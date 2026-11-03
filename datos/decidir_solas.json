@@ -2,100 +2,6 @@
  "_leeme": "Lo que ✅ Decidir cerró o contestó solo, con la regla y la prueba (sheet/decidir.py, resolver_solo()), para «Lo que se resolvió solo» del Dashboard y su «Deshacer». «deshechas»: lo que Dlx deshizo; ninguna regla lo vuelve a tocar. Dlx, 13/10/2026.",
  "solas": [
   {
-   "id": "ac261e254f",
-   "tipo": "Nombre desconocido",
-   "sec": "LA REDENCIÓN · FFA · 19/10 · #490",
-   "que": "¿Quién es «will🇻🇪»?",
-   "r": "Es Agente sombra",
-   "regla": "Discord · su cuenta de Discord: la inscripción, el podio, la llave o la llamada",
-   "rk": "Discord",
-   "por": "el ciclo (su cuenta de Discord)",
-   "porque": "alias de Agente sombra: estaba en la llamada del evento con ese nombre",
-   "t": 1792450920227,
-   "filas": [
-    758
-   ],
-   "variantes": [
-    "will🇻🇪"
-   ],
-   "escribio": {
-    "alias": [
-     "will",
-     "Agente sombra"
-    ],
-    "filas": [
-     297
-    ]
-   }
-  },
-  {
-   "id": "e956a63dc7",
-   "tipo": "alta",
-   "sec": "🪪 Identidad",
-   "que": "A «Ritmo» lo buscó otra persona con /card en FFA (no lo usó él) y no está en la Lista de Raperos. Si ya está con otro nombre, elegilo o escribilo: le pongo su Discord.\nSu cuenta: https://discord.com/users/1371969975929278464",
-   "r": "Ya está resuelto",
-   "regla": "R3 · un alta que no hace falta: el bot, o una cuenta que buscó otro y no jugó",
-   "rk": "R3",
-   "por": "el ciclo",
-   "porque": "no usó /card: lo buscó otra persona, y no jugó en la T1 (ni su nombre ni con lo que se anotó está en ningún resultado). Si se anota sola, entra como cualquiera",
-   "t": 1792454334916,
-   "filas": [
-    759
-   ],
-   "variantes": [
-    "Ritmo = 1371969975929278464"
-   ],
-   "escribio": {}
-  },
-  {
-   "id": "554b377eb7",
-   "tipo": "Batalla sin ganador",
-   "sec": "LA ISLA DE OKINAWA V.2 · FFA · 19/10 · #492",
-   "que": "¿Quién pasó en cuartos?\nLUZ🇨🇱+DYZZ🇨🇱 🆚 snow🇦🇴 + velatz🇵🇪 🆚 makmah 🇻🇪 + Molusco 🇦🇷",
-   "r": "No se jugó",
-   "regla": "R4 · una batalla que es copia de otra ya cargada",
-   "rk": "R4",
-   "por": "el ciclo",
-   "porque": "es la misma batalla que «Snow, Velatz vs Luz, Dyzz vs Makmah, Molusco» (ganó Snow, Velatz), ya cargada en el #492: contestar «Ganó» la contaría dos veces",
-   "t": 1792463560554,
-   "filas": [
-    765
-   ],
-   "variantes": [
-    "LA ISLA DE OKINAWA V.2 · FFA · 19/10 · cuartos · LUZ🇨🇱+DYZZ🇨🇱 🆚 snow🇦🇴 + velatz🇵🇪 🆚 makmah 🇻🇪 + Molusco 🇦🇷"
-   ],
-   "escribio": {
-    "batalla": "LA ISLA DE OKINAWA V.2 · FFA · 19/10 · cuartos · LUZ🇨🇱+DYZZ🇨🇱 🆚 snow🇦🇴 + velatz🇵🇪 🆚 makmah 🇻🇪 + Molusco 🇦🇷"
-   }
-  },
-  {
-   "id": "b7e75ccaee",
-   "tipo": "Nombre desconocido",
-   "sec": "LA ISLA DE OKINAWA V.2 · FFA · 19/10 · #492",
-   "que": "¿Quién es «Snake NC»?",
-   "r": "Es Snake",
-   "regla": "Discord · su cuenta de Discord: la inscripción, el podio, la llave o la llamada",
-   "rk": "Discord",
-   "por": "el ciclo (su cuenta de Discord)",
-   "porque": "alias de Snake: estaba en la llamada del evento con un nombre parecido",
-   "t": 1792463560554,
-   "filas": [
-    766
-   ],
-   "variantes": [
-    "Snake NC"
-   ],
-   "escribio": {
-    "alias": [
-     "Snake NC",
-     "Snake"
-    ],
-    "filas": [
-     298
-    ]
-   }
-  },
-  {
    "id": "6415dbfe87",
    "tipo": "alta",
    "sec": "🪪 Identidad",
@@ -3191,6 +3097,81 @@
     "cr7thebestplayer = 1368748451696742473"
    ],
    "escribio": {}
+  },
+  {
+   "id": "822b8c3d03",
+   "tipo": "Nombre desconocido",
+   "sec": "qcyo rapeen · FFA · 02/11 · #563",
+   "que": "¿Quién es «pelota del 10 🇵🇾»?",
+   "r": "Es Millonari-O (en este evento)",
+   "regla": "R21 · la cuenta que se anotó así para ese evento es de alguien de la Lista que esa noche no jugó con su nombre",
+   "rk": "R21",
+   "por": "el ciclo",
+   "porque": "la cuenta @pelotadel_10_68491 (en Discord: «pelota») · en la Lista: Millonari-O se anotó como «pelota del 10» para ese evento, no es staff de FFA y esa noche no jugó con su nombre",
+   "t": 1793684069140,
+   "filas": [
+    1043
+   ],
+   "variantes": [
+    "pelota del 10 🇵🇾"
+   ],
+   "escribio": {
+    "quien": "qcyo rapeen · FFA · 02/11 · pelota del 10 🇵🇾"
+   }
+  },
+  {
+   "id": "9968e3015d",
+   "tipo": "Nombre desconocido",
+   "sec": "qcyo rapeen · FFA · 02/11 · #563",
+   "que": "¿Quién es «familiafortunayexito 🇫🇷»?",
+   "r": "Es Deuxs",
+   "regla": "Discord · su cuenta de Discord: la inscripción, el podio, la llave o la llamada",
+   "rk": "Discord",
+   "por": "el ciclo (su cuenta de Discord)",
+   "porque": "alias de Deuxs: estaba en la llamada del evento con ese nombre",
+   "t": 1793684069140,
+   "filas": [
+    1041
+   ],
+   "variantes": [
+    "familiafortunayexito 🇫🇷"
+   ],
+   "escribio": {
+    "alias": [
+     "familiafortunayexito",
+     "Deuxs"
+    ],
+    "filas": [
+     335
+    ]
+   }
+  },
+  {
+   "id": "4903c1da73",
+   "tipo": "Nombre desconocido",
+   "sec": "qcyo rapeen · FFA · 02/11 · #563",
+   "que": "¿Quién es «ojos de tailandia🇹🇭»?",
+   "r": "Es Six",
+   "regla": "Discord · su cuenta de Discord: la inscripción, el podio, la llave o la llamada",
+   "rk": "Discord",
+   "por": "el ciclo (su cuenta de Discord)",
+   "porque": "alias de Six: el podio de la llave lo menciona",
+   "t": 1793684069140,
+   "filas": [
+    1042
+   ],
+   "variantes": [
+    "ojos de tailandia🇹🇭"
+   ],
+   "escribio": {
+    "alias": [
+     "ojos de tailandia",
+     "Six"
+    ],
+    "filas": [
+     336
+    ]
+   }
   }
  ],
  "deshechas": []

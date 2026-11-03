@@ -688,6 +688,11 @@
     "🏆 CAMPEÓN",
     "t1",
     1793601241992
+   ],
+   "📆 HABITUÉ": [
+    "📆 HABITUÉ",
+    "t1",
+    1793684083679
    ]
   },
   "temporada": {
@@ -5460,6 +5465,11 @@
  },
  "lvel": {
   "servidor": {
+   "🏛️ PILAR": [
+    "🏛️ PILAR",
+    "t1",
+    1793684083679
+   ],
    "📆 HABITUÉ": [
     "📆 HABITUÉ",
     "t1",
@@ -5471,6 +5481,11 @@
     "⚡ MARATONISTA",
     "t1",
     1793143003505
+   ],
+   "🎖️ CURTIDO": [
+    "🎖️ CURTIDO",
+    "t1",
+    1793684083679
    ],
    "📈 EN ASCENSO": [
     "📈 EN ASCENSO",
@@ -7360,6 +7375,11 @@
     "t1",
     1792953978519
    ],
+   "🗡️ MATAGIGANTES": [
+    "🗡️ MATAGIGANTES",
+    "t1",
+    1793684083679
+   ],
    "🤝 SIN MIEDO": [
     "🤝 SIN MIEDO",
     "t1",
@@ -7884,6 +7904,30 @@
     "🥉 AL PODIO",
     "t1",
     1793029252929
+   ]
+  }
+ },
+ "ojosdetailandia": {
+  "temporada": {
+   "🌱 PROMESA": [
+    "🌱 PROMESA",
+    "t1",
+    1793684083679
+   ],
+   "👑 CAMPEÓN x%d": [
+    "👑 CAMPEÓN x1",
+    "t1",
+    1793684083679
+   ],
+   "🚪 DEBUT CON CORONA": [
+    "🚪 DEBUT CON CORONA",
+    "t1",
+    1793684083679
+   ],
+   "🥉 AL PODIO": [
+    "🥉 AL PODIO",
+    "t1",
+    1793684083679
    ]
   }
  },
@@ -8931,6 +8975,33 @@
     "🤝 SIN MIEDO",
     "t1",
     1793029252929
+   ]
+  },
+  "pais": {
+   "CONQUISTA AFUERA": [
+    "CONQUISTA AFUERA",
+    "t1",
+    1793684083679
+   ],
+   "DA LA CARA": [
+    "DA LA CARA",
+    "t1",
+    1793684083679
+   ],
+   "INTERNACIONAL": [
+    "INTERNACIONAL",
+    "t1",
+    1793684083679
+   ],
+   "MEDALLERO": [
+    "MEDALLERO",
+    "t1",
+    1793684083679
+   ],
+   "SIN FRONTERAS": [
+    "SIN FRONTERAS",
+    "t1",
+    1793684083679
    ]
   },
   "servidor": {
@@ -10584,6 +10655,11 @@
    ]
   },
   "temporada": {
+   "🎖️ CURTIDO": [
+    "🎖️ CURTIDO",
+    "t1",
+    1793684083679
+   ],
    "🐺 LOBO SOLITARIO": [
     "🐺 LOBO SOLITARIO",
     "t1",
@@ -10700,6 +10776,11 @@
     "t1",
     1792953978519
    ],
+   "🏛️ PILAR": [
+    "🏛️ PILAR",
+    "t1",
+    1793684083679
+   ],
    "🏟️ FINALISTA DE CASA": [
     "🏟️ FINALISTA DE CASA",
     "t1",
@@ -10712,6 +10793,16 @@
    ]
   },
   "temporada": {
+   "👑 CAMPEÓN x%d": [
+    "👑 CAMPEÓN x2",
+    "t1",
+    1793684083679
+   ],
+   "💯 CENTENARIO": [
+    "💯 CENTENARIO",
+    "t1",
+    1793684083679
+   ],
    "📈 EN ASCENSO": [
     "📈 EN ASCENSO",
     "t1",

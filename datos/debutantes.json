@@ -4,13 +4,25 @@
   "ACAD": "2026-10-31",
   "DDF": "2026-11-02",
   "FDS": "2026-10-30",
-  "FFA": "2026-11-02",
+  "FFA": "2026-11-03",
   "FRZ": "2026-10-27",
   "FVS": "2026-10-15",
   "SR": "2026-11-01",
   "URBF": "2026-10-30"
  },
  "retos": {
+  "0223": {
+   "chat": "2026-11-03",
+   "con": null,
+   "cumplido": "",
+   "debut": "2026-11-03T02:50:33+00:00",
+   "did": "",
+   "evento": "qcyo rapeen",
+   "n": 563,
+   "sv": "FFA",
+   "vence": "2026-11-10T02:50:33+00:00",
+   "vencido": false
+  },
   "19 FLEIVA WACK": {
    "avisado": "2026-10-30",
    "chat": "2026-10-31",
@@ -27,8 +39,8 @@
   "71": {
    "avisado": "2026-10-30",
    "chat": "2026-10-31",
-   "con": null,
-   "cumplido": "",
+   "con": 563,
+   "cumplido": "2026-11-03T02:50:33+00:00",
    "debut": "2026-10-30T20:59:18+00:00",
    "did": "",
    "evento": "LA ISLA DE OKINAWA V.4",
@@ -418,6 +430,18 @@
    "n": 515,
    "sv": "ACAD",
    "vence": "2026-11-01T21:03:19+00:00",
+   "vencido": false
+  },
+  "Dominic": {
+   "chat": "2026-11-03",
+   "con": null,
+   "cumplido": "",
+   "debut": "2026-11-03T02:50:33+00:00",
+   "did": "",
+   "evento": "qcyo rapeen",
+   "n": 563,
+   "sv": "FFA",
+   "vence": "2026-11-10T02:50:33+00:00",
    "vencido": false
   },
   "EVANGELINE": {
@@ -813,6 +837,18 @@
    "vence": "2026-10-20T15:18:36+00:00",
    "vencido": false
   },
+  "Joven sexlong": {
+   "chat": "2026-11-03",
+   "con": null,
+   "cumplido": "",
+   "debut": "2026-11-03T02:50:33+00:00",
+   "did": "",
+   "evento": "qcyo rapeen",
+   "n": 563,
+   "sv": "FFA",
+   "vence": "2026-11-10T02:50:33+00:00",
+   "vencido": false
+  },
   "Kain": {
    "avisado": "2026-10-16",
    "chat": "2026-10-16",
@@ -980,6 +1016,18 @@
    "n": 532,
    "sv": "FFA",
    "vence": "2026-11-03T03:32:41+00:00",
+   "vencido": false
+  },
+  "Leopold sedar": {
+   "chat": "2026-11-03",
+   "con": null,
+   "cumplido": "",
+   "debut": "2026-11-03T02:50:33+00:00",
+   "did": "",
+   "evento": "qcyo rapeen",
+   "n": 563,
+   "sv": "FFA",
+   "vence": "2026-11-10T02:50:33+00:00",
    "vencido": false
   },
   "Lizen": {
@@ -1851,6 +1899,18 @@
    "vence": "2026-11-07T06:06:01+00:00",
    "vencido": false
   },
+  "familiafortunayexito": {
+   "chat": "2026-11-03",
+   "con": null,
+   "cumplido": "",
+   "debut": "2026-11-03T02:50:33+00:00",
+   "did": "",
+   "evento": "qcyo rapeen",
+   "n": 563,
+   "sv": "FFA",
+   "vence": "2026-11-10T02:50:33+00:00",
+   "vencido": false
+  },
   "fenix": {
    "avisado": "2026-10-29",
    "chat": "2026-10-30",
@@ -1957,6 +2017,18 @@
    "vence": "2026-10-28T21:05:52+00:00",
    "vencido": true
   },
+  "ojos de tailandia": {
+   "chat": "2026-11-03",
+   "con": null,
+   "cumplido": "",
+   "debut": "2026-11-03T02:50:33+00:00",
+   "did": "",
+   "evento": "qcyo rapeen",
+   "n": 563,
+   "sv": "FFA",
+   "vence": "2026-11-10T02:50:33+00:00",
+   "vencido": false
+  },
   "oriuz": {
    "avisado": "2026-10-31",
    "chat": "2026-11-01",
@@ -1968,6 +2040,18 @@
    "n": 550,
    "sv": "FFA",
    "vence": "2026-11-07T02:59:35+00:00",
+   "vencido": false
+  },
+  "pelota del 10": {
+   "chat": "2026-11-03",
+   "con": null,
+   "cumplido": "",
+   "debut": "2026-11-03T02:50:33+00:00",
+   "did": "",
+   "evento": "qcyo rapeen",
+   "n": 563,
+   "sv": "FFA",
+   "vence": "2026-11-10T02:50:33+00:00",
    "vencido": false
   },
   "publicenemy": {

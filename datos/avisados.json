@@ -33333,5 +33333,286 @@
    ]
   ],
   "v": 2
+ },
+ "563": {
+  "antes": {
+   "71": [
+    443,
+    404,
+    true
+   ],
+   "Akuseru": [
+    257,
+    135,
+    true
+   ],
+   "Calíz": [
+    43,
+    55,
+    false
+   ],
+   "Ezze": [
+    253,
+    118,
+    true
+   ],
+   "Jobaking": [
+    61,
+    79,
+    false
+   ],
+   "LRS": [
+    42,
+    53,
+    false
+   ],
+   "MCO": [
+    17,
+    18,
+    false
+   ],
+   "Makmah": [
+    1,
+    1,
+    false
+   ],
+   "PRAISERIZA": [
+    224,
+    5,
+    true
+   ],
+   "Tam": [
+    225,
+    21,
+    true
+   ],
+   "Tenor": [
+    37,
+    46,
+    false
+   ],
+   "ikonoxx": [
+    264,
+    149,
+    true
+   ],
+   "mats": [
+    70,
+    91,
+    false
+   ]
+  },
+  "canal": "1468472443843776659",
+  "duelos": [
+   [
+    "LRS",
+    "Jobaking",
+    "LRS"
+   ],
+   [
+    "LRS",
+    "Akuseru",
+    "LRS"
+   ],
+   [
+    "LRS",
+    "Dominic 🇲🇽",
+    "LRS"
+   ],
+   [
+    "LRS",
+    "MCO",
+    "LRS"
+   ],
+   [
+    "Vandu",
+    "mats",
+    "Vandu"
+   ],
+   [
+    "Vandu",
+    "pelota del 10 🇵🇾",
+    "Vandu"
+   ],
+   [
+    "Vandu",
+    "Lvel 🇻🇪",
+    "Vandu"
+   ],
+   [
+    "0223 🇧🇧",
+    "ikonoxx",
+    "0223 🇧🇧"
+   ],
+   [
+    "Calíz",
+    "Joven sexlong 🇵🇦",
+    "Calíz"
+   ],
+   [
+    "Calíz",
+    "Ezze",
+    "Calíz"
+   ],
+   [
+    "PRAISERIZA",
+    "familiafortunayexito 🇫🇷, Leopold sedar 🇸🇳, 0223🇧🇧",
+    "PRAISERIZA"
+   ],
+   [
+    "ojos de tailandia🇹🇭",
+    "LRS, Calíz",
+    "ojos de tailandia🇹🇭"
+   ],
+   [
+    "PRAISERIZA",
+    "Makmah",
+    "PRAISERIZA"
+   ],
+   [
+    "ojos de tailandia🇹🇭",
+    "71, Tenor, Tam",
+    "ojos de tailandia🇹🇭"
+   ],
+   [
+    "ojos de tailandia🇹🇭",
+    "PRAISERIZA",
+    "ojos de tailandia🇹🇭"
+   ]
+  ],
+  "ev_antes": {
+   "71": 1,
+   "Akuseru": 4,
+   "Calíz": 22,
+   "Ezze": 5,
+   "Jobaking": 15,
+   "LRS": 28,
+   "MCO": 30,
+   "Makmah": 94,
+   "PRAISERIZA": 18,
+   "Tam": 19,
+   "Tenor": 14,
+   "ikonoxx": 7,
+   "mats": 8
+  },
+  "fecha": "02/11",
+  "firma": "f9cf5ccc23de54ea",
+  "msg": "1567040820337443021",
+  "nombre": "__ qcyo rapeen __",
+  "num": 563,
+  "participantes": 24,
+  "sello": {
+   "ojos de tailandia🇹🇭": ""
+  },
+  "sv": "FFA",
+  "t": "2026-11-03T05:24:53Z",
+  "tabla": [
+   [
+    "ojos de tailandia🇹🇭",
+    "Campeón",
+    10000
+   ],
+   [
+    "PRAISERIZA",
+    "Subcampeón",
+    7500
+   ],
+   [
+    "Makmah",
+    "Semifinal",
+    5250
+   ],
+   [
+    "71",
+    "Semifinal",
+    1750
+   ],
+   [
+    "Tenor",
+    "Semifinal",
+    1750
+   ],
+   [
+    "Tam",
+    "Semifinal",
+    1750
+   ],
+   [
+    "LRS",
+    "Cuartos",
+    1250
+   ],
+   [
+    "Calíz",
+    "Cuartos",
+    1250
+   ],
+   [
+    "Jobaking",
+    "Octavos",
+    1250
+   ],
+   [
+    "Akuseru",
+    "Octavos",
+    1250
+   ],
+   [
+    "Dominic 🇲🇽",
+    "Octavos",
+    1250
+   ],
+   [
+    "MCO",
+    "Octavos",
+    1250
+   ],
+   [
+    "mats",
+    "Octavos",
+    1250
+   ],
+   [
+    "pelota del 10 🇵🇾",
+    "Octavos",
+    1250
+   ],
+   [
+    "Lvel 🇻🇪",
+    "Octavos",
+    1250
+   ],
+   [
+    "ikonoxx",
+    "Octavos",
+    1250
+   ],
+   [
+    "Joven sexlong 🇵🇦",
+    "Octavos",
+    1250
+   ],
+   [
+    "Ezze",
+    "Octavos",
+    1250
+   ],
+   [
+    "familiafortunayexito 🇫🇷",
+    "Cuartos",
+    833
+   ],
+   [
+    "Leopold sedar 🇸🇳",
+    "Cuartos",
+    833
+   ],
+   [
+    "0223🇧🇧",
+    "Cuartos",
+    833
+   ]
+  ],
+  "v": 2
  }
 }

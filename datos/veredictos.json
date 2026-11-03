@@ -1563,6 +1563,17 @@
    "b": "TAM",
    "ganador": "SIX",
    "votos": "1–0"
+  },
+  "1567038810372702219": {
+   "id": "1567038810372702219",
+   "sv": "[FFA] Freestyle For All 👾",
+   "g": "1468472442925092958",
+   "canal": "1487206164864438513",
+   "pub": 1793681566566,
+   "a": "TENOR",
+   "b": "SIX",
+   "ganador": "SIX",
+   "votos": "1–0"
   }
  },
  "llaves": {
@@ -5621,7 +5632,7 @@
    "g": "1468472442925092958",
    "canal": "1487206164864438513",
    "pub": 1793674799860,
-   "ed": 1793681566566,
+   "ed": 1793681764426,
    "texto": "`[ OCTAVOS ]`\n⌞JOBA⌝ 🆚 ⌞LRS⌝ 🆚 ⌞AKUSERU⌝ 🆚 ⌞DOMINIC⌝ 🆚 ⌞MCO⌝ 🆚 ⌞TOMY HILFIGHER⌝\n⌞MATS⌝ 🆚 ⌞PELOTA⌝ 🆚 ⌞OJOS DE TAILANDIA PICHULA⌝ 🆚 ⌞VANDU⌝ 🆚 ⌞LVEL⌝\n⌞O223⌝ 🆚 ⌞IKONOX⌝ 🆚 ⌞71 TNOR TAM⌝ 🆚 ⌞DEUXS⌝\n⌞CALIZ⌝ 🆚 ⌞JOVEN SEXLONG⌝ 🆚 ⌞MAKMAH⌝ 🆚 ⌞EZZE⌝ 🆚 ⌞PRAISERIZA⌝\n`[ CUARTOS ]`\n⌞CALIZ LRS⌝ 🆚 ⌞OJOS DE TAILANDIA⌝\n⌞71 TENOR TAM⌝ 🆚 ⌞MAKMAH⌝\n`[ SEMIFINALES ]`\n⌞PRAISERIZAS⌝ 🆚 ⌞MAKMAH⌝\n⌞TENOR 71 TAM⌝ 🆚 ⌞OJOS DE TAILANDIA⌝\n`[ FINAL ]`\n⌞PRAISERIZAS⌝ 🆚 ⌞MAKMAH⌝\n⌞PRAISERIZAS⌝ 🆚 ⌞PRODIGY⌝\n⌞SIX⌝ 🆚 ⌞ZA⌝\n⌞SIX⌝ 🆚 ⌞TAM⌝\n⌞TENOR⌝ 🆚 ⌞SIX⌝",
    "batallas": [
     [
@@ -5762,8 +5773,8 @@
       "TENOR",
       "SIX"
      ],
-     null,
-     "última ronda y no dice campeón",
+     "SIX",
+     "veredicto",
      []
     ]
    ]
