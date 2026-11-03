@@ -1577,27 +1577,6 @@
   }
  },
  "llaves": {
-  "1559602670447108097": {
-   "id": "1559602670447108097",
-   "sv": "╔═══ஜ𝕍.𝕊ஜ═══╗",
-   "g": "1283205153624952975",
-   "canal": "1439611946906157079",
-   "pub": 1791908652651,
-   "ed": 1791908658825,
-   "texto": "`[ FINAL ]`\n⌞MOLUSCO⌝ 🆚 ⌞VANDU⌝",
-   "batallas": [
-    [
-     "FINAL",
-     [
-      "MOLUSCO",
-      "VANDU"
-     ],
-     null,
-     "última ronda y no dice campeón",
-     []
-    ]
-   ]
-  },
   "1559761199640612965": {
    "id": "1559761199640612965",
    "sv": "[FFA] Freestyle For All 👾",
@@ -5662,8 +5641,8 @@
       "71 TENOR TAM",
       "MAKMAH"
      ],
-     "MAKMAH",
-     "ronda siguiente",
+     "71 TENOR TAM",
+     "veredicto",
      []
     ],
     [
