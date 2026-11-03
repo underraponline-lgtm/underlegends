@@ -433,7 +433,10 @@ def html_vs_grupos(v, d):
 
     def pie(i, g, x0, W):
         o = prom(g)
-        quien = ('%d raperos' % len(g)) if len(g) > 1 else ''
+        # 🔴 EL PROMEDIO ESCONDÍA A LOS QUE NO TIENEN DATOS (02/11/2026): en un 2 vs 1 con uno solo conocido, «OVR prom.
+        # 78 · 2 raperos» hacía creer que los dos promediaban 78. Ahora dice cuántos de ellos cuentan
+        con = sum(1 for y in g if float(y.get(campo) or 0) > 0)
+        quien = (('%d raperos' % len(g)) if con in (0, len(g)) else ('%d de %d con datos' % (con, len(g)))) if len(g) > 1 else ''
         dato = ' · '.join(x for x in (('%s %d' % (etiqueta, o) if len(g) == 1 else '%s prom. %d' % (etiqueta, o)) if o
                                        else 'Sin datos en la Liga', quien) if x)
         pct = ('%d%%' % pr[0][i]) if pr else '??'
@@ -516,16 +519,19 @@ def html_vs_grupos(v, d):
 def html_vs(v, d):
     """🖼️ EL VS (Dlx, 12/10/2026: «hacerlo más visual para mostrar las imágenes cuando sea un vs, o sea las tarjetas»; a
     las dos formas, «B»: una imagen armada). `v` es lo que guardó el objeto (`vsEncolar()` en avisos.js): `{ev, ronda,
-    titulo, sub, h2h, a, b}`, cada lado `{n, fl, ovr, sc, rg, forma, racha, carta}`. ⚠️ Quien no tiene tarjeta sale con la
-    silueta, su nombre y su OVR: la imagen nunca queda con un lado vacío (en la COMPE de FFA del 12/10, 13 de 27 tenían
-    tarjeta).
+    titulo, sub, h2h, gano, a, b}`, cada lado `{n, fl, ovr, sc, rg, forma, racha, carta, noche}`. ⚠️ Quien no tiene tarjeta
+    sale con la silueta, su nombre, su bandera y su OVR: la imagen nunca queda con un lado vacío.
 
-    🧩 ORDENADA EN ZONAS (13/10/2026, Dlx a la primera con todo: «me gusta pero asegurate que todo esté organizado, se ve
-    muy apretado… puede ser más personalizable»). Tenía paneles de 120 px a los costados y siete cosas apiladas en los
-    240 px del medio. Ahora, en 1200×675: arriba el evento; a los lados las dos tarjetas y, DEBAJO de cada una, una sola
-    tira con su letra, sus últimos 5 y su racha; en el medio, en una columna que reparte el aire sola —y se acomoda si
-    falta algo—, el título del cruce, el cara a cara, el VS y el pronóstico. Personalizada a los dos: la barra y la tira
-    de cada uno llevan el color de SU letra (`comun.rangos.ACENTO`); sin letra, el magenta y el blanco de la Liga."""
+    🥊 LA PANTALLA DE PELEA (02/11/2026, el remake del VS; Dlx eligió la «B» del lienzo: «mainly the one with VS», y
+    «exclude whats already in the card»). El fondo se parte en dos con el color de la letra de cada uno, separado por una
+    costura en diagonal; arriba el pronóstico, como la barra de la «Prediction Market Card» de 21st (dos colores con el
+    corte en diagonal); las cartas inclinadas hacia la costura; un VS grande; en el medio la historia del cruce (su título,
+    el cara a cara en grande y una línea); abajo de cada carta, sus últimos 5 duelos (en segmentos, como el «Energy Meter»)
+    y lo que hizo esta noche (`nocheVs()`). ⚠️ NADA DE LO QUE LA CARTA YA DICE: ni la letra, ni el OVR, ni la bandera,
+    ni la racha de eventos —eso estaba en la tira de antes—. Sólo el que NO tiene carta lleva su nombre, bandera y OVR.
+
+    🏁 CON `gano` ('a' o 'b') ES LA IMAGEN DEL RESULTADO (`vsResultado()`): arriba «X PASA», el que perdió en gris y el
+    cara a cara ya sumado. Reemplaza a la de antes en el mismo mensaje."""
     # 🧩 los otros formatos (2v2, 1v3, 1v1v1…): su propio armado, con todas las tarjetas
     if v.get('grupos'):
         return html_vs_grupos(v, d)
@@ -551,115 +557,154 @@ def html_vs(v, d):
         rg = str((y or {}).get('rg') or '').rstrip('+-−')
         return ACENTO.get(rg, otro)
 
+    def oscuro(hx, f=0.24):
+        """El fondo de cada mitad: el color de su letra, oscurecido (plano, sin degradé)."""
+        hx = str(hx or '#808080').lstrip('#')
+        try:
+            r, g, b = (int(hx[i:i + 2], 16) for i in (0, 2, 4))
+        except ValueError:
+            r, g, b = 128, 128, 128
+        return '#%02x%02x%02x' % (round(r * f), round(g * f), round(b * f))
+
     ca, cb = color(v.get('a'), '#E41373'), color(v.get('b'), '#F6F6F6')
-    # la misma letra los dos: el segundo en blanco, o la barra sería de un solo color
+    # la misma letra los dos: el segundo en blanco, o la barra y el fondo serían de un solo color
     if cb == ca:
         cb = '#F6F6F6'
+    gano = v.get('gano') if v.get('gano') in ('a', 'b') else ''
+
+    def tamano(txt, grande, chico, cabe):
+        """🔤 el tamaño de un texto para que entre en una línea: `grande` hasta `cabe` letras, y baja hasta `chico`."""
+        n = max(1, len(str(txt or '')))
+        return max(chico, min(grande, int(grande * cabe / n)))
 
     def lado(y, cls):
         y = y or {}
+        perdio = ' perdio' if gano and gano != cls else ''
+        # ⚠️ sin banda «PASA» sobre la carta del que ganó: tapaba sus números y repetía el «X PASA» de arriba
+        pasa = ''
         if y.get('carta'):
-            return '<div class="ld %s"><img class="carta" src="%s" alt=""></div>' % (cls, _e(y['carta']))
-        ovr = '<span class="et ovr">OVR %d</span>' % y['ovr'] if y.get('ovr') else ''
-        return ('<div class="ld %s"><div class="sin"><img class="sil" src="%s" alt=""><b>%s%s</b>%s</div></div>'
-                % (cls, sil(y.get('n')), _e(y.get('n') or '¿?'), bandera(y.get('fl')), ovr))
+            return '<div class="ld %s%s"><img class="carta" src="%s" alt="">%s</div>' % (cls, perdio, _e(y['carta']), pasa)
+        n = str(y.get('n') or '¿?')
+        ovr = '<span class="ovr">OVR %d</span>' % y['ovr'] if y.get('ovr') else ''
+        # 🔤 por el ancho de la caja (260 px útiles; una mayúscula de Archivo 900 ocupa ~0,9 de su tamaño, medido con
+        # «PUBLICENEMYNUMEROUNO»): un nombre largo sin espacios se achica en vez de partirse a la mitad
+        px = max(13, min(34, int(260 / (0.9 * max(1, len(n) + (2 if y.get('fl') else 0))))))
+        return ('<div class="ld %s%s"><div class="sin"><img class="sil" src="%s" alt=""><b style="font-size:%dpx">%s%s</b>%s</div>%s</div>'
+                % (cls, perdio, sil(n), px, _e(n), bandera(y.get('fl')), ovr, pasa))
 
-    def tira(y, cls, col):
-        """🧾 debajo de cada tarjeta, en una fila: su letra con su color, los últimos 5 duelos —verde ganó, magenta perdió,
-        del más viejo al más nuevo— y la racha si es de 2 o más. Sin nada de eso, no hay tira"""
+    def pie(y, cls):
+        """🧾 debajo de cada carta: sus últimos 5 duelos —verde ganó, vacío perdió, del más viejo al más nuevo— y lo que
+        hizo esta noche. Sin nada de eso, no hay pie"""
         y = y or {}
-        partes = []
-        rg = str(y.get('rg') or '')
-        if rg:
-            partes.append('<b class="rg" style="color:%s;border-color:%s">%s</b>' % (col, col, _e(rg)))
         forma = re.sub(r'[^GP]', '', str(y.get('forma') or ''))[-5:]
+        filas = []
         if forma:
-            partes.append('<span class="fm" title="los últimos %d">%s</span>'
-                          % (len(forma), ''.join('<i class="%s"></i>' % ('g' if c == 'G' else 'p') for c in forma)))
-        if int(y.get('racha') or 0) >= 2:
-            partes.append('<span class="rc"><span class="et">Racha</span><b>%d</b></span>' % int(y['racha']))
-        return '<div class="ti %s" style="border-color:%s">%s</div>' % (cls, col, ''.join(partes)) if partes else ''
+            filas.append('<div class="fm"><span class="segs">%s</span><span class="et">Últimos %d duelos</span></div>'
+                         % (''.join('<i class="%s"></i>' % ('g' if c == 'G' else 'p') for c in forma), len(forma)))
+        if y.get('noche'):
+            filas.append('<span class="noche">%s</span>' % _e(str(y['noche'])[:60]))
+        return '<div class="pie %s">%s</div>' % (cls, ''.join(filas)) if filas else ''
 
-    def cara_a_cara():
-        h = v.get('h2h')
-        if not isinstance(h, (list, tuple)) or len(h) != 2:
-            return ''
-        if not (h[0] or h[1]):
-            return '<div class="hh"><span class="et">Primer cruce</span></div>'
-        return ('<div class="hh"><span class="et">Cara a cara</span><b><u style="color:%s">%d</u><i>–</i><u style="color:%s">%d</u></b></div>'
-                % (ca, int(h[0]), cb, int(h[1])))
-
-    def barra():
+    def arriba():
+        if gano:
+            n = str(((v.get(gano) or {}).get('n')) or '')
+            txt = ('%s pasa' % n) if n else 'Pasa'
+            return '<div class="gana"><b style="font-size:%dpx">%s</b></div>' % (tamano(txt, 46, 28, 22), _e(txt))
         pr = prob_vs(v.get('a'), v.get('b'))
         if not pr:
-            return ('<div class="pr nada"><div class="pr-n"><b>??</b><b>??</b></div><div class="pr-b"></div>'
-                    '<span class="et">Sin datos de uno</span></div>')
-        return ('<div class="pr"><div class="pr-n"><b style="color:%s">%d%%</b><b style="color:%s">%d%%</b></div>'
-                '<div class="pr-b" style="background:%s"><i style="width:%d%%;background:%s"></i></div>'
-                '<span class="et">Pronóstico · por %s</span></div>' % (ca, pr[0], cb, pr[1], cb, pr[0], ca, pr[2]))
+            return ('<div class="pr nada"><b>??</b><div class="pr-b"><span class="et">Sin datos de uno</span></div><b>??</b></div>')
+        return ('<div class="pr"><b style="color:%s">%d%%</b><div class="pr-b"><i class="l" style="width:%d%%;background:%s"></i>'
+                '<i class="r" style="width:calc(%d%% - 6px);background:%s"></i><span class="et" style="left:%d%%">Pronóstico · por %s</span>'
+                '</div><b style="color:%s">%d%%</b></div>' % (ca, pr[0], pr[0], ca, pr[1], cb, pr[0], pr[2], cb, pr[1]))
 
-    tit = ('<div class="tt"><span class="et">%s</span>%s</div>' % (_e(v.get('titulo')), ('<small>%s</small>' % _e(v.get('sub')))
-                                                                    if v.get('sub') else '')) if v.get('titulo') else ''
+    def historia():
+        """El cuento del cruce, en el medio: su título, el cara a cara en grande y una línea"""
+        partes = []
+        if v.get('titulo'):
+            partes.append('<span class="tt">%s</span>' % _e(v['titulo']))
+        h = v.get('h2h')
+        if isinstance(h, (list, tuple)) and len(h) == 2:
+            if h[0] or h[1]:
+                partes.append('<b class="hh"><u style="color:%s">%d</u><i>–</i><u style="color:%s">%d</u></b><span class="et">En el cara a cara</span>'
+                              % (ca, int(h[0]), cb, int(h[1])))
+            else:
+                partes.append('<span class="et primero">Primer cruce</span>')
+        if v.get('sub'):
+            partes.append('<small>%s</small>' % _e(v['sub']))
+        return '<div class="historia">%s</div>' % ''.join(partes) if partes else ''
+
     ev = re.sub(r'[_*~`#>]+', ' ', str(v.get('ev') or '')).strip()
+    ev = (ev[:33].rstrip() + '…') if len(ev) > 34 else ev
     css = """
-#c{width:1200px;height:675px;position:relative;overflow:hidden;background:#0a0a0d}
-#c .mitad{position:absolute;inset:0;background:%(fondo)s;clip-path:polygon(0 0,58%% 0,42%% 100%%,0 100%%)}
-#c .cab{position:absolute;left:44px;top:30px;right:44px;display:flex;justify-content:space-between;align-items:flex-start;gap:24px}
-#c .cab b{display:block;font-weight:900;font-size:34px;line-height:1;text-transform:uppercase;font-stretch:112%%;max-width:760px}
-#c .cab .et{display:block;margin-top:6px;font-size:22px;opacity:.85}
-#c .cab .marca img{width:62px;height:62px;border-radius:50%%;object-fit:cover}
-#c .ld{position:absolute;top:122px;width:300px;height:430px;display:grid;place-items:center}
-#c .ld.a{left:130px}
-#c .ld.b{right:130px}
-#c .carta{height:430px;width:auto;filter:drop-shadow(0 14px 24px rgba(0,0,0,.55))}
-#c .sin{width:294px;height:430px;border:3px solid rgba(255,255,255,.28);border-radius:16px;background:rgba(255,255,255,.06);
-  display:flex;flex-direction:column;align-items:center;justify-content:flex-end;gap:10px;padding:24px 18px 30px;text-align:center}
-#c .sin .sil{width:220px;height:220px;opacity:.9}
-#c .sin b{font-weight:900;font-size:30px;line-height:1.05;text-transform:uppercase;overflow-wrap:anywhere}
-#c .sin .ovr{font-size:24px;color:#FFD24A}
-#c .fl{height:.75em;width:auto;vertical-align:.04em;margin-left:8px;border-radius:2px}
-#c .ti{position:absolute;top:572px;width:300px;height:58px;display:flex;align-items:center;justify-content:center;gap:18px;
-  background:rgba(10,10,13,.78);border:2px solid;border-radius:12px}
-#c .ti.a{left:130px}
-#c .ti.b{right:130px}
-#c .ti .rg{font-weight:900;font-size:28px;line-height:1;padding:3px 9px;border:3px solid;border-radius:4px}
-#c .fm{display:flex;gap:5px}
-#c .fm i{display:block;width:18px;height:18px;border:2px solid #fff}
-#c .fm i.g{background:#29B298}
-#c .fm i.p{background:#E41373}
-#c .rc{display:flex;align-items:baseline;gap:6px}
-#c .rc .et{font-size:16px;opacity:.85}
-#c .rc b{font-weight:900;font-size:28px;line-height:1;color:#FFD24A}
-#c .centro{position:absolute;left:50%%;top:118px;bottom:40px;transform:translateX(-50%%);width:290px;display:flex;
-  flex-direction:column;align-items:center;justify-content:space-evenly;text-align:center}
-#c .tt{max-width:290px;padding:10px 12px 12px;background:rgba(10,10,13,.72);border-radius:12px}
-#c .tt .et{display:inline-block;background:#FFD24A;color:#0a0a0d;font-size:26px;padding:6px 14px}
-#c .tt small{display:block;margin-top:8px;font-size:18px;line-height:1.25;opacity:.9}
-#c .hh{padding:8px 18px 10px;background:rgba(10,10,13,.72);border-radius:12px}
-#c .hh .et{font-size:18px;opacity:.9}
-#c .hh b{display:block;margin-top:2px;font-weight:900;font-size:50px;line-height:1}
-#c .hh u{text-decoration:none}
-#c .hh i{font-style:normal;opacity:.5;margin:0 12px}
-#c .vs{width:118px;height:118px;flex:none;border-radius:50%%;background:#E41373;border:6px solid #fff;display:grid;place-items:center;
-  font-weight:900;font-size:50px;font-style:italic;box-shadow:0 10px 30px rgba(0,0,0,.5)}
-#c .pr{width:250px;padding:10px 12px 12px;background:rgba(10,10,13,.72);border-radius:12px}
-#c .pr-n{display:flex;justify-content:space-between;font-weight:900;font-size:32px;line-height:1}
-#c .pr-b{display:flex;height:14px;margin-top:8px;border:2px solid #fff}
-#c .pr-b i{display:block;height:100%%;border-right:3px solid #0a0a0d}
+#c{width:1200px;height:675px;position:relative;overflow:hidden;background:#030304}
+#c .mitad{position:absolute;inset:0}
+#c .mitad.a{background:%(fa)s;clip-path:polygon(0 0,55.5%% 0,44.5%% 100%%,0 100%%)}
+#c .mitad.b{background:%(fb)s;clip-path:polygon(55.5%% 0,100%% 0,100%% 100%%,44.5%% 100%%)}
+#c .costura{position:absolute;inset:0;background:#E41373;clip-path:polygon(54.7%% 0,56.3%% 0,45.3%% 100%%,43.7%% 100%%)}
+#c .costura.blanca{background:#F6F6F6;clip-path:polygon(55.2%% 0,55.8%% 0,44.8%% 100%%,44.2%% 100%%)}
+#c .pr{position:absolute;left:40px;right:40px;top:26px;display:grid;grid-template-columns:auto minmax(0,1fr) auto;gap:18px;align-items:center}
+#c .pr>b{font-weight:900;font-size:44px;line-height:1}
+#c .pr-b{position:relative;height:22px}
+#c .pr-b i{position:absolute;top:0;bottom:0}
+#c .pr-b i.l{left:0;clip-path:polygon(0 0,100%% 0,calc(100%% - 14px) 100%%,0 100%%)}
+#c .pr-b i.r{right:0;clip-path:polygon(14px 0,100%% 0,100%% 100%%,0 100%%)}
+#c .pr-b .et{position:absolute;top:30px;transform:translateX(-50%%);white-space:nowrap;font-size:17px;letter-spacing:.12em}
 #c .pr.nada .pr-b{background:#3A3A3E}
-#c .pr .et{display:block;margin-top:8px;font-size:16px;opacity:.85}
-#c .liga{position:absolute;left:0;right:0;bottom:0}
-""" % {'fondo': _e(d['color'])}
+#c .pr.nada .pr-b .et{left:50%%}
+#c .gana{position:absolute;left:40px;right:40px;top:20px;display:flex;justify-content:center}
+#c .gana b{font-weight:900;font-style:italic;line-height:1;text-transform:uppercase;background:#F6F6F6;color:#030304;padding:8px 18px 6px;
+  max-width:1100px;white-space:nowrap;overflow:hidden}
+#c .ld{position:absolute;top:104px;height:456px;width:312px;display:grid;place-items:center}
+#c .ld.a{left:118px;transform:rotate(-3deg)}
+#c .ld.b{right:118px;transform:rotate(3deg)}
+#c .ld.perdio{filter:grayscale(1);opacity:.45}
+#c .carta{height:456px;width:auto;display:block}
+#c .sin{width:300px;height:438px;border:3px solid rgba(255,255,255,.3);border-radius:4px;background:#121214;display:flex;flex-direction:column;
+  align-items:center;justify-content:flex-end;gap:10px;padding:24px 18px 30px;text-align:center}
+#c .sin .sil{width:220px;height:220px;opacity:.9}
+#c .sin b{font-weight:900;line-height:1.05;text-transform:uppercase;max-width:100%%;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+#c .sin .ovr{font-weight:900;font-size:24px;color:#FFD24A}
+#c .fl{height:.75em;width:auto;vertical-align:.04em;margin-left:8px}
+#c .pasa{position:absolute;left:-16px;right:-16px;bottom:78px;background:#29B298;color:#030304;font-weight:900;font-style:italic;
+  font-size:32px;line-height:1;text-align:center;padding:10px 0 8px;transform:rotate(-6deg)}
+#c .vs-fondo{position:absolute;left:50%%;top:214px;width:250px;height:132px;transform:translateX(-50%%) skewX(-12deg);background:#E41373}
+#c .vs{position:absolute;left:50%%;top:196px;transform:translateX(-50%%);font-weight:900;font-style:italic;font-size:172px;line-height:1;
+  letter-spacing:-.05em;color:#F6F6F6}
+#c .historia{position:absolute;left:50%%;top:380px;width:270px;transform:translateX(-50%%);background:#030304;display:flex;flex-direction:column;
+  align-items:center;gap:4px;padding:14px 14px 14px;text-align:center}
+#c .historia .tt{font-weight:900;font-size:22px;line-height:1.1;letter-spacing:.02em}
+#c .historia .hh{font-weight:900;font-size:52px;line-height:1.05}
+#c .historia .hh u{text-decoration:none}
+#c .historia .hh i{font-style:normal;color:#6E6E6A;margin:0 10px}
+#c .historia .et{font-size:18px;letter-spacing:.06em;color:#A5A5A0}
+#c .historia .primero{color:#F6F6F6;font-size:20px}
+#c .historia small{font-size:16px;line-height:1.3;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+#c .pie{position:absolute;top:584px;width:340px;display:flex;flex-direction:column;gap:7px}
+#c .pie.a{left:92px;align-items:flex-start}
+#c .pie.b{right:92px;align-items:flex-end;text-align:right}
+#c .fm{display:flex;align-items:center;gap:10px}
+#c .pie.b .fm{flex-direction:row-reverse}
+#c .segs{display:flex;gap:4px}
+#c .segs i{display:block;width:30px;height:16px;box-shadow:inset 0 0 0 2px #A5A5A0}
+#c .segs i.g{background:#29B298;box-shadow:none}
+#c .fm .et{font-size:18px;letter-spacing:.06em}
+#c .noche{font-weight:600;font-size:18px;line-height:1.2;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:340px}
+#c .evento{position:absolute;left:50%%;bottom:18px;transform:translateX(-50%%);display:flex;align-items:center;gap:10px;background:#030304;
+  padding:6px 14px 6px 8px;white-space:nowrap}
+#c .evento img{width:32px;height:32px;border-radius:50%%;object-fit:cover}
+#c .evento .et{font-size:18px;letter-spacing:.1em}
+#c .et{text-transform:uppercase}
+""" % {'fa': oscuro(ca), 'fb': oscuro(cb)}
     return ("""<!doctype html><html><head><meta charset="utf-8"><style>%s%s%s</style></head><body><div id="c" class="f">
-<div class="mitad"></div>
-<div class="cab"><div><b>%s</b><span class="et">%s · %s</span></div><div class="marca">%s</div></div>
-%s%s%s%s
-<div class="centro">%s%s<div class="vs">VS</div>%s</div>
-<div class="liga"></div>
-</div></body></html>""" % (_fuentes(), _BASE_CSS, css, _e(ev[:60] or 'Liga Global'), _e(v.get('ronda') or ''), _e(d['nombre']),
-                            ('<img src="%s" alt="">' % d['logo']) if d['logo'] else '',
-                            lado(v.get('a'), 'a'), lado(v.get('b'), 'b'), tira(v.get('a'), 'a', ca), tira(v.get('b'), 'b', cb),
-                            tit, cara_a_cara(), barra()))
+<div class="mitad a"></div><div class="mitad b"></div><div class="costura"></div><div class="costura blanca"></div>
+%s%s%s
+<div class="vs-fondo"></div><div class="vs">VS</div>
+%s%s%s
+<div class="evento">%s<span class="et">%s</span></div>
+</div></body></html>""" % (_fuentes(), _BASE_CSS, css, arriba(), lado(v.get('a'), 'a'), lado(v.get('b'), 'b'),
+                            historia(), pie(v.get('a'), 'a'), pie(v.get('b'), 'b'),
+                            ('<img src="%s" alt="">' % d['logo']) if d.get('logo') else '',
+                            _e(' · '.join(x for x in (ev or d.get('nombre') or 'Liga Global', v.get('ronda') or '') if x))))
 
 
 def foto(htm, ruta, jpeg=False):
@@ -818,6 +863,26 @@ def _self_check():
         ('las tarjetas de un lado: una grande; ocho en dos filas de cuatro de 150 px o más, y ninguna más ancha que su lado',
          acomodar(1, 470, 352)[0] == 1 and acomodar(8, 470, 352)[:2] == (2, 4) and acomodar(8, 470, 352)[2] > 150
          and all(acomodar(n, 470, 352)[3] <= 470 for n in range(1, 9))),
+        ('el remake (02/11/2026): con carta, nada de lo que la carta ya dice (ni la letra ni el OVR); sí la forma, la '
+         'noche y el cara a cara; el nombre largo sin carta se achica en vez de partirse',
+         'class="rg"' not in html_vs({'a': {'n': 'A', 'rg': 'S', 'ovr': 90, 'carta': 'https://pub-a.r2.dev/a.webp', 'forma': 'GGP',
+                                            'noche': 'Esta noche pasó con Badterne'},
+                                      'b': {'n': 'B', 'rg': 'A', 'ovr': 80, 'carta': 'https://pub-a.r2.dev/b.webp'}, 'h2h': [2, 1]}, d)
+         and 'OVR 90' not in html_vs({'a': {'n': 'A', 'ovr': 90, 'carta': 'https://pub-a.r2.dev/a.webp'}, 'b': {'n': 'B', 'ovr': 80}}, d)
+         and 'OVR 80' in html_vs({'a': {'n': 'A', 'ovr': 90, 'carta': 'https://pub-a.r2.dev/a.webp'}, 'b': {'n': 'B', 'ovr': 80}}, d)
+         and 'pasó con Badterne' in html_vs({'a': {'n': 'A', 'noche': 'Esta noche pasó con Badterne'}, 'b': {'n': 'B'}}, d)
+         and '>2</u>' in html_vs({'a': {'n': 'A'}, 'b': {'n': 'B'}, 'h2h': [2, 1]}, d)
+         and 'Primer cruce' in html_vs({'a': {'n': 'A'}, 'b': {'n': 'B'}, 'h2h': [0, 0]}, d)
+         and 'font-size:14px' in html_vs({'a': {'n': 'PUBLICENEMYNUMEROUNO'}, 'b': {'n': 'B'}}, d)
+         and 'font-size:34px' in html_vs({'a': {'n': 'Ana'}, 'b': {'n': 'B'}}, d)),
+        ('la imagen del resultado: «X pasa» arriba en vez del pronóstico y el que perdió en gris',
+         'Oasis pasa' in html_vs({'a': {'n': 'Oasis', 'ovr': 87}, 'b': {'n': 'Liberia', 'ovr': 76}, 'gano': 'a'}, d)
+         and 'ld b perdio' in html_vs({'a': {'n': 'Oasis', 'ovr': 87}, 'b': {'n': 'Liberia', 'ovr': 76}, 'gano': 'a'}, d)
+         and 'ld a perdio' not in html_vs({'a': {'n': 'Oasis', 'ovr': 87}, 'b': {'n': 'Liberia', 'ovr': 76}, 'gano': 'a'}, d)
+         and 'Pronóstico' not in html_vs({'a': {'n': 'Oasis', 'ovr': 87}, 'b': {'n': 'Liberia', 'ovr': 76}, 'gano': 'a'}, d)),
+        ('en equipos, el promedio dice cuántos cuentan: «1 de 2 con datos» y no «2 raperos» como si promediaran los dos',
+         '1 de 2 con datos' in html_vs({'grupos': [[{'n': 'A', 'ovr': 78}, {'n': 'B'}], [{'n': 'C', 'ovr': 70}]]}, d)
+         and '2 raperos' in html_vs({'grupos': [[{'n': 'A', 'ovr': 78}, {'n': 'B', 'ovr': 70}], [{'n': 'C', 'ovr': 70}]]}, d)),
         ('lo que viene de Discord se escapa: ningún HTML crudo',
          '<b>x' not in html_afiche(dict(a, nombre='<b>x</b>', horario='<i>9</i>'), 'FFA', d)
          and '&lt;i&gt;9' in html_afiche(dict(a, nombre='<b>x</b>', horario='<i>9</i>'), 'FFA', d)),
@@ -858,9 +923,15 @@ if __name__ == '__main__':
         v = {'ev': 'COMPE POR 1.5 DOLARES', 'ronda': 'Cuartos', 'titulo': 'LA REVANCHA',
              'sub': '%s le ganó la última vez' % _lado(ks[0])['n'], 'a': _lado(ks[0]), 'b': _lado(ks[1])}
         # ⚠️ de MUESTRA: los últimos 5, la racha y el cara a cara salen de los perfiles, que el lobby no trae
-        v['a'].update(forma='GGPGG', racha=3); v['b'].update(forma='PGGPG', racha=0); v['h2h'] = [2, 1]
+        v['a'].update(forma='GGPGG', racha=3, noche='Esta noche pasó con Badterne')
+        v['b'].update(forma='PGGPG', racha=0, noche='Esta noche le ganó a Drexx')
+        v['h2h'] = [2, 1]
+        # 🏁 `--gano a|b`: la imagen del resultado (`vsResultado()` en avisos.js)
+        if arg('--gano') in ('a', 'b'):
+            v['gano'] = arg('--gano')
+            v['h2h'] = [3, 1] if v['gano'] == 'a' else [2, 2]
         os.makedirs(SALIDA, exist_ok=True)
-        ruta = os.path.join(SALIDA, 'vs_muestra_%s_%s.jpg' % tuple(ks))
+        ruta = os.path.join(SALIDA, 'vs_muestra_%s_%s%s.jpg' % (ks[0], ks[1], '_' + v['gano'] if v.get('gano') else ''))
         foto(html_vs(v, _sv_datos(sv)), ruta, jpeg=True)
         print(ruta)
         sys.exit(0)

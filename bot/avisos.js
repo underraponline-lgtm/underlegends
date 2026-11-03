@@ -440,7 +440,8 @@ export function genteChat(lado, buscar, tabla, ids, enSv) {
     const rev = /\(\s*r\s*\)/i.test(seg);
     let n = seg.replace(BANDERAS_RE, ' ').replace(EMOJIS_RE, ' ').replace(/\(\s*r\s*\)/gi, ' ').replace(/\s+/g, ' ').trim();
     if (!n) continue;
-    const k = buscar ? buscar(n) || '' : '';
+    // 🏳️ con su bandera: si dos de la Liga se llaman igual, la bandera decide quién es (ver `datosCruce()`)
+    const k = buscar ? buscar(n, fl) || '' : '';
     const f = k && tabla ? tabla[k] : null;
     // 🔔 su cuenta, si la Liga la conoce (`turnos:nombres`, el índice de «te toca»): por cómo lo escribe la llave o por
     // su nombre de la Liga
@@ -578,7 +579,9 @@ export function momentosChat(L, nombre, fav, nivel = 'normal', opc = {}) {
           const cab = '⚔️ **' + tit + '**';
           out.push({ m: base, cab, bi: R.r + ':' + i, texto: '✅ **' + nombresChat(gs) + '** ' + (gs.length > 1 ? 'pasan' : 'pasa') + ' · ' + R.r + resto,
             // lo que se le agrega al mensaje del cruce cuando ya salió: los nombres ya están arriba, alcanza con quién
-            res: '✅ ' + (gs.length > 1 ? 'Pasan' : 'Pasa') + ' **' + nombresChat(gs) + '**' });
+            res: '✅ ' + (gs.length > 1 ? 'Pasan' : 'Pasa') + ' **' + nombresChat(gs) + '**',
+            // 🏁 quién pasó, para la imagen del resultado (`vsResultado()`)
+            gk: gs[0].k || claveTurno(gs[0].n) });
           for (const y of gs.slice(1)) {
             out.push({ m: 'u:' + R.r + ':' + i + ':' + (y.k || claveTurno(y.n)), de: base, cab,
               texto: '🧩 **' + nombreChat(gs[0]) + '** suma a **' + nombresChat([y]) + '** a su equipo' });
@@ -900,6 +903,144 @@ export function infoCruce(lados, buscar, tabla, perf) {
     if (Number(d[0]) >= un) { un = Number(d[0]); ult = d[2] ? 'a' : 'b'; }
   }
   return { a, b, h2h: { ga, gb, ult } };
+}
+
+/**
+ * 📊 Quién gana, con la MISMA cuenta que la barra de la imagen (`prob_vs()` de bot/kit.py): el Score de los dos, o el
+ * OVR, con la forma del Elo, entre 3 y 97. `[pa, pb, por]` o `null` si a uno le falta. Si se toca una, se toca la otra.
+ */
+export function probVs(fa, fb) {
+  for (const [campo, escala, por] of [['sc', 30, 'Score'], ['ovr', 40, 'OVR']]) {
+    const xa = Number((fa || {})[campo]) || 0, xb = Number((fb || {})[campo]) || 0;
+    if (xa > 0 && xb > 0) {
+      const pa = Math.min(97, Math.max(3, Math.round(100 / (1 + 10 ** ((xb - xa) / escala)))));
+      return [pa, 100 - pa, por];
+    }
+  }
+  return null;
+}
+
+/**
+ * 🌙 «ESTA NOCHE…» DE CADA LADO DEL VS (02/11/2026, el remake del VS): lo que hizo en la llave antes de esta batalla, la
+ * última vez que pasó —«pasó con Badterne» si pasó en dupla, «le ganó a X» en un mano a mano, «pasó un grupo de 4»—.
+ * Es lo único de la noche que la carta no dice. Devuelve una función: `(persona de genteChat) → texto` o `''`.
+ */
+export function nocheVs(rondas, hasta, gente) {
+  const es = (y, z) => (y.k && z.k ? y.k === z.k : claveTurno(y.n) === claveTurno(z.n));
+  return (y) => {
+    if (!y) return '';
+    let dicho = '';
+    for (let k = 0; k < rondas.length; k++) {
+      const R = rondas[k];
+      if (String(R.r) === String(hasta)) break;
+      for (const b of batallasDe(R)) {
+        if (!jugadaChat(b)) continue;
+        const lados = (b[0] || []).filter(Boolean);
+        const suyo = lados.find((l) => gente(l).some((z) => es(y, z)));
+        if (!suyo || !pasaronChat(rondas, k, b).includes(suyo)) continue;
+        const socios = gente(suyo).filter((z) => !es(y, z)).map((z) => sinBandera(z.n));
+        if (socios.length) dicho = 'pasó con ' + conY(socios);
+        else if (lados.length === 2) dicho = 'le ganó a ' + conY(gente(lados.find((l) => l !== suyo)).map((z) => sinBandera(z.n)));
+        else dicho = 'pasó un grupo de ' + lados.length;
+      }
+    }
+    if (!dicho) return '';
+    const t = 'Esta noche ' + dicho;
+    return t.length > 46 ? t.slice(0, 45).trim() + '…' : t;
+  };
+}
+
+/**
+ * 📊 «VER ESTADÍSTICAS» DE UN CRUCE (Dlx, 02/11/2026: «un botón para enviar un mensaje efímero con las estadísticas»).
+ * Todo lo que la carta NO dice: el pronóstico explicado, el cara a cara cruce por cruce, la forma de los últimos 10, los
+ * duelos de la temporada, los rivales en común y la noche. `x` es `infoCruce()`; `dc`, `datosCruce()`; `o` = `{ev, ronda,
+ * na, nb, fla, flb, nocheA, nocheB}`. Se calcula una vez, al armar el vs, y queda en `vs_ficha`: el botón sólo la lee.
+ */
+export function fichaVs(x, dc, o = {}) {
+  const buscar = (dc && dc.buscar) || (() => '');
+  const a = x.a || {}, b = x.b || {};
+  const h2h = (a.du || []).filter((d) => b.k && buscar(d[1]) === b.k)
+    .sort((p, q) => Number(p[0]) - Number(q[0]))
+    .map((d) => { const e = ((dc && dc.evs) || {})[d[0]] || []; return [String(e[4] || ''), String(e[0] || 'Evento ' + d[0]).slice(0, 60), d[2] ? 'a' : 'b']; });
+  const forma = (y) => {
+    const ds = (y.du || []).slice().sort((p, q) => Number(q[0]) - Number(p[0])).slice(0, 10);
+    return { g: ds.filter((d) => d[2]).length, t: ds.length, s: ds.map((d) => (d[2] ? 'G' : 'P')).join(''),
+      perdio: [...new Set(ds.filter((d) => !d[2]).map((d) => sinBandera(d[1])))].slice(0, 4) };
+  };
+  // 🤝 los rivales que se cruzaron con los dos (por su clave de la Liga, no por cómo lo escribió cada llave)
+  const contra = (y, otro) => {
+    const m = new Map();
+    for (const d of y.du || []) {
+      const k = buscar(d[1]) || claveTurno(d[1]);
+      if (!k || k === otro.k || k === claveTurno(otro.n)) continue;
+      const v = m.get(k) || [sinBandera(d[1]), 0, 0];
+      v[d[2] ? 1 : 2]++;
+      m.set(k, v);
+    }
+    return m;
+  };
+  const ma = contra(a, b), mb = contra(b, a);
+  const filas = [...ma.keys()].filter((k) => mb.has(k)).map((k) => [ma.get(k)[0], ma.get(k)[1], ma.get(k)[2], mb.get(k)[1], mb.get(k)[2]]);
+  const tot = filas.reduce((s, f) => [s[0] + f[1], s[1] + f[2], s[2] + f[3], s[3] + f[4]], [0, 0, 0, 0]);
+  filas.sort((p, q) => (q[1] + q[2] + q[3] + q[4]) - (p[1] + p[2] + p[3] + p[4]));
+  const tabla = (dc && dc.tabla) || {};
+  const fa = tabla[a.k] || {}, fb = tabla[b.k] || {};
+  return { ev: String(o.ev || '').slice(0, 80), ronda: String(o.ronda || '').slice(0, 30),
+    a: { n: String(o.na || sinBandera(a.n)).slice(0, 40), fl: String(o.fla || '') },
+    b: { n: String(o.nb || sinBandera(b.n)).slice(0, 40), fl: String(o.flb || '') },
+    pron: probVs(fa, fb), h2h, forma: [forma(a), forma(b)],
+    temp: [Array.isArray(fa.du) ? fa.du : null, Array.isArray(fb.du) ? fb.du : null],
+    comunes: { n: filas.length, tot, filas: filas.slice(0, 4) },
+    noche: [String(o.nocheA || '').replace(/^Esta noche /, ''), String(o.nocheB || '').replace(/^Esta noche /, '')] };
+}
+
+/** 📊 La ficha de `fichaVs()` como mensaje efímero: secciones cortas, sólo las que tienen datos. */
+export function fichaTexto(f) {
+  if (!f || !f.a || !f.b) return '';
+  const A = escMd(f.a.n), B = escMd(f.b.n);
+  const L = ['📊 **' + A + (f.a.fl ? ' ' + f.a.fl : '') + ' vs ' + B + (f.b.fl ? ' ' + f.b.fl : '') + '**'
+    + [f.ronda, f.ev].filter(Boolean).map((x) => ' · ' + escMd(x)).join('')];
+  L.push('', f.pron ? '**Pronóstico:** ' + A + ' ' + f.pron[0] + ' % · ' + B + ' ' + f.pron[1] + ' % _(por el ' + f.pron[2] + ' de cada uno)_'
+    : '**Pronóstico:** a uno le faltan datos en la Liga.');
+  const h = f.h2h || [];
+  if (h.length) {
+    const ga = h.filter((x) => x[2] === 'a').length;
+    L.push('', '**Cara a cara: ' + A + ' ' + ga + ' · ' + B + ' ' + (h.length - ga) + '**');
+    for (const [fe, ev, g] of h.slice(-5)) L.push('› ' + (fe ? fe + ' · ' : '') + escMd(ev) + ' — ganó ' + (g === 'a' ? A : B));
+  } else {
+    L.push('', '**Cara a cara:** es la primera vez que se cruzan.');
+  }
+  const fo = f.forma || [];
+  if ((fo[0] && fo[0].t) || (fo[1] && fo[1].t)) {
+    L.push('', '**Últimos duelos** _(del más nuevo al más viejo)_');
+    for (const [n, x] of [[A, fo[0]], [B, fo[1]]]) {
+      if (!x || !x.t) { L.push(n + ': sin duelos leídos todavía'); continue; }
+      L.push(n + ' ' + [...x.s].map((c) => (c === 'G' ? '🟩' : '⬛')).join('') + ' ' + x.g + ' de ' + x.t
+        + (x.perdio.length ? ' · perdió con ' + conY(x.perdio.map(escMd)) : ''));
+    }
+  }
+  const t = f.temp || [];
+  const pct = (d) => (d && d[1] ? Math.round((100 * d[0]) / d[1]) + ' %' : '');
+  if (t[0] || t[1]) {
+    L.push('', '**La temporada en duelos:** ' + [[A, t[0]], [B, t[1]]].map(([n, d]) => n + ' ' + (d && d[1] ? d[0] + ' de ' + d[1] + ' (' + pct(d) + ')' : '—')).join(' · '));
+  }
+  const c = f.comunes || {};
+  if (c.n) {
+    L.push('', '**Contra los mismos rivales (' + c.n + '):** ' + A + ' ' + c.tot[0] + '–' + c.tot[1] + ' · ' + B + ' ' + c.tot[2] + '–' + c.tot[3]);
+    for (const r of c.filas || []) L.push('› ' + escMd(r[0]) + ': ' + A + ' ' + r[1] + '–' + r[2] + ' · ' + B + ' ' + r[3] + '–' + r[4]);
+  }
+  const no = f.noche || [];
+  if (no[0] || no[1]) L.push('', '**Esta noche:** ' + [[A, no[0]], [B, no[1]]].filter(([, s]) => s).map(([n, s]) => n + ' ' + escMd(s)).join(' · '));
+  return L.join('\n').slice(0, 1900);
+}
+
+/** 🃏📊 La fila de botones de un vs: «Ver estadísticas» (si tiene ficha) y «Consigue tu tarjeta» (si a uno le falta), juntas. */
+export function filasVs(vs) {
+  const t = filaTarjeta(vs);
+  const b = vs && /^[0-9a-f]{12}$/.test(String(vs.fid || ''))
+    ? { type: 2, style: 2, label: 'Ver estadísticas', emoji: { name: '📊' }, custom_id: 'vx:' + vs.fid } : null;
+  if (!b) return t;
+  return [{ type: 1, components: [b].concat(t.length ? t[0].components : []) }];
 }
 
 const GENTILICIO = { ar: 'ARGENTINO', cl: 'CHILENO', co: 'COLOMBIANO', mx: 'MEXICANO', pe: 'PERUANO', ve: 'VENEZOLANO',
@@ -5787,6 +5928,11 @@ export class Avisos {
       // 🖼️ los vs que esperan su imagen (12/10/2026, «más visual… las tarjetas»): ver `vsEncolar()`
       this.sql.exec('CREATE TABLE IF NOT EXISTS vs_cola (id TEXT PRIMARY KEY, sv TEXT NOT NULL, canal TEXT NOT NULL, ' +
         "msg TEXT NOT NULL, datos TEXT NOT NULL, estado TEXT NOT NULL DEFAULT 'espera', t INTEGER NOT NULL)");
+      // 🔁 cuándo pasó a «dibujando» (02/11/2026): si la tarea se cae, el vs vuelve a la cola en vez de vencer callado
+      try { this.sql.exec('ALTER TABLE vs_cola ADD COLUMN tom INTEGER NOT NULL DEFAULT 0'); } catch (e) { /* ya estaba */ }
+      // 📊 lo de «Ver estadísticas» de cada cruce (02/11/2026): se calcula una vez, al armar el vs, y el botón sólo lo lee.
+      // Ver `fichaVs()` y `vsFicha()`
+      this.sql.exec('CREATE TABLE IF NOT EXISTS vs_ficha (id TEXT PRIMARY KEY, datos TEXT NOT NULL, t INTEGER NOT NULL)');
       this.sql.exec('CREATE TABLE IF NOT EXISTS chat_vivo (llave TEXT NOT NULL, canal TEXT NOT NULL, m TEXT NOT NULL, ' +
         "msg TEXT NOT NULL DEFAULT '', texto TEXT NOT NULL DEFAULT '', t INTEGER NOT NULL, PRIMARY KEY (llave, canal, m))");
       // 🔑 LAS ENCUESTAS (27/09/2026): un voto por Discord ID y por encuesta,
@@ -6749,6 +6895,8 @@ export class Avisos {
       if (ruta === '/apostar') return this.apostar(d);
       // 🗳️ un voto de «¿Quién gana?», desde el botón del chat: ver `qgVotar()`
       if (ruta === '/qg-votar') return json(this.qgVotar(d));
+      // 📊 «Ver estadísticas» de un cruce, desde el botón del chat: ver `vsFicha()`
+      if (ruta === '/vs-ficha') return json(this.vsFicha(d.id));
       if (ruta === '/billetera') {
         await this.resolverPrecios(Date.now());
         return this.billetera(d);
@@ -7485,6 +7633,16 @@ export class Avisos {
                 Object.assign(l, { rg: (y.f || {}).rg || '', forma: forma(y), racha: (y.rd && y.rd[0]) || 0 });
               }
               vs.h2h = [x.h2h.ga, x.h2h.gb];
+              // 🌙 lo de cada uno esta noche, para debajo de su carta, y 📊 la ficha de «Ver estadísticas» (02/11/2026,
+              // el remake del VS): se guarda ya, con el id que va en el botón, así el botón sólo la lee
+              const noche = nocheVs(L.rondas || [], bat.r, (l) => genteChat(l, buscar, dc.tabla, opc.ids, opc.enSv));
+              vs.a.noche = noche(ga[0]);
+              vs.b.noche = noche(gb[0]);
+              vs.fid = codigoDe(L.id + ':' + clave + ':vx').slice(0, 12);
+              try {
+                this.sql.exec('INSERT OR REPLACE INTO vs_ficha (id, datos, t) VALUES (?, ?, ?)', vs.fid, JSON.stringify(fichaVs(x, dc,
+                  { ev: vs.ev, ronda: bat.r, na: ga[0].n, nb: gb[0].n, fla: ga[0].fl, flb: gb[0].fl, nocheA: vs.a.noche, nocheB: vs.b.noche })), ahora);
+              } catch (e) { delete vs.fid; }
             }
             ms.push(Object.assign({ m: mv, cab: '⚔️ **' + titEv + '**', texto: lineas.join('\n') }, vs ? { vs } : {}));
           }
@@ -7550,6 +7708,7 @@ export class Avisos {
           const e = ediciones.get(v.msg) || { texto: v.texto || '', ms: [] };
           e.texto += '\n' + x.res;
           e.ms.push(x.m);
+          if (x.gk && !e.gk) e.gk = x.gk;
           for (const u of ms) if (u.de === x.m && !hechos[u.m]) e.ms.push(u.m);
           ediciones.set(v.msg, e);
         }
@@ -7569,6 +7728,8 @@ export class Avisos {
           this.sql.exec('UPDATE chat_vivo SET texto = ? WHERE canal = ? AND msg = ?', e.texto, canal, msg);
           // la apuesta de ese cruce reescribe su mensaje al cerrar: que lo haga sobre el texto con el resultado
           this.sql.exec('UPDATE apuestas SET texto = ? WHERE canal = ? AND msg = ?', e.texto.slice(0, 1900), canal, msg);
+          // 🏁 y la imagen del vs, otra vez con quién pasó (`vsResultado()`). Nunca frena al chat
+          try { if (e.gk) this.vsResultado(canal, msg, e.gk, ahora); } catch (err) { /* queda la imagen de antes */ }
           for (const m of e.ms) {
             this.sql.exec('INSERT OR REPLACE INTO chat_vivo (llave, canal, m, msg, texto, t) VALUES (?, ?, ?, ?, ?, ?)',
               L.id, canal, m, msg, e.texto, ahora);
@@ -7590,7 +7751,8 @@ export class Avisos {
         const conVoto = !conAp && voto && p.tipo === 'mandar' && [].concat(p.m).includes(voto.m) ? voto : null;
         // 🃏 y debajo, «Conseguí tu tarjeta» si alguno sale con la silueta. Sólo al mandar: una edición sin `components`
         // deja los botones que el mensaje ya tiene
-        const filaT = p.tipo === 'mandar' ? filaTarjeta(p.vs) : [];
+        // 📊 y «Ver estadísticas» en la misma fila (`filasVs()`)
+        const filaT = p.tipo === 'mandar' ? filasVs(p.vs) : [];
         let r = null;
         try {
           r = await fetch(`${DC}/channels/${canal}/messages` + (p.tipo === 'editar' ? '/' + p.msg : ''), {
@@ -7911,19 +8073,35 @@ export class Avisos {
 
   async datosCruce(ahora) {
     if (this.cruceMem && ahora - this.cruceMem.t < 10 * MIN) return this.cruceMem;
-    let lobby = {}, perf = {}, perfT = 0;
+    let lobby = {}, perf = {}, perfT = 0, evs = {};
     try { lobby = JSON.parse((await this.env.KV.get('web:lobby')) || '{}') || {}; } catch (e) { lobby = {}; }
     try {
       const pj = JSON.parse((await this.env.KV.get('web:perfiles')) || '{}') || {};
       perf = pj.p || {};
       perfT = Date.parse(String(pj.sello || '')) || 0;
+      // 📊 los eventos (`[nombre, sv, instante, participantes, dd/mm]`), para el cara a cara de «Ver estadísticas»
+      evs = pj.e || {};
     } catch (e) { perf = {}; }
-    const tabla = {}, por = {};
+    // 🔴 DOS QUE SE LLAMAN IGUAL NO SON EL ÚLTIMO QUE APARECE (02/11/2026). `por[nombre]` se pisaba con el último de la
+    // tabla, y el VS ponía la carta, el OVR y la bandera de otra persona. Ahora un nombre repetido va a `dobles` y lo
+    // decide la bandera que escribió la llave; sin bandera que lo decida, no se adivina: queda sin carta (la silueta)
+    const tabla = {}, por = {}, dobles = {};
     for (const f of lobby.tabla || []) {
-      if (f && f.k) { tabla[f.k] = f; por[claveTurno(f.n)] = f.k; }
+      if (!f || !f.k) continue;
+      tabla[f.k] = f;
+      const c = claveTurno(f.n);
+      if (por[c] && por[c] !== f.k) (dobles[c] = dobles[c] || [por[c]]).push(f.k);
+      else por[c] = f.k;
     }
     const alias = lobby.alias || {};
-    const buscar = (n) => { const c = claveTurno(n); return por[c] || alias[c] || (perf[c] ? c : '') || ''; };
+    const buscar = (n, fl) => {
+      const c = claveTurno(n);
+      if (dobles[c]) {
+        const b = fl || (String(n || '').match(BANDERAS_RE) || [])[0] || '';
+        return (b && dobles[c].find((k) => banderaDe((tabla[k] || {}).cc) === b)) || '';
+      }
+      return por[c] || alias[c] || (perf[c] ? c : '') || '';
+    };
     // 🃏 la tarjeta de alguien para el chat: la de Temporada, o la que tenga (`Liga.cartaUrl()` de la página)
     const r2 = String(lobby.r2 || ''), cartas = lobby.cartas || [];
     const cartaDe = (k) => {
@@ -7935,7 +8113,7 @@ export class Avisos {
       return r2 + '/' + encodeURIComponent(k) + '/' + cual + '.webp' + (v ? '?v=' + v : '');
     };
     // 🏆 los tiers de las crews (bot/crews_tiers.py, en el payload): para decir «la crew X, que está en Oro»
-    this.cruceMem = { t: ahora, tabla, perf, perfT, buscar, cartaDe, tiers: lobby.crews_tiers || null };
+    this.cruceMem = { t: ahora, tabla, perf, perfT, buscar, cartaDe, evs, tiers: lobby.crews_tiers || null };
     return this.cruceMem;
   }
 
@@ -8108,7 +8286,14 @@ export class Avisos {
             components: (estado === 'cerrada' ? botonesApuesta(ap.id, ap.a, ap.b, true, apuestasCfg(this.ajustes()).montos) : [])
               .concat(this.filaTarjetaDe(ap.canal, ap.msg)) }),
         });
-        if (r.ok) this.sql.exec('UPDATE apuestas SET texto = ? WHERE id = ?', texto, ap.id);
+        if (r.ok) {
+          this.sql.exec('UPDATE apuestas SET texto = ? WHERE id = ?', texto, ap.id);
+          // 🔴 y en lo que el chat cree que dice ese mensaje (02/11/2026): si no, el «✅ Pasa…» que llega después se
+          // agregaba sobre el texto de antes y la apuesta volvía a decir «abierta» con la batalla ya jugada
+          // ⚠️ sólo la fila del cruce (`v:`) de esa llave, que es la que lee la edición del resultado
+          this.sql.exec("UPDATE chat_vivo SET texto = ? WHERE llave = ? AND canal = ? AND msg = ? AND m LIKE 'v:%'",
+            texto, ap.llave, ap.canal, ap.msg);
+        }
       } catch (e) { /* el estado ya quedó anotado: el mensaje se corrige solo la próxima vez que cambie */ }
     }
     return pedidos;
@@ -9215,7 +9400,9 @@ export class Avisos {
       // decide qué llega a la imagen: lo que no esté acá se pierde callado (el Score se perdía así la primera vez)
       sc: Number(y && y.sc) || 0, rg: /^(S{1,3}|[A-E][+\-−]?)$/.test(String((y && y.rg) || '')) ? String(y.rg) : '',
       forma: String((y && y.forma) || '').replace(/[^GP]/g, '').slice(-5), racha: Math.max(0, Math.min(999, Number(y && y.racha) || 0)),
-      carta: /^https:\/\/pub-[a-z0-9]+\.r2\.dev\//.test(String((y && y.carta) || '')) ? String(y.carta).slice(0, 300) : '' });
+      carta: /^https:\/\/pub-[a-z0-9]+\.r2\.dev\//.test(String((y && y.carta) || '')) ? String(y.carta).slice(0, 300) : '',
+      // 🌙 lo de esta noche, debajo de la carta (02/11/2026, `nocheVs()`)
+      noche: String((y && y.noche) || '').slice(0, 60) });
     const h2h = Array.isArray(d.h2h) && d.h2h.length === 2 ? d.h2h.map((x) => Math.max(0, Math.min(999, Number(x) || 0))) : null;
     // 🧩 los otros formatos (19/10/2026): hasta 5 lados y 10 personas, cada una como un lado de siempre
     let grupos = null;
@@ -9227,7 +9414,9 @@ export class Avisos {
     }
     const datos = Object.assign({ ev: String(d.ev || '').slice(0, 80), ronda: String(d.ronda || '').slice(0, 30),
       titulo: String(d.titulo || '').slice(0, 40), sub: String(d.sub || '').slice(0, 120) },
-    grupos ? { grupos } : { a: lado(d.a), b: lado(d.b) }, h2h && !grupos ? { h2h } : {});
+    grupos ? { grupos } : { a: lado(d.a), b: lado(d.b) }, h2h && !grupos ? { h2h } : {},
+    // 📊 el id de su ficha (el botón «Ver estadísticas») y 🏁 quién ganó, para la imagen del resultado (`vsResultado()`)
+    /^[0-9a-f]{12}$/.test(String(d.fid || '')) ? { fid: String(d.fid) } : {}, !grupos && /^[ab]$/.test(String(d.gano || '')) ? { gano: d.gano } : {});
     this.sql.exec('INSERT INTO vs_cola (id, sv, canal, msg, datos, t) VALUES (?, ?, ?, ?, ?, ?)', id,
       String(d.sv || '').toUpperCase().slice(0, 6), String(d.canal), String(d.msg), JSON.stringify(datos), ahora);
     return { ok: true, id };
@@ -9239,14 +9428,21 @@ export class Avisos {
     try {
       const f = this.sql.exec('SELECT datos FROM vs_cola WHERE canal = ? AND msg = ? ORDER BY t DESC LIMIT 1',
         String(canal || ''), String(msg || '')).toArray()[0];
-      return f ? filaTarjeta(JSON.parse(f.datos)) : [];
+      // 📊 con «Ver estadísticas»: una edición que cambia los botones (la apuesta que cierra) no se lo lleva
+      return f ? filasVs(JSON.parse(f.datos)) : [];
     } catch (e) { return []; }
   }
 
   /** Prende la tarea de los servidores con vs esperando, como mucho una vez cada `VS_ENTRE` por servidor. */
   async vsDespachar(ahora) {
     this.sql.exec("UPDATE vs_cola SET estado = 'vencido' WHERE estado IN ('espera', 'dibujando') AND t < ?", ahora - VS_VENCE);
+    // 🔁 una tarea que se cayó dejaba el vs en «dibujando» hasta vencer, sin imagen y sin que nadie se enterara: a los
+    // 3 minutos vuelve a la cola, y la tarea siguiente lo intenta otra vez (lo frena el mismo `VS_VENCE`)
+    this.sql.exec("UPDATE vs_cola SET estado = 'espera' WHERE estado = 'dibujando' AND tom > 0 AND tom < ? AND t > ?",
+      ahora - 3 * MIN, ahora - VS_VENCE);
     this.sql.exec('DELETE FROM vs_cola WHERE t < ?', ahora - DIA_MS);
+    // 📊 las fichas de «Ver estadísticas» duran dos días: después, el botón dice que ya no está
+    this.sql.exec('DELETE FROM vs_ficha WHERE t < ?', ahora - 2 * DIA_MS);
     const svs = this.sql.exec("SELECT DISTINCT sv FROM vs_cola WHERE estado = 'espera'").toArray().map((r) => r.sv);
     if (!svs.length || !this.env.GH_TOKEN || !this.env.GH_REPO) return 0;
     const ult = this.leer('vs_desp') || {};
@@ -9268,7 +9464,7 @@ export class Avisos {
   vsCola(sv, ahora = Date.now()) {
     const filas = this.sql.exec("SELECT id, datos FROM vs_cola WHERE sv = ? AND estado = 'espera' AND t > ? ORDER BY t LIMIT 12",
       String(sv || '').toUpperCase(), ahora - VS_VENCE).toArray();
-    for (const f of filas) this.sql.exec("UPDATE vs_cola SET estado = 'dibujando' WHERE id = ?", f.id);
+    for (const f of filas) this.sql.exec("UPDATE vs_cola SET estado = 'dibujando', tom = ? WHERE id = ?", ahora, f.id);
     return { vs: filas.map((f) => Object.assign({ id: f.id }, JSON.parse(f.datos))) };
   }
 
@@ -9296,6 +9492,45 @@ export class Avisos {
     }
     this.sql.exec('UPDATE vs_cola SET estado = ? WHERE id = ?', r.ok ? 'hecho' : 'error', f.id);
     return { ok: r.ok, estado: r.status };
+  }
+
+  /**
+   * 🏁 LA MISMA IMAGEN, CON EL RESULTADO (02/11/2026, el remake del VS): cuando el chat le agrega «✅ Pasa…» al mensaje de
+   * un cruce, el vs de ese mensaje se vuelve a dibujar con quién pasó (`gano`) y el cara a cara sumado, y la imagen nueva
+   * reemplaza a la vieja editando el mismo mensaje —una edición no le suena a nadie—. Si la primera todavía no se dibujó,
+   * se dibuja directo la del resultado. Sólo mano a mano. `gk` = la clave (o `claveTurno`) del que pasó.
+   */
+  vsResultado(canal, msg, gk, ahora = Date.now()) {
+    if (!gk) return '';
+    const f = this.sql.exec('SELECT * FROM vs_cola WHERE canal = ? AND msg = ? ORDER BY t DESC LIMIT 1', String(canal), String(msg)).toArray()[0];
+    if (!f) return '';
+    let d = null;
+    try { d = JSON.parse(f.datos); } catch (e) { return ''; }
+    if (!d || d.grupos || d.gano || !d.a || !d.b) return '';
+    const es = (y) => (y.k ? y.k === gk : claveTurno(y.n) === gk);
+    const gano = es(d.a) ? 'a' : es(d.b) ? 'b' : '';
+    if (!gano) return '';
+    d.gano = gano;
+    if (Array.isArray(d.h2h)) d.h2h = [d.h2h[0] + (gano === 'a' ? 1 : 0), d.h2h[1] + (gano === 'b' ? 1 : 0)];
+    if (f.estado === 'espera' || f.estado === 'dibujando') {
+      this.sql.exec("UPDATE vs_cola SET datos = ?, estado = 'espera' WHERE id = ?", JSON.stringify(d), f.id);
+      return 'misma';
+    }
+    if (f.estado !== 'hecho') return '';
+    const id = [...crypto.getRandomValues(new Uint8Array(10))].map((x) => x.toString(16).padStart(2, '0')).join('');
+    this.sql.exec('INSERT INTO vs_cola (id, sv, canal, msg, datos, t) VALUES (?, ?, ?, ?, ?, ?)', id, f.sv, f.canal, f.msg,
+      JSON.stringify(d), ahora);
+    return 'nueva';
+  }
+
+  /** 📊 «Ver estadísticas» (`vx:<id>`, desde el botón): el texto de la ficha guardada, o que ya no está. */
+  vsFicha(id) {
+    const f = /^[0-9a-f]{12}$/.test(String(id || ''))
+      ? this.sql.exec('SELECT datos FROM vs_ficha WHERE id = ?', String(id)).toArray()[0] : null;
+    if (!f) return { error: 'no existe' };
+    let texto = '';
+    try { texto = fichaTexto(JSON.parse(f.datos)); } catch (e) { texto = ''; }
+    return texto ? { ok: true, texto } : { error: 'vacia' };
   }
 
   // ── 📣 SEGUIR A UN ORGANIZADOR ───────────────────────────────────────

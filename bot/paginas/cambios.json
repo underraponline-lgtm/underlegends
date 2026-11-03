@@ -11,6 +11,18 @@
  ],
  "cambios": [
   {
+   "version": "4.21",
+   "dia": "2026-11-02",
+   "cuando": "2026-11-02T23:30:00-05:00",
+   "titulo": "El VS en vivo, rehecho",
+   "items": [
+    "**El VS del chat** es una pantalla de pelea: el fondo partido con el color de cada uno, el pronóstico arriba, un VS grande y, debajo de cada carta, sus últimos 5 duelos y lo que hizo esta noche.",
+    "**Cuando se decide la batalla**, la misma imagen se actualiza con quién pasa y el cara a cara sumado, sin un mensaje nuevo.",
+    "**«Ver estadísticas»**: un botón en cada cruce que te muestra, sólo a ti, el cara a cara cruce por cruce, la forma de los últimos 10, los duelos de la temporada y los rivales en común.",
+    "Arreglos: dos raperos con el mismo nombre ya no se confunden en el VS, los nombres largos ya no se cortan y en los cruces por equipos se dice cuántos tienen datos."
+   ]
+  },
+  {
    "version": "4.20",
    "dia": "2026-11-02",
    "cuando": "2026-11-02T22:55:00-05:00",

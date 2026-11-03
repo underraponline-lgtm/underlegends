@@ -4557,6 +4557,26 @@ export default {
       // ── 👥 las crews (19/10/2026): `cw:si|no:<crew>:<invitado>` y `cw:salir:x:<quien>` (ver `crewBoton`) ──────────
       if (que === 'cw') return crewBoton(i, env, quien, extra, dueno);
 
+      // ── 📊 «Ver estadísticas» de un cruce (02/11/2026, el remake del VS): `vx:<id>` ─────────────────────────────
+      // Dlx: «un botón para enviar un mensaje efímero con las estadísticas». La ficha ya la calculó el vigía al armar el
+      // vs (`fichaVs()` en avisos.js) y está en el objeto: acá sólo se lee —una consulta, sin tocar KV— y la ve quien tocó
+      if (que === 'vx') {
+        const esperarVx = frenado(idDe(i), 'click');
+        if (esperarVx) return espera(esperarVx);
+        let j = {};
+        try {
+          const r = await env.AVISOS.get(env.AVISOS.idFromName('liga')).fetch('https://avisos/vs-ficha', {
+            method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ id: quien }),
+          });
+          j = await r.json();
+        } catch (e) { j = { error: 'red' }; }
+        if (j.ok && j.texto) {
+          return aviso(j.texto, [{ type: 2, style: 5, label: 'Ver la llave en la página', url: HUB_URL + '/freestyle-rap/eventos' }]);
+        }
+        return aviso('📊 ' + (j.error === 'no existe' ? 'Las estadísticas de ese cruce ya no están: duran dos días.'
+          : 'No pude traer las estadísticas: prueba de nuevo en un rato.'));
+      }
+
       if (que === 'qg') {
         const esperarQg = frenado(idDe(i), 'click');
         if (esperarQg) return espera(esperarQg);

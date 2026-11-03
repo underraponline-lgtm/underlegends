@@ -315,6 +315,34 @@ const ok = (cond, que, det) => {
       && A.filaTarjeta({ a: { carta: '' }, b: { carta: '' } }).length === 1
       && A.filaTarjeta(null).length === 0 && A.filaTarjeta({ a: { carta: '' } }).length === 0,
     '«Consigue tu tarjeta»: sale si alguno del vs va con la silueta; con sólo la Servidor (una tarjeta) no; sin vs, nada');
+    // 📊🌙 EL REMAKE DEL VS (02/11/2026): «Ver estadísticas» al lado de «Consigue tu tarjeta», lo de esta noche, la ficha
+    const fv = A.filasVs({ a: { carta: '' }, b: { carta: ct }, fid: 'abcdef012345' });
+    ok(fv.length === 1 && fv[0].components[0].custom_id === 'vx:abcdef012345' && fv[0].components[1].url === A.HUB_TARJETAS
+      && A.filasVs({ a: { carta: ct }, b: { carta: ct }, fid: 'abcdef012345' })[0].components.length === 1
+      && A.filasVs({ a: { carta: ct }, b: { carta: ct } }).length === 0
+      && A.filasVs({ a: {}, b: {}, fid: 'no-vale' })[0].components[0].url === A.HUB_TARJETAS,
+    '«Ver estadísticas» va en la misma fila que «Consigue tu tarjeta»; sin ficha (o con un id que no vale), lo de antes');
+    const genteN = (l) => A.genteChat(l, null, null);
+    const rondasN = [{ r: 'Octavos', b: [[['Oasis, Badterne', 'Molusco, LRS'], 'Oasis, Badterne'], [['Liberia', 'Drexx'], 'Liberia']] },
+      { r: 'Cuartos', b: [[['Oasis', 'Liberia'], '']] }];
+    const nn = A.nocheVs(rondasN, 'Cuartos', genteN);
+    ok(nn({ n: 'Oasis', k: '' }) === 'Esta noche pasó con Badterne' && nn({ n: 'Liberia', k: '' }) === 'Esta noche le ganó a Drexx'
+      && A.nocheVs(rondasN, 'Octavos', genteN)({ n: 'Oasis', k: '' }) === '' && nn(null) === '',
+    'esta noche: «pasó con…» si pasó en dupla, «le ganó a…» en un mano a mano, y nada en la primera ronda');
+    ok(A.probVs({ sc: 75.3 }, { sc: 71.4 })[0] === 57 && A.probVs({ ovr: 92 }, { ovr: 82 }).join() === '64,36,OVR'
+      && A.probVs({ ovr: 92 }, {}) === null && A.probVs({ sc: 99 }, { sc: 1 })[0] === 97,
+    'el pronóstico de la ficha es la misma cuenta que la barra de la imagen (`prob_vs()` de bot/kit.py)');
+    const fx = { ev: 'COPA X', ronda: 'Cuartos', a: { n: 'Oasis', fl: '🇨🇱' }, b: { n: 'Liberia', fl: '🇦🇷' }, pron: [57, 43, 'Score'],
+      h2h: [['07/10', 'DESGRACIAS', 'b'], ['15/10', 'LA REDENCIÓN', 'a'], ['25/10', 'AGUANTE', 'a']],
+      forma: [{ g: 8, t: 10, s: 'PGGGPGGGGG', perdio: ['PRAISERIZA', 'Abyssus'] }, { g: 0, t: 0, s: '', perdio: [] }],
+      temp: [[32, 38], null], comunes: { n: 7, tot: [7, 1, 4, 4], filas: [['PRAISERIZA', 1, 1, 0, 2]] }, noche: ['pasó con Badterne', ''] };
+    const tx = A.fichaTexto(fx);
+    ok(/Pronóstico:\*\* Oasis 57 %/.test(tx) && /Cara a cara: Oasis 2 · Liberia 1/.test(tx) && /ganó Liberia/.test(tx)
+      && /8 de 10 · perdió con PRAISERIZA y Abyssus/.test(tx) && /Liberia: sin duelos leídos/.test(tx) && /32 de 38 \(84 %\)/.test(tx)
+      && /mismos rivales \(7\):\*\* Oasis 7–1 · Liberia 4–4/.test(tx) && /Esta noche:\*\* Oasis pasó con Badterne/.test(tx)
+      && !/OVR|Rango/.test(tx) && tx.length <= 1900 && A.fichaTexto(null) === ''
+      && /primera vez que se cruzan/.test(A.fichaTexto(Object.assign({}, fx, { h2h: [] }))),
+    'la ficha de «Ver estadísticas»: pronóstico, cara a cara cruce por cruce, forma, temporada, rivales en común y la noche; nada de la carta', tx);
     const bv = A.botonesVoto('q1', 'Snow 🇨🇴', 'Makmah');
     ok(bv[0].components.map((x) => x.custom_id).join() === 'qg:q1:A,qg:q1:B' && bv[0].components[0].label === 'Snow'
       && /Vota abajo/.test(A.lineaVoto('A', 'B', 0, 0)) && /\*\*A\*\* 75 % · \*\*B\*\* 25 % \(4 votos\)/.test(A.lineaVoto('A', 'B', 3, 1))
@@ -1628,7 +1656,10 @@ const ok = (cond, que, det) => {
     const ap = sql.exec('SELECT * FROM apuestas').toArray()[0];
     ok(pedidos.length === 1 && msg && /LA REVANCHA/.test(msg.content) && /Ana 🇦🇷\*\* vs \*\*Bea 🇨🇱/.test(msg.content)
       && /🎲 \*\*Apuestas abiertas/.test(msg.content) && msg.components && msg.components.length === 3 && ap && ap.estado === 'abierta'
-      && msg.components[2].components[0].url === A.HUB_TARJETAS,
+      && msg.components[2].components.some((x) => x.url === A.HUB_TARJETAS)
+      // 📊 y «Ver estadísticas» en la misma fila, con su ficha ya guardada (02/11/2026)
+      && msg.components[2].components.some((x) => /^vx:[0-9a-f]{12}$/.test(x.custom_id || '')
+        && o.vsFicha(x.custom_id.slice(3)).ok && /Cara a cara/.test(o.vsFicha(x.custom_id.slice(3)).texto)),
     'A full: el cruce con su título, su apuesta y sus botones, en un solo mensaje; y como Ana y Bea no tienen tarjeta, debajo «Consigue tu tarjeta»',
     msg && msg.content);
     // 🖼️ el vs de dos: a la cola, con el mensaje donde va; la tarea se lo lleva y la imagen se le agrega editándolo
@@ -1662,16 +1693,30 @@ const ok = (cond, que, det) => {
     await o.chatVivo(T + 4 * 60000);
     const cierre = pedidos.find((p) => p.m === 'PATCH');
     ok(cierre && /🔒 Apuestas cerradas · pozo de \*\*350\*\* entre 2/.test(cierre.b.content) && cierre.b.components[0].components.every((c) => c.disabled)
-      && cierre.b.components.length === 3 && cierre.b.components[2].components[0].url === A.HUB_TARJETAS
+      && cierre.b.components.length === 3 && cierre.b.components[2].components.some((x) => x.url === A.HUB_TARJETAS)
+      && cierre.b.components[2].components.some((x) => /^vx:/.test(x.custom_id || ''))
       && (await pedir({ quien: U3, ap: ap.id, lado: 'A', monto: 50 }, T + 4 * 60000)).error === 'cerrada', 'a los 3 minutos se cierra: botones grises, el pozo, y no se puede apostar');
     pedidos.length = 0;
     llave(CU + '`[ SEMIFINALES ]`\n⌞Ana 🇦🇷⌝ 🆚 ⌞⌝\n', T + 6 * 60000);
     await o.chatVivo(T + 6 * 60000);
     const pago = pedidos.find((p) => p.m === 'PATCH' && /🏆 Ganó/.test(p.b.content));
     ok(pago && /Ganó \*\*Ana\*\*: el pozo de \*\*350\*\* se repartió entre 1 que acertó/.test(pago.b.content)
-      && pago.b.components.length === 1 && pago.b.components[0].components[0].url === A.HUB_TARJETAS
+      && pago.b.components.length === 1 && pago.b.components[0].components.some((x) => x.url === A.HUB_TARJETAS)
       && o.saldo(U1, 0, 5000) === 5250 && o.saldo(U2, 0, 5000) === 4750 && sql.exec('SELECT estado FROM apuestas WHERE id = ?', ap.id).toArray()[0].estado === 'pagada',
     'gana Ana: U1 se lleva el pozo entero (350, puso 100), U2 pierde sus 250, y el mensaje lo dice', JSON.stringify({ ped: pedidos.map((x) => [x.m, String((x.b && x.b.content) || '').slice(0, 90)]), est: sql.exec('SELECT estado, ganador, ronda, a, b FROM apuestas').toArray(), s1: o.saldo(U1, 0, 5000), s2: o.saldo(U2, 0, 5000) }));
+    // 🏁 la imagen del resultado (02/11/2026): el «✅ Pasa Ana» del cruce deja su vs con quién ganó y el cara a cara sumado
+    const vsR = sql.exec('SELECT datos FROM vs_cola ORDER BY t DESC LIMIT 1').toArray().map((x) => JSON.parse(x.datos))[0];
+    ok(vsR && vsR.gano === 'a' && Array.isArray(vsR.h2h) && vsR.h2h[0] === 2 && /^[0-9a-f]{12}$/.test(vsR.fid || ''),
+      'cuando el chat dice «✅ Pasa Ana», el vs de ese cruce se dibuja con quién ganó y el cara a cara ya sumado', JSON.stringify(vsR));
+    // 🏳️ dos que se llaman igual: decide la bandera, y sin bandera no se adivina (antes ganaba el último de la tabla)
+    kv.set('web:lobby', JSON.stringify({ tabla: [{ n: 'Ana', k: 'ana', ovr: 88, cc: 'ar' }, { n: 'Volk', k: 'volk', cc: 'mx' },
+      { n: 'Volk', k: 'volk-co', cc: 'co' }] }));
+    o.cruceMem = null;
+    const dcH = await o.datosCruce(T + 9 * 60000);
+    ok(dcH.buscar('Volk', '🇨🇴') === 'volk-co' && dcH.buscar('Volk 🇲🇽') === 'volk' && dcH.buscar('Volk') === ''
+      && dcH.buscar('Ana') === 'ana' && A.genteChat('Volk 🇨🇴', dcH.buscar, dcH.tabla)[0].k === 'volk-co',
+    'dos que se llaman igual: decide la bandera de la llave; sin bandera no se adivina (queda la silueta, no la carta de otro)');
+    o.cruceMem = null;
     // 📝 la fase de inscripciones: desde tres anotados de verdad, UN mensaje, que se edita cuando se suman más
     sql.exec('DELETE FROM vivo');
     const AN = '1557000000000000000';
@@ -1892,7 +1937,10 @@ const ok = (cond, que, det) => {
     // 🔥 UNA RACHA QUE SE UNE CON UN DÍA QUE LLEGÓ TARDE NO COBRA DE MÁS (revisión del 05/10/2026): 7 días cobrados, un
     // hueco, 7 días cobrados; aparece el día del hueco y son 15 seguidos, que valen dos escalones: no se paga un tercero
     const DANI = '444444444444444444';
-    const hace = (i) => A.diaET(Date.now() - i * 86400000);
+    // 🕐 días de CALENDARIO, no bloques de 24 h (02/11/2026): con el cambio de hora del 01/11, entre las 11 PM y la
+    // medianoche ET dos bloques caían el mismo día y la tabla `activo` rechazaba el repetido (CI en rojo a esa hora)
+    const hoyET = A.diaET(Date.now());
+    const hace = (i) => { const d = new Date(hoyET + 'T12:00:00Z'); d.setUTCDate(d.getUTCDate() - i); return d.toISOString().slice(0, 10); };
     for (const i of [14, 13, 12, 11, 10, 9, 8, 6, 5, 4, 3, 2, 1, 0]) sql.exec('INSERT INTO activo (quien, dia) VALUES (?, ?)', DANI, hace(i));
     sql.exec("INSERT INTO tienda (id, ref, quien, monto, t) VALUES (?, 0, ?, 500, 1)", 'racha:' + DANI + ':' + hace(14) + ':7', DANI);
     // 🔥 desde el 13/10/2026 la racha paga por día y por hito (14 y 30 días), no cada 7: con 15 seguidos, el de 14 una vez
