@@ -1,5 +1,5 @@
 {
- "cuando": "2026-11-02T23:25:57+00:00",
+ "cuando": "2026-11-02T23:55:28+00:00",
  "anuncios": [
   {
    "nombre": "¡SE LLEGÓ LA GRAN NOCHE!",
@@ -4474,10 +4474,10 @@
    "cuando": "2026-03-15T01:46:34",
    "canal_id": "1416914076545581179",
    "guild_id": "1367688812892913774",
-   "organizador": "@Bootrax Humilde",
+   "organizador": "@DJ Bootrax Humilde",
    "orgs": [
     {
-     "n": "Bootrax Humilde",
+     "n": "DJ Bootrax Humilde",
      "id": "1122273746099638354"
     }
    ],
@@ -4491,7 +4491,7 @@
    "fecha": "ahora",
    "premios": "",
    "staff": {},
-   "autor": "Bootrax Humilde",
+   "autor": "DJ Bootrax Humilde",
    "staff_cuentas": {},
    "categoria_id": "1373343272482902127"
   },
@@ -4569,15 +4569,15 @@
    "premios": "",
    "staff": {
     "host": [
-     "Bootrax Humilde"
+     "DJ Bootrax Humilde"
     ],
     "dj": [
-     "Bootrax Humilde"
+     "DJ Bootrax Humilde"
     ]
    },
-   "autor": "Bootrax Humilde",
+   "autor": "DJ Bootrax Humilde",
    "staff_cuentas": {
-    "Bootrax Humilde": "1122273746099638354"
+    "DJ Bootrax Humilde": "1122273746099638354"
    },
    "categoria_id": "1373343272482902127"
   },
@@ -4679,13 +4679,13 @@
      "John pork"
     ],
     "dj": [
-     "Bootrax Humilde"
+     "DJ Bootrax Humilde"
     ]
    },
    "autor": "John pork",
    "staff_cuentas": {
     "John pork": "1316490165836972104",
-    "Bootrax Humilde": "1122273746099638354"
+    "DJ Bootrax Humilde": "1122273746099638354"
    },
    "categoria_id": "1469944166137073857",
    "inscripciones": "abiertas",
