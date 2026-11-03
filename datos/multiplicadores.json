@@ -1082,7 +1082,7 @@
    "organizadores": [
     [
      "NC",
-     21,
+     22,
      1
     ],
     [
@@ -1093,13 +1093,13 @@
    ],
    "semillero": {
     "nuevos": {
-     "FFA": 5,
+     "FFA": 6,
      "DDF": 1
     },
     "gente": {
      "DDF": 11,
      "LKR": 2,
-     "FFA": 21
+     "FFA": 22
     },
     "gana": "FFA"
    },
@@ -1108,7 +1108,7 @@
     "DDF": 11,
     "DRA": 0,
     "FDS": 0,
-    "FFA": 21,
+    "FFA": 22,
     "FFS": 0,
     "FRZ": 0,
     "FVS": 0,
