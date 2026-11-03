@@ -899,7 +899,7 @@
    "n": 536,
    "sv": "FFA",
    "vence": "2026-11-03T20:14:48+00:00",
-   "vencido": false
+   "vencido": true
   },
   "Konan": {
    "avisado": "2026-10-13",
@@ -1540,7 +1540,7 @@
    "n": 535,
    "sv": "ACAD",
    "vence": "2026-11-03T20:02:54+00:00",
-   "vencido": false
+   "vencido": true
   },
   "SULTAN": {
    "avisado": "2026-10-20",
@@ -1713,7 +1713,7 @@
    "n": 535,
    "sv": "ACAD",
    "vence": "2026-11-03T20:02:54+00:00",
-   "vencido": false
+   "vencido": true
   },
   "Trelok": {
    "avisado": "2026-10-27",
