@@ -96,7 +96,7 @@
    "dg": 22,
    "fg": 5,
    "fp": 3,
-   "riv": 18,
+   "riv": 17,
    "venc": 15,
    "vengo": 1
   },
@@ -1109,15 +1109,16 @@
   "tg_c": {
    "bestia": 1,
    "clasico": 3,
-   "dg": 15,
+   "dg": 16,
    "fg": 3,
-   "mata": 1,
+   "mata": 2,
    "riv": 23,
-   "venc": 15
+   "venc": 16,
+   "vengo": 1
   },
   "tg_p": {
    "paises": 7,
-   "paisesg": 6,
+   "paisesg": 7,
    "pionero": true
   }
  },
