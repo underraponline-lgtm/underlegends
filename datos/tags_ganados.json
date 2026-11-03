@@ -4995,6 +4995,11 @@
     "t1",
     1793029252929
    ],
+   "GANA AFUERA": [
+    "GANA AFUERA",
+    "t1",
+    1793747091898
+   ],
    "INTERNACIONAL": [
     "INTERNACIONAL",
     "t1",
@@ -5187,6 +5192,11 @@
  },
  "lizeninn": {
   "pais": {
+   "DA LA CARA": [
+    "DA LA CARA",
+    "t1",
+    1793747091898
+   ],
    "EMBAJADOR": [
     "EMBAJADOR",
     "t1",
@@ -5215,6 +5225,11 @@
     "🔟 DOBLE DÍGITO",
     "t1",
     1793410677837
+   ],
+   "🥉 AL PODIO": [
+    "🥉 AL PODIO",
+    "t1",
+    1793747091898
    ],
    "🧟 RESUCITADO": [
     "🧟 RESUCITADO",
@@ -5481,6 +5496,11 @@
     "⚡ MARATONISTA",
     "t1",
     1793143003505
+   ],
+   "🌍 TROTAMUNDOS": [
+    "🌍 TROTAMUNDOS",
+    "t1",
+    1793747091898
    ],
    "🎖️ CURTIDO": [
     "🎖️ CURTIDO",
@@ -5782,6 +5802,11 @@
     "t1",
     1793029252929
    ],
+   "🌐 IMPERIO": [
+    "🌐 IMPERIO",
+    "t1",
+    1793747091898
+   ],
    "🎖️ CURTIDO": [
     "🎖️ CURTIDO",
     "t1",
@@ -5813,7 +5838,7 @@
     1793138568927
    ],
    "👑 CAMPEÓN x%d": [
-    "👑 CAMPEÓN x6",
+    "👑 CAMPEÓN x7",
     "t1",
     1793029252929
    ],
@@ -5848,7 +5873,7 @@
     1793029252929
    ],
    "📋 SEMANA PERFECTA x%d": [
-    "📋 SEMANA PERFECTA x2",
+    "📋 SEMANA PERFECTA x3",
     "t1",
     1793029252929
    ],

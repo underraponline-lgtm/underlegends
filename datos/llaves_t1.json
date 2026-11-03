@@ -41918,5 +41918,119 @@
     833
    ]
   ]
+ },
+ "564": {
+  "dia": "2026-11-03",
+  "escala": "4-7",
+  "fecha": "03/11",
+  "links": [
+   "https://discord.com/channels/1467763447117778989/1540223675146707045/1567300049640235149"
+  ],
+  "n": 564,
+  "nombre": "Rayos y Centellas",
+  "participantes": 7,
+  "rondas": [
+   {
+    "b": [
+     [
+      [
+       "Makmah",
+       "OEP"
+      ],
+      "Makmah",
+      ""
+     ],
+     [
+      [
+       "Liberia",
+       "Agus"
+      ],
+      "Liberia",
+      ""
+     ],
+     [
+      [
+       "Deuxs",
+       "Lvel 🇻🇪"
+      ],
+      "Deuxs",
+      ""
+     ]
+    ],
+    "r": "Cuartos"
+   },
+   {
+    "b": [
+     [
+      [
+       "Makmah",
+       "Liberia"
+      ],
+      "Makmah",
+      ""
+     ],
+     [
+      [
+       "Lizeninn",
+       "Deuxs"
+      ],
+      "Lizeninn",
+      "Walk-in 1: Lizeninn 🇦🇷"
+     ]
+    ],
+    "r": "Semifinales"
+   },
+   {
+    "b": [
+     [
+      [
+       "Makmah",
+       "Lizeninn"
+      ],
+      "Makmah",
+      ""
+     ]
+    ],
+    "r": "Final"
+   }
+  ],
+  "sv": "URBF",
+  "tabla": [
+   [
+    "Makmah",
+    "Campeón",
+    5000
+   ],
+   [
+    "Deuxs",
+    "Semifinal",
+    2625
+   ],
+   [
+    "Liberia",
+    "Semifinal",
+    2625
+   ],
+   [
+    "Lizeninn",
+    "Subcampeón",
+    1875
+   ],
+   [
+    "Agus",
+    "Cuartos",
+    1250
+   ],
+   [
+    "Lvel 🇻🇪",
+    "Cuartos",
+    1250
+   ],
+   [
+    "OEP",
+    "Cuartos",
+    1250
+   ]
+  ]
  }
 }

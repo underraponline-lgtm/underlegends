@@ -33624,5 +33624,129 @@
    ]
   ],
   "v": 2
+ },
+ "564": {
+  "antes": {
+   "Agus": [
+    13,
+    14,
+    false
+   ],
+   "Deuxs": [
+    108,
+    150,
+    false
+   ],
+   "Liberia": [
+    8,
+    9,
+    false
+   ],
+   "Lizeninn": [
+    243,
+    86,
+    true
+   ],
+   "Makmah": [
+    1,
+    1,
+    false
+   ],
+   "OEP": [
+    181,
+    375,
+    false
+   ]
+  },
+  "canal": "1511962554547703960",
+  "duelos": [
+   [
+    "Makmah",
+    "OEP",
+    "Makmah"
+   ],
+   [
+    "Liberia",
+    "Agus",
+    "Liberia"
+   ],
+   [
+    "Deuxs",
+    "Lvel 🇻🇪",
+    "Deuxs"
+   ],
+   [
+    "Makmah",
+    "Liberia",
+    "Makmah"
+   ],
+   [
+    "Lizeninn",
+    "Deuxs",
+    "Lizeninn"
+   ],
+   [
+    "Makmah",
+    "Lizeninn",
+    "Makmah"
+   ]
+  ],
+  "ev_antes": {
+   "Agus": 22,
+   "Deuxs": 8,
+   "Liberia": 24,
+   "Lizeninn": 11,
+   "Makmah": 95,
+   "OEP": 2
+  },
+  "fecha": "03/11",
+  "firma": "f3979b0972aa81d6",
+  "msg": "1567309579967144037",
+  "nombre": "Rayos y Centellas",
+  "num": 564,
+  "participantes": 7,
+  "sello": {
+   "Makmah": "02863b4c3758:ccd09f762e04"
+  },
+  "sv": "URBF",
+  "t": "2026-11-03T22:54:43Z",
+  "tabla": [
+   [
+    "Makmah",
+    "Campeón",
+    5000
+   ],
+   [
+    "Liberia",
+    "Semifinal",
+    2625
+   ],
+   [
+    "Deuxs",
+    "Semifinal",
+    2625
+   ],
+   [
+    "Lizeninn",
+    "Subcampeón",
+    1875
+   ],
+   [
+    "OEP",
+    "Cuartos",
+    1250
+   ],
+   [
+    "Agus",
+    "Cuartos",
+    1250
+   ],
+   [
+    "Lvel 🇻🇪",
+    "Cuartos",
+    1250
+   ]
+  ],
+  "v": 2
  }
 }

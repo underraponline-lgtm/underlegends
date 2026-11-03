@@ -1420,6 +1420,39 @@
    "b": "LVEL 🇻🇪",
    "ganador": "FAMILIAFORTUNAYEXITO 🇫🇷",
    "votos": "1–0"
+  },
+  "1567306507454910485": {
+   "id": "1567306507454910485",
+   "sv": "✮ 𝑼𝒓𝒃𝒂𝒏 𝑭𝒓𝒆𝒆𝒔𝒕𝒚𝒍𝒆 ✮ | A New Era",
+   "g": "1467763447117778989",
+   "canal": "1540223675146707045",
+   "pub": 1793745390524,
+   "a": "MAKMAH 🇻🇪",
+   "b": "SEBITA 🇱🇷",
+   "ganador": "MAKMAH 🇻🇪",
+   "votos": "1–0"
+  },
+  "1567307384429224048": {
+   "id": "1567307384429224048",
+   "sv": "✮ 𝑼𝒓𝒃𝒂𝒏 𝑭𝒓𝒆𝒆𝒔𝒕𝒚𝒍𝒆 ✮ | A New Era",
+   "g": "1467763447117778989",
+   "canal": "1540223675146707045",
+   "pub": 1793745599611,
+   "a": "FAMILIAFORTUNAYEXITO 🇫🇷",
+   "b": "LIZENINN 🇦🇷",
+   "ganador": "LIZENINN 🇦🇷",
+   "votos": "1–0"
+  },
+  "1567308417285103636": {
+   "id": "1567308417285103636",
+   "sv": "✮ 𝑼𝒓𝒃𝒂𝒏 𝑭𝒓𝒆𝒆𝒔𝒕𝒚𝒍𝒆 ✮ | A New Era",
+   "g": "1467763447117778989",
+   "canal": "1540223675146707045",
+   "pub": 1793745845863,
+   "a": "MAKMAH 🇻🇪",
+   "b": "LIZENINN 🇦🇷",
+   "ganador": "MAKMAH 🇻🇪",
+   "votos": "1–0"
   }
  },
  "llaves": {
@@ -5569,8 +5602,8 @@
    "g": "1467763447117778989",
    "canal": "1540223675146707045",
    "pub": 1793743850861,
-   "ed": 1793744582131,
-   "texto": "`[ CUARTOS ]`\n⌞O.E.P 🇨🇴⌝ 🆚 ⌞MAKMAH 🇻🇪⌝\n⌞AGUS 🇦🇷⌝ 🆚 ⌞SEBITA 🇱🇷⌝\n⌞FAMILIAFORTUNAYEXITO 🇫🇷⌝ 🆚 ⌞LVEL 🇻🇪⌝",
+   "ed": 1793746035343,
+   "texto": "`[ CUARTOS ]`\n⌞O.E.P 🇨🇴⌝ 🆚 ⌞MAKMAH 🇻🇪⌝\n⌞AGUS 🇦🇷⌝ 🆚 ⌞SEBITA 🇱🇷⌝\n⌞FAMILIAFORTUNAYEXITO 🇫🇷⌝ 🆚 ⌞LVEL 🇻🇪⌝\n`[ CUARTOS ]`\n`[ SEMIFINALES ]`\n⌞MAKMAH 🇻🇪⌝ 🆚 ⌞SEBITA 🇱🇷⌝\n⌞FAMILIAFORTUNAYEXITO 🇫🇷⌝ 🆚 ⌞LIZENINN 🇦🇷⌝\n`[ FINAL ]`\n⌞MAKMAH 🇻🇪⌝ 🆚 ⌞LIZENINN 🇦🇷⌝",
    "batallas": [
     [
      "CUARTOS",
@@ -5599,6 +5632,36 @@
       "LVEL 🇻🇪"
      ],
      "FAMILIAFORTUNAYEXITO 🇫🇷",
+     "veredicto",
+     []
+    ],
+    [
+     "SEMIFINALES",
+     [
+      "MAKMAH 🇻🇪",
+      "SEBITA 🇱🇷"
+     ],
+     "MAKMAH 🇻🇪",
+     "veredicto",
+     []
+    ],
+    [
+     "SEMIFINALES",
+     [
+      "FAMILIAFORTUNAYEXITO 🇫🇷",
+      "LIZENINN 🇦🇷"
+     ],
+     "LIZENINN 🇦🇷",
+     "veredicto",
+     []
+    ],
+    [
+     "FINAL",
+     [
+      "MAKMAH 🇻🇪",
+      "LIZENINN 🇦🇷"
+     ],
+     "MAKMAH 🇻🇪",
      "veredicto",
      []
     ]
