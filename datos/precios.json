@@ -2,14 +2,6 @@
  "_leeme": "El precio por cabeza: lo arma bot/precios.py en el ciclo (paso 2b4). Las reglas y los números viven en ese archivo.",
  "precios": [
   {
-   "id": 10,
-   "cabeza": "Catarsis",
-   "monto": 500,
-   "t": "2026-10-04T03:21:14Z",
-   "fin": "2026-10-05T15:00:00Z",
-   "e": "devuelto"
-  },
-  {
    "id": 11,
    "cabeza": "Lord Viruzz",
    "monto": 500,

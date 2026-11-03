@@ -1,6 +1,6 @@
 {
  "_leeme": "Las ligas de los servidores: cada batalla y su resultado, y la tabla que sale de eso. Lo arma bot/ligas.py en cada corrida; las reglas viven ahí. Sin los mensajes: el repo es público. `batallas`: [id del mensaje, instante, jornada, a, b, ganador (vacío: pendiente), directa|replica, extras]. Las batallas con resultado cuentan como duelos (Ranking Duelos y Win%; el Score no). `flyer`: el último afiche de su canal de anuncios, re-alojado en R2 (`url`); `prox`: la próxima fecha que anunció (`d` el día, `t` el instante si lo dijo). Desde el 17/10/2026: `ptb` {id de la batalla: [PTB de a, de b]}, `flyers` (la galería, en R2), `staff` [[discord_id, nombre, mensajes en anuncios, en veredictos, último]] y `nov` (lo nuevo de las últimas horas, para «Seguir la liga»).",
- "t": "2026-11-03T03:01:28Z",
+ "t": "2026-11-03T03:28:52Z",
  "ligas": {
   "fmh-albiceleste": {
    "n": "FMH Albiceleste",
@@ -2273,6 +2273,10 @@
     "1561942306511261707": [
      34.0,
      37.0
+    ],
+    "1567006524335984842": [
+     37.5,
+     39.0
     ]
    },
    "flyers": [
@@ -2398,6 +2402,13 @@
      "2026-11-03T02:44:28Z"
     ],
     [
+     "1055474244089286706",
+     "Erian 恵理久",
+     0,
+     5,
+     "2026-11-03T03:23:37Z"
+    ],
+    [
      "794733304729436212",
      "! 𝗠𝗧𝗭",
      0,
@@ -2431,13 +2442,6 @@
      0,
      3,
      "2026-09-20T20:10:13Z"
-    ],
-    [
-     "1055474244089286706",
-     "Erian 恵理久",
-     0,
-     2,
-     "2026-10-20T03:41:28Z"
     ],
     [
      "1359593021707915568",

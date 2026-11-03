@@ -2,28 +2,6 @@
  "_leeme": "Los eventos de vidas de #veredictos ya armados —quién peleó con quién y quién ganó—, para cargarlos aunque ya no estén entre los últimos mensajes del canal; y cada batalla con su ganador (`batallas`), para la llave que no lo dice; y cada llave como se jugó (`llaves`), que manda sobre la del organizador. Sin los mensajes: el repo es público. Lo escribe bot/escuchar.py (vidas()).",
  "eventos": {},
  "batallas": {
-  "1564473331497832581": {
-   "id": "1564473331497832581",
-   "sv": "#FDS ╏FREESTYLE DISCORD SERIES",
-   "g": "1489848581203689535",
-   "canal": "1536574435761332334",
-   "pub": 1793069908738,
-   "a": "GARY",
-   "b": "SHIKTA",
-   "ganador": "GARY",
-   "votos": "1–0"
-  },
-  "1564476998011846699": {
-   "id": "1564476998011846699",
-   "sv": "#FDS ╏FREESTYLE DISCORD SERIES",
-   "g": "1489848581203689535",
-   "canal": "1536574435761332334",
-   "pub": 1793070782903,
-   "a": "OKAM",
-   "b": "JAZI",
-   "ganador": "OKAM",
-   "votos": "1–0"
-  },
   "1564482899007250515": {
    "id": "1564482899007250515",
    "sv": "#FDS ╏FREESTYLE DISCORD SERIES",
@@ -5663,6 +5641,44 @@
      [
       "XCLUSIVO",
       "MAKMAH"
+     ],
+     null,
+     "última ronda y no dice campeón",
+     []
+    ]
+   ]
+  },
+  "1567010428750536766": {
+   "id": "1567010428750536766",
+   "sv": "[FFA] Freestyle For All 👾",
+   "g": "1468472442925092958",
+   "canal": "1487206164864438513",
+   "pub": 1793674799860,
+   "ed": 1793675905361,
+   "texto": "`[ OCTAVOS ]`\n⌞JOBA⌝ 🆚 ⌞LRS⌝ 🆚 ⌞AKUSERU⌝ 🆚 ⌞DOMINIC⌝ 🆚 ⌞MCO⌝ 🆚 ⌞TOMY HILFIGHER⌝\n⌞MATS⌝ 🆚 ⌞PELOTA⌝ 🆚 ⌞OJOS DE TAILANDIA PICHULA⌝ 🆚 ⌞VANDU⌝ 🆚 ⌞LVEL⌝",
+   "batallas": [
+    [
+     "OCTAVOS",
+     [
+      "JOBA",
+      "LRS",
+      "AKUSERU",
+      "DOMINIC",
+      "MCO",
+      "TOMY HILFIGHER"
+     ],
+     null,
+     "última ronda y no dice campeón",
+     []
+    ],
+    [
+     "OCTAVOS",
+     [
+      "MATS",
+      "PELOTA",
+      "OJOS DE TAILANDIA PICHULA",
+      "VANDU",
+      "LVEL"
      ],
      null,
      "última ronda y no dice campeón",
