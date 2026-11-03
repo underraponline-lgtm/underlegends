@@ -118,7 +118,7 @@ const PrimerosPasos = lazy(() => import('./tutorial.jsx').then((m) => ({ default
 const Ranking = lazy(() => import('./ranking.jsx').then((m) => ({ default: m.Ranking })));
 const Eventos = lazy(() => import('./eventos.jsx').then((m) => ({ default: m.Eventos })));
 const Publicaciones = lazy(() => (REMAKE ? import('./publicaciones2.jsx') : import('./publicaciones.jsx')).then((m) => ({ default: m.Publicaciones })));
-const Socios = lazy(() => import('./socios.jsx').then((m) => ({ default: m.Socios })));
+const Socios = lazy(() => (REMAKE ? import('./socios2.jsx') : import('./socios.jsx')).then((m) => ({ default: m.Socios })));
 const Guia = lazy(() => (REMAKE ? import('./guia2.jsx') : import('./guia.jsx')).then((m) => ({ default: m.Guia })));
 const Tarjetas = lazy(() => import('./tarjetas.jsx').then((m) => ({ default: m.Tarjetas })));
 const Perfil = lazy(() => import('./perfil.jsx').then((m) => ({ default: m.Perfil })));
@@ -129,7 +129,7 @@ const Pase = lazy(() => import('./pase.jsx').then((m) => ({ default: m.Pase })))
 // 🏟️ las Ligas, su propia sección desde el 16/10/2026 (eran una pestaña del Ranking): ver ligas.jsx
 const LigasPagina = lazy(() => import('./ligas.jsx').then((m) => ({ default: m.LigasPagina })));
 // 🏛️ el Salón de la fama (16/10/2026): ver salon.jsx
-const SalonFama = lazy(() => import('./salon.jsx').then((m) => ({ default: m.SalonFama })));
+const SalonFama = lazy(() => (REMAKE ? import('./salon2.jsx') : import('./salon.jsx')).then((m) => ({ default: m.SalonFama })));
 // 🏆 las competencias de la semana (26/10/2026): ver competencias.jsx
 const Competencias = lazy(() => import('./competencias.jsx').then((m) => ({ default: m.Competencias })));
 // 🎒 el Inventario como página (26/10/2026): ver tags_inv.jsx
@@ -165,7 +165,7 @@ function AvisoWeb({ aviso }) {
   );
 }
 const PaginaVerificar = lazy(() => import('./cuenta.jsx').then((m) => ({ default: m.PaginaVerificar })));
-const Cambios = lazy(() => import('./cambios.jsx').then((m) => ({ default: m.Cambios })));
+const Cambios = lazy(() => (REMAKE ? import('./cambios2.jsx') : import('./cambios.jsx')).then((m) => ({ default: m.Cambios })));
 const PerfilSv = lazy(() => (REMAKE ? import('./entidad2.jsx') : import('./servidor.jsx')).then((m) => ({ default: m.PerfilSv })));
 const PaginaCrew = lazy(() => (REMAKE ? import('./entidad2.jsx') : import('./grupo.jsx')).then((m) => ({ default: m.PaginaCrew })));
 const PaginaPais = lazy(() => (REMAKE ? import('./entidad2.jsx') : import('./grupo.jsx')).then((m) => ({ default: m.PaginaPais })));

@@ -6,7 +6,7 @@ import { limpio, mult, num, siglaDe, utc } from './liga.js';
 import { Compartir, Poster, Sec, aDiscord, accion, enlace, silueta } from './piezas.jsx';
 import { McPersona, Vis } from './medio.jsx';
 import { Pub, useAplausos } from './publicaciones.jsx';
-import { Categoria, Nominado, reparto, useSalon } from './salon.jsx';
+import { Categoria, Nominado, reparto, useSalon } from './mesawards.jsx';
 
 export const REDES = { instagram: 'Instagram', tiktok: 'TikTok', youtube: 'YouTube', twitch: 'Twitch', x: 'X', twitter: 'X', kick: 'Kick' };
 

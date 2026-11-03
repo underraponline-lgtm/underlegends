@@ -662,7 +662,7 @@ export function Lobby({ liga, dc }) {
           <span className="lb-big"><Ico n="moneda" t={34} /></span>
           <span className="lb-ti-t"><span className="lb-t">TIENDA</span>
             <small>{cara ? 'La cabeza más cara: ' + limpio((liga.fila(cara) || {}).n || cara) + ' · ' + num(valor[cara])
-              : saldo != null ? 'Ponele precio a la cabeza de alguien' : 'Todos arrancan con Puntos de Tienda'}</small></span>
+              : saldo != null ? 'Ponle precio a la cabeza de alguien' : 'Todos arrancan con Puntos de Tienda'}</small></span>
         </a>
       </div>
     </section>

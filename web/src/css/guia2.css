@@ -8,34 +8,39 @@
   box-shadow:5px 5px 0 var(--magenta)}
 .gx-busca input{flex:1;min-width:0;min-height:48px;border:0;background:transparent;color:#F6F6F6;font:500 16px/1 Archivo,sans-serif;outline:none}
 .gx-busca input::placeholder{color:#8E8E93}
+/* la × azul del navegador repetía el «Borrar» de los resultados */
+.gx-busca input::-webkit-search-cancel-button{-webkit-appearance:none;display:none}
 .gx-busca:focus-within{box-shadow:5px 5px 0 var(--verde)}
 
 /* ── el índice: chips pegados arriba en el celular, una columna pegada a la izquierda en la compu ── */
 .gx-chips{position:sticky;top:0;z-index:20;background:#030304;border-bottom:2px solid #2A2A2C}
-.gx-chips-l{display:flex;gap:6px;margin:0;padding:10px 16px;list-style:none;overflow-x:auto;scrollbar-width:none}
+.gx-chips-l{display:flex;gap:6px;margin:0;padding:8px 16px;list-style:none;overflow-x:auto;scrollbar-width:none}
 .gx-chips-l::-webkit-scrollbar{display:none}
-.gx-chips-l button{display:inline-flex;align-items:center;gap:7px;min-height:38px;padding:0 11px;border:1.5px solid #3A3A3E;background:transparent;color:#F6F6F6;
+.gx-chips-l button{display:inline-flex;align-items:center;gap:7px;min-height:44px;padding:0 12px;border:1.5px solid #3A3A3E;background:transparent;color:#F6F6F6;
   font:700 15px/1 "Barlow Condensed",sans-serif;letter-spacing:.03em;text-transform:uppercase;white-space:nowrap;cursor:pointer}
-.gx-chips-l button .gx-num{color:#8E8E93}
-.gx-chips-l button small{display:none}
+.gx-chips-l button b{font-weight:700}
 .gx-chips-l button.on{background:#F6F6F6;color:#030304;border-color:#F6F6F6}
-.gx-chips-l button.on .gx-num{color:var(--magenta)}
+.gx-chips-l button:focus-visible{outline:2px solid var(--magenta);outline-offset:2px}
+/* la lupa: vuelve al buscador. En el celular, sólo el dibujo */
+.gx-chips-l .gx-lupa{justify-content:center;width:44px;padding:0;border-color:var(--magenta);color:var(--magenta)}
+.gx-chips-l .gx-lupa b{display:none}
 .gx-rail{display:none}
 .gx-t2{display:grid}
 .gx-cuerpo{min-width:0;padding:0 16px 30px}
 
 /* ── cada sección ── */
 .gx-sec{display:grid;gap:14px;padding-top:28px;scroll-margin-top:70px}
-.gx-h{display:flex;align-items:baseline;gap:12px;margin:0}
-.gx-num{font:800 15px/1 Archivo,sans-serif;font-stretch:100%;font-variant-numeric:tabular-nums;color:var(--magenta-tx)}
+.gx-h{margin:0}
 .gx-baj{margin:0;font:500 15px/1.45 Archivo,sans-serif;color:var(--gris);max-width:760px}
 .gx-nota{margin:0;font:500 14px/1.45 Archivo,sans-serif;color:var(--gris)}
 .gx-link{padding:0;border:0;background:none;color:var(--tinta);font:inherit;text-decoration:underline;cursor:pointer}
+/* lo que encontró el buscador, marcado un rato */
+.gx-flash{outline:3px solid var(--magenta);outline-offset:4px}
 
 /* ── los resultados del buscador ── */
 .gx-res{margin-top:22px;padding:16px;border:2px solid var(--linea);background:var(--caja);box-shadow:5px 5px 0 var(--magenta)}
 .gx-res-t{display:flex;flex-wrap:wrap;align-items:baseline;justify-content:space-between;gap:8px;margin:0 0 10px;font:900 18px/1.2 Archivo,sans-serif;text-transform:uppercase}
-.gx-res-x{min-height:34px;padding:0 10px;border:1.5px solid var(--linea);background:var(--fondo);color:var(--tinta);font:700 14px/1 "Barlow Condensed",sans-serif;
+.gx-res-x{min-height:40px;padding:0 12px;border:1.5px solid var(--linea);background:var(--fondo);color:var(--tinta);font:700 14px/1 "Barlow Condensed",sans-serif;
   letter-spacing:.04em;text-transform:uppercase;cursor:pointer}
 .gx-res ul{display:grid;gap:0;margin:0;padding:0;list-style:none}
 .gx-res li button{display:grid;gap:3px;width:100%;padding:10px 0;border:0;border-top:1.5px solid var(--suave);background:none;color:var(--tinta);text-align:left;cursor:pointer}
@@ -62,8 +67,9 @@
 .gx-tuyos span{display:inline-flex;align-items:center;gap:6px}
 .gx-tuyos small{font:700 12px/1 "Barlow Condensed",sans-serif;letter-spacing:.05em;text-transform:uppercase;color:var(--gris)}
 .gx-tabs{display:flex;flex-wrap:wrap;gap:6px}
-.gx-tabs button{display:inline-flex;align-items:baseline;gap:6px;min-height:40px;padding:0 12px;border:2px solid var(--linea);background:var(--fondo);color:var(--tinta);
+.gx-tabs button{display:inline-flex;align-items:baseline;justify-content:center;gap:6px;min-height:44px;padding:0 12px;border:2px solid var(--linea);background:var(--fondo);color:var(--tinta);
   font:800 15px/1 "Barlow Condensed",sans-serif;letter-spacing:.05em;text-transform:uppercase;cursor:pointer}
+.gx-tabs button{align-items:center}
 .gx-tabs button small{font-weight:700;color:var(--gris)}
 .gx-tabs button.on{background:var(--tinta);color:var(--fondo)}
 .gx-tabs button.on small{color:var(--fondo);opacity:.7}
@@ -80,15 +86,18 @@
 .gx-fichas li.tuyo{border:2px solid var(--verde);box-shadow:3px 3px 0 var(--verde)}
 .gx-fichas p{margin:0;font:500 14px/1.35 Archivo,sans-serif}
 .gx-fichas small{font:700 12px/1.2 "Barlow Condensed",sans-serif;letter-spacing:.04em;color:var(--gris)}
-.gx-mas{justify-self:start;min-height:38px;padding:0 12px;border:2px solid var(--linea);background:var(--fondo);color:var(--tinta);
+/* «Ver los N»: en el celular corta en cuatro y en la compu en nueve, y sólo donde quedan tres o más escondidos */
+.gx-mas{display:none;justify-self:start;align-items:center;min-height:44px;padding:0 14px;border:2px solid var(--linea);background:var(--fondo);color:var(--tinta);
   font:800 14px/1 "Barlow Condensed",sans-serif;letter-spacing:.05em;text-transform:uppercase;cursor:pointer;box-shadow:3px 3px 0 var(--linea)}
 .gx-mas:active{transform:translate(3px,3px);box-shadow:none}
 .gx-tag{justify-self:start;padding:4px 8px;font:800 13px/1.1 "Barlow Condensed",sans-serif;letter-spacing:.05em;color:#0A0A0D}
 
 /* ── los puntos por puesto ── */
 .gx-pts{display:grid;gap:18px}
-.gx-esc-b{display:flex;gap:6px;margin-bottom:10px}
-.gx-esc-b button{flex:1;min-height:40px;padding:0 8px;border:2px solid var(--linea);background:var(--fondo);color:var(--tinta);
+.gx-escala{display:grid;gap:6px;margin-bottom:10px}
+.gx-escala>small{font:700 12.5px/1 "Barlow Condensed",sans-serif;letter-spacing:.07em;text-transform:uppercase;color:var(--gris)}
+.gx-esc-b{display:flex;gap:6px}
+.gx-esc-b button{flex:1;min-height:44px;padding:0 8px;border:2px solid var(--linea);background:var(--fondo);color:var(--tinta);
   font:800 14px/1 "Barlow Condensed",sans-serif;letter-spacing:.04em;text-transform:uppercase;cursor:pointer}
 .gx-esc-b button.on{background:var(--tinta);color:var(--fondo)}
 .gx-tabla{width:100%;border-collapse:collapse;font:500 15px/1.3 Archivo,sans-serif}
@@ -99,7 +108,7 @@
 .gx-tabla td:first-child{font-weight:700}
 .gx-tabla td:first-child>small{display:block;font:500 12px/1.3 Archivo,sans-serif;color:var(--gris)}
 .gx-tabla td .med,.gx-tabla td svg{vertical-align:-3px;margin-right:6px}
-/* en el celular, una columna por vez: la que elegiste */
+/* en el celular, una columna por vez: la que elegiste, y sin las filas que en esa no existen */
 .gx-tabla th:not(:first-child):not(.on),.gx-tabla td:not(:first-child):not(.on){display:none}
 .gx-notas{display:grid;gap:8px;margin:0;padding:0;list-style:none;font:500 14px/1.45 Archivo,sans-serif}
 .gx-notas li{padding-left:12px;border-left:3px solid var(--suave)}
@@ -111,7 +120,8 @@
   border-left:2px solid var(--linea)}
 .gx-regla-s:first-child{border-left:0}
 .gx-regla-s b{font:900 16px/1 Archivo,sans-serif;font-stretch:115%}
-.gx-regla-s small{font:700 12px/1 "Barlow Condensed",sans-serif;opacity:.75}
+/* sin opacidad: sobre el zafiro, a 12 px, quedaba en 4,49:1 */
+.gx-regla-s small{font:700 12px/1 "Barlow Condensed",sans-serif}
 .gx-dos{display:grid;gap:22px;margin-top:6px}
 .gx-pesos{display:grid;gap:10px;align-content:start}
 .gx-pesos h3{display:flex;flex-wrap:wrap;align-items:baseline;gap:8px;margin:0;font:900 18px/1 Archivo,sans-serif;font-stretch:115%;text-transform:uppercase}
@@ -134,23 +144,18 @@
 .gx-glos dd{margin:0;font:500 15px/1.5 Archivo,sans-serif}
 .gx-semana{display:grid;grid-template-columns:minmax(0,1fr);gap:10px;margin:0;padding:0;list-style:none}
 .gx-semana li{display:grid;align-content:start;gap:6px;padding:12px;border:2px solid var(--linea);background:var(--caja)}
-.gx-cifra{display:flex;flex-wrap:wrap;align-items:baseline;justify-content:space-between;gap:4px 10px}
+/* la cifra arriba, a lo ancho: en una columna al costado no entraban «30 niveles» ni «Al cerrar la semana» */
+.gx-cifra{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:6px 10px}
 .gx-cifra b{font:900 24px/1 Archivo,sans-serif;font-stretch:115%;font-variant-numeric:tabular-nums}
 .gx-cifra small{padding:4px 6px;background:var(--tinta);color:var(--fondo);font:800 12px/1 Archivo,sans-serif;letter-spacing:.04em;text-transform:uppercase}
 .gx-semana h3{margin:0;font:900 16px/1.15 Archivo,sans-serif;font-stretch:115%;text-transform:uppercase}
 .gx-semana p{margin:0;font:500 14px/1.45 Archivo,sans-serif;color:var(--gris)}
-.gx-leer{display:none;justify-self:start;min-height:32px;padding:0;border:0;background:none;color:var(--tinta);cursor:pointer;
-  font:700 14px/1 "Barlow Condensed",sans-serif;letter-spacing:.04em;text-transform:uppercase;text-decoration:underline;text-underline-offset:3px}
-@media (max-width: 639px){
-  .gx-semana li:not(.abierta) p{display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
-  .gx-leer{display:block}
-}
 
 /* ── las preguntas ── */
 .gx-faq{display:grid;gap:8px;align-items:start}
 .gx-faq details{border:2px solid var(--linea);background:var(--caja)}
 .gx-faq details[open]{box-shadow:4px 4px 0 var(--linea)}
-.gx-faq summary{display:flex;justify-content:space-between;gap:10px;padding:13px 14px;cursor:pointer;font:800 15px/1.3 Archivo,sans-serif;list-style:none}
+.gx-faq summary{display:flex;justify-content:space-between;gap:10px;min-height:48px;padding:13px 14px;cursor:pointer;font:800 15px/1.3 Archivo,sans-serif;list-style:none}
 .gx-faq summary::-webkit-details-marker{display:none}
 .gx-faq summary:after{content:"+";font:900 18px/1 Archivo,sans-serif}
 .gx-faq details[open] summary:after{content:"−"}
@@ -158,17 +163,24 @@
 .gx-faq code{padding:1px 5px;background:var(--fondo);border:1px solid var(--suave);font-size:13.5px}
 .gx-faq a{text-decoration:underline}
 
-@media (min-width: 360px) and (max-width: 639px){
+@media (max-width: 599px){
+  /* las cuatro pestañas de TAG en dos filas parejas (sueltas quedaban tres y una) */
+  .gx-tabs{display:grid;grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+@media (max-width: 899px){
+  .gx-banda:not(.abierta) .m-extra{display:none}
+  .gx-mas.m{display:inline-flex}
+  .gx-tabla[data-esc="16+"] tr.sin-16,.gx-tabla[data-esc="8-15"] tr.sin-8,.gx-tabla[data-esc="4-7"] tr.sin-4{display:none}
+}
+@media (min-width: 360px) and (max-width: 899px){
   .gx-fichas{grid-template-columns:repeat(2,minmax(0,1fr))}
   .gx-fichas p{font-size:13.5px}
-  .gx-semana li{grid-template-columns:84px minmax(0,1fr);column-gap:12px;align-items:start}
-  .gx-semana li>*{grid-column:2}
-  .gx-semana .gx-cifra{grid-column:1;grid-row:1/span 4;display:grid;gap:6px;justify-content:start}
-  .gx-semana .gx-cifra b{font-size:20px}
+  /* la última sola en su fila, a lo ancho: si no, queda media fila vacía */
+  .gx-fichas li:last-child:nth-child(odd){grid-column:1/-1}
 }
 @media (min-width: 640px){
   .gx-cartas{grid-template-columns:repeat(2,minmax(0,1fr))}
-  .gx-fichas{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .gx-carta.prox{grid-column:1/-1}
   .gx-semana{grid-template-columns:repeat(2,minmax(0,1fr))}
 }
 @media (min-width: 900px){
@@ -176,24 +188,31 @@
   .app .gx-chips{display:none}
   .app .gx-t2{grid-template-columns:230px minmax(0,1fr);gap:36px;padding:0 var(--gut)}
   .app .gx-rail{display:block;position:sticky;top:14px;align-self:start;padding-top:30px}
-  .app .gx-rail-t{display:block;margin-bottom:10px;font:700 13px/1 "Barlow Condensed",sans-serif;letter-spacing:.08em;color:var(--gris)}
   .app .gx-rail-l{display:grid;gap:2px;margin:0;padding:0;list-style:none;border-left:2px solid var(--suave)}
-  .app .gx-rail-l button{display:grid;grid-template-columns:26px minmax(0,1fr) auto;align-items:baseline;gap:8px;width:100%;min-height:38px;padding:8px 8px 8px 12px;
-    margin-left:-2px;border:0;border-left:3px solid transparent;background:none;color:var(--tinta);text-align:left;cursor:pointer;font:700 15px/1.2 Archivo,sans-serif}
-  .app .gx-rail-l button small{font:700 13px/1 "Barlow Condensed",sans-serif;color:var(--gris)}
+  .app .gx-rail-l button{display:block;width:100%;min-height:40px;padding:9px 8px 9px 12px;margin-left:-2px;border:0;border-left:3px solid transparent;
+    background:none;color:var(--tinta);text-align:left;cursor:pointer;font:700 15px/1.2 Archivo,sans-serif}
   .app .gx-rail-l button:hover{background:var(--caja)}
   .app .gx-rail-l button.on{border-left-color:var(--magenta);background:var(--caja)}
   .app .gx-rail-l button.on b{font-weight:900}
+  .app .gx-rail-l button:focus-visible{outline:2px solid var(--magenta);outline-offset:-2px}
+  /* la lupa, arriba del índice: «Buscar» con su dibujo, para volver al buscador desde cualquier parte */
+  .app .gx-rail-l .gx-lupa{display:flex;align-items:center;gap:8px;margin:0 0 8px 10px;width:calc(100% - 10px);padding:0 12px;min-height:42px;
+    border:2px solid var(--linea);background:var(--fondo);font:800 14px/1 "Barlow Condensed",sans-serif;letter-spacing:.05em;text-transform:uppercase;box-shadow:3px 3px 0 var(--magenta)}
+  .app .gx-rail-l .gx-lupa:hover{background:var(--caja)}
   .app .gx-cuerpo{padding:0 0 40px}
   .app .gx-sec{scroll-margin-top:20px}
   .app .gx-fichas{grid-template-columns:repeat(3,minmax(0,1fr))}
+  .app .gx-fichas li:last-child:nth-child(3n+1){grid-column:1/-1}
+  .app .gx-fichas li:last-child:nth-child(3n+2){grid-column:span 2}
+  .app .gx-banda:not(.abierta) .d-extra{display:none}
+  .app .gx-mas.d{display:inline-flex}
   .app .gx-pts{grid-template-columns:minmax(0,1.4fr) minmax(0,1fr);gap:28px;align-items:start}
-  .app .gx-esc-b{display:none}
+  .app .gx-escala{display:none}
   .app .gx-tabla th:not(:first-child),.app .gx-tabla td:not(:first-child){display:table-cell}
   .app .gx-dos{grid-template-columns:repeat(2,minmax(0,1fr));gap:30px}
   /* en columnas que fluyen: en una grilla, una definición larga dejaba un hueco al lado de una corta */
   .app .gx-glos{display:block;columns:2;column-gap:34px}
   .app .gx-glos div{break-inside:avoid}
-  .app .gx-semana{grid-template-columns:repeat(3,minmax(0,1fr))}
+  .app .gx-semana{grid-template-columns:repeat(2,minmax(0,1fr))}
   .app .gx-faq{grid-template-columns:repeat(2,minmax(0,1fr))}
 }

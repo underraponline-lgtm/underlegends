@@ -11,6 +11,19 @@
  ],
  "cambios": [
   {
+   "version": "4.19",
+   "dia": "2026-11-02",
+   "cuando": "2026-11-02T20:30:00-05:00",
+   "titulo": "Los MES AWARDS de octubre, a votar",
+   "items": [
+    "Los **MES AWARDS de octubre** ya se votan en el **Salón de la fama**, hasta el miércoles 4 a las 6 PM (hora del este).",
+    "Las horas que ponen los servidores en sus anuncios de Discord se leen como fecha y hora: antes salía un código.",
+    "La **Guía** llama **piedras** a los niveles del Ranking ELO, de Hierro a Mítico, para no confundirlos con los rangos de E a SSS.",
+    "En **Socios**, la carta de Servidor dice cuándo sale de verdad: al verificarte en la página.",
+    "Más textos en «tú»."
+   ]
+  },
+  {
    "version": "4.18",
    "dia": "2026-10-29",
    "cuando": "2026-10-29T21:30:00-04:00",

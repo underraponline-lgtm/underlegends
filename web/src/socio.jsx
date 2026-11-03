@@ -297,7 +297,7 @@ export function PanelSocio({ liga, q }) {
     return (
       <div className="so so-vacio">
         <h1>El panel de tu servidor</h1>
-        <p>{j.ok ? 'Este panel es para los dueños de los servidores socios de la Liga (Tier 1 y 2). Si eres dueño de uno y no lo ves, escribile a @itsdlx.'
+        <p>{j.ok ? 'Este panel es para los dueños de los servidores socios de la Liga (Tier 1 y 2). Si eres dueño de uno y no lo ves, escríbele a @itsdlx.'
           : 'No pude traer el panel ahora. Prueba de nuevo en un rato.'}</p>
       </div>
     );

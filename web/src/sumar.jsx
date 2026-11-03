@@ -14,8 +14,10 @@ export const DLX = 'https://discord.com/users/739338101603696681';
 export const QUE_GANA = [
   { ic: 'ranking', t: 'La tabla de toda la Liga', tx: 'Cada evento suyo cuenta para los mismos rankings que los demás servidores: Temporada, Competitivo, Duelos, Podios y Rachas.',
     ej: 'tabla', mas: 'Cada evento que organiza tu servidor suma a la misma tabla que los de los demás: la Temporada con los puntos de cada puesto, el Competitivo desde los 10 eventos, y los rankings de Duelos, Podios y Rachas. Tu gente compite con toda la Liga sin salir de tu servidor.', ir: '#/ranking' },
-  { ic: 'tarjetas', t: 'La carta de Servidor', tx: 'Su gente tiene su carta con el escudo y el color del servidor desde su primer evento.',
-    ej: 'carta', mas: 'Cada rapero que juega en tu servidor tiene su carta de Servidor, con el escudo y el color de tu servidor, su número y su puesto. Sale sola desde su primer evento, se ve en su perfil y la comparte donde quiera.', ir: '#/tarjetas' },
+  // ⚠️ «al verificarse» y no «desde su primer evento»: las tarjetas van en dos pasos desde la 2.41 (05/10/2026), y la
+  // de Servidor sale al verificarse en la página (`verificados.puede()`)
+  { ic: 'tarjetas', t: 'La carta de Servidor', tx: 'Su gente tiene su carta con el escudo y el color del servidor en cuanto se verifica.',
+    ej: 'carta', mas: 'Cada rapero que juega en tu servidor tiene su carta de Servidor, con el escudo y el color de tu servidor, su número y su puesto. Le sale al verificarse en la página, se ve en su perfil y la comparte donde quiera.', ir: '#/tarjetas' },
   { ic: 'eventos', t: 'La llave, en vivo', tx: 'El cuadro se arma solo mientras se juega, y a quien tiene la campana le avisa cuando le toca pelear.',
     ej: 'llave', mas: 'Mientras se juega, el bot lee la llave de tu canal y la página la arma cruce por cruce, con la cara de cada uno. A quien tiene la campana le avisa cuando le toca pelear, y al terminar queda con su campeón.', ir: '#/eventos' },
   { ic: 'campana', t: 'Avisos al minuto', tx: 'Cuando anuncia un evento le llega al celular a quien activó la campana, y queda en el calendario de la Liga.',
@@ -65,7 +67,7 @@ function Ejemplo({ i, onCerrar, onIr }) {
           <a href={'/ejemplos/ej-' + q.ej + '.webp'} target="_blank" rel="noopener noreferrer" aria-label="Ver la imagen en grande">
             <img alt={'Ejemplo: ' + q.t} src={'/ejemplos/ej-' + q.ej + '.webp'} />
           </a>
-          <figcaption>EJEMPLO DE LA LIGA DE HOY · TOCALA PARA VERLA EN GRANDE</figcaption>
+          <figcaption>EJEMPLO DE LA LIGA DE HOY · TÓCALA PARA VERLA EN GRANDE</figcaption>
         </figure>
         <p className="ej-tx">{q.mas}</p>
         <footer className="ej-pie">

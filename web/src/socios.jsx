@@ -187,7 +187,7 @@ export function Socios({ liga }) {
             <h3>¿Quieres que tu servidor sea parte?</h3>
             {/* 👥 Dlx, 18/10/2026: «al menos 500 para ser socios (no necesario pero recomendado), mínimo 300» */}
             <p>Para ser socio, tu Discord necesita <b>300 miembros como mínimo</b>; se recomiendan 500.</p>
-            <p>Escribile a <b>@itsdlx</b> en Discord.</p>
+            <p>Escríbele a <b>@itsdlx</b> en Discord.</p>
             {/* el usuario de Discord va como es, en minúsculas: el botón pone todo en mayúsculas */}
             <a className="btn verde" href={DLX} target="_blank" rel="noopener noreferrer"><span>Escribirle a <span className="soc-at">@itsdlx</span> ↗</span></a>
           </div>

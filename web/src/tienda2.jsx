@@ -15,7 +15,7 @@ import { limpio, norm, num, utc } from './liga.js';
 import { Bandera, Cara, DosToques, Ico } from './piezas.jsx';
 import { Prenda, Stickers } from './abajo.jsx';
 import { useCrews } from './crews.js';
-import { useSalon } from './salon.jsx';
+import { useSalon } from './mesawards.jsx';
 import CSS_PAGINA from './css/tienda2.css?inline';
 import { usarCss } from './css.js';
 

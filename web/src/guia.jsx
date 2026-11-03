@@ -52,7 +52,9 @@ export const SEMANA = [
   ['Bonos', 'Tu segundo evento de la temporada vale ×1,5 si lo juegas dentro de los 7 días del primero. En una semana, jugar en 3 servidores da +1.500 y jugar 3 días distintos, +1.000. Nada de esto toca el Competitivo.'],
   ['Clásico', 'Cuando dos se cruzan en un duelo en su tercer evento (o más), es un Clásico: la llave lo marca con cómo venían, y el que gana suma +10 % en ese evento. Cuentan los eventos, no las batallas. Las rivalidades no se borran con la temporada.'],
   ['Misiones', 'Tres por semana, las mismas para todos, que se renuevan el lunes a las 11 AM (hora del este): se cumplen jugando y cada una suma puntos a tu Temporada; las tres juntas, un bono. Están en el Ranking.'],
-  ['Ranking ELO', 'Como el Ranked de Brawl Stars, desde el 2 de noviembre: tu rango sale de tu ELO —tu nivel según a quién le ganas y con quién pierdes en las batallas 1v1— y subes o bajas con él. Hierro, Jade, Zafiro, Rubí, Diamante y Mítico, cada uno con subniveles I, II y III. Se mira cada lunes; la primera vez que llegas a cada rango cobras Puntos de Tienda, y al final de la temporada hay premio según el más alto que alcanzaste. Antes eran las Divisiones: una tabla por semana con los puntos de Temporada, en grupos de 30.'],
+  // ⚠️ «piedra» y no «rango» (02/11/2026): en la Guía el rango es la letra de E a SSS, y las de Hierro a Mítico son las
+  // piedras del ELO, como las llama la página del Ranked (divisiones.jsx)
+  ['Ranking ELO', 'Como el Ranked de Brawl Stars, desde el 2 de noviembre: tu piedra sale de tu ELO —tu nivel según a quién le ganas y con quién pierdes en las batallas 1v1— y subes o bajas con él. Hierro, Jade, Zafiro, Rubí, Diamante y Mítico, cada una con subniveles I, II y III. Se mira cada lunes; la primera vez que llegas a cada piedra cobras Puntos de Tienda, y al final de la temporada hay premio según la más alta que alcanzaste. Antes eran las Divisiones: una tabla por semana con los puntos de Temporada, en grupos de 30.'],
   // ⚠️ decía «cada Tarea de la semana es un nivel», que es de antes de la XP (2.46): se corrigió con lo de «sé más
   // descriptivo» (Dlx, 07/10/2026)
   ['Pase de rapero', 'Para los miembros de Discord Rap Español: 30 niveles por temporada. Las Tareas (diarias, semanales y de toda la temporada) dan XP, y la XP te sube de nivel; cada nivel paga Puntos de Tienda. El primero (dos Tareas diarias o una semanal) da tu tarjeta de Temporada, y otros una insignia, un título o tu nombre en dorado. Están en la página del Pase.'],
@@ -70,7 +72,7 @@ export const PALABRAS = [
   ['Cruce nacional', 'Cruzarte con alguien de tu mismo país en una llave: en un 1 contra 1 o en un triple (cada rival del triple es un cruce). Con alguien de otro país es internacional. La tarjeta de País pide de los dos; un triple no cuenta como duelo para el Ranking Duelos ni el Win%.'],
   ['Win%', 'Duelos ganados sobre duelos jugados.'],
   ['Podio', 'Terminar primero, segundo o tercero en un evento.'],
-  ['Walk-in', 'Entrar a una llave ya empezada, salteando rondas. Cobra menos, porque se saltó camino.'],
+  ['Walk-in', 'Entrar a una llave ya empezada, saltándose rondas. Cobra menos, porque se saltó camino.'],
   ['Revivido', 'Volver a la llave después de caer. Cobra su primer puesto entero y una parte del final.'],
   ['Llave', 'El cuadro de un evento, ronda por ronda. Se abre desde «Ver la llave».'],
   ['Temporada', 'La T1 es la primera. El Competitivo se mide dentro de cada temporada y vuelve a cero en la siguiente.'],
@@ -83,13 +85,13 @@ export const PALABRAS = [
   ['Felicitar', 'En Publicaciones, un toque en un logro (un campeón, un rango, el Most Wanted), uno por persona. Se ve cuántos felicitaron, nunca quiénes, y a quien felicitan le llega un aviso.'],
 ];
 export const PREGUNTAS = [
-  ['¿Cómo pido mi tarjeta?', <>En Discord, con <code>/card</code>. Son dos pasos: verifícate (entrando con Discord en <a href="#/cuenta">Mi cuenta</a>) y se desbloquea tu Servidor; cumplí tu primera Tarea del <a href="#/pase">Pase de rapero</a> y se desbloquea tu Temporada. La Competitiva y la de País piden además su requisito, y <code>/verificar</code> te dice qué te falta.</>],
+  ['¿Cómo pido mi tarjeta?', <>En Discord, con <code>/card</code>. Son dos pasos: verifícate (entrando con Discord en <a href="#/cuenta">Mi cuenta</a>) y se desbloquea tu Servidor; cumple tu primera Tarea del <a href="#/pase">Pase de rapero</a> y se desbloquea tu Temporada. La Competitiva y la de País piden además su requisito, y <code>/verificar</code> te dice qué te falta.</>],
   ['¿Cómo aparezco en el ranking?', <>Jugando un evento en un servidor de la Liga. Con una participación ya entras al ranking de Temporada.</>],
   ['¿Cada cuánto se actualiza?', <>Sola, cada media hora. De 3 a 11 de la mañana (hora del este de EE. UU.) corre dos veces.</>],
   ['¿Por qué mi Competitiva está bloqueada?', <>Pide participar en diez eventos de cualquier servidor asociado a la Liga Global, en la temporada, y estar verificado. Hasta entonces la tarjeta sale bloqueada, con cuántos te faltan; tu perfil también lo dice.</>],
   ['¿Cómo cambio mi foto?', <>Con <code>/foto</code> en Discord, una vez por temporada.</>],
   ['¿Cómo me entero de los eventos?', <>Activa los <a href="#/avisos">avisos</a> (o escribe <code>/notify</code> en Discord): te llegan al teléfono o a la compu cuando un servidor anuncia uno. También puedes sumar el calendario de la Liga a tu Google Calendar desde <a href="#/eventos">Eventos</a>.</>],
-  ['¿Mi servidor se puede sumar a la Liga?', <>Sí: escribile a <b>@itsdlx</b> en Discord. Qué gana tu servidor y qué hace el bot, en <a href="#/socios">Socios</a>.</>],
+  ['¿Mi servidor se puede sumar a la Liga?', <>Sí: escríbele a <b>@itsdlx</b> en Discord. Qué gana tu servidor y qué hace el bot, en <a href="#/socios">Socios</a>.</>],
   ['¿Cómo borro mis datos?', <>Escribe <code>/borrar-mis-datos</code> en Discord: te muestra qué se borra y, si confirmas, lo borra al instante. Todo sobre tus datos está en la <a href="privacidad.html">política de privacidad</a>.</>],
 ];
 export const NOMBRE_EV = { '16+': '16 o más', '8-15': '8 a 15', '4-7': '4 a 7' };
@@ -232,7 +234,7 @@ export function Guia({ liga, dc }) {
             </div>
             <ul className="gu-notas">
               <li><b>Por equipos</b>: los puntos del puesto se reparten entre los integrantes.</li>
-              {(P.walkin || []).length ? <li><b>Walk-in</b>: quien entra salteando rondas cobra {P.walkin.map((w, i) => w[1] + ' % con ' + w[0] + (i === P.walkin.length - 1 ? ' o más' : '') + (w[0] === 1 ? ' ronda' : ' rondas')).join(', ')}.</li> : null}
+              {(P.walkin || []).length ? <li><b>Walk-in</b>: quien entra saltándose rondas cobra {P.walkin.map((w, i) => w[1] + ' % con ' + w[0] + (i === P.walkin.length - 1 ? ' o más' : '') + (w[0] === 1 ? ' ronda' : ' rondas')).join(', ')}.</li> : null}
               {P.revivido != null ? <li><b>Revivido</b>: su primer puesto entero y el {P.revivido} % del puesto final.</li> : null}
             </ul>
           </Seccion>

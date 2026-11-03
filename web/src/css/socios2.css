@@ -1,0 +1,149 @@
+/* 🤝 SOCIOS, EL REMAKE (02/11/2026, socios2.jsx, con `?prev=remake`). Todo con `sk-`: las clases del prototipo son
+   globales adentro del shadow root. Las cajas de «lo que gana tu servidor», su ejemplo y las redes de Under Legends son
+   las de socios.css y vivo.css. El color de cada servidor viene en línea (`--c`), del payload */
+
+/* ── la portada: el texto y el muro de logos ── */
+.sk-cab{position:relative;z-index:1;display:grid;gap:22px;padding:24px 16px 26px;color:var(--esc-tinta)}
+.sk-cab-tx{display:grid;justify-items:start;gap:4px;min-width:0}
+.sk-cab-tx .hero-ev{margin:8px 0 6px}
+.sk-cab-tx .hero-p{max-width:52ch}
+.sk-tot{display:flex;flex-wrap:wrap;gap:8px 26px;margin:10px 0 4px}
+.sk-tot div{display:grid;gap:4px}
+.sk-tot dt{font:700 14px/1 "Barlow Condensed",sans-serif;letter-spacing:.06em;color:#A5A5A0}
+.sk-tot dd{margin:0;font:900 30px/1 Archivo,sans-serif;font-stretch:120%;font-variant-numeric:tabular-nums;color:#F6F6F6}
+.sk-acc-h{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
+.sk-muro ol{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:12px 8px;margin:0;padding:0;list-style:none}
+.sk-muro button{display:grid;justify-items:center;gap:5px;width:100%;padding:0;border:0;background:none;color:#F6F6F6;cursor:pointer}
+.sk-muro img{display:block;width:100%;max-width:64px;aspect-ratio:1;object-fit:cover;border:2px solid var(--c);background:#030304;box-shadow:3px 3px 0 var(--c)}
+.sk-muro b{font:700 12px/1 "Barlow Condensed",sans-serif;letter-spacing:.06em}
+.sk-muro button:hover img{border-color:#F6F6F6}
+.sk-muro button:focus-visible{outline:2px solid var(--verde);outline-offset:3px}
+
+/* ── los servidores que ya jugaron: una tarjeta con su número ── */
+.sk-lista{display:grid;gap:14px}
+.sk-soc{position:relative;display:flex;flex-direction:column;gap:14px;min-width:0;padding:16px;border:2px solid var(--linea);background:var(--caja);box-shadow:4px 4px 0 var(--c)}
+/* el orden, grande y en contorno: se lee sin pelearse con el nombre */
+.sk-n{position:absolute;top:12px;right:14px;font:900 36px/1 Archivo,sans-serif;font-stretch:125%;font-variant-numeric:tabular-nums;color:transparent;
+  -webkit-text-stroke:1.5px var(--tinta)}
+.sk-soc-cab{display:flex;align-items:center;gap:14px;min-width:0;padding-right:70px}
+.sk-logo{flex:none;width:64px;height:64px;border-radius:50%;border:3px solid var(--c);object-fit:cover;background:#030304}
+.sk-logo.chico{width:44px;height:44px;border-width:2px}
+.sk-soc-cab h3{margin:0;font:900 22px/1.05 Archivo,sans-serif;font-stretch:115%;text-transform:uppercase;overflow-wrap:anywhere}
+.sk-soc-cab small{font:700 15px/1.3 "Barlow Condensed",sans-serif;letter-spacing:.03em;color:var(--gris)}
+.sk-num{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));margin:0;border:2px solid var(--linea);background:var(--fondo)}
+.sk-num div{display:grid;gap:4px;padding:9px 11px;min-width:0;border-left:1.5px solid var(--suave);border-top:1.5px solid var(--suave)}
+.sk-num div:nth-child(-n+2){border-top:0}
+.sk-num div:nth-child(odd){border-left:0}
+.sk-num dt{font:700 12px/1 "Barlow Condensed",sans-serif;letter-spacing:.07em;color:var(--gris)}
+.sk-num dd{margin:0;font:900 19px/1.05 Archivo,sans-serif;font-stretch:112%;font-variant-numeric:tabular-nums}
+.sk-num dd.sube,.sk-esp-d b.sube{color:#0D7A65}
+.noche .sk-num dd.sube,.noche .sk-esp-d b.sube{color:var(--verde)}
+.sk-medio{display:grid;grid-template-columns:auto minmax(0,1fr);gap:14px;align-items:center}
+.sk-carta-c{display:block;width:72px;height:auto}
+.sk-datos{display:grid;gap:9px;margin:0;padding:0;list-style:none;font:600 14px/1.35 Archivo,sans-serif;min-width:0}
+.sk-datos b{display:block;margin-bottom:4px;font:700 14px/1 "Barlow Condensed",sans-serif;letter-spacing:.06em;color:var(--magenta-tx)}
+/* de noche, el magenta sobre la piel quedaba en 4,2:1 */
+.noche .sk-datos b{color:#F0559A}
+/* lo que se lee y no se ve: el puesto de cada tarjeta, para quien usa lector de pantalla */
+.sk-oculto{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+.sk-acc{display:flex;flex-wrap:wrap;gap:8px;margin-top:auto}
+/* el lugar que sobra con un número impar: invita al que falta */
+.sk-mas{align-items:flex-start;justify-content:center;border-style:dashed;box-shadow:none}
+.sk-mas h3{margin:0;font:900 22px/1.05 Archivo,sans-serif;font-stretch:115%;text-transform:uppercase}
+.sk-mas p{margin:0;max-width:40ch;font:500 14.5px/1.45 Archivo,sans-serif;color:var(--gris)}
+.sk-mas-c{display:grid;place-items:center;width:64px;height:64px;border-radius:50%;border:3px dashed var(--gris);font:900 30px/1 Archivo,sans-serif;color:var(--gris)}
+
+/* ── los que todavía no jugaron: un renglón cada uno ── */
+.sk-espera{display:grid;gap:10px;margin-top:28px}
+.sk-espera-p{margin:0;font:500 14px/1.45 Archivo,sans-serif;color:var(--gris)}
+.sk-espera ul{display:grid;gap:8px;margin:0;padding:0;list-style:none}
+.sk-espera li{display:grid;grid-template-columns:44px minmax(0,1fr) auto auto;grid-template-areas:"logo t d1 d2" "acc acc acc acc";align-items:center;gap:10px 14px;
+  min-width:0;padding:10px 12px;border:1.5px solid var(--suave);border-left:5px solid var(--c);background:var(--caja)}
+.sk-espera li>.sk-logo{grid-area:logo}
+.sk-esp-t{grid-area:t;display:grid;gap:2px;min-width:0}
+.sk-esp-t b{font:900 16px/1.1 Archivo,sans-serif;font-stretch:110%;text-transform:uppercase;overflow-wrap:anywhere}
+.sk-esp-t small{font:700 13.5px/1.2 "Barlow Condensed",sans-serif;letter-spacing:.03em;color:var(--gris)}
+.sk-esp-d{display:grid;justify-items:end;gap:2px}
+.sk-esp-d:nth-of-type(2){grid-area:d1}
+.sk-esp-d:nth-of-type(3){grid-area:d2}
+.sk-esp-d b{font:900 16px/1 Archivo,sans-serif;font-variant-numeric:tabular-nums}
+.sk-esp-d small{font:700 11.5px/1 "Barlow Condensed",sans-serif;letter-spacing:.05em;text-transform:uppercase;color:var(--gris)}
+.sk-esp-acc{grid-area:acc;display:flex;flex-wrap:wrap;gap:8px}
+
+/* ── lo que publican: los videos y el directorio de redes ── */
+.sk-st{margin:22px 0 10px}
+/* en el celular, en una fila que se desliza y la que sigue asoma */
+.pf-vid.sk-vid{display:flex;gap:12px;overflow-x:auto;scroll-snap-type:x mandatory;padding-bottom:6px;scrollbar-width:thin}
+.pf-vid.sk-vid li{flex:0 0 72%;scroll-snap-align:start}
+/* en el celular, un renglón por servidor (la sigla a la izquierda, sus redes a la derecha); desde 640, celdas parejas */
+.sk-redes{display:grid;grid-template-columns:minmax(0,1fr);gap:8px;margin:0;padding:0;list-style:none}
+.sk-redes li{display:grid;grid-template-columns:92px minmax(0,1fr);align-items:center;gap:10px;min-width:0;padding:8px 10px;border:2px solid var(--linea);
+  background:var(--caja);box-shadow:3px 3px 0 var(--c)}
+.sk-redes-sv{display:flex;align-items:center;gap:8px;min-height:44px;color:var(--tinta);font:900 15px/1 Archivo,sans-serif}
+.sk-redes-sv img{width:28px;height:28px;border-radius:50%;object-fit:cover;background:#030304}
+.sk-redes nav{display:flex;flex-wrap:wrap;gap:6px}
+.sk-redes nav a{display:inline-flex;align-items:center;min-height:44px;padding:0 10px;border:1.5px solid var(--linea);color:var(--tinta);
+  font:700 14px/1 "Barlow Condensed",sans-serif;letter-spacing:.04em;text-transform:uppercase}
+.sk-redes nav a:hover{background:var(--fondo)}
+/* el último ocupa lo que sobra de su fila: con siete servidores, uno quedaba solo con un hueco al lado */
+@media (min-width: 640px) and (max-width: 899px){
+  .sk-redes li:last-child:nth-child(3n+1){grid-column:1/-1}
+  .sk-redes li:last-child:nth-child(3n+2){grid-column:span 2}
+}
+@media (min-width: 900px){.app .sk-redes li:last-child{grid-column:span var(--span,1)}}
+
+/* ── patrocinadores ── */
+.sk-pat{display:flex;flex-wrap:wrap;gap:14px;margin:0;padding:0;list-style:none}
+.sk-pat img{display:block;height:56px;width:auto}
+
+/* ── suma tu servidor: los tres pasos, lo que gana y lo que hace el bot ── */
+.sk-sumar-p{margin:0 0 16px;max-width:74ch;font:500 15px/1.5 Archivo,sans-serif;color:#D8D8D4}
+.sk-pasos{display:grid;gap:10px;margin:0 0 8px;padding:0;list-style:none}
+.sk-pasos li{display:grid;grid-template-columns:auto minmax(0,1fr);gap:14px;align-items:start;padding:16px;border:2px solid #3A3A3E;background:var(--caja)}
+.sk-pasos li.cta{border-color:#29B298;box-shadow:4px 4px 0 #29B298}
+.sk-paso-n{font:900 30px/1 Archivo,sans-serif;font-stretch:125%;font-variant-numeric:tabular-nums;color:#29B298}
+.sk-pasos h3{margin:0 0 6px;font:900 17px/1.2 Archivo,sans-serif;font-stretch:112%;text-transform:uppercase}
+.sk-pasos p{margin:0 0 12px;font:500 14.5px/1.45 Archivo,sans-serif;color:#D8D8D4}
+.sk-pasos li:not(.cta) p{margin:0}
+.sk-sumar .soc-feats li{background:var(--caja)}
+.sk-sumar .soc-ul a{display:inline-flex;align-items:center;justify-content:center;min-height:44px}
+.sk-bot{display:grid;gap:12px;margin:22px 0 18px}
+.sk-bot-c{padding:16px;border:2px solid #3A3A3E;background:var(--caja)}
+.sk-bot-c h3{display:flex;align-items:center;gap:8px;margin:0 0 10px;font:900 17px/1.2 Archivo,sans-serif;font-stretch:115%;text-transform:uppercase}
+.sk-bot-c.si{border-color:#29B298}
+.sk-bot-c.si h3 .ico{color:#29B298}
+.sk-bot-c.no{border-color:#E41373}
+.sk-bot-c.no h3 .ico{color:#F0559A}
+.sk-bot-c ul{display:grid;gap:9px;margin:0;padding:0 0 0 18px;font:500 14.5px/1.45 Archivo,sans-serif;color:#D8D8D4}
+.sk-bot-c b{color:#F6F6F6}
+
+@media (max-width: 639px){
+  /* «Tu servidor, acá» llena el lugar que sobra en la compu: en el celular no sobra nada, y ya está el botón de arriba */
+  .sk-lista .sk-mas{display:none}
+}
+@media (max-width: 599px){
+  /* los que esperan: el renglón en dos, los números al lado del nombre */
+  .sk-espera li{grid-template-columns:44px minmax(0,1fr) auto;grid-template-areas:"logo t t" "logo d1 d2" "acc acc acc"}
+  .sk-esp-d{justify-items:start}
+  .sk-n{font-size:30px}
+}
+@media (min-width: 640px){
+  .sk-lista,.sk-espera ul{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .sk-redes{grid-template-columns:repeat(3,minmax(0,1fr))}
+  .sk-redes li{grid-template-columns:minmax(0,1fr);align-content:start;align-items:start;padding:12px}
+}
+@media (min-width: 900px){
+  .app .sk-cab{grid-template-columns:minmax(0,1fr) auto;align-items:center;gap:48px;padding:40px var(--gut) 36px}
+  .app .sk-cab-tx .hero-p{font-size:15px}
+  /* seis por fila: con cuatro, el muro era alto y dejaba un hueco de 416 × 368 al lado del texto */
+  .app .sk-muro ol{grid-template-columns:repeat(6,64px);gap:14px 12px}
+  .app .sk-muro img{max-width:none}
+  .app .sk-num{grid-template-columns:repeat(4,minmax(0,1fr))}
+  .app .sk-num div{border-top:0}
+  .app .sk-num div:nth-child(odd){border-left:1.5px solid var(--suave)}
+  .app .sk-num div:first-child{border-left:0}
+  .app .pf-vid.sk-vid{display:grid;grid-template-columns:repeat(var(--n,5),minmax(0,1fr));overflow:visible;padding-bottom:0}
+  .app .sk-redes{grid-template-columns:repeat(var(--cols,4),minmax(0,1fr))}
+  .app .sk-pasos{grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
+  .app .sk-bot{grid-template-columns:repeat(2,minmax(0,1fr));gap:18px}
+}

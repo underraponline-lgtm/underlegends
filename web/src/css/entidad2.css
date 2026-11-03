@@ -20,7 +20,9 @@
 .ent-redes a{display:inline-flex;align-items:center;min-height:30px;padding:0 8px;border:1.5px solid #3A3A3E;color:#F6F6F6;
   font:700 13px/1 "Barlow Condensed",sans-serif;letter-spacing:.05em;text-transform:uppercase}
 .ent-redes a:hover{border-color:#F6F6F6}
-.ent-acc{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
+/* las acciones van sobre negro: «Pedir entrar» de la crew trae sus notas y botones con los colores de la página clara */
+.ent-acc{--tinta:#F6F6F6;--linea:#F6F6F6;--gris:#B9B9BE;--fondo:#030304;--suave:#2A2A2E;display:flex;flex-wrap:wrap;align-items:flex-start;gap:8px;margin-top:12px}
+.ent-acc .cw-entrar{margin:0}
 .ent-cab>.ent-tx{grid-column:2}
 .ent-num{grid-column:1/-1;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));margin:4px 0 0;border:2px solid #F6F6F6}
 .ent-num div{display:grid;align-content:start;gap:5px;padding:10px 12px;border-left:1.5px solid #3A3A3E;border-top:1.5px solid #3A3A3E;min-width:0}
@@ -47,17 +49,20 @@
 
 /* ── el índice pegado arriba ── */
 .ent-ix{position:sticky;top:0;z-index:20;background:#030304;border-bottom:2px solid #2A2A2C}
-.ent-ix ol{display:flex;gap:6px;margin:0;padding:10px 16px;list-style:none;overflow-x:auto;scrollbar-width:none}
+.ent-ix ol{display:flex;gap:6px;margin:0;padding:8px 16px;list-style:none;overflow-x:auto;scrollbar-width:none}
 .ent-ix ol::-webkit-scrollbar{display:none}
-.ent-ix button{display:inline-flex;align-items:center;gap:8px;min-height:38px;padding:0 11px;border:1.5px solid #3A3A3E;background:transparent;color:#F6F6F6;
+.ent-ix button{display:inline-flex;align-items:center;gap:8px;min-height:44px;padding:0 12px;border:1.5px solid #3A3A3E;background:transparent;color:#F6F6F6;
   font:700 15px/1 "Barlow Condensed",sans-serif;letter-spacing:.03em;text-transform:uppercase;white-space:nowrap;cursor:pointer}
 .ent-ix button em{font:800 12px/1 Archivo,sans-serif;font-style:normal;padding:3px 5px;background:#1E1E21;color:#C9C9CC}
 .ent-ix button.on{background:#F6F6F6;color:#030304;border-color:#F6F6F6}
 .ent-ix button.on em{background:#030304;color:#F6F6F6}
 .ent-ix button:focus-visible{outline:2px solid var(--verde);outline-offset:2px}
-.app .sec[id^="ent-"],#ent-mes{scroll-margin-top:64px}
+.app .sec[id^="ent-"],.app #sv-mes,.app #sv-promos{scroll-margin-top:64px}
+/* el índice va pegado a la portada, y la sección negra que sigue, pegada a él: sin la franja clara del medio */
+.ent-ix+.sec.negra{margin-top:0}
 
 /* ── la gente: el puesto adentro grande, el de la Liga chico ── */
+.ent-gh{display:none}
 .ent-gente{display:grid;gap:0;margin:0;padding:0;list-style:none;border-top:2px solid var(--linea)}
 .ent-gente li{border-bottom:1.5px solid var(--suave)}
 .ent-gente.corta li.extra{display:none}
@@ -66,6 +71,7 @@
 .ent-f:hover{background:var(--caja)}
 .ent-f:focus-visible{outline:2px solid var(--verde);outline-offset:-2px}
 .ent-pos{font:900 18px/1 Archivo,sans-serif;font-stretch:115%;font-variant-numeric:tabular-nums;text-align:center}
+.ent-pos.fc{color:var(--gris)}
 .ent-cara{display:inline-grid;place-items:center;width:36px;height:36px;border-radius:50%;overflow:hidden;background:var(--inv);color:var(--inv-tinta);font:900 14px/1 Archivo,sans-serif}
 .ent-cara img{width:100%;height:100%;object-fit:cover}
 .ent-n{display:grid;gap:3px;min-width:0}
@@ -75,7 +81,7 @@
 .ent-d{display:grid;justify-items:end;gap:2px}
 .ent-d b{font:800 15px/1 Archivo,sans-serif;font-variant-numeric:tabular-nums}
 .ent-d small{font:700 11px/1 "Barlow Condensed",sans-serif;letter-spacing:.06em;color:var(--gris)}
-.ent-mas{margin-top:10px;min-height:42px;padding:0 14px;border:2px solid var(--linea);background:var(--fondo);color:var(--tinta);box-shadow:3px 3px 0 var(--linea);
+.ent-mas{margin-top:10px;min-height:44px;padding:0 14px;border:2px solid var(--linea);background:var(--fondo);color:var(--tinta);box-shadow:3px 3px 0 var(--linea);
   font:800 14px/1 "Barlow Condensed",sans-serif;letter-spacing:.05em;text-transform:uppercase;cursor:pointer}
 .ent-mas:active{transform:translate(3px,3px);box-shadow:none}
 
@@ -86,17 +92,18 @@
 .ent-h small{font:700 13px/1 "Barlow Condensed",sans-serif;color:var(--gris)}
 .ent-nota{margin:0;font:500 14px/1.45 Archivo,sans-serif;color:var(--gris)}
 .ent-esca{display:grid;gap:10px;padding:14px;border:2px solid var(--linea);background:var(--caja)}
-.ent-esca-l{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:4px;margin:0;padding:0 0 22px;list-style:none;position:relative}
-.ent-esca-l li{position:relative}
+.ent-esca-l{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:4px;margin:0;padding:0;list-style:none}
 .ent-esca-l li i{display:block;height:12px;background:var(--suave)}
 .ent-esca-l li.paso i,.ent-esca-l li.aca i{background:var(--c)}
 .ent-esca-l li.aca i{height:18px;margin-top:-3px;box-shadow:0 0 0 2px var(--linea)}
-.ent-esca-l li.sig i{background:repeating-linear-gradient(90deg,var(--c) 0 3px,transparent 3px 6px);border:1.5px solid var(--c)}
-.ent-esca-l li b{position:absolute;top:20px;left:0;white-space:nowrap;font:800 12px/1 Archivo,sans-serif;letter-spacing:.04em;text-transform:uppercase}
-.ent-esca-l li.sig b{left:auto;right:0;color:var(--gris)}
-.ent-esca-t{margin:0;font:500 15px/1.4 Archivo,sans-serif}
-.ent-esca-b{height:10px;border:1.5px solid var(--linea);background:var(--fondo)}
-.ent-esca-b i{display:block;height:100%}
+/* el siguiente se llena con lo de esta semana */
+.ent-esca-l li.sig i{border:1.5px solid var(--c);background:var(--fondo)}
+.ent-esca-l li.sig i u{display:block;height:100%;background:var(--c)}
+.ent-esca-n{display:flex;flex-wrap:wrap;align-items:flex-start;justify-content:space-between;gap:6px 14px}
+.ent-esca-n span{display:grid;gap:3px}
+.ent-esca-n .sig{justify-items:end;text-align:right}
+.ent-esca-n b{font:900 14px/1 Archivo,sans-serif;letter-spacing:.04em;text-transform:uppercase}
+.ent-esca-n small{font:600 12.5px/1.2 Archivo,sans-serif;color:var(--gris);font-variant-numeric:tabular-nums}
 .ent-sin{display:grid;gap:8px;padding:12px;border:2px dashed var(--suave)}
 .ent-sin-t{font:700 13px/1 "Barlow Condensed",sans-serif;letter-spacing:.05em;text-transform:uppercase;color:var(--gris)}
 .ent-sin ul{display:flex;flex-wrap:wrap;gap:10px 12px;margin:0;padding:0;list-style:none}
@@ -123,14 +130,25 @@
 .ent-notas{margin:0}
 
 @media (max-width: 599px){
+  /* el emblema arriba, con el nombre: centrado quedaba flotando al lado de las redes y los botones */
+  .ent-cab{align-items:start}
   /* el emblema más chico y el nombre a su medida: «FOLLOMBIA» se partía a la mitad de la palabra */
   .ent-emb.cuadrado,.ent-emb.redondo{width:72px;height:72px}
   .ent-emb.bandera{width:84px}
   .ent-tx .hero-ev{font-size:clamp(22px,7vw,30px);overflow-wrap:normal;hyphens:manual}
+  /* lo que se toca, de 40 px o más */
+  .ent-redes a{min-height:40px;padding:0 10px}
+  .ent-toque{display:inline-block;padding:10px 0;margin:-10px 0}
+  /* «VENEZUELA» y «NICARAGUA» entran enteros en una celda de 115 px: a 14 px estirados se partían en «VENEZUEL / A» */
+  .ent-otros b{font-size:12px;font-stretch:100%}
 }
 @media (max-width: 420px){
   .ent-f{grid-template-columns:28px 34px minmax(0,1fr) 38px 64px;gap:6px}
   .ent-d.ev{display:none}
+}
+@media (max-width: 899px){
+  /* Lo último: seis en el celular, como antes */
+  .ent-notas li:nth-child(n+7){display:none}
 }
 @media (min-width: 560px){
   .ent-otros{grid-template-columns:repeat(4,minmax(0,1fr))}
@@ -142,15 +160,28 @@
   .app .ent-emb.cuadrado,.app .ent-emb.redondo{width:132px;height:132px}
   .app .ent-emb.bandera{width:168px}
   .app .ent-semana{padding:0 var(--gut) 24px}
-  .app .ent-ix ol{padding:10px var(--gut)}
-  /* la lista larga, en dos columnas que se leen de arriba abajo */
+  .app .ent-ix ol{padding:8px var(--gut)}
+  /* la lista larga, en dos columnas que se leen de arriba abajo, con la cabecera de cada columna una sola vez */
+  .app .ent-gh{display:grid;column-gap:36px;padding:0 0 6px}
+  .app .ent-gh.dos{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .app .ent-gh>div{display:grid;grid-template-columns:34px 36px minmax(0,1fr) 44px 74px 34px;gap:8px;padding:0 2px;
+    font:700 11.5px/1 "Barlow Condensed",sans-serif;letter-spacing:.07em;text-transform:uppercase;color:var(--gris)}
+  .app .ent-gh>div span:first-child{text-align:center}
+  .app .ent-gh>div span:nth-child(n+4){text-align:right}
+  .app .ent-d small{display:none}
   .app .ent-gente.dos{grid-auto-flow:column;grid-template-rows:repeat(var(--filas),auto);grid-template-columns:repeat(2,minmax(0,1fr));column-gap:36px}
   .app .ent-gente.corta li.extra{display:block}
   .app .ent-gente.corta+.ent-mas{display:none}
   .app .ent-dos{grid-template-columns:minmax(0,1fr) minmax(0,1.15fr);gap:36px;align-items:start}
   .app .ent-dos .ent-gente.dos{grid-auto-flow:row;grid-template-columns:minmax(0,1fr)}
-  .app .ent-otros{grid-template-columns:repeat(6,minmax(0,1fr))}
+  .app .ent-dos .ent-gh.dos{grid-template-columns:minmax(0,1fr)}
+  .app .ent-dos .ent-gh.dos>div+div{display:none}
+  /* «los otros» en filas parejas: la cuenta de columnas viene del largo (`--cols`); con dos o tres, del ancho */
+  .app .ent-otros{grid-template-columns:repeat(var(--cols,6),minmax(0,1fr))}
+  .app .ent-otros.pocos{grid-template-columns:repeat(auto-fill,minmax(160px,200px))}
   .app .ent-notas{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));column-gap:36px}
+  /* las dos columnas de Lo último arrancan parejas: la raya de arriba es sólo de la primera de cada una */
+  .app .ent-notas li:nth-child(2){border-top:0}
   /* los buscados, en filas parejas (lo de #sv-buscados de vivo.css, con el id nuevo) */
   .app #ent-buscados .mw-rail{grid-auto-flow:row;grid-template-columns:repeat(auto-fit,minmax(184px,320px));overflow:visible}
   .app #ent-buscados .mw-rail:has(> :nth-child(3)){grid-template-columns:repeat(var(--cols,6),minmax(0,1fr))}

@@ -693,9 +693,28 @@ def _sin_did(m):
     return out
 
 
-def para_web(d=None, ahora=None):
+def figuras_semana(mu=None):
+    """🥇 La figura y la revelación de cada semana cerrada, de la más nueva a la más vieja: `[[fin, figura, pts, revelación,
+    pts], …]` (`''` y `0` la semana que no hubo). Para «Figuras y revelaciones» del Salón.
+
+    ⚠️ SALEN DE LOS PREMIOS DE LA SEMANA (`datos/multiplicadores.json`) Y NO DE LAS INSIGNIAS, que se guardan una vez por
+    persona: armado con las insignias, el Salón nuevo decía que la semana del 02/11/2026 no había tenido figura, y era
+    Makmah, que ya la tenía del 26/10 (la crítica de la tanda 2 del remake)."""
+    if mu is None:
+        import multiplicadores as MU
+        mu = MU.leer()
+    out = []
+    for s in reversed(mu.get('semanas') or []):
+        ps = s.get('premios_semana') or {}
+        f, r = ps.get('figura') or ['', 0], ps.get('revelacion') or ['', 0]
+        if f[0] or r[0]:
+            out.append([s.get('fin') or '', f[0], int(f[1] or 0), r[0], int(r[1] or 0)])
+    return out
+
+
+def para_web(d=None, ahora=None, mu=None):
     """Lo que lee la página en el Salón de la fama (`/api/salon`): las categorías, el mes que se vota o se nomina, cómo
-    va el mes en curso y los ganadores de antes."""
+    va el mes en curso, los ganadores de antes y las figuras de cada semana (`figuras_semana()`)."""
     d = leer() if d is None else d
     ahora = ahora or dt.datetime.now(dt.timezone.utc)
     meses = d.get('meses') or {}
@@ -712,7 +731,7 @@ def para_web(d=None, ahora=None):
     # `cats`: [clave, nombre, de qué, 0 a la vista · 1 detrás de «Ver las demás nominaciones» · 2 en el bloque del staff]
     return {'t': _iso(ahora), 'cats': [list(c) + [0] for c in CATS] + [list(c) + [2 if c[0] in MO.STAFF else 1] for c in OTRAS],
             'cats_sv': [list(c) for c in CATS_SV], 'premio': dict(PREMIO, otra=MO.PREMIO_OTRA), 'premio_sv': dict(PREMIO_SV),
-            'abierto': abierto, 'vivo': viv, 'hist': hist[:24]}
+            'abierto': abierto, 'vivo': viv, 'hist': hist[:24], 'semanas': figuras_semana(mu)}
 
 
 # ── self-check ───────────────────────────────────────────────────────────────────────────────────────────────────────
@@ -861,6 +880,13 @@ def _self_check():
            'si el Dashboard no contesta, lo que Dlx sacó sigue afuera', str(r5['meses']['2026-10']['cats']['rapero']['nom']))
     finally:
         SALIDA = viejo
+    # 🥇 las figuras salen de los premios de cada semana: quien repite, sale las dos veces (con las insignias, no)
+    fs = figuras_semana({'semanas': [
+        {'fin': '2026-10-26T15:00:00+00:00', 'premios_semana': {'figura': ['Makmah', 90000], 'revelacion': ['Matuk', 20000]}},
+        {'fin': '2026-11-02T16:00:00+00:00', 'premios_semana': {'figura': ['Makmah', 175125], 'revelacion': ['Ezze', 30000]}},
+        {'fin': '2026-11-09T16:00:00+00:00'}]})
+    ok([f[1] for f in fs] == ['Makmah', 'Makmah'] and fs[0][0].startswith('2026-11-02') and fs[0][3] == 'Ezze',
+       'las figuras de cada semana, de la más nueva a la más vieja, con quien repite', str(fs))
     print('\n   %s\n' % ('todo bien' if not mal else '🔴 %d mal' % mal))
     return mal
 

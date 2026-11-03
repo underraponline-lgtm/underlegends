@@ -232,7 +232,7 @@ export function Tienda({ liga, dc }) {
         <div className="ti-dos"><div>
         <h3 className="ti-h">Las cabezas de esta semana<small>{top.length || ''}</small></h3>
         {top.length ? <ul className="ti-lista">{lista(top, 'top')}</ul>
-          : <p className="ti-nota">Esta semana todavía nadie tiene precio. Busca a alguien y ponele el primero.</p>}
+          : <p className="ti-nota">Esta semana todavía nadie tiene precio. Busca a alguien y ponle el primero.</p>}
         </div><div>
         <h3 className="ti-h">Ponerle precio a alguien</h3>
         <input type="search" className="ti-busca" value={q} onChange={(e) => setQ(e.target.value)} placeholder="Busca a quién"

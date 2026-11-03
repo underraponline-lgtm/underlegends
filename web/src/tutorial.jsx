@@ -144,8 +144,8 @@ function Recorrido({ liga, dc, onCerrar }) {
 // arriba eran dos bloques diciendo lo mismo. La nota dice lo que no se ve a simple vista
 const NOTAS = {
   publicaciones: 'Toca 👏 en un logro para felicitar: a quien felicitas le llega el aviso, y se ve cuántos, nunca quiénes.',
-  tienda: 'Ponele precio a la cabeza de alguien con tus Puntos de Tienda: el primero que le gane en un evento se los lleva. Si nadie lo caza en la semana, vuelven a ti.',
-  socios: '¿Tu servidor no está? Escribile a @itsdlx en Discord.',
+  tienda: 'Ponle precio a la cabeza de alguien con tus Puntos de Tienda: el primero que le gane en un evento se los lleva. Si nadie lo caza en la semana, vuelven a ti.',
+  socios: '¿Tu servidor no está? Escríbele a @itsdlx en Discord.',
   r: 'Con «Seguir» te avisa cuando gana algo, y con el botón de compartir mandas su perfil.',
   llave: 'Si se está jugando, se actualiza sola: déjala abierta y mira quién pasa.',
   sv: 'En Eventos, en «Cuándo suele jugar», puedes seguir a sus organizadores: te avisa cuando anuncian.',
