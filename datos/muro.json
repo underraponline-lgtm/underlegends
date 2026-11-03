@@ -219,14 +219,6 @@
 "rg": "B",
 "c": []
 },
-"walker": {
-"rg": "A",
-"c": [
-"competitivo",
-"servidor",
-"temporada"
-]
-},
 "hassan": {
 "rg": "A",
 "c": []
@@ -236,6 +228,14 @@
 "c": [
 "competitivo",
 "pais",
+"servidor",
+"temporada"
+]
+},
+"walker": {
+"rg": "A",
+"c": [
+"competitivo",
 "servidor",
 "temporada"
 ]
@@ -992,14 +992,6 @@
 "temporada"
 ]
 },
-"agustin51k": {
-"rg": "",
-"c": [
-"pais",
-"servidor",
-"temporada"
-]
-},
 "andy": {
 "rg": "",
 "c": [
@@ -1060,6 +1052,14 @@
 "ortiz": {
 "rg": "",
 "c": []
+},
+"agustin51k": {
+"rg": "",
+"c": [
+"pais",
+"servidor",
+"temporada"
+]
 },
 "doc": {
 "rg": "",

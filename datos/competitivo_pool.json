@@ -146,10 +146,10 @@
   "tg_c": {
    "bestia": 3,
    "clasico": 4,
-   "dg": 28,
+   "dg": 29,
    "fg": 5,
    "fp": 4,
-   "riv": 29,
+   "riv": 30,
    "venc": 24,
    "vengo": 1
   },
@@ -412,7 +412,7 @@
   "arc_sv": 97,
   "tg_c": {
    "bestia": 3,
-   "clasico": 3,
+   "clasico": 4,
    "dg": 34,
    "fg": 5,
    "fp": 2,
@@ -978,7 +978,7 @@
   "Dm": 43,
   "T": 23,
   "V": 23,
-  "wr": "59.3%",
+  "wr": "60.7%",
   "rch_act": 0,
   "rch_max": 4,
   "duel_v": 12,
@@ -1163,12 +1163,12 @@
   "tg_c": {
    "bestia": 3,
    "clasico": 4,
-   "dg": 53,
+   "dg": 56,
    "fg": 5,
    "fp": 13,
-   "mata": 3,
-   "riv": 76,
-   "venc": 44,
+   "mata": 4,
+   "riv": 79,
+   "venc": 47,
    "vengo": 5
   },
   "tg_p": {
@@ -5185,14 +5185,14 @@
   "tg_c": {
    "bestia": 1,
    "clasico": 1,
-   "dg": 2,
+   "dg": 3,
    "fp": 1,
-   "riv": 7,
-   "venc": 2
+   "riv": 9,
+   "venc": 3
   },
   "tg_p": {
-   "paises": 5,
-   "paisesg": 2
+   "paises": 6,
+   "paisesg": 3
   }
  },
  {
@@ -7500,12 +7500,12 @@
   "tg_c": {
    "bestia": 1,
    "clasico": 1,
-   "dg": 1,
-   "riv": 3,
-   "venc": 1
+   "dg": 2,
+   "riv": 5,
+   "venc": 2
   },
   "tg_p": {
-   "paises": 2,
+   "paises": 3,
    "paisesg": 1
   }
  },
@@ -11590,7 +11590,7 @@
   "arc_sv": 42,
   "tg_c": {
    "clasico": 1,
-   "riv": 5
+   "riv": 6
   },
   "tg_p": {
    "paises": 4
@@ -13878,7 +13878,14 @@
   "pos_pais": "21/28",
   "arc_pais": 29,
   "pos_sv": "113/161",
-  "arc_sv": 30
+  "arc_sv": 30,
+  "tg_c": {
+   "clasico": 1,
+   "riv": 1
+  },
+  "tg_p": {
+   "paises": 1
+  }
  },
  {
   "full": "ikonoxx",
