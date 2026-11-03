@@ -1,65 +1,65 @@
 {
  "v": 1,
- "cuando": "2026-11-03T23:26:11Z",
+ "cuando": "2026-11-03T23:40:23Z",
  "trabajo": "dibujar",
  "codigo": 0,
- "dur_s": 1222.8,
+ "dur_s": 816.4,
  "pasos": [
   {
    "n": "2f",
    "que": "las fotos que faltan, de Discord a R2",
    "ok": true,
-   "s": 6.4
+   "s": 7.1
   },
   {
    "n": "2f2",
    "que": "los TAGs elegidos",
    "ok": true,
-   "s": 1.0
+   "s": 0.8
   },
   {
    "n": "3",
    "que": "qué cambió",
    "ok": true,
-   "s": 9.2
+   "s": 10.1
   },
   {
    "n": "4",
    "que": "las caras, desde R2",
    "ok": true,
-   "s": 34.3
+   "s": 20.7
   },
   {
    "n": "5",
-   "que": "tanda 1 de 5 · 40 persona(s)",
+   "que": "tanda 1 de 3 · 40 persona(s)",
    "ok": false,
-   "s": 1098.6
+   "s": 710.3
   },
   {
    "n": "5b",
    "que": "las Bloqueadas",
    "ok": true,
-   "s": 9.8
+   "s": 6.4
   },
   {
    "n": "6",
    "que": "refrescar KV",
    "ok": true,
-   "s": 62.0
+   "s": 59.4
   }
  ],
  "fallas": [
   {
    "paso": "5",
-   "que": "03_Servidor/generar.py .SosaATR"
+   "que": "03_Servidor/generar.py AGUSTÍN51K"
   },
   {
    "paso": "5",
-   "que": "03_Servidor/generar.py Liam"
+   "que": "03_Servidor/generar.py Makmah"
   },
   {
    "paso": "5",
-   "que": "03_Servidor/generar.py Pipe"
+   "que": "03_Servidor/generar.py Verc"
   }
  ],
  "ultimo_evento": {
@@ -70,24 +70,24 @@
  },
  "cuotas": {
   "kv": {
-   "write": 405,
-   "read": 53211
+   "write": 424,
+   "read": 54759
   },
   "objeto": {
-   "leidas": 4419619,
-   "escritas": 20353,
-   "pedidos": 10787
+   "leidas": 4470462,
+   "escritas": 20517,
+   "pedidos": 10872
   },
   "worker": {
-   "pedidos": 9990,
+   "pedidos": 9962,
    "errores": 0,
-   "sub": 11232,
+   "sub": 11207,
    "cortados": 0,
    "p50_ms": 1.17,
-   "p99_ms": 15.03,
+   "p99_ms": 15.06,
    "cpu": {
-    "total": 21246,
-    "objeto_10": 1885,
+    "total": 21187,
+    "objeto_10": 1882,
     "worker_10": 321
    }
   },
