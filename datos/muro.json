@@ -390,7 +390,11 @@
 },
 "andres": {
 "rg": "B",
-"c": []
+"c": [
+"competitivo",
+"pais",
+"servidor"
+]
 },
 "trot": {
 "rg": "D",
@@ -2686,30 +2690,6 @@
 }
 },
 "cambios": [
-{
-"tipo": "tarjeta",
-"t": "2026-10-04T19:07:21Z",
-"quien": [
-"Zekha"
-],
-"carta": "temporada"
-},
-{
-"tipo": "tarjeta",
-"t": "2026-10-04T19:07:21Z",
-"quien": [
-"Calíz"
-],
-"carta": "servidor"
-},
-{
-"tipo": "tarjeta",
-"t": "2026-10-04T19:07:21Z",
-"quien": [
-"Calíz"
-],
-"carta": "temporada"
-},
 {
 "tipo": "tarjeta",
 "t": "2026-10-04T19:07:21Z",
@@ -6051,6 +6031,30 @@
 ],
 "rg": "A",
 "primero": false
+},
+{
+"tipo": "tarjeta",
+"t": "2026-11-03T06:42:16Z",
+"quien": [
+"Andres"
+],
+"carta": "competitivo"
+},
+{
+"tipo": "tarjeta",
+"t": "2026-11-03T06:42:16Z",
+"quien": [
+"Andres"
+],
+"carta": "pais"
+},
+{
+"tipo": "tarjeta",
+"t": "2026-11-03T06:42:16Z",
+"quien": [
+"Andres"
+],
+"carta": "servidor"
 }
 ]
 }
