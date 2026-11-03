@@ -769,8 +769,8 @@
   },
   "snake-generations": {
    "arama": [
-    "1383fa20dc",
-    49,
+    "34de533267",
+    48,
     10
    ],
    "deluxe": [
@@ -789,9 +789,9 @@
     9
    ],
    "kyss": [
-    "b01d79f064",
+    "c0390bc7a3",
     61,
-    6
+    7
    ],
    "liberia": [
     "5cef5388c1",
@@ -814,19 +814,19 @@
     1
    ],
    "rubik": [
-    "e8f8dedbbb",
+    "016d029d43",
     69,
-    5
+    6
    ],
    "six": [
-    "6bfe7ccda5",
-    60,
-    7
+    "e55d89ab0e",
+    72,
+    4
    ],
    "zeta": [
-    "31c196ad8f",
+    "259cfe381e",
     73,
-    4
+    5
    ]
   },
   "snake-new-chapter": {

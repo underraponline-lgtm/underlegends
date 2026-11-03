@@ -1,5 +1,5 @@
 {
- "cuando": "2026-11-03T01:55:19+00:00",
+ "cuando": "2026-11-03T02:25:42+00:00",
  "anuncios": [
   {
    "nombre": "¡SE LLEGÓ LA GRAN NOCHE!",
@@ -376,6 +376,35 @@
    "autor": "Geronimo",
    "staff_cuentas": {},
    "categoria_id": "1497457390637809837"
+  },
+  {
+   "nombre": "qcyo rapeen 9",
+   "servidor": "FFA",
+   "canal": "✦🏆—eventos",
+   "msg_id": "1567000630269186131",
+   "cuando": "2026-11-03T02:21:03",
+   "canal_id": "1487206325602484295",
+   "guild_id": "1468472442925092958",
+   "organizador": "@nachonc_",
+   "orgs": [
+    {
+     "n": "nachonc_",
+     "id": ""
+    }
+   ],
+   "autor_h": "d83234c3da26ac85",
+   "cupos_texto": "",
+   "inscriptos": null,
+   "cupo_total": null,
+   "rango": "bronce",
+   "modalidad": "MULTIVERSE",
+   "horario": "en 30",
+   "fecha": "",
+   "premios": "aura",
+   "staff": {},
+   "autor": "Nc",
+   "staff_cuentas": {},
+   "categoria_id": "1468478330826260500"
   },
   {
    "nombre": "Rap para Raperos #3",
@@ -1200,40 +1229,6 @@
    "rango": "PLATA 3",
    "modalidad": "",
    "horario": "EN 5 MINUTOS",
-   "fecha": "",
-   "premios": "RESPETO",
-   "staff": {
-    "jurado": [
-     "LEWITO"
-    ],
-    "host": [
-     "LEWITO"
-    ],
-    "dj": [
-     "LEWITO"
-    ]
-   },
-   "autor": "Lewito",
-   "staff_cuentas": {},
-   "categoria_id": "1468478330826260500"
-  },
-  {
-   "nombre": "DESGRACIAS EN TOKYO VOL 29 PANDILLAS",
-   "servidor": "FFA",
-   "canal": "✦🏆—eventos",
-   "msg_id": "1562261659781701702",
-   "cuando": "2026-10-21T00:30:05",
-   "canal_id": "1487206325602484295",
-   "guild_id": "1468472442925092958",
-   "organizador": "LEWITO",
-   "orgs": [],
-   "autor_h": "211322958af20ae2",
-   "cupos_texto": "24",
-   "inscriptos": null,
-   "cupo_total": null,
-   "rango": "PLATA 3",
-   "modalidad": ": PANDILLAS",
-   "horario": "EN 1 HORA",
    "fecha": "",
    "premios": "RESPETO",
    "staff": {
@@ -5911,6 +5906,87 @@
   }
  ],
  "inscripciones": [
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "mats🇺🇾",
+   "quien": "matttt.15",
+   "discord_id": "597240876573392946",
+   "msg_id": "1567000900176838746",
+   "cuando": "2026-11-03T02:22:08"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "Lvel 🇻🇪",
+   "quien": "soycoma__42587",
+   "discord_id": "1241407042195816459",
+   "msg_id": "1567000896036933713",
+   "cuando": "2026-11-03T02:22:07"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "Yor 🇪🇸",
+   "quien": "yor1312",
+   "discord_id": "855875724774735922",
+   "msg_id": "1567000846103875585",
+   "cuando": "2026-11-03T02:21:55"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "Ezze 🇦🇷",
+   "quien": "ezze_2003",
+   "discord_id": "1564832348766343232",
+   "msg_id": "1567000828546515029",
+   "cuando": "2026-11-03T02:21:50"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "Joba 🇨🇱",
+   "quien": "jobains",
+   "discord_id": "1095893775383023708",
+   "msg_id": "1567000809928130592",
+   "cuando": "2026-11-03T02:21:46"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "pelota del 10 🇵🇾",
+   "quien": "pelotadel_10_68491",
+   "discord_id": "1373340031413911624",
+   "msg_id": "1567000790734733395",
+   "cuando": "2026-11-03T02:21:41"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "Roda 🇵🇦",
+   "quien": "rodaaa_mc",
+   "discord_id": "1492592375812587551",
+   "msg_id": "1567000778336374916",
+   "cuando": "2026-11-03T02:21:39"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "Akuseru 🇦🇷",
+   "quien": "akuseru_dionisio",
+   "discord_id": "1564834243039731832",
+   "msg_id": "1567000756979109909",
+   "cuando": "2026-11-03T02:21:33"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "Calíz 🇲🇽",
+   "quien": "caliz123_",
+   "discord_id": "1546111597343146044",
+   "msg_id": "1567000745738502314",
+   "cuando": "2026-11-03T02:21:31"
+  },
   {
    "servidor": "LKR",
    "canal": "⟡・INSCRIPCIONES",
@@ -41829,87 +41905,6 @@
    "discord_id": "745324578347286528",
    "msg_id": "1555067026442158133",
    "cuando": "2026-10-01T04:01:10"
-  },
-  {
-   "servidor": "FFA",
-   "canal": "✦📝—inscripciones",
-   "texto": "Jupiter 🇲🇽",
-   "quien": "jupiter2417tj",
-   "discord_id": "1413305434881658960",
-   "msg_id": "1555067012093575219",
-   "cuando": "2026-10-01T04:01:07"
-  },
-  {
-   "servidor": "FFA",
-   "canal": "✦📝—inscripciones",
-   "texto": "masino",
-   "quien": "martinv444",
-   "discord_id": "1237192883535216715",
-   "msg_id": "1555042651634663445",
-   "cuando": "2026-10-01T02:24:19"
-  },
-  {
-   "servidor": "FFA",
-   "canal": "✦📝—inscripciones",
-   "texto": "Cinexfilo 🇻🇪",
-   "quien": "cinexfilosanity",
-   "discord_id": "781971857519804417",
-   "msg_id": "1555021416112332806",
-   "cuando": "2026-10-01T00:59:56"
-  },
-  {
-   "servidor": "FFA",
-   "canal": "✦📝—inscripciones",
-   "texto": "Yo 🇨🇱",
-   "quien": "cronoxzito",
-   "discord_id": "1487658663148785734",
-   "msg_id": "1555021072338911263",
-   "cuando": "2026-10-01T00:58:34"
-  },
-  {
-   "servidor": "FFA",
-   "canal": "✦📝—inscripciones",
-   "texto": "Nc",
-   "quien": "nachonc_",
-   "discord_id": "1523082259870257315",
-   "msg_id": "1555021033612906537",
-   "cuando": "2026-10-01T00:58:25"
-  },
-  {
-   "servidor": "FFA",
-   "canal": "✦📝—inscripciones",
-   "texto": "snow",
-   "quien": "snowzzzzzzzz",
-   "discord_id": "1097714486795849748",
-   "msg_id": "1555020926117220435",
-   "cuando": "2026-10-01T00:57:59"
-  },
-  {
-   "servidor": "FFA",
-   "canal": "✦📝—inscripciones",
-   "texto": "@everyone \n\n# TEAM PARA EL EZE 🇦🇷",
-   "quien": "l3wito",
-   "discord_id": "1086485696572817418",
-   "msg_id": "1555020899445645453",
-   "cuando": "2026-10-01T00:57:53"
-  },
-  {
-   "servidor": "FFA",
-   "canal": "✦📝—inscripciones",
-   "texto": "Molusco🇦🇷 + gian 🇦🇷",
-   "quien": "moluscoanvriento_79058",
-   "discord_id": "1363285354442133778",
-   "msg_id": "1554998550755151875",
-   "cuando": "2026-09-30T23:29:04"
-  },
-  {
-   "servidor": "FFA",
-   "canal": "✦📝—inscripciones",
-   "texto": "Marto 🇦🇷 con <@742442337028014090>",
-   "quien": "legski2",
-   "discord_id": "1164262480067952772",
-   "msg_id": "1554997107444944977",
-   "cuando": "2026-09-30T23:23:20"
   }
  ]
 }
