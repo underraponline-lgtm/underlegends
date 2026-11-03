@@ -4646,13 +4646,16 @@ export async function rutaAvisos(req, env, ruta) {
     return elObjeto(env).fetch('https://avisos/tutorial', { method: 'POST', body: JSON.stringify({ ev }),
       headers: { 'content-type': 'application/json' } });
   }
-  // 📊 qué sección se abrió: sólo el nombre, de una lista cerrada (`SECC_EV`)
+  // 📊 qué sección se abrió: sólo el nombre, de una lista cerrada (`SECC_EV`), o la página de un servidor (`sv-FFA`),
+  // que decide el objeto con los que mide el ciclo (`seccion()`). 🔴 ESTA PUERTA FRENABA LAS `sv-`: el objeto las aprendió
+  // el 19/10/2026 con el panel de los socios y la puerta siguió con la lista cerrada, así que hasta el 02/11 ninguna visita
+  // a la página de un servidor llegó a «Visitas a su página». No se notaba: el proxy de Pages contesta «ok» al repetido
   if (ruta === '/avisos/seccion') {
     const crudo = await req.text();
     let d = null;
     try { d = crudo.length <= 200 ? JSON.parse(crudo) : null; } catch (e) { d = null; }
     const ev = d && typeof d.ev === 'string' ? d.ev : '';
-    if (!SECC_EV.has(ev)) return json({ error: 'faltan datos' }, 400);
+    if (!SECC_EV.has(ev) && !/^sv-[A-Z]{2,6}$/.test(ev)) return json({ error: 'faltan datos' }, 400);
     return elObjeto(env).fetch('https://avisos/seccion', { method: 'POST', body: JSON.stringify({ ev }),
       headers: { 'content-type': 'application/json' } });
   }
@@ -12841,8 +12844,9 @@ export class Avisos {
           quien, cfg.temp, sem, x.id, ahora).rowsWritten || 0;
       }
     };
-    // las diarias de hoy, y las de ayer por si algo de ayer llegó después de la medianoche
-    for (const dia of [diaET(ahora - DIA_MS), diaET(ahora)]) {
+    // las diarias de hoy, y las de ayer por si algo de ayer llegó después de la medianoche. «Ayer» por calendario: el día
+    // que vuelve el horario de invierno tiene 25 h, y restando 24 h a las 11 PM daba hoy otra vez
+    for (const dia of [masDias(diaET(ahora), -1), diaET(ahora)]) {
       if (!this.paseDiaVale(dia, P)) continue;
       const lista = paseDelDia(cfg, dia), ya = this.paseYa(quien, cfg.temp, 'd:' + dia);
       if (lista.every((t) => ya.has(t[0]))) continue;
@@ -13952,7 +13956,8 @@ export class Avisos {
     }
     const dias = [];
     for (let i = 13; i >= 0; i--) {
-      const dia = diaET(ahora - i * DIA_MS);
+      // por calendario: restando horas, el 1/11 (25 h) salía dos veces entre las 11 PM y la medianoche
+      const dia = masDias(diaET(ahora), -i);
       const c = (por) => this.sql.exec('SELECT COUNT(*) AS n FROM uso WHERE dia = ? AND por = ?', dia, por).toArray()[0].n;
       const v = this.sql.exec('SELECT n FROM visitas WHERE dia = ?', dia).toArray()[0];
       dias.push({ dia, bot: c('bot'), web: c('web'), visitas: v ? v.n : 0 });

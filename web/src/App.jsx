@@ -136,8 +136,8 @@ const Competencias = lazy(() => import('./competencias.jsx').then((m) => ({ defa
 const PaginaInventario = lazy(() => import('./tags_inv.jsx').then((m) => ({ default: m.PaginaInventario })));
 // 👥 las Crews, su propia sección desde el 19/10/2026 (eran una pestaña del Ranking): ver crewspagina.jsx
 const CrewsPagina = lazy(() => import('./crewspagina.jsx').then((m) => ({ default: m.CrewsPagina })));
-// 📊 el panel de los socios Tier 1 y 2, para el dueño de cada servidor (19/10/2026): ver socio.jsx
-const PanelSocio = lazy(() => import('./socio.jsx').then((m) => ({ default: m.PanelSocio })));
+// 📊 el panel de los socios, para el dueño de cada servidor (19/10/2026; el remake del 02/11, en socio2.jsx)
+const PanelSocio = lazy(() => import('./socio2.jsx').then((m) => ({ default: m.PanelSocio })));
 // ⚡ lo que no hace falta para abrir el Inicio va aparte (la pasada del 04/10/2026: el paquete principal pasaba de los
 // 130 KB comprimidos que se puso el remake): Mi cuenta, el changelog y la página de cada servidor
 const Cuenta = lazy(() => import('./cuenta.jsx').then((m) => ({ default: m.Cuenta })));
@@ -164,7 +164,8 @@ function AvisoWeb({ aviso }) {
     </div>
   );
 }
-const PaginaVerificar = lazy(() => import('./cuenta.jsx').then((m) => ({ default: m.PaginaVerificar })));
+// ✅ verificarse, en su página (el remake del 02/11/2026: verificar.jsx, con el trámite de cuenta.jsx adentro)
+const PaginaVerificar = lazy(() => import('./verificar.jsx').then((m) => ({ default: m.PaginaVerificar })));
 const Cambios = lazy(() => import('./cambios2.jsx').then((m) => ({ default: m.Cambios })));
 const PerfilSv = lazy(() => import('./entidad2.jsx').then((m) => ({ default: m.PerfilSv })));
 const PaginaCrew = lazy(() => import('./entidad2.jsx').then((m) => ({ default: m.PaginaCrew })));

@@ -11,6 +11,18 @@
  ],
  "cambios": [
   {
+   "version": "4.22",
+   "dia": "2026-11-02",
+   "cuando": "2026-11-02T23:55:00-05:00",
+   "titulo": "Verificarme y el panel de tu servidor, nuevos",
+   "items": [
+    "**Verificarme**: el botón primero, los cinco pasos debajo, qué abre cada tarjeta con lo que pide, y qué permisos te pide Discord.",
+    "**El panel de tu servidor**, para los dueños de los servidores socios: tu puntaje con sus cuatro partes (que ahora suman el total), lo que conviene arriba, cuándo hay actividad día por día con tu mejor día marcado, las semanas desde el arranque de la temporada, tu gente y los ajustes del bot en tres grupos.",
+    "Al cambiar un ajuste del bot, lo elegido se ve elegido mientras se guarda, y el aviso de «Guardado» aparece donde estás.",
+    "Los botones que todavía no se pueden tocar se ven apagados, en toda la página."
+   ]
+  },
+  {
    "version": "4.21",
    "dia": "2026-11-02",
    "cuando": "2026-11-02T23:30:00-05:00",

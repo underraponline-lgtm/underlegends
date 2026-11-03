@@ -41,6 +41,9 @@
 @keyframes ap-entra{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:none}}
 .app .btn{transition:transform .12s ease,background-color .15s ease,color .15s ease,box-shadow .15s ease}
 .app .btn:active:not(:disabled){transform:translateY(2px)}
+/* 🚫 un botón apagado se ve apagado (02/11/2026): no había regla, y «Guardar» del país en Verificarme se veía igual de
+   verde antes de elegir uno */
+.app .btn:disabled{opacity:.45;cursor:not-allowed}
 /* 👆 en el celular no hay «pasar el mouse» (por eso Dlx no veía ninguna: las de las puertas y las ligas son de hover):
    lo que se toca se hunde un poco */
 .app .pu:active,.app .lb:active,.app .lgh-c:active{transform:translate(1px,1px)}

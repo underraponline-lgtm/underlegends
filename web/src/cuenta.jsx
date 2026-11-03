@@ -1090,7 +1090,8 @@ const ERR_VERIF = {
 // los que piden un permiso nuevo de Discord; el resto se reintenta con el que hay
 const REPERMISO = { cancelado: 1, discord_error: 1, permiso: 1, discord: 1, token: 1 };
 
-function useVerif() {
+// (exportada: la página de verificarse, verificar.jsx, mira si ya empezaste)
+export function useVerif() {
   const [v, setV] = useState(() => W.VERIF || null);
   useEffect(() => {
     const f = () => setV(W.VERIF ? Object.assign({}, W.VERIF) : null);
@@ -1117,8 +1118,9 @@ function ElegirPais({ v }) {
   );
 }
 
-// (exportada: la usa también la pantalla de bienvenida, en su paso 2 —bienvenida.jsx—)
-export function Verificar({ liga, dc }) {
+// (exportada: la usa también la pantalla de bienvenida, en su paso 2 —bienvenida.jsx—, y la página de verificarse,
+// verificar.jsx, que dice los permisos de Discord en su costado: `nota={false}` no los repite)
+export function Verificar({ liga, dc, nota = true }) {
   const v = useVerif();
   const yo = liga.yo;
   // ya cargado: con su clave de la Liga (`d:`), que sólo tiene quien pasó el portón
@@ -1137,10 +1139,12 @@ export function Verificar({ liga, dc }) {
   }
   if (!v || (v.cargando && !v.enDra)) {
     return (
-      <Caja t="Qué es estar verificado" d="Estar en Discord Rap Español, con tu país y el rol de Miembro. Sin eso no hay tarjetas: verificado se abre tu Servidor, con tu primera Tarea del Pase tu Temporada, y la Competitiva y la de País con su requisito. Y tu perfil, con tu foto y tus redes.">
+      // (en la página de verificarse lo que se abre lo dice su costado: acá va sólo qué es)
+      <Caja t="Qué es estar verificado" d={nota ? 'Estar en Discord Rap Español, con tu país y el rol de Miembro. Sin eso no hay tarjetas: verificado se abre tu Servidor, con tu primera Tarea del Pase tu Temporada, y la Competitiva y la de País con su requisito. Y tu perfil, con tu foto y tus redes.'
+        : 'Estar en Discord Rap Español, con tu país y el rol de Miembro.'}>
         <button type="button" className="btn verde" disabled={!!(v && v.cargando)} onClick={() => (W.DC_TOKEN ? revisar() : irADiscord())}>
           {v && v.cargando ? 'Mirando Discord Rap Español…' : 'Verificarme con Discord'}</button>
-        <small className="cu-nota">Discord te va a pedir dos permisos: ver tu usuario y unirte a servidores por ti, que es lo que deja al bot meterte en Discord Rap Español si todavía no estás. Se usa una vez y no se guarda.</small>
+        {nota ? <small className="cu-nota">Discord te va a pedir dos permisos: ver tu usuario y unirte a servidores por ti, que es lo que deja al bot meterte en Discord Rap Español si todavía no estás. Se usa una vez y no se guarda.</small> : null}
       </Caja>
     );
   }
@@ -1169,7 +1173,7 @@ export function Verificar({ liga, dc }) {
   // ✅ con todo completo, el Worker te lo da en el momento (`darMiembro()`, Dlx 12/10/2026: «A y B»)
   const miembro = v.rol ? ['ok', 'Tienes el rol de Miembro', v.dimos ? 'Te lo dimos recién.' : '']
     : v.revisa ? ['aviso', 'Tu caso lo revisa un admin', 'No hace falta que hagas nada más.']
-      : v.completo ? ['espera', 'Tu rol de Miembro', 'Te lo da el bot solo' + (vuelta ? ', en la vuelta de las ' + vuelta + ' o en la siguiente' : '') + '. Con él salen tus tarjetas.']
+      : v.completo ? ['espera', 'Tu rol de Miembro', 'Te lo da el bot solo' + (vuelta ? ', en la vuelta de las ' + vuelta + ' o en la siguiente' : '') + '. Con él sale tu tarjeta de Servidor.']
         : ['espera', 'Tu rol de Miembro', 'Te lo da el bot cuando completes lo de arriba.'];
   const filas = [
     ['ok', 'Tu Discord', dc ? limpio(dc.n) : 'Conectado'],
@@ -1196,16 +1200,7 @@ export function Verificar({ liga, dc }) {
   );
 }
 
-// `#/cuenta/verificar`, sola: el resto de Mi cuenta todavía no está en línea (Dlx, 01/10/2026: primero esto)
-export function PaginaVerificar({ liga, dc }) {
-  useEffect(() => { W.scrollTo(0, 0); }, []);
-  return (
-    <div className="cu cu-sola">
-      <div className="cu-cab"><h1 className="cu-h">Verificarme</h1></div>
-      <section className="cu-parte" aria-label="Verificarme"><Verificar liga={liga} dc={dc} /></section>
-    </div>
-  );
-}
+// `#/cuenta/verificar`, sola: desde el 02/11/2026 es verificar.jsx (el remake), con esta `Verificar` adentro
 
 // 🖥️ EN LA COMPU, LA SECCIÓN ELEGIDA Y NADA MÁS (Dlx, 20/10/2026, ~5:15 PM: «está mostrando todas las configuraciones a
 // lo loco cuando debería mostrar de acuerdo a lo que está seleccionado en el momento»). Es la misma vista del teléfono

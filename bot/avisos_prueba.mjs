@@ -2340,6 +2340,16 @@ const ok = (cond, que, det) => {
     const enApp = /const SECC = new Set\(\[([^\]]+)\]/.exec(readFileSync(join(aqui, '..', 'web', 'src', 'App.jsx'), 'utf8'));
     const deApp = enApp ? enApp[1].match(/'([a-z-]+)'/g).map((x) => x.slice(1, -1)).sort() : [];
     ok(JSON.stringify(deApp) === JSON.stringify([...A.SECC_EV].sort()), 'la lista de App.jsx es SECC_EV', deApp.join(','));
+    // 🔴 y la PUERTA (`rutaAvisos()`), que es por donde llega de verdad: la página de un servidor (`sv-FFA`) pasa y la
+    // decide el objeto. Del 19/10 al 02/11/2026 la puerta la frenaba con la lista cerrada y el objeto nunca la vio
+    const alObjeto = [];
+    const envSecc = { AVISOS: { idFromName: () => 'x', get: () => ({ fetch: async (u, op) => {
+      alObjeto.push(JSON.parse(op.body).ev); return new Response('{"ok":true}'); } }) } };
+    const puerta = async (ev) => (await A.rutaAvisos(new Request('https://x/avisos/seccion',
+      { method: 'POST', body: JSON.stringify({ ev }) }), envSecc, '/avisos/seccion')).status;
+    ok(await puerta('sv-FFA') === 200 && await puerta('ranking') === 200 && await puerta('sv-ffa') === 400
+      && await puerta('sv-') === 400 && await puerta('zzz') === 400 && alObjeto.join() === 'sv-FFA,ranking',
+      'la puerta deja pasar la página de un servidor; lo que no es ni eso ni de la lista no llega al objeto', alObjeto.join());
     // 📊 el panel de los socios (19/10/2026): las visitas de cada servidor, y quién ve qué
     o.guardar('tiers', { t: '2026-10-19T23:00:00Z', semanas: 4, servidores: [
       { sv: 'FFA', nombre: 'Freestyle For All', tier: 1, dueno: '400000000000000001', puntos: 81, antes: 40, rec: 'bien', porque: 'x',

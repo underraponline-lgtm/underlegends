@@ -35,8 +35,9 @@ const porLugar = (a, b) => (a.o || a.pos || 999) - (b.o || b.pos || 999);
 const cartas = (gente) => gente.slice(0, gente.length >= 10 ? 10 : gente.length >= 5 ? 5 : gente.length);
 const raperos = (n) => num(n) + (n === 1 ? ' rapero' : ' raperos');
 
-// ── la portada: el emblema, el nombre, sus acciones y la tira de números ──
-function Portada({ emblema, forma, color, tag, nombre, sub, acciones, numeros, extra, estilo }) {
+// ── la portada: el emblema, el nombre, sus acciones y la tira de números (exportada: la usa también el panel del socio,
+// socio2.jsx, que es su servidor visto por su dueño) ──
+export function Portada({ emblema, forma, color, tag, nombre, sub, acciones, numeros, extra, estilo }) {
   return (
     <div className="escena ent-esc" style={{ '--mo-c': color || '#E41373', '--mo-o': 0.9, ...(estilo || {}) }}>
       <section className="ent-cab">
@@ -55,8 +56,9 @@ function Portada({ emblema, forma, color, tag, nombre, sub, acciones, numeros, e
 }
 
 // ── el índice pegado arriba: qué tiene la página y cuántos; se marca el que se está leyendo ──
-// items: [id de la sección en el DOM, nombre, cuántos]. Los chips de las que no se dibujaron no salen
-function Indice({ items }) {
+// items: [id de la sección en el DOM, nombre, cuántos]. Los chips de las que no se dibujaron no salen (exportado, como la
+// portada)
+export function Indice({ items }) {
   const { act, ir, tira, hay } = useIndice(items.map((x) => x[0]));
   const xs = items.filter(([id]) => hay.includes(id));
   if (xs.length < 2) return null;

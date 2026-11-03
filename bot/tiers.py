@@ -261,6 +261,16 @@ def _sv_de_sec(sec):
     return sv, d
 
 
+def _arranque():
+    """El primer día de la temporada en curso (`comun/temporada.py`), o `None` si no se sabe. Lo usan el puntaje (si se
+    puede comparar con las 4 semanas de antes) y el panel (desde qué semana se dibuja, y si la tendencia vale)."""
+    try:
+        from comun.temporada import FECHAS, ACTUAL
+        return dt.date.fromisoformat(FECHAS[ACTUAL][0])
+    except Exception:                                    # noqa: BLE001
+        return None
+
+
 def medir(D, hoy, svs, nivel, miembros=None):
     """`[{sv, nombre, tier, puntos, partes, m, antes, rec, porque}]` de cada servidor de la Liga. `D` trae: `llaves`
     (llaves_t1), `ayudas` ([(sv, día)]: preguntas y correcciones), `anuncios` ([(sv, día, dice_staff)]), `cancelados`
@@ -299,16 +309,19 @@ def medir(D, hoy, svs, nivel, miembros=None):
         cal = ((1 - min(1.0, ay / nev / 2.0)) * 12 if nev else 0) + ((con_staff / len(an)) * 8 if an else 0) \
             + ((1 - min(1.0, canc / max(1, nev))) * 5 if nev else 0)
         com = ((len(volvieron) / len(nuevos)) * 8 if nuevos else 0) + min(1.0, pro / 8.0) * 4 + min(1.0, lig) * 3
-        partes = {'actividad': round(act), 'alcance': round(alc), 'calidad': round(cal), 'comunidad': round(com)}
-        return m, partes, round(act + alc + cal + com)
+        # 🧮 LAS PARTES SUMAN EL TOTAL (02/11/2026): redondeadas una por una daban 35 + 25 + 13 + 3 = 76 al lado de un
+        # puntaje de 75 en el panel. Se redondea el total y las partes se reparten por el mayor resto: cada una queda a
+        # menos de 1 de la de verdad y nunca pasa su tope (el +1 va a una con resto, que no está en el tope)
+        crudas = {'actividad': act, 'alcance': alc, 'calidad': cal, 'comunidad': com}
+        pts = round(act + alc + cal + com)
+        partes = {k: int(v) for k, v in crudas.items()}
+        for k in sorted(crudas, key=lambda k: -(crudas[k] - int(crudas[k])))[:max(0, pts - sum(partes.values()))]:
+            partes[k] += 1
+        return m, partes, pts
 
     # 📈 ¿las 4 semanas de antes son de esta temporada? Si no, comparar contra ellas es comparar contra cero: todos
     # «suben» (el panel de los socios decía «▲ 81» a FFA el 19/10). `compara_desde`: el día en que ya se puede
-    try:
-        from comun.temporada import FECHAS, ACTUAL
-        arranque = dt.date.fromisoformat(FECHAS[ACTUAL][0])
-    except Exception:                                    # noqa: BLE001
-        arranque = None
+    arranque = _arranque()
     compara = arranque is None or ini0 >= arranque
     compara_desde = (arranque + dt.timedelta(days=7 * SEMANAS * 2 - 1)).isoformat() if arranque else ''
     out = []
@@ -404,6 +417,11 @@ def panel(D, hoy, sv, ps=None, crews=None, otros=None):
     fin = hoy + dt.timedelta(days=1)
     lunes = hoy - dt.timedelta(days=hoy.weekday())
     ini = lunes - dt.timedelta(days=7 * (SEMANAS_PANEL - 1))
+    # 📅 desde el lunes de la semana del arranque, si es más nuevo: una semana de antes de la temporada no tiene eventos y
+    # no dice nada (el panel arrancaba el 14/09 con «sin eventos», y la T1 empezó el 22)
+    arr = _arranque()
+    if arr:
+        ini = max(ini, arr - dt.timedelta(days=arr.weekday()))
     ini4 = fin - dt.timedelta(days=28)
     evs = []
     primero = {}
@@ -419,7 +437,7 @@ def panel(D, hoy, sv, ps=None, crews=None, otros=None):
     mios = [e for e in evs if e[1] == sv and ini <= e[0] < fin]
     # la tendencia: semana por semana (de lunes a domingo), con la gente nueva que trajo cada una
     semanas = []
-    for k in range(SEMANAS_PANEL):
+    for k in range(max(0, (lunes - ini).days // 7 + 1)):
         a = ini + dt.timedelta(days=7 * k)
         b = a + dt.timedelta(days=7)
         ee = [e for e in mios if a <= e[0] < b]
@@ -460,6 +478,11 @@ def panel(D, hoy, sv, ps=None, crews=None, otros=None):
     a4, a8 = fin - dt.timedelta(days=28), fin - dt.timedelta(days=56)
     ev4 = [sum(1 for e in evs if e[1] == sv and a8 <= e[0] < a4), sum(1 for e in evs if e[1] == sv and a4 <= e[0] < fin),
            sum(1 for x, (d, s) in primero.items() if s == sv and a4 <= d < fin)]
+    # 📈 y la tendencia, sólo si las 4 semanas de antes son de esta temporada: la regla de `compara` en medir(). Contra
+    # semanas de antes del arranque todos «suben» (FFA, 02/11/2026: «Vas en subida: 71 eventos contra 34», y esos 34 eran
+    # dos semanas de temporada contra cuatro: 17,75 por semana contra 17)
+    if arr and a8 < arr:
+        ev4[0] = 0
     out = {'semanas': semanas, 'dias': dias, 'franjas': franjas, 'liga': liga, 'raperos': raperos[:10],
            'gente_total': len(raperos), 'crews': crews_top, 'ev4': ev4}
     out['sugerencias'] = sugerencias(out)
@@ -477,7 +500,7 @@ def sugerencias(p, m=None):
         peor = min(buenos, key=lambda x: x[1][1])
         out.append('Los %s tus eventos juntan %s raperos de promedio: el mejor día que tienes.' % (DIAS[mejor[0]], _n(mejor[1][1])))
         if peor[0] != mejor[0] and peor[1][1] < mejor[1][1] * 0.8:
-            out.append('Los %s, %s de promedio: el más flojo. Si puedes, movelo a otro día.' % (DIAS[peor[0]], _n(peor[1][1])))
+            out.append('Los %s, %s de promedio: el más flojo. Si puedes, muévelo a otro día.' % (DIAS[peor[0]], _n(peor[1][1])))
     liga = p.get('liga') or []
     if any(x[0] for x in liga):
         lleno = max(range(7), key=lambda i: liga[i][0])
@@ -502,7 +525,7 @@ def sugerencias(p, m=None):
         elif a and b <= a * 0.75:
             out.append('Bajaste: %d eventos en las últimas 4 semanas contra %d en las 4 de antes.' % (b, a))
         if nuevos:
-            out.append('Trajiste %d raperos nuevos en 4 semanas: avisales del próximo evento para que vuelvan.' % nuevos)
+            out.append('Trajiste %d raperos nuevos en 4 semanas: avísales del próximo evento para que vuelvan.' % nuevos)
     m = m or {}
     if m.get('eventos') and m.get('por_semana', 0) < 1:
         out.append('Haces %s eventos por semana; con 2 por semana la parte de actividad de tu puntaje llega al máximo.' % _n(m['por_semana']))
@@ -776,6 +799,15 @@ def _self_check():
        and any('a la noche' in x.lower() or 'a la tarde' in x.lower() for x in su) and any('2 por semana' in x for x in su)
        and any('quién organiza' in x for x in su), 'las sugerencias, con el número que las respalda')
     ok(sugerencias({'dias': [[1, 30]] + [[0, 0]] * 6}) == [], 'con poca muestra, no se sugiere nada')
+    # 🧮 las partes suman el puntaje (02/11/2026: el panel mostraba 35 + 25 + 13 + 3 = 76 al lado de 75)
+    ok(all(sum(x['partes'].values()) == x['puntos'] for x in f.values()), 'las cuatro partes suman el puntaje de cada servidor',
+       str([(x['sv'], x['puntos'], x['partes']) for x in f.values()]))
+    # 📅 el panel arranca en la semana del arranque, y la tendencia no se compara con semanas de antes de la temporada
+    arr = _arranque()
+    if arr:
+        ok(pa['semanas'][0][0] == (arr - dt.timedelta(days=arr.weekday())).isoformat() and pa['ev4'][0] == 0,
+           'el panel arranca el lunes de la semana del arranque y no compara con las 4 semanas de antes, que son de la pretemporada',
+           str((pa['semanas'][0], pa['ev4'])))
     print('\n   %s\n' % ('todo bien' if not mal else '🔴 %d mal' % mal))
     return mal == 0
 

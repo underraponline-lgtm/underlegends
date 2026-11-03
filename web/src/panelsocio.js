@@ -1,5 +1,5 @@
-// 📊 Lo liviano del panel de los socios (19/10/2026): pedirlo y saber si quien mira es dueño de un socio. Aparte de
-// socio.jsx para que Mi cuenta pueda mostrar «Mi servidor» sin bajarse la página entera.
+// 📊 Lo liviano del panel de los socios (19/10/2026): pedirlo y saber si quien mira es dueño de un socio. Aparte de la
+// página (socio2.jsx desde el 02/11/2026) para que Mi cuenta pueda mostrar «Mi servidor» sin bajarse la página entera.
 import { useEffect, useState } from 'react';
 
 const W = window;
