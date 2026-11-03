@@ -393,7 +393,8 @@
 "c": [
 "competitivo",
 "pais",
-"servidor"
+"servidor",
+"temporada"
 ]
 },
 "trot": {
@@ -2690,14 +2691,6 @@
 }
 },
 "cambios": [
-{
-"tipo": "tarjeta",
-"t": "2026-10-04T19:07:21Z",
-"quien": [
-"Damian"
-],
-"carta": "temporada"
-},
 {
 "tipo": "tarjeta",
 "t": "2026-10-04T19:07:21Z",
@@ -6055,6 +6048,14 @@
 "Andres"
 ],
 "carta": "servidor"
+},
+{
+"tipo": "tarjeta",
+"t": "2026-11-03T06:54:01Z",
+"quien": [
+"Andres"
+],
+"carta": "temporada"
 }
 ]
 }
