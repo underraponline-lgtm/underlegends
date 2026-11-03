@@ -1,6 +1,6 @@
 {
  "_leeme": "Las ligas de los servidores: cada batalla y su resultado, y la tabla que sale de eso. Lo arma bot/ligas.py en cada corrida; las reglas viven ahí. Sin los mensajes: el repo es público. `batallas`: [id del mensaje, instante, jornada, a, b, ganador (vacío: pendiente), directa|replica, extras]. Las batallas con resultado cuentan como duelos (Ranking Duelos y Win%; el Score no). `flyer`: el último afiche de su canal de anuncios, re-alojado en R2 (`url`); `prox`: la próxima fecha que anunció (`d` el día, `t` el instante si lo dijo). Desde el 17/10/2026: `ptb` {id de la batalla: [PTB de a, de b]}, `flyers` (la galería, en R2), `staff` [[discord_id, nombre, mensajes en anuncios, en veredictos, último]] y `nov` (lo nuevo de las últimas horas, para «Seguir la liga»).",
- "t": "2026-11-03T01:29:19Z",
+ "t": "2026-11-03T01:58:35Z",
  "ligas": {
   "fmh-albiceleste": {
    "n": "FMH Albiceleste",
@@ -6593,8 +6593,8 @@
      "847124099243180042",
      "gxbrrlaljndrr",
      0,
-     21,
-     "2026-11-02T22:27:34Z"
+     22,
+     "2026-11-03T01:57:16Z"
     ],
     [
      "1459764124979433654",
@@ -6992,7 +6992,7 @@
      "776271601221763103",
      "CANTU",
      0,
-     9,
+     7,
      "2026-10-26T13:03:49Z"
     ],
     [
@@ -8694,8 +8694,18 @@
      null,
      "CALÍZ",
      "MOSQUI",
-     "",
-     "",
+     "CALÍZ",
+     "directa",
+     ""
+    ],
+    [
+     "1566994058398670961",
+     "2026-11-03T01:54:56Z",
+     null,
+     "TERRY",
+     "MOSQUITRAP",
+     "TERRY",
+     "directa",
      ""
     ]
    ],
@@ -8707,16 +8717,22 @@
      9
     ],
     [
+     "TERRY",
+     3,
+     3,
+     9
+    ],
+    [
      "LRS",
      2,
      2,
      6
     ],
     [
-     "TERRY",
-     2,
-     2,
-     6
+     "CALÍZ",
+     1,
+     1,
+     3
     ],
     [
      "MASINO",
@@ -8725,13 +8741,13 @@
      3
     ],
     [
-     "MOSQUITRAP",
-     1,
+     "MAKMA",
+     2,
      1,
      3
     ],
     [
-     "MAKMA",
+     "MOSQUITRAP",
      2,
      1,
      3
@@ -8768,6 +8784,12 @@
     ],
     [
      "LVEL",
+     1,
+     0,
+     0
+    ],
+    [
+     "MOSQUI",
      1,
      0,
      0
@@ -8907,8 +8929,8 @@
      "1555067257376346122",
      "Zaik",
      65,
-     35,
-     "2026-11-03T01:27:31Z"
+     41,
+     "2026-11-03T01:56:01Z"
     ],
     [
      "1548906948307451906",
@@ -9027,6 +9049,15 @@
      "que": "res",
      "ids": [
       "1566971385287278665"
+     ]
+    },
+    {
+     "id": "r:lkr-fms-plaza:1566994058398670961",
+     "t": "2026-11-03T01:58:35Z",
+     "que": "res",
+     "ids": [
+      "1566987155396370555",
+      "1566994058398670961"
      ]
     }
    ]
