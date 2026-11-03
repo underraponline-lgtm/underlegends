@@ -7692,6 +7692,32 @@
       "John pork": "1316490165836972104",
       "DJ Bootrax Humilde": "1122273746099638354"
      }
+    },
+    "1566982290314362953": {
+     "sv": "DDF",
+     "nombre": "GALACTICOS DEL FREESTYLE VOL.16",
+     "mo": "2026-11-03T01:08:11Z",
+     "staff": {
+      "jurado": [
+       "John pork"
+      ],
+      "host": [
+       "John pork"
+      ],
+      "dj": [
+       "John pork"
+      ]
+     },
+     "orgs": [
+      {
+       "n": "John pork",
+       "id": "1316490165836972104"
+      }
+     ],
+     "organizador": "",
+     "cuentas": {
+      "John pork": "1316490165836972104"
+     }
     }
    },
    "ver": {
@@ -7732,6 +7758,11 @@
       "",
       "chop",
       "30fps30hz"
+     ],
+     "1249980492951060561": [
+      "",
+      "💤",
+      "paratimiringuicaro"
      ]
     },
     "FFA|2026-11-02": {
