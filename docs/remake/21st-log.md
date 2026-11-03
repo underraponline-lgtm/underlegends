@@ -89,3 +89,28 @@ búsquedas, vacías). **Temas**: nada por «dark neon magenta» (y ya tenemos pa
   que le falta poco), «Activity Heatmap», «8-bit XP Bar» (la meta), «Thumbnail Carousel» y «Linear Carousel» (las tres
   cartas en abanico).
 - No aplica: las tarjetas con brillo 3D y glass («ProfileCard» con tilt): el remake prohíbe blur y degradés.
+
+## 02/11/2026 · el Panel del socio y Verificarme (4.22; 32 búsquedas, 0 del cupo)
+
+- Llegó **después de publicar las dos páginas** (Dlx: «Publica y haz todo… sube todo»), que salieron de lo que ya hacían
+  y de una crítica independiente. Queda como lista para cuando Dlx opine. Magic UI y shadcn no contestaron.
+- Ideas de: Meter (redrob-labs), Leaderboard Bars, Rank Bars, Heat Strip, Bench Matrix (eugeneshilow), Charts & KPI
+  Cards (uvain), KPI Tile (konsstepnov), Insight Cards, Leaderboard Table (arihantcodes_1f7b8c4d), Permission Grant
+  (syeddhasnainn), Onboarding Steps with Progress (ephraimduncan), Bar Stack (airbnb-visx), Welcome Checklist Card,
+  Validation Checklist Input (dhxwhy), Weekly KPI Chart (isaiahbjork), Notification Channel Matrix (felipemenezes098),
+  Switch List Card (sean0205), Segmented Control (balick), Checkbox Group (edwinvakayil), Data Refresh State
+  (rmahammad), OAuth Consent Card (supabase), Task Steps (ddoemonn), Stepper with Square Badges, Configuration Stepper
+  (shadcnspace), Auth Verify Email (preetsuthar17), Country Combobox (cnippet-dev), Achievement Card (trophyso).
+- Ya coincidía con lo publicado: la semana que corre marcada (no un derrumbe), el botón de Verificarme en la primera
+  pantalla del celular, los permisos debajo del botón.
+- Para una vuelta siguiente: el puntaje como **una sola barra de 0 a 100 partida en sus cuatro pesos** (en vez de cuatro
+  cajas); cada sugerencia con **su número y un «Ir al ajuste»** (pide que el ciclo mande a dónde lleva); los ajustes de
+  canal en **una tabla de «dónde publica el bot»** y los de comportamiento como interruptores; en Verificarme, **una sola
+  lista viva** (lo hecho plegado, sólo el paso actual abierto) que **se revisa sola al volver de Discord**, y la carta de
+  Servidor de verdad al terminar.
+- Preguntas para Dlx: (1) el magenta hoy dice tres cosas en el panel —gente nueva, el día más lleno, lo que baja—:
+  ¿magenta sólo para «atención» y lo nuevo en verde agua? (2) ¿los ajustes se guardan solos (como hoy) o con un
+  «Guardar» por grupo? (3) ¿Verificarme se revisa sola al volver de Discord?
+- No aplica: medidores en anillo y radar (el puntaje son cuatro pesos, no ejes), sparklines en los números, la barra de
+  «cambios sin guardar» (choca con el guardado solo), el selector de país con un globo (WebGL, y adivinar el país del
+  navegador es adivinar la identidad), un mapa de calor de 7×5 (el payload no trae día por hora).
