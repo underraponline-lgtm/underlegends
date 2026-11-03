@@ -2,72 +2,6 @@
  "_leeme": "Los eventos de vidas de #veredictos ya armados —quién peleó con quién y quién ganó—, para cargarlos aunque ya no estén entre los últimos mensajes del canal; y cada batalla con su ganador (`batallas`), para la llave que no lo dice; y cada llave como se jugó (`llaves`), que manda sobre la del organizador. Sin los mensajes: el repo es público. Lo escribe bot/escuchar.py (vidas()).",
  "eventos": {},
  "batallas": {
-  "1564495032466018476": {
-   "id": "1564495032466018476",
-   "sv": "[FFA] Freestyle For All 👾",
-   "g": "1468472442925092958",
-   "canal": "1487206164864438513",
-   "pub": 1793075082652,
-   "a": "RIZAS GIANLAMALDAD",
-   "b": "KYSS ZIGNOS",
-   "ganador": "RIZAS GIANLAMALDAD",
-   "votos": "1–0"
-  },
-  "1564497223037882450": {
-   "id": "1564497223037882450",
-   "sv": "[FFA] Freestyle For All 👾",
-   "g": "1468472442925092958",
-   "canal": "1487206164864438513",
-   "pub": 1793075604925,
-   "a": "YINN",
-   "b": "RIZAS",
-   "ganador": "RIZAS",
-   "votos": "1–0"
-  },
-  "1564497941845254177": {
-   "id": "1564497941845254177",
-   "sv": "[FFA] Freestyle For All 👾",
-   "g": "1468472442925092958",
-   "canal": "1487206164864438513",
-   "pub": 1793075776302,
-   "a": "RIZAS",
-   "b": "PART",
-   "ganador": "RIZAS",
-   "votos": "1–0"
-  },
-  "1564498932392927285": {
-   "id": "1564498932392927285",
-   "sv": "#FDS ╏FREESTYLE DISCORD SERIES",
-   "g": "1489848581203689535",
-   "canal": "1536574435761332334",
-   "pub": 1793076012467,
-   "a": "LUCK",
-   "b": "MCAREPA",
-   "ganador": "LUCK",
-   "votos": "1–0"
-  },
-  "1564499888987963433": {
-   "id": "1564499888987963433",
-   "sv": "[FFA] Freestyle For All 👾",
-   "g": "1468472442925092958",
-   "canal": "1487206164864438513",
-   "pub": 1793076240537,
-   "a": "TRELOK",
-   "b": "PRAISERIZAS",
-   "ganador": "PRAISERIZAS",
-   "votos": "1–0"
-  },
-  "1564500997152313357": {
-   "id": "1564500997152313357",
-   "sv": "[FFA] Freestyle For All 👾",
-   "g": "1468472442925092958",
-   "canal": "1487206164864438513",
-   "pub": 1793076504744,
-   "a": "GIANLAMALDAD",
-   "b": "SIX",
-   "ganador": "GIANLAMALDAD",
-   "votos": "1–0"
-  },
   "1564733599842959483": {
    "id": "1564733599842959483",
    "sv": "#LaCrew ||🎤ACADEMIA DE RAP 🎤",
@@ -1562,6 +1496,72 @@
    "a": "71 TENOR TAM",
    "b": "MAKMAH",
    "ganador": "71 TENOR TAM",
+   "votos": "1–0"
+  },
+  "1567031076210348055": {
+   "id": "1567031076210348055",
+   "sv": "[FFA] Freestyle For All 👾",
+   "g": "1468472442925092958",
+   "canal": "1487206164864438513",
+   "pub": 1793679722598,
+   "a": "PRAISERIZAS",
+   "b": "MAKMAH",
+   "ganador": "PRAISERIZAS",
+   "votos": "1–0"
+  },
+  "1567032647786700811": {
+   "id": "1567032647786700811",
+   "sv": "[FFA] Freestyle For All 👾",
+   "g": "1468472442925092958",
+   "canal": "1487206164864438513",
+   "pub": 1793680097291,
+   "a": "TENOR 71 TAM",
+   "b": "OJOS DE TAILANDIA",
+   "ganador": "OJOS DE TAILANDIA",
+   "votos": "1–0"
+  },
+  "1567035866608836623": {
+   "id": "1567035866608836623",
+   "sv": "[FFA] Freestyle For All 👾",
+   "g": "1468472442925092958",
+   "canal": "1487206164864438513",
+   "pub": 1793680864718,
+   "a": "PRAISERIZAS",
+   "b": "MAKMAH",
+   "ganador": "PRAISERIZAS",
+   "votos": "1–0"
+  },
+  "1567036101636657296": {
+   "id": "1567036101636657296",
+   "sv": "[FFA] Freestyle For All 👾",
+   "g": "1468472442925092958",
+   "canal": "1487206164864438513",
+   "pub": 1793680920753,
+   "a": "PRAISERIZAS",
+   "b": "PRODIGY",
+   "ganador": "PRAISERIZAS",
+   "votos": "1–0"
+  },
+  "1567036963515670574": {
+   "id": "1567036963515670574",
+   "sv": "[FFA] Freestyle For All 👾",
+   "g": "1468472442925092958",
+   "canal": "1487206164864438513",
+   "pub": 1793681126241,
+   "a": "SIX",
+   "b": "ZA",
+   "ganador": "SIX",
+   "votos": "1–0"
+  },
+  "1567038494558265407": {
+   "id": "1567038494558265407",
+   "sv": "[FFA] Freestyle For All 👾",
+   "g": "1468472442925092958",
+   "canal": "1487206164864438513",
+   "pub": 1793681491270,
+   "a": "SIX",
+   "b": "TAM",
+   "ganador": "SIX",
    "votos": "1–0"
   }
  },
@@ -5621,8 +5621,8 @@
    "g": "1468472442925092958",
    "canal": "1487206164864438513",
    "pub": 1793674799860,
-   "ed": 1793679722598,
-   "texto": "`[ OCTAVOS ]`\n⌞JOBA⌝ 🆚 ⌞LRS⌝ 🆚 ⌞AKUSERU⌝ 🆚 ⌞DOMINIC⌝ 🆚 ⌞MCO⌝ 🆚 ⌞TOMY HILFIGHER⌝\n⌞MATS⌝ 🆚 ⌞PELOTA⌝ 🆚 ⌞OJOS DE TAILANDIA PICHULA⌝ 🆚 ⌞VANDU⌝ 🆚 ⌞LVEL⌝\n⌞O223⌝ 🆚 ⌞IKONOX⌝ 🆚 ⌞71 TNOR TAM⌝ 🆚 ⌞DEUXS⌝\n⌞CALIZ⌝ 🆚 ⌞JOVEN SEXLONG⌝ 🆚 ⌞MAKMAH⌝ 🆚 ⌞EZZE⌝ 🆚 ⌞PRAISERIZA⌝\n`[ CUARTOS ]`\n⌞CALIZ LRS⌝ 🆚 ⌞OJOS DE TAILANDIA⌝\n⌞71 TENOR TAM⌝ 🆚 ⌞MAKMAH⌝\n`[ SEMIFINALES ]`\n⌞PRAISERIZAS⌝ 🆚 ⌞MAKMAH⌝",
+   "ed": 1793681566566,
+   "texto": "`[ OCTAVOS ]`\n⌞JOBA⌝ 🆚 ⌞LRS⌝ 🆚 ⌞AKUSERU⌝ 🆚 ⌞DOMINIC⌝ 🆚 ⌞MCO⌝ 🆚 ⌞TOMY HILFIGHER⌝\n⌞MATS⌝ 🆚 ⌞PELOTA⌝ 🆚 ⌞OJOS DE TAILANDIA PICHULA⌝ 🆚 ⌞VANDU⌝ 🆚 ⌞LVEL⌝\n⌞O223⌝ 🆚 ⌞IKONOX⌝ 🆚 ⌞71 TNOR TAM⌝ 🆚 ⌞DEUXS⌝\n⌞CALIZ⌝ 🆚 ⌞JOVEN SEXLONG⌝ 🆚 ⌞MAKMAH⌝ 🆚 ⌞EZZE⌝ 🆚 ⌞PRAISERIZA⌝\n`[ CUARTOS ]`\n⌞CALIZ LRS⌝ 🆚 ⌞OJOS DE TAILANDIA⌝\n⌞71 TENOR TAM⌝ 🆚 ⌞MAKMAH⌝\n`[ SEMIFINALES ]`\n⌞PRAISERIZAS⌝ 🆚 ⌞MAKMAH⌝\n⌞TENOR 71 TAM⌝ 🆚 ⌞OJOS DE TAILANDIA⌝\n`[ FINAL ]`\n⌞PRAISERIZAS⌝ 🆚 ⌞MAKMAH⌝\n⌞PRAISERIZAS⌝ 🆚 ⌞PRODIGY⌝\n⌞SIX⌝ 🆚 ⌞ZA⌝\n⌞SIX⌝ 🆚 ⌞TAM⌝\n⌞TENOR⌝ 🆚 ⌞SIX⌝",
    "batallas": [
     [
      "OCTAVOS",
@@ -5701,6 +5701,66 @@
      [
       "PRAISERIZAS",
       "MAKMAH"
+     ],
+     "PRAISERIZAS",
+     "veredicto",
+     []
+    ],
+    [
+     "SEMIFINALES",
+     [
+      "TENOR 71 TAM",
+      "OJOS DE TAILANDIA"
+     ],
+     "OJOS DE TAILANDIA",
+     "veredicto",
+     []
+    ],
+    [
+     "FINAL",
+     [
+      "PRAISERIZAS",
+      "MAKMAH"
+     ],
+     "PRAISERIZAS",
+     "veredicto",
+     []
+    ],
+    [
+     "FINAL",
+     [
+      "PRAISERIZAS",
+      "PRODIGY"
+     ],
+     "PRAISERIZAS",
+     "veredicto",
+     []
+    ],
+    [
+     "FINAL",
+     [
+      "SIX",
+      "ZA"
+     ],
+     "SIX",
+     "veredicto",
+     []
+    ],
+    [
+     "FINAL",
+     [
+      "SIX",
+      "TAM"
+     ],
+     "SIX",
+     "veredicto",
+     []
+    ],
+    [
+     "FINAL",
+     [
+      "TENOR",
+      "SIX"
      ],
      null,
      "última ronda y no dice campeón",
