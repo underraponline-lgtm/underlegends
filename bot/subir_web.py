@@ -4291,9 +4291,14 @@ def _self_check():
     _en = p.get('enc') or []
     ok(all(e.get('id') and e.get('hasta') and isinstance(e.get('op'), list) for e in _en),
        'las encuestas traen qué se vota y hasta cuándo  (%d)' % len(_en))
-    ok(not any(k in e for e in _en for k in ('sv', 'yo')) and
+    # 🏟️ `sv` SÍ, COMO SIGLA: las de los MES AWARDS de un servidor lo llevan (`mes_awards.encuestas()`) y `para_kv()`
+    # arma con ESTA lista quién vota cada una; sacarlo dejaría votar a cualquiera. Lo que no puede viajar es lo que
+    # `sv` era hasta el 28/09 —de qué servidor era cada Discord ID, un mapa—. Contar `sv` como prohibido puso CI en
+    # rojo el 02/11/2026, en cuanto volvieron a salir esas encuestas
+    ok(not any('yo' in e for e in _en) and
+       not any(isinstance(e.get('sv'), (dict, list)) or str(e.get('sv') or '').isdigit() for e in _en) and
        not any(str(o).isdigit() and len(str(o)) >= 15 for e in _en for o in e.get('op') or []),
-       'y ningún Discord ID viaja en el payload')
+       'y ningún Discord ID viaja en el payload (el `sv` de las de un servidor es su sigla)')
     ok(json.dumps(p, ensure_ascii=False) and True, 'el payload es JSON')
     crudo = json.dumps(p, ensure_ascii=False).encode('utf-8')
     tam = len(crudo)
