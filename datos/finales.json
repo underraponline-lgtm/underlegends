@@ -1045,5 +1045,27 @@
   "sin_permiso": true,
   "sv": "ACAD"
  },
+ "1567008051813154879": {
+  "autor": "1523082259870257315",
+  "canal": "1487207377601040516",
+  "cuando": "2026-11-03T02:50:33.154000+00:00",
+  "evento": "__ qcyo rapeen __",
+  "fecha": "02/11",
+  "llave": "1567008051813154879",
+  "pregunta": "1567069227733749824",
+  "preguntada": "2026-11-03 2:53 AM ET",
+  "preguntas": [
+   {
+    "lados": [
+     "tomyhilfiger1312🇾🇹",
+     "vandu 🇨🇦"
+    ],
+    "ronda": "CUARTOS"
+   }
+  ],
+  "respondidas": {},
+  "sin_permiso": false,
+  "sv": "FFA"
+ },
  "_leeme": "Las llaves que el ciclo no entendió y se las preguntó a quien las publicó, con botones o un menú (bot/finales.py). Una vez por llave, por su ID: así nunca se pregunta dos veces. Dlx, 12/10/2026."
 }

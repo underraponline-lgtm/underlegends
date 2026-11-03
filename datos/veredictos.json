@@ -1577,47 +1577,6 @@
   }
  },
  "llaves": {
-  "1559452979076010098": {
-   "id": "1559452979076010098",
-   "sv": "[FFA] Freestyle For All 👾",
-   "g": "1468472442925092958",
-   "canal": "1487206164864438513",
-   "pub": 1791872963447,
-   "ed": 1791873363812,
-   "texto": "`[ SEMIFINALES ]`\n⌞CINEXFILO⌝ 🆚 ⌞TENOR⌝\n⌞ERIAN⌝ 🆚 ⌞NHP⌝\n`[ FINAL ]`\n⌞ERIAN⌝ 🆚 ⌞NHP CINEXFILO⌝",
-   "batallas": [
-    [
-     "SEMIFINALES",
-     [
-      "CINEXFILO",
-      "TENOR"
-     ],
-     null,
-     "no aparece nadie después",
-     []
-    ],
-    [
-     "SEMIFINALES",
-     [
-      "ERIAN",
-      "NHP"
-     ],
-     "ERIAN",
-     "veredicto",
-     []
-    ],
-    [
-     "FINAL",
-     [
-      "ERIAN",
-      "NHP CINEXFILO"
-     ],
-     null,
-     "última ronda y no dice campeón",
-     []
-    ]
-   ]
-  },
   "1559602670447108097": {
    "id": "1559602670447108097",
    "sv": "╔═══ஜ𝕍.𝕊ஜ═══╗",
