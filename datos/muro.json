@@ -585,6 +585,14 @@
 "temporada"
 ]
 },
+"kyss": {
+"rg": "E",
+"c": [
+"competitivo",
+"servidor",
+"temporada"
+]
+},
 "jobaking": {
 "rg": "E",
 "c": [
@@ -613,14 +621,6 @@
 ]
 },
 "cinexfilo": {
-"rg": "E",
-"c": [
-"competitivo",
-"servidor",
-"temporada"
-]
-},
-"kyss": {
 "rg": "E",
 "c": [
 "competitivo",
