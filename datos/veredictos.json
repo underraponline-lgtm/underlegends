@@ -2,39 +2,6 @@
  "_leeme": "Los eventos de vidas de #veredictos ya armados —quién peleó con quién y quién ganó—, para cargarlos aunque ya no estén entre los últimos mensajes del canal; y cada batalla con su ganador (`batallas`), para la llave que no lo dice; y cada llave como se jugó (`llaves`), que manda sobre la del organizador. Sin los mensajes: el repo es público. Lo escribe bot/escuchar.py (vidas()).",
  "eventos": {},
  "batallas": {
-  "1564487402993750049": {
-   "id": "1564487402993750049",
-   "sv": "#FDS ╏FREESTYLE DISCORD SERIES",
-   "g": "1489848581203689535",
-   "canal": "1536574435761332334",
-   "pub": 1793073263644,
-   "a": "AL3",
-   "b": "OKAM",
-   "ganador": "AL3",
-   "votos": "1–0"
-  },
-  "1564489422970556468": {
-   "id": "1564489422970556468",
-   "sv": "#FDS ╏FREESTYLE DISCORD SERIES",
-   "g": "1489848581203689535",
-   "canal": "1536574435761332334",
-   "pub": 1793073745244,
-   "a": "LUCK",
-   "b": "ESEKA",
-   "ganador": "LUCK",
-   "votos": "1–0"
-  },
-  "1564493023880937546": {
-   "id": "1564493023880937546",
-   "sv": "[FFA] Freestyle For All 👾",
-   "g": "1468472442925092958",
-   "canal": "1487206164864438513",
-   "pub": 1793074603768,
-   "a": "SIX YINN",
-   "b": "MAKMAH PART",
-   "ganador": "SIX YINN",
-   "votos": "1–0"
-  },
   "1564495032466018476": {
    "id": "1564495032466018476",
    "sv": "[FFA] Freestyle For All 👾",
@@ -1584,6 +1551,17 @@
    "a": "CALIZ LRS",
    "b": "OJOS DE TAILANDIA",
    "ganador": "OJOS DE TAILANDIA",
+   "votos": "1–0"
+  },
+  "1567024424618561577": {
+   "id": "1567024424618561577",
+   "sv": "[FFA] Freestyle For All 👾",
+   "g": "1468472442925092958",
+   "canal": "1487206164864438513",
+   "pub": 1793678136735,
+   "a": "71 TENOR TAM",
+   "b": "MAKMAH",
+   "ganador": "71 TENOR TAM",
    "votos": "1–0"
   }
  },
@@ -5643,8 +5621,8 @@
    "g": "1468472442925092958",
    "canal": "1487206164864438513",
    "pub": 1793674799860,
-   "ed": 1793678003708,
-   "texto": "`[ OCTAVOS ]`\n⌞JOBA⌝ 🆚 ⌞LRS⌝ 🆚 ⌞AKUSERU⌝ 🆚 ⌞DOMINIC⌝ 🆚 ⌞MCO⌝ 🆚 ⌞TOMY HILFIGHER⌝\n⌞MATS⌝ 🆚 ⌞PELOTA⌝ 🆚 ⌞OJOS DE TAILANDIA PICHULA⌝ 🆚 ⌞VANDU⌝ 🆚 ⌞LVEL⌝\n⌞O223⌝ 🆚 ⌞IKONOX⌝ 🆚 ⌞71 TNOR TAM⌝ 🆚 ⌞DEUXS⌝\n⌞CALIZ⌝ 🆚 ⌞JOVEN SEXLONG⌝ 🆚 ⌞MAKMAH⌝ 🆚 ⌞EZZE⌝ 🆚 ⌞PRAISERIZA⌝\n`[ CUARTOS ]`\n⌞CALIZ LRS⌝ 🆚 ⌞OJOS DE TAILANDIA⌝",
+   "ed": 1793679722598,
+   "texto": "`[ OCTAVOS ]`\n⌞JOBA⌝ 🆚 ⌞LRS⌝ 🆚 ⌞AKUSERU⌝ 🆚 ⌞DOMINIC⌝ 🆚 ⌞MCO⌝ 🆚 ⌞TOMY HILFIGHER⌝\n⌞MATS⌝ 🆚 ⌞PELOTA⌝ 🆚 ⌞OJOS DE TAILANDIA PICHULA⌝ 🆚 ⌞VANDU⌝ 🆚 ⌞LVEL⌝\n⌞O223⌝ 🆚 ⌞IKONOX⌝ 🆚 ⌞71 TNOR TAM⌝ 🆚 ⌞DEUXS⌝\n⌞CALIZ⌝ 🆚 ⌞JOVEN SEXLONG⌝ 🆚 ⌞MAKMAH⌝ 🆚 ⌞EZZE⌝ 🆚 ⌞PRAISERIZA⌝\n`[ CUARTOS ]`\n⌞CALIZ LRS⌝ 🆚 ⌞OJOS DE TAILANDIA⌝\n⌞71 TENOR TAM⌝ 🆚 ⌞MAKMAH⌝\n`[ SEMIFINALES ]`\n⌞PRAISERIZAS⌝ 🆚 ⌞MAKMAH⌝",
    "batallas": [
     [
      "OCTAVOS",
@@ -5694,8 +5672,8 @@
       "EZZE",
       "PRAISERIZA"
      ],
-     null,
-     "no aparece nadie después",
+     "MAKMAH",
+     "ronda siguiente",
      []
     ],
     [
@@ -5706,6 +5684,26 @@
      ],
      "OJOS DE TAILANDIA",
      "veredicto",
+     []
+    ],
+    [
+     "CUARTOS",
+     [
+      "71 TENOR TAM",
+      "MAKMAH"
+     ],
+     "MAKMAH",
+     "ronda siguiente",
+     []
+    ],
+    [
+     "SEMIFINALES",
+     [
+      "PRAISERIZAS",
+      "MAKMAH"
+     ],
+     null,
+     "última ronda y no dice campeón",
      []
     ]
    ]
