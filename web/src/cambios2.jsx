@@ -1,5 +1,5 @@
-// 📜 EL CHANGELOG, EL REMAKE (02/11/2026). Dlx: «terminar de remakear las restantes». Se ve con `?prev=remake` (App.jsx
-// `REMAKE`); sin la marca sigue cambios.jsx. Lee el mismo `cambios.json` y abre lo mismo con un link (`#/cambios/4.18`),
+// 📜 EL CHANGELOG, EL REMAKE (02/11/2026). Dlx: «terminar de remakear las restantes»; para todos desde el mismo día
+// («Publica y haz todo»), en lugar de cambios.jsx. Lee el mismo `cambios.json` y abre lo mismo con un link (`#/cambios/4.18`),
 // con lo que dejó el research de 21st (scratchpad/remake2/research_publicaciones_cambios.md):
 // - POR MES: el más nuevo abierto, los anteriores en una fila con cuántas versiones (eran 323 en una sola lista de días).
 // - UN DÍA CERRADO DICE QUÉ TRAE: sus títulos, y no sólo «6 versiones». Abierto, cada versión con su título a la vista y

@@ -1,5 +1,5 @@
-// 🏟️ SERVIDOR, PAÍS Y CREW, EL REMAKE (02/11/2026). Dlx: «terminar de remakear las restantes». Se ven con `?prev=remake`
-// (App.jsx `REMAKE`); sin la marca siguen servidor.jsx y grupo.jsx. Las tres son la misma familia —una portada con el
+// 🏟️ SERVIDOR, PAÍS Y CREW, EL REMAKE (02/11/2026). Dlx: «terminar de remakear las restantes»; para todos desde el mismo
+// día («Publica y haz todo»), en lugar de servidor.jsx y grupo.jsx. Las tres son la misma familia —una portada con el
 // emblema, sus números, su gente y «los otros»— y desde acá salen del mismo esqueleto, con lo que dejó el research de 21st
 // (scratchpad/remake2/research_entidades.md):
 // - LA PORTADA: el emblema con la forma de cada una (el logo cuadrado del servidor, la bandera 3:2, el escudo redondo de

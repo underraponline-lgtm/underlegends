@@ -1,21 +1,16 @@
-// Publicaciones, rehecha (`#/publicaciones`). Dlx, 02/10/2026: «quiero que hagas lo de publicaciones pero quizás algo
-// más para que enganche a las personas o interactivo», y con el plan: «Dale, me gusta como lo tienes planeado». Es el
-// muro de siempre (bot/muro.py: lo que pasa en la Liga, contado solo, y los anuncios de todos los servidores), ahora
-// día por día y con lo de verdad de cada cosa —la carta, la letra, el logo—; las encuestas de la semana para votar ahí
-// mismo; y 👏 Felicitar en los logros, que le llega al teléfono a quien felicitan. Para todos desde la 1.99 (`PROPIAS`
-// de App.jsx y web/montar.py, hasta que app.js se borró el 27/10/2026).
+// Las piezas del muro (bot/muro.py: lo que pasa en la Liga, contado solo, y los anuncios de todos los servidores) que
+// usan otras páginas: cada publicación (`Pub`), con lo de verdad de cada cosa —la carta, la letra, el logo— y
+// 👏 Felicitar en los logros, que le llega al teléfono a quien felicitan; las cartas nuevas de un día (`Cartas`), y
+// `PLATAFORMA`. Las usan el perfil, la página de cada servidor y Publicaciones, que es publicaciones2.jsx desde el
+// 02/11/2026 (Dlx: «Publica y haz todo»). La página de antes —la de la 1.99— vivía acá y se borró al publicar el remake.
 //
 // ⚠️ NO SOBRECARGAR (Dlx, 02/10: «la cosa no es sobrecargar las cosas»): las cartas nuevas de un mismo día van en UNA
 // publicación —eran 46 de 80 renglones—, y Felicitar va sólo en los logros de verdad (campeón, rango, Most Wanted).
-import { Fragment, useMemo, useState } from 'react';
 import { MESES, ksDe, limpio, num, siglaDe } from './liga.js';
 import { Escudo, escudoDe } from './escudo.jsx';
-import { Cara, Carta, Ico, Vacio, accion, promoAbierta, useCampana } from './piezas.jsx';
+import { Cara, Carta, Ico, accion, promoAbierta } from './piezas.jsx';
 import { Miniatura, abrirVideo } from './video.jsx';
-import { Elegido, X2 } from './encuestas.jsx';
 
-// 🖼️ el flyer de una liga es un anuncio (14/10/2026): lo publica su servidor, no es un logro de nadie
-const ANUNCIOS = { anuncio: 1, liga: 1, flyer: 1 };
 // 📣 las promociones de los servidores (bot/promos.py, 16/10/2026): su pestaña, y no van en «En la Liga»
 // `dc` y `web` sólo los agrega Dlx a mano (bot/promos.py `a_mano()`, 20/10/2026)
 export const PLATAFORMA = { yt: 'YouTube', sp: 'Spotify', sc: 'SoundCloud', ig: 'Instagram', tt: 'TikTok', dc: 'Discord', web: 'la página' };
@@ -259,175 +254,5 @@ export function Cartas({ liga, xs }) {
         </div>
       </div>
     </article>
-  );
-}
-
-// ── lo más felicitado de la semana (al costado en la compu) ────────────────────────────────────────────────────────
-function MasFelicitado({ liga, pubs, A }) {
-  const cu = (it) => Number((it.id && A.cu[it.id]) || 0);
-  const top = pubs.filter((it) => LOGROS[it.tipo] && cu(it) > 0).sort((a, b) => cu(b) - cu(a)).slice(0, 3);
-  if (!top.length) return <p className="pub-tx">Todavía nadie felicitó a nadie esta semana. El primer 👏 puede ser el tuyo.</p>;
-  return (
-    <ol className="pub-top">
-      {top.map((it) => {
-        const k = ksDe(it)[0];
-        const quien = (it.quien || []).map(limpio).join(' y ');
-        const que = it.tipo === 'campeon' ? limpio(it.ev) : it.tipo === 'rango' ? 'rango ' + it.rg
-          : it.tipo === 'pase' || it.tipo === 'sorteo' ? 'Pase de rapero' : it.tipo === 'ligahito' ? limpio(it.ln) : 'Most Wanted';
-        return (
-          <li key={it.id}><Cara liga={liga} k={k || ''} nombre={quien} cls="cara pub-top-cara" />
-            <span><b>{quien}</b><small>{que}</small></span><em>👏 {num(cu(it))}</em></li>
-        );
-      })}
-    </ol>
-  );
-}
-
-// las encuestas de la semana, en el muro: se vota ahí mismo (en la columna de al lado se hacían más altas que la
-// pantalla). ⚠️ NO SON LO PRIMERO QUE SE VE (Dlx, 02/10: «que lo de encuestas no sea lo primero que uno vea… si uno ya
-// votó en ambas que no aparezca encuestas en lo primero sino en lo último»): van después del primer día, y al final del
-// muro si ya votaste en todas las abiertas —la regla del panel del Inicio (`Encuestas` de encuestas.jsx)—
-function Encuestas({ liga, enc }) {
-  const x2 = liga.encuesta('x2');
-  const el = liga.encuesta('elegido');
-  // en el teléfono, de a una con pestañas: las dos juntas ocupaban una pantalla entera antes de «Hoy»
-  const [cual, setCual] = useState('x2');
-  if ((!x2 && !el) || !enc) return null;
-  const ver = x2 && el ? cual : (x2 ? 'x2' : 'el');
-  return (
-    <section className="pub-encs" aria-label="Encuestas">
-      <h2 className="pub-dh">Encuestas<small>vota antes de que cierren</small></h2>
-      {x2 && el ? (
-        <div className="pub-enc-tabs" role="tablist">
-          <button type="button" role="tab" aria-selected={ver === 'x2'} className={ver === 'x2' ? 'on' : ''} onClick={() => setCual('x2')}>El ×{String(x2.x || 2).replace('.', ',')}</button>
-          <button type="button" role="tab" aria-selected={ver === 'el'} className={ver === 'el' ? 'on' : ''} onClick={() => setCual('el')}>El Elegido</button>
-        </div>
-      ) : null}
-      <div className={'pub-enc' + (x2 && el ? ' dos' : '')}>
-        {x2 ? <div className={'pub-enc-i' + (ver === 'x2' ? ' on' : '')}><X2 liga={liga} enc={enc} E={x2} /></div> : null}
-        {el ? <div className={'pub-enc-i' + (ver === 'el' ? ' on' : '')}><Elegido liga={liga} enc={enc} E={el} /></div> : null}
-      </div>
-    </section>
-  );
-}
-// 🔔 que te llegue cuando te felicitan: la campana activa y vinculada con tu Discord. Sin eso, Felicitar no le llega a
-// nadie al teléfono. Se va sola cuando está todo
-function Avisame() {
-  const e = useCampana();
-  const C = window.Campana;
-  if (!e || !C || (e.activa && e.yo && e.yo.id)) return null;
-  const puede = e.soporta && !e.negado;
-  return (
-    <section className="pub-bloque">
-      <h2 className="evp-h2">Que te llegue</h2>
-      <p className="pub-tx">Cuando te felicitan, cuando alguien te sigue, cuando la Liga publica algo de quien sigues y cuando te toca pelear: un aviso en este dispositivo. Nunca por DM.</p>
-      {!puede ? <a className="pub-a" href="#/avisos">Cómo activarlos</a>
-        : !e.activa ? <button type="button" className="btn verde chico pub-avb" onClick={() => C.activar()}><Ico n="campana" t={16} />Activar avisos</button>
-          : <button type="button" className="btn borde2 chico pub-avb" onClick={() => C.vincular()}>Vincular con mi Discord</button>}
-      {e.msg ? <p className="evp-msg" role="status">{e.msg}</p> : null}
-    </section>
-  );
-}
-// a quién seguís: las caras, y un toque muestra sólo lo suyo
-function Sigo({ liga, sigo, onVer }) {
-  return (
-    <div className="pub-sigo">
-      <ul>{sigo.slice(0, 8).map((k) => { const f = liga.T[k]; return f ? <li key={k}><a href={'#/r/' + encodeURIComponent(k)} title={limpio(f.n)}><Cara liga={liga} k={k} nombre={f.n} cls="cara pub-sigo-c" /></a></li> : null; })}</ul>
-      <button type="button" className="pub-a" onClick={onVer}>Ver sólo lo suyo</button>
-    </div>
-  );
-}
-
-export function Publicaciones({ liga, enc }) {
-  const A = useAplausos();
-  const [fil, setFil] = useState('');
-  const [ver, setVer] = useState(40);
-  // ¿ya votaste en todas las abiertas? Se decide al abrir la página, como en el Inicio: si cambiara al votar, lo que
-  // estás mirando se te iría de abajo del dedo
-  const [votaste] = useState(() => {
-    const ab = [liga.encuesta('x2'), liga.encuesta('elegido')].filter(Boolean);
-    return ab.length > 0 && ab.every((E) => !!(enc && enc.mio && enc.mio[E.id]));
-  });
-  const sigo = liga.sigue || [];
-  const todos = liga.muro || [];
-  const pubs = useMemo(() => todos.filter((it) => {
-    if (fil === 'sigo') return ksDe(it).some((k) => sigo.includes(k));
-    if (fil === 'liga') return !ANUNCIOS[it.tipo] && it.tipo !== 'promo';
-    if (fil === 'anuncios') return !!ANUNCIOS[it.tipo];
-    if (fil === 'promos') return it.tipo === 'promo';
-    return true;
-  }), [todos, fil, sigo]);
-  // por día, y en cada día las cartas nuevas juntas en el lugar de la primera
-  const dias = useMemo(() => {
-    const out = [];
-    pubs.slice(0, ver).forEach((it) => {
-      const k = liga.diaClave(it.t);
-      let d = out[out.length - 1];
-      if (!d || d.k !== k) { d = { k, xs: [], cartas: null }; out.push(d); }
-      if (it.tipo === 'tarjeta') {
-        if (!d.cartas) { d.cartas = { tipo: 'tarjetas', xs: [] }; d.xs.push(d.cartas); }
-        d.cartas.xs.push(it);
-      } else d.xs.push(it);
-    });
-    return out;
-  }, [pubs, ver, liga]);
-  const hoyK = liga.diaClave(liga.ahora);
-  const tituloDia = (k) => {
-    if (k === hoyK) return 'Hoy';
-    const f = liga.fechaLarga(k + 'T16:00:00Z');
-    return f.charAt(0).toUpperCase() + f.slice(1);
-  };
-  const semana = (liga.muro || []).filter((it) => (liga.ahora - new Date(it.t)) < 7 * 86400000);
-  const encs = fil !== 'anuncios' ? <Encuestas liga={liga} enc={enc} /> : null;
-  return (
-    <>
-      <div className="escena pub-esc" style={{ '--mo-c': '#E41373', '--mo-o': 0.85 }}>
-        <section className="pub-cab">
-          <span className="tag">PUBLICACIONES · {liga.temp}</span>
-          <h1 className="hero-ev largo">Publicaciones</h1>
-          <p className="hero-p">Lo que pasa en la Liga, contado solo, y los anuncios de todos los servidores. Felicita a quien gana: le llega al teléfono.</p>
-        </section>
-      </div>
-      <nav className="pub-fil" aria-label="Qué ver">
-        {[['', 'Todo'], ['liga', 'En la Liga'], ['anuncios', 'Anuncios'], ['promos', 'Promos']].concat(sigo.length ? [['sigo', '★ A quien sigo']] : []).map(([v, t]) => (
-          <button type="button" key={v || 'todo'} className={fil === v ? 'on' : ''} aria-pressed={fil === v} onClick={() => { setFil(v); setVer(40); }}>{t}</button>
-        ))}
-      </nav>
-      <div className="pub-t2">
-        <main className="pub-feed">
-          {dias.length ? dias.map((d, n) => (
-            <Fragment key={d.k}>
-              <section className="pub-dia aparece" aria-label={tituloDia(d.k)}>
-                <h2 className="pub-dh">{tituloDia(d.k)}</h2>
-                {d.xs.map((it, i) => (it.tipo === 'tarjetas' ? <Cartas key={'c' + i} liga={liga} xs={it.xs} />
-                  : <Pub key={it.id || it.tipo + it.t + i} liga={liga} it={it} A={A} />))}
-              </section>
-              {n === 0 && !votaste ? encs : null}
-            </Fragment>
-          )) : (
-            <>
-              {fil === 'sigo'
-                ? <Vacio titulo="Nada todavía de la gente que sigues" texto="Cuando ganen, suban de rango o saquen carta, aparece acá."
-                  acciones={[['Ver el ranking y seguir a alguien', '#/ranking'], ['Ver todo', () => { setFil(''); setVer(40); }, 'borde2']]} />
-                : <Vacio titulo="Todavía no pasó nada" texto="Cuando se juegue el primer evento, aparece acá solo."
-                  acciones={[['Ver los eventos', '#/eventos']]} />}
-              {!votaste ? encs : null}
-            </>
-          )}
-          {pubs.length > ver ? <button type="button" className="btn borde2 chico pub-mas-b" onClick={() => setVer(ver + 40)}>Ver más</button> : null}
-          {votaste ? encs : null}
-        </main>
-        <aside className="pub-der">
-          <div className="pub-der-in">
-            <section className="pub-bloque"><h2 className="evp-h2">Lo más felicitado</h2><MasFelicitado liga={liga} pubs={semana} A={A} /></section>
-            <Avisame />
-            {sigo.length ? <section className="pub-bloque"><h2 className="evp-h2">A quién sigues</h2><Sigo liga={liga} sigo={sigo} onVer={() => { setFil('sigo'); setVer(40); }} /></section> : null}
-          </div>
-        {fil === 'promos' ? <p className="pub-promo-paga">Lo que comparten los raperos en el canal de promoción de su servidor, y los videos de
-          nuestros participantes que promociona la Liga. Cada promo está una semana (la tuya la puedes alargar en la <a href="#/tienda">Tienda</a>).
-          Abrilas con tu cuenta de Discord: cada una te da <b>50 Puntos de Tienda</b> (hasta 3 por día) y suma a tu Pase.</p> : null}
-        </aside>
-      </div>
-    </>
   );
 }

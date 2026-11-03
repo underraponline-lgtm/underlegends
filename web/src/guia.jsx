@@ -1,23 +1,12 @@
-// La Guía, rehecha (`#/guia`). Dlx, 02/10/2026: «reworkeemos GUÍA», y al plan —arranca con «cómo empezar» en tres pasos y
-// sigue con un índice: las tarjetas, los puntos, los rangos, el Most Wanted, la semana, las palabras y las preguntas—:
-// «4. A». Para todos desde la 2.02 (Dlx, 03/10/2026: «2. A»).
+// Los textos de la Guía (`#/guia`): las palabras, las preguntas, la semana, el Most Wanted y la Tienda, y lo que pide
+// cada tarjeta dicho para alguien nuevo. La página es guia2.jsx desde el 02/11/2026 (Dlx: «Publica y haz todo») y los
+// importa de acá: hay una sola copia. La Guía de antes —la de la 2.02 (Dlx, 03/10/2026: «2. A»)— vivía en este archivo
+// y se borró al publicar el remake.
 //
-// ⚠️ LOS NÚMEROS SALEN DE DONDE SE CALCULAN, como en la de app.js: los requisitos de `comun/requisitos.py`, los rangos de
-// `comun/rangos.py`, los puntos de `Config` y los pesos de `sheet/ovr.py` y `sheet/competitivo.py` (`_guia()` de
-// bot/subir_web.py). Acá no se escribe ninguno. Lo que es texto —las palabras, las preguntas— es el de la Guía de
-// app.js (index.html), ordenado por tema.
-import { Suspense, lazy, useEffect, useState } from 'react';
-import TAGS from './tags_catalogo.json';
-import { num } from './liga.js';
-import { Carta, ConMas, Medalla, PUESTO_MEDALLA } from './piezas.jsx';
+// ⚠️ LOS NÚMEROS SALEN DE DONDE SE CALCULAN: los requisitos de `comun/requisitos.py`, los rangos de `comun/rangos.py`,
+// los puntos de `Config` y los pesos de `sheet/ovr.py` y `sheet/competitivo.py` (`_guia()` de bot/subir_web.py). Acá no
+// se escribe ninguno. Lo que es texto es el de la Guía de app.js (index.html), ordenado por tema.
 import * as RQ from './requisitos.js';
-import CSS_PAGINA from './css/guia.css?inline';
-import { usarCss } from './css.js';
-
-// 🎨 su CSS, con su pedazo (web/src/css/guia.css)
-usarCss('guia', CSS_PAGINA);
-
-const PrimerosPasos = lazy(() => import('./tutorial.jsx').then((m) => ({ default: m.PrimerosPasos })));
 
 // ✍️ lo que pide cada tarjeta, dicho para alguien nuevo (Dlx, 07/10/2026: «sé más descriptivo»). El número sale del
 // payload («10 eventos», de `comun/requisitos.py`); qué es y cómo se consigue, de `requisitos.js`
@@ -28,11 +17,6 @@ export const pideLargo = (p) => {
   const m = /^(\d+)\s+(.+)$/.exec(p);
   return m ? RQ.queEs(m[2], Number(m[1])) : p;
 };
-
-export const SECCIONES = [
-  ['empezar', 'Cómo empezar'], ['tarjetas', 'Tarjetas'], ['tags', 'Los TAG'], ['puntos', 'Puntos'], ['rangos', 'Rangos'],
-  ['mw', 'Most Wanted'], ['semana', 'La semana'], ['palabras', 'Palabras'], ['preguntas', 'Preguntas'],
-];
 
 // las palabras de la Liga, por tema (el texto de la Guía de siempre)
 export const MW_TIENDA = [
@@ -96,178 +80,3 @@ export const PREGUNTAS = [
 ];
 export const NOMBRE_EV = { '16+': '16 o más', '8-15': '8 a 15', '4-7': '4 a 7' };
 export const PUESTOS = ['Campeón', 'Subcampeón', 'Tercero', 'Cuarto', 'Semifinal', 'Cuartos', 'Octavos', 'Dieciseisavos'];
-const MEDALLA = PUESTO_MEDALLA;
-
-const Lista = ({ xs }) => (
-  <dl className="gu-glos">{xs.map(([t, d]) => <div key={t}><dt>{t}</dt><dd>{d}</dd></div>)}</dl>
-);
-
-// 🏷️ LOS TAG DE LAS TARJETAS (Dlx, 19/10/2026, «me gusta todo», a «un catálogo de TAGs en la Guía… cuáles hay, qué
-// pide cada uno y cuáles tenés vos»). El catálogo es `tags_catalogo.json`, la copia de `sheet/catalogo_tags.py` (CI la
-// compara contra las cuatro cascadas de verdad); cuál tiene cada uno lo trae `/api/tags` al abrir la Guía, y de ahí
-// sale también cuánta gente tiene cada uno: lo raro se ve raro
-const CARTAS_TAG = [['temporada', 'Temporada'], ['competitivo', 'Competitiva'], ['servidor', 'Servidor'], ['pais', 'País']];
-function TagsCatalogo({ liga }) {
-  const [cual, setCual] = useState('temporada');
-  const [de, setDe] = useState(null);
-  useEffect(() => {
-    let vivo = true;
-    fetch('/api/tags', { headers: { accept: 'application/json' } }).then((r) => (r.ok ? r.json() : null))
-      // sin respuesta, sin números: «0 lo tienen» diría algo que no se sabe
-      .then((d) => { if (vivo) setDe((d && d.de) || null); }).catch(() => { if (vivo) setDe(null); });
-    return () => { vivo = false; };
-  }, []);
-  const col = CARTAS_TAG.findIndex(([c]) => c === cual);
-  const lista = (TAGS.cat || {})[cual] || [];
-  const cuantos = lista.map(() => 0);
-  Object.values(de || {}).forEach((v) => { const i = (v || [])[col]; if (i >= 0 && i < cuantos.length) cuantos[i] += 1; });
-  const yo = liga.yo && de ? (de[liga.yo.k] || null) : null;
-  const mios = yo ? CARTAS_TAG.map(([c, n], j) => [n, yo[j] >= 0 ? ((TAGS.cat[c] || [])[yo[j]] || [])[0] : '']).filter((x) => x[1]) : [];
-  return (
-    <>
-      {mios.length ? (
-        <div className="gu-tags-tuyos"><b>Los tuyos hoy</b>{mios.map(([n, t]) => <span key={n}><small>{n}</small>{t.replace('%d', '')}</span>)}</div>
-      ) : null}
-      <div className="gu-tabs" role="tablist" aria-label="Los TAG de cada tarjeta">
-        {CARTAS_TAG.map(([c, n]) => (
-          <button key={c} type="button" role="tab" aria-selected={c === cual} className={c === cual ? 'on' : ''} onClick={() => setCual(c)}>
-            {n}<small>{((TAGS.cat || {})[c] || []).length}</small></button>
-        ))}
-      </div>
-      <ul className="gu-tags">{lista.map(([t, nivel, pide], i) => {
-        const tuyo = yo && yo[col] === i;
-        return (
-          <li key={t} className={tuyo ? 'tuyo' : ''}>
-            {/* ⚠️ `gu-n1`… y no `t1`…: `.t3` de estilo.css es una grilla de tres columnas, y el TAG raro la heredaba */}
-            <span className={'gu-tag gu-n' + String(nivel).slice(1)}>{t.replace(' x%d', ' ×N').replace('%d', 'N')}</span>
-            <span className="gu-tag-p">{pide}<small>{(TAGS.niveles || {})[nivel] || ''}{de ? ' · ' + (cuantos[i] === 1 ? '1 lo tiene' : cuantos[i] + ' lo tienen') : ''}
-              {tuyo ? ' · el tuyo' : ''}</small></span>
-          </li>
-        );
-      })}</ul>
-      <p className="gu-nota">Cada tarjeta muestra uno solo: el primero de la lista que cumples. El mismo hecho no sale en dos tarjetas tuyas.</p>
-    </>
-  );
-}
-
-function Seccion({ id, titulo, bajada, children }) {
-  return (
-    <section className="gu-sec" id={'gu-' + id} aria-labelledby={'gu-t-' + id}>
-      <h2 className="pub-dh" id={'gu-t-' + id}>{titulo}</h2>
-      {bajada ? <p className="gu-baj">{bajada}</p> : null}
-      {children}
-    </section>
-  );
-}
-
-export function Guia({ liga, dc }) {
-  const G = liga.d.guia || {};
-  const P = G.puntos || {};
-  const reqs = liga.d.requisitos || [];
-  const rangos = liga.d.rangos || [];
-  // el ejemplo de cada tarjeta: la del mejor que la tiene (son cartas de verdad, no dibujos)
-  const ejemplo = (id) => liga.oficiales().find((f) => (f.c || []).includes(id));
-  const escs = ['16+', '8-15', '4-7'].filter((e) => ((P.tablas || {})[e] || []).length);
-  const vale = (e, p) => { const r = (P.tablas[e] || []).find((x) => x[0] === p); return r ? r[1] : null; };
-  const conRango = (liga.d.tabla || []).filter((f) => f.rg).length;
-  const ir = (id) => {
-    const el = document.getElementById('inicio-nuevo');
-    const s = el && el.shadowRoot ? el.shadowRoot.getElementById('gu-' + id) : null;
-    if (s) window.scrollTo({ top: s.getBoundingClientRect().top + window.scrollY - 70, behavior: 'smooth' });
-  };
-  const maxOvr = Math.max(1, ...(G.ovr || []).map((x) => x[1]));
-  const maxSc = Math.max(1, ...(G.score || []).map((x) => x[3]));
-  return (
-    <>
-      <div className="escena gu-esc" style={{ '--mo-c': '#E41373', '--mo-o': 0.85 }}>
-        <section className="gu-hero">
-          <span className="tag">GUÍA · {liga.temp}</span>
-          <h1 className="hero-ev largo">Cómo funciona</h1>
-          <p className="hero-p">Cómo empezar, qué pide cada tarjeta, cuántos puntos da cada puesto, de dónde sale tu rango y qué significa cada palabra.</p>
-        </section>
-      </div>
-      <nav className="pub-fil gu-fil" aria-label="Secciones de la Guía">
-        <ConMas max={5}>
-          {SECCIONES.map(([id, t]) => <button type="button" key={id} onClick={() => ir(id)}>{t}</button>)}
-        </ConMas>
-      </nav>
-      <div className="gu-cuerpo">
-        {/* 🧭 los pasos se tildan solos (Dlx, 12/10/2026, el tutorial: «A pero que no sea necesariamente con jugar»):
-            la misma lista que el Inicio le muestra a quien llegó hace poco. Ver tutorial.jsx */}
-        <Seccion id="empezar" titulo="Cómo empezar" bajada="Cinco pasos, y ninguno pide jugar: se tildan solos a medida que los haces.">
-          <Suspense fallback={null}><PrimerosPasos liga={liga} dc={dc} enGuia /></Suspense>
-        </Seccion>
-        {reqs.length ? (
-          <Seccion id="tarjetas" titulo="Tus tarjetas" bajada="Cada una pide algo distinto, porque cada una mide algo distinto. Mientras no llegues, sale la bloqueada con cuánto falta.">
-            <div className="gu-cartas">
-              {reqs.map((q) => {
-                const f = ejemplo(q.id);
-                return (
-                  <article key={q.id} className="gu-carta">
-                    {f ? <Carta liga={liga} k={f.k} cual={q.id} cls="gu-carta-c" abre={false} /> : <span className="gu-carta-c gu-sin" aria-hidden="true">?</span>}
-                    <div>
-                      <h3>{q.titulo}</h3>
-                      <p>{q.mide}</p>
-                      <ul>{(q.pide || []).map((p) => <li key={p}>{pideLargo(p)}</li>)}</ul>
-                    </div>
-                  </article>
-                );
-              })}
-              <article className="gu-carta prox"><span className="gu-carta-c gu-sin" aria-hidden="true">T2</span>
-                <div><h3>Histórica y Prime</h3><p>Todas tus temporadas juntas.</p><ul><li>Llegan con la Temporada 2</li></ul></div></article>
-            </div>
-          </Seccion>
-        ) : null}
-        <Seccion id="tags" titulo="Los TAG de las tarjetas" bajada="El cartelito de abajo de cada tarjeta. Hay de cuatro niveles —legendario, épico, raro y común— y cada uno pide algo.">
-          <TagsCatalogo liga={liga} />
-        </Seccion>
-        {escs.length ? (
-          <Seccion id="puntos" titulo="Cuántos puntos da cada puesto" bajada="Depende de cuánta gente juega la llave: ganar una de 16 vale más que ganar una de 6.">
-            <div className="gu-tabla">
-              <table>
-                <thead><tr><th>Puesto</th>{escs.map((e) => <th key={e}>{NOMBRE_EV[e]}<small>raperos</small></th>)}</tr></thead>
-                <tbody>{PUESTOS.filter((p) => escs.some((e) => vale(e, p) != null)).map((p) => (
-                  <tr key={p}><td><Medalla p={MEDALLA[p]} />{p}{p === 'Semifinal' ? <small>cuando no se juega el tercer puesto</small> : null}</td>
-                    {escs.map((e) => <td key={e}>{vale(e, p) == null ? '—' : num(vale(e, p))}</td>)}</tr>
-                ))}</tbody>
-              </table>
-            </div>
-            <ul className="gu-notas">
-              <li><b>Por equipos</b>: los puntos del puesto se reparten entre los integrantes.</li>
-              {(P.walkin || []).length ? <li><b>Walk-in</b>: quien entra saltándose rondas cobra {P.walkin.map((w, i) => w[1] + ' % con ' + w[0] + (i === P.walkin.length - 1 ? ' o más' : '') + (w[0] === 1 ? ' ronda' : ' rondas')).join(', ')}.</li> : null}
-              {P.revivido != null ? <li><b>Revivido</b>: su primer puesto entero y el {P.revivido} % del puesto final.</li> : null}
-            </ul>
-          </Seccion>
-        ) : null}
-        {rangos.length ? (
-          <Seccion id="rangos" titulo="Los ocho rangos" bajada={conRango ? 'El rango sale del Score competitivo y es uno solo por persona: da igual en todas tus tarjetas.'
-            : 'El rango sale del Score competitivo, y para tenerlo hacen falta 10 eventos en la temporada. Todavía no llegó nadie: acá van los umbrales.'}>
-            <div className="gu-rangos">{rangos.map((r) => (
-              <div key={r.r} className="gu-rg" style={{ '--c': r.color }}><b>{r.r}</b><small>{r.mat}</small><em>{r.min ? r.min + '+' : 'resto'}</em></div>
-            ))}</div>
-            <div className="gu-dos">
-              {(G.ovr || []).length ? (
-                <div className="gu-pesos"><h3>El OVR <small>de 40 a 99 · ordena la temporada</small></h3>
-                  {G.ovr.map((x) => <div key={x[0]} className="gu-p"><span>{x[0]}</span><i><u style={{ width: Math.round(100 * x[1] / maxOvr) + '%' }} /></i><b>{x[1]} %</b></div>)}
-                  <p className="gu-nota">Cada parte se compara con la mejor de la temporada.</p></div>
-              ) : null}
-              {(G.score || []).length ? (
-                <div className="gu-pesos"><h3>El Score <small>de 0 a 100 · da el rango</small></h3>
-                  {G.score.map((x) => <div key={x[1]} className="gu-p"><span>{x[0]} {x[1]}<small>{x[2]}</small></span><i><u style={{ width: Math.round(100 * x[3] / maxSc) + '%' }} /></i><b>{x[3]} %</b></div>)}
-                  {(G.conf || []).length ? <p className="gu-nota">Y se multiplica por la <b>confianza</b>, que premia jugar más: {G.conf.map((c, i) => c[1] + ' % ' + (i === G.conf.length - 1 ? 'desde ' : 'con ') + c[0] + (c[0] === 1 ? ' evento' : ' eventos')).join(', ')}.</p> : null}
-                </div>
-              ) : null}
-            </div>
-          </Seccion>
-        ) : null}
-        {/* 🎯 cuántos buscados, del payload (`most_wanted.CUANTOS`): decía «9 por semana» cuando ya eran 12 */}
-        <Seccion id="mw" titulo="Most Wanted, encuestas y Tienda"><Lista xs={MW_TIENDA.map(([t, d]) => [t, d.replace('{MW}', G.mw ? ' (' + G.mw + ')' : '')])} /></Seccion>
-        <Seccion id="semana" titulo="Lo de cada semana" bajada="Lo que cambia los puntos semana a semana, y lo que se gana."><Lista xs={SEMANA} /></Seccion>
-        <Seccion id="palabras" titulo="Las palabras de la Liga"><Lista xs={PALABRAS} /></Seccion>
-        <Seccion id="preguntas" titulo="Preguntas frecuentes">
-          <div className="gu-faq">{PREGUNTAS.map(([q, a]) => <details key={q}><summary>{q}</summary><p>{a}</p></details>)}</div>
-        </Seccion>
-      </div>
-    </>
-  );
-}

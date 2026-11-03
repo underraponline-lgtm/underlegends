@@ -11,6 +11,21 @@
  ],
  "cambios": [
   {
+   "version": "4.20",
+   "dia": "2026-11-02",
+   "cuando": "2026-11-02T22:55:00-05:00",
+   "titulo": "Siete páginas nuevas",
+   "items": [
+    "**Publicaciones**: lo importante en caja y lo demás en renglones, lo que se repite junto por día, filtros con cuántos hay y «NUEVO» en lo que no viste desde tu última visita.",
+    "**Tienda**: tu billetera en tres números, el precio por cabeza con su barra hasta el tope y lo cobrado como un libro: quién cazó a quién.",
+    "**Guía**: un buscador que te lleva a la respuesta, un índice que sigue la lectura y los TAG ordenados por rareza.",
+    "**Servidores, países y crews**: las tres páginas con el mismo diseño y un índice arriba; la de cada crew trae su semana y su tier al lado de su gente.",
+    "**Salón de la fama**: los MES AWARDS con cuántos votaron y tu voto marcado, los récords con el número primero, las insignias con su rareza y la figura de cada semana con sus puntos.",
+    "**Socios**: un muro con los logos, los servidores que ya jugaron con su número, y qué hace el bot en tu servidor y qué nunca hace.",
+    "**Changelog**: por mes, con un buscador por versión, por título o por cambio."
+   ]
+  },
+  {
    "version": "4.19",
    "dia": "2026-11-02",
    "cuando": "2026-11-02T20:30:00-05:00",

@@ -1,5 +1,5 @@
-// 🏛️ EL SALÓN DE LA FAMA, EL REMAKE (02/11/2026). Dlx: «terminar de remakear las restantes». Se ve con `?prev=remake`
-// (App.jsx `REMAKE`); sin la marca sigue salon.jsx. Lo mismo, con lo que dejó el research de 21st
+// 🏛️ EL SALÓN DE LA FAMA, EL REMAKE (02/11/2026). Dlx: «terminar de remakear las restantes»; para todos desde el mismo
+// día («Publica y haz todo»), en lugar de salon.jsx. Lo mismo, con lo que dejó el research de 21st
 // (scratchpad/remake2/research_tienda_salon_guia_socios.md):
 // - LOS NÚMEROS DE ARRIBA LLEVAN A SU SECCIÓN, y un índice pegado arriba.
 // - LOS VOTOS que se leen honestos: una pista fina de % debajo del nombre (no la fila entera pintada), cuántos votos van

@@ -103,17 +103,3 @@ export function QueGana({ ejemplos }) {
     </>
   );
 }
-
-// lo que hace el bot en un servidor socio, y lo que no (para el miedo a un «bot de raid»: ver docs de Socios)
-export function BotHace() {
-  return (
-    <div className="soc-bloque">
-      <h3>Qué hace el bot en tu servidor</h3>
-      <ul>
-        <li><b>Lee los anuncios y las llaves</b>, para cargar cada evento solo.</li>
-        <li><b>Crea las invitaciones de la Liga</b>, para que la gente llegue a tu servidor y a tus inscripciones.</li>
-        <li><b>No toca los mensajes de nadie</b> y no le manda mensajes privados a nadie de tu servidor.</li>
-      </ul>
-    </div>
-  );
-}

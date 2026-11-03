@@ -1,5 +1,5 @@
-// 🛒 LA TIENDA, EL REMAKE (02/11/2026). Dlx: «terminar de remakear las restantes». Se ve con `?prev=remake` (App.jsx
-// `REMAKE`); sin la marca sigue la de tienda.jsx. Lo mismo que hace hoy, ordenado como la economía de los Puntos de
+// 🛒 LA TIENDA, EL REMAKE (02/11/2026). Dlx: «terminar de remakear las restantes»; para todos desde el mismo día
+// («Publica y haz todo»), en lugar de la de tienda.jsx. Lo mismo que hacía, ordenado como la economía de los Puntos de
 // Tienda, con lo que dejó el research de 21st (scratchpad/remake2/research_tienda_salon_guia_socios.md):
 // - LA BILLETERA ARRIBA, EN TRES: saldo, lo que tienes en juego (tus precios de la semana) y lo que cobraste cazando.
 // - EN QUÉ SE USAN HOY: el precio por cabeza no es lo único (alargar tu promo, fundar una crew, cambiarle el nombre o el

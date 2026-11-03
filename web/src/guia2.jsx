@@ -1,5 +1,5 @@
-// 📖 LA GUÍA, EL REMAKE (02/11/2026). Dlx: «terminar de remakear las restantes». Se ve con `?prev=remake` (App.jsx
-// `REMAKE`); sin la marca sigue la de guia.jsx. Es la misma Guía —los textos son los de guia.jsx, importados: hay una
+// 📖 LA GUÍA, EL REMAKE (02/11/2026). Dlx: «terminar de remakear las restantes»; para todos desde el mismo día («Publica
+// y haz todo»). Es la misma Guía —los textos son los de guia.jsx, importados: hay una
 // sola copia— ordenada para buscarse en vez de leerse de punta a punta (8.500 px en la compu, 14.600 en el celular), con
 // lo que dejó el research de 21st (scratchpad/remake2/research_tienda_salon_guia_socios.md):
 // - UN BUSCADOR para toda la Guía que encuentra la RESPUESTA y no sólo la sección: las palabras, la semana, los TAG, las

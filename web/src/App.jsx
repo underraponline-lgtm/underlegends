@@ -105,10 +105,10 @@ function anotarUnaVez(k) {
       body: JSON.stringify({ ev: k }), keepalive: true }).catch(() => {});
   } catch (e) { /* sin almacenamiento, no se cuenta */ }
 }
-// 🛠️ EL REMAKE DE LAS PÁGINAS QUE FALTABAN (Dlx, 02/11/2026: «terminar de remakear las restantes… luego juzgaré cada
-// página»): las nuevas viven en su propio archivo (`<página>2.jsx`) y se ven sólo con `?prev=remake` en el navegador de
-// quien las prueba; sin la marca, todos siguen viendo las de hoy. Al aprobarse una, su archivo nuevo reemplaza al viejo
-const REMAKE = (() => { try { return localStorage.getItem('lg:prev-remake') === '1' || /[?&]prev=remake\b/.test(location.search); } catch (e) { return false; } })();
+// 🛠️ EL REMAKE DE LAS PÁGINAS QUE FALTABAN (Dlx, 02/11/2026: «terminar de remakear las restantes»): las nuevas viven
+// en `<página>2.jsx`. Estuvieron unas horas detrás de `?prev=remake` y salieron para todos el mismo día (Dlx: «Publica y
+// haz todo… sube todo»; sus opiniones, después). Las viejas se borraron; lo que otras páginas les pedían prestado quedó
+// en publicaciones.jsx, guia.jsx y servidor.jsx
 const Tutorial = lazy(() => import('./tutorial.jsx').then((m) => ({ default: m.Tutorial })));
 // 🎮 la pantalla de bienvenida (19/10/2026): se baja sólo para quien llega por primera vez
 const Bienvenida = lazy(() => import('./bienvenida.jsx'));
@@ -117,19 +117,19 @@ const PrimerosPasos = lazy(() => import('./tutorial.jsx').then((m) => ({ default
 // pasaba de 120 a 133 KB comprimido (02/10/2026), y el Inicio es lo que abre todo el mundo, en el celular
 const Ranking = lazy(() => import('./ranking.jsx').then((m) => ({ default: m.Ranking })));
 const Eventos = lazy(() => import('./eventos.jsx').then((m) => ({ default: m.Eventos })));
-const Publicaciones = lazy(() => (REMAKE ? import('./publicaciones2.jsx') : import('./publicaciones.jsx')).then((m) => ({ default: m.Publicaciones })));
-const Socios = lazy(() => (REMAKE ? import('./socios2.jsx') : import('./socios.jsx')).then((m) => ({ default: m.Socios })));
-const Guia = lazy(() => (REMAKE ? import('./guia2.jsx') : import('./guia.jsx')).then((m) => ({ default: m.Guia })));
+const Publicaciones = lazy(() => import('./publicaciones2.jsx').then((m) => ({ default: m.Publicaciones })));
+const Socios = lazy(() => import('./socios2.jsx').then((m) => ({ default: m.Socios })));
+const Guia = lazy(() => import('./guia2.jsx').then((m) => ({ default: m.Guia })));
 const Tarjetas = lazy(() => import('./tarjetas.jsx').then((m) => ({ default: m.Tarjetas })));
 const Perfil = lazy(() => import('./perfil.jsx').then((m) => ({ default: m.Perfil })));
 const Llave = lazy(() => import('./llave.jsx').then((m) => ({ default: m.Llave })));
 const VisorCarta = lazy(() => import('./visor.jsx').then((m) => ({ default: m.VisorCarta })));
-const Tienda = lazy(() => (REMAKE ? import('./tienda2.jsx') : import('./tienda.jsx')).then((m) => ({ default: m.Tienda })));
+const Tienda = lazy(() => import('./tienda2.jsx').then((m) => ({ default: m.Tienda })));
 const Pase = lazy(() => import('./pase.jsx').then((m) => ({ default: m.Pase })));
 // 🏟️ las Ligas, su propia sección desde el 16/10/2026 (eran una pestaña del Ranking): ver ligas.jsx
 const LigasPagina = lazy(() => import('./ligas.jsx').then((m) => ({ default: m.LigasPagina })));
-// 🏛️ el Salón de la fama (16/10/2026): ver salon.jsx
-const SalonFama = lazy(() => (REMAKE ? import('./salon2.jsx') : import('./salon.jsx')).then((m) => ({ default: m.SalonFama })));
+// 🏛️ el Salón de la fama (16/10/2026): ver salon2.jsx
+const SalonFama = lazy(() => import('./salon2.jsx').then((m) => ({ default: m.SalonFama })));
 // 🏆 las competencias de la semana (26/10/2026): ver competencias.jsx
 const Competencias = lazy(() => import('./competencias.jsx').then((m) => ({ default: m.Competencias })));
 // 🎒 el Inventario como página (26/10/2026): ver tags_inv.jsx
@@ -165,10 +165,10 @@ function AvisoWeb({ aviso }) {
   );
 }
 const PaginaVerificar = lazy(() => import('./cuenta.jsx').then((m) => ({ default: m.PaginaVerificar })));
-const Cambios = lazy(() => (REMAKE ? import('./cambios2.jsx') : import('./cambios.jsx')).then((m) => ({ default: m.Cambios })));
-const PerfilSv = lazy(() => (REMAKE ? import('./entidad2.jsx') : import('./servidor.jsx')).then((m) => ({ default: m.PerfilSv })));
-const PaginaCrew = lazy(() => (REMAKE ? import('./entidad2.jsx') : import('./grupo.jsx')).then((m) => ({ default: m.PaginaCrew })));
-const PaginaPais = lazy(() => (REMAKE ? import('./entidad2.jsx') : import('./grupo.jsx')).then((m) => ({ default: m.PaginaPais })));
+const Cambios = lazy(() => import('./cambios2.jsx').then((m) => ({ default: m.Cambios })));
+const PerfilSv = lazy(() => import('./entidad2.jsx').then((m) => ({ default: m.PerfilSv })));
+const PaginaCrew = lazy(() => import('./entidad2.jsx').then((m) => ({ default: m.PaginaCrew })));
+const PaginaPais = lazy(() => import('./entidad2.jsx').then((m) => ({ default: m.PaginaPais })));
 // ⏳ mientras baja una página: la misma barrita que la pantalla de carga (`#lg-carga`), en chico
 const Cargando = () => <div className="cargando" role="status"><span>Cargando…</span><i className="cargando-b" aria-hidden="true"><i /></i></div>;
 import { VentanaVideo } from './video.jsx';

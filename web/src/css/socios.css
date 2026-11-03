@@ -1,7 +1,8 @@
 /* 🎨 EL CSS DE SOCIOS, CON SU PEDAZO (19/10/2026; Dlx: «dale», a «partir el CSS por página»).
-   Salió de vivo.css: son las reglas cuyas clases usa SÓLO socios.jsx (`css_mover`, que lo mide con el árbol de imports
+   Salió de vivo.css: son las reglas cuyas clases usaba SÓLO socios.jsx (`css_mover`, que lo mide con el árbol de imports
    y postcss). Lo inyecta `usarCss()` (web/src/css.js) cuando ese pedazo se baja. ⚠️ Una clase nueva de esta página va
-   acá; si la usa también otra página o el Inicio, va en vivo.css. */
+   acá; si la usa también otra página o el Inicio, va en vivo.css. Desde el 02/11/2026 lo carga socios2.jsx, el remake,
+   que sigue usando sus cajas de «lo que gana tu servidor» (socios.jsx se borró) */
 .soc-tot{display:flex;flex-wrap:wrap;gap:8px 24px;margin:4px 0 6px}
 .soc-tot div{display:grid;gap:4px}
 .soc-tot dt{font:700 15px/1 "Barlow Condensed",sans-serif;letter-spacing:0.05em;color:#A5A5A0}

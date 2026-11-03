@@ -1,5 +1,5 @@
-// 🤝 SOCIOS, EL REMAKE (02/11/2026). Dlx: «terminar de remakear las restantes». Se ve con `?prev=remake` (App.jsx
-// `REMAKE`); sin la marca sigue socios.jsx. Lo mismo, ordenado con lo que dejó el research de 21st
+// 🤝 SOCIOS, EL REMAKE (02/11/2026). Dlx: «terminar de remakear las restantes»; para todos desde el mismo día («Publica
+// y haz todo»), en lugar de socios.jsx. Lo mismo, ordenado con lo que dejó el research de 21st
 // (scratchpad/remake2/research_tienda_salon_guia_socios.md):
 // - EL MURO DE LOGOS EN LA PORTADA: cada servidor, con su color, lleva a su tarjeta.
 // - LOS QUE YA JUGARON, EN TARJETA Y CON SU ORDEN («01, 02…», por puntos); LOS QUE TODAVÍA NO, en renglones cortos bajo

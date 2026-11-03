@@ -1,7 +1,7 @@
 // 🏆 LOS MES AWARDS, LO QUE COMPARTEN LAS PÁGINAS (02/11/2026): el pedido de `/api/salon`, cada nominado, la categoría
 // que se vota y el reparto del cierre. Vivían en salon.jsx y los importaban la página de cada servidor, la Tienda y el
-// Salón nuevo; reemplazar salon.jsx por salon2.jsx al aprobar el remake los habría dejado sin de dónde salir (la crítica
-// de la tanda 2). Acá no cambia nada de cómo se ven ni de cómo se vota: es el mismo código, mudado.
+// Salón nuevo; borrar salon.jsx al publicar el remake los habría dejado sin de dónde salir (la crítica de la tanda 2).
+// Acá no cambia nada de cómo se ven ni de cómo se vota: es el mismo código, mudado.
 //
 // Lo arma el ciclo (`bot/mes_awards.py`) y se pide al abrir el Salón (`/api/salon`): no viaja en el lobby. Se vota con
 // las mismas reglas que El Elegido y el ×2 (`accion.votar`, `enc` de App.jsx): un voto por cuenta y por categoría, se

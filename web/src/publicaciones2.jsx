@@ -1,5 +1,5 @@
 // 📰 PUBLICACIONES, EL REMAKE (02/11/2026). Dlx: «terminar de remakear las restantes… tómate tu tiempo… haz research».
-// Se ve con `?prev=remake` (App.jsx `REMAKE`); sin la marca sigue la de publicaciones.jsx. Es el mismo muro (bot/muro.py:
+// Para todos desde el mismo día (Dlx: «Publica y haz todo»), en lugar de la de publicaciones.jsx. Es el mismo muro (bot/muro.py:
 // lo que pasa en la Liga, contado solo, y los anuncios de todos los servidores) con lo que dejó el research de 21st
 // (scratchpad/remake2/research_publicaciones_cambios.md):
 // - DOS DENSIDADES: los logros (campeón, rango, Most Wanted, Pase, MES AWARDS…) grandes y con 👏 Felicitar; lo que es
