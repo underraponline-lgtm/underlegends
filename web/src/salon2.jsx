@@ -378,13 +378,16 @@ function SalonPase({ liga }) {
 // 🔴 DE LOS PREMIOS DE CADA SEMANA (`semanas` de /api/salon, `mes_awards.figuras_semana()`) Y NO DE LAS INSIGNIAS, que
 // se guardan una vez por persona: armada con las insignias, la semana del 02/11 decía que no había habido figura, y era
 // Makmah, que ya la tenía del 26/10 (la crítica de la tanda 2). Con un Salón subido antes de eso, sin `semanas`, sale de
-// las insignias, y lo que falta no se dibuja: un «—» diría que no hubo
+// las insignias, y lo que falta no se dibuja: un «—» diría que no hubo. ⚠️ Y NO MIENTRAS LLEGA /api/salon: armada con
+// las insignias de mientras, la semana del 02/11 salía un momento sin su figura y después aparecía (medido en la página
+// publicada, a 1333). Hasta que llega, la sección no está, como los MES AWARDS
 function Figuras({ liga, perf }) {
   const S = useSalon();
+  if (!S) return null;
   const icono = (id) => ((liga.d.insignias || []).find((x) => x[0] === id) || [])[1] || '';
   // [día, [clave, nombre, pts] de la figura, ídem de la revelación]
   let filas;
-  if (S && Array.isArray(S.semanas)) {
+  if (Array.isArray(S.semanas)) {
     const de = (n, p) => { if (!n) return null; const f = liga.fila(n); return [f ? f.k : '', f ? f.n : n, p]; };
     filas = S.semanas.map(([fin, fn, fp, rn, rp]) => [liga.diaClave(fin), de(fn, fp), de(rn, rp)]).filter(([d]) => d);
   } else {
