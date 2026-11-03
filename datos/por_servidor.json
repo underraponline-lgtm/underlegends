@@ -10279,10 +10279,10 @@
     "racha": "0/0"
    },
    "FFA": {
-    "duelos": "17/29",
+    "duelos": "18/30",
     "ev": 34,
     "oro": 0,
-    "ovr": 69,
+    "ovr": 70,
     "pod": 6,
     "pts": 200101,
     "racha": "2/2",
@@ -11562,6 +11562,20 @@
     "pod": 0,
     "pts": 625,
     "racha": "0/0"
+   }
+  },
+  "tomyhilfiger1312🇾🇹": {
+   "FFA": {
+    "duelos": "0/1",
+    "ev": 1,
+    "oro": 0,
+    "ovr": 44,
+    "pod": 0,
+    "pts": 12500,
+    "racha": "0/0",
+    "tg": {
+     "nuevo": true
+    }
    }
   },
   "tomyhilfiger🇾🇹": {
