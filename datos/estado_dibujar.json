@@ -1,15 +1,15 @@
 {
  "v": 1,
- "cuando": "2026-11-03T04:38:52Z",
+ "cuando": "2026-11-03T05:11:03Z",
  "trabajo": "dibujar",
  "codigo": 0,
- "dur_s": 467.6,
+ "dur_s": 563.7,
  "pasos": [
   {
    "n": "2f",
    "que": "las fotos que faltan, de Discord a R2",
    "ok": true,
-   "s": 7.0
+   "s": 6.9
   },
   {
    "n": "2f2",
@@ -21,31 +21,31 @@
    "n": "3",
    "que": "qué cambió",
    "ok": true,
-   "s": 9.6
+   "s": 9.8
   },
   {
    "n": "4",
    "que": "las caras, desde R2",
    "ok": true,
-   "s": 21.4
+   "s": 27.8
   },
   {
    "n": "5",
    "que": "tanda 1 de 2 · 40 persona(s)",
    "ok": false,
-   "s": 366.0
+   "s": 452.6
   },
   {
    "n": "5b",
    "que": "las Bloqueadas",
    "ok": true,
-   "s": 6.3
+   "s": 9.0
   },
   {
    "n": "6",
    "que": "refrescar KV",
    "ok": true,
-   "s": 55.6
+   "s": 55.4
   }
  ],
  "fallas": [
@@ -55,7 +55,7 @@
   },
   {
    "paso": "5",
-   "que": "03_Servidor/generar.py Vilca"
+   "que": "03_Servidor/generar.py MTZ"
   }
  ],
  "ultimo_evento": {
@@ -66,25 +66,25 @@
  },
  "cuotas": {
   "kv": {
-   "write": 115,
-   "read": 15865
+   "write": 137,
+   "read": 18575
   },
   "objeto": {
-   "leidas": 1815043,
-   "escritas": 6139,
-   "pedidos": 3468
+   "leidas": 2054679,
+   "escritas": 6962,
+   "pedidos": 3914
   },
   "worker": {
-   "pedidos": 10397,
+   "pedidos": 10604,
    "errores": 1,
-   "sub": 11496,
+   "sub": 11705,
    "cortados": 1,
-   "p50_ms": 1.2,
-   "p99_ms": 13.85,
+   "p50_ms": 1.19,
+   "p99_ms": 13.88,
    "cpu": {
-    "total": 21872,
-    "objeto_10": 1899,
-    "worker_10": 306
+    "total": 22273,
+    "objeto_10": 1905,
+    "worker_10": 305
    }
   },
   "r2": {
