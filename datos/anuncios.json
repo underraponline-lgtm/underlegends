@@ -1,5 +1,5 @@
 {
- "cuando": "2026-11-03T21:27:10+00:00",
+ "cuando": "2026-11-03T21:55:59+00:00",
  "anuncios": [
   {
    "nombre": "¡SE LLEGÓ LA GRAN NOCHE!",
@@ -2992,6 +2992,47 @@
    "categoria_id": "867553625508282369"
   },
   {
+   "nombre": "Rayos y Centellas",
+   "servidor": "URBF",
+   "canal": "⋆🏆│Eventos",
+   "msg_id": "1567295516104990743",
+   "cuando": "2026-11-03T21:52:49",
+   "canal_id": "1511963470956990494",
+   "guild_id": "1467763447117778989",
+   "organizador": "Agustin51k",
+   "orgs": [
+    {
+     "n": "Agustin51k",
+     "id": "1114241587262783631"
+    }
+   ],
+   "autor_h": "2b0007b9eb8c6c42",
+   "cupos_texto": "8",
+   "inscriptos": null,
+   "cupo_total": null,
+   "rango": "(2k puntos de ascenso al primero y un campeonato)",
+   "modalidad": "1vs1",
+   "horario": "cuando se llenen inscripciones",
+   "fecha": "",
+   "premios": "",
+   "staff": {
+    "jurado": [
+     "Agustin51k"
+    ],
+    "host": [
+     "Agustin51k"
+    ],
+    "dj": [
+     "Agustin51k"
+    ]
+   },
+   "autor": "Agustin51k",
+   "staff_cuentas": {
+    "Agustin51k": "1114241587262783631"
+   },
+   "categoria_id": "1511963280128868504"
+  },
+  {
    "nombre": "COMPE CHILL V.2",
    "servidor": "URBF",
    "canal": "⋆🏆│Eventos",
@@ -3912,47 +3953,6 @@
    "rango": "(2k puntos de ascenso al primero y un campeonato)",
    "modalidad": "1vs1",
    "horario": "Cuando se llene",
-   "fecha": "",
-   "premios": "",
-   "staff": {
-    "jurado": [
-     "Carlos"
-    ],
-    "host": [
-     "Carlos"
-    ],
-    "dj": [
-     "Carlos"
-    ]
-   },
-   "autor": "Carlos",
-   "staff_cuentas": {
-    "Carlos": "734172184737480745"
-   },
-   "categoria_id": "1511963280128868504"
-  },
-  {
-   "nombre": "COMPE INVITACIONAL PA LOS JAJAS",
-   "servidor": "URBF",
-   "canal": "⋆🏆│Eventos",
-   "msg_id": "1544129810450743337",
-   "cuando": "2026-08-31T23:40:35",
-   "canal_id": "1511963470956990494",
-   "guild_id": "1467763447117778989",
-   "organizador": "@Carlos",
-   "orgs": [
-    {
-     "n": "Carlos",
-     "id": "734172184737480745"
-    }
-   ],
-   "autor_h": "608cfa4b650ba173",
-   "cupos_texto": "8",
-   "inscriptos": null,
-   "cupo_total": null,
-   "rango": "",
-   "modalidad": "1vs1",
-   "horario": "Ya",
    "fecha": "",
    "premios": "",
    "staff": {
@@ -5874,6 +5874,78 @@
   }
  ],
  "inscripciones": [
+  {
+   "servidor": "URBF",
+   "canal": "《📑》Inscripciones",
+   "texto": "Familiafortunayexito 🇫🇷",
+   "quien": "yatusabe_eldeuxss",
+   "discord_id": "1338567692239765617",
+   "msg_id": "1567296105870270527",
+   "cuando": "2026-11-03T21:55:10"
+  },
+  {
+   "servidor": "URBF",
+   "canal": "《📑》Inscripciones",
+   "texto": "Lvel 🇻🇪",
+   "quien": "soycoma__42587",
+   "discord_id": "1241407042195816459",
+   "msg_id": "1567296002258509858",
+   "cuando": "2026-11-03T21:54:45"
+  },
+  {
+   "servidor": "URBF",
+   "canal": "《📑》Inscripciones",
+   "texto": "makmah 🇻🇪",
+   "quien": "makmah_g",
+   "discord_id": "897942226955563068",
+   "msg_id": "1567295957417197610",
+   "cuando": "2026-11-03T21:54:35"
+  },
+  {
+   "servidor": "URBF",
+   "canal": "《📑》Inscripciones",
+   "texto": "Dominick el disonantico🇵🇪",
+   "quien": "equisde_xd23",
+   "discord_id": "1439048698142134436",
+   "msg_id": "1567295810813563073",
+   "cuando": "2026-11-03T21:54:00"
+  },
+  {
+   "servidor": "URBF",
+   "canal": "《📑》Inscripciones",
+   "texto": "erian",
+   "quien": "deslanofthemind",
+   "discord_id": "1055474244089286706",
+   "msg_id": "1567295689778528368",
+   "cuando": "2026-11-03T21:53:31"
+  },
+  {
+   "servidor": "URBF",
+   "canal": "《📑》Inscripciones",
+   "texto": "Sebita🇱🇷",
+   "quien": "malasiafighter",
+   "discord_id": "1357796427191029932",
+   "msg_id": "1567295662540849205",
+   "cuando": "2026-11-03T21:53:24"
+  },
+  {
+   "servidor": "URBF",
+   "canal": "《📑》Inscripciones",
+   "texto": "La matraca traca traca 🇲🇽🇦🇿🎸",
+   "quien": "sebs._.fs",
+   "discord_id": "1217564137383526470",
+   "msg_id": "1567295594832207935",
+   "cuando": "2026-11-03T21:53:08"
+  },
+  {
+   "servidor": "URBF",
+   "canal": "《📑》Inscripciones",
+   "texto": "Teo 🇨🇴",
+   "quien": "teitomc.",
+   "discord_id": "1503540314948898937",
+   "msg_id": "1567295592701366313",
+   "cuando": "2026-11-03T21:53:08"
+  },
   {
    "servidor": "FFA",
    "canal": "✦📝—inscripciones",
@@ -41801,78 +41873,6 @@
    "discord_id": "1548112739770040372",
    "msg_id": "1555326215760511017",
    "cuando": "2026-10-01T21:11:06"
-  },
-  {
-   "servidor": "FFA",
-   "canal": "✦📝—inscripciones",
-   "texto": "Pichulamc",
-   "quien": "dariel.ivo",
-   "discord_id": "578697503130779649",
-   "msg_id": "1555326088673239121",
-   "cuando": "2026-10-01T21:10:36"
-  },
-  {
-   "servidor": "FFA",
-   "canal": "✦📝—inscripciones",
-   "texto": "Sirpro 🇵🇪",
-   "quien": "sirpro2043",
-   "discord_id": "759605326357200947",
-   "msg_id": "1555325809030463550",
-   "cuando": "2026-10-01T21:09:29"
-  },
-  {
-   "servidor": "FFA",
-   "canal": "✦📝—inscripciones",
-   "texto": "Malva  🇨🇱",
-   "quien": "malvinitias",
-   "discord_id": "336579560550432769",
-   "msg_id": "1555325644475469939",
-   "cuando": "2026-10-01T21:08:50"
-  },
-  {
-   "servidor": "FFA",
-   "canal": "✦📝—inscripciones",
-   "texto": "Vilok 🇨🇱 (me lo pidio)",
-   "quien": "cronoxzito",
-   "discord_id": "1487658663148785734",
-   "msg_id": "1555325620370538527",
-   "cuando": "2026-10-01T21:08:44"
-  },
-  {
-   "servidor": "FFA",
-   "canal": "✦📝—inscripciones",
-   "texto": "Cinexfilo 🇻🇪",
-   "quien": "cinexfilosanity",
-   "discord_id": "781971857519804417",
-   "msg_id": "1555325569389035591",
-   "cuando": "2026-10-01T21:08:32"
-  },
-  {
-   "servidor": "FFA",
-   "canal": "✦📝—inscripciones",
-   "texto": "bootrax humilde🇵🇪",
-   "quien": "gianfraxruizescor11",
-   "discord_id": "1122273746099638354",
-   "msg_id": "1555325479509041213",
-   "cuando": "2026-10-01T21:08:10"
-  },
-  {
-   "servidor": "FFA",
-   "canal": "✦📝—inscripciones",
-   "texto": "Erian 🇩🇴",
-   "quien": "_5thofnovember",
-   "discord_id": "681588123699904563",
-   "msg_id": "1555325471510765664",
-   "cuando": "2026-10-01T21:08:08"
-  },
-  {
-   "servidor": "FFA",
-   "canal": "✦📝—inscripciones",
-   "texto": "Zignos 🇩🇴",
-   "quien": "emekultra",
-   "discord_id": "1071185986366742630",
-   "msg_id": "1555325318355488799",
-   "cuando": "2026-10-01T21:07:32"
   }
  ]
 }

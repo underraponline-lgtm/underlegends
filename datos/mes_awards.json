@@ -7732,6 +7732,32 @@
      ],
      "organizador": "@nachonc_",
      "cuentas": {}
+    },
+    "1567295516104990743": {
+     "sv": "URBF",
+     "nombre": "Rayos y Centellas",
+     "mo": "2026-11-03T21:52:49Z",
+     "staff": {
+      "jurado": [
+       "Agustin51k"
+      ],
+      "host": [
+       "Agustin51k"
+      ],
+      "dj": [
+       "Agustin51k"
+      ]
+     },
+     "orgs": [
+      {
+       "n": "Agustin51k",
+       "id": "1114241587262783631"
+      }
+     ],
+     "organizador": "Agustin51k",
+     "cuentas": {
+      "Agustin51k": "1114241587262783631"
+     }
     }
    },
    "ver": {
