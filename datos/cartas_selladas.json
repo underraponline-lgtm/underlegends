@@ -953,7 +953,7 @@
    "competitivo": "ecfd48996dc6:7d41d0503ea2",
    "pais": "23fd2ec1b373:ada55a12db94",
    "servidor": "d135a91747f9:decaf64d9256:3ce074",
-   "temporada": "924ff86b813b:ccd09f762e04"
+   "temporada": "d96f5ba3e035:ccd09f762e04"
   },
   "Luck": {
    "competitivo": "98aa67b54c91:0a48057cb351",
@@ -1476,9 +1476,9 @@
    "servidor": "38a7a76c11dd:decaf64d9256:90b2a5"
   },
   "SOL": {
-   "competitivo": "52cc9c64b0c1:7d41d0503ea2",
+   "competitivo": "764182953c21:7d41d0503ea2",
    "pais": "68c67510372f:ada55a12db94",
-   "servidor": "27b2541de365:decaf64d9256:99e3cc"
+   "servidor": "aa4f110582b8:decaf64d9256:99e3cc"
   },
   "SONIC_DORADITO": {},
   "SPD": {
@@ -1559,7 +1559,7 @@
    "competitivo": "d2836dedf6aa:7d41d0503ea2",
    "pais": "326caee50a94:ada55a12db94",
    "servidor": "74800ffea1fa:decaf64d9256:43d041",
-   "temporada": "40bb865922fb:ccd09f762e04"
+   "temporada": "5252f0de422b:ccd09f762e04"
   },
   "Soft": {},
   "Sombra": {
@@ -1980,5 +1980,5 @@
    "servidor": "7f8885a35a6d:decaf64d9256:93a344"
   }
  },
- "cuando": "2026-11-04T20:09:01+00:00"
+ "cuando": "2026-11-04T20:37:35+00:00"
 }
