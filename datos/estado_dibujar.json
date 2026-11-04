@@ -1,15 +1,15 @@
 {
  "v": 1,
- "cuando": "2026-11-04T05:29:00Z",
+ "cuando": "2026-11-04T05:45:00Z",
  "trabajo": "dibujar",
  "codigo": 0,
- "dur_s": 1350.6,
+ "dur_s": 773.0,
  "pasos": [
   {
    "n": "2f",
    "que": "las fotos que faltan, de Discord a R2",
    "ok": true,
-   "s": 7.1
+   "s": 7.2
   },
   {
    "n": "2f2",
@@ -21,49 +21,41 @@
    "n": "3",
    "que": "qué cambió",
    "ok": true,
-   "s": 10.0
+   "s": 10.4
   },
   {
    "n": "4",
    "que": "las caras, desde R2",
    "ok": true,
-   "s": 21.1
+   "s": 21.6
   },
   {
    "n": "5",
-   "que": "tanda 1 de 5 · 40 persona(s)",
+   "que": "tanda 1 de 3 · 40 persona(s)",
    "ok": false,
-   "s": 1244.2
+   "s": 671.8
   },
   {
    "n": "5b",
    "que": "las Bloqueadas",
    "ok": true,
-   "s": 6.0
+   "s": 6.8
   },
   {
    "n": "6",
    "que": "refrescar KV",
    "ok": true,
-   "s": 59.9
+   "s": 53.3
   }
  ],
  "fallas": [
   {
    "paso": "5",
-   "que": "03_Servidor/generar.py AGUSTÍN51K"
+   "que": "03_Servidor/generar.py Agus"
   },
   {
    "paso": "5",
-   "que": "03_Servidor/generar.py Jult"
-  },
-  {
-   "paso": "5",
-   "que": "03_Servidor/generar.py Mr Still Ballin"
-  },
-  {
-   "paso": "5",
-   "que": "03_Servidor/generar.py Tenor"
+   "que": "03_Servidor/generar.py Luck"
   }
  ],
  "ultimo_evento": {
@@ -74,24 +66,24 @@
  },
  "cuotas": {
   "kv": {
-   "write": 148,
-   "read": 19548
+   "write": 166,
+   "read": 21144
   },
   "objeto": {
-   "leidas": 1978107,
-   "escritas": 7495,
-   "pedidos": 3710
+   "leidas": 2104869,
+   "escritas": 8644,
+   "pedidos": 3825
   },
   "worker": {
-   "pedidos": 8999,
+   "pedidos": 8936,
    "errores": 0,
-   "sub": 10745,
+   "sub": 10682,
    "cortados": 0,
-   "p50_ms": 1.28,
-   "p99_ms": 15.5,
+   "p50_ms": 1.29,
+   "p99_ms": 15.51,
    "cpu": {
-    "total": 19718,
-    "objeto_10": 1858,
+    "total": 19595,
+    "objeto_10": 1862,
     "worker_10": 342
    }
   },
