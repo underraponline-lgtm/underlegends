@@ -2,12 +2,14 @@
 // otras siete ya hechas, «Publica y haz todo… sube todo». Es lo mismo que socio.jsx —el puntaje, lo que conviene, los
 // ajustes del bot, las semanas, cuándo hay actividad, su gente y las visitas—, ordenado como la página de cada servidor:
 // la misma portada y el mismo índice (entidad2.jsx), porque es su servidor visto por su dueño.
-// - EL PUNTAJE VA EN LA TIRA DE NÚMEROS, y abajo sus cuatro partes con lo que pesa cada una.
+// - EL PUNTAJE VA EN LA TIRA DE NÚMEROS, y abajo UNA SOLA BARRA de 0 a 100 partida en sus cuatro pesos (04/11/2026): lo
+//   lleno es el puntaje, y se ve de una dónde falta. Eran cuatro cajas que no decían cómo sumaban.
 // - LO QUE CONVIENE VA SEGUNDO: es lo que el dueño puede hacer hoy con lo que mira, con el número que lo respalda resaltado.
 // - CUÁNDO HAY ACTIVIDAD ES UNA TABLA: cada día con su gente por evento y lo lleno que está el resto de la Liga. El mejor
 //   día y el más lleno se marcan con la regla de las sugerencias (`MIN_MUESTRA` de bot/tiers.py): dicen lo mismo.
-// - LOS AJUSTES, EN TRES GRUPOS (en vivo, los avisos, tu gente), y lo guardado en un aviso que se ve desde donde estés:
-//   abajo de un formulario largo, el «Guardado» de antes quedaba fuera de la pantalla.
+// - LOS AJUSTES, POR LO QUE EL DUEÑO DECIDE (04/11/2026): dónde publica el bot (una tabla, cada cosa con su canal), cómo
+//   se porta (interruptores cuya frase dice lo que pasa) y dónde se usa /card. Cada uno se guarda solo y dice «Guardado»
+//   en su fila, que es donde estás mirando; el aviso de abajo queda para los errores.
 //
 // ⚠️ NO CALCULA NADA NUEVO: lo arma el ciclo (`panel()` de bot/tiers.py) y lo sirve el objeto sólo al dueño de cada
 // servidor (`panelSocio()` de bot/avisos.js); Dlx los ve todos. Pregunta en silencio: a Discord se va recién si la persona
@@ -35,6 +37,8 @@ const PARTES = [['actividad', 'Actividad', 35, 'Eventos por semana: con 2 llega 
   ['alcance', 'Alcance', 25, 'Raperos por evento y gente nueva.'],
   ['calidad', 'Calidad', 25, 'Llaves que el bot lee solo, anuncios que dicen quién organiza y pocos cancelados.'],
   ['comunidad', 'Comunidad', 15, 'Los nuevos que vuelven, las promos y las ligas.']];
+// a qué parte del panel lleva cada sugerencia (`sug_ir`, lo manda el ciclo: `sugerencias_ir()` de bot/tiers.py)
+const IR = { 'sp-cuando': 'Ver cuándo', 'sp-semanas': 'Ver las semanas', 'sp-gente': 'Ver tu gente', 'sp-puntaje': 'Ver el puntaje', 'sp-ajustes': 'Ver los ajustes' };
 const TIER = { 1: 'TIER 1 · SUMA AL RANKING', 2: 'TIER 2 · EL CALENDARIO Y LA CAMPANA', 3: 'TIER 3 · SU PÁGINA Y SUS LIGAS' };
 // lo que trae el panel, para quien todavía no entró
 const TRAE = [['copa', 'Su puntaje', 'De 0 a 100 con las últimas 4 semanas: lo que mira la Liga para el nivel de cada socio.'],
@@ -91,22 +95,25 @@ function Puntaje({ x }) {
   if (!x.puntos && !Object.values(x.partes || {}).some(Boolean)) {
     return <p className="sp-vacio">Todavía no hay con qué medirlo: el puntaje se mueve con tus eventos de las últimas 4 semanas.</p>;
   }
+  const filas = PARTES.map(([k, t, tope, que]) => ({ k, t, tope, que, v: (x.partes || {})[k] || 0 }));
+  const falta = filas.reduce((a, b) => (b.tope - b.v > a.tope - a.v ? b : a));
   return (
     <>
       {/* 📈 sólo contra 4 semanas de ESTA temporada: contra las de antes del arranque, todos «subían» */}
       {x.compara === false
         ? <p className="sp-tend">La comparación con las 4 semanas anteriores llega el <b>{fechaCorta(x.compara_desde)}</b>, cuando la temporada tenga 8 semanas.</p>
         : <p className={'sp-tend' + (dif > 0 ? ' sube' : dif < 0 ? ' baja' : '')}><b>{dif > 0 ? '▲ ' + dif : dif < 0 ? '▼ ' + -dif : '='}</b> contra las 4 semanas de antes, que dieron {x.antes || 0}.</p>}
-      <ol className="sp-partes">{PARTES.map(([k, t, tope, que]) => {
-        const v = (x.partes || {})[k] || 0;
-        return (
-          <li key={k} className={v >= tope ? 'tope' : ''}>
-            <div className="sp-parte-h"><b>{t}</b><span><strong>{v}</strong> de {tope}</span></div>
-            <i className="sp-barra"><u style={{ width: pct(v, tope) }} /></i>
-            <small>{que}</small>
-          </li>
-        );
-      })}</ol>
+      {/* cada parte, tan ancha como lo que pesa: lo lleno de la barra entera ES el puntaje */}
+      <div className="sp-regla" role="img" aria-label={'Puntaje: ' + filas.map((f) => f.t + ' ' + f.v + ' de ' + f.tope).join(', ')}>
+        {filas.map((f) => <span key={f.k} className={f.v >= f.tope ? 'tope' : ''} style={{ flexGrow: f.tope }}><u style={{ width: pct(f.v, f.tope) }} /></span>)}
+      </div>
+      <ol className="sp-partes">{filas.map((f) => (
+        <li key={f.k} className={f.v >= f.tope ? 'tope' : ''} style={{ '--peso': f.tope }}>
+          <b>{f.t}</b><span><strong>{f.v}</strong> de {f.tope}</span>
+          <small>{f.que}</small>
+        </li>
+      ))}</ol>
+      {falta.tope > falta.v ? <p className="sp-falta">Donde más puntos puedes sumar: <b>{falta.t}</b>, te faltan {falta.tope - falta.v}.</p> : null}
     </>
   );
 }
@@ -192,7 +199,7 @@ function Semanas({ p }) {
           {nuevos ? <small className="nv">{num(nuevos)} nuevos</small> : null}
         </li>
       ))}</ol>
-      <p className="sp-ley"><span><i className="g" />participaciones</span><span><i className="m" />de gente que debutaba en la Liga en tu servidor</span></p>
+      <p className="sp-ley"><span><i className="g" />participaciones</span><span><i className="a" />de gente que debutaba en la Liga en tu servidor</span></p>
     </>
   );
 }
@@ -267,8 +274,26 @@ function Canal({ c, cs, cual, ocup, cambiar, vacio }) {
     </select>
   );
 }
-function Campo({ t, ayuda, children }) {
-  return <label className="sp-campo"><span>{t}</span>{children}{ayuda ? <small>{ayuda}</small> : null}</label>;
+// una fila de ajustes: qué es a la izquierda y el control a la derecha (arriba y abajo en el teléfono), con su «Guardado»
+// al lado de lo que se tocó. `label` ata el texto al menú; el interruptor ya lleva su nombre
+function Fila({ t, ayuda, sello, label, children }) {
+  const Tag = label ? 'label' : 'div';
+  return (
+    <Tag className="sp-fila">
+      <span className="sp-fila-t"><b>{t}</b>{ayuda ? <small>{ayuda}</small> : null}</span>
+      <span className="sp-fila-c">{children}
+        <span className="sp-sello" role="status">{sello ? <><Ico n="ok" t={14} />Guardado</> : null}</span>
+      </span>
+    </Tag>
+  );
+}
+// prendido o apagado, con la frase de lo que pasa en cada caso (son las dos opciones que tenía el menú)
+function Interruptor({ t, on, si, no, ocup, cambiar }) {
+  return (
+    <button type="button" role="switch" aria-checked={!!on} aria-label={t} disabled={ocup} className={'sp-sw' + (on ? ' on' : '')} onClick={() => cambiar(!on)}>
+      <i aria-hidden="true" /><span>{on ? si : no}</span>
+    </button>
+  );
 }
 function Ajustes({ sv }) {
   const [j, setJ] = useState(null);
@@ -276,23 +301,30 @@ function Ajustes({ sv }) {
   const [msg, setMsg] = useState(null);
   // ⏳ lo elegido se ve elegido mientras se guarda: sin esto cada menú volvía a lo de antes hasta que contestaba el Worker
   const [pend, setPend] = useState({});
+  // ✅ el «Guardado» de la fila que se acaba de tocar
+  const [sello, setSello] = useState('');
+  useEffect(() => {
+    if (!sello) return undefined;
+    const t = setTimeout(() => setSello(''), 3000);
+    return () => clearTimeout(t);
+  }, [sello]);
   useEffect(() => {
     let vivo = true;
     setJ(null); setMsg(null);
     pedirAjustes(sv).then((r) => { if (vivo) setJ(r || { error: 'red' }); });
     return () => { vivo = false; };
   }, [sv]);
-  // el aviso se va solo: abajo de la pantalla, sin tapar nada
+  // el aviso de error se va solo: abajo de la pantalla, sin tapar nada
   useEffect(() => {
     if (!msg) return undefined;
     const t = setTimeout(() => setMsg(null), 4500);
     return () => clearTimeout(t);
   }, [msg]);
   const cambiar = (cual, valor) => {
-    setOcup(true); setMsg(null);
+    setOcup(true); setMsg(null); setSello('');
     setPend((p) => ({ ...p, [cual]: valor }));
     pedirAjustes(sv, { cual, valor }).then((r) => {
-      if (r && r.ok) { setJ(r); setMsg(['ok', 'Guardado: vale desde ahora.']); } else setMsg(['mal', AJ_ERR[r && r.error] || 'No se pudo guardar.']);
+      if (r && r.ok) { setJ(r); setSello(cual); } else setMsg(['mal', AJ_ERR[r && r.error] || 'No se pudo guardar.']);
       setPend((p) => { const n = { ...p }; delete n[cual]; return n; });
       setOcup(false);
     });
@@ -312,60 +344,52 @@ function Ajustes({ sv }) {
     <>
       <div className="sp-aj">
         <fieldset>
-          <legend>En vivo</legend>
-          <Campo t="El bot en vivo" ayuda="Durante un evento de la Liga en tu servidor, cuenta en ese canal cómo va. Nunca menciona a nadie.">
-            <Canal {...sel} cual="vivo" vacio="Apagado" /></Campo>
-          <Campo t="Cuánto habla" ayuda={c.vivo ? (nivel ? nivel[2] + '.' : '') : 'Vale cuando el bot en vivo tiene un canal.'}>
-            <select value={c.vivo_nivel || 'normal'} disabled={ocup} onChange={(e) => cambiar('vivo_nivel', e.target.value)}>
-              {niveles.map(([k, n]) => <option key={k} value={k}>{n}</option>)}
-            </select></Campo>
-          <Campo t="Apuestas" ayuda="Antes de cada batalla se apuesta con Puntos de Tienda desde el chat, y el pozo se reparte entre los que aciertan.">
-            <select value={c.apuestas ? 'si' : ''} disabled={ocup} onChange={(e) => cambiar('apuestas', e.target.value === 'si')}>
-              <option value="">Como siempre: sólo con el bot en «A full»</option>
-              <option value="si">Prendidas, en cualquier nivel</option>
-            </select></Campo>
-        </fieldset>
-        <fieldset>
-          <legend>Los avisos</legend>
-          <Campo t="El aviso de cada evento" ayuda="Cuando un servidor anuncia un evento, el bot lo cuenta ahí. Vale desde el próximo evento.">
+          <legend>Dónde publica el bot</legend>
+          <Fila label t="Cómo va el evento" sello={sello === 'vivo'} ayuda="Durante un evento de la Liga en tu servidor, lo cuenta ahí. Nunca menciona a nadie.">
+            <Canal {...sel} cual="vivo" vacio="Apagado" /></Fila>
+          <Fila label t="El aviso de cada evento" sello={sello === 'aviso_evento'} ayuda="Cuando un servidor anuncia un evento. Vale desde el próximo.">
             <select value={c.aviso_evento || ''} disabled={ocup} onChange={(e) => cambiar('aviso_evento', e.target.value)}>
               <option value="">Donde habla el bot en vivo</option>
               <option value="chat">En {general}, siempre</option>
               <option value="no">Apagado</option>
-            </select></Campo>
-          <Campo t="Eventos de Discord" ayuda="El bot necesita «Crear eventos» en tu servidor.">
-            <select value={evDiscord ? 'si' : ''} disabled={ocup} onChange={(e) => cambiar('eventos_discord', e.target.value === 'si')}>
-              <option value="">Apagados</option>
-              <option value="si">Cada anuncio, un evento de tu Discord</option>
-            </select></Campo>
-          <Campo t="El ascenso de tus ligas" ayuda="El bot mantiene ahí su ranking de ascenso al día.">
-            <Canal {...sel} cual="ascenso" vacio="Apagado" /></Campo>
+            </select></Fila>
+          <Fila label t="Los cambios de rango" sello={sello === 'avisos'} ayuda="Cuando alguien sube o baja de rango.">
+            <Canal {...sel} cual="avisos" vacio="Apagado" /></Fila>
+          <Fila label t="El ascenso de tus ligas" sello={sello === 'ascenso'} ayuda="Mantiene ahí su ranking de ascenso al día.">
+            <Canal {...sel} cual="ascenso" vacio="Apagado" /></Fila>
         </fieldset>
         <fieldset>
-          <legend>Tu gente</legend>
-          <Campo t="#N del ranking en el apodo" ayuda="Quien lo eligió con /numeral se queda con lo suyo.">
-            <select value={c.nick ? 'si' : 'no'} disabled={ocup} onChange={(e) => cambiar('nick', e.target.value === 'si')}>
-              <option value="si">Activado: se le pone el número a todos</option>
-              <option value="no">Apagado: no se le pone a nadie</option>
-            </select></Campo>
-          <Campo t="Avisos de cambio de rango" ayuda="Dónde anunciar cuando alguien sube o baja de rango.">
-            <Canal {...sel} cual="avisos" vacio="Ninguno" /></Campo>
-          <div className="sp-campo">
-            <span>Dónde se puede usar /card</span>
-            <p className="sp-elegidos">{elegidos.length ? elegidos.map((id) => <b key={id}>{nombre(id)}</b>) : <b>En cualquier canal</b>}
-              <small>{elegidos.length} de 10</small></p>
-            <details className="sp-canales">
-              <summary>Elegir canales</summary>
-              <div className="sp-canales-l">{cs.map((k) => (
-                <label key={k.id}><input type="checkbox" checked={elegidos.includes(k.id)} disabled={ocup || (!elegidos.includes(k.id) && elegidos.length >= 10)}
-                  onChange={() => toggleCanal(k.id)} /><span>#{k.n}</span>{k.cat ? <small>{k.cat}</small> : null}</label>
-              ))}</div>
-            </details>
-          </div>
+          <legend>Cómo se porta</legend>
+          <Fila label t="Cuánto habla" sello={sello === 'vivo_nivel'} ayuda={c.vivo ? (nivel ? nivel[2] + '.' : '') : 'Vale cuando el bot tiene un canal para contar cómo va el evento.'}>
+            <select value={c.vivo_nivel || 'normal'} disabled={ocup} onChange={(e) => cambiar('vivo_nivel', e.target.value)}>
+              {niveles.map(([k, n]) => <option key={k} value={k}>{n}</option>)}
+            </select></Fila>
+          <Fila t="Apuestas" sello={sello === 'apuestas'} ayuda="Antes de cada batalla se apuesta con Puntos de Tienda desde el chat, y el pozo se reparte entre los que aciertan.">
+            <Interruptor t="Apuestas" on={c.apuestas} ocup={ocup} cambiar={(v) => cambiar('apuestas', v)}
+              si="Prendidas, en cualquier nivel" no="Como siempre: sólo con el bot en «A full»" /></Fila>
+          <Fila t="Eventos de Discord" sello={sello === 'eventos_discord'} ayuda="El bot necesita «Crear eventos» en tu servidor.">
+            <Interruptor t="Eventos de Discord" on={evDiscord} ocup={ocup} cambiar={(v) => cambiar('eventos_discord', v)}
+              si="Cada anuncio, un evento de tu Discord" no="Apagados" /></Fila>
+          <Fila t="#N del ranking en el apodo" sello={sello === 'nick'} ayuda="Quien lo eligió con /numeral se queda con lo suyo.">
+            <Interruptor t="#N del ranking en el apodo" on={c.nick} ocup={ocup} cambiar={(v) => cambiar('nick', v)}
+              si="Activado: se le pone el número a todos" no="Apagado: no se le pone a nadie" /></Fila>
+        </fieldset>
+        <fieldset className="sp-aj-card">
+          <legend>Dónde se puede usar /card</legend>
+          <p className="sp-elegidos">{elegidos.length ? elegidos.map((id) => <b key={id}>{nombre(id)}</b>) : <b>En cualquier canal</b>}
+            <small>{elegidos.length} de 10<span className="sp-sello" role="status">{sello === 'canales' ? <><Ico n="ok" t={14} />Guardado</> : null}</span></small></p>
+          <details className="sp-canales">
+            <summary>Elegir canales</summary>
+            {elegidos.length >= 10 ? <p className="sp-tope">Llegaste a 10: quita uno para sumar otro.</p> : null}
+            <div className="sp-canales-l">{cs.map((k) => (
+              <label key={k.id}><input type="checkbox" checked={elegidos.includes(k.id)} disabled={ocup || (!elegidos.includes(k.id) && elegidos.length >= 10)}
+                onChange={() => toggleCanal(k.id)} /><span>#{k.n}</span>{k.cat ? <small>{k.cat}</small> : null}</label>
+            ))}</div>
+          </details>
         </fieldset>
       </div>
-      <div className="sp-toast-z" role="status" aria-live="polite">
-        {msg ? <p className={'sp-toast ' + msg[0]}><Ico n={msg[0] === 'ok' ? 'ok' : 'aviso'} t={18} />{msg[1]}</p> : null}
+      <div className="sp-toast-z" role="alert">
+        {msg ? <p className={'sp-toast ' + msg[0]}><Ico n="aviso" t={18} />{msg[1]}</p> : null}
       </div>
     </>
   );
@@ -380,6 +404,7 @@ function Servidor({ liga, x, svs, onSel, t }) {
   const pts = x.puntos || 0;
   const sube = x.compara !== false && pts > (x.antes || 0);
   const sugs = p.sugerencias || [];
+  const irs = p.sug_ir || [];
   const items = [['sp-puntaje', 'Puntaje', null], ['sp-sug', 'Lo que conviene', sugs.length], ['sp-cuando', 'Cuándo', null],
     ['sp-semanas', 'Semanas', null], ['sp-gente', 'Su gente', null], ['sp-visitas', 'Visitas', null], ['sp-ajustes', 'Ajustes', null]];
   return (
@@ -389,7 +414,9 @@ function Servidor({ liga, x, svs, onSel, t }) {
         estilo={logo ? { '--mo-logo': 'url("' + logo + '")', ...silueta(x.sv, color) } : silueta(x.sv, color)}
         emblema={logo ? <img alt="" src={logo} /> : <b className="sp-sigla">{siglaDe(x.sv)}</b>}
         tag={TIER[x.tier] || 'TIER ' + x.tier}
-        sub={<>{siglaDe(x.sv)}{x.ultimo ? ' · último evento el ' + fechaCorta(x.ultimo) : ''}{m.miembros ? ' · ' + num(m.miembros) + ' miembros en su Discord' : ''}</>}
+        sub={<>{siglaDe(x.sv)}{x.ultimo ? ' · último evento el ' + fechaCorta(x.ultimo) : ''}{m.miembros ? ' · ' + num(m.miembros) + ' miembros en su Discord' : ''}
+          {t ? <small className="sp-medido">Medido el {W.fmtFecha ? W.fmtFecha(t, { day: 'numeric', month: 'numeric' }) : fechaCorta(String(t).slice(0, 10))}
+            {W.fmtHora ? ' a las ' + W.fmtHora(new Date(t)) : ''}. Se actualiza cada media hora.</small> : null}</>}
         acciones={<>
           <a className="btn verde" href={'#/sv/' + encodeURIComponent(siglaDe(x.sv))}>Su página</a>
           <button type="button" className="btn borde" onClick={(e) => irA(e, 'sp-ajustes')}>Ajustes del bot</button>
@@ -403,7 +430,11 @@ function Servidor({ liga, x, svs, onSel, t }) {
       </Sec>
       {sugs.length ? (
         <Sec id="sp-sug" titulo="Lo que conviene" bajada="Sale de tus números de las últimas semanas." extra="negra">
-          <ol className="sp-sug">{sugs.map((s, i) => <li key={s}><span>{String(i + 1).padStart(2, '0')}</span><p>{resaltar(s)}</p></li>)}</ol>
+          {/* el botón una vez por destino: cuatro «Ver cuándo» seguidos llevan al mismo lugar */}
+          <ol className="sp-sug">{sugs.map((s, i) => (
+            <li key={s}><span>{String(i + 1).padStart(2, '0')}</span><p>{resaltar(s)}</p>
+              {IR[irs[i]] && irs.indexOf(irs[i]) === i ? <button type="button" className="sp-ir" onClick={(e) => irA(e, irs[i])}>{IR[irs[i]]}</button> : null}</li>
+          ))}</ol>
         </Sec>
       ) : null}
       {(p.dias || []).length ? (
@@ -413,7 +444,7 @@ function Servidor({ liga, x, svs, onSel, t }) {
       ) : null}
       {/* ocho semanas en cero no son un gráfico: es «sin dato no hay pieza» */}
       {(p.semanas || []).some((s) => s[2]) ? (
-        <Sec id="sp-semanas" titulo="Semana a semana" bajada="Las participaciones de cada semana de la temporada, de lunes a domingo: cada rapero cuenta una vez por evento que juega. En magenta, los que debutaban en la Liga en tu servidor.">
+        <Sec id="sp-semanas" titulo="Semana a semana" bajada="Las participaciones de cada semana de la temporada, de lunes a domingo: cada rapero cuenta una vez por evento que juega. En verde agua, los que debutaban en la Liga en tu servidor.">
           <Semanas p={p} />
         </Sec>
       ) : null}
@@ -430,8 +461,6 @@ function Servidor({ liga, x, svs, onSel, t }) {
       <Sec id="sp-ajustes" titulo="Los ajustes del bot" bajada="Los de /settings en tu Discord —lo último que cambies, acá o allá, es lo que vale— y dos que sólo están acá: el aviso de cada evento y los eventos de Discord.">
         <Ajustes sv={x.sv} />
       </Sec>
-      {t ? <p className="sp-medido">Lo midió la Liga el {W.fmtFecha ? W.fmtFecha(t, { day: 'numeric', month: 'numeric' }) : fechaCorta(String(t).slice(0, 10))}
-        {W.fmtHora ? ' a las ' + W.fmtHora(new Date(t)) : ''}. Se actualiza cada media hora.</p> : null}
     </>
   );
 }

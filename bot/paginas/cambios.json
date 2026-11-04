@@ -10,7 +10,8 @@
   "HORA: `cuando` es el instante en que se publicó (ISO, con la zona); la página lo muestra en la hora de quien mira. Sin `cuando`, sólo el día."
  ],
  "cambios": [
-  {
+  {"version": "4.23", "dia": "2026-11-04", "cuando": "2026-11-04T16:31:00-05:00", "titulo": "El panel de tu servidor y Verificarme, más claros", "items": ["**Tu puntaje** es una sola barra de 0 a 100, partida en lo que pesa cada parte, y te dice dónde puedes sumar más.", "**Los ajustes del bot**: dónde publica, en una sola tabla; cómo se porta, con interruptores que dicen lo que pasa. Cada uno avisa «Guardado» en su fila.", "**Lo que conviene** te lleva a la parte del panel donde se ve lo que dice, y la gente nueva va en verde agua: el magenta queda para lo que pide atención.", "**Verificarme** se revisa solo cuando vuelves de Discord, marca cuánto llevas y qué te toca ahora. Ya verificado, muestra tus tarjetas."]},
+{
    "version": "4.22",
    "dia": "2026-11-02",
    "cuando": "2026-11-02T23:55:00-05:00",

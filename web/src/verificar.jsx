@@ -33,24 +33,27 @@ function queMas(pide) {
   return 'Con ' + (r.length === 1 ? r[0] : r.slice(0, -1).join(', ') + ' y ' + r[r.length - 1]) + '.' + cruces;
 }
 
-function Abre({ liga }) {
+function Abre({ liga, listo }) {
   const reqs = (liga.d.requisitos || []).slice().sort((a, b) => ORDEN.indexOf(a.id) - ORDEN.indexOf(b.id));
+  // ✅ ya verificado, las que tiene se muestran con SU carta (04/11/2026): lo que se abrió, no lo que se abre
+  const yo = listo ? liga.yo : null;
   // la de ejemplo: la del mejor que la tiene (son cartas de verdad, no dibujos)
   const ejemplo = (id) => liga.oficiales().find((f) => (f.c || []).includes(id));
   return (
     <ul className="vf-abre">
       {reqs.map((x) => {
-        const f = ejemplo(x.id);
+        const mia = !!(yo && (yo.c || []).includes(x.id));
+        const f = mia ? yo : ejemplo(x.id);
         return (
           <li key={x.id}>
             {f ? <Carta liga={liga} k={f.k} cual={x.id} cls="vf-carta" abre={false} /> : <span className="vf-carta vf-sin" aria-hidden="true" />}
-            <div><b>{x.titulo}</b><span>{queMas(x.pide)}</span>{x.mide ? <small>{x.mide}</small> : null}</div>
+            <div><b>{x.titulo}</b><span>{mia ? 'Ya la tienes.' : queMas(x.pide)}</span>{x.mide ? <small>{x.mide}</small> : null}</div>
           </li>
         );
       })}
       <li>
         <span className="vf-carta vf-ico" aria-hidden="true"><Ico n="perfil" t={30} /></span>
-        <div><b>Tu perfil</b><span>Al verificarte.</span><small>Con tu foto y tus redes.</small></div>
+        <div><b>Tu perfil</b><span>{yo ? 'Ya lo tienes.' : 'Al verificarte.'}</span><small>Con tu foto y tus redes.</small></div>
       </li>
     </ul>
   );
@@ -100,8 +103,8 @@ export function PaginaVerificar({ liga, dc }) {
           ) : null}
         </div>
         <aside className="vf-lado" aria-labelledby="vf-abre-t">
-          <h2 className="vf-h" id="vf-abre-t">Lo que se abre</h2>
-          <Abre liga={liga} />
+          <h2 className="vf-h" id="vf-abre-t">{listo && liga.yo ? 'Lo tuyo' : 'Lo que se abre'}</h2>
+          <Abre liga={liga} listo={listo} />
         </aside>
       </div>
     </div>

@@ -490,47 +490,53 @@ def panel(D, hoy, sv, ps=None, crews=None, otros=None):
 
 
 def sugerencias(p, m=None):
+    """💡 Lo que conviene, en palabras: ver `sugerencias_ir()`."""
+    return [t for t, _ in sugerencias_ir(p, m)]
+
+
+def sugerencias_ir(p, m=None):
     """💡 Lo que conviene, en palabras y con el número que lo respalda: qué días junta más gente, cuál menos, qué días
-    la Liga está más o menos llena, a qué hora y cómo viene. Sólo lo que los números dicen: con poca muestra, nada."""
+    la Liga está más o menos llena, a qué hora y cómo viene. Sólo lo que los números dicen: con poca muestra, nada.
+    Cada una con la parte del panel donde se ve lo que dice (`IR` de web/src/socio2.jsx): `[(texto, id de la sección)]`."""
     out = []
     dias = p.get('dias') or []
     buenos = [(i, d) for i, d in enumerate(dias) if d[0] >= MIN_MUESTRA]
     if len(buenos) >= 2:
         mejor = max(buenos, key=lambda x: x[1][1])
         peor = min(buenos, key=lambda x: x[1][1])
-        out.append('Los %s tus eventos juntan %s raperos de promedio: el mejor día que tienes.' % (DIAS[mejor[0]], _n(mejor[1][1])))
+        out.append(('Los %s tus eventos juntan %s raperos de promedio: el mejor día que tienes.' % (DIAS[mejor[0]], _n(mejor[1][1])), 'sp-cuando'))
         if peor[0] != mejor[0] and peor[1][1] < mejor[1][1] * 0.8:
-            out.append('Los %s, %s de promedio: el más flojo. Si puedes, muévelo a otro día.' % (DIAS[peor[0]], _n(peor[1][1])))
+            out.append(('Los %s, %s de promedio: el más flojo. Si puedes, muévelo a otro día.' % (DIAS[peor[0]], _n(peor[1][1])), 'sp-cuando'))
     liga = p.get('liga') or []
     if any(x[0] for x in liga):
         lleno = max(range(7), key=lambda i: liga[i][0])
         libres = [i for i in range(7) if liga[i][0] <= 0.5]
         if liga[lleno][0] >= 2:
-            out.append('Los %s la Liga tiene %s eventos por semana: un evento tuyo ese día compite por la misma gente.'
-                       % (DIAS[lleno], _n(liga[lleno][0])))
+            out.append(('Los %s la Liga tiene %s eventos por semana: un evento tuyo ese día compite por la misma gente.'
+                        % (DIAS[lleno], _n(liga[lleno][0])), 'sp-cuando'))
         if libres:
-            out.append('Casi nadie juega los %s (%s): menos competencia para llenar tu llave.'
-                       % (_lista([DIAS[i] for i in libres]), 'ningún evento' if all(liga[i][0] == 0 for i in libres) else 'medio evento por semana o menos'))
+            out.append(('Casi nadie juega los %s (%s): menos competencia para llenar tu llave.'
+                        % (_lista([DIAS[i] for i in libres]), 'ningún evento' if all(liga[i][0] == 0 for i in libres) else 'medio evento por semana o menos'), 'sp-cuando'))
     fr = [(i, f) for i, f in enumerate(p.get('franjas') or []) if f[0] >= MIN_MUESTRA]
     if len(fr) >= 2:
         i, f = max(fr, key=lambda x: x[1][1])
-        out.append('%s es cuando más gente juntas (%s por evento).' % (FRANJAS[i][2].capitalize(), _n(f[1])))
+        out.append(('%s es cuando más gente juntas (%s por evento).' % (FRANJAS[i][2].capitalize(), _n(f[1])), 'sp-cuando'))
     ev4 = p.get('ev4') or []
     if len(ev4) == 3:
         a, b, nuevos = ev4
         if b == 0 and a:
-            out.append('En las últimas 4 semanas no hubo eventos: un evento por semana ya te devuelve a la tabla.')
+            out.append(('En las últimas 4 semanas no hubo eventos: un evento por semana ya te devuelve a la tabla.', 'sp-semanas'))
         elif a and b >= a * 1.25:
-            out.append('Vas en subida: %d eventos en las últimas 4 semanas contra %d en las 4 de antes.' % (b, a))
+            out.append(('Vas en subida: %d eventos en las últimas 4 semanas contra %d en las 4 de antes.' % (b, a), 'sp-semanas'))
         elif a and b <= a * 0.75:
-            out.append('Bajaste: %d eventos en las últimas 4 semanas contra %d en las 4 de antes.' % (b, a))
+            out.append(('Bajaste: %d eventos en las últimas 4 semanas contra %d en las 4 de antes.' % (b, a), 'sp-semanas'))
         if nuevos:
-            out.append('Trajiste %d raperos nuevos en 4 semanas: avísales del próximo evento para que vuelvan.' % nuevos)
+            out.append(('Trajiste %d raperos nuevos en 4 semanas: avísales del próximo evento para que vuelvan.' % nuevos, 'sp-ajustes'))
     m = m or {}
     if m.get('eventos') and m.get('por_semana', 0) < 1:
-        out.append('Haces %s eventos por semana; con 2 por semana la parte de actividad de tu puntaje llega al máximo.' % _n(m['por_semana']))
+        out.append(('Haces %s eventos por semana; con 2 por semana la parte de actividad de tu puntaje llega al máximo.' % _n(m['por_semana']), 'sp-puntaje'))
     if m.get('anuncios') and m.get('con_staff', 0) < m['anuncios'] * 0.5:
-        out.append('Sólo %d de tus %d anuncios dicen quién organiza: ponerlo suma a la calidad.' % (m.get('con_staff', 0), m['anuncios']))
+        out.append(('Sólo %d de tus %d anuncios dicen quién organiza: ponerlo suma a la calidad.' % (m.get('con_staff', 0), m['anuncios']), 'sp-puntaje'))
     return out[:7]
 
 
@@ -677,7 +683,9 @@ def correr(aplicar=False, ahora=None):
         for f in filas:
             if f['tier'] in TIERS:
                 f['panel'] = panel(D, hoy, f['sv'], ps, crews, socios)
-                f['panel']['sugerencias'] = sugerencias(f['panel'], f.get('m'))
+                su = sugerencias_ir(f['panel'], f.get('m'))
+                f['panel']['sugerencias'] = [t for t, _ in su]
+                f['panel']['sug_ir'] = [d for _, d in su]
         if aplicar:
             import fotos as F
             tok = F.env('DISCORD_TOKEN', obligatorio=False)
@@ -799,6 +807,10 @@ def _self_check():
        and any('a la noche' in x.lower() or 'a la tarde' in x.lower() for x in su) and any('2 por semana' in x for x in su)
        and any('quién organiza' in x for x in su), 'las sugerencias, con el número que las respalda')
     ok(sugerencias({'dias': [[1, 30]] + [[0, 0]] * 6}) == [], 'con poca muestra, no se sugiere nada')
+    # 🔗 cada sugerencia lleva a una sección que el panel conoce (`IR` de web/src/socio2.jsx)
+    ir_jsx = re.search(r'const IR = \{([^}]*)\}', io.open(os.path.join(BASE, 'web', 'src', 'socio2.jsx'), encoding='utf-8').read())
+    ok(ir_jsx and all("'%s'" % d in ir_jsx.group(1) for _, d in sugerencias_ir(pa, {'eventos': 4, 'por_semana': 0.5, 'anuncios': 4, 'con_staff': 1})),
+       'cada sugerencia lleva a una parte del panel que existe')
     # 🧮 las partes suman el puntaje (02/11/2026: el panel mostraba 35 + 25 + 13 + 3 = 76 al lado de 75)
     ok(all(sum(x['partes'].values()) == x['puntos'] for x in f.values()), 'las cuatro partes suman el puntaje de cada servidor',
        str([(x['sv'], x['puntos'], x['partes']) for x in f.values()]))

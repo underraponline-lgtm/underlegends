@@ -7,7 +7,7 @@
 // hace cada cosa por dentro —la foto, las redes, «tu servidor», salir— lo sigue haciendo app.js (`cuentaFotoSi()`,
 // `cuentaRedes()`, `cuentaServidor()`, `cuentaSalir()`…) y esta página se entera de cada cambio por `lg:cuentaest`
 // (App.jsx envuelve `pintaPopCuenta()`). Su ventana vieja queda de respaldo, si esto no se monta.
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { DUENO, PAIS, hora, limpio, nuevaQue, num, siglaDe } from './liga.js';
 import { Bandera, Cara, Carta, Chevron, DosToques, GrillaDias, Ico, accion, diaET, masDias, semanasEntre, usePerfiles } from './piezas.jsx';
 import { MiCrew } from './crewpanel.jsx';
@@ -1123,6 +1123,27 @@ function ElegirPais({ v }) {
 export function Verificar({ liga, dc, nota = true }) {
   const v = useVerif();
   const yo = liga.yo;
+  // 🔁 SE REVISA SOLA AL VOLVER DE DISCORD (04/11/2026): quien abre DRA acepta las reglas allá, y al volver encontraba lo
+  // mismo hasta que encontraba «Revisar de nuevo». Una sola vez por cada vez que abrió DRA, con un momento para que Discord
+  // se entere. El Worker deja 6 por minuto: esto no llega ni cerca
+  const alVolver = useRef(false);
+  useEffect(() => {
+    const f = () => {
+      if (document.visibilityState !== 'visible' || !alVolver.current) return;
+      alVolver.current = false;
+      setTimeout(() => revisar(), 800);
+    };
+    document.addEventListener('visibilitychange', f);
+    return () => document.removeEventListener('visibilitychange', f);
+  }, []);
+  // ⏱️ cuándo se miró por última vez: si no cambió nada, se ve que sí miró
+  const cargando = !!(v && v.cargando);
+  const miraba = useRef(false);
+  const [revisado, setRevisado] = useState(null);
+  useEffect(() => {
+    if (miraba.current && !cargando) setRevisado(new Date());
+    miraba.current = cargando;
+  }, [cargando]);
   // ya cargado: con su clave de la Liga (`d:`), que sólo tiene quien pasó el portón
   if ((dc && dc.rapero) || (v && v.listo)) {
     return (
@@ -1156,7 +1177,7 @@ export function Verificar({ liga, dc, nota = true }) {
     );
   }
   const paises = v.paises || [];
-  const abrir = <a key="dra" className="btn borde2 chico" href={DRA_URL} target="_blank" rel="noopener noreferrer">Abrir DRA ↗</a>;
+  const abrir = <a key="dra" className="btn borde2 chico" href={DRA_URL} target="_blank" rel="noopener noreferrer" onClick={() => { alVolver.current = true; }}>Abrir DRA ↗</a>;
   let pais;
   if (paises.length === 1) {
     pais = ['ok', <>Tu país: {PAIS[paises[0]] || paises[0].toUpperCase()} <Bandera cc={paises[0]} cls="cu-band" /></>,
@@ -1164,7 +1185,7 @@ export function Verificar({ liga, dc, nota = true }) {
   } else if (v.pendiente) {
     pais = ['espera', 'Tu país', 'Lo eliges acá cuando aceptes las reglas.'];
   } else if (paises.length > 1 && v.porRol) {
-    pais = ['aviso', 'Tienes ' + paises.length + ' países en DRA', 'Deja uno solo en tus roles de DRA y toca «Revisar de nuevo».', abrir];
+    pais = ['aviso', 'Tienes ' + paises.length + ' países en DRA', 'Deja uno solo en tus roles de DRA. Al volver acá se revisa solo.', abrir];
   } else {
     pais = ['falta', 'Tu país', paises.length > 1 ? 'Tu nombre tiene ' + paises.length + ' banderas: elige la tuya y el bot te pone ese rol en DRA.'
       : 'Elígelo y el bot te pone ese rol en DRA.', <ElegirPais key="p" v={v} />];
@@ -1178,7 +1199,7 @@ export function Verificar({ liga, dc, nota = true }) {
   const filas = [
     ['ok', 'Tu Discord', dc ? limpio(dc.n) : 'Conectado'],
     ['ok', 'Estás en Discord Rap Español', v.entro ? 'Te metimos recién.' : 'Ya estabas adentro.'],
-    v.pendiente ? ['aviso', 'Acepta las reglas de DRA', 'Discord te las muestra al abrir el servidor: es un toque. Después vuelve acá y toca «Revisar de nuevo».', abrir]
+    v.pendiente ? ['aviso', 'Acepta las reglas de DRA', 'Discord te las muestra al abrir el servidor: es un toque. Al volver acá se revisa solo.', abrir]
       : ['ok', 'Aceptaste las reglas de DRA', ''],
     pais,
     miembro,
@@ -1187,13 +1208,21 @@ export function Verificar({ liga, dc, nota = true }) {
     ? (v.rol ? 'Estás verificado en DRA. Tus tarjetas salen cuando el bot te cargue' + (vuelta ? ': en la vuelta de las ' + vuelta + ' o en la siguiente.' : '.')
       : 'Lo tuyo está completo. El resto lo hace el bot solo.')
     : v.revisa ? 'Lo tuyo está completo. Tu caso lo revisa un admin.' : 'Te falta lo que está marcado abajo.';
+  // cuántos van, y cuál toca ahora: el primero que no está listo
+  const hechas = filas.filter((f) => f[0] === 'ok').length;
+  const ahora = filas.findIndex((f) => f[0] !== 'ok');
   return (
     <>
     <Caja t={v.completo ? 'Listo de tu lado' : 'Lo que falta'} d={resumen}>
-      <ul className="cu-chk" aria-busy={!!v.cargando}>{filas.map(([e, t, d, acc], i) => (
-        <li key={i} className={e}><span className="cu-chk-i"><Ico n={e} t={18} /></span><span className="cu-chk-t"><b>{t}</b>{d ? <small>{d}</small> : null}</span>{acc || null}</li>
+      <div className="cu-prog" role="img" aria-label={hechas + ' de ' + filas.length + ' listos'}>
+        <span>{hechas} de {filas.length}</span>
+        <i>{filas.map((f, i) => <u key={i} className={f[0] === 'ok' ? 'ok' : i === ahora ? 'ahora' : ''} />)}</i>
+      </div>
+      <ul className="cu-chk" aria-busy={!!v.cargando} aria-live="polite">{filas.map(([e, t, d, acc], i) => (
+        <li key={i} className={e + (i === ahora ? ' ahora' : '')}><span className="cu-chk-i"><Ico n={e} t={18} /></span><span className="cu-chk-t"><b>{t}</b>{d ? <small>{d}</small> : null}</span>{acc || null}</li>
       ))}</ul>
       <button type="button" className="btn borde2 chico" disabled={!!v.cargando} onClick={() => revisar()}>{v.cargando ? 'Mirando…' : 'Revisar de nuevo'}</button>
+      {revisado && W.fmtHora ? <small className="cu-rev">Revisado a las {W.fmtHora(revisado)}</small> : null}
     </Caja>
     {v.completo ? <ServidorCaja liga={liga} dc={dc} paso /> : null}
     </>

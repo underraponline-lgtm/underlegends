@@ -1466,6 +1466,15 @@ button.ma-op:hover{border-color:#F6F6F6}
 .cu-chk li.falta .cu-chk-i{color:var(--magenta)}
 .cu-chk li.aviso .cu-chk-i{color:#C77700}
 .cu-chk li.espera .cu-chk-i{color:var(--gris)}
+/* lo listo, en una línea; lo que toca ahora, marcado (04/11/2026) */
+.cu-chk li.ok .cu-chk-t{display:flex;flex-wrap:wrap;align-items:baseline;gap:2px 8px}
+.cu-chk li.ahora{box-shadow:inset 4px 0 0 var(--verde)}
+.cu-prog{display:flex;align-items:center;gap:10px;width:100%;font:800 13px/1 Archivo,sans-serif;font-variant-numeric:tabular-nums}
+.cu-prog i{display:flex;flex:1 1 0;gap:2px;height:10px;max-width:240px}
+.cu-prog u{flex:1 1 0;background:var(--suave)}
+.cu-prog u.ok{background:var(--verde)}
+.cu-prog u.ahora{background:var(--tinta)}
+.cu-rev{font:500 12.5px/1.2 Archivo,sans-serif;color:var(--gris)}
 .cu-pais{display:flex;flex-wrap:wrap;gap:8px}
 .cu-sola .cu-parte{max-width:760px}
 .cu-chk li[aria-busy=true],.cu-chk[aria-busy=true]{opacity:.6}

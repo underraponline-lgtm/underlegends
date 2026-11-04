@@ -2358,6 +2358,13 @@ const ok = (cond, que, det) => {
     const usoCon = async (k) => (await A.rutaAvisos(new Request('https://x/avisos/uso-ciclo', { headers: { 'x-lg-ciclo': k } }), envUso,
       '/avisos/uso-ciclo')).status;
     ok(await usoCon('otra') === 404 && await usoCon(await A.claveCiclo('t')) === 200, 'el uso se lee sólo con la clave del ciclo');
+    // ⚡ lo público se cuenta una vez mientras valga: lo mismo que ya prometen sus respuestas
+    let cuentas = 0;
+    const dm1 = o.delMinuto('prueba', 60, () => { cuentas += 1; return { n: cuentas }; });
+    const dm2 = o.delMinuto('prueba', 60, () => { cuentas += 1; return { n: cuentas }; });
+    o.rutaMem.prueba.t -= 61000;
+    const dm3 = o.delMinuto('prueba', 60, () => { cuentas += 1; return { n: cuentas }; });
+    ok(dm1.n === 1 && dm2.n === 1 && dm3.n === 2, 'lo público se cuenta una vez mientras valga, y al vencer se cuenta de nuevo');
     // ⚡ lo leído de `estado` se recuerda como texto: tocar lo que devuelve no cambia lo guardado, y guardar lo pisa
     o.guardar('prueba_mem', { a: 1 });
     const pm1 = o.leer('prueba_mem');
@@ -2374,6 +2381,9 @@ const ok = (cond, que, det) => {
     o.sql.exec("DELETE FROM hechos WHERE id = 'prueba:h2'");
     ok(!hNo && hSi && !o.yaHecho('prueba:h2') && o.hechosMem.has('prueba:h1') && !o.hechosMem.has('prueba:h2'),
       'yaHecho recuerda sólo lo que ya está hecho');
+    // 🔴 un envío que falló se reintenta aunque otra vuelta ya lo haya visto hecho
+    o.hechoDeshacer('prueba:h1');
+    ok(!o.yaHecho('prueba:h1') && !o.hechosMem.has('prueba:h1'), 'lo que se deshace deja de estar hecho, también en lo recordado');
     const enApp = /const SECC = new Set\(\[([^\]]+)\]/.exec(readFileSync(join(aqui, '..', 'web', 'src', 'App.jsx'), 'utf8'));
     const deApp = enApp ? enApp[1].match(/'([a-z-]+)'/g).map((x) => x.slice(1, -1)).sort() : [];
     ok(JSON.stringify(deApp) === JSON.stringify([...A.SECC_EV].sort()), 'la lista de App.jsx es SECC_EV', deApp.join(','));

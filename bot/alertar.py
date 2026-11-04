@@ -213,6 +213,9 @@ def salud():
     try:
         j = requests.get(WORKER + '/avisos/estado', timeout=25).json()
         v = j.get('vigia') or {}
+        # sólo con el estado de verdad: un error también puede venir en JSON (`{"error": …}` o el freno de pedidos)
+        if 'vigia' in j:
+            resuelto('objeto', 'El objeto de la página volvió a contestar.')
         if j.get('ok'):
             resuelto('vigia', 'El vigía de avisos volvió a latir.')
         else:
@@ -238,7 +241,8 @@ def salud():
         print('   ⚠️ no pude preguntarle al vigía (%s)' % str(e)[:80])
         try:
             time.sleep(20)
-            requests.get(WORKER + '/avisos/estado', timeout=25).json()
+            if 'vigia' not in requests.get(WORKER + '/avisos/estado', timeout=25).json():
+                raise ValueError('contesta sin el estado')
         except Exception as e2:                          # noqa: BLE001
             alertar('objeto', 'El objeto de la página no contesta (%s). Sin él no funciona entrar con Discord, lo en vivo '
                     'ni los avisos. Si se acabó la cuota de filas, vuelve solo cerca de las %s. (%s)' % (str(e2)[:80], _corte(), _et()))
@@ -291,8 +295,6 @@ def salud():
                         '`python herramientas/uso.py`.' % (leidas / 1e6, C.LIM['do_filas_leidas_dia'] // 1000000, _corte()))
             elif leidas is not None:
                 resuelto('filas', 'Las filas del objeto volvieron a tener margen (%.1f millones hoy).' % (leidas / 1e6))
-            if j:
-                resuelto('objeto', 'El objeto de la página volvió a contestar.')
     except Exception as e:                               # noqa: BLE001
         print('   ⚠️ no pude mirar el disparador ni KV (%s)' % str(e)[:80])
     # 4 · 🔔 A7, EL SCORE A 40–99. Dlx, 25/09/2026: «aplicalo en otro

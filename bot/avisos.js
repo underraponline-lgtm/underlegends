@@ -6367,6 +6367,30 @@ export class Avisos {
   }
 
   /**
+   * Un envío que falló se reintenta: se borra de `hechos` y de lo recordado. Sin lo segundo, una vuelta del vigía que se
+   * cruza con otra colgada (el freno deja entrar a los 3 minutos) lo recordaba como hecho y no se reintentaba más.
+   */
+  hechoDeshacer(id) {
+    this.sql.exec('DELETE FROM hechos WHERE id = ?', id);
+    if (this.hechosMem) this.hechosMem.delete(id);
+  }
+
+  /**
+   * ⚡ LO PÚBLICO QUE PIDE CADA PÁGINA AL ABRIRSE, una sola cuenta mientras valga (04/11/2026). Estas rutas ya le dicen al
+   * navegador cuánto puede guardarlas, pero cada navegador y cada ciudad de Cloudflare las piden igual: `/pases` lee casi
+   * 2.000 filas cada vez, y en media hora con 25 aperturas se comió 21.000. Acá se guardan los mismos segundos que dice su
+   * respuesta, así que nadie ve nada más viejo de lo que ya podía ver.
+   */
+  delMinuto(k, seg, f) {
+    const m = this.rutaMem || (this.rutaMem = {});
+    const ahora = Date.now();
+    if (m[k] && ahora - m[k].t < seg * 1000) return m[k].v;
+    const v = f();
+    m[k] = { t: ahora, v };
+    return v;
+  }
+
+  /**
    * ⚡ Los anuncios de los últimos 2 días, una lectura por minuto (04/11/2026): `veredictos()`, `inscripciones()` y
    * `llamada()` preguntan lo mismo en la misma vuelta del vigía.
    */
@@ -6690,7 +6714,7 @@ export class Avisos {
     this.medir('pedidos', ruta, 1);
     try {
       if (ruta === '/vigilar') return json(await this.vigilar(await req.json()));
-      if (ruta === '/estado') return json(this.estado(), 200, 20);
+      if (ruta === '/estado') return json(this.delMinuto('/estado', 20, () => this.estado()), 200, 20);
       if (ruta === '/ajustes') return json(this.ajustes());
       if (ruta === '/ajuste') {
         const d = await req.json().catch(() => null);
@@ -6706,11 +6730,11 @@ export class Avisos {
         if (a) r.aviso = a;
         return json(r, 200, 20);
       }
-      if (ruta === '/encuestas') return json(this.encuestas(), 200, 20);
+      if (ruta === '/encuestas') return json(this.delMinuto('/encuestas', 20, () => this.encuestas()), 200, 20);
       if (ruta === '/ligas-votos') return json(this.ligasVotos(), 200, 20);
-      if (ruta === '/precios') return json(this.precios(), 200, 20);
+      if (ruta === '/precios') return json(this.delMinuto('/precios', 20, () => this.precios()), 200, 20);
       if (ruta === '/seguidores') return json(this.seguidores(), 200, 60);
-      if (ruta === '/servidores') return json(this.servidoresElegidos(), 200, 60);
+      if (ruta === '/servidores') return json(this.delMinuto('/servidores', 60, () => this.servidoresElegidos()), 200, 60);
       // 👥 todas las crews, sin ningún Discord ID: la página y el ciclo (`bot/crews_vivas.py`)
       if (ruta === '/crews') { const r = CW.crewsPublico(this); await this.vaciarBasuraCrews(); return json(r, 200, 60); }
       if (ruta === '/aplausos') return json(this.aplausosCuenta(), 200, 20);
@@ -6718,10 +6742,10 @@ export class Avisos {
       if (ruta === '/favoritos') return json(this.favoritos(), 200, 300);
       if (ruta === '/promos-extra') return json(this.promosExtra(), 200, 60);
       if (ruta === '/promos-vistas') return json(this.promosVistas(), 200, 60);
-      if (ruta === '/niveles') return json(this.niveles(), 200, 300);
-      if (ruta === '/pases') return json(this.pases(), 200, 300);
-      if (ruta === '/roles') return json(this.roles(), 200, 300);
-      if (ruta === '/fondos') return json(this.fondos(), 200, 300);
+      if (ruta === '/niveles') return json(this.delMinuto('/niveles', 300, () => this.niveles()), 200, 300);
+      if (ruta === '/pases') return json(this.delMinuto('/pases', 300, () => this.pases()), 200, 300);
+      if (ruta === '/roles') return json(this.delMinuto('/roles', 300, () => this.roles()), 200, 300);
+      if (ruta === '/fondos') return json(this.delMinuto('/fondos', 300, () => this.fondos()), 200, 300);
       if (ruta === '/pase-niveles') return json(this.paseNiveles());
       if (ruta === '/uso-ciclo') return json(this.usoCiclo());
       if (ruta === '/chat-canales') return json(await this.canalesChat());
@@ -8025,15 +8049,16 @@ export class Avisos {
             const fila = this.sql.exec('SELECT texto FROM inscritos WHERE id = ?', m.id).toArray()[0];
             previo = fila ? fila.texto : null;
           }
-          if (vistos.size >= 20000) vistos.clear();
-          vistos.set(m.id, texto);
-          if (previo === texto) continue;
+          // se recuerda DESPUÉS de escribir: si la escritura falla, la vuelta siguiente lo intenta de nuevo
+          const recordar = () => { if (vistos.size >= 20000) vistos.clear(); vistos.set(m.id, texto); };
+          if (previo === texto) { recordar(); continue; }
           if (this.inscMem) delete this.inscMem[c.sv || ''];
           this.sql.exec('INSERT INTO inscritos (id, canal, nombre, sv, autor_id, autor, pub, ed, texto) ' +
             'VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?) ON CONFLICT(id) DO UPDATE SET ed = excluded.ed, ' +
             'texto = excluded.texto', m.id, c.id, c.nombre || '', c.sv || '',
           (m.author && m.author.id) || '', (m.author && m.author.username) || '', pub,
           Math.max(pub, ed || 0), texto);
+          recordar();
           nuevos++;
         }
       }
@@ -10964,7 +10989,7 @@ export class Avisos {
           else if (MUERTA(e)) this.sql.exec('DELETE FROM subs WHERE id = ?', subs[i].id);
           else if (e === 0 || e === 429 || e >= 500) reintentar = true;
         });
-        if (reintentar && !llego) this.sql.exec('DELETE FROM hechos WHERE id = ?', id);
+        if (reintentar && !llego) this.hechoDeshacer(id);
       }
     }
     this.guardar('seguidos', { t: ahora, publicaciones: cands.length, enviados, sin_vinculo: sinVinculo, quedan });
@@ -11035,7 +11060,7 @@ export class Avisos {
           else if (MUERTA(e)) this.sql.exec('DELETE FROM subs WHERE id = ?', subs[i].id);
           else if (e === 0 || e === 429 || e >= 500) reintentar = true;
         });
-        if (reintentar && !llego) this.sql.exec('DELETE FROM hechos WHERE id = ?', id);
+        if (reintentar && !llego) this.hechoDeshacer(id);
       }
     }
     this.guardar('ligas_seguidas', { t: ahora, novedades: items.length, bandeja, enviados, sin_vinculo: sinVinculo, quedan });
@@ -11321,6 +11346,7 @@ export class Avisos {
     // 👥 las crews son de un PERFIL, no de una cuenta: sólo se anota el ID nuevo (no van en `tablas`, que borra lo viejo)
     try { CW.crewMudar(this, viejo, nuevo); } catch (e) { fallas.push('crews'); }
     try { this.sql.exec('UPDATE inscritos SET autor_id = ? WHERE autor_id = ?', nuevo, viejo); } catch (e) { fallas.push('inscritos'); }
+    this.inscMem = null;
     this.sql.exec('DELETE FROM sesiones WHERE quien = ?', viejo);
     if (movidas.foto_oculta) await this.espejarOcultas();
     if (movidas.reportes) await this.colaReportes(Date.now());
@@ -12184,7 +12210,7 @@ export class Avisos {
         // Un 400 o un 403 no: repetirlo daría lo mismo durante una semana.
         else if (e === 0 || e === 429 || e >= 500) reintentar = true;
       });
-      if (reintentar && !llego) this.sql.exec('DELETE FROM hechos WHERE id = ?', id);
+      if (reintentar && !llego) this.hechoDeshacer(id);
     }
     this.sql.exec('DELETE FROM hechos WHERE t < ?', ahora - 30 * 24 * HORA);
     if (rellenar) this.guardar('bandeja_relleno', { t: ahora });
@@ -12236,7 +12262,7 @@ export class Avisos {
         else if (MUERTA(e)) this.sql.exec('DELETE FROM subs WHERE id = ?', subs[i].id);
         else if (e === 0 || e === 429 || e >= 500) reintentar = true;
       });
-      if (reintentar && !llego) this.sql.exec('DELETE FROM hechos WHERE id = ?', id);
+      if (reintentar && !llego) this.hechoDeshacer(id);
     }
     // el día queda hecho cuando no quedó nadie esperando el tope
     if (!quedan) this.guardar('racha_aviso_dia', hoy);
@@ -13185,7 +13211,7 @@ export class Avisos {
         else if (MUERTA(e)) this.sql.exec('DELETE FROM subs WHERE id = ?', subs[i].id);
         else if (e === 0 || e === 429 || e >= 500) reintentar = true;
       });
-      if (reintentar && !llego) this.sql.exec('DELETE FROM hechos WHERE id = ?', id);
+      if (reintentar && !llego) this.hechoDeshacer(id);
     }
     if (!quedan) this.guardar('pase_aviso_sem', s[0]);
     return enviados;
