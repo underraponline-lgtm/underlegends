@@ -61,9 +61,9 @@
     "base": 9500,
     "o": 14,
     "estado": "suelto",
-    "ev": 0,
-    "fase": "",
-    "valor": 9500
+    "ev": 1,
+    "fase": "Campeón",
+    "valor": 11500
    },
    {
     "n": "Kochi",
@@ -99,10 +99,30 @@
     "nivel": "B",
     "base": 9000,
     "o": 3,
-    "estado": "suelto",
-    "ev": 0,
-    "fase": "",
-    "valor": 9000
+    "estado": "cazado",
+    "ev": 1,
+    "fase": "Octavos",
+    "valor": 9000,
+    "caza": {
+     "n": 565,
+     "evento": "qcyo rapeen 10",
+     "sv": "FFA",
+     "t": "2026-11-04T02:05:41Z",
+     "por": [
+      {
+       "n": "Geoka",
+       "cobra": 6000
+      },
+      {
+       "n": "Leopold sedar",
+       "cobra": 6000
+      },
+      {
+       "n": "PichulaMc",
+       "cobra": 3000
+      }
+     ]
+    }
    },
    {
     "n": "Snow",
@@ -164,10 +184,26 @@
     "nivel": "C",
     "base": 6000,
     "o": 13,
-    "estado": "suelto",
-    "ev": 1,
-    "fase": "",
-    "valor": 7250
+    "estado": "cazado",
+    "ev": 2,
+    "fase": "Semifinal",
+    "valor": 7250,
+    "caza": {
+     "n": 565,
+     "evento": "qcyo rapeen 10",
+     "sv": "FFA",
+     "t": "2026-11-04T02:05:41Z",
+     "por": [
+      {
+       "n": "Agus",
+       "cobra": 3500
+      },
+      {
+       "n": "Six",
+       "cobra": 3500
+      }
+     ]
+    }
    },
    {
     "n": "Trelok",
@@ -216,10 +252,30 @@
     "nivel": "D",
     "base": 4000,
     "o": 50,
-    "estado": "suelto",
-    "ev": 0,
-    "fase": "",
-    "valor": 5000
+    "estado": "cazado",
+    "ev": 1,
+    "fase": "Octavos",
+    "valor": 5000,
+    "caza": {
+     "n": 565,
+     "evento": "qcyo rapeen 10",
+     "sv": "FFA",
+     "t": "2026-11-04T02:05:41Z",
+     "por": [
+      {
+       "n": "Geoka",
+       "cobra": 1750
+      },
+      {
+       "n": "Leopold sedar",
+       "cobra": 3250
+      },
+      {
+       "n": "PichulaMc",
+       "cobra": 1750
+      }
+     ]
+    }
    }
   ],
   "snap": {

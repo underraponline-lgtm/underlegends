@@ -42032,5 +42032,238 @@
     1250
    ]
   ]
+ },
+ "565": {
+  "dia": "2026-11-03",
+  "escala": "16+",
+  "fecha": "03/11",
+  "links": [
+   "https://discord.com/channels/1468472442925092958/1487207377601040516/1567359151468712137"
+  ],
+  "n": 565,
+  "nombre": "qcyo rapeen 10",
+  "participantes": 19,
+  "rondas": [
+   {
+    "b": [
+     [
+      [
+       "yinn",
+       "Agus",
+       "Six",
+       "Andres"
+      ],
+      "yinn, Agus, Six",
+      "triple (4 bandas, pasan 3); también pasa: agus / six; Drafteado: yinn"
+     ],
+     [
+      [
+       "Molusco",
+       "Vandu",
+       "LRS",
+       "Rodas"
+      ],
+      "Molusco, Vandu, LRS",
+      "triple (4 bandas, pasan 3); también pasa: vandu 🇨🇦 / Lrs🇦🇷"
+     ],
+     [
+      [
+       "Makmah",
+       "Lvel 🇻🇪",
+       "Lizen🇦🇷",
+       "Saz",
+       "Drexx"
+      ],
+      "Makmah, Lvel 🇻🇪",
+      "triple (5 bandas, pasan 2); también pasa: Lvel 🇻🇪"
+     ],
+     [
+      [
+       "PichulaMc",
+       "Leopold sedar 🇸🇳",
+       "Geoka",
+       "Erian",
+       "Dyzz"
+      ],
+      "PichulaMc, Leopold sedar 🇸🇳, Geoka",
+      "triple (5 bandas, pasan 3); también pasa: Leopold sedar 🇸🇳 / Geoka 🇦🇷"
+     ]
+    ],
+    "r": "Octavos"
+   },
+   {
+    "b": [
+     [
+      [
+       "yinn",
+       "Leopold sedar 🇸🇳",
+       "LRS"
+      ],
+      "yinn, Leopold sedar 🇸🇳",
+      "triple (3 bandas, pasan 2); también pasa: Leopold sedar 🇸🇳"
+     ],
+     [
+      [
+       "Tam",
+       "Molusco",
+       "Makmah"
+      ],
+      "Tam, Molusco",
+      "triple (3 bandas, pasan 2); también pasa: Molusco 🇦🇷; Walk-in 1: tam"
+     ],
+     [
+      [
+       "Geoka",
+       "Vandu",
+       "Lvel 🇻🇪"
+      ],
+      "Geoka, Vandu",
+      "triple (3 bandas, pasan 2); también pasa: vandu 🇨🇦"
+     ],
+     [
+      [
+       "Agus",
+       "Six",
+       "PichulaMc"
+      ],
+      "Agus, Six",
+      "triple (3 bandas, pasan 2); también pasa: six"
+     ]
+    ],
+    "r": "Cuartos"
+   },
+   {
+    "b": [
+     [
+      [
+       "Molusco, Tam",
+       "Leopold sedar 🇸🇳, yinn"
+      ],
+      "Molusco, Tam",
+      ""
+     ],
+     [
+      [
+       "Agus, Six",
+       "Geoka, Vandu"
+      ],
+      "Agus, Six",
+      ""
+     ]
+    ],
+    "r": "Semifinales"
+   },
+   {
+    "b": [
+     [
+      [
+       "Agus, Six, Geoka",
+       "Molusco, Tam, yinn"
+      ],
+      "Agus, Six, Geoka",
+      ""
+     ]
+    ],
+    "r": "Final"
+   }
+  ],
+  "sv": "FFA",
+  "tabla": [
+   [
+    "Geoka",
+    "Semifinal",
+    5958
+   ],
+   [
+    "yinn",
+    "Subcampeón",
+    5125
+   ],
+   [
+    "Agus",
+    "Campeón",
+    3333
+   ],
+   [
+    "Six",
+    "Campeón",
+    3333
+   ],
+   [
+    "Leopold sedar 🇸🇳",
+    "Semifinal",
+    2625
+   ],
+   [
+    "Vandu",
+    "Semifinal",
+    2625
+   ],
+   [
+    "LRS",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Lvel 🇻🇪",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Makmah",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Molusco",
+    "Subcampeón",
+    2500
+   ],
+   [
+    "PichulaMc",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Andres",
+    "Octavos",
+    1250
+   ],
+   [
+    "Drexx",
+    "Octavos",
+    1250
+   ],
+   [
+    "Dyzz",
+    "Octavos",
+    1250
+   ],
+   [
+    "Erian",
+    "Octavos",
+    1250
+   ],
+   [
+    "Lizen🇦🇷",
+    "Octavos",
+    1250
+   ],
+   [
+    "Rodas",
+    "Octavos",
+    1250
+   ],
+   [
+    "Saz",
+    "Octavos",
+    1250
+   ],
+   [
+    "Tam",
+    "Subcampeón",
+    1250
+   ]
+  ]
  }
 }

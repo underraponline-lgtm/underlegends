@@ -33748,5 +33748,290 @@
    ]
   ],
   "v": 2
+ },
+ "565": {
+  "antes": {
+   "Agus": [
+    11,
+    12,
+    false
+   ],
+   "Andres": [
+    39,
+    48,
+    false
+   ],
+   "Drexx": [
+    37,
+    45,
+    false
+   ],
+   "Dyzz": [
+    44,
+    55,
+    false
+   ],
+   "Erian": [
+    3,
+    3,
+    false
+   ],
+   "Geoka": [
+    45,
+    57,
+    false
+   ],
+   "LRS": [
+    41,
+    50,
+    false
+   ],
+   "Makmah": [
+    1,
+    1,
+    false
+   ],
+   "Molusco": [
+    23,
+    26,
+    false
+   ],
+   "PichulaMc": [
+    4,
+    5,
+    false
+   ],
+   "Rodas": [
+    82,
+    109,
+    false
+   ],
+   "Saz": [
+    329,
+    251,
+    true
+   ],
+   "Six": [
+    6,
+    7,
+    false
+   ],
+   "Tam": [
+    225,
+    20,
+    true
+   ],
+   "Vandu": [
+    13,
+    14,
+    false
+   ],
+   "yinn": [
+    226,
+    21,
+    true
+   ]
+  },
+  "canal": "1468472443843776659",
+  "duelos": [
+   [
+    "yinn",
+    "Andres",
+    "yinn"
+   ],
+   [
+    "Molusco",
+    "Rodas",
+    "Molusco"
+   ],
+   [
+    "Makmah",
+    "Lizen🇦🇷",
+    "Makmah"
+   ],
+   [
+    "Makmah",
+    "Saz",
+    "Makmah"
+   ],
+   [
+    "Makmah",
+    "Drexx",
+    "Makmah"
+   ],
+   [
+    "PichulaMc",
+    "Erian",
+    "PichulaMc"
+   ],
+   [
+    "PichulaMc",
+    "Dyzz",
+    "PichulaMc"
+   ],
+   [
+    "yinn",
+    "LRS",
+    "yinn"
+   ],
+   [
+    "Tam",
+    "Makmah",
+    "Tam"
+   ],
+   [
+    "Geoka",
+    "Lvel 🇻🇪",
+    "Geoka"
+   ],
+   [
+    "Agus",
+    "PichulaMc",
+    "Agus"
+   ],
+   [
+    "Molusco, Tam",
+    "Leopold sedar 🇸🇳, yinn",
+    "Molusco, Tam"
+   ],
+   [
+    "Agus, Six",
+    "Geoka, Vandu",
+    "Agus, Six"
+   ],
+   [
+    "Agus, Six, Geoka",
+    "Molusco, Tam, yinn",
+    "Agus, Six, Geoka"
+   ]
+  ],
+  "ev_antes": {
+   "Agus": 23,
+   "Andres": 20,
+   "Drexx": 29,
+   "Dyzz": 23,
+   "Erian": 65,
+   "Geoka": 22,
+   "LRS": 29,
+   "Makmah": 96,
+   "Molusco": 25,
+   "PichulaMc": 55,
+   "Rodas": 10,
+   "Saz": 4,
+   "Six": 40,
+   "Tam": 20,
+   "Vandu": 43,
+   "yinn": 30
+  },
+  "fecha": "03/11",
+  "firma": "e9c5899b035ac84d",
+  "msg": "1567394632550187149",
+  "nombre": "__ qcyo rapeen 10 __",
+  "num": 565,
+  "participantes": 19,
+  "sello": {
+   "Agus": "dafd5aae0c41:ccd09f762e04",
+   "Six": "480292bf4775:ccd09f762e04"
+  },
+  "sv": "FFA",
+  "t": "2026-11-04T04:54:45Z",
+  "tabla": [
+   [
+    "Geoka",
+    "Semifinal",
+    5958
+   ],
+   [
+    "yinn",
+    "Subcampeón",
+    5125
+   ],
+   [
+    "Agus",
+    "Campeón",
+    3333
+   ],
+   [
+    "Six",
+    "Campeón",
+    3333
+   ],
+   [
+    "Leopold sedar 🇸🇳",
+    "Semifinal",
+    2625
+   ],
+   [
+    "Vandu",
+    "Semifinal",
+    2625
+   ],
+   [
+    "Molusco",
+    "Subcampeón",
+    2500
+   ],
+   [
+    "LRS",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Makmah",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Lvel 🇻🇪",
+    "Cuartos",
+    2500
+   ],
+   [
+    "PichulaMc",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Tam",
+    "Subcampeón",
+    1250
+   ],
+   [
+    "Andres",
+    "Octavos",
+    1250
+   ],
+   [
+    "Rodas",
+    "Octavos",
+    1250
+   ],
+   [
+    "Lizen🇦🇷",
+    "Octavos",
+    1250
+   ],
+   [
+    "Saz",
+    "Octavos",
+    1250
+   ],
+   [
+    "Drexx",
+    "Octavos",
+    1250
+   ],
+   [
+    "Erian",
+    "Octavos",
+    1250
+   ],
+   [
+    "Dyzz",
+    "Octavos",
+    1250
+   ]
+  ],
+  "v": 2
  }
 }

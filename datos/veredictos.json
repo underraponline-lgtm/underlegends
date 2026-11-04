@@ -1442,6 +1442,28 @@
    "b": "SIX",
    "ganador": "SIX",
    "votos": "1–0"
+  },
+  "1567393832797081782": {
+   "id": "1567393832797081782",
+   "sv": "[FFA] Freestyle For All 👾",
+   "g": "1468472442925092958",
+   "canal": "1487206164864438513",
+   "pub": 1793766210508,
+   "a": "SIX",
+   "b": "TAM",
+   "ganador": "SIX",
+   "votos": "1–0"
+  },
+  "1567399995269849159": {
+   "id": "1567399995269849159",
+   "sv": "🔥LKR (Champios Legue)🐉",
+   "g": "1558611504046153750",
+   "canal": "1566535333254795466",
+   "pub": 1793767679756,
+   "a": "SIN L.🇵🇪",
+   "b": "LAST🇺🇾",
+   "ganador": "SIN L.🇵🇪",
+   "votos": "1–0"
   }
  },
  "llaves": {
@@ -5590,7 +5612,7 @@
    "g": "1468472442925092958",
    "canal": "1487206164864438513",
    "pub": 1793760828802,
-   "ed": 1793766210508,
+   "ed": 1793766217645,
    "texto": "`[ CUARTOS ]`\n⌞LEOPOLD SEAR⌝ 🆚 ⌞LRS⌝ 🆚 ⌞YINN⌝\n⌞TAM⌝ 🆚 ⌞MOLUSCO⌝ 🆚 ⌞MAKMAH⌝\n⌞GEOKA⌝ 🆚 ⌞LVEL⌝ 🆚 ⌞VANDU⌝\n⌞PICHULA⌝ 🆚 ⌞SIX⌝ 🆚 ⌞AGUS⌝\n`[ SEMIFINALES ]`\n⌞YINN LEOPOLD SEAR⌝ 🆚 ⌞TAM MOLUSCO⌝\n⌞GEOKA VANDU⌝ 🆚 ⌞SIX AGUS⌝\n`[ FINAL ]`\n⌞YINN MOLUSCO TAM⌝ 🆚 ⌞SIX GEOKA AGUS⌝\n⌞GEOKA⌝ 🆚 ⌞YINN⌝\n⌞YINN⌝ 🆚 ⌞AGUS⌝\n⌞YINN⌝ 🆚 ⌞SIX⌝\n⌞NHP⌝ 🆚 ⌞SIX⌝\n⌞MOLUSCO⌝ 🆚 ⌞SIX⌝\n⌞SIX⌝ 🆚 ⌞TAM⌝",
    "batallas": [
     [
@@ -5723,8 +5745,8 @@
       "SIX",
       "TAM"
      ],
-     null,
-     "última ronda y no dice campeón",
+     "SIX",
+     "veredicto",
      []
     ]
    ]

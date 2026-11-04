@@ -528,10 +528,20 @@
     "t1",
     1793029252929
    ],
+   "🏛️ PILAR": [
+    "🏛️ PILAR",
+    "t1",
+    1793768743284
+   ],
    "🏟️ FINALISTA DE CASA": [
     "🏟️ FINALISTA DE CASA",
     "t1",
     1793029252929
+   ],
+   "🏰 FORTALEZA": [
+    "🏰 FORTALEZA",
+    "t1",
+    1793768743284
    ],
    "📆 HABITUÉ": [
     "📆 HABITUÉ",
@@ -586,7 +596,7 @@
     1793029252929
    ],
    "👑 CAMPEÓN x%d": [
-    "👑 CAMPEÓN x5",
+    "👑 CAMPEÓN x6",
     "t1",
     1793029252929
    ],
@@ -817,6 +827,11 @@
     "👑 CAMPEÓN x4",
     "t1",
     1793079194391
+   ],
+   "💯 CENTENARIO": [
+    "💯 CENTENARIO",
+    "t1",
+    1793768743284
    ],
    "📅 INFALTABLE": [
     "📅 INFALTABLE",
@@ -2732,6 +2747,16 @@
     "t1",
     1792953978519
    ],
+   "🐉 MATADRAGONES": [
+    "🐉 MATADRAGONES",
+    "t1",
+    1793768743284
+   ],
+   "🗡️ MATAGIGANTES": [
+    "🗡️ MATAGIGANTES",
+    "t1",
+    1793768743284
+   ],
    "🤝 SIN MIEDO": [
     "🤝 SIN MIEDO",
     "t1",
@@ -2787,6 +2812,11 @@
     "🎖️ CURTIDO",
     "t1",
     1793029252929
+   ],
+   "💯 CENTENARIO": [
+    "💯 CENTENARIO",
+    "t1",
+    1793768743284
    ],
    "📅 INFALTABLE": [
     "📅 INFALTABLE",
@@ -2971,6 +3001,11 @@
     "🎖️ CURTIDO",
     "t1",
     1793162119089
+   ],
+   "💯 CENTENARIO": [
+    "💯 CENTENARIO",
+    "t1",
+    1793768743284
    ],
    "🔟 DOBLE DÍGITO": [
     "🔟 DOBLE DÍGITO",
@@ -3744,6 +3779,11 @@
     "👑 CAMPEÓN x2",
     "t1",
     1793029252929
+   ],
+   "💯 CENTENARIO": [
+    "💯 CENTENARIO",
+    "t1",
+    1793768743284
    ],
    "📅 INFALTABLE": [
     "📅 INFALTABLE",
@@ -5410,6 +5450,11 @@
     "🎖️ CURTIDO",
     "t1",
     1792953978519
+   ],
+   "💯 CENTENARIO": [
+    "💯 CENTENARIO",
+    "t1",
+    1793768743284
    ],
    "📅 INFALTABLE": [
     "📅 INFALTABLE",
@@ -9664,6 +9709,13 @@
     1792953978519
    ]
   },
+  "servidor": {
+   "📆 HABITUÉ": [
+    "📆 HABITUÉ",
+    "t1",
+    1793768743284
+   ]
+  },
   "temporada": {
    "🌍 TROTAMUNDOS": [
     "🌍 TROTAMUNDOS",
@@ -10126,7 +10178,7 @@
     1793029252929
    ],
    "👑 CAMPEÓN x%d": [
-    "👑 CAMPEÓN x6",
+    "👑 CAMPEÓN x7",
     "t1",
     1793029252929
    ],
@@ -10159,6 +10211,11 @@
     "📋 SEMANA PERFECTA",
     "t1",
     1793029252929
+   ],
+   "📋 SEMANA PERFECTA x%d": [
+    "📋 SEMANA PERFECTA x2",
+    "t1",
+    1793768743284
    ],
    "🔋 INAGOTABLE": [
     "🔋 INAGOTABLE",
@@ -10677,6 +10734,11 @@
     "🏅 PODIOS",
     "t1",
     1793029252929
+   ],
+   "🏅 VITRINA LLENA": [
+    "🏅 VITRINA LLENA",
+    "t1",
+    1793768743284
    ],
    "🏆 CAMPEÓN": [
     "🏆 CAMPEÓN",
