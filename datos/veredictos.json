@@ -1365,6 +1365,28 @@
    "b": "ISMEL (EXTRA)",
    "ganador": "SHADOW",
    "votos": "1–0"
+  },
+  "1567377875278110882": {
+   "id": "1567377875278110882",
+   "sv": "[FFA] Freestyle For All 👾",
+   "g": "1468472442925092958",
+   "canal": "1487206164864438513",
+   "pub": 1793762405939,
+   "a": "YINN LEOPOLD SEAR",
+   "b": "TAM MOLUSCO",
+   "ganador": "TAM MOLUSCO",
+   "votos": "1–0"
+  },
+  "1567385432700756001": {
+   "id": "1567385432700756001",
+   "sv": "[FFA] Freestyle For All 👾",
+   "g": "1468472442925092958",
+   "canal": "1487206164864438513",
+   "pub": 1793764207769,
+   "a": "GEOKA VANDU",
+   "b": "SIX AGUS",
+   "ganador": "SIX AGUS",
+   "votos": "1–0"
   }
  },
  "llaves": {
@@ -5513,8 +5535,8 @@
    "g": "1468472442925092958",
    "canal": "1487206164864438513",
    "pub": 1793760828802,
-   "ed": 1793762405939,
-   "texto": "`[ CUARTOS ]`\n⌞LEOPOLD SEAR⌝ 🆚 ⌞LRS⌝ 🆚 ⌞YINN⌝\n⌞TAM⌝ 🆚 ⌞MOLUSCO⌝ 🆚 ⌞MAKMAH⌝\n⌞GEOKA⌝ 🆚 ⌞LVEL⌝ 🆚 ⌞VANDU⌝\n⌞PICHULA⌝ 🆚 ⌞SIX⌝ 🆚 ⌞AGUS⌝\n`[ SEMIFINALES ]`\n⌞YINN LEOPOLD SEAR⌝ 🆚 ⌞TAM MOLUSCO⌝",
+   "ed": 1793764403310,
+   "texto": "`[ CUARTOS ]`\n⌞LEOPOLD SEAR⌝ 🆚 ⌞LRS⌝ 🆚 ⌞YINN⌝\n⌞TAM⌝ 🆚 ⌞MOLUSCO⌝ 🆚 ⌞MAKMAH⌝\n⌞GEOKA⌝ 🆚 ⌞LVEL⌝ 🆚 ⌞VANDU⌝\n⌞PICHULA⌝ 🆚 ⌞SIX⌝ 🆚 ⌞AGUS⌝\n`[ SEMIFINALES ]`\n⌞YINN LEOPOLD SEAR⌝ 🆚 ⌞TAM MOLUSCO⌝\n⌞GEOKA VANDU⌝ 🆚 ⌞SIX AGUS⌝\n`[ FINAL ]`\n⌞YINN MOLUSCO TAM⌝ 🆚 ⌞SIX GEOKA AGUS⌝",
    "batallas": [
     [
      "CUARTOS",
@@ -5565,6 +5587,26 @@
      [
       "YINN LEOPOLD SEAR",
       "TAM MOLUSCO"
+     ],
+     "TAM MOLUSCO",
+     "veredicto",
+     []
+    ],
+    [
+     "SEMIFINALES",
+     [
+      "GEOKA VANDU",
+      "SIX AGUS"
+     ],
+     "SIX AGUS",
+     "veredicto",
+     []
+    ],
+    [
+     "FINAL",
+     [
+      "YINN MOLUSCO TAM",
+      "SIX GEOKA AGUS"
      ],
      null,
      "última ronda y no dice campeón",
