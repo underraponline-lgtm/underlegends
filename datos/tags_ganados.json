@@ -590,6 +590,11 @@
     "t1",
     1793079194391
    ],
+   "🎯 CAZARRECOMPENSAS": [
+    "🎯 CAZARRECOMPENSAS",
+    "t1",
+    1793770288705
+   ],
    "🐺 LOBO SOLITARIO": [
     "🐺 LOBO SOLITARIO",
     "t1",
@@ -3775,6 +3780,16 @@
     "t1",
     1793317391221
    ],
+   "🎯 CAZADOR CAZADO": [
+    "🎯 CAZADOR CAZADO",
+    "t1",
+    1793770288705
+   ],
+   "🎯 CAZARRECOMPENSAS": [
+    "🎯 CAZARRECOMPENSAS",
+    "t1",
+    1793770288705
+   ],
    "👑 CAMPEÓN x%d": [
     "👑 CAMPEÓN x2",
     "t1",
@@ -4925,6 +4940,15 @@
     "🧳 VIAJERO",
     "t1",
     1793029252929
+   ]
+  }
+ },
+ "leopoldsedar": {
+  "temporada": {
+   "🎯 CAZARRECOMPENSAS": [
+    "🎯 CAZARRECOMPENSAS",
+    "t1",
+    1793770288705
    ]
   }
  },

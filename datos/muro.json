@@ -19,6 +19,15 @@
 "temporada"
 ]
 },
+"pichulamc": {
+"rg": "A",
+"c": [
+"competitivo",
+"pais",
+"servidor",
+"temporada"
+]
+},
 "erian": {
 "rg": "B",
 "c": [
@@ -30,15 +39,6 @@
 "praiseriza": {
 "rg": "SS",
 "c": []
-},
-"pichulamc": {
-"rg": "A",
-"c": [
-"competitivo",
-"pais",
-"servidor",
-"temporada"
-]
 },
 "six": {
 "rg": "B",
@@ -76,6 +76,15 @@
 "temporada"
 ]
 },
+"agus": {
+"rg": "S",
+"c": [
+"competitivo",
+"pais",
+"servidor",
+"temporada"
+]
+},
 "mrstillballin": {
 "rg": "S",
 "c": [
@@ -86,15 +95,6 @@
 },
 "vandu": {
 "rg": "C",
-"c": [
-"competitivo",
-"pais",
-"servidor",
-"temporada"
-]
-},
-"agus": {
-"rg": "S",
 "c": [
 "competitivo",
 "pais",
@@ -306,6 +306,15 @@
 "temporada"
 ]
 },
+"geoka": {
+"rg": "D",
+"c": [
+"competitivo",
+"pais",
+"servidor",
+"temporada"
+]
+},
 "cronox": {
 "rg": "D",
 "c": [
@@ -422,15 +431,6 @@
 "neo": {
 "rg": "C",
 "c": []
-},
-"geoka": {
-"rg": "D",
-"c": [
-"competitivo",
-"pais",
-"servidor",
-"temporada"
-]
 },
 "caliz": {
 "rg": "E",
@@ -1060,6 +1060,10 @@
 "servidor",
 "temporada"
 ]
+},
+"leopoldsedar": {
+"rg": "",
+"c": []
 },
 "matuk": {
 "rg": "",
