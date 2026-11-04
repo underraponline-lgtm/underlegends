@@ -3,6 +3,7 @@
 
     python herramientas/banner_link.py                -> bot/paginas/og.png
     python herramientas/banner_link.py --servidores   -> bot/paginas/og/<sv>.png, una por servidor
+    python herramientas/banner_link.py --paginas      -> sólo las páginas `bot/paginas/s/<sv>/`, sin las imágenes
 
 🔑 Y UNA POR SERVIDOR (Dlx, 12/10/2026: «si el link está en un servidor, que la foto de portada tenga temática de ese
 servidor; si no se puede, quitá ese thumbnail»). Misma piel, con el color y el logo de ese servidor, y al lado una página
@@ -60,9 +61,13 @@ WEB = 'https://underlegends.pages.dev'
 LIGA = '/freestyle-rap/'
 
 
-def pagina_sv(sv):
-    """La página chiquita de un servidor, `(sigla, nombre, color, logo)`: su vista previa, y a la Liga."""
+def pagina_sv(sv, eventos=False):
+    """La página chiquita de un servidor, `(sigla, nombre, color, logo)`: su vista previa, y a la Liga. Con `eventos`, la
+    misma vista previa en `/s/<sv>/eventos/`, que lleva a los eventos: la usa el mensaje del reto (Dlx, 04/11/2026), que
+    dice «todos los eventos están aquí»."""
     s, nom, col = sv[0].lower(), _esc(sv[1]), _esc(sv[2])
+    liga = LIGA + 'eventos' if eventos else LIGA
+    url = '%s/s/%s/%s' % (WEB, s, 'eventos/' if eventos else '')
     desc = 'Sus eventos, su gente y sus tarjetas, en el ranking mundial del freestyle online.'
     # 🔑 Y LLEVA A LA PORTADA, a propósito (Dlx, 14/10/2026: «each link should redirect you to the home… but each
     # server has its own link with its own personalized thumbnail»): lo propio de cada servidor es el link y su imagen
@@ -75,7 +80,7 @@ def pagina_sv(sv):
             '<meta property="og:description" content="%(desc)s">\n'
             '<meta property="og:type" content="website">\n'
             '<meta property="og:site_name" content="Under Legends">\n'
-            '<meta property="og:url" content="%(web)s/s/%(s)s/">\n'
+            '<meta property="og:url" content="%(url)s">\n'
             '<meta property="og:image" content="%(web)s/og/%(s)s.png">\n'
             '<meta property="og:image:width" content="1200">\n'
             '<meta property="og:image:height" content="630">\n'
@@ -84,7 +89,16 @@ def pagina_sv(sv):
             '<meta http-equiv="refresh" content="0;url=%(liga)s">\n'
             '<script>location.replace(%(ligaj)s)</script>\n'
             '</head><body><a href="%(liga)s">Liga Global de Freestyle</a></body></html>\n'
-            % {'nom': nom, 'desc': desc, 'col': col, 'web': WEB, 's': s, 'liga': LIGA, 'ligaj': "'" + LIGA + "'"})
+            % {'nom': nom, 'desc': desc, 'col': col, 'web': WEB, 's': s, 'url': url, 'liga': liga, 'ligaj': "'" + liga + "'"})
+
+
+def escribir_paginas(sv):
+    """Las dos páginas chiquitas de un servidor."""
+    d = os.path.join(BASE, 'bot', 'paginas', 's', sv[0].lower())
+    for carpeta, ev in ((d, False), (os.path.join(d, 'eventos'), True)):
+        os.makedirs(carpeta, exist_ok=True)
+        with io.open(os.path.join(carpeta, 'index.html'), 'w', encoding='utf-8', newline='\n') as f:
+            f.write(pagina_sv(sv, ev))
 
 
 def html(sv=None):
@@ -162,6 +176,10 @@ def main():
         sys.stdout.reconfigure(encoding='utf-8', errors='replace')
     except AttributeError:
         pass
+    if '--paginas' in sys.argv:
+        for sv in _servidores():
+            escribir_paginas(sv)
+        return
     from playwright.sync_api import sync_playwright
     trabajos = [(None, SALIDA)]
     if '--servidores' in sys.argv:
@@ -176,10 +194,7 @@ def main():
             pg.screenshot(path=ruta)
             print('   ✅ %s (%d KB)' % (os.path.relpath(ruta, BASE), os.path.getsize(ruta) // 1024))
             if sv:
-                d = os.path.join(BASE, 'bot', 'paginas', 's', sv[0].lower())
-                os.makedirs(d, exist_ok=True)
-                with io.open(os.path.join(d, 'index.html'), 'w', encoding='utf-8', newline='\n') as f:
-                    f.write(pagina_sv(sv))
+                escribir_paginas(sv)
         b.close()
 
 

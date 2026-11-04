@@ -10,6 +10,19 @@
   "HORA: `cuando` es el instante en que se publicó (ISO, con la zona); la página lo muestra en la hora de quien mira. Sin `cuando`, sólo el día."
  ],
  "cambios": [
+    {
+        "version": "4.26",
+        "dia": "2026-11-04",
+        "cuando": "2026-11-04T18:15:00-05:00",
+        "titulo": "El panel de tu servidor dice si tu gente vuelve",
+        "items": [
+            "**¿Vuelve tu gente?** Cuántos de los que debutan en tu servidor juegan otro evento, contra toda la Liga, si ayuda tener otro evento cerca y hasta dónde llegan.",
+            "**Para invitar**: quienes jugaron una vez en tu servidor y no volvieron, con su perfil.",
+            "**Para subir de tier**: lo que te falta, con cómo vas en cada cosa.",
+            "**Los números del panel vuelven a estar al día**: llevaban días sin moverse.",
+            "**El mensaje a quien debuta** ahora dice qué sigue: dónde ver todos los eventos y cómo activar la campana."
+        ]
+    },
   {"version": "4.25", "dia": "2026-11-04", "cuando": "2026-11-04T17:37:00-05:00", "titulo": "El VS de las llaves, de cada servidor", "items": ["**El VS de cada cruce es de tu servidor**: cada uno tiene su propio fondo, y sales con tu carta de ese servidor.", "**Sin tarjeta también te ves bien**: tu silueta con el color del servidor, tu nombre y tus números. Y si tienes carta y no estabas entre los 200 primeros, ahora sale la tuya.", "**Más títulos**: La final soñada, La bestia negra, El desempate, Moneda al aire y más de veinte tipos, sin repetirse en la misma noche si hay otro.", "**Se marca al favorito**, según el pronóstico. Y tus últimos duelos ya cuentan los de esta noche.", "**Equipos y todos contra todos**: una línea entre cada lado, y con cuatro lados, uno en cada cuadrante."]},
     {
         "version": "4.24",

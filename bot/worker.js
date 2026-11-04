@@ -2057,7 +2057,7 @@ async function panelAscenso(env, gid, cfg) {
     '',
     liga
       ? `Ya tenemos las reglas de **${nombre}**: el ascenso a la **${liga}**.`
-      : 'Todavía no tenemos las reglas del ascenso de este servidor: pasale su tabla y sus rangos a **@itsdlx**.',
+      : 'Todavía no tenemos las reglas del ascenso de este servidor: pásale su tabla y sus rangos a **@itsdlx**.',
     '',
     'El bot parte de **su tabla oficial** y le suma lo que vino después —las compes con su rango, con **sus** ' +
     'puntos—. Mantiene **un solo mensaje** en el canal que elijan: lo edita cuando cambia algo y nunca menciona a ' +
@@ -2980,7 +2980,7 @@ const ERRORES_CREW = {
   solo_invitacion: 'A esa crew se entra sólo por invitación.',
   sin_invitacion: 'Esa invitación ya no está (vencen a la semana).',
   rol: 'Tu rango en la crew no te deja hacer eso.',
-  lider_pasa_primero: 'Eres el Líder: antes de irte (o de cambiarte de crew), pasale el liderazgo a alguien desde la página de tu crew.',
+  lider_pasa_primero: 'Eres el Líder: antes de irte (o de cambiarte de crew), pásale el liderazgo a alguien desde la página de tu crew.',
   sin_crew: 'No estás en ninguna crew.',
   no_existe: 'Esa crew ya no existe.',
   espera_dia: 'Ya hiciste mucho de esto hoy: prueba mañana.',

@@ -18,6 +18,8 @@ LAS TRES PATAS
     y sólo donde el bot en vivo está prendido (`ajustes.en_vivo`, el interruptor del Dashboard y de /settings).
     El texto lo aprobó Dlx el 12/10/2026 (*«1. dale»*): hablar en el chat de un servidor es hablar en nombre de la
     Liga, así que si se cambia, se le muestra antes. `python bot/debutantes.py` muestra el que saldría.
+    Y lo cambió el 04/11/2026 (*«Dale»*): medido, el reto no movió a nadie (con Discord, 40 % antes y 41 % con él) y lo que
+    sí pesa es tener otro evento cerca. Ahora primero dice qué sigue, y a dónde ir.
 
 ⚠️ SÓLO LOS DEBUTS DESDE `DESDE`: el reto se anuncia ese día, y quien debutó antes nunca lo vio.
 ⚠️ «OTRO EVENTO» ES OTRO NÚMERO, aunque sea el mismo día: el reto pide volver a jugar, no volver otro día.
@@ -115,30 +117,32 @@ def avisos_pagina(nuevos, cumplidos):
 
 
 def _link(sv):
-    """La página de ese servidor si existe (`bot/paginas/s/<sv>/`), y si no, la de la Liga."""
-    if sv and os.path.exists(os.path.join(BASE, 'bot', 'paginas', 's', sv.lower(), 'index.html')):
-        return 'https://underlegends.pages.dev/s/%s/' % sv.lower()
-    return WEB.rstrip('/')
+    """Los eventos de la Liga, con la vista previa de ese servidor si existe (`bot/paginas/s/<sv>/eventos/`)."""
+    if sv and os.path.exists(os.path.join(BASE, 'bot', 'paginas', 's', sv.lower(), 'eventos', 'index.html')):
+        return 'https://underlegends.pages.dev/s/%s/eventos/' % sv.lower()
+    return WEB + 'eventos'
 
 
 def mensaje_chat(gente, sv=''):
     """El mensaje del chat de un servidor: `(texto, [discord_ids])`. `gente` = `[(raw, reto)]` de ese servidor.
 
-    🖼️ El link es la página de su servidor, `/s/<sigla>/` (Dlx, 12/10/2026: «que la foto de portada tenga temática de
-    ese servidor»): la vista previa que arma Discord sale con su imagen y lleva a la Liga (`herramientas/banner_link.py`).
-    Sin esa página, el link de siempre."""
+    🖼️ El link es el de su servidor, `/s/<sigla>/eventos/` (Dlx, 12/10/2026: «que la foto de portada tenga temática de
+    ese servidor»): la vista previa que arma Discord sale con su imagen y lleva a los eventos, que es lo que dice el
+    mensaje (`herramientas/banner_link.py`). Sin esa página, los eventos sin su imagen."""
     nombres = ['<@%s>' % r['did'] if r.get('did') else '**%s**' % raw for raw, r in gente]
     if len(nombres) > 1:
         quien = ', '.join(nombres[:-1]) + ' y ' + nombres[-1]
     else:
         quien = nombres[0]
     vence = min(dt.datetime.fromisoformat(r['vence']) for _raw, r in gente)
+    varios = len(gente) > 1
     texto = ('🎤 **Bienvenida a la Liga Global:** %s %s su primer evento.\n'
-             '**Reto:** %s otro evento antes del %s y %s **%s Puntos de Tienda**. Cualquier servidor de la Liga '
-             'cuenta. Lo siguen en %s'
-             % (quien, 'jugaron' if len(gente) > 1 else 'jugó', 'jueguen' if len(gente) > 1 else 'juega',
-                _dia(vence), 'se llevan' if len(gente) > 1 else 'te llevas',
-                '{:,}'.format(PREMIO).replace(',', '.'), _link(sv)))
+             '**Lo que sigue:** en la Liga se juega casi todas las noches. Todos los eventos están aquí, y con la campana '
+             '%s avisamos al minuto: %s\n'
+             '**Reto:** %s otro antes del %s y %s **%s Puntos de Tienda**. Cualquier servidor cuenta.'
+             % (quien, 'jugaron' if varios else 'jugó', 'les' if varios else 'te', _link(sv),
+                'jueguen' if varios else 'juega', _dia(vence), 'se llevan' if varios else 'te llevas',
+                '{:,}'.format(PREMIO).replace(',', '.')))
     return texto, [r['did'] for _raw, r in gente if r.get('did')]
 
 
@@ -250,9 +254,13 @@ def _self_check():
          and '**Caro**' in mensaje_chat([('Beto', r['Beto']), ('Caro', r['Caro'])])[0]),
         ('el mensaje no menciona a nadie más que a los debutantes: ni @here ni @everyone',
          '@here' not in mensaje_chat([('Beto', r['Beto'])])[0] and '@everyone' not in mensaje_chat([('Beto', r['Beto'])])[0]),
-        ('el link del chat de un servidor lleva su sigla: la vista previa sale con su imagen',
-         mensaje_chat([('Beto', r['Beto'])], 'URBF')[0].endswith('/s/urbf/')
-         and mensaje_chat([('Beto', r['Beto'])], 'ZZZ')[0].endswith('/freestyle-rap')),
+        ('el link del chat de un servidor lleva su sigla y va a los eventos: la vista previa sale con su imagen',
+         '/s/urbf/eventos/' in mensaje_chat([('Beto', r['Beto'])], 'URBF')[0]
+         and '/freestyle-rap/eventos' in mensaje_chat([('Beto', r['Beto'])], 'ZZZ')[0]),
+        ('el mensaje dice qué sigue antes que el premio',
+         mensaje_chat([('Beto', r['Beto'])])[0].index('Lo que sigue') < mensaje_chat([('Beto', r['Beto'])])[0].index('Reto')),
+        ('a varios les habla en plural',
+         'les avisamos' in mensaje_chat([('Beto', r['Beto']), ('Caro', r['Caro'])])[0] and 'te avisamos' in mensaje_chat([('Beto', r['Beto'])])[0]),
     ]
     for que, ok in casos:
         mal += not ok

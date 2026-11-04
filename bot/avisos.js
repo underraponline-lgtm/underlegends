@@ -4792,7 +4792,9 @@ export async function rutaAvisos(req, env, ruta) {
     if (!env.DISCORD_TOKEN || k !== await claveCiclo(env.DISCORD_TOKEN)) return json({ error: 'no existe' }, 404);
     if (ruta === '/avisos/pedidos-ciclo') return elObjeto(env).fetch('https://avisos/pedidos-ciclo');
     const crudo = await req.text();
-    if (crudo.length > 20000) return json({ error: 'demasiado grande' }, 413);
+    // 🔴 los tiers traen el panel de cada socio: con 20.000 caracteres daban 413 desde el 21/10/2026, cuando entró LKR, y
+    // los paneles se quedaron con los números de ese día (revisión del 04/11/2026). Viene de la clave del ciclo
+    if (crudo.length > (ruta === '/avisos/tiers-ciclo' ? 300000 : 20000)) return json({ error: 'demasiado grande' }, 413);
     return elObjeto(env).fetch('https://avisos' + ruta.slice('/avisos'.length), { method: 'POST', body: crudo,
       headers: { 'content-type': 'application/json' } });
   }

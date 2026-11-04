@@ -339,6 +339,12 @@ def medir(D, hoy, svs, nivel, miembros=None):
     return out
 
 
+#: lo que pide subir de tier: lo miran `recomendar()` y `como_subir()`, y lo dice docs/anuncios/kit_servidor_nuevo.md
+A_TIER2_ANUNCIOS = 2
+A_TIER1_PUNTOS = 60
+A_TIER1_EVENTOS = 4
+
+
 def recomendar(tier, pts, m, sin_jugar):
     """`(recomendación, por qué)`. Recomienda: decide Dlx."""
     gente = m.get('miembros')
@@ -353,12 +359,12 @@ def recomendar(tier, pts, m, sin_jugar):
             return 'bien', 'cumple como Tier 1 (con %d miembros: se recomiendan %d)' % (gente, RECOMENDADO)
         return 'bien', 'cumple como Tier 1'
     if tier == 2:
-        if pts >= 60 and m['eventos'] >= 4 and (m['ayudas'] / m['eventos'] if m['eventos'] else 9) <= 1:
+        if pts >= A_TIER1_PUNTOS and m['eventos'] >= A_TIER1_EVENTOS and (m['ayudas'] / m['eventos'] if m['eventos'] else 9) <= 1:
             if gente is not None and gente < MIN_MIEMBROS:
                 return 'bien', 'trabaja como Tier 1, pero tiene %d miembros: el mínimo es %d' % (gente, MIN_MIEMBROS)
             return 'subir', 'listo para Tier 1: %d eventos en 4 semanas y el bot los lee casi solo' % m['eventos']
         return 'bien', 'se mantiene en Tier 2'
-    if m['anuncios'] >= 2:
+    if m['anuncios'] >= A_TIER2_ANUNCIOS:
         return 'subir', 'ya anuncia eventos (%d): puede pasar a Tier 2' % m['anuncios']
     return 'bien', 'se mantiene en Tier 3'
 
@@ -407,6 +413,103 @@ def _franja(h):
 
 def _prom(xs):
     return round(sum(xs) / len(xs), 1) if xs else 0
+
+
+# 🔁 ¿VUELVE LA GENTE? Dlx, 04/11/2026, a «¿el panel le muestra al dueño cuánto vuelve su gente?»: *«Si y mejora esos
+# paneles»*. Es lo que se midió ese día para toda la Liga (`docs/`, y el informe de uso): los premios casi no mueven a la
+# gente, y tener otro evento cerca sí. «Volver» es lo de `rankings.retencion()`: otro evento, OTRO DÍA, dentro de 14.
+VUELVE_DIAS = 14
+#: «otro evento cerca»: en su servidor, en los días siguientes al debut
+VUELVE_CERCA = 3
+#: con menos debuts que esto no se da un porcentaje: tres personas no son un 33 %. La misma en web/src/socio2.jsx
+MIN_VUELVEN = 8
+#: hasta dónde llegan: cuántos jugaron al menos N eventos
+EMBUDO = (1, 2, 3, 5, 10)
+#: a cuántos se nombra en «Para invitar», y de hasta cuántos días atrás
+SIN_VOLVER_N = 8
+SIN_VOLVER_DIAS = 30
+
+
+def quien_vuelve(llaves, hoy):
+    """🔁 `{'liga': {...}, 'svs': {sigla: {...}}}`. Cada uno: `n` debuts, `v` los que volvieron, `aca`/`otro` adónde, `con`/`sin`
+    `[volvieron, debuts]` según haya otro evento de su servidor cerca, y `emb` hasta dónde llegan. Sólo los debuts con sus 14
+    días cumplidos y sin la semana del arranque: mucha de esa gente ya jugaba. `lista`: los que no volvieron, para invitar
+    (no le hace falta cumplir los 14 días: es justo a quien hay que llamar). Pura."""
+    from comun.claves import clave as K
+    arr = _arranque()
+    desde = arr + dt.timedelta(days=7 - arr.weekday()) if arr else None
+    evs = []
+    for k, v in (llaves or {}).items():
+        d = _dia(v.get('dia')) if isinstance(v, dict) else None
+        if d:
+            evs.append((d, str(k), v.get('sv') or '', [f[0] for f in v.get('tabla') or [] if f and f[0]]))
+    evs.sort(key=lambda e: (e[0], e[1]))
+    por, nombre, dias_sv = {}, {}, {}
+    for d, _k, sv, ns in evs:
+        dias_sv.setdefault(sv, []).append(d)
+        for q, raw in {K(x): x for x in ns}.items():
+            if q:
+                nombre.setdefault(q, raw)
+                por.setdefault(q, []).append((d, sv))
+
+    def nuevo():
+        return {'n': 0, 'v': 0, 'aca': 0, 'otro': 0, 'con': [0, 0], 'sin': [0, 0], 'emb': [0] * len(EMBUDO)}
+    svs, liga = {}, nuevo()
+    for q, xs in por.items():
+        d0, sv0 = xs[0]
+        a = svs.setdefault(sv0, dict(nuevo(), lista=[]))
+        if len(xs) == 1 and 0 < (hoy - d0).days <= SIN_VOLVER_DIAS:
+            a['lista'].append((d0, nombre[q], q))
+        if (desde and d0 < desde) or (hoy - d0).days < VUELVE_DIAS:
+            continue
+        sig = next((x for x in xs[1:] if 0 < (x[0] - d0).days <= VUELVE_DIAS), None)
+        cerca = 'con' if any(0 < (d - d0).days <= VUELVE_CERCA for d in dias_sv.get(sv0, ())) else 'sin'
+        for b in (a, liga):
+            b['n'] += 1
+            b[cerca][1] += 1
+            for i, tope in enumerate(EMBUDO):
+                b['emb'][i] += len(xs) >= tope
+            if sig:
+                b['v'] += 1
+                b['aca' if sig[1] == sv0 else 'otro'] += 1
+                b[cerca][0] += 1
+    return {'liga': liga, 'svs': svs, 'desde': desde.isoformat() if desde else ''}
+
+
+def vuelven_de(vv, sv, hoy):
+    """🔁 Lo de un servidor, para su panel: con la Liga al lado y los que no volvieron, los más recientes primero."""
+    a = (vv.get('svs') or {}).get(sv)
+    if not a:
+        return None
+    lista = sorted(a.get('lista') or [], key=lambda x: (-x[0].toordinal(), x[1]))
+    L = vv.get('liga') or {}
+    return {k: a[k] for k in ('n', 'v', 'aca', 'otro', 'con', 'sin', 'emb')} | {
+        'desde': vv.get('desde') or '', 'liga': {k: L.get(k) for k in ('n', 'v', 'con', 'sin', 'emb')},
+        'sin_volver': [[n, q, (hoy - d).days] for d, n, q in lista[:SIN_VOLVER_N]], 'sin_n': len(lista)}
+
+
+def _pct(a, b):
+    return round(100 * a / b) if b else 0
+
+
+def como_subir(tier, pts, m):
+    """🪜 Lo que le falta para el tier de arriba: `{'a': tier, 'pide': [[qué, cómo va, si cumple]]}`; `None` en Tier 1. Lo mismo
+    que mira `recomendar()`: si se cambia una regla, es ahí. Dlx, 04/11/2026, al kit de los servidores nuevos: *«explica lo de
+    tiers, como subir de tier»*."""
+    m = m or {}
+    if tier == 3:
+        return {'a': 2, 'pide': [['Anunciar %d eventos o más en 4 semanas' % A_TIER2_ANUNCIOS, 'llevas %d' % m.get('anuncios', 0),
+                                  m.get('anuncios', 0) >= A_TIER2_ANUNCIOS]]}
+    if tier == 2:
+        ev, ay = m.get('eventos', 0), m.get('ayudas', 0)
+        pide = [['%d puntos o más' % A_TIER1_PUNTOS, 'llevas %d' % (pts or 0), (pts or 0) >= A_TIER1_PUNTOS],
+                ['%d eventos o más en 4 semanas' % A_TIER1_EVENTOS, 'llevas %d' % ev, ev >= A_TIER1_EVENTOS],
+                ['Llaves que el bot lee casi solo', '%d preguntas en %d eventos' % (ay, ev), bool(ev) and ay / ev <= 1]]
+        if m.get('miembros') is not None:
+            pide.append(['%d miembros en tu Discord (se recomiendan %d)' % (MIN_MIEMBROS, RECOMENDADO), 'tienes %d' % m['miembros'],
+                         m['miembros'] >= MIN_MIEMBROS])
+        return {'a': 1, 'pide': pide}
+    return None
 
 
 def panel(D, hoy, sv, ps=None, crews=None, otros=None):
@@ -485,6 +588,10 @@ def panel(D, hoy, sv, ps=None, crews=None, otros=None):
         ev4[0] = 0
     out = {'semanas': semanas, 'dias': dias, 'franjas': franjas, 'liga': liga, 'raperos': raperos[:10],
            'gente_total': len(raperos), 'crews': crews_top, 'ev4': ev4}
+    vv = D.get('_vuelven') or quien_vuelve(D.get('llaves') or {}, hoy)
+    v = vuelven_de(vv, sv, hoy)
+    if v:
+        out['vuelven'] = v
     out['sugerencias'] = sugerencias(out)
     return out
 
@@ -499,6 +606,14 @@ def sugerencias_ir(p, m=None):
     la Liga está más o menos llena, a qué hora y cómo viene. Sólo lo que los números dicen: con poca muestra, nada.
     Cada una con la parte del panel donde se ve lo que dice (`IR` de web/src/socio2.jsx): `[(texto, id de la sección)]`."""
     out = []
+    # 🔁 primero lo que el dueño puede cambiar: de esto depende que la gente vuelva a jugar
+    v = p.get('vuelven') or {}
+    if (v.get('n') or 0) >= MIN_VUELVEN and (v.get('liga') or {}).get('n'):
+        L = v['liga']
+        out.append(('De quienes debutan en tu servidor vuelve el %d %% en 14 días; en toda la Liga, el %d %%.' % (_pct(v['v'], v['n']), _pct(L['v'], L['n'])), 'sp-vuelven'))
+        if (m or {}).get('por_semana', 0) < 3 and L['con'][1] and L['sin'][1]:
+            out.append(('Con otro evento en los 3 días siguientes vuelve el %d %%; sin otro evento, el %d %%. Un evento más por semana ayuda a que vuelvan.'
+                        % (_pct(*L['con']), _pct(*L['sin'])), 'sp-vuelven'))
     dias = p.get('dias') or []
     buenos = [(i, d) for i, d in enumerate(dias) if d[0] >= MIN_MUESTRA]
     if len(buenos) >= 2:
@@ -531,7 +646,7 @@ def sugerencias_ir(p, m=None):
         elif a and b <= a * 0.75:
             out.append(('Bajaste: %d eventos en las últimas 4 semanas contra %d en las 4 de antes.' % (b, a), 'sp-semanas'))
         if nuevos:
-            out.append(('Trajiste %d raperos nuevos en 4 semanas: avísales del próximo evento para que vuelvan.' % nuevos, 'sp-ajustes'))
+            out.append(('Trajiste %d raperos nuevos en 4 semanas: avísales del próximo evento para que vuelvan.' % nuevos, 'sp-vuelven' if v.get('sin_volver') else 'sp-ajustes'))
     m = m or {}
     if m.get('eventos') and m.get('por_semana', 0) < 1:
         out.append(('Haces %s eventos por semana; con 2 por semana la parte de actividad de tu puntaje llega al máximo.' % _n(m['por_semana']), 'sp-puntaje'))
@@ -600,6 +715,14 @@ def datos():
             'cancelados': canc, 'promos': pro, 'ligas': (_j('datos', 'ligas.json') or {}).get('ligas') or {}}
 
 
+def sin_lo_nuevo(x):
+    """El paquete sin lo opcional del panel, para cuando el Worker todavía tiene el tope viejo."""
+    y = dict(x)
+    y['servidores'] = [dict(f, panel={k: v for k, v in (f.get('panel') or {}).items() if k not in ('vuelven', 'subir')})
+                       if f.get('panel') else f for f in x.get('servidores') or []]
+    return y
+
+
 def _mandar(x):
     """El puntaje al Dashboard (`/avisos/tiers-ciclo`, con la clave del ciclo). Devuelve si llegó."""
     import requests
@@ -610,11 +733,28 @@ def _mandar(x):
     if not tok:
         print('   ⚠️ sin DISCORD_TOKEN: el puntaje no va al Dashboard')
         return False
-    r = requests.post(WORKER + '/avisos/tiers-ciclo', headers={'x-lg-ciclo': CC.clave(tok), 'content-type': 'application/json'},
-                      data=json.dumps(x, ensure_ascii=False).encode('utf-8'), timeout=25)
-    if r.status_code != 200:
-        print('   ⚠️ el puntaje no llegó al Dashboard (%s)' % r.status_code)
-    return r.status_code == 200
+
+    def enviar(cosa):
+        return requests.post(WORKER + '/avisos/tiers-ciclo', headers={'x-lg-ciclo': CC.clave(tok), 'content-type': 'application/json'},
+                             data=json.dumps(cosa, ensure_ascii=False, separators=(',', ':')).encode('utf-8'), timeout=25).status_code
+    # 🔴 DIO 413 DESDE EL 21/10/2026 Y SÓLO LO DECÍA EL LOG: los paneles y el Dashboard se quedaron con los números de ese
+    # día durante dos semanas. Ahora, si no entra entero, va sin lo que sumó la 4.26 (lo demás no espera a un despliegue),
+    # y si no llega, le llega un DM a Dlx
+    cod = enviar(x)
+    if cod == 413:
+        print('   ⚠️ el panel no entra en el tope del Worker: va sin «vuelven» y sin «subir». Hay que desplegar el Worker')
+        cod = enviar(sin_lo_nuevo(x))
+    if cod != 200:
+        print('   ⚠️ el puntaje no llegó al Dashboard (%s)' % cod)
+    try:
+        import alertar as AL
+        if cod == 200:
+            AL.resuelto('tiers', 'Los paneles de los socios volvieron a actualizarse.')
+        else:
+            AL.alertar('tiers', 'Los paneles de los socios no se están actualizando: el Worker contesta %s a `/avisos/tiers-ciclo`.' % cod)
+    except Exception as e:                               # noqa: BLE001
+        print('   ⚠️ no pude avisar lo del panel (%s)' % str(e)[:60])
+    return cod == 200
 
 
 def correr(aplicar=False, ahora=None):
@@ -659,6 +799,7 @@ def correr(aplicar=False, ahora=None):
         except Exception as e:                           # noqa: BLE001
             print('   ⚠️ los tiers: no leí los miembros (%s)' % str(e)[:60])
     D = datos()
+    D['_vuelven'] = quien_vuelve(D.get('llaves') or {}, hoy)
     filas = medir(D, hoy, svs, nivel, gente)
     # 🎛️ los beneficios de cada uno van con su fila: el Dashboard dibuja los interruptores y el objeto filtra el panel
     for f in filas:
@@ -683,6 +824,7 @@ def correr(aplicar=False, ahora=None):
         for f in filas:
             if f['tier'] in TIERS:
                 f['panel'] = panel(D, hoy, f['sv'], ps, crews, socios)
+                f['panel']['subir'] = como_subir(f['tier'], f['puntos'], f.get('m'))
                 su = sugerencias_ir(f['panel'], f.get('m'))
                 f['panel']['sugerencias'] = [t for t, _ in su]
                 f['panel']['sug_ir'] = [d for _, d in su]
@@ -820,6 +962,39 @@ def _self_check():
         ok(pa['semanas'][0][0] == (arr - dt.timedelta(days=arr.weekday())).isoformat() and pa['ev4'][0] == 0,
            'el panel arranca el lunes de la semana del arranque y no compara con las 4 semanas de antes, que son de la pretemporada',
            str((pa['semanas'][0], pa['ev4'])))
+    # 🔁 ¿vuelve la gente? Ana vuelve a otro servidor a los 2 días; Beto, al rato (mismo día: no es volver); Caro debutó hace
+    # poco (no cuenta todavía, pero se la puede invitar); Dani, la semana del arranque (no cuenta). `arr` es la de verdad
+    if arr:
+        h = arr + dt.timedelta(days=60)
+        dd = lambda n: (h - dt.timedelta(days=n)).isoformat()  # noqa: E731
+        tb2 = lambda *ns: [[n, 'x', 1] for n in ns]  # noqa: E731
+        LL = {'1': {'dia': dd(30), 'sv': 'AAA', 'tabla': tb2('Ana🇦🇷', 'Beto')}, '2': {'dia': dd(30), 'sv': 'AAA', 'tabla': tb2('Beto')},
+              '3': {'dia': dd(28), 'sv': 'BBB', 'tabla': tb2('ana')}, '4': {'dia': dd(1), 'sv': 'AAA', 'tabla': tb2('Caro')},
+              '5': {'dia': arr.isoformat(), 'sv': 'AAA', 'tabla': tb2('Dani')}}
+        vv = quien_vuelve(LL, h)
+        A = vv['svs']['AAA']
+        ok(A['n'] == 2 and A['v'] == 1 and A['otro'] == 1 and A['aca'] == 0, 'volver es otro día: Ana sí (a otro servidor, y su bandera no la parte en dos), Beto no; Caro y Dani no cuentan', str(A))
+        ok(A['sin'] == [1, 2] and A['con'] == [0, 0], 'sin otro evento de su servidor en los 3 días siguientes', str(A))
+        ok(A['emb'][:3] == [2, 2, 0], 'hasta dónde llegan: los dos jugaron 2 eventos', str(A['emb']))
+        V = vuelven_de(vv, 'AAA', h)
+        ok([x[1] for x in V['sin_volver']] == ['caro'] and V['sin_n'] == 1 and V['liga']['n'] == 2,
+           'para invitar: quien jugó una vez hace poco (Beto jugó dos; Dani, hace más de 30 días)', str(V))
+        sg = sugerencias_ir({'vuelven': dict(V, n=10, v=3, liga={'n': 100, 'v': 40, 'con': [45, 100], 'sin': [30, 100], 'emb': []})}, {'por_semana': 1})
+        ok(sg[0] == ('De quienes debutan en tu servidor vuelve el 30 % en 14 días; en toda la Liga, el 40 %.', 'sp-vuelven') and '45 %' in sg[1][0] and '30 %' in sg[1][0],
+           'lo primero que conviene es esto', str(sg[:2]))
+        ok(not any('vuelve' in t for t, _ in sugerencias_ir({'vuelven': dict(V, n=3, v=1)}, {})), 'con pocos debuts no se da un porcentaje')
+    # 🪜 cómo subir: las reglas de recomendar()
+    s3, s2 = como_subir(3, 10, {'anuncios': 1}), como_subir(2, 70, {'eventos': 6, 'ayudas': 2, 'miembros': 120})
+    ok(como_subir(1, 90, {}) is None and s3['a'] == 2 and s3['pide'][0][2] is False and como_subir(3, 0, {'anuncios': 2})['pide'][0][2] is True,
+       'Tier 3 sube con 2 anuncios; Tier 1 no tiene a dónde')
+    ok(s2['a'] == 1 and [x[2] for x in s2['pide']] == [True, True, True, False], 'Tier 2: puntos, eventos y llaves bien; le faltan miembros', str(s2))
+    # 📦 el paquete entra en el tope del Worker, con margen para más socios: dos semanas sin llegar y nadie lo vio
+    js = io.open(os.path.join(BASE, 'bot', 'avisos.js'), encoding='utf-8').read()
+    t = re.search(r"ruta === '/avisos/tiers-ciclo' \? (\d+) : \d+", js)
+    fila = {'sv': 'AAA', 'panel': dict(pa, vuelven=V if arr else None, subir=s2), 'partes': {}, 'm': {}}
+    ok(t and int(t.group(1)) > len(json.dumps(fila, ensure_ascii=False)) * 60, 'el tope del Worker aguanta 60 socios con su panel', t and t.group(1))
+    sl = sin_lo_nuevo({'servidores': [{'sv': 'X', 'panel': {'vuelven': 1, 'subir': 2, 'dias': 3}}, {'sv': 'Y'}]})
+    ok(sl['servidores'][0]['panel'] == {'dias': 3} and sl['servidores'][1] == {'sv': 'Y'}, 'sin lo nuevo, el panel va igual')
     print('\n   %s\n' % ('todo bien' if not mal else '🔴 %d mal' % mal))
     return mal == 0
 

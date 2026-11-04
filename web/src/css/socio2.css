@@ -138,6 +138,32 @@
 .sp-vis i{flex:1 1 0;min-width:0;background:#4A4A4F}
 .sp-vis i.mejor{background:var(--verde)}
 .sp-vis-x{display:flex;justify-content:space-between;margin-top:6px;font:600 12px/1 Archivo,sans-serif;color:var(--gris)}
+/* ¿vuelve tu gente? */
+.sp-vu{display:grid;gap:28px}
+.sp-vu-col{display:grid;gap:14px;align-content:start;min-width:0}
+.sp-vu-col .sp-h{margin-top:8px}
+.sp-vu-num{display:flex;align-items:center;gap:14px;margin:0}
+.sp-vu-num b{flex:none;font:900 54px/1 Archivo,sans-serif;font-stretch:115%;font-variant-numeric:tabular-nums}
+.sp-vu-num b small{font-size:.5em}
+.sp-vu-num span{font:500 15px/1.4 Archivo,sans-serif;max-width:38ch}
+.sp-vb{display:grid;gap:12px;margin:0;padding:0;list-style:none}
+.sp-vb li{display:grid;grid-template-columns:minmax(0,1fr) 52px;align-items:center;gap:5px 10px}
+.sp-vb span{grid-column:1/-1;font:700 14px/1.25 Archivo,sans-serif}
+.sp-vb i{display:block;height:12px;background:var(--caja)}
+.sp-vb u{display:block;height:100%;background:#B4B4B8}
+.sp-vb .tuya u{background:var(--verde)}
+.sp-vb b{font:800 15px/1 Archivo,sans-serif;text-align:right;font-variant-numeric:tabular-nums}
+.sp-vb small{grid-column:1/-1;font:600 12.5px/1.2 Archivo,sans-serif;color:var(--gris);font-variant-numeric:tabular-nums}
+.sp-inv li{grid-template-columns:minmax(0,1fr) auto}
+/* para llegar al tier de arriba */
+.sp-sube{display:grid;gap:10px;margin-top:22px}
+.sp-sube ul{display:grid;gap:0;margin:0;padding:0;list-style:none;border-top:2px solid var(--linea)}
+.sp-sube li{display:grid;grid-template-columns:22px minmax(0,1fr) auto;align-items:center;gap:4px 10px;min-height:44px;padding:8px 2px;border-bottom:1.5px solid var(--suave)}
+.sp-sube li>i{display:grid;place-items:center;width:20px;height:20px;border:2px solid var(--linea);color:#030304}
+.sp-sube li.si>i{background:var(--verde);border-color:var(--verde)}
+.sp-sube b{font:700 14.5px/1.25 Archivo,sans-serif}
+.sp-sube li>span{font:600 13px/1.2 Archivo,sans-serif;color:var(--gris);font-variant-numeric:tabular-nums;text-align:right}
+.sp-oculto{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap}
 .sp-vacio{margin:0;padding:16px;border:2px dashed var(--suave);font:500 14px/1.45 Archivo,sans-serif;color:var(--gris)}
 
 /* ── los ajustes del bot: dónde publica, cómo se porta y dónde se usa /card ── */
@@ -222,6 +248,8 @@
   .sp-trae{grid-template-columns:repeat(2,minmax(0,1fr))}
 }
 @media (min-width: 900px){
+  .sp-vu{grid-template-columns:repeat(2,minmax(0,1fr));gap:32px 40px}
+  .sp-vu-inv,.sp-vu.sola>.sp-vu-col{grid-column:1/-1}
   .app .sp-elegir ol{padding:10px var(--gut)}
   .sp-sug{grid-template-columns:repeat(2,minmax(0,1fr))}
   /* la que queda sola en su fila (una sola, o la última de cinco) va entera: media fila vacía al lado se lee como un hueco */

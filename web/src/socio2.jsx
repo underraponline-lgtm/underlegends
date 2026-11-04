@@ -10,6 +10,9 @@
 // - LOS AJUSTES, POR LO QUE EL DUEÑO DECIDE (04/11/2026): dónde publica el bot (una tabla, cada cosa con su canal), cómo
 //   se porta (interruptores cuya frase dice lo que pasa) y dónde se usa /card. Cada uno se guarda solo y dice «Guardado»
 //   en su fila, que es donde estás mirando; el aviso de abajo queda para los errores.
+// - ¿VUELVE TU GENTE? (04/11/2026, Dlx: «Si y mejora esos paneles»): cuánto vuelve, contra la Liga, si ayuda tener otro evento
+//   cerca, hasta dónde llegan y a quién invitar. Va después de lo que conviene: es lo que más puede cambiar el dueño.
+// - CÓMO SUBIR DE TIER, abajo del puntaje: las reglas de `recomendar()`, con cómo va cada una.
 //
 // ⚠️ NO CALCULA NADA NUEVO: lo arma el ciclo (`panel()` de bot/tiers.py) y lo sirve el objeto sólo al dueño de cada
 // servidor (`panelSocio()` de bot/avisos.js); Dlx los ve todos. Pregunta en silencio: a Discord se va recién si la persona
@@ -33,16 +36,19 @@ const DIAS_C = ['Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb', 'Dom'];
 const FRANJAS = [['Madrugada', '0 a 6'], ['Mañana', '6 a 12'], ['Mediodía', '12 a 16'], ['Tarde', '16 a 20'], ['Noche', '20 a 24']];
 // con menos eventos que esto en un día o una franja no se marca nada: es `MIN_MUESTRA` de bot/tiers.py, la de las sugerencias
 const MIN_MUESTRA = 2;
+// con menos debuts no se da un porcentaje: es `MIN_VUELVEN` de bot/tiers.py
+const MIN_VUELVEN = 8;
 const PARTES = [['actividad', 'Actividad', 35, 'Eventos por semana: con 2 llega al tope.'],
   ['alcance', 'Alcance', 25, 'Raperos por evento y gente nueva.'],
   ['calidad', 'Calidad', 25, 'Llaves que el bot lee solo, anuncios que dicen quién organiza y pocos cancelados.'],
   ['comunidad', 'Comunidad', 15, 'Los nuevos que vuelven, las promos y las ligas.']];
 // a qué parte del panel lleva cada sugerencia (`sug_ir`, lo manda el ciclo: `sugerencias_ir()` de bot/tiers.py)
-const IR = { 'sp-cuando': 'Ver cuándo', 'sp-semanas': 'Ver las semanas', 'sp-gente': 'Ver tu gente', 'sp-puntaje': 'Ver el puntaje', 'sp-ajustes': 'Ver los ajustes' };
-const TIER = { 1: 'TIER 1 · SUMA AL RANKING', 2: 'TIER 2 · EL CALENDARIO Y LA CAMPANA', 3: 'TIER 3 · SU PÁGINA Y SUS LIGAS' };
+const IR = { 'sp-vuelven': 'Ver quién vuelve', 'sp-cuando': 'Ver cuándo', 'sp-semanas': 'Ver las semanas', 'sp-gente': 'Ver tu gente', 'sp-puntaje': 'Ver el puntaje', 'sp-ajustes': 'Ver los ajustes' };
+const TIER = { 1: 'TIER 1 · TEMPORADA Y COMPETITIVO', 2: 'TIER 2 · EL CALENDARIO Y LA CAMPANA', 3: 'TIER 3 · SU PÁGINA Y SUS LIGAS' };
 // lo que trae el panel, para quien todavía no entró
 const TRAE = [['copa', 'Su puntaje', 'De 0 a 100 con las últimas 4 semanas: lo que mira la Liga para el nivel de cada socio.'],
   ['brote', 'Lo que conviene', 'Qué días juntan más gente, qué días la Liga está llena y cómo vienes.'],
+  ['fuego', '¿Vuelve tu gente?', 'Cuántos de los que debutan contigo vuelven a jugar, y a quién invitar.'],
   ['reloj', 'Cuándo hay actividad', 'Tu gente por evento, día por día y por franja del día.'],
   ['seguir', 'Su gente', 'Los raperos y las crews que más juegan en tu servidor.'],
   ['perfil', 'Las visitas', 'Cuánta gente abre la página de tu servidor, día por día.'],
@@ -115,6 +121,78 @@ function Puntaje({ x }) {
       ))}</ol>
       {falta.tope > falta.v ? <p className="sp-falta">Donde más puntos puedes sumar: <b>{falta.t}</b>, te faltan {falta.tope - falta.v}.</p> : null}
     </>
+  );
+}
+
+// ── cuánto falta para el tier de arriba: lo que mira la Liga, con cómo va cada cosa. En Tier 1, nada ──
+function ComoSubir({ s }) {
+  if (!s || !s.a) return null;
+  const van = s.pide.filter((x) => x[2]).length;
+  return (
+    <div className="sp-sube">
+      <h3 className="sp-h">Para llegar a Tier {s.a} <small>{van} de {s.pide.length}</small></h3>
+      <ul>{s.pide.map(([t, d, si]) => (
+        <li key={t} className={si ? 'si' : ''}><i aria-hidden="true">{si ? <Ico n="ok" t={14} /> : null}</i><b>{t}</b><span>{si ? <span className="sp-oculto">Cumplido: </span> : null}{d}</span></li>
+      ))}</ul>
+      <p className="sp-nota">Se mide solo con tus últimas 4 semanas. Cuando cumplas todo, Dlx confirma el cambio.</p>
+    </div>
+  );
+}
+
+// ── ¿vuelve tu gente? Lo que el dueño más puede cambiar: cuánto vuelve, contra la Liga, si ayuda tener otro evento cerca,
+// hasta dónde llegan y a quién invitar. Con pocos debuts no hay porcentajes: tres personas no son un 33 % ──
+const pc = (a, b) => (b ? Math.round((100 * a) / b) : 0);
+function Barras({ xs }) {
+  return (
+    <ul className="sp-vb">{xs.map(([t, v, tuya, extra]) => (
+      <li key={t} className={tuya ? 'tuya' : ''}><span>{t}</span><i><u style={{ width: v + '%' }} /></i><b>{v} %</b>{extra ? <small>{extra}</small> : null}</li>
+    ))}</ul>
+  );
+}
+function Vuelven({ v }) {
+  const L = v.liga || {};
+  const hay = v.n >= MIN_VUELVEN;
+  const mio = pc(v.v, v.n);
+  // otro evento cerca: lo suyo si le alcanza para comparar; si no, el de toda la Liga, y lo dice
+  const c = v.con || [0, 0], s = v.sin || [0, 0];
+  const propio = c[1] >= MIN_VUELVEN && s[1] >= MIN_VUELVEN;
+  const [c2, s2] = propio ? [c, s] : [L.con || [0, 0], L.sin || [0, 0]];
+  const emb = v.emb || [], embL = L.emb || [];
+  const pasos = [['2 eventos', 1], ['3 eventos', 2], ['5 eventos', 3], ['10 o más', 4]];
+  const lista = v.sin_volver || [];
+  return (
+    <div className={'sp-vu' + (hay ? '' : ' sola')}>
+      <div className="sp-vu-col">
+        {hay ? (
+          <>
+            <p className="sp-vu-num"><b>{mio}<small> %</small></b><span>{num(v.v)} de los {num(v.n)} que debutaron en tu servidor {v.v === 1 ? 'jugó' : 'jugaron'} otro evento en los 14 días siguientes.</span></p>
+            <Barras xs={[['Tu servidor', mio, true], ['Toda la Liga', pc(L.v, L.n)]]} />
+          </>
+        ) : <p className="sp-vacio">{v.n === 0 ? 'Todavía nadie' : v.n === 1 ? 'Todavía una sola persona' : 'Todavía ' + num(v.n) + ' personas'} con sus 14 días cumplidos: con {MIN_VUELVEN} ya sale tu porcentaje.</p>}
+        {c2[1] && s2[1] ? (
+          <>
+            <h3 className="sp-h">Con otro evento cerca <small>{propio ? 'en tu servidor' : 'en toda la Liga'}</small></h3>
+            <Barras xs={[['Hay otro evento en los 3 días siguientes', pc(c2[0], c2[1]), true, num(c2[0]) + ' de ' + num(c2[1])],
+              ['No hay otro', pc(s2[0], s2[1]), false, num(s2[0]) + ' de ' + num(s2[1])]]} />
+          </>
+        ) : null}
+        {v.v ? <p className="sp-nota">De los que volvieron: {num(v.aca)} acá y {num(v.otro)} en otro servidor de la Liga. Es una comparación, no una prueba: en los servidores que juegan más seguido también hay gente más metida.</p> : null}
+      </div>
+      {hay ? (
+        <div className="sp-vu-col">
+          <h3 className="sp-h">Hasta dónde llegan <small>de los {num(v.n)} que debutaron acá</small></h3>
+          <Barras xs={pasos.map(([t, i]) => [t, pc(emb[i], emb[0]), true, 'En toda la Liga, el ' + pc(embL[i], embL[0]) + ' %'])} />
+        </div>
+      ) : null}
+      {lista.length ? (
+        <div className="sp-vu-col sp-vu-inv">
+          <h3 className="sp-h">Para invitar <small>jugaron una vez acá y no volvieron{v.sin_n > lista.length ? ': ' + num(v.sin_n) + ' en 30 días, los más recientes' : ''}</small></h3>
+          <ol className={'sp-lista sp-inv' + (lista.length > 3 ? ' dos' : '')} style={{ '--filas': Math.ceil(lista.length / 2) }}>{lista.map(([n, k, d]) => (
+            <li key={k}><a href={'#/r/' + encodeURIComponent(k)}>{limpio(n)}</a><span className="sp-dat">{d === 1 ? 'ayer' : 'hace ' + d + ' días'}</span></li>
+          ))}</ol>
+        </div>
+      ) : null}
+    </div>
   );
 }
 
@@ -405,7 +483,8 @@ function Servidor({ liga, x, svs, onSel, t }) {
   const sube = x.compara !== false && pts > (x.antes || 0);
   const sugs = p.sugerencias || [];
   const irs = p.sug_ir || [];
-  const items = [['sp-puntaje', 'Puntaje', null], ['sp-sug', 'Lo que conviene', sugs.length], ['sp-cuando', 'Cuándo', null],
+  const vu = p.vuelven && p.vuelven.n != null ? p.vuelven : null;
+  const items = [['sp-puntaje', 'Puntaje', null], ['sp-sug', 'Lo que conviene', sugs.length], ['sp-vuelven', '¿Vuelven?', vu ? null : 0], ['sp-cuando', 'Cuándo', null],
     ['sp-semanas', 'Semanas', null], ['sp-gente', 'Su gente', null], ['sp-visitas', 'Visitas', null], ['sp-ajustes', 'Ajustes', null]];
   return (
     <>
@@ -423,10 +502,12 @@ function Servidor({ liga, x, svs, onSel, t }) {
         </>}
         numeros={[['PUNTAJE', <><Contador v={pts} /><small className="sp-de"> de 100</small></>, 'dest' + (sube ? ' sube' : '')],
           ['EVENTOS · 4 SEMANAS', num(m.eventos || 0)], ['RAPEROS POR EVENTO', m.eventos ? coma(m.por_evento || 0) : '—'],
-          ['NUEVOS · 4 SEMANAS', <>{num(m.nuevos || 0)}{m.nuevos ? <small className="sp-de"> volvió el {Math.round((100 * (m.volvieron || 0)) / m.nuevos)} %</small> : null}</>]]} />
+          // ⚠️ el «vuelve» de abajo, con sus 14 días cumplidos: el de los nuevos de 4 semanas daba otro número al lado del de la sección
+          ['NUEVOS · 4 SEMANAS', <>{num(m.nuevos || 0)}{vu && vu.n >= MIN_VUELVEN ? <small className="sp-de"> vuelve el {pc(vu.v, vu.n)} %</small> : null}</>]]} />
       <Indice items={items} />
       <Sec id="sp-puntaje" titulo="Su puntaje" bajada="De 0 a 100, con las últimas 4 semanas: es lo que mira la Liga para el nivel de cada socio. Cada parte tiene su tope.">
         <Puntaje x={x} />
+        <ComoSubir s={p.subir} />
       </Sec>
       {sugs.length ? (
         <Sec id="sp-sug" titulo="Lo que conviene" bajada="Sale de tus números de las últimas semanas." extra="negra">
@@ -435,6 +516,11 @@ function Servidor({ liga, x, svs, onSel, t }) {
             <li key={s}><span>{String(i + 1).padStart(2, '0')}</span><p>{resaltar(s)}</p>
               {IR[irs[i]] && irs.indexOf(irs[i]) === i ? <button type="button" className="sp-ir" onClick={(e) => irA(e, irs[i])}>{IR[irs[i]]}</button> : null}</li>
           ))}</ol>
+        </Sec>
+      ) : null}
+      {vu ? (
+        <Sec id="sp-vuelven" titulo="¿Vuelve tu gente?" bajada={'De quienes jugaron su primer evento de la temporada en tu servidor' + (vu.desde ? ', desde el ' + fechaCorta(vu.desde) : '') + '. No cuenta a quien debutó hace menos de 14 días. Volver es otro evento, otro día, en cualquier servidor de la Liga.'}>
+          <Vuelven v={vu} />
         </Sec>
       ) : null}
       {(p.dias || []).length ? (
