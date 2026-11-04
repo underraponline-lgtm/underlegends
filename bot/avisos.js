@@ -2735,6 +2735,8 @@ const RUTAS = {
   '/avisos/tags-mios': 'POST', '/avisos/tag-elige': 'POST', '/avisos/tags-ciclo': 'POST',
   // 🎟️ quién tiene nivel en el Pase, para el ciclo (la Temporada es el premio del nivel 1): con `claveCiclo()`
   '/avisos/pase-niveles': 'GET',
+  // 📊 el uso de la página y del bot, con su clave: los mismos números del Dashboard → Números, sin ningún ID
+  '/avisos/uso-ciclo': 'GET',
   // 🧠 los datos de cada persona para /card, que viven en el objeto desde el 06/10/2026: los escribe y los lee el
   // ciclo, con `claveCiclo()`. Ver `personasCiclo()`
   '/avisos/personas-ciclo': 'POST', '/avisos/personas-leer': 'GET',
@@ -5589,6 +5591,11 @@ export async function rutaAvisos(req, env, ruta) {
     if (!env.DISCORD_TOKEN || k !== await claveCiclo(env.DISCORD_TOKEN)) return json({ error: 'no existe' }, 404);
     return elObjeto(env).fetch('https://avisos/pase-niveles');
   }
+  if (ruta === '/avisos/uso-ciclo') {
+    const k = req.headers.get('x-lg-ciclo') || '';
+    if (!env.DISCORD_TOKEN || k !== await claveCiclo(env.DISCORD_TOKEN)) return json({ error: 'no existe' }, 404);
+    return elObjeto(env).fetch('https://avisos/uso-ciclo');
+  }
   // 🧠 LOS DATOS DE CADA PERSONA, DEL CICLO (`bot/subir_datos.py`) AL OBJETO, y de vuelta para sus auditorías: con su
   // clave. Son ~1.000 personas en un pedido (unos 400 KB), así que no entran por el reenvío de abajo
   if (ruta === '/avisos/personas-ciclo' || ruta === '/avisos/personas-leer') {
@@ -5785,6 +5792,8 @@ export class Avisos {
     // 🔴 `antiraid` (pasada del 19/10/2026): el anti-raid contaba sus avisos, lo de AUTOMÁTICO y sus errores con
     // `medir('antiraid', …)` desde el 18/10, y sin este balde no se guardaba nada: anduviera o no, se veía igual
     this.med = { filas: {}, kv: {}, pedidos: {}, antiraid: {} };
+    // 📏 y las filas de HOY aparte (04/11/2026): ver `medidasGuardar()`
+    this.medHoy = {};
     const real = state.storage.sql;
     const filas = (cur, q) => {
       let n = 0;
@@ -6267,7 +6276,9 @@ export class Avisos {
         // precios de cada uno (cuántos puso hoy): las tres, sin índice
         ['chat_vivo_canal', 'chat_vivo', 'canal, t'], ['votos_quien', 'votos', 'quien, t'], ['precios_quien', 'precios', 'quien, t'],
         // y las dos limpiezas por fecha que recorrían la tabla entera: lo visto de las historias y de las promos
-        ['hvistas_t', 'hvistas', 't'], ['promo_visto_t', 'promo_visto', 't']]) {
+        ['hvistas_t', 'hvistas', 't'], ['promo_visto_t', 'promo_visto', 't'],
+        // ⚡ y el del 04/11/2026: la limpieza de `idk` corre cada minuto con llaves en vivo y recorría la tabla entera
+        ['idk_t', 'idk', 't']]) {
         this.sql.exec(`CREATE INDEX IF NOT EXISTS ${nombre} ON ${tabla} (${col})`);
       }
     });
@@ -6277,6 +6288,7 @@ export class Avisos {
   medir(que, k, n) {
     const o = this.med[que];
     if (o && n) o[k] = (o[k] || 0) + n;
+    if (que === 'filas' && n) this.medHoy[k] = (this.medHoy[k] || 0) + n;
   }
 
   /**
@@ -6289,6 +6301,20 @@ export class Avisos {
     const g = this.medidasVer();
     this.med = { filas: {}, kv: {}, pedidos: {}, antiraid: {} };
     this.guardar('medidas', g);
+    // 📏 LO DE HOY APARTE, porque lo acumulado no alcanzó (04/11/2026). El 27/10 el objeto se pasó de los 5 millones de
+    // filas y lo acumulado explicaba la mitad: guarda las 80 consultas que más leyeron desde el 05/10, y una que empieza
+    // a leer mucho hoy no llega nunca a esa lista. Se mide por día de Cloudflare (UTC), que es por el que se corta, y
+    // queda el de ayer para comparar. Lo lee `herramientas/uso.py`
+    const dia = new Date(ahora).toISOString().slice(0, 10);
+    let h = this.leer('medidas_hoy');
+    if (!h || h.dia !== dia) {
+      if (h) this.guardar('medidas_ayer', h);
+      h = { dia, filas: {} };
+    }
+    for (const [k, n] of Object.entries(this.medHoy)) h.filas[k] = (h.filas[k] || 0) + n;
+    this.medHoy = {};
+    h.filas = Object.fromEntries(Object.entries(h.filas).sort((a, b) => b[1] - a[1]).slice(0, 200));
+    this.guardar('medidas_hoy', h);
   }
 
   /** 📏 Lo guardado más lo que todavía no se guardó: `{desde, t, filas, kv, pedidos, antiraid}`, cada uno de mayor a menor */
@@ -6305,14 +6331,52 @@ export class Avisos {
   }
 
   leer(k) {
-    const r = this.sql.exec('SELECT v FROM estado WHERE k = ?', k).toArray()[0];
-    if (!r) return null;
-    try { return JSON.parse(r.v); } catch (e) { return null; }
+    // ⚡ LO YA LEÍDO NO SE VUELVE A LEER (04/11/2026): `estado` sólo se escribe por `guardar()`, así que esta copia no
+    // se queda vieja. Se guarda el texto y no el objeto: quien lee puede tocar lo que recibe
+    const m = this.estadoMem || (this.estadoMem = new Map());
+    let v = m.get(k);
+    if (v === undefined) {
+      const r = this.sql.exec('SELECT v FROM estado WHERE k = ?', k).toArray()[0];
+      v = r ? r.v : null;
+      if (m.size >= 3000) m.clear();
+      m.set(k, v);
+    }
+    if (v === null) return null;
+    try { return JSON.parse(v); } catch (e) { return null; }
   }
 
   guardar(k, v) {
+    const txt = JSON.stringify(v);
     this.sql.exec('INSERT INTO estado (k, v) VALUES (?, ?) ' +
-      'ON CONFLICT(k) DO UPDATE SET v = excluded.v', k, JSON.stringify(v));
+      'ON CONFLICT(k) DO UPDATE SET v = excluded.v', k, txt);
+    if (this.estadoMem) this.estadoMem.set(k, txt);
+  }
+
+  /**
+   * ⚡ ¿Esto ya se hizo? (04/11/2026) Los avisos de quien sigue a alguien revisan las mismas publicaciones y las mismas
+   * personas cada 5 minutos, y lo que ya se sabe que está hecho no cambia: una sola lectura por cosa. Lo que todavía no
+   * está no se recuerda, porque un envío que falla se reintenta (`DELETE FROM hechos`) y tiene que volver a preguntar.
+   */
+  yaHecho(id) {
+    const m = this.hechosMem || (this.hechosMem = new Set());
+    if (m.has(id)) return true;
+    if (!this.sql.exec('SELECT id FROM hechos WHERE id = ?', id).toArray()[0]) return false;
+    if (m.size >= 50000) m.clear();
+    m.add(id);
+    return true;
+  }
+
+  /**
+   * ⚡ Los anuncios de los últimos 2 días, una lectura por minuto (04/11/2026): `veredictos()`, `inscripciones()` y
+   * `llamada()` preguntan lo mismo en la misma vuelta del vigía.
+   */
+  cuerposRecientes(ahora) {
+    const min = Math.floor(ahora / MIN);
+    if (!this.cuerposMem || this.cuerposMem.min !== min) {
+      this.cuerposMem = { min, filas: this.sql.exec('SELECT cuerpo FROM avisos WHERE estado != 2 AND creado > ?',
+        ahora - 2 * 24 * HORA).toArray().map((r) => r.cuerpo) };
+    }
+    return this.cuerposMem.filas;
   }
 
   /**
@@ -6659,6 +6723,7 @@ export class Avisos {
       if (ruta === '/roles') return json(this.roles(), 200, 300);
       if (ruta === '/fondos') return json(this.fondos(), 200, 300);
       if (ruta === '/pase-niveles') return json(this.paseNiveles());
+      if (ruta === '/uso-ciclo') return json(this.usoCiclo());
       if (ruta === '/chat-canales') return json(await this.canalesChat());
       if (ruta === '/cierre-vivo') {
         const d = await req.json().catch(() => null);
@@ -7441,7 +7506,7 @@ export class Avisos {
       const hechos = {};
       for (const r of this.sql.exec('SELECT m, msg, texto FROM chat_vivo WHERE llave = ? AND canal = ?', L.id, canal)
         .toArray()) hechos[r.m] = r;
-      const ult = (this.sql.exec("SELECT MAX(t) AS t FROM chat_vivo WHERE canal = ? AND msg != ''", canal)
+      const ult = (this.sql.exec("SELECT t FROM chat_vivo WHERE canal = ? AND msg != '' ORDER BY t DESC LIMIT 1", canal)
         .toArray()[0] || {}).t || 0;
       const fresca = ahora - (L.ed || 0) <= CHAT_FRESCA;
       const nombre = nombreDe(L);
@@ -7872,8 +7937,7 @@ export class Avisos {
   async veredictos(ahora) {
     const lista = (this.leer('canales') || {}).veredictos || [];
     if (!lista.length) return;
-    const vivos = svsEnVivo(this.sql.exec('SELECT cuerpo FROM avisos WHERE estado != 2 AND creado > ?',
-      ahora - 2 * 24 * HORA).toArray().map((r) => r.cuerpo), ahora);
+    const vivos = svsEnVivo(this.cuerposRecientes(ahora), ahora);
     // también el servidor que tiene una llave que se está tocando
     for (const r of this.sql.exec('SELECT DISTINCT sv FROM vivo WHERE ed > ?', ahora - 3 * HORA).toArray()) {
       if (r.sv) vivos.add(r.sv);
@@ -7929,8 +7993,7 @@ export class Avisos {
   async inscripciones(ahora) {
     const lista = (this.leer('canales') || {}).inscripciones || [];
     if (!lista.length) return;
-    const svs = svsInscribiendo(this.sql.exec('SELECT cuerpo FROM avisos WHERE estado != 2 AND creado > ?',
-      ahora - 2 * 24 * HORA).toArray().map((r) => r.cuerpo), ahora);
+    const svs = svsInscribiendo(this.cuerposRecientes(ahora), ahora);
     // también el servidor que tiene una llave que se está tocando
     for (const r of this.sql.exec('SELECT DISTINCT sv FROM vivo WHERE ed > ?', ahora - 3 * HORA).toArray()) {
       if (r.sv) svs.add(r.sv);
@@ -7955,8 +8018,17 @@ export class Avisos {
           const ed = m.edited_timestamp ? Date.parse(String(m.edited_timestamp).slice(0, 19) + 'Z') : pub;
           if (Number.isNaN(pub) || ahora - pub > INSC_GUARDA) continue;
           const texto = String(m.content || '').slice(0, 200);
-          const fila = this.sql.exec('SELECT texto FROM inscritos WHERE id = ?', m.id).toArray()[0];
-          if (fila && fila.texto === texto) continue;
+          // ⚡ el canal se relee cada minuto y casi nunca cambia: el texto de cada mensaje se pregunta una vez
+          const vistos = this.inscVistos || (this.inscVistos = new Map());
+          let previo = vistos.get(m.id);
+          if (previo === undefined) {
+            const fila = this.sql.exec('SELECT texto FROM inscritos WHERE id = ?', m.id).toArray()[0];
+            previo = fila ? fila.texto : null;
+          }
+          if (vistos.size >= 20000) vistos.clear();
+          vistos.set(m.id, texto);
+          if (previo === texto) continue;
+          if (this.inscMem) delete this.inscMem[c.sv || ''];
           this.sql.exec('INSERT INTO inscritos (id, canal, nombre, sv, autor_id, autor, pub, ed, texto) ' +
             'VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?) ON CONFLICT(id) DO UPDATE SET ed = excluded.ed, ' +
             'texto = excluded.texto', m.id, c.id, c.nombre || '', c.sv || '',
@@ -8411,7 +8483,7 @@ export class Avisos {
         'i:' + a.id, canal).toArray()[0];
       if (h && (h.texto === texto || !h.msg || ahora - h.t < CHAT_ENTRE_TODO)) continue;
       if (!h) {
-        const ult = (this.sql.exec("SELECT MAX(t) AS t FROM chat_vivo WHERE canal = ? AND msg != ''", canal).toArray()[0] || {}).t || 0;
+        const ult = (this.sql.exec("SELECT t FROM chat_vivo WHERE canal = ? AND msg != '' ORDER BY t DESC LIMIT 1", canal).toArray()[0] || {}).t || 0;
         if (ahora - ult < CHAT_ENTRE_TODO) continue;
       }
       pedidos++;
@@ -8633,8 +8705,14 @@ export class Avisos {
     const out = {};
     let pedidos = 0, cuentas = 0;
     for (const [sv, s] of Object.entries(porSv)) {
-      const insc = this.sql.exec('SELECT autor_id, texto FROM inscritos WHERE sv = ? AND pub > ?', sv,
-        ahora - 36 * HORA).toArray();
+      // ⚡ cada minuto y por servidor eran el 10 % de las filas que lee el objeto (04/11/2026). Se relee cuando entra o
+      // cambia una inscripción (`inscripciones()` borra esta copia) y, si no, cada 10 minutos
+      const mem = this.inscMem || (this.inscMem = {});
+      if (!mem[sv] || ahora - mem[sv].t > 10 * MIN) {
+        mem[sv] = { t: ahora, filas: this.sql.exec('SELECT autor_id, texto FROM inscritos WHERE sv = ? AND pub > ?', sv,
+          ahora - 36 * HORA).toArray() };
+      }
+      const insc = mem[sv].filas;
       let vc = this.vozCache[sv];
       if (!vc || ahora - vc.t > 5 * MIN) {
         let g = {};
@@ -8698,8 +8776,10 @@ export class Avisos {
       return;
     }
     const svs = new Set(evs.map((e) => e.sv));
-    const insc = this.sql.exec('SELECT autor_id, sv, pub, texto FROM inscritos WHERE pub > ? ORDER BY pub',
-      Math.min(...evs.map((e) => e.pub)) - MIN).toArray().filter((x) => svs.has(x.sv));
+    // ⚡ por servidor (`inscritos_sv_pub`): leer las de todos para quedarse con las de uno gastaba filas de más
+    const desdeInsc = Math.min(...evs.map((e) => e.pub)) - MIN;
+    const insc = [...svs].flatMap((sv) => this.sql.exec('SELECT autor_id, sv, pub, texto FROM inscritos WHERE sv = ? AND pub > ? ORDER BY pub',
+      sv, desdeInsc).toArray()).sort((a, b) => a.pub - b.pub);
     const por = anotadosDe(evs, insc);
     // ⚠️ LA CARA DE LA CUENTA, SÓLO A QUIEN SE ANOTÓ UNA VEZ: quien anota a otros en varios mensajes no le presta la
     // cara a nadie. Por MENSAJE y no por nombre desde los equipos (03/10/2026): «yinn+ji sung park» es un mensaje, y
@@ -8760,8 +8840,7 @@ export class Avisos {
    */
   async llamada(ahora) {
     if (!this.env.GH_TOKEN || !this.env.GH_REPO) return;
-    const vivos = svsEnVivo(this.sql.exec('SELECT cuerpo FROM avisos WHERE estado != 2 AND creado > ?',
-      ahora - 2 * 24 * HORA).toArray().map((r) => r.cuerpo), ahora);
+    const vivos = svsEnVivo(this.cuerposRecientes(ahora), ahora);
     for (const r of this.sql.exec('SELECT DISTINCT sv FROM vivo WHERE ed > ?', ahora - 3 * HORA).toArray()) {
       if (r.sv) vivos.add(r.sv);
     }
@@ -9815,6 +9894,7 @@ export class Avisos {
     this.sql.exec('DELETE FROM idk WHERE id = ?', String(d.quien));
     this.sql.exec('DELETE FROM inscritos WHERE autor_id = ?', String(d.quien));
     this.sql.exec('DELETE FROM hechos WHERE id LIKE ? OR id LIKE ?', '%:' + String(d.quien), '%:' + String(d.quien) + ':%');
+    this.hechosMem = null; this.inscMem = null; this.inscVistos = null;
     return json({ ok: true, soltados: r.rowsWritten || 0, votos: v.rowsWritten || 0, tienda: b.rowsWritten || 0,
       sigue: s.rowsWritten || 0, reportes: rp.rowsWritten || 0, aplausos: ap.rowsWritten || 0 });
   }
@@ -10867,7 +10947,7 @@ export class Avisos {
       const fs = this.sql.exec('SELECT quien FROM sigue WHERE a = ? AND t <= ? AND de != ?', c.k, c.t, c.k).toArray();
       for (const f of fs) {
         const id = 'sg:' + c.pub + ':' + f.quien;
-        if (this.sql.exec('SELECT id FROM hechos WHERE id = ?', id).toArray()[0]) continue;
+        if (this.yaHecho(id)) continue;
         const subs = this.sql.exec('SELECT id, endpoint, p256dh, auth FROM subs WHERE quien = ?', f.quien).toArray();
         if (pedidos + subs.length > TOPE_SEGUIDOS && pedidos) { quedan++; continue; }
         this.sql.exec('INSERT OR IGNORE INTO hechos (id, t) VALUES (?, ?)', id, ahora);
@@ -10937,7 +11017,7 @@ export class Avisos {
       const fs = this.sql.exec('SELECT quien FROM liga_sigue WHERE liga = ? AND t <= ?', it.liga, t).toArray();
       for (const f of fs) {
         const id = 'lg:' + it.id + ':' + f.quien;
-        if (this.sql.exec('SELECT id FROM hechos WHERE id = ?', id).toArray()[0]) continue;
+        if (this.yaHecho(id)) continue;
         const subs = this.sql.exec('SELECT id, endpoint, p256dh, auth FROM subs WHERE quien = ?', f.quien).toArray();
         if (pedidos + subs.length > TOPE_LIGAS && pedidos) { quedan++; continue; }
         this.sql.exec('INSERT OR IGNORE INTO hechos (id, t) VALUES (?, ?)', id, ahora);
@@ -11711,7 +11791,13 @@ export class Avisos {
     try {
       const r = this.sql.exec('SELECT COUNT(*) AS n, COUNT(DISTINCT quien) AS p, COUNT(DISTINCT id) AS a FROM aplausos')
         .toArray()[0];
-      const b = this.sql.exec('SELECT COUNT(*) AS n, COUNT(DISTINCT quien) AS p FROM bandeja').toArray()[0];
+      // ⚡ son miles de filas por un número de control, y la página pide este estado al abrirse: era la consulta que más
+      // leía de todas (04/11/2026). Cada 15 minutos alcanza
+      const ahora = Date.now();
+      if (!this.bandejaMem || ahora - this.bandejaMem.t > 15 * MIN) {
+        this.bandejaMem = { t: ahora, b: this.sql.exec('SELECT COUNT(*) AS n, COUNT(DISTINCT quien) AS p FROM bandeja').toArray()[0] };
+      }
+      const b = this.bandejaMem.b;
       return { filas: r.n, felicitan: r.p, publicaciones: r.a, ultima: this.leer('aplausos'),
         bandeja: { filas: b.n, personas: b.p } };
     } catch (e) {
@@ -12065,7 +12151,7 @@ export class Avisos {
     const rellenar = !this.leer('bandeja_relleno');
     for (const a of cola) {
       const id = 'yo:' + a.id;
-      if (this.sql.exec('SELECT id FROM hechos WHERE id = ?', id).toArray()[0]) {
+      if (this.yaHecho(id)) {
         if (rellenar && /^[0-9]{5,25}$/.test(String(a.quien))) {
           this.sql.exec('INSERT OR IGNORE INTO bandeja (quien, clave, t, tipo, titulo, cuerpo, url, visto) VALUES (?, ?, ?, ?, ?, ?, ?, 1)',
             String(a.quien), id, Date.parse(a.t || '') || ahora, 'personal', String(a.titulo).slice(0, 120),
@@ -12133,7 +12219,7 @@ export class Avisos {
       const r = rachaEnPeligro(dias, hoy);
       if (!r) continue;
       const id = 'racha-aviso:' + quien + ':' + hoy;
-      if (this.sql.exec('SELECT id FROM hechos WHERE id = ?', id).toArray()[0]) continue;
+      if (this.yaHecho(id)) continue;
       const subs = this.sql.exec('SELECT id, endpoint, p256dh, auth FROM subs WHERE quien = ?', quien).toArray();
       if (!subs.length) continue;
       if (pedidos + subs.length > TOPE_PERSONALES && pedidos) { quedan++; continue; }
@@ -13077,7 +13163,7 @@ export class Avisos {
     let enviados = 0, pedidos = 0, quedan = 0;
     for (const quien of cands) {
       const id = 'pase-aviso:' + quien + ':' + s[0];
-      if (this.sql.exec('SELECT id FROM hechos WHERE id = ?', id).toArray()[0]) continue;
+      if (this.yaHecho(id)) continue;
       const xp = this.paseXP(quien, P.cfg), nivel = nivelDeXP(P.cfg, xp);
       if (nivel >= P.cfg.niveles) continue;
       const falta = P.cfg.umbrales[nivel] - xp;
@@ -13890,6 +13976,22 @@ export class Avisos {
       out.push(Object.assign({ lunes: ymd(ini) }, x, { k: cuenta(ymd(ini), ymd(ini + (dow + 1) * DIA_MS)) }));
     }
     return out;
+  }
+
+  /**
+   * 📊 Lo que Dlx ve en Dashboard → Números, para `herramientas/uso.py` (Dlx, 04/11/2026: «cuánta gente está usando la
+   * página ahora contra antes»): se podía leer sólo con su sesión. Sólo cuentas, nunca quién.
+   */
+  usoCiclo(ahora = Date.now()) {
+    const dias = [];
+    for (let i = USO_DIAS - 1; i >= 0; i--) {
+      const dia = masDias(diaET(ahora), -i);
+      const c = (por) => this.sql.exec('SELECT COUNT(*) AS n FROM uso WHERE dia = ? AND por = ?', dia, por).toArray()[0].n;
+      const v = this.sql.exec('SELECT n FROM visitas WHERE dia = ?', dia).toArray()[0];
+      dias.push({ dia, bot: c('bot'), web: c('web'), visitas: v ? v.n : 0 });
+    }
+    return { t: ahora, uso: this.usoResumen(), semanas: this.usoSemanas(ahora), dias, secciones: this.seccionesResumen(),
+      tutorial: this.tutorialResumen(), filas: { hoy: this.leer('medidas_hoy'), ayer: this.leer('medidas_ayer') } };
   }
 
   /** ⚙️ Los ajustes del dueño, como están (ver `ajusteValido()`) */

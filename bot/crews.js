@@ -298,6 +298,8 @@ export function crewTablas(sql) {
   sql.exec('CREATE TABLE IF NOT EXISTS crew_miembros (k TEXT PRIMARY KEY, crew TEXT NOT NULL, rol TEXT NOT NULL, ' +
     "quien TEXT NOT NULL DEFAULT '', desde INTEGER NOT NULL)");
   sql.exec('CREATE INDEX IF NOT EXISTS crew_miembros_crew ON crew_miembros (crew)');
+  // ⚡ «¿en qué crew está esta persona?» recorría la tabla entera cada vez (04/11/2026)
+  sql.exec('CREATE INDEX IF NOT EXISTS crew_miembros_quien ON crew_miembros (quien)');
   // 🪪 quien está sin verificarse (19/10/2026): `pend` es cuándo sale si no se verifica (0 = verificado) y `pend_av`,
   // si ya se lo mencionó en el chat de su servidor (una sola vez: ver `crewVerificar()`)
   for (const col of ['pend INTEGER NOT NULL DEFAULT 0', 'pend_av INTEGER NOT NULL DEFAULT 0']) {

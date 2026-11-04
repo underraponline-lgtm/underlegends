@@ -2337,6 +2337,43 @@ const ok = (cond, que, det) => {
     ok(await porFetch('/tutorial', 'franja') === 200 && await porFetch('/seccion', 'pase') === 200
       && await porFetch('/seccion', 'zzz') === 400 && o.panelDueno().tutorial.n.franja === 1
       && o.panelDueno().secciones.n.pase[0] === 1, 'tutorial y secciones también entrando por fetch()');
+    // 📊 el uso con la clave del ciclo: las mismas cuentas del Dashboard, y ningún ID
+    o.sql.exec("INSERT OR IGNORE INTO uso (dia, quien, por) VALUES (?, '700000000000000099', 'web')", A.diaET());
+    o.sql.exec('INSERT INTO visitas (dia, n) VALUES (?, 3) ON CONFLICT(dia) DO UPDATE SET n = n + 3', A.diaET());
+    o.medir('filas', 'SELECT de prueba', 7);
+    o.medT = 0;
+    o.medidasGuardar(Date.now());
+    const uc = o.usoCiclo();
+    ok(uc.dias.length === A.USO_DIAS && uc.dias[uc.dias.length - 1].web >= 1 && uc.dias[uc.dias.length - 1].visitas >= 3
+      && uc.semanas.length >= 1 && !!uc.secciones && !JSON.stringify(uc).includes('700000000000000099')
+      && uc.filas.hoy.filas['SELECT de prueba'] === 7 && uc.filas.hoy.dia === new Date().toISOString().slice(0, 10),
+    'el uso con la clave del ciclo: las cuentas por día y por semana, y lo que leyó cada consulta hoy; ningún ID');
+    // 📏 cuando cambia el día de Cloudflare, lo de hoy pasa a ser lo de ayer
+    o.medir('filas', 'SELECT de prueba', 1);
+    o.medT = 0;
+    o.medidasGuardar(Date.now() + 864e5);
+    ok(o.leer('medidas_ayer').filas['SELECT de prueba'] === 7 && o.leer('medidas_hoy').filas['SELECT de prueba'] === 1,
+      'lo de hoy pasa a ayer al cambiar el día de Cloudflare');
+    const envUso = { DISCORD_TOKEN: 't', AVISOS: { idFromName: () => 'x', get: () => ({ fetch: async () => new Response('{"ok":true}') }) } };
+    const usoCon = async (k) => (await A.rutaAvisos(new Request('https://x/avisos/uso-ciclo', { headers: { 'x-lg-ciclo': k } }), envUso,
+      '/avisos/uso-ciclo')).status;
+    ok(await usoCon('otra') === 404 && await usoCon(await A.claveCiclo('t')) === 200, 'el uso se lee sólo con la clave del ciclo');
+    // ⚡ lo leído de `estado` se recuerda como texto: tocar lo que devuelve no cambia lo guardado, y guardar lo pisa
+    o.guardar('prueba_mem', { a: 1 });
+    const pm1 = o.leer('prueba_mem');
+    pm1.a = 2;
+    const pm2 = o.leer('prueba_mem').a;
+    o.guardar('prueba_mem', { a: 3 });
+    ok(pm2 === 1 && o.leer('prueba_mem').a === 3 && o.leer('prueba_no_esta') === null
+      && o.sql.exec("SELECT v FROM estado WHERE k = 'prueba_mem'").toArray()[0].v === '{"a":3}',
+    'lo leído de estado: tocar lo que devuelve no lo cambia, y guardar lo actualiza');
+    // ⚡ yaHecho: lo que no está se vuelve a preguntar (un envío que falla se reintenta) y lo que está queda sabido
+    const hNo = o.yaHecho('prueba:h1');
+    o.sql.exec("INSERT INTO hechos (id, t) VALUES ('prueba:h1', 1)");
+    const hSi = o.yaHecho('prueba:h1');
+    o.sql.exec("DELETE FROM hechos WHERE id = 'prueba:h2'");
+    ok(!hNo && hSi && !o.yaHecho('prueba:h2') && o.hechosMem.has('prueba:h1') && !o.hechosMem.has('prueba:h2'),
+      'yaHecho recuerda sólo lo que ya está hecho');
     const enApp = /const SECC = new Set\(\[([^\]]+)\]/.exec(readFileSync(join(aqui, '..', 'web', 'src', 'App.jsx'), 'utf8'));
     const deApp = enApp ? enApp[1].match(/'([a-z-]+)'/g).map((x) => x.slice(1, -1)).sort() : [];
     ok(JSON.stringify(deApp) === JSON.stringify([...A.SECC_EV].sort()), 'la lista de App.jsx es SECC_EV', deApp.join(','));

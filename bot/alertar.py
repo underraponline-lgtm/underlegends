@@ -32,6 +32,7 @@ import json
 import os
 import re
 import sys
+import time
 
 SCR = os.path.dirname(os.path.abspath(__file__))
 BASE = os.path.dirname(SCR)
@@ -43,6 +44,9 @@ WORKER = 'https://liga-global-bot.liga-global-ul.workers.dev'
 SILENCIO_H = 6
 #: la cuota de KV es de 1.000 escrituras por día para toda la cuenta
 KV_AVISO = 900
+#: las filas que puede leer el objeto son 5 millones por día de Cloudflare (`cuotas.LIM`). Si se acaban se cae todo lo
+#: que lo usa: entrar con Discord, lo en vivo y los avisos (27/10/2026, de 5:35 a 8:35 PM ET, y no avisó nadie)
+FILAS_AVISO = 4_000_000
 
 
 def _ahora():
@@ -147,6 +151,11 @@ def _guardar(d):
         f.write('\n')
 
 
+def _corte():
+    """La hora del este a la que arranca el próximo día de Cloudflare, que es UTC: 8 PM en verano y 7 PM en invierno."""
+    return _et(_ahora().replace(hour=0, minute=0, second=0, microsecond=0) + datetime.timedelta(days=1))
+
+
 def alertar(clave, texto):
     """Un problema. Se manda si es nuevo o si pasaron 6 h desde el último."""
     d = _leer()
@@ -223,7 +232,16 @@ def salud():
                             ('no late hace %d min' % (hace // 60)) if hace
                             else (errores or 'no hay latido'), _et()))
     except Exception as e:                               # noqa: BLE001
+        # 🔴 EL OBJETO CAÍDO SE VE ASÍ, Y ESTO SÓLO LO IMPRIMÍA EN EL LOG (27/10/2026): cuando se pasa de su cuota el
+        # Worker contesta un error que no es JSON, y durante tres horas nadie se enteró. Se pregunta otra vez, para
+        # no alertar por un corte de red del propio runner
         print('   ⚠️ no pude preguntarle al vigía (%s)' % str(e)[:80])
+        try:
+            time.sleep(20)
+            requests.get(WORKER + '/avisos/estado', timeout=25).json()
+        except Exception as e2:                          # noqa: BLE001
+            alertar('objeto', 'El objeto de la página no contesta (%s). Sin él no funciona entrar con Discord, lo en vivo '
+                    'ni los avisos. Si se acabó la cuota de filas, vuelve solo cerca de las %s. (%s)' % (str(e2)[:80], _corte(), _et()))
     # 2 · el disparador del ciclo: el cron del Worker a los :22 y :52
     try:
         import fotos as F
@@ -265,6 +283,16 @@ def salud():
                         'hub y /card se congelan hasta las 8 PM ET.' % usado)
             elif usado is not None:
                 resuelto('kv', 'La cuota de KV volvió a tener margen (%d hoy).' % usado)
+            # 3b · las filas que lee el objeto: con tiempo para hacer algo antes de que se acaben
+            leidas = (C.objeto_hoy(s) or {}).get('leidas')
+            if leidas is not None and leidas >= FILAS_AVISO:
+                alertar('filas', 'El objeto lleva %.1f millones de filas leídas hoy, de %d millones. Si se acaban se cae '
+                        'entrar con Discord, lo en vivo y los avisos hasta cerca de las %s. Lo que más lee: '
+                        '`python herramientas/uso.py`.' % (leidas / 1e6, C.LIM['do_filas_leidas_dia'] // 1000000, _corte()))
+            elif leidas is not None:
+                resuelto('filas', 'Las filas del objeto volvieron a tener margen (%.1f millones hoy).' % (leidas / 1e6))
+            if j:
+                resuelto('objeto', 'El objeto de la página volvió a contestar.')
     except Exception as e:                               # noqa: BLE001
         print('   ⚠️ no pude mirar el disparador ni KV (%s)' % str(e)[:80])
     # 4 · 🔔 A7, EL SCORE A 40–99. Dlx, 25/09/2026: «aplicalo en otro
