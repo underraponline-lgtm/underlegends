@@ -1,22 +1,6 @@
 {
  "_leeme": "El texto de los anuncios que son una imagen, leído por la IA de Cloudflare (/avisos/ocr del Worker), por id del mensaje: así cada afiche se lee una sola vez. Lo escribe bot/anuncios.py. Dlx, 05/10/2026. Se borra a los 30 días.",
  "msgs": {
-  "1556061426861351064": {
-   "texto": "MUERTE SUBITA\n\n \n \n\nTORNEO DE FREESTYLE\n\n \n\nFECHA 03/10\nCUPOS ILIMTADOS HASTA ACABAR FILTROS\n\nVS \n\nJUECES\nLEITAN-KANJI-IZAYA\n\nTORNEO ONLINE POR DISCORD SERVIDOR:\n\nPREMIOS \n$15P\n$7P\nHORA 7PM",
-   "t": "2026-10-05T05:54:19"
-  },
-  "1556352011316756530": {
-   "texto": "VALHALLA \nVOL1\n\n7PM CHILE\nDOMINGO 4 DE OCTUBRE\n$10 DÓLARES DE PREMIO\n\nSOLO EN DISCORD: LA CREW",
-   "t": "2026-10-05T05:54:22"
-  },
-  "1556450642695032886": {
-   "texto": "PANCHOK\nWELCOME\nWEL\nPAN\nWE\nDA\nFREESTYLE\nMASTER\nHONGO\n2026\nREEMPLAZO\nANDES",
-   "t": "2026-10-05T05:54:12"
-  },
-  "1556548901916381335": {
-   "texto": "FREESTYLE FOR ALL\n57\nHABITUAL\n0\nTÍTULOS\n1\nPODIOS\n1/1\nRACHA\n2/3\nDUELos\n1\nEVENTOS\nPANCHOK\nDE LA CASA",
-   "t": "2026-10-05T06:25:53"
-  },
   "1556848043490410517": {
    "texto": "FREESTYLE MASTER HONGO     #FM# ALBICELSTE FREESTYLE MASTER HONGO",
    "t": "2026-10-06T02:26:27"
@@ -144,6 +128,10 @@
   "1567347019251458192": {
    "texto": "JORNADA 1 - ECATEPEC\n24 DE OCT.\nFREESTYLE\nMASTER\nSERIES\n\nRESULTADO\nFINAL\n\nSHADOW          5-0          ISMEL\n27                             19.5\nDIRECTA\n\n9                    RANDOM MODE                   6\n3.5                 MINUTO DE IDA                2.5\n3.5                 MINUTO DE VUELTA            3\n11                   DELUXE                         8",
    "t": "2026-11-04T01:26:09"
+  },
+  "1567637607989514410": {
+   "texto": "TEMP 2026/27\nFREESTYLE\nMASTER\nSERIES\nLIVE UP\n#FMS COLOMBIA\nRENOVADO\nLast\n7MA TEMPORADA\nPepsi Totalplay RECORD",
+   "t": "2026-11-04T20:55:58"
   }
  }
 }
