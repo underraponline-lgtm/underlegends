@@ -276,7 +276,7 @@
   "crew": "Follombia",
   "discord_id": "1097714486795849748",
   "verificado": true,
-  "pts": 325124,
+  "pts": 324874,
   "ev": 42,
   "wr": "57.7%",
   "pod": 18,
@@ -301,7 +301,6 @@
   "tg_t": {
    "busc": 7,
    "cab": 6,
-   "cobro": 1,
    "dobles": 12,
    "infalt": true,
    "perf": 2,
@@ -861,7 +860,7 @@
   "crew": "Sentinelense",
   "discord_id": "1426686911908675628",
   "verificado": true,
-  "pts": 215915,
+  "pts": 215665,
   "ev": 44,
   "wr": "42.4%",
   "pod": 8,
@@ -885,7 +884,6 @@
   "rango": "A",
   "tg_t": {
    "busc": 3,
-   "cobro": 1,
    "dobles": 14,
    "infalt": true,
    "perf": 1,
@@ -1753,7 +1751,6 @@
   "rango": "B",
   "tg_t": {
    "busc": 1,
-   "cab": 1,
    "dobles": 3,
    "infalt": true,
    "svc": 1

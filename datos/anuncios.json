@@ -1,5 +1,5 @@
 {
- "cuando": "2026-11-04T19:56:01+00:00",
+ "cuando": "2026-11-04T20:25:57+00:00",
  "anuncios": [
   {
    "nombre": "¡SE LLEGÓ LA GRAN NOCHE!",
@@ -5832,6 +5832,24 @@
   }
  ],
  "inscripciones": [
+  {
+   "servidor": "LKR",
+   "canal": "⟡・INSCRIPCIONES",
+   "texto": "🇨🇴",
+   "quien": "inkbluegout",
+   "discord_id": "1032753509776490566",
+   "msg_id": "1567633535077060780",
+   "cuando": "2026-11-04T20:15:59"
+  },
+  {
+   "servidor": "LKR",
+   "canal": "⟡・INSCRIPCIONES",
+   "texto": "🇨🇱",
+   "quien": "sj.2008_",
+   "discord_id": "645308964141137952",
+   "msg_id": "1567630842669305867",
+   "cuando": "2026-11-04T20:05:18"
+  },
   {
    "servidor": "LKR",
    "canal": "⟡・INSCRIPCIONES",
@@ -41813,24 +41831,6 @@
    "discord_id": "979878316846768139",
    "msg_id": "1555383620355620966",
    "cuando": "2026-10-02T00:59:12"
-  },
-  {
-   "servidor": "FFA",
-   "canal": "✦📝—inscripciones",
-   "texto": "sosa",
-   "quien": "sosaatrz",
-   "discord_id": "1471153954254622774",
-   "msg_id": "1555383013301297168",
-   "cuando": "2026-10-02T00:56:47"
-  },
-  {
-   "servidor": "FFA",
-   "canal": "✦📝—inscripciones",
-   "texto": "Soneto 🇪🇨",
-   "quien": "pllsuax",
-   "discord_id": "745324578347286528",
-   "msg_id": "1555381939102285895",
-   "cuando": "2026-10-02T00:52:31"
   }
  ]
 }
