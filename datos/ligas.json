@@ -1,6 +1,6 @@
 {
  "_leeme": "Las ligas de los servidores: cada batalla y su resultado, y la tabla que sale de eso. Lo arma bot/ligas.py en cada corrida; las reglas viven ahí. Sin los mensajes: el repo es público. `batallas`: [id del mensaje, instante, jornada, a, b, ganador (vacío: pendiente), directa|replica, extras]. Las batallas con resultado cuentan como duelos (Ranking Duelos y Win%; el Score no). `flyer`: el último afiche de su canal de anuncios, re-alojado en R2 (`url`); `prox`: la próxima fecha que anunció (`d` el día, `t` el instante si lo dijo). Desde el 17/10/2026: `ptb` {id de la batalla: [PTB de a, de b]}, `flyers` (la galería, en R2), `staff` [[discord_id, nombre, mensajes en anuncios, en veredictos, último]] y `nov` (lo nuevo de las últimas horas, para «Seguir la liga»).",
- "t": "2026-11-04T22:59:09Z",
+ "t": "2026-11-04T23:28:59Z",
  "ligas": {
   "fmh-albiceleste": {
    "n": "FMH Albiceleste",
@@ -6679,7 +6679,7 @@
      "847124099243180042",
      "gxbrrlaljndrr",
      0,
-     25,
+     24,
      "2026-11-03T23:58:07Z"
     ],
     [
@@ -7093,8 +7093,8 @@
      "694719521461764126",
      "Jothazé",
      0,
-     2,
-     "2026-10-27T16:43:43Z"
+     3,
+     "2026-11-04T23:13:02Z"
     ],
     [
      "1070553144964173906",
@@ -8900,6 +8900,16 @@
      "",
      "",
      ""
+    ],
+    [
+     "1567678204943143143",
+     "2026-11-04T23:13:30Z",
+     null,
+     "MAKMA",
+     "MOSQUITRAP",
+     "",
+     "",
+     ""
     ]
    ],
    "tabla": [
@@ -9151,6 +9161,13 @@
      "2026-11-04T01:41:57Z"
     ],
     [
+     "1414431452346581052",
+     "Flennzs | ⛩️",
+     0,
+     5,
+     "2026-11-04T23:13:30Z"
+    ],
+    [
      "1316490165836972104",
      "Adriagner",
      0,
@@ -9163,13 +9180,6 @@
      0,
      4,
      "2026-11-04T02:14:37Z"
-    ],
-    [
-     "1414431452346581052",
-     "Flennzs | ⛩️",
-     0,
-     4,
-     "2026-10-30T20:24:31Z"
     ],
     [
      "897942226955563068",

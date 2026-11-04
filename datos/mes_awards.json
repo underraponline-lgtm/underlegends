@@ -44,6 +44,22 @@
        "oro": 7,
        "ev": 32
       }
+     ],
+     "cuenta": {
+      "Makmah": 1,
+      "Oasis": 1,
+      "Snow": 3
+     },
+     "gana": "Snow",
+     "votos": 3,
+     "total": 5,
+     "por": "votos",
+     "premio": [
+      [
+       "Snow",
+       "1097714486795849748",
+       3000
+      ]
      ]
     },
     "revelacion": {
@@ -83,6 +99,21 @@
        "oro": 0,
        "ev": 17
       }
+     ],
+     "cuenta": {
+      "Adriagner": 1,
+      "Lvel 🇻🇪": 3
+     },
+     "gana": "Lvel 🇻🇪",
+     "votos": 3,
+     "total": 4,
+     "por": "votos",
+     "premio": [
+      [
+       "Lvel 🇻🇪",
+       "1241407042195816459",
+       2000
+      ]
      ]
     },
     "batalla": {
@@ -106,6 +137,25 @@
        ],
        "vistas": 50
       }
+     ],
+     "cuenta": {
+      "0uk1CE5A3Ic": 3
+     },
+     "gana": "0uk1CE5A3Ic",
+     "votos": 3,
+     "total": 3,
+     "por": "votos",
+     "premio": [
+      [
+       "Zeta",
+       "535579351710957568",
+       1500
+      ],
+      [
+       "Rubik",
+       "1070553144964173906",
+       1500
+      ]
      ]
     },
     "servidor": {
@@ -140,7 +190,17 @@
        "gente": 52,
        "ev": 7
       }
-     ]
+     ],
+     "cuenta": {
+      "FFA": 2,
+      "ACAD": 1,
+      "URBF": 1
+     },
+     "gana": "FFA",
+     "votos": 2,
+     "total": 4,
+     "por": "votos",
+     "premio": []
     },
     "organizador": {
      "nom": [
@@ -189,6 +249,22 @@
        ],
        "d": "7 eventos · 136 raperos"
       }
+     ],
+     "cuenta": {
+      "LEWITO": 2,
+      "NC": 2,
+      "Velatz": 1
+     },
+     "gana": "LEWITO",
+     "votos": 2,
+     "total": 5,
+     "por": "votos",
+     "premio": [
+      [
+       "LEWITO",
+       "1086485696572817418",
+       1000
+      ]
      ]
     },
     "staff": {
@@ -238,6 +314,22 @@
        ],
        "d": "9 fechas de staff"
       }
+     ],
+     "cuenta": {
+      "LEWITO": 3,
+      "Flennzs": 1,
+      "ARDEAN": 1
+     },
+     "gana": "LEWITO",
+     "votos": 3,
+     "total": 5,
+     "por": "votos",
+     "premio": [
+      [
+       "LEWITO",
+       "1086485696572817418",
+       1000
+      ]
      ]
     },
     "duelista": {
@@ -287,6 +379,21 @@
        ],
        "d": "26 de 33 duelos ganados"
       }
+     ],
+     "cuenta": {
+      "PichulaMc": 4,
+      "Agus": 1
+     },
+     "gana": "PichulaMc",
+     "votos": 4,
+     "total": 5,
+     "por": "votos",
+     "premio": [
+      [
+       "PichulaMc",
+       "578697503130779649",
+       1000
+      ]
      ]
     },
     "cazador": {
@@ -336,6 +443,21 @@
        ],
        "d": "3 cabezas cazadas"
       }
+     ],
+     "cuenta": {
+      "PichulaMc": 4,
+      "Six": 1
+     },
+     "gana": "PichulaMc",
+     "votos": 4,
+     "total": 5,
+     "por": "votos",
+     "premio": [
+      [
+       "PichulaMc",
+       "578697503130779649",
+       1000
+      ]
      ]
     },
     "batacazo": {
@@ -385,6 +507,20 @@
        ],
        "d": "le ganó a Makmah (#1) siendo #28 · FREESTYLE LEAGUE N3"
       }
+     ],
+     "cuenta": {
+      "553:Bau": 4
+     },
+     "gana": "553:Bau",
+     "votos": 4,
+     "total": 4,
+     "por": "votos",
+     "premio": [
+      [
+       "Bau",
+       "638492318701322267",
+       1000
+      ]
      ]
     },
     "imparable": {
@@ -434,6 +570,23 @@
        ],
        "d": "7 duelos ganados seguidos"
       }
+     ],
+     "cuenta": {
+      "Over": 2,
+      "Carlosss": 1,
+      "PichulaMc": 1,
+      "Agus": 1
+     },
+     "gana": "Over",
+     "votos": 2,
+     "total": 5,
+     "por": "votos",
+     "premio": [
+      [
+       "Over",
+       "794200141023412244",
+       1000
+      ]
      ]
     },
     "evento": {
@@ -479,6 +632,21 @@
         "Benjixo"
        ]
       }
+     ],
+     "cuenta": {
+      "400": 2,
+      "503": 2
+     },
+     "gana": "503",
+     "votos": 2,
+     "total": 4,
+     "por": "votos",
+     "premio": [
+      [
+       "LEWITO",
+       "1086485696572817418",
+       1000
+      ]
      ]
     },
     "promo": {
@@ -533,6 +701,19 @@
        "d": "Makmah · la compartió el 16/10",
        "vid": "CQ7hta4T-c8"
       }
+     ],
+     "cuenta": {
+      "v-eD6swgNiR4I": 2
+     },
+     "gana": "v-eD6swgNiR4I",
+     "por": "numeros",
+     "total": 2,
+     "premio": [
+      [
+       "Makmah",
+       "897942226955563068",
+       1000
+      ]
      ]
     },
     "publicacion": {
@@ -585,6 +766,21 @@
        ],
        "d": "1 felicitación"
       }
+     ],
+     "cuenta": {
+      "129e25edf2b1": 2,
+      "011a3dd86705": 2
+     },
+     "gana": "129e25edf2b1",
+     "votos": 2,
+     "total": 4,
+     "por": "votos",
+     "premio": [
+      [
+       "Liberia",
+       "1357796427191029932",
+       1000
+      ]
      ]
     },
     "hincha": {
@@ -639,6 +835,21 @@
        "did": "1414431452346581052",
        "d": "34 puntos de participación en la página"
       }
+     ],
+     "cuenta": {
+      "Makmah": 1,
+      "ForceGP": 2
+     },
+     "gana": "ForceGP",
+     "votos": 2,
+     "total": 3,
+     "por": "votos",
+     "premio": [
+      [
+       "ForceGP",
+       "884190151180447744",
+       1000
+      ]
      ]
     },
     "clasico": {
@@ -693,6 +904,26 @@
        ],
        "d": "3 duelos · Agus 1, Liberia 2"
       }
+     ],
+     "cuenta": {
+      "Carlosss vs Makmah": 2,
+      "Makmah vs PichulaMc": 1
+     },
+     "gana": "Carlosss vs Makmah",
+     "votos": 2,
+     "total": 3,
+     "por": "votos",
+     "premio": [
+      [
+       "Carlosss",
+       "958103803616444528",
+       1000
+      ],
+      [
+       "Makmah",
+       "897942226955563068",
+       1000
+      ]
      ]
     },
     "sobreviviente": {
@@ -706,6 +937,17 @@
        ],
        "d": "sobrevivió 1 vez"
       }
+     ],
+     "cuenta": {},
+     "gana": "Panchok",
+     "por": "numeros",
+     "total": 0,
+     "premio": [
+      [
+       "Panchok",
+       "1400508144920170577",
+       1000
+      ]
      ]
     },
     "constante": {
@@ -755,6 +997,20 @@
        ],
        "d": "15 podios · 🥇8 🥈7"
       }
+     ],
+     "cuenta": {
+      "Oasis": 3
+     },
+     "gana": "Oasis",
+     "votos": 3,
+     "total": 3,
+     "por": "votos",
+     "premio": [
+      [
+       "Oasis",
+       "979878316846768139",
+       1000
+      ]
      ]
     },
     "villano": {
@@ -804,6 +1060,20 @@
        ],
        "d": "al azar entre los que compitieron este mes"
       }
+     ],
+     "cuenta": {
+      "SOL": 3
+     },
+     "gana": "SOL",
+     "votos": 3,
+     "total": 3,
+     "por": "votos",
+     "premio": [
+      [
+       "SOL",
+       "753104364347850772",
+       1000
+      ]
      ]
     },
     "showman": {
@@ -853,6 +1123,20 @@
        ],
        "d": "al azar entre los que compitieron este mes"
       }
+     ],
+     "cuenta": {
+      "Mr Still Ballin": 3
+     },
+     "gana": "Mr Still Ballin",
+     "votos": 3,
+     "total": 3,
+     "por": "votos",
+     "premio": [
+      [
+       "Mr Still Ballin",
+       "794200141023412244",
+       1000
+      ]
      ]
     },
     "momento": {
@@ -907,6 +1191,24 @@
        ],
        "d": "IDENTITY V · ganó Carlosss · al azar"
       }
+     ],
+     "cuenta": {
+      "484:Guess vs Xubaru": 2
+     },
+     "gana": "484:Guess vs Xubaru",
+     "por": "numeros",
+     "total": 2,
+     "premio": [
+      [
+       "Guess",
+       "1515482513106272366",
+       1000
+      ],
+      [
+       "Xubaru",
+       "1397110475594010700",
+       1000
+      ]
      ]
     },
     "crew": {
@@ -929,7 +1231,16 @@
        "quien": [],
        "d": "131.002 pts · 2 jugaron"
       }
-     ]
+     ],
+     "cuenta": {
+      "Follombia": 2,
+      "Los ULEYES": 1
+     },
+     "gana": "Follombia",
+     "votos": 2,
+     "total": 3,
+     "por": "votos",
+     "premio": []
     },
     "pais": {
      "nom": [
@@ -968,7 +1279,16 @@
        "quien": [],
        "d": "549.240 pts · 20 jugaron"
       }
-     ]
+     ],
+     "cuenta": {
+      "Argentina": 1,
+      "Colombia": 3
+     },
+     "gana": "Colombia",
+     "votos": 3,
+     "total": 4,
+     "por": "votos",
+     "premio": []
     },
     "liga": {
      "nom": [
@@ -1002,7 +1322,16 @@
        "sv": "URBF",
        "d": "12 batallas · 11 raperos"
       }
-     ]
+     ],
+     "cuenta": {
+      "lkr-champions": 1,
+      "fmh-espana": 2
+     },
+     "gana": "fmh-espana",
+     "votos": 2,
+     "total": 3,
+     "por": "votos",
+     "premio": []
     },
     "jurado": {
      "nom": [
@@ -1051,6 +1380,19 @@
        ],
        "d": "7 eventos de jurado"
       }
+     ],
+     "cuenta": {
+      "Flennzs": 2
+     },
+     "gana": "Flennzs",
+     "por": "numeros",
+     "total": 2,
+     "premio": [
+      [
+       "Flennzs",
+       "1414431452346581052",
+       1000
+      ]
      ]
     },
     "host": {
@@ -1100,6 +1442,20 @@
        ],
        "d": "5 eventos de host"
       }
+     ],
+     "cuenta": {
+      "LEWITO": 1,
+      "Elsoolar": 1
+     },
+     "gana": "LEWITO",
+     "por": "numeros",
+     "total": 2,
+     "premio": [
+      [
+       "LEWITO",
+       "1086485696572817418",
+       1000
+      ]
      ]
     },
     "dj": {
@@ -1149,6 +1505,19 @@
        ],
        "d": "5 eventos de DJ"
       }
+     ],
+     "cuenta": {
+      "Zaik": 2
+     },
+     "gana": "LEWITO",
+     "por": "numeros",
+     "total": 2,
+     "premio": [
+      [
+       "LEWITO",
+       "1086485696572817418",
+       1000
+      ]
      ]
     }
    },
@@ -1192,6 +1561,17 @@
          "oro": 0,
          "ev": 5
         }
+       ],
+       "cuenta": {},
+       "gana": "Panchok",
+       "por": "numeros",
+       "total": 0,
+       "premio": [
+        [
+         "Panchok",
+         "1400508144920170577",
+         1000
+        ]
        ]
       },
       "revelacion": {
@@ -1231,6 +1611,17 @@
          "oro": 0,
          "ev": 1
         }
+       ],
+       "cuenta": {},
+       "gana": "Ariaxer",
+       "por": "numeros",
+       "total": 0,
+       "premio": [
+        [
+         "Ariaxer",
+         "659687894587277322",
+         1000
+        ]
        ]
       },
       "staff": {
@@ -1280,6 +1671,17 @@
          ],
          "d": "1 fecha de staff"
         }
+       ],
+       "cuenta": {},
+       "gana": "ARDEAN",
+       "por": "numeros",
+       "total": 0,
+       "premio": [
+        [
+         "ARDEAN",
+         "879849220352393266",
+         1000
+        ]
        ]
       }
      },
@@ -1463,6 +1865,19 @@
          "oro": 1,
          "ev": 12
         }
+       ],
+       "cuenta": {
+        "PichulaMc": 1
+       },
+       "gana": "Carlosss",
+       "por": "numeros",
+       "total": 1,
+       "premio": [
+        [
+         "Carlosss",
+         "958103803616444528",
+         1000
+        ]
        ]
       },
       "revelacion": {
@@ -1481,6 +1896,19 @@
          "oro": 0,
          "ev": 4
         }
+       ],
+       "cuenta": {
+        "Adriagner": 1
+       },
+       "gana": "Adriagner",
+       "por": "numeros",
+       "total": 1,
+       "premio": [
+        [
+         "Adriagner",
+         "1316490165836972104",
+         1000
+        ]
        ]
       },
       "staff": {
@@ -1530,6 +1958,19 @@
          ],
          "d": "3 fechas de staff"
         }
+       ],
+       "cuenta": {
+        "Drexx": 1
+       },
+       "gana": "Adriagner",
+       "por": "numeros",
+       "total": 1,
+       "premio": [
+        [
+         "Adriagner",
+         "1316490165836972104",
+         1000
+        ]
        ]
       }
      },
@@ -1682,6 +2123,17 @@
          "oro": 7,
          "ev": 23
         }
+       ],
+       "cuenta": {},
+       "gana": "Oasis",
+       "por": "numeros",
+       "total": 0,
+       "premio": [
+        [
+         "Oasis",
+         "979878316846768139",
+         1000
+        ]
        ]
       },
       "revelacion": {
@@ -1721,6 +2173,17 @@
          "oro": 0,
          "ev": 2
         }
+       ],
+       "cuenta": {},
+       "gana": "Teo",
+       "por": "numeros",
+       "total": 0,
+       "premio": [
+        [
+         "Teo",
+         "720123151819997245",
+         1000
+        ]
        ]
       },
       "staff": {
@@ -1770,6 +2233,17 @@
          ],
          "d": "9 fechas de staff"
         }
+       ],
+       "cuenta": {},
+       "gana": "LEWITO",
+       "por": "numeros",
+       "total": 0,
+       "premio": [
+        [
+         "LEWITO",
+         "1086485696572817418",
+         1000
+        ]
        ]
       }
      },
@@ -2180,6 +2654,17 @@
          "oro": 1,
          "ev": 1
         }
+       ],
+       "cuenta": {},
+       "gana": "Scritura",
+       "por": "numeros",
+       "total": 0,
+       "premio": [
+        [
+         "Scritura",
+         "1559007314126704653",
+         1000
+        ]
        ]
       },
       "staff": {
@@ -2193,6 +2678,17 @@
          ],
          "d": "2 fechas de staff"
         }
+       ],
+       "cuenta": {},
+       "gana": "Ceko",
+       "por": "numeros",
+       "total": 0,
+       "premio": [
+        [
+         "Ceko",
+         "1162896927017414788",
+         1000
+        ]
        ]
       }
      },
@@ -2259,6 +2755,17 @@
          "oro": 0,
          "ev": 1
         }
+       ],
+       "cuenta": {},
+       "gana": "Molusco",
+       "por": "numeros",
+       "total": 0,
+       "premio": [
+        [
+         "Molusco",
+         "1363285354442133778",
+         1000
+        ]
        ]
       },
       "staff": {
@@ -2308,6 +2815,17 @@
          ],
          "d": "1 fecha de staff"
         }
+       ],
+       "cuenta": {},
+       "gana": "Astral",
+       "por": "numeros",
+       "total": 0,
+       "premio": [
+        [
+         "Astral",
+         "916363636472176681",
+         1000
+        ]
        ]
       }
      },
@@ -2358,6 +2876,17 @@
          "oro": 1,
          "ev": 3
         }
+       ],
+       "cuenta": {},
+       "gana": "Over",
+       "por": "numeros",
+       "total": 0,
+       "premio": [
+        [
+         "Over",
+         "794200141023412244",
+         1000
+        ]
        ]
       },
       "revelacion": {
@@ -2383,6 +2912,17 @@
          "oro": 0,
          "ev": 1
         }
+       ],
+       "cuenta": {},
+       "gana": "nueve7",
+       "por": "numeros",
+       "total": 0,
+       "premio": [
+        [
+         "nueve7",
+         "1529613468850716719",
+         1000
+        ]
        ]
       },
       "batalla": {
@@ -2406,6 +2946,22 @@
          ],
          "vistas": 50
         }
+       ],
+       "cuenta": {},
+       "gana": "0uk1CE5A3Ic",
+       "por": "numeros",
+       "total": 0,
+       "premio": [
+        [
+         "Zeta",
+         "535579351710957568",
+         1000
+        ],
+        [
+         "Rubik",
+         "1070553144964173906",
+         1000
+        ]
        ]
       },
       "staff": {
@@ -2455,6 +3011,17 @@
          ],
          "d": "1 fecha de staff"
         }
+       ],
+       "cuenta": {},
+       "gana": "GP",
+       "por": "numeros",
+       "total": 0,
+       "premio": [
+        [
+         "GP",
+         "847124099243180042",
+         1000
+        ]
        ]
       }
      },
@@ -2566,6 +3133,17 @@
          "oro": 0,
          "ev": 3
         }
+       ],
+       "cuenta": {},
+       "gana": "Motera",
+       "por": "numeros",
+       "total": 0,
+       "premio": [
+        [
+         "Motera",
+         "885365894606381068",
+         1000
+        ]
        ]
       },
       "revelacion": {
@@ -2591,6 +3169,19 @@
          "oro": 0,
          "ev": 1
         }
+       ],
+       "cuenta": {
+        "Catarsis": 1
+       },
+       "gana": "Medster",
+       "por": "numeros",
+       "total": 1,
+       "premio": [
+        [
+         "Medster",
+         "569551932247506953",
+         1000
+        ]
        ]
       },
       "staff": {
@@ -2640,6 +3231,19 @@
          ],
          "d": "1 fecha de staff"
         }
+       ],
+       "cuenta": {
+        "NeisMC": 1
+       },
+       "gana": "Erian",
+       "por": "numeros",
+       "total": 1,
+       "premio": [
+        [
+         "Erian",
+         "1055474244089286706",
+         1000
+        ]
        ]
       }
      },
@@ -2698,7 +3302,8 @@
       "Xowee"
      ]
     }
-   }
+   },
+   "cerrado": "2026-11-04T23:27:36Z"
   }
  },
  "vivo": {
