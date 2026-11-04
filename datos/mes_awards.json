@@ -6340,24 +6340,24 @@
      "mo": "2026-10-30T01:29:24Z",
      "staff": {
       "jurado": [
-       "John pork"
+       "Adriagner"
       ],
       "host": [
-       "John pork"
+       "Adriagner"
       ],
       "dj": [
-       "John pork"
+       "Adriagner"
       ]
      },
      "orgs": [
       {
-       "n": "John pork",
+       "n": "Adriagner",
        "id": "1316490165836972104"
       }
      ],
      "organizador": "",
      "cuentas": {
-      "John pork": "1316490165836972104"
+      "Adriagner": "1316490165836972104"
      }
     },
     "1565757203149758554": {
@@ -6385,24 +6385,24 @@
      "mo": "2026-10-30T18:04:09Z",
      "staff": {
       "jurado": [
-       "John pork"
+       "Adriagner"
       ],
       "host": [
-       "John pork"
+       "Adriagner"
       ],
       "dj": [
-       "John pork"
+       "Adriagner"
       ]
      },
      "orgs": [
       {
-       "n": "John pork",
+       "n": "Adriagner",
        "id": "1316490165836972104"
       }
      ],
      "organizador": "",
      "cuentas": {
-      "John pork": "1316490165836972104"
+      "Adriagner": "1316490165836972104"
      }
     },
     "1565829585386340433": {
@@ -7672,10 +7672,10 @@
      "mo": "2026-11-02T18:37:32Z",
      "staff": {
       "jurado": [
-       "John pork"
+       "Adriagner"
       ],
       "host": [
-       "John pork"
+       "Adriagner"
       ],
       "dj": [
        "DJ Bootrax Humilde"
@@ -7683,13 +7683,13 @@
      },
      "orgs": [
       {
-       "n": "John pork",
+       "n": "Adriagner",
        "id": "1316490165836972104"
       }
      ],
      "organizador": "",
      "cuentas": {
-      "John pork": "1316490165836972104",
+      "Adriagner": "1316490165836972104",
       "DJ Bootrax Humilde": "1122273746099638354"
      }
     },
@@ -7699,24 +7699,24 @@
      "mo": "2026-11-03T01:08:11Z",
      "staff": {
       "jurado": [
-       "John pork"
+       "Adriagner"
       ],
       "host": [
-       "John pork"
+       "Adriagner"
       ],
       "dj": [
-       "John pork"
+       "Adriagner"
       ]
      },
      "orgs": [
       {
-       "n": "John pork",
+       "n": "Adriagner",
        "id": "1316490165836972104"
       }
      ],
      "organizador": "",
      "cuentas": {
-      "John pork": "1316490165836972104"
+      "Adriagner": "1316490165836972104"
      }
     },
     "1567000630269186131": {
@@ -7876,7 +7876,7 @@
     "DDF|2026-11-02": {
      "1316490165836972104": [
       "Adriagner La cuarta barra",
-      "John pork",
+      "Adriagner",
       "adriagner"
      ]
     },
