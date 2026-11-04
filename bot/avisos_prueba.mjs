@@ -317,11 +317,11 @@ const ok = (cond, que, det) => {
     '«Consigue tu tarjeta»: sale si alguno del vs va con la silueta; con sólo la Servidor (una tarjeta) no; sin vs, nada');
     // 📊🌙 EL REMAKE DEL VS (02/11/2026): «Ver estadísticas» al lado de «Consigue tu tarjeta», lo de esta noche, la ficha
     const fv = A.filasVs({ a: { carta: '' }, b: { carta: ct }, fid: 'abcdef012345' });
-    ok(fv.length === 1 && fv[0].components[0].custom_id === 'vx:abcdef012345' && fv[0].components[1].url === A.HUB_TARJETAS
+    ok(fv.length === 2 && fv[0].components[0].custom_id === 'vx:abcdef012345' && fv[1].components[0].url === A.HUB_TARJETAS
       && A.filasVs({ a: { carta: ct }, b: { carta: ct }, fid: 'abcdef012345' })[0].components.length === 1
       && A.filasVs({ a: { carta: ct }, b: { carta: ct } }).length === 0
       && A.filasVs({ a: {}, b: {}, fid: 'no-vale' })[0].components[0].url === A.HUB_TARJETAS,
-    '«Ver estadísticas» va en la misma fila que «Consigue tu tarjeta»; sin ficha (o con un id que no vale), lo de antes');
+    '«Ver estadísticas» y «Consigue tu tarjeta», cada una en su fila; sin ficha (o con un id que no vale), lo de antes');
     const genteN = (l) => A.genteChat(l, null, null);
     const rondasN = [{ r: 'Octavos', b: [[['Oasis, Badterne', 'Molusco, LRS'], 'Oasis, Badterne'], [['Liberia', 'Drexx'], 'Liberia']] },
       { r: 'Cuartos', b: [[['Oasis', 'Liberia'], '']] }];
@@ -336,15 +336,43 @@ const ok = (cond, que, det) => {
       h2h: [['07/10', 'DESGRACIAS', 'b'], ['15/10', 'LA REDENCIÓN', 'a'], ['25/10', 'AGUANTE', 'a']],
       forma: [{ g: 8, t: 10, s: 'PGGGPGGGGG', perdio: ['PRAISERIZA', 'Abyssus'] }, { g: 0, t: 0, s: '', perdio: [] }],
       temp: [[32, 38], null], comunes: { n: 7, tot: [7, 1, 4, 4], filas: [['PRAISERIZA', 1, 1, 0, 2]] }, noche: ['pasó con Badterne', ''] };
-    const tx = A.fichaTexto(fx);
-    ok(/Pronóstico:\*\* Oasis 57 %/.test(tx) && /Cara a cara: Oasis 2 · Liberia 1/.test(tx) && /ganó Liberia/.test(tx)
-      && /8 de 10 · perdió con PRAISERIZA y Abyssus/.test(tx) && /Liberia: sin duelos leídos/.test(tx) && /32 de 38 \(84 %\)/.test(tx)
-      && /mismos rivales \(7\):\*\* Oasis 7–1 · Liberia 4–4/.test(tx) && /Esta noche:\*\* Oasis pasó con Badterne/.test(tx)
-      && !/OVR|Rango/.test(tx) && tx.length <= 1900 && A.fichaTexto(null) === ''
-      && /primera vez que se cruzan/.test(A.fichaTexto(Object.assign({}, fx, { h2h: [] }))),
-    'la ficha de «Ver estadísticas»: pronóstico, cara a cara cruce por cruce, forma, temporada, rivales en común y la noche; nada de la carta', tx);
+    const plano = (c) => (Array.isArray(c) ? c.map(plano).join('\n') : c && c.content ? c.content : c && c.components ? plano(c.components) : '');
+    const fx2 = Object.assign({}, fx, { sv: 'FRZ', puesto: [[12, 175], [44, 175]], dims: ['Eficiencia', 'Consistencia', 'Dominancia', 'Racha', 'Diversidad'],
+      comp: [{ sc: 56.1, rg: 'A', dm: [48, 54, 15, 46, 41] }, { sc: 33.2, rg: '', dm: null }],
+      vienen: [{ ult: ['Campeón', 'Cuartos', 'Ronda de 32'], lejos: 45, t: 20, aca: 6, mejor: 'Campeón' }, null],
+      rivales: [{ cuesta: ['Vandu', 0, 3], gana: ['MCO', 3, 0] }, { cuesta: null, gana: null }] });
+    const cf = A.fichaComponentes(fx2, true);
+    const tx = plano(cf);
+    // 📱 el resumen: mucho más corto, con lo importante, y sin el detalle
+    const res = plano(A.fichaComponentes(fx2));
+    const ren = (t) => t.split('\n').filter((x) => x.trim()).length;
+    ok(ren(res) <= 22 && ren(res) * 2 < ren(tx) && /Oasis 57 %/.test(res) && /⭐ Favorito: Oasis/.test(res) && /\*\*Oasis 2\*\* – 1 Liberia/.test(res) && /Últimos 5 duelos/.test(res)
+      && /\*\*Oasis\*\*/.test(res) && /56\.1\*\* · Score · 33\.2/.test(res) && /84 % · Duelos ganados · -/.test(res) && /Oasis pasó con Badterne/.test(res)
+      && !/ganó Liberia|Le cuesta|Competitivo|mismos rivales|Cómo vienen|Puesto en duelos/.test(res),
+    'el resumen de la ficha: mucho más corto y sin el detalle, que queda en «Ver todo»', res);
+    ok(cf[0].type === 17 && Number.isInteger(cf[0].accent_color) && cf[0].components[0].type === 9
+      && cf[0].components[0].accessory.media.url === 'https://underlegends.pages.dev/logos/frz.webp'
+      && /\*\*Oasis 57 %\*\* · Liberia 43 %/.test(tx) && /\*\*Oasis 2\*\* – 1 Liberia/.test(tx) && /ganó Liberia/.test(tx)
+      && /8 de 10/.test(tx) && /Perdió con PRAISERIZA y Abyssus/.test(tx) && /Le cuesta Vandu \(0–3\)/.test(tx) && /Le gana a MCO \(3–0\)/.test(tx)
+      && /Liberia\*\*\n-# Sin duelos leídos/.test(tx) && /32 de 38 \(84 %\) · Duelos · -/.test(tx) && /\*\*#12\*\* · Puesto en duelos · #44/.test(tx)
+      && /\*\*Oasis:\*\* Campeón · Cuartos · Ronda de 32\n-# En FRZ: 6 eventos, lo mejor Campeón/.test(tx) && /\*\*45 %\*\* · Llega a semifinal/.test(tx) === false
+      && /45 % · Llega a semifinal o más · -/.test(tx) && /\*\*Oasis 7–1\*\* · Liberia 4–4/.test(tx) && /Oasis pasó con Badterne/.test(tx)
+      && !/OVR/.test(tx) && tx.length <= 3500 && A.fichaComponentes(null) === null
+      && /primera vez que se cruzan/.test(plano(A.fichaComponentes(Object.assign({}, fx2, { h2h: [] })))),
+    'la ficha: su caja con el logo, pronóstico, cara a cara, forma, a quién le cuesta, cómo vienen, la comparación con el mejor en negrita, rivales y la noche; nada de la carta', tx);
+    ok(/🎖️ Competitivo/.test(tx) && /\*\*56\.1\*\* · Score · 33\.2/.test(tx) && /A · Rango · Sin letra/.test(tx) && /48 · Eficiencia · -/.test(tx),
+      'lo competitivo: el Score con el mejor en negrita, la letra, y las dimensiones sólo con la Competitiva abierta', tx);
+    // una ficha vieja, guardada antes de esto, sale igual; y sin servidor no hay logo
+    const vieja = A.fichaComponentes(fx);
+    ok(vieja[0].components[0].type === 10 && /Oasis 57/.test(plano(vieja)), 'una ficha guardada antes del cambio sale igual, sin el logo', plano(vieja).slice(0, 200));
+    ok(A.favoritoVs(57, 43).t === 'Favorito' && A.favoritoVs(55, 45) === null && A.favoritoVs(20, 80).t === 'Gran favorito' && A.favoritoVs(20, 80).lado === 1
+      && /⭐ Favorito: Oasis/.test(tx), 'el favorito de la ficha es la misma regla que el de la imagen');
+    ok(A.vieneVs({ k: 'x' }, { perf: { x: { ev: [[3, 'Campeón', 1], [9, 'R32', 1], [7, 'Cuartos', 1], [5, 'Semifinal', 1]] } }, evs: { 3: ['a', 'FRZ'], 7: ['b', 'FRZ'], 9: ['c', 'FFA'] } }, 'FRZ').mejor === 'Campeón'
+      && A.vieneVs({ k: 'x' }, { perf: { x: { ev: [[3, 'Campeón', 1], [9, 'R32', 1], [7, 'Cuartos', 1], [5, 'Semifinal', 1]] } }, evs: { 3: ['a', 'FRZ'], 7: ['b', 'FRZ'], 9: ['c', 'FFA'] } }, 'FRZ').lejos === 50
+      && A.vieneVs({ k: 'x' }, { perf: { x: { ev: [[3, 'Campeón', 1], [9, 'R32', 1]] } }, evs: {} }, 'FRZ').ult[0] === 'Ronda de 32'
+      && A.vieneVs({ k: 'y' }, { perf: {} }, 'FRZ') === null, 'cómo viene: lo último primero, cuánto llega lejos y lo mejor en ese servidor');
     const bv = A.botonesVoto('q1', 'Snow 🇨🇴', 'Makmah');
-    ok(bv[0].components.map((x) => x.custom_id).join() === 'qg:q1:A,qg:q1:B' && bv[0].components[0].label === 'Snow'
+    ok(bv[0].components.map((x) => x.custom_id).join() === 'qg:q1:A,qg:q1:B' && bv[0].components[0].label.replace(/⠀/g, '') === 'Snow'
       && /Vota abajo/.test(A.lineaVoto('A', 'B', 0, 0)) && /\*\*A\*\* 75 % · \*\*B\*\* 25 % \(4 votos\)/.test(A.lineaVoto('A', 'B', 3, 1))
       && /iba con \*\*A\*\* \(75 %, 4 votos\): acertó/.test(A.lineaVoto('A', 'B', 3, 1, 'A'))
       && /se equivocó/.test(A.lineaVoto('A', 'B', 3, 1, 'B')) && /dividido/.test(A.lineaVoto('A', 'B', 2, 2, 'A'))
@@ -1655,11 +1683,12 @@ const ok = (cond, que, det) => {
     const msg = pedidos[0] && pedidos[0].b;
     const ap = sql.exec('SELECT * FROM apuestas').toArray()[0];
     ok(pedidos.length === 1 && msg && /LA REVANCHA/.test(msg.content) && /Ana 🇦🇷\*\* vs \*\*Bea 🇨🇱/.test(msg.content)
-      && /🎲 \*\*Apuestas abiertas/.test(msg.content) && msg.components && msg.components.length === 3 && ap && ap.estado === 'abierta'
-      && msg.components[2].components.some((x) => x.url === A.HUB_TARJETAS)
+      && /🎲 \*\*Apuestas abiertas/.test(msg.content) && msg.components && msg.components.length === 4 && ap && ap.estado === 'abierta'
+      && /^ve:[0-9a-f]+:A:[0-9a-f]+$/.test(msg.components[0].components[0].custom_id) && /🗳️ /.test(msg.content)
+      && msg.components.some((f) => f.components.some((x) => x.url === A.HUB_TARJETAS))
       // 📊 y «Ver estadísticas» en la misma fila, con su ficha ya guardada (02/11/2026)
-      && msg.components[2].components.some((x) => /^vx:[0-9a-f]{12}$/.test(x.custom_id || '')
-        && o.vsFicha(x.custom_id.slice(3)).ok && /Cara a cara/.test(o.vsFicha(x.custom_id.slice(3)).texto)),
+      && msg.components.flatMap((f) => f.components).some((x) => /^vx:[0-9a-f]{12}$/.test(x.custom_id || '')
+        && o.vsFicha(x.custom_id.slice(3)).ok && /Cara a cara/.test(JSON.stringify(o.vsFicha(x.custom_id.slice(3)).comps))),
     'A full: el cruce con su título, su apuesta y sus botones, en un solo mensaje; y como Ana y Bea no tienen tarjeta, debajo «Consigue tu tarjeta»',
     msg && msg.content);
     // 🖼️ el vs de dos: a la cola, con el mensaje donde va; la tarea se lo lleva y la imagen se le agrega editándolo
@@ -1689,19 +1718,31 @@ const ok = (cond, que, det) => {
     ok(a1.ok && a1.saldo === 4900 && a2.error === 'tope' && a3.error === 'otro lado' && a4.ok && a4.pozo === 350
       && a5.error === 'propia' && a6.error === 'datos', 'los frenos: el tope de 500, un solo lado, no en tu batalla, sólo los montos de los botones',
     JSON.stringify([a1, a2, a3, a4, a5, a6]));
+    // 🎲 el modal (04/11/2026): cualquier monto hasta el tope, y lo que muestra antes de apostar
+    const libre = (o.apostar({ quien: U3, ap: ap.id, lado: 'A', monto: 137, inicial: 5000, libre: true }, T + 2 * 60000), 0);
+    const libreJ = await (o.apostar({ quien: U3, ap: ap.id, lado: 'A', monto: 13, inicial: 5000, libre: true }, T + 2 * 60000)).json();
+    const sinLibre = await (o.apostar({ quien: U3, ap: ap.id, lado: 'A', monto: 13, inicial: 5000 }, T + 2 * 60000)).json();
+    const cero = await (o.apostar({ quien: U3, ap: ap.id, lado: 'A', monto: 0, inicial: 5000, libre: true }, T + 2 * 60000)).json();
+    const info = o.apuestaInfo({ quien: U3, ap: ap.id, inicial: 5000 }, T + 2 * 60000);
+    ok(libre === 0 && libreJ.ok && libreJ.total === 150 && sinLibre.error === 'datos' && cero.error === 'datos' && info.abierta && info.saldo === 4850 && info.queda === 350 && info.ya === 150
+      && !o.apuestaInfo({ quien: U3, ap: ap.id, inicial: 5000 }, T + 60 * 60000).abierta,
+    'desde el modal vale cualquier monto de 1 al tope, y antes dice cuánto tiene y cuánto puede poner', JSON.stringify([libreJ, sinLibre, cero, info]));
+    await (o.apostar({ quien: U3, ap: ap.id, lado: 'A', monto: 150, inicial: 5000, libre: true }, T + 2 * 60000)).json();
+    sql.exec("DELETE FROM apostado WHERE ap = ? AND quien = ?", ap.id, U3);
+    sql.exec("DELETE FROM tienda WHERE quien = ? AND id LIKE 'ap:%'", U3);
     pedidos.length = 0;
     await o.chatVivo(T + 4 * 60000);
     const cierre = pedidos.find((p) => p.m === 'PATCH');
-    ok(cierre && /🔒 Apuestas cerradas · pozo de \*\*350\*\* entre 2/.test(cierre.b.content) && cierre.b.components[0].components.every((c) => c.disabled)
-      && cierre.b.components.length === 3 && cierre.b.components[2].components.some((x) => x.url === A.HUB_TARJETAS)
-      && cierre.b.components[2].components.some((x) => /^vx:/.test(x.custom_id || ''))
-      && (await pedir({ quien: U3, ap: ap.id, lado: 'A', monto: 50 }, T + 4 * 60000)).error === 'cerrada', 'a los 3 minutos se cierra: botones grises, el pozo, y no se puede apostar');
+    ok(cierre && /🔒 Apuestas cerradas · pozo de \*\*350\*\* entre 2/.test(cierre.b.content) && cierre.b.components[0].components.every((c) => !c.disabled)
+      && /🗳️ /.test(cierre.b.content) && cierre.b.components.length === 4 && /^qg:/.test(cierre.b.components[0].components[0].custom_id) && cierre.b.components.flatMap((f) => f.components).some((x) => x.url === A.HUB_TARJETAS)
+      && cierre.b.components.flatMap((f) => f.components).some((x) => /^vx:/.test(x.custom_id || ''))
+      && (await pedir({ quien: U3, ap: ap.id, lado: 'A', monto: 50 }, T + 4 * 60000)).error === 'cerrada', 'a los 3 minutos cierra la apuesta: dice el pozo, no se puede apostar y quedan los botones del voto, sin perder su renglón');
     pedidos.length = 0;
     llave(CU + '`[ SEMIFINALES ]`\n⌞Ana 🇦🇷⌝ 🆚 ⌞⌝\n', T + 6 * 60000);
     await o.chatVivo(T + 6 * 60000);
     const pago = pedidos.find((p) => p.m === 'PATCH' && /🏆 Ganó/.test(p.b.content));
     ok(pago && /Ganó \*\*Ana\*\*: el pozo de \*\*350\*\* se repartió entre 1 que acertó/.test(pago.b.content)
-      && pago.b.components.length === 1 && pago.b.components[0].components.some((x) => x.url === A.HUB_TARJETAS)
+      && pago.b.components.flatMap((f) => f.components).some((x) => x.url === A.HUB_TARJETAS) && !pago.b.components.flatMap((f) => f.components).some((x) => /^(ve|qg|ap):/.test(x.custom_id || ''))
       && o.saldo(U1, 0, 5000) === 5250 && o.saldo(U2, 0, 5000) === 4750 && sql.exec('SELECT estado FROM apuestas WHERE id = ?', ap.id).toArray()[0].estado === 'pagada',
     'gana Ana: U1 se lleva el pozo entero (350, puso 100), U2 pierde sus 250, y el mensaje lo dice', JSON.stringify({ ped: pedidos.map((x) => [x.m, String((x.b && x.b.content) || '').slice(0, 90)]), est: sql.exec('SELECT estado, ganador, ronda, a, b FROM apuestas').toArray(), s1: o.saldo(U1, 0, 5000), s2: o.saldo(U2, 0, 5000) }));
     // 🏁 la imagen del resultado (02/11/2026): el «✅ Pasa Ana» del cruce deja su vs con quién ganó y el cara a cara sumado
@@ -2239,6 +2280,30 @@ const ok = (cond, que, det) => {
     && P('LOCAL CONTRA VISITANTE', ca({ sv: 'FRZ' }, { sv: 'FFA' }, { sv: 'FRZ' })) && !P('LOCAL CONTRA VISITANTE', ca({ sv: 'FRZ' }, { sv: 'FRZ' }, { sv: 'FRZ' }))
     && P('CHILE VS MÉXICO', ca({ cc: 'cl' }, { cc: 'mx' })) && !P('CHILE VS CHILE', ca({ cc: 'cl' }, { cc: 'cl' })),
   'cada título nuevo sale sólo con su dato');
+  const bp = A.botonesPerfil({ n: 'Ana 🇦🇷', k: 'ana' }, { n: 'Sin perfil', k: '' });
+  const fv = A.filasVs({ fid: 'abcdef012345', a: { n: 'A', k: 'a', carta: 'x' }, b: { n: 'B', k: 'b', carta: 'y' } });
+  ok(bp.length === 1 && /r\/ana$/.test(bp[0].url) && bp[0].label.replace(/\u2800/g, '') === 'Ana' && fv.length === 2 && fv[0].components.length === 1
+    && fv[1].components.length === 1 && fv[1].components[0].custom_id === 'vp:abcdef012345' && [...fv[1].components[0].label].length === 24
+    && A.filasVs({ a: { n: 'A', k: 'a', carta: 'x' }, b: { n: 'B', k: 'b', carta: 'y' } })[0].components.every((x) => x.style === 5),
+  'en filas: las estadísticas en la suya y los dos perfiles juntos; quien no tiene perfil no lleva botón');
+  // 👤 los perfiles: una caja por persona, con su cara si la tiene, y su botón
+  const fp = { sv: 'FRZ', a: { n: 'PUBLICENEMYNUMEROUNO', fl: '🇨🇱', k: 'ana' }, b: { n: 'Beto', fl: '', k: '' },
+    perfil: [{ av: '123456/abc', pos: 4, rg: 'B', ev: 66, oro: 9, pod: 18, wr: 56, crew: 'Follombia', sv: 'FFA' }, null] };
+  const cp = A.perfilesComponentes(fp);
+  const cpT = JSON.stringify(cp);
+  ok(cp.length === 2 && cp[0].type === 17 && cp[0].components[0].type === 9 && /avatars\/123456\/abc\.webp/.test(cp[0].components[0].accessory.media.url)
+    && /PUBLICENEMYNUMEROUNO/.test(cpT) && /\*\*#4\*\* de la temporada · Rango \*\*B\*\*/.test(cpT) && /66 eventos · 9 títulos · 18 podios/.test(cpT) && /Gana el 56 %/.test(cpT) && /Crew Follombia/.test(cpT)
+    && cp[1].components[0].type === 10 && cp[1].components.length === 1 && /Todavía no tiene perfil/.test(cpT) && /freestyle-rap\/r\/ana/.test(cpT)
+    && A.perfilesComponentes(Object.assign({}, fp, { perfil: [{ av: '', pos: 4 }, null] }))[0].components[0].type === 10
+    && A.perfilesComponentes(Object.assign({}, fp, { perfil: [{ pos: 4, rg: '' }, null] }))[0].components[0].content.includes('Sin rango todavía') && A.perfilesComponentes(null) === null
+    && !/Todavía no tiene/.test(JSON.stringify(A.perfilesComponentes({ a: { n: 'Ana', k: 'ana' }, b: { n: 'Beto', k: 'beto' } }))),
+  'los perfiles: el nombre completo, su cara si la tiene (si la ocultó, sin imagen), sus números y su botón; sin perfil, lo dice');
+  const [pa, pb] = A.parejos('Ana 🇦🇷', 'PUBLICENEMYNUMEROUNO');
+  ok([...pa].length === [...pb].length && pa.replace(/\u2800/g, '') === 'Ana' && pb.replace(/\u2800/g, '').length <= 11 && [...A.parejos('A', 'B')[0]].length === 11
+    && [...A.anchoFila('Ver estadísticas')].length === 24 && A.anchoFila('Ver estadísticas').trim().length === 24,
+  '📱 los dos botones de una fila, del mismo largo y con el relleno invisible, que Discord no recorta');
+  const be = A.botonesElegir({ id: 'q1', a: 'Ana 🇦🇷', b: 'Bea' }, 'ap1');
+  ok(be[0].components[0].custom_id === 've:q1:A:ap1' && be[0].components[1].custom_id === 've:q1:B:ap1' && be[0].components[0].label.replace(/\u2800/g, '') === 'Ana', 'elegir: un botón por lado, que lleva el voto y la apuesta');
   ok(JSON.stringify(A.statsVs({ ev: 12, pod: 2, du: [3, 5] })) === '{"ev":12,"pod":2,"dg":3,"dt":5}' && A.statsVs(null).ev === 0,
     'las stats de la carta de quien no tiene carta salen de su fila, y sin fila son cero');
   const lleno = ca({ pos: 1, oro: 3, cc: 'cl' }, { pos: 5, oro: 1, cc: 'mx' });

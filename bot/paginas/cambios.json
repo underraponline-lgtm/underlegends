@@ -11,6 +11,18 @@
  ],
  "cambios": [
     {
+        "version": "4.27",
+        "dia": "2026-11-04",
+        "cuando": "2026-11-04T18:51:45-05:00",
+        "titulo": "Votar y apostar en un solo paso, y una ficha nueva en cada cruce",
+        "items": [
+            "**Votar y apostar, en un solo paso**: tocas a quién le vas y, donde hay apuesta, te sale una ventana con tus Puntos de Tienda para poner cuánto. Con 0 sólo votas.",
+            "**Ver estadísticas**, renovado: lo principal de un vistazo, y **Ver todo** si quieres el detalle, también lo competitivo.",
+            "**Ver perfiles**: los dos rivales con su foto, su puesto, su rango y sus números, y un botón a cada perfil. Sólo lo ves tú.",
+            "**En el celular**, los botones de cada cruce quedan parejos, y un nombre larguísimo ya no los deforma."
+        ]
+    },
+    {
         "version": "4.26",
         "dia": "2026-11-04",
         "cuando": "2026-11-04T18:15:00-05:00",

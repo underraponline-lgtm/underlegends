@@ -2536,6 +2536,67 @@ console.log('\n/borrar-mis-datos\n');
 console.log('\nLAS ENCUESTAS\n');
 
 {
+  // 🗳️🎲 Elegir a uno (04/11/2026): el botón abre el modal con lo que tiene; el modal vota siempre y apuesta si escribió más de 0
+  console.log('\n=== Elegir: el botón, el modal, el voto y la apuesta');
+  const antesA = env.AVISOS, antesKV = env.KV;
+  const llamadas = [];
+  let info = { abierta: true, propia: false, saldo: 5000, queda: 500, ya: 0, a: 'Ana', b: 'Beto', tope: 500 };
+  env.AVISOS = { idFromName: () => 'liga', get: () => ({ fetch: async (url, opc) => {
+    const ruta = new URL(String(url)).pathname;
+    if (/\/(uso|medir)$/.test(ruta)) return new Response('{"ok":true}');
+    const d = JSON.parse(opc.body);
+    llamadas.push([ruta, d]);
+    if (ruta === '/apuesta-info') return new Response(JSON.stringify(info));
+    if (ruta === '/qg-votar') return new Response(JSON.stringify({ ok: true, lado: d.lado, nombre: 'Ana', n: 3, pct: 67 }));
+    if (ruta === '/apostar') return new Response(JSON.stringify({ ok: true, monto: d.monto, total: d.monto, nombre: 'Ana', pozo: 300, cuantos: 2, cierra: 1893456000000, saldo: 4900 }));
+    return new Response('{"ok":true}');
+  } }) };
+  const kv0 = env.KV;
+  env.KV = Object.assign(Object.create(kv0), { get: async (k, o) => (k === 'precios' ? '{"inicial":5000}' : kv0.get(k, o)) });
+  const quien = (n) => ({ member: { user: { id: String(700900 + n) } } });
+  const boton = (n) => pedir(Object.assign({ type: 3, guild_id: G.DRA, channel_id: '1', data: { custom_id: 've:q1:A:ap1' } }, quien(n)));
+  const modal = (n, v) => pedir(Object.assign({ type: 5, guild_id: G.DRA, channel_id: '1',
+    data: { custom_id: 'vm:q1:A:ap1', components: [{ type: 1, components: [{ type: 4, custom_id: 'monto', value: v }] }] } }, quien(n)));
+  let r = await boton(1);
+  const m = r.json?.data || {};
+  const campo = m.components?.[0]?.components?.[0] || {};
+  ok('el botón abre el modal, con su dinero a la vista', r.json?.type === 9 && m.custom_id === 'vm:q1:A:ap1' && /5\.000 Puntos/.test(m.title) && m.title.length <= 45
+     && campo.type === 4 && campo.value === '0' && /Máx\. 500 · 0 = nada/.test(campo.label) && campo.label.length <= 45, JSON.stringify(m).slice(0, 220));
+  llamadas.length = 0;
+  r = await modal(2, '0');
+  ok('con 0 vota, no apuesta y dice cuánto tiene', llamadas.some((c) => c[0] === '/qg-votar') && !llamadas.some((c) => c[0] === '/apostar')
+     && /Votaste por \*\*Ana\*\*/.test(texto(r)) && /No apostaste: sigues con \*\*5\.000\*\*/.test(texto(r)) && r.json?.data?.flags === 64, texto(r));
+  llamadas.length = 0;
+  r = await modal(3, '1.000');
+  const ap = llamadas.find((c) => c[0] === '/apostar');
+  ok('con un monto vota y apuesta, leyendo sólo los números', llamadas.some((c) => c[0] === '/qg-votar') && ap && ap[1].monto === 1000 && ap[1].libre === true && ap[1].ap === 'ap1'
+     && /Votaste/.test(texto(r)) && /Apostaste \*\*1\.000\*\*/.test(texto(r)), texto(r));
+  llamadas.length = 0;
+  r = await modal(4, 'nada');
+  ok('si escribe otra cosa, cuenta como 0', !llamadas.some((c) => c[0] === '/apostar') && /Votaste/.test(texto(r)), texto(r));
+  info = Object.assign({}, info, { abierta: false });
+  llamadas.length = 0;
+  r = await boton(5);
+  ok('con la apuesta cerrada, el botón vota directo', r.json?.type === 4 && llamadas.some((c) => c[0] === '/qg-votar') && /Votaste/.test(texto(r)), texto(r));
+  info = { abierta: true, propia: true, saldo: 5000, queda: 500, ya: 0, a: 'Ana', b: 'Beto' };
+  r = await boton(6);
+  ok('en tu propia batalla, sólo votas', r.json?.type === 4 && /Votaste/.test(texto(r)), texto(r));
+  info = { abierta: true, propia: false, saldo: 0, queda: 500, ya: 0, a: 'Ana', b: 'Beto' };
+  r = await boton(7);
+  ok('sin puntos, sólo votas', r.json?.type === 4 && /Votaste/.test(texto(r)), texto(r));
+  // 👤 «Ver perfiles»: los dos, y sólo para quien tocó
+  env.AVISOS = { idFromName: () => 'liga', get: () => ({ fetch: async (url) => {
+    const ruta = new URL(String(url)).pathname;
+    if (ruta === '/vs-perfiles') return new Response(JSON.stringify({ ok: true, comps: [{ type: 17, components: [{ type: 10, content: '### Ana' }] }] }));
+    return new Response('{"ok":true}');
+  } }) };
+  r = await pedir(Object.assign({ type: 3, guild_id: G.DRA, channel_id: '1', data: { custom_id: 'vp:abcdef012345' } }, quien(8)));
+  ok('«Ver perfiles» abre el mensaje con los dos, sólo para quien tocó', r.json?.type === 4 && r.json?.data?.flags === (64 | (1 << 15)) && r.json?.data?.components?.[0]?.type === 17, JSON.stringify(r.json).slice(0, 160));
+  env.AVISOS = antesA;
+  env.KV = antesKV;
+}
+
+{
   // 🔑 Dlx, 27/09/2026: «1. A. 2. A». Vota cualquiera que entre con Discord
   // (con una cuenta de más de 30 días) y en el ×2 nadie vota a su servidor.
   // Qué se vota lo deja el ciclo en KV (bot/encuestas.py); quién vota lo dice

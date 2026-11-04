@@ -927,6 +927,77 @@ const botonAvisos = (ocupados) => (ocupados < 5
 const filaDe = (botones) =>
   (botones && botones.length) ? [{ type: 1, components: botones.slice(0, 5) }] : [];
 
+/** 🗳️ Anota el voto y devuelve el texto para quien votó. */
+async function votoChat(env, did, id, lado) {
+  let j = {};
+  try {
+    const r = await env.AVISOS.get(env.AVISOS.idFromName('liga')).fetch('https://avisos/qg-votar', {
+      method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ quien: did, id, lado }),
+    });
+    j = await r.json();
+  } catch (e) { j = { error: 'red' }; }
+  if (j.ok) {
+    // 🧮 con N lados (un «todos contra todos») el total y el porcentaje los da el objeto
+    const n = typeof j.n === 'number' ? j.n : (j.na || 0) + (j.nb || 0);
+    const pct = typeof j.pct === 'number' ? j.pct : n ? Math.round((100 * (j.lado === 'A' ? j.na : j.nb)) / n) : 0;
+    return '🗳️ ' + (j.cambio ? 'Cambiaste tu voto: ahora vas con' : 'Votaste por') + ' **' + j.nombre + '**, que tiene el '
+      + pct + ' % de ' + n + (n === 1 ? ' voto' : ' votos') + '. En el mensaje se ve en un minuto.';
+  }
+  return '🗳️ ' + ({ cerrada: 'Ese voto ya cerró: la batalla se jugó.', 'no existe': 'Ese voto ya no existe.' }[j.error]
+    || 'No pude anotar tu voto: prueba de nuevo.');
+}
+
+/** 🎲 Lo que hace falta para apostar: la configuración y de quién es la cuenta. `null` si no están listas. */
+async function datosApuesta(env, did) {
+  let cfg = null;
+  try { cfg = JSON.parse((await env.KV.get('precios', { cacheTtl: 60 })) || 'null'); } catch (e) { cfg = null; }
+  if (!cfg || !Number.isInteger(cfg.inicial)) return null;
+  let clave = '';
+  try { clave = (await claveCarta(env, did)) || ''; } catch (e) { clave = ''; }
+  return { clave, inicial: cfg.inicial, desde: Date.parse(cfg.desde || '') || 0 };
+}
+
+const milesChat = (v) => String(Math.round(v || 0)).replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+
+/** 🎲 Anota la apuesta y devuelve el texto. `libre`: el monto lo escribió cada uno en el modal. */
+async function apuestaChat(env, did, ap, lado, monto, c, libre) {
+  let j = {};
+  try {
+    const r = await env.AVISOS.get(env.AVISOS.idFromName('liga')).fetch('https://avisos/apostar', {
+      method: 'POST', headers: { 'content-type': 'application/json' },
+      body: JSON.stringify({ quien: did, ap, lado, monto, clave: c.clave, inicial: c.inicial, desde: c.desde, libre }),
+    });
+    j = await r.json();
+  } catch (e) { j = { error: 'red' }; }
+  const mil = milesChat;
+  if (j.ok) {
+    return `🎲 Apostaste **${mil(j.monto)}** a **${j.nombre}**` + (j.total > j.monto ? ` (vas ${mil(j.total)} en total)` : '')
+      + `. El pozo ya es de **${mil(j.pozo)}** entre ${j.cuantos}; cierra <t:${Math.floor(j.cierra / 1000)}:R>.`
+      + `\nTe quedan **${mil(j.saldo)}** Puntos de Tienda.`;
+  }
+  const por = {
+    cerrada: 'Las apuestas de esa batalla ya cerraron.',
+    'no existe': 'Esa apuesta ya no existe.',
+    propia: 'No puedes apostar en tu propia batalla.',
+    'otro lado': `Ya apostaste a **${j.nombre || 'el otro'}**: en una batalla se apuesta a un solo lado.`,
+    tope: `El tope es ${mil(j.tope || 500)} por batalla: te quedan ${mil(j.queda)}.`,
+    saldo: `No te alcanza: tienes ${mil(j.saldo)} Puntos de Tienda.`,
+  };
+  return '🎲 ' + (por[j.error] || 'No pude anotar la apuesta: prueba de nuevo.');
+}
+
+/** 🎲 Quien escribió 0: no apostó, y se le recuerda cuánto tiene. */
+async function saldoChat(env, did, ap, c) {
+  try {
+    const r = await env.AVISOS.get(env.AVISOS.idFromName('liga')).fetch('https://avisos/apuesta-info', {
+      method: 'POST', headers: { 'content-type': 'application/json' },
+      body: JSON.stringify({ quien: did, ap, clave: c.clave, inicial: c.inicial, desde: c.desde }),
+    });
+    const j = await r.json();
+    return typeof j.saldo === 'number' ? `No apostaste: sigues con **${milesChat(j.saldo)}** Puntos de Tienda.` : 'No apostaste.';
+  } catch (e) { return 'No apostaste.'; }
+}
+
 const aviso = (txt, botones) => new Response(JSON.stringify({
   type: RESPONDE.MENSAJE,
   data: { flags: EFIMERO, content: txt, components: filaDe(botones) },
@@ -4543,6 +4614,26 @@ export default {
       return fn ? await fn(i, env, ctx) : aviso(`No conozco \`/${i.data && i.data.name}\`.`);
     }
 
+    // ── 🗳️🎲 El modal de elegir: `vm:<voto>:<lado>:<apuesta>`. El voto va siempre; la apuesta, si escribió más de 0 ──────
+    if (i.type === RECIBE.MODAL) {
+      const [que, qg, lado, ap] = String((i.data && i.data.custom_id) || '').split(':');
+      if (que !== 'vm') return aviso('Ya no pude leer eso: prueba de nuevo.');
+      const esperarVm = frenado(idDe(i), 'click');
+      if (esperarVm) return espera(esperarVm);
+      const did = idDe(i);
+      if (!did) return aviso('No pude saber quién eres: prueba de nuevo.');
+      const fila = ((i.data.components || [])[0] || {}).components || [];
+      const escrito = String((fila[0] || {}).value || '').replace(/[^0-9]/g, '');
+      const monto = escrito ? Math.min(Number(escrito), 1e6) : 0;
+      const voto = await votoChat(env, did, qg, lado);
+      const c = await datosApuesta(env, did);
+      if (!monto) {
+        return aviso(voto + (c ? '\n' + await saldoChat(env, did, ap, c) : ''));
+      }
+      if (!c) return aviso(voto + '\nLas apuestas todavía no están listas: prueba en un rato.');
+      return aviso(voto + '\n' + await apuestaChat(env, did, ap, lado, monto, c, true));
+    }
+
     if (i.type === RECIBE.COMPONENTE) {
       // ⚠️ TODO EL ESTADO VIENE EN EL custom_id. El Worker no busca nada, y
       // por eso dos personas en servidores distintos no se pisan. Además un
@@ -4560,18 +4651,43 @@ export default {
       // ── 📊 «Ver estadísticas» de un cruce (02/11/2026, el remake del VS): `vx:<id>` ─────────────────────────────
       // Dlx: «un botón para enviar un mensaje efímero con las estadísticas». La ficha ya la calculó el vigía al armar el
       // vs (`fichaVs()` en avisos.js) y está en el objeto: acá sólo se lee —una consulta, sin tocar KV— y la ve quien tocó
+      // ── 👤 «Ver perfiles» de un cruce: `vp:<id>`. Los dos, con su cara, y sólo para quien tocó ──────────────────
+      if (que === 'vp') {
+        const esperarVp = frenado(idDe(i), 'click');
+        if (esperarVp) return espera(esperarVp);
+        let j = {};
+        try {
+          const r = await env.AVISOS.get(env.AVISOS.idFromName('liga')).fetch('https://avisos/vs-perfiles', {
+            method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ id: quien }),
+          });
+          j = await r.json();
+        } catch (e) { j = { error: 'red' }; }
+        if (j.ok && j.comps) {
+          return new Response(JSON.stringify({ type: RESPONDE.MENSAJE, data: { flags: EFIMERO | V2, components: j.comps } }), { headers: { 'content-type': 'application/json' } });
+        }
+        return aviso('👤 ' + (j.error === 'no existe' ? 'Los perfiles de ese cruce ya no están: duran dos días.' : 'No pude traer los perfiles: prueba de nuevo en un rato.'));
+      }
+
       if (que === 'vx') {
         const esperarVx = frenado(idDe(i), 'click');
         if (esperarVx) return espera(esperarVx);
         let j = {};
         try {
           const r = await env.AVISOS.get(env.AVISOS.idFromName('liga')).fetch('https://avisos/vs-ficha', {
-            method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ id: quien }),
+            method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ id: quien, todo: extra === 'mas' }),
           });
           j = await r.json();
         } catch (e) { j = { error: 'red' }; }
-        if (j.ok && j.texto) {
-          return aviso(j.texto, [{ type: 2, style: 5, label: 'Ver la llave en la página', url: HUB_URL + '/freestyle-rap/eventos' }]);
+        if (j.ok && j.comps) {
+          // 📊 la ficha en su caja (`fichaComponentes()` de avisos.js): con V2 no hay `content`, va todo en componentes
+          // 📱 «Ver todo» y «Ver menos» cambian el mismo mensaje (tipo 7): el primero es uno nuevo, sólo para quien tocó
+          const todo = extra === 'mas';
+          const [lTodo, lLlave] = j.ctl || [todo ? 'Ver menos' : 'Ver todo', 'La llave'];
+          const fila1 = [{ type: 2, style: 2, label: lTodo, emoji: { name: todo ? '🔼' : '🔽' }, custom_id: 'vx:' + quien + ':' + (todo ? 'menos' : 'mas') },
+            { type: 2, style: 5, label: lLlave, emoji: { name: '🏆' }, url: HUB_URL + '/freestyle-rap/eventos' }];
+          return new Response(JSON.stringify({ type: extra ? 7 : RESPONDE.MENSAJE, data: { flags: EFIMERO | V2,
+            components: j.comps.concat([{ type: 1, components: fila1 }], (j.links || []).length ? [{ type: 1, components: j.links }] : []) } }),
+          { headers: { 'content-type': 'application/json' } });
         }
         return aviso('📊 ' + (j.error === 'no existe' ? 'Las estadísticas de ese cruce ya no están: duran dos días.'
           : 'No pude traer las estadísticas: prueba de nuevo en un rato.'));
@@ -4582,23 +4698,36 @@ export default {
         if (esperarQg) return espera(esperarQg);
         const did = idDe(i);
         if (!did) return aviso('No pude saber quién eres: prueba de nuevo.');
-        let j = {};
-        try {
-          const r = await env.AVISOS.get(env.AVISOS.idFromName('liga')).fetch('https://avisos/qg-votar', {
-            method: 'POST', headers: { 'content-type': 'application/json' },
-            body: JSON.stringify({ quien: did, id: quien, lado: extra }),
-          });
-          j = await r.json();
-        } catch (e) { j = { error: 'red' }; }
-        if (j.ok) {
-          // 🧮 con N lados (un «todos contra todos») el total y el porcentaje los da el objeto
-          const n = typeof j.n === 'number' ? j.n : (j.na || 0) + (j.nb || 0);
-          const pct = typeof j.pct === 'number' ? j.pct : n ? Math.round((100 * (j.lado === 'A' ? j.na : j.nb)) / n) : 0;
-          return aviso('🗳️ ' + (j.cambio ? 'Cambiaste tu voto: ahora vas con' : 'Votaste por') + ' **' + j.nombre + '**, que tiene el '
-            + pct + ' % de ' + n + (n === 1 ? ' voto' : ' votos') + '. En el mensaje se ve en un minuto.');
+        return aviso(await votoChat(env, did, quien, extra));
+      }
+
+      // ── 🗳️🎲 Elegir a uno: `ve:<voto>:<lado>:<apuesta>` (04/11/2026) ────────────────────────────────────
+      // Con la apuesta abierta y plata en la billetera, abre el modal. Si no, es un voto y listo: un modal para escribir 0 sobra
+      if (que === 've') {
+        const esperarVe = frenado(idDe(i), 'click');
+        if (esperarVe) return espera(esperarVe);
+        const did = idDe(i);
+        if (!did) return aviso('No pude saber quién eres: prueba de nuevo.');
+        const c = await datosApuesta(env, did);
+        let info = null;
+        if (c) {
+          try {
+            const r = await env.AVISOS.get(env.AVISOS.idFromName('liga')).fetch('https://avisos/apuesta-info', {
+              method: 'POST', headers: { 'content-type': 'application/json' },
+              body: JSON.stringify({ quien: did, ap: dueno, clave: c.clave, inicial: c.inicial, desde: c.desde }),
+            });
+            info = await r.json();
+          } catch (e) { info = null; }
         }
-        return aviso('🗳️ ' + ({ cerrada: 'Ese voto ya cerró: la batalla se jugó.', 'no existe': 'Ese voto ya no existe.' }[j.error]
-          || 'No pude anotar tu voto: prueba de nuevo.'));
+        if (!info || !info.abierta || info.propia || info.saldo <= 0 || info.queda <= 0) return aviso(await votoChat(env, did, quien, extra));
+        const mil = (v) => String(Math.round(v || 0)).replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+        const nom = String(extra === 'A' ? info.a : info.b);
+        // ⚠️ el título y la etiqueta de un modal van hasta 45 caracteres
+        return new Response(JSON.stringify({ type: 9, data: { custom_id: 'vm:' + quien + ':' + extra + ':' + dueno,
+          title: ('Votas por ' + (nom.length > 12 ? nom.slice(0, 11) + '…' : nom) + ' · Tienes ' + mil(info.saldo) + ' Puntos').slice(0, 45),
+          components: [{ type: 1, components: [{ type: 4, custom_id: 'monto', style: 1, required: true, min_length: 1, max_length: 6, value: '0',
+            label: (info.ya ? 'Ya pusiste ' + mil(info.ya) + '. ¿Cuánto más? Máx. ' + mil(info.queda) : '¿Cuánto apuestas? Máx. ' + mil(info.queda) + ' · 0 = nada').slice(0, 45) }] }] } }),
+        { headers: { 'content-type': 'application/json' } });
       }
 
       // ── 🎲 Una apuesta en vivo (07/10/2026, el nivel «A full» del bot en vivo) ──────────
@@ -4608,35 +4737,9 @@ export default {
         const esperarAp = frenado(idDe(i), 'click');
         if (esperarAp) return espera(esperarAp);
         const did = idDe(i);
-        let cfg = null;
-        try { cfg = JSON.parse((await env.KV.get('precios', { cacheTtl: 60 })) || 'null'); } catch (e) { cfg = null; }
-        if (!did || !cfg || !Number.isInteger(cfg.inicial)) return aviso('Las apuestas todavía no están listas: prueba en un rato.');
-        let clave = '';
-        try { clave = (await claveCarta(env, did)) || ''; } catch (e) { clave = ''; }
-        let j = {};
-        try {
-          const r = await env.AVISOS.get(env.AVISOS.idFromName('liga')).fetch('https://avisos/apostar', {
-            method: 'POST', headers: { 'content-type': 'application/json' },
-            body: JSON.stringify({ quien: did, ap: quien, lado: extra, monto: Number(dueno), clave, inicial: cfg.inicial,
-              desde: Date.parse(cfg.desde || '') || 0 }),
-          });
-          j = await r.json();
-        } catch (e) { j = { error: 'red' }; }
-        const mil = (v) => String(Math.round(v || 0)).replace(/\B(?=(\d{3})+(?!\d))/g, '.');
-        if (j.ok) {
-          return aviso(`🎲 Apostaste **${mil(j.monto)}** a **${j.nombre}**` + (j.total > j.monto ? ` (vas ${mil(j.total)} en total)` : '')
-            + `. El pozo ya es de **${mil(j.pozo)}** entre ${j.cuantos}; cierra <t:${Math.floor(j.cierra / 1000)}:R>.`
-            + `\nTe quedan **${mil(j.saldo)}** Puntos de Tienda.`);
-        }
-        const por = {
-          cerrada: 'Las apuestas de esa batalla ya cerraron.',
-          'no existe': 'Esa apuesta ya no existe.',
-          propia: 'No puedes apostar en tu propia batalla.',
-          'otro lado': `Ya apostaste a **${j.nombre || 'el otro'}**: en una batalla se apuesta a un solo lado.`,
-          tope: `El tope es ${mil(j.tope || 500)} por batalla: te quedan ${mil(j.queda)}.`,
-          saldo: `No te alcanza: tienes ${mil(j.saldo)} Puntos de Tienda.`,
-        };
-        return aviso('🎲 ' + (por[j.error] || 'No pude anotar la apuesta: prueba de nuevo.'));
+        const c = did ? await datosApuesta(env, did) : null;
+        if (!c) return aviso('Las apuestas todavía no están listas: prueba en un rato.');
+        return aviso(await apuestaChat(env, did, quien, extra, Number(dueno), c, false));
       }
 
       // ── 🏁 Lo que el lector no entendió de una llave (12/10/2026) ───────

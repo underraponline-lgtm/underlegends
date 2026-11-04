@@ -1114,6 +1114,15 @@ def correr(tipo, sv, id_=None):
     return 0
 
 
+def _texto_avisos():
+    try:
+        with open(os.path.join(BASE, 'bot', 'avisos.js'), encoding='utf-8') as f:
+            t = f.read()
+        return t[t.index('// VS_SV:inicio'):t.index('// VS_SV:fin')]
+    except (OSError, ValueError):
+        return ''
+
+
 def _self_check():
     mal = 0
     d = {'nombre': 'Freestyle For All', 'guild': '1', 'color': '#26045B', 'logo': ''}
@@ -1187,6 +1196,9 @@ def _self_check():
          '>12</b>Eventos' in html_vs({'a': {'n': 'A', 'ev': 12, 'dg': 3, 'dt': 5}, 'b': {'n': 'B'}}, d)
          and '>3/5</b>Duelos' in html_vs({'a': {'n': 'A', 'ev': 12, 'dg': 3, 'dt': 5}, 'b': {'n': 'B'}}, d)
          and 'class="sc-stats"' not in html_vs({'a': {'n': 'A'}, 'b': {'n': 'B'}}, d)),
+        ('la ficha de «Ver estadísticas» lleva el color de cada servidor: si cambió, `herramientas/emojis_vs.py --aplicar`',
+         all(int(c, 16) == int(camiseta(_sv_datos(sv))['placa'].lstrip('#'), 16)
+             for sv, c in re.findall(r"^\s*(\w+): \[0x([0-9A-F]{6}),", _texto_avisos(), re.M))),
         ('la silueta: los pies o el corte siempre sobre el panel, sin tapar el escudo de arriba',
          all(SIL_PANEL + h - a >= 34 and h >= 0 for a, h in SIL_ALTO.values())),
         ('con grupos, el resultado: quiénes pasan y el resto en gris, sin pronóstico',

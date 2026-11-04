@@ -1012,6 +1012,67 @@ export function nocheVs(rondas, hasta, gente) {
   };
 }
 
+//: de mejor a peor, como los guarda el perfil. Hasta «Semifinal» cuenta como llegar lejos
+const RESULTADOS = ['Campeón', 'Subcampeón', 'Tercero', 'Cuarto', 'Semifinal', 'Cuartos', 'Octavos', 'R32'];
+const LEJOS = 5;
+const resultadoTxt = (r) => (r === 'R32' ? 'Ronda de 32' : String(r || ''));
+
+/** 🏆 Cómo viene alguien: sus tres últimos resultados, cuánto llega a semifinal o más, y lo suyo en ese servidor. */
+export function vieneVs(y, dc, sv) {
+  const evs = (((dc && dc.perf) || {})[y.k] || {}).ev || [];
+  if (!evs.length) return null;
+  const orden = evs.slice().sort((p, q) => Number(q[0]) - Number(p[0]));
+  const lejos = evs.filter((e) => { const i = RESULTADOS.indexOf(e[1]); return i >= 0 && i < LEJOS; }).length;
+  const SV = String(sv || '').toUpperCase();
+  const aca = SV ? evs.filter((e) => String((((dc && dc.evs) || {})[e[0]] || [])[1] || '').toUpperCase() === SV) : [];
+  const mejor = aca.map((e) => RESULTADOS.indexOf(e[1])).filter((i) => i >= 0).sort((p, q) => p - q)[0];
+  return { ult: orden.slice(0, 3).map((e) => resultadoTxt(e[1])), lejos: Math.round((100 * lejos) / evs.length), t: evs.length,
+    aca: aca.length, mejor: mejor === undefined ? '' : resultadoTxt(RESULTADOS[mejor]) };
+}
+
+/**
+ * 🎖️ Lo competitivo de alguien (Dlx, 04/11/2026): su Score, su letra y sus cinco dimensiones. ⚠️ Las dimensiones, sólo con la
+ * Competitiva desbloqueada, como en su perfil (Dlx, 07/10/2026: «para que te muestre sus fortalezas necesita tener desbloqueada
+ * la tarjeta competitiva»). La letra ya viene con su puerta de 10 eventos: sin eso, no hay letra.
+ */
+function compVs(y, dc) {
+  const f = ((dc && dc.tabla) || {})[y.k];
+  if (!f) return null;
+  const dm = (((dc && dc.perf) || {})[y.k] || {}).dm;
+  return { sc: Number(f.sc) || 0, rg: String(f.rg || ''), dm: (f.c || []).includes('competitivo') && Array.isArray(dm) ? dm : null };
+}
+
+/** 👤 Lo que va en la ficha de su perfil: su cara (`av`, vacía si la ocultó: la saca `subir_web.py`) y sus números. */
+function perfilVs(y, dc) {
+  const f = ((dc && dc.tabla) || {})[y.k];
+  if (!f) return null;
+  return { av: String(f.av || ''), pos: Number(f.pos) || 0, rg: String(f.rg || ''), ev: Number(f.ev) || 0, oro: Number(f.oro) || 0, pod: Number(f.pod) || 0,
+    wr: parseFloat(f.wr) || 0, crew: String((y.crew && y.crew.n) || f.crew || ''), sv: String(f.sv || '') };
+}
+
+/** Su puesto en el ranking de duelos, que la carta no muestra: `[puesto, de cuántos]` o `null`. */
+function puestoDuelos(y, dc) {
+  const r = (((dc && dc.perf) || {})[y.k] || {}).rk;
+  return r && Array.isArray(r.du) && r.du[0] ? [r.du[0], r.du[1] || 0] : null;
+}
+
+/** 😈 A quién le cuesta ganarle y a quién le gana siempre, sin contar al de este cruce: `{cuesta, gana}`, cada uno `[nombre, g, p]`. */
+function rivalesVs(y, otro, buscar) {
+  const m = new Map();
+  for (const d of y.du || []) {
+    const n = sinBandera(d[1]);
+    const k = buscar(d[1]) || claveTurno(d[1]);
+    if (!k || k === otro.k || k === claveTurno(otro.n)) continue;
+    const v = m.get(k) || [n, 0, 0];
+    v[d[2] ? 1 : 2]++;
+    m.set(k, v);
+  }
+  const lista = [...m.values()];
+  const cuesta = lista.filter((v) => v[2] >= 2 && v[2] > v[1]).sort((p, q) => (q[2] - q[1]) - (p[2] - p[1]))[0] || null;
+  const gana = lista.filter((v) => v[1] >= 2 && v[1] > v[2]).sort((p, q) => (q[1] - q[2]) - (p[1] - p[2]))[0] || null;
+  return { cuesta, gana };
+}
+
 /**
  * 📊 «VER ESTADÍSTICAS» DE UN CRUCE (Dlx, 02/11/2026: «un botón para enviar un mensaje efímero con las estadísticas»).
  * Todo lo que la carta NO dice: el pronóstico explicado, el cara a cara cruce por cruce, la forma de los últimos 10, los
@@ -1057,62 +1118,276 @@ export function fichaVs(x, dc, o = {}) {
     if (!Array.isArray(du) && !n) return null;
     return [(Array.isArray(du) ? Number(du[0]) || 0 : 0) + (hoy || []).filter((d) => d[2]).length, (Array.isArray(du) ? Number(du[1]) || 0 : 0) + n];
   };
-  return { ev: String(o.ev || '').slice(0, 80), ronda: String(o.ronda || '').slice(0, 30),
-    a: { n: String(o.na || sinBandera(a.n)).slice(0, 40), fl: String(o.fla || '') },
-    b: { n: String(o.nb || sinBandera(b.n)).slice(0, 40), fl: String(o.flb || '') },
+  return { sv: String(o.sv || '').slice(0, 10), ev: String(o.ev || '').slice(0, 80), ronda: String(o.ronda || '').slice(0, 30),
+    vienen: [vieneVs(a, dc, o.sv), vieneVs(b, dc, o.sv)],
+    comp: [compVs(a, dc), compVs(b, dc)], dims: (dc && dc.dims) || [],
+    perfil: [perfilVs(a, dc), perfilVs(b, dc)],
+    puesto: [puestoDuelos(a, dc), puestoDuelos(b, dc)],
+    rivales: [rivalesVs(a, b, buscar), rivalesVs(b, a, buscar)],
+    a: { n: String(o.na || sinBandera(a.n)).slice(0, 40), fl: String(o.fla || ''), k: String(a.k || '') },
+    b: { n: String(o.nb || sinBandera(b.n)).slice(0, 40), fl: String(o.flb || ''), k: String(b.k || '') },
     pron: probVs(fa, fb), h2h, forma: [forma(a), forma(b)],
     temp: [conHoy(fa.du, a.hoy), conHoy(fb.du, b.hoy)],
     comunes: { n: filas.length, tot, filas: filas.slice(0, 4) },
     noche: [String(o.nocheA || '').replace(/^Esta noche /, ''), String(o.nocheB || '').replace(/^Esta noche /, '')] };
 }
 
-/** 📊 La ficha de `fichaVs()` como mensaje efímero: secciones cortas, sólo las que tienen datos. */
-export function fichaTexto(f) {
-  if (!f || !f.a || !f.b) return '';
+// VS_SV:inicio
+const VS_SV = {
+  ACAD: [0xEACB0C, '<:vs_acad_efd849:1567678229018579096>'],
+  DDF: [0x5FA8FF, '<:vs_ddf_5fa8ff:1567678231740686448>'],
+  DRA: [0x3D5BFF, '<:vs_dra_828be8:1567678236115341515>'],
+  FDS: [0x662EAC, '<:vs_fds_baa1da:1567678238757756968>'],
+  FFA: [0xEC48DC, '<:vs_ffa_ec48dc:1567678241131593838>'],
+  FFS: [0x8E9BFF, '<:vs_ffs_8e9bff:1567678243463626802>'],
+  FRZ: [0x8FE8E0, '<:vs_frz_8fe8e0:1567678245946662995>'],
+  FVS: [0xD7DBE2, '<:vs_fvs_8d8f94:1567678248517894357>'],
+  LKR: [0x1A5FFF, '<:vs_lkr_98b7ff:1567678250979954818>'],
+  SR: [0xFFB03A, '<:vs_sr_ffb03a:1567678253102014506>'],
+  URBF: [0xEA7206, '<:vs_urbf_f5c66e:1567678256860241990>'],
+};
+// VS_SV:fin
+
+/** ⭐ La misma regla que `favorito()` de bot/kit.py: desde 12 puntos de diferencia, y «gran favorito» desde 50. */
+export function favoritoVs(pa, pb) {
+  const d = Math.abs(pa - pb);
+  if (d < 12) return null;
+  return { lado: pa > pb ? 0 : 1, t: d >= 50 ? 'Gran favorito' : 'Favorito' };
+}
+
+/**
+ * 📊 LA FICHA DE «VER ESTADÍSTICAS», EN UNA CAJA DEL COLOR DEL SERVIDOR (Dlx, 04/11/2026: «mejorar visualmente, sin imagen,
+ * lo del texto de las estadísticas», «más detallado, con el icono del servidor, y emojis no tantos pero sí»). Componentes V2:
+ * la franja del color del servidor, su logo arriba, secciones con líneas entre medio y lo secundario en letra chica. Los
+ * cuadrados son los mismos del VS (`VS_SV`, de `herramientas/emojis_vs.py`). ⚠️ NADA DE LO QUE YA DICE LA CARTA (OVR, rango,
+ * puntos, racha): en la comparación va en negrita el número mejor. Una ficha guardada antes de esto no trae `sv` ni los
+ * datos nuevos y sale igual, sin esas partes: duran dos días.
+ *
+ * 📱 PRIMERO EL RESUMEN (Dlx, 04/11/2026: «hay mucha información… es demasiado en celular»): se lee sin bajar mucho, y lo demás
+ * —cada cruce, a quién le cuesta, cómo vienen, lo competitivo, los rivales— va en `todo`, detrás de «Ver todo».
+ */
+export function fichaComponentes(f, todo = false) {
+  if (!f || !f.a || !f.b) return null;
   const A = escMd(f.a.n), B = escMd(f.b.n);
-  const L = ['📊 **' + A + (f.a.fl ? ' ' + f.a.fl : '') + ' vs ' + B + (f.b.fl ? ' ' + f.b.fl : '') + '**'
-    + [f.ronda, f.ev].filter(Boolean).map((x) => ' · ' + escMd(x)).join('')];
-  L.push('', f.pron ? '**Pronóstico:** ' + A + ' ' + f.pron[0] + ' % · ' + B + ' ' + f.pron[1] + ' % _(por el ' + f.pron[2] + ' de cada uno)_'
-    : '**Pronóstico:** a uno le faltan datos en la Liga.');
+  const SV = String(f.sv || '').toUpperCase();
+  const [color, cuadro] = VS_SV[SV] || [0x26045B, '🟩'];
+  const texto = (content) => ({ type: 10, content: content.slice(0, 1500) });
+  const linea = { type: 14, divider: true, spacing: 1 };
+  const secciones = [];
+
+  const cabeza = '## ⚔️ ' + A + (f.a.fl ? ' ' + f.a.fl : '') + ' vs ' + B + (f.b.fl ? ' ' + f.b.fl : '')
+    + ([f.ev, f.ronda].filter(Boolean).length ? '\n-# ' + [f.ev, f.ronda].filter(Boolean).map(escMd).join(' · ') : '');
+  const encabezado = SV
+    ? { type: 9, components: [texto(cabeza)], accessory: { type: 11, media: { url: HUB + '/logos/' + SV.toLowerCase() + '.webp' }, description: SV } }
+    : texto(cabeza);
+
+  if (f.pron) {
+    const [pa, pb, por] = f.pron;
+    const llenos = Math.max(1, Math.min(9, Math.round(pa / 10)));
+    const fav = favoritoVs(pa, pb);
+    secciones.push('**📊 Pronóstico**\n' + cuadro.repeat(llenos) + '⬜'.repeat(10 - llenos) + '\n'
+      + (pa >= pb ? '**' + A + ' ' + pa + ' %** · ' + B + ' ' + pb + ' %' : A + ' ' + pa + ' % · **' + B + ' ' + pb + ' %**')
+      + '\n-# ' + (fav ? '⭐ ' + fav.t + ': ' + (fav.lado === 0 ? A : B) : 'Parejos') + (todo ? ' · por el ' + por + (por === 'OVR' ? ' de temporada' : '') + ' de cada uno' : ''));
+  } else {
+    secciones.push('**📊 Pronóstico**\n-# A uno le faltan datos en la Liga.');
+  }
+
   const h = f.h2h || [];
   if (h.length) {
-    const ga = h.filter((x) => x[2] === 'a').length;
-    L.push('', '**Cara a cara: ' + A + ' ' + ga + ' · ' + B + ' ' + (h.length - ga) + '**');
-    for (const [fe, ev, g] of h.slice(-5)) L.push('› ' + (fe ? fe + ' · ' : '') + escMd(ev) + ' — ganó ' + (g === 'a' ? A : B));
+    const ga = h.filter((x) => x[2] === 'a').length, gb = h.length - ga;
+    secciones.push('**🥊 Cara a cara**\n' + (ga > gb ? '**' + A + ' ' + ga + '**' : A + ' ' + ga) + ' – ' + (gb > ga ? '**' + gb + ' ' + B + '**' : gb + ' ' + B)
+      + (todo ? '\n' + h.slice(-5).map(([fe, ev, g]) => '-# ' + (fe ? fe + ' · ' : '') + escMd(ev) + ': ganó ' + (g === 'a' ? A : B)).join('\n') : ''));
   } else {
-    L.push('', '**Cara a cara:** es la primera vez que se cruzan.');
+    secciones.push('**🥊 Cara a cara**\nEs la primera vez que se cruzan.');
   }
+
   const fo = f.forma || [];
-  if ((fo[0] && fo[0].t) || (fo[1] && fo[1].t)) {
-    L.push('', '**Últimos duelos** _(del más nuevo al más viejo)_');
-    for (const [n, x] of [[A, fo[0]], [B, fo[1]]]) {
-      if (!x || !x.t) { L.push(n + ': sin duelos leídos todavía'); continue; }
-      L.push(n + ' ' + [...x.s].map((c) => (c === 'G' ? '🟩' : '⬛')).join('') + ' ' + x.g + ' de ' + x.t
-        + (x.perdio.length ? ' · perdió con ' + conY(x.perdio.map(escMd)) : ''));
-    }
+  const riv = f.rivales || [];
+  if (!todo && ((fo[0] && fo[0].t) || (fo[1] && fo[1].t))) {
+    // 📱 los últimos 5 de cada uno, en una línea por persona
+    const cinco = (x) => [...((x && x.s) || '')].slice(0, 5);
+    const gan = (x) => cinco(x).filter((c) => c === 'G').length;
+    const uno = (n, x, resalta) => (cinco(x).length
+      ? cinco(x).reverse().map((c) => (c === 'G' ? cuadro : '⬛')).join('') + ' ' + (resalta ? '**' + n + '**' : n)
+      : '-# ' + n + ': sin duelos leídos');
+    secciones.push('**🔥 Últimos 5 duelos**\n' + uno(A, fo[0], gan(fo[0]) > gan(fo[1])) + '\n' + uno(B, fo[1], gan(fo[1]) > gan(fo[0])));
+  } else if ((fo[0] && fo[0].t) || (fo[1] && fo[1].t)) {
+    const mejor = (fo[0] && fo[1] && fo[0].t && fo[1].t) ? (fo[0].g / fo[0].t) - (fo[1].g / fo[1].t) : 0;
+    const uno = (n, x, r, resalta) => {
+      if (!x || !x.t) return '**' + n + '**\n-# Sin duelos leídos todavía.';
+      const cuadros = [...x.s].slice(0, 10).reverse().map((c) => (c === 'G' ? cuadro : '⬛')).join('');
+      const extra = [];
+      if (x.perdio && x.perdio.length) extra.push('Perdió con ' + conY(x.perdio.map(escMd)));
+      if (r && r.cuesta) extra.push('Le cuesta ' + escMd(r.cuesta[0]) + ' (' + r.cuesta[1] + '–' + r.cuesta[2] + ')');
+      if (r && r.gana) extra.push('Le gana a ' + escMd(r.gana[0]) + ' (' + r.gana[1] + '–' + r.gana[2] + ')');
+      return '**' + n + '**\n' + cuadros + ' ' + (resalta ? '**' + x.g + ' de ' + x.t + '**' : x.g + ' de ' + x.t)
+        + (extra.length ? '\n-# ' + extra.join(' · ') : '');
+    };
+    secciones.push('**🔥 Últimos duelos**\n-# Del más viejo al más nuevo\n' + uno(A, fo[0], riv[0], mejor > 0) + '\n' + uno(B, fo[1], riv[1], mejor < 0));
   }
+
+  const vi = f.vienen || [];
+  if (todo && (vi[0] || vi[1])) {
+    const uno = (n, v) => {
+      if (!v) return '**' + n + ':** -';
+      const aca = v.aca ? 'En ' + SV + ': ' + v.aca + (v.aca === 1 ? ' evento' : ' eventos') + (v.mejor ? ', lo mejor ' + v.mejor : '') : (SV ? 'Primera vez en ' + SV : '');
+      return '**' + n + ':** ' + v.ult.map(escMd).join(' · ') + (aca ? '\n-# ' + aca : '');
+    };
+    secciones.push('**🏆 Cómo vienen**\n-# Del evento más nuevo al más viejo\n' + uno(A, vi[0]) + '\n' + uno(B, vi[1]));
+  }
+
+  // 🧮 la comparación: una fila por dato, el de A a la izquierda, el de B a la derecha y en negrita el mejor
+  const filas = [];
+  const fila = (va, et, vb, na, nb, lista = filas) => {
+    const izq = na !== null && nb !== null && na > nb, der = na !== null && nb !== null && nb > na;
+    lista.push((izq ? '**' + va + '**' : va) + ' · ' + et + ' · ' + (der ? '**' + vb + '**' : vb));
+  };
   const t = f.temp || [];
-  const pct = (d) => (d && d[1] ? Math.round((100 * d[0]) / d[1]) + ' %' : '');
-  if (t[0] || t[1]) {
-    L.push('', '**La temporada en duelos:** ' + [[A, t[0]], [B, t[1]]].map(([n, d]) => n + ' ' + (d && d[1] ? d[0] + ' de ' + d[1] + ' (' + pct(d) + ')' : '—')).join(' · '));
+  const conPct = (d) => (d && d[1] ? (todo ? d[0] + ' de ' + d[1] + ' (' : '') + Math.round((100 * d[0]) / d[1]) + ' %' + (todo ? ')' : '') : '-');
+  const pct = (d) => (d && d[1] ? d[0] / d[1] : null);
+  if (t[0] || t[1]) fila(conPct(t[0]), todo ? 'Duelos' : 'Duelos ganados', conPct(t[1]), pct(t[0]), pct(t[1]));
+  const pu = f.puesto || [];
+  if (todo && (pu[0] || pu[1])) {
+    fila(pu[0] ? '#' + pu[0][0] : '-', 'Puesto en duelos', pu[1] ? '#' + pu[1][0] : '-', pu[0] ? -pu[0][0] : null, pu[1] ? -pu[1][0] : null);
   }
+  if (vi[0] || vi[1]) {
+    fila(vi[0] ? vi[0].lejos + ' %' : '-', todo ? 'Llega a semifinal o más' : 'Llega a semis', vi[1] ? vi[1].lejos + ' %' : '-', vi[0] ? vi[0].lejos : null, vi[1] ? vi[1].lejos : null);
+  }
+  const coR = f.comp || [];
+  if (!todo && ((coR[0] && coR[0].sc) || (coR[1] && coR[1].sc))) {
+    const sc = (x) => (x && x.sc ? x.sc : null);
+    fila(sc(coR[0]) === null ? '-' : String(sc(coR[0])), 'Score', sc(coR[1]) === null ? '-' : String(sc(coR[1])), sc(coR[0]), sc(coR[1]));
+  }
+  if (filas.length) secciones.push('**La temporada**\n-# ' + A + ' · dato · ' + B + '\n' + filas.join('\n'));
+
+  // 🎖️ lo competitivo: el Score, la letra y, con la Competitiva abierta, las cinco dimensiones
+  const co = f.comp || [];
+  if (todo && ((co[0] && co[0].sc) || (co[1] && co[1].sc))) {
+    const fc = [];
+    const sc = (x) => (x && x.sc ? x.sc : null);
+    fila(sc(co[0]) === null ? '-' : String(sc(co[0])), 'Score', sc(co[1]) === null ? '-' : String(sc(co[1])), sc(co[0]), sc(co[1]), fc);
+    fc.push(((co[0] && co[0].rg) || 'Sin letra') + ' · Rango · ' + ((co[1] && co[1].rg) || 'Sin letra'));
+    if ((co[0] && co[0].dm) || (co[1] && co[1].dm)) {
+      (f.dims || []).forEach((nom, i) => {
+        const va = co[0] && co[0].dm ? co[0].dm[i] : null, vb = co[1] && co[1].dm ? co[1].dm[i] : null;
+        fila(va === null ? '-' : String(va), escMd(nom), vb === null ? '-' : String(vb), va, vb, fc);
+      });
+    }
+    secciones.push('**🎖️ Competitivo**\n-# ' + A + ' · dato · ' + B + '\n' + fc.join('\n'));
+  }
+
   const c = f.comunes || {};
-  if (c.n) {
-    L.push('', '**Contra los mismos rivales (' + c.n + '):** ' + A + ' ' + c.tot[0] + '–' + c.tot[1] + ' · ' + B + ' ' + c.tot[2] + '–' + c.tot[3]);
-    for (const r of c.filas || []) L.push('› ' + escMd(r[0]) + ': ' + A + ' ' + r[1] + '–' + r[2] + ' · ' + B + ' ' + r[3] + '–' + r[4]);
+  if (todo && c.n) {
+    const res = (g, p) => g + '–' + p;
+    const pa = c.tot[0] / ((c.tot[0] + c.tot[1]) || 1), pb = c.tot[2] / ((c.tot[2] + c.tot[3]) || 1);
+    secciones.push('**🤝 Contra los mismos rivales (' + c.n + ')**\n'
+      + (pa > pb ? '**' + A + ' ' + res(c.tot[0], c.tot[1]) + '**' : A + ' ' + res(c.tot[0], c.tot[1])) + ' · '
+      + (pb > pa ? '**' + B + ' ' + res(c.tot[2], c.tot[3]) + '**' : B + ' ' + res(c.tot[2], c.tot[3]))
+      + (c.filas || []).map((r) => '\n-# ' + escMd(r[0]) + ': ' + A + ' ' + res(r[1], r[2]) + ' · ' + B + ' ' + res(r[3], r[4])).join(''));
   }
+
   const no = f.noche || [];
-  if (no[0] || no[1]) L.push('', '**Esta noche:** ' + [[A, no[0]], [B, no[1]]].filter(([, s]) => s).map(([n, s]) => n + ' ' + escMd(s)).join(' · '));
-  return L.join('\n').slice(0, 1900);
+  if (no[0] || no[1]) {
+    secciones.push('**🌙 Esta noche**\n' + [[A, no[0]], [B, no[1]]].filter(([, x]) => x).map(([n, x]) => n + ' ' + escMd(x)).join('\n'));
+  }
+
+  const cuerpo = [encabezado];
+  for (const x of secciones) cuerpo.push(linea, texto(x));
+  return [{ type: 17, accent_color: color, components: cuerpo }];
 }
 
 /** 🃏📊 La fila de botones de un vs: «Ver estadísticas» (si tiene ficha) y «Consigue tu tarjeta» (si a uno le falta), juntas. */
 export function filasVs(vs) {
+  const filas = [];
+  if (vs && /^[0-9a-f]{12}$/.test(String(vs.fid || ''))) {
+    filas.push({ type: 1, components: [{ type: 2, style: 2, label: anchoFila('Ver estadísticas'), emoji: { name: '📊' }, custom_id: 'vx:' + vs.fid }] });
+  }
+  // 👤 los dos perfiles (Dlx, 04/11/2026: «la opción de ver ambos perfiles», y de dos variantes «la B de un botón queda mejor»):
+  // un solo botón largo, que abre un mensaje sólo para quien tocó (`perfilesComponentes()`). Sin ficha, los dos links de una
+  const pf = vs && !vs.grupos ? botonesPerfil(vs.a, vs.b) : [];
+  if (pf.length) filas.push({ type: 1, components: vs.fid && filas.length ? [botonVerPerfiles(vs.fid)] : pf });
   const t = filaTarjeta(vs);
-  const b = vs && /^[0-9a-f]{12}$/.test(String(vs.fid || ''))
-    ? { type: 2, style: 2, label: 'Ver estadísticas', emoji: { name: '📊' }, custom_id: 'vx:' + vs.fid } : null;
-  if (!b) return t;
-  return [{ type: 1, components: [b].concat(t.length ? t[0].components : []) }];
+  if (t.length) filas.push({ type: 1, components: t[0].components.map((c) => Object.assign({}, c, { label: anchoFila(c.label) })) });
+  return filas;
+}
+
+/**
+ * 📱 LOS BOTONES, PAREJOS EN EL CELULAR (Dlx, 04/11/2026: «se ve feo que haya un gran espacio… puedes poner caracteres
+ * invisibles»). Discord hace cada botón del ancho de su texto y, si una fila no entra, la parte: tres botones largos dejaban un
+ * hueco al costado. Ahora va de a dos por fila, con nombres cortos, y el U+2800 (no es un espacio: Discord no lo recorta)
+ * empareja los dos de cada fila. Lo solo en su fila, más ancho, para que ocupe lo de los dos.
+ */
+const INVISIBLE = '\u2800';
+const CORTO_BOTON = 11;
+const ANCHO_BOTON = 11;
+const ANCHO_FILA = 24;
+const nombreBoton = (n) => { const s = sinBandera(n) || '¿?'; return s.length > CORTO_BOTON ? s.slice(0, CORTO_BOTON - 1) + '…' : s; };
+const centrado = (t, ancho) => {
+  const falta = Math.max(0, ancho - [...t].length);
+  return INVISIBLE.repeat(Math.floor(falta / 2)) + t + INVISIBLE.repeat(Math.ceil(falta / 2));
+};
+export const anchoFila = (t) => centrado(t, ANCHO_FILA);
+/** Dos nombres, del mismo largo. */
+export function parejos(a, b) {
+  const x = nombreBoton(a), y = nombreBoton(b);
+  const ancho = Math.max([...x].length, [...y].length, ANCHO_BOTON);
+  return [centrado(x, ancho), centrado(y, ancho)];
+}
+
+/** 👤 El botón largo que abre los dos perfiles: `vp:<ficha>`. */
+export const botonVerPerfiles = (fid) => ({ type: 2, style: 2, label: anchoFila('Ver perfiles'), emoji: { name: '👤' }, custom_id: 'vp:' + fid });
+
+/**
+ * 👤 LOS DOS PERFILES, CON SU CARA (Dlx, 04/11/2026: «pon más info… el avatar de cada usuario, hacer más bonito el embed»). Una caja
+ * por persona, del color del servidor: su avatar al costado, sus números y el botón a su perfil. El nombre va completo: en los
+ * botones se corta. Sin avatar (no tiene, o lo ocultó) va sin imagen, y sin fila en la Liga, sólo el nombre.
+ */
+export function perfilesComponentes(f) {
+  if (!f || !f.a || !f.b) return null;
+  const SV = String(f.sv || '').toUpperCase();
+  const [color] = VS_SV[SV] || [0x26045B];
+  const caja = (y, p) => {
+    const cab = '### ' + (y.fl ? y.fl + ' ' : '') + escMd(y.n);
+    const lineas = [];
+    if (p) {
+      lineas.push([p.pos ? '**#' + p.pos + '** de la temporada' : '', p.rg ? 'Rango **' + escMd(p.rg) + '**' : 'Sin rango todavía'].filter(Boolean).join(' · '));
+      const hechos = [p.ev ? p.ev + (p.ev === 1 ? ' evento' : ' eventos') : '', p.oro ? p.oro + (p.oro === 1 ? ' título' : ' títulos') : '', p.pod ? p.pod + (p.pod === 1 ? ' podio' : ' podios') : ''].filter(Boolean);
+      if (hechos.length) lineas.push('-# ' + hechos.join(' · '));
+      const mas = [p.wr ? 'Gana el ' + Math.round(p.wr) + ' % de sus duelos' : '', p.crew ? 'Crew ' + escMd(p.crew) : ''].filter(Boolean);
+      if (mas.length) lineas.push('-# ' + mas.join(' · '));
+    } else if (!y.k) {
+      lineas.push('-# Todavía no tiene perfil en la Liga.');
+    }
+    const texto = { type: 10, content: [cab].concat(lineas).join('\n').slice(0, 1000) };
+    const arriba = p && /^\d{5,25}\/\w+$/.test(p.av)
+      ? { type: 9, components: [texto], accessory: { type: 11, media: { url: 'https://cdn.discordapp.com/avatars/' + p.av + '.webp?size=256' }, description: y.n } }
+      : texto;
+    const dentro = [arriba];
+    if (y.k) {
+      dentro.push({ type: 1, components: [{ type: 2, style: 5, label: anchoFila('Ver su perfil'), emoji: { name: '👤' }, url: HUB + '/freestyle-rap/r/' + encodeURIComponent(y.k) }] });
+    }
+    return { type: 17, accent_color: color, components: dentro };
+  };
+  const p = f.perfil || [];
+  return [caja(f.a, p[0]), caja(f.b, p[1])];
+}
+
+/** 👤 Los botones al perfil de cada uno, en la página. Quien no tiene perfil en la Liga no lleva botón. */
+export function botonesPerfil(a, b) {
+  const [la, lb] = parejos((a && a.n) || '', (b && b.n) || '');
+  return [[a, la], [b, lb]].filter(([y]) => y && y.k).map(([y, label]) => ({ type: 2, style: 5, label, emoji: { name: '👤' },
+    url: HUB + '/freestyle-rap/r/' + encodeURIComponent(y.k) }));
+}
+
+/**
+ * 🗳️🎲 ELEGIR A UNO, Y CUÁNTO APOSTARLE SI QUIERES (Dlx, 04/11/2026: «que uno pueda votar y apostar basado en un modal: cuánto
+ * quiere apostar, 0 si no quiere nada, pero que muestre su dinero en la tienda»). Reemplaza a las dos filas de montos: dos
+ * botones, `ve:<voto>:<lado>:<apuesta>`, que abren el modal del Worker. Cuando la apuesta cierra quedan los del voto solo.
+ */
+export function botonesElegir(voto, apId) {
+  const [la, lb] = parejos(voto.a, voto.b);
+  return [{ type: 1, components: [[la, 'A', 1], [lb, 'B', 4]].map(([label, lado, estilo]) => ({
+    type: 2, style: estilo, emoji: { name: '🗳️' }, label, custom_id: 've:' + voto.id + ':' + lado + ':' + apId })) }];
 }
 
 const GENTILICIO = { ar: 'ARGENTINO', cl: 'CHILENO', co: 'COLOMBIANO', mx: 'MEXICANO', pe: 'PERUANO', ve: 'VENEZOLANO',
@@ -1367,8 +1642,10 @@ export function botonesVoto(id, a, b, mas = []) {
   const lados = [a, b].concat(mas || []).slice(0, LADOS_VOTO.length);
   const tope = lados.length > 2 ? 18 : 30;
   const corto = (n) => { const s = sinBandera(n); return s.length > tope ? s.slice(0, tope - 1) + '…' : s || '¿?'; };
+  // 📱 con dos, parejos: ver `parejos()`
+  const labels = lados.length === 2 ? parejos(a, b) : lados.map(corto);
   return [{ type: 1, components: lados.map((n, i) => ({
-    type: 2, style: 2, emoji: { name: '🗳️' }, label: corto(n), custom_id: 'qg:' + id + ':' + LADOS_VOTO[i] })) }];
+    type: 2, style: 2, emoji: { name: '🗳️' }, label: labels[i], custom_id: 'qg:' + id + ':' + LADOS_VOTO[i] })) }];
 }
 
 // ═════════════════════════════════════════════════════════════════════
@@ -7145,10 +7422,12 @@ export class Avisos {
       if (ruta === '/precio') return this.precio(d);
       // 🎲 una apuesta, desde el botón del chat (`worker.js`, firmado por Discord): ver `apostar()`
       if (ruta === '/apostar') return this.apostar(d);
+      if (ruta === '/apuesta-info') return json(this.apuestaInfo(d));
       // 🗳️ un voto de «¿Quién gana?», desde el botón del chat: ver `qgVotar()`
       if (ruta === '/qg-votar') return json(this.qgVotar(d));
       // 📊 «Ver estadísticas» de un cruce, desde el botón del chat: ver `vsFicha()`
-      if (ruta === '/vs-ficha') return json(this.vsFicha(d.id));
+      if (ruta === '/vs-ficha') return json(this.vsFicha(d.id, d.todo === true));
+      if (ruta === '/vs-perfiles') return json(this.vsPerfiles(d.id));
       if (ruta === '/billetera') {
         await this.resolverPrecios(Date.now());
         return this.billetera(d);
@@ -7864,11 +8143,10 @@ export class Avisos {
             if (nivel === 'full' && hayApuestas(b.sv, nivel, apc, cfgs.get(b.g))) {
               apuesta = { id: codigoDe(L.id + ':' + clave).slice(0, 12), m: mv, ronda: bat.r, a: bat.lados[0], b: bat.lados[1] };
               lineas.push(lineaApuesta('abierta', apc));
-            } else {
-              // 🗳️ sin apuestas, «¿Quién gana?» votado por el público (ver `botonesVoto()`)
-              voto = { id: codigoDe(L.id + ':' + clave + ':qg').slice(0, 12), m: mv, ronda: bat.r, a: bat.lados[0], b: bat.lados[1] };
-              lineas.push(lineaVoto(voto.a, voto.b, 0, 0));
             }
+            // 🗳️ «¿Quién gana?» votado por el público: siempre. Con apuestas, los dos van con los mismos botones (`botonesElegir()`)
+            voto = { id: codigoDe(L.id + ':' + clave + ':qg').slice(0, 12), m: mv, ronda: bat.r, a: bat.lados[0], b: bat.lados[1] };
+            lineas.push(lineaVoto(voto.a, voto.b, 0, 0));
             const titEv = escMd(String(nombre || L.nombre || 'el evento').replace(/^[\s_*~]+|[\s_*~]+$/g, ''));
             // 🖼️ EL VS CON LAS DOS TARJETAS (Dlx, 12/10/2026: «hacerlo más visual… las tarjetas», «B», «con datos y a
             // full»): sólo mano a mano. La imagen la dibuja `bot/kit.py` (`vsEncolar()`) y llega en un minuto: el mensaje
@@ -7899,7 +8177,7 @@ export class Avisos {
               vs.fid = codigoDe(L.id + ':' + clave + ':vx').slice(0, 12);
               try {
                 this.sql.exec('INSERT OR REPLACE INTO vs_ficha (id, datos, t) VALUES (?, ?, ?)', vs.fid, JSON.stringify(fichaVs(x, dc,
-                  { ev: vs.ev, ronda: bat.r, na: ga[0].n, nb: gb[0].n, fla: ga[0].fl, flb: gb[0].fl, nocheA: vs.a.noche, nocheB: vs.b.noche })), ahora);
+                  { sv: svChat, ev: vs.ev, ronda: bat.r, na: ga[0].n, nb: gb[0].n, fla: ga[0].fl, flb: gb[0].fl, nocheA: vs.a.noche, nocheB: vs.b.noche })), ahora);
               } catch (e) { delete vs.fid; }
             }
             ms.push(Object.assign({ m: mv, cab: '⚔️ **' + titEv + '**', texto: lineas.join('\n') }, vs ? { vs } : {}));
@@ -8006,7 +8284,7 @@ export class Avisos {
         pedidos++;
         // 🎲 la apuesta va en el mensaje que lleva su cruce, con sus botones
         const conAp = apuesta && p.tipo === 'mandar' && [].concat(p.m).includes(apuesta.m) ? apuesta : null;
-        const conVoto = !conAp && voto && p.tipo === 'mandar' && [].concat(p.m).includes(voto.m) ? voto : null;
+        const conVoto = voto && p.tipo === 'mandar' && [].concat(p.m).includes(voto.m) ? voto : null;
         // 🃏 y debajo, «Conseguí tu tarjeta» si alguno sale con la silueta. Sólo al mandar: una edición sin `components`
         // deja los botones que el mensaje ya tiene
         // 📊 y «Ver estadísticas» en la misma fila (`filasVs()`)
@@ -8021,8 +8299,9 @@ export class Avisos {
             // ⚠️ una EDICIÓN no manda `flags`: el mensaje se queda con las suyas (con `flags: 4` se escondía la imagen)
             body: JSON.stringify(Object.assign({ content: p.texto.slice(0, 1900), allowed_mentions: { parse: [] } },
               p.tipo === 'editar' ? {} : p.img ? { embeds: [{ image: { url: p.img }, color: 0xE41373 }] } : { flags: 4 },
-              conAp || conVoto || filaT.length ? { components: (conAp ? botonesApuesta(conAp.id, conAp.a, conAp.b, false, apc.montos)
-                : conVoto ? botonesVoto(conVoto.id, conVoto.a, conVoto.b, conVoto.mas || []) : []).concat(filaT) } : {})),
+              conAp || conVoto || filaT.length ? { components: (conAp && conVoto ? botonesElegir(conVoto, conAp.id)
+                : conAp ? botonesApuesta(conAp.id, conAp.a, conAp.b, false, apc.montos)
+                  : conVoto ? botonesVoto(conVoto.id, conVoto.a, conVoto.b, conVoto.mas || []) : []).concat(filaT) } : {})),
           });
         } catch (e) { r = null; }
         if (r && r.ok) {
@@ -8400,7 +8679,7 @@ export class Avisos {
       return r2 + '/' + encodeURIComponent(k) + '/' + cual + '.webp' + (v ? '?v=' + v : '');
     };
     // 🏆 los tiers de las crews (bot/crews_tiers.py, en el payload): para decir «la crew X, que está en Oro»
-    this.cruceMem = { t: ahora, tabla, perf, perfT, buscar, cartaDe, evs, tiers: lobby.crews_tiers || null };
+    this.cruceMem = { t: ahora, tabla, perf, perfT, buscar, cartaDe, evs, tiers: lobby.crews_tiers || null, dims: ((lobby.guia || {}).score || []).map((d) => String(d[1] || '')) };
     return this.cruceMem;
   }
 
@@ -8501,7 +8780,8 @@ export class Avisos {
     const m = Number(d.monto);
     const apc = apuestasCfg(this.ajustes());
     // ⚠️ también los montos de siempre: un mensaje de antes de cambiar el ajuste sigue con sus botones
-    if (!/^[0-9]{5,25}$/.test(quien) || !lado || !(apc.montos.includes(m) || AP_MONTOS.includes(m))
+    // 🎲 desde el modal (`libre`), el monto lo escribe cada uno; el tope de abajo es el mismo
+    if (!/^[0-9]{5,25}$/.test(quien) || !lado || !(apc.montos.includes(m) || AP_MONTOS.includes(m) || (d.libre === true && Number.isInteger(m) && m >= 1))
         || !Number.isInteger(Number(d.inicial))) {
       return json({ error: 'datos' }, 400);
     }
@@ -8527,6 +8807,19 @@ export class Avisos {
     const pozo = this.sql.exec('SELECT COALESCE(SUM(monto), 0) AS n, COUNT(*) AS c FROM apostado WHERE ap = ?', ap.id).toArray()[0];
     return json({ ok: true, lado, nombre: sinBandera(lado === 'A' ? ap.a : ap.b), monto: m, total: antes + m, saldo: s - m,
       pozo: pozo.n, cuantos: pozo.c, cierra: ap.cierra });
+  }
+
+  /** 🎲 Lo que necesita el modal: si la apuesta sigue abierta, cuánto tiene quien tocó y cuánto más puede poner. */
+  apuestaInfo(d, ahora = Date.now()) {
+    const quien = String(d.quien || '');
+    const ap = this.sql.exec('SELECT * FROM apuestas WHERE id = ?', String(d.ap || '')).toArray()[0];
+    if (!/^[0-9]{5,25}$/.test(quien) || !ap || ap.estado !== 'abierta' || ahora >= ap.cierra || !Number.isInteger(Number(d.inicial))) return { abierta: false };
+    const yo = claveTurno(d.clave || '');
+    const propia = !!yo && [ap.a, ap.b].some((n) => String(n).split(/\s*[,+&]\s*/).some((x) => claveTurno(x) === yo));
+    const ya = this.sql.exec('SELECT lado, monto FROM apostado WHERE ap = ? AND quien = ?', ap.id, quien).toArray()[0];
+    const tope = apuestasCfg(this.ajustes()).tope;
+    return { abierta: true, propia, saldo: this.saldo(quien, Number(d.desde) || 0, Number(d.inicial)), tope, ya: ya ? ya.monto : 0, queda: Math.max(0, tope - (ya ? ya.monto : 0)),
+      a: sinBandera(ap.a), b: sinBandera(ap.b) };
   }
 
   /**
@@ -8564,13 +8857,17 @@ export class Avisos {
       }
       if (!estado || !ap.msg) continue;
       pedidos++;
-      const texto = String(ap.texto || '').replace(/^🎲.*$/mu, lineaApuesta(estado, d));
+      // ⚠️ SOBRE LO QUE EL MENSAJE DICE HOY: el voto edita su renglón en el mismo mensaje, y con el texto guardado acá lo pisaba
+      const hoy = this.sql.exec("SELECT texto FROM chat_vivo WHERE llave = ? AND canal = ? AND msg = ? AND m LIKE 'v:%' ORDER BY t DESC LIMIT 1", ap.llave, ap.canal, ap.msg).toArray()[0];
+      const texto = String((hoy && hoy.texto) || ap.texto || '').replace(/^🎲.*$/mu, lineaApuesta(estado, d));
+      // 🗳️ al cerrar la apuesta quedan los botones del voto, si sigue abierto; sin voto, los montos en gris (los mensajes de antes)
+      const q = estado === 'cerrada' ? this.sql.exec("SELECT * FROM qg WHERE canal = ? AND msg = ? AND estado = 'abierta' LIMIT 1", ap.canal, ap.msg).toArray()[0] : null;
       try {
         const r = await fetch(`${DC}/channels/${ap.canal}/messages/${ap.msg}`, {
           method: 'PATCH',
           headers: { Authorization: 'Bot ' + this.env.DISCORD_TOKEN, 'User-Agent': UA, 'content-type': 'application/json' },
           body: JSON.stringify({ content: texto.slice(0, 1900), allowed_mentions: { parse: [] },
-            components: (estado === 'cerrada' ? botonesApuesta(ap.id, ap.a, ap.b, true, apuestasCfg(this.ajustes()).montos) : [])
+            components: (q ? botonesVoto(q.id, q.a, q.b) : estado === 'cerrada' ? botonesApuesta(ap.id, ap.a, ap.b, true, apuestasCfg(this.ajustes()).montos) : [])
               .concat(this.filaTarjetaDe(ap.canal, ap.msg)) }),
         });
         if (r.ok) {
@@ -9828,14 +10125,29 @@ export class Avisos {
     return 'nueva';
   }
 
-  /** 📊 «Ver estadísticas» (`vx:<id>`, desde el botón): el texto de la ficha guardada, o que ya no está. */
-  vsFicha(id) {
+  /** 📊 «Ver estadísticas» (`vx:<id>`, desde el botón): la ficha guardada, resumida o con `todo`, o que ya no está. */
+  vsFicha(id, todo = false) {
     const f = /^[0-9a-f]{12}$/.test(String(id || ''))
       ? this.sql.exec('SELECT datos FROM vs_ficha WHERE id = ?', String(id)).toArray()[0] : null;
     if (!f) return { error: 'no existe' };
-    let texto = '';
-    try { texto = fichaTexto(JSON.parse(f.datos)); } catch (e) { texto = ''; }
-    return texto ? { ok: true, texto } : { error: 'vacia' };
+    let comps = null, links = [];
+    try {
+      const d = JSON.parse(f.datos);
+      comps = fichaComponentes(d, todo);
+      links = d.a.k || d.b.k ? [botonVerPerfiles(String(id))] : [];
+    } catch (e) { comps = null; }
+    // 📱 los dos botones de abajo, parejos y rellenos: en el celular quedaba un hueco al lado de «La llave»
+    return comps ? { ok: true, comps, links, ctl: parejos(todo ? 'Ver menos' : 'Ver todo', 'La llave') } : { error: 'vacia' };
+  }
+
+  /** 👤 «Ver perfiles» (`vp:<id>`): los dos, con su cara, de la misma ficha guardada. */
+  vsPerfiles(id) {
+    const f = /^[0-9a-f]{12}$/.test(String(id || ''))
+      ? this.sql.exec('SELECT datos FROM vs_ficha WHERE id = ?', String(id)).toArray()[0] : null;
+    if (!f) return { error: 'no existe' };
+    let comps = null;
+    try { comps = perfilesComponentes(JSON.parse(f.datos)); } catch (e) { comps = null; }
+    return comps ? { ok: true, comps } : { error: 'vacia' };
   }
 
   // ── 📣 SEGUIR A UN ORGANIZADOR ───────────────────────────────────────
