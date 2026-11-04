@@ -10,6 +10,7 @@
   "HORA: `cuando` es el instante en que se publicó (ISO, con la zona); la página lo muestra en la hora de quien mira. Sin `cuando`, sólo el día."
  ],
  "cambios": [
+  {"version": "4.25", "dia": "2026-11-04", "cuando": "2026-11-04T17:37:00-05:00", "titulo": "El VS de las llaves, de cada servidor", "items": ["**El VS de cada cruce es de tu servidor**: cada uno tiene su propio fondo, y sales con tu carta de ese servidor.", "**Sin tarjeta también te ves bien**: tu silueta con el color del servidor, tu nombre y tus números. Y si tienes carta y no estabas entre los 200 primeros, ahora sale la tuya.", "**Más títulos**: La final soñada, La bestia negra, El desempate, Moneda al aire y más de veinte tipos, sin repetirse en la misma noche si hay otro.", "**Se marca al favorito**, según el pronóstico. Y tus últimos duelos ya cuentan los de esta noche.", "**Equipos y todos contra todos**: una línea entre cada lado, y con cuatro lados, uno en cada cuadrante."]},
     {
         "version": "4.24",
         "dia": "2026-11-04",
