@@ -530,7 +530,7 @@ function cierreChat(L, rondas, fb, tit, opc, gente, rival) {
   if (mejor.length) lineas.push('', '✨ **Lo mejor de la noche**', ...mejor);
   // 🔗 es cuando más gente está mirando el chat, y el arranque era el único mensaje que llevaba a la página (04/11/2026)
   lineas.push('', 'La llave entera: <' + WEB_EVENTOS + '>');
-  const img = !varios && camp[0] && camp[0].k && opc.cartaDe ? opc.cartaDe(camp[0].k) : '';
+  const img = !varios && camp[0] && camp[0].k && opc.cartaDe ? opc.cartaDe(camp[0].k, opc.sv) : '';
   return Object.assign({ m: 'campeon', texto: lineas.join('\n') }, img ? { img } : {});
 }
 
@@ -882,19 +882,79 @@ export function batallaChat(L) {
  * mano —el OVR, el Score, la letra, los últimos 5 duelos y la racha— (19/10/2026, Dlx: «más algo de info como los de
  * 1v1»). `dc` es lo de `datosCruce()`: la tabla, los perfiles y las cartas.
  */
-export function personaVs(y, dc) {
-  const f = (y.k && (dc.tabla || {})[y.k]) || {};
-  const pf = (y.k && (dc.perf || {})[y.k]) || null;
-  const forma = ((pf && pf.du) || []).slice().sort((p, q) => Number(p[0]) - Number(q[0])).slice(-5).map((d) => (d[2] ? 'G' : 'P')).join('');
-  return { n: y.n, fl: y.fl, k: y.k, ovr: f.ovr || 0, sc: f.sc || 0, rg: f.rg || '', forma, racha: (pf && pf.rd && pf.rd[0]) || 0,
-    carta: y.k && dc.cartaDe ? dc.cartaDe(y.k) : '' };
+/** 📊 Lo que dibuja la carta de quien todavía no tiene carta: eventos, duelos y podios, de su fila. */
+export function statsVs(f) {
+  const du = (f && f.du) || [];
+  return { ev: (f && f.ev) || 0, pod: (f && f.pod) || 0, dg: du[0] || 0, dt: du[1] || 0 };
 }
 
-export function infoCruce(lados, buscar, tabla, perf) {
+export function personaVs(y, dc, o = {}) {
+  const f = (y.k && (dc.tabla || {})[y.k]) || {};
+  const pf = (y.k && (dc.perf || {})[y.k]) || null;
+  const hoy = (o.noche && o.noche.get(y.k || claveTurno(y.n))) || [];
+  const forma = ((pf && pf.du) || []).concat(hoy).sort((p, q) => Number(p[0]) - Number(q[0])).slice(-5).map((d) => (d[2] ? 'G' : 'P')).join('');
+  return Object.assign({ n: y.n, fl: y.fl, k: y.k, ovr: f.ovr || 0, sc: f.sc || 0, rg: f.rg || '', forma, racha: rachaCon((pf && pf.rd) || null, hoy)[0],
+    carta: y.k && dc.cartaDe ? dc.cartaDe(y.k, o.sv) : '' }, statsVs(f));
+}
+
+//: los duelos de esta noche van con un número de evento más alto que cualquiera, así quedan últimos al ordenar
+const DUELO_HOY = 1e9;
+
+/**
+ * 🌙 LOS DUELOS DE ESTA NOCHE, QUE LOS PERFILES TODAVÍA NO TIENEN (Dlx, 04/11/2026: «que todo esté actualizado»). Los
+ * perfiles se arman en el ciclo cuando la llave ya se procesó, así que el VS decía «Últimos 3 duelos» al lado de «Esta
+ * noche le ganó a Lvel», y sin contar ese. `Map(clave → [[DUELO_HOY + i, rival, ganó]])`, con los mano a mano ya
+ * jugados de la llave (la misma regla que los duelos: dos lados de una persona).
+ *
+ * ⚠️ SIN CONTAR DOS VECES: si el perfil ya tiene ese cruce, en un evento de las últimas 12 h de esa llave, es que el ciclo
+ * lo procesó y no se suma.
+ */
+export function duelosDeLlave(L, gente, dc = {}) {
+  const out = new Map();
+  const pub = Number(L && L.pub) || 0;
+  let i = 0;
+  const yaEsta = (k, rk) => {
+    const du = (k && ((dc.perf || {})[k] || {}).du) || [];
+    return !!pub && du.some((d) => {
+      const t = Date.parse(String(((dc.evs || {})[d[0]] || [])[2] || ''));
+      return t && Math.abs(t - pub) < 12 * 3600000 && dc.buscar && dc.buscar(d[1]) === rk;
+    });
+  };
+  for (const R of (L && L.rondas) || []) {
+    for (const b of batallasDe(R)) {
+      const lados = (b[0] || []).filter(Boolean);
+      if (lados.length !== 2 || !b[1]) continue;
+      const [ga, gb] = lados.map(gente);
+      if (ga.length !== 1 || gb.length !== 1) continue;
+      const ganoA = b[1] === lados[0];
+      if (!ganoA && b[1] !== lados[1]) continue;
+      i++;
+      for (const [y, z, g] of [[ga[0], gb[0], ganoA], [gb[0], ga[0], !ganoA]]) {
+        if (y.k && yaEsta(y.k, z.k)) continue;
+        const clave = y.k || claveTurno(y.n);
+        if (!out.has(clave)) out.set(clave, []);
+        out.get(clave).push([DUELO_HOY + i, z.n, g ? 1 : 0]);
+      }
+    }
+  }
+  return out;
+}
+
+/** `[actual, mejor]` de la racha de duelos, con lo de esta noche encima de lo del perfil. */
+function rachaCon(rd, hoy) {
+  let a = Number(rd && rd[0]) || 0, m = Number(rd && rd[1]) || 0;
+  for (const d of hoy || []) { a = d[2] ? a + 1 : 0; m = Math.max(m, a); }
+  return [a, m];
+}
+
+export function infoCruce(lados, buscar, tabla, perf, noche) {
   const lado = (n) => {
     const k = buscar(n) || '';
     const p = (k && (perf || {})[k]) || null;
-    return { n: sinBandera(n), k, f: (k && (tabla || {})[k]) || null, du: (p && p.du) || [], rd: (p && p.rd) || null, hay: !!p };
+    // 🌙 con lo de esta noche (`duelosDeLlave()`), que los perfiles todavía no tienen
+    const hoy = (noche && noche.get(k || claveTurno(n))) || [];
+    const rd = hoy.length ? rachaCon((p && p.rd) || null, hoy) : (p && p.rd) || null;
+    return { n: sinBandera(n), k, f: (k && (tabla || {})[k]) || null, du: ((p && p.du) || []).concat(hoy), rd, hay: !!p, hoy };
   };
   const a = lado(lados[0]);
   const b = lado(lados[1]);
@@ -924,7 +984,7 @@ export function probVs(fa, fb) {
 
 /**
  * 🌙 «ESTA NOCHE…» DE CADA LADO DEL VS (02/11/2026, el remake del VS): lo que hizo en la llave antes de esta batalla, la
- * última vez que pasó —«pasó con Badterne» si pasó en dupla, «le ganó a X» en un mano a mano, «pasó un grupo de 4»—.
+ * última vez que pasó —«pasó con Badterne» si pasó en dupla, «le ganó a X» en un mano a mano, «salió de un grupo de 4»—.
  * Es lo único de la noche que la carta no dice. Devuelve una función: `(persona de genteChat) → texto` o `''`.
  */
 export function nocheVs(rondas, hasta, gente) {
@@ -943,7 +1003,7 @@ export function nocheVs(rondas, hasta, gente) {
         const socios = gente(suyo).filter((z) => !es(y, z)).map((z) => sinBandera(z.n));
         if (socios.length) dicho = 'pasó con ' + conY(socios);
         else if (lados.length === 2) dicho = 'le ganó a ' + conY(gente(lados.find((l) => l !== suyo)).map((z) => sinBandera(z.n)));
-        else dicho = 'pasó un grupo de ' + lados.length;
+        else dicho = 'salió de un grupo de ' + lados.length;
       }
     }
     if (!dicho) return '';
@@ -963,7 +1023,11 @@ export function fichaVs(x, dc, o = {}) {
   const a = x.a || {}, b = x.b || {};
   const h2h = (a.du || []).filter((d) => b.k && buscar(d[1]) === b.k)
     .sort((p, q) => Number(p[0]) - Number(q[0]))
-    .map((d) => { const e = ((dc && dc.evs) || {})[d[0]] || []; return [String(e[4] || ''), String(e[0] || 'Evento ' + d[0]).slice(0, 60), d[2] ? 'a' : 'b']; });
+    .map((d) => {
+      if (Number(d[0]) >= DUELO_HOY) return ['esta noche', String(o.ev || 'este evento').slice(0, 60), d[2] ? 'a' : 'b'];
+      const e = ((dc && dc.evs) || {})[d[0]] || [];
+      return [String(e[4] || ''), String(e[0] || 'Evento ' + d[0]).slice(0, 60), d[2] ? 'a' : 'b'];
+    });
   const forma = (y) => {
     const ds = (y.du || []).slice().sort((p, q) => Number(q[0]) - Number(p[0])).slice(0, 10);
     return { g: ds.filter((d) => d[2]).length, t: ds.length, s: ds.map((d) => (d[2] ? 'G' : 'P')).join(''),
@@ -987,11 +1051,17 @@ export function fichaVs(x, dc, o = {}) {
   filas.sort((p, q) => (q[1] + q[2] + q[3] + q[4]) - (p[1] + p[2] + p[3] + p[4]));
   const tabla = (dc && dc.tabla) || {};
   const fa = tabla[a.k] || {}, fb = tabla[b.k] || {};
+  // 🌙 los duelos de la temporada, más los de esta noche
+  const conHoy = (du, hoy) => {
+    const n = (hoy || []).length;
+    if (!Array.isArray(du) && !n) return null;
+    return [(Array.isArray(du) ? Number(du[0]) || 0 : 0) + (hoy || []).filter((d) => d[2]).length, (Array.isArray(du) ? Number(du[1]) || 0 : 0) + n];
+  };
   return { ev: String(o.ev || '').slice(0, 80), ronda: String(o.ronda || '').slice(0, 30),
     a: { n: String(o.na || sinBandera(a.n)).slice(0, 40), fl: String(o.fla || '') },
     b: { n: String(o.nb || sinBandera(b.n)).slice(0, 40), fl: String(o.flb || '') },
     pron: probVs(fa, fb), h2h, forma: [forma(a), forma(b)],
-    temp: [Array.isArray(fa.du) ? fa.du : null, Array.isArray(fb.du) ? fb.du : null],
+    temp: [conHoy(fa.du, a.hoy), conHoy(fb.du, b.hoy)],
     comunes: { n: filas.length, tot, filas: filas.slice(0, 4) },
     noche: [String(o.nocheA || '').replace(/^Esta noche /, ''), String(o.nocheB || '').replace(/^Esta noche /, '')] };
 }
@@ -1049,51 +1119,137 @@ const GENTILICIO = { ar: 'ARGENTINO', cl: 'CHILENO', co: 'COLOMBIANO', mx: 'MEXI
   uy: 'URUGUAYO', ec: 'ECUATORIANO', es: 'ESPAÑOL', bo: 'BOLIVIANO', py: 'PARAGUAYO', cu: 'CUBANO', do: 'DOMINICANO',
   gt: 'GUATEMALTECO', hn: 'HONDUREÑO', cr: 'COSTARRICENSE', pa: 'PANAMEÑO', pr: 'BORICUA', sv: 'SALVADOREÑO', ni: 'NICA' };
 
+//: el país de cada bandera, para «CHILE VS ARGENTINA»
+const PAIS_DE = { ar: 'ARGENTINA', bo: 'BOLIVIA', br: 'BRASIL', cl: 'CHILE', co: 'COLOMBIA', cr: 'COSTA RICA', cu: 'CUBA', do: 'REP. DOMINICANA',
+  ec: 'ECUADOR', es: 'ESPAÑA', gt: 'GUATEMALA', hn: 'HONDURAS', mx: 'MÉXICO', ni: 'NICARAGUA', pa: 'PANAMÁ', pe: 'PERÚ', pr: 'PUERTO RICO',
+  py: 'PARAGUAY', sv: 'EL SALVADOR', us: 'ESTADOS UNIDOS', uy: 'URUGUAY', ve: 'VENEZUELA' };
+
 /**
- * El título de un cruce, si se gana uno: `{t, sub}` o `null`. En orden: EL CLÁSICO (tres cruces o más), LA REVANCHA
- * (ya se cruzaron), DUELO DE CREWS (cada uno de una crew), FUEGO AMIGO (los dos de la misma), DUELO DE CAMPEONES (los
- * dos ganaron un evento), DUELO DE TITANES (los dos en el top 10), DAVID CONTRA GOLIAT (20 de OVR o más de diferencia),
- * RACHA EN JUEGO (uno viene de 5 duelos ganados o más), LA EXPERIENCIA CONTRA EL HAMBRE (15 eventos o más contra 2 o
- * menos), DEBUT (uno no jugó nada en la temporada), DUELO DE ÉLITE (los dos con letra S o más) y el duelo del mismo
- * país. ⚠️ DEBUT sólo con un nombre que la Liga reconoce (`hay`): uno que no se pudo identificar no es un debutante.
- * ⚠️ La crew (`crew: {n, tier}`) la pone quien llama, del objeto (19/10/2026, Dlx: «más cosas así… David vs Goliat
- * está bien pero más cosas»): sin ella, esos dos no salen
+ * 🔥 TODOS LOS TÍTULOS QUE LE CABEN A UN CRUCE, del más especial al más común: `[{t, sub}]`. Cada uno sale de un dato real
+ * (Dlx, 04/11/2026: «que haya más variación… más cosas»). Medido sobre 1.410 cruces de la temporada, con la lista vieja —13
+ * títulos y el primero que calzara— el 29 % salía sin título, otro 29 % «DUELO DE CAMPEONES» y un 18 % «DAVID CONTRA GOLIAT».
+ * ⚠️ DEBUT sólo con un nombre que la Liga reconoce (`hay`): uno que no se pudo identificar no es un debutante.
+ * Lo que no sale de la fila lo pone quien llama: `crew` y `precio` en cada lado, y `ronda` y `sv` en el cruce; sin eso,
+ * esos títulos no salen.
  */
-export function tituloCruce(x) {
+export function titulosCruce(x) {
   const { a, b, h2h } = x;
   const fa = a.f || {}, fb = b.f || {};
   const tot = h2h.ga + h2h.gb;
+  const c = [];
+  const pon = (t, sub) => c.push({ t, sub: sub || '' });
+  const orden = (campo, f) => (((a.f || {})[campo] || 0) >= ((b.f || {})[campo] || 0) ? [a, b] : [b, a]).map(f || ((y) => y));
+
+  // 🏁 lo que está en juego
+  if (/^(gran )?final/i.test(String(x.ronda || '')) && fa.pos && fb.pos && fa.pos <= 20 && fb.pos <= 20) {
+    pon('LA FINAL SOÑADA', 'el #' + Math.min(fa.pos, fb.pos) + ' contra el #' + Math.max(fa.pos, fb.pos) + ' de la temporada, por el título');
+  }
+  // 🥊 lo que ya pasó entre los dos
+  if (tot >= 2 && h2h.ga === h2h.gb) pon('EL DESEMPATE', 'van ' + h2h.ga + ' a ' + h2h.gb + ': éste define quién manda');
+  if (tot >= 3 && (!h2h.ga || !h2h.gb)) {
+    const [g, p] = h2h.ga ? [a, b] : [b, a];
+    pon('LA BESTIA NEGRA', g.n + ' le ganó las ' + tot + ' veces a ' + p.n);
+  }
   if (tot >= 3) {
-    return { t: 'EL CLÁSICO', sub: 'se cruzaron ' + tot + ' veces: ' + (h2h.ga === h2h.gb ? 'van ' + h2h.ga + ' a ' + h2h.gb
-      : (h2h.ga > h2h.gb ? a.n : b.n) + ' gana ' + Math.max(h2h.ga, h2h.gb) + ' a ' + Math.min(h2h.ga, h2h.gb)) };
+    pon('EL CLÁSICO', 'se cruzaron ' + tot + ' veces: ' + (h2h.ga === h2h.gb ? 'van ' + h2h.ga + ' a ' + h2h.gb
+      : (h2h.ga > h2h.gb ? a.n : b.n) + ' gana ' + Math.max(h2h.ga, h2h.gb) + ' a ' + Math.min(h2h.ga, h2h.gb)));
+  }
+  if (tot === 2 && (!h2h.ga || !h2h.gb)) {
+    const [g, p] = h2h.ga ? [a, b] : [b, a];
+    pon('CUENTA PENDIENTE', p.n + ' todavía no le puede ganar a ' + g.n);
   }
   if (tot >= 1 && h2h.ult) {
     const [g, p] = h2h.ult === 'a' ? [a, b] : [b, a];
-    return { t: 'LA REVANCHA', sub: g.n + ' le ganó la última vez y ' + p.n + ' viene por la revancha' };
+    pon('LA REVANCHA', g.n + ' le ganó la última vez y ' + p.n + ' viene por la revancha');
   }
+  // 👥 las crews
   const cr = (y) => (y.crew ? y.crew.n + (y.crew.tier ? ' (' + y.crew.tier + ')' : '') : '');
-  if (a.crew && b.crew && a.crew.n !== b.crew.n) return { t: 'DUELO DE CREWS', sub: cr(a) + ' contra ' + cr(b) };
-  if (a.crew && b.crew && a.crew.n === b.crew.n) return { t: 'FUEGO AMIGO', sub: 'los dos son de ' + a.crew.n };
-  if ((fa.oro || 0) >= 1 && (fb.oro || 0) >= 1) return { t: 'DUELO DE CAMPEONES', sub: 'los dos ya ganaron un evento esta temporada' };
-  if (fa.pos && fb.pos && fa.pos <= 10 && fb.pos <= 10) {
-    return { t: 'DUELO DE TITANES', sub: 'el #' + Math.min(fa.pos, fb.pos) + ' contra el #' + Math.max(fa.pos, fb.pos) + ' de la temporada' };
+  if (a.crew && b.crew && a.crew.n !== b.crew.n) pon('DUELO DE CREWS', cr(a) + ' contra ' + cr(b));
+  if (a.crew && b.crew && a.crew.n === b.crew.n) pon('FUEGO AMIGO', 'los dos son de ' + a.crew.n);
+  // 🌙 lo de esta noche
+  const ganoHoy = (y) => (y.hoy || []).filter((d) => d[2]).length;
+  if (ganoHoy(a) >= 2 && ganoHoy(b) >= 2) pon('INVICTOS ESTA NOCHE', a.n + ' ganó ' + ganoHoy(a) + ' y ' + b.n + ', ' + ganoHoy(b) + ': uno se queda en el camino');
+  const imparable = [a, b].filter((y) => ganoHoy(y) >= 3).sort((p, q) => ganoHoy(q) - ganoHoy(p))[0];
+  if (imparable) pon('IMPARABLE ESTA NOCHE', imparable.n + ' ya ganó ' + ganoHoy(imparable) + ' duelos hoy: ¿quién lo frena?');
+  // 👑 los de arriba
+  if (fa.pos === 1 || fb.pos === 1) {
+    const [u, o] = fa.pos === 1 ? [a, b] : [b, a];
+    pon('EL #1 EN JUEGO', u.n + ' es el #1 de la temporada y ' + o.n + ' va por él');
   }
+  if (fa.pos && fb.pos && fa.pos <= 10 && fb.pos <= 10) {
+    pon('DUELO DE TITANES', 'el #' + Math.min(fa.pos, fb.pos) + ' contra el #' + Math.max(fa.pos, fb.pos) + ' de la temporada');
+  }
+  // 🎯 Most Wanted y el precio por cabeza
+  const presa = [[a, b], [b, a]].find(([p, q]) => (p.f || {}).caz >= 1 && (q.f || {}).sob >= 1);
+  if (presa) {
+    const [p, q] = presa;
+    pon('EL CAZADOR Y LA PRESA', p.n + ' ya cazó en Most Wanted y ' + q.n + ' sabe escapar');
+  }
+  const conPrecio = [a, b].filter((y) => y.precio > 0).sort((p, q) => q.precio - p.precio)[0];
+  if (conPrecio) pon('CABEZA CON PRECIO', 'por ' + conPrecio.n + ' hay ' + milesAp(conPrecio.precio) + ' Puntos de Tienda');
+  // 🔥 las rachas
+  const racha = (y) => (y.rd && y.rd[0]) || 0;
+  if (racha(a) >= 3 && racha(b) >= 3) pon('CHOQUE DE RACHAS', a.n + ' viene de ' + racha(a) + ' y ' + b.n + ' de ' + racha(b) + ': una se corta hoy');
+  const rach = [a, b].filter((y) => racha(y) >= 5).sort((p, q) => racha(q) - racha(p))[0];
+  if (rach) pon('RACHA EN JUEGO', rach.n + ' viene de ganar ' + racha(rach) + ' duelos seguidos: ¿quién lo frena?');
+  // 🏆 los títulos y los podios
+  if (((fa.oro || 0) >= 2 && !fb.oro) || ((fb.oro || 0) >= 2 && !fa.oro)) {
+    const [g, o] = orden('oro');
+    pon('TUMBAR AL CAMPEÓN', g.n + ' ya ganó ' + g.f.oro + ' eventos y ' + o.n + ' va por el primero');
+  }
+  if ((fa.oro || 0) >= 1 && (fb.oro || 0) >= 1) pon('DUELO DE CAMPEONES', 'los dos ya ganaron un evento esta temporada');
+  // ⚠️ `wr` viene como texto («36.4%»): con `Number()` daba NaN y este título no salía nunca
+  const wr = (f) => ((f.du || [])[1] >= 6 ? parseFloat(f.wr) || 0 : 0);
+  if (wr(fa) >= 70 && wr(fb) >= 70) pon('DOS QUE NO PERDONAN', a.n + ' gana el ' + Math.round(wr(fa)) + ' % de sus duelos y ' + b.n + ' el ' + Math.round(wr(fb)) + ' %');
+  if ((fa.pod || 0) >= 5 && (fb.pod || 0) >= 5) pon('PODIO CONTRA PODIO', a.n + ' lleva ' + fa.pod + ' podios y ' + b.n + ', ' + fb.pod);
+  // ⚖️ qué tan parejo es
   if (fa.ovr && fb.ovr && Math.abs(fa.ovr - fb.ovr) >= 20) {
     const [g, d] = fa.ovr > fb.ovr ? [a, b] : [b, a];
-    return { t: 'DAVID CONTRA GOLIAT', sub: d.n + ' (OVR ' + d.f.ovr + ') contra ' + g.n + ' (OVR ' + g.f.ovr + ')' };
+    pon('DAVID CONTRA GOLIAT', d.n + ' (OVR ' + d.f.ovr + ') contra ' + g.n + ' (OVR ' + g.f.ovr + ')');
   }
-  const rach = [a, b].filter((y) => y.rd && y.rd[0] >= 5).sort((p, q) => q.rd[0] - p.rd[0])[0];
-  if (rach) return { t: 'RACHA EN JUEGO', sub: rach.n + ' viene de ganar ' + rach.rd[0] + ' duelos seguidos: ¿quién lo frena?' };
+  const pr = probVs(fa, fb);
+  if (pr && Math.abs(pr[0] - pr[1]) <= 4) pon('MONEDA AL AIRE', 'el pronóstico los da ' + Math.max(pr[0], pr[1]) + ' a ' + Math.min(pr[0], pr[1]));
+  // 🎤 los años de cada uno
   if (fa.ev && fb.ev && Math.max(fa.ev, fb.ev) >= 15 && Math.min(fa.ev, fb.ev) <= 2) {
     const [v, n] = fa.ev > fb.ev ? [a, b] : [b, a];
-    return { t: 'LA EXPERIENCIA CONTRA EL HAMBRE', sub: v.n + ' lleva ' + v.f.ev + ' eventos; ' + n.n + ', ' + n.f.ev };
+    pon('LA EXPERIENCIA CONTRA EL HAMBRE', v.n + ' lleva ' + v.f.ev + ' eventos; ' + n.n + ', ' + n.f.ev);
   }
+  if ((fa.ev || 0) >= 25 && (fb.ev || 0) >= 25) pon('LOS VETERANOS', 'entre los dos llevan ' + (fa.ev + fb.ev) + ' eventos esta temporada');
+  if (fa.ev && fb.ev && fa.ev <= 2 && fb.ev <= 2) pon('SANGRE NUEVA', 'los dos recién empiezan esta temporada');
   const nuevo = [a, b].find((y) => y.k && !y.hay && !y.f);
-  if (nuevo) return { t: 'DEBUT', sub: nuevo.n + ' juega su primer evento de la temporada' };
+  if (nuevo) pon('DEBUT', nuevo.n + ' juega su primer evento de la temporada');
   const elite = ['S', 'SS', 'SSS'];
-  if (elite.includes(fa.rg) && elite.includes(fb.rg)) return { t: 'DUELO DE ÉLITE', sub: 'letra ' + fa.rg + ' contra letra ' + fb.rg };
-  if (fa.cc && fa.cc === fb.cc) return { t: 'DUELO ' + (GENTILICIO[fa.cc] || 'ENTRE COMPATRIOTAS'), sub: '' };
-  return null;
+  if (elite.includes(fa.rg) && elite.includes(fb.rg)) pon('DUELO DE ÉLITE', 'letra ' + fa.rg + ' contra letra ' + fb.rg);
+  // 🏠 de dónde viene cada uno
+  const SV = String(x.sv || '').toUpperCase();
+  if (SV && fa.sv && fb.sv && (fa.sv === SV) !== (fb.sv === SV)) {
+    const [l, v] = fa.sv === SV ? [a, b] : [b, a];
+    pon('LOCAL CONTRA VISITANTE', l.n + ' juega en casa y ' + v.n + ' viene de ' + v.f.sv);
+  }
+  if (fa.cc && fa.cc === fb.cc) pon('DUELO ' + (GENTILICIO[fa.cc] || 'ENTRE COMPATRIOTAS'));
+  if (fa.cc && fb.cc && fa.cc !== fb.cc && PAIS_DE[fa.cc] && PAIS_DE[fb.cc]) pon(PAIS_DE[fa.cc] + ' VS ' + PAIS_DE[fb.cc]);
+  return c;
+}
+
+/** El título de un cruce o `null`: el más especial que no se haya usado esta noche (`usados`), y si ya salieron todos, el más especial. */
+export function tituloCruce(x, usados) {
+  const c = titulosCruce(x);
+  return c.find((o) => !(usados || []).includes(o.t)) || c[0] || null;
+}
+
+/** Los títulos que ya salieron en una llave, de lo que el bot dijo en el chat. */
+export function titulosUsados(hechos) {
+  return Object.values(hechos || {}).map((h) => (String((h && h.texto) || '').match(/🔥 \*\*(.+?)\*\*/) || [])[1]).filter(Boolean);
+}
+
+/** Con equipos, si no hay otra cosa que contar: cómo está parado el cruce. */
+export function tituloGrupos(ga, gb) {
+  const n = ga.length, m = gb.length;
+  if (Math.min(n, m) === 1) {
+    return { t: 'UNO CONTRA TODOS', sub: (n === 1 ? ga : gb)[0].n + ' se enfrenta solo a ' + Math.max(n, m) + ' rivales' };
+  }
+  if (n !== m) return { t: 'EN DESVENTAJA', sub: Math.min(n, m) + ' contra ' + Math.max(n, m) + ': a ver si los números alcanzan' };
+  return { t: n === 2 ? 'PAREJA CONTRA PAREJA' : n === 3 ? 'TRÍO CONTRA TRÍO' : 'EQUIPO CONTRA EQUIPO', sub: '' };
 }
 
 /**
@@ -7563,7 +7719,7 @@ export class Avisos {
         if (!k || !svChat) return false;
         try { return ((JSON.parse(this.persona('p:' + k) || '{}') || {}).svs || []).includes(svChat); } catch (e) { return false; }
       };
-      const opc = { buscar, tabla: dc.tabla, perf: dc.perf, perfT: dc.perfT, cartaDe: dc.cartaDe,
+      const opc = { buscar, tabla: dc.tabla, perf: dc.perf, perfT: dc.perfT, cartaDe: dc.cartaDe, sv: svChat,
         ids: await this.indiceNombres(ahora), enSv };
       let ms = momentosChat(L, nombre, [], nivel, opc);
       // los favoritos sólo si «Arrancó» sale ahora: el lobby pesa, no se lee cada minuto
@@ -7646,6 +7802,8 @@ export class Avisos {
       let apuesta = null, voto = null;
       if ((nivel === 'datos' || nivel === 'full') && fresca) {
         const bat = batallaChat(L);
+        // 🌙 lo de esta noche, para que la forma, el cara a cara y la racha estén al día (`duelosDeLlave()`)
+        const hoyD = duelosDeLlave(L, (l) => genteChat(l, buscar, dc.tabla, opc.ids, opc.enSv), dc);
         // 🧮 TODOS CONTRA TODOS (1v1v1, 1v1v1v1, o tres equipos): el cruce también sale, con un botón de voto por lado. Sin
         // apuestas (son de dos lados) ni el vs con tarjetas (es de dos). Dlx, 19/10/2026: «¿qué sucede cuando son 3
         // personas distintas batallando? ¿el bot hace 3 votaciones?». Una votación, con un botón para cada uno
@@ -7655,7 +7813,7 @@ export class Avisos {
           if (!hechos[mv]) {
             const gs = bat.lados.map((l) => genteChat(l, buscar, dc.tabla, opc.ids, opc.enSv));
             const equipos = gs.some((g) => g.length > 1);
-            const x = infoCruce(bat.lados.slice(0, 2), buscar, dc.tabla, dc.perf);
+            const x = infoCruce(bat.lados.slice(0, 2), buscar, dc.tabla, dc.perf, hoyD);
             if (gs[0].length === 1) x.a.n = gs[0][0].n;
             if (gs[1].length === 1) x.b.n = gs[1][0].n;
             const dato = datoCurioso(x, L.id + clave, (y) => (y.f ? this.encima(y.f.n, ahora) : 0));
@@ -7668,7 +7826,7 @@ export class Avisos {
             lineas.push(lineaVoto(voto.a, voto.b, 0, 0, '', voto.mas, []));
             const titEv = escMd(String(nombre || L.nombre || 'el evento').replace(/^[\s_*~]+|[\s_*~]+$/g, ''));
             // 🧩 y el vs con todas las tarjetas, separadas por VS (`html_vs_grupos()` de bot/kit.py)
-            const persona = (y) => personaVs(y, dc);
+            const persona = (y) => personaVs(y, dc, { sv: svChat, noche: hoyD });
             const vs = { ev: String(nombre || L.nombre || '').replace(/[_*~`]+/g, '').trim(), ronda: bat.r,
               titulo: equipos ? bat.lados.length + ' EQUIPOS' : 'TODOS CONTRA TODOS', sub: '', grupos: gs.map((g) => g.map(persona)) };
             ms.push({ m: mv, cab: '⚔️ **' + titEv + '**', texto: lineas.join('\n'), vs });
@@ -7679,19 +7837,23 @@ export class Avisos {
           // 🧩 la clave es la batalla, no sus nombres: un equipo que crece antes de jugar no la anuncia dos veces
           const mv = 'v:' + bat.r + ':' + bat.i;
           if (!hechos[mv]) {
-            const x = infoCruce(bat.lados, buscar, dc.tabla, dc.perf);
+            const x = infoCruce(bat.lados, buscar, dc.tabla, dc.perf, hoyD);
             // 👥 la crew de cada uno (del objeto, con su tier del payload) y su puesto en su país: para los títulos y
             // los «¿sabías que…?» nuevos (19/10/2026, Dlx: «más cosas así… David vs Goliat está bien pero más cosas»)
             for (const y of [x.a, x.b]) {
               y.crew = this.crewChat(y.k, dc.tiers);
               const f = y.f;
               if (f && f.cc && f.pts) y.pp = 1 + Object.values(dc.tabla).filter((g) => g && g.cc === f.cc && (g.pts || 0) > f.pts).length;
+              y.precio = f ? this.encima(f.n, ahora) : 0;
             }
+            x.ronda = bat.r;
+            x.sv = svChat;
             const [ga, gb] = bat.lados.map((l) => genteChat(l, buscar, dc.tabla, opc.ids, opc.enSv));
             // el nombre de la Liga también en el título y el dato («MAKMAH le ganó la última vez» → Makmah)
             if (ga.length === 1) x.a.n = ga[0].n;
             if (gb.length === 1) x.b.n = gb[0].n;
-            const tt = tituloCruce(x);
+            // 🔥 el más especial que todavía no salió esta noche: así dos cruces de la misma llave no dicen lo mismo
+            const tt = tituloCruce(x, titulosUsados(hechos)) || (ga.length > 1 || gb.length > 1 ? tituloGrupos(ga, gb) : null);
             const dato = datoCurioso(x, L.id + clave, (y) => (y.f ? this.encima(y.f.n, ahora) : 0));
             const lineas = [];
             if (tt) lineas.push('🔥 **' + tt.t + '**' + (tt.sub ? ' · ' + escMd(tt.sub) : ''));
@@ -7711,20 +7873,20 @@ export class Avisos {
             // sale ya, con el texto, y la imagen se le agrega editándolo (una edición no le suena a nadie)
             // 🧩 CON EQUIPOS (2v2, 1v3, 8v1 del Multiverse) TAMBIÉN, con todas las tarjetas (19/10/2026, Dlx: «hacer algo
             // para que muestre sus tarjetas en estos formatos distintos»): `grupos`, que dibuja `html_vs_grupos()`
-            const persona = (y) => personaVs(y, dc);
+            const persona = (y) => personaVs(y, dc, { sv: svChat, noche: hoyD });
             const vsEq = ga.length > 1 || gb.length > 1 ? { ev: String(nombre || L.nombre || '').replace(/[_*~`]+/g, '').trim(),
               ronda: bat.r, titulo: tt ? tt.t : '', sub: tt ? tt.sub || '' : '', grupos: [ga.map(persona), gb.map(persona)] } : null;
             const vs = vsEq || (ga.length === 1 && gb.length === 1) ? vsEq || { ev: String(nombre || L.nombre || '').replace(/[_*~`]+/g, '').trim(),
               ronda: bat.r, titulo: tt ? tt.t : '', sub: tt ? tt.sub || '' : '',
               // 📊 el Score va también: la barra de quién gana de la imagen lo prefiere al OVR (`prob_vs()` de bot/kit.py)
-              a: { n: ga[0].n, fl: ga[0].fl, k: ga[0].k, ovr: (dc.tabla[ga[0].k] || {}).ovr || 0, sc: (dc.tabla[ga[0].k] || {}).sc || 0, carta: ga[0].k ? dc.cartaDe(ga[0].k) : '' },
-              b: { n: gb[0].n, fl: gb[0].fl, k: gb[0].k, ovr: (dc.tabla[gb[0].k] || {}).ovr || 0, sc: (dc.tabla[gb[0].k] || {}).sc || 0, carta: gb[0].k ? dc.cartaDe(gb[0].k) : '' } } : null;
+              a: { n: ga[0].n, fl: ga[0].fl, k: ga[0].k, ovr: (dc.tabla[ga[0].k] || {}).ovr || 0, sc: (dc.tabla[ga[0].k] || {}).sc || 0, carta: ga[0].k ? dc.cartaDe(ga[0].k, svChat) : '' },
+              b: { n: gb[0].n, fl: gb[0].fl, k: gb[0].k, ovr: (dc.tabla[gb[0].k] || {}).ovr || 0, sc: (dc.tabla[gb[0].k] || {}).sc || 0, carta: gb[0].k ? dc.cartaDe(gb[0].k, svChat) : '' } } : null;
             // 🧾 y lo de los costados de la imagen y el cara a cara (13/10/2026): la letra, los últimos 5 y la racha de cada
             // uno, y cuántas ganó cada uno contra el otro (`html_vs()` de bot/kit.py)
             if (vs && !vs.grupos) {
               const forma = (y) => (y.du || []).slice().sort((p, q) => Number(p[0]) - Number(q[0])).slice(-5).map((d) => (d[2] ? 'G' : 'P')).join('');
               for (const [l, y] of [[vs.a, x.a], [vs.b, x.b]]) {
-                Object.assign(l, { rg: (y.f || {}).rg || '', forma: forma(y), racha: (y.rd && y.rd[0]) || 0 });
+                Object.assign(l, { rg: (y.f || {}).rg || '', forma: forma(y), racha: (y.rd && y.rd[0]) || 0 }, statsVs(y.f));
               }
               vs.h2h = [x.h2h.ga, x.h2h.gb];
               // 🌙 lo de cada uno esta noche, para debajo de su carta, y 📊 la ficha de «Ver estadísticas» (02/11/2026,
@@ -7802,7 +7964,7 @@ export class Avisos {
           const e = ediciones.get(v.msg) || { texto: v.texto || '', ms: [] };
           e.texto += '\n' + x.res;
           e.ms.push(x.m);
-          if (x.gk && !e.gk) e.gk = x.gk;
+          if (x.gk) (e.gks = e.gks || []).push(x.gk);
           for (const u of ms) if (u.de === x.m && !hechos[u.m]) e.ms.push(u.m);
           ediciones.set(v.msg, e);
         }
@@ -7823,7 +7985,7 @@ export class Avisos {
           // la apuesta de ese cruce reescribe su mensaje al cerrar: que lo haga sobre el texto con el resultado
           this.sql.exec('UPDATE apuestas SET texto = ? WHERE canal = ? AND msg = ?', e.texto.slice(0, 1900), canal, msg);
           // 🏁 y la imagen del vs, otra vez con quién pasó (`vsResultado()`). Nunca frena al chat
-          try { if (e.gk) this.vsResultado(canal, msg, e.gk, ahora); } catch (err) { /* queda la imagen de antes */ }
+          try { if (e.gks) this.vsResultado(canal, msg, e.gks, ahora); } catch (err) { /* queda la imagen de antes */ }
           for (const m of e.ms) {
             this.sql.exec('INSERT OR REPLACE INTO chat_vivo (llave, canal, m, msg, texto, t) VALUES (?, ?, ?, ?, ?, ?)',
               L.id, canal, m, msg, e.texto, ahora);
@@ -8188,13 +8350,18 @@ export class Avisos {
     // tabla, y el VS ponía la carta, el OVR y la bandera de otra persona. Ahora un nombre repetido va a `dobles` y lo
     // decide la bandera que escribió la llave; sin bandera que lo decida, no se adivina: queda sin carta (la silueta)
     const tabla = {}, por = {}, dobles = {};
-    for (const f of lobby.tabla || []) {
-      if (!f || !f.k) continue;
+    const sumar = (f) => {
+      if (!f || !f.k || tabla[f.k]) return;
       tabla[f.k] = f;
       const c = claveTurno(f.n);
       if (por[c] && por[c] !== f.k) (dobles[c] = dobles[c] || [por[c]]).push(f.k);
       else por[c] = f.k;
-    }
+    };
+    for (const f of lobby.tabla || []) sumar(f);
+    // 🔴 EL LOBBY TRAE SÓLO LOS PRIMEROS 200, Y EL RESTO VIVE EN SU PERFIL (`p[k].f`, `_perfiles_extra()`). Medido el
+    // 04/11/2026: 464 de 664 quedaban afuera, así que el VS les ponía la silueta teniendo carta, y a ningún rapero de FRZ
+    // (Dlx: «FRZ has their own CARD») le salía la suya: ninguno está entre los 200
+    for (const k of Object.keys(perf)) sumar(perf[k] && perf[k].f);
     const alias = lobby.alias || {};
     const buscar = (n, fl) => {
       const c = claveTurno(n);
@@ -8204,11 +8371,27 @@ export class Avisos {
       }
       return por[c] || alias[c] || (perf[c] ? c : '') || '';
     };
-    // 🃏 la tarjeta de alguien para el chat: la de Temporada, o la que tenga (`Liga.cartaUrl()` de la página)
+    // 🃏 la tarjeta de alguien para el chat: LA DE ESE SERVIDOR si es de ahí (Dlx, 04/11/2026: «que sea relacionada a cada
+    // servidor más»), como la llave de la página (`liga.cartaDe(k, {sv})`); si no, la de Temporada, o la que tenga
     const r2 = String(lobby.r2 || ''), cartas = lobby.cartas || [];
-    const cartaDe = (k) => {
+    const cartaDe = (k, sv) => {
       const f = tabla[k];
-      const cual = f && ['temporada', 'competitivo', 'servidor'].find((c) => (f.c || []).includes(c));
+      const SV = String(sv || '').toUpperCase();
+      // 🃏 CADA UNO TIENE UNA CARTA POR SERVIDOR DONDE ESTÁ (`sv-frz.webp`), la misma de `/card` (Dlx, 04/11/2026: «FRZ has
+      // their own CARD»). Sale de su `p:`, que vive en este objeto. ⚠️ `servidor.webp` ES LA DE SU SERVIDOR PROPIO (`propiaDe()`
+      // en worker.js), que no siempre es el `sv` de la tabla: con ése, a alguien de FDS le salía su carta de FFA
+      let p = null;
+      try {
+        const r = SV ? this.sql.exec('SELECT v FROM persona WHERE k = ?', 'p:' + k).toArray()[0] : null;
+        p = r ? JSON.parse(r.v) : null;
+      } catch (e) { p = null; }
+      const puedeSv = !!p && (p.cs || []).includes('servidor');
+      const propia = p ? String((p.svp !== undefined ? p.svp : puedeSv ? p.sv : '') || '').toUpperCase() : '';
+      if (puedeSv && SV !== propia && (p.svc || []).includes(SV) && /^https:\/\//.test(r2)) {
+        return r2 + '/' + encodeURIComponent(k) + '/sv-' + SV.toLowerCase() + '.webp';
+      }
+      const delSv = f && SV && (f.c || []).includes('servidor') && (p ? propia === SV : String(f.sv || '').toUpperCase() === SV);
+      const cual = delSv ? 'servidor' : f && ['temporada', 'competitivo', 'servidor'].find((c) => (f.c || []).includes(c));
       if (!cual || !/^https:\/\//.test(r2)) return '';
       const i = cartas.indexOf(cual);
       const v = typeof f.cv === 'string' && i >= 0 ? f.cv.split('.')[i] : '';
@@ -9509,6 +9692,7 @@ export class Avisos {
       // decide qué llega a la imagen: lo que no esté acá se pierde callado (el Score se perdía así la primera vez)
       sc: Number(y && y.sc) || 0, rg: /^(S{1,3}|[A-E][+\-−]?)$/.test(String((y && y.rg) || '')) ? String(y.rg) : '',
       forma: String((y && y.forma) || '').replace(/[^GP]/g, '').slice(-5), racha: Math.max(0, Math.min(999, Number(y && y.racha) || 0)),
+      ev: Math.max(0, Number(y && y.ev) || 0), pod: Math.max(0, Number(y && y.pod) || 0), dg: Math.max(0, Number(y && y.dg) || 0), dt: Math.max(0, Number(y && y.dt) || 0),
       carta: /^https:\/\/pub-[a-z0-9]+\.r2\.dev\//.test(String((y && y.carta) || '')) ? String(y.carta).slice(0, 300) : '',
       // 🌙 lo de esta noche, debajo de la carta (02/11/2026, `nocheVs()`)
       noche: String((y && y.noche) || '').slice(0, 60) });
@@ -9607,20 +9791,30 @@ export class Avisos {
    * 🏁 LA MISMA IMAGEN, CON EL RESULTADO (02/11/2026, el remake del VS): cuando el chat le agrega «✅ Pasa…» al mensaje de
    * un cruce, el vs de ese mensaje se vuelve a dibujar con quién pasó (`gano`) y el cara a cara sumado, y la imagen nueva
    * reemplaza a la vieja editando el mismo mensaje —una edición no le suena a nadie—. Si la primera todavía no se dibujó,
-   * se dibuja directo la del resultado. Sólo mano a mano. `gk` = la clave (o `claveTurno`) del que pasó.
+   * se dibuja directo la del resultado. `gks` = las claves (o `claveTurno`) de los que pasaron.
    */
-  vsResultado(canal, msg, gk, ahora = Date.now()) {
-    if (!gk) return '';
+  vsResultado(canal, msg, gks, ahora = Date.now()) {
+    const lista = [].concat(gks || []).filter(Boolean);
+    if (!lista.length) return '';
     const f = this.sql.exec('SELECT * FROM vs_cola WHERE canal = ? AND msg = ? ORDER BY t DESC LIMIT 1', String(canal), String(msg)).toArray()[0];
     if (!f) return '';
     let d = null;
     try { d = JSON.parse(f.datos); } catch (e) { return ''; }
-    if (!d || d.grupos || d.gano || !d.a || !d.b) return '';
-    const es = (y) => (y.k ? y.k === gk : claveTurno(y.n) === gk);
-    const gano = es(d.a) ? 'a' : es(d.b) ? 'b' : '';
-    if (!gano) return '';
-    d.gano = gano;
-    if (Array.isArray(d.h2h)) d.h2h = [d.h2h[0] + (gano === 'a' ? 1 : 0), d.h2h[1] + (gano === 'b' ? 1 : 0)];
+    if (!d) return '';
+    const es = (y) => y && lista.some((gk) => (y.k ? y.k === gk : claveTurno(y.n) === gk));
+    if (Array.isArray(d.grupos)) {
+      // 🧩 con equipos o todos contra todos pueden pasar varios, de a uno: `gano` es la lista de lados, y crece
+      const antes = Array.isArray(d.gano) ? d.gano : [];
+      const ahoraG = d.grupos.map((g, i) => (antes.includes(i) || (g || []).some(es) ? i : -1)).filter((i) => i >= 0);
+      if (!ahoraG.length || ahoraG.length === antes.length) return '';
+      d.gano = ahoraG;
+    } else {
+      if (d.gano || !d.a || !d.b) return '';
+      const gano = es(d.a) ? 'a' : es(d.b) ? 'b' : '';
+      if (!gano) return '';
+      d.gano = gano;
+      if (Array.isArray(d.h2h)) d.h2h = [d.h2h[0] + (gano === 'a' ? 1 : 0), d.h2h[1] + (gano === 'b' ? 1 : 0)];
+    }
     if (f.estado === 'espera' || f.estado === 'dibujando') {
       this.sql.exec("UPDATE vs_cola SET datos = ?, estado = 'espera' WHERE id = ?", JSON.stringify(d), f.id);
       return 'misma';

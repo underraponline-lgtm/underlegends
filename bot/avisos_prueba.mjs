@@ -1717,6 +1717,45 @@ const ok = (cond, que, det) => {
       && dcH.buscar('Ana') === 'ana' && A.genteChat('Volk 🇨🇴', dcH.buscar, dcH.tabla)[0].k === 'volk-co',
     'dos que se llaman igual: decide la bandera de la llave; sin bandera no se adivina (queda la silueta, no la carta de otro)');
     o.cruceMem = null;
+    // 👕 la carta del VS (04/11/2026): la de ESE servidor si es el suyo; si no, la de Temporada, y si no, la que tenga
+    kv.set('web:lobby', JSON.stringify({ r2: 'https://r2', cartas: ['temporada', 'servidor'], tabla: [
+      { n: 'Uno', k: 'uno', sv: 'FFA', c: ['temporada', 'servidor'], cv: '7.9' }, { n: 'Dos', k: 'dos', sv: 'DRA', c: ['servidor'], cv: '.4' }] }));
+    const dcC = await o.datosCruce(T + 9 * 60000);
+    ok(/uno\/servidor\.webp\?v=9$/.test(dcC.cartaDe('uno', 'FFA')) && /uno\/temporada\.webp\?v=7$/.test(dcC.cartaDe('uno', 'SR'))
+      && /dos\/servidor\.webp/.test(dcC.cartaDe('dos', 'FFA')) && dcC.cartaDe('nadie', 'FFA') === '',
+    'el VS usa la carta de ese servidor si es el suyo; en otro, la de Temporada, y si sólo tiene otra, ésa', JSON.stringify([dcC.cartaDe('uno', 'FFA'), dcC.cartaDe('uno', 'SR')]));
+    o.cruceMem = null;
+    // 🔴 quien no entra en los 200 del lobby también tiene carta: su fila viene en su perfil
+    kv.set('web:perfiles', JSON.stringify({ p: { tres: { f: { n: 'Tres Ceros', k: 'tres', sv: 'FRZ', c: ['servidor'], cv: '.2', ovr: 40 } } } }));
+    const dcF = await o.datosCruce(T + 9 * 60000);
+    ok(dcF.buscar('Tres Ceros') === 'tres' && /tres\/servidor\.webp\?v=2$/.test(dcF.cartaDe('tres', 'FRZ')) && dcF.tabla.tres.ovr === 40 && dcF.tabla.uno,
+      'alguien fuera de los 200 de la tabla sale con su carta y su OVR, sin perder a los de la tabla', JSON.stringify(Object.keys(dcF.tabla)));
+    // 🃏 la carta de ESE servidor, si la tiene y puede tenerla: la misma de /card
+    sql.exec('INSERT OR REPLACE INTO persona (k, v, t) VALUES (?, ?, ?)', 'p:uno', JSON.stringify({ cs: ['temporada', 'servidor'], sv: 'FFA', svc: ['FRZ', 'FFA'] }), 1);
+    sql.exec('INSERT OR REPLACE INTO persona (k, v, t) VALUES (?, ?, ?)', 'p:dos', JSON.stringify({ cs: ['servidor'], sv: 'FFA', svc: ['FFA'] }), 1);
+    sql.exec('INSERT OR REPLACE INTO persona (k, v, t) VALUES (?, ?, ?)', 'p:tres', JSON.stringify({ cs: [], svc: ['FRZ'] }), 1);
+    ok(/uno\/sv-frz\.webp$/.test(dcF.cartaDe('uno', 'FRZ')) && /uno\/servidor\.webp/.test(dcF.cartaDe('uno', 'FFA'))
+      && /uno\/temporada\.webp/.test(dcF.cartaDe('uno', 'SR')) && /tres\/servidor\.webp/.test(dcF.cartaDe('tres', 'FRZ'))
+      && /uno\/temporada\.webp/.test(dcF.cartaDe('uno', 'FDS')),
+    'en un servidor donde está, su carta de ese servidor; en el suyo, la suya; donde no está, la de Temporada', dcF.cartaDe('uno', 'FRZ'));
+    sql.exec("DELETE FROM persona WHERE k IN ('p:uno', 'p:dos', 'p:tres')");
+    kv.delete('web:perfiles');
+    o.cruceMem = null;
+    // 🧩 el resultado con equipos: `gano` es la lista de lados, crece de a uno y sólo se redibuja si cambió
+    sql.exec('INSERT INTO vs_cola (id, sv, canal, msg, datos, t) VALUES (?, ?, ?, ?, ?, ?)', 'grupos1', 'FFA', 'CG', 'MG',
+      JSON.stringify({ grupos: [[{ n: 'Ana', k: 'ana' }, { n: 'Bea', k: 'bea' }], [{ n: 'Caro', k: 'caro' }], [{ n: 'Sin Clave' }]] }), T);
+    const gr = () => JSON.parse(sql.exec("SELECT datos FROM vs_cola WHERE msg = 'MG' ORDER BY t DESC LIMIT 1").toArray()[0].datos).gano;
+    const g1 = o.vsResultado('CG', 'MG', ['bea'], T + 1);
+    const gE = JSON.stringify(gr());
+    const g2 = o.vsResultado('CG', 'MG', ['bea'], T + 2);
+    const g3 = o.vsResultado('CG', 'MG', [A.claveTurno('Sin Clave')], T + 3);
+    const gE2 = JSON.stringify(gr());
+    sql.exec("UPDATE vs_cola SET estado = 'hecho' WHERE msg = 'MG'");
+    const g4 = o.vsResultado('CG', 'MG', ['caro'], T + 4);
+    const gE3 = JSON.stringify(gr());
+    ok(g1 === 'misma' && gE === '[0]' && g2 === '' && g3 === 'misma' && gE2 === '[0,2]' && g4 === 'nueva' && gE3 === '[0,1,2]',
+      'con grupos el resultado marca el lado de quien pasó, suma de a uno, no redibuja si no cambió y, ya dibujada, encola otra', JSON.stringify([g1, gE, g2, g3, gE2, g4, gE3]));
+    sql.exec("DELETE FROM vs_cola WHERE msg = 'MG'");
     // 📝 la fase de inscripciones: desde tres anotados de verdad, UN mensaje, que se edita cuando se suman más
     sql.exec('DELETE FROM vivo');
     const AN = '1557000000000000000';
@@ -2157,7 +2196,9 @@ const ok = (cond, que, det) => {
   const buscar = (n) => A.claveTurno(n);
   const x1 = A.infoCruce(['Snow 🇨🇴', 'Oasis 🇨🇱'], buscar, tabla, perf);
   const t1 = A.tituloCruce(x1);
-  ok(t1 && t1.t === 'EL CLÁSICO' && /3 veces: Oasis gana 3 a 0/.test(t1.sub), 'tres cruces: EL CLÁSICO, con cómo van', JSON.stringify(t1));
+  const t1c = A.tituloCruce(x1, ['LA BESTIA NEGRA']);
+  ok(t1 && t1.t === 'LA BESTIA NEGRA' && /Oasis le ganó las 3 veces a Snow/.test(t1.sub) && t1c.t === 'EL CLÁSICO' && /3 veces: Oasis gana 3 a 0/.test(t1c.sub),
+    'tres cruces y todos para uno: LA BESTIA NEGRA, y si ya salió esta noche, EL CLÁSICO con cómo van', JSON.stringify([t1, t1c]));
   const t2 = A.tituloCruce(A.infoCruce(['OG', 'Snow'], buscar, tabla, perf));
   ok(t2 && t2.t === 'LA REVANCHA' && /Snow le ganó la última vez y OG/.test(t2.sub), 'ya se cruzaron: LA REVANCHA', JSON.stringify(t2));
   const t3 = A.tituloCruce(A.infoCruce(['Nuevo', 'OG'], buscar, tabla, perf));
@@ -2178,6 +2219,37 @@ const ok = (cond, que, det) => {
     && T(cx('a', 'b', [{ n: 'KS' }, { n: 'KS' }])) === 'FUEGO AMIGO' && T(cx('a', 'b')) === 'DUELO DE TITANES'
     && T(cx('d', 'c')) === 'RACHA EN JUEGO' && T(cx('a', 'c')) === 'LA EXPERIENCIA CONTRA EL HAMBRE',
   'los títulos nuevos: crews, fuego amigo, titanes, racha y experiencia contra hambre');
+  // 🔥 más títulos (04/11/2026, Dlx: «que haya más variación»), cada uno con su dato, y sin repetir en la misma noche
+  const P = (t, x) => A.titulosCruce(x).some((o) => o.t === t);
+  const ca = (fa, fb, ex = {}) => {
+    const x = { a: Object.assign({ n: 'Ana', k: 'ana', hay: true, du: [], rd: null, hoy: [] }, ex.a, { f: fa }),
+      b: Object.assign({ n: 'Bea', k: 'bea', hay: true, du: [], rd: null, hoy: [] }, ex.b, { f: fb }), h2h: ex.h2h || { ga: 0, gb: 0, ult: '' } };
+    return Object.assign(x, { ronda: ex.ronda, sv: ex.sv });
+  };
+  const gana = (n) => Array.from({ length: n }, (_, i) => [1e9 + i, 'x', 1]);
+  ok(P('EL DESEMPATE', ca({}, {}, { h2h: { ga: 1, gb: 1, ult: 'a' } })) && P('CUENTA PENDIENTE', ca({}, {}, { h2h: { ga: 2, gb: 0, ult: 'a' } }))
+    && P('LA FINAL SOÑADA', ca({ pos: 3 }, { pos: 18 }, { ronda: 'Gran Final' })) && !P('LA FINAL SOÑADA', ca({ pos: 3 }, { pos: 18 }, { ronda: 'Semifinales' }))
+    && P('INVICTOS ESTA NOCHE', ca({}, {}, { a: { hoy: gana(2) }, b: { hoy: gana(2) } })) && P('IMPARABLE ESTA NOCHE', ca({}, {}, { a: { hoy: gana(3) } }))
+    && P('EL #1 EN JUEGO', ca({ pos: 1 }, { pos: 40 })) && P('EL CAZADOR Y LA PRESA', ca({ caz: 2 }, { sob: 1 }))
+    && P('CABEZA CON PRECIO', ca({}, {}, { a: { precio: 1500 } })) && P('CHOQUE DE RACHAS', ca({}, {}, { a: { rd: [3, 3] }, b: { rd: [4, 4] } }))
+    && P('TUMBAR AL CAMPEÓN', ca({ oro: 2 }, { oro: 0 })) && !P('TUMBAR AL CAMPEÓN', ca({ oro: 2 }, { oro: 1 }))
+    && P('DOS QUE NO PERDONAN', ca({ wr: '75.0%', du: [9, 12] }, { wr: '71.4%', du: [5, 7] })) && !P('DOS QUE NO PERDONAN', ca({ wr: '100%', du: [1, 1] }, { wr: '90%', du: [9, 10] }))
+    && P('PODIO CONTRA PODIO', ca({ pod: 5 }, { pod: 6 })) && P('MONEDA AL AIRE', ca({ ovr: 70 }, { ovr: 70 }))
+    && P('LOS VETERANOS', ca({ ev: 25 }, { ev: 30 })) && P('SANGRE NUEVA', ca({ ev: 1 }, { ev: 2 }))
+    && P('LOCAL CONTRA VISITANTE', ca({ sv: 'FRZ' }, { sv: 'FFA' }, { sv: 'FRZ' })) && !P('LOCAL CONTRA VISITANTE', ca({ sv: 'FRZ' }, { sv: 'FRZ' }, { sv: 'FRZ' }))
+    && P('CHILE VS MÉXICO', ca({ cc: 'cl' }, { cc: 'mx' })) && !P('CHILE VS CHILE', ca({ cc: 'cl' }, { cc: 'cl' })),
+  'cada título nuevo sale sólo con su dato');
+  ok(JSON.stringify(A.statsVs({ ev: 12, pod: 2, du: [3, 5] })) === '{"ev":12,"pod":2,"dg":3,"dt":5}' && A.statsVs(null).ev === 0,
+    'las stats de la carta de quien no tiene carta salen de su fila, y sin fila son cero');
+  const lleno = ca({ pos: 1, oro: 3, cc: 'cl' }, { pos: 5, oro: 1, cc: 'mx' });
+  const u1 = A.tituloCruce(lleno, []).t, u2 = A.tituloCruce(lleno, [u1]).t;
+  ok(u1 === 'EL #1 EN JUEGO' && u2 === 'DUELO DE TITANES' && A.tituloCruce(lleno, A.titulosCruce(lleno).map((o) => o.t)).t === u1,
+    'no se repite en la misma noche si hay otro, y si ya salieron todos vuelve el más especial', [u1, u2].join(' / '));
+  ok(JSON.stringify(A.titulosUsados({ 'v:1:1': { texto: '🔥 **LA REVANCHA** · algo' }, 'v:1:2': { texto: 'sin título' }, c: {} })) === '["LA REVANCHA"]',
+    'los títulos usados salen de lo que el bot ya dijo');
+  ok(A.tituloGrupos([{ n: 'Ana' }], [{}, {}, {}]).t === 'UNO CONTRA TODOS' && /Ana se enfrenta solo a 3/.test(A.tituloGrupos([{ n: 'Ana' }], [{}, {}, {}]).sub)
+    && A.tituloGrupos([{}, {}], [{}, {}]).t === 'PAREJA CONTRA PAREJA' && A.tituloGrupos([{}, {}, {}], [{}, {}, {}]).t === 'TRÍO CONTRA TRÍO'
+    && A.tituloGrupos([{}, {}], [{}, {}, {}]).t === 'EN DESVENTAJA', 'con equipos, un título según cómo está parado el cruce');
   const xe = cx('a', 'b');
   xe.a.pp = 1;
   const datos = new Set(Array.from({ length: 40 }, (_, i) => A.datoCurioso(Object.assign(xe, { a: Object.assign(xe.a, { crew: { n: 'Follombia', tier: 'Oro' } }) }), 's' + i, () => 0)));
@@ -2200,6 +2272,22 @@ const ok = (cond, que, det) => {
     { r: 'Semifinales', b: [[['Oasis 🇨🇱', 'OG'], '', '']] }] };
   ok(A.ladoGanador(L, 'Cuartos', 'Snow 🇨🇴', 'Oasis 🇨🇱') === 'B' && A.ladoGanador(L, 'Cuartos', 'OG', 'Ana') === 'A'
     && A.ladoGanador(L, 'Semifinales', 'Oasis 🇨🇱', 'OG') === '', 'quién ganó: el de la ronda siguiente o el escrito; si no, todavía no');
+  // 🌙 los duelos de esta noche (04/11/2026): entran a la forma y al cara a cara, y no se cuentan dos veces
+  {
+    const genteH = (l) => (l === 'Trio' ? [{ k: 'a', n: 'A' }, { k: 'b', n: 'B' }] : [{ k: l.toLowerCase(), n: l }]);
+    const pubH = Date.parse('2026-11-04T01:00:00Z');
+    const LH = { pub: pubH, rondas: [{ r: 'Octavos', b: [[['Ana', 'Caro'], 'Ana', ''], [['Beto', 'Dani'], 'Dani', ''], [['Eva', 'Fer'], '', ''], [['Trio', 'Gus'], 'Gus', '']] }] };
+    const dcH2 = { perf: { ana: { du: [[7, 'Vieja', 0]] } }, evs: {}, buscar: (n) => String(n).toLowerCase() };
+    const hoyD = A.duelosDeLlave(LH, genteH, dcH2);
+    const pv = A.personaVs({ n: 'Ana', k: 'ana' }, { tabla: {}, perf: dcH2.perf }, { noche: hoyD });
+    const xH = A.infoCruce(['Ana', 'Caro'], dcH2.buscar, {}, dcH2.perf, hoyD);
+    ok(hoyD.get('ana')[0][1] === 'Caro' && hoyD.get('ana')[0][2] === 1 && hoyD.get('caro')[0][2] === 0 && hoyD.get('dani')[0][2] === 1
+      && !hoyD.has('eva') && !hoyD.has('gus') && pv.forma === 'PG' && xH.h2h.ga === 1 && xH.h2h.gb === 0 && xH.a.hoy.length === 1,
+    'los duelos de esta noche: sólo los jugados mano a mano, y suman a los últimos 5 y al cara a cara', JSON.stringify([...hoyD]));
+    const dcH3 = { perf: { ana: { du: [[7, 'Caro', 1]] } }, evs: { 7: ['x', 'y', '2026-11-04T02:00:00Z'] }, buscar: (n) => String(n).toLowerCase() };
+    const hoyD2 = A.duelosDeLlave(LH, genteH, dcH3);
+    ok(!hoyD2.has('ana') && hoyD2.has('caro'), 'si el perfil ya trae ese duelo de esa noche, no se cuenta dos veces', JSON.stringify([...hoyD2]));
+  }
   const bc = A.batallaChat({ rondas: [{ r: 'Octavos', b: [[['A', 'B'], '', ''], [['C', 'D'], '', '']] }] });
   ok(bc && bc.lados.join() === 'A,B', 'sin nada jugado, se habla de la primera batalla');
 }
