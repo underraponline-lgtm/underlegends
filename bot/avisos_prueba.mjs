@@ -150,7 +150,7 @@ const ok = (cond, que, det) => {
   'con los cuartos cerrados y la final armada: quién pasó y la final');
   const m2 = A.momentosChat(llaveDe(SEMIS + '\nCAMPEÓN: Dora 🇲🇽\n'), 'COPA SOOLAR', []);
   ok(m2[m2.length - 1].m === 'campeon'
-    && /^🏆 \*\*Dora 🇲🇽\*\* es el campeón de \*\*COPA SOOLAR\*\*\nGanó 2 batallas y en la final le ganó a Ana 🇦🇷\.$/.test(m2[m2.length - 1].texto)
+    && /^🏆 \*\*Dora 🇲🇽\*\* es el campeón de \*\*COPA SOOLAR\*\*\nGanó 2 batallas y en la final le ganó a Ana 🇦🇷\.\n\nLa llave entera: <https:\/\/underlegends\.pages\.dev\/freestyle-rap\/eventos>$/.test(m2[m2.length - 1].texto)
     && !m2.some((x) => x.m === 'final'), 'con campeón: el cierre con su noche, y la final ya no', m2[m2.length - 1].texto);
   // los frenos: sólo el último momento, un mensaje nuevo cada 10 minutos, y lo que cambia se edita
   const T = 1790000000000;

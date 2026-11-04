@@ -111,6 +111,12 @@ búsquedas, vacías). **Temas**: nada por «dark neon magenta» (y ya tenemos pa
 - Preguntas para Dlx: (1) el magenta hoy dice tres cosas en el panel —gente nueva, el día más lleno, lo que baja—:
   ¿magenta sólo para «atención» y lo nuevo en verde agua? (2) ¿los ajustes se guardan solos (como hoy) o con un
   «Guardar» por grupo? (3) ¿Verificarme se revisa sola al volver de Discord?
+- **Hecho en la 4.23 (04/11/2026, sin búsquedas nuevas; Dlx: «Haz todo lo que necesites hacer para mejorar»):** la barra
+  del puntaje partida en sus pesos; magenta sólo para «atención» y lo nuevo en verde agua; los ajustes siguen guardándose
+  solos, en una tabla de «dónde publica» e interruptores; cada sugerencia lleva a su parte del panel (no a un ajuste: casi
+  todas hablan de días y horas, así que el botón dice «Ver cuándo»); Verificarme se revisa sola al volver de Discord, con
+  «3 de 5» y lo que toca ahora marcado; ya verificado, tus cartas. **Queda:** la lista viva de cinco filas desde antes de
+  empezar, el buscador de canales de /card y la carta propia en grande al terminar.
 - No aplica: medidores en anillo y radar (el puntaje son cuatro pesos, no ejes), sparklines en los números, la barra de
   «cambios sin guardar» (choca con el guardado solo), el selector de país con un globo (WebGL, y adivinar el país del
   navegador es adivinar la identidad), un mapa de calor de 7×5 (el payload no trae día por hora).

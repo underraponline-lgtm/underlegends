@@ -528,6 +528,8 @@ function cierreChat(L, rondas, fb, tit, opc, gente, rival) {
   const top = [...racha.values()].sort((a, b) => b[1] - a[1])[0];
   if (top && top[1] >= RACHA_CHAT) mejor.push('🔥 La racha: **' + nombresChat([top[0]]) + '** lleva ' + top[1] + ' duelos ganados seguidos.');
   if (mejor.length) lineas.push('', '✨ **Lo mejor de la noche**', ...mejor);
+  // 🔗 es cuando más gente está mirando el chat, y el arranque era el único mensaje que llevaba a la página (04/11/2026)
+  lineas.push('', 'La llave entera: <' + WEB_EVENTOS + '>');
   const img = !varios && camp[0] && camp[0].k && opc.cartaDe ? opc.cartaDe(camp[0].k) : '';
   return Object.assign({ m: 'campeon', texto: lineas.join('\n') }, img ? { img } : {});
 }
@@ -550,7 +552,7 @@ export function momentosChat(L, nombre, fav, nivel = 'normal', opc = {}) {
   const n = (L && L.participantes) || 0;
   out.push({ m: 'llave', texto: '🎤 Arrancó **' + tit + '**' + (n ? ' · ' + n + ' en la llave' : '')
     + ((fav || []).length ? ' · los favoritos: ' + fav.slice(0, 3).map(([q, o]) => escMd(q) + ' (OVR ' + o + ')').join(', ') : '')
-    + '\nSeguila en vivo: <' + WEB_EVENTOS + '>' });
+    + '\nSíguela en vivo: <' + WEB_EVENTOS + '>' });
   const F = rondas.find((R) => /^final$/i.test(String(R.r || '')));
   const fb = F ? batallasDe(F)[0] : null;
   if (porBatalla(nivel)) {
@@ -14017,7 +14019,9 @@ export class Avisos {
       dias.push({ dia, bot: c('bot'), web: c('web'), visitas: v ? v.n : 0 });
     }
     return { t: ahora, uso: this.usoResumen(), semanas: this.usoSemanas(ahora), dias, secciones: this.seccionesResumen(),
-      tutorial: this.tutorialResumen(), filas: { hoy: this.leer('medidas_hoy'), ayer: this.leer('medidas_ayer') } };
+      tutorial: this.tutorialResumen(), filas: { hoy: this.leer('medidas_hoy'), ayer: this.leer('medidas_ayer') },
+      // 🐞 lo que se le rompió a la gente, 7 días: dónde y qué, nunca de quién (una pasada de bugs no ve esto recorriendo)
+      errores: this.erroresResumen() };
   }
 
   /** ⚙️ Los ajustes del dueño, como están (ver `ajusteValido()`) */

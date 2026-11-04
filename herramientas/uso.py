@@ -186,6 +186,10 @@ def main():
     print('\nLOS ULTIMOS 14 DIAS')
     for d in (j.get('dias') or [])[-14:]:
         print('%s   bot %4d   web %4d   navegadores %4d' % (d['dia'], d['bot'], d['web'], d['visitas']))
+    errs = j.get('errores') or []
+    print('\nLO QUE SE ROMPIO EN LA PAGINA, 7 DIAS' + ('' if errs else ': nada'))
+    for e in errs[:12]:
+        print('  %3d veces · %s · %s' % (e.get('n') or 0, str(e.get('donde'))[:40], str(e.get('msg'))[:90]))
     print('\nLO QUE MAS LEYO EL OBJETO')
     fi = j.get('filas') or {}
     print('\n'.join(filas_txt(fi.get('hoy'))))

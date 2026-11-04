@@ -3409,7 +3409,7 @@ const COMANDOS = {
     }
     let dg = diagnostico(miembro, P);
     // 🔗 «B»: el botón de la página va siempre, también cuando no te falta nada: ahí se ve cómo va
-    const aLaPagina = [botonLink('Seguilo en la página', URL_VERIFICAR)];
+    const aLaPagina = [botonLink('Síguelo en la página', URL_VERIFICAR)];
     const unPais = dg.paises.length === 1;
     const si = (b) => (b ? '✅' : '❌');
     const lista = [

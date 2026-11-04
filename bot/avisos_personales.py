@@ -141,7 +141,7 @@ def eventos(antes, hoy):
             cuerpo = ('%s es el #%d y te lleva %s de OVR.' % (arr[0], ph - 1, _num(d)) if d > 0
                       else '%s es el #%d, con tu mismo OVR: el próximo evento los separa.' % (arr[0], ph - 1))
             out.append({'id': _id(did, 'pasado', t[:10]), 'quien': did,
-                        'titulo': '📉 Te pasaron: ahora sos #%d de la Temporada' % ph,
+                        'titulo': '📉 Te pasaron: ahora eres #%d de la Temporada' % ph,
                         'cuerpo': cuerpo, 'url': url})
     # ⚠️ CON FECHA: el objeto no manda lo de más de una semana, y la cola se
     # recorta por fecha (`encolar()`), porque ya no se borra al leerla
@@ -466,7 +466,7 @@ def _self_check():
        'el mismo rango escrito con otro guion no es un cambio')
     # 📉 te pasaron
     e = eventos({'1': dict(base, pos=5)}, {'1': dict(base, pos=6, arriba=['Bea', 2])})
-    ok(len(e) == 1 and e[0]['titulo'] == '📉 Te pasaron: ahora sos #6 de la Temporada'
+    ok(len(e) == 1 and e[0]['titulo'] == '📉 Te pasaron: ahora eres #6 de la Temporada'
        and e[0]['cuerpo'] == 'Bea es el #5 y te lleva 2 de OVR.', 'te pasaron: tu puesto nuevo, quién y cuánto te lleva')
     e = eventos({'1': dict(base, pos=5)}, {'1': dict(base, pos=6, arriba=['Bea', 0])})
     ok(len(e) == 1 and 'mismo OVR' in e[0]['cuerpo'], 'empatados: el próximo evento los separa')
