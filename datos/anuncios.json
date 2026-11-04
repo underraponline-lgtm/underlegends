@@ -1,5 +1,5 @@
 {
- "cuando": "2026-11-04T16:29:11+00:00",
+ "cuando": "2026-11-04T16:55:52+00:00",
  "anuncios": [
   {
    "nombre": "¡SE LLEGÓ LA GRAN NOCHE!",
@@ -5832,6 +5832,24 @@
   }
  ],
  "inscripciones": [
+  {
+   "servidor": "LKR",
+   "canal": "⟡・INSCRIPCIONES",
+   "texto": "🇲🇽",
+   "quien": "caliz123_",
+   "discord_id": "1546111597343146044",
+   "msg_id": "1567577641614311537",
+   "cuando": "2026-11-04T16:33:53"
+  },
+  {
+   "servidor": "LKR",
+   "canal": "⟡・INSCRIPCIONES",
+   "texto": "🇨🇱",
+   "quien": "dbbdhdhfbdjdj_31533",
+   "discord_id": "1168982381156388998",
+   "msg_id": "1567577252919509045",
+   "cuando": "2026-11-04T16:32:21"
+  },
   {
    "servidor": "LKR",
    "canal": "⟡・INSCRIPCIONES",
@@ -41813,24 +41831,6 @@
    "discord_id": "1554991493054201940",
    "msg_id": "1555380591459963011",
    "cuando": "2026-10-02T00:47:10"
-  },
-  {
-   "servidor": "FFA",
-   "canal": "✦📝—inscripciones",
-   "texto": "Korey🇨🇱",
-   "quien": "korey6312",
-   "discord_id": "1467969065199997000",
-   "msg_id": "1555380576066867262",
-   "cuando": "2026-10-02T00:47:06"
-  },
-  {
-   "servidor": "FFA",
-   "canal": "✦📝—inscripciones",
-   "texto": "sosa",
-   "quien": "sosaatrz",
-   "discord_id": "1471153954254622774",
-   "msg_id": "1555380557695688755",
-   "cuando": "2026-10-02T00:47:02"
   }
  ]
 }
