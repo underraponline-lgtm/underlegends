@@ -1387,6 +1387,61 @@
    "b": "SIX AGUS",
    "ganador": "SIX AGUS",
    "votos": "1–0"
+  },
+  "1567386661451731115": {
+   "id": "1567386661451731115",
+   "sv": "[FFA] Freestyle For All 👾",
+   "g": "1468472442925092958",
+   "canal": "1487206164864438513",
+   "pub": 1793764500726,
+   "a": "GEOKA",
+   "b": "YINN",
+   "ganador": "YINN",
+   "votos": "1–0"
+  },
+  "1567387831700033617": {
+   "id": "1567387831700033617",
+   "sv": "[FFA] Freestyle For All 👾",
+   "g": "1468472442925092958",
+   "canal": "1487206164864438513",
+   "pub": 1793764779735,
+   "a": "YINN",
+   "b": "AGUS",
+   "ganador": "YINN",
+   "votos": "1–0"
+  },
+  "1567389152318718116": {
+   "id": "1567389152318718116",
+   "sv": "[FFA] Freestyle For All 👾",
+   "g": "1468472442925092958",
+   "canal": "1487206164864438513",
+   "pub": 1793765094595,
+   "a": "YINN",
+   "b": "SIX",
+   "ganador": "SIX",
+   "votos": "1–0"
+  },
+  "1567390223867056221": {
+   "id": "1567390223867056221",
+   "sv": "[FFA] Freestyle For All 👾",
+   "g": "1468472442925092958",
+   "canal": "1487206164864438513",
+   "pub": 1793765350072,
+   "a": "NHP",
+   "b": "SIX",
+   "ganador": "SIX",
+   "votos": "1–0"
+  },
+  "1567391292999340094": {
+   "id": "1567391292999340094",
+   "sv": "[FFA] Freestyle For All 👾",
+   "g": "1468472442925092958",
+   "canal": "1487206164864438513",
+   "pub": 1793765604973,
+   "a": "MOLUSCO",
+   "b": "SIX",
+   "ganador": "SIX",
+   "votos": "1–0"
   }
  },
  "llaves": {
@@ -5535,8 +5590,8 @@
    "g": "1468472442925092958",
    "canal": "1487206164864438513",
    "pub": 1793760828802,
-   "ed": 1793764403310,
-   "texto": "`[ CUARTOS ]`\n⌞LEOPOLD SEAR⌝ 🆚 ⌞LRS⌝ 🆚 ⌞YINN⌝\n⌞TAM⌝ 🆚 ⌞MOLUSCO⌝ 🆚 ⌞MAKMAH⌝\n⌞GEOKA⌝ 🆚 ⌞LVEL⌝ 🆚 ⌞VANDU⌝\n⌞PICHULA⌝ 🆚 ⌞SIX⌝ 🆚 ⌞AGUS⌝\n`[ SEMIFINALES ]`\n⌞YINN LEOPOLD SEAR⌝ 🆚 ⌞TAM MOLUSCO⌝\n⌞GEOKA VANDU⌝ 🆚 ⌞SIX AGUS⌝\n`[ FINAL ]`\n⌞YINN MOLUSCO TAM⌝ 🆚 ⌞SIX GEOKA AGUS⌝",
+   "ed": 1793766210508,
+   "texto": "`[ CUARTOS ]`\n⌞LEOPOLD SEAR⌝ 🆚 ⌞LRS⌝ 🆚 ⌞YINN⌝\n⌞TAM⌝ 🆚 ⌞MOLUSCO⌝ 🆚 ⌞MAKMAH⌝\n⌞GEOKA⌝ 🆚 ⌞LVEL⌝ 🆚 ⌞VANDU⌝\n⌞PICHULA⌝ 🆚 ⌞SIX⌝ 🆚 ⌞AGUS⌝\n`[ SEMIFINALES ]`\n⌞YINN LEOPOLD SEAR⌝ 🆚 ⌞TAM MOLUSCO⌝\n⌞GEOKA VANDU⌝ 🆚 ⌞SIX AGUS⌝\n`[ FINAL ]`\n⌞YINN MOLUSCO TAM⌝ 🆚 ⌞SIX GEOKA AGUS⌝\n⌞GEOKA⌝ 🆚 ⌞YINN⌝\n⌞YINN⌝ 🆚 ⌞AGUS⌝\n⌞YINN⌝ 🆚 ⌞SIX⌝\n⌞NHP⌝ 🆚 ⌞SIX⌝\n⌞MOLUSCO⌝ 🆚 ⌞SIX⌝\n⌞SIX⌝ 🆚 ⌞TAM⌝",
    "batallas": [
     [
      "CUARTOS",
@@ -5567,8 +5622,8 @@
       "LVEL",
       "VANDU"
      ],
-     null,
-     "no aparece nadie después",
+     "GEOKA",
+     "ronda siguiente",
      []
     ],
     [
@@ -5607,6 +5662,66 @@
      [
       "YINN MOLUSCO TAM",
       "SIX GEOKA AGUS"
+     ],
+     null,
+     "última ronda y no dice campeón",
+     []
+    ],
+    [
+     "FINAL",
+     [
+      "GEOKA",
+      "YINN"
+     ],
+     "YINN",
+     "veredicto",
+     []
+    ],
+    [
+     "FINAL",
+     [
+      "YINN",
+      "AGUS"
+     ],
+     "YINN",
+     "veredicto",
+     []
+    ],
+    [
+     "FINAL",
+     [
+      "YINN",
+      "SIX"
+     ],
+     "SIX",
+     "veredicto",
+     []
+    ],
+    [
+     "FINAL",
+     [
+      "NHP",
+      "SIX"
+     ],
+     "SIX",
+     "veredicto",
+     []
+    ],
+    [
+     "FINAL",
+     [
+      "MOLUSCO",
+      "SIX"
+     ],
+     "SIX",
+     "veredicto",
+     []
+    ],
+    [
+     "FINAL",
+     [
+      "SIX",
+      "TAM"
      ],
      null,
      "última ronda y no dice campeón",
