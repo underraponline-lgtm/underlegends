@@ -2,39 +2,6 @@
  "_leeme": "Los eventos de vidas de #veredictos ya armados —quién peleó con quién y quién ganó—, para cargarlos aunque ya no estén entre los últimos mensajes del canal; y cada batalla con su ganador (`batallas`), para la llave que no lo dice; y cada llave como se jugó (`llaves`), que manda sobre la del organizador. Sin los mensajes: el repo es público. Lo escribe bot/escuchar.py (vidas()).",
  "eventos": {},
  "batallas": {
-  "1564834922856972419": {
-   "id": "1564834922856972419",
-   "sv": "[FFA] Freestyle For All 👾",
-   "g": "1468472442925092958",
-   "canal": "1487206164864438513",
-   "pub": 1793156118836,
-   "a": "SIX",
-   "b": "LIZEN",
-   "ganador": "SIX",
-   "votos": "1–0"
-  },
-  "1564836395447492740": {
-   "id": "1564836395447492740",
-   "sv": "[FFA] Freestyle For All 👾",
-   "g": "1468472442925092958",
-   "canal": "1487206164864438513",
-   "pub": 1793156469929,
-   "a": "JANHO",
-   "b": "GIANLAMALDAD",
-   "ganador": "GIANLAMALDAD",
-   "votos": "1–0"
-  },
-  "1564838197819875360": {
-   "id": "1564838197819875360",
-   "sv": "[FFA] Freestyle For All 👾",
-   "g": "1468472442925092958",
-   "canal": "1487206164864438513",
-   "pub": 1793156899648,
-   "a": "LAUTARO LA SINCERIDAD",
-   "b": "PARK JI SUNG",
-   "ganador": "PARK JI SUNG",
-   "votos": "1–0"
-  },
   "1564839435080568933": {
    "id": "1564839435080568933",
    "sv": "[FFA] Freestyle For All 👾",
@@ -1412,78 +1379,6 @@
   }
  },
  "llaves": {
-  "1559761199640612965": {
-   "id": "1559761199640612965",
-   "sv": "[FFA] Freestyle For All 👾",
-   "g": "1468472442925092958",
-   "canal": "1557583344638623754",
-   "pub": 1791946448956,
-   "ed": 1791948122212,
-   "texto": "`[ CUARTOS ]`\n⌞AGUS⌝ 🆚 ⌞WARAP⌝\n⌞LIBERIA⌝ 🆚 ⌞GOCHO⌝\n⌞ZA⌝ 🆚 ⌞CRONOX⌝ 🆚 ⌞NEMI⌝\n⌞VERC⌝ 🆚 ⌞PICHULA⌝\n`[ SEMIFINALES ]`\n⌞AGUS⌝ 🆚 ⌞SEBAS⌝\n⌞VERC⌝ 🆚 ⌞NEMI⌝",
-   "batallas": [
-    [
-     "CUARTOS",
-     [
-      "AGUS",
-      "WARAP"
-     ],
-     "AGUS",
-     "veredicto",
-     []
-    ],
-    [
-     "CUARTOS",
-     [
-      "LIBERIA",
-      "GOCHO"
-     ],
-     "LIBERIA",
-     "veredicto",
-     []
-    ],
-    [
-     "CUARTOS",
-     [
-      "ZA",
-      "CRONOX",
-      "NEMI"
-     ],
-     "NEMI",
-     "veredicto",
-     []
-    ],
-    [
-     "CUARTOS",
-     [
-      "VERC",
-      "PICHULA"
-     ],
-     "VERC",
-     "veredicto",
-     []
-    ],
-    [
-     "SEMIFINALES",
-     [
-      "AGUS",
-      "SEBAS"
-     ],
-     "AGUS",
-     "veredicto",
-     []
-    ],
-    [
-     "SEMIFINALES",
-     [
-      "VERC",
-      "NEMI"
-     ],
-     "VERC",
-     "veredicto",
-     []
-    ]
-   ]
-  },
   "1560047366801981441": {
    "id": "1560047366801981441",
    "sv": "✮ 𝑼𝒓𝒃𝒂𝒏 𝑭𝒓𝒆𝒆𝒔𝒕𝒚𝒍𝒆 ✮ | A New Era",
@@ -5619,6 +5514,50 @@
      ],
      "MAKMAH 🇻🇪",
      "veredicto",
+     []
+    ]
+   ]
+  },
+  "1567371260285947934": {
+   "id": "1567371260285947934",
+   "sv": "[FFA] Freestyle For All 👾",
+   "g": "1468472442925092958",
+   "canal": "1487206164864438513",
+   "pub": 1793760828802,
+   "ed": 1793761724065,
+   "texto": "`[ CUARTOS ]`\n⌞LEOPOLD SEAR⌝ 🆚 ⌞LRS⌝ 🆚 ⌞YINN⌝\n⌞TAM⌝ 🆚 ⌞MOLUSCO⌝ 🆚 ⌞MAKMAH⌝\n⌞GEOKA⌝ 🆚 ⌞LVEL⌝ 🆚 ⌞VANDU⌝",
+   "batallas": [
+    [
+     "CUARTOS",
+     [
+      "LEOPOLD SEAR",
+      "LRS",
+      "YINN"
+     ],
+     "LEOPOLD SEAR",
+     "veredicto",
+     []
+    ],
+    [
+     "CUARTOS",
+     [
+      "TAM",
+      "MOLUSCO",
+      "MAKMAH"
+     ],
+     "MOLUSCO",
+     "veredicto",
+     []
+    ],
+    [
+     "CUARTOS",
+     [
+      "GEOKA",
+      "LVEL",
+      "VANDU"
+     ],
+     null,
+     "última ronda y no dice campeón",
      []
     ]
    ]
