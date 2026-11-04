@@ -40,7 +40,7 @@
 /* ── los resultados del buscador ── */
 .gx-res{margin-top:22px;padding:16px;border:2px solid var(--linea);background:var(--caja);box-shadow:5px 5px 0 var(--magenta)}
 .gx-res-t{display:flex;flex-wrap:wrap;align-items:baseline;justify-content:space-between;gap:8px;margin:0 0 10px;font:900 18px/1.2 Archivo,sans-serif;text-transform:uppercase}
-.gx-res-x{min-height:40px;padding:0 12px;border:1.5px solid var(--linea);background:var(--fondo);color:var(--tinta);font:700 14px/1 "Barlow Condensed",sans-serif;
+.gx-res-x{min-height:44px;padding:0 12px;border:1.5px solid var(--linea);background:var(--fondo);color:var(--tinta);font:700 14px/1 "Barlow Condensed",sans-serif;
   letter-spacing:.04em;text-transform:uppercase;cursor:pointer}
 .gx-res ul{display:grid;gap:0;margin:0;padding:0;list-style:none}
 .gx-res li button{display:grid;gap:3px;width:100%;padding:10px 0;border:0;border-top:1.5px solid var(--suave);background:none;color:var(--tinta);text-align:left;cursor:pointer}

@@ -23,7 +23,7 @@ export const MW_TIENDA = [
   ['Most Wanted', 'Los buscados de la semana{MW}, de lunes a lunes, cada uno con su recompensa. El primero que le gana a uno en un evento de la Liga lo caza y cobra; si nadie lo caza y jugó, sobrevive y se lleva la mitad. Lo cobrado suma a tus Puntos de la Temporada, nunca al Competitivo, y además el 10 % va a tus Puntos de Tienda.'],
   ['El Elegido', 'Uno de los buscados lo elige la gente: mientras corre un Most Wanted se vota quién es buscado en el siguiente, y el más votado entra como «El Elegido». Vota cualquiera que entre con Discord; nadie se vota a sí mismo, y hacen falta 3 votos.'],
   ['El ×2 votado', 'Durante la semana se vota qué servidor se lleva el ×2 la siguiente: el más votado sale del sorteo del lunes con ×2 como mínimo. Se puede votar a cualquiera, también al tuyo. Hacen falta 3 votos.'],
-  ['Puntos de Tienda', 'Una moneda aparte de los puntos del ranking: todos arrancan con los mismos y se ven en la Tienda, entrando con Discord. Se ganan cazando (todo el precio por cabeza, y el 10 % del Most Wanted) y hoy sirven para el precio por cabeza.'],
+  ['Puntos de Tienda', 'Una moneda aparte de los puntos del ranking: todos arrancan con los mismos y se ven en la Tienda, entrando con Discord. Se ganan cazando, con tu racha, abriendo promos, subiendo en el Ranked y con los MES AWARDS; en la Tienda están todas las formas y en qué gastarlos.'],
   ['Precio por cabeza', 'Cualquiera pone Puntos de Tienda sobre un rapero de la temporada. El primero que le gana en un evento de la Liga se los lleva: esos Puntos de Tienda y lo mismo en su Temporada. Si nadie lo caza en la semana, vuelven a quien los puso. Nadie ve quién puso un precio.'],
 ];
 export const SEMANA = [

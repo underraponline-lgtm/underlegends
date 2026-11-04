@@ -54,7 +54,12 @@ function Version({ x, nueva, abierta, onToggle }) {
   );
 }
 
-export function Cambios({ liga, ver, antes }) {
+export function Cambios({ liga, ver, antes: antes0 }) {
+  // 🔒 LA ÚLTIMA QUE HABÍAS VISTO, UNA VEZ: tocar una versión vuelve a pasar por `pintaCambios`, que la marca como vista, y
+  // con el primer toque se iban la caja «desde tu última visita» y todos los NUEVO (revisión del 04/11/2026)
+  const fijo = useRef('');
+  if (!fijo.current && antes0) fijo.current = antes0;
+  const antes = fijo.current;
   const [lista, setLista] = useState(() => (Array.isArray(window.CAMBIOS) && window.CAMBIOS.length ? window.CAMBIOS : null));
   const [mal, setMal] = useState(false);
   useEffect(() => {
@@ -106,10 +111,13 @@ export function Cambios({ liga, ver, antes }) {
     setMesesAb(new Set([meses[0].k, ...[...d].map((k) => k.slice(0, 7))]));
   }, [dias, abiertas, dias0, meses]);
   // el link a otra versión con la página ya abierta (o un resultado del buscador): su mes y su día también se abren
+  // ⚠️ una vez por link: mirando `dias` en cada cambio, el mes y el día de esa versión no se podían cerrar
+  const abrioVer = useRef('');
   useEffect(() => {
-    if (!ver || !dias || !mesesAb) return;
+    if (!ver || !dias || !mesesAb || abrioVer.current === ver) return;
     const g = dias0.find((x) => x.xs.some((y) => y.version === ver));
     if (!g) return;
+    abrioVer.current = ver;
     if (!dias.has(g.k)) setDias(new Set([...dias, g.k]));
     if (!mesesAb.has(g.k.slice(0, 7))) setMesesAb(new Set([...mesesAb, g.k.slice(0, 7)]));
   }, [ver, dias, mesesAb, dias0]);

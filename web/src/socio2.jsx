@@ -158,7 +158,7 @@ function Cuando({ p }) {
         {!tuyos ? <p className="sp-nota">Todavía no hay eventos tuyos en la temporada: así está el resto de la Liga cada día.</p> : null}
         {mejor >= 0 || lleno >= 0 ? (
           <p className="sp-ley">{mejor >= 0 ? <span><i className="a" />tu mejor día</span> : null}
-            {lleno >= 0 ? <span><i className="m" />el día con más eventos en la Liga: compite por la misma gente</span> : null}</p>
+            {lleno >= 0 ? <span><i className="lleno" />el día con más eventos en la Liga: compite por la misma gente</span> : null}</p>
         ) : null}
       </div>
       {conHoras ? (

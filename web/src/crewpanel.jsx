@@ -215,7 +215,7 @@ export function EntrarCrew({ c }) {
             onClick={() => hacer({ accion: 'link_unirse', cod }, (j) => { sacar(); return '¡Entraste!' + (j.dejo ? ' Dejaste ' + limpio(j.dejo) + '.' : ''); })}>
             Entrar con el link</button>
         </div>
-        {lider ? <small className="cw-nota">Eres Líder de tu crew: primero pasale el liderazgo a alguien.</small> : null}
+        {lider ? <small className="cw-nota">Eres Líder de tu crew: primero pásale el liderazgo a alguien.</small> : null}
       </div>
     );
   } else if (yo && inv) {
@@ -348,7 +348,7 @@ export function PanelCrew({ liga, c }) {
       <SemanaCrew c={c} rol={rol} onInvitar={invita ? () => { const el = busca.current; if (el) { el.scrollIntoView({ block: 'center' }); el.focus({ preventScroll: true }); } } : null} />
       <div className="cw-yo">
         <span>Eres <RolCrew rol={rol} /> de <b>{limpio(c.nombre)}</b></span>
-        {rol === 'lider' && gente.length > 1 ? <small>Para irte, primero pasale el liderazgo a alguien.</small> : (
+        {rol === 'lider' && gente.length > 1 ? <small>Para irte, primero pásale el liderazgo a alguien.</small> : (
           <DosToques className="btn borde2 chico" confirmar={rol === 'lider' ? '¿Cerrar la crew?' : '¿Seguro? Esperas 7 días para otra'}
             disabled={va} onClick={() => hacer({ accion: 'salir' }, rol === 'lider' ? 'La crew se cerró.' : 'Saliste de la crew.')}>
             {rol === 'lider' ? 'Cerrar la crew' : 'Salir de la crew'}</DosToques>
@@ -792,7 +792,7 @@ export function MiCrew({ liga, dc }) {
                 </span>
               </li>
             ))}</ul>
-            <small className="cw-nota">{mia.rol === 'lider' ? 'Eres Líder: para cambiarte, primero pasale el liderazgo a alguien de tu crew.'
+            <small className="cw-nota">{mia.rol === 'lider' ? 'Eres Líder: para cambiarte, primero pásale el liderazgo a alguien de tu crew.'
               : 'Si aceptas, dejas ' + limpio(mia.crew.nombre) + ' y por 7 días no te puedes cambiar de nuevo.'}</small>
           </div>
         ) : null}

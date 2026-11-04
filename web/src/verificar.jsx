@@ -53,7 +53,7 @@ function Abre({ liga, listo }) {
       })}
       <li>
         <span className="vf-carta vf-ico" aria-hidden="true"><Ico n="perfil" t={30} /></span>
-        <div><b>Tu perfil</b><span>{yo ? 'Ya lo tienes.' : 'Al verificarte.'}</span><small>Con tu foto y tus redes.</small></div>
+        <div><b>Tu perfil</b><span>{listo ? 'Ya lo tienes.' : 'Al verificarte.'}</span><small>Con tu foto y tus redes.</small></div>
       </li>
     </ul>
   );
@@ -103,7 +103,7 @@ export function PaginaVerificar({ liga, dc }) {
           ) : null}
         </div>
         <aside className="vf-lado" aria-labelledby="vf-abre-t">
-          <h2 className="vf-h" id="vf-abre-t">{listo && liga.yo ? 'Lo tuyo' : 'Lo que se abre'}</h2>
+          <h2 className="vf-h" id="vf-abre-t">{listo ? 'Lo tuyo' : 'Lo que se abre'}</h2>
           <Abre liga={liga} listo={listo} />
         </aside>
       </div>

@@ -75,7 +75,7 @@
 .sp-ley span{display:inline-flex;align-items:center;gap:7px}
 .sp-ley i{display:inline-block;flex:none;width:12px;height:12px}
 .sp-ley i.a{background:var(--verde)}
-.sp-ley i.m{background:var(--magenta)}
+.sp-ley i.lleno{background:var(--magenta)}
 .sp-ley i.g{background:#4A4A4F}
 .sp-dias thead th span{font-weight:600;letter-spacing:.04em;text-transform:none}
 .sp-h{display:flex;flex-wrap:wrap;align-items:baseline;gap:4px 10px;margin:0;font:900 16px/1.1 Archivo,sans-serif;font-stretch:115%;text-transform:uppercase}

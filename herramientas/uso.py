@@ -7,7 +7,8 @@
 
 Dlx, 04/11/2026: *«traeme un informe acerca de cuanta gente esta usando la pagina en estos momentos vs antes»*.
 
-⚠️ SON TRES FUENTES Y CUENTAN COSAS DISTINTAS. Medido ese dia: 47 visitas, 225 paginas vistas y ~11 navegadores por dia.
+⚠️ SON TRES FUENTES Y CUENTAN COSAS DISTINTAS. Medido ese dia: 47 visitas, 225 paginas vistas y 34 a 44 navegadores por dia.
+   `medidas.pedidos` NO sirve para contar visitas: guarda solo lo que mas se pide, y por eso primero dio 11.
 
     Cloudflare Web Analytics   visitas (cada vez que alguien entra) y paginas vistas. Prendido desde el 14/10/2026, sin
                                cookies. Hasta el 29/10 cuenta 1 de cada 10 y multiplica. Se lee con el token de Cloudflare

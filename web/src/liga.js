@@ -155,6 +155,8 @@ export class Liga {
   constructor(D, muro, ahora, yo, sigue) {
     this.d = D;
     this.muro = (muro && muro.items) || [];
+    // ⏳ el muro llega después del lobby: «no hay nada» y «todavía no llegó» son cosas distintas
+    this.muroListo = !!muro;
     this.ahora = ahora || new Date();
     this.T = {};
     // 🃏 los que no están en la tabla y se abrieron (su perfil): ver `fuera()`
@@ -311,7 +313,10 @@ export class Liga {
     const dias = diasEntre(b, this.ahora);
     if (dias === 0) return horaNum(b) < 6 ? 'anoche' : 'hace ' + Math.floor(seg / 3600) + ' h';
     if (dias === 1) return horaNum(b) >= 20 ? 'anoche' : 'ayer';
-    return 'el ' + DIAS[diaSemana(b)];
+    if (dias < 7) return 'el ' + DIAS[diaSemana(b)];
+    // 📅 de una semana para atrás, la fecha: un video de mayo decía «el martes» (revisión del 04/11/2026)
+    const [a, m, d] = diaISO(b).split('-').map(Number);
+    return 'el ' + d + ' de ' + MESES[m - 1] + (a !== Number(diaISO(this.ahora).split('-')[0]) ? ' de ' + a : '');
   }
   dia(t) {
     const b = utc(t);
@@ -699,7 +704,7 @@ export class Liga {
     const c = this.cuando(it.t);
     if (it.tipo === 'tarjeta') {
       const nombre = { pais: 'de País', temporada: 'de Temporada', servidor: 'de Servidor', competitivo: 'Competitiva' }[it.carta];
-      return ['CARTA NUEVA', q[0] + ' ya tiene su carta ' + nombre, ['carta', ks[0], it.carta], c, { carta: ks[0] }];
+      return ['CARTA NUEVA', q[0] + ' ya tiene su carta ' + nombre, ['carta', ks[0], it.carta], c, { carta: ks[0], cual: it.carta }];
     }
     if (it.tipo === 'rango') {
       const f = ks.length ? this.T[ks[0]] : null;

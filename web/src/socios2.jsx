@@ -63,7 +63,7 @@ function Socio({ liga, s, n }) {
         ) : null}
         <ul className="sk-datos">
           {mejor ? <li><b>SU MEJOR</b>{limpio(mejor.n)} · #{mejor.pos} de la Liga</li> : null}
-          {prox ? <li><b>EL PRÓXIMO</b>{limpio(prox.nombre)} · {liga.dia(prox.cuando)}</li>
+          {prox ? <li><b>EL PRÓXIMO</b>{limpio(prox.nombre)} · {liga.dia(liga.cuandoDe(prox))}</li>
             : ll ? <li><b>EL ÚLTIMO</b>{limpio(ll.nombre)}{camp.length ? ' · ganó ' + camp.join(' y ') : ''}</li> : null}
         </ul>
       </div>

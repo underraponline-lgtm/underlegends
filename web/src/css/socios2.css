@@ -102,6 +102,7 @@
 .sk-pasos li{display:grid;grid-template-columns:auto minmax(0,1fr);gap:14px;align-items:start;padding:16px;border:2px solid #3A3A3E;background:var(--caja)}
 .sk-pasos li.cta{border-color:#29B298;box-shadow:4px 4px 0 #29B298}
 .sk-paso-n{font:900 30px/1 Archivo,sans-serif;font-stretch:125%;font-variant-numeric:tabular-nums;color:#29B298}
+.sk-pasos .btn{max-width:100%;white-space:normal;line-height:1.15;text-align:center}
 .sk-pasos h3{margin:0 0 6px;font:900 17px/1.2 Archivo,sans-serif;font-stretch:112%;text-transform:uppercase}
 .sk-pasos p{margin:0 0 12px;font:500 14.5px/1.45 Archivo,sans-serif;color:#D8D8D4}
 .sk-pasos li:not(.cta) p{margin:0}

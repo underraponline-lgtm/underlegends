@@ -531,9 +531,6 @@ export default function App() {
   if (mSv) { try { sv = decodeURIComponent(mSv[1]).toUpperCase(); } catch (e) { sv = mSv[1].toUpperCase(); } }
   // 🔤 `/sv/SNK` es Snake Rap: la sigla que se lee abre el mismo perfil que el código (`Liga.codigo()`)
   if (sv && liga) sv = liga.codigo(sv);
-  useEffect(() => { if (sv) window.scrollTo(0, 0); }, [sv]);
-  const enRanking = /^#\/(ranking|duelos|eventos|publicaciones|socios|mundo|guia|tarjetas|ligas|salon|crews|competencias|inventario)(\/|$|\?)/.test(hash || '');
-  useEffect(() => { if (enRanking) window.scrollTo(0, 0); }, [enRanking]);
   // qué página: '' es el Inicio; `cambios` (01/10/2026) la primera que el Inicio nuevo le sacó a la de hoy
   const partes = (hash || '').replace(/^#\/?/, '').split('?')[0].split('/');
   // 🏟️ `#/ranking/ligas[/<id>]` es el link de antes del 16/10/2026 (Publicaciones, las historias, lo compartido): abre
@@ -554,6 +551,14 @@ export default function App() {
   if (pagina === 'ligas' && partes[1]) { try { ligaId = decodeURIComponent(partes[1]); } catch (e) { ligaId = partes[1]; } }
   // la del menú: `#/duelos` es el Ranking, y `#/mundo` es Socios
   const paginaMenu = pagina === 'duelos' ? 'ranking' : pagina === 'avisos' ? 'eventos' : pagina === 'mundo' ? 'socios' : pagina;
+  // 🔝 CADA PÁGINA ABRE ARRIBA (revisión del 04/11/2026). Era «¿estás en una de esta lista?»: de Publicaciones a Socios la
+  // respuesta seguía siendo sí y no se movía, y la Tienda, el Changelog, las crews y los países no estaban. Se veía como
+  // que el toque no hizo nada: Chile abría a 1.500 px, con el título fuera de la pantalla. El perfil y la llave van a su
+  // lugar al abrir, y `#/avisos` baja hasta la campana
+  const lugar = sv ? 'sv/' + sv : pagina === 'crew' || pagina === 'pais' ? pagina + '/' + (partes[1] || '') : paginaMenu;
+  useEffect(() => {
+    if (lugar && pagina !== 'r' && pagina !== 'llave' && pagina !== 'avisos') window.scrollTo(0, 0);
+  }, [lugar]); // eslint-disable-line react-hooks/exhaustive-deps
   // 📊 QUÉ SECCIONES SE ABREN (Dlx, 12/10/2026, el research «página sencilla»: medir antes de mover la tira). Cada
   // sección cuenta UNA vez por día y por navegador (`lg:secc`, en hora del este como la visita) y el vigía sólo suma un
   // número: nunca quién. La lista cerrada es `SECC_EV` de bot/avisos.js; lo que no está ahí no se manda

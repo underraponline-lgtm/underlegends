@@ -7,13 +7,13 @@ const W = window;
 /** 📊 Pide el panel. `irse`: si no hay cuenta, ir a entrar con Discord. */
 export function pedirPanel(irse = false) {
   if (!W.conCuenta) return Promise.resolve({ error: 'red' });
-  return W.conCuenta('/api/avisos/panel-socio', {}, irse ? 's' : undefined).then((j) => j || { error: 'red' });
+  return W.conCuenta('/api/avisos/panel-socio', {}, irse ? 's' : undefined).then((j) => j || { error: 'red' }).catch(() => ({ error: 'red' }));
 }
 
 /** ⚙️ Los ajustes del bot de un servidor socio, y un cambio (`{cual, valor}`). Sólo con la cuenta; nunca manda a Discord solo. */
 export function pedirAjustes(sv, cambio) {
   if (!W.conCuenta) return Promise.resolve({ error: 'red' });
-  return W.conCuenta('/api/avisos/socio-ajustes', cambio ? { sv, cambio } : { sv }).then((j) => j || { error: 'red' });
+  return W.conCuenta('/api/avisos/socio-ajustes', cambio ? { sv, cambio } : { sv }).then((j) => j || { error: 'red' }).catch(() => ({ error: 'red' }));
 }
 
 /** ¿Es dueño de algún socio? Una vez por sesión, en silencio: para el botón de Mi cuenta. */

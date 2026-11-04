@@ -97,11 +97,11 @@
 .ent-esca-l li.paso i,.ent-esca-l li.aca i{background:var(--c)}
 .ent-esca-l li.aca i{height:18px;margin-top:-3px;box-shadow:0 0 0 2px var(--linea)}
 /* el siguiente se llena con lo de esta semana */
-.ent-esca-l li.sig i{border:1.5px solid var(--c);background:var(--fondo)}
-.ent-esca-l li.sig i u{display:block;height:100%;background:var(--c)}
+.ent-esca-l li.ent-sig i{border:1.5px solid var(--c);background:var(--fondo)}
+.ent-esca-l li.ent-sig i u{display:block;height:100%;background:var(--c)}
 .ent-esca-n{display:flex;flex-wrap:wrap;align-items:flex-start;justify-content:space-between;gap:6px 14px}
 .ent-esca-n span{display:grid;gap:3px}
-.ent-esca-n .sig{justify-items:end;text-align:right}
+.ent-esca-n .ent-sig{justify-items:end;text-align:right}
 .ent-esca-n b{font:900 14px/1 Archivo,sans-serif;letter-spacing:.04em;text-transform:uppercase}
 .ent-esca-n small{font:600 12.5px/1.2 Archivo,sans-serif;color:var(--gris);font-variant-numeric:tabular-nums}
 .ent-sin{display:grid;gap:8px;padding:12px;border:2px dashed var(--suave)}
@@ -137,8 +137,8 @@
   .ent-emb.bandera{width:84px}
   .ent-tx .hero-ev{font-size:clamp(22px,7vw,30px);overflow-wrap:normal;hyphens:manual}
   /* lo que se toca, de 40 px o más */
-  .ent-redes a{min-height:40px;padding:0 10px}
-  .ent-toque{display:inline-block;padding:10px 0;margin:-10px 0}
+  .ent-redes a{min-height:44px;padding:0 10px}
+  .ent-toque{display:inline-block;padding:13px 0;margin:-13px 0}
   /* «VENEZUELA» y «NICARAGUA» entran enteros en una celda de 115 px: a 14 px estirados se partían en «VENEZUEL / A» */
   .ent-otros b{font-size:12px;font-stretch:100%}
 }

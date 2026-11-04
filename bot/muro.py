@@ -438,7 +438,7 @@ def k_de(n, tabla):
     return m[0]['k'] if len(m) == 1 else ''
 
 
-def con_claves(items, tabla):
+def con_claves(items, tabla, entera=None):
     """Cada publicación que es de alguien, con la clave de su perfil (`ks`).
 
     🔑 PARA LOS SEGUIDORES (Dlx, 28/09/2026: *«sí, hay que hacer eso»*). El
@@ -451,6 +451,10 @@ def con_claves(items, tabla):
     sabe—; en los premios es `{figura|revelacion|cazador: clave}`. Son las
     claves de los links `#/r/<clave>`: públicas, como el muro. Ningún
     Discord ID.
+
+    📣 `entera`: la tabla con quien no entra en la del lobby, sólo para las promos (revisión del 04/11/2026). Sin su
+    clave, quien no estaba entre los 200 no veía su promo en la Tienda y el objeto contestaba «no es tuya» al alargarla.
+    Las demás siguen con la del lobby: su publicación se dibuja con la carta de su fila, que la página no tiene.
     """
     out = []
     for x in items:
@@ -463,7 +467,8 @@ def con_claves(items, tabla):
             ks = {r: k_de(x[r][0], tabla) for r in PREMIOS if x.get(r)}
             ks = {r: k for r, k in ks.items() if k}
         else:
-            ks = [k_de(n, tabla) for n in x.get('quien') or []]
+            t = (entera or tabla) if x['tipo'] == 'promo' else tabla
+            ks = [k_de(n, t) for n in x.get('quien') or []]
             ks = ks if any(ks) else None
         if ks:
             y['ks'] = ks
@@ -591,7 +596,13 @@ def ligas_hitos(lg):
         return []
 
 
-def armar(p, guardado=None, ahora=None, fuentes=None):
+def _tabla_entera(p, perfiles):
+    """La tabla del lobby y las filas de quien no entra en ella, que viajan en su perfil (`subir_web._perfiles_extra()`)."""
+    extra = [(v or {}).get('f') for v in ((perfiles or {}).get('p') or {}).values()]
+    return (p.get('tabla') or []) + [f for f in extra if f and not f.get('solo')]
+
+
+def armar(p, guardado=None, ahora=None, fuentes=None, perfiles=None):
     """`(muro para la página, lo que se guarda)` con el payload del lobby `p`.
 
     `fuentes` es para el self-check: `{llaves, instantes, mw, precios, mult, anuncios}`.
@@ -622,16 +633,16 @@ def armar(p, guardado=None, ahora=None, fuentes=None):
     lista.sort(key=lambda x: x['t'], reverse=True)
     muro = {'_leeme': 'El muro de Publicaciones: lo arma bot/muro.py desde bot/subir_web.py (paso 2c).',
             # 📣 y las promos que siguen viajan aunque pasen de `VIAJAN`: una alargada en la Tienda es vieja y pagó
-            'items': con_claves([x for i, x in enumerate(con_ids(lista)) if i < VIAJAN or sigue(x)], p.get('tabla'))}
+            'items': con_claves([x for i, x in enumerate(con_ids(lista)) if i < VIAJAN or sigue(x)], p.get('tabla'), _tabla_entera(p, perfiles))}
     guardar = {'_leeme': 'El muro de Publicaciones: cómo estaba cada uno (rango y tarjetas) y los cambios '
                          'que se anotaron. Lo escribe bot/muro.py; lo demás del muro se arma en cada corrida.',
                'estado': estado, 'cambios': anotados}
     return muro, guardar
 
 
-def publicar(p, subir=None):
+def publicar(p, subir=None, perfiles=None):
     """Arma el muro, lo guarda y lo sube a KV. `subir` es `subir_web.subir`."""
-    muro, guardar = armar(p)
+    muro, guardar = armar(p, perfiles=perfiles)
     with io.open(SALIDA, 'w', encoding='utf-8') as f:
         json.dump(guardar, f, ensure_ascii=False, indent=0)
     ok = subir(muro, solo_si_cambio=True, clave=CLAVE) if subir else None

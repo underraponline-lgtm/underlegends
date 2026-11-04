@@ -101,7 +101,7 @@ function Tags({ liga, cual, setCual, abiertas, setAbiertas }) {
   const mios = yo ? CARTAS_TAG.map(([c, n], j) => [n, yo[j] >= 0 ? ((TAGS.cat[c] || [])[yo[j]] || [])[0] : '']).filter((x) => x[1]) : [];
   return (
     <>
-      {mios.length ? <div className="gx-tuyos"><b>Los tuyos hoy</b>{mios.map(([n, t]) => <span key={n}><small>{n}</small>{t.replace('%d', '')}</span>)}</div> : null}
+      {mios.length ? <div className="gx-tuyos"><b>Los tuyos hoy</b>{mios.map(([n, t]) => <span key={n}><small>{n}</small>{nombreTag(t)}</span>)}</div> : null}
       <div className="gx-tabs" role="tablist" aria-label="Los TAG de cada tarjeta">
         {CARTAS_TAG.map(([c, n]) => (
           <button key={c} type="button" role="tab" aria-selected={c === cual} className={c === cual ? 'on' : ''} onClick={() => setCual(c)}>

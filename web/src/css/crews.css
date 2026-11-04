@@ -23,6 +23,7 @@
 .crw-busca .cw-busca{flex:1 1 240px}
 .crw-orden{display:grid;gap:4px;font:700 13px/1 "Barlow Condensed",sans-serif;letter-spacing:.06em;text-transform:uppercase;color:var(--gris)}
 .crw-orden .cw-sel{min-height:44px;font-size:15px;text-transform:none;letter-spacing:0;color:var(--tinta)}
+@media (max-width: 899px){.crw-orden .cw-sel{font-size:16px}}
 .crw-fil{margin:0 -16px 14px}
 
 /* las fichas */

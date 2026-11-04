@@ -1149,7 +1149,8 @@ export function Verificar({ liga, dc, nota = true }) {
     return (
       <>
         <Caja t="Ya estás verificado" d="Tus tarjetas salen con /card en Discord, y tu perfil está en la página.">
-          {yo ? <a className="btn verde chico" href={'#/r/' + encodeURIComponent(yo.k)}>Ver mi perfil</a> : null}
+          {/* quien no entra en la tabla tiene perfil igual: su clave viene con la cuenta */}
+          {(yo && yo.k) || (dc && dc.clave) ? <a className="btn verde chico" href={'#/r/' + encodeURIComponent((yo && yo.k) || dc.clave)}>Ver mi perfil</a> : null}
         </Caja>
         <ServidorCaja liga={liga} dc={dc} paso />
       </>

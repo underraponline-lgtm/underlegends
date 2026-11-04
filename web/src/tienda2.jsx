@@ -72,7 +72,7 @@ function Billetera({ liga, dc }) {
       </div>
     );
   }
-  if (B && B.error) {
+  if (B && B.error && B.error !== 'sin_sesion') {
     const e = (typeof window.errorCuenta === 'function' && window.errorCuenta(B.error))
       || (B.error === 'todavia' ? 'La tienda todavía no está lista: prueba en un rato.' : 'No pude leer tus Puntos. Prueba de nuevo.');
     return (
@@ -83,7 +83,8 @@ function Billetera({ liga, dc }) {
       </div>
     );
   }
-  if (dc) return <div className="tn-bill"><small>TUS PUNTOS DE TIENDA</small><p className="tn-bill-p">Buscando los tuyos…</p></div>;
+  // con la sesión vencida vuelve a pedir que entres, como quien nunca entró
+  if (dc && !B) return <div className="tn-bill"><small>TUS PUNTOS DE TIENDA</small><p className="tn-bill-p">Buscando los tuyos…</p></div>;
   return (
     <div className="tn-bill">
       <small>TODOS ARRANCAN CON</small>
@@ -251,7 +252,8 @@ function Cabezas({ liga, dc }) {
 // ── tu promo, una semana más: con la fecha nueva antes de pagar ──
 function TuPromo({ liga, dc }) {
   const [est, setEst] = useState({});
-  const yo = liga.yo && liga.yo.k;
+  // ⚠️ con la clave de la cuenta: quien no entra en la tabla no tiene `liga.yo`, y leía «no tienes ninguna» con la suya al aire
+  const yo = (liga.yo && liga.yo.k) || (dc && dc.clave);
   const xs = yo ? (liga.muro || []).filter((it) => it.tipo === 'promo' && (it.ks || []).includes(yo) && it.hasta && utc(it.hasta) > liga.ahora) : [];
   const saldo = window.BILL && window.BILL.ok ? window.BILL.saldo : null;
   const alargar = (it) => {

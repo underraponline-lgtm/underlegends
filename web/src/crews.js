@@ -154,7 +154,7 @@ export function errorCrew(j) {
     sin_invitacion: 'Esa invitación ya no está.',
     sin_pedido: 'Ese pedido ya no está.',
     rol: 'Tu rango en la crew no te deja hacer eso.',
-    lider_pasa_primero: 'Eres el Líder: antes de irte o de cambiarte de crew, pasale el liderazgo a alguien de la tuya.',
+    lider_pasa_primero: 'Eres el Líder: antes de irte o de cambiarte de crew, pásale el liderazgo a alguien de la tuya.',
     reps: 'Elige hasta ' + ((j && j.max) || 5) + ' representantes de la crew.',
     espera_dia: 'Ya hiciste mucho de esto hoy: prueba mañana.',
     no_existe: 'Esa crew ya no existe.',

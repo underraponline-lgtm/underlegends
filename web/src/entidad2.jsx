@@ -34,6 +34,8 @@ const porLugar = (a, b) => (a.o || a.pos || 999) - (b.o || b.pos || 999);
 // las cartas de arriba: de a filas enteras de cinco
 const cartas = (gente) => gente.slice(0, gente.length >= 10 ? 10 : gente.length >= 5 ? 5 : gente.length);
 const raperos = (n) => num(n) + (n === 1 ? ' rapero' : ' raperos');
+// 🔑 la clave de un nombre, la de `comun/claves.py`: minúsculas, sin tildes, todo lo alfanumérico de cualquier alfabeto
+const claveNombre = (s) => String(s || '').normalize('NFD').toLowerCase().replace(/[^\p{L}\p{N}]/gu, '');
 
 // ── la portada: el emblema, el nombre, sus acciones y la tira de números (exportada: la usa también el panel del socio,
 // socio2.jsx, que es su servidor visto por su dueño) ──
@@ -172,8 +174,8 @@ export function PerfilSv({ liga, sv, enc }) {
   if (meta) semana.push(['META', va + ' de ' + meta + ' personas' + (va >= meta ? ' · cumplida' : ''), Math.min(100, Math.round((100 * va) / meta))]);
   const fechas = [];
   vivo.forEach((e) => fechas.push({ c: 'vivo', dia: 'HOY', hora: '● EN VIVO', ev: limpio(e.nombre), det: e.modalidad || '', link: (aDiscord(liga, e, true) || {}).url }));
-  prox.forEach((e) => fechas.push({ c: liga.esDorado(e.nombre, e.sv) ? 'dorado' : '', dia: liga.dia(e.cuando).split(' ')[0].toUpperCase(),
-    hora: liga.dia(e.cuando), ev: limpio(e.nombre), det: e.modalidad || '', link: (aDiscord(liga, e, false) || {}).url }));
+  prox.forEach((e) => fechas.push({ c: liga.esDorado(e.nombre, e.sv) ? 'dorado' : '', dia: liga.dia(liga.cuandoDe(e)).split(' ')[0].toUpperCase(),
+    hora: liga.dia(liga.cuandoDe(e)), ev: limpio(e.nombre), det: e.modalidad || '', link: (aDiscord(liga, e, false) || {}).url }));
   llaves.forEach((ll) => {
     const c = liga.campeon(ll);
     fechas.push({ c: 'hecho', dia: liga.cuando(liga.fechaLlave(ll)).toUpperCase(), hora: 'TERMINÓ · ' + ll.participantes + ' raperos',
@@ -262,15 +264,15 @@ function Escalera({ T, id }) {
     <div className="ent-esca">
       <ol className="ent-esca-l" aria-label="Los tiers de las crews">
         {T.nombres.map((nm, i) => (
-          <li key={nm} className={i < n ? 'paso' : i === n ? 'aca' : i === sig ? 'sig' : ''} style={{ '--c': T.colores[i] }} title={nm}>
+          <li key={nm} className={i < n ? 'paso' : i === n ? 'aca' : i === sig ? 'ent-sig' : ''} style={{ '--c': T.colores[i] }} title={nm}>
             <i>{i === sig ? <u style={{ width: pct + '%' }} /> : null}</i>
           </li>
         ))}
       </ol>
       <div className="ent-esca-n">
         <span><b>{T.nombres[n]}</b>{vino ? <small>{vino}</small> : null}</span>
-        {sube ? <span className="sig" aria-label={pct + '% de lo que pide ' + T.nombres[sig]}><b>{T.nombres[sig]}</b><small>{num(pts)} de {num(sube)}</small></span>
-          : <span className="sig"><small>El tier más alto</small></span>}
+        {sube ? <span className="ent-sig" aria-label={pct + '% de lo que pide ' + T.nombres[sig]}><b>{T.nombres[sig]}</b><small>{num(pts)} de {num(sube)}</small></span>
+          : <span className="ent-sig"><small>El tier más alto</small></span>}
       </div>
       {sube ? <p className="ent-nota">Para subir: {num(sube)} puntos en la semana{juegan > 1 ? ' y que jueguen ' + juegan + ' de la crew' : ''}.
         {baja ? <> Con menos de {num(baja)}, baja a {T.nombres[n - 1]}.</> : null}</p>
@@ -295,9 +297,13 @@ export function PaginaCrew({ liga, id }) {
   const pend = viva ? Object.fromEntries(viva.gente.filter((g) => g[3]).map((g) => [g[0], g[3]])) : null;
   // ⚠️ por puesto y no por rol: el número grande de la lista es el puesto adentro de la crew, y ordenada por rol el «1»
   // era el Líder (#88 de la Liga) y el «2», el mejor de la crew. El rol va en su chip
-  const gente = (viva ? viva.gente.map(([k]) => liga.T[k] || { k, n: k }) : (c.gente || []).map((n) => liga.fila(n)).filter(Boolean)).sort(porLugar);
+  // 🃏 la tabla trae a los primeros de la Liga. `c.gente` son todos los de la crew que jugaron, entren o no: quien jugó y
+  // quedó más abajo no es «todavía no jugó» (revisión del 04/11/2026: salían ahí con 4 eventos, y hasta el mejor de la crew)
+  const jugo = Object.fromEntries((c.gente || []).map((n) => [claveNombre(n), limpio(n)]));
+  const gente = (viva ? viva.gente.map(([k]) => liga.T[k] || { k, n: jugo[k] || k }) : (c.gente || []).map((n) => liga.fila(n) || { k: claveNombre(n), n: limpio(n) })).sort(porLugar);
   const jugaron = gente.filter((f) => f.pos || f.o);
-  const sinJugar = gente.filter((f) => !(f.pos || f.o));
+  const masAbajo = gente.filter((f) => !(f.pos || f.o) && jugo[f.k]);
+  const sinJugar = gente.filter((f) => !(f.pos || f.o) && !jugo[f.k]);
   const ccs = [...new Set(gente.map((f) => f.cc).filter(Boolean))];
   const mejor = c.mejor ? liga.fila(c.mejor) : null;
   const lider = viva ? viva.gente.find((g) => g[1] === 'lider') : null;
@@ -334,16 +340,16 @@ export function PaginaCrew({ liga, id }) {
           <div className="ent-col">
             <h3 className="ent-h">Su gente<small>{gente.length}</small></h3>
             {jugaron.length ? <Gente liga={liga} gente={jugaron} roles={roles} pend={pend} conFlag /> : null}
-            {sinJugar.length ? (
-              <div className="ent-sin">
-                <span className="ent-sin-t">Todavía no jugaron la temporada · {sinJugar.length}</span>
-                <ul>{sinJugar.map((f) => (
+            {[['Jugaron, fuera de los ' + num((liga.d.tabla || []).length) + ' primeros', masAbajo], ['Todavía no jugaron la temporada', sinJugar]].map(([t, xs]) => (xs.length ? (
+              <div className="ent-sin" key={t}>
+                <span className="ent-sin-t">{t} · {xs.length}</span>
+                <ul>{xs.map((f) => (
                   <li key={f.k}><a href={'#/r/' + encodeURIComponent(f.k)} title={limpio(f.n)}>
                     <Cara liga={liga} k={f.k} nombre={f.n} cls="ent-sin-c" lazy /><small>{limpio(f.n)}</small>
                     {roles && roles[f.k] && roles[f.k] !== 'miembro' ? <RolCrew rol={roles[f.k]} /> : null}</a></li>
                 ))}</ul>
               </div>
-            ) : null}
+            ) : null))}
             {!gente.length ? <p className="pronto-p">Todavía nadie de la crew jugó la temporada.</p> : null}
           </div>
         </div>
@@ -374,9 +380,10 @@ export function PaginaPais({ liga, cc: cc0 }) {
   const nom = nombrePais(cc);
   const pts = P ? P.pts : gente.reduce((a, f) => a + (f.pts || 0), 0);
   const n = P ? P.n : gente.length;
+  const tope = (liga.d.tabla || []).length;
   const crews = (liga.d.crews || []).filter((c) => (c.gente || []).some((x) => { const f = liga.fila(x); return f && String(f.cc).toLowerCase() === cc; }));
   const otros = ps.filter((p) => String(p.cc).toLowerCase() !== cc);
-  const items = [['ent-cartas', 'Los que mandan', cartas(gente).length], ['ent-gente', 'Toda su gente', gente.length],
+  const items = [['ent-cartas', 'Los que mandan', cartas(gente).length], ['ent-gente', 'Toda su gente', gente.length || n],
     ['ent-crews', 'Sus crews', crews.length], ['ent-otros', 'Los otros', otros.length]];
   return (
     <>
@@ -393,8 +400,12 @@ export function PaginaPais({ liga, cc: cc0 }) {
           <div className="rail mcs2">{cartas(gente).map((f) => <McPersona key={f.k} liga={liga} f={f} cual={liga.cartaDe(f.k, { pais: cc }) || 'temporada'} />)}</div>
         </Sec>
       ) : null}
-      <Sec id="ent-gente" titulo={'Todo ' + nom} bajada={'El puesto dentro de ' + nom + ', de los ' + raperos(gente.length) + ' que jugaron la temporada.'}>
-        <Gente liga={liga} gente={gente} />
+      {/* la tabla trae a los primeros de la Liga: el número de gente del país puede ser más grande que su lista */}
+      <Sec id="ent-gente" titulo={'Todo ' + nom} bajada={!gente.length ? null
+        : gente.length >= n ? (n === 1 ? 'El único rapero de ' + nom + ' que jugó la temporada.' : 'El puesto dentro de ' + nom + ', de los ' + raperos(n) + ' que jugaron la temporada.')
+          : (gente.length === 1 ? 'Quien' : 'Los ' + num(gente.length) + ' que') + ' entra' + (gente.length === 1 ? '' : 'n') + ' entre los ' + num(tope) + ' primeros de la Liga, de ' + raperos(n) + ' de ' + nom + ' que jugaron la temporada.'}>
+        {gente.length ? <Gente liga={liga} gente={gente} />
+          : <p className="pronto-p">{n === 1 ? 'De ' + nom + ' jugó 1 rapero' : 'De ' + nom + ' jugaron ' + raperos(n)} esta temporada, y todavía nadie entra entre los {num(tope)} primeros de la Liga.</p>}
       </Sec>
       {crews.length ? (
         <Sec id="ent-crews" titulo={'Sus crews'}>

@@ -123,7 +123,7 @@ function contenido(liga, it) {
   } else if (it.tipo === 'precio') {
     c.cat = 'Precio por su cabeza';
     c.vis = cara;
-    c.txt = <>{nombres}{q.length > 1 ? ' le ganaron a ' : ' le ganó a '}<b>{limpio(it.a)}</b> y cobra el precio por su cabeza: <b>{num(it.pts)}</b></>;
+    c.txt = <>{nombres}{q.length > 1 ? ' le ganaron a ' : ' le ganó a '}<b>{limpio(it.a)}</b> y {q.length > 1 ? 'cobran' : 'cobra'} el precio por su cabeza: <b>{num(it.pts)}</b></>;
     c.det = it.ev ? limpio(it.ev) : '';
   } else if (it.tipo === 'premios') {
     c.cat = 'Premios de la semana';
@@ -260,6 +260,16 @@ function Tiers({ liga, xs, visto }) {
   );
 }
 
+// ⏳ mientras llega el muro. Si no llega (la página vuelve a pedirlo cada 5 minutos), lo dice en vez de quedarse cargando
+function MuroCargando() {
+  const [tarde, setTarde] = useState(false);
+  useEffect(() => {
+    const t = setTimeout(() => setTarde(true), 10000);
+    return () => clearTimeout(t);
+  }, []);
+  return <p className="pronto-p" role="status">{tarde ? 'No pude traer las publicaciones. Prueba de nuevo en un rato.' : 'Buscando las publicaciones…'}</p>;
+}
+
 // ── las cartas nuevas del día: una tira de cartas que se abren en abanico (sólo CSS) ──
 function Cartas({ liga, xs, nuevo }) {
   const vistos = new Set();
@@ -277,12 +287,12 @@ function Cartas({ liga, xs, nuevo }) {
         <div className="pb-mano" style={{ '--n': Math.min(n, 10) }}>
           {us.slice(0, 10).map((it, i) => {
             const k = (it.ks || [])[0];
-            return <button type="button" key={k + it.carta} className="pb-mini" style={{ '--i': i }} onClick={() => accion.carta(k)} aria-label={'La carta de ' + limpio((it.quien || [])[0] || '')}>
+            return <button type="button" key={k + it.carta} className="pb-mini" style={{ '--i': i }} onClick={() => accion.carta(k, it.carta)} aria-label={'La carta de ' + limpio((it.quien || [])[0] || '')}>
               <Carta liga={liga} k={k} cual={it.carta} cls="pb-mini-c" abre={false} /></button>;
           })}
           {n > 10 ? <span className="pb-mas">+{n - 10}</span> : null}
         </div>
-        {n === 1 ? <div className="pb-acc"><button type="button" className="pb-a" onClick={() => accion.carta(k0)}>Ver la carta</button>
+        {n === 1 ? <div className="pb-acc"><button type="button" className="pb-a" onClick={() => accion.carta(k0, us[0].carta)}>Ver la carta</button>
           {liga.T[k0] ? <a className="pb-a" href={'#/r/' + encodeURIComponent(k0)}>Ver su perfil</a> : null}</div> : null}
       </div>
     </article>
@@ -492,12 +502,14 @@ export function Publicaciones({ liga, enc }) {
   };
   // 📊 hoy en la Liga (o, si hoy todavía no pasó nada, los últimos siete días): lo que dice la portada
   const deHoy = todos.filter((it) => liga.diaClave(it.t) === hoyK);
-  const base = deHoy.length ? deHoy : todos.filter((it) => (liga.ahora - utc(it.t)) < 7 * 86400000);
+  // ⚠️ desde el lunes de la Liga, no siete días para atrás: el martes decía 14 campeones «esta semana» y eran 5
+  const estaSemana = todos.filter((it) => utc(it.t) >= liga.desdeLunes());
+  const base = deHoy.length ? deHoy : estaSemana;
   const cu = (f) => base.filter(f).length;
-  const resumen = [[cu((it) => it.tipo === 'campeon' || (it.tipo === 'ligahito' && it.que === 'campeon')), 'campeones'],
-    [cu((it) => it.tipo === 'rango'), 'suben de rango'], [cu((it) => it.tipo === 'tarjeta'), 'cartas nuevas'],
-    [cu((it) => it.tipo === 'anuncio'), 'eventos anunciados']].filter(([n]) => n > 0);
-  const semana = todos.filter((it) => (liga.ahora - utc(it.t)) < 7 * 86400000);
+  const resumen = [[cu((it) => it.tipo === 'campeon' || (it.tipo === 'ligahito' && it.que === 'campeon')), 'campeón', 'campeones'],
+    [cu((it) => it.tipo === 'rango'), 'sube de rango', 'suben de rango'], [cu((it) => it.tipo === 'tarjeta'), 'carta nueva', 'cartas nuevas'],
+    [cu((it) => it.tipo === 'anuncio'), 'evento anunciado', 'eventos anunciados']].filter(([n]) => n > 0).map(([n, uno, varios]) => [n, n === 1 ? uno : varios]);
+  const semana = estaSemana;
   const encs = fil !== 'anuncios' ? <Encuestas liga={liga} enc={enc} /> : null;
   const masFel = <MasFelicitado liga={liga} pubs={semana} A={A} />;
   const elegir = (f) => { setFil(f); setVer(40); };
@@ -565,8 +577,9 @@ export function Publicaciones({ liga, enc }) {
               {fil === 'sigo'
                 ? <Vacio titulo="Nada todavía de la gente que sigues" texto="Cuando ganen, suban de rango o saquen carta, aparece acá."
                   acciones={[['Ver el ranking y seguir a alguien', '#/ranking'], ['Ver todo', () => elegir(''), 'borde2']]} />
-                : <Vacio titulo="Todavía no pasó nada" texto="Cuando se juegue el primer evento, aparece acá solo."
-                  acciones={[['Ver los eventos', '#/eventos']]} />}
+                : !liga.muroListo ? <MuroCargando />
+                  : <Vacio titulo="Todavía no pasó nada" texto="Cuando se juegue el primer evento, aparece acá solo."
+                    acciones={[['Ver los eventos', '#/eventos']]} />}
               {!votaste ? encs : null}
             </>
           )}

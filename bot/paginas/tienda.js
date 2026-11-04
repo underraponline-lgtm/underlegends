@@ -58,7 +58,8 @@ function pedirBilletera(entrar) {
   conCuenta('/api/avisos/billetera', {}, entrar ? 't' : '', null, null)
     .then(function (j) {
       if (!j) return;
-      if (j.status === 401) { BILL = entrar ? { error: j.error } : null; pintaPrecios(); return; }
+      // ⚠️ con `lg:dc` guardado (no vence) y la sesión vencida (30 días), `null` se quedaba en «Buscando los tuyos…» para siempre
+      if (j.status === 401) { BILL = entrar || DC ? { error: j.error || 'sin_sesion' } : null; pintaPrecios(); return; }
       BILL = j.ok ? j : { error: j.error || 'red' };
       pintaPrecios();
     })

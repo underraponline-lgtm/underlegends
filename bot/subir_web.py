@@ -718,8 +718,10 @@ def armar():
         'eventos': n_eventos,
         'r2': R2,
         'cartas': list(CARTAS),
-        'svs': _servidores(gente),
-        'paises': _paises(gente),
+        # ⚠️ con `todos`, no con la tabla (revisión del 04/11/2026): cortados en 200, FRZ y FVS salían «esperando su primer
+        # evento» con 8 y 5 jugadores, Snake Rap con 6 de 49 y Argentina con 54 de 141
+        'svs': _servidores(todos),
+        'paises': _paises(todos),
         'rangos': _escalera(),
         # 🔑 TODO LO DE ACA SALE DE LOS DOS POOLS QUE YA ESTABAN. No hay
         # una consulta nueva ni una hoja nueva: duelos, rachas, crews y
@@ -2901,7 +2903,12 @@ def _servidores(gente):
         a = acc.setdefault(sv, {'sv': sv, 'n': 0, 'pts': 0, 'ev': 0})
         a['n'] += 1
         a['pts'] += p.get('pts') or 0
-        a['ev'] += p.get('ev') or 0
+    # 🔢 LOS EVENTOS DE SU LLAVE, NO LOS DE SU GENTE: sumar el `ev` de cada persona le daba 2.178 a FFA, con 204 en toda la
+    # Liga. Es la misma trampa que `n_eventos` más arriba (auditoría del 25/09/2026)
+    for x in (_json('datos', 'llaves_t1.json') or {}).values():
+        sv = (x.get('sv') or '').upper() if isinstance(x, dict) else ''
+        if sv:
+            acc.setdefault(sv, {'sv': sv, 'n': 0, 'pts': 0, 'ev': 0})['ev'] += 1
     miembros = _miembros(svs)
     _guardar_iconos(miembros)
     logos = os.path.join(SCR, 'paginas', 'logos')
@@ -4375,7 +4382,7 @@ def main():
     # todos los servidores. Aparte del lobby, en `web:muro`; ver `bot/muro.py`
     try:
         import muro as _MR
-        ok6, n6 = _MR.publicar(p, subir)
+        ok6, n6 = _MR.publicar(p, subir, perf)
         print('   %s' % ('✓ muro: igual (%d publicaciones)' % n6 if ok6 is None else
                          '✅ muro subido (%d publicaciones)' % n6 if ok6 else '🔴 no pude subir el muro'))
         # 📰 Y LAS DE CADA UNO, EN SU PERFIL (Dlx, 13/10/2026: «no todas claramente pero con la opción de ver todas»):

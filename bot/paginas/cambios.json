@@ -10,6 +10,19 @@
   "HORA: `cuando` es el instante en que se publicó (ISO, con la zona); la página lo muestra en la hora de quien mira. Sin `cuando`, sólo el día."
  ],
  "cambios": [
+    {
+        "version": "4.24",
+        "dia": "2026-11-04",
+        "cuando": "2026-11-04T17:40:00-05:00",
+        "titulo": "Las páginas abren arriba, y los números de cada servidor cuentan a todos",
+        "items": [
+            "**Cada página abre arriba**: al pasar de una a otra ya no te quedas a media pantalla, sin ver el título.",
+            "**Servidores y países** cuentan a toda su gente y no sólo a los 200 primeros, y «Eventos» son los eventos de ese servidor. Si jugaste y quedaste más abajo, tu crew ya no dice que no jugaste.",
+            "**Publicaciones**: «esta semana» cuenta desde el lunes de la Liga, tocar una carta nueva abre esa carta y, mientras carga, ya no dice que no pasó nada.",
+            "**En el celular**, los botones de Publicaciones, Tienda y Socios son más fáciles de tocar, y lo que escribes en Crews ya no acerca la pantalla.",
+            "**Y varios arreglos**: lo de hace más de una semana dice su fecha, el Changelog ya no te borra lo nuevo al tocarlo, y la Tienda vuelve a ofrecerte entrar si venció tu sesión."
+        ]
+    },
   {"version": "4.23", "dia": "2026-11-04", "cuando": "2026-11-04T16:31:00-05:00", "titulo": "El panel de tu servidor y Verificarme, más claros", "items": ["**Tu puntaje** es una sola barra de 0 a 100, partida en lo que pesa cada parte, y te dice dónde puedes sumar más.", "**Los ajustes del bot**: dónde publica, en una sola tabla; cómo se porta, con interruptores que dicen lo que pasa. Cada uno avisa «Guardado» en su fila.", "**Lo que conviene** te lleva a la parte del panel donde se ve lo que dice, y la gente nueva va en verde agua: el magenta queda para lo que pide atención.", "**Verificarme** se revisa solo cuando vuelves de Discord, marca cuánto llevas y qué te toca ahora. Ya verificado, muestra tus tarjetas."]},
 {
    "version": "4.22",

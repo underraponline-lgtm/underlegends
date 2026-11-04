@@ -16,7 +16,7 @@
 .pb-fil{position:sticky;top:0;z-index:20;background:#030304;border-bottom:2px solid #2A2A2C}
 .pb-fil-in{display:flex;align-items:center;gap:6px;overflow-x:auto;scrollbar-width:none;padding:10px 16px}
 .pb-fil-in::-webkit-scrollbar{display:none}
-.pb-fil button{flex:none;display:inline-flex;align-items:center;gap:8px;min-height:38px;padding:0 10px 0 12px;border:1.5px solid #3A3A3E;
+.pb-fil button{flex:none;display:inline-flex;align-items:center;gap:8px;min-height:44px;padding:0 10px 0 12px;border:1.5px solid #3A3A3E;
   background:transparent;color:#F6F6F6;font:700 15px/1 "Barlow Condensed",sans-serif;letter-spacing:.03em;text-transform:uppercase;cursor:pointer}
 .pb-fil button em{font:800 12px/1 Archivo,sans-serif;font-style:normal;font-variant-numeric:tabular-nums;padding:3px 5px;background:#1E1E21;color:#C9C9CC}
 .pb-fil button.on{background:#F6F6F6;color:#030304;border-color:#F6F6F6}
@@ -38,7 +38,7 @@
   background:var(--fondo)}
 .pb-dh b{font:inherit}
 .pb-dh small{font:700 14px/1 "Barlow Condensed",sans-serif;letter-spacing:.05em;text-transform:uppercase;color:var(--gris)}
-.pb-dh .pb-nuevas{margin-left:auto;font-size:14px}
+.pb-dh .pb-nuevas{margin-left:auto;font-size:14px;color:var(--tinta)}
 
 /* el riel: la hora y un punto del color de lo que es (verde lo ganado, magenta el Most Wanted, negro los avisos) */
 .pb-riel{position:relative;list-style:none;margin:0;padding:0}
@@ -65,10 +65,10 @@
 .pb-nuevo{font:800 11px/1 Archivo,sans-serif;font-style:normal;letter-spacing:.06em;padding:3px 5px;background:var(--magenta);color:#fff}
 .pb-t{margin:0;font:500 16px/1.4 Archivo,sans-serif;overflow-wrap:anywhere}
 .pb-t b{font-weight:800}
-.pb-t a{font-weight:800;text-decoration:underline;text-decoration-thickness:2px;text-underline-offset:3px}
+.pb-t a{padding-block:12px;font-weight:800;text-decoration:underline;text-decoration-thickness:2px;text-underline-offset:3px}
 .pb-d{font:500 14px/1.4 Archivo,sans-serif;color:var(--gris)}
 .pb-acc{display:flex;flex-wrap:wrap;align-items:center;gap:8px 18px;margin-top:2px}
-.pb-a{display:inline-flex;align-items:center;min-height:36px;padding:0;border:0;background:none;color:inherit;cursor:pointer;
+.pb-a{display:inline-flex;align-items:center;min-height:44px;padding:0;border:0;background:none;color:inherit;cursor:pointer;
   font:700 15px/1 "Barlow Condensed",sans-serif;letter-spacing:.04em;text-transform:uppercase;
   text-decoration:underline;text-decoration-thickness:2px;text-underline-offset:4px}
 .pb-a:hover{color:var(--magenta-tx)}
@@ -134,15 +134,16 @@
 .pb-fcara{width:36px;height:36px;font-size:14px}
 .pb-fn{display:grid;gap:2px;min-width:0}
 .pb-fn b,.pb-fn a{font:800 15px/1.2 Archivo,sans-serif;overflow-wrap:anywhere}
+.pb-fn a{padding-block:12px}
 .pb-fn a{text-decoration:underline;text-decoration-thickness:2px;text-underline-offset:3px}
 .pb-fn small{font:600 13px/1.25 Archivo,sans-serif;color:var(--gris)}
 .pb-filas.ag li{grid-template-columns:32px minmax(0,1fr) auto}
-.pb-filas .pb-a{min-height:40px}
+.pb-filas .pb-a{min-height:44px}
 .pb-flogo{width:32px;height:32px;object-fit:contain}
 .pb-crew-c.chico{width:36px;height:36px}
 
 /* ── 👏 Felicitar: el único botón de verdad de cada logro ── */
-.pb-fel{display:inline-flex;align-items:center;gap:7px;min-height:38px;padding:0 12px;border:2px solid var(--linea);background:var(--fondo);color:var(--tinta);
+.pb-fel{display:inline-flex;align-items:center;gap:7px;min-height:44px;padding:0 12px;border:2px solid var(--linea);background:var(--fondo);color:var(--tinta);
   box-shadow:3px 3px 0 var(--linea);font:800 14px/1 Archivo,sans-serif;font-stretch:110%;text-transform:uppercase;cursor:pointer;
   transition:transform .08s ease,box-shadow .08s ease}
 .pb-fel em{font-style:normal;font-variant-numeric:tabular-nums;padding:3px 5px;background:var(--caja);border:1.5px solid var(--suave)}
@@ -151,7 +152,7 @@
 .pb-fel.on{background:var(--verde);color:#030304;cursor:default}
 .pb-fel.on em{background:#030304;color:#F6F6F6;border-color:#030304}
 .pb-fel.va{opacity:.6}
-.pb-fel.chico{min-height:40px;padding:0 9px;gap:5px;box-shadow:2px 2px 0 var(--linea)}
+.pb-fel.chico{min-height:44px;padding:0 9px;gap:5px;box-shadow:2px 2px 0 var(--linea)}
 .pb-fel.tuyo{box-shadow:none;cursor:default;border-style:dashed}
 .pb-fel:focus-visible{outline:2px solid var(--verde);outline-offset:2px}
 @media (prefers-reduced-motion: reduce){.pb-fel{transition:none}}
@@ -185,7 +186,7 @@
 .pb-encs .en{background:var(--caja)}
 .pb-encs .pb-st{border-top:2px solid var(--linea);padding-top:14px}
 .pb-enc-tabs{display:flex;gap:6px;margin:0 0 12px}
-.pb-enc-tabs button{min-height:38px;padding:0 12px;border:1.5px solid var(--linea);background:transparent;color:var(--tinta);
+.pb-enc-tabs button{min-height:44px;padding:0 12px;border:1.5px solid var(--linea);background:transparent;color:var(--tinta);
   font:700 15px/1 "Barlow Condensed",sans-serif;letter-spacing:.03em;text-transform:uppercase;cursor:pointer}
 .pb-enc-tabs button.on{background:var(--tinta);color:var(--fondo)}
 .pb-enc-i:not(.on){display:none}

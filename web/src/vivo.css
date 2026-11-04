@@ -2880,7 +2880,8 @@ a.rk-z:hover{border-color:var(--linea)}
 .pp-t small{color:var(--gris);font-size:13.5px;line-height:1.35}
 .pp-pie{margin:0;font-size:14px;line-height:1.45;color:var(--gris)}
 .pp-pie a,.pp-rec{color:var(--tinta);text-decoration:underline}
-.pp-rec{padding:0;background:none;border:0;font:inherit;cursor:pointer}
+.pp-pie a{padding-block:13px}
+.pp-rec{padding:13px 0;margin:-13px 0;background:none;border:0;font:inherit;cursor:pointer}
 @media (min-width: 900px){
   .app .pp-lista{display:grid;grid-template-columns:repeat(5,minmax(0,1fr))}
   .app .pp-lista li+li{border-top:0;border-left:1.5px solid var(--suave)}
@@ -3372,6 +3373,8 @@ a.rk-z:hover{border-color:var(--linea)}
   font:500 15px/1 Archivo,sans-serif;border-radius:0}
 .cw-sigla{max-width:110px;text-transform:uppercase}
 .cw-sel{min-height:36px;padding:0 8px;border:1.5px solid var(--linea);background:var(--fondo);color:var(--tinta);font:600 14px/1 Archivo,sans-serif}
+/* en el teléfono: 44 de alto, y 16 px para que el iPhone no acerque la página al tocarlos */
+@media (max-width: 899px){.cw-busca,.cw-sel,.crw-orden .cw-sel{min-height:44px;font-size:16px}}
 .cw-reps{display:flex;flex-wrap:wrap;gap:8px;margin:0;padding:0;border:0}
 .cw-reps legend{margin-bottom:6px;font:700 14px/1 "Barlow Condensed",sans-serif;letter-spacing:.06em;text-transform:uppercase}
 .cw-rep{display:inline-flex;align-items:center;gap:6px;min-height:36px;padding:0 10px;border:1.5px solid var(--linea);cursor:pointer;

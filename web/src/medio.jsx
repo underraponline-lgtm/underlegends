@@ -130,7 +130,7 @@ function notaEncuesta(liga) {
 }
 function irA(d, raiz) {
   if (!d) return;
-  if (d.carta) accion.carta(d.carta);
+  if (d.carta) accion.carta(d.carta, d.cual);
   else if (d.perfil) accion.perfil(d.perfil);
   else if (d.llave) accion.llave(d.llave);
   else if (d.ruta) location.hash = d.ruta;
