@@ -1433,30 +1433,30 @@
    "servidor": "6f41f37af408:decaf64d9256:f1c33e"
   },
   "Richard": {
-   "competitivo": "0276d52af2d3:7d41d0503ea2",
-   "pais": "584f932839f8:ada55a12db94",
-   "servidor": "599fc23b1b4b:decaf64d9256:3ce074",
-   "temporada": "5fc344029420:ccd09f762e04"
+   "competitivo": "e163b349989c:7d41d0503ea2",
+   "pais": "071d33bd7daa:ada55a12db94",
+   "servidor": "83b6d50f9216:decaf64d9256:3ce074",
+   "temporada": "ac0a2d6718b8:ccd09f762e04"
   },
   "Riolu": {
-   "competitivo": "e9189c644edc:7d41d0503ea2",
-   "pais": "9010a151b8ac:ada55a12db94",
-   "servidor": "501e80b51c91:decaf64d9256:93a344",
-   "temporada": "af2e7c43643d:ccd09f762e04"
+   "competitivo": "f51bbd039828:7d41d0503ea2",
+   "pais": "fbf637aab08d:ada55a12db94",
+   "servidor": "bbf8f51681c7:decaf64d9256:93a344",
+   "temporada": "cf3a5de6fd7b:ccd09f762e04"
   },
   "Rodas": {
-   "competitivo": "7d1b35d2b179:7d41d0503ea2",
-   "pais": "d8bf22409b17:ada55a12db94",
-   "servidor": "672a106a6197:decaf64d9256:0a3db8",
-   "temporada": "271db0169985:ccd09f762e04"
+   "competitivo": "a2b1dfaed6f7:7d41d0503ea2",
+   "pais": "740e7560a36d:ada55a12db94",
+   "servidor": "8b02978ebc94:decaf64d9256:0a3db8",
+   "temporada": "3acbe8490772:ccd09f762e04"
   },
   "Ronin": {
    "servidor": "44872cc3122e:decaf64d9256:055f77"
   },
   "Rubik": {
-   "competitivo": "3779b135c75c:7d41d0503ea2",
-   "pais": "867497604426:ada55a12db94",
-   "servidor": "84e6429fdd22:decaf64d9256:0a3db8"
+   "competitivo": "60066b7d167f:7d41d0503ea2",
+   "pais": "8be5a36da647:ada55a12db94",
+   "servidor": "cfc974fc1277:decaf64d9256:0a3db8"
   },
   "Ruvi": {},
   "SDK": {},
@@ -1472,9 +1472,9 @@
    "servidor": "38a7a76c11dd:decaf64d9256:90b2a5"
   },
   "SOL": {
-   "competitivo": "09226eb73710:7d41d0503ea2",
-   "pais": "164bb067977b:ada55a12db94",
-   "servidor": "e1fdb101032e:decaf64d9256:99e3cc"
+   "competitivo": "52cc9c64b0c1:7d41d0503ea2",
+   "pais": "68c67510372f:ada55a12db94",
+   "servidor": "27b2541de365:decaf64d9256:99e3cc"
   },
   "SONIC_DORADITO": {},
   "SPD": {
@@ -1482,10 +1482,10 @@
   },
   "SUDAKA": {},
   "Saiko": {
-   "competitivo": "3c2f7f14dac5:7d41d0503ea2",
-   "pais": "7a02f42e3051:ada55a12db94",
-   "servidor": "98fafdb354fb:decaf64d9256:3214ae",
-   "temporada": "5435e7000474:ccd09f762e04"
+   "competitivo": "20997ae9563d:7d41d0503ea2",
+   "pais": "0adf2b19179e:ada55a12db94",
+   "servidor": "e3ed834e6951:decaf64d9256:3214ae",
+   "temporada": "328b4b391c3b:ccd09f762e04"
   },
   "Saito": {},
   "Sami": {
@@ -1976,5 +1976,5 @@
    "servidor": "7f8885a35a6d:decaf64d9256:93a344"
   }
  },
- "cuando": "2026-11-04T01:29:24+00:00"
+ "cuando": "2026-11-04T01:41:51+00:00"
 }
