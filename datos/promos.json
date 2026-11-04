@@ -73,18 +73,6 @@
 "tit": "Frageelato - Wonderful bird",
 "de": "Frageelato",
 "img": "https://i.ytimg.com/vi/RtqiHlyazSM/hqdefault.jpg"
-},
-{
-"id": "1556696721478914180-0",
-"t": "2026-10-05T15:57:00Z",
-"sv": "DRA",
-"quien": "IFX",
-"url": "https://youtu.be/74DiqwHkaX8?si=ckR8SJy0PcYCrxio",
-"plat": "yt",
-"vid": "74DiqwHkaX8",
-"tit": "INFLOX - OTRA ERA",
-"de": "Inflox",
-"img": "https://i.ytimg.com/vi/74DiqwHkaX8/hqdefault.jpg"
 }
 ],
 "liga": [
@@ -682,11 +670,6 @@
 "tit": "Frageelato - Wonderful bird",
 "de": "Frageelato",
 "img": "https://i.ytimg.com/vi/RtqiHlyazSM/hqdefault.jpg"
-},
-"https://youtu.be/74DiqwHkaX8?si=ckR8SJy0PcYCrxio": {
-"tit": "INFLOX - OTRA ERA",
-"de": "Inflox",
-"img": "https://i.ytimg.com/vi/74DiqwHkaX8/hqdefault.jpg"
 },
 "https://youtu.be/BgPckuiHByg": {
 "tit": "Estaba Dicho.  (EP)",
