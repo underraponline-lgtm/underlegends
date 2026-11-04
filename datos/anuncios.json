@@ -1,5 +1,5 @@
 {
- "cuando": "2026-11-04T19:26:09+00:00",
+ "cuando": "2026-11-04T19:56:01+00:00",
  "anuncios": [
   {
    "nombre": "¡SE LLEGÓ LA GRAN NOCHE!",
@@ -5832,6 +5832,42 @@
   }
  ],
  "inscripciones": [
+  {
+   "servidor": "LKR",
+   "canal": "⟡・INSCRIPCIONES",
+   "texto": "🇨🇷",
+   "quien": "okam77_25976",
+   "discord_id": "1512148565890306153",
+   "msg_id": "1567627212801310754",
+   "cuando": "2026-11-04T19:50:52"
+  },
+  {
+   "servidor": "LKR",
+   "canal": "⟡・INSCRIPCIONES",
+   "texto": "🇨🇴",
+   "quien": "teitomc.",
+   "discord_id": "1503540314948898937",
+   "msg_id": "1567627125576441999",
+   "cuando": "2026-11-04T19:50:31"
+  },
+  {
+   "servidor": "LKR",
+   "canal": "⟡・INSCRIPCIONES",
+   "texto": "# 🇲🇽",
+   "quien": "mcdl.",
+   "discord_id": "1542676805826125926",
+   "msg_id": "1567625048976527486",
+   "cuando": "2026-11-04T19:42:16"
+  },
+  {
+   "servidor": "LKR",
+   "canal": "⟡・INSCRIPCIONES",
+   "texto": "🇲🇽",
+   "quien": "leonart95.",
+   "discord_id": "1440039366654165212",
+   "msg_id": "1567624984870785105",
+   "cuando": "2026-11-04T19:42:01"
+  },
   {
    "servidor": "LKR",
    "canal": "⟡・INSCRIPCIONES",
@@ -41795,42 +41831,6 @@
    "discord_id": "745324578347286528",
    "msg_id": "1555381939102285895",
    "cuando": "2026-10-02T00:52:31"
-  },
-  {
-   "servidor": "FFA",
-   "canal": "✦📝—inscripciones",
-   "texto": "Richard 🇪🇨",
-   "quien": "ricardflex",
-   "discord_id": "750718442050551858",
-   "msg_id": "1555381698512822335",
-   "cuando": "2026-10-02T00:51:34"
-  },
-  {
-   "servidor": "FDS",
-   "canal": "✅╏inscripciones-express",
-   "texto": "Eseeka",
-   "quien": "eseeka",
-   "discord_id": "545406522356662310",
-   "msg_id": "1555381348598947891",
-   "cuando": "2026-10-02T00:50:11"
-  },
-  {
-   "servidor": "FFA",
-   "canal": "✦📝—inscripciones",
-   "texto": "Abyssus 🇨🇦",
-   "quien": "vipertapestry",
-   "discord_id": "768561204707983361",
-   "msg_id": "1555381029487902771",
-   "cuando": "2026-10-02T00:48:55"
-  },
-  {
-   "servidor": "FDS",
-   "canal": "✅╏inscripciones-express",
-   "texto": "Lrs🇦🇷",
-   "quien": "lrs0378",
-   "discord_id": "1385452830684614697",
-   "msg_id": "1555381021862526997",
-   "cuando": "2026-10-02T00:48:53"
   }
  ]
 }
