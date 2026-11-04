@@ -1486,100 +1486,20 @@
    "b": "LIAM 🇭🇳",
    "ganador": "TOKIO 🇦🇷",
    "votos": "1–0"
+  },
+  "1567650772907200703": {
+   "id": "1567650772907200703",
+   "sv": "🔥LKR (Champios Legue)🐉",
+   "g": "1558611504046153750",
+   "canal": "1565416431745634374",
+   "pub": 1793827469804,
+   "a": "LAST",
+   "b": "CALIZ #",
+   "ganador": "LAST",
+   "votos": "1–0"
   }
  },
  "llaves": {
-  "1560047366801981441": {
-   "id": "1560047366801981441",
-   "sv": "✮ 𝑼𝒓𝒃𝒂𝒏 𝑭𝒓𝒆𝒆𝒔𝒕𝒚𝒍𝒆 ✮ | A New Era",
-   "g": "1467763447117778989",
-   "canal": "1540223675146707045",
-   "pub": 1792014676524,
-   "ed": 1792018753932,
-   "texto": "`[ CUARTOS ]`\n⌞Kochi🇨🇱⌝ 🆚 ⌞Vacile🇪🇸⌝\n⌞Ortiz🇪🇸⌝ 🆚 ⌞Makmah🇻🇪⌝\n⌞Shadow🇨🇴⌝ 🆚 ⌞TROT🇪🇸⌝\n⌞Vargas🇨🇴⌝ 🆚 ⌞Motera🇪🇸⌝\n`[ SEMIFINALES ]`\n⌞Vacile🇪🇸⌝ 🆚 ⌞Ortiz🇪🇸⌝\n⌞TROT🇪🇸⌝ 🆚 ⌞Motera🇪🇸⌝\n⌞Ortiz🇪🇸⌝ 🆚 ⌞TROT🇪🇸⌝\n`[ FINAL ]`\n⌞Vacile🇪🇸⌝ 🆚 ⌞Motera🇪🇸⌝",
-   "batallas": [
-    [
-     "CUARTOS",
-     [
-      "Kochi🇨🇱",
-      "Vacile🇪🇸"
-     ],
-     "Vacile🇪🇸",
-     "veredicto",
-     []
-    ],
-    [
-     "CUARTOS",
-     [
-      "Ortiz🇪🇸",
-      "Makmah🇻🇪"
-     ],
-     "Ortiz🇪🇸",
-     "veredicto",
-     []
-    ],
-    [
-     "CUARTOS",
-     [
-      "Shadow🇨🇴",
-      "TROT🇪🇸"
-     ],
-     "TROT🇪🇸",
-     "veredicto",
-     []
-    ],
-    [
-     "CUARTOS",
-     [
-      "Vargas🇨🇴",
-      "Motera🇪🇸"
-     ],
-     "Motera🇪🇸",
-     "veredicto",
-     []
-    ],
-    [
-     "SEMIFINALES",
-     [
-      "Vacile🇪🇸",
-      "Ortiz🇪🇸"
-     ],
-     "Vacile🇪🇸",
-     "veredicto",
-     []
-    ],
-    [
-     "SEMIFINALES",
-     [
-      "TROT🇪🇸",
-      "Motera🇪🇸"
-     ],
-     "Motera🇪🇸",
-     "veredicto",
-     []
-    ],
-    [
-     "TERCER LUGAR",
-     [
-      "Ortiz🇪🇸",
-      "TROT🇪🇸"
-     ],
-     "Ortiz🇪🇸",
-     "veredicto",
-     []
-    ],
-    [
-     "FINAL",
-     [
-      "Vacile🇪🇸",
-      "Motera🇪🇸"
-     ],
-     "Motera🇪🇸",
-     "veredicto",
-     []
-    ]
-   ]
-  },
   "1560122392947458091": {
    "id": "1560122392947458091",
    "sv": "[FFA] Freestyle For All 👾",

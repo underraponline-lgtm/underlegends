@@ -1022,6 +1022,13 @@
 "rg": "",
 "c": []
 },
+"vr": {
+"rg": "",
+"c": [
+"servidor",
+"temporada"
+]
+},
 "millonario": {
 "rg": "",
 "c": []
@@ -1115,13 +1122,6 @@
 "c": []
 },
 "prodigy": {
-"rg": "",
-"c": [
-"servidor",
-"temporada"
-]
-},
-"vr": {
 "rg": "",
 "c": [
 "servidor",
