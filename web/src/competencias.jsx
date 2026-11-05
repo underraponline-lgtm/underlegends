@@ -44,11 +44,35 @@ function Nombre({ liga, C, k, yo }) {
   return tiene ? <a href={'#/r/' + encodeURIComponent(k)} className={cls}>{n}</a> : <span className={cls}>{n}</span>;
 }
 
-/** El cartel de cómo salió un cruce: REAL (con su evento), SIMULADO o POR JUGAR */
+/** El cartel de cómo salió un cruce: REAL (con su evento), SIMULADO (y si fue a réplica) o POR JUGAR */
 function Como({ m }) {
   if (m[3] === 'real') return <span className="cm9-tag real">REAL{m[5] ? ' · #' + m[5] : ''}</span>;
-  if (m[3] === 'sim') return <span className="cm9-tag sim">SIMULADO</span>;
+  if (m[3] === 'sim') return <span className="cm9-tags"><span className="cm9-tag sim">SIMULADO</span>{m[6] ? <span className="cm9-tag rep">RÉPLICA</span> : null}</span>;
   return <span className="cm9-tag pend">POR JUGAR</span>;
+}
+
+/** 🎭 Cómo llega alguien hoy (`C.est`, de `bot/competencias.py`): cada número va de 0 a 100 */
+const ESTADOS = [['Cansancio', 0], ['Motivación', 1], ['Estrés', 2], ['Consistencia', 3]];
+function ComoLlega({ e }) {
+  return (
+    <dl className="cm9-est">
+      {ESTADOS.map(([n, i]) => <div key={n}><dt>{n}</dt><dd aria-label={e[i] + ' de 100'}><i style={{ width: e[i] + '%' }} /></dd></div>)}
+    </dl>
+  );
+}
+/** Los dos, uno contra el otro: el de la izquierda crece hacia el centro */
+function VsEstado({ ea, eb }) {
+  return (
+    <div className="cm9-vse" role="group" aria-label="Cómo llegan hoy">
+      {ESTADOS.map(([n, i]) => (
+        <div key={n}>
+          <span className="cm9-vse-b izq"><i style={{ width: ea[i] + '%' }} /></span>
+          <small>{n}</small>
+          <span className="cm9-vse-b"><i style={{ width: eb[i] + '%' }} /></span>
+        </div>
+      ))}
+    </div>
+  );
 }
 
 /** El jurado sorteado de una simulada: quién votó a quién */
@@ -57,7 +81,7 @@ function Jurado({ liga, C, m }) {
   const va = m[5].filter(([, v]) => v === 'a').length;
   return (
     <div className="cm9-jur">
-      <small>Jurado sorteado · {Math.max(va, 3 - va)}–{Math.min(va, 3 - va)}</small>
+      <small>Jurado sorteado · {Math.max(va, 3 - va)}–{Math.min(va, 3 - va)}{m[6] ? ' en la réplica' : ''}</small>
       {m[5].map(([q, v]) => (
         <span key={q}><i>{inicial(juradoNombre(liga, C, q))}</i>{juradoNombre(liga, C, q)}<b className={v === (m[2] === m[0] ? 'a' : 'b') ? 'ok' : 'no'}>{nombreDe(liga, C, v === 'a' ? m[0] : m[1])}</b></span>
       ))}
@@ -83,6 +107,7 @@ function Cruce({ liga, C, m, yo, jurado }) {
           <span className="cm9-p-n"><b>{pct(p)}</b><b>{pct(1 - p)}</b></span>
         </span>
       ) : null}
+      {jurado && m[6] ? <small className="cm9-cru-rep">Fue a réplica: 2 puntos al que ganó, 1 al que perdió.</small> : null}
       {jurado ? <Jurado liga={liga} C={C} m={m} /> : null}
     </li>
   );
@@ -115,6 +140,8 @@ function DetalleFila({ liga, C, g, f, yo }) {
           {t ? <div><dt>Eventos</dt><dd>{t.ev || 0}</dd></div> : null}
           {t && t.wr ? <div><dt>Win%</dt><dd>{Math.round(parseFloat(String(t.wr).replace(',', '.')) || 0)}%</dd></div> : null}
         </dl>
+        {C.est && C.est[k] ? <span className="cm9-et">Cómo llega hoy</span> : null}
+        {C.est && C.est[k] ? <ComoLlega e={C.est[k]} /> : null}
         {suyos.length ? <span className="cm9-et">Sus cruces en esta liga</span> : null}
         {suyos.length ? (
           <ol className="cm9-det-c">
@@ -127,7 +154,7 @@ function DetalleFila({ liga, C, g, f, yo }) {
                   <small>J{n}</small>
                   <i className={m[2] ? (gano ? 'g' : 'p') : 'n'} aria-label={m[2] ? (gano ? 'ganó' : 'perdió') : 'por jugar'}>{m[2] ? (gano ? 'G' : 'P') : '·'}</i>
                   <span className="cm9-det-r"><Cara liga={liga} k={rival} nombre={nombreDe(liga, C, rival)} cls="cara cm9-cara-ch" lazy /><Nombre liga={liga} C={C} k={rival} yo={yo} /></span>
-                  <em>{m[3] === 'real' ? 'REAL' + (m[5] && !Array.isArray(m[5]) ? ' · #' + m[5] : '') : m[3] === 'sim' ? ('SIM ' + marcador(m)).trim() : pct(mia)}</em>
+                  <em>{m[3] === 'real' ? 'REAL' + (m[5] && !Array.isArray(m[5]) ? ' · #' + m[5] : '') : m[3] === 'sim' ? ('SIM ' + marcador(m)).trim() + (m[6] ? ' · RÉPLICA' : '') : pct(mia)}</em>
                 </li>
               );
             })}
@@ -169,7 +196,7 @@ function TablaLiga({ liga, C, g, yo }) {
                   <td><Cara liga={liga} k={k} nombre={nombreDe(liga, C, k)} cls="cara cm9-cara" lazy /></td>
                   <td><Nombre liga={liga} C={C} k={k} yo={yo} /></td>
                   <td>{pj}</td><td>{gg}</td><td>{pj - gg}</td>
-                  <td><span className="cm9-fo">{ultimas(g, k).concat(Array(5).fill('')).slice(0, 5).map((x, j) => <i key={j} className={x === 'G' ? 'g' : x === 'P' ? 'p' : ''}>{x}</i>)}</span></td>
+                  <td><span className="cm9-fo">{ultimas(g, k).concat(Array(5).fill('')).slice(0, 5).map((x, j) => <i key={j} className={x[0] === 'G' ? 'g' : x[0] === 'P' ? 'p' : ''} title={x.length > 1 ? (x[0] === 'G' ? 'Ganó en réplica' : 'Perdió en réplica') : undefined}>{x.length > 1 ? 'R' : x}</i>)}</span></td>
                   {conPtb ? <td>{ptb}</td> : null}
                   <td className="cm9-pts"><b>{pts}</b></td>
                 </tr>
@@ -183,7 +210,7 @@ function TablaLiga({ liga, C, g, yo }) {
         <span><i className="campeon" />{esElite ? 'Campeón de la Élite' : 'Campeón'}</span>
         {!esElite && g.nv !== 'oro' ? <span><i className="sube" />Suben de liga</span> : null}
         {!esElite && g.nv !== 'ascenso' ? <span><i className="baja" />Bajan de liga</span> : null}
-        <span><i className="g" />G ganó · <i className="p" />P perdió</span>
+        <span><i className="g" />G ganó · <i className="p" />P perdió{g.t.some((f) => ultimas(g, f[0], 9).some((x) => x.length > 1)) ? ' · R fue a réplica: 2 puntos al que gana y 1 al que pierde' : ''}</span>
         {conPtb ? <span><b>PTB</b> votos de jurado a favor, 3 en juego por batalla. Desempata</span> : null}
         <span className="cm9-ley-toca">Toca una fila para ver más</span>
       </div>
@@ -224,6 +251,7 @@ function Escena({ liga, C, yo, donde, onComo }) {
           </div>
           <div className="cm9-barra" aria-hidden="true"><i style={{ width: ancho(p) }} /></div>
           <div className="cm9-vs-n"><span>{nombreDe(liga, C, a)} {pct(p)}</span><span>{pct(1 - p)} {nombreDe(liga, C, b)}</span></div>
+          {C.est && C.est[a] && C.est[b] ? <VsEstado ea={C.est[a]} eb={C.est[b]} /> : null}
           <small className="cm9-vs-nota">Si se cruzan en un evento antes del cierre, cuenta esa batalla. Si no, se simula con estas chances.</small>
         </div>
       ) : null}
@@ -359,7 +387,7 @@ function Llave({ liga, C, r, yo }) {
                 title={m[3] === 'real' ? 'Se cruzaron de verdad' + (m[5] && !Array.isArray(m[5]) ? ' en el #' + m[5] : '') : m[3] === 'sim' ? 'Simulado al cierre' : undefined}>
                 <Lado liga={liga} C={C} k={m[0]} m={m} pos={0} yo={yo} />
                 <Lado liga={liga} C={C} k={m[1]} m={m} pos={1} yo={yo} />
-                {m[3] === 'real' || m[3] === 'sim' ? <em className={'cm9-br-como ' + m[3]}>{m[3] === 'real' ? 'REAL' : 'SIM'}</em> : null}
+                {m[3] === 'real' || m[3] === 'sim' ? <em className={'cm9-br-como ' + m[3]}>{m[3] === 'real' ? 'REAL' : m[6] ? 'RÉPLICA' : 'SIM'}</em> : null}
               </div>
             ))}
           </div>
@@ -698,8 +726,10 @@ function LigasInfo({ liga, C, yo }) {
           <li><b>Los niveles</b><p>De arriba abajo: <b>Oro</b> (1 liga), <b>Plata</b> (2), <b>Bronce</b> (4) y <b>Ascenso</b> (las que hagan falta). Cada liga tiene unos 10 raperos.</p></li>
           <li><b>Quién juega</b><p>Todos los que jugaron al menos un evento en las 2 semanas antes de que arranque la temporada. Quien entra después empieza en Ascenso la temporada siguiente.</p></li>
           <li><b>Las jornadas</b><p>Todos contra todos: en cada jornada te toca un rival. Las jornadas cierran los <b>lunes, miércoles y viernes a las 11 AM</b> (hora del este).</p></li>
-          <li><b>Cómo sale cada cruce</b><p>Si te enfrentas a tu rival en un 1v1 de <b>cualquier evento de cualquier servidor</b> antes del cierre, cuenta esa batalla. Si no se cruzan, se simula: quién gana sale del nivel de cada uno, y por cuánto lo vota un jurado sorteado.</p></li>
-          <li><b>Los puntos</b><p>Ganar da <b>3 puntos</b>. La tabla se ordena por puntos; a igual de puntos, por <b>PTB</b> (desde la temporada 2), después por victorias reales y después por nivel.</p></li>
+          <li><b>Cómo sale cada cruce</b><p>Si te enfrentas a tu rival en un 1v1 de <b>cualquier evento de cualquier servidor</b> antes del cierre, cuenta esa batalla. Si no se cruzan, se simula: quién gana sale del nivel de cada uno y de cómo llega, y por cuánto lo vota un jurado sorteado.</p></li>
+          <li><b>Cómo llega cada uno</b><p>Desde la temporada 2 pesan en toda simulada: el <b>cansancio</b> (cuántas rondas viene de pelear y hace cuánto), la <b>motivación</b> (si viene rindiendo sobre lo esperado), el <b>estrés</b> (la presión de venir ganando seguido), la <b>consistencia</b> (cuánto le varían las notas), su experiencia y cómo le fue contra ese rival. El nivel sigue mandando.</p></li>
+          <li><b>La réplica</b><p>Desde la temporada 2, si el jurado queda dividido la batalla puede ir a <b>réplica</b>: ahí nadie se lleva los 3 puntos. Se simula otra vez, con más peso del cansancio, el estrés y la consistencia. <b>2 puntos al que gana y 1 al que pierde.</b></p></li>
+          <li><b>Los puntos</b><p>Ganar directo da <b>3 puntos</b>, y en réplica, 2 y 1. La tabla se ordena por puntos; a igual de puntos, por <b>PTB</b> (desde la temporada 2), después por victorias reales y después por nivel.</p></li>
           <li><b>El PTB</b><p>Desde la temporada 2, la tabla muestra tu <b>PTB</b>, y <b>desempata</b>: los votos de jurado a tu favor, con 3 en juego por batalla. En una simulada votan 3 jueces de verdad, sorteados, y cada uno vota como suele votar: lo aprendemos de sus votos. En una real, cuentan los votos que dejó el jurado llevados a 3, y sin votos anotados, los 3 al que ganó. Una jornada cerrada ya no cambia.</p></li>
           <li><b>Subir y bajar</b><p>Al terminar las 9 jornadas, los <b>2 primeros suben</b> de nivel y los <b>2 últimos bajan</b>. En Oro no se sube más; en Ascenso no se baja.</p></li>
           <li><b>⭐ La Élite</b><p>Se juega <b>además</b> de tu liga, con el mismo calendario. Es de los 10 mejores del Competitivo que estén activos y <b>tengan su carta Competitiva</b>: sin la carta no se entra.</p></li>
@@ -778,7 +808,7 @@ function Simulada({ liga, C }) {
         <div><b>{nombreDe(liga, C, m[1])}</b><small>{pct(1 - m[4])}</small></div>
       </div>
       <Jurado liga={liga} C={C} m={m} />
-      <p className="cm9-nota">Cada simulada sortea 3 jueces de verdad, y cada uno vota como suele votar: lo aprendemos de sus votos (si se va con el favorito, si tira para su servidor, a quién le suele ir). Quién gana sale del nivel; ellos dicen por cuánto.</p>
+      <p className="cm9-nota">Cada simulada sortea 3 jueces de verdad, y cada uno vota como suele votar: lo aprendemos de sus votos (si se va con el favorito, si tira para su servidor, a quién le suele ir). Quién gana sale del nivel y de cómo llega cada uno; ellos dicen por cuánto, y si queda dividida puede ir a réplica.</p>
     </article>
   );
 }
@@ -885,11 +915,11 @@ export function Competencias({ liga, dc, sub = '' }) {
           <li><b>1</b><h3>JUEGA</h3><p>Cualquier evento de un servidor de la Liga. Con <b>1 evento en las últimas 2 semanas</b> ya entras el lunes.</p></li>
           <li><b>2</b><h3>TE TOCAN RIVALES</h3><p>Tu liga (y la Élite, si estás entre los 10 mejores), tu llave de la Copa y tu Rapid. Los ves arriba, en «Tu próximo cruce».</p></li>
           <li><b>3</b><h3>CRÚZATE</h3><p>Si te enfrentas a tu rival en un 1v1 de <b>cualquier evento</b> antes del cierre, cuenta esa batalla. Si no, se simula con tu nivel.</p></li>
-          <li><b>4</b><h3>SUMA Y SUBE</h3><p>Ganar da <b>3 puntos</b>. Al final de las 9 jornadas, los 2 primeros de cada liga suben y los 2 últimos bajan.</p></li>
+          <li><b>4</b><h3>SUMA Y SUBE</h3><p>Ganar da <b>3 puntos</b>, o 2 y 1 si va a réplica. Al final de las 9 jornadas, los 2 primeros de cada liga suben y los 2 últimos bajan.</p></li>
         </ol>
         <ul className="cm9-glos">
           <li><span className="cm9-tag real">REAL</span>Se cruzaron de verdad en un evento: cuenta esa batalla, y dice en cuál.</li>
-          <li><span className="cm9-tag sim">SIMULADO</span>No se cruzaron: decide el nivel de cada uno, y lo vota un jurado de jueces de verdad, sorteado. Los batacazos pasan.</li>
+          <li><span className="cm9-tag sim">SIMULADO</span>No se cruzaron: deciden el nivel de cada uno y cómo llega, y lo vota un jurado de jueces de verdad, sorteado. Si queda dividido, puede ir a réplica. Los batacazos pasan.</li>
           <li><span className="cm9-tag pend">65 %</span>Tus chances si se simula. Salen de tu nivel: a quién le ganaste y con quién perdiste en todas tus batallas 1v1 de la temporada.</li>
         </ul>
       </section>

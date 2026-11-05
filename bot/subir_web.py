@@ -3055,7 +3055,9 @@ def _competencias_web(pool=None):
         if not m:
             return None
         ex = m.get('ev') or ([[JK(q), v] for q, v in m['j']] if m.get('j') else 0)
-        return [K(m['a']), K(m['b']), K(m.get('g')), m.get('como') or '', m.get('p') or 0, ex]
+        out = [K(m['a']), K(m['b']), K(m.get('g')), m.get('como') or '', m.get('p') or 0, ex]
+        # 🎭 la séptima columna sólo si fue a réplica: son las menos
+        return out + [1] if m.get('rep') else out
 
     def t(xs):
         return [[K(x[0])] + list(x[1:]) for x in xs or []]
@@ -3097,6 +3099,7 @@ def _competencias_web(pool=None):
         'sem': c.get('sem'), 'ini': c.get('ini'), 'fin': c.get('fin'), 'dia': c.get('dia'), 'activos': c.get('activos'),
         'copa': [dict(llave(g), div=g.get('div', 5)) for g in c.get('copa') or []],
         'entran': [K(k) for k in c.get('entran') or []],
+        'est': {K(k): v for k, v in (c.get('estados') or {}).items()},
         'ligas': {'temp': L.get('temp'), 'desde': L.get('desde'), 'hasta': L.get('hasta'), 'jornada': L.get('jornada'),
                   'cierres': L.get('cierres') or [],
                   'g': [{'id': g['id'], 'nv': g['nivel'], 't': t(g['tabla']),

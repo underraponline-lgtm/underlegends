@@ -11,6 +11,17 @@
  ],
  "cambios": [
     {
+      "version": "4.31",
+      "dia": "2026-11-04",
+      "cuando": "2026-11-04T20:22:52-05:00",
+      "titulo": "Las simuladas tienen réplica, y cuenta cómo llega cada uno",
+      "items": [
+        "**Cuenta cómo llega cada uno**: las rondas que viene de pelear y hace cuánto, si viene rindiendo sobre lo esperado, la presión de venir ganando y qué tan parejo es. Lo ves en su fila de la liga y en el cara a cara. El nivel sigue mandando.",
+        "**Puede haber réplica**: si el jurado queda dividido, la batalla se simula otra vez. En las ligas nadie se lleva los 3 puntos: 2 al que gana y 1 al que pierde.",
+        "**Desde cuándo**: en la Copa, la Rapid y los mini eventos, desde el lunes 9. En las ligas, desde la temporada 2, el 16, junto con el PTB. La temporada que está en juego no cambia."
+      ]
+    },
+    {
       "version": "4.30",
       "dia": "2026-11-04",
       "cuando": "2026-11-04T19:54:52-05:00",

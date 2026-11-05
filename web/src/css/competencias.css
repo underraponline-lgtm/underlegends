@@ -14,6 +14,8 @@
 .cm9-tag.pend{border:1.5px solid currentColor}
 .cm9-tag.mag{background:var(--magenta);color:#FFFFFF}
 .cm9-tag.mvp{background:#030304;color:#F5C542}
+.cm9-tag.rep{background:#F5C542;color:#030304}
+.cm9-tags{display:inline-flex;flex-wrap:wrap;gap:4px}
 .cm9-yo{font-weight:900;text-decoration:underline;text-decoration-color:var(--magenta);text-decoration-thickness:2px}
 .cm9-nadie{color:var(--gris);font-style:italic}
 
@@ -441,6 +443,22 @@
 .cm9-br.larga .cm9-br-l.vacio{min-height:27px;line-height:27px}
 .cm9-br-ver{align-self:flex-start;min-height:44px;margin:0 16px 16px;padding:0 14px;border:1.6px solid var(--linea);border-radius:0;background:transparent;color:var(--tinta);
   font:800 13px/1 Archivo,sans-serif;text-transform:uppercase;cursor:pointer}
+
+/* 🎭 cómo llega cada uno y la réplica (Dlx, 04/11/2026: «cansancio, motivación, estrés… consistencia») */
+.cm9-cru-rep{font:600 12.5px/1.3 Archivo,sans-serif;color:var(--gris)}
+.cm9-cru.tuyo .cm9-cru-rep{color:var(--inv-tinta)}
+.cm9-est{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:8px 14px;margin:0;max-width:640px}
+.cm9-est div{display:flex;flex-direction:column;gap:5px;min-width:0}
+.cm9-est dt{font:700 12px/1 "Barlow Condensed",sans-serif;letter-spacing:.08em;text-transform:uppercase;color:var(--gris)}
+.cm9-est dd{margin:0;height:7px;background:var(--suave)}
+.cm9-est dd i{display:block;height:100%;background:var(--magenta)}
+.cm9-vse{display:flex;flex-direction:column;gap:6px}
+.cm9-vse>div{display:grid;grid-template-columns:minmax(0,1fr) 88px minmax(0,1fr);align-items:center;gap:8px}
+.cm9-vse small{text-align:center;font:700 12px/1 "Barlow Condensed",sans-serif;letter-spacing:.08em;text-transform:uppercase;color:var(--esc-gris)}
+.cm9-vse-b{display:flex;height:7px;background:#2A2A2C}
+.cm9-vse-b.izq{justify-content:flex-end}
+.cm9-vse-b i{display:block;height:100%;background:#A5A5A0}
+.cm9-vse-b.izq i{background:#E41373}
 
 /* 🔒 lo que no juegas (Dlx, 04/11/2026: «que diga sus requisitos») */
 .cm9-cand{display:block;width:12px;height:12px;flex:none}

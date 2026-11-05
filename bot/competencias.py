@@ -37,6 +37,10 @@ LAS REGLAS
   desempata, *«sí… pero deberíamos tener mucho cuidado con esta función»*), desde la temporada `PTB_DESDE`: los votos de
   jurado que cada uno fue sumando, `PTB_BATALLA` en juego por batalla (`ptb_de()`). A igual de puntos manda el PTB, después
   los ganados de verdad y después la fuerza.
+- **🎭 Cómo llega cada uno y la réplica** (Dlx, 04/11/2026: *«puede haber réplica, y ahí nadie gana 3 puntos directo… dependerán
+  bastantes factores como cansancio, motivación, estrés… consistencia… no únicamente para la réplica, sino para todas las
+  batallas simuladas… en la réplica el ganador se gana 2 puntos y el perdedor 1»*). Las Copas y Rapid desde `FACTORES_DESDE`, y
+  las ligas desde la temporada `PTB_DESDE`, con el PTB (*«ya es tarde»* para la que está en juego). Ver `batalla_sim()`.
 - **💰 Premios** (Dlx, 27/10/2026, a las cuatro preguntas: «Moderado», «Poco, sólo el campeón»): en Puntos de Tienda. Las
   ligas, a los tres primeros de cada una al cerrar la temporada (`PREMIO_LIGA`); la Copa al campeón y al finalista, la
   Rapid y cada mini evento al campeón, al cerrar la semana. **Sólo cobra quien jugó al menos 1 evento en ese tiempo**: la
@@ -136,9 +140,31 @@ JURADO_HISTORIAL = 0.5
 #: el tope de todo eso junto, en log-odds: 3 es un 95 %. Con pocos datos, un jurado no puede votar «siempre» a nadie
 JURADO_TOPE = 3.0
 #: ⚖️ el PTB de las ligas sale con esta temporada (Dlx: «para la próxima»), y lo que reparte cada batalla: los tres votos
-#: del jurado de una simulada
+#: del jurado de una simulada. Las réplicas de las ligas arrancan con él: una temporada no tiene dos sistemas de puntos
 PTB_DESDE = 2
 PTB_BATALLA = 3
+#: 🎭 desde qué semana pesan los factores y hay réplica en las llaves: la que está en curso ya publicó sus chances
+FACTORES_DESDE = '2026-11-09'
+#: 🎭 cuánto pesa cada cosa en una simulada, en log-odds. Medido el 04/11/2026 sobre 528 batallas de verdad, con el ELO del lunes
+#: como en la simulación (peso ± error, todos juntos): la forma +1,37 ± 0,52 y la racha ganada −0,16 ± 0,07 se notan; la
+#: experiencia +0,10 ± 0,11, el cara a cara +0,08 ± 0,20 y la consistencia −0,15 ± 0,49 apenas; el cansancio, por rondas y
+#: hace cuánto, +0,02 ± 0,02: no se nota, y hasta da al revés (quien viene peleando llega con ritmo). Se usan menos de lo
+#: medido, y el cansancio y lo de jugarse algo van por decisión de Dlx, con poco peso: con estos datos no se puede probar
+#: que muevan un resultado. Con todos juntos, sobre esas 528: el error baja de 0,658 a 0,647 y acierta 332 en vez de 324
+FACTOR = {'forma': 1.0, 'racha': -0.12, 'cansancio': -0.02, 'experiencia': 0.05, 'cara': 0.1, 'consistencia': -0.25, 'juega': 0.12}
+#: 🎭 el cansancio (Dlx, 04/11/2026: «depende de las rondas… hace cuánto tiempo uno ha batallado… si uno participa 5 eventos en
+#: un día, ¿crees que está cansado? puede ser como no, pero obviamente va a afectar al rendimiento algo»): cada ronda pesa 1 si
+#: fue en la última noche y la mitad por cada día de más, hasta `CANSANCIO_DIAS`. Con tope: de ahí no pesa más, así que 5
+#: eventos en un día restan unos 7 puntos de chance. Afecta algo, y la moneda sigue decidiendo
+CANSANCIO_DIAS = 5
+CANSANCIO_TOPE = 15
+#: en una réplica pesan más: ya pelearon, y queda lo que les quede
+FACTOR_REPLICA = {'cansancio': 2.0, 'racha': 1.5, 'consistencia': 1.5}
+#: lo máximo que pueden mover todos juntos: el nivel sigue mandando. 0,6 son unos 14 puntos de chance en una batalla pareja
+FACTOR_TOPE = 0.6
+#: 🎭 una batalla con el jurado dividido va a réplica con esta chance, y menos cuanto más dispareja. Calibrado para que vaya
+#: a réplica como en las ligas de verdad: 62 de 304 batallas con cierre claro (20 %), medido el 04/11/2026
+REPLICA_CHANCE = 0.55
 
 
 def _j(*p, defecto=None):
@@ -235,13 +261,16 @@ def simular(a, b, fa, fb, *semilla):
 
 # ── las tres ──────────────────────────────────────────────────────────────────────────────────────────────────────
 
-def resolver(a, b, reales, cerrada, fz, *semilla):
-    """Un cruce: `{'a','b','g' (ganador o ''),'como' ('real'|'sim'|'pend'),'p' (prob de a),'ev'}`."""
+def resolver(a, b, reales, cerrada, fz, *semilla, sim=None, t=None):
+    """Un cruce: `{'a','b','g' (ganador o ''),'como' ('real'|'sim'|'pend'),'p' (prob de a),'ev'}`. Con `sim`, lo que no se
+    cruzó sale de `batalla_sim()`, y `t` es hasta cuándo se mira cómo llega cada uno."""
     fa, fb = fz.get(a, SIN_ELO), fz.get(b, SIN_ELO)
     real = [x for x in reales if {x[0], x[1]} == {a, b}]
     if real:
         g, _pe, n, _d = real[-1]
         return {'a': a, 'b': b, 'g': g, 'como': 'real', 'p': round(prob(fa, fb), 3), 'ev': n}
+    if sim:
+        return batalla_sim(a, b, prob(fa, fb), cerrada, sim, t, *semilla)
     if cerrada:
         g, p = simular(a, b, fa, fb, *semilla)
         return {'a': a, 'b': b, 'g': g, 'como': 'sim', 'p': p}
@@ -250,7 +279,8 @@ def resolver(a, b, reales, cerrada, fz, *semilla):
 
 def tabla(gente, partidos, fz, ptb=None):
     """`[[norm, pj, g, pts]]`, ordenada: puntos, ganados de verdad, fuerza. Con `ptb` (lo que reparte cada batalla, ver
-    `ptb_de()`) va una quinta columna, y a igual de puntos manda él."""
+    `ptb_de()`) va una quinta columna, y a igual de puntos manda él. Ganar da 3 puntos; en una réplica (`rep`), 2 al que
+    gana y 1 al que pierde."""
     t = {k: [k, 0, 0, 0, 0, 0] for k in gente}
     for m in partidos:
         if not m['g']:
@@ -258,7 +288,9 @@ def tabla(gente, partidos, fz, ptb=None):
         for k in (m['a'], m['b']):
             t[k][1] += 1
         t[m['g']][2] += 1
-        t[m['g']][3] += 3
+        t[m['g']][3] += 2 if m.get('rep') else 3
+        if m.get('rep'):
+            t[m['b'] if m['g'] == m['a'] else m['a']][3] += 1
         if m['como'] == 'real':
             t[m['g']][4] += 1
         if ptb:
@@ -306,7 +338,7 @@ def rondas_copa(lugares, ini, fin):
     return ('Octavos', 'Cuartos', 'Semifinal', 'Final'), [ini] + [dias_despues(ini, d) for d in (2, 4, 6)] + [fin]
 
 
-def copa(activos, niveles, fz, ini, fin, llaves, ahora, sem, fijas=None):
+def copa(activos, niveles, fz, ini, fin, llaves, ahora, sem, fijas=None, sim=None):
     """🏆 LA COPA DE LA SEMANA, A ELIMINACIÓN (Dlx, 26/10/2026: «la copa es un torneo»; 04/11/2026: «de 32vos»): los
     activos, por su división y su fuerza, en llaves de `COPA`, con una ventana por ronda (`rondas_copa()`). Las llaves salen
     parejas en tamaño; las que no llegan a llenarse llevan pases libres para los mejores sembrados, como en cualquier copa.
@@ -326,7 +358,7 @@ def copa(activos, niveles, fz, ini, fin, llaves, ahora, sem, fijas=None):
     for i, slots in enumerate(todas):
         g = [k for k in slots if k]
         nombres, lims = rondas_copa(len(slots), ini, fin)
-        r = llave(slots, lims, nombres, llaves, fz, ahora, sem, 'copa', i)
+        r = llave(slots, lims, nombres, llaves, fz, ahora, sem, 'copa', i, sim=sim)
         r.update(id=LETRAS[i % 26] + ('' if i < 26 else str(i // 26)), div=min(niveles.get(k, 5) for k in g))
         out.append(r)
     return out
@@ -370,10 +402,10 @@ def calendario(n):
     return out
 
 
-def jugar_liga(gente, desde, llaves, fz, ahora, *semilla, jurado=None):
+def jugar_liga(gente, desde, llaves, fz, ahora, *semilla, jurado=None, sim=None):
     """`(jornadas, tabla)` de una liga: una jornada por ventana, real si se cruzaron adentro, simulada al cerrar. `jurado`
     es `(M, temporada, liga)`: el jurado se sortea acá y no al final, porque desde `PTB_DESDE` sus votos ordenan la tabla,
-    y la tabla decide quién sube, quién baja y quién cobra."""
+    y la tabla decide quién sube, quién baja y quién cobra. Con `sim`, cada simulada sale de `batalla_sim()`."""
     cal = calendario(len(gente))
     jornadas, todos = [], []
     M, temp, gid = jurado or (None, 0, '')
@@ -382,13 +414,23 @@ def jugar_liga(gente, desde, llaves, fz, ahora, *semilla, jurado=None):
             break
         reales = cruces(llaves, ini, fin)
         cerrada = ahora >= fin
-        ps = [resolver(gente[a], gente[b], reales, cerrada, fz, *semilla, j) for a, b in cal[j] if a is not None and b is not None]
+        # 🎭 en las últimas jornadas, quién se juega algo: el que está cerca de subir, de bajar o de la punta
+        en_juego = dict(sim, juegan=se_juegan_algo(tabla(gente, todos, fz))) if sim and j >= JORNADAS - 3 else sim
+        ps = [resolver(gente[a], gente[b], reales, cerrada, fz, *semilla, j, sim=en_juego, t=min(ahora, fin)) for a, b in cal[j] if a is not None and b is not None]
         if M:
             for m in ps:
                 jurado_sim(m, M, temp, gid, j + 1)
         jornadas.append({'n': j + 1, 'fin': fin.isoformat(), 'partidos': ps})
         todos += ps
     return jornadas, tabla(gente, todos, fz, (lambda m: ptb_de(m, M['votos'], llaves)) if M and temp >= PTB_DESDE else None)
+
+
+def se_juegan_algo(t):
+    """`{norm}`: quienes están a una victoria de los 2 primeros o de los 2 últimos de una tabla (`t`, ya ordenada)."""
+    if len(t) < 6:
+        return set()
+    corte_alto, corte_bajo = t[SUBEN - 1][3], t[-BAJAN][3]
+    return {f[0] for f in t if f[3] >= corte_alto - 3 or f[3] <= corte_bajo + 3}
 
 
 def repartir(gente, n):
@@ -449,7 +491,7 @@ def elite_de(activos):
     return [k for k, _s, kr in comp if k in activos and (not con or kr in con)][:LIGA]
 
 
-def ligas(viejo, llaves, ahora, M=None):
+def ligas(viejo, llaves, ahora, M=None, S=None):
     """La temporada de ligas: las ligas por niveles y la Élite en paralelo. Las arma la primera vez (por fuerza) y al
     terminar cada temporada (con las subidas y bajadas de la anterior); en el medio, la gente queda fija. La fuerza es
     el ELO al arranque de ESA temporada: con el de la semana, una jornada simulada ya cerrada podía cambiar de ganador."""
@@ -470,14 +512,15 @@ def ligas(viejo, llaves, ahora, M=None):
     cerradas = []
     while ahora >= dias_despues(desde, 7 * TEMP_SEMANAS):
         final = desde + dt.timedelta(days=99)
-        jugadas = {g['id']: jugar_liga(g['gente'], desde, llaves, fz, final, 'liga', temp, g['id'], jurado=(M, temp, g['id']) if M else None) for g in grupos}
+        sim = S if S and temp >= PTB_DESDE else None
+        jugadas = {g['id']: jugar_liga(g['gente'], desde, llaves, fz, final, 'liga', temp, g['id'], jurado=(M, temp, g['id']) if M else None, sim=sim) for g in grupos}
         tablas = {k: v[1] for k, v in jugadas.items()}
         # 💰 la tabla final de la temporada que termina y quién jugó en ella, para los premios (`premios_liga()`)
         c = {'temp': temp, 'fin': dias_despues(desde, 7 * TEMP_SEMANAS).isoformat(),
              'jugaron': sorted(jugaron(llaves, desde, dias_despues(desde, 7 * TEMP_SEMANAS))),
              'grupos': [dict(id=g['id'], nivel=g['nivel'], jornadas=jugadas[g['id']][0], tabla=tablas[g['id']]) for g in grupos]}
         if len(elite) >= 4:
-            js, t = jugar_liga(elite, desde, llaves, fz, final, 'elite', temp, jurado=(M, temp, 'elite') if M else None)
+            js, t = jugar_liga(elite, desde, llaves, fz, final, 'elite', temp, jurado=(M, temp, 'elite') if M else None, sim=sim)
             c['elite'] = {'jornadas': js, 'tabla': t}
         cerradas.append(c)
         desde = dias_despues(desde, 7 * TEMP_SEMANAS)
@@ -491,18 +534,19 @@ def ligas(viejo, llaves, ahora, M=None):
            'grupos': [], 'elite': elite}
     if cerradas:
         out['cerradas'] = cerradas
+    sim = S if S and temp >= PTB_DESDE else None
     for g in grupos:
-        js, t = jugar_liga(g['gente'], desde, llaves, fz, ahora, 'liga', temp, g['id'], jurado=(M, temp, g['id']) if M else None)
+        js, t = jugar_liga(g['gente'], desde, llaves, fz, ahora, 'liga', temp, g['id'], jurado=(M, temp, g['id']) if M else None, sim=sim)
         out['grupos'].append(dict(g, jornadas=js, tabla=t))
     if len(elite) >= 4:
-        js, t = jugar_liga(elite, desde, llaves, fz, ahora, 'elite', temp, jurado=(M, temp, 'elite') if M else None)
+        js, t = jugar_liga(elite, desde, llaves, fz, ahora, 'elite', temp, jurado=(M, temp, 'elite') if M else None, sim=sim)
         out['liga_elite'] = {'gente': elite, 'jornadas': js, 'tabla': t}
     return out
 
 
 # ── la Rapid de la semana ─────────────────────────────────────────────────────────────────────────────────────────
 
-def llave(gente, lims, nombres, llaves, fz, ahora, *semilla):
+def llave(gente, lims, nombres, llaves, fz, ahora, *semilla, sim=None):
     """Una llave a eliminación con una ventana por ronda (`lims`: el arranque y el cierre de cada una). `gente` son los
     lugares en orden; un lugar vacío es un pase libre (`como: 'pase'`). `None` es que en ese lugar no hay nadie ni lo va a
     haber, y '' que todavía no se sabe quién: con muy poca gente, un cruce sin nadie deja un lugar vacío en la ronda de
@@ -519,19 +563,19 @@ def llave(gente, lims, nombres, llaves, fz, ahora, *semilla):
             elif not a or not b:
                 ps.append({'a': a or '', 'b': b or '', 'g': '', 'como': 'pend', 'p': 0.5})
             else:
-                ps.append(resolver(a, b, reales, ahora >= a1, fz, *semilla, nombre))
+                ps.append(resolver(a, b, reales, ahora >= a1, fz, *semilla, nombre, sim=sim, t=min(ahora, a1)))
         rondas.append({'r': nombre, 'hasta': a1.isoformat(), 'partidos': ps})
         vivos = [None if m['como'] == 'pase' and not m['g'] else m['g'] for m in ps]
     return {'gente': [k for k in gente if k], 'rondas': rondas, 'campeon': vivos[0] if vivos and vivos[0] else ''}
 
 
-def llave8(gente, ini, fin, llaves, fz, ahora, *semilla):
+def llave8(gente, ini, fin, llaves, fz, ahora, *semilla, sim=None):
     """Una llave de 8 de la semana: cuartos hasta el jueves, semis hasta el sábado, final hasta el lunes."""
     lims = [ini, dias_despues(ini, 3), dias_despues(ini, 5), fin]
-    return llave(gente, lims, ('Cuartos', 'Semifinal', 'Final'), llaves, fz, ahora, *semilla)
+    return llave(gente, lims, ('Cuartos', 'Semifinal', 'Final'), llaves, fz, ahora, *semilla, sim=sim)
 
 
-def rapids(activos, ini, fin, llaves, fz, ahora, sid, fijas=None):
+def rapids(activos, ini, fin, llaves, fz, ahora, sid, fijas=None, sim=None):
     """Las Rapid de la semana, EN GRUPOS DE NIVEL (Dlx, 26/10/2026: *«que ahí sólo se enfrenten gente de su propio
     nivel»*): los activos por ELO, de a `RAPID` parecidos, sembrados para que los dos mejores del grupo sólo se crucen en
     la final. Los grupos salen parejos en tamaño y el que no llega a 8 lleva pases libres para los mejores sembrados:
@@ -543,7 +587,7 @@ def rapids(activos, ini, fin, llaves, fz, ahora, sid, fijas=None):
         todas = [[g[s_] if s_ < len(g) else '' for s_ in SIEMBRA8] for g in partir(orden, RAPID)] if len(orden) >= 2 else []
     out = []
     for i, slots in enumerate(todas):
-        r = llave8(slots, ini, fin, llaves, fz, ahora, sid, 'rapid', i)
+        r = llave8(slots, ini, fin, llaves, fz, ahora, sid, 'rapid', i, sim=sim)
         r['id'] = 'R%d' % (i + 1)
         out.append(r)
     return out
@@ -596,7 +640,7 @@ def puntos_semana(llaves, ini, fin):
     return out
 
 
-def mini_eventos(sid, ini, fin, activos, llaves, fz, ahora, L, cuantos=MINI):
+def mini_eventos(sid, ini, fin, activos, llaves, fz, ahora, L, cuantos=MINI, sim=None):
     """Los `MINI` de esta semana, sorteados del catálogo con la semana de semilla; cada uno con lo que muestra."""
     reales = cruces(llaves, ini, fin)
     cerrada = ahora >= fin
@@ -616,7 +660,7 @@ def mini_eventos(sid, ini, fin, activos, llaves, fz, ahora, L, cuantos=MINI):
         if len(lados) < 2:
             return None
         a, b = [sorted(por[s], key=lambda k: -fz.get(k, SIN_ELO))[:5] for s in lados]
-        ps = [resolver(x, y, reales, cerrada, fz, sid, id_, i) for i, (x, y) in enumerate(zip(a, b))]
+        ps = [resolver(x, y, reales, cerrada, fz, sid, id_, i, sim=sim, t=min(ahora, fin)) for i, (x, y) in enumerate(zip(a, b))]
         return {'svs': lados, 'partidos': ps, 'score': [sum(m['g'] == m['a'] for m in ps), sum(m['g'] == m['b'] for m in ps)]}
 
     def derbi():
@@ -636,7 +680,7 @@ def mini_eventos(sid, ini, fin, activos, llaves, fz, ahora, L, cuantos=MINI):
         b = next((x[0] for x in oro if x[0] != a), '')
         if not a or not b:
             return None
-        return {'partido': resolver(a, b, reales, cerrada, fz, sid, 'supercopa')}
+        return {'partido': resolver(a, b, reales, cerrada, fz, sid, 'supercopa', sim=sim, t=min(ahora, fin))}
 
     def equipos(n):
         orden = sorted(activos, key=lambda k: moneda('eq', n, sid, k))
@@ -680,7 +724,7 @@ def mini_eventos(sid, ini, fin, activos, llaves, fz, ahora, L, cuantos=MINI):
         nov = sorted((k for k in activos if eventos.get(k, 0) < 5), key=lambda k: moneda('novatos', sid, k))
         if len(nov) < RAPID:
             return None
-        return llave8(nov[:RAPID], ini, fin, llaves, fz, ahora, sid, 'novatos')
+        return llave8(nov[:RAPID], ini, fin, llaves, fz, ahora, sid, 'novatos', sim=sim)
 
     def de_la_semana():
         """Los eventos jugados esta semana, con su gente: `[(evento, [(norm, puesto)])]`."""
@@ -976,6 +1020,153 @@ def jurado_sim(m, M, *semilla):
     return m
 
 
+# ── 🎭 cómo llega cada uno, y la batalla simulada ─────────────────────────────────────────────────────────────────
+
+def contexto_sim(llaves, notas, M, viejo=None):
+    """🎭 Lo que hace falta para simular una batalla: `h`, las batallas de cada uno con cuánto rindió sobre lo esperado (con
+    el ELO que tenía justo antes, no el de hoy: si no, el resultado se le mete a su propia expectativa); `rondas`, cuándo
+    peleó cada ronda, también las de 3 a 5 MCs y las de equipos, que cansan igual; `evs`, cuándo jugó cada evento; `notas`, la
+    nota de cada evento; el jurado (`M`) y `frio`, lo ya simulado."""
+    from notas import NO_PELEO
+    import elo as EL
+    siempre = (dt.datetime(2000, 1, 1, tzinfo=dt.timezone.utc), dt.datetime(2100, 1, 1, tzinfo=dt.timezone.utc))
+    h, elo_ = {}, {}
+    for g, p, _n, d in cruces(llaves, *siempre):
+        cuando = _dia_utc(d)
+        eg, ep = elo_.get(g, SIN_ELO), elo_.get(p, SIN_ELO)
+        e = prob(eg, ep)
+        h.setdefault(g, []).append((cuando, True, p, 1 - e))
+        h.setdefault(p, []).append((cuando, False, g, e - 1))
+        elo_[g], elo_[p] = eg + EL.K * (1 - e), ep - EL.K * (1 - e)
+    evs, ns, rondas = {}, {}, {}
+    for n, ev in llaves.items():
+        cuando = _dia_utc(ev.get('dia'))
+        if cuando is None:
+            continue
+        for nombre, _p, _x in ev.get('tabla') or []:
+            for q in personas(nombre):
+                evs.setdefault(norm(q), []).append(cuando)
+        for rd in ev.get('rondas') or []:
+            for b in rd.get('b') or []:
+                try:
+                    lados, nota = b[0], str(b[2] or '').lower()
+                except (IndexError, TypeError):
+                    continue
+                if not isinstance(lados, list) or any(x in nota for x in NO_PELEO):
+                    continue
+                for lado in lados:
+                    for q in personas(lado):
+                        rondas.setdefault(norm(q), []).append(cuando)
+        for nombre, nota in ((notas or {}).get(str(n)) or {}).get('notas', {}).items():
+            ns.setdefault(norm(nombre), []).append((cuando, nota))
+    frio = {}
+    for _sem, ps in _batallas(viejo or {}):
+        for m in ps:
+            if m.get('k'):
+                frio[m['k']] = m
+    return {'h': h, 'rondas': rondas, 'evs': evs, 'notas': ns, 'M': M, 'frio': frio}
+
+
+def cansancio_de(k, t, S):
+    """🎭 Las rondas que `k` viene de pelear, cada una con menos peso cuanto más lejos: 1 si fue en la última noche, la mitad
+    por cada día de más (ver `CANSANCIO_DIAS`). Se cuentan rondas y no eventos: quien cae en la primera de cinco eventos pelea
+    lo mismo que quien gana uno solo, y no llega igual que quien llegó cinco veces a la final."""
+    total = 0.0
+    for c in S.get('rondas', {}).get(k, ()):
+        dias = (t - c).total_seconds() / 86400.0
+        if 0 < dias <= CANSANCIO_DIAS:
+            total += 0.5 ** max(0.0, dias - 1)
+    return total
+
+
+def como_llega(k, rival, t, S):
+    """🎭 Cómo llega `k` a una batalla en el momento `t`, de lo que se puede medir de lo que jugó antes: `cansancio`, las
+    rondas que viene de pelear (`cansancio_de()`); `forma`, cuánto rindió sobre lo esperado en las últimas 10 (la motivación que se ve); `racha`,
+    victorias seguidas (el estrés de venir ganando: medido, el que viene invicto rinde menos de lo que dice su forma);
+    `experiencia`, eventos jugados; `cara`, cómo le fue contra este rival; `sd`, cuánto le varían las notas (la consistencia).
+    Con menos de 3 batallas no hay con qué medir: llega neutro."""
+    h = [x for x in S['h'].get(k, ()) if x[0] < t]
+    if len(h) < 3:
+        return {'cansancio': cansancio_de(k, t, S), 'forma': 0.0, 'racha': 0, 'experiencia': 0.0, 'cara': 0, 'sd': None}
+    racha = 0
+    for x in reversed(h):
+        if not x[1]:
+            break
+        racha += 1
+    ult = h[-10:]
+    ns = [v for c, v in S['notas'].get(k, ()) if c < t][-15:]
+    media = sum(ns) / float(len(ns)) if ns else 0
+    return {'cansancio': cansancio_de(k, t, S), 'forma': sum(x[3] for x in ult) / float(len(ult)), 'racha': racha,
+            'experiencia': math.log(1 + sum(1 for c in S['evs'].get(k, ()) if c < t)),
+            'cara': sum(1 if x[1] else -1 for x in h if x[2] == rival),
+            'sd': math.sqrt(sum((v - media) ** 2 for v in ns) / len(ns)) if len(ns) >= 3 else None}
+
+
+#: cuánto le varían las notas a alguien normal (medido el 04/11/2026: 0,82): de ahí para arriba es irregular
+SD_NOTAS = 0.82
+
+
+def chance_sim(a, b, p0, t, S, replica=False, juegan=()):
+    """🎭 La chance de `a` con lo que dice el nivel (`p0`) y cómo llega cada uno. La consistencia actúa sobre el nivel: entre
+    dos irregulares la diferencia pesa menos, porque cualquiera puede tener una mala noche; lo demás suma o resta, con un
+    tope (`FACTOR_TOPE`) para que el nivel siga mandando."""
+    fa, fb = como_llega(a, b, t, S), como_llega(b, a, t, S)
+    w = dict(FACTOR)
+    if replica:
+        for c, x in FACTOR_REPLICA.items():
+            w[c] *= x
+    irr = sum(max(-1.0, min(1.0, f['sd'] - SD_NOTAS)) for f in (fa, fb) if f['sd'] is not None)
+    d = (w['forma'] * (fa['forma'] - fb['forma'])
+         + w['racha'] * (min(5, fa['racha']) - min(5, fb['racha']))
+         + w['cansancio'] * (min(CANSANCIO_TOPE, fa['cansancio']) - min(CANSANCIO_TOPE, fb['cansancio']))
+         + w['experiencia'] * (fa['experiencia'] - fb['experiencia'])
+         + w['cara'] * max(-2, min(2, fa['cara']))
+         + w['juega'] * ((a in juegan) - (b in juegan)))
+    x = _logit(p0) * max(0.75, min(1.25, 1 + w['consistencia'] * irr)) + max(-FACTOR_TOPE, min(FACTOR_TOPE, d))
+    return 1.0 / (1.0 + math.exp(-x))
+
+
+def _gana(a, b, p, *semilla):
+    """La moneda de una batalla, siempre en el mismo orden (alfabético), como `simular()`."""
+    x, y = sorted((a, b))
+    return x if moneda(*semilla, x, y) < (p if x == a else 1 - p) else y
+
+
+def batalla_sim(a, b, p0, cerrada, S, t, *semilla):
+    """🎭 UNA BATALLA SIMULADA ENTERA (Dlx, 04/11/2026). Con la chance de cada uno (`chance_sim()`) sale quién va arriba, y el
+    jurado vota. Si queda dividido, puede ir a RÉPLICA: ahí nadie se lleva los 3 puntos, se vuelve a simular con lo que les
+    queda —el cansancio, el estrés y la consistencia pesan más— y vota de nuevo. Los votos que quedan, y los que cuentan para
+    el PTB, son los de la vuelta que decidió. Una batalla ya simulada no cambia (`frio`): si no, un evento cargado tarde le
+    movería el cansancio de hace dos semanas, y con eso el resultado."""
+    k = hashlib.sha256('|'.join(str(x) for x in tuple(semilla) + (a, b)).encode('utf-8')).hexdigest()[:12]
+    if cerrada and k in S['frio']:
+        return dict(S['frio'][k])
+    juegan = S.get('juegan') or ()
+    p1 = chance_sim(a, b, p0, t, S, juegan=juegan)
+    m = {'a': a, 'b': b, 'g': '', 'como': 'pend', 'p': round(p1, 3)}
+    if not cerrada:
+        return m
+    m.update(g=_gana(a, b, p1, *semilla), como='sim', k=k)
+    jurado_sim(m, S['M'], *semilla)
+    lado = 'a' if m['g'] == a else 'b'
+    if m.get('j') and sum(1 for _q, v in m['j'] if v == lado) == 2 and moneda('replica', *semilla, a, b) < REPLICA_CHANCE * (1 - abs(2 * p1 - 1)):
+        p2 = chance_sim(a, b, p0, t, S, replica=True, juegan=juegan)
+        m.update(g=_gana(a, b, p2, *semilla, 'replica'), rep=True)
+        del m['j']
+        jurado_sim(m, S['M'], *semilla, 'replica')
+    return m
+
+
+def estados(gente, t, S):
+    """🎭 `{norm: [cansancio, motivación, estrés, consistencia]}` de 0 a 100, para mostrar cómo llega cada uno."""
+    out = {}
+    for k in gente:
+        f = como_llega(k, '', t, S)
+        out[k] = [int(min(100, f['cansancio'] / float(CANSANCIO_TOPE) * 100)), int(max(0, min(100, 50 + f['forma'] / 0.3 * 50))), min(100, f['racha'] * 20),
+                  int(max(0, min(100, 100 - f['sd'] / 1.6 * 100))) if f['sd'] is not None else 50]
+    return out
+
+
 # ── ⚖️ el PTB de las ligas ────────────────────────────────────────────────────────────────────────────────────────
 
 def votos_por_cruce():
@@ -1095,7 +1286,7 @@ def premios_semana(sid, fin, copas, rapids_, minis, jugo=()):
     return out
 
 
-def cerrar_semana(viejo, llaves):
+def cerrar_semana(viejo, llaves, S=None):
     """💰 Los premios de la semana de `viejo` (el `competencias.json` de la corrida anterior), con todas sus ventanas
     cerradas: se rehacen sus llaves con `ahora` = su cierre, sobre las que ya estaban armadas (`armadas()`), así lo que
     se paga es lo mismo que se vio."""
@@ -1107,9 +1298,10 @@ def cerrar_semana(viejo, llaves):
     ahora = fin + dt.timedelta(seconds=1)
     fz = fuerzas(llaves, ini)
     activos = set(jugaron(llaves, ini - dt.timedelta(days=ACTIVO_DIAS), ini))
-    cp = copa(activos, {}, fz, ini, fin, llaves, ahora, sid, armadas(viejo, sid, 'copa'))
-    rp = rapids(activos, ini, fin, llaves, fz, ahora, sid, armadas(viejo, sid, 'rapid'))
-    mini, _p = mini_eventos(sid, ini, fin, activos, llaves, fz, ahora, viejo.get('ligas') or {})
+    sim = S if S and sid >= FACTORES_DESDE else None
+    cp = copa(activos, {}, fz, ini, fin, llaves, ahora, sid, armadas(viejo, sid, 'copa'), sim=sim)
+    rp = rapids(activos, ini, fin, llaves, fz, ahora, sid, armadas(viejo, sid, 'rapid'), sim=sim)
+    mini, _p = mini_eventos(sid, ini, fin, activos, llaves, fz, ahora, viejo.get('ligas') or {}, sim=sim)
     return premios_semana(sid, viejo['fin'], cp, rp, mini, jugaron(llaves, ini, fin))
 
 
@@ -1154,14 +1346,16 @@ def calcular(ahora=None, llaves=None, notas=None, viejo=None):
     niveles = {norm(k): v for k, v in ((_j('datos', 'divisiones.json', defecto={}) or {}).get('nivel') or {}).items()}
     reales = cruces(llaves, ini, fin)
     M = aprender(llaves, viejo)
-    L = ligas(viejo.get('ligas'), llaves, ahora, M)
+    S = contexto_sim(llaves, notas, M, viejo)
+    sim = S if sid >= FACTORES_DESDE else None
+    L = ligas(viejo.get('ligas'), llaves, ahora, M, S)
     # 💰 el libro de premios: lo de antes, más la temporada de ligas y la semana que se acaban de cerrar
     premios = dict(viejo.get('premios') or {})
     for c in L.pop('cerradas', None) or []:
         premios.update(premios_liga(c))
     if viejo.get('sem') and str(viejo.get('sem')) < sid:
-        premios.update(cerrar_semana(viejo, llaves))
-    mini, pronto = mini_eventos(sid, ini, fin, activos, llaves, fz, ahora, L)
+        premios.update(cerrar_semana(viejo, llaves, S))
+    mini, pronto = mini_eventos(sid, ini, fin, activos, llaves, fz, ahora, L, sim=sim)
     nombres = {}
     for ev in llaves.values():
         for nombre, _p, _x in ev.get('tabla') or []:
@@ -1172,9 +1366,9 @@ def calcular(ahora=None, llaves=None, notas=None, viejo=None):
         'sem': sid, 'ini': ini.isoformat(), 'fin': fin.isoformat(),
         'dia': min(7, max(1, int((ahora - ini).total_seconds() // 86400) + 1)),
         'activos': len(activos),
-        'copa': copa(activos, niveles, fz, ini, fin, llaves, ahora, sid, armadas(viejo, sid, 'copa')),
+        'copa': copa(activos, niveles, fz, ini, fin, llaves, ahora, sid, armadas(viejo, sid, 'copa'), sim=sim),
         'ligas': L,
-        'rapid': rapids(activos, ini, fin, llaves, fz, ahora, sid, armadas(viejo, sid, 'rapid')),
+        'rapid': rapids(activos, ini, fin, llaves, fz, ahora, sid, armadas(viejo, sid, 'rapid'), sim=sim),
         'mini': mini, 'pronto': pronto,
         'proxima': proxima_semana(str(MU.periodo(fin + dt.timedelta(hours=1))[0]), mini),
         'equipo': equipo_semana(llaves, notas, ini, fin),
@@ -1187,6 +1381,9 @@ def calcular(ahora=None, llaves=None, notas=None, viejo=None):
     res['entran'] = sorted(jugaron(llaves, fin - dt.timedelta(days=ACTIVO_DIAS), fin))
     usados = set(activos) | {k for g in L['grupos'] for k in g['gente']} | set(L.get('elite') or [])
     res['nombres'] = {k: nombres.get(k, k) for k in usados | {k for k, *_x in res['equipo']}}
+    # 🎭 cómo llega cada uno, para mostrarlo desde que pesa
+    if sim:
+        res['estados'] = estados(usados, ahora, S)
     return res
 
 
@@ -1331,6 +1528,58 @@ def _self_check():
     ok(Fx['q1']['res'] == [2, 2] and Fx['q3']['res'] == [0, 2], 'la ficha: compara con el resultado, y el voto suelto sin llave no cuenta', Fx.get('q1'))
     ok(Fx['q1']['por'] == {'x': 1, 'y': 2} and Fx['q1']['votos'] == 3 and Fx['q1']['contra'].get('z') == 2, 'y anota a quién le vota y contra quién, por su nombre normalizado', Fx.get('q1'))
     ok(aprender({}, None, {'votos': {}})['jueces'] == [], 'sin votos no se rompe: no hay a quién sortear')
+    # 🎭 cómo llega cada uno y la réplica
+    t_ = dt.datetime(2026, 11, 20, 16, 0, tzinfo=dt.timezone.utc)
+    dias_ = lambda n: t_ - dt.timedelta(days=n)   # noqa: E731
+    sub_ = lambda k, n: [(dias_(40 - i), True, 'z', .5) for i in range(n)]   # noqa: E731
+    H_ = {'cansado': [(dias_(30), True, 'z', .0), (dias_(29), False, 'z', .0)] + [(dias_(1), i % 2 == 0, 'z', .0) for i in range(10)],
+          'fresco': [(dias_(30), True, 'z', .0), (dias_(29), False, 'z', .0), (dias_(20), False, 'z', .0)],
+          'enforma': [(dias_(20 - i), i % 2 == 0, 'z', .4) for i in range(8)], 'bajon': [(dias_(20 - i), i % 2 == 0, 'z', -.4) for i in range(8)],
+          'invicto': [(dias_(20), False, 'z', .0)] + [(dias_(19 - i), True, 'z', .0) for i in range(5)], 'nuevo': [(dias_(5), True, 'z', .5)],
+          'rival': [(dias_(20), True, 'x', .0), (dias_(19), True, 'x', .0), (dias_(18), False, 'z', .0)], 'x': [(dias_(20), False, 'rival', .0), (dias_(19), False, 'rival', .0), (dias_(18), True, 'z', .0)]}
+    irregular_ = [(dias_(10 + i), 3.0 if i % 2 else 9.0) for i in range(6)]
+    parejo_ = [(dias_(10 + i), 6.0) for i in range(6)]
+    S_ = {'h': H_, 'rondas': {'cansado': [dias_(1)] * 10, 'ayer': [dias_(1)] * 4, 'antes': [dias_(3)] * 4, 'lejos': [dias_(9)] * 40, 'cinco': [dias_(1)] * 15, 'veinte': [dias_(1)] * 40},
+          'evs': {'viejo': [dias_(2 + i) for i in range(30)]}, 'notas': {'nuevo2': irregular_, 'fresco': parejo_, 'cansado': parejo_, 'enforma': parejo_, 'bajon': parejo_, 'invicto': parejo_}, 'M': M_, 'frio': {}}
+    ok(cansancio_de('ayer', t_, S_) == 4 and cansancio_de('antes', t_, S_) == 1 and cansancio_de('lejos', t_, S_) == 0 and cansancio_de('nadie', t_, S_) == 0,
+       'el cansancio: 4 rondas anoche pesan 4, las mismas hace 3 días pesan 1, y hace 9 días ya no pesan')
+    pc_ = chance_sim('nadie', 'cinco', .5, t_, S_)
+    ok(.5 < pc_ < .6, '5 eventos en un día (15 rondas) le sacan algo de chance, sin decidir: el otro queda en %.0f %%' % (100 * pc_), pc_)
+    ok(chance_sim('nadie', 'veinte', .5, t_, S_) == pc_, 'y de ahí no pesa más: tiene tope')
+    ok(abs(chance_sim('nuevo', 'otro', .6, t_, S_) - .6) < .001, 'sin historial llegan neutros: manda el nivel')
+    ok(chance_sim('fresco', 'cansado', .5, t_, S_) > .5, 'el descansado le saca algo al que viene de 10 batallas en 3 días')
+    ok(chance_sim('fresco', 'cansado', .5, t_, S_, replica=True) > chance_sim('fresco', 'cansado', .5, t_, S_), 'y en la réplica el cansancio pesa más')
+    ok(chance_sim('enforma', 'bajon', .5, t_, S_) > .6, 'el que viene rindiendo sobre lo esperado le saca más', chance_sim('enforma', 'bajon', .5, t_, S_))
+    ok(chance_sim('invicto', 'fresco', .5, t_, S_) < .5, 'el que viene invicto carga la presión (medido en las batallas de verdad)', chance_sim('invicto', 'fresco', .5, t_, S_))
+    ok(chance_sim('rival', 'x', .5, t_, S_) > .5, 'y a quien ya le ganó, le saca algo')
+    ok(chance_sim('a', 'b', .5, t_, S_, juegan={'a'}) > .5, 'y el que se juega algo, también')
+    S2_ = dict(S_, h=dict(H_, a=H_['enforma'], b=H_['bajon']), notas={'a': irregular_, 'b': irregular_})
+    S3_ = dict(S_, h=dict(H_, a=H_['fresco'], b=H_['fresco']), notas={'a': parejo_, 'b': parejo_})
+    ok(chance_sim('a', 'b', .8, t_, dict(S3_, notas={'a': irregular_, 'b': irregular_})) < chance_sim('a', 'b', .8, t_, S3_), 'entre dos irregulares, el nivel pesa menos')
+    ok(chance_sim('enforma', 'invicto', .8, t_, S_) < .93 and chance_sim('bajon', 'enforma', .5, t_, S_) > .35, 'el nivel sigue mandando: en una pareja, unos 14 puntos como mucho', (chance_sim('enforma', 'invicto', .8, t_, S_), chance_sim('bajon', 'enforma', .5, t_, S_)))
+    S4_ = dict(S_, M=dict(M_, frio={}))
+    bs_ = [batalla_sim('p1', 'p2', .55, True, S4_, t_, 's', i) for i in range(400)]
+    ok(all(m['como'] == 'sim' and m['g'] in ('p1', 'p2') and m.get('k') for m in bs_), 'toda batalla cerrada tiene ganador y su clave')
+    ok(batalla_sim('p1', 'p2', .55, True, S4_, t_, 's', 3) == bs_[3], 'lo mismo da siempre lo mismo')
+    nrep = sum(1 for m in bs_ if m.get('rep'))
+    ok(40 <= nrep <= 160, 'de 400 parejas, una parte va a réplica (%d)' % nrep)
+    ok(all(sum(1 for _q, v in m['j'] if v == ('a' if m['g'] == 'p1' else 'b')) >= 2 for m in bs_), 'y el que ganó, con réplica o sin ella, tiene la mayoría de los votos que quedan')
+    ok(not any(m.get('rep') and False for m in bs_) and all(not m.get('rep') or len(m['j']) == 3 for m in bs_), 'los votos de la réplica son tres: reparten 3 de PTB')
+    rr_ = next(m for m in bs_ if m.get('rep'))
+    otro_ = 'p2' if rr_['g'] == 'p1' else 'p1'
+    ok(tabla(['p1', 'p2'], [rr_], {})[0][:4] == [rr_['g'], 1, 1, 2] and tabla(['p1', 'p2'], [rr_], {})[1][:4] == [otro_, 1, 0, 1], 'en la réplica, 2 puntos al que gana y 1 al que pierde')
+    dd_ = next(m for m in bs_ if not m.get('rep'))
+    ok(tabla(['p1', 'p2'], [dd_], {})[0][3] == 3 and tabla(['p1', 'p2'], [dd_], {})[1][3] == 0, 'y directa, 3 y 0')
+    ok(sum(ptb_de(rr_, {}, {})) == 3, 'el PTB de una réplica reparte 3, como cualquiera')
+    ya_m = dict(bs_[0], g='p1', p=.99, j=[['p1', 'a'], ['p2', 'a'], ['p3', 'a']])
+    S5_ = dict(S4_, frio={bs_[0]['k']: ya_m})
+    ok(batalla_sim('p1', 'p2', .55, True, S5_, t_, 's', 0) == ya_m, 'una batalla ya simulada no cambia, aunque cambien los datos')
+    pend_ = batalla_sim('enforma', 'bajon', .5, False, S_, t_, 's', 9)
+    ok(pend_['como'] == 'pend' and not pend_['g'] and pend_['p'] > .6 and not pend_.get('k'), 'la que falta muestra la chance con cómo llega cada uno, y no se congela')
+    ok(resolver('p1', 'p2', [('p2', 'p1', '8', '2026-11-20')], True, {}, 's', sim=S4_, t=t_)['como'] == 'real', 'si se cruzaron de verdad, cuenta lo de verdad: la simulación ni se mira')
+    ok(se_juegan_algo([['a%d' % i, 9, 9 - i, 27 - 3 * i] for i in range(10)]) == {'a0', 'a1', 'a2', 'a7', 'a8', 'a9'}, 'quién se juega algo: los que están a una victoria de arriba o de abajo')
+    est_ = estados(['enforma', 'nuevo', 'cinco'], t_, S_)
+    ok(est_['nuevo'] == [0, 50, 0, 50] and est_['cinco'][0] == 100 and est_['enforma'][1] > 90, 'cómo llega, de 0 a 100, para mostrarlo', est_)
     # 🎲 los mini eventos nuevos
     d_ = dt.datetime(2026, 11, 9, 16, 0, tzinfo=dt.timezone.utc)
     ll_ = {'1': {'dia': '2026-11-10', 'sv': 'FFA', 'tabla': [['A', 'Campeón', 500], ['B', 'Subcampeón', 300]], 'rondas': [{'b': [[['A', 'B'], 'A', '']]}]},

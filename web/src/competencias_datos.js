@@ -3,7 +3,7 @@
 // las sube `bot/subir_web.py` aparte del lobby (`/api/competencias`, la KV `web:competencias`). Las piden la página de
 // Competencias, la sección del Inicio y la ficha de jurado del perfil: un solo pedido por minuto, compartido.
 // Cada cruce es `[a, b, ganador, cómo ('real'|'sim'|'pend'), prob de a, extra]`: `extra` es el evento si fue real o el
-// jurado sorteado si fue simulado (`[[jurado, 'a'|'b']]`).
+// jurado sorteado si fue simulado (`[[jurado, 'a'|'b']]`). Una séptima columna, sólo si fue a réplica.
 import { useEffect, useState } from 'react';
 
 let pedido = null, cuando = 0, dato = null;
@@ -47,10 +47,10 @@ export function todasLasLigas(C) {
   return (L.e ? [{ id: 'elite', nv: 'elite', t: L.e.t, j: L.e.j }] : []).concat(L.g || []);
 }
 
-/** Las últimas `n` de `k` en una liga: `['G'|'P', …]`, de la más vieja a la más nueva */
+/** Las últimas `n` de `k` en una liga: `['G'|'P'|'GR'|'PR', …]` (R: fue a réplica), de la más vieja a la más nueva */
 export function ultimas(g, k, n = 5) {
   const out = [];
-  for (const j of g.j || []) for (const m of j.p) if ((m[0] === k || m[1] === k) && m[2]) out.push(m[2] === k ? 'G' : 'P');
+  for (const j of g.j || []) for (const m of j.p) if ((m[0] === k || m[1] === k) && m[2]) out.push((m[2] === k ? 'G' : 'P') + (m[6] ? 'R' : ''));
   return out.slice(-n);
 }
 
