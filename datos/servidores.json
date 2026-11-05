@@ -441,7 +441,8 @@
      "1550946824997834853",
      "1556501423662039110",
      "1557528034859294800",
-     "1559100419165130793"
+     "1559100419165130793",
+     "1566513598568726639"
     ],
     "_ids": "las dos categorías de liga: ⚔️「LIGA AK47」⚔️ y 🐊「FMS TITANS」🐊; y FMS PERU, FMS TRICOLOR y FMS WORLD SERIES (12/10/2026)"
    },
@@ -613,7 +614,10 @@
     "_por_que": "Sus dos ligas van a Ligas (bot/ligas.py), no al calendario de eventos: una jornada leída como evento entraba como llave.",
     "ids": [
      "1559772707258769478",
-     "1561972817166209135"
+     "1561972817166209135",
+     "1565413197450846218",
+     "1566519388943945800",
+     "1566534069901328566"
     ],
     "_ids": "las categorías «⛧・CHAMPIONS LEAGUE» y «🏆 FMS Plaza Ubderground»"
    }

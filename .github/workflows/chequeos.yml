@@ -106,6 +106,8 @@ jobs:
           node bot/probar_local.mjs
           # 🛡️ el anti-raid: lo de DDF se avisa, una vez, y nunca actúa solo
           node bot/antiraid_prueba.mjs
+          # 🏟️ el lector de las batallas de liga en vivo: los mismos casos que el `--auto` de bot/ligas.py
+          node bot/ligas_vivo_prueba.mjs
           # 👥 las crews: crear, invitar, los rangos, los 7 días, el tope de 20 y que no salga ningún Discord ID
           node bot/crews_prueba.mjs
           # 🖼️ el logo de una crew por el camino de verdad: el filtro, R2 y lo que no se crea no gasta la IA

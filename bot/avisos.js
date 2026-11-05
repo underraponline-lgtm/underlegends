@@ -49,6 +49,7 @@
 // 🛡️ el anti-raid (18/10/2026): su lógica y lo que contesta el Worker viven en `bot/antiraid.js`; acá, la vuelta de cada minuto
 import * as AR from './antiraid.js';
 import * as CW from './crews.js';
+import * as LIV from './ligas_vivo.js';
 
 export const CRON_VIGIA = '* * * * *';
 
@@ -401,6 +402,8 @@ export const CHAT_JUNTAS = 8;
 export const nivelChat = (dash, admin) => (NIVELES_CHAT[dash] ? dash : NIVELES_CHAT[admin] ? admin : 'normal');
 //: pedidos a Discord por minuto para esto: comparte los 50 subpedidos del vigía
 export const CHAT_TOPE = 2;
+//: 🏟️ pedidos a Discord por vuelta de `ligasRonda()`, que va en su propio pedido. Las listas son 6; el resto, canales que se movieron y llamadas
+export const LIGAS_VIVO_TOPE = 30;
 const WEB_EVENTOS = 'https://underlegends.pages.dev/freestyle-rap/eventos';
 /** Un nombre tal cual, sin que Discord lo lea como formato (`__X__`, `*`, `~`). */
 export const escMd = (s) => String(s || '').replace(/([\\*_~|`>])/g, '\\$1');
@@ -6205,6 +6208,8 @@ export async function vigilar(env, servidores, dueno, dormido) {
   await Promise.allSettled([
     pedir('/vigilar', { servidores, dueno: dueno || '', dormido: !!dormido }),
     pedir('/antiraid-vuelta', {}),
+    // 🏟️ y las batallas de liga, con su propio presupuesto. Ésta sí duerme: ver `ligasRonda()`
+    dormido ? null : pedir('/ligas-vuelta', {}),
   ]);
 }
 
@@ -6448,6 +6453,10 @@ export class Avisos {
       this.sql.exec('CREATE TABLE IF NOT EXISTS liga_sigue (quien TEXT NOT NULL, liga TEXT NOT NULL, t INTEGER NOT NULL, ' +
         'PRIMARY KEY (quien, liga))');
       this.sql.exec('CREATE INDEX IF NOT EXISTS liga_sigue_l ON liga_sigue (liga)');
+      // 🏟️ LAS BATALLAS DE LIGA QUE SE ESTÁN JUGANDO (04/11/2026): ver `ligasRonda()`. Duran 3 días y son del vigía: el resultado que cuenta sigue siendo el del ciclo
+      this.sql.exec('CREATE TABLE IF NOT EXISTS liga_vivo (id TEXT PRIMARY KEY, liga TEXT NOT NULL, ini INTEGER NOT NULL, ult INTEGER NOT NULL, ' +
+        'estado TEXT NOT NULL, datos TEXT NOT NULL)');
+      this.sql.exec('CREATE INDEX IF NOT EXISTS liga_vivo_i ON liga_vivo (ini)');
       // 🎬 TUS BATALLAS EN VIDEO (12/10/2026): cada pedido y cómo terminó, los reportes («esto no es suyo»), lo que
       // cada uno quitó de su perfil y lo que Dlx aprobó o no. Ver `misVideos()`
       this.sql.exec('CREATE TABLE IF NOT EXISTS videos_pedidos (id INTEGER PRIMARY KEY AUTOINCREMENT, quien TEXT NOT NULL, ' +
@@ -7165,6 +7174,8 @@ export class Avisos {
         const r = this.vivo();
         const a = this.avisoWeb();
         if (a) r.aviso = a;
+        // 🏟️ y las batallas de liga que se están jugando: en el mismo pedido, así no suma ninguno
+        try { const lg = this.ligasAhora(); if (lg.length) r.ligas = lg; } catch (e) { /* sin ellas */ }
         return json(r, 200, 20);
       }
       if (ruta === '/encuestas') return json(this.delMinuto('/encuestas', 20, () => this.encuestas()), 200, 20);
@@ -7298,6 +7309,7 @@ export class Avisos {
       if (ruta === '/antiraid-dlx') return json(await this.antiraidDlx(d));
       if (ruta === '/antiraid-devolver') return json(this.antiraidDevolver(d));
       if (ruta === '/antiraid-vuelta') return json(await this.antiraidRonda());
+      if (ruta === '/ligas-vuelta') return json(await this.ligasRonda());
       // 🤝 el puntaje de los servidores: sólo lo guarda, tal cual, para el Dashboard (nunca sale a la página)
       if (ruta === '/tiers-ciclo') {
         if (!d || !Array.isArray(d.servidores) || d.servidores.length > 60) return json({ error: 'datos' }, 400);
@@ -10148,6 +10160,347 @@ export class Avisos {
     let comps = null;
     try { comps = perfilesComponentes(JSON.parse(f.datos)); } catch (e) { comps = null; }
     return comps ? { ok: true, comps } : { error: 'vacia' };
+  }
+
+  // ═════════════════════════════════════════════════
+  // 🏟️ LAS BATALLAS DE LIGA, MIENTRAS SE JUEGAN (Dlx, 04/11/2026). Las reglas y sus mediciones, en `bot/ligas_vivo.js`
+  // ═════════════════════════════════════════════════
+  //
+  // 🔑 UN PEDIDO POR SERVIDOR Y POR MINUTO: la lista de canales trae el `last_message_id` de cada uno, así que sólo se lee
+  // el canal que se movió. Leer los canales de las 11 ligas serían 22 pedidos por minuto para ver nada casi siempre.
+  // ⚠️ EN SU PROPIO PEDIDO, como el anti-raid (ver `vigilar()` de afuera): tiene su presupuesto de 50 y no frena al vigía.
+  // ⚠️ DE MADRUGADA NO CORRE: lo que pase ahí lo lee el ciclo a las 11, como siempre. Medido: 6 de 303 batallas.
+
+  async ligasRonda() {
+    const ahora = Date.now();
+    if (this.lgEn && ahora - this.lgEn < 3 * MIN) return { ok: true, salteada: true };
+    this.lgEn = ahora;
+    try {
+      return await this.ligasVuelta(ahora);
+    } catch (e) {
+      this.guardar('ligas_vivo', { t: ahora, error: String(e).slice(0, 160) });
+      return { ok: false };
+    } finally { this.lgEn = 0; }
+  }
+
+  /** Qué canales mira: los deja el ciclo en KV (`para_vigia()` de bot/ligas.py). Diez minutos en la memoria del objeto. */
+  async ligasCfg(ahora) {
+    if (this.lgCfg && ahora - this.lgCfg.t < 10 * MIN) return this.lgCfg.lista;
+    let lista = this.lgCfg ? this.lgCfg.lista : [];
+    try { lista = JSON.parse((await this.env.KV.get('ligas:vigia')) || '{}').lista || []; } catch (e) { /* queda la de antes */ }
+    this.lgCfg = { t: ahora, lista };
+    return lista;
+  }
+
+  /** Quién es cada uno de la batalla: su nombre de la Liga, su bandera, su clave y su cuenta. Sólo al aparecer. */
+  async ligaGente(b, sv, ahora) {
+    const dc = await this.datosCruce(ahora);
+    const ids = await this.indiceNombres(ahora);
+    const qsv = ((this.leer('quien') || {}).svs || {})[sv] || {};
+    const buscar = (n, fl) => {
+      const q = qsv[normPagina(n)];
+      return (q && (dc.tabla[q] || dc.perf[q]) ? q : '') || dc.buscar(n, fl);
+    };
+    const ga = genteChat(b.ra || b.a, buscar, dc.tabla, ids);
+    const gb = genteChat(b.rb || b.b, buscar, dc.tabla, ids);
+    const y = (g) => (g && g.length === 1 ? g[0] : null);
+    if (y(ga)) Object.assign(b, { na: y(ga).n, fa: y(ga).fl, ka: y(ga).k, ida: y(ga).id });
+    if (y(gb)) Object.assign(b, { nb: y(gb).n, fb: y(gb).fl, kb: y(gb).k, idb: y(gb).id });
+  }
+
+  /** ¿Dónde habla el bot en vivo en ese servidor, y cuánto? La regla de `chatVivo()`. `null` si ahí no habla. */
+  async ligaCanal(L, aj, ahora) {
+    const dash = (aj.en_vivo && typeof aj.en_vivo === 'object') ? aj.en_vivo : {};
+    const dashNivel = (aj.en_vivo_nivel && typeof aj.en_vivo_nivel === 'object') ? aj.en_vivo_nivel : {};
+    if (dash[L.sv] === false) return null;
+    const m = (this.cfgChat = this.cfgChat || new Map()).get(L.g);
+    let c = m && ahora - m.t < 5 * MIN ? m.c : null;
+    if (!c) {
+      try { c = JSON.parse((await this.env.KV.get('cfg:' + L.g, { cacheTtl: 60 })) || '{}') || {}; } catch (e) { c = {}; }
+      this.cfgChat.set(L.g, { c, t: ahora });
+    }
+    const generales = (this.leer('canales') || {}).generales || [];
+    const canal = String(c.vivo || '') || (dash[L.sv] === true ? String((generales.find((x) => x.g === L.g) || {}).id || '') : '');
+    if (!/^\d{5,25}$/.test(canal) || ahora < (this.leer('chat_pausa:' + canal) || 0)) return null;
+    return { canal, nivel: nivelChat(dashNivel[L.sv], c.vivo_nivel) };
+  }
+
+  /** 🎤 El cruce, en el chat: una línea, y en «Con datos» y «A full», el título, el dato y el VS con sus botones. */
+  async ligaAnunciar(b, L, donde, ahora) {
+    const dc = await this.datosCruce(ahora);
+    const ids = await this.indiceNombres(ahora);
+    const enSv = (k) => {
+      if (!k) return false;
+      try { return ((JSON.parse(this.persona('p:' + k) || '{}') || {}).svs || []).includes(L.sv); } catch (e) { return false; }
+    };
+    const buscar = (n, fl) => dc.buscar(n, fl);
+    const ga = genteChat(b.ra || b.a, buscar, dc.tabla, ids, enSv);
+    const gb = genteChat(b.rb || b.b, buscar, dc.tabla, ids, enSv);
+    if (!ga.length || !gb.length) return false;
+    const lineas = [];
+    let vs = null;
+    if (donde.nivel === 'datos' || donde.nivel === 'full') {
+      const x = infoCruce([b.ra || b.a, b.rb || b.b], buscar, dc.tabla, dc.perf);
+      if (ga.length === 1) x.a.n = ga[0].n;
+      if (gb.length === 1) x.b.n = gb[0].n;
+      x.sv = L.sv;
+      const tt = tituloCruce(x, new Set());
+      const dato = datoCurioso(x, b.id, (y) => (y.f ? this.encima(y.f.n, ahora) : 0));
+      if (tt) lineas.push('🔥 **' + tt.t + '**' + (tt.sub ? ' · ' + escMd(tt.sub) : ''));
+      if (dato) lineas.push('💡 ' + escMd(dato));
+      if (ga.length === 1 && gb.length === 1) {
+        const persona = (y) => personaVs(y, dc, { sv: L.sv });
+        const ronda = b.j ? 'Jornada ' + b.j : '';
+        vs = { ev: L.n, ronda, titulo: tt ? tt.t : '', sub: tt ? tt.sub || '' : '', a: persona(ga[0]), b: persona(gb[0]), h2h: [x.h2h.ga, x.h2h.gb],
+          fid: codigoDe(b.id + ':vx').slice(0, 12) };
+        try {
+          this.sql.exec('INSERT OR REPLACE INTO vs_ficha (id, datos, t) VALUES (?, ?, ?)', vs.fid, JSON.stringify(fichaVs(x, dc,
+            { sv: L.sv, ev: L.n, ronda, na: ga[0].n, nb: gb[0].n, fla: ga[0].fl, flb: gb[0].fl })), ahora);
+        } catch (e) { delete vs.fid; }
+      }
+    }
+    const texto = LIV.textoArranca(L.n, b.j, '**' + nombresChat(ga) + '** vs **' + nombresChat(gb) + '**', lineas);
+    const filas = vs ? filasVs(vs) : [];
+    const r = await fetch(`${DC}/channels/${donde.canal}/messages`, {
+      method: 'POST',
+      headers: { Authorization: 'Bot ' + this.env.DISCORD_TOKEN, 'User-Agent': UA, 'content-type': 'application/json' },
+      body: JSON.stringify(Object.assign({ content: texto, allowed_mentions: { parse: [] }, flags: 4 }, filas.length ? { components: filas } : {})),
+    });
+    if (!r.ok) {
+      let ra = 0;
+      if (r.status === 429) { try { ra = Number((await r.json()).retry_after) || 0; } catch (e) { ra = 0; } }
+      const espera = pausaChat(r.status, ra);
+      if (espera) this.guardar('chat_pausa:' + donde.canal, ahora + espera);
+      return false;
+    }
+    let id = '';
+    try { id = String((await r.json()).id || ''); } catch (e) { id = ''; }
+    if (!id) return false;
+    Object.assign(b, { canal: donde.canal, msg: id, texto });
+    if (vs) { try { this.vsEncolar(Object.assign({}, vs, { sv: L.sv, canal: donde.canal, msg: id }), ahora); } catch (e) { /* sin imagen */ } }
+    return true;
+  }
+
+  /** ✏️ El mismo mensaje, con cómo terminó: una edición no le suena a nadie. */
+  async ligaEditar(b, texto) {
+    const r = await fetch(`${DC}/channels/${b.canal}/messages/${b.msg}`, {
+      method: 'PATCH',
+      headers: { Authorization: 'Bot ' + this.env.DISCORD_TOKEN, 'User-Agent': UA, 'content-type': 'application/json' },
+      body: JSON.stringify({ content: texto, allowed_mentions: { parse: [] } }),
+    });
+    return r.ok || r.status === 404;
+  }
+
+  /** 🔔 A quien sigue la liga o a uno de los dos: una vez por batalla y persona, y con tope por vuelta. Nunca por DM. `true` si no quedó nadie. */
+  async ligaCampana(b, L, ahora) {
+    if (this.pausada()) return false;
+    const quienes = new Set(this.sql.exec('SELECT quien FROM liga_sigue WHERE liga = ? AND t <= ?', L.id, b.t0 || ahora).toArray().map((r) => r.quien));
+    for (const k of [b.ka, b.kb]) {
+      if (k) for (const r of this.sql.exec('SELECT quien FROM sigue WHERE a = ? AND t <= ?', k, b.t0 || ahora).toArray()) quienes.add(r.quien);
+    }
+    const titulo = '🔴 ' + (b.na || b.a) + ' vs ' + (b.nb || b.b) + ', ahora';
+    const cuerpo = L.n + ': está arrancando. Míralo en su llamada.';
+    const url = HUB + '/freestyle-rap/ligas/' + L.id;
+    let pedidos = 0, quedan = 0;
+    for (const quien of quienes) {
+      const id = 'lv:' + b.id + ':' + quien;
+      if (this.yaHecho(id)) continue;
+      const subs = this.sql.exec('SELECT id, endpoint, p256dh, auth FROM subs WHERE quien = ?', quien).toArray();
+      if (pedidos + subs.length > TOPE_LIGAS && pedidos) { quedan++; continue; }
+      this.sql.exec('INSERT OR IGNORE INTO hechos (id, t) VALUES (?, ?)', id, ahora);
+      this.aBandeja(quien, 'lv:' + b.id, 'liga', titulo.slice(0, 120), cuerpo.slice(0, 240), url, '', ahora);
+      if (!subs.length) continue;
+      pedidos += subs.length;
+      const c = cuerpoPersonal({ id: 'lv' + b.id, titulo, cuerpo, url });
+      const estados = await Promise.all(subs.map((sx) => empujar(sx, c, { ttl: 1800, topic: ('lv' + b.id).replace(/[^A-Za-z0-9_-]/g, '').slice(0, 32) }, this.env, new Map())));
+      estados.forEach((e, i) => { if (MUERTA(e)) this.sql.exec('DELETE FROM subs WHERE id = ?', subs[i].id); });
+    }
+    return !quedan;
+  }
+
+  async ligasVuelta(ahora) {
+    if (!this.env.DISCORD_TOKEN || ((this.leer('vigia') || {}).pausa || 0) > ahora) return { ok: false };
+    const cfg = await this.ligasCfg(ahora);
+    if (!cfg.length) return { ok: true, ligas: 0 };
+    if (!globalThis.LlaveVivo) await import('./llave_vivo.js');
+    const h = { Authorization: 'Bot ' + this.env.DISCORD_TOKEN, 'User-Agent': UA };
+    let pedidos = 0, auth = false;
+    const ultimo = new Map();
+    await Promise.all([...new Set(cfg.map((L) => L.g))].map(async (g) => {
+      try {
+        pedidos++;
+        const r = await fetch(`${DC}/guilds/${g}/channels`, { headers: h });
+        if (r.status === 401) auth = true;
+        if (r.status !== 200) return;
+        for (const c of await r.json()) if (c.last_message_id) ultimo.set(String(c.id), String(c.last_message_id));
+      } catch (e) { /* ese servidor, a la próxima */ }
+    }));
+    if (auth || !ultimo.size) return { ok: !auth, sin_lista: true };
+
+    const cur = this.leer('lv_cur') || {};
+    let curCambio = false;
+    const leerCanal = async (canal) => {
+      const ult = ultimo.get(canal);
+      if (!canal || !ult || cur[canal] === ult) return [];
+      // la primera vez no se anuncia nada: lo de antes ya pasó
+      if (!cur[canal] || pedidos >= LIGAS_VIVO_TOPE) {
+        if (!cur[canal]) { cur[canal] = ult; curCambio = true; }
+        return [];
+      }
+      pedidos++;
+      const r = await fetch(`${DC}/channels/${canal}/messages?limit=30&after=${cur[canal]}`, { headers: h });
+      if (r.status !== 200) return [];
+      const ms = (await r.json()).map((m) => ({ id: String(m.id), t: m.timestamp, content: m.content || '' }))
+        .sort((x, y) => (BigInt(x.id) < BigInt(y.id) ? -1 : 1));
+      cur[canal] = ms.length ? ms[ms.length - 1].id : ult;
+      curCambio = true;
+      return ms;
+    };
+
+    const filas = this.sql.exec('SELECT id, liga, ini, ult, estado, datos FROM liga_vivo WHERE ini > ? ORDER BY ini', ahora - DIA_MS).toArray()
+      .map((f) => { let d = {}; try { d = JSON.parse(f.datos); } catch (e) { d = {}; } return { id: f.id, liga: f.liga, ini: f.ini, ult: f.ult, estado: f.estado, d, antes: f.estado + f.ult + f.datos }; });
+    const aj = this.ajustes();
+    const callado = enSilencio(aj, ahora);
+    let hablados = 0, nuevas = 0;
+    const errores = [];
+    const CIERRA = new Set(['arranca', 'juego', 'espera', 'definiendo', 'candidata']);
+
+    for (const L of cfg) {
+      const mias = filas.filter((f) => f.liga === L.id);
+      const bats = mias.map((f) => f.d);
+      const alta = async (b, estado) => {
+        const tb = Date.parse(b.t) || ahora;
+        b.n = L.n; b.sv = L.sv; b.t0 = tb;
+        b.beat = ultimo.get(L.beat) || '';
+        try { await this.ligaGente(b, L.sv, ahora); } catch (e) { /* va con el nombre del título */ }
+        const f = { id: L.id + ':' + b.id, liga: L.id, ini: tb, ult: ahora, estado, d: b, antes: '' };
+        filas.push(f);
+        mias.push(f);
+        nuevas++;
+        return f;
+      };
+      // 1️⃣ Visuales: un título con los dos deja la batalla como candidata. Sólo en las que publican al arrancar
+      if (L.fam === 'U' && L.vis) {
+        for (const m of await leerCanal(L.vis)) {
+          if (ahora - (Date.parse(m.t) || 0) > LIV.TITULO_FRESCO) continue;
+          // sólo los títulos: en Visuales no se cierra nada
+          for (const t of LIV.titulosDe(m.content)) {
+            if (bats.some((x) => LIV.mismoPar(x, t[0], t[1]) && Math.abs((Date.parse(m.t) || 0) - (Date.parse(x.t) || 0)) <= 2 * HORA)) continue;
+            const b = { id: m.id, t: m.t, a: t[0], b: t[1], ra: t[4], rb: t[5], j: null, gana: '', como: '', rep: false, df: false, por: null, ptb: null };
+            bats.push(b);
+            await alta(b, 'candidata');
+          }
+        }
+      }
+      // 2️⃣ Veredictos: los títulos y los cierres
+      const titulosVer = [];
+      const msgs = await leerCanal(L.ver);
+      if (msgs.length) {
+        for (const m of msgs) for (const t of LIV.titulosDe(m.content)) titulosVer.push(t);
+        const nv = LIV.leerMensajes(L.fam, msgs, bats);
+        for (const b of nv) {
+          const fresca = ahora - (Date.parse(b.t) || 0) <= LIV.TITULO_FRESCO;
+          await alta(b, !fresca ? 'vieja' : L.fam === 'U' ? 'arranca' : 'definiendo');
+        }
+      }
+      // 3️⃣ las señales de cada una, y a qué estado pasa
+      const seMovioBeat = (b) => !!L.beat && !!ultimo.get(L.beat) && ultimo.get(L.beat) !== b.beat;
+      for (const f of mias) {
+        const b = f.d;
+        if (L.fam === 'U') LIV.resolverU(b, ahora);
+        if (b.df && CIERRA.has(f.estado)) { f.estado = 'sinres'; b.fin = ahora; continue; }
+        if (b.gana && CIERRA.has(f.estado)) { f.estado = 'terminada'; b.fin = ahora; continue; }
+        if (f.estado === 'definiendo') {
+          if (ahora - f.ini >= LIV.DEFINIENDO_VENCE) f.estado = 'sinres';
+          continue;
+        }
+        if (!['candidata', 'arranca', 'juego', 'espera'].includes(f.estado)) continue;
+        const se = { titulo: titulosVer.some((t) => LIV.mismoPar(b, t[0], t[1])), beat: seMovioBeat(b), voz: 0, conocidos: 0 };
+        if (se.beat) b.beat = ultimo.get(L.beat);
+        for (const did of [b.ida, b.idb]) {
+          if (!did || pedidos >= LIGAS_VIVO_TOPE) continue;
+          se.conocidos++;
+          pedidos++;
+          try {
+            const r = await fetch(`${DC}/guilds/${L.g}/voice-states/${did}`, { headers: h });
+            if (r.status === 200) {
+              const v = await r.json();
+              if (v.channel_id && (!L.voz || String(v.channel_id) === L.voz)) se.voz++;
+            }
+          } catch (e) { se.conocidos--; }
+        }
+        const tr = LIV.transicion({ estado: f.estado, ini: f.ini, ult: f.ult }, se, ahora);
+        f.estado = tr.estado;
+        f.ult = tr.ult;
+      }
+      // 4️⃣ lo que se dice: arranca una vez, y se edita al terminar
+      for (const f of mias) {
+        const b = f.d;
+        if (hablados >= CHAT_TOPE) break;
+        if ((f.estado === 'arranca' || f.estado === 'juego') && L.fam === 'U') {
+          if (!b.camp && ahora - f.ini <= CHAT_FRESCA) {
+            try { b.camp = (await this.ligaCampana(b, L, ahora)) ? 1 : 0; } catch (e) { errores.push('campana ' + String(e).slice(0, 60)); b.camp = 1; }
+          }
+          if (!b.msg && !b.nada && !callado && ahora - f.ini <= CHAT_FRESCA) {
+            const donde = await this.ligaCanal(L, aj, ahora);
+            if (!donde || donde.nivel === 'poco') { b.nada = 1; continue; }
+            hablados++;
+            try { if (!(await this.ligaAnunciar(b, L, donde, ahora))) errores.push(L.sv + ' chat'); } catch (e) { errores.push(L.sv + ' ' + String(e).slice(0, 80)); }
+          }
+        } else if (f.estado === 'terminada' && !b.cerrado) {
+          const gana = b.gana === b.a ? (b.na || b.a) : b.gana === b.b ? (b.nb || b.b) : b.gana;
+          if (b.msg) {
+            hablados++;
+            try { if (await this.ligaEditar(b, LIV.textoFinal(b.texto, escMd(gana), b.como))) b.cerrado = 1; } catch (e) { errores.push(L.sv + ' editar'); }
+            const k = b.gana === b.a ? b.ka : b.kb;
+            try { this.vsResultado(b.canal, b.msg, [k || claveTurno(gana)], ahora); } catch (e) { /* queda la imagen de antes */ }
+          } else if (L.fam === 'K' && !callado && ahora - f.ini <= CHAT_FRESCA) {
+            // 🏁 en LKR el título sale casi con el cierre: sólo el resultado, y sólo donde quieren que hable mucho
+            const donde = await this.ligaCanal(L, aj, ahora);
+            b.cerrado = 1;
+            if (donde && donde.nivel !== 'poco' && donde.nivel !== 'normal') {
+              hablados++;
+              const perdio = b.gana === b.a ? (b.nb || b.b) : (b.na || b.a);
+              try {
+                await fetch(`${DC}/channels/${donde.canal}/messages`, {
+                  method: 'POST',
+                  headers: { Authorization: 'Bot ' + this.env.DISCORD_TOKEN, 'User-Agent': UA, 'content-type': 'application/json' },
+                  body: JSON.stringify({ content: '🏁 **' + L.n + '**\n🏆 **' + escMd(gana) + '** le ganó a **' + escMd(perdio) + '**' + (b.como === 'replica' ? ' en la réplica' : ''), allowed_mentions: { parse: [] }, flags: 4 }),
+                });
+              } catch (e) { errores.push(L.sv + ' resultado'); }
+            }
+          } else b.cerrado = 1;
+        } else if (f.estado === 'sinres' && b.msg && !b.cerrado) {
+          hablados++;
+          try { if (await this.ligaEditar(b, LIV.textoSinResultado(b.texto, HUB + '/freestyle-rap/ligas/' + L.id))) b.cerrado = 1; } catch (e) { errores.push(L.sv + ' editar'); }
+        }
+      }
+    }
+
+    // 💾 sólo lo que cambió
+    for (const f of filas) {
+      if (f.estado === 'olvidar') {
+        if (f.antes) this.sql.exec('DELETE FROM liga_vivo WHERE id = ?', f.id);
+        continue;
+      }
+      const datos = JSON.stringify(f.d);
+      if (f.antes === f.estado + f.ult + datos) continue;
+      this.sql.exec('INSERT OR REPLACE INTO liga_vivo (id, liga, ini, ult, estado, datos) VALUES (?, ?, ?, ?, ?, ?)', f.id, f.liga, f.ini, f.ult, f.estado, datos);
+    }
+    if (curCambio) this.guardar('lv_cur', cur);
+    if (Math.floor(ahora / MIN) % 10 === 0) this.sql.exec('DELETE FROM liga_vivo WHERE ini < ?', ahora - 3 * DIA_MS);
+    const abiertas = filas.filter((f) => ['arranca', 'juego', 'espera', 'definiendo'].includes(f.estado)).length;
+    if (nuevas || hablados || errores.length || Math.floor(ahora / MIN) % 10 === 0) {
+      this.guardar('ligas_vivo', { t: ahora, ligas: cfg.length, pedidos, abiertas, nuevas, hablados, errores: errores.slice(0, 5) });
+    }
+    return { ok: true, ligas: cfg.length, pedidos, abiertas, nuevas };
+  }
+
+  /** 🔴 Para la página, con `/avisos/vivo`: lo que se está jugando. */
+  ligasAhora(ahora = Date.now()) {
+    const filas = this.sql.exec("SELECT liga, ini, estado, datos FROM liga_vivo WHERE ini > ? AND estado IN ('arranca', 'juego', 'espera', 'definiendo', 'terminada')",
+      ahora - DIA_MS).toArray().map((f) => { let d = {}; try { d = JSON.parse(f.datos); } catch (e) { d = {}; } return { liga: f.liga, ini: f.ini, estado: f.estado, d }; });
+    return LIV.paraPagina(filas, ahora);
   }
 
   // ── 📣 SEGUIR A UN ORGANIZADOR ───────────────────────────────────────

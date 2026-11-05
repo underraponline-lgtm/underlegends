@@ -20,6 +20,7 @@ import { Bandera, Cara, Compartir, Ico, Sec, accion, enlace, nombrePais, silueta
 import { Numero, useDesliza } from './anima.js';
 import { Miniatura, abrirVideo } from './video.jsx';
 import { pedirLigas } from './ligas_datos.js';
+import { BatallasAhora } from './ligas_ahora.jsx';
 import CSS_PAGINA from './css/ligas.css?inline';
 import { usarCss } from './css.js';
 
@@ -720,6 +721,7 @@ function LigaPerfil({ liga, id }) {
     <>
       <div className={'escena lgp-esc lgx-' + est.c} style={{ '--mo-c': color, '--mo-o': 0.9, ...silueta(L.sv, color) }}>
         <nav className="lgp-miga" aria-label="Volver"><a href="#/ligas"><Ico n="flecha" t={16} />Todas las ligas</a></nav>
+        <BatallasAhora liga={liga} id={L.id} />
         <section className="svp lgp-cab">
           <img className="svp-logo" alt="" src={liga.logo(L.sv, true)} />
           <div className="svp-tx">
@@ -1020,6 +1022,7 @@ function LigasInicio({ liga, falta = '' }) {
   const fls = ls.filter((L) => L.fl).slice(0, 3);
   return (
     <>
+      <BatallasAhora liga={liga} cls="sec" />
       <HeroLigas liga={liga} ls={ls} hs={hs} est={est} det={det} onComo={(e) => {
         const el = e.currentTarget.getRootNode().getElementById('lgh-como');
         if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });

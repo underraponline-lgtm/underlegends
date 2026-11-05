@@ -2372,6 +2372,9 @@ bot/              el lector de Discord y el ciclo
                                   IDENTIFY por día y Discord resetea el token
                   avisos.js       la campana: vigía de cada minuto, cola y
                                   envío cifrado (Durable Object + SQLite)
+                  ligas_vivo.js   las batallas de liga mientras se juegan: el lector
+                                  (atado a ligas.py por ligas_vivo_casos.json) y
+                                  sus estados. Lo corre `ligasRonda()` de avisos.js
                   avisos_casos.py el contrato Python<->JS del lector de
                                   anuncios, con avisos_casos.json
                   paginas/        underlegends.pages.dev — el hub, 7 vistas

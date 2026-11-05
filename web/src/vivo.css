@@ -3674,3 +3674,17 @@ button.tb-yo.on{background:var(--inv);color:var(--inv-tinta);box-shadow:inset 0 
 .cw-armar fieldset,.cw-armar form{min-width:0}
 .cw-armar .cw-crear,.cw-armar .cw-campos,.ae-bloque{grid-template-columns:minmax(0,1fr)}
 .cw-armar .ae-fundar{justify-self:stretch}
+/* 🔴 lo que se está jugando ahora (`BatallasAhora`): el color de cada estado, nada más */
+.lgv{display:grid;gap:8px;margin:0 0 14px}
+.lgv-t{display:flex;align-items:center;gap:8px;margin:0;font:800 14px/1 "Barlow Condensed",sans-serif;letter-spacing:.08em}
+.lgv-t i{width:9px;height:9px;border-radius:50%;background:#E41373;flex:none}
+.lgv-t i.quieto{background:#3DD6B6}
+.lgv-l{list-style:none;margin:0;padding:0;display:grid;gap:8px;grid-template-columns:repeat(auto-fill,minmax(min(100%,280px),1fr))}
+.lgv-c{display:flex;align-items:center;gap:10px;min-height:56px;padding:9px 11px;border:2px solid var(--tinta);border-left:6px solid #E41373;border-radius:4px;background:var(--fondo);color:inherit;text-decoration:none}
+.lgv-c.lgv-espera,.lgv-c.lgv-definiendo{border-left-color:#F5C542}
+.lgv-c.lgv-terminada{border-left-color:#3DD6B6}
+.lgv-c img{width:30px;height:30px;border-radius:3px;flex:none;object-fit:contain}
+.lgv-tx{display:grid;gap:3px;min-width:0}
+.lgv-tx b{font-weight:800;font-size:15px;line-height:1.2;overflow-wrap:anywhere}
+.lgv-tx b em{font-style:normal;font-weight:700;opacity:.65}
+.lgv-tx small{font-size:13px;color:var(--gris);overflow-wrap:anywhere}

@@ -89,13 +89,14 @@ LIGAS = {
     'fmh-espana': {'n': 'FMH España', 'sv': 'URBF', 'fam': 'U', 'vre': r'(?:FMH|MASTER\s+HONGO).*ESPA[NÑ]A|ESPA[NÑ]A.*(?:FMH|MASTER\s+HONGO)', 'ver': '1511973539438399590',
                    'tabla': '1511973442033946644', 'an': '1512167830919839844', 'cc': 'ES'},
     'fms-titans': {'n': 'FMS Titans', 'sv': 'DDF', 'fam': 'D1', 'vre': r'TITANS', 'ver': '1551345471086272542',
-                   'tabla': '1550947722385694871', 'an': '1551426096665337896', 'cc': 'PE'},
+                   'tabla': '1550947722385694871', 'an': '1566583195304992808', 'cc': 'PE'},
     'fms-peru': {'n': 'FMS Perú', 'sv': 'DDF', 'fam': 'D2', 'vre': r'FMS\s+PER[UÚ]', 'ver': '1556501721004376105',
                  'tabla': '1556501553609834557', 'an': '1556501776272724078', 'cc': 'PE'},
     'fms-tricolor': {'n': 'FMS Tricolor', 'sv': 'DDF', 'fam': 'D2', 'vre': r'FMS\s+TRICOLOR', 'ver': '1557529352529387600',
                      'tabla': '1557528234885779587', 'an': '1557529416605761557', 'cc': 'CO'},
-    'fms-world-series': {'n': 'FMS World Series', 'sv': 'DDF', 'fam': 'D2', 'vre': r'FMS\s+WORLD\s+SERIES', 'ver': '1559218872547283096',
-                         'tabla': '1559100558487584838', 'an': '1559219024947183726', 'cc': 'CO'},
+    # 🔴 DDF rehízo sus canales el 01/11/2026: los de antes dan 404 y `_mensajes()` se callaba. Ver `ubicar()`
+    'fms-world-series': {'n': 'FMS World Series', 'sv': 'DDF', 'fam': 'D2', 'vre': r'FMS\s+WORLD\s+SERIES', 'ver': '1566514198584889344',
+                         'tabla': '1566513665081868450', 'an': '1566583919388795021', 'cc': 'CO'},
     'snake-generations': {'n': 'Snake League Generations', 'sv': 'SR', 'fam': 'S', 'vre': r'SNAKE\s+LEAGUE', 'ver': '1167906700452446218',
                           'tabla': '1117080676416638977', 'emoji': 'snkliga', 'an': '1117081139702665236', 'cc': 'AR'},
     'snake-new-chapter': {'n': 'Snake New Chapter', 'sv': 'SR', 'fam': 'S', 'vre': r'NEW\s+CHAPTER', 'ver': '1167906700452446218',
@@ -122,7 +123,20 @@ LIGAS = {
                       'ver': '1560753316768653343', 'tabla': '1559772874183540786', 'an': '1559772764704084128', 'cc': 'MX'},
     'lkr-fms-plaza': {'n': 'FMS Plaza Underground', 'sv': 'LKR', 'fam': 'K', 'vre': r'PLAZA\s*U[BN]DERGROUND',
                       'ver': '1561974380341497867', 'tabla': '', 'an': '1561974281041092638', 'cc': 'MX'},
+    # 🏟️ las tres que LKR abrió a fines de octubre (encontradas el 04/11/2026 mirando sus llamadas). Las escribe a su
+    # manera: «# MAKMA +3PTO», «# TOKIO+3», «# TEITO X LA MINIMA». FMS Tricolor publica en «Resultados», no en «Veredicto»
+    'lkr-fms-tricolor': {'n': 'FMS Tricolor LKR', 'sv': 'LKR', 'fam': 'K', 'vre': r'FMS\s+TRICOLOR',
+                         'ver': '1565416431745634374', 'tabla': '1565416907409064057', 'an': '1565416157463191634', 'cc': 'CO'},
+    'lkr-fms-latam': {'n': 'FMS LATAM', 'sv': 'LKR', 'fam': 'K', 'vre': r'FMS\s+LATAM',
+                      'ver': '1566520848591093781', 'tabla': '1566520642529001683', 'an': '1566520559087521832', 'cc': 'MX'},
+    'lkr-fms-espana': {'n': 'FMS España', 'sv': 'LKR', 'fam': 'K', 'vre': r'FMS\s+ESPANA',
+                       'ver': '1566535333254795466', 'tabla': '1566535121224343632', 'an': '1566534624165892157', 'cc': 'ES'},
 }
+#: 🏟️ la clave de KV con los canales de cada liga, para el vigía de las batallas (`ligasRonda()` en bot/avisos.js)
+CLAVE_VIGIA = 'ligas:vigia'
+#: las familias que el vigía sabe leer mientras pasan (`bot/ligas_vivo.js`). Las FMH publican el título al arrancar; LKR,
+#: casi con el cierre: ahí sólo sale el resultado rápido. Snake, DDF, FRZ y FDS publican al final: el ciclo les alcanza
+FAM_VIGIA = ('U', 'K')
 #: 🗳️ la encuesta «¿quién gana la liga?» cierra a los tantos días sin batallas (y sin una fecha anunciada por delante):
 #: es lo único que dice que una liga terminó. Ver `vota()`
 CIERRA_DIAS = 21
@@ -700,6 +714,13 @@ def _fd(msgs):
 # jurado («Shadow - X - I - X: 3.5», «Matthias🇻🇪 : 4») y el cierre, «GANADOR GLOCK» o «Ganador Matthias 🇻🇪». «Replica»
 # solo, o «GANADOR Replica», abre la réplica, que se cierra con otro «GANADOR». Y al cierre también le dicen por el apodo
 # («GLOCK» por Mc_Glock, «SOUL» por Soul B): lo resuelve `_cual()`, como en FDS. Sin cierre, la batalla queda pendiente.
+#: «# MAKMA +3PTO», «# TOKIO+3»: quien suma 3 ganó directo; quien suma 2, en réplica (el +1 es del que perdió)
+MAS_PUNTOS = re.compile(r'^#*\s*(.+?)\s*\+\s*([23])\s*(?:PTOS?|PTS?|PUNTOS?)?\s*$', re.I)
+#: «# TEITO X LA MINIMA»
+X_MINIMA = re.compile(r'^#*\s*(.+?)\s+X\s+LA\s+MINIMA\b', re.I)
+CON_NUMERO = re.compile(r':\s*\d')
+
+
 def _lk(msgs):
     """Las batallas de una liga de LKR: `[{id, t, a, b, ea, eb, j, gana, como}]`."""
     bats = []
@@ -732,6 +753,23 @@ def _lk(msgs):
                 continue
             # el cierre con el nombre solo, como en su canal de eventos: `# SOUL B 🇨🇱`
             if l.strip().startswith('#'):
+                # ⚠️ el mismo orden en `lineaK()` de bot/ligas_vivo.js: los casos de bot/ligas_vivo_casos.json los atan
+                pt = re.sub(r'\s+', ' ', BANDERA.sub(' ', re.sub(r'^#+\s*', '', pl))).strip()
+                mas = MAS_PUNTOS.match(pt)
+                if mas:
+                    lado = _quien(mas.group(1), b['a'], b['b'])
+                    if lado:
+                        b['gana'], b['como'] = b[lado], 'directa' if mas.group(2) == '3' else 'replica'
+                    continue
+                xm = X_MINIMA.match(pt)
+                if xm:
+                    lado = _quien(xm.group(1), b['a'], b['b'])
+                    if lado:
+                        b['gana'], b['como'] = b[lado], 'replica' if b['rep'] else 'directa'
+                    continue
+                # 🔴 «# MAKMA :28» es su puntaje, no que ganó: «# A :25 / # B :28» le daba la batalla al de arriba
+                if CON_NUMERO.search(pt):
+                    continue
                 lado = _quien(pl, b['a'], b['b'])
                 if lado and len(clave(pl)) <= len(clave(b[lado])) + 2:
                     b['gana'], b['como'] = b[lado], 'replica' if b['rep'] else 'directa'
@@ -1064,6 +1102,94 @@ def proxima_de(L, msgs, ahora=None):
 
 
 # ── Discord ───────────────────────────────────────────────────────────────
+#: 🔎 cómo se llama cada canal de una liga, para encontrarlo si se movió (y para sus vecinos)
+NOMBRE_CANAL = {'ver': r'VEREDICT|RESULTADO', 'an': r'ANUNCIO|AVISOS|NOTICIA', 'tabla': r'TABLA'}
+
+
+def ubicar(L, lst):
+    """🔴 DÓNDE ESTÁ CADA CANAL DE UNA LIGA, de la lista de canales de su servidor (`GET /guilds/{g}/channels`).
+    `{ver, an, tabla, vis, beat, voz, faltan, movidos}`.
+
+    DDF rehízo sus canales el 01/11/2026 y sus 4 ligas se quedaron con ids muertos. `_mensajes()` contesta `[]` a un 404,
+    lo guardado sigue ahí y la página se ve bien: **nada avisa**. Lo encontré cuatro días después, y por casualidad. Ahora:
+    si un canal ya no está, se busca en la categoría de esa liga (`vre`) uno que se llame igual —lo resoluble se resuelve
+    solo—, y si no aparece queda en `faltan`, que va al canal de Logs (`_avisar_canales()`).
+
+    `vis`, `beat` y `voz` son sus vecinos, los de la misma categoría: no se escriben a mano, así no vuelven a quedar
+    viejos. Son las señales del vigía (`bot/ligas_vivo.js`)."""
+    por = {str(c.get('id')): c for c in lst}
+    out = {'ver': L.get('ver') or '', 'an': L.get('an') or '', 'tabla': L.get('tabla') or ''}
+    faltan = [q for q in ('ver', 'an', 'tabla') if out[q] and out[q] not in por]
+    movidos = {}
+    if faltan and L.get('vre'):
+        cat = next((str(c['id']) for c in lst if c.get('type') == 4 and re.search(L['vre'], _plano(c.get('name')), re.I)), '')
+        hijos = [c for c in lst if cat and str(c.get('parent_id') or '') == cat and c.get('type') in (0, 5)]
+        for q in list(faltan):
+            c = next((x for x in hijos if re.search(NOMBRE_CANAL[q], _plano(x.get('name')), re.I)), None)
+            if c:
+                out[q] = movidos[q] = str(c['id'])
+                faltan.remove(q)
+    ver = por.get(out['ver'])
+    cat = str((ver or {}).get('parent_id') or '')
+    herm = [c for c in lst if cat and str(c.get('parent_id') or '') == cat]
+
+    def vecino(rx):
+        return next((str(c['id']) for c in herm if c.get('type') in (0, 5) and re.search(rx, _plano(c.get('name')), re.I)), '')
+    out['vis'], out['beat'] = vecino(r'VISUAL'), vecino(r'BEAT')
+    out['voz'] = next((str(c['id']) for c in herm if c.get('type') in (2, 13)), '')
+    out['faltan'], out['movidos'] = faltan, movidos
+    return out
+
+
+def mapa_canales(s):
+    """`{sv: {g, lst}}`, una lista de canales por servidor. Sin respuesta, ese servidor no está: no se avisa de nada."""
+    try:
+        with io.open(os.path.join(BASE, 'datos', 'servidores.json'), encoding='utf-8') as f:
+            svs = json.load(f).get('servidores') or {}
+    except (OSError, ValueError):
+        return {}
+    out = {}
+    for sv in sorted({L['sv'] for L in LIGAS.values()}):
+        g = str((svs.get(sv) or {}).get('guild_id') or '')
+        if not g:
+            continue
+        try:
+            r = s.get('https://discord.com/api/v10/guilds/%s/channels' % g, timeout=30)
+            if r.status_code == 200:
+                out[sv] = {'g': g, 'lst': r.json()}
+        except Exception:                                # noqa: BLE001
+            pass
+        time.sleep(0.3)
+    return out
+
+
+def _avisar_canales(viejos, ubicados):
+    """🔔 Al canal de Logs, una vez: los canales que se fueron y los que se encontraron solos. `viejos`: lo ya avisado."""
+    lineas = []
+    for lid, u in ubicados.items():
+        n = LIGAS[lid]['n']
+        nuevos = [q for q in u['faltan'] if q not in (viejos.get(lid) or [])]
+        que = {'ver': 'los veredictos', 'an': 'los anuncios', 'tabla': 'la tabla'}
+        if nuevos:
+            lineas.append('🔴 **%s** · ya no existe el canal de %s' % (n, ' ni '.join(que[q] for q in nuevos)))
+        if u.get('movidos'):
+            lineas.append('✅ **%s** · se movió %s y lo encontré solo: `%s`' % (
+                n, ' y '.join(que[q] for q in u['movidos']), ' '.join(u['movidos'].values())))
+    if not lineas:
+        return False
+    try:
+        import avisar
+        return avisar.mandar('🏟️ Las ligas: cambiaron sus canales', lineas[:12])
+    except Exception:                                    # noqa: BLE001
+        return False
+
+
+def para_vigia(d=None):
+    """🏟️ Lo que lee el vigía para ver qué se mueve en cada liga: `{lista: [{id, n, sv, g, fam, ver, vis, beat, voz}]}`.
+    Cambia sólo si una liga cambia de canales: una escritura de KV por cambio, no una por corrida."""
+    return {'lista': ((leer() if d is None else d).get('vigia') or [])}
+
+
 def _mensajes(s, canal, paginas, limite=100):
     """Los mensajes de un canal, del más viejo al más nuevo: `[{id, t, content, adj}]`. Sólo lo que hace falta: de los
     adjuntos, las imágenes (`adj`: `[{u, w, h, ct}]`, el link de Discord vence y no se guarda)."""
@@ -1124,8 +1250,12 @@ def _flyer_nuevo(lid, fl, viejo_fl, aplicar):
 def correr(aplicar=False):
     import escuchar as E
     s = E.sesion()
-    viejo = leer().get('ligas') or {}
+    viejo0 = leer()
+    viejo = viejo0.get('ligas') or {}
     por_canal, por_an, por_tabla = {}, {}, {}
+    # 🔴 dónde está cada canal hoy (`ubicar()`). Sin la lista, como están escritos, y sin avisar de nada
+    mapa = mapa_canales(s)
+    ubicados, vigia = {}, []
     out = {}
     # 🎛️ las de un servidor con el beneficio `ligas` apagado en el Dashboard no se leen ni se muestran (`bot/tiers.py`)
     try:
@@ -1136,7 +1266,18 @@ def correr(aplicar=False):
     for lid, L in LIGAS.items():
         if L['sv'] in sin_ligas:
             continue
+        m_sv = mapa.get(L['sv'])
+        muerto = set()
+        if m_sv:
+            u = ubicados[lid] = ubicar(L, m_sv['lst'])
+            L = dict(L, ver=u['ver'], an=u['an'], tabla=u['tabla'])
+            muerto = {L.get(q) for q in u['faltan']}
+            if L['fam'] in FAM_VIGIA and 'ver' not in u['faltan']:
+                vigia.append({'id': lid, 'n': L['n'], 'sv': L['sv'], 'g': m_sv['g'], 'fam': L['fam'], 'ver': u['ver'], 'vis': u['vis'],
+                              'beat': u['beat'], 'voz': u['voz']})
         guardadas = {b[0]: b for b in (viejo.get(lid) or {}).get('batallas') or []}
+        if L['ver'] in muerto:
+            por_canal.setdefault(L['ver'], [])
         if L['ver'] not in por_canal:
             # la primera vez con el PTB (17/10/2026) se lee la temporada entera, como la primera vez de todas: sin eso
             # las jornadas viejas no tendrían MVP
@@ -1155,7 +1296,7 @@ def correr(aplicar=False):
             guardadas[b[0]] = b
         bats = [guardadas[k] for k in sorted(guardadas, key=_orden)]
         # 📋 las FMH publican un RESUMEN con su tabla: cierra lo que el canal de veredictos dejó pendiente (`u_resumen()`)
-        if L['fam'] == 'U' and L.get('tabla') and any(not b[5] for b in bats):
+        if L['fam'] == 'U' and L.get('tabla') and L['tabla'] not in muerto and any(not b[5] for b in bats):
             if L['tabla'] not in por_tabla:
                 por_tabla[L['tabla']] = _mensajes(s, L['tabla'], 1, limite=30)
                 time.sleep(0.3)
@@ -1163,7 +1304,7 @@ def correr(aplicar=False):
         js = [b[2] for b in bats if b[2]]
         # 📢 el canal de anuncios: el flyer y la próxima fecha (un pedido por canal; Snake Rap comparte el suyo)
         an = L.get('an')
-        if an and an not in por_an:
+        if an and an not in por_an and an not in muerto:
             por_an[an] = _mensajes(s, an, 1, limite=ANUNCIOS_LEER)
             time.sleep(0.3)
         ms_an = por_an.get(an) or []
@@ -1210,6 +1351,16 @@ def correr(aplicar=False):
                    'batalla: [PTB de a, de b]}, `flyers` (la galería, en R2), `staff` [[discord_id, nombre, mensajes en '
                    'anuncios, en veredictos, último]] y `nov` (lo nuevo de las últimas horas, para «Seguir la liga»).',
          't': dt.datetime.now(dt.timezone.utc).strftime('%Y-%m-%dT%H:%M:%SZ'), 'ligas': out}
+    # 🏟️ y lo del vigía de las batallas. Sin la lista de canales queda lo de antes: una lectura que falló no lo apaga
+    d['vigia'] = vigia if mapa else (viejo0.get('vigia') or [])
+    # 🔴 los canales que ya no están: en el archivo —es la memoria de lo avisado, sobrevive al runner—, y a Logs una vez
+    viejos_f = viejo0.get('faltan') or {}
+    d['faltan'] = {lid: u['faltan'] for lid, u in ubicados.items() if u['faltan']} if mapa else viejos_f
+    for lid, u in ubicados.items():
+        if u['faltan'] or u['movidos']:
+            print('   🔴 %-24s sin %s%s' % (LIGAS[lid]['n'], ', '.join(u['faltan']) or '—', ' · movidos: %s' % u['movidos'] if u['movidos'] else ''))
+    if aplicar and ubicados:
+        _avisar_canales(viejos_f, ubicados)
     if aplicar:
         with io.open(SALIDA, 'w', encoding='utf-8', newline='\n') as f:
             json.dump(d, f, ensure_ascii=False, indent=1)
@@ -2086,6 +2237,29 @@ def _self_check_pagina(ok):
        and n2 == [] and [n['id'] for n in n3] == [n['id'] for n in n1],
        'lo nuevo para quien sigue la liga: los resultados juntos en uno, la fecha anunciada; la primera lectura no '
        'es novedad, y lo de hace más de 48 horas vence', [n1, n2, n3])
+    # 🏟️ los mismos casos que el lector en vivo (`bot/ligas_vivo_prueba.mjs`): si un cierre se lee distinto, falla acá o allá
+    with io.open(os.path.join(SCR, 'ligas_vivo_casos.json'), encoding='utf-8') as f:
+        casos = json.load(f)['casos']
+    LIGAS['_u'], LIGAS['_k'] = {'fam': 'U', 'n': 'U', 'sv': ''}, {'fam': 'K', 'n': 'K', 'sv': ''}
+    for c in casos:
+        ms = [{'id': str(i + 1), 't': '2026-11-04T00:00:%02dZ' % i, 'content': x} for i, x in enumerate(c['msgs'])]
+        res = [[b[3], b[4], b[5], b[6]] for b in leer_liga('_u' if c['fam'] == 'U' else '_k', ms)]
+        ok(res == c['res'], 'el mismo que el lector en vivo: ' + c['n'], res)
+    del LIGAS['_u'], LIGAS['_k']
+    # 🔴 un canal que se fue (`ubicar()`)
+    lst = [{'id': '1', 'type': 4, 'name': '🌠 𝗙𝗠𝗦 WORLD SERIES T1'}, {'id': '2', 'type': 0, 'parent_id': '1', 'name': '『⚔️』𝘝𝘦𝘳𝘦𝘥𝘪𝘤𝘵𝘰𝘴'},
+           {'id': '3', 'type': 0, 'parent_id': '1', 'name': '『📌』ANUNCIOS'}, {'id': '4', 'type': 0, 'parent_id': '1', 'name': '「👀」Visuales'},
+           {'id': '5', 'type': 2, 'parent_id': '1', 'name': 'la llamada'}, {'id': '6', 'type': 0, 'parent_id': '1', 'name': '「💽」BEATS'}]
+    L0 = {'vre': r'FMS\s+WORLD\s+SERIES', 'ver': '99', 'an': '98', 'tabla': '97'}
+    u = ubicar(L0, lst)
+    ok(u['ver'] == '2' and u['an'] == '3' and u['faltan'] == ['tabla'] and u['movidos'] == {'ver': '2', 'an': '3'}
+       and (u['vis'], u['beat'], u['voz']) == ('4', '6', '5'),
+       'un canal que se fue se busca en la categoría de su liga, aunque el nombre venga en letras de fantasía; lo que no '
+       'aparece queda en `faltan`, y sus vecinos salen solos', u)
+    u2 = ubicar({'vre': 'NADA', 'ver': '2', 'an': '', 'tabla': ''}, lst)
+    u3 = ubicar({'vre': 'NADA', 'ver': '99', 'an': '', 'tabla': ''}, lst)
+    ok(u2['faltan'] == [] and u2['movidos'] == {} and u3['faltan'] == ['ver'] and u3['vis'] == '',
+       'si el canal está no se toca; sin su categoría, falta, y sin canal no hay vecinos', [u2, u3])
 
 
 def main():

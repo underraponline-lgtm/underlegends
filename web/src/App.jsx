@@ -5,6 +5,7 @@
 import { Component, Suspense, lazy, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { DUENO, Liga, aQuienSigo, limpio, quienMira } from './liga.js';
 import { pedirLigas } from './ligas_datos.js';
+import { BatallasAhora } from './ligas_ahora.jsx';
 import { pedirCalendario, juntarCalendario } from './calendario_datos.js';
 import { AvisoPromo, nombrePais } from './piezas.jsx';
 import { Cabecera, Hero, Historias, Instalar, IrA, MENU, Tira, gruposHistorias, ordenHistorias } from './arriba.jsx';
@@ -733,6 +734,8 @@ export default function App() {
         {yo.dc && String(yo.dc.id) === DUENO ? <Aislada n="PanelDueno"><Suspense fallback={null}><PanelDueno liga={liga} /></Suspense></Aislada> : null}
         <Aislada n="Historias"><Historias liga={liga} grupos={grupos} vistos={vistos || {}} onAbrir={setHistoria} /></Aislada>
         <Aislada n="Hero"><Hero liga={liga} vivoL={vivoL}><Aislada n="Tira"><Tira liga={liga} /></Aislada></Hero></Aislada>
+        {/* 🔴 las batallas de liga que se están jugando (04/11/2026). Se apaga sola: casi siempre no se ve */}
+        <Aislada n="LigasAhora"><BatallasAhora liga={liga} cls="sec" /></Aislada>
         {/* 🏆 la semana: en qué vas en cada competencia (26/10/2026, Dlx: «me gustan… las posiciones de los mini eventos»,
             y el Inicio, como está). Se apaga sola sin datos */}
         <Aislada n="SemanaComp"><SemanaComp liga={liga} dc={yo.dc} /></Aislada>

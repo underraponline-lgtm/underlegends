@@ -4424,6 +4424,12 @@ def main():
             ok10 = subir(_LG.para_nov({'nov': nov}), solo_si_cambio='--siempre' not in sys.argv, clave=_LG.CLAVE_NOV)
             print('   %s' % ('✓ lo nuevo de las ligas: igual' if ok10 is None else '✅ lo nuevo de las ligas, subido'
                              if ok10 else '🔴 no pude subir lo nuevo de las ligas'))
+        # 🏟️ qué canales mira el vigía de las batallas (`ligasRonda()` en bot/avisos.js). Sólo si cambió: casi nunca
+        vg = _LG.para_vigia()
+        if vg['lista']:
+            ok11 = subir(vg, solo_si_cambio='--siempre' not in sys.argv, clave=_LG.CLAVE_VIGIA)
+            print('   %s' % ('✓ los canales de las ligas: igual' if ok11 is None else '✅ los canales de las ligas, subidos'
+                             if ok11 else '🔴 no pude subir los canales de las ligas'))
         # 🏟️ Y EL DETALLE DE CADA LIGA (las fechas y el flyer), aparte del lobby: lo pide la página al abrir Ligas
         if ligas_det:
             ok9 = subir(ligas_det, solo_si_cambio='--siempre' not in sys.argv, clave=_LG.CLAVE_WEB)

@@ -1,0 +1,91 @@
+{
+ "_leeme": "Los corren los dos lectores de las ligas: bot/ligas_vivo_prueba.mjs (JavaScript) y el --auto de bot/ligas.py (Python). Si un cierre se lee distinto, falla CI. `res`: [a, b, ganador, cómo] de cada batalla, en orden. Nombres de ejemplo: no son resultados de nadie.",
+ "casos": [
+  {"n": "FMH: por 3 puntos, y el PTB total después", "fam": "U", "msgs": [
+    "# <:FMH:1> ANA 🇨🇴 <:vs:2> BETO 🇨🇴 <:FMH:1>",
+    "**ANA 🇨🇴 : 36**\nBETO 🇨🇴: 33\n# ANA 🇨🇴 Por 3 Puntos Brother",
+    "# <:FMH:1> PTB TOTAL X3 <:FMH:1>\n**ANA 🇨🇴 : 108**\nBETO 🇨🇴: 99"],
+   "res": [["ANA", "BETO", "ANA", "directa"]]},
+  {"n": "FMH: gana directo, con las letras de fantasía", "fam": "U", "msgs": [
+    "# 𝘼𝙉𝘼 VS 𝘽𝙀𝙏𝙊",
+    "ANA GANA DIRECTO"],
+   "res": [["ANA", "BETO", "ANA", "directa"]]},
+  {"n": "FMH: gana en réplica", "fam": "U", "msgs": [
+    "# ANA VS BETO",
+    "# ⚔️ RÉPLICA ⚔️",
+    "BETO GANA EN REPLICA"],
+   "res": [["ANA", "BETO", "BETO", "replica"]]},
+  {"n": "FMH: «GANA X» sólo vale después de la marca de réplica", "fam": "U", "msgs": [
+    "# ANA VS BETO",
+    "# GANA ANA"],
+   "res": [["ANA", "BETO", "", ""]]},
+  {"n": "FMH: por un punto no cierra nada", "fam": "U", "msgs": [
+    "# ANA VS BETO",
+    "ANA Por 1 Punto"],
+   "res": [["ANA", "BETO", "", ""]]},
+  {"n": "FMH: con marca de réplica, el por N puntos tampoco", "fam": "U", "msgs": [
+    "# ANA VS BETO",
+    "# REPLICA",
+    "ANA Por 4 Puntos"],
+   "res": [["ANA", "BETO", "", ""]]},
+  {"n": "FMH: PTB total con +3", "fam": "U", "msgs": [
+    "# ANA VS BETO",
+    "PTB TOTAL\nANA: 110 +3\nBETO: 100"],
+   "res": [["ANA", "BETO", "ANA", "directa"]]},
+  {"n": "FMH: PTB total x3 sin marcas, gana el de más si la diferencia alcanza", "fam": "U", "msgs": [
+    "# ANA VS BETO",
+    "PTB TOTAL X3\nANA: 90\nBETO: 100"],
+   "res": [["ANA", "BETO", "BETO", "directa"]]},
+  {"n": "FMH: PTB total x3 con poca diferencia no cierra", "fam": "U", "msgs": [
+    "# ANA VS BETO",
+    "PTB TOTAL X3\nANA: 98\nBETO: 100"],
+   "res": [["ANA", "BETO", "", ""]]},
+  {"n": "FMH: el título con la jornada al final", "fam": "U", "msgs": [
+    "# ANA VS BETO - JORNADA 4",
+    "BETO GANA DIRECTO"],
+   "res": [["ANA", "BETO", "BETO", "directa"]]},
+  {"n": "FMH: dos batallas seguidas, el cierre va a la que nombra", "fam": "U", "msgs": [
+    "# ANA VS BETO",
+    "# CARLA VS DIEGO",
+    "ANA GANA DIRECTO",
+    "DIEGO GANA EN REPLICA"],
+   "res": [["ANA", "BETO", "ANA", "directa"], ["CARLA", "DIEGO", "DIEGO", "replica"]]},
+  {"n": "LKR: GANADOR X", "fam": "K", "msgs": [
+    "# ANA vs BETO",
+    "ANA 28 - BETO 25",
+    "GANADOR ANA"],
+   "res": [["ANA", "BETO", "ANA", "directa"]]},
+  {"n": "LKR: GANADOR REPLICA abre la réplica", "fam": "K", "msgs": [
+    "# ANA vs BETO",
+    "GANADOR Replica",
+    "GANADOR BETO"],
+   "res": [["ANA", "BETO", "BETO", "replica"]]},
+  {"n": "LKR: el puntaje con # no es que ganó, y +3 sí", "fam": "K", "msgs": [
+    "# ANA vs BETO",
+    "# ANA :25\n\n# BETO: 28",
+    "# BETO +3PTO"],
+   "res": [["ANA", "BETO", "BETO", "directa"]]},
+  {"n": "LKR: +3 pegado, con bandera", "fam": "K", "msgs": [
+    "# ANA vs BETO",
+    "ANA 24\nBETO 10\nANA🇦🇷",
+    "# ANA+3🇦🇷"],
+   "res": [["ANA", "BETO", "ANA", "directa"]]},
+  {"n": "LKR: +2 es en réplica", "fam": "K", "msgs": [
+    "# ANA vs BETO",
+    "# ANA +2"],
+   "res": [["ANA", "BETO", "ANA", "replica"]]},
+  {"n": "LKR: x la mínima, después de la réplica", "fam": "K", "msgs": [
+    "# ANA vs BETO",
+    "# REPLICA",
+    "# BETO  X LA MINIMA 🙂"],
+   "res": [["ANA", "BETO", "BETO", "replica"]]},
+  {"n": "LKR: el nombre solo", "fam": "K", "msgs": [
+    "# ANA vs BETO",
+    "# BETO 🇨🇱"],
+   "res": [["ANA", "BETO", "BETO", "directa"]]},
+  {"n": "Un título que no es de una batalla", "fam": "U", "msgs": [
+    "# PTB TOTAL X3",
+    "# EXHIBICION ANA VS BETO"],
+   "res": []}
+ ]
+}
