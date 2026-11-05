@@ -5599,7 +5599,7 @@
   "raw": "Trelok",
   "cc": "co",
   "sv": "FFA",
-  "crew": "",
+  "crew": "CHAKALAJE",
   "discord_id": "597257327464284163",
   "verificado": true,
   "ev": 3,
@@ -5632,6 +5632,7 @@
   "arc_pais": 68,
   "pos_sv": "53/160",
   "arc_sv": 68,
+  "pos_crew": "",
   "tg_c": {
    "clasico": 1,
    "riv": 1
