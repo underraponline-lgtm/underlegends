@@ -1683,10 +1683,10 @@
    "servidor": "4573739e4f5f:decaf64d9256:c737a7"
   },
   "VR": {
-   "competitivo": "2a638087455c:7d41d0503ea2",
-   "pais": "a5ffe66bf232:ada55a12db94",
-   "servidor": "1b35dd1ccf77:decaf64d9256:15af16",
-   "temporada": "e78df1e12b1d:ccd09f762e04"
+   "competitivo": "209ba1e1938a:7d41d0503ea2",
+   "pais": "06c514fba847:ada55a12db94",
+   "servidor": "041df0a47bbe:decaf64d9256:15af16",
+   "temporada": "3596fa2f8e1f:ccd09f762e04"
   },
   "Val": {
    "servidor": "d4465c1b5631:decaf64d9256:25c183"
@@ -1980,5 +1980,5 @@
    "servidor": "7f8885a35a6d:decaf64d9256:93a344"
   }
  },
- "cuando": "2026-11-05T01:07:33+00:00"
+ "cuando": "2026-11-05T01:40:54+00:00"
 }
