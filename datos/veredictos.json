@@ -2,39 +2,6 @@
  "_leeme": "Los eventos de vidas de #veredictos ya armados —quién peleó con quién y quién ganó—, para cargarlos aunque ya no estén entre los últimos mensajes del canal; y cada batalla con su ganador (`batallas`), para la llave que no lo dice; y cada llave como se jugó (`llaves`), que manda sobre la del organizador. Sin los mensajes: el repo es público. Lo escribe bot/escuchar.py (vidas()).",
  "eventos": {},
  "batallas": {
-  "1565212532346585160": {
-   "id": "1565212532346585160",
-   "sv": "[FFA] Freestyle For All 👾",
-   "g": "1468472442925092958",
-   "canal": "1487206164864438513",
-   "pub": 1793246147954,
-   "a": "GUS",
-   "b": "YINN ZA TENOR",
-   "ganador": "YINN ZA TENOR",
-   "votos": "1–0"
-  },
-  "1565215376847933481": {
-   "id": "1565215376847933481",
-   "sv": "[FFA] Freestyle For All 👾",
-   "g": "1468472442925092958",
-   "canal": "1487206164864438513",
-   "pub": 1793246826136,
-   "a": "SIX",
-   "b": "VERC",
-   "ganador": "SIX",
-   "votos": "1–0"
-  },
-  "1565218404296687627": {
-   "id": "1565218404296687627",
-   "sv": "[FFA] Freestyle For All 👾",
-   "g": "1468472442925092958",
-   "canal": "1487206164864438513",
-   "pub": 1793247547936,
-   "a": "GEOKA LRS",
-   "b": "PARK JI SUNG",
-   "ganador": "PARK JI SUNG",
-   "votos": "1–0"
-  },
   "1565223362249359441": {
    "id": "1565223362249359441",
    "sv": "[FFA] Freestyle For All 👾",
@@ -871,28 +838,6 @@
    "ganador": "CHOP🇭🇳",
    "votos": "2–1"
   },
-  "1566616814761541778": {
-   "id": "1566616814761541778",
-   "sv": "🔥LKR (Champios Legue)🐉",
-   "g": "1558611504046153750",
-   "canal": "1565416431745634374",
-   "pub": 1793580954972,
-   "a": "GERÓNIMO",
-   "b": "MARTÍNEZ",
-   "ganador": "MARTÍNEZ",
-   "votos": "1–0"
-  },
-  "1566630063565185235": {
-   "id": "1566630063565185235",
-   "sv": "🔥LKR (Champios Legue)🐉",
-   "g": "1558611504046153750",
-   "canal": "1565416431745634374",
-   "pub": 1793584113733,
-   "a": "ZZZ",
-   "b": "LAST",
-   "ganador": "ZZZ",
-   "votos": "1–0"
-  },
   "1566632473230704735": {
    "id": "1566632473230704735",
    "sv": "[FFA] Freestyle For All 👾",
@@ -1058,28 +1003,6 @@
    "ganador": "mats",
    "votos": "1–0"
   },
-  "1566881293843570769": {
-   "id": "1566881293843570769",
-   "sv": "🔥LKR (Champios Legue)🐉",
-   "g": "1558611504046153750",
-   "canal": "1565416431745634374",
-   "pub": 1793644011699,
-   "a": "MARTÍNEZ",
-   "b": "LEONART",
-   "ganador": "MARTÍNEZ",
-   "votos": "1–0"
-  },
-  "1566935972908638209": {
-   "id": "1566935972908638209",
-   "sv": "🔥LKR (Champios Legue)🐉",
-   "g": "1558611504046153750",
-   "canal": "1566520848591093781",
-   "pub": 1793657048204,
-   "a": "RICARD FLEX",
-   "b": "TEITO",
-   "ganador": "RICARD FLEX",
-   "votos": "1–0"
-  },
   "1566938693443391491": {
    "id": "1566938693443391491",
    "sv": "🔥LKR (Champios Legue)🐉",
@@ -1100,17 +1023,6 @@
    "a": "TEITO MC🇨🇴",
    "b": "HIREX 🇨🇴",
    "ganador": "TEITO MC🇨🇴",
-   "votos": "1–0"
-  },
-  "1566974822532124865": {
-   "id": "1566974822532124865",
-   "sv": "🔥LKR (Champios Legue)🐉",
-   "g": "1558611504046153750",
-   "canal": "1565416431745634374",
-   "pub": 1793666310676,
-   "a": "SHADOW",
-   "b": "ZZZ",
-   "ganador": "ZZZ",
    "votos": "1–0"
   },
   "1567022861049266378": {
@@ -1278,17 +1190,6 @@
    "ganador": "MAKMAH 🇻🇪",
    "votos": "1–0"
   },
-  "1567338592022302741": {
-   "id": "1567338592022302741",
-   "sv": "🔥LKR (Champios Legue)🐉",
-   "g": "1558611504046153750",
-   "canal": "1565416431745634374",
-   "pub": 1793753040081,
-   "a": "SHADOW",
-   "b": "ISMEL (EXTRA)",
-   "ganador": "SHADOW",
-   "votos": "1–0"
-  },
   "1567377875278110882": {
    "id": "1567377875278110882",
    "sv": "[FFA] Freestyle For All 👾",
@@ -1375,105 +1276,6 @@
    "a": "SIX",
    "b": "TAM",
    "ganador": "SIX",
-   "votos": "1–0"
-  },
-  "1567399995269849159": {
-   "id": "1567399995269849159",
-   "sv": "🔥LKR (Champios Legue)🐉",
-   "g": "1558611504046153750",
-   "canal": "1566535333254795466",
-   "pub": 1793767679756,
-   "a": "SIN L.🇵🇪",
-   "b": "LAST🇺🇾",
-   "ganador": "SIN L.🇵🇪",
-   "votos": "1–0"
-  },
-  "1567625181801873609": {
-   "id": "1567625181801873609",
-   "sv": "🔥LKR (Champios Legue)🐉",
-   "g": "1558611504046153750",
-   "canal": "1566520848591093781",
-   "pub": 1793821368409,
-   "a": "TEITO",
-   "b": "GAYBEAT",
-   "ganador": "TEITO",
-   "votos": "1–0"
-  },
-  "1567641615864963179": {
-   "id": "1567641615864963179",
-   "sv": "🔥LKR (Champios Legue)🐉",
-   "g": "1558611504046153750",
-   "canal": "1565416431745634374",
-   "pub": 1793825286595,
-   "a": "LAST",
-   "b": "MATTHIAS",
-   "ganador": "MATTHIAS",
-   "votos": "1–0"
-  },
-  "1567645390109409434": {
-   "id": "1567645390109409434",
-   "sv": "🔥LKR (Champios Legue)🐉",
-   "g": "1558611504046153750",
-   "canal": "1566535333254795466",
-   "pub": 1793826186445,
-   "a": "TOKIO 🇦🇷",
-   "b": "LIAM 🇭🇳",
-   "ganador": "TOKIO 🇦🇷",
-   "votos": "1–0"
-  },
-  "1567650772907200703": {
-   "id": "1567650772907200703",
-   "sv": "🔥LKR (Champios Legue)🐉",
-   "g": "1558611504046153750",
-   "canal": "1565416431745634374",
-   "pub": 1793827469804,
-   "a": "LAST",
-   "b": "CALIZ #",
-   "ganador": "LAST",
-   "votos": "1–0"
-  },
-  "1567688405582880869": {
-   "id": "1567688405582880869",
-   "sv": "🔥LKR (Champios Legue)🐉",
-   "g": "1558611504046153750",
-   "canal": "1565416431745634374",
-   "pub": 1793836442133,
-   "a": "CALIZ",
-   "b": "TERRY #",
-   "ganador": "CALIZ",
-   "votos": "1–0"
-  },
-  "1567690415732297820": {
-   "id": "1567690415732297820",
-   "sv": "🔥LKR (Champios Legue)🐉",
-   "g": "1558611504046153750",
-   "canal": "1565416431745634374",
-   "pub": 1793836921390,
-   "a": "MAKMA 🇻🇪",
-   "b": "MATTHIAS 🇻🇪",
-   "ganador": "MAKMA 🇻🇪",
-   "votos": "1–0"
-  },
-  "1567696461997674607": {
-   "id": "1567696461997674607",
-   "sv": "🔥LKR (Champios Legue)🐉",
-   "g": "1558611504046153750",
-   "canal": "1565416431745634374",
-   "pub": 1793838362932,
-   "a": "LUISMC",
-   "b": "TERRY #",
-   "ganador": "LUISMC",
-   "votos": "1–0"
-  },
-  "1567703127132737637": {
-   "id": "1567703127132737637",
-   "sv": "🔥LKR (Champios Legue)🐉",
-   "g": "1558611504046153750",
-   "canal": "1565416431745634374",
-   "pub": 1793839952024,
-   "a": "LUISMC",
-   "b": "ZAIK",
-   "ganador": "LUISMC",
    "votos": "1–0"
   }
  },
