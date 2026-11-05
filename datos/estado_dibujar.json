@@ -1,80 +1,80 @@
 {
  "v": 1,
- "cuando": "2026-11-05T16:36:28Z",
+ "cuando": "2026-11-05T17:18:17Z",
  "trabajo": "dibujar",
  "codigo": 0,
- "dur_s": 143.8,
+ "dur_s": 795.9,
  "pasos": [
   {
    "n": "2f",
    "que": "las fotos que faltan, de Discord a R2",
    "ok": true,
-   "s": 8.5
+   "s": 7.9
   },
   {
    "n": "2f2",
    "que": "los TAGs elegidos",
    "ok": true,
-   "s": 0.7
+   "s": 1.0
   },
   {
    "n": "3",
    "que": "qué cambió",
    "ok": true,
-   "s": 6.7
+   "s": 11.0
   },
   {
    "n": "4",
    "que": "las caras, desde R2",
    "ok": true,
-   "s": 17.3
+   "s": 22.8
   },
   {
    "n": "5",
-   "que": "tanda 1 de 1 · 12 persona(s)",
+   "que": "tanda 1 de 3 · 40 persona(s)",
    "ok": true,
-   "s": 47.1
+   "s": 688.8
   },
   {
    "n": "5b",
    "que": "las Bloqueadas",
    "ok": true,
-   "s": 5.3
+   "s": 6.6
   },
   {
    "n": "6",
    "que": "refrescar KV",
    "ok": true,
-   "s": 57.1
+   "s": 57.0
   }
  ],
  "fallas": [],
  "ultimo_evento": {
-  "n": "566",
-  "nombre": "COMPE XCLUSIVISTICA VOL. 1",
+  "n": "567",
+  "nombre": "GALACTICOS DEL FREESTYLE VOL.16",
   "sv": "DDF",
-  "dia": "2026-11-04"
+  "dia": "2026-11-05"
  },
  "cuotas": {
   "kv": {
-   "write": 275,
-   "read": 31797
+   "write": 316,
+   "read": 34529
   },
   "objeto": {
-   "leidas": 1817697,
-   "escritas": 11565,
-   "pedidos": 6845
+   "leidas": 1956064,
+   "escritas": 13429,
+   "pedidos": 7278
   },
   "worker": {
-   "pedidos": 9946,
+   "pedidos": 10082,
    "errores": 0,
-   "sub": 11341,
+   "sub": 11535,
    "cortados": 0,
    "p50_ms": 1.22,
-   "p99_ms": 15.38,
+   "p99_ms": 15.05,
    "cpu": {
-    "total": 21471,
-    "objeto_10": 1823,
+    "total": 21784,
+    "objeto_10": 1835,
     "worker_10": 344
    }
   },
