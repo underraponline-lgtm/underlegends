@@ -58,7 +58,7 @@
 "temporada"
 ]
 },
-"liberia": {
+"panchok": {
 "rg": "S",
 "c": [
 "competitivo",
@@ -67,7 +67,7 @@
 "temporada"
 ]
 },
-"panchok": {
+"liberia": {
 "rg": "S",
 "c": [
 "competitivo",
@@ -223,6 +223,15 @@
 "rg": "A",
 "c": []
 },
+"miniboy": {
+"rg": "D",
+"c": [
+"competitivo",
+"pais",
+"servidor",
+"temporada"
+]
+},
 "okam": {
 "rg": "C",
 "c": [
@@ -244,15 +253,6 @@
 "rg": "D",
 "c": [
 "competitivo",
-"servidor",
-"temporada"
-]
-},
-"miniboy": {
-"rg": "D",
-"c": [
-"competitivo",
-"pais",
 "servidor",
 "temporada"
 ]
@@ -637,19 +637,19 @@
 "temporada"
 ]
 },
+"shadow": {
+"rg": "E",
+"c": [
+"competitivo",
+"servidor",
+"temporada"
+]
+},
 "teo": {
 "rg": "E",
 "c": [
 "competitivo",
 "pais",
-"servidor",
-"temporada"
-]
-},
-"shadow": {
-"rg": "E",
-"c": [
-"competitivo",
 "servidor",
 "temporada"
 ]
