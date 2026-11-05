@@ -2877,6 +2877,130 @@
      "1032753509776490566"
     ]
    }
+  },
+  {
+   "id": "62f2a19e84",
+   "tipo": "Nombre desconocido",
+   "sec": "19 CUP - FUTCARD EDITION VOL.3 · DDF · 21/10 · #495",
+   "que": "¿Quién es «GHV🇨🇷»?",
+   "r": "Es alguien nuevo: alta con su cuenta 848995686098927677",
+   "regla": "Discord · su cuenta de Discord: la inscripción, el podio, la llave o la llamada",
+   "rk": "Discord",
+   "por": "el ciclo (su cuenta de Discord)",
+   "porque": "nuevo: entró a la Lista con la cuenta con que se anotó (848995686098927677)",
+   "t": 1793917991062,
+   "filas": [
+    1054
+   ],
+   "variantes": [
+    "GHV🇨🇷"
+   ],
+   "escribio": {
+    "alta": [
+     "GHV",
+     "848995686098927677"
+    ]
+   }
+  },
+  {
+   "id": "89f4e92fe9",
+   "tipo": "Nombre desconocido",
+   "sec": "19 CUP FUTCARD EDICIÓN 5 · DDF · 23/10 · #505",
+   "que": "¿Quién es «Isac 🇬🇪»?",
+   "r": "Es alguien nuevo: alta con su cuenta 1409587624364081272",
+   "regla": "Discord · su cuenta de Discord: la inscripción, el podio, la llave o la llamada",
+   "rk": "Discord",
+   "por": "el ciclo (su cuenta de Discord)",
+   "porque": "nuevo: entró a la Lista con la cuenta que estaba en la llamada con ese nombre (1409587624364081272)",
+   "t": 1793917991062,
+   "filas": [
+    1055
+   ],
+   "variantes": [
+    "Isac 🇬🇪"
+   ],
+   "escribio": {
+    "alta": [
+     "Isac",
+     "1409587624364081272"
+    ]
+   }
+  },
+  {
+   "id": "e1376f4f24",
+   "tipo": "Nombre desconocido",
+   "sec": "19 CUP - FUTCARD EDITION VOL.3 · DDF · 21/10 · #495",
+   "que": "¿Quién es «🟢 Batalla 2: Mco»?",
+   "r": "Ya no hace falta",
+   "regla": "cierre · ya no hacía falta preguntarlo",
+   "rk": "cierre",
+   "por": "el ciclo",
+   "porque": "ya no está en ningún resultado: el lector lo lee distinto, o ya es alias de alguien",
+   "t": 1793917991062,
+   "filas": [
+    776
+   ],
+   "variantes": [
+    "🟢 Batalla 2: Mco"
+   ],
+   "escribio": {}
+  },
+  {
+   "id": "720f9201c2",
+   "tipo": "Nombre desconocido",
+   "sec": "19 CUP - FUTCARD EDITION VOL.3 · DDF · 21/10 · #495",
+   "que": "¿Quién es «🟢 Batalla 4: GHV»?",
+   "r": "Ya no hace falta",
+   "regla": "cierre · ya no hacía falta preguntarlo",
+   "rk": "cierre",
+   "por": "el ciclo",
+   "porque": "ya no está en ningún resultado: el lector lo lee distinto, o ya es alias de alguien",
+   "t": 1793917991062,
+   "filas": [
+    777
+   ],
+   "variantes": [
+    "🟢 Batalla 4: GHV"
+   ],
+   "escribio": {}
+  },
+  {
+   "id": "699eb41b7c",
+   "tipo": "Nombre desconocido",
+   "sec": "19 CUP FUTCARD EDICIÓN 5 · DDF · 23/10 · #505",
+   "que": "¿Quién es «💥 SF2: ISAC»?",
+   "r": "Ya no hace falta",
+   "regla": "cierre · ya no hacía falta preguntarlo",
+   "rk": "cierre",
+   "por": "el ciclo",
+   "porque": "ya no está en ningún resultado: el lector lo lee distinto, o ya es alias de alguien",
+   "t": 1793917991062,
+   "filas": [
+    819
+   ],
+   "variantes": [
+    "💥 SF2: ISAC"
+   ],
+   "escribio": {}
+  },
+  {
+   "id": "51c5fba230",
+   "tipo": "Nombre desconocido",
+   "sec": "19 CUP FUTCARD EDICIÓN 5 · DDF · 23/10 · #505",
+   "que": "¿Quién es «🔹 C3: ISAC»?",
+   "r": "Ya no hace falta",
+   "regla": "cierre · ya no hacía falta preguntarlo",
+   "rk": "cierre",
+   "por": "el ciclo",
+   "porque": "ya no está en ningún resultado: el lector lo lee distinto, o ya es alias de alguien",
+   "t": 1793917991062,
+   "filas": [
+    823
+   ],
+   "variantes": [
+    "🔹 C3: ISAC"
+   ],
+   "escribio": {}
   }
  ],
  "deshechas": []

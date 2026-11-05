@@ -753,7 +753,7 @@
   "srv": 5,
   "racha": 2,
   "racha_act": 0,
-  "score": 37.3,
+  "score": 37.0,
   "av": "",
   "ovr": 70,
   "o": 18,
@@ -793,7 +793,7 @@
   "srv": 1,
   "racha": 9,
   "racha_act": 3,
-  "score": 70.4,
+  "score": 71.3,
   "av": "",
   "ovr": 70,
   "o": 19,
@@ -1316,7 +1316,7 @@
   "srv": 5,
   "racha": 2,
   "racha_act": 0,
-  "score": 25.4,
+  "score": 25.6,
   "av": "",
   "ovr": 65,
   "o": 32,
@@ -2278,7 +2278,6 @@
   "tg_t": {
    "infalt": true,
    "rev": 1,
-   "sube": true,
    "trios": 3
   }
  },
@@ -2575,6 +2574,7 @@
   "tg_t": {
    "perf": 1,
    "solo": 1,
+   "sube": true,
    "svc": 1,
    "svtag": "campeon"
   }
@@ -16564,10 +16564,7 @@
   "pos": 499,
   "fc": true,
   "total": 223,
-  "rango": "E",
-  "tg_t": {
-   "reciente": true
-  }
+  "rango": "E"
  },
  {
   "full": "🟢 Batalla 2: Mco",
@@ -16982,10 +16979,7 @@
   "pos": 511,
   "fc": true,
   "total": 223,
-  "rango": "E",
-  "tg_t": {
-   "reciente": true
-  }
+  "rango": "E"
  },
  {
   "full": "BENJI 🇵🇪",

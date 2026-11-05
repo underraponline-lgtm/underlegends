@@ -1574,12 +1574,12 @@
   },
   "Carlosss": {
    "DDF": {
-    "duelos": "29/36",
+    "duelos": "30/37",
     "ev": 16,
     "oro": 8,
     "ovr": 71,
     "pod": 10,
-    "pts": 204650,
+    "pts": 208775,
     "racha": "3/9",
     "tg": {
      "bcasa": true,
@@ -3528,6 +3528,17 @@
     "racha": "0/0"
    }
   },
+  "GHV🇨🇷": {
+   "DDF": {
+    "duelos": "",
+    "ev": 1,
+    "oro": 0,
+    "ovr": 42,
+    "pod": 0,
+    "pts": 2200,
+    "racha": "0/0"
+   }
+  },
   "GP": {
    "SR": {
     "duelos": "0/1",
@@ -4093,6 +4104,17 @@
     "tg": {
      "nuevo": true
     }
+   }
+  },
+  "Isac 🇬🇪": {
+   "DDF": {
+    "duelos": "1/2",
+    "ev": 1,
+    "oro": 0,
+    "ovr": 43,
+    "pod": 0,
+    "pts": 3850,
+    "racha": "0/0"
    }
   },
   "Ivan": {
@@ -6022,12 +6044,12 @@
     }
    },
    "DDF": {
-    "duelos": "4/6",
-    "ev": 5,
+    "duelos": "4/7",
+    "ev": 6,
     "oro": 1,
-    "ovr": 50,
+    "ovr": 51,
     "pod": 2,
-    "pts": 38262,
+    "pts": 40462,
     "racha": "0/1",
     "tg": {
      "fin": 2,
@@ -6772,19 +6794,19 @@
     "oro": 0,
     "ovr": 47,
     "pod": 1,
-    "pts": 10625,
+    "pts": 11188,
     "racha": "1/1",
     "tg": {
      "fin": 1
     }
    },
    "DDF": {
-    "duelos": "6/15",
+    "duelos": "7/16",
     "ev": 15,
     "oro": 0,
     "ovr": 59,
     "pod": 2,
-    "pts": 81075,
+    "pts": 83000,
     "racha": "0/2",
     "tg": {
      "fin": 2
@@ -7975,7 +7997,7 @@
     "racha": "2/2"
    },
    "DDF": {
-    "duelos": "12/15",
+    "duelos": "13/16",
     "ev": 7,
     "oro": 5,
     "ovr": 56,
@@ -9151,12 +9173,12 @@
     "racha": "0/0"
    },
    "DDF": {
-    "duelos": "2/9",
-    "ev": 9,
+    "duelos": "1/9",
+    "ev": 10,
     "oro": 0,
-    "ovr": 48,
+    "ovr": 49,
     "pod": 0,
-    "pts": 28049,
+    "pts": 30249,
     "racha": "0/0"
    },
    "FDS": {
@@ -11657,83 +11679,6 @@
     "ovr": 42,
     "pod": 0,
     "pts": 1875,
-    "racha": "0/0"
-   }
-  },
-  "💥 SF1: PICHULA": {
-   "DDF": {
-    "duelos": "1/1",
-    "ev": 0,
-    "oro": 0,
-    "ovr": 40,
-    "pod": 0,
-    "pts": 0,
-    "racha": "0/0"
-   }
-  },
-  "💥 SF2: ISAC": {
-   "DDF": {
-    "duelos": "0/1",
-    "ev": 1,
-    "oro": 0,
-    "ovr": 42,
-    "pod": 0,
-    "pts": 1925,
-    "racha": "0/0"
-   }
-  },
-  "🔹 C2: UZI": {
-   "DDF": {
-    "duelos": "1/1",
-    "ev": 0,
-    "oro": 0,
-    "ovr": 40,
-    "pod": 0,
-    "pts": 0,
-    "racha": "0/0"
-   }
-  },
-  "🔹 C3: ISAC": {
-   "DDF": {
-    "duelos": "0/1",
-    "ev": 1,
-    "oro": 0,
-    "ovr": 42,
-    "pod": 0,
-    "pts": 2200,
-    "racha": "0/0"
-   }
-  },
-  "🟢 Batalla 1: Carlos": {
-   "DDF": {
-    "duelos": "1/1",
-    "ev": 0,
-    "oro": 0,
-    "ovr": 40,
-    "pod": 0,
-    "pts": 0,
-    "racha": "0/0"
-   }
-  },
-  "🟢 Batalla 2: Mco": {
-   "DDF": {
-    "duelos": "0/1",
-    "ev": 1,
-    "oro": 0,
-    "ovr": 42,
-    "pod": 0,
-    "pts": 2200,
-    "racha": "0/0"
-   }
-  },
-  "🟢 Batalla 4: GHV": {
-   "DDF": {
-    "duelos": "",
-    "ev": 1,
-    "oro": 0,
-    "ovr": 42,
-    "pod": 0,
-    "pts": 2200,
     "racha": "0/0"
    }
   }
