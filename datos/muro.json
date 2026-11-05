@@ -270,6 +270,14 @@
 "temporada"
 ]
 },
+"adriagner": {
+"rg": "B",
+"c": [
+"competitivo",
+"servidor",
+"temporada"
+]
+},
 "bloody": {
 "rg": "B",
 "c": [
@@ -311,14 +319,6 @@
 "c": [
 "competitivo",
 "pais",
-"servidor",
-"temporada"
-]
-},
-"adriagner": {
-"rg": "B",
-"c": [
-"competitivo",
 "servidor",
 "temporada"
 ]

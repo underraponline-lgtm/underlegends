@@ -1087,17 +1087,17 @@
     ],
     [
      "Adriagner",
-     11,
-     1
+     19,
+     2
     ]
    ],
    "semillero": {
     "nuevos": {
      "FFA": 6,
-     "DDF": 1
+     "DDF": 2
     },
     "gente": {
-     "DDF": 20,
+     "DDF": 23,
      "LKR": 2,
      "FFA": 35,
      "URBF": 7
@@ -1106,7 +1106,7 @@
    },
    "meta_va": {
     "ACAD": 0,
-    "DDF": 20,
+    "DDF": 23,
     "DRA": 0,
     "FDS": 0,
     "FFA": 35,

@@ -225,23 +225,23 @@
   "arc_sv": 100,
   "tg_c": {
    "bestia": 3,
-   "clasico": 4,
-   "dg": 29,
+   "clasico": 5,
+   "dg": 31,
    "fg": 8,
    "fp": 3,
-   "riv": 28,
+   "riv": 29,
    "venc": 24,
    "vengo": 1
   },
   "tg_p": {
-   "paises": 9,
+   "paises": 10,
    "paisesg": 8,
    "primer": true,
    "unico": true
   },
   "nac": {
    "evn": 0,
-   "evi": 16,
+   "evi": 17,
    "com": 0,
    "top": [
     1,
@@ -1351,13 +1351,13 @@
   "arc_sv": 91,
   "tg_c": {
    "bestia": 3,
-   "clasico": 4,
-   "dg": 56,
+   "clasico": 5,
+   "dg": 57,
    "fg": 5,
    "fp": 13,
    "mata": 4,
-   "riv": 79,
-   "venc": 47,
+   "riv": 80,
+   "venc": 48,
    "vengo": 5
   },
   "tg_p": {
@@ -1367,7 +1367,7 @@
   },
   "nac": {
    "evn": 20,
-   "evi": 76,
+   "evi": 77,
    "com": 5,
    "top": [
     1,
@@ -1782,27 +1782,29 @@
   "pos_sv": "3/15",
   "arc_sv": 87,
   "tg_c": {
-   "bestia": 1,
-   "clasico": 1,
-   "dg": 7,
+   "bestia": 2,
+   "clasico": 2,
+   "dg": 10,
    "fg": 3,
    "fp": 2,
-   "riv": 12,
-   "venc": 7
+   "mata": 1,
+   "riv": 13,
+   "venc": 9,
+   "vengo": 1
   },
   "tg_p": {
-   "paises": 6,
-   "paisesg": 6,
+   "paises": 7,
+   "paisesg": 7,
    "primer": true,
    "unico": true
   },
   "nac": {
    "evn": 0,
-   "evi": 9,
+   "evi": 10,
    "com": 0,
    "top": [
     1,
-    "pe"
+    "ec"
    ]
   }
  },
@@ -6239,7 +6241,7 @@
   },
   "nac": {
    "evn": 7,
-   "evi": 24,
+   "evi": 25,
    "com": 3,
    "top": [
     1,
@@ -6393,17 +6395,17 @@
   "tg_c": {
    "bestia": 1,
    "clasico": 2,
-   "dg": 1,
-   "riv": 4,
-   "venc": 1
+   "dg": 2,
+   "riv": 5,
+   "venc": 2
   },
   "tg_p": {
-   "paises": 3,
-   "paisesg": 1
+   "paises": 4,
+   "paisesg": 2
   },
   "nac": {
    "evn": 2,
-   "evi": 5,
+   "evi": 6,
    "com": 2,
    "top": [
     13,
@@ -8169,7 +8171,7 @@
    "dg": 7,
    "fp": 2,
    "mata": 1,
-   "riv": 17,
+   "riv": 18,
    "venc": 7
   },
   "tg_p": {
@@ -8178,7 +8180,7 @@
   },
   "nac": {
    "evn": 13,
-   "evi": 21,
+   "evi": 22,
    "com": 1,
    "top": [
     10,
@@ -12790,7 +12792,7 @@
   },
   "nac": {
    "evn": 6,
-   "evi": 15,
+   "evi": 16,
    "com": 0,
    "top": [
     12,
@@ -14078,17 +14080,17 @@
   "tg_c": {
    "bestia": 1,
    "clasico": 2,
-   "dg": 1,
-   "riv": 4,
-   "venc": 1
+   "dg": 2,
+   "riv": 5,
+   "venc": 2
   },
   "tg_p": {
-   "paises": 3,
-   "paisesg": 1
+   "paises": 4,
+   "paisesg": 2
   },
   "nac": {
    "evn": 2,
-   "evi": 5,
+   "evi": 6,
    "com": 2,
    "top": [
     13,
@@ -21641,12 +21643,12 @@
   }
  },
  {
-  "full": "Inko 🇨🇴",
+  "full": "Inko",
   "raw": "Inko",
   "cc": "co",
   "sv": "DDF",
   "crew": "",
-  "discord_id": "",
+  "discord_id": "1032753509776490566",
   "verificado": false,
   "ev": 1,
   "score": 2.5,
@@ -21678,9 +21680,16 @@
   "arc_pais": 0,
   "pos_sv": "",
   "arc_sv": 0,
+  "tg_c": {
+   "clasico": 1,
+   "riv": 1
+  },
+  "tg_p": {
+   "paises": 1
+  },
   "nac": {
    "evn": 0,
-   "evi": 0,
+   "evi": 1,
    "com": 0
   }
  },

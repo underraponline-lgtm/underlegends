@@ -709,11 +709,12 @@
    "vencido": true
   },
   "Inko": {
+   "avisado": "2026-11-05",
    "chat": "2026-11-05",
    "con": null,
    "cumplido": "",
    "debut": "2026-11-05T16:25:11+00:00",
-   "did": "",
+   "did": "1032753509776490566",
    "evento": "GALACTICOS DEL FREESTYLE VOL.16",
    "n": 567,
    "sv": "DDF",

@@ -348,10 +348,20 @@
  },
  "adriagner": {
   "competitivo": {
+   "⚔️ DUELISTA": [
+    "⚔️ DUELISTA",
+    "t1",
+    1793899870631
+   ],
    "🎯 FRANCOTIRADOR": [
     "🎯 FRANCOTIRADOR",
     "t1",
     1793898258653
+   ],
+   "🗡️ MATAGIGANTES": [
+    "🗡️ MATAGIGANTES",
+    "t1",
+    1793899870631
    ]
   },
   "servidor": {
@@ -384,9 +394,19 @@
     "📆 HABITUÉ",
     "t1",
     1793029252929
+   ],
+   "🪓 VERDUGO DEL DUEÑO": [
+    "🪓 VERDUGO DEL DUEÑO",
+    "t1",
+    1793899870631
    ]
   },
   "temporada": {
+   "🎯 CAZADOR CAZADO": [
+    "🎯 CAZADOR CAZADO",
+    "t1",
+    1793899870631
+   ],
    "🐺 LOBO SOLITARIO": [
     "🐺 LOBO SOLITARIO",
     "t1",
@@ -1683,6 +1703,11 @@
     "⚔️ DUELISTA",
     "t1",
     1793029252929
+   ],
+   "🌪️ ARRASADOR": [
+    "🌪️ ARRASADOR",
+    "t1",
+    1793899870631
    ],
    "🎯 FRANCOTIRADOR": [
     "🎯 FRANCOTIRADOR",
