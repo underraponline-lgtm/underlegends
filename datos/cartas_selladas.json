@@ -135,7 +135,7 @@
    "temporada": "d533585ec3ee:5083660e27b0"
   },
   "Ashen": {
-   "servidor": "4af907e5d349:99e0c0179dbe:055f77"
+   "servidor": "4af907e5d349:8b78bf2801f6:055f77"
   },
   "Astral": {
    "competitivo": "249cd0dc026c:20725e2c60f3",
@@ -154,7 +154,7 @@
   "Badterne": {},
   "Baltrip": {},
   "Basik": {
-   "servidor": "f2a0496057bc:99e0c0179dbe:c914f9"
+   "servidor": "f2a0496057bc:8b78bf2801f6:c914f9"
   },
   "BastyRetro": {
    "competitivo": "736d1fac2e92:20725e2c60f3",
@@ -184,7 +184,7 @@
    "temporada": "b3e15646b3c6:5083660e27b0"
   },
   "Blood": {
-   "servidor": "09b6aba527d2:99e0c0179dbe:874d2d"
+   "servidor": "09b6aba527d2:8b78bf2801f6:874d2d"
   },
   "Bloody": {
    "competitivo": "651ddc6716ef:20725e2c60f3",
@@ -193,13 +193,13 @@
    "temporada": "3c982e8d26a5:5083660e27b0"
   },
   "Blue": {
-   "servidor": "5ed67a7d8b87:99e0c0179dbe:403ba8"
+   "servidor": "5ed67a7d8b87:8b78bf2801f6:403ba8"
   },
   "Bocamio": {
-   "servidor": "9b68c9ca721c:99e0c0179dbe:e729e9"
+   "servidor": "9b68c9ca721c:8b78bf2801f6:e729e9"
   },
   "Bocto": {
-   "servidor": "d859448c52be:99e0c0179dbe:c914f9"
+   "servidor": "d859448c52be:8b78bf2801f6:c914f9"
   },
   "Btrece": {
    "competitivo": "ed41c8bbb0ca:20725e2c60f3",
@@ -212,7 +212,7 @@
    "servidor": "54df09832c6d:8b78bf2801f6:71cf5a"
   },
   "Byte": {
-   "servidor": "d479351a8233:99e0c0179dbe:055f77"
+   "servidor": "d479351a8233:8b78bf2801f6:055f77"
   },
   "CJ": {},
   "Calíz": {
@@ -243,16 +243,16 @@
   },
   "Char": {},
   "Charro": {
-   "servidor": "8cfc058bf1a8:99e0c0179dbe:a98d83"
+   "servidor": "8cfc058bf1a8:8b78bf2801f6:a98d83"
   },
   "Chase": {
-   "servidor": "9aad50986b5e:b8c1c7c39e87:403ba8"
+   "servidor": "9aad50986b5e:8b78bf2801f6:403ba8"
   },
   "Cheo": {
-   "servidor": "b0fd21d007f6:99e0c0179dbe:055f77"
+   "servidor": "b0fd21d007f6:8b78bf2801f6:055f77"
   },
   "Chilau": {
-   "servidor": "6a096bb2c9bf:99e0c0179dbe:6066c5"
+   "servidor": "6a096bb2c9bf:8b78bf2801f6:6066c5"
   },
   "Chop": {},
   "Christopher": {
@@ -973,7 +973,7 @@
    "servidor": "3e5469324107:8b78bf2801f6:27d4a9"
   },
   "Luiz": {
-   "servidor": "8d84727eae1e:99e0c0179dbe:055f77"
+   "servidor": "8d84727eae1e:8b78bf2801f6:055f77"
   },
   "Luky": {
    "servidor": "24892b33c509:8b78bf2801f6:980594"
@@ -1734,7 +1734,7 @@
    "temporada": "5af969bdd1dc:5083660e27b0"
   },
   "Vize": {
-   "servidor": "f878da4ea385:99e0c0179dbe:ba481e"
+   "servidor": "f878da4ea385:8b78bf2801f6:ba481e"
   },
   "Vlade": {
    "competitivo": "b8d1140eea41:20725e2c60f3",
@@ -1783,7 +1783,7 @@
   "Yeyox": {
    "competitivo": "683cc0fa2810:20725e2c60f3",
    "pais": "c954a93f2826:d51c1bbe9079",
-   "servidor": "1e2221651a90:8b78bf2801f6:93ed66"
+   "servidor": "1e2221651a90:8b78bf2801f6:8f9835"
   },
   "Yio": {},
   "Yor": {
@@ -1995,5 +1995,5 @@
    "servidor": "7f8885a35a6d:8b78bf2801f6:93a344"
   }
  },
- "cuando": "2026-11-05T04:35:41+00:00"
+ "cuando": "2026-11-05T05:04:44+00:00"
 }
