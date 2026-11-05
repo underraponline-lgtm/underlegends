@@ -726,9 +726,9 @@
   },
   "lkr-fms-plaza": {
    "caliz": [
-    "f0bcea237e",
+    "aa172754f7",
     25,
-    9
+    10
    ],
    "chop": [
     "0ab265bea1",
@@ -741,29 +741,34 @@
     0
    ],
    "dominick": [
-    "f5a960d8dd",
-    0,
-    14
-   ],
-   "dyzz": [
-    "5127eec1f4",
+    "8b2c6033ec",
     0,
     15
    ],
-   "kusoh": [
-    "129aa1ae3b",
+   "dyzz": [
+    "bf76b6404b",
     0,
     16
    ],
-   "last": [
-    "4b1bda990a",
-    8,
-    13
+   "elwachin": [
+    "fe1c370d00",
+    25,
+    5
    ],
-   "leonart": [
-    "652c3438b4",
+   "kusoh": [
+    "425b7e742a",
     0,
     17
+   ],
+   "last": [
+    "a21cce0440",
+    8,
+    14
+   ],
+   "leonart": [
+    "06663f38b6",
+    0,
+    18
    ],
    "lrs": [
     "a7dc635b30",
@@ -771,29 +776,34 @@
     4
    ],
    "lvel": [
-    "9690b1ccf0",
+    "7a561c8bef",
     0,
-    18
+    19
    ],
    "makmah": [
-    "79b33f1ed8",
+    "318db176dc",
     25,
-    10
+    11
    ],
    "masino": [
-    "05cb1adeb0",
-    25,
-    6
-   ],
-   "mayeutyk": [
-    "539ad40b69",
-    8,
-    12
-   ],
-   "mcdl": [
-    "e37c616097",
+    "b2cf44f321",
     25,
     7
+   ],
+   "mayeutyk": [
+    "f3a7a4cd83",
+    8,
+    13
+   ],
+   "mcdl": [
+    "fcbbefd165",
+    25,
+    8
+   ],
+   "miniboy": [
+    "a5e7ba3781",
+    0,
+    20
    ],
    "mosquitrap": [
     "1cd1d0db34",
@@ -801,14 +811,14 @@
     3
    ],
    "mrkude": [
-    "35e89ec1ba",
+    "caad26e452",
     16,
-    11
+    12
    ],
    "shadow": [
-    "9a6ef5f7bf",
+    "1456536272",
     0,
-    19
+    21
    ],
    "terry": [
     "85b915aeea",
@@ -816,14 +826,14 @@
     2
    ],
    "tøkiø": [
-    "9173cce83c",
+    "efbccf6b1f",
     0,
-    20
+    22
    ],
    "zaik": [
-    "4c9ba0285d",
+    "f4f2a54d1e",
     0,
-    21
+    23
    ]
   },
   "lkr-fms-tricolor": {
