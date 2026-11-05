@@ -347,6 +347,13 @@
   }
  },
  "adriagner": {
+  "competitivo": {
+   "🎯 FRANCOTIRADOR": [
+    "🎯 FRANCOTIRADOR",
+    "t1",
+    1793898258653
+   ]
+  },
   "servidor": {
    "⚔️ DUELISTA": [
     "⚔️ DUELISTA",
@@ -380,8 +387,13 @@
    ]
   },
   "temporada": {
+   "🐺 LOBO SOLITARIO": [
+    "🐺 LOBO SOLITARIO",
+    "t1",
+    1793898258653
+   ],
    "👑 CAMPEÓN x%d": [
-    "👑 CAMPEÓN x3",
+    "👑 CAMPEÓN x4",
     "t1",
     1793029252929
    ],
@@ -389,6 +401,11 @@
     "📈 EN ASCENSO",
     "t1",
     1793029252929
+   ],
+   "📋 SEMANA PERFECTA": [
+    "📋 SEMANA PERFECTA",
+    "t1",
+    1793898258653
    ],
    "🔟 DOBLE DÍGITO": [
     "🔟 DOBLE DÍGITO",

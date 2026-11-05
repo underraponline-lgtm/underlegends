@@ -2,7 +2,7 @@
  "_leeme": "El reto del debut (bot/debutantes.py): quién debutó desde el 12/10/2026 a las 6 PM ET, cuándo vence, si lo cumplió y qué ya se avisó. Dlx, 12/10/2026.",
  "chats": {
   "ACAD": "2026-10-31",
-  "DDF": "2026-11-04",
+  "DDF": "2026-11-05",
   "FDS": "2026-10-30",
   "FFA": "2026-11-04",
   "FRZ": "2026-10-27",
@@ -708,6 +708,18 @@
    "vence": "2026-10-29T15:06:42+00:00",
    "vencido": true
   },
+  "Inko": {
+   "chat": "2026-11-05",
+   "con": null,
+   "cumplido": "",
+   "debut": "2026-11-05T16:25:11+00:00",
+   "did": "",
+   "evento": "GALACTICOS DEL FREESTYLE VOL.16",
+   "n": 567,
+   "sv": "DDF",
+   "vence": "2026-11-12T16:25:11+00:00",
+   "vencido": false
+  },
   "Isabella": {
    "avisado": "2026-10-31",
    "chat": "2026-11-01",
@@ -1067,12 +1079,12 @@
    "chat": "2026-10-28",
    "con": null,
    "cumplido": "",
-   "debut": "2026-10-28T17:58:33+00:00",
+   "debut": "2026-10-28T18:23:49+00:00",
    "did": "",
    "evento": "ZONA MORTAL",
    "n": 540,
    "sv": "DDF",
-   "vence": "2026-11-04T17:58:33+00:00",
+   "vence": "2026-11-04T18:23:49+00:00",
    "vencido": true
   },
   "Lizennin": {
@@ -1428,19 +1440,6 @@
    "sv": "FDS",
    "vence": "2026-10-28T02:04:09+00:00",
    "vencido": true
-  },
-  "Penescrotopene ⚫️": {
-   "avisado": "2026-10-30",
-   "chat": "2026-10-31",
-   "con": null,
-   "cumplido": "",
-   "debut": "2026-10-30T20:59:18+00:00",
-   "did": "",
-   "evento": "LA ISLA DE OKINAWA V.4",
-   "n": 547,
-   "sv": "FFA",
-   "vence": "2026-11-06T20:59:18+00:00",
-   "vencido": false
   },
   "Pipe": {
    "avisado": "2026-10-23",

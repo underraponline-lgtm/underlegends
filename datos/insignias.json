@@ -485,6 +485,14 @@
 "mes_sv_staff": [
 "2026-11-04T23:56:59Z",
 "prueba"
+],
+"cazador": [
+"2026-11-05T16:56:26Z",
+"prueba"
+],
+"duelista": [
+"2026-11-05T16:56:26Z",
+"prueba"
 ]
 },
 "Adrianex": {
@@ -3470,6 +3478,12 @@
 "Infected": {
 "debut": [
 "2026-10-27T21:55:33Z",
+"prueba"
+]
+},
+"Inko": {
+"debut": [
+"2026-11-05T16:56:26Z",
 "prueba"
 ]
 },

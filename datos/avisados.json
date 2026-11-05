@@ -34195,5 +34195,139 @@
    ]
   ],
   "v": 2
+ },
+ "567": {
+  "antes": {
+   "Adriagner": [
+    41,
+    49,
+    false
+   ],
+   "Carlosss": [
+    17,
+    19,
+    false
+   ],
+   "Dominick": [
+    232,
+    50,
+    true
+   ],
+   "LRS": [
+    37,
+    44,
+    false
+   ],
+   "Makmah": [
+    1,
+    1,
+    false
+   ],
+   "Number VE": [
+    76,
+    99,
+    false
+   ]
+  },
+  "canal": "1566326935058124832",
+  "duelos": [
+   [
+    "Makmah",
+    "LRS",
+    "Makmah"
+   ],
+   [
+    "Carlosss",
+    "Number VE",
+    "Carlosss"
+   ],
+   [
+    "Evangeline🇵🇪",
+    "Inko 🇨🇴",
+    "Evangeline🇵🇪"
+   ],
+   [
+    "Adriagner",
+    "Dominick",
+    "Adriagner"
+   ],
+   [
+    "Carlosss",
+    "Makmah",
+    "Carlosss"
+   ],
+   [
+    "Adriagner",
+    "Evangeline🇵🇪",
+    "Adriagner"
+   ],
+   [
+    "Adriagner",
+    "Carlosss",
+    "Adriagner"
+   ]
+  ],
+  "ev_antes": {
+   "Adriagner": 12,
+   "Carlosss": 16,
+   "Dominick": 32,
+   "LRS": 30,
+   "Makmah": 97,
+   "Number VE": 15
+  },
+  "fecha": "05/11",
+  "firma": "ce05d3b36d6c4956",
+  "msg": "1567943062532006051",
+  "nombre": "GALACTICOS DEL FREESTYLE VOL.16",
+  "num": 567,
+  "participantes": 8,
+  "sello": {
+   "Adriagner": "7fe03573146c:5083660e27b0"
+  },
+  "sv": "DDF",
+  "t": "2026-11-05T16:54:36Z",
+  "tabla": [
+   [
+    "Adriagner",
+    "Campeón",
+    7500
+   ],
+   [
+    "Carlosss",
+    "Subcampeón",
+    5000
+   ],
+   [
+    "Makmah",
+    "Semifinal",
+    3500
+   ],
+   [
+    "Evangeline🇵🇪",
+    "Semifinal",
+    3500
+   ],
+   [
+    "LRS",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Number VE",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Inko 🇨🇴",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Dominick",
+    "Cuartos",
+    2000
+   ]
+  ],
+  "v": 2
  }
 }

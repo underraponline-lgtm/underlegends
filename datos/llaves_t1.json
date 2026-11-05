@@ -36406,7 +36406,7 @@
        "Miniboy"
       ],
       "OG, Teo",
-      "triple (4 bandas, pasan 2); también pasa: Teo🇨🇴"
+      "triple (4 bandas, pasan 2); también pasa: Teo 🇨🇴"
      ],
      [
       [
@@ -37249,7 +37249,6 @@
   "escala": "8-15",
   "fecha": "28/10",
   "links": [
-   "https://discord.com/channels/1469009547971526659/1470097588635176960/1565062232650416261",
    "https://discord.com/channels/1469009547971526659/1470097588635176960/1565068590317572247"
   ],
   "n": 540,
@@ -38605,7 +38604,7 @@
       [
        "Six",
        "Colesito",
-       "Penescrotopene 🇰🇷⚫️"
+       "1200"
       ],
       "Six",
       "triple (3 bandas)"
@@ -38778,6 +38777,11 @@
     2500
    ],
    [
+    "1200",
+    "Octavos",
+    1250
+   ],
+   [
     "71",
     "Octavos",
     1250
@@ -38854,11 +38858,6 @@
    ],
    [
     "Number Laden 🇸🇦",
-    "Octavos",
-    1250
-   ],
-   [
-    "Penescrotopene 🇰🇷⚫️",
     "Octavos",
     1250
    ],
@@ -42396,6 +42395,133 @@
     "VR",
     "Semifinal",
     1750
+   ]
+  ]
+ },
+ "567": {
+  "dia": "2026-11-05",
+  "escala": "8-15",
+  "fecha": "05/11",
+  "links": [
+   "https://discord.com/channels/1469009547971526659/1470097588635176960/1567937836429082818"
+  ],
+  "n": 567,
+  "nombre": "GALACTICOS DEL FREESTYLE VOL.16",
+  "participantes": 8,
+  "rondas": [
+   {
+    "b": [
+     [
+      [
+       "Makmah",
+       "LRS"
+      ],
+      "Makmah",
+      ""
+     ],
+     [
+      [
+       "Carlosss",
+       "Number VE"
+      ],
+      "Carlosss",
+      ""
+     ],
+     [
+      [
+       "Evangeline🇵🇪",
+       "Inko 🇨🇴"
+      ],
+      "Evangeline🇵🇪",
+      ""
+     ],
+     [
+      [
+       "Adriagner",
+       "Dominick"
+      ],
+      "Adriagner",
+      ""
+     ]
+    ],
+    "r": "Cuartos"
+   },
+   {
+    "b": [
+     [
+      [
+       "Carlosss",
+       "Makmah"
+      ],
+      "Carlosss",
+      ""
+     ],
+     [
+      [
+       "Adriagner",
+       "Evangeline🇵🇪"
+      ],
+      "Adriagner",
+      ""
+     ]
+    ],
+    "r": "Semifinales"
+   },
+   {
+    "b": [
+     [
+      [
+       "Adriagner",
+       "Carlosss"
+      ],
+      "Adriagner",
+      ""
+     ]
+    ],
+    "r": "Final"
+   }
+  ],
+  "sv": "DDF",
+  "tabla": [
+   [
+    "Adriagner",
+    "Campeón",
+    7500
+   ],
+   [
+    "Carlosss",
+    "Subcampeón",
+    5000
+   ],
+   [
+    "Evangeline🇵🇪",
+    "Semifinal",
+    3500
+   ],
+   [
+    "Makmah",
+    "Semifinal",
+    3500
+   ],
+   [
+    "Dominick",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Inko 🇨🇴",
+    "Cuartos",
+    2000
+   ],
+   [
+    "LRS",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Number VE",
+    "Cuartos",
+    2000
    ]
   ]
  }
