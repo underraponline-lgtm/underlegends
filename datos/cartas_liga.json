@@ -957,54 +957,54 @@
   },
   "snake-new-chapter": {
    "deluxe": [
-    "8d3e72b9a9",
+    "5d328bf031",
     72,
-    3
+    4
    ],
    "dloscoria": [
-    "1e2836cf38",
+    "45f414cb8b",
     56,
     10
    ],
    "dlx": [
-    "c0eadb74c4",
+    "21abd16b76",
     0,
     0
    ],
    "gus": [
-    "ef678d5ec8",
+    "e7d5e37d10",
     59,
     9
    ],
    "humildad": [
-    "a4c9184d5a",
+    "b25487cb90",
     74,
-    4
-   ],
-   "jothaze": [
-    "66d06537fe",
-    71,
     5
    ],
+   "jothaze": [
+    "f480ffee55",
+    80,
+    2
+   ],
    "juanpa": [
-    "0a2004ad73",
+    "dfecc3c36e",
     88,
     1
    ],
    "lhyon": [
-    "bb9c9207f7",
+    "60f366e3dc",
     66,
     8
    ],
    "number": [
-    "f8a7cc1c9d",
+    "f2ba57ad88",
     67,
     7
    ],
    "zignos": [
-    "d797817825",
+    "a1a11dbc45",
     76,
-    2
+    3
    ]
   }
  }
