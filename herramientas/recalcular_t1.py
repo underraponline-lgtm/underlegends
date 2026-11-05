@@ -4,6 +4,7 @@
     python herramientas/recalcular_t1.py             # mide: quién sube, quién baja, qué evento entra o sale
     python herramientas/recalcular_t1.py --json X    # y deja el detalle en X
     python herramientas/recalcular_t1.py --informe X --aplicar --sin 405   # aplica todo menos el #405
+    python herramientas/recalcular_t1.py --informe X --aplicar --solo 495,505   # aplica esos y nada más
 
 Dlx, 08/10/2026: *«recalcula todo con el sistema actual… antes había problemas porque el sistema antiguo aún
 estaba»*. A «¿recalculo los 72 eventos con las reglas de hoy?», *«A»*: primero medirlo y mostrar quién cambia.
@@ -250,6 +251,13 @@ def _informe(d, detalle=None):
     if sin:
         ev_cambian = [x for x in ev_cambian if x[0] not in sin]
         print('   (sin %s, como se pidió)' % ', '.join('#' + x for x in sorted(sin)))
+    # 🎯 `--solo 495,505`: esos y nada más (05/11/2026, las dos 19 CUP FUTCARD). Lo demás se mide y no se toca: tampoco los
+    # duplicados, que `aplicar()` manda a `sacar` sin mirar la lista de eventos
+    solo = set(sys.argv[sys.argv.index('--solo') + 1].split(',')) if '--solo' in sys.argv else None
+    if solo is not None:
+        ev_cambian = [x for x in ev_cambian if x[0] in solo]
+        d['duplicados'] = {}
+        print('   (sólo %s, como se pidió)' % ', '.join('#' + x for x in sorted(solo)))
     d['_cambian'] = [k for k, _e, _m in ev_cambian]
     print('   %d persona(s) cambian · %d evento(s) cambian · %d entran · %d duplicado(s) · %d no se pudieron volver '
           'a leer\n' % (len(cambios), len(ev_cambian), len(entran), len(dups), len(no_leidos)))

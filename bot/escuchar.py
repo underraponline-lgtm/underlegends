@@ -240,8 +240,27 @@ SEP = re.compile(r'🆚|<a?:VSF?:\d+>|:vsf?:|\bvs\.?\b', re.I)
 #: 🔑 y «Ganado #» / «Ganador:» delante del primero (MORTAL KOMBAT MAPACHE CUP, DDF, 11/10/2026: `• Ganado # 19🇲🇦 vs
 #: CHOP🇭🇳` en la final, y `• Semifinal 2: # GROOMER🇧🇴 vs 19🇲🇦`): «Ganado # 19» era una persona. Sólo con `#` o `:` detrás,
 #: para no comerse a alguien que se llame así
-ETIQUETA_CRUCE = re.compile(r'^\s*(?:[•·▸➢]\s*|-\s+)*(?:(?:cruce|semi\s*-?\s*final|cuartos?|octavos?|final|batalla|'
-                            r'duelo|combate|llave|match)\s*#?\d*\s*:\s*)?'
+#: 🔑 Y CON UN EMOJI DELANTE, O EN SIGLA (19 CUP FUTCARD, DDF, 21 y 23/10/2026): `🟢 Batalla 2: Mco vs Miniboy`, `🔴 Semi 1:
+#: CARLOS vs MINIBOY`, `🔹 C3: ISAC vs SHADOW`, `💥 SF2: ISAC vs MAKMA`. El ancla pedía una viñeta y el emoji no lo es, así
+#: que «🟢 Batalla 2: Mco» y «🔹 C3: ISAC» entraron al ranking como personas: MCO perdió su evento, «ISAC» salió dos veces, y
+#: Carlosss cobró la mitad del campeonato por «walk-in» (no era el «🟢 Batalla 1: Carlos» de cuartos).
+#: ⚠️ EL EMOJI SÓLO SE VA CON SU ETIQUETA: uno solo puede marcar algo (`PASA_GRUPO`, `CAYO`), y `norm()` ya lo ignora.
+#: ⚠️ LO QUE PARECE EMOJI Y NO LO ES: las banderas (`🇨🇱 PANCHOK` es el país de alguien, y `🏴‍☠️` también), `🆚` (U+1F19A: es
+#: el separador) y los marcos `⌞⌝` `❰❱`. Por eso son rangos y no «todo lo que no sea una letra».
+#: ⚠️ LOS DOS PUNTOS PEGADOS A UN NOMBRE NO SON UNA ETIQUETA: `C4:Espana: vs D4` trae su bandera en shortcode (como el «tnr
+#: :Espana:» de FFA, 11/10) y `C4: 🇦🇷 vs D4` no dejaría a nadie de ese lado. Y una sigla sin dos puntos (`C4 vs D4`, `M1 vs
+#: X`, `g8 vs X`) es una persona: hay gente que se llama así
+_EMOJI_ETIQUETA = '\u2190-\u21FF\u25A0-\u25FF\u2600-\u2767\u2776-\u27BF\u2B00-\u2BFF\uFE0F\u200D' \
+                  '\U0001F000-\U0001F0FF\U0001F200-\U0001F3F2\U0001F3F5-\U0001FAFF'
+_PALABRA_ETIQUETA = (r'cruce|batalla|duelo|combate|llave|match|partid[oa]|enfrentamiento|game|ronda|round|pelea|'
+                     r'dieciseisavos?|octavos?(?:\s+de\s+final)?|cuartos?(?:\s+de\s+final)?|'
+                     r'semi\s*-?\s*final(?:es)?|semis?|(?:gran\s+)?final(?:es)?')
+_DESPUES_ETIQUETA = (r'[:：](?![^\s:：]+[:：])(?!\s*(?:[\U0001F1E6-\U0001F1FF]{2}\s*)?(?:vs\b|🆚|<a?:vsf?:))'
+                     r'\s*(?:\*\*|__|~~)?\s*')
+ETIQUETA_CRUCE = re.compile(r'^\s*(?:[•·▸➢]\s*|-\s+)*'
+                            r'(?:(?:[' + _EMOJI_ETIQUETA + r']\s*|\*\*|__|~~|-?#{1,3}\s+|>\s*|\*\s+)*'
+                            r'(?:(?:' + _PALABRA_ETIQUETA + r')\s*#?\s*\d*\s*|[a-z]{1,3}[ -]?\d{1,2})'
+                            + _DESPUES_ETIQUETA + r')?'
                             r'(?:(?:ganad[oa]|ganador(?:a)?|gan[oó])\s*[#:]\s*)?(?:#\s+)?', re.I)
 #: `[Nombre del equipo (A y B)]` -> `[A + B]`: ver `nombres_de_linea()`
 EQUIPO_NOMBRADO = re.compile(r'([\[⌞])[^\[\]⌞⌝()+&\n]*\s\(([^()\[\]⌞⌝\n]+?(?:\s+(?:y|e)\s+|\s*[+&]\s*)'
@@ -4650,6 +4669,31 @@ def _self_check():
         ('19 CUP (DDF): «• Cruce 1:» y «• Semifinal 1:» no son del nombre, «TERCER PUESTO» es una ronda, '
          'KEIDER no pasa por parecerse a JEIXDER, y el tercero del podio va con el nombre abajo',
          [x[2] for x in cup19] == ['PICHULA', 'CRISZJ', 'JEIXDER', 'NOA', 'PICHULA', 'NOA', 'CRISZJ', 'PICHULAMC']),
+        ('19 CUP FUTCARD (DDF): el emoji con su etiqueta o su sigla no son del nombre (`🟢 Batalla 2:`, `🔴 Semi 1:`, `🔹 C3:`, '
+         '`💥 SF2:`, `⚔️ Semifinales:`), y «ISAC» pasa de cuartos a semis como una sola persona',
+         nombres_de_linea('🟢 Batalla 2: Mco vs Miniboy') == ['Mco', 'Miniboy']
+         and nombres_de_linea('🟢 Batalla 4: GHV vs Martinez vs Xclusivo') == ['GHV', 'Martinez', 'Xclusivo']
+         and nombres_de_linea('🔴 Semi 1: CARLOS vs MINIBOY (SUPLENTE)')[0] == 'CARLOS'
+         and nombres_de_linea('🔹 C1: Pichulamc 🇦🇷  vs  VR') == ['Pichulamc 🇦🇷', 'VR']
+         and nombres_de_linea('💥 SF2: ISAC  vs  MAKMA') == ['ISAC', 'MAKMA']
+         and nombres_de_linea('⚔️ Semifinales: OASIS, LETRAO vs SNOW') == ['OASIS, LETRAO', 'SNOW']
+         and nombres_de_linea('🔹 **C3:** ISAC vs SHADOW') == ['ISAC', 'SHADOW']
+         and nombres_de_linea('## 🔹 C3: ISAC vs SHADOW') == ['ISAC', 'SHADOW']
+         and nombres_de_linea('-# 🟢 Batalla 1: ANA vs BEA') == ['ANA', 'BEA']
+         and nombres_de_linea('> 🔹 C3: ISAC vs SHADOW') == ['ISAC', 'SHADOW']
+         and [x[2] for x in resolver('# CUARTOS\n🔹 C3: ISAC vs SHADOW\n# SEMIFINALES\n💥 SF2: ISAC vs MAKMA')][0] == 'ISAC'),
+        ('… y lo que NO es una etiqueta se queda: la sigla sin dos puntos, los dos puntos pegados a un nombre, la bandera, '
+         'el marco, un emoji solo y un nombre que empieza como una ronda',
+         nombres_de_linea('C4 vs D4') == ['C4', 'D4'] and nombres_de_linea('g8 vs Mau Kc') == ['g8', 'Mau Kc']
+         and nombres_de_linea('tnr :Espana: vs Six') == ['tnr :Espana:', 'Six']
+         and nombres_de_linea('C4:Espana: vs D1') == ['C4:Espana:', 'D1']
+         and nombres_de_linea('C4: 🇦🇷 vs D1') == ['C4: 🇦🇷', 'D1']
+         and nombres_de_linea('T3 :Espana: vs D1') == ['T3 :Espana:', 'D1']
+         and nombres_de_linea('🏴‍☠️ SYEPORUTE vs VALDOZA')[0] == '🏴‍☠️ SYEPORUTE'
+         and nombres_de_linea('⌞ANA⌝ 🆚 ⌞BEA⌝') == ['ANA', 'BEA']
+         and nombres_de_linea('❰ANA❱ 🆚 ❰BEA❱') == ['❰ANA❱', '❰BEA❱']
+         and nombres_de_linea('💥 CARLOS vs MARTINEZ')[0] == '💥 CARLOS'
+         and nombres_de_linea('Final Boss vs Semi') == ['Final Boss', 'Semi']),
         ('el equipo que toma el nombre de su inscripción «Oasis🇨🇱 & Letrao🇨🇱» se queda con «+» (LA REDENCION, FFA)',
          canonizador(['Oasis🇨🇱 & Letrao🇨🇱'])('OASIS🇨🇱 + LETRAO🇨🇱') == 'Oasis🇨🇱 + Letrao🇨🇱'),
         ('`[El hijo y el primo del sol (Nemi y Personality)]` es el equipo Nemi + Personality',

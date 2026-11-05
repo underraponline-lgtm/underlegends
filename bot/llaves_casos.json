@@ -2297,6 +2297,197 @@
    "que": "… y lo que NO es una llave aunque tenga bloques: un fixture (jornadas del mismo tamaño) y una cartelera",
    "texto": "—— J1 ——\nANA vs BEA\nCAMI vs DORA\n—— J2 ——\nANA vs CAMI\nBEA vs DORA\n\n— Sábado —\nEVA vs FLOR\nGIA vs HANA\n— Domingo —\nIRIS vs JUANA\n",
    "rondas": []
+  },
+  {
+   "que": "19 CUP FUTCARD VOL.3 (DDF, 21/10/2026): el emoji y «Batalla N:» / «Semi N:» no son del nombre",
+   "texto": "🎤 19 CUP - FUTCARD EDITION VOL.3\n⚔️ CUARTOS DE FINAL\n🟢 Batalla 1: Carlos vs Drexx\n🟢 Batalla 2: Mco vs Miniboy\n🟢 Batalla 3: Desio vs Dominick\n🟢 Batalla 4: GHV vs Martinez vs Xclusivo\n🔥 SEMIFINALES\n🔴 Semi 1: CARLOS vs MINIBOY (SUPLENTE)\n🔴 Semi 2: DESIO vs MARTINEZ\n👑 GRAN FINAL\n💥 CARLOS  vs MARTINEZ (DEFAULT)\n🏅 PODIO\n🥇 Campeón: CARLOS\n🥈 Subcampeón: MARTINEZ\n🥉 Tercer Lugar: K DESIO\n",
+   "rondas": [
+    [
+     "CUARTOS",
+     [
+      [
+       "Carlos",
+       "Drexx"
+      ],
+      [
+       "Mco",
+       "Miniboy"
+      ],
+      [
+       "Desio",
+       "Dominick"
+      ],
+      [
+       "GHV",
+       "Martinez",
+       "Xclusivo"
+      ]
+     ]
+    ],
+    [
+     "SEMIFINALES",
+     [
+      [
+       "CARLOS",
+       "MINIBOY (SUPLENTE)"
+      ],
+      [
+       "DESIO",
+       "MARTINEZ"
+      ]
+     ]
+    ],
+    [
+     "FINAL",
+     [
+      [
+       "💥 CARLOS",
+       "MARTINEZ (DEFAULT)"
+      ]
+     ]
+    ]
+   ]
+  },
+  {
+   "que": "19 CUP FUTCARD EDICIÓN 5 (DDF, 23/10/2026): el emoji y las siglas «C3:» y «SF2:» no son del nombre",
+   "texto": "🏆 19 CUP FUTCARD EDICIÓN 5 🎃\n⚔️ CUARTOS DE FINAL\n\n🔹 C1: Pichulamc 🇦🇷  vs  VR\n🔹 C2: UZI  vs  BOTRAX\n🔹 C3: ISAC  vs  SHADOW\n🔹 C4: MAKMA vs  MARTINEZ\n\n🔥 SEMIFINALES\n\n💥 SF1: PICHULA vs  MINIBOY\n💥 SF2: ISAC  vs  MAKMA\n\n💀 GRAN FINAL\n\n👑 PICHULA  vs  MAKMAH\n\n🥇 CAMPEÓN: PICHULA\n🥈 SUBCAMPEÓN: MAKMAH \n",
+   "rondas": [
+    [
+     "CUARTOS",
+     [
+      [
+       "Pichulamc 🇦🇷",
+       "VR"
+      ],
+      [
+       "UZI",
+       "BOTRAX"
+      ],
+      [
+       "ISAC",
+       "SHADOW"
+      ],
+      [
+       "MAKMA",
+       "MARTINEZ"
+      ]
+     ]
+    ],
+    [
+     "SEMIFINALES",
+     [
+      [
+       "PICHULA",
+       "MINIBOY"
+      ],
+      [
+       "ISAC",
+       "MAKMA"
+      ]
+     ]
+    ],
+    [
+     "FINAL",
+     [
+      [
+       "👑 PICHULA",
+       "MAKMAH"
+      ]
+     ]
+    ]
+   ]
+  },
+  {
+   "que": "… más etiquetas parecidas: en palabras, en negrita, con el número pegado y sin número",
+   "texto": "# CUARTOS\n⚔️ Cuartos de final 1: ANA vs BEA\n🏆 Cruce 2: CAMI vs DORA\n**🔹 C3: EVA** vs FLOR\n🔹 **C4:** GIA vs HANA\n# SEMIFINALES\n🔥 Semifinales: ANA vs CAMI\n## 🔹 QF2: EVA vs GIA\n# FINAL\n> Gran Final: ANA vs EVA\n",
+   "rondas": [
+    [
+     "CUARTOS",
+     [
+      [
+       "ANA",
+       "BEA"
+      ],
+      [
+       "CAMI",
+       "DORA"
+      ],
+      [
+       "EVA",
+       "FLOR"
+      ],
+      [
+       "GIA",
+       "HANA"
+      ]
+     ]
+    ],
+    [
+     "SEMIFINALES",
+     [
+      [
+       "ANA",
+       "CAMI"
+      ],
+      [
+       "EVA",
+       "GIA"
+      ]
+     ]
+    ],
+    [
+     "FINAL",
+     [
+      [
+       "ANA",
+       "EVA"
+      ]
+     ]
+    ]
+   ]
+  },
+  {
+   "que": "… y lo que NO es una etiqueta: la sigla sin dos puntos, la bandera en shortcode, la bandera, 🆚 y un emoji solo",
+   "texto": "# CUARTOS\nC4 vs D4\ntnr :Espana: vs Six\nC4:Espana: vs D1\nT3 :Espana: vs G8\n🇨🇱 PANCHOK 🆚 DAMIAN 🇵🇪\n🏴‍☠️ SYEPORUTE vs VALDOZA\n💥 CARLOS vs NOA\nFinal Boss vs Semi\n",
+   "rondas": [
+    [
+     "CUARTOS",
+     [
+      [
+       "C4",
+       "D4"
+      ],
+      [
+       "tnr :Espana:",
+       "Six"
+      ],
+      [
+       "C4:Espana:",
+       "D1"
+      ],
+      [
+       "T3 :Espana:",
+       "G8"
+      ],
+      [
+       "PANCHOK 🇨🇱",
+       "DAMIAN 🇵🇪"
+      ],
+      [
+       "🏴‍☠️ SYEPORUTE",
+       "VALDOZA"
+      ],
+      [
+       "💥 CARLOS",
+       "NOA"
+      ],
+      [
+       "Final Boss",
+       "Semi"
+      ]
+     ]
+    ]
+   ]
   }
  ],
  "veredictos": [

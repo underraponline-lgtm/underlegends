@@ -156,6 +156,22 @@ INVENTADOS = [
      "[OCTAVOS]\n[A] ⚔️ [B]\n[C] × [D]\n[FINAL]\n[A] vs [C]"),
     ("… y lo que NO es un vs: el `X1` de FFA después del último lado",
      "**[•OCTAVOS DE FINAL•]**\n▪️   [SEBITA] 🆚 [MALVA] 🆚 [CRONOX] X1\n▪️   [VANDU] 🆚 [RUVIK]"),
+    # 🔑 la etiqueta de la ronda con un emoji delante, o en sigla: dos llaves de verdad (ver `escuchar.ETIQUETA_CRUCE`)
+    ("19 CUP FUTCARD VOL.3 (DDF, 21/10/2026): el emoji y «Batalla N:» / «Semi N:» no son del nombre",
+     "🎤 19 CUP - FUTCARD EDITION VOL.3\n⚔️ CUARTOS DE FINAL\n🟢 Batalla 1: Carlos vs Drexx\n🟢 Batalla 2: Mco vs Miniboy\n"
+     "🟢 Batalla 3: Desio vs Dominick\n🟢 Batalla 4: GHV vs Martinez vs Xclusivo\n🔥 SEMIFINALES\n"
+     "🔴 Semi 1: CARLOS vs MINIBOY (SUPLENTE)\n🔴 Semi 2: DESIO vs MARTINEZ\n👑 GRAN FINAL\n💥 CARLOS  vs MARTINEZ (DEFAULT)\n"
+     "🏅 PODIO\n🥇 Campeón: CARLOS\n🥈 Subcampeón: MARTINEZ\n🥉 Tercer Lugar: K DESIO\n"),
+    ("19 CUP FUTCARD EDICIÓN 5 (DDF, 23/10/2026): el emoji y las siglas «C3:» y «SF2:» no son del nombre",
+     "🏆 19 CUP FUTCARD EDICIÓN 5 🎃\n⚔️ CUARTOS DE FINAL\n\n🔹 C1: Pichulamc 🇦🇷  vs  VR\n🔹 C2: UZI  vs  BOTRAX\n"
+     "🔹 C3: ISAC  vs  SHADOW\n🔹 C4: MAKMA vs  MARTINEZ\n\n🔥 SEMIFINALES\n\n💥 SF1: PICHULA vs  MINIBOY\n"
+     "💥 SF2: ISAC  vs  MAKMA\n\n💀 GRAN FINAL\n\n👑 PICHULA  vs  MAKMAH\n\n🥇 CAMPEÓN: PICHULA\n🥈 SUBCAMPEÓN: MAKMAH \n"),
+    ("… más etiquetas parecidas: en palabras, en negrita, con el número pegado y sin número",
+     "# CUARTOS\n⚔️ Cuartos de final 1: ANA vs BEA\n🏆 Cruce 2: CAMI vs DORA\n**🔹 C3: EVA** vs FLOR\n🔹 **C4:** GIA vs HANA\n"
+     "# SEMIFINALES\n🔥 Semifinales: ANA vs CAMI\n## 🔹 QF2: EVA vs GIA\n# FINAL\n> Gran Final: ANA vs EVA\n"),
+    ("… y lo que NO es una etiqueta: la sigla sin dos puntos, la bandera en shortcode, la bandera, 🆚 y un emoji solo",
+     "# CUARTOS\nC4 vs D4\ntnr :Espana: vs Six\nC4:Espana: vs D1\nT3 :Espana: vs G8\n🇨🇱 PANCHOK 🆚 DAMIAN 🇵🇪\n"
+     "🏴‍☠️ SYEPORUTE vs VALDOZA\n💥 CARLOS vs NOA\nFinal Boss vs Semi\n"),
 ]
 
 

@@ -62,7 +62,17 @@
   var PALABRA = /[\p{L}\p{N}_]/u;
   var SEP = /🆚|<a?:VSF?:\d+>|:vsf?:|\bvs\.?\b/i;
   // y «Ganado #» / «Ganador:» delante del primero (MORTAL KOMBAT MAPACHE CUP, DDF, 11/10/2026): `escuchar.ETIQUETA_CRUCE`
-  var ETIQUETA_CRUCE = /^\s*(?:[•·▸➢]\s*|-\s+)*(?:(?:cruce|semi\s*-?\s*final|cuartos?|octavos?|final|batalla|duelo|combate|llave|match)\s*#?\d*\s*:\s*)?(?:(?:ganad[oa]|ganador(?:a)?|gan[oó])\s*[#:]\s*)?(?:#\s+)?/i;
+  // y con un emoji delante o en sigla (`🟢 Batalla 2: Mco vs Miniboy`, `🔹 C3: ISAC vs SHADOW`, `💥 SF2: ISAC vs MAKMA`: 19 CUP
+  // FUTCARD, DDF, 21 y 23/10/2026). Nunca una bandera, 🆚 ni los marcos, que por eso van por rangos. Ver `escuchar.ETIQUETA_CRUCE`
+  var ETIQUETA_CRUCE = new RegExp('^\\s*(?:[•·▸➢]\\s*|-\\s+)*' +
+    '(?:(?:[\\u2190-\\u21FF\\u25A0-\\u25FF\\u2600-\\u2767\\u2776-\\u27BF\\u2B00-\\u2BFF\\uFE0F\\u200D' +
+    '\\u{1F000}-\\u{1F0FF}\\u{1F200}-\\u{1F3F2}\\u{1F3F5}-\\u{1FAFF}]\\s*|\\*\\*|__|~~|-?#{1,3}\\s+|>\\s*|\\*\\s+)*' +
+    '(?:(?:cruce|batalla|duelo|combate|llave|match|partid[oa]|enfrentamiento|game|ronda|round|pelea|' +
+    'dieciseisavos?|octavos?(?:\\s+de\\s+final)?|cuartos?(?:\\s+de\\s+final)?|' +
+    'semi\\s*-?\\s*final(?:es)?|semis?|(?:gran\\s+)?final(?:es)?)\\s*#?\\s*\\d*\\s*|[a-z]{1,3}[ -]?\\d{1,2})' +
+    '[:：](?![^\\s:：]+[:：])(?!\\s*(?:[\\u{1F1E6}-\\u{1F1FF}]{2}\\s*)?(?:vs\\b|🆚|<a?:vsf?:))' +
+    '\\s*(?:\\*\\*|__|~~)?\\s*)?' +
+    '(?:(?:ganad[oa]|ganador(?:a)?|gan[oó])\\s*[#:]\\s*)?(?:#\\s+)?', 'iu');
   var EQUIPO_NOMBRADO =/([\[⌞])[^\[\]⌞⌝()+&\n]*\s\(([^()\[\]⌞⌝\n]+?(?:\s+(?:y|e)\s+|\s*[+&]\s*)[^()\[\]⌞⌝\n]+?)\)\s*([\]⌝])/gi;
   var SEP_G = /🆚|<a?:VSF?:\d+>|:vsf?:|\bvs\.?\b/gi;
   // 🔴 SIN LOS MARCOS ADENTRO: con el hueco vacío de la plantilla (`⌞⌝ 🆚 ⌞⌝`)
