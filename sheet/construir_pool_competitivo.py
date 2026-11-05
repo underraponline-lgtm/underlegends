@@ -266,6 +266,8 @@ def hechos_tags(pool, D=None, temp=None):
             with open(os.path.join(RAIZ, 'datos', 'temporada_pool.json'), encoding='utf-8') as f:
                 temp = json.load(f)
         hc, hp = _HT.competitivo(pool, D), _HT.pais(pool, temp, D)
+        # 🌎 las stats de la carta de País (Dlx, 04/11/2026), que salen de lo mismo y hacen falta los puestos de arriba
+        nac = _HT.nacionales(pool, temp, D)
     except Exception as e:                               # noqa: BLE001
         print('   ⚠️ no pude calcular los hechos de los TAG (%s): salen con los de la fila' % str(e)[:80])
         return 0
@@ -273,11 +275,14 @@ def hechos_tags(pool, D=None, temp=None):
     for d in pool:
         d.pop('tg_c', None)
         d.pop('tg_p', None)
+        d.pop('nac', None)
         k = norm(d.get('raw'))
         if hc.get(k):
             d['tg_c'] = hc[k]
         if hp.get(k):
             d['tg_p'] = hp[k]
+        if k in nac:
+            d['nac'] = nac[k]
         n += bool(hc.get(k) or hp.get(k))
     print('   🏷️ hechos de los TAG: %d de %d con alguno' % (n, len(pool)))
     return n

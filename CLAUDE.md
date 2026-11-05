@@ -1826,7 +1826,7 @@ lo que Konan tiene.
 
 | llega a | piezas |
 |---|---|
-| **138** | nombre, rango, escudo del servidor, TAG, EVN, EVI, **país, bandera, OVR Nacional, SEG, TER** |
+| **138** | nombre, rango, escudo del servidor, TAG, **país, bandera, OVR Nacional** |
 | **137** | puesto en el rango |
 | 135 | puesto en el servidor |
 | 128 | puesto en el país |
@@ -1850,18 +1850,23 @@ dibuja como `—`, que es la respuesta
 honesta: **el agujero se ve en la carta en vez de esconderse detrás de un
 número plausible**, que es lo que hacía `DEMO_NAC`.
 
-⚠️ **EVN es 0 para las 138 y eso es correcto**, no un hueco: jugaste en cero
-eventos nacionales porque todavía no hubo ninguno.
-
-⚠️ **EVI es una decisión, no un dato crudo.** Es `ev` del pool de temporada,
-o sea *todos* tus eventos, porque hoy toda la competencia es de servidor —
-afuera de tu país—. El día que existan brackets nacionales hay que partirlo.
+🔴 **EVN Y EVI CAMBIARON EL 04/11/2026.** EVN eran los «eventos nacionales», que no
+existen hasta la T2, así que daba 0 en todas las cartas, y EVI eran todos tus
+eventos. Ahora son los eventos en los que te cruzaste con alguien de tu país y
+con alguien de otro, en un duelo o en un triple: 0 % de ceros en los dos.
 
 ⚠️ **El OVR Nacional ya está implementado y NO necesita credenciales.** Es N3
 de `docs/pais_hallazgos.md` —la media geométrica entre tu Score y el Score
 Selección de tu país—, y el Score Selección se lee de `datos/mundial.json`. Da
 un solo 99 (Konan), Am pasa de 99 a 70, y el orden dentro de cada país no
 cambia, así que la pastilla de `pos_pais` sigue diciendo la verdad.
+
+🧮 **Y lleva la confianza del Competitivo entera, desde el 04/11/2026.** Dlx:
+*«debería haber algo de confianza como lo que tiene competitivo para verificar
+algunos OVR»*. El Score ya la traía, pero las dos raíces de la fórmula la
+aplastaban: con 3 eventos es 0.44 y al número le llegaba 0.81, así que Catarsis
+tenía 86. Ahora tiene 65. Con 20 eventos o más no cambia nada. Ver
+`comun/nacional.py`.
 
 ⚠️ **La silueta mide 463 de alto pero la carta 402.** El `path()` trazado de
 `comun/siluetas.py` llega a 463; la carta usa el remate `recta`, que corta el
@@ -1877,10 +1882,22 @@ del pool, así que se recalibra solo cuando llegue la T1 —
 `docs/t1_que_se_mueve.md` lo explica.
 
 **Las seis stats se parten todas igual, nacional contra internacional**:
-`EVN·EVI` dónde jugaste, `SEG·TER` cómo te fue, `DNA·DIN` los duelos ganados
+`EVN·EVI` dónde jugaste, `COM·TOP` a quién venciste, `DNA·DIN` los duelos ganados
 sobre jugados contra cada tipo de rival. Que las seis usen **un solo corte** es
 lo que hace que el bloque se lea de una: la columna izquierda es lo tuyo dentro
-del país y la derecha afuera.
+del país y la derecha afuera. Las calcula `sheet/hechos_tags.nacionales()`.
+
+🔴 **`COM·TOP` REEMPLAZÓ A `SEG·TER` EL 04/11/2026**, porque los dos daban 0 en el
+37 % y el 76 % de las cartas (Dlx: *«los números que veo siempre son 99, o 0»*).
+`COM` son los compatriotas distintos que venciste. `TOP` es el mejor rival de
+otro país que venciste, con su puesto en su país y su bandera.
+
+⚠️ **`TOP` no son «países vencidos», y es a propósito.** Dlx: *«es mejor si tú vences
+al top #1 de Argentina, siendo el top #30 de Colombia… si países vencidos,
+eventualmente todos van a llegar a lo mismo»*. «El mejor» es el de OVR Nacional más
+alto, no el de puesto más bajo: el #1 de un país de 8 no vale lo que el #1 de
+Argentina. Es el puesto de hoy, así que se mueve cuando juega otro, y eso
+redibuja sólo a quien tiene la carta.
 
 ⚠️ **Los duelos estuvieron en dos chips a la derecha y volvieron al bloque.**
 La idea funcionaba —los chips son el lenguaje de la Competitiva— pero costaba
@@ -1897,7 +1914,8 @@ hicieron por motivos que conviene no repetir:
 
 - **WIN** repite el win rate de otra carta.
 - **POD entero** repite los primeros puestos, que el trofeo ya cuenta con su
-  `×N`. Por eso se parte en `SEG` y `TER`.
+  `×N`. Por eso se partió en `SEG` y `TER`, que salieron de la carta el 04/11/2026
+  (ver arriba). Los podios siguen en la de Temporada.
 - **EVT** se pisa con las fechas: si los eventos nacionales *son* las fechas,
   los dos casilleros dicen casi el mismo número.
 - **RIV** (rivales distintos) **se satura en 8 meses**: sólo 9 países tienen 3

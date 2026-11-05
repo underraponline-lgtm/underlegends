@@ -11,6 +11,17 @@
  ],
  "cambios": [
     {
+      "version": "4.33",
+      "dia": "2026-11-04",
+      "cuando": "2026-11-04T21:40:30-05:00",
+      "titulo": "Las tarjetas de liga y de País, con números que dicen más",
+      "items": [
+        "**Tarjeta de liga**: el OVR ahora va de 40 a 99. Ya no sale 99 por ir primero ni 0 por perder una batalla: cuenta cómo vas contra el líder y cómo te va por batalla, con tus puntos, tu PTB y a quién le ganaste. Ser MVP de una jornada y la racha suman, y para llegar arriba hacen falta varias batallas.",
+        "**Tarjeta de País**: cambian las stats. EVN y EVI ahora son los eventos en los que te cruzaste con alguien de tu país y con alguien de otro. COM son los compatriotas que venciste, y TOP tu mejor victoria contra otro país: el puesto de ese rival en su país y su bandera.",
+        "**OVR Nacional**: ahora pesa cuánto jugaste, con la misma confianza del Competitivo. Con pocos eventos baja, y con 20 o más no cambia."
+      ]
+    },
+    {
       "version": "4.32",
       "dia": "2026-11-04",
       "cuando": "2026-11-04T20:51:42-05:00",

@@ -98,6 +98,7 @@ sys.path.insert(0, SCR)
 
 from comun.siluetas import PAIS
 from comun import rangos as RG, nombre as NOM
+from comun import banderas as comun_banderas
 # ⚠️ SOLO POR EL GRIS. `bloqueada.TINTA` es el tono que se eligió para «está
 # antes de los ocho niveles»; importarlo en vez de copiar el hex es lo que
 # evita que dentro de un mes haya dos grises distintos que quieren decir lo
@@ -315,10 +316,10 @@ TROFEOS = [('nac', 'NACIONAL', 1), ('int', 'MUNDIAL', 0)]
 #   SUB  cuantos puestos subiste o bajaste        -> pide historial
 #   SEL  tu puesto en la seleccion de tu pais     -> pide las 9 selecciones
 DEMO_NAC = {
-    #          de   dif      mej sub   sel  pico   tmp  nac  podn seg ter dni     dna       din    evn evi
-    'KONAN': (33, '+18.0', 1, '0', 1, '91.1', 4, 0, 0, 4, 2, '6/3', '4/6', '2/3', 8, 3),
-    'VALEN': (33, '21.9', 2, '+1', 3, '71.4', 3, 0, 0, 8, 6, '12/7', '104/141', '65/87', 14, 6),
-    'KAIRO': (3, '11.4', 2, '+3', 2, '79.8', 3, 0, 0, 6, 9, '38/61', '38/61', '12/23', 11, 4),
+    #          de   dif      mej sub   sel  pico   tmp  nac  podn seg ter dni     dna       din    evn evi com  top
+    'KONAN': (33, '+18.0', 1, '0', 1, '91.1', 4, 0, 0, 4, 2, '6/3', '4/6', '2/3', 8, 3, 6, ('#2', 'cl')),
+    'VALEN': (33, '21.9', 2, '+1', 3, '71.4', 3, 0, 0, 8, 6, '12/7', '104/141', '65/87', 14, 6, 38, ('#1', 'ar')),
+    'KAIRO': (3, '11.4', 2, '+3', 2, '79.8', 3, 0, 0, 6, 9, '38/61', '38/61', '12/23', 11, 4, 12, ('#17', 'mx')),
 }
 
 # ⚠️ DOS GLOBALES QUE VALEN None Y NO SON UN OLVIDO. Son la unica puerta por
@@ -326,7 +327,7 @@ DEMO_NAC = {
 # parametros y lo usan once hojas comparativas. None = "estoy en una hoja, usa
 # lo de la maqueta"; puesto = "estoy dibujando a una persona".
 #
-#   NAC    {nombre: las 16 stats nacionales}   en vez de DEMO_NAC
+#   NAC    {nombre: las 18 stats nacionales}   en vez de DEMO_NAC
 #   FOTOS  [dataURI o None, por carta]         en vez de la rotacion de prueba
 NAC = None
 FOTOS = None
@@ -496,7 +497,12 @@ JUEGOS = {
     # O sea que el precio de los chips era inventar dos datos para tapar el
     # agujero que ellos mismos abrian. El codigo de los chips se queda —vive en
     # los juegos 'chips-*' y en --chips— pero la carta no los usa.
-    'final':  ['EVN', 'SEG', 'EVI', 'TER', 'DNA', 'DIN'],
+    #
+    # 🔴 DESDE EL 04/11/2026 LA FILA DEL MEDIO ES COM·TOP (Dlx): EVN era 0 en el
+    # 100 % de las cartas, TER en el 76 % y SEG en el 37 %. Ver
+    # `generar.stats_nacionales()`. El juego de antes es 'seg-ter'.
+    'final':  ['EVN', 'COM', 'EVI', 'TOP', 'DNA', 'DIN'],
+    'seg-ter': ['EVN', 'SEG', 'EVI', 'TER', 'DNA', 'DIN'],
     # ⚠️ CON LOS DUELOS EN LOS CHIPS, EL BLOQUE SE QUEDA CON CUATRO Y SOBRA UNA
     # FILA. Estas tres son que poner ahi, y no son variantes de lo mismo:
     #
@@ -517,7 +523,7 @@ SIGLA = {'PODN': 'POD', 'DNI': 'DUE'}
 # debajo. La fila de abajo cruza las dos columnas, asi que el divisor vertical
 # tiene que quedarse arriba — si cruzara entero, partiria en dos una fila que
 # justamente esta para leerse junta.
-PIE_2 = {'duelos2', 'duelos3', 'final', 'chips-pais', 'chips-mas'}
+PIE_2 = {'duelos2', 'duelos3', 'final', 'seg-ter', 'chips-pais', 'chips-mas'}
 # el nombre del pais no es un numero: va sin etiqueta y a lo ancho
 PIE_PAIS = {'chips-pais'}
 
@@ -1848,12 +1854,14 @@ def carta(i, LW, marco, tag_centro=True, acorta=0, remate='punta',
     # hojas comparativas necesitan numeros para poder MIRAR el bloque, y
     # generar.py necesita que no haya ninguno inventado. Un solo dict no puede
     # ser las dos cosas.
-    d = (NAC if NAC is not None else DEMO_NAC).get(nom, ('—',) * 16)
+    d = tuple((NAC if NAC is not None else DEMO_NAC).get(nom, ()))
+    d += ('—',) * (18 - len(d))   # quien pase menos (`bot/paises_nuevos.py`) dibuja «—» en las que no trae
     VAL = {'SEM': sem, 'EVT': evt, 'POD': pod, 'WIN': win, 'DUE': due,
            'FCH': fch, 'DE': d[0], 'DIF': d[1], 'MEJ': d[2], 'SUB': d[3],
            'SEL': d[4], 'PICO': d[5], 'TMP': d[6], 'NAC': d[7],
            'PODN': d[8], 'SEG': d[9], 'TER': d[10], 'DNI': d[11],
            'DNA': d[12], 'DIN': d[13], 'EVN': d[14], 'EVI': d[15],
+           'COM': d[16], 'TOP': d[17],
            'PAIS': pais.upper()}
     st = [(SIGLA.get(k, k), VAL[k]) for k in JUEGOS[stats]]
     m = len(st) // 2
@@ -1888,8 +1896,15 @@ def carta(i, LW, marco, tag_centro=True, acorta=0, remate='punta',
                       f'style="font-size:{_rem_chip(VAL["DIN"])}rem">'
                       f'{VAL["DIN"]}<u>FUERA</u></div></div>')
 
+    # 🏳️ TOP es un puesto y una bandera, `('#1', 'ar')`: el puesto mide el ancho y la bandera va pegada, del alto del número
+    def _top(v):
+        return f'{v[0]}<img class="st-ban" src="{comun_banderas.src(v[1])}" alt="">' if isinstance(v, tuple) else v
+
+    def _mide(v):
+        return v[0] + 'MM' if isinstance(v, tuple) else v
+
     fila = (lambda k, v, col=COL_NUM: f'<div class="st">'
-            f'<b style="font-size:{_rem_st(v, col)}rem">{v}</b>'
+            f'<b style="font-size:{_rem_st(_mide(v), col)}rem">{_top(v)}</b>'
             f'<i>{k}</i></div>')
     if stats in PIE_2:
         # los cuatro de arriba en 2x2, y lo que sobre —uno o dos— abajo
@@ -2466,6 +2481,9 @@ body{{margin:0;background:#0B0B12;padding:26px;font-family:Archivo,'LigaEmoji',s
 .st i{{font-size:.56rem;font-weight:800;letter-spacing:1.1px;font-style:normal;
   opacity:.78;text-align:left;
   text-shadow:0 1px 3px rgba(0,0,0,.85)}}
+/* 🏳️ la bandera del TOP: del alto de las cifras y sobre su misma línea, con filo oscuro porque hay banderas blancas */
+.st-ban{{height:.74em;width:auto;margin-left:3px;vertical-align:baseline;
+  border-radius:1px;box-shadow:0 0 0 1px rgba(0,0,0,.55)}}
 
 /* ── el TAG, DEBAJO DEL NOMBRE ──
    ⚠️ Dlx: "el tag debe estar bajo del nombre". Y ahi no hace falta cambiar la

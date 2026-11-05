@@ -2,7 +2,7 @@
 """🏟️ LA CARTA DE LIGA (la quinta): el afiche pegado de cada uno en cada liga que juega.
 
 Dlx la diseñó en la maqueta del 26/10/2026 (artifact CLDPA3E94eRzjRybpwwywB, v14) y la cerró: OVR de liga 60/40 (puntos de
-la tabla y PTB por batalla), los TAG LÍDER DE LA LIGA · INVICTO · RACHA DE N · MÁS PTB, el rango competitivo en la franja,
+la tabla y PTB por batalla; desde el 04/11/2026 de 40 a 99, ver `ovr_liga()`), los TAG LÍDER DE LA LIGA · INVICTO · RACHA DE N · MÁS PTB, el rango competitivo en la franja,
 y el marco del Pase «el afiche pegado» (ése vive en la web, `web/src/marcos.jsx`). La tiene TODO el que juega la liga, sin
 pedir verificación (Dlx, 26/10/2026), y sólo la ve su dueño en su cuenta.
 
@@ -203,39 +203,118 @@ def ptb_liga(lid):
     return acc
 
 
+#: 🎚️ EL OVR DE LIGA: de 40 a 99, la misma escala que el de Temporada y el Nacional
+PISO_LIGA, ALTO_LIGA = 40, 60
+#: las batallas «de relleno» del promedio: valen 1.5 puntos, a mitad de camino entre ganar y perder
+RELLENO = 3
+#: 🧮 LA CONFIANZA: 0.70 con una batalla, y sube derecho hasta 1.00 a las 8 (una temporada de liga son 9 a 14)
+CONF_LIGA, CONF_LIGA_LLENA = .70, 8
+#: lo que suma cada MVP y cada batalla de racha después de la primera, y hasta cuánto (sobre 1)
+MVP_VALE, MVP_TOPE = .03, .09
+RACHA_VALE, RACHA_TOPE = .01, .04
+#: cuánto pesa a quién le ganaste, y cuánto vale cada letra. Sin letra es el medio: no se sabe, no es malo
+RIVAL = .25
+NIVEL_LETRA = {'SSS': 1, 'SS': .9, 'S': .8, 'A': .65, 'B': .5, 'C': .4, 'D': .3, 'E': .2}
+
+
+def nivel_rival(n):
+    """Lo que vale esa persona como rival, de 0 a 1, por su letra del Competitivo. Por la letra y no por su Score: cambia
+    poco, así que una carta no se redibuja cada vez que el rival juega un evento afuera de la liga."""
+    tipo, v = rango_de(n)
+    return NIVEL_LETRA.get(str(v).rstrip('+-−'), .5) if tipo == 'letra' else .5
+
+
+def mvps_liga(lid):
+    """🏅 `{nombre: fechas en las que fue MVP}`. El MVP es el de más PTB de la fecha (la regla de las FMH): lo mismo que
+    `numerosDe()` de web/src/ligas.jsx, así la carta y la página dicen lo mismo. Sin los 🎮 invitados y sin un PTB de más del
+    doble de la mediana de la liga: es otra escala (un veredicto que publicó la suma de los jurados). Sin PTB, no hay MVP."""
+    fechas = [f for f, _p in G2.carrera(lid)]
+    todos = sorted(v for f in fechas for b in f['b'] for v in b[4:6] if isinstance(v, (int, float)) and v > 0)
+    tope = 2 * todos[len(todos) // 2] if todos else 0
+    out = {}
+    for f in fechas:
+        m = None
+        for b in f['b']:
+            if not b[2] or len(b) < 6:
+                continue
+            ex = (b[8] if len(b) > 8 else '') or ''
+            for x, v, lado in ((b[0], b[4], 'a'), (b[1], b[5], 'b')):
+                if lado not in ex and isinstance(v, (int, float)) and 0 < v <= tope and (not m or v > m[1]):
+                    m = (x, v)
+        if m:
+            out[m[0]] = out.get(m[0], 0) + 1
+    return out
+
+
 def ovr_liga(lid):
-    """🎯 EL OVR DE LIGA, de 0 a 99 (Dlx: «entre más PTB y buenos resultados, más arriba»). Dos partes, las dos
-    comparadas con lo mejor de SU liga:
-      · 60 % los PUNTOS de la tabla ÷ los del líder. Ya dicen cómo te fue: directa 3, réplica ganada 2, réplica perdida 1.
-      · 40 % el PTB: cada batalla se mide contra el promedio de SU jornada (1.10 = 10 % más que el promedio de esa
-        fecha), se promedia, y se divide por el mejor de la liga. Contra la jornada y no crudo, porque hay ligas que
-        puntúan en escalas distintas según la fecha (FMH Tricolor: 96 a 87 una jornada, 28 a 21.5 otra).
-    Promedio y no suma: con la suma, ir a réplica daba más PTB que ganar directo (CrisZJ, 3.º de FMS Perú con 14
-    batallas, le ganaba al líder). El promedio lleva tres batallas «de relleno» en el promedio, para que una sola batalla
-    buena no deje a nadie arriba de todos. Una liga sin PTB cargado usa sólo los puntos.
-    Devuelve {nombre: (ovr, ptb_promedio_crudo)} — el crudo es el que se muestra en la carta."""
-    acc, nb, rel = {}, {}, {}
+    """🎯 EL OVR DE LIGA, de 40 a 99. Devuelve {nombre: (ovr, ptb_promedio_crudo)}; el crudo es el que se muestra en la carta.
+
+    🔴 HASTA EL 04/11/2026 IBA DE 0 A 99 Y SE DIVIDÍA POR EL LÍDER (Dlx: «los números que veo siempre son 99, o 0»). Sobre
+    197 filas: 17 en 99, 7 de ellas con 3 batallas o menos, y 21 en 0, todas en las 6 ligas sin PTB. Quien iba primero sacaba
+    99 con dos batallas, y quien perdía su única batalla, 0. Dlx eligió: la mitad contra el líder y la mitad por batalla
+    («Opción A pero agrégale más cosas también como MVP, réplicas si hubo o no»), con confianza «como lo que tiene
+    competitivo». Sobre las mismas filas: ningún 0, dos 99, de 46 a 99, y la tabla no queda al revés en ningún par con 3 puntos
+    o más de diferencia. Se probó también arrancar en 70 y moverse con cada batalla: dos personas con 4-5 en FZ League daban 54
+    y 73, y en el 10 % de esos pares la tabla quedaba al revés.
+
+        OVR = 40 + 60 × confianza × (½ contra el líder + ½ por batalla + MVP + racha)
+
+      · CONTRA EL LÍDER: los puntos ÷ los del líder (60 %) y el PTB ÷ el mejor de la liga (40 %), lo de siempre.
+      · POR BATALLA, sin compararse con nadie: los puntos por batalla (60 %) y el PTB contra su jornada (40 %), con 1.0 =
+        el promedio y de .75 a 1.25 como todo el tramo. LAS RÉPLICAS ENTRAN ACÁ Y ARRIBA: directa 3, réplica ganada 2, réplica
+        perdida 1. Y A QUIÉN LE GANASTE: una victoria vale hasta un `RIVAL` más o menos según la letra del rival, y perder
+        contra alguien fuerte duele menos.
+      · MVP Y RACHA: suman arriba de todo, con tope. Son lo que separa a dos personas con la misma marca.
+      · LA CONFIANZA: se come el tramo de arriba y deja el piso quieto. Dos victorias dan 78 y no 99, y perder la única da 48.
+
+    Contra la jornada y no crudo, porque hay ligas que puntúan en escalas distintas según la fecha (FMH Tricolor: 96 a 87 una
+    jornada, 28 a 21.5 otra). Promedio y no suma: con la suma, ir a réplica daba más PTB que ganar directo (CrisZJ, 3.º de FMS
+    Perú con 14 batallas, le ganaba al líder). Una liga sin PTB cargado usa sólo los puntos, y ahí no hay MVP: quedan más
+    números repetidos (48 % de la gente, contra 71 % de antes)."""
+    acc, nb, rel, vale = {}, {}, {}, {}
+    tabla = G.POR[lid]['tabla']
+    nombres = {f[0] for f in tabla}
     for f, _p in G2.carrera(lid):
         bs = [b for b in f['b'] if len(b) > 5 and isinstance(b[4], (int, float)) and isinstance(b[5], (int, float)) and b[4] + b[5] > 0]
-        if not bs:
-            continue
-        media = sum(b[4] + b[5] for b in bs) / (2 * len(bs))
+        media = sum(b[4] + b[5] for b in bs) / (2 * len(bs)) if bs else 0
         for b in bs:
             for x, me in ((b[0], b[4]), (b[1], b[5])):
                 acc[x] = acc.get(x, 0) + me
                 nb[x] = nb.get(x, 0) + 1
                 rel[x] = rel.get(x, 0) + me / media
-    tabla = G.POR[lid]['tabla']
+        for b in f['b']:
+            if not b[2] or b[0] not in nombres or b[1] not in nombres:   # sin los invitados, como la tabla
+                continue
+            for x, y in ((b[0], b[1]), (b[1], b[0])):
+                gano = b[2] == x
+                pts = ((2 if b[3] == 'replica' else 3) if gano else (1 if b[3] == 'replica' else 0))
+                lv = nivel_rival(y)
+                vale[x] = vale.get(x, 0) + pts * (1 + RIVAL * (lv - .5) * 2) + (0 if gano else RIVAL * lv)
     lider = max(f[3] for f in tabla) or 1
-    if not acc:   # una liga sin PTB cargado (LKR Champions, FZ League): el OVR sale sólo de los puntos, y el PTB dice «—»
-        return {n: (min(99, round(99 * pts / lider)), 0) for n, pj, g, pts in tabla}
-    K = 3
-    suave = {n: (rel[n] + K * 1.0) / (nb[n] + K) for n in rel}
-    mejor = max(suave.values())
+    suave = {n: (rel[n] + RELLENO * 1.0) / (nb[n] + RELLENO) for n in rel}
+    mejor = max(suave.values()) if suave else 1
+    mvp = mvps_liga(lid)
     out = {}
     for n, pj, g, pts in tabla:
-        a = suave.get(n, 1.0)
-        out[n] = (max(0, min(99, round(99 * (.6 * pts / lider + .4 * a / mejor)))), acc.get(n, 0) / nb[n] if nb.get(n) else 0)
+        # 🚫 sin batallas no hay número: queda en 0 para ordenar, y la carta dibuja el hueco (`carta()`)
+        if not pj:
+            out[n] = (0, 0)
+            continue
+        por = min(1, (vale.get(n, 0) + RELLENO * 1.5) / (pj + RELLENO) / 3)
+        contra = pts / lider
+        if suave:   # una liga sin PTB cargado (LKR, FZ League): sólo los puntos, y el PTB dice «—»
+            a = suave.get(n, 1.0)
+            contra = .6 * contra + .4 * a / mejor
+            por = .6 * por + .4 * max(0, min(1, (a - .75) / .5))
+        racha = 0
+        for x in reversed(G.forma(lid, n, 30)):
+            if x != 'g':
+                break
+            racha += 1
+        extra = min(MVP_TOPE, MVP_VALE * mvp.get(n, 0)) + min(RACHA_TOPE, RACHA_VALE * max(0, racha - 1))
+        conf = min(1, CONF_LIGA + (1 - CONF_LIGA) * (pj - 1) / (CONF_LIGA_LLENA - 1))
+        out[n] = (min(99, round(PISO_LIGA + ALTO_LIGA * conf * min(1, .5 * contra + .5 * por + extra))),
+                  acc.get(n, 0) / nb[n] if nb.get(n) else 0)
     return out
 
 
@@ -358,8 +437,8 @@ def carta(lid, i, s=1.0, est='eA'):
     nivel = '' if dueno else 'n1' if i == 0 else 'pod' if i < 3 else ''
     ptb = ptb_liga(lid)
     v = ptb.get(n, 0)
-    ovr, prom = ('', 0) if dueno else ovr_liga(lid).get(n, (0, 0))
-    ptb_txt = 'SIN BATALLAS' if dueno else ('%.1f PTB' % prom) if prom else ''   # una liga sin PTB cargado dice sólo «OVR»
+    ovr, prom = ('', 0) if dueno or not pj else ovr_liga(lid).get(n, (0, 0))
+    ptb_txt = 'SIN BATALLAS' if dueno or not pj else ('%.1f PTB' % prom) if prom else ''   # una liga sin PTB cargado dice sólo «OVR»
     tag = ('DE LA LIGA', 't4', '🏆') if dueno else tag_de(lid, i, n, pj, g, d, ptb)
     fsz, sx = nombre_css(n)
     seed = sum(map(ord, n)) + i

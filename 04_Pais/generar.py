@@ -126,35 +126,32 @@ SIN = '—'
 def stats_nacionales(c, t):
     """Las seis del bloque, con lo que hay. Lo que no hay va en `—`.
 
-    ⚠️ **CUATRO DE LAS SEIS NO TIENEN FUENTE HOY**, y no es un descuido del
-    pipeline: es que la competencia que las genera no existe. La Fecha FIFA y
-    la Copa de Naciones arrancan en T2.
+    🔴 **DESDE EL 04/11/2026 SON EVN·EVI, COM·TOP y DNA·DIN.** Dlx: *«los números
+    que veo siempre son 99, o 0»*. Medido sobre las 67 que tienen la carta: EVN
+    daba 0 en el 100 % —los eventos nacionales no existen hasta la T2—, TER en
+    el 76 % y SEG en el 37 %. Las cuatro nuevas las calcula
+    `sheet/hechos_tags.nacionales()`, y una fila sin `nac` dibuja `—`: eso es
+    tu carta si no jugaste, y un pool de antes de esto.
 
-    EVN · eventos nacionales
-        **Cero para las 138.** No hay ninguna competencia de país todavía, así
-        que el cero es correcto y no un hueco: jugaste en cero eventos
-        nacionales porque no hubo ninguno.
+    EVN · EVI · eventos con alguien de tu país · con alguien de otro
+        En un duelo o en un triple, lo mismo que pide el requisito. 0 % de
+        ceros en los dos. No tienen por qué sumar tus eventos: en uno solo
+        te puedes cruzar con los dos.
 
-    EVI · eventos internacionales
-        `ev` del pool de temporada. ⚠️ **Es una decisión, no un dato crudo**:
-        hoy TODA la competencia es de servidor, o sea afuera de tu país, así
-        que los eventos que jugaste son todos internacionales. El día que haya
-        brackets nacionales este número deja de ser `ev` y hay que partirlo.
+    COM · compatriotas distintos a los que venciste
+        Dlx eligió éste, y el 34 % en 0 es un dato: no le ganaste a nadie de
+        tu país todavía.
 
-    SEG · TER · segundos y terceros puestos
-        ✅ **SÍ EXISTEN, y esto decía que no.** Medido el 20/09/2026: el Sheet
-        tiene las columnas `🥈` y `🥉` con **131 y 83 personas con valor**, y
-        `construir_pool_temporada.py` **ya las leía** — para sumarlas en `pod`
-        y descartar el desglose una línea después.
+    TOP · el mejor rival de otro país que venciste: su puesto y su bandera
+        Va en vez de «países vencidos». Dlx: *«es mejor si tú vences al top
+        #1 de Argentina, siendo el top #30 de Colombia… si países vencidos,
+        eventualmente todos van a llegar a lo mismo»*. Tu puesto ya está en la
+        pastilla de la bandera, así que la carta dice las dos cosas. Sin
+        ninguno, `—`: acá no hay número que poner.
 
-        O sea que el dato estaba en el Sheet, entraba al pipeline y se tiraba
-        adentro del mismo bucle. La versión anterior de este párrafo razonaba
-        bien sobre una premisa falsa: *«el pool trae `oro` y `pod` y nada
-        más»*. Traía eso porque el builder guardaba eso.
-
-        ⚠️ Un `0` acá **es una respuesta**, no un hueco: significa que esa
-        persona no tiene segundos puestos. El `—` se reserva para cuando el
-        pool es viejo y no trae el campo.
+    ⚠️ SEG y TER salen de la carta, no de los pools. Los podios siguen en la de
+    Temporada. Si vuelven, el `0` es una respuesta y el `—` es «no sé», y el
+    juego viejo sigue en `JUEGOS['seg-ter']`.
 
     DNA · DIN · duelos ganados contra compatriota / contra extranjero
         ✅ **YA EXISTEN, desde el 22/09/2026, y esto decía que no.** Decía
@@ -191,8 +188,13 @@ def stats_nacionales(c, t):
                 if tt in c else SIN)
 
     dna, din = _par('dna_v', 'dna_t'), _par('din_v', 'din_t')
-    return (SIN,) * 9 + (seg, ter, SIN, dna, din, 0, t['ev'])
-    #      0..8          seg  ter  dni  dna  din  evn  evi
+    # 🌎 `nac` lo deja el builder. Sin `nac`, «no sé»: las cuatro en `—`
+    nac = c.get('nac')
+    evn, evi, com = (nac['evn'], nac['evi'], nac['com']) if nac else (SIN, SIN, SIN)
+    top = nac.get('top') if nac else None
+    return (SIN,) * 9 + (seg, ter, SIN, dna, din, evn, evi, com,
+                         ('#%d' % top[0], top[1]) if top else SIN)
+    #      0..8          seg  ter  dni  dna  din  evn  evi  com  top
 
 
 # ══ EL PUESTO DENTRO DEL RANGO ══
@@ -585,10 +587,10 @@ def auditar(gente):
         ('el puesto en el rango',  cuenta(lambda p: p['pos_rg'])),
         ('el puesto en el sv',     cuenta(lambda p: p['pos_sv'])),
         ('el TAG',                 n),
-        ('EVN · eventos nac.',     n),
-        ('EVI · eventos int.',     cuenta(lambda p: p['stats'][15] != SIN)),
-        ('SEG · segundos',         cuenta(lambda p: p['stats'][9] != SIN)),
-        ('TER · terceros',         cuenta(lambda p: p['stats'][10] != SIN)),
+        ('EVN · con tu país',      cuenta(lambda p: p['stats'][14] != SIN)),
+        ('EVI · con otros',        cuenta(lambda p: p['stats'][15] != SIN)),
+        ('COM · compatriotas',     cuenta(lambda p: p['stats'][16] != SIN)),
+        ('TOP · el mejor vencido', cuenta(lambda p: p['stats'][17] != SIN)),
         ('DNA · duelos nac.',      cuenta(lambda p: p['stats'][12] != SIN)),
         ('DIN · duelos int.',      cuenta(lambda p: p['stats'][13] != SIN)),
         ('el trofeo nacional',     cuenta(lambda p: p['tro_nac'])),
@@ -631,14 +633,8 @@ def auditar(gente):
                      and p['cc'] not in banderas})
     if faltan:
         print('  paises sin bandera en disco:', ', '.join(faltan))
-    print('\n  ✅ SEG y TER se llenaron el 20/09/2026. Estaban en el Sheet')
-    print('     (columnas 🥈 y 🥉) y el builder las leía para sumarlas en')
-    print('     `pod` y tirar el desglose una línea después.')
-    print('\n  ⚠️ DNA, DIN y los dos trofeos siguen en cero, y NO es un bug')
-    print('     del pipeline: los duelos no guardan de qué país era el rival,')
-    print('     y la Copa de Naciones arranca en T2. Ver stats_nacionales().')
-    print('\n  ⚠️ EVN en 0 para las 138 también es correcto: jugaste en cero')
-    print('     eventos nacionales porque todavía no hubo ninguno.')
+    print('\n  ⚠️ Los dos trofeos siguen en cero, y NO es un bug del pipeline:')
+    print('     la Copa de Naciones arranca en T2. Ver stats_nacionales().')
 
 
 # ══ UNA POR PAIS ══

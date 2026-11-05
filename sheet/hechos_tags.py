@@ -448,6 +448,91 @@ def pais(filas_c, filas_t=None, D=None):
     return out
 
 
+def _triples(L, alias=None):
+    """`[(evento, [claves de los lados], clave del ganador)]`: las batallas de tres lados o más, sin equipos y con ganador.
+    La misma regla de `construir_pool_competitivo.cruces_triples()`: un triple no es un duelo, pero te cruzaste con los otros
+    dos y, si ganaste, les ganaste (Dlx, 21/10/2026, por Kravitz: «debería contar, pero no para # de duelos»)."""
+    from equipos import es_equipo
+    alias = alias or {}
+
+    def _k(x):
+        return K(alias.get(K(x), x))
+
+    out = []
+    for n, e in (L or {}).items():
+        for R in (e.get('rondas') or []) if isinstance(e, dict) else []:
+            for b in (R.get('b') if isinstance(R, dict) else None) or []:
+                lados = b[0] if b and isinstance(b[0], list) else []
+                if len(lados) >= 3 and len(b) >= 2 and str(b[1] or '').strip() and not any(es_equipo(x) for x in lados):
+                    out.append((str(n), [_k(x) for x in lados], _k(b[1])))
+    return out
+
+
+def nacionales(filas_c, filas_t=None, D=None):
+    """🌎 `{clave: {evn, evi, com, top}}`: cuatro de las seis stats de la carta de País (Dlx, 04/11/2026).
+
+    `evn` · `evi`  eventos en los que te cruzaste con alguien de tu país · de otro, en un duelo o en un triple. Antes EVN
+                   eran los «eventos nacionales», que no existen hasta la T2: daba 0 en el 100 % de las cartas.
+    `com`          compatriotas distintos a los que venciste.
+    `top`          `[puesto, país]` del mejor rival de otro país que venciste, si lo hay. Dlx, a «países vencidos»: *«es
+                   mejor si tú vences al top #1 de Argentina, siendo el top #30 de Colombia… si países vencidos, eventualmente
+                   todos van a llegar a lo mismo»*.
+
+    «El mejor» es el de OVR Nacional más alto, no el de puesto más bajo: el #1 de un país de 8 personas no vale lo mismo que el
+    #1 de Argentina, y ese número ya mide las dos cosas. Sólo entra quien tiene puesto en su país (3 personas o más, la regla de
+    los puestos).
+
+    ⚠️ `top` ES EL PUESTO DE HOY, ASÍ QUE SE MUEVE CUANDO JUEGA OTRO, y es la excepción a «lo que se mueve con lo que hacen otros
+    va como sí/no» del encabezado: lo que se guarda es sólo lo que se ve, y sólo cambia para quien tiene esa carta (67 hoy,
+    contra medio pool).
+
+    ⚠️ VA EN `nac` Y NO EN `tg_p`, y con los ceros adentro: `tg_p` borra los ceros, y acá «no venciste a nadie» es un dato. Una
+    fila sin `nac` es una fila de la que no se sabe (la carta dibuja «—»)."""
+    D = D or cargar()
+    filas_t = filas_t if filas_t is not None else (_j('temporada_pool.json', []) or [])
+    cc = _cc_de(filas_c, filas_t)
+    from comun.nacional import tabla
+    ovr = tabla(filas_c, None)
+    fuerza, puesto = {}, {}
+    for c in filas_c:
+        k = K(c.get('raw'))
+        fuerza[k] = ovr.get(c.get('raw'))
+        p = str(c.get('pos_pais') or '')
+        if '/' in p:
+            puesto[k] = int(p.split('/')[0])
+    alias = (_j('akas.json', {}) or {}).get('alias') or {}
+    alias = {K(a): v for a, v in alias.items()}
+    # {clave: (eventos con tu país, eventos con otros, a quién venciste)}
+    ev_n, ev_i, venc = collections.defaultdict(set), collections.defaultdict(set), collections.defaultdict(set)
+
+    def _cruce(a, b, n, gano):
+        pa, pb = cc.get(a), cc.get(b)
+        if pa and pb:
+            (ev_n if pa == pb else ev_i)[a].add(str(n))
+        if gano:
+            venc[a].add(b)
+
+    for a, filas in duelos(D['rivales']).items():
+        for _t, n, b, gano in filas:
+            _cruce(a, b, n, gano)
+    for n, lados, gana in _triples(D['llaves'], alias):
+        for a in lados:
+            for b in lados:
+                if a != b:
+                    _cruce(a, b, n, a == gana)
+    out = {}
+    for c in filas_c:
+        k = K(c.get('raw'))
+        yo = cc.get(k)
+        fuera = [b for b in venc[k] if cc.get(b) and cc[b] != yo and puesto.get(b) and fuerza.get(b) is not None]
+        mejor = max(fuera, key=lambda b: (fuerza[b], -puesto[b], b)) if fuera else None
+        fila = {'evn': len(ev_n[k]), 'evi': len(ev_i[k]), 'com': sum(1 for b in venc[k] if yo and cc.get(b) == yo)}
+        if mejor:
+            fila['top'] = [puesto[mejor], cc[mejor]]
+        out[k] = fila
+    return out
+
+
 # ══ SERVIDOR ════════════════════════════════════════════════════════════════
 
 def duenos(filas_c):
@@ -648,6 +733,26 @@ def _self_check():
        'países vencidos: Beto le ganó a un argentino y a una chilena (2), Ana sólo a argentinos (1)')
     ok(p['ana'].get('paises') == 1 and p['beto'].get('paises') == 2,
        'países enfrentados: Ana sólo argentinos (1), Beto argentina y chileno (2)')
+    # 🌎 las stats de la de País: con su propio elenco, porque hacen falta los puestos y el OVR Nacional
+    Cn = [{'raw': 'Uno', 'cc': 'ar', 'score': 90, 'conf': 1.0, 'pos_pais': '1/40'},
+          {'raw': 'Dos', 'cc': 'ar', 'score': 50, 'conf': 1.0, 'pos_pais': '2/40'},
+          {'raw': 'Tres', 'cc': 'co', 'score': 30, 'conf': 1.0, 'pos_pais': '30/40'},
+          {'raw': 'Chico', 'cc': 'gt', 'score': 80, 'conf': 1.0, 'pos_pais': '1/3'},
+          {'raw': 'Solo', 'cc': 'bo', 'score': 95, 'conf': 1.0, 'pos_pais': ''},
+          {'raw': 'Mudo', 'cc': 'co', 'score': 20, 'conf': 1.0, 'pos_pais': '31/40'}]
+    Rn = [[50, 't1', 'Tres', 'Uno', 'Tres', 'prueba'], [50, 't2', 'Tres', 'Chico', 'Tres', 'prueba'],
+          [51, 't3', 'Tres', 'Solo', 'Tres', 'prueba'], [51, 't4', 'Uno', 'Dos', 'Uno', 'prueba'],
+          [52, 't5', 'Tres', 'Mudo', 'Mudo', 'prueba']]
+    Ln = {'60': {'rondas': [{'b': [[['Dos', 'Tres', 'Uno'], 'Dos']]}]}}
+    n = nacionales(Cn, [], {'rivales': Rn, 'llaves': Ln})
+    ok(n['tres']['top'] == [1, 'ar'], 'el mejor rival vencido es el #1 de Argentina y no el #1 de un país chico, ni el que no tiene puesto')
+    ok(n['dos']['top'] == [30, 'co'] and n['uno'].get('top') is None,
+       'un triple ganado también vence: Dos al #30 de Colombia; Uno sólo le ganó a su compatriota')
+    ok(n['uno']['com'] == 1 and n['dos']['com'] == 1 and n['tres']['com'] == 0, 'compatriotas vencidos: Uno a Dos, Dos a Uno en el triple')
+    ok(n['tres']['com'] == 0 and n['mudo']['com'] == 1, 'Mudo le ganó a su compatriota Tres')
+    ok(n['uno']['evn'] == 2 and n['uno']['evi'] == 2, 'Uno: su país en el #51 y en el triple; afuera en el #50 y en el triple')
+    ok(n['tres']['evn'] == 1 and n['tres']['evi'] == 3, 'Tres: su país en el #52; afuera en los #50 y #51 y en el triple')
+    ok(n['mudo'] == {'evn': 1, 'evi': 0, 'com': 1}, 'quien no venció a nadie de afuera no lleva `top`, y los ceros se quedan')
     ps = {'Ana': {'FFA': {'ev': 3}, 'SR': {'ev': 1}}, 'Beto': {'FFA': {'ev': 2}}, 'Eva': {'FFA': {'ev': 2}},
           'Dan': {'FFA': {'ev': 1}}}
     s = servidor(ps, C, D, hoy='2026-10-14')

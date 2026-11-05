@@ -53,8 +53,19 @@ BASE = os.path.dirname(SCR)
 PISO, ALTO = 40, 59
 
 
-def ovr_nacional(score, score_pais, mejor_score, mejor_pais):
+#: 🧮 cuánto de la confianza falta que llegue. El Score ya la trae, pero la fórmula le saca dos raíces, o sea que pasa elevada
+#: a ¼. Con esto llega entera: ¼ + ¾ = 1
+CONF_FALTA = .75
+
+
+def ovr_nacional(score, score_pais, mejor_score, mejor_pais, conf=1.0):
     """El OVR Nacional de una persona, redondeado. `None` si no se puede.
+
+    🧮 LA CONFIANZA DEL COMPETITIVO, DESDE EL 04/11/2026 (Dlx: «debería haber algo de confianza como lo que tiene
+    competitivo para verificar algunos OVR»). El Score ya venía multiplicado por ella, pero las dos raíces la aplastaban:
+    con 3 eventos es 0.44 y a este número le llegaba 0.81, así que Catarsis tenía 86 con 3 eventos. `conf` es la misma de
+    la fila (`d['conf']`): con 20 eventos o más no cambia nada, y con 3 Catarsis queda en 65. Baja el tramo de arriba y
+    deja el piso quieto, como la de la carta de liga. Sobre las 67 que tienen la carta: de 65-99 pasa a 52-99.
 
     🔴 SIN UN MEJOR CONTRA QUIEN NORMALIZAR NO HAY NUMERO, y esto tiraba
     `ZeroDivisionError`. El OVR Nacional es la media geometrica entre tu
@@ -76,7 +87,8 @@ def ovr_nacional(score, score_pais, mejor_score, mejor_pais):
             return None
         g = math.sqrt(score * score_pais)
         return round(PISO
-                     + math.sqrt(g / math.sqrt(mejor_score * mejor_pais)) * ALTO)
+                     + math.sqrt(g / math.sqrt(mejor_score * mejor_pais))
+                     * float(conf) ** CONF_FALTA * ALTO)
     except (TypeError, ValueError, ZeroDivisionError):
         return None
 
@@ -128,7 +140,8 @@ def tabla(comp, mundial):
     out = {}
     for c in comp:
         sp = sel.get(c.get('cc'))
-        out[c['raw']] = (ovr_nacional(c['score'], sp, mejor_score, mejor_pais)
+        out[c['raw']] = (ovr_nacional(c['score'], sp, mejor_score, mejor_pais,
+                                      c.get('conf') or 1.0)
                          if sp else None)
     return out
 

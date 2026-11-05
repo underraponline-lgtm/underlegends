@@ -24,6 +24,9 @@
    "arc_pais": [
     "opcional"
    ],
+   "arc_sv": [
+    "opcional"
+   ],
    "av": [
     "opcional"
    ],
@@ -48,8 +51,12 @@
    "pos_pais": [
     "opcional"
    ],
+   "pos_sv": [
+    "opcional"
+   ],
    "raw": [
-    "dura"
+    "dura",
+    "opcional"
    ],
    "rch_act": [
     "dura"
@@ -59,6 +66,9 @@
    ],
    "score": [
     "dura"
+   ],
+   "sinjugar": [
+    "opcional"
    ],
    "sv": [
     "opcional"
@@ -79,6 +89,9 @@
    ],
    "cc": [
     "dura",
+    "opcional"
+   ],
+   "conf": [
     "opcional"
    ],
    "din_t": [
@@ -104,6 +117,9 @@
    ],
    "ev": [
     "dura",
+    "opcional"
+   ],
+   "nac": [
     "opcional"
    ],
    "oro": [
@@ -283,11 +299,11 @@
   }
  },
  "codigo": {
-  "competitivo": "6001fadae141",
-  "pais": "96e2a57b1bf6",
-  "servidor": "a61d30b89622",
-  "temporada": "d194988f47f8"
+  "competitivo": "20725e2c60f3",
+  "pais": "d51c1bbe9079",
+  "servidor": "8b78bf2801f6",
+  "temporada": "5083660e27b0"
  },
  "como": "herramientas/que_pide_cada_carta.py",
- "medido": "2026-10-14"
+ "medido": "2026-11-04"
 }
