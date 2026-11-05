@@ -1,81 +1,81 @@
 {
  "v": 1,
- "cuando": "2026-11-05T02:32:57Z",
+ "cuando": "2026-11-05T03:34:20Z",
  "trabajo": "dibujar",
  "codigo": 0,
- "dur_s": 99.9,
+ "dur_s": 1679.5,
  "pasos": [
   {
    "n": "2f",
    "que": "las fotos que faltan, de Discord a R2",
    "ok": true,
-   "s": 5.9
+   "s": 6.3
   },
   {
    "n": "2f2",
    "que": "los TAGs elegidos",
    "ok": true,
-   "s": 0.7
+   "s": 1.1
   },
   {
    "n": "3",
    "que": "qué cambió",
    "ok": true,
-   "s": 6.8
+   "s": 10.4
   },
   {
    "n": "4",
    "que": "las caras, desde R2",
    "ok": true,
-   "s": 19.1
+   "s": 172.8
   },
   {
    "n": "5",
-   "que": "tanda 1 de 1 · 1 persona(s)",
+   "que": "tanda 1 de 6 · 40 persona(s)",
    "ok": true,
-   "s": 7.1
+   "s": 1417.4
   },
   {
    "n": "5b",
    "que": "las Bloqueadas",
    "ok": true,
-   "s": 5.1
+   "s": 10.8
   },
   {
    "n": "6",
    "que": "refrescar KV",
    "ok": true,
-   "s": 54.0
+   "s": 59.4
   }
  ],
  "fallas": [],
  "ultimo_evento": {
-  "n": "565",
-  "nombre": "qcyo rapeen 10",
-  "sv": "FFA",
-  "dia": "2026-11-03"
+  "n": "566",
+  "nombre": "COMPE XCLUSIVISTICA VOL. 1",
+  "sv": "DDF",
+  "dia": "2026-11-04"
  },
  "cuotas": {
   "kv": {
-   "write": 113,
-   "read": 10259
+   "write": 149,
+   "read": 13173
   },
   "objeto": {
-   "leidas": 605306,
-   "escritas": 3464,
-   "pedidos": 1788
+   "leidas": 882936,
+   "escritas": 6307,
+   "pedidos": 2557
   },
   "worker": {
-   "pedidos": 10270,
+   "pedidos": 10251,
    "errores": 0,
-   "sub": 11434,
+   "sub": 11418,
    "cortados": 0,
-   "p50_ms": 1.26,
+   "p50_ms": 1.25,
    "p99_ms": 15.21,
    "cpu": {
-    "total": 21811,
-    "objeto_10": 1852,
-    "worker_10": 355
+    "total": 21816,
+    "objeto_10": 1834,
+    "worker_10": 347
    }
   },
   "r2": {
