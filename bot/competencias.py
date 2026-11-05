@@ -31,15 +31,17 @@ LAS REGLAS
 - **⚡ Las Rapid**: cada lunes, todos los activos sorteados en llaves de `RAPID`; cuartos hasta el jueves, semis hasta el
   sábado, final hasta el lunes.
 - **🎲 Mini eventos**: `MINI` por semana, sorteados del `CATALOGO` con la semana de semilla.
-- **⚖️ Jurados**: la ficha de cada uno sale de quién votó a quién (`datos/jurados.json`), y en las simuladas se sortean
-  tres que votan según su ficha (`jurado_sim()`).
-- **⚖️ El PTB de las ligas** (Dlx, 04/11/2026: *«para la próxima que muestre un PTB basado en los jurados»*), desde la
-  temporada `PTB_DESDE`: los votos de jurado que cada uno fue sumando, `PTB_BATALLA` en juego por batalla (`ptb_de()`).
-  Se muestra y no ordena: la tabla sigue yendo por puntos, ganados de verdad y fuerza.
-- **💰 Premios** (Dlx, 27/10/2026, a las cuatro preguntas: «Moderado», «Poco, sólo el campeón», «Al menos 1 batalla
-  real»): en Puntos de Tienda. Las ligas, a los tres primeros de cada una al cerrar la temporada (`PREMIO_LIGA`); la
-  Copa al campeón y al finalista, la Rapid y cada mini evento al campeón, al cerrar la semana. **Sólo cobra quien jugó al
-  menos una batalla DE VERDAD en esa competencia**: nadie gana un premio entero con simulaciones (`jugo_real()`).
+- **⚖️ Jurados**: la ficha de cada uno sale de lo que vio el vigía (`datos/jurados.json`, `fichas()`), y en las simuladas
+  se sortean tres de verdad, que votan como suelen votar (`jurado_sim()`).
+- **⚖️ El PTB de las ligas** (Dlx, 04/11/2026: *«para la próxima que muestre un PTB basado en los jurados»*, y a si
+  desempata, *«sí… pero deberíamos tener mucho cuidado con esta función»*), desde la temporada `PTB_DESDE`: los votos de
+  jurado que cada uno fue sumando, `PTB_BATALLA` en juego por batalla (`ptb_de()`). A igual de puntos manda el PTB, después
+  los ganados de verdad y después la fuerza.
+- **💰 Premios** (Dlx, 27/10/2026, a las cuatro preguntas: «Moderado», «Poco, sólo el campeón»): en Puntos de Tienda. Las
+  ligas, a los tres primeros de cada una al cerrar la temporada (`PREMIO_LIGA`); la Copa al campeón y al finalista, la
+  Rapid y cada mini evento al campeón, al cerrar la semana. **Sólo cobra quien jugó al menos 1 evento en ese tiempo**: la
+  temporada de ligas, o la semana. Hasta el 04/11/2026 pedía una batalla de verdad EN ESA COMPETENCIA, y medido eran 0 de
+  600 cruces en las ligas y 1 de 153 en la Copa: no cobraba casi nadie (Dlx, a la opción A: *«me gusta la A»*).
 
 💰 EL LIBRO DE PREMIOS NO SE PIERDE. `competencias.json` se rehace entero en cada corrida y sólo tiene la semana en curso,
 así que lo que se cobra va a `premios` (`{clave: [quien, monto, motivo, ms]}`), que cada corrida copia de la anterior y
@@ -47,6 +49,10 @@ nunca borra. La semana que terminó se cierra UNA vez, en la primera corrida de 
 `ahora` = su cierre (`cerrar_semana()`, con las llaves que ya estaban armadas); la temporada de ligas, en el mismo paso
 en que `ligas()` arma la que viene. La clave dice qué se pagó (`liga:1:oro-1:1`, `copa:2026-11-02:A:1`), así que volver
 a cerrar lo mismo no paga dos veces. Lo manda al objeto `precios.py` (`tienda()`), con el prefijo `comp:`.
+
+⚖️ EL JURADO DE LAS SIMULADAS APRENDE DE LOS DE VERDAD. Ver `aprender()`: quién gana sigue saliendo del nivel, y el jurado
+dice por cuánto y quién se aparta. Lo ya votado no cambia aunque el jurado siga aprendiendo (`congelados()`): si no, el
+PTB de una jornada de hace dos semanas se movería con los votos de anoche.
 
 ⚖️ LA SIMULACIÓN ES REPETIBLE Y EXPLICABLE. La fuerza de cada uno es su ELO (`bot/elo.py`) AL ARRANQUE de la semana
 —el de la temporada de ligas, para las ligas—, así no cambia a mitad de semana. La probabilidad de que A le gane a B es
@@ -111,8 +117,24 @@ PREMIO_MINI = 300
 CORTES = (2, 4, 7)
 #: cuántos mini eventos abiertos por semana
 MINI = 4
-#: desde cuántos votos un jurado tiene nota
+#: los cinco mini eventos del 04/11/2026 (Dlx: «cualquier idea es válida») entran al sorteo desde esta semana: la que está
+#: en curso ya tiene los suyos publicados, y sumarlos al catálogo le cambiaría el sorteo
+MINI_NUEVOS = ('maraton', 'trotamundos', 'podios', 'batacazo', 'jurado')
+MINI_NUEVOS_DESDE = '2026-11-09'
+#: lo mínimo para cobrar cada uno de esos (el batacazo: la chance máxima que tenía quien ganó)
+MINI_MINIMO = {'maraton': 3, 'trotamundos': 2, 'podios': 1, 'jurado': 3, 'batacazo': 0.4}
+#: desde cuántos votos un jurado entra a los sorteos de las simuladas, y desde cuántos resultados conocidos tiene nota
 JURADO_MIN = 5
+#: ⚖️ al aprender de un jurado se le suman estos votos «promedio»: con pocos votos se parece al jurado promedio, y con
+#: muchos, a sí mismo
+JURADO_PRIOR = 6
+#: cuánto le pesa el nivel al jurado promedio. Medido el 04/11/2026 sobre 98 votos con resultado: vota al que ganó el 74 %
+#: si tenía entre 35 y 50 % de chances, el 83 % entre 50 y 65, y el 85 % de ahí para arriba
+JURADO_NIVEL = 0.7
+#: cuánto pesa lo que ya votó a cada uno. Medido: con historial distinto entre los dos, votó al que venía mejor 102 de 148
+JURADO_HISTORIAL = 0.5
+#: el tope de todo eso junto, en log-odds: 3 es un 95 %. Con pocos datos, un jurado no puede votar «siempre» a nadie
+JURADO_TOPE = 3.0
 #: ⚖️ el PTB de las ligas sale con esta temporada (Dlx: «para la próxima»), y lo que reparte cada batalla: los tres votos
 #: del jurado de una simulada
 PTB_DESDE = 2
@@ -226,9 +248,10 @@ def resolver(a, b, reales, cerrada, fz, *semilla):
     return {'a': a, 'b': b, 'g': '', 'como': 'pend', 'p': round(prob(fa, fb), 3)}
 
 
-def tabla(gente, partidos, fz):
-    """`[[norm, pj, g, pts]]`, ordenada: puntos, ganados de verdad, fuerza."""
-    t = {k: [k, 0, 0, 0, 0] for k in gente}
+def tabla(gente, partidos, fz, ptb=None):
+    """`[[norm, pj, g, pts]]`, ordenada: puntos, ganados de verdad, fuerza. Con `ptb` (lo que reparte cada batalla, ver
+    `ptb_de()`) va una quinta columna, y a igual de puntos manda él."""
+    t = {k: [k, 0, 0, 0, 0, 0] for k in gente}
     for m in partidos:
         if not m['g']:
             continue
@@ -238,7 +261,12 @@ def tabla(gente, partidos, fz):
         t[m['g']][3] += 3
         if m['como'] == 'real':
             t[m['g']][4] += 1
-    return [x[:4] for x in sorted(t.values(), key=lambda x: (-x[3], -x[4], -fz.get(x[0], 0), x[0]))]
+        if ptb:
+            pa, pb = ptb(m)
+            t[m['a']][5] += pa
+            t[m['b']][5] += pb
+    orden = sorted(t.values(), key=lambda x: (-x[3], -x[5], -x[4], -fz.get(x[0], 0), x[0]))
+    return [x[:4] + [x[5]] if ptb else x[:4] for x in orden]
 
 
 def partir(orden, maximo):
@@ -342,19 +370,25 @@ def calendario(n):
     return out
 
 
-def jugar_liga(gente, desde, llaves, fz, ahora, *semilla):
-    """`(jornadas, tabla)` de una liga: una jornada por ventana, real si se cruzaron adentro, simulada al cerrar."""
+def jugar_liga(gente, desde, llaves, fz, ahora, *semilla, jurado=None):
+    """`(jornadas, tabla)` de una liga: una jornada por ventana, real si se cruzaron adentro, simulada al cerrar. `jurado`
+    es `(M, temporada, liga)`: el jurado se sortea acá y no al final, porque desde `PTB_DESDE` sus votos ordenan la tabla,
+    y la tabla decide quién sube, quién baja y quién cobra."""
     cal = calendario(len(gente))
     jornadas, todos = [], []
+    M, temp, gid = jurado or (None, 0, '')
     for j, (ini, fin) in enumerate(ventanas(desde)):
         if j >= len(cal):
             break
         reales = cruces(llaves, ini, fin)
         cerrada = ahora >= fin
         ps = [resolver(gente[a], gente[b], reales, cerrada, fz, *semilla, j) for a, b in cal[j] if a is not None and b is not None]
+        if M:
+            for m in ps:
+                jurado_sim(m, M, temp, gid, j + 1)
         jornadas.append({'n': j + 1, 'fin': fin.isoformat(), 'partidos': ps})
         todos += ps
-    return jornadas, tabla(gente, todos, fz)
+    return jornadas, tabla(gente, todos, fz, (lambda m: ptb_de(m, M['votos'], llaves)) if M and temp >= PTB_DESDE else None)
 
 
 def repartir(gente, n):
@@ -415,7 +449,7 @@ def elite_de(activos):
     return [k for k, _s, kr in comp if k in activos and (not con or kr in con)][:LIGA]
 
 
-def ligas(viejo, llaves, ahora):
+def ligas(viejo, llaves, ahora, M=None):
     """La temporada de ligas: las ligas por niveles y la Élite en paralelo. Las arma la primera vez (por fuerza) y al
     terminar cada temporada (con las subidas y bajadas de la anterior); en el medio, la gente queda fija. La fuerza es
     el ELO al arranque de ESA temporada: con el de la semana, una jornada simulada ya cerrada podía cambiar de ganador."""
@@ -436,13 +470,14 @@ def ligas(viejo, llaves, ahora):
     cerradas = []
     while ahora >= dias_despues(desde, 7 * TEMP_SEMANAS):
         final = desde + dt.timedelta(days=99)
-        jugadas = {g['id']: jugar_liga(g['gente'], desde, llaves, fz, final, 'liga', temp, g['id']) for g in grupos}
+        jugadas = {g['id']: jugar_liga(g['gente'], desde, llaves, fz, final, 'liga', temp, g['id'], jurado=(M, temp, g['id']) if M else None) for g in grupos}
         tablas = {k: v[1] for k, v in jugadas.items()}
-        # 💰 la tabla final de la temporada que termina, para los premios (`premios_liga()`)
+        # 💰 la tabla final de la temporada que termina y quién jugó en ella, para los premios (`premios_liga()`)
         c = {'temp': temp, 'fin': dias_despues(desde, 7 * TEMP_SEMANAS).isoformat(),
+             'jugaron': sorted(jugaron(llaves, desde, dias_despues(desde, 7 * TEMP_SEMANAS))),
              'grupos': [dict(id=g['id'], nivel=g['nivel'], jornadas=jugadas[g['id']][0], tabla=tablas[g['id']]) for g in grupos]}
         if len(elite) >= 4:
-            js, t = jugar_liga(elite, desde, llaves, fz, final, 'elite', temp)
+            js, t = jugar_liga(elite, desde, llaves, fz, final, 'elite', temp, jurado=(M, temp, 'elite') if M else None)
             c['elite'] = {'jornadas': js, 'tabla': t}
         cerradas.append(c)
         desde = dias_despues(desde, 7 * TEMP_SEMANAS)
@@ -457,10 +492,10 @@ def ligas(viejo, llaves, ahora):
     if cerradas:
         out['cerradas'] = cerradas
     for g in grupos:
-        js, t = jugar_liga(g['gente'], desde, llaves, fz, ahora, 'liga', temp, g['id'])
+        js, t = jugar_liga(g['gente'], desde, llaves, fz, ahora, 'liga', temp, g['id'], jurado=(M, temp, g['id']) if M else None)
         out['grupos'].append(dict(g, jornadas=js, tabla=t))
     if len(elite) >= 4:
-        js, t = jugar_liga(elite, desde, llaves, fz, ahora, 'elite', temp)
+        js, t = jugar_liga(elite, desde, llaves, fz, ahora, 'elite', temp, jurado=(M, temp, 'elite') if M else None)
         out['liga_elite'] = {'gente': elite, 'jornadas': js, 'tabla': t}
     return out
 
@@ -521,8 +556,30 @@ CATALOGO = [('derbi', '⚔️', 'Guerra de servidores'), ('paises', '🌎', 'Gue
             ('supercopa', '🏆', 'Supercopa'),
             ('duos', '👯', 'Dúos'), ('pandillas', '👥', 'Pandillas'), ('rey', '👑', 'Rey de la colina'),
             ('revancha', '🔁', 'Revancha'), ('racha', '🔥', 'Racha'), ('novatos', '🌱', 'Copa de novatos'),
+            ('maraton', '🏃', 'Maratón'), ('trotamundos', '🧳', 'Trotamundos'), ('podios', '🏅', 'Cazador de podios'),
+            ('batacazo', '💥', 'Batacazo'), ('jurado', '⚖️', 'Favorito del jurado'),
             ('escalera', '🪜', 'La Escalera'), ('fantasy', '🎯', 'Fantasy'), ('crews', '🛡️', 'Torneo de crews')]
 PRONTO = ('escalera', 'fantasy', 'crews')
+
+
+def catalogo_de(sid):
+    """El catálogo con el que se sortea la semana `sid`: sin los que todavía no entraban."""
+    return [c for c in CATALOGO if c[0] not in MINI_NUEVOS or str(sid) >= MINI_NUEVOS_DESDE]
+
+
+def votos_de_la_semana(J, ini, fin):
+    """`{norm: votos de jurado a favor}` entre `ini` y `fin`, de lo que vio el vigía (`datos/jurados.json`)."""
+    out = {}
+    d0, d1 = ini.timestamp() * 1000, fin.timestamp() * 1000
+    for b in ((J or {}).get('votos') or {}).values():
+        if not d0 <= int(b.get('pub') or 0) < d1:
+            continue
+        lados = b.get('lados') or [b.get('a') or '', b.get('b') or '']
+        for x in (b.get('v') or {}).values():
+            k = norm(lados[0] if x == 'a' else lados[1] if x == 'b' else x)
+            if k:
+                out[k] = out.get(k, 0) + 1
+    return out
 
 
 def puntos_semana(llaves, ini, fin):
@@ -539,7 +596,7 @@ def puntos_semana(llaves, ini, fin):
     return out
 
 
-def mini_eventos(sid, ini, fin, activos, llaves, fz, ahora, L):
+def mini_eventos(sid, ini, fin, activos, llaves, fz, ahora, L, cuantos=MINI):
     """Los `MINI` de esta semana, sorteados del catálogo con la semana de semilla; cada uno con lo que muestra."""
     reales = cruces(llaves, ini, fin)
     cerrada = ahora >= fin
@@ -625,11 +682,62 @@ def mini_eventos(sid, ini, fin, activos, llaves, fz, ahora, L):
             return None
         return llave8(nov[:RAPID], ini, fin, llaves, fz, ahora, sid, 'novatos')
 
+    def de_la_semana():
+        """Los eventos jugados esta semana, con su gente: `[(evento, [(norm, puesto)])]`."""
+        out = []
+        for ev in llaves.values():
+            t = _dia_utc(ev.get('dia'))
+            if t is not None and ini <= t < fin:
+                out.append((ev, [(norm(p), puesto) for nombre, puesto, _x in ev.get('tabla') or [] for p in personas(nombre)]))
+        return out
+
+    def top(n_de, *mas):
+        """Los 5 primeros de `{norm: número}`. A igual número, los puntos de la semana: con el orden alfabético, el
+        premio de un empate se lo llevaba quien tuviera el nombre más arriba."""
+        orden = sorted(n_de, key=lambda k: (-n_de[k], tuple(-x.get(k, 0) for x in mas), -pts.get(k, 0), k))
+        return {'tabla': [[k, n_de[k]] for k in orden[:5]]}
+
+    def maraton():
+        """🏃 Quién juega más eventos en la semana."""
+        n = {}
+        for _ev, gente in de_la_semana():
+            for k in {k for k, _p in gente}:
+                n[k] = n.get(k, 0) + 1
+        return top(n)
+
+    def trotamundos():
+        """🧳 Quién juega en más servidores distintos en la semana."""
+        svs = {}
+        for ev, gente in de_la_semana():
+            for k, _p in gente:
+                svs.setdefault(k, set()).add(ev.get('sv') or '')
+        return top({k: len(v) for k, v in svs.items()})
+
+    def podios():
+        """🏅 Quién sube más al podio en la semana: las tres medallas, como `pod` del Ranking."""
+        n, oros = {}, {}
+        for _ev, gente in de_la_semana():
+            for k, puesto in gente:
+                if puesto in ('Campeón', 'Subcampeón', 'Tercero'):
+                    n[k] = n.get(k, 0) + 1
+                    oros[k] = oros.get(k, 0) + (puesto == 'Campeón')
+        return top(n, oros)
+
+    def batacazo():
+        """💥 Las mayores sorpresas de la semana: `[ganador, perdedor, chance que tenía el ganador, evento]`."""
+        xs = [[g, p, round(prob(fz.get(g, SIN_ELO), fz.get(p, SIN_ELO)), 3), n] for g, p, n, _d in reales]
+        return {'tabla': sorted(xs, key=lambda x: (x[2], x[3], x[0]))[:5]}
+
+    def jurado():
+        """⚖️ Quién se lleva más votos de los jurados en la semana, de lo que vio el vigía."""
+        return top(votos_de_la_semana(_j('datos', 'jurados.json', defecto={}), ini, fin))
+
     hacer = {'derbi': derbi, 'paises': paises, 'meta': meta, 'supercopa': supercopa, 'duos': lambda: equipos(2), 'pandillas': lambda: equipos(5),
-             'rey': rey, 'revancha': revancha, 'racha': racha, 'novatos': novatos}
+             'rey': rey, 'revancha': revancha, 'racha': racha, 'novatos': novatos, 'maraton': maraton, 'trotamundos': trotamundos,
+             'podios': podios, 'batacazo': batacazo, 'jurado': jurado}
     out = []
-    for id_, ic, nombre in sorted(CATALOGO, key=lambda c: moneda('mini', sid, c[0])):
-        if id_ in PRONTO or len(out) >= MINI:
+    for id_, ic, nombre in sorted(catalogo_de(sid), key=lambda c: moneda('mini', sid, c[0])):
+        if id_ in PRONTO or len(out) >= cuantos:
             continue
         x = hacer[id_]()
         if x:
@@ -641,7 +749,7 @@ def proxima_semana(sid_prox, hoy):
     """⏳ Los que abren la semana que viene (Dlx, 26/10/2026: «para lo que dice pronto, crear un countdown… abre en X»):
     el mismo sorteo con la semilla de la semana que viene, sin los que ya están abiertos esta."""
     ya = {x['id'] for x in hoy}
-    orden = [c for c in sorted(CATALOGO, key=lambda c: moneda('mini', sid_prox, c[0])) if c[0] not in PRONTO]
+    orden = [c for c in sorted(catalogo_de(sid_prox), key=lambda c: moneda('mini', sid_prox, c[0])) if c[0] not in PRONTO]
     return [[i, ic, n] for i, ic, n in orden if i not in ya][:MINI]
 
 
@@ -660,69 +768,212 @@ def equipo_semana(llaves, notas, ini, fin):
     return t[:5]
 
 
-def jurados(fz):
-    """⚖️ LA FICHA DE CADA JURADO, PÚBLICA (Dlx, 26/10/2026: «un score de cada jurado, basado en lo que ellos votan… a
-    quién votan más, menos», y «sí, que sea para el público»), de `datos/jurados.json` (`escuchar.votos_jurados()`):
-    `{jurado: {n, votos, coincide, favorito, propio, mas, menos, nota}}`. `coincide`: cuántas veces votó lo mismo que la
-    mayoría; `favorito`: cuántas veces al de más fuerza; `propio`: cuántas a la gente de su servidor, cuando había uno
-    solo; `nota` 1–10, desde `JURADO_MIN` votos (antes no hay con qué)."""
-    J = _j('datos', 'jurados.json', defecto={}) or {}
+def _logit(p):
+    p = min(0.98, max(0.02, p))
+    return math.log(p / (1 - p))
+
+
+def _suave(par, base):
+    """Una tasa aprendida de `par` (`[a favor, total]`), con `JURADO_PRIOR` votos promedio sumados."""
+    return (par[0] + JURADO_PRIOR * base) / float(par[1] + JURADO_PRIOR)
+
+
+def servidor_de_los_votos():
+    """`{nombre del servidor en Discord: código}`: cada voto guarda el nombre que tenía el servidor, y el pool habla en
+    códigos. Por eso la ficha de cada jurado decía «—» en «con gente de su servidor»: comparaba «FFA» con «[FFA] Freestyle
+    For All 👾», y no daba nunca. `datos/canales_llaves.json` sabe el nombre y el guild, y `datos/servidores.json` el código."""
+    s = (_j('datos', 'servidores.json', defecto={}) or {}).get('servidores') or {}
+    por_guild = {x.get('guild_id'): k for k, x in s.items() if isinstance(x, dict) and x.get('guild_id')}
+    c = _j('datos', 'canales_llaves.json', defecto={}) or {}
+    return {x.get('servidor'): por_guild[x['guild']] for d in (c.get('canales') or {}, c.get('veredictos') or {})
+            for x in d.values() if isinstance(x, dict) and x.get('guild') in por_guild}
+
+
+def fichas(llaves, J=None):
+    """⚖️ LO QUE SE SABE DE CADA JURADO, de cada voto que vio el vigía (`datos/jurados.json`, `escuchar.votos_jurados()` y
+    `votos_en_vivo()`): `{jurado: {votos, res, fav, casa, sv, por, contra, nom}}`.
+
+    `res`: `[votos al que ganó, votos con resultado conocido]`. El resultado es el que dijo la ronda (FFA), o el de la llave
+    si se jugó a ~36 h del voto, o la mayoría si votaron dos o más. Un voto suelto sin llave no se cuenta: comparado consigo
+    mismo daría siempre 100 %, y por eso 10 de las 20 notas salían de 10,0.
+    `fav`: lo mismo con el de más ELO ESE DÍA. `casa`: con la gente del servidor donde votó, cuando hay uno solo de ahí.
+    `por` / `contra`: `{rapero: veces}`. `sv`: donde más votó."""
+    J = J if J is not None else (_j('datos', 'jurados.json', defecto={}) or {})
+    sv_nom = servidor_de_los_votos()
     sv_de = {norm(x['raw']): x.get('sv') or '' for x in (_j('datos', 'temporada_pool.json', defecto=[]) or []) if x.get('raw')}
-    st = {}
+    siempre = (dt.datetime(2000, 1, 1, tzinfo=dt.timezone.utc), dt.datetime(2100, 1, 1, tzinfo=dt.timezone.utc))
+    ganaron = {}
+    for g, p, _n, d in cruces(llaves, *siempre):
+        ganaron.setdefault(frozenset((g, p)), []).append((_dia_utc(d), g))
+    elos, st = {}, {}
     for b in (J.get('votos') or {}).values():
-        # ⚖️ una batalla es `a`/`b` con votos 'a'|'b', o —las de 3 a 5 MCs de FFA, `escuchar.votos_en_vivo()`— `lados`
-        # con el nombre votado. Todo se lleva al nombre: así las dos se cuentan igual
         lados = b.get('lados') or [b.get('a') or '', b.get('b') or '']
+        ln = [norm(x) for x in lados]
         v = {q: (lados[0] if x == 'a' else lados[1] if x == 'b' else x) for q, x in (b.get('v') or {}).items()}
-        cuenta = {}
-        for x in v.values():
-            cuenta[x] = cuenta.get(x, 0) + 1
-        top = sorted(cuenta.items(), key=lambda kv: -kv[1])
-        may = top[0][0] if top and (len(top) == 1 or top[0][1] > top[1][1]) else ''
-        fs = [fz.get(norm(x)) for x in lados]
-        fav = lados[fs.index(max(fs))] if None not in fs and fs.count(max(fs)) == 1 else ''
-        casa_de = [x for x in lados if sv_de.get(norm(x)) == b.get('sv')]
-        casa = casa_de[0] if len(casa_de) == 1 else ''
+        ms = int(b.get('pub') or 0)
+        gano = norm(b.get('g') or '')
+        if not gano and len(ln) == 2:
+            for t, g in ganaron.get(frozenset(ln)) or ():
+                if abs(t.timestamp() - ms / 1000.0) <= 36 * 3600:
+                    gano = g
+        if not gano and len(v) >= 2:
+            cuenta = sorted(_contar(norm(x) for x in v.values()).items(), key=lambda kv: -kv[1])
+            gano = cuenta[0][0] if len(cuenta) == 1 or cuenta[0][1] > cuenta[1][1] else ''
+        dia = dt.datetime.fromtimestamp(ms / 1000.0, dt.timezone.utc).replace(hour=0, minute=0, second=0, microsecond=0)
+        if dia not in elos:
+            elos[dia] = fuerzas(llaves, dia)
+        fs = [elos[dia].get(k) for k in ln]
+        fav = ln[fs.index(max(fs))] if None not in fs and fs.count(max(fs)) == 1 else ''
+        sv = sv_nom.get(b.get('sv')) or ''
+        de_aca = [k for k in ln if sv and sv_de.get(k) == sv]
+        casa = de_aca[0] if len(de_aca) == 1 else ''
         for quien, lado in v.items():
-            s = st.setdefault(quien, {'votos': 0, 'may': [0, 0], 'fav': [0, 0], 'casa': [0, 0], 'por': {}, 'contra': {}})
+            x = norm(lado)
+            s = st.setdefault(quien, {'votos': 0, 'res': [0, 0], 'fav': [0, 0], 'casa': [0, 0], 'svs': {}, 'por': {}, 'contra': {}, 'nom': {}})
             s['votos'] += 1
-            if may:
-                s['may'][1] += 1
-                s['may'][0] += lado == may
-            if fav:
-                s['fav'][1] += 1
-                s['fav'][0] += lado == fav
-            if casa:
-                s['casa'][1] += 1
-                s['casa'][0] += lado == casa
-            s['por'][lado] = s['por'].get(lado, 0) + 1
-            for no in lados:
-                if no != lado:
+            for campo, quien_es in (('res', gano), ('fav', fav), ('casa', casa)):
+                if quien_es:
+                    s[campo][1] += 1
+                    s[campo][0] += x == quien_es
+            if sv:
+                s['svs'][sv] = s['svs'].get(sv, 0) + 1
+            s['por'][x] = s['por'].get(x, 0) + 1
+            s['nom'][x] = lado
+            for no, crudo in zip(ln, lados):
+                if no != x:
                     s['contra'][no] = s['contra'].get(no, 0) + 1
+                    s['nom'][no] = crudo
+    for s in st.values():
+        s['sv'] = max(sorted(s['svs']), key=lambda k: s['svs'][k]) if s['svs'] else ''
+    return st
+
+
+def _contar(xs):
     out = {}
-    nombres = J.get('nombres') or {}
-    for quien, s in st.items():
-        r = lambda x: round(x[0] / x[1], 3) if x[1] else None   # noqa: E731
-        co = r(s['may'])
-        top = lambda d: list(max(d.items(), key=lambda kv: (kv[1], kv[0]))) if d else None   # noqa: E731
-        out[quien] = {'n': nombres.get(quien, ''), 'votos': s['votos'], 'coincide': co, 'favorito': r(s['fav']),
-                      'propio': r(s['casa']), 'mas': top(s['por']), 'menos': top(s['contra']),
-                      'nota': round(1 + 9 * co, 1) if co is not None and s['votos'] >= JURADO_MIN else None}
+    for x in xs:
+        out[x] = out.get(x, 0) + 1
     return out
 
 
-def jurado_sim(m, jueces, J, *semilla):
-    """⚖️ El jurado de una batalla SIMULADA (Dlx, 26/10/2026: «seleccionar el staff de la batalla a lo random así
-    también simulamos el staff»): tres jueces sorteados de los que tienen ficha. Cuanto más pareja, más probable el 2–1;
-    y el que vota en contra es el que menos coincide con la mayoría en su ficha. Repetible, como todo."""
-    if m.get('como') != 'sim' or len(jueces) < 3:
+def jurados(M):
+    """⚖️ LA FICHA DE CADA JURADO, PÚBLICA (Dlx, 26/10/2026: «un score de cada jurado, basado en lo que ellos votan… a
+    quién votan más, menos», y «sí, que sea para el público»): `{jurado: {n, votos, coincide, favorito, propio, mas, menos,
+    nota}}`. `coincide`: cuántas veces votó al que ganó; `favorito`: al de más fuerza; `propio`: a la gente de su servidor,
+    cuando había uno solo; `nota` 1–10, desde `JURADO_MIN` resultados conocidos (antes no hay con qué)."""
+    nombres = (_j('datos', 'jurados.json', defecto={}) or {}).get('nombres') or {}
+    out = {}
+    for quien, s in M['fichas'].items():
+        r = lambda x: round(x[0] / float(x[1]), 3) if x[1] else None   # noqa: E731
+        co = r(s['res'])
+        top = lambda d: [s['nom'].get(max(d.items(), key=lambda kv: (kv[1], kv[0]))[0]), max(d.values())] if d else None   # noqa: E731
+        out[quien] = {'n': nombres.get(quien, ''), 'votos': s['votos'], 'coincide': co, 'favorito': r(s['fav']),
+                      'propio': r(s['casa']), 'mas': top(s['por']), 'menos': top(s['contra']),
+                      'nota': round(1 + 9 * co, 1) if co is not None and s['res'][1] >= JURADO_MIN else None}
+    return out
+
+
+def _batallas(res):
+    """Cada tanda de batallas de un resultado, con la semilla de su jurado: `(semilla, [batallas])`."""
+    L = res.get('ligas') or {}
+    for g in (L.get('grupos') or []) + ([L['liga_elite']] if L.get('liga_elite') else []):
+        for j in g.get('jornadas') or []:
+            yield (L.get('temp'), g.get('id', 'elite'), j['n']), j.get('partidos') or []
+    for r in (res.get('copa') or []) + (res.get('rapid') or []) + [x for x in res.get('mini') or [] if x.get('id') == 'novatos']:
+        for rd in r.get('rondas') or []:
+            yield (res.get('sem'), r.get('id', 'novatos'), rd['r']), rd.get('partidos') or []
+    for x in res.get('mini') or []:
+        if x.get('partidos'):
+            yield (res.get('sem'), x['id']), x['partidos']
+        if x.get('partido'):
+            yield (res.get('sem'), x['id']), [x['partido']]
+
+
+def _clave_sim(semilla, m):
+    return '|'.join(str(x) for x in tuple(semilla) + (m.get('a'), m.get('b')))
+
+
+def congelados(viejo):
+    """`{batalla: votos}` de lo que la corrida anterior ya votó. El jurado sigue aprendiendo y lo ya votado no se mueve: si
+    no, los votos de anoche le cambiarían el PTB a una jornada de hace dos semanas, y con eso quién subió."""
+    out = {}
+    for sem, ps in _batallas(viejo or {}):
+        for m in ps:
+            if m.get('j'):
+                out[_clave_sim(sem, m)] = m['j']
+    return out
+
+
+def aprender(llaves, viejo=None, J=None):
+    """⚖️ EL JURADO QUE APRENDE (Dlx, 04/11/2026: *«que sea basado en lo que el vigía haya visto de las votaciones del
+    jurado… que de eso aprenda y… intente replicar la actitud de un jurado específico»*, y *«deberíamos tener mucho
+    cuidado con esta función»*).
+
+    De cada jurado se aprende lo que se puede medir (`fichas()`): si suele votar al que termina ganando, si se va con el
+    favorito o con el de abajo, si tira para la gente de su servidor y a quién le viene votando. Cada corrida aprende de
+    todo lo que hay, así que mejora sola con cada votación que ve el vigía.
+
+    El cuidado:
+    - **Quién gana no lo deciden ellos**: sigue saliendo del nivel (`simular()`). Eso le da a los votos sólo por cuánto
+      (3–0 o 2–1) y quién se aparta, o sea el desempate, y nunca cambia un resultado.
+    - **Con pocos votos, un jurado se parece al promedio** (`JURADO_PRIOR`), y con menos de `JURADO_MIN` no se lo sortea.
+    - **Lo ya votado no cambia** (`congelados()`).
+    - **Nadie juzga su propia batalla** (`yo`): hay jurados que además compiten.
+    - **Su peso está acotado** (`JURADO_TOPE`): ningún jurado vota con más de un 95 % de seguridad."""
+    F = fichas(llaves, J)
+    base = {}
+    for campo, defecto in (('res', 0.8), ('fav', 0.55), ('casa', 0.5)):
+        x, n = sum(s[campo][0] for s in F.values()), sum(s[campo][1] for s in F.values())
+        base[campo] = (x + JURADO_PRIOR * defecto) / float(n + JURADO_PRIOR)
+    return {'fichas': F, 'base': base, 'jueces': sorted(q for q, s in F.items() if s['votos'] >= JURADO_MIN),
+            'yo': {str(x.get('discord_id')): norm(x.get('raw')) for x in (_j('datos', 'padron.json', defecto=[]) or [])
+                   if x.get('discord_id') and x.get('raw')},
+            'sv': {norm(x['raw']): x.get('sv') or '' for x in (_j('datos', 'temporada_pool.json', defecto=[]) or []) if x.get('raw')},
+            'votos': votos_por_cruce(), 'frio': congelados(viejo)}
+
+
+def voto_al_ganador(q, g, l, pg, M):
+    """La chance de que `q` le vote a `g`, que le ganó a `l` teniendo `pg` de chances. Se suma en log-odds: lo que suele
+    votar al que gana, cuánto le pesa el nivel a él, si tira para los suyos más que el promedio y su historial con los dos."""
+    s = M['fichas'].get(q) or {'res': [0, 0], 'fav': [0, 0], 'casa': [0, 0], 'sv': '', 'por': {}, 'contra': {}}
+    b = M['base']
+    x = _logit(_suave(s['res'], b['res']))
+    x += (JURADO_NIVEL + _logit(_suave(s['fav'], b['fav'])) - _logit(b['fav'])) * _logit(pg)
+    gc, lc = M['sv'].get(g) == s['sv'], M['sv'].get(l) == s['sv']
+    if s['sv'] and gc != lc:
+        lean = _logit(_suave(s['casa'], b['casa'])) - _logit(b['casa'])
+        x += lean if gc else -lean
+    af = lambda k: math.log((s['por'].get(k, 0) + 1.0) / (s['contra'].get(k, 0) + 1.0))   # noqa: E731
+    x += JURADO_HISTORIAL * (af(g) - af(l))
+    return 1.0 / (1.0 + math.exp(-max(-JURADO_TOPE, min(JURADO_TOPE, x))))
+
+
+def jurado_sim(m, M, *semilla):
+    """⚖️ El jurado de una batalla SIMULADA (Dlx, 26/10/2026: «seleccionar el staff de la batalla a lo random así también
+    simulamos el staff»): tres jueces de verdad sorteados, y cada uno vota como suele votar (ver `aprender()`). El que ganó
+    siempre tiene la mayoría: si los votos no se la dan, se la da el juez que más chance tenía de votarlo. Repetible, como
+    todo, y lo ya votado se queda."""
+    if m.get('como') != 'sim' or m.get('j'):
+        return m
+    lado = 'a' if m['g'] == m['a'] else 'b'
+    ya = M['frio'].get(_clave_sim(semilla, m))
+    if ya and 2 * sum(1 for _q, v in ya if v == lado) > len(ya):
+        m['j'] = ya
+        return m
+    jueces = [q for q in M['jueces'] if M['yo'].get(q) not in (m['a'], m['b'])]
+    if len(jueces) < 3:
         return m
     tres = sorted(jueces, key=lambda q: moneda('jurado', *semilla, m['a'], m['b'], q))[:3]
-    g = 'a' if m['g'] == m['a'] else 'b'
-    otro = 'b' if g == 'a' else 'a'
-    dividido = moneda('split', *semilla, m['a'], m['b']) < 1 - abs(m['p'] - 0.5) * 2
-    contra = min(tres, key=lambda q: ((J.get(q) or {}).get('coincide') or 0, q)) if dividido else None
-    return dict(m, j=[[q, otro if q == contra else g] for q in tres])
+    l = m['b'] if lado == 'a' else m['a']
+    pg = m['p'] if lado == 'a' else 1 - m['p']
+    chance = {q: voto_al_ganador(q, m['g'], l, pg, M) for q in tres}
+    con = {q for q in tres if moneda('voto', *semilla, m['a'], m['b'], q) < chance[q]}
+    for q in sorted(tres, key=lambda q: (-chance[q], q)):
+        if len(con) >= 2:
+            break
+        con.add(q)
+    otro = 'b' if lado == 'a' else 'a'
+    m['j'] = [[q, lado if q in con else otro] for q in tres]
+    return m
 
 
 # ── ⚖️ el PTB de las ligas ────────────────────────────────────────────────────────────────────────────────────────
@@ -764,26 +1015,7 @@ def ptb_de(m, votos, llaves):
     return (de_g, PTB_BATALLA - de_g) if g == a else (PTB_BATALLA - de_g, de_g)
 
 
-def poner_ptb(L, llaves, votos=None):
-    """Le suma a cada fila de cada tabla su PTB, como quinta columna. Va después de `_con_jurado()`, que es quien sortea
-    los votos, y no cambia el orden de nadie."""
-    votos = votos_por_cruce() if votos is None else votos
-    for g in L['grupos'] + ([L['liga_elite']] if L.get('liga_elite') else []):
-        ptb = {}
-        for j in g['jornadas']:
-            for m in j['partidos']:
-                pa, pb = ptb_de(m, votos, llaves)
-                ptb[m['a']] = ptb.get(m['a'], 0) + pa
-                ptb[m['b']] = ptb.get(m['b'], 0) + pb
-        g['tabla'] = [f[:4] + [ptb.get(f[0], 0)] for f in g['tabla']]
-
-
 # ── 💰 los premios ────────────────────────────────────────────────────────────────────────────────────────────────
-
-def jugo_real(quien, partidos):
-    """¿Jugó `quien` al menos una de estas batallas de verdad? (Dlx, 27/10/2026: «al menos 1 batalla real»)."""
-    return any(m.get('como') == 'real' and quien in (m.get('a'), m.get('b')) for m in partidos or ())
-
 
 def _ms(iso):
     return int(dt.datetime.fromisoformat(iso).timestamp() * 1000)
@@ -791,60 +1023,58 @@ def _ms(iso):
 
 def premios_liga(c):
     """`{clave: [quien, monto, motivo, ms]}` de una temporada de ligas cerrada (`ligas()['cerradas']`): los tres
-    primeros de cada liga y de la Élite, si jugaron alguna de verdad."""
+    primeros de cada liga y de la Élite, si jugaron al menos un evento en esa temporada."""
     out = {}
+    jugo = set(c.get('jugaron') or ())
     grupos = [(g['id'], g['nivel'], g['jornadas'], g['tabla']) for g in c.get('grupos') or []]
     if c.get('elite'):
         grupos.append(('elite', 'elite', c['elite']['jornadas'], c['elite']['tabla']))
     nombre = {'elite': 'Élite', 'oro': 'Oro', 'plata': 'Plata', 'bronce': 'Bronce', 'ascenso': 'Ascenso'}
     for gid, nivel, js, t in grupos:
-        todos = [m for j in js for m in j.get('partidos') or ()]
         for pos, fila in enumerate(t[:3], 1):
             monto = (PREMIO_LIGA.get(nivel) or (0, 0, 0))[pos - 1]
-            if monto and fila[3] > 0 and jugo_real(fila[0], todos):
+            if monto and fila[3] > 0 and fila[0] in jugo:
                 out['liga:%s:%s:%d' % (c['temp'], gid, pos)] = [fila[0], monto, 'Liga %s · %d.º' % (nombre[nivel], pos),
                                                                _ms(c['fin'])]
     return out
 
 
-def premios_semana(sid, fin, copas, rapids_, minis, sumaron=None):
+def premios_semana(sid, fin, copas, rapids_, minis, jugo=()):
     """`{clave: [quien, monto, motivo, ms]}` de una semana cerrada: la Copa (campeón y finalista), la Rapid y los mini
-    eventos (el campeón), cada uno sólo si jugó alguna de esa competencia de verdad. En Dúos y Pandillas, que se ganan
-    con los puntos de los eventos, cobra el integrante que sumó esa semana (`sumaron`): el que no jugó no cobra por su
-    equipo."""
+    eventos (el campeón), cada uno sólo si jugó al menos un evento esa semana (`jugo`). También en Dúos y Pandillas: el que
+    no jugó no cobra por su equipo."""
     out, ms = {}, _ms(fin)
+    jugo = set(jugo)
 
     def poner(clave, quien, monto, motivo):
         if quien and monto:
             out[clave] = [quien, monto, motivo, ms]
     for i, r in enumerate(copas or []):
-        todos = [m for rd in r['rondas'] for m in rd['partidos']]
         fin_ = (r['rondas'][-1]['partidos'] or [{}])[0] if r.get('rondas') else {}
         g = r.get('campeon') or ''
         segundo = next((x for x in (fin_.get('a'), fin_.get('b')) if x and x != g), '') if g else ''
         for pos, q in ((1, g), (2, segundo)):
-            if q and jugo_real(q, todos):
+            if q and q in jugo:
                 poner('copa:%s:%s:%d' % (sid, r.get('id', i), pos), q, PREMIO_COPA[pos - 1],
                       'Copa %s · %s' % (r.get('id', ''), 'campeón' if pos == 1 else 'finalista'))
     for r in rapids_ or []:
         g = r.get('campeon') or ''
-        if g and jugo_real(g, [m for rd in r['rondas'] for m in rd['partidos']]):
+        if g and g in jugo:
             poner('rapid:%s:%s' % (sid, r.get('id')), g, PREMIO_RAPID, 'Rapid %s · campeón' % r.get('id'))
     for x in minis or []:
         i, nom = x.get('id'), x.get('nombre') or x.get('id')
         if i in ('derbi', 'paises') and x.get('score') and x['score'][0] != x['score'][1]:
             lado = 'a' if x['score'][0] > x['score'][1] else 'b'
             for m in x.get('partidos') or []:
-                if m.get('como') == 'real':
+                if m[lado] in jugo:
                     poner('mini:%s:%s:%s' % (sid, i, m[lado]), m[lado], PREMIO_MINI, '%s · ganó su bando' % nom)
-        elif i == 'supercopa' and (x.get('partido') or {}).get('como') == 'real':
+        elif i == 'supercopa' and (x.get('partido') or {}).get('g') in jugo:
             g = x['partido'].get('g')
             poner('mini:%s:%s:%s' % (sid, i, g), g, PREMIO_MINI, '%s · campeón' % nom)
         elif i in ('duos', 'pandillas') and x.get('tabla') and x['tabla'][0][1] > 0:
             for q in x['tabla'][0][0]:
-                if sumaron is not None and q not in sumaron:
-                    continue
-                poner('mini:%s:%s:%s' % (sid, i, q), q, PREMIO_MINI, '%s · ganó su equipo' % nom)
+                if q in jugo:
+                    poner('mini:%s:%s:%s' % (sid, i, q), q, PREMIO_MINI, '%s · ganó su equipo' % nom)
         elif i == 'rey' and x.get('rey') and (len(x.get('reyes') or []) > 1 or x.get('defensas')):
             poner('mini:%s:%s:%s' % (sid, i, x['rey']), x['rey'], PREMIO_MINI, '%s · terminó la semana con la corona' % nom)
         elif i == 'revancha':
@@ -853,10 +1083,15 @@ def premios_semana(sid, fin, copas, rapids_, minis, sumaron=None):
         elif i == 'racha' and x.get('tabla') and x['tabla'][0][1] >= 2:
             q = x['tabla'][0][0]
             poner('mini:%s:%s:%s' % (sid, i, q), q, PREMIO_MINI, '%s · la mejor racha' % nom)
-        elif i == 'novatos' and x.get('campeon'):
+        elif i == 'novatos' and x.get('campeon') in jugo:
             g = x['campeon']
-            if jugo_real(g, [m for rd in x.get('rondas') or [] for m in rd['partidos']]):
-                poner('mini:%s:%s:%s' % (sid, i, g), g, PREMIO_MINI, '%s · campeón' % nom)
+            poner('mini:%s:%s:%s' % (sid, i, g), g, PREMIO_MINI, '%s · campeón' % nom)
+        elif i in ('maraton', 'trotamundos', 'podios', 'jurado') and x.get('tabla') and x['tabla'][0][1] >= MINI_MINIMO[i]:
+            q = x['tabla'][0][0]
+            poner('mini:%s:%s:%s' % (sid, i, q), q, PREMIO_MINI, '%s · el primero de la semana' % nom)
+        elif i == 'batacazo' and x.get('tabla') and x['tabla'][0][2] <= MINI_MINIMO[i]:
+            q = x['tabla'][0][0]
+            poner('mini:%s:%s:%s' % (sid, i, q), q, PREMIO_MINI, '%s · la mayor sorpresa de la semana' % nom)
     return out
 
 
@@ -875,8 +1110,7 @@ def cerrar_semana(viejo, llaves):
     cp = copa(activos, {}, fz, ini, fin, llaves, ahora, sid, armadas(viejo, sid, 'copa'))
     rp = rapids(activos, ini, fin, llaves, fz, ahora, sid, armadas(viejo, sid, 'rapid'))
     mini, _p = mini_eventos(sid, ini, fin, activos, llaves, fz, ahora, viejo.get('ligas') or {})
-    sumaron = {k for k, v in puntos_semana(llaves, ini, fin).items() if v > 0}
-    return premios_semana(sid, viejo['fin'], cp, rp, mini, sumaron)
+    return premios_semana(sid, viejo['fin'], cp, rp, mini, jugaron(llaves, ini, fin))
 
 
 def leer():
@@ -899,25 +1133,11 @@ def tienda(d, dids):
 
 # ── todo junto ────────────────────────────────────────────────────────────────────────────────────────────────────
 
-_SIMS = ('copa', 'grupos', 'elite', 'rapid', 'mini')
-
-
-def _con_jurado(res, jueces, J):
-    """Le pone su jurado sorteado a cada batalla simulada del resultado (ver `jurado_sim()`)."""
-    def pasar(ps, *sem):
-        return [jurado_sim(m, jueces, J, *sem) for m in ps]
-    L = res['ligas']
-    for g in L['grupos'] + ([L['liga_elite']] if L.get('liga_elite') else []):
-        for j in g['jornadas']:
-            j['partidos'] = pasar(j['partidos'], L['temp'], g.get('id', 'elite'), j['n'])
-    for r in res['copa'] + res['rapid'] + [x for x in res['mini'] if x['id'] == 'novatos']:
-        for rd in r['rondas']:
-            rd['partidos'] = pasar(rd['partidos'], res['sem'], r.get('id', 'novatos'), rd['r'])
-    for x in res['mini']:
-        if x.get('partidos'):
-            x['partidos'] = pasar(x['partidos'], res['sem'], x['id'])
-        if x.get('partido'):
-            x['partido'] = pasar([x['partido']], res['sem'], x['id'])[0]
+def _con_jurado(res, M):
+    """Le pone su jurado a cada batalla simulada que todavía no lo tenga (las ligas ya lo traen: `jugar_liga()`)."""
+    for sem, ps in _batallas(res):
+        for m in ps:
+            jurado_sim(m, M, *sem)
     return res
 
 
@@ -933,7 +1153,8 @@ def calcular(ahora=None, llaves=None, notas=None, viejo=None):
     activos = set(jugaron(llaves, ini - dt.timedelta(days=ACTIVO_DIAS), ini))
     niveles = {norm(k): v for k, v in ((_j('datos', 'divisiones.json', defecto={}) or {}).get('nivel') or {}).items()}
     reales = cruces(llaves, ini, fin)
-    L = ligas(viejo.get('ligas'), llaves, ahora)
+    M = aprender(llaves, viejo)
+    L = ligas(viejo.get('ligas'), llaves, ahora, M)
     # 💰 el libro de premios: lo de antes, más la temporada de ligas y la semana que se acaban de cerrar
     premios = dict(viejo.get('premios') or {})
     for c in L.pop('cerradas', None) or []:
@@ -941,8 +1162,6 @@ def calcular(ahora=None, llaves=None, notas=None, viejo=None):
     if viejo.get('sem') and str(viejo.get('sem')) < sid:
         premios.update(cerrar_semana(viejo, llaves))
     mini, pronto = mini_eventos(sid, ini, fin, activos, llaves, fz, ahora, L)
-    J = jurados(fz)
-    jueces = sorted(q for q, s in J.items() if s['votos'] >= 3)
     nombres = {}
     for ev in llaves.values():
         for nombre, _p, _x in ev.get('tabla') or []:
@@ -959,13 +1178,11 @@ def calcular(ahora=None, llaves=None, notas=None, viejo=None):
         'mini': mini, 'pronto': pronto,
         'proxima': proxima_semana(str(MU.periodo(fin + dt.timedelta(hours=1))[0]), mini),
         'equipo': equipo_semana(llaves, notas, ini, fin),
-        'jurados': J,
+        'jurados': jurados(M),
         'premios': premios,
-        'montos': {'liga': PREMIO_LIGA, 'copa': list(PREMIO_COPA), 'rapid': PREMIO_RAPID, 'mini': PREMIO_MINI},
+        'montos': {'liga': PREMIO_LIGA, 'copa': list(PREMIO_COPA), 'rapid': PREMIO_RAPID, 'mini': PREMIO_MINI, 'minimo': MINI_MINIMO},
     }
-    _con_jurado(res, jueces, J)
-    if L['temp'] >= PTB_DESDE:
-        poner_ptb(L, llaves)
+    _con_jurado(res, M)
     # 🔒 quienes ya cumplieron para el lunes que viene, para que la página no le pida un evento a quien ya lo jugó
     res['entran'] = sorted(jugaron(llaves, fin - dt.timedelta(days=ACTIVO_DIAS), fin))
     usados = set(activos) | {k for g in L['grupos'] for k in g['gente']} | set(L.get('elite') or [])
@@ -976,21 +1193,29 @@ def calcular(ahora=None, llaves=None, notas=None, viejo=None):
 def _self_check_premios(ok):
     real = lambda a, b, g: {'a': a, 'b': b, 'g': g, 'como': 'real', 'p': .5}   # noqa: E731
     sim = lambda a, b, g: {'a': a, 'b': b, 'g': g, 'como': 'sim', 'p': .5}     # noqa: E731
-    c = {'temp': 1, 'fin': '2026-11-16T16:00:00+00:00',
+    c = {'temp': 1, 'fin': '2026-11-16T16:00:00+00:00', 'jugaron': ['a', 'b', 'x'],
          'grupos': [{'id': 'oro-1', 'nivel': 'oro', 'jornadas': [{'partidos': [real('a', 'b', 'a'), sim('c', 'd', 'c')]}],
                      'tabla': [['a', 1, 1, 3], ['c', 1, 1, 3], ['b', 1, 0, 0], ['d', 1, 0, 0]]}]}
     pl = premios_liga(c)
     ok(pl.get('liga:1:oro-1:1', [0, 0])[:2] == ['a', PREMIO_LIGA['oro'][0]] and 'liga:1:oro-1:2' not in pl
        and 'liga:1:oro-1:3' not in pl,
-       'ligas: cobra el 1.º de Oro (jugó de verdad); el 2.º no (todo simulado) ni el 3.º (sin puntos)')
+       'ligas: cobra el 1.º de Oro (jugó un evento); el 2.º no (no jugó en toda la temporada) ni el 3.º (sin puntos)')
+    c2 = dict(c, jugaron=['c', 'b'], grupos=[dict(c['grupos'][0], tabla=[['c', 1, 1, 3], ['b', 1, 0, 0]])])
+    ok('liga:1:oro-1:1' in premios_liga(c2), 'y con todo simulado también cobra, si jugó algún evento (Dlx, 04/11: «me gusta la A»)')
     copa_ = {'id': 'A', 'campeon': 'a', 'rondas': [{'partidos': [real('a', 'c', 'a'), sim('b', 'd', 'b')]},
                                                    {'partidos': [sim('a', 'b', 'a')]}]}
     ps = premios_semana('s', '2026-11-02T16:00:00+00:00', [copa_], [], [
-        {'id': 'pandillas', 'nombre': 'Pandillas', 'tabla': [[['a', 'z'], 900]]}], sumaron={'a'})
+        {'id': 'pandillas', 'nombre': 'Pandillas', 'tabla': [[['a', 'z'], 900]]}], jugo={'a'})
     ok(ps.get('copa:s:A:1', [0, 0])[1] == PREMIO_COPA[0] and 'copa:s:A:2' not in ps,
-       'Copa: el campeón cobra (jugó una de verdad), el finalista con todo simulado no')
+       'Copa: el campeón cobra (jugó esa semana), el finalista que no jugó no')
     ok('mini:s:pandillas:a' in ps and 'mini:s:pandillas:z' not in ps,
-       'Pandillas: cobra el integrante que sumó esa semana, no el que no jugó')
+       'Pandillas: cobra el integrante que jugó esa semana, no el que no jugó')
+    pn = premios_semana('s', '2026-11-02T16:00:00+00:00', [], [], [
+        {'id': 'maraton', 'nombre': 'Maratón', 'tabla': [['a', 3]]}, {'id': 'trotamundos', 'nombre': 'T', 'tabla': [['a', 1]]},
+        {'id': 'batacazo', 'nombre': 'B', 'tabla': [['b', 'c', 0.3, '9']]}, {'id': 'jurado', 'nombre': 'J', 'tabla': [['d', 2]]},
+        {'id': 'podios', 'nombre': 'P', 'tabla': []}], jugo={'a', 'b', 'c', 'd'})
+    ok(sorted(pn) == ['mini:s:batacazo:b', 'mini:s:maraton:a'],
+       'los mini eventos nuevos pagan al primero, si llegó a lo mínimo: 1 servidor y 2 votos no alcanzan', pn)
     ok(tienda({'premios': ps}, {'A 🇦🇷': '123456'}).get('copa:s:A:1', [0])[0] == '123456',
        'al objeto, con el Discord de cada uno')
 
@@ -998,10 +1223,10 @@ def _self_check_premios(ok):
 def _self_check():
     mal = 0
 
-    def ok(c, t):
+    def ok(c, t, extra=None):
         nonlocal mal
         mal += not c
-        print('   %s %s' % ('✅' if c else '🔴', t))
+        print('   %s %s%s' % ('✅' if c else '🔴', t, '' if c or extra is None else '  → %s' % (extra,)))
 
     print('\n══ LAS COMPETENCIAS ══\n')
     _self_check_premios(ok)
@@ -1057,9 +1282,74 @@ def _self_check():
     ok(ptb_de(real_('x'), {('x', 'y'): [(ms, {'x': 0, 'y': 3})]}, ev) == (2, 1), 'el que ganó se lleva dos o más, aunque los votos anotados digan otra cosa')
     ok(ptb_de(real_('x'), {('x', 'y'): [(ms - 10 * 86400000, {'x': 2, 'y': 1})]}, ev) == (3, 0), 'y los votos de otra batalla entre los mismos, días antes, no cuentan')
     ok(ptb_de({'a': 'x', 'b': 'y', 'g': '', 'como': 'pend', 'p': .5}, {}, {}) == (0, 0), 'lo que no se jugó no reparte nada')
-    Lp = {'grupos': [{'jornadas': [{'partidos': [sim_('x', 3)]}, {'partidos': [sim_('y', 1)]}], 'tabla': [['x', 2, 1, 3], ['y', 2, 1, 3]]}]}
-    poner_ptb(Lp, {}, {})
-    ok(Lp['grupos'][0]['tabla'] == [['x', 2, 1, 3, 4], ['y', 2, 1, 3, 2]], 'y la tabla lo suma como quinta columna, sin cambiar el orden')
+    # ⚖️ el desempate, con cuidado
+    par = [sim_('x', 3), sim_('y', 1)]
+    ptb_f = lambda m: ptb_de(m, {}, {})   # noqa: E731
+    ok(tabla(['x', 'y'], par, {'x': 10, 'y': 900}, ptb_f) == [['x', 2, 1, 3, 4], ['y', 2, 1, 3, 2]],
+       'a igual de puntos manda el PTB, aunque el otro tenga más nivel')
+    ok(tabla(['x', 'y'], par, {'x': 10, 'y': 900}) == [['y', 2, 1, 3], ['x', 2, 1, 3]], 'y sin PTB, como siempre: 4 columnas y manda el nivel')
+    ok(tabla(['x', 'y'], [sim_('x', 3), sim_('x', 2)], {}, ptb_f)[0][:4] == ['x', 2, 2, 6], 'el PTB nunca le gana a los puntos')
+    ms_ok = lambda **kw: dict({'res': [0, 0], 'fav': [0, 0], 'casa': [0, 0], 'sv': '', 'por': {}, 'contra': {}, 'votos': 40}, **kw)   # noqa: E731
+    F_ = {'siempre': ms_ok(res=[40, 40], fav=[39, 40]), 'contra': ms_ok(res=[20, 40], fav=[2, 40]), 'nuevo': ms_ok(votos=5),
+          'amigo': ms_ok(res=[30, 40], fav=[20, 40], por={'x': 9}), 'local': ms_ok(res=[30, 40], fav=[20, 40], casa=[20, 20], sv='FFA'),
+          'p1': ms_ok(), 'p2': ms_ok(), 'y': ms_ok()}
+    M_ = {'fichas': F_, 'base': {'res': .8, 'fav': .55, 'casa': .5}, 'jueces': sorted(F_), 'yo': {'y': 'y'}, 'sv': {'x': 'FFA', 'z': 'DDF'}, 'votos': {}, 'frio': {}}
+    v_ = lambda q, g='x', l='z', pg=.7: voto_al_ganador(q, g, l, pg, M_)   # noqa: E731
+    ok(abs(v_('p1', pg=.5) - .8) < .001, 'un jurado sin votos, en una batalla pareja, es el promedio')
+    ok(v_('siempre') > v_('p1') > v_('contra'), 'quien suele votar al que gana y al favorito se le va más a ese que el promedio, y el que no, menos',
+       (v_('siempre'), v_('p1'), v_('contra')))
+    ok(v_('contra', pg=.2) > v_('contra', pg=.8), 'al que vota al de abajo le gusta más la sorpresa: vota más al que ganó sin ser favorito',
+       (v_('contra', pg=.2), v_('contra', pg=.8)))
+    ok(v_('p1', pg=.8) > v_('p1', pg=.2), 'y al promedio le pasa lo contrario')
+    ok(v_('amigo', 'x', 'z', .5) > v_('amigo', 'z', 'x', .5), 'su historial pesa: quien le votó 9 veces a x se le va a x')
+    ok(v_('local', 'x', 'z', .5) > v_('local', 'z', 'x', .5), 'y el que tira para su servidor, tira para su servidor')
+    ok(.04 < v_('contra', 'z', 'x', .02) < .96 and .04 < v_('siempre', 'x', 'z', .98) < .96, 'ningún jurado vota siempre igual: el tope es 95 %',
+       (v_('contra', 'z', 'x', .02), v_('siempre', 'x', 'z', .98)))
+    for sem_ in range(60):
+        mz = jurado_sim({'a': 'x', 'b': 'y', 'g': 'y', 'como': 'sim', 'p': .4}, M_, 'prueba', sem_)
+        if sum(1 for _q, v in mz['j'] if v == 'b') < 2 or 'y' in [q for q, _v in mz['j']] or len(mz['j']) != 3:
+            ok(False, 'el jurado: tres, sin el que pelea, y el que ganó con la mayoría', mz)
+            break
+    else:
+        ok(True, 'el jurado: tres, nunca uno de los que pelea, y el que ganó siempre con la mayoría (60 batallas)')
+    m1 = jurado_sim({'a': 'x', 'b': 'z', 'g': 'x', 'como': 'sim', 'p': .6}, M_, 's', 1)
+    ok(m1['j'] == jurado_sim({'a': 'x', 'b': 'z', 'g': 'x', 'como': 'sim', 'p': .6}, M_, 's', 1)['j'], 'lo mismo da siempre lo mismo')
+    clave_ = _clave_sim(('s', 1), m1)
+    ya_ = [['p1', 'a'], ['p2', 'a'], ['nuevo', 'b']]
+    M2 = dict(M_, frio={clave_: ya_})
+    ok(jurado_sim({'a': 'x', 'b': 'z', 'g': 'x', 'como': 'sim', 'p': .6}, M2, 's', 1)['j'] == ya_, 'lo ya votado se queda, aunque el jurado haya aprendido')
+    ok(jurado_sim({'a': 'x', 'b': 'z', 'g': 'z', 'como': 'sim', 'p': .6}, M2, 's', 1)['j'] != ya_, 'salvo que ya no le dé la mayoría al que ganó: ahí se vuelve a votar')
+    ok(jurado_sim({'a': 'x', 'b': 'z', 'g': 'x', 'como': 'real', 'p': .6}, M_, 's').get('j') is None, 'una batalla real no lleva jurado inventado')
+    ok(jurado_sim({'a': 'x', 'b': 'z', 'g': '', 'como': 'pend', 'p': .6}, M_, 's').get('j') is None, 'y una por jugar, tampoco')
+    ok(jurado_sim({'a': 'x', 'b': 'z', 'g': 'x', 'como': 'sim', 'p': .6}, dict(M_, jueces=['p1', 'p2']), 's').get('j') is None, 'sin tres jueces no hay jurado, y reparte como sin votos')
+    rs_ = {'ligas': {'temp': 2, 'grupos': [{'id': 'oro-1', 'jornadas': [{'n': 1, 'partidos': [dict(m1)]}]}]}}
+    ok(congelados(rs_).get(_clave_sim((2, 'oro-1', 1), m1)) == m1['j'], 'y lo que la corrida anterior votó se encuentra por su batalla')
+    J_ = {'votos': {'1': {'a': 'X 🇦🇷', 'b': 'Z', 'pub': int(_dia_utc('2026-10-27').timestamp() * 1000), 'sv': '?', 'v': {'q1': 'a', 'q2': 'a', 'q3': 'b'}},
+                    '2': {'a': 'X', 'b': 'Y', 'pub': int(_dia_utc('2026-10-28').timestamp() * 1000), 'sv': '?', 'v': {'q1': 'b'}},
+                    '3': {'lados': ['X', 'Y', 'Z'], 'g': 'Y', 'pub': int(_dia_utc('2026-10-29').timestamp() * 1000), 'sv': '?', 'v': {'q1': 'Y', 'q3': 'Z'}}}}
+    Fx = fichas({}, J_)
+    ok(Fx['q1']['res'] == [2, 2] and Fx['q3']['res'] == [0, 2], 'la ficha: compara con el resultado, y el voto suelto sin llave no cuenta', Fx.get('q1'))
+    ok(Fx['q1']['por'] == {'x': 1, 'y': 2} and Fx['q1']['votos'] == 3 and Fx['q1']['contra'].get('z') == 2, 'y anota a quién le vota y contra quién, por su nombre normalizado', Fx.get('q1'))
+    ok(aprender({}, None, {'votos': {}})['jueces'] == [], 'sin votos no se rompe: no hay a quién sortear')
+    # 🎲 los mini eventos nuevos
+    d_ = dt.datetime(2026, 11, 9, 16, 0, tzinfo=dt.timezone.utc)
+    ll_ = {'1': {'dia': '2026-11-10', 'sv': 'FFA', 'tabla': [['A', 'Campeón', 500], ['B', 'Subcampeón', 300]], 'rondas': [{'b': [[['A', 'B'], 'A', '']]}]},
+           '2': {'dia': '2026-11-11', 'sv': 'DDF', 'tabla': [['A', 'Tercero', 100], ['C', 'Campeón', 900]], 'rondas': [{'b': [[['C', 'A'], 'C', '']]}]},
+           '3': {'dia': '2026-11-12', 'sv': 'FFA', 'tabla': [['A', 'Cuartos', 50], ['B', 'Campeón', 600]], 'rondas': [{'b': [[['B', 'A'], 'B', '']]}]},
+           '9': {'dia': '2026-10-01', 'sv': 'SR', 'tabla': [['B', 'Campeón', 900]], 'rondas': []}}
+    ok(len(catalogo_de('2026-11-02')) == len(CATALOGO) - len(MINI_NUEVOS) and len(catalogo_de(MINI_NUEVOS_DESDE)) == len(CATALOGO),
+       'los nuevos entran al sorteo desde el 09/11: la semana en curso no cambia sus mini eventos')
+    viejos_ = [c[0] for c in sorted(catalogo_de('2026-11-02'), key=lambda c: moneda('mini', '2026-11-02', c[0])) if c[0] not in PRONTO][:MINI]
+    ok(viejos_ == ['racha', 'meta', 'pandillas', 'duos'], 'y los de esta semana siguen siendo los publicados', viejos_)
+    mx, _pr = mini_eventos(MINI_NUEVOS_DESDE, d_, dias_despues(d_, 7), {'a', 'b', 'c'}, ll_, {'a': 1300, 'b': 1000, 'c': 800}, d_ + dt.timedelta(days=4), {}, cuantos=len(CATALOGO))
+    de_ = {x['id']: x for x in mx}
+    ok(de_['maraton']['tabla'][0] == ['a', 3], 'Maratón: A jugó 3 eventos esta semana', de_['maraton'])
+    ok(de_['trotamundos']['tabla'][0] == ['a', 2], 'Trotamundos: A jugó en 2 servidores', de_['trotamundos'])
+    ok(de_['podios']['tabla'][0] == ['b', 2], 'Podios: B tiene 2 esta semana (el de octubre no cuenta), y A sólo 2 si contara el cuartos', de_['podios'])
+    ok(de_['batacazo']['tabla'][0][:2] == ['c', 'a'] and de_['batacazo']['tabla'][0][2] < .1, 'Batacazo: C, con mucho menos nivel, le ganó a A', de_['batacazo'])
+    ok(votos_de_la_semana({'votos': {'1': {'a': 'X', 'b': 'Y', 'pub': int(d_.timestamp() * 1000) + 1000, 'v': {'q': 'a', 'r': 'a', 's': 'b'}},
+                                     '2': {'a': 'X', 'b': 'Y', 'pub': 1000, 'v': {'q': 'a'}}}}, d_, dias_despues(d_, 7)) == {'x': 2, 'y': 1},
+       'Favorito del jurado: cuenta los votos de esta semana y nada más')
     cal = calendario(10)
     ok(len(cal) == 9 and all(len(j) == 5 for j in cal) and len({tuple(sorted(p)) for j in cal for p in j}) == 45,
        'una liga de 10: 9 jornadas de 5, los 45 cruces una vez')
@@ -1103,11 +1393,6 @@ def _self_check():
     rs2 = rapids(set(elo20), lunes, dias_despues(lunes, 7), {}, {k: -v for k, v in elo20.items()}, lunes + dt.timedelta(days=8), 's', fij)
     ok([x['gente'] for x in rs2] == [x['gente'] for x in rs] and armadas({'sem': 'otra', 'rapid': rs}, 's', 'rapid') is None,
        'una semana ya armada no se rearma aunque cambie la fuerza; la semana siguiente sí')
-    J = {'x': {'coincide': 0.9}, 'y': {'coincide': 0.4}, 'z': {'coincide': 0.7}}
-    mm = jurado_sim({'a': 'a', 'b': 'b', 'g': 'a', 'como': 'sim', 'p': 0.5}, ['x', 'y', 'z'], J, 's')
-    ok(len(mm['j']) == 3 and sum(1 for _q, v in mm['j'] if v == 'a') >= 2, 'el jurado simulado: tres jueces y el ganador con la mayoría')
-    ok(jurado_sim({'a': 'a', 'b': 'b', 'g': 'a', 'como': 'real', 'p': 0.5}, ['x', 'y', 'z'], J, 's').get('j') is None,
-       'y una batalla real no lleva jurado inventado')
     print('\n   %s' % ('todo bien' if not mal else '🔴 %d mal' % mal))
     return 1 if mal else 0
 

@@ -11,6 +11,19 @@
  ],
  "cambios": [
     {
+      "version": "4.30",
+      "dia": "2026-11-04",
+      "cuando": "2026-11-04T19:54:52-05:00",
+      "titulo": "Competencias: cobra quien jugó, un jurado de verdad y cinco mini eventos más",
+      "items": [
+        "**Los premios de Competencias**: cobra quien ganó y jugó al menos 1 evento en ese tiempo (la temporada de ligas, o la semana). Antes pedía cruzarte justo con tu rival, y casi nadie cobraba.",
+        "**Las simuladas se votan con jueces de verdad**: cada juez sorteado vota como suele votar, y lo aprendemos de sus votos. Una jornada cerrada ya no cambia.",
+        "**Con la temporada 2 de las ligas (el 16), el PTB desempata**: a igual de puntos, va primero quien tiene más votos de jurado.",
+        "**Cinco mini eventos más desde el lunes 9**: Maratón, Trotamundos, Cazador de podios, Batacazo y Favorito del jurado.",
+        "**La ficha de cada jurado, más justa**: su nota compara su voto con el resultado de la batalla, y ya dice cuánto vota a la gente de su servidor."
+      ]
+    },
+    {
         "version": "4.29",
         "dia": "2026-11-04",
         "cuando": "2026-11-04T19:51:12-05:00",

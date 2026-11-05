@@ -3079,8 +3079,10 @@ def _competencias_web(pool=None):
             o.update(rey=K(x['rey']), defensas=x['defensas'], reyes=[K(k) for k in x['reyes']])
         elif x['id'] == 'revancha':
             o.update(hechas=[[K(a), K(b)] for a, b in x['hechas']], pendientes=x['pendientes'])
-        elif x['id'] == 'racha':
+        elif x['id'] in ('racha', 'maraton', 'trotamundos', 'podios', 'jurado'):
             o.update(t=t(x['tabla']))
+        elif x['id'] == 'batacazo':
+            o.update(t=[[K(a), K(b), p, n] for a, b, p, n in x['tabla']])
         elif x['id'] == 'novatos':
             o.update(llave(x))
         return o

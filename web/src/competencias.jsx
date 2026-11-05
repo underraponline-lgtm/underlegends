@@ -184,7 +184,7 @@ function TablaLiga({ liga, C, g, yo }) {
         {!esElite && g.nv !== 'oro' ? <span><i className="sube" />Suben de liga</span> : null}
         {!esElite && g.nv !== 'ascenso' ? <span><i className="baja" />Bajan de liga</span> : null}
         <span><i className="g" />G ganó · <i className="p" />P perdió</span>
-        {conPtb ? <span><b>PTB</b> votos de jurado a favor, 3 en juego por batalla</span> : null}
+        {conPtb ? <span><b>PTB</b> votos de jurado a favor, 3 en juego por batalla. Desempata</span> : null}
         <span className="cm9-ley-toca">Toca una fila para ver más</span>
       </div>
     </div>
@@ -497,6 +497,11 @@ const EXPLICA = {
   revancha: ['Te vuelve a tocar quien te ganó la última vez.', 'Haber perdido un 1v1 en los últimos 60 días.', 'Si esta semana le ganas a quien te ganó, revancha cumplida: vale doble.'],
   racha: ['Victorias seguidas en la semana, en cualquier evento.', 'Jugar 1v1 esta semana.', 'Gana la racha más larga de la semana.'],
   novatos: ['Una llave de 8 sólo para quienes tienen menos de 5 eventos.', 'Tener menos de 5 eventos y haber jugado en las 2 semanas antes del lunes. Entran 8, sorteados.', 'Como la Rapid: cuartos, semis y final, real si se cruzan y simulado si no.'],
+  maraton: ['Quien juega más eventos en la semana, en cualquier servidor.', 'Jugar 1 evento esta semana.', 'Gana quien juegue más eventos. A igual cantidad, quien sumó más puntos.'],
+  trotamundos: ['Quien juega en más servidores distintos en la semana.', 'Jugar 1 evento esta semana.', 'Gana quien juegue en más servidores. A igual cantidad, quien sumó más puntos.'],
+  podios: ['Quien sube más veces al podio en la semana: campeón, subcampeón o tercero.', 'Jugar 1 evento esta semana.', 'Gana quien tenga más podios. A igual cantidad, más títulos y después más puntos.'],
+  batacazo: ['La mayor sorpresa de la semana: ganarle a alguien con mucho más nivel. El % es la chance que tenía de ganar.', 'Jugar 1v1 esta semana.', 'Gana el batacazo más grande.'],
+  jurado: ['Quien se lleva más votos de los jurados en la semana, de lo que el bot ve en las votaciones.', 'Jugar 1 evento esta semana, en un servidor donde se vote a la vista.', 'Gana quien tenga más votos a favor. A igual cantidad, quien sumó más puntos.'],
   escalera: ['10 escalones: tu carta contra otra de tu nivel. Ganas subes, pierdes bajas, y de los escalones dorados no se baja.', 'Todos, con 3 intentos por día.', 'Se prepara: pide que juegues desde la página.'],
   fantasy: ['Eliges 3 raperos y sumas las notas que saquen en la semana.', 'Todos los que armen su equipo.', 'Se prepara: pide elegir desde la página.'],
   crews: ['Crew contra crew el fin de semana. Suma el que sube, el que se mantiene y hasta el que baja.', 'Las crews de la Liga.', 'Se prepara.'],
@@ -505,11 +510,20 @@ const EXPLICA = {
 /** Lo de adentro de cada mini evento */
 /** El color de cada mini evento: el cuadro de su ícono y su barra */
 const COLOR_MINI = { derbi: '#E41373', paises: '#29B298', meta: '#E41373', supercopa: '#F5C542', duos: '#B07CFF', pandillas: '#56A2F2',
-  rey: '#F5C542', revancha: '#E41373', racha: '#FF7A2F', novatos: '#29B298' };
+  rey: '#F5C542', revancha: '#E41373', racha: '#FF7A2F', novatos: '#29B298', maraton: '#29B298', trotamundos: '#56A2F2', podios: '#F5C542',
+  batacazo: '#E41373', jurado: '#B07CFF' };
+/** Lo que cuenta cada mini evento de tabla, y lo mínimo para cobrar (los números viajan con los datos: `MINI_MINIMO`) */
+const CUENTA_MINI = { maraton: ['evento', 'eventos'], trotamundos: ['servidor', 'servidores'], podios: ['podio', 'podios'], jurado: ['voto', 'votos'] };
+const minimoTxt = (C, id) => {
+  const n = ((montos(C) || {}).minimo || {})[id];
+  if (!n) return '';
+  if (id === 'batacazo') return ' Tiene que haber tenido un ' + pct(n) + ' de chances o menos.';
+  return CUENTA_MINI[id] && n > 1 ? ' Hacen falta al menos ' + n + ' ' + CUENTA_MINI[id][1] + '.' : '';
+};
 const MEDALLA = ['🥇', '🥈', '🥉'];
 
 /** Un podio de 3 con barra (Dúos, Pandillas, Racha): el 1.º llena la barra y los demás en proporción */
-function Podio({ filas, yo, nombre, valor, sufijo = '' }) {
+function Podio({ filas, yo, nombre, valor, sufijo = '', texto }) {
   if (!filas.length) return <p className="cm9-ev-nada">Todavía nadie suma esta semana.</p>;
   const tope = Math.max(1, ...filas.map(valor));
   return (
@@ -518,7 +532,7 @@ function Podio({ filas, yo, nombre, valor, sufijo = '' }) {
         <li key={i} className={nombre(f).yo ? 'yo' : undefined}>
           <span className="cm9-pod-m" aria-hidden="true">{MEDALLA[i] || i + 1}</span>
           <span className="cm9-pod-n">{nombre(f).t}</span>
-          <b>{valor(f).toLocaleString('es')}{sufijo}</b>
+          <b>{texto ? texto(f) : valor(f).toLocaleString('es') + sufijo}</b>
           <i className="cm9-pod-b" style={{ width: Math.max(6, Math.round(valor(f) / tope * 100)) + '%' }} />
         </li>
       ))}
@@ -599,6 +613,14 @@ function Mini({ liga, C, x, yo, completo }) {
     );
   } else if (x.id === 'racha') {
     cuerpo = <Podio filas={completo ? x.t : x.t.slice(0, 3)} yo={yo} nombre={([k]) => ({ t: N(k), yo: k === yo })} valor={([, n]) => n} sufijo=" 🔥" />;
+  } else if (CUENTA_MINI[x.id]) {
+    const [uno, varios] = CUENTA_MINI[x.id];
+    cuerpo = <Podio filas={completo ? x.t : x.t.slice(0, 3)} yo={yo} nombre={([k]) => ({ t: N(k), yo: k === yo })} valor={([, n]) => n} texto={([, n]) => n + ' ' + (n === 1 ? uno : varios)} />;
+    const i = x.t.findIndex(([k]) => k === yo);
+    if (i >= 0) tuyo = 'Vas ' + (i + 1) + '.º';
+  } else if (x.id === 'batacazo') {
+    cuerpo = <Podio filas={completo ? x.t : x.t.slice(0, 3)} yo={yo} nombre={([g, p]) => ({ t: N(g) + ' a ' + N(p), yo: g === yo })} valor={([, , pc]) => 1 - pc} texto={([, , pc]) => pct(pc)} />;
+    if (x.t[0] && x.t[0][0] === yo) tuyo = 'El batacazo más grande es tuyo';
   } else if (x.id === 'novatos') {
     cuerpo = x.campeon ? <div className="cm9-rey"><span className="cm9-rey-c" aria-hidden="true">🌱</span><div><b>{N(x.campeon)}</b><small>Campeón de los novatos</small></div></div>
       : <small>{(x.r[0] || { p: [] }).p.map((m) => N(m[0]) + ' vs ' + N(m[1])).slice(0, 2).join(' · ')}</small>;
@@ -615,8 +637,8 @@ function Mini({ liga, C, x, yo, completo }) {
       {tuyo ? <p className="cm9-ev-tuyo">⭐ {tuyo}</p> : null}
       {completo && (x.id === 'derbi' || x.id === 'paises') ? <ul className="cm9-crus">{x.p.map((m) => <Cruce key={m[0] + m[1]} liga={liga} C={C} m={m} yo={yo} jurado />)}</ul> : null}
       {completo && x.id === 'novatos' ? <Llave liga={liga} C={C} r={x} yo={yo} /> : null}
-      {completo ? <dl className="cm9-ex"><div><dt>Quién juega</dt><dd>{ex[1]}</dd></div><div><dt>Cómo se gana</dt><dd>{ex[2]}</dd></div></dl>
-        : <p className="cm9-ev-gana"><b>Cómo se gana:</b> {ex[2]}{montos(C) && x.id !== 'meta' ? ' Premio: ' + pdt(montos(C).mini) + ' Puntos de Tienda.' : ''}</p>}
+      {completo ? <dl className="cm9-ex"><div><dt>Quién juega</dt><dd>{ex[1]}</dd></div><div><dt>Cómo se gana</dt><dd>{ex[2]}{minimoTxt(C, x.id)}</dd></div></dl>
+        : <p className="cm9-ev-gana"><b>Cómo se gana:</b> {ex[2]}{minimoTxt(C, x.id)}{montos(C) && x.id !== 'meta' ? ' Premio: ' + pdt(montos(C).mini) + ' Puntos de Tienda.' : ''}</p>}
     </article>
   );
 }
@@ -676,12 +698,12 @@ function LigasInfo({ liga, C, yo }) {
           <li><b>Los niveles</b><p>De arriba abajo: <b>Oro</b> (1 liga), <b>Plata</b> (2), <b>Bronce</b> (4) y <b>Ascenso</b> (las que hagan falta). Cada liga tiene unos 10 raperos.</p></li>
           <li><b>Quién juega</b><p>Todos los que jugaron al menos un evento en las 2 semanas antes de que arranque la temporada. Quien entra después empieza en Ascenso la temporada siguiente.</p></li>
           <li><b>Las jornadas</b><p>Todos contra todos: en cada jornada te toca un rival. Las jornadas cierran los <b>lunes, miércoles y viernes a las 11 AM</b> (hora del este).</p></li>
-          <li><b>Cómo sale cada cruce</b><p>Si te enfrentas a tu rival en un 1v1 de <b>cualquier evento de cualquier servidor</b> antes del cierre, cuenta esa batalla. Si no se cruzan, se simula con el nivel de cada uno (su Score y su forma), con un jurado sorteado.</p></li>
-          <li><b>Los puntos</b><p>Ganar da <b>3 puntos</b>. La tabla se ordena por puntos, después por victorias reales y después por nivel.</p></li>
-          <li><b>El PTB</b><p>Desde la temporada 2, la tabla muestra tu <b>PTB</b>: los votos de jurado a tu favor, con 3 en juego por batalla. En una simulada, los de su jurado sorteado. En una real, los que dejó el jurado llevados a 3, y sin votos anotados, los 3 al que ganó. No cambia el orden de la tabla.</p></li>
+          <li><b>Cómo sale cada cruce</b><p>Si te enfrentas a tu rival en un 1v1 de <b>cualquier evento de cualquier servidor</b> antes del cierre, cuenta esa batalla. Si no se cruzan, se simula: quién gana sale del nivel de cada uno, y por cuánto lo vota un jurado sorteado.</p></li>
+          <li><b>Los puntos</b><p>Ganar da <b>3 puntos</b>. La tabla se ordena por puntos; a igual de puntos, por <b>PTB</b> (desde la temporada 2), después por victorias reales y después por nivel.</p></li>
+          <li><b>El PTB</b><p>Desde la temporada 2, la tabla muestra tu <b>PTB</b>, y <b>desempata</b>: los votos de jurado a tu favor, con 3 en juego por batalla. En una simulada votan 3 jueces de verdad, sorteados, y cada uno vota como suele votar: lo aprendemos de sus votos. En una real, cuentan los votos que dejó el jurado llevados a 3, y sin votos anotados, los 3 al que ganó. Una jornada cerrada ya no cambia.</p></li>
           <li><b>Subir y bajar</b><p>Al terminar las 9 jornadas, los <b>2 primeros suben</b> de nivel y los <b>2 últimos bajan</b>. En Oro no se sube más; en Ascenso no se baja.</p></li>
           <li><b>⭐ La Élite</b><p>Se juega <b>además</b> de tu liga, con el mismo calendario. Es de los 10 mejores del Competitivo que estén activos y <b>tengan su carta Competitiva</b>: sin la carta no se entra.</p></li>
-          <li><b>Los premios</b><p>Subir de liga, y Puntos de Tienda para los 3 primeros de cada liga al terminar la temporada{montos(C) ? ': ' + ['elite', 'oro', 'plata', 'bronce', 'ascenso'].map((n) => (n === 'elite' ? 'Élite' : NIVEL[n] ? NIVEL[n].n : n) + ' ' + montos(C).liga[n].map(pdt).join(' / ')).join(' · ') : ''}. <b>Para cobrar hay que haber jugado al menos una batalla de verdad</b> en esa liga: con todo simulado no se cobra.</p></li>
+          <li><b>Los premios</b><p>Subir de liga, y Puntos de Tienda para los 3 primeros de cada liga al terminar la temporada{montos(C) ? ': ' + ['elite', 'oro', 'plata', 'bronce', 'ascenso'].map((n) => (n === 'elite' ? 'Élite' : NIVEL[n] ? NIVEL[n].n : n) + ' ' + montos(C).liga[n].map(pdt).join(' / ')).join(' · ') : ''}. <b>Para cobrar hay que haber jugado al menos 1 evento</b> en esa temporada.</p></li>
         </ol>
       </section>
 
@@ -756,7 +778,7 @@ function Simulada({ liga, C }) {
         <div><b>{nombreDe(liga, C, m[1])}</b><small>{pct(1 - m[4])}</small></div>
       </div>
       <Jurado liga={liga} C={C} m={m} />
-      <p className="cm9-nota">Cada simulada sortea 3 jueces que ya votaron en la Liga. Cada uno vota según su ficha: el que menos coincide con la mayoría es el que se aparta.</p>
+      <p className="cm9-nota">Cada simulada sortea 3 jueces de verdad, y cada uno vota como suele votar: lo aprendemos de sus votos (si se va con el favorito, si tira para su servidor, a quién le suele ir). Quién gana sale del nivel; ellos dicen por cuánto.</p>
     </article>
   );
 }
@@ -786,8 +808,8 @@ const PREGUNTAS = [
   ['¿Por qué no veo la Copa ni la Rapid?', 'Las ligas las ve todo el mundo. De lo demás, cada uno ve lo suyo: tu llave y los mini eventos en los que estás. De lo que no juegas, ahí mismo te decimos qué te falta.'],
   ['¿Es sólo para los del Competitivo?', 'No: las ligas, la Copa, la Rapid y los mini eventos son para todos los que jugaron en las últimas 2 semanas. Sólo la Élite pide la carta Competitiva: es de los 10 mejores del Competitivo, y ellos juegan además su liga.'],
   ['¿Tengo que hacer algo?', 'No. No hay inscripción ni botón: tus batallas de siempre cuentan solas. Sólo mira quién te toca y búscalo en los eventos.'],
-  ['¿Se puede arreglar una simulación?', 'No. Lo mismo da siempre el mismo resultado y cualquiera puede rehacer la cuenta. Un resultado real nunca se inventa.'],
-  ['¿Qué gano?', 'Subir de liga y Puntos de Tienda según tu puesto. Y la Élite: los 10 mejores del Competitivo, con su carta Competitiva, la juegan además de su liga.'],
+  ['¿Se puede arreglar una simulación?', 'No. Lo mismo da siempre el mismo resultado, y una jornada cerrada ya no cambia. Un resultado real nunca se inventa.'],
+  ['¿Qué gano?', 'Subir de liga y Puntos de Tienda según tu puesto, si jugaste al menos 1 evento en ese tiempo. Y la Élite: los 10 mejores del Competitivo, con su carta Competitiva, la juegan además de su liga.'],
 ];
 
 /** 💰 Quién cobró en el último cierre (la semana o la temporada de ligas que terminó). Sin nadie, no se dibuja. */
@@ -796,7 +818,7 @@ function Cobraron({ liga, C, yo }) {
   if (!u.length) return null;
   return (
     <section className="cm9-sec" aria-label="Los que cobraron">
-      <div className="cm9-cab"><div><h2>COBRARON EN EL ÚLTIMO CIERRE</h2><p>Puntos de Tienda para quien ganó jugando de verdad.</p></div></div>
+      <div className="cm9-cab"><div><h2>COBRARON EN EL ÚLTIMO CIERRE</h2><p>Puntos de Tienda para quien ganó y jugó al menos 1 evento en ese tiempo.</p></div></div>
       <ul className="cm9-cobro">
         {u.map(([k, m, por]) => (
           <li key={k + por} className={k === yo ? 'yo' : ''}><Cara liga={liga} k={k} nombre={nombreDe(liga, C, k)} cls="cara cm9-cara-ch" lazy /><Nombre liga={liga} C={C} k={k} yo={yo} /><small>{por}</small><b>+{pdt(m)}</b></li>
@@ -867,7 +889,7 @@ export function Competencias({ liga, dc, sub = '' }) {
         </ol>
         <ul className="cm9-glos">
           <li><span className="cm9-tag real">REAL</span>Se cruzaron de verdad en un evento: cuenta esa batalla, y dice en cuál.</li>
-          <li><span className="cm9-tag sim">SIMULADO</span>No se cruzaron: decide el nivel de cada uno, con un jurado sorteado. Los batacazos pasan.</li>
+          <li><span className="cm9-tag sim">SIMULADO</span>No se cruzaron: decide el nivel de cada uno, y lo vota un jurado de jueces de verdad, sorteado. Los batacazos pasan.</li>
           <li><span className="cm9-tag pend">65 %</span>Tus chances si se simula. Salen de tu nivel: a quién le ganaste y con quién perdiste en todas tus batallas 1v1 de la temporada.</li>
         </ul>
       </section>
