@@ -1,6 +1,6 @@
 {
  "_leeme": "Las ligas de los servidores: cada batalla y su resultado, y la tabla que sale de eso. Lo arma bot/ligas.py en cada corrida; las reglas viven ahí. Sin los mensajes: el repo es público. `batallas`: [id del mensaje, instante, jornada, a, b, ganador (vacío: pendiente), directa|replica, extras]. Las batallas con resultado cuentan como duelos (Ranking Duelos y Win%; el Score no). `flyer`: el último afiche de su canal de anuncios, re-alojado en R2 (`url`); `prox`: la próxima fecha que anunció (`d` el día, `t` el instante si lo dijo). Desde el 17/10/2026: `ptb` {id de la batalla: [PTB de a, de b]}, `flyers` (la galería, en R2), `staff` [[discord_id, nombre, mensajes en anuncios, en veredictos, último]] y `nov` (lo nuevo de las últimas horas, para «Seguir la liga»).",
- "t": "2026-11-04T23:59:46Z",
+ "t": "2026-11-05T00:24:01Z",
  "ligas": {
   "fmh-albiceleste": {
    "n": "FMH Albiceleste",
@@ -2186,17 +2186,17 @@
      5,
      "BLOODY",
      "VARGAS",
-     "",
-     "",
+     "BLOODY",
+     "directa",
      ""
     ]
    ],
    "tabla": [
     [
      "BLOODY",
-     3,
-     3,
-     9
+     4,
+     4,
+     12
     ],
     [
      "COLESITO",
@@ -2248,7 +2248,7 @@
     ],
     [
      "VARGAS",
-     4,
+     5,
      0,
      0
     ]
@@ -2321,6 +2321,10 @@
     "1567006524335984842": [
      37.5,
      39.0
+    ],
+    "1567687029993644103": [
+     36.0,
+     33.0
     ]
    },
    "flyers": [
@@ -2442,8 +2446,8 @@
      "1344825963669749804",
      "⁺‧₊˚ ཐིNeisMCཋྀ ˚₊‧",
      15,
-     30,
-     "2026-11-04T23:48:34Z"
+     32,
+     "2026-11-05T00:07:55Z"
     ],
     [
      "1055474244089286706",
@@ -2515,6 +2519,16 @@
      1,
      "2026-10-20T03:41:28Z"
     ]
+   ],
+   "nov": [
+    {
+     "id": "r:fmh-tricolor:1567687029993644103",
+     "t": "2026-11-05T00:23:37Z",
+     "que": "res",
+     "ids": [
+      "1567687029993644103"
+     ]
+    }
    ]
   },
   "fmh-under": {
