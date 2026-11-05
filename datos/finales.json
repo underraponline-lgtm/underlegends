@@ -1069,5 +1069,27 @@
   "sin_permiso": false,
   "sv": "FFA"
  },
+ "1567678059945918565": {
+  "autor": "1493013247488430202",
+  "canal": "1470097588635176960",
+  "cuando": "2026-11-04T23:12:55.541000+00:00",
+  "evento": "COMPE XCLUSIVISTICA VOL. 1",
+  "fecha": "04/11",
+  "llave": "1567678059945918565",
+  "pregunta": "1567726065953144998",
+  "preguntada": "2026-11-04 10:23 PM ET",
+  "preguntas": [
+   {
+    "lados": [
+     "Adriagner🇳🇮",
+     "trelok 🇨🇴"
+    ],
+    "ronda": "FINAL"
+   }
+  ],
+  "respondidas": {},
+  "sin_permiso": false,
+  "sv": "DDF"
+ },
  "_leeme": "Las llaves que el ciclo no entendió y se las preguntó a quien las publicó, con botones o un menú (bot/finales.py). Una vez por llave, por su ID: así nunca se pregunta dos veces. Dlx, 12/10/2026."
 }
