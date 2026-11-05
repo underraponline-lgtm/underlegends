@@ -15197,8 +15197,6 @@ export class Avisos {
     try { tit = ult ? JSON.parse(ult.cuerpo).t || '' : ''; } catch (e) { tit = ''; }
     // ⚠️ EL ULTIMO ERROR SE MUESTRA, no sólo se guarda. Un error que se
     // anota donde nadie lo puede leer es un error callado con más pasos.
-    // 🏟️ el vigía de las batallas de liga: sólo cuentas (`ligasVuelta()`)
-    ligas_vivo: this.leer('ligas_vivo') || null,
     const err = this.leer('ultimo_error');
     const fallo = this.leer('ultimo_fallo');
     // 🔑 POR SERVICIO DE PUSH, SIN UN SOLO ENDPOINT: cuántos de Google
@@ -15224,6 +15222,8 @@ export class Avisos {
       'WHERE sv = ? ORDER BY creado DESC LIMIT 1', SV_PRUEBA).toArray()[0];
     return {
       servicios,
+      // 🏟️ el vigía de las batallas de liga: sólo cuentas (`ligasVuelta()`)
+      ligas_vivo: this.leer('ligas_vivo') || null,
       pruebas: {
         dispositivos: conPrueba,
         ultima: up ? { t: new Date(up.creado).toISOString(), estado: up.estado,
