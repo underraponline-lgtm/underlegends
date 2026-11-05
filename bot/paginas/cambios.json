@@ -11,6 +11,19 @@
  ],
  "cambios": [
     {
+      "version": "4.28",
+      "dia": "2026-11-04",
+      "cuando": "2026-11-04T19:08:55-05:00",
+      "titulo": "Competencias: ves lo tuyo, con la foto de cada uno, y la Copa pasa a 32",
+      "items": [
+        "**Las ligas, con la foto de cada uno.** Y toca una fila para ver su carta, sus números y cómo le fue en esa liga, jornada por jornada.",
+        "**Las ligas las ve todo el mundo**: Élite, Oro, Plata, Bronce y Ascenso.",
+        "**De la Copa, la Rapid y los mini eventos ves lo tuyo**: tu llave y los mini eventos en los que estás. De lo que no juegas, ahí mismo te decimos qué te falta para entrar.",
+        "**Desde el lunes 9, la Copa es de 32**: 32vos, octavos, cuartos, semis y final. Ves tu camino, y la llave entera si quieres.",
+        "**Con la temporada 2 de las ligas (el 16), la tabla trae el PTB**: los votos de jurado a tu favor."
+      ]
+    },
+    {
         "version": "4.27",
         "dia": "2026-11-04",
         "cuando": "2026-11-04T18:51:45-05:00",

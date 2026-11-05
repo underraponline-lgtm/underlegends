@@ -27,12 +27,15 @@ LAS REGLAS
   `SUBEN` primeros de cada liga y bajan los `BAJAN` últimos; quien entra nuevo arranca en Ascenso.
 - **⭐ La Élite**, en paralelo y con el mismo calendario: los 10 mejores del Competitivo activos al arrancar la
   temporada, y con la carta Competitiva (sin ella no se entra). Quien está en la Élite juega también su liga.
-- **🏆 La Copa**: cada lunes, llaves de `COPA` a eliminación por división y fuerza: octavos, cuartos, semis y final.
+- **🏆 La Copa**: cada lunes, llaves de `COPA` a eliminación por división y fuerza: 32vos, octavos, cuartos, semis y final.
 - **⚡ Las Rapid**: cada lunes, todos los activos sorteados en llaves de `RAPID`; cuartos hasta el jueves, semis hasta el
   sábado, final hasta el lunes.
 - **🎲 Mini eventos**: `MINI` por semana, sorteados del `CATALOGO` con la semana de semilla.
 - **⚖️ Jurados**: la ficha de cada uno sale de quién votó a quién (`datos/jurados.json`), y en las simuladas se sortean
   tres que votan según su ficha (`jurado_sim()`).
+- **⚖️ El PTB de las ligas** (Dlx, 04/11/2026: *«para la próxima que muestre un PTB basado en los jurados»*), desde la
+  temporada `PTB_DESDE`: los votos de jurado que cada uno fue sumando, `PTB_BATALLA` en juego por batalla (`ptb_de()`).
+  Se muestra y no ordena: la tabla sigue yendo por puntos, ganados de verdad y fuerza.
 - **💰 Premios** (Dlx, 27/10/2026, a las cuatro preguntas: «Moderado», «Poco, sólo el campeón», «Al menos 1 batalla
   real»): en Puntos de Tienda. Las ligas, a los tres primeros de cada una al cerrar la temporada (`PREMIO_LIGA`); la
   Copa al campeón y al finalista, la Rapid y cada mini evento al campeón, al cerrar la semana. **Sólo cobra quien jugó al
@@ -83,10 +86,14 @@ SIN_ELO = 1000.0
 #: las 8 de una Rapid: el 1 contra el 8, el 4 contra el 5…, así los dos mejores sólo se cruzan en la final
 SIEMBRA8 = (0, 7, 3, 4, 2, 5, 1, 6)
 LETRAS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
-#: la Copa: llaves de 16, y el orden de siembra (el 1 contra el 16, el 8 contra el 9…), así los dos mejores sólo se
-#: cruzan en la final
-COPA = 16
-SIEMBRA = (0, 15, 7, 8, 4, 11, 3, 12, 2, 13, 5, 10, 6, 9, 1, 14)
+#: la Copa: llaves de 32 (Dlx, 04/11/2026: «que la COPA sea de 32vos para la próxima») y el orden de siembra (el 1 contra
+#: el 32, el 16 contra el 17…), así los dos mejores sólo se cruzan en la final. Hasta `COPA32_DESDE` eran de 16: la de esa
+#: semana ya estaba publicada, y una llave publicada no se rearma (`armadas()`)
+COPA = 32
+COPA_ANTES = 16
+COPA32_DESDE = '2026-11-09'
+SIEMBRA16 = (0, 15, 7, 8, 4, 11, 3, 12, 2, 13, 5, 10, 6, 9, 1, 14)
+SIEMBRA = tuple(x for s in SIEMBRA16 for x in (s, COPA - 1 - s))
 #: los niveles de las ligas, de arriba abajo, y cuánta gente entra en cada uno (Ascenso: todo el resto)
 NIVELES = ('oro', 'plata', 'bronce', 'ascenso')
 CUPO = {'oro': 10, 'plata': 20, 'bronce': 40}
@@ -106,6 +113,10 @@ CORTES = (2, 4, 7)
 MINI = 4
 #: desde cuántos votos un jurado tiene nota
 JURADO_MIN = 5
+#: ⚖️ el PTB de las ligas sale con esta temporada (Dlx: «para la próxima»), y lo que reparte cada batalla: los tres votos
+#: del jurado de una simulada
+PTB_DESDE = 2
+PTB_BATALLA = 3
 
 
 def _j(*p, defecto=None):
@@ -258,23 +269,36 @@ def armadas(viejo, sem, que):
     return out or None
 
 
+def rondas_copa(lugares, ini, fin):
+    """`(nombres, ventanas)` de una llave de la Copa, según sus lugares. La de 32: 32vos hasta el miércoles, una ronda por
+    día hasta el sábado y la final hasta el lunes. Una de 16 (una semana armada antes de `COPA32_DESDE`, o una Copa con muy
+    poca gente): una ronda cada dos días."""
+    if lugares > COPA_ANTES:
+        return ('32vos', 'Octavos', 'Cuartos', 'Semifinal', 'Final'), [ini] + [dias_despues(ini, d) for d in (2, 3, 4, 5)] + [fin]
+    return ('Octavos', 'Cuartos', 'Semifinal', 'Final'), [ini] + [dias_despues(ini, d) for d in (2, 4, 6)] + [fin]
+
+
 def copa(activos, niveles, fz, ini, fin, llaves, ahora, sem, fijas=None):
-    """🏆 LA COPA DE LA SEMANA, A ELIMINACIÓN (Dlx, 26/10/2026: «la copa es un torneo de octavos»): los activos, por su
-    división y su fuerza, en llaves de `COPA` (octavos, cuartos, semis y final, una ventana cada una). Las llaves salen
-    parejas en tamaño; las que no llegan a 16 llevan pases libres para los mejores sembrados, como en cualquier copa."""
+    """🏆 LA COPA DE LA SEMANA, A ELIMINACIÓN (Dlx, 26/10/2026: «la copa es un torneo»; 04/11/2026: «de 32vos»): los
+    activos, por su división y su fuerza, en llaves de `COPA`, con una ventana por ronda (`rondas_copa()`). Las llaves salen
+    parejas en tamaño; las que no llegan a llenarse llevan pases libres para los mejores sembrados, como en cualquier copa.
+    Lo que manda en una llave ya armada son sus lugares: la semana del cambio sigue de 16 hasta el lunes."""
     if fijas:
         todas = fijas
     else:
+        grande = str(sem) >= COPA32_DESDE
         orden = sorted(activos, key=lambda k: (niveles.get(k, 5), -fz.get(k, SIN_ELO), k))
         todas = []
-        for g in partir(orden, COPA):
+        for g in partir(orden, COPA if grande else COPA_ANTES):
             g = sorted(g, key=lambda k: (-fz.get(k, SIN_ELO), k))
-            todas.append([g[s_] if s_ < len(g) else '' for s_ in SIEMBRA])
-    lims = [ini, dias_despues(ini, 2), dias_despues(ini, 4), dias_despues(ini, 6), fin]
+            # ⚠️ con 16 o menos, la de 16: en una de 32 quedarían cruces sin nadie, que no tienen ganador
+            siembra = SIEMBRA if len(g) > COPA_ANTES else SIEMBRA16
+            todas.append([g[s_] if s_ < len(g) else '' for s_ in siembra])
     out = []
     for i, slots in enumerate(todas):
         g = [k for k in slots if k]
-        r = llave(slots, lims, ('Octavos', 'Cuartos', 'Semifinal', 'Final'), llaves, fz, ahora, sem, 'copa', i)
+        nombres, lims = rondas_copa(len(slots), ini, fin)
+        r = llave(slots, lims, nombres, llaves, fz, ahora, sem, 'copa', i)
         r.update(id=LETRAS[i % 26] + ('' if i < 26 else str(i // 26)), div=min(niveles.get(k, 5) for k in g))
         out.append(r)
     return out
@@ -445,22 +469,24 @@ def ligas(viejo, llaves, ahora):
 
 def llave(gente, lims, nombres, llaves, fz, ahora, *semilla):
     """Una llave a eliminación con una ventana por ronda (`lims`: el arranque y el cierre de cada una). `gente` son los
-    lugares en orden; un lugar vacío es un pase libre (`como: 'pase'`)."""
-    rondas, vivos = [], list(gente)
+    lugares en orden; un lugar vacío es un pase libre (`como: 'pase'`). `None` es que en ese lugar no hay nadie ni lo va a
+    haber, y '' que todavía no se sabe quién: con muy poca gente, un cruce sin nadie deja un lugar vacío en la ronda de
+    después, y sin separarlos ese cruce esperaba para siempre y la llave nunca tenía campeón."""
+    rondas, vivos = [], [k or None for k in gente]
     for r, nombre in enumerate(nombres):
         a0, a1 = lims[r], lims[r + 1]
         reales = cruces(llaves, a0, a1)
         ps = []
         for i in range(0, len(vivos), 2):
             a, b = vivos[i], vivos[i + 1]
-            if r == 0 and (not a or not b):
-                ps.append({'a': a, 'b': b, 'g': a or b, 'como': 'pase', 'p': 1.0 if a else 0.0})
+            if (a is None and b != '') or (b is None and a != ''):
+                ps.append({'a': a or '', 'b': b or '', 'g': a or b or '', 'como': 'pase', 'p': 1.0 if a else 0.0})
             elif not a or not b:
-                ps.append({'a': a, 'b': b, 'g': '', 'como': 'pend', 'p': 0.5})
+                ps.append({'a': a or '', 'b': b or '', 'g': '', 'como': 'pend', 'p': 0.5})
             else:
                 ps.append(resolver(a, b, reales, ahora >= a1, fz, *semilla, nombre))
         rondas.append({'r': nombre, 'hasta': a1.isoformat(), 'partidos': ps})
-        vivos = [m['g'] for m in ps]
+        vivos = [None if m['como'] == 'pase' and not m['g'] else m['g'] for m in ps]
     return {'gente': [k for k in gente if k], 'rondas': rondas, 'campeon': vivos[0] if vivos and vivos[0] else ''}
 
 
@@ -699,6 +725,59 @@ def jurado_sim(m, jueces, J, *semilla):
     return dict(m, j=[[q, otro if q == contra else g] for q in tres])
 
 
+# ── ⚖️ el PTB de las ligas ────────────────────────────────────────────────────────────────────────────────────────
+
+def votos_por_cruce():
+    """`{(norm, norm): [(ms, {norm: votos})]}`: los votos de cada batalla de dos de `datos/jurados.json`, por sus dos
+    nombres ordenados. Las de 3 a 5 MCs (`lados`) no son un cruce."""
+    out = {}
+    for b in ((_j('datos', 'jurados.json', defecto={}) or {}).get('votos') or {}).values():
+        if b.get('lados') or not b.get('a') or not b.get('b'):
+            continue
+        a, c = norm(b['a']), norm(b['b'])
+        v = list((b.get('v') or {}).values())
+        out.setdefault(tuple(sorted((a, c))), []).append((int(b.get('pub') or 0), {a: v.count('a'), c: v.count('b')}))
+    return out
+
+
+def ptb_de(m, votos, llaves):
+    """`(de a, de b)`: lo que reparte una batalla resuelta, `PTB_BATALLA` en juego. Una simulada, los votos de su jurado
+    sorteado. Una real, los votos que quedaron en esa batalla (a ~36 h de su evento) llevados a tres, y como ganó ella el
+    que ganó se lleva dos o más: un solo jurado es 3–0. Sin votos anotados, los tres al que ganó: el voto suelto de un
+    servidor no puede valer menos que un jurado inventado, o jugar de verdad daría menos PTB que no jugar."""
+    a, b, g = m.get('a'), m.get('b'), m.get('g')
+    if not g or not a or not b:
+        return 0, 0
+    if m.get('como') == 'sim' and m.get('j'):
+        va = sum(1 for _q, v in m['j'] if v == 'a')
+        return va, len(m['j']) - va
+    de_g = PTB_BATALLA
+    t = _dia_utc((llaves.get(str(m.get('ev'))) or {}).get('dia')) if m.get('como') == 'real' else None
+    if t is not None:
+        cerca = [(abs(ms / 1000.0 - t.timestamp()), x) for ms, x in votos.get(tuple(sorted((a, b)))) or []]
+        cerca = [c for c in cerca if c[0] <= 36 * 3600]
+        if cerca:
+            x = min(cerca, key=lambda c: c[0])[1]
+            hay = sum(x.values())
+            if hay:
+                de_g = max(PTB_BATALLA - PTB_BATALLA // 2, int(PTB_BATALLA * x.get(g, 0) / float(hay) + 0.5))
+    return (de_g, PTB_BATALLA - de_g) if g == a else (PTB_BATALLA - de_g, de_g)
+
+
+def poner_ptb(L, llaves, votos=None):
+    """Le suma a cada fila de cada tabla su PTB, como quinta columna. Va después de `_con_jurado()`, que es quien sortea
+    los votos, y no cambia el orden de nadie."""
+    votos = votos_por_cruce() if votos is None else votos
+    for g in L['grupos'] + ([L['liga_elite']] if L.get('liga_elite') else []):
+        ptb = {}
+        for j in g['jornadas']:
+            for m in j['partidos']:
+                pa, pb = ptb_de(m, votos, llaves)
+                ptb[m['a']] = ptb.get(m['a'], 0) + pa
+                ptb[m['b']] = ptb.get(m['b'], 0) + pb
+        g['tabla'] = [f[:4] + [ptb.get(f[0], 0)] for f in g['tabla']]
+
+
 # ── 💰 los premios ────────────────────────────────────────────────────────────────────────────────────────────────
 
 def jugo_real(quien, partidos):
@@ -885,6 +964,10 @@ def calcular(ahora=None, llaves=None, notas=None, viejo=None):
         'montos': {'liga': PREMIO_LIGA, 'copa': list(PREMIO_COPA), 'rapid': PREMIO_RAPID, 'mini': PREMIO_MINI},
     }
     _con_jurado(res, jueces, J)
+    if L['temp'] >= PTB_DESDE:
+        poner_ptb(L, llaves)
+    # 🔒 quienes ya cumplieron para el lunes que viene, para que la página no le pida un evento a quien ya lo jugó
+    res['entran'] = sorted(jugaron(llaves, fin - dt.timedelta(days=ACTIVO_DIAS), fin))
     usados = set(activos) | {k for g in L['grupos'] for k in g['gente']} | set(L.get('elite') or [])
     res['nombres'] = {k: nombres.get(k, k) for k in usados | {k for k, *_x in res['equipo']}}
     return res
@@ -935,11 +1018,48 @@ def _self_check():
     ok(resolver('a', 'c', reales, True, fz, 's')['como'] == 'sim', 'sin cruzarse y con la ventana cerrada: simulado')
     lunes0 = dt.datetime(2026, 10, 26, 15, 0, tzinfo=dt.timezone.utc)
     gente = {'p%02d' % i for i in range(20)}
-    gs = copa(gente, {}, {k: 100 - int(k[1:]) for k in gente}, lunes0, dias_despues(lunes0, 7), {}, lunes0 + dt.timedelta(days=8), 's')
+    fz20 = {k: 100 - int(k[1:]) for k in gente}
+    gs = copa(gente, {}, fz20, lunes0, dias_despues(lunes0, 7), {}, lunes0 + dt.timedelta(days=8), '2026-10-26')
     ok(len(gs) == 2 and sorted(len(g['gente']) for g in gs) == [10, 10] and [x['r'] for x in gs[0]['rondas']] == ['Octavos', 'Cuartos', 'Semifinal', 'Final'],
-       'la Copa: 20 activos, dos llaves parejas de 10, de octavos a la final')
+       'la Copa de antes: 20 activos, dos llaves parejas de 10, de octavos a la final')
     ok(sum(1 for m in gs[0]['rondas'][0]['partidos'] if m['como'] == 'pase') == 6 and all(g['campeon'] for g in gs),
        'con pases libres para los mejores sembrados, y cada llave con su campeón al cerrar')
+    ok(len(set(SIEMBRA)) == COPA and [SIEMBRA[i] + SIEMBRA[i + 1] for i in range(0, COPA, 2)] == [COPA - 1] * (COPA // 2)
+       and SIEMBRA[::2] == SIEMBRA16,
+       'la siembra de 32: cada cruce suma 33 (el 1 contra el 32) y sus ganadores dan la siembra de 16')
+    lunes1 = dt.datetime(2026, 11, 9, 16, 0, tzinfo=dt.timezone.utc)
+    g32 = copa(gente, {}, fz20, lunes1, dias_despues(lunes1, 7), {}, lunes1 + dt.timedelta(days=8), COPA32_DESDE)
+    ok(len(g32) == 1 and len(g32[0]['gente']) == 20 and [x['r'] for x in g32[0]['rondas']] == ['32vos', 'Octavos', 'Cuartos', 'Semifinal', 'Final']
+       and len(g32[0]['rondas'][0]['partidos']) == 16 and sum(1 for m in g32[0]['rondas'][0]['partidos'] if m['como'] == 'pase') == 12 and g32[0]['campeon'],
+       'la Copa desde el 09/11: 20 activos son una llave de 32, con 12 pases libres, de 32vos a la final')
+    gente64 = {'p%02d' % i for i in range(64)}
+    fz64 = {k: 200 - int(k[1:]) for k in gente64}
+    g64 = copa(gente64, {}, fz64, lunes1, dias_despues(lunes1, 7), {}, lunes1 + dt.timedelta(days=1), COPA32_DESDE)
+    p0 = g64[0]['rondas'][0]['partidos']
+    ok(len(g64) == 2 and all(len(g['gente']) == 32 for g in g64) and {p0[0]['a'], p0[0]['b']} == {'p00', 'p31'} and {p0[1]['a'], p0[1]['b']} == {'p15', 'p16'},
+       '64 activos son dos de 32: el mejor contra el 32.º, el 16.º contra el 17.º')
+    ok([x['hasta'][:10] for x in g64[0]['rondas']] == ['2026-11-11', '2026-11-12', '2026-11-13', '2026-11-14', '2026-11-16'],
+       'con 32vos hasta el miércoles, una ronda por día y la final hasta el lunes')
+    g5 = copa({'p%02d' % i for i in range(5)}, {}, fz20, lunes1, dias_despues(lunes1, 7), {}, lunes1 + dt.timedelta(days=8), COPA32_DESDE)
+    ok(len(g5) == 1 and g5[0]['campeon'] and len(g5[0]['rondas']) == 4, 'con poca gente sale una de 16, y tiene campeón: una de 32 tendría cruces sin nadie')
+    fij16 = armadas({'sem': COPA32_DESDE, 'copa': gs}, COPA32_DESDE, 'copa')
+    g16 = copa(gente, {}, fz20, lunes1, dias_despues(lunes1, 7), {}, lunes1 + dt.timedelta(days=1), COPA32_DESDE, fij16)
+    ok(len(g16) == 2 and [x['r'] for x in g16[0]['rondas']] == ['Octavos', 'Cuartos', 'Semifinal', 'Final'],
+       'una llave de 16 ya armada sigue de 16 aunque la semana diga 32: manda lo publicado')
+    sim_ = lambda g, va: {'a': 'x', 'b': 'y', 'g': g, 'como': 'sim', 'p': .5, 'j': [['q%d' % i, 'a' if i < va else 'b'] for i in range(3)]}   # noqa: E731
+    ok(ptb_de(sim_('x', 3), {}, {}) == (3, 0) and ptb_de(sim_('y', 1), {}, {}) == (1, 2), 'el PTB de una simulada: los votos de su jurado, 3–0 o 2–1')
+    ev = {'7': {'dia': '2026-11-20'}}
+    real_ = lambda g: {'a': 'x', 'b': 'y', 'g': g, 'como': 'real', 'p': .5, 'ev': '7'}   # noqa: E731
+    ms = int(_dia_utc('2026-11-20').timestamp() * 1000)
+    ok(ptb_de(real_('y'), {}, ev) == (0, 3), 'el de una real sin votos anotados: los tres al que ganó')
+    ok(ptb_de(real_('x'), {('x', 'y'): [(ms, {'x': 1, 'y': 0})]}, ev) == (3, 0) and ptb_de(real_('x'), {('x', 'y'): [(ms, {'x': 2, 'y': 1})]}, ev) == (2, 1),
+       'con votos, llevados a tres: un solo jurado es 3–0 y un 2–1 es 2–1')
+    ok(ptb_de(real_('x'), {('x', 'y'): [(ms, {'x': 0, 'y': 3})]}, ev) == (2, 1), 'el que ganó se lleva dos o más, aunque los votos anotados digan otra cosa')
+    ok(ptb_de(real_('x'), {('x', 'y'): [(ms - 10 * 86400000, {'x': 2, 'y': 1})]}, ev) == (3, 0), 'y los votos de otra batalla entre los mismos, días antes, no cuentan')
+    ok(ptb_de({'a': 'x', 'b': 'y', 'g': '', 'como': 'pend', 'p': .5}, {}, {}) == (0, 0), 'lo que no se jugó no reparte nada')
+    Lp = {'grupos': [{'jornadas': [{'partidos': [sim_('x', 3)]}, {'partidos': [sim_('y', 1)]}], 'tabla': [['x', 2, 1, 3], ['y', 2, 1, 3]]}]}
+    poner_ptb(Lp, {}, {})
+    ok(Lp['grupos'][0]['tabla'] == [['x', 2, 1, 3, 4], ['y', 2, 1, 3, 2]], 'y la tabla lo suma como quinta columna, sin cambiar el orden')
     cal = calendario(10)
     ok(len(cal) == 9 and all(len(j) == 5 for j in cal) and len({tuple(sorted(p)) for j in cal for p in j}) == 45,
        'una liga de 10: 9 jornadas de 5, los 45 cruces una vez')

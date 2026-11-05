@@ -100,6 +100,20 @@ function porJugar(e, k) {
 }
 
 /**
+ * 🔒 ¿Juega `k` este mini evento? `activo`: tiene llave esta semana, o sea que jugó en las 2 semanas antes del lunes. Lo que
+ * se sortea entre los activos pide eso; lo que se juega en la semana sólo pide jugar, y `entra` es que ya lo hizo.
+ */
+export function enMini(x, k, activo, entra) {
+  if (!k) return false;
+  const en = (m) => !!m && (m[0] === k || m[1] === k);
+  if (x.id === 'derbi' || x.id === 'paises') return (x.p || []).some(en);
+  if (x.id === 'supercopa') return en(x.p);
+  if (x.id === 'novatos') return (x.gente || []).includes(k);
+  if (x.id === 'duos' || x.id === 'pandillas') return !!activo;
+  return !!(activo || entra);
+}
+
+/**
  * Dónde estás tú: `{liga: {g, pos, n, cruce}, elite: {…}, copa: {r, ronda, fuera, campeon}, rapid: {…}, prox}`
  * o null. `prox` es tu próximo cruce por jugar (el de la liga primero), para el panel de arriba.
  */

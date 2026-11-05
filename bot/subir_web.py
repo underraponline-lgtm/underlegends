@@ -3094,6 +3094,7 @@ def _competencias_web(pool=None):
     return {
         'sem': c.get('sem'), 'ini': c.get('ini'), 'fin': c.get('fin'), 'dia': c.get('dia'), 'activos': c.get('activos'),
         'copa': [dict(llave(g), div=g.get('div', 5)) for g in c.get('copa') or []],
+        'entran': [K(k) for k in c.get('entran') or []],
         'ligas': {'temp': L.get('temp'), 'desde': L.get('desde'), 'hasta': L.get('hasta'), 'jornada': L.get('jornada'),
                   'cierres': L.get('cierres') or [],
                   'g': [{'id': g['id'], 'nv': g['nivel'], 't': t(g['tabla']),

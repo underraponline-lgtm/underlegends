@@ -10,10 +10,16 @@
 //   · los MINI EVENTOS que rotan, el EQUIPO DE LA SEMANA y una simulada por dentro (con su jurado sorteado)
 //   · CÓMO SE JUEGA y las preguntas de quien entra nuevo
 // Lo arma `bot/competencias.py`; acá sólo se dibuja.
-import { useEffect, useMemo, useRef, useState } from 'react';
-import { Cara, Carta, nombrePais } from './piezas.jsx';
+// 🔒 QUÉ VE CADA UNO (Dlx, 04/11/2026: «el usuario que compite y está en la llave debería ver lo suyo nada más… si alguien
+// no está en nada, que diga sus requisitos», y sobre las ligas, «que sí se pueda ver… oro, plata, bronce, ascenso… y todas
+// las ligas»). Las ligas las ve todo el mundo. De la Copa, la Rapid y los mini eventos, cada uno ve lo suyo y de lo demás
+// qué le falta para entrar. Dlx lo ve todo, con un selector de llaves. No es un candado de verdad: `/api/competencias` es
+// público; es lo que cada uno tiene que mirar.
+import { Fragment, useEffect, useMemo, useRef, useState } from 'react';
+import { DUENO, num } from './liga.js';
+import { Cara, Carta, accion, nombrePais } from './piezas.jsx';
 import {
-  DIVISIONES, NIVEL, NIVELES, dondeEstoy, faltaTxt, nombreDe, nombreLiga, semanaTxt, todasLasLigas, ultimas, useCompetencias,
+  DIVISIONES, NIVEL, NIVELES, dondeEstoy, enMini, faltaTxt, nombreDe, nombreLiga, todasLasLigas, ultimas, useCompetencias,
 } from './competencias_datos.js';
 import CSS_PAGINA from './css/competencias.css?inline';
 import { usarCss } from './css.js';
@@ -22,6 +28,8 @@ usarCss('competencias', CSS_PAGINA);
 
 const pct = (p) => Math.round((p || 0) * 100) + ' %';
 const ancho = (p) => Math.round((p || 0) * 100) + '%';
+const Candado = () => <svg className="cm9-cand" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 11V7a5 5 0 0 1 10 0v4" fill="none" stroke="currentColor" strokeWidth="2.6" /><rect x="4" y="11" width="16" height="10" fill="currentColor" /></svg>;
+const Listo = () => <svg className="cm9-cand" viewBox="0 0 24 24" aria-hidden="true"><path d="M4.5 12.5 10 18 19.5 7" fill="none" stroke="currentColor" strokeWidth="3.2" /></svg>;
 const inicial = (s) => (String(s || '?').replace(/[^\p{L}\p{N}]/gu, '').charAt(0) || '?').toUpperCase();
 // 💰 los premios (Dlx, 27/10/2026): los montos viajan con los datos (`bot/competencias.py`, `PREMIO_*`), no se escriben acá
 const pdt = (n) => Number(n || 0).toLocaleString('es');
@@ -64,9 +72,9 @@ function Cruce({ liga, C, m, yo, jurado }) {
     <li className={'cm9-cru ' + como + (a === yo || b === yo ? ' tuyo' : '')}>
       <Como m={m} />
       <span className="cm9-cru-l">
-        <span className={g && g === a ? 'gana' : g ? 'pierde' : ''}><Nombre liga={liga} C={C} k={a} yo={yo} /></span>
+        <span className={g && g === a ? 'gana' : g ? 'pierde' : ''}>{a ? <Cara liga={liga} k={a} nombre={nombreDe(liga, C, a)} cls="cara cm9-cara-ch" lazy /> : null}<Nombre liga={liga} C={C} k={a} yo={yo} /></span>
         <small>vs</small>
-        <span className={g && g === b ? 'gana' : g ? 'pierde' : ''}><Nombre liga={liga} C={C} k={b} yo={yo} /></span>
+        <span className={g && g === b ? 'gana' : g ? 'pierde' : ''}>{b ? <Cara liga={liga} k={b} nombre={nombreDe(liga, C, b)} cls="cara cm9-cara-ch" lazy /> : null}<Nombre liga={liga} C={C} k={b} yo={yo} /></span>
       </span>
       {como === 'pend' && a && b ? (
         <span className="cm9-p" title={'Si no se cruzan antes del cierre, se simula: ' + nombreDe(liga, C, a) + ' gana ' + pct(p) + ' de las veces'}>
@@ -80,8 +88,60 @@ function Cruce({ liga, C, m, yo, jurado }) {
   );
 }
 
-/** La tabla de una liga ENTERA, con sus zonas: campeón, suben, bajan */
+/** «3–0»: cómo votó el jurado de una simulada */
+const marcador = (m) => {
+  if (!Array.isArray(m[5]) || !m[5].length) return '';
+  const va = m[5].filter(([, v]) => v === 'a').length;
+  return Math.max(va, m[5].length - va) + '–' + Math.min(va, m[5].length - va);
+};
+
+/** 🔎 LA FILA QUE SE ABRE AHÍ MISMO (Dlx, 04/11/2026: «click como en ranking para ver un poco de info»): su carta, sus
+ *  números y cómo le fue en esta liga, jornada por jornada */
+function DetalleFila({ liga, C, g, f, yo }) {
+  const [k, pj, gg, , ptb] = f;
+  const t = liga.T[k];
+  const cual = t ? liga.cartaDe(k, { comp: true }) : null;
+  const jornada = (C.ligas || {}).jornada;
+  const suyos = (g.j || []).map((j) => ({ n: j.n, m: j.p.find((x) => x[0] === k || x[1] === k) })).filter((x) => x.m && (x.m[2] || x.n === jornada));
+  return (
+    <div className={'cm9-det' + (cual ? '' : ' sin')}>
+      {cual ? <div className="cm9-det-carta"><Carta liga={liga} k={k} cual={cual} cls="cm9-det-ci" /></div> : null}
+      <div className="cm9-det-l">
+        <dl className="cm9-det-n">
+          <div><dt>En esta liga</dt><dd>{gg}–{pj - gg}</dd></div>
+          {ptb != null ? <div><dt>PTB</dt><dd>{ptb}</dd></div> : null}
+          {t ? <div><dt>OVR</dt><dd>{t.ovr || '—'}</dd></div> : null}
+          {t ? <div><dt>Puntos</dt><dd>{num(t.pts)}</dd></div> : null}
+          {t ? <div><dt>Eventos</dt><dd>{t.ev || 0}</dd></div> : null}
+          {t && t.wr ? <div><dt>Win%</dt><dd>{Math.round(parseFloat(String(t.wr).replace(',', '.')) || 0)}%</dd></div> : null}
+        </dl>
+        {suyos.length ? <span className="cm9-et">Sus cruces en esta liga</span> : null}
+        {suyos.length ? (
+          <ol className="cm9-det-c">
+            {suyos.map(({ n, m }) => {
+              const rival = m[0] === k ? m[1] : m[0];
+              const gano = m[2] === k;
+              const mia = m[0] === k ? m[4] : 1 - m[4];
+              return (
+                <li key={n}>
+                  <small>J{n}</small>
+                  <i className={m[2] ? (gano ? 'g' : 'p') : 'n'} aria-label={m[2] ? (gano ? 'ganó' : 'perdió') : 'por jugar'}>{m[2] ? (gano ? 'G' : 'P') : '·'}</i>
+                  <span className="cm9-det-r"><Cara liga={liga} k={rival} nombre={nombreDe(liga, C, rival)} cls="cara cm9-cara-ch" lazy /><Nombre liga={liga} C={C} k={rival} yo={yo} /></span>
+                  <em>{m[3] === 'real' ? 'REAL' + (m[5] && !Array.isArray(m[5]) ? ' · #' + m[5] : '') : m[3] === 'sim' ? ('SIM ' + marcador(m)).trim() : pct(mia)}</em>
+                </li>
+              );
+            })}
+          </ol>
+        ) : null}
+        {t ? <div className="cm9-det-acc"><a className="btn negro chico" href={'#/r/' + encodeURIComponent(k)}>Ver su perfil</a></div> : null}
+      </div>
+    </div>
+  );
+}
+
+/** La tabla de una liga ENTERA, con sus zonas: campeón, suben, bajan. Cada fila se abre ahí mismo, como en el Ranking */
 function TablaLiga({ liga, C, g, yo }) {
+  const [abierta, setAbierta] = useState(null);
   const n = g.t.length;
   const esElite = g.id === 'elite';
   const zona = (i) => {
@@ -90,21 +150,33 @@ function TablaLiga({ liga, C, g, yo }) {
     if (!esElite && g.nv !== 'ascenso' && n >= 6 && i >= n - 2) return 'baja';
     return '';
   };
+  // ⚖️ el PTB viene de `bot/competencias.py` desde la temporada 2 de las ligas: mientras no venga, no hay columna
+  const conPtb = g.t.some((f) => f[4] != null);
   return (
     <div className="cm9-tw">
       <table className="cm9-tabla">
-        <thead><tr><th>#</th><th aria-label="Inicial" /><th>Rapero</th><th>PJ</th><th>G</th><th>P</th><th>Últimas</th><th>PTS</th></tr></thead>
+        <thead><tr><th>#</th><th aria-label="Foto" /><th>Rapero</th><th>PJ</th><th>G</th><th>P</th><th>Últimas</th>{conPtb ? <th title="Votos de jurado a favor">PTB</th> : null}<th>PTS</th></tr></thead>
         <tbody>
-          {g.t.map(([k, pj, gg, pts], i) => (
-            <tr key={k} className={(zona(i) + (k === yo ? ' yo' : '')).trim() || undefined}>
-              <td>{i + 1}</td>
-              <td><i className="cm9-cr">{inicial(nombreDe(liga, C, k))}</i></td>
-              <td><Nombre liga={liga} C={C} k={k} yo={yo} /></td>
-              <td>{pj}</td><td>{gg}</td><td>{pj - gg}</td>
-              <td><span className="cm9-fo">{ultimas(g, k).concat(Array(5).fill('')).slice(0, 5).map((x, j) => <i key={j} className={x === 'G' ? 'g' : x === 'P' ? 'p' : ''}>{x}</i>)}</span></td>
-              <td><b>{pts}</b></td>
-            </tr>
-          ))}
+          {g.t.map((f, i) => {
+            const [k, pj, gg, pts, ptb] = f;
+            const ab = abierta === k;
+            return (
+              <Fragment key={k}>
+                <tr className={(zona(i) + (k === yo ? ' yo' : '')).trim() || undefined} aria-expanded={ab} tabIndex={0}
+                  onClick={(e) => { if (!e.target.closest('a, button')) setAbierta(ab ? null : k); }}
+                  onKeyDown={(e) => { if ((e.key === 'Enter' || e.key === ' ') && e.target === e.currentTarget) { e.preventDefault(); setAbierta(ab ? null : k); } }}>
+                  <td>{i + 1}</td>
+                  <td><Cara liga={liga} k={k} nombre={nombreDe(liga, C, k)} cls="cara cm9-cara" lazy /></td>
+                  <td><Nombre liga={liga} C={C} k={k} yo={yo} /></td>
+                  <td>{pj}</td><td>{gg}</td><td>{pj - gg}</td>
+                  <td><span className="cm9-fo">{ultimas(g, k).concat(Array(5).fill('')).slice(0, 5).map((x, j) => <i key={j} className={x === 'G' ? 'g' : x === 'P' ? 'p' : ''}>{x}</i>)}</span></td>
+                  {conPtb ? <td>{ptb}</td> : null}
+                  <td className="cm9-pts"><b>{pts}</b></td>
+                </tr>
+                {ab ? <tr className="cm9-det-f"><td colSpan={conPtb ? 9 : 8}><DetalleFila liga={liga} C={C} g={g} f={f} yo={yo} /></td></tr> : null}
+              </Fragment>
+            );
+          })}
         </tbody>
       </table>
       <div className="cm9-ley">
@@ -112,6 +184,8 @@ function TablaLiga({ liga, C, g, yo }) {
         {!esElite && g.nv !== 'oro' ? <span><i className="sube" />Suben de liga</span> : null}
         {!esElite && g.nv !== 'ascenso' ? <span><i className="baja" />Bajan de liga</span> : null}
         <span><i className="g" />G ganó · <i className="p" />P perdió</span>
+        {conPtb ? <span><b>PTB</b> votos de jurado a favor, 3 en juego por batalla</span> : null}
+        <span className="cm9-ley-toca">Toca una fila para ver más</span>
       </div>
     </div>
   );
@@ -176,7 +250,7 @@ function Dias({ C }) {
   );
 }
 
-function Ligas({ liga, C, yo, donde }) {
+function Ligas({ liga, C, yo, donde, conCuenta }) {
   const L = C.ligas || {};
   const todas = todasLasLigas(C);
   const mia = (donde && (donde.liga || donde.elite)) ? (donde.liga || donde.elite).g.id : null;
@@ -223,9 +297,12 @@ function Ligas({ liga, C, yo, donde }) {
               {delNivel.map((x) => <button key={x.id} type="button" role="tab" aria-selected={x.id === g.id} className={x.id === g.id ? 'on' : ''} onClick={() => setSel(x.id)}>{nombreLiga(C, x)}{x.id === mia ? ' · tú' : ''}</button>)}
             </div>
           ) : null}
-          <TablaLiga liga={liga} C={C} g={g} yo={yo} />
+          <TablaLiga key={g.id} liga={liga} C={C} g={g} yo={yo} />
         </article>
       </div>
+      {!mia ? (
+        <p className="cm9-fuera">{conCuenta ? <>Todavía no estás en ninguna liga. Juega <b>1 evento</b> en las 2 semanas antes del {new Date(L.hasta).toLocaleDateString('es', { timeZone: 'America/New_York', day: 'numeric', month: 'numeric' })} y entras en <b>Ascenso</b> con la temporada que viene.</> : <>¿Juegas? <b>Entra con Discord</b> y te marcamos tu liga, tu llave y tus cruces.</>}</p>
+      ) : null}
       {jor ? (
         <div className="cm9-jor">
           <h3>JORNADA {jor.n} · LOS {jor.p.length} CRUCES <small>cierra en {faltaTxt(jor.fin)}</small></h3>
@@ -257,20 +334,27 @@ function Lado({ liga, C, k, m, pos, yo }) {
  *  final la copa. En el celular se desliza de costado y abre en la ronda que se está jugando */
 function Llave({ liga, C, r, yo }) {
   const caja = useRef(null);
+  const [entera, setEntera] = useState(false);
   const ia = r.campeon ? r.r.length : Math.max(0, r.r.findIndex((rd) => rd.p.some((m) => !m[2] && m[0] && m[1])));
+  // 🏆 la de 32 son dieciséis cruces de alto: quien la juega ve SU CAMINO —su cruce en cada ronda, y dónde cae el que
+  // sigue— y la abre entera si quiere. Un lugar de una ronda baja a la mitad en la siguiente
+  const larga = r.r[0].p.length >= 16;
+  const mio = yo ? r.r[0].p.findIndex((m) => m[0] === yo || m[1] === yo) : -1;
+  const camino = larga && mio >= 0 && !entera;
   useEffect(() => {
     const el = caja.current;
     const col = el && el.children[ia];
     // ⚠️ por la caja y no por `offsetLeft`, que mide contra el padre posicionado y no contra el que se desliza
     if (el && col && ia > 0 && el.scrollWidth > el.clientWidth) el.scrollLeft = Math.max(0, col.getBoundingClientRect().left - el.getBoundingClientRect().left + el.scrollLeft - 16);
-  }, [ia]);
+  }, [ia, camino]);
   return (
-    <div className="cm9-br" ref={caja} style={{ '--n': r.r.length + 1 }}>
+    <>
+    <div className={'cm9-br' + (larga ? ' larga' : '')} ref={caja} style={{ '--n': r.r.length + 1 }}>
       {r.r.map((rd, ri) => (
         <div key={rd.r} className={'cm9-br-c' + (ri === ia ? ' hoy' : ri < ia ? ' ya' : '')}>
           <small className="cm9-br-t">{rd.r === 'Semifinal' ? 'Semis' : rd.r}<i>{ri < ia ? 'jugada' : faltaTxt(rd.hasta)}</i></small>
           <div className="cm9-br-ms">
-            {rd.p.map((m, i) => (
+            {(camino ? [rd.p[mio >> ri]] : rd.p).map((m, i) => (
               <div key={i} className={'cm9-br-m ' + m[3] + (yo && (m[0] === yo || m[1] === yo) ? ' tuyo' : '')}
                 title={m[3] === 'real' ? 'Se cruzaron de verdad' + (m[5] && !Array.isArray(m[5]) ? ' en el #' + m[5] : '') : m[3] === 'sim' ? 'Simulado al cierre' : undefined}>
                 <Lado liga={liga} C={C} k={m[0]} m={m} pos={0} yo={yo} />
@@ -291,16 +375,18 @@ function Llave({ liga, C, r, yo }) {
         </div>
       </div>
     </div>
+    {larga && mio >= 0 ? <button type="button" className="cm9-br-ver" onClick={() => setEntera(!entera)}>{entera ? 'Ver sólo mi camino' : 'Ver la llave entera'}</button> : null}
+    </>
   );
 }
 
 /** «Octavos», «Afuera en cuartos», «Campeón»: en qué va alguien en una llave */
-const estado = (e) => (!e ? '' : e.campeon ? 'Campeón' : e.fuera ? 'Afuera en ' + ((e.ronda || {}).r || 'octavos').toLowerCase() : (e.ronda || {}).r || '');
+const estado = (e) => (!e ? '' : e.campeon ? 'Campeón' : e.fuera ? 'Afuera en ' + ((e.ronda || {}).r || '').toLowerCase() : (e.ronda || {}).r || '');
 
 /** 🎯 Tu situación en una llave, en una línea: contra quién vas, tus chances y cuándo cierra */
 function TuLlave({ liga, C, e, yo }) {
   if (e.campeon) return <p className="cm9-br-tu"><b>🏆 Campeón</b> de esta llave.</p>;
-  if (e.fuera) return <p className="cm9-br-tu">Quedaste <b>afuera en {((e.ronda || {}).r || 'octavos').toLowerCase()}</b>. El lunes arranca otra.</p>;
+  if (e.fuera) return <p className="cm9-br-tu">Quedaste <b>afuera en {((e.ronda || {}).r || '').toLowerCase()}</b>. El lunes arranca otra.</p>;
   const m = ((e.ronda || {}).p || []).find((x) => x[0] === yo || x[1] === yo);
   if (!m) return null;
   const rival = m[0] === yo ? m[1] : m[0];
@@ -312,49 +398,105 @@ function TuLlave({ liga, C, e, yo }) {
   );
 }
 
-/** 🏆⚡ LA COPA Y LA RAPID: SÓLO TU LLAVE (Dlx, 26/10/2026: «no es necesario ver las 19 llaves si no estás tú»). Quien
- *  no está en ninguna —el dueño, o quien no jugó— ve la de más arriba, para saber cómo es */
-function CopaRapid({ liga, C, yo, donde }) {
+/** 🔒 QUIEN NO ESTÁ EN NINGUNA LLAVE VE QUÉ LE FALTA, en vez de la llave de otro. Si ya jugó, que ya cumplió: pedirle un
+ *  evento a quien lo acaba de jugar es la respuesta equivocada con la cara de la correcta */
+function SinLlave({ C, yo, conCuenta }) {
+  const ya = !!yo && (C.entran || []).includes(yo);
+  const m = montos(C);
+  return (
+    <section className="cm9-blq-s" aria-label="La Copa y la Rapid">
+      <div className={'cm9-blq' + (ya ? ' ok' : '')}>
+        <span className="cm9-blq-i">{ya ? <Listo /> : <Candado />}</span>
+        {ya ? (
+          <div className="cm9-blq-t"><h3>EL LUNES ENTRAS</h3><p>Ya jugaste en las últimas 2 semanas: el lunes a las 11 AM te toca tu llave de la Copa y tu Rapid. Faltan {faltaTxt(C.fin)}.</p></div>
+        ) : conCuenta ? (
+          <div className="cm9-blq-t"><h3>TODAVÍA NO JUEGAS LA COPA NI LA RAPID</h3><p>Para desbloquearlas, <b>juega 1 evento</b> de cualquier servidor antes del lunes y ese mismo día te toca tu llave. Te quedan {faltaTxt(C.fin)}.</p></div>
+        ) : (
+          <div className="cm9-blq-t"><h3>CADA UNO VE SU LLAVE</h3><p>Entra con Discord y te decimos en cuál estás o qué te falta. Para jugarlas hace falta <b>1 evento</b> en las 2 semanas antes del lunes.</p></div>
+        )}
+        {ya ? null : conCuenta ? <a className="btn negro" href="#/eventos">Ver los eventos</a> : <button type="button" className="btn verde" onClick={accion.entrar}>Entrar con Discord</button>}
+      </div>
+      <div className="cm9-blq-dos">
+        <article className="cm9-card">
+          <header className="mag"><h3>🏆 COPA</h3><small>Cada lunes</small></header>
+          <p>Una llave a eliminación con gente de tu división, que se juega durante la semana.</p>
+          {m ? <p className="cm9-premio">💰 Campeón <b>{pdt(m.copa[0])}</b> · finalista <b>{pdt(m.copa[1])}</b> Puntos de Tienda</p> : null}
+        </article>
+        <article className="cm9-card">
+          <header className="ver"><h3>⚡ RAPID</h3><small>Cada lunes</small></header>
+          <p>Una llave de 8 con gente de tu mismo nivel: cuartos hasta el jueves, semis hasta el sábado, final hasta el lunes.</p>
+          {m ? <p className="cm9-premio">💰 El campeón se lleva <b>{pdt(m.rapid)}</b> Puntos de Tienda</p> : null}
+        </article>
+      </div>
+    </section>
+  );
+}
+
+/** El selector de Dlx, el único que ve todas las llaves */
+function ElegirLlave({ xs, v, set, nombre }) {
+  return (
+    <label className="cm9-elegir">
+      <span>Ver la llave</span>
+      <select value={v} onChange={(e) => set(e.target.value)}>
+        {xs.map((x) => <option key={x.id} value={x.id}>{nombre(x)}</option>)}
+      </select>
+      <small>{xs.length} esta semana · sólo tú las ves</small>
+    </label>
+  );
+}
+
+/** 🏆⚡ LA COPA Y LA RAPID: SÓLO TU LLAVE (Dlx, 26/10/2026: «no es necesario ver las 19 llaves si no estás tú»; 04/11/2026:
+ *  «bueno, yo sí porque soy admin»). Quien no está en ninguna ve qué le falta (`SinLlave`). */
+function CopaRapid({ liga, C, yo, donde, verTodo, conCuenta }) {
   const ec = donde && donde.copa;
   const er = donde && donde.rapid;
-  const g = (ec && ec.r) || (C.copa || [])[0];
-  const r = (er && er.r) || (C.rapid || [])[0];
+  const copas = C.copa || [];
+  const rapids = C.rapid || [];
+  const [vC, setVC] = useState('');
+  const [vR, setVR] = useState('');
+  const g = verTodo ? (copas.find((x) => x.id === vC) || (ec && ec.r) || copas[0]) : ec && ec.r;
+  const r = verTodo ? (rapids.find((x) => x.id === vR) || (er && er.r) || rapids[0]) : er && er.r;
+  if (!g && !r) return <SinLlave C={C} yo={yo} conCuenta={conCuenta} />;
+  const divs = (liga.d.div && liga.d.div.m === 'elo' && liga.d.div.n) || DIVISIONES;
+  const miC = ec && g === ec.r;
+  const miR = er && r === er.r;
   return (
     <section className="cm9-dos cm9-dos-br" aria-label="La Copa y la Rapid">
       {g ? (
         <article className="cm9-card">
-          <header className="mag"><h3>🏆 COPA</h3><small>{ec ? 'Tu llave · ' + estado(ec) : 'Llave ' + g.id + ' · ' + ((liga.d.div && liga.d.div.m === 'elo' && liga.d.div.n) || DIVISIONES)[g.div]}</small></header>
-          {ec ? <TuLlave liga={liga} C={C} e={ec} yo={yo} />
-            : <p>Una llave de 16 cada lunes, con gente de tu división: octavos, cuartos, semis y final, una ronda cada dos días. Esta semana no estás en ninguna: entras jugando un evento.</p>}
+          <header className="mag"><h3>🏆 COPA</h3><small>{miC ? 'Tu llave · ' + estado(ec) : 'Llave ' + g.id + ' · ' + divs[g.div]}</small></header>
+          {verTodo ? <ElegirLlave xs={copas} v={g.id} set={setVC} nombre={(x) => x.id + ' · ' + divs[x.div] + ' · ' + x.gente.length + ' raperos'} /> : null}
+          {miC ? <TuLlave liga={liga} C={C} e={ec} yo={yo} /> : null}
           {montos(C) ? <p className="cm9-premio">💰 Campeón <b>{pdt(montos(C).copa[0])}</b> · finalista <b>{pdt(montos(C).copa[1])}</b> Puntos de Tienda</p> : null}
-          <Llave liga={liga} C={C} r={g} yo={yo} />
+          <Llave key={g.id} liga={liga} C={C} r={g} yo={yo} />
         </article>
       ) : null}
       {r ? (
         <article className="cm9-card">
-          <header className="ver"><h3>⚡ RAPID</h3><small>{er ? 'Tu llave · ' + estado(er) : 'Llave de 8 de esta semana'}</small></header>
-          {er ? <TuLlave liga={liga} C={C} e={er} yo={yo} />
-            : <p>Una llave de 8 con gente de tu mismo nivel, armada cada lunes: cuartos hasta el jueves, semis hasta el sábado, final hasta el lunes.</p>}
+          <header className="ver"><h3>⚡ RAPID</h3><small>{miR ? 'Tu llave · ' + estado(er) : 'Llave ' + r.id}</small></header>
+          {verTodo ? <ElegirLlave xs={rapids} v={r.id} set={setVR} nombre={(x) => x.id + ' · ' + x.gente.length + ' raperos'} /> : null}
+          {miR ? <TuLlave liga={liga} C={C} e={er} yo={yo} /> : null}
           {montos(C) ? <p className="cm9-premio">💰 El campeón se lleva <b>{pdt(montos(C).rapid)}</b> Puntos de Tienda</p> : null}
-          <Llave liga={liga} C={C} r={r} yo={yo} />
+          <Llave key={r.id} liga={liga} C={C} r={r} yo={yo} />
         </article>
       ) : null}
     </section>
   );
 }
 
-/** 🎲 Cada mini evento explicado: qué es, quién juega y cómo se gana (la subpágina, #/competencias/mini) */
+/** 🎲 Cada mini evento explicado: qué es, quién juega y cómo se gana (la subpágina, #/competencias/mini). «Quién juega» es
+ *  también lo que le falta a quien no está: un solo lugar, dicho para que se entienda sin saber qué es un «activo» */
 const EXPLICA = {
-  derbi: ['Dos servidores sorteados entre los que tienen 5 o más activos. Sus 5 mejores se cruzan uno contra uno.', 'Los 5 mejores de cada servidor, por su nivel.', 'Gana el servidor que se lleve más cruces. Cuenta lo real si se cruzan en un evento; si no, se simula al cierre.'],
-  paises: ['Dos países sorteados entre los que tienen 5 o más activos. Sus 5 mejores se cruzan uno contra uno.', 'Los 5 mejores de cada país, por su nivel.', 'Gana el país que se lleve más cruces. Real si se cruzan, simulado si no.'],
-  meta: ['Una meta para toda la Liga: llegar a una cantidad de batallas en la semana entre todos.', 'Todos los que jueguen esa semana.', 'Si se llega, cobran todos los que jugaron. La meta sale de la semana anterior, un 10 % más.'],
-  supercopa: ['Una sola batalla al cierre: el que lidera la Élite contra el que lidera el Oro.', 'Los dos líderes.', 'Real si se cruzan durante la semana; si no, se simula.'],
-  duos: ['Parejas sorteadas entre los que juegan: suman los puntos de Temporada de los dos en la semana.', 'Todos los activos, de a dos.', 'Gana la pareja que más puntos sume.'],
-  pandillas: ['Grupos de 5 sorteados (no son las crews): suman los puntos de Temporada de todos en la semana.', 'Todos los activos, de a cinco.', 'Gana la pandilla que más puntos sume.'],
-  rey: ['Hay un rey: el de más nivel al arrancar. Quien le gane en un cruce real se queda con la corona.', 'Cualquiera que se cruce con el rey en un evento.', 'Es rey quien tenga la corona al cierre. Cada batalla que el rey gana es una defensa.'],
-  revancha: ['Te vuelve a tocar quien te ganó la última vez.', 'Todos los que perdieron algún 1v1 en los últimos 60 días.', 'Si esta semana le ganas a quien te ganó, revancha cumplida: vale doble.'],
-  racha: ['Victorias seguidas en la semana, en cualquier evento.', 'Todos los que juegan 1v1.', 'Gana la racha más larga de la semana.'],
-  novatos: ['Una llave de 8 sólo para quienes tienen menos de 5 eventos.', 'Los que recién empiezan.', 'Como la Rapid: cuartos, semis y final, real si se cruzan y simulado si no.'],
+  derbi: ['Dos servidores sorteados entre los que tienen 5 o más activos. Sus 5 mejores se cruzan uno contra uno.', 'Estar entre los 5 mejores de uno de los dos servidores sorteados.', 'Gana el servidor que se lleve más cruces. Cuenta lo real si se cruzan en un evento; si no, se simula al cierre.'],
+  paises: ['Dos países sorteados entre los que tienen 5 o más activos. Sus 5 mejores se cruzan uno contra uno.', 'Estar entre los 5 mejores de uno de los dos países sorteados.', 'Gana el país que se lleve más cruces. Real si se cruzan, simulado si no.'],
+  meta: ['Una meta para toda la Liga: llegar a una cantidad de batallas en la semana entre todos.', 'Jugar 1 evento esta semana.', 'Si se llega, cobran todos los que jugaron. La meta sale de la semana anterior, un 10 % más.'],
+  supercopa: ['Una sola batalla al cierre: el que lidera la Élite contra el que lidera el Oro.', 'Ir primero en la Élite o en la Liga Oro.', 'Real si se cruzan durante la semana; si no, se simula.'],
+  duos: ['Parejas sorteadas entre los que juegan: suman los puntos de Temporada de los dos en la semana.', 'Jugar 1 evento en las 2 semanas antes del lunes: ahí se sortean las parejas.', 'Gana la pareja que más puntos sume.'],
+  pandillas: ['Grupos de 5 sorteados (no son las crews): suman los puntos de Temporada de todos en la semana.', 'Jugar 1 evento en las 2 semanas antes del lunes: ahí se sortean los grupos.', 'Gana la pandilla que más puntos sume.'],
+  rey: ['Hay un rey: el de más nivel al arrancar. Quien le gane en un cruce real se queda con la corona.', 'Jugar 1 evento y cruzarte con el rey.', 'Es rey quien tenga la corona al cierre. Cada batalla que el rey gana es una defensa.'],
+  revancha: ['Te vuelve a tocar quien te ganó la última vez.', 'Haber perdido un 1v1 en los últimos 60 días.', 'Si esta semana le ganas a quien te ganó, revancha cumplida: vale doble.'],
+  racha: ['Victorias seguidas en la semana, en cualquier evento.', 'Jugar 1v1 esta semana.', 'Gana la racha más larga de la semana.'],
+  novatos: ['Una llave de 8 sólo para quienes tienen menos de 5 eventos.', 'Tener menos de 5 eventos y haber jugado en las 2 semanas antes del lunes. Entran 8, sorteados.', 'Como la Rapid: cuartos, semis y final, real si se cruzan y simulado si no.'],
   escalera: ['10 escalones: tu carta contra otra de tu nivel. Ganas subes, pierdes bajas, y de los escalones dorados no se baja.', 'Todos, con 3 intentos por día.', 'Se prepara: pide que juegues desde la página.'],
   fantasy: ['Eliges 3 raperos y sumas las notas que saquen en la semana.', 'Todos los que armen su equipo.', 'Se prepara: pide elegir desde la página.'],
   crews: ['Crew contra crew el fin de semana. Suma el que sube, el que se mantiene y hasta el que baja.', 'Las crews de la Liga.', 'Se prepara.'],
@@ -381,6 +523,22 @@ function Podio({ filas, yo, nombre, valor, sufijo = '' }) {
         </li>
       ))}
     </ol>
+  );
+}
+
+/** 🔒 Un mini evento en el que no estás: qué es y qué pide. Sin cómo va, que es de los que lo juegan */
+function MiniBloqueado({ C, x, completo }) {
+  const ex = EXPLICA[x.id] || ['', '', ''];
+  return (
+    <article className={'cm9-ev rico bloq' + (completo ? ' completo' : '')} style={{ '--c': COLOR_MINI[x.id] || '#29B298' }}>
+      <div className="cm9-ev-t">
+        <span className="cm9-ev-ic" aria-hidden="true">{x.ic}</span>
+        <span className="cm9-tag pend"><Candado />BLOQUEADO</span>
+      </div>
+      <h3>{x.nombre.toUpperCase()}</h3>
+      <p className="cm9-ev-q">{ex[0]}</p>
+      <p className="cm9-ev-pide"><b>Para entrar:</b> {ex[1]}{montos(C) && x.id !== 'meta' ? ' Premio: ' + pdt(montos(C).mini) + ' Puntos de Tienda.' : ''}</p>
+    </article>
   );
 }
 
@@ -520,6 +678,7 @@ function LigasInfo({ liga, C, yo }) {
           <li><b>Las jornadas</b><p>Todos contra todos: en cada jornada te toca un rival. Las jornadas cierran los <b>lunes, miércoles y viernes a las 11 AM</b> (hora del este).</p></li>
           <li><b>Cómo sale cada cruce</b><p>Si te enfrentas a tu rival en un 1v1 de <b>cualquier evento de cualquier servidor</b> antes del cierre, cuenta esa batalla. Si no se cruzan, se simula con el nivel de cada uno (su Score y su forma), con un jurado sorteado.</p></li>
           <li><b>Los puntos</b><p>Ganar da <b>3 puntos</b>. La tabla se ordena por puntos, después por victorias reales y después por nivel.</p></li>
+          <li><b>El PTB</b><p>Desde la temporada 2, la tabla muestra tu <b>PTB</b>: los votos de jurado a tu favor, con 3 en juego por batalla. En una simulada, los de su jurado sorteado. En una real, los que dejó el jurado llevados a 3, y sin votos anotados, los 3 al que ganó. No cambia el orden de la tabla.</p></li>
           <li><b>Subir y bajar</b><p>Al terminar las 9 jornadas, los <b>2 primeros suben</b> de nivel y los <b>2 últimos bajan</b>. En Oro no se sube más; en Ascenso no se baja.</p></li>
           <li><b>⭐ La Élite</b><p>Se juega <b>además</b> de tu liga, con el mismo calendario. Es de los 10 mejores del Competitivo que estén activos y <b>tengan su carta Competitiva</b>: sin la carta no se entra.</p></li>
           <li><b>Los premios</b><p>Subir de liga, y Puntos de Tienda para los 3 primeros de cada liga al terminar la temporada{montos(C) ? ': ' + ['elite', 'oro', 'plata', 'bronce', 'ascenso'].map((n) => (n === 'elite' ? 'Élite' : NIVEL[n] ? NIVEL[n].n : n) + ' ' + montos(C).liga[n].map(pdt).join(' / ')).join(' · ') : ''}. <b>Para cobrar hay que haber jugado al menos una batalla de verdad</b> en esa liga: con todo simulado no se cobra.</p></li>
@@ -555,7 +714,7 @@ function LigasInfo({ liga, C, yo }) {
 
 /** 🎲 LA SUBPÁGINA DE LOS MINI EVENTOS (#/competencias/mini). Dlx, 26/10/2026: «puedes crear una subpágina sobre ellos…
  * y ahí explicar más… para lo que dice pronto crear un countdown… abre en X» */
-function MiniPagina({ liga, C, yo }) {
+function MiniPagina({ liga, C, yo, juega }) {
   return (
     <div className="cm9">
       <section className="cm9-esc corta" aria-label="Mini eventos">
@@ -572,7 +731,7 @@ function MiniPagina({ liga, C, yo }) {
       </section>
       <section className="cm9-sec" aria-label="Abiertos esta semana">
         <div className="cm9-cab"><div><h2>ABIERTOS ESTA SEMANA</h2><p>Cierran el lunes a las 11 AM.</p></div></div>
-        <div className="cm9-evs grande">{(C.mini || []).map((x) => <Mini key={x.id} liga={liga} C={C} x={x} yo={yo} completo />)}</div>
+        <div className="cm9-evs grande">{(C.mini || []).map((x) => (juega(x) ? <Mini key={x.id} liga={liga} C={C} x={x} yo={yo} completo /> : <MiniBloqueado key={x.id} C={C} x={x} completo />))}</div>
       </section>
       <section className="cm9-sec" aria-label="Los que vienen">
         <div className="cm9-cab"><div><h2>LOS QUE VIENEN</h2><p>Los de la semana que viene ya están sorteados. Los que se preparan todavía no tienen fecha.</p></div></div>
@@ -611,6 +770,7 @@ function Equipo({ liga, C, yo }) {
         {C.equipo.map(([k, nota], i) => (
           <li key={k} className={k === yo ? 'yo' : undefined}>
             {i === 0 ? <span className="cm9-tag mvp">MVP</span> : <span className="cm9-et">{i + 1}</span>}
+            <Cara liga={liga} k={k} nombre={nombreDe(liga, C, k)} cls="cara cm9-cara-ch" lazy />
             <Nombre liga={liga} C={C} k={k} yo={yo} />
             <b className={nota >= 8 ? 'alta' : ''}>{nota.toFixed(1)}</b>
           </li>
@@ -623,6 +783,7 @@ function Equipo({ liga, C, yo }) {
 
 const PREGUNTAS = [
   ['¿Por qué no aparezco?', 'Entra quien jugó al menos un evento en las 2 semanas antes del lunes. En las ligas entras al arrancar la temporada que viene, en Ascenso.'],
+  ['¿Por qué no veo la Copa ni la Rapid?', 'Las ligas las ve todo el mundo. De lo demás, cada uno ve lo suyo: tu llave y los mini eventos en los que estás. De lo que no juegas, ahí mismo te decimos qué te falta.'],
   ['¿Es sólo para los del Competitivo?', 'No: las ligas, la Copa, la Rapid y los mini eventos son para todos los que jugaron en las últimas 2 semanas. Sólo la Élite pide la carta Competitiva: es de los 10 mejores del Competitivo, y ellos juegan además su liga.'],
   ['¿Tengo que hacer algo?', 'No. No hay inscripción ni botón: tus batallas de siempre cuentan solas. Sólo mira quién te toca y búscalo en los eventos.'],
   ['¿Se puede arreglar una simulación?', 'No. Lo mismo da siempre el mismo resultado y cualquiera puede rehacer la cuenta. Un resultado real nunca se inventa.'],
@@ -638,7 +799,7 @@ function Cobraron({ liga, C, yo }) {
       <div className="cm9-cab"><div><h2>COBRARON EN EL ÚLTIMO CIERRE</h2><p>Puntos de Tienda para quien ganó jugando de verdad.</p></div></div>
       <ul className="cm9-cobro">
         {u.map(([k, m, por]) => (
-          <li key={k + por} className={k === yo ? 'yo' : ''}><Nombre liga={liga} C={C} k={k} yo={yo} /><small>{por}</small><b>+{pdt(m)}</b></li>
+          <li key={k + por} className={k === yo ? 'yo' : ''}><Cara liga={liga} k={k} nombre={nombreDe(liga, C, k)} cls="cara cm9-cara-ch" lazy /><Nombre liga={liga} C={C} k={k} yo={yo} /><small>{por}</small><b>+{pdt(m)}</b></li>
         ))}
       </ul>
     </section>
@@ -650,23 +811,38 @@ export function Competencias({ liga, dc, sub = '' }) {
   const como = useRef(null);
   const yo = (liga && liga.yo && liga.yo.k) || (dc && dc.clave) || '';
   const donde = useMemo(() => dondeEstoy(C, yo), [C, yo]);
+  // 🔒 Dlx lo ve todo, y puede mirar la página como quien no juega: si no, nunca vería lo que ve la mayoría
+  const admin = !!dc && String(dc.id) === DUENO;
+  const [comoFuera, setComoFuera] = useState(false);
   if (!C) return <div className="cargando">Cargando las competencias…</div>;
   if (!C.ligas) return <div className="cargando">Las competencias se están armando: vuelve en un rato.</div>;
-  if (sub === 'mini') return <MiniPagina liga={liga} C={C} yo={yo} />;
+  const verTodo = admin && !comoFuera;
+  const conCuenta = !!(yo || dc);
+  const yoL = comoFuera ? '' : yo;
+  const dondeL = comoFuera ? null : donde;
+  const juega = (x) => verTodo || enMini(x, yoL, !!(dondeL && (dondeL.copa || dondeL.rapid)), (C.entran || []).includes(yoL));
+  if (sub === 'mini') return <MiniPagina liga={liga} C={C} yo={yo} juega={juega} />;
   if (sub === 'ligas') return <LigasInfo liga={liga} C={C} yo={yo} />;
   const ir = (r) => r.current && r.current.scrollIntoView({ behavior: 'smooth', block: 'start' });
   return (
     <div className="cm9">
       <Escena liga={liga} C={C} yo={yo} donde={donde} onComo={() => ir(como)} />
       <Dias C={C} />
-      <Ligas liga={liga} C={C} yo={yo} donde={donde} />
-      <CopaRapid liga={liga} C={C} yo={yo} donde={donde} />
+      <Ligas liga={liga} C={C} yo={yo} donde={donde} conCuenta={conCuenta} />
+      {admin ? (
+        <div className="cm9-adm" role="group" aria-label="Cómo mirar la Copa, la Rapid y los mini eventos">
+          <span className="cm9-et">Admin</span>
+          <button type="button" aria-pressed={!comoFuera} onClick={() => setComoFuera(false)}>Ver todo</button>
+          <button type="button" aria-pressed={comoFuera} onClick={() => setComoFuera(true)}>Como quien no juega</button>
+        </div>
+      ) : null}
+      <CopaRapid liga={liga} C={C} yo={yoL} donde={dondeL} verTodo={verTodo} conCuenta={conCuenta} />
 
       {(C.mini || []).length ? (
         <section className="cm9-sec" aria-label="Más mini eventos">
-          <div className="cm9-cab"><div><h2>MÁS MINI EVENTOS</h2><p>Rotan cada semana: siempre hay algo abierto, nunca todo a la vez.</p></div><a className="cm9-ver" href="#/competencias/mini">Todos y cómo se juegan →</a></div>
+          <div className="cm9-cab"><div><h2>MÁS MINI EVENTOS</h2><p>Rotan cada semana: siempre hay algo abierto, nunca todo a la vez.{!conCuenta ? ' Entra con Discord para ver en cuáles estás.' : ''}</p></div><a className="cm9-ver" href="#/competencias/mini">Todos y cómo se juegan →</a></div>
           <div className="cm9-evs">
-            {C.mini.map((x) => <Mini key={x.id} liga={liga} C={C} x={x} yo={yo} />)}
+            {C.mini.map((x) => (juega(x) ? <Mini key={x.id} liga={liga} C={C} x={x} yo={yoL} /> : <MiniBloqueado key={x.id} C={C} x={x} />))}
           </div>
           {(C.proxima || []).length ? (
             <p className="cm9-pronto"><span className="cm9-tag pend">ABREN EN {faltaTxt(C.fin).toUpperCase()}</span>{C.proxima.map(([id, ic, n]) => <span key={id}>{ic} {n}</span>)}</p>
@@ -685,7 +861,7 @@ export function Competencias({ liga, dc, sub = '' }) {
         <div className="cm9-cab"><div><span className="cm9-chip">PARA EMPEZAR</span><h2>CÓMO SE JUEGA</h2></div><p>No hay que anotarse en nada: <b>juegas tus eventos de siempre</b> y esto se arma solo.</p></div>
         <ol className="cm9-pasos">
           <li><b>1</b><h3>JUEGA</h3><p>Cualquier evento de un servidor de la Liga. Con <b>1 evento en las últimas 2 semanas</b> ya entras el lunes.</p></li>
-          <li><b>2</b><h3>TE TOCAN RIVALES</h3><p>Tu liga (y la Élite, si estás entre los 10 mejores), tu grupo de la Copa y tu Rapid. Los ves arriba, en «Tu próximo cruce».</p></li>
+          <li><b>2</b><h3>TE TOCAN RIVALES</h3><p>Tu liga (y la Élite, si estás entre los 10 mejores), tu llave de la Copa y tu Rapid. Los ves arriba, en «Tu próximo cruce».</p></li>
           <li><b>3</b><h3>CRÚZATE</h3><p>Si te enfrentas a tu rival en un 1v1 de <b>cualquier evento</b> antes del cierre, cuenta esa batalla. Si no, se simula con tu nivel.</p></li>
           <li><b>4</b><h3>SUMA Y SUBE</h3><p>Ganar da <b>3 puntos</b>. Al final de las 9 jornadas, los 2 primeros de cada liga suben y los 2 últimos bajan.</p></li>
         </ol>

@@ -100,15 +100,16 @@
 .cm9-tabla td{padding:8px;border-top:1px solid var(--suave);text-align:center;color:var(--gris)}
 .cm9-tabla td:first-child{border-left:5px solid transparent;color:var(--tinta)}
 .cm9-tabla td:nth-child(3){text-align:left;color:var(--tinta)}
-.cm9-tabla td:last-child b{font:900 19px/1 Archivo,sans-serif;color:var(--tinta)}
+.cm9-tabla td.cm9-pts b{font:900 19px/1 Archivo,sans-serif;color:var(--tinta)}
 .cm9-tabla tr.campeon td:first-child{border-left-color:#F5C542}
 .cm9-tabla tr.sube td:first-child{border-left-color:var(--verde)}
 .cm9-tabla tr.baja td:first-child{border-left-color:var(--magenta)}
 .cm9-tabla tr.baja{background:color-mix(in srgb,var(--magenta) 8%,var(--fondo))}
 .cm9-tabla tr.yo{background:var(--inv)}
-.cm9-tabla tr.yo td,.cm9-tabla tr.yo td:last-child b{color:var(--inv-tinta)}
-.cm9-cr{display:inline-grid;place-items:center;width:34px;height:34px;background:var(--inv);color:var(--inv-tinta);font:900 14px/1 Archivo,sans-serif;font-style:normal}
-.cm9-tabla tr.yo .cm9-cr{background:var(--magenta);color:#FFFFFF}
+.cm9-tabla tr.yo td,.cm9-tabla tr.yo td.cm9-pts b{color:var(--inv-tinta)}
+.cm9-cara{width:34px;height:34px;vertical-align:middle;font:800 14px/1 Archivo,sans-serif}
+.cm9-cara-ch{width:24px;height:24px;font:800 11px/1 Archivo,sans-serif}
+.cm9-tabla tr.yo .cara.ini{background:var(--magenta);color:#FFFFFF}
 .cm9-fo{display:inline-flex;gap:3px}
 .cm9-fo i{display:grid;place-items:center;width:16px;height:16px;border:1.5px solid var(--suave);font:900 10px/1 Archivo,sans-serif;font-style:normal;color:#FFFFFF}
 .cm9-fo i.g{background:var(--verde);border-color:var(--verde)}.cm9-fo i.p{background:var(--magenta);border-color:var(--magenta)}
@@ -122,7 +123,8 @@
 .cm9-crus{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:10px;margin:0;padding:0;list-style:none}
 .cm9-cru{display:flex;flex-direction:column;align-items:flex-start;gap:8px;padding:12px 14px;border:1.6px solid var(--linea);font:800 15px/1.15 Archivo,sans-serif}
 .cm9-cru.tuyo{background:var(--inv);color:var(--inv-tinta)}
-.cm9-cru-l{display:flex;flex-wrap:wrap;align-items:baseline;gap:6px}
+.cm9-cru-l{display:flex;flex-wrap:wrap;align-items:center;gap:6px}
+.cm9-cru-l>span{display:inline-flex;align-items:center;gap:6px;min-width:0}
 .cm9-cru-l small{font:700 12px/1 "Barlow Condensed",sans-serif;color:var(--gris)}
 .cm9-cru .gana{font-weight:900}
 .cm9-cru .pierde{color:var(--gris);font-weight:600}
@@ -227,7 +229,7 @@
 .cm9-eq{margin:0;padding:6px 16px;list-style:none}
 .cm9-eq li{display:flex;align-items:center;gap:12px;padding:10px 0;border-bottom:1px solid var(--suave);font:700 15px/1 Archivo,sans-serif}
 .cm9-eq li:last-child{border-bottom:0}
-.cm9-eq li>a,.cm9-eq li>span:nth-child(2){flex:1}
+.cm9-eq li>a,.cm9-eq li>span:nth-child(3){flex:1}
 .cm9-eq li .cm9-et{width:34px}
 .cm9-eq li>b{padding:5px 7px;background:var(--suave);font:900 15px/1 Archivo,sans-serif}
 .cm9-eq li>b.alta{background:var(--verde);color:#030304}
@@ -298,7 +300,7 @@
   .cm9-dias b{font-size:17px}
   .cm9-tabla{font-size:13.5px}.cm9-tabla th:nth-child(4),.cm9-tabla td:nth-child(4),.cm9-tabla th:nth-child(5),.cm9-tabla td:nth-child(5),.cm9-tabla th:nth-child(6),.cm9-tabla td:nth-child(6){display:none}
   .cm9-tabla td,.cm9-tabla th{padding:7px 5px}.cm9-fo i{width:13px;height:13px}
-  .cm9-cr{width:28px;height:28px}
+  .cm9-cara{width:28px;height:28px;font-size:12px}
   .cm9-llave{gap:4px;padding:10px 10px 14px}.cm9-llave b{padding:5px 4px;font-size:11px}
   .cm9-gcab input{margin-left:0;width:100%}
 }
@@ -399,7 +401,88 @@
 /* 💰 los premios (27/10/2026) */
 .cm9-premio{margin:8px 0 0;font-size:13px}
 .cm9-cobro{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:6px}
-.cm9-cobro li{display:grid;grid-template-columns:1fr auto;align-items:center;gap:2px 10px;padding:8px 10px;border:1.6px solid var(--linea)}
-.cm9-cobro li small{grid-column:1;font-size:12px;opacity:.75}
-.cm9-cobro li b{grid-row:1 / span 2;grid-column:2;font-variant-numeric:tabular-nums}
+.cm9-cobro li{display:grid;grid-template-columns:auto 1fr auto;align-items:center;gap:2px 10px;padding:8px 10px;border:1.6px solid var(--linea)}
+.cm9-cobro li .cara{grid-row:1 / span 2;width:32px;height:32px;font-size:13px}
+.cm9-cobro li small{grid-column:2;font-size:12px;opacity:.75}
+.cm9-cobro li b{grid-row:1 / span 2;grid-column:3;font-variant-numeric:tabular-nums}
 .cm9-cobro li.yo{outline:2px solid var(--magenta)}
+
+/* 🔎 la fila de una liga que se abre (Dlx, 04/11/2026: «click como en ranking»). El `width:0;min-width:100%` es para que lo
+   de adentro no le mueva las columnas a la tabla al abrirse */
+.cm9-tabla tbody tr[aria-expanded]{cursor:pointer}
+.cm9-tabla tbody tr[aria-expanded="true"]{background:var(--caja)}
+.cm9-tabla tbody tr.yo[aria-expanded]{background:var(--inv)}
+.cm9-tabla tbody tr[aria-expanded]:focus-visible{outline:2px solid var(--verde);outline-offset:-2px}
+.cm9-tabla tr.cm9-det-f>td{padding:0;text-align:left;color:var(--tinta);background:var(--caja)}
+.cm9-det{box-sizing:border-box;width:0;min-width:100%;display:grid;grid-template-columns:150px minmax(0,1fr);gap:18px;padding:16px 18px}
+.cm9-det.sin{grid-template-columns:minmax(0,1fr)}
+.cm9-det-carta{min-width:0}
+.cm9-det-ci{display:block;width:100%;height:auto}
+.cm9-det-l{display:flex;flex-direction:column;gap:12px;min-width:0}
+.cm9-det-n{display:flex;flex-wrap:wrap;gap:10px 22px;margin:0}
+.cm9-det-n div{display:flex;flex-direction:column;gap:5px}
+.cm9-det-n dt{font:700 12px/1 "Barlow Condensed",sans-serif;letter-spacing:.1em;text-transform:uppercase;color:var(--gris)}
+.cm9-det-n dd{margin:0;font:900 20px/1 Archivo,sans-serif;font-stretch:110%;font-variant-numeric:tabular-nums}
+.cm9-det-c{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,250px),1fr));gap:6px;margin:0;padding:0;list-style:none}
+.cm9-det-c li{display:grid;grid-template-columns:auto auto minmax(0,1fr) auto;align-items:center;gap:7px;padding:6px 8px;border:1.5px solid var(--suave);background:var(--fondo);font:700 13.5px/1.1 Archivo,sans-serif}
+.cm9-det-c small{font:700 12px/1 "Barlow Condensed",sans-serif;letter-spacing:.06em;color:var(--gris)}
+.cm9-det-c i{display:grid;place-items:center;width:18px;height:18px;font:900 11px/1 Archivo,sans-serif;font-style:normal;color:#FFFFFF}
+.cm9-det-c i.g{background:var(--verde);color:#030304}.cm9-det-c i.p{background:var(--magenta)}.cm9-det-c i.n{border:1.5px solid var(--suave);color:var(--gris)}
+.cm9-det-r{display:flex;align-items:center;gap:6px;min-width:0;overflow:hidden}
+.cm9-det-r>a,.cm9-det-r>span:last-child{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.cm9-det-c em{font:700 12px/1 "Barlow Condensed",sans-serif;font-style:normal;letter-spacing:.06em;color:var(--gris);white-space:nowrap}
+.cm9-det-acc{display:flex;flex-wrap:wrap;gap:8px}
+.cm9-ley-toca{margin-left:auto}
+.cm9-fuera{margin:0;padding:12px 14px;border:1.6px dashed var(--linea);background:var(--caja);font:600 14px/1.4 Archivo,sans-serif}
+
+/* 🏆 la llave de 32: más apretada, y quien la juega ve su camino */
+.cm9-br.larga .cm9-br-ms{gap:6px}
+.cm9-br.larga .cm9-br-l{min-height:27px;padding:3px 7px}
+.cm9-br.larga .cm9-br-l.vacio{min-height:27px;line-height:27px}
+.cm9-br-ver{align-self:flex-start;min-height:44px;margin:0 16px 16px;padding:0 14px;border:1.6px solid var(--linea);border-radius:0;background:transparent;color:var(--tinta);
+  font:800 13px/1 Archivo,sans-serif;text-transform:uppercase;cursor:pointer}
+
+/* 🔒 lo que no juegas (Dlx, 04/11/2026: «que diga sus requisitos») */
+.cm9-cand{display:block;width:12px;height:12px;flex:none}
+.cm9-tag .cm9-cand{margin-right:5px}
+.cm9-blq-s{display:flex;flex-direction:column;gap:14px;padding:0 var(--gut,40px) 44px}
+.cm9-blq{display:grid;grid-template-columns:auto minmax(0,1fr) auto;align-items:center;gap:16px;padding:18px;border:1.6px solid var(--linea);background:var(--caja)}
+.cm9-blq-i{display:grid;place-items:center;width:56px;height:56px;background:var(--magenta);color:#FFFFFF}
+.cm9-blq-i .cm9-cand{width:28px;height:28px}
+.cm9-blq.ok .cm9-blq-i{background:var(--verde);color:#030304}
+.cm9-blq-t{display:flex;flex-direction:column;gap:6px;min-width:0}
+.cm9-blq h3{font:900 clamp(18px,2.2vw,23px)/1.05 Archivo,sans-serif;font-stretch:120%}
+.cm9-blq p{margin:0;max-width:66ch;font:500 15px/1.45 Archivo,sans-serif;color:var(--gris)}
+.cm9-blq p b{color:var(--tinta)}
+.cm9-blq-dos{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,320px),1fr));gap:14px}
+.cm9-blq-dos .cm9-premio{padding:8px 16px 14px}
+.cm9-ev.bloq .cm9-ev-ic{filter:grayscale(1);opacity:.6}
+.cm9-ev p.cm9-ev-pide{margin:auto 0 0;padding-top:10px;border-top:1px solid var(--suave)}
+.cm9-ev-pide b{color:var(--tinta)}
+
+/* el selector de Dlx */
+.cm9-elegir{display:flex;flex-wrap:wrap;align-items:center;gap:8px 12px;padding:12px 16px;border-bottom:1.6px solid var(--linea)}
+.cm9-elegir span{font:800 12px/1 "Barlow Condensed",sans-serif;letter-spacing:.1em;text-transform:uppercase;color:var(--gris)}
+.cm9-elegir select{max-width:100%;min-height:44px;padding:0 10px;border:1.6px solid var(--linea);border-radius:0;background:var(--fondo);color:var(--tinta);font:700 16px/1.1 Archivo,sans-serif}
+.cm9-elegir small{font:600 13px/1.2 Archivo,sans-serif;color:var(--gris)}
+.cm9-adm{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin:0 var(--gut,40px) 20px;padding:10px 12px;border:1.6px dashed var(--magenta)}
+.cm9-adm button{min-height:44px;padding:0 12px;border:1.6px solid var(--linea);border-radius:0;background:transparent;color:var(--tinta);
+  font:800 14px/1 "Barlow Condensed",sans-serif;letter-spacing:.06em;text-transform:uppercase;cursor:pointer}
+.cm9-adm button[aria-pressed="true"]{background:#29B298;border-color:#29B298;color:#030304}
+
+@media (max-width: 900px){
+  .cm9-blq-s{padding-left:16px;padding-right:16px}
+  .cm9-adm{margin-left:16px;margin-right:16px}
+}
+@media (max-width: 560px){
+  .cm9-det{grid-template-columns:92px minmax(0,1fr);gap:12px;padding:12px}
+  .cm9-det-n{gap:8px 14px}.cm9-det-n dd{font-size:17px}
+  .cm9-blq{grid-template-columns:auto minmax(0,1fr);padding:14px}
+  .cm9-blq-i{width:44px;height:44px}.cm9-blq-i .cm9-cand{width:22px;height:22px}
+  .cm9-blq>.btn{grid-column:1 / -1}
+  .cm9-ley-toca{margin-left:0}
+}
+@media (hover: hover) and (pointer: fine){
+  .cm9-tabla tbody tr[aria-expanded]:not(.yo):hover{background:var(--caja)}
+  .cm9-br-ver:hover,.cm9-adm button[aria-pressed="false"]:hover{color:var(--magenta-tx)}
+}
