@@ -1,5 +1,5 @@
 {
- "cuando": "2026-11-04T23:25:48+00:00",
+ "cuando": "2026-11-04T23:56:01+00:00",
  "anuncios": [
   {
    "nombre": "¡SE LLEGÓ LA GRAN NOCHE!",
@@ -1240,6 +1240,31 @@
    "autor": "Nc",
    "staff_cuentas": {},
    "categoria_id": "1468478330826260500"
+  },
+  {
+   "nombre": "LAS LIGAS",
+   "servidor": "FFA",
+   "canal": "✦⚡—novedades",
+   "msg_id": "1567683765680083124",
+   "cuando": "2026-11-04T23:35:35",
+   "canal_id": "1531832189187264543",
+   "guild_id": "1468472442925092958",
+   "organizador": "",
+   "orgs": [],
+   "autor_h": "797ecd0ceee716c6",
+   "cupos_texto": "",
+   "inscriptos": null,
+   "cupo_total": null,
+   "rango": "",
+   "modalidad": "",
+   "horario": "",
+   "fecha": "Ligas de 10. Tres partidos por semana (jueves, lunes, miércoles y viernes), nueve por temporada. Los 2 primeros suben a ligas | los 2 últimos bajan",
+   "premios": "",
+   "staff": {},
+   "autor": "Dlxmouche",
+   "staff_cuentas": {},
+   "de_imagen": true,
+   "categoria_id": "1468472443843776657"
   },
   {
    "nombre": "FLEIVA FREE",

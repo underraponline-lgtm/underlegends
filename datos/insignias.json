@@ -303,6 +303,10 @@
 "ascenso": [
 "2026-10-18T00:55:39Z",
 "prueba"
+],
+"mes_sv_staff": [
+"2026-11-04T23:56:59Z",
+"prueba"
 ]
 },
 "AREZ": {
@@ -472,6 +476,14 @@
 ],
 "ev10": [
 "2026-10-30T02:56:35Z",
+"prueba"
+],
+"mes_sv_revelacion": [
+"2026-11-04T23:56:59Z",
+"prueba"
+],
+"mes_sv_staff": [
+"2026-11-04T23:56:59Z",
 "prueba"
 ]
 },
@@ -745,6 +757,10 @@
 "ev10": [
 "2026-10-18T00:55:39Z",
 "prueba"
+],
+"mes_sv_revelacion": [
+"2026-11-04T23:56:59Z",
+"prueba"
 ]
 },
 "Armando Faso": {
@@ -780,6 +796,10 @@
 "Astral": {
 "debut": [
 "2026-10-13T02:58:11Z",
+"prueba"
+],
+"mes_sv_staff": [
+"2026-11-04T23:56:59Z",
 "prueba"
 ]
 },
@@ -1016,6 +1036,10 @@
 ],
 "ascenso": [
 "2026-11-02T16:27:24Z",
+"prueba"
+],
+"mes_batacazo": [
+"2026-11-04T23:56:59Z",
 "prueba"
 ]
 },
@@ -1415,6 +1439,14 @@
 "ev10": [
 "2026-10-23T23:25:57Z",
 "prueba"
+],
+"mes_clasico": [
+"2026-11-04T23:56:59Z",
+"prueba"
+],
+"mes_sv_rapero": [
+"2026-11-04T23:56:59Z",
+"prueba"
 ]
 },
 "Catarsis": {
@@ -1452,6 +1484,12 @@
 "Ceegee": {
 "debut": [
 "2026-09-29T22:24:13Z",
+"prueba"
+]
+},
+"Ceko": {
+"mes_sv_staff": [
+"2026-11-04T23:56:59Z",
 "prueba"
 ]
 },
@@ -2549,6 +2587,10 @@
 "liga": [
 "2026-10-16T15:26:51Z",
 "prueba"
+],
+"mes_sv_staff": [
+"2026-11-04T23:56:59Z",
+"prueba"
 ]
 },
 "Erian el papá de colesito": {
@@ -2849,6 +2891,12 @@
 "prueba"
 ]
 },
+"Flennzs": {
+"mes_jurado": [
+"2026-11-04T23:56:59Z",
+"prueba"
+]
+},
 "Focox": {
 "debut": [
 "2026-09-27T17:50:55Z",
@@ -2870,6 +2918,10 @@
 "ForceGP": {
 "liga": [
 "2026-10-16T15:26:51Z",
+"prueba"
+],
+"mes_hincha": [
+"2026-11-04T23:56:59Z",
 "prueba"
 ]
 },
@@ -2910,6 +2962,10 @@
 "GP": {
 "debut": [
 "2026-09-29T22:24:13Z",
+"prueba"
+],
+"mes_sv_staff": [
+"2026-11-04T23:56:59Z",
 "prueba"
 ]
 },
@@ -3108,6 +3164,10 @@
 ],
 "clasico": [
 "2026-10-28T02:25:51Z",
+"prueba"
+],
+"mes_momento": [
+"2026-11-04T23:56:59Z",
 "prueba"
 ]
 },
@@ -4171,6 +4231,30 @@
 "ascenso": [
 "2026-10-26T15:30:43Z",
 "prueba"
+],
+"mes_dj": [
+"2026-11-04T23:56:59Z",
+"prueba"
+],
+"mes_evento": [
+"2026-11-04T23:56:59Z",
+"prueba"
+],
+"mes_host": [
+"2026-11-04T23:56:59Z",
+"prueba"
+],
+"mes_organizador": [
+"2026-11-04T23:56:59Z",
+"prueba"
+],
+"mes_staff": [
+"2026-11-04T23:56:59Z",
+"prueba"
+],
+"mes_sv_staff": [
+"2026-11-04T23:56:59Z",
+"prueba"
 ]
 },
 "LGBD": {
@@ -4447,6 +4531,10 @@
 "ev25": [
 "2026-11-03T22:56:53Z",
 "prueba"
+],
+"mes_publicacion": [
+"2026-11-04T23:56:59Z",
+"prueba"
 ]
 },
 "Lilñaño": {
@@ -4628,6 +4716,10 @@
 ],
 "trotamundos": [
 "2026-11-02T00:25:37Z",
+"prueba"
+],
+"mes_revelacion": [
+"2026-11-04T23:56:59Z",
 "prueba"
 ]
 },
@@ -5069,6 +5161,14 @@
 "figura": [
 "2026-10-26T15:30:43Z",
 "prueba"
+],
+"mes_clasico": [
+"2026-11-04T23:56:59Z",
+"prueba"
+],
+"mes_promo": [
+"2026-11-04T23:56:59Z",
+"prueba"
 ]
 },
 "Malva": {
@@ -5243,6 +5343,10 @@
 "ascenso": [
 "2026-10-12T15:27:35Z",
 "prueba"
+],
+"mes_sv_revelacion": [
+"2026-11-04T23:56:59Z",
+"prueba"
 ]
 },
 "MetriOdin": {
@@ -5383,6 +5487,10 @@
 "ev25": [
 "2026-10-30T22:57:02Z",
 "prueba"
+],
+"mes_sv_rapero": [
+"2026-11-04T23:56:59Z",
+"prueba"
 ]
 },
 "Monamay": {
@@ -5465,6 +5573,10 @@
 "liga": [
 "2026-10-16T15:26:51Z",
 "prueba"
+],
+"mes_sv_rapero": [
+"2026-11-04T23:56:59Z",
+"prueba"
 ]
 },
 "Mr Still Ballin": {
@@ -5514,6 +5626,18 @@
 ],
 "ev10": [
 "2026-10-23T23:55:35Z",
+"prueba"
+],
+"mes_imparable": [
+"2026-11-04T23:56:59Z",
+"prueba"
+],
+"mes_showman": [
+"2026-11-04T23:56:59Z",
+"prueba"
+],
+"mes_sv_rapero": [
+"2026-11-04T23:56:59Z",
 "prueba"
 ]
 },
@@ -6061,6 +6185,14 @@
 "ev25": [
 "2026-10-16T04:25:22Z",
 "prueba"
+],
+"mes_constante": [
+"2026-11-04T23:56:59Z",
+"prueba"
+],
+"mes_sv_rapero": [
+"2026-11-04T23:56:59Z",
+"prueba"
 ]
 },
 "Oasis & Letrao": {
@@ -6341,6 +6473,14 @@
 "ev25": [
 "2026-10-27T21:55:33Z",
 "prueba"
+],
+"mes_sobreviviente": [
+"2026-11-04T23:56:59Z",
+"prueba"
+],
+"mes_sv_rapero": [
+"2026-11-04T23:56:59Z",
+"prueba"
 ]
 },
 "Paria": {
@@ -6488,6 +6628,14 @@
 ],
 "cazador": [
 "2026-10-20T02:25:39Z",
+"prueba"
+],
+"mes_cazador": [
+"2026-11-04T23:56:59Z",
+"prueba"
+],
+"mes_duelista": [
+"2026-11-04T23:56:59Z",
 "prueba"
 ]
 },
@@ -7045,6 +7193,14 @@
 "trotamundos": [
 "2026-10-21T23:56:02Z",
 "prueba"
+],
+"mes_batalla": [
+"2026-11-04T23:56:59Z",
+"prueba"
+],
+"mes_sv_batalla": [
+"2026-11-04T23:56:59Z",
+"prueba"
 ]
 },
 "Ruvi": {
@@ -7191,6 +7347,10 @@
 "racha": [
 "2026-10-26T05:28:09Z",
 "prueba"
+],
+"mes_villano": [
+"2026-11-04T23:56:59Z",
+"prueba"
 ]
 },
 "SONIC_DORADITO": {
@@ -7306,6 +7466,10 @@
 ],
 "trotamundos": [
 "2026-10-19T22:56:04Z",
+"prueba"
+],
+"mes_sv_rapero": [
+"2026-11-04T23:56:59Z",
 "prueba"
 ]
 },
@@ -7576,6 +7740,10 @@
 ],
 "figura": [
 "2026-10-12T15:27:35Z",
+"prueba"
+],
+"mes_rapero": [
+"2026-11-04T23:56:59Z",
 "prueba"
 ]
 },
@@ -7860,6 +8028,10 @@
 ],
 "trotamundos": [
 "2026-10-24T00:25:17Z",
+"prueba"
+],
+"mes_sv_revelacion": [
+"2026-11-04T23:56:59Z",
 "prueba"
 ]
 },
@@ -8493,6 +8665,10 @@
 "tricampeon": [
 "2026-10-24T03:55:43Z",
 "prueba"
+],
+"mes_momento": [
+"2026-11-04T23:56:59Z",
+"prueba"
 ]
 },
 "Xubaru prime": {
@@ -8672,6 +8848,14 @@
 ],
 "liga": [
 "2026-10-16T15:26:51Z",
+"prueba"
+],
+"mes_batalla": [
+"2026-11-04T23:56:59Z",
+"prueba"
+],
+"mes_sv_batalla": [
+"2026-11-04T23:56:59Z",
 "prueba"
 ]
 },
@@ -9182,6 +9366,10 @@
 "nueve7": {
 "debut": [
 "2026-10-21T23:56:02Z",
+"prueba"
+],
+"mes_sv_revelacion": [
+"2026-11-04T23:56:59Z",
 "prueba"
 ]
 },
