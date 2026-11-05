@@ -1,8 +1,10 @@
 # -*- coding: utf-8 -*-
 """QUE DATO NECESITA CADA TARJETA. Medido, no leido.
 
-    python herramientas/que_pide_cada_carta.py          la tabla
-    python herramientas/que_pide_cada_carta.py --md     para pegar en un doc
+    python herramientas/que_pide_cada_carta.py          la tabla, y REESCRIBE el mapa
+    python herramientas/que_pide_cada_carta.py --md     para pegar en un doc, y lo reescribe igual
+    python herramientas/que_pide_cada_carta.py --auto   rojo si a una carta le falta un dato. No escribe
+    python herramientas/que_pide_cada_carta.py --json   lo mismo, para `bot/alertar.py`. No escribe
 
 🔴 POR QUE NO SE LEE EL CODIGO. La pregunta «que necesita cada carta» se
 puede contestar leyendo los generadores, y asi es como se contesta mal: hay
@@ -23,15 +25,35 @@ gente de verdad— y lo que queda anotado es la respuesta.
 puede no tenerlo y la carta sale igual, peor**. Esos salen marcados
 `opcional` — son justo los que hay que decidir si el Sheet nuevo los trae.
 
-⚠️ Y SE CORRE SOBRE VARIAS PERSONAS, no una. Konan tiene crew, pais, titulos
+⚠️ Y SE CORRE SOBRE TODAS LAS PERSONAS, no una. Konan tiene crew, pais, titulos
 y racha; quien no tenga algo hace que su rama no se ejecute y ese campo no
 aparece. Con una sola persona la lista sale corta y parece completa.
+
+🔴 CON LA MUESTRA TAMBIÉN SALÍA CORTA (04/11/2026). Se dibujaban 50, las 25 de
+arriba y las 25 de abajo, porque medir «costaba minutos». Cuesta ~7 s con las ~600
+de hoy, sin credenciales y sin red. Y el 14/10 la muestra perdió `arc_sv` y
+`pos_sv`: desde el 13/10 la Competitiva sólo se los pide a quien eligió servidor,
+ninguno de esos 50 activaba esa parte y salieron del mapa. Con el código de hoy y
+33 fotos de `datos/` del 15/10 al 04/11, el pool entero dio siempre lo mismo y la
+muestra los perdió en dos.
+
+QUIÉN AVISA SI EL MAPA QUEDÓ CORTO
+----------------------------------
+`--auto`, en CI: rojo si una carta pide un dato que el mapa no tiene. Si sigue
+faltando a las 24 h, `bot/alertar.py` le manda un DM a Dlx (`mapa_corto()`).
+
+🔴 NINGUNO DE LOS DOS ESCRIBE EL MAPA, A PROPÓSITO. Sumarle o sacarle un campo a una
+carta le cambia la parte de datos del sello a todas las suyas, y la próxima vuelta
+las redibuja: el 04/11/2026 fueron las 222 Competitivas, por dos datos que se ven en
+14 de ellas y uno que nadie del pool tiene. Cuándo se paga eso lo decide Dlx, y lo
+corre una sesión a mano. Antes de escribir, esto dice qué entra, qué sale y cuánto cuesta.
 """
 import importlib.util
 import io
 import json
 import os
 import sys
+import time
 from collections import defaultdict
 
 SCR = os.path.dirname(os.path.abspath(__file__))
@@ -42,7 +64,10 @@ try:
 except AttributeError:
     pass
 
+CARTAS = ('Temporada', 'Competitiva', 'Servidor', 'Pais')
+MAPA = os.path.join(BASE, 'datos', 'campos_por_carta.json')
 VISTO = defaultdict(lambda: defaultdict(set))    # carta -> clave -> {'dura'|'opcional'}
+DIBUJADAS = defaultdict(lambda: {'n': 0, 'mal': 0, 'error': ''})    # carta -> cuántas, cuántas reventaron y la primera
 _CARTA = [None]
 
 
@@ -84,36 +109,34 @@ def cargar(carpeta, archivo, nombre_mod):
         os.chdir(antes)
 
 
-# ── cuantas personas se dibujan de cada carta ──
-# ⚠️ No una: ver el encabezado. Se toman las primeras N del pool, que ya
-# vienen ordenadas por puesto, mas unas cuantas del final — los de arriba
-# tienen todo y los de abajo tienen huecos, y los huecos son los que
-# activan las ramas con `.get()`.
-N = 25
+def _dibujar(f, *a):
+    """Dibuja una y anota cómo le fue.
 
-
-def muestra(xs):
-    return xs[:N] + xs[-N:]
+    🔴 ERA `except: pass`, Y UNA CARTA QUE REVIENTA PIDE MENOS. Reventada para todos,
+    deja un mapa corto que parece completo: la carta pierde esos campos, le cambian
+    todos los sellos y queda ciega justo a esos datos, sin un solo error.
+    """
+    d = DIBUJADAS[_CARTA[0]]
+    d['n'] += 1
+    try:
+        f(*a)
+    except Exception as e:                       # noqa: BLE001
+        d['mal'] += 1
+        d['error'] = d['error'] or '%s: %s' % (type(e).__name__, str(e)[:70])
 
 
 def temporada():
     _CARTA[0] = 'Temporada'
     m = cargar('01_Temporada', 'normal_v3.py', 'nv3')
-    for p in muestra(pool('temporada_pool.json')):
-        try:
-            m.card(p)
-        except Exception:                        # noqa: BLE001
-            pass
+    for p in pool('temporada_pool.json'):
+        _dibujar(m.card, p)
 
 
 def competitivo():
     _CARTA[0] = 'Competitiva'
     m = cargar(os.path.join('02_Competitivo', 'v2'), 'gencomp.py', 'gc')
-    for i, p in enumerate(muestra(pool('competitivo_pool.json'))):
-        try:
-            m.card(p, i)
-        except Exception:                        # noqa: BLE001
-            pass
+    for i, p in enumerate(pool('competitivo_pool.json')):
+        _dibujar(m.card, p, i)
 
 
 # 🔴 SERVIDOR Y PAIS NO RECIBEN EL POOL: LO LEEN ELLOS. Su `fila(p)` toma
@@ -142,11 +165,8 @@ def _por_la_puerta(carpeta, archivo, mod, etq):
         os.chdir(antes)
         g._j = viejo
     # y la tupla, por si pide algo que `cargar()` no tocó
-    for p in muestra(gente):
-        try:
-            g.fila(p)
-        except Exception:                        # noqa: BLE001
-            pass
+    for p in gente:
+        _dibujar(g.fila, p)
     return gente
 
 
@@ -158,15 +178,194 @@ def pais():
     _por_la_puerta('04_Pais', 'generar.py', 'pag', 'Pais')
 
 
-def main():
-    for f in (temporada, competitivo, servidor, pais):
+def pools_vacios():
+    """Los pools sin nadie, o que no se pudieron leer."""
+    vacios = []
+    for n in ('temporada_pool.json', 'competitivo_pool.json'):
+        try:
+            with io.open(os.path.join(BASE, 'datos', n), encoding='utf-8') as f:
+                if not json.load(f):
+                    vacios.append(n)
+        except (OSError, ValueError):
+            vacios.append(n + ' (no se pudo leer)')
+    return vacios
+
+
+def medir():
+    """Dibuja las cuatro con el espía. Devuelve {carta: por qué no se pudo medir}. No escribe nada."""
+    rotas = {}
+    for c, f in zip(CARTAS, (temporada, competitivo, servidor, pais)):
         try:
             f()
         except Exception as e:                   # noqa: BLE001
-            print('   ⚠️ %s: %s' % (f.__name__, str(e)[:70]))
+            rotas[c] = '%s: %s' % (type(e).__name__, str(e)[:70])
+            print('   ⚠️ %s: %s' % (f.__name__, rotas[c]))
     _CARTA[0] = None
+    # 🔴 «NO PIDIÓ NADA» SÓLO ES UN FALLO SI HABÍA POOL. La Servidor y la de País dibujan también a los de fuera del pool, así
+    # que con los dos en 0 corren enteras sin pasar por el espía. Eso es un estado: «0 de 0» no es «0 %»
+    hay_pool = len(pools_vacios()) < 2
+    for c in CARTAS:
+        d = DIBUJADAS[c]
+        if c in rotas or not d['n']:
+            continue
+        if d['mal'] == d['n']:
+            rotas[c] = d['error']
+        elif hay_pool and not VISTO[c]:
+            rotas[c] = 'no pidió ni un campo, teniendo pool'
+    return rotas
 
-    cartas = ['Temporada', 'Competitiva', 'Servidor', 'Pais']
+
+def leer_mapa():
+    try:
+        with io.open(MAPA, encoding='utf-8') as f:
+            return json.load(f)
+    except (OSError, ValueError):
+        return {}
+
+
+def comparar(medido, mapa):
+    """(faltan, sobran), por carta y sólo de las que se midieron.
+
+    ⚠️ NO PESAN IGUAL. Lo que falta no dispara nada: su carta se queda vieja en silencio,
+    y por eso da rojo. Lo que sobra sólo vigila de más: redibuja cuando no hacía falta.
+    """
+    faltan, sobran = {}, {}
+    for c, campos in medido.items():
+        pide, tiene = set(campos), set(mapa.get(c) or ())
+        if pide - tiene:
+            faltan[c] = sorted(pide - tiene)
+        if tiene - pide:
+            sobran[c] = sorted(tiene - pide)
+    return faltan, sobran
+
+
+def se_perderian(mapa, rotas, dibujadas):
+    """Las cartas que el mapa conoce y esta corrida no pudo medir: escribirlo las dejaría sin campos.
+
+    🔴 Y UNA CARTA SIN CAMPOS LE CAMBIA EL SELLO A TODAS LAS SUYAS Y NO VUELVE A VER NADA. Hasta el 04/11/2026
+    bastaba con que otra carta pidiera algo para escribir igual.
+    """
+    return sorted(c for c, campos in mapa.items() if campos and (c in rotas or not dibujadas.get(c, {}).get('n')))
+
+
+def precio():
+    """{carta: cuántas tiene selladas}: las que redibuja la próxima vuelta si se le suma o se le saca un campo.
+
+    ⚠️ Un campo más es una línea más en el hash de cada persona, aunque a ella no le cambie un píxel
+    (`que_cambio.huellas()`). Medido el 04/11/2026: 222 selladas, 222 redibujadas.
+    """
+    # ⚠️ RECIÉN ACÁ, DESPUÉS DE DIBUJAR: con `bot/` en el path antes de cargar las cartas, un módulo suyo podría tapar a otro
+    sys.path.insert(0, os.path.join(BASE, 'bot'))
+    import que_cambio as QC
+    try:
+        with io.open(QC.SELLO, encoding='utf-8') as f:
+            sello = (json.load(f) or {}).get('cartas') or {}
+    except (OSError, ValueError):
+        sello = {}
+    return {c: sum(1 for v in sello.values() if r2 in v) for c, r2 in QC.COMO_R2.items()}
+
+
+def informe():
+    """La medición de hoy contra el mapa. No escribe nada: lo leen `--auto` y `bot/alertar.py`."""
+    rotas = medir()
+    mapa = leer_mapa()
+    cartas = mapa.get('cartas') or {}
+    if not cartas:
+        rotas['mapa'] = 'falta datos/campos_por_carta.json'
+    medido = {c: VISTO[c] for c in CARTAS if VISTO[c] and c not in rotas}
+    faltan, sobran = comparar(medido, cartas)
+    return {'medido': mapa.get('medido', '?'), 'faltan': faltan, 'sobran': sobran, 'rotas': rotas, 'precio': precio()}
+
+
+def _casos():
+    """Lo que tiene que valer siempre, sin dibujar nada. Cuántos dieron mal."""
+    mal = []
+
+    def ok(cond, que):
+        print('   %s %s' % ('✅' if cond else '🔴', que))
+        if not cond:
+            mal.append(que)
+
+    f, s = comparar({'A': ['x', 'y']}, {'A': ['x']})
+    ok(f == {'A': ['y']} and not s, 'lo que la carta pide y el mapa no tiene, falta')
+    f, s = comparar({'A': ['x']}, {'A': ['x', 'y']})
+    ok(not f and s == {'A': ['y']}, 'lo que el mapa tiene de más no falta: sólo sobra')
+    f, s = comparar({}, {'A': ['x']})
+    ok(not f and not s, 'una carta que no se midió no se compara')
+    ok(se_perderian({'A': {'x': []}, 'B': {'y': []}}, {'A': 'reventó'}, {'A': {'n': 3}, 'B': {'n': 3}}) == ['A'],
+       'no se escribe si una carta reventó')
+    ok(se_perderian({'A': {'x': []}}, {}, {'A': {'n': 0}}) == ['A'], 'ni si se quedó sin gente')
+    ok(not se_perderian({'A': {'x': []}}, {}, {'A': {'n': 3}}), 'medida entera, sí')
+    _CARTA[0] = '_caso'
+    e = Espia({'a': 1})
+    _ = e['a'], e.get('b'), 'c' in e
+    _CARTA[0] = None
+    v = VISTO.pop('_caso')
+    ok(v == {'a': {'dura'}, 'b': {'opcional'}, 'c': {'opcional'}}, 'el espía anota `p[k]` como dura, y `.get()` e `in` como opcional')
+    d = DIBUJADAS['_caso']
+    _CARTA[0] = '_caso'
+    _dibujar(lambda: {}['x'])
+    _dibujar(lambda: None)
+    _CARTA[0] = None
+    DIBUJADAS.pop('_caso')
+    ok(d['n'] == 2 and d['mal'] == 1 and d['error'].startswith('KeyError'), 'una carta que revienta se cuenta, y sigue con la próxima')
+    return len(mal)
+
+
+def _auto():
+    """🔴 EL AVISO EN CI: rojo si una carta pide un dato que el mapa no tiene. No escribe ni redibuja nada.
+
+    ⚠️ NO COMPARA HUELLAS DE CÓDIGO. `que_cambio.mapa_viejo()` se prendió el 19/10/2026 y siguió igual hasta el 04/11, en
+    los 14 commits que tocaron código de cartas, y sólo uno sumó un campo. Una alarma siempre prendida no se mira.
+    """
+    print('\n══ LO QUE LAS CARTAS PIDEN Y EL MAPA NO TIENE ══\n')
+    mal = _casos()
+    t0 = time.time()
+    inf = informe()
+    print('')
+    for c in CARTAS:
+        d = DIBUJADAS[c]
+        print('   %-12s %2d datos · %d dibujadas' % (c, len(VISTO[c]), d['n']))
+        # ⚠️ NO ES ROJO: el resto de la carta se midió igual, y esa persona ya va a reventar al dibujarla de verdad
+        if d['mal'] and c not in inf['rotas']:
+            print('      ⚠️ a %d de %d les revienta (%s)' % (d['mal'], d['n'], d['error']))
+    print('   medido en %.1f s\n' % (time.time() - t0))
+    for c, por in sorted(inf['rotas'].items()):
+        print('   🔴 %s no se pudo medir: %s' % (c, por))
+    for c in CARTAS:
+        ks = inf['faltan'].get(c)
+        if ks:
+            print('   🔴 %s pide %d que el mapa no tiene: %s' % (c, len(ks), ', '.join(ks)))
+            print('      Si cambian, esa carta no se redibuja y nadie se entera.')
+            print('      Arreglarlo redibuja una vez las %d que tiene selladas.' % inf['precio'].get(c, 0))
+            # 🔎 el `for` de CI lo guarda en un grupo plegado: así también sale arriba de la corrida
+            if os.environ.get('GITHUB_ACTIONS'):
+                print('::error::%s pide datos que campos_por_carta.json no tiene: %s' % (c, ', '.join(ks)))
+    if inf['faltan']:
+        print('\n   Se arregla con `python herramientas/que_pide_cada_carta.py`, a mano y con el OK de Dlx.')
+        print('   Si se deja para después, esto sigue en rojo hasta entonces.')
+    for c, ks in sorted(inf['sobran'].items()):
+        print('   ⚠️ %s ya no pide: %s. Vigila de más y no da rojo; sacarlo también la redibuja.' % (c, ', '.join(ks)))
+    if not any(VISTO[c] for c in CARTAS) and not inf['rotas']:
+        # un pool vacío es un estado, no un fallo: ver `medir()` y el `if not todas` de `main()`
+        print('   ⚠️ no hay a quien dibujar: con los pools en 0 no hay con qué medir.')
+    elif not (inf['faltan'] or inf['rotas']):
+        print('   ✅ el mapa del %s tiene todo lo que piden' % inf['medido'])
+    print('')
+    return 1 if (mal or inf['faltan'] or inf['rotas']) else 0
+
+
+def main():
+    if '--auto' in sys.argv:
+        return _auto()
+    if '--json' in sys.argv:
+        # ⚠️ LA ÚLTIMA LÍNEA, Y LO DE ANTES NO VALE: `gencomp.py` imprime al importarse
+        inf = informe()
+        print(json.dumps({k: inf[k] for k in ('faltan', 'sobran', 'rotas', 'precio')}, ensure_ascii=False))
+        return 0
+    rotas = medir()
+
+    cartas = list(CARTAS)
     todas = sorted({k for c in cartas for k in VISTO[c]})
     if not todas:
         # 🔴 LA CAUSA CASI SIEMPRE NO ES LA QUE DECIA ESTE MENSAJE. Se
@@ -177,19 +376,11 @@ def main():
         # ni un campo y salen sin error.
         #
         # ⚠️ IMPORTA PORQUE MANDA A ARREGLAR OTRA COSA. `que_cambio.py`
-        # avisa que el mapa esta viejo y dice «regeneralo»; si al hacerlo
+        # avisaba que el mapa estaba viejo y decia «regeneralo»; si al hacerlo
         # sale un mensaje que culpa a los generadores, lo que sigue es
         # revisar generadores que estan bien. Con los pools vacios no hay
         # nada que regenerar y hay que esperar a que la T1 tenga datos.
-        vacios = []
-        for n in ('temporada_pool.json', 'competitivo_pool.json'):
-            try:
-                with io.open(os.path.join(BASE, 'datos', n),
-                             encoding='utf-8') as f:
-                    if not json.load(f):
-                        vacios.append(n)
-            except (OSError, ValueError):
-                vacios.append(n + ' (no se pudo leer)')
+        vacios = pools_vacios()
         if vacios:
             print('\n   ⚠️ no hay a quien dibujar: %s en 0.' % ' y '.join(vacios))
             print('      No es un fallo de los generadores — el mapa NO se')
@@ -198,6 +389,14 @@ def main():
             return 2
         print('\n   🔴 los generadores corrieron y no pidieron ni un campo,')
         print('      teniendo pool. Eso si es un fallo suyo.\n')
+        return 1
+
+    viejo = leer_mapa().get('cartas') or {}
+    perdidas = se_perderian(viejo, rotas, DIBUJADAS)
+    if perdidas:
+        print('\n   🔴 no escribo el mapa: %s no se pudo medir (%s).' % (
+            ' y '.join(perdidas), '; '.join(rotas.get(c, 'sin gente') for c in perdidas)))
+        print('      Quedaría sin campos y se redibujarían todas sus cartas.\n')
         return 1
 
     md = '--md' in sys.argv
@@ -225,11 +424,23 @@ def main():
     print('\n   ● la pide con `p[campo]`: si falta, la carta revienta')
     print('   ○ la pide con `.get()`: si falta, sale una carta peor **sin avisar**')
 
-    # ⚠️ SE GUARDA PARA QUE OTROS NO TENGAN QUE VOLVER A MEDIRLO. Medir
-    # cuesta dibujar las cuatro cartas —minutos— y la respuesta sólo cambia
-    # cuando cambia un generador. `bot/que_cambio.py` la usa para decidir
-    # qué carta quedó vieja cuando un campo del pool se movió: si cambió
-    # `pts`, la Temporada y nada más.
+    # 🔴 ANTES DE ESCRIBIR, LO QUE VA A PASAR. El 04/11/2026 este mapa le sumó tres campos a la
+    # Competitiva sin que nadie los mirara, y se redibujaron las 222 cuando a Dlx le habíamos dicho
+    # que esa carta no se tocaba. Sólo pasa al pushearlo: hay tiempo de decírselo.
+    entran, salen = comparar({c: VISTO[c] for c in cartas}, viejo)
+    plata = precio()
+    print('\n   Lo que hace este mapa cuando se pushee:')
+    if not (entran or salen):
+        print('   los campos no cambian: no se redibuja nada')
+    for c in cartas:
+        if entran.get(c) or salen.get(c):
+            print('   🔴 %-12s entran: %s · salen: %s' % (
+                c, ', '.join(entran.get(c) or ['—']), ', '.join(salen.get(c) or ['—'])))
+            print('      la próxima vuelta redibuja una vez las %d que tiene selladas' % plata.get(c, 0))
+
+    # ⚠️ SE GUARDA PORQUE EL SELLO SE ARMA CON ESTO, no porque medir sea caro.
+    # `bot/que_cambio.py` la usa para decidir qué carta quedó vieja cuando un
+    # campo del pool se movió: si cambió `pts`, la Temporada y nada más.
     #
     # ⚠️ Es una CACHE, no una fuente: se regenera corriendo esto. Por eso
     # lleva la fecha adentro — una cache sin fecha no se distingue de un

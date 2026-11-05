@@ -2,15 +2,18 @@
 
 Medido el **20/09/2026** con `herramientas/que_pide_cada_carta.py`, que no
 lee el código: envuelve cada entrada del pool en un dict que **anota quién
-le pide qué**, y dibuja las cuatro cartas de verdad sobre 50 personas.
+le pide qué**, y dibuja las cuatro cartas de verdad. Lo de hoy está en
+`datos/campos_por_carta.json`.
 
-⚠️ **Se corre sobre las 25 de arriba y las 25 de abajo del pool**, no sobre
-una. Konan tiene crew, país, títulos y racha; quien no tenga algo hace que
-su rama no se ejecute y ese campo no aparece. Con una persona la lista sale
-corta y parece completa.
+⚠️ **Se corre sobre todo el pool**, no sobre una persona. Konan tiene crew,
+país, títulos y racha; quien no tenga algo hace que su rama no se ejecute y
+ese campo no aparece. Con una persona la lista sale corta y parece completa.
+Esta tabla se midió con 50, las 25 de arriba y las 25 de abajo; desde el
+04/11/2026 son todas, porque esa muestra también perdió campos.
 
 ```bash
-python herramientas/que_pide_cada_carta.py
+python herramientas/que_pide_cada_carta.py --auto   # si falta algo. No escribe
+python herramientas/que_pide_cada_carta.py          # reescribe el mapa: al pushearlo puede redibujar cartas
 ```
 
 ---

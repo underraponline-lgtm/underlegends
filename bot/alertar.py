@@ -206,7 +206,7 @@ def recordar(clave, texto):
 
 # ── lo que late solo ──────────────────────────────────────────────────
 def salud():
-    """El vigía de avisos, el disparador del ciclo y la cuota de KV."""
+    """El vigía de avisos, el disparador del ciclo, la cuota de KV y si al mapa de campos le falta un dato."""
     import requests
     # 1 · el vigía de avisos: late cada minuto en el Worker
     j = {}
@@ -319,10 +319,23 @@ def salud():
         esperando()
     except Exception as e:                               # noqa: BLE001
         print('   ⚠️ no pude mirar las batallas que esperan (%s)' % str(e)[:80])
+    # 6 · 🗺️ LOS DATOS QUE UNA CARTA PIDE Y EL CICLO NO VIGILA
+    try:
+        mapa_corto()
+    except Exception as e:                               # noqa: BLE001
+        print('   ⚠️ no pude medir el mapa de campos (%s)' % str(e)[:80])
 
 
 #: cuántas horas puede esperar una batalla en ✅ Decidir antes del DM
 ESPERA_H = 24
+#: cuántas horas puede faltarle un dato al mapa de campos antes del DM. Quien pusheó ya lo vio en rojo en CI: esto es para
+#: cuando nadie lo atendió
+MAPA_ESPERA_H = 24
+#: medir tarda ~7 s, y un generador trabado no se queda con la vuelta
+MAPA_TOPE_S = 180
+#: cómo se llama cada carta en el DM: ella sola y todas las selladas
+MAPA_CARTAS = {'Temporada': ('la Temporada', 'las %d Temporadas'), 'Competitiva': ('la Competitiva', 'las %d Competitivas'),
+               'Servidor': ('la Servidor', 'las %d Servidor'), 'Pais': ('la de País', 'las %d de País')}
 
 
 def esperando(ahora=None):
@@ -375,6 +388,160 @@ def esperando(ahora=None):
     return viejas
 
 
+def _y(xs):
+    return ', '.join(xs[:-1]) + (' y ' if len(xs) > 1 else '') + xs[-1]
+
+
+def texto_mapa(faltan, precio, ahora=None):
+    """El DM, en palabras: qué tarjeta, qué datos y cuánto cuesta arreglarlo. Dlx lo aprobó el 04/11/2026."""
+    usa, costo = [], []
+    # ⚠️ TAMBIÉN LA QUE NO ESTÉ EN `MAPA_CARTAS`: una carta nueva se llama por su nombre, no se cae del aviso
+    for c in [x for x in MAPA_CARTAS if x in faltan] + sorted(set(faltan) - set(MAPA_CARTAS)):
+        ks = faltan[c]
+        la, todas = MAPA_CARTAS.get(c, ('la ' + c, 'las %d de ' + c))
+        lista = ', '.join('`%s`' % k for k in ks)
+        if usa:
+            usa.append('%s %d (%s)' % (la, len(ks), lista))
+        else:
+            usa.append('%s usa %d %s que el ciclo no vigila (%s)' % (
+                la[0].upper() + la[1:], len(ks), 'dato' if len(ks) == 1 else 'datos', lista))
+        if precio.get(c):
+            costo.append(todas % precio[c])
+    uno = len(usa) == 1
+    return ('**Hay tarjetas que pueden quedarse viejas.** %s: si %s, %s. %s, así que no lo hago solo: dile a una sesión '
+            'cuándo hacerlo. (%s)' % (
+                _y(usa), 'cambia' if uno and sum(len(v) for v in faltan.values()) == 1 else 'cambian',
+                'esa tarjeta no se vuelve a dibujar' if uno else 'esas tarjetas no se vuelven a dibujar',
+                'Arreglarlo redibuja una vez ' + _y(costo) if costo else 'Arreglarlo vuelve a medir el mapa', _et(ahora)))
+
+
+def _medir_mapa():
+    """Lo que dice `herramientas/que_pide_cada_carta.py --json`.
+
+    ⚠️ EN OTRO PROCESO: los generadores cambian de carpeta, imprimen al importarse y traen medio repo, y esto corre en
+    cada vuelta. Si se traba o se rompe levanta una excepción, que `salud()` ataja: nunca frena al ciclo.
+    """
+    import subprocess
+    r = subprocess.run([sys.executable, os.path.join(BASE, 'herramientas', 'que_pide_cada_carta.py'), '--json'],
+                       cwd=BASE, capture_output=True, encoding='utf-8', errors='replace', timeout=MAPA_TOPE_S)
+    return json.loads(r.stdout.strip().splitlines()[-1])
+
+
+def mapa_corto(medido=None, ahora=None):
+    """Un DM a Dlx cuando una carta lleva más de `MAPA_ESPERA_H` pidiendo un dato que el mapa de campos no tiene.
+
+    🔑 Dlx, 04/11/2026: *«Sí, con el DM»*. El sello sólo mira los campos de `datos/campos_por_carta.json`, así que un dato
+    que no está ahí no redibuja nada. El mapa del 14/10 estuvo tres semanas sin tres datos de la Competitiva, y nadie lo
+    supo hasta que se volvió a medir por otra cosa. El rojo de `chequeos.yml` lo ve quien pushea; esto es para cuando nadie
+    lo atendió, o cuando salió de los datos y nadie pusheó nada.
+
+    🔴 NO ARREGLA NADA, Y ES A PROPÓSITO: volver a medir redibuja todas las cartas de esa carta, y cuándo se paga eso lo
+    decide Dlx. Lo corre una sesión a mano.
+
+    ⚠️ UN SOLO DM POR CADA JUEGO DE DATOS, no uno cada 6 h como `alertar()`: nada está roto, y una alerta repetida por algo
+    que él decidió dejar para después es una pared de mensajes. Se cuenta desde que este paso vio el dato por primera vez,
+    como en `esperando()`. Lo que se arregló se olvida solo: si vuelve a faltar, vuelve a contar.
+    """
+    ahora = ahora or _ahora()
+    m = medido if medido is not None else _medir_mapa()
+    # 🔎 sin medición no hay veredicto, ni para avisar ni para olvidar: CI corre esto mismo y ahí sí da rojo
+    if m.get('rotas'):
+        print('   ⚠️ no pude medir el mapa de campos: %s' % '; '.join(
+            '%s (%s)' % kv for kv in sorted(m['rotas'].items()))[:200])
+        return []
+    faltan = m.get('faltan') or {}
+    actuales = {'%s:%s' % (c, k) for c, ks in faltan.items() for k in ks}
+    d = _leer()
+    desde = {k: t for k, t in (d.get('mapa_desde') or {}).items() if k in actuales}
+    for k in actuales:
+        desde.setdefault(k, ahora.isoformat())
+    avisados = sorted(set(d.get('mapa_avisados') or []) & actuales)
+    # ⚠️ SÓLO SI CAMBIÓ, y sin dejar llaves vacías: este archivo se commitea, y son 48 vueltas por día
+    if (d.get('mapa_desde') or {}) != desde or (d.get('mapa_avisados') or []) != avisados:
+        for k, v in (('mapa_desde', desde), ('mapa_avisados', avisados)):
+            if v:
+                d[k] = v
+            else:
+                d.pop(k, None)
+        _guardar(d)
+    if not actuales:
+        print('   🗺️ al mapa de campos no le falta ningún dato')
+        return []
+    print('   🗺️ al mapa de campos le faltan: %s' % ', '.join(sorted(actuales)))
+    viejos = sorted(k for k in actuales - set(avisados)
+                    if (ahora - datetime.datetime.fromisoformat(desde[k])).total_seconds() > MAPA_ESPERA_H * 3600)
+    if not viejos:
+        return []
+    if dm('🔔 ' + texto_mapa(faltan, m.get('precio') or {}, ahora)):
+        # todo lo que dijo el DM, también lo que todavía no cumplía las 24 h: ya se lo contó
+        d = _leer()
+        d['mapa_avisados'] = sorted(actuales)
+        _guardar(d)
+        print('   📨 DM a Dlx: el mapa de campos, %d dato(s)' % len(actuales))
+    return viejos
+
+
+def _prueba_mapa():
+    """`mapa_corto()` de verdad, con el recuerdo en una carpeta temporal y sin mandar nada: cuándo suena, y que una vez."""
+    import tempfile
+    g = globals()
+    orig = g['ESTADO'], g['dm']
+    enviados, responde, mal = [], [True], []
+
+    def ok(cond, que):
+        print('  %s %s' % ('✅' if cond else '❌', que))
+        if not cond:
+            mal.append(que)
+
+    def fake_dm(texto):
+        if responde[0]:
+            enviados.append(texto)
+        return responde[0]
+
+    def hora(h):
+        return datetime.datetime(2026, 11, 5, 4, 0, tzinfo=datetime.timezone.utc) + datetime.timedelta(hours=h)
+
+    def corre(campos, h, **extra):
+        return mapa_corto(dict({'faltan': {'Competitiva': campos} if campos else {}, 'precio': {'Competitiva': 222}}, **extra),
+                          hora(h))
+
+    g['ESTADO'], g['dm'] = os.path.join(tempfile.mkdtemp(), 'alertas.json'), fake_dm
+    try:
+        corre(['a'], 0)
+        corre(['a'], 23)
+        ok(not enviados, 'un dato que falta no suena antes de las 24 h')
+        ok(corre(['a'], 25) == ['Competitiva:a'] and len(enviados) == 1, 'a las 24 h suena')
+        t = enviados[0]
+        ok('`a`' in t and '222 Competitivas' in t and ' ET)' in t and 'dile a una sesión' in t, 'y dice qué dato, cuánto cuesta y la hora en ET')
+        corre(['a'], 31)
+        corre(['a'], 200)
+        ok(len(enviados) == 1, 'y no vuelve a sonar, ni a las 6 h ni días después')
+        corre(['a', 'b'], 201)
+        ok(len(enviados) == 1, 'un dato nuevo también espera sus 24 h')
+        corre(['a', 'b'], 226)
+        ok(len(enviados) == 2 and '`a`, `b`' in enviados[1], 'y entonces suena, con todos los que faltan')
+        corre(['a', 'b'], 300, rotas={'Servidor': 'reventó'})
+        ok(_leer().get('mapa_avisados') == ['Competitiva:a', 'Competitiva:b'] and len(enviados) == 2, 'sin medición no avisa ni olvida')
+        corre([], 301)
+        ok(not _leer(), 'lo que se arregló se olvida, y no deja llaves vacías')
+        corre(['a'], 302)
+        responde[0] = False
+        corre(['a'], 327)
+        ok(len(enviados) == 2, 'si vuelve a faltar, vuelve a contar')
+        responde[0] = True
+        corre(['a'], 328)
+        ok(len(enviados) == 3, 'y si el DM no salió, se reintenta en la vuelta siguiente')
+    finally:
+        g['ESTADO'], g['dm'] = orig
+    una = texto_mapa({'Pais': ['x']}, {'Pais': 220})
+    ok('La de País usa 1 dato que' in una and 'si cambia, esa tarjeta no se vuelve' in una and 'las 220 de País' in una, 'un dato, en singular')
+    dos = texto_mapa({'Competitiva': ['a', 'b'], 'Pais': ['x']}, {'Competitiva': 222, 'Pais': 220})
+    ok('La Competitiva usa 2 datos que el ciclo no vigila (`a`, `b`) y la de País 1 (`x`): si cambian, esas tarjetas' in dos
+       and 'las 222 Competitivas y las 220 de País' in dos, 'dos cartas, juntas')
+    ok('La Liga usa 1 dato' in texto_mapa({'Liga': ['x']}, {'Liga': 5}), 'y una carta que no conoce no se cae del aviso')
+    return not mal
+
+
 def _self_check():
     """Lo que tiene que valer siempre, sin red: que se sepa a quién mandarle el DM."""
     d = dueno()
@@ -388,8 +555,9 @@ def _self_check():
         m = None
     ok2 = bool(m) and m.group(1) == canal_logs()
     print('  %s el vigía avisa en el mismo canal de Logs (%s)' % ('✅' if ok2 else '❌', m.group(1) if m else 'no está'))
-    print('\n  %s' % ('todo ok' if ok and ok2 else 'algo falló'))
-    return ok and ok2
+    ok3 = _prueba_mapa()
+    print('\n  %s' % ('todo ok' if ok and ok2 and ok3 else 'algo falló'))
+    return ok and ok2 and ok3
 
 
 def en_cola_canceladas(horas=3, s=None):

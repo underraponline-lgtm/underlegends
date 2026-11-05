@@ -1371,6 +1371,27 @@ checkout` le pone a todos la hora del checkout**, así que en Actions, el
 único lugar donde el ciclo corre desatendido, no detectaba nada nunca. Un
 guardián que sólo funciona donde hay alguien mirando no es un guardián.
 
+🗺️ **Y MIRAR EL CÓDIGO TAMPOCO ALCANZABA: DESDE EL 04/11/2026 AVISA MEDIR.** Un
+dato que no está en `datos/campos_por_carta.json` no redibuja nada. El mapa
+del 14/10 estuvo tres semanas sin tres datos de la Competitiva y `mapa_viejo()`
+no servía para verlo: prendida del 19/10 al 04/11, igual en los 14 commits con
+código de cartas, y sólo uno sumó un campo. Ahora
+`herramientas/que_pide_cada_carta.py --auto` dibuja las cuatro con el pool
+entero (~7 s, sin red) y da **rojo en CI** si una carta pide un dato que el mapa
+no tiene; si sigue faltando a las 24 h, `alertar.mapa_corto()` le manda **un** DM
+a Dlx.
+
+⚠️ **Ninguno de los dos escribe el mapa.** Volver a medir le cambia el sello a
+toda carta a la que le suma o le saca un campo, y la próxima vuelta las redibuja:
+el 04/11 fueron las 222 Competitivas. Lo corre una sesión a mano, con el OK de Dlx,
+y la herramienta dice qué entra, qué sale y cuánto cuesta antes de escribir.
+
+⚠️ **Y dos de esos tres datos los perdió la medición misma.** Se dibujaba una
+muestra de 50, y desde el 13/10 `arc_sv` y `pos_sv` se piden sólo a quien eligió
+servidor: ninguno de los 50 activaba esa parte. **Un dato detrás de un `if` sólo
+se mide si alguien entra al `if`**, así que uno que todavía no activa nadie no
+aparece hasta el primero; ahí sale el rojo.
+
 ### Las dos piezas pueden estar bien y la composición mal
 
 ⚠️ `sheet/resultados.guardar()` es idempotente —borra las filas de ese número

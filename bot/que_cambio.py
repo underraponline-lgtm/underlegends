@@ -305,8 +305,15 @@ def mapa_viejo():
     peor y mas callado: si un generador empieza a pedir un campo nuevo y
     el mapa no lo sabe, **ese campo no dispara nada nunca mas**.
 
+    🔴 Y ES UNA PISTA, NO LA RESPUESTA (04/11/2026). Mira TODO el codigo de la
+    carta y `comun/` entera, asi que no dice si se pidio algo nuevo: del 19/10
+    al 04/11 dio las cuatro en los 14 commits con codigo de cartas, y solo uno
+    sumo un campo. Por eso ni CI ni el ciclo la usan: lo que avisa es medir
+    (`herramientas/que_pide_cada_carta.py --auto`, `alertar.mapa_corto()`).
+
     Devuelve las cartas cuyo codigo cambio despues de medir el mapa.
-    Se regenera con `python herramientas/que_pide_cada_carta.py`.
+    Se regenera con `python herramientas/que_pide_cada_carta.py`, y al
+    pushearlo redibuja toda carta a la que le suma o le saca un campo.
     """
     m = _j('datos', 'campos_por_carta.json')
     if not m:
@@ -1113,8 +1120,11 @@ def main():
             except (OSError, ValueError):
                 pass
         if hay_pool:
-            print('      Regenerá:')
-            print('      python herramientas/que_pide_cada_carta.py')
+            # 🔴 YA NO MANDA A VOLVER A MEDIR (04/11/2026): eso reescribe el
+            # mapa, y al pushearlo redibuja toda carta a la que le suma un
+            # campo. Primero se pregunta si falta algo, que no toca nada.
+            print('      Para saber si falta algún dato, sin tocar nada:')
+            print('      python herramientas/que_pide_cada_carta.py --auto')
         else:
             print('      ⚠️ pero los pools están en 0: el mapa se mide')
             print('      dibujando, así que HOY no se puede rehacer. Queda')
