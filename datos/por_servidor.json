@@ -1977,11 +1977,11 @@
    },
    "DDF": {
     "duelos": "0/4",
-    "ev": 5,
+    "ev": 6,
     "oro": 1,
-    "ovr": 47,
+    "ovr": 48,
     "pod": 1,
-    "pts": 13162,
+    "pts": 14474,
     "racha": "0/1",
     "tg": {
      "fin": 1,
@@ -11657,20 +11657,6 @@
      "dv": true,
      "fin": 8,
      "fund": true
-    }
-   }
-  },
-  "yo mc": {
-   "DDF": {
-    "duelos": "",
-    "ev": 1,
-    "oro": 0,
-    "ovr": 42,
-    "pod": 0,
-    "pts": 1312,
-    "racha": "0/0",
-    "tg": {
-     "nuevo": true
     }
    }
   },

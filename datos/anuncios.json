@@ -1,5 +1,5 @@
 {
- "cuando": "2026-11-05T02:55:58+00:00",
+ "cuando": "2026-11-05T03:25:55+00:00",
  "anuncios": [
   {
    "nombre": "¡SE LLEGÓ LA GRAN NOCHE!",
@@ -376,35 +376,6 @@
    "autor": "Geronimo",
    "staff_cuentas": {},
    "categoria_id": "1497457390637809837"
-  },
-  {
-   "nombre": "qcyo rapeen 11",
-   "servidor": "FFA",
-   "canal": "✦🏆—eventos",
-   "msg_id": "1567732437965082807",
-   "cuando": "2026-11-05T02:49:00",
-   "canal_id": "1487206325602484295",
-   "guild_id": "1468472442925092958",
-   "organizador": "@nachonc_",
-   "orgs": [
-    {
-     "n": "nachonc_",
-     "id": ""
-    }
-   ],
-   "autor_h": "d83234c3da26ac85",
-   "cupos_texto": "",
-   "inscriptos": null,
-   "cupo_total": null,
-   "rango": "bronce",
-   "modalidad": "MULTIVERSE",
-   "horario": "cuando llegue a mi casa arranca la compe",
-   "fecha": "",
-   "premios": "aura",
-   "staff": {},
-   "autor": "Nc",
-   "staff_cuentas": {},
-   "categoria_id": "1468478330826260500"
   },
   {
    "nombre": "qcyo rapeen 10",
@@ -1239,6 +1210,35 @@
     "mats": "597240876573392946",
     "FsGzDarnBless": "1508771760709963930"
    },
+   "categoria_id": "1468478330826260500"
+  },
+  {
+   "nombre": "qcyo rapeen 2",
+   "servidor": "FFA",
+   "canal": "✦🏆—eventos",
+   "msg_id": "1562618760391557133",
+   "cuando": "2026-10-22T00:09:04",
+   "canal_id": "1487206325602484295",
+   "guild_id": "1468472442925092958",
+   "organizador": "@nachonc_",
+   "orgs": [
+    {
+     "n": "nachonc_",
+     "id": ""
+    }
+   ],
+   "autor_h": "d83234c3da26ac85",
+   "cupos_texto": "",
+   "inscriptos": null,
+   "cupo_total": null,
+   "rango": "bronce",
+   "modalidad": "MULTIVERSE",
+   "horario": "en 30",
+   "fecha": "",
+   "premios": "aura",
+   "staff": {},
+   "autor": "Nc",
+   "staff_cuentas": {},
    "categoria_id": "1468478330826260500"
   },
   {
