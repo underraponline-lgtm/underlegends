@@ -11,6 +11,16 @@
  ],
  "cambios": [
     {
+      "version": "4.35",
+      "dia": "2026-11-05",
+      "cuando": "2026-11-05T17:47:00-05:00",
+      "titulo": "Los nombres de las llaves, sin la etiqueta de la ronda",
+      "items": [
+        "**Algunas llaves escriben la ronda pegada al nombre**, como «🟢 Batalla 2: …» o «🔹 C3: …», y esa etiqueta se leía como si fuera una persona aparte en el Ranking de Temporada. Ya se leen bien, también en las llaves en vivo.",
+        "**Dos eventos de DDF, del 21 y el 23 de octubre, se volvieron a calcular**: los puntos le quedan a cada quien, y quien salía como walk-in por culpa de la etiqueta cobra su puesto completo."
+      ]
+    },
+    {
       "version": "4.34",
       "dia": "2026-11-05",
       "cuando": "2026-11-05T16:32:15-05:00",
