@@ -2,183 +2,6 @@
  "_leeme": "Lo que ✅ Decidir cerró o contestó solo, con la regla y la prueba (sheet/decidir.py, resolver_solo()), para «Lo que se resolvió solo» del Dashboard y su «Deshacer». «deshechas»: lo que Dlx deshizo; ninguna regla lo vuelve a tocar. Dlx, 13/10/2026.",
  "solas": [
   {
-   "id": "6415dbfe87",
-   "tipo": "alta",
-   "sec": "🪪 Identidad",
-   "que": "A «𝓣𝓸𝔁𝓲𝓴𝓸» lo buscó otra persona con /card en FFA (no lo usó él) y no está en la Lista de Raperos. Si ya está con otro nombre, elegilo o escribilo: le pongo su Discord.\nSu cuenta: https://discord.com/users/1543681134842618027",
-   "r": "Ya está resuelto",
-   "regla": "R3 · un alta que no hace falta: el bot, o una cuenta que buscó otro y no jugó",
-   "rk": "R3",
-   "por": "el ciclo",
-   "porque": "no usó /card: lo buscó otra persona, y no jugó en la T1 (ni su nombre ni con lo que se anotó está en ningún resultado). Si se anota sola, entra como cualquiera",
-   "t": 1792529939092,
-   "filas": [
-    768
-   ],
-   "variantes": [
-    "𝓣𝓸𝔁𝓲𝓴𝓸 = 1543681134842618027"
-   ],
-   "escribio": {}
-  },
-  {
-   "id": "d2676def05",
-   "tipo": "Nombre desconocido",
-   "sec": "DESGRACIAS EN TOKYO VOL 29 PANDILLAS · FFA · 20/10 · #493",
-   "que": "¿Quién es «ASURA 🇪🇸»?",
-   "r": "Es AKARK (en este evento)",
-   "regla": "R21 · la cuenta que se anotó así para ese evento es de alguien de la Lista que esa noche no jugó con su nombre",
-   "rk": "R21",
-   "por": "el ciclo",
-   "porque": "la cuenta @asura.pd (en Discord: «asura») · en la Lista: AKARK se anotó como «ASURA» para ese evento, no es staff de FFA y esa noche no jugó con su nombre",
-   "t": 1792553604372,
-   "filas": [
-    770
-   ],
-   "variantes": [
-    "ASURA 🇪🇸"
-   ],
-   "escribio": {
-    "quien": "DESGRACIAS EN TOKYO VOL 29 PANDILLAS · FFA · 20/10 · ASURA 🇪🇸"
-   }
-  },
-  {
-   "id": "b54b6c6100",
-   "tipo": "Nombre desconocido",
-   "sec": "DESGRACIAS EN TOKYO VOL 29 PANDILLAS · FFA · 20/10 · #493",
-   "que": "¿Quién es «asura 🇯🇵»?",
-   "r": "Es AKARK (en este evento)",
-   "regla": "R21 · la cuenta que se anotó así para ese evento es de alguien de la Lista que esa noche no jugó con su nombre",
-   "rk": "R21",
-   "por": "el ciclo",
-   "porque": "la cuenta @asura.pd (en Discord: «asura») · en la Lista: AKARK se anotó como «asura» para ese evento, no es staff de FFA y esa noche no jugó con su nombre",
-   "t": 1792553604372,
-   "filas": [
-    772
-   ],
-   "variantes": [
-    "asura 🇯🇵"
-   ],
-   "escribio": {
-    "quien": "DESGRACIAS EN TOKYO VOL 29 PANDILLAS · FFA · 20/10 · asura 🇯🇵"
-   }
-  },
-  {
-   "id": "045f451119",
-   "tipo": "Nombre desconocido",
-   "sec": "DESGRACIAS EN TOKYO VOL 29 PANDILLAS · FFA · 20/10 · #493",
-   "que": "¿Quién es «SULTAN 🇨🇱»?",
-   "r": "Es alguien nuevo: alta con su cuenta 1560477107598008355",
-   "regla": "Discord · su cuenta de Discord: la inscripción, el podio, la llave o la llamada",
-   "rk": "Discord",
-   "por": "el ciclo (su cuenta de Discord)",
-   "porque": "nuevo: entró a la Lista con la cuenta con que se anotó (1560477107598008355)",
-   "t": 1792553604372,
-   "filas": [
-    771
-   ],
-   "variantes": [
-    "SULTAN 🇨🇱"
-   ],
-   "escribio": {
-    "alta": [
-     "SULTAN",
-     "1560477107598008355"
-    ]
-   }
-  },
-  {
-   "id": "8d73231f6e",
-   "tipo": "Nombre desconocido",
-   "sec": "COMPE POR 1.5 DOLARES · FFA · 12/10 · #462",
-   "que": "¿Quién es «🏳️‍⚧️ VEPG 🏳️‍⚧️»?",
-   "r": "Ya no hace falta",
-   "regla": "cierre · ya no hacía falta preguntarlo",
-   "rk": "cierre",
-   "por": "el ciclo",
-   "porque": "ya no está en ningún resultado: el lector lo lee distinto, o ya es alias de alguien",
-   "t": 1792553604372,
-   "filas": [
-    605
-   ],
-   "variantes": [
-    "🏳️‍⚧️ VEPG 🏳️‍⚧️"
-   ],
-   "escribio": {}
-  },
-  {
-   "id": "eb329a2d6c",
-   "tipo": "Nombre desconocido",
-   "sec": "19 CUP - FUTCARD EDITION VOL.3 · DDF · 21/10 · #495",
-   "que": "¿Quién es «🔴 Semi 2: DESIO»?",
-   "r": "Es Desio",
-   "regla": "Discord · su cuenta de Discord: la inscripción, el podio, la llave o la llamada",
-   "rk": "Discord",
-   "por": "el ciclo (su cuenta de Discord)",
-   "porque": "alias de Desio: estaba en la llamada del evento con un nombre parecido",
-   "t": 1792620139469,
-   "filas": [
-    775
-   ],
-   "variantes": [
-    "🔴 Semi 2: DESIO"
-   ],
-   "escribio": {
-    "alias": [
-     "🔴 Semi 2: DESIO",
-     "Desio"
-    ],
-    "filas": [
-     300
-    ]
-   }
-  },
-  {
-   "id": "b7e6bea3d5",
-   "tipo": "Nombre desconocido",
-   "sec": "19 CUP - FUTCARD EDITION VOL.3 · DDF · 21/10 · #495",
-   "que": "¿Quién es «🟢 Batalla 3: Desio»?",
-   "r": "Es Desio",
-   "regla": "Discord · su cuenta de Discord: la inscripción, el podio, la llave o la llamada",
-   "rk": "Discord",
-   "por": "el ciclo (su cuenta de Discord)",
-   "porque": "alias de Desio: estaba en la llamada del evento con un nombre parecido",
-   "t": 1792629101939,
-   "filas": [
-    783
-   ],
-   "variantes": [
-    "🟢 Batalla 3: Desio"
-   ],
-   "escribio": {
-    "alias": [
-     "🟢 Batalla 3: Desio",
-     "Desio"
-    ],
-    "filas": [
-     301
-    ]
-   }
-  },
-  {
-   "id": "dc54b0db51",
-   "tipo": "Nombre desconocido",
-   "sec": "19 CUP - FUTCARD EDITION VOL.3 · DDF · 21/10 · #495",
-   "que": "¿Quién es «🟢 Batalla 1: Carlos»?",
-   "r": "Ya no hace falta",
-   "regla": "cierre · ya no hacía falta preguntarlo",
-   "rk": "cierre",
-   "por": "el ciclo",
-   "porque": "ya no está en ningún resultado: el lector lo lee distinto, o ya es alias de alguien",
-   "t": 1792629101939,
-   "filas": [
-    782
-   ],
-   "variantes": [
-    "🟢 Batalla 1: Carlos"
-   ],
-   "escribio": {}
-  },
-  {
    "id": "1461e120b6",
    "tipo": "Nombre desconocido",
    "sec": "qcyo rapeen 2 · FFA · 21/10 · #497",
@@ -3170,6 +2993,33 @@
     ],
     "filas": [
      336
+    ]
+   }
+  },
+  {
+   "id": "f54878993d",
+   "tipo": "Nombre desconocido",
+   "sec": "COMPE XCLUSIVISTICA VOL. 1 · DDF · 04/11 · #566",
+   "que": "¿Quién es «yo mc»?",
+   "r": "Es Cronox",
+   "regla": "Discord · su cuenta de Discord: la inscripción, el podio, la llave o la llamada",
+   "rk": "Discord",
+   "por": "el ciclo (su cuenta de Discord)",
+   "porque": "alias de Cronox: estaba en la llamada del evento con ese nombre",
+   "t": 1793847919161,
+   "filas": [
+    1050
+   ],
+   "variantes": [
+    "yo mc"
+   ],
+   "escribio": {
+    "alias": [
+     "yo mc",
+     "Cronox"
+    ],
+    "filas": [
+     338
     ]
    }
   }

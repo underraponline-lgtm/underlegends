@@ -6218,6 +6218,15 @@
    ]
   }
  },
+ "mauzzitoemeces": {
+  "temporada": {
+   "🧳 VIAJERO": [
+    "🧳 VIAJERO",
+    "t1",
+    1793847934121
+   ]
+  }
+ },
  "maximilianocalvo": {
   "servidor": {
    "🧱 FUNDADOR": [
@@ -7453,6 +7462,11 @@
    ]
   },
   "servidor": {
+   "🏛️ PILAR": [
+    "🏛️ PILAR",
+    "t1",
+    1793847934121
+   ],
    "📆 HABITUÉ": [
     "📆 HABITUÉ",
     "t1",
@@ -11035,6 +11049,11 @@
     "t1",
     1793143003505
    ],
+   "👑 CAMPEÓN x%d": [
+    "👑 CAMPEÓN x1",
+    "t1",
+    1793847934121
+   ],
    "📈 EN ASCENSO": [
     "📈 EN ASCENSO",
     "t1",
@@ -11044,11 +11063,21 @@
     "🥉 AL PODIO",
     "t1",
     1793143003505
+   ],
+   "🧳 VIAJERO": [
+    "🧳 VIAJERO",
+    "t1",
+    1793847934121
    ]
   }
  },
  "trot": {
   "competitivo": {
+   "🐉 MATADRAGONES": [
+    "🐉 MATADRAGONES",
+    "t1",
+    1793847934121
+   ],
    "🗡️ MATAGIGANTES": [
     "🗡️ MATAGIGANTES",
     "t1",

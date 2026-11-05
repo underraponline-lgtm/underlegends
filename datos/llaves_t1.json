@@ -42265,5 +42265,138 @@
     1250
    ]
   ]
+ },
+ "566": {
+  "dia": "2026-11-04",
+  "escala": "8-15",
+  "fecha": "04/11",
+  "links": [
+   "https://discord.com/channels/1469009547971526659/1470097588635176960/1567678059945918565"
+  ],
+  "n": 566,
+  "nombre": "COMPE XCLUSIVISTICA VOL. 1",
+  "participantes": 12,
+  "rondas": [
+   {
+    "b": [
+     [
+      [
+       "Adriagner",
+       "Erian",
+       "LSO"
+      ],
+      "Adriagner, Erian",
+      "triple (3 bandas, pasan 2); también pasa: erian 🇵🇦"
+     ],
+     [
+      [
+       "Trelok",
+       "Number VE",
+       "MauzzitoEmeces"
+      ],
+      "Trelok",
+      "triple (3 bandas)"
+     ],
+     [
+      [
+       "VR",
+       "Trelok",
+       "Erian",
+       "Launok"
+      ],
+      "VR, Trelok, Erian",
+      "triple (4 bandas, pasan 3); también pasa: trelok 🇨🇴 / erian 🇵🇦"
+     ]
+    ],
+    "r": "Cuartos"
+   },
+   {
+    "b": [
+     [
+      [
+       "Adriagner",
+       "Erian, VR"
+      ],
+      "Adriagner",
+      ""
+     ],
+     [
+      [
+       "Trelok",
+       "yo mc, Bloody"
+      ],
+      "Trelok",
+      ""
+     ]
+    ],
+    "r": "Semifinales"
+   },
+   {
+    "b": [
+     [
+      [
+       "Trelok",
+       "Adriagner"
+      ],
+      "Trelok",
+      "ganador: ✅ Decidir"
+     ]
+    ],
+    "r": "Final"
+   }
+  ],
+  "sv": "DDF",
+  "tabla": [
+   [
+    "Trelok",
+    "Campeón",
+    7500
+   ],
+   [
+    "Adriagner",
+    "Subcampeón",
+    5000
+   ],
+   [
+    "LSO",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Launok",
+    "Cuartos",
+    2000
+   ],
+   [
+    "MauzzitoEmeces",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Number VE",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Bloody",
+    "Semifinal",
+    1750
+   ],
+   [
+    "Erian",
+    "Semifinal",
+    1750
+   ],
+   [
+    "VR",
+    "Semifinal",
+    1750
+   ],
+   [
+    "yo mc",
+    "Semifinal",
+    1750
+   ]
+  ]
  }
 }

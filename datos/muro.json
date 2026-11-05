@@ -271,7 +271,7 @@
 ]
 },
 "bloody": {
-"rg": "C",
+"rg": "B",
 "c": [
 "competitivo",
 "pais",
@@ -385,6 +385,14 @@
 "temporada"
 ]
 },
+"adriagner": {
+"rg": "C",
+"c": [
+"competitivo",
+"servidor",
+"temporada"
+]
+},
 "dominick": {
 "rg": "D",
 "c": []
@@ -419,14 +427,6 @@
 "criszj": {
 "rg": "C",
 "c": []
-},
-"adriagner": {
-"rg": "C",
-"c": [
-"competitivo",
-"servidor",
-"temporada"
-]
 },
 "neo": {
 "rg": "C",
@@ -735,11 +735,7 @@
 "rg": "D",
 "c": []
 },
-"19": {
-"rg": "",
-"c": []
-},
-"teito": {
+"numberve": {
 "rg": "E",
 "c": [
 "competitivo",
@@ -748,7 +744,11 @@
 "temporada"
 ]
 },
-"numberve": {
+"19": {
+"rg": "",
+"c": []
+},
+"teito": {
 "rg": "E",
 "c": [
 "competitivo",
@@ -864,6 +864,14 @@
 "mtz": {
 "rg": "",
 "c": [
+"servidor",
+"temporada"
+]
+},
+"trelok": {
+"rg": "",
+"c": [
+"pais",
 "servidor",
 "temporada"
 ]
@@ -1032,13 +1040,6 @@
 "millonario": {
 "rg": "",
 "c": []
-},
-"trelok": {
-"rg": "",
-"c": [
-"servidor",
-"temporada"
-]
 },
 "pomberito": {
 "rg": "",
@@ -2698,22 +2699,6 @@
 }
 },
 "cambios": [
-{
-"tipo": "tarjeta",
-"t": "2026-10-04T19:17:31Z",
-"quien": [
-"AGUSTÍN51K"
-],
-"carta": "servidor"
-},
-{
-"tipo": "tarjeta",
-"t": "2026-10-04T19:17:31Z",
-"quien": [
-"AGUSTÍN51K"
-],
-"carta": "temporada"
-},
 {
 "tipo": "tarjeta",
 "t": "2026-10-04T19:17:31Z",
@@ -6064,6 +6049,23 @@
 "Raizer"
 ],
 "carta": "servidor"
+},
+{
+"tipo": "rango",
+"t": "2026-11-05T03:04:53Z",
+"quien": [
+"Bloody"
+],
+"rg": "B",
+"primero": false
+},
+{
+"tipo": "tarjeta",
+"t": "2026-11-05T03:04:53Z",
+"quien": [
+"Trelok"
+],
+"carta": "pais"
 }
 ]
 }

@@ -1,10 +1,6 @@
 {
  "_leeme": "El texto de los anuncios que son una imagen, leído por la IA de Cloudflare (/avisos/ocr del Worker), por id del mensaje: así cada afiche se lee una sola vez. Lo escribe bot/anuncios.py. Dlx, 05/10/2026. Se borra a los 30 días.",
  "msgs": {
-  "1556848043490410517": {
-   "texto": "FREESTYLE MASTER HONGO     #FM# ALBICELSTE FREESTYLE MASTER HONGO",
-   "t": "2026-10-06T02:26:27"
-  },
   "1557241725658079345": {
    "texto": "FREESTYLE MASTER HONGO\nJORNADA 7\nMAZATLÁN\n24 DE OCTUBRE\nLUGAR MAZATLAN INTERNATIONAL CENTER\nHORA: 20:00\nENTRADAS EN: FMH.TV\n\nCHINGAS A TU MADRE   TotalTRANS",
    "t": "2026-10-07T04:24:20"
@@ -144,6 +140,10 @@
   "1567683765680083124": {
    "texto": "LAS LIGAS\n\nLigas de 10. Tres partidos por semana (jueves, lunes, miércoles y viernes), nueve por temporada. Los 2 primeros suben a ligas | los 2 últimos bajan\n\n**LIGA ÉLITE**\n\n*   **¿Cómo se arman? Cada temporada, por sorteo, se arma uno nuevo que empieza en Ascenso. La Elite se juega con equipos que ya están en la Elite*\n\n    **LOS NIVELES**\n\n    ORO **1 LIGA**\n\n    PLATA **2 LIGAS**\n\n    BRONCE **3 LIGAS**\n\n    ASCENSO **23 LIGAS**\n\n    **LIGA ÉLITE**\n\n    | # | R | RIVALES | PJ | G | E | P | ULTIMO ENFRENTAMIENTO | PTS |\n    | --- | --- | --- | --- | --- | --- | --- | --- | --- |\n    | 1 | L | Liberia | 4 | 4 | 0 | 0 | | 12 |\n    | 2 | O | Oasis | 4 | 3 | 1 | 0 | | 9 |\n    | 3 | A | Agus | 4 | 3 | 1 | 0 | | 9 |\n    | 4 | P | Panchoik | 4 | 3 | 1 | 0 | | 9 |\n    | 5 | C | Carlosse | 4 | 2 | 2 | 0 | | 6 |\n    | 6 | A | Abyssus | 4 | 2 | 2 | 0 | | 6 |\n    | 7 | P | PichulaMc | 4 | 1 | 3 | 0 | | 3 |\n    | 8 | V | Verc | 4 | 1 | 3 | 0 | | 3 |\n    | 9 | S | Snow | 4 | 1 | 3 | 0 | | 3 |\n    | 10 | M | Mr Skill Ballin | 4 | 0 | 4 | 0 | | 0 |\n\n    **CAMPEÓN DE LA ÉLITE** \n\n    **G GANÓ** \n\n    **P PERDIÓ**",
    "t": "2026-11-04T23:55:33"
+  },
+  "1567730492542029964": {
+   "texto": "",
+   "t": "2026-11-05T02:55:57"
   }
  }
 }

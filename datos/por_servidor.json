@@ -454,15 +454,15 @@
   },
   "Adriagner": {
    "DDF": {
-    "duelos": "7/11",
-    "ev": 7,
+    "duelos": "7/12",
+    "ev": 8,
     "oro": 3,
-    "ovr": 52,
-    "pod": 4,
-    "pts": 51188,
-    "racha": "0/3",
+    "ovr": 53,
+    "pod": 5,
+    "pts": 54938,
+    "racha": "1/3",
     "tg": {
-     "fin": 4
+     "fin": 5
     }
    },
    "FFA": {
@@ -1238,12 +1238,12 @@
    },
    "DDF": {
     "duelos": "4/6",
-    "ev": 2,
+    "ev": 3,
     "oro": 0,
-    "ovr": 47,
+    "ovr": 48,
     "pod": 1,
-    "pts": 21250,
-    "racha": "2/2",
+    "pts": 22562,
+    "racha": "0/2",
     "tg": {
      "fin": 1
     }
@@ -3033,11 +3033,11 @@
    },
    "DDF": {
     "duelos": "13/23",
-    "ev": 15,
+    "ev": 16,
     "oro": 3,
     "ovr": 62,
     "pod": 5,
-    "pts": 84385,
+    "pts": 85697,
     "racha": "0/3",
     "tg": {
      "dv": true,
@@ -5256,11 +5256,11 @@
   "LSO": {
    "DDF": {
     "duelos": "0/1",
-    "ev": 1,
+    "ev": 2,
     "oro": 0,
-    "ovr": 42,
+    "ovr": 43,
     "pod": 0,
-    "pts": 2200,
+    "pts": 3700,
     "racha": "0/0"
    },
    "FFA": {
@@ -5310,6 +5310,18 @@
    }
   },
   "Launok": {
+   "DDF": {
+    "duelos": "",
+    "ev": 1,
+    "oro": 0,
+    "ovr": 42,
+    "pod": 0,
+    "pts": 1500,
+    "racha": "0/0",
+    "tg": {
+     "nuevo": true
+    }
+   },
    "FFA": {
     "duelos": "",
     "ev": 1,
@@ -6614,6 +6626,18 @@
     "pts": 625,
     "racha": "0/0"
    },
+   "DDF": {
+    "duelos": "",
+    "ev": 1,
+    "oro": 0,
+    "ovr": 42,
+    "pod": 0,
+    "pts": 1500,
+    "racha": "0/0",
+    "tg": {
+     "nuevo": true
+    }
+   },
    "FFA": {
     "duelos": "",
     "ev": 1,
@@ -7526,11 +7550,11 @@
   "Number VE": {
    "DDF": {
     "duelos": "1/13",
-    "ev": 14,
+    "ev": 15,
     "oro": 0,
     "ovr": 51,
     "pod": 0,
-    "pts": 49075,
+    "pts": 50575,
     "racha": "0/0"
    }
   },
@@ -9868,6 +9892,19 @@
    }
   },
   "Trelok": {
+   "DDF": {
+    "duelos": "1/1",
+    "ev": 1,
+    "oro": 1,
+    "ovr": 45,
+    "pod": 1,
+    "pts": 5625,
+    "racha": "1/1",
+    "tg": {
+     "fin": 1,
+     "nuevo": true
+    }
+   },
    "FFA": {
     "duelos": "",
     "ev": 2,
@@ -10154,11 +10191,11 @@
    },
    "DDF": {
     "duelos": "0/2",
-    "ev": 2,
+    "ev": 3,
     "oro": 0,
     "ovr": 45,
     "pod": 0,
-    "pts": 12200,
+    "pts": 13512,
     "racha": "0/0"
    },
    "URBF": {
@@ -11620,6 +11657,20 @@
      "dv": true,
      "fin": 8,
      "fund": true
+    }
+   }
+  },
+  "yo mc": {
+   "DDF": {
+    "duelos": "",
+    "ev": 1,
+    "oro": 0,
+    "ovr": 42,
+    "pod": 0,
+    "pts": 1312,
+    "racha": "0/0",
+    "tg": {
+     "nuevo": true
     }
    }
   },

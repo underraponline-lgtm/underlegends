@@ -214,8 +214,8 @@
     "base": 4000,
     "o": 133,
     "estado": "suelto",
-    "ev": 0,
-    "fase": "",
+    "ev": 1,
+    "fase": "Campeón",
     "valor": 5000
    },
    {
