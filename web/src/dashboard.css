@@ -703,6 +703,8 @@
 .dz-sec .db-vv,.dz-sec .db-dec,.dz-band .db-dec{padding:0;border-top:0}
 /* 🔎 tanda 1 del research: la causa al cerrar, la edad, «lo está viendo», posponer, la vuelta al segundo evento */
 .dz-cerrar{display:flex;flex-wrap:wrap;align-items:center;gap:6px;padding-top:10px;border-top:1px solid var(--suave)}
+/* en el teléfono, «Se equivocó el organizador» se salía del panel */
+.dz-cerrar .btn{max-width:100%;white-space:normal;text-align:left}
 .dz-cerrar>span{flex:1 0 100%;font:800 12.5px/1.2 "Barlow Condensed",sans-serif;letter-spacing:.07em;text-transform:uppercase;color:var(--gris)}
 .dz-band-meta{display:flex;flex-wrap:wrap;align-items:baseline;justify-content:space-between;gap:6px 16px}
 .dz-viejo,.dz-causas{margin:0;font-size:13.5px;line-height:1.4;color:var(--gris)}

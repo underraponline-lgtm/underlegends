@@ -11,6 +11,15 @@
  ],
  "cambios": [
     {
+      "version": "4.34",
+      "dia": "2026-11-05",
+      "cuando": "2026-11-05T16:32:15-05:00",
+      "titulo": "Un evento cancelado ya no suma solo",
+      "items": [
+        "**Si el organizador avisa que un evento se canceló**, su llave ya no suma sola aunque después se complete: primero se revisa. Tampoco se anuncia un campeón en el chat."
+      ]
+    },
+    {
       "version": "4.33",
       "dia": "2026-11-04",
       "cuando": "2026-11-04T21:40:30-05:00",

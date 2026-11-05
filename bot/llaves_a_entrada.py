@@ -3079,9 +3079,8 @@ def estados_vigia():
     return _ESTADOS[0]
 
 
-def pausada(grupo, sv, estados=None):
-    """¿El organizador avisó que esta llave sigue otro día? Un aviso «en pausa» de ESE servidor, publicado desde una
-    hora antes de la llave hasta 24 h después de lo último que se hizo con ella."""
+def _momentos(grupo):
+    """Cuándo se publicó y se editó cada mensaje de esta llave, en milisegundos."""
     ts = []
     for h in grupo['llaves']:
         for k in ('cuando', 'editado'):
@@ -3092,6 +3091,109 @@ def pausada(grupo, sv, estados=None):
                 t = None
             if t is not None:
                 ts.append((t if t.tzinfo else t.replace(tzinfo=datetime.timezone.utc)).timestamp() * 1000)
+    return ts
+
+
+#: 📢 las llaves que el organizador canceló antes de terminarlas, con su aviso: `{'nombre · sv · fecha': {texto, pub}}`. El
+#: vigía guarda los avisos 36 h y una pregunta de ✅ Decidir puede tardar más: sin esto, la llave retenida se sumaría sola
+CANCELADAS = os.path.join(BASE, 'datos', 'llaves_canceladas.json')
+_CANCELADAS = [None, False]
+
+
+def _canceladas():
+    if _CANCELADAS[0] is None:
+        try:
+            with io.open(CANCELADAS, encoding='utf-8') as f:
+                _CANCELADAS[0] = (json.load(f) or {}).get('llaves') or {}
+        except (OSError, ValueError):
+            _CANCELADAS[0] = {}
+    return _CANCELADAS[0]
+
+
+def guardar_canceladas():
+    """Las canceladas nuevas de esta corrida, a su archivo (`bot/ci/guardar.sh` lo commitea)."""
+    if not _CANCELADAS[1]:
+        return
+    with io.open(CANCELADAS, 'w', encoding='utf-8', newline='\n') as f:
+        json.dump({'_leeme': ['Las llaves que el organizador canceló antes de terminarlas (`llaves_a_entrada.cancelada()`): no '
+                              'suman hasta que Dlx diga «Sí cuenta» en ✅ Decidir. El vigía olvida el aviso a las 36 h; esto no.'],
+                   'llaves': _CANCELADAS[0]}, f, ensure_ascii=False, indent=1, sort_keys=True)
+        f.write('\n')
+    _CANCELADAS[1] = False
+
+
+def cancelada(g, nom, sv, fec, anuncios, estados=None):
+    """📢 El aviso `{texto, pub}` de que esta llave se canceló antes de terminarla, o `None`.
+
+    🔴 LA #567 (GALACTICOS DEL FREESTYLE VOL.16, DDF, 05/11/2026). El organizador publicó la llave a las 11:25 AM ET, escribió
+    «@everyone Compe cancelada» a las 11:36 y a las 11:38 la editó poniéndose de campeón, de broma. El vigía SÍ leyó el aviso
+    (`estados` de `/avisos/vivo`, con su anuncio) y nadie le preguntó: el ciclo vio una llave completa y la cargó, y la
+    rectificación la tuvo que pedir Trelok, que ni estaba en la llave. Dlx: «dale».
+
+    ⚠️ EL AVISO TIENE QUE CAER ENTRE LA LLAVE PUBLICADA Y LO ÚLTIMO QUE SE HIZO CON ELLA. Antes de publicarla, lo cancelado
+    es otra edición, y ésta es la que se volvió a armar. Después de terminarla, el aviso habla de otra cosa: el vigía le
+    cuelga al mensaje el último anuncio del servidor si no nombra a ninguno.
+    ⚠️ Y SU ANUNCIO TIENE QUE SER EL DE ESTA LLAVE, por el nombre o por la misma cuenta: un servidor corre varios eventos a la
+    vez, y que se cancele uno no dice nada del otro.
+    ⚠️ RETIENE, NO DESCARTA: si se jugó igual («cancelada» y media hora después «volvimos»), un «Sí cuenta» y entra."""
+    k = '%s · %s · %s' % (nom, sv, fec)
+    if k in _canceladas():
+        return _canceladas()[k]
+    ts = _momentos(g)
+    if not ts:
+        return None
+    import llaves_web as LW
+    por_id = {str(a.get('msg_id') or ''): a for a in anuncios or ()}
+    huellas = {huella_autor(h) for h in g['llaves']} - {None, ''}
+    try:
+        dia = datetime.date.fromisoformat(LW.fecha_iso(fec))
+    except ValueError:
+        dia = None
+    for e in (estados_vigia() if estados is None else estados):
+        if e.get('tipo') != 'cancelado' or e.get('sv') != sv or not min(ts) <= int(e.get('pub') or 0) <= max(ts):
+            continue
+        a = por_id.get(str(e.get('evento') or ''))
+        if a and (LW.anunciado(nom, sv, dia, [a]) or a.get('autor_h') in huellas):
+            _canceladas()[k] = {'texto': str(e.get('texto') or '')[:200], 'pub': int(e['pub'])}
+            _CANCELADAS[1] = True
+            return _canceladas()[k]
+    return None
+
+
+def _prueba_cancelada():
+    """El caso de la #567 y los que no lo son, sin tocar el archivo."""
+    antes = _CANCELADAS[:]
+    _CANCELADAS[:] = [{}, False]
+    try:
+        g = {'llaves': [{'cuando': '2026-11-05T16:25:11+00:00', 'editado': '2026-11-05T16:38:49+00:00', 'autor_id': '1'}]}
+        an = [{'msg_id': '9', 'nombre': 'GALACTICOS VOL.16', 'servidor': 'DDF', 'cuando': '2026-11-05T16:24:20'},
+              {'msg_id': '8', 'nombre': 'OTRA COPA', 'servidor': 'DDF', 'cuando': '2026-11-05T16:00:00', 'autor_h': 'otra'}]
+        e = lambda **k: [dict({'tipo': 'cancelado', 'sv': 'DDF', 'pub': 1793896584000, 'evento': '9', 'texto': '@everyone Compe cancelada'}, **k)]
+        no = lambda **k: cancelada(g, 'GALACTICOS VOL.16', 'DDF', '05/11', an, e(**k)) is None
+        si = cancelada(g, 'GALACTICOS VOL.16', 'DDF', '05/11', an, e())
+        bien = bool(si) and 'Compe cancelada' in motivo_cancelada(si) and '@everyone' not in motivo_cancelada(si) and '11:36 AM ET' in motivo_cancelada(si)
+        # queda guardada: el vigía se olvida a las 36 h y sigue retenida
+        bien = bien and cancelada(g, 'GALACTICOS VOL.16', 'DDF', '05/11', an, []) == si and _CANCELADAS[1]
+        _CANCELADAS[:] = [{}, False]
+        bien = bien and no(sv='FFA') and no(evento='8') and no(tipo='pausado') and no(pub=1793896584000 - 3600 * 1000) and no(pub=1793896584000 + 3600 * 1000) and not _CANCELADAS[1]
+        return bien
+    finally:
+        _CANCELADAS[:] = antes
+
+
+def motivo_cancelada(c):
+    """La pregunta de ✅ Decidir, con lo que el organizador escribió y a qué hora."""
+    texto = re.sub(r'\s+', ' ', re.sub(r'@(?:everyone|here)|<@[!&]?\d+>', ' ', str(c.get('texto') or ''))).strip()[:90]
+    from zoneinfo import ZoneInfo
+    t = datetime.datetime.fromtimestamp(int(c.get('pub') or 0) / 1000, ZoneInfo('America/New_York'))
+    return ('el organizador avisó «%s» el %s a las %s ET y la llave se terminó después. Si se jugó igual, «Sí cuenta»'
+            % (texto, t.strftime('%d/%m'), t.strftime('%I:%M %p').lstrip('0')))
+
+
+def pausada(grupo, sv, estados=None):
+    """¿El organizador avisó que esta llave sigue otro día? Un aviso «en pausa» de ESE servidor, publicado desde una
+    hora antes de la llave hasta 24 h después de lo último que se hizo con ella."""
+    ts = _momentos(grupo)
     if not ts:
         return False
     ini, fin = min(ts) - 3600 * 1000, max(ts) + 24 * 3600 * 1000
@@ -3768,6 +3870,9 @@ def _self_check():
                         [{'n': 366, 'sv': 'FFA', 'fecha': '27/09', 'nombre': 'FFA WORLD CUP',
                           'rondas': [{'r': 'Cuartos', 'b': [[['Fully', 'SOL'], '', ''], [['Snow', 'dxg'], '', ''],
                                                              [['Molusco', 'yinn'], '', '']]}]}]) is None),
+        ('una llave CANCELADA —la #567 de DDF: el aviso cae entre publicarla y terminarla, y es de su anuncio— se retiene; '
+         'la de otro servidor, la de otro anuncio y el aviso de antes o de después, no',
+         _prueba_cancelada()),
         ('una llave EN PAUSA —«seguimos mañana», avisado después de publicarla— espera; la de otro servidor o de antes, no',
          pausada({'llaves': [{'cuando': '2026-10-07T20:45:15+00:00', 'editado': '2026-10-07T21:16:34+00:00'}]}, 'SR',
                  [{'sv': 'SR', 'tipo': 'pausado', 'pub': 1791415920000}])
@@ -4604,6 +4709,10 @@ def main():
                           'propio sistema de puntos (guía, Parte 2, §11.2): '
                           '¿cuenta también para el Ranking Global?')
                 break
+        # 📢 Y LA QUE EL ORGANIZADOR CANCELÓ ANTES DE TERMINARLA (Dlx, 05/11/2026: «dale»): ver `cancelada()`
+        if ligas and not motivo and dec != 'cuenta':
+            _cx = cancelada(g, nom, ligas[0], fec, anuncios_l)
+            motivo = motivo_cancelada(_cx) if _cx else None
         # 🔑 Y LA LLAVE DE BROMA: autor nuevo y sin anuncio (Dlx, 28/09, «A»)
         if ligas and not motivo and dec != 'cuenta':
             motivo = llave_de_broma(g, conocidos, anuncios_l, nom, ligas[0], fec,
@@ -5072,6 +5181,8 @@ def main():
               con_link(' | '.join(cosas[:4]), ev))
              for ev, cosas in por_evento.items()
              if not any(d[0] == ev for d in batallas_q)]
+    # 📢 las canceladas nuevas, antes que nada: lo de abajo ya depende de que se sepa que se retuvieron
+    guardar_canceladas()
     # ⚠️ Y LA LISTA DE LAS QUE SIGUEN SIN GANADOR, para que `Pendientes` cierre
     # sola la pregunta de una batalla que el organizador completó en Discord
     # (ver `pendientes._resuelto_ya()`). Se escribe en cada corrida.

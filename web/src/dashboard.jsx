@@ -3254,15 +3254,16 @@ function CausasLinea({ cs }) {
 function DetalleLlave({ it, liga, d, alCambiar, corrige }) {
   const r = it.r;
   const [abierto, setAbierto] = useState(false);
+  const [seguro, setSeguro] = useState(false);
   const [msg, setMsg] = useState('');
   const [ocup, setOcup] = useState(false);
   const setLista = (l) => alCambiar({ reportes: l });
   // cerrar sin corregir: con su causa, que vuelve al conteo
-  const cerrar = async (accion, causa) => {
+  const cerrar = async (accion, causa, n) => {
     setOcup(true); setMsg('');
     try {
       const rq = await fetch('/api/avisos/dueno/reporte', { method: 'POST', credentials: 'same-origin',
-        headers: { 'content-type': 'application/json' }, body: JSON.stringify({ id: r.id, accion, causa }) });
+        headers: { 'content-type': 'application/json' }, body: JSON.stringify({ id: r.id, accion, causa, n }) });
       const j = await rq.json().catch(() => ({}));
       if (!rq.ok || j.error) throw new Error(rq.status === 401 ? 'la sesión venció: entra de nuevo' : j.error || String(rq.status));
       alCambiar(Object.assign({ reportes: j.reportes || [] }, j.reportes_causas ? { reportes_causas: j.reportes_causas } : {}));
@@ -3279,8 +3280,16 @@ function DetalleLlave({ it, liga, d, alCambiar, corrige }) {
       {r.evid && (r.evid.lineas || []).length > 1 ? <Evidencia r={r} alListo={setLista} corrige={corrige} /> : null}
       {abierto ? (String(r.llave).startsWith('liga:') ? <CorregirLiga r={r} liga={liga} alListo={setLista} />
         : <Corregir r={r} liga={liga} alListo={setLista} hermanos={hermanos} />) : null}
+      {/* 🚫 la llave entera no cuenta (05/11/2026, Dlx: «como decido eso yo?»): «Corregir» sólo cambia un nombre o un ganador */}
+      {seguro ? <p className="dz-dt-tx">La llave sale del ranking para todos en la próxima vuelta del ciclo, y a quien la reportó le llega el aviso. ¿Seguro?</p> : null}
       <div className="dz-acc">
-        {corrige && !abierto && (/^\d+$/.test(r.llave) || String(r.llave).startsWith('liga:')) ? <button type="button" className="btn verde" onClick={() => setAbierto(true)}>Corregir</button> : null}
+        {seguro ? <>
+          <button type="button" className="btn verde" disabled={ocup} onClick={() => cerrar('no_cuenta', 'organizador', r.llave)}>Sí, no cuenta</button>
+          <button type="button" className="btn borde2" disabled={ocup} onClick={() => setSeguro(false)}>Cancelar</button>
+        </> : <>
+          {corrige && !abierto && (/^\d+$/.test(r.llave) || String(r.llave).startsWith('liga:')) ? <button type="button" className="btn verde" onClick={() => setAbierto(true)}>Corregir</button> : null}
+          {corrige && !abierto && /^\d+$/.test(r.llave) ? <button type="button" className="btn borde2" onClick={() => setSeguro(true)}>No cuenta</button> : null}
+        </>}
       </div>
       {/* cerrarlo sin corregir dice por qué: es lo que arma «qué falló» */}
       <div className="dz-cerrar" role="group" aria-label="Cerrarlo sin corregir: por qué">

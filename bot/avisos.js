@@ -3723,6 +3723,7 @@ export function validarReporte(d, id, ahora) {
  * · `nombre`: en el evento `n`, el nombre `nombre` de la llave era otra persona: quien lo reportó (`reporta`), una
  *   de la Lista (`es`) o alguien que no está (`nuevo`). Sólo una de las tres.
  * · `ganador`: en el evento `n`, la batalla de `ronda` entre `lados` la ganó `ganador` (uno de los lados).
+ * · `no_cuenta`: el evento `n` no suma para nadie.
  * Lo aplica el ciclo (`bot/reportes.py --corregir`), que valida además contra la Lista y la llave de verdad.
  */
 export function validarDecisionReporte(d) {
@@ -3733,7 +3734,7 @@ export function validarDecisionReporte(d) {
   // corrección la trae sola: un nombre es un nombre mal leído; un ganador, la llave mal leída, salvo que se diga otra
   const c = String((d && d.causa) || '');
   if (c && !CAUSAS_REPORTE.includes(c)) return { error: 'causa' };
-  const causa = v.accion === 'prueba' ? 'prueba' : c || (v.accion === 'nombre' ? 'nombre_bot' : v.accion === 'ganador' ? 'llave_bot' : '');
+  const causa = v.accion === 'prueba' ? 'prueba' : c || (v.accion === 'nombre' ? 'nombre_bot' : v.accion === 'ganador' ? 'llave_bot' : v.accion === 'no_cuenta' ? 'organizador' : '');
   return Object.assign({}, v, { causa });
 }
 //: por qué se cerró un reporte: el bot leyó mal un nombre, el bot leyó mal la llave, se equivocó el organizador, estaba bien
@@ -3796,6 +3797,9 @@ function decisionReporte0(d) {
   }
   const n = String((d && d.n) || '');
   if (!/^\d{1,6}$/.test(n)) return { error: 'falta el evento' };
+  // 🚫 LA LLAVE ENTERA NO CUENTA (05/11/2026, Dlx, por la #567: «si no cuenta pero como decido eso yo?»). «Corregir» sólo
+  // cambia un nombre o un ganador. Lo aplica `reportes.corregir_no_cuenta()`
+  if (accion === 'no_cuenta') return { id, accion, fix: { tipo: 'no_cuenta', n } };
   if (accion === 'nombre') {
     const nombre = txt(d.nombre, 80);
     if (!nombre) return { error: 'falta el nombre' };
@@ -7954,6 +7958,16 @@ export class Avisos {
       }
       return n;
     };
+    // 📢 los avisos de «se canceló» de las últimas 36 h, con el nombre de su anuncio. Una sola lectura, y sólo si hace falta
+    let cancelados = null;
+    const cancelada = (sv, nombre, pub) => {
+      if (cancelados === null) {
+        const evs = new Map(this.anunciosVistos(ahora, 36, 40).map((a) => [a.id, a]));
+        cancelados = this.sql.exec("SELECT evento, pub FROM estados WHERE tipo = 'cancelado' AND pub > ?", ahora - 36 * HORA).toArray()
+          .map((e) => ({ a: evs.get(e.evento), pub: e.pub })).filter((x) => x.a);
+      }
+      return cancelados.some((x) => x.a.sv === sv && x.a.n === nombre && x.pub >= (pub || 0));
+    };
     for (const b of bloques) {
       // 🌙 en el horario de silencio no habla; las apuestas se siguen cerrando y pagando (abajo)
       if (pedidos >= CHAT_TOPE || callado) break;
@@ -7985,6 +7999,9 @@ export class Avisos {
         .toArray()[0] || {}).t || 0;
       const fresca = ahora - (L.ed || 0) <= CHAT_FRESCA;
       const nombre = nombreDe(L);
+      // 📢 EL ORGANIZADOR AVISÓ QUE SE CANCELÓ, DESPUÉS DE PUBLICAR ESTA LLAVE: de ella no se dice nada más. La #567 (DDF,
+      // 05/11/2026): escribió «Compe cancelada», a los dos minutos se puso de campeón de broma y el bot lo anunció en el chat
+      if (cancelada(b.sv, nombre, b.pub)) continue;
       // 🔁 UNA LLAVE POR EVENTO EN EL CHAT (13/10/2026, Dlx: «se sigue repitiendo esto», con «🎤 Arrancó LA BELLA ARTE DE
       // LA DESGRACIA VOL 5 · 15 en la llave» a las 5:02 PM y otra vez «· 24 en la llave» a las 5:09: el organizador
       // publicó la llave corregida —faltaba gente— y para el chat era otra llave, con su propio «Arrancó»). Si otra llave

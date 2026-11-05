@@ -1195,6 +1195,12 @@ const ok = (cond, que, det) => {
       && V({ id: 0, accion: 'listo' }).error && V({ id: 2, accion: 'borrar' }).error,
     'lo que Dlx decide de un reporte se valida: una sola persona por nombre, el ganador es uno de los lados, sin HTML',
     JSON.stringify([vn, vg]));
+    // 🚫 y la llave entera (05/11/2026): sólo pide el evento, y su causa es la del organizador si no se dice otra
+    const vnc = V({ id: 13, accion: 'no_cuenta', n: '567' });
+    ok(vnc.fix && vnc.fix.tipo === 'no_cuenta' && vnc.fix.n === '567' && vnc.causa === 'organizador'
+      && V({ id: 13, accion: 'no_cuenta', n: 'v:1' }).error && V({ id: 13, accion: 'no_cuenta' }).error
+      && V({ id: 13, accion: 'no_cuenta', n: '567', causa: 'llave_bot' }).causa === 'llave_bot',
+    'una llave que no cuenta pide el número del evento', JSON.stringify(vnc));
     // 🏟️ y de una liga (14/10/2026): quien lo mandó u otro de la Lista; alguien nuevo no (una liga no crea gente)
     const vl = V({ id: 8, accion: 'nombre', liga: 'fmh-carimex', nombre: 'FORCE', reporta: true });
     ok(vl.fix && vl.fix.liga === 'fmh-carimex' && vl.fix.reporta === true && !vl.fix.n

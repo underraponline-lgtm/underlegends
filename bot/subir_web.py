@@ -2307,6 +2307,12 @@ def _cancelados(cal, LW, escribir=False, vigia=None, ahora_ms=None, guardados=No
             ev.setdefault(_clave_cancelado(c), {'n': c.get('n') or '', 'sv': c.get('sv') or '', 't': c.get('t') or '',
                                                 'por': 'su llave se borró y no hubo otra', 'llave': str(b.get('id') or ''),
                                                 'auto': 1})
+    # 📢 y el que el organizador canceló con un mensaje (la #567, DDF, 05/11/2026): el vigía lo olvida a los 3 días
+    por_mensaje = {str(x.get('id') or '') for x in (vigia or {}).get('cancelados') or () if isinstance(x, dict) and x.get('por') == 'mensaje'}
+    for c in cal:
+        if _clave_cancelado(c) in por_mensaje and not (c.get('ll') or c.get('jugado') or c.get('fut')):
+            ev.setdefault(_clave_cancelado(c), {'n': c.get('n') or '', 'sv': c.get('sv') or '', 't': c.get('t') or '',
+                                                'por': 'el organizador avisó que se canceló', 'auto': 1})
     n = 0
     for c in cal:
         k = _clave_cancelado(c)
@@ -4085,6 +4091,11 @@ def _self_check():
     ok([bool(c.get('can')) for c in _cc] == [True, False, False, False, False] and _nc == 1,
        'cancelado: la llave borrada sin otra sí; otra edición, la procesada, la vuelta a publicar y la de hace '
        '5 min no')
+    _cm = [_ev(6, 'COPA CANCELADA', 'DDF', '2026-11-05T16:24:20'), _ev(7, 'COPA JUGADA', 'DDF', '2026-11-05T16:24:20', ll=9)]
+    _nm = _cancelados(_cm, _LWc, ahora_ms=_ms('2026-11-05T17:00:00'), guardados={'eventos': {}},
+                      vigia={'cancelados': [{'id': '1556000000000000006', 'por': 'mensaje'}, {'id': '1556000000000000007', 'por': 'mensaje'}]})
+    ok([bool(c.get('can')) for c in _cm] == [True, False] and _nm == 1,
+       'cancelado por un mensaje del organizador: sale «cancelado», salvo que su llave se haya procesado')
     # ⚠️ LA SEMANA DEL ARRANQUE SALE DE `comun/temporada.py`, NO SE ESCRIBE. Este caso clavaba el 14/10, de cuando la
     # T1 arrancaba el 12/10; el 08/10 pasó a arrancar el 22/09 sin corte, `debutantes()` siguió a `FECHAS` y el chequeo
     # quedó rojo culpando al «NUEVO», que estaba bien (13/10/2026: los 5 de esa semana, iguales que a mano). Y la semana

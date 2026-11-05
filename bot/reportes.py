@@ -343,6 +343,17 @@ def corregir_ganador(r, fix, L, decis, ahora_ms):
     return None, ''
 
 
+def corregir_no_cuenta(r, fix, L, decis, ahora_ms):
+    """🚫 La llave entera no cuenta (05/11/2026, Dlx, por la #567: «si no cuenta pero como decido eso yo?»). Es la misma
+    decisión que un «No cuenta» de ✅ Decidir: `procesar_entrada.sacar_descartados()` la saca del ranking y el lector no la
+    vuelve a cargar. Si Dlx cambia de idea, se saca esta línea de `decisiones.json` y vuelve a entrar sola. `(estado, qué)`."""
+    clave = '%s · %s · %s' % (L.get('nombre'), L.get('sv'), L.get('fecha'))
+    decis.setdefault('eventos', {})[clave] = {
+        'decision': 'no cuenta', 'cuando': _et(ahora_ms), 'por': '%s (un reporte)' % (fix.get('por') or 'Dlx'),
+        'nota': 'el reporte #%s: «%s»' % (r.get('id'), str(r.get('texto') or '')[:200])}
+    return 'aplicado', 'esa llave ya no cuenta para el ranking'
+
+
 # ══ 🔎 LA EVIDENCIA DE CADA REPORTE ═════════════════════════════════════════════════════════════════════════════════
 # 🔑 Dlx, 13/10/2026: *«para cada cosa necesitaremos evidencia y soporte… no necesariamente evidencia que el usuario
 # adjunte, pero que el bot nos dé evidencia»*, y mirando «yo no rapee esta compe»: *«¿pero quién lo dice? necesitamos
@@ -601,6 +612,8 @@ def corregir(cola, aplicar=False):
                 est, que = corregir_nombre(r, fix, L, decis, resolver, padron, aplicar)
             elif fix.get('tipo') == 'ganador':
                 est, que = corregir_ganador(r, fix, L, decis, ahora)
+            elif fix.get('tipo') == 'no_cuenta':
+                est, que = corregir_no_cuenta(r, fix, L, decis, ahora)
             else:
                 raise ValueError('no sé corregir «%s»' % fix.get('tipo'))
         except ValueError as e:
@@ -665,6 +678,12 @@ def _self_check():
             {'id': 8, 'quien': '222', 'llave': 'v:1554310239942213663', 'que': 'otro', 'texto': 'x' * 500,
              'batalla': 'octavos', 't': 1759118400000},
             {'quien': '333', 'llave': '1', 'que': 'otro'}]
+    _dc = {}
+    _nc = corregir_no_cuenta({'id': 13, 'texto': 'nunca pasó'}, {'por': 'Dlx'}, {'nombre': 'COPA', 'sv': 'DDF', 'fecha': '05/11'},
+                             _dc, 1793911391541)
+    ok(_nc[0] == 'aplicado' and _dc['eventos']['COPA · DDF · 05/11']['decision'] == 'no cuenta'
+       and 'nunca pasó' in _dc['eventos']['COPA · DDF · 05/11']['nota'],
+       'una llave que no cuenta queda como un «No cuenta» de ✅ Decidir, con quién lo decidió y por qué')
     fs = filas(cola, {'111': 'Hassan'})
     ok(len(fs) == 2, 'un reporte sin número no entra')
     ok(fs[0][:3] == ('Reporte', 'evento #370', 'El ganador está mal: la final la ganó Paria · #7'),
