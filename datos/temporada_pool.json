@@ -4348,7 +4348,6 @@
   "rango": "E",
   "tg_t": {
    "busc": 1,
-   "reciente": true,
    "solo": 1
   }
  },
@@ -8031,7 +8030,6 @@
   "rango": "E",
   "tg_t": {
    "dcor": true,
-   "reciente": true,
    "svc": 1,
    "svtag": "campeon"
   }
@@ -8069,7 +8067,6 @@
   "rango": "E",
   "tg_t": {
    "dcor": true,
-   "reciente": true,
    "svc": 1
   }
  },
@@ -13885,8 +13882,7 @@
   "total": 223,
   "rango": "E",
   "tg_t": {
-   "cobro": 2,
-   "reciente": true
+   "cobro": 2
   }
  },
  {
@@ -16343,7 +16339,6 @@
   "total": 223,
   "rango": "E",
   "tg_t": {
-   "reciente": true,
    "trios": 1
   }
  },
@@ -16639,10 +16634,7 @@
   "pos": 501,
   "fc": true,
   "total": 223,
-  "rango": "E",
-  "tg_t": {
-   "reciente": true
-  }
+  "rango": "E"
  },
  {
   "full": "🟢 Batalla 4: GHV",
@@ -16674,10 +16666,7 @@
   "pos": 502,
   "fc": true,
   "total": 223,
-  "rango": "E",
-  "tg_t": {
-   "reciente": true
-  }
+  "rango": "E"
  },
  {
   "full": "Astral",
@@ -16868,10 +16857,7 @@
   "pos": 507,
   "fc": true,
   "total": 223,
-  "rango": "E",
-  "tg_t": {
-   "reciente": true
-  }
+  "rango": "E"
  },
  {
   "full": "Paja lenta🇬🇩",
@@ -17437,10 +17423,7 @@
   "o": 504,
   "pos": 208,
   "total": 223,
-  "rango": "E",
-  "tg_t": {
-   "reciente": true
-  }
+  "rango": "E"
  },
  {
   "full": "PETER🇵🇪",
@@ -17925,10 +17908,7 @@
   "pos": 533,
   "fc": true,
   "total": 223,
-  "rango": "E",
-  "tg_t": {
-   "reciente": true
-  }
+  "rango": "E"
  },
  {
   "full": "Dcet",
@@ -18405,10 +18385,7 @@
   "pos": 545,
   "fc": true,
   "total": 223,
-  "rango": "E",
-  "tg_t": {
-   "reciente": true
-  }
+  "rango": "E"
  },
  {
   "full": "METRA",
@@ -18440,10 +18417,7 @@
   "pos": 546,
   "fc": true,
   "total": 223,
-  "rango": "E",
-  "tg_t": {
-   "reciente": true
-  }
+  "rango": "E"
  },
  {
   "full": "Nairda",
