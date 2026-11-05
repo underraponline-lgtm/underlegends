@@ -2,22 +2,6 @@
  "_leeme": "Los equipos que una llave nombra con UN nombre (TEAM VENECIA): quiénes cobran, y por qué. Lo escribe marcar_equipos() de bot/llaves_a_entrada.py en cada corrida; lo lee Pendientes para no preguntar por ellos como si fueran personas. Dlx, 29/09/2026.",
  "equipos": [
   {
-   "evento": "__ FREESTYLE FOR ALL ESPECIAL 1800 2v2 __",
-   "sv": "FFA",
-   "fecha": "24/10",
-   "equipo": "EL TERROR DE TU WA 🇦🇷",
-   "integrantes": [],
-   "por": "ni la llave ni una inscripción dicen quiénes son"
-  },
-  {
-   "evento": "__ FREESTYLE FOR ALL ESPECIAL 1800 2v2 __",
-   "sv": "FFA",
-   "fecha": "24/10",
-   "equipo": "LOS LAPICES DEL EXAMEN CHUNIN 🇦🇷",
-   "integrantes": [],
-   "por": "la inscripción dice geoka + nc🇰🇷🇰🇷, y la llave los pone también en otro lado"
-  },
-  {
    "evento": "2v2 2",
    "sv": "FDS",
    "fecha": "23/10",

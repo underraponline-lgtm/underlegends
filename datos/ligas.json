@@ -1,6 +1,6 @@
 {
  "_leeme": "Las ligas de los servidores: cada batalla y su resultado, y la tabla que sale de eso. Lo arma bot/ligas.py en cada corrida; las reglas viven ahí. Sin los mensajes: el repo es público. `batallas`: [id del mensaje, instante, jornada, a, b, ganador (vacío: pendiente), directa|replica, extras]. Las batallas con resultado cuentan como duelos (Ranking Duelos y Win%; el Score no). `flyer`: el último afiche de su canal de anuncios, re-alojado en R2 (`url`); `prox`: la próxima fecha que anunció (`d` el día, `t` el instante si lo dijo). Desde el 17/10/2026: `ptb` {id de la batalla: [PTB de a, de b]}, `flyers` (la galería, en R2), `staff` [[discord_id, nombre, mensajes en anuncios, en veredictos, último]] y `nov` (lo nuevo de las últimas horas, para «Seguir la liga»).",
- "t": "2026-11-05T07:58:47Z",
+ "t": "2026-11-05T16:31:57Z",
  "ligas": {
   "fmh-albiceleste": {
    "n": "FMH Albiceleste",
@@ -3481,6 +3481,26 @@
      "",
      "",
      "b"
+    ],
+    [
+     "1567930504085246003",
+     "2026-11-05T15:56:02Z",
+     8,
+     "STORMED",
+     "EFE - RECUPERATIVA",
+     "",
+     "",
+     ""
+    ],
+    [
+     "1567939246172668015",
+     "2026-11-05T16:30:47Z",
+     8,
+     "JOSELIYO",
+     "EFE",
+     "",
+     "",
+     ""
     ]
    ],
    "tabla": [
@@ -3826,8 +3846,8 @@
      "1344825963669749804",
      "⁺‧₊˚ ཐིNeisMCཋྀ ˚₊‧",
      43,
-     102,
-     "2026-11-03T21:20:28Z"
+     105,
+     "2026-11-05T16:30:47Z"
     ],
     [
      "756958777126682674",
@@ -3840,8 +3860,8 @@
      "794733304729436212",
      "! 𝗠𝗧𝗭",
      3,
-     14,
-     "2026-10-28T18:07:04Z"
+     16,
+     "2026-11-05T16:00:06Z"
     ],
     [
      "884190151180447744",
@@ -3856,6 +3876,13 @@
      0,
      6,
      "2026-09-23T21:34:46Z"
+    ],
+    [
+     "1502684639062659122",
+     "campy89_",
+     0,
+     6,
+     "2026-11-05T16:01:25Z"
     ],
     [
      "1055474244089286706",
@@ -3877,13 +3904,6 @@
      0,
      4,
      "2026-09-21T17:33:59Z"
-    ],
-    [
-     "1502684639062659122",
-     "campy89_",
-     0,
-     4,
-     "2026-10-28T18:32:41Z"
     ],
     [
      "1471506451146080497",
