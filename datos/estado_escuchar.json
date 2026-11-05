@@ -1,9 +1,9 @@
 {
  "v": 1,
- "cuando": "2026-11-05T21:00:56Z",
+ "cuando": "2026-11-05T21:33:47Z",
  "trabajo": "escuchar",
  "codigo": 0,
- "dur_s": 449.9,
+ "dur_s": 623.8,
  "pasos": [
   {
    "n": "0a",
@@ -15,37 +15,37 @@
    "n": "0a2",
    "que": "las crews, del objeto",
    "ok": true,
-   "s": 1.3
+   "s": 1.5
   },
   {
    "n": "0b",
    "que": "los multiplicadores de la semana",
    "ok": true,
-   "s": 0.8
+   "s": 0.7
   },
   {
    "n": "0c",
    "que": "lo corregido desde los reportes",
    "ok": true,
-   "s": 2.9
+   "s": 3.0
   },
   {
    "n": "1",
    "que": "las llaves cargadas en `Entrada`",
    "ok": true,
-   "s": 71.5
+   "s": 68.0
   },
   {
    "n": "1c",
    "que": "las vitrinas del Oficial",
-   "ok": true,
-   "s": 51.3
+   "ok": false,
+   "s": 47.1
   },
   {
    "n": "1a",
    "que": "la cola del bot (`/card` de quien no está), al Sheet",
    "ok": true,
-   "s": 0.7
+   "s": 0.5
   },
   {
    "n": "1a2",
@@ -57,25 +57,25 @@
    "n": "1b",
    "que": "quién está verificado y en qué servidores, desde Discord",
    "ok": true,
-   "s": 35.8
+   "s": 38.9
   },
   {
    "n": "1b2",
    "que": "quién está en la llamada (sólo con un evento en vivo)",
    "ok": true,
-   "s": 3.5
+   "s": 0.3
   },
   {
    "n": "2",
    "que": "el padrón y los pools, desde el Sheet",
    "ok": true,
-   "s": 6.2
+   "s": 6.3
   },
   {
    "n": "2b0",
    "que": "el Writing Challenge de FFA",
    "ok": true,
-   "s": 0.6
+   "s": 0.5
   },
   {
    "n": "2b",
@@ -99,7 +99,7 @@
    "n": "2b3d",
    "que": "los paneles de DRA",
    "ok": true,
-   "s": 0.3
+   "s": 25.2
   },
   {
    "n": "2b3b",
@@ -111,61 +111,61 @@
    "n": "2b3c",
    "que": "el reto del debut",
    "ok": true,
-   "s": 1.7
+   "s": 1.8
   },
   {
    "n": "2b4",
    "que": "el precio por cabeza",
    "ok": true,
-   "s": 1.0
+   "s": 1.2
   },
   {
    "n": "2b4b",
    "que": "el Pase de rapero",
    "ok": true,
-   "s": 0.6
+   "s": 0.7
   },
   {
    "n": "2b5",
    "que": "las invitaciones de la Liga",
    "ok": true,
-   "s": 3.7
+   "s": 3.3
   },
   {
    "n": "2b5b",
    "que": "los pedidos de la gente",
    "ok": true,
-   "s": 0.3
+   "s": 0.2
   },
   {
    "n": "2b6",
    "que": "el #N del apodo",
    "ok": true,
-   "s": 35.0
+   "s": 223.8
   },
   {
    "n": "2b7",
    "que": "el rol de rango en DRA",
    "ok": true,
-   "s": 3.9
+   "s": 7.4
   },
   {
    "n": "2b8",
    "que": "las batallas en video",
    "ok": true,
-   "s": 2.8
+   "s": 3.3
   },
   {
    "n": "2b8c",
    "que": "las promociones",
    "ok": true,
-   "s": 3.3
+   "s": 3.0
   },
   {
    "n": "2b8d",
    "que": "los MES AWARDS",
    "ok": true,
-   "s": 44.0
+   "s": 43.1
   },
   {
    "n": "2b8e",
@@ -177,13 +177,13 @@
    "n": "2b8f",
    "que": "los tiers",
    "ok": true,
-   "s": 10.8
+   "s": 6.9
   },
   {
    "n": "2b8g",
    "que": "los primerizos",
    "ok": true,
-   "s": 0.5
+   "s": 0.6
   },
   {
    "n": "2b8h",
@@ -195,7 +195,7 @@
    "n": "2b8i",
    "que": "las competencias de la semana",
    "ok": true,
-   "s": 1.4
+   "s": 1.3
   },
   {
    "n": "2b8b",
@@ -207,37 +207,37 @@
    "n": "2b9",
    "que": "las ligas",
    "ok": true,
-   "s": 36.4
+   "s": 32.6
   },
   {
    "n": "2b9b",
    "que": "el ascenso de cada servidor",
    "ok": true,
-   "s": 2.1
+   "s": 1.9
   },
   {
    "n": "2b9c",
    "que": "las cartas de liga",
    "ok": true,
-   "s": 31.5
+   "s": 7.7
   },
   {
    "n": "2b10",
    "que": "los roles de la página",
    "ok": true,
-   "s": 0.5
+   "s": 0.4
   },
   {
    "n": "2c",
    "que": "la web",
    "ok": true,
-   "s": 52.6
+   "s": 52.1
   },
   {
    "n": "2c2",
    "que": "el aviso de cada evento, al día",
    "ok": true,
-   "s": 0.5
+   "s": 0.7
   },
   {
    "n": "2c3",
@@ -249,7 +249,7 @@
    "n": "2d",
    "que": "lo contestado en ✅ Decidir, y los alias de la hoja AKAs",
    "ok": true,
-   "s": 17.7
+   "s": 17.2
   },
   {
    "n": "2e",
@@ -261,7 +261,7 @@
    "n": "2f",
    "que": "las fotos que faltan, de Discord a R2",
    "ok": true,
-   "s": 8.0
+   "s": 6.4
   },
   {
    "n": "2f2",
@@ -273,23 +273,28 @@
    "n": "3",
    "que": "qué cambió",
    "ok": true,
-   "s": 11.0
+   "s": 10.1
   }
  ],
- "fallas": [],
+ "fallas": [
+  {
+   "paso": "1c",
+   "que": "sheet/rankings.py --escribir"
+  }
+ ],
  "decidir": 167,
  "ultimo_evento": {
-  "n": "567",
-  "nombre": "GALACTICOS DEL FREESTYLE VOL.16",
+  "n": "566",
+  "nombre": "COMPE XCLUSIVISTICA VOL. 1",
   "sv": "DDF",
-  "dia": "2026-11-05"
+  "dia": "2026-11-04"
  },
  "retencion": {
   "v": 1,
-  "cuando": "2026-11-05T20:54:49Z",
+  "cuando": "2026-11-05T21:24:44Z",
   "definicion": "jugó otro evento, otro día, dentro de los 14 días de su primero",
-  "jugadores": 613,
-  "un_evento": 291,
+  "jugadores": 612,
+  "un_evento": 290,
   "diez_o_mas": 97,
   "cohortes": [
    {
@@ -330,7 +335,7 @@
    },
    {
     "semana": "2026-11-02",
-    "nuevos": 8,
+    "nuevos": 7,
     "volvieron": 1,
     "completa": false
    }
@@ -338,25 +343,25 @@
  },
  "cuotas": {
   "kv": {
-   "write": 446,
-   "read": 47148
+   "write": 458,
+   "read": 48804
   },
   "objeto": {
-   "leidas": 2577491,
-   "escritas": 17094,
-   "pedidos": 9582
+   "leidas": 2746460,
+   "escritas": 18474,
+   "pedidos": 10044
   },
   "worker": {
-   "pedidos": 10411,
+   "pedidos": 10155,
    "errores": 0,
-   "sub": 12146,
+   "sub": 12021,
    "cortados": 0,
-   "p50_ms": 1.17,
-   "p99_ms": 14.71,
+   "p50_ms": 1.18,
+   "p99_ms": 14.91,
    "cpu": {
-    "total": 22658,
-    "objeto_10": 1865,
-    "worker_10": 330
+    "total": 22203,
+    "objeto_10": 1854,
+    "worker_10": 332
    }
   },
   "r2": {

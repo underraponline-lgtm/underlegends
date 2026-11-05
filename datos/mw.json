@@ -86,22 +86,10 @@
     "nivel": "B",
     "base": 7250,
     "o": 16,
-    "estado": "cazado",
-    "ev": 1,
-    "fase": "Subcampeón",
-    "valor": 7250,
-    "caza": {
-     "n": 567,
-     "evento": "GALACTICOS DEL FREESTYLE VOL.16",
-     "sv": "DDF",
-     "t": "2026-11-05T16:25:11Z",
-     "por": [
-      {
-       "n": "Adriagner",
-       "cobra": 10000
-      }
-     ]
-    }
+    "estado": "suelto",
+    "ev": 0,
+    "fase": "",
+    "valor": 7250
    },
    {
     "n": "Erian",

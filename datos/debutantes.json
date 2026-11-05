@@ -364,7 +364,7 @@
    "n": 543,
    "sv": "FFA",
    "vence": "2026-11-05T21:10:39+00:00",
-   "vencido": false
+   "vencido": true
   },
   "DarkoMC": {
    "avisado": "2026-10-18",
@@ -576,7 +576,7 @@
    "n": 543,
    "sv": "FFA",
    "vence": "2026-11-05T21:10:39+00:00",
-   "vencido": false
+   "vencido": true
   },
   "Fix 17": {
    "avisado": "2026-10-26",
@@ -707,19 +707,6 @@
    "sv": "FFA",
    "vence": "2026-10-29T15:06:42+00:00",
    "vencido": true
-  },
-  "Inko": {
-   "avisado": "2026-11-05",
-   "chat": "2026-11-05",
-   "con": null,
-   "cumplido": "",
-   "debut": "2026-11-05T16:25:11+00:00",
-   "did": "1032753509776490566",
-   "evento": "GALACTICOS DEL FREESTYLE VOL.16",
-   "n": 567,
-   "sv": "DDF",
-   "vence": "2026-11-12T16:25:11+00:00",
-   "vencido": false
   },
   "Isabella": {
    "avisado": "2026-10-31",
@@ -981,7 +968,7 @@
    "n": 543,
    "sv": "FFA",
    "vence": "2026-11-05T21:10:39+00:00",
-   "vencido": false
+   "vencido": true
   },
   "LISEN": {
    "avisado": "2026-11-01",
@@ -1928,7 +1915,7 @@
    "n": 543,
    "sv": "FFA",
    "vence": "2026-11-05T21:10:39+00:00",
-   "vencido": false
+   "vencido": true
   },
   "gary": {
    "avisado": "2026-10-26",

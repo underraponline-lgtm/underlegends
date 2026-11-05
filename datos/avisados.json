@@ -34132,7 +34132,7 @@
    "VR": 7
   },
   "fecha": "04/11",
-  "firma": "ae328dda2edda8d6",
+  "firma": "8768cf1556f42c82",
   "msg": "1567733874077737062",
   "nombre": "COMPE XCLUSIVISTICA VOL. 1",
   "num": 566,
@@ -34197,6 +34197,7 @@
   "v": 2
  },
  "567": {
+  "al_dia": true,
   "antes": {
    "Adriagner": [
     41,
@@ -34276,7 +34277,7 @@
    "Number VE": 15
   },
   "fecha": "05/11",
-  "firma": "5a9d5730b353ca6f",
+  "firma": "5d3b7dec549bf1b4",
   "msg": "1567943062532006051",
   "nombre": "GALACTICOS DEL FREESTYLE VOL.16",
   "num": 567,
