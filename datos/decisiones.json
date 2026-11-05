@@ -120,6 +120,12 @@
    "cuando": "2026-10-15 11:30 AM ET",
    "por": "Dlx (✅ Decidir)",
    "nota": "Dlx en ✅ Decidir, a «Bracket incompleto»: ganó WALKER SANITY. La llave no decía el campeón: WALKER SANITY cobra campeón y el otro, subcampeón (`llaves_a_entrada.con_campeon()`)"
+  },
+  "GALACTICOS DEL FREESTYLE VOL.16 · DDF · 05/11": {
+   "decision": "no cuenta",
+   "cuando": "2026-11-05 4:19 PM ET",
+   "por": "Dlx (chat)",
+   "nota": "llave de broma, reportada por Trelok: Adriagner escribió «@everyone Compe cancelada» a las 11:36 AM ET, «se cancelo la compe» a las 11:38 y a las 11:38:49 editó la llave y se puso de campeón. Si cambia de idea, se saca esta línea y vuelve a entrar sola."
   }
  },
  "no_rankear": {
