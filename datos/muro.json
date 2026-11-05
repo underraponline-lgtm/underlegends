@@ -1146,7 +1146,9 @@
 },
 "raizer": {
 "rg": "",
-"c": []
+"c": [
+"servidor"
+]
 },
 "eldinoco": {
 "rg": "",
@@ -2696,14 +2698,6 @@
 }
 },
 "cambios": [
-{
-"tipo": "tarjeta",
-"t": "2026-10-04T19:07:21Z",
-"quien": [
-"Jayden"
-],
-"carta": "temporada"
-},
 {
 "tipo": "tarjeta",
 "t": "2026-10-04T19:17:31Z",
@@ -6062,6 +6056,14 @@
 "Liam"
 ],
 "carta": "temporada"
+},
+{
+"tipo": "tarjeta",
+"t": "2026-11-05T02:10:17Z",
+"quien": [
+"Raizer"
+],
+"carta": "servidor"
 }
 ]
 }
