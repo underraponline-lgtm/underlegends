@@ -28708,14 +28708,22 @@
   ],
   "n": 495,
   "nombre": "19 CUP - FUTCARD EDITION VOL.3",
-  "participantes": 14,
+  "participantes": 11,
   "rondas": [
    {
     "b": [
      [
       [
+       "Carlosss",
+       "Drexx"
+      ],
+      "Carlosss",
+      ""
+     ],
+     [
+      [
        "Miniboy",
-       "🟢 Batalla 2: Mco"
+       "MCO"
       ],
       "Miniboy",
       ""
@@ -28731,19 +28739,11 @@
      [
       [
        "MaYeuTyK",
-       "🟢 Batalla 4: GHV",
+       "GHV🇨🇷",
        "Xclusivo"
       ],
       "MaYeuTyK",
       "triple (3 bandas)"
-     ],
-     [
-      [
-       "🟢 Batalla 1: Carlos",
-       "Drexx"
-      ],
-      "🟢 Batalla 1: Carlos",
-      "ganador: ✅ Decidir"
      ]
     ],
     "r": "Cuartos"
@@ -28756,7 +28756,7 @@
        "Miniboy"
       ],
       "Carlosss",
-      "Walk-in 1: Carlosss"
+      ""
      ],
      [
       [
@@ -28786,14 +28786,14 @@
   "sv": "DDF",
   "tabla": [
    [
+    "Carlosss",
+    "Campeón",
+    7500
+   ],
+   [
     "MaYeuTyK",
     "Subcampeón",
     5000
-   ],
-   [
-    "Carlosss",
-    "Campeón",
-    3750
    ],
    [
     "Desio",
@@ -28816,17 +28816,17 @@
     2000
    ],
    [
+    "GHV🇨🇷",
+    "Cuartos",
+    2000
+   ],
+   [
+    "MCO",
+    "Cuartos",
+    2000
+   ],
+   [
     "Xclusivo",
-    "Cuartos",
-    2000
-   ],
-   [
-    "🟢 Batalla 2: Mco",
-    "Cuartos",
-    2000
-   ],
-   [
-    "🟢 Batalla 4: GHV",
     "Cuartos",
     2000
    ]
@@ -30909,7 +30909,7 @@
   ],
   "n": 505,
   "nombre": "19 CUP FUTCARD EDICIÓN 5",
-  "participantes": 14,
+  "participantes": 11,
   "rondas": [
    {
     "b": [
@@ -30923,27 +30923,27 @@
      ],
      [
       [
+       "Miniboy",
+       "BTRX"
+      ],
+      "Miniboy",
+      ""
+     ],
+     [
+      [
+       "Isac 🇬🇪",
+       "Shadow"
+      ],
+      "Isac 🇬🇪",
+      ""
+     ],
+     [
+      [
        "Makmah",
        "MaYeuTyK"
       ],
       "Makmah",
       ""
-     ],
-     [
-      [
-       "🔹 C2: UZI",
-       "BTRX"
-      ],
-      "🔹 C2: UZI",
-      "ganador: ✅ Decidir"
-     ],
-     [
-      [
-       "Shadow",
-       "🔹 C3: ISAC"
-      ],
-      "Shadow",
-      "ganador: ✅ Decidir"
      ]
     ],
     "r": "Cuartos"
@@ -30952,19 +30952,19 @@
     "b": [
      [
       [
-       "💥 SF1: PICHULA",
+       "PichulaMc",
        "Miniboy"
       ],
-      "💥 SF1: PICHULA",
-      "Walk-in 1: Miniboy"
+      "PichulaMc",
+      ""
      ],
      [
       [
        "Makmah",
-       "💥 SF2: ISAC"
+       "Isac 🇬🇪"
       ],
       "Makmah",
-      "Walk-in 1: 💥 SF2: ISAC"
+      ""
      ]
     ],
     "r": "Semifinales"
@@ -30996,6 +30996,16 @@
     5000
    ],
    [
+    "Isac 🇬🇪",
+    "Semifinal",
+    3500
+   ],
+   [
+    "Miniboy",
+    "Semifinal",
+    3500
+   ],
+   [
     "BTRX",
     "Cuartos",
     2000
@@ -31006,24 +31016,14 @@
     2000
    ],
    [
+    "Shadow",
+    "Cuartos",
+    2000
+   ],
+   [
     "VR",
     "Cuartos",
     2000
-   ],
-   [
-    "🔹 C3: ISAC",
-    "Cuartos",
-    2000
-   ],
-   [
-    "Miniboy",
-    "Semifinal",
-    1750
-   ],
-   [
-    "💥 SF2: ISAC",
-    "Semifinal",
-    1750
    ]
   ]
  },
