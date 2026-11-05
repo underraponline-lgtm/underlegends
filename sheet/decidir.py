@@ -3757,6 +3757,19 @@ def _decisiones():
         return {}
 
 
+def anotar_sacados(quien):
+    """🚫 `{nombre: número del evento}` de la gente de un evento que se sacó, en `sacados_quien` de `decisiones.json`: quien
+    jugó sólo ahí se va de la vitrina, y `rankings.salen_por_no_cuenta()` lo pregunta acá."""
+    if not quien:
+        return
+    from comun.claves import clave
+    d = _decisiones()
+    d.setdefault('sacados_quien', {}).update({clave(k): v for k, v in quien.items() if clave(k)})
+    with io.open(DECISIONES, 'w', encoding='utf-8', newline='\n') as f:
+        json.dump(d, f, ensure_ascii=False, indent=1)
+        f.write('\n')
+
+
 def no_rankear():
     """Los nombres que no entran a NINGÚN ranking, normalizados.
 

@@ -210,6 +210,9 @@ def sacar_descartados(hproc, ya, aplicar):
         with io.open(p, encoding='utf-8') as f:
             ll = json.load(f)
         if any(str(n) in ll for n in nums):
+            # 🚫 quién estaba en esos eventos: quien jugó sólo ahí se va de la vitrina, y es a propósito. Ver
+            # `rankings.salen_por_no_cuenta()`
+            DEC.anotar_sacados({f[0]: n for n in nums for f in (ll.get(str(n)) or {}).get('tabla') or [] if f and f[0]})
             for n in nums:
                 ll.pop(str(n), None)
             with io.open(p, 'w', encoding='utf-8', newline='\n') as f:

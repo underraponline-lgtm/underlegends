@@ -1559,6 +1559,20 @@ def _nombres_vitrina(filas):
 UNIDOS_MAX = 3
 
 
+def salen_por_no_cuenta(salen, sacados=None):
+    """🚫 ¿Todos los que se van de la vitrina estaban en un evento que se sacó a propósito? Pura si se le pasa `sacados`.
+
+    🔴 LA #567 (05/11/2026). Dlx dijo que no contaba, y Inko, que jugó sólo ésa, se iba de la tabla. El guardián frenó la
+    Temporada entera —está para un `Resultados` leído a medias— y le mandó un DM a Dlx: «No cuenta» traía una alarma atrás.
+    ⚠️ SÓLO SI SON TODOS: uno solo de afuera y frena como siempre, porque ahí sí puede faltar algo."""
+    from comun.claves import clave
+    if sacados is None:
+        sys.path.insert(0, SCR)
+        import decidir as DEC
+        sacados = DEC._decisiones().get('sacados_quien') or {}
+    return bool(salen) and all(clave(x) in sacados for x in salen)
+
+
 def aviso_encoge(hubo, ahora, ev_antes, ev_ahora):
     """El aviso de una tabla con menos personas, o `None`. Pura: la prueba el self-check.
 
@@ -3345,6 +3359,9 @@ def _self_check():
          'menos)' in (aviso_encoge(359, 340, 1200, 1200) or ''), True),
         ('sin la columna de eventos: frena como antes', 'menos)' in (aviso_encoge(359, 358, None, None) or ''), True),
         ('la tabla que crece no avisa', aviso_encoge(358, 359, 1200, 1210), None),
+        ('quien sale porque su evento no cuenta no frena', salen_por_no_cuenta(['Inko'], {'inko': 567}), True),
+        ('pero con uno de afuera, frena', salen_por_no_cuenta(['Inko', 'Oasis'], {'inko': 567}), False),
+        ('y sin nadie que salga, tampoco pasa', salen_por_no_cuenta([], {'inko': 567}), False),
     ]:
         ok = dio == esp
         mal += not ok
@@ -3479,7 +3496,9 @@ def main():
             if salen:
                 print('   🔴 saldrían %d: %s%s' % (len(salen), ', '.join(salen[:8]), '…' if len(salen) > 8 else ''))
             print()
-            return 1
+            if not salen_por_no_cuenta(salen):
+                return 1
+            print('   🚫 y se puede: estaban en un evento que no cuenta (`salen_por_no_cuenta()`)\n')
 
         # 3b · que el arrastre haya enganchado. Media tabla sin fila
         #      anterior no es «entró media Liga nueva», es que los
