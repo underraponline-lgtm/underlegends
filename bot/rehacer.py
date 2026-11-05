@@ -24,8 +24,10 @@ import sys
 SCR = os.path.dirname(os.path.abspath(__file__))
 BASE = os.path.dirname(SCR)
 sys.path.insert(0, BASE)
+sys.path.insert(0, SCR)
 
-SERVIDORES = ('ACAD', 'DDF', 'DRA', 'EFA', 'FDS', 'FFA', 'FFS', 'FRZ', 'FTN', 'FVS', 'LKR', 'SR', 'TFC', 'TWR', 'URBF')
+# 🏠 una sola lista: acá seguían FDS y LKR, que no tienen carta y el generador rechaza
+from que_cambio import SERVIDORES, casa_sin_carta          # noqa: E402
 
 
 def cambiaron():
@@ -117,7 +119,9 @@ def main():
         corre(['01_Temporada/exportar_png.py', n])
         corre(['02_Competitivo/exportar_png.py', n])
         corre(['04_Pais/exportar_png.py', n])
-        corre(['03_Servidor/generar.py', n])
+        # 🏠 quien vive en un servidor sin carta (FDS, LKR) no tiene propia: se la tumbaría (`casa_sin_carta()`)
+        if n not in casa_sin_carta([n]):
+            corre(['03_Servidor/generar.py', n])
         for sv in SERVIDORES:
             corre(['03_Servidor/generar.py', n, '--sv=%s' % sv])
     print('\nlisto. Ahora hay que subirlas:')

@@ -129,6 +129,33 @@ def camisetas(quienes):
     return out
 
 
+def casa_sin_carta(quienes):
+    """🏠 `{quien: camiseta}` de quienes VIVEN en un servidor sin carta (FDS, LKR; ver `SERVIDORES`): su carta propia no se
+    puede dibujar, porque ese servidor no tiene fondo, y hace de propia la camiseta del servidor donde más jugó, o `None` si
+    no tiene ninguna. El servidor de cada uno sale de donde lo saca `03_Servidor/generar.py`: el pool, y si no está,
+    `datos/servidores_de.json`.
+
+    🔴 POR QUÉ. `generar.py` dibuja a todos los de una llamada en un solo proceso, así que uno solo de éstos le revienta a
+    todos con `KeyError: 'FDS'`. Del 26/10 al 04/11/2026: unas 40 cartas Servidor sin salir en cada vuelta, esas personas sin
+    sellar y otra vez a la cola con todas sus cartas. Y el ciclo en verde: `corre()` lo anotaba y seguía."""
+    pool = {c.get('raw'): c.get('sv') or '' for c in (_j('datos', 'competitivo_pool.json') or [])}
+    donde = _j('datos', 'servidores_de.json') or {}
+    try:
+        sys.path.insert(0, os.path.join(BASE, 'sheet'))
+        import construir_padron as _PAD
+        id_de = {p.get('raw'): str(p.get('discord_id') or '') for p in _PAD.cargar()}
+    except Exception:                                    # noqa: BLE001
+        id_de = {}
+    casa = {q: pool[q] if q in pool else (donde.get(id_de.get(q, ''), []) or [''])[0] for q in quienes}
+    sin = [q for q, sv in casa.items() if sv and sv not in SERVIDORES]
+    if not sin:
+        return {}
+    jugo = (_j('datos', 'por_servidor.json') or {}).get('gente') or {}
+    cam = camisetas(sin)
+    # a igual cantidad de eventos, DRA: es el centro de la Liga, y todo verificado está ahí
+    return {q: max(cam.get(q) or [None], key=lambda s: ((jugo.get(q, {}).get(s) or {}).get('ev', 0), s == 'DRA')) for q in sin}
+
+
 def _j(*p):
     ruta = os.path.join(BASE, *p)
     if not os.path.exists(ruta):
@@ -1022,6 +1049,12 @@ def _self_check():
     except Exception as e:                               # noqa: BLE001
         ok(False, 'no pude comparar el puesto en la letra con las cartas (%s)'
            % str(e)[:60])
+    # 🏠 los que viven en un servidor sin carta
+    _pool = [c for c in (_j('datos', 'competitivo_pool.json') or []) if c.get('raw')]
+    _casa = casa_sin_carta([c['raw'] for c in _pool])
+    ok(all(v is None or v in SERVIDORES for v in _casa.values()), 'quien vive en un servidor sin carta usa una camiseta que sí existe, o ninguna')
+    ok(not [c['raw'] for c in _pool if c['raw'] in _casa and c.get('sv') in SERVIDORES], 'y quien tiene carta propia no entra ahí')
+    ok(not [c['raw'] for c in _pool if c.get('sv') and c.get('sv') not in SERVIDORES and c['raw'] not in _casa], 'y no se escapa nadie: uno solo tumba a toda su llamada')
     print('')
     print('   %s' % ('todo bien' if not mal else '🔴 %d mal' % mal))
     return mal

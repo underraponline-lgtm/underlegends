@@ -63,6 +63,7 @@ import hashlib
 import io
 import json
 import os
+import shutil
 import subprocess
 import sys
 import time
@@ -90,7 +91,7 @@ except AttributeError:
 SALIDA = os.path.join(SCR, 'salida')
 # ⚠️ LAS CAMISETAS Y SU LISTA VIVEN EN `que_cambio`: el sello tiene que ver
 # las mismas que se dibujan (`camisetas()`).
-from que_cambio import SERVIDORES, camisetas              # noqa: E402,F401
+from que_cambio import SERVIDORES, camisetas, casa_sin_carta              # noqa: E402,F401
 
 # Cuantas personas por tanda.
 #
@@ -503,6 +504,21 @@ def no_salieron(carta, quienes, corte, camis=None):
             if not hay:
                 falta.append((quien, carta if not sv else 'sv-%s' % sv.lower()))
     return falta
+
+
+def camiseta_como_propia(prestadas):
+    """🏠 Copia a `sv_<clave>.png` la camiseta de quien vive en un servidor sin carta (`casa_sin_carta()`), que es lo que
+    sube como su `servidor`. Con `copy2`: guarda la fecha de la camiseta, así que si no salió en esta tanda `no_salieron()` la
+    sigue viendo como vieja."""
+    from comun.claves import clave as CL
+    _script, carpeta, pref = COMO['servidor']
+    d = os.path.join(BASE, carpeta)
+    for quien, sv in prestadas.items():
+        for n in (CL(quien), str(quien)) if sv else ():
+            f = os.path.join(d, 'sv-%s_%s.png' % (sv.lower(), n))
+            if os.path.exists(f):
+                shutil.copy2(f, os.path.join(d, '%s%s.png' % (pref, n)))
+                break
 
 
 def rehacer_bloqueadas():
@@ -1794,9 +1810,13 @@ def main():
             for c in trabajo[quien]:
                 por_carta.setdefault(c, []).append(quien)
         llamadas = []
+        # 🏠 quien vive en un servidor sin carta no va en la llamada de las propias: se la tumba a todos (`casa_sin_carta()`)
+        prestadas = casa_sin_carta(por_carta.get('servidor') or [])
         for c, quienes in sorted(por_carta.items()):
             print('      %-12s %d persona(s)' % (c, len(quienes)))
-            llamadas.append(list(COMO[c][0]) + sorted(quienes))
+            propias = [q for q in quienes if c != 'servidor' or q not in prestadas]
+            if propias:
+                llamadas.append(list(COMO[c][0]) + sorted(propias))
             if c == 'servidor':
                 # ⚠️ la Servidor son DIEZ: la propia y una por servidor,
                 # porque `/card` abre en la del servidor donde escribiste.
@@ -1824,8 +1844,10 @@ def main():
             list(ex.map(corre, llamadas))
         print('      %d pasada(s) en %.1f min, de a %d'
               % (len(llamadas), (time.time() - t_tanda) / 60, PARALELO))
+        camiseta_como_propia(prestadas)
         for c, quienes in sorted(por_carta.items()):
-            faltan = no_salieron(c, quienes, corte,
+            # quien no tiene ni propia ni camiseta no tiene Servidor que esperar: si se la esperara, no se sellaría nunca
+            faltan = no_salieron(c, [q for q in quienes if c != 'servidor' or prestadas.get(q, q)], corte,
                                  camisetas(quienes) if c == 'servidor' else None)
             for quien, que in faltan:
                 malos.add(quien)

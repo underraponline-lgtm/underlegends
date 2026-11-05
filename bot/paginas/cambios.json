@@ -11,6 +11,16 @@
  ],
  "cambios": [
     {
+      "version": "4.32",
+      "dia": "2026-11-04",
+      "cuando": "2026-11-04T20:51:42-05:00",
+      "titulo": "Las cartas de Servidor vuelven a actualizarse",
+      "items": [
+        "**La carta de Servidor de varias personas no se estaba actualizando**: un error la dejaba vieja desde el 26 de octubre. Ya se arregló, y se ponen al día solas en las próximas vueltas.",
+        "**Si tu servidor principal no tiene carta**, tu carta de Servidor es la del servidor donde más jugaste."
+      ]
+    },
+    {
       "version": "4.31",
       "dia": "2026-11-04",
       "cuando": "2026-11-04T20:22:52-05:00",
