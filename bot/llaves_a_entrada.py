@@ -714,6 +714,11 @@ def nombre_visible(lado, ids):
     return re.sub('([\U0001F1E6-\U0001F1FF]{2})(?:\\s*\\1)+', r'\1', s)
 
 
+def _lado_decidido(gano, lados):
+    """El lado de hoy que ✅ Decidir dio por ganador, aunque se haya guardado escrito de otra manera."""
+    return next((x for x in lados if E.norm(x) == E.norm(gano)), gano) if gano else gano
+
+
 #: Con este plantel `motor.escala_de()` ya da la escala más alta.
 LADOS_16 = 16
 
@@ -3973,6 +3978,10 @@ def _self_check():
         ('y el que está adentro escrito distinto no se cuenta dos veces',
          plantel('`[ CUARTOS ]`\n⌞SAITO(blody)⌝ 🆚 ⌞Bloody⌝\n`[ FINAL ]`\n'
                  '⌞SAITO⌝ 🆚 ⌞Ana⌝') == {'saito', 'bloody', 'ana'}),
+        ('el ganador guardado con un adorno sigue siendo ese lado: no hay un Carlosmo contra Carlosmo',
+         _lado_decidido('💀 Carlosmo (Payaso de it) 🇵🇪', ['Carlosmo (Payaso de it) 🇵🇪', 'Miniboy 🇨🇱 LEVI'])
+         == 'Carlosmo (Payaso de it) 🇵🇪' and _lado_decidido('', ['A', 'B']) == ''
+         and _lado_decidido('Otro', ['A', 'B']) == 'Otro'),
         ('con 16 lados, el disfraz entre paréntesis no suma; con menos sí puede ser alguien',
          len(plantel('`[ OCTAVOS ]`\n' + '\n'.join('⌞Uno%s (%s)⌝ 🆚 ⌞Dos%s⌝' % (c, d, c) for c, d in zip('abcdefgh', _DISFRACES)))) == 16
          and len(plantel('`[ CUARTOS ]`\n' + '\n'.join('⌞Uno%s (%s)⌝ 🆚 ⌞Dos%s⌝' % (c, d, c) for c, d in zip('abcd', _DISFRACES)))) == 12),
@@ -4800,6 +4809,10 @@ def main():
                         'ronda': d[1].lower(), 'ladoA': lados[0], 'ladoB': otro, 'ganador': '',
                         'notas': '; '.join('cobra: %s' % x for x in lados) + '; nadie siguió: ✅ Decidir'})
                 continue
+            # ⚠️ POR NOMBRE Y NO POR TEXTO (05/11/2026): lo contestado guarda el lado como se leía ese día, y si el lector
+            # después le saca un adorno ya no es igual al de hoy. «💀 Carlosmo» contra «Carlosmo» daba un Carlosmo contra
+            # Carlosmo en la #552
+            gano = _lado_decidido(gano, d[4])
             for otro in [x for x in d[4] if x != gano] if gano else []:
                 limpias.append({
                     'evento': base.get('evento') or nom, 'servidor': base.get('servidor') or ligas[0],
