@@ -898,21 +898,6 @@
     "racha": "0/0"
    }
   },
-  "BERRUM 🇨🇱": {
-   "CH": {
-    "duelos": "1/2",
-    "ev": 1,
-    "oro": 0,
-    "ovr": 45,
-    "pod": 1,
-    "pts": 7500,
-    "racha": "1/1",
-    "tg": {
-     "fin": 1,
-     "nuevo": true
-    }
-   }
-  },
   "BLANKO 🇺🇸": {
    "FFA": {
     "duelos": "1/2",
@@ -1219,13 +1204,17 @@
   },
   "Berrun": {
    "CH": {
-    "duelos": "2/2",
-    "ev": 0,
+    "duelos": "3/4",
+    "ev": 1,
     "oro": 0,
-    "ovr": 40,
-    "pod": 0,
-    "pts": 0,
-    "racha": "0/0"
+    "ovr": 45,
+    "pod": 1,
+    "pts": 7500,
+    "racha": "1/1",
+    "tg": {
+     "fin": 1,
+     "nuevo": true
+    }
    }
   },
   "Betelguese": {
@@ -2668,7 +2657,7 @@
     "racha": "0/0"
    }
   },
-  "Drope 🇺🇾": {
+  "Drope": {
    "CH": {
     "duelos": "",
     "ev": 1,
@@ -3067,7 +3056,7 @@
     }
    }
   },
-  "Elinge 🇨🇱": {
+  "Elinge_TIMP": {
    "CH": {
     "duelos": "0/1",
     "ev": 1,
@@ -3079,9 +3068,7 @@
     "tg": {
      "nuevo": true
     }
-   }
-  },
-  "Elinge_TIMP": {
+   },
    "FFA": {
     "duelos": "0/1",
     "ev": 1,
@@ -4473,20 +4460,6 @@
     }
    }
   },
-  "JAZII 🇪🇨": {
-   "CH": {
-    "duelos": "1/2",
-    "ev": 1,
-    "oro": 0,
-    "ovr": 42,
-    "pod": 0,
-    "pts": 2625,
-    "racha": "1/1",
-    "tg": {
-     "nuevo": true
-    }
-   }
-  },
   "JD": {
    "CH": {
     "duelos": "",
@@ -4763,7 +4736,7 @@
     "racha": "0/1"
    }
   },
-  "Jodnes 🇨🇴": {
+  "Jodnes": {
    "CH": {
     "duelos": "1/2",
     "ev": 1,
@@ -5009,7 +4982,7 @@
     "racha": "0/0"
    }
   },
-  "KATALIEN🇬🇹": {
+  "KATALIEN": {
    "CH": {
     "duelos": "",
     "ev": 1,
@@ -5104,7 +5077,7 @@
     "racha": "0/0"
    }
   },
-  "Kaizz🇦🇷": {
+  "Kaizz": {
    "CH": {
     "duelos": "1/2",
     "ev": 1,
@@ -5263,7 +5236,7 @@
     "racha": "0/1"
    }
   },
-  "Koffi 🇲🇽": {
+  "Koffi": {
    "CH": {
     "duelos": "0/1",
     "ev": 1,
@@ -5659,25 +5632,14 @@
     }
    }
   },
-  "LOLOELGAUCHO": {
-   "FFA": {
-    "duelos": "",
-    "ev": 1,
-    "oro": 0,
-    "ovr": 42,
-    "pod": 0,
-    "pts": 688,
-    "racha": "0/0"
-   }
-  },
   "LOLOELGAUCHO 🇦🇷": {
    "FFA": {
     "duelos": "",
-    "ev": 1,
+    "ev": 2,
     "oro": 0,
-    "ovr": 42,
+    "ovr": 43,
     "pod": 0,
-    "pts": 344,
+    "pts": 1375,
     "racha": "0/0"
    }
   },
@@ -7393,7 +7355,7 @@
     }
    }
   },
-  "Minis 🇲🇽": {
+  "Minis": {
    "CH": {
     "duelos": "0/1",
     "ev": 1,
@@ -7442,14 +7404,15 @@
   "Molt": {
    "CH": {
     "duelos": "",
-    "ev": 1,
+    "ev": 3,
     "oro": 0,
-    "ovr": 42,
+    "ovr": 44,
     "pod": 0,
-    "pts": 1250,
+    "pts": 3750,
     "racha": "0/0",
     "tg": {
-     "fund": true
+     "fund": true,
+     "llave": true
     }
    },
    "FRZ": {
@@ -8318,7 +8281,7 @@
     "racha": "0/0"
    }
   },
-  "Omiwido 🇪🇸": {
+  "Omiwido": {
    "CH": {
     "duelos": "",
     "ev": 1,
@@ -8452,7 +8415,7 @@
     "racha": "0/0"
    }
   },
-  "Palako 🇵🇪": {
+  "Palako": {
    "CH": {
     "duelos": "",
     "ev": 1,
@@ -9029,29 +8992,15 @@
     "racha": "0/0"
    }
   },
-  "Ragna": {
-   "FRZ": {
-    "duelos": "3/3",
-    "ev": 1,
-    "oro": 1,
-    "ovr": 45,
-    "pod": 1,
-    "pts": 7500,
-    "racha": "1/1",
-    "tg": {
-     "fin": 1
-    }
-   }
-  },
   "Ragna 🇨🇱": {
    "FRZ": {
-    "duelos": "3/3",
-    "ev": 1,
-    "oro": 1,
-    "ovr": 45,
-    "pod": 1,
-    "pts": 8250,
-    "racha": "1/1",
+    "duelos": "6/6",
+    "ev": 2,
+    "oro": 2,
+    "ovr": 47,
+    "pod": 2,
+    "pts": 15750,
+    "racha": "2/2",
     "tg": {
      "fin": 1
     }
@@ -11696,7 +11645,7 @@
     "racha": "0/0"
    }
   },
-  "Zanz🇲🇽": {
+  "Zanz": {
    "CH": {
     "duelos": "",
     "ev": 1,
@@ -11838,17 +11787,6 @@
     "tg": {
      "fin": 1
     }
-   }
-  },
-  "akvmolt 🇨🇼": {
-   "CH": {
-    "duelos": "",
-    "ev": 2,
-    "oro": 0,
-    "ovr": 43,
-    "pod": 0,
-    "pts": 3125,
-    "racha": "0/0"
    }
   },
   "araya": {
@@ -12137,6 +12075,18 @@
    }
   },
   "jazi": {
+   "CH": {
+    "duelos": "1/2",
+    "ev": 1,
+    "oro": 0,
+    "ovr": 42,
+    "pod": 0,
+    "pts": 2625,
+    "racha": "1/1",
+    "tg": {
+     "nuevo": true
+    }
+   },
    "FDS": {
     "duelos": "",
     "ev": 1,
@@ -12262,7 +12212,7 @@
     "racha": "0/0"
    }
   },
-  "maRIHUANATICO🇦🇷": {
+  "maRIHUANATICO": {
    "CH": {
     "duelos": "",
     "ev": 1,
@@ -12523,25 +12473,14 @@
     "racha": "0/0"
    }
   },
-  "tomyhilfiger": {
-   "FFA": {
-    "duelos": "0/1",
-    "ev": 1,
-    "oro": 0,
-    "ovr": 44,
-    "pod": 0,
-    "pts": 12500,
-    "racha": "0/0"
-   }
-  },
   "tomyhilfiger🇾🇹": {
    "FFA": {
-    "duelos": "",
-    "ev": 1,
+    "duelos": "0/1",
+    "ev": 2,
     "oro": 0,
-    "ovr": 42,
+    "ovr": 45,
     "pod": 0,
-    "pts": 938,
+    "pts": 13438,
     "racha": "0/0"
    }
   },

@@ -1,5 +1,5 @@
 {
- "cuando": "2026-11-06T01:07:44+00:00",
+ "cuando": "2026-11-06T01:25:46+00:00",
  "anuncios": [
   {
    "nombre": "¡SE LLEGÓ LA GRAN NOCHE!",
@@ -13523,6 +13523,15 @@
    "discord_id": "1055474244089286706",
    "msg_id": "1564784565636173875",
    "cuando": "2026-10-27T23:35:12"
+  },
+  {
+   "servidor": "FRZ",
+   "canal": "➣「📝」inscripciones",
+   "texto": "RAGNA",
+   "quien": "maxiragnar",
+   "discord_id": "877285342158397500",
+   "msg_id": "1564784477438353571",
+   "cuando": "2026-10-27T23:34:51"
   },
   {
    "servidor": "FRZ",
@@ -42377,15 +42386,6 @@
    "discord_id": "1069350263204368435",
    "msg_id": "1556032752502186005",
    "cuando": "2026-10-03T19:58:37"
-  },
-  {
-   "servidor": "FFA",
-   "canal": "✦📝—inscripciones",
-   "texto": "tito calderon 🇦🇷  y jorgito el guayaco 🇨🇴",
-   "quien": "gru20192",
-   "discord_id": "1296910893354979368",
-   "msg_id": "1556016754486943805",
-   "cuando": "2026-10-03T18:55:03"
   }
  ]
 }

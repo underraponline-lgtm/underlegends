@@ -185,22 +185,18 @@
     "base": 6000,
     "o": 13,
     "estado": "cazado",
-    "ev": 3,
-    "fase": "Semifinal",
-    "valor": 8500,
+    "ev": 2,
+    "fase": "Cuartos",
+    "valor": 7250,
     "caza": {
-     "n": 565,
-     "evento": "qcyo rapeen 10",
-     "sv": "FFA",
-     "t": "2026-11-04T02:05:41Z",
+     "n": 573,
+     "evento": "COMPE ATERRADORA",
+     "sv": "CH",
+     "t": "2026-11-03T03:59:09Z",
      "por": [
       {
-       "n": "Agus",
-       "cobra": 4250
-      },
-      {
-       "n": "Six",
-       "cobra": 4250
+       "n": "Berrun",
+       "cobra": 14500
       }
      ]
     }

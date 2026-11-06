@@ -1265,6 +1265,25 @@
    ]
   }
  },
+ "berrun": {
+  "temporada": {
+   "🌱 PROMESA": [
+    "🌱 PROMESA",
+    "t1",
+    1793928952060
+   ],
+   "🐺 LOBO SOLITARIO": [
+    "🐺 LOBO SOLITARIO",
+    "t1",
+    1793928952060
+   ],
+   "🥉 AL PODIO": [
+    "🥉 AL PODIO",
+    "t1",
+    1793928952060
+   ]
+  }
+ },
  "betelguese": {
   "servidor": {
    "🏆 CAMPEÓN": [
@@ -4803,6 +4822,15 @@
    ]
   }
  },
+ "katalien": {
+  "servidor": {
+   "🧱 FUNDADOR": [
+    "🧱 FUNDADOR",
+    "t1",
+    1793928952060
+   ]
+  }
+ },
  "keider": {
   "pais": {
    "SIN FRONTERAS": [
@@ -6589,6 +6617,11 @@
     "t1",
     1793410677837
    ],
+   "📈 EN ASCENSO": [
+    "📈 EN ASCENSO",
+    "t1",
+    1793928952060
+   ],
    "🥉 AL PODIO": [
     "🥉 AL PODIO",
     "t1",
@@ -6973,6 +7006,18 @@
   }
  },
  "molt": {
+  "servidor": {
+   "🔑 LLAVE DE LA CASA": [
+    "🔑 LLAVE DE LA CASA",
+    "t1",
+    1793928952060
+   ],
+   "🧱 FUNDADOR": [
+    "🧱 FUNDADOR",
+    "t1",
+    1793928952060
+   ]
+  },
   "temporada": {
    "🧳 VIAJERO": [
     "🧳 VIAJERO",
@@ -8194,6 +8239,11 @@
     "📆 PODIO CADA SEMANA",
     "t1",
     1793029252929
+   ],
+   "📈 EN ASCENSO": [
+    "📈 EN ASCENSO",
+    "t1",
+    1793928952060
    ],
    "📋 SEMANA PERFECTA": [
     "📋 SEMANA PERFECTA",
@@ -9939,7 +9989,7 @@
     1793149367177
    ],
    "👑 CAMPEÓN x%d": [
-    "👑 CAMPEÓN x1",
+    "👑 CAMPEÓN x2",
     "t1",
     1792953978519
    ],
