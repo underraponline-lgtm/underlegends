@@ -297,6 +297,15 @@
 "temporada"
 ]
 },
+"mito": {
+"rg": "C",
+"c": [
+"competitivo",
+"pais",
+"servidor",
+"temporada"
+]
+},
 "majiztral": {
 "rg": "C",
 "c": [
@@ -447,10 +456,6 @@
 "servidor",
 "temporada"
 ]
-},
-"lizeninn": {
-"rg": "C",
-"c": []
 },
 "soulb": {
 "rg": "D",
@@ -962,14 +967,6 @@
 "temporada"
 ]
 },
-"mito": {
-"rg": "",
-"c": [
-"pais",
-"servidor",
-"temporada"
-]
-},
 "assuan": {
 "rg": "",
 "c": []
@@ -1329,6 +1326,10 @@
 },
 "maticerna": {
 "rg": "",
+"c": []
+},
+"lizeninn": {
+"rg": "C",
 "c": []
 },
 "luzzano": {
@@ -2708,24 +2709,6 @@
 }
 },
 "cambios": [
-{
-"tipo": "rango",
-"t": "2026-10-05T06:28:27Z",
-"quien": [
-"Erian"
-],
-"rg": "C",
-"primero": false
-},
-{
-"tipo": "rango",
-"t": "2026-10-05T06:28:27Z",
-"quien": [
-"Bloody"
-],
-"rg": "C",
-"primero": false
-},
 {
 "tipo": "rango",
 "t": "2026-10-05T06:28:27Z",
@@ -6082,6 +6065,23 @@
 "MCNadie"
 ],
 "carta": "pais"
+},
+{
+"tipo": "rango",
+"t": "2026-11-06T03:37:30Z",
+"quien": [
+"Mito"
+],
+"rg": "C",
+"primero": true
+},
+{
+"tipo": "tarjeta",
+"t": "2026-11-06T03:37:30Z",
+"quien": [
+"Mito"
+],
+"carta": "competitivo"
 }
 ]
 }

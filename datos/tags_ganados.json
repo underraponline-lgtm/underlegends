@@ -7042,21 +7042,87 @@
   }
  },
  "mito": {
+  "competitivo": {
+   "🗡️ MATAGIGANTES": [
+    "🗡️ MATAGIGANTES",
+    "t1",
+    1793936281420
+   ]
+  },
+  "pais": {
+   "DA LA CARA": [
+    "DA LA CARA",
+    "t1",
+    1793936281420
+   ],
+   "EMBAJADOR": [
+    "EMBAJADOR",
+    "t1",
+    1793936281420
+   ]
+  },
+  "servidor": {
+   "🏛️ PILAR": [
+    "🏛️ PILAR",
+    "t1",
+    1793936281420
+   ],
+   "📆 HABITUÉ": [
+    "📆 HABITUÉ",
+    "t1",
+    1793936281420
+   ]
+  },
   "temporada": {
+   "🌍 TROTAMUNDOS": [
+    "🌍 TROTAMUNDOS",
+    "t1",
+    1793936281420
+   ],
+   "🎖️ CURTIDO": [
+    "🎖️ CURTIDO",
+    "t1",
+    1793936281420
+   ],
+   "🏁 SEMIFINALISTA SERIAL": [
+    "🏁 SEMIFINALISTA SERIAL",
+    "t1",
+    1793936281420
+   ],
    "👑 CAMPEÓN x%d": [
     "👑 CAMPEÓN x1",
     "t1",
     1793491575234
+   ],
+   "💯 CENTENARIO": [
+    "💯 CENTENARIO",
+    "t1",
+    1793936281420
    ],
    "📈 EN ASCENSO": [
     "📈 EN ASCENSO",
     "t1",
     1793637214887
    ],
+   "🔟 DOBLE DÍGITO": [
+    "🔟 DOBLE DÍGITO",
+    "t1",
+    1793936281420
+   ],
+   "🛫 NÓMADA": [
+    "🛫 NÓMADA",
+    "t1",
+    1793936281420
+   ],
    "🥉 AL PODIO": [
     "🥉 AL PODIO",
     "t1",
     1793491575234
+   ],
+   "🧳 VIAJERO": [
+    "🧳 VIAJERO",
+    "t1",
+    1793936281420
    ]
   }
  },

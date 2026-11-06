@@ -3680,13 +3680,6 @@
      0,
      0
     ],
-    "Lizeninn": [
-     0,
-     0,
-     8,
-     0,
-     0
-    ],
     "Lord Viruzz": [
      0,
      0,
@@ -4712,7 +4705,14 @@
     ],
     "Agus": [
      0,
-     3,
+     2,
+     0,
+     0,
+     0
+    ],
+    "Agustin UY": [
+     0,
+     1,
      0,
      0,
      0
@@ -5368,13 +5368,6 @@
      0,
      0
     ],
-    "Lizeninn": [
-     0,
-     7,
-     0,
-     0,
-     0
-    ],
     "Lord Viruzz": [
      0,
      1,
@@ -5531,7 +5524,7 @@
     ],
     "Mito": [
      0,
-     2,
+     9,
      0,
      0,
      0
@@ -6183,7 +6176,6 @@
     "Lautaro la sinceridad 🇨🇨": 600,
     "Liberia": 900,
     "Lilñaño": 600,
-    "Lizeninn": 600,
     "Luck": 900,
     "Lvel": 300,
     "MATUK 🇦🇷": 300,
@@ -6268,11 +6260,11 @@
     ],
     [
      "caza",
-     "Ganale un duelo a OKAM",
+     "Ganale un duelo a Dominick",
      "caza",
      1,
      800,
-     "OKAM"
+     "Dominick"
     ],
     [
      "dorado",
@@ -6530,13 +6522,6 @@
      0,
      0
     ],
-    "Lizeninn": [
-     2,
-     0,
-     2,
-     0,
-     0
-    ],
     "Lucho": [
      1,
      0,
@@ -6590,6 +6575,13 @@
      1,
      0,
      16,
+     0,
+     0
+    ],
+    "Mito": [
+     2,
+     0,
+     2,
      0,
      0
     ],
@@ -6751,9 +6743,9 @@
     "Erian": 300,
     "LRS": 300,
     "Leopold sedar 🇸🇳": 300,
-    "Lizeninn": 300,
     "Lvel": 300,
     "Makmah": 2900,
+    "Mito": 300,
     "Number VE": 300,
     "Six": 2900,
     "Tam": 300,
@@ -6912,7 +6904,6 @@
   "Liberia": 8000,
   "Lilñaño": 600,
   "LitKunai": 300,
-  "Lizeninn": 900,
   "Lord Viruzz": 1600,
   "Luck": 900,
   "Luzzano": 900,
@@ -6938,7 +6929,7 @@
   "Mc arepa": 1000,
   "Millonari-O": 300,
   "Miniboy": 4500,
-  "Mito": 900,
+  "Mito": 1200,
   "Molusco": 5100,
   "Mosquitrap 🦟": 4000,
   "Motera": 2600,

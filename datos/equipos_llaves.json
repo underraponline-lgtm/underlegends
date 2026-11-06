@@ -2,30 +2,6 @@
  "_leeme": "Los equipos que una llave nombra con UN nombre (TEAM VENECIA): quiénes cobran, y por qué. Lo escribe marcar_equipos() de bot/llaves_a_entrada.py en cada corrida; lo lee Pendientes para no preguntar por ellos como si fueran personas. Dlx, 29/09/2026.",
  "equipos": [
   {
-   "evento": "__ AGUANTE EL ROJO Y EL BARCELONA Multiverse __",
-   "sv": "FFA",
-   "fecha": "25/10",
-   "equipo": "Ed, Edd y Eddy 🇻🇪",
-   "integrantes": [
-    "Provenza",
-    "Tam",
-    "Tenor"
-   ],
-   "por": "lo decidió Dlx"
-  },
-  {
-   "evento": "__ AGUANTE EL ROJO Y EL BARCELONA Multiverse __",
-   "sv": "FFA",
-   "fecha": "25/10",
-   "equipo": "LA ORDEN DEL GRIAL 🇵🇪 🇨🇱 🇦🇷",
-   "integrantes": [
-    "Drexx",
-    "Miniboy",
-    "Lizeninn"
-   ],
-   "por": "lo decidió Dlx"
-  },
-  {
    "evento": "2v2 2",
    "sv": "FDS",
    "fecha": "23/10",

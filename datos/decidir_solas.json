@@ -2,25 +2,6 @@
  "_leeme": "Lo que ✅ Decidir cerró o contestó solo, con la regla y la prueba (sheet/decidir.py, resolver_solo()), para «Lo que se resolvió solo» del Dashboard y su «Deshacer». «deshechas»: lo que Dlx deshizo; ninguna regla lo vuelve a tocar. Dlx, 13/10/2026.",
  "solas": [
   {
-   "id": "399579d6fc",
-   "tipo": "Nombre desconocido",
-   "sec": "19 (EDICIÓN FUTCARD VOL 4) · DDF · 22/10 · #500",
-   "que": "¿Quién es «el sheke»?",
-   "r": "Ya no hace falta",
-   "regla": "cierre · ya no hacía falta preguntarlo",
-   "rk": "cierre",
-   "por": "el ciclo",
-   "porque": "ya no está en ningún resultado: el lector lo lee distinto, o ya es alias de alguien",
-   "t": 1792722616418,
-   "filas": [
-    801
-   ],
-   "variantes": [
-    "el sheke"
-   ],
-   "escribio": {}
-  },
-  {
    "id": "d36ff21cb7",
    "tipo": "Nombre desconocido",
    "sec": "LA ISLA DE OKINAWA V.4 · FFA · 23/10 · #501",
@@ -3469,6 +3450,44 @@
    ],
    "variantes": [
     "Seko Boy🇨🇴  Lamborguini 🇦🇷 - Makma 🇻🇪"
+   ],
+   "escribio": {}
+  },
+  {
+   "id": "be56deb869",
+   "tipo": "Alias posible",
+   "sec": "🪪 Identidad",
+   "que": "¿«Lizeninn» es Mito? La cuenta de Mito en la Lista se anotó como «Lizeninn», y en el ranking suman aparte. Si es la misma persona, los puntos de «Lizeninn» pasan a Mito.\nLa cuenta: https://discord.com/users/1493416945037611140",
+   "r": "Es la misma persona",
+   "regla": "cierre · ya no hacía falta preguntarlo",
+   "rk": "cierre",
+   "por": "el ciclo",
+   "porque": "la misma persona: «Lizeninn» ya es alias de Mito",
+   "t": 1793936268700,
+   "filas": [
+    785
+   ],
+   "variantes": [
+    "DOS NOMBRES: «Lizeninn» → «Mito» · cuenta 1493416945037611140"
+   ],
+   "escribio": {}
+  },
+  {
+   "id": "9d176e9e5d",
+   "tipo": "Alias posible",
+   "sec": "🪪 Identidad",
+   "que": "¿«Lizen» es Mito? La cuenta de Mito en la Lista se anotó como «Lizen», y en el ranking suman aparte. Si es la misma persona, los puntos de «Lizen» pasan a Mito.\nLa cuenta: https://discord.com/users/1493416945037611140",
+   "r": "Es la misma persona",
+   "regla": "cierre · ya no hacía falta preguntarlo",
+   "rk": "cierre",
+   "por": "el ciclo",
+   "porque": "la misma persona: «Lizen» ya es alias de Mito",
+   "t": 1793936268700,
+   "filas": [
+    984
+   ],
+   "variantes": [
+    "DOS NOMBRES: «Lizen» → «Mito» · cuenta 1493416945037611140"
    ],
    "escribio": {}
   }
