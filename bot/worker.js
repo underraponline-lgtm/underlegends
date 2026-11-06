@@ -211,6 +211,9 @@ export const SERVIDORES = [
   // 👑 LKR (21/10/2026): socio Tier 3, dado de alta por Dlx desde el Dashboard y completado a mano como FDS: su página,
   // sus dos ligas (Champions League y FMS Plaza Underground) y el panel de su dueño, SIN carta de Servidor (`sinCarta`)
   { sv: 'LKR', nombre: 'LATÍN KING RAP', guild: '1558611504046153750', invita: 'https://discord.gg/sxjg9uaM26', sigla: 'LKR', sinCarta: true },
+  // ⚡ CYPHERHOOD (05/11/2026): Tier 1 (Dlx: «asegurate que este integrado completamente en la liga global», «son tier 1
+  // x cierto»), con la invitación permanente que creó el bot (`bot/invitaciones.py`)
+  { sv: 'CH', nombre: 'Cypherhood', guild: '1074328197400887388', invita: 'https://discord.gg/GxKa9EBqEY', sigla: 'CH' },
 ];
 
 const SV_DE = (sv) => SERVIDORES.find(s => s.sv === String(sv || '').toUpperCase());

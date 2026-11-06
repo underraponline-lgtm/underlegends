@@ -6,7 +6,7 @@ no, el fondo de su tarjeta. Van a 1200×675, JPG calidad 84. FVS no tiene: Dlx l
 | servidor | de dónde salió | modelo |
 |---|---|---|
 | FRZ, ACAD | Figma Weave | Nano Banana 2.1, 16:9, 1K |
-| FFA, DRA, SR, URBF, FFS, DDF, FDS, LKR | Figma AI (`generate_image`) | `gemini-3.1-flash-image`, 1376×768 |
+| FFA, DRA, SR, URBF, FFS, DDF, FDS, LKR, CH | Figma AI (`generate_image`) | `gemini-3.1-flash-image`, 1376×768 |
 
 ## Lo que pide cada uno
 
@@ -32,3 +32,5 @@ porque ahí van las placas.
 **FDS.** Wide cinematic game key art, background plate for a versus screen. An empty grand championship stage inside a huge dark arena before the final: massive steel truss towers on the left and right, crossing purple spotlight beams converging at the exact center, blank dark LED panels, thick stage haze, falling purple confetti, a glossy black stage floor reflecting the light. Palette only near-black, deep purple and vivid violet (#662EAC) with small white highlights. Symmetrical composition, heavy dark vignette, dark low-contrast lower third. Highly detailed, epic, dramatic, not minimalist. Absolutely no text, no letters, no numbers, no logos, no people, no crowd, no watermark.
 
 **LKR.** Wide cinematic game key art, background plate for a versus screen. A monumental ancient Mesoamerican stepped pyramid at night seen from the base of its stairs, with a blazing electric blue fire at the top in the exact center, and two huge carved stone jaguar statues guarding the left and right sides, lit by blue flames in stone braziers. Jungle silhouettes, drifting blue smoke and sparks. Palette only black, dark stone grey and electric blue (#1A5FFF). Symmetrical composition, heavy dark vignette, dark low-contrast lower third. Highly detailed, regal, dramatic, not minimalist. Absolutely no text, no letters, no numbers, no glyphs that look like writing, no logos, no people, no watermark.
+
+**CH.** Wide cinematic game key art, background plate for a versus screen. A huge underground street cypher inside an abandoned concrete subway hall at night: a dense crowd seen only as black silhouettes with raised hands and raised fists packs the left and right sides, receding in one-point perspective toward a blazing golden light at the exact center of the frame. Jagged golden lightning bolts crackle outward from that central light across the ceiling and along graffiti-textured concrete walls. Abstract gold spray paint splashes with no writing at all, floating gold sparks and dust, smoke drifting through the light, a wet black floor reflecting the gold. Palette only pure black, charcoal and deep metallic gold (#F2A900) with small white-hot highlights at the core. Symmetrical composition, heavy dark vignette, dark low-contrast lower third. Highly detailed, raw, electric, dramatic, not minimalist. Absolutely no text, no letters, no numbers, no graffiti lettering, no signs with writing, no logos, no visible faces, no watermark.

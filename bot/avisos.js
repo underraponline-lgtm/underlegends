@@ -1138,6 +1138,7 @@ export function fichaVs(x, dc, o = {}) {
 // VS_SV:inicio
 const VS_SV = {
   ACAD: [0xEACB0C, '<:vs_acad_efd849:1567678229018579096>'],
+  CH: [0xFFD257, '<:vs_ch_ffd257:1568051057983099011>'],
   DDF: [0x5FA8FF, '<:vs_ddf_5fa8ff:1567678231740686448>'],
   DRA: [0x3D5BFF, '<:vs_dra_828be8:1567678236115341515>'],
   FDS: [0x662EAC, '<:vs_fds_baa1da:1567678238757756968>'],

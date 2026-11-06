@@ -54,6 +54,8 @@ MODOS = {
     # 🆚 FVS (12/10/2026): su escudo es negro con lo blanco encima —el borde, «VS», la corona y el laurel—.
     # Con el escudo entero relleno se perdía el «VS», que es la marca: va sólo lo blanco
     'fvs' : ('FVS.png',     'blanco'),
+    # ⚡ Cypherhood (05/11/2026): la «CH» blanca y el aro, sobre su ilustración dorada. Va sólo lo blanco, como FVS
+    'ch'  : ('CH.png',      'blanco'),
 }
 
 

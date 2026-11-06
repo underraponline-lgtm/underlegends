@@ -5,7 +5,7 @@
 // vivo.css. La primera versión (del mismo día) guardaba 'sv:FFA' en `lg:tema`: se lee como Noche + FFA.
 export const TEMAS_SV = [['DRA', 'Discord Rap Español'], ['FFA', 'FFA'], ['SR', 'Snake Rap'], ['URBF', 'Urban Freestyle'],
   ['FFS', 'FFS'], ['DDF', 'DDF'], ['ACAD', 'La Academia'], ['FVS', 'Freestyle Versus'],
-  ['FRZ', 'Freestyle Zone']];
+  ['FRZ', 'Freestyle Zone'], ['CH', 'Cypherhood']];
 
 const esSv = (s) => TEMAS_SV.some(([x]) => x === s);
 
@@ -13,7 +13,7 @@ const esSv = (s) => TEMAS_SV.some(([x]) => x === s);
 // desbloquees las apariencias», «que esté por default desbloqueado Clara y Noche» y «quizás escalonado»). El nivel es el
 // de la racha (`nivelDeXp()` en bot/avisos.js: los días que entrás y los eventos que jugás), no el del Pase. Clara,
 // Noche y Ninguno, siempre. En el orden de `TEMAS_SV`: los socios más viejos, primero
-export const NIVEL_TEMA = { DRA: 2, FFA: 2, SR: 2, URBF: 3, FFS: 3, DDF: 3, ACAD: 5, FVS: 5, FRZ: 5 };
+export const NIVEL_TEMA = { DRA: 2, FFA: 2, SR: 2, URBF: 3, FFS: 3, DDF: 3, ACAD: 5, FVS: 5, FRZ: 5, CH: 5 };
 export const nivelTema = (sv) => (sv ? NIVEL_TEMA[sv] || 5 : 1);
 
 // `{base, sv}` de lo guardado

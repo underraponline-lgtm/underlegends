@@ -91,7 +91,8 @@ def _guilds():
          # 🌀 FREESTYLE ZONE, DESDE EL 14/10/2026
          ('FRZ', '838593179187544064'),
          ('FDS', '1489848581203689535'),
-         ('LKR', '1558611504046153750')]
+         ('LKR', '1558611504046153750'),
+         ('CH', '1074328197400887388')]
     try:
         with io.open(os.path.join(BASE, 'datos', 'servidores.json'),
                      encoding='utf-8') as f:

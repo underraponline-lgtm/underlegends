@@ -10,136 +10,171 @@
   "HORA: `cuando` es el instante en que se publicó (ISO, con la zona); la página lo muestra en la hora de quien mira. Sin `cuando`, sólo el día."
  ],
  "cambios": [
-    {
-      "version": "4.35",
-      "dia": "2026-11-05",
-      "cuando": "2026-11-05T17:47:00-05:00",
-      "titulo": "Los nombres de las llaves, sin la etiqueta de la ronda",
-      "items": [
-        "**Algunas llaves escriben la ronda pegada al nombre**, como «🟢 Batalla 2: …» o «🔹 C3: …», y esa etiqueta se leía como si fuera una persona aparte en el Ranking de Temporada. Ya se leen bien, también en las llaves en vivo.",
-        "**Dos eventos de DDF, del 21 y el 23 de octubre, se volvieron a calcular**: los puntos le quedan a cada quien, y quien salía como walk-in por culpa de la etiqueta cobra su puesto completo."
-      ]
-    },
-    {
-      "version": "4.34",
-      "dia": "2026-11-05",
-      "cuando": "2026-11-05T16:32:15-05:00",
-      "titulo": "Un evento cancelado ya no suma solo",
-      "items": [
-        "**Si el organizador avisa que un evento se canceló**, su llave ya no suma sola aunque después se complete: primero se revisa. Tampoco se anuncia un campeón en el chat."
-      ]
-    },
-    {
-      "version": "4.33",
-      "dia": "2026-11-04",
-      "cuando": "2026-11-04T21:40:30-05:00",
-      "titulo": "Las tarjetas de liga y de País, con números que dicen más",
-      "items": [
-        "**Tarjeta de liga**: el OVR ahora va de 40 a 99. Ya no sale 99 por ir primero ni 0 por perder una batalla: cuenta cómo vas contra el líder y cómo te va por batalla, con tus puntos, tu PTB y a quién le ganaste. Ser MVP de una jornada y la racha suman, y para llegar arriba hacen falta varias batallas.",
-        "**Tarjeta de País**: cambian las stats. EVN y EVI ahora son los eventos en los que te cruzaste con alguien de tu país y con alguien de otro. COM son los compatriotas que venciste, y TOP tu mejor victoria contra otro país: el puesto de ese rival en su país y su bandera.",
-        "**OVR Nacional**: ahora pesa cuánto jugaste, con la misma confianza del Competitivo. Con pocos eventos baja, y con 20 o más no cambia."
-      ]
-    },
-    {
-      "version": "4.32",
-      "dia": "2026-11-04",
-      "cuando": "2026-11-04T20:51:42-05:00",
-      "titulo": "Las cartas de Servidor vuelven a actualizarse",
-      "items": [
-        "**La carta de Servidor de varias personas no se estaba actualizando**: un error la dejaba vieja desde el 26 de octubre. Ya se arregló, y se ponen al día solas en las próximas vueltas.",
-        "**Si tu servidor principal no tiene carta**, tu carta de Servidor es la del servidor donde más jugaste."
-      ]
-    },
-    {
-      "version": "4.31",
-      "dia": "2026-11-04",
-      "cuando": "2026-11-04T20:22:52-05:00",
-      "titulo": "Las simuladas tienen réplica, y cuenta cómo llega cada uno",
-      "items": [
-        "**Cuenta cómo llega cada uno**: las rondas que viene de pelear y hace cuánto, si viene rindiendo sobre lo esperado, la presión de venir ganando y qué tan parejo es. Lo ves en su fila de la liga y en el cara a cara. El nivel sigue mandando.",
-        "**Puede haber réplica**: si el jurado queda dividido, la batalla se simula otra vez. En las ligas nadie se lleva los 3 puntos: 2 al que gana y 1 al que pierde.",
-        "**Desde cuándo**: en la Copa, la Rapid y los mini eventos, desde el lunes 9. En las ligas, desde la temporada 2, el 16, junto con el PTB. La temporada que está en juego no cambia."
-      ]
-    },
-    {
-      "version": "4.30",
-      "dia": "2026-11-04",
-      "cuando": "2026-11-04T19:54:52-05:00",
-      "titulo": "Competencias: cobra quien jugó, un jurado de verdad y cinco mini eventos más",
-      "items": [
-        "**Los premios de Competencias**: cobra quien ganó y jugó al menos 1 evento en ese tiempo (la temporada de ligas, o la semana). Antes pedía cruzarte justo con tu rival, y casi nadie cobraba.",
-        "**Las simuladas se votan con jueces de verdad**: cada juez sorteado vota como suele votar, y lo aprendemos de sus votos. Una jornada cerrada ya no cambia.",
-        "**Con la temporada 2 de las ligas (el 16), el PTB desempata**: a igual de puntos, va primero quien tiene más votos de jurado.",
-        "**Cinco mini eventos más desde el lunes 9**: Maratón, Trotamundos, Cazador de podios, Batacazo y Favorito del jurado.",
-        "**La ficha de cada jurado, más justa**: su nota compara su voto con el resultado de la batalla, y ya dice cuánto vota a la gente de su servidor."
-      ]
-    },
-    {
-        "version": "4.29",
-        "dia": "2026-11-04",
-        "cuando": "2026-11-04T19:51:12-05:00",
-        "titulo": "Las batallas de liga, mientras se juegan",
-        "items": [
-            "**Ahora en las ligas**: en el Inicio y en Ligas ves qué batalla de liga se está jugando, y cuando termina, quién ganó.",
-            "**Si sigues una liga o a uno de los dos**, la campana te avisa cuando arranca.",
-            "**En el chat de cada servidor**, el bot en vivo también anuncia las batallas de liga, con el VS, y edita el mismo mensaje con el ganador.",
-            "**Tres ligas nuevas**: FMS Tricolor, FMS LATAM y FMS España, de LKR."
-        ]
-    },
-    {
-      "version": "4.28",
-      "dia": "2026-11-04",
-      "cuando": "2026-11-04T19:08:55-05:00",
-      "titulo": "Competencias: ves lo tuyo, con la foto de cada uno, y la Copa pasa a 32",
-      "items": [
-        "**Las ligas, con la foto de cada uno.** Y toca una fila para ver su carta, sus números y cómo le fue en esa liga, jornada por jornada.",
-        "**Las ligas las ve todo el mundo**: Élite, Oro, Plata, Bronce y Ascenso.",
-        "**De la Copa, la Rapid y los mini eventos ves lo tuyo**: tu llave y los mini eventos en los que estás. De lo que no juegas, ahí mismo te decimos qué te falta para entrar.",
-        "**Desde el lunes 9, la Copa es de 32**: 32vos, octavos, cuartos, semis y final. Ves tu camino, y la llave entera si quieres.",
-        "**Con la temporada 2 de las ligas (el 16), la tabla trae el PTB**: los votos de jurado a tu favor."
-      ]
-    },
-    {
-        "version": "4.27",
-        "dia": "2026-11-04",
-        "cuando": "2026-11-04T18:51:45-05:00",
-        "titulo": "Votar y apostar en un solo paso, y una ficha nueva en cada cruce",
-        "items": [
-            "**Votar y apostar, en un solo paso**: tocas a quién le vas y, donde hay apuesta, te sale una ventana con tus Puntos de Tienda para poner cuánto. Con 0 sólo votas.",
-            "**Ver estadísticas**, renovado: lo principal de un vistazo, y **Ver todo** si quieres el detalle, también lo competitivo.",
-            "**Ver perfiles**: los dos rivales con su foto, su puesto, su rango y sus números, y un botón a cada perfil. Sólo lo ves tú.",
-            "**En el celular**, los botones de cada cruce quedan parejos, y un nombre larguísimo ya no los deforma."
-        ]
-    },
-    {
-        "version": "4.26",
-        "dia": "2026-11-04",
-        "cuando": "2026-11-04T18:15:00-05:00",
-        "titulo": "El panel de tu servidor dice si tu gente vuelve",
-        "items": [
-            "**¿Vuelve tu gente?** Cuántos de los que debutan en tu servidor juegan otro evento, contra toda la Liga, si ayuda tener otro evento cerca y hasta dónde llegan.",
-            "**Para invitar**: quienes jugaron una vez en tu servidor y no volvieron, con su perfil.",
-            "**Para subir de tier**: lo que te falta, con cómo vas en cada cosa.",
-            "**Los números del panel vuelven a estar al día**: llevaban días sin moverse.",
-            "**El mensaje a quien debuta** ahora dice qué sigue: dónde ver todos los eventos y cómo activar la campana."
-        ]
-    },
-  {"version": "4.25", "dia": "2026-11-04", "cuando": "2026-11-04T17:37:00-05:00", "titulo": "El VS de las llaves, de cada servidor", "items": ["**El VS de cada cruce es de tu servidor**: cada uno tiene su propio fondo, y sales con tu carta de ese servidor.", "**Sin tarjeta también te ves bien**: tu silueta con el color del servidor, tu nombre y tus números. Y si tienes carta y no estabas entre los 200 primeros, ahora sale la tuya.", "**Más títulos**: La final soñada, La bestia negra, El desempate, Moneda al aire y más de veinte tipos, sin repetirse en la misma noche si hay otro.", "**Se marca al favorito**, según el pronóstico. Y tus últimos duelos ya cuentan los de esta noche.", "**Equipos y todos contra todos**: una línea entre cada lado, y con cuatro lados, uno en cada cuadrante."]},
-    {
-        "version": "4.24",
-        "dia": "2026-11-04",
-        "cuando": "2026-11-04T17:40:00-05:00",
-        "titulo": "Las páginas abren arriba, y los números de cada servidor cuentan a todos",
-        "items": [
-            "**Cada página abre arriba**: al pasar de una a otra ya no te quedas a media pantalla, sin ver el título.",
-            "**Servidores y países** cuentan a toda su gente y no sólo a los 200 primeros, y «Eventos» son los eventos de ese servidor. Si jugaste y quedaste más abajo, tu crew ya no dice que no jugaste.",
-            "**Publicaciones**: «esta semana» cuenta desde el lunes de la Liga, tocar una carta nueva abre esa carta y, mientras carga, ya no dice que no pasó nada.",
-            "**En el celular**, los botones de Publicaciones, Tienda y Socios son más fáciles de tocar, y lo que escribes en Crews ya no acerca la pantalla.",
-            "**Y varios arreglos**: lo de hace más de una semana dice su fecha, el Changelog ya no te borra lo nuevo al tocarlo, y la Tienda vuelve a ofrecerte entrar si venció tu sesión."
-        ]
-    },
-  {"version": "4.23", "dia": "2026-11-04", "cuando": "2026-11-04T16:31:00-05:00", "titulo": "El panel de tu servidor y Verificarme, más claros", "items": ["**Tu puntaje** es una sola barra de 0 a 100, partida en lo que pesa cada parte, y te dice dónde puedes sumar más.", "**Los ajustes del bot**: dónde publica, en una sola tabla; cómo se porta, con interruptores que dicen lo que pasa. Cada uno avisa «Guardado» en su fila.", "**Lo que conviene** te lleva a la parte del panel donde se ve lo que dice, y la gente nueva va en verde agua: el magenta queda para lo que pide atención.", "**Verificarme** se revisa solo cuando vuelves de Discord, marca cuánto llevas y qué te toca ahora. Ya verificado, muestra tus tarjetas."]},
-{
+  {
+   "version": "4.36",
+   "dia": "2026-11-05",
+   "cuando": "2026-11-05T19:06:00-05:00",
+   "titulo": "Cypherhood entra a la Liga Global",
+   "items": [
+    "**Cypherhood ya es un servidor de la Liga**: sus eventos suman al ranking, salen en el calendario y sus llaves se siguen en vivo.",
+    "**Sus 6 eventos de esta temporada cuentan**, desde el 23 de septiembre: si jugaste alguno, tus puntos suben en las próximas horas.",
+    "**Tiene su tarjeta de servidor**, con el trueno de oro de su marca, y su propio fondo en los enfrentamientos.",
+    "**Su tema ya está en Apariencia**, y su página en Socios con sus redes."
+   ]
+  },
+  {
+   "version": "4.35",
+   "dia": "2026-11-05",
+   "cuando": "2026-11-05T17:47:00-05:00",
+   "titulo": "Los nombres de las llaves, sin la etiqueta de la ronda",
+   "items": [
+    "**Algunas llaves escriben la ronda pegada al nombre**, como «🟢 Batalla 2: …» o «🔹 C3: …», y esa etiqueta se leía como si fuera una persona aparte en el Ranking de Temporada. Ya se leen bien, también en las llaves en vivo.",
+    "**Dos eventos de DDF, del 21 y el 23 de octubre, se volvieron a calcular**: los puntos le quedan a cada quien, y quien salía como walk-in por culpa de la etiqueta cobra su puesto completo."
+   ]
+  },
+  {
+   "version": "4.34",
+   "dia": "2026-11-05",
+   "cuando": "2026-11-05T16:32:15-05:00",
+   "titulo": "Un evento cancelado ya no suma solo",
+   "items": [
+    "**Si el organizador avisa que un evento se canceló**, su llave ya no suma sola aunque después se complete: primero se revisa. Tampoco se anuncia un campeón en el chat."
+   ]
+  },
+  {
+   "version": "4.33",
+   "dia": "2026-11-04",
+   "cuando": "2026-11-04T21:40:30-05:00",
+   "titulo": "Las tarjetas de liga y de País, con números que dicen más",
+   "items": [
+    "**Tarjeta de liga**: el OVR ahora va de 40 a 99. Ya no sale 99 por ir primero ni 0 por perder una batalla: cuenta cómo vas contra el líder y cómo te va por batalla, con tus puntos, tu PTB y a quién le ganaste. Ser MVP de una jornada y la racha suman, y para llegar arriba hacen falta varias batallas.",
+    "**Tarjeta de País**: cambian las stats. EVN y EVI ahora son los eventos en los que te cruzaste con alguien de tu país y con alguien de otro. COM son los compatriotas que venciste, y TOP tu mejor victoria contra otro país: el puesto de ese rival en su país y su bandera.",
+    "**OVR Nacional**: ahora pesa cuánto jugaste, con la misma confianza del Competitivo. Con pocos eventos baja, y con 20 o más no cambia."
+   ]
+  },
+  {
+   "version": "4.32",
+   "dia": "2026-11-04",
+   "cuando": "2026-11-04T20:51:42-05:00",
+   "titulo": "Las cartas de Servidor vuelven a actualizarse",
+   "items": [
+    "**La carta de Servidor de varias personas no se estaba actualizando**: un error la dejaba vieja desde el 26 de octubre. Ya se arregló, y se ponen al día solas en las próximas vueltas.",
+    "**Si tu servidor principal no tiene carta**, tu carta de Servidor es la del servidor donde más jugaste."
+   ]
+  },
+  {
+   "version": "4.31",
+   "dia": "2026-11-04",
+   "cuando": "2026-11-04T20:22:52-05:00",
+   "titulo": "Las simuladas tienen réplica, y cuenta cómo llega cada uno",
+   "items": [
+    "**Cuenta cómo llega cada uno**: las rondas que viene de pelear y hace cuánto, si viene rindiendo sobre lo esperado, la presión de venir ganando y qué tan parejo es. Lo ves en su fila de la liga y en el cara a cara. El nivel sigue mandando.",
+    "**Puede haber réplica**: si el jurado queda dividido, la batalla se simula otra vez. En las ligas nadie se lleva los 3 puntos: 2 al que gana y 1 al que pierde.",
+    "**Desde cuándo**: en la Copa, la Rapid y los mini eventos, desde el lunes 9. En las ligas, desde la temporada 2, el 16, junto con el PTB. La temporada que está en juego no cambia."
+   ]
+  },
+  {
+   "version": "4.30",
+   "dia": "2026-11-04",
+   "cuando": "2026-11-04T19:54:52-05:00",
+   "titulo": "Competencias: cobra quien jugó, un jurado de verdad y cinco mini eventos más",
+   "items": [
+    "**Los premios de Competencias**: cobra quien ganó y jugó al menos 1 evento en ese tiempo (la temporada de ligas, o la semana). Antes pedía cruzarte justo con tu rival, y casi nadie cobraba.",
+    "**Las simuladas se votan con jueces de verdad**: cada juez sorteado vota como suele votar, y lo aprendemos de sus votos. Una jornada cerrada ya no cambia.",
+    "**Con la temporada 2 de las ligas (el 16), el PTB desempata**: a igual de puntos, va primero quien tiene más votos de jurado.",
+    "**Cinco mini eventos más desde el lunes 9**: Maratón, Trotamundos, Cazador de podios, Batacazo y Favorito del jurado.",
+    "**La ficha de cada jurado, más justa**: su nota compara su voto con el resultado de la batalla, y ya dice cuánto vota a la gente de su servidor."
+   ]
+  },
+  {
+   "version": "4.29",
+   "dia": "2026-11-04",
+   "cuando": "2026-11-04T19:51:12-05:00",
+   "titulo": "Las batallas de liga, mientras se juegan",
+   "items": [
+    "**Ahora en las ligas**: en el Inicio y en Ligas ves qué batalla de liga se está jugando, y cuando termina, quién ganó.",
+    "**Si sigues una liga o a uno de los dos**, la campana te avisa cuando arranca.",
+    "**En el chat de cada servidor**, el bot en vivo también anuncia las batallas de liga, con el VS, y edita el mismo mensaje con el ganador.",
+    "**Tres ligas nuevas**: FMS Tricolor, FMS LATAM y FMS España, de LKR."
+   ]
+  },
+  {
+   "version": "4.28",
+   "dia": "2026-11-04",
+   "cuando": "2026-11-04T19:08:55-05:00",
+   "titulo": "Competencias: ves lo tuyo, con la foto de cada uno, y la Copa pasa a 32",
+   "items": [
+    "**Las ligas, con la foto de cada uno.** Y toca una fila para ver su carta, sus números y cómo le fue en esa liga, jornada por jornada.",
+    "**Las ligas las ve todo el mundo**: Élite, Oro, Plata, Bronce y Ascenso.",
+    "**De la Copa, la Rapid y los mini eventos ves lo tuyo**: tu llave y los mini eventos en los que estás. De lo que no juegas, ahí mismo te decimos qué te falta para entrar.",
+    "**Desde el lunes 9, la Copa es de 32**: 32vos, octavos, cuartos, semis y final. Ves tu camino, y la llave entera si quieres.",
+    "**Con la temporada 2 de las ligas (el 16), la tabla trae el PTB**: los votos de jurado a tu favor."
+   ]
+  },
+  {
+   "version": "4.27",
+   "dia": "2026-11-04",
+   "cuando": "2026-11-04T18:51:45-05:00",
+   "titulo": "Votar y apostar en un solo paso, y una ficha nueva en cada cruce",
+   "items": [
+    "**Votar y apostar, en un solo paso**: tocas a quién le vas y, donde hay apuesta, te sale una ventana con tus Puntos de Tienda para poner cuánto. Con 0 sólo votas.",
+    "**Ver estadísticas**, renovado: lo principal de un vistazo, y **Ver todo** si quieres el detalle, también lo competitivo.",
+    "**Ver perfiles**: los dos rivales con su foto, su puesto, su rango y sus números, y un botón a cada perfil. Sólo lo ves tú.",
+    "**En el celular**, los botones de cada cruce quedan parejos, y un nombre larguísimo ya no los deforma."
+   ]
+  },
+  {
+   "version": "4.26",
+   "dia": "2026-11-04",
+   "cuando": "2026-11-04T18:15:00-05:00",
+   "titulo": "El panel de tu servidor dice si tu gente vuelve",
+   "items": [
+    "**¿Vuelve tu gente?** Cuántos de los que debutan en tu servidor juegan otro evento, contra toda la Liga, si ayuda tener otro evento cerca y hasta dónde llegan.",
+    "**Para invitar**: quienes jugaron una vez en tu servidor y no volvieron, con su perfil.",
+    "**Para subir de tier**: lo que te falta, con cómo vas en cada cosa.",
+    "**Los números del panel vuelven a estar al día**: llevaban días sin moverse.",
+    "**El mensaje a quien debuta** ahora dice qué sigue: dónde ver todos los eventos y cómo activar la campana."
+   ]
+  },
+  {
+   "version": "4.25",
+   "dia": "2026-11-04",
+   "cuando": "2026-11-04T17:37:00-05:00",
+   "titulo": "El VS de las llaves, de cada servidor",
+   "items": [
+    "**El VS de cada cruce es de tu servidor**: cada uno tiene su propio fondo, y sales con tu carta de ese servidor.",
+    "**Sin tarjeta también te ves bien**: tu silueta con el color del servidor, tu nombre y tus números. Y si tienes carta y no estabas entre los 200 primeros, ahora sale la tuya.",
+    "**Más títulos**: La final soñada, La bestia negra, El desempate, Moneda al aire y más de veinte tipos, sin repetirse en la misma noche si hay otro.",
+    "**Se marca al favorito**, según el pronóstico. Y tus últimos duelos ya cuentan los de esta noche.",
+    "**Equipos y todos contra todos**: una línea entre cada lado, y con cuatro lados, uno en cada cuadrante."
+   ]
+  },
+  {
+   "version": "4.24",
+   "dia": "2026-11-04",
+   "cuando": "2026-11-04T17:40:00-05:00",
+   "titulo": "Las páginas abren arriba, y los números de cada servidor cuentan a todos",
+   "items": [
+    "**Cada página abre arriba**: al pasar de una a otra ya no te quedas a media pantalla, sin ver el título.",
+    "**Servidores y países** cuentan a toda su gente y no sólo a los 200 primeros, y «Eventos» son los eventos de ese servidor. Si jugaste y quedaste más abajo, tu crew ya no dice que no jugaste.",
+    "**Publicaciones**: «esta semana» cuenta desde el lunes de la Liga, tocar una carta nueva abre esa carta y, mientras carga, ya no dice que no pasó nada.",
+    "**En el celular**, los botones de Publicaciones, Tienda y Socios son más fáciles de tocar, y lo que escribes en Crews ya no acerca la pantalla.",
+    "**Y varios arreglos**: lo de hace más de una semana dice su fecha, el Changelog ya no te borra lo nuevo al tocarlo, y la Tienda vuelve a ofrecerte entrar si venció tu sesión."
+   ]
+  },
+  {
+   "version": "4.23",
+   "dia": "2026-11-04",
+   "cuando": "2026-11-04T16:31:00-05:00",
+   "titulo": "El panel de tu servidor y Verificarme, más claros",
+   "items": [
+    "**Tu puntaje** es una sola barra de 0 a 100, partida en lo que pesa cada parte, y te dice dónde puedes sumar más.",
+    "**Los ajustes del bot**: dónde publica, en una sola tabla; cómo se porta, con interruptores que dicen lo que pasa. Cada uno avisa «Guardado» en su fila.",
+    "**Lo que conviene** te lleva a la parte del panel donde se ve lo que dice, y la gente nueva va en verde agua: el magenta queda para lo que pide atención.",
+    "**Verificarme** se revisa solo cuando vuelves de Discord, marca cuánto llevas y qué te toca ahora. Ya verificado, muestra tus tarjetas."
+   ]
+  },
+  {
    "version": "4.22",
    "dia": "2026-11-02",
    "cuando": "2026-11-02T23:55:00-05:00",

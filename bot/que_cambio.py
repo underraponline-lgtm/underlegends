@@ -91,7 +91,7 @@ TODAS = sorted(COMO_R2.values())
 #: `03_Servidor/disenos/todos_sv.DEFS`. Estaban acá desde que entraron (20/10), así que a quien juega en uno de los dos
 #: el generador le moría con «no conozco el servidor "FDS"» y se llevaba puesta su Servidor ENTERA, en cada vuelta: la
 #: vuelta del 26/10 a las 12:22 AM tuvo 36 fallas así. Un servidor sin carta no va en esta lista
-SERVIDORES = ('ACAD', 'DDF', 'DRA', 'EFA', 'FFA', 'FFS', 'FRZ', 'FTN', 'FVS', 'SR', 'TFC', 'TWR', 'URBF')
+SERVIDORES = ('ACAD', 'CH', 'DDF', 'DRA', 'EFA', 'FFA', 'FFS', 'FRZ', 'FTN', 'FVS', 'SR', 'TFC', 'TWR', 'URBF')
 
 
 def camisetas(quienes):

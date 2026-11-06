@@ -75,8 +75,8 @@ def plan(sv, g, nombre):
     if sv not in b:
         cambios.append(('datos/bot_en.json', json.dumps(b + [sv], ensure_ascii=False)))
     e = json.loads(_leer('datos/estrellas.json'))
-    if isinstance(e, dict) and sv not in e:
-        e[sv] = 0
+    if isinstance(e, dict) and sv not in (e.get('estrellas_por_servidor') or {}):
+        e.setdefault('estrellas_por_servidor', {})[sv] = 0
         cambios.append(('datos/estrellas.json', json.dumps(e, ensure_ascii=False, indent=1) + '\n'))
     c = json.loads(_leer('datos/colores_sv_marca.json'))
     if sv not in (c.get('usar') or {}):

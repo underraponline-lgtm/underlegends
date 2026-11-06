@@ -86,7 +86,9 @@ AJUSTE = {'FRZ': 0.68, 'URBF': 0.93, 'FFA': 0.90, 'SR': 0.90, 'DRA': 0.88}
 # RZ entra por lo mismo: su icono es el lobo y las letras SOBRE fuego azul,
 # y ese fuego es el logo tanto como el lobo. Separarlo por color deja las
 # letras blancas solas, que podrian ser de cualquiera.
-A_SANGRE = {'TWR', 'RZ', 'FFS', 'DDF', 'ACAD'}
+A_SANGRE = {'TWR', 'RZ', 'FFS', 'DDF', 'ACAD', 'CH'}
+# ⚡ Cypherhood (05/11/2026) igual: un aro de oro con la «CH» sobre una ilustración de la ciudad y la gente.
+# Lo que va adentro del aro es el logo.
 # 🟣 FFS (28/09/2026) va a sangre por lo mismo que RZ y más: su logo es una
 # ilustración —ocho figuras en un círculo— y no hay «tinta» que separar. Y el
 # archivo es de 256 px: es lo que subieron a Discord.

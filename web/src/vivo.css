@@ -3218,6 +3218,10 @@ a.rk-z:hover{border-color:var(--linea)}
   --escenario:#141205;--esc-tinta:#FFFBE6;--esc-gris:#C4BC8E;--esc-linea:#302C0E;--oscura:#7A6500;--osc-tinta:#FFFFFF;--inv:#FFFBE6;--inv-tinta:#0C0B03;color-scheme:dark}
 .clara.t-acad,.clara .lk-tsv.t-acad{--fondo:#FFFDF0;--caja:#FFF7CC;--suave:#EFE3A0;--tinta:#0C0B03;--linea:#0C0B03;--gris:#5A5322;--verde:#EACB0C;--magenta:#7A6500;--magenta-tx:#665400;
   --escenario:#0C0B03;--esc-tinta:#FFFBE6;--esc-gris:#C4BC8E;--esc-linea:#302C0E;--oscura:#0C0B03;--osc-tinta:#FFFBE6;--inv:#0C0B03;--inv-tinta:#FFFDF0}
+.noche.t-ch,.noche .lk-tsv.t-ch{--fondo:#0B0903;--caja:#1A1505;--suave:#332A0B;--tinta:#FFF9E6;--linea:#FFF0C2;--gris:#C7B98A;--verde:#F2A900;--magenta:#8A6100;--magenta-tx:#F5B93A;
+  --escenario:#141005;--esc-tinta:#FFF9E6;--esc-gris:#C7B98A;--esc-linea:#332A0B;--oscura:#8A6100;--osc-tinta:#FFFFFF;--inv:#FFF9E6;--inv-tinta:#0B0903;color-scheme:dark}
+.clara.t-ch,.clara .lk-tsv.t-ch{--fondo:#FFFCF0;--caja:#FFF4CC;--suave:#F0DFA0;--tinta:#0B0903;--linea:#0B0903;--gris:#5C5020;--verde:#F2A900;--magenta:#8A6100;--magenta-tx:#6E4E00;
+  --escenario:#0B0903;--esc-tinta:#FFF9E6;--esc-gris:#C7B98A;--esc-linea:#332A0B;--oscura:#0B0903;--osc-tinta:#FFF9E6;--inv:#0B0903;--inv-tinta:#FFFCF0}
 .noche.t-fvs,.noche .lk-tsv.t-fvs{--fondo:#0A0A0B;--caja:#141416;--suave:#27272B;--tinta:#F5F6F8;--linea:#E9EBEF;--gris:#ABAFB8;--verde:#C9CDD4;--magenta:#585D69;--magenta-tx:#DCDFE5;
   --escenario:#111113;--esc-tinta:#F5F6F8;--esc-gris:#ABAFB8;--esc-linea:#27272B;--oscura:#585D69;--osc-tinta:#FFFFFF;--inv:#F5F6F8;--inv-tinta:#0A0A0B;color-scheme:dark}
 .clara.t-fvs,.clara .lk-tsv.t-fvs{--fondo:#F7F8FA;--caja:#EDEFF2;--suave:#D5D8DE;--tinta:#0A0A0B;--linea:#0A0A0B;--gris:#4C5059;--verde:#AEB4BF;--magenta:#585D69;--magenta-tx:#3F434C;

@@ -63,7 +63,9 @@ LOGO = {
 # los que hay que buscar como silueta si no estan en LOGO. URBF sigue acá
 # aunque ya tenga ícono: su silueta es la de los rombos de la Competitiva y
 # el respaldo si el ícono da 404 (`comun/respaldo.py`)
-SIN_ICONO = ['URBF', 'EFA', 'FFA', 'ACAD', 'FVS']
+SIN_ICONO = ['URBF', 'EFA', 'FFA', 'ACAD', 'FVS', 'CH']
+# ⚡ CYPHERHOOD (05/11/2026) TAMPOCO: su ícono es un aro de oro con una ilustración y una pared atrás. A 30 px manda la
+# «CH» sola (`logos_sv/sv_ch.png`), y la carta de Servidor lleva el aro entero a color (`escudos_cuad`)
 # 🆚 FVS (12/10/2026) TAMPOCO: su ícono de Discord es el escudo con un gorro de cumpleaños encima (sus dos años)
 # y de 256 px. Va con la silueta de lo blanco de su escudo —el borde, «VS», la corona y el laurel—, sacada de su
 # emoji «VS» (`logos_sv/sv_fvs.png`), y la carta de Servidor con el escudo a color (`escudos_cuad`)

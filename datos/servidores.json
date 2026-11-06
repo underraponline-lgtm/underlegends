@@ -620,7 +620,65 @@
      "1566534069901328566"
     ],
     "_ids": "las categorías «⛧・CHAMPIONS LEAGUE» y «🏆 FMS Plaza Ubderground»"
-   }
+   },
+   "invitaciones_inscripcion": [
+    {
+     "codigo": "XYBXK2XNfq",
+     "canal": "⟡・𝗜𝗡𝗦𝗖𝗥𝗜𝗣𝗖𝗜𝗢𝗡𝗘𝗦",
+     "canal_id": "1558893974780117012",
+     "categoria_id": "1558611505040064605",
+     "creada": "2026-11-05"
+    }
+   ]
+  },
+  "CH": {
+   "nombre": "Cypherhood",
+   "guild_id": "1074328197400887388",
+   "en_el_sheet": false,
+   "confirmado": true,
+   "sigla": "CH",
+   "nota": "05/11/2026: el bot entró (6:29 PM) y Dlx: «activa el servidor y asegurate que este integrado completamente en la liga global», «son tier 1 x cierto». En Discord «CYPHERHOOD™ | Hip-Hop, Freestyle & Producción Musical» (11.437 miembros, se presentan como «LIGA DE FREESTYLE DIGITAL»). A cambio del bot promocionan la página: lo publicaron en 📢︱anuncios a las 6:33 PM. El bot NO es admin: lee sus canales públicos, escribe y crea invitaciones; no puede @everyone ni ver lo del staff. Sus torneos van en «¡COMPITE AHORA!»: 📢︱anuncios, 📜︱inscripciones, 🔑︱llaves y 📥︱veredictos (vacío). Las llaves llevan banderas como emoji animado, `[NOMBRE] <vs> [NOMBRE]`, tríos en octavos y «CAMPEÓN» abajo. Lo jugado desde el 22/09 cuenta, como en todos (`comun/temporada.py`): 6 eventos. Su logo: la «CH» en un aro de oro; su carta, el trueno de oro sobre la gente (`ch_trueno()`).",
+   "tier": 1,
+   "invitacion": "https://discord.gg/GxKa9EBqEY",
+   "redes": [
+    [
+     "instagram",
+     "https://www.instagram.com/cypherhood.rap/"
+    ],
+    [
+     "youtube",
+     "https://www.youtube.com/@CYPHERHOOD"
+    ],
+    [
+     "tiktok",
+     "https://www.tiktok.com/@cnc_oficial"
+    ],
+    [
+     "x",
+     "https://x.com/cypherhood_rap"
+    ],
+    [
+     "facebook",
+     "https://www.facebook.com/cypherhood.rap/"
+    ]
+   ],
+   "youtube_id": "UCrq-JQj6Hpr_a20zD26EFdg",
+   "invitacion_antes": "https://discord.gg/cypherhood",
+   "invitacion_liga": {
+    "codigo": "GxKa9EBqEY",
+    "canal": "📜︱reglas",
+    "canal_id": "1080379404166893688",
+    "creada": "2026-11-05"
+   },
+   "invitaciones_inscripcion": [
+    {
+     "codigo": "MVpYzMY4bv",
+     "canal": "📜︱inscripciones",
+     "canal_id": "1080379418725322792",
+     "categoria_id": "1080379388320817233",
+     "creada": "2026-11-05"
+    }
+   ]
   }
  },
  "_fuera_de_la_tabla": [

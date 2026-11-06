@@ -340,6 +340,84 @@ def urbf_pared():
     return 'data:image/svg+xml;base64,' + base64.b64encode(svg.encode('utf-8')).decode()
 
 
+#: ⚡ CYPHERHOOD: (el oro de su logo, oro claro de acento). Ver su fondo en `ch_trueno()`
+CH_COLORES = ('#F2A900', '#FFD257')
+
+#: ⚡ los rayos de CYPHERHOOD: (los quiebres del rayo, los ramales), con `y` medida desde la línea de la carta. Puestos a
+#: mano, como los chorreados de URBAN. Los largos bajan por los dos bordes; entre x=62 y 240 no hay ninguno
+CH_RAYOS = (
+    (((10, 0), (23, 24), (12, 46), (30, 72), (22, 92)),
+     (((23, 24), (46, 40), (41, 58)), ((30, 72), (51, 84), (48, 96)))),
+    (((290, 0), (276, 28), (288, 50), (268, 74), (278, 94)),
+     (((276, 28), (254, 42), (259, 60)), ((268, 74), (249, 86), (252, 98)))),
+)
+#: ⚡ la gente de CYPHERHOOD, parada sobre el borde de abajo de la carta (`_pie_pico()`): (x, cuánto asoman los hombros,
+#: hacia dónde levanta el puño; 0 no levanta). Una punta no es el espejo de la otra: si no, se lee como un adorno
+CH_GENTE = ((9, 20, 1), (24, 27, 0), (40, 19, -1), (55, 22, -1), (71, 14, 0), (87, 9, 0),
+            (214, 10, 0), (230, 15, 0), (246, 23, 1), (262, 18, 0), (277, 27, -1), (292, 18, 0))
+
+
+def _pie_pico(x):
+    """El borde de abajo de la carta en `x`, medido sobre la carta dibujada: baja derecho de la esquina a la punta."""
+    return 412 + .32 * min(x, 300 - x)
+
+
+def ch_trueno():
+    """El trueno de CYPHERHOOD: dos rayos de oro bajan de la línea por los bordes y la gente los recibe con el puño.
+
+    ⚡ Dlx, 05/11/2026: «son tier 1 x cierto y acuerdate de generar su tarjeta de sv». Sale de su banner —«LIGA DE FREESTYLE
+    DIGITAL», negro, oro y rayos sobre un público— y de su logo, la ciudad y la gente adentro de un aro.
+
+    🔑 Arriba manda la foto, así que el gesto vive en el PANEL, como URBAN. La carta de la ACADEMIA también es amarilla y
+    negra: lo que las separa es esto. Allá todo está quieto y es de piedra; acá hay luz que se mueve y gente.
+
+    ⚠️ ESTÁ PUESTO A MANO y deja libre el medio: los círculos, el TAG y el UL (lo que Dlx le pidió al planeta de DDF).
+    ⚠️ VA EN EL MARCO DE LA CARTA DE VERDAD (300 × 487), como `urbf_pared()`.
+    """
+    rayos = ''
+    for tronco, ramas in CH_RAYOS:
+        y0 = _linea(tronco[0][0])
+        t = 'M' + ' L'.join(f'{x},{y0 + y:.1f}' for x, y in tronco)
+        finos = ' '.join('M' + ' L'.join(f'{x},{y0 + y:.1f}' for x, y in r) for r in ramas)
+        rayos += (f'<path d="{t} {finos}" fill="none" stroke="#FFB400" stroke-width="7" opacity=".42" filter="url(#hal)"/>'
+                  f'<path d="{t}" fill="none" stroke="#FFC02E" stroke-width="2.6" stroke-linejoin="bevel"/>'
+                  f'<path d="{finos}" fill="none" stroke="#F2A900" stroke-width="1.3" stroke-linejoin="bevel"/>'
+                  f'<path d="{t}" fill="none" stroke="#FFF6D6" stroke-width="1" stroke-linejoin="bevel"/>')
+
+    def persona(x, alto, brazo):
+        # la cabeza, los hombros y, si levanta, el brazo con el puño. Al pie de la carta, negro contra el resplandor
+        y = _pie_pico(x) - alto
+        out = (f'<circle cx="{x}" cy="{y - 5:.1f}" r="4.5"/>'
+               f'<path d="M{x - 9},487 L{x - 9.5},{y + 9:.1f} Q{x - 8},{y + 2:.1f} {x - 2.5},{y + 1:.1f} L{x - 2},{y - 2:.1f} '
+               f'L{x + 2},{y - 2:.1f} L{x + 2.5},{y + 1:.1f} Q{x + 8},{y + 2:.1f} {x + 9.5},{y + 9:.1f} L{x + 9},487 Z"/>')
+        if brazo:
+            bx = x + 9 * brazo
+            out += (f'<path d="M{x + 6 * brazo},{y + 4:.1f} L{bx + 2 * brazo},{y - 19:.1f}" stroke="#040302" stroke-width="4.2" '
+                    'stroke-linecap="round" fill="none"/>'
+                    f'<circle cx="{bx + 2.4 * brazo}" cy="{y - 21.5:.1f}" r="3.4"/>')
+        return out
+
+    linea = ' L'.join(f'{x},{_linea(x):.1f}' for x in range(0, 301, 5))
+    svg = ('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 487" width="300" height="487"><defs>'
+           '<linearGradient id="mur" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#191407"/>'
+           '<stop offset="1" stop-color="#070603"/></linearGradient>'
+           '<radialGradient id="resI" gradientUnits="userSpaceOnUse" cx="34" cy="400" r="74">'
+           '<stop offset="0" stop-color="#F2A900" stop-opacity=".62"/><stop offset=".55" stop-color="#F2A900" stop-opacity=".16"/>'
+           '<stop offset="1" stop-color="#F2A900" stop-opacity="0"/></radialGradient>'
+           '<radialGradient id="resD" gradientUnits="userSpaceOnUse" cx="266" cy="400" r="74">'
+           '<stop offset="0" stop-color="#F2A900" stop-opacity=".62"/><stop offset=".55" stop-color="#F2A900" stop-opacity=".16"/>'
+           '<stop offset="1" stop-color="#F2A900" stop-opacity="0"/></radialGradient>'
+           '<filter id="hal" x="-60%" y="-20%" width="220%" height="140%"><feGaussianBlur stdDeviation="3.2"/></filter></defs>'
+           f'<path d="M{linea} L300,487 L0,487 Z" fill="url(#mur)"/>'
+           f'<path d="M{linea} L300,487 L0,487 Z" fill="url(#resI)"/><path d="M{linea} L300,487 L0,487 Z" fill="url(#resD)"/>'
+           + rayos
+           # un filo de luz en cada uno: sin eso, gente pegada es una sola mancha
+           + '<g fill="#050403" stroke="#D29300" stroke-width=".55" stroke-opacity=".6">'
+           + ''.join(persona(*g) for g in CH_GENTE) + '</g>'
+           + '</svg>')
+    return 'data:image/svg+xml;base64,' + base64.b64encode(svg.encode('utf-8')).decode()
+
+
 # ══ LA DEFINICION CANONICA DE CADA FONDO ══
 # sv: (acento, color base, fondo css, capa extra css, remate css, descripcion)
 def defs():
@@ -537,6 +615,16 @@ def defs():
                           'linear-gradient(172deg,#2A2C31 0%,#141518 46%,#060607 100%)']),
                 '', '', 'laurel de su escudo, dibujado, subiendo por los bordes sobre humo gris')
 
+    # CH · Cypherhood, Tier 1 desde el 05/11/2026. Oro y negro como su logo y su banner, y el gesto es el trueno sobre su
+    # gente: `ch_trueno()`. El oro está a ΔE 22,7 del amarillo de la ACADEMIA; la marca de URBAN (#F2B33D) está a 13,1,
+    # pero su carta es naranja (#EA7206, a 30,1).
+    A, B = CH_COLORES
+    d['CH'] = (B, A,
+               ','.join([f'url({ch_trueno()}) 0 0/300px 487px no-repeat',
+                         'radial-gradient(ellipse 70% 24% at 50% 15%,rgba(242,169,0,.14),transparent 72%)',
+                         'linear-gradient(172deg,#221B0A 0%,#100D05 46%,#050403 100%)']),
+               '', '', 'el trueno de oro sobre la gente, como su banner')
+
     # RZ · Rap Zone. Servidor ASOCIADO, no de la Hermandad.
     #
     # Su fuego NO esta simulado: sale extraido de su propio logo con
@@ -568,7 +656,7 @@ def defs():
 
 
 D = defs()
-ORDEN = ['SR', 'TFC', 'TWR', 'FTN', 'DRA', 'FRZ', 'URBF', 'EFA', 'FFA', 'FFS', 'DDF', 'ACAD', 'FVS', 'RZ']
+ORDEN = ['SR', 'TFC', 'TWR', 'FTN', 'DRA', 'FRZ', 'URBF', 'EFA', 'FFA', 'FFS', 'DDF', 'ACAD', 'FVS', 'CH', 'RZ']
 
 
 ESTRELLAS = json.load(open(os.path.join(BASE, 'datos', 'estrellas.json'),

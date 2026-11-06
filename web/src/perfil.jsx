@@ -1136,7 +1136,7 @@ function Eventos({ liga, p, e, n = 5 }) {
 // 12/10/2026: «mejor sería que tú pudieses detectarlos tú mismo desde las cuentas y redes sociales de nuestros socios».
 // Sin videos, no se dibuja. Se toca y se mira acá (`abrirVideo()`): nada de YouTube antes del toque, salvo la miniatura.
 // Va debajo de Sus números y en NEGRO: entre dos blancas (Sus números y Datos), así sigue la regla de intercalar
-const SV_CANAL = { DRA: 'Under Legends', SR: 'Snake Rap', FFS: 'Freestyle Future Series', FFA: 'Free for All', FVS: 'Freestyle Versus' };
+const SV_CANAL = { DRA: 'Under Legends', SR: 'Snake Rap', FFS: 'Freestyle Future Series', FFA: 'Free for All', FVS: 'Freestyle Versus', CH: 'Cypherhood' };
 // 🎬 Y LAS QUE SUMÓ ÉL (12/10/2026, `vp`: `bot/videos_propios.py`), aparte: «De plazas y otras ligas». Cualquiera
 // verificado puede decir «esto no es suyo» (con dos reportes se oculta), y él puede quitar las suyas
 function VideoPropio({ v: [vid, tit, cn], k, esYo, dc }) {
