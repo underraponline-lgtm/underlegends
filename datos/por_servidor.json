@@ -3796,17 +3796,6 @@
     "racha": "0/0"
    }
   },
-  "Galileo": {
-   "ACAD": {
-    "duelos": "",
-    "ev": 1,
-    "oro": 0,
-    "ovr": 42,
-    "pod": 0,
-    "pts": 625,
-    "racha": "0/0"
-   }
-  },
   "Garxzii": {
    "FFA": {
     "duelos": "0/1",
@@ -4505,7 +4494,7 @@
     "oro": 0,
     "ovr": 42,
     "pod": 0,
-    "pts": 1406,
+    "pts": 938,
     "racha": "0/0"
    },
    "CH": {
@@ -6374,17 +6363,6 @@
     "racha": "0/1"
    }
   },
-  "MATO 🇧🇴": {
-   "FDS": {
-    "duelos": "",
-    "ev": 2,
-    "oro": 0,
-    "ovr": 43,
-    "pod": 0,
-    "pts": 2500,
-    "racha": "0/0"
-   }
-  },
   "MATUK 🇦🇷": {
    "FFA": {
     "duelos": "0/1",
@@ -6433,6 +6411,17 @@
     "tg": {
      "fund": true
     }
+   }
+  },
+  "MCGALILEO 🇻🇪": {
+   "ACAD": {
+    "duelos": "",
+    "ev": 1,
+    "oro": 0,
+    "ovr": 42,
+    "pod": 0,
+    "pts": 625,
+    "racha": "0/0"
    }
   },
   "MCNadie": {
@@ -7092,6 +7081,17 @@
     "ovr": 44,
     "pod": 0,
     "pts": 7500,
+    "racha": "0/0"
+   }
+  },
+  "Mato 🇧🇴": {
+   "FDS": {
+    "duelos": "",
+    "ev": 2,
+    "oro": 0,
+    "ovr": 43,
+    "pod": 0,
+    "pts": 2500,
     "racha": "0/0"
    }
   },
@@ -7761,6 +7761,17 @@
     "racha": "0/0"
    }
   },
+  "NOON🇵🇪": {
+   "ACAD": {
+    "duelos": "0/1",
+    "ev": 1,
+    "oro": 0,
+    "ovr": 42,
+    "pod": 0,
+    "pts": 1250,
+    "racha": "0/0"
+   }
+  },
   "NXUZ": {
    "ACAD": {
     "duelos": "1/3",
@@ -7982,15 +7993,6 @@
    }
   },
   "Noone": {
-   "ACAD": {
-    "duelos": "0/1",
-    "ev": 1,
-    "oro": 0,
-    "ovr": 42,
-    "pod": 0,
-    "pts": 1250,
-    "racha": "0/0"
-   },
    "FDS": {
     "duelos": "",
     "ev": 1,

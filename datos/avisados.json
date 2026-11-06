@@ -204,7 +204,7 @@
   "msg": "1556552837842997270"
  },
  "400": {
-  "firma": "VALHALLA VOL1|04/10|78|15|2|0",
+  "firma": "VALHALLA VOL1|04/10|78|15|4|0",
   "msg": "1556552839642357822"
  },
  "401": {
@@ -32566,7 +32566,7 @@
    ],
    [
     "Paria",
-    "Lizeninn",
+    "Mito",
     "Paria"
    ],
    [
@@ -32629,7 +32629,7 @@
    "Zignos": 27
   },
   "fecha": "01/11",
-  "firma": "5409d9801aa2dfa2",
+  "firma": "bf0bd897128ec320",
   "msg": "1566645439611011152",
   "nombre": "__ COCINE FIDEOS __",
   "num": 558,
@@ -32736,7 +32736,7 @@
     1250
    ],
    [
-    "Lizeninn",
+    "Mito",
     "Octavos",
     1250
    ]
@@ -33046,7 +33046,7 @@
    "mats": 7
   },
   "fecha": "02/11",
-  "firma": "87fe06704a97349f",
+  "firma": "25fd79851bc5f882",
   "msg": "1566714400314884126",
   "nombre": "RAP PARA RAPEROS",
   "num": 560,

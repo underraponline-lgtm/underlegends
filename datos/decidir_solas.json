@@ -3618,6 +3618,33 @@
     "DOS NOMBRES: «Joven sexlong» → «Joven shenlong» · cuenta 926257282667413564"
    ],
    "escribio": {}
+  },
+  {
+   "id": "3ef2fb3696",
+   "tipo": "Nombre desconocido",
+   "sec": "VALHALLA VOL1 · ACAD · 04/10 · #400",
+   "que": "¿Quién es «MCGALILEO 🇻🇪»?",
+   "r": "Es Galileo",
+   "regla": "Discord · su cuenta de Discord: la inscripción, el podio, la llave o la llamada",
+   "rk": "Discord",
+   "por": "el ciclo (su cuenta de Discord)",
+   "porque": "alias de Galileo: la misma cuenta de Discord",
+   "t": 1793944811405,
+   "filas": [
+    1120
+   ],
+   "variantes": [
+    "MCGALILEO 🇻🇪"
+   ],
+   "escribio": {
+    "alias": [
+     "MCGALILEO",
+     "Galileo"
+    ],
+    "filas": [
+     344
+    ]
+   }
   }
  ],
  "deshechas": []

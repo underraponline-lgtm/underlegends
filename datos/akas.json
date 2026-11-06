@@ -336,6 +336,7 @@
   "berrum": "Berrun",
   "jazii": "jazi",
   "elinge": "Elinge_TIMP",
+  "mcgalileo": "Galileo",
   "zetryco": "Zetryko",
   "martynez": "MaYeuTyK",
   "basty": "BastyRetro",
@@ -1749,6 +1750,10 @@
   [
    "Elinge",
    "Elinge_TIMP"
+  ],
+  [
+   "MCGALILEO",
+   "Galileo"
   ],
   [
    "Zetryco",
