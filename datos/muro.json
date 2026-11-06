@@ -270,6 +270,15 @@
 "rg": "C",
 "c": []
 },
+"mito": {
+"rg": "C",
+"c": [
+"competitivo",
+"pais",
+"servidor",
+"temporada"
+]
+},
 "bloody": {
 "rg": "B",
 "c": [
@@ -298,15 +307,6 @@
 ]
 },
 "xubaru": {
-"rg": "C",
-"c": [
-"competitivo",
-"pais",
-"servidor",
-"temporada"
-]
-},
-"mito": {
 "rg": "C",
 "c": [
 "competitivo",
@@ -895,6 +895,13 @@
 "temporada"
 ]
 },
+"vr": {
+"rg": "",
+"c": [
+"servidor",
+"temporada"
+]
+},
 "akuseru": {
 "rg": "",
 "c": []
@@ -937,6 +944,13 @@
 "rg": "",
 "c": []
 },
+"marcos": {
+"rg": "",
+"c": [
+"servidor",
+"temporada"
+]
+},
 "juanpa": {
 "rg": "",
 "c": [
@@ -964,6 +978,10 @@
 "c": [
 "servidor"
 ]
+},
+"ikonoxx": {
+"rg": "",
+"c": []
 },
 "efimero": {
 "rg": "",
@@ -1031,27 +1049,9 @@
 "rg": "",
 "c": []
 },
-"marcos": {
-"rg": "",
-"c": [
-"servidor",
-"temporada"
-]
-},
 "santi": {
 "rg": "",
 "c": []
-},
-"ikonoxx": {
-"rg": "",
-"c": []
-},
-"vr": {
-"rg": "",
-"c": [
-"servidor",
-"temporada"
-]
 },
 "millonario": {
 "rg": "",

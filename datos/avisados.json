@@ -36290,5 +36290,177 @@
    ]
   ],
   "v": 2
+ },
+ "575": {
+  "antes": {
+   "19": [
+    253,
+    101,
+    true
+   ],
+   "Dominick": [
+    239,
+    51,
+    true
+   ],
+   "Inko": [
+    357,
+    286,
+    true
+   ],
+   "Keider": [
+    53,
+    70,
+    false
+   ],
+   "Marcos": [
+    107,
+    145,
+    false
+   ],
+   "Mito": [
+    33,
+    39,
+    false
+   ],
+   "VR": [
+    108,
+    148,
+    false
+   ],
+   "Xclusivo": [
+    236,
+    34,
+    true
+   ],
+   "ikonoxx": [
+    270,
+    147,
+    true
+   ]
+  },
+  "canal": "1566326935058124832",
+  "duelos": [
+   [
+    "VR",
+    "ikonoxx",
+    "VR"
+   ],
+   [
+    "Marcos",
+    "Inko",
+    "Marcos"
+   ],
+   [
+    "Marcos",
+    "19",
+    "Marcos"
+   ],
+   [
+    "Keider",
+    "SAIDEM 🇦🇷",
+    "Keider"
+   ],
+   [
+    "Keider",
+    "Dominick",
+    "Keider"
+   ],
+   [
+    "Mito",
+    "Xclusivo",
+    "Mito"
+   ],
+   [
+    "VR",
+    "Marcos",
+    "VR"
+   ],
+   [
+    "Mito",
+    "Keider",
+    "Mito"
+   ],
+   [
+    "Mito",
+    "VR",
+    "Mito"
+   ]
+  ],
+  "ev_antes": {
+   "19": 6,
+   "Dominick": 32,
+   "Inko": 1,
+   "Keider": 11,
+   "Marcos": 8,
+   "Mito": 25,
+   "VR": 8,
+   "Xclusivo": 22,
+   "ikonoxx": 8
+  },
+  "fecha": "06/11",
+  "firma": "769819923e43f311",
+  "msg": "1568364084817297492",
+  "nombre": "GALACTICOS DEL FREESTYLE VOL.17",
+  "num": 575,
+  "participantes": 10,
+  "sello": {
+   "Mito": "1ee9061da0be:b65fe52a19f1"
+  },
+  "sv": "DDF",
+  "t": "2026-11-06T20:54:47Z",
+  "tabla": [
+   [
+    "Mito",
+    "Campeón",
+    7500
+   ],
+   [
+    "VR",
+    "Subcampeón",
+    5000
+   ],
+   [
+    "Marcos",
+    "Semifinal",
+    3500
+   ],
+   [
+    "Keider",
+    "Semifinal",
+    3500
+   ],
+   [
+    "ikonoxx",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Inko",
+    "Cuartos",
+    2000
+   ],
+   [
+    "19",
+    "Cuartos",
+    2000
+   ],
+   [
+    "SAIDEM 🇦🇷",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Dominick",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Xclusivo",
+    "Cuartos",
+    2000
+   ]
+  ],
+  "v": 2
  }
 }

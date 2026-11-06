@@ -767,9 +767,10 @@
   },
   "Inko": {
    "avisado": "2026-11-06",
+   "avisado_cumplido": "2026-11-06",
    "chat": "2026-11-06",
-   "con": null,
-   "cumplido": "",
+   "con": 575,
+   "cumplido": "2026-11-06T19:37:36+00:00",
    "debut": "2026-11-06T03:10:32+00:00",
    "did": "1032753509776490566",
    "evento": "QCYO RAPEEN 11",
@@ -1652,6 +1653,18 @@
    "sv": "ACAD",
    "vence": "2026-11-03T20:02:54+00:00",
    "vencido": true
+  },
+  "SAIDEM": {
+   "avisado": "2026-11-06",
+   "con": null,
+   "cumplido": "",
+   "debut": "2026-11-06T19:37:36+00:00",
+   "did": "",
+   "evento": "GALACTICOS DEL FREESTYLE VOL.17",
+   "n": 575,
+   "sv": "DDF",
+   "vence": "2026-11-13T19:37:36+00:00",
+   "vencido": false
   },
   "SULTAN": {
    "avisado": "2026-10-20",

@@ -44299,5 +44299,144 @@
     2500
    ]
   ]
+ },
+ "575": {
+  "dia": "2026-11-06",
+  "escala": "8-15",
+  "fecha": "06/11",
+  "links": [
+   "https://discord.com/channels/1469009547971526659/1470097588635176960/1568348648637468743"
+  ],
+  "n": 575,
+  "nombre": "GALACTICOS DEL FREESTYLE VOL.17",
+  "participantes": 10,
+  "rondas": [
+   {
+    "b": [
+     [
+      [
+       "VR",
+       "ikonoxx"
+      ],
+      "VR",
+      ""
+     ],
+     [
+      [
+       "Marcos",
+       "Inko",
+       "19"
+      ],
+      "Marcos",
+      "triple (3 bandas)"
+     ],
+     [
+      [
+       "Keider",
+       "SAIDEM 🇦🇷",
+       "Dominick"
+      ],
+      "Keider",
+      "triple (3 bandas)"
+     ],
+     [
+      [
+       "Mito",
+       "Xclusivo"
+      ],
+      "Mito",
+      ""
+     ]
+    ],
+    "r": "Cuartos"
+   },
+   {
+    "b": [
+     [
+      [
+       "VR",
+       "Marcos"
+      ],
+      "VR",
+      ""
+     ],
+     [
+      [
+       "Mito",
+       "Keider"
+      ],
+      "Mito",
+      ""
+     ]
+    ],
+    "r": "Semifinales"
+   },
+   {
+    "b": [
+     [
+      [
+       "Mito",
+       "VR"
+      ],
+      "Mito",
+      ""
+     ]
+    ],
+    "r": "Final"
+   }
+  ],
+  "sv": "DDF",
+  "tabla": [
+   [
+    "Mito",
+    "Campeón",
+    7500
+   ],
+   [
+    "VR",
+    "Subcampeón",
+    5000
+   ],
+   [
+    "Keider",
+    "Semifinal",
+    3500
+   ],
+   [
+    "Marcos",
+    "Semifinal",
+    3500
+   ],
+   [
+    "19",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Dominick",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Inko",
+    "Cuartos",
+    2000
+   ],
+   [
+    "SAIDEM 🇦🇷",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Xclusivo",
+    "Cuartos",
+    2000
+   ],
+   [
+    "ikonoxx",
+    "Cuartos",
+    2000
+   ]
+  ]
  }
 }

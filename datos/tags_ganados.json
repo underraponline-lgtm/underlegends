@@ -4884,6 +4884,11 @@
  },
  "keider": {
   "pais": {
+   "DA LA CARA": [
+    "DA LA CARA",
+    "t1",
+    1793999316686
+   ],
    "SIN FRONTERAS": [
     "SIN FRONTERAS",
     "t1",
@@ -4898,6 +4903,11 @@
    ]
   },
   "temporada": {
+   "🏁 SEMIFINALISTA SERIAL": [
+    "🏁 SEMIFINALISTA SERIAL",
+    "t1",
+    1793999316686
+   ],
    "📈 EN ASCENSO": [
     "📈 EN ASCENSO",
     "t1",
@@ -7115,7 +7125,7 @@
     1793936281420
    ],
    "👑 CAMPEÓN x%d": [
-    "👑 CAMPEÓN x1",
+    "👑 CAMPEÓN x2",
     "t1",
     1793491575234
    ],
@@ -7133,6 +7143,11 @@
     "🔟 DOBLE DÍGITO",
     "t1",
     1793936281420
+   ],
+   "🗺️ CONQUISTADOR": [
+    "🗺️ CONQUISTADOR",
+    "t1",
+    1793999316686
    ],
    "🛫 NÓMADA": [
     "🛫 NÓMADA",
@@ -12774,6 +12789,11 @@
  },
  "vr": {
   "temporada": {
+   "🥉 AL PODIO": [
+    "🥉 AL PODIO",
+    "t1",
+    1793999316686
+   ],
    "🧳 VIAJERO": [
     "🧳 VIAJERO",
     "t1",
@@ -12995,6 +13015,11 @@
     "📋 SEMANA PERFECTA",
     "t1",
     1793029252929
+   ],
+   "📋 SEMANA PERFECTA x%d": [
+    "📋 SEMANA PERFECTA x2",
+    "t1",
+    1793999316686
    ],
    "🔟 DOBLE DÍGITO": [
     "🔟 DOBLE DÍGITO",

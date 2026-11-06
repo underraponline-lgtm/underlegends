@@ -2,51 +2,6 @@
  "_leeme": "Lo que ✅ Decidir cerró o contestó solo, con la regla y la prueba (sheet/decidir.py, resolver_solo()), para «Lo que se resolvió solo» del Dashboard y su «Deshacer». «deshechas»: lo que Dlx deshizo; ninguna regla lo vuelve a tocar. Dlx, 13/10/2026.",
  "solas": [
   {
-   "id": "d36ff21cb7",
-   "tipo": "Nombre desconocido",
-   "sec": "LA ISLA DE OKINAWA V.4 · FFA · 23/10 · #501",
-   "que": "¿Quién es «tnor🇻🇪»?",
-   "r": "Es Tenor (en este evento)",
-   "regla": "R21 · la cuenta que se anotó así para ese evento es de alguien de la Lista que esa noche no jugó con su nombre",
-   "rk": "R21",
-   "por": "el ciclo",
-   "porque": "la cuenta @tenor_25499 · en la Lista: Tenor se anotó como «tnor» para ese evento, no es staff de FFA y esa noche no jugó con su nombre",
-   "t": 1792738906646,
-   "filas": [
-    803
-   ],
-   "variantes": [
-    "tnor🇻🇪"
-   ],
-   "escribio": {
-    "quien": "LA ISLA DE OKINAWA V.4 · FFA · 23/10 · tnor🇻🇪"
-   }
-  },
-  {
-   "id": "42234f8b2f",
-   "tipo": "Nombre desconocido",
-   "sec": "LA ISLA DE OKINAWA V.4 · FFA · 23/10 · #501",
-   "que": "¿Quién es «mats🇺🇾»?",
-   "r": "Es alguien nuevo: alta con su cuenta 597240876573392946",
-   "regla": "Discord · su cuenta de Discord: la inscripción, el podio, la llave o la llamada",
-   "rk": "Discord",
-   "por": "el ciclo (su cuenta de Discord)",
-   "porque": "nuevo: entró a la Lista con la cuenta con que se anotó (597240876573392946)",
-   "t": 1792738906646,
-   "filas": [
-    802
-   ],
-   "variantes": [
-    "mats🇺🇾"
-   ],
-   "escribio": {
-    "alta": [
-     "mats",
-     "597240876573392946"
-    ]
-   }
-  },
-  {
    "id": "dd06319cb1",
    "tipo": "Nombre desconocido",
    "sec": "FREESTYLE FOR ALL ESPECIAL 1800 · FFA · 23/10 · #503",
@@ -3643,6 +3598,30 @@
     ],
     "filas": [
      344
+    ]
+   }
+  },
+  {
+   "id": "af64735432",
+   "tipo": "Nombre desconocido",
+   "sec": "GALACTICOS DEL FREESTYLE VOL.17 · DDF · 06/11 · #575",
+   "que": "¿Quién es «SAIDEM 🇦🇷»?",
+   "r": "Es alguien nuevo: alta con su cuenta 723968697798099057",
+   "regla": "Discord · su cuenta de Discord: la inscripción, el podio, la llave o la llamada",
+   "rk": "Discord",
+   "por": "el ciclo (su cuenta de Discord)",
+   "porque": "nuevo: entró a la Lista con la cuenta con que se anotó (723968697798099057)",
+   "t": 1793999305027,
+   "filas": [
+    1124
+   ],
+   "variantes": [
+    "SAIDEM 🇦🇷"
+   ],
+   "escribio": {
+    "alta": [
+     "SAIDEM",
+     "723968697798099057"
     ]
    }
   }

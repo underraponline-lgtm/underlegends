@@ -6284,6 +6284,13 @@
      0,
      0
     ],
+    "19": [
+     1,
+     0,
+     8,
+     0,
+     0
+    ],
     "71": [
      1,
      0,
@@ -6397,7 +6404,7 @@
      0
     ],
     "Dominick": [
-     1,
+     2,
      0,
      8,
      0,
@@ -6460,7 +6467,7 @@
      0
     ],
     "Inko": [
-     1,
+     2,
      0,
      8,
      0,
@@ -6491,6 +6498,13 @@
      1,
      0,
      8,
+     0,
+     0
+    ],
+    "Keider": [
+     1,
+     0,
+     4,
      0,
      0
     ],
@@ -6572,9 +6586,9 @@
      0
     ],
     "Marcos": [
-     1,
+     2,
      0,
-     8,
+     4,
      0,
      0
     ],
@@ -6600,9 +6614,9 @@
      0
     ],
     "Mito": [
-     2,
+     3,
      0,
-     2,
+     1,
      0,
      0
     ],
@@ -6669,6 +6683,13 @@
      0,
      0
     ],
+    "SAIDEM 🇦🇷": [
+     1,
+     0,
+     8,
+     0,
+     0
+    ],
     "Saz": [
      1,
      0,
@@ -6712,9 +6733,9 @@
      0
     ],
     "VR": [
-     1,
+     2,
      0,
-     4,
+     2,
      0,
      0
     ],
@@ -6733,7 +6754,7 @@
      0
     ],
     "Xclusivo": [
-     1,
+     2,
      1,
      1,
      0,
@@ -6747,9 +6768,9 @@
      0
     ],
     "ikonoxx": [
-     1,
+     2,
      0,
-     16,
+     8,
      0,
      0
     ],
@@ -6797,23 +6818,28 @@
     "Calíz": 1300,
     "Cronox": 1300,
     "Deuxs": 300,
+    "Dominick": 300,
     "Dyzz": 300,
     "EL PIBE 🇦🇷": 600,
     "Erian": 300,
+    "Inko": 300,
     "Joven shenlong": 300,
     "LRS": 300,
     "Leopold sedar 🇸🇳": 300,
     "Lvel": 300,
     "Makmah": 2900,
-    "Mito": 300,
+    "Marcos": 300,
+    "Mito": 1300,
     "Molusco": 300,
     "Number VE": 300,
     "Oasis": 1000,
     "Six": 2900,
     "Tam": 300,
     "Trelok": 1600,
+    "VR": 300,
     "Vandu": 300,
-    "Xclusivo": 1600,
+    "Xclusivo": 2900,
+    "ikonoxx": 300,
     "mats": 1300
    }
   }
@@ -6879,7 +6905,7 @@
   "Denik": 300,
   "Desio": 300,
   "Deuxs": 900,
-  "Dominick": 3200,
+  "Dominick": 3500,
   "Drexx": 2500,
   "Drezz🇵🇪": 300,
   "Dynoco": 1600,
@@ -6925,6 +6951,7 @@
   "ISAIAS": 300,
   "Iguana": 300,
   "Imagy": 300,
+  "Inko": 300,
   "J19": 1000,
   "JD": 1000,
   "JEIXDER": 600,
@@ -6986,6 +7013,7 @@
   "Makmah": 10500,
   "Malva": 300,
   "Manteca mantecosa 🇨🇾": 300,
+  "Marcos": 300,
   "Marto": 300,
   "Masino": 2500,
   "Mathhias": 1900,
@@ -6993,7 +7021,7 @@
   "Mc arepa": 1000,
   "Millonari-O": 300,
   "Miniboy": 4500,
-  "Mito": 1200,
+  "Mito": 2200,
   "Molusco": 5400,
   "Mosquitrap 🦟": 4000,
   "Motera": 2600,
@@ -7078,6 +7106,7 @@
   "Tusicario": 300,
   "TøKīØ🦠🧠": 4500,
   "Under": 600,
+  "VR": 300,
   "Vacile🇪🇸": 600,
   "Valdoza": 600,
   "Valen": 1000,
@@ -7087,7 +7116,7 @@
   "Vilca": 1600,
   "Walker": 7900,
   "Warap": 900,
-  "Xclusivo": 5400,
+  "Xclusivo": 6700,
   "Xplicit": 300,
   "Xubaru": 5800,
   "YIN-SON 🇺🇸": 1000,
@@ -7105,7 +7134,7 @@
   "fleivaman": 1300,
   "francis": 1200,
   "giansito": 1000,
-  "ikonoxx": 600,
+  "ikonoxx": 900,
   "kerkoide": 300,
   "mats": 4200,
   "melomaniaco": 600,
