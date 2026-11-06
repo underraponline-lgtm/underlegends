@@ -655,10 +655,17 @@ def traducir(texto):
     # (`<:VSF:…>` no: `SEP` ya lo lee, y la llave de FFA queda como vino)
     t = re.sub(r'(?<=[⌝\]])[ \t]*' + _MD + r'[ \t]*(?!<a?:(?i:vsf?):)' + PROPIO
                + r'[ \t]*(?=' + _MD + r'[⌞\[])', ' 🆚 ', t)
+    # 🤝 EL EMOJI DE VS ADENTRO DEL SEGUNDO CORCHETE ES UN SEPARADOR DE EQUIPO: `[A] <vs> [Seko Boy🇨🇴 <vs> Lamborguini 🇦🇷 -
+    # Makma 🇻🇪]` (PANDILLAS, Cypherhood, 20/10/2026). La batalla ya tiene su separador afuera, y al borrar el emoji quedaban
+    # «Seko Boy» y «Lamborguini» como una persona
+    t = re.sub(r'(\][ \t]*🆚[ \t]*\[[^\[\]\n]*?' + _BANDERA + r'{2})[ \t]*<a?:\w*[vV][sS]\w*:\d+>[ \t]*(?=[^\W\d_])',
+               r'\1 - ', t)
     # el equipo sin `+`: con « x » entre los nombres, o con una bandera entre cada uno
     t = re.sub(r'⌞([^⌞⌝\n]{1,80})⌝',
                lambda m: '⌞' + _equipo_de_banderas(_equipo_con_x(m.group(1))) + '⌝', t)
-    t = re.sub(r'\[([^\[\]\n]{1,40})\]',
+    # 🤝 80 Y NO 40: un equipo de cuatro con banderas no entraba y quedaba como UNA persona («JD 🇪🇨 - TONY 🇦🇷 - LEITAN 🇦🇷 -
+    # Makma 🇻🇪», campeona con 10.000 en la PANDILLAS de Cypherhood, 05/11/2026). Los corchetes de `⌞⌝` ya eran de 80
+    t = re.sub(r'\[([^\[\]\n]{1,80})\]',
                lambda m: '[' + _equipo_de_banderas(_equipo_con_x(m.group(1))) + ']', t)
     # `3er Y 4º PUESTO` como encabezado: sólo si abajo hay una batalla,
     # así la línea del podio (`3ER PUESTO: X`) no cambia.

@@ -311,8 +311,11 @@
     t = t.replace(/([⌝\]])[ \t]*<a?:\w+:\d+>[ \t]*\([ \t]*([^()\n]{2,30}?)[ \t]*\)/gu, '$1 🆚 ⌞$2⌝');
     t = t.replace(new RegExp('([⌝\\]])[ \\t]*' + MD + '[ \\t]*(?!<a?:[vV][sS][fF]?:)<a?:\\w+:\\d+>[ \\t]*(?=' +
       MD + '[⌞\\[])', 'gu'), '$1 🆚 ');
+    // 🤝 el emoji de vs adentro del segundo corchete separa a un equipo (`escuchar.traducir()`)
+    t = t.replace(new RegExp('(\\][ \\t]*🆚[ \\t]*\\[[^\\[\\]\\n]*?' + BANDERA + '{2})[ \\t]*<a?:\\w*[vV][sS]\\w*:\\d+>[ \\t]*(?=\\p{L})',
+      'gu'), '$1 - ');
     t = t.replace(/⌞([^⌞⌝\n]{1,80})⌝/gu, function (_m, x) { return '⌞' + equipoDeBanderas(equipoConX(x)) + '⌝'; });
-    t = t.replace(/\[([^\[\]\n]{1,40})\]/gu, function (_m, x) { return '[' + equipoDeBanderas(equipoConX(x)) + ']'; });
+    t = t.replace(/\[([^\[\]\n]{1,80})\]/gu, function (_m, x) { return '[' + equipoDeBanderas(equipoConX(x)) + ']'; });
     var ls = podioConMedallas(t.split('\n'));
     for (var i = 0; i < ls.length; i++) {
       var l = ls[i];
