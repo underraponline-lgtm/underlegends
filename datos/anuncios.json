@@ -1,5 +1,5 @@
 {
- "cuando": "2026-11-06T01:58:21+00:00",
+ "cuando": "2026-11-06T02:17:34+00:00",
  "anuncios": [
   {
    "nombre": "¡SE LLEGÓ LA GRAN NOCHE!",
@@ -4501,10 +4501,10 @@
    "cuando": "2026-03-15T01:46:34",
    "canal_id": "1416914076545581179",
    "guild_id": "1367688812892913774",
-   "organizador": "@DJ Bootrax Humilde",
+   "organizador": "@Gazir",
    "orgs": [
     {
-     "n": "DJ Bootrax Humilde",
+     "n": "Gazir",
      "id": "1122273746099638354"
     }
    ],
@@ -4518,7 +4518,7 @@
    "fecha": "ahora",
    "premios": "",
    "staff": {},
-   "autor": "DJ Bootrax Humilde",
+   "autor": "Gazir",
    "staff_cuentas": {},
    "categoria_id": "1373343272482902127"
   },
@@ -4596,15 +4596,15 @@
    "premios": "",
    "staff": {
     "host": [
-     "DJ Bootrax Humilde"
+     "Gazir"
     ],
     "dj": [
-     "DJ Bootrax Humilde"
+     "Gazir"
     ]
    },
-   "autor": "DJ Bootrax Humilde",
+   "autor": "Gazir",
    "staff_cuentas": {
-    "DJ Bootrax Humilde": "1122273746099638354"
+    "Gazir": "1122273746099638354"
    },
    "categoria_id": "1373343272482902127"
   },
@@ -4749,13 +4749,13 @@
      "Adriagner"
     ],
     "dj": [
-     "DJ Bootrax Humilde"
+     "Gazir"
     ]
    },
    "autor": "Adriagner",
    "staff_cuentas": {
     "Adriagner": "1316490165836972104",
-    "DJ Bootrax Humilde": "1122273746099638354"
+    "Gazir": "1122273746099638354"
    },
    "categoria_id": "1469944166137073857",
    "inscripciones": "abiertas",
@@ -6387,6 +6387,15 @@
   }
  ],
  "inscripciones": [
+  {
+   "servidor": "LKR",
+   "canal": "⟡・INSCRIPCIONES",
+   "texto": "Alek🇪🇸",
+   "quien": "adriagner",
+   "discord_id": "1316490165836972104",
+   "msg_id": "1568082503334494272",
+   "cuando": "2026-11-06T02:00:02"
+  },
   {
    "servidor": "LKR",
    "canal": "⟡・INSCRIPCIONES",
@@ -42377,15 +42386,6 @@
    "discord_id": "1538896358679908437",
    "msg_id": "1556034114782756986",
    "cuando": "2026-10-03T20:04:02"
-  },
-  {
-   "servidor": "FFA",
-   "canal": "✦📝—inscripciones",
-   "texto": "# Zaik 🇪🇸",
-   "quien": "zaik0009",
-   "discord_id": "1555067257376346122",
-   "msg_id": "1556033558156677132",
-   "cuando": "2026-10-03T20:01:49"
   }
  ]
 }
