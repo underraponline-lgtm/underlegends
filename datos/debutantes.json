@@ -2,9 +2,9 @@
  "_leeme": "El reto del debut (bot/debutantes.py): quién debutó desde el 12/10/2026 a las 6 PM ET, cuándo vence, si lo cumplió y qué ya se avisó. Dlx, 12/10/2026.",
  "chats": {
   "ACAD": "2026-10-31",
-  "DDF": "2026-11-05",
+  "DDF": "2026-11-06",
   "FDS": "2026-10-30",
-  "FFA": "2026-11-04",
+  "FFA": "2026-11-06",
   "FRZ": "2026-10-27",
   "FVS": "2026-10-15",
   "SR": "2026-11-05",
@@ -13,9 +13,10 @@
  "retos": {
   "0223": {
    "avisado": "2026-11-04",
+   "avisado_cumplido": "2026-11-06",
    "chat": "2026-11-03",
-   "con": null,
-   "cumplido": "",
+   "con": 574,
+   "cumplido": "2026-11-06T03:10:32+00:00",
    "debut": "2026-11-03T02:50:33+00:00",
    "did": "",
    "evento": "qcyo rapeen",
@@ -128,6 +129,7 @@
    "vencido": true
   },
   "Agustin UY": {
+   "avisado": "2026-11-06",
    "chat": "2026-11-05",
    "con": null,
    "cumplido": "",
@@ -137,6 +139,19 @@
    "n": 553,
    "sv": "SR",
    "vence": "2026-11-07T21:34:25+00:00",
+   "vencido": false
+  },
+  "Akus": {
+   "avisado": "2026-11-06",
+   "chat": "2026-11-06",
+   "con": null,
+   "cumplido": "",
+   "debut": "2026-11-06T03:10:32+00:00",
+   "did": "1065844469762641960",
+   "evento": "QCYO RAPEEN 11",
+   "n": 574,
+   "sv": "FFA",
+   "vence": "2026-11-13T03:10:32+00:00",
    "vencido": false
   },
   "Akuseru": {
@@ -747,6 +762,19 @@
    "vence": "2026-10-29T15:06:42+00:00",
    "vencido": true
   },
+  "Inko": {
+   "avisado": "2026-11-06",
+   "chat": "2026-11-06",
+   "con": null,
+   "cumplido": "",
+   "debut": "2026-11-06T03:10:32+00:00",
+   "did": "1032753509776490566",
+   "evento": "QCYO RAPEEN 11",
+   "n": 574,
+   "sv": "FFA",
+   "vence": "2026-11-13T03:10:32+00:00",
+   "vencido": false
+  },
   "Isabella": {
    "avisado": "2026-10-31",
    "chat": "2026-11-01",
@@ -912,6 +940,19 @@
    "n": 563,
    "sv": "FFA",
    "vence": "2026-11-10T02:50:33+00:00",
+   "vencido": false
+  },
+  "Joven shenlong": {
+   "avisado": "2026-11-06",
+   "chat": "2026-11-06",
+   "con": null,
+   "cumplido": "",
+   "debut": "2026-11-06T03:10:32+00:00",
+   "did": "",
+   "evento": "QCYO RAPEEN 11",
+   "n": 574,
+   "sv": "FFA",
+   "vence": "2026-11-13T03:10:32+00:00",
    "vencido": false
   },
   "Kain": {
@@ -1207,6 +1248,7 @@
   },
   "MANJI LOZANO🫩": {
    "avisado": "2026-11-05",
+   "chat": "2026-11-06",
    "con": null,
    "cumplido": "",
    "debut": "2026-10-31T17:45:26+00:00",
@@ -1972,6 +2014,19 @@
    "vence": "2026-10-28T02:04:09+00:00",
    "vencido": true
   },
+  "arce": {
+   "avisado": "2026-11-06",
+   "chat": "2026-11-06",
+   "con": null,
+   "cumplido": "",
+   "debut": "2026-11-06T03:10:32+00:00",
+   "did": "",
+   "evento": "QCYO RAPEEN 11",
+   "n": 574,
+   "sv": "FFA",
+   "vence": "2026-11-13T03:10:32+00:00",
+   "vencido": false
+  },
   "atari": {
    "avisado": "2026-10-31",
    "chat": "2026-11-01",
@@ -1983,6 +2038,19 @@
    "n": 551,
    "sv": "FFA",
    "vence": "2026-11-07T06:06:01+00:00",
+   "vencido": false
+  },
+  "dyzzcord": {
+   "avisado": "2026-11-06",
+   "chat": "2026-11-06",
+   "con": null,
+   "cumplido": "",
+   "debut": "2026-11-06T03:10:32+00:00",
+   "did": "",
+   "evento": "QCYO RAPEEN 11",
+   "n": 574,
+   "sv": "FFA",
+   "vence": "2026-11-13T03:10:32+00:00",
    "vencido": false
   },
   "erpi": {

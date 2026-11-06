@@ -6508,7 +6508,7 @@
    "Trot": 13
   },
   "fecha": "11/10",
-  "firma": "48562e3dce9b74f5",
+  "firma": "a38d8a423473fa68",
   "msg": "1558907910707224587",
   "nombre": "RED BULL NACIONAL ESPAÑA T.5",
   "num": 448,
@@ -9436,7 +9436,7 @@
    "Zignos": 19
   },
   "fecha": "12/10",
-  "firma": "2c01adf8466761d8",
+  "firma": "d630f576c9e2b3ca",
   "msg": "1559587802864295988",
   "nombre": "GODZ",
   "num": 460,
@@ -12529,7 +12529,7 @@
    "Vargas": 1
   },
   "fecha": "14/10",
-  "firma": "3e69080c47d8c4a2",
+  "firma": "b9c61c55549d5c6d",
   "msg": "1560070688113688601",
   "nombre": "FF Freestyle Clasico",
   "num": 473,
@@ -18423,7 +18423,7 @@
    "Velatz": 38
   },
   "fecha": "21/10",
-  "firma": "dab8a257bfa368fd",
+  "firma": "15be21ceeac20ed1",
   "msg": "1562607463755161734",
   "nombre": "SNAKE INSIGNIA 6 8",
   "num": 496,
@@ -22434,7 +22434,7 @@
    "Zekha": 4
   },
   "fecha": "25/10",
-  "firma": "088fd681e37c6a52",
+  "firma": "fed1336329b85eaf",
   "msg": "1564056930748469309",
   "nombre": "REDBULL CREW ARGENTINA 2026",
   "num": 515,
@@ -23854,7 +23854,7 @@
    "Vilca": 1
   },
   "fecha": "14/10",
-  "firma": "2704639906334e41",
+  "firma": "57d6dcf44322879d",
   "msg": "1564147696351191051",
   "nombre": "GG SANGRERAP 1",
   "num": 521,
@@ -24022,7 +24022,7 @@
    "Vandu": 35
   },
   "fecha": "20/10",
-  "firma": "669442cb1514790a",
+  "firma": "1bcce49f873a6f04",
   "msg": "1564147704035151906",
   "nombre": "RAP SIN GROSERIAS 2",
   "num": 522,
@@ -24168,7 +24168,7 @@
    "Vilca": 1
   },
   "fecha": "21/10",
-  "firma": "88be669c2aa97587",
+  "firma": "be968b66a361f21a",
   "msg": "1564147707952758815",
   "nombre": "- RED BULL TORNEO DE PLAZAS 2026 -",
   "num": 523,
@@ -30514,7 +30514,7 @@
    "Walker": 8
   },
   "fecha": "30/10",
-  "firma": "d7cfa14ceea0bc5c",
+  "firma": "8d71fdace303421e",
   "msg": "1565898869114413108",
   "nombre": "IDS V.3",
   "num": 549,
@@ -31437,7 +31437,7 @@
    ],
    [
     "Makmah",
-    "Agus",
+    "Agustin UY",
     "Makmah"
    ],
    [
@@ -31484,7 +31484,7 @@
    "Velatz": 41
   },
   "fecha": "31/10",
-  "firma": "8a144aea6ff75c60",
+  "firma": "af4db687deea83b5",
   "msg": "1566227272355020941",
   "nombre": "SNAKE INSIGNIA 7 8",
   "num": 553,
@@ -31556,7 +31556,7 @@
     2500
    ],
    [
-    "Agus",
+    "Agustin UY",
     "Cuartos",
     2500
    ],
@@ -33046,7 +33046,7 @@
    "mats": 7
   },
   "fecha": "02/11",
-  "firma": "a420f109259c7c0e",
+  "firma": "87fe06704a97349f",
   "msg": "1566714400314884126",
   "nombre": "RAP PARA RAPEROS",
   "num": 560,
@@ -34122,7 +34122,7 @@
    "VR": 7
   },
   "fecha": "04/11",
-  "firma": "bf9826a203bc1aa5",
+  "firma": "959eece528fcd2aa",
   "msg": "1567733874077737062",
   "nombre": "COMPE XCLUSIVISTICA VOL. 1",
   "num": 566,
@@ -36058,6 +36058,235 @@
     "Akuseru",
     "Octavos",
     1250
+   ]
+  ],
+  "v": 2
+ },
+ "574": {
+  "antes": {
+   "Cronox": [
+    37,
+    43,
+    false
+   ],
+   "Erian": [
+    4,
+    4,
+    false
+   ],
+   "JEIXDER": [
+    108,
+    148,
+    false
+   ],
+   "LRS": [
+    38,
+    45,
+    false
+   ],
+   "Molusco": [
+    23,
+    26,
+    false
+   ],
+   "Oasis": [
+    2,
+    2,
+    false
+   ],
+   "Paria": [
+    240,
+    62,
+    true
+   ],
+   "Provenza": [
+    14,
+    15,
+    false
+   ],
+   "Snow": [
+    5,
+    6,
+    false
+   ],
+   "Tam": [
+    231,
+    18,
+    true
+   ]
+  },
+  "canal": "1468472443843776659",
+  "duelos": [
+   [
+    "Oasis",
+    "0223 🇧🇧",
+    "Oasis"
+   ],
+   [
+    "Molusco",
+    "LRS",
+    "Molusco"
+   ],
+   [
+    "Molusco",
+    "Lvel 🇻🇪",
+    "Molusco"
+   ],
+   [
+    "Tam",
+    "dyzzcord🇨🇱",
+    "Tam"
+   ],
+   [
+    "Tam",
+    "Inko",
+    "Tam"
+   ],
+   [
+    "Tam",
+    "JEIXDER",
+    "Tam"
+   ],
+   [
+    "Tam",
+    "arce🇵🇾",
+    "Tam"
+   ],
+   [
+    "Erian",
+    "Akus",
+    "Erian"
+   ],
+   [
+    "Erian",
+    "Joven shenlong 🇵🇦",
+    "Erian"
+   ],
+   [
+    "Oasis, Cronox",
+    "Molusco, Provenza",
+    "Oasis, Cronox"
+   ],
+   [
+    "Paria, Erian",
+    "Snow, Tam",
+    "Paria, Erian"
+   ],
+   [
+    "Oasis, Cronox",
+    "Paria, Erian, Snow",
+    "Oasis, Cronox"
+   ]
+  ],
+  "ev_antes": {
+   "Cronox": 32,
+   "Erian": 71,
+   "JEIXDER": 9,
+   "LRS": 31,
+   "Molusco": 26,
+   "Oasis": 38,
+   "Paria": 15,
+   "Provenza": 40,
+   "Snow": 45,
+   "Tam": 23
+  },
+  "fecha": "05/11",
+  "firma": "defd72d169daab91",
+  "msg": "1568115949356327015",
+  "nombre": "__ QCYO RAPEEN 11 __",
+  "num": 574,
+  "participantes": 18,
+  "sello": {
+   "Cronox": "3f83c12b30ba:dfecf1da0c93",
+   "Oasis": "3d076d70b525:dfecf1da0c93"
+  },
+  "sv": "FFA",
+  "t": "2026-11-06T04:24:31Z",
+  "tabla": [
+   [
+    "Snow",
+    "Subcampeón",
+    5125
+   ],
+   [
+    "Oasis",
+    "Campeón",
+    5000
+   ],
+   [
+    "Cronox",
+    "Campeón",
+    5000
+   ],
+   [
+    "Molusco",
+    "Semifinal",
+    2625
+   ],
+   [
+    "Provenza",
+    "Semifinal",
+    2625
+   ],
+   [
+    "Tam",
+    "Semifinal",
+    2625
+   ],
+   [
+    "Paria",
+    "Subcampeón",
+    2500
+   ],
+   [
+    "Erian",
+    "Subcampeón",
+    2500
+   ],
+   [
+    "0223 🇧🇧",
+    "Cuartos",
+    2500
+   ],
+   [
+    "LRS",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Lvel 🇻🇪",
+    "Cuartos",
+    2500
+   ],
+   [
+    "dyzzcord🇨🇱",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Inko",
+    "Cuartos",
+    2500
+   ],
+   [
+    "JEIXDER",
+    "Cuartos",
+    2500
+   ],
+   [
+    "arce🇵🇾",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Akus",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Joven shenlong 🇵🇦",
+    "Cuartos",
+    2500
    ]
   ],
   "v": 2

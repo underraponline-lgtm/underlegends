@@ -44117,5 +44117,187 @@
     1250
    ]
   ]
+ },
+ "574": {
+  "dia": "2026-11-05",
+  "escala": "16+",
+  "fecha": "05/11",
+  "links": [
+   "https://discord.com/channels/1468472442925092958/1487207377601040516/1568100247463272459"
+  ],
+  "n": 574,
+  "nombre": "QCYO RAPEEN 11",
+  "participantes": 18,
+  "rondas": [
+   {
+    "b": [
+     [
+      [
+       "Oasis",
+       "Cronox",
+       "0223 🇧🇧"
+      ],
+      "Oasis, Cronox",
+      "triple (3 bandas, pasan 2); también pasa: Cronox"
+     ],
+     [
+      [
+       "Molusco",
+       "Snow",
+       "Provenza",
+       "LRS",
+       "Lvel 🇻🇪"
+      ],
+      "Molusco, Snow, Provenza",
+      "triple (5 bandas, pasan 3); también pasa: snow🇨🇴 / za"
+     ],
+     [
+      [
+       "Tam",
+       "Snow",
+       "dyzzcord🇨🇱",
+       "Inko",
+       "JEIXDER",
+       "arce🇵🇾"
+      ],
+      "Tam, Snow",
+      "triple (6 bandas, pasan 2); también pasa: snow🇨🇴"
+     ],
+     [
+      [
+       "Erian",
+       "Paria",
+       "Akus",
+       "Joven shenlong 🇵🇦"
+      ],
+      "Erian, Paria",
+      "triple (4 bandas, pasan 2); también pasa: Paria🇦🇷"
+     ]
+    ],
+    "r": "Cuartos"
+   },
+   {
+    "b": [
+     [
+      [
+       "Oasis, Cronox",
+       "Molusco, Provenza"
+      ],
+      "Oasis, Cronox",
+      ""
+     ],
+     [
+      [
+       "Paria, Erian",
+       "Snow, Tam"
+      ],
+      "Paria, Erian",
+      "Drafteado: snow🇨🇴"
+     ]
+    ],
+    "r": "Semifinales"
+   },
+   {
+    "b": [
+     [
+      [
+       "Oasis, Cronox",
+       "Paria, Erian, Snow"
+      ],
+      "Oasis, Cronox",
+      ""
+     ]
+    ],
+    "r": "Final"
+   }
+  ],
+  "sv": "FFA",
+  "tabla": [
+   [
+    "Snow",
+    "Subcampeón",
+    5125
+   ],
+   [
+    "Cronox",
+    "Campeón",
+    5000
+   ],
+   [
+    "Oasis",
+    "Campeón",
+    5000
+   ],
+   [
+    "Molusco",
+    "Semifinal",
+    2625
+   ],
+   [
+    "Provenza",
+    "Semifinal",
+    2625
+   ],
+   [
+    "Tam",
+    "Semifinal",
+    2625
+   ],
+   [
+    "0223 🇧🇧",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Akus",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Erian",
+    "Subcampeón",
+    2500
+   ],
+   [
+    "Inko",
+    "Cuartos",
+    2500
+   ],
+   [
+    "JEIXDER",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Joven shenlong 🇵🇦",
+    "Cuartos",
+    2500
+   ],
+   [
+    "LRS",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Lvel 🇻🇪",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Paria",
+    "Subcampeón",
+    2500
+   ],
+   [
+    "arce🇵🇾",
+    "Cuartos",
+    2500
+   ],
+   [
+    "dyzzcord🇨🇱",
+    "Cuartos",
+    2500
+   ]
+  ]
  }
 }

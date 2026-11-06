@@ -1035,6 +1035,72 @@
    "b": "LETRA 🇻🇪",
    "ganador": "LETRA 🇻🇪",
    "votos": "1–0"
+  },
+  "1568110848310911017": {
+   "id": "1568110848310911017",
+   "sv": "🔥LKR (Champios Legue)🐉",
+   "g": "1558611504046153750",
+   "canal": "1560448027490001067",
+   "pub": 1793937160328,
+   "a": "SWEET 🇪🇸",
+   "b": "NITRO 🇨🇱",
+   "ganador": "SWEET 🇪🇸",
+   "votos": "1–0"
+  },
+  "1568112397049397281": {
+   "id": "1568112397049397281",
+   "sv": "[FFA] Freestyle For All 👾",
+   "g": "1468472442925092958",
+   "canal": "1487206164864438513",
+   "pub": 1793937529576,
+   "a": "PARK JI SUNG",
+   "b": "ERIAN",
+   "ganador": "PARK JI SUNG",
+   "votos": "1–0"
+  },
+  "1568112720467988652": {
+   "id": "1568112720467988652",
+   "sv": "🔥LKR (Champios Legue)🐉",
+   "g": "1558611504046153750",
+   "canal": "1560448027490001067",
+   "pub": 1793937606685,
+   "a": "CHUTY 🇪🇸",
+   "b": "VALLES-T 🇨🇴",
+   "ganador": "CHUTY 🇪🇸",
+   "votos": "1–0"
+  },
+  "1568113482438803588": {
+   "id": "1568113482438803588",
+   "sv": "🔥LKR (Champios Legue)🐉",
+   "g": "1558611504046153750",
+   "canal": "1560448027490001067",
+   "pub": 1793937788353,
+   "a": "JONY BEL🇲🇽",
+   "b": "LOBO EST 🇲🇽",
+   "ganador": "JONY BEL🇲🇽",
+   "votos": "1–0"
+  },
+  "1568113521747820566": {
+   "id": "1568113521747820566",
+   "sv": "[FFA] Freestyle For All 👾",
+   "g": "1468472442925092958",
+   "canal": "1487206164864438513",
+   "pub": 1793937797725,
+   "a": "PARK JI SUNG",
+   "b": "PARIA",
+   "ganador": "PARK JI SUNG",
+   "votos": "1–0"
+  },
+  "1568114130596921397": {
+   "id": "1568114130596921397",
+   "sv": "[FFA] Freestyle For All 👾",
+   "g": "1468472442925092958",
+   "canal": "1487206164864438513",
+   "pub": 1793937942886,
+   "a": "PARK JI SUNG",
+   "b": "SNOW",
+   "ganador": "PARK JI SUNG",
+   "votos": "1–0"
   }
  },
  "llaves": {
@@ -5223,8 +5289,8 @@
    "g": "1468472442925092958",
    "canal": "1487206164864438513",
    "pub": 1793937034730,
-   "ed": 1793937043143,
-   "texto": "`[ SEMIFINALES ]`\n⌞SNOW TAM⌝ 🆚 ⌞PARIA ERIAN⌝",
+   "ed": 1793938100363,
+   "texto": "`[ SEMIFINALES ]`\n⌞SNOW TAM⌝ 🆚 ⌞PARIA ERIAN⌝\n`[ FINAL ]`\n⌞PARK JI SUNG⌝ 🆚 ⌞ERIAN⌝\n⌞PARK JI SUNG⌝ 🆚 ⌞PARIA⌝\n⌞PARK JI SUNG⌝ 🆚 ⌞SNOW⌝",
    "batallas": [
     [
      "SEMIFINALES",
@@ -5233,7 +5299,37 @@
       "PARIA ERIAN"
      ],
      null,
-     "última ronda y no dice campeón",
+     "no aparece nadie después",
+     []
+    ],
+    [
+     "FINAL",
+     [
+      "PARK JI SUNG",
+      "ERIAN"
+     ],
+     "PARK JI SUNG",
+     "veredicto",
+     []
+    ],
+    [
+     "FINAL",
+     [
+      "PARK JI SUNG",
+      "PARIA"
+     ],
+     "PARK JI SUNG",
+     "veredicto",
+     []
+    ],
+    [
+     "FINAL",
+     [
+      "PARK JI SUNG",
+      "SNOW"
+     ],
+     "PARK JI SUNG",
+     "veredicto",
      []
     ]
    ]

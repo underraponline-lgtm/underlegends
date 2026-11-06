@@ -3490,6 +3490,75 @@
     "DOS NOMBRES: «Lizen» → «Mito» · cuenta 1493416945037611140"
    ],
    "escribio": {}
+  },
+  {
+   "id": "f4ad3bab2a",
+   "tipo": "Nombre desconocido",
+   "sec": "QCYO RAPEEN 11 · FFA · 05/11 · #574",
+   "que": "¿Quién es «dyzzcord🇨🇱»?",
+   "r": "Es Dyzz (en este evento)",
+   "regla": "R21 · la cuenta que se anotó así para ese evento es de alguien de la Lista que esa noche no jugó con su nombre",
+   "rk": "R21",
+   "por": "el ciclo",
+   "porque": "la cuenta @dyzzmc (en Discord: «#60 | 📿», «Dyzzmzt») · en la Lista: Dyzz se anotó como «dyzzcord» para ese evento, no es staff de FFA y esa noche no jugó con su nombre",
+   "t": 1793939854821,
+   "filas": [
+    1116
+   ],
+   "variantes": [
+    "dyzzcord🇨🇱"
+   ],
+   "escribio": {
+    "quien": "QCYO RAPEEN 11 · FFA · 05/11 · dyzzcord🇨🇱"
+   }
+  },
+  {
+   "id": "faef3ac161",
+   "tipo": "Nombre desconocido",
+   "sec": "QCYO RAPEEN 11 · FFA · 05/11 · #574",
+   "que": "¿Quién es «Joven shenlong 🇵🇦»?",
+   "r": "Es alguien nuevo: alta con su cuenta 926257282667413564",
+   "regla": "Discord · su cuenta de Discord: la inscripción, el podio, la llave o la llamada",
+   "rk": "Discord",
+   "por": "el ciclo (su cuenta de Discord)",
+   "porque": "nuevo: entró a la Lista con la cuenta que estaba en la llamada con ese nombre (926257282667413564)",
+   "t": 1793939854821,
+   "filas": [
+    1114
+   ],
+   "variantes": [
+    "Joven shenlong 🇵🇦"
+   ],
+   "escribio": {
+    "alta": [
+     "Joven shenlong",
+     "926257282667413564"
+    ]
+   }
+  },
+  {
+   "id": "73900323e0",
+   "tipo": "Nombre desconocido",
+   "sec": "QCYO RAPEEN 11 · FFA · 05/11 · #574",
+   "que": "¿Quién es «arce🇵🇾»?",
+   "r": "Es alguien nuevo: alta con su cuenta 1240446191506817144",
+   "regla": "Discord · su cuenta de Discord: la inscripción, el podio, la llave o la llamada",
+   "rk": "Discord",
+   "por": "el ciclo (su cuenta de Discord)",
+   "porque": "nuevo: entró a la Lista con la cuenta con que se anotó (1240446191506817144)",
+   "t": 1793939854821,
+   "filas": [
+    1115
+   ],
+   "variantes": [
+    "arce🇵🇾"
+   ],
+   "escribio": {
+    "alta": [
+     "arce",
+     "1240446191506817144"
+    ]
+   }
   }
  ],
  "deshechas": []
