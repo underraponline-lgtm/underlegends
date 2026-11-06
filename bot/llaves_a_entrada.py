@@ -714,6 +714,10 @@ def nombre_visible(lado, ids):
     return re.sub('([\U0001F1E6-\U0001F1FF]{2})(?:\\s*\\1)+', r'\1', s)
 
 
+#: Con este plantel `motor.escala_de()` ya da la escala más alta.
+LADOS_16 = 16
+
+
 def plantel(texto, ids=None):
     """El conjunto de competidores de TODAS las rondas, normalizado.
 
@@ -801,7 +805,10 @@ def plantel(texto, ids=None):
                     k = E.norm(parte)
                     if len(k) >= 2 or (k and len(partes) == 1):
                         out.add(k)
-    for k in sorted(adentro - out):
+    # 🎃 CON 16 LADOS LA ESCALA YA ES LA MÁS ALTA y lo de adentro sólo puede inflar el número que ve la gente. La 19 CUP
+    # HALLOWEEN (DDF, #552) escribe el disfraz entre paréntesis —«MaYeuTyK (condon usado)»— y contaba 26 donde jugaron
+    # 16; lo mismo «Dyzz (te amo nc)» en la #517 (05/11/2026). Por debajo de 16 sí importa: decide la escala
+    for k in sorted(adentro - out) if len(out) < LADOS_16 else ():
         if not (E._parecido(k, list(out)) or any(
                 min(len(k), len(c)) >= 4 and (c.startswith(k) or k.startswith(c))
                 for c in out)):
@@ -3879,6 +3886,7 @@ def _self_check():
     _gf = ganador_forzado([dict(f, evento='X', servidor='FFA', fecha='07/10') for f in _gf_t], decidir=lambda *a: [
         {'ronda': 'octavos', 'lados': ['MATICERNA', 'Agus', 'Henry'], 'ganador': 'Henry'},
         {'ronda': 'final', 'lados': ['PRAISERIZA', 'Liberia'], 'ganador': 'PRAISERIZA'}])
+    _DISFRACES = ['payaso', 'doctor', 'pinata', 'scarface', 'conejita', 'aceite', 'momia', 'vampiro']
     casos = [
         ('un nombre corregido desde un reporte cambia SÓLO en ese evento, también adentro de un equipo, y en otra fecha '
          'no (Agus en la IDS V.2 era AGUSTÍN51K, 13/10/2026)',
@@ -3965,6 +3973,9 @@ def _self_check():
         ('y el que está adentro escrito distinto no se cuenta dos veces',
          plantel('`[ CUARTOS ]`\n⌞SAITO(blody)⌝ 🆚 ⌞Bloody⌝\n`[ FINAL ]`\n'
                  '⌞SAITO⌝ 🆚 ⌞Ana⌝') == {'saito', 'bloody', 'ana'}),
+        ('con 16 lados, el disfraz entre paréntesis no suma; con menos sí puede ser alguien',
+         len(plantel('`[ OCTAVOS ]`\n' + '\n'.join('⌞Uno%s (%s)⌝ 🆚 ⌞Dos%s⌝' % (c, d, c) for c, d in zip('abcdefgh', _DISFRACES)))) == 16
+         and len(plantel('`[ CUARTOS ]`\n' + '\n'.join('⌞Uno%s (%s)⌝ 🆚 ⌞Dos%s⌝' % (c, d, c) for c, d in zip('abcd', _DISFRACES)))) == 12),
         ('en un draft, el que vuelve en un equipo es drafteado',
          'Drafteado: Beto' in ' '.join(f['notas'] for f in fd)),
         ('el ABSORBIDO es drafteado aunque la llave no diga pandillas ni draft (Dlx, 14/10/2026: «Sí, drafteado»)',
