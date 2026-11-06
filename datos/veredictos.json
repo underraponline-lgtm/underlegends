@@ -1024,6 +1024,17 @@
    "b": "NAVAS 🇪🇦",
    "ganador": "LARRIX🇦🇷",
    "votos": "1–0"
+  },
+  "1568110180401684581": {
+   "id": "1568110180401684581",
+   "sv": "🔥LKR (Champios Legue)🐉",
+   "g": "1558611504046153750",
+   "canal": "1560448027490001067",
+   "pub": 1793937001086,
+   "a": "MP 🇦🇷",
+   "b": "LETRA 🇻🇪",
+   "ganador": "LETRA 🇻🇪",
+   "votos": "1–0"
   }
  },
  "llaves": {
@@ -5199,6 +5210,27 @@
      [
       "LARRIX🇦🇷",
       "GAZIR🇪🇦"
+     ],
+     null,
+     "última ronda y no dice campeón",
+     []
+    ]
+   ]
+  },
+  "1568110321514717246": {
+   "id": "1568110321514717246",
+   "sv": "[FFA] Freestyle For All 👾",
+   "g": "1468472442925092958",
+   "canal": "1487206164864438513",
+   "pub": 1793937034730,
+   "ed": 1793937043143,
+   "texto": "`[ SEMIFINALES ]`\n⌞SNOW TAM⌝ 🆚 ⌞PARIA ERIAN⌝",
+   "batallas": [
+    [
+     "SEMIFINALES",
+     [
+      "SNOW TAM",
+      "PARIA ERIAN"
      ],
      null,
      "última ronda y no dice campeón",

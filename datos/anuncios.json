@@ -1,5 +1,5 @@
 {
- "cuando": "2026-11-06T03:25:24+00:00",
+ "cuando": "2026-11-06T03:55:24+00:00",
  "anuncios": [
   {
    "nombre": "¡SE LLEGÓ LA GRAN NOCHE!",
@@ -5953,78 +5953,6 @@
    "categoria_id": "1080379388320817233"
   },
   {
-   "nombre": "Pandillas - No vamos a esperar ni Taguear a Nadie - VOL 2",
-   "servidor": "CH",
-   "canal": "📢—anuncios",
-   "msg_id": "1562222699789557904",
-   "cuando": "2026-10-20T21:55:16",
-   "canal_id": "1081721420373041264",
-   "guild_id": "1074328197400887388",
-   "organizador": "@.",
-   "orgs": [],
-   "autor_h": "168136f1008004d4",
-   "cupos_texto": "(16)",
-   "inscriptos": null,
-   "cupo_total": null,
-   "rango": "",
-   "modalidad": "4x4",
-   "horario": "<t:1792535400:R>",
-   "fecha": "<t:1792533060:D>",
-   "premios": "ROL",
-   "staff": {},
-   "autor": ".",
-   "staff_cuentas": {},
-   "categoria_id": "1080379388320817233"
-  },
-  {
-   "nombre": "Buenas tardes a todos",
-   "servidor": "CH",
-   "canal": "📢—anuncios",
-   "msg_id": "1559713665589182550",
-   "cuando": "2026-10-13T23:45:15",
-   "canal_id": "1081721420373041264",
-   "guild_id": "1074328197400887388",
-   "organizador": "",
-   "orgs": [],
-   "autor_h": "168136f1008004d4",
-   "cupos_texto": "11 personas (mayores de 18 años).",
-   "inscriptos": 11,
-   "cupo_total": 18,
-   "rango": "",
-   "modalidad": "Virtual (grabado).",
-   "horario": "4 domingos de noviembre, de 7:00 a 10:00 a. m. (ART).",
-   "fecha": "",
-   "premios": "",
-   "staff": {},
-   "autor": ".",
-   "staff_cuentas": {},
-   "categoria_id": "1080379388320817233"
-  },
-  {
-   "nombre": "MINUTOS A SANGRE - D3ATHROWCHAMPS VOL 1",
-   "servidor": "CH",
-   "canal": "📢—anuncios",
-   "msg_id": "1558997390978195486",
-   "cuando": "2026-10-12T00:19:02",
-   "canal_id": "1081721420373041264",
-   "guild_id": "1074328197400887388",
-   "organizador": "@.",
-   "orgs": [],
-   "autor_h": "168136f1008004d4",
-   "cupos_texto": "(16)",
-   "inscriptos": null,
-   "cupo_total": null,
-   "rango": "",
-   "modalidad": "30S, y MINUTOS",
-   "horario": "",
-   "fecha": "<t:1791763980:D>",
-   "premios": "ROL",
-   "staff": {},
-   "autor": ".",
-   "staff_cuentas": {},
-   "categoria_id": "1080379388320817233"
-  },
-  {
    "nombre": "EL ONMITRIX VOL 1.",
    "servidor": "CH",
    "canal": "📢—anuncios",
@@ -6425,6 +6353,15 @@
   }
  ],
  "inscripciones": [
+  {
+   "servidor": "LKR",
+   "canal": "⟡・INSCRIPCIONES",
+   "texto": "Nitro🇨🇱",
+   "quien": "paratimiringuicaro",
+   "discord_id": "1249980492951060561",
+   "msg_id": "1568105101850050561",
+   "cuando": "2026-11-06T03:29:50"
+  },
   {
    "servidor": "FFA",
    "canal": "✦📝—inscripciones",
@@ -42415,15 +42352,6 @@
    "discord_id": "1382553397827473428",
    "msg_id": "1556068377842155671",
    "cuando": "2026-10-03T22:20:11"
-  },
-  {
-   "servidor": "FFA",
-   "canal": "✦📝—inscripciones",
-   "texto": "Crk🇲🇽  primera",
-   "quien": "user_mic",
-   "discord_id": "559068959845122048",
-   "msg_id": "1556068373790457950",
-   "cuando": "2026-10-03T22:20:10"
   }
  ]
 }
