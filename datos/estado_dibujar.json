@@ -1,81 +1,81 @@
 {
  "v": 1,
- "cuando": "2026-11-06T20:37:31Z",
+ "cuando": "2026-11-06T21:20:29Z",
  "trabajo": "dibujar",
  "codigo": 0,
- "dur_s": 275.3,
+ "dur_s": 663.5,
  "pasos": [
   {
    "n": "2f",
    "que": "las fotos que faltan, de Discord a R2",
    "ok": true,
-   "s": 5.5
+   "s": 5.9
   },
   {
    "n": "2f2",
    "que": "los TAGs elegidos",
    "ok": true,
-   "s": 0.9
+   "s": 1.0
   },
   {
    "n": "3",
    "que": "qué cambió",
    "ok": true,
-   "s": 11.4
+   "s": 10.1
   },
   {
    "n": "4",
    "que": "las caras, desde R2",
    "ok": true,
-   "s": 181.4
+   "s": 25.9
   },
   {
    "n": "5",
-   "que": "tanda 1 de 1 · 1 persona(s)",
+   "que": "tanda 1 de 4 · 40 persona(s)",
    "ok": true,
-   "s": 9.7
+   "s": 550.9
   },
   {
    "n": "5b",
    "que": "las Bloqueadas",
    "ok": true,
-   "s": 7.5
+   "s": 9.4
   },
   {
    "n": "6",
    "que": "refrescar KV",
    "ok": true,
-   "s": 58.0
+   "s": 58.8
   }
  ],
  "fallas": [],
  "ultimo_evento": {
-  "n": "574",
-  "nombre": "QCYO RAPEEN 11",
-  "sv": "FFA",
-  "dia": "2026-11-05"
+  "n": "575",
+  "nombre": "GALACTICOS DEL FREESTYLE VOL.17",
+  "sv": "DDF",
+  "dia": "2026-11-06"
  },
  "cuotas": {
   "kv": {
-   "write": 533,
-   "read": 45044
+   "write": 555,
+   "read": 46949
   },
   "objeto": {
-   "leidas": 3677482,
-   "escritas": 27626,
-   "pedidos": 10714
+   "leidas": 3839532,
+   "escritas": 29211,
+   "pedidos": 11117
   },
   "worker": {
-   "pedidos": 11063,
+   "pedidos": 10762,
    "errores": 0,
-   "sub": 13717,
+   "sub": 13371,
    "cortados": 0,
-   "p50_ms": 1.14,
-   "p99_ms": 14.08,
+   "p50_ms": 1.15,
+   "p99_ms": 14.13,
    "cpu": {
-    "total": 24799,
-    "objeto_10": 1774,
-    "worker_10": 328
+    "total": 24191,
+    "objeto_10": 1762,
+    "worker_10": 329
    }
   },
   "r2": {
