@@ -8682,6 +8682,32 @@
      ],
      "organizador": "tayo",
      "cuentas": {}
+    },
+    "1568347244233498645": {
+     "sv": "DDF",
+     "nombre": "GALACTICOS DEL FREESTYLE VOL.17",
+     "mo": "2026-11-06T19:32:01Z",
+     "staff": {
+      "jurado": [
+       "Adriagner"
+      ],
+      "host": [
+       "Adriagner"
+      ],
+      "dj": [
+       "Adriagner"
+      ]
+     },
+     "orgs": [
+      {
+       "n": "Adriagner",
+       "id": "1316490165836972104"
+      }
+     ],
+     "organizador": "",
+     "cuentas": {
+      "Adriagner": "1316490165836972104"
+     }
     }
    },
    "ver": {
