@@ -3739,6 +3739,14 @@
 "debut": [
 "2026-11-06T00:50:40Z",
 "prueba"
+],
+"campeon": [
+"2026-11-06T01:59:31Z",
+"prueba"
+],
+"podio": [
+"2026-11-06T01:59:31Z",
+"prueba"
 ]
 },
 "JD   - TONY   - LEITAN   - Makma": {
@@ -4511,6 +4519,20 @@
 "prueba"
 ]
 },
+"LEITAN": {
+"campeon": [
+"2026-11-06T01:59:31Z",
+"prueba"
+],
+"debut": [
+"2026-11-06T01:59:31Z",
+"prueba"
+],
+"podio": [
+"2026-11-06T01:59:31Z",
+"prueba"
+]
+},
 "LEWITO": {
 "debut": [
 "2026-09-27T17:50:55Z",
@@ -4666,6 +4688,12 @@
 "La gonorrea del bajo": {
 "debut": [
 "2026-10-29T23:35:40Z",
+"prueba"
+]
+},
+"Lamborguini": {
+"debut": [
+"2026-11-06T01:59:31Z",
 "prueba"
 ]
 },
@@ -5218,6 +5246,10 @@
 ],
 "trotamundos": [
 "2026-11-06T00:50:40Z",
+"prueba"
+],
+"ascenso": [
+"2026-11-06T01:59:31Z",
 "prueba"
 ]
 },
@@ -8367,6 +8399,20 @@
 "prueba"
 ]
 },
+"TONY": {
+"campeon": [
+"2026-11-06T01:59:31Z",
+"prueba"
+],
+"debut": [
+"2026-11-06T01:59:31Z",
+"prueba"
+],
+"podio": [
+"2026-11-06T01:59:31Z",
+"prueba"
+]
+},
 "TRRR": {
 "debut": [
 "2026-10-13T02:58:11Z",
@@ -8536,6 +8582,10 @@
 "Tizi": {
 "debut": [
 "2026-10-31T21:34:21Z",
+"prueba"
+],
+"ascenso": [
+"2026-11-06T01:59:31Z",
 "prueba"
 ]
 },

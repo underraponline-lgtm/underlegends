@@ -810,17 +810,6 @@
    "vence": "2026-10-27T22:07:15+00:00",
    "vencido": true
   },
-  "JD   - TONY   - LEITAN   - Makma": {
-   "con": null,
-   "cumplido": "",
-   "debut": "2026-10-20T22:07:15+00:00",
-   "did": "",
-   "evento": "PANDILLAS NO VAMOS A TAGUEAR NI A ESPERAR A NADIE VOL 2",
-   "n": 571,
-   "sv": "CH",
-   "vence": "2026-10-27T22:07:15+00:00",
-   "vencido": true
-  },
   "JL": {
    "avisado": "2026-11-01",
    "con": null,
@@ -1038,6 +1027,17 @@
    "vence": "2026-10-26T16:52:32+00:00",
    "vencido": true
   },
+  "LEITAN": {
+   "con": null,
+   "cumplido": "",
+   "debut": "2026-10-20T22:07:15+00:00",
+   "did": "",
+   "evento": "PANDILLAS NO VAMOS A TAGUEAR NI A ESPERAR A NADIE VOL 2",
+   "n": 571,
+   "sv": "CH",
+   "vence": "2026-10-27T22:07:15+00:00",
+   "vencido": true
+  },
   "LGBD": {
    "avisado": "2026-10-29",
    "chat": "2026-10-30",
@@ -1077,6 +1077,17 @@
    "vence": "2026-11-08T20:39:59+00:00",
    "vencido": false
   },
+  "Lamborguini": {
+   "con": null,
+   "cumplido": "",
+   "debut": "2026-10-20T22:07:15+00:00",
+   "did": "",
+   "evento": "PANDILLAS NO VAMOS A TAGUEAR NI A ESPERAR A NADIE VOL 2",
+   "n": 571,
+   "sv": "CH",
+   "vence": "2026-10-27T22:07:15+00:00",
+   "vencido": true
+  },
   "Launok": {
    "avisado": "2026-11-04",
    "chat": "2026-11-04",
@@ -1115,17 +1126,6 @@
    "sv": "FFA",
    "vence": "2026-11-10T02:50:33+00:00",
    "vencido": false
-  },
-  "Lizenim": {
-   "con": null,
-   "cumplido": "",
-   "debut": "2026-10-26T16:48:55+00:00",
-   "did": "",
-   "evento": "MINUTOS A SANGRE - D3ATHROW EN VIVO VOL 3",
-   "n": 572,
-   "sv": "CH",
-   "vence": "2026-11-02T16:48:55+00:00",
-   "vencido": true
   },
   "Luck": {
    "avisado": "2026-10-23",
@@ -1647,17 +1647,6 @@
    "sv": "SR",
    "vence": "2026-10-19T22:01:43+00:00",
    "vencido": false
-  },
-  "Seko Boy  Lamborguini  - Makma": {
-   "con": null,
-   "cumplido": "",
-   "debut": "2026-10-20T22:07:15+00:00",
-   "did": "",
-   "evento": "PANDILLAS NO VAMOS A TAGUEAR NI A ESPERAR A NADIE VOL 2",
-   "n": 571,
-   "sv": "CH",
-   "vence": "2026-10-27T22:07:15+00:00",
-   "vencido": true
   },
   "Senticide": {
    "avisado": "2026-10-19",

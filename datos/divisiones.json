@@ -35,7 +35,7 @@
     ],
     [
      "Makmah",
-     1086,
+     1085,
      104,
      2,
      2,
@@ -273,6 +273,27 @@
      ]
     ],
     [
+     "OG",
+     1144,
+     19,
+     1,
+     2,
+     [
+      [
+       12,
+       "Ezze"
+      ],
+      [
+       9,
+       "Lizeninn"
+      ],
+      [
+       12,
+       "Dynoco"
+      ]
+     ]
+    ],
+    [
      "Walker",
      1143,
      22,
@@ -332,27 +353,6 @@
       [
        11,
        "Geoka"
-      ]
-     ]
-    ],
-    [
-     "yinn",
-     1115,
-     15,
-     1,
-     0,
-     [
-      [
-       14,
-       "Tam"
-      ],
-      [
-       23,
-       "PRAISERIZA"
-      ],
-      [
-       12,
-       "mats"
       ]
      ]
     ],
@@ -588,27 +588,6 @@
      ]
     ],
     [
-     "MaYeuTyK",
-     1010,
-     13,
-     3,
-     0,
-     [
-      [
-       -16,
-       "Mathhias"
-      ],
-      [
-       15,
-       "Mr.Kude"
-      ],
-      [
-       16,
-       "Filozico"
-      ]
-     ]
-    ],
-    [
      "MCO",
      998,
      36,
@@ -672,22 +651,43 @@
      ]
     ],
     [
-     "Lizeninn",
+     "Jobaking",
      954,
-     10,
+     5,
      4,
      0,
+     [
+      [
+       -18,
+       "Teo"
+      ],
+      [
+       -9,
+       "Carlosss"
+      ],
+      [
+       -15,
+       "Erian"
+      ]
+     ]
+    ],
+    [
+     "Lizeninn",
+     944,
+     11,
+     5,
+     2,
      [
       [
        -11,
        "Makmah"
       ],
       [
-       -15,
+       -14,
        "Polosport"
       ],
       [
-       16,
+       17,
        "Leyenda"
       ]
      ]
@@ -781,23 +781,23 @@
      ]
     ],
     [
-     "OG",
-     1144,
-     19,
+     "yinn",
+     1115,
+     15,
      1,
-     2,
+     0,
      [
       [
-       12,
-       "Ezze"
+       14,
+       "Tam"
       ],
       [
-       10,
-       "Lizeninn"
+       23,
+       "PRAISERIZA"
       ],
       [
        12,
-       "Dynoco"
+       "mats"
       ]
      ]
     ],
@@ -1201,6 +1201,27 @@
      ]
     ],
     [
+     "MCNadie",
+     1040,
+     8,
+     3,
+     2,
+     [
+      [
+       22,
+       "PichulaMc"
+      ],
+      [
+       14,
+       "Lizeninn"
+      ],
+      [
+       16,
+       "SULTAN"
+      ]
+     ]
+    ],
+    [
      "Presagio",
      1038,
      4,
@@ -1218,6 +1239,27 @@
       [
        16,
        "Andres"
+      ]
+     ]
+    ],
+    [
+     "Snow",
+     1037,
+     27,
+     3,
+     2,
+     [
+      [
+       -17,
+       "OG"
+      ],
+      [
+       -19,
+       "Guess"
+      ],
+      [
+       15,
+       "Tam"
       ]
      ]
     ],
@@ -1587,7 +1629,7 @@
        "Agus"
       ],
       [
-       15,
+       14,
        "Lizeninn"
       ],
       [
@@ -1614,6 +1656,27 @@
       [
        14,
        "Richard"
+      ]
+     ]
+    ],
+    [
+     "MaYeuTyK",
+     1010,
+     13,
+     3,
+     0,
+     [
+      [
+       -16,
+       "Mathhias"
+      ],
+      [
+       15,
+       "Mr.Kude"
+      ],
+      [
+       16,
+       "Filozico"
       ]
      ]
     ],
@@ -1791,23 +1854,6 @@
      ]
     ],
     [
-     "S1lence",
-     1005,
-     2,
-     4,
-     2,
-     [
-      [
-       -11,
-       "Walker"
-      ],
-      [
-       16,
-       "Tizi"
-      ]
-     ]
-    ],
-    [
      "LAST",
      1004,
      10,
@@ -1880,27 +1926,6 @@
       [
        18,
        "Makmah"
-      ]
-     ]
-    ],
-    [
-     "Mc arepa",
-     1001,
-     4,
-     4,
-     2,
-     [
-      [
-       -15,
-       "Luck"
-      ],
-      [
-       14,
-       "Sin Limites"
-      ],
-      [
-       17,
-       "gary"
       ]
      ]
     ],
@@ -2066,19 +2091,6 @@
       [
        15,
        "Gus"
-      ]
-     ]
-    ],
-    [
-     "MATUK 🇦🇷",
-     993,
-     1,
-     4,
-     2,
-     [
-      [
-       -7,
-       "Oasis"
       ]
      ]
     ],
@@ -2285,6 +2297,19 @@
      ]
     ],
     [
+     "Tizi",
+     984,
+     1,
+     4,
+     2,
+     [
+      [
+       -16,
+       "S1lence"
+      ]
+     ]
+    ],
+    [
      "stormed",
      984,
      1,
@@ -2294,6 +2319,19 @@
       [
        -16,
        "Medster"
+      ]
+     ]
+    ],
+    [
+     "El novio de tu novia 🇧🇧",
+     982,
+     1,
+     4,
+     1,
+     [
+      [
+       -18,
+       "Gus"
       ]
      ]
     ],
@@ -2403,6 +2441,27 @@
      ]
     ],
     [
+     "Jult",
+     971,
+     6,
+     4,
+     1,
+     [
+      [
+       -14,
+       "Bloody"
+      ],
+      [
+       -17,
+       "Cronox"
+      ],
+      [
+       16,
+       "Zaik"
+      ]
+     ]
+    ],
+    [
      "Keider",
      970,
      10,
@@ -2437,6 +2496,27 @@
       [
        -17,
        "Paria"
+      ]
+     ]
+    ],
+    [
+     "Kravitz",
+     969,
+     11,
+     4,
+     1,
+     [
+      [
+       -12,
+       "Erian"
+      ],
+      [
+       15,
+       "NC"
+      ],
+      [
+       18,
+       "Henry"
       ]
      ]
     ],
@@ -2521,27 +2601,6 @@
      ]
     ],
     [
-     "Gus",
-     958,
-     5,
-     4,
-     0,
-     [
-      [
-       -14,
-       "Provenza"
-      ],
-      [
-       18,
-       "El novio de tu novia 🇧🇧"
-      ],
-      [
-       -15,
-       "Cannox"
-      ]
-     ]
-    ],
-    [
      "Dyzz",
      957,
      12,
@@ -2605,23 +2664,23 @@
      ]
     ],
     [
-     "Jobaking",
-     954,
+     "Ariaxer",
+     953,
      5,
      4,
      0,
      [
       [
-       -18,
-       "Teo"
-      ],
-      [
-       -9,
-       "Carlosss"
+       -17,
+       "Geoka"
       ],
       [
        -15,
-       "Erian"
+       "nebu"
+      ],
+      [
+       -16,
+       "Trelok"
       ]
      ]
     ],
@@ -2773,27 +2832,6 @@
      ]
     ],
     [
-     "Crk",
-     933,
-     12,
-     5,
-     1,
-     [
-      [
-       -14,
-       "LAST"
-      ],
-      [
-       -11,
-       "OKAM"
-      ],
-      [
-       -11,
-       "BastyRetro"
-      ]
-     ]
-    ],
-    [
      "Andres",
      932,
      9,
@@ -2853,27 +2891,6 @@
       [
        -11,
        "Tuca"
-      ]
-     ]
-    ],
-    [
-     "Number VE",
-     869,
-     14,
-     5,
-     0,
-     [
-      [
-       -12,
-       "Keider"
-      ],
-      [
-       -6,
-       "Walker"
-      ],
-      [
-       -8,
-       "Walker"
       ]
      ]
     ],
@@ -3008,27 +3025,6 @@
      ]
     ],
     [
-     "MCNadie",
-     1042,
-     8,
-     3,
-     2,
-     [
-      [
-       22,
-       "PichulaMc"
-      ],
-      [
-       16,
-       "Lizenim 🇦🇷"
-      ],
-      [
-       16,
-       "SULTAN"
-      ]
-     ]
-    ],
-    [
      "Number",
      1041,
      15,
@@ -3046,27 +3042,6 @@
       [
        15,
        "THO"
-      ]
-     ]
-    ],
-    [
-     "Snow",
-     1037,
-     27,
-     3,
-     2,
-     [
-      [
-       -17,
-       "OG"
-      ],
-      [
-       -19,
-       "Guess"
-      ],
-      [
-       15,
-       "Tam"
       ]
      ]
     ],
@@ -3109,6 +3084,27 @@
      ]
     ],
     [
+     "Berrun",
+     1032,
+     4,
+     5,
+     2,
+     [
+      [
+       -17,
+       "mats"
+      ],
+      [
+       15,
+       "jazi"
+      ],
+      [
+       19,
+       "Vandu"
+      ]
+     ]
+    ],
+    [
      "Saiko",
      1032,
      4,
@@ -3126,27 +3122,6 @@
       [
        16,
        "BastyRetro"
-      ]
-     ]
-    ],
-    [
-     "Berrun",
-     1031,
-     4,
-     5,
-     2,
-     [
-      [
-       -17,
-       "mats"
-      ],
-      [
-       14,
-       "jazi"
-      ],
-      [
-       19,
-       "Vandu"
       ]
      ]
     ],
@@ -3526,19 +3501,6 @@
      ]
     ],
     [
-     "Kaizz",
-     1015,
-     1,
-     5,
-     2,
-     [
-      [
-       15,
-       "Elinge_TIMP"
-      ]
-     ]
-    ],
-    [
      "Fazer",
      1014,
      14,
@@ -3613,7 +3575,7 @@
        "Ragna 🇨🇱"
       ],
       [
-       14,
+       13,
        "Lizeninn"
       ],
       [
@@ -3670,6 +3632,23 @@
       [
        16,
        "Tmax Turbo [PN]"
+      ]
+     ]
+    ],
+    [
+     "S1lence",
+     1005,
+     2,
+     5,
+     2,
+     [
+      [
+       -11,
+       "Walker"
+      ],
+      [
+       16,
+       "Tizi"
       ]
      ]
     ],
@@ -3848,6 +3827,27 @@
       [
        16,
        "Perrin"
+      ]
+     ]
+    ],
+    [
+     "Mc arepa",
+     1001,
+     4,
+     5,
+     2,
+     [
+      [
+       -15,
+       "Luck"
+      ],
+      [
+       14,
+       "Sin Limites"
+      ],
+      [
+       17,
+       "gary"
       ]
      ]
     ],
@@ -4124,6 +4124,23 @@
      ]
     ],
     [
+     "TONY  🇦🇷",
+     1000,
+     2,
+     5,
+     2,
+     [
+      [
+       -15,
+       "Number"
+      ],
+      [
+       15,
+       "NC"
+      ]
+     ]
+    ],
+    [
      "TYPHLOSION",
      1000,
      2,
@@ -4137,23 +4154,6 @@
       [
        16,
        "xz"
-      ]
-     ]
-    ],
-    [
-     "Tony 🇦🇷",
-     1000,
-     2,
-     5,
-     2,
-     [
-      [
-       -15,
-       "Number"
-      ],
-      [
-       15,
-       "NC"
       ]
      ]
     ],
@@ -4281,6 +4281,23 @@
      ]
     ],
     [
+     "Kaizz",
+     998,
+     2,
+     5,
+     2,
+     [
+      [
+       -17,
+       "jazi"
+      ],
+      [
+       15,
+       "Elinge_TIMP"
+      ]
+     ]
+    ],
+    [
      "Deuxs",
      997,
      4,
@@ -4336,6 +4353,19 @@
      ]
     ],
     [
+     "MATUK 🇦🇷",
+     993,
+     1,
+     5,
+     2,
+     [
+      [
+       -7,
+       "Oasis"
+      ]
+     ]
+    ],
+    [
      "NYCO",
      991,
      1,
@@ -4345,6 +4375,27 @@
       [
        -9,
        "Oasis"
+      ]
+     ]
+    ],
+    [
+     "jazi",
+     990,
+     3,
+     5,
+     2,
+     [
+      [
+       -15,
+       "Berrun"
+      ],
+      [
+       17,
+       "Kaizz"
+      ],
+      [
+       -13,
+       "OKAM"
       ]
      ]
     ],
@@ -5326,19 +5377,6 @@
      ]
     ],
     [
-     "Lizenim 🇦🇷",
-     984,
-     1,
-     5,
-     2,
-     [
-      [
-       -16,
-       "MCNadie"
-      ]
-     ]
-    ],
-    [
      "MAXIMILIANO CALVO",
      984,
      1,
@@ -5517,19 +5555,6 @@
       [
        -16,
        "PichulaMc"
-      ]
-     ]
-    ],
-    [
-     "Tizi",
-     984,
-     1,
-     5,
-     2,
-     [
-      [
-       -16,
-       "S1lence"
       ]
      ]
     ],
@@ -5763,32 +5788,6 @@
      ]
     ],
     [
-     "Dantemx",
-     982,
-     1,
-     5,
-     2,
-     [
-      [
-       -18,
-       "Lizeninn"
-      ]
-     ]
-    ],
-    [
-     "El novio de tu novia 🇧🇧",
-     982,
-     1,
-     5,
-     2,
-     [
-      [
-       -18,
-       "Gus"
-      ]
-     ]
-    ],
-    [
      "Henry",
      982,
      1,
@@ -5828,19 +5827,6 @@
      ]
     ],
     [
-     "Tiago Context 🇦🇷",
-     982,
-     1,
-     5,
-     2,
-     [
-      [
-       -18,
-       "Lizeninn"
-      ]
-     ]
-    ],
-    [
      "Emilio Alva",
      981,
      4,
@@ -5858,6 +5844,19 @@
       [
        -10,
        "Panchok"
+      ]
+     ]
+    ],
+    [
+     "Dantemx",
+     981,
+     1,
+     5,
+     2,
+     [
+      [
+       -19,
+       "Lizeninn"
       ]
      ]
     ],
@@ -5884,6 +5883,19 @@
       [
        -19,
        "Provenza"
+      ]
+     ]
+    ],
+    [
+     "Tiago Context 🇦🇷",
+     981,
+     1,
+     5,
+     2,
+     [
+      [
+       -19,
+       "Lizeninn"
       ]
      ]
     ],
@@ -6121,23 +6133,6 @@
      ]
     ],
     [
-     "jazi",
-     973,
-     2,
-     5,
-     2,
-     [
-      [
-       -14,
-       "Berrun"
-      ],
-      [
-       -13,
-       "OKAM"
-      ]
-     ]
-    ],
-    [
      "Jupiter",
      972,
      10,
@@ -6210,27 +6205,6 @@
      ]
     ],
     [
-     "Jult",
-     971,
-     6,
-     4,
-     1,
-     [
-      [
-       -14,
-       "Bloody"
-      ],
-      [
-       -17,
-       "Cronox"
-      ],
-      [
-       16,
-       "Zaik"
-      ]
-     ]
-    ],
-    [
      "Senticide",
      971,
      2,
@@ -6282,27 +6256,6 @@
       [
        -14,
        "MCO"
-      ]
-     ]
-    ],
-    [
-     "Kravitz",
-     969,
-     11,
-     4,
-     1,
-     [
-      [
-       -12,
-       "Erian"
-      ],
-      [
-       15,
-       "NC"
-      ],
-      [
-       18,
-       "Henry"
       ]
      ]
     ],
@@ -6726,6 +6679,27 @@
      ]
     ],
     [
+     "Gus",
+     958,
+     5,
+     4,
+     0,
+     [
+      [
+       -14,
+       "Provenza"
+      ],
+      [
+       18,
+       "El novio de tu novia 🇧🇧"
+      ],
+      [
+       -15,
+       "Cannox"
+      ]
+     ]
+    ],
+    [
      "Valdoza",
      958,
      3,
@@ -6831,27 +6805,6 @@
      ]
     ],
     [
-     "Ariaxer",
-     953,
-     5,
-     4,
-     0,
-     [
-      [
-       -17,
-       "Geoka"
-      ],
-      [
-       -15,
-       "nebu"
-      ],
-      [
-       -16,
-       "Trelok"
-      ]
-     ]
-    ],
-    [
      "Elbesaabuelas",
      953,
      3,
@@ -6901,7 +6854,7 @@
      2,
      [
       [
-       -16,
+       -17,
        "Lizeninn"
       ],
       [
@@ -7041,6 +6994,27 @@
      ]
     ],
     [
+     "Crk",
+     933,
+     12,
+     5,
+     1,
+     [
+      [
+       -14,
+       "LAST"
+      ],
+      [
+       -11,
+       "OKAM"
+      ],
+      [
+       -11,
+       "BastyRetro"
+      ]
+     ]
+    ],
+    [
      "Zaik",
      931,
      5,
@@ -7165,6 +7139,27 @@
        "Calíz"
       ]
      ]
+    ],
+    [
+     "Number VE",
+     869,
+     14,
+     5,
+     0,
+     [
+      [
+       -12,
+       "Keider"
+      ],
+      [
+       -6,
+       "Walker"
+      ],
+      [
+       -8,
+       "Walker"
+      ]
+     ]
     ]
    ]
   ]
@@ -7268,7 +7263,7 @@
   "Colo": 0,
   "Corvo": 3,
   "CrisZJ": 0,
-  "Crk": 3,
+  "Crk": 0,
   "Cronox": 3,
   "DANCOLL": 0,
   "DARK ANGEL 🇨🇴": 0,
@@ -7308,10 +7303,9 @@
   "EVANGELINE🇧🇴": 0,
   "Eclipsito": 3,
   "Efimero": 0,
-  "El Colesito 🇨🇴": 0,
   "El Hombre Eyau": 0,
   "El Wachin": 0,
-  "El novio de tu novia 🇧🇧": 0,
+  "El novio de tu novia 🇧🇧": 3,
   "Elbesaabuelas": 0,
   "Eldinoco🇦🇷": 0,
   "Elinge_TIMP": 0,
@@ -7372,7 +7366,7 @@
   "Greyfitsh🇵🇦": 0,
   "Guaicurús🇰🇷": 0,
   "Guess": 6,
-  "Gus": 3,
+  "Gus": 0,
   "Gustavo Urrutia Perez 🇲🇽": 0,
   "Gutty": 0,
   "Guty": 0,
@@ -7402,7 +7396,6 @@
   "J.r": 0,
   "J19": 3,
   "JD": 0,
-  "JD 🇪🇨  - TONY  🇦🇷 - LEITAN  🇦🇷 - Makma 🇻🇪": 3,
   "JEIXDER": 0,
   "JHEYSON": 0,
   "JIMMY": 3,
@@ -7418,7 +7411,7 @@
   "Jere": 0,
   "Joaco Zeo": 0,
   "Joaquín La Profecia 👨🏻‍🍳": 0,
-  "Jobaking": 3,
+  "Jobaking": 6,
   "Jodnes": 0,
   "Johao": 0,
   "Joshema": 3,
@@ -7426,7 +7419,7 @@
   "Juanpa": 3,
   "Juasmio": 3,
   "Julix🇧🇴": 3,
-  "Jult": 0,
+  "Jult": 3,
   "Jupiter": 3,
   "KASIVA🇵🇪": 0,
   "KATALIEN": 0,
@@ -7450,7 +7443,7 @@
   "Korey": 0,
   "Korier 🇲🇽": 0,
   "Kourier": 0,
-  "Kravitz": 0,
+  "Kravitz": 3,
   "Krinkross🇪🇸": 0,
   "Krish": 0,
   "Krtman": 0,
@@ -7462,7 +7455,8 @@
   "Kyss": 0,
   "L 🇨🇴": 0,
   "LAST": 3,
-  "LEWITO": 0,
+  "LEITAN  🇦🇷": 0,
+  "LEWITO": 3,
   "LGBD": 0,
   "LKS 🇨🇱": 0,
   "LOCOLOCO🇪🇸": 0,
@@ -7472,6 +7466,7 @@
   "LSO": 0,
   "LUIS": 3,
   "LV": 3,
+  "Lamborguini 🇦🇷": 0,
   "Lambroggini": 0,
   "Launok": 0,
   "Lautaro la sinceridad 🇨🇨": 3,
@@ -7483,7 +7478,6 @@
   "Liberia": 9,
   "Lilñaño": 3,
   "LitKunai": 0,
-  "Lizenim 🇦🇷": 0,
   "Lizeninn": 6,
   "Lord Viruzz": 3,
   "Lucho": 0,
@@ -7502,7 +7496,7 @@
   "MAU KC 🇨🇴": 3,
   "MAWS🇻🇪": 3,
   "MAXIMILIANO CALVO": 0,
-  "MCNadie": 0,
+  "MCNadie": 3,
   "MCO": 9,
   "MD": 0,
   "METORITO": 0,
@@ -7512,7 +7506,7 @@
   "MR.LABURO🇨🇴": 0,
   "MTZ": 3,
   "MZK": 0,
-  "MaYeuTyK": 6,
+  "MaYeuTyK": 3,
   "Magic": 0,
   "Mail O": 0,
   "Majiztral": 3,
@@ -7526,7 +7520,7 @@
   "Matias": 0,
   "MauzzitoEmeces": 0,
   "Mc Glock": 0,
-  "Mc arepa": 3,
+  "Mc arepa": 0,
   "Mc dl": 0,
   "Medster": 0,
   "MetriOdin": 0,
@@ -7566,9 +7560,9 @@
   "Noxvell": 3,
   "Number": 3,
   "Number Laden 🇸🇦": 0,
-  "Number VE": 3,
+  "Number VE": 0,
   "OEP": 0,
-  "OG": 3,
+  "OG": 6,
   "OKAM": 6,
   "OMEGAX🇪🇸": 0,
   "ONDADISKO": 0,
@@ -7636,7 +7630,7 @@
   "Ruvick": 0,
   "Rydo": 0,
   "Ryuk": 0,
-  "S1lence": 3,
+  "S1lence": 0,
   "SAEVA": 0,
   "SDK": 0,
   "SGB": 3,
@@ -7657,7 +7651,6 @@
   "Saz": 0,
   "Scot": 0,
   "Scritura": 0,
-  "Seko Boy🇨🇴  Lamborguini 🇦🇷 - Makma 🇻🇪": 0,
   "Selek": 0,
   "Senticide": 0,
   "Sexo": 0,
@@ -7682,6 +7675,7 @@
   "Swid": 0,
   "TG": 0,
   "THO": 0,
+  "TONY  🇦🇷": 0,
   "TYPHLOSION": 0,
   "Tam": 6,
   "Tayo": 0,
@@ -7692,9 +7686,8 @@
   "Tiago Context 🇦🇷": 0,
   "Tiagoms": 0,
   "Tier": 0,
-  "Tizi": 0,
+  "Tizi": 3,
   "Tmax Turbo [PN]": 0,
-  "Tony 🇦🇷": 0,
   "Toretto Mexicano 🇲🇽": 0,
   "Trelok": 3,
   "Trot": 3,
@@ -7800,7 +7793,7 @@
   "wei shenlong": 0,
   "xJuniorTime": 0,
   "xz": 0,
-  "yinn": 6
+  "yinn": 3
  },
  "modo": "elo",
  "nivel": {
@@ -7843,7 +7836,7 @@
   "Andresito": 5,
   "Andy": 5,
   "Apolo": 5,
-  "Ariaxer": 5,
+  "Ariaxer": 4,
   "Artezzy": 5,
   "Assuan": 5,
   "Astral": 5,
@@ -7901,7 +7894,7 @@
   "Colo": 5,
   "Corvo": 4,
   "CrisZJ": 5,
-  "Crk": 4,
+  "Crk": 5,
   "Cronox": 5,
   "DANCOLL": 5,
   "DARK ANGEL 🇨🇴": 5,
@@ -7941,10 +7934,9 @@
   "EVANGELINE🇧🇴": 5,
   "Eclipsito": 4,
   "Efimero": 5,
-  "El Colesito 🇨🇴": 5,
   "El Hombre Eyau": 5,
   "El Wachin": 5,
-  "El novio de tu novia 🇧🇧": 5,
+  "El novio de tu novia 🇧🇧": 4,
   "Elbesaabuelas": 5,
   "Eldinoco🇦🇷": 5,
   "Elinge_TIMP": 5,
@@ -8005,7 +7997,7 @@
   "Greyfitsh🇵🇦": 5,
   "Guaicurús🇰🇷": 5,
   "Guess": 3,
-  "Gus": 4,
+  "Gus": 5,
   "Gustavo Urrutia Perez 🇲🇽": 5,
   "Gutty": 5,
   "Guty": 5,
@@ -8035,7 +8027,6 @@
   "J.r": 5,
   "J19": 4,
   "JD": 5,
-  "JD 🇪🇨  - TONY  🇦🇷 - LEITAN  🇦🇷 - Makma 🇻🇪": 4,
   "JEIXDER": 5,
   "JHEYSON": 5,
   "JIMMY": 4,
@@ -8051,7 +8042,7 @@
   "Jere": 5,
   "Joaco Zeo": 5,
   "Joaquín La Profecia 👨🏻‍🍳": 5,
-  "Jobaking": 4,
+  "Jobaking": 3,
   "Jodnes": 5,
   "Johao": 5,
   "Joshema": 4,
@@ -8059,7 +8050,7 @@
   "Juanpa": 4,
   "Juasmio": 5,
   "Julix🇧🇴": 4,
-  "Jult": 5,
+  "Jult": 4,
   "Jupiter": 5,
   "KASIVA🇵🇪": 5,
   "KATALIEN": 5,
@@ -8083,7 +8074,7 @@
   "Korey": 5,
   "Korier 🇲🇽": 5,
   "Kourier": 5,
-  "Kravitz": 5,
+  "Kravitz": 4,
   "Krinkross🇪🇸": 5,
   "Krish": 5,
   "Krtman": 5,
@@ -8095,6 +8086,7 @@
   "Kyss": 5,
   "L 🇨🇴": 5,
   "LAST": 4,
+  "LEITAN  🇦🇷": 5,
   "LEWITO": 5,
   "LGBD": 5,
   "LKS 🇨🇱": 5,
@@ -8105,6 +8097,7 @@
   "LSO": 5,
   "LUIS": 4,
   "LV": 5,
+  "Lamborguini 🇦🇷": 5,
   "Lambroggini": 5,
   "Launok": 5,
   "Lautaro la sinceridad 🇨🇨": 4,
@@ -8116,7 +8109,6 @@
   "Liberia": 3,
   "Lilñaño": 4,
   "LitKunai": 5,
-  "Lizenim 🇦🇷": 5,
   "Lizeninn": 3,
   "Lord Viruzz": 4,
   "Lucho": 5,
@@ -8131,11 +8123,11 @@
   "MANJI LOZANO🇧🇴🫩": 5,
   "MATICERNA": 4,
   "MATO 🇧🇴": 5,
-  "MATUK 🇦🇷": 4,
+  "MATUK 🇦🇷": 5,
   "MAU KC 🇨🇴": 4,
   "MAWS🇻🇪": 4,
   "MAXIMILIANO CALVO": 5,
-  "MCNadie": 5,
+  "MCNadie": 4,
   "MCO": 3,
   "MD": 5,
   "METORITO": 5,
@@ -8145,7 +8137,7 @@
   "MR.LABURO🇨🇴": 5,
   "MTZ": 4,
   "MZK": 5,
-  "MaYeuTyK": 3,
+  "MaYeuTyK": 4,
   "Magic": 5,
   "Mail O": 5,
   "Majiztral": 4,
@@ -8159,7 +8151,7 @@
   "Matias": 5,
   "MauzzitoEmeces": 5,
   "Mc Glock": 5,
-  "Mc arepa": 4,
+  "Mc arepa": 5,
   "Mc dl": 5,
   "Medster": 5,
   "MetriOdin": 5,
@@ -8199,9 +8191,9 @@
   "Noxvell": 4,
   "Number": 5,
   "Number Laden 🇸🇦": 5,
-  "Number VE": 4,
+  "Number VE": 5,
   "OEP": 5,
-  "OG": 4,
+  "OG": 3,
   "OKAM": 3,
   "OMEGAX🇪🇸": 5,
   "ONDADISKO": 5,
@@ -8269,7 +8261,7 @@
   "Ruvick": 5,
   "Rydo": 5,
   "Ryuk": 5,
-  "S1lence": 4,
+  "S1lence": 5,
   "SAEVA": 5,
   "SDK": 5,
   "SGB": 4,
@@ -8290,7 +8282,6 @@
   "Saz": 5,
   "Scot": 5,
   "Scritura": 5,
-  "Seko Boy🇨🇴  Lamborguini 🇦🇷 - Makma 🇻🇪": 5,
   "Selek": 5,
   "Senticide": 5,
   "Sexo": 5,
@@ -8303,7 +8294,7 @@
   "Skratch": 5,
   "Slasher": 5,
   "Snake": 5,
-  "Snow": 5,
+  "Snow": 4,
   "Soft": 5,
   "Sombra": 4,
   "Soneto": 5,
@@ -8315,6 +8306,7 @@
   "Swid": 5,
   "TG": 5,
   "THO": 5,
+  "TONY  🇦🇷": 5,
   "TYPHLOSION": 5,
   "Tam": 3,
   "Tayo": 5,
@@ -8325,9 +8317,8 @@
   "Tiago Context 🇦🇷": 5,
   "Tiagoms": 5,
   "Tier": 5,
-  "Tizi": 5,
+  "Tizi": 4,
   "Tmax Turbo [PN]": 5,
-  "Tony 🇦🇷": 5,
   "Toretto Mexicano 🇲🇽": 5,
   "Trelok": 4,
   "Trot": 5,
@@ -8433,7 +8424,7 @@
   "wei shenlong": 5,
   "xJuniorTime": 5,
   "xz": 5,
-  "yinn": 3
+  "yinn": 4
  },
  "nombres": [
   "Mítico",
@@ -9310,17 +9301,22 @@
   ],
   [
    "2026-10-19",
-   "Artezzy",
+   "Jobaking",
    4
   ],
   [
    "2026-10-19",
-   "JD 🇪🇨  - TONY  🇦🇷 - LEITAN  🇦🇷 - Makma 🇻🇪",
+   "LEWITO",
    4
   ],
   [
    "2026-10-19",
    "OKAM",
+   4
+  ],
+  [
+   "2026-10-19",
+   "Artezzy",
    4
   ],
   [
@@ -9336,11 +9332,6 @@
   [
    "2026-10-19",
    "BTRX",
-   4
-  ],
-  [
-   "2026-10-19",
-   "MaYeuTyK",
    4
   ],
   [
@@ -9505,17 +9496,17 @@
   ],
   [
    "2026-10-26",
+   "Jobaking",
+   3
+  ],
+  [
+   "2026-10-26",
    "Lizeninn",
    3
   ],
   [
    "2026-10-26",
    "Tam",
-   3
-  ],
-  [
-   "2026-10-26",
-   "yinn",
    3
   ],
   [
@@ -9530,7 +9521,7 @@
   ],
   [
    "2026-10-26",
-   "MaYeuTyK",
+   "OG",
    3
   ],
   [
@@ -9542,11 +9533,6 @@
    "2026-10-26",
    "Tenor",
    3
-  ],
-  [
-   "2026-10-26",
-   "Jobaking",
-   4
   ],
   [
    "2026-10-26",
@@ -9570,17 +9556,17 @@
   ],
   [
    "2026-10-26",
+   "MCNadie",
+   4
+  ],
+  [
+   "2026-10-26",
    "Lautaro la sinceridad 🇨🇨",
    4
   ],
   [
    "2026-10-26",
    "Mito",
-   4
-  ],
-  [
-   "2026-10-26",
-   "Mc arepa",
    4
   ],
   [
@@ -9595,6 +9581,16 @@
   ],
   [
    "2026-10-26",
+   "Jult",
+   4
+  ],
+  [
+   "2026-10-26",
+   "MaYeuTyK",
+   4
+  ],
+  [
+   "2026-10-26",
    "Keider",
    4
   ],
@@ -9605,22 +9601,12 @@
   ],
   [
    "2026-10-26",
-   "Lilñaño",
-   4
-  ],
-  [
-   "2026-10-26",
-   "Crk",
-   4
-  ],
-  [
-   "2026-10-26",
-   "Gus",
-   4
-  ],
-  [
-   "2026-10-26",
    "Xclusivo",
+   4
+  ],
+  [
+   "2026-10-26",
+   "Lilñaño",
    4
   ],
   [
@@ -9645,17 +9631,12 @@
   ],
   [
    "2026-10-26",
+   "Kravitz",
+   4
+  ],
+  [
+   "2026-10-26",
    "Chop",
-   4
-  ],
-  [
-   "2026-10-26",
-   "Number VE",
-   4
-  ],
-  [
-   "2026-10-26",
-   "S1lence",
    4
   ],
   [
@@ -9666,6 +9647,16 @@
   [
    "2026-10-26",
    "LUIS",
+   4
+  ],
+  [
+   "2026-10-26",
+   "El novio de tu novia 🇧🇧",
+   4
+  ],
+  [
+   "2026-10-26",
+   "Tizi",
    4
   ],
   [
@@ -9710,7 +9701,6 @@
  "ult": {
   "baja": [
    "Andres",
-   "Ariaxer",
    "Artezzy",
    "Bloody",
    "Carlos",
@@ -9718,11 +9708,12 @@
    "DarnBless",
    "Delux",
    "Jupiter",
+   "LEWITO",
    "Liberia",
+   "MATUK 🇦🇷",
    "MCO",
    "Panchok",
    "Prosu",
-   "Snow",
    "Trot",
    "Velatz"
   ],
@@ -9735,40 +9726,40 @@
    "Bau",
    "Carlosss",
    "Chop",
-   "Crk",
+   "El novio de tu novia 🇧🇧",
    "Erian",
    "Ezze",
-   "Gus",
    "Jobaking",
+   "Jult",
    "Keider",
+   "Kravitz",
    "LUIS",
    "Lautaro la sinceridad 🇨🇨",
    "Lilñaño",
    "Lizeninn",
    "Luck",
+   "MCNadie",
    "MaYeuTyK",
    "Majiztral",
-   "Mc arepa",
    "Miniboy",
    "Mito",
    "NC",
-   "Number VE",
+   "OG",
    "OKAM",
    "Oasis",
    "Paria",
    "PichulaMc",
    "Polosport",
    "Provenza",
-   "S1lence",
    "Tam",
    "Tenor",
+   "Tizi",
    "Trelok",
    "Tuca",
    "Walker",
    "Xclusivo",
    "Zignos",
-   "mats",
-   "yinn"
+   "mats"
   ]
  },
  "zona": 5
