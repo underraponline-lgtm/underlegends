@@ -38,6 +38,7 @@
  "ac3nto": {
   "servidor": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/ac3nto/servidor.webp",
   "sv-acad": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/ac3nto/sv-acad.webp",
+  "sv-ch": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/ac3nto/sv-ch.webp",
   "sv-dra": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/ac3nto/sv-dra.webp",
   "sv-ffa": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/ac3nto/sv-ffa.webp",
   "sv-sr": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/ac3nto/sv-sr.webp"
@@ -201,6 +202,7 @@
  },
  "amaya": {
   "servidor": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/amaya/servidor.webp",
+  "sv-ch": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/amaya/sv-ch.webp",
   "sv-dra": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/amaya/sv-dra.webp",
   "sv-sr": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/amaya/sv-sr.webp"
  },
@@ -326,6 +328,7 @@
  },
  "axzeye": {
   "servidor": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/axzeye/servidor.webp",
+  "sv-ch": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/axzeye/sv-ch.webp",
   "sv-dra": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/axzeye/sv-dra.webp",
   "sv-ffa": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/axzeye/sv-ffa.webp",
   "sv-sr": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/axzeye/sv-sr.webp"
@@ -333,6 +336,7 @@
  "basik": {
   "servidor": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/basik/servidor.webp",
   "sv-acad": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/basik/sv-acad.webp",
+  "sv-ch": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/basik/sv-ch.webp",
   "sv-dra": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/basik/sv-dra.webp",
   "sv-ffa": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/basik/sv-ffa.webp",
   "sv-frz": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/basik/sv-frz.webp",
@@ -408,6 +412,7 @@
  "blood": {
   "servidor": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/blood/servidor.webp",
   "sv-acad": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/blood/sv-acad.webp",
+  "sv-ch": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/blood/sv-ch.webp",
   "sv-dra": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/blood/sv-dra.webp",
   "sv-ffa": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/blood/sv-ffa.webp"
  },
@@ -432,6 +437,7 @@
  "blue": {
   "servidor": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/blue/servidor.webp",
   "sv-acad": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/blue/sv-acad.webp",
+  "sv-ch": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/blue/sv-ch.webp",
   "sv-dra": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/blue/sv-dra.webp",
   "sv-ffa": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/blue/sv-ffa.webp",
   "sv-frz": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/blue/sv-frz.webp",
@@ -441,6 +447,7 @@
  "bocamio": {
   "servidor": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/bocamio/servidor.webp",
   "sv-acad": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/bocamio/sv-acad.webp",
+  "sv-ch": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/bocamio/sv-ch.webp",
   "sv-dra": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/bocamio/sv-dra.webp",
   "sv-ffa": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/bocamio/sv-ffa.webp",
   "sv-frz": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/bocamio/sv-frz.webp",
@@ -450,6 +457,7 @@
  "bocto": {
   "servidor": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/bocto/servidor.webp",
   "sv-acad": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/bocto/sv-acad.webp",
+  "sv-ch": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/bocto/sv-ch.webp",
   "sv-dra": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/bocto/sv-dra.webp",
   "sv-ffa": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/bocto/sv-ffa.webp",
   "sv-frz": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/bocto/sv-frz.webp",
@@ -556,6 +564,7 @@
  },
  "charro": {
   "servidor": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/charro/servidor.webp",
+  "sv-ch": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/charro/sv-ch.webp",
   "sv-dra": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/charro/sv-dra.webp",
   "sv-fvs": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/charro/sv-fvs.webp",
   "sv-sr": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/charro/sv-sr.webp"
@@ -563,6 +572,7 @@
  "chase": {
   "servidor": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/chase/servidor.webp",
   "sv-acad": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/chase/sv-acad.webp",
+  "sv-ch": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/chase/sv-ch.webp",
   "sv-dra": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/chase/sv-dra.webp",
   "sv-ffa": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/chase/sv-ffa.webp",
   "sv-frz": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/chase/sv-frz.webp",
@@ -582,6 +592,7 @@
  },
  "christopher": {
   "servidor": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/christopher/servidor.webp",
+  "sv-ch": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/christopher/sv-ch.webp",
   "sv-dra": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/christopher/sv-dra.webp",
   "sv-ffa": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/christopher/sv-ffa.webp",
   "sv-ffs": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/christopher/sv-ffs.webp",
@@ -705,6 +716,7 @@
  },
  "danixz": {
   "servidor": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/danixz/servidor.webp",
+  "sv-ch": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/danixz/sv-ch.webp",
   "sv-dra": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/danixz/sv-dra.webp",
   "sv-ffa": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/danixz/sv-ffa.webp",
   "sv-sr": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/danixz/sv-sr.webp"
@@ -712,6 +724,7 @@
  "danny": {
   "servidor": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/danny/servidor.webp",
   "sv-acad": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/danny/sv-acad.webp",
+  "sv-ch": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/danny/sv-ch.webp",
   "sv-dra": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/danny/sv-dra.webp",
   "sv-ffa": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/danny/sv-ffa.webp",
   "sv-fvs": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/danny/sv-fvs.webp",
@@ -869,6 +882,7 @@
   "pais": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/dios/pais.webp",
   "servidor": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/dios/servidor.webp",
   "sv-acad": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/dios/sv-acad.webp",
+  "sv-ch": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/dios/sv-ch.webp",
   "sv-ddf": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/dios/sv-ddf.webp",
   "sv-dra": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/dios/sv-dra.webp",
   "sv-ffa": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/dios/sv-ffa.webp",
@@ -881,12 +895,14 @@
  },
  "dist": {
   "servidor": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/dist/servidor.webp",
+  "sv-ch": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/dist/sv-ch.webp",
   "sv-dra": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/dist/sv-dra.webp",
   "sv-fvs": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/dist/sv-fvs.webp"
  },
  "djcalambremister": {
   "servidor": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/djcalambremister/servidor.webp",
   "sv-acad": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/djcalambremister/sv-acad.webp",
+  "sv-ch": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/djcalambremister/sv-ch.webp",
   "sv-ddf": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/djcalambremister/sv-ddf.webp",
   "sv-dra": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/djcalambremister/sv-dra.webp",
   "sv-ffa": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/djcalambremister/sv-ffa.webp",
@@ -903,6 +919,7 @@
   "pais": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/dlx/pais.webp",
   "servidor": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/dlx/servidor.webp",
   "sv-acad": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/dlx/sv-acad.webp",
+  "sv-ch": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/dlx/sv-ch.webp",
   "sv-ddf": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/dlx/sv-ddf.webp",
   "sv-dra": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/dlx/sv-dra.webp",
   "sv-ffa": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/dlx/sv-ffa.webp",
@@ -1029,6 +1046,7 @@
  },
  "elmonarca": {
   "servidor": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/elmonarca/servidor.webp",
+  "sv-ch": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/elmonarca/sv-ch.webp",
   "sv-dra": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/elmonarca/sv-dra.webp",
   "sv-ffa": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/elmonarca/sv-ffa.webp",
   "sv-sr": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/elmonarca/sv-sr.webp"
@@ -1366,6 +1384,7 @@
  },
  "goru": {
   "servidor": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/goru/servidor.webp",
+  "sv-ch": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/goru/sv-ch.webp",
   "sv-dra": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/goru/sv-dra.webp",
   "sv-sr": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/goru/sv-sr.webp"
  },
@@ -1488,6 +1507,7 @@
   "bloq-competitivo": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/hirex/bloq-competitivo.webp",
   "bloq-pais": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/hirex/bloq-pais.webp",
   "servidor": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/hirex/servidor.webp",
+  "sv-ch": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/hirex/sv-ch.webp",
   "sv-ddf": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/hirex/sv-ddf.webp",
   "sv-dra": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/hirex/sv-dra.webp",
   "sv-ffa": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/hirex/sv-ffa.webp",
@@ -1534,11 +1554,13 @@
  },
  "inder": {
   "servidor": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/inder/servidor.webp",
+  "sv-ch": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/inder/sv-ch.webp",
   "sv-dra": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/inder/sv-dra.webp",
   "sv-sr": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/inder/sv-sr.webp"
  },
  "inhuman": {
   "servidor": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/inhuman/servidor.webp",
+  "sv-ch": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/inhuman/sv-ch.webp",
   "sv-dra": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/inhuman/sv-dra.webp",
   "sv-sr": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/inhuman/sv-sr.webp"
  },
@@ -1553,6 +1575,7 @@
  },
  "itohimo": {
   "servidor": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/itohimo/servidor.webp",
+  "sv-ch": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/itohimo/sv-ch.webp",
   "sv-dra": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/itohimo/sv-dra.webp",
   "sv-frz": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/itohimo/sv-frz.webp",
   "sv-sr": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/itohimo/sv-sr.webp"
@@ -1804,6 +1827,7 @@
  },
  "kamui": {
   "servidor": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/kamui/servidor.webp",
+  "sv-ch": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/kamui/sv-ch.webp",
   "sv-dra": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/kamui/sv-dra.webp",
   "sv-ffa": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/kamui/sv-ffa.webp",
   "sv-frz": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/kamui/sv-frz.webp",
@@ -1845,6 +1869,7 @@
  },
  "keku": {
   "servidor": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/keku/servidor.webp",
+  "sv-ch": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/keku/sv-ch.webp",
   "sv-dra": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/keku/sv-dra.webp",
   "sv-ffa": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/keku/sv-ffa.webp",
   "sv-fvs": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/keku/sv-fvs.webp"
@@ -1925,6 +1950,7 @@
  "koppakidd": {
   "servidor": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/koppakidd/servidor.webp",
   "sv-acad": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/koppakidd/sv-acad.webp",
+  "sv-ch": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/koppakidd/sv-ch.webp",
   "sv-ddf": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/koppakidd/sv-ddf.webp",
   "sv-dra": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/koppakidd/sv-dra.webp",
   "sv-fvs": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/koppakidd/sv-fvs.webp",
@@ -1995,6 +2021,7 @@
  },
  "krypto": {
   "servidor": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/krypto/servidor.webp",
+  "sv-ch": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/krypto/sv-ch.webp",
   "sv-dra": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/krypto/sv-dra.webp",
   "sv-ffa": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/krypto/sv-ffa.webp"
  },
@@ -2043,6 +2070,7 @@
  },
  "lagca": {
   "servidor": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/lagca/servidor.webp",
+  "sv-ch": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/lagca/sv-ch.webp",
   "sv-dra": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/lagca/sv-dra.webp",
   "sv-sr": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/lagca/sv-sr.webp"
  },
@@ -2089,6 +2117,7 @@
  },
  "leiter": {
   "servidor": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/leiter/servidor.webp",
+  "sv-ch": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/leiter/sv-ch.webp",
   "sv-dra": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/leiter/sv-dra.webp",
   "sv-sr": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/leiter/sv-sr.webp"
  },
@@ -2205,6 +2234,7 @@
  "longsunzhao": {
   "servidor": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/longsunzhao/servidor.webp",
   "sv-acad": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/longsunzhao/sv-acad.webp",
+  "sv-ch": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/longsunzhao/sv-ch.webp",
   "sv-dra": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/longsunzhao/sv-dra.webp",
   "sv-ffa": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/longsunzhao/sv-ffa.webp",
   "sv-sr": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/longsunzhao/sv-sr.webp"
@@ -2345,6 +2375,7 @@
  "maki": {
   "servidor": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/maki/servidor.webp",
   "sv-acad": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/maki/sv-acad.webp",
+  "sv-ch": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/maki/sv-ch.webp",
   "sv-dra": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/maki/sv-dra.webp",
   "sv-ffa": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/maki/sv-ffa.webp",
   "sv-ffs": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/maki/sv-ffs.webp",
@@ -2370,6 +2401,7 @@
  },
  "malova": {
   "servidor": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/malova/servidor.webp",
+  "sv-ch": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/malova/sv-ch.webp",
   "sv-dra": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/malova/sv-dra.webp",
   "sv-sr": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/malova/sv-sr.webp"
  },
@@ -2422,6 +2454,7 @@
  "mathiasmc": {
   "servidor": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/mathiasmc/servidor.webp",
   "sv-acad": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/mathiasmc/sv-acad.webp",
+  "sv-ch": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/mathiasmc/sv-ch.webp",
   "sv-ddf": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/mathiasmc/sv-ddf.webp",
   "sv-dra": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/mathiasmc/sv-dra.webp",
   "sv-ffa": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/mathiasmc/sv-ffa.webp",
@@ -2546,6 +2579,7 @@
  },
  "megara": {
   "servidor": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/megara/servidor.webp",
+  "sv-ch": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/megara/sv-ch.webp",
   "sv-dra": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/megara/sv-dra.webp",
   "sv-frz": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/megara/sv-frz.webp",
   "sv-sr": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/megara/sv-sr.webp"
@@ -2565,6 +2599,7 @@
  "meteoro": {
   "servidor": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/meteoro/servidor.webp",
   "sv-acad": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/meteoro/sv-acad.webp",
+  "sv-ch": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/meteoro/sv-ch.webp",
   "sv-dra": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/meteoro/sv-dra.webp",
   "sv-ffa": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/meteoro/sv-ffa.webp",
   "sv-frz": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/meteoro/sv-frz.webp",
@@ -2633,6 +2668,7 @@
  "mknoli": {
   "servidor": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/mknoli/servidor.webp",
   "sv-acad": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/mknoli/sv-acad.webp",
+  "sv-ch": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/mknoli/sv-ch.webp",
   "sv-ddf": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/mknoli/sv-ddf.webp",
   "sv-dra": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/mknoli/sv-dra.webp",
   "sv-ffs": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/mknoli/sv-ffs.webp",
@@ -2643,6 +2679,7 @@
  "mochidg": {
   "servidor": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/mochidg/servidor.webp",
   "sv-acad": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/mochidg/sv-acad.webp",
+  "sv-ch": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/mochidg/sv-ch.webp",
   "sv-ddf": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/mochidg/sv-ddf.webp",
   "sv-dra": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/mochidg/sv-dra.webp",
   "sv-ffa": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/mochidg/sv-ffa.webp",
@@ -2778,6 +2815,7 @@
  },
  "nahu": {
   "servidor": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/nahu/servidor.webp",
+  "sv-ch": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/nahu/sv-ch.webp",
   "sv-dra": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/nahu/sv-dra.webp",
   "sv-sr": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/nahu/sv-sr.webp"
  },
@@ -2838,6 +2876,7 @@
  },
  "nevon": {
   "servidor": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/nevon/servidor.webp",
+  "sv-ch": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/nevon/sv-ch.webp",
   "sv-dra": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/nevon/sv-dra.webp",
   "sv-sr": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/nevon/sv-sr.webp"
  },
@@ -2857,6 +2896,7 @@
  "nitt": {
   "servidor": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/nitt/servidor.webp",
   "sv-acad": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/nitt/sv-acad.webp",
+  "sv-ch": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/nitt/sv-ch.webp",
   "sv-ddf": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/nitt/sv-ddf.webp",
   "sv-dra": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/nitt/sv-dra.webp",
   "sv-ffa": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/nitt/sv-ffa.webp",
@@ -2876,6 +2916,7 @@
  },
  "nonno": {
   "servidor": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/nonno/servidor.webp",
+  "sv-ch": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/nonno/sv-ch.webp",
   "sv-dra": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/nonno/sv-dra.webp",
   "sv-ffa": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/nonno/sv-ffa.webp"
  },
@@ -3067,6 +3108,7 @@
  },
  "osiris": {
   "servidor": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/osiris/servidor.webp",
+  "sv-ch": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/osiris/sv-ch.webp",
   "sv-dra": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/osiris/sv-dra.webp",
   "sv-ffa": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/osiris/sv-ffa.webp",
   "sv-sr": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/osiris/sv-sr.webp"
@@ -3301,6 +3343,7 @@
  "raven": {
   "servidor": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/raven/servidor.webp",
   "sv-acad": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/raven/sv-acad.webp",
+  "sv-ch": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/raven/sv-ch.webp",
   "sv-dra": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/raven/sv-dra.webp",
   "sv-frz": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/raven/sv-frz.webp",
   "sv-fvs": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/raven/sv-fvs.webp",
@@ -3308,6 +3351,7 @@
  },
  "raxer": {
   "servidor": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/raxer/servidor.webp",
+  "sv-ch": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/raxer/sv-ch.webp",
   "sv-dra": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/raxer/sv-dra.webp",
   "sv-ffa": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/raxer/sv-ffa.webp"
  },
@@ -3514,6 +3558,7 @@
  },
  "saturb": {
   "servidor": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/saturb/servidor.webp",
+  "sv-ch": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/saturb/sv-ch.webp",
   "sv-dra": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/saturb/sv-dra.webp",
   "sv-ffa": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/saturb/sv-ffa.webp",
   "sv-frz": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/saturb/sv-frz.webp",
@@ -3621,6 +3666,7 @@
  },
  "skamilla": {
   "servidor": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/skamilla/servidor.webp",
+  "sv-ch": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/skamilla/sv-ch.webp",
   "sv-ddf": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/skamilla/sv-ddf.webp",
   "sv-dra": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/skamilla/sv-dra.webp",
   "sv-ffa": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/skamilla/sv-ffa.webp"
@@ -3641,6 +3687,7 @@
  },
  "sm0n": {
   "servidor": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/sm0n/servidor.webp",
+  "sv-ch": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/sm0n/sv-ch.webp",
   "sv-dra": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/sm0n/sv-dra.webp",
   "sv-sr": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/sm0n/sv-sr.webp"
  },
@@ -3784,6 +3831,7 @@
  "surya": {
   "servidor": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/surya/servidor.webp",
   "sv-acad": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/surya/sv-acad.webp",
+  "sv-ch": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/surya/sv-ch.webp",
   "sv-ddf": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/surya/sv-ddf.webp",
   "sv-dra": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/surya/sv-dra.webp",
   "sv-ffa": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/surya/sv-ffa.webp",
@@ -3827,6 +3875,7 @@
  "telmex": {
   "servidor": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/telmex/servidor.webp",
   "sv-acad": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/telmex/sv-acad.webp",
+  "sv-ch": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/telmex/sv-ch.webp",
   "sv-dra": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/telmex/sv-dra.webp",
   "sv-ffa": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/telmex/sv-ffa.webp",
   "sv-frz": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/telmex/sv-frz.webp",
@@ -3859,6 +3908,7 @@
  },
  "thiflow": {
   "servidor": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/thiflow/servidor.webp",
+  "sv-ch": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/thiflow/sv-ch.webp",
   "sv-dra": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/thiflow/sv-dra.webp",
   "sv-ffs": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/thiflow/sv-ffs.webp",
   "sv-sr": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/thiflow/sv-sr.webp"
@@ -4004,6 +4054,7 @@
  "val": {
   "servidor": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/val/servidor.webp",
   "sv-acad": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/val/sv-acad.webp",
+  "sv-ch": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/val/sv-ch.webp",
   "sv-ddf": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/val/sv-ddf.webp",
   "sv-dra": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/val/sv-dra.webp",
   "sv-ffa": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/val/sv-ffa.webp",
@@ -4085,6 +4136,7 @@
   "pais": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/vixoverso/pais.webp",
   "servidor": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/vixoverso/servidor.webp",
   "sv-acad": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/vixoverso/sv-acad.webp",
+  "sv-ch": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/vixoverso/sv-ch.webp",
   "sv-ddf": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/vixoverso/sv-ddf.webp",
   "sv-dra": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/vixoverso/sv-dra.webp",
   "sv-ffa": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/vixoverso/sv-ffa.webp",
@@ -4095,6 +4147,7 @@
  "vize": {
   "servidor": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/vize/servidor.webp",
   "sv-acad": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/vize/sv-acad.webp",
+  "sv-ch": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/vize/sv-ch.webp",
   "sv-ddf": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/vize/sv-ddf.webp",
   "sv-dra": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/vize/sv-dra.webp",
   "sv-sr": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/vize/sv-sr.webp"
@@ -4175,6 +4228,7 @@
  },
  "xhay": {
   "servidor": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/xhay/servidor.webp",
+  "sv-ch": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/xhay/sv-ch.webp",
   "sv-dra": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/xhay/sv-dra.webp",
   "sv-ffs": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/xhay/sv-ffs.webp",
   "sv-fvs": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/xhay/sv-fvs.webp",
@@ -4221,6 +4275,7 @@
   "competitivo": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/yeyox/competitivo.webp",
   "pais": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/yeyox/pais.webp",
   "servidor": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/yeyox/servidor.webp",
+  "sv-ch": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/yeyox/sv-ch.webp",
   "sv-dra": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/yeyox/sv-dra.webp",
   "sv-fvs": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/yeyox/sv-fvs.webp",
   "sv-sr": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/yeyox/sv-sr.webp",
@@ -4241,6 +4296,7 @@
  },
  "young": {
   "servidor": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/young/servidor.webp",
+  "sv-ch": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/young/sv-ch.webp",
   "sv-dra": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/young/sv-dra.webp",
   "sv-sr": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/young/sv-sr.webp"
  },
@@ -4279,6 +4335,7 @@
  },
  "zamo": {
   "servidor": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/zamo/servidor.webp",
+  "sv-ch": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/zamo/sv-ch.webp",
   "sv-ddf": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/zamo/sv-ddf.webp",
   "sv-dra": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/zamo/sv-dra.webp",
   "sv-ffs": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/zamo/sv-ffs.webp",
@@ -4353,6 +4410,7 @@
  },
  "zkalefa": {
   "servidor": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/zkalefa/servidor.webp",
+  "sv-ch": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/zkalefa/sv-ch.webp",
   "sv-dra": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/zkalefa/sv-dra.webp",
   "sv-sr": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/zkalefa/sv-sr.webp"
  },
