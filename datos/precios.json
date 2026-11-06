@@ -2,66 +2,6 @@
  "_leeme": "El precio por cabeza: lo arma bot/precios.py en el ciclo (paso 2b4). Las reglas y los números viven en ese archivo.",
  "precios": [
   {
-   "id": 12,
-   "cabeza": "Snow",
-   "monto": 5000,
-   "t": "2026-10-07T17:44:42Z",
-   "fin": "2026-10-12T04:00:00Z",
-   "e": "cazado",
-   "por": [
-    [
-     "PRAISERIZA",
-     5000
-    ]
-   ],
-   "ev": {
-    "n": 423,
-    "nombre": "DESGRACIAS EN BELLAS ARTES VOL1",
-    "sv": "FFA",
-    "t": "2026-10-07T19:45:45Z"
-   }
-  },
-  {
-   "id": 13,
-   "cabeza": "Snow",
-   "monto": 500,
-   "t": "2026-10-07T17:44:49Z",
-   "fin": "2026-10-12T04:00:00Z",
-   "e": "cazado",
-   "por": [
-    [
-     "PRAISERIZA",
-     500
-    ]
-   ],
-   "ev": {
-    "n": 423,
-    "nombre": "DESGRACIAS EN BELLAS ARTES VOL1",
-    "sv": "FFA",
-    "t": "2026-10-07T19:45:45Z"
-   }
-  },
-  {
-   "id": 14,
-   "cabeza": "Snow",
-   "monto": 5000,
-   "t": "2026-10-07T17:50:28Z",
-   "fin": "2026-10-12T04:00:00Z",
-   "e": "cazado",
-   "por": [
-    [
-     "PRAISERIZA",
-     5000
-    ]
-   ],
-   "ev": {
-    "n": 423,
-    "nombre": "DESGRACIAS EN BELLAS ARTES VOL1",
-    "sv": "FFA",
-    "t": "2026-10-07T19:45:45Z"
-   }
-  },
-  {
    "id": 15,
    "cabeza": "Snow",
    "monto": 1000,
@@ -471,7 +411,7 @@
   }
  ],
  "suma": {
-  "PRAISERIZA": 14500,
+  "PRAISERIZA": 4000,
   "Six": 5000,
   "PichulaMc": 3875,
   "PIERR": 5000,
