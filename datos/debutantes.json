@@ -37,6 +37,17 @@
    "vence": "2026-11-06T20:59:18+00:00",
    "vencido": false
   },
+  "23": {
+   "con": null,
+   "cumplido": "",
+   "debut": "2026-10-20T22:07:15+00:00",
+   "did": "",
+   "evento": "PANDILLAS NO VAMOS A TAGUEAR NI A ESPERAR A NADIE VOL 2",
+   "n": 571,
+   "sv": "CH",
+   "vence": "2026-10-27T22:07:15+00:00",
+   "vencido": true
+  },
   "71": {
    "avisado": "2026-10-30",
    "avisado_cumplido": "2026-11-04",
@@ -196,6 +207,18 @@
    "sv": "FFA",
    "vence": "2026-11-01T00:48:12+00:00",
    "vencido": true
+  },
+  "BERRUM": {
+   "avisado": "2026-11-05",
+   "con": null,
+   "cumplido": "",
+   "debut": "2026-11-03T03:59:09+00:00",
+   "did": "",
+   "evento": "COMPE ATERRADORA",
+   "n": 573,
+   "sv": "CH",
+   "vence": "2026-11-10T03:59:09+00:00",
+   "vencido": false
   },
   "BLUE BURKA": {
    "avisado": "2026-10-23",
@@ -434,6 +457,29 @@
    "vence": "2026-11-10T02:50:33+00:00",
    "vencido": false
   },
+  "Drope": {
+   "con": null,
+   "cumplido": "",
+   "debut": "2026-10-20T22:07:15+00:00",
+   "did": "",
+   "evento": "PANDILLAS NO VAMOS A TAGUEAR NI A ESPERAR A NADIE VOL 2",
+   "n": 571,
+   "sv": "CH",
+   "vence": "2026-10-27T22:07:15+00:00",
+   "vencido": true
+  },
+  "EL PIBE": {
+   "avisado": "2026-11-05",
+   "con": null,
+   "cumplido": "",
+   "debut": "2026-11-03T03:59:09+00:00",
+   "did": "",
+   "evento": "COMPE ATERRADORA",
+   "n": 573,
+   "sv": "CH",
+   "vence": "2026-11-10T03:59:09+00:00",
+   "vencido": false
+  },
   "EVANGELINE": {
    "avisado": "2026-10-18",
    "chat": "2026-10-18",
@@ -471,6 +517,18 @@
    "n": 544,
    "sv": "DDF",
    "vence": "2026-11-06T01:30:46+00:00",
+   "vencido": false
+  },
+  "Elinge": {
+   "avisado": "2026-11-05",
+   "con": null,
+   "cumplido": "",
+   "debut": "2026-11-03T03:59:09+00:00",
+   "did": "",
+   "evento": "COMPE ATERRADORA",
+   "n": 573,
+   "sv": "CH",
+   "vence": "2026-11-10T03:59:09+00:00",
    "vencido": false
   },
   "Evanlyne": {
@@ -572,6 +630,17 @@
    "n": 495,
    "sv": "DDF",
    "vence": "2026-10-28T21:09:28+00:00",
+   "vencido": true
+  },
+  "Ghost": {
+   "con": null,
+   "cumplido": "",
+   "debut": "2026-10-20T22:07:15+00:00",
+   "did": "931693691532378162",
+   "evento": "PANDILLAS NO VAMOS A TAGUEAR NI A ESPERAR A NADIE VOL 2",
+   "n": 571,
+   "sv": "CH",
+   "vence": "2026-10-27T22:07:15+00:00",
    "vencido": true
   },
   "Guaicurús": {
@@ -742,6 +811,40 @@
    "vence": "2026-10-26T06:14:16+00:00",
    "vencido": false
   },
+  "JAZII": {
+   "avisado": "2026-11-05",
+   "con": null,
+   "cumplido": "",
+   "debut": "2026-11-03T03:59:09+00:00",
+   "did": "",
+   "evento": "COMPE ATERRADORA",
+   "n": 573,
+   "sv": "CH",
+   "vence": "2026-11-10T03:59:09+00:00",
+   "vencido": false
+  },
+  "JD": {
+   "con": null,
+   "cumplido": "",
+   "debut": "2026-10-20T22:07:15+00:00",
+   "did": "360165225955065868",
+   "evento": "PANDILLAS NO VAMOS A TAGUEAR NI A ESPERAR A NADIE VOL 2",
+   "n": 571,
+   "sv": "CH",
+   "vence": "2026-10-27T22:07:15+00:00",
+   "vencido": true
+  },
+  "JD   - TONY   - LEITAN   - Makma": {
+   "con": null,
+   "cumplido": "",
+   "debut": "2026-10-20T22:07:15+00:00",
+   "did": "",
+   "evento": "PANDILLAS NO VAMOS A TAGUEAR NI A ESPERAR A NADIE VOL 2",
+   "n": 571,
+   "sv": "CH",
+   "vence": "2026-10-27T22:07:15+00:00",
+   "vencido": true
+  },
   "JL": {
    "avisado": "2026-11-01",
    "con": null,
@@ -847,6 +950,18 @@
    "vence": "2026-10-23T17:34:15+00:00",
    "vencido": true
   },
+  "Kaizz": {
+   "avisado": "2026-11-05",
+   "con": null,
+   "cumplido": "",
+   "debut": "2026-11-03T03:59:09+00:00",
+   "did": "",
+   "evento": "COMPE ATERRADORA",
+   "n": 573,
+   "sv": "CH",
+   "vence": "2026-11-10T03:59:09+00:00",
+   "vencido": false
+  },
   "Karumailafmasha": {
    "avisado": "2026-10-29",
    "chat": "2026-10-30",
@@ -886,6 +1001,17 @@
    "vence": "2026-11-03T20:14:48+00:00",
    "vencido": true
   },
+  "Koffi": {
+   "con": null,
+   "cumplido": "",
+   "debut": "2026-10-26T16:48:55+00:00",
+   "did": "",
+   "evento": "MINUTOS A SANGRE - D3ATHROW EN VIVO VOL 3",
+   "n": 572,
+   "sv": "CH",
+   "vence": "2026-11-02T16:48:55+00:00",
+   "vencido": true
+  },
   "Konan": {
    "avisado": "2026-10-13",
    "chat": "2026-10-14",
@@ -897,6 +1023,17 @@
    "n": 468,
    "sv": "FFA",
    "vence": "2026-10-20T23:50:48+00:00",
+   "vencido": true
+  },
+  "Korier": {
+   "con": null,
+   "cumplido": "",
+   "debut": "2026-10-20T22:07:15+00:00",
+   "did": "",
+   "evento": "PANDILLAS NO VAMOS A TAGUEAR NI A ESPERAR A NADIE VOL 2",
+   "n": 571,
+   "sv": "CH",
+   "vence": "2026-10-27T22:07:15+00:00",
    "vencido": true
   },
   "Kusoh": {
@@ -1002,6 +1139,17 @@
    "sv": "FFA",
    "vence": "2026-11-10T02:50:33+00:00",
    "vencido": false
+  },
+  "Lizenim": {
+   "con": null,
+   "cumplido": "",
+   "debut": "2026-10-26T16:48:55+00:00",
+   "did": "",
+   "evento": "MINUTOS A SANGRE - D3ATHROW EN VIVO VOL 3",
+   "n": 572,
+   "sv": "CH",
+   "vence": "2026-11-02T16:48:55+00:00",
+   "vencido": true
   },
   "Luck": {
    "avisado": "2026-10-23",
@@ -1317,6 +1465,17 @@
    "vence": "2026-11-02T22:39:00+00:00",
    "vencido": true
   },
+  "Omiwido": {
+   "con": null,
+   "cumplido": "",
+   "debut": "2026-10-20T22:07:15+00:00",
+   "did": "",
+   "evento": "PANDILLAS NO VAMOS A TAGUEAR NI A ESPERAR A NADIE VOL 2",
+   "n": 571,
+   "sv": "CH",
+   "vence": "2026-10-27T22:07:15+00:00",
+   "vencido": true
+  },
   "PETER": {
    "avisado": "2026-10-16",
    "chat": "2026-10-16",
@@ -1341,6 +1500,17 @@
    "n": 522,
    "sv": "FDS",
    "vence": "2026-10-28T02:04:09+00:00",
+   "vencido": true
+  },
+  "Palako": {
+   "con": null,
+   "cumplido": "",
+   "debut": "2026-10-20T22:07:15+00:00",
+   "did": "",
+   "evento": "PANDILLAS NO VAMOS A TAGUEAR NI A ESPERAR A NADIE VOL 2",
+   "n": 571,
+   "sv": "CH",
+   "vence": "2026-10-27T22:07:15+00:00",
    "vencido": true
   },
   "Pipe": {
@@ -1465,14 +1635,14 @@
    "avisado": "2026-10-20",
    "avisado_cumplido": "2026-10-21",
    "chat": "2026-10-21",
-   "con": 555,
-   "cumplido": "2026-10-21T03:23:26+00:00",
-   "debut": "2026-10-21T01:13:25+00:00",
+   "con": 493,
+   "cumplido": "2026-10-21T01:13:25+00:00",
+   "debut": "2026-10-20T22:07:15+00:00",
    "did": "1560477107598008355",
-   "evento": "DESGRACIAS EN TOKYO VOL 29 PANDILLAS",
-   "n": 493,
-   "sv": "FFA",
-   "vence": "2026-10-28T01:13:25+00:00",
+   "evento": "PANDILLAS NO VAMOS A TAGUEAR NI A ESPERAR A NADIE VOL 2",
+   "n": 571,
+   "sv": "CH",
+   "vence": "2026-10-27T22:07:15+00:00",
    "vencido": false
   },
   "SYEPORUTE": {
@@ -1501,6 +1671,17 @@
    "sv": "SR",
    "vence": "2026-10-19T22:01:43+00:00",
    "vencido": false
+  },
+  "Seko Boy  Lamborguini  - Makma": {
+   "con": null,
+   "cumplido": "",
+   "debut": "2026-10-20T22:07:15+00:00",
+   "did": "",
+   "evento": "PANDILLAS NO VAMOS A TAGUEAR NI A ESPERAR A NADIE VOL 2",
+   "n": 571,
+   "sv": "CH",
+   "vence": "2026-10-27T22:07:15+00:00",
+   "vencido": true
   },
   "Senticide": {
    "avisado": "2026-10-19",
@@ -1531,15 +1712,16 @@
   },
   "SikoV": {
    "avisado": "2026-10-30",
+   "avisado_cumplido": "2026-11-05",
    "chat": "2026-10-30",
-   "con": null,
-   "cumplido": "",
-   "debut": "2026-10-30T18:33:33+00:00",
+   "con": 546,
+   "cumplido": "2026-10-30T18:33:33+00:00",
+   "debut": "2026-10-26T16:48:55+00:00",
    "did": "855279570953437195",
-   "evento": "Galacticos del Freestyle vol.13",
-   "n": 546,
-   "sv": "DDF",
-   "vence": "2026-11-06T18:33:33+00:00",
+   "evento": "MINUTOS A SANGRE - D3ATHROW EN VIVO VOL 3",
+   "n": 572,
+   "sv": "CH",
+   "vence": "2026-11-02T16:48:55+00:00",
    "vencido": false
   },
   "Skiller": {
@@ -1596,6 +1778,17 @@
    "vence": "2026-11-02T22:39:00+00:00",
    "vencido": true
   },
+  "TheOg": {
+   "con": null,
+   "cumplido": "",
+   "debut": "2026-10-20T22:07:15+00:00",
+   "did": "",
+   "evento": "PANDILLAS NO VAMOS A TAGUEAR NI A ESPERAR A NADIE VOL 2",
+   "n": 571,
+   "sv": "CH",
+   "vence": "2026-10-27T22:07:15+00:00",
+   "vencido": true
+  },
   "Tiago Context": {
    "avisado": "2026-10-27",
    "chat": "2026-10-27",
@@ -1635,18 +1828,16 @@
    "vence": "2026-11-03T20:02:54+00:00",
    "vencido": true
   },
-  "Trelok": {
-   "avisado": "2026-10-27",
-   "avisado_cumplido": "2026-10-27",
-   "con": 536,
-   "cumplido": "2026-10-27T20:14:48+00:00",
-   "debut": "2026-10-27T03:32:41+00:00",
-   "did": "597257327464284163",
-   "evento": "qcyo rapeen 4",
-   "n": 532,
-   "sv": "FFA",
-   "vence": "2026-11-03T03:32:41+00:00",
-   "vencido": false
+  "Toretto Mexicano": {
+   "con": null,
+   "cumplido": "",
+   "debut": "2026-10-20T22:07:15+00:00",
+   "did": "",
+   "evento": "PANDILLAS NO VAMOS A TAGUEAR NI A ESPERAR A NADIE VOL 2",
+   "n": 571,
+   "sv": "CH",
+   "vence": "2026-10-27T22:07:15+00:00",
+   "vencido": true
   },
   "VECA": {
    "avisado": "2026-10-16",
@@ -1780,6 +1971,17 @@
    "vence": "2026-11-01T00:48:12+00:00",
    "vencido": true
   },
+  "Zanz": {
+   "con": null,
+   "cumplido": "",
+   "debut": "2026-10-26T16:48:55+00:00",
+   "did": "",
+   "evento": "MINUTOS A SANGRE - D3ATHROW EN VIVO VOL 3",
+   "n": 572,
+   "sv": "CH",
+   "vence": "2026-11-02T16:48:55+00:00",
+   "vencido": true
+  },
   "Zaza B": {
    "avisado": "2026-10-26",
    "chat": "2026-10-26",
@@ -1792,6 +1994,18 @@
    "sv": "FDS",
    "vence": "2026-10-28T02:04:09+00:00",
    "vencido": true
+  },
+  "akvmolt": {
+   "avisado_cumplido": "2026-11-05",
+   "con": 572,
+   "cumplido": "2026-10-26T16:48:55+00:00",
+   "debut": "2026-10-20T22:07:15+00:00",
+   "did": "",
+   "evento": "PANDILLAS NO VAMOS A TAGUEAR NI A ESPERAR A NADIE VOL 2",
+   "n": 571,
+   "sv": "CH",
+   "vence": "2026-10-27T22:07:15+00:00",
+   "vencido": false
   },
   "atari": {
    "avisado": "2026-10-31",
@@ -1872,6 +2086,17 @@
    "vence": "2026-11-07T06:06:01+00:00",
    "vencido": false
   },
+  "kata lyrical": {
+   "con": null,
+   "cumplido": "",
+   "debut": "2026-10-20T22:07:15+00:00",
+   "did": "",
+   "evento": "PANDILLAS NO VAMOS A TAGUEAR NI A ESPERAR A NADIE VOL 2",
+   "n": 571,
+   "sv": "CH",
+   "vence": "2026-10-27T22:07:15+00:00",
+   "vencido": true
+  },
   "lil": {
    "avisado": "2026-10-18",
    "chat": "2026-10-17",
@@ -1884,20 +2109,6 @@
    "sv": "FFA",
    "vence": "2026-10-25T02:26:23+00:00",
    "vencido": true
-  },
-  "mats": {
-   "avisado": "2026-10-23",
-   "avisado_cumplido": "2026-10-26",
-   "chat": "2026-10-24",
-   "con": 517,
-   "cumplido": "2026-10-26T01:55:51+00:00",
-   "debut": "2026-10-23T04:48:58+00:00",
-   "did": "597240876573392946",
-   "evento": "LA ISLA DE OKINAWA V.4",
-   "n": 501,
-   "sv": "FFA",
-   "vence": "2026-10-30T04:48:58+00:00",
-   "vencido": false
   },
   "npk": {
    "avisado": "2026-10-21",

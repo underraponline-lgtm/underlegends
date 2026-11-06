@@ -24436,7 +24436,7 @@
    "Vilca": 1
   },
   "fecha": "22/10",
-  "firma": "bbe5c053a0571649",
+  "firma": "d1614b06b2715fa9",
   "msg": "1564147714000953499",
   "nombre": "GG SANGRERAP 4",
   "num": 525,
@@ -26860,7 +26860,7 @@
    "Teo": 17
   },
   "fecha": "27/10",
-  "firma": "233bd934783b76c8",
+  "firma": "7acfa4eed63e77ff",
   "msg": "1564804334967980113",
   "nombre": "PRADERAP VOL.2",
   "num": 535,
@@ -29841,7 +29841,7 @@
    ],
    [
     "Six",
-    "Penescrotopene 🇰🇷⚫️",
+    "1200",
     "Six"
    ],
    [
@@ -29975,7 +29975,7 @@
    "Teo": 18
   },
   "fecha": "30/10",
-  "firma": "5f9f74d282d91b5d",
+  "firma": "513f40e5fa86ab3d",
   "msg": "1565861597019111555",
   "nombre": "__ LA ISLA DE OKINAWA V.4 __",
   "num": 547,
@@ -30042,7 +30042,7 @@
     1250
    ],
    [
-    "Penescrotopene 🇰🇷⚫️",
+    "1200",
     "Octavos",
     1250
    ],
@@ -30269,7 +30269,7 @@
    "mats": 5
   },
   "fecha": "26/10",
-  "firma": "cb04b46b414c5e8a",
+  "firma": "3aa5221e9d872ec0",
   "msg": "1565899302046277764",
   "nombre": "RAP SIN GROSERIAS 1",
   "num": 548,
@@ -32033,7 +32033,7 @@
    ],
    [
     "BLITZ",
-    "LISEN",
+    "Lizeninn",
     "BLITZ"
    ],
    [
@@ -32106,7 +32106,7 @@
    "yinn": 29
   },
   "fecha": "01/11",
-  "firma": "f91794d5f61369eb",
+  "firma": "53c386b9ab1d4b8b",
   "msg": "1566337161006026843",
   "nombre": "__ la palera del edi __",
   "num": 556,
@@ -32148,7 +32148,7 @@
     1625
    ],
    [
-    "LISEN",
+    "Lizeninn",
     "Octavos",
     625
    ],
@@ -32566,7 +32566,7 @@
    ],
    [
     "Paria",
-    "Lizen🇦🇷",
+    "Lizeninn",
     "Paria"
    ],
    [
@@ -32629,7 +32629,7 @@
    "Zignos": 27
   },
   "fecha": "01/11",
-  "firma": "513f6e7b6134b50a",
+  "firma": "1211d3656977669a",
   "msg": "1566645439611011152",
   "nombre": "__ COCINE FIDEOS __",
   "num": 558,
@@ -32736,7 +32736,7 @@
     1250
    ],
    [
-    "Lizen🇦🇷",
+    "Lizeninn",
     "Octavos",
     1250
    ]
@@ -34317,6 +34317,1747 @@
     "Dominick",
     "Cuartos",
     2000
+   ]
+  ],
+  "v": 2
+ },
+ "568": {
+  "antes": {
+   "LEWITO": [
+    129,
+    199,
+    false
+   ],
+   "LV": [
+    580,
+    577,
+    true
+   ],
+   "MCO": [
+    16,
+    19,
+    false
+   ],
+   "Makmah": [
+    1,
+    1,
+    false
+   ],
+   "Molt": [
+    168,
+    320,
+    false
+   ],
+   "Number": [
+    53,
+    71,
+    false
+   ],
+   "PichulaMc": [
+    3,
+    3,
+    false
+   ],
+   "Riolu": [
+    115,
+    171,
+    false
+   ],
+   "Sin Limites": [
+    27,
+    32,
+    false
+   ],
+   "Snow": [
+    6,
+    7,
+    false
+   ],
+   "Soulb": [
+    47,
+    62,
+    false
+   ]
+  },
+  "canal": "",
+  "duelos": [
+   [
+    "OMEGAX🇪🇸",
+    "KATALIEN🇬🇹",
+    "OMEGAX🇪🇸"
+   ],
+   [
+    "OMEGAX🇪🇸",
+    "DECYS🇦🇷",
+    "OMEGAX🇪🇸"
+   ],
+   [
+    "MCO",
+    "PichulaMc",
+    "MCO"
+   ],
+   [
+    "MCO",
+    "Molt",
+    "MCO"
+   ],
+   [
+    "JAUANAN🇦🇷",
+    "Makmah",
+    "JAUANAN🇦🇷"
+   ],
+   [
+    "JAUANAN🇦🇷",
+    "Benja",
+    "JAUANAN🇦🇷"
+   ],
+   [
+    "GIBA🇵🇪",
+    "Number",
+    "GIBA🇵🇪"
+   ],
+   [
+    "GIBA🇵🇪",
+    "CLENCHOT🇪🇸",
+    "GIBA🇵🇪"
+   ],
+   [
+    "LV",
+    "IBAN🇦🇷",
+    "LV"
+   ],
+   [
+    "LV",
+    "ZBK🇪🇸",
+    "LV"
+   ],
+   [
+    "LV",
+    "CULT🇦🇷",
+    "LV"
+   ],
+   [
+    "Snow",
+    "GATO🇨🇱",
+    "Snow"
+   ],
+   [
+    "Snow",
+    "LOCOLOCO🇪🇸",
+    "Snow"
+   ],
+   [
+    "Snow",
+    "LEWITO",
+    "Snow"
+   ],
+   [
+    "Soulb",
+    "Sin Limites",
+    "Soulb"
+   ],
+   [
+    "Soulb",
+    "KELNCHOS🇪🇸",
+    "Soulb"
+   ],
+   [
+    "Soulb",
+    "CROQUETA🇪🇸",
+    "Soulb"
+   ],
+   [
+    "Riolu",
+    "OMEGAX🇪🇸",
+    "Riolu"
+   ],
+   [
+    "MCO",
+    "JUANAN🇦🇷",
+    "MCO"
+   ],
+   [
+    "LV",
+    "GIBA🇵🇪",
+    "LV"
+   ],
+   [
+    "Snow",
+    "Soulb",
+    "Snow"
+   ],
+   [
+    "MCO",
+    "Riolu",
+    "MCO"
+   ],
+   [
+    "Snow",
+    "LV",
+    "Snow"
+   ],
+   [
+    "MCO",
+    "Snow",
+    "MCO"
+   ]
+  ],
+  "ev_antes": {
+   "LEWITO": 5,
+   "LV": 1,
+   "MCO": 32,
+   "Makmah": 97,
+   "Molt": 3,
+   "Number": 11,
+   "PichulaMc": 56,
+   "Riolu": 5,
+   "Sin Limites": 41,
+   "Snow": 42,
+   "Soulb": 17
+  },
+  "fecha": "23/09",
+  "nombre": "EL ONMITRIX VOL 1",
+  "num": 568,
+  "participantes": 29,
+  "sello": {
+   "MCO": "1afc2f93e570:d903d0d85717"
+  },
+  "sv": "CH",
+  "t": "2026-11-06T00:48:14Z",
+  "tabla": [
+   [
+    "MCO",
+    "Campeón",
+    10000
+   ],
+   [
+    "Snow",
+    "Subcampeón",
+    7500
+   ],
+   [
+    "LV",
+    "Semifinal",
+    5250
+   ],
+   [
+    "Riolu",
+    "Semifinal",
+    2625
+   ],
+   [
+    "OMEGAX🇪🇸",
+    "Cuartos",
+    2500
+   ],
+   [
+    "JUANAN🇦🇷",
+    "Cuartos",
+    2500
+   ],
+   [
+    "GIBA🇵🇪",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Soulb",
+    "Cuartos",
+    2500
+   ],
+   [
+    "KATALIEN🇬🇹",
+    "Octavos",
+    1250
+   ],
+   [
+    "DECYS🇦🇷",
+    "Octavos",
+    1250
+   ],
+   [
+    "PichulaMc",
+    "Octavos",
+    1250
+   ],
+   [
+    "Molt",
+    "Octavos",
+    1250
+   ],
+   [
+    "Makmah",
+    "Octavos",
+    1250
+   ],
+   [
+    "Benja",
+    "Octavos",
+    1250
+   ],
+   [
+    "Number",
+    "Octavos",
+    1250
+   ],
+   [
+    "CLENCHOT🇪🇸",
+    "Octavos",
+    1250
+   ],
+   [
+    "IBAN🇦🇷",
+    "Octavos",
+    1250
+   ],
+   [
+    "ZBK🇪🇸",
+    "Octavos",
+    1250
+   ],
+   [
+    "CULT🇦🇷",
+    "Octavos",
+    1250
+   ],
+   [
+    "GATO🇨🇱",
+    "Octavos",
+    1250
+   ],
+   [
+    "LOCOLOCO🇪🇸",
+    "Octavos",
+    1250
+   ],
+   [
+    "LEWITO",
+    "Octavos",
+    1250
+   ],
+   [
+    "Sin Limites",
+    "Octavos",
+    1250
+   ],
+   [
+    "KELNCHOS🇪🇸",
+    "Octavos",
+    1250
+   ],
+   [
+    "CROQUETA🇪🇸",
+    "Octavos",
+    1250
+   ]
+  ],
+  "v": 2
+ },
+ "569": {
+  "antes": {
+   "Andy": [
+    103,
+    138,
+    false
+   ],
+   "BLITZ": [
+    252,
+    113,
+    true
+   ],
+   "Cronox": [
+    36,
+    42,
+    false
+   ],
+   "Erian": [
+    4,
+    4,
+    false
+   ],
+   "Iguana": [
+    150,
+    269,
+    false
+   ],
+   "LRS": [
+    38,
+    45,
+    false
+   ],
+   "MCNadie": [
+    78,
+    102,
+    false
+   ],
+   "Makmah": [
+    1,
+    1,
+    false
+   ],
+   "Masino": [
+    68,
+    87,
+    false
+   ],
+   "NC": [
+    21,
+    24,
+    false
+   ],
+   "Number": [
+    53,
+    71,
+    false
+   ],
+   "Polosport": [
+    30,
+    36,
+    false
+   ],
+   "Snow": [
+    6,
+    7,
+    false
+   ],
+   "Soulb": [
+    47,
+    62,
+    false
+   ],
+   "Vandu": [
+    11,
+    12,
+    false
+   ],
+   "Xclusivo": [
+    229,
+    33,
+    true
+   ],
+   "Zignos": [
+    20,
+    23,
+    false
+   ],
+   "dxg": [
+    117,
+    175,
+    false
+   ]
+  },
+  "canal": "",
+  "duelos": [
+   [
+    "Snow",
+    "LRS",
+    "Snow"
+   ],
+   [
+    "Snow",
+    "NC",
+    "Snow"
+   ],
+   [
+    "Zignos",
+    "maRIHUANATICO🇦🇷",
+    "Zignos"
+   ],
+   [
+    "Zignos",
+    "dxg",
+    "Zignos"
+   ],
+   [
+    "Zignos",
+    "Vandu",
+    "Zignos"
+   ],
+   [
+    "Number",
+    "BLITZ",
+    "Number"
+   ],
+   [
+    "Number",
+    "Polosport",
+    "Number"
+   ],
+   [
+    "Number",
+    "Iguana",
+    "Number"
+   ],
+   [
+    "Erian",
+    "effar",
+    "Erian"
+   ],
+   [
+    "Erian",
+    "Masino",
+    "Erian"
+   ],
+   [
+    "Soulb",
+    "Gutty",
+    "Soulb"
+   ],
+   [
+    "Soulb",
+    "Andy",
+    "Soulb"
+   ],
+   [
+    "Soulb",
+    "Cronox",
+    "Soulb"
+   ],
+   [
+    "Number",
+    "el hnito de leitan 🇦🇷",
+    "Number"
+   ],
+   [
+    "Number",
+    "el familiar",
+    "Number"
+   ],
+   [
+    "Number",
+    "Xclusivo",
+    "Number"
+   ],
+   [
+    "Soulb",
+    "Snow",
+    "Soulb"
+   ],
+   [
+    "MCNadie",
+    "Zignos",
+    "MCNadie"
+   ],
+   [
+    "Makmah",
+    "Number",
+    "Makmah"
+   ],
+   [
+    "Erian",
+    "Lucho",
+    "Erian"
+   ],
+   [
+    "Soulb",
+    "Makmah",
+    "Soulb"
+   ],
+   [
+    "MCNadie",
+    "Erian",
+    "MCNadie"
+   ],
+   [
+    "MCNadie",
+    "Soulb",
+    "MCNadie"
+   ]
+  ],
+  "ev_antes": {
+   "Andy": 6,
+   "BLITZ": 9,
+   "Cronox": 31,
+   "Erian": 69,
+   "Iguana": 4,
+   "LRS": 30,
+   "MCNadie": 6,
+   "Makmah": 97,
+   "Masino": 8,
+   "NC": 47,
+   "Number": 11,
+   "Polosport": 14,
+   "Snow": 42,
+   "Soulb": 17,
+   "Vandu": 44,
+   "Xclusivo": 20,
+   "Zignos": 28,
+   "dxg": 9
+  },
+  "fecha": "29/09",
+  "nombre": "MANIJA Y NUEVA ERA VOL.1",
+  "num": 569,
+  "participantes": 33,
+  "sello": {
+   "MCNadie": "28ed09c6b1b7:d903d0d85717"
+  },
+  "sv": "CH",
+  "t": "2026-11-06T00:48:16Z",
+  "tabla": [
+   [
+    "Soulb",
+    "Subcampeón",
+    7500
+   ],
+   [
+    "Erian",
+    "Semifinal",
+    5250
+   ],
+   [
+    "MCNadie",
+    "Campeón",
+    5000
+   ],
+   [
+    "Makmah",
+    "Semifinal",
+    2625
+   ],
+   [
+    "Snow",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Zignos",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Number",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Lucho",
+    "Cuartos",
+    2500
+   ],
+   [
+    "LRS",
+    "Octavos",
+    1250
+   ],
+   [
+    "NC",
+    "Octavos",
+    1250
+   ],
+   [
+    "maRIHUANATICO🇦🇷",
+    "Octavos",
+    1250
+   ],
+   [
+    "dxg",
+    "Octavos",
+    1250
+   ],
+   [
+    "Vandu",
+    "Octavos",
+    1250
+   ],
+   [
+    "BLITZ",
+    "Octavos",
+    1250
+   ],
+   [
+    "Polosport",
+    "Octavos",
+    1250
+   ],
+   [
+    "Iguana",
+    "Octavos",
+    1250
+   ],
+   [
+    "effar",
+    "Octavos",
+    1250
+   ],
+   [
+    "Masino",
+    "Octavos",
+    1250
+   ],
+   [
+    "Gutty",
+    "Octavos",
+    1250
+   ],
+   [
+    "Andy",
+    "Octavos",
+    1250
+   ],
+   [
+    "Cronox",
+    "Octavos",
+    1250
+   ],
+   [
+    "el hnito de leitan 🇦🇷",
+    "Octavos",
+    1250
+   ],
+   [
+    "el familiar",
+    "Octavos",
+    1250
+   ],
+   [
+    "Xclusivo",
+    "Octavos",
+    1250
+   ]
+  ],
+  "v": 2
+ },
+ "570": {
+  "antes": {
+   "Ariaxer": [
+    57,
+    75,
+    false
+   ],
+   "Guess": [
+    23,
+    26,
+    false
+   ],
+   "Jotap": [
+    563,
+    559,
+    true
+   ],
+   "Makmah": [
+    1,
+    1,
+    false
+   ],
+   "NC": [
+    21,
+    24,
+    false
+   ],
+   "Number": [
+    53,
+    71,
+    false
+   ],
+   "Soulb": [
+    47,
+    62,
+    false
+   ],
+   "Trelok": [
+    89,
+    119,
+    false
+   ],
+   "Yio": [
+    590,
+    588,
+    true
+   ],
+   "mats": [
+    71,
+    90,
+    false
+   ]
+  },
+  "canal": "",
+  "duelos": [
+   [
+    "Yio",
+    "Soulb",
+    "Yio"
+   ],
+   [
+    "Jotap",
+    "Goohan MVP",
+    "Jotap"
+   ],
+   [
+    "Jodnes 🇨🇴",
+    "Minis 🇲🇽",
+    "Jodnes 🇨🇴"
+   ],
+   [
+    "Tony 🇦🇷",
+    "NC",
+    "Tony 🇦🇷"
+   ],
+   [
+    "Karma",
+    "Guess",
+    "Karma"
+   ],
+   [
+    "Trelok",
+    "Ariaxer",
+    "Trelok"
+   ],
+   [
+    "THO",
+    "Lvel 🇻🇪",
+    "THO"
+   ],
+   [
+    "THO",
+    "mats",
+    "THO"
+   ],
+   [
+    "Number",
+    "El Colesito 🇨🇴",
+    "Number"
+   ],
+   [
+    "Number",
+    "Makmah",
+    "Number"
+   ],
+   [
+    "Karma",
+    "Yio",
+    "Karma"
+   ],
+   [
+    "Trelok",
+    "Jotap",
+    "Trelok"
+   ],
+   [
+    "THO",
+    "Jodnes 🇨🇴",
+    "THO"
+   ],
+   [
+    "Number",
+    "Tony 🇦🇷",
+    "Number"
+   ],
+   [
+    "THO",
+    "Karma",
+    "THO"
+   ],
+   [
+    "Number",
+    "Trelok",
+    "Number"
+   ],
+   [
+    "Number",
+    "THO",
+    "Number"
+   ]
+  ],
+  "ev_antes": {
+   "Ariaxer": 14,
+   "Guess": 21,
+   "Jotap": 1,
+   "Makmah": 97,
+   "NC": 47,
+   "Number": 11,
+   "Soulb": 17,
+   "Trelok": 4,
+   "Yio": 1,
+   "mats": 9
+  },
+  "fecha": "11/10",
+  "nombre": "MINUTOS A SANGRE - DEATHROW EN VIVO VOL 1",
+  "num": 570,
+  "participantes": 18,
+  "sello": {
+   "Number": "62903d25269d:d903d0d85717"
+  },
+  "sv": "CH",
+  "t": "2026-11-06T00:48:16Z",
+  "tabla": [
+   [
+    "Number",
+    "Campeón",
+    10000
+   ],
+   [
+    "THO",
+    "Subcampeón",
+    7500
+   ],
+   [
+    "Karma",
+    "Semifinal",
+    5250
+   ],
+   [
+    "Trelok",
+    "Semifinal",
+    5250
+   ],
+   [
+    "Yio",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Jotap",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Jodnes 🇨🇴",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Tony 🇦🇷",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Soulb",
+    "Octavos",
+    1250
+   ],
+   [
+    "Goohan MVP",
+    "Octavos",
+    1250
+   ],
+   [
+    "Minis 🇲🇽",
+    "Octavos",
+    1250
+   ],
+   [
+    "NC",
+    "Octavos",
+    1250
+   ],
+   [
+    "Guess",
+    "Octavos",
+    1250
+   ],
+   [
+    "Ariaxer",
+    "Octavos",
+    1250
+   ],
+   [
+    "Lvel 🇻🇪",
+    "Octavos",
+    1250
+   ],
+   [
+    "mats",
+    "Octavos",
+    1250
+   ],
+   [
+    "El Colesito 🇨🇴",
+    "Octavos",
+    1250
+   ],
+   [
+    "Makmah",
+    "Octavos",
+    1250
+   ]
+  ],
+  "v": 2
+ },
+ "571": {
+  "antes": {
+   "Chop": [
+    230,
+    43,
+    true
+   ],
+   "DarnBless": [
+    244,
+    95,
+    true
+   ],
+   "Dyzz": [
+    43,
+    52,
+    false
+   ],
+   "Erian": [
+    4,
+    4,
+    false
+   ],
+   "Geoka": [
+    34,
+    40,
+    false
+   ],
+   "JEIXDER": [
+    113,
+    166,
+    false
+   ],
+   "Kourier": [
+    145,
+    247,
+    false
+   ],
+   "LEWITO": [
+    129,
+    199,
+    false
+   ],
+   "Masino": [
+    68,
+    87,
+    false
+   ],
+   "OG": [
+    15,
+    16,
+    false
+   ],
+   "Provenza": [
+    14,
+    15,
+    false
+   ],
+   "Riolu": [
+    115,
+    171,
+    false
+   ],
+   "SULTAN": [
+    249,
+    104,
+    true
+   ],
+   "Snow": [
+    6,
+    7,
+    false
+   ],
+   "Xclusivo": [
+    229,
+    33,
+    true
+   ]
+  },
+  "canal": "",
+  "duelos": [
+   [
+    "Makmah",
+    "Geoka",
+    "Makmah"
+   ],
+   [
+    "Makmah",
+    "akvmolt 🇨🇼",
+    "Makmah"
+   ],
+   [
+    "Riolu",
+    "Chop",
+    "Riolu"
+   ],
+   [
+    "Riolu",
+    "Lvel 🇻🇪",
+    "Riolu"
+   ],
+   [
+    "tony 🇦🇷",
+    "DarnBless",
+    "tony 🇦🇷"
+   ],
+   [
+    "tony 🇦🇷",
+    "Karma",
+    "tony 🇦🇷"
+   ],
+   [
+    "tony 🇦🇷",
+    "JEIXDER",
+    "tony 🇦🇷"
+   ],
+   [
+    "LEWITO",
+    "Palako 🇵🇪",
+    "LEWITO"
+   ],
+   [
+    "kata lyrical 🇨🇱",
+    "Toretto Mexicano 🇲🇽",
+    "kata lyrical 🇨🇱"
+   ],
+   [
+    "kata lyrical 🇨🇱",
+    "Dyzz",
+    "kata lyrical 🇨🇱"
+   ],
+   [
+    "kata lyrical 🇨🇱",
+    "OG",
+    "kata lyrical 🇨🇱"
+   ],
+   [
+    "Omiwido 🇪🇸",
+    "Kourier",
+    "Omiwido 🇪🇸"
+   ],
+   [
+    "Omiwido 🇪🇸",
+    "Xclusivo",
+    "Omiwido 🇪🇸"
+   ],
+   [
+    "Provenza",
+    "Korier 🇲🇽",
+    "Provenza"
+   ],
+   [
+    "Provenza",
+    "Drope 🇺🇾",
+    "Provenza"
+   ],
+   [
+    "Provenza",
+    "TheOg",
+    "Provenza"
+   ],
+   [
+    "LEWITO, Erian",
+    "SULTAN, Masino",
+    "LEWITO, Erian"
+   ],
+   [
+    "Lamborguini 🇦🇷, Makmah",
+    "Snow, Omiwido 🇪🇸",
+    "Lamborguini 🇦🇷, Makmah"
+   ],
+   [
+    "Provenza, 23 🇨🇴",
+    "Riolu, Ghost 🇻🇪",
+    "Provenza, 23 🇨🇴"
+   ],
+   [
+    "TONY  🇦🇷, LEITAN  🇦🇷",
+    "kata lyrical 🇨🇱, JD",
+    "TONY  🇦🇷, LEITAN  🇦🇷"
+   ],
+   [
+    "LEWITO, Erian, SULTAN",
+    "Riolu, Provenza, 23 🇨🇴",
+    "LEWITO, Erian, SULTAN"
+   ],
+   [
+    "JD, TONY  🇦🇷, LEITAN  🇦🇷",
+    "Seko Boy🇨🇴  Lamborguini 🇦🇷 - Makma 🇻🇪",
+    "JD, TONY  🇦🇷, LEITAN  🇦🇷"
+   ],
+   [
+    "JD 🇪🇨  - TONY  🇦🇷 - LEITAN  🇦🇷 - Makma 🇻🇪",
+    "LEWITO, Erian, SULTAN, Provenza",
+    "JD 🇪🇨  - TONY  🇦🇷 - LEITAN  🇦🇷 - Makma 🇻🇪"
+   ]
+  ],
+  "ev_antes": {
+   "Chop": 20,
+   "DarnBless": 10,
+   "Dyzz": 24,
+   "Erian": 69,
+   "Geoka": 23,
+   "JEIXDER": 7,
+   "Kourier": 5,
+   "LEWITO": 5,
+   "Masino": 8,
+   "OG": 18,
+   "Provenza": 39,
+   "Riolu": 5,
+   "SULTAN": 10,
+   "Snow": 42,
+   "Xclusivo": 20
+  },
+  "fecha": "20/10",
+  "nombre": "PANDILLAS NO VAMOS A TAGUEAR NI A ESPERAR A NADIE VOL 2",
+  "num": 571,
+  "participantes": 35,
+  "sello": {
+   "JD 🇪🇨  - TONY  🇦🇷 - LEITAN  🇦🇷 - Makma 🇻🇪": ""
+  },
+  "sv": "CH",
+  "t": "2026-11-06T00:48:18Z",
+  "tabla": [
+   [
+    "JD 🇪🇨  - TONY  🇦🇷 - LEITAN  🇦🇷 - Makma 🇻🇪",
+    "Campeón",
+    10000
+   ],
+   [
+    "Seko Boy🇨🇴  Lamborguini 🇦🇷 - Makma 🇻🇪",
+    "Semifinal",
+    5250
+   ],
+   [
+    "Provenza",
+    "Semifinal",
+    3625
+   ],
+   [
+    "Riolu",
+    "Semifinal",
+    3000
+   ],
+   [
+    "LEWITO",
+    "Subcampeón",
+    1875
+   ],
+   [
+    "Erian",
+    "Subcampeón",
+    1875
+   ],
+   [
+    "SULTAN",
+    "Subcampeón",
+    1875
+   ],
+   [
+    "23 🇨🇴",
+    "Semifinal",
+    1750
+   ],
+   [
+    "Masino",
+    "Cuartos",
+    1250
+   ],
+   [
+    "Snow",
+    "Cuartos",
+    1250
+   ],
+   [
+    "Omiwido 🇪🇸",
+    "Cuartos",
+    1250
+   ],
+   [
+    "Ghost 🇻🇪",
+    "Cuartos",
+    1250
+   ],
+   [
+    "kata lyrical 🇨🇱",
+    "Cuartos",
+    1250
+   ],
+   [
+    "JD",
+    "Cuartos",
+    1250
+   ],
+   [
+    "Geoka",
+    "Octavos",
+    1250
+   ],
+   [
+    "akvmolt 🇨🇼",
+    "Octavos",
+    1250
+   ],
+   [
+    "Chop",
+    "Octavos",
+    1250
+   ],
+   [
+    "Lvel 🇻🇪",
+    "Octavos",
+    1250
+   ],
+   [
+    "DarnBless",
+    "Octavos",
+    1250
+   ],
+   [
+    "Karma",
+    "Octavos",
+    1250
+   ],
+   [
+    "JEIXDER",
+    "Octavos",
+    1250
+   ],
+   [
+    "Palako 🇵🇪",
+    "Octavos",
+    1250
+   ],
+   [
+    "Toretto Mexicano 🇲🇽",
+    "Octavos",
+    1250
+   ],
+   [
+    "Dyzz",
+    "Octavos",
+    1250
+   ],
+   [
+    "OG",
+    "Octavos",
+    1250
+   ],
+   [
+    "Kourier",
+    "Octavos",
+    1250
+   ],
+   [
+    "Xclusivo",
+    "Octavos",
+    1250
+   ],
+   [
+    "Korier 🇲🇽",
+    "Octavos",
+    1250
+   ],
+   [
+    "Drope 🇺🇾",
+    "Octavos",
+    1250
+   ],
+   [
+    "TheOg",
+    "Octavos",
+    1250
+   ]
+  ],
+  "v": 2
+ },
+ "572": {
+  "antes": {
+   "Drexx": [
+    39,
+    46,
+    false
+   ],
+   "JEIXDER": [
+    113,
+    166,
+    false
+   ],
+   "Jupiter": [
+    49,
+    65,
+    false
+   ],
+   "MCNadie": [
+    78,
+    102,
+    false
+   ],
+   "NC": [
+    21,
+    24,
+    false
+   ],
+   "PichulaMc": [
+    3,
+    3,
+    false
+   ],
+   "SULTAN": [
+    249,
+    104,
+    true
+   ],
+   "SikoV": [
+    356,
+    289,
+    true
+   ],
+   "Sin Limites": [
+    27,
+    32,
+    false
+   ],
+   "Trelok": [
+    89,
+    119,
+    false
+   ]
+  },
+  "canal": "",
+  "duelos": [
+   [
+    "Lucho",
+    "akvmolt 🇨🇼",
+    "Lucho"
+   ],
+   [
+    "Lucho",
+    "NC",
+    "Lucho"
+   ],
+   [
+    "MCNadie",
+    "Zanz🇲🇽",
+    "MCNadie"
+   ],
+   [
+    "MCNadie",
+    "Lvel 🇻🇪",
+    "MCNadie"
+   ],
+   [
+    "SULTAN",
+    "Sin Limites",
+    "SULTAN"
+   ],
+   [
+    "SULTAN",
+    "Jupiter",
+    "SULTAN"
+   ],
+   [
+    "Koffi 🇲🇽",
+    "Drexx",
+    "Koffi 🇲🇽"
+   ],
+   [
+    "Koffi 🇲🇽",
+    "SikoV",
+    "Koffi 🇲🇽"
+   ],
+   [
+    "Lizenim 🇦🇷",
+    "Lucho",
+    "Lizenim 🇦🇷"
+   ],
+   [
+    "MCNadie",
+    "SULTAN",
+    "MCNadie"
+   ],
+   [
+    "JEIXDER",
+    "Koffi 🇲🇽",
+    "JEIXDER"
+   ],
+   [
+    "PichulaMc",
+    "Trelok",
+    "PichulaMc"
+   ],
+   [
+    "MCNadie",
+    "Lizenim 🇦🇷",
+    "MCNadie"
+   ],
+   [
+    "PichulaMc",
+    "JEIXDER",
+    "PichulaMc"
+   ],
+   [
+    "MCNadie",
+    "PichulaMc",
+    "MCNadie"
+   ]
+  ],
+  "ev_antes": {
+   "Drexx": 31,
+   "JEIXDER": 7,
+   "Jupiter": 12,
+   "MCNadie": 6,
+   "NC": 47,
+   "PichulaMc": 56,
+   "SULTAN": 10,
+   "SikoV": 1,
+   "Sin Limites": 41,
+   "Trelok": 4
+  },
+  "fecha": "26/10",
+  "nombre": "MINUTOS A SANGRE - D3ATHROW EN VIVO VOL 3",
+  "num": 572,
+  "participantes": 26,
+  "sello": {
+   "MCNadie": "28ed09c6b1b7:d903d0d85717"
+  },
+  "sv": "CH",
+  "t": "2026-11-06T00:48:20Z",
+  "tabla": [
+   [
+    "MCNadie",
+    "Campeón",
+    10000
+   ],
+   [
+    "PichulaMc",
+    "Subcampeón",
+    7500
+   ],
+   [
+    "JEIXDER",
+    "Semifinal",
+    5250
+   ],
+   [
+    "Lizenim 🇦🇷",
+    "Semifinal",
+    2625
+   ],
+   [
+    "Lucho",
+    "Cuartos",
+    2500
+   ],
+   [
+    "SULTAN",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Koffi 🇲🇽",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Trelok",
+    "Cuartos",
+    2500
+   ],
+   [
+    "akvmolt 🇨🇼",
+    "Octavos",
+    1250
+   ],
+   [
+    "NC",
+    "Octavos",
+    1250
+   ],
+   [
+    "Zanz🇲🇽",
+    "Octavos",
+    1250
+   ],
+   [
+    "Lvel 🇻🇪",
+    "Octavos",
+    1250
+   ],
+   [
+    "Sin Limites",
+    "Octavos",
+    1250
+   ],
+   [
+    "Jupiter",
+    "Octavos",
+    1250
+   ],
+   [
+    "Drexx",
+    "Octavos",
+    1250
+   ],
+   [
+    "SikoV",
+    "Octavos",
+    1250
+   ]
+  ],
+  "v": 2
+ },
+ "573": {
+  "antes": {
+   "Akuseru": [
+    257,
+    133,
+    true
+   ],
+   "DarnBless": [
+    244,
+    95,
+    true
+   ],
+   "Masino": [
+    68,
+    87,
+    false
+   ],
+   "Vandu": [
+    11,
+    12,
+    false
+   ],
+   "luisito 🏆": [
+    479,
+    456,
+    true
+   ],
+   "mats": [
+    71,
+    90,
+    false
+   ]
+  },
+  "canal": "",
+  "duelos": [
+   [
+    "Kaizz🇦🇷",
+    "Elinge 🇨🇱",
+    "Kaizz🇦🇷"
+   ],
+   [
+    "Masino",
+    "Lucho",
+    "Masino"
+   ],
+   [
+    "Vandu",
+    "luisito 🏆",
+    "Vandu"
+   ],
+   [
+    "Berrun",
+    "DarnBless",
+    "Berrun"
+   ],
+   [
+    "Ezze",
+    "Akuseru",
+    "Ezze"
+   ],
+   [
+    "JAZII 🇪🇨",
+    "Kaizz🇦🇷",
+    "JAZII 🇪🇨"
+   ],
+   [
+    "EL PIBE 🇦🇷",
+    "Masino",
+    "EL PIBE 🇦🇷"
+   ],
+   [
+    "Berrun",
+    "Vandu",
+    "Berrun"
+   ],
+   [
+    "mats",
+    "Ezze",
+    "mats"
+   ],
+   [
+    "BERRUM 🇨🇱",
+    "JAZII 🇪🇨",
+    "BERRUM 🇨🇱"
+   ],
+   [
+    "mats",
+    "EL PIBE 🇦🇷",
+    "mats"
+   ],
+   [
+    "mats",
+    "BERRUM 🇨🇱",
+    "mats"
+   ]
+  ],
+  "ev_antes": {
+   "Akuseru": 5,
+   "DarnBless": 10,
+   "Masino": 8,
+   "Vandu": 44,
+   "luisito 🏆": 2,
+   "mats": 9
+  },
+  "fecha": "02/11",
+  "nombre": "COMPE ATERRADORA",
+  "num": 573,
+  "participantes": 18,
+  "sello": {
+   "mats": "c7400f9d676c:d903d0d85717"
+  },
+  "sv": "CH",
+  "t": "2026-11-06T00:48:28Z",
+  "tabla": [
+   [
+    "mats",
+    "Campeón",
+    10000
+   ],
+   [
+    "BERRUM 🇨🇱",
+    "Subcampeón",
+    7500
+   ],
+   [
+    "EL PIBE 🇦🇷",
+    "Semifinal",
+    5250
+   ],
+   [
+    "JAZII 🇪🇨",
+    "Semifinal",
+    2625
+   ],
+   [
+    "Kaizz🇦🇷",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Masino",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Vandu",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Elinge 🇨🇱",
+    "Octavos",
+    1250
+   ],
+   [
+    "Lucho",
+    "Octavos",
+    1250
+   ],
+   [
+    "luisito 🏆",
+    "Octavos",
+    1250
+   ],
+   [
+    "DarnBless",
+    "Octavos",
+    1250
+   ],
+   [
+    "Akuseru",
+    "Octavos",
+    1250
    ]
   ],
   "v": 2

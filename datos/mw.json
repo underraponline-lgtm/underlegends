@@ -185,9 +185,9 @@
     "base": 6000,
     "o": 13,
     "estado": "cazado",
-    "ev": 2,
+    "ev": 3,
     "fase": "Semifinal",
-    "valor": 7250,
+    "valor": 8500,
     "caza": {
      "n": 565,
      "evento": "qcyo rapeen 10",
@@ -196,11 +196,11 @@
      "por": [
       {
        "n": "Agus",
-       "cobra": 3500
+       "cobra": 4250
       },
       {
        "n": "Six",
-       "cobra": 3500
+       "cobra": 4250
       }
      ]
     }
