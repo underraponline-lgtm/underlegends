@@ -11,6 +11,18 @@
  ],
  "cambios": [
   {
+   "version": "4.37",
+   "dia": "2026-11-05",
+   "cuando": "2026-11-05T19:56:00-05:00",
+   "titulo": "Más nombres bien leídos en las llaves",
+   "items": [
+    "**Algunas llaves escriben el «vs» al principio del renglón** y se perdían casi todas las batallas de esa ronda: quien ganó cobraba como walk-in y quien perdió no cobraba nada. Ya se leen bien, también en las llaves en vivo.",
+    "**Un equipo con nombre ya no se parte en dos personas** cuando el nombre lleva una coma: los puntos les quedan a quienes jugaron.",
+    "**Seis eventos se volvieron a calcular**, entre el 26 de septiembre y el 31 de octubre, y varios nombres escritos de otra manera quedaron unidos con su dueño: tus puntos pueden haber subido.",
+    "**La llave de un evento ya no muestra una final de más** cuando debajo se anuncia el momento de la noche, y el número de raperos no cuenta los disfraces entre paréntesis."
+   ]
+  },
+  {
    "version": "4.36",
    "dia": "2026-11-05",
    "cuando": "2026-11-05T19:06:00-05:00",
