@@ -14,6 +14,10 @@
    "sv-sr": "2026-11-03",
    "temporada": "2026-11-03"
   },
+  "fleivawack": {
+   "competitivo": "2026-11-06",
+   "temporada": "2026-11-06"
+  },
   "matias": {
    "bloq-competitivo": "2026-11-03",
    "bloq-pais": "2026-11-03",
@@ -35,7 +39,7 @@
   }
  },
  "pasaban": 413,
- "cuando": "2026-11-06T05:05:13Z",
+ "cuando": "2026-11-06T05:30:41Z",
  "borradas": [
   [
    "criszj",

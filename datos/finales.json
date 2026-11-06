@@ -1093,5 +1093,27 @@
   "sin_permiso": false,
   "sv": "DDF"
  },
+ "1568083395974799433": {
+  "autor": "1548906948307451906",
+  "canal": "1558611505040064607",
+  "cuando": "2026-11-06T02:03:35.181000+00:00",
+  "evento": "(sin titulo)",
+  "fecha": "05/11",
+  "llave": "1568083395974799433",
+  "pregunta": "",
+  "preguntada": "2026-11-06 1:24 AM ET",
+  "preguntas": [
+   {
+    "lados": [
+     "LARRIX🇦🇷",
+     "Gazir🇪🇸"
+    ],
+    "ronda": "FINAL"
+   }
+  ],
+  "respondidas": {},
+  "sin_permiso": true,
+  "sv": "LKR"
+ },
  "_leeme": "Las llaves que el ciclo no entendió y se las preguntó a quien las publicó, con botones o un menú (bot/finales.py). Una vez por llave, por su ID: así nunca se pregunta dos veces. Dlx, 12/10/2026."
 }

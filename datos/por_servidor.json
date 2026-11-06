@@ -2075,10 +2075,7 @@
     "ovr": 45,
     "pod": 0,
     "pts": 16250,
-    "racha": "0/0",
-    "tg": {
-     "nuevo": true
-    }
+    "racha": "0/0"
    },
    "FFA": {
     "duelos": "3/9",
@@ -2267,10 +2264,7 @@
     "ovr": 43,
     "pod": 0,
     "pts": 7500,
-    "racha": "0/0",
-    "tg": {
-     "nuevo": true
-    }
+    "racha": "0/0"
    }
   },
   "DarkoMC": {
@@ -2916,10 +2910,7 @@
     "ovr": 42,
     "pod": 0,
     "pts": 1875,
-    "racha": "0/0",
-    "tg": {
-     "nuevo": true
-    }
+    "racha": "0/0"
    }
   },
   "Eclipsito": {
@@ -3062,8 +3053,7 @@
     "pts": 25000,
     "racha": "1/1",
     "tg": {
-     "fin": 1,
-     "nuevo": true
+     "fin": 1
     }
    }
   },
@@ -3077,8 +3067,7 @@
     "pts": 0,
     "racha": "0/0",
     "tg": {
-     "fin": 1,
-     "nuevo": true
+     "fin": 1
     }
    }
   },
@@ -3444,8 +3433,7 @@
     "pts": 49750,
     "racha": "0/1",
     "tg": {
-     "fin": 1,
-     "nuevo": true
+     "fin": 1
     }
    }
   },
@@ -3562,10 +3550,7 @@
     "ovr": 43,
     "pod": 0,
     "pts": 3750,
-    "racha": "0/0",
-    "tg": {
-     "nuevo": true
-    }
+    "racha": "0/0"
    }
   },
   "Filozico": {
@@ -3998,8 +3983,7 @@
     "pts": 22500,
     "racha": "1/1",
     "tg": {
-     "fin": 1,
-     "nuevo": true
+     "fin": 1
     }
    }
   },
@@ -4827,28 +4811,14 @@
     "racha": "0/0"
    }
   },
-  "Joven sexlong 🇵🇦": {
-   "FFA": {
-    "duelos": "",
-    "ev": 1,
-    "oro": 0,
-    "ovr": 43,
-    "pod": 0,
-    "pts": 6250,
-    "racha": "0/0",
-    "tg": {
-     "nuevo": true
-    }
-   }
-  },
   "Joven shenlong": {
    "FFA": {
     "duelos": "",
-    "ev": 1,
+    "ev": 2,
     "oro": 0,
-    "ovr": 44,
+    "ovr": 45,
     "pod": 0,
-    "pts": 12500,
+    "pts": 18750,
     "racha": "0/0",
     "tg": {
      "nuevo": true
@@ -5153,10 +5123,7 @@
     "ovr": 43,
     "pod": 0,
     "pts": 7500,
-    "racha": "0/0",
-    "tg": {
-     "nuevo": true
-    }
+    "racha": "0/0"
    }
   },
   "Kastigoz": {
@@ -5658,10 +5625,7 @@
     "ovr": 43,
     "pod": 0,
     "pts": 3750,
-    "racha": "0/0",
-    "tg": {
-     "nuevo": true
-    }
+    "racha": "0/0"
    }
   },
   "LKS 🇨🇱": {
@@ -6160,10 +6124,7 @@
     "ovr": 45,
     "pod": 0,
     "pts": 17500,
-    "racha": "0/0",
-    "tg": {
-     "nuevo": true
-    }
+    "racha": "0/0"
    },
    "FFA": {
     "duelos": "3/6",
@@ -7131,10 +7092,7 @@
     "ovr": 44,
     "pod": 0,
     "pts": 7500,
-    "racha": "0/0",
-    "tg": {
-     "nuevo": true
-    }
+    "racha": "0/0"
    }
   },
   "MauzzitoEmeces": {
@@ -7556,10 +7514,7 @@
     "ovr": 44,
     "pod": 0,
     "pts": 10000,
-    "racha": "0/0",
-    "tg": {
-     "nuevo": true
-    }
+    "racha": "0/0"
    },
    "FFA": {
     "duelos": "0/1",
@@ -12047,10 +12002,7 @@
     "ovr": 43,
     "pod": 0,
     "pts": 3750,
-    "racha": "0/0",
-    "tg": {
-     "nuevo": true
-    }
+    "racha": "0/0"
    }
   },
   "fleivaman": {
@@ -12447,10 +12399,7 @@
     "ovr": 43,
     "pod": 0,
     "pts": 7875,
-    "racha": "1/1",
-    "tg": {
-     "nuevo": true
-    }
+    "racha": "1/1"
    }
   },
   "rayito": {

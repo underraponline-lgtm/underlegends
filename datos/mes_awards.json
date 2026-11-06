@@ -7177,6 +7177,70 @@
      "orgs": [],
      "organizador": "@.",
      "cuentas": {}
+    },
+    "1559343495137726485": {
+     "sv": "DDS",
+     "nombre": "Duo Style Vol.5",
+     "mo": "2026-10-12T23:14:20Z",
+     "staff": {},
+     "orgs": [
+      {
+       "n": "Benji Price",
+       "id": "734945161158852630"
+      },
+      {
+       "n": "Versekiz",
+       "id": "987149314591719474"
+      },
+      {
+       "n": "VILCOVICH",
+       "id": "846870712950194196"
+      }
+     ],
+     "organizador": "",
+     "cuentas": {}
+    },
+    "1565157156645511330": {
+     "sv": "DDS",
+     "nombre": "no se k poner style",
+     "mo": "2026-10-29T01:00:00Z",
+     "staff": {},
+     "orgs": [
+      {
+       "n": "ORIUZ",
+       "id": ""
+      }
+     ],
+     "organizador": "ORIUZ",
+     "cuentas": {}
+    },
+    "1564816341054267484": {
+     "sv": "DDS",
+     "nombre": "SIX SEVEN STYLE",
+     "mo": "2026-10-28T01:56:28Z",
+     "staff": {},
+     "orgs": [
+      {
+       "n": "tayo0016",
+       "id": ""
+      }
+     ],
+     "organizador": "@tayo0016",
+     "cuentas": {}
+    },
+    "1564781511188815875": {
+     "sv": "DDS",
+     "nombre": "MÁSTER STYLE REMAKE",
+     "mo": "2026-10-27T23:23:04Z",
+     "staff": {},
+     "orgs": [
+      {
+       "n": "Infected",
+       "id": "1174409397397631030"
+      }
+     ],
+     "organizador": "@Infected",
+     "cuentas": {}
     }
    },
    "ver": {
@@ -8577,6 +8641,47 @@
      ],
      "organizador": "@nachonc_",
      "cuentas": {}
+    },
+    "1568102176260100222": {
+     "sv": "DDS",
+     "nombre": "DUO STYLE",
+     "mo": "2026-11-06T03:18:12Z",
+     "staff": {
+      "dj": [
+       "VERSECK"
+      ]
+     },
+     "orgs": [],
+     "organizador": "",
+     "cuentas": {}
+    },
+    "1568016698022297641": {
+     "sv": "DDS",
+     "nombre": "HORARIOS DE INSCRIPCION: ya",
+     "mo": "2026-11-05T21:38:33Z",
+     "staff": {},
+     "orgs": [
+      {
+       "n": "infected",
+       "id": ""
+      }
+     ],
+     "organizador": "infected",
+     "cuentas": {}
+    },
+    "1567354077430677607": {
+     "sv": "DDS",
+     "nombre": "SIX SEVEN STYLE",
+     "mo": "2026-11-04T01:45:32Z",
+     "staff": {},
+     "orgs": [
+      {
+       "n": "tayo",
+       "id": ""
+      }
+     ],
+     "organizador": "tayo",
+     "cuentas": {}
     }
    },
    "ver": {
@@ -8779,6 +8884,13 @@
       "",
       "💤",
       "paratimiringuicaro"
+     ]
+    },
+    "LKR|2026-11-06": {
+     "1555067257376346122": [
+      "",
+      "Zaik",
+      "zaik0009"
      ]
     }
    }

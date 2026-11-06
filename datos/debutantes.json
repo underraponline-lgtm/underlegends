@@ -929,30 +929,18 @@
    "vence": "2026-10-20T15:18:36+00:00",
    "vencido": false
   },
-  "Joven sexlong": {
-   "avisado": "2026-11-04",
-   "chat": "2026-11-03",
-   "con": null,
-   "cumplido": "",
+  "Joven shenlong": {
+   "avisado": "2026-11-06",
+   "avisado_cumplido": "2026-11-06",
+   "chat": "2026-11-06",
+   "con": 574,
+   "cumplido": "2026-11-06T03:10:32+00:00",
    "debut": "2026-11-03T02:50:33+00:00",
-   "did": "",
+   "did": "926257282667413564",
    "evento": "qcyo rapeen",
    "n": 563,
    "sv": "FFA",
    "vence": "2026-11-10T02:50:33+00:00",
-   "vencido": false
-  },
-  "Joven shenlong": {
-   "avisado": "2026-11-06",
-   "chat": "2026-11-06",
-   "con": null,
-   "cumplido": "",
-   "debut": "2026-11-06T03:10:32+00:00",
-   "did": "926257282667413564",
-   "evento": "QCYO RAPEEN 11",
-   "n": 574,
-   "sv": "FFA",
-   "vence": "2026-11-13T03:10:32+00:00",
    "vencido": false
   },
   "Kain": {
