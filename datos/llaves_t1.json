@@ -43355,7 +43355,7 @@
   ],
   "n": 571,
   "nombre": "PANDILLAS NO VAMOS A TAGUEAR NI A ESPERAR A NADIE VOL 2",
-  "participantes": 35,
+  "participantes": 34,
   "rondas": [
    {
     "b": [
@@ -43366,7 +43366,7 @@
        "Molt"
       ],
       "Makmah",
-      "triple (3 bandas)"
+      "triple (3 bandas); Drafteado: Makma 🇻🇪"
      ],
      [
       [
@@ -43425,7 +43425,7 @@
        "TheOg"
       ],
       "Provenza, 23 🇨🇴",
-      "triple (5 bandas, pasan 2); también pasa: 23 🇨🇴"
+      "triple (5 bandas, pasan 2); también pasa: 23 🇨🇴; Drafteado: Provenza 🇦🇷"
      ],
      [
       [
@@ -43455,7 +43455,7 @@
        "Snow, Omiwido"
       ],
       "Lamborguini 🇦🇷, Makmah",
-      ""
+      "Drafteado: Seko Boy🇨🇴"
      ],
      [
       [
@@ -43489,7 +43489,7 @@
      [
       [
        "JD, TONY  🇦🇷, LEITAN  🇦🇷",
-       "Seko Boy🇨🇴  Lamborguini 🇦🇷 - Makma 🇻🇪"
+       "Snow, Lamborguini 🇦🇷, Makmah"
       ],
       "JD, TONY  🇦🇷, LEITAN  🇦🇷",
       ""
@@ -43501,10 +43501,10 @@
     "b": [
      [
       [
-       "JD 🇪🇨  - TONY  🇦🇷 - LEITAN  🇦🇷 - Makma 🇻🇪",
+       "JD, TONY  🇦🇷, LEITAN  🇦🇷, Makmah",
        "LEWITO, Erian, SULTAN, Provenza"
       ],
-      "JD 🇪🇨  - TONY  🇦🇷 - LEITAN  🇦🇷 - Makma 🇻🇪",
+      "JD, TONY  🇦🇷, LEITAN  🇦🇷, Makmah",
       ""
      ]
     ],
@@ -43514,24 +43514,39 @@
   "sv": "CH",
   "tabla": [
    [
-    "JD 🇪🇨  - TONY  🇦🇷 - LEITAN  🇦🇷 - Makma 🇻🇪",
+    "Makmah",
     "Campeón",
-    10000
+    4250
    ],
    [
-    "Seko Boy🇨🇴  Lamborguini 🇦🇷 - Makma 🇻🇪",
-    "Semifinal",
-    5250
+    "JD",
+    "Campeón",
+    3750
    ],
    [
     "Provenza",
-    "Semifinal",
+    "Subcampeón",
     3625
    ],
    [
     "Riolu",
     "Semifinal",
     3000
+   ],
+   [
+    "Snow",
+    "Semifinal",
+    3000
+   ],
+   [
+    "LEITAN  🇦🇷",
+    "Campeón",
+    2500
+   ],
+   [
+    "TONY  🇦🇷",
+    "Campeón",
+    2500
    ],
    [
     "Erian",
@@ -43550,6 +43565,11 @@
    ],
    [
     "23 🇨🇴",
+    "Semifinal",
+    1750
+   ],
+   [
+    "Lamborguini 🇦🇷",
     "Semifinal",
     1750
    ],
@@ -43580,11 +43600,6 @@
    ],
    [
     "Ghost 🇻🇪",
-    "Cuartos",
-    1250
-   ],
-   [
-    "JD",
     "Cuartos",
     1250
    ],
@@ -43636,11 +43651,6 @@
    [
     "Palako",
     "Octavos",
-    1250
-   ],
-   [
-    "Snow",
-    "Cuartos",
     1250
    ],
    [
@@ -43980,7 +43990,7 @@
        "Kaizz"
       ],
       "jazi",
-      "Walk-in 1: JAZII 🇪🇨"
+      ""
      ],
      [
       [
@@ -44064,7 +44074,7 @@
    [
     "jazi",
     "Semifinal",
-    2625
+    5250
    ],
    [
     "Kaizz",
