@@ -67,7 +67,7 @@ export function lados(linea) {
   const partes = l.split(SEP);
   if (partes.length !== 2) return null;
   const [a0, b00] = partes;
-  const b0 = b00.replace(/\s*[-|]\s*JORNADA\s*\d+.*$/i, '');
+  const b0 = b00.replace(/\s*[-|]\s*(?:JORNADA\s*\d+|RECUPERATIVA\b).*$/i, '');
   const a = limpio(a0), b = limpio(b0);
   if (!/[A-Za-z]/.test(a) || !/[A-Za-z]/.test(b) || a.length > 40 || b.length > 40) return null;
   // lo último, como lo escribieron y sin sus emojis: la bandera separa a dos que se llaman igual (`genteChat()`)

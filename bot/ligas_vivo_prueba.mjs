@@ -102,7 +102,8 @@ if (!DatabaseSync) {
     ['ligas:vigia', JSON.stringify({ lista: [
       { id: 'fmh-tricolor', n: 'FMH Tricolor', sv: 'URBF', g: G, fam: 'U', ver: VER, vis: VIS, beat: BEAT, voz: VOZ },
       { id: 'lkr-fms-tricolor', n: 'FMS Tricolor LKR', sv: 'LKR', g: GK, fam: 'K', ver: VERK, vis: '', beat: '', voz: '' }] })],
-    ['cfg:' + G, JSON.stringify({ vivo: CHAT, vivo_nivel: 'normal' })],
+    // 🔴 en «Con datos», el nivel de verdad de Urban: en «Normal» no se arma el título, y así esta prueba no vio que reventaba
+    ['cfg:' + G, JSON.stringify({ vivo: CHAT, vivo_nivel: 'datos' })],
     ['web:lobby', JSON.stringify({ tabla: [{ n: 'Bloody', k: 'bloody', ovr: 90, sc: 60, rg: 'A', cc: 'co' }, { n: 'Vargas', k: 'vargas', ovr: 70, sc: 40, rg: 'B', cc: 'co' }] })],
     ['turnos:nombres', JSON.stringify({ bloody: BL, vargas: VA })],
   ]);
@@ -145,6 +146,8 @@ if (!DatabaseSync) {
   await vuelta(0);
   ok(estadoDe().join() === 'arranca' && mandados.length === 1 && /🔴 \*\*FMH Tricolor\*\*/.test(mandados[0].content) && /está arrancando/.test(mandados[0].content)
     && JSON.stringify(mandados[0].allowed_mentions) === '{"parse":[]}', 'el título en los dos canales es UNA batalla: arranca, y sale una vez en el chat sin mencionar a nadie', );
+  ok(!(o.leer('ligas_vivo').errores || []).length && !o.leer('ligas_vivo').ult_error, 'sin errores: ' + JSON.stringify(o.leer('ligas_vivo').errores));
+  ok(sql.exec('SELECT COUNT(*) AS n FROM vs_cola').toArray()[0].n === 1 && (mandados[0].components || []).length >= 2, 'en «Con datos» lleva el VS y sus botones');
   await vuelta(1);
   ok(mandados.length === 1, 'y no se repite');
   ok(o.ligasAhora(T0 + M)[0].txt === 'Está arrancando' && !JSON.stringify(o.ligasAhora(T0 + M)).includes(BL), 'la página lo ve, sin IDs de nadie');

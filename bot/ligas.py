@@ -212,7 +212,8 @@ def lados(linea):
         return None
     a, b = partes
     # «… - JORNADA 4» al final del título de FMH Under, y «…| Jornada 2» en el de FDS
-    b = re.sub(r'\s*[-|]\s*JORNADA\s*\d+.*$', '', b, flags=re.I)
+    # 🔁 y «- RECUPERATIVA» (FMH España, 05/11/2026): «EFE - RECUPERATIVA» salía como si fuera su nombre, también en el chat
+    b = re.sub(r'\s*[-|]\s*(?:JORNADA\s*\d+|RECUPERATIVA\b).*$', '', b, flags=re.I)
     ea, eb = '🎮' in a, '🎮' in b
     a, b = limpio(a), limpio(b)
     # en DDF Titans el título lleva «(REMPLAZO)»: `limpio()` ya lo saca

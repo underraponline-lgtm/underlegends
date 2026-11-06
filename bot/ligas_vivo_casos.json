@@ -44,6 +44,10 @@
     "# ANA VS BETO - JORNADA 4",
     "BETO GANA DIRECTO"],
    "res": [["ANA", "BETO", "BETO", "directa"]]},
+  {"n": "FMH: «- RECUPERATIVA» no es parte del nombre", "fam": "U", "msgs": [
+    "# <:FMHESP:1> ANA 🇪🇸 VS BETO 🇪🇸 <:FMHESP:1> - RECUPERATIVA",
+    "BETO GANA DIRECTO"],
+   "res": [["ANA", "BETO", "BETO", "directa"]]},
   {"n": "FMH: dos batallas seguidas, el cierre va a la que nombra", "fam": "U", "msgs": [
     "# ANA VS BETO",
     "# CARLA VS DIEGO",

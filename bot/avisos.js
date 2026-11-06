@@ -10262,7 +10262,7 @@ export class Avisos {
       if (ga.length === 1) x.a.n = ga[0].n;
       if (gb.length === 1) x.b.n = gb[0].n;
       x.sv = L.sv;
-      const tt = tituloCruce(x, new Set());
+      const tt = tituloCruce(x, []);
       const dato = datoCurioso(x, b.id, (y) => (y.f ? this.encima(y.f.n, ahora) : 0));
       if (tt) lineas.push('🔥 **' + tt.t + '**' + (tt.sub ? ' · ' + escMd(tt.sub) : ''));
       if (dato) lineas.push('💡 ' + escMd(dato));
@@ -10461,7 +10461,9 @@ export class Avisos {
           }
           if (!b.msg && !b.nada && !callado && ahora - f.ini <= CHAT_FRESCA) {
             const donde = await this.ligaCanal(L, aj, ahora);
-            if (!donde || donde.nivel === 'poco') { b.nada = 1; continue; }
+            // ⚠️ sin canal puede ser una pausa de minutos (`chat_pausa`): se reintenta mientras sea fresca. Sólo «Lo justo» es un no
+            if (!donde) continue;
+            if (donde.nivel === 'poco') { b.nada = 1; continue; }
             hablados++;
             try { if (!(await this.ligaAnunciar(b, L, donde, ahora))) errores.push(L.sv + ' chat'); } catch (e) { errores.push(L.sv + ' ' + String(e).slice(0, 80)); }
           }
@@ -10509,7 +10511,13 @@ export class Avisos {
     if (Math.floor(ahora / MIN) % 10 === 0) this.sql.exec('DELETE FROM liga_vivo WHERE ini < ?', ahora - 3 * DIA_MS);
     const abiertas = filas.filter((f) => ['arranca', 'juego', 'espera', 'definiendo'].includes(f.estado)).length;
     if (nuevas || hablados || errores.length || Math.floor(ahora / MIN) % 10 === 0) {
-      this.guardar('ligas_vivo', { t: ahora, ligas: cfg.length, pedidos, abiertas, nuevas, hablados, errores: errores.slice(0, 5) });
+      // 🔴 EL ERROR SE QUEDA A LA VISTA (05/11/2026). El aviso reventó toda una tarde y el latido de cada 10 minutos lo borraba del
+      // estado: se leía `errores: []`. Un día, y con cuándo. Y con las últimas batallas, para contrastarlas contra los canales
+      const pv = this.leer('ligas_vivo') || {};
+      const ultError = errores.length ? { t: ahora, e: errores.slice(0, 3) } : (pv.ult_error && ahora - pv.ult_error.t < DIA_MS ? pv.ult_error : null);
+      const ultimas = filas.filter((f) => f.estado !== 'vieja' && f.estado !== 'olvidar').slice(-8)
+        .map((f) => [f.liga, f.d.a, f.d.b, f.estado, f.d.msg ? 1 : 0, f.ini]);
+      this.guardar('ligas_vivo', { t: ahora, ligas: cfg.length, pedidos, abiertas, nuevas, hablados, errores: errores.slice(0, 5), ult_error: ultError, ultimas });
     }
     return { ok: true, ligas: cfg.length, pedidos, abiertas, nuevas };
   }
