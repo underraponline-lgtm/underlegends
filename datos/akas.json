@@ -388,17 +388,18 @@
   "garxziiscity": "Garxzii",
   "abysuss": "Abyssus",
   "elsolar": "Elsoolar",
-  "lizen": "Lizeninn",
-  "lizenin": "Lizeninn",
-  "lizennin": "Lizeninn",
-  "lisen": "Lizeninn",
+  "lizen": "Mito",
+  "lizenin": "Mito",
+  "lizennin": "Mito",
+  "lisen": "Mito",
   "tomyhilfiger1312": "tomyhilfiger🇾🇹",
   "silence": "S1lence",
   "loloelgaucho": "LOLOELGAUCHO 🇦🇷",
   "ragna": "Ragna 🇨🇱",
   "tomyhilfiger": "tomyhilfiger🇾🇹",
-  "lizenim": "Lizeninn",
-  "elcolesito": "Colesito"
+  "lizenim": "Mito",
+  "elcolesito": "Colesito",
+  "lizeninn": "Mito"
  },
  "pares": [
   [
@@ -1963,19 +1964,19 @@
   ],
   [
    "Lizen",
-   "Lizeninn"
+   "Mito"
   ],
   [
    "Lizenin",
-   "Lizeninn"
+   "Mito"
   ],
   [
    "Lizennin",
-   "Lizeninn"
+   "Mito"
   ],
   [
    "LISEN",
-   "Lizeninn"
+   "Mito"
   ],
   [
    "tomyhilfiger1312",
@@ -1999,11 +2000,15 @@
   ],
   [
    "Lizenim",
-   "Lizeninn"
+   "Mito"
   ],
   [
    "El Colesito",
    "Colesito"
+  ],
+  [
+   "Lizeninn",
+   "Mito"
   ]
  ],
  "no_confundir": [
