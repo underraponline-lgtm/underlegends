@@ -795,7 +795,7 @@
    "servidor": "94decf3ddb3f:52802c8017c2:83ca49"
   },
   "Keider": {
-   "competitivo": "367b79172ec5:69ebad5d143d",
+   "competitivo": "ef2c47dfdc09:69ebad5d143d",
    "pais": "6dfd57fd8039:17d95ff16abf",
    "servidor": "c9b7a31ed9de:52802c8017c2:3c7154",
    "temporada": "2d45d81087af:b65fe52a19f1"
@@ -1067,10 +1067,10 @@
   },
   "Malva": {},
   "Marcos": {
-   "competitivo": "c2609627cade:69ebad5d143d",
-   "pais": "b7e07fe34f1e:17d95ff16abf",
+   "competitivo": "ec3f2e9804b8:69ebad5d143d",
+   "pais": "da45da2b446c:17d95ff16abf",
    "servidor": "3798f69007ab:52802c8017c2:bcd566",
-   "temporada": "7427a3a0e345:b65fe52a19f1"
+   "temporada": "53c645bf4ad6:b65fe52a19f1"
   },
   "Marto": {},
   "Masino": {
@@ -1134,10 +1134,10 @@
    "servidor": "c3e39b4d3573:52802c8017c2:77728e"
   },
   "Mito": {
-   "competitivo": "d3695dcf996d:69ebad5d143d",
-   "pais": "1ff3b4c91626:17d95ff16abf",
+   "competitivo": "051184b43e43:69ebad5d143d",
+   "pais": "d81db2c7c48b:17d95ff16abf",
    "servidor": "a6476a9d2e6e:52802c8017c2:3d0a1b",
-   "temporada": "086eede3f974:b65fe52a19f1"
+   "temporada": "efd0cd5cb85b:b65fe52a19f1"
   },
   "Mknoli": {
    "servidor": "0995b01c57e5:52802c8017c2:2fe2e1"
@@ -1709,10 +1709,10 @@
    "servidor": "4573739e4f5f:52802c8017c2:db1079"
   },
   "VR": {
-   "competitivo": "1e4a515c7947:69ebad5d143d",
-   "pais": "fcfd6461bce9:17d95ff16abf",
+   "competitivo": "43e431355625:69ebad5d143d",
+   "pais": "b782b797cf1f:17d95ff16abf",
    "servidor": "102dfcd4151a:52802c8017c2:15af16",
-   "temporada": "637059013019:b65fe52a19f1"
+   "temporada": "ce702f024b89:b65fe52a19f1"
   },
   "Val": {
    "servidor": "d4465c1b5631:52802c8017c2:0bce64"
@@ -2014,5 +2014,5 @@
    "servidor": "7f8885a35a6d:52802c8017c2:93a344"
   }
  },
- "cuando": "2026-11-06T21:19:21+00:00"
+ "cuando": "2026-11-06T21:33:46+00:00"
 }
