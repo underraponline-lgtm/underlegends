@@ -3058,6 +3058,381 @@
     "Miniboy 🇨🇱 LEVI"
    ],
    "escribio": {}
+  },
+  {
+   "id": "cf7466538a",
+   "tipo": "Nombre desconocido",
+   "sec": "COMPE ATERRADORA · CH · 02/11 · #573",
+   "que": "¿Quién es «Elinge 🇨🇱»?",
+   "r": "Es Elinge_TIMP (en este evento)",
+   "regla": "R21 · la cuenta que se anotó así para ese evento es de alguien de la Lista que esa noche no jugó con su nombre",
+   "rk": "R21",
+   "por": "el ciclo",
+   "porque": "la cuenta @elinge823 · en la Lista: Elinge_TIMP se anotó como «Elinge» para ese evento, no es staff de CH y esa noche no jugó con su nombre",
+   "t": 1793927646280,
+   "filas": [
+    1109
+   ],
+   "variantes": [
+    "Elinge 🇨🇱"
+   ],
+   "escribio": {
+    "quien": "COMPE ATERRADORA · CH · 02/11 · Elinge 🇨🇱"
+   }
+  },
+  {
+   "id": "841473c763",
+   "tipo": "Nombre desconocido",
+   "sec": "PANDILLAS NO VAMOS A TAGUEAR NI A ESPERAR A NADIE VOL 2 · CH · 20/10 · #571",
+   "que": "¿Quién es «akvmolt 🇨🇼»?",
+   "r": "Es Molt",
+   "regla": "Discord · su cuenta de Discord: la inscripción, el podio, la llave o la llamada",
+   "rk": "Discord",
+   "por": "el ciclo (su cuenta de Discord)",
+   "porque": "alias de Molt: la misma cuenta de Discord",
+   "t": 1793927646280,
+   "filas": [
+    1101
+   ],
+   "variantes": [
+    "akvmolt 🇨🇼"
+   ],
+   "escribio": {
+    "alias": [
+     "akvmolt",
+     "Molt"
+    ],
+    "filas": [
+     340
+    ]
+   }
+  },
+  {
+   "id": "5b4f7f7918",
+   "tipo": "Nombre desconocido",
+   "sec": "COMPE ATERRADORA · CH · 02/11 · #573",
+   "que": "¿Quién es «BERRUM 🇨🇱»?",
+   "r": "Es Berrun",
+   "regla": "Discord · su cuenta de Discord: la inscripción, el podio, la llave o la llamada",
+   "rk": "Discord",
+   "por": "el ciclo (su cuenta de Discord)",
+   "porque": "alias de Berrun: el podio de la llave lo menciona",
+   "t": 1793927646280,
+   "filas": [
+    1107
+   ],
+   "variantes": [
+    "BERRUM 🇨🇱"
+   ],
+   "escribio": {
+    "alias": [
+     "BERRUM",
+     "Berrun"
+    ],
+    "filas": [
+     341
+    ]
+   }
+  },
+  {
+   "id": "10838052f6",
+   "tipo": "Nombre desconocido",
+   "sec": "EL ONMITRIX VOL 1 · CH · 23/09 · #568",
+   "que": "¿Quién es «KATALIEN🇬🇹»?",
+   "r": "Es alguien nuevo: alta con su cuenta 1516598988449648647",
+   "regla": "Discord · su cuenta de Discord: la inscripción, el podio, la llave o la llamada",
+   "rk": "Discord",
+   "por": "el ciclo (su cuenta de Discord)",
+   "porque": "nuevo: entró a la Lista con su Discord (1516598988449648647)",
+   "t": 1793927646280,
+   "filas": [
+    1076
+   ],
+   "variantes": [
+    "KATALIEN🇬🇹"
+   ],
+   "escribio": {
+    "alta": [
+     "KATALIEN",
+     "1516598988449648647"
+    ]
+   }
+  },
+  {
+   "id": "ed78b80a49",
+   "tipo": "Nombre desconocido",
+   "sec": "MANIJA Y NUEVA ERA VOL.1 · CH · 29/09 · #569",
+   "que": "¿Quién es «maRIHUANATICO🇦🇷»?",
+   "r": "Es alguien nuevo: alta con su cuenta 555464923585576975",
+   "regla": "Discord · su cuenta de Discord: la inscripción, el podio, la llave o la llamada",
+   "rk": "Discord",
+   "por": "el ciclo (su cuenta de Discord)",
+   "porque": "nuevo: entró a la Lista con su Discord (555464923585576975)",
+   "t": 1793927646280,
+   "filas": [
+    1084
+   ],
+   "variantes": [
+    "maRIHUANATICO🇦🇷"
+   ],
+   "escribio": {
+    "alta": [
+     "maRIHUANATICO",
+     "555464923585576975"
+    ]
+   }
+  },
+  {
+   "id": "30a1ccc139",
+   "tipo": "Nombre desconocido",
+   "sec": "MINUTOS A SANGRE - DEATHROW EN VIVO VOL 1 · CH · 11/10 · #570",
+   "que": "¿Quién es «Jodnes 🇨🇴»?",
+   "r": "Es alguien nuevo: alta con su cuenta 1095358950548983839",
+   "regla": "Discord · su cuenta de Discord: la inscripción, el podio, la llave o la llamada",
+   "rk": "Discord",
+   "por": "el ciclo (su cuenta de Discord)",
+   "porque": "nuevo: entró a la Lista con su Discord (1095358950548983839)",
+   "t": 1793927646280,
+   "filas": [
+    1087
+   ],
+   "variantes": [
+    "Jodnes 🇨🇴"
+   ],
+   "escribio": {
+    "alta": [
+     "Jodnes",
+     "1095358950548983839"
+    ]
+   }
+  },
+  {
+   "id": "fbade057db",
+   "tipo": "Nombre desconocido",
+   "sec": "PANDILLAS NO VAMOS A TAGUEAR NI A ESPERAR A NADIE VOL 2 · CH · 20/10 · #571",
+   "que": "¿Quién es «Drope 🇺🇾»?",
+   "r": "Es alguien nuevo: alta con su cuenta 1559723085345587218",
+   "regla": "Discord · su cuenta de Discord: la inscripción, el podio, la llave o la llamada",
+   "rk": "Discord",
+   "por": "el ciclo (su cuenta de Discord)",
+   "porque": "nuevo: entró a la Lista con su Discord (1559723085345587218)",
+   "t": 1793927646280,
+   "filas": [
+    1091
+   ],
+   "variantes": [
+    "Drope 🇺🇾"
+   ],
+   "escribio": {
+    "alta": [
+     "Drope",
+     "1559723085345587218"
+    ]
+   }
+  },
+  {
+   "id": "c079a7be33",
+   "tipo": "Nombre desconocido",
+   "sec": "PANDILLAS NO VAMOS A TAGUEAR NI A ESPERAR A NADIE VOL 2 · CH · 20/10 · #571",
+   "que": "¿Quién es «Omiwido 🇪🇸»?",
+   "r": "Es alguien nuevo: alta con su cuenta 270619133073293314",
+   "regla": "Discord · su cuenta de Discord: la inscripción, el podio, la llave o la llamada",
+   "rk": "Discord",
+   "por": "el ciclo (su cuenta de Discord)",
+   "porque": "nuevo: entró a la Lista con su Discord (270619133073293314)",
+   "t": 1793927646280,
+   "filas": [
+    1096
+   ],
+   "variantes": [
+    "Omiwido 🇪🇸"
+   ],
+   "escribio": {
+    "alta": [
+     "Omiwido",
+     "270619133073293314"
+    ]
+   }
+  },
+  {
+   "id": "387068bf98",
+   "tipo": "Nombre desconocido",
+   "sec": "PANDILLAS NO VAMOS A TAGUEAR NI A ESPERAR A NADIE VOL 2 · CH · 20/10 · #571",
+   "que": "¿Quién es «Palako 🇵🇪»?",
+   "r": "Es alguien nuevo: alta con su cuenta 752837467828256809",
+   "regla": "Discord · su cuenta de Discord: la inscripción, el podio, la llave o la llamada",
+   "rk": "Discord",
+   "por": "el ciclo (su cuenta de Discord)",
+   "porque": "nuevo: entró a la Lista con su Discord (752837467828256809)",
+   "t": 1793927646280,
+   "filas": [
+    1097
+   ],
+   "variantes": [
+    "Palako 🇵🇪"
+   ],
+   "escribio": {
+    "alta": [
+     "Palako",
+     "752837467828256809"
+    ]
+   }
+  },
+  {
+   "id": "ec82e210ac",
+   "tipo": "Nombre desconocido",
+   "sec": "MINUTOS A SANGRE - D3ATHROW EN VIVO VOL 3 · CH · 26/10 · #572",
+   "que": "¿Quién es «Koffi 🇲🇽»?",
+   "r": "Es alguien nuevo: alta con su cuenta 745493295228256367",
+   "regla": "Discord · su cuenta de Discord: la inscripción, el podio, la llave o la llamada",
+   "rk": "Discord",
+   "por": "el ciclo (su cuenta de Discord)",
+   "porque": "nuevo: entró a la Lista con su Discord (745493295228256367)",
+   "t": 1793927646280,
+   "filas": [
+    1104
+   ],
+   "variantes": [
+    "Koffi 🇲🇽"
+   ],
+   "escribio": {
+    "alta": [
+     "Koffi",
+     "745493295228256367"
+    ]
+   }
+  },
+  {
+   "id": "11c9dbde8f",
+   "tipo": "Nombre desconocido",
+   "sec": "MINUTOS A SANGRE - D3ATHROW EN VIVO VOL 3 · CH · 26/10 · #572",
+   "que": "¿Quién es «Zanz🇲🇽»?",
+   "r": "Es alguien nuevo: alta con su cuenta 353682361784860682",
+   "regla": "Discord · su cuenta de Discord: la inscripción, el podio, la llave o la llamada",
+   "rk": "Discord",
+   "por": "el ciclo (su cuenta de Discord)",
+   "porque": "nuevo: entró a la Lista con la cuenta con que se anotó (353682361784860682)",
+   "t": 1793927646280,
+   "filas": [
+    1106
+   ],
+   "variantes": [
+    "Zanz🇲🇽"
+   ],
+   "escribio": {
+    "alta": [
+     "Zanz",
+     "353682361784860682"
+    ]
+   }
+  },
+  {
+   "id": "6c3edef85f",
+   "tipo": "Nombre desconocido",
+   "sec": "COMPE ATERRADORA · CH · 02/11 · #573",
+   "que": "¿Quién es «Kaizz🇦🇷»?",
+   "r": "Es alguien nuevo: alta con su cuenta 432983360932020224",
+   "regla": "Discord · su cuenta de Discord: la inscripción, el podio, la llave o la llamada",
+   "rk": "Discord",
+   "por": "el ciclo (su cuenta de Discord)",
+   "porque": "nuevo: entró a la Lista con la cuenta con que se anotó (432983360932020224)",
+   "t": 1793927646280,
+   "filas": [
+    1111
+   ],
+   "variantes": [
+    "Kaizz🇦🇷"
+   ],
+   "escribio": {
+    "alta": [
+     "Kaizz",
+     "432983360932020224"
+    ]
+   }
+  },
+  {
+   "id": "5248138344",
+   "tipo": "Nombre desconocido",
+   "sec": "COMPE ATERRADORA · CH · 02/11 · #573",
+   "que": "¿Quién es «JAZII 🇪🇨»?",
+   "r": "Es jazi",
+   "regla": "tipeo · el nombre de alguien de la Lista con una letra de diferencia",
+   "rk": "tipeo",
+   "por": "el ciclo (una letra de diferencia)",
+   "porque": "alias de jazi: «JAZII» con una letra de diferencia, del mismo país, y jazi juega en CH",
+   "t": 1793927646280,
+   "filas": [
+    1110
+   ],
+   "variantes": [
+    "JAZII 🇪🇨"
+   ],
+   "escribio": {
+    "alias": [
+     "JAZII",
+     "jazi"
+    ],
+    "filas": [
+     342
+    ]
+   }
+  },
+  {
+   "id": "f83e0790d5",
+   "tipo": "Nombre desconocido",
+   "sec": "EL ONMITRIX VOL 1 · CH · 23/09 · #568",
+   "que": "¿Quién es «JAUANAN🇦🇷»?",
+   "r": "Ya no hace falta",
+   "regla": "cierre · ya no hacía falta preguntarlo",
+   "rk": "cierre",
+   "por": "el ciclo",
+   "porque": "ya no está en ningún resultado: el lector lo lee distinto, o ya es alias de alguien",
+   "t": 1793927646280,
+   "filas": [
+    1074
+   ],
+   "variantes": [
+    "JAUANAN🇦🇷"
+   ],
+   "escribio": {}
+  },
+  {
+   "id": "05f5b0046b",
+   "tipo": "Nombre desconocido",
+   "sec": "PANDILLAS NO VAMOS A TAGUEAR NI A ESPERAR A NADIE VOL 2 · CH · 20/10 · #571",
+   "que": "¿Quién es «LEITAN  🇦🇷»?",
+   "r": "Ya no hace falta",
+   "regla": "cierre · ya no hacía falta preguntarlo",
+   "rk": "cierre",
+   "por": "el ciclo",
+   "porque": "ya no está en ningún resultado: el lector lo lee distinto, o ya es alias de alguien",
+   "t": 1793927646280,
+   "filas": [
+    1094
+   ],
+   "variantes": [
+    "LEITAN  🇦🇷"
+   ],
+   "escribio": {}
+  },
+  {
+   "id": "879875efcf",
+   "tipo": "Nombre desconocido",
+   "sec": "PANDILLAS NO VAMOS A TAGUEAR NI A ESPERAR A NADIE VOL 2 · CH · 20/10 · #571",
+   "que": "¿Quién es «Lamborguini 🇦🇷»?",
+   "r": "Ya no hace falta",
+   "regla": "cierre · ya no hacía falta preguntarlo",
+   "rk": "cierre",
+   "por": "el ciclo",
+   "porque": "ya no está en ningún resultado: el lector lo lee distinto, o ya es alias de alguien",
+   "t": 1793927646280,
+   "filas": [
+    1095
+   ],
+   "variantes": [
+    "Lamborguini 🇦🇷"
+   ],
+   "escribio": {}
   }
  ],
  "deshechas": []

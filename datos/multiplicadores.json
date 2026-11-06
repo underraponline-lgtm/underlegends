@@ -1094,15 +1094,17 @@
    "semillero": {
     "nuevos": {
      "FFA": 6,
-     "DDF": 2
+     "DDF": 2,
+     "CH": 5
     },
     "gente": {
      "DDF": 20,
      "LKR": 2,
      "FFA": 35,
-     "URBF": 7
+     "URBF": 7,
+     "CH": 12
     },
-    "gana": "FFA"
+    "gana": "CH"
    },
    "meta_va": {
     "ACAD": 0,
