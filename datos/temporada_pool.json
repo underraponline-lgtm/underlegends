@@ -720,6 +720,7 @@
   "rango": "A",
   "tg_t": {
    "busc": 1,
+   "cab": 2,
    "dobles": 3,
    "infalt": true,
    "perf": 2,
