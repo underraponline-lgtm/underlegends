@@ -1167,7 +1167,7 @@ def _self_check():
          or ('repeat-x' in camiseta({'sv': 'FVS'})['fondo'] and '300px' not in camiseta({'sv': 'FVS'})['fondo'])),
         ('el fondo original de cada servidor: su escena de `bot/vs_fondos/`, sin la sombra de la mitad, y sin escena, el de su tarjeta',
          camiseta({'sv': 'FRZ', 'color': '#26B3A6'})['fondo'].startswith('url(data:image/jpeg') and camiseta({'sv': 'FRZ', 'color': '#26B3A6'})['sombra'] == 0
-         and all(_fondo_vs(x) for x in ('FFA', 'DRA', 'SR', 'URBF', 'FFS', 'DDF', 'FDS', 'LKR', 'ACAD', 'FRZ')) and not _fondo_vs('NADA') and not _fondo_vs('')),
+         and all(_fondo_vs(x) for x in ('FFA', 'DRA', 'SR', 'URBF', 'FFS', 'DDF', 'FDS', 'LKR', 'ACAD', 'FRZ', 'CH')) and not _fondo_vs('NADA') and not _fondo_vs('')),
         ('el escudo del servidor: su logo y, sin logo, su sigla, en los dos armados',
          'class="escudo" ' in html_vs({'a': {'n': 'A'}, 'b': {'n': 'B'}}, dict(d, logo='data:image/png;base64,AA'))
          and 'escudo sigla' in html_vs({'a': {'n': 'A'}, 'b': {'n': 'B'}}, dict(d, sv='XX'))
