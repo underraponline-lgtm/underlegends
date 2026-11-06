@@ -396,7 +396,9 @@
   "silence": "S1lence",
   "loloelgaucho": "LOLOELGAUCHO 🇦🇷",
   "ragna": "Ragna 🇨🇱",
-  "tomyhilfiger": "tomyhilfiger🇾🇹"
+  "tomyhilfiger": "tomyhilfiger🇾🇹",
+  "lizenim": "Lizeninn",
+  "elcolesito": "Colesito"
  },
  "pares": [
   [
@@ -1994,6 +1996,14 @@
   [
    "tomyhilfiger",
    "tomyhilfiger🇾🇹"
+  ],
+  [
+   "Lizenim",
+   "Lizeninn"
+  ],
+  [
+   "El Colesito",
+   "Colesito"
   ]
  ],
  "no_confundir": [
