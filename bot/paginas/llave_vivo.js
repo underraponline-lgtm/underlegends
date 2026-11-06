@@ -64,9 +64,14 @@
   // y «Ganado #» / «Ganador:» delante del primero (MORTAL KOMBAT MAPACHE CUP, DDF, 11/10/2026): `escuchar.ETIQUETA_CRUCE`
   // y con un emoji delante o en sigla (`🟢 Batalla 2: Mco vs Miniboy`, `🔹 C3: ISAC vs SHADOW`, `💥 SF2: ISAC vs MAKMA`: 19 CUP
   // FUTCARD, DDF, 21 y 23/10/2026). Nunca una bandera, 🆚 ni los marcos, que por eso van por rangos. Ver `escuchar.ETIQUETA_CRUCE`
+  var EMOJI_ETIQUETA = '\\u2190-\\u21FF\\u25A0-\\u25FF\\u2600-\\u2767\\u2776-\\u27BF\\u2B00-\\u2BFF\\uFE0F\\u200D' +
+    '\\u{1F000}-\\u{1F0FF}\\u{1F200}-\\u{1F3F2}\\u{1F3F5}-\\u{1FAFF}';
+  var EMOJI_ADELANTE = new RegExp('^[' + EMOJI_ETIQUETA + ']+[ \\t]*', 'u');
+  // `A` arriba y ` vs B` abajo: `escuchar.VS_ADELANTE`. Y lo que cuenta algo de una batalla sin serlo: `escuchar.LINEA_DESTACADA`
+  var VS_ADELANTE = /^\s*(?:🆚|<a?:VSF?:\d+>|:vsf?:|vs\.?(?=\s|$))/i;
+  var LINEA_DESTACADA = /^\W*(?:(?:momento|batalla|duelo|cruce|pelea|rima)\s+(?:de\s+la|del|de)\s+(?:noche|evento|torneo|fecha|jornada|competencia)|mejor(?:es)?\s+(?:batalla|duelo|cruce|momento|rima)s?)\b/i;
   var ETIQUETA_CRUCE = new RegExp('^\\s*(?:[•·▸➢]\\s*|-\\s+)*' +
-    '(?:(?:[\\u2190-\\u21FF\\u25A0-\\u25FF\\u2600-\\u2767\\u2776-\\u27BF\\u2B00-\\u2BFF\\uFE0F\\u200D' +
-    '\\u{1F000}-\\u{1F0FF}\\u{1F200}-\\u{1F3F2}\\u{1F3F5}-\\u{1FAFF}]\\s*|\\*\\*|__|~~|-?#{1,3}\\s+|>\\s*|\\*\\s+)*' +
+    '(?:(?:[' + EMOJI_ETIQUETA + ']\\s*|\\*\\*|__|~~|-?#{1,3}\\s+|>\\s*|\\*\\s+)*' +
     '(?:(?:cruce|batalla|duelo|combate|llave|match|partid[oa]|enfrentamiento|game|ronda|round|pelea|' +
     'dieciseisavos?|octavos?(?:\\s+de\\s+final)?|cuartos?(?:\\s+de\\s+final)?|' +
     'semi\\s*-?\\s*final(?:es)?|semis?|(?:gran\\s+)?final(?:es)?)\\s*#?\\s*\\d*\\s*|[a-z]{1,3}[ -]?\\d{1,2})' +
@@ -179,6 +184,8 @@
   function sinMarcas(x) {
     x = quitarBordes(String(x).replace(MARCAS, '').replace(/[ \t]*<a?:\w+:\d+>/g, ''), [' ', '*', '`']);
     x = x.replace(/^#{1,3}[ \t]+/, '');
+    // y el emoji de adorno delante del nombre (`💀 Carlosmo`), nunca una bandera: `escuchar._sin_marcas()`
+    x = x.replace(EMOJI_ADELANTE, '');
     var m = /^((?:[\u{1F1E6}-\u{1F1FF}]{2}[ \t]*)+)(\S[\s\S]*)$/u.exec(x);
     if (m) {
       // y la misma bandera a los dos lados, una vez: `🇪🇸Rfran🇪🇸` (FVS) es «Rfran🇪🇸» (`escuchar._sin_marcas()`)
@@ -449,7 +456,14 @@
         if (!sigue(buf)) { salida.push(buf); buf = null; }
         return;
       }
-      if (sigue(l)) buf = l; else salida.push(l);
+      // el «vs» que empieza el renglón es del de arriba (19 CUP HALLOWEEN, 31/10/2026): `escuchar.unir_continuadas()`
+      var arriba = salida.length ? salida[salida.length - 1] : '';
+      if (VS_ADELANTE.test(l) && /[\p{L}\p{N}]/u.test(arriba) && !(buscarRonda(arriba) && !nombresDeLinea(arriba).length)) {
+        buf = salida.pop().replace(/\s+$/, '') + ' ' + l.trim();
+        if (!sigue(buf)) { salida.push(buf); buf = null; }
+        return;
+      }
+      if (sigue(l) && !VS_ADELANTE.test(l)) buf = l; else salida.push(l);
     });
     if (buf !== null) salida.push(buf);
     return salida.join('\n');
@@ -515,6 +529,7 @@
     var out = [], actual = null, bats = [], previas = [], bloques = [[]];
     texto = plano(texto);
     lineas(unirContinuadas(texto)).forEach(function (l) {
+      if (LINEA_DESTACADA.test(l)) return;
       var m = buscarRonda(l), nombres = nombresDeLinea(l);
       var cy = !m && !nombres.length && CYPHER_ENC.test(l.trim());
       if ((m || cy) && !nombres.length) {
@@ -556,7 +571,8 @@
       if (conPunto < 2 || !enOrden) return x;
       return [x[0], bats.map(function (b, i) {
         var m = nums[i], resto = m ? b[0].slice(m[0].length).trim() : '';
-        return m && resto ? [resto].concat(b.slice(1)) : b;
+        // con la bandera que quedó adelante, atrás: `escuchar._sin_numeracion()`
+        return m && resto ? [sinMarcas(resto)].concat(b.slice(1)) : b;
       })];
     });
   }

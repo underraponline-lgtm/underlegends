@@ -5,6 +5,7 @@
     python herramientas/recalcular_t1.py --json X    # y deja el detalle en X
     python herramientas/recalcular_t1.py --informe X --aplicar --sin 405   # aplica todo menos el #405
     python herramientas/recalcular_t1.py --informe X --aplicar --solo 495,505   # aplica esos y nada más
+    python herramientas/recalcular_t1.py --leer 495,505 --json X   # lee sólo esas llaves: segundos, no 31 minutos
 
 Dlx, 08/10/2026: *«recalcula todo con el sistema actual… antes había problemas porque el sistema antiguo aún
 estaba»*. A «¿recalculo los 72 eventos con las reglas de hoy?», *«A»*: primero medirlo y mostrar quién cambia.
@@ -87,6 +88,28 @@ class Paginador:
             antes = ms[-1]['id']
 
 
+class SoloMensajes:
+    """La sesión de Discord, pero el canal de una llave contesta sólo los mensajes de esas llaves: ver `--leer`."""
+
+    def __init__(self, s, por_canal):
+        self.s, self.por_canal, self.pedidos = s, por_canal, 0
+
+    def __getattr__(self, k):
+        return getattr(self.s, k)
+
+    def get(self, url, params=None, **k):
+        m = re.search(r'/channels/(\d+)/messages$', url)
+        if not m or m.group(1) not in self.por_canal:
+            return self.s.get(url, params=params, **k)
+        ms = []
+        for mid in self.por_canal[m.group(1)]:
+            self.pedidos += 1
+            r = self.s.get('%s/%s' % (url, mid), **k)
+            if r.status_code == 200:
+                ms.append(r.json())
+        return _Resp(sorted(ms, key=lambda x: int(x['id']), reverse=True))
+
+
 def _hijo(salida):
     """Corre ADENTRO de la copia: lee, paga y compara."""
     raiz = os.getcwd()
@@ -105,6 +128,31 @@ def _hijo(salida):
     E.sesion = _sesion
     _esc = E.escuchar
     E.escuchar = lambda s, forzar=None, por_canal=25: _esc(s, forzar=True, por_canal=100)
+    # 🎯 `--leer 495,505`: sólo esas llaves, por sus links de `datos/llaves_t1.json` (05/11/2026). La historia entera son
+    # 3.467 pedidos y 31 minutos, y cruza una corrida del ciclo aunque se arranque justo después de otra
+    leer = os.environ.get('RECALCULAR_LEER')
+    if leer:
+        with io.open(os.path.join(raiz, 'datos', 'llaves_t1.json'), encoding='utf-8') as f:
+            ll = json.load(f)
+        por_canal, solo = {}, {}
+        for n in leer.split(','):
+            e = ll.get(n) or {}
+            for link in e.get('links') or []:
+                g = re.search(r'/channels/(\d+)/(\d+)/(\d+)', str(link))
+                if g:
+                    por_canal.setdefault(g.group(2), []).append(g.group(3))
+                    solo[g.group(2)] = {'servidor': e.get('sv') or '?', 'guild': g.group(1), 'canal': 'llaves'}
+
+        def _sesion_solo():
+            p = SoloMensajes(real(), por_canal)
+            pag.append(p)
+            return p
+
+        def _escuchar_solo(s, forzar=None, por_canal=25):
+            out, n_ch, n_msg = E.barrer(s, por_canal=100, solo=solo)
+            return out, {'completo': False, 'canales': n_ch, 'mensajes': n_msg}
+
+        E.sesion, E.escuchar = _sesion_solo, _escuchar_solo
     import llaves_a_entrada as L
     sys.argv = ['llaves_a_entrada.py']
     L.main()
@@ -428,9 +476,11 @@ def main():
                     shutil.copytree(os.path.join(BASE, x), os.path.join(copia, x))
                 else:
                     shutil.copy(os.path.join(BASE, x), os.path.join(copia, x))
+        entorno = dict(os.environ, PYTHONIOENCODING='utf-8')
+        if '--leer' in sys.argv:
+            entorno['RECALCULAR_LEER'] = sys.argv[sys.argv.index('--leer') + 1]
         r = subprocess.run([sys.executable, os.path.join(copia, 'herramientas', 'recalcular_t1.py'), '--hijo', salida],
-                           cwd=copia, capture_output=True, text=True, encoding='utf-8', errors='replace',
-                           env=dict(os.environ, PYTHONIOENCODING='utf-8'))
+                           cwd=copia, capture_output=True, text=True, encoding='utf-8', errors='replace', env=entorno)
         if r.returncode != 0 or not os.path.exists(salida):
             print(r.stdout[-3000:])
             print(r.stderr[-3000:])

@@ -244,7 +244,7 @@ SEP = re.compile(r'🆚|<a?:VSF?:\d+>|:vsf?:|\bvs\.?\b', re.I)
 #: CARLOS vs MINIBOY`, `🔹 C3: ISAC vs SHADOW`, `💥 SF2: ISAC vs MAKMA`. El ancla pedía una viñeta y el emoji no lo es, así
 #: que «🟢 Batalla 2: Mco» y «🔹 C3: ISAC» entraron al ranking como personas: MCO perdió su evento, «ISAC» salió dos veces, y
 #: Carlosss cobró la mitad del campeonato por «walk-in» (no era el «🟢 Batalla 1: Carlos» de cuartos).
-#: ⚠️ EL EMOJI SÓLO SE VA CON SU ETIQUETA: uno solo puede marcar algo (`PASA_GRUPO`, `CAYO`), y `norm()` ya lo ignora.
+#: (El emoji sin etiqueta, delante de un lado, lo saca `_sin_marcas()`.)
 #: ⚠️ LO QUE PARECE EMOJI Y NO LO ES: las banderas (`🇨🇱 PANCHOK` es el país de alguien, y `🏴‍☠️` también), `🆚` (U+1F19A: es
 #: el separador) y los marcos `⌞⌝` `❰❱`. Por eso son rangos y no «todo lo que no sea una letra».
 #: ⚠️ LOS DOS PUNTOS PEGADOS A UN NOMBRE NO SON UNA ETIQUETA: `C4:Espana: vs D4` trae su bandera en shortcode (como el «tnr
@@ -262,6 +262,14 @@ ETIQUETA_CRUCE = re.compile(r'^\s*(?:[•·▸➢]\s*|-\s+)*'
                             r'(?:(?:' + _PALABRA_ETIQUETA + r')\s*#?\s*\d*\s*|[a-z]{1,3}[ -]?\d{1,2})'
                             + _DESPUES_ETIQUETA + r')?'
                             r'(?:(?:ganad[oa]|ganador(?:a)?|gan[oó])\s*[#:]\s*)?(?:#\s+)?', re.I)
+#: el «vs» al principio del renglón: `A` arriba y ` vs B` abajo. Ver `unir_continuadas()`
+VS_ADELANTE = re.compile(r'^\s*(?:🆚|<a?:VSF?:\d+>|:vsf?:|vs\.?(?=\s|$))', re.I)
+#: 🔑 el renglón que CUENTA algo de una batalla y no es una batalla: «MOMENTO DE LA NOCHE: AM vs Xclusivo», debajo del
+#: podio de GALACTICOS DEL FREESTYLE VOL.15 (DDF, 02/11/2026). Se leía como una segunda final: un duelo que no existió
+#: y una persona llamada «MOMENTO DE LA NOCHE: AM». ⚠️ Con su frase entera: «Batalla 1:» y «Final:» sí son una batalla
+LINEA_DESTACADA = re.compile(r'^\W*(?:(?:momento|batalla|duelo|cruce|pelea|rima)\s+(?:de\s+la|del|de)\s+'
+                             r'(?:noche|evento|torneo|fecha|jornada|competencia)'
+                             r'|mejor(?:es)?\s+(?:batalla|duelo|cruce|momento|rima)s?)\b', re.I)
 #: `[Nombre del equipo (A y B)]` -> `[A + B]`: ver `nombres_de_linea()`
 EQUIPO_NOMBRADO = re.compile(r'([\[⌞])[^\[\]⌞⌝()+&\n]*\s\(([^()\[\]⌞⌝\n]+?(?:\s+(?:y|e)\s+|\s*[+&]\s*)'
                              r'[^()\[\]⌞⌝\n]+?)\)\s*([\]⌝])', re.I)
@@ -727,6 +735,10 @@ def _sin_marcas(x):
     # de Discord y la bandera ADELANTE del primero. El «##» llegaba al nombre —«## 🇵🇪 SOSA» era otra
     # persona que «SOSA 🇵🇪»— y la bandera adelante se mostraba así. Va al final, como en el resto
     x = re.sub(r'^#{1,3}[ \t]+', '', x)
+    # 🔑 Y EL EMOJI DE ADORNO DELANTE DEL NOMBRE: `💀 Carlosmo`, `⚔️ Steve de minecraft` (19 CUP HALLOWEEN, DDF, 31/10/2026).
+    # `norm()` ya lo ignoraba para comparar; lo que quedaba mal era lo que se mostraba, y a quien no está en la Lista lo
+    # dejaba en el ranking con el emoji pegado. ⚠️ Las banderas no: son el país (y por eso son rangos, ver `_EMOJI_ETIQUETA`)
+    x = re.sub('^[%s]+[ \t]*' % _EMOJI_ETIQUETA, '', x)
     m = re.match('^((?:%s{2}[ \t]*)+)(\\S.*)$' % _BANDERA, x)
     if m:
         # 🔑 y la misma bandera a los dos lados, una vez: `🇪🇸Rfran🇪🇸` (FVS) es «Rfran🇪🇸», no «Rfran🇪🇸 🇪🇸»
@@ -968,7 +980,19 @@ def unir_continuadas(texto):
                 salida.append(buf)
                 buf = None
             continue
-        if _sigue(l):
+        # 🔑 Y EL «vs» QUE EMPIEZA EL RENGLÓN ES DEL DE ARRIBA (19 CUP HALLOWEEN 2026, DDF, 31/10/2026): `⚔️ MaYeuTyK 🇺🇾` y
+        # abajo ` vs Homelander 🇲🇽`. El lado de arriba quedaba solo y el «vs B» no era nadie: se perdieron 7 de sus 8 octavos,
+        # siete personas sin cobrar, y los que pasaron salían walk-in: el campeón, con la cuarta parte. Sólo si lo de arriba
+        # tiene letras y no es el título de una ronda
+        if VS_ADELANTE.match(l) and salida and re.search(r'[^\W_]', salida[-1]) \
+                and not (RONDA.search(salida[-1]) and not nombres_de_linea(salida[-1])):
+            buf = salida.pop().rstrip() + ' ' + l.strip()
+            if not _sigue(buf):
+                salida.append(buf)
+                buf = None
+            continue
+        # ⚠️ un «vs B» sin nadie arriba tampoco se pega a lo de abajo: no hay de quién es
+        if _sigue(l) and not VS_ADELANTE.match(l):
             buf = l
         else:
             salida.append(l)
@@ -996,14 +1020,17 @@ def _sin_numeracion(rs):
     mitad, y SHADOW se quedó sin su octavos.
 
     ⚠️ SÓLO SI LA RONDA ESTÁ NUMERADA: dos batallas o más con «N.» o «N)», y cada número igual a su lugar (1, 2, 3…).
-    Ahí el «2» sin punto también es numeración. «19» o «27» se llaman así: no llevan punto ni van en secuencia."""
+    Ahí el «2» sin punto también es numeración. «19» o «27» se llaman así: no llevan punto ni van en secuencia.
+
+    🔑 Y LA BANDERA QUE QUEDA ADELANTE VA ATRÁS, como en cualquier otro nombre (`_sin_marcas()`): con el número delante no
+    se la veía, y en esa misma llave quedó «🇺🇾 ATR» en vez de «ATR 🇺🇾»."""
     out = []
     for r, bats in rs:
         nums = [_NUM_BAT.match(b[0]) if b and b[0] else None for b in bats]
         con_punto = sum(1 for m in nums if m and m.group(2))
         en_orden = all(m is None or int(m.group(1)) == i + 1 for i, m in enumerate(nums))
         if con_punto >= 2 and en_orden:
-            bats = [[b[0][m.end():].strip()] + list(b[1:]) if m and b[0][m.end():].strip() else b
+            bats = [[_sin_marcas(b[0][m.end():].strip())] + list(b[1:]) if m and b[0][m.end():].strip() else b
                     for b, m in zip(bats, nums)]
         out.append((r, bats))
     return out
@@ -1027,6 +1054,9 @@ def _rondas_crudas(texto):
     # esto, un equipo partido en dos lineas se pierde y la ronda entera
     # puede quedar a medias sin que nada falle.
     for l in unir_continuadas(texto).splitlines():
+        # 🔑 lo que cuenta algo de una batalla no es una batalla: ver `LINEA_DESTACADA`
+        if LINEA_DESTACADA.match(l):
+            continue
         m = RONDA.search(l)
         nombres = nombres_de_linea(l)
         # ⚠️ UNA LINEA QUE TRAE LOS DOS es una batalla, no un encabezado:
@@ -4692,8 +4722,25 @@ def _self_check():
          and nombres_de_linea('🏴‍☠️ SYEPORUTE vs VALDOZA')[0] == '🏴‍☠️ SYEPORUTE'
          and nombres_de_linea('⌞ANA⌝ 🆚 ⌞BEA⌝') == ['ANA', 'BEA']
          and nombres_de_linea('❰ANA❱ 🆚 ❰BEA❱') == ['❰ANA❱', '❰BEA❱']
-         and nombres_de_linea('💥 CARLOS vs MARTINEZ')[0] == '💥 CARLOS'
          and nombres_de_linea('Final Boss vs Semi') == ['Final Boss', 'Semi']),
+        ('el emoji de adorno delante de un lado se va, también sin etiqueta y en los dos lados; la bandera, no',
+         nombres_de_linea('💥 CARLOS vs 💀 MARTINEZ') == ['CARLOS', 'MARTINEZ']
+         and nombres_de_linea('⚔️ Steve de minecraft 🇳🇮 vs Number') == ['Steve de minecraft 🇳🇮', 'Number']
+         and nombres_de_linea('🇨🇱 PANCHOK 🆚 DAMIAN 🇵🇪') == ['PANCHOK 🇨🇱', 'DAMIAN 🇵🇪']),
+        ('19 CUP HALLOWEEN (DDF): el «vs» que empieza el renglón es del de arriba, y los octavos no se pierden',
+         [b for _r, b in rondas_de('# OCTAVOS\n⚔️ ANA 🇦🇷 (la bruja)\nvs BEA 🇨🇱\n\n\n⚔️ CAMI 🇻🇪\n vs DORA\n⚔️ EVA vs\nFLOR\n'
+                                   '# CUARTOS\n💀 ANA vs CAMI\n💀 EVA\n vs GIA\n')]
+         == [[['ANA 🇦🇷 (la bruja)', 'BEA 🇨🇱'], ['CAMI 🇻🇪', 'DORA'], ['EVA', 'FLOR']], [['ANA', 'CAMI'], ['EVA', 'GIA']]]),
+        ('… pero debajo de un título de ronda o de un renglón sin letras no se pega a nada',
+         rondas_de('# CUARTOS\nvs BEA\nANA vs CAMI\nDORA vs EVA') == [('CUARTOS', [['ANA', 'CAMI'], ['DORA', 'EVA']])]),
+        ('FAT BATTLES (ACAD): con la ronda numerada, la bandera de adelante va atrás: «7. 🇺🇾 ATR» es «ATR 🇺🇾»',
+         [b[0] for b in rondas_de('# OCTAVOS\n## 1. 🇨🇴 VR 🆚 ECLIPSE 🇨🇱\n## 2. 🇺🇾 ATR 🆚 AGUS 🇦🇷\n')[0][1]]
+         == ['VR 🇨🇴', 'ATR 🇺🇾']),
+        ('«MOMENTO DE LA NOCHE: AM vs Xclusivo» no es una batalla; «Batalla 1: AM vs Xclusivo» y «Final: A vs B», sí',
+         [len(b) for _r, b in rondas_de('# FINAL\nANA vs BEA\nCAMPEÓN: ANA\nMOMENTO DE LA NOCHE: AM vs Xclusivo\n'
+                                        'Mejor batalla: CAMI vs DORA\n')] == [1]
+         and nombres_de_linea('Batalla 1: AM vs Xclusivo') == ['AM', 'Xclusivo']
+         and rondas_de('# CUARTOS\nBatalla 1: AM vs ANA\n# FINAL\nFinal: AM vs BEA\n')[1][1] == [['AM', 'BEA']]),
         ('el equipo que toma el nombre de su inscripción «Oasis🇨🇱 & Letrao🇨🇱» se queda con «+» (LA REDENCION, FFA)',
          canonizador(['Oasis🇨🇱 & Letrao🇨🇱'])('OASIS🇨🇱 + LETRAO🇨🇱') == 'Oasis🇨🇱 + Letrao🇨🇱'),
         ('`[El hijo y el primo del sol (Nemi y Personality)]` es el equipo Nemi + Personality',

@@ -2341,7 +2341,7 @@
      "FINAL",
      [
       [
-       "💥 CARLOS",
+       "CARLOS",
        "MARTINEZ (DEFAULT)"
       ]
      ]
@@ -2390,7 +2390,7 @@
      "FINAL",
      [
       [
-       "👑 PICHULA",
+       "PICHULA",
        "MAKMAH"
       ]
      ]
@@ -2447,6 +2447,121 @@
    ]
   },
   {
+   "que": "19 CUP HALLOWEEN (DDF, 31/10/2026): el «vs» que empieza el renglón es del de arriba, y el emoji de adorno se va",
+   "texto": "📜 OCTAVOS DE FINAL\n\n⚔️ ANA 🇦🇷 (la bruja)\nvs BEA 🇨🇱\n\n\n⚔️ CAMI 🇻🇪 \n vs DORA (el payaso) 🇧🇷 \n\n⚔️ EVA (piñata) vs\nFLOR\n\n⚔️GIA 🇸🇦\n vs HANA 🇨🇴\n\n🩸 CUARTOS DE FINAL\n\n💀 ANA 🇦🇷 (la bruja) vs  DORA (el payaso) 🇧🇷 \n\n💀 FLOR\n vs HANA 🇨🇴\n\n🔥 SEMIFINALES\n\n⚡ ANA (la bruja) vs FLOR\n",
+   "rondas": [
+    [
+     "OCTAVOS",
+     [
+      [
+       "ANA 🇦🇷 (la bruja)",
+       "BEA 🇨🇱"
+      ],
+      [
+       "CAMI 🇻🇪",
+       "DORA (el payaso) 🇧🇷"
+      ],
+      [
+       "EVA (piñata)",
+       "FLOR"
+      ],
+      [
+       "GIA 🇸🇦",
+       "HANA 🇨🇴"
+      ]
+     ]
+    ],
+    [
+     "CUARTOS",
+     [
+      [
+       "ANA 🇦🇷 (la bruja)",
+       "DORA (el payaso) 🇧🇷"
+      ],
+      [
+       "FLOR",
+       "HANA 🇨🇴"
+      ]
+     ]
+    ],
+    [
+     "SEMIFINALES",
+     [
+      [
+       "ANA (la bruja)",
+       "FLOR"
+      ]
+     ]
+    ]
+   ]
+  },
+  {
+   "que": "… y un «vs B» debajo de un título de ronda no se pega ni arriba ni abajo",
+   "texto": "# CUARTOS\nvs BEA\nANA vs CAMI\nDORA vs EVA\n",
+   "rondas": [
+    [
+     "CUARTOS",
+     [
+      [
+       "ANA",
+       "CAMI"
+      ],
+      [
+       "DORA",
+       "EVA"
+      ]
+     ]
+    ]
+   ]
+  },
+  {
+   "que": "GALACTICOS VOL.15 (DDF, 02/11/2026): «MOMENTO DE LA NOCHE: AM vs Xclusivo» cuenta algo y no es una batalla",
+   "texto": "🏯 [ G R A N - F I N A L] 🏯\n『makmah 🇻🇪 』<:versus_:1> 『 Xclusivo🇻🇪』\nCAMPEÓN [<:MEDALLAPRIMERLUGAR:1>] :Xclusivo🇻🇪\nMVP:evangelinne\nMOMENTO DE LA NOCHE: AM vs Xclusivo\nMejor batalla: ANA vs BEA\n",
+   "rondas": [
+    [
+     "FINAL",
+     [
+      [
+       "makmah 🇻🇪",
+       "Xclusivo🇻🇪"
+      ]
+     ]
+    ]
+   ]
+  },
+  {
+   "que": "FAT BATTLES (ACAD, 09/10/2026): con la ronda numerada, la bandera de adelante va atrás: «7. 🇺🇾 ATR» es «ATR 🇺🇾»",
+   "texto": "## SORTEO DE OCTAVOS\n## 1. 🇨🇱 PANCHOK 🆚 DAMIAN 🇵🇪\n## 2 ALVA 🇲🇽 🆚 SHADOW 🇨🇴\n## 3. 🇺🇾 ATR 🆚 AGUS 🇦🇷\n# 🏆 CUARTOS 🏆\n## PANCHOK 🇨🇱 🆚 ATR 🇺🇾\n",
+   "rondas": [
+    [
+     "OCTAVOS",
+     [
+      [
+       "PANCHOK 🇨🇱",
+       "DAMIAN 🇵🇪"
+      ],
+      [
+       "ALVA 🇲🇽",
+       "SHADOW 🇨🇴"
+      ],
+      [
+       "ATR 🇺🇾",
+       "AGUS 🇦🇷"
+      ]
+     ]
+    ],
+    [
+     "CUARTOS",
+     [
+      [
+       "PANCHOK 🇨🇱",
+       "ATR 🇺🇾"
+      ]
+     ]
+    ]
+   ]
+  },
+  {
    "que": "… y lo que NO es una etiqueta: la sigla sin dos puntos, la bandera en shortcode, la bandera, 🆚 y un emoji solo",
    "texto": "# CUARTOS\nC4 vs D4\ntnr :Espana: vs Six\nC4:Espana: vs D1\nT3 :Espana: vs G8\n🇨🇱 PANCHOK 🆚 DAMIAN 🇵🇪\n🏴‍☠️ SYEPORUTE vs VALDOZA\n💥 CARLOS vs NOA\nFinal Boss vs Semi\n",
    "rondas": [
@@ -2478,7 +2593,7 @@
        "VALDOZA"
       ],
       [
-       "💥 CARLOS",
+       "CARLOS",
        "NOA"
       ],
       [

@@ -363,6 +363,19 @@ def ids_del_padron():
             for x in PAD.cargar():
                 if x.get('discord_id'):
                     out.setdefault(str(x['discord_id']), []).append(x['raw'])
+            # 🔑 Y LA OTRA CUENTA DE ALGUIEN (`cuentas` de `akas_a_mano.json`), primera, para que el nombre que se muestre
+            # sea el suyo. MARRUECOS EN VENTA (#359) menciona a <@681588123699904563>, la otra cuenta de Erian (Dlx,
+            # 07/10/2026: «sí, esa es su otra cuenta»), y entró con su apodo de Discord de ese día: «Ab'l 🇦🇷 🇩🇴», y si se
+            # relee hoy, «tabaco neopalestino». Una persona de más que cambia de nombre sola
+            try:
+                with io.open(os.path.join(BASE, 'datos', 'akas_a_mano.json'), encoding='utf-8') as f:
+                    for quien_es, dids in ((json.load(f) or {}).get('cuentas') or {}).items():
+                        for did in dids or ():
+                            ya = out.setdefault(str(did), [])
+                            if quien_es not in ya:
+                                ya.insert(0, quien_es)
+            except (OSError, ValueError):
+                pass
         except Exception as e:                           # noqa: BLE001
             # ⚠️ EL FALLBACK ESTA BIEN Y EL SILENCIO NO. Devolver `{}` es
             # lo correcto —sin padron las menciones quedan sin resolver,
@@ -1065,7 +1078,29 @@ def marcar_equipos(filas, textos=(), cuando=None, inscripciones=None, decidir=No
         solos, n = equipos_con_nombre(t)
         for lado in solos:
             equipos.setdefault(E.norm(E.HISTORIA.sub('', lado)), (lado, n))
-    if not equipos or not filas:
+    if not filas:
+        return filas, []
+    if decidir is None:
+        try:
+            import decidir as DEC
+            decidir = DEC.integrantes_equipo
+        except Exception:                                # noqa: BLE001
+            decidir = lambda *a: None
+    # 🔑 Y EL EQUIPO QUE YA SE SABE QUIÉNES SON, EN CUALQUIER FORMATO (05/11/2026). `equipos_con_nombre()` sólo mira las llaves
+    # de parejas o de tríos, y en un MULTIVERSE (2v2, 1v3, 8v1) no hay tamaño de donde deducir nada: «Ed, Edd y Eddy»
+    # tenía sus integrantes decididos desde el 22/10 («somos yo, tam y tenor», Provenza, vía Dlx) y la decisión no se
+    # miraba nunca. El campeonato de la qcyo rapeen 2 (#497) siguió en dos personas que no existen, «Ed» y «Edd y Eddy»
+    f0 = filas[0]
+    decididos = set()
+    for f in filas:
+        for campo in ('ladoA', 'ladoB', 'ganador'):
+            v = f.get(campo) or ''
+            k = E.norm(E.HISTORIA.sub('', v))
+            if k and k not in decididos and decidir(f0.get('evento') or '', f0.get('servidor') or '', f0.get('fecha') or '',
+                                                    re.sub(r'\s+', ' ', E.HISTORIA.sub('', v)).strip()) is not None:
+                decididos.add(k)
+                equipos.setdefault(k, (v, 0))
+    if not equipos:
         return filas, []
     # quién juega en OTRO lado de la llave: si la inscripción dice que el
     # equipo son ellos, la llave se contradice
@@ -1083,17 +1118,10 @@ def marcar_equipos(filas, textos=(), cuando=None, inscripciones=None, decidir=No
         personas = E._personas()
     except Exception:                                    # noqa: BLE001
         personas = set()
-    equipos = {k: v for k, v in equipos.items() if k not in personas}
+    equipos = {k: v for k, v in equipos.items() if k not in personas or k in decididos}
     if not equipos:
         return filas, []
-    f0 = filas[0]
     ev, sv, fe = f0.get('evento') or '', f0.get('servidor') or '', f0.get('fecha') or ''
-    if decidir is None:
-        try:
-            import decidir as DEC
-            decidir = DEC.integrantes_equipo
-        except Exception:                                # noqa: BLE001
-            decidir = lambda *a: None
     plan, informe = {}, []
     for k, (crudo, n) in equipos.items():
         nombre = re.sub(r'\s+', ' ', E.HISTORIA.sub('', crudo)).strip()
@@ -3800,7 +3828,13 @@ def _self_check():
     _eq_choca, _eq_choca_i = marcar_equipos(_feq(), [_teq], cuando=_cu, decidir=_nada, inscripciones=[
         {'servidor': 'FFA', 'texto': 'TEAM VENECIA: Paria + Prrr', 'cuando': '2026-09-28T23:00:00'}])
     _eq_dec, _ = marcar_equipos(_feq(), [_teq], cuando=_cu, inscripciones=[],
-                                decidir=lambda *a: ['Uno', 'Dos'])
+                                decidir=lambda ev, sv, fe, n: ['Uno', 'Dos'] if E.norm(n) == 'teamvenecia' else None)
+    # 🔑 y en un MULTIVERSE, donde el formato no dice nada: lo decidido se mira en cualquier lado (qcyo rapeen 2, #497)
+    _eq_mix, _eq_mix_i = marcar_equipos(
+        [{'evento': 'qcyo rapeen 2', 'servidor': 'FFA', 'fecha': '21/10', 'ronda': 'final', 'ladoA': 'Ed, Edd y Eddy 🇻🇪',
+          'ladoB': 'Six', 'ganador': 'Ed, Edd y Eddy 🇻🇪', 'notas': ''}],
+        ['# FINAL\n[Ed, Edd y Eddy🇻🇪] 🆚 [Six]\n'], cuando=_cu, inscripciones=[],
+        decidir=lambda ev, sv, fe, n: ['Provenza', 'Tam', 'Tenor'] if E.norm(n) == 'ededdyeddy' else None)
     _pv = E._PERSONAS[0]
     E._PERSONAS[0] = {'teamvenecia'}            # como si fuera alguien del padrón
     try:
@@ -3914,6 +3948,9 @@ def _self_check():
         ('si la inscripción nombra a quien juega en otro lado de la llave, no se adivina (VOL.13)',
          _eq_choca[0]['ladoB'] == 'TEAM VENECIA' and 'otro lado' in _eq_choca_i[0][5]),
         ('lo que decidió Dlx manda', _eq_dec[0]['ladoB'] == 'Uno + Dos'),
+        ('… también en un MULTIVERSE, donde el formato no dice nada, y sin tocar al otro lado (qcyo rapeen 2, #497)',
+         _eq_mix[0]['ladoA'] == 'Provenza + Tam + Tenor' and _eq_mix[0]['ganador'] == 'Provenza + Tam + Tenor'
+         and _eq_mix[0]['ladoB'] == 'Six' and 'Equipo: Ed, Edd y Eddy' in _eq_mix[0]['notas'] and len(_eq_mix_i) == 1),
         ('el pokemon de la final queda anotado en esa fila',
          len(fin) == 1 and 'Pokemon: Beto' in fin[0]['notas']),
         ('y no se lo cuenta como revivido (§10.3)', 'Revivido' not in notas),

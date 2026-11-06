@@ -169,6 +169,18 @@ INVENTADOS = [
     ("… más etiquetas parecidas: en palabras, en negrita, con el número pegado y sin número",
      "# CUARTOS\n⚔️ Cuartos de final 1: ANA vs BEA\n🏆 Cruce 2: CAMI vs DORA\n**🔹 C3: EVA** vs FLOR\n🔹 **C4:** GIA vs HANA\n"
      "# SEMIFINALES\n🔥 Semifinales: ANA vs CAMI\n## 🔹 QF2: EVA vs GIA\n# FINAL\n> Gran Final: ANA vs EVA\n"),
+    ("19 CUP HALLOWEEN (DDF, 31/10/2026): el «vs» que empieza el renglón es del de arriba, y el emoji de adorno se va",
+     "📜 OCTAVOS DE FINAL\n\n⚔️ ANA 🇦🇷 (la bruja)\nvs BEA 🇨🇱\n\n\n⚔️ CAMI 🇻🇪 \n vs DORA (el payaso) 🇧🇷 \n\n⚔️ EVA (piñata) vs\nFLOR\n\n"
+     "⚔️GIA 🇸🇦\n vs HANA 🇨🇴\n\n🩸 CUARTOS DE FINAL\n\n💀 ANA 🇦🇷 (la bruja) vs  DORA (el payaso) 🇧🇷 \n\n"
+     "💀 FLOR\n vs HANA 🇨🇴\n\n🔥 SEMIFINALES\n\n⚡ ANA (la bruja) vs FLOR\n"),
+    ("… y un «vs B» debajo de un título de ronda no se pega ni arriba ni abajo",
+     "# CUARTOS\nvs BEA\nANA vs CAMI\nDORA vs EVA\n"),
+    ("GALACTICOS VOL.15 (DDF, 02/11/2026): «MOMENTO DE LA NOCHE: AM vs Xclusivo» cuenta algo y no es una batalla",
+     "🏯 [ G R A N - F I N A L] 🏯\n『makmah 🇻🇪 』<:versus_:1> 『 Xclusivo🇻🇪』\nCAMPEÓN [<:MEDALLAPRIMERLUGAR:1>] :Xclusivo🇻🇪\n"
+     "MVP:evangelinne\nMOMENTO DE LA NOCHE: AM vs Xclusivo\nMejor batalla: ANA vs BEA\n"),
+    ("FAT BATTLES (ACAD, 09/10/2026): con la ronda numerada, la bandera de adelante va atrás: «7. 🇺🇾 ATR» es «ATR 🇺🇾»",
+     "## SORTEO DE OCTAVOS\n## 1. 🇨🇱 PANCHOK 🆚 DAMIAN 🇵🇪\n## 2 ALVA 🇲🇽 🆚 SHADOW 🇨🇴\n## 3. 🇺🇾 ATR 🆚 AGUS 🇦🇷\n# 🏆 CUARTOS 🏆\n"
+     "## PANCHOK 🇨🇱 🆚 ATR 🇺🇾\n"),
     ("… y lo que NO es una etiqueta: la sigla sin dos puntos, la bandera en shortcode, la bandera, 🆚 y un emoji solo",
      "# CUARTOS\nC4 vs D4\ntnr :Espana: vs Six\nC4:Espana: vs D1\nT3 :Espana: vs G8\n🇨🇱 PANCHOK 🆚 DAMIAN 🇵🇪\n"
      "🏴‍☠️ SYEPORUTE vs VALDOZA\n💥 CARLOS vs NOA\nFinal Boss vs Semi\n"),
