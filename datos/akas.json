@@ -379,7 +379,17 @@
   "johnpork": "Adriagner",
   "lanochenuncaperdona": "Drexx",
   "seronoser": "Drexx",
-  "milica": "OEP"
+  "milica": "OEP",
+  "xza": "Provenza",
+  "garxziiscity": "Garxzii",
+  "abysuss": "Abyssus",
+  "elsolar": "Elsoolar",
+  "lizen": "Lizeninn",
+  "lizenin": "Lizeninn",
+  "lizennin": "Lizeninn",
+  "lisen": "Lizeninn",
+  "tomyhilfiger1312": "tomyhilfiger",
+  "silence": "S1lence"
  },
  "pares": [
   [
@@ -1909,6 +1919,46 @@
   [
    "MILICA",
    "OEP"
+  ],
+  [
+   "x Za",
+   "Provenza"
+  ],
+  [
+   "Garxziiscity",
+   "Garxzii"
+  ],
+  [
+   "Abysuss",
+   "Abyssus"
+  ],
+  [
+   "ELSOLAR",
+   "Elsoolar"
+  ],
+  [
+   "Lizen",
+   "Lizeninn"
+  ],
+  [
+   "Lizenin",
+   "Lizeninn"
+  ],
+  [
+   "Lizennin",
+   "Lizeninn"
+  ],
+  [
+   "LISEN",
+   "Lizeninn"
+  ],
+  [
+   "tomyhilfiger1312",
+   "tomyhilfiger"
+  ],
+  [
+   "Silence",
+   "S1lence"
   ]
  ],
  "no_confundir": [
@@ -1966,11 +2016,6 @@
    "Respawn 🇻🇪",
    "Prosu 🇨🇴",
    "Diferente país"
-  ],
-  [
-   "S1lence 🇵🇪",
-   "Silence ❓",
-   "Posiblemente"
   ],
   [
    "Hassan (=ND)",

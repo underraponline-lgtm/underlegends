@@ -18669,9 +18669,9 @@
     "Andres"
    ],
    [
-    "Ed, Edd y Eddy 🇻🇪",
+    "Provenza, Tam, Tenor",
     "BTRX",
-    "Ed, Edd y Eddy 🇻🇪"
+    "Provenza, Tam, Tenor"
    ],
    [
     "Makmah",
@@ -18684,9 +18684,9 @@
     "Makmah"
    ],
    [
-    "Ed, Edd y Eddy 🇻🇪",
+    "Provenza, Tam, Tenor",
     "Polosport, PichulaMc, BNA",
-    "Ed, Edd y Eddy 🇻🇪"
+    "Provenza, Tam, Tenor"
    ],
    [
     "MCO",
@@ -18704,9 +18704,9 @@
     "Gian"
    ],
    [
-    "Ed, Edd y Eddy 🇻🇪",
+    "Provenza, Tam, Tenor",
     "MCO",
-    "Ed, Edd y Eddy 🇻🇪"
+    "Provenza, Tam, Tenor"
    ],
    [
     "Six",
@@ -18714,9 +18714,9 @@
     "Six"
    ],
    [
-    "Ed, Edd y Eddy 🇻🇪",
+    "Provenza, Tam, Tenor",
     "Six",
-    "Ed, Edd y Eddy 🇻🇪"
+    "Provenza, Tam, Tenor"
    ],
    [
     "Six",
@@ -18748,7 +18748,7 @@
    "Vandu": 29
   },
   "fecha": "21/10",
-  "firma": "6d2fc244853e4f1c",
+  "firma": "eec64165808e0b7e",
   "msg": "1562665100169445427",
   "nombre": "__ qcyo rapeen 2 __",
   "num": 497,
@@ -18776,14 +18776,19 @@
     5250
    ],
    [
-    "Ed",
+    "Provenza",
     "Campeón",
-    5000
+    3333
    ],
    [
-    "Edd y Eddy 🇻🇪",
+    "Tam",
     "Campeón",
-    5000
+    3333
+   ],
+   [
+    "Tenor",
+    "Campeón",
+    3333
    ],
    [
     "Lizeninn",
@@ -22966,19 +22971,14 @@
     "Erizo"
    ],
    [
-    "Keider",
-    "dyss",
-    "Keider"
-   ],
-   [
-    "Tenor, 🇺🇸 x Za, Tam",
+    "Tenor, Provenza, Tam",
     "Makmah",
-    "Tenor, 🇺🇸 x Za, Tam"
+    "Tenor, Provenza, Tam"
    ],
    [
-    "Tenor, 🇺🇸 x Za, Tam",
+    "Tenor, Provenza, Tam",
     "Erian",
-    "Tenor, 🇺🇸 x Za, Tam"
+    "Tenor, Provenza, Tam"
    ],
    [
     "Tuca",
@@ -23007,7 +23007,7 @@
    ],
    [
     "Tuca",
-    "Tenor, 🇺🇸 x Za, Tam",
+    "Tenor, Provenza, Tam",
     "Tuca"
    ],
    [
@@ -23046,11 +23046,11 @@
    "mats": 1
   },
   "fecha": "25/10",
-  "firma": "80bdca5c0dd18edb",
+  "firma": "c719c84298670669",
   "msg": "1564128739326038038",
   "nombre": "QCYO RAPEEN 3",
   "num": 517,
-  "participantes": 26,
+  "participantes": 25,
   "sello": {
    "Oasis": "f377f67df19a:be3f6aea2456",
    "gianlamaldad": ""
@@ -23129,11 +23129,6 @@
     1250
    ],
    [
-    "dyss",
-    "Octavos",
-    1250
-   ],
-   [
     "Makmah",
     "Octavos",
     1250
@@ -23154,7 +23149,7 @@
     833
    ],
    [
-    "🇺🇸 x Za",
+    "Provenza",
     "Cuartos",
     833
    ],

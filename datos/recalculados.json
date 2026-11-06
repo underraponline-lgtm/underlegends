@@ -19,6 +19,12 @@
    "nombre": "__ DESGRACIAS EN TOKYO VOL.14 __",
    "sv": "FFA"
   },
+  "359": {
+   "cuando": "2026-11-06T00:10:39+00:00",
+   "fecha": "26/09",
+   "nombre": "__ MARRUECOS EN VENTA V.1 __",
+   "sv": "FFA"
+  },
   "381": {
    "cuando": "2026-10-15T05:00:11+00:00",
    "fecha": "03/10",
@@ -97,6 +103,12 @@
    "nombre": "__ LA BELLA ARTE DE LA DESGRACIA VOL2 __",
    "sv": "FFA"
   },
+  "438": {
+   "cuando": "2026-11-06T00:10:39+00:00",
+   "fecha": "09/10",
+   "nombre": "FAT BATTLES PALOOZA T.3 FECHA 6",
+   "sv": "ACAD"
+  },
   "450": {
    "cuando": "2026-10-15T05:00:11+00:00",
    "fecha": "08/10",
@@ -115,10 +127,34 @@
    "nombre": "19 CUP - FUTCARD EDITION VOL.3",
    "sv": "DDF"
   },
+  "497": {
+   "cuando": "2026-11-06T00:10:39+00:00",
+   "fecha": "21/10",
+   "nombre": "__ qcyo rapeen 2 __",
+   "sv": "FFA"
+  },
   "505": {
    "cuando": "2026-11-05T22:13:05+00:00",
    "fecha": "23/10",
    "nombre": "19 CUP FUTCARD EDICIÓN 5",
+   "sv": "DDF"
+  },
+  "516": {
+   "cuando": "2026-11-06T00:10:39+00:00",
+   "fecha": "25/10",
+   "nombre": "__ AGUANTE EL ROJO Y EL BARCELONA Multiverse __",
+   "sv": "FFA"
+  },
+  "517": {
+   "cuando": "2026-11-06T00:10:39+00:00",
+   "fecha": "25/10",
+   "nombre": "QCYO RAPEEN 3",
+   "sv": "FFA"
+  },
+  "552": {
+   "cuando": "2026-11-06T00:10:39+00:00",
+   "fecha": "31/10",
+   "nombre": "19 CUP HALLOWEEN 2026 LLAVES DE COMPETENCIA",
    "sv": "DDF"
   },
   "nuevo:- FMS CHILE -|FRZ|01/10": {

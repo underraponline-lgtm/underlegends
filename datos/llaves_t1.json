@@ -2140,18 +2140,19 @@
      [
       [
        "OKAM",
+       "Provenza",
        "Jult",
        "Sin Limites"
       ],
-      "OKAM",
-      "triple (4 bandas, pasan 2)"
+      "OKAM, Provenza",
+      "triple (4 bandas, pasan 2); también pasa: PROVENZA🇦🇷"
      ],
      [
       [
        "Masino",
        "Marto",
        "Xclusivo",
-       "Ab'l 🇦🇷 🇩🇴"
+       "Erian"
       ],
       "Masino",
       "triple (4 bandas)"
@@ -2290,12 +2291,12 @@
     2500
    ],
    [
-    "Ab'l 🇦🇷 🇩🇴",
+    "Elinge_TIMP",
     "Octavos",
     1250
    ],
    [
-    "Elinge_TIMP",
+    "Erian",
     "Octavos",
     1250
    ],
@@ -18016,7 +18017,7 @@
      [
       [
        "Agus",
-       "🇺🇾 ATR"
+       ".SosaATR"
       ],
       "Agus",
       ""
@@ -18155,6 +18156,11 @@
     2500
    ],
    [
+    ".SosaATR",
+    "Octavos",
+    1250
+   ],
+   [
     "Calíz",
     "Octavos",
     1250
@@ -18181,11 +18187,6 @@
    ],
    [
     "VR",
-    "Octavos",
-    1250
-   ],
-   [
-    "🇺🇾 ATR",
     "Octavos",
     1250
    ]
@@ -29174,12 +29175,12 @@
      ],
      [
       [
-       "Ed, Edd y Eddy 🇻🇪",
+       "Provenza, Tam, Tenor",
        "Guess",
        "BTRX"
       ],
-      "Ed, Edd y Eddy 🇻🇪, Guess",
-      "triple (3 bandas, pasan 2); también pasa: Guess 🇦🇷"
+      "Provenza, Tam, Tenor, Guess",
+      "triple (3 bandas, pasan 2); también pasa: Guess 🇦🇷; Equipo: Ed, Edd y Eddy 🇻🇪"
      ],
      [
       [
@@ -29198,11 +29199,11 @@
     "b": [
      [
       [
-       "Ed, Edd y Eddy 🇻🇪",
+       "Provenza, Tam, Tenor",
        "Polosport, PichulaMc, BNA"
       ],
-      "Ed, Edd y Eddy 🇻🇪",
-      ""
+      "Provenza, Tam, Tenor",
+      "Equipo: Ed, Edd y Eddy 🇻🇪"
      ],
      [
       [
@@ -29237,11 +29238,11 @@
     "b": [
      [
       [
-       "Ed, Edd y Eddy 🇻🇪",
+       "Provenza, Tam, Tenor",
        "MCO"
       ],
-      "Ed, Edd y Eddy 🇻🇪",
-      ""
+      "Provenza, Tam, Tenor",
+      "Equipo: Ed, Edd y Eddy 🇻🇪"
      ],
      [
       [
@@ -29258,11 +29259,11 @@
     "b": [
      [
       [
-       "Ed, Edd y Eddy 🇻🇪",
+       "Provenza, Tam, Tenor",
        "Six"
       ],
-      "Ed, Edd y Eddy 🇻🇪",
-      ""
+      "Provenza, Tam, Tenor",
+      "Equipo: Ed, Edd y Eddy 🇻🇪"
      ]
     ],
     "r": "Final"
@@ -29286,14 +29287,19 @@
     5250
    ],
    [
-    "Ed",
+    "Provenza",
     "Campeón",
-    5000
+    3333
    ],
    [
-    "Edd y Eddy 🇻🇪",
+    "Tam",
     "Campeón",
-    5000
+    3333
+   ],
+   [
+    "Tenor",
+    "Campeón",
+    3333
    ],
    [
     "Andres",
@@ -32585,10 +32591,10 @@
      [
       [
        "Oasis",
-       "Ed, Edd y Eddy 🇻🇪"
+       "Provenza, Tam, Tenor"
       ],
       "Oasis",
-      ""
+      "Equipo: Ed, Edd y Eddy 🇻🇪"
      ],
      [
       [
@@ -32601,10 +32607,10 @@
      [
       [
        "MATUK 🇦🇷",
-       "LA ORDEN DEL GRIAL 🇵🇪 🇨🇱 🇦🇷"
+       "Drexx, Miniboy, Lizeninn"
       ],
       "MATUK 🇦🇷",
-      ""
+      "Equipo: LA ORDEN DEL GRIAL 🇵🇪 🇨🇱 🇦🇷"
      ],
      [
       [
@@ -32774,11 +32780,6 @@
     1250
    ],
    [
-    "LA ORDEN DEL GRIAL 🇵🇪 🇨🇱 🇦🇷",
-    "Octavos",
-    1250
-   ],
-   [
     "Makmah",
     "Cuartos",
     1250
@@ -32809,16 +32810,6 @@
     1250
    ],
    [
-    "Ed",
-    "Octavos",
-    625
-   ],
-   [
-    "Edd y Eddy 🇻🇪",
-    "Octavos",
-    625
-   ],
-   [
     "Guess",
     "Octavos",
     625
@@ -32837,6 +32828,36 @@
     "Six",
     "Octavos",
     625
+   ],
+   [
+    "Drexx",
+    "Octavos",
+    416
+   ],
+   [
+    "Lizeninn",
+    "Octavos",
+    416
+   ],
+   [
+    "Miniboy",
+    "Octavos",
+    416
+   ],
+   [
+    "Provenza",
+    "Octavos",
+    416
+   ],
+   [
+    "Tam",
+    "Octavos",
+    416
+   ],
+   [
+    "Tenor",
+    "Octavos",
+    416
    ]
   ]
  },
@@ -32849,7 +32870,7 @@
   ],
   "n": 517,
   "nombre": "QCYO RAPEEN 3",
-  "participantes": 26,
+  "participantes": 25,
   "rondas": [
    {
     "b": [
@@ -32897,11 +32918,11 @@
      ],
      [
       [
-       "Tenor, 🇺🇸 x Za, Tam",
+       "Tenor, Provenza, Tam",
        "Makmah",
        "Erian"
       ],
-      "Tenor, 🇺🇸 x Za, Tam",
+      "Tenor, Provenza, Tam",
       "triple (3 bandas)"
      ],
      [
@@ -32953,7 +32974,7 @@
      [
       [
        "Tuca",
-       "Tenor, 🇺🇸 x Za, Tam"
+       "Tenor, Provenza, Tam"
       ],
       "Tuca",
       ""
@@ -33084,17 +33105,17 @@
     1250
    ],
    [
+    "Provenza",
+    "Cuartos",
+    833
+   ],
+   [
     "Tam",
     "Cuartos",
     833
    ],
    [
     "Tenor",
-    "Cuartos",
-    833
-   ],
-   [
-    "🇺🇸 x Za",
     "Cuartos",
     833
    ],
@@ -39880,11 +39901,67 @@
     "b": [
      [
       [
-       "silence kla ignorancia peru",
+       "MaYeuTyK",
+       "Leonart"
+      ],
+      "MaYeuTyK",
+      ""
+     ],
+     [
+      [
+       "Keider",
+       "Skiller"
+      ],
+      "Keider",
+      ""
+     ],
+     [
+      [
+       "Carlosmo",
+       "MANJI LOZANO🇧🇴🫩"
+      ],
+      "Carlosmo",
+      ""
+     ],
+     [
+      [
+       "Miniboy",
+       "Adriagner"
+      ],
+      "Miniboy",
+      ""
+     ],
+     [
+      [
+       "OKAM",
+       "Crk"
+      ],
+      "OKAM",
+      ""
+     ],
+     [
+      [
+       "Majiztral",
+       "Erian"
+      ],
+      "Majiztral",
+      ""
+     ],
+     [
+      [
+       "S1lence",
        "Tizi"
       ],
-      "silence kla ignorancia peru",
-      "ganador: ✅ Decidir"
+      "S1lence",
+      ""
+     ],
+     [
+      [
+       "Walker",
+       "Number VE"
+      ],
+      "Walker",
+      ""
      ]
     ],
     "r": "Octavos"
@@ -39897,7 +39974,7 @@
        "Keider"
       ],
       "MaYeuTyK",
-      "Walk-in 1: MaYeuTyK 🇺🇾; Walk-in 1: Keider (El recibe pipe) 🇧🇷"
+      ""
      ],
      [
       [
@@ -39905,15 +39982,23 @@
        "OKAM"
       ],
       "Majiztral",
-      "Walk-in 1: Majiztral 🇨🇴; Walk-in 1: okam🇨🇷"
+      ""
+     ],
+     [
+      [
+       "Walker",
+       "S1lence"
+      ],
+      "Walker",
+      ""
      ],
      [
       [
        "Carlosmo",
-       "Miniboy 🇨🇱 LEVI"
+       "Miniboy"
       ],
       "Carlosmo",
-      "ganador: ✅ Decidir; Walk-in 1: 💀 Carlosmo (Payaso de it) 🇵🇪; Walk-in 1: Miniboy 🇨🇱 LEVI"
+      "ganador: ✅ Decidir"
      ]
     ],
     "r": "Cuartos"
@@ -39934,7 +40019,7 @@
        "Majiztral"
       ],
       "Walker",
-      "Walk-in 2: Walker"
+      ""
      ]
     ],
     "r": "Semifinales"
@@ -39969,38 +40054,78 @@
   "sv": "DDF",
   "tabla": [
    [
+    "Walker",
+    "Campeón",
+    10000
+   ],
+   [
     "MaYeuTyK",
     "Subcampeón",
-    3750
+    7500
    ],
    [
     "Majiztral",
     "Tercero",
-    3000
-   ],
-   [
-    "Walker",
-    "Campeón",
-    2500
+    6000
    ],
    [
     "Carlosmo",
     "Cuarto",
-    2250
+    4500
    ],
    [
     "Keider",
     "Cuartos",
-    1250
+    2500
    ],
    [
-    "Miniboy 🇨🇱 LEVI",
+    "Miniboy",
     "Cuartos",
-    1250
+    2500
    ],
    [
     "OKAM",
     "Cuartos",
+    2500
+   ],
+   [
+    "S1lence",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Adriagner",
+    "Octavos",
+    1250
+   ],
+   [
+    "Crk",
+    "Octavos",
+    1250
+   ],
+   [
+    "Erian",
+    "Octavos",
+    1250
+   ],
+   [
+    "Leonart",
+    "Octavos",
+    1250
+   ],
+   [
+    "MANJI LOZANO🇧🇴🫩",
+    "Octavos",
+    1250
+   ],
+   [
+    "Number VE",
+    "Octavos",
+    1250
+   ],
+   [
+    "Skiller",
+    "Octavos",
     1250
    ],
    [
