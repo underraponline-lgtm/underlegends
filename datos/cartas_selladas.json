@@ -579,7 +579,8 @@
   "Global Hustler": {
    "competitivo": "549a2c031468:69ebad5d143d",
    "pais": "46cea85f5813:17d95ff16abf",
-   "servidor": "7b11d2d77898:52802c8017c2:aa8232"
+   "servidor": "7b11d2d77898:52802c8017c2:aa8232",
+   "temporada": "e01b5db22d0a:b65fe52a19f1"
   },
   "Gocho": {
    "competitivo": "1ac143a4fa87:69ebad5d143d",
@@ -2013,5 +2014,5 @@
    "servidor": "7f8885a35a6d:52802c8017c2:93a344"
   }
  },
- "cuando": "2026-11-06T08:01:34+00:00"
+ "cuando": "2026-11-06T16:35:31+00:00"
 }
