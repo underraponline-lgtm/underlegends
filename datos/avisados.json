@@ -204,7 +204,7 @@
   "msg": "1556552837842997270"
  },
  "400": {
-  "firma": "VALHALLA VOL1|04/10|78|15|4|0",
+  "firma": "VALHALLA VOL1|04/10|78|15|3|0",
   "msg": "1556552839642357822"
  },
  "401": {
@@ -2516,7 +2516,7 @@
    "Zeta": 4
   },
   "fecha": "08/10",
-  "firma": "96056c3555f0ff2e",
+  "firma": "86ea78b558d5e69d",
   "msg": "1557926456259248232",
   "nombre": "SNAKE INSIGNIA 4 8",
   "num": 430,
@@ -6508,7 +6508,7 @@
    "Trot": 13
   },
   "fecha": "11/10",
-  "firma": "d673ca7499b5104d",
+  "firma": "731d3918f50a740c",
   "msg": "1558907910707224587",
   "nombre": "RED BULL NACIONAL ESPAÑA T.5",
   "num": 448,
@@ -9436,7 +9436,7 @@
    "Zignos": 19
   },
   "fecha": "12/10",
-  "firma": "14d963e1fec4e1d1",
+  "firma": "1627868051622278",
   "msg": "1559587802864295988",
   "nombre": "GODZ",
   "num": 460,
@@ -12529,7 +12529,7 @@
    "Vargas": 1
   },
   "fecha": "14/10",
-  "firma": "bc4a1afd753940d0",
+  "firma": "2f3cc21dcedabb58",
   "msg": "1560070688113688601",
   "nombre": "FF Freestyle Clasico",
   "num": 473,
@@ -13865,7 +13865,7 @@
    "Vandu": 22
   },
   "fecha": "16/10",
-  "firma": "521b34385b273764",
+  "firma": "76bbea2300b7024f",
   "msg": "1560779869497983097",
   "nombre": "PRADERAP VOL.1",
   "num": 479,
@@ -14591,7 +14591,7 @@
    "Panchok": 15
   },
   "fecha": "17/10",
-  "firma": "38ff152e57d14598",
+  "firma": "f4c24ccf012e2a6c",
   "msg": "1561153562665558208",
   "nombre": "MUNDIALITO",
   "num": 482,
@@ -18423,7 +18423,7 @@
    "Velatz": 38
   },
   "fecha": "21/10",
-  "firma": "2a68c7a3bf339781",
+  "firma": "2aaa10588e4bf417",
   "msg": "1562607463755161734",
   "nombre": "SNAKE INSIGNIA 6 8",
   "num": 496,
@@ -22434,7 +22434,7 @@
    "Zekha": 4
   },
   "fecha": "25/10",
-  "firma": "12da806b40eb3999",
+  "firma": "07f2c131b69a46a1",
   "msg": "1564056930748469309",
   "nombre": "REDBULL CREW ARGENTINA 2026",
   "num": 515,
@@ -23279,7 +23279,7 @@
    "Vandu": 34
   },
   "fecha": "25/10",
-  "firma": "d234d877ff55b47c",
+  "firma": "08de154376d72b43",
   "msg": "1564145050185891903",
   "nombre": "CHILL",
   "num": 518,
@@ -23777,7 +23777,7 @@
    ],
    [
     "Chop",
-    "MATO 🇧🇴",
+    "Mato 🇧🇴",
     "Chop"
    ],
    [
@@ -23854,7 +23854,7 @@
    "Vilca": 1
   },
   "fecha": "14/10",
-  "firma": "57d6dcf44322879d",
+  "firma": "5b79a28af843cef9",
   "msg": "1564147696351191051",
   "nombre": "GG SANGRERAP 1",
   "num": 521,
@@ -23911,7 +23911,7 @@
     1250
    ],
    [
-    "MATO 🇧🇴",
+    "Mato 🇧🇴",
     "Octavos",
     1250
    ],
@@ -24022,7 +24022,7 @@
    "Vandu": 35
   },
   "fecha": "20/10",
-  "firma": "2afc961026e4eaa8",
+  "firma": "65c1fd98cb912b04",
   "msg": "1564147704035151906",
   "nombre": "RAP SIN GROSERIAS 2",
   "num": 522,
@@ -24168,7 +24168,7 @@
    "Vilca": 1
   },
   "fecha": "21/10",
-  "firma": "150037b238d1b675",
+  "firma": "fe02a8ecef473e39",
   "msg": "1564147707952758815",
   "nombre": "- RED BULL TORNEO DE PLAZAS 2026 -",
   "num": 523,
@@ -26860,7 +26860,7 @@
    "Teo": 17
   },
   "fecha": "27/10",
-  "firma": "9fee80e971bf2166",
+  "firma": "df6f55a99ca75914",
   "msg": "1564804334967980113",
   "nombre": "PRADERAP VOL.2",
   "num": 535,
@@ -27976,7 +27976,7 @@
    "mats": 3
   },
   "fecha": "27/10",
-  "firma": "d0bee3bed635a393",
+  "firma": "326c83a686d17dd4",
   "msg": "1564844210035757187",
   "nombre": "__ QCYO RAPEEN 5 __",
   "num": 539,
@@ -28586,7 +28586,7 @@
    "yinn": 25
   },
   "fecha": "28/10",
-  "firma": "577a0fbb45763561",
+  "firma": "a3edb2185e75d015",
   "msg": "1565236518367264860",
   "nombre": "__ QCYO RAPEEN 6 __",
   "num": 542,
@@ -28832,14 +28832,14 @@
     "Dantemx"
    ],
    [
-    "Lizeninn",
+    "Mito",
     "Miniboy",
-    "Lizeninn"
+    "Mito"
    ],
    [
-    "Lizeninn",
+    "Mito",
     "Fear",
-    "Lizeninn"
+    "Mito"
    ],
    [
     "OG",
@@ -28931,7 +28931,7 @@
    "yinn": 26
   },
   "fecha": "29/10",
-  "firma": "c783bb5dede85d56",
+  "firma": "7969edf7c6655d82",
   "msg": "1565508537881198633",
   "nombre": "Rap para Raperos #1",
   "num": 543,
@@ -30514,7 +30514,7 @@
    "Walker": 8
   },
   "fecha": "30/10",
-  "firma": "0aeac31c3d5ca99d",
+  "firma": "26f85769baf7e8ca",
   "msg": "1565898869114413108",
   "nombre": "IDS V.3",
   "num": 549,
@@ -31484,7 +31484,7 @@
    "Velatz": 41
   },
   "fecha": "31/10",
-  "firma": "be3ad2f22a339058",
+  "firma": "33db18f909687747",
   "msg": "1566227272355020941",
   "nombre": "SNAKE INSIGNIA 7 8",
   "num": 553,
@@ -32629,7 +32629,7 @@
    "Zignos": 27
   },
   "fecha": "01/11",
-  "firma": "bf0bd897128ec320",
+  "firma": "bbfa8135e0ae7938",
   "msg": "1566645439611011152",
   "nombre": "__ COCINE FIDEOS __",
   "num": 558,
@@ -33690,7 +33690,7 @@
    "OEP": 2
   },
   "fecha": "03/11",
-  "firma": "b971afdc382e22bc",
+  "firma": "ef55d34b8dd4cd87",
   "msg": "1567309579967144037",
   "nombre": "Rayos y Centellas",
   "num": 564,
@@ -34122,7 +34122,7 @@
    "VR": 7
   },
   "fecha": "04/11",
-  "firma": "6c4fa55bc91cde97",
+  "firma": "91e2a84642cd36ed",
   "msg": "1567733874077737062",
   "nombre": "COMPE XCLUSIVISTICA VOL. 1",
   "num": 566,

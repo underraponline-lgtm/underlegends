@@ -2,6 +2,7 @@
  "_leeme": "El reto del debut (bot/debutantes.py): quién debutó desde el 12/10/2026 a las 6 PM ET, cuándo vence, si lo cumplió y qué ya se avisó. Dlx, 12/10/2026.",
  "chats": {
   "ACAD": "2026-10-31",
+  "CH": "2026-11-06",
   "DDF": "2026-11-06",
   "FDS": "2026-10-30",
   "FFA": "2026-11-06",
@@ -263,6 +264,7 @@
   },
   "Berrun": {
    "avisado": "2026-11-05",
+   "chat": "2026-11-06",
    "con": null,
    "cumplido": "",
    "debut": "2026-11-03T03:59:09+00:00",
@@ -497,6 +499,7 @@
   },
   "EL PIBE": {
    "avisado": "2026-11-05",
+   "chat": "2026-11-06",
    "con": null,
    "cumplido": "",
    "debut": "2026-11-03T03:59:09+00:00",
@@ -958,6 +961,7 @@
   },
   "Kaizz": {
    "avisado": "2026-11-05",
+   "chat": "2026-11-06",
    "con": null,
    "cumplido": "",
    "debut": "2026-11-03T03:59:09+00:00",

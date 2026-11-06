@@ -3796,6 +3796,17 @@
     "racha": "0/0"
    }
   },
+  "Galileo": {
+   "ACAD": {
+    "duelos": "",
+    "ev": 1,
+    "oro": 0,
+    "ovr": 42,
+    "pod": 0,
+    "pts": 625,
+    "racha": "0/0"
+   }
+  },
   "Garxzii": {
    "FFA": {
     "duelos": "0/1",
@@ -6411,17 +6422,6 @@
     "tg": {
      "fund": true
     }
-   }
-  },
-  "MCGALILEO 🇻🇪": {
-   "ACAD": {
-    "duelos": "",
-    "ev": 1,
-    "oro": 0,
-    "ovr": 42,
-    "pod": 0,
-    "pts": 625,
-    "racha": "0/0"
    }
   },
   "MCNadie": {
