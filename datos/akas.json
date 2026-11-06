@@ -358,7 +358,7 @@
   "adachi": "Nobu",
   "sabado": "Guess",
   "rizas": "PRAISERIZA",
-  "eyou": "LOLOELGAUCHO",
+  "eyou": "LOLOELGAUCHO 🇦🇷",
   "pichula": "PichulaMc",
   "za": "Provenza",
   "sol": "SOL🇵🇪",
@@ -392,8 +392,11 @@
   "lizenin": "Lizeninn",
   "lizennin": "Lizeninn",
   "lisen": "Lizeninn",
-  "tomyhilfiger1312": "tomyhilfiger",
-  "silence": "S1lence"
+  "tomyhilfiger1312": "tomyhilfiger🇾🇹",
+  "silence": "S1lence",
+  "loloelgaucho": "LOLOELGAUCHO 🇦🇷",
+  "ragna": "Ragna 🇨🇱",
+  "tomyhilfiger": "tomyhilfiger🇾🇹"
  },
  "pares": [
   [
@@ -1974,11 +1977,23 @@
   ],
   [
    "tomyhilfiger1312",
-   "tomyhilfiger"
+   "tomyhilfiger🇾🇹"
   ],
   [
    "Silence",
    "S1lence"
+  ],
+  [
+   "LOLOELGAUCHO",
+   "LOLOELGAUCHO 🇦🇷"
+  ],
+  [
+   "Ragna",
+   "Ragna 🇨🇱"
+  ],
+  [
+   "tomyhilfiger",
+   "tomyhilfiger🇾🇹"
   ]
  ],
  "no_confundir": [
