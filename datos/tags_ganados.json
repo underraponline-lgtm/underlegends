@@ -212,6 +212,11 @@
     "t1",
     1793029252929
    ],
+   "🏯 CIUDADELA": [
+    "🏯 CIUDADELA",
+    "t1",
+    1793925416194
+   ],
    "🏰 FORTALEZA": [
     "🏰 FORTALEZA",
     "t1",
@@ -260,7 +265,7 @@
     1793029252929
    ],
    "👑 CAMPEÓN x%d": [
-    "👑 CAMPEÓN x6",
+    "👑 CAMPEÓN x7",
     "t1",
     1793029252929
    ],
@@ -283,6 +288,11 @@
     "📈 EN ASCENSO",
     "t1",
     1793029252929
+   ],
+   "📋 SEMANA PERFECTA": [
+    "📋 SEMANA PERFECTA",
+    "t1",
+    1793925416194
    ],
    "🔟 DOBLE DÍGITO": [
     "🔟 DOBLE DÍGITO",
@@ -362,6 +372,11 @@
     "🗡️ MATAGIGANTES",
     "t1",
     1793899870631
+   ],
+   "🤝 SIN MIEDO": [
+    "🤝 SIN MIEDO",
+    "t1",
+    1793925416194
    ]
   },
   "servidor": {
@@ -3630,6 +3645,11 @@
     "t1",
     1792960180764
    ],
+   "📈 EN ASCENSO": [
+    "📈 EN ASCENSO",
+    "t1",
+    1793925416194
+   ],
    "🥉 AL PODIO": [
     "🥉 AL PODIO",
     "t1",
@@ -4338,6 +4358,13 @@
     "📆 HABITUÉ",
     "t1",
     1792953978519
+   ]
+  },
+  "temporada": {
+   "📈 EN ASCENSO": [
+    "📈 EN ASCENSO",
+    "t1",
+    1793925416194
    ]
   }
  },
@@ -5332,10 +5359,20 @@
    ]
   },
   "temporada": {
+   "⚡ MARATONISTA": [
+    "⚡ MARATONISTA",
+    "t1",
+    1793925416194
+   ],
    "🌍 TROTAMUNDOS": [
     "🌍 TROTAMUNDOS",
     "t1",
     1793410677837
+   ],
+   "💯 CENTENARIO": [
+    "💯 CENTENARIO",
+    "t1",
+    1793925416194
    ],
    "📈 EN ASCENSO": [
     "📈 EN ASCENSO",
@@ -5346,6 +5383,11 @@
     "🔟 DOBLE DÍGITO",
     "t1",
     1793410677837
+   ],
+   "🛫 NÓMADA": [
+    "🛫 NÓMADA",
+    "t1",
+    1793925416194
    ],
    "🥉 AL PODIO": [
     "🥉 AL PODIO",
@@ -5727,6 +5769,11 @@
     "📅 INFALTABLE",
     "t1",
     1793029252929
+   ],
+   "📈 EN ASCENSO": [
+    "📈 EN ASCENSO",
+    "t1",
+    1793925416194
    ],
    "🔟 DOBLE DÍGITO": [
     "🔟 DOBLE DÍGITO",
@@ -6381,6 +6428,11 @@
     "t1",
     1792953978519
    ],
+   "🗡️ MATAGIGANTES": [
+    "🗡️ MATAGIGANTES",
+    "t1",
+    1793925416194
+   ],
    "🤝 SIN MIEDO": [
     "🤝 SIN MIEDO",
     "t1",
@@ -6590,6 +6642,11 @@
     "EMBAJADOR",
     "t1",
     1792992726322
+   ],
+   "INTERNACIONAL": [
+    "INTERNACIONAL",
+    "t1",
+    1793925416194
    ],
    "SIN FRONTERAS": [
     "SIN FRONTERAS",
@@ -9465,6 +9522,11 @@
     "t1",
     1793029252929
    ],
+   "MEDALLERO": [
+    "MEDALLERO",
+    "t1",
+    1793925416194
+   ],
    "SIN FRONTERAS": [
     "SIN FRONTERAS",
     "t1",
@@ -9476,6 +9538,11 @@
     "🏅 PODIOS",
     "t1",
     1793029252929
+   ],
+   "🏅 VITRINA LLENA": [
+    "🏅 VITRINA LLENA",
+    "t1",
+    1793925416194
    ],
    "🏆 CAMPEÓN": [
     "🏆 CAMPEÓN",
@@ -9525,7 +9592,7 @@
     1793029252929
    ],
    "👑 CAMPEÓN x%d": [
-    "👑 CAMPEÓN x3",
+    "👑 CAMPEÓN x4",
     "t1",
     1793029252929
    ],
@@ -9553,6 +9620,11 @@
     "📋 SEMANA PERFECTA",
     "t1",
     1793029252929
+   ],
+   "🔋 INAGOTABLE": [
+    "🔋 INAGOTABLE",
+    "t1",
+    1793925416194
    ],
    "🔟 DOBLE DÍGITO": [
     "🔟 DOBLE DÍGITO",
@@ -10683,6 +10755,15 @@
    ]
   }
  },
+ "sosaatr": {
+  "temporada": {
+   "🧳 VIAJERO": [
+    "🧳 VIAJERO",
+    "t1",
+    1793925416194
+   ]
+  }
+ },
  "soulb": {
   "competitivo": {
    "🐉 MATADRAGONES": [
@@ -10873,7 +10954,7 @@
     1793064764072
    ],
    "👑 CAMPEÓN x%d": [
-    "👑 CAMPEÓN x3",
+    "👑 CAMPEÓN x4",
     "t1",
     1793317391221
    ],
@@ -10993,6 +11074,11 @@
     "t1",
     1793423073293
    ],
+   "🏰 FORTALEZA": [
+    "🏰 FORTALEZA",
+    "t1",
+    1793925416194
+   ],
    "📆 HABITUÉ": [
     "📆 HABITUÉ",
     "t1",
@@ -11000,8 +11086,13 @@
    ]
   },
   "temporada": {
+   "⚡ RELÁMPAGO": [
+    "⚡ RELÁMPAGO",
+    "t1",
+    1793925416194
+   ],
    "👑 CAMPEÓN x%d": [
-    "👑 CAMPEÓN x2",
+    "👑 CAMPEÓN x3",
     "t1",
     1793684083679
    ],

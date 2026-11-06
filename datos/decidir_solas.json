@@ -3001,6 +3001,63 @@
     "🔹 C3: ISAC"
    ],
    "escribio": {}
+  },
+  {
+   "id": "5d023dccd1",
+   "tipo": "Nombre desconocido",
+   "sec": "qcyo rapeen 2 · FFA · 21/10 · #497",
+   "que": "¿Quién es «Ed»?",
+   "r": "Ya no hace falta",
+   "regla": "cierre · ya no hacía falta preguntarlo",
+   "rk": "cierre",
+   "por": "el ciclo",
+   "porque": "ya no está en ningún resultado: el lector lo lee distinto, o ya es alias de alguien",
+   "t": 1793925404517,
+   "filas": [
+    789
+   ],
+   "variantes": [
+    "Ed"
+   ],
+   "escribio": {}
+  },
+  {
+   "id": "e8171e3e37",
+   "tipo": "Nombre desconocido",
+   "sec": "qcyo rapeen 2 · FFA · 21/10 · #497",
+   "que": "¿Quién es «Edd y Eddy 🇻🇪»?",
+   "r": "Ya no hace falta",
+   "regla": "cierre · ya no hacía falta preguntarlo",
+   "rk": "cierre",
+   "por": "el ciclo",
+   "porque": "ya no está en ningún resultado: el lector lo lee distinto, o ya es alias de alguien",
+   "t": 1793925404517,
+   "filas": [
+    790
+   ],
+   "variantes": [
+    "Edd y Eddy 🇻🇪"
+   ],
+   "escribio": {}
+  },
+  {
+   "id": "57e193d548",
+   "tipo": "Nombre desconocido",
+   "sec": "19 CUP HALLOWEEN 2026 LLAVES DE COMPETENCIA · DDF · 31/10 · #552",
+   "que": "¿Quién es «Miniboy 🇨🇱 LEVI»?",
+   "r": "Ya no hace falta",
+   "regla": "cierre · ya no hacía falta preguntarlo",
+   "rk": "cierre",
+   "por": "el ciclo",
+   "porque": "ya no está en ningún resultado: el lector lo lee distinto, o ya es alias de alguien",
+   "t": 1793925404517,
+   "filas": [
+    996
+   ],
+   "variantes": [
+    "Miniboy 🇨🇱 LEVI"
+   ],
+   "escribio": {}
   }
  ],
  "deshechas": []

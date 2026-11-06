@@ -103,19 +103,6 @@
    "vence": "2026-11-03T03:32:41+00:00",
    "vencido": true
   },
-  "Abysuss": {
-   "avisado": "2026-10-12",
-   "chat": "2026-10-12",
-   "con": null,
-   "cumplido": "",
-   "debut": "2026-10-13T02:35:27+00:00",
-   "did": "",
-   "evento": "COMPE POR 1.5 DOLARES",
-   "n": 462,
-   "sv": "FFA",
-   "vence": "2026-10-20T02:35:27+00:00",
-   "vencido": true
-  },
   "Agenda motta": {
    "avisado": "2026-10-26",
    "chat": "2026-10-26",
@@ -460,34 +447,6 @@
    "vence": "2026-10-26T01:35:44+00:00",
    "vencido": true
   },
-  "Ed": {
-   "avisado": "2026-10-21",
-   "avisado_cumplido": "2026-10-26",
-   "chat": "2026-10-22",
-   "con": 516,
-   "cumplido": "2026-10-25T22:13:32+00:00",
-   "debut": "2026-10-22T00:30:05+00:00",
-   "did": "",
-   "evento": "qcyo rapeen 2",
-   "n": 497,
-   "sv": "FFA",
-   "vence": "2026-10-29T00:30:05+00:00",
-   "vencido": false
-  },
-  "Edd y Eddy": {
-   "avisado": "2026-10-21",
-   "avisado_cumplido": "2026-10-26",
-   "chat": "2026-10-22",
-   "con": 516,
-   "cumplido": "2026-10-25T22:13:32+00:00",
-   "debut": "2026-10-22T00:30:05+00:00",
-   "did": "",
-   "evento": "qcyo rapeen 2",
-   "n": 497,
-   "sv": "FFA",
-   "vence": "2026-10-29T00:30:05+00:00",
-   "vencido": false
-  },
   "El novio de tu novia": {
    "avisado": "2026-11-02",
    "chat": "2026-11-02",
@@ -626,7 +585,7 @@
    "n": 545,
    "sv": "FFA",
    "vence": "2026-11-06T00:12:24+00:00",
-   "vencido": false
+   "vencido": true
   },
   "Gustavo Urrutia Perez": {
    "avisado": "2026-10-31",
@@ -899,7 +858,7 @@
    "n": 545,
    "sv": "FFA",
    "vence": "2026-11-06T00:12:24+00:00",
-   "vencido": false
+   "vencido": true
   },
   "Kastigoz": {
    "avisado": "2026-10-31",
@@ -966,19 +925,6 @@
    "vence": "2026-10-26T16:52:32+00:00",
    "vencido": true
   },
-  "LA ORDEN DEL GRIAL": {
-   "avisado": "2026-10-26",
-   "chat": "2026-10-26",
-   "con": null,
-   "cumplido": "",
-   "debut": "2026-10-25T22:13:32+00:00",
-   "did": "",
-   "evento": "AGUANTE EL ROJO Y EL BARCELONA Multiverse",
-   "n": 516,
-   "sv": "FFA",
-   "vence": "2026-11-01T22:13:32+00:00",
-   "vencido": true
-  },
   "LGBD": {
    "avisado": "2026-10-29",
    "chat": "2026-10-30",
@@ -991,19 +937,6 @@
    "sv": "FFA",
    "vence": "2026-11-05T21:10:39+00:00",
    "vencido": true
-  },
-  "LISEN": {
-   "avisado": "2026-11-01",
-   "chat": "2026-11-02",
-   "con": null,
-   "cumplido": "",
-   "debut": "2026-11-01T05:05:26+00:00",
-   "did": "",
-   "evento": "la palera del edi",
-   "n": 556,
-   "sv": "FFA",
-   "vence": "2026-11-08T05:05:26+00:00",
-   "vencido": false
   },
   "LSO": {
    "avisado": "2026-10-25",
@@ -1070,46 +1003,6 @@
    "vence": "2026-11-10T02:50:33+00:00",
    "vencido": false
   },
-  "Lizen": {
-   "avisado": "2026-10-31",
-   "avisado_cumplido": "2026-11-02",
-   "chat": "2026-11-01",
-   "con": 558,
-   "cumplido": "2026-11-02T01:30:37+00:00",
-   "debut": "2026-10-31T02:59:35+00:00",
-   "did": "",
-   "evento": "qcyo rapeen",
-   "n": 550,
-   "sv": "FFA",
-   "vence": "2026-11-07T02:59:35+00:00",
-   "vencido": false
-  },
-  "Lizenin": {
-   "avisado": "2026-10-29",
-   "chat": "2026-10-28",
-   "con": null,
-   "cumplido": "",
-   "debut": "2026-10-28T18:23:49+00:00",
-   "did": "",
-   "evento": "ZONA MORTAL",
-   "n": 540,
-   "sv": "DDF",
-   "vence": "2026-11-04T18:23:49+00:00",
-   "vencido": true
-  },
-  "Lizennin": {
-   "avisado": "2026-10-27",
-   "chat": "2026-10-27",
-   "con": null,
-   "cumplido": "",
-   "debut": "2026-10-27T18:35:17+00:00",
-   "did": "",
-   "evento": "- IRLANDA FREESTYLE -",
-   "n": 533,
-   "sv": "FRZ",
-   "vence": "2026-11-03T18:35:17+00:00",
-   "vencido": true
-  },
   "Luck": {
    "avisado": "2026-10-23",
    "chat": "2026-10-23",
@@ -1175,6 +1068,18 @@
    "sv": "FFA",
    "vence": "2026-10-26T04:19:55+00:00",
    "vencido": true
+  },
+  "MANJI LOZANO🫩": {
+   "avisado": "2026-11-05",
+   "con": null,
+   "cumplido": "",
+   "debut": "2026-10-31T17:45:26+00:00",
+   "did": "",
+   "evento": "19 CUP HALLOWEEN 2026 LLAVES DE COMPETENCIA",
+   "n": 552,
+   "sv": "DDF",
+   "vence": "2026-11-07T17:45:26+00:00",
+   "vencido": false
   },
   "MATUK": {
    "avisado": "2026-10-25",
@@ -1294,19 +1199,6 @@
    "sv": "FRZ",
    "vence": "2026-10-22T01:41:57+00:00",
    "vencido": true
-  },
-  "Miniboy  LEVI": {
-   "avisado": "2026-10-31",
-   "chat": "2026-10-31",
-   "con": null,
-   "cumplido": "",
-   "debut": "2026-10-31T17:45:26+00:00",
-   "did": "",
-   "evento": "19 CUP HALLOWEEN 2026 LLAVES DE COMPETENCIA",
-   "n": 552,
-   "sv": "DDF",
-   "vence": "2026-11-07T17:45:26+00:00",
-   "vencido": false
   },
   "Misterioso": {
    "avisado": "2026-10-18",
@@ -1652,9 +1544,10 @@
   },
   "Skiller": {
    "avisado": "2026-10-30",
+   "avisado_cumplido": "2026-11-05",
    "chat": "2026-10-30",
-   "con": null,
-   "cumplido": "",
+   "con": 552,
+   "cumplido": "2026-10-31T17:45:26+00:00",
    "debut": "2026-10-30T18:33:33+00:00",
    "did": "1258968231809384470",
    "evento": "Galacticos del Freestyle vol.13",
@@ -2056,7 +1949,7 @@
    "n": 545,
    "sv": "FFA",
    "vence": "2026-11-06T00:12:24+00:00",
-   "vencido": false
+   "vencido": true
   },
   "roda mc": {
    "avisado": "2026-10-26",
@@ -2069,45 +1962,6 @@
    "n": 527,
    "sv": "FDS",
    "vence": "2026-10-31T02:50:48+00:00",
-   "vencido": true
-  },
-  "tomyhilfiger": {
-   "avisado": "2026-10-19",
-   "chat": "2026-10-20",
-   "con": null,
-   "cumplido": "",
-   "debut": "2026-10-19T06:14:16+00:00",
-   "did": "",
-   "evento": "FREESTYLE LEAGUE N3",
-   "n": 488,
-   "sv": "FFA",
-   "vence": "2026-10-26T06:14:16+00:00",
-   "vencido": true
-  },
-  "tomyhilfiger1312": {
-   "avisado": "2026-11-04",
-   "chat": "2026-11-04",
-   "con": null,
-   "cumplido": "",
-   "debut": "2026-11-03T02:50:33+00:00",
-   "did": "",
-   "evento": "qcyo rapeen",
-   "n": 563,
-   "sv": "FFA",
-   "vence": "2026-11-10T02:50:33+00:00",
-   "vencido": false
-  },
-  "x Za": {
-   "avisado": "2026-10-26",
-   "chat": "2026-10-26",
-   "con": null,
-   "cumplido": "",
-   "debut": "2026-10-26T01:55:51+00:00",
-   "did": "",
-   "evento": "QCYO RAPEEN 3",
-   "n": 517,
-   "sv": "FFA",
-   "vence": "2026-11-02T01:55:51+00:00",
    "vencido": true
   },
   "xJuniorTime": {

@@ -2,6 +2,7 @@
  "_leeme": "El nivel de cada servidor de la Liga (Tier 1: suma al ranking; 2: sólo el calendario; 3: su página, sus ligas y sus eventos promocionados, sin sumar). Lo elige Dlx en el Dashboard; sin elegir, el `tier` de datos/servidores.json, y si no, Tier 1. Lo escribe bot/tiers.py y lo leen el lector de llaves y las ligas. El puntaje de cada uno NO va acá: va al Dashboard.",
  "niveles": {
   "ACAD": 1,
+  "CH": 1,
   "DDF": 1,
   "DRA": 1,
   "FDS": 3,
@@ -15,6 +16,15 @@
  },
  "beneficios": {
   "ACAD": {
+   "pagina": true,
+   "calendario": true,
+   "ligas": true,
+   "panel": true,
+   "suma": true,
+   "competitivo": true,
+   "duelos": true
+  },
+  "CH": {
    "pagina": true,
    "calendario": true,
    "ligas": true,

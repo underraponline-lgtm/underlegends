@@ -196,7 +196,7 @@
   "msg": "1556522264164311072"
  },
  "398": {
-  "firma": "COMPE DE UDDI|22/09|12|7|1|0",
+  "firma": "COMPE DE UDDI|22/09|12|7|0|0",
   "msg": "1556552836395835533"
  },
  "399": {
@@ -2516,7 +2516,7 @@
    "Zeta": 4
   },
   "fecha": "08/10",
-  "firma": "e9f8a2f1bde3213e",
+  "firma": "f2b99aec8da9cd10",
   "msg": "1557926456259248232",
   "nombre": "SNAKE INSIGNIA 4 8",
   "num": 430,
@@ -6508,7 +6508,7 @@
    "Trot": 13
   },
   "fecha": "11/10",
-  "firma": "16af2e829d12b60f",
+  "firma": "f32f7898b3e0dd19",
   "msg": "1558907910707224587",
   "nombre": "RED BULL NACIONAL ESPAÑA T.5",
   "num": 448,
@@ -9436,7 +9436,7 @@
    "Zignos": 19
   },
   "fecha": "12/10",
-  "firma": "d5a9626dbca37339",
+  "firma": "b481337cb287d36c",
   "msg": "1559587802864295988",
   "nombre": "GODZ",
   "num": 460,
@@ -12529,7 +12529,7 @@
    "Vargas": 1
   },
   "fecha": "14/10",
-  "firma": "a67d8d06a5d0df2c",
+  "firma": "49155ada318eebcf",
   "msg": "1560070688113688601",
   "nombre": "FF Freestyle Clasico",
   "num": 473,
@@ -13865,7 +13865,7 @@
    "Vandu": 22
   },
   "fecha": "16/10",
-  "firma": "2cd2635aabf62c06",
+  "firma": "e2f55c451b83feef",
   "msg": "1560779869497983097",
   "nombre": "PRADERAP VOL.1",
   "num": 479,
@@ -14591,7 +14591,7 @@
    "Panchok": 15
   },
   "fecha": "17/10",
-  "firma": "13d4564501ebe65e",
+  "firma": "6a55750ff2ec8554",
   "msg": "1561153562665558208",
   "nombre": "MUNDIALITO",
   "num": 482,
@@ -18423,7 +18423,7 @@
    "Velatz": 38
   },
   "fecha": "21/10",
-  "firma": "33aa224e05b15082",
+  "firma": "2e464a8561d8746b",
   "msg": "1562607463755161734",
   "nombre": "SNAKE INSIGNIA 6 8",
   "num": 496,
@@ -22434,7 +22434,7 @@
    "Zekha": 4
   },
   "fecha": "25/10",
-  "firma": "a9566ad1200ab479",
+  "firma": "486169eb018353e9",
   "msg": "1564056930748469309",
   "nombre": "REDBULL CREW ARGENTINA 2026",
   "num": 515,
@@ -23279,7 +23279,7 @@
    "Vandu": 34
   },
   "fecha": "25/10",
-  "firma": "0109845b4f2856bd",
+  "firma": "847aa5c069b425a2",
   "msg": "1564145050185891903",
   "nombre": "CHILL",
   "num": 518,
@@ -23854,7 +23854,7 @@
    "Vilca": 1
   },
   "fecha": "14/10",
-  "firma": "eaaac8c162ec9251",
+  "firma": "e0e3ed24269efa8f",
   "msg": "1564147696351191051",
   "nombre": "GG SANGRERAP 1",
   "num": 521,
@@ -24022,7 +24022,7 @@
    "Vandu": 35
   },
   "fecha": "20/10",
-  "firma": "258ec3d251f18cf1",
+  "firma": "1f819b609429bf97",
   "msg": "1564147704035151906",
   "nombre": "RAP SIN GROSERIAS 2",
   "num": 522,
@@ -24168,7 +24168,7 @@
    "Vilca": 1
   },
   "fecha": "21/10",
-  "firma": "da113ce679772db9",
+  "firma": "b3474c483642746b",
   "msg": "1564147707952758815",
   "nombre": "- RED BULL TORNEO DE PLAZAS 2026 -",
   "num": 523,
@@ -27976,7 +27976,7 @@
    "mats": 3
   },
   "fecha": "27/10",
-  "firma": "0931d3c6a9405411",
+  "firma": "39355993f0d9f3e3",
   "msg": "1564844210035757187",
   "nombre": "__ QCYO RAPEEN 5 __",
   "num": 539,
@@ -28586,7 +28586,7 @@
    "yinn": 25
   },
   "fecha": "28/10",
-  "firma": "e1bc75468c2c851d",
+  "firma": "41872f36fe3e945d",
   "msg": "1565236518367264860",
   "nombre": "__ QCYO RAPEEN 6 __",
   "num": 542,
@@ -28832,14 +28832,14 @@
     "Dantemx"
    ],
    [
-    "Lizen🇦🇷",
+    "Lizeninn",
     "Miniboy",
-    "Lizen🇦🇷"
+    "Lizeninn"
    ],
    [
-    "Lizen🇦🇷",
+    "Lizeninn",
     "Fear",
-    "Lizen🇦🇷"
+    "Lizeninn"
    ],
    [
     "OG",
@@ -28931,7 +28931,7 @@
    "yinn": 26
   },
   "fecha": "29/10",
-  "firma": "b3c100a646ff92c9",
+  "firma": "e0ce8e20afb7ddac",
   "msg": "1565508537881198633",
   "nombre": "Rap para Raperos #1",
   "num": 543,
@@ -30514,7 +30514,7 @@
    "Walker": 8
   },
   "fecha": "30/10",
-  "firma": "1d2a3177f0050c1c",
+  "firma": "797a503ac270009f",
   "msg": "1565898869114413108",
   "nombre": "IDS V.3",
   "num": 549,
@@ -31484,7 +31484,7 @@
    "Velatz": 41
   },
   "fecha": "31/10",
-  "firma": "c5ed427a2b051f34",
+  "firma": "6c6f78b5a806b18b",
   "msg": "1566227272355020941",
   "nombre": "SNAKE INSIGNIA 7 8",
   "num": 553,
@@ -33194,11 +33194,6 @@
     "Xclusivo",
     "Makmah",
     "Xclusivo"
-   ],
-   [
-    "Xclusivo",
-    "MOMENTO DE LA NOCHE: AM",
-    "Xclusivo"
    ]
   ],
   "ev_antes": {
@@ -33212,11 +33207,11 @@
    "Xclusivo": 19
   },
   "fecha": "02/11",
-  "firma": "2210319025518fa6",
+  "firma": "c07723713c8ca7c7",
   "msg": "1566909178818076723",
   "nombre": "GALACTICOS DEL FREESTYLE VOL.15",
   "num": 561,
-  "participantes": 12,
+  "participantes": 11,
   "sello": {
    "Xclusivo": ""
   },
@@ -33695,7 +33690,7 @@
    "OEP": 2
   },
   "fecha": "03/11",
-  "firma": "2fafc14e93e743dc",
+  "firma": "6dea35ecedd11c58",
   "msg": "1567309579967144037",
   "nombre": "Rayos y Centellas",
   "num": 564,
@@ -34127,7 +34122,7 @@
    "VR": 7
   },
   "fecha": "04/11",
-  "firma": "8768cf1556f42c82",
+  "firma": "53938fcf5669eb74",
   "msg": "1567733874077737062",
   "nombre": "COMPE XCLUSIVISTICA VOL. 1",
   "num": 566,
