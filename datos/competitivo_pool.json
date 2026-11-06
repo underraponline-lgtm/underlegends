@@ -2153,19 +2153,19 @@
   "tg_c": {
    "bestia": 1,
    "clasico": 1,
-   "dg": 5,
+   "dg": 8,
    "fg": 2,
    "mata": 1,
-   "riv": 10,
-   "venc": 5
+   "riv": 13,
+   "venc": 8
   },
   "tg_p": {
    "paises": 4,
-   "paisesg": 3
+   "paisesg": 4
   },
   "nac": {
    "evn": 9,
-   "evi": 11,
+   "evi": 12,
    "com": 4,
    "top": [
     3,
@@ -2770,7 +2770,7 @@
    "dg": 13,
    "fg": 2,
    "fp": 2,
-   "riv": 19,
+   "riv": 20,
    "venc": 11
   },
   "tg_p": {
@@ -2779,7 +2779,7 @@
   },
   "nac": {
    "evn": 8,
-   "evi": 19,
+   "evi": 20,
    "com": 4,
    "top": [
     10,
@@ -5013,7 +5013,7 @@
   "din_v": 3,
   "din_t": 9,
   "crn_t": 5,
-  "cri_t": 21,
+  "cri_t": 22,
   "pos": 48,
   "total": 78,
   "rango": "D",
@@ -5028,7 +5028,7 @@
    "bestia": 2,
    "clasico": 2,
    "dg": 4,
-   "riv": 9,
+   "riv": 10,
    "venc": 3
   },
   "tg_p": {
@@ -5266,17 +5266,25 @@
   "pos_sv": "8/16",
   "arc_sv": 56,
   "tg_c": {
+   "bestia": 1,
    "clasico": 1,
+   "dg": 2,
    "fp": 1,
-   "riv": 6
+   "riv": 9,
+   "venc": 2
   },
   "tg_p": {
-   "paises": 6
+   "paises": 7,
+   "paisesg": 2
   },
   "nac": {
    "evn": 2,
-   "evi": 6,
-   "com": 0
+   "evi": 7,
+   "com": 0,
+   "top": [
+    5,
+    "es"
+   ]
   }
  },
  {
@@ -5502,11 +5510,11 @@
    "bestia": 1,
    "clasico": 2,
    "dg": 2,
-   "riv": 6,
+   "riv": 7,
    "venc": 2
   },
   "tg_p": {
-   "paises": 6,
+   "paises": 7,
    "paisesg": 2
   },
   "nac": {
@@ -6392,7 +6400,7 @@
   "din_v": 2,
   "din_t": 15,
   "crn_t": 6,
-  "cri_t": 34,
+  "cri_t": 35,
   "pos": 93,
   "total": 78,
   "rango": "D",
@@ -15016,14 +15024,14 @@
   "arc_sv": 0,
   "tg_c": {
    "clasico": 1,
-   "riv": 2
+   "riv": 3
   },
   "tg_p": {
-   "paises": 1
+   "paises": 2
   },
   "nac": {
    "evn": 0,
-   "evi": 6,
+   "evi": 7,
    "com": 0
   }
  },
@@ -22552,12 +22560,12 @@
   }
  },
  {
-  "full": "SAIDEM 🇦🇷",
+  "full": "SAIDEM",
   "raw": "SAIDEM",
   "cc": "ar",
   "sv": "DDF",
   "crew": "",
-  "discord_id": "",
+  "discord_id": "723968697798099057",
   "verificado": false,
   "ev": 1,
   "score": 2.5,
@@ -22578,7 +22586,7 @@
   "din_v": 0,
   "din_t": 0,
   "crn_t": 0,
-  "cri_t": 0,
+  "cri_t": 2,
   "pos": 412,
   "total": 78,
   "rango": "",

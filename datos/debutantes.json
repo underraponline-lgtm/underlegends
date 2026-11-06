@@ -37,7 +37,7 @@
    "n": 547,
    "sv": "FFA",
    "vence": "2026-11-06T20:59:18+00:00",
-   "vencido": false
+   "vencido": true
   },
   "23": {
    "con": null,
@@ -312,7 +312,7 @@
    "n": 547,
    "sv": "FFA",
    "vence": "2026-11-06T20:59:18+00:00",
-   "vencido": false
+   "vencido": true
   },
   "Cazafla anti cazanova": {
    "avisado": "2026-10-18",
@@ -1421,7 +1421,7 @@
    "n": 547,
    "sv": "FFA",
    "vence": "2026-11-06T20:59:18+00:00",
-   "vencido": false
+   "vencido": true
   },
   "Nerick": {
    "avisado": "2026-10-26",
@@ -1460,7 +1460,7 @@
    "n": 547,
    "sv": "FFA",
    "vence": "2026-11-06T20:59:18+00:00",
-   "vencido": false
+   "vencido": true
   },
   "ONDADISKO": {
    "avisado": "2026-10-13",
@@ -1659,7 +1659,7 @@
    "con": null,
    "cumplido": "",
    "debut": "2026-11-06T19:37:36+00:00",
-   "did": "",
+   "did": "723968697798099057",
    "evento": "GALACTICOS DEL FREESTYLE VOL.17",
    "n": 575,
    "sv": "DDF",
