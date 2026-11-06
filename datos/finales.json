@@ -1115,5 +1115,27 @@
   "sin_permiso": true,
   "sv": "LKR"
  },
+ "1568104021267583118": {
+  "autor": "1546111597343146044",
+  "canal": "1558611505040064607",
+  "cuando": "2026-11-06T03:25:32.634000+00:00",
+  "evento": "TORNEOS",
+  "fecha": "05/11",
+  "llave": "1568104021267583118",
+  "pregunta": "",
+  "preguntada": "2026-11-06 3:53 AM ET",
+  "preguntas": [
+   {
+    "lados": [
+     "Letra 🇻🇪",
+     "URKO 🇨🇴"
+    ],
+    "ronda": "FINAL"
+   }
+  ],
+  "respondidas": {},
+  "sin_permiso": true,
+  "sv": "LKR"
+ },
  "_leeme": "Las llaves que el ciclo no entendió y se las preguntó a quien las publicó, con botones o un menú (bot/finales.py). Una vez por llave, por su ID: así nunca se pregunta dos veces. Dlx, 12/10/2026."
 }
