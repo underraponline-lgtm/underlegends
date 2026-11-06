@@ -1,0 +1,36 @@
+{
+ "_leeme": "La bienvenida a Cypherhood (05/11/2026), en su chat general y sin menciones (el bot no puede usar @everyone ahí). Dlx aprobó el texto: «si como siempre». Componentes V2. Se publica con herramientas/anunciar.py --canal 1215539465427222528 --servidor CH.",
+ "flags": 32768,
+ "components": [
+  {
+   "type": 17,
+   "accent_color": 15902976,
+   "components": [
+    {
+     "type": 9,
+     "components": [
+      {
+       "type": 10,
+       "content": "# 👋 ¡Bienvenidos a la Liga Global, Cypherhood!\nDesde hoy sus eventos suman al ranking, salen en el calendario y sus llaves se siguen en vivo. Los 6 eventos de esta temporada ya cuentan."
+      }
+     ],
+     "accessory": {
+      "type": 11,
+      "media": {
+       "url": "https://underlegends.pages.dev/ul.png"
+      }
+     }
+    },
+    {
+     "type": 14,
+     "divider": true,
+     "spacing": 1
+    },
+    {
+     "type": 10,
+     "content": "Entra, busca tu nombre y mira tu tarjeta: https://underlegends.pages.dev/s/ch/"
+    }
+   ]
+  }
+ ]
+}
