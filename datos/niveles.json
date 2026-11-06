@@ -4,6 +4,7 @@
   "ACAD": 1,
   "CH": 1,
   "DDF": 1,
+  "DDS": 3,
   "DRA": 1,
   "FDS": 3,
   "FFA": 1,
@@ -41,6 +42,15 @@
    "suma": true,
    "competitivo": true,
    "duelos": true
+  },
+  "DDS": {
+   "pagina": true,
+   "calendario": true,
+   "ligas": true,
+   "panel": true,
+   "suma": false,
+   "competitivo": false,
+   "duelos": false
   },
   "DRA": {
    "pagina": true,

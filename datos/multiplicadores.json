@@ -1082,8 +1082,8 @@
    "organizadores": [
     [
      "NC",
-     41,
-     2
+     58,
+     3
     ],
     [
      "Adriagner",
@@ -1093,14 +1093,14 @@
    ],
    "semillero": {
     "nuevos": {
-     "FFA": 6,
+     "FFA": 10,
      "CH": 5,
      "DDF": 2
     },
     "gente": {
      "DDF": 20,
      "LKR": 2,
-     "FFA": 35,
+     "FFA": 46,
      "URBF": 7,
      "CH": 12
     },
@@ -1111,7 +1111,7 @@
     "DDF": 20,
     "DRA": 0,
     "FDS": 0,
-    "FFA": 35,
+    "FFA": 46,
     "FFS": 0,
     "FRZ": 0,
     "FVS": 0,

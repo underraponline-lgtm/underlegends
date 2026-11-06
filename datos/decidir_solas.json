@@ -3559,6 +3559,46 @@
      "1240446191506817144"
     ]
    }
+  },
+  {
+   "id": "b5b479cb0e",
+   "tipo": "Nombre desconocido",
+   "sec": "qcyo rapeen · FFA · 02/11 · #563",
+   "que": "¿Quién es «Joven sexlong 🇵🇦»?",
+   "r": "Es Joven shenlong (en este evento)",
+   "regla": "R21 · la cuenta que se anotó así para ese evento es de alguien de la Lista que esa noche no jugó con su nombre",
+   "rk": "R21",
+   "por": "el ciclo",
+   "porque": "la cuenta @godkiller___ · en la Lista: Joven shenlong se anotó como «Joven sexlong» para ese evento, no es staff de FFA y esa noche no jugó con su nombre",
+   "t": 1793941508268,
+   "filas": [
+    1039
+   ],
+   "variantes": [
+    "Joven sexlong 🇵🇦"
+   ],
+   "escribio": {
+    "quien": "qcyo rapeen · FFA · 02/11 · Joven sexlong 🇵🇦"
+   }
+  },
+  {
+   "id": "f32c74f9fc",
+   "tipo": "Alias posible",
+   "sec": "🪪 Identidad",
+   "que": "¿«dyzzcord» es Dyzz? La cuenta de Dyzz en la Lista se anotó como «dyzzcord», y en el ranking suman aparte. Si es la misma persona, los puntos de «dyzzcord» pasan a Dyzz.\nLa cuenta: https://discord.com/users/1525996330042921081",
+   "r": "Ya no hace falta",
+   "regla": "cierre · ya no hacía falta preguntarlo",
+   "rk": "cierre",
+   "por": "el ciclo",
+   "porque": "ya no hace falta: «dyzzcord» ya no suma aparte en el ranking",
+   "t": 1793941508268,
+   "filas": [
+    1117
+   ],
+   "variantes": [
+    "DOS NOMBRES: «dyzzcord» → «Dyzz» · cuenta 1525996330042921081"
+   ],
+   "escribio": {}
   }
  ],
  "deshechas": []

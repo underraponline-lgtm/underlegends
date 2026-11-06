@@ -948,7 +948,7 @@
    "con": null,
    "cumplido": "",
    "debut": "2026-11-06T03:10:32+00:00",
-   "did": "",
+   "did": "926257282667413564",
    "evento": "QCYO RAPEEN 11",
    "n": 574,
    "sv": "FFA",
@@ -2020,7 +2020,7 @@
    "con": null,
    "cumplido": "",
    "debut": "2026-11-06T03:10:32+00:00",
-   "did": "",
+   "did": "1240446191506817144",
    "evento": "QCYO RAPEEN 11",
    "n": 574,
    "sv": "FFA",
@@ -2038,19 +2038,6 @@
    "n": 551,
    "sv": "FFA",
    "vence": "2026-11-07T06:06:01+00:00",
-   "vencido": false
-  },
-  "dyzzcord": {
-   "avisado": "2026-11-06",
-   "chat": "2026-11-06",
-   "con": null,
-   "cumplido": "",
-   "debut": "2026-11-06T03:10:32+00:00",
-   "did": "",
-   "evento": "QCYO RAPEEN 11",
-   "n": 574,
-   "sv": "FFA",
-   "vence": "2026-11-13T03:10:32+00:00",
    "vencido": false
   },
   "erpi": {

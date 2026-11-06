@@ -680,6 +680,17 @@
     }
    ],
    "tag": "CULTURA"
+  },
+  "DDS": {
+   "nombre": "Discord Style",
+   "guild_id": "1443770831598649528",
+   "en_el_sheet": false,
+   "confirmado": true,
+   "sigla": "DDS",
+   "tier": 3,
+   "alta": "dashboard",
+   "nota": "dado de alta desde el Dashboard el 06/11/2026 (bot/tiers.py `altas()`)",
+   "tag": "EXCLUSIVIDAD"
   }
  },
  "_fuera_de_la_tabla": [

@@ -257,6 +257,15 @@
 "temporada"
 ]
 },
+"cronox": {
+"rg": "D",
+"c": [
+"competitivo",
+"pais",
+"servidor",
+"temporada"
+]
+},
 "xclusivo": {
 "rg": "C",
 "c": []
@@ -290,15 +299,6 @@
 },
 "xubaru": {
 "rg": "C",
-"c": [
-"competitivo",
-"pais",
-"servidor",
-"temporada"
-]
-},
-"cronox": {
-"rg": "D",
 "c": [
 "competitivo",
 "pais",
@@ -393,6 +393,15 @@
 "temporada"
 ]
 },
+"dyzz": {
+"rg": "E",
+"c": [
+"competitivo",
+"pais",
+"servidor",
+"temporada"
+]
+},
 "dominick": {
 "rg": "D",
 "c": []
@@ -444,15 +453,6 @@
 "rg": "B",
 "c": [
 "competitivo",
-"servidor",
-"temporada"
-]
-},
-"dyzz": {
-"rg": "E",
-"c": [
-"competitivo",
-"pais",
 "servidor",
 "temporada"
 ]
