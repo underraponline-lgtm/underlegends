@@ -698,7 +698,7 @@
    "n": 551,
    "sv": "FFA",
    "vence": "2026-11-07T06:06:01+00:00",
-   "vencido": false
+   "vencido": true
   },
   "Guty": {
    "avisado": "2026-10-12",
@@ -803,7 +803,7 @@
    "n": 551,
    "sv": "FFA",
    "vence": "2026-11-07T06:06:01+00:00",
-   "vencido": false
+   "vencido": true
   },
   "Isac": {
    "con": null,
@@ -2057,7 +2057,7 @@
    "n": 551,
    "sv": "FFA",
    "vence": "2026-11-07T06:06:01+00:00",
-   "vencido": false
+   "vencido": true
   },
   "erpi": {
    "avisado": "2026-10-31",
@@ -2070,7 +2070,7 @@
    "n": 551,
    "sv": "FFA",
    "vence": "2026-11-07T06:06:01+00:00",
-   "vencido": false
+   "vencido": true
   },
   "fenix": {
    "avisado": "2026-10-29",
@@ -2123,7 +2123,7 @@
    "n": 551,
    "sv": "FFA",
    "vence": "2026-11-07T06:06:01+00:00",
-   "vencido": false
+   "vencido": true
   },
   "kata lyrical": {
    "con": null,

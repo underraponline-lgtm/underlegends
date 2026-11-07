@@ -2,61 +2,6 @@
  "_leeme": "Los eventos de vidas de #veredictos ya armados —quién peleó con quién y quién ganó—, para cargarlos aunque ya no estén entre los últimos mensajes del canal; y cada batalla con su ganador (`batallas`), para la llave que no lo dice; y cada llave como se jugó (`llaves`), que manda sobre la del organizador. Sin los mensajes: el repo es público. Lo escribe bot/escuchar.py (vidas()).",
  "eventos": {},
  "batallas": {
-  "1565969508936589333": {
-   "id": "1565969508936589333",
-   "sv": "[FFA] Freestyle For All 👾",
-   "g": "1468472442925092958",
-   "canal": "1487206164864438513",
-   "pub": 1793426625237,
-   "a": "nc",
-   "b": "lvel",
-   "ganador": "nc",
-   "votos": "3–0"
-  },
-  "1565971125354233940": {
-   "id": "1565971125354233940",
-   "sv": "[FFA] Freestyle For All 👾",
-   "g": "1468472442925092958",
-   "canal": "1487206164864438513",
-   "pub": 1793427010621,
-   "a": "Kravitz",
-   "b": "Supreme",
-   "ganador": "Supreme",
-   "votos": "2–0"
-  },
-  "1565972212895195207": {
-   "id": "1565972212895195207",
-   "sv": "[FFA] Freestyle For All 👾",
-   "g": "1468472442925092958",
-   "canal": "1487206164864438513",
-   "pub": 1793427269911,
-   "a": "OKAM",
-   "b": "STARI",
-   "ganador": "OKAM",
-   "votos": "1–0"
-  },
-  "1565972414171455499": {
-   "id": "1565972414171455499",
-   "sv": "[FFA] Freestyle For All 👾",
-   "g": "1468472442925092958",
-   "canal": "1487206164864438513",
-   "pub": 1793427317899,
-   "a": "Aldre 🇦🇷",
-   "b": "Sin límites 🇵🇪",
-   "ganador": "Aldre 🇦🇷",
-   "votos": "3–0"
-  },
-  "1565973436415737979": {
-   "id": "1565973436415737979",
-   "sv": "[FFA] Freestyle For All 👾",
-   "g": "1468472442925092958",
-   "canal": "1487206164864438513",
-   "pub": 1793427561621,
-   "a": "erian 🇫🇯",
-   "b": "Isabella 🇦🇷",
-   "ganador": "Isabella 🇦🇷",
-   "votos": "2–1"
-  },
   "1565974632249692223": {
    "id": "1565974632249692223",
    "sv": "[FFA] Freestyle For All 👾",
