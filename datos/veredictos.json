@@ -2,17 +2,6 @@
  "_leeme": "Los eventos de vidas de #veredictos ya armados —quién peleó con quién y quién ganó—, para cargarlos aunque ya no estén entre los últimos mensajes del canal; y cada batalla con su ganador (`batallas`), para la llave que no lo dice; y cada llave como se jugó (`llaves`), que manda sobre la del organizador. Sin los mensajes: el repo es público. Lo escribe bot/escuchar.py (vidas()).",
  "eventos": {},
  "batallas": {
-  "1565895436487761993": {
-   "id": "1565895436487761993",
-   "sv": "✮ 𝑼𝒓𝒃𝒂𝒏 𝑭𝒓𝒆𝒆𝒔𝒕𝒚𝒍𝒆 ✮ | A New Era",
-   "g": "1467763447117778989",
-   "canal": "1540223675146707045",
-   "pub": 1793408964989,
-   "a": "POLLOSPORT 🇦🇷",
-   "b": "AGUS 🇦🇷",
-   "ganador": "AGUS 🇦🇷",
-   "votos": "1–0"
-  },
   "1565901585362452593": {
    "id": "1565901585362452593",
    "sv": "#FDS ╏FREESTYLE DISCORD SERIES",
@@ -1089,6 +1078,17 @@
    "a": "WOS 🇦🇷",
    "b": "URKO 🇨🇴",
    "ganador": "URKO 🇨🇴",
+   "votos": "1–0"
+  },
+  "1568430934397689857": {
+   "id": "1568430934397689857",
+   "sv": "🔥 𝐃𝐈𝐒𝐂𝐎𝐑𝐃 𝐒𝐓𝐘𝐋𝐄 🎤",
+   "g": "1443770831598649528",
+   "canal": "1477446447422246943",
+   "pub": 1794013474798,
+   "a": "NRE Y ABRAHAM",
+   "b": "NXUS Y TAYO",
+   "ganador": "NRE Y ABRAHAM",
    "votos": "1–0"
   }
  },
