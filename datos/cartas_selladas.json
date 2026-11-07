@@ -11,7 +11,7 @@
   "19 FLEIVA WACK": {
    "competitivo": "4cf1e0aab227:69ebad5d143d",
    "pais": "a3ad88c32aa5:17d95ff16abf",
-   "servidor": "a9e5ddcb9969:52802c8017c2:18d204",
+   "servidor": "85d6866e6eba:52802c8017c2:18d204",
    "temporada": "bfef82504499:b65fe52a19f1"
   },
   "27": {},
@@ -70,7 +70,7 @@
   "Agus": {
    "competitivo": "63e193463898:69ebad5d143d",
    "pais": "69029365ac49:17d95ff16abf",
-   "servidor": "a3e27277f512:52802c8017c2:51cb66",
+   "servidor": "fc06e29a3cf7:52802c8017c2:51cb66",
    "temporada": "67b038498955:b65fe52a19f1"
   },
   "Aktybo": {
@@ -161,7 +161,7 @@
   "BastyRetro": {
    "competitivo": "ae5c96113515:69ebad5d143d",
    "pais": "786fc4741971:17d95ff16abf",
-   "servidor": "bc06b3927884:52802c8017c2:514274",
+   "servidor": "cf17a52e9797:52802c8017c2:514274",
    "temporada": "37d027550c01:b65fe52a19f1"
   },
   "Bau": {
@@ -278,7 +278,7 @@
   "Crk": {
    "competitivo": "044c4837f1da:69ebad5d143d",
    "pais": "49b502fa9289:17d95ff16abf",
-   "servidor": "523c57797fb0:52802c8017c2:be5547",
+   "servidor": "a7789d38e941:52802c8017c2:be5547",
    "temporada": "e4acc9ffd4af:b65fe52a19f1"
   },
   "Cronox": {
@@ -378,7 +378,7 @@
   "Dev": {
    "competitivo": "98543853286f:69ebad5d143d",
    "pais": "d3a2d2c7d41b:17d95ff16abf",
-   "servidor": "4d4dfc134346:52802c8017c2:16bc7a",
+   "servidor": "c94970846d6c:52802c8017c2:16bc7a",
    "temporada": "4c2db2454cdd:b65fe52a19f1"
   },
   "Diablo": {
@@ -954,7 +954,7 @@
   "Lilñaño": {
    "competitivo": "87a58ab32c2a:69ebad5d143d",
    "pais": "ef72113c282d:17d95ff16abf",
-   "servidor": "94c36ef14572:52802c8017c2:46a103"
+   "servidor": "b98ecedb994e:52802c8017c2:46a103"
   },
   "LitKunai": {
    "competitivo": "d7461f034afb:69ebad5d143d",
@@ -1102,7 +1102,7 @@
   "Mc arepa": {
    "competitivo": "193307f7320b:69ebad5d143d",
    "pais": "0076d63bd7bb:17d95ff16abf",
-   "servidor": "665424fdc48e:52802c8017c2:abdb4a",
+   "servidor": "3f33155ee0ec:52802c8017c2:abdb4a",
    "temporada": "508b4ec0eac0:b65fe52a19f1"
   },
   "Mcarita": {
@@ -1223,7 +1223,7 @@
   "Nain sdp": {
    "competitivo": "ea5c0d54a8a1:69ebad5d143d",
    "pais": "65f0bd6e460b:17d95ff16abf",
-   "servidor": "ed424ba0f944:52802c8017c2:324686"
+   "servidor": "3e78d3f66388:52802c8017c2:324686"
   },
   "Nairda": {},
   "Nemi": {
@@ -1264,7 +1264,7 @@
   "Number": {
    "competitivo": "ef256a62b491:69ebad5d143d",
    "pais": "d177ebf2996d:17d95ff16abf",
-   "servidor": "f71acd7d936a:52802c8017c2:fdb28b",
+   "servidor": "bd65778b1497:52802c8017c2:fdb28b",
    "temporada": "1bbcd5ae20cf:b65fe52a19f1"
   },
   "Number VE": {
@@ -1765,7 +1765,7 @@
   "Walker": {
    "competitivo": "6c8c13e73665:69ebad5d143d",
    "pais": "00006021d31c:17d95ff16abf",
-   "servidor": "9283aaf0f588:52802c8017c2:62e67f",
+   "servidor": "c63f0e073c48:52802c8017c2:62e67f",
    "temporada": "8c5f7e43498f:b65fe52a19f1"
   },
   "Warriorvid": {},
@@ -2019,5 +2019,5 @@
    "servidor": "7f8885a35a6d:52802c8017c2:93a344"
   }
  },
- "cuando": "2026-11-07T05:04:31+00:00"
+ "cuando": "2026-11-07T05:34:12+00:00"
 }
