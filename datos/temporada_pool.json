@@ -9860,7 +9860,6 @@
   "rango": "E",
   "tg_t": {
    "dcor": true,
-   "reciente": true,
    "svc": 1
   }
  },
@@ -10063,10 +10062,7 @@
   "pos": 356,
   "fc": true,
   "total": 231,
-  "rango": "E",
-  "tg_t": {
-   "reciente": true
-  }
+  "rango": "E"
  },
  {
   "full": "Acry",
@@ -13265,10 +13261,7 @@
   "pos": 424,
   "fc": true,
   "total": 231,
-  "rango": "E",
-  "tg_t": {
-   "reciente": true
-  }
+  "rango": "E"
  },
  {
   "full": "Lambroggini",
@@ -14533,10 +14526,7 @@
   "pos": 456,
   "fc": true,
   "total": 231,
-  "rango": "E",
-  "tg_t": {
-   "reciente": true
-  }
+  "rango": "E"
  },
  {
   "full": "Agustin UY",
@@ -17633,10 +17623,7 @@
   "pos": 530,
   "fc": true,
   "total": 231,
-  "rango": "E",
-  "tg_t": {
-   "reciente": true
-  }
+  "rango": "E"
  },
  {
   "full": "Hirex",
@@ -20172,10 +20159,7 @@
   "pos": 599,
   "fc": true,
   "total": 231,
-  "rango": "E",
-  "tg_t": {
-   "reciente": true
-  }
+  "rango": "E"
  },
  {
   "full": "Zanz",
