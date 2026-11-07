@@ -86,10 +86,22 @@
     "nivel": "B",
     "base": 7250,
     "o": 16,
-    "estado": "suelto",
-    "ev": 0,
-    "fase": "",
-    "valor": 7250
+    "estado": "cazado",
+    "ev": 1,
+    "fase": "Semifinal",
+    "valor": 7250,
+    "caza": {
+     "n": 577,
+     "evento": "ZONA MORTAL",
+     "sv": "DDF",
+     "t": "2026-11-07T21:12:14Z",
+     "por": [
+      {
+       "n": "19",
+       "cobra": 14500
+      }
+     ]
+    }
    },
    {
     "n": "Erian",

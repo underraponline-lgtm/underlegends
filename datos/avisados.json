@@ -36723,5 +36723,135 @@
    ]
   ],
   "v": 2
+ },
+ "577": {
+  "antes": {
+   "19": [
+    254,
+    101,
+    true
+   ],
+   "Carlosss": [
+    17,
+    20,
+    false
+   ],
+   "Crk": [
+    66,
+    83,
+    false
+   ],
+   "Drexx": [
+    34,
+    40,
+    false
+   ],
+   "MaYeuTyK": [
+    52,
+    66,
+    false
+   ],
+   "Rodas": [
+    85,
+    109,
+    false
+   ],
+   "Xclusivo": [
+    237,
+    35,
+    true
+   ]
+  },
+  "canal": "1566326935058124832",
+  "duelos": [
+   [
+    "Carlosss",
+    "Rodas",
+    "Carlosss"
+   ],
+   [
+    "19",
+    "MaYeuTyK",
+    "19"
+   ],
+   [
+    "Drexx",
+    "Crk",
+    "Drexx"
+   ],
+   [
+    "19",
+    "Carlosss",
+    "19"
+   ],
+   [
+    "Drexx",
+    "Xclusivo",
+    "Drexx"
+   ],
+   [
+    "19",
+    "Drexx",
+    "19"
+   ]
+  ],
+  "ev_antes": {
+   "19": 7,
+   "Carlosss": 16,
+   "Crk": 15,
+   "Drexx": 33,
+   "MaYeuTyK": 11,
+   "Rodas": 11,
+   "Xclusivo": 23
+  },
+  "fecha": "07/11",
+  "firma": "8d3462615952fcb4",
+  "msg": "1568746606562509004",
+  "nombre": "ZONA MORTAL",
+  "num": 577,
+  "participantes": 9,
+  "sello": {
+   "19": ""
+  },
+  "sv": "DDF",
+  "t": "2026-11-07T22:25:02Z",
+  "tabla": [
+   [
+    "19",
+    "Campeón",
+    7500
+   ],
+   [
+    "Drexx",
+    "Subcampeón",
+    5000
+   ],
+   [
+    "Carlosss",
+    "Semifinal",
+    3500
+   ],
+   [
+    "Rodas",
+    "Cuartos",
+    2000
+   ],
+   [
+    "MaYeuTyK",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Crk",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Xclusivo",
+    "Semifinal",
+    1750
+   ]
+  ],
+  "v": 2
  }
 }

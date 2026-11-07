@@ -1,5 +1,5 @@
 {
- "cuando": "2026-11-07T21:56:18+00:00",
+ "cuando": "2026-11-07T22:26:29+00:00",
  "anuncios": [
   {
    "nombre": "¡SE LLEGÓ LA GRAN NOCHE!",
@@ -6815,6 +6815,15 @@
   }
  ],
  "inscripciones": [
+  {
+   "servidor": "ACAD",
+   "canal": "📝┇inscripciones-1",
+   "texto": "trelok",
+   "quien": "fibonacci_______________",
+   "discord_id": "597257327464284163",
+   "msg_id": "1568751104257302639",
+   "cuando": "2026-11-07T22:16:49"
+  },
   {
    "servidor": "DDF",
    "canal": "『📑』Inscripciones",
@@ -42805,15 +42814,6 @@
    "discord_id": "1097714486795849748",
    "msg_id": "1556731914063315046",
    "cuando": "2026-10-05T18:16:50"
-  },
-  {
-   "servidor": "FFA",
-   "canal": "✦📝—inscripciones",
-   "texto": "Park-Ji Sung🇰🇷 ultima",
-   "quien": "fullylo4ded",
-   "discord_id": "979878316846768139",
-   "msg_id": "1556729777837178962",
-   "cuando": "2026-10-05T18:08:21"
   }
  ]
 }

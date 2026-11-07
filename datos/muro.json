@@ -279,6 +279,15 @@
 "rg": "C",
 "c": []
 },
+"drexx": {
+"rg": "C",
+"c": [
+"competitivo",
+"pais",
+"servidor",
+"temporada"
+]
+},
 "bloody": {
 "rg": "B",
 "c": [
@@ -307,15 +316,6 @@
 ]
 },
 "xubaru": {
-"rg": "C",
-"c": [
-"competitivo",
-"pais",
-"servidor",
-"temporada"
-]
-},
-"drexx": {
 "rg": "C",
 "c": [
 "competitivo",
@@ -503,7 +503,7 @@
 "c": []
 },
 "mayeutyk": {
-"rg": "",
+"rg": "D",
 "c": [
 "competitivo",
 "servidor",
@@ -736,6 +736,10 @@
 "rg": "",
 "c": []
 },
+"19": {
+"rg": "",
+"c": []
+},
 "numberve": {
 "rg": "E",
 "c": [
@@ -759,10 +763,6 @@
 },
 "emizor": {
 "rg": "D",
-"c": []
-},
-"19": {
-"rg": "",
 "c": []
 },
 "teito": {
@@ -810,17 +810,17 @@
 "temporada"
 ]
 },
-"bastyretro": {
-"rg": "",
-"c": [
-"servidor",
-"temporada"
-]
-},
 "rodas": {
 "rg": "E",
 "c": [
 "competitivo",
+"servidor",
+"temporada"
+]
+},
+"bastyretro": {
+"rg": "",
+"c": [
 "servidor",
 "temporada"
 ]
@@ -2711,15 +2711,6 @@
 }
 },
 "cambios": [
-{
-"tipo": "rango",
-"t": "2026-10-05T06:28:27Z",
-"quien": [
-"Vandu"
-],
-"rg": "E",
-"primero": true
-},
 {
 "tipo": "tarjeta",
 "t": "2026-10-05T06:28:27Z",
@@ -6084,6 +6075,15 @@
 "Mathhias"
 ],
 "carta": "competitivo"
+},
+{
+"tipo": "rango",
+"t": "2026-11-07T22:38:08Z",
+"quien": [
+"MaYeuTyK"
+],
+"rg": "D",
+"primero": true
 }
 ]
 }

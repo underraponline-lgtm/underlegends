@@ -44618,5 +44618,127 @@
     1250
    ]
   ]
+ },
+ "577": {
+  "dia": "2026-11-07",
+  "escala": "8-15",
+  "fecha": "07/11",
+  "links": [
+   "https://discord.com/channels/1469009547971526659/1470097588635176960/1568734851740213419"
+  ],
+  "n": 577,
+  "nombre": "ZONA MORTAL",
+  "participantes": 9,
+  "rondas": [
+   {
+    "b": [
+     [
+      [
+       "Carlosss",
+       "Rodas"
+      ],
+      "Carlosss",
+      ""
+     ],
+     [
+      [
+       "19",
+       "MaYeuTyK"
+      ],
+      "19",
+      ""
+     ],
+     [
+      [
+       "Drexx",
+       "Crk"
+      ],
+      "Drexx",
+      ""
+     ],
+     [
+      [
+       "Last🇬🇶",
+       "Jupiter 🇲🇽"
+      ],
+      "",
+      "sin ganador: espera en ✅ Decidir"
+     ]
+    ],
+    "r": "Cuartos"
+   },
+   {
+    "b": [
+     [
+      [
+       "19",
+       "Carlosss"
+      ],
+      "19",
+      ""
+     ],
+     [
+      [
+       "Drexx",
+       "Xclusivo"
+      ],
+      "Drexx",
+      "Walk-in 1: xclusivo"
+     ]
+    ],
+    "r": "Semifinales"
+   },
+   {
+    "b": [
+     [
+      [
+       "19",
+       "Drexx"
+      ],
+      "19",
+      ""
+     ]
+    ],
+    "r": "Final"
+   }
+  ],
+  "sv": "DDF",
+  "tabla": [
+   [
+    "19",
+    "Campeón",
+    7500
+   ],
+   [
+    "Drexx",
+    "Subcampeón",
+    5000
+   ],
+   [
+    "Carlosss",
+    "Semifinal",
+    3500
+   ],
+   [
+    "Crk",
+    "Cuartos",
+    2000
+   ],
+   [
+    "MaYeuTyK",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Rodas",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Xclusivo",
+    "Semifinal",
+    1750
+   ]
+  ]
  }
 }

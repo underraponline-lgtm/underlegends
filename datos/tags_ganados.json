@@ -66,6 +66,11 @@
     "t1",
     1793029252929
    ],
+   "🏰 FORTALEZA": [
+    "🏰 FORTALEZA",
+    "t1",
+    1794091121070
+   ],
    "📆 HABITUÉ": [
     "📆 HABITUÉ",
     "t1",
@@ -83,10 +88,20 @@
     "t1",
     1792953978519
    ],
+   "🐺 LOBO SOLITARIO": [
+    "🐺 LOBO SOLITARIO",
+    "t1",
+    1794091121070
+   ],
    "👑 CAMPEÓN x%d": [
-    "👑 CAMPEÓN x2",
+    "👑 CAMPEÓN x3",
     "t1",
     1793029252929
+   ],
+   "📋 SEMANA PERFECTA": [
+    "📋 SEMANA PERFECTA",
+    "t1",
+    1794091121070
    ],
    "🥉 AL PODIO": [
     "🥉 AL PODIO",
@@ -2920,6 +2935,11 @@
     "🤝 SIN MIEDO",
     "t1",
     1793029252929
+   ],
+   "🥈 A UN PASO": [
+    "🥈 A UN PASO",
+    "t1",
+    1794091121070
    ]
   },
   "pais": {
