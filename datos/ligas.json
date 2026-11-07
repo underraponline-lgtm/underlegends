@@ -1,6 +1,6 @@
 {
  "_leeme": "Las ligas de los servidores: cada batalla y su resultado, y la tabla que sale de eso. Lo arma bot/ligas.py en cada corrida; las reglas viven ahí. Sin los mensajes: el repo es público. `batallas`: [id del mensaje, instante, jornada, a, b, ganador (vacío: pendiente), directa|replica, extras]. Las batallas con resultado cuentan como duelos (Ranking Duelos y Win%; el Score no). `flyer`: el último afiche de su canal de anuncios, re-alojado en R2 (`url`); `prox`: la próxima fecha que anunció (`d` el día, `t` el instante si lo dijo). Desde el 17/10/2026: `ptb` {id de la batalla: [PTB de a, de b]}, `flyers` (la galería, en R2), `staff` [[discord_id, nombre, mensajes en anuncios, en veredictos, último]] y `nov` (lo nuevo de las últimas horas, para «Seguir la liga»).",
- "t": "2026-11-07T18:59:33Z",
+ "t": "2026-11-07T19:30:49Z",
  "ligas": {
   "fmh-albiceleste": {
    "n": "FMH Albiceleste",
@@ -7182,16 +7182,6 @@
      1,
      "2026-10-22T02:51:05Z"
     ]
-   ],
-   "nov": [
-    {
-     "id": "r:snake-new-chapter:1567983287446536285",
-     "t": "2026-11-05T19:28:16Z",
-     "que": "res",
-     "ids": [
-      "1567983287446536285"
-     ]
-    }
    ]
   },
   "fzl": {
@@ -9163,15 +9153,59 @@
     ]
    ],
    "flyer": {
-    "id": "1567354941436338319",
-    "t": "2026-11-04T01:48:58Z",
-    "tit": "🔥 JORNADA 4: MÉXICO 🔥",
-    "url": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/ligas/lkr-fms-plaza/1567354941436338319.webp",
+    "id": "1568708375187951728",
+    "t": "2026-11-07T19:27:01Z",
+    "tit": "🔥 JORNADA 5: BOGOTÁ 🔥",
+    "url": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/ligas/lkr-fms-plaza/1568708375187951728.webp",
     "w": 720,
     "h": 720
    },
    "ptb": {},
    "flyers": [
+    {
+     "id": "1568708375187951728",
+     "t": "2026-11-07T19:27:01Z",
+     "tit": "🔥 JORNADA 5: BOGOTÁ 🔥",
+     "url": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/ligas/lkr-fms-plaza/1568708375187951728.webp",
+     "w": 720,
+     "h": 720
+    },
+    {
+     "id": "1568708081708175392",
+     "msg": "1568708081708175392",
+     "t": "2026-11-07T19:25:51Z",
+     "tit": "🔥 JORNADA 5: BOGOTÁ 🔥",
+     "url": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/ligas/lkr-fms-plaza/1568708081708175392.webp",
+     "w": 720,
+     "h": 720
+    },
+    {
+     "id": "1568707802912919824",
+     "msg": "1568707802912919824",
+     "t": "2026-11-07T19:24:45Z",
+     "tit": "🔥 JORNADA 5: BOGOTÁ 🔥",
+     "url": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/ligas/lkr-fms-plaza/1568707802912919824.webp",
+     "w": 720,
+     "h": 720
+    },
+    {
+     "id": "1568703798212296886",
+     "msg": "1568703798212296886",
+     "t": "2026-11-07T19:08:50Z",
+     "tit": "🔥 JORNADA 5: BOGOTÁ 🔥",
+     "url": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/ligas/lkr-fms-plaza/1568703798212296886.webp",
+     "w": 720,
+     "h": 720
+    },
+    {
+     "id": "1568703245059367063",
+     "msg": "1568703245059367063",
+     "t": "2026-11-07T19:06:38Z",
+     "tit": "🔥 JORNADA 5: BOGOTÁ 🔥",
+     "url": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/ligas/lkr-fms-plaza/1568703245059367063.webp",
+     "w": 720,
+     "h": 720
+    },
     {
      "id": "1567354941436338319",
      "t": "2026-11-04T01:48:58Z",
@@ -9232,64 +9266,20 @@
      "url": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/ligas/lkr-fms-plaza/1567336123217481828.webp",
      "w": 720,
      "h": 720
-    },
-    {
-     "id": "1567335899782586489",
-     "msg": "1567335899782586489",
-     "t": "2026-11-04T00:33:18Z",
-     "tit": "🔥 JORNADA 4: MÉXICO 🔥",
-     "url": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/ligas/lkr-fms-plaza/1567335899782586489.webp",
-     "w": 720,
-     "h": 720
-    },
-    {
-     "id": "1567335459431125112",
-     "msg": "1567335459431125112",
-     "t": "2026-11-04T00:31:33Z",
-     "tit": "🔥 JORNADA 4: MÉXICO 🔥",
-     "url": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/ligas/lkr-fms-plaza/1567335459431125112.webp",
-     "w": 720,
-     "h": 720
-    },
-    {
-     "id": "1567335245366173776",
-     "msg": "1567335245366173776",
-     "t": "2026-11-04T00:30:42Z",
-     "tit": "🔥 JORNADA 4: MÉXICO 🔥",
-     "url": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/ligas/lkr-fms-plaza/1567335245366173776.webp",
-     "w": 720,
-     "h": 720
-    },
-    {
-     "id": "1567334951509303478",
-     "msg": "1567334951509303478",
-     "t": "2026-11-04T00:29:32Z",
-     "tit": "🔥 JORNADA 4: MÉXICO 🔥",
-     "url": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/ligas/lkr-fms-plaza/1567334951509303478.webp",
-     "w": 720,
-     "h": 720
-    },
-    {
-     "id": "1567334658692091970",
-     "t": "2026-11-04T00:28:22Z",
-     "tit": "🔥 JORNADA 4: MÉXICO 🔥",
-     "url": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/ligas/lkr-fms-plaza/1567334658692091970.webp",
-     "w": 720,
-     "h": 720
     }
    ],
    "staff": [
     [
      "1555067257376346122",
      "Zaik",
-     89,
+     98,
      64,
-     "2026-11-05T19:41:33Z"
+     "2026-11-07T19:27:01Z"
     ],
     [
      "1548906948307451906",
      "#99 |ALEXXXOL🇨🇴🔥🐉",
-     4,
+     2,
      38,
      "2026-11-05T01:57:16Z"
     ],
