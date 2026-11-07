@@ -505,10 +505,6 @@
    "servidor": "3a9cb73293c8:52802c8017c2:7d9cf1"
   },
   "Fleivacheck": {},
-  "Flennzs": {
-   "servidor": "323dfb43abfb:52802c8017c2:980594",
-   "temporada": "56c112b4974d:b65fe52a19f1"
-  },
   "Flores": {
    "servidor": "c659f446173a:52802c8017c2:67201a"
   },
@@ -555,7 +551,7 @@
    "competitivo": "11f72512e6c5:69ebad5d143d",
    "pais": "5a36377c2750:17d95ff16abf",
    "servidor": "2c00905ce4a0:52802c8017c2:fdb28b",
-   "temporada": "da3b761252b3:b65fe52a19f1"
+   "temporada": "faf07da78a8e:7a510334494e"
   },
   "Geremy": {
    "servidor": "4dd315c53988:52802c8017c2:980594"
@@ -1341,7 +1337,7 @@
    "competitivo": "5db45a8158d5:69ebad5d143d",
    "pais": "4e69822014c2:17d95ff16abf",
    "servidor": "897eada7b402:52802c8017c2:35630e",
-   "temporada": "a66f0c172948:b65fe52a19f1"
+   "temporada": "c04ff6217b61:7a510334494e"
   },
   "Pipe": {
    "competitivo": "7283cdf800cd:69ebad5d143d",
@@ -2019,5 +2015,5 @@
    "servidor": "7f8885a35a6d:52802c8017c2:93a344"
   }
  },
- "cuando": "2026-11-07T17:04:08+00:00"
+ "cuando": "2026-11-07T21:03:47+00:00"
 }
