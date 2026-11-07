@@ -1,5 +1,5 @@
 {
- "cuando": "2026-11-07T01:25:36+00:00",
+ "cuando": "2026-11-07T01:56:21+00:00",
  "anuncios": [
   {
    "nombre": "¡SE LLEGÓ LA GRAN NOCHE!",
@@ -6712,6 +6712,24 @@
   }
  ],
  "inscripciones": [
+  {
+   "servidor": "ACAD",
+   "canal": "📝┇inscripciones-1",
+   "texto": "Velatzz 🇯🇵",
+   "quien": "funhorlavild",
+   "discord_id": "1426686911908675628",
+   "msg_id": "1568441430287065272",
+   "cuando": "2026-11-07T01:46:17"
+  },
+  {
+   "servidor": "ACAD",
+   "canal": "📝┇inscripciones-1",
+   "texto": "Mathias 🇻🇪",
+   "quien": "elthiasmathias",
+   "discord_id": "1177916322122833933",
+   "msg_id": "1568439704112726107",
+   "cuando": "2026-11-07T01:39:25"
+  },
   {
    "servidor": "ACAD",
    "canal": "📝┇inscripciones-1",
@@ -42693,24 +42711,6 @@
    "discord_id": "1347663033949880360",
    "msg_id": "1556728068045803551",
    "cuando": "2026-10-05T18:01:34"
-  },
-  {
-   "servidor": "FFA",
-   "canal": "✦📝—inscripciones",
-   "texto": "KEIDER🇧🇷",
-   "quien": "mc.luisito",
-   "discord_id": "1437913232407920770",
-   "msg_id": "1556727867067338834",
-   "cuando": "2026-10-05T18:00:46"
-  },
-  {
-   "servidor": "FFA",
-   "canal": "✦📝—inscripciones",
-   "texto": "1200 🇰🇷",
-   "quien": "dreamero",
-   "discord_id": "1395903355909570633",
-   "msg_id": "1556727757101072385",
-   "cuando": "2026-10-05T18:00:19"
   }
  ]
 }
