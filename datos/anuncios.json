@@ -1,5 +1,5 @@
 {
- "cuando": "2026-11-07T16:28:11+00:00",
+ "cuando": "2026-11-07T16:56:03+00:00",
  "anuncios": [
   {
    "nombre": "¡SE LLEGÓ LA GRAN NOCHE!",
@@ -5192,6 +5192,47 @@
    "autor": "Mosquitrap 🦟🇦🇷",
    "staff_cuentas": {},
    "categoria_id": "868218509975498805",
+   "inscripciones": "abiertas",
+   "inscripciones_cuando": "2026-11-07T00:59:45"
+  },
+  {
+   "nombre": "UN PLACER MOSTRAR AL EQUIPO DE TRABAJO DE ESTA NACIONAL",
+   "servidor": "ACAD",
+   "canal": "🥇┇torneos",
+   "msg_id": "1568666341064577025",
+   "cuando": "2026-11-07T16:40:00",
+   "canal_id": "1309243940448243856",
+   "guild_id": "765045834647339038",
+   "organizador": "",
+   "orgs": [],
+   "autor_h": "33b8d394b34980ad",
+   "cupos_texto": "",
+   "inscriptos": null,
+   "cupo_total": null,
+   "rango": "",
+   "modalidad": "",
+   "horario": "",
+   "fecha": "",
+   "premios": "",
+   "staff": {
+    "jurado": [
+     "YIO 🇲🇽",
+     "YIO CR"
+    ],
+    "host": [
+     "ZINOX 🇨🇱",
+     "๖ۣۜẔͥḭnͣ๏ͫჯ ༻一"
+    ],
+    "dj": [
+     "TOKIO 🇦🇷"
+    ]
+   },
+   "autor": "Leonar-T",
+   "staff_cuentas": {
+    "YIO CR": "1033600988373848166",
+    "๖ۣۜẔͥḭnͣ๏ͫჯ ༻一": "372088439082057732"
+   },
+   "categoria_id": "1309234419525222477",
    "inscripciones": "abiertas",
    "inscripciones_cuando": "2026-11-07T00:59:45"
   },
