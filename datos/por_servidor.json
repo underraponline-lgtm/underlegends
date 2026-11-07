@@ -2544,20 +2544,6 @@
     "racha": "0/0"
    }
   },
-  "Dominic 🇲🇽": {
-   "FFA": {
-    "duelos": "",
-    "ev": 1,
-    "oro": 0,
-    "ovr": 43,
-    "pod": 0,
-    "pts": 6250,
-    "racha": "0/0",
-    "tg": {
-     "nuevo": true
-    }
-   }
-  },
   "Dominick": {
    "ACAD": {
     "duelos": "",
@@ -2583,11 +2569,11 @@
    },
    "FFA": {
     "duelos": "",
-    "ev": 9,
+    "ev": 10,
     "oro": 0,
-    "ovr": 47,
+    "ovr": 48,
     "pod": 0,
-    "pts": 21718,
+    "pts": 27968,
     "racha": "0/0"
    },
    "LKR": {

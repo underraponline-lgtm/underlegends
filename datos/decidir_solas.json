@@ -2,235 +2,6 @@
  "_leeme": "Lo que ✅ Decidir cerró o contestó solo, con la regla y la prueba (sheet/decidir.py, resolver_solo()), para «Lo que se resolvió solo» del Dashboard y su «Deshacer». «deshechas»: lo que Dlx deshizo; ninguna regla lo vuelve a tocar. Dlx, 13/10/2026.",
  "solas": [
   {
-   "id": "dd06319cb1",
-   "tipo": "Nombre desconocido",
-   "sec": "FREESTYLE FOR ALL ESPECIAL 1800 · FFA · 23/10 · #503",
-   "que": "¿Quién es «DARKO 🇲🇽»?",
-   "r": "Es DarkoMC",
-   "regla": "Discord · su cuenta de Discord: la inscripción, el podio, la llave o la llamada",
-   "rk": "Discord",
-   "por": "el ciclo (su cuenta de Discord)",
-   "porque": "alias de DarkoMC: estaba en la llamada del evento con ese nombre",
-   "t": 1792799263991,
-   "filas": [
-    806
-   ],
-   "variantes": [
-    "DARKO 🇲🇽"
-   ],
-   "escribio": {
-    "alias": [
-     "DARKO",
-     "DarkoMC"
-    ],
-    "filas": [
-     304
-    ]
-   }
-  },
-  {
-   "id": "d1225c837b",
-   "tipo": "Nombre desconocido",
-   "sec": "FREESTYLE FOR ALL ESPECIAL 1800 · FFA · 23/10 · #503",
-   "que": "¿Quién es «MR STLL BALLIN 🇺🇾»?",
-   "r": "Es Mr Still Ballin",
-   "regla": "Discord · su cuenta de Discord: la inscripción, el podio, la llave o la llamada",
-   "rk": "Discord",
-   "por": "el ciclo (su cuenta de Discord)",
-   "porque": "alias de Mr Still Ballin: estaba en la llamada del evento con un nombre parecido",
-   "t": 1792799263991,
-   "filas": [
-    807
-   ],
-   "variantes": [
-    "MR STLL BALLIN 🇺🇾"
-   ],
-   "escribio": {
-    "alias": [
-     "MR STLL BALLIN",
-     "Mr Still Ballin"
-    ],
-    "filas": [
-     305
-    ]
-   }
-  },
-  {
-   "id": "7da2883f79",
-   "tipo": "Nombre desconocido",
-   "sec": "FREESTYLE FOR ALL ESPECIAL 1800 · FFA · 23/10 · #503",
-   "que": "¿Quién es «familiafortunaexito 🇫🇷»?",
-   "r": "Es Deuxs",
-   "regla": "Discord · su cuenta de Discord: la inscripción, el podio, la llave o la llamada",
-   "rk": "Discord",
-   "por": "el ciclo (su cuenta de Discord)",
-   "porque": "alias de Deuxs: estaba en la llamada del evento con un nombre parecido",
-   "t": 1792799263991,
-   "filas": [
-    808
-   ],
-   "variantes": [
-    "familiafortunaexito 🇫🇷"
-   ],
-   "escribio": {
-    "alias": [
-     "familiafortunaexito",
-     "Deuxs"
-    ],
-    "filas": [
-     306
-    ]
-   }
-  },
-  {
-   "id": "0e9304c107",
-   "tipo": "Nombre desconocido",
-   "sec": "FATS BATTLES PALOOZA FECHA 8 · ACAD · 23/10 · #504",
-   "que": "¿Quién es «Edd🇮🇹»?",
-   "r": "Es Dominick",
-   "regla": "Discord · su cuenta de Discord: la inscripción, el podio, la llave o la llamada",
-   "rk": "Discord",
-   "por": "el ciclo (su cuenta de Discord)",
-   "porque": "alias de Dominick: estaba en la llamada del evento con ese nombre",
-   "t": 1792802013844,
-   "filas": [
-    811
-   ],
-   "variantes": [
-    "Edd🇮🇹"
-   ],
-   "escribio": {
-    "alias": [
-     "Edd",
-     "Dominick"
-    ],
-    "filas": [
-     307
-    ]
-   }
-  },
-  {
-   "id": "4040f1b25c",
-   "tipo": "Nombre desconocido",
-   "sec": "FATS BATTLES PALOOZA FECHA 8 · ACAD · 23/10 · #504",
-   "que": "¿Quién es «HOTARU 🇦🇷»?",
-   "r": "Es Hotaru Adeyemi 🏳️‍⚧️",
-   "regla": "Discord · su cuenta de Discord: la inscripción, el podio, la llave o la llamada",
-   "rk": "Discord",
-   "por": "el ciclo (su cuenta de Discord)",
-   "porque": "alias de Hotaru Adeyemi 🏳️‍⚧️: estaba en la llamada del evento con un nombre parecido",
-   "t": 1792802013844,
-   "filas": [
-    812
-   ],
-   "variantes": [
-    "HOTARU 🇦🇷"
-   ],
-   "escribio": {
-    "alias": [
-     "HOTARU",
-     "Hotaru Adeyemi 🏳️‍⚧️"
-    ],
-    "filas": [
-     308
-    ]
-   }
-  },
-  {
-   "id": "c4073c3e5a",
-   "tipo": "Nombre desconocido",
-   "sec": "FATS BATTLES PALOOZA FECHA 8 · ACAD · 23/10 · #504",
-   "que": "¿Quién es «MATKMA 🇻🇪»?",
-   "r": "Es Makmah",
-   "regla": "Discord · su cuenta de Discord: la inscripción, el podio, la llave o la llamada",
-   "rk": "Discord",
-   "por": "el ciclo (su cuenta de Discord)",
-   "porque": "alias de Makmah: estaba en la llamada del evento con un nombre parecido",
-   "t": 1792802013844,
-   "filas": [
-    814
-   ],
-   "variantes": [
-    "MATKMA 🇻🇪"
-   ],
-   "escribio": {
-    "alias": [
-     "MATKMA",
-     "Makmah"
-    ],
-    "filas": [
-     309
-    ]
-   }
-  },
-  {
-   "id": "8937afafc4",
-   "tipo": "Nombre desconocido",
-   "sec": "FATS BATTLES PALOOZA FECHA 8 · ACAD · 23/10 · #504",
-   "que": "¿Quién es «BELIKKO 🇻🇪»?",
-   "r": "Es alguien nuevo: alta con su cuenta 989702187523407903",
-   "regla": "Discord · su cuenta de Discord: la inscripción, el podio, la llave o la llamada",
-   "rk": "Discord",
-   "por": "el ciclo (su cuenta de Discord)",
-   "porque": "nuevo: entró a la Lista con la cuenta con que se anotó (989702187523407903)",
-   "t": 1792802013844,
-   "filas": [
-    809
-   ],
-   "variantes": [
-    "BELIKKO 🇻🇪"
-   ],
-   "escribio": {
-    "alta": [
-     "BELIKKO",
-     "989702187523407903"
-    ]
-   }
-  },
-  {
-   "id": "1d5b94e6b5",
-   "tipo": "Nombre desconocido",
-   "sec": "FATS BATTLES PALOOZA FECHA 8 · ACAD · 23/10 · #504",
-   "que": "¿Quién es «DANCOLL🇻🇪»?",
-   "r": "Es alguien nuevo: alta con su cuenta 1316585510625607742",
-   "regla": "Discord · su cuenta de Discord: la inscripción, el podio, la llave o la llamada",
-   "rk": "Discord",
-   "por": "el ciclo (su cuenta de Discord)",
-   "porque": "nuevo: entró a la Lista con la cuenta con que se anotó (1316585510625607742)",
-   "t": 1792802013844,
-   "filas": [
-    810
-   ],
-   "variantes": [
-    "DANCOLL🇻🇪"
-   ],
-   "escribio": {
-    "alta": [
-     "DANCOLL",
-     "1316585510625607742"
-    ]
-   }
-  },
-  {
-   "id": "2a214e97d6",
-   "tipo": "Nombre desconocido",
-   "sec": "FATS BATTLES PALOOZA FECHA 8 · ACAD · 23/10 · #504",
-   "que": "¿Quién es «LUIS 🇦🇷»?",
-   "r": "Ya no hace falta",
-   "regla": "cierre · ya no hacía falta preguntarlo",
-   "rk": "cierre",
-   "por": "el ciclo",
-   "porque": "ya no está en ningún resultado: el lector lo lee distinto, o ya es alias de alguien",
-   "t": 1792802013844,
-   "filas": [
-    813
-   ],
-   "variantes": [
-    "LUIS 🇦🇷"
-   ],
-   "escribio": {}
-  },
-  {
    "id": "8ebd46daab",
    "tipo": "Nombre desconocido",
    "sec": "19 CUP FUTCARD EDICIÓN 5 · DDF · 23/10 · #505",
@@ -3624,6 +3395,25 @@
      "723968697798099057"
     ]
    }
+  },
+  {
+   "id": "a02ce0a512",
+   "tipo": "Nombre desconocido",
+   "sec": "qcyo rapeen · FFA · 02/11 · #563",
+   "que": "¿Quién es «Dominic 🇲🇽»?",
+   "r": "Ya no hace falta",
+   "regla": "cierre · ya no hacía falta preguntarlo",
+   "rk": "cierre",
+   "por": "el ciclo",
+   "porque": "ya no está en ningún resultado: el lector lo lee distinto, o ya es alias de alguien",
+   "t": 1794013259442,
+   "filas": [
+    1038
+   ],
+   "variantes": [
+    "Dominic 🇲🇽"
+   ],
+   "escribio": {}
   }
  ],
  "deshechas": []

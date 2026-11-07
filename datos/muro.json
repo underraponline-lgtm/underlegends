@@ -393,6 +393,10 @@
 "temporada"
 ]
 },
+"dominick": {
+"rg": "D",
+"c": []
+},
 "dyzz": {
 "rg": "E",
 "c": [
@@ -401,10 +405,6 @@
 "servidor",
 "temporada"
 ]
-},
-"dominick": {
-"rg": "D",
-"c": []
 },
 "lordviruzz": {
 "rg": "C",
