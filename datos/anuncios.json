@@ -1,5 +1,5 @@
 {
- "cuando": "2026-11-07T21:26:25+00:00",
+ "cuando": "2026-11-07T21:56:18+00:00",
  "anuncios": [
   {
    "nombre": "¡SE LLEGÓ LA GRAN NOCHE!",
@@ -6650,7 +6650,7 @@
      "id": "987149314591719474"
     },
     {
-     "n": "ALEJANDRO | VT",
+     "n": "VILCA",
      "id": "846870712950194196"
     }
    ],
@@ -6815,6 +6815,15 @@
   }
  ],
  "inscripciones": [
+  {
+   "servidor": "DDF",
+   "canal": "『📑』Inscripciones",
+   "texto": "Nxuz",
+   "quien": "n_x_u_z_",
+   "discord_id": "1089661639508377630",
+   "msg_id": "1568741748149325967",
+   "cuando": "2026-11-07T21:39:38"
+  },
   {
    "servidor": "DDF",
    "canal": "『📑』Inscripciones",
@@ -42805,15 +42814,6 @@
    "discord_id": "979878316846768139",
    "msg_id": "1556729777837178962",
    "cuando": "2026-10-05T18:08:21"
-  },
-  {
-   "servidor": "FFA",
-   "canal": "✦📝—inscripciones",
-   "texto": "agustin",
-   "quien": "agusdcab",
-   "discord_id": "494965289042182164",
-   "msg_id": "1556729364807291073",
-   "cuando": "2026-10-05T18:06:43"
   }
  ]
 }

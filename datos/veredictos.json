@@ -4998,8 +4998,8 @@
    "g": "1469009547971526659",
    "canal": "1498009509036163173",
    "pub": 1794086165800,
-   "ed": 1794086525517,
-   "texto": "`[ CUARTOS ]`\n⌞CARLOSS⌝ 🆚 ⌞RODA⌝\n⌞19⌝ 🆚 ⌞MARTINEZ⌝\n⌞DREXX⌝ 🆚 ⌞CRK⌝",
+   "ed": 1794088431930,
+   "texto": "`[ CUARTOS ]`\n⌞CARLOSS⌝ 🆚 ⌞RODA⌝\n⌞19⌝ 🆚 ⌞MARTINEZ⌝\n⌞DREXX⌝ 🆚 ⌞CRK⌝\n⌞XCLUSIVO⌝ 🆚 ⌞LAST⌝\n`[ SEMIFINALES ]`\n⌞CARLOS⌝ 🆚 ⌞19⌝\n⌞REPLICA: CARLOS⌝ 🆚 ⌞19⌝\n⌞NEXUS⌝ 🆚 ⌞DREXX⌝\n⌞19⌝ 🆚 ⌞DREXX⌝\n`[ FINAL ]`\n⌞DREXX⌝ 🆚 ⌞19⌝",
    "batallas": [
     [
      "CUARTOS",
@@ -5008,7 +5008,7 @@
       "RODA"
      ],
      null,
-     "última ronda y no dice campeón",
+     "no aparece nadie después",
      []
     ],
     [
@@ -5017,8 +5017,8 @@
       "19",
       "MARTINEZ"
      ],
-     null,
-     "última ronda y no dice campeón",
+     "19",
+     "ronda siguiente",
      []
     ],
     [
@@ -5026,6 +5026,69 @@
      [
       "DREXX",
       "CRK"
+     ],
+     "DREXX",
+     "ronda siguiente",
+     []
+    ],
+    [
+     "CUARTOS",
+     [
+      "XCLUSIVO",
+      "LAST"
+     ],
+     null,
+     "no aparece nadie después",
+     []
+    ],
+    [
+     "SEMIFINALES",
+     [
+      "CARLOS",
+      "19"
+     ],
+     "19",
+     "ronda siguiente",
+     []
+    ],
+    [
+     "SEMIFINALES",
+     [
+      "REPLICA: CARLOS",
+      "19"
+     ],
+     "19",
+     "ronda siguiente",
+     []
+    ],
+    [
+     "SEMIFINALES",
+     [
+      "NEXUS",
+      "DREXX"
+     ],
+     "DREXX",
+     "ronda siguiente",
+     []
+    ],
+    [
+     "SEMIFINALES",
+     [
+      "19",
+      "DREXX"
+     ],
+     null,
+     "pasan 2, no hay un ganador",
+     [
+      "19",
+      "DREXX"
+     ]
+    ],
+    [
+     "FINAL",
+     [
+      "DREXX",
+      "19"
      ],
      null,
      "última ronda y no dice campeón",

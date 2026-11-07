@@ -153,7 +153,7 @@
    "n": 553,
    "sv": "SR",
    "vence": "2026-11-07T21:34:25+00:00",
-   "vencido": false
+   "vencido": true
   },
   "Akus": {
    "avisado": "2026-11-06",
@@ -286,7 +286,7 @@
    "n": 553,
    "sv": "SR",
    "vence": "2026-11-07T21:34:25+00:00",
-   "vencido": false
+   "vencido": true
   },
   "Berrun": {
    "avisado": "2026-11-05",
@@ -827,7 +827,7 @@
    "n": 553,
    "sv": "SR",
    "vence": "2026-11-07T21:34:25+00:00",
-   "vencido": false
+   "vencido": true
   },
   "J.r": {
    "avisado": "2026-10-19",
@@ -1010,7 +1010,7 @@
    "n": 553,
    "sv": "SR",
    "vence": "2026-11-07T21:34:25+00:00",
-   "vencido": false
+   "vencido": true
   },
   "Khalil": {
    "avisado": "2026-10-27",
@@ -1914,7 +1914,7 @@
    "n": 553,
    "sv": "SR",
    "vence": "2026-11-07T21:34:25+00:00",
-   "vencido": false
+   "vencido": true
   },
   "Valen": {
    "avisado": "2026-10-19",
