@@ -2,100 +2,6 @@
  "_leeme": "Lo que ✅ Decidir cerró o contestó solo, con la regla y la prueba (sheet/decidir.py, resolver_solo()), para «Lo que se resolvió solo» del Dashboard y su «Deshacer». «deshechas»: lo que Dlx deshizo; ninguna regla lo vuelve a tocar. Dlx, 13/10/2026.",
  "solas": [
   {
-   "id": "8ebd46daab",
-   "tipo": "Nombre desconocido",
-   "sec": "19 CUP FUTCARD EDICIÓN 5 · DDF · 23/10 · #505",
-   "que": "¿Quién es «🔹 C4: MAKMA»?",
-   "r": "Es Makmah",
-   "regla": "Discord · su cuenta de Discord: la inscripción, el podio, la llave o la llamada",
-   "rk": "Discord",
-   "por": "el ciclo (su cuenta de Discord)",
-   "porque": "alias de Makmah: estaba en la llamada del evento con un nombre parecido",
-   "t": 1792807303219,
-   "filas": [
-    820
-   ],
-   "variantes": [
-    "🔹 C4: MAKMA"
-   ],
-   "escribio": {
-    "alias": [
-     "🔹 C4: MAKMA",
-     "Makmah"
-    ],
-    "filas": [
-     310
-    ]
-   }
-  },
-  {
-   "id": "79d2b66a9f",
-   "tipo": "Nombre desconocido",
-   "sec": "19 CUP FUTCARD EDICIÓN 5 · DDF · 23/10 · #505",
-   "que": "¿Quién es «💥 SF1: PICHULA»?",
-   "r": "Ya no hace falta",
-   "regla": "cierre · ya no hacía falta preguntarlo",
-   "rk": "cierre",
-   "por": "el ciclo",
-   "porque": "ya no está en ningún resultado: el lector lo lee distinto, o ya es alias de alguien",
-   "t": 1792807303219,
-   "filas": [
-    818
-   ],
-   "variantes": [
-    "💥 SF1: PICHULA"
-   ],
-   "escribio": {}
-  },
-  {
-   "id": "95b3299d87",
-   "tipo": "Nombre desconocido",
-   "sec": "GRISELDA RECORDS VOL. 2 · DDF · 23/10 · #506",
-   "que": "¿Quién es «Bootrax humildee🇵🇪»?",
-   "r": "Es BTRX (en este evento)",
-   "regla": "R21 · la cuenta que se anotó así para ese evento es de alguien de la Lista que esa noche no jugó con su nombre",
-   "rk": "R21",
-   "por": "el ciclo",
-   "porque": "la cuenta @gianfraxruizescor11 (en Discord: «Bootrax Humilde») · en la Lista: BTRX se anotó como «Bootrax humildee» para ese evento, no es staff de DDF y esa noche no jugó con su nombre",
-   "t": 1792810927955,
-   "filas": [
-    821
-   ],
-   "variantes": [
-    "Bootrax humildee🇵🇪"
-   ],
-   "escribio": {
-    "quien": "GRISELDA RECORDS VOL. 2 · DDF · 23/10 · Bootrax humildee🇵🇪"
-   }
-  },
-  {
-   "id": "9ffcb7dffe",
-   "tipo": "Nombre desconocido",
-   "sec": "GRISELDA RECORDS VOL. 2 · DDF · 23/10 · #506",
-   "que": "¿Quién es «Mosqui»?",
-   "r": "Es Mosquitrap 🦟",
-   "regla": "Discord · su cuenta de Discord: la inscripción, el podio, la llave o la llamada",
-   "rk": "Discord",
-   "por": "el ciclo (su cuenta de Discord)",
-   "porque": "alias de Mosquitrap 🦟: estaba en la llamada del evento con un nombre parecido",
-   "t": 1792810927955,
-   "filas": [
-    822
-   ],
-   "variantes": [
-    "Mosqui"
-   ],
-   "escribio": {
-    "alias": [
-     "Mosqui",
-     "Mosquitrap 🦟"
-    ],
-    "filas": [
-     311
-    ]
-   }
-  },
-  {
    "id": "47a49427b7",
    "tipo": "Nombre desconocido",
    "sec": "19 CUP FUTCARD EDICIÓN 5 · DDF · 23/10 · #505",
@@ -3414,6 +3320,54 @@
     "Dominic 🇲🇽"
    ],
    "escribio": {}
+  },
+  {
+   "id": "6d86be471a",
+   "tipo": "Nombre desconocido",
+   "sec": "FAT BATTLES PALOOZA FECHA 10 FINALS · ACAD · 06/11 · #576",
+   "que": "¿Quién es «Aszecas 🇲🇽»?",
+   "r": "Es alguien nuevo: alta con su cuenta 1060325188723548210",
+   "regla": "Discord · su cuenta de Discord: la inscripción, el podio, la llave o la llamada",
+   "rk": "Discord",
+   "por": "el ciclo (su cuenta de Discord)",
+   "porque": "nuevo: entró a la Lista con la cuenta con que se anotó (1060325188723548210)",
+   "t": 1794020811914,
+   "filas": [
+    1126
+   ],
+   "variantes": [
+    "Aszecas 🇲🇽"
+   ],
+   "escribio": {
+    "alta": [
+     "Aszecas",
+     "1060325188723548210"
+    ]
+   }
+  },
+  {
+   "id": "1a0a1b050a",
+   "tipo": "Nombre desconocido",
+   "sec": "FAT BATTLES PALOOZA FECHA 10 FINALS · ACAD · 06/11 · #576",
+   "que": "¿Quién es «romeo🇲🇽»?",
+   "r": "Es alguien nuevo: alta con su cuenta 1283642314517909517",
+   "regla": "Discord · su cuenta de Discord: la inscripción, el podio, la llave o la llamada",
+   "rk": "Discord",
+   "por": "el ciclo (su cuenta de Discord)",
+   "porque": "nuevo: entró a la Lista con la cuenta con que se anotó (1283642314517909517)",
+   "t": 1794020811914,
+   "filas": [
+    1127
+   ],
+   "variantes": [
+    "romeo🇲🇽"
+   ],
+   "escribio": {
+    "alta": [
+     "romeo",
+     "1283642314517909517"
+    ]
+   }
   }
  ],
  "deshechas": []

@@ -67,6 +67,15 @@
 "temporada"
 ]
 },
+"vandu": {
+"rg": "C",
+"c": [
+"competitivo",
+"pais",
+"servidor",
+"temporada"
+]
+},
 "liberia": {
 "rg": "S",
 "c": [
@@ -104,15 +113,6 @@
 },
 "verc": {
 "rg": "A",
-"c": [
-"competitivo",
-"pais",
-"servidor",
-"temporada"
-]
-},
-"vandu": {
-"rg": "C",
 "c": [
 "competitivo",
 "pais",
@@ -223,6 +223,15 @@
 "temporada"
 ]
 },
+"okam": {
+"rg": "C",
+"c": [
+"competitivo",
+"pais",
+"servidor",
+"temporada"
+]
+},
 "tuca": {
 "rg": "B",
 "c": []
@@ -240,19 +249,19 @@
 "temporada"
 ]
 },
-"okam": {
-"rg": "C",
-"c": [
-"competitivo",
-"pais",
-"servidor",
-"temporada"
-]
-},
 "sinlimites": {
 "rg": "D",
 "c": [
 "competitivo",
+"servidor",
+"temporada"
+]
+},
+"mito": {
+"rg": "C",
+"c": [
+"competitivo",
+"pais",
 "servidor",
 "temporada"
 ]
@@ -269,15 +278,6 @@
 "xclusivo": {
 "rg": "C",
 "c": []
-},
-"mito": {
-"rg": "C",
-"c": [
-"competitivo",
-"pais",
-"servidor",
-"temporada"
-]
 },
 "bloody": {
 "rg": "B",
@@ -307,6 +307,15 @@
 ]
 },
 "xubaru": {
+"rg": "C",
+"c": [
+"competitivo",
+"pais",
+"servidor",
+"temporada"
+]
+},
+"drexx": {
 "rg": "C",
 "c": [
 "competitivo",
@@ -360,18 +369,18 @@
 "temporada"
 ]
 },
-"chop": {
-"rg": "D",
-"c": []
-},
-"drexx": {
-"rg": "D",
+"lordviruzz": {
+"rg": "C",
 "c": [
 "competitivo",
 "pais",
 "servidor",
 "temporada"
 ]
+},
+"chop": {
+"rg": "D",
+"c": []
 },
 "bna": {
 "rg": "C",
@@ -399,15 +408,6 @@
 },
 "dyzz": {
 "rg": "E",
-"c": [
-"competitivo",
-"pais",
-"servidor",
-"temporada"
-]
-},
-"lordviruzz": {
-"rg": "C",
 "c": [
 "competitivo",
 "pais",
@@ -470,6 +470,14 @@
 "temporada"
 ]
 },
+"mathhias": {
+"rg": "",
+"c": [
+"competitivo",
+"servidor",
+"temporada"
+]
+},
 "number": {
 "rg": "C",
 "c": [
@@ -494,9 +502,26 @@
 "rg": "C",
 "c": []
 },
+"mayeutyk": {
+"rg": "",
+"c": [
+"competitivo",
+"servidor",
+"temporada"
+]
+},
 "onzass": {
 "rg": "E",
 "c": []
+},
+"leonart": {
+"rg": "D",
+"c": [
+"competitivo",
+"pais",
+"servidor",
+"temporada"
+]
 },
 "dynoco": {
 "rg": "C",
@@ -528,14 +553,6 @@
 "c": [
 "competitivo",
 "pais",
-"servidor",
-"temporada"
-]
-},
-"mayeutyk": {
-"rg": "",
-"c": [
-"competitivo",
 "servidor",
 "temporada"
 ]
@@ -599,6 +616,14 @@
 "temporada"
 ]
 },
+"lvel": {
+"rg": "E",
+"c": [
+"competitivo",
+"servidor",
+"temporada"
+]
+},
 "jobaking": {
 "rg": "E",
 "c": [
@@ -643,23 +668,6 @@
 ]
 },
 "kyss": {
-"rg": "E",
-"c": [
-"competitivo",
-"servidor",
-"temporada"
-]
-},
-"leonart": {
-"rg": "D",
-"c": [
-"competitivo",
-"pais",
-"servidor",
-"temporada"
-]
-},
-"lvel": {
 "rg": "E",
 "c": [
 "competitivo",
@@ -733,13 +741,6 @@
 "c": [
 "competitivo",
 "pais",
-"servidor",
-"temporada"
-]
-},
-"mathhias": {
-"rg": "",
-"c": [
 "servidor",
 "temporada"
 ]
@@ -1049,6 +1050,13 @@
 "rg": "",
 "c": []
 },
+"ezias": {
+"rg": "",
+"c": [
+"servidor",
+"temporada"
+]
+},
 "santi": {
 "rg": "",
 "c": []
@@ -1070,6 +1078,10 @@
 ]
 },
 "valdoza": {
+"rg": "",
+"c": []
+},
+"leyenda": {
 "rg": "",
 "c": []
 },
@@ -1138,13 +1150,6 @@
 "marto": {
 "rg": "",
 "c": []
-},
-"ezias": {
-"rg": "",
-"c": [
-"servidor",
-"temporada"
-]
 },
 "evangeline-pe": {
 "rg": "",
@@ -1231,10 +1236,6 @@
 "rg": "",
 "c": []
 },
-"leyenda": {
-"rg": "",
-"c": []
-},
 "krtman": {
 "rg": "",
 "c": [
@@ -1278,6 +1279,13 @@
 "francis": {
 "rg": "",
 "c": []
+},
+"yor": {
+"rg": "",
+"c": [
+"servidor",
+"temporada"
+]
 },
 "sintext": {
 "rg": "",
@@ -1873,13 +1881,6 @@
 "steven": {
 "rg": "",
 "c": []
-},
-"yor": {
-"rg": "",
-"c": [
-"servidor",
-"temporada"
-]
 },
 "lhyon": {
 "rg": "",
@@ -2710,23 +2711,6 @@
 }
 },
 "cambios": [
-{
-"tipo": "rango",
-"t": "2026-10-05T06:28:27Z",
-"quien": [
-"Trot"
-],
-"rg": "E",
-"primero": true
-},
-{
-"tipo": "tarjeta",
-"t": "2026-10-05T06:28:27Z",
-"quien": [
-"Trot"
-],
-"carta": "competitivo"
-},
 {
 "tipo": "rango",
 "t": "2026-10-05T06:28:27Z",
@@ -6081,6 +6065,23 @@
 "t": "2026-11-06T04:37:13Z",
 "quien": [
 "JEIXDER"
+],
+"carta": "competitivo"
+},
+{
+"tipo": "rango",
+"t": "2026-11-07T03:06:32Z",
+"quien": [
+"Drexx"
+],
+"rg": "C",
+"primero": false
+},
+{
+"tipo": "tarjeta",
+"t": "2026-11-07T03:06:32Z",
+"quien": [
+"Mathhias"
 ],
 "carta": "competitivo"
 }

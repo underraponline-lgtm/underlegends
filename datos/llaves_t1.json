@@ -44438,5 +44438,185 @@
     2000
    ]
   ]
+ },
+ "576": {
+  "dia": "2026-11-06",
+  "escala": "16+",
+  "fecha": "06/11",
+  "links": [
+   "https://discord.com/channels/765045834647339038/1309234583023124531/1568434177764753409"
+  ],
+  "n": 576,
+  "nombre": "FAT BATTLES PALOOZA FECHA 10 FINALS",
+  "participantes": 17,
+  "rondas": [
+   {
+    "b": [
+     [
+      [
+       "Lord Viruzz",
+       "Yor",
+       "Mito"
+      ],
+      "Lord Viruzz",
+      "triple (3 bandas)"
+     ],
+     [
+      [
+       "Leonart",
+       "Leyenda",
+       "Aszecas 🇲🇽",
+       "romeo🇲🇽"
+      ],
+      "Leonart",
+      "triple (4 bandas)"
+     ],
+     [
+      [
+       "Vandu",
+       "MaYeuTyK",
+       "Lvel 🇻🇪",
+       "OKAM, <:emoji_5:1462319885810925610>"
+      ],
+      "Vandu",
+      "triple (4 bandas)"
+     ],
+     [
+      [
+       "Drexx",
+       "Erian",
+       "Ezias🥈✒️🧢🐍",
+       "Mathhias",
+       "Velatz"
+      ],
+      "Drexx",
+      "triple (5 bandas)"
+     ]
+    ],
+    "r": "Cuartos"
+   },
+   {
+    "b": [
+     [
+      [
+       "Leonart",
+       "Lord Viruzz"
+      ],
+      "Leonart",
+      ""
+     ],
+     [
+      [
+       "Vandu",
+       "Drexx"
+      ],
+      "Vandu",
+      ""
+     ]
+    ],
+    "r": "Semifinales"
+   },
+   {
+    "b": [
+     [
+      [
+       "Vandu",
+       "Leonart"
+      ],
+      "Vandu",
+      ""
+     ]
+    ],
+    "r": "Final"
+   }
+  ],
+  "sv": "ACAD",
+  "tabla": [
+   [
+    "Vandu",
+    "Campeón",
+    10000
+   ],
+   [
+    "Leonart",
+    "Subcampeón",
+    7500
+   ],
+   [
+    "Drexx",
+    "Semifinal",
+    5250
+   ],
+   [
+    "Lord Viruzz",
+    "Semifinal",
+    5250
+   ],
+   [
+    "Aszecas 🇲🇽",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Erian",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Ezias🥈✒️🧢🐍",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Leyenda",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Lvel 🇻🇪",
+    "Cuartos",
+    2500
+   ],
+   [
+    "MaYeuTyK",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Mathhias",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Mito",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Velatz",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Yor",
+    "Cuartos",
+    2500
+   ],
+   [
+    "romeo🇲🇽",
+    "Cuartos",
+    2500
+   ],
+   [
+    "<:emoji_5:1462319885810925610>",
+    "Cuartos",
+    1250
+   ],
+   [
+    "OKAM",
+    "Cuartos",
+    1250
+   ]
+  ]
  }
 }

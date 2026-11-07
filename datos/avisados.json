@@ -36462,5 +36462,266 @@
    ]
   ],
   "v": 2
+ },
+ "576": {
+  "antes": {
+   "Drexx": [
+    39,
+    46,
+    false
+   ],
+   "Erian": [
+    4,
+    4,
+    false
+   ],
+   "Ezias🥈✒️🧢🐍": [
+    114,
+    166,
+    false
+   ],
+   "Leonart": [
+    68,
+    85,
+    false
+   ],
+   "Leyenda": [
+    292,
+    183,
+    true
+   ],
+   "Lord Viruzz": [
+    43,
+    52,
+    false
+   ],
+   "MaYeuTyK": [
+    54,
+    71,
+    false
+   ],
+   "Mathhias": [
+    77,
+    97,
+    false
+   ],
+   "Mito": [
+    29,
+    35,
+    false
+   ],
+   "OKAM": [
+    26,
+    31,
+    false
+   ],
+   "Vandu": [
+    13,
+    14,
+    false
+   ],
+   "Velatz": [
+    19,
+    22,
+    false
+   ],
+   "Yor": [
+    146,
+    255,
+    false
+   ]
+  },
+  "canal": "925213294703300649",
+  "duelos": [
+   [
+    "Lord Viruzz",
+    "Yor",
+    "Lord Viruzz"
+   ],
+   [
+    "Lord Viruzz",
+    "Mito",
+    "Lord Viruzz"
+   ],
+   [
+    "Leonart",
+    "Leyenda",
+    "Leonart"
+   ],
+   [
+    "Leonart",
+    "Aszecas 🇲🇽",
+    "Leonart"
+   ],
+   [
+    "Leonart",
+    "romeo🇲🇽",
+    "Leonart"
+   ],
+   [
+    "Vandu",
+    "MaYeuTyK",
+    "Vandu"
+   ],
+   [
+    "Vandu",
+    "Lvel 🇻🇪",
+    "Vandu"
+   ],
+   [
+    "Vandu",
+    "OKAM, <:emoji_5:1462319885810925610>",
+    "Vandu"
+   ],
+   [
+    "Drexx",
+    "Erian",
+    "Drexx"
+   ],
+   [
+    "Drexx",
+    "Ezias🥈✒️🧢🐍",
+    "Drexx"
+   ],
+   [
+    "Drexx",
+    "Mathhias",
+    "Drexx"
+   ],
+   [
+    "Drexx",
+    "Velatz",
+    "Drexx"
+   ],
+   [
+    "Leonart",
+    "Lord Viruzz",
+    "Leonart"
+   ],
+   [
+    "Vandu",
+    "Drexx",
+    "Vandu"
+   ],
+   [
+    "Vandu",
+    "Leonart",
+    "Vandu"
+   ]
+  ],
+  "ev_antes": {
+   "Drexx": 32,
+   "Erian": 72,
+   "Ezias🥈✒️🧢🐍": 5,
+   "Leonart": 13,
+   "Leyenda": 8,
+   "Lord Viruzz": 20,
+   "MaYeuTyK": 10,
+   "Mathhias": 9,
+   "Mito": 26,
+   "OKAM": 21,
+   "Vandu": 46,
+   "Velatz": 44,
+   "Yor": 4
+  },
+  "fecha": "06/11",
+  "firma": "5f84b266329a53c2",
+  "msg": "1568457450267484231",
+  "nombre": "FAT BATTLES PALOOZA FECHA 10 FINALS",
+  "num": 576,
+  "participantes": 17,
+  "sello": {
+   "Vandu": "82cbae755384:b65fe52a19f1"
+  },
+  "sv": "ACAD",
+  "t": "2026-11-07T02:54:35Z",
+  "tabla": [
+   [
+    "Vandu",
+    "Campeón",
+    10000
+   ],
+   [
+    "Leonart",
+    "Subcampeón",
+    7500
+   ],
+   [
+    "Lord Viruzz",
+    "Semifinal",
+    5250
+   ],
+   [
+    "Drexx",
+    "Semifinal",
+    5250
+   ],
+   [
+    "Yor",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Mito",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Leyenda",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Aszecas 🇲🇽",
+    "Cuartos",
+    2500
+   ],
+   [
+    "romeo🇲🇽",
+    "Cuartos",
+    2500
+   ],
+   [
+    "MaYeuTyK",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Lvel 🇻🇪",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Erian",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Ezias🥈✒️🧢🐍",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Mathhias",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Velatz",
+    "Cuartos",
+    2500
+   ],
+   [
+    "OKAM",
+    "Cuartos",
+    1250
+   ],
+   [
+    "<:emoji_5:1462319885810925610>",
+    "Cuartos",
+    1250
+   ]
+  ],
+  "v": 2
  }
 }

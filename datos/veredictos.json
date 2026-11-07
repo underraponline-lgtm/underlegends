@@ -2,17 +2,6 @@
  "_leeme": "Los eventos de vidas de #veredictos ya armados —quién peleó con quién y quién ganó—, para cargarlos aunque ya no estén entre los últimos mensajes del canal; y cada batalla con su ganador (`batallas`), para la llave que no lo dice; y cada llave como se jugó (`llaves`), que manda sobre la del organizador. Sin los mensajes: el repo es público. Lo escribe bot/escuchar.py (vidas()).",
  "eventos": {},
  "batallas": {
-  "1565916694281457724": {
-   "id": "1565916694281457724",
-   "sv": "#FDS ╏FREESTYLE DISCORD SERIES",
-   "g": "1489848581203689535",
-   "canal": "1536574435761332334",
-   "pub": 1793414033242,
-   "a": "SIN LÍMITES",
-   "b": "MCAREPA",
-   "ganador": "SIN LÍMITES",
-   "votos": "1–0"
-  },
   "1565926627186315385": {
    "id": "1565926627186315385",
    "sv": "[FFA] Freestyle For All 👾",
@@ -1067,6 +1056,17 @@
    "a": "CRISZJ X CAQUIÑA",
    "b": "MCO X CHASE",
    "ganador": "MCO X CHASE",
+   "votos": "1–0"
+  },
+  "1568452709923688449": {
+   "id": "1568452709923688449",
+   "sv": "🔥 𝐃𝐈𝐒𝐂𝐎𝐑𝐃 𝐒𝐓𝐘𝐋𝐄 🎤",
+   "g": "1443770831598649528",
+   "canal": "1477446447422246943",
+   "pub": 1794018666488,
+   "a": "ABRAHAM X NRE",
+   "b": "JEIXDER X PICHULA",
+   "ganador": "JEIXDER X PICHULA",
    "votos": "1–0"
   }
  },

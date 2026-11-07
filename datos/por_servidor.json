@@ -143,6 +143,20 @@
     }
    }
   },
+  "<:emoji_5:1462319885810925610>": {
+   "ACAD": {
+    "duelos": "",
+    "ev": 1,
+    "oro": 0,
+    "ovr": 43,
+    "pod": 0,
+    "pts": 6250,
+    "racha": "0/0",
+    "tg": {
+     "nuevo": true
+    }
+   }
+  },
   "AFR": {
    "FFA": {
     "duelos": "",
@@ -881,6 +895,20 @@
     "racha": "0/0",
     "tg": {
      "fund": true
+    }
+   }
+  },
+  "Aszecas 🇲🇽": {
+   "ACAD": {
+    "duelos": "",
+    "ev": 1,
+    "oro": 0,
+    "ovr": 44,
+    "pod": 0,
+    "pts": 12500,
+    "racha": "0/0",
+    "tg": {
+     "nuevo": true
     }
    }
   },
@@ -2609,13 +2637,16 @@
   },
   "Drexx": {
    "ACAD": {
-    "duelos": "3/7",
-    "ev": 6,
+    "duelos": "3/8",
+    "ev": 7,
     "oro": 0,
-    "ovr": 46,
+    "ovr": 48,
     "pod": 0,
-    "pts": 15156,
-    "racha": "0/1"
+    "pts": 41406,
+    "racha": "0/1",
+    "tg": {
+     "llave": true
+    }
    },
    "CH": {
     "duelos": "",
@@ -3182,12 +3213,12 @@
   "Erian": {
    "ACAD": {
     "duelos": "6/10",
-    "ev": 7,
+    "ev": 8,
     "oro": 1,
-    "ovr": 51,
+    "ovr": 52,
     "pod": 2,
-    "pts": 40388,
-    "racha": "1/2",
+    "pts": 52888,
+    "racha": "0/2",
     "tg": {
      "fin": 2,
      "fund": true,
@@ -3365,11 +3396,11 @@
   "Ezias🥈✒️🧢🐍": {
    "ACAD": {
     "duelos": "",
-    "ev": 1,
+    "ev": 2,
     "oro": 0,
-    "ovr": 42,
+    "ovr": 45,
     "pod": 0,
-    "pts": 625,
+    "pts": 13125,
     "racha": "0/0"
    },
    "DDF": {
@@ -5841,15 +5872,17 @@
   },
   "Leonart": {
    "ACAD": {
-    "duelos": "2/5",
-    "ev": 6,
+    "duelos": "3/7",
+    "ev": 7,
     "oro": 0,
-    "ovr": 46,
-    "pod": 0,
-    "pts": 15650,
-    "racha": "0/1",
+    "ovr": 51,
+    "pod": 1,
+    "pts": 53150,
+    "racha": "1/1",
     "tg": {
-     "bcasa": true
+     "bcasa": true,
+     "fin": 1,
+     "llave": true
     }
    },
    "DDF": {
@@ -5930,11 +5963,11 @@
   "Leyenda": {
    "ACAD": {
     "duelos": "",
-    "ev": 3,
+    "ev": 4,
     "oro": 0,
-    "ovr": 43,
+    "ovr": 46,
     "pod": 0,
-    "pts": 3026,
+    "pts": 15526,
     "racha": "0/0",
     "tg": {
      "fund": true
@@ -6102,12 +6135,12 @@
   },
   "Lord Viruzz": {
    "ACAD": {
-    "duelos": "2/6",
-    "ev": 7,
+    "duelos": "2/7",
+    "ev": 8,
     "oro": 1,
-    "ovr": 50,
+    "ovr": 52,
     "pod": 1,
-    "pts": 43004,
+    "pts": 69254,
     "racha": "0/1",
     "tg": {
      "fin": 1,
@@ -6269,11 +6302,11 @@
   "Lvel": {
    "ACAD": {
     "duelos": "0/1",
-    "ev": 4,
+    "ev": 5,
     "oro": 0,
-    "ovr": 44,
+    "ovr": 46,
     "pod": 0,
-    "pts": 4156,
+    "pts": 16656,
     "racha": "0/0"
    },
    "CH": {
@@ -6669,11 +6702,11 @@
   "MaYeuTyK": {
    "ACAD": {
     "duelos": "",
-    "ev": 1,
+    "ev": 2,
     "oro": 0,
-    "ovr": 42,
+    "ovr": 45,
     "pod": 0,
-    "pts": 938,
+    "pts": 13438,
     "racha": "0/0"
    },
    "DDF": {
@@ -7014,12 +7047,12 @@
   "Mathhias": {
    "ACAD": {
     "duelos": "",
-    "ev": 2,
+    "ev": 3,
     "oro": 1,
-    "ovr": 47,
+    "ovr": 48,
     "pod": 1,
-    "pts": 17125,
-    "racha": "1/1",
+    "pts": 29625,
+    "racha": "0/1",
     "tg": {
      "fin": 1
     }
@@ -7334,12 +7367,15 @@
   "Mito": {
    "ACAD": {
     "duelos": "",
-    "ev": 1,
+    "ev": 2,
     "oro": 0,
-    "ovr": 43,
+    "ovr": 45,
     "pod": 0,
-    "pts": 4125,
-    "racha": "0/0"
+    "pts": 16625,
+    "racha": "0/0",
+    "tg": {
+     "nuevo": true
+    }
    },
    "CH": {
     "duelos": "1/2",
@@ -8175,6 +8211,18 @@
    }
   },
   "OKAM": {
+   "ACAD": {
+    "duelos": "",
+    "ev": 1,
+    "oro": 0,
+    "ovr": 43,
+    "pod": 0,
+    "pts": 6250,
+    "racha": "0/0",
+    "tg": {
+     "nuevo": true
+    }
+   },
    "DDF": {
     "duelos": "1/2",
     "ev": 1,
@@ -11054,13 +11102,16 @@
   },
   "Vandu": {
    "ACAD": {
-    "duelos": "0/1",
-    "ev": 3,
-    "oro": 0,
-    "ovr": 45,
-    "pod": 0,
-    "pts": 11000,
-    "racha": "0/0"
+    "duelos": "2/3",
+    "ev": 4,
+    "oro": 1,
+    "ovr": 50,
+    "pod": 1,
+    "pts": 61000,
+    "racha": "1/1",
+    "tg": {
+     "fin": 1
+    }
    },
    "CH": {
     "duelos": "1/2",
@@ -11143,12 +11194,12 @@
   "Velatz": {
    "ACAD": {
     "duelos": "0/1",
-    "ev": 4,
+    "ev": 5,
     "oro": 0,
-    "ovr": 45,
+    "ovr": 47,
     "pod": 0,
-    "pts": 13037,
-    "racha": "1/1"
+    "pts": 25537,
+    "racha": "0/1"
    },
    "FFA": {
     "duelos": "12/27",
@@ -11524,11 +11575,11 @@
   "Yor": {
    "ACAD": {
     "duelos": "1/2",
-    "ev": 1,
+    "ev": 2,
     "oro": 0,
-    "ovr": 43,
+    "ovr": 45,
     "pod": 0,
-    "pts": 3750,
+    "pts": 16250,
     "racha": "0/0"
    },
    "FFA": {
@@ -12469,6 +12520,20 @@
     "pod": 0,
     "pts": 11286,
     "racha": "0/1"
+   }
+  },
+  "romeo🇲🇽": {
+   "ACAD": {
+    "duelos": "",
+    "ev": 1,
+    "oro": 0,
+    "ovr": 44,
+    "pod": 0,
+    "pts": 12500,
+    "racha": "0/0",
+    "tg": {
+     "nuevo": true
+    }
    }
   },
   "setesfifi": {
