@@ -74,6 +74,7 @@
     "pts": 56625,
     "racha": "1/3",
     "tg": {
+     "dv": true,
      "fin": 4,
      "fund": true
     }

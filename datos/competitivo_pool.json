@@ -164,22 +164,22 @@
   "tg_c": {
    "bestia": 3,
    "clasico": 5,
-   "dg": 32,
+   "dg": 33,
    "fg": 8,
    "fp": 2,
-   "riv": 30,
-   "venc": 25,
+   "riv": 32,
+   "venc": 26,
    "vengo": 1
   },
   "tg_p": {
-   "paises": 10,
-   "paisesg": 8,
+   "paises": 11,
+   "paisesg": 9,
    "primer": true,
    "unico": true
   },
   "nac": {
    "evn": 0,
-   "evi": 17,
+   "evi": 18,
    "com": 0,
    "top": [
     1,
@@ -1037,23 +1037,23 @@
   "tg_c": {
    "bestia": 2,
    "clasico": 2,
-   "dg": 8,
+   "dg": 11,
    "fg": 3,
    "fp": 1,
-   "riv": 9,
-   "venc": 7
+   "riv": 12,
+   "venc": 10
   },
   "tg_p": {
-   "paises": 6,
-   "paisesg": 5
+   "paises": 9,
+   "paisesg": 8
   },
   "nac": {
    "evn": 3,
-   "evi": 6,
+   "evi": 7,
    "com": 4,
    "top": [
-    10,
-    "cl"
+    1,
+    "ec"
    ]
   }
  },
@@ -2832,7 +2832,7 @@
    "dg": 13,
    "fg": 2,
    "fp": 2,
-   "riv": 20,
+   "riv": 21,
    "venc": 11
   },
   "tg_p": {
@@ -2841,7 +2841,7 @@
   },
   "nac": {
    "evn": 8,
-   "evi": 20,
+   "evi": 21,
    "com": 4,
    "top": [
     10,
@@ -3998,10 +3998,10 @@
   "tg_c": {
    "bestia": 2,
    "clasico": 2,
-   "dg": 10,
+   "dg": 12,
    "fp": 3,
-   "riv": 21,
-   "venc": 9,
+   "riv": 24,
+   "venc": 11,
    "vengo": 1
   },
   "tg_p": {
@@ -4010,7 +4010,7 @@
   },
   "nac": {
    "evn": 9,
-   "evi": 25,
+   "evi": 26,
    "com": 5,
    "top": [
     7,
@@ -6627,7 +6627,7 @@
    "clasico": 2,
    "dg": 6,
    "fp": 2,
-   "riv": 12,
+   "riv": 13,
    "venc": 6
   },
   "tg_p": {
@@ -6636,7 +6636,7 @@
   },
   "nac": {
    "evn": 0,
-   "evi": 8,
+   "evi": 9,
    "com": 0,
    "top": [
     6,
@@ -7619,17 +7619,17 @@
    "clasico": 2,
    "dg": 1,
    "mata": 1,
-   "riv": 8,
+   "riv": 9,
    "venc": 1
   },
   "tg_p": {
-   "paises": 4,
+   "paises": 5,
    "paisesg": 1,
    "pionero": true
   },
   "nac": {
    "evn": 0,
-   "evi": 12,
+   "evi": 13,
    "com": 0,
    "top": [
     25,
@@ -10352,7 +10352,7 @@
    "dg": 3,
    "fp": 1,
    "mata": 1,
-   "riv": 10,
+   "riv": 11,
    "venc": 3
   },
   "tg_p": {
@@ -10361,7 +10361,7 @@
   },
   "nac": {
    "evn": 2,
-   "evi": 14,
+   "evi": 15,
    "com": 0,
    "top": [
     7,
