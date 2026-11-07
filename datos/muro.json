@@ -1077,11 +1077,11 @@
 "temporada"
 ]
 },
-"valdoza": {
+"leyenda": {
 "rg": "",
 "c": []
 },
-"leyenda": {
+"valdoza": {
 "rg": "",
 "c": []
 },
@@ -1183,6 +1183,13 @@
 "rg": "",
 "c": []
 },
+"yor": {
+"rg": "",
+"c": [
+"servidor",
+"temporada"
+]
+},
 "scritura": {
 "rg": "",
 "c": [
@@ -1279,13 +1286,6 @@
 "francis": {
 "rg": "",
 "c": []
-},
-"yor": {
-"rg": "",
-"c": [
-"servidor",
-"temporada"
-]
 },
 "sintext": {
 "rg": "",
