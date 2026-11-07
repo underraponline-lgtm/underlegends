@@ -6272,7 +6272,7 @@
      "dorado",
      1,
      600,
-     null,
+     576,
      "ACAD"
     ]
    ],
@@ -6303,7 +6303,7 @@
      0,
      8,
      0,
-     0
+     1
     ],
     "Adriagner": [
      1,
@@ -6347,12 +6347,12 @@
      0,
      0
     ],
-    "Aszecas 🇲🇽": [
+    "Aszecas": [
      1,
      0,
      8,
      0,
-     0
+     1
     ],
     "BTRX": [
      1,
@@ -6422,7 +6422,7 @@
      0,
      4,
      0,
-     0
+     1
     ],
     "Dyzz": [
      2,
@@ -6450,7 +6450,7 @@
      0,
      2,
      0,
-     0
+     1
     ],
     "Evangeline🇵🇪": [
      1,
@@ -6464,7 +6464,7 @@
      0,
      8,
      0,
-     0
+     1
     ],
     "Ezze": [
      1,
@@ -6555,7 +6555,7 @@
      1,
      2,
      0,
-     0
+     1
     ],
     "Leopold sedar 🇸🇳": [
      2,
@@ -6569,7 +6569,7 @@
      0,
      8,
      0,
-     0
+     1
     ],
     "Liberia": [
      1,
@@ -6583,7 +6583,7 @@
      0,
      4,
      0,
-     0
+     1
     ],
     "Lucho": [
      1,
@@ -6597,7 +6597,7 @@
      0,
      8,
      0,
-     0
+     1
     ],
     "MCO": [
      1,
@@ -6611,7 +6611,7 @@
      0,
      8,
      0,
-     0
+     1
     ],
     "Makmah": [
      4,
@@ -6639,7 +6639,7 @@
      0,
      8,
      0,
-     0
+     1
     ],
     "MauzzitoEmeces": [
      1,
@@ -6660,7 +6660,7 @@
      0,
      1,
      0,
-     0
+     1
     ],
     "Molusco": [
      2,
@@ -6688,7 +6688,7 @@
      0,
      8,
      0,
-     0
+     1
     ],
     "Oasis": [
      1,
@@ -6793,14 +6793,14 @@
      0,
      1,
      0,
-     0
+     1
     ],
     "Velatz": [
      1,
      0,
      8,
      0,
-     0
+     1
     ],
     "Volg 🇵🇦": [
      1,
@@ -6821,7 +6821,7 @@
      0,
      8,
      0,
-     0
+     1
     ],
     "arce": [
      1,
@@ -6858,12 +6858,12 @@
      0,
      0
     ],
-    "romeo🇲🇽": [
+    "romeo": [
      1,
      0,
      8,
      0,
-     0
+     1
     ],
     "tomyhilfiger🇾🇹": [
      1,
@@ -6882,37 +6882,48 @@
    },
    "pts": {
     "0223🇧🇧": 300,
+    "<:emoji_5:1462319885810925610>": 600,
     "Agus": 1300,
     "Akuseru": 300,
+    "Aszecas": 600,
     "Berrun": 600,
     "Calíz": 1300,
     "Cronox": 1300,
     "Deuxs": 300,
     "Dominick": 300,
-    "Drexx": 300,
+    "Drexx": 900,
     "Dyzz": 300,
     "EL PIBE 🇦🇷": 600,
-    "Erian": 300,
+    "Erian": 900,
+    "Ezias🥈✒️🧢🐍": 600,
     "Inko": 300,
     "Joven shenlong": 300,
     "LRS": 300,
-    "Leonart": 900,
+    "Leonart": 1500,
     "Leopold sedar 🇸🇳": 300,
-    "Lvel": 300,
+    "Leyenda": 600,
+    "Lord Viruzz": 600,
+    "Lvel": 900,
+    "MaYeuTyK": 600,
     "Makmah": 2900,
     "Marcos": 300,
-    "Mito": 1300,
+    "Mathhias": 600,
+    "Mito": 1900,
     "Molusco": 300,
     "Number VE": 300,
+    "OKAM": 600,
     "Oasis": 1000,
     "Six": 2900,
     "Tam": 300,
     "Trelok": 1600,
     "VR": 300,
-    "Vandu": 1300,
+    "Vandu": 1900,
+    "Velatz": 600,
     "Xclusivo": 2900,
+    "Yor": 600,
     "ikonoxx": 300,
-    "mats": 1300
+    "mats": 1300,
+    "romeo": 600
    }
   }
  },
@@ -6922,6 +6933,7 @@
   "1200": 1200,
   "19": 1600,
   "19 FLEIVA WACK": 1800,
+  "<:emoji_5:1462319885810925610>": 600,
   "AGUSTÍN51K": 1900,
   "AKARK": 600,
   "ALESS": 300,
@@ -6942,6 +6954,7 @@
   "Andy": 300,
   "Ariaxer": 600,
   "Assuan": 1300,
+  "Aszecas": 600,
   "Axinu": 300,
   "BELIKKO": 300,
   "BLITZ": 900,
@@ -6978,7 +6991,7 @@
   "Desio": 300,
   "Deuxs": 900,
   "Dominick": 3500,
-  "Drexx": 2800,
+  "Drexx": 3400,
   "Drezz🇵🇪": 300,
   "Dynoco": 1600,
   "Dyzz": 2100,
@@ -6994,11 +7007,11 @@
   "Emilio Alva": 600,
   "Emily Family": 300,
   "Enkil 🇦🇷": 300,
-  "Erian": 9400,
+  "Erian": 10000,
   "Erik": 1900,
   "Erizo": 300,
   "Eze": 300,
-  "Ezias🥈✒️🧢🐍": 300,
+  "Ezias🥈✒️🧢🐍": 900,
   "Ezze": 1600,
   "F1THER": 300,
   "FAT PENIS": 300,
@@ -7059,18 +7072,18 @@
   "LSO": 300,
   "Launok": 300,
   "Lautaro la sinceridad 🇨🇨": 600,
-  "Leonart": 1200,
+  "Leonart": 1800,
   "Leopold sedar 🇸🇳": 300,
   "Letrao🇨🇱": 1300,
-  "Leyenda": 300,
+  "Leyenda": 900,
   "Liam": 300,
   "Liberia": 8000,
   "Lilñaño": 600,
   "LitKunai": 300,
-  "Lord Viruzz": 1600,
+  "Lord Viruzz": 2200,
   "Luck": 900,
   "Luzzano": 900,
-  "Lvel": 1200,
+  "Lvel": 1800,
   "MALBORO": 600,
   "MATICERNA": 300,
   "MATUK 🇦🇷": 1300,
@@ -7079,7 +7092,7 @@
   "MCO": 7100,
   "MHS": 300,
   "MTZ": 1900,
-  "MaYeuTyK": 1600,
+  "MaYeuTyK": 2200,
   "Magic": 600,
   "Majiztral": 1800,
   "Makmah": 10500,
@@ -7088,12 +7101,12 @@
   "Marcos": 300,
   "Marto": 300,
   "Masino": 2500,
-  "Mathhias": 1900,
+  "Mathhias": 2500,
   "Matias": 300,
   "Mc arepa": 1000,
   "Millonari-O": 300,
   "Miniboy": 4500,
-  "Mito": 2200,
+  "Mito": 2800,
   "Molusco": 5400,
   "Mosquitrap 🦟": 4000,
   "Motera": 2600,
@@ -7113,7 +7126,7 @@
   "Number": 3200,
   "Number VE": 300,
   "OG": 7700,
-  "OKAM": 3300,
+  "OKAM": 3900,
   "ONDADISKO": 600,
   "ONZASS": 1200,
   "Oasis": 8700,
@@ -7182,8 +7195,8 @@
   "Vacile🇪🇸": 600,
   "Valdoza": 600,
   "Valen": 1000,
-  "Vandu": 9700,
-  "Velatz": 6000,
+  "Vandu": 10300,
+  "Velatz": 6600,
   "Verc": 6700,
   "Vilca": 1600,
   "Walker": 7900,
@@ -7193,6 +7206,7 @@
   "Xubaru": 5800,
   "YIN-SON 🇺🇸": 1000,
   "YOUNG VLAD 🇨🇴": 1300,
+  "Yor": 600,
   "Zaik": 600,
   "Zaza": 300,
   "Zekha": 1000,
@@ -7214,6 +7228,7 @@
   "publicenemy🇦🇷": 300,
   "roda mc 🇵🇦": 1000,
   "rodrilp": 900,
+  "romeo": 600,
   "setesfifi": 300,
   "wei shenlong": 300,
   "yinn": 7100

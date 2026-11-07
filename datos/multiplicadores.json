@@ -1010,7 +1010,9 @@
    },
    "dorado": {
     "sv": "ACAD",
-    "desde": "2026-11-06T05:00:00Z"
+    "desde": "2026-11-06T05:00:00Z",
+    "n": 576,
+    "nombre": "FAT BATTLES PALOOZA FECHA 10 FINALS"
    },
    "guerra": {
     "pares": [
@@ -1095,19 +1097,21 @@
     "nuevos": {
      "FFA": 10,
      "CH": 5,
-     "DDF": 3
+     "DDF": 3,
+     "ACAD": 2
     },
     "gente": {
      "DDF": 26,
      "LKR": 2,
      "FFA": 44,
      "URBF": 7,
-     "CH": 12
+     "CH": 12,
+     "ACAD": 17
     },
     "gana": "CH"
    },
    "meta_va": {
-    "ACAD": 0,
+    "ACAD": 16,
     "DDF": 26,
     "DRA": 0,
     "FDS": 0,

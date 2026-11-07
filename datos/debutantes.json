@@ -65,6 +65,7 @@
    "vencido": false
   },
   "<:emoji_5:1462319885810925610>": {
+   "avisado": "2026-11-06",
    "chat": "2026-11-06",
    "con": null,
    "cumplido": "",
@@ -222,11 +223,12 @@
    "vencido": false
   },
   "Aszecas": {
+   "avisado": "2026-11-06",
    "chat": "2026-11-06",
    "con": null,
    "cumplido": "",
    "debut": "2026-11-07T01:17:28+00:00",
-   "did": "",
+   "did": "1060325188723548210",
    "evento": "FAT BATTLES PALOOZA FECHA 10 FINALS",
    "n": 576,
    "sv": "ACAD",
@@ -2183,7 +2185,7 @@
    "n": 550,
    "sv": "FFA",
    "vence": "2026-11-07T02:59:35+00:00",
-   "vencido": false
+   "vencido": true
   },
   "publicenemy": {
    "avisado": "2026-10-29",
@@ -2212,11 +2214,12 @@
    "vencido": true
   },
   "romeo": {
+   "avisado": "2026-11-06",
    "chat": "2026-11-06",
    "con": null,
    "cumplido": "",
    "debut": "2026-11-07T01:17:28+00:00",
-   "did": "",
+   "did": "1283642314517909517",
    "evento": "FAT BATTLES PALOOZA FECHA 10 FINALS",
    "n": 576,
    "sv": "ACAD",
@@ -2245,7 +2248,7 @@
    "n": 550,
    "sv": "FFA",
    "vence": "2026-11-07T02:59:35+00:00",
-   "vencido": false
+   "vencido": true
   }
  }
 }

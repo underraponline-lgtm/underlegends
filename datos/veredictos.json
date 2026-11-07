@@ -2,28 +2,6 @@
  "_leeme": "Los eventos de vidas de #veredictos ya armados —quién peleó con quién y quién ganó—, para cargarlos aunque ya no estén entre los últimos mensajes del canal; y cada batalla con su ganador (`batallas`), para la llave que no lo dice; y cada llave como se jugó (`llaves`), que manda sobre la del organizador. Sin los mensajes: el repo es público. Lo escribe bot/escuchar.py (vidas()).",
  "eventos": {},
  "batallas": {
-  "1565926627186315385": {
-   "id": "1565926627186315385",
-   "sv": "[FFA] Freestyle For All 👾",
-   "g": "1468472442925092958",
-   "canal": "1487206164864438513",
-   "pub": 1793416401431,
-   "a": "ASSUAN",
-   "b": "EZZE",
-   "ganador": "EZZE",
-   "votos": "1–0"
-  },
-  "1565929202937626715": {
-   "id": "1565929202937626715",
-   "sv": "[FFA] Freestyle For All 👾",
-   "g": "1468472442925092958",
-   "canal": "1487206164864438513",
-   "pub": 1793417015538,
-   "a": "EZZE",
-   "b": "AKUSERU",
-   "ganador": "AKUSERU",
-   "votos": "1–0"
-  },
   "1565932125222346753": {
    "id": "1565932125222346753",
    "sv": "[FFA] Freestyle For All 👾",
@@ -1068,6 +1046,17 @@
    "b": "JEIXDER X PICHULA",
    "ganador": "JEIXDER X PICHULA",
    "votos": "1–0"
+  },
+  "1568462159716024393": {
+   "id": "1568462159716024393",
+   "sv": "🔥 𝐃𝐈𝐒𝐂𝐎𝐑𝐃 𝐒𝐓𝐘𝐋𝐄 🎤",
+   "g": "1443770831598649528",
+   "canal": "1477446447422246943",
+   "pub": 1794020919494,
+   "a": "MCO X CHASE",
+   "b": "JEIXDER X PICHULA",
+   "ganador": "MCO X CHASE",
+   "votos": "2–0"
   }
  },
  "llaves": {
