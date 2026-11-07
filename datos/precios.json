@@ -2,26 +2,6 @@
  "_leeme": "El precio por cabeza: lo arma bot/precios.py en el ciclo (paso 2b4). Las reglas y los números viven en ese archivo.",
  "precios": [
   {
-   "id": 19,
-   "cabeza": "Geoka",
-   "monto": 2500,
-   "t": "2026-10-08T20:19:14Z",
-   "fin": "2026-10-12T15:00:00Z",
-   "e": "cazado",
-   "por": [
-    [
-     "PichulaMc",
-     2500
-    ]
-   ],
-   "ev": {
-    "n": 431,
-    "nombre": "LA REDENCIÓN VOL.1",
-    "sv": "FFA",
-    "t": "2026-10-08T23:25:35Z"
-   }
-  },
-  {
    "id": 20,
    "cabeza": "PichulaMc",
    "monto": 5000,
@@ -331,7 +311,6 @@
   }
  ],
  "suma": {
-  "PichulaMc": 3875,
   "PIERR": 5000,
   "Emilio Alva": 2500,
   "Tuca": 1000,
@@ -339,6 +318,7 @@
   "Guess": 5000,
   "BLUE BURKA": 375,
   "BNA": 375,
+  "PichulaMc": 1375,
   "Polosport": 375
  }
 }
