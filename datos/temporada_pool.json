@@ -97,7 +97,7 @@
   "crew": "",
   "discord_id": "578697503130779649",
   "verificado": true,
-  "pts": 467167,
+  "pts": 464667,
   "ev": 58,
   "wr": "60.6%",
   "pod": 18,
@@ -122,7 +122,7 @@
   "tg_t": {
    "busc": 6,
    "cab": 1,
-   "cobro": 4,
+   "cobro": 3,
    "dcor": true,
    "dobles": 17,
    "infalt": true,
@@ -1780,7 +1780,6 @@
   "rango": "B",
   "tg_t": {
    "busc": 1,
-   "cab": 1,
    "dobles": 6,
    "infalt": true,
    "perf": 1,
