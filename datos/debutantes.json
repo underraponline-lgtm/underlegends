@@ -1263,7 +1263,7 @@
    "n": 552,
    "sv": "DDF",
    "vence": "2026-11-07T17:45:26+00:00",
-   "vencido": false
+   "vencido": true
   },
   "MATUK": {
    "avisado": "2026-10-25",
@@ -1851,7 +1851,7 @@
    "n": 552,
    "sv": "DDF",
    "vence": "2026-11-07T17:45:26+00:00",
-   "vencido": false
+   "vencido": true
   },
   "Tmax Turbo [PN]": {
    "avisado": "2026-10-31",
