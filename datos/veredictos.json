@@ -5053,8 +5053,8 @@
    "g": "1469009547971526659",
    "canal": "1498009509036163173",
    "pub": 1794161849790,
-   "ed": 1794162912105,
-   "texto": "`[ SEMIFINALES ]`\n⌞TEITO⌝ 🆚 ⌞AGUSTIN⌝\n⌞ADRIAGNER⌝ 🆚 ⌞SAIDEM⌝\n`[ FINAL ]`\n⌞SAIDEM⌝ 🆚 ⌞TEITO⌝",
+   "ed": 1794163804272,
+   "texto": "`[ SEMIFINALES ]`\n⌞TEITO⌝ 🆚 ⌞AGUSTIN⌝\n⌞ADRIAGNER⌝ 🆚 ⌞SAIDEM⌝\n`[ FINAL ]`\n⌞SAIDEM⌝ 🆚 ⌞TEITO⌝\n⌞KEIDER⌝ 🆚 ⌞SIN LIMITES⌝",
    "batallas": [
     [
      "SEMIFINALES",
@@ -5081,6 +5081,16 @@
      [
       "SAIDEM",
       "TEITO"
+     ],
+     null,
+     "última ronda y no dice campeón",
+     []
+    ],
+    [
+     "FINAL",
+     [
+      "KEIDER",
+      "SIN LIMITES"
      ],
      null,
      "última ronda y no dice campeón",
