@@ -760,6 +760,39 @@
    "b": "SAIDEM",
    "ganador": "SAIDEM",
    "votos": "1–0"
+  },
+  "1569089248412311654": {
+   "id": "1569089248412311654",
+   "sv": "#FDS ╏FREESTYLE DISCORD SERIES",
+   "g": "1489848581203689535",
+   "canal": "1536574435761332334",
+   "pub": 1794170429090,
+   "a": "MCAREPA",
+   "b": "LEYENDA",
+   "ganador": "MCAREPA",
+   "votos": "1–0"
+  },
+  "1569089905760542842": {
+   "id": "1569089905760542842",
+   "sv": "✮ 𝑼𝒓𝒃𝒂𝒏 𝑭𝒓𝒆𝒆𝒔𝒕𝒚𝒍𝒆 ✮ | A New Era",
+   "g": "1467763447117778989",
+   "canal": "1540224373309444257",
+   "pub": 1794170585814,
+   "a": "JJ 🇨🇴",
+   "b": "CARLOS 🇪🇨",
+   "ganador": "JJ 🇨🇴",
+   "votos": "1–0"
+  },
+  "1569091045801599109": {
+   "id": "1569091045801599109",
+   "sv": "✮ 𝑼𝒓𝒃𝒂𝒏 𝑭𝒓𝒆𝒆𝒔𝒕𝒚𝒍𝒆 ✮ | A New Era",
+   "g": "1467763447117778989",
+   "canal": "1540224373309444257",
+   "pub": 1794170857621,
+   "a": "DREXX 🇵🇪",
+   "b": "MATHIAS 🇻🇪",
+   "ganador": "MATHIAS 🇻🇪",
+   "votos": "1–0"
   }
  },
  "llaves": {
@@ -5231,6 +5264,77 @@
      [
       "PANCHOK",
       "BOOTRAX"
+     ],
+     null,
+     "última ronda y no dice campeón",
+     []
+    ]
+   ]
+  },
+  "1569087548020498498": {
+   "id": "1569087548020498498",
+   "sv": "#FDS ╏FREESTYLE DISCORD SERIES",
+   "g": "1489848581203689535",
+   "canal": "1500675902042931280",
+   "pub": 1794170023685,
+   "ed": 1794171084282,
+   "texto": "`[ OCTAVOS ]`\n⌞LEYENDA⌝ 🆚 ⌞MCAREPA⌝\n⌞cinexfilo⌝ 🆚 ⌞nexux⌝\n⌞SIN LIMITES⌝ 🆚 ⌞YO⌝\n⌞Luck⌝ 🆚 ⌞dios⌝\n⌞Mito⌝ 🆚 ⌞DARKO⌝\n`[ CUARTOS ]`\n⌞santiki⌝ 🆚 ⌞mcarepa⌝\n`[ FINAL ]`",
+   "batallas": [
+    [
+     "OCTAVOS",
+     [
+      "LEYENDA",
+      "MCAREPA"
+     ],
+     "MCAREPA",
+     "ronda siguiente",
+     []
+    ],
+    [
+     "OCTAVOS",
+     [
+      "cinexfilo",
+      "nexux"
+     ],
+     null,
+     "no aparece nadie después",
+     []
+    ],
+    [
+     "OCTAVOS",
+     [
+      "SIN LIMITES",
+      "YO"
+     ],
+     null,
+     "no aparece nadie después",
+     []
+    ],
+    [
+     "OCTAVOS",
+     [
+      "Luck",
+      "dios"
+     ],
+     null,
+     "no aparece nadie después",
+     []
+    ],
+    [
+     "OCTAVOS",
+     [
+      "Mito",
+      "DARKO"
+     ],
+     null,
+     "no aparece nadie después",
+     []
+    ],
+    [
+     "CUARTOS",
+     [
+      "santiki",
+      "mcarepa"
      ],
      null,
      "última ronda y no dice campeón",

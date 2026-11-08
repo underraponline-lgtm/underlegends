@@ -1,5 +1,5 @@
 {
- "cuando": "2026-11-08T20:25:29+00:00",
+ "cuando": "2026-11-08T20:55:33+00:00",
  "anuncios": [
   {
    "nombre": "¡SE LLEGÓ LA GRAN NOCHE!",
@@ -6809,6 +6809,33 @@
   }
  ],
  "inscripciones": [
+  {
+   "servidor": "FDS",
+   "canal": "✅╏inscripciones-express",
+   "texto": "Mito🇦🇷",
+   "quien": "lizeninn.",
+   "discord_id": "1493416945037611140",
+   "msg_id": "1569091858963898409",
+   "cuando": "2026-11-08T20:50:51"
+  },
+  {
+   "servidor": "FDS",
+   "canal": "✅╏inscripciones-express",
+   "texto": "Dios 🇲🇽",
+   "quien": "dan666._",
+   "discord_id": "1204164715350196284",
+   "msg_id": "1569087933355397131",
+   "cuando": "2026-11-08T20:35:15"
+  },
+  {
+   "servidor": "URBF",
+   "canal": "‣《🗞️》Inscripciones",
+   "texto": "Tokio🇭🇷",
+   "quien": "paratimiringuicaro",
+   "discord_id": "1249980492951060561",
+   "msg_id": "1569085509517443194",
+   "cuando": "2026-11-08T20:25:37"
+  },
   {
    "servidor": "URBF",
    "canal": "‣《🗞️》Inscripciones",
@@ -42781,33 +42808,6 @@
    "discord_id": "1190746928774922311",
    "msg_id": "1556859823520354385",
    "cuando": "2026-10-06T02:45:06"
-  },
-  {
-   "servidor": "FFA",
-   "canal": "✦📝—inscripciones",
-   "texto": "Shisui🇯🇵 + Pain🇯🇵",
-   "quien": "funhorlavild",
-   "discord_id": "1426686911908675628",
-   "msg_id": "1556859634575351809",
-   "cuando": "2026-10-06T02:44:21"
-  },
-  {
-   "servidor": "FFA",
-   "canal": "✦📝—inscripciones",
-   "texto": "Lrs🇦🇷",
-   "quien": "lrs0378",
-   "discord_id": "1385452830684614697",
-   "msg_id": "1556859444930019369",
-   "cuando": "2026-10-06T02:43:36"
-  },
-  {
-   "servidor": "FFA",
-   "canal": "✦📝—inscripciones",
-   "texto": "Shisui 🇯🇵 + Pain🇯🇵",
-   "quien": "funhorlavild",
-   "discord_id": "1426686911908675628",
-   "msg_id": "1556859340256706631",
-   "cuando": "2026-10-06T02:43:11"
   }
  ]
 }

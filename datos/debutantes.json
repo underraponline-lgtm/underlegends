@@ -735,7 +735,7 @@
    "n": 557,
    "sv": "LKR",
    "vence": "2026-11-08T20:39:59+00:00",
-   "vencido": false
+   "vencido": true
   },
   "Hotaru Adeyemi 🏳️‍⚧️": {
    "avisado": "2026-10-16",
@@ -877,7 +877,7 @@
    "n": 557,
    "sv": "LKR",
    "vence": "2026-11-08T20:39:59+00:00",
-   "vencido": false
+   "vencido": true
   },
   "Jahno Afrodisiaco": {
    "avisado": "2026-10-28",
@@ -1134,7 +1134,7 @@
    "n": 557,
    "sv": "LKR",
    "vence": "2026-11-08T20:39:59+00:00",
-   "vencido": false
+   "vencido": true
   },
   "Lamborguini": {
    "con": null,
