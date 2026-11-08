@@ -1137,5 +1137,27 @@
   "sin_permiso": true,
   "sv": "LKR"
  },
+ "1568734851740213419": {
+  "autor": "1437913232407920770",
+  "canal": "1470097588635176960",
+  "cuando": "2026-11-07T21:12:14.339000+00:00",
+  "evento": "ZONA MORTAL",
+  "fecha": "07/11",
+  "llave": "1568734851740213419",
+  "pregunta": "1568775580986638379",
+  "preguntada": "2026-11-07 7:54 PM ET",
+  "preguntas": [
+   {
+    "lados": [
+     "Last🇬🇶",
+     "Jupiter 🇲🇽"
+    ],
+    "ronda": "CUARTOS"
+   }
+  ],
+  "respondidas": {},
+  "sin_permiso": false,
+  "sv": "DDF"
+ },
  "_leeme": "Las llaves que el ciclo no entendió y se las preguntó a quien las publicó, con botones o un menú (bot/finales.py). Una vez por llave, por su ID: así nunca se pregunta dos veces. Dlx, 12/10/2026."
 }
