@@ -2,17 +2,6 @@
  "_leeme": "Los eventos de vidas de #veredictos ya armados —quién peleó con quién y quién ganó—, para cargarlos aunque ya no estén entre los últimos mensajes del canal; y cada batalla con su ganador (`batallas`), para la llave que no lo dice; y cada llave como se jugó (`llaves`), que manda sobre la del organizador. Sin los mensajes: el repo es público. Lo escribe bot/escuchar.py (vidas()).",
  "eventos": {},
  "batallas": {
-  "1566589400379302001": {
-   "id": "1566589400379302001",
-   "sv": "🔥LKR (Champios Legue)🐉",
-   "g": "1558611504046153750",
-   "canal": "1560645560015519834",
-   "pub": 1793574418874,
-   "a": "MAJIZTRAL 🇨🇴",
-   "b": "CHOP🇭🇳",
-   "ganador": "CHOP🇭🇳",
-   "votos": "1–0"
-  },
   "1566593964507926731": {
    "id": "1566593964507926731",
    "sv": "🔥LKR (Champios Legue)🐉",
