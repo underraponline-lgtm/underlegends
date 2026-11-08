@@ -1,5 +1,5 @@
 {
- "cuando": "2026-11-08T05:25:05+00:00",
+ "cuando": "2026-11-08T05:52:24+00:00",
  "anuncios": [
   {
    "nombre": "¡SE LLEGÓ LA GRAN NOCHE!",
@@ -6382,35 +6382,6 @@
    "categoria_id": "1080379388320817233"
   },
   {
-   "nombre": "DUO STYLE",
-   "servidor": "DDS",
-   "canal": "📢]ANUNCIOS",
-   "msg_id": "1568102176260100222",
-   "cuando": "2026-11-06T03:18:12",
-   "canal_id": "1476035007133778001",
-   "guild_id": "1443770831598649528",
-   "organizador": "",
-   "orgs": [],
-   "autor_h": "cc5bf399801b74a0",
-   "cupos_texto": "",
-   "inscriptos": null,
-   "cupo_total": null,
-   "rango": "",
-   "modalidad": "",
-   "horario": "6 DE NOVIEMBE  7 PM",
-   "fecha": "",
-   "premios": "",
-   "staff": {
-    "dj": [
-     "VERSECK"
-    ]
-   },
-   "autor": "Benji Price",
-   "staff_cuentas": {},
-   "de_imagen": true,
-   "categoria_id": "1476034653457616916"
-  },
-  {
    "nombre": "DISCORD STYLE FREESTYLE LEAGUE",
    "servidor": "DDS",
    "canal": "🔥〕ANUNCIOS",
@@ -6554,43 +6525,6 @@
    "autor": "Benji Price",
    "staff_cuentas": {},
    "categoria_id": "1457061102138425425"
-  },
-  {
-   "nombre": "Duo Style Vol.5",
-   "servidor": "DDS",
-   "canal": "🏆]EVENTOS",
-   "msg_id": "1559343495137726485",
-   "cuando": "2026-10-12T23:14:20",
-   "canal_id": "1557910632962203730",
-   "guild_id": "1443770831598649528",
-   "organizador": "",
-   "orgs": [
-    {
-     "n": "Benji Price",
-     "id": "734945161158852630"
-    },
-    {
-     "n": "Versekiz",
-     "id": "987149314591719474"
-    },
-    {
-     "n": "VILCA",
-     "id": "846870712950194196"
-    }
-   ],
-   "autor_h": "6c949290e75b4291",
-   "cupos_texto": "32",
-   "inscriptos": null,
-   "cupo_total": null,
-   "rango": "",
-   "modalidad": "2 🆚️ 2",
-   "horario": "🇵🇪 Perú: 7:00 PM",
-   "fecha": "06/11",
-   "premios": "POR DEFINIR",
-   "staff": {},
-   "autor": "Versekiz",
-   "staff_cuentas": {},
-   "categoria_id": "1476034653457616916"
   },
   {
    "nombre": "MF DOOM Y MADLIB FECHA 1",
