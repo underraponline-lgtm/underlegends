@@ -1,45 +1,45 @@
 {
  "v": 1,
- "cuando": "2026-11-08T18:57:29Z",
+ "cuando": "2026-11-08T19:03:49Z",
  "trabajo": "dibujar",
  "codigo": 0,
- "dur_s": 1193.7,
+ "dur_s": 348.0,
  "pasos": [
   {
    "n": "2f",
    "que": "las fotos que faltan, de Discord a R2",
    "ok": true,
-   "s": 6.1
+   "s": 11.4
   },
   {
    "n": "2f2",
    "que": "los TAGs elegidos",
    "ok": true,
-   "s": 0.9
+   "s": 0.7
   },
   {
    "n": "3",
    "que": "qué cambió",
    "ok": true,
-   "s": 11.0
+   "s": 7.1
   },
   {
    "n": "4",
    "que": "las caras, desde R2",
    "ok": true,
-   "s": 23.7
+   "s": 21.1
   },
   {
    "n": "5",
-   "que": "tanda 1 de 3 · 40 persona(s)",
+   "que": "tanda 1 de 1 · 35 persona(s)",
    "ok": false,
-   "s": 1086.4
+   "s": 241.7
   },
   {
    "n": "5b",
    "que": "las Bloqueadas",
    "ok": true,
-   "s": 5.7
+   "s": 5.6
   },
   {
    "n": "6",
@@ -52,14 +52,6 @@
   {
    "paso": "5",
    "que": "03_Servidor/generar.py Adriagner"
-  },
-  {
-   "paso": "5",
-   "que": "03_Servidor/generar.py LAST"
-  },
-  {
-   "paso": "5",
-   "que": "03_Servidor/generar.py Richard"
   }
  ],
  "ultimo_evento": {
@@ -70,24 +62,24 @@
  },
  "cuotas": {
   "kv": {
-   "write": 262,
-   "read": 36922
+   "write": 275,
+   "read": 37977
   },
   "objeto": {
-   "leidas": 2566924,
-   "escritas": 11950,
-   "pedidos": 7308
+   "leidas": 2630655,
+   "escritas": 12321,
+   "pedidos": 7463
   },
   "worker": {
-   "pedidos": 7760,
+   "pedidos": 7853,
    "errores": 0,
-   "sub": 10254,
+   "sub": 10357,
    "cortados": 0,
    "p50_ms": 1.06,
-   "p99_ms": 12.58,
+   "p99_ms": 12.57,
    "cpu": {
-    "total": 18098,
-    "objeto_10": 1718,
+    "total": 18286,
+    "objeto_10": 1723,
     "worker_10": 173
    }
   },
