@@ -48,7 +48,7 @@
    "calendario": true,
    "ligas": true,
    "panel": true,
-   "suma": false,
+   "suma": true,
    "competitivo": false,
    "duelos": false
   },
