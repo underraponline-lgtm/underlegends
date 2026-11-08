@@ -925,6 +925,61 @@
    "b": "SIN LÍMITES",
    "ganador": "SIN LÍMITES",
    "votos": "1–0"
+  },
+  "1569107901094563841": {
+   "id": "1569107901094563841",
+   "sv": "✮ 𝑼𝒓𝒃𝒂𝒏 𝑭𝒓𝒆𝒆𝒔𝒕𝒚𝒍𝒆 ✮ | A New Era",
+   "g": "1467763447117778989",
+   "canal": "1540224373309444257",
+   "pub": 1794174876236,
+   "a": "MAKMA 🇻🇪",
+   "b": "NUMBER 🇻🇪",
+   "ganador": "MAKMA 🇻🇪",
+   "votos": "1–0"
+  },
+  "1569108945727918173": {
+   "id": "1569108945727918173",
+   "sv": "#FDS ╏FREESTYLE DISCORD SERIES",
+   "g": "1489848581203689535",
+   "canal": "1536574435761332334",
+   "pub": 1794175125296,
+   "a": "SIN LIMITE",
+   "b": "DIOS",
+   "ganador": "DIOS",
+   "votos": "1–0"
+  },
+  "1569109294777897094": {
+   "id": "1569109294777897094",
+   "sv": "✮ 𝑼𝒓𝒃𝒂𝒏 𝑭𝒓𝒆𝒆𝒔𝒕𝒚𝒍𝒆 ✮ | A New Era",
+   "g": "1467763447117778989",
+   "canal": "1540224373309444257",
+   "pub": 1794175208516,
+   "a": "JJ 🇨🇴",
+   "b": "MATHIAS 🇻🇪",
+   "ganador": "JJ 🇨🇴",
+   "votos": "1–0"
+  },
+  "1569110671893729305": {
+   "id": "1569110671893729305",
+   "sv": "✮ 𝑼𝒓𝒃𝒂𝒏 𝑭𝒓𝒆𝒆𝒔𝒕𝒚𝒍𝒆 ✮ | A New Era",
+   "g": "1467763447117778989",
+   "canal": "1540224373309444257",
+   "pub": 1794175536846,
+   "a": "FORZA🇻🇪",
+   "b": "MAKMA 🇻🇪",
+   "ganador": "MAKMA 🇻🇪",
+   "votos": "1–0"
+  },
+  "1569114394305237134": {
+   "id": "1569114394305237134",
+   "sv": "✮ 𝑼𝒓𝒃𝒂𝒏 𝑭𝒓𝒆𝒆𝒔𝒕𝒚𝒍𝒆 ✮ | A New Era",
+   "g": "1467763447117778989",
+   "canal": "1540224373309444257",
+   "pub": 1794176424338,
+   "a": "JJ 🇨🇴",
+   "b": "MAKMA 🇻🇪",
+   "ganador": "JJ 🇨🇴",
+   "votos": "1–0"
   }
  },
  "llaves": {
@@ -5442,8 +5497,8 @@
    "g": "1467763447117778989",
    "canal": "1540224373309444257",
    "pub": 1794173322656,
-   "ed": 1794174609242,
-   "texto": "`[ CUARTOS ]`\n⌞CINEXFILO 🇻🇪⌝ 🆚 ⌞JJ 🇨🇴⌝\n⌞MATHIAS 🇻🇪⌝ 🆚 ⌞MAJIZTRAL 🇨🇴⌝\n⌞FORZA 🇻🇪⌝ 🆚 ⌞ERIAN 🇵🇦 (R)⌝",
+   "ed": 1794176645702,
+   "texto": "`[ CUARTOS ]`\n⌞CINEXFILO 🇻🇪⌝ 🆚 ⌞JJ 🇨🇴⌝\n⌞MATHIAS 🇻🇪⌝ 🆚 ⌞MAJIZTRAL 🇨🇴⌝\n⌞FORZA 🇻🇪⌝ 🆚 ⌞ERIAN 🇵🇦 (R)⌝\n⌞MAKMA 🇻🇪⌝ 🆚 ⌞NUMBER 🇻🇪⌝\n⌞JJ 🇨🇴⌝ 🆚 ⌞MATHIAS 🇻🇪⌝\n⌞FORZA 🇻🇪⌝ 🆚 ⌞MAKMA 🇻🇪⌝\n⌞JJ 🇨🇴⌝ 🆚 ⌞MAKMA 🇻🇪⌝",
    "batallas": [
     [
      "CUARTOS",
@@ -5472,6 +5527,46 @@
       "ERIAN 🇵🇦 (R)"
      ],
      "FORZA 🇻🇪",
+     "veredicto",
+     []
+    ],
+    [
+     "CUARTOS",
+     [
+      "MAKMA 🇻🇪",
+      "NUMBER 🇻🇪"
+     ],
+     "MAKMA 🇻🇪",
+     "veredicto",
+     []
+    ],
+    [
+     "CUARTOS",
+     [
+      "JJ 🇨🇴",
+      "MATHIAS 🇻🇪"
+     ],
+     "JJ 🇨🇴",
+     "veredicto",
+     []
+    ],
+    [
+     "CUARTOS",
+     [
+      "FORZA 🇻🇪",
+      "MAKMA 🇻🇪"
+     ],
+     "MAKMA 🇻🇪",
+     "veredicto",
+     []
+    ],
+    [
+     "CUARTOS",
+     [
+      "JJ 🇨🇴",
+      "MAKMA 🇻🇪"
+     ],
+     "JJ 🇨🇴",
      "veredicto",
      []
     ]
