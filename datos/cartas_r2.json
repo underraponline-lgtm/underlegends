@@ -575,7 +575,9 @@
  },
  "caylon": {
   "servidor": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/caylon/servidor.webp",
-  "sv-dra": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/caylon/sv-dra.webp"
+  "sv-ch": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/caylon/sv-ch.webp",
+  "sv-dra": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/caylon/sv-dra.webp",
+  "sv-sr": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/caylon/sv-sr.webp"
  },
  "charro": {
   "servidor": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/charro/servidor.webp",
@@ -859,8 +861,15 @@
  },
  "descalzo": {
   "servidor": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/descalzo/servidor.webp",
+  "sv-acad": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/descalzo/sv-acad.webp",
+  "sv-ch": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/descalzo/sv-ch.webp",
+  "sv-ddf": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/descalzo/sv-ddf.webp",
   "sv-dra": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/descalzo/sv-dra.webp",
-  "sv-ffa": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/descalzo/sv-ffa.webp"
+  "sv-ffa": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/descalzo/sv-ffa.webp",
+  "sv-frz": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/descalzo/sv-frz.webp",
+  "sv-fvs": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/descalzo/sv-fvs.webp",
+  "sv-sr": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/descalzo/sv-sr.webp",
+  "sv-urbf": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/descalzo/sv-urbf.webp"
  },
  "deuxs": {
   "bloq-competitivo": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/deuxs/bloq-competitivo.webp",
