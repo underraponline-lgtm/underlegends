@@ -793,70 +793,64 @@
    "b": "MATHIAS 🇻🇪",
    "ganador": "MATHIAS 🇻🇪",
    "votos": "1–0"
+  },
+  "1569092676802846943": {
+   "id": "1569092676802846943",
+   "sv": "✮ 𝑼𝒓𝒃𝒂𝒏 𝑭𝒓𝒆𝒆𝒔𝒕𝒚𝒍𝒆 ✮ | A New Era",
+   "g": "1467763447117778989",
+   "canal": "1540224373309444257",
+   "pub": 1794171246482,
+   "a": "MAJIZTRAL 🇨🇴",
+   "b": "AREZ 🇪🇨",
+   "ganador": "MAJIZTRAL 🇨🇴",
+   "votos": "1–0"
+  },
+  "1569094116665466911": {
+   "id": "1569094116665466911",
+   "sv": "#FDS ╏FREESTYLE DISCORD SERIES",
+   "g": "1489848581203689535",
+   "canal": "1536574435761332334",
+   "pub": 1794171589772,
+   "a": "LUCK",
+   "b": "DIOS",
+   "ganador": "DIOS",
+   "votos": "1–0"
+  },
+  "1569095557442568235": {
+   "id": "1569095557442568235",
+   "sv": "✮ 𝑼𝒓𝒃𝒂𝒏 𝑭𝒓𝒆𝒆𝒔𝒕𝒚𝒍𝒆 ✮ | A New Era",
+   "g": "1467763447117778989",
+   "canal": "1540224373309444257",
+   "pub": 1794171933280,
+   "a": "FORZA🇻🇪",
+   "b": "SNE🇪🇨",
+   "ganador": "FORZA🇻🇪",
+   "votos": "1–0"
+  },
+  "1569096769231523881": {
+   "id": "1569096769231523881",
+   "sv": "#FDS ╏FREESTYLE DISCORD SERIES",
+   "g": "1489848581203689535",
+   "canal": "1536574435761332334",
+   "pub": 1794172222193,
+   "a": "MITO",
+   "b": "SIN LÍMITES",
+   "ganador": "MITO",
+   "votos": "1–0"
+  },
+  "1569099477728497697": {
+   "id": "1569099477728497697",
+   "sv": "✮ 𝑼𝒓𝒃𝒂𝒏 𝑭𝒓𝒆𝒆𝒔𝒕𝒚𝒍𝒆 ✮ | A New Era",
+   "g": "1467763447117778989",
+   "canal": "1540224373309444257",
+   "pub": 1794172867949,
+   "a": "MAKMA 🇻🇪",
+   "b": "LIZZENIN 🇨🇴",
+   "ganador": "MAKMA 🇻🇪",
+   "votos": "1–0"
   }
  },
  "llaves": {
-  "1561484428012818537": {
-   "id": "1561484428012818537",
-   "sv": "[FFA] Freestyle For All 👾",
-   "g": "1468472442925092958",
-   "canal": "1557583344638623754",
-   "pub": 1792357298616,
-   "ed": 1792375654842,
-   "texto": "`[ FILTROS ]`\n⌞PANCHOK🇨🇱⌝ 🆚 ⌞LVEL🇻🇪⌝ 🆚 ⌞JOBA🇨🇱⌝ 🆚 ⌞AX🇻🇪⌝ 🆚 ⌞1200🇰🇷⌝\n⌞SEBITA🇱🇷⌝ 🆚 ⌞IMAGY🇵🇪⌝ 🆚 ⌞TAM🇻🇪⌝ 🆚 ⌞MILLONARI-O(MC MILLO)🇵🇾⌝ 🆚 ⌞ONZAS.S🇻🇪⌝\n⌞JOBA🇨🇱R⌝ 🆚 ⌞MAILÉN🇳🇴⌝ 🆚 ⌞PARK-JI SUNG🇰🇷⌝ 🆚 ⌞VANDU🇨🇦⌝ 🆚 ⌞WARAP🇦🇷⌝ 🆚 ⌞CAZAFLA ANTI CAZANOVA🇭🇹⌝\n`[ FINAL ]`\n⌞WARAP🇦🇷✖️+MAILÉN🇳🇴✖️+PANCHOK🇨🇱✖️⌝ 🆚 ⌞TAM🇻🇪+SEBITA🇱🇷✖️+ANDRES🇨🇱✖️⌝",
-   "batallas": [
-    [
-     "FILTROS",
-     [
-      "PANCHOK🇨🇱",
-      "LVEL🇻🇪",
-      "JOBA🇨🇱",
-      "AX🇻🇪",
-      "1200🇰🇷"
-     ],
-     null,
-     "no aparece nadie después",
-     []
-    ],
-    [
-     "FILTROS",
-     [
-      "SEBITA🇱🇷",
-      "IMAGY🇵🇪",
-      "TAM🇻🇪",
-      "MILLONARI-O(MC MILLO)🇵🇾",
-      "ONZAS.S🇻🇪"
-     ],
-     null,
-     "no aparece nadie después",
-     []
-    ],
-    [
-     "FILTROS",
-     [
-      "JOBA🇨🇱R",
-      "MAILÉN🇳🇴",
-      "PARK-JI SUNG🇰🇷",
-      "VANDU🇨🇦",
-      "WARAP🇦🇷",
-      "CAZAFLA ANTI CAZANOVA🇭🇹"
-     ],
-     null,
-     "no aparece nadie después",
-     []
-    ],
-    [
-     "FINAL",
-     [
-      "WARAP🇦🇷✖️+MAILÉN🇳🇴✖️+PANCHOK🇨🇱✖️",
-      "TAM🇻🇪+SEBITA🇱🇷✖️+ANDRES🇨🇱✖️"
-     ],
-     null,
-     "última ronda y no dice campeón",
-     []
-    ]
-   ]
-  },
   "1561560619419959317": {
    "id": "1561560619419959317",
    "sv": "🌌┃𝐃𝐈𝐌𝐄𝐍𝐒𝐈Ó𝐍 𝐃𝐄𝐋 𝐅𝐑𝐄𝐄𝐒𝐓𝐘𝐋𝐄┃🌌",
@@ -5277,8 +5271,8 @@
    "g": "1489848581203689535",
    "canal": "1500675902042931280",
    "pub": 1794170023685,
-   "ed": 1794171084282,
-   "texto": "`[ OCTAVOS ]`\n⌞LEYENDA⌝ 🆚 ⌞MCAREPA⌝\n⌞cinexfilo⌝ 🆚 ⌞nexux⌝\n⌞SIN LIMITES⌝ 🆚 ⌞YO⌝\n⌞Luck⌝ 🆚 ⌞dios⌝\n⌞Mito⌝ 🆚 ⌞DARKO⌝\n`[ CUARTOS ]`\n⌞santiki⌝ 🆚 ⌞mcarepa⌝\n`[ FINAL ]`",
+   "ed": 1794172847983,
+   "texto": "`[ OCTAVOS ]`\n⌞LEYENDA⌝ 🆚 ⌞MCAREPA⌝\n⌞cinexfilo⌝ 🆚 ⌞nexux⌝\n⌞SIN LIMITES⌝ 🆚 ⌞mito⌝\n⌞Luck⌝ 🆚 ⌞dios⌝\n`[ CUARTOS ]`\n⌞santiki⌝ 🆚 ⌞mito⌝\n⌞Valki⌝ 🆚 ⌞dios⌝\n⌞Sin límites⌝ 🆚 ⌞DARKO⌝\n`[ SEMIFINALES ]`",
    "batallas": [
     [
      "OCTAVOS",
@@ -5286,8 +5280,8 @@
       "LEYENDA",
       "MCAREPA"
      ],
-     "MCAREPA",
-     "ronda siguiente",
+     null,
+     "no aparece nadie después",
      []
     ],
     [
@@ -5304,11 +5298,14 @@
      "OCTAVOS",
      [
       "SIN LIMITES",
-      "YO"
+      "mito"
      ],
      null,
-     "no aparece nadie después",
-     []
+     "pasan 2, no hay un ganador",
+     [
+      "SIN LIMITES",
+      "mito"
+     ]
     ],
     [
      "OCTAVOS",
@@ -5316,25 +5313,35 @@
       "Luck",
       "dios"
      ],
-     null,
-     "no aparece nadie después",
-     []
-    ],
-    [
-     "OCTAVOS",
-     [
-      "Mito",
-      "DARKO"
-     ],
-     null,
-     "no aparece nadie después",
+     "dios",
+     "ronda siguiente",
      []
     ],
     [
      "CUARTOS",
      [
       "santiki",
-      "mcarepa"
+      "mito"
+     ],
+     null,
+     "última ronda y no dice campeón",
+     []
+    ],
+    [
+     "CUARTOS",
+     [
+      "Valki",
+      "dios"
+     ],
+     null,
+     "última ronda y no dice campeón",
+     []
+    ],
+    [
+     "CUARTOS",
+     [
+      "Sin límites",
+      "DARKO"
      ],
      null,
      "última ronda y no dice campeón",
