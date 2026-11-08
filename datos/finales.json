@@ -1161,6 +1161,28 @@
   "sin_permiso": false,
   "sv": "DDF"
  },
+ "1568792402750218372": {
+  "autor": "1557215371050876960",
+  "canal": "1563698791595507743",
+  "cuando": "2026-11-08T01:00:55.569000+00:00",
+  "evento": "MF DOOM Y MADLIB EDICION 1",
+  "fecha": "07/11",
+  "llave": "1568792402750218372",
+  "pregunta": "",
+  "preguntada": "2026-11-08 3:54 PM ET",
+  "preguntas": [
+   {
+    "lados": [
+     "Black D-mon 🇪🇨🇺🇸",
+     "Benji 🇵🇪"
+    ],
+    "ronda": "SEMIFINALES"
+   }
+  ],
+  "respondidas": {},
+  "sin_permiso": true,
+  "sv": "DDS"
+ },
  "1568815884129144914": {
   "autor": "1548906948307451906",
   "canal": "1558611505040064607",

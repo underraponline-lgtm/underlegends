@@ -763,27 +763,6 @@
   }
  },
  "llaves": {
-  "1561466351141396521": {
-   "id": "1561466351141396521",
-   "sv": "[FFA] Freestyle For All 👾",
-   "g": "1468472442925092958",
-   "canal": "1487206164864438513",
-   "pub": 1792352988754,
-   "ed": 1792360193995,
-   "texto": "`[ FINAL ]`\n⌞MOLUSCO 🇦🇷⌝ 🆚 ⌞GUESS 🇦🇷⌝",
-   "batallas": [
-    [
-     "FINAL",
-     [
-      "MOLUSCO 🇦🇷",
-      "GUESS 🇦🇷"
-     ],
-     "GUESS 🇦🇷",
-     "veredicto",
-     []
-    ]
-   ]
-  },
   "1561484428012818537": {
    "id": "1561484428012818537",
    "sv": "[FFA] Freestyle For All 👾",
@@ -5053,8 +5032,8 @@
    "g": "1469009547971526659",
    "canal": "1498009509036163173",
    "pub": 1794161849790,
-   "ed": 1794165280741,
-   "texto": "`[ SEMIFINALES ]`\n⌞TEITO⌝ 🆚 ⌞AGUSTIN⌝\n⌞ADRIAGNER⌝ 🆚 ⌞SAIDEM⌝\n`[ FINAL ]`\n⌞SAIDEM⌝ 🆚 ⌞TEITO⌝\n⌞KEIDER⌝ 🆚 ⌞SIN LIMITES⌝\n⌞CABECEANDOLA⌝ 🆚 ⌞DJ BUTACS💀🥵⌝\n⌞namber⌝ 🆚 ⌞Cali⌝\n⌞MIXO⌝ 🆚 ⌞NEXUZ⌝\n⌞LAVA⌝ 🆚 ⌞MITOCONDRIA⌝\n⌞NUMBER⌝ 🆚 ⌞CARLOS⌝\n⌞MINIBOY⌝ 🆚 ⌞JULIX⌝",
+   "ed": 1794165889441,
+   "texto": "`[ SEMIFINALES ]`\n⌞TEITO⌝ 🆚 ⌞AGUSTIN⌝\n⌞ADRIAGNER⌝ 🆚 ⌞SAIDEM⌝\n`[ FINAL ]`\n⌞SAIDEM⌝ 🆚 ⌞TEITO⌝\n⌞KEIDER⌝ 🆚 ⌞SIN LIMITES⌝\n⌞CABECEANDOLA⌝ 🆚 ⌞DJ BUTACS💀🥵⌝\n⌞namber⌝ 🆚 ⌞Cali⌝\n⌞MIXO⌝ 🆚 ⌞NEXUZ⌝\n⌞LAVA⌝ 🆚 ⌞MITOCONDRIA⌝\n⌞NUMBER⌝ 🆚 ⌞CARLOS⌝\n⌞MINIBOY⌝ 🆚 ⌞JULIX⌝\n⌞PANCHOK⌝ 🆚 ⌞DINAMIGHT⌝",
    "batallas": [
     [
      "SEMIFINALES",
@@ -5151,6 +5130,77 @@
      [
       "MINIBOY",
       "JULIX"
+     ],
+     null,
+     "última ronda y no dice campeón",
+     []
+    ],
+    [
+     "FINAL",
+     [
+      "PANCHOK",
+      "DINAMIGHT"
+     ],
+     null,
+     "última ronda y no dice campeón",
+     []
+    ]
+   ]
+  },
+  "1569070619419615253": {
+   "id": "1569070619419615253",
+   "sv": "🌌┃𝐃𝐈𝐌𝐄𝐍𝐒𝐈Ó𝐍 𝐃𝐄𝐋 𝐅𝐑𝐄𝐄𝐒𝐓𝐘𝐋𝐄┃🌌",
+   "g": "1469009547971526659",
+   "canal": "1498009509036163173",
+   "pub": 1794165987592,
+   "ed": 1794167604432,
+   "texto": "`[ CUARTOS ]`\n⌞SIN LIMITES⌝ 🆚 ⌞BOOTRAX⌝\n⌞CALIZ⌝ 🆚 ⌞NXUZ⌝\n⌞MAKMAH⌝ 🆚 ⌞CARLOS⌝\n⌞CARLOS⌝ 🆚 ⌞MAKMAH⌝\n⌞EVANGELINE⌝ 🆚 ⌞PANCHOK⌝",
+   "batallas": [
+    [
+     "CUARTOS",
+     [
+      "SIN LIMITES",
+      "BOOTRAX"
+     ],
+     null,
+     "última ronda y no dice campeón",
+     []
+    ],
+    [
+     "CUARTOS",
+     [
+      "CALIZ",
+      "NXUZ"
+     ],
+     null,
+     "última ronda y no dice campeón",
+     []
+    ],
+    [
+     "CUARTOS",
+     [
+      "MAKMAH",
+      "CARLOS"
+     ],
+     null,
+     "última ronda y no dice campeón",
+     []
+    ],
+    [
+     "CUARTOS",
+     [
+      "CARLOS",
+      "MAKMAH"
+     ],
+     null,
+     "última ronda y no dice campeón",
+     []
+    ],
+    [
+     "CUARTOS",
+     [
+      "EVANGELINE",
+      "PANCHOK"
      ],
      null,
      "última ronda y no dice campeón",
