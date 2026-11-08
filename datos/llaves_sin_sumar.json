@@ -1467,6 +1467,140 @@
    ]
   ]
  },
+ "150218372": {
+  "dia": "2026-11-07",
+  "escala": "8-15",
+  "fecha": "07/11",
+  "links": [
+   "https://discord.com/channels/1443770831598649528/1563698791595507743/1568792402750218372"
+  ],
+  "n": 150218372,
+  "nombre": "MF DOOM Y MADLIB EDICION 1",
+  "ns": 1,
+  "participantes": 9,
+  "rondas": [
+   {
+    "b": [
+     [
+      [
+       "Keider",
+       "Leyenda"
+      ],
+      "Keider",
+      ""
+     ],
+     [
+      [
+       "Benji 🇵🇪",
+       "CrisZJ"
+      ],
+      "Benji 🇵🇪",
+      ""
+     ],
+     [
+      [
+       "Lilñaño",
+       "Dios",
+       "NXUZ"
+      ],
+      "Lilñaño",
+      "triple (3 bandas)"
+     ],
+     [
+      [
+       "MCO",
+       "Choco🇵🇪"
+      ],
+      "MCO",
+      ""
+     ]
+    ],
+    "r": "Cuartos"
+   },
+   {
+    "b": [
+     [
+      [
+       "Keider",
+       "Benji 🇵🇪"
+      ],
+      "Keider",
+      ""
+     ],
+     [
+      [
+       "MCO",
+       "Lilñaño"
+      ],
+      "MCO",
+      ""
+     ]
+    ],
+    "r": "Semifinales"
+   },
+   {
+    "b": [
+     [
+      [
+       "MCO",
+       "Keider"
+      ],
+      "MCO",
+      ""
+     ]
+    ],
+    "r": "Final"
+   }
+  ],
+  "sv": "DDS",
+  "tabla": [
+   [
+    "MCO",
+    "Campeón",
+    0
+   ],
+   [
+    "Keider",
+    "Subcampeón",
+    0
+   ],
+   [
+    "Benji 🇵🇪",
+    "Semifinal",
+    0
+   ],
+   [
+    "Lilñaño",
+    "Semifinal",
+    0
+   ],
+   [
+    "Choco🇵🇪",
+    "Cuartos",
+    0
+   ],
+   [
+    "CrisZJ",
+    "Cuartos",
+    0
+   ],
+   [
+    "Dios",
+    "Cuartos",
+    0
+   ],
+   [
+    "Leyenda",
+    "Cuartos",
+    0
+   ],
+   [
+    "NXUZ",
+    "Cuartos",
+    0
+   ]
+  ]
+ },
  "153106945": {
   "dia": "2026-10-30",
   "escala": "16+",

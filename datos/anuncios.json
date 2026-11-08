@@ -1,5 +1,5 @@
 {
- "cuando": "2026-11-08T00:55:56+00:00",
+ "cuando": "2026-11-08T01:25:11+00:00",
  "anuncios": [
   {
    "nombre": "¡SE LLEGÓ LA GRAN NOCHE!",
@@ -5200,9 +5200,7 @@
    "staff": {},
    "autor": "Mosquitrap 🦟🇦🇷",
    "staff_cuentas": {},
-   "categoria_id": "868218509975498805",
-   "inscripciones": "abiertas",
-   "inscripciones_cuando": "2026-11-07T00:59:45"
+   "categoria_id": "868218509975498805"
   },
   {
    "nombre": "UN PLACER MOSTRAR AL EQUIPO DE TRABAJO DE ESTA NACIONAL",
@@ -5241,9 +5239,7 @@
     "YIO CR": "1033600988373848166",
     "๖ۣۜẔͥḭnͣ๏ͫჯ ༻一": "372088439082057732"
    },
-   "categoria_id": "1309234419525222477",
-   "inscripciones": "abiertas",
-   "inscripciones_cuando": "2026-11-07T00:59:45"
+   "categoria_id": "1309234419525222477"
   },
   {
    "nombre": "HOY ES LA NACIONAL DE VENEC",
@@ -5267,9 +5263,7 @@
    "staff": {},
    "autor": "Leonar-T",
    "staff_cuentas": {},
-   "categoria_id": "1309234419525222477",
-   "inscripciones": "abiertas",
-   "inscripciones_cuando": "2026-11-07T00:59:45"
+   "categoria_id": "1309234419525222477"
   },
   {
    "nombre": "FAT BATTLES PALOOZA FECHA 10 T.3 FINALS",
@@ -5293,9 +5287,7 @@
    "staff": {},
    "autor": "Mosquitrap 🦟🇦🇷",
    "staff_cuentas": {},
-   "categoria_id": "1309234419525222477",
-   "inscripciones": "abiertas",
-   "inscripciones_cuando": "2026-11-07T00:59:45"
+   "categoria_id": "1309234419525222477"
   },
   {
    "nombre": "FAT BATTLES PALOOZA EDICIÓN HALOWEEN",
@@ -5319,9 +5311,7 @@
    "staff": {},
    "autor": "Leonar-T",
    "staff_cuentas": {},
-   "categoria_id": "1309234419525222477",
-   "inscripciones": "abiertas",
-   "inscripciones_cuando": "2026-11-07T00:59:45"
+   "categoria_id": "1309234419525222477"
   },
   {
    "nombre": "NUEVO DESTINO DE RED BULL CREW!!!",
@@ -5345,9 +5335,7 @@
    "staff": {},
    "autor": "Leonar-T",
    "staff_cuentas": {},
-   "categoria_id": "1309234419525222477",
-   "inscripciones": "abiertas",
-   "inscripciones_cuando": "2026-11-07T00:59:45"
+   "categoria_id": "1309234419525222477"
   },
   {
    "nombre": "PRADERAP VOL.2",
@@ -5378,9 +5366,7 @@
    },
    "autor": "Ardean",
    "staff_cuentas": {},
-   "categoria_id": "1309234419525222477",
-   "inscripciones": "abiertas",
-   "inscripciones_cuando": "2026-11-07T00:59:45"
+   "categoria_id": "1309234419525222477"
   },
   {
    "nombre": "FAT BATTLES PALOOZA T.3 FECHA 8",
@@ -5404,9 +5390,7 @@
    "staff": {},
    "autor": "Leonar-T",
    "staff_cuentas": {},
-   "categoria_id": "1309234419525222477",
-   "inscripciones": "abiertas",
-   "inscripciones_cuando": "2026-11-07T00:59:45"
+   "categoria_id": "1309234419525222477"
   },
   {
    "nombre": "PRADE RAP VOL.1 | LACREW",
@@ -5442,9 +5426,7 @@
    },
    "autor": "Ardean",
    "staff_cuentas": {},
-   "categoria_id": "1309234419525222477",
-   "inscripciones": "abiertas",
-   "inscripciones_cuando": "2026-11-07T00:59:45"
+   "categoria_id": "1309234419525222477"
   },
   {
    "nombre": "RAP SIN GROSERIAS",
@@ -6589,7 +6571,7 @@
      "id": "987149314591719474"
     },
     {
-     "n": "VILCA",
+     "n": "VILCA | 16",
      "id": "846870712950194196"
     }
    ],
@@ -6783,6 +6765,15 @@
   }
  ],
  "inscripciones": [
+  {
+   "servidor": "LKR",
+   "canal": "⟡・INSCRIPCIONES",
+   "texto": "andy",
+   "quien": "andy._.2321",
+   "discord_id": "853130894663745549",
+   "msg_id": "1568792059178131571",
+   "cuando": "2026-11-08T00:59:33"
+  },
   {
    "servidor": "DDS",
    "canal": "📝〕INSCRIPCIONES",
@@ -42773,15 +42764,6 @@
    "discord_id": "1492688606773641277",
    "msg_id": "1556735695412928636",
    "cuando": "2026-10-05T18:31:52"
-  },
-  {
-   "servidor": "FFA",
-   "canal": "✦📝—inscripciones",
-   "texto": "Player🇻🇪",
-   "quien": "jesuslgamer31",
-   "discord_id": "817387658656874536",
-   "msg_id": "1556735183351451789",
-   "cuando": "2026-10-05T18:29:50"
   }
  ]
 }
