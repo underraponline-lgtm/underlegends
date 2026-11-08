@@ -7193,7 +7193,7 @@
        "id": "987149314591719474"
       },
       {
-       "n": "VILCA | 16",
+       "n": "VILCA",
        "id": "846870712950194196"
       }
      ],
@@ -8801,6 +8801,20 @@
      ],
      "organizador": "MADLIB Y MF DOOM",
      "cuentas": {}
+    },
+    "1568821423810551849": {
+     "sv": "FFA",
+     "nombre": "KISS OF SHINIGAMI",
+     "mo": "2026-11-08T02:56:14Z",
+     "staff": {},
+     "orgs": [
+      {
+       "n": "> Azillmoyta",
+       "id": ""
+      }
+     ],
+     "organizador": "AZILLMOYTA",
+     "cuentas": {}
     }
    },
    "ver": {
@@ -9084,6 +9098,11 @@
       "ZASKO",
       "#99 |ALEXXXOL🇨🇴🔥🐉",
       "tenacious_dragon_23394"
+     ],
+     "645308964141137952": [
+      "REPLIK",
+      "Soul B",
+      "sj.2008_"
      ]
     }
    }
