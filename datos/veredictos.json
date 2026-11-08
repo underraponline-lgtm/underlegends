@@ -848,6 +848,83 @@
    "b": "LIZZENIN 🇨🇴",
    "ganador": "MAKMA 🇻🇪",
    "votos": "1–0"
+  },
+  "1569100521879633972": {
+   "id": "1569100521879633972",
+   "sv": "#FDS ╏FREESTYLE DISCORD SERIES",
+   "g": "1489848581203689535",
+   "canal": "1536574435761332334",
+   "pub": 1794173116894,
+   "a": "DIOS",
+   "b": "VILCA",
+   "ganador": "DIOS",
+   "votos": "2–0"
+  },
+  "1569101020985040961": {
+   "id": "1569101020985040961",
+   "sv": "✮ 𝑼𝒓𝒃𝒂𝒏 𝑭𝒓𝒆𝒆𝒔𝒕𝒚𝒍𝒆 ✮ | A New Era",
+   "g": "1467763447117778989",
+   "canal": "1540224373309444257",
+   "pub": 1794173235890,
+   "a": "NUMBER 🇻🇪",
+   "b": "SHADOW 🇨🇴",
+   "ganador": "NUMBER 🇻🇪",
+   "votos": "1–0"
+  },
+  "1569101432605515799": {
+   "id": "1569101432605515799",
+   "sv": "✮ 𝑼𝒓𝒃𝒂𝒏 𝑭𝒓𝒆𝒆𝒔𝒕𝒚𝒍𝒆 ✮ | A New Era",
+   "g": "1467763447117778989",
+   "canal": "1540224373309444257",
+   "pub": 1794173334028,
+   "a": "CINEXFILO 🇻🇪",
+   "b": "JJ 🇨🇴",
+   "ganador": "JJ 🇨🇴",
+   "votos": "1–0"
+  },
+  "1569102845448298617": {
+   "id": "1569102845448298617",
+   "sv": "#FDS ╏FREESTYLE DISCORD SERIES",
+   "g": "1489848581203689535",
+   "canal": "1536574435761332334",
+   "pub": 1794173670876,
+   "a": "DARKO",
+   "b": "SIN LÍMITES",
+   "ganador": "SIN LÍMITES",
+   "votos": "1–0"
+  },
+  "1569103032493277195": {
+   "id": "1569103032493277195",
+   "sv": "✮ 𝑼𝒓𝒃𝒂𝒏 𝑭𝒓𝒆𝒆𝒔𝒕𝒚𝒍𝒆 ✮ | A New Era",
+   "g": "1467763447117778989",
+   "canal": "1540224373309444257",
+   "pub": 1794173715471,
+   "a": "MATHIAS 🇻🇪",
+   "b": "MAJIZTRAL 🇨🇴",
+   "ganador": "MATHIAS 🇻🇪",
+   "votos": "1–0"
+  },
+  "1569104403372318812": {
+   "id": "1569104403372318812",
+   "sv": "✮ 𝑼𝒓𝒃𝒂𝒏 𝑭𝒓𝒆𝒆𝒔𝒕𝒚𝒍𝒆 ✮ | A New Era",
+   "g": "1467763447117778989",
+   "canal": "1540224373309444257",
+   "pub": 1794174042314,
+   "a": "FORZA🇻🇪",
+   "b": "ERIAN 🇵🇦 (R)",
+   "ganador": "FORZA🇻🇪",
+   "votos": "1–0"
+  },
+  "1569105715069587607": {
+   "id": "1569105715069587607",
+   "sv": "#FDS ╏FREESTYLE DISCORD SERIES",
+   "g": "1489848581203689535",
+   "canal": "1536574435761332334",
+   "pub": 1794174355047,
+   "a": "MCAREPA",
+   "b": "SIN LÍMITES",
+   "ganador": "SIN LÍMITES",
+   "votos": "1–0"
   }
  },
  "llaves": {
@@ -5271,8 +5348,8 @@
    "g": "1489848581203689535",
    "canal": "1500675902042931280",
    "pub": 1794170023685,
-   "ed": 1794172847983,
-   "texto": "`[ OCTAVOS ]`\n⌞LEYENDA⌝ 🆚 ⌞MCAREPA⌝\n⌞cinexfilo⌝ 🆚 ⌞nexux⌝\n⌞SIN LIMITES⌝ 🆚 ⌞mito⌝\n⌞Luck⌝ 🆚 ⌞dios⌝\n`[ CUARTOS ]`\n⌞santiki⌝ 🆚 ⌞mito⌝\n⌞Valki⌝ 🆚 ⌞dios⌝\n⌞Sin límites⌝ 🆚 ⌞DARKO⌝\n`[ SEMIFINALES ]`",
+   "ed": 1794174398343,
+   "texto": "`[ OCTAVOS ]`\n⌞LEYENDA⌝ 🆚 ⌞MCAREPA⌝\n⌞cinexfilo⌝ 🆚 ⌞nexux⌝\n⌞SIN LIMITES⌝ 🆚 ⌞mito⌝\n⌞Luck⌝ 🆚 ⌞dios⌝\n`[ CUARTOS ]`\n⌞santiki⌝ 🆚 ⌞mito⌝\n⌞Valki⌝ 🆚 ⌞dios⌝\n⌞Sin límites⌝ 🆚 ⌞DARKO⌝\n`[ SEMIFINALES ]`\n⌞Scot⌝ 🆚 ⌞dios⌝",
    "batallas": [
     [
      "OCTAVOS",
@@ -5324,7 +5401,7 @@
       "mito"
      ],
      null,
-     "última ronda y no dice campeón",
+     "no aparece nadie después",
      []
     ],
     [
@@ -5333,8 +5410,8 @@
       "Valki",
       "dios"
      ],
-     null,
-     "última ronda y no dice campeón",
+     "dios",
+     "ronda siguiente",
      []
     ],
     [
@@ -5344,7 +5421,58 @@
       "DARKO"
      ],
      null,
+     "no aparece nadie después",
+     []
+    ],
+    [
+     "SEMIFINALES",
+     [
+      "Scot",
+      "dios"
+     ],
+     null,
      "última ronda y no dice campeón",
+     []
+    ]
+   ]
+  },
+  "1569101384907755643": {
+   "id": "1569101384907755643",
+   "sv": "✮ 𝑼𝒓𝒃𝒂𝒏 𝑭𝒓𝒆𝒆𝒔𝒕𝒚𝒍𝒆 ✮ | A New Era",
+   "g": "1467763447117778989",
+   "canal": "1540224373309444257",
+   "pub": 1794173322656,
+   "ed": 1794174609242,
+   "texto": "`[ CUARTOS ]`\n⌞CINEXFILO 🇻🇪⌝ 🆚 ⌞JJ 🇨🇴⌝\n⌞MATHIAS 🇻🇪⌝ 🆚 ⌞MAJIZTRAL 🇨🇴⌝\n⌞FORZA 🇻🇪⌝ 🆚 ⌞ERIAN 🇵🇦 (R)⌝",
+   "batallas": [
+    [
+     "CUARTOS",
+     [
+      "CINEXFILO 🇻🇪",
+      "JJ 🇨🇴"
+     ],
+     "JJ 🇨🇴",
+     "veredicto",
+     []
+    ],
+    [
+     "CUARTOS",
+     [
+      "MATHIAS 🇻🇪",
+      "MAJIZTRAL 🇨🇴"
+     ],
+     "MATHIAS 🇻🇪",
+     "veredicto",
+     []
+    ],
+    [
+     "CUARTOS",
+     [
+      "FORZA 🇻🇪",
+      "ERIAN 🇵🇦 (R)"
+     ],
+     "FORZA 🇻🇪",
+     "veredicto",
      []
     ]
    ]
