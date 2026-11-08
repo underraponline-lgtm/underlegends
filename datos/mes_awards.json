@@ -8753,6 +8753,20 @@
      "orgs": [],
      "organizador": "KEIDER",
      "cuentas": {}
+    },
+    "1568778341278818377": {
+     "sv": "DDS",
+     "nombre": "MF DOOM Y MADLIB FECHA 1",
+     "mo": "2026-11-08T00:05:03Z",
+     "staff": {},
+     "orgs": [
+      {
+       "n": "MADLIB Y MF DOOM",
+       "id": ""
+      }
+     ],
+     "organizador": "MADLIB Y MF DOOM",
+     "cuentas": {}
     }
    },
    "ver": {
