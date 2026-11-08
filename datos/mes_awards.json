@@ -8841,6 +8841,24 @@
      "cuentas": {
       "Adriagner": "1316490165836972104"
      }
+    },
+    "1569080698541969603": {
+     "sv": "FDS",
+     "nombre": "RAP SIN GROSERIAS",
+     "mo": "2026-11-08T20:06:30Z",
+     "staff": {
+      "jurado": [
+       "el que este"
+      ]
+     },
+     "orgs": [
+      {
+       "n": "Abraham",
+       "id": "1489469731168845894"
+      }
+     ],
+     "organizador": "@Abraham",
+     "cuentas": {}
     }
    },
    "ver": {

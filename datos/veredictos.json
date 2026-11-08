@@ -5153,8 +5153,8 @@
    "g": "1469009547971526659",
    "canal": "1498009509036163173",
    "pub": 1794165987592,
-   "ed": 1794167604432,
-   "texto": "`[ CUARTOS ]`\n⌞SIN LIMITES⌝ 🆚 ⌞BOOTRAX⌝\n⌞CALIZ⌝ 🆚 ⌞NXUZ⌝\n⌞MAKMAH⌝ 🆚 ⌞CARLOS⌝\n⌞CARLOS⌝ 🆚 ⌞MAKMAH⌝\n⌞EVANGELINE⌝ 🆚 ⌞PANCHOK⌝",
+   "ed": 1794168683206,
+   "texto": "`[ CUARTOS ]`\n⌞SIN LIMITES⌝ 🆚 ⌞BOOTRAX⌝\n⌞CALIZ⌝ 🆚 ⌞NXUZ⌝\n⌞MAKMAH⌝ 🆚 ⌞CARLOS⌝\n⌞CARLOS⌝ 🆚 ⌞MAKMAH⌝\n⌞EVANGELINE⌝ 🆚 ⌞PANCHOK⌝\n⌞BOOTRAX⌝ 🆚 ⌞NXUZ⌝\n⌞PANCHOK⌝ 🆚 ⌞MAKMAH⌝\n⌞PANCHOK⌝ 🆚 ⌞BOOTRAX⌝",
    "batallas": [
     [
      "CUARTOS",
@@ -5201,6 +5201,36 @@
      [
       "EVANGELINE",
       "PANCHOK"
+     ],
+     null,
+     "última ronda y no dice campeón",
+     []
+    ],
+    [
+     "CUARTOS",
+     [
+      "BOOTRAX",
+      "NXUZ"
+     ],
+     null,
+     "última ronda y no dice campeón",
+     []
+    ],
+    [
+     "CUARTOS",
+     [
+      "PANCHOK",
+      "MAKMAH"
+     ],
+     null,
+     "última ronda y no dice campeón",
+     []
+    ],
+    [
+     "CUARTOS",
+     [
+      "PANCHOK",
+      "BOOTRAX"
      ],
      null,
      "última ronda y no dice campeón",
