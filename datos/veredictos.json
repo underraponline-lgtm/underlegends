@@ -5053,8 +5053,8 @@
    "g": "1469009547971526659",
    "canal": "1498009509036163173",
    "pub": 1794161849790,
-   "ed": 1794163804272,
-   "texto": "`[ SEMIFINALES ]`\n⌞TEITO⌝ 🆚 ⌞AGUSTIN⌝\n⌞ADRIAGNER⌝ 🆚 ⌞SAIDEM⌝\n`[ FINAL ]`\n⌞SAIDEM⌝ 🆚 ⌞TEITO⌝\n⌞KEIDER⌝ 🆚 ⌞SIN LIMITES⌝",
+   "ed": 1794165280741,
+   "texto": "`[ SEMIFINALES ]`\n⌞TEITO⌝ 🆚 ⌞AGUSTIN⌝\n⌞ADRIAGNER⌝ 🆚 ⌞SAIDEM⌝\n`[ FINAL ]`\n⌞SAIDEM⌝ 🆚 ⌞TEITO⌝\n⌞KEIDER⌝ 🆚 ⌞SIN LIMITES⌝\n⌞CABECEANDOLA⌝ 🆚 ⌞DJ BUTACS💀🥵⌝\n⌞namber⌝ 🆚 ⌞Cali⌝\n⌞MIXO⌝ 🆚 ⌞NEXUZ⌝\n⌞LAVA⌝ 🆚 ⌞MITOCONDRIA⌝\n⌞NUMBER⌝ 🆚 ⌞CARLOS⌝\n⌞MINIBOY⌝ 🆚 ⌞JULIX⌝",
    "batallas": [
     [
      "SEMIFINALES",
@@ -5091,6 +5091,66 @@
      [
       "KEIDER",
       "SIN LIMITES"
+     ],
+     null,
+     "última ronda y no dice campeón",
+     []
+    ],
+    [
+     "FINAL",
+     [
+      "CABECEANDOLA",
+      "DJ BUTACS💀🥵"
+     ],
+     null,
+     "última ronda y no dice campeón",
+     []
+    ],
+    [
+     "FINAL",
+     [
+      "namber",
+      "Cali"
+     ],
+     null,
+     "última ronda y no dice campeón",
+     []
+    ],
+    [
+     "FINAL",
+     [
+      "MIXO",
+      "NEXUZ"
+     ],
+     null,
+     "última ronda y no dice campeón",
+     []
+    ],
+    [
+     "FINAL",
+     [
+      "LAVA",
+      "MITOCONDRIA"
+     ],
+     null,
+     "última ronda y no dice campeón",
+     []
+    ],
+    [
+     "FINAL",
+     [
+      "NUMBER",
+      "CARLOS"
+     ],
+     null,
+     "última ronda y no dice campeón",
+     []
+    ],
+    [
+     "FINAL",
+     [
+      "MINIBOY",
+      "JULIX"
      ],
      null,
      "última ronda y no dice campeón",
