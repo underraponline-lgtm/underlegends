@@ -800,6 +800,7 @@
   "rango": "A",
   "tg_t": {
    "busc": 2,
+   "cab": 1,
    "dobles": 8,
    "infalt": true,
    "perf": 2,

@@ -1,5 +1,5 @@
 {
- "cuando": "2026-11-08T03:54:55+00:00",
+ "cuando": "2026-11-08T04:25:22+00:00",
  "anuncios": [
   {
    "nombre": "¡SE LLEGÓ LA GRAN NOCHE!",
@@ -6719,6 +6719,33 @@
   }
  ],
  "inscripciones": [
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "vandu 🇨🇦",
+   "quien": "dfelipetor",
+   "discord_id": "613552853302378527",
+   "msg_id": "1568842280524320922",
+   "cuando": "2026-11-08T04:19:07"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "Crk🇲🇽",
+   "quien": "user_mic",
+   "discord_id": "559068959845122048",
+   "msg_id": "1568841007158665350",
+   "cuando": "2026-11-08T04:14:03"
+  },
+  {
+   "servidor": "DDF",
+   "canal": "『📑』Inscripciones",
+   "texto": "romeo🇲🇽",
+   "quien": "jadiel_official",
+   "discord_id": "1283642314517909517",
+   "msg_id": "1568839092010225726",
+   "cuando": "2026-11-08T04:06:27"
+  },
   {
    "servidor": "FFA",
    "canal": "✦📝—inscripciones",
@@ -42691,33 +42718,6 @@
    "discord_id": "1467969065199997000",
    "msg_id": "1556813742346600469",
    "cuando": "2026-10-05T23:42:00"
-  },
-  {
-   "servidor": "FFA",
-   "canal": "✦📝—inscripciones",
-   "texto": "Tusicario 🇨🇱",
-   "quien": "tusicario0o",
-   "discord_id": "1501380948946583642",
-   "msg_id": "1556813737468502178",
-   "cuando": "2026-10-05T23:41:59"
-  },
-  {
-   "servidor": "FFA",
-   "canal": "✦📝—inscripciones",
-   "texto": "Ariaxer 🇦🇷",
-   "quien": "ariaxer",
-   "discord_id": "659687894587277322",
-   "msg_id": "1556813584774996059",
-   "cuando": "2026-10-05T23:41:22"
-  },
-  {
-   "servidor": "FFA",
-   "canal": "✦📝—inscripciones",
-   "texto": "Tusicario 🇨🇱",
-   "quien": "tusicario0o",
-   "discord_id": "1501380948946583642",
-   "msg_id": "1556812955864006799",
-   "cuando": "2026-10-05T23:38:52"
   }
  ]
 }
