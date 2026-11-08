@@ -573,6 +573,10 @@
   "sv-urbf": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/catarsis/sv-urbf.webp",
   "temporada": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/catarsis/temporada.webp"
  },
+ "caylon": {
+  "servidor": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/caylon/servidor.webp",
+  "sv-dra": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/caylon/sv-dra.webp"
+ },
  "charro": {
   "servidor": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/charro/servidor.webp",
   "sv-ch": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/charro/sv-ch.webp",
@@ -852,6 +856,11 @@
   "sv-dra": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/derates/sv-dra.webp",
   "sv-ffa": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/derates/sv-ffa.webp",
   "sv-sr": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/derates/sv-sr.webp"
+ },
+ "descalzo": {
+  "servidor": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/descalzo/servidor.webp",
+  "sv-dra": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/descalzo/sv-dra.webp",
+  "sv-ffa": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/descalzo/sv-ffa.webp"
  },
  "deuxs": {
   "bloq-competitivo": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/deuxs/bloq-competitivo.webp",
