@@ -10,16 +10,25 @@
   "HORA: `cuando` es el instante en que se publicó (ISO, con la zona); la página lo muestra en la hora de quien mira. Sin `cuando`, sólo el día."
  ],
  "cambios": [
-    {
-        "version": "4.38",
-        "dia": "2026-11-05",
-        "cuando": "2026-11-05T23:36:18-05:00",
-        "titulo": "Las batallas de liga, todas en el chat",
-        "items": [
-            "**El aviso de las batallas de liga** se le saltaba a la mayoría: ahora sale con su VS y sus botones.",
-            "**«Recuperativa»** ya no aparece como parte del nombre de quien juega."
-        ]
-    },
+  {
+   "version": "4.39",
+   "dia": "2026-11-08",
+   "cuando": "2026-11-08T13:07:00-05:00",
+   "titulo": "Discord Style, socio de la Liga",
+   "items": [
+    "**Discord Style ya tiene su página en Socios**, con su logo y su invitación, y sus eventos salen en el calendario y en la campana."
+   ]
+  },
+  {
+   "version": "4.38",
+   "dia": "2026-11-05",
+   "cuando": "2026-11-05T23:36:18-05:00",
+   "titulo": "Las batallas de liga, todas en el chat",
+   "items": [
+    "**El aviso de las batallas de liga** se le saltaba a la mayoría: ahora sale con su VS y sus botones.",
+    "**«Recuperativa»** ya no aparece como parte del nombre de quien juega."
+   ]
+  },
   {
    "version": "4.37",
    "dia": "2026-11-05",

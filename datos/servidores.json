@@ -687,10 +687,41 @@
    "en_el_sheet": false,
    "confirmado": true,
    "sigla": "DDS",
+   "nota": "06/11/2026: dado de alta por Dlx desde el Dashboard (Tier 3, etiqueta EXCLUSIVIDAD) y completado a mano como LKR el 08/11 (Dlx: «asegurate que estos servidores esten bien agregados»). En Discord «🔥 DISCORD STYLE 🎤» (354 miembros); el bot entró el 05/11 y no es admin. Sus torneos van en «🏆 TORNEOS STYLE» (📢 EVENTOS, 📝 INSCRIPCIONES, 🔑 LLAVES, ⚖️ VEREDICTOS) y en «DISCORD STYLE». Su liga, la DISCORD LEAGUE STYLE (DLS), se canceló el 12/10 y anunció su vuelta el 03/11: cuando arranque se suma a Ligas (`bot/ligas.py`). Tier 3: no suma al ranking ni lleva carta de Servidor.",
    "tier": 3,
    "alta": "dashboard",
-   "nota": "dado de alta desde el Dashboard el 06/11/2026 (bot/tiers.py `altas()`)",
-   "tag": "EXCLUSIVIDAD"
+   "tag": "EXCLUSIVIDAD",
+   "invitaciones_inscripcion": [
+    {
+     "codigo": "2j9sRqmNZt",
+     "canal": "📜〕𝐈𝐍𝐒𝐂𝐑𝐈𝐏𝐂𝐈𝐎𝐍𝐄𝐒",
+     "canal_id": "1485796037682663545",
+     "categoria_id": "1457061102138425425",
+     "creada": "2026-11-08"
+    },
+    {
+     "codigo": "Y6pY8sybcC",
+     "canal": "📝〕𝐈𝐍𝐒𝐂𝐑𝐈𝐏𝐂𝐈𝐎𝐍𝐄𝐒",
+     "canal_id": "1563698533058748607",
+     "categoria_id": "1563697445366669393",
+     "creada": "2026-11-08"
+    },
+    {
+     "codigo": "7euTEPntxs",
+     "canal": "📝〕𝐈𝐍𝐒𝐂𝐑𝐈𝐏𝐂𝐈𝐎𝐍-2",
+     "canal_id": "1563954187577065553",
+     "categoria_id": "1563697445366669393",
+     "creada": "2026-11-08"
+    }
+   ],
+   "invitacion": "https://discord.gg/HTERZJAcYR",
+   "invitacion_liga": {
+    "codigo": "HTERZJAcYR",
+    "canal": "💬〕𝐆𝐄𝐍𝐄𝐑𝐀𝐋",
+    "canal_id": "1443793172013776997",
+    "creada": "2026-11-08",
+    "_por_que": "en 👋〕BIENVENIDAS el bot no puede crear invitaciones (403)"
+   }
   }
  },
  "_fuera_de_la_tabla": [
