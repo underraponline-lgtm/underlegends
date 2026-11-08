@@ -1,54 +1,67 @@
 {
  "v": 1,
- "cuando": "2026-11-08T18:04:38Z",
+ "cuando": "2026-11-08T18:57:29Z",
  "trabajo": "dibujar",
  "codigo": 0,
- "dur_s": 111.4,
+ "dur_s": 1193.7,
  "pasos": [
   {
    "n": "2f",
    "que": "las fotos que faltan, de Discord a R2",
    "ok": true,
-   "s": 6.7
+   "s": 6.1
   },
   {
    "n": "2f2",
    "que": "los TAGs elegidos",
    "ok": true,
-   "s": 0.8
+   "s": 0.9
   },
   {
    "n": "3",
    "que": "qué cambió",
    "ok": true,
-   "s": 7.5
+   "s": 11.0
   },
   {
    "n": "4",
    "que": "las caras, desde R2",
    "ok": true,
-   "s": 23.6
+   "s": 23.7
   },
   {
    "n": "5",
-   "que": "tanda 1 de 1 · 1 persona(s)",
-   "ok": true,
-   "s": 8.6
+   "que": "tanda 1 de 3 · 40 persona(s)",
+   "ok": false,
+   "s": 1086.4
   },
   {
    "n": "5b",
    "que": "las Bloqueadas",
    "ok": true,
-   "s": 6.0
+   "s": 5.7
   },
   {
    "n": "6",
    "que": "refrescar KV",
    "ok": true,
-   "s": 56.9
+   "s": 59.3
   }
  ],
- "fallas": [],
+ "fallas": [
+  {
+   "paso": "5",
+   "que": "03_Servidor/generar.py Adriagner"
+  },
+  {
+   "paso": "5",
+   "que": "03_Servidor/generar.py LAST"
+  },
+  {
+   "paso": "5",
+   "que": "03_Servidor/generar.py Richard"
+  }
+ ],
  "ultimo_evento": {
   "n": "577",
   "nombre": "ZONA MORTAL",
@@ -57,25 +70,25 @@
  },
  "cuotas": {
   "kv": {
-   "write": 237,
-   "read": 33694
+   "write": 262,
+   "read": 36922
   },
   "objeto": {
-   "leidas": 2336179,
-   "escritas": 10367,
-   "pedidos": 6671
+   "leidas": 2566924,
+   "escritas": 11950,
+   "pedidos": 7308
   },
   "worker": {
-   "pedidos": 7489,
+   "pedidos": 7760,
    "errores": 0,
-   "sub": 9996,
+   "sub": 10254,
    "cortados": 0,
-   "p50_ms": 1.05,
-   "p99_ms": 12.1,
+   "p50_ms": 1.06,
+   "p99_ms": 12.58,
    "cpu": {
-    "total": 17529,
-    "objeto_10": 1684,
-    "worker_10": 154
+    "total": 18098,
+    "objeto_10": 1718,
+    "worker_10": 173
    }
   },
   "r2": {
