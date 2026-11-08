@@ -167,7 +167,7 @@
   "Bau": {
    "competitivo": "f9754d74c911:624f5e322311",
    "pais": "80b4300b6f2c:733ce66bf5fa",
-   "servidor": "afcf7d4bf1a9:2415c901692f:6a5f1a"
+   "servidor": "b115ef08ff50:2415c901692f:6a5f1a"
   },
   "Benjixo": {},
   "Benju": {},
@@ -228,7 +228,7 @@
   "Carlosmo": {
    "competitivo": "d15d77fa1f76:624f5e322311",
    "pais": "c6a93eaed1af:733ce66bf5fa",
-   "servidor": "0ace48108c09:2415c901692f:51cb66",
+   "servidor": "a9f07ca24486:2415c901692f:51cb66",
    "temporada": "4e900b55aae2:7a510334494e"
   },
   "Carlosss": {
@@ -356,7 +356,7 @@
   "Delux": {
    "competitivo": "99873efa0760:624f5e322311",
    "pais": "d3377c9673fe:733ce66bf5fa",
-   "servidor": "e70e6347a180:2415c901692f:4e5869",
+   "servidor": "cb1d3dec6955:2415c901692f:4e5869",
    "temporada": "2b8e02e2e4c7:7a510334494e"
   },
   "Deluxe": {
@@ -1132,7 +1132,7 @@
   "Mito": {
    "competitivo": "00538053ca26:624f5e322311",
    "pais": "ac0a28a14f8f:733ce66bf5fa",
-   "servidor": "bfd990f876ae:2415c901692f:3d0a1b",
+   "servidor": "e215fbbc59f4:2415c901692f:3d0a1b",
    "temporada": "8b16b41ddee5:7a510334494e"
   },
   "Mknoli": {
@@ -1284,7 +1284,7 @@
   "OKAM": {
    "competitivo": "2ae14cc26b2f:624f5e322311",
    "pais": "10fadd45db43:733ce66bf5fa",
-   "servidor": "d979bea7cf14:2415c901692f:3d0a1b",
+   "servidor": "29112987b75a:2415c901692f:3d0a1b",
    "temporada": "46b586d62975:7a510334494e"
   },
   "OKTA": {
@@ -1675,7 +1675,7 @@
   "Trelok": {
    "competitivo": "4b04a0817ee6:624f5e322311",
    "pais": "e5ee80d401d4:733ce66bf5fa",
-   "servidor": "b8d848974fcf:2415c901692f:16bc7a",
+   "servidor": "1b3e0f8a64ec:2415c901692f:16bc7a",
    "temporada": "96065645d685:7a510334494e"
   },
   "Trot": {
@@ -1717,7 +1717,7 @@
   "Vandu": {
    "competitivo": "4209a2beb198:624f5e322311",
    "pais": "af5b57c3cafb:733ce66bf5fa",
-   "servidor": "0af6d1de6a75:2415c901692f:0bce64",
+   "servidor": "76383e942ca9:2415c901692f:0bce64",
    "temporada": "ccaee6937b92:7a510334494e"
   },
   "Vanet": {
@@ -2015,5 +2015,5 @@
    "servidor": "7f8885a35a6d:2415c901692f:93a344"
   }
  },
- "cuando": "2026-11-08T05:43:08+00:00"
+ "cuando": "2026-11-08T05:46:23+00:00"
 }
