@@ -1,5 +1,5 @@
 {
- "cuando": "2026-11-08T02:24:55+00:00",
+ "cuando": "2026-11-08T02:55:24+00:00",
  "anuncios": [
   {
    "nombre": "¡SE LLEGÓ LA GRAN NOCHE!",
@@ -189,7 +189,7 @@
    "fecha": "",
    "premios": "",
    "staff": {},
-   "autor": "LEYENDA.X5",
+   "autor": "WOS",
    "staff_cuentas": {},
    "categoria_id": "1511754900026032139"
   },
@@ -4641,7 +4641,7 @@
    "cuando": "2026-11-07T21:02:29",
    "canal_id": "1470097121284980736",
    "guild_id": "1469009547971526659",
-   "organizador": "KEIDER",
+   "organizador": "AZUKY",
    "orgs": [],
    "autor_h": "20ac21df9a0694b1",
    "cupos_texto": "8",
@@ -4653,7 +4653,7 @@
    "fecha": "",
    "premios": "",
    "staff": {},
-   "autor": "KEIDER",
+   "autor": "AZUKY",
    "staff_cuentas": {},
    "categoria_id": "1469944166137073857",
    "inscripciones": "cerradas",
@@ -4935,7 +4935,7 @@
    "cuando": "2026-10-28T17:50:00",
    "canal_id": "1470097121284980736",
    "guild_id": "1469009547971526659",
-   "organizador": "KEIDER",
+   "organizador": "AZUKY",
    "orgs": [],
    "autor_h": "20ac21df9a0694b1",
    "cupos_texto": "8",
@@ -4947,7 +4947,7 @@
    "fecha": "",
    "premios": "",
    "staff": {},
-   "autor": "KEIDER",
+   "autor": "AZUKY",
    "staff_cuentas": {},
    "categoria_id": "1469944166137073857",
    "inscripciones": "cerradas",
@@ -6765,6 +6765,33 @@
   }
  ],
  "inscripciones": [
+  {
+   "servidor": "LKR",
+   "canal": "⟡・INSCRIPCIONES",
+   "texto": "AZUKY🇲🇽",
+   "quien": "mc.luisito",
+   "discord_id": "1437913232407920770",
+   "msg_id": "1568815472835698733",
+   "cuando": "2026-11-08T02:32:35"
+  },
+  {
+   "servidor": "LKR",
+   "canal": "⟡・INSCRIPCIONES",
+   "texto": "ZASKO 🇪🇸",
+   "quien": "tenacious_dragon_23394",
+   "discord_id": "1548906948307451906",
+   "msg_id": "1568814000488054890",
+   "cuando": "2026-11-08T02:26:44"
+  },
+  {
+   "servidor": "LKR",
+   "canal": "⟡・INSCRIPCIONES",
+   "texto": "Exe 🇦🇷 ultima",
+   "quien": "caliz123_",
+   "discord_id": "1546111597343146044",
+   "msg_id": "1568813694371102762",
+   "cuando": "2026-11-08T02:25:31"
+  },
   {
    "servidor": "LKR",
    "canal": "⟡・INSCRIPCIONES",
@@ -42737,33 +42764,6 @@
    "discord_id": "1505432009491615864",
    "msg_id": "1556746249116319755",
    "cuando": "2026-10-05T19:13:48"
-  },
-  {
-   "servidor": "FFA",
-   "canal": "✦📝—inscripciones",
-   "texto": "RT 🇲🇽",
-   "quien": "rt1603",
-   "discord_id": "995447111334232094",
-   "msg_id": "1556745231309865060",
-   "cuando": "2026-10-05T19:09:46"
-  },
-  {
-   "servidor": "FFA",
-   "canal": "✦📝—inscripciones",
-   "texto": "Zignos",
-   "quien": "emekultra",
-   "discord_id": "1071185986366742630",
-   "msg_id": "1556745228201889964",
-   "cuando": "2026-10-05T19:09:45"
-  },
-  {
-   "servidor": "URBF",
-   "canal": "‣《🗞️》Inscripciones",
-   "texto": "VR🇨🇴",
-   "quien": "1mrvargas",
-   "discord_id": "1456416455405863038",
-   "msg_id": "1556743332431007896",
-   "cuando": "2026-10-05T19:02:13"
   }
  ]
 }
