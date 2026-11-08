@@ -1,5 +1,5 @@
 {
- "cuando": "2026-11-08T07:54:50+00:00",
+ "cuando": "2026-11-08T16:28:02+00:00",
  "anuncios": [
   {
    "nombre": "¡SE LLEGÓ LA GRAN NOCHE!",
@@ -4595,7 +4595,7 @@
    "cuando": "2026-11-07T21:02:29",
    "canal_id": "1470097121284980736",
    "guild_id": "1469009547971526659",
-   "organizador": "AZUKY",
+   "organizador": "KEIDER",
    "orgs": [],
    "autor_h": "20ac21df9a0694b1",
    "cupos_texto": "8",
@@ -4607,7 +4607,7 @@
    "fecha": "",
    "premios": "",
    "staff": {},
-   "autor": "AZUKY",
+   "autor": "KEIDER",
    "staff_cuentas": {},
    "categoria_id": "1469944166137073857",
    "inscripciones": "abiertas",
@@ -4889,7 +4889,7 @@
    "cuando": "2026-10-28T17:50:00",
    "canal_id": "1470097121284980736",
    "guild_id": "1469009547971526659",
-   "organizador": "AZUKY",
+   "organizador": "KEIDER",
    "orgs": [],
    "autor_h": "20ac21df9a0694b1",
    "cupos_texto": "8",
@@ -4901,7 +4901,7 @@
    "fecha": "",
    "premios": "",
    "staff": {},
-   "autor": "AZUKY",
+   "autor": "KEIDER",
    "staff_cuentas": {},
    "categoria_id": "1469944166137073857",
    "inscripciones": "abiertas",
@@ -6702,6 +6702,15 @@
   }
  ],
  "inscripciones": [
+  {
+   "servidor": "DDS",
+   "canal": "📜〕INSCRIPCIONES",
+   "texto": "Nxuz",
+   "quien": "n_x_u_z_",
+   "discord_id": "1089661639508377630",
+   "msg_id": "1568989191872708629",
+   "cuando": "2026-11-08T14:02:53"
+  },
   {
    "servidor": "FFA",
    "canal": "✦📝—inscripciones",
@@ -39547,8 +39556,8 @@
    "servidor": "DDS",
    "canal": "📜〕INSCRIPCIONES",
    "texto": "Nobu🇻🇪",
-   "quien": "x_d_21",
-   "discord_id": "1517265253694570556",
+   "quien": "Deleted User",
+   "discord_id": "456226577798135808",
    "msg_id": "1557527288621301812",
    "cuando": "2026-10-07T22:57:23"
   },
@@ -42692,15 +42701,6 @@
    "discord_id": "897942226955563068",
    "msg_id": "1556813773195583589",
    "cuando": "2026-10-05T23:42:07"
-  },
-  {
-   "servidor": "FFA",
-   "canal": "✦📝—inscripciones",
-   "texto": "Korey🇨🇱",
-   "quien": "korey6312",
-   "discord_id": "1467969065199997000",
-   "msg_id": "1556813742346600469",
-   "cuando": "2026-10-05T23:42:00"
   }
  ]
 }
