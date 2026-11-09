@@ -542,7 +542,10 @@
 },
 "btrx": {
 "rg": "C",
-"c": []
+"c": [
+"competitivo",
+"servidor"
+]
 },
 "badterne": {
 "rg": "",
@@ -2711,22 +2714,6 @@
 }
 },
 "cambios": [
-{
-"tipo": "tarjeta",
-"t": "2026-10-05T06:28:27Z",
-"quien": [
-"Vandu"
-],
-"carta": "competitivo"
-},
-{
-"tipo": "tarjeta",
-"t": "2026-10-05T06:58:17Z",
-"quien": [
-"Zetryko"
-],
-"carta": "temporada"
-},
 {
 "tipo": "tarjeta",
 "t": "2026-10-05T07:20:52Z",
@@ -6084,6 +6071,22 @@
 ],
 "rg": "D",
 "primero": true
+},
+{
+"tipo": "tarjeta",
+"t": "2026-11-08T23:59:59Z",
+"quien": [
+"BTRX"
+],
+"carta": "competitivo"
+},
+{
+"tipo": "tarjeta",
+"t": "2026-11-08T23:59:59Z",
+"quien": [
+"BTRX"
+],
+"carta": "servidor"
 }
 ]
 }
