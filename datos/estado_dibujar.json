@@ -1,61 +1,65 @@
 {
  "v": 1,
- "cuando": "2026-11-09T08:16:26Z",
+ "cuando": "2026-11-09T16:53:07Z",
  "trabajo": "dibujar",
  "codigo": 0,
- "dur_s": 820.2,
+ "dur_s": 825.4,
  "pasos": [
   {
    "n": "2f",
    "que": "las fotos que faltan, de Discord a R2",
    "ok": true,
-   "s": 6.8
+   "s": 7.4
   },
   {
    "n": "2f2",
    "que": "los TAGs elegidos",
    "ok": true,
-   "s": 0.9
+   "s": 1.2
   },
   {
    "n": "3",
    "que": "qué cambió",
    "ok": true,
-   "s": 12.4
+   "s": 11.8
   },
   {
    "n": "4",
    "que": "las caras, desde R2",
    "ok": true,
-   "s": 21.0
+   "s": 23.3
   },
   {
    "n": "5",
-   "que": "tanda 1 de 2 · 40 persona(s)",
+   "que": "tanda 1 de 3 · 40 persona(s)",
    "ok": false,
-   "s": 715.6
+   "s": 712.2
   },
   {
    "n": "5b",
    "que": "las Bloqueadas",
    "ok": true,
-   "s": 5.3
+   "s": 7.0
   },
   {
    "n": "6",
    "que": "refrescar KV",
    "ok": true,
-   "s": 57.2
+   "s": 61.4
   }
  ],
  "fallas": [
   {
    "paso": "5",
-   "que": "03_Servidor/generar.py .SosaATR"
+   "que": "03_Servidor/generar.py Adriagner"
   },
   {
    "paso": "5",
-   "que": "03_Servidor/generar.py Masino"
+   "que": "03_Servidor/generar.py Lilñaño"
+  },
+  {
+   "paso": "5",
+   "que": "03_Servidor/generar.py Vilca"
   }
  ],
  "ultimo_evento": {
@@ -66,31 +70,31 @@
  },
  "cuotas": {
   "kv": {
-   "write": 221,
-   "read": 31244
+   "write": 237,
+   "read": 33393
   },
   "objeto": {
-   "leidas": 3555211,
-   "escritas": 8442,
-   "pedidos": 5040
+   "leidas": 4125423,
+   "escritas": 11748,
+   "pedidos": 6945
   },
   "worker": {
-   "pedidos": 8518,
+   "pedidos": 8315,
    "errores": 0,
-   "sub": 11134,
+   "sub": 10945,
    "cortados": 0,
-   "p50_ms": 1.14,
-   "p99_ms": 13.0,
+   "p50_ms": 1.22,
+   "p99_ms": 13.11,
    "cpu": {
-    "total": 19615,
-    "objeto_10": 1929,
-    "worker_10": 199
+    "total": 19140,
+    "objeto_10": 2043,
+    "worker_10": 205
    }
   },
   "r2": {
-   "objetos": 6347,
-   "gb": 0.585,
-   "ts": 1794199317
+   "objetos": 6357,
+   "gb": 0.587,
+   "ts": 1794243198
   }
  }
 }
