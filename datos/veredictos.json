@@ -903,6 +903,39 @@
    "b": "ARAYA",
    "ganador": "CRAKERO",
    "votos": "1–0"
+  },
+  "1569214010098712718": {
+   "id": "1569214010098712718",
+   "sv": "[FFA] Freestyle For All 👾",
+   "g": "1468472442925092958",
+   "canal": "1487206164864438513",
+   "pub": 1794200174594,
+   "a": "DYZZ+CALIZ",
+   "b": "SIX+PARIA",
+   "ganador": "SIX+PARIA",
+   "votos": "1–0"
+  },
+  "1569215544425709613": {
+   "id": "1569215544425709613",
+   "sv": "[FFA] Freestyle For All 👾",
+   "g": "1468472442925092958",
+   "canal": "1487206164864438513",
+   "pub": 1794200540406,
+   "a": "SH+CARLOS",
+   "b": "LEANDRO KATANA+AKASHA",
+   "ganador": "LEANDRO KATANA+AKASHA",
+   "votos": "1–0"
+  },
+  "1569217163758276680": {
+   "id": "1569217163758276680",
+   "sv": "[FFA] Freestyle For All 👾",
+   "g": "1468472442925092958",
+   "canal": "1487206164864438513",
+   "pub": 1794200926485,
+   "a": "MCO",
+   "b": "PRAISERIZAS",
+   "ganador": "PRAISERIZAS",
+   "votos": "1–0"
   }
  },
  "llaves": {
@@ -5420,8 +5453,8 @@
    "g": "1468472442925092958",
    "canal": "1487206164864438513",
    "pub": 1794197391714,
-   "ed": 1794199797869,
-   "texto": "`[ OCTAVOS ]`\n⌞MCO⌝ 🆚 ⌞OKAM⌝\n⌞ERIAN⌝ 🆚 ⌞PRAISERIZAS⌝\n⌞VERC⌝ 🆚 ⌞TAM⌝\n⌞SIX⌝ 🆚 ⌞PARK JI SUNG⌝ 🆚 ⌞SURYA+ZA⌝\n⌞CRAKERO⌝ 🆚 ⌞ARAYA⌝",
+   "ed": 1794201484453,
+   "texto": "`[ OCTAVOS ]`\n⌞MCO⌝ 🆚 ⌞OKAM⌝\n⌞ERIAN⌝ 🆚 ⌞PRAISERIZAS⌝\n⌞VERC⌝ 🆚 ⌞TAM⌝\n⌞SIX⌝ 🆚 ⌞PARK JI SUNG⌝ 🆚 ⌞SURYA+ZA⌝\n⌞CRAKERO⌝ 🆚 ⌞ARAYA⌝\n⌞DYZZ+CALIZ⌝ 🆚 ⌞SIX+PARIA⌝\n⌞SH+CARLOS⌝ 🆚 ⌞LEANDRO KATANA+AKASHA⌝\n`[ CUARTOS ]`\n⌞MCO⌝ 🆚 ⌞PRAISERIZAS⌝\n⌞LEANDRO KATANA+AKASHA⌝ 🆚 ⌞PARIA SIX⌝",
    "batallas": [
     [
      "OCTAVOS",
@@ -5472,6 +5505,46 @@
      ],
      "CRAKERO",
      "veredicto",
+     []
+    ],
+    [
+     "OCTAVOS",
+     [
+      "DYZZ+CALIZ",
+      "SIX+PARIA"
+     ],
+     "SIX+PARIA",
+     "veredicto",
+     []
+    ],
+    [
+     "OCTAVOS",
+     [
+      "SH+CARLOS",
+      "LEANDRO KATANA+AKASHA"
+     ],
+     "LEANDRO KATANA+AKASHA",
+     "veredicto",
+     []
+    ],
+    [
+     "CUARTOS",
+     [
+      "MCO",
+      "PRAISERIZAS"
+     ],
+     "PRAISERIZAS",
+     "veredicto",
+     []
+    ],
+    [
+     "CUARTOS",
+     [
+      "LEANDRO KATANA+AKASHA",
+      "PARIA SIX"
+     ],
+     null,
+     "última ronda y no dice campeón",
      []
     ]
    ]

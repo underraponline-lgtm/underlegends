@@ -1673,10 +1673,7 @@
     "ovr": 43,
     "pod": 0,
     "pts": 3750,
-    "racha": "0/0",
-    "tg": {
-     "nuevo": true
-    }
+    "racha": "0/0"
    }
   },
   "Carlosmo": {
@@ -1868,8 +1865,7 @@
     "pts": 15000,
     "racha": "1/1",
     "tg": {
-     "fin": 1,
-     "nuevo": true
+     "fin": 1
     }
    },
    "SR": {
@@ -3013,10 +3009,7 @@
     "ovr": 43,
     "pod": 0,
     "pts": 7500,
-    "racha": "0/0",
-    "tg": {
-     "nuevo": true
-    }
+    "racha": "0/0"
    }
   },
   "Elbesaabuelas": {
@@ -3557,10 +3550,7 @@
     "ovr": 42,
     "pod": 0,
     "pts": 1875,
-    "racha": "0/0",
-    "tg": {
-     "nuevo": true
-    }
+    "racha": "0/0"
    }
   },
   "Fin": {
@@ -4207,10 +4197,7 @@
     "ovr": 42,
     "pod": 0,
     "pts": 1875,
-    "racha": "0/0",
-    "tg": {
-     "nuevo": true
-    }
+    "racha": "0/0"
    }
   },
   "Holden": {
@@ -4582,10 +4569,7 @@
     "ovr": 42,
     "pod": 0,
     "pts": 1875,
-    "racha": "0/0",
-    "tg": {
-     "nuevo": true
-    }
+    "racha": "0/0"
    }
   },
   "JOACO 🇨🇱": {
@@ -5743,10 +5727,7 @@
     "ovr": 43,
     "pod": 0,
     "pts": 7875,
-    "racha": "1/1",
-    "tg": {
-     "nuevo": true
-    }
+    "racha": "1/1"
    }
   },
   "LV": {
@@ -6291,10 +6272,7 @@
     "ovr": 42,
     "pod": 0,
     "pts": 1875,
-    "racha": "0/0",
-    "tg": {
-     "nuevo": true
-    }
+    "racha": "0/0"
    },
    "URBF": {
     "duelos": "0/1",
@@ -6764,10 +6742,7 @@
     "ovr": 43,
     "pod": 0,
     "pts": 3750,
-    "racha": "0/0",
-    "tg": {
-     "nuevo": true
-    }
+    "racha": "0/0"
    },
    "URBF": {
     "duelos": "2/4",
@@ -7619,10 +7594,7 @@
     "ovr": 43,
     "pod": 0,
     "pts": 3750,
-    "racha": "0/0",
-    "tg": {
-     "nuevo": true
-    }
+    "racha": "0/0"
    }
   },
   "Musicdum": {
@@ -9220,10 +9192,7 @@
     "ovr": 42,
     "pod": 0,
     "pts": 1875,
-    "racha": "0/0",
-    "tg": {
-     "nuevo": true
-    }
+    "racha": "0/0"
    }
   },
   "Riolu": {

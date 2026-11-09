@@ -127,7 +127,6 @@
    "dobles": 17,
    "infalt": true,
    "perf": 2,
-   "podsem": true,
    "relampago": true,
    "solo": 1,
    "sube": true,
@@ -341,9 +340,7 @@
    "busc": 2,
    "dcor": true,
    "dobles": 4,
-   "infalt": true,
    "perf": 2,
-   "podsem": true,
    "relampago": true,
    "rey": true,
    "solo": 1,
@@ -428,7 +425,6 @@
    "dobles": 6,
    "infalt": true,
    "perf": 2,
-   "podsem": true,
    "relampago": true,
    "svc": 4,
    "trios": 5
@@ -555,7 +551,6 @@
   "tg_t": {
    "busc": 1,
    "dobles": 11,
-   "infalt": true,
    "perf": 1,
    "relampago": true,
    "rev": 1,
@@ -720,7 +715,6 @@
    "busc": 1,
    "cab": 2,
    "dobles": 3,
-   "infalt": true,
    "perf": 2,
    "relampago": true,
    "svc": 1,
@@ -881,7 +875,6 @@
   "rango": "A",
   "tg_t": {
    "dobles": 4,
-   "infalt": true,
    "perf": 1,
    "relampago": true,
    "rey": true,
@@ -962,7 +955,6 @@
   "tg_t": {
    "dcor": true,
    "dobles": 6,
-   "infalt": true,
    "perf": 2,
    "relampago": true,
    "sube": true,
@@ -1204,7 +1196,6 @@
   "tg_t": {
    "cobro": 1,
    "dobles": 2,
-   "infalt": true,
    "perf": 1,
    "solo": 1,
    "sube": true,
@@ -1285,7 +1276,6 @@
   "tg_t": {
    "cab": 1,
    "dobles": 12,
-   "infalt": true,
    "perf": 1,
    "sube": true,
    "trios": 2
@@ -1360,7 +1350,6 @@
   "total": 232,
   "rango": "B",
   "tg_t": {
-   "cohete": true,
    "dobles": 3,
    "sube": true,
    "svc": 2,
@@ -1587,7 +1576,6 @@
    "busc": 1,
    "cobro": 2,
    "dobles": 3,
-   "infalt": true,
    "sube": true,
    "suelto": true,
    "svc": 1,
@@ -1667,7 +1655,6 @@
   "tg_t": {
    "cab": 2,
    "dobles": 7,
-   "infalt": true,
    "rev": 2,
    "sube": true,
    "svc": 1,
@@ -1708,7 +1695,6 @@
   "tg_t": {
    "busc": 2,
    "dobles": 5,
-   "infalt": true,
    "svc": 1,
    "trios": 2
   }
@@ -1976,7 +1962,6 @@
   "tg_t": {
    "busc": 1,
    "dobles": 1,
-   "infalt": true,
    "perf": 1,
    "svc": 1,
    "trios": 2
@@ -2161,7 +2146,6 @@
   "rango": "B",
   "tg_t": {
    "dobles": 6,
-   "infalt": true,
    "trios": 1
   }
  },
@@ -2198,7 +2182,6 @@
   "rango": "B",
   "tg_t": {
    "dobles": 2,
-   "infalt": true,
    "svc": 1,
    "svtag": "campeon"
   }
@@ -2234,7 +2217,6 @@
   "total": 232,
   "rango": "B",
   "tg_t": {
-   "cohete": true,
    "dobles": 2,
    "perf": 1,
    "relampago": true,
@@ -2390,7 +2372,6 @@
   "tg_t": {
    "busc": 2,
    "dobles": 2,
-   "infalt": true,
    "perf": 1,
    "svc": 1,
    "trios": 2
@@ -2428,7 +2409,6 @@
   "rango": "C",
   "tg_t": {
    "cab": 1,
-   "cohete": true,
    "dcor": true,
    "dobles": 2,
    "svc": 2
@@ -2726,7 +2706,6 @@
   "rango": "C",
   "tg_t": {
    "dobles": 3,
-   "infalt": true,
    "rev": 1,
    "svc": 1,
    "svtag": "campeon",
@@ -3345,7 +3324,6 @@
   "rango": "D",
   "tg_t": {
    "dobles": 2,
-   "infalt": true,
    "sube": true
   }
  },
@@ -3381,7 +3359,6 @@
   "rango": "D",
   "tg_t": {
    "busc": 1,
-   "cohete": true,
    "trios": 1
   }
  },
@@ -3417,7 +3394,6 @@
   "rango": "D",
   "tg_t": {
    "dobles": 2,
-   "infalt": true,
    "trios": 2
   }
  },
@@ -3453,7 +3429,6 @@
   "rango": "D",
   "tg_t": {
    "dobles": 6,
-   "infalt": true,
    "svc": 1,
    "trios": 3
   }
@@ -3923,8 +3898,7 @@
   "total": 232,
   "rango": "D",
   "tg_t": {
-   "dobles": 1,
-   "infalt": true
+   "dobles": 1
   }
  },
  {
@@ -4028,7 +4002,6 @@
   "total": 232,
   "rango": "D",
   "tg_t": {
-   "cohete": true,
    "dobles": 3
   }
  },
@@ -4466,7 +4439,6 @@
   "rango": "E",
   "tg_t": {
    "dobles": 1,
-   "infalt": true,
    "rev": 1,
    "svc": 1
   }
@@ -4712,10 +4684,7 @@
   "o": 124,
   "pos": 95,
   "total": 232,
-  "rango": "E",
-  "tg_t": {
-   "infalt": true
-  }
+  "rango": "E"
  },
  {
   "full": "Gus",
@@ -5032,8 +5001,7 @@
   "rango": "E",
   "tg_t": {
    "busc": 1,
-   "dobles": 2,
-   "infalt": true
+   "dobles": 2
   }
  },
  {
@@ -5416,7 +5384,6 @@
   "total": 232,
   "rango": "E",
   "tg_t": {
-   "cohete": true,
    "rev": 1
   }
  },
@@ -6455,7 +6422,6 @@
   "rango": "E",
   "tg_t": {
    "busc": 1,
-   "cohete": true,
    "dobles": 1
   }
  },
@@ -8716,10 +8682,7 @@
   "pos": 330,
   "fc": true,
   "total": 232,
-  "rango": "E",
-  "tg_t": {
-   "reciente": true
-  }
+  "rango": "E"
  },
  {
   "full": "ONDADISKO",
@@ -9213,10 +9176,7 @@
   "pos": 340,
   "fc": true,
   "total": 232,
-  "rango": "E",
-  "tg_t": {
-   "reciente": true
-  }
+  "rango": "E"
  },
  {
   "full": "Musicdum",
@@ -11038,7 +10998,6 @@
   "total": 232,
   "rango": "E",
   "tg_t": {
-   "cohete": true,
    "reciente": true
   }
  },
@@ -11267,10 +11226,7 @@
   "o": 317,
   "pos": 170,
   "total": 232,
-  "rango": "E",
-  "tg_t": {
-   "reciente": true
-  }
+  "rango": "E"
  },
  {
   "full": "AFR",
@@ -12376,7 +12332,6 @@
   "total": 232,
   "rango": "E",
   "tg_t": {
-   "reciente": true,
    "trios": 1
   }
  },
@@ -15360,10 +15315,7 @@
   "o": 441,
   "pos": 198,
   "total": 232,
-  "rango": "E",
-  "tg_t": {
-   "reciente": true
-  }
+  "rango": "E"
  },
  {
   "full": "Bludi🇨🇴",
@@ -20421,10 +20373,7 @@
   "pos": 605,
   "fc": true,
   "total": 232,
-  "rango": "E",
-  "tg_t": {
-   "reciente": true
-  }
+  "rango": "E"
  },
  {
   "full": "AKKAMARU 🇪🇸",
