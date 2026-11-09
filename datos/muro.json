@@ -1290,6 +1290,14 @@
 "rg": "",
 "c": []
 },
+"crakero": {
+"rg": "",
+"c": [
+"pais",
+"servidor",
+"temporada"
+]
+},
 "sintext": {
 "rg": "",
 "c": []
@@ -1693,12 +1701,6 @@
 "g8-co": {
 "rg": "",
 "c": []
-},
-"crakero": {
-"rg": "",
-"c": [
-"servidor"
-]
 },
 "hinjkybesuk": {
 "rg": "",
@@ -2714,22 +2716,6 @@
 }
 },
 "cambios": [
-{
-"tipo": "tarjeta",
-"t": "2026-10-05T07:20:52Z",
-"quien": [
-"SGB"
-],
-"carta": "servidor"
-},
-{
-"tipo": "tarjeta",
-"t": "2026-10-05T07:20:52Z",
-"quien": [
-"SGB"
-],
-"carta": "temporada"
-},
 {
 "tipo": "tarjeta",
 "t": "2026-10-05T07:20:52Z",
@@ -6087,6 +6073,22 @@
 "BTRX"
 ],
 "carta": "servidor"
+},
+{
+"tipo": "tarjeta",
+"t": "2026-11-09T20:31:58Z",
+"quien": [
+"crakero"
+],
+"carta": "pais"
+},
+{
+"tipo": "tarjeta",
+"t": "2026-11-09T20:31:58Z",
+"quien": [
+"crakero"
+],
+"carta": "temporada"
 }
 ]
 }

@@ -556,7 +556,7 @@
    "evi": 13,
    "com": 7,
    "top": [
-    6,
+    5,
     "cl"
    ]
   }
@@ -865,7 +865,7 @@
    "evi": 14,
    "com": 1,
    "top": [
-    4,
+    1,
     "ar"
    ]
   }
@@ -928,7 +928,7 @@
    "evi": 29,
    "com": 5,
    "top": [
-    5,
+    2,
     "ar"
    ]
   }
@@ -1182,7 +1182,7 @@
    "evi": 67,
    "com": 0,
    "top": [
-    4,
+    1,
     "ar"
    ]
   }
@@ -1307,7 +1307,7 @@
    "evi": 10,
    "com": 1,
    "top": [
-    4,
+    1,
     "ar"
    ]
   }
@@ -1462,7 +1462,7 @@
   "dna_t": 11,
   "din_v": 10,
   "din_t": 23,
-  "crn_t": 32,
+  "crn_t": 33,
   "cri_t": 55,
   "pos": 18,
   "total": 80,
@@ -1493,7 +1493,7 @@
    "evi": 26,
    "com": 15,
    "top": [
-    2,
+    1,
     "co"
    ]
   }
@@ -1554,7 +1554,7 @@
    "evi": 5,
    "com": 3,
    "top": [
-    18,
+    6,
     "ar"
    ]
   }
@@ -1677,7 +1677,7 @@
    "evi": 16,
    "com": 0,
    "top": [
-    4,
+    3,
     "pe"
    ]
   }
@@ -1982,7 +1982,7 @@
    "evi": 6,
    "com": 2,
    "top": [
-    31,
+    13,
     "ar"
    ]
   }
@@ -2044,7 +2044,7 @@
    "evi": 9,
    "com": 3,
    "top": [
-    3,
+    1,
     "co"
    ]
   }
@@ -2228,7 +2228,7 @@
    "evi": 8,
    "com": 4,
    "top": [
-    6,
+    3,
     "co"
    ]
   }
@@ -2413,7 +2413,7 @@
    "evi": 3,
    "com": 3,
    "top": [
-    6,
+    3,
     "co"
    ]
   }
@@ -2476,7 +2476,7 @@
    "evi": 41,
    "com": 3,
    "top": [
-    4,
+    1,
     "ar"
    ]
   }
@@ -2844,7 +2844,7 @@
    "evi": 21,
    "com": 4,
    "top": [
-    10,
+    7,
     "cl"
    ]
   }
@@ -3094,7 +3094,7 @@
    "evi": 9,
    "com": 0,
    "top": [
-    7,
+    4,
     "cl"
    ]
   }
@@ -3191,7 +3191,7 @@
   "din_v": 5,
   "din_t": 7,
   "crn_t": 6,
-  "cri_t": 37,
+  "cri_t": 38,
   "pos": 33,
   "total": 80,
   "rango": "C",
@@ -3220,7 +3220,7 @@
    "evi": 12,
    "com": 0,
    "top": [
-    4,
+    1,
     "ar"
    ]
   }
@@ -3342,7 +3342,7 @@
    "evi": 21,
    "com": 2,
    "top": [
-    7,
+    4,
     "cl"
    ]
   }
@@ -3465,7 +3465,7 @@
    "evi": 3,
    "com": 6,
    "top": [
-    18,
+    13,
     "co"
    ]
   }
@@ -3584,7 +3584,7 @@
    "evi": 1,
    "com": 3,
    "top": [
-    11,
+    8,
     "cl"
    ]
   }
@@ -3646,7 +3646,7 @@
    "evi": 14,
    "com": 4,
    "top": [
-    4,
+    1,
     "ar"
    ]
   }
@@ -3829,7 +3829,7 @@
    "evi": 1,
    "com": 3,
    "top": [
-    3,
+    1,
     "co"
    ]
   }
@@ -3892,7 +3892,7 @@
    "evi": 17,
    "com": 2,
    "top": [
-    6,
+    5,
     "ar"
    ]
   }
@@ -3952,7 +3952,7 @@
    "evi": 16,
    "com": 3,
    "top": [
-    11,
+    10,
     "ar"
    ]
   }
@@ -4013,7 +4013,7 @@
    "evi": 26,
    "com": 5,
    "top": [
-    7,
+    4,
     "cl"
    ]
   }
@@ -4074,7 +4074,7 @@
    "evi": 2,
    "com": 2,
    "top": [
-    6,
+    3,
     "co"
    ]
   }
@@ -4134,7 +4134,7 @@
    "evi": 14,
    "com": 0,
    "top": [
-    8,
+    6,
     "ar"
    ]
   }
@@ -4314,7 +4314,7 @@
    "evi": 9,
    "com": 1,
    "top": [
-    10,
+    8,
     "co"
    ]
   }
@@ -4375,7 +4375,7 @@
    "evi": 11,
    "com": 2,
    "top": [
-    12,
+    4,
     "ar"
    ]
   }
@@ -4615,7 +4615,7 @@
    "evi": 22,
    "com": 2,
    "top": [
-    33,
+    13,
     "ar"
    ]
   }
@@ -4677,7 +4677,7 @@
    "evi": 30,
    "com": 0,
    "top": [
-    4,
+    1,
     "ar"
    ]
   }
@@ -4736,7 +4736,7 @@
    "evi": 11,
    "com": 3,
    "top": [
-    10,
+    7,
     "cl"
    ]
   }
@@ -4796,7 +4796,7 @@
    "evi": 9,
    "com": 0,
    "top": [
-    9,
+    3,
     "co"
    ]
   }
@@ -5096,7 +5096,7 @@
    "evi": 11,
    "com": 2,
    "top": [
-    10,
+    7,
     "cl"
    ]
   }
@@ -5582,7 +5582,7 @@
    "evi": 8,
    "com": 1,
    "top": [
-    7,
+    4,
     "cl"
    ]
   }
@@ -5758,7 +5758,7 @@
    "evi": 1,
    "com": 0,
    "top": [
-    9,
+    4,
     "ar"
    ]
   }
@@ -5816,7 +5816,7 @@
    "evi": 3,
    "com": 2,
    "top": [
-    6,
+    3,
     "co"
    ]
   }
@@ -6248,7 +6248,7 @@
    "evi": 1,
    "com": 0,
    "top": [
-    10,
+    7,
     "cl"
    ]
   }
@@ -6367,7 +6367,7 @@
    "evi": 7,
    "com": 0,
    "top": [
-    6,
+    5,
     "ar"
    ]
   }
@@ -6488,7 +6488,7 @@
   "din_v": 2,
   "din_t": 15,
   "crn_t": 6,
-  "cri_t": 39,
+  "cri_t": 40,
   "pos": 94,
   "total": 80,
   "rango": "D",
@@ -6759,7 +6759,7 @@
    "evi": 2,
    "com": 2,
    "top": [
-    7,
+    4,
     "cl"
    ]
   }
@@ -6814,7 +6814,7 @@
    "evi": 7,
    "com": 0,
    "top": [
-    9,
+    6,
     "mx"
    ]
   }
@@ -6933,7 +6933,7 @@
    "evi": 5,
    "com": 0,
    "top": [
-    8,
+    6,
     "ar"
    ]
   }
@@ -7052,7 +7052,7 @@
    "evi": 1,
    "com": 2,
    "top": [
-    18,
+    6,
     "ar"
    ]
   }
@@ -7112,7 +7112,7 @@
    "evi": 3,
    "com": 2,
    "top": [
-    6,
+    5,
     "ar"
    ]
   }
@@ -7172,7 +7172,7 @@
    "evi": 15,
    "com": 0,
    "top": [
-    4,
+    1,
     "ar"
    ]
   }
@@ -7351,7 +7351,7 @@
    "evi": 2,
    "com": 1,
    "top": [
-    5,
+    4,
     "pe"
    ]
   }
@@ -7693,7 +7693,7 @@
    "evi": 16,
    "com": 1,
    "top": [
-    13,
+    11,
     "co"
    ]
   }
@@ -7796,7 +7796,7 @@
    "evi": 1,
    "com": 0,
    "top": [
-    6,
+    5,
     "cl"
    ]
   }
@@ -7855,7 +7855,7 @@
    "evi": 15,
    "com": 0,
    "top": [
-    13,
+    11,
     "pe"
    ]
   }
@@ -7915,7 +7915,7 @@
    "evi": 4,
    "com": 2,
    "top": [
-    12,
+    4,
     "ar"
    ]
   }
@@ -8005,7 +8005,7 @@
   "dna_t": 3,
   "din_v": 4,
   "din_t": 8,
-  "crn_t": 19,
+  "crn_t": 20,
   "cri_t": 36,
   "pos": 62,
   "total": 80,
@@ -8035,7 +8035,7 @@
    "evi": 24,
    "com": 1,
    "top": [
-    11,
+    8,
     "cl"
    ]
   }
@@ -8252,7 +8252,7 @@
    "evi": 10,
    "com": 2,
    "top": [
-    19,
+    8,
     "ar"
    ]
   }
@@ -8312,7 +8312,7 @@
    "evi": 5,
    "com": 0,
    "top": [
-    6,
+    5,
     "ar"
    ]
   }
@@ -8372,7 +8372,7 @@
    "evi": 22,
    "com": 1,
    "top": [
-    12,
+    4,
     "ar"
    ]
   }
@@ -8404,7 +8404,7 @@
   "din_v": 1,
   "din_t": 5,
   "crn_t": 8,
-  "cri_t": 32,
+  "cri_t": 33,
   "pos": 66,
   "total": 80,
   "rango": "E",
@@ -8430,7 +8430,7 @@
    "evi": 14,
    "com": 0,
    "top": [
-    17,
+    14,
     "co"
    ]
   }
@@ -8461,7 +8461,7 @@
   "dna_t": 2,
   "din_v": 0,
   "din_t": 0,
-  "crn_t": 14,
+  "crn_t": 15,
   "cri_t": 7,
   "pos": 162,
   "total": 80,
@@ -8542,7 +8542,7 @@
    "evi": 2,
    "com": 0,
    "top": [
-    11,
+    8,
     "cl"
    ]
   }
@@ -8722,7 +8722,7 @@
    "evi": 1,
    "com": 0,
    "top": [
-    10,
+    9,
     "pe"
    ]
   }
@@ -9186,7 +9186,7 @@
    "evi": 6,
    "com": 1,
    "top": [
-    6,
+    5,
     "cl"
    ]
   }
@@ -9245,7 +9245,7 @@
    "evi": 10,
    "com": 1,
    "top": [
-    19,
+    8,
     "ar"
    ]
   }
@@ -9304,7 +9304,7 @@
    "evi": 4,
    "com": 0,
    "top": [
-    19,
+    17,
     "pe"
    ]
   }
@@ -9364,7 +9364,7 @@
    "evi": 9,
    "com": 1,
    "top": [
-    4,
+    3,
     "pe"
    ]
   }
@@ -9482,7 +9482,7 @@
    "evi": 1,
    "com": 0,
    "top": [
-    16,
+    15,
     "mx"
    ]
   }
@@ -9601,7 +9601,7 @@
    "evi": 1,
    "com": 2,
    "top": [
-    15,
+    13,
     "cl"
    ]
   }
@@ -9889,7 +9889,7 @@
    "evi": 2,
    "com": 0,
    "top": [
-    17,
+    6,
     "ar"
    ]
   }
@@ -9949,7 +9949,7 @@
    "evi": 1,
    "com": 0,
    "top": [
-    13,
+    11,
     "pe"
    ]
   }
@@ -10069,7 +10069,7 @@
    "evi": 1,
    "com": 1,
    "top": [
-    11,
+    8,
     "cl"
    ]
   }
@@ -10129,7 +10129,7 @@
    "evi": 1,
    "com": 1,
    "top": [
-    9,
+    5,
     "cl"
    ]
   }
@@ -10423,7 +10423,7 @@
    "evi": 6,
    "com": 2,
    "top": [
-    13,
+    11,
     "co"
    ]
   }
@@ -10484,7 +10484,7 @@
    "evi": 4,
    "com": 0,
    "top": [
-    11,
+    8,
     "cl"
    ]
   }
@@ -10539,7 +10539,7 @@
    "evi": 10,
    "com": 0,
    "top": [
-    11,
+    10,
     "ar"
    ]
   }
@@ -10599,7 +10599,7 @@
    "evi": 8,
    "com": 0,
    "top": [
-    9,
+    3,
     "co"
    ]
   }
@@ -10654,7 +10654,7 @@
    "evi": 2,
    "com": 0,
    "top": [
-    9,
+    4,
     "ar"
    ]
   }
@@ -10713,7 +10713,7 @@
    "evi": 9,
    "com": 0,
    "top": [
-    10,
+    7,
     "cl"
    ]
   }
@@ -10833,7 +10833,7 @@
    "evi": 11,
    "com": 0,
    "top": [
-    9,
+    3,
     "co"
    ]
   }
@@ -10992,7 +10992,7 @@
    "evi": 4,
    "com": 0,
    "top": [
-    3,
+    1,
     "co"
    ]
   }
@@ -11249,7 +11249,7 @@
    "evi": 1,
    "com": 0,
    "top": [
-    14,
+    4,
     "ar"
    ]
   }
@@ -11308,7 +11308,7 @@
    "evi": 4,
    "com": 0,
    "top": [
-    15,
+    13,
     "cl"
    ]
   }
@@ -11532,7 +11532,7 @@
    "evi": 1,
    "com": 0,
    "top": [
-    13,
+    11,
     "co"
    ]
   }
@@ -11591,7 +11591,7 @@
    "evi": 1,
    "com": 0,
    "top": [
-    6,
+    4,
     "pe"
    ]
   }
@@ -11881,7 +11881,7 @@
    "evi": 1,
    "com": 0,
    "top": [
-    13,
+    11,
     "co"
    ]
   }
@@ -12094,7 +12094,7 @@
    "evi": 14,
    "com": 0,
    "top": [
-    16,
+    13,
     "cl"
    ]
   }
@@ -12152,7 +12152,7 @@
    "evi": 2,
    "com": 1,
    "top": [
-    11,
+    10,
     "mx"
    ]
   }
@@ -12325,7 +12325,7 @@
    "evi": 2,
    "com": 0,
    "top": [
-    23,
+    8,
     "ar"
    ]
   }
@@ -12386,7 +12386,7 @@
    "evi": 9,
    "com": 1,
    "top": [
-    18,
+    6,
     "ar"
    ]
   }
@@ -12445,7 +12445,7 @@
    "evi": 2,
    "com": 1,
    "top": [
-    17,
+    14,
     "co"
    ]
   }
@@ -13094,7 +13094,7 @@
    "evi": 2,
    "com": 0,
    "top": [
-    8,
+    6,
     "ar"
    ]
   }
@@ -13153,7 +13153,7 @@
    "evi": 17,
    "com": 0,
    "top": [
-    12,
+    11,
     "mx"
    ]
   }
@@ -13184,7 +13184,7 @@
   "dna_t": 2,
   "din_v": 2,
   "din_t": 5,
-  "crn_t": 17,
+  "crn_t": 18,
   "cri_t": 27,
   "pos": 78,
   "total": 80,
@@ -13208,7 +13208,7 @@
    "paisesg": 2
   },
   "nac": {
-   "evn": 11,
+   "evn": 12,
    "evi": 14,
    "com": 1
   }
@@ -13326,7 +13326,7 @@
    "evi": 5,
    "com": 2,
    "top": [
-    9,
+    5,
     "cl"
    ]
   }
@@ -13440,7 +13440,7 @@
    "evi": 2,
    "com": 0,
    "top": [
-    10,
+    7,
     "cl"
    ]
   }
@@ -14374,7 +14374,7 @@
    "evi": 4,
    "com": 0,
    "top": [
-    29,
+    6,
     "ar"
    ]
   }
@@ -14492,7 +14492,7 @@
    "evi": 6,
    "com": 2,
    "top": [
-    13,
+    11,
     "co"
    ]
   }
@@ -14927,7 +14927,7 @@
    "evi": 4,
    "com": 0,
    "top": [
-    7,
+    4,
     "cl"
    ]
   }
@@ -15199,7 +15199,7 @@
    "evi": 4,
    "com": 0,
    "top": [
-    23,
+    8,
     "ar"
    ]
   }
@@ -15254,7 +15254,7 @@
    "evi": 3,
    "com": 0,
    "top": [
-    10,
+    7,
     "cl"
    ]
   }
@@ -15565,7 +15565,7 @@
    "evi": 7,
    "com": 3,
    "top": [
-    11,
+    8,
     "cl"
    ]
   }
@@ -15620,7 +15620,7 @@
    "evi": 4,
    "com": 1,
    "top": [
-    25,
+    15,
     "ar"
    ]
   }
@@ -16184,7 +16184,7 @@
    "evi": 6,
    "com": 0,
    "top": [
-    21,
+    20,
     "pe"
    ]
   }
@@ -16450,66 +16450,6 @@
   }
  },
  {
-  "full": "crakero",
-  "raw": "crakero",
-  "cc": "ar",
-  "sv": "FFA",
-  "crew": "lppcrew1312",
-  "discord_id": "1374555884868337738",
-  "verificado": true,
-  "ev": 1,
-  "score": 4.6,
-  "conf": 0.3,
-  "E": 62,
-  "C": 0,
-  "Dm": 0,
-  "T": 0,
-  "V": 0,
-  "wr": "",
-  "rch_act": 0,
-  "rch_max": 0,
-  "duel_v": 1,
-  "duel_t": 2,
-  "duel_real": true,
-  "dna_v": 0,
-  "dna_t": 0,
-  "din_v": 1,
-  "din_t": 2,
-  "crn_t": 1,
-  "cri_t": 3,
-  "pos": 291,
-  "total": 80,
-  "rango": "",
-  "subrango": "",
-  "ovr": 0,
-  "av": "",
-  "pos_pais": "38/52",
-  "arc_pais": 29,
-  "pos_sv": "112/162",
-  "arc_sv": 31,
-  "pos_crew": "",
-  "tg_c": {
-   "bestia": 1,
-   "clasico": 1,
-   "dg": 1,
-   "riv": 2,
-   "venc": 1
-  },
-  "tg_p": {
-   "paises": 2,
-   "paisesg": 1
-  },
-  "nac": {
-   "evn": 1,
-   "evi": 1,
-   "com": 0,
-   "top": [
-    1,
-    "pr"
-   ]
-  }
- },
- {
   "full": "Alonso",
   "raw": "Alonso",
   "cc": "cl",
@@ -16537,7 +16477,7 @@
   "din_t": 0,
   "crn_t": 2,
   "cri_t": 4,
-  "pos": 292,
+  "pos": 291,
   "total": 80,
   "rango": "",
   "subrango": "",
@@ -16581,15 +16521,15 @@
   "din_t": 1,
   "crn_t": 2,
   "cri_t": 2,
-  "pos": 293,
+  "pos": 292,
   "total": 80,
   "rango": "",
   "subrango": "",
   "ovr": 0,
   "av": "",
-  "pos_pais": "39/52",
-  "arc_pais": 27,
-  "pos_sv": "113/162",
+  "pos_pais": "38/52",
+  "arc_pais": 29,
+  "pos_sv": "112/162",
   "arc_sv": 31,
   "tg_c": {
    "clasico": 1,
@@ -16632,7 +16572,7 @@
   "din_t": 1,
   "crn_t": 0,
   "cri_t": 1,
-  "pos": 294,
+  "pos": 293,
   "total": 80,
   "rango": "",
   "subrango": "",
@@ -16686,7 +16626,7 @@
   "din_t": 1,
   "crn_t": 1,
   "cri_t": 3,
-  "pos": 295,
+  "pos": 294,
   "total": 80,
   "rango": "",
   "subrango": "",
@@ -16737,16 +16677,16 @@
   "din_t": 0,
   "crn_t": 2,
   "cri_t": 0,
-  "pos": 296,
+  "pos": 295,
   "total": 80,
   "rango": "",
   "subrango": "",
   "ovr": 0,
   "av": "",
-  "pos_pais": "40/52",
-  "arc_pais": 25,
-  "pos_sv": "114/162",
-  "arc_sv": 30,
+  "pos_pais": "39/52",
+  "arc_pais": 27,
+  "pos_sv": "113/162",
+  "arc_sv": 31,
   "tg_c": {
    "bestia": 1,
    "clasico": 1,
@@ -16792,7 +16732,7 @@
   "din_t": 3,
   "crn_t": 2,
   "cri_t": 5,
-  "pos": 297,
+  "pos": 296,
   "total": 80,
   "rango": "",
   "subrango": "",
@@ -16851,7 +16791,7 @@
   "din_t": 0,
   "crn_t": 1,
   "cri_t": 3,
-  "pos": 298,
+  "pos": 297,
   "total": 80,
   "rango": "",
   "subrango": "",
@@ -16895,7 +16835,7 @@
   "din_t": 1,
   "crn_t": 0,
   "cri_t": 3,
-  "pos": 299,
+  "pos": 298,
   "total": 80,
   "rango": "",
   "subrango": "",
@@ -16946,7 +16886,7 @@
   "din_t": 0,
   "crn_t": 1,
   "cri_t": 5,
-  "pos": 300,
+  "pos": 299,
   "total": 80,
   "rango": "",
   "subrango": "",
@@ -16990,7 +16930,7 @@
   "din_t": 1,
   "crn_t": 1,
   "cri_t": 4,
-  "pos": 301,
+  "pos": 300,
   "total": 80,
   "rango": "",
   "subrango": "",
@@ -16998,7 +16938,7 @@
   "av": "",
   "pos_pais": "21/28",
   "arc_pais": 29,
-  "pos_sv": "115/162",
+  "pos_sv": "114/162",
   "arc_sv": 30,
   "tg_c": {
    "clasico": 1,
@@ -17011,6 +16951,66 @@
    "evn": 1,
    "evi": 3,
    "com": 0
+  }
+ },
+ {
+  "full": "crakero",
+  "raw": "crakero",
+  "cc": "ar",
+  "sv": "FFA",
+  "crew": "lppcrew1312",
+  "discord_id": "1374555884868337738",
+  "verificado": true,
+  "ev": 3,
+  "score": 4.2,
+  "conf": 0.44,
+  "E": 38,
+  "C": 0,
+  "Dm": 0,
+  "T": 0,
+  "V": 0,
+  "wr": "",
+  "rch_act": 0,
+  "rch_max": 0,
+  "duel_v": 1,
+  "duel_t": 2,
+  "duel_real": true,
+  "dna_v": 0,
+  "dna_t": 0,
+  "din_v": 1,
+  "din_t": 2,
+  "crn_t": 5,
+  "cri_t": 7,
+  "pos": 301,
+  "total": 80,
+  "rango": "",
+  "subrango": "",
+  "ovr": 0,
+  "av": "",
+  "pos_pais": "40/52",
+  "arc_pais": 25,
+  "pos_sv": "115/162",
+  "arc_sv": 30,
+  "pos_crew": "",
+  "tg_c": {
+   "bestia": 1,
+   "clasico": 1,
+   "dg": 1,
+   "riv": 2,
+   "venc": 1
+  },
+  "tg_p": {
+   "paises": 2,
+   "paisesg": 1
+  },
+  "nac": {
+   "evn": 3,
+   "evi": 3,
+   "com": 0,
+   "top": [
+    1,
+    "pr"
+   ]
   }
  },
  {
@@ -17271,7 +17271,7 @@
    "evi": 1,
    "com": 0,
    "top": [
-    32,
+    18,
     "cl"
    ]
   }
@@ -17370,7 +17370,7 @@
    "evi": 3,
    "com": 1,
    "top": [
-    24,
+    19,
     "cl"
    ]
   }
@@ -17626,7 +17626,7 @@
    "evi": 6,
    "com": 1,
    "top": [
-    17,
+    6,
     "ar"
    ]
   }
@@ -18808,7 +18808,7 @@
    "evi": 1,
    "com": 0,
    "top": [
-    34,
+    19,
     "cl"
    ]
   }
@@ -19016,7 +19016,7 @@
    "evi": 1,
    "com": 0,
    "top": [
-    31,
+    13,
     "ar"
    ]
   }
@@ -19075,7 +19075,7 @@
    "evi": 1,
    "com": 0,
    "top": [
-    19,
+    16,
     "co"
    ]
   }
@@ -19229,7 +19229,7 @@
    "evi": 0,
    "com": 0,
    "top": [
-    4,
+    3,
     "pe"
    ]
   }
@@ -19764,7 +19764,7 @@
    "evi": 1,
    "com": 0,
    "top": [
-    7,
+    4,
     "cl"
    ]
   }
@@ -19925,7 +19925,7 @@
    "evi": 1,
    "com": 0,
    "top": [
-    6,
+    5,
     "ar"
    ]
   }
@@ -20131,7 +20131,7 @@
    "evi": 1,
    "com": 0,
    "top": [
-    3,
+    1,
     "co"
    ]
   }
@@ -20341,7 +20341,7 @@
    "evi": 1,
    "com": 0,
    "top": [
-    15,
+    13,
     "cl"
    ]
   }
@@ -20843,7 +20843,7 @@
    "evi": 2,
    "com": 0,
    "top": [
-    3,
+    1,
     "co"
    ]
   }
@@ -22797,57 +22797,6 @@
   }
  },
  {
-  "full": "tomyhilfiger🇾🇹",
-  "raw": "tomyhilfiger",
-  "cc": "",
-  "sv": "FFA",
-  "crew": "",
-  "discord_id": "",
-  "verificado": false,
-  "ev": 2,
-  "score": 2.4,
-  "conf": 0.37,
-  "E": 26,
-  "C": 0,
-  "Dm": 0,
-  "T": 0,
-  "V": 0,
-  "wr": "",
-  "rch_act": 0,
-  "rch_max": 0,
-  "duel_v": 0,
-  "duel_t": 1,
-  "duel_real": true,
-  "dna_v": 0,
-  "dna_t": 0,
-  "din_v": 0,
-  "din_t": 0,
-  "crn_t": 0,
-  "cri_t": 0,
-  "pos": 417,
-  "total": 80,
-  "rango": "",
-  "subrango": "",
-  "ovr": 0,
-  "av": "",
-  "pos_pais": "",
-  "arc_pais": 0,
-  "pos_sv": "",
-  "arc_sv": 0,
-  "tg_c": {
-   "clasico": 1,
-   "riv": 1
-  },
-  "tg_p": {
-   "paises": 1
-  },
-  "nac": {
-   "evn": 0,
-   "evi": 0,
-   "com": 0
-  }
- },
- {
   "full": "TYPHLOSION",
   "raw": "TYPHLOSION",
   "cc": "cl",
@@ -22875,7 +22824,7 @@
   "din_t": 0,
   "crn_t": 3,
   "cri_t": 7,
-  "pos": 418,
+  "pos": 417,
   "total": 80,
   "rango": "",
   "subrango": "",
@@ -22930,7 +22879,7 @@
   "din_t": 2,
   "crn_t": 0,
   "cri_t": 4,
-  "pos": 419,
+  "pos": 418,
   "total": 80,
   "rango": "",
   "subrango": "",
@@ -22982,7 +22931,7 @@
   "din_t": 0,
   "crn_t": 1,
   "cri_t": 3,
-  "pos": 420,
+  "pos": 419,
   "total": 80,
   "rango": "",
   "subrango": "",
@@ -23026,7 +22975,7 @@
   "din_t": 1,
   "crn_t": 1,
   "cri_t": 2,
-  "pos": 421,
+  "pos": 420,
   "total": 80,
   "rango": "",
   "subrango": "",
@@ -23077,7 +23026,7 @@
   "din_t": 0,
   "crn_t": 0,
   "cri_t": 7,
-  "pos": 422,
+  "pos": 421,
   "total": 80,
   "rango": "",
   "subrango": "",
@@ -23121,7 +23070,7 @@
   "din_t": 0,
   "crn_t": 1,
   "cri_t": 3,
-  "pos": 423,
+  "pos": 422,
   "total": 80,
   "rango": "",
   "subrango": "",
@@ -23165,7 +23114,7 @@
   "din_t": 1,
   "crn_t": 1,
   "cri_t": 2,
-  "pos": 424,
+  "pos": 423,
   "total": 80,
   "rango": "",
   "subrango": "",
@@ -23216,7 +23165,7 @@
   "din_t": 0,
   "crn_t": 0,
   "cri_t": 3,
-  "pos": 425,
+  "pos": 424,
   "total": 80,
   "rango": "",
   "subrango": "",
@@ -23260,7 +23209,7 @@
   "din_t": 0,
   "crn_t": 0,
   "cri_t": 0,
-  "pos": 426,
+  "pos": 425,
   "total": 80,
   "rango": "",
   "subrango": "",
@@ -23304,7 +23253,7 @@
   "din_t": 3,
   "crn_t": 1,
   "cri_t": 3,
-  "pos": 427,
+  "pos": 426,
   "total": 80,
   "rango": "",
   "subrango": "",
@@ -23359,7 +23308,7 @@
   "din_t": 1,
   "crn_t": 0,
   "cri_t": 3,
-  "pos": 428,
+  "pos": 427,
   "total": 80,
   "rango": "",
   "subrango": "",
@@ -23410,7 +23359,7 @@
   "din_t": 0,
   "crn_t": 0,
   "cri_t": 0,
-  "pos": 429,
+  "pos": 428,
   "total": 80,
   "rango": "",
   "subrango": "",
@@ -23454,7 +23403,7 @@
   "din_t": 0,
   "crn_t": 1,
   "cri_t": 4,
-  "pos": 430,
+  "pos": 429,
   "total": 80,
   "rango": "",
   "subrango": "",
@@ -23498,7 +23447,7 @@
   "din_t": 0,
   "crn_t": 0,
   "cri_t": 4,
-  "pos": 431,
+  "pos": 430,
   "total": 80,
   "rango": "",
   "subrango": "",
@@ -23548,8 +23497,8 @@
   "din_v": 0,
   "din_t": 0,
   "crn_t": 0,
-  "cri_t": 7,
-  "pos": 432,
+  "cri_t": 8,
+  "pos": 431,
   "total": 80,
   "rango": "",
   "subrango": "",
@@ -23593,7 +23542,7 @@
   "din_t": 0,
   "crn_t": 1,
   "cri_t": 0,
-  "pos": 433,
+  "pos": 432,
   "total": 80,
   "rango": "",
   "subrango": "",
@@ -23637,7 +23586,7 @@
   "din_t": 0,
   "crn_t": 3,
   "cri_t": 1,
-  "pos": 434,
+  "pos": 433,
   "total": 80,
   "rango": "",
   "subrango": "",
@@ -23681,7 +23630,7 @@
   "din_t": 1,
   "crn_t": 3,
   "cri_t": 8,
-  "pos": 435,
+  "pos": 434,
   "total": 80,
   "rango": "",
   "subrango": "",
@@ -23732,7 +23681,7 @@
   "din_t": 1,
   "crn_t": 0,
   "cri_t": 2,
-  "pos": 436,
+  "pos": 435,
   "total": 80,
   "rango": "",
   "subrango": "",
@@ -23783,7 +23732,7 @@
   "din_t": 1,
   "crn_t": 0,
   "cri_t": 1,
-  "pos": 437,
+  "pos": 436,
   "total": 80,
   "rango": "",
   "subrango": "",
@@ -23834,7 +23783,7 @@
   "din_t": 0,
   "crn_t": 0,
   "cri_t": 0,
-  "pos": 438,
+  "pos": 437,
   "total": 80,
   "rango": "",
   "subrango": "",
@@ -23878,7 +23827,7 @@
   "din_t": 0,
   "crn_t": 0,
   "cri_t": 0,
-  "pos": 439,
+  "pos": 438,
   "total": 80,
   "rango": "",
   "subrango": "",
@@ -23922,7 +23871,7 @@
   "din_t": 1,
   "crn_t": 0,
   "cri_t": 1,
-  "pos": 440,
+  "pos": 439,
   "total": 80,
   "rango": "",
   "subrango": "",
@@ -23973,7 +23922,7 @@
   "din_t": 0,
   "crn_t": 0,
   "cri_t": 2,
-  "pos": 441,
+  "pos": 440,
   "total": 80,
   "rango": "",
   "subrango": "",
@@ -24017,7 +23966,7 @@
   "din_t": 0,
   "crn_t": 0,
   "cri_t": 2,
-  "pos": 442,
+  "pos": 441,
   "total": 80,
   "rango": "",
   "subrango": "",
@@ -24061,7 +24010,7 @@
   "din_t": 0,
   "crn_t": 1,
   "cri_t": 1,
-  "pos": 443,
+  "pos": 442,
   "total": 80,
   "rango": "",
   "subrango": "",
@@ -24105,7 +24054,7 @@
   "din_t": 0,
   "crn_t": 1,
   "cri_t": 1,
-  "pos": 444,
+  "pos": 443,
   "total": 80,
   "rango": "",
   "subrango": "",
@@ -24156,7 +24105,7 @@
   "din_t": 0,
   "crn_t": 0,
   "cri_t": 0,
-  "pos": 445,
+  "pos": 444,
   "total": 80,
   "rango": "",
   "subrango": "",
@@ -24200,7 +24149,7 @@
   "din_t": 0,
   "crn_t": 1,
   "cri_t": 2,
-  "pos": 446,
+  "pos": 445,
   "total": 80,
   "rango": "",
   "subrango": "",
@@ -24244,7 +24193,7 @@
   "din_t": 0,
   "crn_t": 0,
   "cri_t": 1,
-  "pos": 447,
+  "pos": 446,
   "total": 80,
   "rango": "",
   "subrango": "",
@@ -24291,7 +24240,7 @@
   "din_t": 0,
   "crn_t": 0,
   "cri_t": 3,
-  "pos": 448,
+  "pos": 447,
   "total": 80,
   "rango": "",
   "subrango": "",
@@ -24335,7 +24284,7 @@
   "din_t": 0,
   "crn_t": 0,
   "cri_t": 0,
-  "pos": 449,
+  "pos": 448,
   "total": 80,
   "rango": "",
   "subrango": "",
@@ -24379,7 +24328,7 @@
   "din_t": 1,
   "crn_t": 0,
   "cri_t": 1,
-  "pos": 450,
+  "pos": 449,
   "total": 80,
   "rango": "",
   "subrango": "",
@@ -24438,7 +24387,7 @@
   "din_t": 0,
   "crn_t": 1,
   "cri_t": 0,
-  "pos": 451,
+  "pos": 450,
   "total": 80,
   "rango": "",
   "subrango": "",
@@ -24489,7 +24438,7 @@
   "din_t": 0,
   "crn_t": 0,
   "cri_t": 2,
-  "pos": 452,
+  "pos": 451,
   "total": 80,
   "rango": "",
   "subrango": "",
@@ -24533,7 +24482,7 @@
   "din_t": 1,
   "crn_t": 0,
   "cri_t": 1,
-  "pos": 453,
+  "pos": 452,
   "total": 80,
   "rango": "",
   "subrango": "",
@@ -24584,7 +24533,7 @@
   "din_t": 0,
   "crn_t": 0,
   "cri_t": 0,
-  "pos": 454,
+  "pos": 453,
   "total": 80,
   "rango": "",
   "subrango": "",
@@ -24628,7 +24577,7 @@
   "din_t": 0,
   "crn_t": 0,
   "cri_t": 3,
-  "pos": 455,
+  "pos": 454,
   "total": 80,
   "rango": "",
   "subrango": "",
@@ -24672,7 +24621,7 @@
   "din_t": 0,
   "crn_t": 0,
   "cri_t": 0,
-  "pos": 456,
+  "pos": 455,
   "total": 80,
   "rango": "",
   "subrango": "",
@@ -24716,7 +24665,7 @@
   "din_t": 0,
   "crn_t": 0,
   "cri_t": 0,
-  "pos": 457,
+  "pos": 456,
   "total": 80,
   "rango": "",
   "subrango": "",
@@ -24760,7 +24709,7 @@
   "din_t": 0,
   "crn_t": 0,
   "cri_t": 0,
-  "pos": 458,
+  "pos": 457,
   "total": 80,
   "rango": "",
   "subrango": "",
@@ -24804,7 +24753,7 @@
   "din_t": 0,
   "crn_t": 1,
   "cri_t": 1,
-  "pos": 459,
+  "pos": 458,
   "total": 80,
   "rango": "",
   "subrango": "",
@@ -24848,7 +24797,7 @@
   "din_t": 0,
   "crn_t": 0,
   "cri_t": 0,
-  "pos": 460,
+  "pos": 459,
   "total": 80,
   "rango": "",
   "subrango": "",
@@ -24892,7 +24841,7 @@
   "din_t": 0,
   "crn_t": 0,
   "cri_t": 0,
-  "pos": 461,
+  "pos": 460,
   "total": 80,
   "rango": "",
   "subrango": "",
@@ -24936,7 +24885,7 @@
   "din_t": 0,
   "crn_t": 0,
   "cri_t": 0,
-  "pos": 462,
+  "pos": 461,
   "total": 80,
   "rango": "",
   "subrango": "",
@@ -24980,7 +24929,7 @@
   "din_t": 0,
   "crn_t": 0,
   "cri_t": 0,
-  "pos": 463,
+  "pos": 462,
   "total": 80,
   "rango": "",
   "subrango": "",
@@ -25024,7 +24973,7 @@
   "din_t": 1,
   "crn_t": 0,
   "cri_t": 1,
-  "pos": 464,
+  "pos": 463,
   "total": 80,
   "rango": "",
   "subrango": "",
@@ -25075,7 +25024,7 @@
   "din_t": 0,
   "crn_t": 0,
   "cri_t": 2,
-  "pos": 465,
+  "pos": 464,
   "total": 80,
   "rango": "",
   "subrango": "",
@@ -25119,7 +25068,7 @@
   "din_t": 0,
   "crn_t": 0,
   "cri_t": 3,
-  "pos": 466,
+  "pos": 465,
   "total": 80,
   "rango": "",
   "subrango": "",
@@ -25163,7 +25112,7 @@
   "din_t": 0,
   "crn_t": 0,
   "cri_t": 0,
-  "pos": 467,
+  "pos": 466,
   "total": 80,
   "rango": "",
   "subrango": "",
@@ -25207,7 +25156,7 @@
   "din_t": 0,
   "crn_t": 0,
   "cri_t": 0,
-  "pos": 468,
+  "pos": 467,
   "total": 80,
   "rango": "",
   "subrango": "",
@@ -25251,7 +25200,7 @@
   "din_t": 0,
   "crn_t": 0,
   "cri_t": 0,
-  "pos": 469,
+  "pos": 468,
   "total": 80,
   "rango": "",
   "subrango": "",
@@ -25295,7 +25244,7 @@
   "din_t": 0,
   "crn_t": 2,
   "cri_t": 0,
-  "pos": 470,
+  "pos": 469,
   "total": 80,
   "rango": "",
   "subrango": "",
@@ -25339,7 +25288,7 @@
   "din_t": 0,
   "crn_t": 0,
   "cri_t": 0,
-  "pos": 471,
+  "pos": 470,
   "total": 80,
   "rango": "",
   "subrango": "",
@@ -25383,7 +25332,7 @@
   "din_t": 1,
   "crn_t": 0,
   "cri_t": 1,
-  "pos": 472,
+  "pos": 471,
   "total": 80,
   "rango": "",
   "subrango": "",
@@ -25434,7 +25383,7 @@
   "din_t": 0,
   "crn_t": 0,
   "cri_t": 0,
-  "pos": 473,
+  "pos": 472,
   "total": 80,
   "rango": "",
   "subrango": "",
@@ -25478,7 +25427,7 @@
   "din_t": 0,
   "crn_t": 0,
   "cri_t": 3,
-  "pos": 474,
+  "pos": 473,
   "total": 80,
   "rango": "",
   "subrango": "",
@@ -25522,7 +25471,7 @@
   "din_t": 0,
   "crn_t": 0,
   "cri_t": 2,
-  "pos": 475,
+  "pos": 474,
   "total": 80,
   "rango": "",
   "subrango": "",
@@ -25566,7 +25515,7 @@
   "din_t": 0,
   "crn_t": 0,
   "cri_t": 0,
-  "pos": 476,
+  "pos": 475,
   "total": 80,
   "rango": "",
   "subrango": "",
@@ -25610,7 +25559,7 @@
   "din_t": 0,
   "crn_t": 0,
   "cri_t": 0,
-  "pos": 477,
+  "pos": 476,
   "total": 80,
   "rango": "",
   "subrango": "",
@@ -25654,7 +25603,7 @@
   "din_t": 0,
   "crn_t": 2,
   "cri_t": 0,
-  "pos": 478,
+  "pos": 477,
   "total": 80,
   "rango": "",
   "subrango": "",
@@ -25698,7 +25647,7 @@
   "din_t": 0,
   "crn_t": 0,
   "cri_t": 0,
-  "pos": 479,
+  "pos": 478,
   "total": 80,
   "rango": "",
   "subrango": "",
@@ -25749,7 +25698,7 @@
   "din_t": 0,
   "crn_t": 1,
   "cri_t": 0,
-  "pos": 480,
+  "pos": 479,
   "total": 80,
   "rango": "",
   "subrango": "",
@@ -25800,7 +25749,7 @@
   "din_t": 0,
   "crn_t": 0,
   "cri_t": 0,
-  "pos": 481,
+  "pos": 480,
   "total": 80,
   "rango": "",
   "subrango": "",
@@ -25844,7 +25793,7 @@
   "din_t": 0,
   "crn_t": 0,
   "cri_t": 0,
-  "pos": 482,
+  "pos": 481,
   "total": 80,
   "rango": "",
   "subrango": "",
@@ -25888,7 +25837,7 @@
   "din_t": 0,
   "crn_t": 0,
   "cri_t": 0,
-  "pos": 483,
+  "pos": 482,
   "total": 80,
   "rango": "",
   "subrango": "",
@@ -25932,7 +25881,7 @@
   "din_t": 0,
   "crn_t": 0,
   "cri_t": 0,
-  "pos": 484,
+  "pos": 483,
   "total": 80,
   "rango": "",
   "subrango": "",
@@ -25976,7 +25925,7 @@
   "din_t": 0,
   "crn_t": 0,
   "cri_t": 3,
-  "pos": 485,
+  "pos": 484,
   "total": 80,
   "rango": "",
   "subrango": "",
@@ -26020,7 +25969,7 @@
   "din_t": 0,
   "crn_t": 0,
   "cri_t": 0,
-  "pos": 486,
+  "pos": 485,
   "total": 80,
   "rango": "",
   "subrango": "",
@@ -26071,7 +26020,7 @@
   "din_t": 1,
   "crn_t": 0,
   "cri_t": 1,
-  "pos": 487,
+  "pos": 486,
   "total": 80,
   "rango": "",
   "subrango": "",
@@ -26122,7 +26071,7 @@
   "din_t": 0,
   "crn_t": 0,
   "cri_t": 3,
-  "pos": 488,
+  "pos": 487,
   "total": 80,
   "rango": "",
   "subrango": "",
@@ -26166,7 +26115,7 @@
   "din_t": 0,
   "crn_t": 0,
   "cri_t": 0,
-  "pos": 489,
+  "pos": 488,
   "total": 80,
   "rango": "",
   "subrango": "",
@@ -26210,7 +26159,7 @@
   "din_t": 0,
   "crn_t": 0,
   "cri_t": 0,
-  "pos": 490,
+  "pos": 489,
   "total": 80,
   "rango": "",
   "subrango": "",
@@ -26258,7 +26207,7 @@
   "din_t": 0,
   "crn_t": 0,
   "cri_t": 2,
-  "pos": 491,
+  "pos": 490,
   "total": 80,
   "rango": "",
   "subrango": "",
@@ -26302,7 +26251,7 @@
   "din_t": 0,
   "crn_t": 0,
   "cri_t": 0,
-  "pos": 492,
+  "pos": 491,
   "total": 80,
   "rango": "",
   "subrango": "",
@@ -26346,7 +26295,7 @@
   "din_t": 0,
   "crn_t": 0,
   "cri_t": 0,
-  "pos": 493,
+  "pos": 492,
   "total": 80,
   "rango": "",
   "subrango": "",
@@ -26390,7 +26339,7 @@
   "din_t": 0,
   "crn_t": 0,
   "cri_t": 2,
-  "pos": 494,
+  "pos": 493,
   "total": 80,
   "rango": "",
   "subrango": "",
@@ -26434,7 +26383,7 @@
   "din_t": 0,
   "crn_t": 0,
   "cri_t": 2,
-  "pos": 495,
+  "pos": 494,
   "total": 80,
   "rango": "",
   "subrango": "",
@@ -26478,7 +26427,7 @@
   "din_t": 0,
   "crn_t": 0,
   "cri_t": 0,
-  "pos": 496,
+  "pos": 495,
   "total": 80,
   "rango": "",
   "subrango": "",
@@ -26522,7 +26471,7 @@
   "din_t": 0,
   "crn_t": 0,
   "cri_t": 0,
-  "pos": 497,
+  "pos": 496,
   "total": 80,
   "rango": "",
   "subrango": "",
@@ -26566,7 +26515,7 @@
   "din_t": 0,
   "crn_t": 0,
   "cri_t": 0,
-  "pos": 498,
+  "pos": 497,
   "total": 80,
   "rango": "",
   "subrango": "",
@@ -26610,7 +26559,7 @@
   "din_t": 0,
   "crn_t": 0,
   "cri_t": 3,
-  "pos": 499,
+  "pos": 498,
   "total": 80,
   "rango": "",
   "subrango": "",
@@ -26654,7 +26603,7 @@
   "din_t": 0,
   "crn_t": 1,
   "cri_t": 4,
-  "pos": 500,
+  "pos": 499,
   "total": 80,
   "rango": "",
   "subrango": "",
@@ -26698,7 +26647,7 @@
   "din_t": 0,
   "crn_t": 0,
   "cri_t": 0,
-  "pos": 501,
+  "pos": 500,
   "total": 80,
   "rango": "",
   "subrango": "",
@@ -26742,7 +26691,7 @@
   "din_t": 0,
   "crn_t": 0,
   "cri_t": 0,
-  "pos": 502,
+  "pos": 501,
   "total": 80,
   "rango": "",
   "subrango": "",
@@ -26789,7 +26738,7 @@
   "din_t": 0,
   "crn_t": 0,
   "cri_t": 0,
-  "pos": 503,
+  "pos": 502,
   "total": 80,
   "rango": "",
   "subrango": "",
@@ -26833,7 +26782,7 @@
   "din_t": 0,
   "crn_t": 0,
   "cri_t": 1,
-  "pos": 504,
+  "pos": 503,
   "total": 80,
   "rango": "",
   "subrango": "",
@@ -26877,7 +26826,7 @@
   "din_t": 0,
   "crn_t": 0,
   "cri_t": 0,
-  "pos": 505,
+  "pos": 504,
   "total": 80,
   "rango": "",
   "subrango": "",
@@ -26921,7 +26870,7 @@
   "din_t": 0,
   "crn_t": 0,
   "cri_t": 0,
-  "pos": 506,
+  "pos": 505,
   "total": 80,
   "rango": "",
   "subrango": "",
@@ -26965,7 +26914,7 @@
   "din_t": 0,
   "crn_t": 0,
   "cri_t": 0,
-  "pos": 507,
+  "pos": 506,
   "total": 80,
   "rango": "",
   "subrango": "",
@@ -27009,7 +26958,7 @@
   "din_t": 0,
   "crn_t": 0,
   "cri_t": 0,
-  "pos": 508,
+  "pos": 507,
   "total": 80,
   "rango": "",
   "subrango": "",
@@ -27053,7 +27002,7 @@
   "din_t": 0,
   "crn_t": 0,
   "cri_t": 0,
-  "pos": 509,
+  "pos": 508,
   "total": 80,
   "rango": "",
   "subrango": "",
@@ -27097,7 +27046,7 @@
   "din_t": 0,
   "crn_t": 0,
   "cri_t": 0,
-  "pos": 510,
+  "pos": 509,
   "total": 80,
   "rango": "",
   "subrango": "",
@@ -27141,7 +27090,7 @@
   "din_t": 0,
   "crn_t": 0,
   "cri_t": 0,
-  "pos": 511,
+  "pos": 510,
   "total": 80,
   "rango": "",
   "subrango": "",
@@ -27185,7 +27134,7 @@
   "din_t": 0,
   "crn_t": 0,
   "cri_t": 0,
-  "pos": 512,
+  "pos": 511,
   "total": 80,
   "rango": "",
   "subrango": "",
@@ -27229,7 +27178,7 @@
   "din_t": 0,
   "crn_t": 1,
   "cri_t": 0,
-  "pos": 513,
+  "pos": 512,
   "total": 80,
   "rango": "",
   "subrango": "",
@@ -27280,7 +27229,7 @@
   "din_t": 0,
   "crn_t": 1,
   "cri_t": 0,
-  "pos": 514,
+  "pos": 513,
   "total": 80,
   "rango": "",
   "subrango": "",
@@ -27331,7 +27280,7 @@
   "din_t": 0,
   "crn_t": 0,
   "cri_t": 0,
-  "pos": 515,
+  "pos": 514,
   "total": 80,
   "rango": "",
   "subrango": "",
@@ -27382,7 +27331,7 @@
   "din_t": 0,
   "crn_t": 1,
   "cri_t": 0,
-  "pos": 516,
+  "pos": 515,
   "total": 80,
   "rango": "",
   "subrango": "",
@@ -27433,7 +27382,7 @@
   "din_t": 1,
   "crn_t": 0,
   "cri_t": 1,
-  "pos": 517,
+  "pos": 516,
   "total": 80,
   "rango": "",
   "subrango": "",
@@ -27484,7 +27433,7 @@
   "din_t": 1,
   "crn_t": 0,
   "cri_t": 1,
-  "pos": 518,
+  "pos": 517,
   "total": 80,
   "rango": "",
   "subrango": "",
@@ -27535,7 +27484,7 @@
   "din_t": 1,
   "crn_t": 0,
   "cri_t": 1,
-  "pos": 519,
+  "pos": 518,
   "total": 80,
   "rango": "",
   "subrango": "",
@@ -27586,7 +27535,7 @@
   "din_t": 1,
   "crn_t": 0,
   "cri_t": 1,
-  "pos": 520,
+  "pos": 519,
   "total": 80,
   "rango": "",
   "subrango": "",
@@ -27637,7 +27586,7 @@
   "din_t": 0,
   "crn_t": 1,
   "cri_t": 1,
-  "pos": 521,
+  "pos": 520,
   "total": 80,
   "rango": "",
   "subrango": "",
@@ -27681,7 +27630,7 @@
   "din_t": 0,
   "crn_t": 0,
   "cri_t": 0,
-  "pos": 522,
+  "pos": 521,
   "total": 80,
   "rango": "",
   "subrango": "",
@@ -27725,7 +27674,7 @@
   "din_t": 0,
   "crn_t": 0,
   "cri_t": 0,
-  "pos": 523,
+  "pos": 522,
   "total": 80,
   "rango": "",
   "subrango": "",
@@ -27769,7 +27718,7 @@
   "din_t": 0,
   "crn_t": 0,
   "cri_t": 3,
-  "pos": 524,
+  "pos": 523,
   "total": 80,
   "rango": "",
   "subrango": "",
@@ -27813,7 +27762,7 @@
   "din_t": 0,
   "crn_t": 0,
   "cri_t": 3,
-  "pos": 525,
+  "pos": 524,
   "total": 80,
   "rango": "",
   "subrango": "",
@@ -27857,7 +27806,7 @@
   "din_t": 0,
   "crn_t": 0,
   "cri_t": 0,
-  "pos": 526,
+  "pos": 525,
   "total": 80,
   "rango": "",
   "subrango": "",
@@ -27901,7 +27850,7 @@
   "din_t": 0,
   "crn_t": 0,
   "cri_t": 0,
-  "pos": 527,
+  "pos": 526,
   "total": 80,
   "rango": "",
   "subrango": "",
@@ -27945,7 +27894,7 @@
   "din_t": 0,
   "crn_t": 0,
   "cri_t": 0,
-  "pos": 528,
+  "pos": 527,
   "total": 80,
   "rango": "",
   "subrango": "",
@@ -27989,7 +27938,7 @@
   "din_t": 1,
   "crn_t": 0,
   "cri_t": 1,
-  "pos": 529,
+  "pos": 528,
   "total": 80,
   "rango": "",
   "subrango": "",
@@ -28040,7 +27989,7 @@
   "din_t": 0,
   "crn_t": 0,
   "cri_t": 0,
-  "pos": 530,
+  "pos": 529,
   "total": 80,
   "rango": "",
   "subrango": "",
@@ -28091,7 +28040,7 @@
   "din_t": 0,
   "crn_t": 1,
   "cri_t": 15,
-  "pos": 531,
+  "pos": 530,
   "total": 80,
   "rango": "",
   "subrango": "",
@@ -28142,7 +28091,7 @@
   "din_t": 0,
   "crn_t": 0,
   "cri_t": 3,
-  "pos": 532,
+  "pos": 531,
   "total": 80,
   "rango": "",
   "subrango": "",
@@ -28186,7 +28135,7 @@
   "din_t": 0,
   "crn_t": 0,
   "cri_t": 0,
-  "pos": 533,
+  "pos": 532,
   "total": 80,
   "rango": "",
   "subrango": "",
@@ -28237,7 +28186,7 @@
   "din_t": 1,
   "crn_t": 0,
   "cri_t": 1,
-  "pos": 534,
+  "pos": 533,
   "total": 80,
   "rango": "",
   "subrango": "",
@@ -28288,7 +28237,7 @@
   "din_t": 0,
   "crn_t": 0,
   "cri_t": 0,
-  "pos": 535,
+  "pos": 534,
   "total": 80,
   "rango": "",
   "subrango": "",
@@ -28332,7 +28281,7 @@
   "din_t": 0,
   "crn_t": 0,
   "cri_t": 2,
-  "pos": 536,
+  "pos": 535,
   "total": 80,
   "rango": "",
   "subrango": "",
@@ -28376,7 +28325,7 @@
   "din_t": 0,
   "crn_t": 0,
   "cri_t": 2,
-  "pos": 537,
+  "pos": 536,
   "total": 80,
   "rango": "",
   "subrango": "",
@@ -28420,7 +28369,7 @@
   "din_t": 0,
   "crn_t": 1,
   "cri_t": 0,
-  "pos": 538,
+  "pos": 537,
   "total": 80,
   "rango": "",
   "subrango": "",
@@ -28471,7 +28420,7 @@
   "din_t": 0,
   "crn_t": 0,
   "cri_t": 2,
-  "pos": 539,
+  "pos": 538,
   "total": 80,
   "rango": "",
   "subrango": "",
@@ -28515,7 +28464,7 @@
   "din_t": 0,
   "crn_t": 0,
   "cri_t": 0,
-  "pos": 540,
+  "pos": 539,
   "total": 80,
   "rango": "",
   "subrango": "",
@@ -28559,7 +28508,7 @@
   "din_t": 0,
   "crn_t": 0,
   "cri_t": 0,
-  "pos": 541,
+  "pos": 540,
   "total": 80,
   "rango": "",
   "subrango": "",
@@ -28603,7 +28552,7 @@
   "din_t": 0,
   "crn_t": 0,
   "cri_t": 0,
-  "pos": 542,
+  "pos": 541,
   "total": 80,
   "rango": "",
   "subrango": "",
@@ -28647,7 +28596,7 @@
   "din_t": 0,
   "crn_t": 0,
   "cri_t": 2,
-  "pos": 543,
+  "pos": 542,
   "total": 80,
   "rango": "",
   "subrango": "",
@@ -28691,7 +28640,7 @@
   "din_t": 0,
   "crn_t": 0,
   "cri_t": 0,
-  "pos": 544,
+  "pos": 543,
   "total": 80,
   "rango": "",
   "subrango": "",
@@ -28735,7 +28684,7 @@
   "din_t": 0,
   "crn_t": 0,
   "cri_t": 3,
-  "pos": 545,
+  "pos": 544,
   "total": 80,
   "rango": "",
   "subrango": "",
@@ -28779,7 +28728,7 @@
   "din_t": 0,
   "crn_t": 0,
   "cri_t": 0,
-  "pos": 546,
+  "pos": 545,
   "total": 80,
   "rango": "",
   "subrango": "",
@@ -28823,7 +28772,7 @@
   "din_t": 0,
   "crn_t": 0,
   "cri_t": 4,
-  "pos": 547,
+  "pos": 546,
   "total": 80,
   "rango": "",
   "subrango": "",
@@ -28878,7 +28827,7 @@
   "din_t": 1,
   "crn_t": 0,
   "cri_t": 1,
-  "pos": 548,
+  "pos": 547,
   "total": 80,
   "rango": "",
   "subrango": "",
@@ -28929,7 +28878,7 @@
   "din_t": 0,
   "crn_t": 1,
   "cri_t": 2,
-  "pos": 549,
+  "pos": 548,
   "total": 80,
   "rango": "",
   "subrango": "",
@@ -28973,7 +28922,7 @@
   "din_t": 0,
   "crn_t": 0,
   "cri_t": 0,
-  "pos": 550,
+  "pos": 549,
   "total": 80,
   "rango": "",
   "subrango": "",
@@ -29017,7 +28966,7 @@
   "din_t": 0,
   "crn_t": 0,
   "cri_t": 0,
-  "pos": 551,
+  "pos": 550,
   "total": 80,
   "rango": "",
   "subrango": "",
@@ -29061,7 +29010,7 @@
   "din_t": 0,
   "crn_t": 0,
   "cri_t": 2,
-  "pos": 552,
+  "pos": 551,
   "total": 80,
   "rango": "",
   "subrango": "",
@@ -29105,7 +29054,7 @@
   "din_t": 0,
   "crn_t": 0,
   "cri_t": 2,
-  "pos": 553,
+  "pos": 552,
   "total": 80,
   "rango": "",
   "subrango": "",
@@ -29149,7 +29098,7 @@
   "din_t": 0,
   "crn_t": 0,
   "cri_t": 3,
-  "pos": 554,
+  "pos": 553,
   "total": 80,
   "rango": "",
   "subrango": "",
@@ -29193,7 +29142,7 @@
   "din_t": 0,
   "crn_t": 3,
   "cri_t": 1,
-  "pos": 555,
+  "pos": 554,
   "total": 80,
   "rango": "",
   "subrango": "",
@@ -29237,7 +29186,7 @@
   "din_t": 0,
   "crn_t": 0,
   "cri_t": 0,
-  "pos": 556,
+  "pos": 555,
   "total": 80,
   "rango": "",
   "subrango": "",
@@ -29281,7 +29230,7 @@
   "din_t": 0,
   "crn_t": 1,
   "cri_t": 0,
-  "pos": 557,
+  "pos": 556,
   "total": 80,
   "rango": "",
   "subrango": "",
@@ -29332,7 +29281,7 @@
   "din_t": 0,
   "crn_t": 0,
   "cri_t": 4,
-  "pos": 558,
+  "pos": 557,
   "total": 80,
   "rango": "",
   "subrango": "",
@@ -29359,7 +29308,7 @@
    "evi": 3,
    "com": 0,
    "top": [
-    4,
+    3,
     "pe"
    ]
   }
@@ -29392,7 +29341,7 @@
   "din_t": 0,
   "crn_t": 0,
   "cri_t": 0,
-  "pos": 559,
+  "pos": 558,
   "total": 80,
   "rango": "",
   "subrango": "",
@@ -29436,7 +29385,7 @@
   "din_t": 0,
   "crn_t": 0,
   "cri_t": 0,
-  "pos": 560,
+  "pos": 559,
   "total": 80,
   "rango": "",
   "subrango": "",
@@ -29487,7 +29436,7 @@
   "din_t": 0,
   "crn_t": 1,
   "cri_t": 0,
-  "pos": 561,
+  "pos": 560,
   "total": 80,
   "rango": "",
   "subrango": "",
@@ -29538,7 +29487,7 @@
   "din_t": 0,
   "crn_t": 0,
   "cri_t": 0,
-  "pos": 562,
+  "pos": 561,
   "total": 80,
   "rango": "",
   "subrango": "",
@@ -29589,7 +29538,7 @@
   "din_t": 0,
   "crn_t": 0,
   "cri_t": 0,
-  "pos": 563,
+  "pos": 562,
   "total": 80,
   "rango": "",
   "subrango": "",
@@ -29633,7 +29582,7 @@
   "din_t": 0,
   "crn_t": 0,
   "cri_t": 0,
-  "pos": 564,
+  "pos": 563,
   "total": 80,
   "rango": "",
   "subrango": "",
@@ -29677,7 +29626,7 @@
   "din_t": 1,
   "crn_t": 0,
   "cri_t": 1,
-  "pos": 565,
+  "pos": 564,
   "total": 80,
   "rango": "",
   "subrango": "",
@@ -29728,7 +29677,7 @@
   "din_t": 0,
   "crn_t": 0,
   "cri_t": 0,
-  "pos": 566,
+  "pos": 565,
   "total": 80,
   "rango": "",
   "subrango": "",
@@ -29772,7 +29721,7 @@
   "din_t": 0,
   "crn_t": 0,
   "cri_t": 0,
-  "pos": 567,
+  "pos": 566,
   "total": 80,
   "rango": "",
   "subrango": "",
@@ -29828,7 +29777,7 @@
   "din_t": 0,
   "crn_t": 0,
   "cri_t": 2,
-  "pos": 568,
+  "pos": 567,
   "total": 80,
   "rango": "",
   "subrango": "",
@@ -29872,7 +29821,7 @@
   "din_t": 0,
   "crn_t": 1,
   "cri_t": 6,
-  "pos": 569,
+  "pos": 568,
   "total": 80,
   "rango": "",
   "subrango": "",
@@ -29916,7 +29865,7 @@
   "din_t": 0,
   "crn_t": 0,
   "cri_t": 0,
-  "pos": 570,
+  "pos": 569,
   "total": 80,
   "rango": "",
   "subrango": "",
@@ -29960,7 +29909,7 @@
   "din_t": 0,
   "crn_t": 1,
   "cri_t": 9,
-  "pos": 571,
+  "pos": 570,
   "total": 80,
   "rango": "",
   "subrango": "",
@@ -30011,7 +29960,7 @@
   "din_t": 0,
   "crn_t": 1,
   "cri_t": 9,
-  "pos": 572,
+  "pos": 571,
   "total": 80,
   "rango": "",
   "subrango": "",
@@ -30055,7 +30004,7 @@
   "din_t": 0,
   "crn_t": 3,
   "cri_t": 1,
-  "pos": 573,
+  "pos": 572,
   "total": 80,
   "rango": "",
   "subrango": "",
@@ -30099,7 +30048,7 @@
   "din_t": 0,
   "crn_t": 0,
   "cri_t": 0,
-  "pos": 574,
+  "pos": 573,
   "total": 80,
   "rango": "",
   "subrango": "",
@@ -30143,7 +30092,7 @@
   "din_t": 0,
   "crn_t": 1,
   "cri_t": 0,
-  "pos": 575,
+  "pos": 574,
   "total": 80,
   "rango": "",
   "subrango": "",
@@ -30194,7 +30143,7 @@
   "din_t": 0,
   "crn_t": 0,
   "cri_t": 0,
-  "pos": 576,
+  "pos": 575,
   "total": 80,
   "rango": "",
   "subrango": "",
@@ -30241,7 +30190,7 @@
   "din_t": 0,
   "crn_t": 0,
   "cri_t": 0,
-  "pos": 577,
+  "pos": 576,
   "total": 80,
   "rango": "",
   "subrango": "",
@@ -30285,7 +30234,7 @@
   "din_t": 0,
   "crn_t": 0,
   "cri_t": 0,
-  "pos": 578,
+  "pos": 577,
   "total": 80,
   "rango": "",
   "subrango": "",
@@ -30336,7 +30285,7 @@
   "din_t": 0,
   "crn_t": 0,
   "cri_t": 10,
-  "pos": 579,
+  "pos": 578,
   "total": 80,
   "rango": "",
   "subrango": "",
@@ -30380,7 +30329,7 @@
   "din_t": 0,
   "crn_t": 0,
   "cri_t": 0,
-  "pos": 580,
+  "pos": 579,
   "total": 80,
   "rango": "",
   "subrango": "",
@@ -30424,7 +30373,7 @@
   "din_t": 0,
   "crn_t": 0,
   "cri_t": 8,
-  "pos": 581,
+  "pos": 580,
   "total": 80,
   "rango": "",
   "subrango": "",
@@ -30468,7 +30417,7 @@
   "din_t": 0,
   "crn_t": 0,
   "cri_t": 0,
-  "pos": 582,
+  "pos": 581,
   "total": 80,
   "rango": "",
   "subrango": "",
@@ -30512,7 +30461,7 @@
   "din_t": 0,
   "crn_t": 0,
   "cri_t": 0,
-  "pos": 583,
+  "pos": 582,
   "total": 80,
   "rango": "",
   "subrango": "",
@@ -30556,7 +30505,7 @@
   "din_t": 0,
   "crn_t": 0,
   "cri_t": 0,
-  "pos": 584,
+  "pos": 583,
   "total": 80,
   "rango": "",
   "subrango": "",
@@ -30600,7 +30549,7 @@
   "din_t": 0,
   "crn_t": 0,
   "cri_t": 0,
-  "pos": 585,
+  "pos": 584,
   "total": 80,
   "rango": "",
   "subrango": "",
@@ -30644,7 +30593,7 @@
   "din_t": 0,
   "crn_t": 0,
   "cri_t": 0,
-  "pos": 586,
+  "pos": 585,
   "total": 80,
   "rango": "",
   "subrango": "",
@@ -30688,7 +30637,7 @@
   "din_t": 0,
   "crn_t": 0,
   "cri_t": 0,
-  "pos": 587,
+  "pos": 586,
   "total": 80,
   "rango": "",
   "subrango": "",
@@ -30732,7 +30681,7 @@
   "din_t": 0,
   "crn_t": 0,
   "cri_t": 0,
-  "pos": 588,
+  "pos": 587,
   "total": 80,
   "rango": "",
   "subrango": "",
@@ -30776,7 +30725,7 @@
   "din_t": 0,
   "crn_t": 0,
   "cri_t": 0,
-  "pos": 589,
+  "pos": 588,
   "total": 80,
   "rango": "",
   "subrango": "",
@@ -30820,7 +30769,7 @@
   "din_t": 0,
   "crn_t": 0,
   "cri_t": 0,
-  "pos": 590,
+  "pos": 589,
   "total": 80,
   "rango": "",
   "subrango": "",
@@ -30864,7 +30813,7 @@
   "din_t": 0,
   "crn_t": 0,
   "cri_t": 0,
-  "pos": 591,
+  "pos": 590,
   "total": 80,
   "rango": "",
   "subrango": "",
@@ -30908,7 +30857,7 @@
   "din_t": 0,
   "crn_t": 0,
   "cri_t": 0,
-  "pos": 592,
+  "pos": 591,
   "total": 80,
   "rango": "",
   "subrango": "",
@@ -30952,7 +30901,7 @@
   "din_t": 1,
   "crn_t": 0,
   "cri_t": 3,
-  "pos": 593,
+  "pos": 592,
   "total": 80,
   "rango": "",
   "subrango": "",
@@ -30978,7 +30927,7 @@
    "evi": 2,
    "com": 0,
    "top": [
-    7,
+    6,
     "ar"
    ]
   }
@@ -31011,7 +30960,7 @@
   "din_t": 0,
   "crn_t": 0,
   "cri_t": 3,
-  "pos": 594,
+  "pos": 593,
   "total": 80,
   "rango": "",
   "subrango": "",
@@ -31055,7 +31004,7 @@
   "din_t": 0,
   "crn_t": 0,
   "cri_t": 0,
-  "pos": 595,
+  "pos": 594,
   "total": 80,
   "rango": "",
   "subrango": "",
@@ -31099,7 +31048,7 @@
   "din_t": 0,
   "crn_t": 0,
   "cri_t": 0,
-  "pos": 596,
+  "pos": 595,
   "total": 80,
   "rango": "",
   "subrango": "",
@@ -31143,7 +31092,7 @@
   "din_t": 0,
   "crn_t": 0,
   "cri_t": 0,
-  "pos": 597,
+  "pos": 596,
   "total": 80,
   "rango": "",
   "subrango": "",
@@ -31187,7 +31136,7 @@
   "din_t": 0,
   "crn_t": 0,
   "cri_t": 0,
-  "pos": 598,
+  "pos": 597,
   "total": 80,
   "rango": "",
   "subrango": "",
@@ -31231,7 +31180,7 @@
   "din_t": 0,
   "crn_t": 0,
   "cri_t": 0,
-  "pos": 599,
+  "pos": 598,
   "total": 80,
   "rango": "",
   "subrango": "",
@@ -31275,7 +31224,7 @@
   "din_t": 0,
   "crn_t": 0,
   "cri_t": 0,
-  "pos": 600,
+  "pos": 599,
   "total": 80,
   "rango": "",
   "subrango": "",
@@ -31330,7 +31279,7 @@
   "din_t": 0,
   "crn_t": 0,
   "cri_t": 0,
-  "pos": 601,
+  "pos": 600,
   "total": 80,
   "rango": "",
   "subrango": "",
@@ -31374,7 +31323,7 @@
   "din_t": 0,
   "crn_t": 0,
   "cri_t": 0,
-  "pos": 602,
+  "pos": 601,
   "total": 80,
   "rango": "",
   "subrango": "",
@@ -31419,7 +31368,7 @@
   "din_t": 0,
   "crn_t": 0,
   "cri_t": 0,
-  "pos": 603,
+  "pos": 602,
   "total": 80,
   "rango": "",
   "subrango": "",
@@ -31463,7 +31412,7 @@
   "din_t": 0,
   "crn_t": 0,
   "cri_t": 0,
-  "pos": 604,
+  "pos": 603,
   "total": 80,
   "rango": "",
   "subrango": "",
@@ -31507,7 +31456,7 @@
   "din_t": 0,
   "crn_t": 0,
   "cri_t": 0,
-  "pos": 605,
+  "pos": 604,
   "total": 80,
   "rango": "",
   "subrango": "",
@@ -31551,7 +31500,7 @@
   "din_t": 0,
   "crn_t": 0,
   "cri_t": 0,
-  "pos": 606,
+  "pos": 605,
   "total": 80,
   "rango": "",
   "subrango": "",
@@ -31595,7 +31544,7 @@
   "din_t": 0,
   "crn_t": 0,
   "cri_t": 0,
-  "pos": 607,
+  "pos": 606,
   "total": 80,
   "rango": "",
   "subrango": "",
@@ -31639,7 +31588,7 @@
   "din_t": 0,
   "crn_t": 0,
   "cri_t": 0,
-  "pos": 608,
+  "pos": 607,
   "total": 80,
   "rango": "",
   "subrango": "",
@@ -31683,7 +31632,7 @@
   "din_t": 0,
   "crn_t": 0,
   "cri_t": 3,
-  "pos": 609,
+  "pos": 608,
   "total": 80,
   "rango": "",
   "subrango": "",
@@ -31727,7 +31676,7 @@
   "din_t": 0,
   "crn_t": 0,
   "cri_t": 2,
-  "pos": 610,
+  "pos": 609,
   "total": 80,
   "rango": "",
   "subrango": "",
@@ -31771,7 +31720,7 @@
   "din_t": 0,
   "crn_t": 2,
   "cri_t": 6,
-  "pos": 611,
+  "pos": 610,
   "total": 80,
   "rango": "",
   "subrango": "",
@@ -31815,7 +31764,7 @@
   "din_t": 0,
   "crn_t": 2,
   "cri_t": 6,
-  "pos": 612,
+  "pos": 611,
   "total": 80,
   "rango": "",
   "subrango": "",
@@ -31859,7 +31808,7 @@
   "din_t": 0,
   "crn_t": 2,
   "cri_t": 6,
-  "pos": 613,
+  "pos": 612,
   "total": 80,
   "rango": "",
   "subrango": "",
@@ -31903,7 +31852,7 @@
   "din_t": 0,
   "crn_t": 0,
   "cri_t": 9,
-  "pos": 614,
+  "pos": 613,
   "total": 80,
   "rango": "",
   "subrango": "",
@@ -31947,7 +31896,7 @@
   "din_t": 0,
   "crn_t": 0,
   "cri_t": 0,
-  "pos": 615,
+  "pos": 614,
   "total": 80,
   "rango": "",
   "subrango": "",
@@ -31991,7 +31940,7 @@
   "din_t": 0,
   "crn_t": 2,
   "cri_t": 7,
-  "pos": 616,
+  "pos": 615,
   "total": 80,
   "rango": "",
   "subrango": "",
@@ -32035,7 +31984,7 @@
   "din_t": 0,
   "crn_t": 1,
   "cri_t": 9,
-  "pos": 617,
+  "pos": 616,
   "total": 80,
   "rango": "",
   "subrango": "",
@@ -32079,7 +32028,7 @@
   "din_t": 0,
   "crn_t": 2,
   "cri_t": 8,
-  "pos": 618,
+  "pos": 617,
   "total": 80,
   "rango": "",
   "subrango": "",
@@ -32123,7 +32072,7 @@
   "din_t": 0,
   "crn_t": 0,
   "cri_t": 10,
-  "pos": 619,
+  "pos": 618,
   "total": 80,
   "rango": "",
   "subrango": "",
@@ -32167,7 +32116,7 @@
   "din_t": 0,
   "crn_t": 1,
   "cri_t": 7,
-  "pos": 620,
+  "pos": 619,
   "total": 80,
   "rango": "",
   "subrango": "",
@@ -32211,7 +32160,7 @@
   "din_t": 0,
   "crn_t": 0,
   "cri_t": 8,
-  "pos": 621,
+  "pos": 620,
   "total": 80,
   "rango": "",
   "subrango": "",
@@ -32255,7 +32204,7 @@
   "din_t": 0,
   "crn_t": 0,
   "cri_t": 0,
-  "pos": 622,
+  "pos": 621,
   "total": 80,
   "rango": "",
   "subrango": "",
@@ -32299,7 +32248,7 @@
   "din_t": 0,
   "crn_t": 0,
   "cri_t": 8,
-  "pos": 623,
+  "pos": 622,
   "total": 80,
   "rango": "",
   "subrango": "",
@@ -32343,7 +32292,7 @@
   "din_t": 0,
   "crn_t": 0,
   "cri_t": 0,
-  "pos": 624,
+  "pos": 623,
   "total": 80,
   "rango": "",
   "subrango": "",
