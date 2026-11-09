@@ -272,7 +272,7 @@
    "temporada": "163744b064f3:7a510334494e"
   },
   "Cinexfilo": {
-   "competitivo": "73714c778020:624f5e322311",
+   "competitivo": "b94e4c4c6388:624f5e322311",
    "pais": "986a8d3f6283:733ce66bf5fa",
    "servidor": "c99606e835ea:2415c901692f:6a5f1a",
    "temporada": "b6c06798a818:7a510334494e"
@@ -983,7 +983,7 @@
    "competitivo": "4e742e90e3bd:624f5e322311",
    "pais": "7527945c64b2:733ce66bf5fa",
    "servidor": "a28b702fc40f:2415c901692f:943e25",
-   "temporada": "0bab74913171:7a510334494e"
+   "temporada": "044cb981939b:7a510334494e"
   },
   "Luck": {
    "competitivo": "36885e51885f:624f5e322311",
@@ -1094,8 +1094,8 @@
    "temporada": "3229ee8e3b59:7a510334494e"
   },
   "Mathhias": {
-   "competitivo": "0ee1a7c5dbc4:624f5e322311",
-   "pais": "85d24c57f1cf:733ce66bf5fa",
+   "competitivo": "8613e6be45fa:624f5e322311",
+   "pais": "b052bc5afc8c:733ce66bf5fa",
    "servidor": "b4da00dba59a:2415c901692f:ce9c52",
    "temporada": "6e14b575b3bc:7a510334494e"
   },
@@ -1706,7 +1706,7 @@
    "competitivo": "1c1615d40190:624f5e322311",
    "pais": "1cd73b9b9eac:733ce66bf5fa",
    "servidor": "7e2e07593a11:2415c901692f:16bc7a",
-   "temporada": "608f3c7751c4:7a510334494e"
+   "temporada": "c00fbe30ae86:7a510334494e"
   },
   "Trot": {
    "competitivo": "ed10626c6203:624f5e322311",
@@ -1745,8 +1745,8 @@
   },
   "Valdoza": {},
   "Vandu": {
-   "competitivo": "da51121eaa8a:624f5e322311",
-   "pais": "a4cafa4297fb:733ce66bf5fa",
+   "competitivo": "b4732d1fb67f:624f5e322311",
+   "pais": "2b838a10c373:733ce66bf5fa",
    "servidor": "b2f0bf7e51b8:2415c901692f:0bce64",
    "temporada": "32e7a6b9bd97:7a510334494e"
   },
@@ -1763,7 +1763,7 @@
    "competitivo": "003b0ba72832:624f5e322311",
    "pais": "06252389fc7d:733ce66bf5fa",
    "servidor": "e5da72204ac9:2415c901692f:2271dc",
-   "temporada": "bb2f62184628:7a510334494e"
+   "temporada": "bf3a0713e203:7a510334494e"
   },
   "Vilca": {
    "competitivo": "af63d416a448:624f5e322311",
@@ -2050,5 +2050,5 @@
    "servidor": "7f8885a35a6d:2415c901692f:93a344"
   }
  },
- "cuando": "2026-11-09T23:07:03+00:00"
+ "cuando": "2026-11-09T23:22:37+00:00"
 }
