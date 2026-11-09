@@ -2,28 +2,6 @@
  "_leeme": "Los eventos de vidas de #veredictos ya armados —quién peleó con quién y quién ganó—, para cargarlos aunque ya no estén entre los últimos mensajes del canal; y cada batalla con su ganador (`batallas`), para la llave que no lo dice; y cada llave como se jugó (`llaves`), que manda sobre la del organizador. Sin los mensajes: el repo es público. Lo escribe bot/escuchar.py (vidas()).",
  "eventos": {},
  "batallas": {
-  "1566686215401508989": {
-   "id": "1566686215401508989",
-   "sv": "[FFA] Freestyle For All 👾",
-   "g": "1468472442925092958",
-   "canal": "1487206164864438513",
-   "pub": 1793597501374,
-   "a": "mats🇺🇾+Emi 🇲🇽",
-   "b": "Geoka 🇧🇩+Akuseru 🇦🇷",
-   "ganador": "Geoka 🇧🇩+Akuseru 🇦🇷",
-   "votos": "1–0"
-  },
-  "1566687962476052481": {
-   "id": "1566687962476052481",
-   "sv": "[FFA] Freestyle For All 👾",
-   "g": "1468472442925092958",
-   "canal": "1487206164864438513",
-   "pub": 1793597917909,
-   "a": "GEOKA🇧🇩",
-   "b": "ERIAN🇰🇷",
-   "ganador": "ERIAN🇰🇷",
-   "votos": "1–0"
-  },
   "1566701751011115059": {
    "id": "1566701751011115059",
    "sv": "[FFA] Freestyle For All 👾",
@@ -935,6 +913,28 @@
    "a": "MCO",
    "b": "PRAISERIZAS",
    "ganador": "PRAISERIZAS",
+   "votos": "1–0"
+  },
+  "1569224608077320327": {
+   "id": "1569224608077320327",
+   "sv": "[FFA] Freestyle For All 👾",
+   "g": "1468472442925092958",
+   "canal": "1487206164864438513",
+   "pub": 1794202701349,
+   "a": "LVEL",
+   "b": "ZA+TAM",
+   "ganador": "ZA+TAM",
+   "votos": "1–0"
+  },
+  "1569226285652250715": {
+   "id": "1569226285652250715",
+   "sv": "[FFA] Freestyle For All 👾",
+   "g": "1468472442925092958",
+   "canal": "1487206164864438513",
+   "pub": 1794203101314,
+   "a": "PARK JI SUNG",
+   "b": "CRAKERO",
+   "ganador": "PARK JI SUNG",
    "votos": "1–0"
   }
  },
@@ -5453,8 +5453,8 @@
    "g": "1468472442925092958",
    "canal": "1487206164864438513",
    "pub": 1794197391714,
-   "ed": 1794201484453,
-   "texto": "`[ OCTAVOS ]`\n⌞MCO⌝ 🆚 ⌞OKAM⌝\n⌞ERIAN⌝ 🆚 ⌞PRAISERIZAS⌝\n⌞VERC⌝ 🆚 ⌞TAM⌝\n⌞SIX⌝ 🆚 ⌞PARK JI SUNG⌝ 🆚 ⌞SURYA+ZA⌝\n⌞CRAKERO⌝ 🆚 ⌞ARAYA⌝\n⌞DYZZ+CALIZ⌝ 🆚 ⌞SIX+PARIA⌝\n⌞SH+CARLOS⌝ 🆚 ⌞LEANDRO KATANA+AKASHA⌝\n`[ CUARTOS ]`\n⌞MCO⌝ 🆚 ⌞PRAISERIZAS⌝\n⌞LEANDRO KATANA+AKASHA⌝ 🆚 ⌞PARIA SIX⌝",
+   "ed": 1794203267407,
+   "texto": "`[ OCTAVOS ]`\n⌞MCO⌝ 🆚 ⌞OKAM⌝\n⌞ERIAN⌝ 🆚 ⌞PRAISERIZAS⌝\n⌞VERC⌝ 🆚 ⌞TAM⌝\n⌞SIX⌝ 🆚 ⌞PARK JI SUNG⌝ 🆚 ⌞SURYA+ZA⌝\n⌞CRAKERO⌝ 🆚 ⌞ARAYA⌝\n⌞DYZZ+CALIZ⌝ 🆚 ⌞SIX+PARIA⌝\n⌞SH+CARLOS⌝ 🆚 ⌞LEANDRO KATANA+AKASHA⌝\n`[ CUARTOS ]`\n⌞MCO⌝ 🆚 ⌞PRAISERIZAS⌝\n⌞LEANDRO KATANA+AKASHA⌝ 🆚 ⌞PARIA SIX⌝\n⌞LVEL⌝ 🆚 ⌞ZA+TAM⌝\n⌞PARK JI SUNG⌝ 🆚 ⌞CRAKERO⌝\n`[ SEMIFINALES ]`\n⌞AKASHA+SIX+LEANDRO KATANA⌝ 🆚 ⌞PARK JI SUNG⌝",
    "batallas": [
     [
      "OCTAVOS",
@@ -5542,6 +5542,36 @@
      [
       "LEANDRO KATANA+AKASHA",
       "PARIA SIX"
+     ],
+     null,
+     "no aparece nadie después",
+     []
+    ],
+    [
+     "CUARTOS",
+     [
+      "LVEL",
+      "ZA+TAM"
+     ],
+     "ZA+TAM",
+     "veredicto",
+     []
+    ],
+    [
+     "CUARTOS",
+     [
+      "PARK JI SUNG",
+      "CRAKERO"
+     ],
+     "PARK JI SUNG",
+     "veredicto",
+     []
+    ],
+    [
+     "SEMIFINALES",
+     [
+      "AKASHA+SIX+LEANDRO KATANA",
+      "PARK JI SUNG"
      ],
      null,
      "última ronda y no dice campeón",
