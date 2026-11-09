@@ -1,51 +1,51 @@
 {
  "v": 1,
- "cuando": "2026-11-09T05:42:45Z",
+ "cuando": "2026-11-09T06:14:51Z",
  "trabajo": "dibujar",
  "codigo": 0,
- "dur_s": 651.9,
+ "dur_s": 762.9,
  "pasos": [
   {
    "n": "2f",
    "que": "las fotos que faltan, de Discord a R2",
    "ok": true,
-   "s": 9.5
+   "s": 6.6
   },
   {
    "n": "2f2",
    "que": "los TAGs elegidos",
    "ok": true,
-   "s": 0.8
+   "s": 1.0
   },
   {
    "n": "3",
    "que": "qué cambió",
    "ok": true,
-   "s": 7.2
+   "s": 10.1
   },
   {
    "n": "4",
    "que": "las caras, desde R2",
    "ok": true,
-   "s": 19.3
+   "s": 23.0
   },
   {
    "n": "5",
-   "que": "tanda 1 de 3 · 40 persona(s)",
+   "que": "tanda 1 de 2 · 40 persona(s)",
    "ok": false,
-   "s": 550.9
+   "s": 658.3
   },
   {
    "n": "5b",
    "que": "las Bloqueadas",
    "ok": true,
-   "s": 5.2
+   "s": 6.1
   },
   {
    "n": "6",
    "que": "refrescar KV",
    "ok": true,
-   "s": 57.7
+   "s": 56.6
   }
  ],
  "fallas": [
@@ -55,11 +55,7 @@
   },
   {
    "paso": "5",
-   "que": "03_Servidor/generar.py LRS"
-  },
-  {
-   "paso": "5",
-   "que": "03_Servidor/generar.py TøKīØ🦠🧠"
+   "que": "03_Servidor/generar.py Miniboy"
   }
  ],
  "ultimo_evento": {
@@ -70,25 +66,25 @@
  },
  "cuotas": {
   "kv": {
-   "write": 171,
-   "read": 22450
+   "write": 181,
+   "read": 24304
   },
   "objeto": {
-   "leidas": 2021999,
-   "escritas": 6361,
-   "pedidos": 3528
+   "leidas": 2344213,
+   "escritas": 6964,
+   "pedidos": 3826
   },
   "worker": {
-   "pedidos": 8116,
+   "pedidos": 8114,
    "errores": 0,
-   "sub": 10701,
+   "sub": 10719,
    "cortados": 0,
    "p50_ms": 1.15,
-   "p99_ms": 13.03,
+   "p99_ms": 13.04,
    "cpu": {
-    "total": 18725,
+    "total": 18729,
     "objeto_10": 1854,
-    "worker_10": 191
+    "worker_10": 192
    }
   },
   "r2": {
