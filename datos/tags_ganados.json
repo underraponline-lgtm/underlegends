@@ -254,6 +254,11 @@
     "t1",
     1793029252929
    ],
+   "🏅 VITRINA LLENA": [
+    "🏅 VITRINA LLENA",
+    "t1",
+    1794267614222
+   ],
    "🏆 CAMPEÓN": [
     "🏆 CAMPEÓN",
     "t1",
@@ -777,6 +782,13 @@
   }
  },
  "agustin51k": {
+  "pais": {
+   "EMBAJADOR": [
+    "EMBAJADOR",
+    "t1",
+    1794267614222
+   ]
+  },
   "servidor": {
    "🏆 CAMPEÓN": [
     "🏆 CAMPEÓN",
@@ -785,6 +797,11 @@
    ]
   },
   "temporada": {
+   "🌍 TROTAMUNDOS": [
+    "🌍 TROTAMUNDOS",
+    "t1",
+    1794267614222
+   ],
    "👑 CAMPEÓN x%d": [
     "👑 CAMPEÓN x1",
     "t1",
@@ -865,6 +882,21 @@
     "⚔️ DUELISTA",
     "t1",
     1792953978519
+   ],
+   "🏅 PODIOS": [
+    "🏅 PODIOS",
+    "t1",
+    1794267614222
+   ],
+   "🏆 CAMPEÓN": [
+    "🏆 CAMPEÓN",
+    "t1",
+    1794267614222
+   ],
+   "📆 HABITUÉ": [
+    "📆 HABITUÉ",
+    "t1",
+    1794267614222
    ]
   },
   "temporada": {
@@ -872,6 +904,11 @@
     "📈 EN ASCENSO",
     "t1",
     1794242313248
+   ],
+   "📋 SEMANA PERFECTA": [
+    "📋 SEMANA PERFECTA",
+    "t1",
+    1794267614222
    ],
    "🥉 AL PODIO": [
     "🥉 AL PODIO",
@@ -1497,6 +1534,11 @@
    ]
   },
   "servidor": {
+   "🏅 PODIOS": [
+    "🏅 PODIOS",
+    "t1",
+    1794267614222
+   ],
    "🏛️ PILAR": [
     "🏛️ PILAR",
     "t1",
@@ -3127,6 +3169,15 @@
    ]
   }
  },
+ "dlx": {
+  "temporada": {
+   "👥 FUNDADOR DE CREW": [
+    "👥 FUNDADOR DE CREW",
+    "t1",
+    1794267614222
+   ]
+  }
+ },
  "doc": {
   "servidor": {
    "📆 HABITUÉ": [
@@ -3789,6 +3840,11 @@
  },
  "eliot": {
   "servidor": {
+   "🏅 PODIOS": [
+    "🏅 PODIOS",
+    "t1",
+    1794267614222
+   ],
    "🏆 CAMPEÓN": [
     "🏆 CAMPEÓN",
     "t1",
@@ -3796,6 +3852,16 @@
    ]
   },
   "temporada": {
+   "👑 CAMPEÓN x%d": [
+    "👑 CAMPEÓN x2",
+    "t1",
+    1794267614222
+   ],
+   "📋 SEMANA PERFECTA": [
+    "📋 SEMANA PERFECTA",
+    "t1",
+    1794267614222
+   ],
    "🚪 DEBUT CON CORONA": [
     "🚪 DEBUT CON CORONA",
     "t1",
@@ -4947,6 +5013,15 @@
     "🥉 AL PODIO",
     "t1",
     1793029252929
+   ]
+  }
+ },
+ "humildad": {
+  "temporada": {
+   "📈 EN ASCENSO": [
+    "📈 EN ASCENSO",
+    "t1",
+    1794267614222
    ]
   }
  },
@@ -6581,6 +6656,15 @@
    ]
   }
  },
+ "magic": {
+  "servidor": {
+   "📆 HABITUÉ": [
+    "📆 HABITUÉ",
+    "t1",
+    1794267614222
+   ]
+  }
+ },
  "majiztral": {
   "competitivo": {
    "⚔️ DUELISTA": [
@@ -6925,7 +7009,7 @@
     1793138568927
    ],
    "👑 CAMPEÓN x%d": [
-    "👑 CAMPEÓN x9",
+    "👑 CAMPEÓN x8",
     "t1",
     1793029252929
    ],
@@ -8564,6 +8648,13 @@
     1792953978519
    ]
   },
+  "pais": {
+   "DA LA CARA": [
+    "DA LA CARA",
+    "t1",
+    1794267614222
+   ]
+  },
   "servidor": {
    "📆 HABITUÉ": [
     "📆 HABITUÉ",
@@ -8722,6 +8813,13 @@
   }
  },
  "noxvell": {
+  "servidor": {
+   "🏅 PODIOS": [
+    "🏅 PODIOS",
+    "t1",
+    1794267614222
+   ]
+  },
   "temporada": {
    "🥉 AL PODIO": [
     "🥉 AL PODIO",
@@ -8953,6 +9051,11 @@
     "📅 INFALTABLE",
     "t1",
     1793029252929
+   ],
+   "📈 EN ASCENSO": [
+    "📈 EN ASCENSO",
+    "t1",
+    1794267614222
    ],
    "🔟 DOBLE DÍGITO": [
     "🔟 DOBLE DÍGITO",
@@ -12542,6 +12645,11 @@
     "t1",
     1794261790120
    ],
+   "🎯 FRANCOTIRADOR": [
+    "🎯 FRANCOTIRADOR",
+    "t1",
+    1794267614222
+   ],
    "😈 BESTIA NEGRA": [
     "😈 BESTIA NEGRA",
     "t1",
@@ -12672,6 +12780,11 @@
     "📋 SEMANA PERFECTA",
     "t1",
     1792953978519
+   ],
+   "📋 SEMANA PERFECTA x%d": [
+    "📋 SEMANA PERFECTA x2",
+    "t1",
+    1794267614222
    ],
    "🔟 DOBLE DÍGITO": [
     "🔟 DOBLE DÍGITO",
@@ -14119,6 +14232,27 @@
     "🧳 VIAJERO",
     "t1",
     1793410677837
+   ]
+  }
+ },
+ "walkersanity": {
+  "servidor": {
+   "🏆 CAMPEÓN": [
+    "🏆 CAMPEÓN",
+    "t1",
+    1794267614222
+   ]
+  },
+  "temporada": {
+   "👑 CAMPEÓN x%d": [
+    "👑 CAMPEÓN x1",
+    "t1",
+    1794267614222
+   ],
+   "🥉 AL PODIO": [
+    "🥉 AL PODIO",
+    "t1",
+    1794267614222
    ]
   }
  },

@@ -2,71 +2,6 @@
  "_leeme": "Lo que ✅ Decidir cerró o contestó solo, con la regla y la prueba (sheet/decidir.py, resolver_solo()), para «Lo que se resolvió solo» del Dashboard y su «Deshacer». «deshechas»: lo que Dlx deshizo; ninguna regla lo vuelve a tocar. Dlx, 13/10/2026.",
  "solas": [
   {
-   "id": "50c8158b39",
-   "tipo": "Nombre desconocido",
-   "sec": "GRISELDA RECORDS VOL. 6 · DDF · 25/10 · #511",
-   "que": "¿Quién es «Fix1🇦🇷»?",
-   "r": "Es Fix 17",
-   "regla": "Discord · su cuenta de Discord: la inscripción, el podio, la llave o la llamada",
-   "rk": "Discord",
-   "por": "el ciclo (su cuenta de Discord)",
-   "porque": "alias de Fix 17: se anotó así en inscripciones",
-   "t": 1793055601481,
-   "filas": [
-    890
-   ],
-   "variantes": [
-    "Fix1🇦🇷"
-   ],
-   "escribio": {
-    "alias": [
-     "Fix1",
-     "Fix 17"
-    ],
-    "filas": [
-     317
-    ]
-   }
-  },
-  {
-   "id": "9ea6d98efb",
-   "tipo": "Nombre desconocido",
-   "sec": "GRISELDA RECORDS VOL. 6 · DDF · 25/10 · #511",
-   "que": "¿Quién es «Fix»?",
-   "r": "Ya no hace falta",
-   "regla": "cierre · ya no hacía falta preguntarlo",
-   "rk": "cierre",
-   "por": "el ciclo",
-   "porque": "ya no está en ningún resultado: el lector lo lee distinto, o ya es alias de alguien",
-   "t": 1793055601481,
-   "filas": [
-    832
-   ],
-   "variantes": [
-    "Fix"
-   ],
-   "escribio": {}
-  },
-  {
-   "id": "3390b571d7",
-   "tipo": "Alias posible",
-   "sec": "🪪 Identidad",
-   "que": "¿«Fix1» es Fix 17? La cuenta de Fix 17 en la Lista se anotó como «Fix1», y en el ranking suman aparte. Si es la misma persona, los puntos de «Fix1» pasan a Fix 17.\nLa cuenta: https://discord.com/users/1079533414530678814",
-   "r": "Es la misma persona",
-   "regla": "cierre · ya no hacía falta preguntarlo",
-   "rk": "cierre",
-   "por": "el ciclo",
-   "porque": "la misma persona: «Fix1» ya es alias de Fix 17",
-   "t": 1793057427126,
-   "filas": [
-    891
-   ],
-   "variantes": [
-    "DOS NOMBRES: «Fix1» → «Fix 17» · cuenta 1079533414530678814"
-   ],
-   "escribio": {}
-  },
-  {
    "id": "d75663e5cb",
    "tipo": "Nombre desconocido",
    "sec": "NOMBRE DE LA COMPETENCIA · DDF · 26/10 · #530",
@@ -3315,6 +3250,73 @@
    ],
    "variantes": [
     "DOS NOMBRES: «xxxxxclusivo» → «Xclusivo» · cuenta 1493013247488430202"
+   ],
+   "escribio": {}
+  },
+  {
+   "id": "37b1e3084c",
+   "tipo": "Nombre desconocido",
+   "sec": "FFA DELUXE · FFA · 08/10 · #599",
+   "que": "¿Quién es «Ciro🇦🇷»?",
+   "r": "Es alguien nuevo: alta con su cuenta 759107559536984157",
+   "regla": "Discord · su cuenta de Discord: la inscripción, el podio, la llave o la llamada",
+   "rk": "Discord",
+   "por": "el ciclo (su cuenta de Discord)",
+   "porque": "nuevo: entró a la Lista con su Discord (759107559536984157)",
+   "t": 1794267595352,
+   "filas": [
+    1199
+   ],
+   "variantes": [
+    "Ciro🇦🇷"
+   ],
+   "escribio": {
+    "alta": [
+     "Ciro",
+     "759107559536984157"
+    ]
+   }
+  },
+  {
+   "id": "ef694948dd",
+   "tipo": "Nombre desconocido",
+   "sec": "FFA DELUXE · FFA · 08/10 · #599",
+   "que": "¿Quién es «Drelain🇦🇷»?",
+   "r": "Es alguien nuevo: alta con su cuenta 1507399113526739126",
+   "regla": "Discord · su cuenta de Discord: la inscripción, el podio, la llave o la llamada",
+   "rk": "Discord",
+   "por": "el ciclo (su cuenta de Discord)",
+   "porque": "nuevo: entró a la Lista con su Discord (1507399113526739126)",
+   "t": 1794267595352,
+   "filas": [
+    1200
+   ],
+   "variantes": [
+    "Drelain🇦🇷"
+   ],
+   "escribio": {
+    "alta": [
+     "Drelain",
+     "1507399113526739126"
+    ]
+   }
+  },
+  {
+   "id": "59addfd0cc",
+   "tipo": "Nombre desconocido",
+   "sec": "DETALLES DEL EVENTO · FFA · 26/10 · #531",
+   "que": "¿Quién es «QZ🇦🇷»?",
+   "r": "Ya no hace falta",
+   "regla": "cierre · ya no hacía falta preguntarlo",
+   "rk": "cierre",
+   "por": "el ciclo",
+   "porque": "ya no está en ningún resultado: el lector lo lee distinto, o ya es alias de alguien",
+   "t": 1794267595352,
+   "filas": [
+    898
+   ],
+   "variantes": [
+    "QZ🇦🇷"
    ],
    "escribio": {}
   }

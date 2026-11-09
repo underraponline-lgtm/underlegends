@@ -1760,19 +1760,6 @@
    "vence": "2026-10-21T23:10:06+00:00",
    "vencido": true
   },
-  "QZ": {
-   "avisado": "2026-10-26",
-   "chat": "2026-10-27",
-   "con": null,
-   "cumplido": "",
-   "debut": "2026-10-26T22:39:00+00:00",
-   "did": "",
-   "evento": "DETALLES DEL EVENTO",
-   "n": 531,
-   "sv": "FFA",
-   "vence": "2026-11-02T22:39:00+00:00",
-   "vencido": true
-  },
   "RC": {
    "avisado": "2026-10-18",
    "chat": "2026-10-18",

@@ -16,7 +16,7 @@
   "msg": "1552524905868824759"
  },
  "353": {
-  "firma": "ELRAP FECHA 6|24/09|25|7|5|0",
+  "firma": "ELRAP FECHA 6|24/09|25|7|6|0",
   "msg": "1552572590831444072"
  },
  "354": {
@@ -28,7 +28,7 @@
   "msg": "1552649686937243682"
  },
  "356": {
-  "firma": "__ DESGRACIAS EN TOKYO VOL.13 __|25/09|30|0|1|17",
+  "firma": "__ DESGRACIAS EN TOKYO VOL.13 __|25/09|30|0|2|17",
   "msg": "1553175999737237537"
  },
  "357": {
@@ -84,7 +84,7 @@
   "msg": "1554287305886269511"
  },
  "370": {
-  "firma": "__ DESGRACIAS EN TOKYO VOL 16 2VS2 __|28/09|14|0|2|8",
+  "firma": "__ DESGRACIAS EN TOKYO VOL 16 2VS2 __|28/09|14|0|4|8",
   "msg": "1554332621457334373"
  },
  "371": {
@@ -1115,7 +1115,7 @@
    ],
    [
     "Prodigy",
-    "Enkil",
+    "Enkil 🇦🇷",
     "Prodigy"
    ],
    [
@@ -1125,7 +1125,7 @@
    ],
    [
     "PichulaMc",
-    "Velatz, BNA, Neo",
+    "Velatz, Armando Faso🇦🇫, Neo",
     "PichulaMc"
    ],
    [
@@ -1190,7 +1190,7 @@
    "Xclusivo": 4
   },
   "fecha": "07/10",
-  "firma": "d78127d1d59782e3",
+  "firma": "7b02006ace96ab58",
   "msg": "1557564144360890428",
   "nombre": "__ PRITTY FREE __",
   "num": 425,
@@ -1282,7 +1282,7 @@
     1250
    ],
    [
-    "Enkil",
+    "Enkil 🇦🇷",
     "Octavos",
     1250
    ],
@@ -1307,7 +1307,7 @@
     1250
    ],
    [
-    "BNA",
+    "Armando Faso🇦🇫",
     "Octavos",
     416
    ]
@@ -3707,14 +3707,19 @@
     "BLITZ"
    ],
    [
-    "Erian",
-    "DLX",
-    "Erian"
+    "BLITZ",
+    "Tenor",
+    "BLITZ"
    ],
    [
-    "Erian",
+    "DLX",
     "ANTONIO🇵🇾",
-    "Erian"
+    "DLX"
+   ],
+   [
+    "DLX",
+    "Erian",
+    "DLX"
    ],
    [
     "Provenza",
@@ -3722,9 +3727,19 @@
     "Provenza"
    ],
    [
-    "Volg",
+    "Greyfitsh🇵🇦",
     "Emily Family",
-    "Volg"
+    "Greyfitsh🇵🇦"
+   ],
+   [
+    "Makmah",
+    "Teo",
+    "Makmah"
+   ],
+   [
+    "Aldre",
+    "Erian",
+    "Aldre"
    ],
    [
     "Makmah",
@@ -3737,24 +3752,44 @@
     "Aldre"
    ],
    [
-    "Aldre",
-    "Erian",
-    "Aldre"
-   ],
-   [
     "Provenza",
     "Makmah",
     "Provenza"
    ],
    [
     "Aldre",
-    "Volg",
+    "Greyfitsh🇵🇦",
+    "Aldre"
+   ],
+   [
+    "Makmah",
+    "Xubaru",
+    "Makmah"
+   ],
+   [
+    "Colesito",
+    "Makmah",
+    "Colesito"
+   ],
+   [
+    "Aldre",
+    "Colesito",
     "Aldre"
    ],
    [
     "Aldre",
     "Provenza",
     "Aldre"
+   ],
+   [
+    "Aldre, Makmah, Rodas",
+    "Provenza, Colesito, Xubaru",
+    "Aldre, Makmah, Rodas"
+   ],
+   [
+    "Greyfitsh🇵🇦",
+    "Xubaru",
+    "Greyfitsh🇵🇦"
    ]
   ],
   "ev_antes": {
@@ -3770,11 +3805,11 @@
    "Xubaru": 3
   },
   "fecha": "08/10",
-  "firma": "b2fe9134b5bd878a",
+  "firma": "8f01d665d2e69838",
   "msg": "1557986840865411073",
   "nombre": "__ __ Cuentas Pendientes V.1 __ __",
   "num": 435,
-  "participantes": 14,
+  "participantes": 19,
   "sello": {
    "Makmah": "3932ef7fc828:17c4f13e63d4"
   },
@@ -3782,49 +3817,49 @@
   "t": "2026-10-09T05:23:27Z",
   "tabla": [
    [
-    "Aldre",
-    "Campeón",
-    7500
-   ],
-   [
-    "Provenza",
-    "Subcampeón",
-    5000
-   ],
-   [
     "Makmah",
-    "Semifinal",
-    3500
+    "Campeón",
+    10250
    ],
    [
-    "Volg",
+    "Greyfitsh🇵🇦",
     "Semifinal",
-    3500
+    5250
    ],
    [
     "BLITZ",
     "Cuartos",
-    2000
+    2500
    ],
    [
     "Emily Family",
     "Cuartos",
-    2000
+    2500
    ],
    [
-    "Tenor",
+    "Teo",
     "Cuartos",
-    2000
+    2500
    ],
    [
     "Ram",
     "Cuartos",
-    2000
+    2500
+   ],
+   [
+    "Xubaru",
+    "Subcampeón",
+    1875
    ],
    [
     "Erian",
     "Cuartos",
-    2000
+    1875
+   ],
+   [
+    "Tenor",
+    "Cuartos",
+    1875
    ],
    [
     "NC",
@@ -3838,11 +3873,6 @@
    ],
    [
     "Nemi",
-    "R32",
-    625
-   ],
-   [
-    "DLX",
     "R32",
     625
    ],
@@ -6478,7 +6508,7 @@
    "Trot": 13
   },
   "fecha": "11/10",
-  "firma": "0c5d6597c6ec76d3",
+  "firma": "0f65ee77191ab960",
   "msg": "1558907910707224587",
   "nombre": "RED BULL NACIONAL ESPAÑA T.5",
   "num": 448,
@@ -9406,7 +9436,7 @@
    "Zignos": 19
   },
   "fecha": "12/10",
-  "firma": "a2a52f167b8963d1",
+  "firma": "01a152dda59068a2",
   "msg": "1559587802864295988",
   "nombre": "GODZ",
   "num": 460,
@@ -9822,61 +9852,6 @@
   "duelos": [
    [
     "rodrilp, Velatz, Snow",
-    "Teo",
-    "rodrilp, Velatz, Snow"
-   ],
-   [
-    "rodrilp, Velatz, Snow",
-    "Betelguese, Guess, Erian",
-    "rodrilp, Velatz, Snow"
-   ],
-   [
-    "Guty",
-    "🏳️‍⚧️ VEPG 🏳️‍⚧️",
-    "Guty"
-   ],
-   [
-    "Guty",
-    "Zaik 🇪🇸",
-    "Guty"
-   ],
-   [
-    "Oasis, AKARK",
-    "Makmah",
-    "Oasis, AKARK"
-   ],
-   [
-    "Number",
-    "Dynoco",
-    "Number"
-   ],
-   [
-    "Number",
-    "Nemi",
-    "Number"
-   ],
-   [
-    "MauzzitoEmeces",
-    "Magic",
-    "MauzzitoEmeces"
-   ],
-   [
-    "MauzzitoEmeces",
-    "Dynoco",
-    "MauzzitoEmeces"
-   ],
-   [
-    "Delux, Erik, Tam",
-    "BNA, NC",
-    "Delux, Erik, Tam"
-   ],
-   [
-    "7, NC",
-    "SINTEXT",
-    "7, NC"
-   ],
-   [
-    "rodrilp, Velatz, Snow",
     "Guty",
     "rodrilp, Velatz, Snow"
    ],
@@ -9935,11 +9910,11 @@
    "rodrilp": 1
   },
   "fecha": "12/10",
-  "firma": "341abd2b2038e8f0",
+  "firma": "d9f75daa3478d1af",
   "msg": "1559399391536611440",
   "nombre": "COMPE POR 1.5 DOLARES",
   "num": 462,
-  "participantes": 28,
+  "participantes": 15,
   "sello": {
    "Abysuss": "",
    "Presagio": "98282e18f3d6:9df1984d05ab",
@@ -9949,144 +9924,84 @@
   "t": "2026-10-13T02:56:26Z",
   "tabla": [
    [
-    "Oasis",
-    "Subcampeón",
-    3750
-   ],
-   [
-    "AKARK",
-    "Subcampeón",
-    3750
-   ],
-   [
     "Verc",
     "Campeón",
-    3333
+    2500
    ],
    [
     "Presagio",
     "Campeón",
-    3333
+    2500
    ],
    [
     "Abysuss",
     "Campeón",
-    3333
+    2500
+   ],
+   [
+    "Oasis",
+    "Subcampeón",
+    2500
+   ],
+   [
+    "AKARK",
+    "Subcampeón",
+    2500
    ],
    [
     "Guty",
     "Cuartos",
-    2500
+    2000
    ],
    [
     "Number",
     "Cuartos",
-    2500
+    2000
    ],
    [
     "MauzzitoEmeces",
     "Cuartos",
-    2500
-   ],
-   [
-    "Dynoco",
-    "Octavos",
-    1875
+    2000
    ],
    [
     "rodrilp",
     "Semifinal",
-    1750
+    1166
    ],
    [
     "Velatz",
     "Semifinal",
-    1750
+    1166
    ],
    [
     "Snow",
     "Semifinal",
-    1750
+    1166
    ],
    [
     "Delux",
     "Semifinal",
-    1750
+    1166
    ],
    [
     "Erik",
     "Semifinal",
-    1750
+    1166
    ],
    [
     "Tam",
     "Semifinal",
-    1750
+    1166
    ],
    [
     "7",
     "Cuartos",
-    1250
+    1000
    ],
    [
     "NC",
     "Cuartos",
-    1250
-   ],
-   [
-    "Teo",
-    "Octavos",
-    1250
-   ],
-   [
-    "🏳️‍⚧️ VEPG 🏳️‍⚧️",
-    "Octavos",
-    1250
-   ],
-   [
-    "Zaik 🇪🇸",
-    "Octavos",
-    1250
-   ],
-   [
-    "Makmah",
-    "Octavos",
-    1250
-   ],
-   [
-    "Nemi",
-    "Octavos",
-    1250
-   ],
-   [
-    "Magic",
-    "Octavos",
-    1250
-   ],
-   [
-    "SINTEXT",
-    "Octavos",
-    1250
-   ],
-   [
-    "BNA",
-    "Octavos",
-    625
-   ],
-   [
-    "Betelguese",
-    "Octavos",
-    416
-   ],
-   [
-    "Guess",
-    "Octavos",
-    416
-   ],
-   [
-    "Erian",
-    "Octavos",
-    416
+    1000
    ]
   ],
   "v": 2
@@ -15970,7 +15885,7 @@
    ],
    [
     "Tenor",
-    "crakero",
+    "tomyhilfiger🇾🇹",
     "Tenor"
    ],
    [
@@ -16021,7 +15936,7 @@
    "Tenor": 5
   },
   "fecha": "19/10",
-  "firma": "855cd2aa28ea689a",
+  "firma": "195a521b18d90525",
   "msg": "1561761975514697891",
   "nombre": "FREESTYLE LEAGUE N3",
   "num": 488,
@@ -16068,7 +15983,7 @@
     625
    ],
    [
-    "crakero",
+    "tomyhilfiger🇾🇹",
     "R32",
     625
    ],
@@ -17900,11 +17815,6 @@
    ],
    [
     "Oasis",
-    "PichulaMc",
-    "Oasis"
-   ],
-   [
-    "Oasis",
     "1200",
     "Oasis"
    ],
@@ -17926,11 +17836,6 @@
    [
     "Agus",
     "Kyss",
-    "Agus"
-   ],
-   [
-    "Agus",
-    "PichulaMc",
     "Agus"
    ],
    [
@@ -18002,7 +17907,7 @@
    "Velatz": 37
   },
   "fecha": "21/10",
-  "firma": "72d793adbb5dae2a",
+  "firma": "1a370189aa6731d6",
   "msg": "1562578019472773131",
   "nombre": "__ DESGRACIAS EN TOKYO VOL 30 1 VS 1 __",
   "num": 494,
@@ -18052,11 +17957,6 @@
     "Colesito",
     "Cuartos",
     2500
-   ],
-   [
-    "PichulaMc",
-    "Octavos",
-    1875
    ],
    [
     "SULTAN",
@@ -18523,7 +18423,7 @@
    "Velatz": 38
   },
   "fecha": "21/10",
-  "firma": "11954188cbd923e4",
+  "firma": "12e014d59862dcc5",
   "msg": "1562607463755161734",
   "nombre": "SNAKE INSIGNIA 6 8",
   "num": 496,
@@ -22534,7 +22434,7 @@
    "Zekha": 4
   },
   "fecha": "25/10",
-  "firma": "641785b57d15621c",
+  "firma": "e22e4955c2b5f3f0",
   "msg": "1564056930748469309",
   "nombre": "REDBULL CREW ARGENTINA 2026",
   "num": 515,
@@ -23379,7 +23279,7 @@
    "Vandu": 34
   },
   "fecha": "25/10",
-  "firma": "9aeba3a7209a37a6",
+  "firma": "33871ba54602992e",
   "msg": "1564145050185891903",
   "nombre": "CHILL",
   "num": 518,
@@ -30075,7 +29975,7 @@
    "Teo": 18
   },
   "fecha": "30/10",
-  "firma": "9aed27d53326fb40",
+  "firma": "1bd611c284c5130d",
   "msg": "1565861597019111555",
   "nombre": "__ LA ISLA DE OKINAWA V.4 __",
   "num": 547,
@@ -30369,7 +30269,7 @@
    "mats": 5
   },
   "fecha": "26/10",
-  "firma": "cb8209d2ac891ffa",
+  "firma": "1dbc22f17c663e77",
   "msg": "1565899302046277764",
   "nombre": "RAP SIN GROSERIAS 1",
   "num": 548,
@@ -30614,7 +30514,7 @@
    "Walker": 8
   },
   "fecha": "30/10",
-  "firma": "2f2170cbd7d5ac5c",
+  "firma": "0518a4acebcb2056",
   "msg": "1565898869114413108",
   "nombre": "IDS V.3",
   "num": 549,
@@ -32206,7 +32106,7 @@
    "yinn": 29
   },
   "fecha": "01/11",
-  "firma": "e895931f41b9302b",
+  "firma": "dbfb10ee1696103c",
   "msg": "1566337161006026843",
   "nombre": "__ la palera del edi __",
   "num": 556,
@@ -32729,7 +32629,7 @@
    "Zignos": 27
   },
   "fecha": "01/11",
-  "firma": "90c3f6850fa4cb1d",
+  "firma": "40a4c056ee28d7e4",
   "msg": "1566645439611011152",
   "nombre": "__ COCINE FIDEOS __",
   "num": 558,
@@ -36725,7 +36625,7 @@
    "Yor": 4
   },
   "fecha": "06/11",
-  "firma": "36339a52c466b9e8",
+  "firma": "e61b200f742e4ffd",
   "msg": "1568457450267484231",
   "nombre": "FAT BATTLES PALOOZA FECHA 10 FINALS",
   "num": 576,
