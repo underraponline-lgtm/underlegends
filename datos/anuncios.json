@@ -1,5 +1,5 @@
 {
- "cuando": "2026-11-09T18:55:17+00:00",
+ "cuando": "2026-11-09T19:25:40+00:00",
  "anuncios": [
   {
    "nombre": "¡SE LLEGÓ LA GRAN NOCHE!",
@@ -6767,6 +6767,42 @@
   }
  ],
  "inscripciones": [
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "Mito🇦🇷",
+   "quien": "lizeninn.",
+   "discord_id": "1493416945037611140",
+   "msg_id": "1569429038424920065",
+   "cuando": "2026-11-09T19:10:41"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "Eze 🇦🇷",
+   "quien": "shinshakaru",
+   "discord_id": "341753322148986881",
+   "msg_id": "1569427617277550764",
+   "cuando": "2026-11-09T19:05:02"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "Dynoco 🇦🇷",
+   "quien": "dynoco.",
+   "discord_id": "588547235621371936",
+   "msg_id": "1569426346067623947",
+   "cuando": "2026-11-09T18:59:59"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "Verc 🇨🇱",
+   "quien": "jovenvesta",
+   "discord_id": "913652602208649226",
+   "msg_id": "1569425634797559809",
+   "cuando": "2026-11-09T18:57:09"
+  },
   {
    "servidor": "FFA",
    "canal": "✦📝—inscripciones",
@@ -42730,42 +42766,6 @@
    "discord_id": "1493317254581063680",
    "msg_id": "1557151247818031205",
    "cuando": "2026-10-06T22:03:07"
-  },
-  {
-   "servidor": "FFA",
-   "canal": "✦📝—inscripciones",
-   "texto": "Pain🇯🇵",
-   "quien": "snowzzzzzzzz",
-   "discord_id": "1097714486795849748",
-   "msg_id": "1557151230638292993",
-   "cuando": "2026-10-06T22:03:03"
-  },
-  {
-   "servidor": "FFA",
-   "canal": "✦📝—inscripciones",
-   "texto": "Makma 🇻🇪",
-   "quien": "makmah_g",
-   "discord_id": "897942226955563068",
-   "msg_id": "1557150859517763625",
-   "cuando": "2026-10-06T22:01:35"
-  },
-  {
-   "servidor": "FFA",
-   "canal": "✦📝—inscripciones",
-   "texto": "O.E.P 🇨🇴",
-   "quien": "puto_si_me_mencionas.",
-   "discord_id": "817432890807156756",
-   "msg_id": "1557150855461994559",
-   "cuando": "2026-10-06T22:01:34"
-  },
-  {
-   "servidor": "FFA",
-   "canal": "✦📝—inscripciones",
-   "texto": "O.E.P 🇨🇴",
-   "quien": "puto_si_me_mencionas.",
-   "discord_id": "817432890807156756",
-   "msg_id": "1557146164137037925",
-   "cuando": "2026-10-06T21:42:55"
   }
  ]
 }

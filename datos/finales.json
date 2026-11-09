@@ -1266,5 +1266,27 @@
   "sin_permiso": false,
   "sv": "FDS"
  },
+ "1569376186633687223": {
+  "autor": "1548906948307451906",
+  "canal": "1558611505040064607",
+  "cuando": "2026-11-09T15:40:40.493000+00:00",
+  "evento": "(sin titulo)",
+  "fecha": "09/11",
+  "llave": "1569376186633687223",
+  "pregunta": "",
+  "preguntada": "2026-11-09 3:24 PM ET",
+  "preguntas": [
+   {
+    "lados": [
+     "Under🇨🇴",
+     "Fin 🇦🇷"
+    ],
+    "ronda": "FINAL"
+   }
+  ],
+  "respondidas": {},
+  "sin_permiso": true,
+  "sv": "LKR"
+ },
  "_leeme": "Las llaves que el ciclo no entendió y se las preguntó a quien las publicó, con botones o un menú (bot/finales.py). Una vez por llave, por su ID: así nunca se pregunta dos veces. Dlx, 12/10/2026."
 }
