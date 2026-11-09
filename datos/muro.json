@@ -899,7 +899,10 @@
 },
 "evangeline": {
 "rg": "",
-"c": []
+"c": [
+"servidor",
+"temporada"
+]
 },
 "blitz": {
 "rg": "E",
@@ -2755,23 +2758,6 @@
 }
 },
 "cambios": [
-{
-"tipo": "rango",
-"t": "2026-10-06T22:29:12Z",
-"quien": [
-"Six"
-],
-"rg": "C",
-"primero": true
-},
-{
-"tipo": "tarjeta",
-"t": "2026-10-06T22:29:12Z",
-"quien": [
-"Six"
-],
-"carta": "competitivo"
-},
 {
 "tipo": "rango",
 "t": "2026-10-06T22:56:20Z",
@@ -6127,6 +6113,22 @@
 ],
 "rg": "S",
 "primero": false
+},
+{
+"tipo": "tarjeta",
+"t": "2026-11-09T23:01:40Z",
+"quien": [
+"Evangeline"
+],
+"carta": "servidor"
+},
+{
+"tipo": "tarjeta",
+"t": "2026-11-09T23:01:40Z",
+"quien": [
+"Evangeline"
+],
+"carta": "temporada"
 }
 ],
 "noche_antes": {

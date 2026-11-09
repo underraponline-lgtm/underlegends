@@ -49,8 +49,8 @@
   "texto": "2 corridas del ciclo se cancelaron esperando su turno de dibujar (07/10 6:42 PM ET): la anterior tardó de más. Lo que no dibujaron lo dibuja la próxima.\nhttps://github.com/underraponline-lgtm/underlegends/actions/runs/37695783015"
  },
  "filas": {
-  "t": "2026-11-09T16:38:51.320756+00:00",
-  "texto": "El objeto lleva 4.1 millones de filas leídas hoy, de 5 millones. Si se acaban se cae entrar con Discord, lo en vivo y los avisos hasta cerca de las 09/11 7:00 PM ET. Lo que más lee: `python herramientas/uso.py`."
+  "t": "2026-11-09T23:02:54.404152+00:00",
+  "texto": "El objeto lleva 5.1 millones de filas leídas hoy, de 5 millones. Si se acaban se cae entrar con Discord, lo en vivo y los avisos hasta cerca de las 09/11 7:00 PM ET. Lo que más lee: `python herramientas/uso.py`."
  },
  "objeto": {
   "t": "2026-11-09T21:43:22.425455+00:00",
