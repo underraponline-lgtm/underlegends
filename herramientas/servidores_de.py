@@ -86,6 +86,7 @@ SALIDA = os.path.join(BASE, 'datos', 'servidores_de.json')
 #: el runner —lo escribe el paso 1b y lo lee el 2d, en el mismo trabajo—.
 APODOS = os.path.join(BASE, '.cache', 'apodos_discord.json')
 _NOMBRES = {}                # discord_id -> [nombres]
+_EN = {}                     # discord_id -> {guild_id: [sus nombres EN ESE servidor]}; ver `miembros()`
 _ROLES_DE = {}               # guild_id -> {discord_id: [ids de rol]}
 
 # 🏷️ LOS ROLES DE LA PÁGINA (Dlx, 13/10/2026: «en cada perfil aparezca el rol de cada uno… competidor, organizador,
@@ -221,6 +222,11 @@ def miembros(s, gid):
                     if un in ns:
                         ns.remove(un)
                     ns.append(un)
+                # 🔑 Y CÓMO SE LLAMA EN ESTE SERVIDOR (09/11/2026): su apodo de acá, su nombre visible y su usuario. El
+                # apodo es de cada servidor y `_NOMBRES` los junta todos; `decidir._cuenta_de_uno()` necesita saber
+                # quién se llama «Force» EN FVS, no quién se llama así en algún lado. Ver `_EN`
+                _EN.setdefault(u['id'], {})[gid] = [x.strip() for x in (m.get('nick'), u.get('global_name'), un)
+                                                    if x and x.strip()]
         # 🔴 `key=int` NO ES COSMETICO. Los snowflakes tienen 17, 18 y 19
         # digitos, y `max()` sobre cadenas compara alfabeticamente: asi
         # '999999999999999999' le gana a '1000000000000000000', que es
@@ -367,7 +373,10 @@ def main():
                                      'de la Liga, y en cuáles está, para ✅ Decidir. NO SE COMMITEA.',
                            'nombres': _NOMBRES,
                            'servidores': {did: [sv for sv, _ in GUILDS if did in dentro[sv]]
-                                          for did in todas}}, f, ensure_ascii=False)
+                                          for did in todas},
+                           # 🔑 cómo se llama en CADA servidor: ver `_EN` y `decidir._cuenta_de_uno()`
+                           'en': {did: {sv: x[gid] for sv, gid in GUILDS if gid in x}
+                                  for did, x in _EN.items()}}, f, ensure_ascii=False)
             print('-> %s   (%d cuentas, fuera de git)'
                   % (os.path.relpath(APODOS, BASE), len(_NOMBRES)))
         except OSError as e:

@@ -615,7 +615,7 @@ APODOS = os.path.join(BASE, '.cache', 'apodos_discord.json')
 def _apodos():
     """`{nombre normalizado: {discord_id}}` de `APODOS`, o `{}` si no está."""
     if 'apodos' not in _DATOS:
-        idx, donde = {}, {}
+        idx, donde, en = {}, {}, {}
         try:
             with io.open(APODOS, encoding='utf-8') as f:
                 crudo = json.load(f) or {}
@@ -626,10 +626,15 @@ def _apodos():
                     if len(k) >= 3:
                         idx.setdefault(k, set()).add(str(did))
             donde = {str(d): list(s or []) for d, s in (crudo.get('servidores') or {}).items()}
+            # 🔑 cómo se llama cada cuenta EN CADA SERVIDOR (su apodo ahí, su nombre visible y su usuario): ver
+            # `_cuenta_de_uno()`. Un caché viejo no lo trae, y entonces no se elige por servidor
+            en = {str(d): {sv: {norm(_sin_bandera(n)) for n in ns or ()} for sv, ns in (x or {}).items()}
+                  for d, x in (crudo.get('en') or {}).items()}
         except (OSError, ValueError):
             pass
         _DATOS['apodos'] = idx
         _DATOS['donde'] = donde
+        _DATOS['en'] = en
     return _DATOS['apodos']
 
 
@@ -671,9 +676,18 @@ def _servidores_de(did, svs):
     de la Liga: medido el 28/09/2026, 10 de 50 nombres desconocidos, seis de
     ellos anotados con ese mismo nombre en las inscripciones del evento.
     El caché de apodos (sólo en el runner, nunca en git) trae a todos.
+
+    🔴 Y SE JUNTAN LOS DOS, no uno o el otro (09/11/2026). Con `or`, una cuenta que también está en DRA o FFA
+    —que el json guarda enteros— figuraba sólo ahí, y los otros once servidores, que guardan sólo a la gente de la
+    Lista, no se veían: «Forza» estaba en FVS, en Cypherhood y en FRZ y para esto estaba sólo en FFA, así que
+    `por_discord()` no la daba por jugadora de su evento de FVS.
     """
     _apodos()
-    return list(svs.get(did) or []) or list(_DATOS.get('donde', {}).get(str(did)) or [])
+    out = list(svs.get(did) or [])
+    for sv in _DATOS.get('donde', {}).get(str(did)) or []:
+        if sv not in out:
+            out.append(sv)
+    return out
 
 
 #: los separadores de una inscripción de varios: «snow🇨🇴 + nc»
@@ -876,7 +890,26 @@ def _cuenta_de_uno(p, eventos, sin_apodo=False):
                 return cand, 'llamada_parecido'
     if sin_apodo:
         return [], 'Discord'
-    return sorted(_apodos().get(k) or set()) if len(k) >= 3 else [], 'Discord'
+    if len(k) < 3:
+        return [], 'Discord'
+    todos = sorted(_apodos().get(k) or set())
+    # 🔑 LA ÚNICA CUENTA CON ESE NOMBRE EN EL SERVIDOR DEL EVENTO (Dlx, 09/11/2026, a «19 nombres de las llaves de los
+    # servidores nuevos son exactamente el nombre de una cuenta de ese mismo servidor… ¿los uno solos?»: *«Sí»*, y que
+    # quede como regla). Hasta acá se pedía UNA cuenta en toda la Liga, y con 13 servidores un nombre como «Gutty» u
+    # «OMEGAX» es de más de una aunque en Cypherhood haya una sola: medido ese día, 18 de 154 nombres sin cuenta
+    # quedaban preguntados por eso. Quien jugó un evento está en ese servidor (la misma idea que `por_discord()`).
+    # ⚠️ CON EL NOMBRE QUE USA EN ESE SERVIDOR, no con cualquiera de los suyos: en FVS «Force» es el apodo de Forza, y
+    # también el de «Force De fvs» en OTRO servidor; preguntar «¿quién de los de FVS se llama Force en algún lado?» daba
+    # dos, o peor, el equivocado. Sale de `en` del caché (`herramientas/servidores_de.py`); sin eso no se elige.
+    # ⚠️ Sigue pidiendo 3 letras o más: «QZ» o «JL» en un servidor de 11.000 no prueban nada solos.
+    if len(todos) > 1:
+        ev = eventos.get(_num_evento(p)) or ()
+        if len(ev) > 1:
+            en = _DATOS.get('en') or {}
+            aca = [d for d in todos if k in ((en.get(d) or {}).get(ev[1]) or ())]
+            if len(aca) == 1:
+                return aca, 'Discord_servidor'
+    return todos, 'Discord'
 
 
 def _crecio_de(p, eventos, padron, akas):
@@ -1223,7 +1256,9 @@ def por_discord(preguntas, respuestas, eventos, dry=True):
                   'podio': 'el podio de la llave lo menciona',
                   'llave': 'la llave lo escribe con su mención',
                   'llamada': 'estaba en la llamada del evento con ese nombre',
-                  'llamada_parecido': 'estaba en la llamada del evento con un nombre parecido'}.get(fuente, 'la misma cuenta de Discord')
+                  'llamada_parecido': 'estaba en la llamada del evento con un nombre parecido',
+                  'Discord_servidor': 'la única cuenta con ese nombre en el servidor del evento'}.get(
+                      fuente, 'la misma cuenta de Discord')
         real = por_id.get(did)
         # 🔑 Y SI LA CUENTA NO ESTÁ EN LA LISTA PERO SE ANOTÓ CON EL NOMBRE DE ALGUIEN QUE SÍ (y sin cuenta cargada): es
         # esa persona. Antes que darla de alta: eso partiría a Paria en dos. Ver `_se_anoto_como()`.
@@ -5613,6 +5648,35 @@ def _self_check():
         ok(_se_anoto_como('55', _DATOS['padron']) == 'Paria'
            and _se_anoto_como('55', [{'raw': 'Paria', 'discord_id': '99'}]) is None,
            'la cuenta que se anotó sola como alguien de la Lista sin cuenta es esa persona; con otra cuenta, no')
+        # 🔑 09/11/2026 (Dlx: «Sí, los 20»): la única cuenta con ese nombre EN EL SERVIDOR DEL EVENTO, aunque en la Liga
+        # haya otra; con dos ahí, o con un nombre de dos letras, no
+        ev6 = {'568': ('LA COPA CH', 'CH', '05/11'), '461': ('FVS UNDER', 'FVS', '22/10')}
+        _antes6 = {x: _DATOS.get(x) for x in ('inscritos', 'podio', 'servidores_de', 'apodos', 'donde', 'en')}
+        _DATOS.update({'inscritos': {}, 'podio': {},
+                       # 61 está en la Lista, así que el json lo guarda con FVS; 60 también está en FFA y el json dice
+                       # sólo eso: FVS sale del caché (ver `_servidores_de()`)
+                       'servidores_de': {'60': ['FFA'], '61': ['DRA', 'FVS']},
+                       'apodos': {'gutty': {'30', '31'}, 'omegax': {'40', '41'}, 'qz': {'50'}, 'force': {'60', '61'}},
+                       'donde': {'30': ['CH'], '31': ['FFA'], '40': ['CH'], '41': ['CH', 'DRA'], '50': ['CH'],
+                                 '60': ['FVS', 'FFA'], '61': ['DRA', 'FVS']},
+                       'en': {'30': {'CH': {'gutty'}}, '31': {'FFA': {'gutty'}},
+                              '40': {'CH': {'omegax'}}, '41': {'CH': {'omegax'}, 'DRA': {'omegax'}}, '50': {'CH': {'qz'}},
+                              '60': {'FVS': {'force', 'forza'}, 'FFA': {'forza'}},
+                              '61': {'DRA': {'force'}, 'FVS': {'forcedefvs'}}}})
+        qs = armar([(120, {'Tipo': nd, 'Detalle': 'Gutty', 'Origen': 'evento #568'}),
+                    (121, {'Tipo': nd, 'Detalle': 'OMEGAX🇪🇸', 'Origen': 'evento #568'}),
+                    (122, {'Tipo': nd, 'Detalle': 'QZ🇦🇷', 'Origen': 'evento #568'}),
+                    (123, {'Tipo': nd, 'Detalle': 'Force', 'Origen': 'evento #461'})], ev6)
+        ok(_cuenta_de(qs[0], ev6) == (['30'], 'Discord_servidor') and _cuenta_de(qs[1], ev6) == (['40', '41'], 'Discord')
+           and _cuenta_de(qs[2], ev6) == ([], 'Discord'),
+           'la única cuenta con ese nombre en el servidor del evento es esa persona, aunque en otro servidor haya otra; '
+           'con dos en ese servidor no se elige, y un nombre de dos letras no busca')
+        ok(_cuenta_de(qs[3], ev6) == (['60'], 'Discord_servidor') and _servidores_de('60', _DATOS['servidores_de']) == ['FFA', 'FVS'],
+           'con el nombre que usa EN ESE servidor: en FVS «Force» es Forza, no quien se llama así en DRA; y los servidores '
+           'de una cuenta son los del json y los del caché juntos')
+        ok(por_discord(qs, {}, ev6, dry=True) == {qs[0]['id'], qs[3]['id']},
+           '… y entran a la Lista con esa cuenta, solos')
+        _DATOS.update(_antes6)
         _guarda = _nombres_en_resultados
         try:
             globals()['_nombres_en_resultados'] = lambda: {'six', 'papa'}
