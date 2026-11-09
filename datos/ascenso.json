@@ -1,6 +1,6 @@
 {
  "_leeme": "El ranking de ascenso de cada servidor, al día (bot/ascenso.py): su tabla oficial más lo que vino después, con sus reglas (datos/ascenso_reglas.json). `filas`: [nombre, cc, pts, lo sumado, raw]. `pendiente`: lo que no se sabe y no suma (las preguntas de Dlx a cada servidor).",
- "t": "2026-11-09T08:00:25Z",
+ "t": "2026-11-09T16:37:05Z",
  "sv": {
   "SR": {
    "filas": [
@@ -738,6 +738,24 @@
      "compe": "ccff",
      "evento": "CCFF V.2",
      "dia": "2026-09-28"
+    },
+    {
+     "que": "rango",
+     "compe": "ids",
+     "evento": "IDS V.3",
+     "dia": "2026-11-09"
+    },
+    {
+     "que": "rango",
+     "compe": "rayos y centellas",
+     "evento": "Rayos y Centellas",
+     "dia": "2026-11-09"
+    },
+    {
+     "que": "rango",
+     "compe": "red bull caracas regional",
+     "evento": "RED BULL CARACAS REGIONAL T.5",
+     "dia": "2026-11-09"
     }
    ],
    "oficial": {

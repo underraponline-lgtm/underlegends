@@ -1036,6 +1036,23 @@
       "ACAD",
       "FFA"
      ]
+    ],
+    "ppp": {
+     "FVS": 0,
+     "DRA": 0,
+     "FFS": 0,
+     "FRZ": 0,
+     "DDF": 3750.0,
+     "SR": 0,
+     "LKR": 6875.0,
+     "URBF": 2267.9,
+     "ACAD": 3411.8,
+     "FFA": 3272.7
+    },
+    "gana": [
+     "DDF",
+     "LKR",
+     "ACAD"
     ]
    },
    "metas": {
@@ -1108,7 +1125,8 @@
      "CH": 12,
      "ACAD": 17
     },
-    "gana": "CH"
+    "gana": "CH",
+    "final": true
    },
    "meta_va": {
     "ACAD": 16,
@@ -1122,6 +1140,135 @@
     "LKR": 2,
     "SR": 0,
     "URBF": 7
+   },
+   "organizadores_final": true,
+   "premios_semana": {
+    "figura": [
+     "Six",
+     66665
+    ],
+    "revelacion": [
+     "Joven shenlong",
+     18750
+    ],
+    "servidor": [
+     "FFA",
+     44
+    ]
+   }
+  },
+  {
+   "id": "2026-11-09",
+   "inicio": "2026-11-09T16:00:00Z",
+   "fin": "2026-11-16T16:00:00Z",
+   "temporada": "prueba",
+   "sorteado": "2026-11-09T16:23:38Z",
+   "sv": {
+    "FVS": 2,
+    "DDS": 1,
+    "FRZ": 1.5,
+    "CH": 1.5,
+    "LKR": 2.25,
+    "URBF": 1.5,
+    "DDF": 3.0,
+    "ACAD": 2.25,
+    "DRA": 1,
+    "SR": 1,
+    "FFS": 1,
+    "FFA": 1,
+    "FDS": 2
+   },
+   "dorado": {
+    "sv": "SR",
+    "desde": "2026-11-10T05:00:00Z"
+   },
+   "guerra": {
+    "pares": [
+     [
+      "SR",
+      "ACAD"
+     ],
+     [
+      "FDS",
+      "FFS"
+     ],
+     [
+      "URBF",
+      "CH"
+     ],
+     [
+      "DDF",
+      "LKR"
+     ],
+     [
+      "DRA",
+      "DDS"
+     ],
+     [
+      "FFA",
+      "FVS"
+     ]
+    ]
+   },
+   "metas": {
+    "ACAD": 31,
+    "CH": 22,
+    "DDF": 42,
+    "DDS": 8,
+    "DRA": 8,
+    "FDS": 25,
+    "FFA": 123,
+    "FFS": 8,
+    "FRZ": 14,
+    "FVS": 8,
+    "LKR": 15,
+    "SR": 27,
+    "URBF": 15
+   },
+   "votado": {
+    "sv": "DDF",
+    "votos": 1,
+    "de": 4
+   },
+   "premios": {
+    "DDF": [
+     "votado",
+     "guerra"
+    ],
+    "LKR": [
+     "guerra"
+    ],
+    "ACAD": [
+     "guerra"
+    ],
+    "CH": [
+     "semillero"
+    ]
+   },
+   "copa": {
+    "org": "NC",
+    "clave": "nc"
+   },
+   "organizadores": [],
+   "semillero": {
+    "nuevos": {},
+    "gente": {},
+    "gana": null
+   },
+   "meta_va": {
+    "ACAD": 0,
+    "CH": 0,
+    "DDF": 0,
+    "DDS": 0,
+    "DRA": 0,
+    "FDS": 0,
+    "FFA": 0,
+    "FFS": 0,
+    "FRZ": 0,
+    "FVS": 0,
+    "LKR": 0,
+    "SR": 0,
+    "URBF": 0
    }
   }
  ]

@@ -2,26 +2,6 @@
  "_leeme": "El precio por cabeza: lo arma bot/precios.py en el ciclo (paso 2b4). Las reglas y los números viven en ese archivo.",
  "precios": [
   {
-   "id": 20,
-   "cabeza": "PichulaMc",
-   "monto": 5000,
-   "t": "2026-10-10T13:55:58Z",
-   "fin": "2026-10-12T15:00:00Z",
-   "e": "cazado",
-   "por": [
-    [
-     "PIERR",
-     5000
-    ]
-   ],
-   "ev": {
-    "n": 447,
-    "nombre": "LA REDENCION",
-    "sv": "FFA",
-    "t": "2026-10-11T02:39:38Z"
-   }
-  },
-  {
    "id": 21,
    "cabeza": "Jupiter",
    "monto": 2500,
@@ -319,7 +299,6 @@
   }
  ],
  "suma": {
-  "PIERR": 5000,
   "Emilio Alva": 2500,
   "Tuca": 1000,
   "1200": 3000,

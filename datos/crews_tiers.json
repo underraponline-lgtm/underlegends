@@ -1,7 +1,28 @@
 {
  "_leeme": "Los tiers de las crews: el de cada una, la semana en curso (la última foto de los puntos de cada persona) y los últimos cambios. Lo escribe bot/crews_tiers.py en el paso 1c; las reglas viven en ese archivo.",
- "avisado": "2026-10-26",
+ "avisado": "2026-11-02",
  "hist": [
+  [
+   "2026-11-02",
+   "Follombia",
+   2,
+   1,
+   8381
+  ],
+  [
+   "2026-11-02",
+   "KS",
+   2,
+   1,
+   3122
+  ],
+  [
+   "2026-11-02",
+   "Los ULEYES",
+   2,
+   1,
+   969
+  ],
   [
    "2026-10-26",
    "Follombia",
@@ -507,34 +528,48 @@
   "zetryko": 1088,
   "zignos": 1028
  },
- "sem": "2026-11-02",
+ "sem": "2026-11-09",
  "tier": {
-  "Follombia": 2,
-  "KS": 2,
-  "Los ULEYES": 2
+  "CHAKALAJE": 0,
+  "Follombia": 1,
+  "KS": 1,
+  "Los ULEYES": 1,
+  "lppcrew1312": 0
  },
  "ult": {
   "crews": {
+   "CHAKALAJE": {
+    "a": 0,
+    "de": 0,
+    "jugaron": 1,
+    "pts": 1004
+   },
    "Follombia": {
-    "a": 2,
-    "de": 1,
-    "jugaron": 5,
-    "pts": 210036
+    "a": 1,
+    "de": 2,
+    "jugaron": 8,
+    "pts": 8381
    },
    "KS": {
-    "a": 2,
-    "de": 1,
-    "jugaron": 2,
-    "pts": 39749
+    "a": 1,
+    "de": 2,
+    "jugaron": 3,
+    "pts": 3122
    },
    "Los ULEYES": {
-    "a": 2,
-    "de": 1,
-    "jugaron": 2,
-    "pts": 59125
+    "a": 1,
+    "de": 2,
+    "jugaron": 1,
+    "pts": 969
+   },
+   "lppcrew1312": {
+    "a": 0,
+    "de": 0,
+    "jugaron": 1,
+    "pts": 1001
    }
   },
   "cuenta": true,
-  "sem": "2026-10-26"
+  "sem": "2026-11-02"
  }
 }

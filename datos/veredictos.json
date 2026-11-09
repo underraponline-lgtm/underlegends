@@ -892,6 +892,72 @@
    "b": "PARK JI SUNG",
    "ganador": "PARK JI SUNG",
    "votos": "1–0"
+  },
+  "1569361374767882301": {
+   "id": "1569361374767882301",
+   "sv": "✮ 𝑼𝒓𝒃𝒂𝒏 𝑭𝒓𝒆𝒆𝒔𝒕𝒚𝒍𝒆 ✮ | A New Era",
+   "g": "1467763447117778989",
+   "canal": "1540223675146707045",
+   "pub": 1794235309069,
+   "a": "Sancez🇪🇸",
+   "b": "Majiztral 🇨🇴",
+   "ganador": "Majiztral 🇨🇴",
+   "votos": "1–0"
+  },
+  "1569364454897098873": {
+   "id": "1569364454897098873",
+   "sv": "✮ 𝑼𝒓𝒃𝒂𝒏 𝑭𝒓𝒆𝒆𝒔𝒕𝒚𝒍𝒆 ✮ | A New Era",
+   "g": "1467763447117778989",
+   "canal": "1540223675146707045",
+   "pub": 1794236043429,
+   "a": "black live🇨🇴",
+   "b": "Calíz🇲🇽",
+   "ganador": "Calíz🇲🇽",
+   "votos": "1–0"
+  },
+  "1569366021456920667": {
+   "id": "1569366021456920667",
+   "sv": "✮ 𝑼𝒓𝒃𝒂𝒏 𝑭𝒓𝒆𝒆𝒔𝒕𝒚𝒍𝒆 ✮ | A New Era",
+   "g": "1467763447117778989",
+   "canal": "1540223675146707045",
+   "pub": 1794236416926,
+   "a": "Verc🇨🇱",
+   "b": "Fin 🏳️‍🌈",
+   "ganador": "Verc🇨🇱",
+   "votos": "1–0"
+  },
+  "1569367605276573798": {
+   "id": "1569367605276573798",
+   "sv": "✮ 𝑼𝒓𝒃𝒂𝒏 𝑭𝒓𝒆𝒆𝒔𝒕𝒚𝒍𝒆 ✮ | A New Era",
+   "g": "1467763447117778989",
+   "canal": "1540223675146707045",
+   "pub": 1794236794538,
+   "a": "Majiztral 🇨🇴",
+   "b": "Mathias🇻🇪",
+   "ganador": "Majiztral 🇨🇴",
+   "votos": "1–0"
+  },
+  "1569367790173814825": {
+   "id": "1569367790173814825",
+   "sv": "✮ 𝑼𝒓𝒃𝒂𝒏 𝑭𝒓𝒆𝒆𝒔𝒕𝒚𝒍𝒆 ✮ | A New Era",
+   "g": "1467763447117778989",
+   "canal": "1540223675146707045",
+   "pub": 1794236838621,
+   "a": "Calíz🇲🇽",
+   "b": "Verc🇨🇱",
+   "ganador": "Verc🇨🇱",
+   "votos": "1–0"
+  },
+  "1569372408392187957": {
+   "id": "1569372408392187957",
+   "sv": "✮ 𝑼𝒓𝒃𝒂𝒏 𝑭𝒓𝒆𝒆𝒔𝒕𝒚𝒍𝒆 ✮ | A New Era",
+   "g": "1467763447117778989",
+   "canal": "1540223675146707045",
+   "pub": 1794237939690,
+   "a": "Majiztral 🇨🇴",
+   "b": "Verc🇨🇱",
+   "ganador": "Majiztral 🇨🇴",
+   "votos": "1–0"
   }
  },
  "llaves": {
@@ -5651,6 +5717,109 @@
       "PARK JI SUNG"
      ],
      "PARK JI SUNG",
+     "veredicto",
+     []
+    ]
+   ]
+  },
+  "1569361374767882301": {
+   "id": "1569361374767882301",
+   "sv": "✮ 𝑼𝒓𝒃𝒂𝒏 𝑭𝒓𝒆𝒆𝒔𝒕𝒚𝒍𝒆 ✮ | A New Era",
+   "g": "1467763447117778989",
+   "canal": "1540223675146707045",
+   "pub": 1794235309069,
+   "ed": 1794237949816,
+   "texto": "`[ OCTAVOS ]`\n⌞Sancez🇪🇸⌝ 🆚 ⌞Majiztral 🇨🇴⌝\n⌞SHADOW 🇨🇴⌝ 🆚 ⌞Mathias 🇻🇪⌝ 🆚 ⌞Yeyox🇲🇽⌝\n⌞black live🇨🇴⌝ 🆚 ⌞Calíz🇲🇽⌝\n⌞Dyzz🇨🇱⌝ 🆚 ⌞Verc🇨🇱⌝ 🆚 ⌞Fin 🏳️‍🌈⌝\n⌞Verc🇨🇱⌝ 🆚 ⌞Fin 🏳️‍🌈⌝\n⌞Verc🇨🇱⌝ 🆚 ⌞Fin 🏳️‍🌈⌝\n`[ CUARTOS ]`\n⌞Majiztral🇨🇴⌝ 🆚 ⌞Mathias🇻🇪⌝\n⌞Calíz🇲🇽⌝ 🆚 ⌞Verc🇨🇱⌝\n`[ FINAL ]`\n⌞Majiztral🇨🇴⌝ 🆚 ⌞Verc🇨🇱⌝",
+   "batallas": [
+    [
+     "OCTAVOS",
+     [
+      "Sancez🇪🇸",
+      "Majiztral 🇨🇴"
+     ],
+     "Majiztral 🇨🇴",
+     "veredicto",
+     []
+    ],
+    [
+     "OCTAVOS",
+     [
+      "SHADOW 🇨🇴",
+      "Mathias 🇻🇪",
+      "Yeyox🇲🇽"
+     ],
+     "Mathias 🇻🇪",
+     "veredicto",
+     []
+    ],
+    [
+     "OCTAVOS",
+     [
+      "black live🇨🇴",
+      "Calíz🇲🇽"
+     ],
+     "Calíz🇲🇽",
+     "veredicto",
+     []
+    ],
+    [
+     "OCTAVOS",
+     [
+      "Dyzz🇨🇱",
+      "Verc🇨🇱",
+      "Fin 🏳️‍🌈"
+     ],
+     "Verc🇨🇱",
+     "ronda siguiente",
+     []
+    ],
+    [
+     "OCTAVOS",
+     [
+      "Verc🇨🇱",
+      "Fin 🏳️‍🌈"
+     ],
+     "Verc🇨🇱",
+     "ronda siguiente",
+     []
+    ],
+    [
+     "OCTAVOS",
+     [
+      "Verc🇨🇱",
+      "Fin 🏳️‍🌈"
+     ],
+     "Verc🇨🇱",
+     "veredicto",
+     []
+    ],
+    [
+     "CUARTOS",
+     [
+      "Majiztral🇨🇴",
+      "Mathias🇻🇪"
+     ],
+     "Majiztral🇨🇴",
+     "veredicto",
+     []
+    ],
+    [
+     "CUARTOS",
+     [
+      "Calíz🇲🇽",
+      "Verc🇨🇱"
+     ],
+     "Verc🇨🇱",
+     "veredicto",
+     []
+    ],
+    [
+     "FINAL",
+     [
+      "Majiztral🇨🇴",
+      "Verc🇨🇱"
+     ],
+     "Majiztral🇨🇴",
      "veredicto",
      []
     ]

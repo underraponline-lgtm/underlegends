@@ -129,7 +129,6 @@
    "perf": 2,
    "relampago": true,
    "solo": 1,
-   "sube": true,
    "svc": 2,
    "trios": 12
   }
@@ -174,7 +173,6 @@
    "relampago": true,
    "rev": 1,
    "solo": 1,
-   "sube": true,
    "svc": 4,
    "trios": 8
   }
@@ -217,6 +215,7 @@
    "relampago": true,
    "rey": true,
    "solo": 5,
+   "sube": true,
    "svc": 1,
    "trios": 5
   }
@@ -258,6 +257,7 @@
    "perf": 2,
    "relampago": true,
    "solo": 1,
+   "sube": true,
    "svc": 1,
    "trios": 12
   }
@@ -344,6 +344,7 @@
    "relampago": true,
    "rey": true,
    "solo": 1,
+   "sube": true,
    "suelto": true,
    "svc": 3,
    "trios": 5
@@ -426,6 +427,7 @@
    "infalt": true,
    "perf": 2,
    "relampago": true,
+   "sube": true,
    "svc": 4,
    "trios": 5
   }
@@ -471,6 +473,7 @@
    "rev": 1,
    "rey": true,
    "solo": 1,
+   "sube": true,
    "svc": 1,
    "trios": 2
   }
@@ -513,6 +516,7 @@
    "relampago": true,
    "rev": 1,
    "solo": 1,
+   "sube": true,
    "suelto": true,
    "svc": 4,
    "trios": 5
@@ -556,6 +560,7 @@
    "rev": 1,
    "rey": true,
    "solo": 2,
+   "sube": true,
    "svc": 2,
    "trios": 7
   }
@@ -636,7 +641,6 @@
    "dobles": 10,
    "infalt": true,
    "perf": 1,
-   "sube": true,
    "svc": 1,
    "trios": 2
   }
@@ -717,6 +721,7 @@
    "dobles": 3,
    "perf": 2,
    "relampago": true,
+   "sube": true,
    "svc": 1,
    "trios": 5
   }
@@ -879,6 +884,7 @@
    "relampago": true,
    "rey": true,
    "solo": 2,
+   "sube": true,
    "svc": 3,
    "trios": 5
   }
@@ -998,7 +1004,6 @@
    "infalt": true,
    "perf": 1,
    "rev": 1,
-   "sube": true,
    "svc": 1,
    "trios": 5
   }
@@ -1120,6 +1125,7 @@
    "perf": 1,
    "relampago": true,
    "rev": 1,
+   "sube": true,
    "svc": 1,
    "trios": 3
   }
@@ -1239,6 +1245,7 @@
    "dcor": true,
    "dobles": 3,
    "relampago": true,
+   "sube": true,
    "svc": 2,
    "trios": 3
   }
@@ -1277,7 +1284,6 @@
    "cab": 1,
    "dobles": 12,
    "perf": 1,
-   "sube": true,
    "trios": 2
   }
  },
@@ -1351,7 +1357,6 @@
   "rango": "B",
   "tg_t": {
    "dobles": 3,
-   "sube": true,
    "svc": 2,
    "trios": 2
   }
@@ -1504,7 +1509,8 @@
   "tg_t": {
    "busc": 2,
    "dobles": 6,
-   "infalt": true
+   "infalt": true,
+   "sube": true
   }
  },
  {
@@ -1539,7 +1545,8 @@
   "rango": "B",
   "tg_t": {
    "dobles": 3,
-   "solo": 1
+   "solo": 1,
+   "sube": true
   }
  },
  {
@@ -1617,6 +1624,7 @@
    "dobles": 3,
    "perf": 1,
    "relampago": true,
+   "sube": true,
    "svc": 2,
    "svtag": "campeon",
    "trios": 2
@@ -1809,7 +1817,6 @@
    "dobles": 3,
    "perf": 2,
    "relampago": true,
-   "sube": true,
    "svc": 1,
    "trios": 2
   }
@@ -1885,6 +1892,7 @@
   "rango": "B",
   "tg_t": {
    "dobles": 5,
+   "sube": true,
    "svc": 1
   }
  },
@@ -1924,6 +1932,7 @@
    "dobles": 3,
    "perf": 1,
    "solo": 1,
+   "sube": true,
    "svc": 1,
    "svtag": "campeon",
    "trios": 2
@@ -1963,6 +1972,7 @@
    "busc": 1,
    "dobles": 1,
    "perf": 1,
+   "sube": true,
    "svc": 1,
    "trios": 2
   }
@@ -2001,7 +2011,6 @@
    "busc": 1,
    "dcor": true,
    "dobles": 2,
-   "sube": true,
    "svc": 1
   }
  },
@@ -2182,6 +2191,7 @@
   "rango": "B",
   "tg_t": {
    "dobles": 2,
+   "sube": true,
    "svc": 1,
    "svtag": "campeon"
   }
@@ -2296,6 +2306,7 @@
   "rango": "B",
   "tg_t": {
    "dcor": true,
+   "sube": true,
    "svc": 2,
    "trios": 3
   }
@@ -2334,7 +2345,6 @@
   "tg_t": {
    "infalt": true,
    "rev": 1,
-   "sube": true,
    "svtag": "llamas",
    "trios": 3
   }
@@ -2373,6 +2383,7 @@
    "busc": 2,
    "dobles": 2,
    "perf": 1,
+   "sube": true,
    "svc": 1,
    "trios": 2
   }
@@ -2411,6 +2422,7 @@
    "cab": 1,
    "dcor": true,
    "dobles": 2,
+   "sube": true,
    "svc": 2
   }
  },
@@ -2448,6 +2460,7 @@
    "dobles": 3,
    "perf": 1,
    "solo": 1,
+   "sube": true,
    "svc": 1,
    "trios": 4
   }
@@ -2524,6 +2537,7 @@
   "tg_t": {
    "dobles": 2,
    "perf": 1,
+   "sube": true,
    "trios": 1
   }
  },
@@ -2560,7 +2574,8 @@
   "rango": "C",
   "tg_t": {
    "dobles": 3,
-   "perf": 1
+   "perf": 1,
+   "sube": true
   }
  },
  {
@@ -2595,7 +2610,6 @@
   "rango": "C",
   "tg_t": {
    "dobles": 1,
-   "sube": true,
    "trios": 1
   }
  },
@@ -2633,6 +2647,7 @@
    "busc": 1,
    "dobles": 1,
    "infalt": true,
+   "sube": true,
    "svc": 1,
    "trios": 1
   }
@@ -2707,6 +2722,7 @@
   "tg_t": {
    "dobles": 3,
    "rev": 1,
+   "sube": true,
    "svc": 1,
    "svtag": "campeon",
    "trios": 2
@@ -2745,7 +2761,8 @@
   "tg_t": {
    "busc": 1,
    "cab": 1,
-   "dobles": 3
+   "dobles": 3,
+   "sube": true
   }
  },
  {
@@ -2780,6 +2797,7 @@
   "rango": "C",
   "tg_t": {
    "dobles": 3,
+   "sube": true,
    "svc": 1
   }
  },
@@ -2817,6 +2835,7 @@
   "tg_t": {
    "perf": 1,
    "solo": 1,
+   "sube": true,
    "svc": 1,
    "svtag": "campeon"
   }
@@ -2854,7 +2873,6 @@
   "tg_t": {
    "dobles": 4,
    "rev": 1,
-   "sube": true,
    "trios": 1
   }
  },
@@ -2890,7 +2908,6 @@
   "rango": "C",
   "tg_t": {
    "dobles": 1,
-   "sube": true,
    "trios": 1
   }
  },
@@ -2927,6 +2944,7 @@
   "tg_t": {
    "busc": 2,
    "dobles": 2,
+   "sube": true,
    "suelto": true,
    "svc": 1
   }
@@ -3004,6 +3022,7 @@
   "tg_t": {
    "dobles": 2,
    "perf": 1,
+   "sube": true,
    "svc": 1
   }
  },
@@ -3040,6 +3059,7 @@
   "tg_t": {
    "dobles": 3,
    "rev": 1,
+   "sube": true,
    "trios": 1
   }
  },
@@ -3110,6 +3130,7 @@
   "rango": "C",
   "tg_t": {
    "dobles": 2,
+   "sube": true,
    "svc": 1
   }
  },
@@ -3179,8 +3200,7 @@
   "total": 232,
   "rango": "D",
   "tg_t": {
-   "dobles": 4,
-   "sube": true
+   "dobles": 4
   }
  },
  {
@@ -3218,6 +3238,7 @@
    "perf": 1,
    "relampago": true,
    "solo": 1,
+   "sube": true,
    "svc": 1,
    "trios": 1
   }
@@ -3323,8 +3344,7 @@
   "total": 232,
   "rango": "D",
   "tg_t": {
-   "dobles": 2,
-   "sube": true
+   "dobles": 2
   }
  },
  {
@@ -3467,6 +3487,7 @@
    "dobles": 1,
    "rey": true,
    "solo": 1,
+   "sube": true,
    "svc": 1,
    "trios": 2
   }
@@ -3536,7 +3557,8 @@
   "total": 232,
   "rango": "D",
   "tg_t": {
-   "dobles": 5
+   "dobles": 5,
+   "sube": true
   }
  },
  {
@@ -3646,6 +3668,7 @@
   "tg_t": {
    "busc": 1,
    "cab": 1,
+   "sube": true,
    "svc": 1
   }
  },
@@ -3792,7 +3815,8 @@
   "rango": "D",
   "tg_t": {
    "dobles": 2,
-   "rev": 1
+   "rev": 1,
+   "sube": true
   }
  },
  {
@@ -3827,6 +3851,7 @@
   "rango": "D",
   "tg_t": {
    "busc": 2,
+   "sube": true,
    "svc": 2,
    "trios": 1
   }
@@ -3932,6 +3957,7 @@
   "total": 232,
   "rango": "D",
   "tg_t": {
+   "sube": true,
    "trios": 1
   }
  },
@@ -4002,7 +4028,8 @@
   "total": 232,
   "rango": "D",
   "tg_t": {
-   "dobles": 3
+   "dobles": 3,
+   "sube": true
   }
  },
  {
@@ -4077,6 +4104,7 @@
    "busc": 1,
    "dcor": true,
    "dobles": 1,
+   "sube": true,
    "svc": 1
   }
  },
@@ -4259,7 +4287,6 @@
   "total": 232,
   "rango": "E",
   "tg_t": {
-   "sube": true,
    "trios": 2
   }
  },
@@ -4332,6 +4359,7 @@
   "rango": "E",
   "tg_t": {
    "dcor": true,
+   "sube": true,
    "svc": 1
   }
  },
@@ -4367,8 +4395,7 @@
   "rango": "E",
   "tg_t": {
    "busc": 1,
-   "solo": 1,
-   "sube": true
+   "solo": 1
   }
  },
  {
@@ -4404,6 +4431,7 @@
   "tg_t": {
    "busc": 4,
    "dobles": 1,
+   "sube": true,
    "svc": 2
   }
  },
@@ -4475,6 +4503,7 @@
   "rango": "E",
   "tg_t": {
    "dcor": true,
+   "sube": true,
    "svc": 1
   }
  },
@@ -4545,7 +4574,10 @@
   "pos": 260,
   "fc": true,
   "total": 232,
-  "rango": "E"
+  "rango": "E",
+  "tg_t": {
+   "sube": true
+  }
  },
  {
   "full": "RT",
@@ -4650,7 +4682,6 @@
   "tg_t": {
    "dobles": 2,
    "reciente": true,
-   "sube": true,
    "svc": 1,
    "svtag": "campeon"
   }
@@ -4684,7 +4715,10 @@
   "o": 124,
   "pos": 95,
   "total": 232,
-  "rango": "E"
+  "rango": "E",
+  "tg_t": {
+   "sube": true
+  }
  },
  {
   "full": "Gus",
@@ -4718,6 +4752,7 @@
   "rango": "E",
   "tg_t": {
    "dobles": 1,
+   "sube": true,
    "trios": 1
   }
  },
@@ -4753,6 +4788,7 @@
   "rango": "E",
   "tg_t": {
    "busc": 2,
+   "sube": true,
    "svc": 1,
    "trios": 1
   }
@@ -4791,6 +4827,7 @@
    "dcor": true,
    "dobles": 1,
    "perf": 1,
+   "sube": true,
    "svc": 2
   }
  },
@@ -4826,6 +4863,7 @@
   "total": 232,
   "rango": "E",
   "tg_t": {
+   "sube": true,
    "svc": 1,
    "trios": 2
   }
@@ -4862,6 +4900,7 @@
   "total": 232,
   "rango": "E",
   "tg_t": {
+   "sube": true,
    "svc": 1
   }
  },
@@ -4932,6 +4971,7 @@
   "rango": "E",
   "tg_t": {
    "busc": 1,
+   "sube": true,
    "trios": 1
   }
  },
@@ -5037,7 +5077,6 @@
   "tg_t": {
    "busc": 1,
    "dobles": 1,
-   "sube": true,
    "suelto": true
   }
  },
@@ -5073,8 +5112,7 @@
   "total": 232,
   "rango": "E",
   "tg_t": {
-   "dobles": 3,
-   "sube": true
+   "dobles": 3
   }
  },
  {
@@ -5248,7 +5286,8 @@
   "total": 232,
   "rango": "E",
   "tg_t": {
-   "dobles": 1
+   "dobles": 1,
+   "sube": true
   }
  },
  {
@@ -5318,7 +5357,8 @@
   "total": 232,
   "rango": "E",
   "tg_t": {
-   "rev": 1
+   "rev": 1,
+   "sube": true
   }
  },
  {
@@ -5419,6 +5459,7 @@
   "rango": "E",
   "tg_t": {
    "busc": 1,
+   "sube": true,
    "trios": 2
   }
  },
@@ -5454,6 +5495,7 @@
   "total": 232,
   "rango": "E",
   "tg_t": {
+   "sube": true,
    "trios": 1
   }
  },
@@ -5562,6 +5604,7 @@
   "rango": "E",
   "tg_t": {
    "dobles": 1,
+   "sube": true,
    "trios": 1
   }
  },
@@ -5633,6 +5676,7 @@
   "rango": "E",
   "tg_t": {
    "perf": 1,
+   "sube": true,
    "svc": 1,
    "svtag": "campeon"
   }
@@ -5770,6 +5814,7 @@
   "rango": "E",
   "tg_t": {
    "busc": 1,
+   "sube": true,
    "trios": 2
   }
  },
@@ -6115,6 +6160,7 @@
   "rango": "E",
   "tg_t": {
    "dobles": 1,
+   "sube": true,
    "svc": 1
   }
  },
@@ -6150,6 +6196,7 @@
   "total": 232,
   "rango": "E",
   "tg_t": {
+   "sube": true,
    "trios": 1
   }
  },
@@ -6217,6 +6264,7 @@
   "total": 232,
   "rango": "E",
   "tg_t": {
+   "sube": true,
    "trios": 2
   }
  },
@@ -6286,6 +6334,7 @@
   "total": 232,
   "rango": "E",
   "tg_t": {
+   "sube": true,
    "trios": 2
   }
  },
@@ -6353,7 +6402,10 @@
   "o": 172,
   "pos": 118,
   "total": 232,
-  "rango": "E"
+  "rango": "E",
+  "tg_t": {
+   "sube": true
+  }
  },
  {
   "full": "Eldinoco🇦🇷",
@@ -6808,6 +6860,7 @@
   "rango": "E",
   "tg_t": {
    "dcor": true,
+   "sube": true,
    "svc": 1,
    "svtag": "campeon"
   }
@@ -6911,7 +6964,10 @@
   "o": 188,
   "pos": 125,
   "total": 232,
-  "rango": "E"
+  "rango": "E",
+  "tg_t": {
+   "sube": true
+  }
  },
  {
   "full": "Saiko",
@@ -6976,8 +7032,7 @@
   "total": 232,
   "rango": "E",
   "tg_t": {
-   "reciente": true,
-   "sube": true
+   "reciente": true
   }
  },
  {
@@ -7805,7 +7860,10 @@
   "o": 214,
   "pos": 136,
   "total": 232,
-  "rango": "E"
+  "rango": "E",
+  "tg_t": {
+   "sube": true
+  }
  },
  {
   "full": "Scot",
@@ -7972,7 +8030,6 @@
   "rango": "E",
   "tg_t": {
    "reciente": true,
-   "sube": true,
    "trios": 1
   }
  },
@@ -8141,6 +8198,7 @@
   "total": 232,
   "rango": "E",
   "tg_t": {
+   "sube": true,
    "trios": 2
   }
  },
@@ -9375,7 +9433,8 @@
   "rango": "E",
   "tg_t": {
    "dobles": 1,
-   "rev": 1
+   "rev": 1,
+   "sube": true
   }
  },
  {
@@ -12367,8 +12426,7 @@
   "total": 232,
   "rango": "E",
   "tg_t": {
-   "reciente": true,
-   "sube": true
+   "reciente": true
   }
  },
  {
@@ -12508,8 +12566,7 @@
   "total": 232,
   "rango": "E",
   "tg_t": {
-   "reciente": true,
-   "sube": true
+   "reciente": true
   }
  },
  {
@@ -12885,8 +12942,7 @@
   "total": 232,
   "rango": "E",
   "tg_t": {
-   "reciente": true,
-   "sube": true
+   "reciente": true
   }
  },
  {
@@ -14040,7 +14096,10 @@
   "pos": 444,
   "fc": true,
   "total": 232,
-  "rango": "E"
+  "rango": "E",
+  "tg_t": {
+   "sube": true
+  }
  },
  {
   "full": "Cabece",
