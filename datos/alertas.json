@@ -66,5 +66,9 @@
  "tiers": {
   "t": "2026-11-09T21:39:41.815650+00:00",
   "texto": "Los paneles de los socios no se están actualizando: el Worker contesta 500 a `/avisos/tiers-ciclo`."
+ },
+ "vitrina": {
+  "t": "2026-11-09T21:55:10.709182+00:00",
+  "texto": "**Ranking Temporada no se está escribiendo**: las cartas de Temporada y la web se quedan con los números de la última corrida buena.\n> 🔴 La tabla encogería. Si es a propósito —un reset,\n> 🔴 saldrían 30: 23 🇨🇴, Choco🇵🇪, DARK ANGEL 🇨🇴, Dinamight🇲🇽, Dobell 🇪🇸, ENEK 🇪🇸, EVANGELINE🇧🇴, Enkil 🇦🇷…"
  }
 }

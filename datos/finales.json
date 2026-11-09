@@ -1288,5 +1288,27 @@
   "sin_permiso": true,
   "sv": "LKR"
  },
+ "1569428627563479152": {
+  "autor": "1515482513106272366",
+  "canal": "1487207377601040516",
+  "cuando": "2026-11-09T19:09:03.385000+00:00",
+  "evento": "__ JKWODJAKB V.1 __",
+  "fecha": "09/11",
+  "llave": "1569428627563479152",
+  "pregunta": "1569470241464123510",
+  "preguntada": "2026-11-09 5:54 PM ET",
+  "preguntas": [
+   {
+    "lados": [
+     "Mito🇦🇷",
+     "Dobell 🇪🇸"
+    ],
+    "ronda": "CUARTOS"
+   }
+  ],
+  "respondidas": {},
+  "sin_permiso": false,
+  "sv": "FFA"
+ },
  "_leeme": "Las llaves que el ciclo no entendió y se las preguntó a quien las publicó, con botones o un menú (bot/finales.py). Una vez por llave, por su ID: así nunca se pregunta dos veces. Dlx, 12/10/2026."
 }

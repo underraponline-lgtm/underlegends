@@ -1709,6 +1709,11 @@
  },
  "btrx": {
   "competitivo": {
+   "⚔️ DUELISTA": [
+    "⚔️ DUELISTA",
+    "t1",
+    1794261790120
+   ],
    "🤝 SIN MIEDO": [
     "🤝 SIN MIEDO",
     "t1",
@@ -2269,6 +2274,13 @@
   }
  },
  "cinexfilo": {
+  "competitivo": {
+   "🤝 SIN MIEDO": [
+    "🤝 SIN MIEDO",
+    "t1",
+    1794261790120
+   ]
+  },
   "servidor": {
    "📆 HABITUÉ": [
     "📆 HABITUÉ",
@@ -2624,6 +2636,11 @@
     "🤝 SIN MIEDO",
     "t1",
     1793029252929
+   ],
+   "🦁 TEMERARIO": [
+    "🦁 TEMERARIO",
+    "t1",
+    1794261790120
    ]
   },
   "pais": {
@@ -3715,6 +3732,11 @@
  },
  "eidp": {
   "competitivo": {
+   "🐉 MATADRAGONES": [
+    "🐉 MATADRAGONES",
+    "t1",
+    1794261790120
+   ],
    "🗡️ MATAGIGANTES": [
     "🗡️ MATAGIGANTES",
     "t1",
@@ -3845,6 +3867,13 @@
   }
  },
  "enek": {
+  "servidor": {
+   "🏆 CAMPEÓN": [
+    "🏆 CAMPEÓN",
+    "t1",
+    1794261790120
+   ]
+  },
   "temporada": {
    "👑 CAMPEÓN x%d": [
     "👑 CAMPEÓN x1",
@@ -4113,6 +4142,13 @@
   }
  },
  "evangeline": {
+  "servidor": {
+   "📆 HABITUÉ": [
+    "📆 HABITUÉ",
+    "t1",
+    1794261790120
+   ]
+  },
   "temporada": {
    "🌱 PROMESA": [
     "🌱 PROMESA",
@@ -5358,6 +5394,13 @@
   }
  },
  "keider": {
+  "competitivo": {
+   "🤝 SIN MIEDO": [
+    "🤝 SIN MIEDO",
+    "t1",
+    1794261790120
+   ]
+  },
   "pais": {
    "DA LA CARA": [
     "DA LA CARA",
@@ -6545,6 +6588,16 @@
     "t1",
     1792953978519
    ],
+   "🔁 VENGADOR": [
+    "🔁 VENGADOR",
+    "t1",
+    1794261790120
+   ],
+   "🗡️ MATAGIGANTES": [
+    "🗡️ MATAGIGANTES",
+    "t1",
+    1794261790120
+   ],
    "🤝 SIN MIEDO": [
     "🤝 SIN MIEDO",
     "t1",
@@ -7248,6 +7301,13 @@
   }
  },
  "mayeutyk": {
+  "competitivo": {
+   "🤝 SIN MIEDO": [
+    "🤝 SIN MIEDO",
+    "t1",
+    1794261790120
+   ]
+  },
   "servidor": {
    "🏅 PODIOS": [
     "🏅 PODIOS",
@@ -7364,6 +7424,11 @@
     "⚔️ DUELISTA",
     "t1",
     1792953978519
+   ],
+   "🔁 VENGADOR": [
+    "🔁 VENGADOR",
+    "t1",
+    1794261790120
    ],
    "🗡️ MATAGIGANTES": [
     "🗡️ MATAGIGANTES",
@@ -7602,6 +7667,11 @@
     "🥈 A UN PASO",
     "t1",
     1793138568927
+   ],
+   "🦁 TEMERARIO": [
+    "🦁 TEMERARIO",
+    "t1",
+    1794261790120
    ]
   },
   "pais": {
@@ -7723,10 +7793,20 @@
  },
  "mito": {
   "competitivo": {
+   "⚔️ DUELISTA": [
+    "⚔️ DUELISTA",
+    "t1",
+    1794261790120
+   ],
    "🗡️ MATAGIGANTES": [
     "🗡️ MATAGIGANTES",
     "t1",
     1793936281420
+   ],
+   "🤝 SIN MIEDO": [
+    "🤝 SIN MIEDO",
+    "t1",
+    1794261790120
    ]
   },
   "pais": {
@@ -7739,6 +7819,11 @@
     "EMBAJADOR",
     "t1",
     1793936281420
+   ],
+   "INTERNACIONAL": [
+    "INTERNACIONAL",
+    "t1",
+    1794261790120
    ]
   },
   "servidor": {
@@ -8640,6 +8725,11 @@
  },
  "number": {
   "competitivo": {
+   "⚔️ DUELISTA": [
+    "⚔️ DUELISTA",
+    "t1",
+    1794261790120
+   ],
    "🗡️ MATAGIGANTES": [
     "🗡️ MATAGIGANTES",
     "t1",
@@ -8712,6 +8802,11 @@
     "DA LA CARA",
     "t1",
     1792953978519
+   ],
+   "SIN FRONTERAS": [
+    "SIN FRONTERAS",
+    "t1",
+    1794261790120
    ]
   },
   "servidor": {
@@ -8745,6 +8840,11 @@
     "⚔️ DUELISTA",
     "t1",
     1792953978519
+   ],
+   "🔁 VENGADOR": [
+    "🔁 VENGADOR",
+    "t1",
+    1794261790120
    ],
    "🗡️ MATAGIGANTES": [
     "🗡️ MATAGIGANTES",
@@ -10472,6 +10572,11 @@
     "t1",
     1793029252929
    ],
+   "🤜 CLÁSICO": [
+    "🤜 CLÁSICO",
+    "t1",
+    1794261790120
+   ],
    "🤝 SIN MIEDO": [
     "🤝 SIN MIEDO",
     "t1",
@@ -11454,6 +11559,11 @@
     "t1",
     1793029252929
    ],
+   "🔁 VENGADOR": [
+    "🔁 VENGADOR",
+    "t1",
+    1794261790120
+   ],
    "🗡️ MATAGIGANTES": [
     "🗡️ MATAGIGANTES",
     "t1",
@@ -12143,6 +12253,13 @@
   }
  },
  "sosa": {
+  "competitivo": {
+   "🗡️ MATAGIGANTES": [
+    "🗡️ MATAGIGANTES",
+    "t1",
+    1794261790120
+   ]
+  },
   "pais": {
    "DA LA CARA": [
     "DA LA CARA",
@@ -12158,6 +12275,11 @@
     "PIONERO",
     "t1",
     1793029252929
+   ],
+   "SIN FRONTERAS": [
+    "SIN FRONTERAS",
+    "t1",
+    1794261790120
    ]
   },
   "servidor": {
@@ -12381,6 +12503,11 @@
  },
  "tam": {
   "competitivo": {
+   "⚔️ DUELISTA": [
+    "⚔️ DUELISTA",
+    "t1",
+    1794261790120
+   ],
    "😈 BESTIA NEGRA": [
     "😈 BESTIA NEGRA",
     "t1",
@@ -13579,6 +13706,11 @@
     "MEDALLERO",
     "t1",
     1793029252929
+   ],
+   "SIN FRONTERAS": [
+    "SIN FRONTERAS",
+    "t1",
+    1794261790120
    ]
   },
   "servidor": {

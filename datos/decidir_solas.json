@@ -3234,6 +3234,46 @@
     "nexux"
    ],
    "escribio": {}
+  },
+  {
+   "id": "e28ad56b03",
+   "tipo": "Nombre desconocido",
+   "sec": "GG SANGRERAP 1 · FDS · 14/10 · #521",
+   "que": "¿Quién es «Evanlyne 🇧🇴»?",
+   "r": "Es MAT MC (en este evento)",
+   "regla": "R21 · la cuenta que se anotó así para ese evento es de alguien de la Lista que esa noche no jugó con su nombre",
+   "rk": "R21",
+   "por": "el ciclo",
+   "porque": "la cuenta @4456540222 · en la Lista: MAT MC se anotó como «Evanlyne» para ese evento, no es staff de FDS y esa noche no jugó con su nombre",
+   "t": 1794261771991,
+   "filas": [
+    874
+   ],
+   "variantes": [
+    "Evanlyne 🇧🇴"
+   ],
+   "escribio": {
+    "quien": "GG SANGRERAP 1 · FDS · 14/10 · Evanlyne 🇧🇴"
+   }
+  },
+  {
+   "id": "a89e070a54",
+   "tipo": "Alias posible",
+   "sec": "🪪 Identidad",
+   "que": "¿«McK» es Hades? La cuenta de Hades en la Lista se anotó como «McK», y en el ranking suman aparte. Si es la misma persona, los puntos de «McK» pasan a Hades.\nLa cuenta: https://discord.com/users/740307349809397841",
+   "r": "Es la misma persona",
+   "regla": "cierre · ya no hacía falta preguntarlo",
+   "rk": "cierre",
+   "por": "el ciclo",
+   "porque": "la misma persona: «McK» ya es alias de Hades",
+   "t": 1794261771991,
+   "filas": [
+    1186
+   ],
+   "variantes": [
+    "DOS NOMBRES: «McK» → «Hades» · cuenta 740307349809397841"
+   ],
+   "escribio": {}
   }
  ],
  "deshechas": []

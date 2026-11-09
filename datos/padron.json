@@ -4885,7 +4885,7 @@
   "pais": "",
   "sv": "",
   "verificado": "",
-  "discord_id": "",
+  "discord_id": "1096531415916621936",
   "av_sheet": "",
   "notas": ""
  },
@@ -11202,7 +11202,7 @@
  {
   "full": "Evangeline",
   "raw": "Evangeline",
-  "pais": "",
+  "pais": "Bolivia",
   "sv": "",
   "verificado": "",
   "discord_id": "552121423804628995",
@@ -11252,7 +11252,7 @@
  {
   "full": "Gutty",
   "raw": "Gutty",
-  "pais": "",
+  "pais": "Panamá",
   "sv": "",
   "verificado": "",
   "discord_id": "168821396913389568",
@@ -11298,5 +11298,95 @@
   "discord_id": "1245383910980849688",
   "av_sheet": "",
   "notas": "regla A (Dlx, 09/11/2026): la única cuenta con ese nombre en LKR (y se anotó así)"
+ },
+ {
+  "full": "Nitrox 🇦🇷",
+  "raw": "Nitrox",
+  "pais": "Argentina",
+  "sv": "",
+  "verificado": "",
+  "discord_id": "1502679833665208444",
+  "av_sheet": "",
+  "notas": "alta automática · se anotó así en inscripciones · 2026-11-09 4:42 PM ET"
+ },
+ {
+  "full": "replisan 🇦🇷",
+  "raw": "replisan",
+  "pais": "Argentina",
+  "sv": "",
+  "verificado": "",
+  "discord_id": "1538845917476560976",
+  "av_sheet": "",
+  "notas": "alta automática · se anotó así en inscripciones · 2026-11-09 4:42 PM ET"
+ },
+ {
+  "full": "Fecha 🇦🇷",
+  "raw": "Fecha",
+  "pais": "Argentina",
+  "sv": "",
+  "verificado": "",
+  "discord_id": "1459022035291476050",
+  "av_sheet": "",
+  "notas": "alta automática · se anotó así en inscripciones · 2026-11-09 4:42 PM ET"
+ },
+ {
+  "full": "MAT MC",
+  "raw": "MAT MC",
+  "pais": "",
+  "sv": "",
+  "verificado": "",
+  "discord_id": "1555731451180482560",
+  "av_sheet": "",
+  "notas": "alta automática · su nombre en Discord · 2026-11-09 4:42 PM ET"
+ },
+ {
+  "full": "Choco 🇵🇪",
+  "raw": "Choco",
+  "pais": "Perú",
+  "sv": "",
+  "verificado": "",
+  "discord_id": "875841712575098920",
+  "av_sheet": "",
+  "notas": "alta automática · se anotó así en inscripciones · 2026-11-09 4:42 PM ET"
+ },
+ {
+  "full": "Dinamight 🇲🇽",
+  "raw": "Dinamight",
+  "pais": "México",
+  "sv": "",
+  "verificado": "",
+  "discord_id": "1463249255962644530",
+  "av_sheet": "",
+  "notas": "alta automática · estaba en la llamada del evento con ese nombre · 2026-11-09 4:42 PM ET"
+ },
+ {
+  "full": "Forza 🇻🇪",
+  "raw": "Forza",
+  "pais": "Venezuela",
+  "sv": "",
+  "verificado": "",
+  "discord_id": "1471506451146080497",
+  "av_sheet": "",
+  "notas": "alta automática · se anotó así en inscripciones · 2026-11-09 4:42 PM ET"
+ },
+ {
+  "full": "black live 🇨🇴",
+  "raw": "black live",
+  "pais": "Colombia",
+  "sv": "",
+  "verificado": "",
+  "discord_id": "1523008096660885505",
+  "av_sheet": "",
+  "notas": "alta automática · se anotó así en inscripciones · 2026-11-09 4:42 PM ET"
+ },
+ {
+  "full": "Dobell 🇪🇸",
+  "raw": "Dobell",
+  "pais": "España",
+  "sv": "",
+  "verificado": "",
+  "discord_id": "560204755280855051",
+  "av_sheet": "",
+  "notas": "alta automática · estaba en la llamada del evento con ese nombre · 2026-11-09 4:42 PM ET"
  }
 ]

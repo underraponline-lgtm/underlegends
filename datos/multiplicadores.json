@@ -1249,11 +1249,21 @@
     "org": "NC",
     "clave": "nc"
    },
-   "organizadores": [],
+   "organizadores": [
+    [
+     "Guess",
+     20,
+     1
+    ]
+   ],
    "semillero": {
-    "nuevos": {},
-    "gente": {},
-    "gana": null
+    "nuevos": {
+     "FFA": 3
+    },
+    "gente": {
+     "FFA": 20
+    },
+    "gana": "FFA"
    },
    "meta_va": {
     "ACAD": 0,
@@ -1262,7 +1272,7 @@
     "DDS": 0,
     "DRA": 0,
     "FDS": 0,
-    "FFA": 0,
+    "FFA": 20,
     "FFS": 0,
     "FRZ": 0,
     "FVS": 0,
