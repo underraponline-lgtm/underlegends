@@ -304,6 +304,11 @@ FUNA = [
      '『Trot🇪🇸』\n『Kyle🇵🇪』\n『Kinkross🇪🇸』\n『NC🇦🇷』\n\n[ FINAL ]\n\n'
      '⌞ Argenfifa 🇦🇷 ⌝ 🆚 ⌞ NC🇦🇷 ⌝ 🆚 ⌞ sin limites🇵🇪 ⌝\n\n<@&1> ▋\n\n'
      'CAMPEON: NC🇦🇷\nSUBCAMPEON: sin limites🇵🇪\nTERCER LUGAR: Argenfifa 🇦🇷'),
+    ('LA SUPERVIVENCIA (FFA, 05/11/2026): «CHYPHER», 💀 en los que cayeron, 🏅 pegado al cuarto y el podio sin batallas',
+     '`[ORDEN DEL CHYPHER]`\n# ADRIANEX 💀  <a:8878spainflag:1> \n# PARK JI SUNG   <a:1048chileflag:2> \n'
+     '# LRS <a:ARGENTINA:3> 💀 \n# LORDVIRUZZ<a:2786colombiaflag:4> 💀 \n# VANDU<a:2786colombiaflag:4> 🏅 **4to lugar**\n'
+     '# DARNBLESS 💀  <a:2786colombiaflag:4> \n# trelok <a:2786colombiaflag:4> \n# VERC 🇨🇱  \n'
+     '# lvel 💀  <a:9916venezuelaflag:5>\n\n🥇 : verc\n🥈 : park jing sun\n🥉 : trelok \n🏅 :vandu\n🥋 : verc, vandu '),
     ('Revo 2/5: «1 - [x] ❌», final de dos y el podio con medallas',
      'nave de funa:\n\n1 - [Black demon] ❌\n2 - [Darkomc] ❌\n3 - [Saiko] ❌\n4 - [Tam]\n'
      '5 - [Corazón de fleiva] ❌\n6 - [Diego] ❌\n7 - [Joba] ❌\n8 - [silence] ❌\n9 - [multi]\n'

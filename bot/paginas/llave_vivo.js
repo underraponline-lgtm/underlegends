@@ -1036,8 +1036,11 @@
      una lista, un nombre por renglón, con ❌ en los que cayeron (Dlx,
      29/09/2026). Lo que sigue —final, podio— se lee como cualquier llave. */
   // 🔑 y la NAVE DE EXTERMINACIÓN (FFA, 03/10/2026): el mismo formato con otro nombre (`escuchar.FUNA`)
-  var FUNA = /FASE\s+DE\s+ELIMINACI[OÓ]N|NAVE\s+DE\s+FUNA|ANIQUILACI[OÓ]N|EXTERMINACI[OÓ]N|\bC[IY]PHER\b/i;
-  var CAYO = /[❌✖✗✘❎\u{1F6AB}]/gu;
+  // 💀 y «CHYPHER» (LA SUPERVIVENCIA, 05/11/2026): `escuchar.FUNA` y `escuchar.CAYO`
+  var FUNA = /FASE\s+DE\s+ELIMINACI[OÓ]N|NAVE\s+DE\s+FUNA|ANIQUILACI[OÓ]N|EXTERMINACI[OÓ]N|\bCH?[IY]PH?ER\b/i;
+  var CAYO = /[❌✖✗✘❎\u{1F6AB}\u{1F480}]/gu;
+  // 🏅 el cuarto del podio, aparte de MEDALLA (`escuchar.CUARTO`)
+  var CUARTO = '\u{1F3C5}';
   // «ELIMINADO #3», «eliminado #1», «ELIMNINADO #6»: cayó, como la ❌ (`escuchar.ELIMINADO`)
   var ELIMINADO = /(^|[^\p{L}\p{N}_])ELIM[\p{L}\p{N}_]{0,4}NAD[OA]S?(?![\p{L}\p{N}_])(?:\s*#?\s*\d+)?/giu;
   // el adorno que sigue en el mismo renglón (`escuchar.COLA`)
@@ -1061,6 +1064,8 @@
     ELIMINADO.lastIndex = 0;
     s = s.replace(CAYO, '').replace(ELIMINADO, '$1').replace(/<@&\d+>|@everyone|@here|▋/g, '');
     s = s.replace(/^\s*(?:\d{1,3}\s*[-.)–—]\s*|[▪️•·*\-–—]+\s*)/u, '');
+    var c4 = s.indexOf(CUARTO);
+    if (c4 >= 0) s = s.slice(0, c4);
     var m = UNO.exec(s);
     var t = recortar(sinMarcas(m ? m[1] : s));
     MENCION.lastIndex = 0;
@@ -1093,7 +1098,8 @@
       var out = [];
       var fin = ls.length;
       for (var j = i + 1; j < ls.length; j++) {
-        var l = ls[j];
+        // 🏅 `VANDU 🏅 **4to lugar**`: lo de la medalla en adelante no es del renglón de la fase (`escuchar._funa()`)
+        var l = ls[j].replace(/^[ >#*_]+/, '').indexOf(CUARTO) === 0 ? ls[j] : ls[j].split(CUARTO)[0];
         if (!l.trim()) continue;
         if (FUNA.test(l) && !nombresDeLinea(l).length) continue;
         if (nombresDeLinea(l).length || buscarRonda(l) || PODIO.test(l) ||
@@ -1120,7 +1126,7 @@
     var out = {};
     lineas(plano(texto || '')).forEach(function (l) {
       var s = l.trim().replace(/^[>#*_ ]+/, '');
-      var c = Array.from(s)[0], n = MEDALLA[c];
+      var c = Array.from(s)[0], n = MEDALLA[c] || (c === CUARTO ? 4 : 0);
       if (!n || out[n] || PODIO.test(s)) return;
       var t = sinMarcas(recortar(s.slice(c.length)));
       MENCION.lastIndex = 0;

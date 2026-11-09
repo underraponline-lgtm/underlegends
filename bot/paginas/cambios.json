@@ -11,6 +11,16 @@
  ],
  "cambios": [
   {
+   "version": "4.41",
+   "dia": "2026-11-09",
+   "cuando": "2026-11-09T16:05:00-05:00",
+   "titulo": "Los cypher cuentan",
+   "items": [
+    "**Los cypher ya cuentan**: si sólo dicen quién entró y quién cayó, todos suman participación; si traen podio, cada uno suma su puesto.",
+    "**En la carta de País, el TOP** muestra el mejor puesto que tuvo en su país el mejor rival que venciste, no el de hoy."
+   ]
+  },
+  {
    "version": "4.40",
    "dia": "2026-11-09",
    "cuando": "2026-11-09T16:00:00-05:00",

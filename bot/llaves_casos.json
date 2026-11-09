@@ -4221,6 +4221,55 @@
    "rondas": null
   },
   {
+   "que": "LA SUPERVIVENCIA (FFA, 05/11/2026): «CHYPHER», 💀 en los que cayeron, 🏅 pegado al cuarto y el podio sin batallas",
+   "texto": "`[ORDEN DEL CHYPHER]`\n# ADRIANEX 💀  <a:8878spainflag:1> \n# PARK JI SUNG   <a:1048chileflag:2> \n# LRS <a:ARGENTINA:3> 💀 \n# LORDVIRUZZ<a:2786colombiaflag:4> 💀 \n# VANDU<a:2786colombiaflag:4> 🏅 **4to lugar**\n# DARNBLESS 💀  <a:2786colombiaflag:4> \n# trelok <a:2786colombiaflag:4> \n# VERC 🇨🇱  \n# lvel 💀  <a:9916venezuelaflag:5>\n\n🥇 : verc\n🥈 : park jing sun\n🥉 : trelok \n🏅 :vandu\n🥋 : verc, vandu ",
+   "fase": [
+    [
+     "ADRIANEX",
+     true
+    ],
+    [
+     "PARK JI SUNG",
+     false
+    ],
+    [
+     "LRS",
+     true
+    ],
+    [
+     "LORDVIRUZZ",
+     true
+    ],
+    [
+     "VANDU",
+     false
+    ],
+    [
+     "DARNBLESS",
+     true
+    ],
+    [
+     "trelok",
+     false
+    ],
+    [
+     "VERC 🇨🇱",
+     false
+    ],
+    [
+     "lvel",
+     true
+    ]
+   ],
+   "medallas": {
+    "1": "verc",
+    "2": "park jing sun",
+    "3": "trelok",
+    "4": "vandu"
+   },
+   "rondas": null
+  },
+  {
    "que": "Revo 2/5: «1 - [x] ❌», final de dos y el podio con medallas",
    "texto": "nave de funa:\n\n1 - [Black demon] ❌\n2 - [Darkomc] ❌\n3 - [Saiko] ❌\n4 - [Tam]\n5 - [Corazón de fleiva] ❌\n6 - [Diego] ❌\n7 - [Joba] ❌\n8 - [silence] ❌\n9 - [multi]\n10 - [Chekerau] ❌\n11 - [Guess]\n12 - [xubaru] ❌\n13 - [kyron] ❌\n14 - [dnk] ❌\n15 - [mussito] ❌\n16 - [rodopro] ❌\n\nFinal\n\n[Guess] 🆚 [tam]\n\n🥇 tam\n🥈 guess\n🥉 multi",
    "fase": [

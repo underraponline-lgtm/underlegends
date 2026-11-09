@@ -876,9 +876,13 @@ def filas_funa(filas, fu, texto, base):
     ter_l = ter.group(1) if ter else med.get(3)
 
     def _cual(linea, entre):
-        """El de `entre` que nombra el renglón del podio, si es uno solo."""
+        """El de `entre` que nombra el renglón del podio, si es uno solo. Y si no, el único muy parecido: el podio de LA
+        SUPERVIVENCIA dice «park jing sun» por PARK JI SUNG (05/11/2026)."""
         kl = k(linea)
         c = [x for x in entre if kl and k(x) and (k(x) == kl or kl.startswith(k(x)))]
+        if not c and kl:
+            import difflib
+            c = [x for x in entre if k(x) and difflib.SequenceMatcher(None, kl, k(x)).ratio() >= 0.8]
         return c[0] if len(c) == 1 else None
 
     finales = [f for f in filas if (f.get('ronda') or '').lower() == 'final']
@@ -895,7 +899,22 @@ def filas_funa(filas, fu, texto, base):
         lados_fin = [E._sin_marcas(x) for x in fin[-1]] if len(fin) == 1 else []
         camp = _cual(med.get(1), lados_fin)
     resuelta, tercero = False, None
-    if camp and len(lados_fin) == 3:
+    marcas = any(c for _n, c in fu)
+    # 🏅 SÓLO EL PODIO, SIN UNA BATALLA (LA SUPERVIVENCIA DEL MÁS FUERTE, FFA, 05/11/2026): la fase con 💀 en los que cayeron
+    # y abajo 🥇 🥈 🥉 🏅. Dlx, 09/11: *«puede ser parecido a NAVE DE EXTERMINACIÓN»*: paga como ella, con el podio. Sin
+    # batalla de verdad, así que ninguna va a `1v1` («podio» en la nota)
+    solo_podio = False
+    if not finales and not lados_fin and marcas and med.get(1) and med.get(2):
+        pie = [n for n, c in fu if not c]
+        c1 = _cual(med.get(1), pie)
+        c2 = _cual(med.get(2), [x for x in pie if x != c1]) if c1 else None
+        if c1 and c2:
+            filas.append(dict(base, ronda='final', ladoA=c1, ladoB=c2, ganador=c1,
+                              notas='podio: final sin batalla en la llave'))
+            camp, lados_fin, solo_podio, resuelta = c1, [c1, c2], True, True
+    if solo_podio:
+        pass
+    elif camp and len(lados_fin) == 3:
         sub = _cual(sub_l, [x for x in lados_fin if k(x) != k(camp)])
         otros = [x for x in lados_fin if k(x) not in (k(camp), k(sub or ''))]
         if sub and len(otros) == 1:
@@ -912,14 +931,22 @@ def filas_funa(filas, fu, texto, base):
     arriba = {k(x) for f in filas for x in (f.get('ladoA'), f.get('ladoB'), f.get('ganador')) if x}
     arriba |= {k(x) for x in lados_fin}
     hay_ter = any((f.get('ronda') or '').lower() in ('tercer lugar', 'tercer puesto') for f in filas)
-    marcas = any(c for _n, c in fu)
     sueltos = [n for n, c in fu if not c and k(n) not in arriba] if marcas else []
     if tercero is None and not hay_ter and camp:
         tercero = _cual(ter_l, sueltos) if ter_l else (sueltos[0] if len(sueltos) == 1 else None)
     if tercero is not None and not hay_ter:
-        filas.append(dict(base, ronda='tercer lugar', ladoA=tercero, ladoB='', ganador=tercero,
+        # 🏅 y el cuarto, si el podio lo nombra: pierde el tercer puesto (sin batalla, como el tercero)
+        cuarto = _cual(med.get(4), [x for x in sueltos if k(x) != k(tercero)]) if med.get(4) else None
+        filas.append(dict(base, ronda='tercer lugar', ladoA=tercero, ladoB=cuarto or '', ganador=tercero,
                           notas='podio: tercer puesto sin batalla en la llave'))
         arriba.add(k(tercero))
+        if cuarto:
+            arriba.add(k(cuarto))
+    # 🎤 SÓLO UN CYPHER: nadie cayó, no hay final ni podio (Dlx, 09/11/2026: *«si es sólo CYPHER que sea sólo
+    # participación»*). Cada uno cobra lo mínimo del evento, como el filtro donde no pasa nadie
+    if not marcas and not finales and not lados_fin and not med:
+        return [dict(base, ronda='filtros', ladoA='', ladoB=n, ganador='', notas='cypher: sólo participación')
+                for n, _c in fu], False
     caen = [n for n, c in fu if c] if marcas else [n for n, _c in fu if k(n) not in arriba]
     pasan = len(fu) - len(caen)
     # 🔑 y en qué ronda cayó, si la llave lo dice («ELIMINADO #3», NAVE DE EXTERMINACIÓN, 03/10/2026): va en la nota
@@ -933,6 +960,21 @@ def filas_funa(filas, fu, texto, base):
                           % ('quedó en pie' if n in sueltos else
                              'cayó en la ronda %d' % rnd[k(n)] if k(n) in rnd else 'cayó', len(fu), pasan)))
     return filas, resuelta
+
+
+def _sup(con_podio):
+    """La prueba de LA SUPERVIVENCIA (podio sin batallas) y la del cypher solo, para el self-check."""
+    t = ('`[ORDEN DEL CHYPHER]`\n# ANA 💀\n# BETO\n# CIRO 💀\n# DANI 🏅 **4to lugar**\n# EVA\n# FEDE\n# GUS 💀\n\n'
+         '🥇 : fede\n🥈 : betto\n🥉 : eva\n🏅 :dani') if con_podio else '[ CYPHER ]\n# ANA\n# BETO\n# CIRO\n# DANI\n# EVA\n'
+    fu = E.funa_de(t)
+    fs, _r = filas_funa([], fu, t, {'evento': 'X', 'servidor': 'FFA', 'fecha': '05/11', 'participantes': len(fu or [])})
+    if not con_podio:
+        return len(fs) == 5 and all(f['ronda'] == 'filtros' and not f['ladoA'] and not f['ganador'] for f in fs)
+    por = {f['ronda']: f for f in fs}
+    return ((por['final']['ganador'], por['final']['ladoB']) == ('FEDE', 'BETO')
+            and (por['tercer lugar']['ganador'], por['tercer lugar']['ladoB']) == ('EVA', 'DANI')
+            and all('podio' in f['notas'] for f in fs if f['ronda'] in ('final', 'tercer lugar'))
+            and sorted(f['ladoB'] for f in fs if f['ronda'] == 'fase de eliminación') == ['ANA', 'CIRO', 'GUS'])
 
 
 def repetidos_en_la_primera(texto):
@@ -3948,6 +3990,12 @@ def _self_check():
          and not _dnf and all(f['participantes'] == 8 for f in _fnf)),
         ('una fase de NAVE DE FUNA no descarta el evento (la lista dice quién cayó)',
          fase_sin_batallas(_nf) is None),
+        ('LA SUPERVIVENCIA (05/11/2026): sin batallas, el podio arma la final y el tercer puesto, el 🏅 es el cuarto, nada es '
+         'duelo y los 💀 caen en la fase',
+         _sup(True)),
+        ('y un cypher sin 💀, sin final ni podio paga sólo participación (Dlx, 09/11: «si es sólo CYPHER que sea sólo '
+         'participación»)',
+         _sup(False)),
         ('quien juega solo en un 2VS2 (alguien del padrón) no es un equipo: cobra como siempre',
          'Sin integrantes' not in _eq_per[0]['notas'] and not _eq_per_i),
         ('TEAM VENECIA sin inscripción: la fila queda, con «Sin integrantes», y no cobra nadie',

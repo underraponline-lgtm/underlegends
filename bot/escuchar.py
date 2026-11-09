@@ -1212,10 +1212,13 @@ def _negritas(texto):
 #: 🔑 y la NAVE DE EXTERMINACIÓN (FFA, 03/10/2026, Dlx: «no detectó las llaves de nave de exterminación, la ronda
 #: de exterminación»): el mismo formato con otro nombre. Sin esto la llave quedaba con las semis y la final —4 raperos
 #: de 17— y los otros 13 no existían
-FUNA = re.compile(r'FASE\s+DE\s+ELIMINACI[OÓ]N|NAVE\s+DE\s+FUNA|ANIQUILACI[OÓ]N|EXTERMINACI[OÓ]N|\bC[IY]PHER\b',
+#: 💀 y «CHYPHER», con la H de más (LA SUPERVIVENCIA DEL MÁS FUERTE, FFA, 05/11/2026: `[ORDEN DEL CHYPHER]`, la 💀 en los que
+#: cayeron y el podio abajo, sin batallas). Dlx, 09/11: *«puede ser parecido a NAVE DE EXTERMINACIÓN, pero si es sólo CYPHER
+#: que sea sólo participación»*: ver `llaves_a_entrada.filas_funa()`
+FUNA = re.compile(r'FASE\s+DE\s+ELIMINACI[OÓ]N|NAVE\s+DE\s+FUNA|ANIQUILACI[OÓ]N|EXTERMINACI[OÓ]N|\bCH?[IY]PH?ER\b',
                   re.I)
-#: quién cayó en la fase: ❌ ✖ ✗ ✘ ❎ 🚫
-CAYO = re.compile('[❌✖✗✘❎\U0001F6AB]')
+#: quién cayó en la fase: ❌ ✖ ✗ ✘ ❎ 🚫 💀
+CAYO = re.compile('[❌✖✗✘❎\U0001F6AB\U0001F480]')
 #: …o la palabra: «ELIMINADO #3», «eliminado #1» y «ELIMNINADO #6», con la letra de más (la de EXTERMINACIÓN). El
 #: número dice en qué orden cayeron; hoy se lee como la ❌: cayó
 ELIMINADO = re.compile(r'\bELIM\w{0,4}NAD[OA]S?\b(?:\s*#?\s*\d+)?', re.I)
@@ -1227,6 +1230,9 @@ _PAREN = re.compile(r'^(.+?)\s*\(\s*([^()]+?)\s*\)(.*)$')
 _UNO = re.compile(r'[『「⌞\[]\s*([^』」⌝\]]+?)\s*[』」⌝\]]')
 #: las medallas del podio, cuando el renglón no dice CAMPEÓN ni PUESTO: `🥇 tam`
 MEDALLA = {'\U0001F947': 1, '\U0001F948': 2, '\U0001F949': 3}
+#: 🏅 el cuarto del podio (LA SUPERVIVENCIA, 05/11/2026: `🏅 :vandu`). Aparte de `MEDALLA` a propósito: en la fase va pegada al
+#: nombre (`VANDU 🏅 **4to lugar**`) y ahí no corta la lista
+CUARTO = '\U0001F3C5'
 
 
 def uno_de_renglon(l):
@@ -1237,6 +1243,8 @@ def uno_de_renglon(l):
     s = ELIMINADO.sub('', CAYO.sub('', s))
     s = re.sub(r'<@&\d+>|@everyone|@here|▋', '', s)          # el rol del aviso
     s = re.sub(r'^\s*(?:\d{1,3}\s*[-.)–—]\s*|[▪️•·*\-–—]+\s*)', '', s)
+    # 🏅 y lo que la sigue: `VANDU 🏅 **4to lugar**` es Vandu (el lugar lo dice el podio, `medallas_de()`)
+    s = re.sub(CUARTO + '.*$', '', s)
     m = _UNO.search(s)
     t = _sin_marcas(m.group(1) if m else s).strip(' .·▪️*_`:-–—️')
     if not (norm(t) or MENCION.search(t)) or len(norm(t)) > 28:
@@ -1299,7 +1307,8 @@ def _funa(texto):
         out = []
         fin = len(ls)
         for j in range(i + 1, len(ls)):
-            l2 = ls[j]
+            # 🏅 `VANDU 🏅 **4to lugar**`: lo de la medalla en adelante no es del renglón de la fase (su «lugar» cortaba la lista)
+            l2 = ls[j].split(CUARTO)[0] if not ls[j].lstrip(' >#*_').startswith(CUARTO) else ls[j]
             if not l2.strip():
                 continue
             if FUNA.search(l2) and not nombres_de_linea(l2):
@@ -1384,7 +1393,7 @@ def medallas_de(texto):
     out = {}
     for l in plano(texto or '').splitlines():
         s = l.strip().lstrip('>#*_ ')
-        n = MEDALLA.get(s[:1])
+        n = MEDALLA.get(s[:1]) or (4 if s[:1] == CUARTO else None)
         if not n or n in out or PODIO.search(s):
             continue
         t = _sin_marcas(s[1:].strip(' .·▪️*_`:-–—️'))
