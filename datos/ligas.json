@@ -1,6 +1,6 @@
 {
  "_leeme": "Las ligas de los servidores: cada batalla y su resultado, y la tabla que sale de eso. Lo arma bot/ligas.py en cada corrida; las reglas viven ahí. Sin los mensajes: el repo es público. `batallas`: [id del mensaje, instante, jornada, a, b, ganador (vacío: pendiente), directa|replica, extras]. Las batallas con resultado cuentan como duelos (Ranking Duelos y Win%; el Score no). `flyer`: el último afiche de su canal de anuncios, re-alojado en R2 (`url`); `prox`: la próxima fecha que anunció (`d` el día, `t` el instante si lo dijo). Desde el 17/10/2026: `ptb` {id de la batalla: [PTB de a, de b]}, `flyers` (la galería, en R2), `staff` [[discord_id, nombre, mensajes en anuncios, en veredictos, último]] y `nov` (lo nuevo de las últimas horas, para «Seguir la liga»).",
- "t": "2026-11-09T17:59:52Z",
+ "t": "2026-11-09T18:59:36Z",
  "ligas": {
   "fmh-albiceleste": {
    "n": "FMH Albiceleste",
@@ -3600,10 +3600,10 @@
     ]
    ],
    "flyer": {
-    "id": "1569406801970204833",
-    "t": "2026-11-09T17:42:19Z",
-    "tit": "JJ vs FORCE",
-    "url": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/ligas/fmh-espana/1569406801970204833.webp",
+    "id": "1569423623054295061",
+    "t": "2026-11-09T18:49:10Z",
+    "tit": "CARLOSMO vs MTZ",
+    "url": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/ligas/fmh-espana/1569423623054295061.webp",
     "w": 720,
     "h": 900
    },
@@ -3611,7 +3611,7 @@
     "d": "2026-11-09",
     "t": "",
     "j": null,
-    "id": "1569406801970204833"
+    "id": "1569423623054295061"
    },
    "ptb": {
     "1542955687561134080": [
@@ -3777,6 +3777,32 @@
    },
    "flyers": [
     {
+     "id": "1569423623054295061",
+     "t": "2026-11-09T18:49:10Z",
+     "tit": "CARLOSMO vs MTZ",
+     "url": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/ligas/fmh-espana/1569423623054295061.webp",
+     "w": 720,
+     "h": 900
+    },
+    {
+     "id": "1569422955530821803",
+     "msg": "1569422955530821803",
+     "t": "2026-11-09T18:46:31Z",
+     "tit": "JOSELIYO vs MOTERA",
+     "url": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/ligas/fmh-espana/1569422955530821803.webp",
+     "w": 720,
+     "h": 900
+    },
+    {
+     "id": "1569422103340519494",
+     "msg": "1569422103340519494",
+     "t": "2026-11-09T18:43:07Z",
+     "tit": "EFE vs TROT",
+     "url": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/ligas/fmh-espana/1569422103340519494.webp",
+     "w": 720,
+     "h": 900
+    },
+    {
      "id": "1569406801970204833",
      "t": "2026-11-09T17:42:19Z",
      "tit": "JJ vs FORCE",
@@ -3853,42 +3879,15 @@
      "url": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/ligas/fmh-espana/1566105040794681494.webp",
      "w": 720,
      "h": 900
-    },
-    {
-     "id": "1566103864405528576",
-     "msg": "1566103864405528576",
-     "t": "2026-10-31T14:57:38Z",
-     "tit": "MTZ vs JAHNO",
-     "url": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/ligas/fmh-espana/1566103864405528576.webp",
-     "w": 720,
-     "h": 900
-    },
-    {
-     "id": "1566102677253791764",
-     "msg": "1566102677253791764",
-     "t": "2026-10-31T14:52:55Z",
-     "tit": "EXTRAPLAYER 🎮",
-     "url": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/ligas/fmh-espana/1566102677253791764.webp",
-     "w": 720,
-     "h": 900
-    },
-    {
-     "id": "1566099220115492874",
-     "msg": "1566099220115492874",
-     "t": "2026-10-31T14:39:10Z",
-     "tit": "FMH ESPAÑA PRE-FINALS T.5 - VALENCIA",
-     "url": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/ligas/fmh-espana/1566099220115492874.webp",
-     "w": 720,
-     "h": 900
     }
    ],
    "staff": [
     [
      "1344825963669749804",
      "⁺‧₊˚ ཐིNeisMCཋྀ ˚₊‧",
-     48,
+     51,
      108,
-     "2026-11-09T17:42:19Z"
+     "2026-11-09T18:49:10Z"
     ],
     [
      "756958777126682674",
