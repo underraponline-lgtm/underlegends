@@ -1,90 +1,106 @@
 {
  "v": 1,
- "cuando": "2026-11-09T21:12:37Z",
+ "cuando": "2026-11-09T22:41:12Z",
  "trabajo": "dibujar",
  "codigo": 0,
- "dur_s": 596.0,
+ "dur_s": 2209.7,
  "pasos": [
   {
    "n": "2f",
    "que": "las fotos que faltan, de Discord a R2",
    "ok": true,
-   "s": 7.4
+   "s": 8.5
   },
   {
    "n": "2f2",
    "que": "los TAGs elegidos",
    "ok": true,
-   "s": 0.9
+   "s": 1.6
   },
   {
    "n": "3",
    "que": "qué cambió",
    "ok": true,
-   "s": 9.4
+   "s": 11.2
   },
   {
    "n": "4",
    "que": "las caras, desde R2",
    "ok": true,
-   "s": 21.2
+   "s": 21.9
   },
   {
    "n": "5",
-   "que": "tanda 1 de 2 · 40 persona(s)",
+   "que": "tanda 1 de 7 · 40 persona(s)",
    "ok": false,
-   "s": 481.1
+   "s": 2059.5
   },
   {
    "n": "5b",
    "que": "las Bloqueadas",
    "ok": true,
-   "s": 6.9
+   "s": 26.6
   },
   {
    "n": "6",
    "que": "refrescar KV",
    "ok": true,
-   "s": 68.0
+   "s": 78.6
   }
  ],
  "fallas": [
   {
    "paso": "5",
-   "que": "03_Servidor/generar.py Adriagner"
+   "que": "03_Servidor/generar.py .SosaATR"
   },
   {
    "paso": "5",
-   "que": "03_Servidor/generar.py Shadow"
+   "que": "03_Servidor/generar.py Dcet"
+  },
+  {
+   "paso": "5",
+   "que": "03_Servidor/generar.py JEIXDER"
+  },
+  {
+   "paso": "5",
+   "que": "03_Servidor/generar.py MCO"
+  },
+  {
+   "paso": "5",
+   "que": "03_Servidor/generar.py Raizer"
+  },
+  {
+   "paso": "5",
+   "que": "03_Servidor/generar.py TøKīØ🦠🧠"
   }
  ],
  "ultimo_evento": {
-  "n": "577",
-  "nombre": "ZONA MORTAL",
-  "sv": "DDF",
-  "dia": "2026-11-07"
+  "n": "595",
+  "nombre": "JKWODJAKB V.1",
+  "sv": "FFA",
+  "dia": "2026-11-09"
  },
  "cuotas": {
   "kv": {
-   "write": 362,
-   "read": 48870
+   "write": 412,
+   "read": 51084
   },
   "objeto": {
    "leidas": 5126809,
    "escritas": 18770,
-   "pedidos": 9353
+   "pedidos": 11323
   },
   "worker": {
-   "pedidos": 8451,
-   "errores": 306,
-   "sub": 11016,
-   "cortados": 306,
-   "p50_ms": 1.29,
-   "p99_ms": 14.27,
+   "pedidos": 9718,
+   "errores": 1979,
+   "sub": 12278,
+   "cortados": 1979,
+   "p50_ms": 1.32,
+   "p99_ms": 14.31,
    "cpu": {
-    "total": 20371,
-    "objeto_10": 2015,
-    "worker_10": 257
+    "total": 28080,
+    "objeto_10": 1885,
+    "worker_10": 273
    }
   },
   "r2": {
