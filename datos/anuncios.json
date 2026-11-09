@@ -1,5 +1,5 @@
 {
- "cuando": "2026-11-09T21:56:06+00:00",
+ "cuando": "2026-11-09T22:25:59+00:00",
  "anuncios": [
   {
    "nombre": "¡SE LLEGÓ LA GRAN NOCHE!",
@@ -6768,6 +6768,15 @@
   }
  ],
  "inscripciones": [
+  {
+   "servidor": "DDF",
+   "canal": "『📑』Inscripciones",
+   "texto": "Dan 🇨🇴",
+   "quien": "dan.e.k.j",
+   "discord_id": "748609435798208655",
+   "msg_id": "1569471515379109909",
+   "cuando": "2026-11-09T21:59:28"
+  },
   {
    "servidor": "DDF",
    "canal": "『📑』Inscripciones",
@@ -15240,6 +15249,15 @@
   {
    "servidor": "DDS",
    "canal": "📜〕INSCRIPCIONES",
+   "texto": "replisan",
+   "quien": "benji_price16",
+   "discord_id": "734945161158852630",
+   "msg_id": "1565872209774379089",
+   "cuando": "2026-10-30T23:37:07"
+  },
+  {
+   "servidor": "DDS",
+   "canal": "📜〕INSCRIPCIONES",
    "texto": "chop",
    "quien": "benji_price16",
    "discord_id": "734945161158852630",
@@ -18089,6 +18107,15 @@
    "discord_id": "1538845917476560976",
    "msg_id": "1564790447706996839",
    "cuando": "2026-10-27T23:58:35"
+  },
+  {
+   "servidor": "DDS",
+   "canal": "📝〕INSCRIPCIONES",
+   "texto": "replisan",
+   "quien": "sabakunogaara__",
+   "discord_id": "1538845917476560976",
+   "msg_id": "1564790435640115282",
+   "cuando": "2026-10-27T23:58:32"
   },
   {
    "servidor": "DDS",
@@ -42740,33 +42767,6 @@
    "discord_id": "995447111334232094",
    "msg_id": "1557203874333335633",
    "cuando": "2026-10-07T01:32:15"
-  },
-  {
-   "servidor": "DDF",
-   "canal": "『📑』Inscripciones",
-   "texto": "Dm🇵🇪",
-   "quien": "equisde_xd23",
-   "discord_id": "1439048698142134436",
-   "msg_id": "1557203863985987657",
-   "cuando": "2026-10-07T01:32:12"
-  },
-  {
-   "servidor": "DDF",
-   "canal": "『📑』Inscripciones",
-   "texto": "Pichulamc",
-   "quien": "dariel.ivo",
-   "discord_id": "578697503130779649",
-   "msg_id": "1557203852724543632",
-   "cuando": "2026-10-07T01:32:09"
-  },
-  {
-   "servidor": "DDF",
-   "canal": "『📑』Inscripciones",
-   "texto": "CrisZJ🇵🇪",
-   "quien": "criszjono",
-   "discord_id": "1462237816829513971",
-   "msg_id": "1557203848517394476",
-   "cuando": "2026-10-07T01:32:08"
   }
  ]
 }

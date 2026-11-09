@@ -141,6 +141,18 @@
    "vence": "2026-11-03T03:32:41+00:00",
    "vencido": true
   },
+  "Adrianex": {
+   "avisado": "2026-11-09",
+   "con": null,
+   "cumplido": "",
+   "debut": "2026-11-05T16:15:08+00:00",
+   "did": "1276857675316989962",
+   "evento": "ORDEN DEL CHYPHER",
+   "n": 596,
+   "sv": "FFA",
+   "vence": "2026-11-12T16:15:08+00:00",
+   "vencido": false
+  },
   "Agenda motta": {
    "avisado": "2026-10-26",
    "chat": "2026-10-26",
@@ -609,17 +621,6 @@
    "vence": "2026-11-06T01:30:46+00:00",
    "vencido": true
   },
-  "Evanlyne": {
-   "con": null,
-   "cumplido": "",
-   "debut": "2026-10-14T23:10:06+00:00",
-   "did": "",
-   "evento": "GG SANGRERAP 1",
-   "n": 521,
-   "sv": "FDS",
-   "vence": "2026-10-21T23:10:06+00:00",
-   "vencido": true
-  },
   "Ezze": {
    "avisado": "2026-10-29",
    "avisado_cumplido": "2026-10-30",
@@ -805,6 +806,18 @@
    "sv": "LKR",
    "vence": "2026-10-30T20:44:26+00:00",
    "vencido": true
+  },
+  "Hades": {
+   "avisado": "2026-11-09",
+   "con": null,
+   "cumplido": "",
+   "debut": "2026-11-08T19:50:21+00:00",
+   "did": "740307349809397841",
+   "evento": "RED BULL CARACAS REGIONAL T.5",
+   "n": 590,
+   "sv": "URBF",
+   "vence": "2026-11-15T19:50:21+00:00",
+   "vencido": false
   },
   "Hirex": {
    "avisado": "2026-11-01",
@@ -1041,6 +1054,18 @@
    "vence": "2026-11-10T02:50:33+00:00",
    "vencido": false
   },
+  "KOJIRO": {
+   "avisado": "2026-11-09",
+   "con": null,
+   "cumplido": "",
+   "debut": "2026-11-09T19:49:54+00:00",
+   "did": "",
+   "evento": "RED BULL COLOMBIA",
+   "n": 597,
+   "sv": "LKR",
+   "vence": "2026-11-16T19:49:54+00:00",
+   "vencido": false
+  },
   "Kain": {
    "avisado": "2026-10-16",
    "chat": "2026-10-16",
@@ -1265,6 +1290,18 @@
    "vence": "2026-11-03T03:32:41+00:00",
    "vencido": false
   },
+  "Leandro Katana": {
+   "avisado": "2026-11-09",
+   "con": null,
+   "cumplido": "",
+   "debut": "2026-11-09T03:16:00+00:00",
+   "did": "1231247210604400711",
+   "evento": "QCYO RAPEEN 12",
+   "n": 593,
+   "sv": "FFA",
+   "vence": "2026-11-16T03:16:00+00:00",
+   "vencido": false
+  },
   "Leopold sedar": {
    "avisado_cumplido": "2026-11-04",
    "chat": "2026-11-03",
@@ -1347,12 +1384,12 @@
   "MAT MC": {
    "con": null,
    "cumplido": "",
-   "debut": "2026-11-01T23:44:14+00:00",
+   "debut": "2026-10-14T23:10:06+00:00",
    "did": "1555731451180482560",
-   "evento": "LLAVES PARA LA DISCORD STYLE 19",
-   "n": 584,
-   "sv": "DDS",
-   "vence": "2026-11-08T23:44:14+00:00",
+   "evento": "GG SANGRERAP 1",
+   "n": 521,
+   "sv": "FDS",
+   "vence": "2026-10-21T23:10:06+00:00",
    "vencido": true
   },
   "MATUK": {
@@ -1499,6 +1536,18 @@
    "vence": "2026-10-26T01:35:44+00:00",
    "vencido": true
   },
+  "Mochi DG": {
+   "avisado": "2026-11-09",
+   "con": null,
+   "cumplido": "",
+   "debut": "2026-11-08T19:50:21+00:00",
+   "did": "1147639724132012114",
+   "evento": "RED BULL CARACAS REGIONAL T.5",
+   "n": 590,
+   "sv": "URBF",
+   "vence": "2026-11-15T19:50:21+00:00",
+   "vencido": false
+  },
   "Monamay": {
    "avisado": "2026-10-30",
    "chat": "2026-10-30",
@@ -1511,6 +1560,18 @@
    "sv": "URBF",
    "vence": "2026-11-06T23:28:52+00:00",
    "vencido": true
+  },
+  "NEXOR": {
+   "avisado": "2026-11-09",
+   "con": null,
+   "cumplido": "",
+   "debut": "2026-11-09T19:49:54+00:00",
+   "did": "",
+   "evento": "RED BULL COLOMBIA",
+   "n": 597,
+   "sv": "LKR",
+   "vence": "2026-11-16T19:49:54+00:00",
+   "vencido": false
   },
   "NILS": {
    "avisado": "2026-10-25",

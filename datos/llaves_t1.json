@@ -33703,10 +33703,10 @@
      ],
      [
       [
-       "Evanlyne 🇧🇴",
+       "MAT MC",
        "Shadow"
       ],
-      "Evanlyne 🇧🇴",
+      "MAT MC",
       ""
      ]
     ],
@@ -33741,7 +33741,7 @@
      [
       [
        "CrisZJ",
-       "Evanlyne 🇧🇴"
+       "MAT MC"
       ],
       "CrisZJ",
       ""
@@ -33812,12 +33812,12 @@
     2500
    ],
    [
-    "Evanlyne 🇧🇴",
+    "Luck",
     "Cuartos",
     2500
    ],
    [
-    "Luck",
+    "MAT MC",
     "Cuartos",
     2500
    ],
@@ -45109,7 +45109,7 @@
      ],
      [
       [
-       "ABRAHAM",
+       "Abraham",
        "CRIZJ"
       ],
       "",
@@ -48231,6 +48231,323 @@
     "Xclusivo",
     "Octavos",
     1250
+   ]
+  ]
+ },
+ "596": {
+  "dia": "2026-11-05",
+  "escala": "8-15",
+  "fecha": "05/11",
+  "funa": [
+   [
+    "Trelok",
+    false
+   ],
+   [
+    "Vandu",
+    false
+   ],
+   [
+    "Verc",
+    false
+   ],
+   [
+    "Oasis",
+    false
+   ],
+   [
+    "Adrianex",
+    true
+   ],
+   [
+    "LRS",
+    true
+   ],
+   [
+    "Lord Viruzz",
+    true
+   ],
+   [
+    "DarnBless",
+    true
+   ],
+   [
+    "Lvel 🇻🇪",
+    true
+   ]
+  ],
+  "links": [
+   "https://discord.com/channels/1468472442925092958/1487207377601040516/1567935310438867005"
+  ],
+  "n": 596,
+  "nombre": "ORDEN DEL CHYPHER",
+  "participantes": 9,
+  "rondas": [
+   {
+    "b": [
+     [
+      [
+       "Trelok",
+       "Vandu"
+      ],
+      "Trelok",
+      "podio: tercer puesto sin batalla en la llave"
+     ]
+    ],
+    "r": "Tercer puesto"
+   },
+   {
+    "b": [
+     [
+      [
+       "Verc",
+       "Oasis"
+      ],
+      "Verc",
+      "podio: final sin batalla en la llave"
+     ]
+    ],
+    "r": "Final"
+   }
+  ],
+  "sv": "FFA",
+  "tabla": [
+   [
+    "Verc",
+    "Campeón",
+    7500
+   ],
+   [
+    "Oasis",
+    "Subcampeón",
+    5000
+   ],
+   [
+    "Trelok",
+    "Tercero",
+    4000
+   ],
+   [
+    "Vandu",
+    "Cuarto",
+    3000
+   ],
+   [
+    "Adrianex",
+    "Octavos",
+    1600
+   ],
+   [
+    "DarnBless",
+    "Octavos",
+    1600
+   ],
+   [
+    "LRS",
+    "Octavos",
+    1600
+   ],
+   [
+    "Lord Viruzz",
+    "Octavos",
+    1600
+   ],
+   [
+    "Lvel 🇻🇪",
+    "Octavos",
+    1600
+   ]
+  ]
+ },
+ "597": {
+  "dia": "2026-11-09",
+  "escala": "8-15",
+  "fecha": "09/11",
+  "links": [
+   "https://discord.com/channels/1558611504046153750/1560645507095728278/1569438907714769002"
+  ],
+  "n": 597,
+  "nombre": "RED BULL COLOMBIA",
+  "participantes": 14,
+  "rondas": [
+   {
+    "b": [
+     [
+      [
+       "NEXOR",
+       "Cinexfilo"
+      ],
+      "NEXOR",
+      ""
+     ],
+     [
+      [
+       "Makmah",
+       "Carlos"
+      ],
+      "Makmah",
+      ""
+     ],
+     [
+      [
+       "Lvel 🇻🇪",
+       "Shadow"
+      ],
+      "Lvel 🇻🇪",
+      ""
+     ],
+     [
+      [
+       "Vandu",
+       "Under"
+      ],
+      "Vandu",
+      ""
+     ],
+     [
+      [
+       "Richard",
+       "Mathhias"
+      ],
+      "Richard",
+      ""
+     ],
+     [
+      [
+       "Majiztral",
+       "KOJIRO"
+      ],
+      "Majiztral",
+      ""
+     ],
+     [
+      [
+       "Miniboy🇨🇱",
+       "NUMBER"
+      ],
+      "",
+      "sin ganador: espera en ✅ Decidir"
+     ]
+    ],
+    "r": "Octavos"
+   },
+   {
+    "b": [
+     [
+      [
+       "Makmah",
+       "NEXOR"
+      ],
+      "Makmah",
+      ""
+     ],
+     [
+      [
+       "Vandu",
+       "Lvel 🇻🇪"
+      ],
+      "Vandu",
+      ""
+     ],
+     [
+      [
+       "Richard",
+       "Majiztral"
+      ],
+      "Richard",
+      "ganador según #veredictos"
+     ]
+    ],
+    "r": "Cuartos"
+   },
+   {
+    "b": [
+     [
+      [
+       "Vandu",
+       "Makmah"
+      ],
+      "Vandu",
+      ""
+     ]
+    ],
+    "r": "Semifinales"
+   },
+   {
+    "b": [
+     [
+      [
+       "Richard",
+       "Vandu"
+      ],
+      "Richard",
+      "ganador según #veredictos"
+     ]
+    ],
+    "r": "Final"
+   }
+  ],
+  "sv": "LKR",
+  "tabla": [
+   [
+    "Richard",
+    "Campeón",
+    7500
+   ],
+   [
+    "Vandu",
+    "Subcampeón",
+    5000
+   ],
+   [
+    "Makmah",
+    "Semifinal",
+    3500
+   ],
+   [
+    "Lvel 🇻🇪",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Majiztral",
+    "Cuartos",
+    2000
+   ],
+   [
+    "NEXOR",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Carlos",
+    "Octavos",
+    625
+   ],
+   [
+    "Cinexfilo",
+    "Octavos",
+    625
+   ],
+   [
+    "KOJIRO",
+    "Octavos",
+    625
+   ],
+   [
+    "Mathhias",
+    "Octavos",
+    625
+   ],
+   [
+    "Shadow",
+    "Octavos",
+    625
+   ],
+   [
+    "Under",
+    "Octavos",
+    625
    ]
   ]
  }

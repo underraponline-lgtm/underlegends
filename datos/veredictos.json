@@ -2,28 +2,6 @@
  "_leeme": "Los eventos de vidas de #veredictos ya armados —quién peleó con quién y quién ganó—, para cargarlos aunque ya no estén entre los últimos mensajes del canal; y cada batalla con su ganador (`batallas`), para la llave que no lo dice; y cada llave como se jugó (`llaves`), que manda sobre la del organizador. Sin los mensajes: el repo es público. Lo escribe bot/escuchar.py (vidas()).",
  "eventos": {},
  "batallas": {
-  "1566938693443391491": {
-   "id": "1566938693443391491",
-   "sv": "🔥LKR (Champios Legue)🐉",
-   "g": "1558611504046153750",
-   "canal": "1560448027490001067",
-   "pub": 1793657696830,
-   "a": "LEONAR T",
-   "b": "CALIZ",
-   "ganador": "CALIZ",
-   "votos": "1–0"
-  },
-  "1566940783431393442": {
-   "id": "1566940783431393442",
-   "sv": "🔥LKR (Champios Legue)🐉",
-   "g": "1558611504046153750",
-   "canal": "1560448027490001067",
-   "pub": 1793658195122,
-   "a": "TEITO MC🇨🇴",
-   "b": "HIREX 🇨🇴",
-   "ganador": "TEITO MC🇨🇴",
-   "votos": "1–0"
-  },
   "1567022861049266378": {
    "id": "1567022861049266378",
    "sv": "[FFA] Freestyle For All 👾",
@@ -1112,6 +1090,17 @@
    "b": "RICARD🇪🇨",
    "ganador": "RICARD🇪🇨",
    "votos": "2–0"
+  },
+  "1569473918442536971": {
+   "id": "1569473918442536971",
+   "sv": "🔥LKR (Champios Legue)🐉",
+   "g": "1558611504046153750",
+   "canal": "1560645560015519834",
+   "pub": 1794262141572,
+   "a": "VANDU🇨🇴",
+   "b": "RICARD🇪🇨",
+   "ganador": "RICARD🇪🇨",
+   "votos": "1–0"
   }
  },
  "llaves": {

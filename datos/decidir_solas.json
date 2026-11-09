@@ -3274,6 +3274,49 @@
     "DOS NOMBRES: «McK» → «Hades» · cuenta 740307349809397841"
    ],
    "escribio": {}
+  },
+  {
+   "id": "907081bf77",
+   "tipo": "Nombre desconocido",
+   "sec": "RED BULL COLOMBIA · LKR · 09/11 · #597",
+   "que": "¿Quién es «NEXOR»?",
+   "r": "Es alguien nuevo: alta con su cuenta 1458471263524753484",
+   "regla": "Discord · su cuenta de Discord: la inscripción, el podio, la llave o la llamada",
+   "rk": "Discord",
+   "por": "el ciclo (su cuenta de Discord)",
+   "porque": "nuevo: entró a la Lista con su Discord (1458471263524753484)",
+   "t": 1794263865159,
+   "filas": [
+    1193
+   ],
+   "variantes": [
+    "NEXOR"
+   ],
+   "escribio": {
+    "alta": [
+     "NEXOR",
+     "1458471263524753484"
+    ]
+   }
+  },
+  {
+   "id": "a85414d983",
+   "tipo": "Alias posible",
+   "sec": "🪪 Identidad",
+   "que": "¿«xxxxxclusivo» es Xclusivo? La cuenta de Xclusivo en la Lista se anotó como «xxxxxclusivo», y en el ranking suman aparte. Si es la misma persona, los puntos de «xxxxxclusivo» pasan a Xclusivo.\nLa cuenta: https://discord.com/users/1493013247488430202",
+   "r": "Ya no hace falta",
+   "regla": "cierre · ya no hacía falta preguntarlo",
+   "rk": "cierre",
+   "por": "el ciclo",
+   "porque": "ya no hace falta: «xxxxxclusivo» ya no suma aparte en el ranking",
+   "t": 1794263865159,
+   "filas": [
+    1185
+   ],
+   "variantes": [
+    "DOS NOMBRES: «xxxxxclusivo» → «Xclusivo» · cuenta 1493013247488430202"
+   ],
+   "escribio": {}
   }
  ],
  "deshechas": []
