@@ -1458,6 +1458,26 @@ def es_llave(texto):
     return len(rs) >= 2 and sum(len(b) for _, b in rs) >= 2
 
 
+#: el campeón dicho en su renglón, al principio: `🏆 CAMPEÓN: verc`. ⚠️ Al principio y con los dos puntos: «el campeón
+#: se lleva un rol» es un anuncio, no un resultado
+CAMPEON_RENGLON = re.compile(r'^\W*(?<!SUB)CAMPE[OÓ]N\s*[:\-–—]\s*\S', re.I | re.M)
+
+
+def es_cypher(texto):
+    """🎤 Un cypher jugado entero SIN batallas: la lista de la fase (`funa_de()`) y el podio con su campeón.
+
+    🔴 LA SUPERVIVENCIA DEL MÁS FUERTE (FFA, 05/11/2026) NO ENTRABA, Y EL ARREGLO DEL CYPHER ESTABA A MEDIAS. `barrer()`
+    sólo toma un mensaje si `es_llave()` —dos rondas y dos batallas—, y esa llave es una lista con 💀 y un podio
+    🥇🥈🥉🏅: ninguna batalla. `llaves_a_entrada.filas_funa()` ya sabía pagarla (Dlx, 09/11: *«si es sólo CYPHER que
+    sea sólo participación»*), pero nunca le llegaba: la prueba la llamó directo y se salteó esta puerta.
+
+    ⚠️ CON CAMPEÓN, NO CUALQUIER LISTA: una lista de nombres sola es también el orden que se publica ANTES de jugar
+    (o la fase previa de una llave que viene en otro mensaje: `fase_previa()`). El podio dice que se jugó."""
+    if es_llave(texto) or not funa_de(texto):
+        return False
+    return 1 in medallas_de(texto) or bool(CAMPEON_RENGLON.search(plano(texto or '')))
+
+
 #: `A(B+C)`: lo de adentro es a quien le gano A, no parte de su nombre.
 #: Solo al FINAL del lado, y el cierre es opcional porque hay llaves
 #: que lo cortan. Es el mismo criterio que `sheet/equipos._PAREN`.
@@ -3193,14 +3213,16 @@ def barrer(s, por_canal=25, solo=None, guilds=None):
             # 🖼️ LA LLAVE QUE ES UNA IMAGEN (Dlx, 07/10/2026: «ya deberías poder reconocer las imágenes»): la lee la
             # IA, como los afiches, y se lee como cualquier otra. Ver `llave_de_imagen()`
             imagen = False
-            if not es_llave(texto):
+            # 🎤 o un cypher con su podio, sin batallas (`es_cypher()`): también es una llave
+            llave = es_llave(texto) or es_cypher(texto)
+            if not llave:
                 t2 = llave_de_imagen(m, canal)
                 if t2 and es_llave(t2):
-                    texto, imagen = t2, True
-            fp = None if es_llave(texto) else fase_previa(texto)
+                    texto, imagen, llave = t2, True, True
+            fp = None if llave else fase_previa(texto)
             if fp:
                 fases.append((m.get('timestamp') or '', m.get('id'), fp))
-            if es_llave(texto):
+            if llave:
                 out.append({'servidor': servidor, 'guild': guild,
                             'canal': canal, 'canal_id': cid,
                             'msg_id': m['id'],
@@ -4419,6 +4441,18 @@ def _self_check():
         mal += not ok
         print('   %s %-26s %s' % ('✅' if ok else '🔴', que,
                                   'es llave' if esperado else 'NO es llave'))
+    # 🎤 el cypher sin batallas (LA SUPERVIVENCIA, 05/11/2026): con podio entra; la lista sola, no
+    sup = ('`[ORDEN DEL CHYPHER]`\n# ANA 💀\n# BETO\n# CIRO 💀\n# DANI 🏅 **4to lugar**\n# EVA\n# FEDE\n# GUS 💀\n\n'
+           '🥇 : fede\n🥈 : betto\n🥉 : eva\n🏅 :dani')
+    lista = '[ CYPHER ]\n# ANA\n# BETO\n# CIRO\n# DANI\n# EVA\n'
+    for que, ok in [
+        ('un cypher con podio es una llave aunque no tenga batallas', es_cypher(sup) and not es_llave(sup)),
+        ('con el campeón en su renglón, también', es_cypher(lista + '\n🏆 CAMPEÓN: beto')),
+        ('la lista sola no (es el orden de antes de jugar), ni «el campeón se lleva…»',
+         not es_cypher(lista) and not es_cypher(lista + '\nel campeón se lleva el rol')),
+    ]:
+        mal += not ok
+        print('   %s %s' % ('✅' if ok else '🔴', que))
 
     # 🔴 LAS LINEAS PARTIDAS, QUE COSTARON LA MITAD DE LA PRIMERA LLAVE
     # DE LA T1. Medido el 22/09/2026 contra «EL RAP FECHA 5»: el mensaje
