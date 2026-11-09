@@ -30,7 +30,7 @@
   "total": 232,
   "rango": "SSS",
   "tg_t": {
-   "busc": 5,
+   "busc": 6,
    "dobles": 29,
    "fenix": 1,
    "infalt": true,
@@ -39,6 +39,7 @@
    "relampago": true,
    "rev": 2,
    "solo": 3,
+   "suelto": true,
    "svc": 4,
    "trios": 11
   }
@@ -84,7 +85,6 @@
    "relampago": true,
    "solo": 3,
    "sube": true,
-   "suelto": true,
    "svc": 1,
    "trios": 8
   }
@@ -120,8 +120,7 @@
   "total": 232,
   "rango": "SS",
   "tg_t": {
-   "busc": 6,
-   "cab": 1,
+   "busc": 7,
    "cobro": 3,
    "dcor": true,
    "dobles": 17,
@@ -129,6 +128,7 @@
    "perf": 2,
    "relampago": true,
    "solo": 1,
+   "suelto": true,
    "svc": 2,
    "trios": 12
   }
@@ -293,7 +293,7 @@
   "total": 232,
   "rango": "S",
   "tg_t": {
-   "busc": 1,
+   "busc": 2,
    "dobles": 12,
    "fenix": 1,
    "infalt": true,
@@ -302,6 +302,7 @@
    "relampago": true,
    "rev": 1,
    "solo": 1,
+   "suelto": true,
    "svc": 2,
    "trios": 8
   }
@@ -345,7 +346,6 @@
    "rey": true,
    "solo": 1,
    "sube": true,
-   "suelto": true,
    "svc": 3,
    "trios": 5
   }
@@ -463,7 +463,7 @@
   "total": 232,
   "rango": "S",
   "tg_t": {
-   "busc": 1,
+   "busc": 2,
    "cab": 3,
    "dcor": true,
    "dobles": 2,
@@ -474,6 +474,7 @@
    "rey": true,
    "solo": 1,
    "sube": true,
+   "suelto": true,
    "svc": 1,
    "trios": 2
   }
@@ -517,7 +518,6 @@
    "rev": 1,
    "solo": 1,
    "sube": true,
-   "suelto": true,
    "svc": 4,
    "trios": 5
   }
@@ -553,7 +553,7 @@
   "total": 232,
   "rango": "S",
   "tg_t": {
-   "busc": 1,
+   "busc": 2,
    "dobles": 11,
    "perf": 1,
    "relampago": true,
@@ -561,6 +561,7 @@
    "rey": true,
    "solo": 2,
    "sube": true,
+   "suelto": true,
    "svc": 2,
    "trios": 7
   }
@@ -596,13 +597,14 @@
   "total": 232,
   "rango": "S",
   "tg_t": {
-   "busc": 1,
+   "busc": 2,
    "cab": 1,
    "dobles": 6,
    "perf": 2,
    "relampago": true,
    "solo": 1,
    "sube": true,
+   "suelto": true,
    "svc": 1,
    "trios": 7
   }
@@ -716,12 +718,13 @@
   "total": 232,
   "rango": "A",
   "tg_t": {
-   "busc": 1,
+   "busc": 2,
    "cab": 2,
    "dobles": 3,
    "perf": 2,
    "relampago": true,
    "sube": true,
+   "suelto": true,
    "svc": 1,
    "trios": 5
   }
@@ -999,11 +1002,12 @@
   "total": 232,
   "rango": "A",
   "tg_t": {
-   "busc": 1,
+   "busc": 2,
    "dobles": 14,
    "infalt": true,
    "perf": 1,
    "rev": 1,
+   "suelto": true,
    "svc": 1,
    "trios": 5
   }
@@ -1318,10 +1322,11 @@
   "total": 232,
   "rango": "B",
   "tg_t": {
-   "busc": 1,
+   "busc": 2,
    "dobles": 13,
    "infalt": true,
    "rev": 2,
+   "suelto": true,
    "svc": 1
   }
  },
@@ -1584,7 +1589,6 @@
    "cobro": 2,
    "dobles": 3,
    "sube": true,
-   "suelto": true,
    "svc": 1,
    "svtag": "campeon",
    "trios": 2
@@ -2008,9 +2012,10 @@
   "total": 232,
   "rango": "B",
   "tg_t": {
-   "busc": 1,
+   "busc": 2,
    "dcor": true,
    "dobles": 2,
+   "suelto": true,
    "svc": 1
   }
  },
@@ -2227,10 +2232,12 @@
   "total": 232,
   "rango": "B",
   "tg_t": {
+   "busc": 1,
    "dobles": 2,
    "perf": 1,
    "relampago": true,
    "sube": true,
+   "suelto": true,
    "svc": 2,
    "svtag": "campeon",
    "trios": 2
@@ -2644,10 +2651,11 @@
   "total": 232,
   "rango": "C",
   "tg_t": {
-   "busc": 1,
+   "busc": 2,
    "dobles": 1,
    "infalt": true,
    "sube": true,
+   "suelto": true,
    "svc": 1,
    "trios": 1
   }
@@ -2945,7 +2953,6 @@
    "busc": 2,
    "dobles": 2,
    "sube": true,
-   "suelto": true,
    "svc": 1
   }
  },
@@ -2985,7 +2992,6 @@
    "dobles": 2,
    "perf": 1,
    "relampago": true,
-   "suelto": true,
    "svc": 2
   }
  },
@@ -4139,7 +4145,9 @@
   "total": 232,
   "rango": "E",
   "tg_t": {
+   "busc": 1,
    "dobles": 1,
+   "suelto": true,
    "trios": 1
   }
  },
@@ -4215,7 +4223,6 @@
    "busc": 1,
    "dobles": 1,
    "sube": true,
-   "suelto": true,
    "svc": 1,
    "trios": 2
   }
@@ -5076,8 +5083,7 @@
   "rango": "E",
   "tg_t": {
    "busc": 1,
-   "dobles": 1,
-   "suelto": true
+   "dobles": 1
   }
  },
  {
@@ -6580,8 +6586,7 @@
   "rango": "E",
   "tg_t": {
    "busc": 1,
-   "dobles": 1,
-   "suelto": true
+   "dobles": 1
   }
  },
  {
@@ -8937,8 +8942,10 @@
   "total": 232,
   "rango": "E",
   "tg_t": {
+   "busc": 1,
    "dobles": 1,
-   "reciente": true
+   "reciente": true,
+   "suelto": true
   }
  },
  {
@@ -9267,8 +9274,7 @@
   "total": 232,
   "rango": "E",
   "tg_t": {
-   "busc": 1,
-   "suelto": true
+   "busc": 1
   }
  },
  {
@@ -10142,41 +10148,6 @@
   "rango": "E"
  },
  {
-  "full": "PIERR🇵🇪",
-  "raw": "PIERR",
-  "cc": "pe",
-  "sv": "FFA",
-  "crew": "",
-  "discord_id": "",
-  "verificado": false,
-  "pts": 13550,
-  "ev": 1,
-  "wr": "",
-  "pod": 0,
-  "oro": 0,
-  "sem": 0,
-  "seg": 0,
-  "ter": 0,
-  "caz": 0,
-  "czd": 0,
-  "sob": 0,
-  "mis": 1,
-  "srv": 1,
-  "racha": 0,
-  "racha_act": 0,
-  "score": 0.0,
-  "av": "",
-  "ovr": 44,
-  "o": 283,
-  "pos": 358,
-  "fc": true,
-  "total": 232,
-  "rango": "E",
-  "tg_t": {
-   "cobro": 1
-  }
- },
- {
   "full": "Aszecas",
   "raw": "Aszecas",
   "cc": "mx",
@@ -10202,8 +10173,8 @@
   "score": 0.0,
   "av": "",
   "ovr": 44,
-  "o": 284,
-  "pos": 359,
+  "o": 283,
+  "pos": 358,
   "fc": true,
   "total": 232,
   "rango": "E",
@@ -10237,7 +10208,7 @@
   "score": 0.0,
   "av": "",
   "ovr": 44,
-  "o": 285,
+  "o": 284,
   "pos": 158,
   "total": 232,
   "rango": "E",
@@ -10271,7 +10242,7 @@
   "score": 0.0,
   "av": "",
   "ovr": 44,
-  "o": 286,
+  "o": 285,
   "pos": 159,
   "total": 232,
   "rango": "E"
@@ -10302,7 +10273,7 @@
   "score": 0.0,
   "av": "",
   "ovr": 44,
-  "o": 287,
+  "o": 286,
   "pos": 160,
   "total": 232,
   "rango": "E",
@@ -10336,7 +10307,7 @@
   "score": 0.0,
   "av": "",
   "ovr": 44,
-  "o": 288,
+  "o": 287,
   "pos": 161,
   "total": 232,
   "rango": "E",
@@ -10370,8 +10341,8 @@
   "score": 0.0,
   "av": "",
   "ovr": 44,
-  "o": 289,
-  "pos": 360,
+  "o": 288,
+  "pos": 359,
   "fc": true,
   "total": 232,
   "rango": "E"
@@ -10402,8 +10373,8 @@
   "score": 0.0,
   "av": "",
   "ovr": 44,
-  "o": 290,
-  "pos": 361,
+  "o": 289,
+  "pos": 360,
   "fc": true,
   "total": 232,
   "rango": "E"
@@ -10434,7 +10405,7 @@
   "score": 0.0,
   "av": "",
   "ovr": 44,
-  "o": 291,
+  "o": 290,
   "pos": 162,
   "total": 232,
   "rango": "E"
@@ -10465,8 +10436,8 @@
   "score": 0.0,
   "av": "",
   "ovr": 44,
-  "o": 292,
-  "pos": 362,
+  "o": 291,
+  "pos": 361,
   "fc": true,
   "total": 232,
   "rango": "E",
@@ -10500,8 +10471,8 @@
   "score": 0.0,
   "av": "",
   "ovr": 44,
-  "o": 293,
-  "pos": 363,
+  "o": 292,
+  "pos": 362,
   "fc": true,
   "total": 232,
   "rango": "E",
@@ -10535,7 +10506,7 @@
   "score": 0.0,
   "av": "",
   "ovr": 44,
-  "o": 294,
+  "o": 293,
   "pos": 163,
   "total": 232,
   "rango": "E"
@@ -10566,8 +10537,8 @@
   "score": 0.0,
   "av": "",
   "ovr": 44,
-  "o": 295,
-  "pos": 364,
+  "o": 294,
+  "pos": 363,
   "fc": true,
   "total": 232,
   "rango": "E"
@@ -10598,8 +10569,8 @@
   "score": 0.0,
   "av": "",
   "ovr": 44,
-  "o": 296,
-  "pos": 365,
+  "o": 295,
+  "pos": 364,
   "fc": true,
   "total": 232,
   "rango": "E",
@@ -10633,7 +10604,7 @@
   "score": 0.0,
   "av": "",
   "ovr": 44,
-  "o": 297,
+  "o": 296,
   "pos": 164,
   "total": 232,
   "rango": "E",
@@ -10667,8 +10638,8 @@
   "score": 0.0,
   "av": "",
   "ovr": 44,
-  "o": 298,
-  "pos": 366,
+  "o": 297,
+  "pos": 365,
   "fc": true,
   "total": 232,
   "rango": "E"
@@ -10699,7 +10670,7 @@
   "score": 0.0,
   "av": "",
   "ovr": 44,
-  "o": 299,
+  "o": 298,
   "pos": 165,
   "total": 232,
   "rango": "E"
@@ -10730,8 +10701,8 @@
   "score": 0.0,
   "av": "",
   "ovr": 44,
-  "o": 300,
-  "pos": 367,
+  "o": 299,
+  "pos": 366,
   "fc": true,
   "total": 232,
   "rango": "E"
@@ -10762,8 +10733,8 @@
   "score": 0.0,
   "av": "",
   "ovr": 44,
-  "o": 301,
-  "pos": 368,
+  "o": 300,
+  "pos": 367,
   "fc": true,
   "total": 232,
   "rango": "E"
@@ -10794,8 +10765,8 @@
   "score": 0.0,
   "av": "",
   "ovr": 44,
-  "o": 302,
-  "pos": 369,
+  "o": 301,
+  "pos": 368,
   "fc": true,
   "total": 232,
   "rango": "E"
@@ -10826,8 +10797,8 @@
   "score": 0.0,
   "av": "",
   "ovr": 44,
-  "o": 303,
-  "pos": 370,
+  "o": 302,
+  "pos": 369,
   "fc": true,
   "total": 232,
   "rango": "E"
@@ -10858,8 +10829,8 @@
   "score": 0.0,
   "av": "",
   "ovr": 44,
-  "o": 304,
-  "pos": 371,
+  "o": 303,
+  "pos": 370,
   "fc": true,
   "total": 232,
   "rango": "E"
@@ -10890,8 +10861,8 @@
   "score": 0.0,
   "av": "",
   "ovr": 44,
-  "o": 305,
-  "pos": 372,
+  "o": 304,
+  "pos": 371,
   "fc": true,
   "total": 232,
   "rango": "E"
@@ -10922,8 +10893,8 @@
   "score": 0.0,
   "av": "",
   "ovr": 44,
-  "o": 306,
-  "pos": 373,
+  "o": 305,
+  "pos": 372,
   "fc": true,
   "total": 232,
   "rango": "E"
@@ -10954,14 +10925,46 @@
   "score": 0.0,
   "av": "",
   "ovr": 44,
-  "o": 307,
-  "pos": 374,
+  "o": 306,
+  "pos": 373,
   "fc": true,
   "total": 232,
   "rango": "E",
   "tg_t": {
    "trios": 1
   }
+ },
+ {
+  "full": "PIERR🇵🇪",
+  "raw": "PIERR",
+  "cc": "pe",
+  "sv": "FFA",
+  "crew": "",
+  "discord_id": "",
+  "verificado": false,
+  "pts": 8550,
+  "ev": 1,
+  "wr": "",
+  "pod": 0,
+  "oro": 0,
+  "sem": 0,
+  "seg": 0,
+  "ter": 0,
+  "caz": 0,
+  "czd": 0,
+  "sob": 0,
+  "mis": 1,
+  "srv": 1,
+  "racha": 0,
+  "racha_act": 0,
+  "score": 0.0,
+  "av": "",
+  "ovr": 44,
+  "o": 307,
+  "pos": 374,
+  "fc": true,
+  "total": 232,
+  "rango": "E"
  },
  {
   "full": "Ram",
@@ -11057,7 +11060,9 @@
   "total": 232,
   "rango": "E",
   "tg_t": {
-   "reciente": true
+   "busc": 1,
+   "reciente": true,
+   "suelto": true
   }
  },
  {
