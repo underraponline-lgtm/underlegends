@@ -1,15 +1,15 @@
 {
  "v": 1,
- "cuando": "2026-11-09T17:13:59Z",
+ "cuando": "2026-11-09T17:42:35Z",
  "trabajo": "dibujar",
  "codigo": 0,
- "dur_s": 689.3,
+ "dur_s": 652.6,
  "pasos": [
   {
    "n": "2f",
    "que": "las fotos que faltan, de Discord a R2",
    "ok": true,
-   "s": 7.5
+   "s": 12.7
   },
   {
    "n": "2f2",
@@ -21,19 +21,19 @@
    "n": "3",
    "que": "qué cambió",
    "ok": true,
-   "s": 11.9
+   "s": 12.2
   },
   {
    "n": "4",
    "que": "las caras, desde R2",
    "ok": true,
-   "s": 22.1
+   "s": 22.0
   },
   {
    "n": "5",
    "que": "tanda 1 de 2 · 40 persona(s)",
    "ok": false,
-   "s": 578.9
+   "s": 539.6
   },
   {
    "n": "5b",
@@ -45,7 +45,7 @@
    "n": "6",
    "que": "refrescar KV",
    "ok": true,
-   "s": 60.7
+   "s": 57.3
   }
  ],
  "fallas": [
@@ -55,7 +55,7 @@
   },
   {
    "paso": "5",
-   "que": "03_Servidor/generar.py OKAM"
+   "que": "03_Servidor/generar.py Shadow"
   }
  ],
  "ultimo_evento": {
@@ -66,25 +66,25 @@
  },
  "cuotas": {
   "kv": {
-   "write": 247,
-   "read": 35012
+   "write": 258,
+   "read": 36744
   },
   "objeto": {
-   "leidas": 4201417,
-   "escritas": 13023,
-   "pedidos": 7082
+   "leidas": 4278001,
+   "escritas": 13349,
+   "pedidos": 7271
   },
   "worker": {
-   "pedidos": 8338,
+   "pedidos": 8395,
    "errores": 0,
-   "sub": 10970,
+   "sub": 11015,
    "cortados": 0,
    "p50_ms": 1.22,
-   "p99_ms": 13.3,
+   "p99_ms": 13.39,
    "cpu": {
-    "total": 19187,
-    "objeto_10": 2052,
-    "worker_10": 212
+    "total": 19302,
+    "objeto_10": 2067,
+    "worker_10": 217
    }
   },
   "r2": {
