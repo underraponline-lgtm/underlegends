@@ -337,6 +337,10 @@
   "jazii": "jazi",
   "elinge": "Elinge_TIMP",
   "mcgalileo": "Galileo",
+  "mck": "Hades",
+  "valki": "Vilca",
+  "soaraya": "araya",
+  "mochi": "Mochi DG",
   "zetryco": "Zetryko",
   "martynez": "MaYeuTyK",
   "basty": "BastyRetro",
@@ -1754,6 +1758,22 @@
   [
    "MCGALILEO",
    "Galileo"
+  ],
+  [
+   "McK",
+   "Hades"
+  ],
+  [
+   "Valki",
+   "Vilca"
+  ],
+  [
+   "soaraya",
+   "araya"
+  ],
+  [
+   "Mochi",
+   "Mochi DG"
   ],
   [
    "Zetryco",

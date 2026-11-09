@@ -34,10 +34,22 @@
     "o": 1,
     "votos": 3,
     "de": 3,
-    "estado": "suelto",
-    "ev": 0,
-    "fase": "",
-    "valor": 9000
+    "estado": "cazado",
+    "ev": 1,
+    "fase": "Octavos",
+    "valor": 9000,
+    "caza": {
+     "n": 595,
+     "evento": "JKWODJAKB V.1",
+     "sv": "FFA",
+     "t": "2026-11-09T19:09:03Z",
+     "por": [
+      {
+       "n": "Verc",
+       "cobra": 11250
+      }
+     ]
+    }
    },
    {
     "n": "OG",
@@ -99,10 +111,22 @@
     "nivel": "B",
     "base": 7250,
     "o": 14,
-    "estado": "suelto",
-    "ev": 0,
-    "fase": "",
-    "valor": 7250
+    "estado": "cazado",
+    "ev": 1,
+    "fase": "Semifinal",
+    "valor": 7250,
+    "caza": {
+     "n": 595,
+     "evento": "JKWODJAKB V.1",
+     "sv": "FFA",
+     "t": "2026-11-09T19:09:03Z",
+     "por": [
+      {
+       "n": "Valen",
+       "cobra": 14500
+      }
+     ]
+    }
    },
    {
     "n": "Six",
@@ -164,10 +188,22 @@
     "nivel": "C",
     "base": 6000,
     "o": 24,
-    "estado": "suelto",
-    "ev": 0,
-    "fase": "",
-    "valor": 6000
+    "estado": "cazado",
+    "ev": 1,
+    "fase": "Octavos",
+    "valor": 6000,
+    "caza": {
+     "n": 595,
+     "evento": "JKWODJAKB V.1",
+     "sv": "FFA",
+     "t": "2026-11-09T19:09:03Z",
+     "por": [
+      {
+       "n": "Valen",
+       "cobra": 12000
+      }
+     ]
+    }
    },
    {
     "n": "gary",
@@ -216,10 +252,22 @@
     "nivel": "D",
     "base": 4750,
     "o": 13,
-    "estado": "suelto",
-    "ev": 0,
-    "fase": "",
-    "valor": 5000
+    "estado": "cazado",
+    "ev": 1,
+    "fase": "Semifinal",
+    "valor": 5000,
+    "caza": {
+     "n": 595,
+     "evento": "JKWODJAKB V.1",
+     "sv": "FFA",
+     "t": "2026-11-09T19:09:03Z",
+     "por": [
+      {
+       "n": "Verc",
+       "cobra": 5000
+      }
+     ]
+    }
    }
   ],
   "snap": {

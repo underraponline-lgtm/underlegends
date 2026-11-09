@@ -43,7 +43,7 @@
    "con": null,
    "cumplido": "",
    "debut": "2026-10-20T22:07:15+00:00",
-   "did": "",
+   "did": "766509416689565708",
    "evento": "PANDILLAS NO VAMOS A TAGUEAR NI A ESPERAR A NADIE VOL 2",
    "n": 571,
    "sv": "CH",
@@ -75,6 +75,18 @@
    "n": 576,
    "sv": "ACAD",
    "vence": "2026-11-14T01:17:28+00:00",
+   "vencido": false
+  },
+  "ADEUXE": {
+   "avisado": "2026-11-09",
+   "con": null,
+   "cumplido": "",
+   "debut": "2026-11-09T19:09:03+00:00",
+   "did": "",
+   "evento": "JKWODJAKB V.1",
+   "n": 595,
+   "sv": "FFA",
+   "vence": "2026-11-16T19:09:03+00:00",
    "vencido": false
   },
   "AKARK": {
@@ -251,16 +263,17 @@
   },
   "BENJI": {
    "avisado": "2026-10-25",
+   "avisado_cumplido": "2026-11-09",
    "chat": "2026-10-25",
-   "con": null,
-   "cumplido": "",
-   "debut": "2026-10-25T00:48:12+00:00",
+   "con": 512,
+   "cumplido": "2026-10-25T00:48:12+00:00",
+   "debut": "2026-10-24T00:02:15+00:00",
    "did": "",
-   "evento": "FREESTYLE FOR ALL ESPECIAL 1800 2v2",
-   "n": 512,
-   "sv": "FFA",
-   "vence": "2026-11-01T00:48:12+00:00",
-   "vencido": true
+   "evento": "LLAVES PARA LA DISCORD STYLE 17",
+   "n": 580,
+   "sv": "DDS",
+   "vence": "2026-10-31T00:02:15+00:00",
+   "vencido": false
   },
   "BLUE BURKA": {
    "avisado": "2026-10-23",
@@ -273,6 +286,17 @@
    "n": 497,
    "sv": "FFA",
    "vence": "2026-10-29T00:30:05+00:00",
+   "vencido": true
+  },
+  "BROTAXX": {
+   "con": null,
+   "cumplido": "",
+   "debut": "2026-10-30T22:52:29+00:00",
+   "did": "",
+   "evento": "LLAVES PARA LA DISCORD STYLE 18",
+   "n": 583,
+   "sv": "DDS",
+   "vence": "2026-11-06T22:52:29+00:00",
    "vencido": true
   },
   "Bau": {
@@ -353,6 +377,18 @@
    "vence": "2026-10-25T21:59:50+00:00",
    "vencido": true
   },
+  "Choco": {
+   "avisado": "2026-11-09",
+   "con": null,
+   "cumplido": "",
+   "debut": "2026-11-08T01:00:55+00:00",
+   "did": "",
+   "evento": "MF DOOM Y MADLIB EDICION 1",
+   "n": 586,
+   "sv": "DDS",
+   "vence": "2026-11-15T01:00:55+00:00",
+   "vencido": false
+  },
   "Choka": {
    "avisado": "2026-10-16",
    "chat": "2026-10-16",
@@ -405,13 +441,25 @@
    "vence": "2026-11-01T00:48:12+00:00",
    "vencido": true
   },
+  "Crizcejotas": {
+   "avisado": "2026-11-09",
+   "con": null,
+   "cumplido": "",
+   "debut": "2026-11-04T01:53:16+00:00",
+   "did": "",
+   "evento": "SIX SEVEN STYLE",
+   "n": 585,
+   "sv": "DDS",
+   "vence": "2026-11-11T01:53:16+00:00",
+   "vencido": false
+  },
   "DARK ANGEL": {
    "avisado": "2026-10-23",
    "chat": "2026-10-24",
    "con": null,
    "cumplido": "",
    "debut": "2026-10-23T20:26:11+00:00",
-   "did": "",
+   "did": "1451400270264274944",
    "evento": "FREESTYLE FOR ALL ESPECIAL 1800",
    "n": 503,
    "sv": "FFA",
@@ -499,6 +547,18 @@
    "vence": "2026-11-01T21:03:19+00:00",
    "vencido": false
   },
+  "Dinamight": {
+   "avisado": "2026-11-09",
+   "con": null,
+   "cumplido": "",
+   "debut": "2026-11-08T18:42:24+00:00",
+   "did": "",
+   "evento": "EL ULTIMO DIA DE DDF",
+   "n": 589,
+   "sv": "DDF",
+   "vence": "2026-11-15T18:42:24+00:00",
+   "vencido": false
+  },
   "Drope": {
    "con": null,
    "cumplido": "",
@@ -529,7 +589,7 @@
    "con": null,
    "cumplido": "",
    "debut": "2026-10-19T01:35:44+00:00",
-   "did": "",
+   "did": "552121423804628995",
    "evento": "LA MISIÓN DEL MONJE",
    "n": 486,
    "sv": "DDF",
@@ -626,6 +686,17 @@
    "vence": "2026-11-05T21:10:39+00:00",
    "vencido": true
   },
+  "Fecha": {
+   "con": null,
+   "cumplido": "",
+   "debut": "2026-11-01T23:44:14+00:00",
+   "did": "",
+   "evento": "LLAVES PARA LA DISCORD STYLE 19",
+   "n": 584,
+   "sv": "DDS",
+   "vence": "2026-11-08T23:44:14+00:00",
+   "vencido": true
+  },
   "Fix 17": {
    "avisado": "2026-10-26",
    "avisado_cumplido": "2026-10-26",
@@ -638,6 +709,29 @@
    "sv": "DDF",
    "vence": "2026-11-01T04:08:34+00:00",
    "vencido": false
+  },
+  "Forza": {
+   "avisado": "2026-11-09",
+   "con": null,
+   "cumplido": "",
+   "debut": "2026-11-08T19:50:21+00:00",
+   "did": "",
+   "evento": "RED BULL CARACAS REGIONAL T.5",
+   "n": 590,
+   "sv": "URBF",
+   "vence": "2026-11-15T19:50:21+00:00",
+   "vencido": false
+  },
+  "Foto": {
+   "con": null,
+   "cumplido": "",
+   "debut": "2026-10-28T01:58:48+00:00",
+   "did": "",
+   "evento": "SIX SEVEN STYLE",
+   "n": 582,
+   "sv": "DDS",
+   "vence": "2026-11-04T01:58:48+00:00",
+   "vencido": true
   },
   "GGWAN": {
    "avisado": "2026-10-25",
@@ -872,7 +966,7 @@
    "con": null,
    "cumplido": "",
    "debut": "2026-11-01T20:39:59+00:00",
-   "did": "",
+   "did": "1245383910980849688",
    "evento": "RED BULL SUDAMÉRICA",
    "n": 557,
    "sv": "LKR",
@@ -1136,6 +1230,17 @@
    "vence": "2026-11-08T20:39:59+00:00",
    "vencido": true
   },
+  "Lalox": {
+   "con": null,
+   "cumplido": "",
+   "debut": "2026-10-24T00:02:15+00:00",
+   "did": "",
+   "evento": "LLAVES PARA LA DISCORD STYLE 17",
+   "n": 580,
+   "sv": "DDS",
+   "vence": "2026-10-31T00:02:15+00:00",
+   "vencido": true
+  },
   "Lamborguini": {
    "con": null,
    "cumplido": "",
@@ -1171,6 +1276,18 @@
    "n": 532,
    "sv": "FFA",
    "vence": "2026-11-03T03:32:41+00:00",
+   "vencido": false
+  },
+  "Leandro es la excepción a la regla": {
+   "avisado": "2026-11-09",
+   "con": null,
+   "cumplido": "",
+   "debut": "2026-11-09T03:16:00+00:00",
+   "did": "",
+   "evento": "QCYO RAPEEN 12",
+   "n": 593,
+   "sv": "FFA",
+   "vence": "2026-11-16T03:16:00+00:00",
    "vencido": false
   },
   "Leopold sedar": {
@@ -1265,6 +1382,17 @@
    "vence": "2026-11-07T17:45:26+00:00",
    "vencido": true
   },
+  "MAT MC": {
+   "con": null,
+   "cumplido": "",
+   "debut": "2026-11-01T23:44:14+00:00",
+   "did": "",
+   "evento": "LLAVES PARA LA DISCORD STYLE 19",
+   "n": 584,
+   "sv": "DDS",
+   "vence": "2026-11-08T23:44:14+00:00",
+   "vencido": true
+  },
   "MATUK": {
    "avisado": "2026-10-25",
    "avisado_cumplido": "2026-10-26",
@@ -1319,6 +1447,18 @@
    "vence": "2026-11-05T03:04:48+00:00",
    "vencido": true
   },
+  "Mark": {
+   "avisado_cumplido": "2026-11-09",
+   "con": 580,
+   "cumplido": "2026-10-24T00:02:15+00:00",
+   "debut": "2026-10-17T04:08:41+00:00",
+   "did": "1471344428064178248",
+   "evento": "DISCORD STYLE ED. 16",
+   "n": 579,
+   "sv": "DDS",
+   "vence": "2026-10-24T04:08:41+00:00",
+   "vencido": false
+  },
   "Matias": {
    "avisado": "2026-10-29",
    "avisado_cumplido": "2026-10-30",
@@ -1356,6 +1496,18 @@
    "sv": "LKR",
    "vence": "2026-11-01T03:55:52+00:00",
    "vencido": true
+  },
+  "McK": {
+   "avisado": "2026-11-09",
+   "con": null,
+   "cumplido": "",
+   "debut": "2026-11-08T19:50:21+00:00",
+   "did": "",
+   "evento": "RED BULL CARACAS REGIONAL T.5",
+   "n": 590,
+   "sv": "URBF",
+   "vence": "2026-11-15T19:50:21+00:00",
+   "vencido": false
   },
   "Millonari-O": {
    "avisado": "2026-10-18",
@@ -1396,6 +1548,18 @@
    "sv": "DDF",
    "vence": "2026-10-26T01:35:44+00:00",
    "vencido": true
+  },
+  "Mochi": {
+   "avisado": "2026-11-09",
+   "con": null,
+   "cumplido": "",
+   "debut": "2026-11-08T19:50:21+00:00",
+   "did": "",
+   "evento": "RED BULL CARACAS REGIONAL T.5",
+   "n": 590,
+   "sv": "URBF",
+   "vence": "2026-11-15T19:50:21+00:00",
+   "vencido": false
   },
   "Monamay": {
    "avisado": "2026-10-30",
@@ -1447,6 +1611,17 @@
    "n": 524,
    "sv": "FDS",
    "vence": "2026-10-29T03:33:52+00:00",
+   "vencido": true
+  },
+  "Nitrox": {
+   "con": null,
+   "cumplido": "",
+   "debut": "2026-10-24T00:02:15+00:00",
+   "did": "",
+   "evento": "LLAVES PARA LA DISCORD STYLE 17",
+   "n": 580,
+   "sv": "DDS",
+   "vence": "2026-10-31T00:02:15+00:00",
    "vencido": true
   },
   "Nmb": {
@@ -1524,6 +1699,18 @@
    "sv": "FFA",
    "vence": "2026-10-23T02:35:47+00:00",
    "vencido": true
+  },
+  "PRV": {
+   "avisado": "2026-11-09",
+   "con": null,
+   "cumplido": "",
+   "debut": "2026-11-08T03:22:22+00:00",
+   "did": "",
+   "evento": "KISS OF SHINIGAMI",
+   "n": 587,
+   "sv": "FFA",
+   "vence": "2026-11-15T03:22:22+00:00",
+   "vencido": false
   },
   "Paja lenta": {
    "avisado": "2026-10-26",
@@ -1669,15 +1856,28 @@
   },
   "SAIDEM": {
    "avisado": "2026-11-06",
+   "avisado_cumplido": "2026-11-09",
    "chat": "2026-11-07",
-   "con": null,
-   "cumplido": "",
+   "con": 588,
+   "cumplido": "2026-11-08T18:36:43+00:00",
    "debut": "2026-11-06T19:37:36+00:00",
    "did": "723968697798099057",
    "evento": "GALACTICOS DEL FREESTYLE VOL.17",
    "n": 575,
    "sv": "DDF",
    "vence": "2026-11-13T19:37:36+00:00",
+   "vencido": false
+  },
+  "SNE": {
+   "avisado": "2026-11-09",
+   "con": null,
+   "cumplido": "",
+   "debut": "2026-11-08T19:50:21+00:00",
+   "did": "1513243793116102867",
+   "evento": "RED BULL CARACAS REGIONAL T.5",
+   "n": 590,
+   "sv": "URBF",
+   "vence": "2026-11-15T19:50:21+00:00",
    "vencido": false
   },
   "SULTAN": {
@@ -1706,6 +1906,40 @@
    "sv": "SR",
    "vence": "2026-10-19T22:01:43+00:00",
    "vencido": true
+  },
+  "Sadik": {
+   "con": null,
+   "cumplido": "",
+   "debut": "2026-10-17T04:08:41+00:00",
+   "did": "1209640635775066182",
+   "evento": "DISCORD STYLE ED. 16",
+   "n": 579,
+   "sv": "DDS",
+   "vence": "2026-10-24T04:08:41+00:00",
+   "vencido": true
+  },
+  "Sainos": {
+   "con": null,
+   "cumplido": "",
+   "debut": "2026-10-17T04:08:41+00:00",
+   "did": "651152619196121126",
+   "evento": "DISCORD STYLE ED. 16",
+   "n": 579,
+   "sv": "DDS",
+   "vence": "2026-10-24T04:08:41+00:00",
+   "vencido": true
+  },
+  "Sancez": {
+   "avisado": "2026-11-09",
+   "con": null,
+   "cumplido": "",
+   "debut": "2026-11-09T14:38:17+00:00",
+   "did": "",
+   "evento": "COMPE MAÑANERA",
+   "n": 594,
+   "sv": "URBF",
+   "vence": "2026-11-16T14:38:17+00:00",
+   "vencido": false
   },
   "Scritura": {
    "avisado": "2026-10-12",
@@ -1790,6 +2024,18 @@
    "vence": "2026-10-20T23:50:48+00:00",
    "vencido": false
   },
+  "Soul": {
+   "avisado": "2026-11-09",
+   "con": null,
+   "cumplido": "",
+   "debut": "2026-11-09T19:09:03+00:00",
+   "did": "",
+   "evento": "JKWODJAKB V.1",
+   "n": 595,
+   "sv": "FFA",
+   "vence": "2026-11-16T19:09:03+00:00",
+   "vencido": false
+  },
   "Stt": {
    "avisado": "2026-10-26",
    "chat": "2026-10-27",
@@ -1802,6 +2048,18 @@
    "sv": "FFA",
    "vence": "2026-11-02T22:39:00+00:00",
    "vencido": true
+  },
+  "Surya": {
+   "avisado": "2026-11-09",
+   "con": null,
+   "cumplido": "",
+   "debut": "2026-11-09T03:16:00+00:00",
+   "did": "1272710574970769509",
+   "evento": "QCYO RAPEEN 12",
+   "n": 593,
+   "sv": "FFA",
+   "vence": "2026-11-16T03:16:00+00:00",
+   "vencido": false
   },
   "Swid": {
    "avisado": "2026-10-26",
@@ -1870,7 +2128,7 @@
    "con": null,
    "cumplido": "",
    "debut": "2026-10-20T22:07:15+00:00",
-   "did": "",
+   "did": "1360027435126493426",
    "evento": "PANDILLAS NO VAMOS A TAGUEAR NI A ESPERAR A NADIE VOL 2",
    "n": 571,
    "sv": "CH",
@@ -1930,6 +2188,18 @@
    "vence": "2026-10-26T16:52:32+00:00",
    "vencido": false
   },
+  "Valki": {
+   "avisado": "2026-11-09",
+   "con": null,
+   "cumplido": "",
+   "debut": "2026-11-08T20:33:43+00:00",
+   "did": "",
+   "evento": "RAP SIN GROSERIAS 4",
+   "n": 591,
+   "sv": "FDS",
+   "vence": "2026-11-15T20:33:43+00:00",
+   "vencido": false
+  },
   "Vargas": {
    "avisado": "2026-10-12",
    "avisado_cumplido": "2026-10-14",
@@ -1950,11 +2220,22 @@
    "con": null,
    "cumplido": "",
    "debut": "2026-11-02T18:51:13+00:00",
-   "did": "",
+   "did": "1492592375812587551",
    "evento": "GALACTICOS DEL FREESTYLE VOL.15",
    "n": 561,
    "sv": "DDF",
    "vence": "2026-11-09T18:51:13+00:00",
+   "vencido": true
+  },
+  "WHITE": {
+   "con": null,
+   "cumplido": "",
+   "debut": "2026-10-24T00:02:15+00:00",
+   "did": "",
+   "evento": "LLAVES PARA LA DISCORD STYLE 17",
+   "n": 580,
+   "sv": "DDS",
+   "vence": "2026-10-31T00:02:15+00:00",
    "vencido": true
   },
   "Warap": {
@@ -2033,6 +2314,18 @@
    "vence": "2026-10-28T02:04:09+00:00",
    "vencido": true
   },
+  "akasha": {
+   "avisado": "2026-11-09",
+   "con": null,
+   "cumplido": "",
+   "debut": "2026-11-09T03:16:00+00:00",
+   "did": "",
+   "evento": "QCYO RAPEEN 12",
+   "n": 593,
+   "sv": "FFA",
+   "vence": "2026-11-16T03:16:00+00:00",
+   "vencido": false
+  },
   "arce": {
    "avisado": "2026-11-06",
    "chat": "2026-11-06",
@@ -2058,6 +2351,41 @@
    "sv": "FFA",
    "vence": "2026-11-07T06:06:01+00:00",
    "vencido": true
+  },
+  "black live": {
+   "avisado": "2026-11-09",
+   "con": null,
+   "cumplido": "",
+   "debut": "2026-11-09T14:38:17+00:00",
+   "did": "",
+   "evento": "COMPE MAÑANERA",
+   "n": 594,
+   "sv": "URBF",
+   "vence": "2026-11-16T14:38:17+00:00",
+   "vencido": false
+  },
+  "botrax": {
+   "con": null,
+   "cumplido": "",
+   "debut": "2026-10-28T01:58:48+00:00",
+   "did": "",
+   "evento": "SIX SEVEN STYLE",
+   "n": 582,
+   "sv": "DDS",
+   "vence": "2026-11-04T01:58:48+00:00",
+   "vencido": true
+  },
+  "dyzzcord": {
+   "avisado": "2026-11-09",
+   "con": null,
+   "cumplido": "",
+   "debut": "2026-11-08T03:22:22+00:00",
+   "did": "",
+   "evento": "KISS OF SHINIGAMI",
+   "n": 587,
+   "sv": "FFA",
+   "vence": "2026-11-15T03:22:22+00:00",
+   "vencido": false
   },
   "erpi": {
    "avisado": "2026-10-31",
@@ -2175,19 +2503,6 @@
    "vence": "2026-10-28T21:05:52+00:00",
    "vencido": true
   },
-  "oriuz": {
-   "avisado": "2026-10-31",
-   "chat": "2026-11-01",
-   "con": null,
-   "cumplido": "",
-   "debut": "2026-10-31T02:59:35+00:00",
-   "did": "764617398602039371",
-   "evento": "qcyo rapeen",
-   "n": 550,
-   "sv": "FFA",
-   "vence": "2026-11-07T02:59:35+00:00",
-   "vencido": true
-  },
   "publicenemy": {
    "avisado": "2026-10-29",
    "chat": "2026-10-30",
@@ -2200,6 +2515,18 @@
    "sv": "FFA",
    "vence": "2026-11-06T00:12:24+00:00",
    "vencido": true
+  },
+  "replisan": {
+   "avisado_cumplido": "2026-11-09",
+   "con": 583,
+   "cumplido": "2026-10-30T22:52:29+00:00",
+   "debut": "2026-10-28T00:13:40+00:00",
+   "did": "",
+   "evento": "MASTER STYLE REMAKE",
+   "n": 581,
+   "sv": "DDS",
+   "vence": "2026-11-04T00:13:40+00:00",
+   "vencido": false
   },
   "roda mc": {
    "avisado": "2026-10-26",
@@ -2216,15 +2543,40 @@
   },
   "romeo": {
    "avisado": "2026-11-06",
+   "avisado_cumplido": "2026-11-09",
    "chat": "2026-11-06",
-   "con": null,
-   "cumplido": "",
+   "con": 587,
+   "cumplido": "2026-11-08T03:22:22+00:00",
    "debut": "2026-11-07T01:17:28+00:00",
    "did": "1283642314517909517",
    "evento": "FAT BATTLES PALOOZA FECHA 10 FINALS",
    "n": 576,
    "sv": "ACAD",
    "vence": "2026-11-14T01:17:28+00:00",
+   "vencido": false
+  },
+  "sh": {
+   "avisado": "2026-11-09",
+   "con": null,
+   "cumplido": "",
+   "debut": "2026-11-09T03:16:00+00:00",
+   "did": "",
+   "evento": "QCYO RAPEEN 12",
+   "n": 593,
+   "sv": "FFA",
+   "vence": "2026-11-16T03:16:00+00:00",
+   "vencido": false
+  },
+  "soaraya": {
+   "avisado": "2026-11-09",
+   "con": null,
+   "cumplido": "",
+   "debut": "2026-11-09T03:16:00+00:00",
+   "did": "",
+   "evento": "QCYO RAPEEN 12",
+   "n": 593,
+   "sv": "FFA",
+   "vence": "2026-11-16T03:16:00+00:00",
    "vencido": false
   },
   "xJuniorTime": {
@@ -2239,6 +2591,18 @@
    "sv": "FFA",
    "vence": "2026-11-07T02:59:35+00:00",
    "vencido": true
+  },
+  "xxxxxclusivo": {
+   "avisado": "2026-11-09",
+   "con": null,
+   "cumplido": "",
+   "debut": "2026-11-09T19:09:03+00:00",
+   "did": "",
+   "evento": "JKWODJAKB V.1",
+   "n": 595,
+   "sv": "FFA",
+   "vence": "2026-11-16T19:09:03+00:00",
+   "vencido": false
   }
  }
 }

@@ -2733,6 +2733,507 @@
     "DOS NOMBRES: «tomyhilfiger» → «crakero» · cuenta 1374555884868337738"
    ],
    "escribio": {}
+  },
+  {
+   "id": "e9b2ec193c",
+   "tipo": "Nombre desconocido",
+   "sec": "Cuentas Pendientes V.1 · FFA · 08/10 · #435",
+   "que": "¿Quién es «Greyfitsh🇵🇦»?",
+   "r": "Es Volg (en este evento)",
+   "regla": "R21 · la cuenta que se anotó así para ese evento es de alguien de la Lista que esa noche no jugó con su nombre",
+   "rk": "R21",
+   "por": "el ciclo",
+   "porque": "la cuenta @rodaaa_mc (en Discord: «👤 | RoDaaa MCC») · en la Lista: Volg se anotó como «Greyfitsh» para ese evento, no es staff de FFA y esa noche no jugó con su nombre",
+   "t": 1794260548978,
+   "filas": [
+    469
+   ],
+   "variantes": [
+    "Greyfitsh🇵🇦"
+   ],
+   "escribio": {
+    "quien": "Cuentas Pendientes V.1 · FFA · 08/10 · Greyfitsh🇵🇦"
+   }
+  },
+  {
+   "id": "6439a91dd6",
+   "tipo": "Nombre desconocido",
+   "sec": "19 CUP HALLOWEEN 2026 LLAVES DE COMPETENCIA · DDF · 31/10 · #552",
+   "que": "¿Quién es «MANJI LOZANO🇧🇴🫩»?",
+   "r": "Es Evangeline (en este evento)",
+   "regla": "R21 · la cuenta que se anotó así para ese evento es de alguien de la Lista que esa noche no jugó con su nombre",
+   "rk": "R21",
+   "por": "el ciclo",
+   "porque": "la cuenta @vibesfly7 · en la Lista: Evangeline se anotó como «MANJI LOZANO🫩» para ese evento, no es staff de DDF y esa noche no jugó con su nombre",
+   "t": 1794260548978,
+   "filas": [
+    1056
+   ],
+   "variantes": [
+    "MANJI LOZANO🇧🇴🫩"
+   ],
+   "escribio": {
+    "quien": "19 CUP HALLOWEEN 2026 LLAVES DE COMPETENCIA · DDF · 31/10 · MANJI LOZANO🇧🇴🫩"
+   }
+  },
+  {
+   "id": "e362dd644c",
+   "tipo": "Nombre desconocido",
+   "sec": "RED BULL CARACAS REGIONAL T.5 · URBF · 08/11 · #590",
+   "que": "¿Quién es «Mochi 🇪🇨»?",
+   "r": "Es Mochi DG (en este evento)",
+   "regla": "R21 · la cuenta que se anotó así para ese evento es de alguien de la Lista que esa noche no jugó con su nombre",
+   "rk": "R21",
+   "por": "el ciclo",
+   "porque": "la cuenta @diego89780 (en Discord: «꧁✧MoChi✧꧂») · en la Lista: Mochi DG se anotó como «Mochi» para ese evento, no es staff de URBF y esa noche no jugó con su nombre",
+   "t": 1794260548978,
+   "filas": [
+    1171
+   ],
+   "variantes": [
+    "Mochi 🇪🇨"
+   ],
+   "escribio": {
+    "quien": "RED BULL CARACAS REGIONAL T.5 · URBF · 08/11 · Mochi 🇪🇨"
+   }
+  },
+  {
+   "id": "913b76e7ca",
+   "tipo": "Nombre desconocido",
+   "sec": "QCYO RAPEEN 12 · FFA · 08/11 · #593",
+   "que": "¿Quién es «Leandro es la excepción a la regla 🇦🇷»?",
+   "r": "Es Leandro Katana (en este evento)",
+   "regla": "R21 · la cuenta que se anotó así para ese evento es de alguien de la Lista que esa noche no jugó con su nombre",
+   "rk": "R21",
+   "por": "el ciclo",
+   "porque": "la cuenta @ill.lean · en la Lista: Leandro Katana se anotó como «Leandro es la excepción a la regla» para ese evento, no es staff de FFA y esa noche no jugó con su nombre",
+   "t": 1794260548978,
+   "filas": [
+    1175
+   ],
+   "variantes": [
+    "Leandro es la excepción a la regla 🇦🇷"
+   ],
+   "escribio": {
+    "quien": "QCYO RAPEEN 12 · FFA · 08/11 · Leandro es la excepción a la regla 🇦🇷"
+   }
+  },
+  {
+   "id": "9fea974ffa",
+   "tipo": "Nombre desconocido",
+   "sec": "COMPE MAÑANERA · URBF · 09/11 · #594",
+   "que": "¿Quién es «Sancez🇪🇸»?",
+   "r": "Es Tmax Turbo [PN] (en este evento)",
+   "regla": "R21 · la cuenta que se anotó así para ese evento es de alguien de la Lista que esa noche no jugó con su nombre",
+   "rk": "R21",
+   "por": "el ciclo",
+   "porque": "la cuenta @arowey0719_09614 (en Discord: «Sancez») · en la Lista: Tmax Turbo [PN] se anotó como «Sancez» para ese evento, no es staff de URBF y esa noche no jugó con su nombre",
+   "t": 1794260548978,
+   "filas": [
+    1179
+   ],
+   "variantes": [
+    "Sancez🇪🇸"
+   ],
+   "escribio": {
+    "quien": "COMPE MAÑANERA · URBF · 09/11 · Sancez🇪🇸"
+   }
+  },
+  {
+   "id": "7f29d91501",
+   "tipo": "Nombre desconocido",
+   "sec": "JKWODJAKB V.1 · FFA · 09/11 · #595",
+   "que": "¿Quién es «Soul🇲🇽»?",
+   "r": "Es Magic (en este evento)",
+   "regla": "R21 · la cuenta que se anotó así para ese evento es de alguien de la Lista que esa noche no jugó con su nombre",
+   "rk": "R21",
+   "por": "el ciclo",
+   "porque": "la cuenta @soul011294 (en Discord: «👤 | MAGIC OG», «SOUL OG») · en la Lista: Magic se anotó como «Soul» para ese evento, no es staff de FFA y esa noche no jugó con su nombre",
+   "t": 1794260548978,
+   "filas": [
+    1183
+   ],
+   "variantes": [
+    "Soul🇲🇽"
+   ],
+   "escribio": {
+    "quien": "JKWODJAKB V.1 · FFA · 09/11 · Soul🇲🇽"
+   }
+  },
+  {
+   "id": "90e52fb5f9",
+   "tipo": "Nombre desconocido",
+   "sec": "JKWODJAKB V.1 · FFA · 09/11 · #595",
+   "que": "¿Quién es «xxxxxclusivo🇻🇪»?",
+   "r": "Es Xclusivo (en este evento)",
+   "regla": "R21 · la cuenta que se anotó así para ese evento es de alguien de la Lista que esa noche no jugó con su nombre",
+   "rk": "R21",
+   "por": "el ciclo",
+   "porque": "la cuenta @tequieromami · en la Lista: Xclusivo se anotó como «xxxxxclusivo» para ese evento, no es staff de FFA y esa noche no jugó con su nombre",
+   "t": 1794260548978,
+   "filas": [
+    1184
+   ],
+   "variantes": [
+    "xxxxxclusivo🇻🇪"
+   ],
+   "escribio": {
+    "quien": "JKWODJAKB V.1 · FFA · 09/11 · xxxxxclusivo🇻🇪"
+   }
+  },
+  {
+   "id": "2681af59af",
+   "tipo": "Nombre desconocido",
+   "sec": "RED BULL CARACAS REGIONAL T.5 · URBF · 08/11 · #590",
+   "que": "¿Quién es «McK 🇨🇴»?",
+   "r": "Es Hades",
+   "regla": "Discord · su cuenta de Discord: la inscripción, el podio, la llave o la llamada",
+   "rk": "Discord",
+   "por": "el ciclo (su cuenta de Discord)",
+   "porque": "alias de Hades: se anotó así en inscripciones",
+   "t": 1794260548978,
+   "filas": [
+    1170
+   ],
+   "variantes": [
+    "McK 🇨🇴"
+   ],
+   "escribio": {
+    "alias": [
+     "McK",
+     "Hades"
+    ],
+    "filas": [
+     345
+    ]
+   }
+  },
+  {
+   "id": "d796b9fb8c",
+   "tipo": "Nombre desconocido",
+   "sec": "RAP SIN GROSERIAS 4 · FDS · 08/11 · #591",
+   "que": "¿Quién es «Valki»?",
+   "r": "Es Vilca",
+   "regla": "Discord · su cuenta de Discord: la inscripción, el podio, la llave o la llamada",
+   "rk": "Discord",
+   "por": "el ciclo (su cuenta de Discord)",
+   "porque": "alias de Vilca: estaba en la llamada del evento con ese nombre",
+   "t": 1794260548978,
+   "filas": [
+    1173
+   ],
+   "variantes": [
+    "Valki"
+   ],
+   "escribio": {
+    "alias": [
+     "Valki",
+     "Vilca"
+    ],
+    "filas": [
+     346
+    ]
+   }
+  },
+  {
+   "id": "1fffb784b1",
+   "tipo": "Nombre desconocido",
+   "sec": "QCYO RAPEEN 12 · FFA · 08/11 · #593",
+   "que": "¿Quién es «soaraya🇦🇷»?",
+   "r": "Es araya",
+   "regla": "Discord · su cuenta de Discord: la inscripción, el podio, la llave o la llamada",
+   "rk": "Discord",
+   "por": "el ciclo (su cuenta de Discord)",
+   "porque": "alias de araya: estaba en la llamada del evento con un nombre parecido",
+   "t": 1794260548978,
+   "filas": [
+    1178
+   ],
+   "variantes": [
+    "soaraya🇦🇷"
+   ],
+   "escribio": {
+    "alias": [
+     "soaraya",
+     "araya"
+    ],
+    "filas": [
+     347
+    ]
+   }
+  },
+  {
+   "id": "0c9f587469",
+   "tipo": "Nombre desconocido",
+   "sec": "LLAVES PARA LA DISCORD STYLE 17 · DDS · 23/10 · #580",
+   "que": "¿Quién es «Nitrox 🇦🇷🇦🇷»?",
+   "r": "Es alguien nuevo: alta con su cuenta 1502679833665208444",
+   "regla": "Discord · su cuenta de Discord: la inscripción, el podio, la llave o la llamada",
+   "rk": "Discord",
+   "por": "el ciclo (su cuenta de Discord)",
+   "porque": "nuevo: entró a la Lista con la cuenta con que se anotó (1502679833665208444)",
+   "t": 1794260548978,
+   "filas": [
+    1156
+   ],
+   "variantes": [
+    "Nitrox 🇦🇷🇦🇷"
+   ],
+   "escribio": {
+    "alta": [
+     "Nitrox",
+     "1502679833665208444"
+    ]
+   }
+  },
+  {
+   "id": "1d2c662d8e",
+   "tipo": "Nombre desconocido",
+   "sec": "MASTER STYLE REMAKE · DDS · 27/10 · #581",
+   "que": "¿Quién es «replisan🇦🇷»?",
+   "r": "Es alguien nuevo: alta con su cuenta 1538845917476560976",
+   "regla": "Discord · su cuenta de Discord: la inscripción, el podio, la llave o la llamada",
+   "rk": "Discord",
+   "por": "el ciclo (su cuenta de Discord)",
+   "porque": "nuevo: entró a la Lista con la cuenta con que se anotó (1538845917476560976)",
+   "t": 1794260548978,
+   "filas": [
+    1158
+   ],
+   "variantes": [
+    "replisan🇦🇷"
+   ],
+   "escribio": {
+    "alta": [
+     "replisan",
+     "1538845917476560976"
+    ]
+   }
+  },
+  {
+   "id": "515e25dd78",
+   "tipo": "Nombre desconocido",
+   "sec": "LLAVES PARA LA DISCORD STYLE 19 · DDS · 01/11 · #584",
+   "que": "¿Quién es «Fecha 🇦🇷»?",
+   "r": "Es alguien nuevo: alta con su cuenta 1459022035291476050",
+   "regla": "Discord · su cuenta de Discord: la inscripción, el podio, la llave o la llamada",
+   "rk": "Discord",
+   "por": "el ciclo (su cuenta de Discord)",
+   "porque": "nuevo: entró a la Lista con la cuenta con que se anotó (1459022035291476050)",
+   "t": 1794260548978,
+   "filas": [
+    1163
+   ],
+   "variantes": [
+    "Fecha 🇦🇷"
+   ],
+   "escribio": {
+    "alta": [
+     "Fecha",
+     "1459022035291476050"
+    ]
+   }
+  },
+  {
+   "id": "bb7f88a9b3",
+   "tipo": "Nombre desconocido",
+   "sec": "LLAVES PARA LA DISCORD STYLE 19 · DDS · 01/11 · #584",
+   "que": "¿Quién es «MAT MC»?",
+   "r": "Es alguien nuevo: alta con su cuenta 1555731451180482560",
+   "regla": "Discord · su cuenta de Discord: la inscripción, el podio, la llave o la llamada",
+   "rk": "Discord",
+   "por": "el ciclo (su cuenta de Discord)",
+   "porque": "nuevo: entró a la Lista con su Discord (1555731451180482560)",
+   "t": 1794260548978,
+   "filas": [
+    1164
+   ],
+   "variantes": [
+    "MAT MC"
+   ],
+   "escribio": {
+    "alta": [
+     "MAT MC",
+     "1555731451180482560"
+    ]
+   }
+  },
+  {
+   "id": "b1480f9b28",
+   "tipo": "Nombre desconocido",
+   "sec": "MF DOOM Y MADLIB EDICION 1 · DDS · 07/11 · #586",
+   "que": "¿Quién es «Choco🇵🇪»?",
+   "r": "Es alguien nuevo: alta con su cuenta 875841712575098920",
+   "regla": "Discord · su cuenta de Discord: la inscripción, el podio, la llave o la llamada",
+   "rk": "Discord",
+   "por": "el ciclo (su cuenta de Discord)",
+   "porque": "nuevo: entró a la Lista con la cuenta con que se anotó (875841712575098920)",
+   "t": 1794260548978,
+   "filas": [
+    1166
+   ],
+   "variantes": [
+    "Choco🇵🇪"
+   ],
+   "escribio": {
+    "alta": [
+     "Choco",
+     "875841712575098920"
+    ]
+   }
+  },
+  {
+   "id": "4ed1ef0cb3",
+   "tipo": "Nombre desconocido",
+   "sec": "EL ULTIMO DIA DE DDF · DDF · 08/11 · #589",
+   "que": "¿Quién es «Dinamight🇲🇽»?",
+   "r": "Es alguien nuevo: alta con su cuenta 1463249255962644530",
+   "regla": "Discord · su cuenta de Discord: la inscripción, el podio, la llave o la llamada",
+   "rk": "Discord",
+   "por": "el ciclo (su cuenta de Discord)",
+   "porque": "nuevo: entró a la Lista con la cuenta que estaba en la llamada con ese nombre (1463249255962644530)",
+   "t": 1794260548978,
+   "filas": [
+    1168
+   ],
+   "variantes": [
+    "Dinamight🇲🇽"
+   ],
+   "escribio": {
+    "alta": [
+     "Dinamight",
+     "1463249255962644530"
+    ]
+   }
+  },
+  {
+   "id": "90d2a90912",
+   "tipo": "Nombre desconocido",
+   "sec": "RED BULL CARACAS REGIONAL T.5 · URBF · 08/11 · #590",
+   "que": "¿Quién es «Forza🇻🇪»?",
+   "r": "Es alguien nuevo: alta con su cuenta 1471506451146080497",
+   "regla": "Discord · su cuenta de Discord: la inscripción, el podio, la llave o la llamada",
+   "rk": "Discord",
+   "por": "el ciclo (su cuenta de Discord)",
+   "porque": "nuevo: entró a la Lista con la cuenta con que se anotó (1471506451146080497)",
+   "t": 1794260548978,
+   "filas": [
+    1169
+   ],
+   "variantes": [
+    "Forza🇻🇪"
+   ],
+   "escribio": {
+    "alta": [
+     "Forza",
+     "1471506451146080497"
+    ]
+   }
+  },
+  {
+   "id": "91e8fe0b5a",
+   "tipo": "Nombre desconocido",
+   "sec": "COMPE MAÑANERA · URBF · 09/11 · #594",
+   "que": "¿Quién es «black live 🇨🇴»?",
+   "r": "Es alguien nuevo: alta con su cuenta 1523008096660885505",
+   "regla": "Discord · su cuenta de Discord: la inscripción, el podio, la llave o la llamada",
+   "rk": "Discord",
+   "por": "el ciclo (su cuenta de Discord)",
+   "porque": "nuevo: entró a la Lista con la cuenta con que se anotó (1523008096660885505)",
+   "t": 1794260548978,
+   "filas": [
+    1180
+   ],
+   "variantes": [
+    "black live 🇨🇴"
+   ],
+   "escribio": {
+    "alta": [
+     "black live",
+     "1523008096660885505"
+    ]
+   }
+  },
+  {
+   "id": "eb2b24fe47",
+   "tipo": "Nombre desconocido",
+   "sec": "JKWODJAKB V.1 · FFA · 09/11 · #595",
+   "que": "¿Quién es «Dobell 🇪🇸»?",
+   "r": "Es alguien nuevo: alta con su cuenta 560204755280855051",
+   "regla": "Discord · su cuenta de Discord: la inscripción, el podio, la llave o la llamada",
+   "rk": "Discord",
+   "por": "el ciclo (su cuenta de Discord)",
+   "porque": "nuevo: entró a la Lista con la cuenta que estaba en la llamada con ese nombre (560204755280855051)",
+   "t": 1794260548978,
+   "filas": [
+    1182
+   ],
+   "variantes": [
+    "Dobell 🇪🇸"
+   ],
+   "escribio": {
+    "alta": [
+     "Dobell",
+     "560204755280855051"
+    ]
+   }
+  },
+  {
+   "id": "68b2203831",
+   "tipo": "Nombre desconocido",
+   "sec": "LLAVES PARA LA DISCORD STYLE 18 · DDS · 30/10 · #583",
+   "que": "¿Quién es «BOTRAXX»?",
+   "r": "Ya no hace falta",
+   "regla": "cierre · ya no hacía falta preguntarlo",
+   "rk": "cierre",
+   "por": "el ciclo",
+   "porque": "ya no está en ningún resultado: el lector lo lee distinto, o ya es alias de alguien",
+   "t": 1794260548978,
+   "filas": [
+    1161
+   ],
+   "variantes": [
+    "BOTRAXX"
+   ],
+   "escribio": {}
+  },
+  {
+   "id": "f5bc1ca4b2",
+   "tipo": "Nombre desconocido",
+   "sec": "RAP SIN GROSERIAS 4 · FDS · 08/11 · #591",
+   "que": "¿Quién es «Santiki 🇦🇷»?",
+   "r": "Ya no hace falta",
+   "regla": "cierre · ya no hacía falta preguntarlo",
+   "rk": "cierre",
+   "por": "el ciclo",
+   "porque": "ya no está en ningún resultado: el lector lo lee distinto, o ya es alias de alguien",
+   "t": 1794260548978,
+   "filas": [
+    1172
+   ],
+   "variantes": [
+    "Santiki 🇦🇷"
+   ],
+   "escribio": {}
+  },
+  {
+   "id": "a18003198b",
+   "tipo": "Nombre desconocido",
+   "sec": "RAP SIN GROSERIAS 4 · FDS · 08/11 · #591",
+   "que": "¿Quién es «nexux»?",
+   "r": "Ya no hace falta",
+   "regla": "cierre · ya no hacía falta preguntarlo",
+   "rk": "cierre",
+   "por": "el ciclo",
+   "porque": "ya no está en ningún resultado: el lector lo lee distinto, o ya es alias de alguien",
+   "t": 1794260548978,
+   "filas": [
+    1174
+   ],
+   "variantes": [
+    "nexux"
+   ],
+   "escribio": {}
   }
  ],
  "deshechas": []
