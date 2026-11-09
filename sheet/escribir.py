@@ -319,11 +319,52 @@ class Hoja(object):
             print('   [dry] %s: pondria %d fila(s) desde la %d '
                   '(hoy tiene %d)' % (self.nombre, len(filas), destino, hay))
             return 0
+        # 🔴 ANTES, LAS FILAS VACÍAS DEL FONDO: ver `recortar()`. Nunca frena la escritura
+        try:
+            self.recortar()
+        except Exception as e:                           # noqa: BLE001
+            print('   ⚠️ no pude recortar las filas vacías de %s (%s)' % (self.nombre, str(e)[:80]))
         _pedir('POST', '/values/%s!A%d:append?valueInputOption=RAW'
                        '&insertDataOption=INSERT_ROWS'
                % (requests.utils.quote(self.nombre), destino),
                json={'values': filas})
         return len(filas)
+
+    def recortar(self):
+        """🔴 LA HOJA QUE CRECÍA SOLA (09/11/2026). `agregar()` INSERTA filas —a propósito: así nunca pisa nada, aunque
+        haya huecos— y `procesar_entrada.py --limpiar` las deja en blanco sin borrarlas. Cada corrida sumaba ~1.170 a
+        `Entrada`, y el 09/11 tenía **1.233.156 filas**, casi todas vacías: el Operativo llegó al tope de celdas, el
+        append reventó y desde el 07/11 no se cargó ningún evento («el lector salió con 1», sin frenar el ciclo).
+
+        Borra las filas vacías del fondo cuando sobran más de `SOBRA_MAX`, y deja `SOBRA_DEJA`. «Vacías» es leyendo
+        TODAS las columnas de la hoja, no las que usa el lector: la API devuelve hasta la última fila con algo. Devuelve
+        cuántas borró."""
+        meta = _pedir('GET', '?fields=sheets.properties')
+        p = next((s['properties'] for s in meta.get('sheets') or [] if s['properties'].get('title') == self.nombre), None)
+        if not p:
+            return 0
+        filas_grid = int((p.get('gridProperties') or {}).get('rowCount') or 0)
+        d = _pedir('GET', '/values/%s' % requests.utils.quote(self.nombre))
+        tramo = cuanto_recortar(filas_grid, len(d.get('values') or []))
+        if not tramo:
+            return 0
+        _pedir('POST', ':batchUpdate', json={'requests': [{'deleteDimension': {'range': {
+            'sheetId': p['sheetId'], 'dimension': 'ROWS', 'startIndex': tramo[0], 'endIndex': tramo[1]}}}]})
+        print('   ✂️ %s: borré %d fila(s) vacías del fondo' % (self.nombre, tramo[1] - tramo[0]))
+        return tramo[1] - tramo[0]
+
+
+#: cuántas filas vacías pueden sobrar al fondo de una hoja antes de borrarlas, y cuántas se dejan. Ver `Hoja.recortar()`
+SOBRA_MAX, SOBRA_DEJA = 5000, 1000
+
+
+def cuanto_recortar(filas_grid, ultima_con_algo):
+    """`(desde, hasta)` en índices de la API (desde 0, `hasta` sin incluir) de las filas vacías que hay que borrar al
+    fondo, o `None` si sobran `SOBRA_MAX` o menos. `ultima_con_algo` es la última fila con algo (1 = la primera). Pura."""
+    desde = max(0, int(ultima_con_algo)) + SOBRA_DEJA
+    if filas_grid - max(0, int(ultima_con_algo)) <= SOBRA_MAX or desde >= filas_grid:
+        return None
+    return desde, filas_grid
 
 
 def ver():
@@ -376,6 +417,13 @@ def _self_check():
         r = _fin_de(a1)
         mal += r != esperado
         print('   %s %-34s -> %r' % ('ok' if r == esperado else '🔴', a1, r))
+    # ✂️ las filas vacías del fondo (09/11/2026): `Entrada` tenía 1.233.156 con 21 usadas
+    rc = [((1233156, 21), (1021, 1233156)), ((2000, 21), None), ((5900, 900), None), ((7000, 900), (1900, 7000)),
+          ((1000, 0), None), ((9000, 0), (1000, 9000))]
+    for (g, u), esperado in rc:
+        r = cuanto_recortar(g, u)
+        mal += r != esperado
+        print('   %s recortar %7d filas con %4d usadas -> %r' % ('ok' if r == esperado else '🔴', g, u, r))
     print('\n   %s\n' % ('todo bien' if not mal else '🔴 %d mal' % mal))
     return 1 if mal else 0
 

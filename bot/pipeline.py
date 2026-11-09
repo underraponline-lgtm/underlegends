@@ -614,6 +614,34 @@ def rehacer_bloqueadas():
         return 0
 
 
+#: 🔴 cuántas corridas seguidas puede fallar el lector de llaves antes de avisarle a Dlx. Ver `lector_seguidas()`
+LECTOR_SEGUIDAS = 2
+
+
+def lector_seguidas(codigo, ultima=(), al=None):
+    """Cuenta las corridas seguidas en que falló el lector de llaves (`cuenta:lector` en `datos/alertas.json`, que va
+    al repo). Con `LECTOR_SEGUIDAS` o más, DM a Dlx (`alertar.alertar()`, que se calla 6 h); cuando vuelve a andar, UNO
+    de que volvió. `al` es el módulo `alertar` (el self-check pasa uno de mentira). Devuelve cuántas van."""
+    if al is None:
+        import alertar as al
+    d = al._leer()
+    n = int((d.get('cuenta:lector') or {}).get('n') or 0)
+    if not codigo:
+        if n:
+            d.pop('cuenta:lector', None)
+            al._guardar(d)
+            al.resuelto('lector', '**El lector de llaves volvió a cargar eventos**, después de %d corrida(s) sin poder.' % n)
+        return 0
+    n += 1
+    motivo = ' '.join(str(x).strip() for x in ultima or () if str(x).strip())[:200]
+    d['cuenta:lector'] = {'n': n, 't': al._ahora().isoformat(), 'motivo': motivo}
+    al._guardar(d)
+    if n >= LECTOR_SEGUIDAS:
+        al.alertar('lector', '**El lector de llaves falló %d corridas seguidas**: no se está cargando ningún evento. '
+                             'El motivo: %s' % (n, motivo or '—'))
+    return n
+
+
 def _lo_barato(correr):
     """Los pasos 1 a 2d: de Discord y el Sheet a los pools y la web.
 
@@ -801,6 +829,14 @@ def _lo_barato(correr):
             for l in (r.stderr or '').strip().splitlines()[-6:]:
                 if l.strip():
                     print('         %s' % l.strip()[:96])
+        # 🔴 Y SI FALLA DOS CORRIDAS SEGUIDAS, A DLX (09/11/2026). Del 07/11 al 09/11 falló en todas —el Operativo llegó
+        # al tope de celdas y no se podía escribir `Entrada`: ver `escribir.Hoja.recortar()`— y no se cargó ningún
+        # evento sin que nadie se enterara: esta línea lo decía en un log que no mira nadie. Una sola falla puede ser
+        # un tropiezo de Sheets; dos seguidas, no. ⚠️ Nunca frena el ciclo
+        try:
+            lector_seguidas(r.returncode, (r.stderr or '').strip().splitlines()[-1:])
+        except Exception as e:                           # noqa: BLE001
+            print('      ⚠️ no pude contar las fallas del lector (%s)' % str(e)[:60])
     except Exception as e:                               # noqa: BLE001
         print('      ⚠️ el lector no pudo correr (%s): sigo'
               % str(e)[:60])
