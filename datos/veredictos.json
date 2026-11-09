@@ -936,6 +936,39 @@
    "b": "CRAKERO",
    "ganador": "PARK JI SUNG",
    "votos": "1–0"
+  },
+  "1569226982296785001": {
+   "id": "1569226982296785001",
+   "sv": "[FFA] Freestyle For All 👾",
+   "g": "1468472442925092958",
+   "canal": "1487206164864438513",
+   "pub": 1794203267407,
+   "a": "AKASHA+SIX+LEANDRO KATANA",
+   "b": "PARK JI SUNG",
+   "ganador": "PARK JI SUNG",
+   "votos": "1–0"
+  },
+  "1569230121620209755": {
+   "id": "1569230121620209755",
+   "sv": "[FFA] Freestyle For All 👾",
+   "g": "1468472442925092958",
+   "canal": "1487206164864438513",
+   "pub": 1794204015880,
+   "a": "ERIK+ZA+TAM",
+   "b": "PRAISERIZA",
+   "ganador": "PRAISERIZA",
+   "votos": "1–0"
+  },
+  "1569233277468811365": {
+   "id": "1569233277468811365",
+   "sv": "[FFA] Freestyle For All 👾",
+   "g": "1468472442925092958",
+   "canal": "1487206164864438513",
+   "pub": 1794204768293,
+   "a": "PRAISERIZAS",
+   "b": "PARK JI SUNG",
+   "ganador": "PARK JI SUNG",
+   "votos": "1–0"
   }
  },
  "llaves": {
@@ -5181,6 +5214,107 @@
     ]
    ]
   },
+  "1569055325619757097": {
+   "id": "1569055325619757097",
+   "sv": "🌌┃𝐃𝐈𝐌𝐄𝐍𝐒𝐈Ó𝐍 𝐃𝐄𝐋 𝐅𝐑𝐄𝐄𝐒𝐓𝐘𝐋𝐄┃🌌",
+   "g": "1469009547971526659",
+   "canal": "1498009509036163173",
+   "pub": 1794162341266,
+   "ed": 1794165889441,
+   "texto": "`[ FINAL ]`\n⌞SAIDEM⌝ 🆚 ⌞TEITO⌝\n⌞KEIDER⌝ 🆚 ⌞SIN LIMITES⌝\n⌞CABECEANDOLA⌝ 🆚 ⌞DJ BUTACS💀🥵⌝\n⌞namber⌝ 🆚 ⌞Cali⌝\n⌞MIXO⌝ 🆚 ⌞NEXUZ⌝\n⌞LAVA⌝ 🆚 ⌞MITOCONDRIA⌝\n⌞NUMBER⌝ 🆚 ⌞CARLOS⌝\n⌞MINIBOY⌝ 🆚 ⌞JULIX⌝\n⌞PANCHOK⌝ 🆚 ⌞DINAMIGHT⌝",
+   "batallas": [
+    [
+     "FINAL",
+     [
+      "SAIDEM",
+      "TEITO"
+     ],
+     null,
+     "última ronda y no dice campeón",
+     []
+    ],
+    [
+     "FINAL",
+     [
+      "KEIDER",
+      "SIN LIMITES"
+     ],
+     null,
+     "última ronda y no dice campeón",
+     []
+    ],
+    [
+     "FINAL",
+     [
+      "CABECEANDOLA",
+      "DJ BUTACS💀🥵"
+     ],
+     null,
+     "última ronda y no dice campeón",
+     []
+    ],
+    [
+     "FINAL",
+     [
+      "namber",
+      "Cali"
+     ],
+     null,
+     "última ronda y no dice campeón",
+     []
+    ],
+    [
+     "FINAL",
+     [
+      "MIXO",
+      "NEXUZ"
+     ],
+     null,
+     "última ronda y no dice campeón",
+     []
+    ],
+    [
+     "FINAL",
+     [
+      "LAVA",
+      "MITOCONDRIA"
+     ],
+     null,
+     "última ronda y no dice campeón",
+     []
+    ],
+    [
+     "FINAL",
+     [
+      "NUMBER",
+      "CARLOS"
+     ],
+     null,
+     "última ronda y no dice campeón",
+     []
+    ],
+    [
+     "FINAL",
+     [
+      "MINIBOY",
+      "JULIX"
+     ],
+     null,
+     "última ronda y no dice campeón",
+     []
+    ],
+    [
+     "FINAL",
+     [
+      "PANCHOK",
+      "DINAMIGHT"
+     ],
+     null,
+     "última ronda y no dice campeón",
+     []
+    ]
+   ]
+  },
   "1569070619419615253": {
    "id": "1569070619419615253",
    "sv": "🌌┃𝐃𝐈𝐌𝐄𝐍𝐒𝐈Ó𝐍 𝐃𝐄𝐋 𝐅𝐑𝐄𝐄𝐒𝐓𝐘𝐋𝐄┃🌌",
@@ -5453,8 +5587,8 @@
    "g": "1468472442925092958",
    "canal": "1487206164864438513",
    "pub": 1794197391714,
-   "ed": 1794203267407,
-   "texto": "`[ OCTAVOS ]`\n⌞MCO⌝ 🆚 ⌞OKAM⌝\n⌞ERIAN⌝ 🆚 ⌞PRAISERIZAS⌝\n⌞VERC⌝ 🆚 ⌞TAM⌝\n⌞SIX⌝ 🆚 ⌞PARK JI SUNG⌝ 🆚 ⌞SURYA+ZA⌝\n⌞CRAKERO⌝ 🆚 ⌞ARAYA⌝\n⌞DYZZ+CALIZ⌝ 🆚 ⌞SIX+PARIA⌝\n⌞SH+CARLOS⌝ 🆚 ⌞LEANDRO KATANA+AKASHA⌝\n`[ CUARTOS ]`\n⌞MCO⌝ 🆚 ⌞PRAISERIZAS⌝\n⌞LEANDRO KATANA+AKASHA⌝ 🆚 ⌞PARIA SIX⌝\n⌞LVEL⌝ 🆚 ⌞ZA+TAM⌝\n⌞PARK JI SUNG⌝ 🆚 ⌞CRAKERO⌝\n`[ SEMIFINALES ]`\n⌞AKASHA+SIX+LEANDRO KATANA⌝ 🆚 ⌞PARK JI SUNG⌝",
+   "ed": 1794205076500,
+   "texto": "`[ OCTAVOS ]`\n⌞MCO⌝ 🆚 ⌞OKAM⌝\n⌞ERIAN⌝ 🆚 ⌞PRAISERIZAS⌝\n⌞VERC⌝ 🆚 ⌞TAM⌝\n⌞SIX⌝ 🆚 ⌞PARK JI SUNG⌝ 🆚 ⌞SURYA+ZA⌝\n⌞CRAKERO⌝ 🆚 ⌞ARAYA⌝\n⌞DYZZ+CALIZ⌝ 🆚 ⌞SIX+PARIA⌝\n⌞SH+CARLOS⌝ 🆚 ⌞LEANDRO KATANA+AKASHA⌝\n`[ CUARTOS ]`\n⌞MCO⌝ 🆚 ⌞PRAISERIZAS⌝\n⌞LEANDRO KATANA+AKASHA⌝ 🆚 ⌞PARIA SIX⌝\n⌞LVEL⌝ 🆚 ⌞ZA+TAM⌝\n⌞PARK JI SUNG⌝ 🆚 ⌞CRAKERO⌝\n`[ SEMIFINALES ]`\n⌞AKASHA+SIX+LEANDRO KATANA⌝ 🆚 ⌞PARK JI SUNG⌝\n⌞ERIK+ZA+TAM⌝ 🆚 ⌞PRAISERIZA⌝\n`[ FINAL ]`\n⌞PRAISERIZAS⌝ 🆚 ⌞PARK JI SUNG⌝",
    "batallas": [
     [
      "OCTAVOS",
@@ -5573,8 +5707,28 @@
       "AKASHA+SIX+LEANDRO KATANA",
       "PARK JI SUNG"
      ],
-     null,
-     "última ronda y no dice campeón",
+     "PARK JI SUNG",
+     "veredicto",
+     []
+    ],
+    [
+     "SEMIFINALES",
+     [
+      "ERIK+ZA+TAM",
+      "PRAISERIZA"
+     ],
+     "PRAISERIZA",
+     "veredicto",
+     []
+    ],
+    [
+     "FINAL",
+     [
+      "PRAISERIZAS",
+      "PARK JI SUNG"
+     ],
+     "PARK JI SUNG",
+     "veredicto",
      []
     ]
    ]
