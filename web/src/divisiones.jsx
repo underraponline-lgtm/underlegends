@@ -161,10 +161,33 @@ function estadoElo(D, nombres, di, f) {
   return { msg: <>Te faltan <b>{num(Math.max(1, sig[1] - elo))} de ELO</b> para {sig[0]} ({num(sig[1])}). Llegar por primera vez paga {num(sig[0].endsWith(' I') ? D.p : (D.ps || 150))} Puntos de Tienda.</>, chip: '' };
 }
 
+// ⚔️ TUS ÚLTIMAS BATALLAS, de `/api/divisiones` (09/11/2026: el lobby se pasó de su tope y la columna `f[5]` de cada
+// fila salió de ahí —se ven sólo las tuyas—; `CLAVE_DIVISIONES` de bot/subir_web.py). Se piden al abrir Divisiones, una
+// vez por cada lobby nuevo (`sello`). Si la fila todavía las trae (un lobby viejo en caché), se usan ésas
+let BAT = null, batDe = null, batPidiendo = null;
+function useBatallas(activo, sello) {
+  const [b, setB] = useState(batDe === sello ? BAT : null);
+  useEffect(() => {
+    if (!activo) return undefined;
+    if (BAT && batDe === sello) { setB(BAT); return undefined; }
+    let vivo = true;
+    batPidiendo = batPidiendo || fetch('/api/divisiones', { headers: { accept: 'application/json' } })
+      .then((r) => (r.ok ? r.json() : null)).catch(() => null)
+      .then((j) => { batPidiendo = null; return j; });
+    batPidiendo.then((j) => {
+      if (j && j.b && typeof j.b === 'object') { BAT = j.b; batDe = sello; }
+      if (vivo) setB(BAT && batDe === sello ? BAT : {});
+    });
+    return () => { vivo = false; };
+  }, [activo, sello]);
+  return b;
+}
+
 function TuSemanaElo({ liga, D, nombres, divs, esYo }) {
   const cierra = enCuanto(liga, D.fin);
   const reloj = cierra ? <span className="dv-tu-chip oro">cierra {cierra}</span> : null;
   const yo = miFila(divs, esYo);
+  const bat = useBatallas(!!yo && !(yo.f[5] || []).length, liga.d.sello);
   if (!yo) {
     return (
       <section className="dv-tu" aria-label="Tu ELO">
@@ -175,6 +198,7 @@ function TuSemanaElo({ liga, D, nombres, divs, esYo }) {
     );
   }
   const { di, g, pos, f } = yo;
+  const ultb = (f[5] || []).length ? f[5] : ((bat || {})[f[0]] || []);
   const e = estadoElo(D, nombres, di, f);
   // 📏 tu ELO entre el piso de tu subnivel y el próximo escalón
   const s = f[4] || 0;
@@ -191,9 +215,9 @@ function TuSemanaElo({ liga, D, nombres, divs, esYo }) {
       </span>
       <div className="dv-tu-chips">{reloj}{e.chip ? <span className="dv-tu-chip">{e.chip}</span> : null}<span className="dv-tu-chip">{f[2]} {f[2] === 1 ? 'batalla' : 'batallas'}</span></div>
       {/* ± lo que te dio o te sacó cada batalla, como el +/− de Brawl después de cada partida */}
-      {(f[5] || []).length ? (
+      {ultb.length ? (
         <ul className="dv-ultb" aria-label="Tus últimas batallas">
-          {f[5].map(([x, rival], i) => <li key={i} className={x > 0 ? 'sube' : x < 0 ? 'baja' : ''}><b>{signo(x)}</b> vs {limpio(rival)}</li>)}
+          {ultb.map(([x, rival], i) => <li key={i} className={x > 0 ? 'sube' : x < 0 ? 'baja' : ''}><b>{signo(x)}</b> vs {limpio(rival)}</li>)}
         </ul>
       ) : null}
     </section>

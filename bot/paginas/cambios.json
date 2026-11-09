@@ -11,6 +11,16 @@
  ],
  "cambios": [
   {
+   "version": "4.40",
+   "dia": "2026-11-09",
+   "cuando": "2026-11-09T16:00:00-05:00",
+   "titulo": "La página carga más liviana",
+   "items": [
+    "**La página baja menos datos en cada visita**: lo que no se ve en el Inicio se pide recién cuando lo abres.",
+    "**Tus últimas batallas del Ranking ELO** llegan al abrir Ranking → Divisiones, un instante después que el resto."
+   ]
+  },
+  {
    "version": "4.39",
    "dia": "2026-11-08",
    "cuando": "2026-11-08T13:07:00-05:00",

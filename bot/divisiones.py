@@ -437,7 +437,26 @@ def para_web(d):
     if d.get('modo') == 'elo':
         out.update(m='elo', t=d.get('tramos') or list(TRAMOS), pv=d.get('prov'), c=d.get('colores') or list(COLOR_PIEDRA),
                    ps=d.get('premio_sub', PREMIO_SUB))
+        # 📦 EN MODO ELO EL LOBBY VA SIN `v` NI LAS ÚLTIMAS BATALLAS (09/11/2026). El lobby se pasó de su tope (51,0 KB
+        # contra 52.000 bytes) y lo que creció fue esto: +6,2 KB en una semana, porque el ELO es de toda la temporada y
+        # cada fila suma a alguien. `v` (la división de 629 personas, 2,9 KB) sólo lo leen las pantallas de la semana
+        # por puntos (`SemanaNueva`, `TuSemana` de web/src/divisiones.jsx), que con `m: 'elo'` no se dibujan. Y las
+        # últimas batallas de cada fila (`f[5]`, 3,7 KB) se ven sólo las TUYAS, en Ranking → Divisiones: van a
+        # `batallas_web()` → `web:divisiones` (`/api/divisiones`), que esa pestaña pide al abrirse. La previa del
+        # Inicio, la escalera y las tablas siguen con lo de acá: las cinco primeras columnas de cada fila
+        out.pop('v', None)
+        out['d'] = [[[f[:5] for f in g] for g in gs or []] for gs in out['d'] or []]
     return out
+
+
+def batallas_web(d):
+    """⚔️ Las últimas batallas de cada uno en el Ranking ELO, `{rapero: [[cuánto, rival], …]}` (la más nueva primero),
+    o `None` fuera del modo ELO. Es la columna `f[5]` que `para_web()` le saca al lobby: va a `web:divisiones`
+    (`bot/subir_web.py`, `CLAVE_DIVISIONES`) y la pide Ranking → Divisiones para «Tus últimas batallas»."""
+    if not d or d.get('modo') != 'elo':
+        return None
+    return {f[0]: f[5] for gs in d.get('divs') or [] for g in gs or [] for f in g
+            if len(f) > 5 and f[5]}
 
 
 # ── self-check ───────────────────────────────────────────────────────────
@@ -528,6 +547,14 @@ def _self_check():
     ok(ce['ult']['sem'] == '2026-11-16' and ce['ult']['sube'] == ['A'], 'cómo cerró la última semana')
     ok([f[0] for f in ce['divs'][0][0]] == ['C', 'A'] and ce['divs'][1][0][0][:5] == ['B', 1101, 12, 1, 0],
        'la tabla de ahora: una por división, por ELO')
+    # 📦 lo que viaja en el lobby en modo ELO: sin `v` y sin las últimas batallas, que van aparte (09/11/2026)
+    de = dict(ce, modo='elo', divs=[[[f[:5] + [[[12, 'X']]] for f in g] for g in gs] for gs in ce['divs']])
+    we, be = para_web(de), batallas_web(de)
+    ok(we['m'] == 'elo' and 'v' not in we and all(len(f) == 5 for gs in we['d'] for g in gs for f in g)
+       and [f[:5] for f in we['d'][1][0]] == [f[:5] for f in de['divs'][1][0]],
+       'el lobby del ELO va sin `v` y con las cinco primeras columnas de cada fila')
+    ok(be == {f[0]: [[12, 'X']] for gs in de['divs'] for g in gs for f in g} and batallas_web(c) is None
+       and 'v' in (para_web(c) or {}), 'las últimas batallas van aparte; fuera del ELO, `v` se queda y no hay aparte')
     print('\n  %s' % ('todo ok' if not fallas else '%d fallaron' % len(fallas)))
     return not fallas
 

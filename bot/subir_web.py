@@ -103,6 +103,9 @@ LLAVES_WEB = 12
 #: `CLAVE_CALENDARIO` (`/api/calendario`) y la piden Eventos y la llave. Si alguien mira más atrás, se sube esto
 CAL_DIAS = 28
 CLAVE_CALENDARIO = 'web:calendario'
+#: ⚔️ las últimas batallas de cada uno en el Ranking ELO (`/api/divisiones`), aparte del lobby desde el 09/11/2026: las
+#: pide Ranking → Divisiones para «Tus últimas batallas». Ver `divisiones.para_web()` y `batallas_web()`
+CLAVE_DIVISIONES = 'web:divisiones'
 
 
 def _nom(s):
@@ -670,6 +673,8 @@ def armar():
     _lg_det = _con_ascenso(_lg_det, _cl_lg)
     # 🏟️ y quién tiene carta de liga (`05_Liga/ciclo.py`, 27/10/2026), para «Tus cartas de liga» y el álbum de cada liga
     _lg_det = _con_cartas_liga(_lg_det)
+    # 🏟️ las divisiones: lo del lobby y, aparte, las últimas batallas del ELO (`_div()`, 09/11/2026)
+    _dv = _div()
     # 📈 y en el lobby, sólo QUÉ servidores tienen ascenso y a qué liga (`{sv: [liga, id]}`): con eso el Ranking sabe si
     # mostrar «Ascensos»; las tablas las pide al abrirlo, con el detalle de las ligas
     if _lg_lobby is not None and (_asc_json().get('sv')):
@@ -761,7 +766,9 @@ def armar():
         'insignias': [list(c) for c in _IN().CATALOGO],
         'rivales': _rivales(gente),
         # 🏟️ LAS DIVISIONES DE LA SEMANA (04/10/2026): las tablas de ahora y cómo cerró la anterior. Ver `_div()`
-        'div': _div(),
+        'div': _dv[0],
+        # ⚔️ las últimas batallas de cada uno NO viajan en el lobby (09/11/2026): `main()` las sube a `CLAVE_DIVISIONES`
+        '_divisiones': _dv[1],
         # 🎯 LAS MISIONES DE LA SEMANA (05/10/2026): las tres, el progreso y lo sumado. Ver `_mis()`
         'mis': _mis(),
         # 🏟️ LAS LIGAS DE LOS SERVIDORES (12/10/2026, Dlx: «2. Me gusta»): la tabla de cada una y sus últimos resultados.
@@ -3434,13 +3441,15 @@ def _wch_de(raw):
 
 
 def _div():
-    """🏟️ Las divisiones de la semana (`bot/divisiones.py`), o `None` si nadie jugó todavía. Nunca frena el lobby."""
+    """🏟️ Las divisiones de la semana (`bot/divisiones.py`): `(lo del lobby, las últimas batallas del ELO)`, cada una
+    `None` si no hay. La segunda va aparte, a `CLAVE_DIVISIONES` (09/11/2026). Nunca frena el lobby."""
     try:
         import divisiones as _D
-        return _D.para_web(_D.leer())
+        d = _D.leer()
+        return _D.para_web(d), _D.batallas_web(d)
     except Exception as e:                               # noqa: BLE001
         print('   ⚠️ las divisiones no entran al lobby: %s' % str(e)[:120])
-        return None
+        return None, None
 
 
 _INS = {}
@@ -4040,6 +4049,13 @@ def _self_check():
     p.pop('_semanas', None)
     _due = p.pop('_duelos', None)
     _calf = p.pop('_calendario', None)
+    _dvb = p.pop('_divisiones', None)
+    # ⚔️ el Ranking ELO en el lobby, sin `v` ni las últimas batallas: ésas van a `CLAVE_DIVISIONES` (09/11/2026)
+    _dvl = p.get('div') or {}
+    ok(_dvl.get('m') != 'elo' or ('v' not in _dvl and isinstance(_dvb, dict)
+                                  and all(len(f) == 5 for gs in _dvl.get('d') or [] for g in gs or [] for f in g)),
+       'el Ranking ELO viaja sin `v` ni las últimas batallas; ésas van aparte, a `web:divisiones`  (%d con batallas)'
+       % len(_dvb or {}))
     # 📅 el calendario en el lobby, sólo desde `cal_desde`; la temporada entera, aparte (29/10/2026)
     ok(isinstance(_calf, list) and p.get('cal_desde', '').endswith('T00:00:00Z')
        and p.get('calendario') == [c for c in _calf if c['t'] >= p['cal_desde']],
@@ -4324,7 +4340,9 @@ def _self_check():
        not any(str(o).isdigit() and len(str(o)) >= 15 for e in _en for o in e.get('op') or []),
        'y ningún Discord ID viaja en el payload (el `sv` de las de un servidor es su sigla)')
     ok(json.dumps(p, ensure_ascii=False) and True, 'el payload es JSON')
-    crudo = json.dumps(p, ensure_ascii=False).encode('utf-8')
+    # 📏 COMPACTO, COMO LO SUBE `subir()` (09/11/2026): esto medía con los espacios de `json.dumps` por defecto —«, » y
+    # «: »— y a KV va con `separators=(',', ':')`, así que contaba ~0,8 KB comprimidos que nunca viajan
+    crudo = json.dumps(p, ensure_ascii=False, separators=(',', ':')).encode('utf-8')
     tam = len(crudo)
     # ⚠️ KV admite 25 MB por valor; el problema no es ese sino que el
     # payload viaja entero en CADA visita.
@@ -4344,6 +4362,14 @@ def _self_check():
     # ~1,6 KB por semana—: si vuelve a pasarse, lo próximo es dejar en el lobby sólo sus últimas semanas
     # ✅ Y SE HIZO ESA MISMA NOCHE: el lobby trae el calendario desde `cal_desde` (`CAL_DIAS`) y la temporada entera va a
     # `web:calendario`. Con eso ya no queda ninguna clave que crezca sola con la temporada
+    # 🔴 Y QUEDABA UNA: SE PASÓ OTRA VEZ EL 08/11/2026 (50,9 KB) y NO se subió. Medido contra `datos/` del 30/10 y el
+    # 01/11: +6,2 KB `div`, porque el Ranking ELO (desde el 26/10) es de toda la temporada y suma a cada uno que juega
+    # un 1v1 (397 personas). Se sacaron del lobby `div.v` (2,9 KB, nadie lo lee en modo ELO) y las últimas batallas de
+    # cada fila (3,7 KB, van a `web:divisiones`), y esto pasó a medir compacto como se sube (0,8 KB): 51,0 → ~43,7 KB.
+    # ⚠️ El costo del Worker NO es el tope: `/lobby?json=1` reenvía lo de KV sin parsear (telemetría del 08/11, 24 h:
+    # 114 corridas, ninguna de 10 ms o más; en local, 1,3 ms a 243 KB y +0,25 ms cada 50 KB). Lo caro es la bajada de
+    # quien mira, en cada visita: el lobby real (con caras y novedades) pesaba 68,3 KB en brotli. Lo que sigue creciendo
+    # es la gente con ELO (~8 bytes por persona) y los eventos de 28 días a medida que entran servidores
     ok(comp < 52000, 'y pesa poco: %.1f KB comprimido (%.1f KB de JSON)' % (comp / 1024.0, tam / 1024.0))
     ok(_compactas({'temporada': 'a1', 'pais': 'd4'}) == 'a1...d4' and _compactas({}) == '',
        'las versiones de las cartas viajan compactas, en el orden de `CARTAS`')
@@ -4368,6 +4394,7 @@ def main():
     sem_det = p.pop('_semanas', None)
     due_det = p.pop('_duelos', None)
     cal_det = p.pop('_calendario', None)
+    div_det = p.pop('_divisiones', None)
     redes_ok = _con_redes(perf) is not None
     print('\n══ LO QUE VA A LA WEB ══\n')
     print('   temporada %s · %d en el padrón del pool' % (p['temporada'],
@@ -4484,6 +4511,12 @@ def main():
         okd = subir({'duelos': due_det}, solo_si_cambio='--siempre' not in sys.argv, clave=CLAVE_DUELOS)
         print('   %s' % ('✓ los duelos: igual' if okd is None else '✅ los duelos, subidos (%d)' % len(due_det)
                          if okd else '🔴 no pude subir los duelos'))
+    # ⚔️ LAS ÚLTIMAS BATALLAS DEL RANKING ELO, aparte del lobby (09/11/2026): sólo si cambió, que es cuando entra una
+    # batalla 1v1. `None` fuera del modo ELO: ahí no se escribe nada
+    if div_det is not None:
+        okb = subir({'b': div_det}, solo_si_cambio='--siempre' not in sys.argv, clave=CLAVE_DIVISIONES)
+        print('   %s' % ('✓ las batallas del ELO: igual' if okb is None else '✅ las batallas del ELO, subidas (%d)'
+                         % len(div_det) if okb else '🔴 no pude subir las batallas del ELO'))
     # 🔑 LOS PERFILES, CON EL MISMO DIFF-WRITER: cambian cuando entra una
     # llave, no en cada corrida. Si fallan, el lobby ya está arriba.
     ok2 = None
