@@ -261,19 +261,29 @@ def salud():
             # donde el Worker la escribe si el objeto no contesta, y donde
             # estaba antes de ese cambio.
             c = (j.get('disparador') or {}).get('ultimo') or None
+            de_kv = False
             if not c:
                 r = s.get('https://api.cloudflare.com/client/v4/accounts/%s/storage/kv/'
                           'namespaces/%s/values/cron:ultimo' % (C.CUENTA, D.KV_ID),
                           timeout=25)
                 if r.status_code == 200:
                     c = json.loads(r.content.decode('utf-8'))
+                    de_kv = True
             if c:
                 t = datetime.datetime.fromisoformat(c['t'].replace('Z', '+00:00'))
                 viejo = (_ahora() - t).total_seconds() / 60
                 # 🌙 de madrugada el disparador se calla ~4 h a propósito:
                 # ver `bot/madrugada.py`
                 import madrugada as MD
-                if viejo > MD.pausa_max() or not c.get('ok'):
+                # 🔴 CON EL OBJETO CAÍDO, LA MARCA DE KV ES VIEJA A PROPÓSITO (09/11/2026). El Worker escribe la marca en
+                # el objeto —escribir no tiene tope, leer sí— y en KV sólo si el objeto no la toma, así que con el objeto
+                # sin cuota de lectura KV dice la última vez que se usó de respaldo: el 27/10. El DM decía «el disparador
+                # no anda desde el 27/10» con el ciclo disparándose cada media hora. Sin el objeto, no se sabe: no se
+                # avisa (el del objeto ya salió)
+                if de_kv and 'vigia' not in j and viejo > MD.pausa_max():
+                    print('   ⓘ el disparador: el objeto no contesta y la marca de respaldo (KV) es del %s: no se sabe'
+                          % _et(t))
+                elif viejo > MD.pausa_max() or not c.get('ok'):
                     alertar('disparador', 'El disparador del ciclo no anda: su último '
                             'intento fue %s (%s). El ciclo queda sólo con el cron de '
                             'GitHub, que dispara 1 de cada 9 veces.'
