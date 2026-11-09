@@ -19,13 +19,25 @@
 },
 "canales_t": "2026-11-08T19:58:01Z",
 "ult": {
-"1498327465251045418": "1569043913262637211",
+"1498327465251045418": "1569179881684729950",
 "937392432276992010": "1568032127608430672",
 "1511963131880931338": "1540204032679743619",
 "1445948805710352514": "1530074145402912861",
 "1375099464183713823": "1560720259563130951"
 },
 "items": [
+{
+"id": "1569179881684729950-0",
+"t": "2026-11-09T02:40:37Z",
+"sv": "DRA",
+"quien": "Filozico",
+"url": "https://youtu.be/IwcqSwjSW0g?si=uonFJMuoJXs24Y8A",
+"plat": "yt",
+"vid": "IwcqSwjSW0g",
+"tit": "Debe entender beat 808 audio official de filozico ",
+"de": "No soy filo",
+"img": "https://i.ytimg.com/vi/IwcqSwjSW0g/hqdefault.jpg"
+},
 {
 "id": "1568032127608430672-0",
 "t": "2026-11-05T22:39:51Z",
@@ -661,6 +673,11 @@
 "https://open.spotify.com/track/1U8yknIGFlrJAfyEW9yIZA?si=izCppb7wQ9mqOQRPWL03Hg&utm_source=copy-link&rowId=5daf0948546fd5c8": {
 "tit": "HIPNOSIS",
 "de": ""
+},
+"https://youtu.be/IwcqSwjSW0g?si=uonFJMuoJXs24Y8A": {
+"tit": "Debe entender beat 808 audio official de filozico ",
+"de": "No soy filo",
+"img": "https://i.ytimg.com/vi/IwcqSwjSW0g/hqdefault.jpg"
 }
 }
 }
