@@ -2,17 +2,6 @@
  "_leeme": "Los eventos de vidas de #veredictos ya armados —quién peleó con quién y quién ganó—, para cargarlos aunque ya no estén entre los últimos mensajes del canal; y cada batalla con su ganador (`batallas`), para la llave que no lo dice; y cada llave como se jugó (`llaves`), que manda sobre la del organizador. Sin los mensajes: el repo es público. Lo escribe bot/escuchar.py (vidas()).",
  "eventos": {},
  "batallas": {
-  "1566636863043928097": {
-   "id": "1566636863043928097",
-   "sv": "[FFA] Freestyle For All 👾",
-   "g": "1468472442925092958",
-   "canal": "1487206164864438513",
-   "pub": 1793585734855,
-   "a": "GEOKA",
-   "b": "GUS",
-   "ganador": "GUS",
-   "votos": "1–0"
-  },
   "1566638974276214975": {
    "id": "1566638974276214975",
    "sv": "[FFA] Freestyle For All 👾",
@@ -903,90 +892,20 @@
    "b": "MAKMA 🇻🇪",
    "ganador": "JJ 🇨🇴",
    "votos": "1–0"
+  },
+  "1569171078230581279": {
+   "id": "1569171078230581279",
+   "sv": "#FDS ╏FREESTYLE DISCORD SERIES",
+   "g": "1489848581203689535",
+   "canal": "1536574435761332334",
+   "pub": 1794189938839,
+   "a": "JORNADA 6 --> ARTEZZY",
+   "b": "PEPE MUJICA",
+   "ganador": "PEPE MUJICA",
+   "votos": "1–0"
   }
  },
  "llaves": {
-  "1561560619419959317": {
-   "id": "1561560619419959317",
-   "sv": "🌌┃𝐃𝐈𝐌𝐄𝐍𝐒𝐈Ó𝐍 𝐃𝐄𝐋 𝐅𝐑𝐄𝐄𝐒𝐓𝐘𝐋𝐄┃🌌",
-   "g": "1469009547971526659",
-   "canal": "1498009509036163173",
-   "pub": 1792375464063,
-   "ed": 1792377476055,
-   "texto": "`[ SEMIFINALES ]`\n⌞MOSQUITRAP🇦🇷 + ADRIAGNER🇳🇮⌝ 🆚 ⌞CARLOS🇪🇨 + KEIDER🇻🇪⌝\n⌞MASINO🇨🇱 + EVANGELINE🇧🇴⌝ 🆚 ⌞ERIAN🇦🇱 + SEBITAS🇱🇷⌝\n`[ FINAL ]`\n⌞ERIAN🇵🇦⌝ 🆚 ⌞ADRIAGNER🇳🇮⌝\n⌞ERIAN🇵🇦⌝ 🆚 ⌞CARLOS🇪🇨⌝\n⌞CARLOS🇪🇨⌝ 🆚 ⌞EVANGELINE🇧🇴⌝\n⌞MASINO🇨🇱⌝ 🆚 ⌞CARLOS🇪🇨⌝\n⌞MASINO🇨🇱⌝ 🆚 ⌞MOSQUITORAP🇦🇷⌝",
-   "batallas": [
-    [
-     "SEMIFINALES",
-     [
-      "MOSQUITRAP🇦🇷 + ADRIAGNER🇳🇮",
-      "CARLOS🇪🇨 + KEIDER🇻🇪"
-     ],
-     null,
-     "no aparece nadie después",
-     []
-    ],
-    [
-     "SEMIFINALES",
-     [
-      "MASINO🇨🇱 + EVANGELINE🇧🇴",
-      "ERIAN🇦🇱 + SEBITAS🇱🇷"
-     ],
-     null,
-     "no aparece nadie después",
-     []
-    ],
-    [
-     "FINAL",
-     [
-      "ERIAN🇵🇦",
-      "ADRIAGNER🇳🇮"
-     ],
-     "ERIAN🇵🇦",
-     "veredicto",
-     []
-    ],
-    [
-     "FINAL",
-     [
-      "ERIAN🇵🇦",
-      "CARLOS🇪🇨"
-     ],
-     "CARLOS🇪🇨",
-     "veredicto",
-     []
-    ],
-    [
-     "FINAL",
-     [
-      "CARLOS🇪🇨",
-      "EVANGELINE🇧🇴"
-     ],
-     "CARLOS🇪🇨",
-     "veredicto",
-     []
-    ],
-    [
-     "FINAL",
-     [
-      "MASINO🇨🇱",
-      "CARLOS🇪🇨"
-     ],
-     "MASINO🇨🇱",
-     "veredicto",
-     []
-    ],
-    [
-     "FINAL",
-     [
-      "MASINO🇨🇱",
-      "MOSQUITORAP🇦🇷"
-     ],
-     "MOSQUITORAP🇦🇷",
-     "veredicto",
-     []
-    ]
-   ]
-  },
   "1561793578244505673": {
    "id": "1561793578244505673",
    "sv": "[FFA] Freestyle For All 👾",

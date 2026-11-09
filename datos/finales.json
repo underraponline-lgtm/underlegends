@@ -1234,5 +1234,34 @@
   "sin_permiso": true,
   "sv": "LKR"
  },
+ "1569087548020498498": {
+  "autor": "1489469731168845894",
+  "canal": "1500675902042931280",
+  "cuando": "2026-11-08T20:33:43.685000+00:00",
+  "evento": "RAP SIN GROSERIAS 4",
+  "fecha": "08/11",
+  "llave": "1569087548020498498",
+  "pregunta": "1569175769308078313",
+  "preguntada": "2026-11-08 10:24 PM ET",
+  "preguntas": [
+   {
+    "lados": [
+     "Santiki 🇦🇷",
+     "Mito🇦🇷"
+    ],
+    "ronda": "CUARTOS"
+   },
+   {
+    "lados": [
+     "Cinexfilo 🇻🇪",
+     "nexux"
+    ],
+    "ronda": "OCTAVOS"
+   }
+  ],
+  "respondidas": {},
+  "sin_permiso": false,
+  "sv": "FDS"
+ },
  "_leeme": "Las llaves que el ciclo no entendió y se las preguntó a quien las publicó, con botones o un menú (bot/finales.py). Una vez por llave, por su ID: así nunca se pregunta dos veces. Dlx, 12/10/2026."
 }
