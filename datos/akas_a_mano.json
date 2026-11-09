@@ -147,7 +147,8 @@
   "🏳️ Tres personas partidas sólo por la bandera, 05/11/2026. Quien no está en el padrón se separa por bandera (`rankings._grafia()`), y una fila sin bandera no se junta con la que la tiene. «Ragna» y «Ragna 🇨🇱» son uno: Dlx, 15/10/2026, «el ragna de chile es de FRZ», y las dos filas son de FRZ (#474 y #533). «LOLOELGAUCHO» y «LOLOELGAUCHO 🇦🇷»: el mismo nombre, en FFA, con un día de diferencia (#375 y #379), y nunca jugaron el mismo evento. El alias va hacia la forma con bandera: así las dos dan el mismo texto, en cualquier orden.",
   "⚡ Las variantes que llegaron con Cypherhood, 05/11/2026: «Lizenim 🇦🇷» (#572) es Lizeninn, con su bandera, y «El Colesito 🇨🇴» (#570) es Colesito, con la suya. NO se unieron: «Gutty» (#569), porque hay dos cuentas Guty, 🇨🇱 y 🇨🇴, y «Korier 🇲🇽», porque la #571 trae también a «Kourier 🇲🇽» en otra batalla.",
   "05/11/2026, Cypherhood: «akvmolt» es Molt: es el nombre visible de la cuenta 1355612971144839439, que es la de Molt en el padrón. «Jazi ecuador» y «JAZII» son la cuenta JaZi (eljazipo): el mismo lugar de la llave de COMPE ATERRADORA, de octavos a cuartos, con la misma bandera.",
-  "🔑 Lizeninn es Mito, 🇦🇷: Dlx, 05/11/2026, a «¿Lizeninn y Mito son la misma persona?»: «Sí, únelos». La cuenta @lizeninn. (1493416945037611140), que es la de la fila Mito de la Lista, se anotó «Lizen» 16 veces, «Lizeninn» 12 y también «Mito», «Mitosis» y «Aarón El arte de la Mitosis», y las dos filas nunca jugaron el mismo evento. Queda con el nombre de la Lista: si prefiere otro, se cambia ahí (`lista_raperos.py --renombrar`)."
+  "🔑 Lizeninn es Mito, 🇦🇷: Dlx, 05/11/2026, a «¿Lizeninn y Mito son la misma persona?»: «Sí, únelos». La cuenta @lizeninn. (1493416945037611140), que es la de la fila Mito de la Lista, se anotó «Lizen» 16 veces, «Lizeninn» 12 y también «Mito», «Mitosis» y «Aarón El arte de la Mitosis», y las dos filas nunca jugaron el mismo evento. Queda con el nombre de la Lista: si prefiere otro, se cambia ahí (`lista_raperos.py --renombrar`).",
+  "09/11/2026: «tomyhilfiger», «tomyhilfiger1312» y «tomyhilfiger🇾🇹» son crakero (la fila de la Lista con la cuenta 1374555884868337738, crakero_crew_1312): esa cuenta se anotó «tomyhilfiger🇾🇹» el 19/10 y el 22/10 y «tomyhilfiger1312🇾🇹» el 03/11 y el 09/11 en FFA, y lo reportó ella misma desde la página (reporte #14: «pork no me toma que soy tomyhilfiger1312»). El 05/11 se habían unido a «tomyhilfiger🇾🇹», una fila sin cuenta."
  ],
  "cuentas": {
   "Monet": [
@@ -406,7 +407,7 @@
   ],
   [
    "tomyhilfiger1312",
-   "tomyhilfiger🇾🇹"
+   "crakero"
   ],
   [
    "Silence",
@@ -422,7 +423,7 @@
   ],
   [
    "tomyhilfiger",
-   "tomyhilfiger🇾🇹"
+   "crakero"
   ],
   [
    "Lizenim",
@@ -435,6 +436,10 @@
   [
    "Lizeninn",
    "Mito"
+  ],
+  [
+   "tomyhilfiger🇾🇹",
+   "crakero"
   ]
  ],
  "no_confundir": [
