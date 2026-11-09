@@ -859,6 +859,28 @@
    "b": "PEPE MUJICA",
    "ganador": "PEPE MUJICA",
    "votos": "1–0"
+  },
+  "1569202370041348247": {
+   "id": "1569202370041348247",
+   "sv": "[FFA] Freestyle For All 👾",
+   "g": "1468472442925092958",
+   "canal": "1487206164864438513",
+   "pub": 1794197399388,
+   "a": "MCO",
+   "b": "OKAM",
+   "ganador": "MCO",
+   "votos": "1–0"
+  },
+  "1569204630305378554": {
+   "id": "1569204630305378554",
+   "sv": "[FFA] Freestyle For All 👾",
+   "g": "1468472442925092958",
+   "canal": "1487206164864438513",
+   "pub": 1794197938277,
+   "a": "ERIAN",
+   "b": "PRAISERIZAS",
+   "ganador": "PRAISERIZAS",
+   "votos": "1–0"
   }
  },
  "llaves": {
@@ -5365,6 +5387,37 @@
       "MAKMA 🇻🇪"
      ],
      "JJ 🇨🇴",
+     "veredicto",
+     []
+    ]
+   ]
+  },
+  "1569202337854005310": {
+   "id": "1569202337854005310",
+   "sv": "[FFA] Freestyle For All 👾",
+   "g": "1468472442925092958",
+   "canal": "1487206164864438513",
+   "pub": 1794197391714,
+   "ed": 1794197985347,
+   "texto": "`[ OCTAVOS ]`\n⌞MCO⌝ 🆚 ⌞OKAM⌝\n⌞ERIAN⌝ 🆚 ⌞PRAISERIZAS⌝",
+   "batallas": [
+    [
+     "OCTAVOS",
+     [
+      "MCO",
+      "OKAM"
+     ],
+     "MCO",
+     "veredicto",
+     []
+    ],
+    [
+     "OCTAVOS",
+     [
+      "ERIAN",
+      "PRAISERIZAS"
+     ],
+     "PRAISERIZAS",
      "veredicto",
      []
     ]

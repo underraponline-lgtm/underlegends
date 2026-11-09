@@ -1,5 +1,5 @@
 {
- "cuando": "2026-11-09T03:55:16+00:00",
+ "cuando": "2026-11-09T04:25:18+00:00",
  "anuncios": [
   {
    "nombre": "¡SE LLEGÓ LA GRAN NOCHE!",
@@ -6055,31 +6055,6 @@
    "inscripciones_cuando": "2026-11-08T20:06:51"
   },
   {
-   "nombre": "TORNEOS",
-   "servidor": "LKR",
-   "canal": "anuncios",
-   "msg_id": "1568111536562503742",
-   "cuando": "2026-11-06T03:55:24",
-   "canal_id": "1558611505040064604",
-   "guild_id": "1558611504046153750",
-   "organizador": "",
-   "orgs": [],
-   "autor_h": "c8d55d8b39f1b761",
-   "cupos_texto": "",
-   "inscriptos": null,
-   "cupo_total": null,
-   "rango": "",
-   "modalidad": "",
-   "horario": "2:20:16",
-   "fecha": "",
-   "premios": "",
-   "staff": {},
-   "autor": "Caliz",
-   "staff_cuentas": {},
-   "de_imagen": true,
-   "categoria_id": "1558611505040064602"
-  },
-  {
    "nombre": "COMPE ATERRADORA",
    "servidor": "CH",
    "canal": "📢—anuncios",
@@ -6847,6 +6822,15 @@
   }
  ],
  "inscripciones": [
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "Lrs🇦🇷",
+   "quien": "lrs0378",
+   "discord_id": "1385452830684614697",
+   "msg_id": "1569202775513112667",
+   "cuando": "2026-11-09T04:11:36"
+  },
   {
    "servidor": "FFA",
    "canal": "✦📝—inscripciones",
@@ -42837,15 +42821,6 @@
    "discord_id": "494965289042182164",
    "msg_id": "1557090615597203477",
    "cuando": "2026-10-06T18:02:12"
-  },
-  {
-   "servidor": "FFA",
-   "canal": "✦📝—inscripciones",
-   "texto": "Panchok 🇨🇱",
-   "quien": "panchok0103",
-   "discord_id": "1400508144920170577",
-   "msg_id": "1557090397258383391",
-   "cuando": "2026-10-06T18:01:20"
   }
  ]
 }
