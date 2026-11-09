@@ -1,51 +1,51 @@
 {
  "v": 1,
- "cuando": "2026-11-09T07:45:41Z",
+ "cuando": "2026-11-09T08:16:26Z",
  "trabajo": "dibujar",
  "codigo": 0,
- "dur_s": 863.0,
+ "dur_s": 820.2,
  "pasos": [
   {
    "n": "2f",
    "que": "las fotos que faltan, de Discord a R2",
    "ok": true,
-   "s": 7.1
+   "s": 6.8
   },
   {
    "n": "2f2",
    "que": "los TAGs elegidos",
    "ok": true,
-   "s": 0.8
+   "s": 0.9
   },
   {
    "n": "3",
    "que": "qué cambió",
    "ok": true,
-   "s": 11.9
+   "s": 12.4
   },
   {
    "n": "4",
    "que": "las caras, desde R2",
    "ok": true,
-   "s": 21.4
+   "s": 21.0
   },
   {
    "n": "5",
    "que": "tanda 1 de 2 · 40 persona(s)",
    "ok": false,
-   "s": 760.6
+   "s": 715.6
   },
   {
    "n": "5b",
    "que": "las Bloqueadas",
    "ok": true,
-   "s": 5.5
+   "s": 5.3
   },
   {
    "n": "6",
    "que": "refrescar KV",
    "ok": true,
-   "s": 54.3
+   "s": 57.2
   }
  ],
  "fallas": [
@@ -55,7 +55,7 @@
   },
   {
    "paso": "5",
-   "que": "03_Servidor/generar.py Miniboy"
+   "que": "03_Servidor/generar.py Masino"
   }
  ],
  "ultimo_evento": {
@@ -66,25 +66,25 @@
  },
  "cuotas": {
   "kv": {
-   "write": 212,
-   "read": 29606
+   "write": 221,
+   "read": 31244
   },
   "objeto": {
-   "leidas": 3330188,
-   "escritas": 8215,
-   "pedidos": 4770
+   "leidas": 3555211,
+   "escritas": 8442,
+   "pedidos": 5040
   },
   "worker": {
-   "pedidos": 8435,
+   "pedidos": 8518,
    "errores": 0,
-   "sub": 11048,
+   "sub": 11134,
    "cortados": 0,
-   "p50_ms": 1.13,
-   "p99_ms": 13.03,
+   "p50_ms": 1.14,
+   "p99_ms": 13.0,
    "cpu": {
-    "total": 19437,
-    "objeto_10": 1939,
-    "worker_10": 196
+    "total": 19615,
+    "objeto_10": 1929,
+    "worker_10": 199
    }
   },
   "r2": {
