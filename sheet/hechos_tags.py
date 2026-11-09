@@ -468,7 +468,42 @@ def _triples(L, alias=None):
     return out
 
 
-def nacionales(filas_c, filas_t=None, D=None):
+#: 🏔️ el mejor puesto que cada uno tuvo en su país en la temporada: lo que muestra `top` (Dlx, 09/11/2026)
+MEJOR_PUESTO = os.path.join(RAIZ, 'datos', 'mejor_pos_pais.json')
+#: 🏔️ un puesto entra al «mejor» sólo si su país tenía al menos esta gente ese día. Medido el 09/11/2026 sobre 155 fotos del
+#: pool desde el 22/09: sin piso, el TOP de 94 de 223 cartas decía #1 (hoy 25), porque al arrancar la temporada había tres por
+#: país y casi todos fueron #1 alguna vez; con 10, 83; con 15, 74; con 20, 39. Un #1 entre tres no es un #1 de Argentina
+MIN_TABLA = 20
+
+
+def mejores_puestos(puesto, guardar=False, ruta=None, tam=None):
+    """🏔️ `{clave: mejor puesto en su país en la temporada}`: lo guardado, con lo de hoy encima. Con `guardar`, lo escribe.
+
+    Dlx, 09/11/2026, a «¿el puesto de hoy del rival o el que tenía cuando le ganaste?»: *«mejor ahí muestra su mejor
+    posición en su país»*. El de hoy cambiaba cuando jugaba otro; el mejor sólo puede mejorar. Va por temporada
+    (`comun/temporada.ACTUAL`): en la T2 arranca de cero, como los puestos."""
+    from comun.temporada import ACTUAL
+    ruta = ruta or MEJOR_PUESTO
+    try:
+        with io.open(ruta, encoding='utf-8') as f:
+            todo = json.load(f) or {}
+    except (OSError, ValueError):
+        todo = {}
+    hay = dict(todo.get(ACTUAL) or {})
+    for k, p in (puesto or {}).items():
+        if p and (tam is None or (tam.get(k) or 0) >= MIN_TABLA) and (k not in hay or p < hay[k]):
+            hay[k] = p
+    if guardar:
+        todo['_leeme'] = ('El mejor puesto que cada uno tuvo en su país, por temporada: el número de TOP en la carta de País. '
+                          'Lo escribe sheet/construir_pool_competitivo.py en cada corrida (hechos_tags.mejores_puestos()).')
+        todo[ACTUAL] = dict(sorted(hay.items()))
+        with io.open(ruta, 'w', encoding='utf-8', newline='\n') as f:
+            json.dump(todo, f, ensure_ascii=False, indent=1)
+            f.write('\n')
+    return hay
+
+
+def nacionales(filas_c, filas_t=None, D=None, memoria=False):
     """🌎 `{clave: {evn, evi, com, top}}`: cuatro de las seis stats de la carta de País (Dlx, 04/11/2026).
 
     `evn` · `evi`  eventos en los que te cruzaste con alguien de tu país · de otro, en un duelo o en un triple. Antes EVN
@@ -482,9 +517,10 @@ def nacionales(filas_c, filas_t=None, D=None):
     #1 de Argentina, y ese número ya mide las dos cosas. Sólo entra quien tiene puesto en su país (3 personas o más, la regla de
     los puestos).
 
-    ⚠️ `top` ES EL PUESTO DE HOY, ASÍ QUE SE MUEVE CUANDO JUEGA OTRO, y es la excepción a «lo que se mueve con lo que hacen otros
-    va como sí/no» del encabezado: lo que se guarda es sólo lo que se ve, y sólo cambia para quien tiene esa carta (67 hoy,
-    contra medio pool).
+    🏔️ `top` ES EL MEJOR PUESTO QUE ESE RIVAL TUVO EN SU PAÍS EN LA TEMPORADA (Dlx, 09/11/2026: *«mejor ahí muestra su
+    mejor posición en su país»*), no el de hoy: ver `mejores_puestos()`. A quién se elige no cambia (el de OVR Nacional más
+    alto). Con `memoria`, lo de hoy se guarda en `datos/mejor_pos_pais.json`; sin ella (el self-check), se lee y no se toca.
+    Sigue siendo la excepción a «lo que se mueve con lo que hacen otros va como sí/no»: ahora sólo puede mejorar.
 
     ⚠️ VA EN `nac` Y NO EN `tg_p`, y con los ceros adentro: `tg_p` borra los ceros, y acá «no venciste a nadie» es un dato. Una
     fila sin `nac` es una fila de la que no se sabe (la carta dibuja «—»)."""
@@ -493,13 +529,15 @@ def nacionales(filas_c, filas_t=None, D=None):
     cc = _cc_de(filas_c, filas_t)
     from comun.nacional import tabla
     ovr = tabla(filas_c, None)
-    fuerza, puesto = {}, {}
+    fuerza, puesto, tam = {}, {}, {}
     for c in filas_c:
         k = K(c.get('raw'))
         fuerza[k] = ovr.get(c.get('raw'))
         p = str(c.get('pos_pais') or '')
         if '/' in p:
             puesto[k] = int(p.split('/')[0])
+            tam[k] = int(p.split('/')[1] or 0) if p.split('/')[1].isdigit() else 0
+    pico = mejores_puestos(puesto, guardar=memoria, tam=tam) if memoria is not None else {}
     alias = (_j('akas.json', {}) or {}).get('alias') or {}
     alias = {K(a): v for a, v in alias.items()}
     # {clave: (eventos con tu país, eventos con otros, a quién venciste)}
@@ -528,7 +566,7 @@ def nacionales(filas_c, filas_t=None, D=None):
         mejor = max(fuera, key=lambda b: (fuerza[b], -puesto[b], b)) if fuera else None
         fila = {'evn': len(ev_n[k]), 'evi': len(ev_i[k]), 'com': sum(1 for b in venc[k] if yo and cc.get(b) == yo)}
         if mejor:
-            fila['top'] = [puesto[mejor], cc[mejor]]
+            fila['top'] = [min(puesto[mejor], pico.get(mejor) or puesto[mejor]), cc[mejor]]
         out[k] = fila
     return out
 
@@ -744,7 +782,7 @@ def _self_check():
           [51, 't3', 'Tres', 'Solo', 'Tres', 'prueba'], [51, 't4', 'Uno', 'Dos', 'Uno', 'prueba'],
           [52, 't5', 'Tres', 'Mudo', 'Mudo', 'prueba']]
     Ln = {'60': {'rondas': [{'b': [[['Dos', 'Tres', 'Uno'], 'Dos']]}]}}
-    n = nacionales(Cn, [], {'rivales': Rn, 'llaves': Ln})
+    n = nacionales(Cn, [], {'rivales': Rn, 'llaves': Ln}, memoria=None)
     ok(n['tres']['top'] == [1, 'ar'], 'el mejor rival vencido es el #1 de Argentina y no el #1 de un país chico, ni el que no tiene puesto')
     ok(n['dos']['top'] == [30, 'co'] and n['uno'].get('top') is None,
        'un triple ganado también vence: Dos al #30 de Colombia; Uno sólo le ganó a su compatriota')
@@ -753,6 +791,14 @@ def _self_check():
     ok(n['uno']['evn'] == 2 and n['uno']['evi'] == 2, 'Uno: su país en el #51 y en el triple; afuera en el #50 y en el triple')
     ok(n['tres']['evn'] == 1 and n['tres']['evi'] == 3, 'Tres: su país en el #52; afuera en los #50 y #51 y en el triple')
     ok(n['mudo'] == {'evn': 1, 'evi': 0, 'com': 1}, 'quien no venció a nadie de afuera no lleva `top`, y los ceros se quedan')
+    import tempfile
+    _tmp = os.path.join(tempfile.mkdtemp(), 'mejor.json')
+    from comun.temporada import ACTUAL as _ACT
+    with io.open(_tmp, 'w', encoding='utf-8') as _f:
+        json.dump({_ACT: {'mudo': 4}}, _f)
+    _pico = mejores_puestos({'mudo': 31, 'uno': 2, 'chico': 1}, guardar=True, ruta=_tmp, tam={'mudo': 40, 'uno': 25, 'chico': 3})
+    ok(_pico == {'mudo': 4, 'uno': 2} and json.load(io.open(_tmp, encoding='utf-8'))[_ACT]['mudo'] == 4,
+       'el mejor puesto sólo mejora: Mudo fue #4 y hoy es #31, se queda el 4; Uno entra con el de hoy; el #1 de 3 no entra')
     ps = {'Ana': {'FFA': {'ev': 3}, 'SR': {'ev': 1}}, 'Beto': {'FFA': {'ev': 2}}, 'Eva': {'FFA': {'ev': 2}},
           'Dan': {'FFA': {'ev': 1}}}
     s = servidor(ps, C, D, hoy='2026-10-14')

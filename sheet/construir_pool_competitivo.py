@@ -267,7 +267,7 @@ def hechos_tags(pool, D=None, temp=None):
                 temp = json.load(f)
         hc, hp = _HT.competitivo(pool, D), _HT.pais(pool, temp, D)
         # 🌎 las stats de la carta de País (Dlx, 04/11/2026), que salen de lo mismo y hacen falta los puestos de arriba
-        nac = _HT.nacionales(pool, temp, D)
+        nac = _HT.nacionales(pool, temp, D, memoria=True)
     except Exception as e:                               # noqa: BLE001
         print('   ⚠️ no pude calcular los hechos de los TAG (%s): salen con los de la fila' % str(e)[:80])
         return 0

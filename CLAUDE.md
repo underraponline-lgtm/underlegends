@@ -1917,8 +1917,12 @@ otro país que venciste, con su puesto en su país y su bandera.
 al top #1 de Argentina, siendo el top #30 de Colombia… si países vencidos,
 eventualmente todos van a llegar a lo mismo»*. «El mejor» es el de OVR Nacional más
 alto, no el de puesto más bajo: el #1 de un país de 8 no vale lo que el #1 de
-Argentina. Es el puesto de hoy, así que se mueve cuando juega otro, y eso
-redibuja sólo a quien tiene la carta.
+Argentina. **Y el número es el MEJOR puesto que ese rival tuvo en su país en la
+temporada** (Dlx, 09/11/2026: *«mejor ahí muestra su mejor posición en su país»*),
+guardado en `datos/mejor_pos_pais.json`: sólo puede mejorar, y redibuja sólo a
+quien tiene la carta. ⚠️ **Sólo cuenta si su país tenía 20 o más ese día**
+(`MIN_TABLA`): sin piso, 94 de 223 cartas decían #1, porque al arrancar había
+tres por país y casi todos fueron #1 alguna vez.
 
 ⚠️ **Los duelos estuvieron en dos chips a la derecha y volvieron al bloque.**
 La idea funcionaba —los chips son el lenguaje de la Competitiva— pero costaba

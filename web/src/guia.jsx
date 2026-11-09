@@ -55,7 +55,7 @@ export const PALABRAS = [
   ['Duelo', 'Una batalla uno contra uno. Los triples, los de cuatro y los de equipos no cuentan: ahí no hay un solo rival.'],
   ['OVR de liga', 'El número de tu tarjeta de liga, de 40 a 99. La mitad mide cómo vas contra el líder y la otra mitad cómo te va por batalla: tus puntos (ganar directo da más que ganar en réplica), tu PTB y a quién le ganaste. Ser MVP de una jornada y la racha suman, y con pocas batallas no se llega arriba.'],
   ['OVR Nacional', 'El número de tu tarjeta de País, de 40 a 99. Sale de tu Score y del de los cinco mejores de tu país, y con pocos eventos baja por la confianza, la misma del Competitivo.'],
-  ['Stats de la tarjeta de País', 'EVN y EVI: eventos en los que te cruzaste con alguien de tu país y con alguien de otro. COM: compatriotas a los que venciste. TOP: el mejor rival de otro país que venciste, con su puesto en su país y su bandera. DNA y DIN: duelos ganados sobre jugados contra tu país y contra otros.'],
+  ['Stats de la tarjeta de País', 'EVN y EVI: eventos en los que te cruzaste con alguien de tu país y con alguien de otro. COM: compatriotas a los que venciste. TOP: el mejor rival de otro país que venciste, con el mejor puesto que tuvo en su país esta temporada y su bandera. DNA y DIN: duelos ganados sobre jugados contra tu país y contra otros.'],
   ['Cruce nacional', 'Cruzarte con alguien de tu mismo país en una llave: en un 1 contra 1 o en un triple (cada rival del triple es un cruce). Con alguien de otro país es internacional. La tarjeta de País pide de los dos; un triple no cuenta como duelo para el Ranking Duelos ni el Win%.'],
   ['Win%', 'Duelos ganados sobre duelos jugados.'],
   ['Podio', 'Terminar primero, segundo o tercero en un evento.'],
