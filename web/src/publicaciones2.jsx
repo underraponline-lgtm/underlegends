@@ -38,7 +38,17 @@ const JUNTOS = { tarjeta: 1, rango: 1, anuncio: 1, crewtier: 1 };
 // 📦 lo que va en caja con su sombra: lo que es noticia (un campeón, el Most Wanted, un MES AWARD). Lo demás, en renglón
 // (la revisión del remake: «si todo es una caja, nada se ve primero»)
 const fuerte = (it) => it.tipo === 'campeon' || it.tipo === 'mesaward' || it.tipo === 'caza' || it.tipo === 'sobrevivio'
-  || it.tipo === 'precio' || it.tipo === 'elegido' || (it.tipo === 'ligahito' && it.que === 'campeon');
+  || it.tipo === 'precio' || it.tipo === 'elegido' || it.tipo === 'resnoche' || (it.tipo === 'ligahito' && it.que === 'campeon');
+
+// 🌙 un nombre del resumen de la noche, con link a su perfil si está en la temporada (las claves van en cada renglón,
+// no en `ks`: ver `muro.noches()`)
+function Nombre({ liga, x }) {
+  const n = limpio(x && x.n);
+  return x && x.k && liga.T[x.k] ? <a href={'#/r/' + encodeURIComponent(x.k)}>{n}</a> : <b>{n}</b>;
+}
+const y = (xs) => xs.reduce((acc, x, i) => (i ? acc.concat([i === xs.length - 1 ? ' y ' : ', ', x]) : [x]), []);
+//: cuántos campeones se nombran en el resumen antes de «y N más»
+const NOCHE_CAMPEONES = 4;
 
 // 👏 el mismo Felicitar de siempre (las funciones son de social.js: `felicitar`, `errorAplauso`); `chico` para las listas
 function Felicitar({ liga, it, A, chico }) {
@@ -206,6 +216,22 @@ function contenido(liga, it) {
     const tx = String(it.tx || '').replace(/<t:(\d{9,11})(?::[tTdDfFR])?>/g, (m, s) => liga.dia(new Date(Number(s) * 1000).toISOString()));
     c.det = tx ? limpio(tx).slice(0, 220) + (tx.length > 220 ? '…' : '') : '';
     c.acc = it.link ? <a className="pb-a" href={it.link} target="_blank" rel="noopener noreferrer">Ver en Discord ↗</a> : null;
+  } else if (it.tipo === 'resnoche') {
+    // 🌙 el resumen de la noche (Dlx, 07/10 y 09/11/2026): los campeones, los que más sumaron, quién subió y las sorpresas
+    const [, m, d] = String(it.dia || '').split('-');
+    c.cat = 'Resumen de la noche' + (d ? ' · ' + d + '/' + m : '');
+    c.vis = <img className="pb-logo" alt="" src="/ul.png" />;
+    const cs = (it.campeones || []).slice(0, NOCHE_CAMPEONES).map((e, i) => (
+      <Fragment key={i}>{y((e.quien || []).map(([n, k], j) => <Nombre key={j} liga={liga} x={{ n, k }} />))} ganó <b>{limpio(e.ev)}</b></Fragment>));
+    const mas = (it.campeones || []).length - cs.length;
+    c.txt = <>{it.eventos} {it.eventos === 1 ? 'evento' : 'eventos'} y {num(it.part)} {it.part === 1 ? 'participación' : 'participaciones'}.{' '}
+      {cs.reduce((acc, x, i) => (i ? acc.concat(['; ', x]) : [x]), [])}{mas > 0 ? <>, y {mas} más</> : null}{cs.length ? '.' : ''}</>;
+    const partes = [];
+    if ((it.suman || []).length) partes.push(<Fragment key="s">Más puntos: {y(it.suman.map((x, i) => <Fragment key={i}><Nombre liga={liga} x={x} /> +{num(x.pts)}</Fragment>))}</Fragment>);
+    if ((it.suben || []).length) partes.push(<Fragment key="u">Subieron: {y(it.suben.map((x, i) => <Fragment key={i}><Nombre liga={liga} x={x} /> #{x.de} → #{x.a}</Fragment>))}</Fragment>);
+    if ((it.sorpresas || []).length) partes.push(<Fragment key="p">Sorpresa: {y(it.sorpresas.map((x, i) => <Fragment key={i}><Nombre liga={liga} x={x} />{x.que === 'debut' ? ' ganó en su primer evento' : ' ganó su primer título' + (x.desde ? ' (venía #' + x.desde + ')' : '')}</Fragment>))}</Fragment>);
+    c.det = partes.length ? partes.reduce((acc, x, i) => (i ? acc.concat([' · ', x]) : [x]), []) : '';
+    c.acc = <a className="pb-a" href="#/eventos">Ver los eventos</a>;
   } else if (it.tipo === 'anuncio') {
     c.cat = 'Evento · ' + siglaDe(it.sv);
     c.vis = <img className="pb-logo" alt="" src={liga.logo(it.sv)} />;

@@ -209,6 +209,144 @@ def premios(mult):
     return out
 
 
+# ── 🌙 el resumen de cada noche ──────────────────────────────────────────
+# Dlx lo aprobó el 07/10/2026 —un solo mensaje al cierre de la noche con los campeones, quién subió de puesto y las
+# sorpresas— y nunca se hizo; el 09/11, a «¿dónde va?»: *«publicaciones y en un canal de DRA que ahí te diré»*. Esto
+# es lo de Publicaciones; el canal, cuando lo diga.
+#
+# LA NOCHE de D va de las 12 PM de D a las 3 AM de D+1 (ET), que es cuando para el ciclo (ver `madrugada-sin-ciclo`).
+# ⚠️ LO QUE DEPENDE DE UN «ANTES» SE GUARDA: el puesto de cada uno al empezar la noche (`noche_antes` en
+# `datos/muro.json`, la primera corrida después de las 12 PM) y el resumen de cada noche (`noches`), que se rehace en
+# cada corrida hasta las 12 PM del día siguiente —una llave que entra tarde también cuenta— y después queda.
+# ⚠️ EL TIPO ES `resnoche` Y NO `noche`: el tipo es también la clase de la publicación, y `.noche` es el tema oscuro
+# de la página (estilo.css): la caja salía negra con letra negra. ⚠️ NO VA EN `DE_ALGUIEN`: no lleva `ks` (las claves van adentro de cada renglón), así el objeto no lo lee como «ganó
+# alguien que sigues» y no manda un segundo aviso por cada campeón.
+NOCHE_EMPIEZA_H, NOCHE_TERMINA_H = 12, 3
+#: cuántas noches se guardan, y desde cuántos puestos se cuenta una subida
+NOCHES_GUARDA, SUBE_MIN = 14, 5
+#: cuántos van en cada renglón del resumen
+NOCHE_TOPE = 3
+
+
+def _et():
+    import zoneinfo
+    return zoneinfo.ZoneInfo('America/New_York')
+
+
+def noche_activa(ahora):
+    """La fecha (ET) de la noche que se está armando: hoy desde las 12 PM, si no la de ayer."""
+    et = ahora.astimezone(_et())
+    return et.date() if et.hour >= NOCHE_EMPIEZA_H else et.date() - dt.timedelta(days=1)
+
+
+def ventana_noche(d):
+    """`(desde, hasta)` en UTC de la noche del día `d`: de las 12 PM de `d` a las 3 AM del día siguiente (ET)."""
+    tz = _et()
+    desde = dt.datetime(d.year, d.month, d.day, NOCHE_EMPIEZA_H, tzinfo=tz)
+    m = d + dt.timedelta(days=1)
+    hasta = dt.datetime(m.year, m.month, m.day, NOCHE_TERMINA_H, tzinfo=tz)
+    return desde.astimezone(dt.timezone.utc), hasta.astimezone(dt.timezone.utc)
+
+
+def puestos(pool):
+    """`{nombre normalizado: puesto en el Ranking Temporada}` del pool (`datos/temporada_pool.json`)."""
+    out = {}
+    for r in pool or []:
+        if isinstance(r, dict) and r.get('pos'):
+            for n in (r.get('raw'), r.get('full')):
+                if _norm(n):
+                    out.setdefault(_norm(n), int(r['pos']))
+    return out
+
+
+def resumen_noche(d, llaves, instantes, antes, ahora_pos, tabla):
+    """🌙 El resumen de la noche `d`, o `None` si esa noche no hubo eventos. Pura.
+
+    `antes` y `ahora_pos` son `{nombre normalizado: puesto}` al empezar la noche y ahora; `tabla`, la del lobby (para la
+    clave del perfil). Lleva: los campeones de cada evento, los que más sumaron, los que más subieron en el Ranking
+    Temporada (de `SUBE_MIN` puestos para arriba) y las sorpresas: el campeón en su primer evento de la temporada y el
+    que gana su primer título."""
+    desde, hasta = ventana_noche(d)
+    evs, previos = [], []
+    for n, L in (llaves or {}).items():
+        if not str(n).isdigit() or not isinstance(L, dict):
+            continue
+        ms = (instantes or {}).get(int(n))
+        t = dt.datetime.fromtimestamp(ms / 1000, dt.timezone.utc) if ms else None
+        en = desde <= t < hasta if t else L.get('dia') == d.isoformat()
+        if en:
+            evs.append((t or desde, int(n), L))
+        elif (t and t < desde) or (not t and (L.get('dia') or '') < d.isoformat()):
+            previos.append(L)
+    if not evs:
+        return None
+    evs.sort(key=lambda x: (x[0], x[1]))
+    k = lambda nombre: k_de(nombre, tabla) or ''  # noqa: E731
+    jugados, titulos = set(), set()
+    for L in previos:
+        for r in L.get('tabla') or []:
+            if r and _norm(r[0]):
+                jugados.add(_norm(r[0]))
+                if len(r) > 1 and r[1] == 'Campeón':
+                    titulos.add(_norm(r[0]))
+    campeones, suma, sorpresas, vistos = [], {}, [], set()
+    for _t, n, L in evs:
+        camp = [r[0] for r in L.get('tabla') or [] if len(r) > 1 and r[1] == 'Campeón']
+        if camp:
+            campeones.append({'ev': L.get('nombre') or '', 'sv': L.get('sv') or '', 'll': n,
+                              'quien': [[c, k(c)] for c in camp]})
+        for r in L.get('tabla') or []:
+            if len(r) > 2 and isinstance(r[2], (int, float)) and _norm(r[0]):
+                x = suma.setdefault(_norm(r[0]), [r[0], 0, 0])
+                x[1] += r[2]
+                x[2] += 1
+        for c in camp:
+            q = _norm(c)
+            if not q or q in vistos:
+                continue
+            vistos.add(q)
+            if q not in jugados:
+                sorpresas.append({'n': c, 'k': k(c), 'que': 'debut', 'ev': L.get('nombre') or ''})
+            elif q not in titulos:
+                sorpresas.append({'n': c, 'k': k(c), 'que': 'primer', 'ev': L.get('nombre') or '',
+                                  'desde': (antes or {}).get(q)})
+            jugados.add(q)
+            titulos.add(q)
+    suman = sorted(suma.values(), key=lambda x: (-x[1], x[0]))[:NOCHE_TOPE]
+    suben = []
+    for q, pos in (ahora_pos or {}).items():
+        a = (antes or {}).get(q)
+        if a and pos and a - pos >= SUBE_MIN and q in suma:
+            suben.append((a - pos, pos, suma[q][0], a))
+    suben.sort(key=lambda x: (-x[0], x[1]))
+    return {'tipo': 'resnoche', 't': _iso(hasta), 'dia': d.isoformat(), 'eventos': len(evs),
+            'part': sum(int(L.get('participantes') or len(L.get('tabla') or [])) for _t, _n, L in evs),
+            'campeones': campeones,
+            'suman': [{'n': n, 'k': k(n), 'pts': p, 'ev': e} for n, p, e in suman],
+            'suben': [{'n': n, 'k': k(n), 'de': a, 'a': p} for _s, p, n, a in suben[:NOCHE_TOPE]],
+            'sorpresas': sorpresas[:NOCHE_TOPE]}
+
+
+def noches(guardado, ahora, fuentes, tabla):
+    """`(publicaciones, noche_antes, noches)`: el resumen de las últimas noches, con lo que hay que guardar. Si algo
+    falla, nada: nunca frena el muro."""
+    viejas = dict((guardado or {}).get('noches') or {})
+    antes = (guardado or {}).get('noche_antes') or {}
+    try:
+        d = noche_activa(ahora)
+        pos = puestos(fuentes.get('pool'))
+        if antes.get('dia') != d.isoformat() and pos:
+            antes = {'dia': d.isoformat(), 'pos': pos}
+        if antes.get('dia') == d.isoformat():
+            r = resumen_noche(d, fuentes.get('llaves'), fuentes.get('instantes'), antes.get('pos'), pos, tabla)
+            if r:
+                viejas[d.isoformat()] = r
+        viejas = dict(sorted(viejas.items())[-NOCHES_GUARDA:])
+    except Exception as e:                               # noqa: BLE001
+        print('   ⚠️ el muro sin el resumen de la noche (%s)' % str(e)[:80])
+    return list(viejas.values()), antes, viejas
+
+
 def crews_suben(ct, vivas):
     """🏆 Las crews que subieron de tier al cerrar cada semana (`bot/crews_tiers.py`, su `hist`: `[sem, crew, de, a,
     puntos]`). Dlx, 19/10/2026, a «el primer cierre de tiers pasa en silencio»: «me gusta todo». Sólo las que SUBEN: que
@@ -377,6 +515,9 @@ def id_de(x):
     elif tipo == 'sorteo':
         # 🎟️ un sorteo tiene un solo ganador: el id del sorteo alcanza
         partes = [tipo, x.get('sorteo') or '']
+    elif tipo == 'resnoche':
+        # 🌙 una por noche: se rehace hasta el mediodía siguiente y sigue siendo la misma publicación
+        partes = [tipo, x.get('dia') or '']
     elif tipo == 'pase':
         # 🎟️ de quién (su perfil), de qué temporada y qué nivel: llega una sola vez
         partes = [tipo, x.get('temp') or '', str(x.get('nivel') or ''), (x.get('ks') or [''])[0] or '|'.join(x.get('quien') or [])]
@@ -484,7 +625,9 @@ def _fuentes():
             'precios': _j('datos', 'precios.json'), 'mult': _j('datos', 'multiplicadores.json'),
             'anuncios': _j('datos', 'anuncios.json'), 'pase': _j('datos', 'pase_niveles.json'),
             'ligas': _j('datos', 'ligas.json'), 'promos': _j('datos', 'promos.json'),
-            'crews_tiers': _j('datos', 'crews_tiers.json'), 'crews_vivas': _j('datos', 'crews_vivas.json')}
+            'crews_tiers': _j('datos', 'crews_tiers.json'), 'crews_vivas': _j('datos', 'crews_vivas.json'),
+            # 🌙 el puesto de cada uno, para «quién subió» en el resumen de la noche (`noches()`)
+            'pool': _j('datos', 'temporada_pool.json')}
 
 
 def _arranque(ahora):
@@ -612,6 +755,9 @@ def armar(p, guardado=None, ahora=None, fuentes=None, perfiles=None):
     if fuentes is None:
         fuentes = _fuentes()
     todo, estado, anotados = _todo(p, guardado, ahora, fuentes)
+    # 🌙 y el resumen de cada noche, con su «antes» guardado: ver `noches()`
+    ns, n_antes, n_guarda = noches(guardado, ahora, fuentes, p.get('tabla'))
+    todo = todo + ns
     # desde cuándo: lo de los últimos días, y nunca lo de antes del arranque
     desde = ahora - dt.timedelta(days=DIAS)
     a = _arranque(ahora)
@@ -636,7 +782,7 @@ def armar(p, guardado=None, ahora=None, fuentes=None, perfiles=None):
             'items': con_claves([x for i, x in enumerate(con_ids(lista)) if i < VIAJAN or sigue(x)], p.get('tabla'), _tabla_entera(p, perfiles))}
     guardar = {'_leeme': 'El muro de Publicaciones: cómo estaba cada uno (rango y tarjetas) y los cambios '
                          'que se anotaron. Lo escribe bot/muro.py; lo demás del muro se arma en cada corrida.',
-               'estado': estado, 'cambios': anotados}
+               'estado': estado, 'cambios': anotados, 'noche_antes': n_antes, 'noches': n_guarda}
     return muro, guardar
 
 
@@ -773,6 +919,37 @@ def _self_check():
     ok([k_de(n, t2) for n in ('Volk', 'volk', 'VOLK 🇨🇴', 'VOLK', 'lazaro 🇨🇺', 'Nadie')]
        == ['volk', 'volk-co', 'volk-co', '', 'lazaro', ''],
        'el nombre se lleva a la clave como en la página: exacto, sin tildes ni banderas, y la bandera desempata')
+    # 🌙 el resumen de la noche (09/11/2026)
+    nd = dt.date(2026, 11, 8)
+    et = lambda d, h, m=0: int(dt.datetime(2026, 11, d, h, m, tzinfo=_et()).timestamp() * 1000)  # noqa: E731
+    ll = {'10': {'nombre': 'VIEJA', 'sv': 'FFA', 'dia': '2026-11-01', 'tabla': [['Ana', 'Campeón', 7500], ['Bea', 'Subcampeón', 5000]]},
+          '11': {'nombre': 'K.O.M', 'sv': 'FFA', 'dia': '2026-11-08', 'tabla': [['Bea', 'Campeón', 7500], ['Ana', 'Subcampeón', 5000]]},
+          '12': {'nombre': 'LA DE MADRUGADA', 'sv': 'DDF', 'dia': '2026-11-09', 'tabla': [['Eli', 'Campeón', 5000], ['Ana', 'Semifinal', 2000]]},
+          '13': {'nombre': 'LA DEL OTRO DÍA', 'sv': 'SR', 'dia': '2026-11-09', 'tabla': [['Cid', 'Campeón', 5000]]}}
+    ins = {10: et(1, 21), 11: et(8, 21), 12: et(9, 1, 30), 13: et(9, 20)}
+    tb = [{'k': 'ana', 'n': 'Ana'}, {'k': 'bea', 'n': 'Bea'}]
+    r = resumen_noche(nd, ll, ins, {'ana': 9, 'bea': 40, 'eli': 300}, {'ana': 8, 'bea': 20, 'eli': 120}, tb)
+    ok(r and r['eventos'] == 2 and [c['ev'] for c in r['campeones']] == ['K.O.M', 'LA DE MADRUGADA']
+       and r['t'] == '2026-11-09T08:00:00Z' and r['campeones'][0]['quien'] == [['Bea', 'bea']],
+       'la noche del 08/11 va de las 12 PM a las 3 AM del 09 (ET): la de la 1:30 AM entra, la del 09 a la noche no')
+    ok([x['n'] for x in r['suman']] == ['Bea', 'Ana', 'Eli'] and r['suman'][1]['pts'] == 7000 and r['suman'][1]['ev'] == 2,
+       'los que más sumaron esa noche, con cuántos eventos jugaron')
+    ok([(x['n'], x['de'], x['a']) for x in r['suben']] == [('Eli', 300, 120), ('Bea', 40, 20)],
+       'los que más subieron en el Ranking, de 5 puestos para arriba (Ana subió 1: no)')
+    ok([(x['n'], x['que'], x.get('desde')) for x in r['sorpresas']] == [('Bea', 'primer', 40), ('Eli', 'debut', None)],
+       'las sorpresas: el primer título de la temporada (Bea, desde el 40) y el campeón en su primer evento (Eli)')
+    ok(resumen_noche(dt.date(2026, 11, 5), ll, ins, {}, {}, tb) is None, 'una noche sin eventos no tiene resumen')
+    ok(noche_activa(dt.datetime(2026, 11, 9, 16, tzinfo=dt.timezone.utc)) == dt.date(2026, 11, 8)
+       and noche_activa(dt.datetime(2026, 11, 9, 17, 30, tzinfo=dt.timezone.utc)) == dt.date(2026, 11, 9),
+       'hasta las 12 PM ET se sigue armando la noche de ayer; desde ahí, la de hoy')
+    g = {'noche_antes': {'dia': '2026-11-08', 'pos': {'ana': 9, 'bea': 40, 'eli': 300}}}
+    f6 = {'llaves': ll, 'instantes': ins, 'pool': [{'raw': 'Ana', 'pos': 8}, {'raw': 'Bea', 'pos': 20}, {'raw': 'Eli', 'pos': 120}]}
+    its, na, ng = noches(g, dt.datetime(2026, 11, 9, 16, tzinfo=dt.timezone.utc), f6, tb)
+    its2, na2, ng2 = noches({'noche_antes': na, 'noches': ng}, dt.datetime(2026, 11, 9, 18, tzinfo=dt.timezone.utc), f6, tb)
+    ok(len(its) == 1 and na['dia'] == '2026-11-08' and na2['dia'] == '2026-11-09' and na2['pos']['bea'] == 20
+       and '2026-11-08' in ng2 and 'resnoche' not in DE_ALGUIEN and 'ks' not in its[0],
+       'a las 12 PM se guarda cómo empieza la noche nueva y la de ayer queda; no lleva `ks`: no avisa a los seguidores')
+    ok(id_de(dict(r, part=99)) == id_de(r), 'el resumen que se rehace sigue siendo la misma publicación')
     print('\n   %s\n' % ('todo bien' if not mal else '🔴 %d mal' % mal))
     return mal
 
