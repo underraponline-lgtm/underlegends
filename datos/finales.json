@@ -1259,7 +1259,10 @@
     "ronda": "OCTAVOS"
    }
   ],
-  "respondidas": {},
+  "respondidas": {
+   "0": "Santiki 🇦🇷",
+   "1": "nexux"
+  },
   "sin_permiso": false,
   "sv": "FDS"
  },

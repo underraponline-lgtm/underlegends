@@ -881,6 +881,28 @@
    "b": "PRAISERIZAS",
    "ganador": "PRAISERIZAS",
    "votos": "1–0"
+  },
+  "1569206601376604222": {
+   "id": "1569206601376604222",
+   "sv": "[FFA] Freestyle For All 👾",
+   "g": "1468472442925092958",
+   "canal": "1487206164864438513",
+   "pub": 1794198408217,
+   "a": "VERC",
+   "b": "TAM",
+   "ganador": "TAM",
+   "votos": "1–0"
+  },
+  "1569212318792032279": {
+   "id": "1569212318792032279",
+   "sv": "[FFA] Freestyle For All 👾",
+   "g": "1468472442925092958",
+   "canal": "1487206164864438513",
+   "pub": 1794199771355,
+   "a": "CRAKERO",
+   "b": "ARAYA",
+   "ganador": "CRAKERO",
+   "votos": "1–0"
   }
  },
  "llaves": {
@@ -5398,8 +5420,8 @@
    "g": "1468472442925092958",
    "canal": "1487206164864438513",
    "pub": 1794197391714,
-   "ed": 1794197985347,
-   "texto": "`[ OCTAVOS ]`\n⌞MCO⌝ 🆚 ⌞OKAM⌝\n⌞ERIAN⌝ 🆚 ⌞PRAISERIZAS⌝",
+   "ed": 1794199797869,
+   "texto": "`[ OCTAVOS ]`\n⌞MCO⌝ 🆚 ⌞OKAM⌝\n⌞ERIAN⌝ 🆚 ⌞PRAISERIZAS⌝\n⌞VERC⌝ 🆚 ⌞TAM⌝\n⌞SIX⌝ 🆚 ⌞PARK JI SUNG⌝ 🆚 ⌞SURYA+ZA⌝\n⌞CRAKERO⌝ 🆚 ⌞ARAYA⌝",
    "batallas": [
     [
      "OCTAVOS",
@@ -5418,6 +5440,37 @@
       "PRAISERIZAS"
      ],
      "PRAISERIZAS",
+     "veredicto",
+     []
+    ],
+    [
+     "OCTAVOS",
+     [
+      "VERC",
+      "TAM"
+     ],
+     "TAM",
+     "veredicto",
+     []
+    ],
+    [
+     "OCTAVOS",
+     [
+      "SIX",
+      "PARK JI SUNG",
+      "SURYA+ZA"
+     ],
+     "PARK JI SUNG",
+     "veredicto",
+     []
+    ],
+    [
+     "OCTAVOS",
+     [
+      "CRAKERO",
+      "ARAYA"
+     ],
+     "CRAKERO",
      "veredicto",
      []
     ]
