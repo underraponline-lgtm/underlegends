@@ -1,6 +1,12 @@
 {
  "_leeme": "Los eventos que corrigió herramientas/recalcular_t1.py --aplicar, con cuándo: el ciclo no los vuelve a escribir mientras su llave no se edite después (llaves_a_entrada.corregido_por_recalculo). Dlx, 12/10/2026.",
  "eventos": {
+  "353": {
+   "cuando": "2026-11-09T23:22:59+00:00",
+   "fecha": "24/09",
+   "nombre": "ELRAP FECHA 6",
+   "sv": "FFA"
+  },
   "354": {
    "cuando": "2026-10-15T05:00:11+00:00",
    "fecha": "23/09",
@@ -11,6 +17,12 @@
    "cuando": "2026-10-15T05:00:11+00:00",
    "fecha": "23/09",
    "nombre": "__ DESGRACIAS EN TOKYO VOL.12 __",
+   "sv": "FFA"
+  },
+  "356": {
+   "cuando": "2026-11-09T23:22:59+00:00",
+   "fecha": "25/09",
+   "nombre": "__ DESGRACIAS EN TOKYO VOL.13 __",
    "sv": "FFA"
   },
   "357": {
@@ -25,6 +37,18 @@
    "nombre": "__ MARRUECOS EN VENTA V.1 __",
    "sv": "FFA"
   },
+  "370": {
+   "cuando": "2026-11-09T23:22:59+00:00",
+   "fecha": "28/09",
+   "nombre": "__ DESGRACIAS EN TOKYO VOL 16 2VS2 __",
+   "sv": "FFA"
+  },
+  "379": {
+   "cuando": "2026-11-09T23:22:59+00:00",
+   "fecha": "01/10",
+   "nombre": "Dos Generaciones Un Destino Vol 2",
+   "sv": "FFA"
+  },
   "381": {
    "cuando": "2026-10-15T05:00:11+00:00",
    "fecha": "03/10",
@@ -35,6 +59,18 @@
    "cuando": "2026-10-15T05:00:11+00:00",
    "fecha": "02/10",
    "nombre": "KISS OF SHINIGAMI",
+   "sv": "FFA"
+  },
+  "383": {
+   "cuando": "2026-11-09T23:22:59+00:00",
+   "fecha": "03/10",
+   "nombre": "__ DESGRACIAS EN TOKYO VOL 21 1v1 __",
+   "sv": "FFA"
+  },
+  "396": {
+   "cuando": "2026-11-09T23:22:59+00:00",
+   "fecha": "04/10",
+   "nombre": "COPA SOOLAR 2",
    "sv": "FFA"
   },
   "402": {
@@ -54,6 +90,12 @@
    "fecha": "05/10",
    "nombre": "__ DESGRACIAS EN TOKYO VOL 24 __",
    "sv": "FFA"
+  },
+  "408": {
+   "cuando": "2026-11-09T23:22:59+00:00",
+   "fecha": "05/10",
+   "nombre": "GALACTICOS DEL FREESTYLE VOL.7",
+   "sv": "DDF"
   },
   "411": {
    "cuando": "2026-10-15T05:00:11+00:00",
@@ -91,6 +133,12 @@
    "nombre": "__ DESGRACIAS EN BELLAS ARTES VOL1 __",
    "sv": "FFA"
   },
+  "425": {
+   "cuando": "2026-11-09T23:22:59+00:00",
+   "fecha": "07/10",
+   "nombre": "__ PRITTY FREE __",
+   "sv": "FFA"
+  },
   "428": {
    "cuando": "2026-10-15T05:00:11+00:00",
    "fecha": "27/09",
@@ -103,11 +151,35 @@
    "nombre": "__ LA BELLA ARTE DE LA DESGRACIA VOL2 __",
    "sv": "FFA"
   },
+  "433": {
+   "cuando": "2026-11-09T23:22:59+00:00",
+   "fecha": "08/10",
+   "nombre": "PROYECTO X",
+   "sv": "DDF"
+  },
+  "434": {
+   "cuando": "2026-11-09T23:22:59+00:00",
+   "fecha": "08/10",
+   "nombre": "__ PRITTY FREE __",
+   "sv": "FFA"
+  },
+  "435": {
+   "cuando": "2026-11-09T23:22:59+00:00",
+   "fecha": "08/10",
+   "nombre": "__ __ Cuentas Pendientes V.1 __ __",
+   "sv": "FFA"
+  },
   "438": {
    "cuando": "2026-11-06T00:10:39+00:00",
    "fecha": "09/10",
    "nombre": "FAT BATTLES PALOOZA T.3 FECHA 6",
    "sv": "ACAD"
+  },
+  "440": {
+   "cuando": "2026-11-09T23:22:59+00:00",
+   "fecha": "09/10",
+   "nombre": "PROYECTO X VOL.2",
+   "sv": "DDF"
   },
   "450": {
    "cuando": "2026-10-15T05:00:11+00:00",
@@ -115,10 +187,40 @@
    "nombre": "__ MULTIVERSE __",
    "sv": "FFA"
   },
+  "451": {
+   "cuando": "2026-11-09T23:22:59+00:00",
+   "fecha": "11/10",
+   "nombre": "MORTAL KOMBAT MAPACHE CUP",
+   "sv": "DDF"
+  },
   "456": {
    "cuando": "2026-10-12T23:03:45+00:00",
    "fecha": "11/10",
    "nombre": "Fecha Rempalago Vol. 64 compe express por plata",
+   "sv": "FFA"
+  },
+  "462": {
+   "cuando": "2026-11-09T23:22:59+00:00",
+   "fecha": "12/10",
+   "nombre": "COMPE POR 1.5 DOLARES",
+   "sv": "FFA"
+  },
+  "486": {
+   "cuando": "2026-11-09T23:22:59+00:00",
+   "fecha": "18/10",
+   "nombre": "LA MISIÓN DEL MONJE",
+   "sv": "DDF"
+  },
+  "488": {
+   "cuando": "2026-11-09T23:22:59+00:00",
+   "fecha": "19/10",
+   "nombre": "FREESTYLE LEAGUE N3",
+   "sv": "FFA"
+  },
+  "494": {
+   "cuando": "2026-11-09T23:22:59+00:00",
+   "fecha": "21/10",
+   "nombre": "__ DESGRACIAS EN TOKYO VOL 30 1 VS 1 __",
    "sv": "FFA"
   },
   "495": {
@@ -133,10 +235,28 @@
    "nombre": "__ qcyo rapeen 2 __",
    "sv": "FFA"
   },
+  "501": {
+   "cuando": "2026-11-09T23:22:59+00:00",
+   "fecha": "23/10",
+   "nombre": "__ LA ISLA DE OKINAWA V.4 __",
+   "sv": "FFA"
+  },
+  "503": {
+   "cuando": "2026-11-09T23:22:59+00:00",
+   "fecha": "23/10",
+   "nombre": "__ FREESTYLE FOR ALL ESPECIAL 1800 __",
+   "sv": "FFA"
+  },
   "505": {
    "cuando": "2026-11-05T22:13:05+00:00",
    "fecha": "23/10",
    "nombre": "19 CUP FUTCARD EDICIÓN 5",
+   "sv": "DDF"
+  },
+  "514": {
+   "cuando": "2026-11-09T23:22:59+00:00",
+   "fecha": "25/10",
+   "nombre": "IDENTITY V",
    "sv": "DDF"
   },
   "516": {
@@ -150,6 +270,18 @@
    "fecha": "25/10",
    "nombre": "QCYO RAPEEN 3",
    "sv": "FFA"
+  },
+  "531": {
+   "cuando": "2026-11-09T23:22:59+00:00",
+   "fecha": "26/10",
+   "nombre": "DETALLES DEL EVENTO",
+   "sv": "FFA"
+  },
+  "541": {
+   "cuando": "2026-11-09T23:22:59+00:00",
+   "fecha": "28/10",
+   "nombre": "EL CAMINO DEL MONJE V.2",
+   "sv": "DDF"
   },
   "552": {
    "cuando": "2026-11-06T00:10:39+00:00",
@@ -174,6 +306,18 @@
    "fecha": "01/10",
    "nombre": "- FMS CHILE -",
    "sv": "FRZ"
+  },
+  "nuevo:19 CUP VOL 2 EDICION FIFA|DDF|23/09": {
+   "cuando": "2026-11-09T23:22:59+00:00",
+   "fecha": "23/09",
+   "nombre": "19 CUP VOL 2 EDICION FIFA",
+   "sv": "DDF"
+  },
+  "nuevo:FFA DELUXE|FFA|08/10": {
+   "cuando": "2026-11-09T23:22:59+00:00",
+   "fecha": "08/10",
+   "nombre": "FFA DELUXE",
+   "sv": "FFA"
   }
  }
 }

@@ -16,7 +16,7 @@
   "msg": "1552524905868824759"
  },
  "353": {
-  "firma": "ELRAP FECHA 6|24/09|25|7|6|0",
+  "firma": "ELRAP FECHA 6|24/09|25|7|5|0",
   "msg": "1552572590831444072"
  },
  "354": {
@@ -28,7 +28,7 @@
   "msg": "1552649686937243682"
  },
  "356": {
-  "firma": "__ DESGRACIAS EN TOKYO VOL.13 __|25/09|30|0|2|17",
+  "firma": "__ DESGRACIAS EN TOKYO VOL.13 __|25/09|30|0|1|17",
   "msg": "1553175999737237537"
  },
  "357": {
@@ -84,7 +84,7 @@
   "msg": "1554287305886269511"
  },
  "370": {
-  "firma": "__ DESGRACIAS EN TOKYO VOL 16 2VS2 __|28/09|14|0|4|8",
+  "firma": "__ DESGRACIAS EN TOKYO VOL 16 2VS2 __|28/09|14|0|2|8",
   "msg": "1554332621457334373"
  },
  "371": {
@@ -1115,7 +1115,7 @@
    ],
    [
     "Prodigy",
-    "Enkil 🇦🇷",
+    "Enkil",
     "Prodigy"
    ],
    [
@@ -1125,7 +1125,7 @@
    ],
    [
     "PichulaMc",
-    "Velatz, Armando Faso🇦🇫, Neo",
+    "Velatz, BNA, Neo",
     "PichulaMc"
    ],
    [
@@ -1190,7 +1190,7 @@
    "Xclusivo": 4
   },
   "fecha": "07/10",
-  "firma": "7b02006ace96ab58",
+  "firma": "d78127d1d59782e3",
   "msg": "1557564144360890428",
   "nombre": "__ PRITTY FREE __",
   "num": 425,
@@ -1282,7 +1282,7 @@
     1250
    ],
    [
-    "Enkil 🇦🇷",
+    "Enkil",
     "Octavos",
     1250
    ],
@@ -1307,7 +1307,7 @@
     1250
    ],
    [
-    "Armando Faso🇦🇫",
+    "BNA",
     "Octavos",
     416
    ]
@@ -3707,19 +3707,14 @@
     "BLITZ"
    ],
    [
-    "BLITZ",
-    "Tenor",
-    "BLITZ"
-   ],
-   [
-    "DLX",
-    "ANTONIO🇵🇾",
-    "DLX"
-   ],
-   [
-    "DLX",
     "Erian",
-    "DLX"
+    "DLX",
+    "Erian"
+   ],
+   [
+    "Erian",
+    "ANTONIO🇵🇾",
+    "Erian"
    ],
    [
     "Provenza",
@@ -3727,19 +3722,9 @@
     "Provenza"
    ],
    [
-    "Greyfitsh🇵🇦",
+    "Volg",
     "Emily Family",
-    "Greyfitsh🇵🇦"
-   ],
-   [
-    "Makmah",
-    "Teo",
-    "Makmah"
-   ],
-   [
-    "Aldre",
-    "Erian",
-    "Aldre"
+    "Volg"
    ],
    [
     "Makmah",
@@ -3752,44 +3737,24 @@
     "Aldre"
    ],
    [
+    "Aldre",
+    "Erian",
+    "Aldre"
+   ],
+   [
     "Provenza",
     "Makmah",
     "Provenza"
    ],
    [
     "Aldre",
-    "Greyfitsh🇵🇦",
-    "Aldre"
-   ],
-   [
-    "Makmah",
-    "Xubaru",
-    "Makmah"
-   ],
-   [
-    "Colesito",
-    "Makmah",
-    "Colesito"
-   ],
-   [
-    "Aldre",
-    "Colesito",
+    "Volg",
     "Aldre"
    ],
    [
     "Aldre",
     "Provenza",
     "Aldre"
-   ],
-   [
-    "Aldre, Makmah, Rodas",
-    "Provenza, Colesito, Xubaru",
-    "Aldre, Makmah, Rodas"
-   ],
-   [
-    "Greyfitsh🇵🇦",
-    "Xubaru",
-    "Greyfitsh🇵🇦"
    ]
   ],
   "ev_antes": {
@@ -3805,11 +3770,11 @@
    "Xubaru": 3
   },
   "fecha": "08/10",
-  "firma": "8f01d665d2e69838",
+  "firma": "b2fe9134b5bd878a",
   "msg": "1557986840865411073",
   "nombre": "__ __ Cuentas Pendientes V.1 __ __",
   "num": 435,
-  "participantes": 19,
+  "participantes": 14,
   "sello": {
    "Makmah": "3932ef7fc828:17c4f13e63d4"
   },
@@ -3817,49 +3782,49 @@
   "t": "2026-10-09T05:23:27Z",
   "tabla": [
    [
-    "Makmah",
+    "Aldre",
     "Campeón",
-    10250
+    7500
    ],
    [
-    "Greyfitsh🇵🇦",
+    "Provenza",
+    "Subcampeón",
+    5000
+   ],
+   [
+    "Makmah",
     "Semifinal",
-    5250
+    3500
+   ],
+   [
+    "Volg",
+    "Semifinal",
+    3500
    ],
    [
     "BLITZ",
     "Cuartos",
-    2500
+    2000
    ],
    [
     "Emily Family",
     "Cuartos",
-    2500
-   ],
-   [
-    "Teo",
-    "Cuartos",
-    2500
-   ],
-   [
-    "Ram",
-    "Cuartos",
-    2500
-   ],
-   [
-    "Xubaru",
-    "Subcampeón",
-    1875
-   ],
-   [
-    "Erian",
-    "Cuartos",
-    1875
+    2000
    ],
    [
     "Tenor",
     "Cuartos",
-    1875
+    2000
+   ],
+   [
+    "Ram",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Erian",
+    "Cuartos",
+    2000
    ],
    [
     "NC",
@@ -3873,6 +3838,11 @@
    ],
    [
     "Nemi",
+    "R32",
+    625
+   ],
+   [
+    "DLX",
     "R32",
     625
    ],
@@ -9852,6 +9822,61 @@
   "duelos": [
    [
     "rodrilp, Velatz, Snow",
+    "Teo",
+    "rodrilp, Velatz, Snow"
+   ],
+   [
+    "rodrilp, Velatz, Snow",
+    "Betelguese, Guess, Erian",
+    "rodrilp, Velatz, Snow"
+   ],
+   [
+    "Guty",
+    "🏳️‍⚧️ VEPG 🏳️‍⚧️",
+    "Guty"
+   ],
+   [
+    "Guty",
+    "Zaik 🇪🇸",
+    "Guty"
+   ],
+   [
+    "Oasis, AKARK",
+    "Makmah",
+    "Oasis, AKARK"
+   ],
+   [
+    "Number",
+    "Dynoco",
+    "Number"
+   ],
+   [
+    "Number",
+    "Nemi",
+    "Number"
+   ],
+   [
+    "MauzzitoEmeces",
+    "Magic",
+    "MauzzitoEmeces"
+   ],
+   [
+    "MauzzitoEmeces",
+    "Dynoco",
+    "MauzzitoEmeces"
+   ],
+   [
+    "Delux, Erik, Tam",
+    "BNA, NC",
+    "Delux, Erik, Tam"
+   ],
+   [
+    "7, NC",
+    "SINTEXT",
+    "7, NC"
+   ],
+   [
+    "rodrilp, Velatz, Snow",
     "Guty",
     "rodrilp, Velatz, Snow"
    ],
@@ -9910,11 +9935,11 @@
    "rodrilp": 1
   },
   "fecha": "12/10",
-  "firma": "d9f75daa3478d1af",
+  "firma": "341abd2b2038e8f0",
   "msg": "1559399391536611440",
   "nombre": "COMPE POR 1.5 DOLARES",
   "num": 462,
-  "participantes": 15,
+  "participantes": 28,
   "sello": {
    "Abysuss": "",
    "Presagio": "98282e18f3d6:9df1984d05ab",
@@ -9924,84 +9949,144 @@
   "t": "2026-10-13T02:56:26Z",
   "tabla": [
    [
-    "Verc",
-    "Campeón",
-    2500
-   ],
-   [
-    "Presagio",
-    "Campeón",
-    2500
-   ],
-   [
-    "Abysuss",
-    "Campeón",
-    2500
-   ],
-   [
     "Oasis",
     "Subcampeón",
-    2500
+    3750
    ],
    [
     "AKARK",
     "Subcampeón",
-    2500
+    3750
+   ],
+   [
+    "Verc",
+    "Campeón",
+    3333
+   ],
+   [
+    "Presagio",
+    "Campeón",
+    3333
+   ],
+   [
+    "Abysuss",
+    "Campeón",
+    3333
    ],
    [
     "Guty",
     "Cuartos",
-    2000
+    2500
    ],
    [
     "Number",
     "Cuartos",
-    2000
+    2500
    ],
    [
     "MauzzitoEmeces",
     "Cuartos",
-    2000
+    2500
+   ],
+   [
+    "Dynoco",
+    "Octavos",
+    1875
    ],
    [
     "rodrilp",
     "Semifinal",
-    1166
+    1750
    ],
    [
     "Velatz",
     "Semifinal",
-    1166
+    1750
    ],
    [
     "Snow",
     "Semifinal",
-    1166
+    1750
    ],
    [
     "Delux",
     "Semifinal",
-    1166
+    1750
    ],
    [
     "Erik",
     "Semifinal",
-    1166
+    1750
    ],
    [
     "Tam",
     "Semifinal",
-    1166
+    1750
    ],
    [
     "7",
     "Cuartos",
-    1000
+    1250
    ],
    [
     "NC",
     "Cuartos",
-    1000
+    1250
+   ],
+   [
+    "Teo",
+    "Octavos",
+    1250
+   ],
+   [
+    "🏳️‍⚧️ VEPG 🏳️‍⚧️",
+    "Octavos",
+    1250
+   ],
+   [
+    "Zaik 🇪🇸",
+    "Octavos",
+    1250
+   ],
+   [
+    "Makmah",
+    "Octavos",
+    1250
+   ],
+   [
+    "Nemi",
+    "Octavos",
+    1250
+   ],
+   [
+    "Magic",
+    "Octavos",
+    1250
+   ],
+   [
+    "SINTEXT",
+    "Octavos",
+    1250
+   ],
+   [
+    "BNA",
+    "Octavos",
+    625
+   ],
+   [
+    "Betelguese",
+    "Octavos",
+    416
+   ],
+   [
+    "Guess",
+    "Octavos",
+    416
+   ],
+   [
+    "Erian",
+    "Octavos",
+    416
    ]
   ],
   "v": 2
@@ -15885,7 +15970,7 @@
    ],
    [
     "Tenor",
-    "tomyhilfiger🇾🇹",
+    "crakero",
     "Tenor"
    ],
    [
@@ -15936,7 +16021,7 @@
    "Tenor": 5
   },
   "fecha": "19/10",
-  "firma": "195a521b18d90525",
+  "firma": "855cd2aa28ea689a",
   "msg": "1561761975514697891",
   "nombre": "FREESTYLE LEAGUE N3",
   "num": 488,
@@ -15983,7 +16068,7 @@
     625
    ],
    [
-    "tomyhilfiger🇾🇹",
+    "crakero",
     "R32",
     625
    ],
@@ -17815,6 +17900,11 @@
    ],
    [
     "Oasis",
+    "PichulaMc",
+    "Oasis"
+   ],
+   [
+    "Oasis",
     "1200",
     "Oasis"
    ],
@@ -17836,6 +17926,11 @@
    [
     "Agus",
     "Kyss",
+    "Agus"
+   ],
+   [
+    "Agus",
+    "PichulaMc",
     "Agus"
    ],
    [
@@ -17907,7 +18002,7 @@
    "Velatz": 37
   },
   "fecha": "21/10",
-  "firma": "1a370189aa6731d6",
+  "firma": "72d793adbb5dae2a",
   "msg": "1562578019472773131",
   "nombre": "__ DESGRACIAS EN TOKYO VOL 30 1 VS 1 __",
   "num": 494,
@@ -17957,6 +18052,11 @@
     "Colesito",
     "Cuartos",
     2500
+   ],
+   [
+    "PichulaMc",
+    "Octavos",
+    1875
    ],
    [
     "SULTAN",

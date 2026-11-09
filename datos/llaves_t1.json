@@ -921,7 +921,7 @@
   ],
   "n": 353,
   "nombre": "ELRAP FECHA 6",
-  "participantes": 29,
+  "participantes": 27,
   "rondas": [
    {
     "b": [
@@ -938,10 +938,11 @@
      [
       [
        "chianluka",
+       "Presagio",
        "Kravitz"
       ],
-      "chianluka",
-      "triple (3 bandas, pasan 2)"
+      "chianluka, Presagio",
+      "triple (3 bandas, pasan 2); también pasa: geekto 🇦🇷"
      ],
      [
       [
@@ -993,7 +994,7 @@
       [
        "Saito",
        "Bloody",
-       "volk 🇨🇴"
+       "Volk"
       ],
       "Saito",
       "triple (3 bandas)"
@@ -1191,12 +1192,12 @@
     1250
    ],
    [
-    "ZTR",
+    "Volk",
     "Octavos",
     1250
    ],
    [
-    "volk 🇨🇴",
+    "ZTR",
     "Octavos",
     1250
    ]
@@ -1613,10 +1614,10 @@
      ],
      [
       [
-       "ENEK 🇪🇸, Neo",
+       "ENEK, Neo",
        "LAST, Trot"
       ],
-      "ENEK 🇪🇸, Neo",
+      "ENEK, Neo",
       ""
      ],
      [
@@ -1658,10 +1659,10 @@
      ],
      [
       [
-       "Neo, ENEK 🇪🇸",
+       "Neo, ENEK",
        "Eze, Six"
       ],
-      "Neo, ENEK 🇪🇸",
+      "Neo, ENEK",
       ""
      ]
     ],
@@ -1679,10 +1680,10 @@
      ],
      [
       [
-       "Neo, ENEK 🇪🇸",
+       "Neo, ENEK",
        "Makmah, Snow"
       ],
-      "Neo, ENEK 🇪🇸",
+      "Neo, ENEK",
       ""
      ]
     ],
@@ -1692,10 +1693,10 @@
     "b": [
      [
       [
-       "ENEK 🇪🇸, Neo",
+       "ENEK, Neo",
        "Paria, Kravitz"
       ],
-      "ENEK 🇪🇸, Neo",
+      "ENEK, Neo",
       "Equipo: ME TIENE SIN CUIDADO 🇯🇲"
      ]
     ],
@@ -1705,7 +1706,7 @@
   "sv": "FFA",
   "tabla": [
    [
-    "ENEK 🇪🇸",
+    "ENEK",
     "Campeón",
     5000
    ],
@@ -4694,10 +4695,10 @@
      ],
      [
       [
-       "27 🇺🇸, Piyi 🇲🇽",
+       "27 🇺🇸, PIYI 🇲🇽",
        "Soulb, Char"
       ],
-      "27 🇺🇸, Piyi 🇲🇽",
+      "27 🇺🇸, PIYI 🇲🇽",
       ""
      ],
      [
@@ -4711,7 +4712,7 @@
      [
       [
        "Snow, NC",
-       "ELSOLAR 🇨🇴, METORITO 🇲🇽"
+       "Elsoolar, METORITO"
       ],
       "Snow, NC",
       ""
@@ -4723,10 +4724,10 @@
     "b": [
      [
       [
-       "27 🇺🇸, Piyi 🇲🇽",
+       "27 🇺🇸, PIYI 🇲🇽",
        "TEAM VENECIA 🇲🇦 🇻🇪"
       ],
-      "27 🇺🇸, Piyi 🇲🇽",
+      "27 🇺🇸, PIYI 🇲🇽",
       "Sin integrantes: TEAM VENECIA 🇲🇦 🇻🇪"
      ],
      [
@@ -4744,10 +4745,10 @@
     "b": [
      [
       [
-       "27 🇺🇸, Piyi 🇲🇽",
+       "27 🇺🇸, PIYI 🇲🇽",
        "Paria, Oasis"
       ],
-      "27 🇺🇸, Piyi 🇲🇽",
+      "27 🇺🇸, PIYI 🇲🇽",
       ""
      ]
     ],
@@ -4765,7 +4766,7 @@
     5000
    ],
    [
-    "Piyi 🇲🇽",
+    "PIYI 🇲🇽",
     "Campeón",
     5000
    ],
@@ -4795,7 +4796,7 @@
     1250
    ],
    [
-    "ELSOLAR 🇨🇴",
+    "Elsoolar",
     "Cuartos",
     1250
    ],
@@ -4810,7 +4811,7 @@
     1250
    ],
    [
-    "METORITO 🇲🇽",
+    "METORITO",
     "Cuartos",
     1250
    ],
@@ -6541,19 +6542,20 @@
      [
       [
        "Soneto",
+       "ACH",
        "Yor"
       ],
       "Soneto",
-      ""
+      "triple (3 bandas)"
      ],
      [
       [
+       "Abyssus",
        "Six",
-       "Jult",
-       "Abyssus"
+       "Jult"
       ],
-      "Six",
-      "triple (3 bandas)"
+      "Abyssus, Six",
+      "triple (3 bandas, pasan 2); también pasa: six"
      ],
      [
       [
@@ -6576,7 +6578,7 @@
      [
       [
        "Oasis",
-       "LRS",
+       "dxg",
        "tito calderon"
       ],
       "Oasis",
@@ -6599,17 +6601,6 @@
       ],
       "Snow",
       "triple (3 bandas)"
-     ],
-     [
-      [
-       "Abyssus",
-       "Zignos",
-       "Korey",
-       "LOLOELGAUCHO",
-       "Tayo"
-      ],
-      "Abyssus",
-      "triple (5 bandas)"
      ]
     ],
     "r": "Octavos"
@@ -6634,18 +6625,18 @@
      ],
      [
       [
-       "Abyssus",
-       "Cinexfilo"
+       "Snow",
+       "Geoka"
       ],
-      "Abyssus",
+      "Snow",
       ""
      ],
      [
       [
-       "Snow",
-       "Zignos"
+       "Abyssus",
+       "Cinexfilo"
       ],
-      "Snow",
+      "Abyssus",
       ""
      ]
     ],
@@ -6676,6 +6667,19 @@
     "b": [
      [
       [
+       "Abyssus",
+       "Six"
+      ],
+      "Abyssus",
+      "podio: tercer puesto sin batalla en la llave"
+     ]
+    ],
+    "r": "Tercer puesto"
+   },
+   {
+    "b": [
+     [
+      [
        "Oasis",
        "Snow"
       ],
@@ -6699,17 +6703,22 @@
     7500
    ],
    [
-    "Six",
-    "Semifinal",
-    5250
+    "Abyssus",
+    "Tercero",
+    6000
    ],
    [
-    "Abyssus",
-    "Semifinal",
-    3875
+    "Six",
+    "Cuarto",
+    4500
    ],
    [
     "Cinexfilo",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Geoka",
     "Cuartos",
     2500
    ],
@@ -6724,9 +6733,9 @@
     2500
    ],
    [
-    "Zignos",
-    "Cuartos",
-    2500
+    "ACH",
+    "Octavos",
+    1250
    ],
    [
     "AREZ",
@@ -6744,11 +6753,6 @@
     1250
    ],
    [
-    "Geoka",
-    "Octavos",
-    1250
-   ],
-   [
     "Gocho",
     "Octavos",
     1250
@@ -6759,27 +6763,7 @@
     1250
    ],
    [
-    "Korey",
-    "Octavos",
-    1250
-   ],
-   [
-    "LOLOELGAUCHO",
-    "Octavos",
-    1250
-   ],
-   [
-    "LRS",
-    "Octavos",
-    1250
-   ],
-   [
     "Richard",
-    "Octavos",
-    1250
-   ],
-   [
-    "Tayo",
     "Octavos",
     1250
    ],
@@ -6795,6 +6779,16 @@
    ],
    [
     "Yor",
+    "Octavos",
+    1250
+   ],
+   [
+    "Zignos",
+    "Octavos",
+    1250
+   ],
+   [
+    "dxg",
     "Octavos",
     1250
    ],
@@ -7355,7 +7349,7 @@
       [
        "yinn",
        "DEWACHOMEFUI 🇨🇲",
-       "gibraltar 🇦🇨"
+       "GIBRALTAR 🇦🇨"
       ],
       "yinn",
       "triple (3 bandas)"
@@ -7372,7 +7366,7 @@
      [
       [
        "PichulaMc",
-       "BRAGEURITHER🇦🇪",
+       "BRAGEURITHER 🇦🇪",
        "Abyssus"
       ],
       "PichulaMc",
@@ -7555,7 +7549,7 @@
     1250
    ],
    [
-    "BRAGEURITHER🇦🇪",
+    "BRAGEURITHER 🇦🇪",
     "Octavos",
     1250
    ],
@@ -7576,6 +7570,11 @@
    ],
    [
     "EmiZor",
+    "Octavos",
+    1250
+   ],
+   [
+    "GIBRALTAR 🇦🇨",
     "Octavos",
     1250
    ],
@@ -7616,11 +7615,6 @@
    ],
    [
     "Zignos",
-    "Octavos",
-    1250
-   ],
-   [
-    "gibraltar 🇦🇨",
     "Octavos",
     1250
    ]
@@ -9571,7 +9565,7 @@
   ],
   "n": 396,
   "nombre": "COPA SOOLAR 2",
-  "participantes": 23,
+  "participantes": 21,
   "rondas": [
    {
     "b": [
@@ -9607,7 +9601,7 @@
        "Provenza"
       ],
       "LRS",
-      "Revivido: za"
+      "Revivido: ZA"
      ],
      [
       [
@@ -9620,7 +9614,7 @@
      [
       [
        "BTRX",
-       "Ola🇲🇽"
+       "Garxzii"
       ],
       "BTRX",
       ""
@@ -9632,15 +9626,6 @@
       ],
       "CFM",
       ""
-     ],
-     [
-      [
-       "Eclipse🇨🇱",
-       "Tuca 🇦🇷",
-       "onzass"
-      ],
-      "",
-      "sin ganador: espera en ✅ Decidir"
      ]
     ],
     "r": "Octavos"
@@ -9653,7 +9638,7 @@
        "Fisics"
       ],
       "Ariaxer",
-      "Walk-in 1: Fisics 🇵🇪"
+      "Walk-in 1: Fisics"
      ],
      [
       [
@@ -9775,17 +9760,17 @@
     1250
    ],
    [
+    "Garxzii",
+    "Octavos",
+    1250
+   ],
+   [
     "MCNadie",
     "Octavos",
     1250
    ],
    [
     "NC",
-    "Octavos",
-    1250
-   ],
-   [
-    "Ola🇲🇽",
     "Octavos",
     1250
    ],
@@ -12286,10 +12271,10 @@
     "b": [
      [
       [
-       "V-zir🏳️‍⚧️",
+       "V-zir",
        "ARDEAN"
       ],
-      "V-zir🏳️‍⚧️",
+      "V-zir",
       ""
      ],
      [
@@ -12302,10 +12287,10 @@
      ],
      [
       [
-       "Pipas🇵🇪",
+       "CrisZJ",
        "Krtman"
       ],
-      "Pipas🇵🇪",
+      "CrisZJ",
       ""
      ],
      [
@@ -12324,7 +12309,7 @@
      [
       [
        "Carlosss",
-       "V-zir 🇻🇪"
+       "V-zir"
       ],
       "Carlosss",
       ""
@@ -12332,7 +12317,7 @@
      [
       [
        "Xclusivo",
-       "Pipas🇵🇪"
+       "CrisZJ"
       ],
       "Xclusivo",
       ""
@@ -12367,12 +12352,12 @@
     5000
    ],
    [
-    "Pipas🇵🇪",
+    "CrisZJ",
     "Semifinal",
     3500
    ],
    [
-    "V-zir 🇻🇪",
+    "V-zir",
     "Semifinal",
     3500
    ],
@@ -14963,7 +14948,7 @@
        "Prodigy",
        "Nemi, Presagio, Delux",
        "Akutagawa🇹🇼",
-       "Enkil 🇦🇷"
+       "Enkil"
       ],
       "Prodigy, Nemi, Presagio, Delux",
       "triple (4 bandas, pasan 2); también pasa: Nemi + presagio + dantedelux🇦🇷 🇦🇷 🇦🇷"
@@ -15133,7 +15118,7 @@
     1250
    ],
    [
-    "Enkil 🇦🇷",
+    "Enkil",
     "Octavos",
     1250
    ],
@@ -16809,7 +16794,7 @@
      [
       [
        "Number VE",
-       "Dm🇵🇪"
+       "DM🇵🇪"
       ],
       "Number VE",
       "ganador: ✅ Decidir"
@@ -16934,7 +16919,7 @@
     1250
    ],
    [
-    "Dm🇵🇪",
+    "DM🇵🇪",
     "Octavos",
     1250
    ],
@@ -16981,7 +16966,7 @@
       [
        "Cronox, Xclusivo",
        "Neo, Emily Family",
-       "Egipto 🇨🇷, Santo Trinidad 🇨🇴"
+       "francis, Santo Trinidad 🇨🇴"
       ],
       "Cronox, Xclusivo, Neo, Emily Family",
       "triple (3 bandas, pasan 2); también pasa: Neo Soul + Family🇵🇾"
@@ -17178,11 +17163,6 @@
     625
    ],
    [
-    "Egipto 🇨🇷",
-    "Octavos",
-    625
-   ],
-   [
     "Holden",
     "Octavos",
     625
@@ -17211,40 +17191,45 @@
     "Santo Trinidad 🇨🇴",
     "Octavos",
     625
+   ],
+   [
+    "francis",
+    "Octavos",
+    625
    ]
   ]
  },
  "435": {
   "dia": "2026-10-08",
-  "escala": "16+",
+  "escala": "8-15",
   "fecha": "08/10",
   "links": [
    "https://discord.com/channels/1468472442925092958/1487206164864438513/1557966243867271220"
   ],
   "n": 435,
   "nombre": "Cuentas Pendientes V.1",
-  "participantes": 19,
+  "participantes": 14,
   "rondas": [
    {
     "b": [
      [
       [
        "BLITZ",
+       "Tenor",
        "NC",
        "Cronox",
-       "Nemi",
-       "Tenor"
+       "Nemi"
       ],
-      "BLITZ",
-      "triple (5 bandas)"
+      "BLITZ, Tenor",
+      "triple (5 bandas, pasan 2); también pasa: tenor"
      ],
      [
       [
+       "Erian",
        "DLX",
-       "ANTONIO🇵🇾",
-       "Erian"
+       "ANTONIO🇵🇾"
       ],
-      "DLX",
+      "Erian",
       "triple (3 bandas)"
      ]
     ],
@@ -17271,22 +17256,6 @@
      [
       [
        "Makmah",
-       "Teo"
-      ],
-      "Makmah",
-      "Revivido: makmah 🇻🇪"
-     ],
-     [
-      [
-       "Aldre",
-       "Erian"
-      ],
-      "Aldre",
-      ""
-     ],
-     [
-      [
-       "Makmah",
        "Tenor"
       ],
       "Makmah",
@@ -17295,7 +17264,8 @@
      [
       [
        "Aldre",
-       "Ram"
+       "Ram",
+       "Erian"
       ],
       "Aldre",
       "triple (3 bandas)"
@@ -17328,59 +17298,11 @@
     "b": [
      [
       [
-       "Makmah",
-       "Xubaru"
-      ],
-      "Makmah",
-      "Walk-in 2: Xubaru🇻🇪"
-     ],
-     [
-      [
-       "Colesito",
-       "Makmah"
-      ],
-      "Colesito",
-      "Revivido: colesito; Walk-in 2: colesito"
-     ],
-     [
-      [
-       "Aldre",
-       "Colesito"
-      ],
-      "Aldre",
-      ""
-     ],
-     [
-      [
        "Aldre",
        "Provenza"
       ],
       "Aldre",
       ""
-     ],
-     [
-      [
-       "Aldre, Makmah, Rodas",
-       "Provenza, Colesito, Xubaru"
-      ],
-      "Aldre, Makmah, Rodas",
-      "ganador: ✅ Decidir; Walk-in 2: PROVENZA COLESITO XUBARU"
-     ],
-     [
-      [
-       "Volg",
-       "Xubaru"
-      ],
-      "Volg",
-      "ganador: ✅ Decidir"
-     ],
-     [
-      [
-       "za",
-       "Aldre 🇦🇷"
-      ],
-      "",
-      "sin ganador: espera en ✅ Decidir"
      ]
     ],
     "r": "Final"
@@ -17389,49 +17311,49 @@
   "sv": "FFA",
   "tabla": [
    [
-    "Makmah",
+    "Aldre",
     "Campeón",
-    10250
+    7500
+   ],
+   [
+    "Provenza",
+    "Subcampeón",
+    5000
+   ],
+   [
+    "Makmah",
+    "Semifinal",
+    3500
    ],
    [
     "Volg",
     "Semifinal",
-    5250
+    3500
    ],
    [
     "BLITZ",
     "Cuartos",
-    2500
+    2000
    ],
    [
     "Emily Family",
     "Cuartos",
-    2500
-   ],
-   [
-    "Ram",
-    "Cuartos",
-    2500
-   ],
-   [
-    "Teo",
-    "Cuartos",
-    2500
+    2000
    ],
    [
     "Erian",
     "Cuartos",
-    1875
+    2000
+   ],
+   [
+    "Ram",
+    "Cuartos",
+    2000
    ],
    [
     "Tenor",
     "Cuartos",
-    1875
-   ],
-   [
-    "Xubaru",
-    "Subcampeón",
-    1875
+    2000
    ],
    [
     "ANTONIO🇵🇾",
@@ -17440,6 +17362,11 @@
    ],
    [
     "Cronox",
+    "R32",
+    625
+   ],
+   [
+    "DLX",
     "R32",
     625
    ],
@@ -18385,18 +18312,18 @@
      ],
      [
       [
-       "Masino",
-       "Rodas"
-      ],
-      "Masino",
-      "Revivido: Roda🇦🇷"
-     ],
-     [
-      [
        "Walker",
        "Soulb"
       ],
       "Walker",
+      ""
+     ],
+     [
+      [
+       "Rodas",
+       "Masino"
+      ],
+      "Rodas",
       ""
      ],
      [
@@ -18410,7 +18337,7 @@
      [
       [
        "Agus",
-       "MARTYNEZ🇺🇾"
+       "AGUSTÍN51K"
       ],
       "Agus",
       ""
@@ -18446,18 +18373,18 @@
      ],
      [
       [
-       "Agus",
-       "EIDP"
-      ],
-      "Agus",
-      ""
-     ],
-     [
-      [
        "Makmah",
        "Walker"
       ],
       "Makmah",
+      ""
+     ],
+     [
+      [
+       "Agus",
+       "EIDP"
+      ],
+      "Agus",
       ""
      ],
      [
@@ -18549,6 +18476,11 @@
     2500
    ],
    [
+    "AGUSTÍN51K",
+    "Octavos",
+    1250
+   ],
+   [
     "Dominick",
     "Octavos",
     1250
@@ -18559,12 +18491,12 @@
     1250
    ],
    [
-    "MARTYNEZ🇺🇾",
+    "MCO",
     "Octavos",
     1250
    ],
    [
-    "MCO",
+    "Masino",
     "Octavos",
     1250
    ],
@@ -20202,7 +20134,7 @@
      [
       [
        "Btrece",
-       "Evangeline🇵🇪"
+       "Evangeline"
       ],
       "",
       "cobra: Btrece🇺🇾; cobra: Evangeline🇵🇪; nadie siguió: ✅ Decidir"
@@ -20273,7 +20205,7 @@
     2000
    ],
    [
-    "Evangeline🇵🇪",
+    "Evangeline",
     "Cuartos",
     2000
    ],
@@ -21874,15 +21806,80 @@
  },
  "462": {
   "dia": "2026-10-12",
-  "escala": "8-15",
+  "escala": "16+",
   "fecha": "12/10",
   "links": [
    "https://discord.com/channels/1468472442925092958/1487207377601040516/1559394106361385043"
   ],
   "n": 462,
   "nombre": "COMPE POR 1.5 DOLARES",
-  "participantes": 15,
+  "participantes": 28,
   "rondas": [
+   {
+    "b": [
+     [
+      [
+       "rodrilp, Velatz, Snow",
+       "Teo",
+       "Betelguese, Guess, Erian"
+      ],
+      "rodrilp, Velatz, Snow",
+      "triple (3 bandas)"
+     ],
+     [
+      [
+       "Guty",
+       "🏳️‍⚧️ VEPG 🏳️‍⚧️",
+       "Zaik 🇪🇸"
+      ],
+      "Guty",
+      "triple (3 bandas)"
+     ],
+     [
+      [
+       "Oasis, AKARK",
+       "Makmah"
+      ],
+      "Oasis, AKARK",
+      ""
+     ],
+     [
+      [
+       "Number",
+       "Dynoco",
+       "Nemi"
+      ],
+      "Number",
+      "triple (3 bandas); Revivido: Dynoco 🇦🇷"
+     ],
+     [
+      [
+       "MauzzitoEmeces",
+       "Magic",
+       "Dynoco"
+      ],
+      "MauzzitoEmeces",
+      "triple (3 bandas)"
+     ],
+     [
+      [
+       "Delux, Erik, Tam",
+       "BNA, NC"
+      ],
+      "Delux, Erik, Tam",
+      "Revivido: 🇦🇷 NC 🇦🇷 (R) 🇦🇷"
+     ],
+     [
+      [
+       "7, NC",
+       "SINTEXT"
+      ],
+      "7, NC",
+      ""
+     ]
+    ],
+    "r": "Octavos"
+   },
    {
     "b": [
      [
@@ -21960,82 +21957,142 @@
    [
     "AKARK",
     "Subcampeón",
-    2500
-   ],
-   [
-    "Abysuss",
-    "Campeón",
-    2500
+    3750
    ],
    [
     "Oasis",
     "Subcampeón",
-    2500
+    3750
+   ],
+   [
+    "Abysuss",
+    "Campeón",
+    3333
    ],
    [
     "Presagio",
     "Campeón",
-    2500
+    3333
    ],
    [
     "Verc",
     "Campeón",
-    2500
+    3333
    ],
    [
     "Guty",
     "Cuartos",
-    2000
+    2500
    ],
    [
     "MauzzitoEmeces",
     "Cuartos",
-    2000
+    2500
    ],
    [
     "Number",
     "Cuartos",
-    2000
+    2500
+   ],
+   [
+    "Dynoco",
+    "Octavos",
+    1875
    ],
    [
     "Delux",
     "Semifinal",
-    1166
+    1750
    ],
    [
     "Erik",
     "Semifinal",
-    1166
+    1750
    ],
    [
     "Snow",
     "Semifinal",
-    1166
+    1750
    ],
    [
     "Tam",
     "Semifinal",
-    1166
+    1750
    ],
    [
     "Velatz",
     "Semifinal",
-    1166
+    1750
    ],
    [
     "rodrilp",
     "Semifinal",
-    1166
+    1750
    ],
    [
     "7",
     "Cuartos",
-    1000
+    1250
+   ],
+   [
+    "Magic",
+    "Octavos",
+    1250
+   ],
+   [
+    "Makmah",
+    "Octavos",
+    1250
    ],
    [
     "NC",
     "Cuartos",
-    1000
+    1250
+   ],
+   [
+    "Nemi",
+    "Octavos",
+    1250
+   ],
+   [
+    "SINTEXT",
+    "Octavos",
+    1250
+   ],
+   [
+    "Teo",
+    "Octavos",
+    1250
+   ],
+   [
+    "Zaik 🇪🇸",
+    "Octavos",
+    1250
+   ],
+   [
+    "🏳️‍⚧️ VEPG 🏳️‍⚧️",
+    "Octavos",
+    1250
+   ],
+   [
+    "BNA",
+    "Octavos",
+    625
+   ],
+   [
+    "Betelguese",
+    "Octavos",
+    416
+   ],
+   [
+    "Erian",
+    "Octavos",
+    416
+   ],
+   [
+    "Guess",
+    "Octavos",
+    416
    ]
   ]
  },
@@ -26722,11 +26779,11 @@
      ],
      [
       [
-       "Evangeline🇵🇪",
+       "Evangeline",
        "CrisZJ",
        "Shadow"
       ],
-      "Evangeline🇵🇪",
+      "Evangeline",
       "triple (3 bandas)"
      ],
      [
@@ -26754,10 +26811,10 @@
     "b": [
      [
       [
-       "Masino, EVANGELINE🇧🇴",
+       "Masino, Evangeline",
        "Erian, Liberia"
       ],
-      "Masino, EVANGELINE🇧🇴",
+      "Masino, Evangeline",
       ""
      ],
      [
@@ -26776,7 +26833,7 @@
      [
       [
        "Mosquitrap 🦟, Adriagner, Carlosss",
-       "Masino, EVANGELINE🇧🇴, Erian"
+       "Masino, Evangeline, Erian"
       ],
       "Mosquitrap 🦟, Adriagner, Carlosss",
       ""
@@ -26818,7 +26875,7 @@
     1750
    ],
    [
-    "EVANGELINE🇧🇴",
+    "Evangeline",
     "Subcampeón",
     1666
    ],
@@ -27009,7 +27066,7 @@
       [
        "Tenor",
        "DarkoMC",
-       "tomyhilfiger🇾🇹",
+       "crakero",
        "Jult"
       ],
       "Tenor",
@@ -27128,7 +27185,7 @@
     625
    ],
    [
-    "tomyhilfiger🇾🇹",
+    "crakero",
     "R32",
     625
    ]
@@ -28471,22 +28528,23 @@
      [
       [
        "Oasis",
+       "PichulaMc",
        "1200"
       ],
       "Oasis",
-      "triple (3 bandas, pasan 2); también pasa: Park-Ji Sung🇰🇷"
+      "triple (3 bandas); Revivido: Pichulamc"
      ],
      [
       [
        "Agus",
-       "Oasis",
        "Jobaking",
        "Dyzz",
        "Tenor",
-       "Kyss"
+       "Kyss",
+       "PichulaMc"
       ],
-      "Agus, Oasis",
-      "triple (6 bandas, pasan 2); también pasa: Park-Ji Sung🇰🇷"
+      "Agus",
+      "triple (6 bandas)"
      ]
     ],
     "r": "Octavos"
@@ -28617,6 +28675,11 @@
     "Sosa",
     "Cuartos",
     2500
+   ],
+   [
+    "PichulaMc",
+    "Octavos",
+    1875
    ],
    [
     "1200",
@@ -30032,6 +30095,19 @@
     "b": [
      [
       [
+       "Bloody",
+       "Vandu"
+      ],
+      "Bloody",
+      "podio: tercer puesto sin batalla en la llave"
+     ]
+    ],
+    "r": "Tercer puesto"
+   },
+   {
+    "b": [
+     [
+      [
        "CJ",
        "J19"
       ],
@@ -30056,13 +30132,13 @@
    ],
    [
     "Bloody",
-    "Semifinal",
-    5250
+    "Tercero",
+    6000
    ],
    [
     "Vandu",
-    "Semifinal",
-    5250
+    "Cuarto",
+    4500
    ],
    [
     "Denik",
@@ -30299,7 +30375,7 @@
        "Trot"
       ],
       "Liberia, Velatz",
-      "triple (4 bandas, pasan 2); también pasa: Velatz; Drafteado: LIBERIA"
+      "triple (4 bandas, pasan 2); también pasa: Velatz🇺🇸; Drafteado: LIBERIA"
      ],
      [
       [
@@ -30329,7 +30405,7 @@
        "Makmah"
       ],
       "Delux, Vandu",
-      "triple (4 bandas, pasan 2); también pasa: vandu 🇨🇦; Drafteado: delux🇦🇷"
+      "triple (4 bandas, pasan 2); también pasa: vandu; Drafteado: DELUX🇦🇷"
      ],
      [
       [
@@ -30346,7 +30422,7 @@
        "BNA",
        "Calíz",
        "Chente",
-       "DARK ANGEL 🇨🇴"
+       "DARK ANGEL"
       ],
       "BNA, Calíz",
       "triple (4 bandas, pasan 2); también pasa: Caliz🇲🇽; Drafteado: Bna"
@@ -30359,7 +30435,7 @@
        "Deuxs"
       ],
       "Kyss, Provenza",
-      "triple (4 bandas, pasan 2); también pasa: PROVENZA 🇦🇷; Drafteado: kyss"
+      "triple (4 bandas, pasan 2); también pasa: PROVENZA 🇦🇷; Drafteado: kyss 🇦🇱"
      ]
     ],
     "r": "Octavos"
@@ -30524,7 +30600,7 @@
     1250
    ],
    [
-    "DARK ANGEL 🇨🇴",
+    "DARK ANGEL",
     "Octavos",
     1250
    ],
@@ -32270,7 +32346,7 @@
      [
       [
        "Makmah",
-       "Evangeline🇵🇪"
+       "Evangeline"
       ],
       "Makmah",
       ""
@@ -32336,7 +32412,7 @@
     3500
    ],
    [
-    "Evangeline🇵🇪",
+    "Evangeline",
     "Cuartos",
     2000
    ],
@@ -35253,7 +35329,7 @@
        "Six",
        "Andy",
        "Calíz",
-       "QZ🇦🇷",
+       "QUEEN",
        "Jobaking"
       ],
       "Six",
@@ -35507,7 +35583,7 @@
     1250
    ],
    [
-    "QZ🇦🇷",
+    "QUEEN",
     "Octavos",
     1250
    ],
@@ -37407,10 +37483,10 @@
     "b": [
      [
       [
-       "Evangeline🇵🇪",
+       "Evangeline",
        "Adriagner"
       ],
-      "Evangeline🇵🇪",
+      "Evangeline",
       ""
      ],
      [
@@ -37446,7 +37522,7 @@
      [
       [
        "PichulaMc",
-       "Evangeline🇵🇪"
+       "Evangeline"
       ],
       "PichulaMc",
       ""
@@ -37489,7 +37565,7 @@
     5000
    ],
    [
-    "Evangeline🇵🇪",
+    "Evangeline",
     "Semifinal",
     3500
    ],
@@ -48548,6 +48624,461 @@
     "Under",
     "Octavos",
     625
+   ]
+  ]
+ },
+ "598": {
+  "dia": "2026-09-23",
+  "escala": "8-15",
+  "fecha": "23/09",
+  "links": [],
+  "n": 598,
+  "nombre": "19 CUP VOL 2 EDICION FIFA",
+  "participantes": 9,
+  "rondas": [
+   {
+    "b": [
+     [
+      [
+       "WALKER SANITY",
+       "Number VE"
+      ],
+      "WALKER SANITY",
+      ""
+     ],
+     [
+      [
+       "MCO",
+       "DOMINICK DE CHOP"
+      ],
+      "MCO",
+      ""
+     ],
+     [
+      [
+       "Noxvell",
+       "Shadow"
+      ],
+      "Noxvell",
+      ""
+     ],
+     [
+      [
+       "NXUZ",
+       "Miniboy"
+      ],
+      "NXUZ",
+      ""
+     ]
+    ],
+    "r": "Cuartos"
+   },
+   {
+    "b": [
+     [
+      [
+       "WALKER SANITY",
+       "MCO"
+      ],
+      "WALKER SANITY",
+      ""
+     ],
+     [
+      [
+       "Noxvell",
+       "NXUZ"
+      ],
+      "Noxvell",
+      ""
+     ]
+    ],
+    "r": "Semifinales"
+   },
+   {
+    "b": [
+     [
+      [
+       "WALKER SANITY",
+       "Noxvell"
+      ],
+      "WALKER SANITY",
+      "campeón: ✅ Decidir (Dlx eligió a WALKER SANITY)"
+     ]
+    ],
+    "r": "Final"
+   }
+  ],
+  "sv": "DDF",
+  "tabla": [
+   [
+    "WALKER SANITY",
+    "Campeón",
+    7500
+   ],
+   [
+    "Noxvell",
+    "Subcampeón",
+    5000
+   ],
+   [
+    "MCO",
+    "Semifinal",
+    3500
+   ],
+   [
+    "NXUZ",
+    "Semifinal",
+    3500
+   ],
+   [
+    "DOMINICK DE CHOP",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Miniboy",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Number VE",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Shadow",
+    "Cuartos",
+    2000
+   ]
+  ]
+ },
+ "599": {
+  "dia": "2026-10-08",
+  "escala": "16+",
+  "fecha": "08/10",
+  "links": [],
+  "n": 599,
+  "nombre": "FFA DELUXE",
+  "participantes": 32,
+  "rondas": [
+   {
+    "b": [
+     [
+      [
+       "Andres",
+       "LRS",
+       "Monet",
+       "DNK"
+      ],
+      "Andres",
+      "triple (4 bandas)"
+     ],
+     [
+      [
+       "Bocto",
+       "Makmah",
+       "Ciro🇦🇷",
+       "Manolito🇨🇴"
+      ],
+      "Bocto",
+      "triple (4 bandas)"
+     ],
+     [
+      [
+       "Tam",
+       "Kyron",
+       "Molusco",
+       "Pipe"
+      ],
+      "Tam",
+      "triple (4 bandas)"
+     ],
+     [
+      [
+       "Lilñaño",
+       "Anderbarra",
+       "Erian",
+       "Colesito"
+      ],
+      "Lilñaño",
+      "triple (4 bandas)"
+     ],
+     [
+      [
+       "Marley🇦🇷",
+       "Cronox",
+       "Drelain🇦🇷",
+       "Bloody"
+      ],
+      "Marley🇦🇷",
+      "triple (4 bandas)"
+     ],
+     [
+      [
+       "Abyssus",
+       "Mathhias",
+       "Dantemx",
+       "Left🇺🇾"
+      ],
+      "Abyssus",
+      "triple (4 bandas)"
+     ],
+     [
+      [
+       "Respawm🇭🇳",
+       "Guess",
+       "Nova",
+       "Hassan"
+      ],
+      "Respawm🇭🇳",
+      "triple (4 bandas)"
+     ],
+     [
+      [
+       "Eliot",
+       "Rodas",
+       "Blue",
+       "Erik"
+      ],
+      "Eliot",
+      "triple (4 bandas)"
+     ]
+    ],
+    "r": "Octavos"
+   },
+   {
+    "b": [
+     [
+      [
+       "Marley🇦🇷",
+       "Andres"
+      ],
+      "Marley🇦🇷",
+      ""
+     ],
+     [
+      [
+       "Abyssus",
+       "Bocto"
+      ],
+      "Abyssus",
+      ""
+     ],
+     [
+      [
+       "Tam",
+       "Respawm🇭🇳"
+      ],
+      "Tam",
+      ""
+     ],
+     [
+      [
+       "Eliot",
+       "Lilñaño"
+      ],
+      "Eliot",
+      ""
+     ]
+    ],
+    "r": "Cuartos"
+   },
+   {
+    "b": [
+     [
+      [
+       "Abyssus",
+       "Marley🇦🇷"
+      ],
+      "Abyssus",
+      ""
+     ],
+     [
+      [
+       "Eliot",
+       "Tam"
+      ],
+      "Eliot",
+      ""
+     ]
+    ],
+    "r": "Semifinales"
+   },
+   {
+    "b": [
+     [
+      [
+       "Eliot",
+       "Abyssus"
+      ],
+      "Eliot",
+      ""
+     ]
+    ],
+    "r": "Final"
+   }
+  ],
+  "sv": "FFA",
+  "tabla": [
+   [
+    "Eliot",
+    "Campeón",
+    10000
+   ],
+   [
+    "Abyssus",
+    "Subcampeón",
+    7500
+   ],
+   [
+    "Marley🇦🇷",
+    "Semifinal",
+    5250
+   ],
+   [
+    "Tam",
+    "Semifinal",
+    5250
+   ],
+   [
+    "Andres",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Bocto",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Lilñaño",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Respawm🇭🇳",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Anderbarra",
+    "Octavos",
+    1250
+   ],
+   [
+    "Bloody",
+    "Octavos",
+    1250
+   ],
+   [
+    "Blue",
+    "Octavos",
+    1250
+   ],
+   [
+    "Ciro🇦🇷",
+    "Octavos",
+    1250
+   ],
+   [
+    "Colesito",
+    "Octavos",
+    1250
+   ],
+   [
+    "Cronox",
+    "Octavos",
+    1250
+   ],
+   [
+    "DNK",
+    "Octavos",
+    1250
+   ],
+   [
+    "Dantemx",
+    "Octavos",
+    1250
+   ],
+   [
+    "Drelain🇦🇷",
+    "Octavos",
+    1250
+   ],
+   [
+    "Erian",
+    "Octavos",
+    1250
+   ],
+   [
+    "Erik",
+    "Octavos",
+    1250
+   ],
+   [
+    "Guess",
+    "Octavos",
+    1250
+   ],
+   [
+    "Hassan",
+    "Octavos",
+    1250
+   ],
+   [
+    "Kyron",
+    "Octavos",
+    1250
+   ],
+   [
+    "LRS",
+    "Octavos",
+    1250
+   ],
+   [
+    "Left🇺🇾",
+    "Octavos",
+    1250
+   ],
+   [
+    "Makmah",
+    "Octavos",
+    1250
+   ],
+   [
+    "Manolito🇨🇴",
+    "Octavos",
+    1250
+   ],
+   [
+    "Mathhias",
+    "Octavos",
+    1250
+   ],
+   [
+    "Molusco",
+    "Octavos",
+    1250
+   ],
+   [
+    "Monet",
+    "Octavos",
+    1250
+   ],
+   [
+    "Nova",
+    "Octavos",
+    1250
+   ],
+   [
+    "Pipe",
+    "Octavos",
+    1250
+   ],
+   [
+    "Rodas",
+    "Octavos",
+    1250
    ]
   ]
  }
