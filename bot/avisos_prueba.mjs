@@ -2771,6 +2771,15 @@ const ok = (cond, que, det) => {
   'el panel del socio: el #N, los canales (sin repetir, sólo los del servidor), el nivel, los eventos de Discord, el aviso de cada evento; nada más');
 }
 
+{
+  // 🖼️ el vigía y los afiches (09/11/2026): imagen y poco texto, la misma regla que `anuncios.pide_ocr()`
+  const img = [{ content_type: 'image/png', width: 800 }];
+  ok(A.esAfiche({ content: '@everyone', attachments: img }) && A.esAfiche({ content: '<@&123> hoy', attachments: img })
+    && !A.esAfiche({ content: 'x', attachments: [] }) && !A.esAfiche({ content: 'x'.repeat(200), attachments: img })
+    && !A.esAfiche({ content: '', attachments: [{ content_type: 'video/mp4', width: 800 }] }) && A.AFICHE_TEXTO_MAX === 160,
+  'un afiche es una imagen con poco texto (sin contar las menciones); un video o un texto largo, no');
+}
+
 if (fallas) {
   console.log(`\n❌ ${fallas} prueba(s) fallaron`);
   process.exit(1);

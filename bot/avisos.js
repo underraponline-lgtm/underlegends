@@ -2403,6 +2403,18 @@ export function nombreDe(texto) {
 }
 
 /** Un mensaje -> un anuncio, o `null` si no parece uno. Ver `parsear()`. */
+/**
+ * 🖼️ ¿Un anuncio que es sólo una imagen? Un adjunto de imagen y poco texto propio (sin menciones), la misma regla que
+ * `anuncios.pide_ocr()` del ciclo (`OCR_TEXTO_MAX`). Dlx, 09/11/2026, a «el vigía no lee afiches»: *«arreglemos eso»*.
+ */
+export const AFICHE_TEXTO_MAX = 160;
+export function esAfiche(m) {
+  const img = (m && Array.isArray(m.attachments) ? m.attachments : [])
+    .some((a) => String((a && a.content_type) || '').startsWith('image/') && a.width);
+  const txt = String((m && m.content) || '').replace(/<[@#][!&]?\d+>|@everyone|@here/g, ' ').trim();
+  return img && txt.length <= AFICHE_TEXTO_MAX;
+}
+
 export function parsearAnuncio(m) {
   const txt = (m && m.content) || '';
   const anchos = camposLineas(txt);
@@ -3187,6 +3199,8 @@ const RUTAS = {
   '/avisos/finales': 'GET',
   // 🧰 la imagen de /afiche o /llave ya dibujada (`bot/kit.py`), con `claveCiclo()`. Ver `kitListo()`
   '/avisos/kit-listo': 'POST',
+  // 🖼️ los afiches que esperan y su texto, de la tarea `afiche.yml`: con `claveCiclo()`. Ver `afichePoner()`
+  '/avisos/afiches': 'POST', '/avisos/afiche': 'POST',
   // 🖼️ los vs que esperan su imagen y la imagen ya dibujada (`bot/kit.py --tipo vs`), con `claveCiclo()`. Ver `vsCola()`
   '/avisos/vs-cola': 'GET', '/avisos/vs-listo': 'POST',
   // 🎬 tus batallas en video (12/10/2026): pedir un link o un canal, ver tus pedidos y quitar uno, con tu sesión y
@@ -5988,6 +6002,16 @@ export async function rutaAvisos(req, env, ruta) {
     return elObjeto(env).fetch('https://avisos/reportes-estados', { method: 'POST', body: crudo,
       headers: { 'content-type': 'application/json' } });
   }
+  // 🖼️ LOS AFICHES DEL VIGÍA, PARA LA TAREA `afiche.yml` (`bot/afiches.py`): con la clave del ciclo
+  if (ruta === '/avisos/afiches' || ruta === '/avisos/afiche') {
+    const k = req.headers.get('x-lg-ciclo') || '';
+    if (!env.DISCORD_TOKEN || k !== await claveCiclo(env.DISCORD_TOKEN)) return json({ error: 'no existe' }, 404);
+    const crudo = await req.text();
+    if (crudo.length > 8000) return json({ error: 'demasiado grande' }, 413);
+    return elObjeto(env).fetch('https://avisos' + ruta.replace('/avisos', ''), {
+      method: 'POST', body: crudo || '{}', headers: { 'content-type': 'application/json' },
+    });
+  }
   // 🧰 LA IMAGEN DEL KIT, DE LA TAREA `kit.yml` (`bot/kit.py`): con la clave del ciclo
   if (ruta === '/avisos/kit-listo') {
     const k = req.headers.get('x-lg-ciclo') || '';
@@ -6706,6 +6730,10 @@ export class Avisos {
       // con cada evento—, y KV da 1.000 por día: el 06/10 a las 7:57 PM iba en 909. Acá son filas, de 100.000 por día.
       // Las escribe el ciclo (`personasCiclo()`, desde `bot/subir_datos.py`) y las lee el Worker (`leerP()`)
       this.sql.exec('CREATE TABLE IF NOT EXISTS persona (k TEXT PRIMARY KEY, v TEXT NOT NULL, t INTEGER NOT NULL) WITHOUT ROWID');
+      // 🖼️ LOS AFICHES QUE ESPERAN SU TEXTO (09/11/2026): el mensaje y su canal, para volver a pasarlo por `anotar()` cuando
+      // la tarea `afiche.yml` lo lea. Ver `encolarAfiche()` y `afichePoner()`
+      this.sql.exec('CREATE TABLE IF NOT EXISTS afiches (id TEXT PRIMARY KEY, c TEXT NOT NULL, m TEXT NOT NULL, ' +
+        't INTEGER NOT NULL, estado INTEGER NOT NULL DEFAULT 0, texto TEXT NOT NULL DEFAULT \'\')');
       // 👥 LAS CREWS QUE ARMA LA GENTE (19/10/2026): sus tablas viven con su lógica, en bot/crews.js
       CW.crewTablas(this.sql);
       // 📏 LOS ÍNDICES QUE FALTABAN (05/10/2026), medidos con `medidas`: en una hora tranquila el objeto leía 61.000
@@ -7245,6 +7273,8 @@ export class Avisos {
       // 🧰 /afiche y /llave: el permiso para contestar, del Worker; y la imagen, de la tarea (ver `kitGuardar()`)
       if (ruta === '/kit') return json(this.kitGuardar(d));
       if (ruta === '/kit-listo') return json(await this.kitListo(d));
+      if (ruta === '/afiches') return json(this.afichesPendientes());
+      if (ruta === '/afiche') return json(this.afichePoner(d));
       if (ruta === '/vs-listo') return json(await this.vsListo(d));
       if (ruta === '/mis-videos') return this.misVideos(d);
       if (ruta === '/seguir-org') return json(this.seguirOrg(d));
@@ -7668,6 +7698,8 @@ export class Avisos {
       leidos += msgs.length;
       for (const m of msgs) if (this.anotar(m, c, ahora)) nuevos++;
     }
+    // 🖼️ si quedó algún afiche esperando, la tarea que lo lee. Nunca frena al vigía
+    try { await this.lanzarAfiches(ahora); } catch (e) { this.guardar('afiches', { t: ahora, error: String(e).slice(0, 160) }); }
     if (pausa) errores.push('401: el token no sirve; se reintenta en una hora');
     if (sinLeer.length) {
       const fuera = sinLeer.map((c) => c.id);
@@ -9556,6 +9588,8 @@ export class Avisos {
     if (!a) {
       // 📢 y lo que el organizador avisa después del anuncio: cancelado, en pausa o atrasado. Nunca frena
       try { this.anotarEstado(m, c, ahora); } catch (e) { /* sigue */ }
+      // 🖼️ y el afiche, a la cola de la tarea que lo lee (`encolarAfiche()`). Nunca frena
+      if (!c.afiche && esAfiche(m)) { try { this.encolarAfiche(m, c, ahora); } catch (e) { /* sigue */ } }
       return descartar();
     }
     const ini = momentoMs(a.horario, m.timestamp, a.fecha || diaDelNombre(a.nombre));
@@ -15052,6 +15086,66 @@ export class Avisos {
 
   /** Un pedido a la API de GitHub sobre el repo del ciclo, con el token del Worker. ⚠️ GitHub rechaza sin User-Agent,
    *  con un 403 que no dice que el problema es el encabezado (ver el disparador del ciclo, en worker.js). */
+  /** 🖼️ Un afiche a la cola: el mensaje (lo que `anotar()` usa) y su canal. Una vez por mensaje; se borra a las 12 h. */
+  encolarAfiche(m, c, ahora) {
+    const au = m.author || {};
+    const mini = {
+      id: m.id, timestamp: m.timestamp, content: String(m.content || '').slice(0, 600),
+      author: { id: au.id, username: au.username, global_name: au.global_name },
+      member: m.member && m.member.nick ? { nick: m.member.nick } : undefined,
+      mentions: (m.mentions || []).slice(0, 10).map((u) => ({ id: u.id, username: u.username, global_name: u.global_name })),
+    };
+    this.sql.exec('INSERT OR IGNORE INTO afiches (id, c, m, t) VALUES (?, ?, ?, ?)', String(m.id),
+      JSON.stringify({ id: c.id, sv: c.sv, svn: c.svn, g: c.g, nombre: c.nombre }), JSON.stringify(mini), ahora);
+    this.sql.exec('DELETE FROM afiches WHERE t < ?', ahora - EDAD_MAX);
+  }
+
+  /**
+   * 🖼️ La tarea que lee los afiches (`afiche.yml`, `bot/afiches.py`), si hay alguno esperando: el Worker no puede bajar la
+   * imagen —Discord le contesta 403 a Cloudflare—, así que la baja GitHub. Una vez cada `AFICHE_CADA`, y nunca dos a la vez.
+   */
+  async lanzarAfiches(ahora) {
+    const hay = this.sql.exec('SELECT COUNT(*) AS n FROM afiches WHERE estado = 0').toArray()[0].n;
+    if (!hay || !this.env.GH_TOKEN || !this.env.GH_REPO) return;
+    const ult = this.leer('afiche_lanzado') || {};
+    if (ahora - (ult.t || 0) < 3 * MIN) return;
+    for (const st of ['queued', 'in_progress']) {
+      const r = await this.gh(`/actions/workflows/afiche.yml/runs?status=${st}&per_page=1`);
+      if (r.ok && ((await r.json()).total_count || 0) > 0) return;
+    }
+    const r = await this.gh('/actions/workflows/afiche.yml/dispatches', { method: 'POST', body: JSON.stringify({ ref: 'main' }) });
+    this.guardar('afiche_lanzado', { t: ahora, estado: r.status, hay });
+  }
+
+  /** 🖼️ Los afiches que esperan, para la tarea: `{pendientes: [{id, canal, sv}]}`. */
+  afichesPendientes() {
+    const p = this.sql.exec('SELECT id, c FROM afiches WHERE estado = 0 ORDER BY t LIMIT 8').toArray()
+      .map((r) => { const c = JSON.parse(r.c); return { id: r.id, canal: c.id, sv: c.sv }; });
+    return { pendientes: p };
+  }
+
+  /**
+   * 🖼️ El texto de un afiche, de la tarea: el mensaje vuelve a `anotar()` con ese texto, como si el organizador lo hubiera
+   * escrito. Lo que ya se descartó por no tener texto se borra antes, así se lee de nuevo. `{ok, aviso}`.
+   */
+  afichePoner(d) {
+    const id = String((d && d.id) || '');
+    const fila = this.sql.exec('SELECT c, m FROM afiches WHERE id = ? AND estado = 0', id).toArray()[0];
+    if (!fila) return { ok: false, error: 'no está en la cola' };
+    const texto = String((d && d.texto) || '').slice(0, 3000);
+    let aviso = false;
+    if (texto.trim()) {
+      const m = JSON.parse(fila.m);
+      const c = Object.assign(JSON.parse(fila.c), { afiche: true });
+      m.content = texto;
+      this.sql.exec('DELETE FROM avisos WHERE id = ? AND estado = 2', id);
+      aviso = this.anotar(m, c, Date.now());
+    }
+    this.sql.exec('UPDATE afiches SET estado = 1, texto = ? WHERE id = ?', texto, id);
+    this.guardar('afiches', { t: Date.now(), ultimo: id, aviso });
+    return { ok: true, aviso };
+  }
+
   gh(ruta, opc) {
     return fetch(`https://api.github.com/repos/${this.env.GH_REPO}${ruta}`, {
       // ⏱️ con tope: el Dashboard lo espera, y con GitHub caído un pedido sin tope colgaba el panel entero

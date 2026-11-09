@@ -1,0 +1,38 @@
+name: afiche
+
+# ═══════════════════════════════════════════════════════════════════
+# 🖼️ EL ANUNCIO QUE ES SÓLO UNA IMAGEN, LEÍDO EN UN MINUTO O DOS.
+#
+# Dlx, 09/11/2026, a «el vigía no lee afiches»: «arreglemos eso». Lo
+# larga el vigía del Worker (`lanzarAfiches()` en bot/avisos.js) cuando
+# deja un afiche en la cola: baja la imagen de Discord —al Worker le
+# contesta 403—, se la pasa a la IA del Worker y le devuelve el texto.
+# Ver bot/afiches.py.
+#
+# ⚠️ UNO POR VEZ (`concurrency`), y no escribe nada en el repo.
+# 🔒 El log dice de qué servidor es y si avisó, nunca qué decía el afiche.
+# ═══════════════════════════════════════════════════════════════════
+
+on:
+  workflow_dispatch:
+
+concurrency:
+  group: afiche
+  cancel-in-progress: false
+
+jobs:
+  leer:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: ./.github/actions/preparar
+        with:
+          creds_json: ${{ secrets.CREDS_JSON }}
+          env_file: ${{ secrets.ENV_FILE }}
+
+      - name: leer los afiches
+        run: python bot/afiches.py
