@@ -91,7 +91,10 @@ TODAS = sorted(COMO_R2.values())
 #: `03_Servidor/disenos/todos_sv.DEFS`. Estaban acá desde que entraron (20/10), así que a quien juega en uno de los dos
 #: el generador le moría con «no conozco el servidor "FDS"» y se llevaba puesta su Servidor ENTERA, en cada vuelta: la
 #: vuelta del 26/10 a las 12:22 AM tuvo 36 fallas así. Un servidor sin carta no va en esta lista
-SERVIDORES = ('ACAD', 'CH', 'DDF', 'DDS', 'DRA', 'EFA', 'FFA', 'FFS', 'FRZ', 'FTN', 'FVS', 'SR', 'TFC', 'TWR', 'URBF')
+#: 🔴 Y PASÓ OTRA VEZ CON DDS (Tier 3, sin carta): entró acá el 08/11/2026 con su alta (4.39) y desde esa tarde cada
+#: `dibujar` tuvo 1 a 6 fallas, siempre la Servidor de la tanda entera; los de esa tanda no se sellaban y volvían a la cola
+#: cada media hora (el 09/11, ~384 minutos de runner). Ahora el self-check compara esta lista con `todos_sv.DEFS`
+SERVIDORES = ('ACAD', 'CH', 'DDF', 'DRA', 'EFA', 'FFA', 'FFS', 'FRZ', 'FTN', 'FVS', 'SR', 'TFC', 'TWR', 'URBF')
 
 
 def camisetas(quienes):
@@ -1056,6 +1059,14 @@ def _self_check():
     except Exception as e:                               # noqa: BLE001
         ok(False, 'no pude comparar el puesto en la letra con las cartas (%s)'
            % str(e)[:60])
+    # 🃏 cada servidor de la lista tiene su fondo para dibujarse: uno que no lo tiene tumba a toda su llamada (FDS y LKR el
+    # 26/10, DDS el 08/11/2026)
+    try:
+        _sin_fondo = [sv for sv in SERVIDORES if sv not in _S.TS.DEFS]
+        ok(not _sin_fondo, 'cada servidor de SERVIDORES tiene su fondo en todos_sv.DEFS%s'
+           % (': falta ' + ', '.join(_sin_fondo) if _sin_fondo else ''))
+    except Exception as e:                               # noqa: BLE001
+        ok(False, 'no pude comparar SERVIDORES con todos_sv.DEFS (%s)' % str(e)[:60])
     # 🏠 los que viven en un servidor sin carta
     _pool = [c for c in (_j('datos', 'competitivo_pool.json') or []) if c.get('raw')]
     _casa = casa_sin_carta([c['raw'] for c in _pool])

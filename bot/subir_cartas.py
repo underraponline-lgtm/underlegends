@@ -126,6 +126,8 @@ POR_SERVIDOR = re.compile(r'^sv-([a-z0-9]+)[_\-. ]+(.+)$', re.I)
 # sea que pisaria la Temporada de verdad de una persona que no existe. Es el
 # mismo agujero que ya tenia `sv-ffa_konan`, un nivel mas adentro.
 POR_BLOQUEADA = re.compile(r'^bloq-([a-z]+)[_\-. ]+(.+)$', re.I)
+# `temporada_19 FLEIVA WACK.png`: la carta adelante y el nombre entero atrás (ver `leer_nombre()`)
+POR_CARTA = re.compile(r'^([a-z]+)_(.+)$', re.I)
 
 
 def leer_nombre(archivo):
@@ -137,6 +139,14 @@ def leer_nombre(archivo):
     m = POR_SERVIDOR.match(raiz)
     if m:
         return norm(m.group(2)), 'sv-%s' % m.group(1).lower()
+    # 🔴 EL DE LOS EXPORTADORES, `<carta>_<nombre>.png`: EL NOMBRE ES TODO LO QUE SIGUE, CON SUS NÚMEROS (09/11/2026). El
+    # camino de abajo tira los números sueltos (el orden de `Konan_4_pais.png`), y «19 FLEIVA WACK» y «Fix 17» se subían
+    # a `fleivawack/` y `fix/`: /card y el inventario de R2 los buscan por su clave entera (`19fleivawack`, `fix17`), así
+    # que su Temporada y su Competitiva no llegaban nunca, y `que_cambio.faltan_en_r2()` lo veía faltar en cada vuelta y
+    # largaba un `dibujar` cada media hora para nada
+    m = POR_CARTA.match(raiz)
+    if m and (m.group(1).lower() in CARTAS or m.group(1).lower() in ALIAS):
+        return norm(m.group(2)), ALIAS.get(m.group(1).lower(), m.group(1).lower())
     partes = [p for p in re.split(r'[_\-. ]+', raiz) if p]
     carta = next((ALIAS.get(p.lower(), p.lower()) for p in partes
                   if p.lower() in CARTAS or p.lower() in ALIAS), None)
@@ -416,7 +426,41 @@ def completar_chicas(s, tope=200):
     return hechas, borradas, max(0, len(faltan) - hechas)
 
 
+def _self_check():
+    """`--auto`: cómo se lee cada nombre de archivo, y que nadie del pool se suba a una clave que no es la suya. No sube
+    nada ni pide credenciales."""
+    mal = 0
+
+    def ok(cond, que):
+        nonlocal mal
+        print('   %s %s' % ('✅' if cond else '🔴', que))
+        if not cond:
+            mal += 1
+
+    casos = [('temporada_19 FLEIVA WACK.png', ('19fleivawack', 'temporada')), ('competitivo_Fix 17.png', ('fix17', 'competitivo')),
+             ('temporada_Konan.png', ('konan', 'temporada')), ('pais_7.png', ('7', 'pais')), ('Konan_4_pais.png', ('konan', 'pais')),
+             ('sv-ffa_konan.png', ('konan', 'sv-ffa')), ('bloq-temporada_konan.png', ('konan', 'bloq-temporada')),
+             ('Konan_servidor.png', ('konan', 'servidor')), ('sv_konan.png', ('konan', 'servidor')),
+             ('temporada_Juan Pérez.png', ('juanperez', 'temporada')), ('cualquiera.png', None)]
+    for archivo, esperado in casos:
+        ok(leer_nombre(archivo) == esperado, '%s → %s' % (archivo, esperado))
+    try:
+        pool = json.load(io.open(os.path.join(BASE, 'datos', 'competitivo_pool.json'), encoding='utf-8'))
+    except Exception:                                    # noqa: BLE001
+        pool = []
+    nombres = [c.get('raw') for c in pool if c.get('raw')]
+    malos = [n for n in nombres for carta in ('temporada', 'competitivo')
+             if (leer_nombre('%s_%s.png' % (carta, n)) or ('',))[0] != norm(n)]
+    ok(not malos, 'los %d del pool, con el nombre que les ponen los exportadores, van a su clave%s'
+       % (len(nombres), (': ' + ', '.join(sorted(set(malos))[:5])) if malos else ''))
+    print('')
+    print('   %s' % ('todo bien' if not mal else '🔴 %d mal' % mal))
+    return mal
+
+
 def main():
+    if '--auto' in sys.argv:
+        sys.exit(1 if _self_check() else 0)
     s = sesion()
 
     if '--chicas' in sys.argv:
