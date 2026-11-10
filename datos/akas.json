@@ -404,7 +404,8 @@
   "tomyhilfiger": "crakero",
   "lizenim": "Mito",
   "elcolesito": "Colesito",
-  "lizeninn": "Mito"
+  "lizeninn": "Mito",
+  "ztr": "Shadow"
  },
  "pares": [
   [
@@ -2038,6 +2039,10 @@
   [
    "tomyhilfiger🇾🇹",
    "crakero"
+  ],
+  [
+   "ZTR",
+   "Shadow"
   ]
  ],
  "no_confundir": [

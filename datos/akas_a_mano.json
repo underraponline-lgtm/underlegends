@@ -149,7 +149,8 @@
   "05/11/2026, Cypherhood: «akvmolt» es Molt: es el nombre visible de la cuenta 1355612971144839439, que es la de Molt en el padrón. «Jazi ecuador» y «JAZII» son la cuenta JaZi (eljazipo): el mismo lugar de la llave de COMPE ATERRADORA, de octavos a cuartos, con la misma bandera.",
   "🔑 Lizeninn es Mito, 🇦🇷: Dlx, 05/11/2026, a «¿Lizeninn y Mito son la misma persona?»: «Sí, únelos». La cuenta @lizeninn. (1493416945037611140), que es la de la fila Mito de la Lista, se anotó «Lizen» 16 veces, «Lizeninn» 12 y también «Mito», «Mitosis» y «Aarón El arte de la Mitosis», y las dos filas nunca jugaron el mismo evento. Queda con el nombre de la Lista: si prefiere otro, se cambia ahí (`lista_raperos.py --renombrar`).",
   "09/11/2026: «tomyhilfiger», «tomyhilfiger1312» y «tomyhilfiger🇾🇹» son crakero (la fila de la Lista con la cuenta 1374555884868337738, crakero_crew_1312): esa cuenta se anotó «tomyhilfiger🇾🇹» el 19/10 y el 22/10 y «tomyhilfiger1312🇾🇹» el 03/11 y el 09/11 en FFA, y lo reportó ella misma desde la página (reporte #14: «pork no me toma que soy tomyhilfiger1312»). El 05/11 se habían unido a «tomyhilfiger🇾🇹», una fila sin cuenta.",
-  "09/11/2026: en FFA «QZ» es QUEEN: la única cuenta que se llama así en FFA es la de QUEEN (regla A, Dlx: «Sí, los 20»). Sólo en FFA: dos letras no prueban nada en otro servidor."
+  "09/11/2026: en FFA «QZ» es QUEEN: la única cuenta que se llama así en FFA es la de QUEEN (regla A, Dlx: «Sí, los 20»). Sólo en FFA: dos letras no prueban nada en otro servidor.",
+  "🔑 ZTR es Shadow, 🇨🇴 (Dlx, 10/11/2026: «Yes, the same person», a «¿Shadow y ZTR son la misma persona?»). Los 18 eventos de «Shadow» caen en su cuenta de la Lista (1461433944237936829, @alejo008715, «DRAGON XX»), que nunca se anotó desde que se guardan las inscripciones (02/10); quien se anota «SHADOW 🇨🇴» es @tenacious_dragon_23394 («DJ SHADOW🐉», 1548906948307451906), que en la Lista era la fila ZTR, con 1 evento. En el menú de la #505 contestó esa cuenta que ganó SHADOW. Va como Rodas y Roda: ZTR es alias y esa cuenta va en `cuentas` (abre las cartas de Shadow con /card); la fila ZTR de la Lista se fusiona en Shadow."
  ],
  "cuentas": {
   "Monet": [
@@ -163,6 +164,9 @@
   ],
   "Mony": [
    "771930273482014731"
+  ],
+  "Shadow": [
+   "1548906948307451906"
   ]
  },
  "pares": [
@@ -441,6 +445,10 @@
   [
    "tomyhilfiger🇾🇹",
    "crakero"
+  ],
+  [
+   "ZTR",
+   "Shadow"
   ]
  ],
  "no_confundir": [

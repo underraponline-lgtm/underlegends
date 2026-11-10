@@ -3,6 +3,7 @@
 
     python sheet/lista_raperos.py --fusionar                 qué fusionaría
     python sheet/lista_raperos.py --fusionar --aplicar       lo hace
+    python sheet/lista_raperos.py --fusionar --solo REAL [--aplicar]   sólo los dobles de esa persona
     python sheet/lista_raperos.py --agregar NOMBRE CC ID ["nota"] [--aplicar]
     python sheet/lista_raperos.py --id NOMBRE ID [--aplicar]
     python sheet/lista_raperos.py --cuenta-nueva NOMBRE ID "por qué" [--aplicar]
@@ -459,7 +460,9 @@ def _mezcla(real, doble, col, alias_full):
     return out
 
 
-def fusionar(aplicar=False):
+def fusionar(aplicar=False, solo=None):
+    """`solo`: el nombre REAL de la Lista cuyos dobles se fusionan, y ningún otro (10/11/2026: Dlx decidió ZTR → Shadow
+    y `--fusionar` quería hacer también siete pares de antes que nadie había mandado a fusionar en esa tanda)."""
     v = leer()
     i, col = mapa(v)
     plan, cambios, borrar = [], [], []
@@ -471,7 +474,8 @@ def fusionar(aplicar=False):
     # si TODAS sus filas se mezclaron.
     por_real = {}
     for a, r in dobles():
-        por_real.setdefault(r, []).append(a)
+        if solo is None or PAD.norm(r) == PAD.norm(solo):
+            por_real.setdefault(r, []).append(a)
     for r, alias in por_real.items():
         fr = filas_de(v, r)
         if len(fr) != 1:
@@ -560,7 +564,7 @@ def main():
     args = [a for a in sys.argv[1:] if a != '--aplicar']
     aplicar = '--aplicar' in sys.argv
     if not args or args[0] == '--fusionar':
-        fusionar(aplicar)
+        fusionar(aplicar, args[args.index('--solo') + 1] if '--solo' in args and args.index('--solo') + 1 < len(args) else None)
     elif args[0] == '--agregar' and len(args) >= 4:
         agregar(args[1], args[2], args[3], args[4] if len(args) > 4 else '', aplicar)
     elif args[0] == '--id' and len(args) == 3:
