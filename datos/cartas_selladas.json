@@ -383,8 +383,8 @@
    "servidor": "1aa95f31e5f9:2415c901692f:3c7154"
   },
   "Delux": {
-   "competitivo": "06aae5eaa6a5:624f5e322311",
-   "pais": "fdd250428b14:733ce66bf5fa",
+   "competitivo": "7c68b5b6597a:624f5e322311",
+   "pais": "73b9e30eb617:733ce66bf5fa",
    "servidor": "2946c3afebfb:2415c901692f:4e5869",
    "temporada": "516fb8fa8f66:7a510334494e"
   },
@@ -1320,8 +1320,8 @@
   "Nox": {},
   "Noxvell": {},
   "Number": {
-   "competitivo": "d2f04fa80161:624f5e322311",
-   "pais": "3379fa7912e3:733ce66bf5fa",
+   "competitivo": "33d1b259b17d:624f5e322311",
+   "pais": "500648f2a19b:733ce66bf5fa",
    "servidor": "c265cd41c282:2415c901692f:fdb28b",
    "temporada": "b766285cfbfb:7a510334494e"
   },
@@ -2091,5 +2091,5 @@
    "servidor": "7f8885a35a6d:2415c901692f:93a344"
   }
  },
- "cuando": "2026-11-10T06:38:00+00:00"
+ "cuando": "2026-11-10T07:02:32+00:00"
 }
