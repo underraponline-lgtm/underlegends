@@ -219,6 +219,9 @@
    "pais": "7d8cac55893d:733ce66bf5fa",
    "servidor": "bb90466cc0ae:2415c901692f:57cf8d"
   },
+  "Byfoxx_mc": {
+   "servidor": "4c0611e88c3e:2415c901692f:055f77"
+  },
   "Byte": {
    "servidor": "d479351a8233:2415c901692f:055f77"
   },
@@ -408,8 +411,8 @@
    "temporada": "6cad79b924de:7a510334494e"
   },
   "Dobell": {
-   "competitivo": "c6bc68cfc190:624f5e322311",
-   "pais": "53002d32338b:733ce66bf5fa",
+   "competitivo": "ce121bf0fc5b:624f5e322311",
+   "pais": "93c723f689b7:733ce66bf5fa",
    "servidor": "23de78e1b366:2415c901692f:9b3a50"
   },
   "Dominick": {},
@@ -532,6 +535,9 @@
    "servidor": "fc7da1fb8dfb:2415c901692f:7d9cf1"
   },
   "Fleivacheck": {},
+  "Flex": {
+   "servidor": "8668de68c5db:2415c901692f:980594"
+  },
   "Flores": {
    "servidor": "c659f446173a:2415c901692f:67201a"
   },
@@ -2063,5 +2069,5 @@
    "servidor": "7f8885a35a6d:2415c901692f:93a344"
   }
  },
- "cuando": "2026-11-10T02:38:35+00:00"
+ "cuando": "2026-11-10T02:46:59+00:00"
 }
