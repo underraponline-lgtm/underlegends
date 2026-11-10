@@ -1,5 +1,5 @@
 {
- "cuando": "2026-11-10T19:55:44+00:00",
+ "cuando": "2026-11-10T20:25:20+00:00",
  "anuncios": [
   {
    "nombre": "¡SE LLEGÓ LA GRAN NOCHE!",
@@ -6792,6 +6792,15 @@
   }
  ],
  "inscripciones": [
+  {
+   "servidor": "FDS",
+   "canal": "✅╏inscripciones-express",
+   "texto": "CrisZJ",
+   "quien": "criszjono",
+   "discord_id": "1462237816829513971",
+   "msg_id": "1569802953580224534",
+   "cuando": "2026-11-10T19:56:29"
+  },
   {
    "servidor": "FDS",
    "canal": "✅╏inscripciones-express",
@@ -42782,15 +42791,6 @@
    "discord_id": "1487658663148785734",
    "msg_id": "1557493130851254284",
    "cuando": "2026-10-07T20:41:39"
-  },
-  {
-   "servidor": "SR",
-   "canal": "[📝]inscripciones",
-   "texto": "Alexiz 🇦🇷",
-   "quien": "alexxii02",
-   "discord_id": "1440141957266673745",
-   "msg_id": "1557493060483551303",
-   "cuando": "2026-10-07T20:41:22"
   }
  ]
 }
