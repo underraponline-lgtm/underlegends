@@ -1033,6 +1033,27 @@ contesta, de KV, donde quedan las de antes. `d:`, `dn:`, `dx:` y `meta` siguen
 en KV: cambian poco. ⚠️ **Recién desplegado, el Worker viejo contesta unos
 segundos más**: un pedido nuevo puede dar 404 y hay que repetirlo.
 
+🔴 **EL OBJETO SE DUERME A LOS ~10 SEGUNDOS SIN PEDIDOS, Y LO QUE TIENE EN
+MEMORIA SE PIERDE.** No usa WebSockets ni timers, así que para Cloudflare es
+«hibernable»: después de 10 s quieto lo saca de la memoria y el próximo
+pedido corre el constructor de cero. Medido el 09/11/2026: un objeto nuevo
+por cada vuelta del vigía, 0,97 h del día en memoria con 12.781 pedidos.
+**Cualquier caché que viva en `this` dura segundos**: `memo()` y
+`delMinuto()` no bajaron nada hasta pasarse a filas de `estado`, y el
+medidor perdía la mitad de lo leído. La regla: **cada pedido tiene que ser
+barato contando con que llega en frío** —leer las filas de UNA persona y no
+armar el mapa de todos, índices para lo que se pregunta seguido, y lo caro
+que se repite, guardado en una fila—. Mantenerlo despierto no es la salida:
+la duración se cobra con 128 MB fijos y todo el día son ~11.000 de los
+13.000 GB-s gratis.
+
+⚡ **Y EL BORDE DE PAGES TAMPOCO GUARDABA** (09/11/2026): un subpedido a un
+Worker de workers.dev con `cf.cacheTtl` no pasa por el caché. Lo público se
+guarda con la API de caché (`delBorde()` en `bot/paginas/_worker.js`).
+Para comprobar que anda: pedir `/api/avisos/estado` dos veces con menos de
+30 s y comparar `medidas.t`. ⚠️ **`/avisos/uso-ciclo` cuesta ~10–15 mil
+filas por llamada**: nunca en un bucle.
+
 ⚠️ **Playwright no corre en un Worker**, así que el render de las cartas no
 puede vivir ahí. O se pregeneran los 414 PNG (138 × 3) o el render vive en
 otro lado.
