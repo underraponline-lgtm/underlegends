@@ -39,6 +39,14 @@ jobs:
           creds_json: ${{ secrets.CREDS_JSON }}
           env_file: ${{ secrets.ENV_FILE }}
 
+      # ⚡ el Chromium de Playwright, guardado (10/11/2026), con la MISMA clave que kit.yml y el `dibujar` del ciclo: una
+      # sola copia para los tres. Bajarlo eran ~36 s más de espera para quien pidió su carta (`bot/navegador.py` lo
+      # encuentra y no baja nada)
+      - uses: actions/cache@v4
+        with:
+          path: ~/.cache/ms-playwright
+          key: playwright-chromium-${{ runner.os }}-v1
+
       - name: redibujar
         env:
           QUIENES: ${{ github.event.inputs.quienes }}

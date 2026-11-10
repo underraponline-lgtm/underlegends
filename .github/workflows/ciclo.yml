@@ -323,6 +323,13 @@ jobs:
         with:
           creds_json: ${{ secrets.CREDS_JSON }}
           env_file: ${{ secrets.ENV_FILE }}
+      # ⚡ el Chromium de Playwright, guardado (10/11/2026), con la MISMA clave que kit.yml y carta.yml: una sola copia
+      # para los tres. `bot/navegador.py` lo bajaba en cada `dibujar` que dibuja (~36 s, y el apt de `--with-deps` se
+      # trabó dos horas el 07/10); con la caché lo encuentra y no baja nada. Sigue bajándose sólo si hay que dibujar
+      - uses: actions/cache@v4
+        with:
+          path: ~/.cache/ms-playwright
+          key: playwright-chromium-${{ runner.os }}-v1
       - name: el ciclo
         env:
           REDIBUJAR_YA: ${{ inputs.redibujar_ya }}
