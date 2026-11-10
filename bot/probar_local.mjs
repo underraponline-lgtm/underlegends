@@ -2211,7 +2211,8 @@ console.log('\n🛡️ EL FRENO POR IP\n');
   // el Worker: 240 por minuto a quien lo llama directo, y nada a Discord, a la página ni al ciclo
   const ip = '192.0.2.44';
   const directo = () => worker.fetch(new Request('https://w/no-existe-' + Math.random(), { headers: { 'cf-connecting-ip': ip } }), env, ctx);
-  const desdePagina = () => worker.fetch(new Request('https://w/no-existe', { headers: { 'cf-connecting-ip': ip, 'cf-worker': 'underlegends.pages.dev' } }), env, ctx);
+  // (la página de verdad: `cf-worker` con su nombre Y la IP de los Workers de Cloudflare, medido el 10/11/2026)
+  const desdePagina = () => worker.fetch(new Request('https://w/no-existe', { headers: { 'cf-connecting-ip': '2a06:98c0:3600::103', 'cf-worker': 'underlegends.pages.dev' } }), env, ctx);
   const deCloudflare = () => worker.fetch(new Request('https://w/no-existe', { headers: { 'cf-connecting-ip': '2a06:98c0:3600::103' } }), env, ctx);
   const cw = [];
   for (let i = 0; i < 245; i++) cw.push((await directo()).status);
@@ -2237,6 +2238,28 @@ console.log('\n🛡️ EL FRENO POR IP\n');
   }
   ok('desde afuera, inventar la IP de la página o la clave del ciclo no esquiva el freno: se cuenta la IP real',
     truco.slice(0, 240).every((c) => c !== 429) && truco.slice(240).every((c) => c === 429), JSON.stringify(truco.filter((c) => c === 429).length));
+  // 🔴 Y LOS DOS AGUJEROS DE `cf-worker` (pasada del 09/11/2026): cualquier Worker de Cloudflare lo manda, así que otro
+  // Worker sin `x-lg-ip` no se frenaba nunca, y con un `x-lg-ip` distinto en cada pedido era una persona nueva cada vez
+  const otroWorker = (x) => worker.fetch(new Request('https://w/no-existe', { headers: Object.assign({ 'cf-connecting-ip': '2a06:98c0:3600::7',
+    'cf-worker': 'cualquiera.workers.dev' }, x ? { 'x-lg-ip': x } : {}) }), env, ctx);
+  const ow = [];
+  for (let i = 0; i < 242; i++) ow.push((await otroWorker(i % 2 ? '198.51.100.' + (i % 200) : '')).status);
+  ok('otro Worker de Cloudflare (sin la IP de quien mira o inventándola) se frena entero en el 241: ya no esquiva el freno',
+    ow.slice(0, 240).every((c) => c !== 429) && ow.slice(240).every((c) => c === 429), JSON.stringify(ow.filter((c) => c === 429).length));
+  // y desde afuera, decir que se es la página (`cf-worker`) sin la IP de un Worker tampoco: se cuenta la IP real
+  const ipDisfraz = '192.0.2.123';
+  const df = [];
+  for (let i = 0; i < 242; i++) {
+    df.push((await worker.fetch(new Request('https://w/no-existe', { headers: { 'cf-connecting-ip': ipDisfraz,
+      'cf-worker': 'underlegends.pages.dev', 'x-lg-ip': '198.51.100.' + (i % 200) } }), env, ctx)).status);
+  }
+  ok('desde afuera, decir que se es la página (cf-worker) no esquiva el freno: sin la IP de un Worker se cuenta la IP real',
+    df.slice(0, 240).every((c) => c !== 429) && df.slice(240).every((c) => c === 429), JSON.stringify(df.filter((c) => c === 429).length));
+  // y la página de verdad sin la IP de quien mira (el lobby, lo de KV, las vistas previas) sigue sin freno: ya pasó el suyo
+  const pg = [];
+  for (let i = 0; i < 245; i++) pg.push((await desdePagina()).status);
+  ok('la página de verdad sin la IP de quien mira no se frena (ya pasó por el freno de Pages)', pg.every((c) => c !== 429),
+    JSON.stringify(pg.filter((c) => c === 429).length));
   // IPv6: se cuenta el bloque /64, así rotar direcciones adentro de él no esquiva el freno
   const v6 = [];
   for (let i = 0; i < 242; i++) {

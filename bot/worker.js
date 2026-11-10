@@ -4291,6 +4291,16 @@ const bloqueIP = (ip) => {
   const p = x.split(':');
   return p.slice(0, 4).join(':') + '::/64';
 };
+/**
+ * 🛡️ ¿Este pedido es de la página (underlegends.pages.dev)? (10/11/2026) Por dos cosas que pone Cloudflare: `cf-worker`
+ * con su nombre y la IP de los Workers. Medido ese día con un eco (httpbin) desde la página: llega `Cf-Worker:
+ * underlegends.pages.dev` desde `2a06:98c0:3600::103`, y si la página manda OTRO `cf-worker`, Cloudflare lo pisa con el
+ * suyo — o sea que ningún Worker se puede hacer pasar por ella. Y quien llama de afuera no tiene la IP de un Worker:
+ * `cf-connecting-ip` sale de la conexión. Las dos juntas, sin inventar ninguna clave nueva
+ */
+export const PAGINA_CF = 'underlegends.pages.dev';
+export const esIPWorker = (ip) => String(ip || '').startsWith('2a06:98c0:');
+export const dePagina = (cw, ip) => cw === PAGINA_CF && esIPWorker(ip);
 const LIMITE_IP = { max: 240, ventana: 60000, tope: 5000 };
 const POR_IP = new Map();
 /** ¿Esa IP ya pasó su techo en este minuto? Cuenta este pedido */
@@ -4472,11 +4482,21 @@ export default {
     // `x-lg-ciclo` cualquiera y saltarse el freno, o un `x-lg-ip` distinto en cada pedido y no frenarse nunca. Ahora
     // `x-lg-ip` vale sólo si el pedido viene de un Worker (`cf-worker`: el subpedido de la página), y el ciclo se salta
     // el freno sólo con SU clave (`claveCiclo()`)
+    // 🔴 Y ESO NO ALCANZABA (pasada del 09/11/2026): `cf-worker` lo manda CUALQUIER Worker de Cloudflare, así que otro
+    // Worker sin `x-lg-ip` no se frenaba nunca (la clave quedaba vacía), y con un `x-lg-ip` distinto en cada pedido era
+    // una persona nueva cada vez. Justo lo que repetiría el 09/11 a propósito: miles de pedidos a lo que más lee el objeto.
+    // Ahora la página se reconoce por las DOS cosas que pone Cloudflare y nadie más puede poner (`dePagina()`), y otro
+    // Worker se frena entero, por su zona
     const ipQ = req.headers.get('cf-connecting-ip') || '';
-    const deWorker = !!req.headers.get('cf-worker');
-    const ipPag = deWorker ? (req.headers.get('x-lg-ip') || '') : '';
+    const cw = req.headers.get('cf-worker') || '';
+    const pagina = dePagina(cw, ipQ);
+    const ipPag = pagina ? (req.headers.get('x-lg-ip') || '') : '';
     const claveIP = ipPag ? 'pag:' + bloqueIP(ipPag)
-      : ipQ && !ipQ.startsWith('2a06:98c0:') && !deWorker ? 'ip:' + bloqueIP(ipQ) : '';
+      // la página sin la IP de quien mira (el lobby, lo de KV, las vistas previas): ya pasó por el freno de Pages
+      : pagina ? ''
+        // otro Worker: todos sus pedidos juntos, por la zona que le pone Cloudflare (no la puede cambiar)
+        : esIPWorker(ipQ) ? 'w:' + (cw || '?')
+          : ipQ ? 'ip:' + bloqueIP(ipQ) : '';
     let esCiclo = false;
     const kc = req.headers.get('x-lg-ciclo') || '';
     if (kc && env0.DISCORD_TOKEN) { try { esCiclo = kc === await claveCiclo(env0.DISCORD_TOKEN); } catch (e) { esCiclo = false; } }
