@@ -49091,5 +49091,213 @@
     1250
    ]
   ]
+ },
+ "600": {
+  "dia": "2026-11-09",
+  "escala": "16+",
+  "fecha": "09/11",
+  "links": [
+   "https://discord.com/channels/1468472442925092958/1487207377601040516/1569529154875949159"
+  ],
+  "n": 600,
+  "nombre": "TORNEO CLANDESTINO V.1",
+  "participantes": 19,
+  "rondas": [
+   {
+    "b": [
+     [
+      [
+       "Jupiter",
+       "Mito"
+      ],
+      "Jupiter",
+      ""
+     ],
+     [
+      [
+       "yinn",
+       "Drexx"
+      ],
+      "yinn",
+      ""
+     ],
+     [
+      [
+       "dyz🇨🇱",
+       "Miniboy"
+      ],
+      "dyz🇨🇱",
+      ""
+     ],
+     [
+      [
+       "Verc",
+       "0223 🇧🇧"
+      ],
+      "Verc",
+      ""
+     ],
+     [
+      [
+       "DELUX🇦🇷",
+       "Number 🇺🇾"
+      ],
+      "",
+      "sin ganador: espera en ✅ Decidir"
+     ],
+     [
+      [
+       "Kourier 🇲🇽",
+       "Sentpa 🇦🇷"
+      ],
+      "",
+      "sin ganador: espera en ✅ Decidir"
+     ],
+     [
+      [
+       "Soneto 🇪🇨",
+       "AbrahamSRRL🇵🇪"
+      ],
+      "",
+      "sin ganador: espera en ✅ Decidir"
+     ]
+    ],
+    "r": "Octavos"
+   },
+   {
+    "b": [
+     [
+      [
+       "yinn",
+       "Jupiter"
+      ],
+      "yinn",
+      ""
+     ],
+     [
+      [
+       "NC",
+       "Deko"
+      ],
+      "NC",
+      "Walk-in 1: Nc🇵🇷; Walk-in 1: Deko 🇦🇷"
+     ],
+     [
+      [
+       "Dyzz",
+       "Verc"
+      ],
+      "Dyzz",
+      ""
+     ],
+     [
+      [
+       "Guess",
+       "Tam"
+      ],
+      "Guess",
+      ""
+     ]
+    ],
+    "r": "Cuartos"
+   },
+   {
+    "b": [
+     [
+      [
+       "yinn",
+       "NC"
+      ],
+      "yinn",
+      ""
+     ],
+     [
+      [
+       "Guess",
+       "Dyzz"
+      ],
+      "Guess",
+      ""
+     ]
+    ],
+    "r": "Semifinales"
+   },
+   {
+    "b": [
+     [
+      [
+       "yinn",
+       "Guess"
+      ],
+      "yinn",
+      "ganador según #veredictos"
+     ]
+    ],
+    "r": "Final"
+   }
+  ],
+  "sv": "FFA",
+  "tabla": [
+   [
+    "yinn",
+    "Campeón",
+    10000
+   ],
+   [
+    "Guess",
+    "Subcampeón",
+    7500
+   ],
+   [
+    "Dyzz",
+    "Semifinal",
+    5250
+   ],
+   [
+    "NC",
+    "Semifinal",
+    2625
+   ],
+   [
+    "Jupiter",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Tam",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Verc",
+    "Cuartos",
+    2500
+   ],
+   [
+    "0223 🇧🇧",
+    "Octavos",
+    1250
+   ],
+   [
+    "Deko",
+    "Cuartos",
+    1250
+   ],
+   [
+    "Drexx",
+    "Octavos",
+    1250
+   ],
+   [
+    "Miniboy",
+    "Octavos",
+    1250
+   ],
+   [
+    "Mito",
+    "Octavos",
+    1250
+   ]
+  ]
  }
 }

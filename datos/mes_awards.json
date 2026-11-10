@@ -9050,6 +9050,20 @@
      ],
      "organizador": "@Zaik",
      "cuentas": {}
+    },
+    "1569560588638617663": {
+     "sv": "FDS",
+     "nombre": "RANKED",
+     "mo": "2026-11-10T23:45:00Z",
+     "staff": {},
+     "orgs": [
+      {
+       "n": "Cu?",
+       "id": "1452005860493492335"
+      }
+     ],
+     "organizador": "@Cu?",
+     "cuentas": {}
     }
    },
    "ver": {
@@ -9473,7 +9487,7 @@
       "nachonc_"
      ],
      "1515482513106272366": [
-      "#25 | Guess",
+      "#24 | Guess",
       "29",
       "sinergiabreak"
      ],

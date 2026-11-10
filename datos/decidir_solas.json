@@ -2,176 +2,6 @@
  "_leeme": "Lo que ✅ Decidir cerró o contestó solo, con la regla y la prueba (sheet/decidir.py, resolver_solo()), para «Lo que se resolvió solo» del Dashboard y su «Deshacer». «deshechas»: lo que Dlx deshizo; ninguna regla lo vuelve a tocar. Dlx, 13/10/2026.",
  "solas": [
   {
-   "id": "d75663e5cb",
-   "tipo": "Nombre desconocido",
-   "sec": "NOMBRE DE LA COMPETENCIA · DDF · 26/10 · #530",
-   "que": "¿Quién es «Pichu»?",
-   "r": "Es PichulaMc",
-   "regla": "Discord · su cuenta de Discord: la inscripción, el podio, la llave o la llamada",
-   "rk": "Discord",
-   "por": "el ciclo (su cuenta de Discord)",
-   "porque": "alias de PichulaMc: estaba en la llamada del evento con un nombre parecido",
-   "t": 1793062835663,
-   "filas": [
-    894
-   ],
-   "variantes": [
-    "Pichu"
-   ],
-   "escribio": {
-    "alias": [
-     "Pichu",
-     "PichulaMc"
-    ],
-    "filas": [
-     318
-    ]
-   }
-  },
-  {
-   "id": "9372486c30",
-   "tipo": "Nombre desconocido",
-   "sec": "NOMBRE DE LA COMPETENCIA · DDF · 26/10 · #530",
-   "que": "¿Quién es «Pichu 🇦🇷»?",
-   "r": "Es PichulaMc",
-   "regla": "Discord · su cuenta de Discord: la inscripción, el podio, la llave o la llamada",
-   "rk": "Discord",
-   "por": "el ciclo (su cuenta de Discord)",
-   "porque": "alias de PichulaMc: estaba en la llamada del evento con un nombre parecido",
-   "t": 1793062835663,
-   "filas": [
-    895
-   ],
-   "variantes": [
-    "Pichu 🇦🇷"
-   ],
-   "escribio": {
-    "alias": [
-     "Pichu",
-     "PichulaMc"
-    ],
-    "filas": [
-     318
-    ]
-   }
-  },
-  {
-   "id": "00c836a7ac",
-   "tipo": "Nombre desconocido",
-   "sec": "DETALLES DEL EVENTO · FFA · 26/10 · #531",
-   "que": "¿Quién es «Jahno Melomaníaco 🇦🇷»?",
-   "r": "Es melomaniaco",
-   "regla": "Discord · su cuenta de Discord: la inscripción, el podio, la llave o la llamada",
-   "rk": "Discord",
-   "por": "el ciclo (su cuenta de Discord)",
-   "porque": "alias de melomaniaco: estaba en la llamada del evento con un nombre parecido",
-   "t": 1793064750917,
-   "filas": [
-    896
-   ],
-   "variantes": [
-    "Jahno Melomaníaco 🇦🇷"
-   ],
-   "escribio": {
-    "alias": [
-     "Jahno Melomaníaco",
-     "melomaniaco"
-    ],
-    "filas": [
-     319
-    ]
-   }
-  },
-  {
-   "id": "18c408a650",
-   "tipo": "Nombre desconocido",
-   "sec": "DETALLES DEL EVENTO · FFA · 26/10 · #531",
-   "que": "¿Quién es «Swid🇪🇸»?",
-   "r": "Es alguien nuevo: alta con su cuenta 380869870264254465",
-   "regla": "Discord · su cuenta de Discord: la inscripción, el podio, la llave o la llamada",
-   "rk": "Discord",
-   "por": "el ciclo (su cuenta de Discord)",
-   "porque": "nuevo: entró a la Lista con la cuenta con que se anotó (380869870264254465)",
-   "t": 1793064750917,
-   "filas": [
-    900
-   ],
-   "variantes": [
-    "Swid🇪🇸"
-   ],
-   "escribio": {
-    "alta": [
-     "Swid",
-     "380869870264254465"
-    ]
-   }
-  },
-  {
-   "id": "f8f21c35c0",
-   "tipo": "Alias posible",
-   "sec": "🪪 Identidad",
-   "que": "¿«Jahno Melomaníaco» es melomaniaco? La cuenta de melomaniaco en la Lista se anotó como «Jahno Melomaníaco», y en el ranking suman aparte. Si es la misma persona, los puntos de «Jahno Melomaníaco» pasan a melomaniaco.\nLa cuenta: https://discord.com/users/653011056184000513",
-   "r": "Es la misma persona",
-   "regla": "cierre · ya no hacía falta preguntarlo",
-   "rk": "cierre",
-   "por": "el ciclo",
-   "porque": "la misma persona: «Jahno Melomaníaco» ya es alias de melomaniaco",
-   "t": 1793065182757,
-   "filas": [
-    901
-   ],
-   "variantes": [
-    "DOS NOMBRES: «Jahno Melomaníaco» → «melomaniaco» · cuenta 653011056184000513"
-   ],
-   "escribio": {}
-  },
-  {
-   "id": "729ead9298",
-   "tipo": "Nombre desconocido",
-   "sec": "NOMBRE DE LA COMPETENCIA · DDF · 26/10 · #530",
-   "que": "¿Quién es «Miniboy:CL:»?",
-   "r": "Es Miniboy",
-   "regla": "Discord · su cuenta de Discord: la inscripción, el podio, la llave o la llamada",
-   "rk": "Discord",
-   "por": "el ciclo (su cuenta de Discord)",
-   "porque": "alias de Miniboy: estaba en la llamada del evento con un nombre parecido",
-   "t": 1793068185227,
-   "filas": [
-    902
-   ],
-   "variantes": [
-    "Miniboy:CL:"
-   ],
-   "escribio": {
-    "alias": [
-     "Miniboy:CL:",
-     "Miniboy"
-    ],
-    "filas": [
-     320
-    ]
-   }
-  },
-  {
-   "id": "6a03978e5c",
-   "tipo": "Nombre desconocido",
-   "sec": "NOMBRE DE LA COMPETENCIA · DDF · 26/10 · #530",
-   "que": "¿Quién es «Wackmc🇪🇸»?",
-   "r": "Ya no hace falta",
-   "regla": "cierre · ya no hacía falta preguntarlo",
-   "rk": "cierre",
-   "por": "el ciclo",
-   "porque": "ya no está en ningún resultado: el lector lo lee distinto, o ya es alias de alguien",
-   "t": 1793068185227,
-   "filas": [
-    903
-   ],
-   "variantes": [
-    "Wackmc🇪🇸"
-   ],
-   "escribio": {}
-  },
-  {
    "id": "ebfe03dfbc",
    "tipo": "alta",
    "sec": "🪪 Identidad",
@@ -3317,6 +3147,25 @@
    ],
    "variantes": [
     "QZ🇦🇷"
+   ],
+   "escribio": {}
+  },
+  {
+   "id": "8b29ef4cf7",
+   "tipo": "Nombre desconocido",
+   "sec": "TORNEO CLANDESTINO V.1 · FFA · 09/11 · #600",
+   "que": "¿Quién es «dyz🇨🇱»?",
+   "r": "Ya no hace falta",
+   "regla": "cierre · ya no hacía falta preguntarlo",
+   "rk": "cierre",
+   "por": "el ciclo",
+   "porque": "ya no está en ningún resultado: el lector lo lee distinto, o ya es alias de alguien",
+   "t": 1794283653405,
+   "filas": [
+    1208
+   ],
+   "variantes": [
+    "dyz🇨🇱"
    ],
    "escribio": {}
   }

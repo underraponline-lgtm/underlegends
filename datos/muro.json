@@ -59,7 +59,7 @@
 ]
 },
 "verc": {
-"rg": "S",
+"rg": "A",
 "c": [
 "competitivo",
 "pais",
@@ -138,12 +138,12 @@
 "temporada"
 ]
 },
-"tam": {
-"rg": "A",
-"c": []
-},
 "yinn": {
 "rg": "C",
+"c": []
+},
+"tam": {
+"rg": "B",
 "c": []
 },
 "og": {
@@ -189,6 +189,15 @@
 "temporada"
 ]
 },
+"guess": {
+"rg": "C",
+"c": [
+"competitivo",
+"pais",
+"servidor",
+"temporada"
+]
+},
 "zignos": {
 "rg": "B",
 "c": [
@@ -198,15 +207,6 @@
 ]
 },
 "molusco": {
-"rg": "C",
-"c": [
-"competitivo",
-"pais",
-"servidor",
-"temporada"
-]
-},
-"guess": {
 "rg": "C",
 "c": [
 "competitivo",
@@ -545,10 +545,6 @@
 "rg": "D",
 "c": []
 },
-"eclipsito": {
-"rg": "C",
-"c": []
-},
 "jupiter": {
 "rg": "D",
 "c": [
@@ -556,6 +552,10 @@
 "servidor",
 "temporada"
 ]
+},
+"eclipsito": {
+"rg": "C",
+"c": []
 },
 "badterne": {
 "rg": "",
@@ -6818,8 +6818,8 @@
 "tipo": "resnoche",
 "t": "2026-11-10T08:00:00Z",
 "dia": "2026-11-09",
-"eventos": 2,
-"part": 36,
+"eventos": 3,
+"part": 55,
 "campeones": [
 {
 "ev": "JKWODJAKB V.1",
@@ -6842,6 +6842,17 @@
 "richard"
 ]
 ]
+},
+{
+"ev": "TORNEO CLANDESTINO V.1",
+"sv": "FFA",
+"ll": 600,
+"quien": [
+[
+"yinn",
+"yinn"
+]
+]
 }
 ],
 "suman": [
@@ -6852,16 +6863,16 @@
 "ev": 2
 },
 {
-"n": "Richard",
-"k": "richard",
-"pts": 7500,
+"n": "yinn",
+"k": "yinn",
+"pts": 10000,
 "ev": 1
 },
 {
-"n": "Valen",
-"k": "valen",
-"pts": 7500,
-"ev": 1
+"n": "Verc",
+"k": "verc",
+"pts": 7750,
+"ev": 2
 }
 ],
 "suben": [
@@ -6878,10 +6889,10 @@
 "a": 275
 },
 {
-"n": "Richard",
-"k": "richard",
-"de": 91,
-"a": 83
+"n": "0223 🇧🇧",
+"k": "",
+"de": 333,
+"a": 324
 }
 ],
 "sorpresas": [
