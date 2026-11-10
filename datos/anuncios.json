@@ -1,5 +1,5 @@
 {
- "cuando": "2026-11-10T20:25:20+00:00",
+ "cuando": "2026-11-10T20:55:34+00:00",
  "anuncios": [
   {
    "nombre": "¡SE LLEGÓ LA GRAN NOCHE!",
@@ -6792,6 +6792,42 @@
   }
  ],
  "inscripciones": [
+  {
+   "servidor": "LKR",
+   "canal": "⟡・INSCRIPCIONES",
+   "texto": "Mito🇦🇷",
+   "quien": "lizeninn.",
+   "discord_id": "1493416945037611140",
+   "msg_id": "1569817413900312708",
+   "cuando": "2026-11-10T20:53:57"
+  },
+  {
+   "servidor": "LKR",
+   "canal": "⟡・INSCRIPCIONES",
+   "texto": "Showsero🇬🇵",
+   "quien": "vilca_16",
+   "discord_id": "846870712950194196",
+   "msg_id": "1569815665664065607",
+   "cuando": "2026-11-10T20:47:00"
+  },
+  {
+   "servidor": "LKR",
+   "canal": "⟡・INSCRIPCIONES",
+   "texto": "Monet 🇲🇽",
+   "quien": "monet_x.",
+   "discord_id": "1501320596485701642",
+   "msg_id": "1569814597916037231",
+   "cuando": "2026-11-10T20:42:45"
+  },
+  {
+   "servidor": "FDS",
+   "canal": "✅╏inscripciones-express",
+   "texto": "Matito 🇧🇴",
+   "quien": "4456540222",
+   "discord_id": "1555731451180482560",
+   "msg_id": "1569811785106858056",
+   "cuando": "2026-11-10T20:31:35"
+  },
   {
    "servidor": "FDS",
    "canal": "✅╏inscripciones-express",
@@ -42755,42 +42791,6 @@
    "discord_id": "1492228152691396720",
    "msg_id": "1557493532887883860",
    "cuando": "2026-10-07T20:43:15"
-  },
-  {
-   "servidor": "SR",
-   "canal": "[📝]inscripciones",
-   "texto": "erian 🇧🇱",
-   "quien": "deslanofthemind",
-   "discord_id": "1055474244089286706",
-   "msg_id": "1557493410007482389",
-   "cuando": "2026-10-07T20:42:45"
-  },
-  {
-   "servidor": "SR",
-   "canal": "[📝]inscripciones",
-   "texto": "Chop🇭🇳",
-   "quien": "30fps30hz",
-   "discord_id": "1364747464170668042",
-   "msg_id": "1557493350494638235",
-   "cuando": "2026-10-07T20:42:31"
-  },
-  {
-   "servidor": "SR",
-   "canal": "[📝]inscripciones",
-   "texto": "Molt 🇨🇼",
-   "quien": "akvmolt",
-   "discord_id": "1355612971144839439",
-   "msg_id": "1557493337311678586",
-   "cuando": "2026-10-07T20:42:28"
-  },
-  {
-   "servidor": "SR",
-   "canal": "[📝]inscripciones",
-   "texto": "Cronox 🇨🇱",
-   "quien": "cronoxzito",
-   "discord_id": "1487658663148785734",
-   "msg_id": "1557493130851254284",
-   "cuando": "2026-10-07T20:41:39"
   }
  ]
 }
