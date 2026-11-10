@@ -1,5 +1,5 @@
 {
- "cuando": "2026-11-10T06:55:10+00:00",
+ "cuando": "2026-11-10T07:25:11+00:00",
  "anuncios": [
   {
    "nombre": "¡SE LLEGÓ LA GRAN NOCHE!",
@@ -1153,7 +1153,7 @@
     "jurado": [
      "Kravitz",
      "Lewito",
-     "Xubaru",
+     "Cornelius",
      "tenor"
     ],
     "host": [
@@ -1169,7 +1169,7 @@
    "staff_cuentas": {
     "Kravitz": "1345962362615894027",
     "Lewito": "1086485696572817418",
-    "Xubaru": "1397110475594010700",
+    "Cornelius": "1397110475594010700",
     "tenor": "1370860602972569632"
    },
    "categoria_id": "1468478330826260500"
