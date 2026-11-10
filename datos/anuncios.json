@@ -1,5 +1,5 @@
 {
- "cuando": "2026-11-10T17:25:44+00:00",
+ "cuando": "2026-11-10T17:55:02+00:00",
  "anuncios": [
   {
    "nombre": "¡SE LLEGÓ LA GRAN NOCHE!",
@@ -6792,6 +6792,42 @@
   }
  ],
  "inscripciones": [
+  {
+   "servidor": "DDF",
+   "canal": "『📑』Inscripciones",
+   "texto": "Majiztral 🇨🇴 (si alcanzo) (final BOSS si se puede):p",
+   "quien": "majiztral",
+   "discord_id": "1492228152691396720",
+   "msg_id": "1569771811321946163",
+   "cuando": "2026-11-10T17:52:44"
+  },
+  {
+   "servidor": "LKR",
+   "canal": "⟡・INSCRIPCIONES",
+   "texto": "MaYeuTyK 🇺🇾",
+   "quien": "martinez4080",
+   "discord_id": "756958777126682674",
+   "msg_id": "1569770578724913273",
+   "cuando": "2026-11-10T17:47:50"
+  },
+  {
+   "servidor": "LKR",
+   "canal": "⟡・INSCRIPCIONES",
+   "texto": "Teo 🇨🇴",
+   "quien": "teitomc.",
+   "discord_id": "1503540314948898937",
+   "msg_id": "1569770245948842107",
+   "cuando": "2026-11-10T17:46:31"
+  },
+  {
+   "servidor": "LKR",
+   "canal": "⟡・INSCRIPCIONES",
+   "texto": "Player 🇻🇪",
+   "quien": "jesuslgamer31",
+   "discord_id": "817387658656874536",
+   "msg_id": "1569765205003739257",
+   "cuando": "2026-11-10T17:26:29"
+  },
   {
    "servidor": "DDF",
    "canal": "『📑』Inscripciones",
@@ -42755,42 +42791,6 @@
    "discord_id": "578697503130779649",
    "msg_id": "1557481701846949919",
    "cuando": "2026-10-07T19:56:14"
-  },
-  {
-   "servidor": "FFA",
-   "canal": "✦📝—inscripciones",
-   "texto": "Ger9🇨🇱",
-   "quien": "elneekoperoelog",
-   "discord_id": "825179002091995136",
-   "msg_id": "1557481686814429417",
-   "cuando": "2026-10-07T19:56:10"
-  },
-  {
-   "servidor": "FFA",
-   "canal": "✦📝—inscripciones",
-   "texto": "Dyzzcapacitado🇨🇱",
-   "quien": "dyzzmc",
-   "discord_id": "1525996330042921081",
-   "msg_id": "1557480188697124975",
-   "cuando": "2026-10-07T19:50:13"
-  },
-  {
-   "servidor": "FFA",
-   "canal": "✦📝—inscripciones",
-   "texto": "MC Bot 🇻🇪",
-   "quien": "purpletoned",
-   "discord_id": "430117759620218890",
-   "msg_id": "1557479926393995275",
-   "cuando": "2026-10-07T19:49:11"
-  },
-  {
-   "servidor": "FFA",
-   "canal": "✦📝—inscripciones",
-   "texto": "Panchok 🇨🇱",
-   "quien": "panchok0103",
-   "discord_id": "1400508144920170577",
-   "msg_id": "1557479849440976988",
-   "cuando": "2026-10-07T19:48:52"
   }
  ]
 }

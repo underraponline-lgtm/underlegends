@@ -1189,6 +1189,17 @@
    "b": "GUESS",
    "ganador": "yinn",
    "votos": "1–0"
+  },
+  "1569766885480730667": {
+   "id": "1569766885480730667",
+   "sv": "🔥LKR (Champios Legue)🐉",
+   "g": "1558611504046153750",
+   "canal": "1560448027490001067",
+   "pub": 1794331990357,
+   "a": "Martinez 🇺🇾",
+   "b": "Fin 🇦🇷 #",
+   "ganador": "Fin 🇦🇷 #",
+   "votos": "1–0"
   }
  },
  "llaves": {
@@ -6008,6 +6019,47 @@
      ],
      "YINN",
      "veredicto",
+     []
+    ]
+   ]
+  },
+  "1569768754429034570": {
+   "id": "1569768754429034570",
+   "sv": "🔥LKR (Champios Legue)🐉",
+   "g": "1558611504046153750",
+   "canal": "1560448027490001067",
+   "pub": 1794332435949,
+   "ed": 1794333099662,
+   "texto": "`[ SEMIFINALES ]`\n⌞MARTINEZ 🇺🇾⌝ 🆚 ⌞ERIAN 🇨🇳 #⌝\n⌞LAST 🇺🇾⌝ 🆚 ⌞MATHIAS 🇻🇪 #⌝\n`[ FINAL ]`\n⌞ERIAN 🇨🇳⌝ 🆚 ⌞MATHIAS 🇻🇪  #⌝",
+   "batallas": [
+    [
+     "SEMIFINALES",
+     [
+      "MARTINEZ 🇺🇾",
+      "ERIAN 🇨🇳 #"
+     ],
+     "ERIAN 🇨🇳 #",
+     "ronda siguiente",
+     []
+    ],
+    [
+     "SEMIFINALES",
+     [
+      "LAST 🇺🇾",
+      "MATHIAS 🇻🇪 #"
+     ],
+     "MATHIAS 🇻🇪 #",
+     "ronda siguiente",
+     []
+    ],
+    [
+     "FINAL",
+     [
+      "ERIAN 🇨🇳",
+      "MATHIAS 🇻🇪  #"
+     ],
+     null,
+     "última ronda y no dice campeón",
      []
     ]
    ]
