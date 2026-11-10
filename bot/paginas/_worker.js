@@ -615,14 +615,6 @@ export default {
   async fetch(req, env, ctx) {
     const url = new URL(req.url);
     const ua = req.headers.get('user-agent') || '';
-    // 🧪 TEMPORAL (10/11/2026): qué `cf-worker` y qué IP le pone Cloudflare a un subpedido de esta página, para que el
-    // freno del Worker sepa reconocerla. Un servicio de eco y nada más: no lleva nada de quien pide. Se saca en seguida
-    if (url.pathname === '/api/__eco' && req.method === 'GET') {
-      // y si un Worker puede poner otro `cf-worker` (si puede, cualquiera se haría pasar por la página)
-      const r = await fetch('https://httpbin.org/anything', { headers: { accept: 'application/json', 'cf-worker': 'otro.pages.dev', 'x-lg-prueba': '3' } })
-        .catch(() => null);
-      return new Response(r ? await r.text() : '{"error":"sin eco"}', { headers: { 'content-type': 'application/json', 'cache-control': 'no-store' } });
-    }
 
     // 🖼️ la vista previa de cada página, sólo para los bots: una liga, una llave o un país tienen la suya; las demás, la de
     // su página (ver `vistaPagina()` y las tres de arriba)
