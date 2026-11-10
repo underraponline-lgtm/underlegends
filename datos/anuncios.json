@@ -1,5 +1,5 @@
 {
- "cuando": "2026-11-10T02:56:02+00:00",
+ "cuando": "2026-11-10T03:26:19+00:00",
  "anuncios": [
   {
    "nombre": "¡SE LLEGÓ LA GRAN NOCHE!",
@@ -5211,6 +5211,30 @@
    "autor": "Mosquitrap 🦟🇦🇷",
    "staff_cuentas": {},
    "categoria_id": "868218509975498805"
+  },
+  {
+   "nombre": "NUESTRO SIGUIENTE DESTINO ES PARA REPRESENTAR A TODO EL CONTINENTE!!!",
+   "servidor": "ACAD",
+   "canal": "🥇┇torneos",
+   "msg_id": "1569549201698717756",
+   "cuando": "2026-11-10T03:08:10",
+   "canal_id": "1309243940448243856",
+   "guild_id": "765045834647339038",
+   "organizador": "",
+   "orgs": [],
+   "autor_h": "33b8d394b34980ad",
+   "cupos_texto": "",
+   "inscriptos": null,
+   "cupo_total": null,
+   "rango": "",
+   "modalidad": "",
+   "horario": "PROXIMAMENTE ANUNCIADOS",
+   "fecha": "",
+   "premios": "",
+   "staff": {},
+   "autor": "Leonar-T",
+   "staff_cuentas": {},
+   "categoria_id": "1309234419525222477"
   },
   {
    "nombre": "UN PLACER MOSTRAR AL EQUIPO DE TRABAJO DE ESTA NACIONAL",
