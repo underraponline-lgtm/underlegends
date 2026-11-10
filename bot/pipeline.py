@@ -1577,9 +1577,14 @@ def main():
     # ahora, no en la vuelta siguiente.
     #
     # ⚠️ NO FRENA EL CICLO: sin foto, la carta sale igual, con la inicial.
+    # ⚡ Y SÓLO EN `escuchar` (10/11/2026): `dibujar` corre unos minutos después sobre su commit, y repetirlo era listar
+    # y releer los ~430 `d:` de KV otra vez por vuelta (KV leía ~57.000 de 100.000 por día, casi todo el ciclo). Quien
+    # se verifica en esos minutos tiene su foto en la vuelta siguiente
     paso('2f', 'las fotos que faltan, de Discord a R2')
     if not correr:
         print('      bajaría las fotos que faltan (`fotos.para_el_ciclo()`)')
+    elif '--solo-dibujar' in sys.argv:
+        print('      ⏭  las trajo `escuchar` en esta misma vuelta')
     else:
         try:
             sys.path.insert(0, SCR)

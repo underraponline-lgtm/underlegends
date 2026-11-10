@@ -585,6 +585,41 @@ def gente_de_kv(s):
     return out
 
 
+def gente_local():
+    """`{clave: discord_id}` de los verificados como el ciclo los escribe en `d:` (`subir_datos.armar()`), SIN LEER KV, o
+    `None` si no se puede asegurar que respete las bajas.
+
+    ⚡ POR QUÉ (10/11/2026): `gente_de_kv()` lista y relee los ~430 `d:` de KV en cada vuelta del ciclo, y KV leía ~57.000
+    de sus 100.000 lecturas diarias, casi todas del ciclo releyendo lo que él mismo escribió. `armar()` arma esos mismos
+    pares con lo que hay en el checkout —el padrón, `verificados.json`— y es lo que `subir_datos` escribe en esta vuelta:
+    hasta un poco más nuevo (quien se verificó en esta vuelta ya está).
+
+    🔒 Y LAS BAJAS: `/borrar-mis-datos` borra el `d:` de KV en el momento, y `armar()` las respeta por
+    `verificados.pasa()`, que lee `datos/olvidados.json`. Ese archivo NO va al repo: lo rehace `olvidar.traer()` al
+    principio de cada corrida. Si no se rehízo en esta (KV no contestó, o se corre a mano), no se arriesga a bajarle la
+    foto a quien pidió salir: `None`, y se lee KV como antes.
+    """
+    import contextlib
+    p = os.path.join(BASE, 'datos', 'olvidados.json')
+    try:
+        if time.time() - os.path.getmtime(p) > 2 * 3600:
+            return None
+    except OSError:
+        return None
+    try:
+        import subir_datos as SD
+        with contextlib.redirect_stdout(io.StringIO()):
+            pares, _n, _c = SD.armar()
+    except Exception:                                    # noqa: BLE001
+        return None
+    out = {}
+    for x in pares:
+        k, v = x.get('key') or '', x.get('value')
+        if k.startswith('d:') and isinstance(v, str) and v:
+            out[v] = k[2:]
+    return out or None
+
+
 def para_el_ciclo(limite=40):
     """📸 Las fotos que faltan, de Discord a R2: el paso del ciclo.
 
@@ -605,7 +640,10 @@ def para_el_ciclo(limite=40):
     """
     r2 = requests.Session()
     r2.headers['Authorization'] = 'Bearer ' + env('CLOUDFLARE_API_TOKEN')
-    porid = gente_de_kv(r2)
+    # ⚡ lo que el ciclo escribe en `d:`, sin releer KV (ver `gente_local()`); si no se puede asegurar, KV como antes
+    porid = gente_local()
+    print('      verificados: %s' % ('los de esta corrida (sin leer KV)' if porid else 'de KV'))
+    porid = porid or gente_de_kv(r2)
     tengo = ya_en_r2(r2)
     sin = {n: d for n, d in porid.items() if clave_de(n) not in tengo}
     if not sin:

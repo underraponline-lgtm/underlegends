@@ -293,8 +293,9 @@ def salud():
             # 3 · la cuota de KV del día (se agotó el 24/09 y congeló el hub)
             usado = (C.kv_hoy(s) or {}).get('write')
             if usado is not None and usado >= KV_AVISO:
+                # (la hora sale de `_corte()`: en invierno el día de Cloudflare arranca a las 7 PM ET, no a las 8)
                 alertar('kv', 'KV lleva %d escrituras hoy de 1.000: si se agotan, el '
-                        'hub y /card se congelan hasta las 8 PM ET.' % usado)
+                        'hub y /card se congelan hasta las %s.' % (usado, _corte()))
             elif usado is not None:
                 resuelto('kv', 'La cuota de KV volvió a tener margen (%d hoy).' % usado)
             # 3b · las filas que lee el objeto: con tiempo para hacer algo antes de que se acaben

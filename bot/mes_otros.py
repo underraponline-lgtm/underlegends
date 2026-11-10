@@ -603,14 +603,25 @@ def _nombres_lista(s, guilds):
         did_raw = {str(p['discord_id']): p['raw'] for p in json.load(f) or [] if p.get('raw') and p.get('discord_id')}
     out = {}
     for gid in sorted(guilds):
-        after = '0'
-        for _pag in range(12):
+        # 🔴 HASTA EL FINAL, Y UN 429 NO GASTA UNA PÁGINA (10/11/2026): eran 12 páginas de 1.000 contando también las
+        # esperas por 429, y Cypherhood tiene 11.437 miembros: con un solo 429 quedaban ~400 afuera, sin avisar. Ahora
+        # el tope es de 60 páginas de verdad (60.000 personas) y, si se llega, lo dice
+        after, pags, esperas = '0', 0, 0
+        while True:
+            if pags >= 60:
+                print('   ⚠️ %s tiene más de 60.000 miembros: los nombres quedan cortados ahí' % gid)
+                break
             r = s.get('https://discord.com/api/v10/guilds/%s/members' % gid, params={'limit': 1000, 'after': after}, timeout=40)
             if r.status_code == 429:
+                esperas += 1
+                if esperas > 10:
+                    print('   ⚠️ Discord frenó 10 veces la lista de %s: los nombres quedan cortados en %d página(s)' % (gid, pags))
+                    break
                 time.sleep(float(r.json().get('retry_after', 1)) + .3)
                 continue
             if r.status_code != 200:
                 break
+            pags += 1
             lote = r.json() or []
             for m in lote:
                 u = m.get('user') or {}
