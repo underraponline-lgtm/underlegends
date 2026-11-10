@@ -9036,6 +9036,20 @@
      "cuentas": {
       "Erian 恵理久": "1055474244089286706"
      }
+    },
+    "1569525815551590563": {
+     "sv": "FFA",
+     "nombre": "TORNEO CLANDESTINO V.1",
+     "mo": "2026-11-10T01:35:14Z",
+     "staff": {},
+     "orgs": [
+      {
+       "n": "Zaik",
+       "id": ""
+      }
+     ],
+     "organizador": "@Zaik",
+     "cuentas": {}
     }
    },
    "ver": {
@@ -9462,6 +9476,11 @@
       "#25 | Guess",
       "29",
       "sinergiabreak"
+     ],
+     "1345962362615894027": [
+      "#60 | Kravitz",
+      "Kravitz",
+      "thekravitz777"
      ]
     },
     "LKR|2026-11-09": {

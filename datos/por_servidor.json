@@ -2923,13 +2923,16 @@
   },
   "Dobell": {
    "FFA": {
-    "duelos": "1/1",
-    "ev": 0,
+    "duelos": "1/2",
+    "ev": 1,
     "oro": 0,
-    "ovr": 40,
+    "ovr": 42,
     "pod": 0,
-    "pts": 0,
-    "racha": "0/0"
+    "pts": 2500,
+    "racha": "0/0",
+    "tg": {
+     "nuevo": true
+    }
    }
   },
   "Dominick": {
@@ -8115,7 +8118,7 @@
     }
    },
    "FFA": {
-    "duelos": "3/8",
+    "duelos": "4/9",
     "ev": 15,
     "oro": 0,
     "ovr": 55,

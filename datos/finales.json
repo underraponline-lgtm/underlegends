@@ -1306,7 +1306,9 @@
     "ronda": "CUARTOS"
    }
   ],
-  "respondidas": {},
+  "respondidas": {
+   "0": "Mito🇦🇷"
+  },
   "sin_permiso": false,
   "sv": "FFA"
  },

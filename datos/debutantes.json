@@ -577,6 +577,18 @@
    "vence": "2026-11-15T18:42:24+00:00",
    "vencido": false
   },
+  "Dobell": {
+   "avisado": "2026-11-09",
+   "con": null,
+   "cumplido": "",
+   "debut": "2026-11-09T19:09:03+00:00",
+   "did": "560204755280855051",
+   "evento": "JKWODJAKB V.1",
+   "n": 595,
+   "sv": "FFA",
+   "vence": "2026-11-16T19:09:03+00:00",
+   "vencido": false
+  },
   "Drope": {
    "con": null,
    "cumplido": "",
