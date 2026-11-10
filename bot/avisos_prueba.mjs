@@ -2780,6 +2780,48 @@ const ok = (cond, que, det) => {
   'un afiche es una imagen con poco texto (sin contar las menciones); un video o un texto largo, no');
 }
 
+{
+  // ⚡ lo que se arma leyendo una tabla entera, una vez (09/11/2026: el objeto se pasó de las 5 millones de filas)
+  ok(A.tablaQueEscribe('INSERT OR REPLACE INTO jugo_temp (a) VALUES (1)') === 'jugo_temp'
+    && A.tablaQueEscribe('  UPDATE OR IGNORE idk SET id = ? WHERE id = ?') === 'idk'
+    && A.tablaQueEscribe('DELETE FROM carta_principal WHERE quien = ?') === 'carta_principal'
+    && A.tablaQueEscribe('INSERT INTO redibujo (k) VALUES (?) ON CONFLICT(k) DO UPDATE SET n = 1') === 'redibujo'
+    && A.tablaQueEscribe('SELECT quien FROM marcos') === '' && A.tablaQueEscribe('CREATE TABLE IF NOT EXISTS marcos (x)') === '',
+  'qué tabla escribe una consulta: INSERT [OR …] INTO, UPDATE [OR …], DELETE FROM; un SELECT o un CREATE, ninguna');
+  let DatabaseSync = null;
+  try { ({ DatabaseSync } = await import('node:sqlite')); } catch (e) { DatabaseSync = null; }
+  if (DatabaseSync) {
+    const db = new DatabaseSync(':memory:');
+    const sql = {
+      exec(q, ...ps) {
+        const t = String(q).trim();
+        if (!ps.length && /;\s*\S/.test(t)) { db.exec(t); return { toArray: () => [] }; }
+        const st = db.prepare(t);
+        if (/^\s*(SELECT|WITH|PRAGMA)/i.test(t)) { const rows = st.all(...ps); return { toArray: () => rows }; }
+        st.run(...ps);
+        return { toArray: () => [] };
+      },
+    };
+    const o = new A.Avisos({ storage: { sql, setAlarm() {}, getAlarm() { return null; } }, blockConcurrencyWhile: async (f) => f() },
+      { DISCORD_TOKEN: 'x' });
+    await new Promise((r) => setTimeout(r, 5));
+    o.sql.exec("INSERT INTO jugo_temp (quien, temp, k, eventos) VALUES ('1', 't1', 'ana', 1)");
+    o.sql.exec("INSERT INTO carta_principal (quien, carta, t) VALUES ('1', 'pais', 1)");
+    const a = o.cartasPrincipales();
+    let lecturas = 0;
+    const exec0 = sql.exec;
+    sql.exec = (q, ...ps) => { if (/^\s*SELECT[\s\S]*carta_principal/i.test(q)) lecturas++; return exec0.call(sql, q, ...ps); };
+    const b = o.cartasPrincipales();
+    o.sql.exec("INSERT INTO carta_principal (quien, carta, t) VALUES ('1', 'servidor', 2) "
+      + 'ON CONFLICT(quien) DO UPDATE SET carta = excluded.carta, t = excluded.t');
+    const c = o.cartasPrincipales();
+    sql.exec = exec0;
+    ok(a.ana === 'pais' && b === a && lecturas === 1 && c.ana === 'servidor',
+      'la carta principal de todos se arma una vez: la segunda no lee, y escribir la tabla la tira y la vuelve a armar',
+      JSON.stringify({ a, c, lecturas }));
+  }
+}
+
 if (fallas) {
   console.log(`\n❌ ${fallas} prueba(s) fallaron`);
   process.exit(1);

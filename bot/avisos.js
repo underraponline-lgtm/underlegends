@@ -2407,6 +2407,16 @@ export function nombreDe(texto) {
  * 🖼️ ¿Un anuncio que es sólo una imagen? Un adjunto de imagen y poco texto propio (sin menciones), la misma regla que
  * `anuncios.pide_ocr()` del ciclo (`OCR_TEXTO_MAX`). Dlx, 09/11/2026, a «el vigía no lee afiches»: *«arreglemos eso»*.
  */
+/**
+ * ⚡ La tabla que escribe una consulta (`INSERT [OR …] INTO`, `REPLACE INTO`, `UPDATE`, `DELETE FROM`), o ''. Con esto el
+ * objeto tira lo que tenía en memoria armado con esa tabla (`memo()`, 09/11/2026). Pura.
+ */
+export function tablaQueEscribe(q) {
+  const m = /^\s*(?:INSERT(?:\s+OR\s+\w+)?\s+INTO|REPLACE\s+INTO|UPDATE(?:\s+OR\s+\w+)?|DELETE\s+FROM)\s+["`]?([A-Za-z_]\w*)/i
+    .exec(String(q || ''));
+  return m ? m[1].toLowerCase() : '';
+}
+
 export const AFICHE_TEXTO_MAX = 160;
 export function esAfiche(m) {
   const img = (m && Array.isArray(m.attachments) ? m.attachments : [])
@@ -6265,6 +6275,9 @@ export class Avisos {
     this.med = { filas: {}, kv: {}, pedidos: {}, antiraid: {} };
     // 📏 y las filas de HOY aparte (04/11/2026): ver `medidasGuardar()`
     this.medHoy = {};
+    // ⚡ LO QUE SE ARMA LEYENDO UNA TABLA ENTERA, EN MEMORIA (09/11/2026): ver `memo()`. Una escritura en una de sus tablas
+    // lo tira (abajo, en `exec`), así que nunca se sirve viejo
+    this.memos = {};
     const real = state.storage.sql;
     const filas = (cur, q) => {
       let n = 0;
@@ -6275,7 +6288,13 @@ export class Avisos {
       exec: (q, ...ps) => {
         const cur = real.exec(q, ...ps);
         // lo que no devuelve filas ya se ejecutó entero; lo que sí, se cuenta al leerlo
-        if (!/^\s*(SELECT|WITH)\b/i.test(String(q))) { filas(cur, q); return cur; }
+        if (!/^\s*(SELECT|WITH)\b/i.test(String(q))) {
+          // ⚡ y si escribió una tabla, lo que estaba en memoria armado con ella se tira (`memo()`)
+          const t = tablaQueEscribe(q);
+          if (t) this.memoOlvidar(t);
+          filas(cur, q);
+          return cur;
+        }
         return new Proxy(cur, { get: (t, p) => {
           if (p === 'toArray') return () => { const r = t.toArray(); filas(t, q); return r; };
           const v = Reflect.get(t, p, t);
@@ -6768,6 +6787,30 @@ export class Avisos {
     const o = this.med[que];
     if (o && n) o[k] = (o[k] || 0) + n;
     if (que === 'filas' && n) this.medHoy[k] = (this.medHoy[k] || 0) + n;
+  }
+
+  /**
+   * ⚡ LO QUE SE ARMA LEYENDO UNA TABLA ENTERA, UNA VEZ (09/11/2026). El 09/11 el objeto se pasó de los 5 millones de filas
+   * leídas y desde las 3:55 PM no anduvo nada hasta las 7:15: la campana, el vigía, el bot en vivo, entrar con Discord.
+   * Medido el día entero (`medidas_ayer`): el 58 % eran siete consultas que leen una tabla entera para sacar UNA fila
+   * —los marcos, la carta principal, los redibujos y las fotos con marco de TODOS, armados en cada `/card` y en cada
+   * perfil (`persona()`) para mirar a una persona—. Ahora se arma una vez y se guarda en memoria: hasta que se escribe
+   * una de sus `tablas` (`memoOlvidar()`, desde `exec`) o pasan `ttl` minutos (lo que cambia por otro lado: el Pase, la
+   * temporada). ⚠️ Lo que devuelve es el MISMO objeto para todos: nunca se modifica.
+   */
+  memo(nombre, tablas, f, ttl = 10 * MIN) {
+    const m = this.memos[nombre];
+    const ahora = Date.now();
+    if (m && ahora - m.t < ttl) return m.v;
+    const v = f();
+    this.memos[nombre] = { t: ahora, v, tablas };
+    return v;
+  }
+
+  /** ⚡ Tira lo que estaba en memoria armado con `tabla` (ver `memo()`). Lo llama `exec` en cada escritura. ⚠️ NO SE LLAMA
+   *  `olvidar`: ése ya existe (borrar a alguien) y, definido más abajo, pisaba a éste */
+  memoOlvidar(tabla) {
+    for (const [k, m] of Object.entries(this.memos || {})) if (m.tablas.includes(tabla)) delete this.memos[k];
   }
 
   /**
@@ -12741,9 +12784,10 @@ export class Avisos {
       const r = this.sql.exec('SELECT COUNT(*) AS n, COUNT(DISTINCT quien) AS p, COUNT(DISTINCT id) AS a FROM aplausos')
         .toArray()[0];
       // ⚡ son miles de filas por un número de control, y la página pide este estado al abrirse: era la consulta que más
-      // leía de todas (04/11/2026). Cada 15 minutos alcanza
+      // leía de todas (04/11/2026). Cada 15 minutos alcanza… y no alcanzó: el 09/11, con ~2.600 filas, seguía siendo el
+      // 9 % de todo lo leído (250.000). Cada 2 horas: es un número de control, no lo mira nadie en vivo
       const ahora = Date.now();
-      if (!this.bandejaMem || ahora - this.bandejaMem.t > 15 * MIN) {
+      if (!this.bandejaMem || ahora - this.bandejaMem.t > 120 * MIN) {
         this.bandejaMem = { t: ahora, b: this.sql.exec('SELECT COUNT(*) AS n, COUNT(DISTINCT quien) AS p FROM bandeja').toArray()[0] };
       }
       const b = this.bandejaMem.b;
@@ -14332,6 +14376,11 @@ export class Avisos {
    * clave, nunca por cuenta
    */
   marcosPublicos() {
+    // ⚡ una vez, en memoria: ver `memo()`. `jugo_temp` e `idk` son las de `claveDe()`
+    return this.memo('marcosPublicos', ['marcos', 'marco_elige', 'jugo_temp', 'idk'], () => this._marcosPublicos());
+  }
+
+  _marcosPublicos() {
     const out = {};
     try {
       const tiene = {};
@@ -14419,6 +14468,11 @@ export class Avisos {
 
   /** 🃏 La carta principal de cada perfil: `{clave: carta}`. Por clave, nunca por cuenta */
   cartasPrincipales() {
+    // ⚡ una vez, en memoria: ver `memo()`
+    return this.memo('cartasPrincipales', ['carta_principal', 'jugo_temp', 'idk'], () => this._cartasPrincipales());
+  }
+
+  _cartasPrincipales() {
     const out = {};
     try {
       for (const r of this.sql.exec('SELECT quien, carta FROM carta_principal').toArray()) {
@@ -14654,6 +14708,11 @@ export class Avisos {
   /** 🖼️ `{clave: [cartas]}` de las fotos con marco que siguen valiendo: las sacadas con el marco que lleva puesto hoy.
    *  Si cambió de marco (o lo sacó), su foto vieja no se usa y /card vuelve a la carta sola hasta la nueva */
   marcosEnImagen() {
+    // ⚡ una vez, en memoria: ver `memo()`. Con las tablas de `marcosPublicos()`, que usa adentro
+    return this.memo('marcosEnImagen', ['marco_img', 'marcos', 'marco_elige', 'jugo_temp', 'idk'], () => this._marcosEnImagen());
+  }
+
+  _marcosEnImagen() {
     const out = {};
     try {
       const pub = this.marcosPublicos();
@@ -14667,6 +14726,11 @@ export class Avisos {
 
   /** ⚡ `{clave: cuándo se redibujó}` de los que pidieron: la versión que va en la URL de sus cartas */
   versionesRedibujo() {
+    // ⚡ una vez, en memoria: ver `memo()`
+    return this.memo('versionesRedibujo', ['redibujo'], () => this._versionesRedibujo());
+  }
+
+  _versionesRedibujo() {
     const out = {};
     try { for (const r of this.sql.exec('SELECT k, hecho FROM redibujo WHERE hecho > 0').toArray()) out[r.k] = r.hecho; } catch (e) { /* nada */ }
     return out;
