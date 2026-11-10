@@ -553,6 +553,39 @@ def _prueba_mapa():
     return not mal
 
 
+#: 🎨 cuántas vueltas seguidas puede fallar algo del dibujo antes de avisarle a Dlx. Ver `dibujar_seguidas()`
+DIBUJAR_SEGUIDAS = 3
+
+
+def dibujar_seguidas(fallas):
+    """🎨 Cuenta las vueltas seguidas de `dibujar` con alguna carta que no salió (`cuenta:dibujar` en `datos/alertas.json`).
+    Con `DIBUJAR_SEGUIDAS` o más, DM a Dlx con qué falló; cuando sale una vuelta limpia, UNO de que volvió. Devuelve
+    cuántas van.
+
+    🔴 POR QUÉ (10/11/2026): DDS entró a `que_cambio.SERVIDORES` el 08/11 sin tener carta, y desde esa tarde cada `dibujar`
+    falló en la Servidor de la tanda entera: nadie de la tanda se sellaba y volvía a la cola cada media hora (~384
+    minutos de runner el 09/11). El trabajo salía en verde —una carta que no sale no frena el ciclo— y el estado guardaba
+    la falla sin que nadie la mirara. Lo encontró un revisor leyendo el historial. Es la forma de `lector_seguidas()` del
+    pipeline, para el dibujo."""
+    d = _leer()
+    n = int((d.get('cuenta:dibujar') or {}).get('n') or 0)
+    if not fallas:
+        if n:
+            d.pop('cuenta:dibujar', None)
+            _guardar(d)
+            if n >= DIBUJAR_SEGUIDAS:
+                resuelto('dibujar', '**El dibujo volvió a salir entero**, después de %d vuelta(s) con fallas.' % n)
+        return 0
+    n += 1
+    que = sorted({str((x or {}).get('que') or '?') for x in fallas})
+    d['cuenta:dibujar'] = {'n': n, 't': _ahora().isoformat(), 'que': que[:6]}
+    _guardar(d)
+    if n >= DIBUJAR_SEGUIDAS:
+        alertar('dibujar', '**El dibujo falló %d vueltas seguidas**: las cartas de esas tandas no se sellan y se vuelven a '
+                'dibujar en cada vuelta. Lo que falló: %s' % (n, ' · '.join('`%s`' % q for q in que[:6])))
+    return n
+
+
 def _self_check():
     """Lo que tiene que valer siempre, sin red: que se sepa a quién mandarle el DM."""
     d = dueno()
@@ -567,8 +600,32 @@ def _self_check():
     ok2 = bool(m) and m.group(1) == canal_logs()
     print('  %s el vigía avisa en el mismo canal de Logs (%s)' % ('✅' if ok2 else '❌', m.group(1) if m else 'no está'))
     ok3 = _prueba_mapa()
-    print('\n  %s' % ('todo ok' if ok and ok2 and ok3 else 'algo falló'))
-    return ok and ok2 and ok3
+    ok4 = _prueba_dibujar()
+    print('\n  %s' % ('todo ok' if ok and ok2 and ok3 and ok4 else 'algo falló'))
+    return ok and ok2 and ok3 and ok4
+
+
+def _prueba_dibujar():
+    """`dibujar_seguidas()` con un `datos/alertas.json` de mentira y sin mandar nada: avisa en la tercera, se calla en
+    las otras y dice que volvió con la primera limpia."""
+    global ESTADO, alertar, resuelto
+    viejo = (ESTADO, alertar, resuelto)
+    import tempfile
+    dirt = tempfile.mkdtemp()
+    dichos = []
+    try:
+        ESTADO = os.path.join(dirt, 'alertas.json')
+        alertar = lambda clave, texto: dichos.append(('alertar', clave, texto))       # noqa: E731
+        resuelto = lambda clave, texto: dichos.append(('resuelto', clave, texto))     # noqa: E731
+        falla = [{'paso': '5', 'que': '03_Servidor/generar.py .SosaATR'}]
+        ns = [dibujar_seguidas(falla) for _ in range(3)] + [dibujar_seguidas([])]
+        ok = (ns == [1, 2, 3, 0] and [x[0] for x in dichos] == ['alertar', 'resuelto']
+              and 'SosaATR' in dichos[0][2] and 'cuenta:dibujar' not in _leer())
+    finally:
+        ESTADO, alertar, resuelto = viejo
+    print('  %s el dibujo que falla 3 vueltas seguidas avisa una vez, y la vuelta limpia dice que volvió'
+          % ('✅' if ok else '❌'))
+    return ok
 
 
 def en_cola_canceladas(horas=3, s=None):
@@ -644,6 +701,14 @@ def main():
                         que, _et(), ('\n' + run) if run else ''))
         elif estado == 'success':
             resuelto('ciclo:' + job, '%s volvió a andar (%s).' % (que, _et()))
+        # 🎨 y lo que no salió del dibujo, vuelta tras vuelta (ver `dibujar_seguidas()`): el trabajo sale en verde igual
+        if job == 'dibujar' and estado == 'success':
+            try:
+                with io.open(os.path.join(BASE, 'datos', 'estado_dibujar.json'), encoding='utf-8') as f:
+                    fallas = (json.load(f) or {}).get('fallas') or []
+                print('   🎨 vueltas seguidas con fallas en el dibujo: %d' % dibujar_seguidas(fallas))
+            except (OSError, ValueError) as e:
+                print('   ⚠️ no pude mirar las fallas del dibujo: %s' % str(e)[:80])
         # ⏭ y las que se cancelaron esperando detrás de ésta (ver `en_cola_canceladas()`). Con dos o más es que ésta
         # tardó de más: una sola es el reemplazo de siempre
         if job == 'dibujar':
