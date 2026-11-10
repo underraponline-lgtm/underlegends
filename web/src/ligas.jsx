@@ -130,7 +130,8 @@ function useVotos() {
     const f = () => setN((n) => n + 1);
     VOTOS.oyentes.add(f);
     pedirVotos(false);
-    const t = setInterval(() => pedirVotos(true), 120000);
+    // (sólo con la pestaña a la vista: oculta seguía pidiendo cada dos minutos, 10/11/2026)
+    const t = setInterval(() => { if (!document.hidden) pedirVotos(true); }, 120000);
     return () => { VOTOS.oyentes.delete(f); clearInterval(t); };
   }, []);
   return VOTOS;

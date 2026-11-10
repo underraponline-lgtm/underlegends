@@ -251,9 +251,15 @@ function useBandeja() {
     window.addEventListener('lg:bandeja', f);
     window.addEventListener('lg:cuenta', pedir);
     pedir();
-    // lo nuevo, cada tres minutos con la pestaña a la vista
-    const t = setInterval(pedir, 180000);
-    return () => { window.removeEventListener('lg:bandeja', f); window.removeEventListener('lg:cuenta', pedir); clearInterval(t); };
+    // lo nuevo, cada diez minutos con la pestaña a la vista, y en cuanto se vuelve a ella (`pedirBandeja()` no pide dos
+    // veces en un minuto). ⚡ Eran tres (10/11/2026): un POST sin caché —el Worker y dos pedidos al objeto— cada tres
+    // minutos por cada pestaña con cuenta, lo mire alguien o no. Abrir la campana pide igual en el momento
+    const t = setInterval(pedir, 600000);
+    document.addEventListener('visibilitychange', pedir);
+    return () => {
+      window.removeEventListener('lg:bandeja', f); window.removeEventListener('lg:cuenta', pedir); clearInterval(t);
+      document.removeEventListener('visibilitychange', pedir);
+    };
   }, []);
   return b;
 }

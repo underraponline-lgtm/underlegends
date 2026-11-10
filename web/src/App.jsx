@@ -186,12 +186,12 @@ escucharErrores();
 // ⚠️ Sus funciones son globales (scripts clásicos, sin módulo), y adentro se llaman por su nombre: si se cambia
 // `window.pintaDatos`, las llamadas de los scripts pasan por el cambio. Se envuelven una sola vez. Desde la tanda 4
 // (27/10/2026) no dibujan nada: existen para que salga el aviso. ⚠️ Renombrarlas deja a la página sorda sin fallar
-function envolver(nombre, evento) {
+function envolver(nombre, evento, avisar) {
   const f = window[nombre];
   if (typeof f !== 'function' || f.__inicio) return;
   const g = function () {
     const r = f.apply(this, arguments);
-    try { window.dispatchEvent(new CustomEvent(evento)); } catch (e) { /* nada */ }
+    try { if (!avisar || avisar()) window.dispatchEvent(new CustomEvent(evento)); } catch (e) { /* nada */ }
     return r;
   };
   g.__inicio = true;
@@ -204,7 +204,21 @@ envolver('ir', 'lg:ruta');
 // 🔴 ENTRAR CON DISCORD TERMINA SOLO: `volverDeDiscord()` guarda la cuenta cuando vuelve un fetch y llama a
 // `pintaCuenta()`, sin `ir()` ni datos nuevos. Sin esto el Inicio seguía mostrando «Entrar» (30/09/2026, revisión).
 // Y a quién seguís lo guarda siempre `guardarSigo()`.
-envolver('pintaCuenta', 'lg:cuenta');
+// 🔴 Y SÓLO SI CAMBIÓ LA CUENTA (10/11/2026): `pintaDatos()` llama a `pintaCuenta()` con CADA lobby nuevo, y cada
+// `lg:cuenta` volvía a pedir la racha, el Pase, la crew y la bandeja —cuatro POST, sin caché: el Worker y el objeto— sin
+// que nadie hubiera entrado ni salido. La firma es lo que guarda Mi cuenta al entrar, salir u olvidar (`lg:dc`,
+// `lg:yo`), entero; si no se puede leer, avisa siempre (lo de antes). Lo que cambia sin cambiar de cuenta (la foto, las
+// redes, «tu servidor») ya avisa por `lg:cuentaest`
+let firmaCuentaVieja = firmaCuenta();
+function firmaCuenta() {
+  try { return (localStorage.getItem('lg:dc') || '') + '|' + (localStorage.getItem('lg:yo') || ''); } catch (e) { return null; }
+}
+envolver('pintaCuenta', 'lg:cuenta', () => {
+  const f = firmaCuenta();
+  if (f !== null && f === firmaCuentaVieja) return false;
+  firmaCuentaVieja = f;
+  return true;
+});
 envolver('guardarSigo', 'lg:sigo');
 // 👤 Y LO DE MI CUENTA (02/10/2026): la foto, las redes, «tu servidor». cuenta.js llama a `pintaPopCuenta()` después
 // de cada cambio, así que ése es el aviso

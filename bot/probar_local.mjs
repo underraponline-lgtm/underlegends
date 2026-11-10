@@ -3139,6 +3139,16 @@ console.log('\n👏 FELICITAR\n');
   ok('/pases?r= va siempre al Worker y renueva lo guardado; el lobby, un minuto en el borde con su encabezado de siempre',
      ebP.pedidos === 2 && ebP.ttl === 300 && ebL.pedidos === 1 && ebL.ttl === 60
      && ebL.navegador === 'public, max-age=60, stale-while-revalidate=120', JSON.stringify({ ebP, ebL }));
+  // ⚡ y un 5xx se guarda 15 s (que una caída no multiplique los pedidos al Worker), sin caché para el navegador; un 429
+  // no se guarda: es el freno de UNA IP y se lo daría a todos los de esa ciudad (10/11/2026)
+  const conEstado = async (st) => {
+    const f1 = globalThis.fetch;
+    globalThis.fetch = async () => new Response('{"error":"x"}', { status: st });
+    try { return await enBorde(proxy, envP, '/api/avisos/estado'); } finally { globalThis.fetch = f1; }
+  };
+  const e5 = await conEstado(503), e4 = await conEstado(429);
+  ok('un error del Worker (5xx) se guarda 15 s en el borde, sin caché para el navegador; un 429 (el freno de una IP) no se guarda',
+     e5.pedidos === 1 && e5.ttl === 15 && e5.navegador === 'no-store' && e4.pedidos === 2 && e4.ttl === 0, JSON.stringify({ e5, e4 }));
   // 🔔 la bandeja: con la sesión, y el «visto» pasa tal cual (nunca otro quien)
   await proxy.fetch(new Request('https://underlegends.pages.dev/api/avisos/bandeja', { method: 'POST', body: '{"visto":true}',
     headers: { cookie: 'lg_ses=' + SES } }), envP);

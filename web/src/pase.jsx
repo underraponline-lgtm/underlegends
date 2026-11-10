@@ -337,11 +337,24 @@ function Sorteo({ liga, dc, miembro }) {
   const s = S && S.sorteo;
   const res = S && S.resultado;
   // a la hora, hasta que llega el resultado (lo saca el vigía, minuto a minuto), se vuelve a preguntar
+  // 🔴 Y AHORA PARA (10/11/2026): sin nadie anotado no sale resultado nunca (`sortear()` no sortea a nadie), y esto
+  // preguntaba cada 15 s PARA SIEMPRE —también con la pestaña oculta y de madrugada, con el vigía dormido—: un POST sin
+  // caché, o sea el Worker y el objeto, cada vez. Ahora: sólo si hay alguien, sólo a la vista, cada vez más espaciado
+  // (15 s, 30, 60, hasta 2 min) y hasta media hora después de la hora; quien vuelve a abrir el Pase lo ve igual
   useEffect(() => {
-    if (!s || res || ahora < s.cuando) return undefined;
-    const i = setInterval(traer, 15000);
-    return () => clearInterval(i);
-  }, [!!s, !!res, ahora >= (s ? s.cuando : Infinity)]); // eslint-disable-line react-hooks/exhaustive-deps
+    if (!s || res || ahora < s.cuando || !s.personas) return undefined;
+    let espera = 15000, t = null, vivo = true;
+    const otra = () => {
+      t = setTimeout(() => {
+        if (!vivo || Date.now() - s.cuando > 30 * 60000) return;
+        if (!document.hidden) traer();
+        espera = Math.min(espera * 2, 120000);
+        otra();
+      }, espera);
+    };
+    otra();
+    return () => { vivo = false; clearTimeout(t); };
+  }, [!!s, !!res, ahora >= (s ? s.cuando : Infinity), !!(s && s.personas)]); // eslint-disable-line react-hooks/exhaustive-deps
   const nombre = (k) => (liga.T && liga.T[k] ? limpio(liga.T[k].n) : k);
   // 🎰 la rueda: pasan los que entraron, cada vez más lento, y se para en quien ganó. Una vez por sorteo y por navegador
   const girar = () => {

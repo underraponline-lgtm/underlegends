@@ -434,15 +434,27 @@
   // quedaba quieta y el «hace» crecía, así que la página decía que el vigía se había caído cuando corría cada minuto.
   // Ahora se vuelve a pedir cada minuto mientras la página está a la vista, y en cuanto se vuelve a ella. El borde lo
   // guarda 30 s (`_worker.js`), así que mucha gente mirando sigue siendo pocos pedidos al Worker
+  // ⚡ Y SÓLO EN EVENTOS (10/11/2026): es la única página que muestra «última vez hace…», los servidores de la campana y
+  // la pausa. El resto (el Inicio, que mira si está en pausa) se queda con el de al abrir. Antes se pedía cada minuto en
+  // TODAS las páginas: con una pestaña sola en su ciudad de Cloudflare, el borde (30 s) nunca le servía la copia
   var ESTADO_CADA = 60 * 1000, estadoT = null;
+  function enEventos() {
+    var r = window.rutaLG ? window.rutaLG() : (location.hash || '').replace(/^#\/?/, '');
+    r = String(r || '').split('?')[0].split('/')[0];
+    return r === 'eventos' || r === 'avisos';
+  }
   function refrescarEstado() {
     if (estadoT) return;
+    var ult = Date.now();
     async function una() {
-      if (document.hidden) return;
+      if (document.hidden || !enEventos() || Date.now() - ult < 20000) return;
+      ult = Date.now();
       try { EST = await pedir('estado'); pinta(); } catch (e) { /* se queda el de antes */ }
     }
     estadoT = setInterval(una, ESTADO_CADA);
     document.addEventListener('visibilitychange', function () { if (!document.hidden) una(); });
+    // y al llegar a Eventos desde otra página, el de ahora (el del arranque puede ser de hace horas)
+    window.addEventListener('lg:ruta', function () { una(); });
   }
 
   // ── arrancar ────────────────────────────────────────────────────────

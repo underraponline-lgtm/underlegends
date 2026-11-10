@@ -217,17 +217,24 @@ async function delBorde(ctx, url, ttl, pedir, cab, fresco) {
   if (!fresco) {
     try {
       const hay = await caches.default.match(clave);
-      if (hay) return new Response(hay.body, { status: 200, headers: cab });
+      if (hay) return new Response(hay.body, { status: hay.status, headers: hay.status === 200 ? cab : { ...cab, 'cache-control': 'no-store' } });
     } catch (e) { /* sin caché: se pide */ }
   }
   const r = await pedir();
-  if (r.status !== 200) return new Response(r.body, { status: r.status, headers: cab });
   const cuerpo = await r.arrayBuffer();
-  try {
-    const guarda = caches.default.put(clave, new Response(cuerpo, { headers: { ...cab, 'cache-control': `public, max-age=${ttl}` } }));
-    if (ctx && ctx.waitUntil) ctx.waitUntil(guarda.catch(() => {})); else await guarda.catch(() => {});
-  } catch (e) { /* sin caché: sale igual */ }
-  return new Response(cuerpo, { status: 200, headers: cab });
+  // 🔴 UN ERROR DEL WORKER TAMBIÉN SE GUARDA, 15 s (10/11/2026): en la caída del 09/11 cada pestaña siguió preguntando a
+  // su ritmo y cada pregunta llegaba al Worker (los 100.000 pedidos del día son de todo: el bot de Discord también).
+  // Así, mientras algo está caído, cada ciudad pregunta una vez cada 15 s por ruta; la página se queda con lo que tenía.
+  // ⚠️ Sólo los 5xx: un 429 es el freno de UNA IP, y guardarlo se lo daría a todos los de esa ciudad
+  const guardar = r.status === 200 ? ttl : r.status >= 500 ? Math.min(ttl, 15) : 0;
+  if (guardar) {
+    try {
+      const guarda = caches.default.put(clave, new Response(cuerpo, { status: r.status,
+        headers: { ...cab, 'cache-control': `public, max-age=${guardar}` } }));
+      if (ctx && ctx.waitUntil) ctx.waitUntil(guarda.catch(() => {})); else await guarda.catch(() => {});
+    } catch (e) { /* sin caché: sale igual */ }
+  }
+  return new Response(cuerpo, { status: r.status, headers: r.status === 200 ? cab : { ...cab, 'cache-control': 'no-store' } });
 }
 
 function sesion(req) {

@@ -13,7 +13,8 @@ export function useAplausos() {
   const [a, setA] = useState(leerAplausos);
   useEffect(() => {
     const f = () => setA(leerAplausos());
-    const pedir = () => { if (window.pedirAplausos) window.pedirAplausos(); };
+    // (sólo con la pestaña a la vista: oculta seguía pidiendo cada dos minutos, 10/11/2026)
+    const pedir = () => { if (window.pedirAplausos && !document.hidden) window.pedirAplausos(); };
     window.addEventListener('lg:aplausos', f);
     pedir();
     // los de los demás, cada dos minutos mientras se mira (el borde guarda 30 s)
