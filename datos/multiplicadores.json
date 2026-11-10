@@ -1252,17 +1252,17 @@
    "organizadores": [
     [
      "Guess",
-     20,
+     21,
      1
     ]
    ],
    "semillero": {
     "nuevos": {
-     "FFA": 3,
+     "FFA": 4,
      "LKR": 2
     },
     "gente": {
-     "FFA": 20,
+     "FFA": 21,
      "LKR": 13
     },
     "gana": "FFA"
@@ -1274,7 +1274,7 @@
     "DDS": 0,
     "DRA": 0,
     "FDS": 0,
-    "FFA": 20,
+    "FFA": 21,
     "FFS": 0,
     "FRZ": 0,
     "FVS": 0,
