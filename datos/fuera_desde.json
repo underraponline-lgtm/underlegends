@@ -1,6 +1,17 @@
 {
  "_leeme": "El reloj de bot/fuera.py: desde qué día le sobra cada tarjeta a cada carpeta de R2 (`verificados.puede()`). A los 7 días seguidos se borra esa tarjeta (Dlx, 27/09/2026). No se edita a mano.",
  "desde": {
+  "dobell": {
+   "bloq-competitivo": "2026-11-10",
+   "bloq-pais": "2026-11-10",
+   "competitivo": "2026-11-10",
+   "pais": "2026-11-10",
+   "servidor": "2026-11-10",
+   "sv-ch": "2026-11-10",
+   "sv-dra": "2026-11-10",
+   "sv-ffa": "2026-11-10",
+   "sv-sr": "2026-11-10"
+  },
   "fleivawack": {
    "competitivo": "2026-11-06",
    "temporada": "2026-11-06"
@@ -12,10 +23,27 @@
    "sv-ffa": "2026-11-07",
    "sv-sr": "2026-11-07",
    "temporada": "2026-11-07"
+  },
+  "ztr": {
+   "bloq-competitivo": "2026-11-10",
+   "bloq-pais": "2026-11-10",
+   "competitivo": "2026-11-10",
+   "pais": "2026-11-10",
+   "servidor": "2026-11-10",
+   "sv-acad": "2026-11-10",
+   "sv-ch": "2026-11-10",
+   "sv-ddf": "2026-11-10",
+   "sv-dra": "2026-11-10",
+   "sv-ffa": "2026-11-10",
+   "sv-ffs": "2026-11-10",
+   "sv-frz": "2026-11-10",
+   "sv-sr": "2026-11-10",
+   "sv-urbf": "2026-11-10",
+   "temporada": "2026-11-10"
   }
  },
- "pasaban": 427,
- "cuando": "2026-11-10T08:01:27Z",
+ "pasaban": 425,
+ "cuando": "2026-11-10T16:41:26Z",
  "borradas": [
   [
    "19",
