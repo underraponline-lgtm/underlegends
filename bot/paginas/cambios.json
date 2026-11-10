@@ -11,6 +11,18 @@
  ],
  "cambios": [
   {
+   "version": "4.42",
+   "dia": "2026-11-10",
+   "cuando": "2026-11-10T02:50:53-05:00",
+   "titulo": "El resumen de la noche",
+   "items": [
+    "**El resumen de la noche, en Publicaciones**: cuántos eventos y participaciones hubo, el campeón de cada uno, los tres que más sumaron, los que más subieron en el Ranking Temporada y las sorpresas de la noche.",
+    "**Los eventos vuelven a entrar al ranking**: desde el sábado no se cargaba ninguno, y ya están los que se habían quedado afuera.",
+    "**La temporada, recalculada con el lector de hoy**: 22 eventos corregidos y 2 que nunca se habían cargado (FFA DELUXE y 19 CUP VOL 2 EDICIÓN FIFA). En Cuentas Pendientes V.1 el campeón es **Aldre**.",
+    "**La página responde más rápido**: lo que ven todos se guarda unos segundos cerca de ti, en vez de armarse de nuevo en cada visita."
+   ]
+  },
+  {
    "version": "4.41",
    "dia": "2026-11-09",
    "cuando": "2026-11-09T16:05:00-05:00",
