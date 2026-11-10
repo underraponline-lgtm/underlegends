@@ -152,32 +152,6 @@
    "fund": "dlx"
   },
   {
-   "id": "lppcrew1312",
-   "nombre": "lppcrew1312",
-   "sigla": "LPP",
-   "entrada": "pedido",
-   "oficial": false,
-   "creada": 1793730296389,
-   "reps": [
-    "crakero"
-   ],
-   "gente": [
-    [
-     "crakero",
-     "lider",
-     1793730296389
-    ]
-   ],
-   "vence": 1794335096389,
-   "logo": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/logos-crews/b19df0230684954296072e9b.webp",
-   "desc": "under, rap piola nada de gilada",
-   "req": {
-    "rg": "",
-    "ev": 0
-   },
-   "fund": "crakero"
-  },
-  {
    "id": "CHAKALAJE",
    "nombre": "CHAKALAJE",
    "sigla": "CKLJ",
