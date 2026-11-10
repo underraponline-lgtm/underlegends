@@ -38,7 +38,6 @@
   "MINUTOS A SANGRE - D3ATHROW EN VIVO VOL 3 · CH · 26/10 · octavos · vandu 🇨🇦 🆚 makma🇻🇪 🆚 Number 🇻🇪": "2026-11-06T01:04:12.478242+00:00",
   "MINUTOS A SANGRE - D3ATHROW EN VIVO VOL 3 · CH · 26/10 · octavos · yo mc 🇨🇱 🆚 Pollo Sport 🇦🇷 🆚 Yio 🇲🇽": "2026-11-06T01:04:12.478242+00:00",
   "RAP SIN GROSERIAS 1 · FDS · 26/10 · octavos · Artezzy 🇵🇪 🆚 Vilca🇵🇪": "2026-11-01T18:05:06.282627+00:00",
-  "RED BULL COLOMBIA · LKR · 09/11 · octavos · Miniboy🇨🇱 🆚 NUMBER": "2026-11-09T22:38:34.487651+00:00",
   "SIX SEVEN STYLE · DDS · 03/11 · cuartos · Adriagner🇳🇮 🆚 Sakro🇧🇶": "2026-11-09T21:43:22.888475+00:00",
   "SIX SEVEN STYLE · DDS · 03/11 · semifinales · Benji 🇵🇪 🆚 Oriuz 🇦🇷": "2026-11-09T21:43:22.888475+00:00",
   "SIX SEVEN STYLE · DDS · 27/10 · cuartos · Drexc 🆚 Number 🇻🇪": "2026-11-09T21:43:22.888475+00:00",
@@ -48,20 +47,8 @@
   "t": "2026-10-07T22:42:58.996306+00:00",
   "texto": "2 corridas del ciclo se cancelaron esperando su turno de dibujar (07/10 6:42 PM ET): la anterior tardó de más. Lo que no dibujaron lo dibuja la próxima.\nhttps://github.com/underraponline-lgtm/underlegends/actions/runs/37695783015"
  },
- "filas": {
-  "t": "2026-11-09T23:02:54.404152+00:00",
-  "texto": "El objeto lleva 5.1 millones de filas leídas hoy, de 5 millones. Si se acaban se cae entrar con Discord, lo en vivo y los avisos hasta cerca de las 09/11 7:00 PM ET. Lo que más lee: `python herramientas/uso.py`."
- },
- "objeto": {
-  "t": "2026-11-09T21:43:22.425455+00:00",
-  "texto": "El objeto de la página no contesta (Expecting value: line 1 column 1 (char 0)). Sin él no funciona entrar con Discord, lo en vivo ni los avisos. Si se acabó la cuota de filas, vuelve solo cerca de las 09/11 7:00 PM ET. (09/11 4:43 PM ET)"
- },
  "recordado:a7": {
   "t": "2026-09-26T03:54:52.348453+00:00",
   "texto": "Lo que me pediste recordarte: **A7**, llevar el Score del Competitivo a 40–99. **PichulaMc ya tiene 8 eventos**: cuando alguien llega a 10 tiene letra, y cambiar la escala después se la mueve a mitad de temporada. Si va, decime y lo aplico junto con los umbrales de los 8 rangos."
- },
- "tiers": {
-  "t": "2026-11-09T21:39:41.815650+00:00",
-  "texto": "Los paneles de los socios no se están actualizando: el Worker contesta 500 a `/avisos/tiers-ciclo`."
  }
 }

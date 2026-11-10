@@ -2602,6 +2602,27 @@
      ]
     ],
     [
+     "Number",
+     989,
+     22,
+     4,
+     2,
+     [
+      [
+       14,
+       "Miniboy"
+      ],
+      [
+       -10,
+       "yinn"
+      ],
+      [
+       -11,
+       "Makmah"
+      ]
+     ]
+    ],
+    [
      "Flama",
      987,
      5,
@@ -2953,27 +2974,6 @@
       [
        18,
        "Fazer"
-      ]
-     ]
-    ],
-    [
-     "Number",
-     974,
-     21,
-     4,
-     1,
-     [
-      [
-       -10,
-       "yinn"
-      ],
-      [
-       -11,
-       "Makmah"
-      ],
-      [
-       10,
-       "Shadow"
       ]
      ]
     ],
@@ -7313,27 +7313,6 @@
      ]
     ],
     [
-     "Miniboy",
-     937,
-     44,
-     5,
-     2,
-     [
-      [
-       -18,
-       "Lvel"
-      ],
-      [
-       -17,
-       "Evangeline"
-      ],
-      [
-       -20,
-       "Teito"
-      ]
-     ]
-    ],
-    [
      "Trot",
      937,
      17,
@@ -7498,6 +7477,27 @@
       [
        -17,
        "Soneto"
+      ]
+     ]
+    ],
+    [
+     "Miniboy",
+     923,
+     45,
+     5,
+     1,
+     [
+      [
+       -14,
+       "Number"
+      ],
+      [
+       -18,
+       "Lvel"
+      ],
+      [
+       -17,
+       "Evangeline"
       ]
      ]
     ],
@@ -7877,7 +7877,7 @@
   "Chop": 8,
   "Chuwin": 0,
   "Cinexfilo": 3,
-  "Ciro🇦🇷": 0,
+  "Ciro": 0,
   "Clitax": 0,
   "Cody🇺🇸": 0,
   "Colesito": 10,
@@ -7914,7 +7914,7 @@
   "Dios": 0,
   "Dm🇵🇪": 0,
   "Dominick": 3,
-  "Drelain🇦🇷": 0,
+  "Drelain": 0,
   "Drexx": 3,
   "Drezz🇵🇪": 0,
   "Drope": 0,
@@ -8536,7 +8536,7 @@
   "Chop": 3,
   "Chuwin": 5,
   "Cinexfilo": 5,
-  "Ciro🇦🇷": 5,
+  "Ciro": 5,
   "Clitax": 5,
   "Cody🇺🇸": 5,
   "Colesito": 2,
@@ -8573,7 +8573,7 @@
   "Dios": 5,
   "Dm🇵🇪": 5,
   "Dominick": 5,
-  "Drelain🇦🇷": 5,
+  "Drelain": 5,
   "Drexx": 5,
   "Drezz🇵🇪": 5,
   "Drope": 5,

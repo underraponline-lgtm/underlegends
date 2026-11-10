@@ -778,6 +778,13 @@
    "cuando": "2026-11-09 12:53 AM ET",
    "por": "el organizador, con el menú (<@1489469731168845894>)",
    "nota": "bot/finales.py: el lector no entendió esa batalla y se la preguntó a quien publicó la llave"
+  },
+  "redbullcolombia|LKR|09/11|octavos|miniboy|number": {
+   "ganador": "NUMBER",
+   "batalla": "RED BULL COLOMBIA · LKR · 09/11 · octavos · Miniboy🇨🇱 🆚 NUMBER",
+   "cuando": "2026-11-09 8:23 PM ET",
+   "por": "el organizador, con el botón (<@1458603256292053037>)",
+   "nota": "bot/finales.py: el lector no entendió esa batalla y se la preguntó a quien publicó la llave"
   }
  },
  "anuncios_fuera": {

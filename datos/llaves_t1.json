@@ -48498,11 +48498,11 @@
      ],
      [
       [
-       "Miniboy🇨🇱",
-       "NUMBER"
+       "Number",
+       "Miniboy"
       ],
-      "",
-      "sin ganador: espera en ✅ Decidir"
+      "Number",
+      "ganador: ✅ Decidir"
      ]
     ],
     "r": "Octavos"
@@ -48612,6 +48612,11 @@
    ],
    [
     "Mathhias",
+    "Octavos",
+    625
+   ],
+   [
+    "Miniboy",
     "Octavos",
     625
    ],

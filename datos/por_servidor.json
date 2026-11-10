@@ -2181,7 +2181,7 @@
     }
    }
   },
-  "Ciro🇦🇷": {
+  "Ciro": {
    "FFA": {
     "duelos": "",
     "ev": 1,
@@ -3007,7 +3007,7 @@
     "racha": "0/0"
    }
   },
-  "Drelain🇦🇷": {
+  "Drelain": {
    "FFA": {
     "duelos": "",
     "ev": 1,
@@ -8025,11 +8025,11 @@
    },
    "LKR": {
     "duelos": "",
-    "ev": 1,
+    "ev": 2,
     "oro": 0,
-    "ovr": 42,
+    "ovr": 43,
     "pod": 0,
-    "pts": 2500,
+    "pts": 3906,
     "racha": "0/0",
     "tg": {
      "fund": true

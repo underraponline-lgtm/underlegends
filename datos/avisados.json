@@ -6508,7 +6508,7 @@
    "Trot": 13
   },
   "fecha": "11/10",
-  "firma": "0f65ee77191ab960",
+  "firma": "45b48326e5a85440",
   "msg": "1558907910707224587",
   "nombre": "RED BULL NACIONAL ESPAÑA T.5",
   "num": 448,
@@ -9436,7 +9436,7 @@
    "Zignos": 19
   },
   "fecha": "12/10",
-  "firma": "01a152dda59068a2",
+  "firma": "3db651ddc5423f33",
   "msg": "1559587802864295988",
   "nombre": "GODZ",
   "num": 460,
@@ -18423,7 +18423,7 @@
    "Velatz": 38
   },
   "fecha": "21/10",
-  "firma": "12e014d59862dcc5",
+  "firma": "3a27bc09502429e6",
   "msg": "1562607463755161734",
   "nombre": "SNAKE INSIGNIA 6 8",
   "num": 496,
@@ -22434,7 +22434,7 @@
    "Zekha": 4
   },
   "fecha": "25/10",
-  "firma": "e22e4955c2b5f3f0",
+  "firma": "1a52ef6b4c617464",
   "msg": "1564056930748469309",
   "nombre": "REDBULL CREW ARGENTINA 2026",
   "num": 515,
@@ -29975,7 +29975,7 @@
    "Teo": 18
   },
   "fecha": "30/10",
-  "firma": "1bd611c284c5130d",
+  "firma": "3ea337eeb5c23195",
   "msg": "1565861597019111555",
   "nombre": "__ LA ISLA DE OKINAWA V.4 __",
   "num": 547,
@@ -30269,7 +30269,7 @@
    "mats": 5
   },
   "fecha": "26/10",
-  "firma": "1dbc22f17c663e77",
+  "firma": "6060064f17786af4",
   "msg": "1565899302046277764",
   "nombre": "RAP SIN GROSERIAS 1",
   "num": 548,
@@ -30514,7 +30514,7 @@
    "Walker": 8
   },
   "fecha": "30/10",
-  "firma": "0518a4acebcb2056",
+  "firma": "2db6ede4ab4c0efe",
   "msg": "1565898869114413108",
   "nombre": "IDS V.3",
   "num": 549,
@@ -32629,7 +32629,7 @@
    "Zignos": 27
   },
   "fecha": "01/11",
-  "firma": "40a4c056ee28d7e4",
+  "firma": "63e1b06877be9572",
   "msg": "1566645439611011152",
   "nombre": "__ COCINE FIDEOS __",
   "num": 558,
@@ -33046,7 +33046,7 @@
    "mats": 7
   },
   "fecha": "02/11",
-  "firma": "bfc32abf62e336a1",
+  "firma": "f98a1c63ec632b48",
   "msg": "1566714400314884126",
   "nombre": "RAP PARA RAPEROS",
   "num": 560,
@@ -36625,7 +36625,7 @@
    "Yor": 4
   },
   "fecha": "06/11",
-  "firma": "e61b200f742e4ffd",
+  "firma": "5a227308f3c259aa",
   "msg": "1568457450267484231",
   "nombre": "FAT BATTLES PALOOZA FECHA 10 FINALS",
   "num": 576,
@@ -36850,6 +36850,3838 @@
     "Xclusivo",
     "Semifinal",
     1750
+   ]
+  ],
+  "v": 2
+ },
+ "578": {
+  "antes": {
+   "Abraham": [
+    296,
+    160,
+    true
+   ],
+   "Chase": [
+    121,
+    182,
+    false
+   ],
+   "Chop": [
+    257,
+    45,
+    true
+   ],
+   "CrisZJ": [
+    258,
+    47,
+    true
+   ],
+   "Dominick": [
+    259,
+    50,
+    true
+   ],
+   "FOUNDER": [
+    598,
+    585,
+    true
+   ],
+   "Infecte": [
+    360,
+    263,
+    true
+   ],
+   "NXUZ": [
+    26,
+    30,
+    false
+   ],
+   "Ozu": [
+    622,
+    612,
+    true
+   ],
+   "RODRO": [
+    632,
+    623,
+    true
+   ],
+   "S1lence": [
+    342,
+    233,
+    true
+   ],
+   "Vilca": [
+    76,
+    95,
+    false
+   ],
+   "oriuz": [
+    286,
+    141,
+    true
+   ]
+  },
+  "canal": "1443793172013776997",
+  "duelos": [
+   [
+    "Chop",
+    "Ozu",
+    "Chop"
+   ],
+   [
+    "Chase",
+    "FOUNDER",
+    "Chase"
+   ],
+   [
+    "Infecte",
+    "RODRO",
+    "Infecte"
+   ],
+   [
+    "Abraham",
+    "NXUZ",
+    "Abraham"
+   ],
+   [
+    "Vilca",
+    "Dominick",
+    "Vilca"
+   ],
+   [
+    "oriuz",
+    "Mato  🇧🇴",
+    "oriuz"
+   ],
+   [
+    "Chase",
+    "Chop",
+    "Chase"
+   ],
+   [
+    "CrisZJ",
+    "Infecte",
+    "CrisZJ"
+   ],
+   [
+    "Abraham",
+    "oriuz",
+    "Abraham"
+   ],
+   [
+    "Vilca",
+    "S1lence",
+    "Vilca"
+   ],
+   [
+    "Chase",
+    "CrisZJ",
+    "Chase"
+   ],
+   [
+    "Abraham",
+    "Vilca",
+    "Abraham"
+   ],
+   [
+    "Chase",
+    "Abraham",
+    "Chase"
+   ]
+  ],
+  "ev_antes": {
+   "Abraham": 6,
+   "Chase": 2,
+   "Chop": 24,
+   "CrisZJ": 24,
+   "Dominick": 35,
+   "FOUNDER": 1,
+   "Infecte": 6,
+   "NXUZ": 36,
+   "Ozu": 1,
+   "RODRO": 1,
+   "S1lence": 3,
+   "Vilca": 15,
+   "oriuz": 7
+  },
+  "fecha": "07/10",
+  "firma": "511b0ed8c642e2e5",
+  "msg": "1569507985938714665",
+  "nombre": "DISCORD STYLE ED. 15",
+  "num": 578,
+  "participantes": 19,
+  "sello": {
+   "Chase": ""
+  },
+  "sv": "DDS",
+  "t": "2026-11-10T00:24:22Z",
+  "tabla": [
+   [
+    "Chase",
+    "Campeón",
+    10000
+   ],
+   [
+    "Abraham",
+    "Subcampeón",
+    7500
+   ],
+   [
+    "CrisZJ",
+    "Semifinal",
+    5250
+   ],
+   [
+    "Vilca",
+    "Semifinal",
+    5250
+   ],
+   [
+    "Chop",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Infecte",
+    "Cuartos",
+    2500
+   ],
+   [
+    "oriuz",
+    "Cuartos",
+    2500
+   ],
+   [
+    "S1lence",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Ozu",
+    "Octavos",
+    1250
+   ],
+   [
+    "FOUNDER",
+    "Octavos",
+    1250
+   ],
+   [
+    "RODRO",
+    "Octavos",
+    1250
+   ],
+   [
+    "NXUZ",
+    "Octavos",
+    1250
+   ],
+   [
+    "Dominick",
+    "Octavos",
+    1250
+   ],
+   [
+    "Mato  🇧🇴",
+    "Octavos",
+    1250
+   ]
+  ],
+  "v": 2
+ },
+ "579": {
+  "antes": {
+   "Abraham": [
+    296,
+    160,
+    true
+   ],
+   "Chase": [
+    121,
+    182,
+    false
+   ],
+   "CrisZJ": [
+    258,
+    47,
+    true
+   ],
+   "Drexx": [
+    32,
+    37,
+    false
+   ],
+   "Infecte": [
+    360,
+    263,
+    true
+   ],
+   "MCO": [
+    14,
+    15,
+    false
+   ],
+   "Mark": [
+    389,
+    306,
+    true
+   ],
+   "NXUZ": [
+    26,
+    30,
+    false
+   ],
+   "Sadik": [
+    350,
+    248,
+    true
+   ],
+   "Sainos": [
+    547,
+    524,
+    true
+   ],
+   "Sin Limites": [
+    28,
+    33,
+    false
+   ],
+   "Soulb": [
+    53,
+    65,
+    false
+   ],
+   "Vilca": [
+    76,
+    95,
+    false
+   ],
+   "Xubaru": [
+    35,
+    41,
+    false
+   ],
+   "oriuz": [
+    286,
+    141,
+    true
+   ]
+  },
+  "canal": "1443793172013776997",
+  "duelos": [
+   [
+    "Abraham",
+    "Mark",
+    "Abraham"
+   ],
+   [
+    "Drexx",
+    "Infecte",
+    "Drexx"
+   ],
+   [
+    "Vilca",
+    "NXUZ",
+    "Vilca"
+   ],
+   [
+    "Sadik",
+    "Mato  🇧🇴",
+    "Sadik"
+   ],
+   [
+    "CrisZJ",
+    "Sin Limites",
+    "CrisZJ"
+   ],
+   [
+    "Sainos",
+    "MCO",
+    "Sainos"
+   ],
+   [
+    "Chase",
+    "oriuz",
+    "Chase"
+   ],
+   [
+    "Soulb",
+    "Xubaru",
+    "Soulb"
+   ],
+   [
+    "Abraham",
+    "Drexx",
+    "Abraham"
+   ],
+   [
+    "Sadik",
+    "Vilca",
+    "Sadik"
+   ],
+   [
+    "CrisZJ",
+    "Sainos",
+    "CrisZJ"
+   ],
+   [
+    "Chase",
+    "Soulb",
+    "Chase"
+   ],
+   [
+    "Sadik",
+    "Abraham",
+    "Sadik"
+   ],
+   [
+    "Chase",
+    "CrisZJ",
+    "Chase"
+   ],
+   [
+    "Sadik",
+    "Chase",
+    "Sadik"
+   ]
+  ],
+  "ev_antes": {
+   "Abraham": 6,
+   "Chase": 2,
+   "CrisZJ": 24,
+   "Drexx": 36,
+   "Infecte": 6,
+   "MCO": 41,
+   "Mark": 3,
+   "NXUZ": 36,
+   "Sadik": 1,
+   "Sainos": 1,
+   "Sin Limites": 47,
+   "Soulb": 21,
+   "Vilca": 15,
+   "Xubaru": 15,
+   "oriuz": 7
+  },
+  "fecha": "17/10",
+  "firma": "3eb4b22467d1c967",
+  "msg": "1569507995547602980",
+  "nombre": "DISCORD STYLE ED. 16",
+  "num": 579,
+  "participantes": 17,
+  "sello": {
+   "Sadik": ""
+  },
+  "sv": "DDS",
+  "t": "2026-11-10T00:24:25Z",
+  "tabla": [
+   [
+    "Sadik",
+    "Campeón",
+    10000
+   ],
+   [
+    "Chase",
+    "Subcampeón",
+    7500
+   ],
+   [
+    "Abraham",
+    "Semifinal",
+    5250
+   ],
+   [
+    "CrisZJ",
+    "Semifinal",
+    5250
+   ],
+   [
+    "Drexx",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Vilca",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Sainos",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Soulb",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Mark",
+    "Octavos",
+    1250
+   ],
+   [
+    "Infecte",
+    "Octavos",
+    1250
+   ],
+   [
+    "NXUZ",
+    "Octavos",
+    1250
+   ],
+   [
+    "Mato  🇧🇴",
+    "Octavos",
+    1250
+   ],
+   [
+    "Sin Limites",
+    "Octavos",
+    1250
+   ],
+   [
+    "MCO",
+    "Octavos",
+    1250
+   ],
+   [
+    "oriuz",
+    "Octavos",
+    1250
+   ],
+   [
+    "Xubaru",
+    "Octavos",
+    1250
+   ]
+  ],
+  "v": 2
+ },
+ "580": {
+  "antes": {
+   "Artezzy": [
+    107,
+    143,
+    false
+   ],
+   "Carlos": [
+    268,
+    87,
+    true
+   ],
+   "CrisZJ": [
+    258,
+    47,
+    true
+   ],
+   "Filozico": [
+    187,
+    352,
+    false
+   ],
+   "Infecte": [
+    360,
+    263,
+    true
+   ],
+   "Lalox": [
+    612,
+    602,
+    true
+   ],
+   "MaYeuTyK": [
+    55,
+    67,
+    false
+   ],
+   "Mark": [
+    389,
+    306,
+    true
+   ],
+   "Miniboy": [
+    25,
+    29,
+    false
+   ],
+   "NXUZ": [
+    26,
+    30,
+    false
+   ],
+   "Nitrox": [
+    208,
+    453,
+    false
+   ],
+   "Sosa": [
+    65,
+    82,
+    false
+   ],
+   "Vilca": [
+    76,
+    95,
+    false
+   ],
+   "WHITE": [
+    638,
+    630,
+    true
+   ],
+   "oriuz": [
+    286,
+    141,
+    true
+   ]
+  },
+  "canal": "1443793172013776997",
+  "duelos": [
+   [
+    "MaYeuTyK",
+    "Benji 🇵🇪",
+    "MaYeuTyK"
+   ],
+   [
+    "Nitrox",
+    "Infecte",
+    "Nitrox"
+   ],
+   [
+    "Miniboy",
+    "Sosa",
+    "Miniboy"
+   ],
+   [
+    "NXUZ",
+    "WHITE",
+    "NXUZ"
+   ],
+   [
+    "Mark",
+    "CrisZJ",
+    "Mark"
+   ],
+   [
+    "Vilca",
+    "Artezzy",
+    "Vilca"
+   ],
+   [
+    "oriuz",
+    "Lalox",
+    "oriuz"
+   ],
+   [
+    "Carlos",
+    "Filozico",
+    "Carlos"
+   ],
+   [
+    "MaYeuTyK",
+    "Nitrox",
+    "MaYeuTyK"
+   ],
+   [
+    "NXUZ",
+    "Miniboy",
+    "NXUZ"
+   ],
+   [
+    "Vilca",
+    "Mark",
+    "Vilca"
+   ],
+   [
+    "Carlos",
+    "oriuz",
+    "Carlos"
+   ],
+   [
+    "NXUZ",
+    "MaYeuTyK",
+    "NXUZ"
+   ],
+   [
+    "Vilca",
+    "Carlos",
+    "Vilca"
+   ],
+   [
+    "NXUZ",
+    "Vilca",
+    "NXUZ"
+   ]
+  ],
+  "ev_antes": {
+   "Artezzy": 10,
+   "Carlos": 11,
+   "CrisZJ": 24,
+   "Filozico": 3,
+   "Infecte": 6,
+   "Lalox": 1,
+   "MaYeuTyK": 12,
+   "Mark": 3,
+   "Miniboy": 47,
+   "NXUZ": 36,
+   "Nitrox": 2,
+   "Sosa": 25,
+   "Vilca": 15,
+   "WHITE": 1,
+   "oriuz": 7
+  },
+  "fecha": "23/10",
+  "firma": "142587304257c1e5",
+  "msg": "1569508003776823307",
+  "nombre": "LLAVES PARA LA DISCORD STYLE 17",
+  "num": 580,
+  "participantes": 18,
+  "sello": {
+   "NXUZ": "eb59f3b185d9:7a510334494e"
+  },
+  "sv": "DDS",
+  "t": "2026-11-10T00:24:27Z",
+  "tabla": [
+   [
+    "NXUZ",
+    "Campeón",
+    10000
+   ],
+   [
+    "Vilca",
+    "Subcampeón",
+    7500
+   ],
+   [
+    "MaYeuTyK",
+    "Semifinal",
+    5250
+   ],
+   [
+    "Carlos",
+    "Semifinal",
+    5250
+   ],
+   [
+    "Nitrox",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Miniboy",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Mark",
+    "Cuartos",
+    2500
+   ],
+   [
+    "oriuz",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Benji 🇵🇪",
+    "Octavos",
+    1250
+   ],
+   [
+    "Infecte",
+    "Octavos",
+    1250
+   ],
+   [
+    "Sosa",
+    "Octavos",
+    1250
+   ],
+   [
+    "WHITE",
+    "Octavos",
+    1250
+   ],
+   [
+    "CrisZJ",
+    "Octavos",
+    1250
+   ],
+   [
+    "Artezzy",
+    "Octavos",
+    1250
+   ],
+   [
+    "Lalox",
+    "Octavos",
+    1250
+   ],
+   [
+    "Filozico",
+    "Octavos",
+    1250
+   ]
+  ],
+  "v": 2
+ },
+ "581": {
+  "antes": {
+   "CrisZJ": [
+    258,
+    47,
+    true
+   ],
+   "Miniboy": [
+    25,
+    29,
+    false
+   ],
+   "NXUZ": [
+    26,
+    30,
+    false
+   ],
+   "Number": [
+    43,
+    53,
+    false
+   ],
+   "Richard": [
+    83,
+    106,
+    false
+   ],
+   "Sosa": [
+    65,
+    82,
+    false
+   ],
+   "Vilca": [
+    76,
+    95,
+    false
+   ],
+   "replisan": [
+    410,
+    340,
+    true
+   ]
+  },
+  "canal": "1443793172013776997",
+  "duelos": [
+   [
+    "Sosa",
+    "Number",
+    "Sosa"
+   ],
+   [
+    "Vilca",
+    "replisan",
+    "Vilca"
+   ],
+   [
+    "NXUZ",
+    "Richard",
+    "NXUZ"
+   ],
+   [
+    "CrisZJ",
+    "Miniboy",
+    "CrisZJ"
+   ],
+   [
+    "Sosa",
+    "Vilca",
+    "Sosa"
+   ],
+   [
+    "CrisZJ",
+    "NXUZ",
+    "CrisZJ"
+   ],
+   [
+    "CrisZJ",
+    "Sosa",
+    "CrisZJ"
+   ]
+  ],
+  "ev_antes": {
+   "CrisZJ": 24,
+   "Miniboy": 47,
+   "NXUZ": 36,
+   "Number": 19,
+   "Richard": 18,
+   "Sosa": 25,
+   "Vilca": 15,
+   "replisan": 3
+  },
+  "fecha": "27/10",
+  "firma": "60293a2c60fc65d5",
+  "msg": "1569508012169633877",
+  "nombre": "MASTER STYLE REMAKE",
+  "num": 581,
+  "participantes": 10,
+  "sello": {
+   "CrisZJ": ""
+  },
+  "sv": "DDS",
+  "t": "2026-11-10T00:24:29Z",
+  "tabla": [
+   [
+    "CrisZJ",
+    "Campeón",
+    7500
+   ],
+   [
+    "Sosa",
+    "Subcampeón",
+    5000
+   ],
+   [
+    "Vilca",
+    "Semifinal",
+    3500
+   ],
+   [
+    "NXUZ",
+    "Semifinal",
+    3500
+   ],
+   [
+    "Number",
+    "Cuartos",
+    2000
+   ],
+   [
+    "replisan",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Richard",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Miniboy",
+    "Cuartos",
+    2000
+   ]
+  ],
+  "v": 2
+ },
+ "582": {
+  "antes": {
+   "FOTOSÍNTESIS": [
+    451,
+    393,
+    true
+   ],
+   "Foto": [
+    511,
+    474,
+    true
+   ],
+   "NXUZ": [
+    26,
+    30,
+    false
+   ],
+   "Richard": [
+    83,
+    106,
+    false
+   ],
+   "Sin Limites": [
+    28,
+    33,
+    false
+   ],
+   "Sosa": [
+    65,
+    82,
+    false
+   ],
+   "botrax": [
+    362,
+    265,
+    true
+   ]
+  },
+  "canal": "1443793172013776997",
+  "duelos": [
+   [
+    "BTRX",
+    "Sosa",
+    "BTRX"
+   ],
+   [
+    "NXUZ",
+    "Sin Limites",
+    "NXUZ"
+   ],
+   [
+    "Richard",
+    "FOTOSÍNTESIS",
+    "Richard"
+   ],
+   [
+    "BTRX",
+    "NXUZ",
+    "BTRX"
+   ],
+   [
+    "Richard",
+    "Foto",
+    "Richard"
+   ],
+   [
+    "botrax",
+    "Richard",
+    "botrax"
+   ]
+  ],
+  "ev_antes": {
+   "FOTOSÍNTESIS": 2,
+   "Foto": 1,
+   "NXUZ": 36,
+   "Richard": 18,
+   "Sin Limites": 47,
+   "Sosa": 25,
+   "botrax": 1
+  },
+  "fecha": "27/10",
+  "firma": "c1dc6701ba18675e",
+  "msg": "1569508015298715659",
+  "nombre": "SIX SEVEN STYLE",
+  "num": 582,
+  "participantes": 10,
+  "sello": {
+   "botrax": ""
+  },
+  "sv": "DDS",
+  "t": "2026-11-10T00:24:30Z",
+  "tabla": [
+   [
+    "botrax",
+    "Campeón",
+    7500
+   ],
+   [
+    "Richard",
+    "Subcampeón",
+    5000
+   ],
+   [
+    "NXUZ",
+    "Semifinal",
+    3500
+   ],
+   [
+    "Foto",
+    "Semifinal",
+    3500
+   ],
+   [
+    "Sosa",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Sin Limites",
+    "Cuartos",
+    2000
+   ],
+   [
+    "FOTOSÍNTESIS",
+    "Cuartos",
+    2000
+   ]
+  ],
+  "v": 2
+ },
+ "583": {
+  "antes": {
+   "Adriagner": [
+    45,
+    55,
+    false
+   ],
+   "BROTAXX": [
+    537,
+    513,
+    true
+   ],
+   "Chop": [
+    257,
+    45,
+    true
+   ],
+   "CrisZJ": [
+    258,
+    47,
+    true
+   ],
+   "Fisics": [
+    398,
+    318,
+    true
+   ],
+   "Kochi": [
+    60,
+    76,
+    false
+   ],
+   "MCO": [
+    14,
+    15,
+    false
+   ],
+   "Mark": [
+    389,
+    306,
+    true
+   ],
+   "Miniboy": [
+    25,
+    29,
+    false
+   ],
+   "NC": [
+    19,
+    22,
+    false
+   ],
+   "NXUZ": [
+    26,
+    30,
+    false
+   ],
+   "Number": [
+    43,
+    53,
+    false
+   ],
+   "Scot": [
+    314,
+    187,
+    true
+   ],
+   "oriuz": [
+    286,
+    141,
+    true
+   ],
+   "replisan": [
+    410,
+    340,
+    true
+   ]
+  },
+  "canal": "1443793172013776997",
+  "duelos": [
+   [
+    "Benji 🇵🇪",
+    "Scot",
+    "Benji 🇵🇪"
+   ],
+   [
+    "MCO",
+    "Chop",
+    "MCO"
+   ],
+   [
+    "Mark",
+    "Number",
+    "Mark"
+   ],
+   [
+    "Kochi",
+    "NXUZ",
+    "Kochi"
+   ],
+   [
+    "Miniboy",
+    "Adriagner",
+    "Miniboy"
+   ],
+   [
+    "Fisics",
+    "CrisZJ",
+    "Fisics"
+   ],
+   [
+    "oriuz",
+    "replisan",
+    "oriuz"
+   ],
+   [
+    "BOTRAXX",
+    "NC",
+    "BOTRAXX"
+   ],
+   [
+    "Benji 🇵🇪",
+    "MCO",
+    "Benji 🇵🇪"
+   ],
+   [
+    "Mark",
+    "Kochi",
+    "Mark"
+   ],
+   [
+    "Miniboy",
+    "Fisics",
+    "Miniboy"
+   ],
+   [
+    "oriuz",
+    "BROTAXX",
+    "oriuz"
+   ],
+   [
+    "Benji 🇵🇪",
+    "Mark",
+    "Benji 🇵🇪"
+   ],
+   [
+    "oriuz",
+    "Miniboy",
+    "oriuz"
+   ],
+   [
+    "oriuz",
+    "Benji 🇵🇪",
+    "oriuz"
+   ]
+  ],
+  "ev_antes": {
+   "Adriagner": 15,
+   "BROTAXX": 1,
+   "Chop": 24,
+   "CrisZJ": 24,
+   "Fisics": 3,
+   "Kochi": 11,
+   "MCO": 41,
+   "Mark": 3,
+   "Miniboy": 47,
+   "NC": 53,
+   "NXUZ": 36,
+   "Number": 19,
+   "Scot": 9,
+   "oriuz": 7,
+   "replisan": 3
+  },
+  "fecha": "30/10",
+  "firma": "b184c3891c618a52",
+  "msg": "1569508021242175499",
+  "nombre": "LLAVES PARA LA DISCORD STYLE 18",
+  "num": 583,
+  "participantes": 17,
+  "sello": {
+   "oriuz": ""
+  },
+  "sv": "DDS",
+  "t": "2026-11-10T00:24:32Z",
+  "tabla": [
+   [
+    "oriuz",
+    "Campeón",
+    10000
+   ],
+   [
+    "Benji 🇵🇪",
+    "Subcampeón",
+    7500
+   ],
+   [
+    "Mark",
+    "Semifinal",
+    5250
+   ],
+   [
+    "Miniboy",
+    "Semifinal",
+    5250
+   ],
+   [
+    "MCO",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Kochi",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Fisics",
+    "Cuartos",
+    2500
+   ],
+   [
+    "BROTAXX",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Scot",
+    "Octavos",
+    1250
+   ],
+   [
+    "Chop",
+    "Octavos",
+    1250
+   ],
+   [
+    "Number",
+    "Octavos",
+    1250
+   ],
+   [
+    "NXUZ",
+    "Octavos",
+    1250
+   ],
+   [
+    "Adriagner",
+    "Octavos",
+    1250
+   ],
+   [
+    "CrisZJ",
+    "Octavos",
+    1250
+   ],
+   [
+    "replisan",
+    "Octavos",
+    1250
+   ],
+   [
+    "NC",
+    "Octavos",
+    1250
+   ]
+  ],
+  "v": 2
+ },
+ "584": {
+  "antes": {
+   "Carlos": [
+    268,
+    87,
+    true
+   ],
+   "Chop": [
+    257,
+    45,
+    true
+   ],
+   "Crk": [
+    67,
+    84,
+    false
+   ],
+   "Fecha": [
+    596,
+    583,
+    true
+   ],
+   "JULIX": [
+    276,
+    115,
+    true
+   ],
+   "Keider": [
+    52,
+    64,
+    false
+   ],
+   "MAT MC": [
+    495,
+    452,
+    true
+   ],
+   "MCO": [
+    14,
+    15,
+    false
+   ],
+   "Miniboy": [
+    25,
+    29,
+    false
+   ],
+   "Nitrox": [
+    208,
+    453,
+    false
+   ],
+   "Noone": [
+    136,
+    208,
+    false
+   ],
+   "Richard": [
+    83,
+    106,
+    false
+   ],
+   "oriuz": [
+    286,
+    141,
+    true
+   ],
+   "replisan": [
+    410,
+    340,
+    true
+   ]
+  },
+  "canal": "1443793172013776997",
+  "duelos": [
+   [
+    "NXUZ",
+    "Nitrox",
+    "NXUZ"
+   ],
+   [
+    "JULIX",
+    "Richard",
+    "JULIX"
+   ],
+   [
+    "Miniboy",
+    "oriuz",
+    "Miniboy"
+   ],
+   [
+    "Mito",
+    "Noone",
+    "Mito"
+   ],
+   [
+    "MCO",
+    "Crk",
+    "MCO"
+   ],
+   [
+    "Carlos",
+    "MAT MC",
+    "Carlos"
+   ],
+   [
+    "Keider",
+    "replisan",
+    "Keider"
+   ],
+   [
+    "Keider",
+    "Fecha",
+    "Keider"
+   ],
+   [
+    "JULIX",
+    "Miniboy",
+    "JULIX"
+   ],
+   [
+    "MCO",
+    "Lizenin",
+    "MCO"
+   ],
+   [
+    "Carlos",
+    "Keider",
+    "Carlos"
+   ],
+   [
+    "Chop",
+    "JULIX",
+    "Chop"
+   ],
+   [
+    "Carlos",
+    "MCO",
+    "Carlos"
+   ],
+   [
+    "Carlos",
+    "Chop",
+    "Carlos"
+   ]
+  ],
+  "ev_antes": {
+   "Carlos": 11,
+   "Chop": 24,
+   "Crk": 17,
+   "Fecha": 1,
+   "JULIX": 6,
+   "Keider": 18,
+   "MAT MC": 2,
+   "MCO": 41,
+   "Miniboy": 47,
+   "Nitrox": 2,
+   "Noone": 7,
+   "Richard": 18,
+   "oriuz": 7,
+   "replisan": 3
+  },
+  "fecha": "01/11",
+  "firma": "1d81ddc85055b206",
+  "msg": "1569508030054142025",
+  "nombre": "LLAVES PARA LA DISCORD STYLE 19",
+  "num": 584,
+  "participantes": 19,
+  "sello": {
+   "Carlos": ""
+  },
+  "sv": "DDS",
+  "t": "2026-11-10T00:24:34Z",
+  "tabla": [
+   [
+    "Carlos",
+    "Campeón",
+    10000
+   ],
+   [
+    "Chop",
+    "Subcampeón",
+    7500
+   ],
+   [
+    "JULIX",
+    "Semifinal",
+    5250
+   ],
+   [
+    "MCO",
+    "Semifinal",
+    5250
+   ],
+   [
+    "Miniboy",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Lizenin",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Keider",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Nitrox",
+    "Octavos",
+    1250
+   ],
+   [
+    "Richard",
+    "Octavos",
+    1250
+   ],
+   [
+    "oriuz",
+    "Octavos",
+    1250
+   ],
+   [
+    "Noone",
+    "Octavos",
+    1250
+   ],
+   [
+    "Crk",
+    "Octavos",
+    1250
+   ],
+   [
+    "MAT MC",
+    "Octavos",
+    1250
+   ],
+   [
+    "replisan",
+    "Octavos",
+    1250
+   ],
+   [
+    "Fecha",
+    "Octavos",
+    1250
+   ]
+  ],
+  "v": 2
+ },
+ "585": {
+  "antes": {
+   "Crizcejotas": [
+    559,
+    537,
+    true
+   ],
+   "MCO": [
+    14,
+    15,
+    false
+   ],
+   "Miniboy": [
+    25,
+    29,
+    false
+   ],
+   "NXUZ": [
+    26,
+    30,
+    false
+   ],
+   "Number": [
+    43,
+    53,
+    false
+   ],
+   "oriuz": [
+    286,
+    141,
+    true
+   ]
+  },
+  "canal": "1443793172013776997",
+  "duelos": [
+   [
+    "Benji 🇵🇪",
+    "Crizcejotas",
+    "Benji 🇵🇪"
+   ],
+   [
+    "NXUZ",
+    "Number",
+    "NXUZ"
+   ],
+   [
+    "oriuz",
+    "Miniboy",
+    "oriuz"
+   ],
+   [
+    "NXUZ",
+    "Benji 🇵🇪",
+    "NXUZ"
+   ],
+   [
+    "MCO",
+    "oriuz",
+    "MCO"
+   ],
+   [
+    "NXUZ",
+    "MCO",
+    "NXUZ"
+   ]
+  ],
+  "ev_antes": {
+   "Crizcejotas": 1,
+   "MCO": 41,
+   "Miniboy": 47,
+   "NXUZ": 36,
+   "Number": 19,
+   "oriuz": 7
+  },
+  "fecha": "03/11",
+  "firma": "7fe170027b041057",
+  "msg": "1569508038820237324",
+  "nombre": "SIX SEVEN STYLE",
+  "num": 585,
+  "participantes": 9,
+  "sello": {
+   "NXUZ": "eb59f3b185d9:7a510334494e"
+  },
+  "sv": "DDS",
+  "t": "2026-11-10T00:24:36Z",
+  "tabla": [
+   [
+    "NXUZ",
+    "Campeón",
+    7500
+   ],
+   [
+    "Benji 🇵🇪",
+    "Semifinal",
+    3500
+   ],
+   [
+    "oriuz",
+    "Semifinal",
+    3500
+   ],
+   [
+    "MCO",
+    "Subcampeón",
+    2500
+   ],
+   [
+    "Crizcejotas",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Number",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Miniboy",
+    "Cuartos",
+    2000
+   ]
+  ],
+  "v": 2
+ },
+ "586": {
+  "antes": {
+   "Choco": [
+    558,
+    536,
+    true
+   ],
+   "CrisZJ": [
+    258,
+    47,
+    true
+   ],
+   "Dios": [
+    122,
+    183,
+    false
+   ],
+   "Keider": [
+    52,
+    64,
+    false
+   ],
+   "Leyenda": [
+    291,
+    153,
+    true
+   ],
+   "Lilñaño": [
+    94,
+    123,
+    false
+   ],
+   "MCO": [
+    14,
+    15,
+    false
+   ],
+   "NXUZ": [
+    26,
+    30,
+    false
+   ]
+  },
+  "canal": "1443793172013776997",
+  "duelos": [
+   [
+    "Keider",
+    "Leyenda",
+    "Keider"
+   ],
+   [
+    "Benji 🇵🇪",
+    "CrisZJ",
+    "Benji 🇵🇪"
+   ],
+   [
+    "Lilñaño",
+    "Dios",
+    "Lilñaño"
+   ],
+   [
+    "Lilñaño",
+    "NXUZ",
+    "Lilñaño"
+   ],
+   [
+    "MCO",
+    "Choco",
+    "MCO"
+   ],
+   [
+    "Keider",
+    "Benji 🇵🇪",
+    "Keider"
+   ],
+   [
+    "MCO",
+    "Lilñaño",
+    "MCO"
+   ],
+   [
+    "MCO",
+    "Keider",
+    "MCO"
+   ]
+  ],
+  "ev_antes": {
+   "Choco": 1,
+   "CrisZJ": 24,
+   "Dios": 4,
+   "Keider": 18,
+   "Leyenda": 11,
+   "Lilñaño": 7,
+   "MCO": 41,
+   "NXUZ": 36
+  },
+  "fecha": "07/11",
+  "firma": "ecfccd7ead6295ed",
+  "msg": "1569508050510028801",
+  "nombre": "MF DOOM Y MADLIB EDICION 1",
+  "num": 586,
+  "participantes": 9,
+  "sello": {
+   "MCO": "777df2d36655:7a510334494e"
+  },
+  "sv": "DDS",
+  "t": "2026-11-10T00:24:39Z",
+  "tabla": [
+   [
+    "MCO",
+    "Campeón",
+    7500
+   ],
+   [
+    "Keider",
+    "Subcampeón",
+    5000
+   ],
+   [
+    "Benji 🇵🇪",
+    "Semifinal",
+    3500
+   ],
+   [
+    "Lilñaño",
+    "Semifinal",
+    3500
+   ],
+   [
+    "Leyenda",
+    "Cuartos",
+    2000
+   ],
+   [
+    "CrisZJ",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Dios",
+    "Cuartos",
+    2000
+   ],
+   [
+    "NXUZ",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Choco",
+    "Cuartos",
+    2000
+   ]
+  ],
+  "v": 2
+ },
+ "587": {
+  "antes": {
+   "Agus": [
+    11,
+    12,
+    false
+   ],
+   "Geoka": [
+    39,
+    46,
+    false
+   ],
+   "Guess": [
+    23,
+    26,
+    false
+   ],
+   "Gus": [
+    90,
+    116,
+    false
+   ],
+   "LRS": [
+    36,
+    42,
+    false
+   ],
+   "MCO": [
+    14,
+    15,
+    false
+   ],
+   "NC": [
+    19,
+    22,
+    false
+   ],
+   "OKAM": [
+    27,
+    31,
+    false
+   ],
+   "Oasis": [
+    2,
+    2,
+    false
+   ],
+   "PRAISERIZA": [
+    251,
+    5,
+    true
+   ],
+   "PRV": [
+    382,
+    297,
+    true
+   ],
+   "romeo": [
+    128,
+    197,
+    false
+   ],
+   "yinn": [
+    253,
+    18,
+    true
+   ]
+  },
+  "canal": "1468472443843776659",
+  "duelos": [
+   [
+    "Agus",
+    "Gus",
+    "Agus"
+   ],
+   [
+    "Agus",
+    "dyzzcord🇨🇱",
+    "Agus"
+   ],
+   [
+    "NC",
+    "romeo",
+    "NC"
+   ],
+   [
+    "NC",
+    "Lvel 🇻🇪",
+    "NC"
+   ],
+   [
+    "NC",
+    "yinn",
+    "NC"
+   ],
+   [
+    "Oasis",
+    "Geoka",
+    "Oasis"
+   ],
+   [
+    "Oasis",
+    "Guess",
+    "Oasis"
+   ],
+   [
+    "PRAISERIZA",
+    "LRS",
+    "PRAISERIZA"
+   ],
+   [
+    "PRAISERIZA",
+    "OKAM",
+    "PRAISERIZA"
+   ],
+   [
+    "PRAISERIZA",
+    "PRV",
+    "PRAISERIZA"
+   ],
+   [
+    "PRAISERIZA",
+    "MCO",
+    "PRAISERIZA"
+   ],
+   [
+    "PRAISERIZA",
+    "Guess",
+    "PRAISERIZA"
+   ],
+   [
+    "Agus",
+    "NC",
+    "Agus"
+   ],
+   [
+    "Oasis",
+    "PRAISERIZA",
+    "Oasis"
+   ],
+   [
+    "Oasis",
+    "Agus",
+    "Oasis"
+   ],
+   [
+    "PRAISERIZA",
+    "NC",
+    "PRAISERIZA"
+   ]
+  ],
+  "ev_antes": {
+   "Agus": 24,
+   "Geoka": 25,
+   "Guess": 25,
+   "Gus": 11,
+   "LRS": 34,
+   "MCO": 41,
+   "NC": 53,
+   "OKAM": 24,
+   "Oasis": 42,
+   "PRAISERIZA": 21,
+   "PRV": 1,
+   "romeo": 2,
+   "yinn": 33
+  },
+  "fecha": "07/11",
+  "firma": "a10eac11d614d261",
+  "msg": "1568849280746393691",
+  "nombre": "KISS OF SHINIGAMI",
+  "num": 587,
+  "participantes": 17,
+  "sello": {
+   "Oasis": "36034523eae3:7a510334494e"
+  },
+  "sv": "FFA",
+  "t": "2026-11-10T00:24:39Z",
+  "tabla": [
+   [
+    "Oasis",
+    "Campeón",
+    10000
+   ],
+   [
+    "Agus",
+    "Subcampeón",
+    7500
+   ],
+   [
+    "PRAISERIZA",
+    "Tercero",
+    6000
+   ],
+   [
+    "NC",
+    "Cuarto",
+    4500
+   ],
+   [
+    "Gus",
+    "Cuartos",
+    2500
+   ],
+   [
+    "dyzzcord🇨🇱",
+    "Cuartos",
+    2500
+   ],
+   [
+    "romeo",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Lvel 🇻🇪",
+    "Cuartos",
+    2500
+   ],
+   [
+    "yinn",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Geoka",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Guess",
+    "Cuartos",
+    2500
+   ],
+   [
+    "LRS",
+    "Cuartos",
+    2500
+   ],
+   [
+    "OKAM",
+    "Cuartos",
+    2500
+   ],
+   [
+    "PRV",
+    "Cuartos",
+    2500
+   ],
+   [
+    "MCO",
+    "Cuartos",
+    2500
+   ]
+  ],
+  "v": 2
+ },
+ "588": {
+  "antes": {
+   "Adriagner": [
+    45,
+    55,
+    false
+   ],
+   "EIDP": [
+    264,
+    70,
+    true
+   ],
+   "Keider": [
+    52,
+    64,
+    false
+   ],
+   "Makmah": [
+    1,
+    1,
+    false
+   ],
+   "Miniboy": [
+    25,
+    29,
+    false
+   ],
+   "SAIDEM": [
+    332,
+    222,
+    true
+   ],
+   "Teito": [
+    68,
+    85,
+    false
+   ],
+   "Xclusivo": [
+    256,
+    38,
+    true
+   ]
+  },
+  "canal": "1566326935058124832",
+  "duelos": [
+   [
+    "Teito",
+    "Miniboy",
+    "Teito"
+   ],
+   [
+    "EIDP",
+    "Makmah",
+    "EIDP"
+   ],
+   [
+    "SAIDEM",
+    "Xclusivo",
+    "SAIDEM"
+   ],
+   [
+    "Adriagner",
+    "Keider",
+    "Adriagner"
+   ],
+   [
+    "Teito",
+    "EIDP",
+    "Teito"
+   ],
+   [
+    "SAIDEM",
+    "Adriagner",
+    "SAIDEM"
+   ],
+   [
+    "SAIDEM",
+    "Teito",
+    "SAIDEM"
+   ]
+  ],
+  "ev_antes": {
+   "Adriagner": 15,
+   "EIDP": 11,
+   "Keider": 18,
+   "Makmah": 109,
+   "Miniboy": 47,
+   "SAIDEM": 2,
+   "Teito": 18,
+   "Xclusivo": 26
+  },
+  "fecha": "08/11",
+  "firma": "4427fe6d3dd3d68c",
+  "msg": "1569060676079722624",
+  "nombre": "EVANGELION CUP VOL 1",
+  "num": 588,
+  "participantes": 8,
+  "sello": {
+   "SAIDEM": ""
+  },
+  "sv": "DDF",
+  "t": "2026-11-10T00:24:40Z",
+  "tabla": [
+   [
+    "SAIDEM",
+    "Campeón",
+    7500
+   ],
+   [
+    "Teito",
+    "Subcampeón",
+    5000
+   ],
+   [
+    "EIDP",
+    "Semifinal",
+    3500
+   ],
+   [
+    "Adriagner",
+    "Semifinal",
+    3500
+   ],
+   [
+    "Miniboy",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Makmah",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Xclusivo",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Keider",
+    "Cuartos",
+    2000
+   ]
+  ],
+  "v": 2
+ },
+ "589": {
+  "antes": {
+   "BTRX": [
+    47,
+    57,
+    false
+   ],
+   "Cabece": [
+    413,
+    345,
+    true
+   ],
+   "Calíz": [
+    48,
+    58,
+    false
+   ],
+   "Carlosss": [
+    18,
+    21,
+    false
+   ],
+   "Dinamight": [
+    649,
+    644,
+    true
+   ],
+   "Evangeline": [
+    95,
+    124,
+    false
+   ],
+   "Keider": [
+    52,
+    64,
+    false
+   ],
+   "LSO": [
+    352,
+    250,
+    true
+   ],
+   "Makmah": [
+    1,
+    1,
+    false
+   ],
+   "Miniboy": [
+    25,
+    29,
+    false
+   ],
+   "Mito": [
+    29,
+    34,
+    false
+   ],
+   "NXUZ": [
+    26,
+    30,
+    false
+   ],
+   "Number VE": [
+    81,
+    103,
+    false
+   ],
+   "Panchok": [
+    8,
+    9,
+    false
+   ],
+   "Sin Limites": [
+    28,
+    33,
+    false
+   ]
+  },
+  "canal": "1566326935058124832",
+  "duelos": [
+   [
+    "Sin Limites",
+    "Keider",
+    "Sin Limites"
+   ],
+   [
+    "BTRX",
+    "Cabece",
+    "BTRX"
+   ],
+   [
+    "Calíz",
+    "Number VE",
+    "Calíz"
+   ],
+   [
+    "NXUZ",
+    "LSO",
+    "NXUZ"
+   ],
+   [
+    "Makmah",
+    "Mito",
+    "Makmah"
+   ],
+   [
+    "Carlosss",
+    "Benji 🇵🇪",
+    "Carlosss"
+   ],
+   [
+    "Evangeline",
+    "Miniboy",
+    "Evangeline"
+   ],
+   [
+    "Panchok",
+    "Dinamight",
+    "Panchok"
+   ],
+   [
+    "BTRX",
+    "Sin Limites",
+    "BTRX"
+   ],
+   [
+    "NXUZ",
+    "Calíz",
+    "NXUZ"
+   ],
+   [
+    "Makmah",
+    "Carlosss",
+    "Makmah"
+   ],
+   [
+    "Panchok",
+    "Evangeline",
+    "Panchok"
+   ],
+   [
+    "BTRX",
+    "NXUZ",
+    "BTRX"
+   ],
+   [
+    "Panchok",
+    "Makmah",
+    "Panchok"
+   ],
+   [
+    "Panchok",
+    "BTRX",
+    "Panchok"
+   ]
+  ],
+  "ev_antes": {
+   "BTRX": 16,
+   "Cabece": 3,
+   "Calíz": 27,
+   "Carlosss": 18,
+   "Dinamight": 1,
+   "Evangeline": 9,
+   "Keider": 18,
+   "LSO": 4,
+   "Makmah": 109,
+   "Miniboy": 47,
+   "Mito": 31,
+   "NXUZ": 36,
+   "Number VE": 18,
+   "Panchok": 26,
+   "Sin Limites": 47
+  },
+  "fecha": "08/11",
+  "firma": "c6a65d2346718eae",
+  "msg": "1569082568027017278",
+  "nombre": "EL ULTIMO DIA DE DDF",
+  "num": 589,
+  "participantes": 16,
+  "sello": {
+   "Panchok": "634c77c23d9a:7a510334494e"
+  },
+  "sv": "DDF",
+  "t": "2026-11-10T00:24:40Z",
+  "tabla": [
+   [
+    "Panchok",
+    "Campeón",
+    10000
+   ],
+   [
+    "BTRX",
+    "Subcampeón",
+    7500
+   ],
+   [
+    "NXUZ",
+    "Semifinal",
+    5250
+   ],
+   [
+    "Makmah",
+    "Semifinal",
+    5250
+   ],
+   [
+    "Sin Limites",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Calíz",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Carlosss",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Evangeline",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Keider",
+    "Octavos",
+    1250
+   ],
+   [
+    "Cabece",
+    "Octavos",
+    1250
+   ],
+   [
+    "Number VE",
+    "Octavos",
+    1250
+   ],
+   [
+    "LSO",
+    "Octavos",
+    1250
+   ],
+   [
+    "Mito",
+    "Octavos",
+    1250
+   ],
+   [
+    "Benji 🇵🇪",
+    "Octavos",
+    1250
+   ],
+   [
+    "Miniboy",
+    "Octavos",
+    1250
+   ],
+   [
+    "Dinamight",
+    "Octavos",
+    1250
+   ]
+  ],
+  "v": 2
+ },
+ "590": {
+  "antes": {
+   "AREZ": [
+    349,
+    244,
+    true
+   ],
+   "Carlos": [
+    268,
+    87,
+    true
+   ],
+   "Cinexfilo": [
+    61,
+    77,
+    false
+   ],
+   "Drexx": [
+    32,
+    37,
+    false
+   ],
+   "Erian": [
+    4,
+    4,
+    false
+   ],
+   "Forza": [
+    371,
+    277,
+    true
+   ],
+   "Hades": [
+    203,
+    438,
+    false
+   ],
+   "JJ": [
+    267,
+    81,
+    true
+   ],
+   "Majiztral": [
+    30,
+    35,
+    false
+   ],
+   "Makmah": [
+    1,
+    1,
+    false
+   ],
+   "Mathhias": [
+    42,
+    51,
+    false
+   ],
+   "Mochi DG": [
+    204,
+    439,
+    false
+   ],
+   "Number": [
+    43,
+    53,
+    false
+   ],
+   "SNE": [
+    205,
+    440,
+    false
+   ],
+   "Shadow": [
+    74,
+    92,
+    false
+   ]
+  },
+  "canal": "1511962554547703960",
+  "duelos": [
+   [
+    "Cinexfilo",
+    "Hades",
+    "Cinexfilo"
+   ],
+   [
+    "JJ",
+    "Carlos",
+    "JJ"
+   ],
+   [
+    "Mathhias",
+    "Drexx",
+    "Mathhias"
+   ],
+   [
+    "Majiztral",
+    "AREZ",
+    "Majiztral"
+   ],
+   [
+    "Forza",
+    "SNE",
+    "Forza"
+   ],
+   [
+    "Erian",
+    "Mochi DG",
+    "Erian"
+   ],
+   [
+    "Makmah",
+    "Lizeninn",
+    "Makmah"
+   ],
+   [
+    "Number",
+    "Shadow",
+    "Number"
+   ],
+   [
+    "JJ",
+    "Cinexfilo",
+    "JJ"
+   ],
+   [
+    "Mathhias",
+    "Majiztral",
+    "Mathhias"
+   ],
+   [
+    "Forza",
+    "Erian",
+    "Forza"
+   ],
+   [
+    "Makmah",
+    "Number",
+    "Makmah"
+   ],
+   [
+    "JJ",
+    "Mathhias",
+    "JJ"
+   ],
+   [
+    "Makmah",
+    "Forza",
+    "Makmah"
+   ],
+   [
+    "JJ",
+    "Makmah",
+    "JJ"
+   ]
+  ],
+  "ev_antes": {
+   "AREZ": 4,
+   "Carlos": 11,
+   "Cinexfilo": 19,
+   "Drexx": 36,
+   "Erian": 77,
+   "Forza": 1,
+   "Hades": 1,
+   "JJ": 9,
+   "Majiztral": 27,
+   "Makmah": 109,
+   "Mathhias": 14,
+   "Mochi DG": 1,
+   "Number": 19,
+   "SNE": 1,
+   "Shadow": 22
+  },
+  "fecha": "08/11",
+  "firma": "e841fd1c24b9f28f",
+  "msg": "1569508061335396465",
+  "nombre": "RED BULL CARACAS REGIONAL T.5",
+  "num": 590,
+  "participantes": 17,
+  "sello": {
+   "JJ": ""
+  },
+  "sv": "URBF",
+  "t": "2026-11-10T00:24:41Z",
+  "tabla": [
+   [
+    "JJ",
+    "Campeón",
+    10000
+   ],
+   [
+    "Makmah",
+    "Subcampeón",
+    7500
+   ],
+   [
+    "Mathhias",
+    "Semifinal",
+    5250
+   ],
+   [
+    "Forza",
+    "Semifinal",
+    5250
+   ],
+   [
+    "Cinexfilo",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Majiztral",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Erian",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Number",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Hades",
+    "Octavos",
+    1250
+   ],
+   [
+    "Carlos",
+    "Octavos",
+    1250
+   ],
+   [
+    "Drexx",
+    "Octavos",
+    1250
+   ],
+   [
+    "AREZ",
+    "Octavos",
+    1250
+   ],
+   [
+    "SNE",
+    "Octavos",
+    1250
+   ],
+   [
+    "Mochi DG",
+    "Octavos",
+    1250
+   ],
+   [
+    "Lizeninn",
+    "Octavos",
+    1250
+   ],
+   [
+    "Shadow",
+    "Octavos",
+    1250
+   ]
+  ],
+  "v": 2
+ },
+ "591": {
+  "antes": {
+   "Cinexfilo": [
+    61,
+    77,
+    false
+   ],
+   "DarkoMC": [
+    178,
+    335,
+    false
+   ],
+   "Dios": [
+    122,
+    183,
+    false
+   ],
+   "Leyenda": [
+    291,
+    153,
+    true
+   ],
+   "Luck": [
+    80,
+    102,
+    false
+   ],
+   "Mc arepa": [
+    91,
+    117,
+    false
+   ],
+   "Mito": [
+    29,
+    34,
+    false
+   ],
+   "Scot": [
+    314,
+    187,
+    true
+   ],
+   "Sin Limites": [
+    28,
+    33,
+    false
+   ],
+   "Vilca": [
+    76,
+    95,
+    false
+   ]
+  },
+  "canal": "1489848582189224104",
+  "duelos": [
+   [
+    "Mc arepa",
+    "Leyenda",
+    "Mc arepa"
+   ],
+   [
+    "Dios",
+    "Luck",
+    "Dios"
+   ],
+   [
+    "Dios",
+    "Vilca",
+    "Dios"
+   ],
+   [
+    "Sin Limites",
+    "DarkoMC",
+    "Sin Limites"
+   ],
+   [
+    "Dios",
+    "Scot",
+    "Dios"
+   ],
+   [
+    "Sin Limites",
+    "Mc arepa",
+    "Sin Limites"
+   ],
+   [
+    "Dios",
+    "Sin Limites",
+    "Dios"
+   ],
+   [
+    "nexux",
+    "Cinexfilo",
+    "nexux"
+   ],
+   [
+    "Santiki 🇦🇷",
+    "Mito",
+    "Santiki 🇦🇷"
+   ]
+  ],
+  "ev_antes": {
+   "Cinexfilo": 19,
+   "DarkoMC": 4,
+   "Dios": 4,
+   "Leyenda": 11,
+   "Luck": 9,
+   "Mc arepa": 5,
+   "Mito": 31,
+   "Scot": 9,
+   "Sin Limites": 47,
+   "Vilca": 15
+  },
+  "fecha": "08/11",
+  "firma": "e7118d1feca83488",
+  "msg": "1569508065508593856",
+  "nombre": "RAP SIN GROSERIAS 4",
+  "num": 591,
+  "participantes": 12,
+  "sello": {
+   "Dios": "6cad79b924de:7a510334494e"
+  },
+  "sv": "FDS",
+  "t": "2026-11-10T00:24:42Z",
+  "tabla": [
+   [
+    "Dios",
+    "Campeón",
+    7500
+   ],
+   [
+    "Sin Limites",
+    "Subcampeón",
+    5000
+   ],
+   [
+    "Mc arepa",
+    "Semifinal",
+    3500
+   ],
+   [
+    "Mito",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Vilca",
+    "Cuartos",
+    1000
+   ],
+   [
+    "DarkoMC",
+    "Cuartos",
+    1000
+   ],
+   [
+    "Scot",
+    "Semifinal",
+    875
+   ],
+   [
+    "Leyenda",
+    "Octavos",
+    625
+   ],
+   [
+    "Luck",
+    "Octavos",
+    625
+   ],
+   [
+    "Cinexfilo",
+    "Octavos",
+    625
+   ]
+  ],
+  "v": 2
+ },
+ "593": {
+  "antes": {
+   "Calíz": [
+    48,
+    58,
+    false
+   ],
+   "Carlos": [
+    268,
+    87,
+    true
+   ],
+   "Dyzz": [
+    41,
+    49,
+    false
+   ],
+   "Erian": [
+    4,
+    4,
+    false
+   ],
+   "Leandro Katana": [
+    426,
+    363,
+    true
+   ],
+   "MCO": [
+    14,
+    15,
+    false
+   ],
+   "Miniboy": [
+    25,
+    29,
+    false
+   ],
+   "OKAM": [
+    27,
+    31,
+    false
+   ],
+   "Oasis": [
+    2,
+    2,
+    false
+   ],
+   "PRAISERIZA": [
+    251,
+    5,
+    true
+   ],
+   "Paria": [
+    261,
+    60,
+    true
+   ],
+   "Provenza": [
+    15,
+    16,
+    false
+   ],
+   "Six": [
+    6,
+    7,
+    false
+   ],
+   "Surya": [
+    223,
+    501,
+    false
+   ],
+   "Tam": [
+    252,
+    17,
+    true
+   ],
+   "araya": [
+    143,
+    235,
+    false
+   ],
+   "crakero": [
+    116,
+    170,
+    false
+   ]
+  },
+  "canal": "1468472443843776659",
+  "duelos": [
+   [
+    "Oasis",
+    "romeo",
+    "Oasis"
+   ],
+   [
+    "Oasis",
+    "Monet",
+    "Oasis"
+   ],
+   [
+    "sh🇧🇿, Carlos",
+    "Under",
+    "sh🇧🇿, Carlos"
+   ],
+   [
+    "crakero",
+    "yinn, Provenza",
+    "crakero"
+   ],
+   [
+    "crakero",
+    "Player",
+    "crakero"
+   ],
+   [
+    "MCO",
+    "OKAM",
+    "MCO"
+   ],
+   [
+    "PRAISERIZA",
+    "Erian",
+    "PRAISERIZA"
+   ],
+   [
+    "Tam",
+    "Leopold sedar 🇸🇳",
+    "Tam"
+   ],
+   [
+    "Lvel 🇻🇪",
+    "Miniboy",
+    "Lvel 🇻🇪"
+   ],
+   [
+    "Oasis",
+    "Surya, Provenza",
+    "Oasis"
+   ],
+   [
+    "crakero",
+    "araya",
+    "crakero"
+   ],
+   [
+    "Paria, Six",
+    "Dyzz, Calíz",
+    "Paria, Six"
+   ],
+   [
+    "Leandro Katana, akasha🇦🇷",
+    "sh🇧🇿, Carlos",
+    "Leandro Katana, akasha🇦🇷"
+   ],
+   [
+    "PRAISERIZA",
+    "MCO",
+    "PRAISERIZA"
+   ],
+   [
+    "Tam, Provenza",
+    "Lvel 🇻🇪",
+    "Tam, Provenza"
+   ],
+   [
+    "Oasis",
+    "crakero",
+    "Oasis"
+   ],
+   [
+    "Leandro Katana, akasha🇦🇷",
+    "Six, Paria",
+    "Leandro Katana, akasha🇦🇷"
+   ],
+   [
+    "PRAISERIZA",
+    "Tam, Provenza",
+    "PRAISERIZA"
+   ],
+   [
+    "Oasis",
+    "Leandro Katana, akasha🇦🇷, Six",
+    "Oasis"
+   ],
+   [
+    "Oasis",
+    "PRAISERIZA",
+    "Oasis"
+   ]
+  ],
+  "ev_antes": {
+   "Calíz": 27,
+   "Carlos": 11,
+   "Dyzz": 28,
+   "Erian": 77,
+   "Leandro Katana": 1,
+   "MCO": 41,
+   "Miniboy": 47,
+   "OKAM": 24,
+   "Oasis": 42,
+   "PRAISERIZA": 21,
+   "Paria": 17,
+   "Provenza": 43,
+   "Six": 42,
+   "Surya": 1,
+   "Tam": 26,
+   "araya": 3,
+   "crakero": 4
+  },
+  "fecha": "08/11",
+  "firma": "0102cf6e98038a67",
+  "msg": "1569234841730547736",
+  "nombre": "__ QCYO RAPEEN 12 __",
+  "num": 593,
+  "participantes": 29,
+  "sello": {
+   "Oasis": "36034523eae3:7a510334494e"
+  },
+  "sv": "FFA",
+  "t": "2026-11-10T00:24:43Z",
+  "tabla": [
+   [
+    "Oasis",
+    "Campeón",
+    10000
+   ],
+   [
+    "PRAISERIZA",
+    "Subcampeón",
+    7500
+   ],
+   [
+    "Six",
+    "Semifinal",
+    3000
+   ],
+   [
+    "Tam",
+    "Semifinal",
+    2625
+   ],
+   [
+    "MCO",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Lvel 🇻🇪",
+    "Cuartos",
+    2500
+   ],
+   [
+    "crakero",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Provenza",
+    "Semifinal",
+    1937
+   ],
+   [
+    "Leandro Katana",
+    "Semifinal",
+    1750
+   ],
+   [
+    "akasha🇦🇷",
+    "Semifinal",
+    1750
+   ],
+   [
+    "Paria",
+    "Cuartos",
+    1250
+   ],
+   [
+    "OKAM",
+    "Octavos",
+    1250
+   ],
+   [
+    "Erian",
+    "Octavos",
+    1250
+   ],
+   [
+    "Leopold sedar 🇸🇳",
+    "Octavos",
+    1250
+   ],
+   [
+    "Miniboy",
+    "Octavos",
+    1250
+   ],
+   [
+    "araya",
+    "Octavos",
+    1250
+   ],
+   [
+    "Surya",
+    "Octavos",
+    625
+   ],
+   [
+    "Dyzz",
+    "Octavos",
+    625
+   ],
+   [
+    "Calíz",
+    "Octavos",
+    625
+   ],
+   [
+    "sh🇧🇿",
+    "Octavos",
+    625
+   ],
+   [
+    "Carlos",
+    "Octavos",
+    625
+   ]
+  ],
+  "v": 2
+ },
+ "594": {
+  "antes": {
+   "AREZ": [
+    349,
+    244,
+    true
+   ],
+   "Calíz": [
+    48,
+    58,
+    false
+   ],
+   "Dyzz": [
+    41,
+    49,
+    false
+   ],
+   "Fin": [
+    145,
+    243,
+    false
+   ],
+   "Majiztral": [
+    30,
+    35,
+    false
+   ],
+   "Mathhias": [
+    42,
+    51,
+    false
+   ],
+   "Shadow": [
+    74,
+    92,
+    false
+   ],
+   "Tmax Turbo [PN]": [
+    174,
+    326,
+    false
+   ],
+   "Verc": [
+    7,
+    8,
+    false
+   ],
+   "Yeyox": [
+    166,
+    300,
+    false
+   ],
+   "black live": [
+    443,
+    383,
+    true
+   ]
+  },
+  "canal": "1511962554547703960",
+  "duelos": [
+   [
+    "Majiztral",
+    "Tmax Turbo [PN]",
+    "Majiztral"
+   ],
+   [
+    "Mathhias",
+    "Shadow",
+    "Mathhias"
+   ],
+   [
+    "Mathhias",
+    "Yeyox",
+    "Mathhias"
+   ],
+   [
+    "Calíz",
+    "AREZ",
+    "Calíz"
+   ],
+   [
+    "Calíz",
+    "black live",
+    "Calíz"
+   ],
+   [
+    "Verc",
+    "Dyzz",
+    "Verc"
+   ],
+   [
+    "Verc",
+    "Fin",
+    "Verc"
+   ],
+   [
+    "Majiztral",
+    "Mathhias",
+    "Majiztral"
+   ],
+   [
+    "Verc",
+    "Calíz",
+    "Verc"
+   ],
+   [
+    "Majiztral",
+    "Verc",
+    "Majiztral"
+   ]
+  ],
+  "ev_antes": {
+   "AREZ": 4,
+   "Calíz": 27,
+   "Dyzz": 28,
+   "Fin": 4,
+   "Majiztral": 27,
+   "Mathhias": 14,
+   "Shadow": 22,
+   "Tmax Turbo [PN]": 2,
+   "Verc": 27,
+   "Yeyox": 2,
+   "black live": 1
+  },
+  "fecha": "09/11",
+  "firma": "2ce2c1fca4d05247",
+  "msg": "1569508072605618221",
+  "nombre": "COMPE MAÑANERA",
+  "num": 594,
+  "participantes": 11,
+  "sello": {
+   "Majiztral": "2303ad4d061e:7a510334494e"
+  },
+  "sv": "URBF",
+  "t": "2026-11-10T00:24:44Z",
+  "tabla": [
+   [
+    "Majiztral",
+    "Campeón",
+    7500
+   ],
+   [
+    "Verc",
+    "Subcampeón",
+    5000
+   ],
+   [
+    "Mathhias",
+    "Semifinal",
+    3500
+   ],
+   [
+    "Calíz",
+    "Semifinal",
+    3500
+   ],
+   [
+    "Tmax Turbo [PN]",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Shadow",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Yeyox",
+    "Cuartos",
+    2000
+   ],
+   [
+    "AREZ",
+    "Cuartos",
+    2000
+   ],
+   [
+    "black live",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Dyzz",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Fin",
+    "Cuartos",
+    2000
+   ]
+  ],
+  "v": 2
+ },
+ "596": {
+  "antes": {
+   "Adrianex": [
+    190,
+    370,
+    false
+   ],
+   "DarnBless": [
+    271,
+    98,
+    true
+   ],
+   "LRS": [
+    36,
+    42,
+    false
+   ],
+   "Lord Viruzz": [
+    38,
+    44,
+    false
+   ],
+   "Oasis": [
+    2,
+    2,
+    false
+   ],
+   "Trelok": [
+    79,
+    101,
+    false
+   ],
+   "Vandu": [
+    9,
+    10,
+    false
+   ],
+   "Verc": [
+    7,
+    8,
+    false
+   ]
+  },
+  "canal": "1468472443843776659",
+  "duelos": [
+   [
+    "Verc",
+    "Oasis",
+    "Verc"
+   ],
+   [
+    "Trelok",
+    "Vandu",
+    "Trelok"
+   ]
+  ],
+  "ev_antes": {
+   "Adrianex": 1,
+   "DarnBless": 13,
+   "LRS": 34,
+   "Lord Viruzz": 22,
+   "Oasis": 42,
+   "Trelok": 7,
+   "Vandu": 50,
+   "Verc": 27
+  },
+  "fecha": "05/11",
+  "firma": "0d7623d40644461e",
+  "msg": "1569508042813210686",
+  "nombre": "ORDEN DEL CHYPHER",
+  "num": 596,
+  "participantes": 9,
+  "sello": {
+   "Verc": "9066647ae030:7a510334494e"
+  },
+  "sv": "FFA",
+  "t": "2026-11-10T00:24:37Z",
+  "tabla": [
+   [
+    "Verc",
+    "Campeón",
+    7500
+   ],
+   [
+    "Oasis",
+    "Subcampeón",
+    5000
+   ],
+   [
+    "Trelok",
+    "Tercero",
+    4000
+   ],
+   [
+    "Vandu",
+    "Cuarto",
+    3000
+   ],
+   [
+    "Adrianex",
+    "Octavos",
+    1600
+   ],
+   [
+    "LRS",
+    "Octavos",
+    1600
+   ],
+   [
+    "Lord Viruzz",
+    "Octavos",
+    1600
+   ],
+   [
+    "DarnBless",
+    "Octavos",
+    1600
+   ],
+   [
+    "Lvel 🇻🇪",
+    "Octavos",
+    1600
+   ]
+  ],
+  "v": 2
+ },
+ "597": {
+  "antes": {
+   "Carlos": [
+    268,
+    87,
+    true
+   ],
+   "Cinexfilo": [
+    61,
+    77,
+    false
+   ],
+   "KOJIRO": [
+    580,
+    565,
+    true
+   ],
+   "Majiztral": [
+    30,
+    35,
+    false
+   ],
+   "Makmah": [
+    1,
+    1,
+    false
+   ],
+   "Mathhias": [
+    42,
+    51,
+    false
+   ],
+   "Miniboy": [
+    25,
+    29,
+    false
+   ],
+   "NEXOR": [
+    463,
+    408,
+    true
+   ],
+   "Richard": [
+    83,
+    106,
+    false
+   ],
+   "Shadow": [
+    74,
+    92,
+    false
+   ],
+   "Under": [
+    321,
+    202,
+    true
+   ],
+   "Vandu": [
+    9,
+    10,
+    false
+   ]
+  },
+  "canal": "",
+  "duelos": [
+   [
+    "NEXOR",
+    "Cinexfilo",
+    "NEXOR"
+   ],
+   [
+    "Makmah",
+    "Carlos",
+    "Makmah"
+   ],
+   [
+    "Lvel 🇻🇪",
+    "Shadow",
+    "Lvel 🇻🇪"
+   ],
+   [
+    "Vandu",
+    "Under",
+    "Vandu"
+   ],
+   [
+    "Richard",
+    "Mathhias",
+    "Richard"
+   ],
+   [
+    "Majiztral",
+    "KOJIRO",
+    "Majiztral"
+   ],
+   [
+    "Makmah",
+    "NEXOR",
+    "Makmah"
+   ],
+   [
+    "Vandu",
+    "Lvel 🇻🇪",
+    "Vandu"
+   ],
+   [
+    "Richard",
+    "Majiztral",
+    "Richard"
+   ],
+   [
+    "Vandu",
+    "Makmah",
+    "Vandu"
+   ],
+   [
+    "Richard",
+    "Vandu",
+    "Richard"
+   ],
+   [
+    "Number",
+    "Miniboy",
+    "Number"
+   ]
+  ],
+  "ev_antes": {
+   "Carlos": 11,
+   "Cinexfilo": 19,
+   "KOJIRO": 1,
+   "Majiztral": 27,
+   "Makmah": 109,
+   "Mathhias": 14,
+   "Miniboy": 47,
+   "NEXOR": 1,
+   "Richard": 18,
+   "Shadow": 22,
+   "Under": 6,
+   "Vandu": 50
+  },
+  "fecha": "09/11",
+  "nombre": "RED BULL COLOMBIA",
+  "num": 597,
+  "participantes": 14,
+  "sello": {
+   "Richard": "945d3fc189c1:7a510334494e"
+  },
+  "sv": "LKR",
+  "t": "2026-11-10T00:24:45Z",
+  "tabla": [
+   [
+    "Richard",
+    "Campeón",
+    7500
+   ],
+   [
+    "Vandu",
+    "Subcampeón",
+    5000
+   ],
+   [
+    "Makmah",
+    "Semifinal",
+    3500
+   ],
+   [
+    "NEXOR",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Lvel 🇻🇪",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Majiztral",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Cinexfilo",
+    "Octavos",
+    625
+   ],
+   [
+    "Carlos",
+    "Octavos",
+    625
+   ],
+   [
+    "Shadow",
+    "Octavos",
+    625
+   ],
+   [
+    "Under",
+    "Octavos",
+    625
+   ],
+   [
+    "Mathhias",
+    "Octavos",
+    625
+   ],
+   [
+    "KOJIRO",
+    "Octavos",
+    625
+   ],
+   [
+    "Miniboy",
+    "Octavos",
+    625
    ]
   ],
   "v": 2

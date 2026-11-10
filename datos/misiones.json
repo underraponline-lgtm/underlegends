@@ -244,7 +244,7 @@
      2,
      2
     ],
-    "Ciro🇦🇷": [
+    "Ciro": [
      1,
      0,
      16
@@ -339,7 +339,7 @@
      2,
      2
     ],
-    "Drelain🇦🇷": [
+    "Drelain": [
      1,
      0,
      16
@@ -1486,7 +1486,7 @@
     "Carlosss": 1600,
     "Chase": 1000,
     "Chop": 1300,
-    "Ciro🇦🇷": 300,
+    "Ciro": 300,
     "Colesito": 900,
     "CrisZJ": 1600,
     "Crk": 300,
@@ -1502,7 +1502,7 @@
     "Desio": 300,
     "Deuxs": 300,
     "Dominick": 1300,
-    "Drelain🇦🇷": 300,
+    "Drelain": 300,
     "Drexx": 300,
     "Drezz🇵🇪": 300,
     "Dynoco": 1300,
@@ -7829,6 +7829,13 @@
      0,
      0
     ],
+    "Miniboy": [
+     0,
+     0,
+     0,
+     0,
+     0
+    ],
     "Mito": [
      0,
      1,
@@ -7959,7 +7966,7 @@
   "Chase": 1600,
   "Chop": 2800,
   "Cinexfilo": 1200,
-  "Ciro🇦🇷": 300,
+  "Ciro": 300,
   "Colesito": 4800,
   "Corvo": 1000,
   "CrisZJ": 3100,
@@ -7979,7 +7986,7 @@
   "Deuxs": 900,
   "Dios": 1300,
   "Dominick": 3500,
-  "Drelain🇦🇷": 300,
+  "Drelain": 300,
   "Drexx": 4000,
   "Drezz🇵🇪": 300,
   "Dynoco": 1600,

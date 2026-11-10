@@ -1328,7 +1328,9 @@
     "ronda": "OCTAVOS"
    }
   ],
-  "respondidas": {},
+  "respondidas": {
+   "0": "NUMBER"
+  },
   "sin_permiso": false,
   "sv": "LKR"
  },
