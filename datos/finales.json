@@ -1368,7 +1368,10 @@
     "ronda": "OCTAVOS"
    }
   ],
-  "respondidas": {},
+  "respondidas": {
+   "0": "Soneto 🇪🇨",
+   "1": "Kourier 🇲🇽"
+  },
   "sin_permiso": false,
   "sv": "FFA"
  },

@@ -419,6 +419,20 @@
     "racha": "0/0"
    }
   },
+  "AbrahamSRRL🇵🇪": {
+   "FFA": {
+    "duelos": "0/1",
+    "ev": 1,
+    "oro": 0,
+    "ovr": 42,
+    "pod": 0,
+    "pts": 1250,
+    "racha": "0/0",
+    "tg": {
+     "nuevo": true
+    }
+   }
+  },
   "Aby": {
    "DDF": {
     "duelos": "1/1",
@@ -5879,7 +5893,7 @@
     "racha": "0/0"
    },
    "FFA": {
-    "duelos": "",
+    "duelos": "1/1",
     "ev": 2,
     "oro": 0,
     "ovr": 43,
@@ -10736,6 +10750,20 @@
     "racha": "0/0"
    }
   },
+  "Sentpa 🇦🇷": {
+   "FFA": {
+    "duelos": "0/1",
+    "ev": 1,
+    "oro": 0,
+    "ovr": 42,
+    "pod": 0,
+    "pts": 1250,
+    "racha": "0/0",
+    "tg": {
+     "nuevo": true
+    }
+   }
+  },
   "Sexo": {
    "DDF": {
     "duelos": "1/2",
@@ -11100,7 +11128,7 @@
   },
   "Soneto": {
    "FFA": {
-    "duelos": "3/10",
+    "duelos": "4/11",
     "ev": 10,
     "oro": 0,
     "ovr": 51,

@@ -143,6 +143,17 @@
    "vence": "2026-11-03T03:32:41+00:00",
    "vencido": true
   },
+  "AbrahamSRRL": {
+   "con": null,
+   "cumplido": "",
+   "debut": "2026-11-10T01:48:30+00:00",
+   "did": "",
+   "evento": "TORNEO CLANDESTINO V.1",
+   "n": 600,
+   "sv": "FFA",
+   "vence": "2026-11-17T01:48:30+00:00",
+   "vencido": false
+  },
   "Adrianex": {
    "avisado": "2026-11-09",
    "chat": "2026-11-09",
@@ -1966,6 +1977,17 @@
    "n": 487,
    "sv": "FFA",
    "vence": "2026-10-26T04:19:55+00:00",
+   "vencido": false
+  },
+  "Sentpa": {
+   "con": null,
+   "cumplido": "",
+   "debut": "2026-11-10T01:48:30+00:00",
+   "did": "",
+   "evento": "TORNEO CLANDESTINO V.1",
+   "n": 600,
+   "sv": "FFA",
+   "vence": "2026-11-17T01:48:30+00:00",
    "vencido": false
   },
   "Shitka": {

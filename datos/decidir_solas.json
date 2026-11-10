@@ -2,103 +2,6 @@
  "_leeme": "Lo que ✅ Decidir cerró o contestó solo, con la regla y la prueba (sheet/decidir.py, resolver_solo()), para «Lo que se resolvió solo» del Dashboard y su «Deshacer». «deshechas»: lo que Dlx deshizo; ninguna regla lo vuelve a tocar. Dlx, 13/10/2026.",
  "solas": [
   {
-   "id": "ebfe03dfbc",
-   "tipo": "alta",
-   "sec": "🪪 Identidad",
-   "que": "A «GodfatherXoth» lo buscó otra persona con /card en FFA (no lo usó él) y no está en la Lista de Raperos. Si ya está con otro nombre, elígelo o escribilo: le pongo su Discord.\nSu cuenta: https://discord.com/users/1432915481651843195",
-   "r": "Ya está resuelto",
-   "regla": "R3 · un alta que no hace falta: el bot, o una cuenta que buscó otro y no jugó",
-   "rk": "R3",
-   "por": "el ciclo",
-   "porque": "no usó /card: lo buscó otra persona, y no jugó en la T1 (ni su nombre ni con lo que se anotó está en ningún resultado). Si se anota sola, entra como cualquiera",
-   "t": 1793077387614,
-   "filas": [
-    905
-   ],
-   "variantes": [
-    "GodfatherXoth = 1432915481651843195"
-   ],
-   "escribio": {}
-  },
-  {
-   "id": "54949dd3d1",
-   "tipo": "Nombre desconocido",
-   "sec": "qcyo rapeen 4 · FFA · 26/10 · #532",
-   "que": "¿Quién es «parttt🇧🇫»?",
-   "r": "Es Provenza",
-   "regla": "Discord · su cuenta de Discord: la inscripción, el podio, la llave o la llamada",
-   "rk": "Discord",
-   "por": "el ciclo (su cuenta de Discord)",
-   "porque": "alias de Provenza: la llave lo escribe con su mención",
-   "t": 1793079182523,
-   "filas": [
-    908
-   ],
-   "variantes": [
-    "parttt🇧🇫"
-   ],
-   "escribio": {
-    "alias": [
-     "parttt",
-     "Provenza"
-    ],
-    "filas": [
-     321
-    ]
-   }
-  },
-  {
-   "id": "1bf7aa3db9",
-   "tipo": "Nombre desconocido",
-   "sec": "qcyo rapeen 4 · FFA · 26/10 · #532",
-   "que": "¿Quién es «parttt🇨🇨»?",
-   "r": "Es Provenza",
-   "regla": "Discord · su cuenta de Discord: la inscripción, el podio, la llave o la llamada",
-   "rk": "Discord",
-   "por": "el ciclo (su cuenta de Discord)",
-   "porque": "alias de Provenza: la llave lo escribe con su mención",
-   "t": 1793079182523,
-   "filas": [
-    909
-   ],
-   "variantes": [
-    "parttt🇨🇨"
-   ],
-   "escribio": {
-    "alias": [
-     "parttt",
-     "Provenza"
-    ],
-    "filas": [
-     321
-    ]
-   }
-  },
-  {
-   "id": "fe6395fd9a",
-   "tipo": "Nombre desconocido",
-   "sec": "qcyo rapeen 4 · FFA · 26/10 · #532",
-   "que": "¿Quién es «ANG 🇺🇸»?",
-   "r": "Es alguien nuevo: alta con su cuenta 1560897903042764943",
-   "regla": "Discord · su cuenta de Discord: la inscripción, el podio, la llave o la llamada",
-   "rk": "Discord",
-   "por": "el ciclo (su cuenta de Discord)",
-   "porque": "nuevo: entró a la Lista con la cuenta con que se anotó (1560897903042764943)",
-   "t": 1793079182523,
-   "filas": [
-    906
-   ],
-   "variantes": [
-    "ANG 🇺🇸"
-   ],
-   "escribio": {
-    "alta": [
-     "ANG",
-     "1560897903042764943"
-    ]
-   }
-  },
-  {
    "id": "e944fd4956",
    "tipo": "Nombre desconocido",
    "sec": "PRADERAP VOL.2 · ACAD · 27/10 · #535",
@@ -3168,6 +3071,30 @@
     "dyz🇨🇱"
    ],
    "escribio": {}
+  },
+  {
+   "id": "4d0d4ee886",
+   "tipo": "Nombre desconocido",
+   "sec": "TORNEO CLANDESTINO V.1 · FFA · 09/11 · #600",
+   "que": "¿Quién es «Sentpa 🇦🇷»?",
+   "r": "Es alguien nuevo: alta con su cuenta 429348374379233280",
+   "regla": "Discord · su cuenta de Discord: la inscripción, el podio, la llave o la llamada",
+   "rk": "Discord",
+   "por": "el ciclo (su cuenta de Discord)",
+   "porque": "nuevo: entró a la Lista con la cuenta con que se anotó (429348374379233280)",
+   "t": 1794290453845,
+   "filas": [
+    1211
+   ],
+   "variantes": [
+    "Sentpa 🇦🇷"
+   ],
+   "escribio": {
+    "alta": [
+     "Sentpa",
+     "429348374379233280"
+    ]
+   }
   }
  ],
  "deshechas": []

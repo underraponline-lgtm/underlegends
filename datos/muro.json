@@ -811,6 +811,14 @@
 "rg": "",
 "c": []
 },
+"soneto": {
+"rg": "E",
+"c": [
+"competitivo",
+"servidor",
+"temporada"
+]
+},
 "marcos": {
 "rg": "D",
 "c": [
@@ -884,14 +892,6 @@
 "alexi": {
 "rg": "",
 "c": []
-},
-"soneto": {
-"rg": "E",
-"c": [
-"competitivo",
-"servidor",
-"temporada"
-]
 },
 "eliot": {
 "rg": "",
