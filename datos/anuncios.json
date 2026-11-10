@@ -1,5 +1,5 @@
 {
- "cuando": "2026-11-10T21:25:51+00:00",
+ "cuando": "2026-11-10T21:56:18+00:00",
  "anuncios": [
   {
    "nombre": "¡SE LLEGÓ LA GRAN NOCHE!",
@@ -6847,6 +6847,42 @@
   }
  ],
  "inscripciones": [
+  {
+   "servidor": "DDS",
+   "canal": "📝〕INSCRIPCIONES",
+   "texto": "Vilca🇬🇵",
+   "quien": "vilca_16",
+   "discord_id": "846870712950194196",
+   "msg_id": "1569831292026101872",
+   "cuando": "2026-11-10T21:49:06"
+  },
+  {
+   "servidor": "DDS",
+   "canal": "📝〕INSCRIPCIONES",
+   "texto": "Monet 🇲🇽",
+   "quien": "monet_x.",
+   "discord_id": "1501320596485701642",
+   "msg_id": "1569828953227792517",
+   "cuando": "2026-11-10T21:39:48"
+  },
+  {
+   "servidor": "DDS",
+   "canal": "📝〕INSCRIPCIONES",
+   "texto": "Tokio🇦🇷",
+   "quien": "paratimiringuicaro",
+   "discord_id": "1249980492951060561",
+   "msg_id": "1569828153780871250",
+   "cuando": "2026-11-10T21:36:37"
+  },
+  {
+   "servidor": "DDS",
+   "canal": "📝〕INSCRIPCIONES",
+   "texto": "CrisZJ🇵🇪 <:a_:1477410461040377927>",
+   "quien": "criszjono",
+   "discord_id": "1462237816829513971",
+   "msg_id": "1569826295968174183",
+   "cuando": "2026-11-10T21:29:14"
+  },
   {
    "servidor": "LKR",
    "canal": "⟡・INSCRIPCIONES",
@@ -42810,42 +42846,6 @@
    "discord_id": "1523082259870257315",
    "msg_id": "1557498941438689332",
    "cuando": "2026-10-07T21:04:44"
-  },
-  {
-   "servidor": "DDS",
-   "canal": "📜〕INSCRIPCIONES",
-   "texto": "zaile 🇻🇪",
-   "quien": "tenacious_fox_23808",
-   "discord_id": "1549288345966878902",
-   "msg_id": "1557496758756442164",
-   "cuando": "2026-10-07T20:56:04"
-  },
-  {
-   "servidor": "SR",
-   "canal": "[📝]inscripciones",
-   "texto": "Rayo 🇵🇪",
-   "quien": "rayyoo_",
-   "discord_id": "921617312728109167",
-   "msg_id": "1557495817420673075",
-   "cuando": "2026-10-07T20:52:19"
-  },
-  {
-   "servidor": "SR",
-   "canal": "[📝]inscripciones",
-   "texto": "Makma 🇻🇪",
-   "quien": "makmah_g",
-   "discord_id": "897942226955563068",
-   "msg_id": "1557494248520286309",
-   "cuando": "2026-10-07T20:46:05"
-  },
-  {
-   "servidor": "SR",
-   "canal": "[📝]inscripciones",
-   "texto": "gero🇨🇱",
-   "quien": "elneekoperoelog",
-   "discord_id": "825179002091995136",
-   "msg_id": "1557493850950475877",
-   "cuando": "2026-10-07T20:44:30"
   }
  ]
 }
