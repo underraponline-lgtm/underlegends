@@ -1258,11 +1258,11 @@
    ],
    "semillero": {
     "nuevos": {
-     "FFA": 4,
+     "FFA": 6,
      "LKR": 2
     },
     "gente": {
-     "FFA": 29,
+     "FFA": 31,
      "LKR": 13
     },
     "gana": "FFA"
@@ -1274,7 +1274,7 @@
     "DDS": 0,
     "DRA": 0,
     "FDS": 0,
-    "FFA": 29,
+    "FFA": 31,
     "FFS": 0,
     "FRZ": 0,
     "FVS": 0,

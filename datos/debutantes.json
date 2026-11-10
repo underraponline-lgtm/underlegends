@@ -144,6 +144,7 @@
    "vencido": true
   },
   "AbrahamSRRL": {
+   "avisado": "2026-11-10",
    "con": null,
    "cumplido": "",
    "debut": "2026-11-10T01:48:30+00:00",
@@ -1980,10 +1981,11 @@
    "vencido": false
   },
   "Sentpa": {
+   "avisado": "2026-11-10",
    "con": null,
    "cumplido": "",
    "debut": "2026-11-10T01:48:30+00:00",
-   "did": "",
+   "did": "429348374379233280",
    "evento": "TORNEO CLANDESTINO V.1",
    "n": 600,
    "sv": "FFA",
