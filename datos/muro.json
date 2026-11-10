@@ -215,6 +215,15 @@
 "temporada"
 ]
 },
+"okam": {
+"rg": "C",
+"c": [
+"competitivo",
+"pais",
+"servidor",
+"temporada"
+]
+},
 "walker": {
 "rg": "A",
 "c": [
@@ -237,15 +246,6 @@
 ]
 },
 "nxuz": {
-"rg": "C",
-"c": [
-"competitivo",
-"pais",
-"servidor",
-"temporada"
-]
-},
-"okam": {
 "rg": "C",
 "c": [
 "competitivo",
@@ -641,6 +641,14 @@
 "temporada"
 ]
 },
+"vilca": {
+"rg": "",
+"c": [
+"competitivo",
+"servidor",
+"temporada"
+]
+},
 "19": {
 "rg": "",
 "c": []
@@ -712,14 +720,6 @@
 },
 "shadow": {
 "rg": "E",
-"c": [
-"competitivo",
-"servidor",
-"temporada"
-]
-},
-"vilca": {
-"rg": "",
 "c": [
 "competitivo",
 "servidor",
@@ -1043,6 +1043,13 @@
 "temporada"
 ]
 },
+"dios": {
+"rg": "",
+"c": [
+"servidor",
+"temporada"
+]
+},
 "zeta": {
 "rg": "",
 "c": [
@@ -1134,6 +1141,10 @@
 "rg": "",
 "c": []
 },
+"benji": {
+"rg": "",
+"c": []
+},
 "lewito": {
 "rg": "",
 "c": [
@@ -1158,10 +1169,6 @@
 "c": []
 },
 "corvo": {
-"rg": "",
-"c": []
-},
-"benji": {
 "rg": "",
 "c": []
 },
@@ -1237,13 +1244,6 @@
 "rg": "",
 "c": [
 "servidor"
-]
-},
-"dios": {
-"rg": "",
-"c": [
-"servidor",
-"temporada"
 ]
 },
 "j19": {
@@ -6928,8 +6928,8 @@
 "tipo": "resnoche",
 "t": "2026-11-11T08:00:00Z",
 "dia": "2026-11-10",
-"eventos": 1,
-"part": 8,
+"eventos": 2,
+"part": 18,
 "campeones": [
 {
 "ev": "(sin titulo)",
@@ -6941,9 +6941,26 @@
 "erian"
 ]
 ]
+},
+{
+"ev": "MF DOOM Y MADLIB EDICION 1",
+"sv": "DDS",
+"ll": 604,
+"quien": [
+[
+"Dios",
+"dios"
+]
+]
 }
 ],
 "suman": [
+{
+"n": "Dios",
+"k": "dios",
+"pts": 7500,
+"ev": 1
+},
 {
 "n": "Erian",
 "k": "erian",
@@ -6955,12 +6972,6 @@
 "k": "mathhias",
 "pts": 5000,
 "ev": 1
-},
-{
-"n": "LAST",
-"k": "last",
-"pts": 3500,
-"ev": 1
 }
 ],
 "suben": [
@@ -6971,10 +6982,16 @@
 "a": 376
 },
 {
-"n": "Fin",
-"k": "",
-"de": 145,
-"a": 138
+"n": "Dios",
+"k": "dios",
+"de": 122,
+"a": 108
+},
+{
+"n": "Vilca",
+"k": "vilca",
+"de": 76,
+"a": 67
 }
 ],
 "sorpresas": []

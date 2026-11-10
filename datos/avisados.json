@@ -18423,7 +18423,7 @@
    "Velatz": 38
   },
   "fecha": "21/10",
-  "firma": "c27b5a2999f72031",
+  "firma": "c07a8c4a7a0a7c47",
   "msg": "1562607463755161734",
   "nombre": "SNAKE INSIGNIA 6 8",
   "num": 496,
@@ -24168,7 +24168,7 @@
    "Vilca": 1
   },
   "fecha": "21/10",
-  "firma": "ad090488e8250e00",
+  "firma": "7eb89787cb056b6d",
   "msg": "1564147707952758815",
   "nombre": "- RED BULL TORNEO DE PLAZAS 2026 -",
   "num": 523,
@@ -24436,7 +24436,7 @@
    "Vilca": 1
   },
   "fecha": "22/10",
-  "firma": "4c2926b58265bb61",
+  "firma": "fdca8bb6cb12d2db",
   "msg": "1564147714000953499",
   "nombre": "GG SANGRERAP 4",
   "num": 525,
@@ -30514,7 +30514,7 @@
    "Walker": 8
   },
   "fecha": "30/10",
-  "firma": "ccd164dcaf983bdd",
+  "firma": "869957bf1f2ad174",
   "msg": "1565898869114413108",
   "nombre": "IDS V.3",
   "num": 549,
@@ -32629,7 +32629,7 @@
    "Zignos": 27
   },
   "fecha": "01/11",
-  "firma": "63e1b06877be9572",
+  "firma": "4afa867eab870e4a",
   "msg": "1566645439611011152",
   "nombre": "__ COCINE FIDEOS __",
   "num": 558,
@@ -33690,7 +33690,7 @@
    "OEP": 2
   },
   "fecha": "03/11",
-  "firma": "44c01efd37125b92",
+  "firma": "4d342bd91e4bf5ca",
   "msg": "1567309579967144037",
   "nombre": "Rayos y Centellas",
   "num": 564,
@@ -37532,7 +37532,7 @@
    "oriuz": 7
   },
   "fecha": "23/10",
-  "firma": "a00776e1e5a9447c",
+  "firma": "aa4510e027c87b01",
   "msg": "1569508003776823307",
   "nombre": "LLAVES PARA LA DISCORD STYLE 17",
   "num": 580,
@@ -38497,7 +38497,7 @@
    "oriuz": 7
   },
   "fecha": "03/11",
-  "firma": "6780fa3eb3659d20",
+  "firma": "fe2bf1351aa7840f",
   "msg": "1569508038820237324",
   "nombre": "SIX SEVEN STYLE",
   "num": 585,
@@ -39893,7 +39893,7 @@
    "yinn": 33
   },
   "fecha": "08/11",
-  "firma": "7728ffd50d7ecd2e",
+  "firma": "5f881185e6b9df74",
   "msg": "1569128640363364464",
   "nombre": "K.O.M VOL.10",
   "num": 592,
@@ -41785,6 +41785,178 @@
    ],
    [
     "Abraham",
+    "Cuartos",
+    2000
+   ]
+  ],
+  "v": 2
+ },
+ "604": {
+  "antes": {
+   "Calíz": [
+    47,
+    57,
+    false
+   ],
+   "CrisZJ": [
+    257,
+    43,
+    true
+   ],
+   "Dios": [
+    122,
+    183,
+    false
+   ],
+   "Miniboy": [
+    25,
+    29,
+    false
+   ],
+   "Monet": [
+    329,
+    218,
+    true
+   ],
+   "NXUZ": [
+    26,
+    30,
+    false
+   ],
+   "OKAM": [
+    27,
+    31,
+    false
+   ],
+   "Richard": [
+    78,
+    99,
+    false
+   ],
+   "Vilca": [
+    75,
+    94,
+    false
+   ]
+  },
+  "canal": "1443793172013776997",
+  "duelos": [
+   [
+    "Dios",
+    "OKAM",
+    "Dios"
+   ],
+   [
+    "CrisZJ",
+    "Richard",
+    "CrisZJ"
+   ],
+   [
+    "Monet",
+    "Miniboy",
+    "Monet"
+   ],
+   [
+    "Monet",
+    "Calíz",
+    "Monet"
+   ],
+   [
+    "Vilca",
+    "NXUZ",
+    "Vilca"
+   ],
+   [
+    "Vilca",
+    "Benji 🇵🇪",
+    "Vilca"
+   ],
+   [
+    "Dios",
+    "CrisZJ",
+    "Dios"
+   ],
+   [
+    "Vilca",
+    "Monet",
+    "Vilca"
+   ],
+   [
+    "Dios",
+    "Vilca",
+    "Dios"
+   ]
+  ],
+  "ev_antes": {
+   "Calíz": 27,
+   "CrisZJ": 25,
+   "Dios": 4,
+   "Miniboy": 49,
+   "Monet": 5,
+   "NXUZ": 37,
+   "OKAM": 25,
+   "Richard": 18,
+   "Vilca": 16
+  },
+  "fecha": "10/11",
+  "firma": "3624b960fad6dd38",
+  "msg": "1569848635271680124",
+  "nombre": "MF DOOM Y MADLIB EDICION 1",
+  "num": 604,
+  "participantes": 10,
+  "sello": {
+   "Dios": "319635f06305:7a510334494e"
+  },
+  "sv": "DDS",
+  "t": "2026-11-10T23:24:36Z",
+  "tabla": [
+   [
+    "Dios",
+    "Campeón",
+    7500
+   ],
+   [
+    "Vilca",
+    "Subcampeón",
+    5000
+   ],
+   [
+    "CrisZJ",
+    "Semifinal",
+    3500
+   ],
+   [
+    "Monet",
+    "Semifinal",
+    3500
+   ],
+   [
+    "OKAM",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Richard",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Miniboy",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Calíz",
+    "Cuartos",
+    2000
+   ],
+   [
+    "NXUZ",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Benji 🇵🇪",
     "Cuartos",
     2000
    ]

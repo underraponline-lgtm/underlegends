@@ -44225,7 +44225,7 @@
        "Lvel 🇻🇪"
       ],
       "Molusco, Snow, Provenza",
-      "triple (5 bandas, pasan 3); también pasa: Snow🇨🇴 / za🇺🇸"
+      "triple (5 bandas, pasan 3); también pasa: snow🇨🇴 / za🇺🇸"
      ],
      [
       [
@@ -44237,7 +44237,7 @@
        "arce"
       ],
       "Tam, Snow",
-      "triple (6 bandas, pasan 2); también pasa: Snow🇨🇴"
+      "triple (6 bandas, pasan 2); también pasa: snow🇨🇴"
      ],
      [
       [
@@ -44878,7 +44878,7 @@
      [
       [
        "oriuz",
-       "Mato  🇧🇴"
+       "Mato 🇧🇴"
       ],
       "oriuz",
       ""
@@ -44951,7 +44951,7 @@
      ],
      [
       [
-       "Vilka🇵🇪",
+       "Vilka",
        "CRIZJ"
       ],
       "",
@@ -45027,7 +45027,7 @@
     1250
    ],
    [
-    "Mato  🇧🇴",
+    "Mato 🇧🇴",
     "Octavos",
     1250
    ],
@@ -45088,7 +45088,7 @@
      [
       [
        "Sadik",
-       "Mato  🇧🇴"
+       "Mato 🇧🇴"
       ],
       "Sadik",
       ""
@@ -45266,7 +45266,7 @@
     1250
    ],
    [
-    "Mato  🇧🇴",
+    "Mato 🇧🇴",
     "Octavos",
     1250
    ],
@@ -46110,7 +46110,7 @@
      [
       [
        "Artezzy 🇵🇪",
-       "Chop🇭🇳"
+       "Chop🐐 🇭🇳"
       ],
       "",
       "sin ganador: espera en ✅ Decidir"
@@ -46146,7 +46146,7 @@
      ],
      [
       [
-       "Adriagner🇳🇮",
+       "Adriagner🇨🇴",
        "nxus"
       ],
       "",
@@ -46316,7 +46316,7 @@
      ],
      [
       [
-       "Adriagner🇳🇮",
+       "Adriagner🇨🇴",
        "Sakro🇧🇶"
       ],
       "",
@@ -49801,6 +49801,153 @@
    ],
    [
     "Sosa",
+    "Cuartos",
+    2000
+   ]
+  ]
+ },
+ "604": {
+  "dia": "2026-11-10",
+  "escala": "8-15",
+  "fecha": "10/11",
+  "links": [
+   "https://discord.com/channels/1443770831598649528/1563698791595507743/1569835574292906046"
+  ],
+  "n": 604,
+  "nombre": "MF DOOM Y MADLIB EDICION 1",
+  "participantes": 10,
+  "rondas": [
+   {
+    "b": [
+     [
+      [
+       "Dios",
+       "OKAM"
+      ],
+      "Dios",
+      ""
+     ],
+     [
+      [
+       "CrisZJ",
+       "Richard"
+      ],
+      "CrisZJ",
+      ""
+     ],
+     [
+      [
+       "Monet",
+       "Miniboy",
+       "Calíz"
+      ],
+      "Monet",
+      "triple (3 bandas)"
+     ],
+     [
+      [
+       "Vilca",
+       "NXUZ",
+       "Benji 🇵🇪"
+      ],
+      "Vilca",
+      "triple (3 bandas)"
+     ]
+    ],
+    "r": "Cuartos"
+   },
+   {
+    "b": [
+     [
+      [
+       "Dios",
+       "CrisZJ"
+      ],
+      "Dios",
+      ""
+     ],
+     [
+      [
+       "Vilca",
+       "Monet"
+      ],
+      "Vilca",
+      ""
+     ],
+     [
+      [
+       "CrisZJ🇵🇪",
+       "Monet 🇲🇽"
+      ],
+      "",
+      "sin ganador: espera en ✅ Decidir"
+     ]
+    ],
+    "r": "Semifinales"
+   },
+   {
+    "b": [
+     [
+      [
+       "Dios",
+       "Vilca"
+      ],
+      "Dios",
+      ""
+     ]
+    ],
+    "r": "Final"
+   }
+  ],
+  "sv": "DDS",
+  "tabla": [
+   [
+    "Dios",
+    "Campeón",
+    7500
+   ],
+   [
+    "Vilca",
+    "Subcampeón",
+    5000
+   ],
+   [
+    "CrisZJ",
+    "Semifinal",
+    3500
+   ],
+   [
+    "Monet",
+    "Semifinal",
+    3500
+   ],
+   [
+    "Benji 🇵🇪",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Calíz",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Miniboy",
+    "Cuartos",
+    2000
+   ],
+   [
+    "NXUZ",
+    "Cuartos",
+    2000
+   ],
+   [
+    "OKAM",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Richard",
     "Cuartos",
     2000
    ]

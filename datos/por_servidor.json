@@ -1089,11 +1089,11 @@
    },
    "DDS": {
     "duelos": "",
-    "ev": 4,
+    "ev": 5,
     "oro": 0,
     "ovr": 47,
     "pod": 1,
-    "pts": 15750,
+    "pts": 17950,
     "racha": "0/1",
     "tg": {
      "fin": 1
@@ -1789,6 +1789,18 @@
     "pts": 37250,
     "racha": "0/1"
    },
+   "DDS": {
+    "duelos": "",
+    "ev": 1,
+    "oro": 0,
+    "ovr": 42,
+    "pod": 0,
+    "pts": 2200,
+    "racha": "0/0",
+    "tg": {
+     "nuevo": true
+    }
+   },
    "FFA": {
     "duelos": "1/2",
     "ev": 11,
@@ -2391,11 +2403,11 @@
    },
    "DDS": {
     "duelos": "",
-    "ev": 7,
+    "ev": 8,
     "oro": 2,
     "ovr": 50,
     "pod": 2,
-    "pts": 30000,
+    "pts": 34600,
     "racha": "0/3",
     "tg": {
      "fin": 2,
@@ -2969,13 +2981,14 @@
    },
    "DDS": {
     "duelos": "",
-    "ev": 1,
-    "oro": 0,
-    "ovr": 42,
-    "pod": 0,
-    "pts": 2000,
-    "racha": "0/0",
+    "ev": 2,
+    "oro": 1,
+    "ovr": 46,
+    "pod": 1,
+    "pts": 10250,
+    "racha": "1/1",
     "tg": {
+     "fin": 1,
      "nuevo": true
     }
    },
@@ -8121,12 +8134,15 @@
    },
    "DDS": {
     "duelos": "",
-    "ev": 5,
+    "ev": 6,
     "oro": 0,
-    "ovr": 45,
+    "ovr": 46,
     "pod": 0,
-    "pts": 14250,
-    "racha": "0/1"
+    "pts": 16450,
+    "racha": "0/1",
+    "tg": {
+     "llave": true
+    }
    },
    "FDS": {
     "duelos": "",
@@ -8395,6 +8411,18 @@
     "pod": 0,
     "pts": 10000,
     "racha": "0/0"
+   },
+   "DDS": {
+    "duelos": "",
+    "ev": 1,
+    "oro": 0,
+    "ovr": 43,
+    "pod": 0,
+    "pts": 3850,
+    "racha": "0/0",
+    "tg": {
+     "nuevo": true
+    }
    },
    "FFA": {
     "duelos": "0/1",
@@ -8706,11 +8734,11 @@
    },
    "DDS": {
     "duelos": "",
-    "ev": 9,
+    "ev": 10,
     "oro": 2,
     "ovr": 51,
     "pod": 3,
-    "pts": 36250,
+    "pts": 38950,
     "racha": "0/1",
     "tg": {
      "fin": 3,
@@ -9151,6 +9179,18 @@
     "pod": 0,
     "pts": 12500,
     "racha": "0/0"
+   },
+   "DDS": {
+    "duelos": "",
+    "ev": 1,
+    "oro": 0,
+    "ovr": 42,
+    "pod": 0,
+    "pts": 2200,
+    "racha": "0/0",
+    "tg": {
+     "nuevo": true
+    }
    },
    "FDS": {
     "duelos": "",
@@ -10242,11 +10282,11 @@
    },
    "DDS": {
     "duelos": "",
-    "ev": 3,
+    "ev": 4,
     "oro": 0,
     "ovr": 46,
     "pod": 1,
-    "pts": 8250,
+    "pts": 10450,
     "racha": "0/1",
     "tg": {
      "fin": 1
@@ -11351,7 +11391,7 @@
     "oro": 0,
     "ovr": 46,
     "pod": 1,
-    "pts": 10250,
+    "pts": 10750,
     "racha": "0/1",
     "tg": {
      "fin": 1
@@ -12431,15 +12471,16 @@
    },
    "DDS": {
     "duelos": "",
-    "ev": 5,
+    "ev": 6,
     "oro": 0,
-    "ovr": 48,
-    "pod": 1,
-    "pts": 23000,
-    "racha": "0/1",
+    "ovr": 49,
+    "pod": 2,
+    "pts": 28500,
+    "racha": "1/1",
     "tg": {
-     "fin": 1,
-     "fund": true
+     "fin": 2,
+     "fund": true,
+     "llave": true
     }
    },
    "FDS": {
