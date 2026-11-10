@@ -1,51 +1,51 @@
 {
  "v": 1,
- "cuando": "2026-11-10T01:46:36Z",
+ "cuando": "2026-11-10T02:39:46Z",
  "trabajo": "dibujar",
  "codigo": 0,
- "dur_s": 891.8,
+ "dur_s": 2219.7,
  "pasos": [
   {
    "n": "2f",
    "que": "las fotos que faltan, de Discord a R2",
    "ok": true,
-   "s": 7.5
+   "s": 7.0
   },
   {
    "n": "2f2",
    "que": "los TAGs elegidos",
    "ok": true,
-   "s": 1.0
+   "s": 1.2
   },
   {
    "n": "3",
    "que": "qué cambió",
    "ok": true,
-   "s": 12.2
+   "s": 12.0
   },
   {
    "n": "4",
    "que": "las caras, desde R2",
    "ok": true,
-   "s": 20.1
+   "s": 22.5
   },
   {
    "n": "5",
-   "que": "tanda 1 de 2 · 40 persona(s)",
+   "que": "tanda 1 de 7 · 40 persona(s)",
    "ok": false,
-   "s": 784.4
+   "s": 2104.5
   },
   {
    "n": "5b",
    "que": "las Bloqueadas",
    "ok": true,
-   "s": 6.4
+   "s": 9.9
   },
   {
    "n": "6",
    "que": "refrescar KV",
    "ok": true,
-   "s": 59.3
+   "s": 61.2
   }
  ],
  "fallas": [
@@ -55,7 +55,23 @@
   },
   {
    "paso": "5",
-   "que": "03_Servidor/generar.py Miniboy"
+   "que": "03_Servidor/generar.py DARK ANGEL"
+  },
+  {
+   "paso": "5",
+   "que": "03_Servidor/generar.py Hardcore"
+  },
+  {
+   "paso": "5",
+   "que": "03_Servidor/generar.py Lvel"
+  },
+  {
+   "paso": "5",
+   "que": "03_Servidor/generar.py Panchok"
+  },
+  {
+   "paso": "5",
+   "que": "03_Servidor/generar.py Tmax Turbo [PN]"
   }
  ],
  "ultimo_evento": {
@@ -66,25 +82,25 @@
  },
  "cuotas": {
   "kv": {
-   "write": 91,
-   "read": 6461
+   "write": 124,
+   "read": 9265
   },
   "objeto": {
-   "leidas": 398347,
-   "escritas": 5410,
-   "pedidos": 1127
+   "leidas": 800680,
+   "escritas": 7696,
+   "pedidos": 2275
   },
   "worker": {
-   "pedidos": 10725,
+   "pedidos": 11429,
    "errores": 3017,
-   "sub": 13276,
+   "sub": 14065,
    "cortados": 3017,
-   "p50_ms": 1.35,
-   "p99_ms": 14.68,
+   "p50_ms": 1.33,
+   "p99_ms": 14.42,
    "cpu": {
-    "total": 33737,
-    "objeto_10": 1661,
-    "worker_10": 320
+    "total": 35159,
+    "objeto_10": 1677,
+    "worker_10": 336
    }
   },
   "r2": {
