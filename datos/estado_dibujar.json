@@ -1,9 +1,9 @@
 {
  "v": 1,
- "cuando": "2026-11-10T23:07:34Z",
+ "cuando": "2026-11-10T23:38:52Z",
  "trabajo": "dibujar",
  "codigo": 0,
- "dur_s": 230.3,
+ "dur_s": 363.6,
  "pasos": [
   {
    "n": "2f",
@@ -21,61 +21,61 @@
    "n": "3",
    "que": "qué cambió",
    "ok": true,
-   "s": 9.9
+   "s": 6.7
   },
   {
    "n": "4",
    "que": "las caras, desde R2",
    "ok": true,
-   "s": 20.1
+   "s": 39.4
   },
   {
    "n": "5",
-   "que": "tanda 1 de 1 · 25 persona(s)",
+   "que": "tanda 1 de 2 · 40 persona(s)",
    "ok": true,
-   "s": 135.1
+   "s": 246.4
   },
   {
    "n": "5b",
    "que": "las Bloqueadas",
    "ok": true,
-   "s": 6.4
+   "s": 9.9
   },
   {
    "n": "6",
    "que": "refrescar KV",
    "ok": true,
-   "s": 56.8
+   "s": 59.6
   }
  ],
  "fallas": [],
  "ultimo_evento": {
-  "n": "603",
-  "nombre": "(sin titulo)",
+  "n": "604",
+  "nombre": "MF DOOM Y MADLIB EDICION 1",
   "sv": "DDS",
-  "dia": "2026-10-12"
+  "dia": "2026-11-10"
  },
  "cuotas": {
   "kv": {
-   "write": 484,
-   "read": 43009
+   "write": 505,
+   "read": 44046
   },
   "objeto": {
-   "leidas": 2608649,
-   "escritas": 39586,
-   "pedidos": 11222
+   "leidas": 2677502,
+   "escritas": 42257,
+   "pedidos": 11501
   },
   "worker": {
-   "pedidos": 9520,
-   "errores": 550,
-   "sub": 12119,
-   "cortados": 550,
+   "pedidos": 9404,
+   "errores": 284,
+   "sub": 12019,
+   "cortados": 284,
    "p50_ms": 1.31,
-   "p99_ms": 15.13,
+   "p99_ms": 15.16,
    "cpu": {
-    "total": 23426,
-    "objeto_10": 1902,
-    "worker_10": 367
+    "total": 22327,
+    "objeto_10": 1954,
+    "worker_10": 376
    }
   },
   "r2": {
