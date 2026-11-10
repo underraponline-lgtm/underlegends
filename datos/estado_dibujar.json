@@ -1,9 +1,9 @@
 {
  "v": 1,
- "cuando": "2026-11-10T22:36:29Z",
+ "cuando": "2026-11-10T23:07:34Z",
  "trabajo": "dibujar",
  "codigo": 0,
- "dur_s": 110.2,
+ "dur_s": 230.3,
  "pasos": [
   {
    "n": "2f",
@@ -15,31 +15,31 @@
    "n": "2f2",
    "que": "los TAGs elegidos",
    "ok": true,
-   "s": 1.2
+   "s": 0.8
   },
   {
    "n": "3",
    "que": "qué cambió",
    "ok": true,
-   "s": 12.2
+   "s": 9.9
   },
   {
    "n": "4",
    "que": "las caras, desde R2",
    "ok": true,
-   "s": 21.3
+   "s": 20.1
   },
   {
    "n": "5",
-   "que": "tanda 1 de 1 · 1 persona(s)",
+   "que": "tanda 1 de 1 · 25 persona(s)",
    "ok": true,
-   "s": 11.7
+   "s": 135.1
   },
   {
    "n": "5b",
    "que": "las Bloqueadas",
    "ok": true,
-   "s": 5.6
+   "s": 6.4
   },
   {
    "n": "6",
@@ -50,32 +50,32 @@
  ],
  "fallas": [],
  "ultimo_evento": {
-  "n": "601",
+  "n": "603",
   "nombre": "(sin titulo)",
-  "sv": "LKR",
-  "dia": "2026-11-10"
+  "sv": "DDS",
+  "dia": "2026-10-12"
  },
  "cuotas": {
   "kv": {
-   "write": 464,
-   "read": 42008
+   "write": 484,
+   "read": 43009
   },
   "objeto": {
-   "leidas": 2537639,
-   "escritas": 37135,
-   "pedidos": 10887
+   "leidas": 2608649,
+   "escritas": 39586,
+   "pedidos": 11222
   },
   "worker": {
-   "pedidos": 9914,
-   "errores": 1056,
-   "sub": 12524,
-   "cortados": 1056,
-   "p50_ms": 1.32,
-   "p99_ms": 15.11,
+   "pedidos": 9520,
+   "errores": 550,
+   "sub": 12119,
+   "cortados": 550,
+   "p50_ms": 1.31,
+   "p99_ms": 15.13,
    "cpu": {
-    "total": 25988,
-    "objeto_10": 1857,
-    "worker_10": 371
+    "total": 23426,
+    "objeto_10": 1902,
+    "worker_10": 367
    }
   },
   "r2": {
