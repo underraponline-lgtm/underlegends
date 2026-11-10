@@ -191,6 +191,32 @@ const ok = (nombre, cond, detalle = '') => {
   if (!cond) mal++;
 };
 
+// ⚡ EL BORDE DE VERDAD (09/11/2026): el proxy de Pages guarda con la API de caché (`delBorde()` en paginas/_worker.js) y
+// no con `cf.cacheTtl`, que a un Worker de workers.dev no le guardaba nada. Esto pide dos veces la misma ruta con un
+// caché de mentira: la segunda no tiene que llegar al Worker, el borde guarda `ttl` y el navegador ve lo de siempre
+const cacheFalso = () => {
+  const m = new Map();
+  const c = { ttl: {}, async match(r) { const x = m.get(r.url); return x ? x.clone() : undefined; },
+    async put(r, resp) { c.ttl[r.url] = resp.headers.get('cache-control'); m.set(r.url, resp.clone()); } };
+  return c;
+};
+const enBorde = async (proxy, envP, ruta) => {
+  const c = cacheFalso();
+  const antesC = globalThis.caches;
+  globalThis.caches = { default: c };
+  let pedidos = 0;
+  const f0 = globalThis.fetch;
+  globalThis.fetch = async (u, o) => { pedidos++; return f0(u, o); };
+  try {
+    const a = await proxy.fetch(new Request('https://underlegends.pages.dev' + ruta), envP);
+    const b = await proxy.fetch(new Request('https://underlegends.pages.dev' + ruta), envP);
+    const cc = Object.values(c.ttl)[0] || '';
+    return { pedidos, ttl: Number((/max-age=(\d+)/.exec(cc) || [])[1] || 0), navegador: a.headers.get('cache-control'),
+      igual: (await a.text()) === (await b.text()) && b.headers.get('cache-control') === a.headers.get('cache-control'),
+      clave: Object.keys(c.ttl)[0] || '' };
+  } finally { globalThis.fetch = f0; globalThis.caches = antesC; }
+};
+
 console.log('\nEL WORKER, SIN DISCORD Y SIN CLOUDFLARE\n');
 
 {
@@ -3003,9 +3029,10 @@ console.log('\nSEGUIR RAPEROS\n');
   await proxy.fetch(new Request('https://underlegends.pages.dev/api/avisos/seguir', { method: 'POST', body: '{"a":"ana"}',
     headers: { cookie: 'lg_ses=' + SES } }), envP);
   ok('el proxy deja pasar /seguir con la sesión', fue && fue.u.endsWith('/avisos/seguir') && fue.h['x-lg-ses'] === SES);
-  await proxy.fetch(new Request('https://underlegends.pages.dev/api/avisos/seguidores'), envP);
-  ok('y /seguidores, con un minuto en el borde', fue && fue.u.endsWith('/avisos/seguidores') && fue.cf &&
-     fue.cf.cacheTtl === 60);
+  const ebS = await enBorde(proxy, envP, '/api/avisos/seguidores');
+  ok('y /seguidores, con un minuto en el borde (de verdad: la segunda no llega al Worker)', fue && fue.u.endsWith('/avisos/seguidores')
+     && ebS.pedidos === 1 && ebS.ttl === 60 && ebS.navegador === 'public, max-age=20' && ebS.igual
+     && ebS.clave.includes('/__borde/'), JSON.stringify(ebS));
   globalThis.fetch = antesF;
   env.AVISOS = antesA;
   delete PUESTO['d:' + VIEJO];
@@ -3080,8 +3107,15 @@ console.log('\n👏 FELICITAR\n');
   await proxy.fetch(new Request('https://underlegends.pages.dev/api/avisos/felicitar', { method: 'POST',
     body: '{"id":"cccccccccccc"}', headers: { cookie: 'lg_ses=' + SES } }), envP);
   ok('el proxy deja pasar /felicitar con la sesión', fue && fue.u.endsWith('/avisos/felicitar') && fue.h['x-lg-ses'] === SES);
-  await proxy.fetch(new Request('https://underlegends.pages.dev/api/avisos/aplausos'), envP);
-  ok('y /aplausos, con 30 s en el borde', fue && fue.u.endsWith('/avisos/aplausos') && fue.cf && fue.cf.cacheTtl === 30);
+  const ebA = await enBorde(proxy, envP, '/api/avisos/aplausos');
+  ok('y /aplausos, con 30 s en el borde (de verdad)', fue && fue.u.endsWith('/avisos/aplausos') && ebA.pedidos === 1 && ebA.ttl === 30,
+     JSON.stringify(ebA));
+  // ⚡ y `?r=` (después de elegir un marco) pasa de largo y renueva lo guardado; el lobby, con su encabezado de siempre
+  const ebP = await enBorde(proxy, envP, '/api/avisos/pases?r=1');
+  const ebL = await enBorde(proxy, envP, '/api/lobby');
+  ok('/pases?r= va siempre al Worker y renueva lo guardado; el lobby, un minuto en el borde con su encabezado de siempre',
+     ebP.pedidos === 2 && ebP.ttl === 300 && ebL.pedidos === 1 && ebL.ttl === 60
+     && ebL.navegador === 'public, max-age=60, stale-while-revalidate=120', JSON.stringify({ ebP, ebL }));
   // 🔔 la bandeja: con la sesión, y el «visto» pasa tal cual (nunca otro quien)
   await proxy.fetch(new Request('https://underlegends.pages.dev/api/avisos/bandeja', { method: 'POST', body: '{"visto":true}',
     headers: { cookie: 'lg_ses=' + SES } }), envP);
@@ -3184,9 +3218,9 @@ console.log('\n«TU SERVIDOR»\n');
     body: '{"sv":"FFA"}', headers: { cookie: 'lg_ses=' + SES } }), envP);
   ok('el proxy deja pasar /mi-servidor con la sesión', fue && fue.u.endsWith('/avisos/mi-servidor') &&
      fue.h['x-lg-ses'] === SES);
-  await proxy.fetch(new Request('https://underlegends.pages.dev/api/avisos/servidores'), envP);
-  ok('y /servidores, con un minuto en el borde', fue && fue.u.endsWith('/avisos/servidores') && fue.cf &&
-     fue.cf.cacheTtl === 60);
+  const ebV = await enBorde(proxy, envP, '/api/avisos/servidores');
+  ok('y /servidores, con un minuto en el borde (de verdad)', fue && fue.u.endsWith('/avisos/servidores') && ebV.pedidos === 1
+     && ebV.ttl === 60, JSON.stringify(ebV));
   // 🙈 «ocultar mi foto» (02/10/2026): lo mismo que «tu servidor», con un sí/no
   globalThis.fetch = async () => new Response('{"message":"401: Unauthorized"}', { status: 401 });
   alObjeto.length = 0;

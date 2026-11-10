@@ -202,6 +202,34 @@ const CUENTA = {
 // cabeceras de la página (los archivos) están en `_headers`
 const SEGURO = { 'x-content-type-options': 'nosniff' };
 
+// ⚡ EL BORDE, DE VERDAD (09/11/2026). Todo lo público se pedía con `cf: { cacheTtl, cacheEverything }` y NO SE GUARDABA:
+// un subpedido a un Worker de workers.dev no pasa por el caché. Medido ese día: `/api/avisos/estado` pedido dos veces con
+// 25 s de diferencia, en la misma ciudad (IAD) y con 30 s de caché, salió armado dos veces por el objeto (`medidas.t`
+// distinto). O sea que cada pestaña abierta llegaba al Worker y al objeto en cada vuelta, y el objeto —que se duerme a
+// los 10 s— lo armaba de cero. Acá se guarda con la API de caché, que en Pages sí anda (también en *.pages.dev).
+// · la clave es una ruta que nadie pide (`/__borde/…`), así el caché nunca contesta solo un pedido de la página
+// · lo que ve el navegador es lo de antes, igual (`cab`): el tiempo largo es sólo del borde
+// · `fresco`: no lee lo guardado y lo reemplaza (`?r=` de `refrescarPases()`, después de elegir un marco)
+// · se guarda sólo un 200: un error del objeto no se repite durante `ttl`
+// · es por ciudad de Cloudflare: cada una arma su copia una vez cada `ttl`
+async function delBorde(ctx, url, ttl, pedir, cab, fresco) {
+  const clave = new Request(url.origin + '/__borde' + url.pathname, { method: 'GET' });
+  if (!fresco) {
+    try {
+      const hay = await caches.default.match(clave);
+      if (hay) return new Response(hay.body, { status: 200, headers: cab });
+    } catch (e) { /* sin caché: se pide */ }
+  }
+  const r = await pedir();
+  if (r.status !== 200) return new Response(r.body, { status: r.status, headers: cab });
+  const cuerpo = await r.arrayBuffer();
+  try {
+    const guarda = caches.default.put(clave, new Response(cuerpo, { headers: { ...cab, 'cache-control': `public, max-age=${ttl}` } }));
+    if (ctx && ctx.waitUntil) ctx.waitUntil(guarda.catch(() => {})); else await guarda.catch(() => {});
+  } catch (e) { /* sin caché: sale igual */ }
+  return new Response(cuerpo, { status: 200, headers: cab });
+}
+
 function sesion(req) {
   const m = /(?:^|;\s*)lg_ses=([A-Za-z0-9_-]{30,100})/.exec(req.headers.get('cookie') || '');
   return m ? m[1] : '';
@@ -223,7 +251,7 @@ function visitaRepetida(req, que) {
   return false;
 }
 
-async function avisos(req, url) {
+async function avisos(req, url, ctx) {
   const metodo = AVISOS[url.pathname];
   if (req.method !== metodo) return new Response('no', { status: 405 });
   // 🧭 lo del tutorial, con el mismo freno que la visita pero por cosa: el navegador ya cuenta cada una una sola vez.
@@ -248,6 +276,7 @@ async function avisos(req, url) {
       'cache-control': 'no-store' } });
   }
   const init = { method: metodo, headers: { accept: 'application/json', 'x-lg-ip': ipDe(req) } };
+  let ttl = 0;
   if (metodo === 'POST') {
     const cuerpo = await req.text();
     // 🖼️ una imagen de fondo es más que 4 KB: sólo esa ruta, y con su propio tope (el Worker lo vuelve a medir). Y el
@@ -259,7 +288,7 @@ async function avisos(req, url) {
     if (sesion(req)) init.headers['x-lg-ses'] = sesion(req);
   } else if (url.pathname.endsWith('/clave')) {
     // la clave pública no cambia: una hora en el borde
-    init.cf = { cacheTtl: 3600, cacheEverything: true };
+    ttl = 3600;
   } else if (url.pathname.endsWith('/vivo') || url.pathname.endsWith('/encuestas') || url.pathname.endsWith('/ligas-votos') ||
              url.pathname.endsWith('/precios') || url.pathname.endsWith('/aplausos') ||
              url.pathname.endsWith('/estado')) {
@@ -268,27 +297,27 @@ async function avisos(req, url) {
     // ⚠️ 30 s EN EL BORDE: la página pregunta cada minuto y el vigía escribe
     // cada minuto; con esto, mucha gente mirando son pocos pedidos al Worker.
     // Los votos, igual: quien vota recibe su cuenta en la respuesta del voto
-    init.cf = { cacheTtl: 30, cacheEverything: true };
+    ttl = 30;
   } else if (url.pathname.endsWith('/seguidores') || url.pathname.endsWith('/servidores')) {
     // cuántos siguen a cada uno: se mira al abrir un perfil, y un minuto
     // de atraso no le cambia nada a nadie
-    init.cf = { cacheTtl: 60, cacheEverything: true };
+    ttl = 60;
   } else if (url.pathname.endsWith('/pases') || url.pathname.endsWith('/niveles') || url.pathname.endsWith('/avisos/roles')
     || url.pathname.endsWith('/avisos/fondos')) {
     // 🎟️ el nivel del Pase y el de la racha de cada perfil (revisión del 05/10/2026): los pide CADA Inicio y CADA
     // perfil, y en el objeto son tablas enteras —el Pase, una persona por persona—. Con la Liga creciendo eran
     // millones de filas leídas por día (techo: 5 millones). Cinco minutos en el borde: un nivel nuevo se ve un rato
     // después, y el de cada uno, en su Pase, al instante (eso va con su sesión, no por acá)
-    init.cf = { cacheTtl: 300, cacheEverything: true };
+    ttl = 300;
+  }
+  const cab = { 'content-type': 'application/json; charset=utf-8', ...SEGURO,
+    'cache-control': metodo === 'GET' ? 'public, max-age=20' : 'no-store' };
+  // ⚡ por el borde de verdad (ver `delBorde()`); `?r=` es «lo de ahora»: después de elegir un marco (`refrescarPases()`)
+  if (metodo === 'GET' && ttl) {
+    return delBorde(ctx, url, ttl, () => fetch(ORIGEN + url.pathname.slice('/api'.length), init), cab, url.searchParams.has('r'));
   }
   const r = await fetch(ORIGEN + url.pathname.slice('/api'.length), init);
-  return new Response(r.body, {
-    status: r.status,
-    headers: {
-      'content-type': 'application/json; charset=utf-8', ...SEGURO,
-      'cache-control': metodo === 'GET' ? 'public, max-age=20' : 'no-store',
-    },
-  });
+  return new Response(r.body, { status: r.status, headers: cab });
 }
 
 // 🛡️ UN FRENO POR IP (Dlx, 14/10/2026: «Las dos», a «contra un DDoS que agote la cuota gratis»: este freno y, cuando
@@ -583,7 +612,7 @@ async function vistaCrew(req, env, id, url) {
 }
 
 export default {
-  async fetch(req, env) {
+  async fetch(req, env, ctx) {
     const url = new URL(req.url);
     const ua = req.headers.get('user-agent') || '';
 
@@ -643,20 +672,14 @@ export default {
       if (o !== null && o !== url.origin) return new Response('no', { status: 403, headers: SEGURO });
     }
 
-    if (AVISOS[url.pathname]) return avisos(req, url);
+    if (AVISOS[url.pathname]) return avisos(req, url, ctx);
 
     if (url.pathname === '/api/lobby') {
       if (req.method !== 'GET') return new Response('no', { status: 405 });
       // El Worker sirve el lobby como HTML; lo que hace falta acá es el
       // json crudo. `?json=1` se lo pide (ver `/lobby` en worker.js).
-      const r = await fetch(ORIGEN + '/lobby?json=1', {
-        method: 'GET',
-        headers: { accept: 'application/json' },
-        cf: { cacheTtl: 60, cacheEverything: true },
-      });
-      const h = new Headers();
-      h.set('content-type', 'application/json; charset=utf-8');
-      h.set('x-content-type-options', 'nosniff');
+      // ⚡ por el borde de verdad: ver `delBorde()` (el `cf.cacheTtl` de antes no guardaba nada)
+      const pedir = () => fetch(ORIGEN + '/lobby?json=1', { method: 'GET', headers: { accept: 'application/json' } });
       // ⚠️ 60 s DE CACHE Y `stale-while-revalidate`: el ciclo escribe una
       // vez por hora, pero la cuenta atrás corre en el navegador, así que
       // una copia de hace un minuto no atrasa el contador ni un segundo.
@@ -673,23 +696,16 @@ export default {
       // página se ve rota y no lo está. 120 s conserva casi toda la
       // ganancia —la segunda visita sigue siendo instantánea— y deja de
       // mostrar un mundo de hace diez minutos.
-      h.set('cache-control', 'public, max-age=60, stale-while-revalidate=120');
-      return new Response(r.body, { status: r.status, headers: h });
+      return delBorde(ctx, url, 60, pedir, { 'content-type': 'application/json; charset=utf-8', ...SEGURO,
+        'cache-control': 'public, max-age=60, stale-while-revalidate=120' }, false);
     }
 
     // 🔑 LOS PERFILES, por el mismo camino que el lobby: el Worker los lee
     // de KV y acá se reenvían. Se piden sólo al abrir un perfil.
     // el calendario para Google y Apple (webcal): el Worker lo tiene en KV
     if (url.pathname === '/api/calendario.ics' || url.pathname === '/calendario.ics') {
-      const r = await fetch(ORIGEN + '/calendario.ics', {
-        headers: { accept: 'text/calendar' },
-        cf: { cacheTtl: 600, cacheEverything: true },
-      });
-      return new Response(r.body, {
-        status: r.status,
-        headers: { 'content-type': 'text/calendar; charset=utf-8', ...SEGURO,
-          'cache-control': 'public, max-age=900' },
-      });
+      return delBorde(ctx, url, 600, () => fetch(ORIGEN + '/calendario.ics', { headers: { accept: 'text/calendar' } }),
+        { 'content-type': 'text/calendar; charset=utf-8', ...SEGURO, 'cache-control': 'public, max-age=900' }, false);
     }
     // «Mi cuenta» con Discord: el permiso va al Worker, que le pregunta a Discord
     if (CUENTA[url.pathname]) {
@@ -713,16 +729,9 @@ export default {
         || url.pathname === '/api/competencias' || url.pathname === '/api/duelos' || url.pathname === '/api/calendario'
         || url.pathname === '/api/divisiones') {
       if (req.method !== 'GET') return new Response('no', { status: 405 });
-      const r = await fetch(ORIGEN + url.pathname.slice(4), {
-        method: 'GET',
-        headers: { accept: 'application/json' },
-        cf: { cacheTtl: 60, cacheEverything: true },
-      });
-      const h = new Headers();
-      h.set('content-type', 'application/json; charset=utf-8');
-      h.set('x-content-type-options', 'nosniff');
-      h.set('cache-control', 'public, max-age=60, stale-while-revalidate=120');
-      return new Response(r.body, { status: r.status, headers: h });
+      // ⚡ por el borde de verdad: ver `delBorde()`
+      return delBorde(ctx, url, 60, () => fetch(ORIGEN + url.pathname.slice(4), { method: 'GET', headers: { accept: 'application/json' } }),
+        { 'content-type': 'application/json; charset=utf-8', ...SEGURO, 'cache-control': 'public, max-age=60, stale-while-revalidate=120' }, false);
     }
 
     // `/lobby` era la ruta de antes. Se conserva como redirección: es la
