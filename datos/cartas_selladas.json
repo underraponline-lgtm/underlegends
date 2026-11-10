@@ -76,7 +76,7 @@
    "temporada": "9db6ffc60460:7a510334494e"
   },
   "Aktybo": {
-   "competitivo": "265f7ecb44d8:624f5e322311",
+   "competitivo": "06237dca3d3c:624f5e322311",
    "pais": "e3267b7a29c8:733ce66bf5fa",
    "servidor": "ca9d68a3bb15:2415c901692f:aa8232"
   },
@@ -231,7 +231,7 @@
   },
   "CJ": {},
   "CULT": {
-   "competitivo": "f48df595c148:624f5e322311",
+   "competitivo": "2105f1f9b950:624f5e322311",
    "pais": "de53dea91c4c:733ce66bf5fa",
    "servidor": "2c85acfc836f:2415c901692f:e4fbfa"
   },
@@ -378,14 +378,14 @@
    "servidor": "5326ca7e9e57:2415c901692f:ce9c52"
   },
   "Dcet": {
-   "competitivo": "1a77b833a2a5:624f5e322311",
+   "competitivo": "ebf69507d1a4:624f5e322311",
    "pais": "5fa3b98ad836:733ce66bf5fa",
    "servidor": "1aa95f31e5f9:2415c901692f:3c7154"
   },
   "Delux": {
-   "competitivo": "f731dafbc14e:624f5e322311",
-   "pais": "cd1b865296e4:733ce66bf5fa",
-   "servidor": "2a53d9195f5f:2415c901692f:4e5869",
+   "competitivo": "06aae5eaa6a5:624f5e322311",
+   "pais": "fdd250428b14:733ce66bf5fa",
+   "servidor": "2946c3afebfb:2415c901692f:4e5869",
    "temporada": "516fb8fa8f66:7a510334494e"
   },
   "Deluxe": {
@@ -437,10 +437,10 @@
    "servidor": "8ed71eb0bd02:2415c901692f:948362"
   },
   "Drexx": {
-   "competitivo": "124bca020c24:624f5e322311",
-   "pais": "6f64c40d6932:733ce66bf5fa",
-   "servidor": "754ade462efd:2415c901692f:51cb66",
-   "temporada": "7bd16f567805:7a510334494e"
+   "competitivo": "457b601e39f6:624f5e322311",
+   "pais": "fdf8aea070bd:733ce66bf5fa",
+   "servidor": "2652e0fafcc1:2415c901692f:51cb66",
+   "temporada": "dd88bca86079:7a510334494e"
   },
   "Dyminuto": {
    "servidor": "fd4581683589:2415c901692f:15af16"
@@ -756,7 +756,7 @@
    "servidor": "1b54240d32bf:2415c901692f:055f77"
   },
   "Jayden": {
-   "competitivo": "8f8ad2c699a6:624f5e322311",
+   "competitivo": "9789d22d9591:624f5e322311",
    "pais": "99f4a7175d7d:733ce66bf5fa",
    "servidor": "354188f165ce:2415c901692f:0ab0a0"
   },
@@ -883,8 +883,8 @@
   },
   "Korey": {},
   "Kourier": {
-   "competitivo": "88d8e62b0fe9:624f5e322311",
-   "pais": "e60c6523975b:733ce66bf5fa",
+   "competitivo": "974c38cd8c4b:624f5e322311",
+   "pais": "17897ca13355:733ce66bf5fa",
    "servidor": "8e5530f43f2a:2415c901692f:cda7f5",
    "temporada": "15f5c3427093:7a510334494e"
   },
@@ -941,7 +941,7 @@
    "temporada": "88a9c5ee1c9c:7a510334494e"
   },
   "LGBD": {
-   "competitivo": "3d96f37bc3b1:624f5e322311",
+   "competitivo": "5889dbb934ac:624f5e322311",
    "pais": "3dc41f8deecd:733ce66bf5fa",
    "servidor": "287d5544c98f:2415c901692f:5579b8"
   },
@@ -1320,10 +1320,10 @@
   "Nox": {},
   "Noxvell": {},
   "Number": {
-   "competitivo": "d498b678a1d0:624f5e322311",
-   "pais": "ec43df175fb5:733ce66bf5fa",
-   "servidor": "5366c756cad9:2415c901692f:fdb28b",
-   "temporada": "dd4675bff181:7a510334494e"
+   "competitivo": "d2f04fa80161:624f5e322311",
+   "pais": "3379fa7912e3:733ce66bf5fa",
+   "servidor": "c265cd41c282:2415c901692f:fdb28b",
+   "temporada": "b766285cfbfb:7a510334494e"
   },
   "Number VE": {
    "competitivo": "b3863316cc8d:624f5e322311",
@@ -1548,7 +1548,7 @@
   "SGB": {},
   "SHULIOT": {},
   "SK8": {
-   "competitivo": "5117ba6ca154:624f5e322311",
+   "competitivo": "2579bc375a5b:624f5e322311",
    "pais": "292c05c53b8a:733ce66bf5fa",
    "servidor": "a10bfe005981:2415c901692f:afbca9"
   },
@@ -1651,8 +1651,8 @@
    "servidor": "ffe575ac7b03:2415c901692f:a672ab"
   },
   "Soneto": {
-   "competitivo": "eeb3a41163c3:624f5e322311",
-   "pais": "46bf98522741:733ce66bf5fa",
+   "competitivo": "44ecb8d69f07:624f5e322311",
+   "pais": "af48507f0d35:733ce66bf5fa",
    "servidor": "e82582e9f19d:2415c901692f:9b3a50",
    "temporada": "c804b3289b5d:7a510334494e"
   },
@@ -1903,7 +1903,7 @@
   "Zanet": {},
   "Zekha": {
    "competitivo": "2183cb67d85b:624f5e322311",
-   "pais": "037cc1506f0e:733ce66bf5fa",
+   "pais": "776cf0545128:733ce66bf5fa",
    "servidor": "dfcdd0eed29b:2415c901692f:77319d"
   },
   "Zekki": {
@@ -2091,5 +2091,5 @@
    "servidor": "7f8885a35a6d:2415c901692f:93a344"
   }
  },
- "cuando": "2026-11-10T06:05:11+00:00"
+ "cuando": "2026-11-10T06:38:00+00:00"
 }
