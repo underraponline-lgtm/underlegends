@@ -56,7 +56,7 @@
   "Adriagner": {
    "competitivo": "807760837e52:624f5e322311",
    "pais": "7474a9112a02:733ce66bf5fa",
-   "servidor": "8a111e0ea853:2415c901692f:40a77e",
+   "servidor": "8a111e0ea853:2415c901692f:cde293",
    "temporada": "64a22009abb8:7a510334494e"
   },
   "Adrianex": {
@@ -100,7 +100,7 @@
   "Am": {
    "competitivo": "56080f460470:624f5e322311",
    "pais": "c58b63ece0d2:733ce66bf5fa",
-   "servidor": "2b94ae9c8316:2415c901692f:8551cb"
+   "servidor": "423cb9786284:2415c901692f:8551cb"
   },
   "Amaya": {
    "servidor": "db03783dddac:2415c901692f:aa8232"
@@ -978,7 +978,7 @@
   "Leonart": {
    "competitivo": "fe0e8d408fbe:624f5e322311",
    "pais": "4d2253ad3d17:733ce66bf5fa",
-   "servidor": "835b59f20cfd:2415c901692f:35ef22",
+   "servidor": "591b9d59db4d:2415c901692f:35ef22",
    "temporada": "e2a7499b2b6d:7a510334494e"
   },
   "Leyenda": {},
@@ -1196,7 +1196,7 @@
   "Mochi DG": {
    "competitivo": "3bbd86272812:624f5e322311",
    "pais": "0576b7910b37:733ce66bf5fa",
-   "servidor": "65d0f5a9bda8:2415c901692f:3c7154"
+   "servidor": "65d0f5a9bda8:2415c901692f:db1079"
   },
   "Molt": {
    "competitivo": "9191df18d626:624f5e322311",
@@ -1822,7 +1822,7 @@
   "Volg": {
    "competitivo": "0a3c283ca67c:624f5e322311",
    "pais": "a3a8691982c2:733ce66bf5fa",
-   "servidor": "aadd5048e88a:2415c901692f:effa76"
+   "servidor": "db06dadca491:2415c901692f:effa76"
   },
   "Volk": {
    "competitivo": "1bac27b3a2e0:624f5e322311",
@@ -1994,7 +1994,7 @@
   "jazi": {
    "competitivo": "20686dea5873:624f5e322311",
    "pais": "ef5cb26723c1:733ce66bf5fa",
-   "servidor": "d7726bcaf55f:2415c901692f:aa8232"
+   "servidor": "df997a7ffb93:2415c901692f:aa8232"
   },
   "joakko": {
    "servidor": "17505f71e7f1:2415c901692f:3d792e"
@@ -2091,5 +2091,5 @@
    "servidor": "7f8885a35a6d:2415c901692f:93a344"
   }
  },
- "cuando": "2026-11-10T05:02:16+00:00"
+ "cuando": "2026-11-10T05:32:49+00:00"
 }
