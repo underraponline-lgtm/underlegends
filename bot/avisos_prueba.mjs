@@ -2521,9 +2521,17 @@ const ok = (cond, que, det) => {
     let cuentas = 0;
     const dm1 = o.delMinuto('prueba', 60, () => { cuentas += 1; return { n: cuentas }; });
     const dm2 = o.delMinuto('prueba', 60, () => { cuentas += 1; return { n: cuentas }; });
+    // 💤 y un objeto que se despertó de cero (09/11/2026: se duerme a los ~10 s) usa la guardada en `estado`, sin contar
+    o.rutaMem = {};
+    const dm2b = o.delMinuto('prueba', 60, () => { cuentas += 1; return { n: cuentas }; });
+    // al vencer —la de memoria y la guardada— se cuenta de nuevo
     o.rutaMem.prueba.t -= 61000;
+    const gu = o.leer('ruta:prueba'); gu.t -= 61000; o.guardar('ruta:prueba', gu);
     const dm3 = o.delMinuto('prueba', 60, () => { cuentas += 1; return { n: cuentas }; });
-    ok(dm1.n === 1 && dm2.n === 1 && dm3.n === 2, 'lo público se cuenta una vez mientras valga, y al vencer se cuenta de nuevo');
+    // y las de menos de un minuto no se guardan: escribirlas costaría más que lo que ahorran
+    o.delMinuto('corta', 20, () => ({ n: 1 }));
+    ok(dm1.n === 1 && dm2.n === 1 && dm2b.n === 1 && dm3.n === 2 && cuentas === 2 && o.leer('ruta:corta') === null,
+      'lo público se cuenta una vez mientras valga, también después de dormirse, y al vencer se cuenta de nuevo');
     // ⚡ lo leído de `estado` se recuerda como texto: tocar lo que devuelve no cambia lo guardado, y guardar lo pisa
     o.guardar('prueba_mem', { a: 1 });
     const pm1 = o.leer('prueba_mem');
@@ -2819,6 +2827,138 @@ const ok = (cond, que, det) => {
     ok(a.ana === 'pais' && b === a && lecturas === 1 && c.ana === 'servidor',
       'la carta principal de todos se arma una vez: la segunda no lee, y escribir la tabla la tira y la vuelve a armar',
       JSON.stringify({ a, c, lecturas }));
+  }
+}
+
+{
+  // ⚡ /card lee las filas de UNA persona (09/11/2026): tiene que dar EXACTAMENTE lo que los mapas de todos le daban a esa
+  // clave. Con datos armados para que se noten las diferencias: cuentas que cambian de clave entre temporadas, dos cuentas
+  // con la misma clave, la clave que sale de `idk`, el dueño (con y sin marcos propios), «ninguno», un marco elegido que
+  // ya no tiene, una foto con marco de otra firma y redibujos sin hacer
+  let DatabaseSync = null;
+  try { ({ DatabaseSync } = await import('node:sqlite')); } catch (e) { DatabaseSync = null; }
+  if (DatabaseSync) {
+    const db = new DatabaseSync(':memory:');
+    const sql = {
+      exec(q, ...ps) {
+        const t = String(q).trim();
+        if (!ps.length && /;\s*\S/.test(t)) { db.exec(t); return { toArray: () => [] }; }
+        const st = db.prepare(t);
+        if (/^\s*(SELECT|WITH|PRAGMA)/i.test(t)) { const rows = st.all(...ps); return { toArray: () => rows }; }
+        st.run(...ps);
+        return { toArray: () => [] };
+      },
+    };
+    const o = new A.Avisos({ storage: { sql, setAlarm() {}, getAlarm() { return null; }, transactionSync: (f) => f() },
+      blockConcurrencyWhile: async (f) => f() }, { DISCORD_TOKEN: 'x' });
+    await new Promise((r) => setTimeout(r, 5));
+    // con un Pase cargado: así el dueño tiene sus tres marcos de la temporada (`marcosDueno()`)
+    o.guardar('pase_v', 'x');
+    o.guardar('pase', { cfg: { temp: 't1', umbrales: [0], niveles: 30 } });
+    let semilla = 7;
+    // (Park-Miller: 16807 por menos de 2^31 entra entero en un double; con el 1103515245 de C los bits de abajo se perdían)
+    const azar = (n) => { semilla = (semilla * 16807) % 2147483647; return Math.floor((semilla / 2147483647) * n); };
+    const ids = Array.from({ length: 70 }, (_, i) => String(100000 + i));
+    const claves = ['ana', 'beto', 'caro', 'dani', 'eli', 'fer', 'gus', 'hugo', 'ines', 'juan', 'kai', 'luz', A.DUENO_K];
+    const cartas = ['temporada', 'competitiva', 'pais', 'servidor'];
+    const marcos = ['t1:premium', 't1:plata', 't1:oro', 'prueba:oro', 'prueba:plata'];
+    // los casos que deciden, armados a mano (con azar casi nunca caen justo en el lugar que decide):
+    // · 'zeta': X jugó la prueba como zeta y la T1 como omega (ya no es zeta), con su carta principal DESPUÉS de la de Y
+    // · 'nn': P y Q comparten clave; Q, el último por su primer marco, eligió «ninguno»: queda el de P
+    // · 'dd': el dueño sin marcos propios (los de la temporada, por ser el dueño) va último y decide
+    const fijo = (q, ...a) => o.sql.exec(q, ...a);
+    fijo("INSERT INTO jugo_temp (quien, temp, k, eventos) VALUES ('900001', 't1', 'zeta', 1)");
+    fijo("INSERT INTO carta_principal (quien, carta, t) VALUES ('900001', 'servidor', 1)");
+    fijo("INSERT INTO jugo_temp (quien, temp, k, eventos) VALUES ('900002', 'prueba', 'zeta', 1)");
+    fijo("INSERT INTO jugo_temp (quien, temp, k, eventos) VALUES ('900002', 't1', 'omega', 1)");
+    fijo("INSERT INTO carta_principal (quien, carta, t) VALUES ('900002', 'pais', 2)");
+    fijo("INSERT INTO idk (id, k, t) VALUES ('900003', 'nn', 1)");
+    fijo("INSERT INTO marcos (quien, marco, t) VALUES ('900003', 't1:plata', 10)");
+    fijo("INSERT INTO jugo_temp (quien, temp, k, eventos) VALUES ('900004', 't1', 'nn', 1)");
+    fijo("INSERT INTO marcos (quien, marco, t) VALUES ('900004', 't1:oro', 20)");
+    fijo("INSERT INTO marco_elige (quien, marco, estilo, t) VALUES ('900004', 'ninguno', 'camiseta', 1)");
+    fijo("INSERT INTO jugo_temp (quien, temp, k, eventos) VALUES ('900005', 't1', 'dd', 1)");
+    fijo("INSERT INTO marcos (quien, marco, t) VALUES ('900005', 't1:premium', 30)");
+    fijo("INSERT INTO jugo_temp (quien, temp, k, eventos) VALUES (?, 't1', 'dd', 1)", A.DUENO);
+    fijo("INSERT INTO marco_elige (quien, marco, estilo, t) VALUES (?, '', 'liso', 1)", A.DUENO);
+    let t = 1000;
+    for (const q of ids) {
+      // la clave de la temporada más nueva manda; a veces sólo `idk`, a veces nada
+      const r = azar(10);
+      if (r < 6) o.sql.exec('INSERT INTO jugo_temp (quien, temp, k, eventos) VALUES (?, ?, ?, 1)', q, 'prueba', claves[azar(claves.length)]);
+      if (r < 4) o.sql.exec('INSERT INTO jugo_temp (quien, temp, k, eventos) VALUES (?, ?, ?, 1)', q, 't1', claves[azar(claves.length)]);
+      if (r >= 6 && r < 9) o.sql.exec('INSERT INTO idk (id, k, t) VALUES (?, ?, ?)', q, claves[azar(claves.length)], t++);
+      if (azar(3) === 0) o.sql.exec('INSERT INTO carta_principal (quien, carta, t) VALUES (?, ?, ?)', q, cartas[azar(4)], t++);
+      for (const m of marcos) if (azar(4) === 0) o.sql.exec('INSERT INTO marcos (quien, marco, t) VALUES (?, ?, ?)', q, m, t++);
+      const e = azar(5);
+      if (e === 0) o.sql.exec('INSERT INTO marco_elige (quien, marco, estilo, t) VALUES (?, ?, ?, ?)', q, 'ninguno', 'camiseta', t++);
+      if (e === 1) o.sql.exec('INSERT INTO marco_elige (quien, marco, estilo, t) VALUES (?, ?, ?, ?)', q, marcos[azar(5)], 'liso', t++);
+    }
+    for (const k of claves) {
+      if (azar(2)) o.sql.exec('INSERT INTO redibujo (k, n, pedido, hecho) VALUES (?, ?, ?, ?)', k, k, t++, azar(2) ? t++ : 0);
+      if (azar(3)) {
+        const m = marcos[azar(5)];
+        const firma = azar(2) ? m + '|' + ['camiseta', 'liso'][azar(2)] : 'otra|cosa';
+        o.sql.exec('INSERT INTO marco_img (k, firma, cartas, t) VALUES (?, ?, ?, ?)', k, firma, JSON.stringify([cartas[azar(4)]]), t++);
+      }
+    }
+    // a la firma de algunos se le pone la de su marco de verdad, así también hay fotos con marco que SÍ valen
+    const pub = o.marcosPublicos();
+    for (const k of claves.slice(0, 6)) {
+      if (pub[k]) o.sql.exec('INSERT INTO marco_img (k, firma, cartas, t) VALUES (?, ?, ?, ?) ON CONFLICT(k) DO UPDATE SET '
+        + 'firma = excluded.firma', k, pub[k][0] + '|' + pub[k][1], '["temporada"]', t++);
+    }
+    const cp = o.cartasPrincipales(), vr = o.versionesRedibujo(), mp = o.marcosPublicos(), mi = o.marcosEnImagen();
+    const distintas = [];
+    let conDato = 0;
+    const esperado = { zeta: 'servidor', nn: 't1:plata', dd: 't1:oro' };
+    const fijosBien = o.cartaPrincipalDe('zeta') === 'servidor' && JSON.stringify(o.marcoPublicoDe('nn')) === '["t1:plata","camiseta"]'
+      && JSON.stringify(o.marcoPublicoDe('dd')) === '["t1:oro","liso"]' && cp.zeta === esperado.zeta && mp.nn[0] === esperado.nn && mp.dd[0] === esperado.dd;
+    for (const k of claves.concat(['nadie', 'zeta', 'omega', 'nn', 'dd'])) {
+      const q = o.quienesDeClave(k);
+      const a = [cp[k], vr[k], mp[k] ? mp[k].slice(0, 2) : undefined, mi[k]];
+      const b = [o.cartaPrincipalDe(k, q), o.versionRedibujoDe(k), o.marcoPublicoDe(k, q), o.marcoEnImagenDe(k, q)];
+      if (JSON.stringify(a) !== JSON.stringify(b)) distintas.push({ k, mapas: a, una: b });
+      if (a.some((x) => x !== undefined)) conDato++;
+    }
+    const conFoto = claves.filter((k) => mi[k]).length;
+    ok(!distintas.length && fijosBien && conDato >= 8 && conFoto >= 1,
+      `/card de una persona da lo mismo que los mapas de todos (carta principal, redibujo, marco y foto con marco; ${conDato} claves con algo, ${conFoto} con foto)`,
+      JSON.stringify(distintas.slice(0, 3)));
+    // y lo que /card le pone a la persona, igual que antes
+    o.sql.exec("INSERT INTO persona (k, v, t) VALUES ('p:ana', '{\"n\":\"Ana\"}', 1)");
+    const antes = (() => {
+      const k = 'ana';
+      const x = Object.assign({ n: 'Ana' }, cp[k] ? { cp: cp[k] } : {}, vr[k] ? { vr: vr[k] } : {}, mi[k] ? { mi: mi[k] } : {});
+      return JSON.stringify(x);
+    })();
+    ok(o.persona('p:ana') === antes || (antes === '{"n":"Ana"}' && o.persona('p:ana') === '{"n":"Ana"}'),
+      'persona() arma lo mismo que con los mapas', o.persona('p:ana') + ' vs ' + antes);
+    // 🗂️ y la copia guardada de /pases se tira cuando alguien elige algo que ella muestra (09/11/2026): con la copia en
+    // `estado` sobrevive a la siesta del objeto, y sin esto «la carta se revertía» (26/10) por cinco minutos
+    let armadas = 0;
+    o.delMinuto('/pases', 300, () => ({ n: ++armadas }));
+    o.rutaMem = {};
+    const pz1 = o.delMinuto('/pases', 300, () => ({ n: ++armadas }));
+    o.sql.exec("INSERT INTO marco_elige (quien, marco, estilo, t) VALUES ('555555', 't1:oro', 'liso', 1)");
+    const pz2 = o.delMinuto('/pases', 300, () => ({ n: ++armadas }));
+    o.rutaMem = {};
+    const pz3 = o.delMinuto('/pases', 300, () => ({ n: ++armadas }));
+    o.sql.exec("INSERT INTO pase_hecho (quien, temp, sem, tarea, t) VALUES ('555555', 't1', 's1', 'x', 1)");
+    const pz4 = o.delMinuto('/pases', 300, () => ({ n: ++armadas }));
+    ok(pz1.n === 1 && pz2.n === 2 && pz3.n === 2 && pz4.n === 2 && armadas === 2,
+      'la copia de /pases se tira al elegir un marco (y vuelve a guardarse), y no por lo que cambia solo, como una Tarea',
+      JSON.stringify({ pz1, pz2, pz3, pz4, armadas }));
+    // 📏 y lo medido se guarda solo cuando el objeto queda quieto (`medPronto()`), con cuántas veces se despertó y cuántos
+    // pedidos atendió: antes lo guardaba el vigía cada 10 minutos, y el objeto se dormía antes (09/11/2026)
+    o.medir('filas', 'SELECT de la siesta', 5);
+    await o.fetch(new Request('https://avisos/ajustes'));
+    await o.fetch(new Request('https://avisos/ajustes'));
+    const enSeguida = ((o.leer('medidas_hoy') || {}).filas || {})['SELECT de la siesta'];
+    await new Promise((r) => setTimeout(r, 2400));
+    const mh = o.leer('medidas_hoy') || {};
+    ok(!enSeguida && (mh.filas || {})['SELECT de la siesta'] === 5 && mh.despertares === 1 && mh.pedidos === 2,
+      'lo medido se guarda al quedar quieto el objeto (una vez por tanda), con los despertares y los pedidos', JSON.stringify({ enSeguida, d: mh.despertares, p: mh.pedidos }));
   }
 }
 

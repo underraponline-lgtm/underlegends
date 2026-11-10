@@ -62,6 +62,19 @@ const UA = 'DiscordBot (https://underlegends.pages.dev, 1)';
 
 const MIN = 60 * 1000;
 const HORA = 60 * MIN;
+// 📏 cuánto después del último pedido se guarda lo medido (ver `medPronto()`): menos que los ~10 s en que el objeto se
+// duerme. Mientras espera no puede dormirse, así que cada tanda cuesta estos segundos de más (13.000 GB-s gratis por día;
+// el objeto gasta ~450)
+const MED_QUIETO = 2000;
+// 🗂️ LAS RUTAS PÚBLICAS GUARDADAS Y LO QUE LAS TIRA (09/11/2026): ver `delMinuto()`. Desde que su copia vive también en
+// `estado`, sobrevive a que el objeto se duerma — y entonces quien elige un marco tiene que verlo al volver a pedir
+// `/pases` (la página lo hace, ver `refrescarPases()` en web/src/pase.js; el 26/10 «la carta se revertía»). Sólo las
+// tablas de lo que ELIGE alguien, que se escriben poco: lo que cambia solo (el nivel del Pase, las claves) espera su
+// tiempo, como ya esperaba en el borde. ⚠️ `estado` nunca va acá: tirar una copia escribe en `estado`
+const RUTA_TABLAS = {
+  '/pases': ['marcos', 'marco_elige', 'carta_principal', 'marco_img', 'redibujo', 'pase_premium'],
+  '/fondos': ['fondos'], '/servidores': ['servidor'], '/roles': ['roles_manual'],
+};
 
 //: un anuncio SIN hora se avisa sólo si es de hace menos de esto. Pasado
 //: ese rato ya no se sabe si el evento está por empezar o terminó.
@@ -6776,7 +6789,18 @@ export class Avisos {
         // y las dos limpiezas por fecha que recorrían la tabla entera: lo visto de las historias y de las promos
         ['hvistas_t', 'hvistas', 't'], ['promo_visto_t', 'promo_visto', 't'],
         // ⚡ y el del 04/11/2026: la limpieza de `idk` corre cada minuto con llaves en vivo y recorría la tabla entera
-        ['idk_t', 'idk', 't']]) {
+        ['idk_t', 'idk', 't'],
+        // ⚡ y los del 09/11/2026, sacados de pedirle a SQLite el plan de cada una de las 955 consultas del objeto contra
+        // su esquema (`EXPLAIN QUERY PLAN`) y cruzarlo con lo medido: las que recorrían la tabla entera y más leían.
+        // Las dos primeras son la inversa de `claveDe()`, que /card hace ahora en cada pedido (`quienesDeClave()`); las de
+        // `qg` y `vs_cola`, consultas de CADA MINUTO del vigía (las votaciones abiertas y la cola de los vs); la de
+        // `veredictos_hist`, lo que el ciclo pide de las últimas 12 horas.
+        // ⚠️ UN ÍNDICE NUEVO PUEDE EMPEORAR OTRA CONSULTA: SQLite no tiene estadísticas acá y elige por reglas. Uno en
+        // `vivo (canal)` hacía que el «qué canales tuvieron algo en 3 horas» de cada minuto recorriera la tabla entera por
+        // ese índice en vez de ir por `vivo_ed`: se sacó. Antes de sumar uno, comparar el plan de TODAS las consultas
+        ['jugo_temp_k', 'jugo_temp', 'k'], ['idk_k', 'idk', 'k'],
+        ['qg_estado', 'qg', 'estado, abre'], ['vs_cola_estado', 'vs_cola', 'estado, t'], ['vs_cola_msg', 'vs_cola', 'canal, msg, t'],
+        ['veredictos_hist_ed', 'veredictos_hist', 'ed']]) {
         this.sql.exec(`CREATE INDEX IF NOT EXISTS ${nombre} ON ${tabla} (${col})`);
       }
     });
@@ -6811,6 +6835,18 @@ export class Avisos {
    *  `olvidar`: ése ya existe (borrar a alguien) y, definido más abajo, pisaba a éste */
   memoOlvidar(tabla) {
     for (const [k, m] of Object.entries(this.memos || {})) if (m.tablas.includes(tabla)) delete this.memos[k];
+    // 🗂️ y lo público guardado que muestra lo que alguien acaba de elegir (ver `delMinuto()` y `RUTA_TABLAS`)
+    for (const [ruta, ts] of Object.entries(RUTA_TABLAS)) if (ts.includes(tabla)) this.rutaOlvidar(ruta);
+  }
+
+  /** 🗂️ Tira la copia de una ruta pública, en memoria y en `estado`: la próxima se arma de nuevo (ver `delMinuto()`) */
+  rutaOlvidar(ruta) {
+    if (this.rutaMem) delete this.rutaMem[ruta];
+    const k = 'ruta:' + ruta;
+    // ya se sabe que no está: no se escribe nada
+    if (this.estadoMem && this.estadoMem.has(k) && this.estadoMem.get(k) === null) return;
+    try { this.sql.exec('DELETE FROM estado WHERE k = ?', k); } catch (e) { /* la vence su tiempo */ }
+    if (this.estadoMem) this.estadoMem.set(k, null);
   }
 
   /**
@@ -6835,6 +6871,11 @@ export class Avisos {
     }
     for (const [k, n] of Object.entries(this.medHoy)) h.filas[k] = (h.filas[k] || 0) + n;
     this.medHoy = {};
+    // 📏 y cuántas veces se despertó y cuántos pedidos atendió (09/11/2026): con esto se ve cuánto dura despierto y
+    // cuántas filas cuesta cada pedido. `medContado` vive en memoria, así que se cuenta una vez por despertar
+    if (!this.medContado) { h.despertares = (h.despertares || 0) + 1; this.medContado = true; }
+    h.pedidos = (h.pedidos || 0) + (this.medPedidos || 0);
+    this.medPedidos = 0;
     h.filas = Object.fromEntries(Object.entries(h.filas).sort((a, b) => b[1] - a[1]).slice(0, 200));
     this.guardar('medidas_hoy', h);
   }
@@ -6907,8 +6948,17 @@ export class Avisos {
     const m = this.rutaMem || (this.rutaMem = {});
     const ahora = Date.now();
     if (m[k] && ahora - m[k].t < seg * 1000) return m[k].v;
+    // 🔴 Y EN MEMORIA SOLA NO DURABA (09/11/2026): el objeto se duerme a los ~10 s sin pedidos y se despierta de cero,
+    // así que casi cada pedido armaba todo de nuevo. Las de un minuto o más quedan también en `estado` (una fila: leerla
+    // es 1 fila contra ~2.000 de `/pases`); escribirla, una vez por vez que se arma (como mucho 1.440 + 4 × 288 por día)
+    const base = seg >= 60;
+    if (base) {
+      const g = this.leer('ruta:' + k);
+      if (g && typeof g.t === 'number' && ahora - g.t < seg * 1000) { m[k] = g; return g.v; }
+    }
     const v = f();
     m[k] = { t: ahora, v };
+    if (base) { try { this.guardar('ruta:' + k, m[k]); } catch (e) { /* queda en memoria */ } }
     return v;
   }
 
@@ -7231,7 +7281,38 @@ export class Avisos {
   }
 
 
+  /**
+   * 📏 Cada pedido, y al terminar lo medido se guarda en cuanto el objeto queda quieto (`medPronto()`): EL OBJETO SE
+   * DUERME A LOS ~10 SEGUNDOS SIN PEDIDOS y se despierta de cero (09/11/2026). Con el guardado cada 10 minutos del vigía,
+   * todo lo que se leía entre una vuelta y la siguiente se perdía en cada siesta: el medidor vio 2,69 millones de filas
+   * el día que Cloudflare cobró 5,13.
+   */
   async fetch(req) {
+    try {
+      return await this.atender(req);
+    } finally {
+      this.medPronto();
+    }
+  }
+
+  /** 📏 Guarda lo medido `MED_QUIETO` después del último pedido (cada uno lo corre), y ya si hace mucho que no se guarda */
+  medPronto() {
+    try {
+      this.medPedidos = (this.medPedidos || 0) + 1;
+      if (this.medTimer) clearTimeout(this.medTimer);
+      this.medTimer = null;
+      if (this.medT && Date.now() - this.medT > 5 * MIN) {
+        this.medidasGuardar(Date.now(), true);
+        return;
+      }
+      this.medTimer = setTimeout(() => {
+        this.medTimer = null;
+        try { this.medidasGuardar(Date.now(), true); } catch (e) { /* medir nunca frena nada */ }
+      }, MED_QUIETO);
+    } catch (e) { /* medir nunca frena nada: lo guarda el vigía */ }
+  }
+
+  async atender(req) {
     const ruta = new URL(req.url).pathname;
     this.medir('pedidos', ruta, 1);
     try {
@@ -7855,6 +7936,13 @@ export class Avisos {
       this.sql.exec('DELETE FROM cambios_dia WHERE dia < ?', new Date(ahora - DIA_MS).toISOString().slice(0, 10));
       // 🎤 y lo que dijo el bot en vivo: dos días (de una llave sólo se habla mientras se mueve)
       this.sql.exec('DELETE FROM chat_vivo WHERE t < ?', ahora - 2 * DIA_MS);
+      // ⚡ y lo que antes se borraba CADA MINUTO recorriendo la tabla entera (09/11/2026: 160.000 filas por día entre las
+      // cinco): las votaciones cerradas de hace una semana (`qgRevisar()`), los vs de más de un día y las fichas de «Ver
+      // estadísticas» de más de dos (`vsDespachar()`). Una hora de más guardados no le cambia nada a nadie
+      this.sql.exec("DELETE FROM qg_voto WHERE id IN (SELECT id FROM qg WHERE estado != 'abierta' AND abre < ?)", ahora - 7 * DIA_MS);
+      this.sql.exec("DELETE FROM qg WHERE estado != 'abierta' AND abre < ?", ahora - 7 * DIA_MS);
+      this.sql.exec('DELETE FROM vs_cola WHERE t < ?', ahora - DIA_MS);
+      this.sql.exec('DELETE FROM vs_ficha WHERE t < ?', ahora - 2 * DIA_MS);
       // 👥 y de las crews, lo vencido: invitaciones y pedidos de más de una semana, esperas cumplidas
       try { CW.crewLimpiar(this); } catch (e) { /* sigue */ }
       await this.vaciarBasuraCrews();
@@ -8873,8 +8961,7 @@ export class Avisos {
         this.sql.exec("UPDATE qg SET estado = 'borrada' WHERE id = ?", q.id);
       }
     }
-    this.sql.exec("DELETE FROM qg_voto WHERE id IN (SELECT id FROM qg WHERE estado != 'abierta' AND abre < ?)", ahora - 7 * DIA_MS);
-    this.sql.exec("DELETE FROM qg WHERE estado != 'abierta' AND abre < ?", ahora - 7 * DIA_MS);
+    // (lo cerrado de hace una semana se borra en la limpieza de cada hora del vigía: cada minuto recorría la tabla)
     return n;
   }
 
@@ -9933,6 +10020,8 @@ export class Avisos {
       }
     }
     await this.despertar(Date.now());
+    // 📏 y lo medido, como al terminar cada pedido (ver `fetch()`)
+    this.medPronto();
   }
 
   async lote(av, ahora) {
@@ -10139,9 +10228,7 @@ export class Avisos {
     // 3 minutos vuelve a la cola, y la tarea siguiente lo intenta otra vez (lo frena el mismo `VS_VENCE`)
     this.sql.exec("UPDATE vs_cola SET estado = 'espera' WHERE estado = 'dibujando' AND tom > 0 AND tom < ? AND t > ?",
       ahora - 3 * MIN, ahora - VS_VENCE);
-    this.sql.exec('DELETE FROM vs_cola WHERE t < ?', ahora - DIA_MS);
-    // 📊 las fichas de «Ver estadísticas» duran dos días: después, el botón dice que ya no está
-    this.sql.exec('DELETE FROM vs_ficha WHERE t < ?', ahora - 2 * DIA_MS);
+    // (lo de más de un día, y las fichas de «Ver estadísticas» de más de dos, se borran en la limpieza de cada hora)
     const svs = this.sql.exec("SELECT DISTINCT sv FROM vs_cola WHERE estado = 'espera'").toArray().map((r) => r.sv);
     if (!svs.length || !this.env.GH_TOKEN || !this.env.GH_REPO) return 0;
     const ult = this.leer('vs_desp') || {};
@@ -12786,11 +12873,15 @@ export class Avisos {
       // ⚡ son miles de filas por un número de control, y la página pide este estado al abrirse: era la consulta que más
       // leía de todas (04/11/2026). Cada 15 minutos alcanza… y no alcanzó: el 09/11, con ~2.600 filas, seguía siendo el
       // 9 % de todo lo leído (250.000). Cada 2 horas: es un número de control, no lo mira nadie en vivo
+      // 🔴 Y EN MEMORIA NO SE GUARDABA (09/11/2026): el objeto se duerme a los ~10 s sin pedidos y se despierta de cero,
+      // así que el «cada 2 horas» era «casi cada vez» (80.000 filas en 75 minutos). Va a `estado`: una fila
       const ahora = Date.now();
-      if (!this.bandejaMem || ahora - this.bandejaMem.t > 120 * MIN) {
-        this.bandejaMem = { t: ahora, b: this.sql.exec('SELECT COUNT(*) AS n, COUNT(DISTINCT quien) AS p FROM bandeja').toArray()[0] };
+      let bm = this.leer('bandeja_cuenta');
+      if (!bm || !bm.b || ahora - (bm.t || 0) > 120 * MIN) {
+        bm = { t: ahora, b: this.sql.exec('SELECT COUNT(*) AS n, COUNT(DISTINCT quien) AS p FROM bandeja').toArray()[0] };
+        this.guardar('bandeja_cuenta', bm);
       }
-      const b = this.bandejaMem.b;
+      const b = bm.b;
       return { filas: r.n, felicitan: r.p, publicaciones: r.a, ultima: this.leer('aplausos'),
         bandeja: { filas: b.n, personas: b.p } };
     } catch (e) {
@@ -13561,12 +13652,15 @@ export class Avisos {
     if (!/^p:\S{1,100}$/.test(String(k || ''))) return null;
     const r = this.sql.exec('SELECT v FROM persona WHERE k = ?', String(k)).toArray()[0];
     if (!r) return null;
+    // ⚡ DE ESTA PERSONA SOLA (09/11/2026): eran los mapas de todos, armados en cada /card. Ver `quienesDeClave()`
+    const kp = String(k).slice(2);
+    const quienes = this.quienesDeClave(kp);
     // 🃏 y su carta principal, si eligió una: /card abre ahí (`cp`)
-    const cp = this.cartasPrincipales()[String(k).slice(2)];
+    const cp = this.cartaPrincipalDe(kp, quienes);
     // ⚡ y la versión de su último redibujo a pedido: /card la pone en la URL
-    const vr = this.versionesRedibujo()[String(k).slice(2)];
+    const vr = this.versionRedibujoDe(kp);
     // 🖼️ y qué cartas tienen su foto con el marco que lleva puesto: /card usa `<carta>-m.webp`
-    const mi = this.marcosEnImagen()[String(k).slice(2)];
+    const mi = this.marcoEnImagenDe(kp, quienes);
     if (!cp && !vr && !mi) return r.v;
     try { return JSON.stringify(Object.assign(JSON.parse(r.v), cp ? { cp } : {}, vr ? { vr } : {}, mi ? { mi } : {})); } catch (e) { return r.v; }
   }
@@ -14734,6 +14828,74 @@ export class Avisos {
     const out = {};
     try { for (const r of this.sql.exec('SELECT k, hecho FROM redibujo WHERE hecho > 0').toArray()) out[r.k] = r.hecho; } catch (e) { /* nada */ }
     return out;
+  }
+
+  // ── ⚡ LO MISMO, DE UNA SOLA PERSONA (09/11/2026) ─────────────────────────────────────────────────────────────────────
+  // `memo()` no alcanzó, y la causa no era la memoria: EL OBJETO SE DUERME A LOS ~10 SEGUNDOS SIN PEDIDOS (Cloudflare lo
+  // saca de la memoria si no tiene nada pendiente) y se despierta de cero. Medido el 09/11: el medidor se guardaba cada
+  // minuto en vez de cada 10 —un objeto nuevo en cada vuelta del vigía— y el objeto pasó en memoria 0,97 h del día con
+  // 12.781 pedidos. O sea que casi cada `/card` encontraba la memoria vacía y volvía a leer las tablas de todos. Y con
+  // llaves en vivo `idk` se escribe cada minuto, que tiraba lo armado aunque el objeto siguiera despierto.
+  // Lo que `/card` y el perfil necesitan es UNA persona: estas leen sólo sus filas (unas 10-15 en vez de miles) y dan
+  // exactamente lo que los mapas de todos le darían a esa clave —lo prueba `bot/avisos_prueba.mjs` con muchas cuentas
+  // por clave, el dueño y «ninguno»—. Los mapas de todos quedan para `pases()`, que sí los manda enteros.
+
+  /** Las cuentas cuyo perfil es `k`: las de `cuentasDeClave()` a las que `claveDe()` les da justo `k` */
+  quienesDeClave(k) {
+    const out = [];
+    for (const q of this.cuentasDeClave(k)) if ((this.claveDe(q) || (q === DUENO ? DUENO_K : '')) === k) out.push(q);
+    return out;
+  }
+
+  /** La carta principal del perfil `k` (lo que `cartasPrincipales()[k]` daría): con varias cuentas, la última fila */
+  cartaPrincipalDe(k, quienes = this.quienesDeClave(k)) {
+    if (!quienes.length) return undefined;
+    try {
+      const fs = this.sql.exec('SELECT carta FROM carta_principal WHERE quien IN (' + quienes.map(() => '?').join(',') +
+        ') ORDER BY rowid', ...quienes).toArray();
+      return fs.length ? fs[fs.length - 1].carta : undefined;
+    } catch (e) { return undefined; }
+  }
+
+  /** La versión del último redibujo del perfil `k` (lo que `versionesRedibujo()[k]` daría) */
+  versionRedibujoDe(k) {
+    try {
+      const r = this.sql.exec('SELECT hecho FROM redibujo WHERE k = ? AND hecho > 0', k).toArray()[0];
+      return r ? r.hecho : undefined;
+    } catch (e) { return undefined; }
+  }
+
+  /** `[marco, estilo]` del perfil `k` (los dos primeros de `marcosPublicos()[k]`; el N.º de serie no hace falta acá) */
+  marcoPublicoDe(k, quienes = this.quienesDeClave(k)) {
+    let out;
+    try {
+      const dueno = this.marcosDueno();
+      // en el orden en que `_marcosPublicos()` los recorre: por su primer marco; el dueño sin marcos propios, al final
+      const cs = [];
+      for (const q of quienes) {
+        const fs = this.sql.exec('SELECT marco, t FROM marcos WHERE quien = ? ORDER BY t', q).toArray();
+        let xs = fs.map((f) => f.marco);
+        if (q === DUENO && dueno.length) xs = [...new Set([...xs, ...dueno])];
+        if (xs.length) cs.push({ q, xs, t: fs.length ? fs[0].t : Infinity });
+      }
+      cs.sort((a, b) => a.t - b.t);
+      for (const { q, xs } of cs) {
+        const e = this.sql.exec('SELECT marco, estilo FROM marco_elige WHERE quien = ?', q).toArray()[0];
+        if (e && e.marco === 'ninguno') continue;
+        out = [e && xs.includes(e.marco) ? e.marco : mejorMarco(xs), e ? e.estilo : 'camiseta'];
+      }
+    } catch (err) { /* sin marcos: las cartas salen como siempre */ }
+    return out;
+  }
+
+  /** Qué cartas del perfil `k` tienen su foto con el marco puesto (lo que `marcosEnImagen()[k]` daría) */
+  marcoEnImagenDe(k, quienes = this.quienesDeClave(k)) {
+    try {
+      const r = this.sql.exec('SELECT firma, cartas FROM marco_img WHERE k = ?', k).toArray()[0];
+      if (!r) return undefined;
+      const m = this.marcoPublicoDe(k, quienes);
+      return m && r.firma === m[0] + '|' + m[1] ? JSON.parse(r.cartas) : undefined;
+    } catch (e) { return undefined; }
   }
 
   /** 👑 los marcos del dueño: los tres de la temporada que corre */
