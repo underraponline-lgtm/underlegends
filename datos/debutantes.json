@@ -2353,9 +2353,10 @@
   },
   "black live": {
    "avisado": "2026-11-09",
+   "avisado_cumplido": "2026-11-10",
    "chat": "2026-11-09",
-   "con": null,
-   "cumplido": "",
+   "con": 601,
+   "cumplido": "2026-11-10T17:04:49+00:00",
    "debut": "2026-11-09T14:38:17+00:00",
    "did": "1523008096660885505",
    "evento": "COMPE MAÑANERA",

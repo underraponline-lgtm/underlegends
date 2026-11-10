@@ -41344,5 +41344,149 @@
    ]
   ],
   "v": 2
+ },
+ "601": {
+  "antes": {
+   "Adriagner": [
+    45,
+    55,
+    false
+   ],
+   "Erian": [
+    4,
+    4,
+    false
+   ],
+   "Fin": [
+    145,
+    243,
+    false
+   ],
+   "LAST": [
+    64,
+    80,
+    false
+   ],
+   "MaYeuTyK": [
+    55,
+    67,
+    false
+   ],
+   "Mathhias": [
+    42,
+    51,
+    false
+   ],
+   "OKAM": [
+    27,
+    31,
+    false
+   ],
+   "black live": [
+    442,
+    383,
+    true
+   ]
+  },
+  "canal": "",
+  "duelos": [
+   [
+    "Mathhias",
+    "black live",
+    "Mathhias"
+   ],
+   [
+    "LAST",
+    "OKAM",
+    "LAST"
+   ],
+   [
+    "Erian",
+    "Adriagner",
+    "Erian"
+   ],
+   [
+    "MaYeuTyK",
+    "Fin",
+    "MaYeuTyK"
+   ],
+   [
+    "Mathhias",
+    "LAST",
+    "Mathhias"
+   ],
+   [
+    "Erian",
+    "MaYeuTyK",
+    "Erian"
+   ],
+   [
+    "Erian",
+    "Mathhias",
+    "Erian"
+   ]
+  ],
+  "ev_antes": {
+   "Adriagner": 15,
+   "Erian": 77,
+   "Fin": 4,
+   "LAST": 13,
+   "MaYeuTyK": 12,
+   "Mathhias": 14,
+   "OKAM": 24,
+   "black live": 1
+  },
+  "fecha": "10/11",
+  "nombre": "(sin titulo)",
+  "num": 601,
+  "participantes": 8,
+  "sello": {
+   "Erian": "aec4b472f4d1:7a510334494e"
+  },
+  "sv": "LKR",
+  "t": "2026-11-10T18:24:36Z",
+  "tabla": [
+   [
+    "Erian",
+    "Campeón",
+    7500
+   ],
+   [
+    "Mathhias",
+    "Subcampeón",
+    5000
+   ],
+   [
+    "LAST",
+    "Semifinal",
+    3500
+   ],
+   [
+    "MaYeuTyK",
+    "Semifinal",
+    3500
+   ],
+   [
+    "black live",
+    "Cuartos",
+    2000
+   ],
+   [
+    "OKAM",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Adriagner",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Fin",
+    "Cuartos",
+    2000
+   ]
+  ],
+  "v": 2
  }
 }

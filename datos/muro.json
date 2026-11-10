@@ -19,19 +19,19 @@
 "temporada"
 ]
 },
+"erian": {
+"rg": "B",
+"c": [
+"competitivo",
+"servidor",
+"temporada"
+]
+},
 "pichulamc": {
 "rg": "A",
 "c": [
 "competitivo",
 "pais",
-"servidor",
-"temporada"
-]
-},
-"erian": {
-"rg": "B",
-"c": [
-"competitivo",
 "servidor",
 "temporada"
 ]
@@ -374,6 +374,14 @@
 "temporada"
 ]
 },
+"mathhias": {
+"rg": "C",
+"c": [
+"competitivo",
+"servidor",
+"temporada"
+]
+},
 "criszj": {
 "rg": "C",
 "c": []
@@ -383,6 +391,14 @@
 "c": [
 "competitivo",
 "pais",
+"servidor",
+"temporada"
+]
+},
+"adriagner": {
+"rg": "C",
+"c": [
+"competitivo",
 "servidor",
 "temporada"
 ]
@@ -400,14 +416,6 @@
 "rg": "D",
 "c": []
 },
-"mathhias": {
-"rg": "C",
-"c": [
-"competitivo",
-"servidor",
-"temporada"
-]
-},
 "bna": {
 "rg": "C",
 "c": []
@@ -421,14 +429,6 @@
 ]
 },
 "mats": {
-"rg": "C",
-"c": [
-"competitivo",
-"servidor",
-"temporada"
-]
-},
-"adriagner": {
 "rg": "C",
 "c": [
 "competitivo",
@@ -604,19 +604,19 @@
 "temporada"
 ]
 },
+"last": {
+"rg": "E",
+"c": [
+"competitivo",
+"servidor",
+"temporada"
+]
+},
 "nemi": {
 "rg": "E",
 "c": [
 "competitivo",
 "pais",
-"servidor",
-"temporada"
-]
-},
-"last": {
-"rg": "E",
-"c": [
-"competitivo",
 "servidor",
 "temporada"
 ]
@@ -751,6 +751,14 @@
 "rg": "E",
 "c": []
 },
+"richard": {
+"rg": "E",
+"c": [
+"competitivo",
+"servidor",
+"temporada"
+]
+},
 "sultan": {
 "rg": "E",
 "c": []
@@ -792,14 +800,6 @@
 "c": []
 },
 "rodas": {
-"rg": "E",
-"c": [
-"competitivo",
-"servidor",
-"temporada"
-]
-},
-"richard": {
 "rg": "E",
 "c": [
 "competitivo",
@@ -6923,6 +6923,61 @@
 "desde": 91
 }
 ]
+},
+"2026-11-10": {
+"tipo": "resnoche",
+"t": "2026-11-11T08:00:00Z",
+"dia": "2026-11-10",
+"eventos": 1,
+"part": 8,
+"campeones": [
+{
+"ev": "(sin titulo)",
+"sv": "LKR",
+"ll": 601,
+"quien": [
+[
+"Erian",
+"erian"
+]
+]
+}
+],
+"suman": [
+{
+"n": "Erian",
+"k": "erian",
+"pts": 7500,
+"ev": 1
+},
+{
+"n": "Mathhias",
+"k": "mathhias",
+"pts": 5000,
+"ev": 1
+},
+{
+"n": "LAST",
+"k": "last",
+"pts": 3500,
+"ev": 1
+}
+],
+"suben": [
+{
+"n": "black live",
+"k": "",
+"de": 442,
+"a": 374
+},
+{
+"n": "Fin",
+"k": "",
+"de": 145,
+"a": 138
+}
+],
+"sorpresas": []
 }
 }
 }

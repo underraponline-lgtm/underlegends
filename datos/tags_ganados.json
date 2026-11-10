@@ -484,6 +484,11 @@
    ]
   },
   "temporada": {
+   "🌍 TROTAMUNDOS": [
+    "🌍 TROTAMUNDOS",
+    "t1",
+    1794335521998
+   ],
    "🎯 CAZADOR CAZADO": [
     "🎯 CAZADOR CAZADO",
     "t1",
@@ -4134,7 +4139,7 @@
     1793029252929
    ],
    "👑 CAMPEÓN x%d": [
-    "👑 CAMPEÓN x9",
+    "👑 CAMPEÓN x10",
     "t1",
     1793029252929
    ],
@@ -4374,6 +4379,11 @@
  },
  "fin": {
   "temporada": {
+   "🌍 TROTAMUNDOS": [
+    "🌍 TROTAMUNDOS",
+    "t1",
+    1794335521998
+   ],
    "🧳 VIAJERO": [
     "🧳 VIAJERO",
     "t1",
@@ -7269,6 +7279,23 @@
     1794265338455
    ]
   },
+  "servidor": {
+   "🏅 PODIOS": [
+    "🏅 PODIOS",
+    "t1",
+    1794335521998
+   ],
+   "🔑 LLAVE DE LA CASA": [
+    "🔑 LLAVE DE LA CASA",
+    "t1",
+    1794335521998
+   ],
+   "🧱 FUNDADOR": [
+    "🧱 FUNDADOR",
+    "t1",
+    1794335521998
+   ]
+  },
   "temporada": {
    "🌍 TROTAMUNDOS": [
     "🌍 TROTAMUNDOS",
@@ -7445,6 +7472,11 @@
     "🌍 TROTAMUNDOS",
     "t1",
     1792992726322
+   ],
+   "💯 CENTENARIO": [
+    "💯 CENTENARIO",
+    "t1",
+    1794335521998
    ],
    "📈 EN ASCENSO": [
     "📈 EN ASCENSO",
@@ -9645,6 +9677,11 @@
     "t1",
     1793477231914
    ],
+   "GANA AFUERA": [
+    "GANA AFUERA",
+    "t1",
+    1794335521998
+   ],
    "INTERNACIONAL": [
     "INTERNACIONAL",
     "t1",
@@ -9738,6 +9775,11 @@
     "🗺️ CONQUISTADOR",
     "t1",
     1792992726322
+   ],
+   "🛫 NÓMADA": [
+    "🛫 NÓMADA",
+    "t1",
+    1794335521998
    ],
    "🥉 AL PODIO": [
     "🥉 AL PODIO",
