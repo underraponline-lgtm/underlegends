@@ -12021,13 +12021,21 @@ export class Avisos {
     try { items = (JSON.parse((await this.env.KV.get('web:muro')) || '{}').items) || []; } catch (e) { items = []; }
     const cands = paraSeguidores(items, ahora);
     let pedidos = 0, enviados = 0, quedan = 0, sinVinculo = 0;
+    // ⚡ UNA PUBLICACIÓN YA AVISADA A TODOS NO SE VUELVE A RECORRER (10/11/2026). Cada 5 minutos se preguntaba `hechos`
+    // seguidor por seguidor de cada publicación de las últimas horas —~90.000 filas por día—, aunque ya estuvieran todos.
+    // Cuando no quedó nadie pendiente (ni por el tope ni por un envío a reintentar), una fila marca la publicación
+    // entera. Nadie nuevo puede entrar después: la lista es de quien seguía ANTES de la publicación (`t <= …`), y quien
+    // sigue después tiene su `t` de ahora
     for (const c of cands) {
+      const entera = 'sgc:' + c.pub + ':' + c.k;
+      if (this.yaHecho(entera)) continue;
+      let todos = true;
       const fs = this.sql.exec('SELECT quien FROM sigue WHERE a = ? AND t <= ? AND de != ?', c.k, c.t, c.k).toArray();
       for (const f of fs) {
         const id = 'sg:' + c.pub + ':' + f.quien;
         if (this.yaHecho(id)) continue;
         const subs = this.sql.exec('SELECT id, endpoint, p256dh, auth FROM subs WHERE quien = ?', f.quien).toArray();
-        if (pedidos + subs.length > TOPE_SEGUIDOS && pedidos) { quedan++; continue; }
+        if (pedidos + subs.length > TOPE_SEGUIDOS && pedidos) { quedan++; todos = false; continue; }
         this.sql.exec('INSERT OR IGNORE INTO hechos (id, t) VALUES (?, ?)', id, ahora);
         // 🔔 y a su bandeja, con la cara de quien ganó (ver `aBandeja()`)
         this.aBandeja(f.quien, 'sg:' + c.pub, 'seguido', c.titulo, c.cuerpo, c.url, c.k, c.t || ahora);
@@ -12042,8 +12050,9 @@ export class Avisos {
           else if (MUERTA(e)) this.sql.exec('DELETE FROM subs WHERE id = ?', subs[i].id);
           else if (e === 0 || e === 429 || e >= 500) reintentar = true;
         });
-        if (reintentar && !llego) this.hechoDeshacer(id);
+        if (reintentar && !llego) { this.hechoDeshacer(id); todos = false; }
       }
+      if (todos) this.sql.exec('INSERT OR IGNORE INTO hechos (id, t) VALUES (?, ?)', entera, ahora);
     }
     this.guardar('seguidos', { t: ahora, publicaciones: cands.length, enviados, sin_vinculo: sinVinculo, quedan });
     return enviados;
@@ -12092,12 +12101,16 @@ export class Avisos {
     for (const it of items) {
       const t = Date.parse(it.t || '');
       if (!it.id || !LIGA_ID.test(String(it.liga || '')) || !(t > ahora - 48 * HORA)) continue;
+      // ⚡ la novedad ya avisada a todos, de una (ver `seguidos()`)
+      const entera = 'lgc:' + it.id;
+      if (this.yaHecho(entera)) continue;
+      let todos = true;
       const fs = this.sql.exec('SELECT quien FROM liga_sigue WHERE liga = ? AND t <= ?', it.liga, t).toArray();
       for (const f of fs) {
         const id = 'lg:' + it.id + ':' + f.quien;
         if (this.yaHecho(id)) continue;
         const subs = this.sql.exec('SELECT id, endpoint, p256dh, auth FROM subs WHERE quien = ?', f.quien).toArray();
-        if (pedidos + subs.length > TOPE_LIGAS && pedidos) { quedan++; continue; }
+        if (pedidos + subs.length > TOPE_LIGAS && pedidos) { quedan++; todos = false; continue; }
         this.sql.exec('INSERT OR IGNORE INTO hechos (id, t) VALUES (?, ?)', id, ahora);
         this.aBandeja(f.quien, 'lg:' + it.id, 'liga', String(it.titulo || '').slice(0, 120), String(it.cuerpo || '').slice(0, 240),
           String(it.url || ''), '', t);
@@ -12113,8 +12126,9 @@ export class Avisos {
           else if (MUERTA(e)) this.sql.exec('DELETE FROM subs WHERE id = ?', subs[i].id);
           else if (e === 0 || e === 429 || e >= 500) reintentar = true;
         });
-        if (reintentar && !llego) this.hechoDeshacer(id);
+        if (reintentar && !llego) { this.hechoDeshacer(id); todos = false; }
       }
+      if (todos) this.sql.exec('INSERT OR IGNORE INTO hechos (id, t) VALUES (?, ?)', entera, ahora);
     }
     this.guardar('ligas_seguidas', { t: ahora, novedades: items.length, bandeja, enviados, sin_vinculo: sinVinculo, quedan });
     return bandeja;
@@ -12877,7 +12891,9 @@ export class Avisos {
       // así que el «cada 2 horas» era «casi cada vez» (80.000 filas en 75 minutos). Va a `estado`: una fila
       const ahora = Date.now();
       let bm = this.leer('bandeja_cuenta');
-      if (!bm || !bm.b || ahora - (bm.t || 0) > 120 * MIN) {
+      // (6 h desde el 10/11/2026: con la copia ya en `estado` seguía siendo lo que más leía del día, ~5.000 filas cada
+      // vez; es un número de control)
+      if (!bm || !bm.b || ahora - (bm.t || 0) > 6 * HORA) {
         bm = { t: ahora, b: this.sql.exec('SELECT COUNT(*) AS n, COUNT(DISTINCT quien) AS p FROM bandeja').toArray()[0] };
         this.guardar('bandeja_cuenta', bm);
       }
@@ -14948,7 +14964,12 @@ export class Avisos {
   }
 
   /** 🧭 Lo del tutorial de las dos últimas semanas, sumado: `{ev: n}`, y desde qué día se cuenta */
-  tutorialResumen() {
+  // ⚡ GUARDADO 10 MIN (10/11/2026): el Dashboard pide su panel entero cada 2 minutos mientras está abierto, y
+  // `/uso-ciclo` lo mismo; cada vez se volvían a contar las tablas de días (~5.000 filas entre éstos). Son números del día
+  // —nadie los mira cambiar minuto a minuto—: quedan en `estado` (`delMinuto()`), y el objeto que se duerme no los pierde
+  tutorialResumen() { return this.delMinuto('resumen:tutorial', 600, () => this._tutorialResumen()); }
+
+  _tutorialResumen() {
     const out = {};
     for (const f of this.sql.exec('SELECT ev, SUM(n) AS n FROM tutorial WHERE dia > ? GROUP BY ev',
       diaET(Date.now() - 14 * DIA_MS)).toArray()) out[f.ev] = f.n;
@@ -15057,7 +15078,10 @@ export class Avisos {
   }
 
   /** 🐞 Los errores de los últimos 7 días, del último al primero: `[{donde, msg, f, tipo, n, primero, ultimo, dias}]`. */
-  erroresResumen() {
+  // (los errores, 5 min: es lo que se mira cuando algo se rompe; lo juntado en memoria se vuelca antes, igual que siempre)
+  erroresResumen() { this.errVolcar(); return this.delMinuto('resumen:errores', 300, () => this._erroresResumen()); }
+
+  _erroresResumen() {
     this.errVolcar();
     return this.sql.exec('SELECT k, donde, msg, MAX(f) AS f, MAX(tipo) AS tipo, SUM(n) AS n, MIN(primero) AS primero, ' +
       'MAX(ultimo) AS ultimo, COUNT(*) AS dias FROM errores_pag WHERE dia > ? GROUP BY k ORDER BY ultimo DESC LIMIT 30',
@@ -15082,7 +15106,12 @@ export class Avisos {
   }
 
   /** 👆 Lo más tocado de los últimos 7 días, con los 7 anteriores al lado: `{k: [estos7, anteriores7]}` (las 80 más) */
-  clicsResumen() {
+  // ⚡ GUARDADO 10 MIN (10/11/2026): el Dashboard pide su panel entero cada 2 minutos mientras está abierto, y
+  // `/uso-ciclo` lo mismo; cada vez se volvían a contar las tablas de días (~5.000 filas entre éstos). Son números del día
+  // —nadie los mira cambiar minuto a minuto—: quedan en `estado` (`delMinuto()`), y el objeto que se duerme no los pierde
+  clicsResumen() { this.clicsVolcar(); return this.delMinuto('resumen:clics', 600, () => this._clicsResumen()); }
+
+  _clicsResumen() {
     this.clicsVolcar();
     const desde = (n) => diaET(Date.now() - n * DIA_MS);
     const out = {};
@@ -15096,7 +15125,9 @@ export class Avisos {
 
   /** 📊 Las secciones de los últimos 7 días y de los 7 anteriores, sumadas: `{s: [estos7, anteriores7]}`, y desde
    *  cuándo se cuenta */
-  seccionesResumen() {
+  seccionesResumen() { return this.delMinuto('resumen:secciones', 600, () => this._seccionesResumen()); }
+
+  _seccionesResumen() {
     const desde = (n) => diaET(Date.now() - n * DIA_MS);
     const out = {};
     for (const [i, a, b] of [[0, 7, 0], [1, 14, 7]]) {
@@ -15107,7 +15138,12 @@ export class Avisos {
   }
 
   /** Cuántas personas distintas en los últimos 7 días (y los 7 anteriores, para comparar), y las visitas por día */
-  usoResumen() {
+  // ⚡ GUARDADO 10 MIN (10/11/2026): el Dashboard pide su panel entero cada 2 minutos mientras está abierto, y
+  // `/uso-ciclo` lo mismo; cada vez se volvían a contar las tablas de días (~5.000 filas entre éstos). Son números del día
+  // —nadie los mira cambiar minuto a minuto—: quedan en `estado` (`delMinuto()`), y el objeto que se duerme no los pierde
+  usoResumen() { return this.delMinuto('resumen:uso', 600, () => this._usoResumen()); }
+
+  _usoResumen() {
     const desde = (n) => diaET(Date.now() - n * DIA_MS);
     const contar = (a, b, por) => this.sql.exec('SELECT COUNT(DISTINCT quien) AS n FROM uso WHERE dia > ? AND dia <= ?' +
       (por ? ' AND por = ?' : ''), ...[desde(a), desde(b)].concat(por ? [por] : [])).toArray()[0].n;
@@ -15129,7 +15165,9 @@ export class Avisos {
    *  a la de ahora. `k` es lo mismo en los primeros días de esa semana —tantos como lleva la de ahora—, para comparar
    *  «a igual día» una semana que va por la mitad. Las personas se guardan `USO_DIAS` días: de una semana más vieja que
    *  eso quedan sólo las visitas (`personas: null`) */
-  usoSemanas(ahora = Date.now()) {
+  usoSemanas(ahora = Date.now()) { return this.delMinuto('resumen:semanas', 600, () => this._usoSemanas(ahora)); }
+
+  _usoSemanas(ahora = Date.now()) {
     const hoy = diaET(ahora);
     const d0 = Date.parse(hoy + 'T12:00:00Z');
     const dow = (new Date(d0).getUTCDay() + 6) % 7;            // 0 = lunes

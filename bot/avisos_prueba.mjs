@@ -26,6 +26,13 @@ const aqui = dirname(fileURLToPath(import.meta.url));
 const A = await import('./avisos.js');
 
 let fallas = 0;
+// ⚡ los resúmenes del Dashboard quedan guardados 10 min (`delMinuto('resumen:…')`, 10/11/2026): para mirar lo recién
+// anotado, se tira la copia (en memoria y en `estado`)
+const sinCopia = (o) => {
+  o.rutaMem = {};
+  try { o.sql.exec("DELETE FROM estado WHERE k LIKE 'ruta:resumen:%'"); } catch (e) { /* sin tabla */ }
+  if (o.estadoMem) for (const k of [...o.estadoMem.keys()]) if (k.startsWith('ruta:resumen:')) o.estadoMem.delete(k);
+};
 const ok = (cond, que, det) => {
   console.log(`  ${cond ? '✅' : '❌'} ${que}`);
   if (!cond) {
@@ -2147,7 +2154,15 @@ const ok = (cond, que, det) => {
     await new Promise((r) => setTimeout(r, 5));
     sql.exec('INSERT INTO liga_sigue (quien, liga, t) VALUES (?, ?, ?)', SEG2, 'fmh-espana', tIt + 1000);
     const nb1 = await oL.ligasSeguidas(ahoraL);
+    // ⚡ y la segunda vuelta no pregunta seguidor por seguidor: la novedad quedó marcada entera (10/11/2026)
+    let porSeguidor = 0;
+    const execL = sql.exec;
+    sql.exec = (q, ...ps) => { if (/FROM hechos WHERE id = \?/.test(q) && String(ps[0]).startsWith('lg:')) porSeguidor++; return execL.call(sql, q, ...ps); };
     const nb2 = await oL.ligasSeguidas(ahoraL);
+    sql.exec = execL;
+    ok(sql.exec("SELECT 1 AS x FROM hechos WHERE id = 'lgc:r:fmh-espana:9'").toArray().length === 1 && porSeguidor === 0,
+      'una novedad de liga ya avisada a todos queda marcada entera: la vuelta siguiente no pregunta por cada seguidor',
+      JSON.stringify({ porSeguidor }));
     const bl = sql.exec("SELECT titulo, url FROM bandeja WHERE quien = ? AND clave = 'lg:r:fmh-espana:9'", SEG1).toArray()[0];
     const bl2 = sql.exec("SELECT 1 AS x FROM bandeja WHERE quien = ? AND clave LIKE 'lg:%'", SEG2).toArray().length;
     ok(nb1 === 1 && nb2 === 0 && bl && /Ortiz le ganó/.test(bl.titulo) && /ligas\/fmh-espana$/.test(bl.url) && bl2 === 0,
@@ -2479,14 +2494,19 @@ const ok = (cond, que, det) => {
       && o.agendar({ sv: 'SR', nombre: 'Copa X', borrar: true }).error === 'no_esta', 'y se borra');
     // 🧭 el tutorial: sólo lo de la lista, sumado por día; y el Dashboard lo recibe
     const tu = async (ev) => (await o.tutorial({ ev })).status;
+    const tu0 = JSON.stringify(o.panelDueno().tutorial);
     ok(await tu('tour') === 200 && await tu('tour') === 200 && await tu('salta2') === 200 && await tu('otra') === 400
       && await tu('') === 400, 'tutorial: lo de la lista suma, lo demás no');
+    const tuGuardado = JSON.stringify(o.panelDueno().tutorial);
+    ok(tuGuardado === tu0, 'el resumen del Dashboard queda guardado: lo recién anotado no lo cambia hasta que vence la copia');
+    sinCopia(o);
     const tr = o.panelDueno().tutorial;
     ok(tr.n.tour === 2 && tr.n.salta2 === 1 && !tr.n.otra && !!tr.desde, 'y el Dashboard lo ve sumado', JSON.stringify(tr));
     // 📊 las secciones: igual que el tutorial, y la lista de la página es la misma que la de acá
     const se = async (ev) => (await o.seccion({ ev })).status;
     ok(await se('ranking') === 200 && await se('ranking') === 200 && await se('guia') === 200 && await se('dashboard') === 400
       && await se('') === 400, 'secciones: lo de la lista suma, lo demás no');
+    sinCopia(o);
     const sr = o.panelDueno().secciones;
     ok(sr.n.ranking && sr.n.ranking[0] === 2 && sr.n.ranking[1] === 0 && sr.n.guia[0] === 1 && !sr.n.dashboard && !!sr.desde,
       'y el Dashboard las ve, esta semana contra la anterior', JSON.stringify(sr));
@@ -2494,7 +2514,7 @@ const ok = (cond, que, det) => {
     const porFetch = async (r, ev) => (await o.fetch(new Request('https://avisos' + r, { method: 'POST',
       body: JSON.stringify({ ev }), headers: { 'content-type': 'application/json' } }))).status;
     ok(await porFetch('/tutorial', 'franja') === 200 && await porFetch('/seccion', 'pase') === 200
-      && await porFetch('/seccion', 'zzz') === 400 && o.panelDueno().tutorial.n.franja === 1
+      && await porFetch('/seccion', 'zzz') === 400 && (sinCopia(o), o.panelDueno().tutorial.n.franja === 1)
       && o.panelDueno().secciones.n.pase[0] === 1, 'tutorial y secciones también entrando por fetch()');
     // 📊 el uso con la clave del ciclo: las mismas cuentas del Dashboard, y ningún ID
     o.sql.exec("INSERT OR IGNORE INTO uso (dia, quien, por) VALUES (?, '700000000000000099', 'web')", A.diaET());
@@ -2502,6 +2522,7 @@ const ok = (cond, que, det) => {
     o.medir('filas', 'SELECT de prueba', 7);
     o.medT = 0;
     o.medidasGuardar(Date.now());
+    sinCopia(o);
     const uc = o.usoCiclo();
     ok(uc.dias.length === A.USO_DIAS && uc.dias[uc.dias.length - 1].web >= 1 && uc.dias[uc.dias.length - 1].visitas >= 3
       && uc.semanas.length >= 1 && !!uc.secciones && !JSON.stringify(uc).includes('700000000000000099')
