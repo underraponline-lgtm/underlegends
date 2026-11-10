@@ -2,39 +2,6 @@
  "_leeme": "Los eventos de vidas de #veredictos ya armados —quién peleó con quién y quién ganó—, para cargarlos aunque ya no estén entre los últimos mensajes del canal; y cada batalla con su ganador (`batallas`), para la llave que no lo dice; y cada llave como se jugó (`llaves`), que manda sobre la del organizador. Sin los mensajes: el repo es público. Lo escribe bot/escuchar.py (vidas()).",
  "eventos": {},
  "batallas": {
-  "1567300139054276681": {
-   "id": "1567300139054276681",
-   "sv": "✮ 𝑼𝒓𝒃𝒂𝒏 𝑭𝒓𝒆𝒆𝒔𝒕𝒚𝒍𝒆 ✮ | A New Era",
-   "g": "1467763447117778989",
-   "canal": "1540223675146707045",
-   "pub": 1793743872179,
-   "a": "O.E.P 🇨🇴",
-   "b": "MAKMAH 🇻🇪",
-   "ganador": "MAKMAH 🇻🇪",
-   "votos": "1–0"
-  },
-  "1567301222950633615": {
-   "id": "1567301222950633615",
-   "sv": "✮ 𝑼𝒓𝒃𝒂𝒏 𝑭𝒓𝒆𝒆𝒔𝒕𝒚𝒍𝒆 ✮ | A New Era",
-   "g": "1467763447117778989",
-   "canal": "1540223675146707045",
-   "pub": 1793744130600,
-   "a": "AGUS 🇦🇷",
-   "b": "SEBITA 🇱🇷",
-   "ganador": "SEBITA 🇱🇷",
-   "votos": "1–0"
-  },
-  "1567302637832114198": {
-   "id": "1567302637832114198",
-   "sv": "✮ 𝑼𝒓𝒃𝒂𝒏 𝑭𝒓𝒆𝒆𝒔𝒕𝒚𝒍𝒆 ✮ | A New Era",
-   "g": "1467763447117778989",
-   "canal": "1540223675146707045",
-   "pub": 1793744467934,
-   "a": "FAMILIAFORTUNAYEXITO 🇫🇷",
-   "b": "LVEL 🇻🇪",
-   "ganador": "FAMILIAFORTUNAYEXITO 🇫🇷",
-   "votos": "1–0"
-  },
   "1567306507454910485": {
    "id": "1567306507454910485",
    "sv": "✮ 𝑼𝒓𝒃𝒂𝒏 𝑭𝒓𝒆𝒆𝒔𝒕𝒚𝒍𝒆 ✮ | A New Era",
@@ -1199,6 +1166,28 @@
    "a": "Martinez 🇺🇾",
    "b": "Fin 🇦🇷 #",
    "ganador": "Fin 🇦🇷 #",
+   "votos": "1–0"
+  },
+  "1569836607190867980": {
+   "id": "1569836607190867980",
+   "sv": "🔥 𝐃𝐈𝐒𝐂𝐎𝐑𝐃 𝐒𝐓𝐘𝐋𝐄 🎤",
+   "g": "1443770831598649528",
+   "canal": "1563698957996134501",
+   "pub": 1794348613308,
+   "a": "OKAM",
+   "b": "DIOS",
+   "ganador": "DIOS",
+   "votos": "1–0"
+  },
+  "1569837431941763143": {
+   "id": "1569837431941763143",
+   "sv": "🔥 𝐃𝐈𝐒𝐂𝐎𝐑𝐃 𝐒𝐓𝐘𝐋𝐄 🎤",
+   "g": "1443770831598649528",
+   "canal": "1563698957996134501",
+   "pub": 1794348809944,
+   "a": "CRISZJ",
+   "b": "RICARDFLEX",
+   "ganador": "CRISZJ",
    "votos": "1–0"
   }
  },

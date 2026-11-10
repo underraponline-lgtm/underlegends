@@ -1,5 +1,5 @@
 {
- "cuando": "2026-11-10T21:56:18+00:00",
+ "cuando": "2026-11-10T22:25:35+00:00",
  "anuncios": [
   {
    "nombre": "¡SE LLEGÓ LA GRAN NOCHE!",
@@ -6847,6 +6847,42 @@
   }
  ],
  "inscripciones": [
+  {
+   "servidor": "DDS",
+   "canal": "📝〕INSCRIPCIONES",
+   "texto": "Miniboy",
+   "quien": "min_g16m",
+   "discord_id": "950011515434573824",
+   "msg_id": "1569837820527247514",
+   "cuando": "2026-11-10T22:15:02"
+  },
+  {
+   "servidor": "FDS",
+   "canal": "✅╏inscripciones-express",
+   "texto": "Calíz 🇲🇽",
+   "quien": "caliz123_",
+   "discord_id": "1546111597343146044",
+   "msg_id": "1569836683585650690",
+   "cuando": "2026-11-10T22:10:31"
+  },
+  {
+   "servidor": "DDS",
+   "canal": "📝〕INSCRIPCIONES",
+   "texto": "Calíz 🇲🇽",
+   "quien": "caliz123_",
+   "discord_id": "1546111597343146044",
+   "msg_id": "1569834973488222209",
+   "cuando": "2026-11-10T22:03:43"
+  },
+  {
+   "servidor": "DDS",
+   "canal": "📝〕INSCRIPCIONES",
+   "texto": "Nxuz🇵🇪",
+   "quien": "n_x_u_z_",
+   "discord_id": "1089661639508377630",
+   "msg_id": "1569833400141881418",
+   "cuando": "2026-11-10T21:57:28"
+  },
   {
    "servidor": "DDS",
    "canal": "📝〕INSCRIPCIONES",
@@ -42810,42 +42846,6 @@
    "discord_id": "734945161158852630",
    "msg_id": "1557506366027993190",
    "cuando": "2026-10-07T21:34:14"
-  },
-  {
-   "servidor": "FFA",
-   "canal": "✦📝—inscripciones",
-   "texto": "riolu",
-   "quien": "alvaroriolu03",
-   "discord_id": "522777983921029162",
-   "msg_id": "1557504565643845715",
-   "cuando": "2026-10-07T21:27:05"
-  },
-  {
-   "servidor": "SR",
-   "canal": "[📝]inscripciones",
-   "texto": "Chuche 🇨🇱",
-   "quien": "chucheee",
-   "discord_id": "617949355848237057",
-   "msg_id": "1557502879470985337",
-   "cuando": "2026-10-07T21:20:23"
-  },
-  {
-   "servidor": "SR",
-   "canal": "[📝]inscripciones",
-   "texto": "Geoka 🇦🇷",
-   "quien": "goksito_8",
-   "discord_id": "1325042155819106324",
-   "msg_id": "1557501252336615597",
-   "cuando": "2026-10-07T21:13:55"
-  },
-  {
-   "servidor": "SR",
-   "canal": "[📝]inscripciones",
-   "texto": "Nc🇵🇷",
-   "quien": "nachonc_",
-   "discord_id": "1523082259870257315",
-   "msg_id": "1557498941438689332",
-   "cuando": "2026-10-07T21:04:44"
   }
  ]
 }
