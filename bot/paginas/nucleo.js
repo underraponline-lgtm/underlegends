@@ -184,7 +184,10 @@ function pinta() {
 window.addEventListener('lg:dir', function () { ir(); });
 try { aplicarCalma(); } catch (e) { /* nada */ }
 
-fetch('/api/lobby', { headers: { accept: 'application/json' } })
+// ⚡ el que ya salió desde el script del principio de index.html (`__lobbyP`, ver web/montar.py), y si no, uno nuevo
+var lobbyP = window.__lobbyP || fetch('/api/lobby', { headers: { accept: 'application/json' } });
+window.__lobbyP = null;
+lobbyP
   .then(function (r) { if (!r.ok) throw new Error(r.status); return r.json(); })
   .then(function (d) { D = d; pinta(); })
   .catch(function (e) {

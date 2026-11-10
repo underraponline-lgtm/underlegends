@@ -104,6 +104,11 @@ html.calma.lg-sale #lg-carga{opacity:0;transition:opacity .25s ease}
 </style>
 <script>
 (function () {
+  // ⚡ EL LOBBY, PEDIDO YA (10/11/2026): salía recién cuando corría nucleo.js, después de bajar y correr seis scripts
+  // (llave_vivo.js solo son 96 KB). Acá sale apenas se lee la página, y nucleo.js usa ESTA promesa (`__lobbyP`) en vez
+  // de pedirlo otra vez: el Response se lee una sola vez. Un `<link rel=preload>` no: si el navegador no lo reconoce como
+  // el mismo pedido, baja el lobby (230 KB) dos veces
+  try { window.__lobbyP = fetch('/api/lobby', { headers: { accept: 'application/json' } }); } catch (e) { window.__lobbyP = null; }
   // 🔑 LAS RUTAS DE VERDAD: /freestyle-rap/ranking en vez de #/ranking (ver web/montar.py). Todo el código de la
   // página sigue pidiendo y escribiendo `#/…`: acá se traduce, en un solo lugar.
   //   rutaLG()  la ruta pedida, sin «/» adelante: «ranking/temporada». Un `#/…` (un link viejo) gana
