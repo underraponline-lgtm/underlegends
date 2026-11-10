@@ -1,19 +1,6 @@
 {
  "_leeme": "El reloj de bot/fuera.py: desde qué día le sobra cada tarjeta a cada carpeta de R2 (`verificados.puede()`). A los 7 días seguidos se borra esa tarjeta (Dlx, 27/09/2026). No se edita a mano.",
  "desde": {
-  "darnbless": {
-   "bloq-competitivo": "2026-11-03",
-   "bloq-pais": "2026-11-03",
-   "competitivo": "2026-11-03",
-   "pais": "2026-11-03",
-   "servidor": "2026-11-03",
-   "sv-acad": "2026-11-03",
-   "sv-dra": "2026-11-03",
-   "sv-ffa": "2026-11-03",
-   "sv-fvs": "2026-11-03",
-   "sv-sr": "2026-11-03",
-   "temporada": "2026-11-03"
-  },
   "fleivawack": {
    "competitivo": "2026-11-06",
    "temporada": "2026-11-06"
@@ -25,31 +12,11 @@
    "sv-ffa": "2026-11-07",
    "sv-sr": "2026-11-07",
    "temporada": "2026-11-07"
-  },
-  "matias": {
-   "bloq-competitivo": "2026-11-03",
-   "bloq-pais": "2026-11-03",
-   "competitivo": "2026-11-03",
-   "pais": "2026-11-03",
-   "servidor": "2026-11-03",
-   "sv-ddf": "2026-11-03",
-   "sv-dra": "2026-11-03",
-   "sv-ffa": "2026-11-03",
-   "sv-sr": "2026-11-03",
-   "temporada": "2026-11-03"
   }
  },
  "pasaban": 427,
- "cuando": "2026-11-10T04:31:10Z",
+ "cuando": "2026-11-10T05:00:30Z",
  "borradas": [
-  [
-   "nobu",
-   "2026-10-18"
-  ],
-  [
-   "1200",
-   "2026-10-19"
-  ],
   [
    "19",
    "2026-10-19"
@@ -841,6 +808,14 @@
   [
    "nyl",
    "2026-11-07"
+  ],
+  [
+   "darnbless",
+   "2026-11-10"
+  ],
+  [
+   "matias",
+   "2026-11-10"
   ]
  ]
 }
