@@ -1,5 +1,5 @@
 {
- "cuando": "2026-11-10T02:25:36+00:00",
+ "cuando": "2026-11-10T02:56:02+00:00",
  "anuncios": [
   {
    "nombre": "¡SE LLEGÓ LA GRAN NOCHE!",
@@ -6733,6 +6733,15 @@
   }
  ],
  "inscripciones": [
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "okam🇨🇷",
+   "quien": "okam77_25976",
+   "discord_id": "1512148565890306153",
+   "msg_id": "1569542923580735590",
+   "cuando": "2026-11-10T02:43:13"
+  },
   {
    "servidor": "FFA",
    "canal": "✦📝—inscripciones",
@@ -42723,15 +42732,6 @@
    "discord_id": "1493013247488430202",
    "msg_id": "1557457781357936724",
    "cuando": "2026-10-07T18:21:11"
-  },
-  {
-   "servidor": "FFA",
-   "canal": "✦📝—inscripciones",
-   "texto": "Majiztral 🇨🇴",
-   "quien": "majiztral",
-   "discord_id": "1492228152691396720",
-   "msg_id": "1557457282034442263",
-   "cuando": "2026-10-07T18:19:12"
   }
  ]
 }
