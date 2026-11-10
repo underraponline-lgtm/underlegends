@@ -254,7 +254,7 @@ def cruces_triples(llaves, pais_de, alias=None):
     return out
 
 
-def hechos_tags(pool, D=None, temp=None):
+def hechos_tags(pool, D=None, temp=None, memoria=True):
     """🏷️ Le pone a cada fila su `tg_c` (Competitiva) y su `tg_p` (País). Pura: no lee el Sheet —la temporada sale de
     `datos/temporada_pool.json`, que este ciclo ya escribió— y se prueba con `python sheet/hechos_tags.py`.
 
@@ -267,7 +267,8 @@ def hechos_tags(pool, D=None, temp=None):
                 temp = json.load(f)
         hc, hp = _HT.competitivo(pool, D), _HT.pais(pool, temp, D)
         # 🌎 las stats de la carta de País (Dlx, 04/11/2026), que salen de lo mismo y hacen falta los puestos de arriba
-        nac = _HT.nacionales(pool, temp, D, memoria=True)
+        # (`memoria`: el mejor puesto de la temporada se guarda en datos/mejor_pos_pais.json; el self-check no lo toca)
+        nac = _HT.nacionales(pool, temp, D, memoria=memoria)
     except Exception as e:                               # noqa: BLE001
         print('   ⚠️ no pude calcular los hechos de los TAG (%s): salen con los de la fila' % str(e)[:80])
         return 0
@@ -385,7 +386,9 @@ def _self_check():
          'mw': {}, 'precios': [], 'misiones': {}, 'divisiones': {}, 'semana': {}, 'ps': {}}
     filas = [{'raw': 'Ana', 'cc': 'ar', 'rango': 'B'}, {'raw': 'Bea', 'cc': 'ar', 'rango': 'B'},
              {'raw': 'Cyn', 'cc': 'ar', 'rango': ''}]
-    n = hechos_tags(filas, D, temp=[])
+    # 🔴 SIN `memoria` (10/11/2026): con ella el `--auto` reescribía datos/mejor_pos_pais.json de verdad con esta gente de
+    # mentira (no entraba nadie porque su país tiene menos de 20, y quedaba el archivo cambiado de fin de línea)
+    n = hechos_tags(filas, D, temp=[], memoria=False)
     a = filas[0]
     ok = (n == 3 and a.get('tg_c', {}).get('fg') == 1 and a.get('tg_p', {}).get('primer')
           and filas[1].get('tg_c', {}).get('fp') == 1 and 'tg_c' not in filas[2]
