@@ -1336,5 +1336,41 @@
   "sin_permiso": false,
   "sv": "LKR"
  },
+ "1569529154875949159": {
+  "autor": "1555067257376346122",
+  "canal": "1487207377601040516",
+  "cuando": "2026-11-10T01:48:30.964000+00:00",
+  "evento": "TORNEO CLANDESTINO V.1",
+  "fecha": "09/11",
+  "llave": "1569529154875949159",
+  "pregunta": "1569583422178074655",
+  "preguntada": "2026-11-10 1:24 AM ET",
+  "preguntas": [
+   {
+    "lados": [
+     "Soneto 🇪🇨",
+     "AbrahamSRRL🇵🇪"
+    ],
+    "ronda": "OCTAVOS"
+   },
+   {
+    "lados": [
+     "Kourier 🇲🇽",
+     "Sentpa 🇦🇷"
+    ],
+    "ronda": "OCTAVOS"
+   },
+   {
+    "lados": [
+     "DELUX🇦🇷",
+     "Number 🇺🇾"
+    ],
+    "ronda": "OCTAVOS"
+   }
+  ],
+  "respondidas": {},
+  "sin_permiso": false,
+  "sv": "FFA"
+ },
  "_leeme": "Las llaves que el ciclo no entendió y se las preguntó a quien las publicó, con botones o un menú (bot/finales.py). Una vez por llave, por su ID: así nunca se pregunta dos veces. Dlx, 12/10/2026."
 }

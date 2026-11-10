@@ -7203,10 +7203,7 @@
   "pos": 319,
   "fc": true,
   "total": 251,
-  "rango": "E",
-  "tg_t": {
-   "reciente": true
-  }
+  "rango": "E"
  },
  {
   "full": "HH",
@@ -10538,7 +10535,6 @@
   "tg_t": {
    "busc": 1,
    "dobles": 1,
-   "reciente": true,
    "suelto": true
   }
  },
@@ -10840,10 +10836,7 @@
   "pos": 386,
   "fc": true,
   "total": 251,
-  "rango": "E",
-  "tg_t": {
-   "reciente": true
-  }
+  "rango": "E"
  },
  {
   "full": "AL3",
@@ -10875,10 +10868,7 @@
   "pos": 387,
   "fc": true,
   "total": 251,
-  "rango": "E",
-  "tg_t": {
-   "reciente": true
-  }
+  "rango": "E"
  },
  {
   "full": "EGI",
@@ -11435,7 +11425,6 @@
   "rango": "E",
   "tg_t": {
    "busc": 1,
-   "reciente": true,
    "suelto": true
   }
  },
@@ -13258,10 +13247,7 @@
   "pos": 435,
   "fc": true,
   "total": 251,
-  "rango": "E",
-  "tg_t": {
-   "reciente": true
-  }
+  "rango": "E"
  },
  {
   "full": "Cannox",
@@ -13435,7 +13421,6 @@
   "total": 251,
   "rango": "E",
   "tg_t": {
-   "reciente": true,
    "trios": 1
   }
  },
@@ -16354,10 +16339,7 @@
   "pos": 508,
   "fc": true,
   "total": 251,
-  "rango": "E",
-  "tg_t": {
-   "reciente": true
-  }
+  "rango": "E"
  },
  {
   "full": "Swid",
@@ -16388,10 +16370,7 @@
   "o": 469,
   "pos": 212,
   "total": 251,
-  "rango": "E",
-  "tg_t": {
-   "reciente": true
-  }
+  "rango": "E"
  },
  {
   "full": "Valdrax",
@@ -17466,10 +17445,7 @@
   "pos": 530,
   "fc": true,
   "total": 251,
-  "rango": "E",
-  "tg_t": {
-   "reciente": true
-  }
+  "rango": "E"
  },
  {
   "full": "Axinu",
@@ -18064,7 +18040,6 @@
   "total": 251,
   "rango": "E",
   "tg_t": {
-   "reciente": true,
    "trios": 1
   }
  },
@@ -21769,10 +21744,7 @@
   "pos": 643,
   "fc": true,
   "total": 251,
-  "rango": "E",
-  "tg_t": {
-   "reciente": true
-  }
+  "rango": "E"
  },
  {
   "full": "ZBK🇪🇸",

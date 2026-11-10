@@ -38,10 +38,7 @@
     "ovr": 46,
     "pod": 0,
     "pts": 19165,
-    "racha": "0/0",
-    "tg": {
-     "nuevo": true
-    }
+    "racha": "0/0"
    }
   },
   "1200": {
@@ -702,10 +699,7 @@
     "ovr": 42,
     "pod": 0,
     "pts": 1250,
-    "racha": "0/0",
-    "tg": {
-     "nuevo": true
-    }
+    "racha": "0/0"
    },
    "FFA": {
     "duelos": "0/1",
@@ -787,10 +781,7 @@
     "ovr": 42,
     "pod": 0,
     "pts": 2625,
-    "racha": "0/0",
-    "tg": {
-     "nuevo": true
-    }
+    "racha": "0/0"
    }
   },
   "Anderbarra": {
@@ -1389,8 +1380,7 @@
     "pts": 7500,
     "racha": "1/1",
     "tg": {
-     "fin": 1,
-     "nuevo": true
+     "fin": 1
     }
    }
   },
@@ -3283,10 +3273,7 @@
     "ovr": 43,
     "pod": 0,
     "pts": 5250,
-    "racha": "1/1",
-    "tg": {
-     "nuevo": true
-    }
+    "racha": "1/1"
    }
   },
   "ELPIBEOSIRIS": {
@@ -3488,10 +3475,7 @@
     "ovr": 42,
     "pod": 0,
     "pts": 1250,
-    "racha": "0/0",
-    "tg": {
-     "nuevo": true
-    }
+    "racha": "0/0"
    },
    "FFA": {
     "duelos": "0/1",
@@ -5357,10 +5341,7 @@
     "ovr": 45,
     "pod": 0,
     "pts": 18750,
-    "racha": "0/0",
-    "tg": {
-     "nuevo": true
-    }
+    "racha": "0/0"
    }
   },
   "Juanpa": {
@@ -5659,10 +5640,7 @@
     "ovr": 42,
     "pod": 0,
     "pts": 2500,
-    "racha": "0/0",
-    "tg": {
-     "nuevo": true
-    }
+    "racha": "0/0"
    }
   },
   "Karma": {
@@ -6506,8 +6484,7 @@
     "pts": 3750,
     "racha": "1/1",
     "tg": {
-     "fin": 1,
-     "nuevo": true
+     "fin": 1
     }
    },
    "SR": {
@@ -6531,10 +6508,7 @@
     "ovr": 46,
     "pod": 0,
     "pts": 23540,
-    "racha": "0/1",
-    "tg": {
-     "nuevo": true
-    }
+    "racha": "0/1"
    }
   },
   "Letrao🇨🇱": {
@@ -12301,10 +12275,7 @@
     "ovr": 42,
     "pod": 0,
     "pts": 1500,
-    "racha": "0/0",
-    "tg": {
-     "nuevo": true
-    }
+    "racha": "0/0"
    },
    "FFA": {
     "duelos": "1/2",
@@ -13257,10 +13228,7 @@
     "ovr": 43,
     "pod": 0,
     "pts": 5250,
-    "racha": "1/1",
-    "tg": {
-     "nuevo": true
-    }
+    "racha": "1/1"
    },
    "FDS": {
     "duelos": "",
@@ -13369,10 +13337,7 @@
     "ovr": 42,
     "pod": 0,
     "pts": 1250,
-    "racha": "0/0",
-    "tg": {
-     "nuevo": true
-    }
+    "racha": "0/0"
    },
    "FFA": {
     "duelos": "",
