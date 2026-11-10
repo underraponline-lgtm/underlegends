@@ -18423,7 +18423,7 @@
    "Velatz": 38
   },
   "fecha": "21/10",
-  "firma": "3a27bc09502429e6",
+  "firma": "c27b5a2999f72031",
   "msg": "1562607463755161734",
   "nombre": "SNAKE INSIGNIA 6 8",
   "num": 496,
@@ -29975,7 +29975,7 @@
    "Teo": 18
   },
   "fecha": "30/10",
-  "firma": "3ea337eeb5c23195",
+  "firma": "5db9ca5120a0b343",
   "msg": "1565861597019111555",
   "nombre": "__ LA ISLA DE OKINAWA V.4 __",
   "num": 547,
@@ -30514,7 +30514,7 @@
    "Walker": 8
   },
   "fecha": "30/10",
-  "firma": "2db6ede4ab4c0efe",
+  "firma": "ccd164dcaf983bdd",
   "msg": "1565898869114413108",
   "nombre": "IDS V.3",
   "num": 549,
@@ -33046,7 +33046,7 @@
    "mats": 7
   },
   "fecha": "02/11",
-  "firma": "f98a1c63ec632b48",
+  "firma": "cf078bedc58f297a",
   "msg": "1566714400314884126",
   "nombre": "RAP PARA RAPEROS",
   "num": 560,
@@ -33491,7 +33491,7 @@
    "mats": 8
   },
   "fecha": "02/11",
-  "firma": "07791a070b0f032b",
+  "firma": "986cb4dad82a68bf",
   "msg": "1567040820337443021",
   "nombre": "__ qcyo rapeen __",
   "num": 563,
@@ -39814,6 +39814,130 @@
     "Cinexfilo",
     "Octavos",
     625
+   ]
+  ],
+  "v": 2
+ },
+ "592": {
+  "antes": {
+   "BTRX": [
+    47,
+    57,
+    false
+   ],
+   "Keider": [
+    52,
+    64,
+    false
+   ],
+   "Makmah": [
+    1,
+    1,
+    false
+   ],
+   "Number": [
+    43,
+    53,
+    false
+   ],
+   "Vilca": [
+    76,
+    95,
+    false
+   ],
+   "yinn": [
+    253,
+    18,
+    true
+   ]
+  },
+  "canal": "1468472443843776659",
+  "duelos": [
+   [
+    "BTRX",
+    "Lvel 🇻🇪",
+    "BTRX"
+   ],
+   [
+    "Bloody",
+    "Vilca",
+    "Bloody"
+   ],
+   [
+    "yinn",
+    "Number",
+    "yinn"
+   ],
+   [
+    "Makmah",
+    "Keider",
+    "Makmah"
+   ],
+   [
+    "Makmah",
+    "yinn",
+    "Makmah"
+   ],
+   [
+    "Makmah",
+    "BTRX",
+    "Makmah"
+   ]
+  ],
+  "ev_antes": {
+   "BTRX": 16,
+   "Keider": 18,
+   "Makmah": 109,
+   "Number": 19,
+   "Vilca": 15,
+   "yinn": 33
+  },
+  "fecha": "08/11",
+  "firma": "eade4c4838227fd1",
+  "msg": "1569128640363364464",
+  "nombre": "K.O.M VOL.10",
+  "num": 592,
+  "participantes": 8,
+  "sello": {
+   "Makmah": "7749ebfe6a2f:7a510334494e"
+  },
+  "sv": "FFA",
+  "t": "2026-11-10T00:54:29Z",
+  "tabla": [
+   [
+    "Makmah",
+    "Campeón",
+    7500
+   ],
+   [
+    "BTRX",
+    "Subcampeón",
+    5000
+   ],
+   [
+    "yinn",
+    "Semifinal",
+    3500
+   ],
+   [
+    "Lvel 🇻🇪",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Vilca",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Number",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Keider",
+    "Cuartos",
+    2000
    ]
   ],
   "v": 2

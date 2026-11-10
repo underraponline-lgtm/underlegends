@@ -185,7 +185,7 @@
   "crew": "",
   "discord_id": "1078792444080046271",
   "verificado": false,
-  "pts": 362660,
+  "pts": 363160,
   "ev": 21,
   "wr": "78.6%",
   "pod": 18,
@@ -209,6 +209,7 @@
   "total": 250,
   "rango": "SS",
   "tg_t": {
+   "cobro": 1,
    "dcor": true,
    "dobles": 5,
    "perf": 1,

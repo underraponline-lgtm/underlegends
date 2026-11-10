@@ -4060,10 +4060,10 @@
   "tg_c": {
    "bestia": 1,
    "clasico": 2,
-   "dg": 10,
+   "dg": 11,
    "fg": 1,
-   "riv": 21,
-   "venc": 10
+   "riv": 22,
+   "venc": 11
   },
   "tg_p": {
    "paises": 7,
@@ -4071,7 +4071,7 @@
   },
   "nac": {
    "evn": 0,
-   "evi": 20,
+   "evi": 21,
    "com": 0,
    "top": [
     2,
@@ -4968,17 +4968,17 @@
    "dg": 18,
    "fp": 3,
    "mata": 2,
-   "riv": 36,
+   "riv": 37,
    "venc": 16,
    "vengo": 3
   },
   "tg_p": {
-   "paises": 11,
+   "paises": 12,
    "paisesg": 5
   },
   "nac": {
    "evn": 9,
-   "evi": 38,
+   "evi": 39,
    "com": 0,
    "top": [
     1,
