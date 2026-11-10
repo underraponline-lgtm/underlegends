@@ -618,7 +618,9 @@ export default {
     // 🧪 TEMPORAL (10/11/2026): qué `cf-worker` y qué IP le pone Cloudflare a un subpedido de esta página, para que el
     // freno del Worker sepa reconocerla. Un servicio de eco y nada más: no lleva nada de quien pide. Se saca en seguida
     if (url.pathname === '/api/__eco' && req.method === 'GET') {
-      const r = await fetch('https://httpbin.org/anything', { headers: { accept: 'application/json' } }).catch(() => null);
+      // y si un Worker puede poner otro `cf-worker` (si puede, cualquiera se haría pasar por la página)
+      const r = await fetch('https://httpbin.org/anything', { headers: { accept: 'application/json', 'cf-worker': 'otro.pages.dev' } })
+        .catch(() => null);
       return new Response(r ? await r.text() : '{"error":"sin eco"}', { headers: { 'content-type': 'application/json', 'cache-control': 'no-store' } });
     }
 
