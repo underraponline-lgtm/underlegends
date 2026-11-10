@@ -1,5 +1,5 @@
 {
- "cuando": "2026-11-10T18:55:55+00:00",
+ "cuando": "2026-11-10T19:25:46+00:00",
  "anuncios": [
   {
    "nombre": "¡SE LLEGÓ LA GRAN NOCHE!",
@@ -6792,6 +6792,33 @@
   }
  ],
  "inscripciones": [
+  {
+   "servidor": "FDS",
+   "canal": "✅╏inscripciones-express",
+   "texto": "Nxuz🇵🇪",
+   "quien": "n_x_u_z_",
+   "discord_id": "1089661639508377630",
+   "msg_id": "1569793625930334231",
+   "cuando": "2026-11-10T19:19:25"
+  },
+  {
+   "servidor": "FDS",
+   "canal": "✅╏inscripciones-express",
+   "texto": "Krish 🇪🇸",
+   "quien": "krishsss11111",
+   "discord_id": "1513620494199558295",
+   "msg_id": "1569793613305487503",
+   "cuando": "2026-11-10T19:19:22"
+  },
+  {
+   "servidor": "FDS",
+   "canal": "✅╏inscripciones-express",
+   "texto": "Artezzy 🇵🇪",
+   "quien": "h6itam29",
+   "discord_id": "1435531540472795240",
+   "msg_id": "1569793478689296547",
+   "cuando": "2026-11-10T19:18:50"
+  },
   {
    "servidor": "LKR",
    "canal": "⟡・INSCRIPCIONES",
@@ -42764,33 +42791,6 @@
    "discord_id": "1440141957266673745",
    "msg_id": "1557493060483551303",
    "cuando": "2026-10-07T20:41:22"
-  },
-  {
-   "servidor": "FFA",
-   "canal": "✦📝—inscripciones",
-   "texto": "Ardean 🇵🇪",
-   "quien": "ardean_rap373",
-   "discord_id": "879849220352393266",
-   "msg_id": "1557490666584412233",
-   "cuando": "2026-10-07T20:31:51"
-  },
-  {
-   "servidor": "DDF",
-   "canal": "『📑』Inscripciones",
-   "texto": "Criszj",
-   "quien": "criszjono",
-   "discord_id": "1462237816829513971",
-   "msg_id": "1557486425417584821",
-   "cuando": "2026-10-07T20:15:00"
-  },
-  {
-   "servidor": "FFA",
-   "canal": "✦📝—inscripciones",
-   "texto": "VL.PE 🇵🇪",
-   "quien": "carlosvalencia04030877",
-   "discord_id": "743335818894246008",
-   "msg_id": "1557484471677091901",
-   "cuando": "2026-10-07T20:07:14"
   }
  ]
 }
