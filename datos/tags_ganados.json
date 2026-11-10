@@ -230,6 +230,15 @@
    ]
   }
  },
+ "abrahamychop": {
+  "temporada": {
+   "🥉 AL PODIO": [
+    "🥉 AL PODIO",
+    "t1",
+    1794351772558
+   ]
+  }
+ },
  "abyssus": {
   "competitivo": {
    "⚔️ DUELISTA": [
@@ -2698,6 +2707,11 @@
     "🦁 TEMERARIO",
     "t1",
     1794261790120
+   ],
+   "🧊 SANGRE FRÍA": [
+    "🧊 SANGRE FRÍA",
+    "t1",
+    1794351772558
    ]
   },
   "pais": {
@@ -2764,6 +2778,11 @@
     "📈 EN ASCENSO",
     "t1",
     1794242313248
+   ],
+   "📋 SEMANA PERFECTA": [
+    "📋 SEMANA PERFECTA",
+    "t1",
+    1794351772558
    ],
    "🔟 DOBLE DÍGITO": [
     "🔟 DOBLE DÍGITO",
@@ -12483,6 +12502,25 @@
    ]
   }
  },
+ "solysadik": {
+  "temporada": {
+   "👑 CAMPEÓN x%d": [
+    "👑 CAMPEÓN x1",
+    "t1",
+    1794351772558
+   ],
+   "🚪 DEBUT CON CORONA": [
+    "🚪 DEBUT CON CORONA",
+    "t1",
+    1794351772558
+   ],
+   "🥉 AL PODIO": [
+    "🥉 AL PODIO",
+    "t1",
+    1794351772558
+   ]
+  }
+ },
  "sombra": {
   "temporada": {
    "📈 EN ASCENSO": [
@@ -14409,6 +14447,15 @@
     "🥉 AL PODIO",
     "t1",
     1794267614222
+   ]
+  }
+ },
+ "walkover": {
+  "temporada": {
+   "🧟 RESUCITADO": [
+    "🧟 RESUCITADO",
+    "t1",
+    1794351772558
    ]
   }
  },

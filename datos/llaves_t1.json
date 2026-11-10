@@ -2377,7 +2377,7 @@
        "BNA"
       ],
       "Dynoco, Geoka",
-      "triple (3 bandas, pasan 2); también pasa: Geoka 🇦🇷"
+      "triple (3 bandas, pasan 2); también pasa: GEOKA🇦🇷"
      ],
      [
       [
@@ -49437,6 +49437,370 @@
    ],
    [
     "black live",
+    "Cuartos",
+    2000
+   ]
+  ]
+ },
+ "602": {
+  "dia": "2026-10-10",
+  "escala": "16+",
+  "fecha": "10/10",
+  "links": [
+   "https://discord.com/channels/1443770831598649528/1558236459247468608/1558531979949899898"
+  ],
+  "n": 602,
+  "nombre": "(sin titulo)",
+  "participantes": 18,
+  "rondas": [
+   {
+    "b": [
+     [
+      [
+       "ABRAHAM Y CHOP",
+       "CRIZJ Y PIPA"
+      ],
+      "ABRAHAM Y CHOP",
+      ""
+     ],
+     [
+      [
+       "VILCA Y DANU",
+       "NOBU Y NIT NATION"
+      ],
+      "VILCA Y DANU",
+      ""
+     ],
+     [
+      [
+       "CRIZJ Y NEXUS",
+       "RAIBLES Y V1UDON"
+      ],
+      "CRIZJ Y NEXUS",
+      ""
+     ],
+     [
+      [
+       "CHASE Y MCO",
+       "MANU Y ALEJOZZ"
+      ],
+      "CHASE Y MCO",
+      ""
+     ],
+     [
+      [
+       "DIOS Y ICON",
+       "WALKOVER"
+      ],
+      "DIOS Y ICON",
+      "Revivido: WALKOVER"
+     ],
+     [
+      [
+       "SOL Y SADIK",
+       "WALKOVER"
+      ],
+      "SOL Y SADIK",
+      ""
+     ],
+     [
+      [
+       "KUN Y CARLOS",
+       "WALKOVER"
+      ],
+      "KUN Y CARLOS",
+      ""
+     ],
+     [
+      [
+       "TOBALSILLO Y MARK",
+       "DOMINICK Y SAMGAMING"
+      ],
+      "",
+      "sin ganador: espera en ✅ Decidir"
+     ]
+    ],
+    "r": "Octavos"
+   },
+   {
+    "b": [
+     [
+      [
+       "ABRAHAM Y CHOP",
+       "MARK Y TOBALSILLO"
+      ],
+      "ABRAHAM Y CHOP",
+      "Walk-in 1: MARK Y TOBALSILLO"
+     ],
+     [
+      [
+       "VILCA Y DANU",
+       "CRIZJ Y NEXUS"
+      ],
+      "VILCA Y DANU",
+      ""
+     ],
+     [
+      [
+       "CHASE Y MCO",
+       "DIOS Y ICON"
+      ],
+      "CHASE Y MCO",
+      ""
+     ],
+     [
+      [
+       "SOL Y SADIK",
+       "KUN Y CARLOS"
+      ],
+      "SOL Y SADIK",
+      ""
+     ]
+    ],
+    "r": "Cuartos"
+   },
+   {
+    "b": [
+     [
+      [
+       "ABRAHAM Y CHOP",
+       "VILCA Y DANU"
+      ],
+      "ABRAHAM Y CHOP",
+      ""
+     ],
+     [
+      [
+       "SOL Y SADIK",
+       "CHASE Y MCO"
+      ],
+      "SOL Y SADIK",
+      ""
+     ],
+     [
+      [
+       "VILCA Y DANU",
+       "CHASE Y MCO"
+      ],
+      "",
+      "sin ganador: espera en ✅ Decidir"
+     ]
+    ],
+    "r": "Semifinales"
+   },
+   {
+    "b": [
+     [
+      [
+       "SOL Y SADIK",
+       "ABRAHAM Y CHOP"
+      ],
+      "SOL Y SADIK",
+      ""
+     ]
+    ],
+    "r": "Final"
+   }
+  ],
+  "sv": "DDS",
+  "tabla": [
+   [
+    "SOL Y SADIK",
+    "Campeón",
+    10000
+   ],
+   [
+    "ABRAHAM Y CHOP",
+    "Subcampeón",
+    7500
+   ],
+   [
+    "CHASE Y MCO",
+    "Semifinal",
+    5250
+   ],
+   [
+    "VILCA Y DANU",
+    "Semifinal",
+    5250
+   ],
+   [
+    "CRIZJ Y NEXUS",
+    "Cuartos",
+    2500
+   ],
+   [
+    "DIOS Y ICON",
+    "Cuartos",
+    2500
+   ],
+   [
+    "KUN Y CARLOS",
+    "Cuartos",
+    2500
+   ],
+   [
+    "WALKOVER",
+    "Octavos",
+    1875
+   ],
+   [
+    "CRIZJ Y PIPA",
+    "Octavos",
+    1250
+   ],
+   [
+    "MANU Y ALEJOZZ",
+    "Octavos",
+    1250
+   ],
+   [
+    "MARK Y TOBALSILLO",
+    "Cuartos",
+    1250
+   ],
+   [
+    "NOBU Y NIT NATION",
+    "Octavos",
+    1250
+   ],
+   [
+    "RAIBLES Y V1UDON",
+    "Octavos",
+    1250
+   ]
+  ]
+ },
+ "603": {
+  "dia": "2026-10-12",
+  "escala": "8-15",
+  "fecha": "12/10",
+  "links": [
+   "https://discord.com/channels/1443770831598649528/1488270140775731301/1559324504021409937"
+  ],
+  "n": 603,
+  "nombre": "(sin titulo)",
+  "participantes": 10,
+  "rondas": [
+   {
+    "b": [
+     [
+      [
+       "Dominick",
+       "Chop"
+      ],
+      "Dominick",
+      ""
+     ],
+     [
+      [
+       "NXUZ",
+       "19"
+      ],
+      "NXUZ",
+      ""
+     ],
+     [
+      [
+       "Vilca",
+       "Sosa"
+      ],
+      "Vilca",
+      ""
+     ],
+     [
+      [
+       "CrisZJ",
+       "Abraham"
+      ],
+      "CrisZJ",
+      ""
+     ]
+    ],
+    "r": "Cuartos"
+   },
+   {
+    "b": [
+     [
+      [
+       "NXUZ",
+       "Dominick"
+      ],
+      "NXUZ",
+      ""
+     ],
+     [
+      [
+       "CrisZJ",
+       "Vilca"
+      ],
+      "CrisZJ",
+      ""
+     ],
+     [
+      [
+       "walkover",
+       "walkover"
+      ],
+      "",
+      "sin ganador: espera en ✅ Decidir"
+     ]
+    ],
+    "r": "Semifinales"
+   },
+   {
+    "b": [
+     [
+      [
+       "CrisZJ",
+       "NXUZ"
+      ],
+      "CrisZJ",
+      ""
+     ]
+    ],
+    "r": "Final"
+   }
+  ],
+  "sv": "DDS",
+  "tabla": [
+   [
+    "CrisZJ",
+    "Campeón",
+    7500
+   ],
+   [
+    "NXUZ",
+    "Subcampeón",
+    5000
+   ],
+   [
+    "Dominick",
+    "Semifinal",
+    3500
+   ],
+   [
+    "Vilca",
+    "Semifinal",
+    3500
+   ],
+   [
+    "19",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Abraham",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Chop",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Sosa",
     "Cuartos",
     2000
    ]

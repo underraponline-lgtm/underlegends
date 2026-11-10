@@ -41488,5 +41488,307 @@
    ]
   ],
   "v": 2
+ },
+ "602": {
+  "antes": {},
+  "canal": "1443793172013776997",
+  "duelos": [
+   [
+    "ABRAHAM Y CHOP",
+    "CRIZJ Y PIPA",
+    "ABRAHAM Y CHOP"
+   ],
+   [
+    "VILCA Y DANU",
+    "NOBU Y NIT NATION",
+    "VILCA Y DANU"
+   ],
+   [
+    "CRIZJ Y NEXUS",
+    "RAIBLES Y V1UDON",
+    "CRIZJ Y NEXUS"
+   ],
+   [
+    "CHASE Y MCO",
+    "MANU Y ALEJOZZ",
+    "CHASE Y MCO"
+   ],
+   [
+    "DIOS Y ICON",
+    "WALKOVER",
+    "DIOS Y ICON"
+   ],
+   [
+    "SOL Y SADIK",
+    "WALKOVER",
+    "SOL Y SADIK"
+   ],
+   [
+    "KUN Y CARLOS",
+    "WALKOVER",
+    "KUN Y CARLOS"
+   ],
+   [
+    "ABRAHAM Y CHOP",
+    "MARK Y TOBALSILLO",
+    "ABRAHAM Y CHOP"
+   ],
+   [
+    "VILCA Y DANU",
+    "CRIZJ Y NEXUS",
+    "VILCA Y DANU"
+   ],
+   [
+    "CHASE Y MCO",
+    "DIOS Y ICON",
+    "CHASE Y MCO"
+   ],
+   [
+    "SOL Y SADIK",
+    "KUN Y CARLOS",
+    "SOL Y SADIK"
+   ],
+   [
+    "ABRAHAM Y CHOP",
+    "VILCA Y DANU",
+    "ABRAHAM Y CHOP"
+   ],
+   [
+    "SOL Y SADIK",
+    "CHASE Y MCO",
+    "SOL Y SADIK"
+   ],
+   [
+    "SOL Y SADIK",
+    "ABRAHAM Y CHOP",
+    "SOL Y SADIK"
+   ]
+  ],
+  "ev_antes": {},
+  "fecha": "10/10",
+  "firma": "b4759d85f5098317",
+  "msg": "1569847767734554677",
+  "nombre": "(sin titulo)",
+  "num": 602,
+  "participantes": 18,
+  "sello": {
+   "SOL Y SADIK": ""
+  },
+  "sv": "DDS",
+  "t": "2026-11-10T22:54:32Z",
+  "tabla": [
+   [
+    "SOL Y SADIK",
+    "Campeón",
+    10000
+   ],
+   [
+    "ABRAHAM Y CHOP",
+    "Subcampeón",
+    7500
+   ],
+   [
+    "VILCA Y DANU",
+    "Semifinal",
+    5250
+   ],
+   [
+    "CHASE Y MCO",
+    "Semifinal",
+    5250
+   ],
+   [
+    "CRIZJ Y NEXUS",
+    "Cuartos",
+    2500
+   ],
+   [
+    "DIOS Y ICON",
+    "Cuartos",
+    2500
+   ],
+   [
+    "KUN Y CARLOS",
+    "Cuartos",
+    2500
+   ],
+   [
+    "WALKOVER",
+    "Octavos",
+    1875
+   ],
+   [
+    "MARK Y TOBALSILLO",
+    "Cuartos",
+    1250
+   ],
+   [
+    "CRIZJ Y PIPA",
+    "Octavos",
+    1250
+   ],
+   [
+    "NOBU Y NIT NATION",
+    "Octavos",
+    1250
+   ],
+   [
+    "RAIBLES Y V1UDON",
+    "Octavos",
+    1250
+   ],
+   [
+    "MANU Y ALEJOZZ",
+    "Octavos",
+    1250
+   ]
+  ],
+  "v": 2
+ },
+ "603": {
+  "antes": {
+   "19": [
+    269,
+    93,
+    true
+   ],
+   "Abraham": [
+    296,
+    160,
+    true
+   ],
+   "Chop": [
+    257,
+    45,
+    true
+   ],
+   "CrisZJ": [
+    258,
+    48,
+    true
+   ],
+   "Dominick": [
+    259,
+    52,
+    true
+   ],
+   "NXUZ": [
+    26,
+    30,
+    false
+   ],
+   "Sosa": [
+    65,
+    82,
+    false
+   ],
+   "Vilca": [
+    76,
+    95,
+    false
+   ]
+  },
+  "canal": "1443793172013776997",
+  "duelos": [
+   [
+    "Dominick",
+    "Chop",
+    "Dominick"
+   ],
+   [
+    "NXUZ",
+    "19",
+    "NXUZ"
+   ],
+   [
+    "Vilca",
+    "Sosa",
+    "Vilca"
+   ],
+   [
+    "CrisZJ",
+    "Abraham",
+    "CrisZJ"
+   ],
+   [
+    "NXUZ",
+    "Dominick",
+    "NXUZ"
+   ],
+   [
+    "CrisZJ",
+    "Vilca",
+    "CrisZJ"
+   ],
+   [
+    "CrisZJ",
+    "NXUZ",
+    "CrisZJ"
+   ]
+  ],
+  "ev_antes": {
+   "19": 8,
+   "Abraham": 6,
+   "Chop": 24,
+   "CrisZJ": 24,
+   "Dominick": 35,
+   "NXUZ": 36,
+   "Sosa": 25,
+   "Vilca": 15
+  },
+  "fecha": "12/10",
+  "firma": "328ac0f923eeec85",
+  "msg": "1569847774147776593",
+  "nombre": "(sin titulo)",
+  "num": 603,
+  "participantes": 10,
+  "sello": {
+   "CrisZJ": ""
+  },
+  "sv": "DDS",
+  "t": "2026-11-10T22:54:35Z",
+  "tabla": [
+   [
+    "CrisZJ",
+    "Campeón",
+    7500
+   ],
+   [
+    "NXUZ",
+    "Subcampeón",
+    5000
+   ],
+   [
+    "Dominick",
+    "Semifinal",
+    3500
+   ],
+   [
+    "Vilca",
+    "Semifinal",
+    3500
+   ],
+   [
+    "Chop",
+    "Cuartos",
+    2000
+   ],
+   [
+    "19",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Sosa",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Abraham",
+    "Cuartos",
+    2000
+   ]
+  ],
+  "v": 2
  }
 }

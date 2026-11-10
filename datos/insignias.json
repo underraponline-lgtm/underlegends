@@ -201,6 +201,16 @@
 "prueba"
 ]
 },
+"ABRAHAM Y CHOP": {
+"debut": [
+"2026-11-10T22:57:17Z",
+"prueba"
+],
+"podio": [
+"2026-11-10T22:57:17Z",
+"prueba"
+]
+},
 "ACH": {
 "debut": [
 "2026-10-02T02:54:53Z",
@@ -1393,6 +1403,12 @@
 "prueba"
 ]
 },
+"CHASE Y MCO": {
+"debut": [
+"2026-11-10T22:57:17Z",
+"prueba"
+]
+},
 "CHOCLITO": {
 "debut": [
 "2026-10-05T06:27:01Z",
@@ -1450,6 +1466,18 @@
 "CRIZJ": {
 "debut": [
 "2026-10-03T22:38:07Z",
+"prueba"
+]
+},
+"CRIZJ Y NEXUS": {
+"debut": [
+"2026-11-10T22:57:17Z",
+"prueba"
+]
+},
+"CRIZJ Y PIPA": {
+"debut": [
+"2026-11-10T22:57:17Z",
 "prueba"
 ]
 },
@@ -1787,6 +1815,10 @@
 "duelista": [
 "2026-11-02T00:25:37Z",
 "prueba"
+],
+"ev25": [
+"2026-11-10T22:57:17Z",
+"prueba"
 ]
 },
 "ChopAntiTrans": {
@@ -2003,6 +2035,14 @@
 "trotamundos": [
 "2026-11-09T21:27:39Z",
 "prueba"
+],
+"ev25": [
+"2026-11-10T22:57:17Z",
+"prueba"
+],
+"tricampeon": [
+"2026-11-10T22:57:17Z",
+"prueba"
 ]
 },
 "Crizcejotas": {
@@ -2124,6 +2164,12 @@
 "DIEGO": {
 "liga": [
 "2026-10-21T21:55:21Z",
+"prueba"
+]
+},
+"DIOS Y ICON": {
+"debut": [
+"2026-11-10T22:57:17Z",
 "prueba"
 ]
 },
@@ -3254,6 +3300,10 @@
 "Fix 17": {
 "debut": [
 "2026-10-26T23:26:17Z",
+"prueba"
+],
+"ascenso": [
+"2026-11-10T22:57:17Z",
 "prueba"
 ]
 },
@@ -4501,6 +4551,12 @@
 "prueba"
 ]
 },
+"KUN Y CARLOS": {
+"debut": [
+"2026-11-10T22:57:17Z",
+"prueba"
+]
+},
 "Kain": {
 "debut": [
 "2026-10-16T20:26:14Z",
@@ -5479,6 +5535,12 @@
 "prueba"
 ]
 },
+"MANU Y ALEJOZZ": {
+"debut": [
+"2026-11-10T22:57:17Z",
+"prueba"
+]
+},
 "MARITHEA": {
 "debut": [
 "2026-10-13T02:58:11Z",
@@ -5486,6 +5548,12 @@
 ],
 "podio": [
 "2026-10-13T02:58:11Z",
+"prueba"
+]
+},
+"MARK Y TOBALSILLO": {
+"debut": [
+"2026-11-10T22:57:17Z",
 "prueba"
 ]
 },
@@ -6610,6 +6678,12 @@
 "NILS": {
 "debut": [
 "2026-10-25T15:31:57Z",
+"prueba"
+]
+},
+"NOBU Y NIT NATION": {
+"debut": [
+"2026-11-10T22:57:17Z",
 "prueba"
 ]
 },
@@ -7859,6 +7933,12 @@
 "prueba"
 ]
 },
+"RAIBLES Y V1UDON": {
+"debut": [
+"2026-11-10T22:57:17Z",
+"prueba"
+]
+},
 "RC": {
 "debut": [
 "2026-10-19T02:56:07Z",
@@ -8379,6 +8459,24 @@
 "prueba"
 ]
 },
+"SOL Y SADIK": {
+"ascenso": [
+"2026-11-10T22:57:17Z",
+"prueba"
+],
+"campeon": [
+"2026-11-10T22:57:17Z",
+"prueba"
+],
+"debut": [
+"2026-11-10T22:57:17Z",
+"prueba"
+],
+"podio": [
+"2026-11-10T22:57:17Z",
+"prueba"
+]
+},
 "SONIC_DORADITO": {
 "debut": [
 "2026-10-04T21:25:29Z",
@@ -8534,6 +8632,10 @@
 ],
 "mes_sv_rapero": [
 "2026-11-04T23:56:59Z",
+"prueba"
+],
+"ascenso": [
+"2026-11-10T22:57:17Z",
 "prueba"
 ]
 },
@@ -9449,6 +9551,12 @@
 "prueba"
 ]
 },
+"VILCA Y DANU": {
+"debut": [
+"2026-11-10T22:57:17Z",
+"prueba"
+]
+},
 "VISIONARIO": {
 "debut": [
 "2026-10-13T02:58:11Z",
@@ -9744,6 +9852,12 @@
 ],
 "podio": [
 "2026-11-09T23:27:09Z",
+"prueba"
+]
+},
+"WALKOVER": {
+"debut": [
+"2026-11-10T22:57:17Z",
 "prueba"
 ]
 },
@@ -10350,6 +10464,10 @@
 "crakero": {
 "debut": [
 "2026-10-10T06:55:04Z",
+"prueba"
+],
+"ascenso": [
+"2026-11-10T22:57:17Z",
 "prueba"
 ]
 },

@@ -2,39 +2,6 @@
  "_leeme": "Los eventos de vidas de #veredictos ya armados —quién peleó con quién y quién ganó—, para cargarlos aunque ya no estén entre los últimos mensajes del canal; y cada batalla con su ganador (`batallas`), para la llave que no lo dice; y cada llave como se jugó (`llaves`), que manda sobre la del organizador. Sin los mensajes: el repo es público. Lo escribe bot/escuchar.py (vidas()).",
  "eventos": {},
  "batallas": {
-  "1567306507454910485": {
-   "id": "1567306507454910485",
-   "sv": "✮ 𝑼𝒓𝒃𝒂𝒏 𝑭𝒓𝒆𝒆𝒔𝒕𝒚𝒍𝒆 ✮ | A New Era",
-   "g": "1467763447117778989",
-   "canal": "1540223675146707045",
-   "pub": 1793745390524,
-   "a": "MAKMAH 🇻🇪",
-   "b": "SEBITA 🇱🇷",
-   "ganador": "MAKMAH 🇻🇪",
-   "votos": "1–0"
-  },
-  "1567307384429224048": {
-   "id": "1567307384429224048",
-   "sv": "✮ 𝑼𝒓𝒃𝒂𝒏 𝑭𝒓𝒆𝒆𝒔𝒕𝒚𝒍𝒆 ✮ | A New Era",
-   "g": "1467763447117778989",
-   "canal": "1540223675146707045",
-   "pub": 1793745599611,
-   "a": "FAMILIAFORTUNAYEXITO 🇫🇷",
-   "b": "LIZENINN 🇦🇷",
-   "ganador": "LIZENINN 🇦🇷",
-   "votos": "1–0"
-  },
-  "1567308417285103636": {
-   "id": "1567308417285103636",
-   "sv": "✮ 𝑼𝒓𝒃𝒂𝒏 𝑭𝒓𝒆𝒆𝒔𝒕𝒚𝒍𝒆 ✮ | A New Era",
-   "g": "1467763447117778989",
-   "canal": "1540223675146707045",
-   "pub": 1793745845863,
-   "a": "MAKMAH 🇻🇪",
-   "b": "LIZENINN 🇦🇷",
-   "ganador": "MAKMAH 🇻🇪",
-   "votos": "1–0"
-  },
   "1567377875278110882": {
    "id": "1567377875278110882",
    "sv": "[FFA] Freestyle For All 👾",
@@ -1188,6 +1155,28 @@
    "a": "CRISZJ",
    "b": "RICARDFLEX",
    "ganador": "CRISZJ",
+   "votos": "1–0"
+  },
+  "1569842264409116765": {
+   "id": "1569842264409116765",
+   "sv": "🔥 𝐃𝐈𝐒𝐂𝐎𝐑𝐃 𝐒𝐓𝐘𝐋𝐄 🎤",
+   "g": "1443770831598649528",
+   "canal": "1563698957996134501",
+   "pub": 1794349962094,
+   "a": "DIOS",
+   "b": "CRISZJ",
+   "ganador": "DIOS",
+   "votos": "1–0"
+  },
+  "1569843990738501674": {
+   "id": "1569843990738501674",
+   "sv": "🔥 𝐃𝐈𝐒𝐂𝐎𝐑𝐃 𝐒𝐓𝐘𝐋𝐄 🎤",
+   "g": "1443770831598649528",
+   "canal": "1563698957996134501",
+   "pub": 1794350373683,
+   "a": "VILCA",
+   "b": "MONET",
+   "ganador": "VILCA",
    "votos": "1–0"
   }
  },
