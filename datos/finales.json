@@ -1310,5 +1310,27 @@
   "sin_permiso": false,
   "sv": "FFA"
  },
+ "1569438907714769002": {
+  "autor": "1548906948307451906",
+  "canal": "1560645507095728278",
+  "cuando": "2026-11-09T19:49:54.364000+00:00",
+  "evento": "RED BULL COLOMBIA",
+  "fecha": "09/11",
+  "llave": "1569438907714769002",
+  "pregunta": "1569500356285829141",
+  "preguntada": "2026-11-09 7:54 PM ET",
+  "preguntas": [
+   {
+    "lados": [
+     "Miniboy🇨🇱",
+     "NUMBER"
+    ],
+    "ronda": "OCTAVOS"
+   }
+  ],
+  "respondidas": {},
+  "sin_permiso": false,
+  "sv": "LKR"
+ },
  "_leeme": "Las llaves que el ciclo no entendió y se las preguntó a quien las publicó, con botones o un menú (bot/finales.py). Una vez por llave, por su ID: así nunca se pregunta dos veces. Dlx, 12/10/2026."
 }

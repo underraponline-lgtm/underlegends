@@ -343,15 +343,6 @@
 "temporada"
 ]
 },
-"geoka": {
-"rg": "D",
-"c": [
-"competitivo",
-"pais",
-"servidor",
-"temporada"
-]
-},
 "polosport": {
 "rg": "C",
 "c": [
@@ -373,6 +364,15 @@
 "chop": {
 "rg": "D",
 "c": []
+},
+"geoka": {
+"rg": "D",
+"c": [
+"competitivo",
+"pais",
+"servidor",
+"temporada"
+]
 },
 "criszj": {
 "rg": "C",
@@ -399,15 +399,6 @@
 "dominick": {
 "rg": "D",
 "c": []
-},
-"andres": {
-"rg": "B",
-"c": [
-"competitivo",
-"pais",
-"servidor",
-"temporada"
-]
 },
 "mathhias": {
 "rg": "C",
@@ -465,6 +456,15 @@
 "rg": "D",
 "c": [
 "competitivo",
+"servidor",
+"temporada"
+]
+},
+"andres": {
+"rg": "B",
+"c": [
+"competitivo",
+"pais",
 "servidor",
 "temporada"
 ]
@@ -6874,7 +6874,7 @@
 "n": "Valen",
 "k": "valen",
 "de": 294,
-"a": 273
+"a": 274
 },
 {
 "n": "Richard",

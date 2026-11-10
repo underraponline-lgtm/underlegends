@@ -9010,6 +9010,32 @@
      ],
      "organizador": "",
      "cuentas": {}
+    },
+    "1569493688852283463": {
+     "sv": "URBF",
+     "nombre": "COMPE CHILL V.3",
+     "mo": "2026-11-09T23:27:35Z",
+     "staff": {
+      "jurado": [
+       "Erian 恵理久"
+      ],
+      "host": [
+       "Erian 恵理久"
+      ],
+      "dj": [
+       "Erian 恵理久"
+      ]
+     },
+     "orgs": [
+      {
+       "n": "Erian 恵理久",
+       "id": "1055474244089286706"
+      }
+     ],
+     "organizador": "Erian 恵理久",
+     "cuentas": {
+      "Erian 恵理久": "1055474244089286706"
+     }
     }
    },
    "ver": {
@@ -9453,6 +9479,11 @@
       "",
       "💤",
       "paratimiringuicaro"
+     ],
+     "1492228152691396720": [
+      "",
+      "Majiztral 🇨🇴",
+      "majiztral"
      ]
     },
     "URBF|2026-11-09": {
@@ -9460,6 +9491,11 @@
       "PLAYER",
       "❤️‍🔥예수-Jesus-예수❤️‍🔥",
       "jesuslgamer31"
+     ],
+     "1055474244089286706": [
+      "",
+      "Erian 恵理久",
+      "deslanofthemind"
      ]
     },
     "DDF|2026-11-09": {
