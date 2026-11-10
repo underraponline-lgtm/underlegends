@@ -40466,6 +40466,337 @@
   ],
   "v": 2
  },
+ "595": {
+  "antes": {
+   "Benjixo": [
+    275,
+    111,
+    true
+   ],
+   "Calíz": [
+    48,
+    58,
+    false
+   ],
+   "Colesito": [
+    13,
+    14,
+    false
+   ],
+   "Deko": [
+    335,
+    225,
+    true
+   ],
+   "Dynoco": [
+    56,
+    68,
+    false
+   ],
+   "Garxzii": [
+    184,
+    348,
+    false
+   ],
+   "Keider": [
+    52,
+    64,
+    false
+   ],
+   "Kminant": [
+    396,
+    315,
+    true
+   ],
+   "Kravitz": [
+    59,
+    75,
+    false
+   ],
+   "Krish": [
+    104,
+    136,
+    false
+   ],
+   "Magic": [
+    149,
+    254,
+    false
+   ],
+   "Makmah": [
+    1,
+    1,
+    false
+   ],
+   "Marcos": [
+    84,
+    108,
+    false
+   ],
+   "NC": [
+    19,
+    22,
+    false
+   ],
+   "Valen": [
+    274,
+    107,
+    true
+   ],
+   "Vandu": [
+    9,
+    10,
+    false
+   ],
+   "Verc": [
+    7,
+    8,
+    false
+   ],
+   "Xclusivo": [
+    256,
+    38,
+    true
+   ]
+  },
+  "canal": "1468472443843776659",
+  "duelos": [
+   [
+    "Mito",
+    "Keider",
+    "Mito"
+   ],
+   [
+    "Calíz",
+    "Xclusivo",
+    "Calíz"
+   ],
+   [
+    "Vandu",
+    "Garxzii",
+    "Vandu"
+   ],
+   [
+    "Kminant",
+    "ADEUXE🇨🇦",
+    "Kminant"
+   ],
+   [
+    "Dobell",
+    "Krish",
+    "Dobell"
+   ],
+   [
+    "Valen",
+    "0223 🇧🇧",
+    "Valen"
+   ],
+   [
+    "Valen",
+    "NC",
+    "Valen"
+   ],
+   [
+    "Benjixo",
+    "Marcos",
+    "Benjixo"
+   ],
+   [
+    "Benjixo",
+    "Dynoco",
+    "Benjixo"
+   ],
+   [
+    "Verc",
+    "Magic",
+    "Verc"
+   ],
+   [
+    "Verc",
+    "Colesito",
+    "Verc"
+   ],
+   [
+    "Verc",
+    "Makmah",
+    "Verc"
+   ],
+   [
+    "Valen",
+    "Calíz",
+    "Valen"
+   ],
+   [
+    "Vandu",
+    "Benjixo",
+    "Vandu"
+   ],
+   [
+    "Verc",
+    "Kminant",
+    "Verc"
+   ],
+   [
+    "Deko",
+    "Kravitz",
+    "Deko"
+   ],
+   [
+    "Deko",
+    "Vandu",
+    "Deko"
+   ],
+   [
+    "Deko",
+    "Colesito",
+    "Deko"
+   ],
+   [
+    "Valen",
+    "Verc",
+    "Valen"
+   ],
+   [
+    "Deko",
+    "Valen",
+    "Deko"
+   ]
+  ],
+  "ev_antes": {
+   "Benjixo": 8,
+   "Calíz": 27,
+   "Colesito": 41,
+   "Deko": 2,
+   "Dynoco": 17,
+   "Garxzii": 5,
+   "Keider": 18,
+   "Kminant": 3,
+   "Kravitz": 14,
+   "Krish": 14,
+   "Magic": 6,
+   "Makmah": 109,
+   "Marcos": 10,
+   "NC": 53,
+   "Valen": 4,
+   "Vandu": 50,
+   "Verc": 27,
+   "Xclusivo": 26
+  },
+  "fecha": "09/11",
+  "firma": "708e76f6f1edfb68",
+  "msg": "1569448001989251545",
+  "nombre": "__ JKWODJAKB V.1 __",
+  "num": 595,
+  "participantes": 22,
+  "sello": {
+   "Deko": ""
+  },
+  "sv": "FFA",
+  "t": "2026-11-10T01:24:29Z",
+  "tabla": [
+   [
+    "Valen",
+    "Subcampeón",
+    7500
+   ],
+   [
+    "Vandu",
+    "Semifinal",
+    5250
+   ],
+   [
+    "Verc",
+    "Semifinal",
+    5250
+   ],
+   [
+    "Colesito",
+    "Semifinal",
+    3875
+   ],
+   [
+    "Deko",
+    "Campeón",
+    2500
+   ],
+   [
+    "Calíz",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Benjixo",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Kminant",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Kravitz",
+    "Semifinal",
+    1312
+   ],
+   [
+    "Keider",
+    "Octavos",
+    1250
+   ],
+   [
+    "Xclusivo",
+    "Octavos",
+    1250
+   ],
+   [
+    "Garxzii",
+    "Octavos",
+    1250
+   ],
+   [
+    "ADEUXE🇨🇦",
+    "Octavos",
+    1250
+   ],
+   [
+    "Krish",
+    "Octavos",
+    1250
+   ],
+   [
+    "0223 🇧🇧",
+    "Octavos",
+    1250
+   ],
+   [
+    "NC",
+    "Octavos",
+    1250
+   ],
+   [
+    "Marcos",
+    "Octavos",
+    1250
+   ],
+   [
+    "Dynoco",
+    "Octavos",
+    1250
+   ],
+   [
+    "Magic",
+    "Octavos",
+    1250
+   ],
+   [
+    "Makmah",
+    "Octavos",
+    1250
+   ]
+  ],
+  "v": 2
+ },
  "596": {
   "antes": {
    "Adrianex": [
