@@ -1,15 +1,15 @@
 {
  "v": 1,
- "cuando": "2026-11-09T23:23:55Z",
+ "cuando": "2026-11-10T00:15:54Z",
  "trabajo": "dibujar",
  "codigo": 0,
- "dur_s": 890.4,
+ "dur_s": 2071.9,
  "pasos": [
   {
    "n": "2f",
    "que": "las fotos que faltan, de Discord a R2",
    "ok": true,
-   "s": 7.7
+   "s": 5.9
   },
   {
    "n": "2f2",
@@ -21,31 +21,31 @@
    "n": "3",
    "que": "qué cambió",
    "ok": true,
-   "s": 12.4
+   "s": 9.6
   },
   {
    "n": "4",
    "que": "las caras, desde R2",
    "ok": true,
-   "s": 21.9
+   "s": 20.5
   },
   {
    "n": "5",
-   "que": "tanda 1 de 2 · 40 persona(s)",
+   "que": "tanda 1 de 7 · 40 persona(s)",
    "ok": false,
-   "s": 768.9
+   "s": 1952.8
   },
   {
    "n": "5b",
    "que": "las Bloqueadas",
    "ok": true,
-   "s": 6.1
+   "s": 17.4
   },
   {
    "n": "6",
    "que": "refrescar KV",
    "ok": true,
-   "s": 71.4
+   "s": 63.2
   }
  ],
  "fallas": [
@@ -55,36 +55,52 @@
   },
   {
    "paso": "5",
-   "que": "03_Servidor/generar.py Miniboy"
+   "que": "03_Servidor/generar.py DARK ANGEL"
+  },
+  {
+   "paso": "5",
+   "que": "03_Servidor/generar.py JEIXDER"
+  },
+  {
+   "paso": "5",
+   "que": "03_Servidor/generar.py Lvel"
+  },
+  {
+   "paso": "5",
+   "que": "03_Servidor/generar.py PichulaMc"
+  },
+  {
+   "paso": "5",
+   "que": "03_Servidor/generar.py Tmax Turbo [PN]"
   }
  ],
  "ultimo_evento": {
-  "n": "597",
-  "nombre": "RED BULL COLOMBIA",
-  "sv": "LKR",
-  "dia": "2026-11-09"
+  "n": "599",
+  "nombre": "FFA DELUXE",
+  "sv": "FFA",
+  "dia": "2026-10-08"
  },
  "cuotas": {
   "kv": {
-   "write": 480,
-   "read": 55068
+   "write": 15,
+   "read": 475
   },
   "objeto": {
-   "leidas": 5126809,
-   "escritas": 18770,
-   "pedidos": 12122
+   "leidas": 2558,
+   "escritas": 1750,
+   "pedidos": 95
   },
   "worker": {
-   "pedidos": 10059,
-   "errores": 2507,
-   "sub": 12683,
-   "cortados": 2507,
+   "pedidos": 10322,
+   "errores": 3017,
+   "sub": 12915,
+   "cortados": 3017,
    "p50_ms": 1.35,
-   "p99_ms": 14.14,
+   "p99_ms": 14.27,
    "cpu": {
-    "total": 30731,
-    "objeto_10": 1791,
-    "worker_10": 277
+    "total": 32942,
+    "objeto_10": 1642,
+    "worker_10": 285
    }
   },
   "r2": {

@@ -48,13 +48,13 @@
   "t": "2026-10-07T22:42:58.996306+00:00",
   "texto": "2 corridas del ciclo se cancelaron esperando su turno de dibujar (07/10 6:42 PM ET): la anterior tardó de más. Lo que no dibujaron lo dibuja la próxima.\nhttps://github.com/underraponline-lgtm/underlegends/actions/runs/37695783015"
  },
+ "filas": {
+  "t": "2026-11-09T23:02:54.404152+00:00",
+  "texto": "El objeto lleva 5.1 millones de filas leídas hoy, de 5 millones. Si se acaban se cae entrar con Discord, lo en vivo y los avisos hasta cerca de las 09/11 7:00 PM ET. Lo que más lee: `python herramientas/uso.py`."
+ },
  "objeto": {
   "t": "2026-11-09T21:43:22.425455+00:00",
   "texto": "El objeto de la página no contesta (Expecting value: line 1 column 1 (char 0)). Sin él no funciona entrar con Discord, lo en vivo ni los avisos. Si se acabó la cuota de filas, vuelve solo cerca de las 09/11 7:00 PM ET. (09/11 4:43 PM ET)"
- },
- "objeto_personas": {
-  "t": "2026-11-09T21:00:53.812888+00:00",
-  "texto": "Los datos de cada persona no se subieron al objeto: /card muestra los de la corrida anterior hasta que la próxima lo logre. El motivo, en el log del ciclo (subir_datos)."
  },
  "recordado:a7": {
   "t": "2026-09-26T03:54:52.348453+00:00",
