@@ -1,5 +1,5 @@
 {
- "cuando": "2026-11-10T23:56:06+00:00",
+ "cuando": "2026-11-11T00:25:26+00:00",
  "anuncios": [
   {
    "nombre": "¡SE LLEGÓ LA GRAN NOCHE!",
@@ -6840,6 +6840,24 @@
   }
  ],
  "inscripciones": [
+  {
+   "servidor": "FDS",
+   "canal": "✅╏inscripciones-express",
+   "texto": "Lrs🇦🇷",
+   "quien": "lrs0378",
+   "discord_id": "1385452830684614697",
+   "msg_id": "1569867237202862211",
+   "cuando": "2026-11-11T00:11:56"
+  },
+  {
+   "servidor": "FDS",
+   "canal": "✅╏inscripciones-express",
+   "texto": "Soul B 🇨🇱 sup",
+   "quien": "sj.2008_",
+   "discord_id": "645308964141137952",
+   "msg_id": "1569864957443579916",
+   "cuando": "2026-11-11T00:02:52"
+  },
   {
    "servidor": "FDS",
    "canal": "✅╏inscripciones-express",
@@ -42821,24 +42839,6 @@
    "discord_id": "1177916322122833933",
    "msg_id": "1557793678880411793",
    "cuando": "2026-10-08T16:35:55"
-  },
-  {
-   "servidor": "DDF",
-   "canal": "『📑』Inscripciones",
-   "texto": "Teito 🇨🇴",
-   "quien": "teitomc.",
-   "discord_id": "1503540314948898937",
-   "msg_id": "1557793671309430836",
-   "cuando": "2026-10-08T16:35:53"
-  },
-  {
-   "servidor": "DDF",
-   "canal": "『📑』Inscripciones",
-   "texto": "Isax 🇬🇪",
-   "quien": "isac_16__45369",
-   "discord_id": "1409587624364081272",
-   "msg_id": "1557793671380861044",
-   "cuando": "2026-10-08T16:35:53"
   }
  ]
 }

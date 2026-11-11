@@ -1178,6 +1178,94 @@
    "b": "MONET",
    "ganador": "VILCA",
    "votos": "1–0"
+  },
+  "1569865044865323059": {
+   "id": "1569865044865323059",
+   "sv": "🔥LKR (Champios Legue)🐉",
+   "g": "1558611504046153750",
+   "canal": "1560645560015519834",
+   "pub": 1794355393378,
+   "a": "MC DL 🇲🇽",
+   "b": "MARTINEZ",
+   "ganador": "MARTINEZ",
+   "votos": "3–0"
+  },
+  "1569865078780461188": {
+   "id": "1569865078780461188",
+   "sv": "#FDS ╏FREESTYLE DISCORD SERIES",
+   "g": "1489848581203689535",
+   "canal": "1536574435761332334",
+   "pub": 1794355401464,
+   "a": "CALIZ",
+   "b": "MCAREPA",
+   "ganador": "MCAREPA",
+   "votos": "1–0"
+  },
+  "1569866093579731118": {
+   "id": "1569866093579731118",
+   "sv": "#FDS ╏FREESTYLE DISCORD SERIES",
+   "g": "1489848581203689535",
+   "canal": "1536574435761332334",
+   "pub": 1794355643411,
+   "a": "NC",
+   "b": "RAIZER",
+   "ganador": "RAIZER",
+   "votos": "1–0"
+  },
+  "1569866443829280811": {
+   "id": "1569866443829280811",
+   "sv": "#LaCrew ||🎤ACADEMIA DE RAP 🎤",
+   "g": "765045834647339038",
+   "canal": "1309238412976590908",
+   "pub": 1794355726917,
+   "a": "LEONAR-T 🇲🇽",
+   "b": "NOA 🇲🇽",
+   "ganador": "LEONAR-T 🇲🇽",
+   "votos": "1–0"
+  },
+  "1569866876828254339": {
+   "id": "1569866876828254339",
+   "sv": "🔥LKR (Champios Legue)🐉",
+   "g": "1558611504046153750",
+   "canal": "1560645560015519834",
+   "pub": 1794355830152,
+   "a": "MINIBOY🇨🇱",
+   "b": "MONET🇲🇽",
+   "ganador": "MINIBOY🇨🇱",
+   "votos": "1–0"
+  },
+  "1569867585250525286": {
+   "id": "1569867585250525286",
+   "sv": "#LaCrew ||🎤ACADEMIA DE RAP 🎤",
+   "g": "765045834647339038",
+   "canal": "1309238412976590908",
+   "pub": 1794355999053,
+   "a": "LEONAR-T 🇲🇽",
+   "b": "MONET 🇲🇽",
+   "ganador": "LEONAR-T 🇲🇽",
+   "votos": "1–0"
+  },
+  "1569868154916577321": {
+   "id": "1569868154916577321",
+   "sv": "#FDS ╏FREESTYLE DISCORD SERIES",
+   "g": "1489848581203689535",
+   "canal": "1536574435761332334",
+   "pub": 1794356134872,
+   "a": "DIOS",
+   "b": "LRS",
+   "ganador": "DIOS",
+   "votos": "1–0"
+  },
+  "1569869732746764410": {
+   "id": "1569869732746764410",
+   "sv": "🔥LKR (Champios Legue)🐉",
+   "g": "1558611504046153750",
+   "canal": "1560645560015519834",
+   "pub": 1794356511056,
+   "a": "CÁLIZ🇲🇽",
+   "b": "MINIBOY🇨🇱",
+   "ganador": "MINIBOY🇨🇱",
+   "votos": "1–0"
   }
  },
  "llaves": {
@@ -6035,6 +6123,128 @@
      [
       "ERIAN 🇨🇳",
       "MATHIAS 🇻🇪  #"
+     ],
+     null,
+     "última ronda y no dice campeón",
+     []
+    ]
+   ]
+  },
+  "1569862472523980801": {
+   "id": "1569862472523980801",
+   "sv": "#FDS ╏FREESTYLE DISCORD SERIES",
+   "g": "1489848581203689535",
+   "canal": "1500675902042931280",
+   "pub": 1794354780084,
+   "ed": 1794356187076,
+   "texto": "`[ OCTAVOS ]`\n⌞Scot 🇦🇷⌝ 🆚 ⌞Raizer🇵🇪⌝\n⌞Dios 🇲🇽⌝ 🆚 ⌞Lrs🇦🇷⌝\n⌞Trelok 🇨🇴⌝ 🆚 ⌞Cinexfilo 🇻🇪⌝\n⌞Leyenda.X5 🇦🇷⌝ 🆚 ⌞Artezzy 🇵🇪⌝\n⌞Krish 🇪🇸⌝ 🆚 ⌞Nxuz🇵🇪⌝\n⌞CrisZJ 🇵🇪⌝ 🆚 ⌞Mat MC 🇧🇴⌝",
+   "batallas": [
+    [
+     "OCTAVOS",
+     [
+      "Scot 🇦🇷",
+      "Raizer🇵🇪"
+     ],
+     null,
+     "última ronda y no dice campeón",
+     []
+    ],
+    [
+     "OCTAVOS",
+     [
+      "Dios 🇲🇽",
+      "Lrs🇦🇷"
+     ],
+     null,
+     "última ronda y no dice campeón",
+     []
+    ],
+    [
+     "OCTAVOS",
+     [
+      "Trelok 🇨🇴",
+      "Cinexfilo 🇻🇪"
+     ],
+     null,
+     "última ronda y no dice campeón",
+     []
+    ],
+    [
+     "OCTAVOS",
+     [
+      "Leyenda.X5 🇦🇷",
+      "Artezzy 🇵🇪"
+     ],
+     null,
+     "última ronda y no dice campeón",
+     []
+    ],
+    [
+     "OCTAVOS",
+     [
+      "Krish 🇪🇸",
+      "Nxuz🇵🇪"
+     ],
+     null,
+     "última ronda y no dice campeón",
+     []
+    ],
+    [
+     "OCTAVOS",
+     [
+      "CrisZJ 🇵🇪",
+      "Mat MC 🇧🇴"
+     ],
+     null,
+     "última ronda y no dice campeón",
+     []
+    ]
+   ]
+  },
+  "1569865021301858345": {
+   "id": "1569865021301858345",
+   "sv": "#FDS ╏FREESTYLE DISCORD SERIES",
+   "g": "1489848581203689535",
+   "canal": "1536574435761332334",
+   "pub": 1794355387760,
+   "ed": 1794356635808,
+   "texto": "`[ OCTAVOS ]`\n⌞CALIZ⌝ 🆚 ⌞MCAREPA⌝\n⌞NC⌝ 🆚 ⌞RAIZER⌝\n⌞DIOS⌝ 🆚 ⌞LRS⌝\n⌞CRK⌝ 🆚 ⌞SOUL B⌝",
+   "batallas": [
+    [
+     "OCTAVOS",
+     [
+      "CALIZ",
+      "MCAREPA"
+     ],
+     "MCAREPA",
+     "veredicto",
+     []
+    ],
+    [
+     "OCTAVOS",
+     [
+      "NC",
+      "RAIZER"
+     ],
+     "RAIZER",
+     "veredicto",
+     []
+    ],
+    [
+     "OCTAVOS",
+     [
+      "DIOS",
+      "LRS"
+     ],
+     "DIOS",
+     "veredicto",
+     []
+    ],
+    [
+     "OCTAVOS",
+     [
+      "CRK",
+      "SOUL B"
      ],
      null,
      "última ronda y no dice campeón",
