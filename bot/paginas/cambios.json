@@ -11,6 +11,15 @@
  ],
  "cambios": [
   {
+   "version": "4.43",
+   "dia": "2026-11-11",
+   "cuando": "2026-11-11T18:30:00-05:00",
+   "titulo": "Cypherhood se lee CYH",
+   "items": [
+    "**Cypherhood** ahora se lee **CYH** en la página y en el bot."
+   ]
+  },
+  {
    "version": "4.42",
    "dia": "2026-11-10",
    "cuando": "2026-11-10T02:50:53-05:00",
