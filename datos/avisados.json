@@ -6508,7 +6508,7 @@
    "Trot": 13
   },
   "fecha": "11/10",
-  "firma": "45b48326e5a85440",
+  "firma": "f64181088a3c5ac4",
   "msg": "1558907910707224587",
   "nombre": "RED BULL NACIONAL ESPAÑA T.5",
   "num": 448,
@@ -9436,7 +9436,7 @@
    "Zignos": 19
   },
   "fecha": "12/10",
-  "firma": "3db651ddc5423f33",
+  "firma": "09d917255d7b9e79",
   "msg": "1559587802864295988",
   "nombre": "GODZ",
   "num": 460,
@@ -12529,7 +12529,7 @@
    "Vargas": 1
   },
   "fecha": "14/10",
-  "firma": "24761b806e61a988",
+  "firma": "ac05a910f3f75499",
   "msg": "1560070688113688601",
   "nombre": "FF Freestyle Clasico",
   "num": 473,
@@ -22434,7 +22434,7 @@
    "Zekha": 4
   },
   "fecha": "25/10",
-  "firma": "0db1ce65dc5ae4bc",
+  "firma": "c7e899248c06acdc",
   "msg": "1564056930748469309",
   "nombre": "REDBULL CREW ARGENTINA 2026",
   "num": 515,
@@ -24022,7 +24022,7 @@
    "Vandu": 35
   },
   "fecha": "20/10",
-  "firma": "5d5689252d53b892",
+  "firma": "718348775cb30f94",
   "msg": "1564147704035151906",
   "nombre": "RAP SIN GROSERIAS 2",
   "num": 522,
@@ -24168,7 +24168,7 @@
    "Vilca": 1
   },
   "fecha": "21/10",
-  "firma": "a74dea7e2f9bcbbe",
+  "firma": "a4837a71234051b8",
   "msg": "1564147707952758815",
   "nombre": "- RED BULL TORNEO DE PLAZAS 2026 -",
   "num": 523,
@@ -30269,7 +30269,7 @@
    "mats": 5
   },
   "fecha": "26/10",
-  "firma": "8aeb3553ddc25057",
+  "firma": "f06e32c713f907d9",
   "msg": "1565899302046277764",
   "nombre": "RAP SIN GROSERIAS 1",
   "num": 548,
@@ -31484,7 +31484,7 @@
    "Velatz": 41
   },
   "fecha": "31/10",
-  "firma": "fb4c2a9fd9673dcc",
+  "firma": "9f3ad263fff822bf",
   "msg": "1566227272355020941",
   "nombre": "SNAKE INSIGNIA 7 8",
   "num": 553,
@@ -32629,7 +32629,7 @@
    "Zignos": 27
   },
   "fecha": "01/11",
-  "firma": "4afa867eab870e4a",
+  "firma": "87e7223e627def11",
   "msg": "1566645439611011152",
   "nombre": "__ COCINE FIDEOS __",
   "num": 558,
@@ -33046,7 +33046,7 @@
    "mats": 7
   },
   "fecha": "02/11",
-  "firma": "ee75e0dde82eb071",
+  "firma": "f98a1c63ec632b48",
   "msg": "1566714400314884126",
   "nombre": "RAP PARA RAPEROS",
   "num": 560,
@@ -36399,7 +36399,7 @@
    "ikonoxx": 8
   },
   "fecha": "06/11",
-  "firma": "7e4201c9531c39bb",
+  "firma": "4cfff8663f8a7920",
   "msg": "1568364084817297492",
   "nombre": "GALACTICOS DEL FREESTYLE VOL.17",
   "num": 575,
@@ -36625,7 +36625,7 @@
    "Yor": 4
   },
   "fecha": "06/11",
-  "firma": "e61b200f742e4ffd",
+  "firma": "8625636bc09cd58c",
   "msg": "1568457450267484231",
   "nombre": "FAT BATTLES PALOOZA FECHA 10 FINALS",
   "num": 576,
@@ -37532,7 +37532,7 @@
    "oriuz": 7
   },
   "fecha": "23/10",
-  "firma": "15ed2cec7abba25d",
+  "firma": "4265c1adb1a3f812",
   "msg": "1569508003776823307",
   "nombre": "LLAVES PARA LA DISCORD STYLE 17",
   "num": 580,
@@ -38497,7 +38497,7 @@
    "oriuz": 7
   },
   "fecha": "03/11",
-  "firma": "f95ab67eaf7a6950",
+  "firma": "62eafd469dede03c",
   "msg": "1569508038820237324",
   "nombre": "SIX SEVEN STYLE",
   "num": 585,
@@ -39754,7 +39754,7 @@
    "Vilca": 15
   },
   "fecha": "08/11",
-  "firma": "c7979531eb9dbee0",
+  "firma": "4398235f727bc1a2",
   "msg": "1569508065508593856",
   "nombre": "RAP SIN GROSERIAS 4",
   "num": 591,
@@ -40397,7 +40397,7 @@
    "black live": 1
   },
   "fecha": "09/11",
-  "firma": "4b17d00394f68879",
+  "firma": "88b32f6a4ee1fc7d",
   "msg": "1569508072605618221",
   "nombre": "COMPE MAÑANERA",
   "num": 594,
@@ -41885,6 +41885,11 @@
     "Dios",
     "Vilca",
     "Dios"
+   ],
+   [
+    "Monet",
+    "CrisZJ",
+    "Monet"
    ]
   ],
   "ev_antes": {
@@ -41899,7 +41904,7 @@
    "Vilca": 16
   },
   "fecha": "10/11",
-  "firma": "10bc6a3a465129b0",
+  "firma": "8fc3757aa0bdac74",
   "msg": "1569848635271680124",
   "nombre": "MF DOOM Y MADLIB EDICION 1",
   "num": 604,
@@ -41916,14 +41921,14 @@
     7500
    ],
    [
+    "CrisZJ",
+    "Semifinal",
+    7000
+   ],
+   [
     "Vilca",
     "Subcampeón",
     5000
-   ],
-   [
-    "CrisZJ",
-    "Semifinal",
-    3500
    ],
    [
     "Monet",
@@ -42043,7 +42048,7 @@
    "tormen": 3
   },
   "fecha": "11/11",
-  "firma": "a2cd8cea8e1dd19e",
+  "firma": "181b39e7631fdd1a",
   "msg": "1569945900820988016",
   "nombre": "EL ULTIMO DIA DE DDF",
   "num": 605,

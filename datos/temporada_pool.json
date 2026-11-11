@@ -8692,7 +8692,10 @@
   "o": 237,
   "pos": 144,
   "total": 251,
-  "rango": "E"
+  "rango": "E",
+  "tg_t": {
+   "cab": 1
+  }
  },
  {
   "full": "Denik",
