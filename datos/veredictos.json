@@ -1354,6 +1354,39 @@
    "b": "JONY B",
    "ganador": "JONY B",
    "votos": "1–0"
+  },
+  "1569885399851991093": {
+   "id": "1569885399851991093",
+   "sv": "#FDS ╏FREESTYLE DISCORD SERIES",
+   "g": "1489848581203689535",
+   "canal": "1536574435761332334",
+   "pub": 1794360246385,
+   "a": "NXUZ",
+   "b": "DIOS",
+   "ganador": "DIOS",
+   "votos": "1–0"
+  },
+  "1569887132368244887": {
+   "id": "1569887132368244887",
+   "sv": "#FDS ╏FREESTYLE DISCORD SERIES",
+   "g": "1489848581203689535",
+   "canal": "1536574435761332334",
+   "pub": 1794360659449,
+   "a": "ARTEZZY",
+   "b": "OKAM",
+   "ganador": "ARTEZZY",
+   "votos": "1–0"
+  },
+  "1569891956551589899": {
+   "id": "1569891956551589899",
+   "sv": "🔥LKR (Champios Legue)🐉",
+   "g": "1558611504046153750",
+   "canal": "1560448027490001067",
+   "pub": 1794361809624,
+   "a": "KODIGO 🇦🇷",
+   "b": "LOKILLO",
+   "ganador": "LOKILLO",
+   "votos": "1–0"
   }
  },
  "llaves": {
@@ -6224,7 +6257,7 @@
    "g": "1489848581203689535",
    "canal": "1500675902042931280",
    "pub": 1794354780084,
-   "ed": 1794360081232,
+   "ed": 1794361124293,
    "texto": "`[ OCTAVOS ]`\n⌞Scot 🇦🇷⌝ 🆚 ⌞Raizer🇵🇪⌝\n⌞Dios 🇲🇽⌝ 🆚 ⌞Lrs🇦🇷⌝\n⌞CRK 🇲🇽⌝ 🆚 ⌞Soul B 🇨🇱⌝\n⌞Leyenda.X5 🇦🇷⌝ 🆚 ⌞Artezzy 🇵🇪⌝\n⌞Scot 🇦🇷⌝ 🆚 ⌞Nxuz🇵🇪⌝\n⌞CrisZJ 🇵🇪⌝ 🆚 ⌞Mat MC 🇧🇴⌝",
    "batallas": [
     [
@@ -6295,8 +6328,8 @@
    "g": "1489848581203689535",
    "canal": "1536574435761332334",
    "pub": 1794355387760,
-   "ed": 1794360246385,
-   "texto": "`[ OCTAVOS ]`\n⌞CALIZ⌝ 🆚 ⌞MCAREPA⌝\n⌞NC⌝ 🆚 ⌞RAIZER⌝\n⌞DIOS⌝ 🆚 ⌞LRS⌝\n⌞CRK⌝ 🆚 ⌞SOUL B⌝\n⌞ARTESI⌝ 🆚 ⌞MITO.X10⌝\n⌞NXUZ⌝ 🆚 ⌞SCOT⌝\n⌞CRISZJ⌝ 🆚 ⌞MATO MC⌝\n`[ CUARTOS ]`\n⌞RAIZER⌝ 🆚 ⌞DIOS⌝\n⌞MCAREPA⌝ 🆚 ⌞OKAM⌝\n`[ SEMIFINALES ]`\n⌞NXUZ⌝ 🆚 ⌞DIOS⌝",
+   "ed": 1794361047141,
+   "texto": "`[ OCTAVOS ]`\n⌞CALIZ⌝ 🆚 ⌞MCAREPA⌝\n⌞NC⌝ 🆚 ⌞RAIZER⌝\n⌞DIOS⌝ 🆚 ⌞LRS⌝\n⌞CRK⌝ 🆚 ⌞SOUL B⌝\n⌞ARTESI⌝ 🆚 ⌞MITO.X10⌝\n⌞NXUZ⌝ 🆚 ⌞SCOT⌝\n⌞CRISZJ⌝ 🆚 ⌞MATO MC⌝\n`[ CUARTOS ]`\n⌞RAIZER⌝ 🆚 ⌞DIOS⌝\n⌞MCAREPA⌝ 🆚 ⌞OKAM⌝\n`[ SEMIFINALES ]`\n⌞NXUZ⌝ 🆚 ⌞DIOS⌝\n⌞ARTEZZY⌝ 🆚 ⌞OKAM⌝",
    "batallas": [
     [
      "OCTAVOS",
@@ -6394,8 +6427,18 @@
       "NXUZ",
       "DIOS"
      ],
-     null,
-     "última ronda y no dice campeón",
+     "DIOS",
+     "veredicto",
+     []
+    ],
+    [
+     "SEMIFINALES",
+     [
+      "ARTEZZY",
+      "OKAM"
+     ],
+     "ARTEZZY",
+     "veredicto",
      []
     ]
    ]

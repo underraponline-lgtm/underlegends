@@ -1,5 +1,5 @@
 {
- "cuando": "2026-11-11T01:26:00+00:00",
+ "cuando": "2026-11-11T01:55:43+00:00",
  "anuncios": [
   {
    "nombre": "¡SE LLEGÓ LA GRAN NOCHE!",
@@ -4420,10 +4420,10 @@
    "cuando": "2026-03-15T01:46:34",
    "canal_id": "1416914076545581179",
    "guild_id": "1367688812892913774",
-   "organizador": "@Bootrax Humilde",
+   "organizador": "@Bootrax",
    "orgs": [
     {
-     "n": "Bootrax Humilde",
+     "n": "Bootrax",
      "id": "1122273746099638354"
     }
    ],
@@ -4437,7 +4437,7 @@
    "fecha": "ahora",
    "premios": "",
    "staff": {},
-   "autor": "Bootrax Humilde",
+   "autor": "Bootrax",
    "staff_cuentas": {},
    "categoria_id": "1373343272482902127"
   },
@@ -4515,15 +4515,15 @@
    "premios": "",
    "staff": {
     "host": [
-     "Bootrax Humilde"
+     "Bootrax"
     ],
     "dj": [
-     "Bootrax Humilde"
+     "Bootrax"
     ]
    },
-   "autor": "Bootrax Humilde",
+   "autor": "Bootrax",
    "staff_cuentas": {
-    "Bootrax Humilde": "1122273746099638354"
+    "Bootrax": "1122273746099638354"
    },
    "categoria_id": "1373343272482902127"
   },
@@ -4834,13 +4834,13 @@
      "Adriagner"
     ],
     "dj": [
-     "Bootrax Humilde"
+     "Bootrax"
     ]
    },
    "autor": "Adriagner",
    "staff_cuentas": {
     "Adriagner": "1316490165836972104",
-    "Bootrax Humilde": "1122273746099638354"
+    "Bootrax": "1122273746099638354"
    },
    "categoria_id": "1469944166137073857",
    "inscripciones": "abiertas",
@@ -5044,7 +5044,7 @@
    "cuando": "2026-10-26T22:00:03",
    "canal_id": "1470097121284980736",
    "guild_id": "1469009547971526659",
-   "organizador": "Lizeninn",
+   "organizador": "MP EL JUVENIL",
    "orgs": [],
    "autor_h": "62528949becb0707",
    "cupos_texto": "8",
@@ -5056,7 +5056,7 @@
    "fecha": "",
    "premios": "",
    "staff": {},
-   "autor": "Lizeninn",
+   "autor": "MP EL JUVENIL",
    "staff_cuentas": {},
    "categoria_id": "1469944166137073857",
    "inscripciones": "abiertas",
@@ -5070,7 +5070,7 @@
    "cuando": "2026-10-25T04:05:19",
    "canal_id": "1470097121284980736",
    "guild_id": "1469009547971526659",
-   "organizador": "Lizeninn",
+   "organizador": "MP EL JUVENIL",
    "orgs": [],
    "autor_h": "62528949becb0707",
    "cupos_texto": "8",
@@ -5082,7 +5082,7 @@
    "fecha": "",
    "premios": "",
    "staff": {},
-   "autor": "Lizeninn",
+   "autor": "MP EL JUVENIL",
    "staff_cuentas": {},
    "categoria_id": "1469944166137073857",
    "inscripciones": "abiertas",
@@ -6840,6 +6840,78 @@
   }
  ],
  "inscripciones": [
+  {
+   "servidor": "LKR",
+   "canal": "⟡・INSCRIPCIONES",
+   "texto": "Larrix 🇦🇷",
+   "quien": "danix9827",
+   "discord_id": "1498441174728577025",
+   "msg_id": "1569892121438330961",
+   "cuando": "2026-11-11T01:50:48"
+  },
+  {
+   "servidor": "LKR",
+   "canal": "⟡・INSCRIPCIONES",
+   "texto": "Mp el juvenil🇦🇷",
+   "quien": "lizeninn.",
+   "discord_id": "1493416945037611140",
+   "msg_id": "1569890448007233718",
+   "cuando": "2026-11-11T01:44:09"
+  },
+  {
+   "servidor": "LKR",
+   "canal": "⟡・INSCRIPCIONES",
+   "texto": "Larrix 🇦🇷",
+   "quien": "danix9827",
+   "discord_id": "1498441174728577025",
+   "msg_id": "1569890202867077121",
+   "cuando": "2026-11-11T01:43:11"
+  },
+  {
+   "servidor": "LKR",
+   "canal": "⟡・INSCRIPCIONES",
+   "texto": "Abel 🇦🇷",
+   "quien": "sj.2008_",
+   "discord_id": "645308964141137952",
+   "msg_id": "1569887556580020327",
+   "cuando": "2026-11-11T01:32:40"
+  },
+  {
+   "servidor": "LKR",
+   "canal": "⟡・INSCRIPCIONES",
+   "texto": "Exe 🇦🇷 (Aguantenme 30m)",
+   "quien": "caliz123_",
+   "discord_id": "1546111597343146044",
+   "msg_id": "1569887387377733713",
+   "cuando": "2026-11-11T01:32:00"
+  },
+  {
+   "servidor": "LKR",
+   "canal": "⟡・INSCRIPCIONES",
+   "texto": "Kodigo doble tempo flow super koko big aura 🇦🇷",
+   "quien": "numbyng",
+   "discord_id": "1310075576991875144",
+   "msg_id": "1569887359359655957",
+   "cuando": "2026-11-11T01:31:53"
+  },
+  {
+   "servidor": "LKR",
+   "canal": "⟡・INSCRIPCIONES",
+   "texto": "LOKILLO🇨🇴",
+   "quien": "tenacious_dragon_23394",
+   "discord_id": "1548906948307451906",
+   "msg_id": "1569887268942913612",
+   "cuando": "2026-11-11T01:31:32"
+  },
+  {
+   "servidor": "LKR",
+   "canal": "⟡・INSCRIPCIONES",
+   "texto": "Mecha🇦🇷",
+   "quien": "last5724",
+   "discord_id": "483070865081237505",
+   "msg_id": "1569887207248891966",
+   "cuando": "2026-11-11T01:31:17"
+  },
   {
    "servidor": "LKR",
    "canal": "⟡・INSCRIPCIONES",
@@ -42767,78 +42839,6 @@
    "discord_id": "754749179410251847",
    "msg_id": "1557838004968755342",
    "cuando": "2026-10-08T19:32:03"
-  },
-  {
-   "servidor": "FFA",
-   "canal": "✦📝—inscripciones",
-   "texto": "Teo 🇨🇴",
-   "quien": "teitomc.",
-   "discord_id": "1503540314948898937",
-   "msg_id": "1557837990938673304",
-   "cuando": "2026-10-08T19:32:00"
-  },
-  {
-   "servidor": "FFA",
-   "canal": "✦📝—inscripciones",
-   "texto": "Agustín la reliquia 🇺🇾",
-   "quien": "fabrythenoob7n76687",
-   "discord_id": "595648807920861205",
-   "msg_id": "1557837958634274957",
-   "cuando": "2026-10-08T19:31:52"
-  },
-  {
-   "servidor": "FFA",
-   "canal": "✦📝—inscripciones",
-   "texto": "Dominick🇵🇪",
-   "quien": "equisde_xd23",
-   "discord_id": "1439048698142134436",
-   "msg_id": "1557837941836095589",
-   "cuando": "2026-10-08T19:31:48"
-  },
-  {
-   "servidor": "FFA",
-   "canal": "✦📝—inscripciones",
-   "texto": "Geoka 🇦🇷",
-   "quien": "goksito_8",
-   "discord_id": "1325042155819106324",
-   "msg_id": "1557837943417217055",
-   "cuando": "2026-10-08T19:31:48"
-  },
-  {
-   "servidor": "FFA",
-   "canal": "✦📝—inscripciones",
-   "texto": "MELGAR🇲🇽",
-   "quien": "ventu._.x",
-   "discord_id": "913850096062439456",
-   "msg_id": "1557837916670140517",
-   "cuando": "2026-10-08T19:31:42"
-  },
-  {
-   "servidor": "FFA",
-   "canal": "✦📝—inscripciones",
-   "texto": "HH 🇲🇽",
-   "quien": "hhhomes",
-   "discord_id": "771817602657288192",
-   "msg_id": "1557837917995667578",
-   "cuando": "2026-10-08T19:31:42"
-  },
-  {
-   "servidor": "FFA",
-   "canal": "✦📝—inscripciones",
-   "texto": "Chop🇭🇳",
-   "quien": "30fps30hz",
-   "discord_id": "1364747464170668042",
-   "msg_id": "1557837908814331957",
-   "cuando": "2026-10-08T19:31:40"
-  },
-  {
-   "servidor": "DDS",
-   "canal": "╰➤-inscripciones-🏆",
-   "texto": "Matito 🇧🇴",
-   "quien": "4456540222",
-   "discord_id": "1555731451180482560",
-   "msg_id": "1557834944535855165",
-   "cuando": "2026-10-08T19:19:53"
   }
  ]
 }
