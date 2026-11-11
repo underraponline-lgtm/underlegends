@@ -4746,14 +4746,19 @@ export default {
             info = await r.json();
           } catch (e) { info = null; }
         }
-        if (!info || !info.abierta || info.propia || info.saldo <= 0 || info.queda <= 0) return aviso(await votoChat(env, did, quien, extra));
+        // 🎲 SIEMPRE SE ABRE, EN 0 (Dlx, 11/11/2026: «cada vez que presiones por quién va a ganar, automáticamente se abra eso de
+        // apostar, por default 0, y que se pueda cambiar… para introducir ese sistema»). Sin Puntos o ya en el tope también: así
+        // todos ven que se puede apostar. Sólo vota directo si la apuesta cerró, si es su propia batalla o si no tiene cuenta
+        if (!info || !info.abierta || info.propia) return aviso(await votoChat(env, did, quien, extra));
         const mil = (v) => String(Math.round(v || 0)).replace(/\B(?=(\d{3})+(?!\d))/g, '.');
         const nom = String(extra === 'A' ? info.a : info.b);
         // ⚠️ el título y la etiqueta de un modal van hasta 45 caracteres
         return new Response(JSON.stringify({ type: 9, data: { custom_id: 'vm:' + quien + ':' + extra + ':' + dueno,
           title: ('Votas por ' + (nom.length > 12 ? nom.slice(0, 11) + '…' : nom) + ' · Tienes ' + mil(info.saldo) + ' Puntos').slice(0, 45),
           components: [{ type: 1, components: [{ type: 4, custom_id: 'monto', style: 1, required: true, min_length: 1, max_length: 6, value: '0',
-            label: (info.ya ? 'Ya pusiste ' + mil(info.ya) + '. ¿Cuánto más? Máx. ' + mil(info.queda) : '¿Cuánto apuestas? Máx. ' + mil(info.queda) + ' · 0 = nada').slice(0, 45) }] }] } }),
+            label: (info.saldo <= 0 ? 'Todavía no tienes Puntos: deja 0 y votas'
+              : info.queda <= 0 ? 'Ya pusiste el máximo: deja 0 y votas'
+                : info.ya ? 'Ya pusiste ' + mil(info.ya) + '. ¿Cuánto más? Máx. ' + mil(info.queda) : '¿Cuánto apuestas? Máx. ' + mil(Math.min(info.queda, info.saldo)) + ' · 0 = nada').slice(0, 45) }] }] } }),
         { headers: { 'content-type': 'application/json' } });
       }
 

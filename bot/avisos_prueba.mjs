@@ -1758,10 +1758,10 @@ const ok = (cond, que, det) => {
       && pago.b.components.flatMap((f) => f.components).some((x) => x.url === A.HUB_TARJETAS) && !pago.b.components.flatMap((f) => f.components).some((x) => /^(ve|qg|ap):/.test(x.custom_id || ''))
       && o.saldo(U1, 0, 5000) === 5250 && o.saldo(U2, 0, 5000) === 4750 && sql.exec('SELECT estado FROM apuestas WHERE id = ?', ap.id).toArray()[0].estado === 'pagada',
     'gana Ana: U1 se lleva el pozo entero (350, puso 100), U2 pierde sus 250, y el mensaje lo dice', JSON.stringify({ ped: pedidos.map((x) => [x.m, String((x.b && x.b.content) || '').slice(0, 90)]), est: sql.exec('SELECT estado, ganador, ronda, a, b FROM apuestas').toArray(), s1: o.saldo(U1, 0, 5000), s2: o.saldo(U2, 0, 5000) }));
-    // 🏁 la imagen del resultado (02/11/2026): el «✅ Pasa Ana» del cruce deja su vs con quién ganó y el cara a cara sumado
-    const vsR = sql.exec('SELECT datos FROM vs_cola ORDER BY t DESC LIMIT 1').toArray().map((x) => JSON.parse(x.datos))[0];
-    ok(vsR && vsR.gano === 'a' && Array.isArray(vsR.h2h) && vsR.h2h[0] === 2 && /^[0-9a-f]{12}$/.test(vsR.fid || ''),
-      'cuando el chat dice «✅ Pasa Ana», el vs de ese cruce se dibuja con quién ganó y el cara a cara ya sumado', JSON.stringify(vsR));
+    // 🏁 la imagen del resultado ya no se dibuja (Dlx, 11/11/2026: «si gasta mucho, sólo quítalo, es innecesario»): era la mitad
+    // de los dibujos del VS. El «✅ Pasa Ana» sigue en el texto; el vs queda como salió
+    ok(!sql.exec('SELECT datos FROM vs_cola').toArray().some((x) => JSON.parse(x.datos).gano),
+      'cuando el chat dice «✅ Pasa Ana», no se dibuja otra imagen del vs');
     // 🏳️ dos que se llaman igual: decide la bandera, y sin bandera no se adivina (antes ganaba el último de la tabla)
     kv.set('web:lobby', JSON.stringify({ tabla: [{ n: 'Ana', k: 'ana', ovr: 88, cc: 'ar' }, { n: 'Volk', k: 'volk', cc: 'mx' },
       { n: 'Volk', k: 'volk-co', cc: 'co' }] }));
@@ -1795,20 +1795,8 @@ const ok = (cond, que, det) => {
     sql.exec("DELETE FROM persona WHERE k IN ('p:uno', 'p:dos', 'p:tres')");
     kv.delete('web:perfiles');
     o.cruceMem = null;
-    // 🧩 el resultado con equipos: `gano` es la lista de lados, crece de a uno y sólo se redibuja si cambió
-    sql.exec('INSERT INTO vs_cola (id, sv, canal, msg, datos, t) VALUES (?, ?, ?, ?, ?, ?)', 'grupos1', 'FFA', 'CG', 'MG',
-      JSON.stringify({ grupos: [[{ n: 'Ana', k: 'ana' }, { n: 'Bea', k: 'bea' }], [{ n: 'Caro', k: 'caro' }], [{ n: 'Sin Clave' }]] }), T);
-    const gr = () => JSON.parse(sql.exec("SELECT datos FROM vs_cola WHERE msg = 'MG' ORDER BY t DESC LIMIT 1").toArray()[0].datos).gano;
-    const g1 = o.vsResultado('CG', 'MG', ['bea'], T + 1);
-    const gE = JSON.stringify(gr());
-    const g2 = o.vsResultado('CG', 'MG', ['bea'], T + 2);
-    const g3 = o.vsResultado('CG', 'MG', [A.claveTurno('Sin Clave')], T + 3);
-    const gE2 = JSON.stringify(gr());
-    sql.exec("UPDATE vs_cola SET estado = 'hecho' WHERE msg = 'MG'");
-    const g4 = o.vsResultado('CG', 'MG', ['caro'], T + 4);
-    const gE3 = JSON.stringify(gr());
-    ok(g1 === 'misma' && gE === '[0]' && g2 === '' && g3 === 'misma' && gE2 === '[0,2]' && g4 === 'nueva' && gE3 === '[0,1,2]',
-      'con grupos el resultado marca el lado de quien pasó, suma de a uno, no redibuja si no cambió y, ya dibujada, encola otra', JSON.stringify([g1, gE, g2, g3, gE2, g4, gE3]));
+    // 🏁 la imagen del resultado ya no se dibuja (11/11/2026): Dlx, «si gasta mucho, sólo quítalo, es innecesario»
+    ok(typeof o.vsResultado === 'undefined', 'la imagen del resultado ya no existe');
     sql.exec("DELETE FROM vs_cola WHERE msg = 'MG'");
     // 📝 la fase de inscripciones: desde tres anotados de verdad, UN mensaje, que se edita cuando se suman más
     sql.exec('DELETE FROM vivo');
@@ -2347,8 +2335,9 @@ const ok = (cond, que, det) => {
   'cada título nuevo sale sólo con su dato');
   const bp = A.botonesPerfil({ n: 'Ana 🇦🇷', k: 'ana' }, { n: 'Sin perfil', k: '' });
   const fv = A.filasVs({ fid: 'abcdef012345', a: { n: 'A', k: 'a', carta: 'x' }, b: { n: 'B', k: 'b', carta: 'y' } });
-  ok(bp.length === 1 && /r\/ana$/.test(bp[0].url) && bp[0].label.replace(/\u2800/g, '') === 'Ana' && fv.length === 2 && fv[0].components.length === 1
-    && fv[1].components.length === 1 && fv[1].components[0].custom_id === 'vp:abcdef012345' && [...fv[1].components[0].label].length === 24
+  ok(bp.length === 1 && /r\/ana$/.test(bp[0].url) && bp[0].label === 'Ana' && fv.length === 2 && fv[0].components.length === 1
+    && fv[0].components[0].label === 'Estadísticas' && fv[1].components.length === 1 && fv[1].components[0].custom_id === 'vp:abcdef012345'
+    && fv[1].components[0].label === 'Perfiles' && !JSON.stringify(fv).includes('\u2800')
     && A.filasVs({ a: { n: 'A', k: 'a', carta: 'x' }, b: { n: 'B', k: 'b', carta: 'y' } })[0].components.every((x) => x.style === 5),
   'en filas: las estadísticas en la suya y los dos perfiles juntos; quien no tiene perfil no lleva botón');
   // 👤 los perfiles: una caja por persona, con su cara si la tiene, y su botón
@@ -2364,11 +2353,10 @@ const ok = (cond, que, det) => {
     && !/Todavía no tiene/.test(JSON.stringify(A.perfilesComponentes({ a: { n: 'Ana', k: 'ana' }, b: { n: 'Beto', k: 'beto' } }))),
   'los perfiles: el nombre completo, su cara si la tiene (si la ocultó, sin imagen), sus números y su botón; sin perfil, lo dice');
   const [pa, pb] = A.parejos('Ana 🇦🇷', 'PUBLICENEMYNUMEROUNO');
-  ok([...pa].length === [...pb].length && pa.replace(/\u2800/g, '') === 'Ana' && pb.replace(/\u2800/g, '').length <= 11 && [...A.parejos('A', 'B')[0]].length === 11
-    && [...A.anchoFila('Ver estadísticas')].length === 24 && A.anchoFila('Ver estadísticas').trim().length === 24,
-  '📱 los dos botones de una fila, del mismo largo y con el relleno invisible, que Discord no recorta');
+  ok(pa === 'Ana' && pb.length <= 11 && pb.endsWith('…') && A.parejos('A', 'B')[0] === 'A' && typeof A.anchoFila === 'undefined',
+  '📱 los botones, cortos y sin relleno invisible (Dlx, 11/11/2026)');
   const be = A.botonesElegir({ id: 'q1', a: 'Ana 🇦🇷', b: 'Bea' }, 'ap1');
-  ok(be[0].components[0].custom_id === 've:q1:A:ap1' && be[0].components[1].custom_id === 've:q1:B:ap1' && be[0].components[0].label.replace(/\u2800/g, '') === 'Ana', 'elegir: un botón por lado, que lleva el voto y la apuesta');
+  ok(be[0].components[0].custom_id === 've:q1:A:ap1' && be[0].components[1].custom_id === 've:q1:B:ap1' && be[0].components[0].label === 'Ana', 'elegir: un botón por lado, que lleva el voto y la apuesta');
   ok(JSON.stringify(A.statsVs({ ev: 12, pod: 2, du: [3, 5] })) === '{"ev":12,"pod":2,"dg":3,"dt":5}' && A.statsVs(null).ev === 0,
     'las stats de la carta de quien no tiene carta salen de su fila, y sin fila son cero');
   const lleno = ca({ pos: 1, oro: 3, cc: 'cl' }, { pos: 5, oro: 1, cc: 'mx' });

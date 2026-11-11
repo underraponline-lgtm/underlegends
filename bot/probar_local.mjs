@@ -2632,7 +2632,12 @@ console.log('\nLAS ENCUESTAS\n');
   ok('en tu propia batalla, sólo votas', r.json?.type === 4 && /Votaste/.test(texto(r)), texto(r));
   info = { abierta: true, propia: false, saldo: 0, queda: 500, ya: 0, a: 'Ana', b: 'Beto' };
   r = await boton(7);
-  ok('sin puntos, sólo votas', r.json?.type === 4 && /Votaste/.test(texto(r)), texto(r));
+  ok('sin Puntos también se abre, en 0: así se ve que se puede apostar (Dlx, 11/11/2026)', r.json?.type === 9
+    && r.json?.data?.components?.[0]?.components?.[0]?.value === '0' && /Todavía no tienes Puntos/.test(r.json?.data?.components?.[0]?.components?.[0]?.label || ''),
+  JSON.stringify(r.json).slice(0, 200));
+  info = { abierta: false, propia: false, saldo: 5000, queda: 500, ya: 0, a: 'Ana', b: 'Beto' };
+  r = await boton(7);
+  ok('con la apuesta cerrada, sólo votas', r.json?.type === 4 && /Votaste/.test(texto(r)), texto(r));
   // 👤 «Ver perfiles»: los dos, y sólo para quien tocó
   env.AVISOS = { idFromName: () => 'liga', get: () => ({ fetch: async (url) => {
     const ruta = new URL(String(url)).pathname;

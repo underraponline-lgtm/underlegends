@@ -598,7 +598,7 @@ export function momentosChat(L, nombre, fav, nivel = 'normal', opc = {}) {
           out.push({ m: base, cab, bi: R.r + ':' + i, texto: '✅ **' + nombresChat(gs) + '** ' + (gs.length > 1 ? 'pasan' : 'pasa') + ' · ' + R.r + resto,
             // lo que se le agrega al mensaje del cruce cuando ya salió: los nombres ya están arriba, alcanza con quién
             res: '✅ ' + (gs.length > 1 ? 'Pasan' : 'Pasa') + ' **' + nombresChat(gs) + '**',
-            // 🏁 quién pasó, para la imagen del resultado (`vsResultado()`)
+            // 🏁 quién pasó (la imagen del resultado ya no se dibuja desde el 11/11/2026)
             gk: gs[0].k || claveTurno(gs[0].n) });
           for (const y of gs.slice(1)) {
             out.push({ m: 'u:' + R.r + ':' + i + ':' + (y.k || claveTurno(y.n)), de: base, cab,
@@ -1313,46 +1313,35 @@ export function fichaComponentes(f, todo = false) {
   return [{ type: 17, accent_color: color, components: cuerpo }];
 }
 
-/** 🃏📊 La fila de botones de un vs: «Ver estadísticas» (si tiene ficha) y «Consigue tu tarjeta» (si a uno le falta), juntas. */
+/** 🃏📊 La fila de botones de un vs: «Estadísticas» (si tiene ficha) y «Consigue tu tarjeta» (si a uno le falta), juntas. */
 export function filasVs(vs) {
   const filas = [];
   if (vs && /^[0-9a-f]{12}$/.test(String(vs.fid || ''))) {
-    filas.push({ type: 1, components: [{ type: 2, style: 2, label: anchoFila('Ver estadísticas'), emoji: { name: '📊' }, custom_id: 'vx:' + vs.fid }] });
+    filas.push({ type: 1, components: [{ type: 2, style: 2, label: 'Estadísticas', emoji: { name: '📊' }, custom_id: 'vx:' + vs.fid }] });
   }
   // 👤 los dos perfiles (Dlx, 04/11/2026: «la opción de ver ambos perfiles», y de dos variantes «la B de un botón queda mejor»):
   // un solo botón largo, que abre un mensaje sólo para quien tocó (`perfilesComponentes()`). Sin ficha, los dos links de una
   const pf = vs && !vs.grupos ? botonesPerfil(vs.a, vs.b) : [];
   if (pf.length) filas.push({ type: 1, components: vs.fid && filas.length ? [botonVerPerfiles(vs.fid)] : pf });
   const t = filaTarjeta(vs);
-  if (t.length) filas.push({ type: 1, components: t[0].components.map((c) => Object.assign({}, c, { label: anchoFila(c.label) })) });
+  if (t.length) filas.push({ type: 1, components: t[0].components });
   return filas;
 }
 
 /**
- * 📱 LOS BOTONES, PAREJOS EN EL CELULAR (Dlx, 04/11/2026: «se ve feo que haya un gran espacio… puedes poner caracteres
- * invisibles»). Discord hace cada botón del ancho de su texto y, si una fila no entra, la parte: tres botones largos dejaban un
- * hueco al costado. Ahora va de a dos por fila, con nombres cortos, y el U+2800 (no es un espacio: Discord no lo recorta)
- * empareja los dos de cada fila. Lo solo en su fila, más ancho, para que ocupe lo de los dos.
+ * 📱 LOS BOTONES EN EL CELULAR: de a dos por fila y con nombres cortos, para que un nombre larguísimo no parta la fila.
+ * ⚠️ SIN RELLENO INVISIBLE desde el 11/11/2026 (Dlx: «quita lo de los caracteres invisibles de los botones»): el U+2800
+ * emparejaba los dos de cada fila, y Dlx lo prefiere sin.
  */
-const INVISIBLE = '\u2800';
 const CORTO_BOTON = 11;
-const ANCHO_BOTON = 11;
-const ANCHO_FILA = 24;
 const nombreBoton = (n) => { const s = sinBandera(n) || '¿?'; return s.length > CORTO_BOTON ? s.slice(0, CORTO_BOTON - 1) + '…' : s; };
-const centrado = (t, ancho) => {
-  const falta = Math.max(0, ancho - [...t].length);
-  return INVISIBLE.repeat(Math.floor(falta / 2)) + t + INVISIBLE.repeat(Math.ceil(falta / 2));
-};
-export const anchoFila = (t) => centrado(t, ANCHO_FILA);
-/** Dos nombres, del mismo largo. */
+/** Dos nombres, cortos. */
 export function parejos(a, b) {
-  const x = nombreBoton(a), y = nombreBoton(b);
-  const ancho = Math.max([...x].length, [...y].length, ANCHO_BOTON);
-  return [centrado(x, ancho), centrado(y, ancho)];
+  return [nombreBoton(a), nombreBoton(b)];
 }
 
 /** 👤 El botón largo que abre los dos perfiles: `vp:<ficha>`. */
-export const botonVerPerfiles = (fid) => ({ type: 2, style: 2, label: anchoFila('Ver perfiles'), emoji: { name: '👤' }, custom_id: 'vp:' + fid });
+export const botonVerPerfiles = (fid) => ({ type: 2, style: 2, label: 'Perfiles', emoji: { name: '👤' }, custom_id: 'vp:' + fid });
 
 /**
  * 👤 LOS DOS PERFILES, CON SU CARA (Dlx, 04/11/2026: «pon más info… el avatar de cada usuario, hacer más bonito el embed»). Una caja
@@ -1381,7 +1370,7 @@ export function perfilesComponentes(f) {
       : texto;
     const dentro = [arriba];
     if (y.k) {
-      dentro.push({ type: 1, components: [{ type: 2, style: 5, label: anchoFila('Ver su perfil'), emoji: { name: '👤' }, url: HUB + '/freestyle-rap/r/' + encodeURIComponent(y.k) }] });
+      dentro.push({ type: 1, components: [{ type: 2, style: 5, label: 'Perfil', emoji: { name: '👤' }, url: HUB + '/freestyle-rap/r/' + encodeURIComponent(y.k) }] });
     }
     return { type: 17, accent_color: color, components: dentro };
   };
@@ -8477,8 +8466,6 @@ export class Avisos {
           this.sql.exec('UPDATE chat_vivo SET texto = ? WHERE canal = ? AND msg = ?', e.texto, canal, msg);
           // la apuesta de ese cruce reescribe su mensaje al cerrar: que lo haga sobre el texto con el resultado
           this.sql.exec('UPDATE apuestas SET texto = ? WHERE canal = ? AND msg = ?', e.texto.slice(0, 1900), canal, msg);
-          // 🏁 y la imagen del vs, otra vez con quién pasó (`vsResultado()`). Nunca frena al chat
-          try { if (e.gks) this.vsResultado(canal, msg, e.gks, ahora); } catch (err) { /* queda la imagen de antes */ }
           for (const m of e.ms) {
             this.sql.exec('INSERT OR REPLACE INTO chat_vivo (llave, canal, m, msg, texto, t) VALUES (?, ?, ?, ?, ?, ?)',
               L.id, canal, m, msg, e.texto, ahora);
@@ -10223,7 +10210,7 @@ export class Avisos {
     const datos = Object.assign({ ev: String(d.ev || '').slice(0, 80), ronda: String(d.ronda || '').slice(0, 30),
       titulo: String(d.titulo || '').slice(0, 40), sub: String(d.sub || '').slice(0, 120) },
     grupos ? { grupos } : { a: lado(d.a), b: lado(d.b) }, h2h && !grupos ? { h2h } : {},
-    // 📊 el id de su ficha (el botón «Ver estadísticas») y 🏁 quién ganó, para la imagen del resultado (`vsResultado()`)
+    // 📊 el id de su ficha (el botón «Estadísticas») y 🏁 quién ganó (desde el 11/11/2026 nadie lo pide: la imagen del resultado se sacó)
     /^[0-9a-f]{12}$/.test(String(d.fid || '')) ? { fid: String(d.fid) } : {}, !grupos && /^[ab]$/.test(String(d.gano || '')) ? { gano: d.gano } : {});
     this.sql.exec('INSERT INTO vs_cola (id, sv, canal, msg, datos, t) VALUES (?, ?, ?, ?, ?, ?)', id,
       String(d.sv || '').toUpperCase().slice(0, 6), String(d.canal), String(d.msg), JSON.stringify(datos), ahora);
@@ -10300,44 +10287,6 @@ export class Avisos {
     return { ok: r.ok, estado: r.status };
   }
 
-  /**
-   * 🏁 LA MISMA IMAGEN, CON EL RESULTADO (02/11/2026, el remake del VS): cuando el chat le agrega «✅ Pasa…» al mensaje de
-   * un cruce, el vs de ese mensaje se vuelve a dibujar con quién pasó (`gano`) y el cara a cara sumado, y la imagen nueva
-   * reemplaza a la vieja editando el mismo mensaje —una edición no le suena a nadie—. Si la primera todavía no se dibujó,
-   * se dibuja directo la del resultado. `gks` = las claves (o `claveTurno`) de los que pasaron.
-   */
-  vsResultado(canal, msg, gks, ahora = Date.now()) {
-    const lista = [].concat(gks || []).filter(Boolean);
-    if (!lista.length) return '';
-    const f = this.sql.exec('SELECT * FROM vs_cola WHERE canal = ? AND msg = ? ORDER BY t DESC LIMIT 1', String(canal), String(msg)).toArray()[0];
-    if (!f) return '';
-    let d = null;
-    try { d = JSON.parse(f.datos); } catch (e) { return ''; }
-    if (!d) return '';
-    const es = (y) => y && lista.some((gk) => (y.k ? y.k === gk : claveTurno(y.n) === gk));
-    if (Array.isArray(d.grupos)) {
-      // 🧩 con equipos o todos contra todos pueden pasar varios, de a uno: `gano` es la lista de lados, y crece
-      const antes = Array.isArray(d.gano) ? d.gano : [];
-      const ahoraG = d.grupos.map((g, i) => (antes.includes(i) || (g || []).some(es) ? i : -1)).filter((i) => i >= 0);
-      if (!ahoraG.length || ahoraG.length === antes.length) return '';
-      d.gano = ahoraG;
-    } else {
-      if (d.gano || !d.a || !d.b) return '';
-      const gano = es(d.a) ? 'a' : es(d.b) ? 'b' : '';
-      if (!gano) return '';
-      d.gano = gano;
-      if (Array.isArray(d.h2h)) d.h2h = [d.h2h[0] + (gano === 'a' ? 1 : 0), d.h2h[1] + (gano === 'b' ? 1 : 0)];
-    }
-    if (f.estado === 'espera' || f.estado === 'dibujando') {
-      this.sql.exec("UPDATE vs_cola SET datos = ?, estado = 'espera' WHERE id = ?", JSON.stringify(d), f.id);
-      return 'misma';
-    }
-    if (f.estado !== 'hecho') return '';
-    const id = [...crypto.getRandomValues(new Uint8Array(10))].map((x) => x.toString(16).padStart(2, '0')).join('');
-    this.sql.exec('INSERT INTO vs_cola (id, sv, canal, msg, datos, t) VALUES (?, ?, ?, ?, ?, ?)', id, f.sv, f.canal, f.msg,
-      JSON.stringify(d), ahora);
-    return 'nueva';
-  }
 
   /** 📊 «Ver estadísticas» (`vx:<id>`, desde el botón): la ficha guardada, resumida o con `todo`, o que ya no está. */
   vsFicha(id, todo = false) {
@@ -10350,8 +10299,7 @@ export class Avisos {
       comps = fichaComponentes(d, todo);
       links = d.a.k || d.b.k ? [botonVerPerfiles(String(id))] : [];
     } catch (e) { comps = null; }
-    // 📱 los dos botones de abajo, parejos y rellenos: en el celular quedaba un hueco al lado de «La llave»
-    return comps ? { ok: true, comps, links, ctl: parejos(todo ? 'Ver menos' : 'Ver todo', 'La llave') } : { error: 'vacia' };
+    return comps ? { ok: true, comps, links, ctl: [todo ? 'Ver menos' : 'Ver todo', 'La llave'] } : { error: 'vacia' };
   }
 
   /** 👤 «Ver perfiles» (`vp:<id>`): los dos, con su cara, de la misma ficha guardada. */
@@ -10656,8 +10604,6 @@ export class Avisos {
           if (b.msg) {
             hablados++;
             try { if (await this.ligaEditar(b, LIV.textoFinal(b.texto, escMd(gana), b.como))) b.cerrado = 1; } catch (e) { errores.push(L.sv + ' editar'); }
-            const k = b.gana === b.a ? b.ka : b.kb;
-            try { this.vsResultado(b.canal, b.msg, [k || claveTurno(gana)], ahora); } catch (e) { /* queda la imagen de antes */ }
           } else if (L.fam === 'K' && !callado && ahora - f.ini <= CHAT_FRESCA) {
             // 🏁 en LKR el título sale casi con el cierre: sólo el resultado, y sólo donde quieren que hable mucho
             const donde = await this.ligaCanal(L, aj, ahora);

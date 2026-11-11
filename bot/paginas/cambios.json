@@ -10,6 +10,18 @@
   "HORA: `cuando` es el instante en que se publicó (ISO, con la zona); la página lo muestra en la hora de quien mira. Sin `cuando`, sólo el día."
  ],
  "cambios": [
+    {
+        "version": "4.44",
+        "dia": "2026-11-11",
+        "cuando": "2026-11-11T18:34:42-05:00",
+        "titulo": "El VS en vivo, más limpio, y apostar a un toque",
+        "items": [
+            "**Votar abre la apuesta**: cada vez que tocas quién gana se abre la ventana para apostar, ya en 0. Si lo dejas así, sólo votas.",
+            "**Los botones del VS** dicen lo justo: «Estadísticas» y «Perfiles».",
+            "**Discord Style** tiene su propio fondo en el VS.",
+            "**El VS ya no se vuelve a dibujar** al final de cada cruce: el resultado sigue en el mensaje."
+        ]
+    },
   {
    "version": "4.43",
    "dia": "2026-11-11",
