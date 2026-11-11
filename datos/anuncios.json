@@ -1,5 +1,5 @@
 {
- "cuando": "2026-11-11T01:55:43+00:00",
+ "cuando": "2026-11-11T02:25:24+00:00",
  "anuncios": [
   {
    "nombre": "¡SE LLEGÓ LA GRAN NOCHE!",
@@ -5044,7 +5044,7 @@
    "cuando": "2026-10-26T22:00:03",
    "canal_id": "1470097121284980736",
    "guild_id": "1469009547971526659",
-   "organizador": "MP EL JUVENIL",
+   "organizador": "Lizeninn",
    "orgs": [],
    "autor_h": "62528949becb0707",
    "cupos_texto": "8",
@@ -5056,7 +5056,7 @@
    "fecha": "",
    "premios": "",
    "staff": {},
-   "autor": "MP EL JUVENIL",
+   "autor": "Lizeninn",
    "staff_cuentas": {},
    "categoria_id": "1469944166137073857",
    "inscripciones": "abiertas",
@@ -5070,7 +5070,7 @@
    "cuando": "2026-10-25T04:05:19",
    "canal_id": "1470097121284980736",
    "guild_id": "1469009547971526659",
-   "organizador": "MP EL JUVENIL",
+   "organizador": "Lizeninn",
    "orgs": [],
    "autor_h": "62528949becb0707",
    "cupos_texto": "8",
@@ -5082,7 +5082,7 @@
    "fecha": "",
    "premios": "",
    "staff": {},
-   "autor": "MP EL JUVENIL",
+   "autor": "Lizeninn",
    "staff_cuentas": {},
    "categoria_id": "1469944166137073857",
    "inscripciones": "abiertas",
@@ -6840,6 +6840,42 @@
   }
  ],
  "inscripciones": [
+  {
+   "servidor": "LKR",
+   "canal": "⟡・INSCRIPCIONES",
+   "texto": "Papo🇦🇷",
+   "quien": "last5724",
+   "discord_id": "483070865081237505",
+   "msg_id": "1569898241942626385",
+   "cuando": "2026-11-11T02:15:08"
+  },
+  {
+   "servidor": "LKR",
+   "canal": "⟡・INSCRIPCIONES",
+   "texto": "SKONE 🇪🇸",
+   "quien": "tenacious_dragon_23394",
+   "discord_id": "1548906948307451906",
+   "msg_id": "1569897931316662424",
+   "cuando": "2026-11-11T02:13:54"
+  },
+  {
+   "servidor": "LKR",
+   "canal": "⟡・INSCRIPCIONES",
+   "texto": "El titi (El freestyler down de España) 🇪🇸",
+   "quien": "numbyng",
+   "discord_id": "1310075576991875144",
+   "msg_id": "1569897793550815334",
+   "cuando": "2026-11-11T02:13:21"
+  },
+  {
+   "servidor": "LKR",
+   "canal": "⟡・INSCRIPCIONES",
+   "texto": "Mecha 🇦🇷",
+   "quien": "martinez4080",
+   "discord_id": "756958777126682674",
+   "msg_id": "1569897762156314685",
+   "cuando": "2026-11-11T02:13:13"
+  },
   {
    "servidor": "LKR",
    "canal": "⟡・INSCRIPCIONES",
@@ -42803,42 +42839,6 @@
    "discord_id": "790016013680771102",
    "msg_id": "1557838601054851184",
    "cuando": "2026-10-08T19:34:25"
-  },
-  {
-   "servidor": "FFA",
-   "canal": "✦📝—inscripciones",
-   "texto": "Shisui🇯🇵 (primera)",
-   "quien": "funhorlavild",
-   "discord_id": "1426686911908675628",
-   "msg_id": "1557838469051584523",
-   "cuando": "2026-10-08T19:33:54"
-  },
-  {
-   "servidor": "FFA",
-   "canal": "✦📝—inscripciones",
-   "texto": "Lvel 🇻🇪",
-   "quien": "lvel_free",
-   "discord_id": "1526612644642160721",
-   "msg_id": "1557838146677379072",
-   "cuando": "2026-10-08T19:32:37"
-  },
-  {
-   "servidor": "FFA",
-   "canal": "✦📝—inscripciones",
-   "texto": "Krish🇪🇸  (si no hago de jurado)",
-   "quien": "krishsss11111",
-   "discord_id": "1513620494199558295",
-   "msg_id": "1557838045405913249",
-   "cuando": "2026-10-08T19:32:13"
-  },
-  {
-   "servidor": "FFA",
-   "canal": "✦📝—inscripciones",
-   "texto": "Noone🇵🇪 (última si se puede)",
-   "quien": "limitz2702",
-   "discord_id": "754749179410251847",
-   "msg_id": "1557838004968755342",
-   "cuando": "2026-10-08T19:32:03"
   }
  ]
 }
