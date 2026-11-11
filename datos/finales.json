@@ -1416,7 +1416,9 @@
     "ronda": "SEMIFINALES"
    }
   ],
-  "respondidas": {},
+  "respondidas": {
+   "0": "Monet 🇲🇽"
+  },
   "sin_permiso": false,
   "sv": "DDS"
  },

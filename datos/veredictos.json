@@ -1299,6 +1299,28 @@
    "b": "EMILIO ALVA 🇲🇽",
    "ganador": "EMILIO ALVA 🇲🇽",
    "votos": "1–0"
+  },
+  "1569873798751060102": {
+   "id": "1569873798751060102",
+   "sv": "#FDS ╏FREESTYLE DISCORD SERIES",
+   "g": "1489848581203689535",
+   "canal": "1536574435761332334",
+   "pub": 1794357480467,
+   "a": "NXUZ",
+   "b": "SCOT",
+   "ganador": "NXUZ",
+   "votos": "1–0"
+  },
+  "1569874948095344641": {
+   "id": "1569874948095344641",
+   "sv": "#FDS ╏FREESTYLE DISCORD SERIES",
+   "g": "1489848581203689535",
+   "canal": "1536574435761332334",
+   "pub": 1794357754492,
+   "a": "CRISZJ",
+   "b": "MATO MC",
+   "ganador": "CRISZJ",
+   "votos": "1–0"
   }
  },
  "llaves": {
@@ -6169,7 +6191,7 @@
    "g": "1489848581203689535",
    "canal": "1500675902042931280",
    "pub": 1794354780084,
-   "ed": 1794357308281,
+   "ed": 1794358360276,
    "texto": "`[ OCTAVOS ]`\n⌞Scot 🇦🇷⌝ 🆚 ⌞Raizer🇵🇪⌝\n⌞Dios 🇲🇽⌝ 🆚 ⌞Lrs🇦🇷⌝\n⌞CRK 🇲🇽⌝ 🆚 ⌞Soul B 🇨🇱⌝\n⌞Leyenda.X5 🇦🇷⌝ 🆚 ⌞Artezzy 🇵🇪⌝\n⌞Scot 🇦🇷⌝ 🆚 ⌞Nxuz🇵🇪⌝\n⌞CrisZJ 🇵🇪⌝ 🆚 ⌞Mat MC 🇧🇴⌝",
    "batallas": [
     [
@@ -6240,8 +6262,8 @@
    "g": "1489848581203689535",
    "canal": "1536574435761332334",
    "pub": 1794355387760,
-   "ed": 1794357215326,
-   "texto": "`[ OCTAVOS ]`\n⌞CALIZ⌝ 🆚 ⌞MCAREPA⌝\n⌞NC⌝ 🆚 ⌞RAIZER⌝\n⌞DIOS⌝ 🆚 ⌞LRS⌝\n⌞CRK⌝ 🆚 ⌞SOUL B⌝\n⌞ARTESI⌝ 🆚 ⌞MITO.X10⌝",
+   "ed": 1794357768963,
+   "texto": "`[ OCTAVOS ]`\n⌞CALIZ⌝ 🆚 ⌞MCAREPA⌝\n⌞NC⌝ 🆚 ⌞RAIZER⌝\n⌞DIOS⌝ 🆚 ⌞LRS⌝\n⌞CRK⌝ 🆚 ⌞SOUL B⌝\n⌞ARTESI⌝ 🆚 ⌞MITO.X10⌝\n⌞NXUZ⌝ 🆚 ⌞SCOT⌝\n⌞CRISZJ⌝ 🆚 ⌞MATO MC⌝\n`[ CUARTOS ]`",
    "batallas": [
     [
      "OCTAVOS",
@@ -6290,6 +6312,26 @@
       "MITO.X10"
      ],
      "ARTESI",
+     "veredicto",
+     []
+    ],
+    [
+     "OCTAVOS",
+     [
+      "NXUZ",
+      "SCOT"
+     ],
+     "NXUZ",
+     "veredicto",
+     []
+    ],
+    [
+     "OCTAVOS",
+     [
+      "CRISZJ",
+      "MATO MC"
+     ],
+     "CRISZJ",
      "veredicto",
      []
     ]
