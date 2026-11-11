@@ -1,6 +1,6 @@
 {
  "_leeme": "Las ligas de los servidores: cada batalla y su resultado, y la tabla que sale de eso. Lo arma bot/ligas.py en cada corrida; las reglas viven ahí. Sin los mensajes: el repo es público. `batallas`: [id del mensaje, instante, jornada, a, b, ganador (vacío: pendiente), directa|replica, extras]. Las batallas con resultado cuentan como duelos (Ranking Duelos y Win%; el Score no). `flyer`: el último afiche de su canal de anuncios, re-alojado en R2 (`url`); `prox`: la próxima fecha que anunció (`d` el día, `t` el instante si lo dijo). Desde el 17/10/2026: `ptb` {id de la batalla: [PTB de a, de b]}, `flyers` (la galería, en R2), `staff` [[discord_id, nombre, mensajes en anuncios, en veredictos, último]] y `nov` (lo nuevo de las últimas horas, para «Seguir la liga»).",
- "t": "2026-11-11T17:29:13Z",
+ "t": "2026-11-11T17:58:47Z",
  "ligas": {
   "fmh-albiceleste": {
    "n": "FMH Albiceleste",
@@ -1650,12 +1650,18 @@
     ]
    ],
    "flyer": {
-    "id": "1561060312361468095",
-    "t": "2026-10-17T16:56:21Z",
-    "tit": "A UN PASO DE GANAR vs A MUCHOS PASOS DE ADELGAZAR",
-    "url": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/ligas/fmh-carimex/1561060312361468095.webp",
+    "id": "1570134159056310382",
+    "t": "2026-11-11T17:52:35Z",
+    "tit": "DENVER DESPIDE A LA MEJOR LIGA DE LA HISTORIA DE URBAN",
+    "url": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/ligas/fmh-carimex/1570134159056310382.webp",
     "w": 720,
     "h": 901
+   },
+   "prox": {
+    "d": "2026-11-21",
+    "t": "",
+    "j": null,
+    "id": "1570134159056310382"
    },
    "ptb": {
     "1542703586448769144": [
@@ -1789,6 +1795,14 @@
    },
    "flyers": [
     {
+     "id": "1570134159056310382",
+     "t": "2026-11-11T17:52:35Z",
+     "tit": "DENVER DESPIDE A LA MEJOR LIGA DE LA HISTORIA DE URBAN",
+     "url": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/ligas/fmh-carimex/1570134159056310382.webp",
+     "w": 720,
+     "h": 901
+    },
+    {
      "id": "1561060312361468095",
      "t": "2026-10-17T16:56:21Z",
      "tit": "A UN PASO DE GANAR vs A MUCHOS PASOS DE ADELGAZAR",
@@ -1885,15 +1899,6 @@
      "url": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/ligas/fmh-carimex/1557545411835727945.webp",
      "w": 720,
      "h": 901
-    },
-    {
-     "id": "1557241725658079345",
-     "msg": "1557241725658079345",
-     "t": "2026-10-07T04:02:39Z",
-     "tit": "Y NOS IREMOS A MAZATLA PARA Q EL CHAPO NOS PRESTE EL MAZATLÁN INTERNATIONAL CENTER PARA HA",
-     "url": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/ligas/fmh-carimex/1557241725658079345.webp",
-     "w": 720,
-     "h": 901
     }
    ],
    "staff": [
@@ -1902,7 +1907,7 @@
      "Christopher",
      100,
      41,
-     "2026-10-29T16:38:09Z"
+     "2026-11-11T17:52:35Z"
     ],
     [
      "1344825963669749804",
@@ -1981,6 +1986,15 @@
      3,
      "2026-09-14T22:31:55Z"
     ]
+   ],
+   "nov": [
+    {
+     "id": "f:fmh-carimex:2026-11-21",
+     "t": "2026-11-11T17:58:25Z",
+     "que": "fecha",
+     "d": "2026-11-21",
+     "j": null
+    }
    ]
   },
   "fmh-tricolor": {

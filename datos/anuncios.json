@@ -1,5 +1,5 @@
 {
- "cuando": "2026-11-11T17:24:58+00:00",
+ "cuando": "2026-11-11T17:54:42+00:00",
  "anuncios": [
   {
    "nombre": "¡SE LLEGÓ LA GRAN NOCHE!",
@@ -27717,6 +27717,15 @@
    "cuando": "2026-10-21T20:53:04"
   },
   {
+   "servidor": "DDS",
+   "canal": "📜〕INSCRIPCIONES",
+   "texto": "Alejozz",
+   "quien": "zzzdeil",
+   "discord_id": "988931536080486420",
+   "msg_id": "1562569413172134010",
+   "cuando": "2026-10-21T20:52:59"
+  },
+  {
    "servidor": "SR",
    "canal": "[📝]inscripciones",
    "texto": "OKAM🇨🇷",
@@ -28948,6 +28957,15 @@
    "discord_id": "846870712950194196",
    "msg_id": "1562238102334865500",
    "cuando": "2026-10-20T22:56:28"
+  },
+  {
+   "servidor": "DDS",
+   "canal": "╰➤-inscripciones-🏆",
+   "texto": "alejozz",
+   "quien": "zzzdeil",
+   "discord_id": "988931536080486420",
+   "msg_id": "1562236979469488139",
+   "cuando": "2026-10-20T22:52:00"
   },
   {
    "servidor": "DDS",
@@ -42844,24 +42862,6 @@
    "discord_id": "458702447913861130",
    "msg_id": "1557891516960350329",
    "cuando": "2026-10-08T23:04:41"
-  },
-  {
-   "servidor": "FFA",
-   "canal": "✦📝—inscripciones",
-   "texto": "Agustín la reliquia 🇺🇾",
-   "quien": "fabrythenoob7n76687",
-   "discord_id": "595648807920861205",
-   "msg_id": "1557891509276246091",
-   "cuando": "2026-10-08T23:04:40"
-  },
-  {
-   "servidor": "SR",
-   "canal": "[📝]inscripciones",
-   "texto": "Global Hustler 🇦🇷",
-   "quien": "kaled7370",
-   "discord_id": "949110039426261033",
-   "msg_id": "1557891427902689301",
-   "cuando": "2026-10-08T23:04:20"
   }
  ]
 }
