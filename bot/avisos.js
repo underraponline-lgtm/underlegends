@@ -2653,6 +2653,12 @@ export function paseDelDia(cfg, dia) {
   return [ds[0]].concat(Array.from({ length: n }, (_, j) => resto[(k + j) % resto.length]));
 }
 /** El nivel de una XP: cuántos umbrales alcanza, con tope */
+/** 🎟️ Lo que cambia cuánto vale cada Tarea (la XP de cada una, la XP doble y el premium): si cambia, la XP guardada
+ *  de todos (`paseXPs()`) se arma de nuevo. Pura */
+export function paseFirmaXP(cfg) {
+  return JSON.stringify([cfg.temp, cfg.xp || {}, cfg.doble || [], cfg.boost || 0]);
+}
+
 export function nivelDeXP(cfg, xp) {
   let n = 0;
   for (const u of (cfg && cfg.umbrales) || []) if (xp >= u) n++;
@@ -6837,6 +6843,8 @@ export class Avisos {
     for (const [k, m] of Object.entries(this.memos || {})) if (m.tablas.includes(tabla)) delete this.memos[k];
     // 🗂️ y lo público guardado que muestra lo que alguien acaba de elegir (ver `delMinuto()` y `RUTA_TABLAS`)
     for (const [ruta, ts] of Object.entries(RUTA_TABLAS)) if (ts.includes(tabla)) this.rutaOlvidar(ruta);
+    // 🎟️ y la XP sumada del Pase (`paseXPs()`), salvo la Tarea que se está cobrando: ésa la arregla `pxpParche()`
+    if (tabla === 'pase_premium' || (tabla === 'pase_hecho' && !this.pxpSuave)) this.pxpOlvidar();
   }
 
   /** 🗂️ Tira la copia de una ruta pública, en memoria y en `estado`: la próxima se arma de nuevo (ver `delMinuto()`) */
@@ -7302,14 +7310,26 @@ export class Avisos {
       if (this.medTimer) clearTimeout(this.medTimer);
       this.medTimer = null;
       if (this.medT && Date.now() - this.medT > 5 * MIN) {
-        this.medidasGuardar(Date.now(), true);
+        this.quietoVolcar();
         return;
       }
       this.medTimer = setTimeout(() => {
         this.medTimer = null;
-        try { this.medidasGuardar(Date.now(), true); } catch (e) { /* medir nunca frena nada */ }
+        this.quietoVolcar();
       }, MED_QUIETO);
     } catch (e) { /* medir nunca frena nada: lo guarda el vigía */ }
+  }
+
+  /**
+   * 💤 LO QUE VIVE EN MEMORIA, A LA BASE ANTES DE LA SIESTA (10/11/2026). El medidor ya se guardaba acá desde el 09/11;
+   * los toques y los errores de la página esperaban al vigía, una vez por minuto, y el objeto se duerme a los ~10 s sin
+   * pedidos: un toque que llegaba entre dos vueltas se perdía casi siempre (la página los manda cada 15 s). Es el mismo
+   * timer, así que no lo tiene despierto ni un segundo más; cada uno por separado, para que uno roto no frene al otro.
+   */
+  quietoVolcar() {
+    try { this.clicsVolcar(); } catch (e) { this.medir('filas', 'clics-error', 1); }
+    try { this.errVolcar(); } catch (e) { this.medir('filas', 'errores-error', 1); }
+    try { this.medidasGuardar(Date.now(), true); } catch (e) { /* medir nunca frena nada */ }
   }
 
   async atender(req) {
@@ -13964,12 +13984,46 @@ export class Avisos {
     return xp;
   }
 
-  /** `{quien: xp}` de todos los que tienen algo anotado en la temporada */
+  /**
+   * `{quien: xp}` de todos los que tienen algo anotado en la temporada.
+   * ⚡ SUMADA Y GUARDADA EN `estado` (10/11/2026): eran TODAS las Tareas de la temporada en cada llamada —el perfil de
+   * cada uno (`pases()`), el ciclo (`paseNiveles()`) y el Dashboard—, una tabla que crece hasta el 31/12. Ahora se arma
+   * una vez; cobrar una Tarea le arregla la suya a esa persona (`pxpParche()`), y cualquier otra escritura de
+   * `pase_hecho` o `pase_premium` —olvidarme, mudar la cuenta, el premium que llega o se va— la tira entera
+   * (`memoOlvidar()`). La firma lleva lo que cambia lo que vale cada Tarea: si el ciclo trae otra XP, se arma de nuevo
+   */
   paseXPs(cfg) {
+    const firma = paseFirmaXP(cfg);
+    const g = this.leer('pase_xps');
+    if (g && g.f === firma && g.xp) return g.xp;
+    const out = this.paseXPsArmar(cfg);
+    try { this.guardar('pase_xps', { f: firma, xp: out }); } catch (e) { /* la próxima la arma otra vez */ }
+    return Object.assign({}, out);
+  }
+
+  /** 🎟️ Le arregla la XP guardada a quien acaba de cobrar una Tarea (ver `paseXPs()`): sus filas y nada más */
+  pxpParche(quien, cfg) {
+    const g = this.leer('pase_xps');
+    if (!g || g.f !== paseFirmaXP(cfg) || !g.xp) return;
+    g.xp[quien] = this.paseXP(quien, cfg);
+    try { this.guardar('pase_xps', g); } catch (e) { this.pxpOlvidar(); }
+  }
+
+  /** 🎟️ Tira la XP guardada (ver `paseXPs()`); como `rutaOlvidar()`, sin escribir si ya se sabe que no está */
+  pxpOlvidar() {
+    if (this.estadoMem && this.estadoMem.has('pase_xps') && this.estadoMem.get('pase_xps') === null) return;
+    try { this.sql.exec("DELETE FROM estado WHERE k = 'pase_xps'"); } catch (e) { /* la arma la próxima igual */ }
+    if (this.estadoMem) this.estadoMem.set('pase_xps', null);
+  }
+
+  paseXPsArmar(cfg) {
     const prs = {};
     for (const r of this.sql.exec('SELECT quien, desde, hasta FROM pase_premium WHERE temp = ?', cfg.temp).toArray()) {
       prs[r.quien] = [r.desde, r.hasta];
     }
+    // 👑 el dueño, con todo desbloqueado como en `pasePremium()` (10/11/2026): acá no estaba, así que el nivel de su
+    // perfil podía ser otro que el de su Pase
+    prs[DUENO] = [0, null];
     const out = {};
     for (const r of this.sql.exec('SELECT quien, tarea, t FROM pase_hecho WHERE temp = ?', cfg.temp).toArray()) {
       out[r.quien] = (out[r.quien] || 0) + this.paseVale(cfg, cfg.xp[r.tarea] || 0, r.t, prs[r.quien] || null);
@@ -14029,8 +14083,11 @@ export class Avisos {
     const anotar = (sem, xs) => {
       for (const x of xs) {
         if (!x.hecha) continue;
-        nuevas += this.sql.exec('INSERT OR IGNORE INTO pase_hecho (quien, temp, sem, tarea, t) VALUES (?, ?, ?, ?, ?)',
-          quien, cfg.temp, sem, x.id, ahora).rowsWritten || 0;
+        this.pxpSuave = true;
+        try {
+          nuevas += this.sql.exec('INSERT OR IGNORE INTO pase_hecho (quien, temp, sem, tarea, t) VALUES (?, ?, ?, ?, ?)',
+            quien, cfg.temp, sem, x.id, ahora).rowsWritten || 0;
+        } finally { this.pxpSuave = false; }
       }
     };
     // las diarias de hoy, y las de ayer por si algo de ayer llegó después de la medianoche. «Ayer» por calendario: el día
@@ -14074,6 +14131,7 @@ export class Avisos {
       if (c && c.hechas >= c.meta) anotar(s[0], [{ id: 'crew', hecha: true }]);
     }
     if (!nuevas) return 0;
+    this.pxpParche(quien, cfg);
     const { nivel, cola } = this.premiarPase(quien);
     // 🏛️ los niveles que se publican (y el último es el Salón del Pase): cuándo llegó a cada uno, una vez
     for (const h of cfg.publicar || []) {
@@ -14994,7 +15052,8 @@ export class Avisos {
    * 👆 Los toques de la página. 🔴 JUNTADOS EN MEMORIA Y A LA BASE UNA VEZ POR MINUTO (pasada del 19/10/2026): cada
    * página manda los suyos cada tanto, y cada pedido eran hasta 40 filas escritas y 41 leídas; ahora la misma tecla de
    * cien personas en un minuto es UNA escritura. Lo vuelca el vigía (`clicsVolcar()`, también de madrugada), y el
-   * Dashboard antes de leer. ⚠️ Si el objeto se reinicia, se pierde el último minuto de toques: es un conteo, no plata.
+   * Dashboard antes de leer. 💤 Y desde el 10/11/2026 también al quedar quieto el objeto (`quietoVolcar()`): esperaban
+   * al vigía y el objeto se dormía antes, así que se perdían casi todos. Es un conteo, no plata.
    */
   clics(d) {
     const dia = diaET();
@@ -15011,8 +15070,9 @@ export class Avisos {
   }
 
   /**
-   * 🐞 Un error de la página (19/10/2026). Como los toques: se junta en memoria y va a la base una vez por minuto
-   * (`errVolcar()`), así una página rota que abren cien personas es una escritura y no cien.
+   * 🐞 Un error de la página (19/10/2026). Como los toques: se junta en memoria y va a la base por tanda
+   * (`errVolcar()`, al quedar quieto el objeto y con el vigía), así una página rota que abren cien personas a la vez es
+   * una escritura y no cien.
    */
   errorPagina(d) {
     const e = errorValido(d);
@@ -15030,9 +15090,12 @@ export class Avisos {
     if (!buf || !buf.size) return;
     this.errBuf = new Map();
     const dia = diaET();
-    let distintas = (this.sql.exec('SELECT COUNT(*) AS n FROM errores_pag WHERE dia = ?', dia).toArray()[0] || {}).n || 0;
+    let distintas = null;   // como en `clicsVolcar()`: se cuentan sólo si hay uno nuevo
     for (const [k, x] of buf) {
       const ya = this.sql.exec('SELECT n FROM errores_pag WHERE dia = ? AND k = ?', dia, k).toArray()[0];
+      if (!ya && distintas === null) {
+        distintas = (this.sql.exec('SELECT COUNT(*) AS n FROM errores_pag WHERE dia = ?', dia).toArray()[0] || {}).n || 0;
+      }
       if (!ya && distintas >= ERRORES_DIA) continue;
       if (!ya) distintas++;
       this.sql.exec('INSERT INTO errores_pag (dia, k, donde, msg, f, tipo, n, primero, ultimo) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?) ' +
@@ -15094,9 +15157,14 @@ export class Avisos {
     if (!buf || !buf.size) return;
     this.clicsBuf = new Map();
     for (const [dia, hoy] of buf) {
-      let distintas = (this.sql.exec('SELECT COUNT(*) AS n FROM clics WHERE dia = ?', dia).toArray()[0] || {}).n || 0;
+      // ⚡ CONTAR LAS DEL DÍA SÓLO SI HAY UNA NUEVA (10/11/2026): eran hasta 1.500 filas leídas por vuelco para un tope
+      // que sólo importa al sumar una etiqueta, y ahora se vuelca después de cada tanda de pedidos (`quietoVolcar()`)
+      let distintas = null;
       for (const [kk, v] of hoy) {
         const ya = this.sql.exec('SELECT n FROM clics WHERE dia = ? AND k = ?', dia, kk).toArray()[0];
+        if (!ya && distintas === null) {
+          distintas = (this.sql.exec('SELECT COUNT(*) AS n FROM clics WHERE dia = ?', dia).toArray()[0] || {}).n || 0;
+        }
         if (!ya && distintas >= CLICS_MAX_K) continue;
         if (!ya) distintas++;
         this.sql.exec('INSERT INTO clics (dia, k, n) VALUES (?, ?, ?) ON CONFLICT(dia, k) DO UPDATE SET n = n + excluded.n ' +

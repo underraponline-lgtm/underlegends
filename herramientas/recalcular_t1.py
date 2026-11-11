@@ -202,7 +202,10 @@ def _hijo(salida):
            'ya_cargadas': [list(map(str, x[:4])) for x in U.get('ya_cargadas') or []],
            'descartados': [list(x[:3]) for x in U.get('descartados') or []],
            'retenidos': [list(map(str, x[:4])) for x in U.get('retenidos') or []],
-           'dudas': len(U.get('dudas') or [])}
+           'dudas': len(U.get('dudas') or []),
+           # 🔎 y CUÁLES (10/11/2026): con `--leer` se mira una llave sola, y «1 duda» sin decir de qué batalla obliga a
+           # correr el lector a mano para saber si es la que cambia el resultado
+           'dudas_detalle': [[str(y)[:160] for y in x[:5]] for x in U.get('dudas') or []]}
     with io.open(salida, 'w', encoding='utf-8') as f:
         json.dump(out, f, ensure_ascii=False)
     return 0
@@ -306,6 +309,23 @@ def _informe(d, detalle=None):
         ev_cambian = [x for x in ev_cambian if x[0] in solo]
         d['duplicados'] = {}
         print('   (sólo %s, como se pidió)' % ', '.join('#' + x for x in sorted(solo)))
+    # ⏸️ Y EL QUE CAMBIA PORQUE UNA BATALLA ESPERA ✅ DECIDIR NO SE APLICA (10/11/2026, la #471: Teito contra Geoka, sin
+    # nadie en cuartos). El lector de hoy la saca de las filas y la pregunta; aplicarlo le quitaba la ronda a Geoka
+    # por una pregunta, no por una lectura mejor. Queda como está hasta que se conteste
+    _esp = {}
+    for x in d.get('dudas_detalle') or []:
+        _esp.setdefault(str(x[0]), []).append('%s: %s' % (str(x[1]).lower(), x[4] if len(x) > 4 else x[2]))
+    esperan = [(k, e, _esp[e['nombre']]) for k, e, _m in ev_cambian if e['nombre'] in _esp]
+    ev_cambian = [x for x in ev_cambian if x[1]['nombre'] not in _esp]
+    # y sus puntos quedan como hoy también en la cuenta por persona, o el total diría que Geoka baja
+    for k, e, _b in esperan:
+        for q, p in e['pts'].items():
+            tot_n[q] = tot_n.get(q, 0) - p
+        for q, p in hoy.get(k, {}).get('pts', {}).items():
+            tot_n[q] = tot_n.get(q, 0) + p
+    if esperan:
+        cambios = sorted(((tot_n.get(q, 0) - tot_h.get(q, 0), q) for q in set(tot_h) | set(tot_n)
+                          if tot_n.get(q, 0) != tot_h.get(q, 0)), key=lambda x: (-abs(x[0]), x[1]))
     d['_cambian'] = [k for k, _e, _m in ev_cambian]
     print('   %d persona(s) cambian · %d evento(s) cambian · %d entran · %d duplicado(s) · %d no se pudieron volver '
           'a leer\n' % (len(cambios), len(ev_cambian), len(entran), len(dups), len(no_leidos)))
@@ -325,6 +345,12 @@ def _informe(d, detalle=None):
                                                          e['pos'].get(q, '—')))
             if len(mas) > 8:
                 print('          … y %d más' % (len(mas) - 8))
+    if esperan:
+        print('\n   -- cambian por una batalla que espera ✅ Decidir: NO se aplican --')
+        for k, e, bs in esperan:
+            print('   #%-4s %-30s %-5s %s' % (k, e['nombre'][:30], e['sv'], e['fecha']))
+            for x in bs:
+                print('          ⏸️ %s' % x[:110])
     if entran:
         print('\n   -- eventos que hoy no están y entrarían --')
         for k, e in entran:

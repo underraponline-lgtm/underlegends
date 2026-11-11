@@ -2021,6 +2021,50 @@ const ok = (cond, que, det) => {
       ok(ps.n.ana && ps.n.ana[0] === nivelA && ps.n.bea && ps.n.bea[0] === 30 && ps.n.bea[2] === '#F5C542'
         && ps.salon.prueba.length === 1 && ps.salon.prueba[0][0] === 'bea' && ps.cfg.semanales.length === 5,
       'para los perfiles, por clave: Ana y Bea con su nivel; el Salón del Pase con Bea; y lo público del Pase');
+      // ⚡ LA XP DE TODOS, SUMADA Y GUARDADA (10/11/2026, `paseXPs()`): tiene que dar siempre lo mismo que contarla de cero
+      {
+        const c = o.paseDatos().cfg;
+        // (`meter()` escribe por debajo del objeto, sin el gancho de las escrituras: lo guardado hasta acá no cuenta)
+        o.pxpOlvidar();
+        const fresca = () => JSON.stringify(Object.entries(o.paseXPsArmar(c)).sort());
+        const guardada = () => JSON.stringify(Object.entries(o.paseXPs(c)).sort());
+        const g0 = guardada(), f0 = fresca();
+        const hay0 = !!o.leer('pase_xps');
+        // cobrar una Tarea la arregla, sin tirarla: como `anotar()` de `paseRevisar()` (con `pxpSuave`) y `pxpParche()`.
+        // (A esta altura a Ana no le queda ninguna fácil de cumplir de verdad: se anota a mano, por el mismo camino)
+        const xpA0 = o.paseXP(ANA, c);
+        o.pxpSuave = true;
+        try {
+          o.sql.exec("INSERT OR IGNORE INTO pase_hecho (quien, temp, sem, tarea, t) VALUES (?, ?, 'e:prueba', 'caza', ?)", ANA, c.temp, FIJO);
+        } finally { o.pxpSuave = false; }
+        o.pxpParche(ANA, c);
+        const xpA1 = o.paseXP(ANA, c);
+        ok(/pxpSuave = true/.test(String(o.paseRevisar)) && /pxpParche\(quien, cfg\)/.test(String(o.paseRevisar)),
+          'paseRevisar() anota las Tareas sin tirar la XP guardada y después se la arregla a esa persona');
+        const hay1 = !!o.leer('pase_xps');
+        const g1 = guardada(), f1 = fresca();
+        ok(hay0 && g0 === f0 && xpA1 > xpA0 && hay1 && g1 === f1 && JSON.parse(g1).find((x) => x[0] === ANA)[1] === xpA1,
+          'la XP guardada de todos da lo mismo que contarla; cobrar una Tarea se la arregla a esa persona sin tirarla',
+          JSON.stringify({ hay0, xpA0, xpA1, hay1, igual: g1 === f1 }));
+        // cualquier otra escritura de sus tablas la tira: olvidar a alguien, y el premium que llega
+        o.sql.exec('DELETE FROM pase_hecho WHERE quien = ?', BEA);
+        const hay2 = !!o.leer('pase_xps');
+        const sinBea = !JSON.parse(guardada()).some((x) => x[0] === BEA);
+        o.sql.exec('INSERT INTO pase_premium (quien, temp, desde, hasta) VALUES (?, ?, 0, NULL)', ANA, c.temp);
+        const hay3 = !!o.leer('pase_xps');
+        const cb = Object.assign({}, c, { boost: 50 });
+        ok(!hay2 && sinBea && !hay3 && guardada() === fresca()
+          && o.paseXPs(cb)[ANA] === o.paseXP(ANA, cb) && o.paseXPs(cb)[ANA] > o.paseXPs(c)[ANA],
+          'borrar las Tareas de alguien o darle el premium tira la XP guardada; y con otro premium (la firma) se arma de nuevo',
+          JSON.stringify({ hay2, sinBea, hay3 }));
+        // 👑 y el dueño, con todo desbloqueado como en su Pase
+        o.sql.exec("INSERT INTO pase_hecho (quien, temp, sem, tarea, t) VALUES (?, ?, 'temp', 'caza', ?)", A.DUENO, c.temp, FIJO);
+        ok(o.paseXPs(cb)[A.DUENO] === o.paseXP(A.DUENO, cb) && o.paseXP(A.DUENO, cb) === 4500,
+          'el dueño suma con el premium también en la XP de todos (su perfil y su Pase dicen el mismo nivel)',
+          JSON.stringify({ todos: o.paseXPs(cb)[A.DUENO], suyo: o.paseXP(A.DUENO, cb) }));
+        o.sql.exec('DELETE FROM pase_premium WHERE quien = ?', ANA);
+        o.sql.exec('DELETE FROM pase_hecho WHERE quien = ?', A.DUENO);
+      }
       ok(A.APLAUDIBLES.pase && A.motivoAplauso({ tipo: 'pase', completo: true }) === 'completar el Pase de rapero'
         && A.motivoAplauso({ tipo: 'pase', nivel: 10, premio: 'De la casa' }).includes('«De la casa»'),
       'llegar a un nivel del Pase que se publica se puede felicitar, con su motivo');
@@ -2975,11 +3019,33 @@ const ok = (cond, que, det) => {
     o.medir('filas', 'SELECT de la siesta', 5);
     await o.fetch(new Request('https://avisos/ajustes'));
     await o.fetch(new Request('https://avisos/ajustes'));
+    // 💤 y los toques y los errores de la página, en el mismo timer (10/11/2026): esperaban al vigía y se perdían en la siesta
+    const posta = (ruta, d) => o.fetch(new Request('https://avisos/' + ruta, { method: 'POST', body: JSON.stringify(d),
+      headers: { 'content-type': 'application/json' } }));
+    await posta('clics', { c: { 'inicio:la siesta': 2 } });
+    await posta('error-pagina', { d: 'global', m: 'se rompio la siesta' });
+    const filasClic = () => o.sql.exec("SELECT n FROM clics WHERE k = 'inicio:la siesta'").toArray();
+    const filasErr = () => o.sql.exec("SELECT n FROM errores_pag WHERE msg = 'se rompio la siesta'").toArray();
     const enSeguida = ((o.leer('medidas_hoy') || {}).filas || {})['SELECT de la siesta'];
+    const clicEnSeguida = filasClic().length + filasErr().length;
     await new Promise((r) => setTimeout(r, 2400));
     const mh = o.leer('medidas_hoy') || {};
-    ok(!enSeguida && (mh.filas || {})['SELECT de la siesta'] === 5 && mh.despertares === 1 && mh.pedidos === 2,
+    ok(!enSeguida && (mh.filas || {})['SELECT de la siesta'] === 5 && mh.despertares === 1 && mh.pedidos === 4,
       'lo medido se guarda al quedar quieto el objeto (una vez por tanda), con los despertares y los pedidos', JSON.stringify({ enSeguida, d: mh.despertares, p: mh.pedidos }));
+    ok(clicEnSeguida === 0 && (filasClic()[0] || {}).n === 2 && (filasErr()[0] || {}).n === 1,
+      'los toques y los errores van a la base al quedar quieto, sin esperar al vigía', JSON.stringify({ clicEnSeguida, c: filasClic(), e: filasErr() }));
+    // ⚡ y el tope de etiquetas distintas sigue: lo que ya está se suma aunque el día esté lleno, lo nuevo no entra
+    {
+      const dia = A.diaET ? A.diaET() : null;
+      if (dia) {
+        for (let i = 0; i < A.CLICS_MAX_K; i += 1) o.sql.exec('INSERT OR IGNORE INTO clics (dia, k, n) VALUES (?, ?, 1)', dia, 'relleno:' + i);
+        o.clics({ c: { 'inicio:la siesta': 3, 'inicio:no entra': 1 } });
+        o.clicsVolcar();
+        ok((filasClic()[0] || {}).n === 5 && !o.sql.exec("SELECT n FROM clics WHERE k = 'inicio:no entra'").toArray().length,
+          'con el día lleno se sigue sumando lo que ya estaba y lo nuevo no entra (el COUNT sólo se hace si hay una nueva)',
+          JSON.stringify(filasClic()));
+      }
+    }
   }
 }
 
