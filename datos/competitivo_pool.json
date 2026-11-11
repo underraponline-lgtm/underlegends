@@ -2953,7 +2953,7 @@
    "bestia": 2,
    "clasico": 2,
    "dg": 11,
-   "fg": 2,
+   "fg": 3,
    "fp": 2,
    "mata": 1,
    "riv": 17,
@@ -6682,6 +6682,7 @@
    "clasico": 1,
    "dg": 8,
    "fg": 1,
+   "fp": 1,
    "mata": 1,
    "riv": 21,
    "venc": 8

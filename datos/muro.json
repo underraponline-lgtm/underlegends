@@ -206,6 +206,15 @@
 "temporada"
 ]
 },
+"miniboy": {
+"rg": "D",
+"c": [
+"competitivo",
+"pais",
+"servidor",
+"temporada"
+]
+},
 "molusco": {
 "rg": "C",
 "c": [
@@ -235,15 +244,6 @@
 "hassan": {
 "rg": "A",
 "c": []
-},
-"miniboy": {
-"rg": "D",
-"c": [
-"competitivo",
-"pais",
-"servidor",
-"temporada"
-]
 },
 "nxuz": {
 "rg": "C",
@@ -1203,6 +1203,10 @@
 ]
 },
 "ortiz": {
+"rg": "",
+"c": []
+},
+"monet": {
 "rg": "",
 "c": []
 },
@@ -6932,17 +6936,6 @@
 "part": 18,
 "campeones": [
 {
-"ev": "(sin titulo)",
-"sv": "LKR",
-"ll": 601,
-"quien": [
-[
-"Erian",
-"erian"
-]
-]
-},
-{
 "ev": "MF DOOM Y MADLIB EDICION 1",
 "sv": "DDS",
 "ll": 604,
@@ -6950,6 +6943,17 @@
 [
 "Dios",
 "dios"
+]
+]
+},
+{
+"ev": "(sin titulo)",
+"sv": "LKR",
+"ll": 601,
+"quien": [
+[
+"Erian",
+"erian"
 ]
 ]
 }
@@ -6976,22 +6980,22 @@
 ],
 "suben": [
 {
+"n": "Mc dl",
+"k": "",
+"de": 491,
+"a": 398
+},
+{
 "n": "black live",
 "k": "",
 "de": 442,
 "a": 376
 },
 {
-"n": "Dios",
-"k": "dios",
-"de": 122,
-"a": 108
-},
-{
-"n": "Vilca",
-"k": "vilca",
-"de": 76,
-"a": 67
+"n": "Monet",
+"k": "monet",
+"de": 328,
+"a": 308
 }
 ],
 "sorpresas": []

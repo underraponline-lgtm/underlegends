@@ -7508,9 +7508,9 @@
     "duelos": "",
     "ev": 3,
     "oro": 0,
-    "ovr": 45,
+    "ovr": 46,
     "pod": 0,
-    "pts": 17787,
+    "pts": 26450,
     "racha": "0/1",
     "tg": {
      "fund": true,
@@ -8036,12 +8036,15 @@
   "Mc dl": {
    "LKR": {
     "duelos": "",
-    "ev": 2,
+    "ev": 3,
     "oro": 0,
-    "ovr": 43,
+    "ovr": 44,
     "pod": 0,
-    "pts": 3875,
-    "racha": "0/0"
+    "pts": 8825,
+    "racha": "0/0",
+    "tg": {
+     "llave": true
+    }
    }
   },
   "Medster": {
@@ -8167,14 +8170,15 @@
    },
    "LKR": {
     "duelos": "",
-    "ev": 2,
+    "ev": 3,
     "oro": 0,
-    "ovr": 43,
+    "ovr": 45,
     "pod": 0,
-    "pts": 4047,
+    "pts": 12709,
     "racha": "0/0",
     "tg": {
-     "fund": true
+     "fund": true,
+     "llave": true
     }
    }
   },
@@ -8272,6 +8276,15 @@
     "ovr": 43,
     "pod": 0,
     "pts": 3850,
+    "racha": "0/0"
+   },
+   "LKR": {
+    "duelos": "",
+    "ev": 1,
+    "oro": 0,
+    "ovr": 43,
+    "pod": 0,
+    "pts": 4950,
     "racha": "0/0"
    },
    "SR": {
@@ -8432,6 +8445,18 @@
     "pod": 0,
     "pts": 5685,
     "racha": "0/0"
+   },
+   "LKR": {
+    "duelos": "",
+    "ev": 1,
+    "oro": 0,
+    "ovr": 43,
+    "pod": 0,
+    "pts": 4950,
+    "racha": "0/0",
+    "tg": {
+     "nuevo": true
+    }
    }
   },
   "Mosquitrap 🦟": {

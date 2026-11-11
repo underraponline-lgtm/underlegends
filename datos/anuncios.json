@@ -1,5 +1,5 @@
 {
- "cuando": "2026-11-11T02:55:20+00:00",
+ "cuando": "2026-11-11T03:25:21+00:00",
  "anuncios": [
   {
    "nombre": "¡SE LLEGÓ LA GRAN NOCHE!",
@@ -4420,10 +4420,10 @@
    "cuando": "2026-03-15T01:46:34",
    "canal_id": "1416914076545581179",
    "guild_id": "1367688812892913774",
-   "organizador": "@Nekroos",
+   "organizador": "@Bootrax",
    "orgs": [
     {
-     "n": "Nekroos",
+     "n": "Bootrax",
      "id": "1122273746099638354"
     }
    ],
@@ -4437,7 +4437,7 @@
    "fecha": "ahora",
    "premios": "",
    "staff": {},
-   "autor": "Nekroos",
+   "autor": "Bootrax",
    "staff_cuentas": {},
    "categoria_id": "1373343272482902127"
   },
@@ -4515,15 +4515,15 @@
    "premios": "",
    "staff": {
     "host": [
-     "Nekroos"
+     "Bootrax"
     ],
     "dj": [
-     "Nekroos"
+     "Bootrax"
     ]
    },
-   "autor": "Nekroos",
+   "autor": "Bootrax",
    "staff_cuentas": {
-    "Nekroos": "1122273746099638354"
+    "Bootrax": "1122273746099638354"
    },
    "categoria_id": "1373343272482902127"
   },
@@ -4834,13 +4834,13 @@
      "Adriagner"
     ],
     "dj": [
-     "Nekroos"
+     "Bootrax"
     ]
    },
    "autor": "Adriagner",
    "staff_cuentas": {
     "Adriagner": "1316490165836972104",
-    "Nekroos": "1122273746099638354"
+    "Bootrax": "1122273746099638354"
    },
    "categoria_id": "1469944166137073857",
    "inscripciones": "abiertas",

@@ -226,22 +226,10 @@
     "nivel": "D",
     "base": 4000,
     "o": 50,
-    "estado": "cazado",
+    "estado": "suelto",
     "ev": 1,
     "fase": "Cuartos",
-    "valor": 5000,
-    "caza": {
-     "n": 601,
-     "evento": "(sin titulo)",
-     "sv": "LKR",
-     "t": "2026-11-10T17:04:49Z",
-     "por": [
-      {
-       "n": "Erian",
-       "cobra": 5000
-      }
-     ]
-    }
+    "valor": 5000
    },
    {
     "n": "Rodas",
