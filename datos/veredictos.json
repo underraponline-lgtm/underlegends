@@ -1321,6 +1321,39 @@
    "b": "MATO MC",
    "ganador": "CRISZJ",
    "votos": "1–0"
+  },
+  "1569879762028208191": {
+   "id": "1569879762028208191",
+   "sv": "#FDS ╏FREESTYLE DISCORD SERIES",
+   "g": "1489848581203689535",
+   "canal": "1536574435761332334",
+   "pub": 1794358902223,
+   "a": "RAIZER",
+   "b": "DIOS",
+   "ganador": "DIOS",
+   "votos": "1–0"
+  },
+  "1569882317995114508": {
+   "id": "1569882317995114508",
+   "sv": "#FDS ╏FREESTYLE DISCORD SERIES",
+   "g": "1489848581203689535",
+   "canal": "1536574435761332334",
+   "pub": 1794359511613,
+   "a": "MCAREPA",
+   "b": "OKAM",
+   "ganador": "OKAM",
+   "votos": "1–0"
+  },
+  "1569882959597666395": {
+   "id": "1569882959597666395",
+   "sv": "🔥LKR (Champios Legue)🐉",
+   "g": "1558611504046153750",
+   "canal": "1560448027490001067",
+   "pub": 1794359664583,
+   "a": "LOKILLO",
+   "b": "JONY B",
+   "ganador": "JONY B",
+   "votos": "1–0"
   }
  },
  "llaves": {
@@ -6191,7 +6224,7 @@
    "g": "1489848581203689535",
    "canal": "1500675902042931280",
    "pub": 1794354780084,
-   "ed": 1794358360276,
+   "ed": 1794360081232,
    "texto": "`[ OCTAVOS ]`\n⌞Scot 🇦🇷⌝ 🆚 ⌞Raizer🇵🇪⌝\n⌞Dios 🇲🇽⌝ 🆚 ⌞Lrs🇦🇷⌝\n⌞CRK 🇲🇽⌝ 🆚 ⌞Soul B 🇨🇱⌝\n⌞Leyenda.X5 🇦🇷⌝ 🆚 ⌞Artezzy 🇵🇪⌝\n⌞Scot 🇦🇷⌝ 🆚 ⌞Nxuz🇵🇪⌝\n⌞CrisZJ 🇵🇪⌝ 🆚 ⌞Mat MC 🇧🇴⌝",
    "batallas": [
     [
@@ -6262,8 +6295,8 @@
    "g": "1489848581203689535",
    "canal": "1536574435761332334",
    "pub": 1794355387760,
-   "ed": 1794357768963,
-   "texto": "`[ OCTAVOS ]`\n⌞CALIZ⌝ 🆚 ⌞MCAREPA⌝\n⌞NC⌝ 🆚 ⌞RAIZER⌝\n⌞DIOS⌝ 🆚 ⌞LRS⌝\n⌞CRK⌝ 🆚 ⌞SOUL B⌝\n⌞ARTESI⌝ 🆚 ⌞MITO.X10⌝\n⌞NXUZ⌝ 🆚 ⌞SCOT⌝\n⌞CRISZJ⌝ 🆚 ⌞MATO MC⌝\n`[ CUARTOS ]`",
+   "ed": 1794360246385,
+   "texto": "`[ OCTAVOS ]`\n⌞CALIZ⌝ 🆚 ⌞MCAREPA⌝\n⌞NC⌝ 🆚 ⌞RAIZER⌝\n⌞DIOS⌝ 🆚 ⌞LRS⌝\n⌞CRK⌝ 🆚 ⌞SOUL B⌝\n⌞ARTESI⌝ 🆚 ⌞MITO.X10⌝\n⌞NXUZ⌝ 🆚 ⌞SCOT⌝\n⌞CRISZJ⌝ 🆚 ⌞MATO MC⌝\n`[ CUARTOS ]`\n⌞RAIZER⌝ 🆚 ⌞DIOS⌝\n⌞MCAREPA⌝ 🆚 ⌞OKAM⌝\n`[ SEMIFINALES ]`\n⌞NXUZ⌝ 🆚 ⌞DIOS⌝",
    "batallas": [
     [
      "OCTAVOS",
@@ -6333,6 +6366,36 @@
      ],
      "CRISZJ",
      "veredicto",
+     []
+    ],
+    [
+     "CUARTOS",
+     [
+      "RAIZER",
+      "DIOS"
+     ],
+     "DIOS",
+     "veredicto",
+     []
+    ],
+    [
+     "CUARTOS",
+     [
+      "MCAREPA",
+      "OKAM"
+     ],
+     "OKAM",
+     "veredicto",
+     []
+    ],
+    [
+     "SEMIFINALES",
+     [
+      "NXUZ",
+      "DIOS"
+     ],
+     null,
+     "última ronda y no dice campeón",
      []
     ]
    ]

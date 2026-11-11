@@ -3755,7 +3755,7 @@
    "fg": 3,
    "fp": 1,
    "mata": 1,
-   "riv": 36,
+   "riv": 37,
    "venc": 23,
    "vengo": 1
   },
@@ -15441,11 +15441,15 @@
   "pos_sv": "",
   "arc_sv": 0,
   "tg_c": {
+   "bestia": 1,
    "clasico": 1,
-   "riv": 3
+   "dg": 1,
+   "riv": 4,
+   "venc": 1
   },
   "tg_p": {
-   "paises": 3
+   "paises": 3,
+   "paisesg": 1
   },
   "nac": {
    "evn": 1,
