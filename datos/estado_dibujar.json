@@ -1,9 +1,9 @@
 {
  "v": 1,
- "cuando": "2026-11-11T05:03:28Z",
+ "cuando": "2026-11-11T06:06:39Z",
  "trabajo": "dibujar",
  "codigo": 0,
- "dur_s": 123.1,
+ "dur_s": 1617.9,
  "pasos": [
   {
    "n": "2f",
@@ -15,73 +15,73 @@
    "n": "2f2",
    "que": "los TAGs elegidos",
    "ok": true,
-   "s": 0.8
+   "s": 1.1
   },
   {
    "n": "3",
    "que": "qué cambió",
    "ok": true,
-   "s": 7.8
+   "s": 12.8
   },
   {
    "n": "4",
    "que": "las caras, desde R2",
    "ok": true,
-   "s": 17.8
+   "s": 23.8
   },
   {
    "n": "5",
-   "que": "tanda 1 de 1 · 4 persona(s)",
+   "que": "tanda 1 de 7 · 40 persona(s)",
    "ok": true,
-   "s": 36.0
+   "s": 1508.4
   },
   {
    "n": "5b",
    "que": "las Bloqueadas",
    "ok": true,
-   "s": 5.5
+   "s": 10.7
   },
   {
    "n": "6",
    "que": "refrescar KV",
    "ok": true,
-   "s": 54.2
+   "s": 59.1
   }
  ],
  "fallas": [],
  "ultimo_evento": {
-  "n": "604",
-  "nombre": "MF DOOM Y MADLIB EDICION 1",
-  "sv": "DDS",
-  "dia": "2026-11-10"
+  "n": "605",
+  "nombre": "EL ULTIMO DIA DE DDF",
+  "sv": "DDF",
+  "dia": "2026-11-11"
  },
  "cuotas": {
   "kv": {
-   "write": 120,
-   "read": 9542
+   "write": 152,
+   "read": 11209
   },
   "objeto": {
-   "leidas": 510755,
-   "escritas": 10527,
-   "pedidos": 2989
+   "leidas": 679812,
+   "escritas": 14248,
+   "pedidos": 3914
   },
   "worker": {
-   "pedidos": 8304,
+   "pedidos": 8397,
    "errores": 0,
-   "sub": 10950,
+   "sub": 11025,
    "cortados": 0,
    "p50_ms": 1.29,
-   "p99_ms": 14.87,
+   "p99_ms": 14.83,
    "cpu": {
-    "total": 19214,
+    "total": 19347,
     "objeto_10": 2001,
-    "worker_10": 321
+    "worker_10": 322
    }
   },
   "r2": {
-   "objetos": 6567,
-   "gb": 0.607,
-   "ts": 1794330508
+   "objetos": 6638,
+   "gb": 0.614,
+   "ts": 1794377208
   }
  }
 }
