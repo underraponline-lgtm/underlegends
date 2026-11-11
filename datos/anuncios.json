@@ -1,5 +1,5 @@
 {
- "cuando": "2026-11-11T22:55:17+00:00",
+ "cuando": "2026-11-11T23:24:35+00:00",
  "anuncios": [
   {
    "nombre": "¡SE LLEGÓ LA GRAN NOCHE!",
@@ -4852,7 +4852,7 @@
    "fecha": "",
    "premios": "Honor, gloria y respeto en el freestyle (Sin premio / Rango)",
    "staff": {},
-   "autor": "₁₉",
+   "autor": "4 | ₁₉",
    "staff_cuentas": {},
    "categoria_id": "1469944166137073857"
   },
@@ -5121,9 +5121,7 @@
    "staff": {},
    "autor": "Mosquitrap 🦟🇦🇷",
    "staff_cuentas": {},
-   "categoria_id": "868218509975498805",
-   "inscripciones": "abiertas",
-   "inscripciones_cuando": "2026-11-10T23:00:05"
+   "categoria_id": "868218509975498805"
   },
   {
    "nombre": "RBCW LATAM 2026",
@@ -5147,9 +5145,7 @@
    "staff": {},
    "autor": "Leonar-T",
    "staff_cuentas": {},
-   "categoria_id": "1309234419525222477",
-   "inscripciones": "abiertas",
-   "inscripciones_cuando": "2026-11-10T23:00:05"
+   "categoria_id": "1309234419525222477"
   },
   {
    "nombre": "NUESTRO SIGUIENTE DESTINO ES PARA REPRESENTAR A TODO EL CONTINENTE!!!",
@@ -5173,9 +5169,7 @@
    "staff": {},
    "autor": "Leonar-T",
    "staff_cuentas": {},
-   "categoria_id": "1309234419525222477",
-   "inscripciones": "abiertas",
-   "inscripciones_cuando": "2026-11-10T23:00:05"
+   "categoria_id": "1309234419525222477"
   },
   {
    "nombre": "UN PLACER MOSTRAR AL EQUIPO DE TRABAJO DE ESTA NACIONAL",
@@ -5214,9 +5208,7 @@
     "YIO CR": "1033600988373848166",
     "๖ۣۜẔͥḭnͣ๏ͫჯ ༻一": "372088439082057732"
    },
-   "categoria_id": "1309234419525222477",
-   "inscripciones": "abiertas",
-   "inscripciones_cuando": "2026-11-10T23:00:05"
+   "categoria_id": "1309234419525222477"
   },
   {
    "nombre": "HOY ES LA NACIONAL DE VENEC",
@@ -5240,9 +5232,7 @@
    "staff": {},
    "autor": "Leonar-T",
    "staff_cuentas": {},
-   "categoria_id": "1309234419525222477",
-   "inscripciones": "abiertas",
-   "inscripciones_cuando": "2026-11-10T23:00:05"
+   "categoria_id": "1309234419525222477"
   },
   {
    "nombre": "FAT BATTLES PALOOZA FECHA 10 T.3 FINALS",
@@ -5266,9 +5256,7 @@
    "staff": {},
    "autor": "Mosquitrap 🦟🇦🇷",
    "staff_cuentas": {},
-   "categoria_id": "1309234419525222477",
-   "inscripciones": "abiertas",
-   "inscripciones_cuando": "2026-11-10T23:00:05"
+   "categoria_id": "1309234419525222477"
   },
   {
    "nombre": "FAT BATTLES PALOOZA EDICIÓN HALOWEEN",
@@ -5292,9 +5280,7 @@
    "staff": {},
    "autor": "Leonar-T",
    "staff_cuentas": {},
-   "categoria_id": "1309234419525222477",
-   "inscripciones": "abiertas",
-   "inscripciones_cuando": "2026-11-10T23:00:05"
+   "categoria_id": "1309234419525222477"
   },
   {
    "nombre": "NUEVO DESTINO DE RED BULL CREW!!!",
@@ -5318,9 +5304,7 @@
    "staff": {},
    "autor": "Leonar-T",
    "staff_cuentas": {},
-   "categoria_id": "1309234419525222477",
-   "inscripciones": "abiertas",
-   "inscripciones_cuando": "2026-11-10T23:00:05"
+   "categoria_id": "1309234419525222477"
   },
   {
    "nombre": "PRADERAP VOL.2",
@@ -5351,9 +5335,7 @@
    },
    "autor": "Ardean",
    "staff_cuentas": {},
-   "categoria_id": "1309234419525222477",
-   "inscripciones": "abiertas",
-   "inscripciones_cuando": "2026-11-10T23:00:05"
+   "categoria_id": "1309234419525222477"
   },
   {
    "nombre": "FAT BATTLES PALOOZA T.3 FECHA 8",
@@ -5377,9 +5359,7 @@
    "staff": {},
    "autor": "Leonar-T",
    "staff_cuentas": {},
-   "categoria_id": "1309234419525222477",
-   "inscripciones": "abiertas",
-   "inscripciones_cuando": "2026-11-10T23:00:05"
+   "categoria_id": "1309234419525222477"
   },
   {
    "nombre": "PRADE RAP VOL.1 | LACREW",
@@ -5415,9 +5395,7 @@
    },
    "autor": "Ardean",
    "staff_cuentas": {},
-   "categoria_id": "1309234419525222477",
-   "inscripciones": "abiertas",
-   "inscripciones_cuando": "2026-11-10T23:00:05"
+   "categoria_id": "1309234419525222477"
   },
   {
    "nombre": "RANKED",
@@ -6556,7 +6534,7 @@
      "id": "987149314591719474"
     },
     {
-     "n": "VILCA | HHN",
+     "n": "VILCAZ | HHN",
      "id": "846870712950194196"
     }
    ],
