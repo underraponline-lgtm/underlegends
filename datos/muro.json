@@ -734,19 +734,19 @@
 "temporada"
 ]
 },
+"evangeline": {
+"rg": "E",
+"c": [
+"competitivo",
+"servidor",
+"temporada"
+]
+},
 "teo": {
 "rg": "E",
 "c": [
 "competitivo",
 "pais",
-"servidor",
-"temporada"
-]
-},
-"evangeline": {
-"rg": "E",
-"c": [
-"competitivo",
 "servidor",
 "temporada"
 ]

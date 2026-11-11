@@ -1259,19 +1259,21 @@
    "semillero": {
     "nuevos": {
      "FFA": 6,
-     "LKR": 2
+     "LKR": 2,
+     "DDF": 2
     },
     "gente": {
      "FFA": 32,
      "LKR": 23,
-     "DDS": 10
+     "DDS": 10,
+     "DDF": 8
     },
     "gana": "FFA"
    },
    "meta_va": {
     "ACAD": 0,
     "CH": 0,
-    "DDF": 0,
+    "DDF": 8,
     "DDS": 10,
     "DRA": 0,
     "FDS": 0,
