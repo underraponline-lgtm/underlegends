@@ -1398,5 +1398,27 @@
   "sin_permiso": true,
   "sv": "LKR"
  },
+ "1569835574292906046": {
+  "autor": "734945161158852630",
+  "canal": "1563698791595507743",
+  "cuando": "2026-11-10T22:06:07.046000+00:00",
+  "evento": "MF DOOM Y MADLIB EDICION 1",
+  "fecha": "10/11",
+  "llave": "1569835574292906046",
+  "pregunta": "1569873530747748505",
+  "preguntada": "2026-11-10 8:36 PM ET",
+  "preguntas": [
+   {
+    "lados": [
+     "CrisZJ🇵🇪",
+     "Monet 🇲🇽"
+    ],
+    "ronda": "SEMIFINALES"
+   }
+  ],
+  "respondidas": {},
+  "sin_permiso": false,
+  "sv": "DDS"
+ },
  "_leeme": "Las llaves que el ciclo no entendió y se las preguntó a quien las publicó, con botones o un menú (bot/finales.py). Una vez por llave, por su ID: así nunca se pregunta dos veces. Dlx, 12/10/2026."
 }

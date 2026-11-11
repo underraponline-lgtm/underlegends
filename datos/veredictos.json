@@ -1266,6 +1266,39 @@
    "b": "MINIBOY🇨🇱",
    "ganador": "MINIBOY🇨🇱",
    "votos": "1–0"
+  },
+  "1569870255994576928": {
+   "id": "1569870255994576928",
+   "sv": "#FDS ╏FREESTYLE DISCORD SERIES",
+   "g": "1489848581203689535",
+   "canal": "1536574435761332334",
+   "pub": 1794356635808,
+   "a": "CRK",
+   "b": "SOUL B",
+   "ganador": "SOUL B",
+   "votos": "1–0"
+  },
+  "1569870796065738854": {
+   "id": "1569870796065738854",
+   "sv": "#FDS ╏FREESTYLE DISCORD SERIES",
+   "g": "1489848581203689535",
+   "canal": "1536574435761332334",
+   "pub": 1794356764571,
+   "a": "ARTESI",
+   "b": "MITO.X10",
+   "ganador": "ARTESI",
+   "votos": "1–0"
+  },
+  "1569871139646476309": {
+   "id": "1569871139646476309",
+   "sv": "#LaCrew ||🎤ACADEMIA DE RAP 🎤",
+   "g": "765045834647339038",
+   "canal": "1309238412976590908",
+   "pub": 1794356846487,
+   "a": "LEONAR-T 🇲🇽",
+   "b": "EMILIO ALVA 🇲🇽",
+   "ganador": "EMILIO ALVA 🇲🇽",
+   "votos": "1–0"
   }
  },
  "llaves": {
@@ -6136,8 +6169,8 @@
    "g": "1489848581203689535",
    "canal": "1500675902042931280",
    "pub": 1794354780084,
-   "ed": 1794356187076,
-   "texto": "`[ OCTAVOS ]`\n⌞Scot 🇦🇷⌝ 🆚 ⌞Raizer🇵🇪⌝\n⌞Dios 🇲🇽⌝ 🆚 ⌞Lrs🇦🇷⌝\n⌞Trelok 🇨🇴⌝ 🆚 ⌞Cinexfilo 🇻🇪⌝\n⌞Leyenda.X5 🇦🇷⌝ 🆚 ⌞Artezzy 🇵🇪⌝\n⌞Krish 🇪🇸⌝ 🆚 ⌞Nxuz🇵🇪⌝\n⌞CrisZJ 🇵🇪⌝ 🆚 ⌞Mat MC 🇧🇴⌝",
+   "ed": 1794357308281,
+   "texto": "`[ OCTAVOS ]`\n⌞Scot 🇦🇷⌝ 🆚 ⌞Raizer🇵🇪⌝\n⌞Dios 🇲🇽⌝ 🆚 ⌞Lrs🇦🇷⌝\n⌞CRK 🇲🇽⌝ 🆚 ⌞Soul B 🇨🇱⌝\n⌞Leyenda.X5 🇦🇷⌝ 🆚 ⌞Artezzy 🇵🇪⌝\n⌞Scot 🇦🇷⌝ 🆚 ⌞Nxuz🇵🇪⌝\n⌞CrisZJ 🇵🇪⌝ 🆚 ⌞Mat MC 🇧🇴⌝",
    "batallas": [
     [
      "OCTAVOS",
@@ -6162,8 +6195,8 @@
     [
      "OCTAVOS",
      [
-      "Trelok 🇨🇴",
-      "Cinexfilo 🇻🇪"
+      "CRK 🇲🇽",
+      "Soul B 🇨🇱"
      ],
      null,
      "última ronda y no dice campeón",
@@ -6182,7 +6215,7 @@
     [
      "OCTAVOS",
      [
-      "Krish 🇪🇸",
+      "Scot 🇦🇷",
       "Nxuz🇵🇪"
      ],
      null,
@@ -6207,8 +6240,8 @@
    "g": "1489848581203689535",
    "canal": "1536574435761332334",
    "pub": 1794355387760,
-   "ed": 1794356635808,
-   "texto": "`[ OCTAVOS ]`\n⌞CALIZ⌝ 🆚 ⌞MCAREPA⌝\n⌞NC⌝ 🆚 ⌞RAIZER⌝\n⌞DIOS⌝ 🆚 ⌞LRS⌝\n⌞CRK⌝ 🆚 ⌞SOUL B⌝",
+   "ed": 1794357215326,
+   "texto": "`[ OCTAVOS ]`\n⌞CALIZ⌝ 🆚 ⌞MCAREPA⌝\n⌞NC⌝ 🆚 ⌞RAIZER⌝\n⌞DIOS⌝ 🆚 ⌞LRS⌝\n⌞CRK⌝ 🆚 ⌞SOUL B⌝\n⌞ARTESI⌝ 🆚 ⌞MITO.X10⌝",
    "batallas": [
     [
      "OCTAVOS",
@@ -6246,8 +6279,18 @@
       "CRK",
       "SOUL B"
      ],
-     null,
-     "última ronda y no dice campeón",
+     "SOUL B",
+     "veredicto",
+     []
+    ],
+    [
+     "OCTAVOS",
+     [
+      "ARTESI",
+      "MITO.X10"
+     ],
+     "ARTESI",
+     "veredicto",
      []
     ]
    ]
