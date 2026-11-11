@@ -224,6 +224,15 @@
 "temporada"
 ]
 },
+"nxuz": {
+"rg": "C",
+"c": [
+"competitivo",
+"pais",
+"servidor",
+"temporada"
+]
+},
 "okam": {
 "rg": "C",
 "c": [
@@ -244,15 +253,6 @@
 "hassan": {
 "rg": "A",
 "c": []
-},
-"nxuz": {
-"rg": "C",
-"c": [
-"competitivo",
-"pais",
-"servidor",
-"temporada"
-]
 },
 "tuca": {
 "rg": "B",
@@ -494,6 +494,14 @@
 "temporada"
 ]
 },
+"mayeutyk": {
+"rg": "",
+"c": [
+"competitivo",
+"servidor",
+"temporada"
+]
+},
 "keider": {
 "rg": "D",
 "c": [
@@ -514,14 +522,6 @@
 },
 "lvel": {
 "rg": "E",
-"c": [
-"competitivo",
-"servidor",
-"temporada"
-]
-},
-"mayeutyk": {
-"rg": "",
 "c": [
 "competitivo",
 "servidor",
@@ -596,6 +596,14 @@
 "temporada"
 ]
 },
+"vilca": {
+"rg": "",
+"c": [
+"competitivo",
+"servidor",
+"temporada"
+]
+},
 "cinexfilo": {
 "rg": "E",
 "c": [
@@ -637,14 +645,6 @@
 "presagio": {
 "rg": "",
 "c": [
-"servidor",
-"temporada"
-]
-},
-"vilca": {
-"rg": "",
-"c": [
-"competitivo",
 "servidor",
 "temporada"
 ]
@@ -981,6 +981,10 @@
 "rg": "",
 "c": []
 },
+"benji": {
+"rg": "",
+"c": []
+},
 "carlosmo": {
 "rg": "",
 "c": [
@@ -1139,10 +1143,6 @@
 "c": []
 },
 "emilioalva": {
-"rg": "",
-"c": []
-},
-"benji": {
 "rg": "",
 "c": []
 },

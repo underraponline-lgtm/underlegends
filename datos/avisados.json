@@ -42101,5 +42101,128 @@
    ]
   ],
   "v": 2
+ },
+ "606": {
+  "antes": {
+   "Adriagner": [
+    34,
+    40,
+    false
+   ],
+   "MaYeuTyK": [
+    55,
+    67,
+    false
+   ],
+   "NXUZ": [
+    27,
+    31,
+    false
+   ],
+   "Vilca": [
+    67,
+    84,
+    false
+   ],
+   "oriuz": [
+    288,
+    142,
+    true
+   ]
+  },
+  "canal": "1443793172013776997",
+  "duelos": [
+   [
+    "NXUZ",
+    "MaYeuTyK",
+    "NXUZ"
+   ],
+   [
+    "Vilca",
+    "alejozz 🇪🇨 🇪🇨",
+    "Vilca"
+   ],
+   [
+    "Benji 🇵🇪",
+    "Adriagner",
+    "Benji 🇵🇪"
+   ],
+   [
+    "NXUZ",
+    "Vilca",
+    "NXUZ"
+   ],
+   [
+    "Benji 🇵🇪",
+    "oriuz",
+    "Benji 🇵🇪"
+   ],
+   [
+    "NXUZ",
+    "Benji 🇵🇪",
+    "NXUZ"
+   ],
+   [
+    "Vilca",
+    "oriuz",
+    "Vilca"
+   ]
+  ],
+  "ev_antes": {
+   "Adriagner": 17,
+   "MaYeuTyK": 13,
+   "NXUZ": 38,
+   "Vilca": 17,
+   "oriuz": 7
+  },
+  "fecha": "20/10",
+  "firma": "6c63629a1816ea10",
+  "msg": "1570112820249366641",
+  "nombre": "MINI COMPE LLAVES",
+  "num": 606,
+  "participantes": 9,
+  "sello": {
+   "NXUZ": "81d1f429a1c4:7a510334494e"
+  },
+  "sv": "DDS",
+  "t": "2026-11-11T16:27:44Z",
+  "tabla": [
+   [
+    "NXUZ",
+    "Campeón",
+    7500
+   ],
+   [
+    "Benji 🇵🇪",
+    "Subcampeón",
+    5000
+   ],
+   [
+    "Vilca",
+    "Tercero",
+    4000
+   ],
+   [
+    "MaYeuTyK",
+    "Cuartos",
+    2000
+   ],
+   [
+    "alejozz 🇪🇨 🇪🇨",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Adriagner",
+    "Cuartos",
+    2000
+   ],
+   [
+    "oriuz",
+    "Cuarto",
+    1500
+   ]
+  ],
+  "v": 2
  }
 }

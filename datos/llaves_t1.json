@@ -50155,5 +50155,140 @@
     2000
    ]
   ]
+ },
+ "606": {
+  "dia": "2026-10-20",
+  "escala": "8-15",
+  "fecha": "20/10",
+  "links": [
+   "https://discord.com/channels/1443770831598649528/1556751961431220266/1562251347020218479"
+  ],
+  "n": 606,
+  "nombre": "MINI COMPE LLAVES",
+  "participantes": 9,
+  "rondas": [
+   {
+    "b": [
+     [
+      [
+       "NXUZ",
+       "MaYeuTyK"
+      ],
+      "NXUZ",
+      ""
+     ],
+     [
+      [
+       "Vilca",
+       "alejozz 🇪🇨 🇪🇨"
+      ],
+      "Vilca",
+      ""
+     ],
+     [
+      [
+       "Benji 🇵🇪",
+       "Adriagner"
+      ],
+      "Benji 🇵🇪",
+      ""
+     ],
+     [
+      [
+       "CrisZJ🇵🇪",
+       "Tokio🇦🇷🇬🇩"
+      ],
+      "",
+      "sin ganador: espera en ✅ Decidir"
+     ]
+    ],
+    "r": "Cuartos"
+   },
+   {
+    "b": [
+     [
+      [
+       "NXUZ",
+       "Vilca"
+      ],
+      "NXUZ",
+      ""
+     ],
+     [
+      [
+       "Benji 🇵🇪",
+       "oriuz"
+      ],
+      "Benji 🇵🇪",
+      "Walk-in 1: Oriuz 🇦🇷"
+     ]
+    ],
+    "r": "Semifinales"
+   },
+   {
+    "b": [
+     [
+      [
+       "Vilca",
+       "oriuz"
+      ],
+      "Vilca",
+      "podio: tercer puesto sin batalla en la llave"
+     ]
+    ],
+    "r": "Tercer puesto"
+   },
+   {
+    "b": [
+     [
+      [
+       "NXUZ",
+       "Benji 🇵🇪"
+      ],
+      "NXUZ",
+      ""
+     ]
+    ],
+    "r": "Final"
+   }
+  ],
+  "sv": "DDS",
+  "tabla": [
+   [
+    "NXUZ",
+    "Campeón",
+    7500
+   ],
+   [
+    "Benji 🇵🇪",
+    "Subcampeón",
+    5000
+   ],
+   [
+    "Vilca",
+    "Tercero",
+    4000
+   ],
+   [
+    "Adriagner",
+    "Cuartos",
+    2000
+   ],
+   [
+    "MaYeuTyK",
+    "Cuartos",
+    2000
+   ],
+   [
+    "alejozz 🇪🇨 🇪🇨",
+    "Cuartos",
+    2000
+   ],
+   [
+    "oriuz",
+    "Cuarto",
+    1500
+   ]
+  ]
  }
 }

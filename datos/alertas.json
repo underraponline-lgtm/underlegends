@@ -46,6 +46,7 @@
   "MANIJA Y NUEVA ERA VOL.1 · CH · 29/09 · octavos · HH 🇲🇽 🆚 Khat alien 🇬🇹 🆚 Higtme🇨🇴 🆚 Ruvi 🇨🇱": "2026-11-06T01:04:12.478242+00:00",
   "MASTER STYLE REMAKE · DDS · 27/10 · semifinales · nxus 🆚 ramses": "2026-11-09T21:43:22.888475+00:00",
   "MF DOOM Y MADLIB EDICION 1 · DDS · 07/11 · semifinales · Black D-mon 🇪🇨🇺🇸 🆚 Benji 🇵🇪": "2026-11-09T21:43:22.888475+00:00",
+  "MINI COMPE LLAVES · DDS · 20/10 · cuartos · CrisZJ🇵🇪 🆚 Tokio🇦🇷🇬🇩": "2026-11-11T16:42:40.730999+00:00",
   "MINUTOS A SANGRE - D3ATHROW EN VIVO VOL 3 · CH · 26/10 · octavos · Quasimoto🇻🇪 🆚 CrisZJ🇵🇪 🆚 lil monja 🇦🇷": "2026-11-06T01:04:12.478242+00:00",
   "MINUTOS A SANGRE - D3ATHROW EN VIVO VOL 3 · CH · 26/10 · octavos · vandu 🇨🇦 🆚 makma🇻🇪 🆚 Number 🇻🇪": "2026-11-06T01:04:12.478242+00:00",
   "MINUTOS A SANGRE - D3ATHROW EN VIVO VOL 3 · CH · 26/10 · octavos · yo mc 🇨🇱 🆚 Pollo Sport 🇦🇷 🆚 Yio 🇲🇽": "2026-11-06T01:04:12.478242+00:00",
@@ -57,6 +58,10 @@
  "ciclo:cola": {
   "t": "2026-10-07T22:42:58.996306+00:00",
   "texto": "2 corridas del ciclo se cancelaron esperando su turno de dibujar (07/10 6:42 PM ET): la anterior tardó de más. Lo que no dibujaron lo dibuja la próxima.\nhttps://github.com/underraponline-lgtm/underlegends/actions/runs/37695783015"
+ },
+ "ciclo:escuchar": {
+  "t": "2026-11-11T16:42:40.010199+00:00",
+  "texto": "El ciclo, en «escuchar», se cortó antes de terminar (11/11 11:42 AM ET): llegó a su tiempo máximo o alguien la canceló. Lo que alcanzó a sellar queda; el resto sigue en la próxima corrida.\nhttps://github.com/underraponline-lgtm/underlegends/actions/runs/43057629548"
  },
  "recordado:a7": {
   "t": "2026-09-26T03:54:52.348453+00:00",

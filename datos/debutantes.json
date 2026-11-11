@@ -293,14 +293,14 @@
    "avisado": "2026-10-25",
    "avisado_cumplido": "2026-11-09",
    "chat": "2026-10-25",
-   "con": 512,
-   "cumplido": "2026-10-25T00:48:12+00:00",
-   "debut": "2026-10-24T00:02:15+00:00",
+   "con": 580,
+   "cumplido": "2026-10-24T00:02:15+00:00",
+   "debut": "2026-10-20T23:49:06+00:00",
    "did": "",
-   "evento": "LLAVES PARA LA DISCORD STYLE 17",
-   "n": 580,
+   "evento": "MINI COMPE LLAVES",
+   "n": 606,
    "sv": "DDS",
-   "vence": "2026-10-31T00:02:15+00:00",
+   "vence": "2026-10-27T23:49:06+00:00",
    "vencido": false
   },
   "BLUE BURKA": {
@@ -2350,6 +2350,17 @@
    "sv": "FFA",
    "vence": "2026-11-16T03:16:00+00:00",
    "vencido": false
+  },
+  "alejozz": {
+   "con": null,
+   "cumplido": "",
+   "debut": "2026-10-20T23:49:06+00:00",
+   "did": "",
+   "evento": "MINI COMPE LLAVES",
+   "n": 606,
+   "sv": "DDS",
+   "vence": "2026-10-27T23:49:06+00:00",
+   "vencido": true
   },
   "arce": {
    "avisado": "2026-11-06",
