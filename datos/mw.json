@@ -227,9 +227,9 @@
     "base": 4000,
     "o": 50,
     "estado": "suelto",
-    "ev": 2,
+    "ev": 3,
     "fase": "Campeón",
-    "valor": 5500
+    "valor": 6500
    },
    {
     "n": "Rodas",

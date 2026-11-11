@@ -476,6 +476,11 @@
     "t1",
     1793029252929
    ],
+   "🏯 CIUDADELA": [
+    "🏯 CIUDADELA",
+    "t1",
+    1794422177684
+   ],
    "🏰 FORTALEZA": [
     "🏰 FORTALEZA",
     "t1",
@@ -493,6 +498,16 @@
    ]
   },
   "temporada": {
+   "⚡ RELÁMPAGO": [
+    "⚡ RELÁMPAGO",
+    "t1",
+    1794422177684
+   ],
+   "⭐ PENTACAMPEÓN": [
+    "⭐ PENTACAMPEÓN",
+    "t1",
+    1794422177684
+   ],
    "🌍 TROTAMUNDOS": [
     "🌍 TROTAMUNDOS",
     "t1",
@@ -509,7 +524,7 @@
     1793898258653
    ],
    "👑 CAMPEÓN x%d": [
-    "👑 CAMPEÓN x4",
+    "👑 CAMPEÓN x5",
     "t1",
     1793029252929
    ],
@@ -13095,6 +13110,11 @@
     "🌍 TROTAMUNDOS",
     "t1",
     1792953978519
+   ],
+   "🎖️ CURTIDO": [
+    "🎖️ CURTIDO",
+    "t1",
+    1794422177684
    ],
    "📅 INFALTABLE": [
     "📅 INFALTABLE",

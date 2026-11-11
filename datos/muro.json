@@ -189,6 +189,15 @@
 "temporada"
 ]
 },
+"miniboy": {
+"rg": "D",
+"c": [
+"competitivo",
+"pais",
+"servidor",
+"temporada"
+]
+},
 "guess": {
 "rg": "C",
 "c": [
@@ -202,15 +211,6 @@
 "rg": "B",
 "c": [
 "competitivo",
-"servidor",
-"temporada"
-]
-},
-"miniboy": {
-"rg": "D",
-"c": [
-"competitivo",
-"pais",
 "servidor",
 "temporada"
 ]
@@ -253,6 +253,14 @@
 "hassan": {
 "rg": "A",
 "c": []
+},
+"adriagner": {
+"rg": "B",
+"c": [
+"competitivo",
+"servidor",
+"temporada"
+]
 },
 "tuca": {
 "rg": "B",
@@ -312,14 +320,6 @@
 "c": [
 "competitivo",
 "pais",
-"servidor",
-"temporada"
-]
-},
-"adriagner": {
-"rg": "B",
-"c": [
-"competitivo",
 "servidor",
 "temporada"
 ]
@@ -653,19 +653,19 @@
 "rg": "",
 "c": []
 },
-"crk": {
-"rg": "E",
-"c": [
-"competitivo",
-"servidor",
-"temporada"
-]
-},
 "teito": {
 "rg": "E",
 "c": [
 "competitivo",
 "pais",
+"servidor",
+"temporada"
+]
+},
+"crk": {
+"rg": "E",
+"c": [
+"competitivo",
 "servidor",
 "temporada"
 ]
@@ -963,6 +963,10 @@
 "temporada"
 ]
 },
+"cj": {
+"rg": "",
+"c": []
+},
 "prosu": {
 "rg": "",
 "c": [
@@ -1009,6 +1013,10 @@
 "rg": "",
 "c": []
 },
+"goblin": {
+"rg": "",
+"c": []
+},
 "zetryko": {
 "rg": "",
 "c": [
@@ -1022,10 +1030,6 @@
 "c": []
 },
 "leopoldsedar": {
-"rg": "",
-"c": []
-},
-"cj": {
 "rg": "",
 "c": []
 },
@@ -7025,6 +7029,67 @@
 "k": "",
 "de": 216,
 "a": 153
+}
+],
+"sorpresas": []
+},
+"2026-11-11": {
+"tipo": "resnoche",
+"t": "2026-11-12T08:00:00Z",
+"dia": "2026-11-11",
+"eventos": 1,
+"part": 9,
+"campeones": [
+{
+"ev": "EL ULTIMO DDF",
+"sv": "DDF",
+"ll": 607,
+"quien": [
+[
+"Adriagner",
+"adriagner"
+]
+]
+}
+],
+"suman": [
+{
+"n": "Adriagner",
+"k": "adriagner",
+"pts": 7500,
+"ev": 1
+},
+{
+"n": "Goblin🇳🇮",
+"k": "goblin",
+"pts": 5000,
+"ev": 1
+},
+{
+"n": "Miniboy",
+"k": "miniboy",
+"pts": 3500,
+"ev": 1
+}
+],
+"suben": [
+{
+"n": "Goblin🇳🇮",
+"k": "goblin",
+"de": 333,
+"a": 287
+},
+{
+"n": "tormen",
+"k": "",
+"de": 153,
+"a": 141
+},
+{
+"n": "Adriagner",
+"k": "adriagner",
+"de": 34,
+"a": 28
 }
 ],
 "sorpresas": []

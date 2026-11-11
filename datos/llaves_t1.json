@@ -16156,7 +16156,7 @@
        "Molt"
       ],
       "PichulaMc, Global Hustler",
-      "triple (4 bandas, pasan 2); también pasa: Global Hustler 🇦🇷"
+      "triple (4 bandas, pasan 2); también pasa: Global Hustler🇦🇷"
      ]
     ],
     "r": "Octavos"
@@ -41125,7 +41125,7 @@
        "Soulb"
       ],
       "El novio de tu novia 🇧🇧, EIDP",
-      "triple (4 bandas, pasan 2); también pasa: Agustín la reliquia 🇺🇾"
+      "triple (4 bandas, pasan 2); también pasa: AGUSTIN LA RELIQUIA 🇺🇾"
      ],
      [
       [
@@ -50288,6 +50288,133 @@
     "oriuz",
     "Cuarto",
     1500
+   ]
+  ]
+ },
+ "607": {
+  "dia": "2026-11-11",
+  "escala": "8-15",
+  "fecha": "11/11",
+  "links": [
+   "https://discord.com/channels/1469009547971526659/1470097588635176960/1570137615720779895"
+  ],
+  "n": 607,
+  "nombre": "EL ULTIMO DDF",
+  "participantes": 9,
+  "rondas": [
+   {
+    "b": [
+     [
+      [
+       "Adriagner",
+       "tormen"
+      ],
+      "Adriagner",
+      ""
+     ],
+     [
+      [
+       "Mito",
+       "Teito"
+      ],
+      "Mito",
+      ""
+     ],
+     [
+      [
+       "Miniboy",
+       "Evangeline"
+      ],
+      "Miniboy",
+      ""
+     ],
+     [
+      [
+       "Goblin🇳🇮",
+       "CJ"
+      ],
+      "Goblin🇳🇮",
+      ""
+     ]
+    ],
+    "r": "Cuartos"
+   },
+   {
+    "b": [
+     [
+      [
+       "Adriagner",
+       "Mito"
+      ],
+      "Adriagner",
+      ""
+     ],
+     [
+      [
+       "Goblin🇳🇮",
+       "Miniboy"
+      ],
+      "Goblin🇳🇮",
+      ""
+     ]
+    ],
+    "r": "Semifinales"
+   },
+   {
+    "b": [
+     [
+      [
+       "Adriagner",
+       "Goblin🇳🇮"
+      ],
+      "Adriagner",
+      ""
+     ]
+    ],
+    "r": "Final"
+   }
+  ],
+  "sv": "DDF",
+  "tabla": [
+   [
+    "Adriagner",
+    "Campeón",
+    7500
+   ],
+   [
+    "Goblin🇳🇮",
+    "Subcampeón",
+    5000
+   ],
+   [
+    "Miniboy",
+    "Semifinal",
+    3500
+   ],
+   [
+    "Mito",
+    "Semifinal",
+    3500
+   ],
+   [
+    "CJ",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Evangeline",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Teito",
+    "Cuartos",
+    2000
+   ],
+   [
+    "tormen",
+    "Cuartos",
+    2000
    ]
   ]
  }
