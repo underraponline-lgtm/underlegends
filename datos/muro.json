@@ -254,6 +254,15 @@
 "rg": "A",
 "c": []
 },
+"mito": {
+"rg": "C",
+"c": [
+"competitivo",
+"pais",
+"servidor",
+"temporada"
+]
+},
 "adriagner": {
 "rg": "B",
 "c": [
@@ -268,15 +277,6 @@
 },
 "sinlimites": {
 "rg": "D",
-"c": [
-"competitivo",
-"pais",
-"servidor",
-"temporada"
-]
-},
-"mito": {
-"rg": "C",
 "c": [
 "competitivo",
 "pais",
@@ -7086,10 +7086,10 @@
 "a": 141
 },
 {
-"n": "Adriagner",
-"k": "adriagner",
-"de": 34,
-"a": 28
+"n": "CJ",
+"k": "cj",
+"de": 288,
+"a": 282
 }
 ],
 "sorpresas": []

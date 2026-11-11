@@ -2516,7 +2516,7 @@
    "Zeta": 4
   },
   "fecha": "08/10",
-  "firma": "da5c93b27d9817de",
+  "firma": "8d6be3711d8e173c",
   "msg": "1557926456259248232",
   "nombre": "SNAKE INSIGNIA 4 8",
   "num": 430,
@@ -24022,7 +24022,7 @@
    "Vandu": 35
   },
   "fecha": "20/10",
-  "firma": "718348775cb30f94",
+  "firma": "9ff9f91899379158",
   "msg": "1564147704035151906",
   "nombre": "RAP SIN GROSERIAS 2",
   "num": 522,
@@ -29975,7 +29975,7 @@
    "Teo": 18
   },
   "fecha": "30/10",
-  "firma": "f804fd902b119b89",
+  "firma": "0671daa01f74f433",
   "msg": "1565861597019111555",
   "nombre": "__ LA ISLA DE OKINAWA V.4 __",
   "num": 547,
@@ -30269,7 +30269,7 @@
    "mats": 5
   },
   "fecha": "26/10",
-  "firma": "f06e32c713f907d9",
+  "firma": "55cf5956c84d7dc8",
   "msg": "1565899302046277764",
   "nombre": "RAP SIN GROSERIAS 1",
   "num": 548,
@@ -31484,7 +31484,7 @@
    "Velatz": 41
   },
   "fecha": "31/10",
-  "firma": "9f3ad263fff822bf",
+  "firma": "73b9cfaf2f157bc4",
   "msg": "1566227272355020941",
   "nombre": "SNAKE INSIGNIA 7 8",
   "num": 553,
@@ -33046,7 +33046,7 @@
    "mats": 7
   },
   "fecha": "02/11",
-  "firma": "f98a1c63ec632b48",
+  "firma": "f8f01a7f6e6bb7c4",
   "msg": "1566714400314884126",
   "nombre": "RAP PARA RAPEROS",
   "num": 560,
@@ -33690,7 +33690,7 @@
    "OEP": 2
   },
   "fecha": "03/11",
-  "firma": "5da8cf2c5ab63cc6",
+  "firma": "b3b71a3f98d0ad4c",
   "msg": "1567309579967144037",
   "nombre": "Rayos y Centellas",
   "num": 564,
@@ -36399,7 +36399,7 @@
    "ikonoxx": 8
   },
   "fecha": "06/11",
-  "firma": "4cfff8663f8a7920",
+  "firma": "070a6ac622996024",
   "msg": "1568364084817297492",
   "nombre": "GALACTICOS DEL FREESTYLE VOL.17",
   "num": 575,
@@ -38643,7 +38643,7 @@
    "NXUZ": 36
   },
   "fecha": "07/11",
-  "firma": "f235844d0bb1517e",
+  "firma": "6b85582c23dc8651",
   "msg": "1569508050510028801",
   "nombre": "MF DOOM Y MADLIB EDICION 1",
   "num": 586,
@@ -39893,7 +39893,7 @@
    "yinn": 33
   },
   "fecha": "08/11",
-  "firma": "6d47e95f6d60857c",
+  "firma": "e4c3589b41759551",
   "msg": "1569128640363364464",
   "nombre": "K.O.M VOL.10",
   "num": 592,
@@ -40397,7 +40397,7 @@
    "black live": 1
   },
   "fecha": "09/11",
-  "firma": "88b32f6a4ee1fc7d",
+  "firma": "e7297a3185ba5133",
   "msg": "1569508072605618221",
   "nombre": "COMPE MAÑANERA",
   "num": 594,
@@ -41969,6 +41969,7 @@
   "v": 2
  },
  "605": {
+  "al_dia": true,
   "antes": {
    "Adriagner": [
     42,
@@ -42048,7 +42049,7 @@
    "tormen": 3
   },
   "fecha": "11/11",
-  "firma": "e15a7fa366870d30",
+  "firma": "492f8b1ed5d9d151",
   "msg": "1569945900820988016",
   "nombre": "EL ULTIMO DIA DE DDF",
   "num": 605,
@@ -42103,6 +42104,7 @@
   "v": 2
  },
  "606": {
+  "al_dia": true,
   "antes": {
    "Adriagner": [
     34,
@@ -42226,6 +42228,7 @@
   "v": 2
  },
  "607": {
+  "al_dia": true,
   "antes": {
    "Adriagner": [
     34,
@@ -42311,7 +42314,7 @@
    "tormen": 4
   },
   "fecha": "11/11",
-  "firma": "0829f84fb4e09d92",
+  "firma": "ddf2988f66468e83",
   "msg": "1570138092461891605",
   "nombre": "EL ULTIMO DDF",
   "num": 607,

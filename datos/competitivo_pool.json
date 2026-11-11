@@ -1222,12 +1222,12 @@
   "tg_c": {
    "bestia": 2,
    "clasico": 2,
-   "dg": 17,
+   "dg": 20,
    "fg": 5,
    "fp": 2,
    "mata": 1,
-   "riv": 24,
-   "venc": 16,
+   "riv": 25,
+   "venc": 17,
    "vengo": 1
   },
   "tg_p": {
@@ -1237,12 +1237,12 @@
    "unico": true
   },
   "nac": {
-   "evn": 1,
-   "evi": 15,
+   "evn": 2,
+   "evi": 16,
    "com": 3,
    "top": [
-    1,
-    "ec"
+    10,
+    "ar"
    ]
   }
  },
@@ -2649,19 +2649,19 @@
   "tg_c": {
    "bestia": 2,
    "clasico": 2,
-   "dg": 11,
+   "dg": 12,
    "fg": 2,
    "mata": 1,
-   "riv": 17,
-   "venc": 10
+   "riv": 19,
+   "venc": 11
   },
   "tg_p": {
-   "paises": 7,
+   "paises": 8,
    "paisesg": 6
   },
   "nac": {
    "evn": 9,
-   "evi": 17,
+   "evi": 18,
    "com": 4,
    "top": [
     3,
@@ -3813,7 +3813,7 @@
   "arc_sv": 0,
   "tg_c": {
    "bestia": 1,
-   "clasico": 1,
+   "clasico": 2,
    "dg": 4,
    "fg": 1,
    "riv": 5,
@@ -3826,7 +3826,7 @@
   },
   "nac": {
    "evn": 1,
-   "evi": 3,
+   "evi": 4,
    "com": 2,
    "top": [
     3,
@@ -4724,7 +4724,7 @@
   "tg_c": {
    "bestia": 2,
    "clasico": 3,
-   "dg": 20,
+   "dg": 21,
    "fp": 3,
    "mata": 4,
    "riv": 40,
@@ -4737,7 +4737,7 @@
   },
   "nac": {
    "evn": 9,
-   "evi": 42,
+   "evi": 43,
    "com": 0,
    "top": [
     1,
@@ -7854,9 +7854,9 @@
   "pos_sv": "",
   "arc_sv": 0,
   "tg_c": {
-   "bestia": 1,
-   "clasico": 1,
-   "dg": 2,
+   "bestia": 2,
+   "clasico": 2,
+   "dg": 4,
    "fp": 2,
    "riv": 3,
    "venc": 2
@@ -7866,8 +7866,8 @@
    "paisesg": 2
   },
   "nac": {
-   "evn": 1,
-   "evi": 1,
+   "evn": 2,
+   "evi": 2,
    "com": 0,
    "top": [
     8,
@@ -8141,7 +8141,7 @@
    "clasico": 2,
    "dg": 3,
    "fp": 1,
-   "riv": 13,
+   "riv": 14,
    "venc": 3
   },
   "tg_p": {
@@ -8150,7 +8150,7 @@
   },
   "nac": {
    "evn": 4,
-   "evi": 13,
+   "evi": 14,
    "com": 0,
    "top": [
     8,
@@ -8580,7 +8580,7 @@
   "arc_sv": 24,
   "tg_c": {
    "bestia": 1,
-   "clasico": 2,
+   "clasico": 3,
    "dg": 3,
    "mata": 1,
    "riv": 8,
@@ -8592,7 +8592,7 @@
   },
   "nac": {
    "evn": 0,
-   "evi": 9,
+   "evi": 10,
    "com": 0,
    "top": [
     8,
@@ -16000,7 +16000,7 @@
   "pos_sv": "102/171",
   "arc_sv": 41,
   "tg_c": {
-   "clasico": 1,
+   "clasico": 2,
    "riv": 3
   },
   "tg_p": {
@@ -16008,7 +16008,7 @@
    "pionero": true
   },
   "nac": {
-   "evn": 1,
+   "evn": 2,
    "evi": 3,
    "com": 0
   }
