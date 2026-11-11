@@ -1,5 +1,5 @@
 {
- "cuando": "2026-11-11T18:55:01+00:00",
+ "cuando": "2026-11-11T19:24:48+00:00",
  "anuncios": [
   {
    "nombre": "¡SE LLEGÓ LA GRAN NOCHE!",
@@ -5158,6 +5158,32 @@
    "inscripciones_cuando": "2026-11-10T23:00:05"
   },
   {
+   "nombre": "RBCW LATAM 2026",
+   "servidor": "ACAD",
+   "canal": "🥇┇torneos",
+   "msg_id": "1570153432721924097",
+   "cuando": "2026-11-11T19:09:10",
+   "canal_id": "1309243940448243856",
+   "guild_id": "765045834647339038",
+   "organizador": "",
+   "orgs": [],
+   "autor_h": "33b8d394b34980ad",
+   "cupos_texto": "",
+   "inscriptos": null,
+   "cupo_total": null,
+   "rango": "",
+   "modalidad": "",
+   "horario": "DE INSCRIPCIONES",
+   "fecha": "",
+   "premios": "",
+   "staff": {},
+   "autor": "Leonar-T",
+   "staff_cuentas": {},
+   "categoria_id": "1309234419525222477",
+   "inscripciones": "abiertas",
+   "inscripciones_cuando": "2026-11-10T23:00:05"
+  },
+  {
    "nombre": "NUESTRO SIGUIENTE DESTINO ES PARA REPRESENTAR A TODO EL CONTINENTE!!!",
    "servidor": "ACAD",
    "canal": "🥇┇torneos",
@@ -6813,6 +6839,24 @@
   }
  ],
  "inscripciones": [
+  {
+   "servidor": "LKR",
+   "canal": "📋・INSCRIPCIONES",
+   "texto": "Mito🇦🇷",
+   "quien": "lizeninn.",
+   "discord_id": "1493416945037611140",
+   "msg_id": "1570153621394558988",
+   "cuando": "2026-11-11T19:09:55"
+  },
+  {
+   "servidor": "DDF",
+   "canal": "『📑』Inscripciones",
+   "texto": "**Muerte a México y a Chile** 🇦🇷",
+   "quien": "takubot_95134",
+   "discord_id": "1448692821170061374",
+   "msg_id": "1570153335749873698",
+   "cuando": "2026-11-11T19:08:47"
+  },
   {
    "servidor": "LKR",
    "canal": "📋・INSCRIPCIONES",
@@ -42794,24 +42838,6 @@
    "discord_id": "1097714486795849748",
    "msg_id": "1557891519212429396",
    "cuando": "2026-10-08T23:04:42"
-  },
-  {
-   "servidor": "FFA",
-   "canal": "✦📝—inscripciones",
-   "texto": "Eclipse🇨🇱",
-   "quien": "eclipseeefre",
-   "discord_id": "1547397892153671792",
-   "msg_id": "1557891520139366411",
-   "cuando": "2026-10-08T23:04:42"
-  },
-  {
-   "servidor": "FFA",
-   "canal": "✦📝—inscripciones",
-   "texto": "Tuca 🇦🇷",
-   "quien": "tuquitta",
-   "discord_id": "458702447913861130",
-   "msg_id": "1557891516960350329",
-   "cuando": "2026-10-08T23:04:41"
   }
  ]
 }
