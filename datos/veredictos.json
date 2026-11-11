@@ -745,9 +745,9 @@
    "g": "1467763447117778989",
    "canal": "1540223675146707045",
    "pub": 1794236794538,
-   "a": "Majiztral 🇨🇴",
+   "a": "Majiztral🇨🇴",
    "b": "Mathias🇻🇪",
-   "ganador": "Majiztral 🇨🇴",
+   "ganador": "Majiztral🇨🇴",
    "votos": "1–0"
   },
   "1569367790173814825": {
@@ -767,9 +767,9 @@
    "g": "1467763447117778989",
    "canal": "1540223675146707045",
    "pub": 1794237939690,
-   "a": "Majiztral 🇨🇴",
+   "a": "Majiztral🇨🇴",
    "b": "Verc🇨🇱",
-   "ganador": "Majiztral 🇨🇴",
+   "ganador": "Majiztral🇨🇴",
    "votos": "1–0"
   },
   "1569437814167445685": {
@@ -6064,6 +6064,47 @@
      "veredicto",
      []
     ],
+    [
+     "CUARTOS",
+     [
+      "Majiztral🇨🇴",
+      "Mathias🇻🇪"
+     ],
+     "Majiztral🇨🇴",
+     "veredicto",
+     []
+    ],
+    [
+     "CUARTOS",
+     [
+      "Calíz🇲🇽",
+      "Verc🇨🇱"
+     ],
+     "Verc🇨🇱",
+     "veredicto",
+     []
+    ],
+    [
+     "FINAL",
+     [
+      "Majiztral🇨🇴",
+      "Verc🇨🇱"
+     ],
+     "Majiztral🇨🇴",
+     "veredicto",
+     []
+    ]
+   ]
+  },
+  "1569366600685977621": {
+   "id": "1569366600685977621",
+   "sv": "✮ 𝑼𝒓𝒃𝒂𝒏 𝑭𝒓𝒆𝒆𝒔𝒕𝒚𝒍𝒆 ✮ | A New Era",
+   "g": "1467763447117778989",
+   "canal": "1540223675146707045",
+   "pub": 1794236555025,
+   "ed": 1794237949816,
+   "texto": "`[ CUARTOS ]`\n⌞Majiztral🇨🇴⌝ 🆚 ⌞Mathias🇻🇪⌝\n⌞Calíz🇲🇽⌝ 🆚 ⌞Verc🇨🇱⌝\n`[ FINAL ]`\n⌞Majiztral🇨🇴⌝ 🆚 ⌞Verc🇨🇱⌝",
+   "batallas": [
     [
      "CUARTOS",
      [
