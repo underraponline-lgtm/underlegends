@@ -2,182 +2,6 @@
  "_leeme": "Lo que ✅ Decidir cerró o contestó solo, con la regla y la prueba (sheet/decidir.py, resolver_solo()), para «Lo que se resolvió solo» del Dashboard y su «Deshacer». «deshechas»: lo que Dlx deshizo; ninguna regla lo vuelve a tocar. Dlx, 13/10/2026.",
  "solas": [
   {
-   "id": "e944fd4956",
-   "tipo": "Nombre desconocido",
-   "sec": "PRADERAP VOL.2 · ACAD · 27/10 · #535",
-   "que": "¿Quién es «Infected🇨🇴»?",
-   "r": "Es Infecte (en este evento)",
-   "regla": "R21 · la cuenta que se anotó así para ese evento es de alguien de la Lista que esa noche no jugó con su nombre",
-   "rk": "R21",
-   "por": "el ciclo",
-   "porque": "la cuenta @mxrio_xtz (en Discord: «Infected») · en la Lista: Infecte se anotó como «Infected» para ese evento, no es staff de ACAD y esa noche no jugó con su nombre",
-   "t": 1793138554516,
-   "filas": [
-    915
-   ],
-   "variantes": [
-    "Infected🇨🇴"
-   ],
-   "escribio": {
-    "quien": "PRADERAP VOL.2 · ACAD · 27/10 · Infected🇨🇴"
-   }
-  },
-  {
-   "id": "d45b08223b",
-   "tipo": "Nombre desconocido",
-   "sec": "PRADERAP VOL.2 · ACAD · 27/10 · #535",
-   "que": "¿Quién es «Dreex 🇵🇪»?",
-   "r": "Es Drexx",
-   "regla": "Discord · su cuenta de Discord: la inscripción, el podio, la llave o la llamada",
-   "rk": "Discord",
-   "por": "el ciclo (su cuenta de Discord)",
-   "porque": "alias de Drexx: estaba en la llamada del evento con un nombre parecido",
-   "t": 1793138554516,
-   "filas": [
-    914
-   ],
-   "variantes": [
-    "Dreex 🇵🇪"
-   ],
-   "escribio": {
-    "alias": [
-     "Dreex",
-     "Drexx"
-    ],
-    "filas": [
-     322
-    ]
-   }
-  },
-  {
-   "id": "10c27f5a82",
-   "tipo": "Nombre desconocido",
-   "sec": "PRADERAP VOL.2 · ACAD · 27/10 · #535",
-   "que": "¿Quién es «Ryuk 🇦🇷»?",
-   "r": "Es alguien nuevo: alta con su cuenta 757267093162033253",
-   "regla": "Discord · su cuenta de Discord: la inscripción, el podio, la llave o la llamada",
-   "rk": "Discord",
-   "por": "el ciclo (su cuenta de Discord)",
-   "porque": "nuevo: entró a la Lista con la cuenta con que se anotó (757267093162033253)",
-   "t": 1793138554516,
-   "filas": [
-    916
-   ],
-   "variantes": [
-    "Ryuk 🇦🇷"
-   ],
-   "escribio": {
-    "alta": [
-     "Ryuk",
-     "757267093162033253"
-    ]
-   }
-  },
-  {
-   "id": "bdf0d61048",
-   "tipo": "Nombre desconocido",
-   "sec": "COMPE DE UDDI · ACAD · 22/09 · #398",
-   "que": "¿Quién es «<:3_KYS:1262380343139241994>»?",
-   "r": "Ya no hace falta",
-   "regla": "cierre · ya no hacía falta preguntarlo",
-   "rk": "cierre",
-   "por": "el ciclo",
-   "porque": "ya no está en ningún resultado: el lector lo lee distinto, o ya es alias de alguien",
-   "t": 1793142184052,
-   "filas": [
-    918
-   ],
-   "variantes": [
-    "<:3_KYS:1262380343139241994>"
-   ],
-   "escribio": {}
-  },
-  {
-   "id": "65b010c671",
-   "tipo": "Nombre desconocido",
-   "sec": "QCYO RAPEEN 5 · FFA · 27/10 · #539",
-   "que": "¿Quién es «Dyzz polla de 2 metros🇨🇱»?",
-   "r": "Es Dyzz (en este evento)",
-   "regla": "R21 · la cuenta que se anotó así para ese evento es de alguien de la Lista que esa noche no jugó con su nombre",
-   "rk": "R21",
-   "por": "el ciclo",
-   "porque": "la cuenta @dyzzmc (en Discord: «#51 | 📿», «Dyzzmzt») · en la Lista: Dyzz se anotó como «Dyzz polla de 2 metros» para ese evento, no es staff de FFA y esa noche no jugó con su nombre",
-   "t": 1793160243984,
-   "filas": [
-    927
-   ],
-   "variantes": [
-    "Dyzz polla de 2 metros🇨🇱"
-   ],
-   "escribio": {
-    "quien": "QCYO RAPEEN 5 · FFA · 27/10 · Dyzz polla de 2 metros🇨🇱"
-   }
-  },
-  {
-   "id": "711b033316",
-   "tipo": "Nombre desconocido",
-   "sec": "QCYO RAPEEN 5 · FFA · 27/10 · #539",
-   "que": "¿Quién es «Lizen🇦🇷»?",
-   "r": "Es Mito (en este evento)",
-   "regla": "R21 · la cuenta que se anotó así para ese evento es de alguien de la Lista que esa noche no jugó con su nombre",
-   "rk": "R21",
-   "por": "el ciclo",
-   "porque": "la cuenta @lizeninn. · en la Lista: Mito se anotó como «Lizen» para ese evento, no es staff de FFA y esa noche no jugó con su nombre",
-   "t": 1793160243984,
-   "filas": [
-    929
-   ],
-   "variantes": [
-    "Lizen🇦🇷"
-   ],
-   "escribio": {
-    "quien": "QCYO RAPEEN 5 · FFA · 27/10 · Lizen🇦🇷"
-   }
-  },
-  {
-   "id": "f0d4281c1a",
-   "tipo": "Nombre desconocido",
-   "sec": "QCYO RAPEEN 5 · FFA · 27/10 · #539",
-   "que": "¿Quién es «Rydo🇩🇪»?",
-   "r": "Es alguien nuevo: alta con su cuenta 674043115237015671",
-   "regla": "Discord · su cuenta de Discord: la inscripción, el podio, la llave o la llamada",
-   "rk": "Discord",
-   "por": "el ciclo (su cuenta de Discord)",
-   "porque": "nuevo: entró a la Lista con la cuenta con que se anotó (674043115237015671)",
-   "t": 1793160243984,
-   "filas": [
-    930
-   ],
-   "variantes": [
-    "Rydo🇩🇪"
-   ],
-   "escribio": {
-    "alta": [
-     "Rydo",
-     "674043115237015671"
-    ]
-   }
-  },
-  {
-   "id": "39099b05fb",
-   "tipo": "Alias posible",
-   "sec": "🪪 Identidad",
-   "que": "¿«Dyzz polla de 2 metros» es Dyzz? La cuenta de Dyzz en la Lista se anotó como «Dyzz polla de 2 metros», y en el ranking suman aparte. Si es la misma persona, los puntos de «Dyzz polla de 2 metros» pasan a Dyzz.\nLa cuenta: https://discord.com/users/1525996330042921081",
-   "r": "Ya no hace falta",
-   "regla": "cierre · ya no hacía falta preguntarlo",
-   "rk": "cierre",
-   "por": "el ciclo",
-   "porque": "ya no hace falta: «Dyzz polla de 2 metros» ya no suma aparte en el ranking",
-   "t": 1793162103838,
-   "filas": [
-    931
-   ],
-   "variantes": [
-    "DOS NOMBRES: «Dyzz polla de 2 metros» → «Dyzz» · cuenta 1525996330042921081"
-   ],
-   "escribio": {}
-  },
-  {
    "id": "b6fcb8786f",
    "tipo": "Batalla sin ganador",
    "sec": "ZONA MORTAL · DDF · 28/10 · #540",
@@ -3093,6 +2917,30 @@
     "alta": [
      "Sentpa",
      "429348374379233280"
+    ]
+   }
+  },
+  {
+   "id": "d8f50aa68a",
+   "tipo": "Nombre desconocido",
+   "sec": "MINI COMPE LLAVES · DDS · 20/10 · #606",
+   "que": "¿Quién es «alejozz 🇪🇨 🇪🇨»?",
+   "r": "Es alguien nuevo: alta con su cuenta 988931536080486420",
+   "regla": "Discord · su cuenta de Discord: la inscripción, el podio, la llave o la llamada",
+   "rk": "Discord",
+   "por": "el ciclo (su cuenta de Discord)",
+   "porque": "nuevo: entró a la Lista con la cuenta con que se anotó (988931536080486420)",
+   "t": 1794416425233,
+   "filas": [
+    1243
+   ],
+   "variantes": [
+    "alejozz 🇪🇨 🇪🇨"
+   ],
+   "escribio": {
+    "alta": [
+     "alejozz",
+     "988931536080486420"
     ]
    }
   }
