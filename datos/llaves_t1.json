@@ -50028,5 +50028,132 @@
     2000
    ]
   ]
+ },
+ "605": {
+  "dia": "2026-11-11",
+  "escala": "8-15",
+  "fecha": "11/11",
+  "links": [
+   "https://discord.com/channels/1469009547971526659/1470097588635176960/1569942242267893820"
+  ],
+  "n": 605,
+  "nombre": "EL ULTIMO DIA DE DDF",
+  "participantes": 8,
+  "rondas": [
+   {
+    "b": [
+     [
+      [
+       "Adriagner",
+       "tormen"
+      ],
+      "Adriagner",
+      ""
+     ],
+     [
+      [
+       "Sourlate🇳🇮",
+       "Teito"
+      ],
+      "Sourlate🇳🇮",
+      ""
+     ],
+     [
+      [
+       "Miniboy",
+       "Evangeline"
+      ],
+      "Miniboy",
+      ""
+     ],
+     [
+      [
+       "Goblin🇳🇮",
+       "CJ"
+      ],
+      "Goblin🇳🇮",
+      ""
+     ]
+    ],
+    "r": "Cuartos"
+   },
+   {
+    "b": [
+     [
+      [
+       "Adriagner",
+       "Sourlate🇳🇮"
+      ],
+      "Adriagner",
+      ""
+     ],
+     [
+      [
+       "Goblin🇳🇮",
+       "Miniboy"
+      ],
+      "Goblin🇳🇮",
+      ""
+     ]
+    ],
+    "r": "Semifinales"
+   },
+   {
+    "b": [
+     [
+      [
+       "Adriagner",
+       "Goblin🇳🇮"
+      ],
+      "Adriagner",
+      ""
+     ]
+    ],
+    "r": "Final"
+   }
+  ],
+  "sv": "DDF",
+  "tabla": [
+   [
+    "Adriagner",
+    "Campeón",
+    7500
+   ],
+   [
+    "Goblin🇳🇮",
+    "Subcampeón",
+    5000
+   ],
+   [
+    "Miniboy",
+    "Semifinal",
+    3500
+   ],
+   [
+    "Sourlate🇳🇮",
+    "Semifinal",
+    3500
+   ],
+   [
+    "CJ",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Evangeline",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Teito",
+    "Cuartos",
+    2000
+   ],
+   [
+    "tormen",
+    "Cuartos",
+    2000
+   ]
+  ]
  }
 }

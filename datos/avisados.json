@@ -41962,5 +41962,139 @@
    ]
   ],
   "v": 2
+ },
+ "605": {
+  "antes": {
+   "Adriagner": [
+    42,
+    50,
+    false
+   ],
+   "CJ": [
+    297,
+    161,
+    true
+   ],
+   "Evangeline": [
+    95,
+    124,
+    false
+   ],
+   "Miniboy": [
+    23,
+    26,
+    false
+   ],
+   "Teito": [
+    69,
+    87,
+    false
+   ],
+   "tormen": [
+    218,
+    488,
+    false
+   ]
+  },
+  "canal": "1566326935058124832",
+  "duelos": [
+   [
+    "Adriagner",
+    "tormen",
+    "Adriagner"
+   ],
+   [
+    "Sourlate🇳🇮",
+    "Teito",
+    "Sourlate🇳🇮"
+   ],
+   [
+    "Miniboy",
+    "Evangeline",
+    "Miniboy"
+   ],
+   [
+    "Goblin🇳🇮",
+    "CJ",
+    "Goblin🇳🇮"
+   ],
+   [
+    "Adriagner",
+    "Sourlate🇳🇮",
+    "Adriagner"
+   ],
+   [
+    "Goblin🇳🇮",
+    "Miniboy",
+    "Goblin🇳🇮"
+   ],
+   [
+    "Adriagner",
+    "Goblin🇳🇮",
+    "Adriagner"
+   ]
+  ],
+  "ev_antes": {
+   "Adriagner": 16,
+   "CJ": 4,
+   "Evangeline": 9,
+   "Miniboy": 51,
+   "Teito": 18,
+   "tormen": 3
+  },
+  "fecha": "11/11",
+  "firma": "a2cd8cea8e1dd19e",
+  "msg": "1569945900820988016",
+  "nombre": "EL ULTIMO DIA DE DDF",
+  "num": 605,
+  "participantes": 8,
+  "sello": {
+   "Adriagner": "a89f89844654:7a510334494e"
+  },
+  "sv": "DDF",
+  "t": "2026-11-11T05:24:29Z",
+  "tabla": [
+   [
+    "Adriagner",
+    "Campeón",
+    7500
+   ],
+   [
+    "Goblin🇳🇮",
+    "Subcampeón",
+    5000
+   ],
+   [
+    "Sourlate🇳🇮",
+    "Semifinal",
+    3500
+   ],
+   [
+    "Miniboy",
+    "Semifinal",
+    3500
+   ],
+   [
+    "tormen",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Teito",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Evangeline",
+    "Cuartos",
+    2000
+   ],
+   [
+    "CJ",
+    "Cuartos",
+    2000
+   ]
+  ],
+  "v": 2
  }
 }

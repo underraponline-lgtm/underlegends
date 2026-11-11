@@ -3,7 +3,7 @@
  "chats": {
   "ACAD": "2026-11-06",
   "CH": "2026-11-06",
-  "DDF": "2026-11-09",
+  "DDF": "2026-11-11",
   "DDS": "2026-11-09",
   "FDS": "2026-10-30",
   "FFA": "2026-11-11",
@@ -788,6 +788,18 @@
    "sv": "CH",
    "vence": "2026-10-27T22:07:15+00:00",
    "vencido": true
+  },
+  "Goblin": {
+   "chat": "2026-11-11",
+   "con": null,
+   "cumplido": "",
+   "debut": "2026-11-11T05:09:58+00:00",
+   "did": "",
+   "evento": "EL ULTIMO DIA DE DDF",
+   "n": 605,
+   "sv": "DDF",
+   "vence": "2026-11-18T05:09:58+00:00",
+   "vencido": false
   },
   "Guaicurús": {
    "avisado": "2026-10-29",
@@ -2047,6 +2059,18 @@
    "n": 468,
    "sv": "FFA",
    "vence": "2026-10-20T23:50:48+00:00",
+   "vencido": false
+  },
+  "Sourlate": {
+   "chat": "2026-11-11",
+   "con": null,
+   "cumplido": "",
+   "debut": "2026-11-11T05:09:58+00:00",
+   "did": "",
+   "evento": "EL ULTIMO DIA DE DDF",
+   "n": 605,
+   "sv": "DDF",
+   "vence": "2026-11-18T05:09:58+00:00",
    "vencido": false
   },
   "Stt": {

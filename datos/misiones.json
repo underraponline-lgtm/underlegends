@@ -7769,9 +7769,9 @@
      0
     ],
     "Adriagner": [
+     1,
      0,
-     0,
-     0,
+     1,
      0,
      0
     ],
@@ -7784,6 +7784,13 @@
     ],
     "Benjixo": [
      0,
+     0,
+     0,
+     0,
+     0
+    ],
+    "CJ": [
+     1,
      0,
      0,
      0,
@@ -7880,6 +7887,13 @@
      0,
      0
     ],
+    "Evangeline": [
+     1,
+     0,
+     0,
+     0,
+     0
+    ],
     "Fin": [
      0,
      0,
@@ -7891,6 +7905,13 @@
      0,
      0,
      0,
+     0,
+     0
+    ],
+    "Goblin🇳🇮": [
+     1,
+     0,
+     1,
      0,
      0
     ],
@@ -8014,8 +8035,8 @@
      0
     ],
     "Miniboy": [
-     0,
-     0,
+     1,
+     1,
      0,
      0,
      0
@@ -8097,8 +8118,22 @@
      0,
      0
     ],
+    "Sourlate🇳🇮": [
+     1,
+     0,
+     0,
+     0,
+     0
+    ],
     "Tam": [
      0,
+     0,
+     0,
+     0,
+     0
+    ],
+    "Teito": [
+     1,
      0,
      0,
      0,
@@ -8160,6 +8195,13 @@
      0,
      0
     ],
+    "tormen": [
+     1,
+     0,
+     0,
+     0,
+     0
+    ],
     "yinn": [
      0,
      2,
@@ -8168,7 +8210,16 @@
      0
     ]
    },
-   "pts": {}
+   "pts": {
+    "Adriagner": 300,
+    "CJ": 300,
+    "Evangeline": 300,
+    "Goblin🇳🇮": 300,
+    "Miniboy": 300,
+    "Sourlate🇳🇮": 300,
+    "Teito": 300,
+    "tormen": 300
+   }
   }
  },
  "suma": {
@@ -8189,7 +8240,7 @@
   "AREZ": 300,
   "Abraham": 1900,
   "Abyssus": 5500,
-  "Adriagner": 4400,
+  "Adriagner": 4700,
   "Agente sombra": 300,
   "Agus": 9300,
   "Akuseru": 900,
@@ -8216,7 +8267,7 @@
   "Bloody": 2200,
   "Blue": 300,
   "Bocto": 300,
-  "CJ": 2100,
+  "CJ": 2400,
   "Cajita": 300,
   "Calíz": 3100,
   "Carlos": 1900,
@@ -8266,7 +8317,7 @@
   "Erian": 10000,
   "Erik": 1900,
   "Erizo": 300,
-  "Evangeline": 2100,
+  "Evangeline": 2400,
   "Eze": 300,
   "Ezias🥈✒️🧢🐍": 900,
   "Ezze": 1600,
@@ -8279,6 +8330,7 @@
   "Geoka": 4400,
   "Gero": 300,
   "Global Hustler": 1000,
+  "Goblin🇳🇮": 300,
   "Gocho": 600,
   "Guaicurús🇰🇷": 300,
   "Guess": 4500,
@@ -8367,7 +8419,7 @@
   "Mato 🇧🇴": 300,
   "Mc arepa": 1000,
   "Millonari-O": 300,
-  "Miniboy": 4800,
+  "Miniboy": 5100,
   "Mito": 2800,
   "Molusco": 5400,
   "Monet": 300,
@@ -8447,10 +8499,11 @@
   "Soneto": 300,
   "Sosa": 3100,
   "Soulb": 5200,
+  "Sourlate🇳🇮": 300,
   "THO": 1000,
   "TONY  🇦🇷": 1000,
   "Tam": 8500,
-  "Teito": 1200,
+  "Teito": 1500,
   "Tenor": 7100,
   "Teo": 900,
   "Tier": 300,
@@ -8501,6 +8554,7 @@
   "rodrilp": 900,
   "romeo": 900,
   "setesfifi": 300,
+  "tormen": 300,
   "wei shenlong": 300,
   "yinn": 7400
  },

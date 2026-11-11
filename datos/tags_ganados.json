@@ -509,9 +509,14 @@
     1793898258653
    ],
    "👑 CAMPEÓN x%d": [
-    "👑 CAMPEÓN x3",
+    "👑 CAMPEÓN x4",
     "t1",
     1793029252929
+   ],
+   "💯 CENTENARIO": [
+    "💯 CENTENARIO",
+    "t1",
+    1794375528664
    ],
    "📈 EN ASCENSO": [
     "📈 EN ASCENSO",
@@ -4298,6 +4303,13 @@
   }
  },
  "evangeline": {
+  "competitivo": {
+   "🗡️ MATAGIGANTES": [
+    "🗡️ MATAGIGANTES",
+    "t1",
+    1794375528664
+   ]
+  },
   "servidor": {
    "📆 HABITUÉ": [
     "📆 HABITUÉ",
@@ -4315,6 +4327,11 @@
     "📈 EN ASCENSO",
     "t1",
     1793925416194
+   ],
+   "🔟 DOBLE DÍGITO": [
+    "🔟 DOBLE DÍGITO",
+    "t1",
+    1794375528664
    ],
    "🥉 AL PODIO": [
     "🥉 AL PODIO",
@@ -4674,6 +4691,20 @@
     "🥉 AL PODIO",
     "t1",
     1792953978519
+   ]
+  }
+ },
+ "goblin": {
+  "temporada": {
+   "🌱 PROMESA": [
+    "🌱 PROMESA",
+    "t1",
+    1794375528664
+   ],
+   "🥉 AL PODIO": [
+    "🥉 AL PODIO",
+    "t1",
+    1794375528664
    ]
   }
  },
