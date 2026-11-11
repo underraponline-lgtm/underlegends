@@ -904,7 +904,7 @@
   "Krish": {
    "competitivo": "0ee0f2f79b57:624f5e322311",
    "pais": "bb9d722ccc5c:733ce66bf5fa",
-   "servidor": "63ff3ec1dc2e:2415c901692f:b11e87",
+   "servidor": "63ff3ec1dc2e:2415c901692f:6b534c",
    "temporada": "ad36d8e8644c:7a510334494e"
   },
   "Krozakeo": {
@@ -1589,7 +1589,7 @@
   "Sami": {
    "competitivo": "e6cdc492d8e7:624f5e322311",
    "pais": "a9a137a0461c:733ce66bf5fa",
-   "servidor": "16df322aeb76:2415c901692f:03fcb1",
+   "servidor": "16df322aeb76:2415c901692f:fce3e6",
    "temporada": "9fc6e3a47999:7a510334494e"
   },
   "Sando": {
@@ -1628,7 +1628,7 @@
   "Sin Limites": {
    "competitivo": "d461fb1a3bae:624f5e322311",
    "pais": "76677bbb873d:733ce66bf5fa",
-   "servidor": "df8b10a0730e:2415c901692f:0bce64",
+   "servidor": "df8b10a0730e:2415c901692f:3d0a1b",
    "temporada": "87d8c19d8c89:7a510334494e"
   },
   "Six": {
@@ -1968,7 +1968,7 @@
    "competitivo": "973956b546f3:624f5e322311",
    "pais": "59670a2ac81a:733ce66bf5fa",
    "servidor": "e0c9ec1c47ef:2415c901692f:3c7154",
-   "temporada": "2fdbb316fc02:7a510334494e"
+   "temporada": "080e4453d65d:7a510334494e"
   },
   "doble h": {
    "competitivo": "9714036b04af:624f5e322311",
@@ -2096,5 +2096,5 @@
    "servidor": "7f8885a35a6d:2415c901692f:93a344"
   }
  },
- "cuando": "2026-11-11T04:03:08+00:00"
+ "cuando": "2026-11-11T05:02:29+00:00"
 }
