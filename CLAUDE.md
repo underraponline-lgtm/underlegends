@@ -438,12 +438,18 @@ VIVEN EN EL SHEET** (`espejo_t1.SIN_SHEET`): el archivo es la hoja, y el
 Sheet quedó quieto en lo que tenía esa noche. Las vitrinas las escribe
 `rankings.py` en `datos/t1_vitrina_*.json` y se leen con `fuente_vitrina()`
 o `rankings._leer_vitrina()`, **nunca** con `worksheet('Ranking …')`: un
-lector directo lee una tabla congelada y no falla. La Lista, AKAs,
-Pendientes, ✅ Decidir y Config **se siguen escribiendo en el Sheet**, pero el
-ciclo las copia a `datos/` al arrancar (`espejo_t1.al_dia()`) y las lee de
-ahí; lo que escribe en la corrida se vuelve a copiar antes de leerlo. Una PC,
-`recalcular.yml` y `dibujar` las leen del Sheet. Al final el Sheet **se
-congela como archivo, no se borra**.
+lector directo lee una tabla congelada y no falla.
+
+🖊️ **Y DESDE EL 12/11/2026 TAMBIÉN LA LISTA, AKAs, PENDIENTES, ✅ DECIDIR Y
+CONFIG** (Dlx: *«No, ya no lo toco»*): lo que se les escribía en el Sheet lo
+aplica `espejo_t1.aplicar()` sobre su archivo, desde `escribir._pedir()`, y
+las lecturas salen de ahí. **Escribirlas es del ciclo**: desde una PC se niega
+sin `--desde-aca` (y entonces `git pull` antes y commit enseguida), y en
+GitHub sólo las escribe `escuchar` —`guardar.sh` es «gana el mío», y dos
+trabajos se pisarían el archivo—. Lo único que sigue en el Sheet son las
+hojas que nadie lee (Log, Anuncios, los apodos) y los paneles con fórmula,
+que quedaron congelados. Al final el Sheet **se congela como archivo, no se
+borra**.
 
 ⚠️ **La fórmula está verificada contra las 138 filas de la pre-temporada**,
 con una diferencia máxima de 0.050. Ver el encabezado de

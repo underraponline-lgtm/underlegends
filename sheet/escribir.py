@@ -111,11 +111,15 @@ def _pedir(metodo, ruta, **kw):
         r0 = _de_archivo(ruta)
         if r0 is not None:
             return r0
-    # 🖊️ LOS ESCRITORES, A PRUEBA (etapa 6a, 12/11/2026): la base de lo que se va a escribir, antes de escribirlo.
-    # Ver `espejo_t1.antes_de_escribir()`
+    # 🖊️ LAS GRILLAS, SIN EL SHEET (etapa 6b, 12/11/2026): lo que se le escribe a la Lista, AKAs, Pendientes,
+    # ✅ Decidir o Config va a su archivo de datos/ (`espejo_t1.escribir_en_archivo()`); a la API, sólo lo de otras
+    # hojas. ⚠️ Sin `try`: si no se puede escribir el archivo, frena, como frenaría un error de la API
     if metodo in ('PUT', 'POST'):
+        import espejo_t1 as _EJ
+        hecho, kw = _EJ.escribir_en_archivo(metodo, ruta, kw, _titulo_de_id)
+        if hecho is not None:
+            return hecho
         try:
-            import espejo_t1 as _EJ
             _EJ.antes_de_escribir(metodo, ruta, kw, _titulo_de_id)
         except Exception:                                # noqa: BLE001
             pass

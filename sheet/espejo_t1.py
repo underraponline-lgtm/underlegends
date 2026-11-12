@@ -143,6 +143,12 @@ SIN_SHEET = {'Resultados', '1v1', 'Eventos Procesados',
              # 🏆 y las cinco vitrinas (etapa 5b, 12/11/2026; Dlx: «espera dos corridas y hazlo esta noche»): lo que
              # calcula `rankings.py` dio igual al Sheet en las corridas de las 11:22 PM, 11:52 PM y 12:22 AM
              'Ranking Temporada', 'Ranking Competitivo', 'Ranking Podios', 'Ranking Duelos', 'Ranking Mundial'}
+#: 🖊️ Y LAS CINCO GRILLAS (etapa 6b, 12/11/2026; Dlx: «dale, sigue con que los escritores escriban sólo el archivo» y,
+#: a «¿hoy escribes a mano en el Sheet?», «No, ya no lo toco»): la Lista, AKAs, Pendientes, ✅ Decidir y Config se leen
+#: y se escriben sólo en datos/. Lo que se escribía en el Sheet lo aplica `aplicar()` sobre el archivo
+#: (`escribir_en_archivo()`), la misma función que lo imitó a prueba en las corridas de las 3:35 y las 4:03 AM con
+#: todas las celdas de datos iguales. ⚠️ Desde una PC se niega sin `--desde-aca`: un solo escritor, como los resultados.
+SIN_SHEET |= set(GRILLAS)
 
 
 def sin_archivo(hoja):
@@ -588,6 +594,13 @@ def espejar_grillas(aplicar=False):
     `construir_akas`, paso 2d) y en el 2g. Devuelve `{hoja: 'igual' | 'cambió' | 'no'}`."""
     out = {}
     for hoja in GRILLAS:
+        if hoja in SIN_SHEET:
+            # 🖊️ ya no vive en el Sheet (etapa 6b): copiarla de ahí pisaría el archivo con la hoja congelada
+            g = grilla_guardada(hoja)
+            print('   %-20s %s' % (hoja, 'la fuente es datos/ (%d fila(s)): el Sheet ya no se escribe' % len(g)
+                                    if g is not None else '🔴 sin archivo'))
+            out[hoja] = 'datos' if g is not None else 'no'
+            continue
         try:
             g = _leer_grilla_sheet(hoja)
         except Exception as e:                             # noqa: BLE001
@@ -679,17 +692,32 @@ def hojas_de_pedido(metodo, ruta, kw, titulo_de_id=None):
                 a1 = a1[:-len(suf)]
         return {_celdas(unquote(a1))[0]}
     if ruta.startswith(':batchUpdate'):
-        ids = set()
-        for r in cuerpo.get('requests') or []:
-            for v in r.values():
-                if isinstance(v, dict):
-                    sid = v.get('sheetId', (v.get('range') or {}).get('sheetId') if isinstance(v.get('range'), dict) else None)
-                    if sid is not None:
-                        ids.add(sid)
+        ids = {_sheet_id(r) for r in cuerpo.get('requests') or []} - {None}
         if titulo_de_id is None:
             return set(GRILLAS) if ids else set()
         return {titulo_de_id(i) for i in ids} - {None}
     return set()
+
+
+def _sheet_id(x):
+    """El `sheetId` de un pedido de `:batchUpdate`, esté donde esté: `range.sheetId`, `rule.ranges[0].sheetId`
+    (`addConditionalFormatRule`), `protectedRange.range.sheetId`, `properties.sheetId`… o `None`. Pura.
+
+    🖊️ HASTA EL 12/11/2026 SÓLO SE MIRABA EL PRIMER NIVEL, y en la prueba del corte (`decidir.py --aplicar` con la API
+    bloqueada) el formato de ✅ Decidir se escapó al Sheet: sus reglas traen el `sheetId` dentro de `rule.ranges`."""
+    if isinstance(x, dict):
+        if 'sheetId' in x and not isinstance(x['sheetId'], (dict, list)):
+            return x['sheetId']
+        for v in x.values():
+            s = _sheet_id(v)
+            if s is not None:
+                return s
+    elif isinstance(x, list):
+        for v in x:
+            s = _sheet_id(v)
+            if s is not None:
+                return s
+    return None
 
 
 #: 🖊️ las hojas enteras que este proceso escribió: su archivo se refresca al terminar (o antes de leerlas)
@@ -703,6 +731,8 @@ _AL_SALIR = []
 def _al_salir():
     for hoja in sorted(_SUCIAS):
         refrescar(hoja)
+    if _ESCRITAS:
+        print('   🖊️ %s: escritas en datos/, sin el Sheet' % ', '.join(sorted(_ESCRITAS)))
     if _IMITADAS['iguales'] or _IMITADAS['distintas'] or _IMITADAS['no_se']:
         print('   %s escrituras del Operativo imitadas en datos/: %d hoja(s) igual al Sheet%s%s%s'
               % ('🖊️' if not (_IMITADAS['distintas'] or _IMITADAS['no_se']) else '🔴', _IMITADAS['iguales'],
@@ -735,7 +765,7 @@ def marcar_sucias(hojas):
     """🖊️ Lo llama `escribir._pedir()` después de cada escritura que salió bien. Nunca levanta."""
     if not _en_github():
         return
-    nuevas = {h for h in hojas if h in GRILLAS}
+    nuevas = {h for h in hojas if h in GRILLAS and h not in SIN_SHEET}
     if nuevas:
         _SUCIAS.update(nuevas)
         _registrar_salida()
@@ -751,6 +781,9 @@ def marcar_sucias(hojas):
 
 def refrescar(hoja):
     """Vuelve a copiar una hoja entera del Sheet a su archivo (después de que alguien la escribió). Nunca levanta."""
+    if hoja in SIN_SHEET:
+        _SUCIAS.discard(hoja)                              # 🖊️ el archivo es la hoja (etapa 6b): no hay qué copiar
+        return True
     try:
         g = _leer_grilla_sheet(hoja)
         viejo = grilla_guardada(hoja)
@@ -809,6 +842,11 @@ def comparar_lectura(ruta_get, respuesta):
 def fuente_grilla(hoja, del_sheet, lector='', base=BASE):
     """🪪 Lo que usan `construir_padron` y `construir_akas` en vez de `worksheet(hoja).get_all_values()` (etapa 4b).
     Con `CONTROL`, como `fuente()`: compara con la lectura de siempre (`del_sheet`) y si no coincide usa el Sheet."""
+    if hoja in SIN_SHEET:
+        g = grilla_guardada(hoja, base=base)               # 🖊️ el archivo es la hoja (etapa 6b), en cualquier lado
+        if g is None:
+            sin_archivo(hoja)
+        return g
     if base == BASE and de_archivo(hoja):
         _registrar_salida()
         _COMPARADAS['archivo'] += 1
@@ -871,7 +909,7 @@ def al_dia():
     except Exception as e:                                 # noqa: BLE001
         print('   ⚠️ no pude copiar las grillas (%s): se leen del Sheet, como antes' % str(e)[:80])
         r = {}
-    listas = {h for h, v in r.items() if v in ('igual', 'cambió')}
+    listas = {h for h, v in r.items() if v in ('igual', 'cambió', 'datos')}
     for h in listas:
         _sin_marca(h)
     os.environ[ENV_AL_DIA] = '|'.join(sorted(listas))
@@ -885,6 +923,8 @@ def de_archivo(hoja):
     """🗄️ ¿Esta grilla se lee de su archivo, sin preguntarle al Sheet? Sólo si `al_dia()` la dejó al día en esta
     corrida y, si alguien la escribió después, se pudo volver a copiar. Nunca levanta."""
     try:
+        if hoja in SIN_SHEET and hoja in GRILLAS:
+            return grilla_guardada(hoja) is not None       # 🖊️ el archivo es la hoja (etapa 6b), en cualquier lado
         if hoja not in GRILLAS or not _en_github():
             return False
         if hoja not in (os.environ.get(ENV_AL_DIA) or '').split('|'):
@@ -899,15 +939,14 @@ def de_archivo(hoja):
 def leer_de_archivo(ruta_get):
     """🗄️ Lo que `escribir._pedir('GET', '/values/<a1>')` contesta desde datos/ sin ir al Sheet, o `None` (y va al
     Sheet). Sólo el texto que se ve (sin `?valueRenderOption`…) y sólo lo que se guarda (`GRILLAS_RANGO`). Nunca
-    levanta."""
+    levanta, salvo 🖊️ una grilla que ya no vive en el Sheet (etapa 6b) sin su archivo: ahí frena (`sin_archivo()`)."""
     try:
         from urllib.parse import unquote
         if not ruta_get.startswith('/values/'):
             return None
         crudo = ruta_get[len('/values/'):]
-        if '?' in crudo:
-            return None
-        a1 = unquote(crudo)
+        opciones = '?' in crudo
+        a1 = unquote(crudo.split('?')[0])
         hoja, _f1, _c1, f2, c2 = _celdas(a1)
         if hoja not in GRILLAS:
             return None
@@ -915,11 +954,22 @@ def leer_de_archivo(ruta_get):
             _h, _a, _b, lf, lc = _celdas('%s!%s' % (hoja, GRILLAS_RANGO[hoja]))
             if not f2 or not c2 or f2 > lf or c2 > lc:
                 return None
-        if not de_archivo(hoja):
+        sin = hoja in SIN_SHEET
+        if opciones and not sin:
             return None
-        g = grilla_guardada(hoja)
+    except Exception:                                      # noqa: BLE001
+        return None
+    if sin:
+        g = grilla_guardada(hoja)                          # 🖊️ la grilla es su archivo, con o sin opciones
         if g is None:
-            return None
+            sin_archivo(hoja)
+    try:
+        if not sin:
+            if not de_archivo(hoja):
+                return None
+            g = grilla_guardada(hoja)
+            if g is None:
+                return None
         _registrar_salida()
         _COMPARADAS['archivo'] += 1
         out = {'range': a1, 'majorDimension': 'ROWS'}
@@ -1061,8 +1111,8 @@ def aplicar(grillas, metodo, ruta_api, kw, titulo_de_id=None):
                 if tipo in _SIN_VALORES:
                     continue
                 rng = (v or {}).get('range') or {}
-                sid = rng.get('sheetId', ((v or {}).get('start') or {}).get('sheetId'))
-                hoja = titulo_de_id(sid) if titulo_de_id else None
+                sid = _sheet_id(v)
+                hoja = titulo_de_id(sid) if titulo_de_id and sid is not None else None
                 if hoja not in grillas:
                     if hoja is None and titulo_de_id is None:
                         raise NoSe('%s sin saber de qué hoja' % tipo)
@@ -1122,7 +1172,7 @@ def antes_de_escribir(metodo, ruta_api, kw, titulo_de_id=None):
     try:
         if not os.environ.get(ENV_AL_DIA) or not _en_github():
             return
-        for hoja in hojas_de_pedido(metodo, ruta_api, kw, titulo_de_id) & set(GRILLAS):
+        for hoja in (hojas_de_pedido(metodo, ruta_api, kw, titulo_de_id) & set(GRILLAS)) - SIN_SHEET:
             if hoja in _IMITADA or hoja in _NO_SE:
                 continue
             if de_archivo(hoja):
@@ -1224,6 +1274,85 @@ def _letra(c):
         c, r = divmod(c - 1, 26)
         s = chr(65 + r) + s
     return s
+
+
+def _partir(metodo, ruta_api, kw, hojas, titulo_de_id):
+    """`(kw para las grillas de `hojas`, kw para lo demás o None)` de un pedido que puede tocar varias hojas: los `data`
+    de un `values:batchUpdate` y los `requests` de un `:batchUpdate` se reparten por hoja. Pura salvo `titulo_de_id`."""
+    cuerpo = dict((kw or {}).get('json') or {})
+    if ruta_api.startswith('/values:batchUpdate'):
+        mio = [d for d in cuerpo.get('data') or [] if _celdas(d.get('range', ''))[0] in hojas]
+        resto = [d for d in cuerpo.get('data') or [] if _celdas(d.get('range', ''))[0] not in hojas]
+        return dict(kw, json=dict(cuerpo, data=mio)), (dict(kw, json=dict(cuerpo, data=resto)) if resto else None)
+    if ruta_api.startswith(':batchUpdate'):
+        def de(r):
+            sid = _sheet_id(r)
+            return titulo_de_id(sid) if sid is not None and titulo_de_id else None
+
+        def es_mio(r):
+            # ⚠️ lo que no cambia valores y no dice de qué hoja es —`deleteProtectedRange` trae sólo el id de la
+            # protección— va con la grilla del mismo pedido: es su formato, y en el archivo no hace nada (medido en la
+            # prueba del corte, 12/11/2026: se escapaba al Sheet). `addSheet` no: crear una hoja sí es del Sheet
+            tipo = next(iter(r), '')
+            return de(r) in hojas or (_sheet_id(r) is None and tipo in _SIN_VALORES and tipo != 'addSheet')
+        mio = [r for r in cuerpo.get('requests') or [] if es_mio(r)]
+        resto = [r for r in cuerpo.get('requests') or [] if not es_mio(r)]
+        return dict(kw, json=dict(cuerpo, requests=mio)), (dict(kw, json=dict(cuerpo, requests=resto)) if resto else None)
+    return kw, None                                        # un solo rango: es de una sola hoja
+
+
+def _escritor_aca(hojas, argv=None, entorno=None):
+    """🖊️ Un solo escritor, también para las grillas: en GitHub escribe; en una PC se niega salvo `--desde-aca`."""
+    entorno = os.environ if entorno is None else entorno
+    argv = sys.argv if argv is None else argv
+    if entorno.get('GITHUB_ACTIONS') == 'true' or entorno.get('ESPEJO_SIEMPRE') == '1' or '--desde-aca' in argv:
+        return None
+    motivo = ('🔴 %s vive en datos/ y la escribe el ciclo, en GitHub, para que nunca haya dos escritores a la vez.\n'
+              '   Si sabes que el ciclo no está corriendo y lo quieres igual desde acá: `git pull` antes, --desde-aca, '
+              'y commit de su archivo de datos/ enseguida.' % ', '.join(sorted(hojas)))
+    try:
+        sys.stderr.reconfigure(encoding='utf-8', errors='replace')
+    except AttributeError:
+        pass
+    sys.exit(motivo)
+
+
+def escribir_en_archivo(metodo, ruta_api, kw, titulo_de_id=None):
+    """🖊️ LA ESCRITURA DE LAS GRILLAS, SIN EL SHEET (etapa 6b). Lo llama `escribir._pedir()` antes de ir a la API:
+    lo que el pedido le escribe a una grilla de `SIN_SHEET` se aplica a su archivo con `aplicar()`. Devuelve
+    `(respuesta, None)` si ya no queda nada para la API, o `(None, kw)` con lo que sí va (otra hoja, o todo).
+
+    ⚠️ NO SE TRAGA NADA: un pedido que no se sabe aplicar (`NoSe`) o una grilla sin archivo frenan, igual que frenaría
+    un error de la API. Escribir a medias en silencio es justo lo que esto no puede hacer."""
+    if metodo not in ('PUT', 'POST'):
+        return None, kw
+    hojas = hojas_de_pedido(metodo, ruta_api, kw, titulo_de_id) & set(GRILLAS) & SIN_SHEET
+    if not hojas:
+        return None, kw
+    _escritor_aca(hojas)
+    mio, resto = _partir(metodo, ruta_api, kw, hojas, titulo_de_id)
+    grillas = {}
+    for h in hojas:
+        g = grilla_guardada(h)
+        if g is None:
+            sin_archivo(h)
+        grillas[h] = [list(f) for f in g]
+    try:
+        aplicar(grillas, metodo, ruta_api, mio, titulo_de_id)
+    except NoSe as e:
+        raise RuntimeError('🔴 no sé escribir «%s» en %s (datos/): no escribo nada' % (e, ', '.join(sorted(hojas))))
+    for h, g in grillas.items():
+        texto = volcar_grilla(h, rectangular(_normal_grilla(g)))
+        if _texto_de(ruta(h)) != texto:
+            with io.open(ruta(h), 'w', encoding='utf-8', newline='\n') as f:
+                f.write(texto)
+    _ESCRITAS.update(hojas)
+    _registrar_salida()
+    return ({}, None) if resto is None else (None, resto)
+
+
+#: 🖊️ las grillas que este proceso escribió en su archivo (etapa 6b): para el renglón del final
+_ESCRITAS = set()
 
 
 def _self_check():
@@ -1357,8 +1486,8 @@ def _self_check():
        and ruta('1v1').endswith(os.path.join('datos', ACTUAL + '_1v1.json')), 'las tres hojas, con la temporada en el nombre')
     # 🛑 ETAPA 5: las que ya no viven en el Sheet se leen y se escriben sólo en su archivo, y sin archivo frena
     SIN_SHEET.update(sin_sheet0)
-    ok({'Resultados', '1v1', 'Eventos Procesados'} | set(VITRINAS) == SIN_SHEET,
-       'las tres de datos y las cinco vitrinas ya no viven en el Sheet')
+    ok({'Resultados', '1v1', 'Eventos Procesados'} | set(VITRINAS) | set(GRILLAS) == SIN_SHEET,
+       'las tres de datos, las cinco vitrinas y las cinco grillas ya no viven en el Sheet')
     real, ctrl = sys.modules.get('escribir'), CONTROL
     falso = types.ModuleType('escribir')
 
@@ -1392,6 +1521,9 @@ def _self_check():
 
     # 🗄️ LA PRUEBA DE LAS GRILLAS, APAGADA (12/11/2026): en el ciclo se copian al arrancar y se leen del archivo; lo que
     # se escribe se vuelve a copiar antes de leerlo, y lo que no se pudo copiar se lee del Sheet
+    # ⚠️ son pruebas de cuando las grillas TODAVÍA vivían en el Sheet (etapas 4b a 6a): se corren sin ellas en
+    # `SIN_SHEET`, y al final vuelven (etapa 6b)
+    SIN_SHEET.difference_update(GRILLAS)
     from urllib.parse import quote
     G = globals()
     ruta0, leer0 = G['ruta'], G['_leer_grilla_sheet']
@@ -1541,6 +1673,74 @@ def _self_check():
         _COMPARADAS['archivo'] = 0
     ok(igual and distinta, 'escritores en el ciclo: la copia imitada se compara con el Sheet al volver a copiarla')
     ok(formula, 'escritores: una celda con fórmula que recalculó el Sheet se cuenta aparte, no como distinta')
+
+    # 🖊️ EL CORTE (etapa 6b): las grillas vuelven a `SIN_SHEET` y se leen y se escriben sólo en su archivo
+    SIN_SHEET.update(GRILLAS)
+    env2 = {k: os.environ.get(k) for k in ('GITHUB_ACTIONS', 'ESPEJO_SIEMPRE', ENV_AL_DIA)}
+    al_sheet6 = []
+
+    def _no(h):
+        al_sheet6.append(h)
+        raise AssertionError('leyó el Sheet')
+    try:
+        with tempfile.TemporaryDirectory() as tmp:
+            os.makedirs(os.path.join(tmp, 'datos'))
+            G['ruta'] = lambda hoja, temp=ACTUAL, base=BASE: os.path.join(tmp, 'datos', '%s_%s.json' % (temp, GRILLAS[hoja]))
+            G['_leer_grilla_sheet'] = _no
+            for k in env2:
+                os.environ.pop(k, None)
+            for h in GRILLAS:
+                with io.open(ruta(h), 'w', encoding='utf-8', newline='\n') as f:
+                    f.write(volcar_grilla(h, [list(x) for x in {'AKAs': [['Alias', 'Nombre Real'], ['a', 'A']],
+                                                                'Config': [['Puesto', 'Puntos'], ['1', '1000']]}
+                                                               .get(h, [['x']])]))
+            # en una PC: se lee del archivo, y escribir se niega sin --desde-aca
+            lee_pc = (leer_de_archivo('/values/AKAs%21A1%3AB') or {}).get('values') == [['Alias', 'Nombre Real'], ['a', 'A']]
+            try:
+                escribir_en_archivo('PUT', '/values/%s?valueInputOption=RAW' % q('AKAs!A3'), {'json': {'values': [['b', 'B']]}})
+                niega = False
+            except SystemExit as e:
+                niega = 'datos/' in str(e) and '--desde-aca' in str(e)
+            os.environ['ESPEJO_SIEMPRE'] = '1'
+            # en el ciclo: el archivo es la hoja, sin copiar ni comparar nada con el Sheet
+            al = al_dia()
+            r_put = escribir_en_archivo('PUT', '/values/%s?valueInputOption=RAW' % q('AKAs!A3'),
+                                        {'json': {'values': [['b', 'B']]}})
+            r_cfg = escribir_en_archivo('PUT', '/values/%s?valueInputOption=RAW' % q('Config!B27'),
+                                        {'json': {'values': [['611']]}})
+            mixto = escribir_en_archivo('POST', '/values:batchUpdate', {'json': {'valueInputOption': 'RAW', 'data': [
+                {'range': 'Pendientes!A2', 'values': [['nuevo']]}, {'range': 'Log!A1', 'values': [['al Sheet']]}]}})
+            otra = escribir_en_archivo('PUT', '/values/%s?valueInputOption=RAW' % q('Log!A1'), {'json': {'values': [['x']]}})
+            try:
+                escribir_en_archivo('POST', ':batchUpdate', {'json': {'requests': [{'sortRange': {'range': {'sheetId': 4}}}]}},
+                                    {4: 'AKAs'}.get)
+                frena = False
+            except RuntimeError as e:
+                frena = 'no sé escribir' in str(e)
+            akas = grilla_guardada('AKAs')
+            cfg = grilla_guardada('Config')
+            pend = grilla_guardada('Pendientes')
+            r_leer = (leer_de_archivo('/values/AKAs%21A1%3AB?valueRenderOption=UNFORMATTED_VALUE') or {}).get('values')
+            refresca = refrescar('AKAs') and espejar_grillas(aplicar=True) == {h: 'datos' for h in GRILLAS}
+            g_fuente = fuente_grilla('AKAs', _no)
+    finally:
+        G['ruta'], G['_leer_grilla_sheet'] = ruta0, leer0
+        for k, v in env2.items():
+            if v is None:
+                os.environ.pop(k, None)
+            else:
+                os.environ[k] = v
+        _ESCRITAS.clear()
+        _SUCIAS.clear()
+        _COMPARADAS['archivo'] = 0
+    ok(lee_pc and niega, 'el corte, en una PC: la grilla se lee de su archivo, y escribirla se niega sin --desde-aca')
+    ok(al == set(GRILLAS) and r_put == ({}, None) and r_cfg == ({}, None)
+       and akas == [['Alias', 'Nombre Real'], ['a', 'A'], ['b', 'B']] and cfg[26] == ['', '611']
+       and mixto[0] is None and mixto[1]['json']['data'] == [{'range': 'Log!A1', 'values': [['al Sheet']]}]
+       and pend[1] == ['nuevo'] and otra == (None, {'json': {'values': [['x']]}}) and frena,
+       'el corte, en el ciclo: lo escrito va a su archivo; lo de otra hoja, a la API; lo que no se sabe escribir, frena')
+    ok(r_leer == [['Alias', 'Nombre Real'], ['a', 'A'], ['b', 'B']] and refresca and g_fuente == akas and not al_sheet6,
+       'el corte: se lee del archivo aun con opciones, y nada se copia ni se compara con el Sheet')
     print('\n   %s' % ('✅ todo bien' if not fallas else '🔴 %d mal' % fallas))
     return 1 if fallas else 0
 

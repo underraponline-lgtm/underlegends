@@ -256,6 +256,17 @@ jobs:
         if: success() && inputs.simulacro != true
         run: python bot/avisos_personales.py --aplicar || true
 
+      - name: lo que ya se cerró en Pendientes
+        # 🖊️ VIVÍA EN `dibujar`, DESPUÉS DE SU COMMIT (hasta el 12/11/2026):
+        # mientras `Pendientes` estaba en el Sheet daba igual quién la
+        # escribiera. Desde que vive en `datos/t1_pendientes.json` (etapa 6b
+        # de sacar el Sheet) la escribe sólo `escuchar` —que va de a uno, y
+        # en la misma fila que `recalcular.yml`—: en `dibujar` se perdía, y
+        # con «gana el mío» de `guardar.sh` dos trabajos se pisarían el
+        # archivo. Va ANTES de guardar. Nunca frena.
+        if: always() && inputs.simulacro != true
+        run: python sheet/pendientes.py --barrer --aplicar || true
+
       - name: guardar
         # 🔴 EL CUERPO VIVE EN `bot/ci/guardar.sh`, Y NO ES PROLIJIDAD:
         # lo llaman los DOS trabajos. Copiar 130 lineas es la forma que
@@ -377,5 +388,6 @@ jobs:
           # cola llena de cosas hechas se deja de leer, y entonces deja
           # de existir: es la leccion de las 188 alarmas falsas del
           # `audit` y la que `avisar.py` aplica con los avisos.
-          python sheet/pendientes.py --barrer --aplicar || true
+          # 🖊️ Y DESDE EL 12/11/2026 ESO LO HACE `escuchar`, antes de su
+          # commit (ver «lo que ya se cerró en Pendientes»): acá sólo se mira.
           python sheet/pendientes.py || true
