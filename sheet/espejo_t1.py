@@ -704,8 +704,9 @@ def _al_salir():
     for hoja in sorted(_SUCIAS):
         refrescar(hoja)
     if _IMITADAS['iguales'] or _IMITADAS['distintas'] or _IMITADAS['no_se']:
-        print('   %s escrituras del Operativo imitadas en datos/: %d hoja(s) igual al Sheet%s%s'
+        print('   %s escrituras del Operativo imitadas en datos/: %d hoja(s) igual al Sheet%s%s%s'
               % ('🖊️' if not (_IMITADAS['distintas'] or _IMITADAS['no_se']) else '🔴', _IMITADAS['iguales'],
+                 ' (%d celda(s) con fórmula aparte)' % _IMITADAS['formulas'] if _IMITADAS.get('formulas') else '',
                  ', %d DISTINTA(S)' % _IMITADAS['distintas'] if _IMITADAS['distintas'] else '',
                  ', %d sin poder imitar' % _IMITADAS['no_se'] if _IMITADAS['no_se'] else ''))
     if _COMPARADAS['archivo']:
@@ -1162,8 +1163,7 @@ def _comparar_imitada(hoja, del_sheet):
     if a == b:
         _IMITADAS['iguales'] += 1
         return True
-    _IMITADAS['distintas'] += 1
-    malas = []
+    distintas = []
     for i in range(max(len(a), len(b))):
         fa = a[i] if i < len(a) else []
         fb = b[i] if i < len(b) else []
@@ -1171,10 +1171,51 @@ def _comparar_imitada(hoja, del_sheet):
             x = fa[j] if j < len(fa) else ''
             y = fb[j] if j < len(fb) else ''
             if x != y:
-                malas.append('%s%d «%s» / Sheet «%s»' % (_letra(j + 1), i + 1, x[:30], y[:30]))
-    print('   🔴 %s: lo imitado no coincide con el Sheet en %d celda(s) (%d contra %d filas): %s'
-          % (hoja, len(malas), len(a), len(b), ' · '.join(malas[:3])))
+                distintas.append((i + 1, j + 1, x, y))
+    # 🧮 LOS PANELES SON FÓRMULAS (medido en la corrida de las 3:35 AM del 12/11): «📊 Totales» y «📈 Progreso» de la
+    # Lista (L:M) y «📊 Total aliases» de AKAs (J) los recalcula el Sheet, y acá no se calculan. Una celda con fórmula
+    # que cambió no es un error de la imitación: se cuenta aparte. Se pregunta sólo cuando algo difiere
+    calc = _formulas(hoja)
+    con_formula = [d for d in distintas if (d[0], d[1]) in calc]
+    malas = [d for d in distintas if (d[0], d[1]) not in calc]
+    nota = (' (y %d con fórmula, que calcula el Sheet)' % len(con_formula)) if con_formula else ''
+    if not malas:
+        _IMITADAS['iguales'] += 1
+        _IMITADAS['formulas'] = _IMITADAS.get('formulas', 0) + len(con_formula)
+        print('   🖊️ %s: lo imitado coincide con el Sheet%s' % (hoja, nota))
+        return True
+    _IMITADAS['distintas'] += 1
+    print('   🔴 %s: lo imitado no coincide con el Sheet en %d celda(s)%s (%d contra %d filas): %s'
+          % (hoja, len(malas), nota, len(a), len(b),
+             ' · '.join('%s%d «%s» / Sheet «%s»' % (_letra(c), f, x[:30], y[:30]) for f, c, x, y in malas[:3])))
     return False
+
+
+_FORMULAS = {}
+
+
+def _formulas(hoja):
+    """🧮 `{(fila, columna)}` (base 1) de las celdas de `hoja` que tienen fórmula. Una lectura por hoja y proceso; si no
+    se puede, ninguna (y entonces todo lo distinto cuenta como distinto)."""
+    if hoja in _FORMULAS:
+        return _FORMULAS[hoja]
+    out = set()
+    try:
+        import requests
+        from escribir import token, id_operativo
+        rng = "'%s'" % hoja + ('!' + GRILLAS_RANGO[hoja] if hoja in GRILLAS_RANGO else '')
+        r = requests.get('https://sheets.googleapis.com/v4/spreadsheets/%s/values/%s?valueRenderOption=FORMULA'
+                         % (id_operativo(), requests.utils.quote(rng)),
+                         headers={'Authorization': 'Bearer ' + token()}, timeout=90)
+        r.raise_for_status()
+        for i, f in enumerate(r.json().get('values') or [], 1):
+            for j, v in enumerate(f, 1):
+                if isinstance(v, str) and v.startswith('='):
+                    out.add((i, j))
+    except Exception as e:                                 # noqa: BLE001
+        print('   ⚠️ %s: no pude ver qué celdas son fórmulas (%s)' % (hoja, str(e)[:60]))
+    _FORMULAS[hoja] = out
+    return out
 
 
 def _letra(c):
@@ -1456,6 +1497,7 @@ def _self_check():
 
     # y la vuelta entera, en el ciclo: la base antes, la imitación después, y la comparación al volver a copiarla
     env1 = {k: os.environ.get(k) for k in ('GITHUB_ACTIONS', 'ESPEJO_SIEMPRE', ENV_AL_DIA)}
+    formulas0 = G['_formulas']
     del_sheet['AKAs'] = [['Alias', 'Nombre Real'], ['a', 'A']]
     sheet_despues = {}
     try:
@@ -1463,6 +1505,8 @@ def _self_check():
             os.makedirs(os.path.join(tmp, 'datos'))
             G['ruta'] = lambda hoja, temp=ACTUAL, base=BASE: os.path.join(tmp, 'datos', '%s_%s.json' % (temp, GRILLAS[hoja]))
             G['_leer_grilla_sheet'] = lambda h: [list(f) for f in sheet_despues.get(h, del_sheet[h])]
+            calc = set()
+            G['_formulas'] = lambda h: calc
             os.environ['ESPEJO_SIEMPRE'] = '1'
             al_dia()
             pedido = ('PUT', '/values/%s?valueInputOption=RAW' % q('AKAs!A3'), {'json': {'values': [['b', 'B']]}})
@@ -1475,8 +1519,15 @@ def _self_check():
             sheet_despues['AKAs'] = del_sheet['AKAs'] + [['b', 'otra cosa']]
             imitar(*pedido)
             distinta = refrescar('AKAs') and _IMITADAS['distintas'] == 1
+            # 🧮 la misma diferencia, pero en una celda con fórmula (un panel que recalcula el Sheet): no cuenta
+            calc.add((3, 2))
+            antes_de_escribir(*pedido)
+            sheet_despues['AKAs'] = del_sheet['AKAs'] + [['b', 'el total, recalculado']]
+            imitar(*pedido)
+            formula = (refrescar('AKAs') and _IMITADAS['distintas'] == 1 and _IMITADAS['iguales'] == 2
+                       and _IMITADAS.get('formulas') == 1)
     finally:
-        G['ruta'], G['_leer_grilla_sheet'] = ruta0, leer0
+        G['ruta'], G['_leer_grilla_sheet'], G['_formulas'] = ruta0, leer0, formulas0
         for k, v in env1.items():
             if v is None:
                 os.environ.pop(k, None)
@@ -1489,6 +1540,7 @@ def _self_check():
             _IMITADAS[k] = 0
         _COMPARADAS['archivo'] = 0
     ok(igual and distinta, 'escritores en el ciclo: la copia imitada se compara con el Sheet al volver a copiarla')
+    ok(formula, 'escritores: una celda con fórmula que recalculó el Sheet se cuenta aparte, no como distinta')
     print('\n   %s' % ('✅ todo bien' if not fallas else '🔴 %d mal' % fallas))
     return 1 if fallas else 0
 
