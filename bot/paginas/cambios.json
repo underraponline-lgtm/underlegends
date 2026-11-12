@@ -11,6 +11,16 @@
  ],
  "cambios": [
     {
+        "version": "4.75",
+        "dia": "2026-11-12",
+        "cuando": "2026-11-12T17:47:00-05:00",
+        "titulo": "La bienvenida, pulida",
+        "items": [
+            "**Un clip del video que se trababa ya va fluido**, como los demás.",
+            "**Los títulos de cada página se animan** como «Liga Global»: entran en blanco y se llenan con el video."
+        ]
+    },
+    {
         "version": "4.74",
         "dia": "2026-11-12",
         "cuando": "2026-11-12T17:20:00-05:00",
