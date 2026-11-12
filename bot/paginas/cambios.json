@@ -11,6 +11,18 @@
  ],
  "cambios": [
     {
+        "version": "4.59",
+        "dia": "2026-11-12",
+        "cuando": "2026-11-12T06:40:00-05:00",
+        "titulo": "La bienvenida, más grande y en HD",
+        "items": [
+            "**En la compu, la bienvenida llena la pantalla** y el video va en HD.",
+            "**Abajo ya no hay barra**: los puntos y el botón van directo sobre el video. Se pasa de página deslizando o tocando un punto.",
+            "**Las cartas de atrás cambian con la de adelante**: si al frente está la #1 del competitivo, atrás van la #2 y la #3 del competitivo.",
+            "**Un video más claro**, con otra batalla de Sombra, y «LIGA GLOBAL» pasa del blanco a la textura del video sin saltos."
+        ]
+    },
+    {
         "version": "4.58",
         "dia": "2026-11-12",
         "cuando": "2026-11-12T06:20:00-05:00",
