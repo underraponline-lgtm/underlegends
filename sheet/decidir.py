@@ -3302,6 +3302,12 @@ def reglas(preguntas, eventos, dry=True, todas=None):
                     elif mid in borradas:
                         sola(p, YA_NO, 'R5', 'esa llave se borró y no hubo otra (`cancelados.json`): no suma')
                 continue
+            # 🧹 el aviso de «alguien contra sí mismo» de antes de R8 (13/10/2026): desde entonces el motor saca esa batalla
+            # solo y el aviso ya no viene acá (`motor.procesar()`, «CONSIGO MISMO»). Quedaba abierto el de la #461
+            if 'pelean en la misma batalla' in det:
+                sola(p, YA_NO, 'cierre', 'desde R8 (13/10/2026) la batalla de alguien contra sí mismo se saca sola y no '
+                     'paga ni es duelo: no hay nada que revisar')
+                continue
             m = _ESCALA_RE.match(det)
             if m and MO is not None:
                 puesto = dict(MO.CAIDA).get(MO.ronda_de(m.group(1)))
@@ -3778,8 +3784,13 @@ def _pregunta(p):
         # 🏆 `match`: los tres primeros de su tabla, «Ceko · Juasmio · Mr.Kude» (el link a su tabla ya salió aparte)
         m = LIGA_FIN_RE.match(det)
         tops = [x.strip() for x in str(match or '').split(' · ') if x.strip()]
-        return ('¿Terminó %s? Lleva tres semanas sin batallas y sin una fecha anunciada. Si terminó, ¿quién la ganó? '
-                'El campeón entra al Salón de campeones, con su insignia' % (m.group(2) if m else det),
+        # 📅 los días de verdad (12/11/2026): decía «tres semanas» siempre, también de FMS Tricolor LKR, que se preguntó
+        # a los 6 porque se quedó sin canales (`ligas.terminadas()`, `cerrada`)
+        dias = dias_desde('%s/%s' % (m.group(3)[8:10], m.group(3)[5:7])) if m else None
+        cuanto = ('%d días sin batallas' % dias + (' y sin una fecha anunciada' if dias >= 21 else '')
+                  if dias is not None else 'semanas sin batallas')
+        return ('¿Terminó %s? Lleva %s. Si terminó, ¿quién la ganó? '
+                'El campeón entra al Salón de campeones, con su insignia' % (m.group(2) if m else det, cuanto),
                 ', '.join('%dº %s' % (i + 1, x) for i, x in enumerate(tops)) or '—',
                 ['Terminó: la ganó %s' % x for x in tops] + [LIGA_SIGUE])
     if t == 'Reporte':
