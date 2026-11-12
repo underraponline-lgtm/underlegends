@@ -3038,6 +3038,30 @@
    "escribio": {
     "batalla": "FATS BATTLES PALOOZA FECHA 7 · ACAD · 19/10 · cuartos · MAJIZTRAL 🇨🇴 + MINIBOY 🇨🇱 🆚 MCO 🇦🇷 + MATHIAS 🇻🇪"
    }
+  },
+  {
+   "id": "1e247a0bc5",
+   "tipo": "Nombre desconocido",
+   "sec": "GALACTICOS DEL FREESTYLE VOL.1 · ACAD · 11/11 · #608",
+   "que": "¿Quién es «Nene🇨🇱»?",
+   "r": "Es alguien nuevo: alta con su cuenta 1462907811792031754",
+   "regla": "Discord · su cuenta de Discord: la inscripción, el podio, la llave o la llamada",
+   "rk": "Discord",
+   "por": "el ciclo (su cuenta de Discord)",
+   "porque": "nuevo: entró a la Lista con la cuenta con que se anotó (1462907811792031754)",
+   "t": 1794453353637,
+   "filas": [
+    1250
+   ],
+   "variantes": [
+    "Nene🇨🇱"
+   ],
+   "escribio": {
+    "alta": [
+     "Nene",
+     "1462907811792031754"
+    ]
+   }
   }
  ],
  "deshechas": []

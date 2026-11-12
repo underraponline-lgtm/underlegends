@@ -1,7 +1,7 @@
 {
  "_leeme": "El reto del debut (bot/debutantes.py): quién debutó desde el 12/10/2026 a las 6 PM ET, cuándo vence, si lo cumplió y qué ya se avisó. Dlx, 12/10/2026.",
  "chats": {
-  "ACAD": "2026-11-06",
+  "ACAD": "2026-11-11",
   "CH": "2026-11-06",
   "DDF": "2026-11-11",
   "DDS": "2026-11-09",
@@ -652,6 +652,18 @@
    "sv": "DDF",
    "vence": "2026-11-06T01:30:46+00:00",
    "vencido": true
+  },
+  "Emilio Alva aka mr cachondo folla mama de lord 🔥": {
+   "chat": "2026-11-11",
+   "con": null,
+   "cumplido": "",
+   "debut": "2026-11-12T01:52:53+00:00",
+   "did": "",
+   "evento": "GALACTICOS DEL FREESTYLE VOL.1",
+   "n": 608,
+   "sv": "ACAD",
+   "vence": "2026-11-19T01:52:53+00:00",
+   "vencido": false
   },
   "Ezze": {
    "avisado": "2026-10-29",
@@ -1634,6 +1646,18 @@
    "sv": "FFA",
    "vence": "2026-11-06T20:59:18+00:00",
    "vencido": true
+  },
+  "Nene": {
+   "chat": "2026-11-11",
+   "con": null,
+   "cumplido": "",
+   "debut": "2026-11-12T01:52:53+00:00",
+   "did": "",
+   "evento": "GALACTICOS DEL FREESTYLE VOL.1",
+   "n": 608,
+   "sv": "ACAD",
+   "vence": "2026-11-19T01:52:53+00:00",
+   "vencido": false
   },
   "Nerick": {
    "avisado": "2026-10-26",

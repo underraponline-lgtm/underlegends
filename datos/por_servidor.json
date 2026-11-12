@@ -31,6 +31,18 @@
    }
   },
   "0223🇧🇧": {
+   "ACAD": {
+    "duelos": "0/1",
+    "ev": 1,
+    "oro": 0,
+    "ovr": 43,
+    "pod": 0,
+    "pts": 7875,
+    "racha": "0/0",
+    "tg": {
+     "nuevo": true
+    }
+   },
    "FFA": {
     "duelos": "0/1",
     "ev": 4,
@@ -993,6 +1005,19 @@
    }
   },
   "Assuan": {
+   "ACAD": {
+    "duelos": "1/2",
+    "ev": 1,
+    "oro": 0,
+    "ovr": 45,
+    "pod": 1,
+    "pts": 11250,
+    "racha": "1/1",
+    "tg": {
+     "fin": 1,
+     "nuevo": true
+    }
+   },
    "DDF": {
     "duelos": "2/3",
     "ev": 2,
@@ -1224,6 +1249,18 @@
    }
   },
   "BTRX": {
+   "ACAD": {
+    "duelos": "0/1",
+    "ev": 1,
+    "oro": 0,
+    "ovr": 43,
+    "pod": 0,
+    "pts": 7875,
+    "racha": "0/0",
+    "tg": {
+     "nuevo": true
+    }
+   },
    "DDF": {
     "duelos": "7/14",
     "ev": 8,
@@ -1775,10 +1812,7 @@
     "ovr": 47,
     "pod": 0,
     "pts": 23377,
-    "racha": "0/0",
-    "tg": {
-     "llave": true
-    }
+    "racha": "0/0"
    },
    "DDF": {
     "duelos": "3/8",
@@ -3119,10 +3153,7 @@
     "ovr": 48,
     "pod": 0,
     "pts": 41406,
-    "racha": "0/1",
-    "tg": {
-     "llave": true
-    }
+    "racha": "0/1"
    },
    "CH": {
     "duelos": "",
@@ -3652,6 +3683,21 @@
     "racha": "1/1",
     "tg": {
      "fin": 1
+    }
+   }
+  },
+  "Emilio Alva aka mr cachondo folla mama de lord 🔥🇧🇱": {
+   "ACAD": {
+    "duelos": "2/2",
+    "ev": 1,
+    "oro": 1,
+    "ovr": 46,
+    "pod": 1,
+    "pts": 16875,
+    "racha": "1/1",
+    "tg": {
+     "fin": 1,
+     "nuevo": true
     }
    }
   },
@@ -4646,6 +4692,18 @@
    }
   },
   "Gus": {
+   "ACAD": {
+    "duelos": "",
+    "ev": 1,
+    "oro": 0,
+    "ovr": 43,
+    "pod": 0,
+    "pts": 4500,
+    "racha": "0/0",
+    "tg": {
+     "nuevo": true
+    }
+   },
    "FFA": {
     "duelos": "1/4",
     "ev": 10,
@@ -6590,12 +6648,12 @@
   "Leonart": {
    "ACAD": {
     "duelos": "3/7",
-    "ev": 7,
+    "ev": 8,
     "oro": 0,
-    "ovr": 50,
+    "ovr": 51,
     "pod": 1,
-    "pts": 53150,
-    "racha": "1/1",
+    "pts": 57650,
+    "racha": "0/1",
     "tg": {
      "bcasa": true,
      "fin": 1,
@@ -6869,11 +6927,11 @@
   "Lord Viruzz": {
    "ACAD": {
     "duelos": "2/7",
-    "ev": 8,
+    "ev": 9,
     "oro": 1,
-    "ovr": 51,
+    "ovr": 52,
     "pod": 1,
-    "pts": 69254,
+    "pts": 73754,
     "racha": "0/1",
     "tg": {
      "fin": 1,
@@ -7252,7 +7310,7 @@
     "oro": 0,
     "ovr": 50,
     "pod": 1,
-    "pts": 55587,
+    "pts": 59712,
     "racha": "1/3",
     "tg": {
      "fin": 1
@@ -7469,11 +7527,11 @@
   "MaYeuTyK": {
    "ACAD": {
     "duelos": "",
-    "ev": 2,
+    "ev": 3,
     "oro": 0,
-    "ovr": 44,
+    "ovr": 45,
     "pod": 0,
-    "pts": 13438,
+    "pts": 17938,
     "racha": "0/0"
    },
    "DDF": {
@@ -7556,10 +7614,10 @@
     "duelos": "",
     "ev": 3,
     "oro": 0,
-    "ovr": 44,
+    "ovr": 45,
     "pod": 0,
-    "pts": 8176,
-    "racha": "1/1"
+    "pts": 12301,
+    "racha": "0/0"
    },
    "DDF": {
     "duelos": "4/8",
@@ -7854,11 +7912,11 @@
   "Mathhias": {
    "ACAD": {
     "duelos": "",
-    "ev": 3,
+    "ev": 4,
     "oro": 1,
     "ovr": 48,
     "pod": 1,
-    "pts": 29625,
+    "pts": 33750,
     "racha": "0/1",
     "tg": {
      "fin": 1
@@ -8114,11 +8172,11 @@
   "Miniboy": {
    "ACAD": {
     "duelos": "3/6",
-    "ev": 4,
+    "ev": 5,
     "oro": 0,
     "ovr": 47,
     "pod": 1,
-    "pts": 11188,
+    "pts": 15313,
     "racha": "1/1",
     "tg": {
      "fin": 1
@@ -8858,6 +8916,20 @@
     "racha": "1/1",
     "tg": {
      "fin": 1
+    }
+   }
+  },
+  "Nene🇨🇱": {
+   "ACAD": {
+    "duelos": "",
+    "ev": 1,
+    "oro": 0,
+    "ovr": 43,
+    "pod": 0,
+    "pts": 4500,
+    "racha": "0/0",
+    "tg": {
+     "nuevo": true
     }
    }
   },
@@ -10533,11 +10605,11 @@
   "Ryuk": {
    "ACAD": {
     "duelos": "1/2",
-    "ev": 1,
+    "ev": 2,
     "oro": 0,
-    "ovr": 42,
+    "ovr": 44,
     "pod": 0,
-    "pts": 1875,
+    "pts": 6375,
     "racha": "0/0"
    }
   },
@@ -12203,11 +12275,11 @@
   "VR": {
    "ACAD": {
     "duelos": "0/1",
-    "ev": 2,
+    "ev": 3,
     "oro": 0,
-    "ovr": 43,
+    "ovr": 44,
     "pod": 0,
-    "pts": 3937,
+    "pts": 8437,
     "racha": "0/0"
    },
    "DDF": {
@@ -13301,6 +13373,18 @@
    }
   },
   "crakero": {
+   "ACAD": {
+    "duelos": "",
+    "ev": 1,
+    "oro": 0,
+    "ovr": 43,
+    "pod": 0,
+    "pts": 4500,
+    "racha": "0/0",
+    "tg": {
+     "nuevo": true
+    }
+   },
    "FFA": {
     "duelos": "2/5",
     "ev": 4,

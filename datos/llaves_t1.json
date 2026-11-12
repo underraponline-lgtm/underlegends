@@ -27883,11 +27883,11 @@
      ],
      [
       [
-       "MAJIZTRAL 🇨🇴 + MINIBOY 🇨🇱",
-       "MCO 🇦🇷 + MATHIAS 🇻🇪"
+       "Majiztral, Miniboy",
+       "MCO, Mathhias"
       ],
       "",
-      "sin ganador: espera en ✅ Decidir"
+      "cobra: MAJIZTRAL 🇨🇴 + MINIBOY 🇨🇱; cobra: MCO 🇦🇷 + MATHIAS 🇻🇪; nadie siguió: ✅ Decidir"
      ]
     ],
     "r": "Cuartos"
@@ -27935,14 +27935,14 @@
     6250
    ],
    [
+    "MCO",
+    "Subcampeón",
+    4500
+   ],
+   [
     "Corvo",
     "Campeón",
     3750
-   ],
-   [
-    "MCO",
-    "Subcampeón",
-    3250
    ],
    [
     "Makmah",
@@ -27953,6 +27953,11 @@
     "Panchok",
     "Campeón",
     3250
+   ],
+   [
+    "Majiztral",
+    "Cuartos",
+    3000
    ],
    [
     "Erian",
@@ -27971,11 +27976,6 @@
    ],
    [
     "Leonart",
-    "Semifinal",
-    1750
-   ],
-   [
-    "Majiztral",
     "Semifinal",
     1750
    ],
@@ -28016,6 +28016,16 @@
    ],
    [
     "Kourier",
+    "Cuartos",
+    1250
+   ],
+   [
+    "Mathhias",
+    "Cuartos",
+    1250
+   ],
+   [
+    "Miniboy",
     "Cuartos",
     1250
    ],
@@ -50044,6 +50054,162 @@
   ],
   "ver": {
    "min": 62,
+   "v": 1
+  }
+ },
+ "608": {
+  "dia": "2026-11-11",
+  "escala": "8-15",
+  "fecha": "11/11",
+  "links": [
+   "https://discord.com/channels/765045834647339038/1309234583023124531/1570255032924774552"
+  ],
+  "n": 608,
+  "nombre": "GALACTICOS DEL FREESTYLE VOL.1",
+  "participantes": 13,
+  "rondas": [
+   {
+    "b": [
+     [
+      [
+       "Assuan",
+       "Nene🇨🇱",
+       "crakero"
+      ],
+      "Assuan",
+      "triple (3 bandas)"
+     ],
+     [
+      [
+       "0223 🇧🇧",
+       "Gus",
+       "Lord Viruzz"
+      ],
+      "0223 🇧🇧",
+      "triple (3 bandas)"
+     ],
+     [
+      [
+       "Emilio Alva aka mr cachondo folla mama de lord 🔥🇧🇱",
+       "MaYeuTyK",
+       "VR"
+      ],
+      "Emilio Alva aka mr cachondo folla mama de lord 🔥🇧🇱",
+      "triple (3 bandas)"
+     ],
+     [
+      [
+       "BTRX",
+       "Leonart",
+       "Ryuk"
+      ],
+      "BTRX",
+      "triple (3 bandas)"
+     ]
+    ],
+    "r": "Cuartos"
+   },
+   {
+    "b": [
+     [
+      [
+       "Assuan",
+       "0223 🇧🇧"
+      ],
+      "Assuan",
+      ""
+     ],
+     [
+      [
+       "Emilio Alva aka mr cachondo folla mama de lord 🔥🇧🇱",
+       "BTRX"
+      ],
+      "Emilio Alva aka mr cachondo folla mama de lord 🔥🇧🇱",
+      ""
+     ]
+    ],
+    "r": "Semifinales"
+   },
+   {
+    "b": [
+     [
+      [
+       "Emilio Alva aka mr cachondo folla mama de lord 🔥🇧🇱",
+       "Assuan"
+      ],
+      "Emilio Alva aka mr cachondo folla mama de lord 🔥🇧🇱",
+      ""
+     ]
+    ],
+    "r": "Final"
+   }
+  ],
+  "sv": "ACAD",
+  "tabla": [
+   [
+    "Emilio Alva aka mr cachondo folla mama de lord 🔥🇧🇱",
+    "Campeón",
+    7500
+   ],
+   [
+    "Assuan",
+    "Subcampeón",
+    5000
+   ],
+   [
+    "0223 🇧🇧",
+    "Semifinal",
+    3500
+   ],
+   [
+    "BTRX",
+    "Semifinal",
+    3500
+   ],
+   [
+    "Gus",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Leonart",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Lord Viruzz",
+    "Cuartos",
+    2000
+   ],
+   [
+    "MaYeuTyK",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Nene🇨🇱",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Ryuk",
+    "Cuartos",
+    2000
+   ],
+   [
+    "VR",
+    "Cuartos",
+    2000
+   ],
+   [
+    "crakero",
+    "Cuartos",
+    2000
+   ]
+  ],
+  "ver": {
+   "min": 66,
+   "obs": 1,
    "v": 1
   }
  }

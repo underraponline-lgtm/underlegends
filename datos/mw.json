@@ -85,10 +85,22 @@
     "nivel": "B",
     "base": 6000,
     "o": 67,
-    "estado": "suelto",
-    "ev": 0,
-    "fase": "",
-    "valor": 6000
+    "estado": "cazado",
+    "ev": 1,
+    "fase": "Cuartos",
+    "valor": 6000,
+    "caza": {
+     "n": 608,
+     "evento": "GALACTICOS DEL FREESTYLE VOL.1",
+     "sv": "ACAD",
+     "t": "2026-11-12T01:52:53Z",
+     "por": [
+      {
+       "n": "BTRX",
+       "cobra": 6000
+      }
+     ]
+    }
    },
    {
     "n": "Mr Still Ballin",

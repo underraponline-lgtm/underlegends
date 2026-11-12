@@ -356,6 +356,14 @@
 "temporada"
 ]
 },
+"mathhias": {
+"rg": "C",
+"c": [
+"competitivo",
+"servidor",
+"temporada"
+]
+},
 "delux": {
 "rg": "C",
 "c": [
@@ -383,14 +391,6 @@
 "c": [
 "competitivo",
 "pais",
-"servidor",
-"temporada"
-]
-},
-"mathhias": {
-"rg": "C",
-"c": [
-"competitivo",
 "servidor",
 "temporada"
 ]
@@ -436,20 +436,20 @@
 "temporada"
 ]
 },
-"tøkiø": {
-"rg": "",
-"c": [
-"competitivo",
-"servidor",
-"temporada"
-]
-},
 "btrx": {
 "rg": "C",
 "c": [
 "competitivo",
 "pais",
 "servidor"
+]
+},
+"tøkiø": {
+"rg": "",
+"c": [
+"competitivo",
+"servidor",
+"temporada"
 ]
 },
 "caliz": {
@@ -491,7 +491,7 @@
 ]
 },
 "mayeutyk": {
-"rg": "",
+"rg": "D",
 "c": [
 "competitivo",
 "servidor",
@@ -532,6 +532,15 @@
 "temporada"
 ]
 },
+"leonart": {
+"rg": "D",
+"c": [
+"competitivo",
+"pais",
+"servidor",
+"temporada"
+]
+},
 "dynoco": {
 "rg": "C",
 "c": [
@@ -560,15 +569,6 @@
 "badterne": {
 "rg": "",
 "c": []
-},
-"leonart": {
-"rg": "D",
-"c": [
-"competitivo",
-"pais",
-"servidor",
-"temporada"
-]
 },
 "kravitz": {
 "rg": "E",
@@ -759,6 +759,14 @@
 "temporada"
 ]
 },
+"vr": {
+"rg": "D",
+"c": [
+"competitivo",
+"servidor",
+"temporada"
+]
+},
 "sultan": {
 "rg": "E",
 "c": []
@@ -863,6 +871,14 @@
 "temporada"
 ]
 },
+"gus": {
+"rg": "E",
+"c": [
+"competitivo",
+"servidor",
+"temporada"
+]
+},
 "bastyretro": {
 "rg": "",
 "c": [
@@ -873,14 +889,6 @@
 "julix-x": {
 "rg": "",
 "c": []
-},
-"gus": {
-"rg": "E",
-"c": [
-"competitivo",
-"servidor",
-"temporada"
-]
 },
 "mcarepa": {
 "rg": "",
@@ -929,18 +937,15 @@
 "servidor"
 ]
 },
+"assuan": {
+"rg": "",
+"c": []
+},
 "blitz": {
 "rg": "E",
 "c": []
 },
 "rt": {
-"rg": "",
-"c": [
-"servidor",
-"temporada"
-]
-},
-"vr": {
 "rg": "",
 "c": [
 "servidor",
@@ -1091,6 +1096,14 @@
 "temporada"
 ]
 },
+"crakero": {
+"rg": "",
+"c": [
+"pais",
+"servidor",
+"temporada"
+]
+},
 "deuxs": {
 "rg": "",
 "c": [
@@ -1133,10 +1146,6 @@
 "temporada"
 ]
 },
-"assuan": {
-"rg": "",
-"c": []
-},
 "pomberito": {
 "rg": "",
 "c": []
@@ -1176,14 +1185,6 @@
 "rg": "",
 "c": []
 },
-"crakero": {
-"rg": "",
-"c": [
-"pais",
-"servidor",
-"temporada"
-]
-},
 "prodigy": {
 "rg": "",
 "c": [
@@ -1203,6 +1204,10 @@
 ]
 },
 "ortiz": {
+"rg": "",
+"c": []
+},
+"0223": {
 "rg": "",
 "c": []
 },
@@ -2767,31 +2772,6 @@
 }
 },
 "cambios": [
-{
-"tipo": "tarjeta",
-"t": "2026-10-07T04:27:16Z",
-"quien": [
-"Zignos"
-],
-"carta": "competitivo"
-},
-{
-"tipo": "rango",
-"t": "2026-10-07T04:27:16Z",
-"quien": [
-"Sosa"
-],
-"rg": "E",
-"primero": true
-},
-{
-"tipo": "tarjeta",
-"t": "2026-10-07T04:27:16Z",
-"quien": [
-"Sosa"
-],
-"carta": "competitivo"
-},
 {
 "tipo": "tarjeta",
 "t": "2026-10-07T05:59:04Z",
@@ -6139,6 +6119,32 @@
 ],
 "rg": "D",
 "primero": false
+},
+{
+"tipo": "rango",
+"t": "2026-11-12T03:15:31Z",
+"quien": [
+"MaYeuTyK"
+],
+"rg": "D",
+"primero": true
+},
+{
+"tipo": "rango",
+"t": "2026-11-12T03:15:31Z",
+"quien": [
+"VR"
+],
+"rg": "D",
+"primero": true
+},
+{
+"tipo": "tarjeta",
+"t": "2026-11-12T03:15:31Z",
+"quien": [
+"VR"
+],
+"carta": "competitivo"
 }
 ],
 "noche_antes": {
@@ -7037,61 +7043,68 @@
 "t": "2026-11-12T08:00:00Z",
 "dia": "2026-11-11",
 "eventos": 1,
-"part": 9,
+"part": 13,
 "campeones": [
 {
-"ev": "EL ULTIMO DDF",
-"sv": "DDF",
-"ll": 607,
+"ev": "GALACTICOS DEL FREESTYLE VOL.1",
+"sv": "ACAD",
+"ll": 608,
 "quien": [
 [
-"Adriagner",
-"adriagner"
+"Emilio Alva aka mr cachondo folla mama de lord 🔥🇧🇱",
+""
 ]
 ]
 }
 ],
 "suman": [
 {
-"n": "Adriagner",
-"k": "adriagner",
+"n": "Emilio Alva aka mr cachondo folla mama de lord 🔥🇧🇱",
+"k": "",
 "pts": 7500,
 "ev": 1
 },
 {
-"n": "Goblin🇳🇮",
-"k": "goblin",
+"n": "Assuan",
+"k": "assuan",
 "pts": 5000,
 "ev": 1
 },
 {
-"n": "Miniboy",
-"k": "miniboy",
+"n": "0223 🇧🇧",
+"k": "0223",
 "pts": 3500,
 "ev": 1
 }
 ],
 "suben": [
 {
-"n": "Goblin🇳🇮",
-"k": "goblin",
-"de": 333,
-"a": 287
-},
-{
-"n": "tormen",
+"n": "Ryuk",
 "k": "",
-"de": 153,
-"a": 141
+"de": 537,
+"a": 410
 },
 {
-"n": "Teito",
-"k": "teito",
-"de": 69,
-"a": 63
+"n": "VR",
+"k": "vr",
+"de": 98,
+"a": 79
+},
+{
+"n": "0223 🇧🇧",
+"k": "0223",
+"de": 325,
+"a": 308
 }
 ],
-"sorpresas": []
+"sorpresas": [
+{
+"n": "Emilio Alva aka mr cachondo folla mama de lord 🔥🇧🇱",
+"k": "",
+"que": "debut",
+"ev": "GALACTICOS DEL FREESTYLE VOL.1"
+}
+]
 }
 }
 }

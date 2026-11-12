@@ -1214,6 +1214,11 @@
     "🥉 AL PODIO",
     "t1",
     1792953978519
+   ],
+   "🧳 VIAJERO": [
+    "🧳 VIAJERO",
+    "t1",
+    1794453370864
    ]
   }
  },
@@ -1812,6 +1817,11 @@
     "t1",
     1794260565889
    ],
+   "EMBAJADOR": [
+    "EMBAJADOR",
+    "t1",
+    1794453370864
+   ],
    "INTERNACIONAL": [
     "INTERNACIONAL",
     "t1",
@@ -1841,6 +1851,16 @@
    ]
   },
   "temporada": {
+   "🌍 TROTAMUNDOS": [
+    "🌍 TROTAMUNDOS",
+    "t1",
+    1794453370864
+   ],
+   "🐺 LOBO SOLITARIO": [
+    "🐺 LOBO SOLITARIO",
+    "t1",
+    1794453370864
+   ],
    "👑 CAMPEÓN x%d": [
     "👑 CAMPEÓN x1",
     "t1",
@@ -4016,6 +4036,30 @@
    ]
   }
  },
+ "emilioalvaakamrcachondofollamamadelord": {
+  "temporada": {
+   "🌱 PROMESA": [
+    "🌱 PROMESA",
+    "t1",
+    1794453370864
+   ],
+   "👑 CAMPEÓN x%d": [
+    "👑 CAMPEÓN x1",
+    "t1",
+    1794453370864
+   ],
+   "🚪 DEBUT CON CORONA": [
+    "🚪 DEBUT CON CORONA",
+    "t1",
+    1794453370864
+   ],
+   "🥉 AL PODIO": [
+    "🥉 AL PODIO",
+    "t1",
+    1794453370864
+   ]
+  }
+ },
  "emizor": {
   "servidor": {
    "📆 HABITUÉ": [
@@ -4931,6 +4975,11 @@
     "🔟 DOBLE DÍGITO",
     "t1",
     1793588669220
+   ],
+   "🧳 VIAJERO": [
+    "🧳 VIAJERO",
+    "t1",
+    1794453370864
    ]
   }
  },
@@ -7397,6 +7446,11 @@
     "t1",
     1794335521998
    ],
+   "🏆 CAMPEÓN": [
+    "🏆 CAMPEÓN",
+    "t1",
+    1794453370864
+   ],
    "🔑 LLAVE DE LA CASA": [
     "🔑 LLAVE DE LA CASA",
     "t1",
@@ -7561,6 +7615,11 @@
  },
  "mayeutyk": {
   "competitivo": {
+   "⚔️ DUELISTA": [
+    "⚔️ DUELISTA",
+    "t1",
+    1794453370864
+   ],
    "🤝 SIN MIEDO": [
     "🤝 SIN MIEDO",
     "t1",
@@ -14424,6 +14483,11 @@
  },
  "vr": {
   "temporada": {
+   "🔟 DOBLE DÍGITO": [
+    "🔟 DOBLE DÍGITO",
+    "t1",
+    1794453370864
+   ],
    "🥉 AL PODIO": [
     "🥉 AL PODIO",
     "t1",
