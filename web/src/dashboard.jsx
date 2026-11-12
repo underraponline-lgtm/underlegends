@@ -4080,8 +4080,9 @@ function Bandeja({ d, liga, ve, cambiarD, sub }) {
                 {x.tipo !== 'quien' ? <span className={'dz-tipo ' + TIPO_B[x.tipo][1]}>{TIPO_B[x.tipo][0]}</span> : null}
                 <b>{x.titulo}</b>
                 {x.sub ? <small>{x.sub}</small> : null}
-                {x.tipo === 'quien' && (x.pts || x.p.igual || x.p.vence || tomo(x)) ? (
+                {x.tipo === 'quien' && (x.pts || x.p.igual || x.p.vence || x.p.sug || tomo(x)) ? (
                   <span className="dz-chips">
+                    {x.p.sug ? <em className="dz-ch v">💡 el bot sugiere</em> : null}
                     {x.pts ? <em className="dz-ch v">mueve {num(x.pts)}</em> : null}
                     {x.p.igual ? <em className="dz-ch">no mueve puntos</em> : null}
                     {x.p.vence ? <em className="dz-ch a">{x.p.vence > Date.now() ? 'se cierra en ' + enHoras(x.p.vence) : 'se cierra ya'}</em> : null}

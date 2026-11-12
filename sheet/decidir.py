@@ -4739,6 +4739,56 @@ def efectos(p, llaves, tab):
     return out, len(set(cuentan)) <= 1
 
 
+def _parecido(a, b):
+    """¿El mismo nombre, uno más largo que el otro? «Erian» y «ERIAN EL MAS WACK🇱🇰» sí; «Ana» y «Anabel» también: es
+    una SUGERENCIA, la confirma Dlx. Sin banderas ni mayúsculas, y con tres letras o más."""
+    na, nb = norm(_sin_bandera(lado_limpio(a))), norm(_sin_bandera(lado_limpio(b)))
+    return min(len(na), len(nb)) >= 3 and (na == nb or na.startswith(nb) or nb.startswith(na))
+
+
+def sugerencia(p, llaves):
+    """💡 LO QUE SUGIERE EL BOT (Dlx, 11/11/2026: «dale, haz lo de la sugerencia del bot»): `(respuesta, por qué)` de una
+    «Batalla sin ganador», o `('', '')`. Si en las rondas de después aparece alguien de UN SOLO lado —con su nombre o con
+    uno más largo o más corto, como el «Erian» de la semi y «ERIAN EL MAS WACK🇱🇰» en cuartos (NOCHE DE BOOMBAP, DDF,
+    06/10)—, ese lado es el que siguió. ⚠️ NO TOCA EL LECTOR: no escribe nada ni cambia ningún punto; sólo pone primera esa
+    respuesta en ✅ Decidir, y Dlx la confirma con un toque. Si aparece gente de los dos lados, o de ninguno, no sugiere.
+    Pura con `llaves`."""
+    x = partes_batalla(p.get('detalle')) if p.get('tipo') == 'Batalla sin ganador' else None
+    if not x:
+        return '', ''
+    ev, sv, fe, ronda, lados = x
+    L = next((v for v in (llaves or {}).values() if isinstance(v, dict) and norm(v.get('nombre')) == norm(ev)
+              and v.get('sv') == sv and v.get('fecha') == fe), None)
+    if not L or len(lados) < 2:
+        return '', ''
+    rs = L.get('rondas') or []
+    i = next((k for k, r in enumerate(rs) if norm(r.get('r')) == norm(ronda)
+              or (_CAE.get(norm(r.get('r'))) and _CAE.get(norm(r.get('r'))) == _CAE.get(norm(ronda)))), None)
+    if i is None or i + 1 >= len(rs):
+        return '', ''
+    despues = [(r.get('r'), m) for r in rs[i + 1:] for b in r.get('b') or [] for lado in (b[0] or []) for m in _miembros(lado)]
+    hits = []
+    for lado in lados:
+        quien = next(((r, m) for r, m in despues if any(_parecido(n, m) for n in _miembros(lado))), None)
+        if quien:
+            hits.append((lado, quien))
+    if len(hits) != 1:
+        return '', ''
+    lado, (r, m) = hits[0]
+    op = ('Ganó %s' if len(lados) == 2 else 'Pasó %s') % lado
+    if op not in (p.get('opciones') or []):
+        return '', ''
+    return op, '«%s» juega %s, y es el único de esta batalla que sigue: parece %s.' % (
+        _sin_bandera(m), ('la ' if norm(r) == 'final' else 'las ' if norm(r).startswith('semi') else 'los ') + str(r).lower(),
+        _sin_bandera(lado))
+
+
+def _pi(p):
+    """Las pistas de una pregunta, sin el «—» de cuando no hay."""
+    x = str(p.get('pistas') or '')
+    return '' if x.strip() == '—' else x
+
+
 def vence_de(p, fin):
     """⏳ Cuándo se cierra sola una «Batalla sin ganador» que se le preguntó al organizador (`bot/finales.py`, 48 h):
     ms, o 0. Sólo las que se preguntaron desde el 11/11/2026 (`t_pregunta`); la final, nunca. Pura con `fin`."""
@@ -4791,15 +4841,18 @@ def para_web(preguntas):
         for p in ps:
             link = str(p.get('link') or '')
             ef, igual = efectos(p, ll, tab)
+            # 💡 lo que sugiere el bot: va en `sug` (la respuesta, primera en el Dashboard) y su porqué arriba de las pistas
+            sug, porque = sugerencia(p, ll)
             out.append({'id': p['id'], 'tipo': p['tipo'], 'sec': str(tit)[:120], 'que': str(p.get('que') or '')[:400],
-                        'pistas': str(p.get('pistas') or '')[:900], 'opciones': [str(x)[:80] for x in p.get('opciones') or []][:14],
+                        'pistas': ('💡 ' + porque[:280] + '\n' + _pi(p))[:900] if porque else _pi(p)[:900],
+                        'opciones': [str(x)[:80] for x in p.get('opciones') or []][:14],
                         'link': link if link.startswith('https://discord.com/') else '',
                         'libre': p['tipo'] == 'Nombre desconocido',
                         'grupo': GRUPO.get(p['tipo'], (4, p['tipo']))[1], 'imp': IMPORTANCIA.get(p['tipo'], 'media'),
                         # 🧮 qué cobra cada uno con cada respuesta, y ⏳ cuándo se cierra sola (11/11/2026)
                         'efectos': {k[:80]: [[str(n)[:40], int(v)] for n, v in xs[:12]] for k, xs in ef.items()},
                         'igual': bool(ef) and igual, 'vence': vence_de(p, fin),
-                        'sug': str(p.get('sug') or '')[:120] if str(p.get('sug') or '') not in ('—', '') else ''})
+                        'sug': sug[:80]})
     return out[:150]
 
 
@@ -6067,6 +6120,13 @@ def _self_check():
            and not _ib and _ie and _ee[NADIE_SIGUIO] == [['MINIBOY 🇨🇱', 1250], ['MATHIAS 🇻🇪', 1250]]
            and _ee[NO_SE_JUGO] == [['MINIBOY 🇨🇱', 0], ['MATHIAS 🇻🇪', 0]] and efectos(dict(_pb, detalle='X · Y · 1/1 · final · a 🆚 b'), _llb, _tb) == ({}, False),
            'lo que paga cada respuesta: en el 1 contra 1 el que gana y no sigue, 0; en equipos todas pagan lo mismo; quien sigue no se nombra')
+        # 💡 la sugerencia: el «Erian» de la semi es ERIAN EL MAS WACK; con gente de los dos lados después, nada
+        _sg, _sp = sugerencia(_pb, _llb)
+        _ll2 = {'415': dict(_llb['415'], rondas=[_llb['415']['rondas'][0], {'r': 'Semifinales', 'b': [[['Erian', 'Xnoah'], '', '']]}])}
+        ok(_sg == 'Ganó ERIAN EL MAS WACK🇱🇰' and '«Erian» juega las semifinales' in _sp and sugerencia(_pb, _ll2) == ('', '')
+           and sugerencia(dict(_pb, detalle=_pb['detalle'].replace('cuartos', 'semifinales')), _llb) == ('', '')
+           and not _parecido('Al', 'Alan') and _parecido('MATI🇦🇷', 'MATICERNA 🇦🇷'),
+           'lo que sugiere el bot: el único lado que sigue después, con su nombre más largo o más corto; si siguen los dos, nada')
         _fin = {'1': {'evento': 'NOCHE DE BOOMBAP', 't_pregunta': '2026-11-11T20:00:00+00:00',
                       'preguntas': [{'ronda': 'CUARTOS', 'lados': ['XNOAH🇦🇷', 'ERIAN EL MAS WACK🇱🇰']}]}}
         ok(vence_de(_pb, _fin) == int(datetime.datetime(2026, 11, 13, 20, tzinfo=datetime.timezone.utc).timestamp() * 1000)
