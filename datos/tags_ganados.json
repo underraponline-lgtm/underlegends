@@ -49,6 +49,11 @@
     "t1",
     1793029252929
    ],
+   "REY DEL DERBI": [
+    "REY DEL DERBI",
+    "t1",
+    1794517691194
+   ],
    "SIN FRONTERAS": [
     "SIN FRONTERAS",
     "t1",
@@ -123,10 +128,20 @@
     "t1",
     1794091121070
    ],
+   "🔟 DOBLE DÍGITO": [
+    "🔟 DOBLE DÍGITO",
+    "t1",
+    1794517691194
+   ],
    "🥉 AL PODIO": [
     "🥉 AL PODIO",
     "t1",
     1793029252929
+   ],
+   "🧳 VIAJERO": [
+    "🧳 VIAJERO",
+    "t1",
+    1794517691194
    ]
   }
  },
@@ -2256,13 +2271,23 @@
     "t1",
     1793029252929
    ],
+   "🎖️ CURTIDO": [
+    "🎖️ CURTIDO",
+    "t1",
+    1794517691194
+   ],
+   "🎯 CAZARRECOMPENSAS": [
+    "🎯 CAZARRECOMPENSAS",
+    "t1",
+    1794517691194
+   ],
    "🏁 SEMIFINALISTA SERIAL": [
     "🏁 SEMIFINALISTA SERIAL",
     "t1",
     1793029252929
    ],
    "👑 CAMPEÓN x%d": [
-    "👑 CAMPEÓN x8",
+    "👑 CAMPEÓN x9",
     "t1",
     1793029252929
    ],
@@ -2286,6 +2311,11 @@
     "t1",
     1793029252929
    ],
+   "🗺️ CONQUISTADOR": [
+    "🗺️ CONQUISTADOR",
+    "t1",
+    1794517691194
+   ],
    "🚪 DEBUT CON CORONA": [
     "🚪 DEBUT CON CORONA",
     "t1",
@@ -2295,6 +2325,11 @@
     "🥉 AL PODIO",
     "t1",
     1793029252929
+   ],
+   "🧳 VIAJERO": [
+    "🧳 VIAJERO",
+    "t1",
+    1794517691194
    ]
   }
  },
@@ -2507,6 +2542,11 @@
     "🔟 DOBLE DÍGITO",
     "t1",
     1793029252929
+   ],
+   "🛫 NÓMADA": [
+    "🛫 NÓMADA",
+    "t1",
+    1794517691194
    ],
    "🥉 AL PODIO": [
     "🥉 AL PODIO",
@@ -5887,6 +5927,11 @@
     "t1",
     1793999316686
    ],
+   "EMBAJADOR": [
+    "EMBAJADOR",
+    "t1",
+    1794517691194
+   ],
    "SIN FRONTERAS": [
     "SIN FRONTERAS",
     "t1",
@@ -5905,6 +5950,11 @@
     "⚡ MARATONISTA",
     "t1",
     1794260565889
+   ],
+   "🌍 TROTAMUNDOS": [
+    "🌍 TROTAMUNDOS",
+    "t1",
+    1794517691194
    ],
    "🏁 SEMIFINALISTA SERIAL": [
     "🏁 SEMIFINALISTA SERIAL",
@@ -10170,6 +10220,11 @@
    ]
   },
   "pais": {
+   "CONQUISTA AFUERA": [
+    "CONQUISTA AFUERA",
+    "t1",
+    1794517691194
+   ],
    "DA LA CARA": [
     "DA LA CARA",
     "t1",
@@ -10249,6 +10304,11 @@
     "t1",
     1793029252929
    ],
+   "💯 BICENTENARIO": [
+    "💯 BICENTENARIO",
+    "t1",
+    1794517691194
+   ],
    "💯 CENTENARIO": [
     "💯 CENTENARIO",
     "t1",
@@ -10288,6 +10348,11 @@
     "🥉 AL PODIO",
     "t1",
     1793029252929
+   ],
+   "🧳 VIAJERO": [
+    "🧳 VIAJERO",
+    "t1",
+    1794517691194
    ]
   }
  },
@@ -12183,6 +12248,11 @@
     "t1",
     1794263880554
    ],
+   "📅 INFALTABLE": [
+    "📅 INFALTABLE",
+    "t1",
+    1794517691194
+   ],
    "📈 EN ASCENSO": [
     "📈 EN ASCENSO",
     "t1",
@@ -12192,6 +12262,11 @@
     "🔟 DOBLE DÍGITO",
     "t1",
     1793029252929
+   ],
+   "🛫 NÓMADA": [
+    "🛫 NÓMADA",
+    "t1",
+    1794517691194
    ],
    "🥉 AL PODIO": [
     "🥉 AL PODIO",
@@ -13301,6 +13376,11 @@
     "🔟 DOBLE DÍGITO",
     "t1",
     1792953978519
+   ],
+   "🧳 VIAJERO": [
+    "🧳 VIAJERO",
+    "t1",
+    1794517691194
    ]
   }
  },

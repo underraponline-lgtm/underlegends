@@ -4448,6 +4448,27 @@
     "DOS NOMBRES: «GERONIMO» → «Makmah» · cuenta 897942226955563068"
    ],
    "escribio": {}
+  },
+  {
+   "id": "35de72756c",
+   "tipo": "Batalla sin ganador",
+   "sec": "Red Bull Crew VENEC · ACAD · 07/11 · #623",
+   "que": "¿Quién ganó en semifinales?\nmakmah 🇻🇪 🆚 19🇻🇪",
+   "r": "No se jugó",
+   "regla": "R23 · el tercer puesto que la llave escribe como otra semifinal, sin ganador: los dos quedan semifinalistas",
+   "rk": "R23",
+   "por": "el ciclo",
+   "porque": "es el tercer puesto (makmah 🇻🇪 y 19🇻🇪 perdieron las semis) y la llave no dice quién lo ganó: los dos quedan como semifinalistas, el promedio de 3.º y 4.º",
+   "t": 1794517684381,
+   "filas": [
+    1323
+   ],
+   "variantes": [
+    "Red Bull Crew VENEC · ACAD · 07/11 · semifinales · makmah 🇻🇪 🆚 19🇻🇪"
+   ],
+   "escribio": {
+    "batalla": "Red Bull Crew VENEC · ACAD · 07/11 · semifinales · makmah 🇻🇪 🆚 19🇻🇪"
+   }
   }
  ],
  "deshechas": []

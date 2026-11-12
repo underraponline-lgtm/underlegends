@@ -39363,7 +39363,7 @@
        "Number"
       ],
       "Erian, Tenor, PRAISERIZA",
-      "triple (8 bandas, pasan 3); también pasa: tenor / Praiseriza"
+      "triple (8 bandas, pasan 3); también pasa: TENOR🇵🇪 / Praiseriza"
      ],
      [
       [
@@ -39390,7 +39390,7 @@
        "Mito"
       ],
       "Six, Tenor",
-      "triple (3 bandas, pasan 2); también pasa: tenor"
+      "triple (3 bandas, pasan 2); también pasa: TENOR🇵🇪"
      ],
      [
       [
@@ -40440,7 +40440,7 @@
        "Mito"
       ],
       "BLITZ",
-      "triple (3 bandas); Revivido: mr still ballin 🇳🇴"
+      "triple (3 bandas); Revivido: Mr still ballin"
      ],
      [
       [
@@ -50691,7 +50691,7 @@
        "Akus"
       ],
       "k 🇺🇸, Tenor",
-      "triple (5 bandas, pasan 2); también pasa: tenor"
+      "triple (5 bandas, pasan 2); también pasa: TENOR🇵🇪"
      ],
      [
       [
@@ -52723,6 +52723,254 @@
   "ver": {
    "min": 57,
    "org": "juega",
+   "v": 1
+  }
+ },
+ "623": {
+  "dia": "2026-11-07",
+  "escala": "16+",
+  "fecha": "07/11",
+  "links": [
+   "https://discord.com/channels/765045834647339038/1309234583023124531/1568741232644067409"
+  ],
+  "n": 623,
+  "nombre": "Red Bull Crew VENEC",
+  "participantes": 16,
+  "rondas": [
+   {
+    "b": [
+     [
+      [
+       "Cinexfilo",
+       "Acry"
+      ],
+      "Cinexfilo",
+      ""
+     ],
+     [
+      [
+       "Carlosss",
+       "Soneto"
+      ],
+      "Carlosss",
+      ""
+     ],
+     [
+      [
+       "Black Demon🇪🇨",
+       "Keider"
+      ],
+      "Black Demon🇪🇨",
+      ""
+     ],
+     [
+      [
+       "Makmah",
+       "Richard"
+      ],
+      "Makmah",
+      ""
+     ],
+     [
+      [
+       "Mathhias",
+       "Mochi DG"
+      ],
+      "Mathhias",
+      ""
+     ],
+     [
+      [
+       "19",
+       "El Cuicho🇪🇨"
+      ],
+      "19",
+      ""
+     ],
+     [
+      [
+       "OG",
+       "IAN"
+      ],
+      "OG",
+      ""
+     ],
+     [
+      [
+       "Number",
+       "Player"
+      ],
+      "Number",
+      ""
+     ]
+    ],
+    "r": "Octavos"
+   },
+   {
+    "b": [
+     [
+      [
+       "Carlosss",
+       "Cinexfilo"
+      ],
+      "Carlosss",
+      ""
+     ],
+     [
+      [
+       "Makmah",
+       "Black Demon🇪🇨"
+      ],
+      "Makmah",
+      ""
+     ],
+     [
+      [
+       "19",
+       "Mathhias"
+      ],
+      "19",
+      ""
+     ],
+     [
+      [
+       "OG",
+       "Number"
+      ],
+      "OG",
+      ""
+     ]
+    ],
+    "r": "Cuartos"
+   },
+   {
+    "b": [
+     [
+      [
+       "Carlosss",
+       "Makmah"
+      ],
+      "Carlosss",
+      ""
+     ],
+     [
+      [
+       "OG",
+       "19"
+      ],
+      "OG",
+      ""
+     ],
+     [
+      [
+       "makmah 🇻🇪",
+       "19🇻🇪"
+      ],
+      "",
+      "sin ganador: espera en ✅ Decidir"
+     ]
+    ],
+    "r": "Semifinales"
+   },
+   {
+    "b": [
+     [
+      [
+       "Carlosss",
+       "OG"
+      ],
+      "Carlosss",
+      ""
+     ]
+    ],
+    "r": "Final"
+   }
+  ],
+  "sv": "ACAD",
+  "tabla": [
+   [
+    "Carlosss",
+    "Campeón",
+    10000
+   ],
+   [
+    "OG",
+    "Subcampeón",
+    7500
+   ],
+   [
+    "19",
+    "Semifinal",
+    5250
+   ],
+   [
+    "Makmah",
+    "Semifinal",
+    5250
+   ],
+   [
+    "Black Demon🇪🇨",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Cinexfilo",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Mathhias",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Number",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Acry",
+    "Octavos",
+    1250
+   ],
+   [
+    "El Cuicho🇪🇨",
+    "Octavos",
+    1250
+   ],
+   [
+    "IAN",
+    "Octavos",
+    1250
+   ],
+   [
+    "Keider",
+    "Octavos",
+    1250
+   ],
+   [
+    "Mochi DG",
+    "Octavos",
+    1250
+   ],
+   [
+    "Player",
+    "Octavos",
+    1250
+   ],
+   [
+    "Richard",
+    "Octavos",
+    1250
+   ],
+   [
+    "Soneto",
+    "Octavos",
+    1250
+   ]
+  ],
+  "ver": {
+   "min": 150,
    "v": 1
   }
  }

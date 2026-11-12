@@ -33715,7 +33715,7 @@
    "OEP": 2
   },
   "fecha": "03/11",
-  "firma": "ec71db149ac8ab3a",
+  "firma": "10c3e4696e3b16a5",
   "msg": "1567309579967144037",
   "nombre": "Rayos y Centellas",
   "num": 564,
@@ -39779,7 +39779,7 @@
    "Vilca": 15
   },
   "fecha": "08/11",
-  "firma": "976d9d863b56deff",
+  "firma": "0f0a368ce3cc9302",
   "msg": "1569508065508593856",
   "nombre": "RAP SIN GROSERIAS 4",
   "num": 591,
@@ -39918,7 +39918,7 @@
    "yinn": 33
   },
   "fecha": "08/11",
-  "firma": "45b9f2a841f37b5b",
+  "firma": "a2ee0591ce663d10",
   "msg": "1569128640363364464",
   "nombre": "K.O.M VOL.10",
   "num": 592,
@@ -41964,7 +41964,7 @@
    "Vilca": 16
   },
   "fecha": "10/11",
-  "firma": "576c699c0c908699",
+  "firma": "4bfb3984bb588f03",
   "msg": "1569848635271680124",
   "nombre": "MF DOOM Y MADLIB EDICION 1",
   "num": 604,
@@ -45177,6 +45177,260 @@
     "Cinexfilo",
     "Cuartos",
     2000
+   ]
+  ],
+  "v": 2
+ },
+ "623": {
+  "antes": {
+   "19": [
+    272,
+    86,
+    true
+   ],
+   "Acry": [
+    160,
+    289,
+    false
+   ],
+   "Carlosss": [
+    16,
+    19,
+    false
+   ],
+   "Cinexfilo": [
+    64,
+    80,
+    false
+   ],
+   "Keider": [
+    55,
+    66,
+    false
+   ],
+   "Makmah": [
+    1,
+    1,
+    false
+   ],
+   "Mathhias": [
+    39,
+    47,
+    false
+   ],
+   "Mochi DG": [
+    197,
+    409,
+    false
+   ],
+   "Number": [
+    46,
+    56,
+    false
+   ],
+   "OG": [
+    18,
+    21,
+    false
+   ],
+   "Player": [
+    65,
+    81,
+    false
+   ],
+   "Richard": [
+    77,
+    96,
+    false
+   ],
+   "Soneto": [
+    86,
+    110,
+    false
+   ]
+  },
+  "canal": "",
+  "duelos": [
+   [
+    "Cinexfilo",
+    "Acry",
+    "Cinexfilo"
+   ],
+   [
+    "Carlosss",
+    "Soneto",
+    "Carlosss"
+   ],
+   [
+    "Black Demon🇪🇨",
+    "Keider",
+    "Black Demon🇪🇨"
+   ],
+   [
+    "Makmah",
+    "Richard",
+    "Makmah"
+   ],
+   [
+    "Mathhias",
+    "Mochi DG",
+    "Mathhias"
+   ],
+   [
+    "19",
+    "El Cuicho🇪🇨",
+    "19"
+   ],
+   [
+    "OG",
+    "IAN",
+    "OG"
+   ],
+   [
+    "Number",
+    "Player",
+    "Number"
+   ],
+   [
+    "Carlosss",
+    "Cinexfilo",
+    "Carlosss"
+   ],
+   [
+    "Makmah",
+    "Black Demon🇪🇨",
+    "Makmah"
+   ],
+   [
+    "19",
+    "Mathhias",
+    "19"
+   ],
+   [
+    "OG",
+    "Number",
+    "OG"
+   ],
+   [
+    "Carlosss",
+    "Makmah",
+    "Carlosss"
+   ],
+   [
+    "OG",
+    "19",
+    "OG"
+   ],
+   [
+    "Carlosss",
+    "OG",
+    "Carlosss"
+   ]
+  ],
+  "ev_antes": {
+   "19": 9,
+   "Acry": 2,
+   "Carlosss": 19,
+   "Cinexfilo": 21,
+   "Keider": 18,
+   "Makmah": 112,
+   "Mathhias": 17,
+   "Mochi DG": 2,
+   "Number": 20,
+   "OG": 18,
+   "Player": 12,
+   "Richard": 20,
+   "Soneto": 11
+  },
+  "fecha": "07/11",
+  "nombre": "Red Bull Crew VENEC",
+  "num": 623,
+  "participantes": 16,
+  "sello": {
+   "Carlosss": "c1dd0b151910:7a510334494e"
+  },
+  "sv": "ACAD",
+  "t": "2026-11-12T20:54:20Z",
+  "tabla": [
+   [
+    "Carlosss",
+    "Campeón",
+    10000
+   ],
+   [
+    "OG",
+    "Subcampeón",
+    7500
+   ],
+   [
+    "Makmah",
+    "Semifinal",
+    5250
+   ],
+   [
+    "19",
+    "Semifinal",
+    5250
+   ],
+   [
+    "Cinexfilo",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Black Demon🇪🇨",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Mathhias",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Number",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Acry",
+    "Octavos",
+    1250
+   ],
+   [
+    "Soneto",
+    "Octavos",
+    1250
+   ],
+   [
+    "Keider",
+    "Octavos",
+    1250
+   ],
+   [
+    "Richard",
+    "Octavos",
+    1250
+   ],
+   [
+    "Mochi DG",
+    "Octavos",
+    1250
+   ],
+   [
+    "El Cuicho🇪🇨",
+    "Octavos",
+    1250
+   ],
+   [
+    "IAN",
+    "Octavos",
+    1250
+   ],
+   [
+    "Player",
+    "Octavos",
+    1250
    ]
   ],
   "v": 2

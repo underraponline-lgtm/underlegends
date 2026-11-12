@@ -231,7 +231,19 @@
    "monto": 1000,
    "t": "2026-11-06T17:08:44Z",
    "fin": "2026-11-09T16:00:00Z",
-   "e": "devuelto"
+   "e": "cazado",
+   "por": [
+    [
+     "Carlosss",
+     1000
+    ]
+   ],
+   "ev": {
+    "n": 623,
+    "nombre": "Red Bull Crew VENEC",
+    "sv": "ACAD",
+    "t": "2026-11-07T21:37:35Z"
+   }
   },
   {
    "id": 41,
@@ -239,7 +251,19 @@
    "monto": 2500,
    "t": "2026-11-06T17:08:48Z",
    "fin": "2026-11-09T16:00:00Z",
-   "e": "devuelto"
+   "e": "cazado",
+   "por": [
+    [
+     "Carlosss",
+     2500
+    ]
+   ],
+   "ev": {
+    "n": 623,
+    "nombre": "Red Bull Crew VENEC",
+    "sv": "ACAD",
+    "t": "2026-11-07T21:37:35Z"
+   }
   },
   {
    "id": 42,
@@ -277,6 +301,7 @@
   "BNA": 375,
   "PichulaMc": 1375,
   "Polosport": 375,
+  "Carlosss": 3500,
   "PRAISERIZA": 500
  }
 }
