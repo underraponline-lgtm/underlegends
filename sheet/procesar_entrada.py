@@ -51,6 +51,7 @@ verifico leyendo, y **la copia queda impresa** en la corrida.
 import io
 import json
 import os
+import re
 import sys
 from datetime import date
 
@@ -79,6 +80,63 @@ CAMPOS = ['evento', 'servidor', 'fecha', 'participantes', 'ronda',
 
 CELDA_ULTIMO, CELDA_PROXIMO = 'Config!B27', 'Config!B28'
 
+#: 📬 EL BUZÓN (etapa 3a de sacar el Sheet, 11/11/2026). Las batallas que el lector de llaves —o el recálculo— deja
+#: para procesar. Era la hoja `Entrada` del Operativo, compartida por todos, y por eso el 11/11 la #471 y el ciclo de
+#: las 6:52 PM se pisaron: el ciclo procesó las filas que había dejado el recálculo hecho en una PC. Y del 07 al 09/11
+#: la hoja llegó a 1.233.156 filas y frenó la carga. Un archivo es de la máquina que lo escribe: no se cruzan.
+#: ⚠️ `entrada_*.json`: `guardar.sh` no lo commitea y está en `.gitignore` (es lo de esta corrida, no estado).
+BUZON = os.path.join(BASE, 'datos', 'entrada_buzon.json')
+
+
+def clave_batalla(f):
+    """La misma batalla dos veces es una: evento, ronda y los dos lados (el ganador puede corregirse en una repostada,
+    y esa corrección tiene que poder entrar). En un 5 vidas la misma pareja pelea varias veces: ahí va también la nota,
+    que trae el número de batalla (`llaves_a_entrada.filas_vidas()`). Es la clave que usaba la hoja `Entrada`."""
+    k = (str(f.get('evento', '')).strip(), str(f.get('ronda', '')).strip().lower(),
+         str(f.get('ladoA', '')).strip(), str(f.get('ladoB', '')).strip())
+    return k + ((str(f.get('notas', '')).strip(),) if re.match(r'^\d+\s*vidas?$', k[1]) else ())
+
+
+def _leer_buzon(ruta=None):
+    try:
+        with io.open(ruta or BUZON, encoding='utf-8') as f:
+            d = json.load(f)
+        return [x for x in d if isinstance(x, dict)] if isinstance(d, list) else []
+    except (OSError, ValueError):
+        return []
+
+
+def dejar_en_buzon(filas, ruta=None):
+    """📬 Agrega batallas al buzón, sin repetir las que ya están (`clave_batalla()`). Devuelve cuántas entraron.
+    ⚠️ Es la red contra los duelos duplicados que tenía la hoja `Entrada` (el #350 pasó de 7 a 14 duelos el
+    23/09/2026): si una corrida no llegó a vaciarlo, la siguiente no vuelve a sumar lo mismo."""
+    ruta = ruta or BUZON
+    hay = _leer_buzon(ruta)
+    ya = {clave_batalla(f) for f in hay}
+    nuevas = []
+    for f in filas:
+        d = {c: f.get(c, '') for c in CAMPOS}
+        k = clave_batalla(d)
+        if k in ya:
+            continue
+        ya.add(k)
+        nuevas.append(d)
+    if nuevas:
+        os.makedirs(os.path.dirname(ruta), exist_ok=True)
+        with io.open(ruta, 'w', encoding='utf-8', newline='\n') as f:
+            f.write(json.dumps(hay + nuevas, ensure_ascii=False, indent=1) + '\n')
+    return len(nuevas)
+
+
+def vaciar_buzon(ruta=None):
+    """Lo borra y comprueba que no quedó nada. `True` si quedó vacío."""
+    ruta = ruta or BUZON
+    try:
+        os.remove(ruta)
+    except FileNotFoundError:
+        pass
+    return not _leer_buzon(ruta)
+
 
 def _get(rng):
     # 🔴 CON REINTENTO: corre en el ciclo y es una lectura como cualquier
@@ -104,14 +162,11 @@ def _put(rng, filas):
            % requests.utils.quote(rng), json={'values': filas})
 
 
-def leer_entrada():
-    """Las batallas pegadas en `Entrada!C:K`."""
-    h = Hoja('Entrada')
-    filas = _get('Entrada!%s%d:%s' % (COL_A, h.fila_datos, COL_Z))
+def leer_entrada(ruta=None):
+    """Las batallas del buzón (`BUZON`), normalizadas como las leía la hoja `Entrada`. `(batallas, ruta)`."""
     out = []
-    for f in filas:
-        f = list(f) + [''] * (len(CAMPOS) - len(f))
-        d = dict(zip(CAMPOS, [str(x).strip() for x in f[:len(CAMPOS)]]))
+    for f in _leer_buzon(ruta):
+        d = {c: ('' if f.get(c) is None else str(f.get(c))).strip() for c in CAMPOS}
         # sin evento no es una batalla: es una fila en blanco o una nota
         if not d['evento'] or not d['ronda']:
             continue
@@ -120,7 +175,7 @@ def leer_entrada():
         except ValueError:
             d['participantes'] = 0
         out.append(d)
-    return out, h
+    return out, (ruta or BUZON)
 
 
 def agrupar(batallas):
@@ -296,11 +351,9 @@ def main():
         _hp = Hoja('Eventos Procesados')
         sacar_descartados(_hp, numeros_por_evento(_hp), aplicar)
 
-    batallas, hent = leer_entrada()
+    batallas, buzon = leer_entrada()
     if not batallas:
-        print('   `Entrada` no tiene batallas pegadas (se leen de %s a %s,\n'
-              '   desde la fila %d). No hay nada que procesar.\n'
-              % (COL_A, COL_Z, hent.fila_datos))
+        print('   el buzón (%s) no tiene batallas. No hay nada que procesar.\n' % os.path.relpath(buzon, BASE))
         return 0
 
     evs = agrupar(batallas)
@@ -530,49 +583,25 @@ def main():
         print('   ⚠️ no pude guardar las llaves para el hub (%s)' % str(e)[:60])
 
     if not limpiar:
-        print('\n   (`Entrada` queda como está — `--limpiar` la vacía)\n')
+        print('\n   (el buzón queda como está — `--limpiar` lo vacía)\n')
         return 0
 
-    # se comprueba leyendo ANTES de borrar el unico original
-    puestas = sum(len(_get('Resultados!A1:A')) for _ in (1,))
-    if not puestas:
-        print('\n   🔴 `Resultados` sigue vacía: NO limpio `Entrada`.\n')
+    # 🔴 SE COMPRUEBA ANTES DE BORRAR EL ÚNICO ORIGINAL: que `Resultados` tenga cada evento de esta tanda. Lo dice
+    # `datos/t1_resultados.json`, que `resultados.reescribir()` acaba de dejar junto con el Sheet (`espejo_t1`): no
+    # hace falta otra lectura. (Era «la hoja tiene alguna fila», que daba bien aunque faltara justo lo de ahora.)
+    # ⚠️ Vaciar es seguro por lo mismo de siempre: la copia cruda queda en `datos/entrada_<fecha>.json` y la fuente de
+    # verdad es el mensaje de Discord, que se vuelve a leer cada vuelta.
+    import espejo_t1 as _EJ
+    _nums = {str(ev['num']) for ev in planes}
+    puestas = {_EJ.visible(f[0]) for f in _EJ.crudas('Resultados') if f} & _nums
+    if puestas != _nums:
+        print('\n   🔴 `Resultados` no tiene %s: NO vacío el buzón.\n'
+              % ', '.join('#' + n for n in sorted(_nums - puestas)))
         return 1
-    # 🔴 SE VACIA EL AREA ENTERA, NO `len(batallas) + 6` FILAS.
-    #
-    # `leer_entrada()` **saltea** las filas sin evento o sin ronda, asi
-    # que `len(batallas)` no es el alto de lo que hay pegado: con un
-    # hueco en el medio, o con filas mas abajo de una tanda anterior, el
-    # rango se quedaba corto y sobrevivian batallas. Medido el
-    # 23/09/2026: despues de un `--limpiar` que dijo «Entrada vacía»
-    # quedaban **10 filas** del evento #349, y la corrida siguiente las
-    # sumo a las nuevas.
-    #
-    # ⚠️ Y ESO ES LO QUE DUPLICA LOS DUELOS. Un `1v1` con la misma
-    # batalla dos veces no falla: da el doble de duelos y un win rate
-    # plausible. El #350 paso de 7 a 14 y despues a 21 en tres corridas.
-    #
-    # ⚠️ SE VERIFICA LEYENDO, como todo lo que escribe este modulo: un
-    # 200 dice que la API acepto el pedido, no que la hoja quedo vacia.
-    ancho = ord(COL_Z) - ord(COL_A) + 1
-    # ⚠️ EL ALTO SALE DE LO QUE LA HOJA TIENE, no de cuántas batallas se
-    # leyeron: leerlas saltea las filas vacías, así que ese número no
-    # mide el alto de lo pegado.
-    hay = _get('Entrada!%s%d:%s' % (COL_A, hent.fila_datos, COL_Z))
-    alto = max(len(hay), len(batallas) + 6)
-    _put('Entrada!%s%d:%s%d' % (COL_A, hent.fila_datos, COL_Z,
-                                hent.fila_datos + alto - 1),
-         [[''] * ancho for _ in range(alto)])
-    queda = [f for f in _get('Entrada!%s%d:%s' % (COL_A, hent.fila_datos,
-                                                  COL_Z))
-             if any(str(c).strip() for c in f)]
-    if queda:
-        print('   🔴 `Entrada` NO quedó vacía: sobreviven %d fila(s).'
-              % len(queda))
-        print('      La copia está en %s\n' % os.path.relpath(cop, BASE))
+    if not vaciar_buzon():
+        print('   🔴 el buzón NO quedó vacío. La copia está en %s\n' % os.path.relpath(cop, BASE))
         return 1
-    print('   ✅ `Entrada` vacía (la copia está en %s)\n'
-          % os.path.relpath(cop, BASE))
+    print('   ✅ el buzón quedó vacío (la copia está en %s)\n' % os.path.relpath(cop, BASE))
     return 0
 
 

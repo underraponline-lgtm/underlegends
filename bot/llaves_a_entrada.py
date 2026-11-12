@@ -4408,23 +4408,33 @@ def _self_check():
         mal += not ok
         print('   %s %s' % ('✅' if ok else '🔴', que))
 
-    print('\n  la fila, contra la forma de la hoja')
-    try:
-        from procesar_entrada import COL_A, CAMPOS as CAMPOS_E
-        desplazo = ord(COL_A.upper()) - ord('A')
-        ancho = desplazo + len(CAMPOS_E)
-        print('   .. la hoja empieza en la columna %s -> %d de relleno'
-              % (COL_A, desplazo))
-        print('   .. %d relleno + %d campos = %d columnas'
-              % (desplazo, len(CAMPOS_E), ancho))
-        from escribir import Hoja
-        real = Hoja('Entrada').ancho
-        ok = ancho == real
+    # 📬 EL BUZÓN EN VEZ DE LA HOJA `Entrada` (etapa 3a, 11/11/2026): lo que deja el lector es lo que lee el procesador,
+    # sin duplicar en dos corridas seguidas, y el 5 vidas no pierde sus revanchas. Sin credenciales: anda en CI
+    print('\n  el buzón, de ida y vuelta')
+    import tempfile
+    import procesar_entrada as _PE
+    with tempfile.TemporaryDirectory() as _tmp:
+        _b = os.path.join(_tmp, 'datos', 'entrada_buzon.json')
+        _f1 = {'evento': 'EV', 'servidor': 'FFA', 'fecha': '14/10', 'participantes': 16, 'ronda': 'Octavos',
+               'ladoA': 'Teito', 'ladoB': 'Geoka', 'ganador': '', 'notas': 'nadie siguió', 'otra': 'x'}
+        _v1 = dict(_f1, ronda='5 vidas', notas='batalla 1', ganador='Teito')
+        _v2 = dict(_v1, notas='batalla 2')
+        _n1 = _PE.dejar_en_buzon([_f1, _v1, _v2], ruta=_b)
+        _n2 = _PE.dejar_en_buzon([dict(_f1, ganador='Geoka'), _v1], ruta=_b)
+        _bs, _r = _PE.leer_entrada(ruta=_b)
+        _vacio = _PE.vaciar_buzon(ruta=_b)
+        casos_b = [
+            ('lo que deja el lector, lo lee el procesador: los nueve campos, como texto, y las participantes como número',
+             _n1 == 3 and len(_bs) == 3 and _bs[0]['participantes'] == 16 and _bs[0]['ladoA'] == 'Teito'
+             and set(_bs[0]) == set(_PE.CAMPOS)),
+            ('la misma batalla en la corrida siguiente no se repite (tampoco con el ganador corregido); el 5 vidas guarda '
+             'sus dos revanchas', _n2 == 0 and sum(1 for b in _bs if b['ronda'] == '5 vidas') == 2),
+            ('vaciarlo lo deja vacío, y vacío no hay nada que procesar',
+             _vacio and _PE.leer_entrada(ruta=_b)[0] == []),
+        ]
+    for que, ok in casos_b:
         mal += not ok
-        print('   %s la hoja mide %d' % ('✅' if ok else '🔴', real))
-    except Exception as e:                               # noqa: BLE001
-        print('   ⚠️ sin credenciales, no se pudo comprobar: %s'
-              % str(e)[:50])
+        print('   %s %s' % ('✅' if ok else '🔴', que))
     return mal
 
 
@@ -5243,76 +5253,16 @@ def main():
     except OSError as e:
         print('   ⚠️ no pude guardar quién es quién de las llaves (%s)' % str(e)[:60])
 
-    from escribir import Hoja
     import pendientes as P
-    # 🔴 LAS NUEVE COLUMNAS EMPIEZAN EN LA `C`, NO EN LA `A`. `Entrada`
-    # mide **once** (A..K): la `A` es la columna del instructivo y la `B`
-    # un separador. `Hoja.agregar()` escribe desde la A, asi que mandar
-    # las nueve tal cual las corre dos lugares a la izquierda — el evento
-    # caeria en la columna del instructivo y `procesar_entrada`, que lee
-    # `C:K`, leeria todo desplazado.
-    #
-    # ⚠️ NO HABRIA ESCRITO BASURA, PERO SI HABRIA REVENTADO: `agregar()`
-    # compara contra `self.ancho` y levanta. O sea que `--aplicar` estaba
-    # roto de entrada y no se veia, porque es el unico camino de este
-    # script que nunca se ejecuto. Un `--aplicar` sin probar es codigo que
-    # se estrena el dia que mas importa.
-    #
-    # ⚠️ EL RELLENO SE CALCULA DE `COL_A`, no se escribe un 2. Si mañana
-    # la hoja gana o pierde una columna a la izquierda, esto la sigue.
-    from procesar_entrada import COL_A, CAMPOS as CAMPOS_E
-    h = Hoja('Entrada')
-    desplazo = ord(COL_A.upper()) - ord('A')
-    filas_hoja = [[''] * desplazo + [f[c] for c in CAMPOS_E] for f in todas]
-    ancho = desplazo + len(CAMPOS_E)
-    if ancho != h.ancho:
-        sys.exit('`Entrada` mide %d columnas y estas armando %d '
-                 '(%d de relleno + %d campos). No escribo nada.'
-                 % (h.ancho, ancho, desplazo, len(CAMPOS_E)))
-    # 🔴 LA SEGUNDA GUARDA CONTRA LA DUPLICACION: no se vuelve a pegar
-    # una batalla que YA esta en `Entrada`.
-    #
-    # `sin_repetir()` limpia dentro de la tanda que se acaba de leer, y
-    # eso no alcanza: el lector **agrega**, asi que la corrida siguiente
-    # trae las mismas llaves —Discord las sigue mostrando— y quedan dos
-    # veces en la hoja. Medido el 23/09/2026: el evento #350 paso de 7
-    # duelos a 14 entre dos corridas, y las batallas de 29 a 42.
-    #
-    # ⚠️ EL CICLO YA VACIA `Entrada` CON `--limpiar`, asi que esto es la
-    # red de abajo: si esa limpieza falla una vez, sin esto la corrida
-    # siguiente duplica igual. Un error que se COMPONE no puede depender
-    # de una sola guarda.
-    #
-    # ⚠️ La clave es la misma que usa `sin_repetir()` —evento, ronda y
-    # los dos lados— y no la fila entera: el `ganador` puede corregirse
-    # en una repostada, y esa correccion tiene que poder entrar.
-    def _clave(f):
-        k = (str(f.get('evento', '')).strip(),
-             str(f.get('ronda', '')).strip().lower(),
-             str(f.get('ladoA', '')).strip(),
-             str(f.get('ladoB', '')).strip())
-        # 🔴 EN UN 5 VIDAS LA MISMA PAREJA PELEA VARIAS VECES, y con esta
-        # clave la segunda revancha «ya estaba»: se la saltaba. La nota trae
-        # el número de batalla (`filas_vidas()`).
-        return k + ((str(f.get('notas', '')).strip(),)
-                    if re.match(r'^\d+\s*vidas?$', k[1]) else ())
-
-    ya = set()
-    for f in h.filas():
-        f = list(f) + [''] * (desplazo + len(CAMPOS_E))
-        d = dict(zip(CAMPOS_E, [str(x).strip() for x in f[desplazo:]]))
-        ya.add(_clave(d))
-    nuevas = [f for f in todas if _clave(f) not in ya]
-    if len(nuevas) != len(todas):
-        print('   ⓘ %d batalla(s) ya estaban en `Entrada`: no se repiten'
-              % (len(todas) - len(nuevas)))
-    if nuevas:
-        filas_hoja = [[''] * desplazo + [f[c] for c in CAMPOS_E]
-                      for f in nuevas]
-        h.agregar(filas_hoja, dry=False)
-        print('   ✅ %d fila(s) en `Entrada`' % len(nuevas))
-    else:
-        print('   ✅ nada nuevo para `Entrada`')
+    # 📬 AL BUZÓN Y NO A LA HOJA `Entrada` (etapa 3a de sacar el Sheet, 11/11/2026): ver `procesar_entrada.BUZON`.
+    # La guarda contra la duplicación —no volver a pegar una batalla que ya está, con la misma clave de siempre— vive
+    # ahora en `procesar_entrada.dejar_en_buzon()`. (Lo que pegaba en la hoja, con su relleno de columnas y su guardián
+    # de ancho, está en el historial de git.)
+    import procesar_entrada as _PE
+    _n = _PE.dejar_en_buzon(todas)
+    if _n != len(todas):
+        print('   ⓘ %d batalla(s) ya estaban en el buzón: no se repiten' % (len(todas) - _n))
+    print(('   ✅ %d fila(s) en el buzón' % _n) if _n else '   ✅ nada nuevo para el buzón')
     # ⚠️ TODO EN UN LOTE: una lectura de la cola y un pedido, no uno por
     # evento. Ver `pendientes.anotar_varios()`.
     # ⚠️ EL LINK VA AL FINAL DEL «POSIBLE MATCH», separado por « · »:

@@ -392,8 +392,6 @@ def aplicar(d):
 
     ⚠️ NO A LAS :22 NI A LAS :52: el ciclo escribe las mismas hojas y `datos/`."""
     sys.path[:0] = [os.path.join(BASE, 'bot'), os.path.join(BASE, 'sheet'), BASE]
-    from procesar_entrada import COL_A, CAMPOS
-    from escribir import Hoja
     import decidir as DEC
     filas = []
     for n in d.get('_cambian') or []:
@@ -417,10 +415,10 @@ def aplicar(d):
     if pedidos and n_ent < len(pedidos):
         print('   ⚠️ pediste %d evento(s) que entran y encontré %d: mirá los nombres' % (len(pedidos), n_ent))
     if filas:
-        h = Hoja('Entrada')
-        desplazo = ord(COL_A.upper()) - ord('A')
-        h.agregar([[''] * desplazo + [f.get(c, '') for c in CAMPOS] for f in filas], dry=False)
-        print('   ✅ %d fila(s) de %d evento(s) en `Entrada`' % (len(filas), len(d.get('_cambian') or [])))
+        # 📬 al buzón de ESTA máquina, no a la hoja `Entrada` que el ciclo también leía (el choque del 11/11/2026)
+        import procesar_entrada as _PE
+        _PE.dejar_en_buzon(filas)
+        print('   ✅ %d fila(s) de %d evento(s) en el buzón' % (len(filas), len(d.get('_cambian') or [])))
     dups = d.get('duplicados') or {}
     if dups:
         dd = DEC._decisiones()
@@ -438,7 +436,7 @@ def aplicar(d):
         r = subprocess.run([sys.executable, os.path.join(BASE, 'sheet', 'procesar_entrada.py'), '--aplicar', '--limpiar'],
                            cwd=BASE, env=dict(os.environ, PYTHONIOENCODING='utf-8'))
         if r.returncode != 0:
-            raise SystemExit('   🔴 procesar_entrada.py no terminó bien: mirá `Entrada`')
+            raise SystemExit('   🔴 procesar_entrada.py no terminó bien: mirá datos/entrada_buzon.json')
         # 🔒 y queda anotado qué se corrigió, para que el ciclo no lo vuelva a pisar con su lectura de los últimos 25
         # mensajes (Dlx, 12/10/2026, «1. dale»): ver `llaves_a_entrada.corregido_por_recalculo()`
         import datetime as _dt

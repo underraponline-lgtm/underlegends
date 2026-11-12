@@ -768,7 +768,7 @@ def _lo_barato(correr):
         if not corre(['bot/reportes.py', '--corregir', '--aplicar'], callado=False):
             print('      ⚠️ no pude aplicar las correcciones: quedan para la próxima corrida')
 
-    paso(1, 'las llaves cargadas en `Entrada`')
+    paso(1, 'las llaves cargadas, al buzón (datos/entrada_buzon.json)')
     # ✅ EL LECTOR **YA ESCRIBE**, desde el 22/09/2026. Dlx: «pongamos
     # esto a prueba, estos 3 dias pongamos a prueba FFA, quiero ver si
     # logras captar todo».
