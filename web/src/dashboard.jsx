@@ -1434,7 +1434,7 @@ function AjApuestas({ liga, aj, hacer, ocup, chat, general }) {
   return (
     <div className="db-aj">
       <div className="db-aj-c"><h3>Las apuestas</h3><span className={'db-est' + (a ? ' ojo' : ' ok')}>{a ? '✍ A tu gusto' : 'Como siempre'}</span></div>
-      <p className="db-tx">Con el bot en vivo en <b>A full</b> salen solas, en el mensaje de cada cruce. <b>Prendidas</b> en un servidor salen en cualquier nivel: un mensaje con la batalla que viene y sus botones (el admin de cada servidor también las puede prender con <code>/settings</code>). Se apuesta con Puntos de Tienda y el pozo se reparte entre los que aciertan. «No hay apuestas en» gana sobre todo.</p>
+      <p className="db-tx">Con el bot en vivo en <b>Con datos</b> o <b>A full</b> salen siempre, en el mensaje de cada cruce, elija lo que elija el admin. <b>Prendidas</b> en un servidor salen también en los otros niveles: un mensaje con la batalla que viene y sus botones (el admin de cada servidor también las puede prender con <code>/settings</code>). Se apuesta con Puntos de Tienda y el pozo se reparte entre los que aciertan. «No hay apuestas en» gana sobre todo.</p>
       <form className="db-form uno" onSubmit={(e) => {
         e.preventDefault();
         if (!mal) hacer('apuestas', { montos: ms, minutos: Number(minutos), tope: t, apagadas: fuera, prendidas: dentro }, 'Guardado: vale para la próxima apuesta.');
@@ -1450,7 +1450,7 @@ function AjApuestas({ liga, aj, hacer, ocup, chat, general }) {
             <input type="number" min={10} max={20000} step={10} value={tope} onChange={(e) => setTope(e.target.value)} /></label>
         </div>
         {!general && svs.length ? (
-          <fieldset className="db-chk"><legend>Prendidas en <small>(en cualquier nivel)</small></legend>
+          <fieldset className="db-chk"><legend>Prendidas en <small>(también en los otros niveles)</small></legend>
             {svs.map((sv) => (
               <label key={sv}><input type="checkbox" checked={!!dentro[sv]} disabled={!!fuera[sv]} onChange={(e) => {
                 const n = Object.assign({}, dentro);
@@ -1979,8 +1979,8 @@ function AjServidores({ liga, aj, hacer, ocup, chat }) {
               </select></label>
             <label><span>Apuestas</span>
               <select value={apDe(sv)} disabled={ocup} onChange={(e) => cambiarAp(sv, e.target.value)}>
-                <option value="">Como siempre: sólo en «A full»</option>
-                <option value="si">Prendidas, en cualquier nivel</option>
+                <option value="">Como siempre: en cada cruce («Con datos» y «A full»)</option>
+                <option value="si">Prendidas, también en los otros niveles</option>
                 <option value="no">Apagadas</option>
               </select></label>
             {/* 📅 los eventos de Discord (19/10/2026): cada anuncio, un evento del servidor con «Me interesa» */}
@@ -4263,7 +4263,7 @@ function ServidoresTabla({ liga, aj, hacer, ocup, chat, T, origen }) {
                     <option value="">{'Admin: ' + ((niveles[nivelAdmin(sv)] || ['normal'])[0]).toLowerCase()}</option>
                     {Object.keys(niveles).map((k) => <option key={k} value={k}>{niveles[k][0]}</option>)}</select></td>
                   <td><select aria-label={'Las apuestas en ' + siglaDe(sv)} value={apDe(sv)} disabled={ocup} onChange={(e) => cambiarAp(sv, e.target.value)}>
-                    <option value="">Sólo «A full»</option><option value="si">Siempre</option><option value="no">Apagadas</option></select></td>
+                    <option value="">En cada cruce</option><option value="si">En todo nivel</option><option value="no">Apagadas</option></select></td>
                   <td><select aria-label={'El aviso de cada evento en ' + siglaDe(sv)} value={porSv[sv] || ''} disabled={ocup} onChange={(e) => cambiarAviso(sv, e.target.value)}>
                     <option value="">Donde habla</option><option value="chat">Chat general</option><option value="no">Apagado</option></select></td>
                   <td><select aria-label={'Los eventos de Discord de ' + siglaDe(sv)} value={(aj.eventos_discord || {})[sv] === true ? 'si' : ''} disabled={ocup}

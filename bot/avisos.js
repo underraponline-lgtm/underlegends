@@ -813,11 +813,18 @@ export function apuestasCfg(aj) {
  * apuestas en» del Dashboard gana siempre; después, PRENDIDAS A MANO —Dlx en el Dashboard (`prendidas`) o el admin del
  * servidor con /settings (`apuestas` en `cfg:<guild>`)—, en cualquier nivel; y si no, como hasta hoy: sólo «A full».
  * Con el bot en vivo apagado en ese servidor no hay chat donde ponerlas, así que tampoco hay apuestas.
+ *
+ * 🎲 EN CADA CRUCE, SIEMPRE (11/11/2026, Dlx: «asegúrate que eso de la apuesta aparezca siempre, sin importar lo que los
+ * demás tengan seleccionado»). Con el bot en «Con datos» o «A full», el mensaje de cada cruce lleva la apuesta, elija lo
+ * que elija el admin. 🔴 Y «CON DATOS» NO LA PONÍA NUNCA, NI PRENDIDA: el cruce la pedía sólo en «A full» y la apuesta
+ * suelta sólo va debajo de «Con datos», así que FFA, ACAD, URBF, CH y DDS —prendidas en el Dashboard y en «Con datos»—
+ * mostraban el voto solo, y el modal de la 4.44 no se abría nunca. Lo único que la saca es «No hay apuestas en», de Dlx.
+ * En los niveles de abajo no hay cruce: ahí sigue saliendo sólo prendida, porque es un mensaje más por batalla.
  */
 export function hayApuestas(sv, nivel, apc, cfg) {
   if (apc.apagadas[sv]) return false;
-  if (apc.prendidas[sv] || (cfg && cfg.apuestas === true)) return true;
-  return nivel === 'full';
+  if (nivel === 'datos' || nivel === 'full') return true;
+  return !!(apc.prendidas[sv] || (cfg && cfg.apuestas === true));
 }
 
 /** Cada cuánto puede hablar el bot en vivo en un canal, en ms: `normal` (y lo justo) y `batalla` (cada batalla y más) */
@@ -1327,6 +1334,8 @@ export function filasVs(vs) {
   // un solo botón largo, que abre un mensaje sólo para quien tocó (`perfilesComponentes()`). Sin ficha, los dos links de una
   const pf = vs && !vs.grupos ? botonesPerfil(vs.a, vs.b) : [];
   if (pf.length) filas.push({ type: 1, components: vs.fid && filas.length ? [botonVerPerfiles(vs.fid)] : pf });
+  // 👥 con equipos o todos contra todos, el mismo botón, con la ficha de la gente de cada lado (`perfilesGrupos()`)
+  if (vs && vs.grupos && /^[0-9a-f]{12}$/.test(String(vs.pid || ''))) filas.push({ type: 1, components: [botonVerPerfiles(vs.pid)] });
   const t = filaTarjeta(vs);
   if (t.length) filas.push({ type: 1, components: t[0].components });
   return filas;
@@ -1344,6 +1353,34 @@ export function parejos(a, b) {
   return [nombreBoton(a), nombreBoton(b)];
 }
 
+/**
+ * 🏷️ CADA LADO CON EL NOMBRE DEL RANKING (Dlx, 11/11/2026, con la final de ALL VALLEY: «asegúrate que ahí abajo sea el nombre
+ * como aparece en el ranking»). Los botones del voto y la apuesta decían lo que escribió el organizador en la llave: un
+ * equipo salía como «EddyLaSomb…» —lo crudo de su lado, cortado— y Letrao como «letrao». Ahora cada lado lleva su gente de
+ * `genteChat()`, que trae el nombre de la Liga cuando lo conoce, y lo crudo de la llave queda para saber quién ganó
+ * (`ladoGanador()`) y si es tu propia batalla. Sin gente guardada (un mensaje de antes), lo crudo, como antes.
+ */
+export const genteLado = (g) => (g || []).map((y) => String((y && y.n) || '').trim()).filter(Boolean).slice(0, 10);
+/** «Liberia y Pichulamc», para el texto. */
+export const nombreLado = (ns, crudo = '') => (Array.isArray(ns) && ns.length ? conY(ns.map((n) => sinBandera(n) || '¿?')) : sinBandera(crudo));
+/** 📱 Para un botón: corto, y un equipo que no entra entero va con el primero y cuántos más («Liberia +1»). */
+export function etiquetaLado(ns, crudo = '', tope = CORTO_BOTON) {
+  const xs = (Array.isArray(ns) && ns.length ? ns : [crudo]).map((n) => sinBandera(n) || '¿?');
+  const corto = (s, t) => (s.length > t ? s.slice(0, Math.max(1, t - 1)) + '…' : s);
+  if (xs.length === 1) return corto(xs[0], tope);
+  const todos = conY(xs);
+  if (todos.length <= tope) return todos;
+  const mas = ' +' + (xs.length - 1);
+  return corto(xs[0], tope - mas.length) + mas;
+}
+/** La gente guardada de un voto o una apuesta (su columna `gente`, en JSON), o `[]`. */
+export function genteDe(fila) {
+  try {
+    const g = JSON.parse((fila && fila.gente) || '[]');
+    return Array.isArray(g) ? g.map((x) => (Array.isArray(x) ? x.map(String) : [])) : [];
+  } catch (e) { return []; }
+}
+
 /** 👤 El botón largo que abre los dos perfiles: `vp:<ficha>`. */
 export const botonVerPerfiles = (fid) => ({ type: 2, style: 2, label: 'Perfiles', emoji: { name: '👤' }, custom_id: 'vp:' + fid });
 
@@ -1353,33 +1390,112 @@ export const botonVerPerfiles = (fid) => ({ type: 2, style: 2, label: 'Perfiles'
  * botones se corta. Sin avatar (no tiene, o lo ocultó) va sin imagen, y sin fila en la Liga, sólo el nombre.
  */
 export function perfilesComponentes(f) {
+  // 👥 con equipos o todos contra todos, una caja por lado (`perfilesGrupos()`)
+  if (f && Array.isArray(f.grupos)) return perfilesGrupos(f);
   if (!f || !f.a || !f.b) return null;
   const SV = String(f.sv || '').toUpperCase();
   const [color] = VS_SV[SV] || [0x26045B];
   const caja = (y, p) => {
     const cab = '### ' + (y.fl ? y.fl + ' ' : '') + escMd(y.n);
-    const lineas = [];
-    if (p) {
-      lineas.push([p.pos ? '**#' + p.pos + '** de la temporada' : '', p.rg ? 'Rango **' + escMd(p.rg) + '**' : 'Sin rango todavía'].filter(Boolean).join(' · '));
-      const hechos = [p.ev ? p.ev + (p.ev === 1 ? ' evento' : ' eventos') : '', p.oro ? p.oro + (p.oro === 1 ? ' título' : ' títulos') : '', p.pod ? p.pod + (p.pod === 1 ? ' podio' : ' podios') : ''].filter(Boolean);
-      if (hechos.length) lineas.push('-# ' + hechos.join(' · '));
-      const mas = [p.wr ? 'Gana el ' + Math.round(p.wr) + ' % de sus duelos' : '', p.crew ? 'Crew ' + escMd(p.crew) : ''].filter(Boolean);
-      if (mas.length) lineas.push('-# ' + mas.join(' · '));
-    } else if (!y.k) {
-      lineas.push('-# Todavía no tiene perfil en la Liga.');
-    }
-    const texto = { type: 10, content: [cab].concat(lineas).join('\n').slice(0, 1000) };
-    const arriba = p && /^\d{5,25}\/\w+$/.test(p.av)
-      ? { type: 9, components: [texto], accessory: { type: 11, media: { url: 'https://cdn.discordapp.com/avatars/' + p.av + '.webp?size=256' }, description: y.n } }
-      : texto;
+    const texto = { type: 10, content: [cab].concat(lineasPerfil(y, p)).join('\n').slice(0, 1000) };
+    const av = caraPerfil(p);
+    const arriba = av ? { type: 9, components: [texto], accessory: { type: 11, media: { url: av }, description: y.n } } : texto;
     const dentro = [arriba];
     if (y.k) {
-      dentro.push({ type: 1, components: [{ type: 2, style: 5, label: 'Perfil', emoji: { name: '👤' }, url: HUB + '/freestyle-rap/r/' + encodeURIComponent(y.k) }] });
+      dentro.push({ type: 1, components: [{ type: 2, style: 5, label: 'Perfil', emoji: { name: '👤' }, url: linkPerfil(y.k) }] });
     }
     return { type: 17, accent_color: color, components: dentro };
   };
   const p = f.perfil || [];
   return [caja(f.a, p[0]), caja(f.b, p[1])];
+}
+
+/** Los renglones de los números de una persona (de `perfilVs()`): los mismos en el mano a mano y con equipos. */
+function lineasPerfil(y, p) {
+  const lineas = [];
+  if (p) {
+    lineas.push([p.pos ? '**#' + p.pos + '** de la temporada' : '', p.rg ? 'Rango **' + escMd(p.rg) + '**' : 'Sin rango todavía'].filter(Boolean).join(' · '));
+    const hechos = [p.ev ? p.ev + (p.ev === 1 ? ' evento' : ' eventos') : '', p.oro ? p.oro + (p.oro === 1 ? ' título' : ' títulos') : '', p.pod ? p.pod + (p.pod === 1 ? ' podio' : ' podios') : ''].filter(Boolean);
+    if (hechos.length) lineas.push('-# ' + hechos.join(' · '));
+    const mas = [p.wr ? 'Gana el ' + Math.round(p.wr) + ' % de sus duelos' : '', p.crew ? 'Crew ' + escMd(p.crew) : ''].filter(Boolean);
+    if (mas.length) lineas.push('-# ' + mas.join(' · '));
+  } else if (!y.k) {
+    lineas.push('-# Todavía no tiene perfil en la Liga.');
+  }
+  return lineas;
+}
+/** Su cara en Discord (`p.av` = `<id>/<hash>`), o '' si no tiene o la ocultó. */
+const caraPerfil = (p) => (p && /^\d{5,25}\/\w+$/.test(String(p.av || '')) ? 'https://cdn.discordapp.com/avatars/' + p.av + '.webp?size=256' : '');
+const linkPerfil = (k) => HUB + '/freestyle-rap/r/' + encodeURIComponent(k);
+
+//: Discord deja 40 componentes por mensaje, contando los de adentro (una caja, una sección, un texto, una imagen, una
+//: fila, un botón: uno cada uno), y 4.000 letras de texto entre todos
+export const TOPE_COMPONENTES = 40;
+export const TOPE_LETRAS_V2 = 4000;
+/** Cuántos componentes son, con los de adentro. */
+export function contarComponentes(cs) {
+  let n = 0;
+  for (const c of cs || []) {
+    if (!c || typeof c !== 'object') continue;
+    n += 1 + contarComponentes(c.components) + (c.accessory ? contarComponentes([c.accessory]) : 0);
+  }
+  return n;
+}
+/** Cuántas letras de texto llevan (los `type: 10`). */
+export function letrasComponentes(cs) {
+  let n = 0;
+  for (const c of cs || []) {
+    if (!c || typeof c !== 'object') continue;
+    n += (c.type === 10 ? String(c.content || '').length : 0) + letrasComponentes(c.components);
+  }
+  return n;
+}
+
+/** 👥 La ficha de «Perfiles» de un vs con equipos o de todos contra todos: la gente de cada lado con su fila (`perfilVs()`). */
+export function fichaGrupos(gs, dc, o = {}) {
+  return { sv: String(o.sv || ''), ev: String(o.ev || ''), ronda: String(o.ronda || ''),
+    grupos: (gs || []).map((g) => (g || []).slice(0, 10).map((y) => ({ n: String(y.n || ''), fl: String(y.fl || ''), k: String(y.k || ''),
+      p: perfilVs(y, dc) }))) };
+}
+
+/**
+ * 👥 LOS PERFILES DE UN VS CON EQUIPOS O DE TODOS CONTRA TODOS (11/11/2026, Dlx: «Sí, agrégalo»). Una caja por lado, del
+ * color del servidor: cada uno con su cara, su nombre del ranking y los mismos renglones del mano a mano, y abajo un botón
+ * a cada perfil. ⚠️ CON CARAS NO SIEMPRE ENTRA: Discord cuenta 40 componentes por mensaje con los de adentro, y una cara son
+ * tres (sección, texto e imagen). El 8 contra 1 del Multiverse daría 41. Si no entra, va sin caras: un renglón por persona,
+ * con los botones. Y si ni así entra, sin los botones.
+ */
+export function perfilesGrupos(f) {
+  const gs = (Array.isArray(f && f.grupos) ? f.grupos : []).map((g) => (Array.isArray(g) ? g.filter((y) => y && y.n) : []))
+    .filter((g) => g.length);
+  if (gs.length < 2) return null;
+  const SV = String(f.sv || '').toUpperCase();
+  const [color] = VS_SV[SV] || [0x26045B];
+  const nombre = (y) => (y.fl ? y.fl + ' ' : '') + '**' + escMd(y.n) + '**';
+  const links = (g) => {
+    const ks = g.filter((y) => y.k);
+    const filas = [];
+    for (let i = 0; i < ks.length; i += 5) {
+      filas.push({ type: 1, components: ks.slice(i, i + 5).map((y) => ({ type: 2, style: 5, label: nombreBoton(y.n), emoji: { name: '👤' },
+        url: linkPerfil(y.k) })) });
+    }
+    return filas;
+  };
+  const entra = (cs) => contarComponentes(cs) <= TOPE_COMPONENTES && letrasComponentes(cs) <= TOPE_LETRAS_V2;
+  const conCaras = gs.map((g) => ({ type: 17, accent_color: color, components: g.map((y) => {
+    const texto = { type: 10, content: [nombre(y)].concat(lineasPerfil(y, y.p)).join('\n').slice(0, 600) };
+    const av = caraPerfil(y.p);
+    return av ? { type: 9, components: [texto], accessory: { type: 11, media: { url: av }, description: y.n } } : texto;
+  }).concat(links(g)) }));
+  if (entra(conCaras)) return conCaras;
+  const renglon = (y) => {
+    const p = y.p;
+    return [nombre(y), p && p.pos ? '#' + p.pos : '', p ? (p.rg ? 'Rango ' + escMd(p.rg) : 'sin rango') : '',
+      p && p.ev ? p.ev + (p.ev === 1 ? ' evento' : ' eventos') : '', !p && !y.k ? 'sin perfil en la Liga' : ''].filter(Boolean).join(' · ');
+  };
+  const sinCaras = gs.map((g) => ({ type: 17, accent_color: color, components: [{ type: 10, content: g.map(renglon).join('\n').slice(0, 1500) }]
+    .concat(links(g)) }));
+  return entra(sinCaras) ? sinCaras : sinCaras.map((c) => Object.assign({}, c, { components: c.components.slice(0, 1) }));
 }
 
 /** 👤 Los botones al perfil de cada uno, en la página. Quien no tiene perfil en la Liga no lleva botón. */
@@ -1395,7 +1511,9 @@ export function botonesPerfil(a, b) {
  * botones, `ve:<voto>:<lado>:<apuesta>`, que abren el modal del Worker. Cuando la apuesta cierra quedan los del voto solo.
  */
 export function botonesElegir(voto, apId) {
-  const [la, lb] = parejos(voto.a, voto.b);
+  // 🏷️ con el nombre del ranking (`etiquetaLado()`)
+  const g = voto.gente || [];
+  const [la, lb] = [etiquetaLado(g[0], voto.a), etiquetaLado(g[1], voto.b)];
   return [{ type: 1, components: [[la, 'A', 1], [lb, 'B', 4]].map(([label, lado, estilo]) => ({
     type: 2, style: estilo, emoji: { name: '🗳️' }, label, custom_id: 've:' + voto.id + ':' + lado + ':' + apId })) }];
 }
@@ -1621,13 +1739,13 @@ export async function editarConAdjunto(urlApi, urlImg, nombre, extra, headers) {
   } catch (e) { return null; }
 }
 
-/** Los botones de una apuesta: una fila por lado, con los cuatro montos. `cerrada` los deja grises */
-export function botonesApuesta(id, a, b, cerrada, montos = AP_MONTOS) {
-  const corto = (n) => { const s = sinBandera(n); return s.length > 14 ? s.slice(0, 13) + '…' : s; };
-  return [['A', a, 1], ['B', b, 4]].map(([lado, n, estilo]) => ({
+/** Los botones de una apuesta: una fila por lado, con los cuatro montos. `cerrada` los deja grises. `gente`: la de cada
+ *  lado, para el nombre del ranking (`etiquetaLado()`) */
+export function botonesApuesta(id, a, b, cerrada, montos = AP_MONTOS, gente = []) {
+  return [['A', a, 1, 0], ['B', b, 4, 1]].map(([lado, n, estilo, k]) => ({
     type: 1,
     components: montos.map((m, i) => ({ type: 2, style: estilo, disabled: !!cerrada,
-      label: (i ? '' : corto(n) + ' · ') + m, custom_id: 'ap:' + id + ':' + lado + ':' + m })),
+      label: (i ? '' : etiquetaLado((gente || [])[k], n, 14) + ' · ') + m, custom_id: 'ap:' + id + ':' + lado + ':' + m })),
   }));
 }
 
@@ -1647,13 +1765,13 @@ export const QG_FAV_MIN = 3;
 //: «todos contra todos» —1v1v1, 1v1v1v1— (19/10/2026, Dlx: «¿qué sucede cuando son 3 personas distintas batallando?»)
 export const LADOS_VOTO = ['A', 'B', 'C', 'D', 'E'];
 
-/** Los botones del voto, uno por lado con su nombre: `a`, `b` y los de `mas` (los lados C, D, E). */
-export function botonesVoto(id, a, b, mas = []) {
+/** Los botones del voto, uno por lado con su nombre: `a`, `b` y los de `mas` (los lados C, D, E). `gente`: la de cada lado,
+ *  para el nombre del ranking (`etiquetaLado()`); sin ella, lo crudo de la llave */
+export function botonesVoto(id, a, b, mas = [], gente = []) {
   const lados = [a, b].concat(mas || []).slice(0, LADOS_VOTO.length);
-  const tope = lados.length > 2 ? 18 : 30;
-  const corto = (n) => { const s = sinBandera(n); return s.length > tope ? s.slice(0, tope - 1) + '…' : s || '¿?'; };
-  // 📱 con dos, parejos: ver `parejos()`
-  const labels = lados.length === 2 ? parejos(a, b) : lados.map(corto);
+  // 📱 con dos, cortos como en `parejos()`; con más, un poco más largos
+  const tope = lados.length > 2 ? 18 : CORTO_BOTON;
+  const labels = lados.map((n, i) => etiquetaLado((gente || [])[i], n, tope));
   return [{ type: 1, components: lados.map((n, i) => ({
     type: 2, style: 2, emoji: { name: '🗳️' }, label: labels[i], custom_id: 'qg:' + id + ':' + LADOS_VOTO[i] })) }];
 }
@@ -7109,6 +7227,10 @@ export class Avisos {
       // 🧮 los lados de más de un «todos contra todos» (C, D, E) y sus votos, en JSON (19/10/2026)
       try { this.sql.exec("ALTER TABLE qg ADD COLUMN mas TEXT NOT NULL DEFAULT '[]'"); } catch (e) { /* ya estaba */ }
       try { this.sql.exec("ALTER TABLE qg ADD COLUMN nmas TEXT NOT NULL DEFAULT '[]'"); } catch (e) { /* ya estaba */ }
+      // 🏷️ la gente de cada lado, con el nombre del ranking, para los botones y los renglones (11/11/2026, ver `etiquetaLado()`).
+      // Lo crudo de la llave (`a`, `b`, `mas`) sigue siendo lo que decide quién ganó
+      try { this.sql.exec("ALTER TABLE qg ADD COLUMN gente TEXT NOT NULL DEFAULT '[]'"); } catch (e) { /* ya estaba */ }
+      try { this.sql.exec("ALTER TABLE apuestas ADD COLUMN gente TEXT NOT NULL DEFAULT '[]'"); } catch (e) { /* ya estaba */ }
       // 🗳️ a quién votó el público en cada cruce cerrado (19/10/2026): `qg` se borra a la semana y el TAG 🗳️ FAVORITO
       // DEL PÚBLICO cuenta la temporada entera. Uno por cruce; ver `favoritoDe()` y `favoritos()`
       this.sql.exec('CREATE TABLE IF NOT EXISTS qg_fav (id TEXT PRIMARY KEY, n TEXT NOT NULL, temporada TEXT NOT NULL, t INTEGER NOT NULL)');
@@ -8764,8 +8886,8 @@ export class Avisos {
           L.id, canal, m, '', '', ahora);
         hechos[m] = { m, msg: '', texto: '' };
       }
-      // 🔥🎲 «CON DATOS» Y «A FULL»: la batalla que VIENE (`batallaChat()`), con su título, su «¿sabías que…?» y —en «A
-      // full»— la apuesta, que va con botones en el mismo mensaje. Sólo de dos lados, y una vez por batalla
+      // 🔥🎲 «CON DATOS» Y «A FULL»: la batalla que VIENE (`batallaChat()`), con su título, su «¿sabías que…?» y la
+      // apuesta, que va con botones en el mismo mensaje (`hayApuestas()`). Sólo de dos lados, y una vez por batalla
       let apuesta = null, voto = null;
       if ((nivel === 'datos' || nivel === 'full') && fresca) {
         const bat = batallaChat(L);
@@ -8788,14 +8910,17 @@ export class Avisos {
               + (equipos ? ' equipos' : ' raperos') + ' en la misma batalla, y pasa uno'];
             lineas.push('⚔️ ' + bat.r + ': ' + gs.map((g) => '**' + nombresChat(g) + '**').join(' vs '));
             if (dato) lineas.push('💡 ' + escMd(dato));
+            // 🏷️ cada lado con su gente, como en el ranking (`etiquetaLado()`)
             voto = { id: codigoDe(L.id + ':' + clave + ':qg').slice(0, 12), m: mv, ronda: bat.r, a: bat.lados[0], b: bat.lados[1],
-              mas: bat.lados.slice(2) };
+              mas: bat.lados.slice(2), gente: gs.map(genteLado) };
             lineas.push(lineaVoto(voto.a, voto.b, 0, 0, '', voto.mas, []));
             const titEv = escMd(String(nombre || L.nombre || 'el evento').replace(/^[\s_*~]+|[\s_*~]+$/g, ''));
             // 🧩 y el vs con todas las tarjetas, separadas por VS (`html_vs_grupos()` de bot/kit.py)
             const persona = (y) => personaVs(y, dc, { sv: svChat, noche: hoyD });
             const vs = { ev: String(nombre || L.nombre || '').replace(/[_*~`]+/g, '').trim(), ronda: bat.r,
               titulo: equipos ? bat.lados.length + ' EQUIPOS' : 'TODOS CONTRA TODOS', sub: '', grupos: gs.map((g) => g.map(persona)) };
+            // 👤 y «Perfiles», como el mano a mano (`perfilesGruposGuardar()`)
+            this.perfilesGruposGuardar(vs, gs, dc, L.id + ':' + clave, { sv: svChat, ev: vs.ev, ronda: bat.r }, ahora);
             ms.push({ m: mv, cab: '⚔️ **' + titEv + '**', texto: lineas.join('\n'), vs });
           }
         }
@@ -8826,12 +8951,16 @@ export class Avisos {
             if (tt) lineas.push('🔥 **' + tt.t + '**' + (tt.sub ? ' · ' + escMd(tt.sub) : ''));
             lineas.push('⚔️ ' + bat.r + ': **' + nombresChat(ga) + '** vs **' + nombresChat(gb) + '**');
             if (dato) lineas.push('💡 ' + escMd(dato));
-            if (nivel === 'full' && hayApuestas(b.sv, nivel, apc, cfgs.get(b.g))) {
-              apuesta = { id: codigoDe(L.id + ':' + clave).slice(0, 12), m: mv, ronda: bat.r, a: bat.lados[0], b: bat.lados[1] };
+            // 🏷️ cada lado con su gente, como en el ranking: los botones la muestran (`etiquetaLado()`); lo crudo de la llave
+            // queda para saber quién ganó
+            const gente = [genteLado(ga), genteLado(gb)];
+            // 🎲 en «Con datos» y en «A full», siempre (`hayApuestas()`, 11/11/2026)
+            if (hayApuestas(b.sv, nivel, apc, cfgs.get(b.g))) {
+              apuesta = { id: codigoDe(L.id + ':' + clave).slice(0, 12), m: mv, ronda: bat.r, a: bat.lados[0], b: bat.lados[1], gente };
               lineas.push(lineaApuesta('abierta', apc));
             }
             // 🗳️ «¿Quién gana?» votado por el público: siempre. Con apuestas, los dos van con los mismos botones (`botonesElegir()`)
-            voto = { id: codigoDe(L.id + ':' + clave + ':qg').slice(0, 12), m: mv, ronda: bat.r, a: bat.lados[0], b: bat.lados[1] };
+            voto = { id: codigoDe(L.id + ':' + clave + ':qg').slice(0, 12), m: mv, ronda: bat.r, a: bat.lados[0], b: bat.lados[1], gente };
             lineas.push(lineaVoto(voto.a, voto.b, 0, 0));
             const titEv = escMd(String(nombre || L.nombre || 'el evento').replace(/^[\s_*~]+|[\s_*~]+$/g, ''));
             // 🖼️ EL VS CON LAS DOS TARJETAS (Dlx, 12/10/2026: «hacerlo más visual… las tarjetas», «B», «con datos y a
@@ -8866,6 +8995,9 @@ export class Avisos {
                   { sv: svChat, ev: vs.ev, ronda: bat.r, na: ga[0].n, nb: gb[0].n, fla: ga[0].fl, flb: gb[0].fl, nocheA: vs.a.noche, nocheB: vs.b.noche })), ahora);
               } catch (e) { delete vs.fid; }
             }
+            // 👤 CON EQUIPOS (2v2, 2v1, el 8 contra 1 del Multiverse), «Perfiles» también (11/11/2026, Dlx: «Sí, agrégalo»).
+            // «Estadísticas» sigue siendo del mano a mano: compara a dos personas (`perfilesGruposGuardar()`)
+            if (vs && vs.grupos) this.perfilesGruposGuardar(vs, [ga, gb], dc, L.id + ':' + clave, { sv: svChat, ev: vs.ev, ronda: bat.r }, ahora);
             ms.push(Object.assign({ m: mv, cab: '⚔️ **' + titEv + '**', texto: lineas.join('\n') }, vs ? { vs } : {}));
           }
         }
@@ -8884,7 +9016,8 @@ export class Avisos {
           const titEv = escMd(String(nombre || L.nombre || 'el evento').replace(/^[\s_*~]+|[\s_*~]+$/g, ''));
           const texto = ['⚔️ **' + titEv + '**', '⚔️ ' + bat.r + ': **' + nombresChat(ga) + '** vs **' + nombresChat(gb) + '**',
             lineaApuesta('abierta', apc)].join('\n');
-          const ap = { id: codigoDe(L.id + ':' + clave).slice(0, 12), ronda: bat.r, a: bat.lados[0], b: bat.lados[1] };
+          // 🏷️ con la gente de cada lado, para el nombre del ranking en los botones (`etiquetaLado()`)
+          const ap = { id: codigoDe(L.id + ':' + clave).slice(0, 12), ronda: bat.r, a: bat.lados[0], b: bat.lados[1], gente: [genteLado(ga), genteLado(gb)] };
           pedidos++;
           let r = null;
           try {
@@ -8892,7 +9025,7 @@ export class Avisos {
               method: 'POST',
               headers: { Authorization: 'Bot ' + this.env.DISCORD_TOKEN, 'User-Agent': UA, 'content-type': 'application/json' },
               body: JSON.stringify({ content: texto.slice(0, 1900), allowed_mentions: { parse: [] }, flags: 4,
-                components: botonesApuesta(ap.id, ap.a, ap.b, false, apc.montos) }),
+                components: botonesApuesta(ap.id, ap.a, ap.b, false, apc.montos, ap.gente) }),
             });
           } catch (e) { r = null; }
           let id = '';
@@ -8902,9 +9035,9 @@ export class Avisos {
             this.sql.exec('INSERT OR REPLACE INTO chat_vivo (llave, canal, m, msg, texto, t) VALUES (?, ?, ?, ?, ?, ?)',
               L.id, canal, mv, id, texto, ahora);
             hechos[mv] = { m: mv, msg: id, texto };
-            this.sql.exec('INSERT OR IGNORE INTO apuestas (id, canal, msg, sv, llave, ronda, a, b, texto, abre, cierra) ' +
-              'VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)', ap.id, canal, id, b.sv || '', L.id, ap.ronda, ap.a, ap.b,
-            texto.slice(0, 1900), ahora, ahora + apc.cierra);
+            this.sql.exec('INSERT OR IGNORE INTO apuestas (id, canal, msg, sv, llave, ronda, a, b, texto, abre, cierra, gente) ' +
+              'VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)', ap.id, canal, id, b.sv || '', L.id, ap.ronda, ap.a, ap.b,
+            texto.slice(0, 1900), ahora, ahora + apc.cierra, JSON.stringify(ap.gente || []));
             mandados++;
           } else {
             errores.push(b.sv + ' apuesta ' + (r ? r.status : 'red'));
@@ -8984,8 +9117,8 @@ export class Avisos {
             body: JSON.stringify(Object.assign({ content: p.texto.slice(0, 1900), allowed_mentions: { parse: [] } },
               p.tipo === 'editar' ? {} : p.img ? { embeds: [{ image: { url: p.img }, color: 0xE41373 }] } : { flags: 4 },
               conAp || conVoto || filaT.length ? { components: (conAp && conVoto ? botonesElegir(conVoto, conAp.id)
-                : conAp ? botonesApuesta(conAp.id, conAp.a, conAp.b, false, apc.montos)
-                  : conVoto ? botonesVoto(conVoto.id, conVoto.a, conVoto.b, conVoto.mas || []) : []).concat(filaT) } : {})),
+                : conAp ? botonesApuesta(conAp.id, conAp.a, conAp.b, false, apc.montos, conAp.gente)
+                  : conVoto ? botonesVoto(conVoto.id, conVoto.a, conVoto.b, conVoto.mas || [], conVoto.gente) : []).concat(filaT) } : {})),
           });
         } catch (e) { r = null; }
         if (r && r.ok) {
@@ -9006,14 +9139,15 @@ export class Avisos {
             try { this.vsEncolar(Object.assign({}, p.vs, { sv: b.sv || '', canal, msg: id }), ahora); } catch (e) { /* sin imagen */ }
           }
           if (conVoto && id) {
-            this.sql.exec('INSERT OR IGNORE INTO qg (id, canal, msg, sv, llave, ronda, a, b, dicho, abre, mas) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)',
+            this.sql.exec('INSERT OR IGNORE INTO qg (id, canal, msg, sv, llave, ronda, a, b, dicho, abre, mas, gente) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)',
               conVoto.id, canal, id, b.sv || '', L.id, conVoto.ronda, conVoto.a, conVoto.b,
-              lineaVoto(conVoto.a, conVoto.b, 0, 0, '', conVoto.mas || [], []), ahora, JSON.stringify(conVoto.mas || []));
+              lineaVoto(conVoto.a, conVoto.b, 0, 0, '', conVoto.mas || [], []), ahora, JSON.stringify(conVoto.mas || []),
+              JSON.stringify(conVoto.gente || []));
           }
           if (conAp && id) {
-            this.sql.exec('INSERT OR IGNORE INTO apuestas (id, canal, msg, sv, llave, ronda, a, b, texto, abre, cierra) ' +
-              'VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)', conAp.id, canal, id, b.sv || '', L.id, conAp.ronda, conAp.a, conAp.b,
-            p.texto.slice(0, 1900), ahora, ahora + apc.cierra);
+            this.sql.exec('INSERT OR IGNORE INTO apuestas (id, canal, msg, sv, llave, ronda, a, b, texto, abre, cierra, gente) ' +
+              'VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)', conAp.id, canal, id, b.sv || '', L.id, conAp.ronda, conAp.a, conAp.b,
+            p.texto.slice(0, 1900), ahora, ahora + apc.cierra, JSON.stringify(conAp.gente || []));
           }
           mandados++;
           break;
@@ -9399,7 +9533,7 @@ export class Avisos {
     this.sql.exec('UPDATE qg SET na = ?, nb = ?, nmas = ? WHERE id = ?', na, nb, JSON.stringify(nmas), q.id);
     const n = na + nb + nmas.reduce((x, y) => x + y, 0);
     const mio = [na, nb].concat(nmas)[i] || 0;
-    return { ok: true, lado, nombre: sinBandera(lados[i] || ''), cambio: !!(antes && antes.lado !== lado), na, nb, nmas, n,
+    return { ok: true, lado, nombre: nombreLado(genteDe(q)[i], lados[i] || ''), cambio: !!(antes && antes.lado !== lado), na, nb, nmas, n,
       pct: n ? Math.round((100 * mio) / n) : 0 };
   }
 
@@ -9427,7 +9561,10 @@ export class Avisos {
             String(this.env.TEMPORADA || 't1'), ahora);
         }
       }
-      const linea = lineaVoto(q.a, q.b, q.na, q.nb, g, mas, nmas);
+      // 🏷️ con el nombre del ranking (`nombreLado()`); sin gente guardada, lo crudo, como antes
+      const gq = genteDe(q);
+      const ns = [q.a, q.b].concat(mas).map((x, j) => nombreLado(gq[j], x));
+      const linea = lineaVoto(ns[0], ns[1], q.na, q.nb, g, ns.slice(2), nmas);
       if (!g && linea === q.dicho) continue;
       const h = this.sql.exec('SELECT texto FROM chat_vivo WHERE canal = ? AND msg = ? ORDER BY t DESC LIMIT 1', q.canal, q.msg).toArray()[0];
       // ⚠️ sin el texto del mensaje no se edita: se pisaría todo con el renglón solo
@@ -9477,7 +9614,10 @@ export class Avisos {
       return json({ error: 'propia' }, 409);
     }
     const ya = this.sql.exec('SELECT lado, monto FROM apostado WHERE ap = ? AND quien = ?', ap.id, quien).toArray()[0];
-    if (ya && ya.lado !== lado) return json({ error: 'otro lado', lado: ya.lado, nombre: sinBandera(ya.lado === 'A' ? ap.a : ap.b) }, 409);
+    // 🏷️ los nombres, como en el ranking (`nombreLado()`)
+    const gap = genteDe(ap);
+    const nomAp = (l) => (l === 'A' ? nombreLado(gap[0], ap.a) : nombreLado(gap[1], ap.b));
+    if (ya && ya.lado !== lado) return json({ error: 'otro lado', lado: ya.lado, nombre: nomAp(ya.lado) }, 409);
     const antes = ya ? ya.monto : 0;
     if (antes + m > apc.tope) return json({ error: 'tope', queda: Math.max(0, apc.tope - antes), tope: apc.tope }, 409);
     const s = this.saldo(quien, Number(d.desde) || 0, Number(d.inicial));
@@ -9489,7 +9629,7 @@ export class Avisos {
         quien, -(antes + m), ahora);
     });
     const pozo = this.sql.exec('SELECT COALESCE(SUM(monto), 0) AS n, COUNT(*) AS c FROM apostado WHERE ap = ?', ap.id).toArray()[0];
-    return json({ ok: true, lado, nombre: sinBandera(lado === 'A' ? ap.a : ap.b), monto: m, total: antes + m, saldo: s - m,
+    return json({ ok: true, lado, nombre: nomAp(lado), monto: m, total: antes + m, saldo: s - m,
       pozo: pozo.n, cuantos: pozo.c, cierra: ap.cierra });
   }
 
@@ -9502,8 +9642,10 @@ export class Avisos {
     const propia = !!yo && [ap.a, ap.b].some((n) => String(n).split(/\s*[,+&]\s*/).some((x) => claveTurno(x) === yo));
     const ya = this.sql.exec('SELECT lado, monto FROM apostado WHERE ap = ? AND quien = ?', ap.id, quien).toArray()[0];
     const tope = apuestasCfg(this.ajustes()).tope;
+    // 🏷️ el título del modal, con el nombre del ranking (`nombreLado()`)
+    const gap = genteDe(ap);
     return { abierta: true, propia, saldo: this.saldo(quien, Number(d.desde) || 0, Number(d.inicial)), tope, ya: ya ? ya.monto : 0, queda: Math.max(0, tope - (ya ? ya.monto : 0)),
-      a: sinBandera(ap.a), b: sinBandera(ap.b) };
+      a: nombreLado(gap[0], ap.a), b: nombreLado(gap[1], ap.b), ea: etiquetaLado(gap[0], ap.a, 12), eb: etiquetaLado(gap[1], ap.b, 12) };
   }
 
   /**
@@ -9531,7 +9673,7 @@ export class Avisos {
           }
           this.sql.exec('UPDATE apuestas SET estado = ?, ganador = ? WHERE id = ?', estado, g, ap.id);
         });
-        d = { pozo: r.total, cuantos: Object.keys(r.out).length, ganador: sinBandera(g === 'A' ? ap.a : ap.b),
+        d = { pozo: r.total, cuantos: Object.keys(r.out).length, ganador: g === 'A' ? nombreLado(genteDe(ap)[0], ap.a) : nombreLado(genteDe(ap)[1], ap.b),
           porque: !g ? 'Sin resultado' : !filas.length ? 'Nadie apostó' : 'Nadie acertó' };
       } else if (ap.estado === 'abierta' && ahora >= ap.cierra) {
         this.sql.exec("UPDATE apuestas SET estado = 'cerrada' WHERE id = ?", ap.id);
@@ -9551,7 +9693,8 @@ export class Avisos {
           method: 'PATCH',
           headers: { Authorization: 'Bot ' + this.env.DISCORD_TOKEN, 'User-Agent': UA, 'content-type': 'application/json' },
           body: JSON.stringify({ content: texto.slice(0, 1900), allowed_mentions: { parse: [] },
-            components: (q ? botonesVoto(q.id, q.a, q.b) : estado === 'cerrada' ? botonesApuesta(ap.id, ap.a, ap.b, true, apuestasCfg(this.ajustes()).montos) : [])
+            components: (q ? botonesVoto(q.id, q.a, q.b, [], genteDe(q)) : estado === 'cerrada'
+              ? botonesApuesta(ap.id, ap.a, ap.b, true, apuestasCfg(this.ajustes()).montos, genteDe(ap)) : [])
               .concat(this.filaTarjetaDe(ap.canal, ap.msg)) }),
         });
         if (r.ok) {
@@ -10829,6 +10972,8 @@ export class Avisos {
     grupos ? { grupos } : { a: lado(d.a), b: lado(d.b) }, h2h && !grupos ? { h2h } : {},
     // 📊 el id de su ficha (el botón «Estadísticas») y 🏁 quién ganó (desde el 11/11/2026 nadie lo pide: la imagen del resultado se sacó)
     /^[0-9a-f]{12}$/.test(String(d.fid || '')) ? { fid: String(d.fid) } : {}, !grupos && /^[ab]$/.test(String(d.gano || '')) ? { gano: d.gano } : {},
+    // 👥 y el de «Perfiles» con equipos (`perfilesGruposGuardar()`): sin él, una edición que cambia los botones se lo llevaría
+    grupos && /^[0-9a-f]{12}$/.test(String(d.pid || '')) ? { pid: String(d.pid) } : {},
     // 🏟️ una batalla de liga: su id, su nombre y la jornada (`html_vs_liga()` de bot/kit.py). ⚠️ Lo que no está en esta lista no llega
     d.liga && LIGA_ID.test(String(d.liga.id || '')) ? { liga: { id: String(d.liga.id), n: String(d.liga.n || '').slice(0, 40),
       j: Math.max(0, Math.min(99, Number(d.liga.j) || 0)) || null } } : {});
@@ -10916,6 +11061,8 @@ export class Avisos {
     let comps = null, links = [];
     try {
       const d = JSON.parse(f.datos);
+      // 👥 la ficha de un vs con equipos es sólo de «Perfiles»: «Estadísticas» compara a dos personas
+      if (Array.isArray(d.grupos)) return { error: 'vacia' };
       comps = fichaComponentes(d, todo);
       links = d.a.k || d.b.k ? [botonVerPerfiles(String(id))] : [];
     } catch (e) { comps = null; }
@@ -10930,6 +11077,18 @@ export class Avisos {
     let comps = null;
     try { comps = perfilesComponentes(JSON.parse(f.datos)); } catch (e) { comps = null; }
     return comps ? { ok: true, comps } : { error: 'vacia' };
+  }
+
+  /**
+   * 👥 «Perfiles» de un vs con equipos o de todos contra todos (11/11/2026): la gente de cada lado, guardada como la ficha del
+   * mano a mano (`vs_ficha`, dos días) con un id propio que va en el botón (`vs.pid`, ver `filasVs()`). Sin guardar, sin botón.
+   */
+  perfilesGruposGuardar(vs, gs, dc, base, o, ahora) {
+    const pid = codigoDe(base + ':vp').slice(0, 12);
+    try {
+      this.sql.exec('INSERT OR REPLACE INTO vs_ficha (id, datos, t) VALUES (?, ?, ?)', pid, JSON.stringify(fichaGrupos(gs, dc, o)), ahora);
+      vs.pid = pid;
+    } catch (e) { delete vs.pid; }
   }
 
   // ═════════════════════════════════════════════════

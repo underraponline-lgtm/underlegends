@@ -312,7 +312,25 @@ const ok = (cond, que, det) => {
       && !A.hayApuestas('FFA', 'normal', c2, {}) && A.hayApuestas('FFA', 'todo', c2, { apuestas: true })
       && A.hayApuestas('FFA', 'full', c2, {}) && A.hayApuestas('FFA', 'full', c0, {})
       && !A.hayApuestas('DDF', 'full', c2, { apuestas: true }) && !A.hayApuestas('DDF', 'normal', c2, {}),
-    'las apuestas: «No hay apuestas en» gana; prendidas a mano (Dashboard o /settings) van en cualquier nivel; si no, sólo «A full»');
+    'las apuestas: «No hay apuestas en» gana; prendidas a mano (Dashboard o /settings) van en cualquier nivel; si no, sólo con cruce');
+    // 🎲 en «Con datos» también, siempre (11/11/2026, Dlx: «sin importar lo que los demás tengan seleccionado»): antes ahí no
+    // salía nunca, ni prendida
+    ok(A.hayApuestas('FFA', 'datos', c0, {}) && A.hayApuestas('FFA', 'datos', c0, { apuestas: false }) && A.hayApuestas('URBF', 'datos', c2, null)
+      && !A.hayApuestas('DDF', 'datos', c2, { apuestas: true }) && !A.hayApuestas('FFA', 'normal', c0, {})
+      && !A.hayApuestas('FFA', 'poco', c0, { apuestas: false }) && !A.hayApuestas('FFA', 'todo', c0, {}),
+    'las apuestas en «Con datos»: siempre, elija lo que elija el admin, y sólo «No hay apuestas en» las saca; abajo, sólo prendidas');
+    // 🏷️ los botones con el nombre del ranking (11/11/2026): un equipo que no entra entero va con el primero y cuántos más
+    const lbl = (bs) => bs.flatMap((f) => f.components).map((x) => x.label);
+    ok(A.etiquetaLado(['Liberia', 'Pichulamc'], 'EddyLaSombra + Pichulamc') === 'Liberia +1' && A.etiquetaLado(['Ana', 'Bea']) === 'Ana y Bea'
+      && A.etiquetaLado(['Letrao'], 'letrao 🇨🇱') === 'Letrao' && A.etiquetaLado([], 'letrao 🇨🇱') === 'letrao'
+      && A.etiquetaLado(['EddyLaSombraXX', 'Bea']) === 'EddyLaS… +1' && A.etiquetaLado(['EddyLaSombraXX', 'Bea']).length === 11
+      && A.nombreLado(['Liberia', 'Pichulamc'], 'x') === 'Liberia y Pichulamc' && A.nombreLado([], 'letrao 🇨🇱') === 'letrao'
+      && lbl(A.botonesVoto('q', 'EddyLaSombra + Pichulamc', 'letrao', [], [['Liberia', 'Pichulamc'], ['Letrao']])).join('|') === 'Liberia +1|Letrao'
+      && lbl(A.botonesElegir({ id: 'q', a: 'EddyLaSombra + Pichulamc', b: 'letrao', gente: [['Liberia', 'Pichulamc'], ['Letrao']] }, 'ap')).join('|') === 'Liberia +1|Letrao'
+      && lbl(A.botonesApuesta('x', 'EddyLaSombra', 'letrao', false, [50, 100], [['Liberia', 'Pichulamc'], ['Letrao']]))[0] === 'Liberia +1 · 50'
+      && lbl(A.botonesVoto('q', 'Ana 🇦🇷', 'Bea')).join('|') === 'Ana|Bea'
+      && A.genteDe({ gente: '[["Ana","Bea"],["Cami"]]' })[0].join() === 'Ana,Bea' && A.genteDe({ gente: 'roto' }).length === 0 && A.genteDe(null).length === 0,
+    'los botones del voto y la apuesta, con el nombre del ranking; sin gente guardada (un mensaje de antes), lo de la llave');
     // 🗳️ «¿Quién gana?» (13/10/2026): el renglón, cómo cierra, y que se cambia SÓLO su renglón
     // 🃏 «Conseguí tu tarjeta» (14/10/2026, Dlx: «Botón abajo de la imagen», «Sólo con silueta»)
     const ct = 'https://pub-a.r2.dev/snow/temporada.webp', cs = 'https://pub-a.r2.dev/kochi/servidor.webp';
@@ -1757,6 +1775,11 @@ const ok = (cond, que, det) => {
     ok(pedidos.length === 1 && m1.m === 'POST' && m1.b.content.includes('⚔️ Cuartos: **<@' + ANA + '> 🇦🇷** vs **Bea 🇨🇱**')
       && JSON.stringify(m1.b.allowed_mentions) === '{"parse":[]}',
     'con datos: el cruce menciona a quien la Liga conoce, y no suena', m1 && m1.b.content);
+    // 🎲 y lleva la apuesta, siempre (11/11/2026): el voto abre el modal (`ve:`), con el nombre del ranking en los botones
+    const fila1 = ((m1 && m1.b.components) || [])[0] || {};
+    ok(/^🎲 \*\*Apuestas abiertas/m.test((m1 && m1.b.content) || '') && (fila1.components || []).length === 2
+      && fila1.components.every((x) => /^ve:/.test(x.custom_id)) && fila1.components.map((x) => x.label).join('|') === 'Ana|Bea',
+    'con datos: la apuesta va en el cruce, siempre, y los botones dicen el nombre del ranking', JSON.stringify(m1 && m1.b.components));
     llave('# COPA Y\n`[ CUARTOS ]`\n⌞Ana 🇦🇷⌝ ✅ 🆚 ⌞Bea 🇨🇱⌝\n⌞Cami 🇻🇪⌝ 🆚 ⌞Dora 🇲🇽⌝\n`[ FINAL ]`\n⌞Ana 🇦🇷⌝ 🆚 ⌞⌝\n', T + 3 * 60000);
     await o.chatVivo(T + 3 * 60000);
     const ed = pedidos.find((p, i) => i >= 1 && p.m === 'PATCH');
@@ -1804,8 +1827,59 @@ const ok = (cond, que, det) => {
       && /iba con \*\*Cami\*\* \(100 %, 2 votos\): acertó/.test(A.lineaVoto('Ana', 'Bea', 0, 0, 'C', ['Cami'], [2]) || '')
       && A.lineaVoto('Ana', 'Bea', 3, 1, '') === '🗳️ El público: **Ana** 75 % · **Bea** 25 % (4 votos)',
     'el renglón con tres lados, y el de dos como siempre');
+    // 👤 el todos contra todos también trae «Perfiles» (11/11/2026)
+    const vpTres = ((tres && tres.b.components) || []).flatMap((f) => f.components || []).find((x) => /^vp:/.test(x.custom_id || ''));
+    const pfTres = vpTres ? o.vsPerfiles(vpTres.custom_id.split(':')[1]) : {};
+    ok(!!vpTres && pfTres.ok && pfTres.comps.length === 3, 'todos contra todos: «Perfiles», una caja por cada uno', JSON.stringify(pfTres));
+    // 👥🏷️ CON EQUIPOS (11/11/2026, Dlx: «Sí, agrégalo» y «que ahí abajo sea el nombre como aparece en el ranking»): «Perfiles»
+    // de los dos lados, sin «Estadísticas», y los botones con el nombre de la Liga aunque la llave diga «ana» y «bea»
+    const n5 = pedidos.length;
+    sql.exec('INSERT INTO vivo (id, canal, sv, g, autor, pub, ed, texto, visto, men) ' +
+      "VALUES ('12', '4', 'FFA', '111', 'z', ?, ?, ?, ?, '[]')", T + 119 * 60000, T + 120 * 60000,
+    '# COPA EQUIPOS\n`[ FINAL ]`\n⌞ana 🇦🇷 + bea 🇨🇱⌝ 🆚 ⌞Cami 🇻🇪⌝\n', T + 120 * 60000);
+    await o.chatVivo(T + 120 * 60000);
+    const eq = pedidos.slice(n5).find((p) => p.m === 'POST' && /Final: /.test((p.b && p.b.content) || ''));
+    const bEq = ((eq && eq.b.components) || []).flatMap((f) => f.components || []);
+    const veEq = bEq.filter((x) => /^ve:/.test(x.custom_id || '')), vpEq = bEq.find((x) => /^vp:/.test(x.custom_id || ''));
+    const pfEq = vpEq ? o.vsPerfiles(vpEq.custom_id.split(':')[1]) : {};
+    const fichaEq = vpEq ? o.vsFicha(vpEq.custom_id.split(':')[1]) : {};
+    ok(veEq.map((x) => x.label).join('|') === 'Ana y Bea|Cami' && !!vpEq && !bEq.some((x) => /^vx:/.test(x.custom_id || ''))
+      && pfEq.ok && pfEq.comps.length === 2 && A.contarComponentes(pfEq.comps) <= 40 && /\*\*Ana\*\*/.test(JSON.stringify(pfEq.comps))
+      && /\*\*Bea\*\*/.test(JSON.stringify(pfEq.comps)) && fichaEq.error === 'vacia',
+    'con equipos: «Perfiles» de los dos lados, sin «Estadísticas», y los botones con el nombre del ranking',
+    JSON.stringify([eq && eq.b.content, eq && eq.b.components, pfEq]));
+    // 🗳️ y el voto contesta con el nombre del ranking
+    const qEq = veEq.length ? veEq[0].custom_id.split(':')[1] : '';
+    const vEq = qEq ? o.qgVotar({ quien: '700000211', id: qEq, lado: 'A' }, T + 121 * 60000) : {};
+    ok(vEq.ok && vEq.nombre === 'Ana y Bea', 'el voto de un equipo dice el nombre del ranking', JSON.stringify(vEq));
     globalThis.fetch = antesF;
   }
+}
+
+// 👥 «PERFILES» CON EQUIPOS, SIN PASARSE DE LO QUE DISCORD DEJA (11/11/2026): con caras si entran, sin caras el 8 contra 1 del
+// Multiverse —con caras serían 41 componentes—, y nunca más de 40 ni de 4.000 letras
+{
+  const cara = (i) => ({ n: 'Rapero' + i, fl: '🇦🇷', k: 'r' + i,
+    p: { av: '123456789012345678/abc' + i, pos: i + 1, rg: 'A', ev: 5, oro: 1, pod: 2, wr: 60, crew: 'X', sv: 'FFA' } });
+  const caras = (cs) => (JSON.stringify(cs).match(/"type":11/g) || []).length;
+  const g21 = A.perfilesGrupos({ sv: 'FFA', grupos: [[cara(0), cara(1)], [cara(2)]] });
+  const g81 = A.perfilesGrupos({ sv: 'FFA', grupos: [Array.from({ length: 8 }, (_, i) => cara(i)), [cara(8)]] });
+  const g50 = A.perfilesGrupos({ sv: 'FFA', grupos: Array.from({ length: 5 }, (_, j) => Array.from({ length: 10 }, (_, i) => cara(j * 10 + i))) });
+  const sinFila = A.perfilesGrupos({ sv: 'FFA', grupos: [[{ n: 'Nadie', fl: '', k: '', p: null }], [cara(1)]] });
+  ok(g21.length === 2 && caras(g21) === 3 && A.contarComponentes(g21) <= 40 && g21[0].components.filter((c) => c.type === 1).length === 1
+    && g81.length === 2 && caras(g81) === 0 && A.contarComponentes(g81) <= 40 && /Rapero7/.test(JSON.stringify(g81))
+    && g81[0].components.filter((c) => c.type === 1).length === 2
+    && A.contarComponentes(g50) <= 40 && A.letrasComponentes(g50) <= 4000 && g50.length === 5
+    && /Todavía no tiene perfil en la Liga/.test(JSON.stringify(sinFila)) && A.perfilesGrupos({ grupos: [[cara(0)]] }) === null
+    && A.perfilesComponentes({ sv: 'FFA', grupos: [[cara(0)], [cara(1)]] }).length === 2,
+  'perfiles con equipos: con caras si entran (2v1), sin caras el 8 contra 1, y nunca más de 40 componentes ni 4.000 letras',
+  JSON.stringify([A.contarComponentes(g21), A.contarComponentes(g81), A.contarComponentes(g50), A.letrasComponentes(g50)]));
+  // 📊 y la fila de botones: «Perfiles» con equipos sólo si tiene su ficha; el mano a mano, como siempre
+  const fq = (vs) => A.filasVs(vs).flatMap((f) => f.components).map((x) => x.custom_id || x.url || '');
+  ok(fq({ grupos: [[{ n: 'A' }], [{ n: 'B' }]], pid: 'abcdef012345' }).includes('vp:abcdef012345')
+    && !fq({ grupos: [[{ n: 'A' }], [{ n: 'B' }]] }).some((x) => /^vp:/.test(x))
+    && fq({ a: { n: 'Ana', k: 'ana', carta: 'x' }, b: { n: 'Bea', k: 'bea', carta: 'x' }, fid: '0123456789ab' }).join('|') === 'vx:0123456789ab|vp:0123456789ab',
+  'la fila del vs: «Perfiles» con equipos sólo con su ficha; el mano a mano, igual que antes');
 }
 
 // 🎲 LAS APUESTAS SOBRE EL OBJETO DE VERDAD (07/10/2026, «A full»): se abre con botones, se apuesta con sus frenos, se

@@ -2047,9 +2047,10 @@ function panelAjustes(sv, cfg) {
     'mensaje cada 10 minutos) o **cada batalla** (quién gana cada una apenas se sabe; como mucho uno cada 2 ' +
     'minutos). Nunca menciona a nadie.',
     '',
-    `**Apuestas** · ${cfg.apuestas === true ? '🟢 prendidas' : nivel === 'full' ? '🟢 van con «A full»' : '🔴 apagadas'}`,
+    // 🎲 en «Con datos» y «A full», siempre (11/11/2026, ver `hayApuestas()` en avisos.js)
+    `**Apuestas** · ${nivel === 'datos' || nivel === 'full' ? '🟢 en cada cruce' : cfg.apuestas === true ? '🟢 prendidas' : '🔴 apagadas en este nivel'}`,
     '> Con el bot en vivo, antes de cada batalla se puede apostar con Puntos de Tienda desde unos botones en el chat, ' +
-    'y el pozo se reparte entre los que aciertan. En «A full» van siempre; prendidas, van en cualquier nivel. ' +
+    'y el pozo se reparte entre los que aciertan. En «Con datos» y «A full» van siempre; prendidas, van en cualquier nivel. ' +
     'Desde la Liga se pueden apagar para un servidor, y eso gana.',
     '',
     `**📈 El ascenso de sus ligas** · ${cfg.ascenso ? `<#${cfg.ascenso}>` : '**apagado**'}`,
@@ -4751,7 +4752,8 @@ export default {
         // todos ven que se puede apostar. Sólo vota directo si la apuesta cerró, si es su propia batalla o si no tiene cuenta
         if (!info || !info.abierta || info.propia) return aviso(await votoChat(env, did, quien, extra));
         const mil = (v) => String(Math.round(v || 0)).replace(/\B(?=(\d{3})+(?!\d))/g, '.');
-        const nom = String(extra === 'A' ? info.a : info.b);
+        // 🏷️ el nombre del ranking, corto: un equipo que no entra va «Liberia +1» (`etiquetaLado()` en avisos.js)
+        const nom = String(extra === 'A' ? info.ea || info.a : info.eb || info.b);
         // ⚠️ el título y la etiqueta de un modal van hasta 45 caracteres
         return new Response(JSON.stringify({ type: 9, data: { custom_id: 'vm:' + quien + ':' + extra + ':' + dueno,
           title: ('Votas por ' + (nom.length > 12 ? nom.slice(0, 11) + '…' : nom) + ' · Tienes ' + mil(info.saldo) + ' Puntos').slice(0, 45),
