@@ -7452,7 +7452,7 @@
     "DDF|2026-10-06": {
      "1150099153238630410": [
       "",
-      "drexx💤",
+      "drexx",
       "manuxxx0789_78781"
      ]
     },
@@ -9209,6 +9209,97 @@
      ],
      "organizador": "@nachonc_",
      "cuentas": {}
+    },
+    "1570566779376377938": {
+     "sv": "FRZ",
+     "nombre": "LIGA INMORTAL",
+     "mo": "2026-11-12T22:31:39Z",
+     "staff": {
+      "jurado": [
+       "Ragna",
+       "Ragnaa.bdy"
+      ]
+     },
+     "orgs": [
+      {
+       "n": "Ragna",
+       "id": "877285342158397500"
+      },
+      {
+       "n": "Ragnaa.bdy",
+       "id": ""
+      }
+     ],
+     "organizador": "Ragnaa.bdy",
+     "cuentas": {
+      "Ragna": "877285342158397500"
+     }
+    },
+    "1570567200203350037": {
+     "sv": "ACAD",
+     "nombre": "GALACTICOS DEL FREESTYLE VOL.1",
+     "mo": "2026-11-12T22:33:20Z",
+     "staff": {
+      "jurado": [
+       "Mosquitrap 🦟🇦🇷"
+      ],
+      "host": [
+       "Mosquitrap 🦟🇦🇷"
+      ],
+      "dj": [
+       "Mosquitrap 🦟🇦🇷"
+      ]
+     },
+     "orgs": [
+      {
+       "n": "Mosquitrap 🦟🇦🇷",
+       "id": "1494178897908990136"
+      }
+     ],
+     "organizador": "",
+     "cuentas": {
+      "Mosquitrap 🦟🇦🇷": "1494178897908990136"
+     }
+    },
+    "1570569384131559586": {
+     "sv": "FDS",
+     "nombre": "RAP SIN GROSERIAS",
+     "mo": "2026-11-12T22:42:00Z",
+     "staff": {
+      "jurado": [
+       "Abraham"
+      ]
+     },
+     "orgs": [
+      {
+       "n": "Abraham",
+       "id": "1489469731168845894"
+      }
+     ],
+     "organizador": "@Abraham",
+     "cuentas": {
+      "Abraham": "1489469731168845894"
+     }
+    },
+    "1570569228874940460": {
+     "sv": "FDS",
+     "nombre": "RAP SIN GROSERIAS",
+     "mo": "2026-11-12T22:41:23Z",
+     "staff": {
+      "jurado": [
+       "Abraham"
+      ]
+     },
+     "orgs": [
+      {
+       "n": "Abraham",
+       "id": "1489469731168845894"
+      }
+     ],
+     "organizador": "@Abraham",
+     "cuentas": {
+      "Abraham": "1489469731168845894"
+     }
     }
    },
    "ver": {
@@ -9804,6 +9895,13 @@
       "nc",
       "Nc",
       "nachonc_"
+     ]
+    },
+    "ACAD|2026-11-12": {
+     "1494178897908990136": [
+      "El Wachin",
+      "Mosquitrap 🦟🇦🇷",
+      "3decopas."
      ]
     }
    }

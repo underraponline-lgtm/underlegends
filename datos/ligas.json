@@ -1,6 +1,6 @@
 {
  "_leeme": "Las ligas de los servidores: cada batalla y su resultado, y la tabla que sale de eso. Lo arma bot/ligas.py en cada corrida; las reglas viven ahí. Sin los mensajes: el repo es público. `batallas`: [id del mensaje, instante, jornada, a, b, ganador (vacío: pendiente), directa|replica, extras]. Las batallas con resultado cuentan como duelos (Ranking Duelos y Win%; el Score no). `flyer`: el último afiche de su canal de anuncios, re-alojado en R2 (`url`); `prox`: la próxima fecha que anunció (`d` el día, `t` el instante si lo dijo). Desde el 17/10/2026: `ptb` {id de la batalla: [PTB de a, de b]}, `flyers` (la galería, en R2), `staff` [[discord_id, nombre, mensajes en anuncios, en veredictos, último]] y `nov` (lo nuevo de las últimas horas, para «Seguir la liga»). Desde el 11/11/2026: `temps` [{t, c, n, msg, p, ult, desde}] (cada campeón que anunció su servidor: cierra esa temporada), `tn` (el número de la temporada que juega, si lo dice), `cerrada` {t} (sus canales ya no están) y, arriba, `nuevas` (las ligas que el bot encontró solo: `fam` vacío hasta que un lector entienda sus veredictos).",
- "t": "2026-11-12T22:29:03Z",
+ "t": "2026-11-12T22:59:19Z",
  "ligas": {
   "fmh-albiceleste": {
    "n": "FMH Albiceleste",
@@ -4098,14 +4098,6 @@
     ]
    ],
    "nov": [
-    {
-     "id": "r:fmh-espana:1569835629045485740",
-     "t": "2026-11-10T22:31:43Z",
-     "que": "res",
-     "ids": [
-      "1569835629045485740"
-     ]
-    },
     {
      "id": "r:fmh-espana:1570043863115243582",
      "t": "2026-11-11T16:36:57Z",
@@ -9307,6 +9299,16 @@
      "SHADOW",
      "directa",
      ""
+    ],
+    [
+     "1570566780861157549",
+     "2026-11-12T22:31:40Z",
+     null,
+     "Mosquito",
+     "Martinez",
+     "Mosquito",
+     "directa",
+     ""
     ]
    ],
    "tabla": [
@@ -9366,6 +9368,12 @@
     ],
     [
      "MC DL",
+     1,
+     1,
+     3
+    ],
+    [
+     "Mosquito",
      1,
      1,
      3
@@ -9432,6 +9440,12 @@
     ],
     [
      "LVEL",
+     1,
+     0,
+     0
+    ],
+    [
+     "Martinez",
      1,
      0,
      0
@@ -9621,6 +9635,13 @@
      "2026-10-29T17:05:34Z"
     ],
     [
+     "1493416945037611140",
+     "! Lizeninn",
+     0,
+     2,
+     "2026-11-12T22:32:02Z"
+    ],
+    [
      "1385452830684614697",
      "Lrs la sustancia 💫",
      0,
@@ -9647,13 +9668,6 @@
      0,
      1,
      "2026-10-29T21:22:33Z"
-    ],
-    [
-     "645308964141137952",
-     "Soul B",
-     0,
-     1,
-     "2026-11-02T04:33:51Z"
     ]
    ],
    "nov": [
@@ -9679,6 +9693,14 @@
      "que": "res",
      "ids": [
       "1570286019209732278"
+     ]
+    },
+    {
+     "id": "r:lkr-fms-plaza:1570566780861157549",
+     "t": "2026-11-12T22:59:57Z",
+     "que": "res",
+     "ids": [
+      "1570566780861157549"
      ]
     }
    ]
@@ -10436,6 +10458,16 @@
      "WALKER",
      "directa",
      ""
+    ],
+    [
+     "1570569658254495815",
+     "2026-11-12T22:43:06Z",
+     null,
+     "CARLOS",
+     "XCLUSIVO",
+     "",
+     "",
+     ""
     ]
    ],
    "tabla": [
@@ -10488,8 +10520,8 @@
      "552121423804628995",
      "𝙀𝙫𝙖𝙣†𝙜𝙚𝙡𝙞𝙣𝙚",
      4,
-     7,
-     "2026-11-11T23:27:04Z"
+     10,
+     "2026-11-12T22:49:27Z"
     ],
     [
      "958103803616444528",
@@ -10497,6 +10529,20 @@
      1,
      0,
      "2026-11-09T04:07:02Z"
+    ],
+    [
+     "1150099153238630410",
+     "drexx",
+     0,
+     1,
+     "2026-11-12T22:50:03Z"
+    ],
+    [
+     "950011515434573824",
+     "👾🫟 𝙻𝙴𝚅𝙸(• ◡•)🫟👾",
+     0,
+     1,
+     "2026-11-12T22:49:28Z"
     ]
    ]
   }
@@ -10544,7 +10590,7 @@
     "K": 3,
     "FF": 0
    },
-   "probado": "2026-11-12T16:38:03Z",
+   "probado": "2026-11-12T22:59:19Z",
    "quieta": true
   },
   "ffs-future-free-series": {
@@ -10567,7 +10613,7 @@
     "K": 0,
     "FF": 0
    },
-   "probado": "2026-11-12T16:38:03Z",
+   "probado": "2026-11-12T22:59:19Z",
    "quieta": false
   },
   "ffs-ffs-league-tricolor": {
@@ -10590,7 +10636,7 @@
     "K": 0,
     "FF": 48
    },
-   "probado": "2026-11-12T16:38:03Z",
+   "probado": "2026-11-12T22:59:19Z",
    "quieta": true
   },
   "ffs-ffs-league-argentina": {
@@ -10613,7 +10659,7 @@
     "K": 0,
     "FF": 78
    },
-   "probado": "2026-11-12T16:38:03Z",
+   "probado": "2026-11-12T22:59:19Z",
    "quieta": true
   },
   "ffs-ffs-league-chile": {
@@ -10636,7 +10682,7 @@
     "K": 0,
     "FF": 64
    },
-   "probado": "2026-11-12T16:38:03Z",
+   "probado": "2026-11-12T22:59:19Z",
    "quieta": true
   },
   "ffs-ffs-league-caribe": {
@@ -10659,7 +10705,7 @@
     "K": 0,
     "FF": 87
    },
-   "probado": "2026-11-12T16:38:03Z",
+   "probado": "2026-11-12T22:59:19Z",
    "quieta": true
   },
   "ffs-ffs-league-sur-america": {
@@ -10682,7 +10728,7 @@
     "K": 0,
     "FF": 42
    },
-   "probado": "2026-11-12T16:38:03Z",
+   "probado": "2026-11-12T22:59:19Z",
    "quieta": true
   },
   "fvs-fvs-world-series": {
@@ -10705,7 +10751,7 @@
     "K": 0,
     "FF": 0
    },
-   "probado": "2026-11-12T16:38:03Z",
+   "probado": "2026-11-12T22:59:19Z",
    "quieta": false
   },
   "fvs-fvs-primera-division": {
@@ -10728,7 +10774,7 @@
     "K": 0,
     "FF": 0
    },
-   "probado": "2026-11-12T16:38:03Z",
+   "probado": "2026-11-12T22:59:19Z",
    "quieta": false
   }
  },
