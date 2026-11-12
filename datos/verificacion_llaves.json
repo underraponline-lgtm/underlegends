@@ -9,6 +9,10 @@
    "min": 1337,
    "v": 1
   },
+  "(sin titulo)|LKR|05/11": {
+   "min": 34,
+   "v": 1
+  },
   "(sin titulo)|LKR|07/11": {
    "min": 67,
    "v": 1
@@ -27,6 +31,14 @@
   },
   "(sin titulo)|LKR|11/11": {
    "min": 35,
+   "v": 1
+  },
+  "(sin titulo)|LKR|15/10": {
+   "min": 39,
+   "v": 1
+  },
+  "(sin titulo)|LKR|21/10": {
+   "min": 34,
    "v": 1
   },
   "- FMS CHILE -|FRZ|01/10": {
@@ -260,6 +272,10 @@
    "min": 204,
    "v": 1
   },
+  "PLAZA UNDERGROUND BRACKET CLASIFICATORIO|LKR|19/10": {
+   "min": 62,
+   "v": 1
+  },
   "POESÍA CRUDA|URBF|01/10": {
    "min": 76,
    "v": 1
@@ -395,6 +411,10 @@
   },
   "TORNEO CLANDESTINO V.1|FFA|09/11": {
    "min": 137,
+   "v": 1
+  },
+  "TORNEOS|LKR|05/11": {
+   "min": 99,
    "v": 1
   },
   "VALHALLA VOL1|ACAD|04/10": {

@@ -50703,5 +50703,1687 @@
    "min": 71,
    "v": 1
   }
+ },
+ "611": {
+  "dia": "2026-09-29",
+  "escala": "8-15",
+  "fecha": "29/09",
+  "links": [
+   "https://discord.com/channels/1489848581203689535/1500675902042931280/1554640551054151752"
+  ],
+  "n": 611,
+  "nombre": "Shaoling Battles 1v1 3",
+  "participantes": 8,
+  "rondas": [
+   {
+    "b": [
+     [
+      [
+       "Abraham",
+       "SOL"
+      ],
+      "Abraham",
+      ""
+     ],
+     [
+      [
+       "CrisZJ",
+       "Sol 2da 🇵🇪"
+      ],
+      "CrisZJ",
+      ""
+     ],
+     [
+      [
+       "MCO 🇦🇷",
+       "Vilca🇵🇪"
+      ],
+      "",
+      "sin ganador: espera en ✅ Decidir"
+     ]
+    ],
+    "r": "Cuartos"
+   },
+   {
+    "b": [
+     [
+      [
+       "Abraham",
+       "Artezzy"
+      ],
+      "Abraham",
+      ""
+     ],
+     [
+      [
+       "CrisZJ",
+       "NXUZ"
+      ],
+      "CrisZJ",
+      ""
+     ]
+    ],
+    "r": "Semifinales"
+   },
+   {
+    "b": [
+     [
+      [
+       "Abraham",
+       "CrisZJ"
+      ],
+      "",
+      "sin campeón: ✅ Decidir (los dos finalistas cobran el promedio de 1.º y 2.º)"
+     ]
+    ],
+    "r": "Final"
+   }
+  ],
+  "sv": "FDS",
+  "tabla": [
+   [
+    "Abraham",
+    "Subcampeón",
+    6250
+   ],
+   [
+    "CrisZJ",
+    "Subcampeón",
+    6250
+   ],
+   [
+    "Artezzy",
+    "Semifinal",
+    3500
+   ],
+   [
+    "NXUZ",
+    "Semifinal",
+    3500
+   ],
+   [
+    "SOL",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Sol 2da 🇵🇪",
+    "Cuartos",
+    2000
+   ]
+  ],
+  "ver": {
+   "min": 76,
+   "org": "juega",
+   "v": 1
+  }
+ },
+ "612": {
+  "dia": "2026-10-15",
+  "escala": "8-15",
+  "fecha": "15/10",
+  "links": [
+   "https://discord.com/channels/1558611504046153750/1558611505040064607/1560446944525025393"
+  ],
+  "n": 612,
+  "nombre": "(sin titulo)",
+  "participantes": 9,
+  "rondas": [
+   {
+    "b": [
+     [
+      [
+       "Soulb",
+       "LAST"
+      ],
+      "Soulb",
+      ""
+     ],
+     [
+      [
+       "Richard",
+       "Scot"
+      ],
+      "Richard",
+      ""
+     ],
+     [
+      [
+       "Miniboy",
+       "Sin Limites"
+      ],
+      "Miniboy",
+      ""
+     ],
+     [
+      [
+       "El Wachin",
+       "MaYeuTyK",
+       "Btrece"
+      ],
+      "El Wachin",
+      "triple (3 bandas)"
+     ]
+    ],
+    "r": "Cuartos"
+   },
+   {
+    "b": [
+     [
+      [
+       "Richard",
+       "Soulb"
+      ],
+      "Richard",
+      ""
+     ],
+     [
+      [
+       "El Wachin",
+       "Miniboy"
+      ],
+      "El Wachin",
+      ""
+     ]
+    ],
+    "r": "Semifinales"
+   },
+   {
+    "b": [
+     [
+      [
+       "Richard",
+       "El Wachin"
+      ],
+      "",
+      "sin campeón: ✅ Decidir (los dos finalistas cobran el promedio de 1.º y 2.º)"
+     ]
+    ],
+    "r": "Final"
+   }
+  ],
+  "sv": "LKR",
+  "tabla": [
+   [
+    "El Wachin",
+    "Subcampeón",
+    6250
+   ],
+   [
+    "Richard",
+    "Subcampeón",
+    6250
+   ],
+   [
+    "Miniboy",
+    "Semifinal",
+    3500
+   ],
+   [
+    "Soulb",
+    "Semifinal",
+    3500
+   ],
+   [
+    "Btrece",
+    "Cuartos",
+    2000
+   ],
+   [
+    "LAST",
+    "Cuartos",
+    2000
+   ],
+   [
+    "MaYeuTyK",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Scot",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Sin Limites",
+    "Cuartos",
+    2000
+   ]
+  ],
+  "ver": {
+   "min": 39,
+   "v": 1
+  }
+ },
+ "613": {
+  "dia": "2026-10-18",
+  "escala": "16+",
+  "fecha": "18/10",
+  "links": [
+   "https://discord.com/channels/1558611504046153750/1560645507095728278/1561476508881649676"
+  ],
+  "n": 613,
+  "nombre": "RED BULL",
+  "participantes": 16,
+  "rondas": [
+   {
+    "b": [
+     [
+      [
+       "NXUZ",
+       "POXE"
+      ],
+      "NXUZ",
+      ""
+     ],
+     [
+      [
+       "BTRX",
+       "CrisZJ"
+      ],
+      "BTRX",
+      ""
+     ],
+     [
+      [
+       "Dominick",
+       "ARDEAN"
+      ],
+      "Dominick",
+      ""
+     ],
+     [
+      [
+       "Hedorah 🇨🇱",
+       "Joshema"
+      ],
+      "Hedorah 🇨🇱",
+      ""
+     ],
+     [
+      [
+       "Leonart",
+       "Miniboy"
+      ],
+      "Leonart",
+      ""
+     ],
+     [
+      [
+       "LAST",
+       "Fisics"
+      ],
+      "LAST",
+      ""
+     ],
+     [
+      [
+       "Soulb",
+       "EmiZor"
+      ],
+      "Soulb",
+      ""
+     ],
+     [
+      [
+       "Mr.Kude",
+       "Chop"
+      ],
+      "Mr.Kude",
+      ""
+     ]
+    ],
+    "r": "Octavos"
+   },
+   {
+    "b": [
+     [
+      [
+       "BTRX",
+       "NXUZ"
+      ],
+      "BTRX",
+      ""
+     ],
+     [
+      [
+       "Hedorah 🇨🇱",
+       "Dominick"
+      ],
+      "Hedorah 🇨🇱",
+      ""
+     ],
+     [
+      [
+       "Leonart",
+       "LAST"
+      ],
+      "Leonart",
+      ""
+     ],
+     [
+      [
+       "Soulb",
+       "Mr.Kude"
+      ],
+      "Soulb",
+      ""
+     ]
+    ],
+    "r": "Cuartos"
+   },
+   {
+    "b": [
+     [
+      [
+       "BTRX",
+       "Hedorah 🇨🇱"
+      ],
+      "BTRX",
+      ""
+     ],
+     [
+      [
+       "Leonart",
+       "Soulb"
+      ],
+      "Leonart",
+      ""
+     ]
+    ],
+    "r": "Semifinales"
+   },
+   {
+    "b": [
+     [
+      [
+       "BTRX",
+       "Leonart"
+      ],
+      "",
+      "sin campeón: ✅ Decidir (los dos finalistas cobran el promedio de 1.º y 2.º)"
+     ]
+    ],
+    "r": "Final"
+   }
+  ],
+  "sv": "LKR",
+  "tabla": [
+   [
+    "BTRX",
+    "Subcampeón",
+    8750
+   ],
+   [
+    "Leonart",
+    "Subcampeón",
+    8750
+   ],
+   [
+    "Hedorah 🇨🇱",
+    "Semifinal",
+    5250
+   ],
+   [
+    "Soulb",
+    "Semifinal",
+    5250
+   ],
+   [
+    "Dominick",
+    "Cuartos",
+    2500
+   ],
+   [
+    "LAST",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Mr.Kude",
+    "Cuartos",
+    2500
+   ],
+   [
+    "NXUZ",
+    "Cuartos",
+    2500
+   ],
+   [
+    "ARDEAN",
+    "Octavos",
+    1250
+   ],
+   [
+    "Chop",
+    "Octavos",
+    1250
+   ],
+   [
+    "CrisZJ",
+    "Octavos",
+    1250
+   ],
+   [
+    "EmiZor",
+    "Octavos",
+    1250
+   ],
+   [
+    "Fisics",
+    "Octavos",
+    1250
+   ],
+   [
+    "Joshema",
+    "Octavos",
+    1250
+   ],
+   [
+    "Miniboy",
+    "Octavos",
+    1250
+   ],
+   [
+    "POXE",
+    "Octavos",
+    1250
+   ]
+  ],
+  "ver": {
+   "min": 160,
+   "v": 1
+  }
+ },
+ "614": {
+  "dia": "2026-10-19",
+  "escala": "8-15",
+  "fecha": "19/10",
+  "links": [
+   "https://discord.com/channels/1558611504046153750/1558611505040064607/1561924413971238925"
+  ],
+  "n": 614,
+  "nombre": "PLAZA UNDERGROUND BRACKET CLASIFICATORIO",
+  "participantes": 9,
+  "rondas": [
+   {
+    "b": [
+     [
+      [
+       "Soulb",
+       "Calíz"
+      ],
+      "Soulb",
+      ""
+     ],
+     [
+      [
+       "Leonart",
+       "Chop"
+      ],
+      "Leonart",
+      ""
+     ],
+     [
+      [
+       "Shadow",
+       "Hedorah 🇨🇱"
+      ],
+      "Shadow",
+      ""
+     ],
+     [
+      [
+       "Richard 🇪🇨",
+       "ANDY🇵🇪"
+      ],
+      "",
+      "sin ganador: espera en ✅ Decidir"
+     ]
+    ],
+    "r": "Cuartos"
+   },
+   {
+    "b": [
+     [
+      [
+       "Leonart",
+       "Soulb"
+      ],
+      "Leonart",
+      ""
+     ],
+     [
+      [
+       "Mosquitrap 🦟",
+       "Shadow"
+      ],
+      "Mosquitrap 🦟",
+      "Walk-in 1: Mosquitrap 🇦🇷"
+     ]
+    ],
+    "r": "Semifinales"
+   },
+   {
+    "b": [
+     [
+      [
+       "Leonart",
+       "Mosquitrap 🦟"
+      ],
+      "",
+      "sin campeón: ✅ Decidir (los dos finalistas cobran el promedio de 1.º y 2.º)"
+     ]
+    ],
+    "r": "Final"
+   }
+  ],
+  "sv": "LKR",
+  "tabla": [
+   [
+    "Leonart",
+    "Subcampeón",
+    6250
+   ],
+   [
+    "Shadow",
+    "Semifinal",
+    3500
+   ],
+   [
+    "Soulb",
+    "Semifinal",
+    3500
+   ],
+   [
+    "Mosquitrap 🦟",
+    "Subcampeón",
+    3125
+   ],
+   [
+    "Calíz",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Chop",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Hedorah 🇨🇱",
+    "Cuartos",
+    2000
+   ]
+  ],
+  "ver": {
+   "min": 62,
+   "v": 1
+  }
+ },
+ "615": {
+  "dia": "2026-10-21",
+  "escala": "8-15",
+  "fecha": "21/10",
+  "links": [
+   "https://discord.com/channels/1558611504046153750/1558611505040064607/1562611278495748138"
+  ],
+  "n": 615,
+  "nombre": "(sin titulo)",
+  "participantes": 10,
+  "rondas": [
+   {
+    "b": [
+     [
+      [
+       "PichulaMc",
+       "Calíz"
+      ],
+      "PichulaMc",
+      ""
+     ],
+     [
+      [
+       "PichulaMc",
+       "Krtman"
+      ],
+      "PichulaMc",
+      ""
+     ],
+     [
+      [
+       "Mathhias",
+       "Miniboy"
+      ],
+      "Mathhias",
+      ""
+     ],
+     [
+      [
+       "Makmah",
+       "Teito",
+       "Soulb"
+      ],
+      "Makmah",
+      "triple (3 bandas)"
+     ]
+    ],
+    "r": "Cuartos"
+   },
+   {
+    "b": [
+     [
+      [
+       "PichulaMc",
+       "LAST"
+      ],
+      "PichulaMc",
+      "Walk-in 1: Last🇬🇶"
+     ],
+     [
+      [
+       "Makmah",
+       "Mathhias"
+      ],
+      "Makmah",
+      ""
+     ]
+    ],
+    "r": "Semifinales"
+   },
+   {
+    "b": [
+     [
+      [
+       "PichulaMc",
+       "Makmah"
+      ],
+      "",
+      "sin campeón: ✅ Decidir (los dos finalistas cobran el promedio de 1.º y 2.º)"
+     ]
+    ],
+    "r": "Final"
+   }
+  ],
+  "sv": "LKR",
+  "tabla": [
+   [
+    "Makmah",
+    "Subcampeón",
+    6250
+   ],
+   [
+    "PichulaMc",
+    "Subcampeón",
+    6250
+   ],
+   [
+    "Mathhias",
+    "Semifinal",
+    3500
+   ],
+   [
+    "Calíz",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Krtman",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Miniboy",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Soulb",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Teito",
+    "Cuartos",
+    2000
+   ],
+   [
+    "LAST",
+    "Semifinal",
+    1750
+   ]
+  ],
+  "ver": {
+   "min": 34,
+   "v": 1
+  }
+ },
+ "616": {
+  "dia": "2026-10-28",
+  "escala": "16+",
+  "fecha": "28/10",
+  "links": [
+   "https://discord.com/channels/1443770831598649528/1563698791595507743/1565165824245764217"
+  ],
+  "n": 616,
+  "nombre": "no se k poner style",
+  "participantes": 19,
+  "rondas": [
+   {
+    "b": [
+     [
+      [
+       "》 A.  nc",
+       "BTRX",
+       "Miniboy"
+      ],
+      "》 A.  nc",
+      "triple (3 bandas)"
+     ],
+     [
+      [
+       "CrisZJ",
+       "NXUZ",
+       "Lvel 🇻🇪"
+      ],
+      "CrisZJ",
+      "triple (3 bandas)"
+     ],
+     [
+      [
+       "Delux",
+       "Number Elixir 🇻🇪",
+       "Vilca"
+      ],
+      "Delux",
+      "triple (3 bandas)"
+     ],
+     [
+      [
+       "BastyRetro",
+       "Kochi",
+       "Noone",
+       "Artezzy"
+      ],
+      "BastyRetro",
+      "triple (4 bandas)"
+     ]
+    ],
+    "r": "Cuartos"
+   },
+   {
+    "b": [
+     [
+      [
+       "NC",
+       "CrisZJ"
+      ],
+      "NC",
+      ""
+     ],
+     [
+      [
+       "BastyRetro",
+       "Delux"
+      ],
+      "BastyRetro",
+      ""
+     ],
+     [
+      [
+       "dante",
+       "criz"
+      ],
+      "",
+      "sin ganador: espera en ✅ Decidir"
+     ]
+    ],
+    "r": "Semifinales"
+   },
+   {
+    "b": [
+     [
+      [
+       "NC",
+       "bastty"
+      ],
+      "",
+      "sin campeón: ✅ Decidir (los dos finalistas cobran el promedio de 1.º y 2.º)"
+     ]
+    ],
+    "r": "Final"
+   }
+  ],
+  "sv": "DDS",
+  "tabla": [
+   [
+    "NC",
+    "Subcampeón",
+    8750
+   ],
+   [
+    "bastty",
+    "Subcampeón",
+    8750
+   ],
+   [
+    "CrisZJ",
+    "Semifinal",
+    5250
+   ],
+   [
+    "Delux",
+    "Semifinal",
+    5250
+   ],
+   [
+    "Artezzy",
+    "Cuartos",
+    2500
+   ],
+   [
+    "BTRX",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Kochi",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Lvel 🇻🇪",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Miniboy",
+    "Cuartos",
+    2500
+   ],
+   [
+    "NXUZ",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Noone",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Number Elixir 🇻🇪",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Vilca",
+    "Cuartos",
+    2500
+   ]
+  ],
+  "ver": {
+   "min": 58,
+   "v": 1
+  }
+ },
+ "617": {
+  "dia": "2026-10-31",
+  "escala": "16+",
+  "fecha": "31/10",
+  "links": [
+   "https://discord.com/channels/765045834647339038/1309234583023124531/1566218030692827249"
+  ],
+  "n": 617,
+  "nombre": "FAT BATTLES PALOOZA EDICIÓN HALOWEEN",
+  "participantes": 20,
+  "rondas": [
+   {
+    "b": [
+     [
+      [
+       "Panchok",
+       "Velatz"
+      ],
+      "Panchok",
+      ""
+     ],
+     [
+      [
+       "Lord Viruzz",
+       "Ariaxer",
+       "Baut_N 🇻🇪"
+      ],
+      "Lord Viruzz",
+      "triple (3 bandas)"
+     ],
+     [
+      [
+       "Erian",
+       "Lvel 🇻🇪",
+       "Calíz"
+      ],
+      "Erian",
+      "triple (3 bandas)"
+     ],
+     [
+      [
+       "MCO",
+       "Tmax Turbo [PN]"
+      ],
+      "MCO",
+      ""
+     ],
+     [
+      [
+       "Mito",
+       "Kastigoz"
+      ],
+      "Mito",
+      ""
+     ],
+     [
+      [
+       "Milo",
+       "Makmah",
+       "UDDIZIM"
+      ],
+      "Milo",
+      "triple (3 bandas)"
+     ],
+     [
+      [
+       "TøKīØ🦠🧠",
+       "Gonorrea"
+      ],
+      "TøKīØ🦠🧠",
+      ""
+     ],
+     [
+      [
+       "Drexx",
+       "Dantemx"
+      ],
+      "Drexx",
+      ""
+     ]
+    ],
+    "r": "Octavos"
+   },
+   {
+    "b": [
+     [
+      [
+       "Panchok",
+       "Lord Viruzz"
+      ],
+      "Panchok",
+      ""
+     ],
+     [
+      [
+       "MCO",
+       "Erian"
+      ],
+      "MCO",
+      ""
+     ],
+     [
+      [
+       "Milo",
+       "Mito"
+      ],
+      "Milo",
+      ""
+     ],
+     [
+      [
+       "TøKīØ🦠🧠",
+       "Drexx"
+      ],
+      "TøKīØ🦠🧠",
+      ""
+     ]
+    ],
+    "r": "Cuartos"
+   },
+   {
+    "b": [
+     [
+      [
+       "Panchok",
+       "MCO"
+      ],
+      "Panchok",
+      ""
+     ],
+     [
+      [
+       "Milo",
+       "TøKīØ🦠🧠"
+      ],
+      "Milo",
+      ""
+     ]
+    ],
+    "r": "Semifinales"
+   },
+   {
+    "b": [
+     [
+      [
+       "Panchok",
+       "Milo"
+      ],
+      "",
+      "sin campeón: ✅ Decidir (los dos finalistas cobran el promedio de 1.º y 2.º)"
+     ]
+    ],
+    "r": "Final"
+   }
+  ],
+  "sv": "ACAD",
+  "tabla": [
+   [
+    "Milo",
+    "Subcampeón",
+    8750
+   ],
+   [
+    "Panchok",
+    "Subcampeón",
+    8750
+   ],
+   [
+    "MCO",
+    "Semifinal",
+    5250
+   ],
+   [
+    "TøKīØ🦠🧠",
+    "Semifinal",
+    5250
+   ],
+   [
+    "Drexx",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Erian",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Lord Viruzz",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Mito",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Ariaxer",
+    "Octavos",
+    1250
+   ],
+   [
+    "Baut_N 🇻🇪",
+    "Octavos",
+    1250
+   ],
+   [
+    "Calíz",
+    "Octavos",
+    1250
+   ],
+   [
+    "Dantemx",
+    "Octavos",
+    1250
+   ],
+   [
+    "Gonorrea",
+    "Octavos",
+    1250
+   ],
+   [
+    "Kastigoz",
+    "Octavos",
+    1250
+   ],
+   [
+    "Lvel 🇻🇪",
+    "Octavos",
+    1250
+   ],
+   [
+    "Makmah",
+    "Octavos",
+    1250
+   ],
+   [
+    "Tmax Turbo [PN]",
+    "Octavos",
+    1250
+   ],
+   [
+    "UDDIZIM",
+    "Octavos",
+    1250
+   ],
+   [
+    "Velatz",
+    "Octavos",
+    1250
+   ]
+  ],
+  "ver": {
+   "min": 87,
+   "v": 1
+  }
+ },
+ "618": {
+  "dia": "2026-10-31",
+  "escala": "8-15",
+  "fecha": "31/10",
+  "links": [
+   "https://discord.com/channels/765045834647339038/1309234583023124531/1566300280969236521"
+  ],
+  "n": 618,
+  "nombre": "CALLE DEL TERROR",
+  "participantes": 8,
+  "rondas": [
+   {
+    "b": [
+     [
+      [
+       "Lord Viruzz",
+       "Carlos"
+      ],
+      "Lord Viruzz",
+      ""
+     ],
+     [
+      [
+       "Mito",
+       "Bishop"
+      ],
+      "Mito",
+      ""
+     ],
+     [
+      [
+       "GERONIMO🇻🇪",
+       "Geoka"
+      ],
+      "GERONIMO🇻🇪",
+      ""
+     ],
+     [
+      [
+       "LRSLASUSTANCIA🇦🇷",
+       "Mochi DG"
+      ],
+      "LRSLASUSTANCIA🇦🇷",
+      ""
+     ]
+    ],
+    "r": "Cuartos"
+   },
+   {
+    "b": [
+     [
+      [
+       "Mito",
+       "Lord Viruzz"
+      ],
+      "Mito",
+      ""
+     ],
+     [
+      [
+       "GERONIMO🇻🇪",
+       "LRSLASUSTANCIA🇦🇷"
+      ],
+      "GERONIMO🇻🇪",
+      ""
+     ]
+    ],
+    "r": "Semifinales"
+   },
+   {
+    "b": [
+     [
+      [
+       "Mito",
+       "GERONIMO🇻🇪"
+      ],
+      "",
+      "sin campeón: ✅ Decidir (los dos finalistas cobran el promedio de 1.º y 2.º)"
+     ]
+    ],
+    "r": "Final"
+   }
+  ],
+  "sv": "ACAD",
+  "tabla": [
+   [
+    "GERONIMO🇻🇪",
+    "Subcampeón",
+    6250
+   ],
+   [
+    "Mito",
+    "Subcampeón",
+    6250
+   ],
+   [
+    "LRSLASUSTANCIA🇦🇷",
+    "Semifinal",
+    3500
+   ],
+   [
+    "Lord Viruzz",
+    "Semifinal",
+    3500
+   ],
+   [
+    "Bishop",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Carlos",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Geoka",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Mochi DG",
+    "Cuartos",
+    2000
+   ]
+  ],
+  "ver": {
+   "v": 1
+  }
+ },
+ "619": {
+  "dia": "2026-11-05",
+  "escala": "8-15",
+  "fecha": "05/11",
+  "links": [
+   "https://discord.com/channels/1558611504046153750/1558611505040064607/1568083395974799433"
+  ],
+  "n": 619,
+  "nombre": "(sin titulo)",
+  "participantes": 9,
+  "rondas": [
+   {
+    "b": [
+     [
+      [
+       "LARRIX🇦🇷",
+       "EXE 🇦🇷"
+      ],
+      "LARRIX🇦🇷",
+      ""
+     ],
+     [
+      [
+       "NAVAS 🇪🇸",
+       "Letra 🇻🇪"
+      ],
+      "NAVAS 🇪🇸",
+      ""
+     ],
+     [
+      [
+       "AZUKY🇲🇽",
+       "Force 🇪🇸"
+      ],
+      "AZUKY🇲🇽",
+      ""
+     ],
+     [
+      [
+       "Gazir🇪🇸",
+       "Carpediem 🇨🇴"
+      ],
+      "Gazir🇪🇸",
+      ""
+     ]
+    ],
+    "r": "Cuartos"
+   },
+   {
+    "b": [
+     [
+      [
+       "LARRIX🇦🇷",
+       "NAVAS 🇪🇸"
+      ],
+      "LARRIX🇦🇷",
+      ""
+     ],
+     [
+      [
+       "Gazir🇪🇸",
+       "AZUKI"
+      ],
+      "Gazir🇪🇸",
+      ""
+     ]
+    ],
+    "r": "Semifinales"
+   },
+   {
+    "b": [
+     [
+      [
+       "LARRIX🇦🇷",
+       "Gazir🇪🇸"
+      ],
+      "",
+      "sin campeón: ✅ Decidir (los dos finalistas cobran el promedio de 1.º y 2.º)"
+     ]
+    ],
+    "r": "Final"
+   }
+  ],
+  "sv": "LKR",
+  "tabla": [
+   [
+    "Gazir🇪🇸",
+    "Subcampeón",
+    6250
+   ],
+   [
+    "LARRIX🇦🇷",
+    "Subcampeón",
+    6250
+   ],
+   [
+    "AZUKI",
+    "Semifinal",
+    3500
+   ],
+   [
+    "NAVAS 🇪🇸",
+    "Semifinal",
+    3500
+   ],
+   [
+    "Carpediem 🇨🇴",
+    "Cuartos",
+    2000
+   ],
+   [
+    "EXE 🇦🇷",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Force 🇪🇸",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Letra 🇻🇪",
+    "Cuartos",
+    2000
+   ]
+  ],
+  "ver": {
+   "min": 34,
+   "v": 1
+  }
+ },
+ "620": {
+  "dia": "2026-11-05",
+  "escala": "16+",
+  "fecha": "05/11",
+  "links": [
+   "https://discord.com/channels/1558611504046153750/1558611505040064607/1568104021267583118"
+  ],
+  "n": 620,
+  "nombre": "TORNEOS",
+  "participantes": 17,
+  "rondas": [
+   {
+    "b": [
+     [
+      [
+       "Letra 🇻🇪",
+       "MP 🇦🇷"
+      ],
+      "Letra 🇻🇪",
+      ""
+     ],
+     [
+      [
+       "Sweet pain🇻🇪",
+       "Nitro🇨🇱"
+      ],
+      "Sweet pain🇻🇪",
+      ""
+     ],
+     [
+      [
+       "CHUTY 🇪🇸",
+       "VALLES-T 🇨🇴"
+      ],
+      "CHUTY 🇪🇸",
+      ""
+     ],
+     [
+      [
+       "JONY B 🇲🇽",
+       "LOBO ES 🇲🇽"
+      ],
+      "JONY B 🇲🇽",
+      ""
+     ],
+     [
+      [
+       "LARRIX🇦🇷",
+       "BNET 🇪🇸"
+      ],
+      "LARRIX🇦🇷",
+      ""
+     ],
+     [
+      [
+       "Teorema 🇨🇱",
+       "Trueno🇦🇷"
+      ],
+      "Teorema 🇨🇱",
+      ""
+     ],
+     [
+      [
+       "WOS",
+       "Hardcore"
+      ],
+      "WOS",
+      ""
+     ],
+     [
+      [
+       "URKO 🇨🇴",
+       "Replik 🇦🇷"
+      ],
+      "URKO 🇨🇴",
+      ""
+     ]
+    ],
+    "r": "Octavos"
+   },
+   {
+    "b": [
+     [
+      [
+       "Letra 🇻🇪",
+       "Sweet pain🇻🇪"
+      ],
+      "Letra 🇻🇪",
+      ""
+     ],
+     [
+      [
+       "CHUTY 🇪🇸",
+       "JONY BEL 🇲🇽"
+      ],
+      "CHUTY 🇪🇸",
+      ""
+     ],
+     [
+      [
+       "Teorema 🇨🇱",
+       "LARRIX🇦🇷"
+      ],
+      "Teorema 🇨🇱",
+      ""
+     ],
+     [
+      [
+       "URKO 🇨🇴",
+       "WOS"
+      ],
+      "URKO 🇨🇴",
+      ""
+     ]
+    ],
+    "r": "Cuartos"
+   },
+   {
+    "b": [
+     [
+      [
+       "Letra 🇻🇪",
+       "CHUTY 🇪🇸"
+      ],
+      "Letra 🇻🇪",
+      ""
+     ],
+     [
+      [
+       "URKO 🇨🇴",
+       "Teorema 🇨🇱"
+      ],
+      "URKO 🇨🇴",
+      ""
+     ]
+    ],
+    "r": "Semifinales"
+   },
+   {
+    "b": [
+     [
+      [
+       "Letra 🇻🇪",
+       "URKO 🇨🇴"
+      ],
+      "",
+      "sin campeón: ✅ Decidir (los dos finalistas cobran el promedio de 1.º y 2.º)"
+     ]
+    ],
+    "r": "Final"
+   }
+  ],
+  "sv": "LKR",
+  "tabla": [
+   [
+    "Letra 🇻🇪",
+    "Subcampeón",
+    8750
+   ],
+   [
+    "URKO 🇨🇴",
+    "Subcampeón",
+    8750
+   ],
+   [
+    "CHUTY 🇪🇸",
+    "Semifinal",
+    5250
+   ],
+   [
+    "Teorema 🇨🇱",
+    "Semifinal",
+    5250
+   ],
+   [
+    "JONY BEL 🇲🇽",
+    "Cuartos",
+    2500
+   ],
+   [
+    "LARRIX🇦🇷",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Sweet pain🇻🇪",
+    "Cuartos",
+    2500
+   ],
+   [
+    "WOS",
+    "Cuartos",
+    2500
+   ],
+   [
+    "BNET 🇪🇸",
+    "Octavos",
+    1250
+   ],
+   [
+    "Hardcore",
+    "Octavos",
+    1250
+   ],
+   [
+    "LOBO ES 🇲🇽",
+    "Octavos",
+    1250
+   ],
+   [
+    "MP 🇦🇷",
+    "Octavos",
+    1250
+   ],
+   [
+    "Nitro🇨🇱",
+    "Octavos",
+    1250
+   ],
+   [
+    "Replik 🇦🇷",
+    "Octavos",
+    1250
+   ],
+   [
+    "Trueno🇦🇷",
+    "Octavos",
+    1250
+   ],
+   [
+    "VALLES-T 🇨🇴",
+    "Octavos",
+    1250
+   ]
+  ],
+  "ver": {
+   "min": 99,
+   "v": 1
+  }
  }
 }

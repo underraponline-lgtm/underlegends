@@ -43257,5 +43257,1709 @@
    ]
   ],
   "v": 2
+ },
+ "611": {
+  "antes": {
+   "Abraham": [
+    284,
+    134,
+    true
+   ],
+   "Artezzy": [
+    109,
+    148,
+    false
+   ],
+   "CrisZJ": [
+    259,
+    40,
+    true
+   ],
+   "NXUZ": [
+    23,
+    26,
+    false
+   ],
+   "SOL": [
+    110,
+    150,
+    false
+   ]
+  },
+  "canal": "",
+  "duelos": [
+   [
+    "Abraham",
+    "SOL",
+    "Abraham"
+   ],
+   [
+    "CrisZJ",
+    "Sol 2da 🇵🇪",
+    "CrisZJ"
+   ],
+   [
+    "Abraham",
+    "Artezzy",
+    "Abraham"
+   ],
+   [
+    "CrisZJ",
+    "NXUZ",
+    "CrisZJ"
+   ],
+   [
+    "Abraham",
+    "CrisZJ",
+    ""
+   ]
+  ],
+  "ev_antes": {
+   "Abraham": 8,
+   "Artezzy": 10,
+   "CrisZJ": 27,
+   "NXUZ": 40,
+   "SOL": 5
+  },
+  "fecha": "29/09",
+  "nombre": "Shaoling Battles 1v1 3",
+  "num": 611,
+  "participantes": 8,
+  "sello": {},
+  "sv": "FDS",
+  "t": "2026-11-12T07:53:28Z",
+  "tabla": [
+   [
+    "Abraham",
+    "Subcampeón",
+    6250
+   ],
+   [
+    "CrisZJ",
+    "Subcampeón",
+    6250
+   ],
+   [
+    "Artezzy",
+    "Semifinal",
+    3500
+   ],
+   [
+    "NXUZ",
+    "Semifinal",
+    3500
+   ],
+   [
+    "SOL",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Sol 2da 🇵🇪",
+    "Cuartos",
+    2000
+   ]
+  ],
+  "v": 2
+ },
+ "612": {
+  "antes": {
+   "Btrece": [
+    187,
+    355,
+    false
+   ],
+   "El Wachin": [
+    493,
+    449,
+    true
+   ],
+   "LAST": [
+    64,
+    80,
+    false
+   ],
+   "MaYeuTyK": [
+    52,
+    63,
+    false
+   ],
+   "Miniboy": [
+    22,
+    25,
+    false
+   ],
+   "Richard": [
+    79,
+    100,
+    false
+   ],
+   "Scot": [
+    321,
+    192,
+    true
+   ],
+   "Sin Limites": [
+    28,
+    33,
+    false
+   ],
+   "Soulb": [
+    54,
+    65,
+    false
+   ]
+  },
+  "canal": "",
+  "duelos": [
+   [
+    "Soulb",
+    "LAST",
+    "Soulb"
+   ],
+   [
+    "Richard",
+    "Scot",
+    "Richard"
+   ],
+   [
+    "Miniboy",
+    "Sin Limites",
+    "Miniboy"
+   ],
+   [
+    "El Wachin",
+    "MaYeuTyK",
+    "El Wachin"
+   ],
+   [
+    "El Wachin",
+    "Btrece",
+    "El Wachin"
+   ],
+   [
+    "Richard",
+    "Soulb",
+    "Richard"
+   ],
+   [
+    "El Wachin",
+    "Miniboy",
+    "El Wachin"
+   ],
+   [
+    "Richard",
+    "El Wachin",
+    ""
+   ]
+  ],
+  "ev_antes": {
+   "Btrece": 3,
+   "El Wachin": 2,
+   "LAST": 14,
+   "MaYeuTyK": 15,
+   "Miniboy": 53,
+   "Richard": 19,
+   "Scot": 9,
+   "Sin Limites": 47,
+   "Soulb": 22
+  },
+  "fecha": "15/10",
+  "nombre": "(sin titulo)",
+  "num": 612,
+  "participantes": 9,
+  "sello": {},
+  "sv": "LKR",
+  "t": "2026-11-12T07:53:30Z",
+  "tabla": [
+   [
+    "Richard",
+    "Subcampeón",
+    6250
+   ],
+   [
+    "El Wachin",
+    "Subcampeón",
+    6250
+   ],
+   [
+    "Soulb",
+    "Semifinal",
+    3500
+   ],
+   [
+    "Miniboy",
+    "Semifinal",
+    3500
+   ],
+   [
+    "LAST",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Scot",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Sin Limites",
+    "Cuartos",
+    2000
+   ],
+   [
+    "MaYeuTyK",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Btrece",
+    "Cuartos",
+    2000
+   ]
+  ],
+  "v": 2
+ },
+ "613": {
+  "antes": {
+   "ARDEAN": [
+    115,
+    159,
+    false
+   ],
+   "BTRX": [
+    44,
+    53,
+    false
+   ],
+   "Chop": [
+    260,
+    44,
+    true
+   ],
+   "CrisZJ": [
+    259,
+    40,
+    true
+   ],
+   "Dominick": [
+    262,
+    54,
+    true
+   ],
+   "EmiZor": [
+    275,
+    106,
+    true
+   ],
+   "Fisics": [
+    403,
+    324,
+    true
+   ],
+   "Joshema": [
+    138,
+    219,
+    false
+   ],
+   "LAST": [
+    64,
+    80,
+    false
+   ],
+   "Leonart": [
+    56,
+    69,
+    false
+   ],
+   "Miniboy": [
+    22,
+    25,
+    false
+   ],
+   "Mr.Kude": [
+    360,
+    257,
+    true
+   ],
+   "NXUZ": [
+    23,
+    26,
+    false
+   ],
+   "Soulb": [
+    54,
+    65,
+    false
+   ]
+  },
+  "canal": "",
+  "duelos": [
+   [
+    "NXUZ",
+    "POXE",
+    "NXUZ"
+   ],
+   [
+    "BTRX",
+    "CrisZJ",
+    "BTRX"
+   ],
+   [
+    "Dominick",
+    "ARDEAN",
+    "Dominick"
+   ],
+   [
+    "Hedorah 🇨🇱",
+    "Joshema",
+    "Hedorah 🇨🇱"
+   ],
+   [
+    "Leonart",
+    "Miniboy",
+    "Leonart"
+   ],
+   [
+    "LAST",
+    "Fisics",
+    "LAST"
+   ],
+   [
+    "Soulb",
+    "EmiZor",
+    "Soulb"
+   ],
+   [
+    "Mr.Kude",
+    "Chop",
+    "Mr.Kude"
+   ],
+   [
+    "BTRX",
+    "NXUZ",
+    "BTRX"
+   ],
+   [
+    "Hedorah 🇨🇱",
+    "Dominick",
+    "Hedorah 🇨🇱"
+   ],
+   [
+    "Leonart",
+    "LAST",
+    "Leonart"
+   ],
+   [
+    "Soulb",
+    "Mr.Kude",
+    "Soulb"
+   ],
+   [
+    "BTRX",
+    "Hedorah 🇨🇱",
+    "BTRX"
+   ],
+   [
+    "Leonart",
+    "Soulb",
+    "Leonart"
+   ],
+   [
+    "BTRX",
+    "Leonart",
+    ""
+   ]
+  ],
+  "ev_antes": {
+   "ARDEAN": 9,
+   "BTRX": 17,
+   "Chop": 25,
+   "CrisZJ": 27,
+   "Dominick": 36,
+   "EmiZor": 12,
+   "Fisics": 3,
+   "Joshema": 4,
+   "LAST": 14,
+   "Leonart": 15,
+   "Miniboy": 53,
+   "Mr.Kude": 4,
+   "NXUZ": 40,
+   "Soulb": 22
+  },
+  "fecha": "18/10",
+  "nombre": "RED BULL",
+  "num": 613,
+  "participantes": 16,
+  "sello": {},
+  "sv": "LKR",
+  "t": "2026-11-12T07:53:31Z",
+  "tabla": [
+   [
+    "BTRX",
+    "Subcampeón",
+    8750
+   ],
+   [
+    "Leonart",
+    "Subcampeón",
+    8750
+   ],
+   [
+    "Hedorah 🇨🇱",
+    "Semifinal",
+    5250
+   ],
+   [
+    "Soulb",
+    "Semifinal",
+    5250
+   ],
+   [
+    "NXUZ",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Dominick",
+    "Cuartos",
+    2500
+   ],
+   [
+    "LAST",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Mr.Kude",
+    "Cuartos",
+    2500
+   ],
+   [
+    "POXE",
+    "Octavos",
+    1250
+   ],
+   [
+    "CrisZJ",
+    "Octavos",
+    1250
+   ],
+   [
+    "ARDEAN",
+    "Octavos",
+    1250
+   ],
+   [
+    "Joshema",
+    "Octavos",
+    1250
+   ],
+   [
+    "Miniboy",
+    "Octavos",
+    1250
+   ],
+   [
+    "Fisics",
+    "Octavos",
+    1250
+   ],
+   [
+    "EmiZor",
+    "Octavos",
+    1250
+   ],
+   [
+    "Chop",
+    "Octavos",
+    1250
+   ]
+  ],
+  "v": 2
+ },
+ "614": {
+  "antes": {
+   "Calíz": [
+    47,
+    57,
+    false
+   ],
+   "Chop": [
+    260,
+    44,
+    true
+   ],
+   "Leonart": [
+    56,
+    69,
+    false
+   ],
+   "Mosquitrap 🦟": [
+    286,
+    136,
+    true
+   ],
+   "Shadow": [
+    75,
+    94,
+    false
+   ],
+   "Soulb": [
+    54,
+    65,
+    false
+   ]
+  },
+  "canal": "",
+  "duelos": [
+   [
+    "Soulb",
+    "Calíz",
+    "Soulb"
+   ],
+   [
+    "Leonart",
+    "Chop",
+    "Leonart"
+   ],
+   [
+    "Shadow",
+    "Hedorah 🇨🇱",
+    "Shadow"
+   ],
+   [
+    "Leonart",
+    "Soulb",
+    "Leonart"
+   ],
+   [
+    "Mosquitrap 🦟",
+    "Shadow",
+    "Mosquitrap 🦟"
+   ],
+   [
+    "Leonart",
+    "Mosquitrap 🦟",
+    ""
+   ]
+  ],
+  "ev_antes": {
+   "Calíz": 28,
+   "Chop": 25,
+   "Leonart": 15,
+   "Mosquitrap 🦟": 5,
+   "Shadow": 23,
+   "Soulb": 22
+  },
+  "fecha": "19/10",
+  "nombre": "PLAZA UNDERGROUND BRACKET CLASIFICATORIO",
+  "num": 614,
+  "participantes": 9,
+  "sello": {},
+  "sv": "LKR",
+  "t": "2026-11-12T07:53:31Z",
+  "tabla": [
+   [
+    "Leonart",
+    "Subcampeón",
+    6250
+   ],
+   [
+    "Soulb",
+    "Semifinal",
+    3500
+   ],
+   [
+    "Shadow",
+    "Semifinal",
+    3500
+   ],
+   [
+    "Mosquitrap 🦟",
+    "Subcampeón",
+    3125
+   ],
+   [
+    "Calíz",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Chop",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Hedorah 🇨🇱",
+    "Cuartos",
+    2000
+   ]
+  ],
+  "v": 2
+ },
+ "615": {
+  "antes": {
+   "Calíz": [
+    47,
+    57,
+    false
+   ],
+   "Krtman": [
+    124,
+    196,
+    false
+   ],
+   "LAST": [
+    64,
+    80,
+    false
+   ],
+   "Makmah": [
+    1,
+    1,
+    false
+   ],
+   "Mathhias": [
+    42,
+    50,
+    false
+   ],
+   "Miniboy": [
+    22,
+    25,
+    false
+   ],
+   "PichulaMc": [
+    4,
+    4,
+    false
+   ],
+   "Soulb": [
+    54,
+    65,
+    false
+   ],
+   "Teito": [
+    68,
+    86,
+    false
+   ]
+  },
+  "canal": "",
+  "duelos": [
+   [
+    "PichulaMc",
+    "Calíz",
+    "PichulaMc"
+   ],
+   [
+    "PichulaMc",
+    "Krtman",
+    "PichulaMc"
+   ],
+   [
+    "Mathhias",
+    "Miniboy",
+    "Mathhias"
+   ],
+   [
+    "Makmah",
+    "Teito",
+    "Makmah"
+   ],
+   [
+    "Makmah",
+    "Soulb",
+    "Makmah"
+   ],
+   [
+    "PichulaMc",
+    "LAST",
+    "PichulaMc"
+   ],
+   [
+    "Makmah",
+    "Mathhias",
+    "Makmah"
+   ],
+   [
+    "PichulaMc",
+    "Makmah",
+    ""
+   ]
+  ],
+  "ev_antes": {
+   "Calíz": 28,
+   "Krtman": 4,
+   "LAST": 14,
+   "Makmah": 109,
+   "Mathhias": 16,
+   "Miniboy": 53,
+   "PichulaMc": 60,
+   "Soulb": 22,
+   "Teito": 19
+  },
+  "fecha": "21/10",
+  "nombre": "(sin titulo)",
+  "num": 615,
+  "participantes": 10,
+  "sello": {},
+  "sv": "LKR",
+  "t": "2026-11-12T07:53:31Z",
+  "tabla": [
+   [
+    "PichulaMc",
+    "Subcampeón",
+    6250
+   ],
+   [
+    "Makmah",
+    "Subcampeón",
+    6250
+   ],
+   [
+    "Mathhias",
+    "Semifinal",
+    3500
+   ],
+   [
+    "Calíz",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Krtman",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Miniboy",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Teito",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Soulb",
+    "Cuartos",
+    2000
+   ],
+   [
+    "LAST",
+    "Semifinal",
+    1750
+   ]
+  ],
+  "v": 2
+ },
+ "616": {
+  "antes": {
+   "Artezzy": [
+    109,
+    148,
+    false
+   ],
+   "BTRX": [
+    44,
+    53,
+    false
+   ],
+   "CrisZJ": [
+    259,
+    40,
+    true
+   ],
+   "Delux": [
+    38,
+    46,
+    false
+   ],
+   "Kochi": [
+    60,
+    76,
+    false
+   ],
+   "Miniboy": [
+    22,
+    25,
+    false
+   ],
+   "NC": [
+    19,
+    22,
+    false
+   ],
+   "NXUZ": [
+    23,
+    26,
+    false
+   ],
+   "Noone": [
+    136,
+    215,
+    false
+   ],
+   "Vilca": [
+    62,
+    78,
+    false
+   ]
+  },
+  "canal": "",
+  "duelos": [
+   [
+    "》 A.  nc",
+    "BTRX",
+    "》 A.  nc"
+   ],
+   [
+    "》 A.  nc",
+    "Miniboy",
+    "》 A.  nc"
+   ],
+   [
+    "CrisZJ",
+    "NXUZ",
+    "CrisZJ"
+   ],
+   [
+    "CrisZJ",
+    "Lvel 🇻🇪",
+    "CrisZJ"
+   ],
+   [
+    "Delux",
+    "Number Elixir 🇻🇪",
+    "Delux"
+   ],
+   [
+    "Delux",
+    "Vilca",
+    "Delux"
+   ],
+   [
+    "BastyRetro",
+    "Kochi",
+    "BastyRetro"
+   ],
+   [
+    "BastyRetro",
+    "Noone",
+    "BastyRetro"
+   ],
+   [
+    "BastyRetro",
+    "Artezzy",
+    "BastyRetro"
+   ],
+   [
+    "NC",
+    "CrisZJ",
+    "NC"
+   ],
+   [
+    "BastyRetro",
+    "Delux",
+    "BastyRetro"
+   ],
+   [
+    "NC",
+    "bastty",
+    ""
+   ]
+  ],
+  "ev_antes": {
+   "Artezzy": 10,
+   "BTRX": 17,
+   "CrisZJ": 27,
+   "Delux": 13,
+   "Kochi": 11,
+   "Miniboy": 53,
+   "NC": 54,
+   "NXUZ": 40,
+   "Noone": 7,
+   "Vilca": 19
+  },
+  "fecha": "28/10",
+  "nombre": "no se k poner style",
+  "num": 616,
+  "participantes": 19,
+  "sello": {},
+  "sv": "DDS",
+  "t": "2026-11-12T07:53:32Z",
+  "tabla": [
+   [
+    "NC",
+    "Subcampeón",
+    8750
+   ],
+   [
+    "bastty",
+    "Subcampeón",
+    8750
+   ],
+   [
+    "CrisZJ",
+    "Semifinal",
+    5250
+   ],
+   [
+    "Delux",
+    "Semifinal",
+    5250
+   ],
+   [
+    "BTRX",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Miniboy",
+    "Cuartos",
+    2500
+   ],
+   [
+    "NXUZ",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Lvel 🇻🇪",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Number Elixir 🇻🇪",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Vilca",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Kochi",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Noone",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Artezzy",
+    "Cuartos",
+    2500
+   ]
+  ],
+  "v": 2
+ },
+ "617": {
+  "antes": {
+   "Ariaxer": [
+    71,
+    90,
+    false
+   ],
+   "Calíz": [
+    47,
+    57,
+    false
+   ],
+   "Dantemx": [
+    131,
+    209,
+    false
+   ],
+   "Drexx": [
+    33,
+    38,
+    false
+   ],
+   "Erian": [
+    3,
+    3,
+    false
+   ],
+   "Kastigoz": [
+    509,
+    468,
+    true
+   ],
+   "Lord Viruzz": [
+    40,
+    48,
+    false
+   ],
+   "MCO": [
+    14,
+    15,
+    false
+   ],
+   "Makmah": [
+    1,
+    1,
+    false
+   ],
+   "Milo": [
+    573,
+    551,
+    true
+   ],
+   "Mito": [
+    29,
+    34,
+    false
+   ],
+   "Panchok": [
+    8,
+    9,
+    false
+   ],
+   "Tmax Turbo [PN]": [
+    177,
+    332,
+    false
+   ],
+   "TøKīØ🦠🧠": [
+    50,
+    61,
+    false
+   ],
+   "UDDIZIM": [
+    533,
+    504,
+    true
+   ],
+   "Velatz": [
+    20,
+    23,
+    false
+   ]
+  },
+  "canal": "",
+  "duelos": [
+   [
+    "Panchok",
+    "Velatz",
+    "Panchok"
+   ],
+   [
+    "Lord Viruzz",
+    "Ariaxer",
+    "Lord Viruzz"
+   ],
+   [
+    "Lord Viruzz",
+    "Baut_N 🇻🇪",
+    "Lord Viruzz"
+   ],
+   [
+    "Erian",
+    "Lvel 🇻🇪",
+    "Erian"
+   ],
+   [
+    "Erian",
+    "Calíz",
+    "Erian"
+   ],
+   [
+    "MCO",
+    "Tmax Turbo [PN]",
+    "MCO"
+   ],
+   [
+    "Mito",
+    "Kastigoz",
+    "Mito"
+   ],
+   [
+    "Milo",
+    "Makmah",
+    "Milo"
+   ],
+   [
+    "Milo",
+    "UDDIZIM",
+    "Milo"
+   ],
+   [
+    "TøKīØ🦠🧠",
+    "Gonorrea",
+    "TøKīØ🦠🧠"
+   ],
+   [
+    "Drexx",
+    "Dantemx",
+    "Drexx"
+   ],
+   [
+    "Panchok",
+    "Lord Viruzz",
+    "Panchok"
+   ],
+   [
+    "MCO",
+    "Erian",
+    "MCO"
+   ],
+   [
+    "Milo",
+    "Mito",
+    "Milo"
+   ],
+   [
+    "TøKīØ🦠🧠",
+    "Drexx",
+    "TøKīØ🦠🧠"
+   ],
+   [
+    "Panchok",
+    "MCO",
+    "Panchok"
+   ],
+   [
+    "Milo",
+    "TøKīØ🦠🧠",
+    "Milo"
+   ],
+   [
+    "Panchok",
+    "Milo",
+    ""
+   ]
+  ],
+  "ev_antes": {
+   "Ariaxer": 16,
+   "Calíz": 28,
+   "Dantemx": 2,
+   "Drexx": 38,
+   "Erian": 77,
+   "Kastigoz": 1,
+   "Lord Viruzz": 23,
+   "MCO": 42,
+   "Makmah": 109,
+   "Milo": 1,
+   "Mito": 34,
+   "Panchok": 26,
+   "Tmax Turbo [PN]": 2,
+   "TøKīØ🦠🧠": 10,
+   "UDDIZIM": 2,
+   "Velatz": 43
+  },
+  "fecha": "31/10",
+  "nombre": "FAT BATTLES PALOOZA EDICIÓN HALOWEEN",
+  "num": 617,
+  "participantes": 20,
+  "sello": {},
+  "sv": "ACAD",
+  "t": "2026-11-12T07:53:33Z",
+  "tabla": [
+   [
+    "Panchok",
+    "Subcampeón",
+    8750
+   ],
+   [
+    "Milo",
+    "Subcampeón",
+    8750
+   ],
+   [
+    "MCO",
+    "Semifinal",
+    5250
+   ],
+   [
+    "TøKīØ🦠🧠",
+    "Semifinal",
+    5250
+   ],
+   [
+    "Lord Viruzz",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Erian",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Mito",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Drexx",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Velatz",
+    "Octavos",
+    1250
+   ],
+   [
+    "Ariaxer",
+    "Octavos",
+    1250
+   ],
+   [
+    "Baut_N 🇻🇪",
+    "Octavos",
+    1250
+   ],
+   [
+    "Lvel 🇻🇪",
+    "Octavos",
+    1250
+   ],
+   [
+    "Calíz",
+    "Octavos",
+    1250
+   ],
+   [
+    "Tmax Turbo [PN]",
+    "Octavos",
+    1250
+   ],
+   [
+    "Kastigoz",
+    "Octavos",
+    1250
+   ],
+   [
+    "Makmah",
+    "Octavos",
+    1250
+   ],
+   [
+    "UDDIZIM",
+    "Octavos",
+    1250
+   ],
+   [
+    "Gonorrea",
+    "Octavos",
+    1250
+   ],
+   [
+    "Dantemx",
+    "Octavos",
+    1250
+   ]
+  ],
+  "v": 2
+ },
+ "618": {
+  "antes": {
+   "Bishop": [
+    217,
+    483,
+    false
+   ],
+   "Carlos": [
+    271,
+    89,
+    true
+   ],
+   "Geoka": [
+    37,
+    45,
+    false
+   ],
+   "Lord Viruzz": [
+    40,
+    48,
+    false
+   ],
+   "Mito": [
+    29,
+    34,
+    false
+   ],
+   "Mochi DG": [
+    206,
+    445,
+    false
+   ]
+  },
+  "canal": "",
+  "duelos": [
+   [
+    "Lord Viruzz",
+    "Carlos",
+    "Lord Viruzz"
+   ],
+   [
+    "Mito",
+    "Bishop",
+    "Mito"
+   ],
+   [
+    "GERONIMO🇻🇪",
+    "Geoka",
+    "GERONIMO🇻🇪"
+   ],
+   [
+    "LRSLASUSTANCIA🇦🇷",
+    "Mochi DG",
+    "LRSLASUSTANCIA🇦🇷"
+   ],
+   [
+    "Mito",
+    "Lord Viruzz",
+    "Mito"
+   ],
+   [
+    "GERONIMO🇻🇪",
+    "LRSLASUSTANCIA🇦🇷",
+    "GERONIMO🇻🇪"
+   ],
+   [
+    "Mito",
+    "GERONIMO🇻🇪",
+    ""
+   ]
+  ],
+  "ev_antes": {
+   "Bishop": 1,
+   "Carlos": 12,
+   "Geoka": 25,
+   "Lord Viruzz": 23,
+   "Mito": 34,
+   "Mochi DG": 1
+  },
+  "fecha": "31/10",
+  "nombre": "CALLE DEL TERROR",
+  "num": 618,
+  "participantes": 8,
+  "sello": {},
+  "sv": "ACAD",
+  "t": "2026-11-12T07:53:33Z",
+  "tabla": [
+   [
+    "Mito",
+    "Subcampeón",
+    6250
+   ],
+   [
+    "GERONIMO🇻🇪",
+    "Subcampeón",
+    6250
+   ],
+   [
+    "Lord Viruzz",
+    "Semifinal",
+    3500
+   ],
+   [
+    "LRSLASUSTANCIA🇦🇷",
+    "Semifinal",
+    3500
+   ],
+   [
+    "Carlos",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Bishop",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Geoka",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Mochi DG",
+    "Cuartos",
+    2000
+   ]
+  ],
+  "v": 2
+ },
+ "619": {
+  "antes": {},
+  "canal": "",
+  "duelos": [
+   [
+    "LARRIX🇦🇷",
+    "EXE 🇦🇷",
+    "LARRIX🇦🇷"
+   ],
+   [
+    "NAVAS 🇪🇸",
+    "Letra 🇻🇪",
+    "NAVAS 🇪🇸"
+   ],
+   [
+    "AZUKY🇲🇽",
+    "Force 🇪🇸",
+    "AZUKY🇲🇽"
+   ],
+   [
+    "Gazir🇪🇸",
+    "Carpediem 🇨🇴",
+    "Gazir🇪🇸"
+   ],
+   [
+    "LARRIX🇦🇷",
+    "NAVAS 🇪🇸",
+    "LARRIX🇦🇷"
+   ],
+   [
+    "Gazir🇪🇸",
+    "AZUKI",
+    "Gazir🇪🇸"
+   ],
+   [
+    "LARRIX🇦🇷",
+    "Gazir🇪🇸",
+    ""
+   ]
+  ],
+  "ev_antes": {},
+  "fecha": "05/11",
+  "nombre": "(sin titulo)",
+  "num": 619,
+  "participantes": 9,
+  "sello": {},
+  "sv": "LKR",
+  "t": "2026-11-12T07:53:34Z",
+  "tabla": [
+   [
+    "LARRIX🇦🇷",
+    "Subcampeón",
+    6250
+   ],
+   [
+    "Gazir🇪🇸",
+    "Subcampeón",
+    6250
+   ],
+   [
+    "NAVAS 🇪🇸",
+    "Semifinal",
+    3500
+   ],
+   [
+    "AZUKI",
+    "Semifinal",
+    3500
+   ],
+   [
+    "EXE 🇦🇷",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Letra 🇻🇪",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Force 🇪🇸",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Carpediem 🇨🇴",
+    "Cuartos",
+    2000
+   ]
+  ],
+  "v": 2
+ },
+ "620": {
+  "antes": {
+   "Hardcore": [
+    202,
+    427,
+    false
+   ]
+  },
+  "canal": "",
+  "duelos": [
+   [
+    "Letra 🇻🇪",
+    "MP 🇦🇷",
+    "Letra 🇻🇪"
+   ],
+   [
+    "Sweet pain🇻🇪",
+    "Nitro🇨🇱",
+    "Sweet pain🇻🇪"
+   ],
+   [
+    "CHUTY 🇪🇸",
+    "VALLES-T 🇨🇴",
+    "CHUTY 🇪🇸"
+   ],
+   [
+    "JONY B 🇲🇽",
+    "LOBO ES 🇲🇽",
+    "JONY B 🇲🇽"
+   ],
+   [
+    "LARRIX🇦🇷",
+    "BNET 🇪🇸",
+    "LARRIX🇦🇷"
+   ],
+   [
+    "Teorema 🇨🇱",
+    "Trueno🇦🇷",
+    "Teorema 🇨🇱"
+   ],
+   [
+    "WOS",
+    "Hardcore",
+    "WOS"
+   ],
+   [
+    "URKO 🇨🇴",
+    "Replik 🇦🇷",
+    "URKO 🇨🇴"
+   ],
+   [
+    "Letra 🇻🇪",
+    "Sweet pain🇻🇪",
+    "Letra 🇻🇪"
+   ],
+   [
+    "CHUTY 🇪🇸",
+    "JONY BEL 🇲🇽",
+    "CHUTY 🇪🇸"
+   ],
+   [
+    "Teorema 🇨🇱",
+    "LARRIX🇦🇷",
+    "Teorema 🇨🇱"
+   ],
+   [
+    "URKO 🇨🇴",
+    "WOS",
+    "URKO 🇨🇴"
+   ],
+   [
+    "Letra 🇻🇪",
+    "CHUTY 🇪🇸",
+    "Letra 🇻🇪"
+   ],
+   [
+    "URKO 🇨🇴",
+    "Teorema 🇨🇱",
+    "URKO 🇨🇴"
+   ],
+   [
+    "Letra 🇻🇪",
+    "URKO 🇨🇴",
+    ""
+   ]
+  ],
+  "ev_antes": {
+   "Hardcore": 1
+  },
+  "fecha": "05/11",
+  "nombre": "TORNEOS",
+  "num": 620,
+  "participantes": 17,
+  "sello": {},
+  "sv": "LKR",
+  "t": "2026-11-12T07:53:34Z",
+  "tabla": [
+   [
+    "Letra 🇻🇪",
+    "Subcampeón",
+    8750
+   ],
+   [
+    "URKO 🇨🇴",
+    "Subcampeón",
+    8750
+   ],
+   [
+    "CHUTY 🇪🇸",
+    "Semifinal",
+    5250
+   ],
+   [
+    "Teorema 🇨🇱",
+    "Semifinal",
+    5250
+   ],
+   [
+    "Sweet pain🇻🇪",
+    "Cuartos",
+    2500
+   ],
+   [
+    "JONY BEL 🇲🇽",
+    "Cuartos",
+    2500
+   ],
+   [
+    "LARRIX🇦🇷",
+    "Cuartos",
+    2500
+   ],
+   [
+    "WOS",
+    "Cuartos",
+    2500
+   ],
+   [
+    "MP 🇦🇷",
+    "Octavos",
+    1250
+   ],
+   [
+    "Nitro🇨🇱",
+    "Octavos",
+    1250
+   ],
+   [
+    "VALLES-T 🇨🇴",
+    "Octavos",
+    1250
+   ],
+   [
+    "LOBO ES 🇲🇽",
+    "Octavos",
+    1250
+   ],
+   [
+    "BNET 🇪🇸",
+    "Octavos",
+    1250
+   ],
+   [
+    "Trueno🇦🇷",
+    "Octavos",
+    1250
+   ],
+   [
+    "Hardcore",
+    "Octavos",
+    1250
+   ],
+   [
+    "Replik 🇦🇷",
+    "Octavos",
+    1250
+   ]
+  ],
+  "v": 2
  }
 }
