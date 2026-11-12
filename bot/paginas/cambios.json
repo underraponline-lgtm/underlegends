@@ -11,6 +11,19 @@
  ],
  "cambios": [
     {
+        "version": "4.49",
+        "dia": "2026-11-11",
+        "cuando": "2026-11-11T20:58:00-05:00",
+        "titulo": "Los eventos de hoy, con la cara de su servidor",
+        "items": [
+            "**Cada evento en Discord lleva el color y el logo de su servidor**, y una imagen: el afiche del anuncio si el organizador lo subió, o el banner de su servidor.",
+            "**La tarjeta cambia con el evento**: cuánto falta, «Empezó», «En vivo» mientras se juega la llave y, al terminar, quién salió campeón. Cambia sin volver a sonar.",
+            "**Los datos se leen de una**: «1 vs 1», «8 cupos», el premio, y si esa semana el servidor vale ×2 o tiene el evento dorado.",
+            "**Al terminar, la tarjeta del campeón** pasa a ser la imagen del evento.",
+            "**Si un servidor borra el anuncio y lo vuelve a publicar**, la tarjeta vuelve a estar viva en vez de quedar como cancelada."
+        ]
+    },
+    {
         "version": "4.48",
         "dia": "2026-11-11",
         "cuando": "2026-11-11T20:34:02-05:00",
