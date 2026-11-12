@@ -294,3 +294,27 @@
 .sp-preg-nadie{opacity:.85}
 .sp-preg-vence,.sp-preg-ayuda,.sp-preg-msg{margin:10px 0 0;font:500 13px/1.45 Archivo,sans-serif;color:#A5A5A0}
 .sp-preg-msg{color:var(--verde);font-weight:700}
+/* 👥 TU EQUIPO (11/11/2026): los que están, los sugeridos por su permiso en Discord y el buscador. Cada fila, el nombre a la
+   izquierda y su botón a la derecha, como las filas de los ajustes */
+.sp-eq{display:grid;gap:12px}
+.sp-eq .sp-h{margin-top:6px}
+.sp-eq-l{display:grid;gap:6px;margin:0;padding:0;list-style:none}
+.sp-eq-l li{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:10px 12px;border:2px solid var(--suave);background:rgba(255,255,255,.02)}
+.sp-eq-l li>span{display:grid;gap:2px;min-width:0}
+.sp-eq-l b{font:800 15px/1.2 Archivo,sans-serif;overflow-wrap:anywhere}
+.sp-eq-l small{font:600 13px/1.2 "Barlow Condensed",sans-serif;color:var(--gris)}
+.sp-eq-q{display:grid;gap:6px;margin-top:4px;font:700 13px/1.2 "Barlow Condensed",sans-serif;letter-spacing:.04em;text-transform:uppercase;color:var(--gris)}
+.sp-eq-q input{min-height:44px;padding:0 12px;border:2px solid var(--linea);border-radius:0;background:var(--fondo);color:var(--tinta);font:500 16px/1 Archivo,sans-serif;text-transform:none;letter-spacing:0}
+.sp-eq-q input:focus-visible{outline:2px solid var(--verde);outline-offset:2px}
+/* 🏠 TU PÁGINA (11/11/2026): el texto, las redes en dos columnas y el banner */
+.sp-pag{display:grid;gap:12px}
+.sp-pag textarea{min-height:88px;padding:10px 12px;border:2px solid var(--linea);border-radius:0;background:var(--fondo);color:var(--tinta);font:500 16px/1.45 Archivo,sans-serif;text-transform:none;letter-spacing:0;resize:vertical}
+.sp-pag textarea:focus-visible{outline:2px solid var(--verde);outline-offset:2px}
+.sp-pag-redes{display:grid;gap:10px}
+@media (min-width:720px){.sp-pag-redes{grid-template-columns:1fr 1fr}}
+.sp-pag-ban{display:block;width:100%;max-width:640px;aspect-ratio:8/3;object-fit:cover;border:2px solid var(--suave)}
+.sp-pag-acc{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.sp-pag-acc label.btn{cursor:pointer}
+.sp-pag>.btn{justify-self:start}
+/* en el tema claro, el verde de la marca da 2.35:1 sobre el papel: uno más hondo (5.7:1). En el de noche, el de siempre */
+.clara .sp-eq .sp-preg-msg,.clara .sp-pag .sp-preg-msg{color:#0B6B58}

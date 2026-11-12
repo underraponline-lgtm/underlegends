@@ -23,6 +23,18 @@ export function contestarFinal(sv, k, v) {
   return W.conCuenta('/api/avisos/socio-final', { sv, k, v }).then((j) => j || { error: 'red' }).catch(() => ({ error: 'red' }));
 }
 
+/** 👥 El equipo de un socio (sólo su dueño): `ver`, `buscar` (`{q}`), `sumar` o `sacar` (`{id}`). */
+export function pedirEquipo(sv, accion, extra) {
+  if (!W.conCuenta) return Promise.resolve({ error: 'red' });
+  return W.conCuenta('/api/avisos/socio-equipo', Object.assign({ sv, accion }, extra || {})).then((j) => j || { error: 'red' }).catch(() => ({ error: 'red' }));
+}
+
+/** 🏠 La página del servidor, a su gusto: sin nada lee; con `{desc}`, `{redes}`, `{img}` (base64) o `{quitar_banner: true}` cambia. */
+export function pedirPagina(sv, cambio) {
+  if (!W.conCuenta) return Promise.resolve({ error: 'red' });
+  return W.conCuenta('/api/avisos/socio-pagina', Object.assign({ sv }, cambio || {})).then((j) => j || { error: 'red' }).catch(() => ({ error: 'red' }));
+}
+
 /** ¿Es dueño de algún socio? Una vez por sesión, en silencio: para el botón de Mi cuenta. */
 export function useSocio(conCuenta) {
   const [si, setSi] = useState(() => { try { return sessionStorage.getItem('lg:socio') === '1'; } catch (e) { return false; } });

@@ -865,3 +865,7 @@
 .dz-vsf-b label{cursor:pointer}
 .dz-vsf-b label.off{opacity:.5;cursor:wait}
 @media (max-width:640px){.dz-ll{grid-template-columns:minmax(0,1fr) auto}.dz-ll>button{grid-column:1 / -1;justify-self:start}}
+/* 🏠 las páginas de los socios, en el registro (11/11/2026): una fila por servidor con lo que escribió su equipo */
+.db-socios-pag{display:grid;gap:8px;margin:0 0 14px;padding:0;list-style:none}
+.db-socios-pag li{display:flex;flex-wrap:wrap;align-items:center;gap:6px 14px;padding:10px 12px;border:1.5px solid rgba(255,255,255,.12)}
+.db-socios-pag li>span{display:inline-flex;flex-wrap:wrap;align-items:center;gap:6px;overflow-wrap:anywhere}

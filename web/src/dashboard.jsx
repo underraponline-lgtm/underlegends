@@ -4239,6 +4239,82 @@ function deA(x, liga) {
   return [['', enPalabras(cual, x.antes, liga), enPalabras(cual, x.despues, liga)]];
 }
 
+// 🗂️ LO QUE TOCARON LOS SOCIOS (Dlx, 11/11/2026: «que haya un registro para nosotros, no para ellos, de las cosas que
+// cambian… así si pasa algo tenemos prueba que alguien cambió algo de alguien»). Cada cambio desde un panel del socio:
+// quién (el dueño, un admin de su equipo o Dlx, con su ID), qué, lo de antes y lo de después. Lo arma `socioAnotar()` del
+// objeto; se pide al abrir esta sección. ⚠️ Ningún socio lo ve
+const NOMBRE_SOCIO = { vivo: 'Cómo va el evento (canal)', avisos: 'Los cambios de rango (canal)', ascenso: 'El ascenso de sus ligas (canal)',
+  vivo_nivel: 'Cuánto habla el bot', apuestas: 'Apuestas', nick: '#N en el apodo', eventos_discord: 'Eventos de Discord',
+  aviso_evento: 'El aviso de cada evento', canales: 'Dónde se usa /card', ligas: 'Las batallas de sus ligas (canal)', resumen: 'El resumen de la semana (canal)' };
+const ROL_SOCIO = { dueno: 'el dueño', admin: 'admin', dlx: 'Dlx' };
+function RegistroSocios() {
+  const [r, setR] = useState(null);
+  const [q, setQ] = useState('');
+  const [mas, setMas] = useState(false);
+  useEffect(() => {
+    let vivo = true;
+    fetch('/api/avisos/dueno-socios', { method: 'POST', credentials: 'same-origin', headers: { 'content-type': 'application/json' }, body: '{}' })
+      .then(async (x) => (x.ok ? x.json() : { error: x.status })).then((j) => { if (vivo) setR(j || { error: 'vacío' }); })
+      .catch(() => { if (vivo) setR({ error: 'red' }); });
+    return () => { vivo = false; };
+  }, []);
+  const accion = (sv, a) => {
+    fetch('/api/avisos/dueno-socios', { method: 'POST', credentials: 'same-origin', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ sv, accion: a }) })
+      .then(async (x) => (x.ok ? x.json() : null)).then((j) => { if (j) setR(j); }).catch(() => {});
+  };
+  if (!r) return <p className="pronto-p">Leyendo el registro…</p>;
+  if (r.error) return <p className="pronto-p">No pude leer el registro ({String(r.error)}).</p>;
+  const cn = r.canales || {};
+  // 🏠 lo que escribió cada equipo en su página: lo que espera revisión primero, y para todos, quitarlo
+  const pags = Object.entries(r.paginas || {});
+  const paginas = pags.length ? (
+    <ul className="db-socios-pag">{pags.map(([sv, p]) => (
+      <li key={sv}>
+        <b>{siglaDe(sv)}</b>
+        {p.pend ? <span>Banner por revisar: <a href={p.pend} target="_blank" rel="noopener noreferrer">verlo ↗</a>{' '}
+          <button type="button" className="btn verde chico" onClick={() => accion(sv, 'aprobar')}>Aprobar</button>{' '}
+          <DosToques className="btn borde2 chico" confirmar="Toca de nuevo: no se aprueba" onClick={() => accion(sv, 'rechazar')}>No</DosToques></span> : null}
+        {p.banner ? <span><a href={p.banner} target="_blank" rel="noopener noreferrer">Su banner ↗</a>{' '}
+          <DosToques className="btn borde2 chico" confirmar="Toca de nuevo: se saca" onClick={() => accion(sv, 'quitar_banner')}>Sacarlo</DosToques></span> : null}
+        {p.desc ? <span>«{p.desc}» <DosToques className="btn borde2 chico" confirmar="Toca de nuevo: se saca" onClick={() => accion(sv, 'quitar_desc')}>Sacar el texto</DosToques></span> : null}
+        {(p.redes || []).length ? <span>{p.redes.map(([k]) => k).join(', ')} <DosToques className="btn borde2 chico" confirmar="Toca de nuevo: se sacan" onClick={() => accion(sv, 'quitar_redes')}>Sacar las redes</DosToques></span> : null}
+      </li>
+    ))}</ul>
+  ) : null;
+  // un canal se ve con su nombre si el objeto lo conoce; «no» y vacío, en palabras
+  const val = (v) => {
+    const x = String(v == null ? '' : v);
+    if (!x) return 'nada';
+    if (x === 'no') return 'apagado';
+    if (/^\d{15,25}$/.test(x)) return cn[x] ? '#' + cn[x] : 'canal ' + x;
+    if (x === 'true') return 'prendido';
+    if (x === 'false') return 'apagado';
+    return x.replace(/"(\d{15,25})"/g, (m, id) => (cn[id] ? '#' + cn[id] : id));
+  };
+  const que = (k) => NOMBRE_SOCIO[k] || (/^liga:/.test(k) ? 'Las batallas de la liga ' + k.slice(5) + ' (canal)' : k);
+  const todos = r.xs || [];
+  if (!todos.length) return <>{paginas}<p className="db-tx">Todavía nadie tocó nada desde un panel: el registro empezó el 11/11/2026.</p></>;
+  const filas = todos.filter((x) => contiene([x.sv, siglaDe(x.sv), x.n, x.quien, que(x.que), ROL_SOCIO[x.rol]], q));
+  const ver = mas ? filas : filas.slice(0, 20);
+  return (
+    <div className="dz-hi">
+      {paginas}
+      <label className="db-buscar dz-band-q"><Ico n="buscar" t={16} />
+        <input type="search" value={q} placeholder="Buscar un servidor, una persona o un ajuste" aria-label="Buscar en el registro de los socios" onChange={(e) => setQ(e.target.value)} /></label>
+      <ol className="dz-hi-l">{ver.map((x) => (
+        <li key={x.t + x.que + x.quien}>
+          <span className="dz-hora" title={new Date(x.t).toLocaleString('es', { timeZone: 'America/New_York' }) + ' ET'}>{hace(x.t)}</span>
+          <div className="dz-hi-q">
+            <b>{siglaDe(x.sv)} · {que(x.que)}<small> · {x.n || ROL_SOCIO[x.rol] || 'alguien'}{x.rol === 'admin' && x.n ? ' (admin)' : ''} · {x.quien}</small></b>
+            {x.antes || x.despues ? <ul><li><s>{val(x.antes)}</s><span aria-hidden="true">→</span><span className="rk-sr">pasó a</span><strong>{val(x.despues)}</strong></li></ul> : null}
+          </div>
+        </li>
+      ))}{!ver.length ? <li className="dz-it-nada">Nada con «{q}».</li> : null}</ol>
+      {filas.length > 20 ? <button type="button" className="dz-lnk" onClick={() => setMas(!mas)}>{mas ? 'Ver menos' : 'Ver los ' + filas.length}</button> : null}
+    </div>
+  );
+}
+
 function HistorialDeA({ hist, hacer, ocup, liga }) {
   const [q, setQ] = useState('');
   const [mas, setMas] = useState(false);
@@ -4677,6 +4753,7 @@ export function Dashboard({ dc, liga }) {
     vista = (
       <>
         {sec('hi-hist', 'LOS ÚLTIMOS CAMBIOS', 'deshacer vuelve a como estaba', <HistorialDeA hist={d.ajustes_hist} hacer={hacer} ocup={ocup} liga={liga} />)}
+        {ve('ajustes') ? sec('hi-socios', 'LO QUE TOCARON LOS SOCIOS', 'en sus paneles · sólo lo ves tú · un año', <RegistroSocios />) : null}
       </>
     );
   }

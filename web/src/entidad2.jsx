@@ -39,9 +39,11 @@ const claveNombre = (s) => String(s || '').normalize('NFD').toLowerCase().replac
 
 // ── la portada: el emblema, el nombre, sus acciones y la tira de números (exportada: la usa también el panel del socio,
 // socio2.jsx, que es su servidor visto por su dueño) ──
-export function Portada({ emblema, forma, color, tag, nombre, sub, acciones, numeros, extra, estilo }) {
+// 🏠 `fondo`: el banner que subió el equipo de un socio (11/11/2026), detrás de todo y con el velo de los fondos de la gente
+export function Portada({ emblema, forma, color, tag, nombre, sub, acciones, numeros, extra, estilo, fondo }) {
   return (
-    <div className="escena ent-esc" style={{ '--mo-c': color || '#E41373', '--mo-o': 0.9, ...(estilo || {}) }}>
+    <div className={'escena ent-esc' + (fondo ? ' con-fondo' : '')}
+      style={{ '--mo-c': color || '#E41373', '--mo-o': 0.9, ...(estilo || {}), ...(fondo ? { '--pf-fondo': 'url("' + fondo + '")' } : {}) }}>
       <section className="ent-cab">
         <div className={'ent-emb ' + forma} style={{ '--c': color || '#E41373' }}>{emblema}</div>
         <div className="ent-tx">
@@ -191,7 +193,9 @@ export function PerfilSv({ liga, sv, enc }) {
         estilo={{ '--mo-logo': 'url("' + liga.logo(sv, true) + '")', ...silueta(sv, s.color) }}
         emblema={<img alt="" src={liga.logo(sv, true)} />}
         tag={s.tag ? String(s.tag).toUpperCase() : ''}
+        fondo={/^https:\/\//.test(s.banner || '') ? s.banner : ''}
         sub={<>{siglaDe(sv)}{s.miembros ? ' · ' + num(s.miembros) + ' miembros en su Discord' : ''}
+          {s.desc ? <p className="ent-desc">{s.desc}</p> : null}
           {(s.redes || []).length ? <nav className="ent-redes" aria-label="Sus redes">{s.redes.map(([r, u]) => <a key={r} href={u} target="_blank" rel="noopener noreferrer">{REDES[r] || r} ↗</a>)}</nav> : null}</>}
         acciones={<>{s.invita ? <a className="btn verde" href={s.invita} target="_blank" rel="noopener noreferrer">Entrar al servidor ↗</a> : null}
           <Compartir cls="btn borde" url={enlace('#/sv/' + siglaDe(sv))} texto={(s.nombre || siglaDe(sv)) + ' en la Liga Global'} /></>}

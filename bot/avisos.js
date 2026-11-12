@@ -390,7 +390,11 @@ export const CHAT_FRESCA = 30 * MIN;
 // abrió `/settings` tiene que comportarse como antes de que `/settings` existiera (ver el comentario en worker.js)
 // `aviso_evento`: dónde va el aviso de cada evento, elegido por el dueño desde su panel (19/10/2026): '' donde habla el
 // bot en vivo, 'chat' en su chat general siempre, 'no' apagado. Lo del Dashboard para ese servidor gana (`canalesChat()`)
-export const CFG_BASE = { nick: true, canales: [], avisos: '', vivo: '', vivo_nivel: 'normal', ascenso: '', aviso_evento: '' };
+// 🏟️ `ligas`: dónde van las batallas de sus ligas (11/11/2026, Dlx: «Canal para las ligas… uno, y cambiar por liga»): ''
+// donde habla el bot en vivo, un canal, o 'no'; `ligas_por` cambia el de una liga (`{<liga>: canal | 'no'}`).
+// 📅 `resumen`: el canal del resumen de la semana de ese servidor, los lunes ('' = no se manda)
+export const CFG_BASE = { nick: true, canales: [], avisos: '', vivo: '', vivo_nivel: 'normal', ascenso: '', aviso_evento: '',
+  ligas: '', ligas_por: {}, resumen: '' };
 
 export const NIVELES_CHAT = {
   poco: ['Lo justo', 'Cuando arranca y el campeón'],
@@ -3276,6 +3280,13 @@ const RUTAS = {
   '/avisos/socio-ajustes': 'POST',
   // 🏁 quién ganó una batalla que el bot no entendió, desde el panel del socio (11/11/2026). Ver `socioFinal()` del objeto
   '/avisos/socio-final': 'POST',
+  // 👥 el equipo de cada socio: los admins que suma su dueño (11/11/2026). Ver `socioEquipo()` del objeto
+  '/avisos/socio-equipo': 'POST',
+  // 🏠 la página de un socio, a su gusto: el texto, las redes y el banner (11/11/2026). Ver `socioPagina()` del objeto;
+  // lo publicado, para el ciclo (`bot/subir_web.py`): público, como la página
+  '/avisos/socio-pagina': 'POST', '/avisos/socio-paginas': 'GET',
+  // 🗂️ lo que tocaron los socios en sus paneles, para el Dashboard (11/11/2026). Ver `socioRegistro()` del objeto
+  '/avisos/dueno-socios': 'POST',
   // 📊 lo que espera respuesta de cada organizador, para el panel del socio (`bot/finales.py`, con la clave del ciclo)
   '/avisos/finales-pend': 'POST',
   // 🗳️ a quién votó el público como ganador en el bot en vivo, sumado por nombre (público: sin ningún Discord ID)
@@ -4429,8 +4440,19 @@ export const NIVELES_AVISO = {
  * canales de texto de ESE servidor (`canales`, de Discord): el dueño no puede apuntar el bot a un canal de otro. Pura:
  * la prueba `bot/avisos_prueba.mjs`.
  */
-export function socioAjusteValido(cual, valor, canales) {
+export function socioAjusteValido(cual, valor, canales, ligas) {
   const ids = new Set((canales || []).map((c) => String(c.id)));
+  // 🏟️ el canal de las ligas: el de todas, o el de UNA de las ligas de ese servidor (`liga:<id>`); 'no' las apaga
+  if (cual === 'ligas' || /^liga:/.test(cual)) {
+    if (/^liga:/.test(cual) && !(ligas || []).includes(cual.slice(5))) return undefined;
+    if (valor === '' || valor === null) return '';
+    if (valor === 'no') return 'no';
+    return typeof valor === 'string' && ids.has(valor) ? valor : undefined;
+  }
+  if (cual === 'resumen') {
+    if (valor === '' || valor === null) return '';
+    return typeof valor === 'string' && ids.has(valor) ? valor : undefined;
+  }
   if (cual === 'nick' || cual === 'apuestas' || cual === 'eventos_discord') return typeof valor === 'boolean' ? valor : undefined;
   if (cual === 'vivo_nivel') return Object.prototype.hasOwnProperty.call(NIVELES_CHAT, valor) ? valor : undefined;
   if (cual === 'aviso_evento') return (valor === '' || valor === null) ? '' : (valor === 'chat' || valor === 'no') ? valor : undefined;
@@ -4448,6 +4470,66 @@ export function socioAjusteValido(cual, valor, canales) {
     return out;
   }
   return undefined;
+}
+
+/**
+ * 🏠 LA PÁGINA DE UN SERVIDOR, A SU GUSTO (Dlx, 11/11/2026: «Su página, a su gusto»): lo que el dueño o su equipo pueden
+ * escribir desde su panel. El texto, hasta 280 letras y SIN LINKS (los links van en las redes, que se validan); las redes,
+ * sólo las seis que la página sabe dibujar y con su dominio. `undefined` = no vale.
+ */
+export const SOCIO_REDES = { instagram: /^https:\/\/(www\.)?instagram\.com\/[A-Za-z0-9._/-]{1,80}$/,
+  tiktok: /^https:\/\/(www\.)?tiktok\.com\/@[A-Za-z0-9._-]{1,60}\/?$/, youtube: /^https:\/\/(www\.)?(youtube\.com\/[@A-Za-z0-9._/-]{1,80}|youtu\.be\/[A-Za-z0-9_-]{6,20})$/,
+  twitch: /^https:\/\/(www\.)?twitch\.tv\/[A-Za-z0-9_]{2,40}\/?$/, x: /^https:\/\/(www\.)?(x|twitter)\.com\/[A-Za-z0-9_]{1,30}\/?$/,
+  kick: /^https:\/\/(www\.)?kick\.com\/[A-Za-z0-9_-]{2,40}\/?$/ };
+export function socioPaginaValida(cual, valor) {
+  if (cual === 'desc') {
+    if (valor === '' || valor === null) return '';
+    if (typeof valor !== 'string') return undefined;
+    const t = valor.replace(/[\u0000-\u0009\u000B-\u001F\u007F​-‏‪-‮⁦-⁩]/g, '').replace(/[ \t]+/g, ' ')
+      .replace(/\n{3,}/g, '\n\n').trim();
+    if (t.length > 280 || /https?:|www\.|discord\.gg|\.(com|net|org|gg|ly|tv)\b/i.test(t) || /<@|@everyone|@here/.test(t)) return undefined;
+    return t;
+  }
+  if (cual === 'redes') {
+    if (!valor || typeof valor !== 'object' || Array.isArray(valor)) return undefined;
+    const out = [];
+    for (const [r, u] of Object.entries(valor)) {
+      if (!SOCIO_REDES[r]) return undefined;
+      const x = String(u == null ? '' : u).trim();
+      if (!x) continue;
+      if (x.length > 120 || !SOCIO_REDES[r].test(x)) return undefined;
+      out.push([r, x]);
+    }
+    return out;
+  }
+  return undefined;
+}
+
+/**
+ * 📅 El texto del resumen de la semana de un socio (`resumenesSemana()`): `x` es su fila de `tiers` (la del panel). La
+ * semana que cerró es la anterior a la del lunes `lunes` (`semanas` del panel: `[lunes, eventos, gente, nuevos]`). Sin
+ * eventos esa semana y sin gente en la temporada, `''`: no se manda un resumen vacío. ⚠️ Nunca menciona a nadie.
+ */
+export function resumenTexto(x, lunes) {
+  const p = (x && x.panel) || {};
+  const sem = (p.semanas || []).filter((s) => Array.isArray(s) && s[0] < lunes);
+  const ult = sem[sem.length - 1], ant = sem[sem.length - 2];
+  const rs = (p.raperos || []).slice(0, 3);
+  if ((!ult || !ult[1]) && !rs.length) return '';
+  const nom = String(x.nombre || x.sv).replace(/[*_~`|>]/g, '');
+  const fl = (a, b) => (b == null ? '' : a > b ? ' ▲' : a < b ? ' ▼' : '');
+  const L = ['📅 **La semana de ' + nom + ' en la Liga**'];
+  if (ult && ult[1]) {
+    L.push('🎤 **' + ult[1] + '** ' + (ult[1] === 1 ? 'evento' : 'eventos') + fl(ult[1], ant && ant[1]) + ' · **' + ult[2] + '** '
+      + (ult[2] === 1 ? 'participación' : 'participaciones') + fl(ult[2], ant && ant[2]) + (ult[3] ? ' · **' + ult[3] + '** ' + (ult[3] === 1 ? 'debutó' : 'debutaron') + ' en la Liga acá' : ''));
+  } else L.push('🎤 Esta semana no hubo eventos acá.');
+  if (rs.length) {
+    L.push('🏆 Los que más puntos hicieron acá en la temporada: ' + rs.map(([n, , , pts], i) => (i + 1) + '. ' + String(n).replace(/[*_~`|>]/g, '') + ' (' + pts + ')').join(' · '));
+  }
+  const v = p.vuelven;
+  if (v && v.n >= 8) L.push('🔁 De los que debutaron acá, vuelve a jugar el **' + Math.round((100 * v.v) / v.n) + ' %**.');
+  L.push('Todo el detalle: ' + HUB + '/freestyle-rap/sv/' + encodeURIComponent(x.sigla || x.sv));
+  return L.join('\n').slice(0, 1900);
 }
 
 /** 🎛️ los beneficios que se prenden y apagan por servidor (los mismos de `BENEFICIOS` en bot/tiers.py) */
@@ -5616,7 +5698,7 @@ export async function rutaAvisos(req, env, ruta) {
       || (Array.isArray(v) && v.length <= 10 && v.every((x) => typeof x === 'string' && x.length <= 32));
     if (!d || typeof d !== 'object' || !/^[A-Z]{2,6}$/.test(String(d.sv || ''))
         || (d.token && !/^[A-Za-z0-9._-]{10,300}$/.test(String(d.token)))
-        || (d.cambio !== undefined && (!cambio || typeof cambio.cual !== 'string' || cambio.cual.length > 20 || !valorOk(cambio.valor)))) {
+        || (d.cambio !== undefined && (!cambio || typeof cambio.cual !== 'string' || cambio.cual.length > 50 || !valorOk(cambio.valor)))) {
       return json({ error: 'faltan datos' }, 400);
     }
     const q = await quienPide(req, env, d);
@@ -6324,6 +6406,63 @@ export async function rutaAvisos(req, env, ruta) {
     if (crudo.length > 200000) return json({ error: 'demasiado grande' }, 413);
     return elObjeto(env).fetch('https://avisos/finales-pend', {
       method: 'POST', body: crudo, headers: { 'content-type': 'application/json' },
+    });
+  }
+  // 👥 EL EQUIPO DE UN SOCIO (Dlx, 11/11/2026: «que ellos agreguen a sus administradores por su propia cuenta, pero para
+  // que tengan acceso tengan que iniciar sesión también con Discord»): quién pide lo dice Discord; si es el dueño, el
+  // objeto (`socioEquipo()`). El cuerpo: `{sv, accion: 'ver' | 'sumar' | 'sacar' | 'buscar', id?, q?}`
+  if (ruta === '/avisos/socio-equipo') {
+    const crudo = await req.text();
+    if (crudo.length > 2048) return json({ error: 'demasiado grande' }, 413);
+    let d = null;
+    try { d = JSON.parse(crudo || '{}'); } catch (e) { d = null; }
+    if (!d || typeof d !== 'object' || !/^[A-Z]{2,6}$/.test(String(d.sv || '')) || !['ver', 'sumar', 'sacar', 'buscar'].includes(d.accion)
+        || (d.id !== undefined && !/^\d{5,25}$/.test(String(d.id))) || (d.q !== undefined && String(d.q).length > 32)
+        || (d.token && !/^[A-Za-z0-9._-]{10,300}$/.test(String(d.token)))) {
+      return json({ error: 'faltan datos' }, 400);
+    }
+    const q = await quienPide(req, env, d);
+    if (!q.id) return json({ error: q.error }, q.estado);
+    return elObjeto(env).fetch('https://avisos/socio-equipo', {
+      method: 'POST', headers: { 'content-type': 'application/json' },
+      body: JSON.stringify({ quien: q.id, sv: String(d.sv), accion: d.accion, id: d.id ? String(d.id) : '', q: d.q ? String(d.q) : '' }),
+    });
+  }
+  // 🏠 LA PÁGINA DE UN SOCIO, A SU GUSTO (Dlx, 11/11/2026): quién pide lo dice Discord; si es del equipo y qué vale, el
+  // objeto (`socioPagina()`). El cuerpo: `{sv, desc?, redes?, img?, quitar_banner?}`; sin nada, sólo lee
+  if (ruta === '/avisos/socio-pagina') {
+    const crudo = await req.text();
+    if (crudo.length > 900000) return json({ error: 'demasiado grande' }, 413);
+    let d = null;
+    try { d = JSON.parse(crudo || '{}'); } catch (e) { d = null; }
+    if (!d || typeof d !== 'object' || !/^[A-Z]{2,6}$/.test(String(d.sv || '')) || (d.token && !/^[A-Za-z0-9._-]{10,300}$/.test(String(d.token)))
+        || (d.desc !== undefined && d.desc !== null && (typeof d.desc !== 'string' || d.desc.length > 600))
+        || (d.redes !== undefined && (!d.redes || typeof d.redes !== 'object' || Array.isArray(d.redes) || Object.keys(d.redes).length > 8))
+        || (d.img !== undefined && (typeof d.img !== 'string' || !/^[A-Za-z0-9+/=]+$/.test(d.img)))) return json({ error: 'faltan datos' }, 400);
+    const q = await quienPide(req, env, d);
+    if (!q.id) return json({ error: q.error }, q.estado);
+    return elObjeto(env).fetch('https://avisos/socio-pagina', {
+      method: 'POST', headers: { 'content-type': 'application/json' },
+      body: JSON.stringify({ quien: q.id, sv: String(d.sv), desc: d.desc, redes: d.redes, img: d.img, quitar_banner: d.quitar_banner === true }),
+    });
+  }
+  // 🗂️ LO QUE TOCARON LOS SOCIOS, PARA EL DASHBOARD (Dlx, 11/11/2026: «que haya un registro para nosotros, no para ellos,
+  // de las cosas que cambian… así si pasa algo tenemos prueba»). Sólo quien puede los ajustes del Dashboard
+  if (ruta === '/avisos/dueno-socios') {
+    const crudo = await req.text();
+    let d = null;
+    try { d = crudo.length <= 1024 ? JSON.parse(crudo || '{}') : null; } catch (e) { d = null; }
+    if (!d || typeof d !== 'object' || (d.token && !/^[A-Za-z0-9._-]{10,300}$/.test(String(d.token)))) {
+      return json({ error: 'faltan datos' }, 400);
+    }
+    const q = await quienPide(req, env, d);
+    if (!q.id) return json({ error: q.error }, q.estado);
+    if (!(await puede(q.id, 'ajustes'))) return json({ error: 'no' }, 403);
+    // 🛠️ lo que puede hacer Dlx desde ahí: aprobar o no un banner que el filtro dejó para revisar, y quitar lo de una página
+    const acc = ['aprobar', 'rechazar', 'quitar_banner', 'quitar_desc', 'quitar_redes'].includes(d.accion) && /^[A-Z]{2,6}$/.test(String(d.sv || ''))
+      ? { accion: d.accion, sv: String(d.sv), quien: q.id } : {};
+    return elObjeto(env).fetch('https://avisos/dueno-socios', {
+      method: 'POST', body: JSON.stringify(acc), headers: { 'content-type': 'application/json' },
     });
   }
   // 🏁 QUIÉN GANÓ, DESDE EL PANEL DEL SOCIO (Dlx, 11/11/2026: «Panel del socio»): quién pide lo dice Discord; si es dueño
@@ -7654,6 +7793,7 @@ export class Avisos {
       if (ruta === '/promos-extra') return json(this.promosExtra(), 200, 60);
       if (ruta === '/promos-vistas') return json(this.promosVistas(), 200, 60);
       if (ruta === '/niveles') return json(this.delMinuto('/niveles', 300, () => this.niveles()), 200, 300);
+      if (ruta === '/socio-paginas') return json(this.paginasPublicas(), 200, 60);
       if (ruta === '/pases') return json(this.delMinuto('/pases', 300, () => this.pases()), 200, 300);
       if (ruta === '/roles') return json(this.delMinuto('/roles', 300, () => this.roles()), 200, 300);
       if (ruta === '/vs-fondos') return json(Object.fromEntries(Object.entries(this.vsFondosDueno()).map(([k, v]) => [k, v.url])), 200, 60);
@@ -7880,9 +8020,12 @@ export class Avisos {
       if (ruta === '/tutorial') return this.tutorial(d);
       if (ruta === '/seccion') return this.seccion(d);
       if (ruta === '/panel-socio') return this.panelSocio(d);
-      if (ruta === '/finales-pend') return json(this.finalesPend(d));
+      if (ruta === '/finales-pend') return json(await this.finalesPend(d));
       if (ruta === '/socio-final') return json(this.socioFinal(d));
       if (ruta === '/socio-ajustes') return this.socioAjustes(d);
+      if (ruta === '/socio-equipo') return this.socioEquipo(d);
+      if (ruta === '/dueno-socios') { if (d && d.accion) await this.socioPaginaDlx(d); return json(this.socioRegistro()); }
+      if (ruta === '/socio-pagina') return json(await this.socioPagina(d));
       if (ruta === '/clics') return this.clics(d);
       if (ruta === '/error-pagina') return this.errorPagina(d);
       if (ruta === '/dueno') {
@@ -8259,6 +8402,8 @@ export class Avisos {
       // 👥 y de las crews, lo vencido: invitaciones y pedidos de más de una semana, esperas cumplidas
       try { CW.crewLimpiar(this); } catch (e) { /* sigue */ }
       await this.vaciarBasuraCrews();
+      // 📅 y los lunes, el resumen de la semana de cada socio que lo pidió (`resumenesSemana()`)
+      try { await this.resumenesSemana(ahora); } catch (e) { /* el próximo intento, en una hora */ }
     }
     this.guardar('vigia', {
       t: ahora, canales: (canales.lista || []).length, leidos, nuevos, errores,
@@ -8847,6 +8992,7 @@ export class Avisos {
           if (r && r.status === 429) { try { ra = Number((await r.json()).retry_after) || 0; } catch (e) { ra = 0; } }
           const espera = pausaChat(r ? r.status : 0, ra);
           if (espera) this.guardar('chat_pausa:' + canal, ahora + espera);
+          if (r) await this.chatSinPermiso(b.sv, canal, r.status, ahora);
         }
         // un mensaje que ya no está (lo borraron): no se vuelve a editar
         else if (r && r.status === 404) {
@@ -9511,7 +9657,7 @@ export class Avisos {
         });
       } catch (e) { r = null; }
       if (!r || !r.ok) {
-        if (!h && r) this.guardar('chat_pausa:' + canal, ahora + pausaChat(r.status, 0));
+        if (!h && r) { this.guardar('chat_pausa:' + canal, ahora + pausaChat(r.status, 0)); await this.chatSinPermiso(a.sv, canal, r.status, ahora); }
         continue;
       }
       let id = h ? h.msg : '';
@@ -10812,7 +10958,10 @@ export class Avisos {
       this.cfgChat.set(L.g, { c, t: ahora });
     }
     const generales = (this.leer('canales') || {}).generales || [];
-    const canal = String(c.vivo || '') || (dash[L.sv] === true ? String((generales.find((x) => x.g === L.g) || {}).id || '') : '');
+    // 🏟️ el de esa liga, el de todas sus ligas (Dlx, 11/11/2026: «uno, y cambiar por liga»), y si no, donde habla en vivo
+    const propio = String(((c.ligas_por && typeof c.ligas_por === 'object') ? c.ligas_por[L.id] : '') || c.ligas || '');
+    if (propio === 'no') return null;
+    const canal = propio || String(c.vivo || '') || (dash[L.sv] === true ? String((generales.find((x) => x.g === L.g) || {}).id || '') : '');
     if (!/^\d{5,25}$/.test(canal) || ahora < (this.leer('chat_pausa:' + canal) || 0)) return null;
     return { canal, nivel: nivelChat(dashNivel[L.sv], c.vivo_nivel) };
   }
@@ -10865,6 +11014,7 @@ export class Avisos {
       if (r.status === 429) { try { ra = Number((await r.json()).retry_after) || 0; } catch (e) { ra = 0; } }
       const espera = pausaChat(r.status, ra);
       if (espera) this.guardar('chat_pausa:' + donde.canal, ahora + espera);
+      await this.chatSinPermiso(L.sv, donde.canal, r.status, ahora);
       return false;
     }
     let id = '';
@@ -13244,9 +13394,365 @@ export class Avisos {
     // 🎛️ el panel es un beneficio (20/10/2026): lo que Dlx eligió recién manda sobre lo que trajo el ciclo
     const ben = (aj.beneficios && typeof aj.beneficios === 'object') ? aj.beneficios : {};
     const conPanel = (x) => ((ben[x.sv] || {}).panel ?? (x.ben || {}).panel) !== false;
-    const lista = (T.servidores || []).filter((x) => [1, 2, 3].includes(tierDe(x)) && (esDlx || (conPanel(x) && de(x).includes(quien))))
-      .map((x) => ({ ...x, tier: tierDe(x) }));
+    // 👥 y su equipo (11/11/2026): los admins que sumó el dueño entran con su propia cuenta y pueden todo menos el equipo
+    const eq = this.leer('socio_equipo') || {};
+    const enEquipo = (x) => (eq[x.sv] || []).some((a) => a.id === quien);
+    const lista = (T.servidores || []).filter((x) => [1, 2, 3].includes(tierDe(x)) && (esDlx || (conPanel(x) && (de(x).includes(quien) || enEquipo(x)))))
+      .map((x) => ({ ...x, tier: tierDe(x), rol: esDlx ? 'dlx' : de(x).includes(quien) ? 'dueno' : 'admin', duenos: de(x) }));
     return { esDlx, T, lista };
+  }
+
+  /**
+   * 🗂️ EL REGISTRO DE LOS SOCIOS (Dlx, 11/11/2026: «un registro para nosotros, no para ellos, de las cosas que cambian en
+   * nuestro dashboard; así, si pasa algo, tenemos prueba de que alguien cambió algo de alguien»). Cada cosa que se toca
+   * desde un panel: quién (su ID y si era el dueño, un admin o Dlx), qué, lo de antes y lo de después. Un año, en su
+   * tabla: no se pisa como `socio_hist`, que eran los 50 últimos. ⚠️ Nunca se le muestra a un socio.
+   */
+  socioAnotar(sv, quien, rol, que, antes, despues, n = '') {
+    try {
+      this.sql.exec('CREATE TABLE IF NOT EXISTS socio_log (t INTEGER NOT NULL, sv TEXT NOT NULL, quien TEXT NOT NULL, rol TEXT, n TEXT, que TEXT NOT NULL, antes TEXT, despues TEXT)');
+      this.sql.exec('CREATE INDEX IF NOT EXISTS socio_log_t ON socio_log (t)');
+      const txt = (x) => (x === undefined || x === null ? '' : typeof x === 'string' ? x : JSON.stringify(x)).slice(0, 300);
+      this.sql.exec('INSERT INTO socio_log (t, sv, quien, rol, n, que, antes, despues) VALUES (?, ?, ?, ?, ?, ?, ?, ?)',
+        Date.now(), sv, String(quien), rol || '', String(n || '').slice(0, 60), String(que).slice(0, 60), txt(antes), txt(despues));
+      this.sql.exec('DELETE FROM socio_log WHERE t < ?', Date.now() - 365 * DIA_MS);
+    } catch (e) { /* el registro nunca frena el cambio */ }
+  }
+
+  /** 🗂️ El registro, para el Dashboard: lo último primero, hasta 500, con el nombre de cada canal si se sabe */
+  socioRegistro() {
+    let xs = [];
+    try {
+      xs = this.sql.exec('SELECT t, sv, quien, rol, n, que, antes, despues FROM socio_log ORDER BY t DESC LIMIT 500').toArray()
+        .map((r) => ({ t: Number(r.t), sv: r.sv, quien: r.quien, rol: r.rol || '', n: r.n || '', que: r.que, antes: r.antes || '', despues: r.despues || '' }));
+    } catch (e) { xs = []; }
+    // 🏷️ los canales que se ven en el registro, con su nombre: de la lista de cada servidor que ya se pidió
+    const canales = {};
+    for (const [, c] of (this._canalesSv || new Map())) for (const k of c.lista || []) canales[k.id] = k.n;
+    return { ok: true, xs, canales, equipo: this.leer('socio_equipo') || {}, paginas: this.leer('socio_paginas') || {} };
+  }
+
+  /** 👥 Los nombres en el servidor de la persona que pide, si está en un equipo (para el registro) */
+  nombreEquipo(sv, quien) {
+    const a = ((this.leer('socio_equipo') || {})[sv] || []).find((x) => x.id === quien);
+    return a ? a.n : '';
+  }
+
+  /** Un miembro de un servidor, de Discord: `{id, n}` o `null` si no está. */
+  async miembroDe(g, id) {
+    try {
+      const r = await fetch(`${DC}/guilds/${g}/members/${id}`, { headers: { Authorization: 'Bot ' + this.env.DISCORD_TOKEN, 'User-Agent': UA } });
+      if (r.status !== 200) return null;
+      const m = await r.json();
+      if (!m || !m.user || m.user.bot) return null;
+      return { id: String(m.user.id), n: String(m.nick || m.user.global_name || m.user.username || '').slice(0, 40) };
+    } catch (e) { return null; }
+  }
+
+  /**
+   * 🛡️ QUIÉN TIENE PERMISO DE ADMIN EN ESE DISCORD, para sugerírselo al dueño (Dlx, 11/11/2026, «las dos»: los que tienen
+   * permiso aparecen sugeridos y el dueño confirma uno por uno). Los roles con Administrador o Gestionar servidor, y los
+   * miembros que tienen alguno; sin bots. Se le pregunta a Discord al abrir el equipo y se guarda un día en una fila
+   * (en memoria no dura: el objeto se duerme a los 10 s). `null` si Discord no contestó. Hasta 15 páginas de 1.000.
+   */
+  async adminsDe(g) {
+    const ahora = Date.now();
+    const ya = this.leer('socio_adm:' + g);
+    if (ya && ahora - ya.t < DIA_MS) return ya.xs;
+    const H = { Authorization: 'Bot ' + this.env.DISCORD_TOKEN, 'User-Agent': UA };
+    try {
+      const rg = await fetch(`${DC}/guilds/${g}`, { headers: H });
+      if (rg.status !== 200) return ya ? ya.xs : null;
+      const G = await rg.json();
+      const ADMIN = 8n, GESTIONAR = 32n;
+      const roles = new Set((G.roles || []).filter((r) => r && !r.managed && String(r.id) !== String(g)
+        && (BigInt(r.permissions || '0') & (ADMIN | GESTIONAR))).map((r) => String(r.id)));
+      const xs = [];
+      let despues = '0';
+      for (let p = 0; p < 15 && roles.size; p++) {
+        const r = await fetch(`${DC}/guilds/${g}/members?limit=1000&after=${despues}`, { headers: H });
+        if (r.status !== 200) break;
+        const ms = await r.json();
+        if (!Array.isArray(ms) || !ms.length) break;
+        for (const m of ms) {
+          if (m && m.user && !m.user.bot && (m.roles || []).some((x) => roles.has(String(x)))) {
+            xs.push({ id: String(m.user.id), n: String(m.nick || m.user.global_name || m.user.username || '').slice(0, 40) });
+          }
+        }
+        despues = String(ms[ms.length - 1].user.id);
+        if (ms.length < 1000) break;
+      }
+      const out = { t: ahora, xs: xs.slice(0, 30), dueno: String(G.owner_id || '') };
+      this.guardar('socio_adm:' + g, out);
+      return out.xs;
+    } catch (e) { return ya ? ya.xs : null; }
+  }
+
+  /**
+   * 👥 EL EQUIPO DE UN SOCIO (Dlx, 11/11/2026). Lo maneja sólo el dueño (y Dlx): `ver` trae su equipo y a quién se le
+   * sugiere (los que tienen permiso de admin en su Discord y todavía no están), `buscar` busca en su servidor por nombre,
+   * `sumar` y `sacar`. Hasta 10. Quien se suma tiene que estar en ese servidor. Los admins pueden todo menos esto (Dlx:
+   * «todo menos el equipo»). Cada cambio, al registro.
+   */
+  async socioEquipo(d) {
+    const quien = String((d && d.quien) || ''), sv = String((d && d.sv) || '').toUpperCase();
+    const accion = String((d && d.accion) || ''), id = String((d && d.id) || '');
+    const x = this.sociosDe(quien).lista.find((s) => s.sv === sv);
+    if (!x) return json({ error: 'no' }, 403);
+    if (x.rol === 'admin') return json({ error: 'solo_dueno' }, 403);
+    const g = this.guildDe(sv);
+    if (!g) return json({ error: 'sin_guild' }, 404);
+    const eq = this.leer('socio_equipo') || {};
+    let mios = (eq[sv] || []).slice();
+    const fuera = new Set([...(x.duenos || []), DUENO]);
+    if (accion === 'buscar') {
+      const q = String((d && d.q) || '').trim();
+      if (q.length < 2) return json({ ok: true, hallados: [] });
+      try {
+        const r = await fetch(`${DC}/guilds/${g}/members/search?query=${encodeURIComponent(q)}&limit=10`,
+          { headers: { Authorization: 'Bot ' + this.env.DISCORD_TOKEN, 'User-Agent': UA } });
+        if (r.status !== 200) return json({ error: 'discord' }, 503);
+        const ms = await r.json();
+        return json({ ok: true, hallados: (ms || []).filter((m) => m && m.user && !m.user.bot && !fuera.has(String(m.user.id)))
+          .map((m) => ({ id: String(m.user.id), n: String(m.nick || m.user.global_name || m.user.username || '').slice(0, 40),
+            u: String(m.user.username || '').slice(0, 32) })) });
+      } catch (e) { return json({ error: 'discord' }, 503); }
+    }
+    if (accion === 'sumar' || accion === 'sacar') {
+      if (!/^\d{5,25}$/.test(id) || fuera.has(id)) return json({ error: 'datos' }, 400);
+      const antes = mios.map((a) => a.n || a.id);
+      if (accion === 'sumar') {
+        if (mios.some((a) => a.id === id)) return json({ error: 'ya_esta' }, 400);
+        if (mios.length >= 10) return json({ error: 'tope' }, 400);
+        const m = await this.miembroDe(g, id);
+        if (!m) return json({ error: 'no_esta' }, 400);
+        mios.push({ id, n: m.n, por: quien, t: Date.now() });
+        this.socioAnotar(sv, quien, x.rol, 'equipo: suma a ' + (m.n || id) + ' (' + id + ')', antes, mios.map((a) => a.n || a.id));
+      } else {
+        const a = mios.find((y) => y.id === id);
+        if (!a) return json({ error: 'no_esta' }, 400);
+        mios = mios.filter((y) => y.id !== id);
+        this.socioAnotar(sv, quien, x.rol, 'equipo: saca a ' + (a.n || id) + ' (' + id + ')', antes, mios.map((y) => y.n || y.id));
+      }
+      if (mios.length) eq[sv] = mios; else delete eq[sv];
+      this.guardar('socio_equipo', eq);
+    }
+    const adm = await this.adminsDe(g);
+    const tengo = new Set(mios.map((a) => a.id));
+    return json({
+      ok: true, equipo: mios.map((a) => ({ id: a.id, n: a.n, t: a.t })),
+      sugeridos: adm === null ? null : adm.filter((a) => !tengo.has(a.id) && !fuera.has(a.id)),
+    });
+  }
+
+  /**
+   * 📲 UN AVISO AL TELÉFONO DEL EQUIPO DE UN SOCIO (Dlx, 11/11/2026: «Avisos en su teléfono»): al dueño y a sus admins, por
+   * la campana de la página —su bandeja y el push—, nunca por DM. Una vez por `clave` y persona (`hechos`).
+   */
+  async avisarEquipo(sv, clave, titulo, cuerpo, ahora = Date.now()) {
+    if (this.pausada()) return 0;
+    const x = (((this.leer('tiers') || {}).servidores) || []).find((s) => s.sv === sv);
+    if (!x) return 0;
+    const aj = this.ajustes();
+    const mano = (aj.socios_duenos && typeof aj.socios_duenos === 'object') ? aj.socios_duenos : {};
+    const duenos = Array.isArray(mano[sv]) && mano[sv].length ? mano[sv] : (x.dueno ? [x.dueno] : []);
+    const quienes = new Set([...duenos, ...(((this.leer('socio_equipo') || {})[sv]) || []).map((a) => a.id)]);
+    const url = HUB + '/freestyle-rap/socio?sv=' + sv;
+    let n = 0;
+    for (const quien of quienes) {
+      if (!/^\d{5,25}$/.test(String(quien))) continue;
+      const id = 'se:' + clave + ':' + quien;
+      if (this.yaHecho(id)) continue;
+      this.sql.exec('INSERT OR IGNORE INTO hechos (id, t) VALUES (?, ?)', id, ahora);
+      this.aBandeja(quien, 'se:' + clave, 'socio', titulo.slice(0, 120), cuerpo.slice(0, 240), url, '', ahora);
+      n++;
+      const subs = this.sql.exec('SELECT id, endpoint, p256dh, auth FROM subs WHERE quien = ?', quien).toArray();
+      if (!subs.length) continue;
+      const c = cuerpoPersonal({ id: 'se' + clave, titulo, cuerpo, url });
+      const estados = await Promise.all(subs.map((sx) => empujar(sx, c, { ttl: 6 * HORA / 1000, topic: ('se' + clave).replace(/[^A-Za-z0-9_-]/g, '').slice(0, 32) }, this.env, new Map())));
+      estados.forEach((e, i) => { if (MUERTA(e)) this.sql.exec('DELETE FROM subs WHERE id = ?', subs[i].id); });
+    }
+    return n;
+  }
+
+  /** 🏠 Lo publicado de cada página de socio, para el ciclo: `{sv: {desc, redes, banner}}`. Sin lo que espera revisión */
+  paginasPublicas() {
+    const P = this.leer('socio_paginas') || {};
+    const out = {};
+    for (const [sv, p] of Object.entries(P)) {
+      const x = {};
+      if (p.desc) x.desc = p.desc;
+      if (Array.isArray(p.redes) && p.redes.length) x.redes = p.redes;
+      if (p.banner) x.banner = p.banner;
+      if (Object.keys(x).length) out[sv] = x;
+    }
+    return { ok: true, paginas: out };
+  }
+
+  /**
+   * 🏠 LA PÁGINA DE UN SOCIO, A SU GUSTO (Dlx, 11/11/2026: «Su página, a su gusto»). El dueño y su equipo cambian el texto,
+   * las redes y el banner de la página de su servidor; sale en la próxima vuelta del ciclo (`bot/subir_web.py`). El banner
+   * pasa por lo mismo que los fondos de la gente —el tipo por los bytes, sin metadatos, el filtro de la IA—: limpio se ve,
+   * con algo que no va no entra, y lo dudoso espera a Dlx en el Dashboard. Todo va al registro.
+   */
+  async socioPagina(d) {
+    const quien = String((d && d.quien) || ''), sv = String((d && d.sv) || '').toUpperCase();
+    const x = this.sociosDe(quien).lista.find((s) => s.sv === sv);
+    if (!x) return { error: 'no' };
+    const P = this.leer('socio_paginas') || {};
+    const p = { ...(P[sv] || {}) };
+    const n = this.nombreEquipo(sv, quien);
+    const ahora = Date.now();
+    const borrarR2 = async (u) => {
+      const k = String(u || '').split('.r2.dev/')[1];
+      if (k && k.startsWith('bannersv/')) { try { await this.env.CARTAS.delete(k); } catch (e) { /* queda huérfano */ } }
+    };
+    let filtro = '';
+    const cambia = d && (d.desc !== undefined || d.redes !== undefined || d.img || d.quitar_banner);
+    if (cambia && !this.cuentaCambio(quien, 'socio_pagina', 30)) return { error: 'tope' };
+    if (d && d.desc !== undefined) {
+      const v = socioPaginaValida('desc', d.desc);
+      if (v === undefined) return { error: 'desc' };
+      if (v !== (p.desc || '')) { this.socioAnotar(sv, quien, x.rol, 'página: el texto', p.desc || '', v, n); p.desc = v; }
+    }
+    if (d && d.redes !== undefined) {
+      const v = socioPaginaValida('redes', d.redes);
+      if (v === undefined) return { error: 'redes' };
+      if (JSON.stringify(v) !== JSON.stringify(p.redes || [])) { this.socioAnotar(sv, quien, x.rol, 'página: las redes', p.redes || [], v, n); p.redes = v; }
+    }
+    if (d && d.quitar_banner) {
+      if (p.banner || p.pend) this.socioAnotar(sv, quien, x.rol, 'página: saca el banner', p.banner || p.pend, '', n);
+      await borrarR2(p.banner); await borrarR2(p.pend);
+      delete p.banner; delete p.pend;
+    } else if (d && d.img) {
+      let b = null;
+      try { b = Uint8Array.from(atob(d.img), (c) => c.charCodeAt(0)); } catch (e) { b = null; }
+      const tipo = b ? tipoImagen(b) : '';
+      if (!tipo) return { error: 'no es una imagen' };
+      if (b.length > FONDO_TOPE) return { error: 'demasiado grande' };
+      b = limpiarMetadatos(b);
+      if (!b || tieneMetadatos(b)) return { error: 'metadatos' };
+      if (!this.cuentaCambio(quien, 'banner_filtro', 6)) return { error: 'tope' };
+      let f = { v: 'revisar', si: [], quizas: [], crudo: '', error: 'sin IA' };
+      if (this.env.AI) {
+        try { f = await filtrarImagen(this.env, d.img, tipo); } catch (e) { f = { v: 'revisar', si: [], quizas: [], crudo: '', error: String((e && e.message) || e).slice(0, 100) }; }
+      }
+      this.anotarFiltro(quien, 'sv:' + sv, f, ahora);
+      if (f.v === 'no') {
+        const cats = f.si.filter((k) => FILTRO_NO.includes(k));
+        return { error: 'filtro', texto: cats.map((k) => FILTRO_TEXTO[k]).join(', ') };
+      }
+      const azar = Array.from(crypto.getRandomValues(new Uint8Array(12)), (y) => y.toString(16).padStart(2, '0')).join('');
+      const clave = 'bannersv/' + azar + '.' + ({ 'image/jpeg': 'jpg', 'image/png': 'png', 'image/webp': 'webp' }[tipo]);
+      try {
+        await this.env.CARTAS.put(clave, b, { httpMetadata: { contentType: tipo, cacheControl: 'public, max-age=31536000' } });
+      } catch (e) { return { error: 'no pude guardarla' }; }
+      const url = R2_PUB + '/' + clave;
+      await borrarR2(p.pend);
+      if (f.v === 'ok') {
+        await borrarR2(p.banner);
+        p.banner = url; delete p.pend;
+        this.socioAnotar(sv, quien, x.rol, 'página: banner nuevo', '', url, n);
+      } else {
+        p.pend = url;
+        this.socioAnotar(sv, quien, x.rol, 'página: banner por revisar', '', url, n);
+        this.aBandeja(DUENO, 'sv-banner:' + sv, 'socio', '🖼️ Un banner de ' + sv + ' espera revisión', 'El filtro no lo aprobó solo. Míralo en el Dashboard, en Historial.',
+          HUB + '/dashboard', '', ahora);
+      }
+      filtro = f.v;
+    }
+    if (cambia) {
+      p.t = ahora;
+      if (Object.keys(p).some((k) => k !== 't' && p[k] && (!Array.isArray(p[k]) || p[k].length))) P[sv] = p; else delete P[sv];
+      this.guardar('socio_paginas', P);
+    }
+    const q = P[sv] || {};
+    return { ok: true, desc: q.desc || '', redes: q.redes || [], banner: q.banner || '', pend: q.pend || '', filtro };
+  }
+
+  /** 🛠️ Lo que hace Dlx con las páginas desde el Dashboard: aprobar o no un banner que espera, y quitar lo que haga falta */
+  async socioPaginaDlx(d) {
+    const sv = String(d.sv || ''), P = this.leer('socio_paginas') || {}, p = { ...(P[sv] || {}) };
+    const borrarR2 = async (u) => {
+      const k = String(u || '').split('.r2.dev/')[1];
+      if (k && k.startsWith('bannersv/')) { try { await this.env.CARTAS.delete(k); } catch (e) { /* queda huérfano */ } }
+    };
+    const antes = JSON.stringify({ desc: p.desc || '', redes: p.redes || [], banner: p.banner || '', pend: p.pend || '' });
+    if (d.accion === 'aprobar' && p.pend) { await borrarR2(p.banner); p.banner = p.pend; delete p.pend; }
+    else if (d.accion === 'rechazar' && p.pend) { await borrarR2(p.pend); delete p.pend; }
+    else if (d.accion === 'quitar_banner') { await borrarR2(p.banner); await borrarR2(p.pend); delete p.banner; delete p.pend; }
+    else if (d.accion === 'quitar_desc') delete p.desc;
+    else if (d.accion === 'quitar_redes') delete p.redes;
+    else return;
+    if (Object.keys(p).some((k) => k !== 't' && p[k] && (!Array.isArray(p[k]) || p[k].length))) P[sv] = p; else delete P[sv];
+    this.guardar('socio_paginas', P);
+    this.socioAnotar(sv, String(d.quien || DUENO), 'dlx', 'página: ' + d.accion.replace('_', ' '), antes, '', 'Dashboard');
+    // 🔔 a su equipo, si se aprobó o no su banner
+    if (d.accion === 'aprobar' || d.accion === 'rechazar') {
+      try {
+        await this.avisarEquipo(sv, 'banner:' + d.accion + ':' + Date.now(), d.accion === 'aprobar' ? '🖼️ Tu banner ya se ve' : '🖼️ Tu banner no se aprobó',
+          d.accion === 'aprobar' ? 'Sale en la página de tu servidor en la próxima media hora.' : 'Prueba con otra imagen desde tu panel.');
+      } catch (e) { /* el aviso no frena */ }
+    }
+  }
+
+  /**
+   * 📅 EL RESUMEN DE LA SEMANA DE CADA SOCIO (Dlx, 11/11/2026: «Resumen de la semana»): los lunes desde las 12 PM (hora del
+   * este), en el canal que eligió su equipo (`resumen` de `cfg:<guild>`), un mensaje con su semana —eventos, gente, cuántos
+   * nuevos, contra la semana anterior—, los que más puntos hicieron ahí en la temporada y cuántos vuelven. Sin mencionar a
+   * nadie. Una vez por servidor y semana (`hechos`). Lo corre la vuelta de cada hora del vigía; sale de lo que ya trae el
+   * ciclo (`tiers`), así que no le pide nada a nadie más que a Discord para mandarlo.
+   */
+  async resumenesSemana(ahora = Date.now()) {
+    const dia = new Intl.DateTimeFormat('en-US', { timeZone: 'America/New_York', weekday: 'short' }).format(new Date(ahora));
+    if (dia !== 'Mon' || Number(horaET(ahora).slice(0, 2)) < 12 || this.pausada()) return 0;
+    const lunes = diaET(ahora);
+    if (this.yaHecho('resumen:' + lunes)) return 0;
+    const T = this.leer('tiers') || {};
+    let mandados = 0, pendientes = 0;
+    for (const x of T.servidores || []) {
+      const id = 'resumen:' + lunes + ':' + x.sv;
+      if (this.yaHecho(id)) continue;
+      const g = this.guildDe(x.sv);
+      if (!g) continue;
+      let c = {};
+      try { c = JSON.parse((await this.env.KV.get('cfg:' + g, { cacheTtl: 60 })) || '{}') || {}; } catch (e) { c = {}; }
+      const canal = String(c.resumen || '');
+      if (!/^\d{5,25}$/.test(canal)) continue;
+      const texto = resumenTexto(x, lunes);
+      if (!texto) { this.sql.exec('INSERT OR IGNORE INTO hechos (id, t) VALUES (?, ?)', id, ahora); continue; }
+      let r = null;
+      try {
+        r = await fetch(`${DC}/channels/${canal}/messages`, {
+          method: 'POST',
+          headers: { Authorization: 'Bot ' + this.env.DISCORD_TOKEN, 'User-Agent': UA, 'content-type': 'application/json' },
+          body: JSON.stringify({ content: texto, allowed_mentions: { parse: [] }, flags: 4 }),
+        });
+      } catch (e) { r = null; }
+      if (r && r.ok) { this.sql.exec('INSERT OR IGNORE INTO hechos (id, t) VALUES (?, ?)', id, ahora); mandados++; continue; }
+      if (r && (r.status === 403 || r.status === 404)) {
+        this.sql.exec('INSERT OR IGNORE INTO hechos (id, t) VALUES (?, ?)', id, ahora);
+        await this.chatSinPermiso(x.sv, canal, r.status, ahora);
+        continue;
+      }
+      pendientes++;
+    }
+    if (!pendientes) this.sql.exec('INSERT OR IGNORE INTO hechos (id, t) VALUES (?, ?)', 'resumen:' + lunes, ahora);
+    return mandados;
+  }
+
+  /** 📲 Discord no deja escribir al bot en el canal que eligió un socio (403/404): se le avisa al equipo, una vez por día y canal */
+  async chatSinPermiso(sv, canal, estado, ahora = Date.now()) {
+    if ((estado !== 403 && estado !== 404) || !sv || !canal) return;
+    try {
+      const g = this.guildDe(sv);
+      const cs = g ? await this.canalesDe(g) : null;
+      const k = (cs || []).find((c) => c.id === String(canal));
+      const nombre = k ? '#' + k.n : 'el canal que elegiste';
+      await this.avisarEquipo(sv, 'canal:' + canal + ':' + diaET(ahora), '⚠️ El bot no puede escribir en ' + nombre,
+        estado === 404 ? 'Ese canal ya no está. Elige otro en los ajustes de tu panel.'
+          : 'Discord no lo deja escribir ahí. Dale permiso para ver el canal y mandar mensajes, o elige otro en tu panel.', ahora);
+    } catch (e) { /* nunca frena al vigía */ }
   }
 
   panelSocio(d) {
@@ -13256,7 +13762,7 @@ export class Avisos {
     const servidores = lista.map((x) => ({
       sv: x.sv, nombre: x.nombre, tier: x.tier, puntos: x.puntos, antes: x.antes, compara: x.compara !== false,
       compara_desde: x.compara_desde || '', partes: x.partes, m: x.m, ultimo: x.ultimo,
-      sin_jugar: x.sin_jugar, panel: x.panel || null, preguntas: this.preguntasDe(x.sv),
+      sin_jugar: x.sin_jugar, panel: x.panel || null, preguntas: this.preguntasDe(x.sv), rol: x.rol,
       visitas: this.sql.exec('SELECT dia, n FROM secciones WHERE s = ? AND dia >= ? ORDER BY dia', 'sv-' + x.sv, desde).toArray()
         .map((r) => [r.dia, Number(r.n) || 0]),
     }));
@@ -13277,7 +13783,7 @@ export class Avisos {
    * `{sv: [{k, evento, fecha, ronda, lados, link, autor, vence, nadie}]}`. Se reemplaza entero: lo que ya no está, se
    * contestó o se cerró. Lo valida acá porque lo muestra una página.
    */
-  finalesPend(d) {
+  async finalesPend(d) {
     const p = d && d.pend;
     if (!p || typeof p !== 'object' || Array.isArray(p)) return { error: 'datos' };
     const txt = (x, n) => String(x == null ? '' : x).slice(0, n);
@@ -13293,7 +13799,17 @@ export class Avisos {
       }));
     }
     this.guardar('finales_pend', { t: Date.now(), pend: out });
-    return { ok: true, n: Object.values(out).reduce((a, xs) => a + xs.length, 0) };
+    // 📲 a su equipo, una vez por batalla (Dlx, 11/11/2026: «Avisos en su teléfono»)
+    let avisos = 0;
+    for (const [sv, xs] of Object.entries(out)) {
+      for (const x of xs.slice(0, 5)) {
+        try {
+          avisos += await this.avisarEquipo(sv, 'fin:' + x.k, '🏁 Una batalla espera quién ganó',
+            (x.evento || 'Tu evento') + (x.ronda ? ' · ' + x.ronda : '') + ': ' + x.lados.slice(0, 2).join(' vs ') + '. Márcalo en tu panel.');
+        } catch (e) { /* el aviso no frena la lista */ }
+      }
+    }
+    return { ok: true, n: Object.values(out).reduce((a, xs) => a + xs.length, 0), avisos };
   }
 
   /** Lo que espera respuesta de `sv`, sin lo que ya se marcó (en Discord o en el panel) desde la última corrida */
@@ -13319,6 +13835,8 @@ export class Avisos {
     if (!nombre) return { error: 'datos' };
     const r = this.finalElegir({ k, v, nombre, quien });
     if (r.error) return r;
+    const yo = this.sociosDe(quien).lista.find((s) => s.sv === sv);
+    this.socioAnotar(sv, quien, yo ? yo.rol : '', 'quién ganó: ' + (x.evento || '') + ' · ' + (x.ronda || ''), '', r.ya || nombre, this.nombreEquipo(sv, quien));
     return { ok: true, ya: r.ya || '', preguntas: this.preguntasDe(sv) };
   }
 
@@ -13365,7 +13883,7 @@ export class Avisos {
    * ⚠️ Lo que Dlx fijó en el Dashboard para ese servidor —el bot en vivo, cuánto habla, las apuestas, el aviso de cada
    * evento— GANA POR ABAJO Y NO SE LE MUESTRA (Dlx, 19/10/2026: «lo mío manda, pero que no le aparezca eso a ellos,
    * sino que ellos lo pueden cambiar»): el dueño ve y cambia lo suyo, como con `/settings`, y el Dashboard decide.
-   * 🕓 Qué cambió cada dueño queda en `socio_hist` (los 50 últimos), para mirarlo si algo se ve raro.
+   * 🗂️ Qué cambió cada uno —el dueño, un admin de su equipo o Dlx— va al registro (`socioAnotar()`), que ve sólo el Dashboard.
    */
   async socioAjustes(d) {
     const quien = String((d && d.quien) || '');
@@ -13379,9 +13897,11 @@ export class Avisos {
     let cfg = { ...CFG_BASE };
     try { cfg = { ...CFG_BASE, ...(JSON.parse((await this.env.KV.get('cfg:' + g)) || '{}') || {}) }; } catch (e) { /* sin KV, lo de siempre */ }
     let aj = this.ajustes();
+    // 🏟️ las ligas de ese servidor, para elegir un canal por liga
+    const ligas = (await this.ligasCfg(Date.now())).filter((L) => L && L.sv === sv).map((L) => ({ id: String(L.id), n: String(L.n || L.id) }));
     if (d && d.cambio && typeof d.cambio === 'object') {
       const cual = String(d.cambio.cual || '');
-      const v = socioAjusteValido(cual, d.cambio.valor, canales);
+      const v = socioAjusteValido(cual, d.cambio.valor, canales, ligas.map((L) => L.id));
       if (v === undefined) return json({ error: 'valor' }, 400);
       // ⏱️ una escritura cada 2 s por servidor: KV tiene 1.000 escrituras por día para todo el bot
       if (!this._cfgT) this._cfgT = new Map();
@@ -13394,6 +13914,14 @@ export class Avisos {
         antes = ev[sv] === true;
         if (v) ev[sv] = true; else delete ev[sv];
         if (antes !== v) { this.ajuste({ cual: 'eventos_discord', valor: ev, por: quien }); aj = this.ajustes(); }
+      } else if (/^liga:/.test(cual)) {
+        const lp = { ...((cfg.ligas_por && typeof cfg.ligas_por === 'object') ? cfg.ligas_por : {}) };
+        antes = lp[cual.slice(5)] || '';
+        if (antes !== v) {
+          if (v) lp[cual.slice(5)] = v; else delete lp[cual.slice(5)];
+          cfg.ligas_por = lp;
+          try { await this.env.KV.put('cfg:' + g, JSON.stringify(cfg)); } catch (e) { return json({ error: 'kv' }, 503); }
+        }
       } else {
         antes = cfg[cual];
         if (JSON.stringify(antes) !== JSON.stringify(v)) {
@@ -13401,11 +13929,9 @@ export class Avisos {
           try { await this.env.KV.put('cfg:' + g, JSON.stringify(cfg)); } catch (e) { return json({ error: 'kv' }, 503); }
         }
       }
-      if (JSON.stringify(antes) !== JSON.stringify(v)) {
-        const h = this.leer('socio_hist') || [];
-        h.unshift({ t: ahora, sv, cual, antes: antes === undefined ? null : antes, despues: v, por: quien });
-        this.guardar('socio_hist', h.slice(0, 50));
-      }
+      // 🗂️ al registro de Dlx (antes, `socio_hist`: los 50 últimos y sin quién era cada uno)
+      if (JSON.stringify(antes) !== JSON.stringify(v)) this.socioAnotar(sv, quien, x.rol, cual, antes, v, this.nombreEquipo(sv, quien));
+      if (this.cfgChat) this.cfgChat.delete(g);
     }
     const gen = ((this.leer('canales') || {}).generales || []).find((c) => c.sv === sv);
     return json({
@@ -13413,7 +13939,10 @@ export class Avisos {
       cfg: { nick: cfg.nick !== false, canales: Array.isArray(cfg.canales) ? cfg.canales.map(String) : [], avisos: String(cfg.avisos || ''),
         vivo: String(cfg.vivo || ''), vivo_nivel: NIVELES_CHAT[cfg.vivo_nivel] ? cfg.vivo_nivel : 'normal',
         apuestas: cfg.apuestas === true, ascenso: String(cfg.ascenso || ''),
-        aviso_evento: (cfg.aviso_evento === 'chat' || cfg.aviso_evento === 'no') ? cfg.aviso_evento : '' },
+        aviso_evento: (cfg.aviso_evento === 'chat' || cfg.aviso_evento === 'no') ? cfg.aviso_evento : '',
+        ligas: String(cfg.ligas || ''), ligas_por: (cfg.ligas_por && typeof cfg.ligas_por === 'object') ? cfg.ligas_por : {},
+        resumen: String(cfg.resumen || '') },
+      ligas, rol: x.rol,
       eventos_discord: ((aj.eventos_discord && typeof aj.eventos_discord === 'object') ? aj.eventos_discord : {})[sv] === true,
       canales, general: gen ? String(gen.id) : '',
       niveles: Object.entries(NIVELES_CHAT).map(([k, [n, q]]) => [k, n, q]),

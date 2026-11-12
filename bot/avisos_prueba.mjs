@@ -33,6 +33,7 @@ const sinCopia = (o) => {
   try { o.sql.exec("DELETE FROM estado WHERE k LIKE 'ruta:resumen:%'"); } catch (e) { /* sin tabla */ }
   if (o.estadoMem) for (const k of [...o.estadoMem.keys()]) if (k.startsWith('ruta:resumen:')) o.estadoMem.delete(k);
 };
+const R2_PRUEBA = 'https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev';
 const ok = (cond, que, det) => {
   console.log(`  ${cond ? '✅' : '❌'} ${que}`);
   if (!cond) {
@@ -2776,7 +2777,8 @@ const ok = (cond, que, det) => {
       'lo que corrige Dlx en el Dashboard manda sobre el dueño de Discord');
     o.guardar('ajustes_dueno', aj0);
     // 🏁 lo que espera respuesta del organizador, en el panel del socio (Dlx, 11/11/2026: «Panel del socio»)
-    const fp = o.finalesPend({ pend: {
+    o.guardar('socio_equipo', { FFA: [{ id: '400000000000000005', n: 'Admin Uno', por: '400000000000000001', t: 1 }] });
+    const fp = await o.finalesPend({ pend: {
       FFA: [{ k: '1561867654464012369:0', evento: 'FATS', fecha: '19/10', ronda: 'CUARTOS', lados: ['A + B', 'C + D'],
         link: 'https://discord.com/channels/1/2/3', autor: '400000000000000003', vence: 5, nadie: true },
       { k: '1561867654464012369:1', evento: 'FATS', fecha: '19/10', ronda: 'FINAL', lados: ['E', 'F'], link: 'javascript:x', nadie: false },
@@ -2793,6 +2795,132 @@ const ok = (cond, que, det) => {
       && (o.leer('finales') || {})['1561867654464012369:0'].nombre === 'C + D'
       && (o.leer('finales') || {})['1561867654464012369:0'].quien === '400000000000000001',
     'contestar desde el panel: sólo el dueño de ese servidor, «Nadie siguió» no va en la final, queda como un clic en Discord y sale de la lista');
+    // 📲 cada batalla que espera le llega al teléfono del equipo de ESE servidor (el dueño y sus admins), una vez
+    const enBandeja = (q) => o.sql.exec("SELECT clave FROM bandeja WHERE quien = ? AND tipo = 'socio'", q).toArray().map((r) => r.clave);
+    const fp2 = await o.finalesPend({ pend: { FFA: [{ k: '1561867654464012369:1', evento: 'FATS', ronda: 'FINAL', lados: ['E', 'F'] }] } });
+    ok(fp.avisos === 4 && fp2.avisos === 0 && enBandeja('400000000000000001').length === 2 && enBandeja('400000000000000005').length === 2
+      && !enBandeja('400000000000000002').length,
+    'la batalla que espera quién ganó va a la campana del dueño y de su admin, una sola vez, y no a la de otro servidor', JSON.stringify([fp.avisos, fp2.avisos]));
+    // 👥 EL EQUIPO (Dlx, 11/11/2026): el admin que sumó el dueño entra con su cuenta, como admin; el equipo lo maneja el dueño
+    const pAdm = await ps('400000000000000005');
+    ok(pAdm.servidores.length === 1 && pAdm.servidores[0].sv === 'FFA' && pAdm.servidores[0].rol === 'admin'
+      && (await ps('400000000000000001')).servidores[0].rol === 'dueno' && (await ps(A.DUENO)).servidores[0].rol === 'dlx',
+    'el admin del equipo ve el panel de ese servidor y nada más; cada uno sabe si es dueño, admin o Dlx');
+    o.guardar('guilds', { FFA: '111111111111111111' });
+    const fetch0 = globalThis.fetch;
+    const env0 = o.env;
+    const kvMem = new Map();
+    const kvMock = { get: async (k) => (kvMem.has(k) ? kvMem.get(k) : null), put: async (k, v) => { kvMem.set(k, v); } };
+    o.env = new Proxy(env0, { get: (t, p) => (p === 'KV' ? kvMock : t[p]) });
+    const pedidos = [];
+    globalThis.fetch = async (u) => {
+      const url = String(u);
+      pedidos.push(url);
+      const js = (x, st = 200) => new Response(JSON.stringify(x), { status: st, headers: { 'content-type': 'application/json' } });
+      if (/\/guilds\/111111111111111111\/members\/search/.test(url)) return js([{ user: { id: '400000000000000007', username: 'carla' }, nick: 'Carla' }, { user: { id: '400000000000000001', username: 'dueno' } }]);
+      if (/\/guilds\/111111111111111111\/members\?limit/.test(url)) {
+        return js([{ user: { id: '400000000000000006', username: 'beto' }, roles: ['222'] }, { user: { id: '400000000000000001', username: 'dueno' }, roles: ['222'] },
+          { user: { id: '400000000000000008', username: 'bot', bot: true }, roles: ['222'] }, { user: { id: '400000000000000009', username: 'nadie' }, roles: [] }]);
+      }
+      if (/\/guilds\/111111111111111111\/members\/400000000000000006$/.test(url)) return js({ user: { id: '400000000000000006', username: 'beto' }, nick: 'Beto' });
+      if (/\/guilds\/111111111111111111\/members\//.test(url)) return js({ message: 'Unknown Member' }, 404);
+      if (/\/channels\/777777\/messages/.test(url)) return js({ message: 'Missing Access' }, 403);
+      if (/\/guilds\/111111111111111111\/channels$/.test(url)) return js([{ id: '555', type: 0, name: 'batallas', position: 1 }, { id: '444', type: 0, name: 'general', position: 0 }]);
+      if (/\/guilds\/111111111111111111$/.test(url)) return js({ owner_id: '400000000000000001', roles: [{ id: '111111111111111111', permissions: '8' }, { id: '222', permissions: '32' }, { id: '333', permissions: '0' }] });
+      return js({}, 404);
+    };
+    try {
+      const eq = async (quien, accion, extra) => (await o.socioEquipo(Object.assign({ quien, sv: 'FFA', accion }, extra || {}))).json();
+      const e0 = await eq('400000000000000005', 'ver');
+      const e1 = await eq('400000000000000001', 'ver');
+      const e2 = await eq('400000000000000001', 'sumar', { id: '400000000000000006' });
+      const e3 = await eq('400000000000000001', 'sumar', { id: '400000000000000004' });
+      const e4 = await eq('400000000000000001', 'buscar', { q: 'car' });
+      const e5 = await eq('400000000000000001', 'sacar', { id: '400000000000000005' });
+      const e6 = await eq('400000000000000001', 'sumar', { id: '400000000000000001' });
+      ok(e0.error === 'solo_dueno' && e1.ok && e1.equipo.length === 1 && e1.sugeridos.map((x) => x.id).join() === '400000000000000006'
+        && e2.ok && e2.equipo.map((x) => x.n).join() === 'Admin Uno,Beto' && e2.sugeridos.length === 0
+        && e3.error === 'no_esta' && e4.hallados.map((x) => x.n).join() === 'Carla' && e5.ok && e5.equipo.length === 1 && e6.error === 'datos',
+      'el equipo: sólo el dueño; sugiere a quien tiene Administrador o Gestionar servidor (sin el dueño, sin bots); suma sólo a quien está en el servidor; busca y saca', JSON.stringify([e0, e1, e2, e3, e4, e5, e6]).slice(0, 600));
+      const adm1 = pedidos.filter((u) => /members\?limit/.test(u)).length;
+      await eq('400000000000000001', 'ver');
+      ok(adm1 === 1 && pedidos.filter((u) => /members\?limit/.test(u)).length === adm1, 'quién tiene permiso de admin se le pregunta a Discord una vez por día, no cada vez');
+      // 🏟️ el canal de las ligas: el de todas, el de una liga suya, y al registro
+      kvMem.set('ligas:vigia', JSON.stringify({ lista: [{ id: 'fmh-x', n: 'FMH X', sv: 'FFA', g: '111111111111111111' }] }));
+      const aj = async (quien, cual, valor) => (await o.socioAjustes({ quien, sv: 'FFA', cambio: { cual, valor } })).json();
+      o.lgCfg = null;
+      const a1 = await aj('400000000000000006', 'ligas', '555');
+      o._cfgT = new Map();
+      const a2 = await aj('400000000000000006', 'liga:fmh-x', 'no');
+      o._cfgT = new Map();
+      const a3 = await aj('400000000000000006', 'liga:otra', '555');
+      ok(a1.ok && a1.cfg.ligas === '555' && a1.ligas[0].id === 'fmh-x' && a1.rol === 'admin' && a2.ok && a2.cfg.ligas_por['fmh-x'] === 'no' && a3.error === 'valor',
+        'el canal de las ligas: el admin lo cambia, el de una liga suya también, y una liga que no es de ese servidor no vale', JSON.stringify([a1.error, a2.error, a3]));
+      const L = { id: 'fmh-x', sv: 'FFA', g: '111111111111111111' };
+      o.cfgChat = null;
+      const donde0 = await o.ligaCanal(L, {}, Date.now());
+      o.cfgChat = null;
+      kvMem.set('cfg:111111111111111111', JSON.stringify({ vivo: '444444', ligas: '555555', ligas_por: {} }));
+      const donde1 = await o.ligaCanal(L, {}, Date.now());
+      o.cfgChat = null;
+      kvMem.set('cfg:111111111111111111', JSON.stringify({ vivo: '444444', ligas: '', ligas_por: {} }));
+      const donde2 = await o.ligaCanal(L, {}, Date.now());
+      ok(donde0 === null && donde1.canal === '555555' && donde2.canal === '444444', 'la batalla de liga va a su canal; apagada, a ninguno; sin elegir, donde habla en vivo',
+        JSON.stringify([donde0, donde1, donde2]));
+      // 🗂️ el registro: todo lo de arriba, con quién y su rol
+      const reg = o.socioRegistro();
+      ok(reg.ok && reg.xs.some((x) => /suma a Beto/.test(x.que) && x.rol === 'dueno') && reg.xs.some((x) => x.que === 'liga:fmh-x' && x.rol === 'admin' && x.n === 'Beto')
+        && reg.xs.some((x) => /saca a Admin Uno/.test(x.que)) && reg.canales['555'] === 'batallas',
+      'el registro de los socios anota quién (dueño o admin, con su nombre), qué y lo de antes y después', JSON.stringify(reg.xs.map((x) => x.que)));
+      // 📲 Discord no deja escribir: al equipo, una vez por día y canal
+      await o.chatSinPermiso('FFA', '555', 403);
+      await o.chatSinPermiso('FFA', '555', 403);
+      ok(enBandeja('400000000000000006').filter((k) => /^se:canal:555/.test(k)).length === 1, 'si el bot no puede escribir en el canal elegido, el equipo se entera una vez');
+      // 🏠 SU PÁGINA, A SU GUSTO: el texto sin links, las redes de su dominio, y lo publicado para el ciclo
+      const pg = async (quien, c) => o.socioPagina(Object.assign({ quien, sv: 'FFA' }, c || {}));
+      const g0 = await pg('400000000000000009', { desc: 'hola' });
+      const g1 = await pg('400000000000000006', { desc: 'El mejor servidor de batallas. Eventos los viernes.' });
+      const g2 = await pg('400000000000000006', { desc: 'entra a discord.gg/abc' });
+      const g3 = await pg('400000000000000001', { redes: { instagram: 'https://instagram.com/ffa', tiktok: '' } });
+      const g4 = await pg('400000000000000001', { redes: { instagram: 'https://evil.com/ffa' } });
+      const g5 = await pg('400000000000000001', { img: btoa('esto no es una imagen') });
+      ok(g0.error === 'no' && g1.ok && g1.desc.startsWith('El mejor') && g2.error === 'desc' && g3.ok && g3.redes.length === 1 && g4.error === 'redes'
+        && g5.error === 'no es una imagen' && o.paginasPublicas().paginas.FFA.desc === g1.desc && o.paginasPublicas().paginas.FFA.redes[0][0] === 'instagram'
+        && !('pend' in o.paginasPublicas().paginas.FFA),
+      'su página: sólo su equipo; el texto sin links; las redes con su dominio; una imagen de verdad; lo publicado, sin lo que espera', JSON.stringify([g0, g1, g2, g3, g4, g5]).slice(0, 400));
+      // 🛠️ lo que espera revisión lo aprueba Dlx desde el Dashboard, y su equipo se entera
+      const P0 = o.leer('socio_paginas');
+      P0.FFA.pend = R2_PRUEBA + '/bannersv/x.webp';
+      o.guardar('socio_paginas', P0);
+      o.env = new Proxy(env0, { get: (t, p) => (p === 'KV' ? kvMock : p === 'CARTAS' ? { delete: async () => {} } : t[p]) });
+      await o.socioPaginaDlx({ accion: 'aprobar', sv: 'FFA', quien: A.DUENO });
+      await o.socioPaginaDlx({ accion: 'quitar_desc', sv: 'FFA', quien: A.DUENO });
+      const P1 = o.leer('socio_paginas').FFA;
+      ok(P1.banner === R2_PRUEBA + '/bannersv/x.webp' && !P1.pend && !P1.desc && enBandeja('400000000000000001').some((k) => /^se:banner:aprobar/.test(k))
+        && o.socioRegistro().xs.some((x) => x.rol === 'dlx' && x.que === 'página: quitar desc'),
+      'Dlx aprueba un banner o saca un texto desde el registro; su equipo se entera y queda anotado');
+      // 📅 EL RESUMEN DE LA SEMANA: los lunes desde las 12 PM ET, en el canal elegido, una vez
+      const T0 = o.leer('tiers');
+      T0.servidores[0].panel = { semanas: [['2026-11-02', 2, 30, 4], ['2026-11-09', 3, 41, 6], ['2026-11-16', 0, 0, 0]],
+        raperos: [['Ana', 'ana', 3, 120, 1], ['Beto', 'beto', 2, 80, 0]], vuelven: { n: 10, v: 4 } };
+      o.guardar('tiers', T0);
+      const tx = A.resumenTexto(T0.servidores[0], '2026-11-16');
+      ok(/\*\*3\*\* eventos ▲/.test(tx) && /\*\*41\*\* participaciones ▲/.test(tx) && /6\*\* debutaron/.test(tx) && /1\. Ana \(120\)/.test(tx)
+        && /40 %/.test(tx) && !/<@/.test(tx) && A.resumenTexto({ sv: 'X', panel: {} }, '2026-11-16') === '',
+      'el texto del resumen: la semana que cerró contra la anterior, los que más puntos hicieron, cuántos vuelven; vacío, nada', tx);
+      kvMem.set('cfg:111111111111111111', JSON.stringify({ resumen: '777777' }));
+      const lunes13 = Date.parse('2026-11-16T18:00:00Z'), lunes11 = Date.parse('2026-11-16T16:00:00Z'), martes = Date.parse('2026-11-17T18:00:00Z');
+      const mandadosA = pedidos.filter((u) => /channels\/777777\/messages/.test(u)).length;
+      const r11 = await o.resumenesSemana(lunes11);
+      const r13 = await o.resumenesSemana(lunes13);
+      const r13b = await o.resumenesSemana(lunes13 + 3600000);
+      const rMa = await o.resumenesSemana(martes);
+      ok(r11 === 0 && r13 === 0 && r13b === 0 && rMa === 0 && pedidos.filter((u) => /channels\/777777\/messages/.test(u)).length === mandadosA + 1,
+        'el resumen sale el lunes desde las 12 PM, una sola vez; ni antes, ni otro día', JSON.stringify([r11, r13, r13b, rMa]));
+    } finally { globalThis.fetch = fetch0; o.env = env0; }
+    ok(A.socioAjusteValido('ligas', 'no', []) === 'no' && A.socioAjusteValido('liga:fmh-x', '', [], ['fmh-x']) === ''
+      && A.socioAjusteValido('liga:fmh-y', '', [], ['fmh-x']) === undefined && A.socioAjusteValido('resumen', '9', [{ id: '9' }]) === '9',
+    'los ajustes nuevos del panel: el canal de las ligas, el de una liga suya y el del resumen');
     ok(A.ajusteValido('socios_duenos', { SR: ['400000000000000009'] }).SR.length === 1 && A.ajusteValido('socios_duenos', { SR: ['x'] }) === undefined
       && A.ajusteValido('socios_duenos', null) === null && A.ajusteValido('socios_duenos', { sr: [] }) === undefined,
     'el dueño a mano: siglas en mayúscula e IDs de Discord');
@@ -2983,8 +3111,8 @@ const ok = (cond, que, det) => {
     && A.socioAjusteValido('canales', ['11', '99'], cs) === undefined && A.socioAjusteValido('eventos_discord', true, cs) === true
     && A.socioAjusteValido('aviso_evento', 'chat', cs) === 'chat' && A.socioAjusteValido('aviso_evento', null, cs) === ''
     && A.socioAjusteValido('aviso_evento', 'si', cs) === undefined
-    && A.socioAjusteValido('multiplicador', 2, cs) === undefined && JSON.stringify(A.CFG_BASE) === '{"nick":true,"canales":[],"avisos":"","vivo":"","vivo_nivel":"normal","ascenso":"","aviso_evento":""}',
-  'el panel del socio: el #N, los canales (sin repetir, sólo los del servidor), el nivel, los eventos de Discord, el aviso de cada evento; nada más');
+    && A.socioAjusteValido('multiplicador', 2, cs) === undefined && JSON.stringify(A.CFG_BASE) === '{"nick":true,"canales":[],"avisos":"","vivo":"","vivo_nivel":"normal","ascenso":"","aviso_evento":"","ligas":"","ligas_por":{},"resumen":""}',
+  'el panel del socio: el #N, los canales (sin repetir, sólo los del servidor), el nivel, los eventos de Discord, el aviso de cada evento, el canal de las ligas y el del resumen (11/11/2026); nada más');
 }
 
 {

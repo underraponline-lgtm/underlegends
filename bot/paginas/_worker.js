@@ -96,6 +96,9 @@ const AVISOS = {
   '/api/avisos/panel-socio': 'POST',
   '/api/avisos/socio-ajustes': 'POST',
   '/api/avisos/socio-final': 'POST',
+  '/api/avisos/socio-equipo': 'POST',
+  '/api/avisos/socio-pagina': 'POST',
+  '/api/avisos/dueno-socios': 'POST',
   '/api/avisos/promo-vio': 'POST',
   '/api/avisos/promo-extender': 'POST',
   '/api/avisos/dueno-logs': 'POST',
@@ -289,7 +292,8 @@ async function avisos(req, url, ctx) {
     const cuerpo = await req.text();
     // 🖼️ una imagen de fondo es más que 4 KB: sólo esa ruta, y con su propio tope (el Worker lo vuelve a medir). Y el
     // logo de una crew (19/10/2026): viaja en el mismo pedido que la crea
-    const grande = url.pathname === '/api/avisos/fondo' || url.pathname === '/api/avisos/foto-carta' || url.pathname === '/api/avisos/crew';
+    const grande = url.pathname === '/api/avisos/fondo' || url.pathname === '/api/avisos/foto-carta' || url.pathname === '/api/avisos/crew'
+      || url.pathname === '/api/avisos/socio-pagina';
     if (cuerpo.length > (grande ? 900000 : 4096)) return new Response('demasiado grande', { status: 413 });
     init.body = cuerpo;
     init.headers['content-type'] = 'application/json';

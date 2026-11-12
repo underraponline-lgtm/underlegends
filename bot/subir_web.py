@@ -2873,6 +2873,21 @@ def _guild_del_bot(gid):
             'guild': {'id': g.get('id'), 'icon': g.get('icon')}}
 
 
+def _paginas_socios():
+    """🏠 Lo que el dueño de cada socio (o su equipo) escribió para su página desde su panel (Dlx, 11/11/2026: «Su
+    página, a su gusto»): `{sv: {desc, redes, banner}}`, sólo lo publicado. Lo guarda el objeto (`socioPagina()` de
+    bot/avisos.js) y es público, como la página. Sin red, `{}`: la página queda con lo de `datos/servidores.json`."""
+    try:
+        import requests
+        from alertar import WORKER
+        r = requests.get(WORKER + '/avisos/socio-paginas', timeout=10)
+        if r.status_code == 200:
+            return (r.json() or {}).get('paginas') or {}
+    except Exception as e:                               # noqa: BLE001
+        print('   ⚠️ las páginas de los socios no llegaron (%s): van con lo de siempre' % str(e)[:60])
+    return {}
+
+
 def _servidores(gente):
     """Los servidores confirmados de la Liga, con su gente en la T1.
 
@@ -2924,6 +2939,7 @@ def _servidores(gente):
             acc.setdefault(sv, {'sv': sv, 'n': 0, 'pts': 0, 'ev': 0})['ev'] += 1
     miembros = _miembros(svs)
     _guardar_iconos(miembros)
+    pags = _paginas_socios()
     logos = os.path.join(SCR, 'paginas', 'logos')
     out = []
     for sv in list(svs) + [s for s in acc if s not in svs]:
@@ -2940,6 +2956,14 @@ def _servidores(gente):
             a['tag'] = x['tag']
         if x.get('redes'):
             a['redes'] = x['redes']
+        # 🏠 lo que escribió su equipo desde el panel gana: el texto, las redes y el banner (`_paginas_socios()`)
+        pg = pags.get(sv) or {}
+        if pg.get('desc'):
+            a['desc'] = str(pg['desc'])[:280]
+        if pg.get('redes'):
+            a['redes'] = [[str(r), str(u)] for r, u in pg['redes']][:8]
+        if str(pg.get('banner') or '').startswith('https://'):
+            a['banner'] = pg['banner']
         # 🔑 LOS PUNTOS DE ASCENSO DE CADA RANGO, en SU servidor (Snake Rap,
         # 27/09/2026). Son de su ranking, no de la Liga: la página los muestra
         # junto al rango del evento y no suman en ningún lado.

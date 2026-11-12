@@ -3250,6 +3250,9 @@ a.rk-z:hover{border-color:var(--linea)}
 .cu-foto-mini{width:40px;height:40px;background:#030304 center/cover no-repeat;border:1.5px solid var(--suave)}
 .cu-foto-mini.vacia{background:repeating-linear-gradient(45deg,transparent 0 4px,var(--suave) 4px 5px)}
 /* en el perfil: la imagen detrás de la cabecera, con un velo para que el nombre y los números se lean igual */
+/* 🏠 el banner de un socio en la página de su servidor (11/11/2026): el mismo velo que el fondo de un perfil */
+.escena.ent-esc.con-fondo{background-image:linear-gradient(180deg,rgba(3,3,4,.62),rgba(3,3,4,.9)),var(--pf-fondo);background-size:cover;background-position:center}
+.ent-desc{margin:8px 0 0;max-width:62ch;font:500 15px/1.5 Archivo,sans-serif;color:#E9E9E4;white-space:pre-line;overflow-wrap:anywhere}
 .escena.pf-esc.con-fondo{background-image:linear-gradient(180deg,rgba(3,3,4,.66),rgba(3,3,4,.88)),var(--pf-fondo);background-size:cover;background-position:center}
 /* y de fondo de tu propia página: en las franjas oscuras (el escenario), con el mismo velo */
 .app.con-fondo .escena:not(.con-fondo){background-image:linear-gradient(180deg,rgba(3,3,4,.68),rgba(3,3,4,.88)),var(--mi-fondo);background-size:cover;background-position:center}
