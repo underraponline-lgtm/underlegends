@@ -1545,12 +1545,19 @@ def num_actual(L, msgs, desde=''):
     return max(ns) if ns else None
 
 
+#: 🚫 los anuncios de campeón que NO cierran nada (`datos/decisiones.json`, una lista de ids de mensaje): si el bot leyó
+#: mal uno, se anota acá su id —el link del aviso en Logs lo trae— y deja de contar, aunque se vuelva a leer
+NO_ANUNCIO = 'ligas_anuncio_no'
+
+
 def cierres_de(lid, x, decis=None):
     """Los cierres de temporada de una liga, del más viejo al más nuevo: `[{t, c, fuente, n, msg, p}]`. Los anunciados
-    (`temps` de `datos/ligas.json`), los que Dlx contestó (`ligas_fin`, al final del día de su última batalla) y el de
-    los canales borrados (`cerrada`)."""
-    out = [dict(c) for c in (x or {}).get('temps') or [] if c.get('t')]
-    for f in (_decis(decis).get(FIN) or []):
+    (`temps` de `datos/ligas.json`, menos los de `NO_ANUNCIO`), los que Dlx contestó (`ligas_fin`, al final del día de
+    su última batalla) y el de los canales borrados (`cerrada`)."""
+    decis = _decis(decis)
+    no = {str(i) for i in decis.get(NO_ANUNCIO) or []}
+    out = [dict(c) for c in (x or {}).get('temps') or [] if c.get('t') and str(c.get('msg') or '') not in no]
+    for f in (decis.get(FIN) or []):
         if f.get('liga') == lid and f.get('ult'):
             out.append({'t': f['ult'] + 'T23:59:59Z', 'c': f.get('campeon') or '', 'p': f.get('podio') or [],
                         'fuente': 'dlx', 'n': None, 'msg': ''})
@@ -1632,8 +1639,9 @@ def campeones(decis=None, d=None, resolver=None, ps=None, desde=None):
     ya = {(x.get('liga'), x.get('ult')) for x in out}
     d = d if d is not None else leer()
     r0 = None
+    no = {str(i) for i in decis.get(NO_ANUNCIO) or []}
     for lid, x in (d.get('ligas') or {}).items():
-        anunc = [c for c in x.get('temps') or [] if c.get('c') and c.get('t')]
+        anunc = [c for c in x.get('temps') or [] if c.get('c') and c.get('t') and str(c.get('msg') or '') not in no]
         if not anunc:
             continue
         if r0 is None:
@@ -1851,7 +1859,9 @@ def correr(aplicar=False):
             tb_a = tabla(abierta['bats'])
             camp = None
             if not cer and sum(1 for b in abierta['bats'] if b[5]) >= CAMPEON_MIN:
-                camp = campeon_en(L, msgs, [f[0] for f in tb_a[:3]], abierta['desde'], tn)
+                no = {str(i) for i in decis.get(NO_ANUNCIO) or []}
+                camp = campeon_en(L, [m for m in msgs if str(m.get('id')) not in no], [f[0] for f in tb_a[:3]],
+                                  abierta['desde'], tn)
             if camp:
                 c = dict(camp, n=camp.get('n') or tn, p=podio([f[0] for f in tb_a], camp['c']),
                          ult=ultima(abierta['bats']), desde=abierta['desde'])
@@ -2877,6 +2887,11 @@ def _self_check_temporadas(ok):
        [(t['c'], t['fuente']) for t in ts2 + ts3])
     ok(actual_de(temporadas(bs[:4] + [b(7, '10-20', 'E', 'F')], [anuncio]))['c'] == 'A',
        'la que terminó se sigue viendo hasta el primer resultado de la siguiente')
+    ts4 = temporadas(bs, cierres_de('fmh-espana', {'temps': [anuncio]}, {NO_ANUNCIO: ['9']}))
+    ok(len(ts4) == 1 and not ts4[0]['hasta']
+       and not campeones({NO_ANUNCIO: ['9']}, {'ligas': {'fmh-espana': {'n': 'X', 'sv': 'URBF', 'batallas': bs[:4],
+                                                                        'temps': [anuncio]}}}, lambda x: x, {}, desde=''),
+       'un anuncio leído mal se anula con su id en `ligas_anuncio_no`: no cierra nada ni entra al Salón')
 
     # 🖥️ la página: la de ahora, y la que terminó en «Ligas completadas», con sus cartas aparte
     ahora = dt.datetime(2026, 10, 22, tzinfo=dt.timezone.utc)
