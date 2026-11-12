@@ -19,6 +19,7 @@ import { Suspense, lazy, useEffect, useRef, useState } from 'react';
 import { Ico } from './piezas.jsx';
 import { limpio, num, srcLogo, utc } from './liga.js';
 import { contar, pedirRecorrido, tutoPoner } from './primera.js';
+import { pedirLigas } from './ligas_datos.js';
 import ESTILO from './bienvenida.css?inline';
 
 const W = typeof window !== 'undefined' ? window : {};
@@ -50,16 +51,88 @@ const TIPOS = [['servidor', 'Servidor', 'Al verificarte'], ['temporada', 'Tempor
 
 // 🎬 LAS ENTRADAS (12/11/2026, Dlx: «que esté bonito todo y con buenas animaciones de transición»): cada pieza lleva `bv-e`
 // y su lugar en la fila (`--i`, en ella misma: nunca un transform desde una variable del padre), y entra cuando su página
-// se ve por primera vez (`vista`). La portada ya trae las suyas (el sello, el título, el abanico): sus piezas entran detrás
+// se ve por primera vez (`vista`). La portada ya trae las suyas (el sello, el título, las cartas): sus piezas entran detrás
 const e = (i, cls) => ({ className: (cls ? cls + ' ' : '') + 'bv-e', style: { '--i': i } });
 
-function Pagina({ id, i, vista, sello, titulo, texto, puntos, extra, visual, primera, tit }) {
+// 🎬 EL FONDO DE VIDEO (Dlx, 12/11/2026: «un video en blanco y negro de fondo… gente rapeando en cámara lenta que
+// cambien»). 19 tramos de los nuestros en batallas en cámara, en loop y sin sonido: 50 s, 1,7 MB. Lo arma y lo sube
+// `herramientas/bienvenida_video.py`, y vive en R2 y NO en el repo (son caras de gente real). Los créditos de los canales
+// viajan con el video (`creditos.json`): si se rearma con otros clips, la página nombra los de ese video.
+// ⚠️ Con «Menos animaciones», movimiento reducido o ahorro de datos, un cuadro quieto del mismo montaje
+const VIDEO = 't1';
+const quieto = () => (W.matchMedia && W.matchMedia('(prefers-reduced-motion: reduce)').matches) || !!document.querySelector('.calma')
+  || !!(W.navigator && W.navigator.connection && W.navigator.connection.saveData);
+function Fondo({ base }) {
+  const [sinVideo] = useState(quieto);
+  // `muted` como propiedad Y antes de play(): React no lo pone como atributo y sin eso el navegador no lo arranca solo
+  const arrancar = (v) => { if (v) { v.muted = true; const p = v.play(); if (p && p.catch) p.catch(() => { /* queda el póster */ }); } };
+  return (
+    <div className="bv-fondo" aria-hidden="true">
+      {sinVideo ? <img alt="" src={base + 'poster.jpg'} />
+        : <video ref={arrancar} src={base + 'montaje.mp4'} poster={base + 'poster.jpg'} autoPlay muted loop playsInline preload="auto" />}
+      <i className="bv-vineta" />
+      <svg className="bv-grano"><filter id="bv-gr"><feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="2" stitchTiles="stitch" />
+        <feColorMatrix type="saturate" values="0" /></filter><rect width="100%" height="100%" filter="url(#bv-gr)" /></svg>
+    </div>
+  );
+}
+
+// 🔤 el título letra por letra (cada una cae con su demora); los espacios no son letras
+// (el espacio es un espacio de verdad, no una caja: así mide lo mismo que el relleno de video, que va encima letra con letra)
+const letras = (txt, d0) => [...txt].map((ch, i) => (ch === ' ' ? ' '
+  : <span key={i} className="bv-l" style={{ '--d': d0 + i * 45 + 'ms' }}>{ch}</span>));
+
+// 🔢 un número que cuenta desde cero una vez, al entrar (quieto: el número de una)
+function useCuenta(meta, demora = 1200, dura = 1300) {
+  const [n, setN] = useState(() => (quieto() ? meta : 0));
+  useEffect(() => {
+    if (quieto() || !meta) { setN(meta); return undefined; }
+    let raf = 0;
+    const t0 = performance.now() + demora;
+    const paso = (t) => {
+      const p = Math.max(0, Math.min(1, (t - t0) / dura));
+      setN(Math.round(meta * (1 - Math.pow(1 - p, 3))));
+      if (p < 1) raf = requestAnimationFrame(paso);
+    };
+    raf = requestAnimationFrame(paso);
+    return () => cancelAnimationFrame(raf);
+  }, [meta]);
+  return n;
+}
+
+// 🃏 LA CARTA QUE SE TURNA (Dlx, 12/11/2026: «variar e intercalar con la tarjeta del ranking competitivo o de liga»): la
+// de Temporada del #1, la Competitiva del #1 del competitivo y la de liga del líder con más OVR. Cada 6 s gira a la
+// siguiente; con transiciones y no con keyframes, así un cambio a mitad de giro sale del punto en que estaba
+// (la caja de las cartas tiene alto fijo y las cartas van abajo de todo: la leyenda va FUERA de la caja, debajo; adentro
+// quedaba arriba, detrás de la carta)
+function Rota({ cartas, children }) {
+  const [i, setI] = useState(0);
+  useEffect(() => {
+    if (cartas.length < 2 || quieto()) return undefined;
+    const t = setInterval(() => setI((x) => (x + 1) % cartas.length), 6000);
+    return () => clearInterval(t);
+  }, [cartas.length]);
+  const on = Math.min(i, cartas.length - 1);
+  return (
+    <>
+      <div className="bv-cartas">
+        {children}
+        <div className="bv-rota">{cartas.map((c, k) => (
+          <span key={c.id} className={'bv-rota-c ' + c.forma + (k === on ? ' on' : k < on ? ' fue' : '')}><img alt={c.alt} src={c.src} /></span>
+        ))}</div>
+      </div>
+      <p className="bv-rota-pie" key={on}><b>{cartas[on].que}</b> · {cartas[on].quien}</p>
+    </>
+  );
+}
+
+function Pagina({ id, i, vista, sello, titulo, etiqueta, texto, puntos, extra, visual, primera, tit }) {
   const o = primera ? 8 : 0;
   return (
     <section className={'bv-pag bv-pag-' + id + (vista ? ' vista' : '')} aria-roledescription="página" aria-label={sello}>
       <div className="bv-pag-tx">
         {primera ? <span className="bv-sello">{sello}</span> : <span {...e(0, 'bv-kick')}>{sello}</span>}
-        {primera ? <h1 className="bv-t" id="bv-t" tabIndex={-1} ref={tit}>{titulo}</h1> : <h2 {...e(1, 'bv-h')}>{titulo}</h2>}
+        {primera ? <h1 className="bv-t" id="bv-t" tabIndex={-1} ref={tit} aria-label={etiqueta}>{titulo}</h1> : <h2 {...e(1, 'bv-h')}>{titulo}</h2>}
         <p {...e(o + 2, 'bv-p')}>{texto}</p>
         {extra ? <div {...e(o + 3)}>{extra}</div> : null}
         {puntos ? <ul className="bv-puntos">{puntos.map(([ico, t], k) => <li key={t} {...e(o + 3 + k)}><Ico n={ico} t={18} /><span>{t}</span></li>)}</ul> : null}
@@ -125,10 +198,57 @@ function Paso1({ liga, unirme, cerrar, tit }) {
     W.addEventListener('keydown', tecla);
     return () => W.removeEventListener('keydown', tecla);
   });
+  // ⏩ PASA SOLA A LA DERECHA CADA 10 s (Dlx, 12/11/2026: «que se mueva solo para la derecha… cada 10 s ponle»), con una
+  // barrita celeste que se llena debajo de la página en la que estás. Llega a la última y se queda.
+  // ♿ En cuanto la persona toca algo —desliza, una flecha, un punto, el teclado— deja de moverse sola: ya maneja ella, y
+  // un carrusel que sigue avanzando debajo del dedo es justo lo que no tiene que pasar. Quieta, nunca arranca
+  const [auto, setAuto] = useState(() => !quieto());
+  useEffect(() => {
+    if (!auto) return undefined;
+    const para = () => setAuto(false);
+    const ev = ['pointerdown', 'wheel', 'keydown', 'touchstart'];
+    ev.forEach((x) => W.addEventListener(x, para, { passive: true }));
+    return () => ev.forEach((x) => W.removeEventListener(x, para));
+  }, [auto]);
+  useEffect(() => {
+    if (!auto || pag >= PAGINAS.length - 1) return undefined;
+    const t = setTimeout(() => ir(pag + 1), 10000);
+    return () => clearTimeout(t);
+  }, [auto, pag]);
 
   const top = liga.oficiales().filter((f) => f.k && liga.cartaDe(f.k)).slice(0, 3);
-  const abanico = top.length === 3 ? [top[1], top[0], top[2]] : top;
   const svs = (liga.d.svs || []).map((s) => (typeof s === 'string' ? s : s && s.sv)).filter(Boolean);
+  // 👥 los miembros de los servidores de la Liga, sumados (Dlx: «la cantidad de usuarios totales… para sorprender»).
+  // Es una suma de membresías: quien está en dos servidores cuenta dos veces, y por eso dice «miembros» y no «personas»
+  const miembros = (liga.d.svs || []).reduce((s, x) => s + ((x && x.miembros) || 0), 0);
+  const nMiembros = useCuenta(miembros);
+  const base = liga.d.r2 + '/bienvenida/' + VIDEO + '/';
+  const [creditos, setCreditos] = useState([]);
+  const [lider, setLider] = useState(null);
+  useEffect(() => {
+    let vivo = true;
+    fetch(base + 'creditos.json').then((r) => (r.ok ? r.json() : null)).then((x) => { if (vivo && x && x.canales) setCreditos(x.canales); }).catch(() => { /* sin créditos no hay línea */ });
+    // 🏟️ el líder de liga con más OVR: del mismo pedido que ya hace el Inicio (`pedirLigas`), no de uno nuevo
+    pedirLigas(liga.d.sello).then((x) => {
+      if (!vivo || !x || !x.cartas) return;
+      let m = null;
+      Object.entries(x.cartas).forEach(([k, l]) => (l || []).forEach((c) => { if (c[3] === 1 && k !== 'dlx' && (!m || c[2] > m[2][2])) m = [k, c[0], c]; }));
+      if (!m) return;
+      const L = (((x.lobby || {}).ligas) || []).find((y) => y.id === m[1]);
+      const f = liga.T[m[0]];
+      setLider({ k: m[0], lid: m[1], v: m[2][1], n: f ? f.n : m[0], liga: L ? L.n : '' });
+    }).catch(() => { /* sin la de liga, se turnan dos */ });
+    return () => { vivo = false; };
+  }, []);
+  // las que se turnan: la de Temporada del #1, la Competitiva del #1 del competitivo y la de liga del líder. «Sin dato no
+  // hay pieza»: la que no existe no entra
+  const comp = liga.oficiales().filter((f) => f.k && f.rg && !f.fc && (f.c || []).includes('competitivo')).sort((a, b) => (b.sc || 0) - (a.sc || 0))[0];
+  const rota = [
+    top[0] && { id: 't', forma: 'rect', src: liga.cartaUrl(top[0].k, liga.cartaDe(top[0].k)), alt: 'Carta de ' + limpio(top[0].n) + ', #1 de la temporada', que: '#1 de la temporada', quien: limpio(top[0].n) },
+    comp && { id: 'c', forma: 'escudo', src: liga.cartaUrl(comp.k, 'competitivo'), alt: 'Carta Competitiva de ' + limpio(comp.n) + ', #1 del competitivo', que: '#1 del competitivo', quien: limpio(comp.n) },
+    lider && { id: 'l', forma: 'afiche', src: liga.d.r2 + '/' + encodeURIComponent(lider.k) + '/liga-' + lider.lid + '.webp?v=' + lider.v,
+      alt: 'Carta de liga de ' + limpio(lider.n), que: lider.liga ? '#1 de ' + lider.liga : '#1 de su liga', quien: limpio(lider.n) },
+  ].filter((c) => c && c.src);
   const nombreSv = (s) => ((liga.svs || {})[s] || {}).nombre || s;
   const carta = (k, cual, cls) => (
     <img className={cls} alt="" src={liga.cartaUrl(k, cual)}
@@ -156,10 +276,11 @@ function Paso1({ liga, unirme, cerrar, tit }) {
   const visuales = {
     liga: (
       <div className="bv-v-liga">
-        {abanico.length ? <div className="bv-cartas" aria-hidden="true">{abanico.map((f, i) => (
-          <span key={f.k} className={'bv-carta c' + i + (abanico.length === 3 && i === 1 ? ' uno' : '')}>{carta(f.k, liga.cartaDe(f.k), '')}</span>
-        ))}</div> : null}
-        <p className="bv-top">{abanico.length === 3 ? <>Los tres primeros de la temporada: <b>{limpio(top[0].n)}</b>, {limpio(top[1].n)} y {limpio(top[2].n)}</> : null}</p>
+        {/* el #2 y el #3, apagados y flotando detrás; adelante, la que se turna */}
+        {rota.length ? <Rota cartas={rota}>
+          {top.slice(1, 3).map((f, i) => <span key={f.k} className={'bv-atras a' + i} aria-hidden="true">{carta(f.k, liga.cartaDe(f.k), '')}</span>)}
+        </Rota> : null}
+        <p className="bv-top">{top.length === 3 ? <>Los tres primeros de la temporada: <b>{limpio(top[0].n)}</b>, {limpio(top[1].n)} y {limpio(top[2].n)}</> : null}</p>
         {ult ? <p {...e(10, 'bv-ult')}><Ico n="copa" t={16} /><span>{ult[1]}</span><small>{ult[3]}</small></p> : null}
       </div>
     ),
@@ -215,12 +336,24 @@ function Paso1({ liga, unirme, cerrar, tit }) {
   };
 
   const paginas = [
-    { id: 'liga', sello: 'TEMPORADA ' + String(liga.temp || '').replace(/^T/i, '') + ' · EN JUEGO', titulo: <><span>LIGA GLOBAL</span><span>DE FREESTYLE</span></>,
+    // 🔤 «LIGA GLOBAL» cae letra por letra y después se llena con cuadros del mismo montaje (Dlx: «ese estilo para la
+    // letra de la Liga Global está buenísimo»); lo lee una sola vez quien usa lector (`aria-label`)
+    { id: 'liga', sello: 'TEMPORADA ' + String(liga.temp || '').replace(/^T/i, '') + ' · EN JUEGO',
+      etiqueta: 'Liga Global de Freestyle',
+      titulo: <>
+        <span className="bv-t1"><span className="bv-t-bl">{letras('LIGA GLOBAL', 100)}</span>
+          {[1, 2, 3].map((q) => <span key={q} className={'bv-t-rel r' + q} style={{ backgroundImage: 'url(' + base + 'quieto' + q + '.jpg)' }}>LIGA GLOBAL</span>)}</span>
+        <span className="bv-t2">{letras('DE FREESTYLE', 620)}</span></>,
       texto: 'El ranking de los servidores de freestyle de Discord. Juega en el tuyo, sube en la tabla y gana tu carta.',
       extra: svs.length ? (
-        <div className="bv-svs">
-          <span className="bv-svs-l">{svs.slice(0, 9).map((s) => <img key={s} alt={nombreSv(s)} title={nombreSv(s)} src={liga.logo(s)} />)}</span>
-          <small>{liga.d.gente ? <><b>{num(liga.d.gente)}</b> en el ranking · </> : null}<b>{svs.length}</b> servidores · <b>{num(liga.d.eventos || 0)}</b> eventos</small>
+        <div className="bv-cifras-p">
+          {miembros ? <p className="bv-miembros"><b>{num(nMiembros)}</b><small>miembros en<br />los {svs.length} servidores</small></p> : null}
+          <div className="bv-svs">
+            {liga.d.gente ? <span><b>{num(liga.d.gente)}</b><small>en el ranking</small></span> : null}
+            <span><span className="bv-svs-l">{svs.slice(0, 6).map((s) => <img key={s} alt={nombreSv(s)} title={nombreSv(s)} src={liga.logo(s)} />)}</span>
+              <b>{svs.length}</b><small>servidores</small></span>
+            <span><b>{num(liga.d.eventos || 0)}</b><small>eventos</small></span>
+          </div>
         </div>
       ) : null },
     { id: 'cartas', sello: 'TU CARTA', titulo: 'Cuatro cartas, una por lo que haces',
@@ -243,6 +376,16 @@ function Paso1({ liga, unirme, cerrar, tit }) {
 
   return (
     <>
+      <Fondo base={base} />
+      {/* 🏷️ la marca, como en las cartas: el UL y la temporada, en blanco (Dlx: «el típico UL blanco y el T1 blanco») */}
+      <div className="bv-arriba">
+        <span className="bv-marca"><img alt="Under Legends" src="/ul-blanco.png" width="160" height="130" /><i aria-hidden="true" /><b>{String(liga.temp || 'T1').toUpperCase()}</b></span>
+        {/* (en el teléfono los 13 canales son cuatro líneas que no entran: ahí, los dos con más clips y cuántos más; la
+            lista entera sale en la compu) */}
+        {creditos.length ? <p className="bv-creditos" title={'Video: ' + creditos.join(' · ')}>
+          <span className="todo">Video: {creditos.join(' · ')}</span>
+          <span className="corto">Video: {creditos.slice(0, 2).join(', ')}{creditos.length > 2 ? ' y ' + (creditos.length - 2) + ' canales más' : ''}</span></p> : null}
+      </div>
       <div className="bv-pista" ref={pista} tabIndex={-1}>
         {paginas.map((p, i) => (
           <Pagina key={p.id} {...p} i={i} vista={vistas.has(i)} primera={i === 0} tit={tit} visual={visuales[p.id]} />
@@ -254,7 +397,7 @@ function Paso1({ liga, unirme, cerrar, tit }) {
           <button type="button" className="bv-fl izq" aria-label="Página anterior" disabled={pag === 0} onClick={() => ir(pag - 1)}><Ico n="flecha" t={20} /></button>
           <ol className="bv-puntos-nav">{PAGINAS.map(([id, n], i) => (
             <li key={id}><button type="button" className={i === pag ? 'on' : ''} aria-current={i === pag ? 'step' : undefined} onClick={() => ir(i)}>
-              <i aria-hidden="true" /><span>{n}</span></button></li>
+              <i aria-hidden="true" /><span>{n}{auto && i === pag && !ultima ? <em className="bv-avance" key={pag} aria-hidden="true" /> : null}</span></button></li>
           ))}</ol>
           <button type="button" className={'bv-fl der' + (pag === 0 ? ' llama' : '')} aria-label="Página siguiente" disabled={ultima} onClick={() => ir(pag + 1)}><Ico n="flecha" t={20} /></button>
         </nav>
@@ -324,7 +467,6 @@ export default function Bienvenida({ liga, dc }) {
   return (
     <div className={'bv' + (sale ? ' sale' : '')} role="dialog" aria-modal="true" aria-labelledby="bv-t">
       <style>{ESTILO}</style>
-      <i className="bv-tape a" aria-hidden="true" /><i className="bv-tape b" aria-hidden="true" />
       {paso === 1 ? (
         <Paso1 liga={liga} unirme={unirme} cerrar={cerrar} tit={tit} />
       ) : (
