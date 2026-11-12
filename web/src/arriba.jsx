@@ -8,10 +8,90 @@ import { Miniatura, abrirVideo } from './video.jsx';
 import { useRacha } from './racha.js';
 import { YoMenu } from './yomenu.jsx';
 
+// 🧭 EL ORDEN, EL DEL MENÚ DE ARRIBA AGRUPADO (12/11/2026, ver `GRUPOS`): lo que va suelto arriba, primero, y después lo
+// de cada grupo. Es el de la tira de abajo del celular, así que las cuatro y media que se ven sin deslizar son Inicio,
+// Ranking, Eventos, Pase rapero y Publicaciones —las que se quiere que la gente mire—. La Tienda ya no está: vive en «Tu
+// cuenta» (Dlx: «Tienda me gusta en tu cuenta… ahí nos ahorramos un espacio»), en el panel del Inicio y en el ☰
 export const MENU = [
-  ['Inicio', '#/'], ['Eventos', '#/eventos'], ['Ranking', '#/ranking'], ['Competencias', '#/competencias'], ['Pase rapero', '#/pase'],
-  ['Ligas', '#/ligas'], ['Crews', '#/crews'], ['Tarjetas', '#/tarjetas'], ['Salón de la fama', '#/salon'], ['Publicaciones', '#/publicaciones'], ['Tienda', '#/tienda'], ['Socios', '#/socios'], ['Guía', '#/guia'],
+  ['Inicio', '#/'], ['Ranking', '#/ranking'], ['Eventos', '#/eventos'], ['Pase rapero', '#/pase'], ['Publicaciones', '#/publicaciones'],
+  ['Competencias', '#/competencias'], ['Ligas', '#/ligas'], ['Crews', '#/crews'], ['Tarjetas', '#/tarjetas'], ['Salón de la fama', '#/salon'],
+  ['Socios', '#/socios'], ['Guía', '#/guia'],
 ];
+// el ☰ sigue teniendo todas, con la Tienda
+export const MENU_TODO = [...MENU, ['Tienda', '#/tienda']];
+// 🧭 EL MENÚ DE ARRIBA, AGRUPADO (Dlx, 12/11/2026: «los títulos de arriba… no se ven en todas las resoluciones», y su
+// idea: «INICIO, Ranking ahí con todos sus rankings… la sección de eventos que abre Torneos, Competencias y Ligas… PASE
+// RAPERO solo, Publicaciones solo y comunidad»; eligió esa, la D de la maqueta). Eran 13 en fila y medido a 1100 px no
+// entraban. Seis botones entran en cualquier compu; los que llevan lista la abren al tocarlos o al pasar el mouse
+const RK_SUBS = [['Temporada', 'temporada', 'Los puntos y el OVR de la temporada'], ['Competitivo', 'competitivo', 'El Score y el rango'],
+  ['ELO', 'divisiones', 'Las batallas uno contra uno, por divisiones'], ['Duelos', 'duelos', 'Quién gana más duelos'],
+  ['Podios', 'podios', 'Campeones y finalistas'], ['Rachas', 'rachas', 'Eventos seguidos llegando lejos'],
+  ['Países', 'paises', 'Por los puntos de su gente'], ['Crews', 'crews', 'Por los puntos de sus miembros'],
+  ['Most Wanted', 'mw', 'Los buscados de la semana'], ['Misiones', 'misiones', 'Las de la semana, para todos']];
+export const GRUPOS = [
+  ['Inicio', '#/'],
+  ['Ranking', '#/ranking', RK_SUBS.map(([n, s, d]) => [n, '#/ranking/' + s, d, 'ranking'])],
+  ['Eventos', '#/eventos', [['Calendario', '#/eventos', 'Todos los torneos y la campana', 'eventos'], ['Competencias', '#/competencias', 'La Copa, la Liga de 10 y la Rapid', 'competencias'],
+    ['Ligas', '#/ligas', 'Las ligas de cada servidor', 'ligas']]],
+  ['Pase rapero', '#/pase'],
+  ['Publicaciones', '#/publicaciones'],
+  ['Comunidad', '', [['Crews', '#/crews', 'Arma la tuya o súmate a una', 'crews'], ['Tarjetas', '#/tarjetas', 'Las de cada rapero', 'tarjetas'],
+    ['Salón de la fama', '#/salon', 'Los que ya ganaron', 'salon'], ['Socios', '#/socios', 'Los servidores de la Liga', 'socios'],
+    ['Guía', '#/guia', 'Cómo funciona todo', 'guia']]],
+];
+// las páginas de cada grupo, para marcarlo cuando estás adentro
+const PAGINAS_DE = { Ranking: ['ranking', 'duelos'], Eventos: ['eventos', 'competencias', 'ligas', 'avisos'], Comunidad: ['crews', 'crew', 'tarjetas', 'salon', 'socios', 'mundo', 'guia'] };
+
+function Grupo({ n, items, on, pagina }) {
+  const [abierto, setAbierto] = useState(false);
+  const caja = useRef(null);
+  const t = useRef(null);
+  // se cierra tocando afuera (dentro del shadow root: por `composedPath`, como el buscador), con Escape y al cambiar de página
+  useEffect(() => {
+    if (!abierto) return undefined;
+    const fuera = (e) => { const p = e.composedPath ? e.composedPath() : []; if (caja.current && !p.includes(caja.current)) setAbierto(false); };
+    const tecla = (e) => { if (e.key === 'Escape') { setAbierto(false); const b = caja.current && caja.current.querySelector('button'); if (b) b.focus(); } };
+    const cambio = () => setAbierto(false);
+    document.addEventListener('pointerdown', fuera, true);
+    window.addEventListener('keydown', tecla);
+    window.addEventListener('lg:dir', cambio);
+    return () => { document.removeEventListener('pointerdown', fuera, true); window.removeEventListener('keydown', tecla); window.removeEventListener('lg:dir', cambio); };
+  }, [abierto]);
+  // con el mouse se abre al pasar por encima; se cierra con un respiro, así cruzar el hueco hasta la lista no la cierra
+  const entra = (e) => { if (e.pointerType !== 'mouse') return; clearTimeout(t.current); setAbierto(true); };
+  const sale = (e) => { if (e.pointerType !== 'mouse') return; clearTimeout(t.current); t.current = setTimeout(() => setAbierto(false), 160); };
+  useEffect(() => () => clearTimeout(t.current), []);
+  const id = 'grp-' + norm(n).replace(/[^a-z]/g, '');
+  return (
+    <div className={'grp' + (abierto ? ' abierto' : '')} ref={caja} onPointerEnter={entra} onPointerLeave={sale}>
+      <button type="button" className={'grp-b' + (on ? ' on' : '')} aria-expanded={abierto} aria-controls={id} onClick={() => setAbierto((v) => !v)}>
+        {n}<Chevron /></button>
+      {abierto ? (
+        <div className={'grp-lista' + (items.length > 6 ? ' dos' : '')} id={id}>
+          {items.map(([nn, h, d, k]) => (
+            <a key={h} href={h} onClick={(e) => { subirSiEsta(h)(e); setAbierto(false); }}
+              className={pagina && h === '#/' + pagina ? 'on' : ''}>
+              <Ico n={k} t={20} /><span><b>{nn}</b><small>{d}</small></span></a>
+          ))}
+        </div>
+      ) : null}
+    </div>
+  );
+}
+
+function MenuArriba({ pagina }) {
+  return (
+    <nav className="menu" aria-label="Secciones">
+      {GRUPOS.map(([n, r, items]) => {
+        if (!items) {
+          const on = n === 'Inicio' ? !pagina : pagina && r === '#/' + pagina;
+          return <a key={n} href={r} title={QUE_ES[r]} onClick={subirSiEsta(r)} className={on ? 'on' : ''}>{n}</a>;
+        }
+        return <Grupo key={n} n={n} items={items} pagina={pagina} on={!!pagina && (PAGINAS_DE[n] || []).includes(pagina)} />;
+      })}
+    </nav>
+  );
+}
 // «Socios» es lo que era «Mundo» (Dlx, 03/10/2026: «1. A»); `#/mundo` sigue abriéndolo (App.jsx). «Ligas», al lado de
 // Tarjetas desde el 16/10/2026 (Dlx: «que ligas tenga su propio espacio aparte de ranking… al costado de tarjetas»)
 // Y «Pase rapero» y «Publicaciones», intercambiados el mismo día (Dlx: «intercambiá eso»), y Ligas a la IZQUIERDA de
@@ -209,17 +289,13 @@ export function Cabecera({ liga, dc, onMenu, pagina = '' }) {
   return (
     <header className="cab negra">
       <Marca liga={liga} />
-      <nav className="menu" aria-label="Secciones">
-        {MENU.map(([n, r]) => <a key={n} href={r} title={QUE_ES[r]} onClick={subirSiEsta(r)} className={(n === 'Inicio' ? !pagina : pagina && r === '#/' + pagina) ? 'on' : ''}>{n}</a>)}
-      </nav>
+      <MenuArriba pagina={pagina} />
       <div className="cab-der">
         <Buscar liga={liga} />
         <button className="btn-ico lupa-b" type="button" aria-label="Buscar" onClick={() => setBusca(true)}><Ico n="buscar" t={20} /></button>
         <Campanita liga={liga} />
-        {/* Ajustes, con su engranaje (Dlx, 01/10/2026: «al costado de la campanita y la cuenta»). Y en el celular, en
-            el lugar de tu cuenta, que vuelve abajo como «Yo» (Dlx, 02/10/2026: «el engranaje en vez de la cuenta. En
-            el celular. En la PC que esté arriba, por supuesto») */}
-        <a className="btn-ico ajustes-b" href="#/cuenta/apariencia" aria-label="La app: apariencia, hora y avisos"><Ico n="engranaje" t={20} /></a>
+        {/* ⚙️ SIN EL ENGRANAJE (Dlx, 12/11/2026: «quitar eso del ícono de ajustes porque se puede entrar desde tu cuenta»):
+            los ajustes están en Tu cuenta, que abre tu cara arriba y «Tu cuenta» abajo en el celular, y en el ☰ */}
         {cara ? (
           <span className="yo-envol">
             <button type="button" className="yo-chip" aria-haspopup="menu" aria-expanded={yoM} onClick={() => setYoM((v) => !v)}

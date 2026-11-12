@@ -33,6 +33,9 @@ export function YoMenu({ k, nombre, cara, abajo = false, onCerrar }) {
     [k ? '#/r/' + encodeURIComponent(k) : '#/cuenta/perfil', '👤', 'Mi perfil', 'lo que ven los demás'],
     ['#/cuenta', '⚙️', 'Tu cuenta', 'foto, redes, avisos y la app'],
     ['#/pase', '🎟️', 'Pase rapero', 'tu nivel y tus premios'],
+    // 🛍️ la Tienda vive acá desde que salió del menú de arriba (Dlx, 12/11/2026: «Tienda me gusta en tu cuenta… ahí nos
+    // ahorramos un espacio»): es donde se gastan tus Puntos
+    ['#/tienda', '🛍️', 'Tienda', 'tus Puntos y el precio por cabeza'],
   ];
   return (
     <div className={'yo-menu' + (abajo ? ' abajo' : '')} ref={caja} role="menu" aria-label="Lo tuyo">

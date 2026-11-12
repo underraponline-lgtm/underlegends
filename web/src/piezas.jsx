@@ -62,6 +62,11 @@ const TRAZOS = {
   replica: <path d="M4 8.5h13.5M14 5l3.5 3.5L14 12M20 15.5H6.5M10 12l-3.5 3.5L10 19" />,
   brote: <path d="M12 21v-9M12 12c0-4.2 3-6.5 7.5-6.5 0 4.2-3 6.5-7.5 6.5zM12 15c0-3.2-2.3-5-6-5 0 3.2 2.3 5 6 5z" />,
   cruce: <path d="M4 4l6.5 6.5M20 20l-6.5-6.5M20 4L4 20M4 4h4.5M4 4v4.5M20 20h-4.5M20 20v-4.5" />,
+  // 🧭 los que faltaban en la tira del celular (12/11/2026, Dlx: «asegúrate que todo tenga su logotipo»): Competencias y
+  // Crews salían sin ícono porque la tira busca uno por el nombre de la página. Competencias es un cuadro de llave; Crews,
+  // tres personas
+  competencias: <path d="M3 5h5v4H3zM3 15h5v4H3zM8 7h3v10H8M11 12h4M15 9.5h6v5h-6z" />,
+  crews: <><circle cx="12" cy="7.5" r="3" /><circle cx="5.5" cy="10" r="2.3" /><circle cx="18.5" cy="10" r="2.3" /><path d="M6.5 20c.6-3.6 2.8-5.8 5.5-5.8s4.9 2.2 5.5 5.8M2 18.5c.4-2 1.6-3.4 3.3-3.8M22 18.5c-.4-2-1.6-3.4-3.3-3.8" /></>,
   moneda: <><circle cx="12" cy="12" r="8.5" /><path d="M14.5 8.5h-3.2a1.8 1.8 0 000 3.6h1.4a1.8 1.8 0 010 3.6H9.5M12 6.5v2M12 15.7v1.8" /></>,
 };
 // ✏️ EL TRAZO ES NUESTRO, NO EL DE LUCIDE (13/10/2026): punta y esquina rectas, un poco más grueso. Redondeado y en 2

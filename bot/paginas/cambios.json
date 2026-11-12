@@ -11,6 +11,19 @@
  ],
  "cambios": [
     {
+        "version": "4.57",
+        "dia": "2026-11-12",
+        "cuando": "2026-11-12T05:50:00-05:00",
+        "titulo": "El menú de arriba, agrupado",
+        "items": [
+            "**El menú de arriba entra en cualquier pantalla**: ahora son seis botones, y Ranking, Eventos y Comunidad abren su lista al tocarlos o al pasar el mouse.",
+            "**Ranking** trae todos los rankings; **Eventos**, el calendario, Competencias y Ligas; **Comunidad**, Crews, Tarjetas, el Salón de la fama, Socios y la Guía.",
+            "**La Tienda está en el menú de tu cuenta** (tocando tu cara), junto a tu Inventario y tu Pase.",
+            "Se fue el engranaje de arriba: los ajustes están en Tu cuenta y en el ☰.",
+            "En el celular, Competencias y Crews ya tienen su ícono en la barra de abajo."
+        ]
+    },
+    {
         "version": "4.56",
         "dia": "2026-11-12",
         "cuando": "2026-11-12T05:10:00-05:00",
