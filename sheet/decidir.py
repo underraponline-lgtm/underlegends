@@ -2145,7 +2145,7 @@ def _msg_de_link(link):
     return (m.group(1), m.group(2)) if m else None
 
 
-def releer_por_r24(ps, ruta=None, ahora=None):
+def releer_por_r24(ps, ruta=None, ahora=None, por='R24'):
     """🔁 Las llaves que R24 decidió, a la cola de relectura (`escuchar.RELEER`): el lector aplica el «sin campeón» al
     releer la llave (`llaves_a_entrada.con_campeon()`), y una llave que ya se releyó tres veces —casi todas: R24 espera 7
     días— no se volvía a pedir nunca. Con `vistas` 0, la corrida siguiente la trae. Devuelve cuántas anotó."""
@@ -2159,12 +2159,13 @@ def releer_por_r24(ps, ruta=None, ahora=None):
     n = 0
     for p in ps:
         cm = _msg_de_link(p.get('link'))
-        partes = [x.strip() for x in str(p.get('detalle') or '').split(' · ')]
+        # el evento, el servidor y la fecha: lo primero del detalle (el de una batalla sigue con la ronda y los lados)
+        partes = [x.strip() for x in str(p.get('detalle') or '').split(' · ')][:3]
         if not cm or len(partes) != 3:
             continue
         ll[cm[1]] = {'canal': cm[0], 'evento': partes[0], 'sv': partes[1], 'fecha': partes[2], 'vistas': 0,
                      'desde': ahora or datetime.datetime.now(datetime.timezone.utc).isoformat(timespec='seconds'),
-                     'por': 'R24'}
+                     'por': por}
         n += 1
     if n:
         with io.open(ruta, 'w', encoding='utf-8', newline='\n') as f:
@@ -3411,6 +3412,9 @@ def reglas(preguntas, eventos, dry=True, todas=None):
             retirar_pendientes(ids_dec, dry=False)
             hechas.difference_update(ids_dec)
             raise
+        # 🔁 Y SU LLAVE, A RELEER (12/11/2026): la decisión de una batalla la aplica el lector al leer la llave, y una
+        # llave vieja ya no se relee —R25 espera 28 días—: sin esto quedaba escrita y los puntos no se movían
+        releer_por_r24([p for p, _r, _g, _q, _e in con_dec if p['id'] in ids_dec], por='batalla')
     return hechas
 
 
@@ -6382,6 +6386,13 @@ def _self_check():
         ok(_nr == 1 and _rl['333'] == {'canal': '22', 'evento': 'X', 'sv': 'LKR', 'fecha': '05/11', 'vistas': 0,
                                       'desde': 'x', 'por': 'R24'},
            'R24 manda la llave a releer (con su canal y su mensaje); sin link no la anota')
+        _nb = releer_por_r24([{'detalle': 'EL ONMITRIX VOL 1 · CH · 23/09 · octavos · A 🆚 B',
+                               'link': 'https://discord.com/channels/1/44/555'}], ruta=_rt, ahora='y', por='batalla')
+        with io.open(_rt, encoding='utf-8') as _f:
+            _rl = json.load(_f)['llaves']
+        ok(_nb == 1 and _rl['555']['evento'] == 'EL ONMITRIX VOL 1' and _rl['555']['fecha'] == '23/09'
+           and _rl['555']['por'] == 'batalla' and '333' in _rl,
+           '… y la de una batalla decidida también (R22, R23, R25), sin borrar las que ya estaban')
         ok(se_cierra_sola('OCTAVOS') and se_cierra_sola('cuartos') and not se_cierra_sola('SEMIFINALES')
            and not se_cierra_sola('Tercer puesto') and not se_cierra_sola('final'),
            'se cierran solas sólo dieciseisavos, octavos y cuartos: ni la semi, ni el tercer puesto, ni la final')
