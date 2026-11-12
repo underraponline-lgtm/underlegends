@@ -362,12 +362,30 @@ def sin_ganador(L, f, decididas, DEC):
     return sin, tot
 
 
+def forma_ok(L):
+    """🔎 ¿El cuadro tiene forma de llave? A lo sumo dos batallas en la final (la final y el tercer puesto). Sin esto, una llave que el BOT leyó mal se descartaba como si el organizador no
+    hubiera marcado nada: la #562 de LKR (Freestyle Master Series ZZZ, 02/11) quedó con sus 8 batallas en «Final», y 7
+    «sin ganador» son un error de lectura, no del organizador. Medido el 11/11/2026, armando la maqueta de ✅ Decidir.
+
+    ⚠️ SÓLO LA FINAL, A PROPÓSITO. Se probó también «ninguna ronda con más batallas que la anterior» y marcaba 10 de 240
+    llaves sanas: los Filtros y las Clasificatorias van antes con pocas batallas, la doble eliminación tiene 14 en la de
+    perdedores y GG SANGRERAP 6 tiene 2 octavos por los pases directos. Con la final sola caen 2: la #562 y la IRLANDA
+    FREESTYLE de FRZ (3 finales), que sólo quiere decir que ésa no se descarta sola."""
+    fin = [len(r.get('b') or []) for r in L.get('rondas') or [] if str(r.get('r') or '').strip().lower() == 'final']
+    return all(n <= 2 for n in fin)
+
+
 def cerrar(estado, llaves, dd, ahora, DEC):
     """⏳ Pura sobre `estado` y `dd` (las cambia en el lugar). `[(llave, 'no cuenta' | 'nadie siguió', n, sin, tot)]`."""
     hecho = []
     for k in vencidas(estado, ahora):
         f = estado[k]
         L = llave_de(llaves, k)
+        if L and not forma_ok(L):
+            # 🔎 la leyó mal el bot: ni se descarta ni se cierra nada; queda en ✅ Decidir y se avisa una vez a Logs
+            f['cerrada'] = {'como': 'mal leída', 't': _ahora()}
+            hecho.append((k, 'mal leída', 0, 0, 0))
+            continue
         sin, tot = sin_ganador(L, f, set((dd.get('batallas') or {}).keys()), DEC) if L else (0, 0)
         if tot and sin / tot >= DESCARTE:
             dd.setdefault('eventos', {})['%s · %s · %s' % (f['evento'], f['sv'], f['fecha'])] = {
@@ -444,6 +462,10 @@ def cerrar_vencidas():
                 if f.get('donde') == 'llave':
                     m['message_reference'] = {'message_id': f['llave'], 'channel_id': f['canal'], 'fail_if_not_exists': False}
                 _postear(requests, cab, f.get('canal_pregunta') or f['canal'], m)
+        elif como == 'mal leída':
+            print('   🔎 %s: el cuadro no tiene forma de llave; no se cierra ni se descarta' % cual)
+            lineas.append('🔎 **%s**: a las %d h el cuadro no tiene forma de llave (¿la leyó mal el bot?). No se cerró ni se '
+                          'descartó: queda en ✅ Decidir.' % (cual, VENCE_H))
         elif n:
             print('   ⏳ %s: %d batalla(s) con «Nadie siguió» a las %d h' % (cual, n, VENCE_H))
             lineas.append('⏳ **%s**: %d batalla(s) cerradas con «Nadie siguió» (nadie las marcó en %d h).' % (cual, n, VENCE_H))
@@ -678,6 +700,14 @@ def _prueba_nuevo():
         malos.append('el último recurso escribe «Nadie siguió» en decisiones.json (%d)' % len(nadies))
     if vencidas(est, ahora + datetime.timedelta(hours=5)) != ['joven']:
         malos.append('lo cerrado no se vuelve a cerrar, y la joven vence a su hora')
+    # 🔎 la #562 de verdad: las 8 batallas en «Final». Ni descarte ni «Nadie siguió»
+    mala = {'nombre': 'ZZZ', 'sv': 'LKR', 'fecha': '02/11', 'links': ['https://discord.com/channels/1/2/mala'],
+            'rondas': [{'r': 'Final', 'b': [bat(['g', 'h'], 'g')] + [bat(['e', 'f'])] * 7}]}
+    e3 = {'mala': dict(f, llave='mala', t_pregunta=hace(50), respondidas={}, preguntas=[{'ronda': 'FINAL', 'lados': ['e', 'f']}])}
+    d3 = {}
+    h3 = cerrar(e3, {'x': mala}, d3, ahora, D)
+    if [x[1] for x in h3] != ['mal leída'] or d3 or not forma_ok(l491) or not forma_ok(l562) or forma_ok(mala):
+        malos.append('una llave sin forma de llave (todo en «Final») no se descarta ni se cierra: la leyó mal el bot')
     fin = dict(f, llave='fin', t_pregunta=hace(60), cuando=hace(61), respondidas={},
                preguntas=[{'ronda': 'FINAL', 'lados': ['a', 'b']}, {'ronda': 'SEMIS', 'lados': ['c', 'd']}])
     e2 = {'fin': fin}
