@@ -2960,6 +2960,63 @@
     "Sourlate🇳🇮"
    ],
    "escribio": {}
+  },
+  {
+   "id": "64661014b8",
+   "tipo": "Evento duplicado",
+   "sec": "🏆 Evento",
+   "que": "El #534 «DESGRACIAS EN TOKYO VOL 28 PANDILLAS» (FFA · 16/10) tiene las mismas batallas que el #480 «DESGRACIAS EN TOKYO VOL 28 PANDILLAS»: 7 de 7. Los dos suman puntos y duelos. ¿Es el mismo evento contado dos veces?",
+   "r": "Sí, es el mismo: sacar el #534",
+   "regla": "R1 · lo que ya no existe: un evento sacado, un 5 vidas ya decidido, un duplicado ya sacado",
+   "rk": "R1",
+   "por": "el ciclo",
+   "porque": "el #534 ya se sacó (Dlx (chat))",
+   "t": 1794447478848,
+   "filas": [
+    912
+   ],
+   "variantes": [
+    "DUPLICADO: #534 «DESGRACIAS EN TOKYO VOL 28 PANDILLAS» · FFA · 16/10 = #480 «DESGRACIAS EN TOKYO VOL 28 PANDILLAS» · 7 de 7 batallas"
+   ],
+   "escribio": {}
+  },
+  {
+   "id": "ad64fb2636",
+   "tipo": "Evento duplicado",
+   "sec": "🏆 Evento",
+   "que": "El #538 «LA BELLA ARTE DE LA DESGRACIA VOL 7» (FFA · 18/10) tiene las mismas batallas que el #484 «LA BELLA ARTE DE LA DESGRACIA VOL7»: 8 de 8. Los dos suman puntos y duelos. ¿Es el mismo evento contado dos veces?",
+   "r": "Sí, es el mismo: sacar el #538",
+   "regla": "R1 · lo que ya no existe: un evento sacado, un 5 vidas ya decidido, un duplicado ya sacado",
+   "rk": "R1",
+   "por": "el ciclo",
+   "porque": "el #538 ya se sacó (Dlx (chat))",
+   "t": 1794447478848,
+   "filas": [
+    924
+   ],
+   "variantes": [
+    "DUPLICADO: #538 «LA BELLA ARTE DE LA DESGRACIA VOL 7» · FFA · 18/10 = #484 «LA BELLA ARTE DE LA DESGRACIA VOL7» · 8 de 8 batallas"
+   ],
+   "escribio": {}
+  },
+  {
+   "id": "309192884a",
+   "tipo": "Evento duplicado",
+   "sec": "🏆 Evento",
+   "que": "El #555 «DESGRACIAS EN TOKYO VOL 29 PANDILLAS» (FFA · 20/10) tiene las mismas batallas que el #493 «DESGRACIAS EN TOKYO VOL 29 PANDILLAS»: 7 de 7. Los dos suman puntos y duelos. ¿Es el mismo evento contado dos veces?",
+   "r": "Sí, es el mismo: sacar el #555",
+   "regla": "R1 · lo que ya no existe: un evento sacado, un 5 vidas ya decidido, un duplicado ya sacado",
+   "rk": "R1",
+   "por": "el ciclo",
+   "porque": "el #555 ya se sacó (Dlx (chat))",
+   "t": 1794447478848,
+   "filas": [
+    1007
+   ],
+   "variantes": [
+    "DUPLICADO: #555 «DESGRACIAS EN TOKYO VOL 29 PANDILLAS» · FFA · 20/10 = #493 «DESGRACIAS EN TOKYO VOL 29 PANDILLAS» · 7 de 7 batallas"
+   ],
+   "escribio": {}
   }
  ],
  "deshechas": []

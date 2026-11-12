@@ -1,21 +1,21 @@
 {
  "v": 1,
- "cuando": "2026-11-12T01:01:36Z",
+ "cuando": "2026-11-12T01:38:22Z",
  "trabajo": "escuchar",
  "codigo": 0,
- "dur_s": 530.7,
+ "dur_s": 942.0,
  "pasos": [
   {
    "n": "0a",
    "que": "los nombres de Discord de la Lista, del Operativo",
    "ok": true,
-   "s": 1.8
+   "s": 0.8
   },
   {
    "n": "0a2",
    "que": "las crews, del objeto",
    "ok": true,
-   "s": 1.2
+   "s": 1.4
   },
   {
    "n": "0b",
@@ -27,25 +27,25 @@
    "n": "0c",
    "que": "lo corregido desde los reportes",
    "ok": true,
-   "s": 2.8
+   "s": 2.5
   },
   {
    "n": "1",
    "que": "las llaves cargadas en `Entrada`",
    "ok": true,
-   "s": 56.4
+   "s": 84.7
   },
   {
    "n": "1c",
    "que": "las vitrinas del Oficial",
    "ok": true,
-   "s": 66.9
+   "s": 79.6
   },
   {
    "n": "1a",
    "que": "la cola del bot (`/card` de quien no está), al Sheet",
    "ok": true,
-   "s": 0.5
+   "s": 2.6
   },
   {
    "n": "1a2",
@@ -57,25 +57,25 @@
    "n": "1b",
    "que": "quién está verificado y en qué servidores, desde Discord",
    "ok": true,
-   "s": 74.1
+   "s": 61.5
   },
   {
    "n": "1b2",
    "que": "quién está en la llamada (sólo con un evento en vivo)",
    "ok": true,
-   "s": 1.4
+   "s": 2.2
   },
   {
    "n": "2",
    "que": "el padrón y los pools, desde el Sheet",
    "ok": true,
-   "s": 6.6
+   "s": 5.7
   },
   {
    "n": "2b0",
    "que": "el Writing Challenge de FFA",
    "ok": true,
-   "s": 0.5
+   "s": 0.6
   },
   {
    "n": "2b",
@@ -87,19 +87,19 @@
    "n": "2b2",
    "que": "las insignias",
    "ok": true,
-   "s": 1.3
+   "s": 1.0
   },
   {
    "n": "2b3",
    "que": "el Lunes de la Liga",
    "ok": true,
-   "s": 1.0
+   "s": 0.1
   },
   {
    "n": "2b3d",
    "que": "los paneles de DRA",
    "ok": true,
-   "s": 0.3
+   "s": 22.2
   },
   {
    "n": "2b3b",
@@ -111,43 +111,43 @@
    "n": "2b3c",
    "que": "el reto del debut",
    "ok": true,
-   "s": 2.0
+   "s": 1.8
   },
   {
    "n": "2b4",
    "que": "el precio por cabeza",
    "ok": true,
-   "s": 0.8
+   "s": 1.4
   },
   {
    "n": "2b4b",
    "que": "el Pase de rapero",
    "ok": true,
-   "s": 0.5
+   "s": 0.7
   },
   {
    "n": "2b5",
    "que": "las invitaciones de la Liga",
    "ok": true,
-   "s": 6.3
+   "s": 4.3
   },
   {
    "n": "2b5b",
    "que": "los pedidos de la gente",
    "ok": true,
-   "s": 0.2
+   "s": 0.3
   },
   {
    "n": "2b6",
    "que": "el #N del apodo",
    "ok": true,
-   "s": 63.5
+   "s": 419.0
   },
   {
    "n": "2b7",
    "que": "el rol de rango en DRA",
    "ok": true,
-   "s": 3.3
+   "s": 10.6
   },
   {
    "n": "2b8",
@@ -159,13 +159,13 @@
    "n": "2b8c",
    "que": "las promociones",
    "ok": true,
-   "s": 2.5
+   "s": 3.0
   },
   {
    "n": "2b8d",
    "que": "los MES AWARDS",
    "ok": true,
-   "s": 79.1
+   "s": 77.5
   },
   {
    "n": "2b8e",
@@ -177,13 +177,13 @@
    "n": "2b8f",
    "que": "los tiers",
    "ok": true,
-   "s": 8.9
+   "s": 9.9
   },
   {
    "n": "2b8g",
    "que": "los primerizos",
    "ok": true,
-   "s": 0.4
+   "s": 0.6
   },
   {
    "n": "2b8h",
@@ -195,7 +195,7 @@
    "n": "2b8i",
    "que": "las competencias de la semana",
    "ok": true,
-   "s": 1.3
+   "s": 1.2
   },
   {
    "n": "2b8b",
@@ -207,7 +207,7 @@
    "n": "2b9",
    "que": "las ligas",
    "ok": true,
-   "s": 35.1
+   "s": 34.8
   },
   {
    "n": "2b9b",
@@ -219,19 +219,19 @@
    "n": "2b9c",
    "que": "las cartas de liga",
    "ok": true,
-   "s": 1.2
+   "s": 7.9
   },
   {
    "n": "2b10",
    "que": "los roles de la página",
    "ok": true,
-   "s": 0.5
+   "s": 0.4
   },
   {
    "n": "2c",
    "que": "la web",
    "ok": true,
-   "s": 56.5
+   "s": 57.0
   },
   {
    "n": "2c2",
@@ -243,13 +243,13 @@
    "n": "2c3",
    "que": "el anuncio que sale solo a su hora",
    "ok": true,
-   "s": 1.0
+   "s": 1.2
   },
   {
    "n": "2d",
    "que": "lo contestado en ✅ Decidir, y los alias de la hoja AKAs",
    "ok": true,
-   "s": 18.6
+   "s": 18.8
   },
   {
    "n": "2e",
@@ -267,23 +267,23 @@
    "n": "2f",
    "que": "las fotos que faltan, de Discord a R2",
    "ok": true,
-   "s": 11.1
+   "s": 4.1
   },
   {
    "n": "2f2",
    "que": "los TAGs elegidos",
    "ok": true,
-   "s": 0.6
+   "s": 0.7
   },
   {
    "n": "3",
    "que": "qué cambió",
    "ok": true,
-   "s": 11.7
+   "s": 10.8
   }
  ],
  "fallas": [],
- "decidir": 224,
+ "decidir": 225,
  "ultimo_evento": {
   "n": "606",
   "nombre": "MINI COMPE LLAVES",
@@ -292,10 +292,10 @@
  },
  "retencion": {
   "v": 1,
-  "cuando": "2026-11-12T00:53:54Z",
+  "cuando": "2026-11-12T01:24:15Z",
   "definicion": "jugó otro evento, otro día, dentro de los 14 días de su primero",
   "jugadores": 704,
-  "un_evento": 353,
+  "un_evento": 354,
   "diez_o_mas": 108,
   "cohortes": [
    {
@@ -350,25 +350,25 @@
  },
  "cuotas": {
   "kv": {
-   "write": 37,
-   "read": 1264
+   "write": 68,
+   "read": 2916
   },
   "objeto": {
-   "leidas": 159457,
-   "escritas": 4632,
-   "pedidos": 844
+   "leidas": 289080,
+   "escritas": 7958,
+   "pedidos": 1821
   },
   "worker": {
-   "pedidos": 8258,
+   "pedidos": 8867,
    "errores": 0,
-   "sub": 10828,
+   "sub": 11536,
    "cortados": 0,
-   "p50_ms": 1.3,
-   "p99_ms": 14.2,
+   "p50_ms": 1.34,
+   "p99_ms": 14.35,
    "cpu": {
-    "total": 18999,
-    "objeto_10": 1987,
-    "worker_10": 288
+    "total": 20279,
+    "objeto_10": 1974,
+    "worker_10": 311
    }
   },
   "r2": {

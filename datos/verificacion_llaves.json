@@ -1,4 +1,456 @@
 {
  "_leeme": "Lo que ve «Ver llave» de cada llave procesada (bot/verificar_llaves.py): min = de la primera publicación al último cambio; org = el organizador «juega» o «gana»; copia = la llave de la que es copia; obs = la publicó un organizador observado. Lo cuelga sheet/llaves_web.py como «ver».",
- "eventos": {}
+ "eventos": {
+  "(sin titulo)|DDS|10/10": {
+   "min": 13,
+   "v": 1
+  },
+  "(sin titulo)|DDS|12/10": {
+   "min": 1337,
+   "v": 1
+  },
+  "(sin titulo)|LKR|07/11": {
+   "min": 67,
+   "v": 1
+  },
+  "(sin titulo)|LKR|08/11": {
+   "min": 32,
+   "v": 1
+  },
+  "(sin titulo)|LKR|09/11": {
+   "min": 35,
+   "v": 1
+  },
+  "(sin titulo)|LKR|10/11": {
+   "min": 36,
+   "v": 1
+  },
+  "- FMS CHILE -|FRZ|01/10": {
+   "min": 61,
+   "v": 1
+  },
+  "- IRLANDA FREESTYLE -|FRZ|14/10": {
+   "min": 45,
+   "v": 1
+  },
+  "- IRLANDA FREESTYLE -|FRZ|27/10": {
+   "min": 123,
+   "v": 1
+  },
+  "- RED BULL NACIONAL PERÚ 2026 -|FDS|04/10": {
+   "min": 220,
+   "org": "juega",
+   "v": 1
+  },
+  "- RED BULL TORNEO DE PLAZAS 2026 -|FDS|21/10": {
+   "min": 117,
+   "org": "juega",
+   "v": 1
+  },
+  ". Rango Bronce III|FFA|30/10": {
+   "min": 17480,
+   "v": 1
+  },
+  "2v2 1|FDS|25/09": {
+   "min": 58,
+   "v": 1
+  },
+  "2v2 2|FDS|23/10": {
+   "min": 98,
+   "org": "juega",
+   "v": 1
+  },
+  "CALLE DEL TERROR|ACAD|31/10": {
+   "v": 1
+  },
+  "CCFF V.3|URBF|28/09": {
+   "min": 25,
+   "v": 1
+  },
+  "CHILL|URBF|25/10": {
+   "min": 67,
+   "v": 1
+  },
+  "COMPE ATERRADORA|CH|02/11": {
+   "min": 209,
+   "v": 1
+  },
+  "COMPE CHILL DE FASO|URBF|30/09": {
+   "min": 65,
+   "v": 1
+  },
+  "COMPE DEL VACILE 1|URBF|28/09": {
+   "min": 117,
+   "v": 1
+  },
+  "COMPE MAÑANERA|URBF|09/11": {
+   "min": 50,
+   "v": 1
+  },
+  "COPA DE GRUPOS LCW|ACAD|03/10": {
+   "min": 92,
+   "v": 1
+  },
+  "DISCORD STYLE ED. 15|DDS|07/10": {
+   "min": 13285,
+   "v": 1
+  },
+  "DISCORD STYLE ED. 16|DDS|17/10": {
+   "min": 2779,
+   "v": 1
+  },
+  "EL ONMITRIX VOL 1|CH|23/09": {
+   "min": 112,
+   "v": 1
+  },
+  "EL ULTIMO DIA DE DDF|DDF|08/11": {
+   "min": 91,
+   "obs": 1,
+   "v": 1
+  },
+  "EVANGELION CUP VOL 1|DDF|08/11": {
+   "v": 1
+  },
+  "FAT BATTLES PALOOZA EDICIÓN HALOWEEN|ACAD|31/10": {
+   "min": 87,
+   "v": 1
+  },
+  "FAT BATTLES PALOOZA FECHA 10 FINALS|ACAD|06/11": {
+   "min": 80,
+   "v": 1
+  },
+  "FAT BATTLES PALOOZA T.3 FECHA 4 🏆 ( DOMINGO - HOY )|ACAD|27/09": {
+   "min": 91,
+   "v": 1
+  },
+  "FAT BATTLES PALOOZA T.3 FECHA 5|ACAD|01/10": {
+   "min": 90,
+   "v": 1
+  },
+  "FAT BATTLES PALOOZA T.3 FECHA 6|ACAD|09/10": {
+   "min": 110,
+   "v": 1
+  },
+  "FATS BATTLES PALOOZA FECHA 7|ACAD|19/10": {
+   "min": 97,
+   "v": 1
+  },
+  "FATS BATTLES PALOOZA FECHA 8|ACAD|23/10": {
+   "min": 107,
+   "v": 1
+  },
+  "FF Freestyle Clasico|URBF|14/10": {
+   "min": 71,
+   "v": 1
+  },
+  "GALACTICOS DEL FREESTYLE VOL.17|DDF|06/11": {
+   "min": 61,
+   "obs": 1,
+   "v": 1
+  },
+  "GG SANGRERAP 1|FDS|14/10": {
+   "min": 136,
+   "org": "juega",
+   "v": 1
+  },
+  "GG SANGRERAP 3|FDS|21/10": {
+   "min": 52,
+   "v": 1
+  },
+  "GG SANGRERAP 4|FDS|22/10": {
+   "min": 74,
+   "org": "juega",
+   "v": 1
+  },
+  "GG SANGRERAP 6|FDS|26/10": {
+   "min": 81,
+   "org": "juega",
+   "v": 1
+  },
+  "GODZ|SR|12/10": {
+   "min": 102,
+   "v": 1
+  },
+  "IDS V.2|URBF|12/10": {
+   "min": 96,
+   "v": 1
+  },
+  "IDS V.3|URBF|30/10": {
+   "min": 206,
+   "v": 1
+  },
+  "K.O.M VOL.10|FFA|08/11": {
+   "min": 67,
+   "v": 1
+  },
+  "KISS OF SHINIGAMI|FFA|07/11": {
+   "min": 84,
+   "v": 1
+  },
+  "LLAVES PARA LA DISCORD STYLE 17|DDS|23/10": {
+   "min": 2490,
+   "v": 1
+  },
+  "LLAVES PARA LA DISCORD STYLE 18|DDS|30/10": {
+   "min": 200,
+   "v": 1
+  },
+  "LLAVES PARA LA DISCORD STYLE 19|DDS|01/11": {
+   "min": 1532,
+   "v": 1
+  },
+  "LLAVES PARA LA SHOWSERA STYLE 4|DDS|02/11": {
+   "min": 76,
+   "v": 1
+  },
+  "MANIJA Y NUEVA ERA VOL.1|CH|29/09": {
+   "min": 145,
+   "v": 1
+  },
+  "MASTER STYLE REMAKE|DDS|27/10": {
+   "min": 50,
+   "v": 1
+  },
+  "MF DOOM Y MADLIB EDICION 1|DDS|07/11": {
+   "v": 1
+  },
+  "MF DOOM Y MADLIB EDICION 1|DDS|10/11": {
+   "min": 51,
+   "v": 1
+  },
+  "MINI COMPE LLAVES|DDS|08/10": {
+   "min": 31,
+   "v": 1
+  },
+  "MINI COMPE LLAVES|DDS|20/10": {
+   "min": 62,
+   "v": 1
+  },
+  "MINUTOS A SANGRE - D3ATHROW EN VIVO VOL 3|CH|26/10": {
+   "min": 1932,
+   "v": 1
+  },
+  "MINUTOS A SANGRE - DEATHROW EN VIVO VOL 1|CH|11/10": {
+   "min": 163,
+   "v": 1
+  },
+  "MUNDIALITO|ACAD|17/10": {
+   "min": 53,
+   "v": 1
+  },
+  "ORDEN DEL CHYPHER|FFA|05/11": {
+   "min": 42,
+   "v": 1
+  },
+  "PANDILLAS NO VAMOS A TAGUEAR NI A ESPERAR A NADIE VOL 2|CH|20/10": {
+   "min": 204,
+   "v": 1
+  },
+  "POESÍA CRUDA|URBF|01/10": {
+   "min": 76,
+   "v": 1
+  },
+  "PRADERAP VOL.1|ACAD|16/10": {
+   "min": 109,
+   "v": 1
+  },
+  "PRADERAP VOL.2|ACAD|27/10": {
+   "min": 399,
+   "v": 1
+  },
+  "PUTA CUP|LKR|10/11": {
+   "min": 84,
+   "org": "juega",
+   "v": 1
+  },
+  "RANKED 1|FDS|10/11": {
+   "min": 106,
+   "org": "juega",
+   "v": 1
+  },
+  "RAP PARA RAPEROS|FFA|02/11": {
+   "min": 52,
+   "org": "juega",
+   "v": 1
+  },
+  "RAP SIN GROSERIAS 1|FDS|11/10": {
+   "min": 70,
+   "org": "juega",
+   "v": 1
+  },
+  "RAP SIN GROSERIAS 1|FDS|26/10": {
+   "min": 5715,
+   "v": 1
+  },
+  "RAP SIN GROSERIAS 2|FDS|20/10": {
+   "min": 101,
+   "org": "juega",
+   "v": 1
+  },
+  "RAP SIN GROSERIAS 4|FDS|08/11": {
+   "min": 281,
+   "v": 1
+  },
+  "RED BULL CARACAS REGIONAL T.5|URBF|08/11": {
+   "min": 949,
+   "v": 1
+  },
+  "RED BULL COLOMBIA|LKR|09/11": {
+   "min": 123,
+   "v": 1
+  },
+  "RED BULL CREW CHILE 2026|ACAD|26/09": {
+   "min": 126,
+   "v": 1
+  },
+  "RED BULL NACIONAL ALBICELESTE|URBF|03/10": {
+   "min": 109,
+   "v": 1
+  },
+  "RED BULL NACIONAL ESPAÑA T.5|URBF|11/10": {
+   "min": 89,
+   "v": 1
+  },
+  "RED BULL SUDAMÉRICA|LKR|01/11": {
+   "min": 209,
+   "v": 1
+  },
+  "RED BULL|LKR|18/10": {
+   "min": 160,
+   "v": 1
+  },
+  "REDBULL CREW ARGENTINA 2026|ACAD|25/10": {
+   "min": 118,
+   "v": 1
+  },
+  "Rap para Raperos 2|FFA|31/10": {
+   "min": 132,
+   "org": "juega",
+   "v": 1
+  },
+  "Rayos y Centellas|URBF|03/11": {
+   "min": 36,
+   "v": 1
+  },
+  "Red Bull Crew VENEC|ACAD|07/11": {
+   "min": 150,
+   "v": 1
+  },
+  "SIX SEVEN STYLE|DDS|03/11": {
+   "min": 49,
+   "v": 1
+  },
+  "SIX SEVEN STYLE|DDS|27/10": {
+   "min": 59,
+   "v": 1
+  },
+  "SNAKE INSIGNIA 3 8|SR|26/09": {
+   "min": 124,
+   "v": 1
+  },
+  "SNAKE INSIGNIA 4 8|SR|08/10": {
+   "min": 116,
+   "v": 1
+  },
+  "SNAKE INSIGNIA 5 8|SR|16/10": {
+   "min": 241,
+   "v": 1
+  },
+  "SNAKE INSIGNIA 6 8|SR|21/10": {
+   "min": 138,
+   "v": 1
+  },
+  "SNAKE INSIGNIA 7 8|SR|31/10": {
+   "min": 93,
+   "v": 1
+  },
+  "Shaoling Battles 1v1 2|FDS|27/09": {
+   "min": 75,
+   "org": "juega",
+   "v": 1
+  },
+  "Shaoling Battles 1v1 3|FDS|29/09": {
+   "min": 76,
+   "org": "juega",
+   "v": 1
+  },
+  "Shaoling Battles 1v1 4|FDS|01/10": {
+   "min": 57,
+   "org": "juega",
+   "v": 1
+  },
+  "TORNEO CLANDESTINO V.1|FFA|09/11": {
+   "min": 137,
+   "v": 1
+  },
+  "VALHALLA VOL1|ACAD|04/10": {
+   "min": 78,
+   "v": 1
+  },
+  "WORLD OF FREE|LKR|23/10": {
+   "min": 136,
+   "v": 1
+  },
+  "ZONA MORTAL|DDF|07/11": {
+   "min": 46,
+   "v": 1
+  },
+  "__ COCINE FIDEOS __|FFA|01/11": {
+   "min": 79,
+   "v": 1
+  },
+  "__ GENESIS BATTLES __|SR|25/09": {
+   "min": 2503,
+   "v": 1
+  },
+  "__ JKWODJAKB V.1 __|FFA|09/11": {
+   "min": 77,
+   "v": 1
+  },
+  "__ LA PALERA DEL KACHUM __|FFA|02/11": {
+   "min": 44,
+   "v": 1
+  },
+  "__ QCYO RAPEEN 11 __|FFA|05/11": {
+   "min": 62,
+   "v": 1
+  },
+  "__ QCYO RAPEEN 12 __|FFA|08/11": {
+   "min": 183,
+   "v": 1
+  },
+  "__ RAP EXHIBITION 1 8 __|SR|22/09": {
+   "min": 142,
+   "v": 1
+  },
+  "__ RAP EXHIBITION 2 8 __|SR|29/09": {
+   "min": 108,
+   "v": 1
+  },
+  "__ la palera del edi __|FFA|01/11": {
+   "min": 65,
+   "org": "juega",
+   "v": 1
+  },
+  "__ qcyo rapeen 10 __|FFA|03/11": {
+   "min": 141,
+   "v": 1
+  },
+  "__ qcyo rapeen 7 __|FFA|29/10": {
+   "min": 137,
+   "v": 1
+  },
+  "__ qcyo rapeen __|FFA|02/11": {
+   "min": 130,
+   "v": 1
+  },
+  "__ qcyo rapeen __|FFA|30/10": {
+   "min": 105,
+   "v": 1
+  },
+  "no se k poner style|DDS|28/10": {
+   "min": 58,
+   "v": 1
+  }
+ }
 }

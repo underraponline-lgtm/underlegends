@@ -150,32 +150,6 @@
     "ev": 1
    },
    "fund": "dlx"
-  },
-  {
-   "id": "CHAKALAJE",
-   "nombre": "CHAKALAJE",
-   "sigla": "CKLJ",
-   "entrada": "pedido",
-   "oficial": false,
-   "creada": 1793841745555,
-   "reps": [
-    "trelok"
-   ],
-   "gente": [
-    [
-     "trelok",
-     "lider",
-     1793841745555
-    ]
-   ],
-   "vence": 1794446545555,
-   "logo": "esc:rombo.ojo.0e0e10.e5484d",
-   "desc": "Strictology",
-   "req": {
-    "rg": "",
-    "ev": 0
-   },
-   "fund": "trelok"
   }
  ]
 }
