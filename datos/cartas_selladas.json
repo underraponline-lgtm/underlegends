@@ -98,7 +98,7 @@
   "Alexi": {},
   "Alonso": {},
   "Am": {
-   "competitivo": "ec00552d5024:624f5e322311",
+   "competitivo": "511fe030a351:624f5e322311",
    "pais": "bdf989389328:733ce66bf5fa",
    "servidor": "5e605137389c:2415c901692f:8551cb"
   },
@@ -155,10 +155,10 @@
   "BLITZ": {},
   "BNA": {},
   "BTRX": {
-   "competitivo": "19a9c0ed6e08:624f5e322311",
+   "competitivo": "4dd3c1f167a8:624f5e322311",
    "pais": "9cfab7843ed1:733ce66bf5fa",
-   "servidor": "0c279c86de3b:2415c901692f:88f477",
-   "temporada": "244ba82960d3:7a510334494e"
+   "servidor": "1a7baee733cc:2415c901692f:88f477",
+   "temporada": "bb448747f761:7a510334494e"
   },
   "Badterne": {},
   "Baltrip": {},
@@ -987,7 +987,7 @@
    "competitivo": "d633b9538cae:624f5e322311",
    "pais": "eaccef41e1ec:733ce66bf5fa",
    "servidor": "b914b906d42d:2415c901692f:35ef22",
-   "temporada": "aa4be17a4217:7a510334494e"
+   "temporada": "ad7c93929657:7a510334494e"
   },
   "Leyenda": {},
   "Lhyon": {},
@@ -1168,7 +1168,7 @@
    "servidor": "02128fc165e7:2415c901692f:67201a"
   },
   "Medster": {
-   "competitivo": "d3c9db9b7723:624f5e322311",
+   "competitivo": "237f9b1b25d2:624f5e322311",
    "pais": "ae02a39181a6:733ce66bf5fa",
    "servidor": "8b9cbaff2785:2415c901692f:0e0e03"
   },
@@ -1332,10 +1332,10 @@
   "Nox": {},
   "Noxvell": {},
   "Number": {
-   "competitivo": "3fb266f9fccb:624f5e322311",
+   "competitivo": "16228ca78174:624f5e322311",
    "pais": "b7f1f3bd5893:733ce66bf5fa",
    "servidor": "71adff8c4253:2415c901692f:fdb28b",
-   "temporada": "0c5a58e11be9:7a510334494e"
+   "temporada": "c63d184dd264:7a510334494e"
   },
   "Number VE": {
    "competitivo": "2cb0ba31cf93:624f5e322311",
@@ -2014,10 +2014,10 @@
   "luisito 🏆": {},
   "maldita enfermedad": {},
   "mats": {
-   "competitivo": "835c7552cf1e:624f5e322311",
+   "competitivo": "7b24f85102fd:624f5e322311",
    "pais": "49351bda1275:733ce66bf5fa",
    "servidor": "dd567876b479:2415c901692f:4700fc",
-   "temporada": "2733937a1844:7a510334494e"
+   "temporada": "d9680f1b9460:7a510334494e"
   },
   "melomaniaco": {
    "competitivo": "9739f11f6e84:624f5e322311",
@@ -2097,5 +2097,5 @@
    "servidor": "7f8885a35a6d:2415c901692f:93a344"
   }
  },
- "cuando": "2026-11-12T03:40:23+00:00"
+ "cuando": "2026-11-12T03:43:15+00:00"
 }

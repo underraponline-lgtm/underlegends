@@ -416,6 +416,15 @@
 "temporada"
 ]
 },
+"btrx": {
+"rg": "C",
+"c": [
+"competitivo",
+"pais",
+"servidor",
+"temporada"
+]
+},
 "dominick": {
 "rg": "D",
 "c": []
@@ -432,15 +441,6 @@
 "rg": "C",
 "c": [
 "competitivo",
-"servidor",
-"temporada"
-]
-},
-"btrx": {
-"rg": "C",
-"c": [
-"competitivo",
-"pais",
 "servidor",
 "temporada"
 ]
