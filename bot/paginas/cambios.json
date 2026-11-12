@@ -11,6 +11,17 @@
  ],
  "cambios": [
     {
+        "version": "4.45",
+        "dia": "2026-11-11",
+        "cuando": "2026-11-11T20:10:09-05:00",
+        "titulo": "Las batallas de liga tienen su propio VS",
+        "items": [
+            "**El VS de las ligas** se ve como un afiche pegado en la pared, con el estilo de las cartas de liga y **la carta de liga de cada uno**.",
+            "**Cada liga con su color y su escena**: el fondo, el VS, el pronóstico y los cuadritos cambian según la liga.",
+            "**Todo se lee**: el T1, el logo, el porcentaje y quién es favorito van sobre negro o sobre el papel, con buen contraste."
+        ]
+    },
+    {
         "version": "4.44",
         "dia": "2026-11-11",
         "cuando": "2026-11-11T18:34:42-05:00",
