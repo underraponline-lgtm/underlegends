@@ -57,19 +57,25 @@ const e = (i, cls) => ({ className: (cls ? cls + ' ' : '') + 'bv-e', style: { '-
 // 🎬 EL FONDO DE VIDEO (Dlx, 12/11/2026: «un video en blanco y negro de fondo… gente rapeando en cámara lenta que
 // cambien»). 19 tramos de los nuestros en batallas en cámara, en loop y sin sonido: 50 s, 1,7 MB. Lo arma y lo sube
 // `herramientas/bienvenida_video.py`, y vive en R2 y NO en el repo (son caras de gente real). Los créditos de los canales
-// viajan con el video (`creditos.json`): si se rearma con otros clips, la página nombra los de ese video.
+// viajan con el video (`creditos.json`).
 // ⚠️ Con «Menos animaciones», movimiento reducido o ahorro de datos, un cuadro quieto del mismo montaje
 const VIDEO = 't1';
+// (la versión del video: se sube con el mismo nombre, así que se cambia acá cada vez que se rearma, o el navegador y el
+// borde de R2 siguen sirviendo el de antes. 2 = el del 12/11 con el segundo tramo de Sombra y los oscuros más claros)
+const VV = '?v=2';
 const quieto = () => (W.matchMedia && W.matchMedia('(prefers-reduced-motion: reduce)').matches) || !!document.querySelector('.calma')
   || !!(W.navigator && W.navigator.connection && W.navigator.connection.saveData);
 function Fondo({ base }) {
   const [sinVideo] = useState(quieto);
+  // 🖥️ en la compu, el de 1280 × 720 (Dlx: «el video no está en HD»: el de 640 se veía a píxeles en 1454 px); en el
+  // teléfono, el de 640, que pesa la mitad y en esa pantalla no se nota. Se elige una vez, al abrir
+  const [hd] = useState(() => (W.innerWidth || 0) >= 900);
   // `muted` como propiedad Y antes de play(): React no lo pone como atributo y sin eso el navegador no lo arranca solo
   const arrancar = (v) => { if (v) { v.muted = true; const p = v.play(); if (p && p.catch) p.catch(() => { /* queda el póster */ }); } };
   return (
     <div className="bv-fondo" aria-hidden="true">
-      {sinVideo ? <img alt="" src={base + 'poster.jpg'} />
-        : <video ref={arrancar} src={base + 'montaje.mp4'} poster={base + 'poster.jpg'} autoPlay muted loop playsInline preload="auto" />}
+      {sinVideo ? <img alt="" src={base + 'poster.jpg' + VV} />
+        : <video ref={arrancar} src={base + (hd ? 'montaje-hd.mp4' : 'montaje.mp4') + VV} poster={base + 'poster.jpg' + VV} autoPlay muted loop playsInline preload="auto" />}
       <i className="bv-vineta" />
       <svg className="bv-grano"><filter id="bv-gr"><feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="2" stitchTiles="stitch" />
         <feColorMatrix type="saturate" values="0" /></filter><rect width="100%" height="100%" filter="url(#bv-gr)" /></svg>
@@ -105,7 +111,9 @@ function useCuenta(meta, demora = 1200, dura = 1300) {
 // siguiente; con transiciones y no con keyframes, así un cambio a mitad de giro sale del punto en que estaba
 // (la caja de las cartas tiene alto fijo y las cartas van abajo de todo: la leyenda va FUERA de la caja, debajo; adentro
 // quedaba arriba, detrás de la carta)
-function Rota({ cartas, children }) {
+// 🃏 Y LAS DE ATRÁS SON DEL MISMO RANKING (Dlx, 12/11/2026: «cuando se cambia de ranking de tarjeta, las 2 de atrás, o
+// sea el 2.º y el 3.º, no cambian, se quedan en temporada»): cada carta trae su #2 y su #3 (`atras`), y cambian con ella
+function Rota({ cartas }) {
   const [i, setI] = useState(0);
   useEffect(() => {
     if (cartas.length < 2 || quieto()) return undefined;
@@ -116,7 +124,10 @@ function Rota({ cartas, children }) {
   return (
     <>
       <div className="bv-cartas">
-        {children}
+        {[0, 1].map((j) => (
+          <span key={j} className={'bv-atras a' + j} aria-hidden="true"><span className="bv-atras-f">{cartas.map((c, k) => (c.atras && c.atras[j]
+            ? <img key={c.id} alt="" src={c.atras[j]} className={c.forma + (k === on ? ' on' : '')} /> : null))}</span></span>
+        ))}
         <div className="bv-rota">{cartas.map((c, k) => (
           <span key={c.id} className={'bv-rota-c ' + c.forma + (k === on ? ' on' : k < on ? ' fue' : '')}><img alt={c.alt} src={c.src} /></span>
         ))}</div>
@@ -126,7 +137,7 @@ function Rota({ cartas, children }) {
   );
 }
 
-function Pagina({ id, i, vista, sello, titulo, etiqueta, texto, puntos, extra, visual, primera, tit }) {
+function Pagina({ id, vista, sello, titulo, etiqueta, texto, puntos, extra, visual, primera, tit }) {
   const o = primera ? 8 : 0;
   return (
     <section className={'bv-pag bv-pag-' + id + (vista ? ' vista' : '')} aria-roledescription="página" aria-label={sello}>
@@ -137,8 +148,9 @@ function Pagina({ id, i, vista, sello, titulo, etiqueta, texto, puntos, extra, v
         {extra ? <div {...e(o + 3)}>{extra}</div> : null}
         {puntos ? <ul className="bv-puntos">{puntos.map(([ico, t], k) => <li key={t} {...e(o + 3 + k)}><Ico n={ico} t={18} /><span>{t}</span></li>)}</ul> : null}
       </div>
-      {/* el número grande de atrás va más lento que todo al deslizar: es lo que da la profundidad */}
-      <div className="bv-pag-vis"><span className="bv-num" aria-hidden="true">{String(i + 1).padStart(2, '0')}</span>{visual}</div>
+      {/* (el número grande de atrás —«01»…— se fue el 12/11/2026, Dlx: «quita ese 01 de arriba»: con el video detrás
+          era una cosa más compitiendo) */}
+      <div className="bv-pag-vis">{visual}</div>
     </section>
   );
 }
@@ -162,18 +174,17 @@ function Paso1({ liga, unirme, cerrar, tit }) {
       setPag(Math.round(x / w));
       const quieto = (W.matchMedia && W.matchMedia('(prefers-reduced-motion: reduce)').matches) || !!document.querySelector('.calma');
       Array.prototype.forEach.call(el.children, (pg, i) => {
-        const tx = pg.firstElementChild, vis = pg.lastElementChild, num = vis && vis.firstElementChild;
-        if (!tx || !vis || !num) return;
+        const tx = pg.firstElementChild, vis = pg.lastElementChild;
+        if (!tx || !vis) return;
         const d = Math.max(-1, Math.min(1, (i * w - x) / w)), a = Math.abs(d);
         if (quieto || a < 0.001) {
-          tx.style.transform = vis.style.transform = num.style.transform = tx.style.opacity = vis.style.opacity = '';
+          tx.style.transform = vis.style.transform = tx.style.opacity = vis.style.opacity = '';
           return;
         }
         tx.style.transform = 'translate3d(' + (-d * 36).toFixed(1) + 'px,0,0)';
         tx.style.opacity = (1 - a * 0.45).toFixed(3);
         vis.style.transform = 'translate3d(' + (-d * 120).toFixed(1) + 'px,0,0) scale(' + (1 - a * 0.06).toFixed(3) + ')';
         vis.style.opacity = (1 - a * 0.65).toFixed(3);
-        num.style.transform = 'translate3d(' + (-d * 240).toFixed(1) + 'px,0,0)';
       });
     };
     const ver = () => { cancelAnimationFrame(t); t = requestAnimationFrame(mover); };
@@ -223,11 +234,9 @@ function Paso1({ liga, unirme, cerrar, tit }) {
   const miembros = (liga.d.svs || []).reduce((s, x) => s + ((x && x.miembros) || 0), 0);
   const nMiembros = useCuenta(miembros);
   const base = liga.d.r2 + '/bienvenida/' + VIDEO + '/';
-  const [creditos, setCreditos] = useState([]);
   const [lider, setLider] = useState(null);
   useEffect(() => {
     let vivo = true;
-    fetch(base + 'creditos.json').then((r) => (r.ok ? r.json() : null)).then((x) => { if (vivo && x && x.canales) setCreditos(x.canales); }).catch(() => { /* sin créditos no hay línea */ });
     // 🏟️ el líder de liga con más OVR: del mismo pedido que ya hace el Inicio (`pedirLigas`), no de uno nuevo
     pedirLigas(liga.d.sello).then((x) => {
       if (!vivo || !x || !x.cartas) return;
@@ -236,18 +245,28 @@ function Paso1({ liga, unirme, cerrar, tit }) {
       if (!m) return;
       const L = (((x.lobby || {}).ligas) || []).find((y) => y.id === m[1]);
       const f = liga.T[m[0]];
-      setLider({ k: m[0], lid: m[1], v: m[2][1], n: f ? f.n : m[0], liga: L ? L.n : '' });
+      const atras = [2, 3].map((pu) => {
+        const e = Object.entries(x.cartas).find(([k, l]) => k !== 'dlx' && (l || []).some((c) => c[0] === m[1] && c[3] === pu));
+        if (!e) return null;
+        const c = e[1].find((y) => y[0] === m[1] && y[3] === pu);
+        return liga.d.r2 + '/' + encodeURIComponent(e[0]) + '/liga-' + m[1] + '.webp?v=' + c[1];
+      });
+      setLider({ k: m[0], lid: m[1], v: m[2][1], n: f ? f.n : m[0], liga: L ? L.n : '', atras });
     }).catch(() => { /* sin la de liga, se turnan dos */ });
     return () => { vivo = false; };
   }, []);
   // las que se turnan: la de Temporada del #1, la Competitiva del #1 del competitivo y la de liga del líder. «Sin dato no
   // hay pieza»: la que no existe no entra
-  const comp = liga.oficiales().filter((f) => f.k && f.rg && !f.fc && (f.c || []).includes('competitivo')).sort((a, b) => (b.sc || 0) - (a.sc || 0))[0];
+  const comps = liga.oficiales().filter((f) => f.k && f.rg && !f.fc && (f.c || []).includes('competitivo')).sort((a, b) => (b.sc || 0) - (a.sc || 0));
+  const comp = comps[0];
+  const temp = (f) => (f ? liga.cartaUrl(f.k, liga.cartaDe(f.k)) : null);
   const rota = [
-    top[0] && { id: 't', forma: 'rect', src: liga.cartaUrl(top[0].k, liga.cartaDe(top[0].k)), alt: 'Carta de ' + limpio(top[0].n) + ', #1 de la temporada', que: '#1 de la temporada', quien: limpio(top[0].n) },
-    comp && { id: 'c', forma: 'escudo', src: liga.cartaUrl(comp.k, 'competitivo'), alt: 'Carta Competitiva de ' + limpio(comp.n) + ', #1 del competitivo', que: '#1 del competitivo', quien: limpio(comp.n) },
+    top[0] && { id: 't', forma: 'rect', src: liga.cartaUrl(top[0].k, liga.cartaDe(top[0].k)), alt: 'Carta de ' + limpio(top[0].n) + ', #1 de la temporada', que: '#1 de la temporada', quien: limpio(top[0].n),
+      atras: [temp(top[1]), temp(top[2])] },
+    comp && { id: 'c', forma: 'escudo', src: liga.cartaUrl(comp.k, 'competitivo'), alt: 'Carta Competitiva de ' + limpio(comp.n) + ', #1 del competitivo', que: '#1 del competitivo', quien: limpio(comp.n),
+      atras: comps.slice(1, 3).map((f) => liga.cartaUrl(f.k, 'competitivo')) },
     lider && { id: 'l', forma: 'afiche', src: liga.d.r2 + '/' + encodeURIComponent(lider.k) + '/liga-' + lider.lid + '.webp?v=' + lider.v,
-      alt: 'Carta de liga de ' + limpio(lider.n), que: lider.liga ? '#1 de ' + lider.liga : '#1 de su liga', quien: limpio(lider.n) },
+      alt: 'Carta de liga de ' + limpio(lider.n), que: lider.liga ? '#1 de ' + lider.liga : '#1 de su liga', quien: limpio(lider.n), atras: lider.atras },
   ].filter((c) => c && c.src);
   const nombreSv = (s) => ((liga.svs || {})[s] || {}).nombre || s;
   const carta = (k, cual, cls) => (
@@ -277,9 +296,7 @@ function Paso1({ liga, unirme, cerrar, tit }) {
     liga: (
       <div className="bv-v-liga">
         {/* el #2 y el #3, apagados y flotando detrás; adelante, la que se turna */}
-        {rota.length ? <Rota cartas={rota}>
-          {top.slice(1, 3).map((f, i) => <span key={f.k} className={'bv-atras a' + i} aria-hidden="true">{carta(f.k, liga.cartaDe(f.k), '')}</span>)}
-        </Rota> : null}
+        {rota.length ? <Rota cartas={rota} /> : null}
         <p className="bv-top">{top.length === 3 ? <>Los tres primeros de la temporada: <b>{limpio(top[0].n)}</b>, {limpio(top[1].n)} y {limpio(top[2].n)}</> : null}</p>
         {ult ? <p {...e(10, 'bv-ult')}><Ico n="copa" t={16} /><span>{ult[1]}</span><small>{ult[3]}</small></p> : null}
       </div>
@@ -342,7 +359,7 @@ function Paso1({ liga, unirme, cerrar, tit }) {
       etiqueta: 'Liga Global de Freestyle',
       titulo: <>
         <span className="bv-t1"><span className="bv-t-bl">{letras('LIGA GLOBAL', 100)}</span>
-          {[1, 2, 3].map((q) => <span key={q} className={'bv-t-rel r' + q} style={{ backgroundImage: 'url(' + base + 'quieto' + q + '.jpg)' }}>LIGA GLOBAL</span>)}</span>
+          {[1, 2, 3].map((q) => <span key={q} className={'bv-t-rel r' + q} style={{ '--q': 'url(' + base + 'quieto' + q + '.jpg' + VV + ')' }}>LIGA GLOBAL</span>)}</span>
         <span className="bv-t2">{letras('DE FREESTYLE', 620)}</span></>,
       texto: 'El ranking de los servidores de freestyle de Discord. Juega en el tuyo, sube en la tabla y gana tu carta.',
       extra: svs.length ? (
@@ -350,8 +367,7 @@ function Paso1({ liga, unirme, cerrar, tit }) {
           {miembros ? <p className="bv-miembros"><b>{num(nMiembros)}</b><small>miembros en<br />los {svs.length} servidores</small></p> : null}
           <div className="bv-svs">
             {liga.d.gente ? <span><b>{num(liga.d.gente)}</b><small>en el ranking</small></span> : null}
-            <span><span className="bv-svs-l">{svs.slice(0, 6).map((s) => <img key={s} alt={nombreSv(s)} title={nombreSv(s)} src={liga.logo(s)} />)}</span>
-              <b>{svs.length}</b><small>servidores</small></span>
+            <span><b>{svs.length}</b><small>socios</small></span>
             <span><b>{num(liga.d.eventos || 0)}</b><small>eventos</small></span>
           </div>
         </div>
@@ -380,33 +396,33 @@ function Paso1({ liga, unirme, cerrar, tit }) {
       {/* 🏷️ la marca, como en las cartas: el UL y la temporada, en blanco (Dlx: «el típico UL blanco y el T1 blanco») */}
       <div className="bv-arriba">
         <span className="bv-marca"><img alt="Under Legends" src="/ul-blanco.png" width="160" height="130" /><i aria-hidden="true" /><b>{String(liga.temp || 'T1').toUpperCase()}</b></span>
-        {/* (en el teléfono los 13 canales son cuatro líneas que no entran: ahí, los dos con más clips y cuántos más; la
-            lista entera sale en la compu) */}
-        {creditos.length ? <p className="bv-creditos" title={'Video: ' + creditos.join(' · ')}>
-          <span className="todo">Video: {creditos.join(' · ')}</span>
-          <span className="corto">Video: {creditos.slice(0, 2).join(', ')}{creditos.length > 2 ? ' y ' + (creditos.length - 2) + ' canales más' : ''}</span></p> : null}
+        {/* (los canales de los clips iban acá a la derecha: Dlx, 12/11/2026, «quita esas letras de arriba a la derecha».
+            Siguen escritos en `creditos.json` y en `herramientas/bienvenida_video.py`) */}
       </div>
       <div className="bv-pista" ref={pista} tabIndex={-1}>
         {paginas.map((p, i) => (
-          <Pagina key={p.id} {...p} i={i} vista={vistas.has(i)} primera={i === 0} tit={tit} visual={visuales[p.id]} />
+          <Pagina key={p.id} {...p} vista={vistas.has(i)} primera={i === 0} tit={tit} visual={visuales[p.id]} />
         ))}
       </div>
-      {/* 🔒 LA BARRA DE ABAJO NO SE MUEVE: Dlx, «que siempre aparezca la opción de UNIRME CON DISCORD o en otro momento» */}
+      {/* 🔒 LA BARRA DE ABAJO NO SE MUEVE: Dlx, «que siempre aparezca la opción de UNIRME CON DISCORD o en otro momento».
+          🎬 Y DESDE EL 12/11/2026 VA SIN BARRA (Dlx eligió la A de https://claude.ai/artifact/AgSZ13KSdtpdE8J9gQyC3Y: «se ve
+          horrible la verdad»): sin fondo, sin la línea rosada y sin flechas, los puntos a la izquierda y el botón a la derecha,
+          sobre el video. Se pasa de página deslizando, tocando un punto o con ← → (lo mismo que pidió para la barra del
+          teléfono: «no me gustaría que tenga esa línea ni la flecha, se ve feo») */}
       <div className="bv-barra">
         <nav className="bv-nav" aria-label="Páginas de la bienvenida">
-          <button type="button" className="bv-fl izq" aria-label="Página anterior" disabled={pag === 0} onClick={() => ir(pag - 1)}><Ico n="flecha" t={20} /></button>
           <ol className="bv-puntos-nav">{PAGINAS.map(([id, n], i) => (
             <li key={id}><button type="button" className={i === pag ? 'on' : ''} aria-current={i === pag ? 'step' : undefined} onClick={() => ir(i)}>
               <i aria-hidden="true" /><span>{n}{auto && i === pag && !ultima ? <em className="bv-avance" key={pag} aria-hidden="true" /> : null}</span></button></li>
           ))}</ol>
-          <button type="button" className={'bv-fl der' + (pag === 0 ? ' llama' : '')} aria-label="Página siguiente" disabled={ultima} onClick={() => ir(pag + 1)}><Ico n="flecha" t={20} /></button>
         </nav>
         <div className="bv-acc">
           <button type="button" className="bv-si" onClick={unirme}>
             <svg viewBox="0 0 24 24" width="24" height="24" aria-hidden="true"><path fill="currentColor" d={DISCORD} /></svg>Unirme con Discord</button>
           <div className="bv-acc-2">
             <button type="button" className="bv-luego" onClick={() => cerrar('luego')}>En otro momento</button>
-            <small className="bv-nota">Te sumamos a Discord Rap Español. Sólo vemos tu nombre y tu foto, nunca tu contraseña.</small>
+            {/* (la nota «Te sumamos a Discord Rap Español… nunca tu contraseña» se fue el 12/11/2026, Dlx: «está de más… e
+                incluso puede asustar a la gente». Lo que pide el permiso lo dice Discord en su propia pantalla) */}
           </div>
         </div>
       </div>

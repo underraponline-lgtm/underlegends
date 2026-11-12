@@ -14,6 +14,7 @@ ahí (`liga.d.r2`). Si un rapero pide salir, se rearma sin su tramo y se vuelve 
 
 uso:
   python herramientas/bienvenida_video.py --armar <carpeta>   # baja los tramos y arma el montaje (yt-dlp + ffmpeg)
+  python herramientas/bienvenida_video.py --armar <carpeta> --hd   # el de 1280 × 720, para la compu
   python herramientas/bienvenida_video.py --subir <carpeta>   # sube montaje, póster y cuadros a R2
   python herramientas/bienvenida_video.py                     # sólo lista los tramos
 
@@ -38,6 +39,7 @@ TRAMOS = [
     ('B2OyIluaMF8', 104, 'Kain', 'BVS Network'),
     ('eariGFs-TEM', 115, 'SOL', 'BLDC Freestyle'),
     ('7lIj3Cva3qc', 100, 'Zaylax', 'BVS Network'),
+    ('kommY3DfdJQ', 150, 'Sombra', 'BVS Network'),          # Dlx: «subir otro clip de Sombra» (primer plano, rapeando)
     ('CD9HicZ0bU4', 644, 'Panchok', 'DEM Battles'),
     ('NWO5AIKRzHw', 280, 'Makma', 'Falcon Music Colima'),
     ('TV_ED82CTSY', 458, 'Velatz y Oasis', 'Liga Inmortal'),
@@ -56,6 +58,11 @@ TRAMOS = [
     ('B8113ZFfbzI', 140, 'Guty y Andres', 'Skyline Freestyle'),
 ]
 SEG, LENTO, XF, W, H = 1.5, 2.0, 0.4, 640, 360   # 1,5 s del original, cámara lenta ×2, fundidos de 0,4 s
+# 💡 LOS OSCUROS, MÁS CLAROS (Dlx, 12/11/2026: «a los que están un poco oscuros podrías subirles un poquito el brillo»).
+# Se mide el gris medio de cada tramo y, si queda por debajo de LUZ, se le sube con gamma hasta ahí: los claros no se
+# tocan, y la gamma levanta los medios sin quemar las luces (subir el brillo parejo lavaba los negros)
+LUZ, GAMMA_MAX = 92, 1.9
+# ⚠️ AL REARMAR, subir `VV` en web/src/bienvenida.jsx: se sube con el mismo nombre y si no, se sigue viendo el de antes
 QUIETOS = (7.4, 20.2, 42.6)                         # los cuadros que rellenan «LIGA GLOBAL»
 CREDITOS = sorted({t[3] for t in TRAMOS}, key=lambda c: (-sum(1 for t in TRAMOS if t[3] == c), c))
 
@@ -71,22 +78,53 @@ def correr(args):
         sys.exit(r.stderr[-800:])
 
 
-def armar(dst):
-    crudos = os.path.join(dst, 'crudos')
+def luz(src, desde):
+    """El gris medio (0–255) de 1,5 s de un video, para saber cuánto subirle."""
+    r = subprocess.run([ffmpeg(), '-v', 'error', '-ss', str(desde), '-t', str(SEG), '-i', src, '-vf',
+                        'scale=320:-2,format=gray,signalstats,metadata=print:key=lavfi.signalstats.YAVG:file=-', '-f', 'null', '-'],
+                       capture_output=True, text=True)
+    v = [float(l.split('=')[1]) for l in r.stdout.splitlines() if 'YAVG=' in l]
+    return sum(v) / len(v) if v else 255.0
+
+
+def gamma_para(y):
+    import math
+    if y >= LUZ or y <= 1:
+        return 1.0
+    return round(min(GAMMA_MAX, math.log(y / 255) / math.log(LUZ / 255)), 2)
+
+
+def armar(dst, hd=False):
+    """`hd`: 1280 × 720 para la compu (Dlx, 12/11/2026: «el video no está en HD»: a 640 × 360 en una pantalla de
+    1.454 px se ve cada píxel). El de 640 queda para el teléfono, donde pesa menos y no se nota."""
+    w, h, alto, crf, nombre = (1280, 720, 720, 35, 'montaje-hd') if hd else (W, H, 480, 34, 'montaje')
+    crudos = os.path.join(dst, 'crudos' + ('-hd' if hd else ''))
     os.makedirs(crudos, exist_ok=True)
-    ids = sorted({t[0] for t in TRAMOS})
-    subprocess.run([sys.executable, '-m', 'yt_dlp', '-f', 'bv*[height<=480][ext=mp4]/bv*[height<=480]', '--no-playlist',
-                    '-o', os.path.join(crudos, '%(id)s.%(ext)s'), '--'] + ids, check=True)
+    # ⚡ SÓLO EL PEDAZO DE CADA VIDEO (`--download-sections`): de 3 s antes a 5 s después del tramo, no el video entero.
+    # En 480p los 23 enteros eran 588 MB. `--force-keyframes-at-cuts` corta en el segundo exacto: sin eso arranca en el
+    # keyframe de antes y el tramo saldría corrido
+    for i, (vid, t, _, _) in enumerate(TRAMOS):
+        sal = os.path.join(crudos, '%02d.mp4' % i)
+        if not os.path.exists(sal):
+            subprocess.run([sys.executable, '-m', 'yt_dlp', '-f', 'bv*[height<=%d][ext=mp4]/bv*[height<=%d]' % (alto, alto),
+                            '--no-playlist', '--ffmpeg-location', os.path.dirname(ffmpeg()) or '.',
+                            '--download-sections', '*%d-%d' % (max(0, t - 3), t + 5), '--force-keyframes-at-cuts',
+                            '-o', sal, '--', vid], check=True)
     partes = []
     for i, (vid, t, quien, _) in enumerate(TRAMOS):
         p = os.path.join(dst, 'p%02d.mp4' % i)
+        # el pedazo arranca 3 s antes del tramo (o en el 0, si el tramo empieza antes del segundo 3)
+        desde = min(3, t)
+        g = gamma_para(luz(os.path.join(crudos, '%02d.mp4' % i), desde))
         vf = ('scale=%d:%d:force_original_aspect_ratio=increase,crop=%d:%d,setpts=%s*PTS,'
-              'minterpolate=fps=30:mi_mode=mci:mc_mode=aobmc:vsbmc=1,format=gray,eq=contrast=1.12:brightness=-0.03'
-              % (W, H, W, H, LENTO))
-        correr(['-ss', str(t), '-t', str(SEG), '-i', os.path.join(crudos, vid + '.mp4'), '-an', '-vf', vf,
+              'minterpolate=fps=30:mi_mode=mci:mc_mode=aobmc:vsbmc=1,format=gray,eq=contrast=1.12:brightness=-0.03:gamma=%s'
+              % (w, h, w, h, LENTO, g))
+        # (`-ss` y `-t` ANTES de `-i`, como opciones de la entrada: el tramo arranca en 0 y dura 1,5 s del original. Después
+        # de `-i` cortaban lo ya estirado, a la mitad, y los fundidos quedaban fuera de tiempo: el HD salió de 3 s y 234 KB)
+        correr(['-ss', str(desde), '-t', str(SEG), '-i', os.path.join(crudos, '%02d.mp4' % i), '-an', '-vf', vf,
                 '-c:v', 'libx264', '-crf', '14', '-preset', 'fast', '-pix_fmt', 'yuv420p', p])
         partes.append(p)
-        print(i, quien)
+        print(i, quien, 'gamma %s' % g if g > 1 else '')
     ins, fil, prev, off = [], [], '0:v', 0.0
     for p in partes:
         ins += ['-i', p]
@@ -94,13 +132,14 @@ def armar(dst):
         off += SEG * LENTO - XF
         fil.append('[%s][%d:v]xfade=transition=fade:duration=%s:offset=%.3f[x%d]' % (prev, i, XF, off, i))
         prev = 'x%d' % i
-    final = os.path.join(dst, 'montaje.mp4')
+    final = os.path.join(dst, nombre + '.mp4')
     # el grano NO va en el video: lo pone la página encima (en el video, el grano es lo que más pesa)
-    correr(ins + ['-filter_complex', ';'.join(fil), '-map', '[%s]' % prev, '-an', '-c:v', 'libx264', '-crf', '34',
+    correr(ins + ['-filter_complex', ';'.join(fil), '-map', '[%s]' % prev, '-an', '-c:v', 'libx264', '-crf', str(crf),
                   '-preset', 'veryslow', '-tune', 'grain', '-pix_fmt', 'yuv420p', '-movflags', '+faststart', final])
-    correr(['-ss', '1', '-i', final, '-frames:v', '1', '-q:v', '4', os.path.join(dst, 'poster.jpg')])
-    for n, t in enumerate(QUIETOS, 1):
-        correr(['-ss', str(t), '-i', final, '-frames:v', '1', '-q:v', '3', os.path.join(dst, 'quieto%d.jpg' % n)])
+    if not hd:
+        correr(['-ss', '1', '-i', final, '-frames:v', '1', '-q:v', '4', os.path.join(dst, 'poster.jpg')])
+        for n, t in enumerate(QUIETOS, 1):
+            correr(['-ss', str(t), '-i', final, '-frames:v', '1', '-q:v', '3', os.path.join(dst, 'quieto%d.jpg' % n)])
     for p in partes:
         os.remove(p)
     print('listo: %s (%d KB). Los crudos quedan en %s: bórralos al terminar' % (final, os.path.getsize(final) // 1024, crudos))
@@ -122,7 +161,7 @@ def subir(src):
     s = requests.Session()
     s.headers['Authorization'] = 'Bearer ' + token()
     tipos = {'.mp4': 'video/mp4', '.jpg': 'image/jpeg', '.json': 'application/json'}
-    archivos = ['montaje.mp4', 'poster.jpg'] + ['quieto%d.jpg' % n for n in range(1, len(QUIETOS) + 1)]
+    archivos = ['montaje.mp4', 'montaje-hd.mp4', 'poster.jpg'] + ['quieto%d.jpg' % n for n in range(1, len(QUIETOS) + 1)]
     faltan = [a for a in archivos if not os.path.exists(os.path.join(src, a))]
     if faltan:
         sys.exit('faltan en %s: %s' % (src, ', '.join(faltan)))
@@ -139,7 +178,7 @@ def subir(src):
 
 if __name__ == '__main__':
     if '--armar' in sys.argv:
-        armar(sys.argv[sys.argv.index('--armar') + 1])
+        armar(sys.argv[sys.argv.index('--armar') + 1], hd='--hd' in sys.argv)
     elif '--subir' in sys.argv:
         subir(sys.argv[sys.argv.index('--subir') + 1])
     else:

@@ -27,11 +27,7 @@
 .bv-marca img{display:block;width:auto;height:30px}
 .bv-marca i{width:2px;height:20px;background:rgba(246,246,246,.5)}
 .bv-marca b{font:900 20px/1 Archivo,sans-serif;font-stretch:125%;color:#F6F6F6}
-.bv-creditos{margin:0;max-width:520px;color:rgba(246,246,246,.55);font:600 11px/1.35 "Barlow Condensed",sans-serif;letter-spacing:.08em;
-  text-transform:uppercase;text-align:right;text-wrap:balance}
-.bv-creditos .corto{display:none}
-@media (max-width:899.98px){.bv-creditos{max-width:220px;font-size:10px;line-height:1.3}.bv-creditos .todo{display:none}.bv-creditos .corto{display:inline}}
-@media (min-width:900px){.bv-arriba{padding:22px max(56px,calc((100% - 1180px) / 2)) 0}.bv-marca img{height:42px}.bv-marca i{height:28px}
+@media (min-width:900px){.bv-arriba{padding:22px max(56px,calc((100% - 1320px) / 2)) 0}.bv-marca img{height:42px}.bv-marca i{height:28px}
   .bv-marca b{font-size:28px}}
 
 /* ── las piezas de siempre ── */
@@ -44,14 +40,22 @@
 .bv-t>span{display:block;position:relative}
 .bv-t2{color:#E41373}
 .bv-l{display:inline-block;animation:bv-golpe .55s var(--ease-out) var(--d,0ms) both}
-.bv-t-bl{display:block;animation:bv-apaga 1.1s var(--ease-out) 1.5s both}
+/* 🎞️ EL PASO DEL BLANCO A LA TEXTURA, SIN SALTOS (Dlx, 12/11/2026: «que el efecto de transición, ese de la misma textura,
+   no sea tan brusco o inesperado»). Antes el blanco se apagaba mientras la textura recién entraba: medio segundo con las
+   letras a medias, transparentes; y de un cuadro al otro eran 0,7 s. Ahora la textura entra POR DEBAJO con el blanco
+   entero (1,4 → 3,2 s) y el blanco se va recién cuando ella ya está (2,8 → 4 s); de un cuadro al siguiente, un fundido
+   de 1,8 s, y el que sale ESPERA a que el nuevo esté entero para irse (cruzados a la vez, los dos quedaban a media
+   opacidad y las letras se veían transparentes un instante: medido cuadro por cuadro); y la textura va un poco más
+   clara, así el salto desde el blanco es menor. (Probé en oro, Dlx: «no me convence, el blanco queda mejor») */
+.bv-t-bl{display:block;animation:bv-apaga 1.2s ease-in-out 2.8s both}
 .bv-t-rel{position:absolute;left:0;top:0;white-space:nowrap;color:transparent;-webkit-background-clip:text;background-clip:text;
+  background-image:linear-gradient(rgba(246,246,246,.22),rgba(246,246,246,.22)),var(--q);background-blend-mode:screen;
   background-size:180% auto;background-repeat:no-repeat;-webkit-text-stroke:1.5px rgba(246,246,246,.55);opacity:0;
   animation:bv-relleno 18s linear infinite both}
-.bv-t-rel.r1{animation-delay:1.5s}.bv-t-rel.r2{animation-delay:7.5s}.bv-t-rel.r3{animation-delay:13.5s}
+.bv-t-rel.r1{animation-delay:1.4s}.bv-t-rel.r2{animation-delay:7.4s}.bv-t-rel.r3{animation-delay:13.4s}
 @keyframes bv-golpe{from{opacity:0;transform:scale(1.9) translate3d(0,-10px,0)}to{opacity:1;transform:none}}
 @keyframes bv-apaga{from{opacity:1}to{opacity:0}}
-@keyframes bv-relleno{0%{opacity:0;background-position:0% 30%}4%{opacity:1}33%{opacity:1}37%{opacity:0;background-position:60% 50%}100%{opacity:0;background-position:60% 50%}}
+@keyframes bv-relleno{0%{opacity:0;background-position:0% 30%}10%{opacity:1}43.333%{opacity:1}53.333%{opacity:0;background-position:60% 50%}100%{opacity:0;background-position:60% 50%}}
 .bv-t.chico{font-size:clamp(20px,5.6vw,36px);white-space:normal;text-wrap:balance}
 .bv-p{margin:0;max-width:46ch;color:#C9C9C4;font:500 16px/1.5 Archivo,sans-serif;text-wrap:pretty}
 .bv-sil{display:grid;place-items:center;width:44px;aspect-ratio:300/405;background:#16161A;border:2px solid #E41373;border-radius:3px;
@@ -69,8 +73,6 @@
 .bv-svs>span>small{grid-column:1/-1}
 .bv-svs b{font:900 clamp(26px,7cqi,40px)/1 Archivo,sans-serif;font-variant-numeric:tabular-nums;color:#F6F6F6}
 .bv-svs small{font:700 13px/1.1 "Barlow Condensed",sans-serif;letter-spacing:.14em;text-transform:uppercase;color:#A5A5A0}
-.bv-svs-l{display:flex;padding-left:8px}
-.bv-svs-l img{width:26px;height:26px;margin-left:-8px;border-radius:50%;border:2px solid #030304;background:#16161A;object-fit:cover}
 
 /* ── la pista: una página por pantalla, de costado ── */
 .bv-pista{position:relative;z-index:1;flex:1 1 auto;min-height:0;display:flex;overflow-x:auto;overflow-y:hidden;
@@ -80,11 +82,6 @@
   display:grid;grid-template-columns:minmax(0,1fr);align-content:start;gap:18px;padding:20px 16px 16px}
 .bv-pag-tx{container-type:inline-size;display:grid;gap:12px;align-content:start;min-width:0}
 .bv-pag-vis{position:relative;isolation:isolate;display:grid;justify-items:center;align-content:center;min-width:0;order:-1}
-/* el número de la página, enorme y sólo el contorno, detrás de la imagen: al deslizar va más lento que todo */
-.bv-num{position:absolute;z-index:-1;right:0;top:-6px;font:900 clamp(110px,38vw,170px)/.8 Archivo,sans-serif;letter-spacing:-.04em;
-  color:transparent;-webkit-text-stroke:2px #34343D;pointer-events:none;user-select:none}
-/* (en la compu asoma por arriba a la derecha de la imagen: centrado quedaba entero detrás de los paneles) */
-@media (min-width:900px){.bv-num{top:auto;bottom:calc(100% - .42em);right:-2%;font-size:clamp(150px,15vw,240px)}}
 .bv-kick{justify-self:start;font:700 14px/1 "Barlow Condensed",sans-serif;letter-spacing:.16em;text-transform:uppercase;color:#E41373}
 .bv-h{margin:0;font:900 clamp(28px,8vw,56px)/.95 Archivo,sans-serif;font-stretch:118%;text-transform:uppercase;text-wrap:balance}
 .bv-puntos{display:grid;gap:10px;margin:4px 0 0;padding:0;list-style:none}
@@ -94,7 +91,7 @@
 /* en la compu: el texto a la izquierda y lo de verdad a la derecha, centrados en la altura */
 @media (min-width:900px){
   .bv-pag{grid-template-columns:minmax(0,1fr) minmax(0,1fr);align-content:center;align-items:center;gap:56px;
-    padding:32px max(56px,calc((100% - 1180px) / 2))}
+    padding:32px max(56px,calc((100% - 1320px) / 2))}
   .bv-pag-vis{order:0}
   .bv-h{font-size:clamp(32px,3.1vw,46px)}
 }
@@ -107,7 +104,11 @@
 .bv-cartas{position:relative;width:100%;height:clamp(150px,26svh,240px);perspective:900px}
 .bv-atras{position:absolute;bottom:4%;left:50%;width:clamp(62px,10.5svh,96px);aspect-ratio:300/438;filter:grayscale(1) brightness(.5);
   animation:bv-atras .7s var(--ease-out) .5s both}
-.bv-atras img{display:block;width:100%;height:100%;object-fit:contain;animation:bv-flota 7s ease-in-out infinite}
+.bv-atras-f{position:relative;display:block;width:100%;height:100%;animation:bv-flota 7s ease-in-out infinite}
+/* (las tres parejas apiladas: se ve la de la carta de adelante, y cambian con un fundido) */
+.bv-atras img{position:absolute;left:0;bottom:0;display:block;width:100%;height:auto;opacity:0;transition:opacity .6s ease}
+.bv-atras img.on{opacity:1}
+.bv-atras img.afiche{left:-6%;width:112%}
 .bv-atras.a0{transform:translateX(-128%) rotate(-12deg)}
 .bv-atras.a1{transform:translateX(28%) rotate(12deg)}
 .bv-rota{position:absolute;left:50%;bottom:0;width:clamp(96px,17svh,150px);aspect-ratio:300/438;transform:translateX(-50%);
@@ -189,30 +190,21 @@
 .bv-moneda b{color:#F6F6F6;font-weight:900}
 
 /* ── la barra de abajo, fija: los puntos y las flechas, y el botón ── */
-.bv-barra{position:relative;z-index:2;flex:none;display:grid;gap:12px;border-top:2px solid #E41373;background:#0B0B0E;
-  padding:12px 16px calc(12px + env(safe-area-inset-bottom,0px))}
+/* 🎬 SIN BARRA (12/11/2026, la A): sin fondo ni línea, sobre el video; la viñeta del fondo ya oscurece los bordes */
+.bv-barra{position:relative;z-index:2;flex:none;display:grid;gap:12px;
+  padding:12px 16px calc(14px + env(safe-area-inset-bottom,0px))}
 .bv-nav{display:flex;align-items:center;justify-content:center;gap:8px;min-width:0}
-.bv-fl{flex:none;display:grid;place-items:center;width:44px;height:44px;border:2px solid #3A3A42;background:#030304;color:#F6F6F6;border-radius:3px;cursor:pointer}
-.bv-fl svg{transition:transform .16s var(--ease-out)}
-.bv-fl.izq svg{transform:rotate(180deg)}
-@media (hover:hover) and (pointer:fine){.bv-fl.der:not(:disabled):hover svg{transform:translateX(3px)}.bv-fl.izq:not(:disabled):hover svg{transform:rotate(180deg) translateX(3px)}}
-.bv-fl:not(:disabled):active{transform:scale(.94)}
-.bv-fl{transition:transform .12s var(--ease-out),border-color .16s ease}
-.bv-fl:disabled{opacity:.3;cursor:default}
-@media (hover:hover) and (pointer:fine){.bv-fl:not(:disabled):hover{border-color:#F6F6F6}}
-/* la flecha de seguir llama la atención dos veces al llegar, y se queda quieta (nada que no termina) */
-.bv-fl.llama{border-color:#E41373;animation:bv-llama .9s ease-in-out 1.6s 2}
 .bv-puntos-nav{display:flex;align-items:center;gap:2px;margin:0;padding:0;list-style:none;min-width:0}
 .bv-puntos-nav button{display:flex;align-items:center;gap:8px;min-height:44px;padding:0 6px;border:0;background:none;color:#9A9AA6;cursor:pointer;
   font:700 14px/1 "Barlow Condensed",sans-serif;letter-spacing:.06em;text-transform:uppercase;white-space:nowrap}
-.bv-puntos-nav i{display:block;width:10px;height:10px;border-radius:50%;background:#3A3A42;transition:transform .22s var(--ease-out),background-color .22s ease}
+.bv-puntos-nav i{display:block;width:10px;height:10px;border-radius:50%;background:rgba(246,246,246,.35);transition:transform .22s var(--ease-out),background-color .22s ease}
 .bv-puntos-nav .on{color:#F6F6F6}
 .bv-puntos-nav .on i{background:#E41373;transform:scale(1.3)}
 .bv-puntos-nav .on span{position:relative;animation:bv-lbl .28s var(--ease-out) both}
 /* ⏩ pasa sola cada 10 s: la barrita celeste se llena en ese tiempo (y se va en cuanto la persona toca algo) */
 .bv-avance{position:absolute;left:0;right:0;bottom:-7px;height:3px;background:#29B298;transform-origin:left center;animation:bv-avance 10s linear both}
 @keyframes bv-avance{from{transform:scaleX(0)}to{transform:scaleX(1)}}
-@media (hover:hover) and (pointer:fine){.bv-puntos-nav button:not(.on):hover i{background:#6A6A74}}
+@media (hover:hover) and (pointer:fine){.bv-puntos-nav button:not(.on):hover i{background:rgba(246,246,246,.7)}}
 /* sólo el nombre de la página en la que estás: los seis no entran al lado del botón (medido: 620 px en 578) */
 .bv-puntos-nav button:not(.on) span{display:none}
 .bv-acc{display:grid;justify-items:center;gap:6px;width:100%}
@@ -223,13 +215,12 @@
 .bv-si svg{flex:none}
 @media (hover:hover) and (pointer:fine){.bv-si:hover{background:#F0247F}}
 .bv-si:active{transform:translate(4px,4px);box-shadow:1px 1px 0 #29B298}
-.bv-si:focus-visible,.bv-luego:focus-visible,.bv-fl:focus-visible,.bv-puntos-nav button:focus-visible{outline:3px solid #29B298;outline-offset:3px}
-.bv-nota{max-width:46ch;color:#9A9AA6;font:500 13px/1.4 Archivo,sans-serif}
+.bv-si:focus-visible,.bv-luego:focus-visible,.bv-puntos-nav button:focus-visible{outline:3px solid #29B298;outline-offset:3px}
 .bv-luego{min-height:44px;border:0;background:none;color:#C9C9C4;font:700 15px/1 Archivo,sans-serif;text-decoration:underline;text-underline-offset:4px;
   padding:10px 14px;cursor:pointer}
 @media (hover:hover) and (pointer:fine){.bv-luego:hover{color:#F6F6F6}}
 @media (min-width:900px){
-  .bv-barra{grid-template-columns:minmax(0,1fr) auto;align-items:center;gap:24px;padding:14px max(56px,calc((100% - 1180px) / 2)) calc(14px + env(safe-area-inset-bottom,0px))}
+  .bv-barra{grid-template-columns:minmax(0,1fr) auto;align-items:center;gap:24px;padding:10px max(56px,calc((100% - 1320px) / 2)) calc(30px + env(safe-area-inset-bottom,0px))}
   .bv-nav{justify-content:flex-start}
   .bv-acc{grid-template-columns:auto auto;align-items:center;justify-items:start;gap:18px;width:auto}
   .bv-acc-2{justify-items:start;text-align:left;max-width:240px}
@@ -244,7 +235,6 @@
   .bv-acc{gap:0}
   .bv-si{min-height:52px;padding:12px 18px;font-size:17px}
   .bv-luego{min-height:40px;padding:8px 12px}
-  .bv-nota{font-size:12px;line-height:1.35}
   .bv-pag{gap:14px;padding:14px 16px 12px}
   /* centrada en la altura con márgenes automáticos: si alguna vez no entra, no se corta arriba (`align-content:center` sí cortaba) */
   .bv-pag{display:flex;flex-direction:column}
@@ -257,7 +247,6 @@
   .bv-v-liga{padding-top:14px}
   /* 📱 la portada nueva (12/11/2026) se pasaba 82 px en 390 × 844: la fila de números se partía en dos por los logos.
      En el teléfono, el número de servidores sin los logos, y las cartas un poco más chicas */
-  .bv-svs-l{display:none}
   .bv-svs{gap:8px 24px}
   .bv-svs b{font-size:28px}
   .bv-cifras-p{gap:10px}
@@ -275,7 +264,7 @@
 }
 /* un teléfono bajito (un iPhone SE, 667 de alto): sin la nota, sin los rangos sueltos ni el número de atrás, todo más chico */
 @media (max-width:899.98px) and (max-height:760px){
-  .bv-nota,.bv-rangos,.bv-num{display:none}
+  .bv-rangos{display:none}
   .bv-cartas{height:clamp(110px,19svh,150px)}
   /* (más angostas: a 15 y 18 svh la del medio medía 175 de alto en una caja de 127 y asomaba por arriba) */
   .bv-atras{width:clamp(52px,9svh,72px)}
@@ -322,10 +311,27 @@
 @keyframes bv-carta{from{opacity:0;transform:var(--t) translateY(70px) scale(.86)}to{opacity:1;transform:var(--t)}}
 @keyframes bv-sello{from{opacity:0;transform:rotate(-3deg) scale(1.4)}to{opacity:1;transform:rotate(-3deg)}}
 @keyframes bv-sube{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:none}}
-@keyframes bv-llama{50%{transform:translateX(5px)}}
 @keyframes bv-fuera{to{opacity:0;transform:scale(1.04)}}
 @media (prefers-reduced-motion:reduce){.bv,.bv *:not(.bv-e){animation:none!important;transition:none!important}
   .bv-pag.vista .bv-e{animation:bv-fundido .2s ease both!important}}
 .calma .bv,.calma .bv *:not(.bv-e){animation:none!important;transition:none!important}
 .calma .bv-pag.vista .bv-e{animation:bv-fundido .2s ease both!important}
 @keyframes bv-fundido{from{opacity:0}to{opacity:1}}
+
+/* 🖥️ LA PORTADA EN UNA PANTALLA GRANDE (12/11/2026, Dlx con una captura a 1454 × 860: «mira mi resolución»). Con el
+   ancho útil de 1180 y las dos columnas iguales, el título medía 480 px y la carta 200 sobre 1454: todo chico y un mar
+   de video alrededor. Desde 1200 px, la columna del texto es la ancha, el título crece con ella hasta 96 px y la carta
+   hasta 270 */
+@media (min-width:1200px){
+  .bv-pag-liga{grid-template-columns:minmax(0,1.15fr) minmax(0,.85fr);gap:40px}
+  .bv-pag-liga .bv-t{font-size:clamp(28px,10.2cqi,96px)}
+  .bv-pag-liga .bv-p{font-size:18px;max-width:40ch}
+  .bv-miembros b{font-size:clamp(40px,11cqi,80px)}
+  .bv-miembros small{font-size:17px}
+  .bv-svs b{font-size:clamp(26px,7cqi,48px)}
+  .bv-svs small{font-size:14px}
+  .bv-pag-liga .bv-cartas{height:clamp(300px,52vh,520px)}
+  .bv-rota{width:clamp(170px,17.5vw,270px)}
+  .bv-atras{width:clamp(120px,12vw,180px)}
+  .bv-rota-pie{font-size:17px}
+}
