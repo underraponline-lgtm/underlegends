@@ -114,6 +114,23 @@ function useCuenta(meta, demora = 1200, dura = 1300) {
 // quedaba arriba, detrás de la carta)
 // 🃏 Y LAS DE ATRÁS SON DEL MISMO RANKING (Dlx, 12/11/2026: «cuando se cambia de ranking de tarjeta, las 2 de atrás, o
 // sea el 2.º y el 3.º, no cambian, se quedan en temporada»): cada carta trae su #2 y su #3 (`atras`), y cambian con ella
+// 👑 LA CORONA DEL #1 (Dlx, 12/11/2026: «una corona dorada del color del oro del TAG de cada tarjeta arriba de la tarjeta,
+// pero con un estilo callejero y algo curvado»; de las tres de https://claude.ai/artifact/JUGWkmtqjS6QDKA68xHbEk,
+// «concuerdo con el primero pero que sea más pequeño»). Trazo de marcador con su sombra oscura, tres puntas
+// desparejas y la base curvada. ⚠️ El oro es el del TAG de las cartas (`.lg.t1` de 01_Temporada/normal_v3.css y el
+// punto de campeón de la Competitiva): #FFD024, su luz #FFF0A8 y su tinta #2A1E00. Si el TAG cambia de oro, cambia acá
+const CORONA = 'M14 70 L18 26 L44 52 L69 10 L95 50 L123 22 L126 70 Q70 86 14 70 Z';
+function Corona({ cls }) {
+  return (
+    <svg className={cls} viewBox="0 0 140 92" aria-hidden="true">
+      <path d={CORONA} fill="none" stroke="#2A1E00" strokeWidth="11" strokeLinejoin="round" strokeLinecap="round" transform="translate(3 3)" />
+      <path d={CORONA} fill="none" stroke="#FFD024" strokeWidth="8" strokeLinejoin="round" strokeLinecap="round" />
+      <path d="M17 66 L20 30 L45 57 L68 15 L96 55 L121 27 L123 66" fill="none" stroke="#FFF0A8" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round" opacity=".7" />
+      <circle cx="18" cy="20" r="5" fill="#FFD024" /><circle cx="69" cy="5" r="5.5" fill="#FFD024" /><circle cx="124" cy="16" r="5" fill="#FFD024" />
+    </svg>
+  );
+}
+
 function Rota({ cartas }) {
   const [i, setI] = useState(0);
   useEffect(() => {
@@ -131,20 +148,20 @@ function Rota({ cartas }) {
         ))}
         <div className="bv-rota">{cartas.map((c, k) => (
           <span key={c.id} className={'bv-rota-c ' + c.forma + (k === on ? ' on' : k < on ? ' fue' : '')}><img alt={c.alt} src={c.src} /></span>
-        ))}</div>
+        ))}<Corona key={on} cls={'bv-corona ' + cartas[on].forma} /></div>
       </div>
       <p className="bv-rota-pie" key={on}><b>{cartas[on].que}</b> · {cartas[on].quien}</p>
     </>
   );
 }
 
-function Pagina({ id, vista, sello, titulo, etiqueta, texto, puntos, extra, visual, primera, tit }) {
+function Pagina({ id, vista, sello, titulo, etiqueta, texto, puntos, extra, visual, primera, tit, relleno }) {
   const o = primera ? 8 : 0;
   return (
     <section className={'bv-pag bv-pag-' + id + (vista ? ' vista' : '')} aria-roledescription="página" aria-label={sello}>
       <div className="bv-pag-tx">
         {primera ? <span className="bv-sello">{sello}</span> : <span {...e(0, 'bv-kick')}>{sello}</span>}
-        {primera ? <h1 className="bv-t" id="bv-t" tabIndex={-1} ref={tit} aria-label={etiqueta}>{titulo}</h1> : <h2 {...e(1, 'bv-h')}>{titulo}</h2>}
+        {primera ? <h1 className="bv-t" id="bv-t" tabIndex={-1} ref={tit} aria-label={etiqueta}>{titulo}</h1> : <h2 {...e(1, 'bv-h' + (relleno ? ' relleno' : ''))} style={relleno ? { '--i': 1, '--q': relleno } : undefined}>{titulo}</h2>}
         <p {...e(o + 2, 'bv-p')}>{texto}</p>
         {extra ? <div {...e(o + 3)}>{extra}</div> : null}
         {puntos ? <ul className="bv-puntos">{puntos.map(([ico, t], k) => <li key={t} {...e(o + 3 + k)}><Ico n={ico} t={18} /><span>{t}</span></li>)}</ul> : null}
@@ -324,10 +341,15 @@ function Paso1({ liga, unirme, cerrar, tit }) {
     ) : null,
     ranking: ofi.length ? (
       <div {...e(1, 'bv-v-lista')}>
-        <p className="bv-v-t">La tabla de hoy</p>
+        {/* 🥊 LA CARTELERA (Dlx, 12/11/2026, eligiendo de la maqueta: «me gusta que esté transparente, para que se vea el
+            video»): sin caja, números huecos, el #1 en oro. ⚠️ EL NÚMERO GRANDE ES EL OVR: la tabla se ordena por OVR
+            (`oficiales()` va por `pos`) y mostraba los puntos, así que Erian (533.790) salía debajo de PichulaMc
+            (479.354) y parecía un error. Los puntos van chicos, debajo del nombre */}
+        <p className="bv-v-t"><span>La tabla de hoy</span><span>OVR</span></p>
         <ol className="bv-tabla">{ofi.slice(0, 5).map((f, k) => (
-          <li key={f.k || f.n} {...e(3 + k)}><span className="bv-pos">{f.pos}</span><b>{limpio(f.n)}</b>
-            {f.rg ? <i className="bv-rg" style={{ '--c': f.rgc || liga.colorRg(f.rg) }}>{f.rg}</i> : null}<span className="bv-pts">{num(f.pts || 0)}</span></li>
+          <li key={f.k || f.n} {...e(3 + k)}><span className="bv-pos">{f.pos}</span>
+            <span>{k === 0 ? <b><Corona cls="bv-mini-cor" /> {limpio(f.n)}</b> : <b>{limpio(f.n)}</b>}<small>{num(f.pts || 0)} pts</small></span>
+            {f.rg ? <i className="bv-rg" style={{ '--c': f.rgc || liga.colorRg(f.rg) }}>{f.rg}</i> : null}<span className="bv-ovr">{f.ovr != null ? f.ovr : '—'}</span></li>
         ))}</ol>
         {rangos.length ? <p {...e(8, 'bv-rangos')} aria-label="Los rangos, de arriba a abajo">{rangos.map((r) => <i key={r.r} style={{ '--c': r.color }}>{r.r}</i>)}</p> : null}
       </div>
@@ -342,10 +364,10 @@ function Paso1({ liga, unirme, cerrar, tit }) {
     ),
     gente: (
       <div {...e(1, 'bv-v-lista')}>
-        {crews.length ? <><p className="bv-v-t">Las crews de arriba</p>
+        {crews.length ? <><p className="bv-v-t"><span>Las crews de arriba</span><span>Puntos</span></p>
           <ol className="bv-crews">{crews.map((c, i) => (
             <li key={c.clave || c.crew} {...e(3 + i)}><span className="bv-pos">{i + 1}</span>{c.logo ? <img alt="" src={srcLogo(c.logo)} /> : <i className="bv-sinlogo" aria-hidden="true" />}
-              <span><b>{limpio(c.crew)}</b><small>{c.n} raperos</small></span><span className="bv-pts">{num(c.pts || 0)}</span></li>
+              <span><b>{limpio(c.crew)}</b><small>{c.n} raperos</small></span><span className="bv-ovr chico">{num(c.pts || 0)}</span></li>
           ))}</ol></> : null}
         <p {...e(7, 'bv-cifras')}>{com.personas ? <span><b>{num(com.personas)}</b> personas en los servidores</span> : null}
           {ligas.length ? <span><b>{ligas.length}</b> ligas de los servidores</span> : null}</p>
@@ -401,7 +423,8 @@ function Paso1({ liga, unirme, cerrar, tit }) {
       </div>
       <div className="bv-pista" ref={pista} tabIndex={-1}>
         {paginas.map((p, i) => (
-          <Pagina key={p.id} {...p} vista={vistas.has(i)} primera={i === 0} tit={tit} visual={visuales[p.id]} />
+          <Pagina key={p.id} {...p} vista={vistas.has(i)} primera={i === 0} tit={tit} visual={visuales[p.id]}
+            relleno={i ? 'url(' + base + 'quieto' + (((i - 1) % 3) + 1) + '.jpg' + VV + ')' : null} />
         ))}
       </div>
       {/* 🔒 LA BARRA DE ABAJO NO SE MUEVE: Dlx, «que siempre aparezca la opción de UNIRME CON DISCORD o en otro momento».

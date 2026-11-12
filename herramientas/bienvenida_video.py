@@ -66,15 +66,17 @@ SEG, LENTO, XF, W, H = 1.5, 2.0, 0.4, 640, 360   # 1,5 s del original, cámara l
 # Se mide el gris medio de cada tramo y, si queda por debajo de LUZ, se le sube con gamma hasta ahí: los claros no se
 # tocan, y la gamma levanta los medios sin quemar las luces (subir el brillo parejo lavaba los negros)
 LUZ, GAMMA_MAX = 92, 1.9
-# 🎞️ LA CÁMARA LENTA REPITE CUADROS REALES, NO INVENTA (Dlx, 12/11/2026: «el video está a veces distorsionado»). Hasta
-# la 4.64 era `minterpolate` en modo `mci`: inventa el cuadro de en medio estimando el movimiento, y donde algo se mueve
-# rápido contra el fondo —una mano, un brazo, una cara que gira— lo dibuja estirado o partido. Comparadas sobre el mismo
-# tramo de SOL, cuadro por cuadro: `mci` con `aobmc` (el de antes) y con `obmc` deforman las manos, `blend` las deja
-# dobles (fantasmas), y repetir cada cuadro real sale nítido en todos. Cada tramo sale a 15 cuadros reales por
-# segundo, cada uno dos veces (la cámara lenta «a pasos» del cine), salvo los grabados a 60, que tienen cuadros de
-# sobra y salen a 30 reales: cámara lenta de verdad. Por eso la lentitud es de cada tramo (`lento_de()`) y el
-# pedazo que se toma del original también: todos duran SEG × LENTO = 3 s en el montaje
-CUADROS_REALES = 15
+# 🎞️ LA CÁMARA LENTA: ×2, Y LOS CUADROS QUE FALTAN LOS INVENTA RIFE (Dlx, 12/11/2026, viendo las cuatro maneras
+# lado a lado: «haz el RIFE ×2 entonces»). El camino, porque cada paso se cayó por algo que se ve:
+#   · hasta la 4.64, `minterpolate` en modo `mci`: estiraba manos y caras al moverse rápido («a veces distorsionado»);
+#   · 4.66–4.68, repetir cada cuadro real: nada se deforma, pero los grabados a 30 quedan en 15 cuadros reales por
+#     segundo y se nota el salto («se nota bastante, y más en el primer video»);
+#   · desde ahora, RIFE (rife-ncnn-vulkan, IA en la tarjeta de video): ×2 fluido, y en el tramo de las manos que se
+#     deformaba la mano avanza entera cuadro a cuadro. Comparado contra ×1,25 sin inventar y RIFE ×1,6.
+# Los grabados a 60 no pasan por RIFE: tienen los cuadros de verdad. Revisado antes de usarlo (12/11, con el sí de
+# Dlx): un .exe que sólo usa Windows y Vulkan, sin red ni scripts. Vive fuera del repo, en RIFE_DIR
+RIFE_DIR = os.environ.get('RIFE_DIR') or os.path.join(os.environ.get('LOCALAPPDATA', ''), 'rife-ncnn-vulkan-20221029')
+RIFE_MODELO = 'rife-v4.6'
 # ⚠️ AL REARMAR, subir `VV` en web/src/bienvenida.jsx: se sube con el mismo nombre y si no, se sigue viendo el de antes
 QUIETOS = (7.4, 20.2, 42.6)                         # los cuadros que rellenan «LIGA GLOBAL»
 CREDITOS = sorted({t[3] for t in TRAMOS}, key=lambda c: (-sum(1 for t in TRAMOS if t[3] == c), c))
@@ -110,9 +112,25 @@ def fps_de(src):
     return float(a) / float(b or 1) if a else 30.0
 
 
-def lento_de(fps):
-    """Cuánto se estira un tramo: los de 60 ×2 (30 cuadros reales), los demás hasta CUADROS_REALES por segundo."""
-    return 2.0 if fps >= 50 else round(fps / CUADROS_REALES, 3)
+def rife(src, desde, vf_caja, dst_mp4, vf_tono):
+    """El tramo con los cuadros intermedios de RIFE: SEG del original, hasta SEG × LENTO × 30 cuadros (3 s a 30)."""
+    import shutil, tempfile
+    exe = os.path.join(RIFE_DIR, 'rife-ncnn-vulkan.exe')
+    if not os.path.exists(exe):
+        sys.exit('🔴 falta RIFE en %s (o RIFE_DIR): sin él la cámara lenta vuelve a saltar' % RIFE_DIR)
+    tmp = tempfile.mkdtemp(prefix='rife_')
+    ent, sal = os.path.join(tmp, 'in'), os.path.join(tmp, 'out')
+    os.makedirs(ent); os.makedirs(sal)
+    try:
+        correr(['-ss', str(desde), '-t', str(SEG), '-i', src, '-an', '-vf', vf_caja, os.path.join(ent, '%06d.png')])
+        r = subprocess.run([exe, '-i', ent, '-o', sal, '-n', str(int(round(SEG * LENTO * 30))), '-m', os.path.join(RIFE_DIR, RIFE_MODELO)],
+                           capture_output=True, text=True, cwd=RIFE_DIR)
+        if r.returncode or not os.listdir(sal):
+            sys.exit('🔴 RIFE falló: ' + (r.stderr or r.stdout)[-600:])
+        correr(['-framerate', '30', '-i', os.path.join(sal, '%08d.png'), '-vf', vf_tono,
+                '-c:v', 'libx264', '-crf', '14', '-preset', 'fast', '-pix_fmt', 'yuv420p', dst_mp4])
+    finally:
+        shutil.rmtree(tmp, ignore_errors=True)
 
 
 def gamma_para(y):
@@ -149,17 +167,19 @@ def armar(dst, grande=False):
         # el pedazo arranca 3 s antes del tramo (o en el 0, si el tramo empieza antes del segundo 3)
         desde = min(3, t)
         src = os.path.join(crudos, '%02d.mp4' % i)
-        lento = lento_de(fps_de(src))
-        seg = round(SEG * LENTO / lento, 3)               # el pedazo del original que, estirado, dura 3 s
+        fps = fps_de(src)
         g = gamma_para(luz(src, desde))
-        vf = ('scale=%d:%d:force_original_aspect_ratio=increase,crop=%d:%d,setpts=%s*PTS,fps=30,'
-              'format=gray,eq=contrast=1.12:brightness=-0.03:gamma=%s' % (w, h, w, h, lento, g))
-        # (`-ss` y `-t` ANTES de `-i`, como opciones de la entrada: el tramo arranca en 0 y dura 1,5 s del original. Después
-        # de `-i` cortaban lo ya estirado, a la mitad, y los fundidos quedaban fuera de tiempo: el HD salió de 3 s y 234 KB)
-        correr(['-ss', str(desde), '-t', str(seg), '-i', src, '-an', '-vf', vf,
-                '-c:v', 'libx264', '-crf', '14', '-preset', 'fast', '-pix_fmt', 'yuv420p', p])
+        caja = 'scale=%d:%d:force_original_aspect_ratio=increase,crop=%d:%d' % (w, h, w, h)
+        tono = 'format=gray,eq=contrast=1.12:brightness=-0.03:gamma=%s' % g
+        if fps >= 50:
+            # (`-ss` y `-t` ANTES de `-i`, como opciones de la entrada: el tramo arranca en 0 y dura 1,5 s del original.
+            # Después de `-i` cortaban lo ya estirado, a la mitad, y los fundidos quedaban fuera de tiempo)
+            correr(['-ss', str(desde), '-t', str(SEG), '-i', src, '-an', '-vf', '%s,setpts=%s*PTS,fps=30,%s' % (caja, LENTO, tono),
+                    '-c:v', 'libx264', '-crf', '14', '-preset', 'fast', '-pix_fmt', 'yuv420p', p])
+        else:
+            rife(src, desde, caja, p, tono)
         partes.append(p)
-        print(i, quien, '×%s' % lento, 'gamma %s' % g if g > 1 else '')
+        print(i, quien, '%g cps' % fps, 'real' if fps >= 50 else 'RIFE', 'gamma %s' % g if g > 1 else '')
     ins, fil, prev, off = [], [], '0:v', 0.0
     for p in partes:
         ins += ['-i', p]
