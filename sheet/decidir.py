@@ -2082,6 +2082,9 @@ SIN_CAMPEON = 'Sin campeón: los dos finalistas cobran el promedio'
 CAMPEON_PROMEDIO = '(sin campeón)'
 #: los días que espera R24 desde la fecha del evento
 SIN_CAMPEON_DIAS = 7
+#: ⏳ R25 (Dlx, 12/11/2026, a «¿cierro solas las de octavos y cuartos que llevan 7 días, aunque el bot no haya podido
+#: preguntar?»: «28 días»): los días desde la fecha del evento
+NADIE_DIAS = 28
 #: qué hace cada regla, en palabras: va con cada pregunta que cerró o contestó
 REGLAS = {
     'Discord': 'su cuenta de Discord: la inscripción, el podio, la llave o la llamada',
@@ -2101,6 +2104,7 @@ REGLAS = {
     'R22': 'una batalla de equipos: cualquier respuesta paga lo mismo, porque quien gana y no sigue cobra su parte',
     'R23': 'el tercer puesto que la llave escribe como otra semifinal, sin ganador: los dos quedan semifinalistas',
     'R24': 'una final sin campeón, a los 7 días: los dos finalistas cobran el promedio de 1.º y 2.º',
+    'R25': 'una batalla sin ganador de dieciseisavos, octavos o cuartos, a los 28 días: «nadie siguió»',
 }
 
 
@@ -3124,6 +3128,11 @@ def reglas(preguntas, eventos, dry=True, todas=None):
           «sin campeón», y los dos finalistas cobran el promedio de 1.º y 2.º (8.750 en la 16+), como la semifinal es el
           de 3.º y 4.º. Dlx, 12/11/2026: «me gustan todas». Había 16 así —10 de LKR, que no deja escribir al bot— y no le
           sumaban nada a nadie de la llave
+      R25 la «Batalla sin ganador» de dieciseisavos, octavos o cuartos (`se_cierra_sola()`), a los `NADIE_DIAS` días de
+          la fecha del evento: «nadie siguió», la misma respuesta que las 48 h de `bot/finales.py`. Ésas cierran sólo lo
+          que se le pudo preguntar al organizador; en un servidor donde el bot no escribe, la pregunta no se cerraba
+          nunca (12 el 12/11/2026, de 9 a 50 días). Dlx: «28 días». Cada uno cobra la ronda y nadie cobra dos veces (el
+          motor paga «cobra:» sólo a quien no tiene puesto)
 
     ⚠️ R4 y R6 ESCRIBEN una decisión de batalla (`datos/decisiones.json`, `por: el ciclo (R4)`): así el lector no la
     vuelve a dejar «sin ganador». «Deshacer» la saca. ⚠️ Y CIERRAN DESPUÉS DE ESCRIBIRLA: si la escritura falla, la
@@ -3246,6 +3255,15 @@ def reglas(preguntas, eventos, dry=True, todas=None):
                 nuevas_dec[clave_batalla(det)] = {'ganador': NADIE, 'batalla': det, 'cuando': _ahora_et(),
                                                   'por': 'el ciclo (R22)', 'nota': porque}
                 con_dec.append((p, NADIE_SIGUIO, 'R22', porque, {'batalla': det}))
+                continue
+            # ── R25 · la de dieciseisavos, octavos o cuartos que nadie contestó en 28 días (Dlx, 12/11/2026)
+            _dn = dias_desde(x[2])
+            if se_cierra_sola(x[3]) and _dn is not None and _dn >= NADIE_DIAS:
+                porque = ('nadie dijo quién ganó en %d días: cada uno cobra la ronda, como las 48 h cuando se le pudo '
+                          'preguntar al organizador' % _dn)
+                nuevas_dec[clave_batalla(det)] = {'ganador': NADIE, 'batalla': det, 'cuando': _ahora_et(),
+                                                  'por': 'el ciclo (R25)', 'nota': porque}
+                con_dec.append((p, NADIE_SIGUIO, 'R25', porque, {'batalla': det}))
                 continue
             if 'no aparece nadie' in (p.get('match') or ''):
                 # ⚠️ contra TODAS, también las contestadas sin aplicar: un «Ganó X» de una hermana no es «nadie»
@@ -6329,6 +6347,9 @@ def _self_check():
            and not tercer_puesto(_x3[:3] + ('cuartos', ['Miniboy🇨🇱', 'Mark']), _L3)
            and tercer_puesto(_x3[:3] + ('octavos', ['walkover', 'WALKOVER']), _L3) and 'R23' in REGLAS,
            'R23: la «semifinal» de más entre los dos que perdieron las semis es el tercer puesto; con uno que no la jugó, no')
+        ok('R25' in REGLAS and NADIE_DIAS == 28 and se_cierra_sola('octavos') and not se_cierra_sola('semifinales')
+           and dias_desde('15/10', datetime.date(2026, 11, 12)) == 28,
+           'R25: dieciseisavos, octavos y cuartos, a los 28 días de la fecha del evento; la semi y la final, no')
         _hoy = datetime.date(2026, 11, 12)
         _pi = {'tipo': 'Bracket incompleto', 'detalle': 'X · LKR · 05/11', 'match': 'x | final: LARRIX🇦🇷 vs Gazir🇪🇸'}
         _ps = dict(_pi, match='x | semifinales: A vs B | semifinales: C vs D')
