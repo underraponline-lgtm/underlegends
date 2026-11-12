@@ -1417,13 +1417,9 @@ function AjApuestas({ liga, aj, hacer, ocup, chat, general }) {
   const firma = JSON.stringify(a);
   const [montos, setMontos] = useState((a || def).montos.join(', '));
   const [minutos, setMinutos] = useState((a || def).minutos);
-  const [fuera, setFuera] = useState((a && a.apagadas) || {});
-  // 🎲 prendidas a mano, en cualquier nivel del bot en vivo (13/10/2026, ver `hayApuestas()` en avisos.js)
-  const [dentro, setDentro] = useState((a && a.prendidas) || {});
   useEffect(() => {
     const r = a || def;
-    setMontos(r.montos.join(', ')); setMinutos(r.minutos); setFuera((a && a.apagadas) || {});
-    setDentro((a && a.prendidas) || {});
+    setMontos(r.montos.join(', ')); setMinutos(r.minutos);
   }, [firma]); // eslint-disable-line react-hooks/exhaustive-deps
   const ms = montos.split(/[\s,;.]+/).filter(Boolean).map(Number);
   const mal = ms.length < 2 || ms.length > 4 ? 'De 2 a 4 botones.'
@@ -1432,10 +1428,10 @@ function AjApuestas({ liga, aj, hacer, ocup, chat, general }) {
   return (
     <div className="db-aj">
       <div className="db-aj-c"><h3>Las apuestas</h3><span className={'db-est' + (a ? ' ojo' : ' ok')}>{a ? '✍ A tu gusto' : 'Como siempre'}</span></div>
-      <p className="db-tx">Salen <b>siempre</b>, en todo servidor con el bot en vivo y elija lo que elija su admin: en <b>Con datos</b> y <b>A full</b>, en el mensaje de cada cruce; en los otros niveles, en un mensaje con la batalla que viene. Se toca a quién gana y se abre la ventana para apostar, con Puntos de Tienda; el pozo se reparte entre los que aciertan. Sólo las saca «No hay apuestas en».</p>
+      <p className="db-tx">Salen <b>siempre</b>, en todo servidor con el bot en vivo y elija lo que elija su admin: en <b>Con datos</b> y <b>A full</b>, en el mensaje de cada cruce; en los otros niveles, en un mensaje con la batalla que viene. Se toca a quién gana y se abre la ventana para apostar, con Puntos de Tienda; el pozo se reparte entre los que aciertan. No se apagan: sólo no salen donde el bot en vivo está apagado.</p>
       <form className="db-form uno" onSubmit={(e) => {
         e.preventDefault();
-        if (!mal) hacer('apuestas', { montos: ms, minutos: Number(minutos), apagadas: fuera, prendidas: dentro }, 'Guardado: vale para la próxima apuesta.');
+        if (!mal) hacer('apuestas', { montos: ms, minutos: Number(minutos), apagadas: {}, prendidas: {} }, 'Guardado: vale para la próxima apuesta.');
       }}>
         <label className="db-campo"><span>Los botones <small>de menor a mayor, separados por coma</small></span>
           <input value={montos} inputMode="numeric" placeholder="50, 100, 250, 500" onChange={(e) => setMontos(e.target.value)} /></label>
@@ -1445,18 +1441,8 @@ function AjApuestas({ liga, aj, hacer, ocup, chat, general }) {
               {Array.from({ length: 15 }, (_, i) => i + 1).map((x) => <option key={x} value={x}>{x} {x === 1 ? 'minuto' : 'minutos'}</option>)}
             </select></label>
         </div>
-        {/* 🎲 «Prendidas en» se fue el 11/11/2026: las apuestas salen siempre (`hayApuestas()` en avisos.js) */}
-        {!general && svs.length ? (
-          <fieldset className="db-chk"><legend>No hay apuestas en</legend>
-            {svs.map((sv) => (
-              <label key={sv}><input type="checkbox" checked={!!fuera[sv]} onChange={(e) => {
-                const n = Object.assign({}, fuera);
-                if (e.target.checked) n[sv] = true; else delete n[sv];
-                setFuera(n);
-              }} /><img alt="" src={liga.logo(sv)} />{siglaDe(sv)}</label>
-            ))}
-          </fieldset>
-        ) : null}
+        {/* 🎲 «Prendidas en» se fue el 11/11/2026 y «No hay apuestas en» el 12/11 (Dlx: «the objective of it its to be
+            always on»): salen siempre (`hayApuestas()` en avisos.js) */}
         {mal ? <p className="db-tx db-mal">{mal}</p> : null}
         <div className="cu-btns">
           <button type="submit" className="btn verde chico" disabled={ocup || !!mal}>Guardar</button>
@@ -1906,12 +1892,6 @@ function AjServidores({ liga, aj, hacer, ocup, chat }) {
   const admin = c.admin || {};
   const nivelAdmin = (sv) => (c.nivel || {})[sv] || 'normal';
   const prendido = (sv) => dash[sv] !== false && (!!admin[sv] || dash[sv] === true);
-  const defAp = (c.def || {}).apuestas || DEF_AP;
-  const ap = aj.apuestas || null;
-  const apBase = { montos: (ap || defAp).montos, minutos: (ap || defAp).minutos,
-    apagadas: (ap && ap.apagadas) || {}, prendidas: (ap && ap.prendidas) || {} };
-  // 🎲 prendidas o apagadas: desde el 11/11/2026 salen siempre, así que «prendidas a mano» ya no existe (`hayApuestas()`)
-  const apDe = (sv) => (apBase.apagadas[sv] ? 'no' : '');
   const ae = aj.aviso_evento || {};
   const porSv = ae.sv || {};
   const m = liga.d.mult || {};
@@ -1920,12 +1900,6 @@ function AjServidores({ liga, aj, hacer, ocup, chat }) {
   const ref = Object.assign({}, base, man || {});
   const YA = 'Guardado: vale desde el próximo minuto.';
   const cambiar = (cual, obj, sv, v) => { const n = Object.assign({}, obj); if (v === '') delete n[sv]; else n[sv] = v; return hacer(cual, n, YA); };
-  const cambiarAp = (sv, v) => {
-    const ag = Object.assign({}, apBase.apagadas), pr = Object.assign({}, apBase.prendidas);
-    delete ag[sv]; delete pr[sv];
-    if (v === 'no') ag[sv] = true; else if (v === 'si') pr[sv] = true;
-    return hacer('apuestas', Object.assign({}, apBase, { apagadas: ag, prendidas: pr }), 'Guardado: vale para la próxima apuesta.');
-  };
   const cambiarAviso = (sv, v) => {
     const n = Object.assign({}, porSv);
     if (v) n[sv] = v; else delete n[sv];
@@ -1963,11 +1937,6 @@ function AjServidores({ liga, aj, hacer, ocup, chat }) {
                 onChange={(e) => cambiar('en_vivo_nivel', dashNivel, sv, e.target.value)}>
                 <option value="">{'Lo que eligió su admin: ' + ((niveles[nivelAdmin(sv)] || ['normal'])[0]).toLowerCase()}</option>
                 {Object.keys(niveles).map((k) => <option key={k} value={k}>{niveles[k][0]}</option>)}
-              </select></label>
-            <label><span>Apuestas</span>
-              <select value={apDe(sv)} disabled={ocup} onChange={(e) => cambiarAp(sv, e.target.value)}>
-                <option value="">Prendidas, como siempre</option>
-                <option value="no">Apagadas</option>
               </select></label>
             {/* 📅 los eventos de Discord (19/10/2026): cada anuncio, un evento del servidor con «Me interesa» */}
             <label><span>Eventos de Discord</span>
@@ -4187,12 +4156,6 @@ function ServidoresTabla({ liga, aj, hacer, ocup, chat, T, origen }) {
   const admin = c.admin || {};
   const nivelAdmin = (sv) => (c.nivel || {})[sv] || 'normal';
   const prendido = (sv) => dash[sv] !== false && (!!admin[sv] || dash[sv] === true);
-  const defAp = (c.def || {}).apuestas || DEF_AP;
-  const ap = aj.apuestas || null;
-  const apBase = { montos: (ap || defAp).montos, minutos: (ap || defAp).minutos,
-    apagadas: (ap && ap.apagadas) || {}, prendidas: (ap && ap.prendidas) || {} };
-  // 🎲 prendidas o apagadas: desde el 11/11/2026 salen siempre, así que «prendidas a mano» ya no existe (`hayApuestas()`)
-  const apDe = (sv) => (apBase.apagadas[sv] ? 'no' : '');
   const ae = aj.aviso_evento || {};
   const porSv = ae.sv || {};
   const m = liga.d.mult || {};
@@ -4202,12 +4165,6 @@ function ServidoresTabla({ liga, aj, hacer, ocup, chat, T, origen }) {
   const tierDe = (sv) => { const x = tiersT.find((y) => y.sv === sv); return elegidos[sv] || (x && x.tier) || 0; };
   const YA = 'Guardado: vale desde el próximo minuto.';
   const cambiar = (cual, obj, sv, v) => { const n = Object.assign({}, obj); if (v === '') delete n[sv]; else n[sv] = v; return hacer(cual, n, siglaDe(sv) + ': ' + YA); };
-  const cambiarAp = (sv, v) => {
-    const ag = Object.assign({}, apBase.apagadas), pr = Object.assign({}, apBase.prendidas);
-    delete ag[sv]; delete pr[sv];
-    if (v === 'no') ag[sv] = true; else if (v === 'si') pr[sv] = true;
-    return hacer('apuestas', Object.assign({}, apBase, { apagadas: ag, prendidas: pr }), siglaDe(sv) + ': vale para la próxima apuesta.');
-  };
   const cambiarAviso = (sv, v) => { const n = Object.assign({}, porSv); if (v) n[sv] = v; else delete n[sv]; return hacer('aviso_evento', { sv: n, resto: ae.resto || '' }, siglaDe(sv) + ': vale desde el próximo evento.'); };
   const cambiarMult = (sv, x) => hacer('multiplicadores', { semana: m.id, sv: Object.assign({}, ref, { [sv]: x }) }, siglaDe(sv) + ' pasa a ' + mult(x) + ': entra en la próxima vuelta del ciclo.');
   const cambiarTier = (sv, t) => hacer('tiers', Object.assign({}, elegidos, { [sv]: t }),
@@ -4226,7 +4183,7 @@ function ServidoresTabla({ liga, aj, hacer, ocup, chat, T, origen }) {
         <table>
           <thead><tr>
             <th scope="col">Servidor</th><th scope="col">Tier</th>{m.id ? <th scope="col">Multiplicador</th> : null}<th scope="col">Bot en vivo</th>
-            <th scope="col">Cuánto habla</th><th scope="col">Apuestas</th><th scope="col">Aviso de evento</th><th scope="col">Eventos Discord</th><th scope="col" title="De los que debutaron ahí, cuántos volvieron a jugar en 14 días">Vuelven</th><th scope="col"><span className="rk-sr">Ficha</span></th>
+            <th scope="col">Cuánto habla</th><th scope="col">Aviso de evento</th><th scope="col">Eventos Discord</th><th scope="col" title="De los que debutaron ahí, cuántos volvieron a jugar en 14 días">Vuelven</th><th scope="col"><span className="rk-sr">Ficha</span></th>
           </tr></thead>
           <tbody>{svs.map((sv) => {
             const vm = ref[sv] == null ? 1 : ref[sv];
@@ -4249,8 +4206,6 @@ function ServidoresTabla({ liga, aj, hacer, ocup, chat, T, origen }) {
                     onChange={(e) => cambiar('en_vivo_nivel', dashNivel, sv, e.target.value)}>
                     <option value="">{'Admin: ' + ((niveles[nivelAdmin(sv)] || ['normal'])[0]).toLowerCase()}</option>
                     {Object.keys(niveles).map((k) => <option key={k} value={k}>{niveles[k][0]}</option>)}</select></td>
-                  <td><select aria-label={'Las apuestas en ' + siglaDe(sv)} value={apDe(sv)} disabled={ocup} onChange={(e) => cambiarAp(sv, e.target.value)}>
-                    <option value="">Prendidas</option><option value="no">Apagadas</option></select></td>
                   <td><select aria-label={'El aviso de cada evento en ' + siglaDe(sv)} value={porSv[sv] || ''} disabled={ocup} onChange={(e) => cambiarAviso(sv, e.target.value)}>
                     <option value="">Donde habla</option><option value="chat">Chat general</option><option value="no">Apagado</option></select></td>
                   <td><select aria-label={'Los eventos de Discord de ' + siglaDe(sv)} value={(aj.eventos_discord || {})[sv] === true ? 'si' : ''} disabled={ocup}

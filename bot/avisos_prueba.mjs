@@ -314,13 +314,13 @@ const ok = (cond, que, det) => {
       && A.hayApuestas('URBF', 'normal', c2, {}) && A.hayApuestas('URBF', 'poco', c2, null)
       && A.hayApuestas('FFA', 'normal', c2, {}) && A.hayApuestas('FFA', 'todo', c2, { apuestas: true })
       && A.hayApuestas('FFA', 'full', c2, {}) && A.hayApuestas('FFA', 'full', c0, {})
-      && !A.hayApuestas('DDF', 'full', c2, { apuestas: true }) && !A.hayApuestas('DDF', 'normal', c2, {}),
+      && A.hayApuestas('DDF', 'full', c2, { apuestas: true }) && A.hayApuestas('DDF', 'normal', c2, {}),
     'las apuestas: «No hay apuestas en» gana; lo demás (prendidas viejas incluidas) ya no cambia nada');
     // 🎲 SIEMPRE, EN TODOS LOS NIVELES (11/11/2026, Dlx: «sin importar lo que los demás tengan seleccionado» y, para los
     // servidores sin cruce, «Sí, también ahí»): antes «Con datos» no la ponía nunca, ni prendida, y abajo iba sólo prendida
     ok(A.hayApuestas('FFA', 'datos', c0, {}) && A.hayApuestas('FFA', 'datos', c0, { apuestas: false }) && A.hayApuestas('URBF', 'datos', c2, null)
-      && !A.hayApuestas('DDF', 'datos', c2, { apuestas: true }) && A.hayApuestas('FFA', 'normal', c0, {})
-      && A.hayApuestas('FFA', 'poco', c0, { apuestas: false }) && A.hayApuestas('FFA', 'todo', c0, {}) && !A.hayApuestas('DDF', 'poco', c2, {}),
+      && A.hayApuestas('DDF', 'datos', c2, { apuestas: true }) && A.hayApuestas('FFA', 'normal', c0, {})
+      && A.hayApuestas('FFA', 'poco', c0, { apuestas: false }) && A.hayApuestas('FFA', 'todo', c0, {}) && A.hayApuestas('DDF', 'poco', c2, {}),
     'las apuestas, siempre: en todos los niveles y elija lo que elija el admin; sólo «No hay apuestas en» las saca');
     // 🏷️ los botones con el nombre del ranking (11/11/2026): un equipo que no entra entero va con el primero y cuántos más
     const lbl = (bs) => bs.flatMap((f) => f.components).map((x) => x.label);
@@ -973,13 +973,18 @@ const ok = (cond, que, det) => {
     const o = new A.Avisos({ storage: { sql, setAlarm() {}, getAlarm() { return null; } }, blockConcurrencyWhile: async (f) => f() },
       { DISCORD_TOKEN: 'x', KV: { get: async (k) => kv.get(k) ?? null } });
     await new Promise((r) => setTimeout(r, 5));
-    // 🎲 SIN APUESTAS ACÁ, CON «No hay apuestas en»: desde el 11/11/2026 salen siempre, también en «normal», un mensaje por
-    // batalla, y esta prueba cuenta los mensajes de la charla. La apuesta de los niveles de abajo tiene su propia prueba
-    const SIN_AP = { apuestas: { apagadas: { FFA: true } } };
+    // 🎲 LAS APUESTAS VAN APARTE: desde el 11/11/2026 salen siempre, también en «normal», un mensaje por batalla, y desde el
+    // 12/11 no se pueden apagar (`hayApuestas()`). Esta prueba cuenta los mensajes de la charla, así que el mensaje de la
+    // apuesta («Apuestas abiertas», sus botones `ap:`) se anota en `apuestasVistas` y no en `pedidos`. La apuesta tiene su propia prueba
+    const SIN_AP = {};
     o.guardar('ajustes_dueno', SIN_AP);
     const antesF = globalThis.fetch;
-    const pedidos = [];
+    const pedidos = [], apuestasVistas = [];
     globalThis.fetch = async (u, op = {}) => {
+      if (op.body && /"custom_id":"ap[:a-z]|Apuestas abiertas/.test(op.body)) {
+        apuestasVistas.push((op.method || 'GET') + ' ' + JSON.parse(op.body).content);
+        return new Response(JSON.stringify({ id: 'a' + apuestasVistas.length }), { status: 200 });
+      }
       pedidos.push({ u: String(u), m: op.method || 'GET', b: op.body ? JSON.parse(op.body) : null });
       return new Response(JSON.stringify({ id: 'm' + pedidos.length }), { status: 200 });
     };
@@ -1003,24 +1008,27 @@ const ok = (cond, que, det) => {
     await o.chatVivo(T + 12 * 60000);
     const a12 = pedidos.length;
     await o.chatVivo(T + 22 * 60000);
-    ok(a5 === 1 && a12 === 2 && pedidos.length === 3 && /La final/.test(pedidos[1].b.content)
-      && /🏆 \*\*Dora 🇲🇽\*\* es el campeón de \*\*COPA SOOLAR\*\*/.test(pedidos[2].b.content),
-    'la final y el campeón, cada uno a los 10 minutos del anterior: tres mensajes en total');
+    // 🎲 la final la anuncia el mensaje de su apuesta («⚔️ Final: Ana vs Dora»), no un «🔥 La final de…» aparte
+    ok(a5 === 1 && a12 === 1 && pedidos.length === 2 && apuestasVistas.some((x) => /^POST [^]*⚔️ Final: \*\*Ana/.test(x))
+      && /🏆 \*\*Dora 🇲🇽\*\* es el campeón de \*\*COPA SOOLAR\*\*/.test(pedidos[1].b.content),
+    'la final (con su apuesta) y el campeón, cada uno a los 10 minutos del anterior: dos mensajes de charla y uno de apuesta');
     o.guardar('ajustes_dueno', Object.assign({ en_vivo: { FFA: false } }, SIN_AP));
     sql.exec('DELETE FROM chat_vivo');
+    const apAntes = apuestasVistas.length;
     await o.chatVivo(T + 40 * 60000);
-    const apagado = pedidos.length === 3;
+    // y sin chat tampoco hay apuesta: lo único que las saca es el bot en vivo apagado
+    const apagado = pedidos.length === 2 && apuestasVistas.length === apAntes;
     o.guardar('ajustes_dueno', Object.assign({ en_vivo: { FFA: true } }, SIN_AP));
     kv.set('cfg:111', '{}');
     o.guardar('canales', { generales: [{ sv: 'FFA', g: '111', id: GENERAL }] });
     llave(FI + '\nCAMPEÓN: Dora 🇲🇽\n', T + 41 * 60000);
     await o.chatVivo(T + 41 * 60000);
-    ok(apagado && pedidos.length === 4 && pedidos[3].u.endsWith('/channels/' + GENERAL + '/messages'),
+    ok(apagado && pedidos.length === 3 && pedidos[2].u.endsWith('/channels/' + GENERAL + '/messages'),
       'apagado desde el Dashboard no escribe aunque el admin lo prendió; prendido desde ahí, va al chat general');
     o.guardar('ajustes_dueno', SIN_AP);
     sql.exec('DELETE FROM chat_vivo');
     await o.chatVivo(T + 60 * 60000);
-    ok(pedidos.length === 4, 'sin canal del admin ni el Dashboard, no escribe');
+    ok(pedidos.length === 3, 'sin canal del admin ni el Dashboard, no escribe');
     // 🏆 UN SOLO MENSAJE POR CAMPEÓN (13/10/2026): el aviso del ciclo salió primero y quedó anotado; el cierre se le suma
     kv.set('cfg:111', JSON.stringify({ vivo: CANAL }));
     o.guardar('canales', { generales: [] });

@@ -819,7 +819,7 @@ export function apuestasCfg(aj) {
  * demás tengan seleccionado»). Con el bot en «Con datos» o «A full», el mensaje de cada cruce lleva la apuesta, elija lo
  * que elija el admin. 🔴 Y «CON DATOS» NO LA PONÍA NUNCA, NI PRENDIDA: el cruce la pedía sólo en «A full» y la apuesta
  * suelta sólo va debajo de «Con datos», así que FFA, ACAD, URBF, CH y DDS —prendidas en el Dashboard y en «Con datos»—
- * mostraban el voto solo, y el modal de la 4.44 no se abría nunca. Lo único que la saca es «No hay apuestas en», de Dlx.
+ * mostraban el voto solo, y el modal de la 4.44 no se abría nunca. («No hay apuestas en» también se fue: ver abajo.)
  *
  * 🎲 Y EN TODOS LOS NIVELES, EL MISMO 11/11 (Dlx, a «¿pongo la apuesta también en SR, DDF, FRZ y FDS?», que están en «Lo
  * justo» y «Normal»: «Sí, también ahí»). Donde no hay cruce sale la apuesta sola, un mensaje por batalla (ver abajo, en
@@ -827,7 +827,11 @@ export function apuestasCfg(aj) {
  * un valor viejo no rompa la validación, y sus interruptores se sacaron. `nivel` y `cfg` quedan en la firma por quien llama.
  */
 export function hayApuestas(sv, nivel, apc, cfg) { // eslint-disable-line no-unused-vars
-  return !apc.apagadas[sv];
+  // 🎲 SIEMPRE, TAMBIÉN SIN «NO HAY APUESTAS EN» (12/11/2026, Dlx, mirando Servidores: «I think the apuestas section here
+  // should be removed bc as I told u the objective of it its to be always on»). Los tres interruptores del Dashboard se
+  // fueron; `apagadas` queda en los datos para que un valor viejo no rompa la validación, y no apaga nada. Lo único que
+  // las saca es el bot en vivo apagado en ese servidor, que lo mira quien llama: sin chat no hay dónde ponerlas
+  return true;
 }
 
 /** Cada cuánto puede hablar el bot en vivo en un canal, en ms: `normal` (y lo justo) y `batalla` (cada batalla y más) */
