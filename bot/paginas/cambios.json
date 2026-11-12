@@ -11,6 +11,17 @@
  ],
  "cambios": [
     {
+        "version": "4.53",
+        "dia": "2026-11-12",
+        "cuando": "2026-11-12T00:13:00-05:00",
+        "titulo": "La apuesta en todos los servidores, y sin tope",
+        "items": [
+            "**La apuesta sale en todos los servidores con el bot en vivo**, también donde habla poco: un mensaje con la batalla que viene, para votar quién gana y apostar.",
+            "**Sin tope**: apuestas lo que quieras de tus Puntos de Tienda. Antes eran 500 por batalla.",
+            "**Se vota y se apuesta con los mismos botones** en todos lados: tocas quién gana y se abre la ventana; si dejas 0, sólo votas."
+        ]
+    },
+    {
         "version": "4.52",
         "dia": "2026-11-11",
         "cuando": "2026-11-11T23:13:00-05:00",
