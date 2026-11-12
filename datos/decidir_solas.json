@@ -2,25 +2,6 @@
  "_leeme": "Lo que ✅ Decidir cerró o contestó solo, con la regla y la prueba (sheet/decidir.py, resolver_solo()), para «Lo que se resolvió solo» del Dashboard y su «Deshacer». «deshechas»: lo que Dlx deshizo; ninguna regla lo vuelve a tocar. Dlx, 13/10/2026.",
  "solas": [
   {
-   "id": "98d7e54f8d",
-   "tipo": "Alias posible",
-   "sec": "🪪 Identidad",
-   "que": "¿«Jahno El Melomaníaco» es melomaniaco? La cuenta de melomaniaco en la Lista se anotó como «Jahno El Melomaníaco», y en el ranking suman aparte. Si es la misma persona, los puntos de «Jahno El Melomaníaco» pasan a melomaniaco.\nLa cuenta: https://discord.com/users/653011056184000513",
-   "r": "Es la misma persona",
-   "regla": "cierre · ya no hacía falta preguntarlo",
-   "rk": "cierre",
-   "por": "el ciclo",
-   "porque": "la misma persona: «Jahno El Melomaníaco» ya es alias de melomaniaco",
-   "t": 1793255392455,
-   "filas": [
-    937
-   ],
-   "variantes": [
-    "DOS NOMBRES: «Jahno El Melomaníaco» → «melomaniaco» · cuenta 653011056184000513"
-   ],
-   "escribio": {}
-  },
-  {
    "id": "e118a4581b",
    "tipo": "Nombre desconocido",
    "sec": "Rap para Raperos #1 · FFA · 29/10 · #543",
@@ -3538,6 +3519,216 @@
    ],
    "escribio": {
     "batalla": "(sin titulo) · DDS · 10/10 · semifinales · VILCA Y DANU 🆚 CHASE Y MCO"
+   }
+  },
+  {
+   "id": "3634be4cc9",
+   "tipo": "Bracket incompleto",
+   "sec": "Shaoling Battles 1v1 3 · FDS · 29/09",
+   "que": "Esta llave no dice quién ganó y lleva más de 12 h sin cambios, así que no sumó nada. Si sabes quién salió campeón, elegilo: cobra campeón y el otro, subcampeón. Si no, ¿cuenta? A los 7 días sin campeón, el ciclo la carga solo: los dos finalistas cobran el promedio de 1.º y 2.º.",
+   "r": "Sin campeón: los dos finalistas cobran el promedio",
+   "regla": "R24 · una final sin campeón, a los 7 días: los dos finalistas cobran el promedio de 1.º y 2.º",
+   "rk": "R24",
+   "por": "el ciclo",
+   "porque": "la llave no dice el campeón y pasaron 44 días: los dos finalistas (Abraham 🇻🇪 y CrisZJ🇵🇪) cobran el promedio de 1.º y 2.º",
+   "t": 1794468589641,
+   "filas": [
+    862
+   ],
+   "variantes": [
+    "Shaoling Battles 1v1 3 · FDS · 29/09"
+   ],
+   "escribio": {
+    "campeon": "Shaoling Battles 1v1 3 · FDS · 29/09"
+   }
+  },
+  {
+   "id": "26e36d597e",
+   "tipo": "Bracket incompleto",
+   "sec": "(sin titulo) · LKR · 21/10",
+   "que": "Esta llave no dice quién ganó y lleva más de 12 h sin cambios, así que no sumó nada. Si sabes quién salió campeón, elegilo: cobra campeón y el otro, subcampeón. Si no, ¿cuenta? A los 7 días sin campeón, el ciclo la carga solo: los dos finalistas cobran el promedio de 1.º y 2.º.",
+   "r": "Sin campeón: los dos finalistas cobran el promedio",
+   "regla": "R24 · una final sin campeón, a los 7 días: los dos finalistas cobran el promedio de 1.º y 2.º",
+   "rk": "R24",
+   "por": "el ciclo",
+   "porque": "la llave no dice el campeón y pasaron 22 días: los dos finalistas (PICHULA y MAKMA) cobran el promedio de 1.º y 2.º",
+   "t": 1794468589641,
+   "filas": [
+    864
+   ],
+   "variantes": [
+    "(sin titulo) · LKR · 21/10"
+   ],
+   "escribio": {
+    "campeon": "(sin titulo) · LKR · 21/10"
+   }
+  },
+  {
+   "id": "36a528b74a",
+   "tipo": "Bracket incompleto",
+   "sec": "PLAZA UNDERGROUND BRACKET CLASIFICATORIO · LKR · 19/10",
+   "que": "Esta llave no dice quién ganó y lleva más de 12 h sin cambios, así que no sumó nada. Si sabes quién salió campeón, elegilo: cobra campeón y el otro, subcampeón. Si no, ¿cuenta? A los 7 días sin campeón, el ciclo la carga solo: los dos finalistas cobran el promedio de 1.º y 2.º.",
+   "r": "Sin campeón: los dos finalistas cobran el promedio",
+   "regla": "R24 · una final sin campeón, a los 7 días: los dos finalistas cobran el promedio de 1.º y 2.º",
+   "rk": "R24",
+   "por": "el ciclo",
+   "porque": "la llave no dice el campeón y pasaron 24 días: los dos finalistas (Leonar-T 🇲🇽 y ⚡ Mosquitrap 🇦🇷) cobran el promedio de 1.º y 2.º",
+   "t": 1794468589641,
+   "filas": [
+    865
+   ],
+   "variantes": [
+    "PLAZA UNDERGROUND BRACKET CLASIFICATORIO · LKR · 19/10"
+   ],
+   "escribio": {
+    "campeon": "PLAZA UNDERGROUND BRACKET CLASIFICATORIO · LKR · 19/10"
+   }
+  },
+  {
+   "id": "ff84eeaf1a",
+   "tipo": "Bracket incompleto",
+   "sec": "(sin titulo) · LKR · 15/10",
+   "que": "Esta llave no dice quién ganó y lleva más de 12 h sin cambios, así que no sumó nada. Si sabes quién salió campeón, elegilo: cobra campeón y el otro, subcampeón. Si no, ¿cuenta? A los 7 días sin campeón, el ciclo la carga solo: los dos finalistas cobran el promedio de 1.º y 2.º.",
+   "r": "Sin campeón: los dos finalistas cobran el promedio",
+   "regla": "R24 · una final sin campeón, a los 7 días: los dos finalistas cobran el promedio de 1.º y 2.º",
+   "rk": "R24",
+   "por": "el ciclo",
+   "porque": "la llave no dice el campeón y pasaron 28 días: los dos finalistas (RICARD y WACHIN) cobran el promedio de 1.º y 2.º",
+   "t": 1794468589641,
+   "filas": [
+    866
+   ],
+   "variantes": [
+    "(sin titulo) · LKR · 15/10"
+   ],
+   "escribio": {
+    "campeon": "(sin titulo) · LKR · 15/10"
+   }
+  },
+  {
+   "id": "506b2e56ee",
+   "tipo": "Bracket incompleto",
+   "sec": "RED BULL · LKR · 18/10",
+   "que": "Esta llave no dice quién ganó y lleva más de 12 h sin cambios, así que no sumó nada. Si sabes quién salió campeón, elegilo: cobra campeón y el otro, subcampeón. Si no, ¿cuenta? A los 7 días sin campeón, el ciclo la carga solo: los dos finalistas cobran el promedio de 1.º y 2.º.",
+   "r": "Sin campeón: los dos finalistas cobran el promedio",
+   "regla": "R24 · una final sin campeón, a los 7 días: los dos finalistas cobran el promedio de 1.º y 2.º",
+   "rk": "R24",
+   "por": "el ciclo",
+   "porque": "la llave no dice el campeón y pasaron 25 días: los dos finalistas (BOOTRAX y Leonar-T 🇲🇽) cobran el promedio de 1.º y 2.º",
+   "t": 1794468589641,
+   "filas": [
+    867
+   ],
+   "variantes": [
+    "RED BULL · LKR · 18/10"
+   ],
+   "escribio": {
+    "campeon": "RED BULL · LKR · 18/10"
+   }
+  },
+  {
+   "id": "0979445f87",
+   "tipo": "Bracket incompleto",
+   "sec": "CALLE DEL TERROR · ACAD · 31/10",
+   "que": "Esta llave no dice quién ganó y lleva más de 12 h sin cambios, así que no sumó nada. Si sabes quién salió campeón, elegilo: cobra campeón y el otro, subcampeón. Si no, ¿cuenta? A los 7 días sin campeón, el ciclo la carga solo: los dos finalistas cobran el promedio de 1.º y 2.º.",
+   "r": "Sin campeón: los dos finalistas cobran el promedio",
+   "regla": "R24 · una final sin campeón, a los 7 días: los dos finalistas cobran el promedio de 1.º y 2.º",
+   "rk": "R24",
+   "por": "el ciclo",
+   "porque": "la llave no dice el campeón y pasaron 12 días: los dos finalistas (Lizen🇦🇷 y GERONIMO🇻🇪) cobran el promedio de 1.º y 2.º",
+   "t": 1794468589641,
+   "filas": [
+    1009
+   ],
+   "variantes": [
+    "CALLE DEL TERROR · ACAD · 31/10"
+   ],
+   "escribio": {
+    "campeon": "CALLE DEL TERROR · ACAD · 31/10"
+   }
+  },
+  {
+   "id": "90531eb592",
+   "tipo": "Bracket incompleto",
+   "sec": "FAT BATTLES PALOOZA EDICIÓN HALOWEEN · ACAD · 31/10",
+   "que": "Esta llave no dice quién ganó y lleva más de 12 h sin cambios, así que no sumó nada. Si sabes quién salió campeón, elegilo: cobra campeón y el otro, subcampeón. Si no, ¿cuenta? A los 7 días sin campeón, el ciclo la carga solo: los dos finalistas cobran el promedio de 1.º y 2.º.",
+   "r": "Sin campeón: los dos finalistas cobran el promedio",
+   "regla": "R24 · una final sin campeón, a los 7 días: los dos finalistas cobran el promedio de 1.º y 2.º",
+   "rk": "R24",
+   "por": "el ciclo",
+   "porque": "la llave no dice el campeón y pasaron 12 días: los dos finalistas (Panchok 🇨🇱 y MILO 🇲🇽) cobran el promedio de 1.º y 2.º",
+   "t": 1794468589641,
+   "filas": [
+    1010
+   ],
+   "variantes": [
+    "FAT BATTLES PALOOZA EDICIÓN HALOWEEN · ACAD · 31/10"
+   ],
+   "escribio": {
+    "campeon": "FAT BATTLES PALOOZA EDICIÓN HALOWEEN · ACAD · 31/10"
+   }
+  },
+  {
+   "id": "12cd1a74e0",
+   "tipo": "Bracket incompleto",
+   "sec": "(sin titulo) · LKR · 05/11",
+   "que": "Esta llave no dice quién ganó y lleva más de 12 h sin cambios, así que no sumó nada. Si sabes quién salió campeón, elegilo: cobra campeón y el otro, subcampeón. Si no, ¿cuenta? A los 7 días sin campeón, el ciclo la carga solo: los dos finalistas cobran el promedio de 1.º y 2.º.",
+   "r": "Sin campeón: los dos finalistas cobran el promedio",
+   "regla": "R24 · una final sin campeón, a los 7 días: los dos finalistas cobran el promedio de 1.º y 2.º",
+   "rk": "R24",
+   "por": "el ciclo",
+   "porque": "la llave no dice el campeón y pasaron 7 días: los dos finalistas (LARRIX🇦🇷 y Gazir🇪🇸) cobran el promedio de 1.º y 2.º",
+   "t": 1794468589641,
+   "filas": [
+    1122
+   ],
+   "variantes": [
+    "(sin titulo) · LKR · 05/11"
+   ],
+   "escribio": {
+    "campeon": "(sin titulo) · LKR · 05/11"
+   }
+  },
+  {
+   "id": "629ce3eb8f",
+   "tipo": "Bracket incompleto",
+   "sec": "TORNEOS · LKR · 05/11",
+   "que": "Esta llave no dice quién ganó y lleva más de 12 h sin cambios, así que no sumó nada. Si sabes quién salió campeón, elegilo: cobra campeón y el otro, subcampeón. Si no, ¿cuenta? A los 7 días sin campeón, el ciclo la carga solo: los dos finalistas cobran el promedio de 1.º y 2.º.",
+   "r": "Sin campeón: los dos finalistas cobran el promedio",
+   "regla": "R24 · una final sin campeón, a los 7 días: los dos finalistas cobran el promedio de 1.º y 2.º",
+   "rk": "R24",
+   "por": "el ciclo",
+   "porque": "la llave no dice el campeón y pasaron 7 días: los dos finalistas (Letra 🇻🇪 y URKO 🇨🇴) cobran el promedio de 1.º y 2.º",
+   "t": 1794468589641,
+   "filas": [
+    1123
+   ],
+   "variantes": [
+    "TORNEOS · LKR · 05/11"
+   ],
+   "escribio": {
+    "campeon": "TORNEOS · LKR · 05/11"
+   }
+  },
+  {
+   "id": "fec5b04c6f",
+   "tipo": "Bracket incompleto",
+   "sec": "no se k poner style · DDS · 28/10",
+   "que": "Esta llave no dice quién ganó y lleva más de 12 h sin cambios, así que no sumó nada. Si sabes quién salió campeón, elegilo: cobra campeón y el otro, subcampeón. Si no, ¿cuenta? A los 7 días sin campeón, el ciclo la carga solo: los dos finalistas cobran el promedio de 1.º y 2.º.",
+   "r": "Sin campeón: los dos finalistas cobran el promedio",
+   "regla": "R24 · una final sin campeón, a los 7 días: los dos finalistas cobran el promedio de 1.º y 2.º",
+   "rk": "R24",
+   "por": "el ciclo",
+   "porque": "la llave no dice el campeón y pasaron 15 días: los dos finalistas (nc🇰🇷 y bastty) cobran el promedio de 1.º y 2.º",
+   "t": 1794468589641,
+   "filas": [
+    1150
+   ],
+   "variantes": [
+    "no se k poner style · DDS · 28/10"
+   ],
+   "escribio": {
+    "campeon": "no se k poner style · DDS · 28/10"
    }
   }
  ],
