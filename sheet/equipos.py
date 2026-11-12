@@ -117,6 +117,38 @@ def limpiar(s):
     return _DIBUJO.sub('', str(s or '')).strip()
 
 
+#: 👥 «SOL Y SADIK»: la «y» como separador, pero SÓLO POR LLAVE. Ver `con_y()`.
+_Y = re.compile(r'\s+[yY]\s+')
+#: 🚫 lo que la llave escribe en el lugar de un lado que no existe: no es nadie
+NADIE = re.compile(r'^\s*(?:walk\s*-?\s*over|w\s*\.?\s*o\s*\.?|bye|pase\s+libre|libre)\s*$', re.I)
+#: qué parte de los lados de una llave tiene que traer « y » para leerla como de equipos
+Y_MINIMO = 0.75
+
+
+def no_es_nadie(lado):
+    """¿«WALKOVER», «BYE», «W.O.»…? El lugar vacío de una llave, no una persona."""
+    return bool(NADIE.match(limpiar(lado)))
+
+
+def con_y(lados):
+    """👥 `{lado: lado con « + »}` de una llave que escribe sus equipos con « y », o `{}`.
+
+    🔴 La DDS del 10/10 (#444) es un 2 contra 2 escrito «SOL Y SADIK», «CHASE Y MCO»: 29 de sus 32 lados. Como « y » no
+    separa (arriba, `SEPS`), cargó 13 «personas» que no existen —«SOL Y SADIK» campeón con 10.000— y a los 26 raperos de
+    verdad, MCO entre ellos, en cero. Lo vio Dlx en Pendientes el 12/11/2026 y dijo «Sí, arréglalo».
+
+    ⚠️ LA REGLA DE ARRIBA SIGUE: un nombre suelto con « y » no se parte. Se parte la LLAVE cuando casi todos sus lados
+    (`Y_MINIMO`, con cuatro o más) traen « y » y ninguno trae otro separador: ahí la « y » es el formato, no un nombre."""
+    ls = {str(x or '').strip() for x in lados or []}
+    ls = {x for x in ls if limpiar(x) and not no_es_nadie(x)}
+    if len(ls) < 4 or any(s in x for x in ls for s in SEPS):
+        return {}
+    con = [x for x in ls if _Y.search(limpiar(x))]
+    if len(con) < Y_MINIMO * len(ls):
+        return {}
+    return {x: _Y.sub(' + ', limpiar(x)) for x in con}
+
+
 def integrantes(lado):
     """`(nombres, cortado)` de un lado de la llave.
 
@@ -276,6 +308,17 @@ def _self_check():
     ok = len(n1) == 1 and len(n2) == 1
     print('   %s `&` y « y » NO parten: partir de más junta a dos en una'
           % ('✅' if ok else '🔴'))
+    mal += not ok
+
+    # 👥 la « y » de una llave de equipos (la DDS del 10/10, #444), y nunca la de un nombre suelto
+    _ll = ['SOL Y SADIK', 'ABRAHAM Y CHOP', 'CHASE Y MCO', 'VILCA Y DANU', 'WALKOVER', 'Kun y Carlos']
+    _cy = con_y(_ll)
+    ok = (_cy.get('SOL Y SADIK') == 'SOL + SADIK' and _cy.get('Kun y Carlos') == 'Kun + Carlos' and 'WALKOVER' not in _cy
+          and con_y(['Ana y Beto', 'Caro', 'Dani', 'Eze']) == {} and con_y(['A y B', 'C y D', 'E y F', 'G + H']) == {}
+          and con_y(['A y B', 'C y D']) == {} and no_es_nadie('WALKOVER') and no_es_nadie(' W.O. ') and no_es_nadie('bye')
+          and not no_es_nadie('Wolf') and not no_es_nadie('Libreta'))
+    print('   %s la « y » parte una llave de equipos, no un nombre suelto; «WALKOVER» no es nadie'
+          % ('✅' if ok else '🔴 %r' % _cy))
     mal += not ok
 
     # el dibujo del bracket

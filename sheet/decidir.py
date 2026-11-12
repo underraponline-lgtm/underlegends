@@ -3123,7 +3123,8 @@ def reglas(preguntas, eventos, dry=True, todas=None):
                 con_dec.append((p, NO_SE_JUGO, 'R4', porque, {'batalla': det}))
                 continue
             # ── R22 · la de equipos: cualquier respuesta paga lo mismo (Dlx, 11/11/2026: «Sí, cobra solo»)
-            if de_equipos(x[4]) and se_cierra_sola(x[3]):
+            _ysx = _ys_de(_llave_de(x[0], x[1], x[2], ll))
+            if de_equipos([_ysx.get(str(l or '').strip(), l) for l in x[4]]) and se_cierra_sola(x[3]):
                 porque = ('es de equipos (%s): quien gana y no sigue cobra su parte, así que cualquier respuesta paga lo '
                           'mismo, y en equipos no hay duelo' % ' vs '.join(x[4])[:160])
                 nuevas_dec[clave_batalla(det)] = {'ganador': NADIE, 'batalla': det, 'cuando': _ahora_et(),
@@ -4715,6 +4716,20 @@ def _miembros(lado):
     return [x.strip() for x in re.split(r'[+,&]', lado_limpio(lado)) if x.strip()]
 
 
+def _ys_de(L):
+    """👥 `{lado: lado con « + »}` de una llave que escribe sus equipos con « y » (`equipos.con_y()`), o `{}`."""
+    try:
+        from equipos import con_y
+    except Exception:                                    # noqa: BLE001
+        return {}
+    return con_y([lado for r in (L or {}).get('rondas') or [] for b in r.get('b') or [] for lado in (b[0] or [])])
+
+
+def _llave_de(ev, sv, fe, llaves):
+    return next((v for v in (llaves or {}).values() if isinstance(v, dict) and norm(v.get('nombre')) == norm(ev)
+                 and v.get('sv') == sv and v.get('fecha') == fe), None)
+
+
 def efectos(p, llaves, tab):
     """`({respuesta: [[nombre, puntos]]}, igual)` de una «Batalla sin ganador», o `({}, False)` si no se puede saber
     (otra pregunta, una llave que no está, una ronda que no paga). `igual`: «Ganó X» y «Nadie siguió» pagan lo mismo a
@@ -4724,20 +4739,23 @@ def efectos(p, llaves, tab):
         return {}, False
     ev, sv, fe, ronda, lados = x
     puesto = _CAE.get(norm(ronda))
-    L = next((v for v in (llaves or {}).values() if isinstance(v, dict) and norm(v.get('nombre')) == norm(ev)
-              and v.get('sv') == sv and v.get('fecha') == fe), None)
+    L = _llave_de(ev, sv, fe, llaves)
     if not puesto or not L:
         return {}, False
     rs = L.get('rondas') or []
+    _ys = _ys_de(L)
+
+    def _mie(lado):
+        return _miembros(_ys.get(str(lado or '').strip(), lado))
     i = next((k for k, r in enumerate(rs) if _CAE.get(norm(r.get('r'))) == puesto), None)
     if i is None:
         return {}, False
     pts = int(((tab or {}).get(L.get('escala')) or {}).get(puesto) or 0)
     despues = {norm(_sin_bandera(m)) for r in rs[i + 1:] for b in r.get('b') or [] for lado in (b[0] or [])
-               for m in _miembros(lado)}
-    equipos = de_equipos(lados)
-    quedan = [(lado, m) for lado in lados for m in _miembros(lado) if norm(_sin_bandera(m)) not in despues]
-    cuota = {lado: pts // max(1, len(_miembros(lado))) for lado in lados}
+               for m in _mie(lado)}
+    equipos = de_equipos([_ys.get(str(l or '').strip(), l) for l in lados])
+    quedan = [(lado, m) for lado in lados for m in _mie(lado) if norm(_sin_bandera(m)) not in despues]
+    cuota = {lado: pts // max(1, len(_mie(lado))) for lado in lados}
     out = {}
     for op in p.get('opciones') or []:
         if op.startswith(('Ganó ', 'Pasó ')):
@@ -4769,19 +4787,22 @@ def sugerencia(p, llaves):
     if not x:
         return '', ''
     ev, sv, fe, ronda, lados = x
-    L = next((v for v in (llaves or {}).values() if isinstance(v, dict) and norm(v.get('nombre')) == norm(ev)
-              and v.get('sv') == sv and v.get('fecha') == fe), None)
+    L = _llave_de(ev, sv, fe, llaves)
     if not L or len(lados) < 2:
         return '', ''
     rs = L.get('rondas') or []
+    _ys = _ys_de(L)
+
+    def _mie(lado):
+        return _miembros(_ys.get(str(lado or '').strip(), lado))
     i = next((k for k, r in enumerate(rs) if norm(r.get('r')) == norm(ronda)
               or (_CAE.get(norm(r.get('r'))) and _CAE.get(norm(r.get('r'))) == _CAE.get(norm(ronda)))), None)
     if i is None or i + 1 >= len(rs):
         return '', ''
-    despues = [(r.get('r'), m) for r in rs[i + 1:] for b in r.get('b') or [] for lado in (b[0] or []) for m in _miembros(lado)]
+    despues = [(r.get('r'), m) for r in rs[i + 1:] for b in r.get('b') or [] for lado in (b[0] or []) for m in _mie(lado)]
     hits = []
     for lado in lados:
-        quien = next(((r, m) for r, m in despues if any(_parecido(n, m) for n in _miembros(lado))), None)
+        quien = next(((r, m) for r, m in despues if any(_parecido(n, m) for n in _mie(lado))), None)
         if quien:
             hits.append((lado, quien))
     if len(hits) != 1:

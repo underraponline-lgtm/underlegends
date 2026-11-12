@@ -693,11 +693,40 @@ def procesar(batallas, num, fecha, servidor, participantes=None,
                 j = juntos(x, resolver)
                 if j:
                     cambio[x] = ' + '.join(j)
+    # 👥 Y LA LLAVE QUE ESCRIBE SUS EQUIPOS CON « Y » («SOL Y SADIK», la DDS del 10/10, #444), y 🚫 «WALKOVER», que es
+    # el lugar vacío y no un rapero (cobraba 1.875). Ver `equipos.con_y()`. Dlx, 12/11/2026: «Sí, arréglalo»
+    from equipos import con_y, no_es_nadie
+    _ys = con_y([b.get(c) for b in batallas for c in ('ladoA', 'ladoB')])
+    for x, e in _ys.items():
+        if x not in cambio:
+            cambio[x] = e
+            avisos.append('CON Y: «%s» son %s (la llave escribe sus equipos con « y »)' % (x, e))
+    for b in batallas:
+        for c in ('ladoA', 'ladoB', 'ganador'):
+            x = str(b.get(c) or '').strip()
+            if x and no_es_nadie(x) and x not in cambio:
+                cambio[x] = ''
+                avisos.append('NADIE: «%s» es el lugar vacío de la llave, no una persona' % x)
     if cambio:
         batallas = [dict(b, **{c: cambio.get(str(b.get(c) or '').strip(), b.get(c))
                                for c in ('ladoA', 'ladoB', 'ganador')}) for b in batallas]
+        # ⚠️ Y LAS NOTAS, que nombran lados: «Walk-in 1: MARK Y TOBALSILLO» tiene que decir el mismo equipo que la batalla,
+        # y «Revivido: WALKOVER» no revive a nadie (se saca esa parte)
+        _nadie = [x for x, e in cambio.items() if not e]
+        _ren = sorted(((x, e) for x, e in _ys.items() if cambio.get(x) == e), key=lambda xe: -len(xe[0]))
+
+        def _nota(n):
+            n = str(n or '')
+            for x, e in _ren:
+                n = n.replace(x, e)
+            for x in _nadie:
+                n = re.sub(r'\s*[^;|:]*:\s*' + re.escape(x) + r'\s*(?=[;|]|$)', '', n)
+            return re.sub(r'^\s*[;|]\s*|\s*[;|]\s*$', '', n)
+        if _ren or _nadie:
+            batallas = [dict(b, notas=_nota(b.get('notas'))) if b.get('notas') else b for b in batallas]
         for x, e in cambio.items():
-            avisos.append('JUNTOS: «%s» son %s (un equipo escrito sin «+»)' % (x, e))
+            if e and not (x in _ys and _ys[x] == e):
+                avisos.append('JUNTOS: «%s» son %s (un equipo escrito sin «+»)' % (x, e))
     # 🔑 R8 (Dlx, 13/10/2026, «Sí»): UNA BATALLA DE ALGUIEN CONTRA SÍ MISMO NO EXISTE: no paga ni es duelo. FVS UNDER
     # (#461) escribe a Mathias con las dos banderas —`[🇻🇪Mathias🇪🇸]`— y su final traía, además de «Mathias 🇪🇸 vs Rfran
     # 🇪🇸», una batalla «Mathias 🇪🇸 vs mathias 🇻🇪»: Mathhias contra Mathhias. Con ella no había campeón, Mathhias cobraba
@@ -1126,10 +1155,13 @@ def procesar(batallas, num, fecha, servidor, participantes=None,
             for mq in mqs:
                 rondas = min(int(mq.group(1)), 3)
                 pct = mods['walkin'].get(rondas, 0.0)
-                d = res.get(resolver(mq.group(2).strip()))
-                if d:
-                    d['puntos'] = int(d['puntos'] * pct)
-                    d['notas'] += 'Walk-in %d ' % rondas
+                # 👥 un equipo en la nota («Walk-in 1: MARK + TOBALSILLO», la #444): a cada integrante
+                _wn = mq.group(2).strip()
+                for _wm in (equipo(_wn) or [_wn]):
+                    d = res.get(resolver(_wm))
+                    if d:
+                        d['puntos'] = int(d['puntos'] * pct)
+                        d['notas'] += 'Walk-in %d ' % rondas
             continue
         m = re.search(r'walk-in\s+(\d+)', n)
         if m:
@@ -1521,6 +1553,18 @@ def _self_check():
        _nd.get('Mco') == con_eq.get('Mco') and _nd.get('Mak') == con_eq.get('Mak')
        and _nd.get('Math', {}).get('puntos') == _nd.get('Mini', {}).get('puntos') == con_eq.get('Mini', {}).get('puntos'),
        '%s' % _nd)
+    # 👥 la llave que escribe sus equipos con « y » (la DDS del 10/10, #444) y 🚫 «WALKOVER», que no es nadie
+    _cy, _ecy = _pp([{'ronda': 'cuartos', 'ladoA': 'Sol Y Sad', 'ladoB': 'WALKOVER', 'ganador': 'Sol Y Sad',
+                      'notas': 'Revivido: WALKOVER'},
+                     {'ronda': 'cuartos', 'ladoA': 'Kun Y Car', 'ladoB': 'Dio Y Ico', 'ganador': 'Kun Y Car'},
+                     {'ronda': 'cuartos', 'ladoA': 'Man Y Ale', 'ladoB': 'Nob Y Nit', 'ganador': 'Man Y Ale'},
+                     {'ronda': 'final', 'ladoA': 'Sol Y Sad', 'ladoB': 'Kun Y Car', 'ganador': 'Sol Y Sad',
+                      'notas': 'Walk-in 1: Kun Y Car'}])
+    ok('la « y » de una llave de equipos parte el equipo, el walk-in cae en cada uno y «WALKOVER» no cobra',
+       not any(' Y ' in k or 'WALKOVER' in k.upper() for k in _cy)
+       and _cy.get('Sol', {}).get('puntos') == _cy.get('Sad', {}).get('puntos') == t16['16+']['campeon'] // 2
+       and _cy.get('Kun', {}).get('puntos') == _cy.get('Car', {}).get('puntos') < t16['16+']['subcampeon'] // 2
+       and _cy.get('Dio', {}).get('puntos') == t16['16+']['cuartos'] // 2, '%s' % _cy)
     ok('… y con «cobra: Geo», el octavo, como quien lo perdió',
        con_c.get('Geo', {}).get('puntos') == 1250 and con_c.get('Geo', {}).get('posicion') == ETIQUETA['octavos']
        and con_c.get('Ana', {}).get('puntos') == 10000,
