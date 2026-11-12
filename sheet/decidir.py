@@ -2092,6 +2092,7 @@ REGLAS = {
     'R19': 'la ronda que la escala 8-15 no tenía ahora paga 625',
     'R21': 'la cuenta que se anotó así para ese evento es de alguien de la Lista que esa noche no jugó con su nombre',
     'R22': 'una batalla de equipos: cualquier respuesta paga lo mismo, porque quien gana y no sigue cobra su parte',
+    'R23': 'el tercer puesto que la llave escribe como otra semifinal, sin ganador: los dos quedan semifinalistas',
 }
 
 
@@ -2105,6 +2106,42 @@ SE_CIERRAN = ('r32', 'octavos', 'cuartos')
 def se_cierra_sola(ronda):
     """¿Esta ronda se puede cerrar sola con «nadie siguió»? Dieciseisavos, octavos o cuartos."""
     return _CAE.get(norm(ronda)) in SE_CIERRAN or norm(ronda) in ('dieciseisavos', 'cuartosdefinal', 'octavosdefinal')
+
+
+def tercer_puesto(x, L):
+    """🥉 R23: por qué la «Batalla sin ganador» `x` (`partes_batalla()`) se cierra sola, o `''`. Pura con la llave `L`.
+
+    · Una «semifinal» de más entre los dos que PERDIERON las otras semis de esa llave: es el tercer puesto, que la llave
+      escribe en la misma ronda y sin ganador. Medido el 12/11/2026: 6 de las 10 «semifinales» sin ganador de DDS (la #444,
+      #578, #579, #583, #584, #585). Sin ganador, los dos cobran la Semifinal, que es el promedio de 3.º y 4.º (Dlx).
+    · Una batalla de dos lugares vacíos («walkover vs walkover», la #603): no hay nadie que cobre.
+    ⚠️ Si uno de los dos no jugó la semi (#580: MARTINES no aparece; #586: Black D-mon), no es eso: sigue la pregunta."""
+    if not x or not L:
+        return ''
+    ronda, lados = x[3], x[4]
+    try:
+        from equipos import no_es_nadie
+    except Exception:                                    # noqa: BLE001
+        def no_es_nadie(_):
+            return False
+    if lados and all(no_es_nadie(l) for l in lados):
+        return 'es una batalla entre dos lugares vacíos (%s): no hay nadie que cobre' % ' vs '.join(lados)
+    if not norm(ronda).startswith('semi') or len(lados) != 2:
+        return ''
+
+    def k(n):
+        return norm(_sin_bandera(lado_limpio(n)))
+
+    def igual(a, b):
+        a, b = k(a), k(b)
+        return bool(a and b) and (a == b or _parecido(a, b) or difflib.SequenceMatcher(None, a, b).ratio() >= 0.8)
+    r = next((r for r in L.get('rondas') or [] if norm(r.get('r')).startswith('semi')), None)
+    bs = [b for b in (r or {}).get('b') or [] if len(b) > 1 and b[1]]
+    perdieron = [l for b in bs for l in (b[0] or []) if not igual(l, b[1])]
+    if len(bs) < 2 or igual(lados[0], lados[1]) or not all(any(igual(l, q) for q in perdieron) for l in lados):
+        return ''
+    return ('es el tercer puesto (%s perdieron las semis) y la llave no dice quién lo ganó: los dos quedan como '
+            'semifinalistas, el promedio de 3.º y 4.º' % ' y '.join(lados))
 
 
 def de_equipos(lados):
@@ -3018,6 +3055,10 @@ def reglas(preguntas, eventos, dry=True, todas=None):
       R22 la batalla de EQUIPOS sin ganador, que no sea la final (`de_equipos()`): «nadie siguió». Dlx, 11/11/2026, a
           «¿quien gana y no sigue cobra su ronda automáticamente?»: «Sí, cobra solo» (`motor`, «Ganó en equipo y no
           siguió»). Con eso cualquier respuesta paga lo mismo, y en equipos no hay duelo: preguntarla no cambia nada
+      R23 la «semifinal» de más entre los dos que perdieron las semis —el tercer puesto que la llave no marca—, y la
+          batalla de dos lugares vacíos («walkover vs walkover»): «no se jugó» (`tercer_puesto()`). Dlx, 12/11/2026:
+          «el sistema o guía dice que es un promedio de 3ero y 4to», y eso es la Semifinal (5.250 = (6.000 + 4.500) / 2),
+          lo que los dos ya cobran por la semi que perdieron. Contestarla no cambiaba nada
 
     ⚠️ R4 y R6 ESCRIBEN una decisión de batalla (`datos/decisiones.json`, `por: el ciclo (R4)`): así el lector no la
     vuelve a dejar «sin ganador». «Deshacer» la saca. ⚠️ Y CIERRAN DESPUÉS DE ESCRIBIRLA: si la escritura falla, la
@@ -3123,7 +3164,15 @@ def reglas(preguntas, eventos, dry=True, todas=None):
                 con_dec.append((p, NO_SE_JUGO, 'R4', porque, {'batalla': det}))
                 continue
             # ── R22 · la de equipos: cualquier respuesta paga lo mismo (Dlx, 11/11/2026: «Sí, cobra solo»)
-            _ysx = _ys_de(_llave_de(x[0], x[1], x[2], ll))
+            # ── R23 · el tercer puesto que la llave escribe como otra semi (Dlx, 12/11/2026: «es un promedio de 3ero y 4to»)
+            _L3 = _llave_de(x[0], x[1], x[2], ll)
+            _t3 = tercer_puesto(x, _L3)
+            if _t3:
+                nuevas_dec[clave_batalla(det)] = {'ganador': '', 'batalla': det, 'cuando': _ahora_et(),
+                                                  'por': 'el ciclo (R23)', 'nota': _t3}
+                con_dec.append((p, NO_SE_JUGO, 'R23', _t3, {'batalla': det}))
+                continue
+            _ysx = _ys_de(_L3)
             if de_equipos([_ysx.get(str(l or '').strip(), l) for l in x[4]]) and se_cierra_sola(x[3]):
                 porque = ('es de equipos (%s): quien gana y no sigue cobra su parte, así que cualquier respuesta paga lo '
                           'mismo, y en equipos no hay duelo' % ' vs '.join(x[4])[:160])
@@ -6161,6 +6210,13 @@ def _self_check():
            and sugerencia(dict(_pb, detalle=_pb['detalle'].replace('cuartos', 'semifinales')), _llb) == ('', '')
            and not _parecido('Al', 'Alan') and _parecido('MATI🇦🇷', 'MATICERNA 🇦🇷'),
            'lo que sugiere el bot: el único lado que sigue después, con su nombre más largo o más corto; si siguen los dos, nada')
+        _L3 = {'rondas': [{'r': 'Semifinales', 'b': [[['Benji 🇵🇪', 'Mark'], 'Benji 🇵🇪'], [['oriuz', 'Miniboy'], 'oriuz'],
+                                                   [['Miniboy🇨🇱', 'Mark'], '']]}, {'r': 'Final', 'b': [[['oriuz', 'Benji'], 'oriuz']]}]}
+        _x3 = ('X', 'DDS', '30/10', 'semifinales', ['Miniboy🇨🇱', 'Mark'])
+        ok(tercer_puesto(_x3, _L3) and not tercer_puesto(_x3[:4] + (['Miniboy🇨🇱', 'Martines'],), _L3)
+           and not tercer_puesto(_x3[:3] + ('cuartos', ['Miniboy🇨🇱', 'Mark']), _L3)
+           and tercer_puesto(_x3[:3] + ('octavos', ['walkover', 'WALKOVER']), _L3) and 'R23' in REGLAS,
+           'R23: la «semifinal» de más entre los dos que perdieron las semis es el tercer puesto; con uno que no la jugó, no')
         ok(se_cierra_sola('OCTAVOS') and se_cierra_sola('cuartos') and not se_cierra_sola('SEMIFINALES')
            and not se_cierra_sola('Tercer puesto') and not se_cierra_sola('final'),
            'se cierran solas sólo dieciseisavos, octavos y cuartos: ni la semi, ni el tercer puesto, ni la final')
