@@ -67,9 +67,11 @@ const quieto = () => (W.matchMedia && W.matchMedia('(prefers-reduced-motion: red
   || !!(W.navigator && W.navigator.connection && W.navigator.connection.saveData);
 function Fondo({ base }) {
   const [sinVideo] = useState(quieto);
-  // 🖥️ en la compu, el de 1280 × 720 (Dlx: «el video no está en HD»: el de 640 se veía a píxeles en 1454 px); en el
-  // teléfono, el de 640, que pesa la mitad y en esa pantalla no se nota. Se elige una vez, al abrir
-  const [hd] = useState(() => (W.innerWidth || 0) >= 900);
+  // 🖥️ EL DE 1280 × 720 DONDE LA PANTALLA TIENE LOS PÍXELES PARA VERLO (Dlx: «el video no está en HD»: el de 640 se veía
+  // a píxeles en 1454 px; y después, «haz lo mismo en la versión del teléfono»). Se mide en píxeles de verdad, no de CSS:
+  // un teléfono de 390 con densidad 3 tiene 1.170, y ahí el de 640 también se veía blando. El de 640 queda para pantallas
+  // de verdad chicas; con ahorro de datos no va ninguno (el cuadro quieto). Se elige una vez, al abrir
+  const [hd] = useState(() => (W.innerWidth || 0) * (W.devicePixelRatio || 1) >= 900);
   // `muted` como propiedad Y antes de play(): React no lo pone como atributo y sin eso el navegador no lo arranca solo
   const arrancar = (v) => { if (v) { v.muted = true; const p = v.play(); if (p && p.catch) p.catch(() => { /* queda el póster */ }); } };
   return (
