@@ -1410,7 +1410,7 @@ function svsDe(chat, aj) {
 const DEF_AP = { montos: [50, 100, 250, 500], minutos: 3 };
 const DEF_RIT = { normal: 10, batalla: 2 };
 
-// 🎲 las apuestas: los botones, cuánto quedan abiertas y dónde no van. Sin tope (11/11/2026)
+// 🎲 las apuestas: los botones y cuánto quedan abiertas. Sin tope (11/11/2026) y sin «dónde no van» (12/11/2026)
 function AjApuestas({ liga, aj, hacer, ocup, chat, general }) {
   const def = ((chat || {}).def || {}).apuestas || DEF_AP;
   const a = aj.apuestas || null;
@@ -1870,7 +1870,7 @@ function atencion(d, liga, q, logs) {
     d.sistema && d.sistema.ok === false ? ['⚠️', 'El lector de anuncios no contesta', 'Los avisos al minuto y el bot en vivo pueden estar quietos.', 'salud', 'sa-corridas'] : null,
     ult && ult.estado === 'completed' && ult.fin && ult.fin !== 'success' && ult.fin !== 'skipped'
       ? ['⚠️', 'La última vuelta del ciclo ' + String(FIN_CORRIDA[ult.fin] || ult.fin).replace(/^\S+\s/, ''), 'Puedes correrlo de nuevo desde Salud.', 'salud', 'sa-corridas'] : null,
-    ...cuotasEnRojo(q).map(([, , t]) => ['⚠️', t + ' casi llenas hoy', 'Se renuevan a las 8 PM ET.', 'salud', 'sa-cuotas']),
+    ...cuotasEnRojo(q).map(([, , t]) => ['⚠️', t + ' casi llenas hoy', 'Se renuevan a las ' + hora(renuevaKV()) + '.', 'salud', 'sa-cuotas']),
     ...(d.reportes || []).filter((x) => x.estado === 'no_pude').map((x) => ['⚠️', 'No se pudo corregir la llave #' + x.llave, x.resultado, 'pendientes', '']),
     ...(() => {
       const v = logsVistos();
@@ -2207,6 +2207,9 @@ async function pedirLlaveCuenta(cuerpo) {
   return j.llaves_cuenta;
 }
 
+// «(sin titulo)» es como el lector guarda la llave sin nombre: en pantalla, con su tilde
+const sinTitulo = (n) => (/^\(?sin t[ií]tulo\)?$/i.test(String(n || '').trim()) ? 'Sin título' : n);
+
 function LlavesCuentan({ L, liga, alCambiar }) {
   const todas = useLlavesTodas();
   const [q, setQ] = useState('');
@@ -2221,7 +2224,10 @@ function LlavesCuentan({ L, liga, alCambiar }) {
   const ped = L.pedidos || {};
   // 👀 sin las de los servidores que no suman (`ns`, `llaves_sin_sumar.json`): nunca contaron y sacarlas no hace nada. Su
   // número era el final del mensaje de Discord (#195217675) y salían con «Cuenta» (12/11/2026, mirándolo con Dlx)
-  const xs = Object.values(todas).filter((e) => e && e.nombre && e.sv && e.fecha && !e.ns).sort((a, b) => (b.n || 0) - (a.n || 0));
+  // 📅 la más nueva arriba POR FECHA, no por número: una llave cargada tarde tiene número alto y fecha vieja (la #598 es del
+  // 23/09 y salía entre la #599 del 08/10 y la #597 del 09/11). A igual día, el número
+  const xs = Object.values(todas).filter((e) => e && e.nombre && e.sv && e.fecha && !e.ns)
+    .sort((a, b) => String(b.dia || '').localeCompare(String(a.dia || '')) || (b.n || 0) - (a.n || 0));
   const svs = [...new Set(xs.map((e) => e.sv))].sort();
   const qn = normN(q);
   const vis = xs.filter((e) => (!sv || e.sv === sv) && (!qn || normN(e.nombre).includes(qn) || String(e.n) === q.trim().replace('#', '')));
@@ -2239,7 +2245,7 @@ function LlavesCuentan({ L, liga, alCambiar }) {
     return (
       <li key={c} className={'dz-ll' + (st === 'no' || st === 'sale' ? ' fuera' : '')}>
         <div>
-          <b>{e ? '#' + e.n + ' · ' : ''}{limpio(e ? e.nombre : c.split(' · ')[0])}</b>
+          <b>{e ? '#' + e.n + ' · ' : ''}{sinTitulo(limpio(e ? e.nombre : c.split(' · ')[0]))}</b>
           <small>{siglaDe(e ? e.sv : c.split(' · ')[1])} · {e ? e.fecha : c.split(' · ')[2]}{e && e.participantes ? ' · ' + e.participantes + ' raperos' : ''}</small>
         </div>
         <span className={'db-chip' + (st === 'si' ? ' ok' : ' ojo')}>{{ si: 'Cuenta', no: 'No cuenta', sale: 'Sale en la próxima corrida', vuelve: 'Vuelve en la próxima corrida' }[st]}</span>
@@ -2351,7 +2357,9 @@ function FondosVs({ F, svs, liga, alCambiar }) {
   );
 }
 
-function FondosVistos({ fs }) {
+function FondosVistos({ fs, liga }) {
+  // el nombre como sale en el ranking («Calíz»), no la clave del perfil («caliz»)
+  const nom = (k) => ((liga && liga.T && liga.T[k]) || {}).n || k;
   const [fuera, setFuera] = useState({});
   const [sel, setSel] = useState('');
   const [motivo, setMotivo] = useState(MOTIVOS_FONDO[0]);
@@ -2377,7 +2385,7 @@ function FondosVistos({ fs }) {
         <li key={f.quien}>
           <div className="dz-fv-img" style={{ backgroundImage: 'url("' + f.url + '")' }} />
           <div className="dz-fv-t">
-            {f.k ? <a href={'#/r/' + f.k}>{f.k}</a> : <span>sin perfil</span>}
+            {f.k ? <a href={'#/r/' + f.k}>{nom(f.k)}</a> : <span>sin perfil</span>}
             <small>{hace(f.t)}</small>
             {sel === f.quien ? (
               <span className="dz-fv-q">
@@ -3437,14 +3445,30 @@ function BuscarTodo({ abierto, cerrar, ir, visibles, liga, abrirFicha, extra }) 
 }
 
 // 💚 LA SALUD EN UNA FRASE (la maqueta: «Todo anda»), y sólo si algo anda mal, qué. El cupo de escrituras con su ritmo:
-// el día de Cloudflare es UTC, así que lo medido se proyecta a las 24 h desde la última medianoche UTC
+// el día de Cloudflare es UTC, así que lo medido se proyecta desde la última medianoche UTC.
+// 🌙 SÓLO SOBRE LAS HORAS EN QUE SE ESCRIBE (12/11/2026, mirándolo con Dlx: decía «~1.326, no alcanza» con 363). De 3 a
+// 11 AM ET no corre ni el ciclo ni el vigía (`MADRUGADA`), y el día UTC arranca a las 7 PM ET, justo en las horas de los
+// eventos: proyectar a 24 h triplicaba la noche. Medido en las corridas del 09 al 11/11: los días cerraron en 360–500
+const MADRUGADA = [3, 11];
+const _horaET = new Intl.DateTimeFormat('en-US', { timeZone: 'America/New_York', hour: 'numeric', hourCycle: 'h23' });
+function horasActivas(desde, hasta) {
+  let n = 0;
+  for (let t = desde; t < hasta; t += 900000) {
+    const h = Number(_horaET.format(new Date(t)));
+    if (h < MADRUGADA[0] || h >= MADRUGADA[1]) n += 0.25;
+  }
+  return n;
+}
 function proyeccion(q) {
   const w = q && q.kv && q.kv.write;
   if (w == null || !q.cuando) return null;
   const t = Date.parse(q.cuando);
-  const h = ((t % 86400000) + 86400000) % 86400000 / 3600000;
-  return h >= 1 ? Math.round((w / h) * 24) : null;
+  const ini = t - (((t % 86400000) + 86400000) % 86400000);
+  const ya = horasActivas(ini, t);
+  return ya >= 1 ? Math.round((w / ya) * horasActivas(ini, ini + 86400000)) : null;
 }
+// a qué hora se renueva el cupo de Cloudflare (la medianoche UTC): 7 PM ET en invierno, 8 PM en verano
+const renuevaKV = () => { const a = new Date(); return new Date(Date.UTC(a.getUTCFullYear(), a.getUTCMonth(), a.getUTCDate() + 1)); };
 function saludDe(d, q) {
   const s = d.sistema || {};
   const ult = (d.corridas || [])[0];
@@ -3494,7 +3518,9 @@ function programado(aj, liga) {
   const m = liga.d.mult || {};
   const av = avisoVigente(aj);
   return [
-    aj.pase_sorteo ? ['El sorteo del premium', 'cierra el ' + fecha(aj.pase_sorteo.cierra) + ' y se sortea el ' + fecha(aj.pase_sorteo.sorteo), 'web', 'aj-sorteo'] : null,
+    // ⏳ sólo si todavía no se sorteó: el del 30/10 seguía «programado» el 12/11 (mirándolo con Dlx)
+    aj.pase_sorteo && msDe(aj.pase_sorteo.sorteo) > Date.now()
+      ? ['El sorteo del premium', 'cierra el ' + fecha(aj.pase_sorteo.cierra) + ' y se sortea el ' + fecha(aj.pase_sorteo.sorteo), 'web', 'aj-sorteo'] : null,
     av ? ['Aviso en la página', '«' + av.texto.slice(0, 80) + (av.texto.length > 80 ? '…' : '') + '» hasta el ' + fecha(av.hasta), 'web', 'aj-aviso'] : null,
     aj.silencio ? ['Horario de silencio', 'el bot en vivo calla de ' + aj.silencio.desde + ' a ' + aj.silencio.hasta, 'web', 'aj-silencio'] : null,
     aj.multiplicadores && aj.multiplicadores.semana === m.id ? ['El multiplicador de esta semana', 'va a mano, no es el del sorteo', 'servidores', 'sv-cada'] : null,
@@ -3636,15 +3662,18 @@ function DetalleVideo({ it, alCambiar }) {
 
 // 🔎 POR QUÉ SE CIERRA UN REPORTE (25/10/2026, el research: el motivo de cierre de Battlefy). La misma lista que
 // `CAUSAS_REPORTE` de bot/avisos.js: cerrar pide una, y el Dashboard cuenta cuál falla más (`CausasLinea`)
-const CAUSAS = [['nombre_bot', 'El bot leyó mal un nombre', 'nombres mal leídos'], ['llave_bot', 'El bot leyó mal la llave', 'llaves mal leídas'],
-  ['organizador', 'Se equivocó el organizador', 'del organizador'], ['no_corresponde', 'Estaba bien', 'estaban bien'], ['prueba', 'Era una prueba', 'pruebas']];
+// el cuarto, en singular: «1 nombre mal leído», no «1 nombres mal leídos» (12/11/2026)
+const CAUSAS = [['nombre_bot', 'El bot leyó mal un nombre', 'nombres mal leídos', 'nombre mal leído'],
+  ['llave_bot', 'El bot leyó mal la llave', 'llaves mal leídas', 'llave mal leída'],
+  ['organizador', 'Se equivocó el organizador', 'del organizador', 'del organizador'], ['no_corresponde', 'Estaba bien', 'estaban bien', 'estaba bien'],
+  ['prueba', 'Era una prueba', 'pruebas', 'prueba']];
 // «qué falla más», en una línea: los últimos 30 días, de más a menos (sin quién: sólo cuántos)
 function CausasLinea({ cs }) {
   const xs = (cs || []).filter((c) => c.n30 && c.causa !== 'prueba').sort((a, b) => b.n30 - a.n30);
   if (!xs.length) return null;
   return (
     <p className="dz-causas"><b>Qué falló en 30 días:</b> {xs.map((c, i) => (
-      <span key={c.causa} className={i ? '' : 'top'}>{num(c.n30)} {(CAUSAS.find((x) => x[0] === c.causa) || [0, 0, c.causa])[2]}</span>
+      <span key={c.causa} className={i ? '' : 'top'}>{num(c.n30)} {(CAUSAS.find((x) => x[0] === c.causa) || [0, 0, c.causa, c.causa])[c.n30 === 1 ? 3 : 2]}</span>
     ))}</p>
   );
 }
@@ -4320,14 +4349,14 @@ function AjustesFilas({ liga, aj, hacer, ocup, chat, ir, abrir, sis }) {
         <Fila {...f('aj-silencio')} t="Horario de silencio" que="Horas (en hora del este) en que el bot en vivo no habla en ningún chat."
           val={s ? '🌙 De ' + s.desde + ' a ' + s.hasta : 'Sin silencio'} tono={s ? 'ojo' : ''}>
           <AjSilencio aj={aj} hacer={hacer} ocup={ocup} /></Fila>
-        <Fila {...f('aj-apuestas')} t="Las apuestas" que="Los botones, cuánto quedan abiertas y dónde no van. Sin tope."
-          val={(a || defA).montos.map(num).join(' · ') + ' · tope ' + num((a || defA).tope) + (a ? ' · ✍' : '')} tono={a ? 'ojo' : ''}>
+        <Fila {...f('aj-apuestas')} t="Las apuestas" que="Los botones y cuánto quedan abiertas. Salen siempre y sin tope."
+          val={(a || defA).montos.map(num).join(' · ') + ' · ' + ((a || defA).minutos || 3) + ' min' + (a ? ' · ✍' : '')} tono={a ? 'ojo' : ''}>
           <AjApuestas liga={liga} aj={aj} hacer={hacer} ocup={ocup} chat={chat} general /></Fila>
       </ul>
       <h3 className="dz-h">El Pase, las crews y el Salón</h3>
       <ul>
         <Fila {...f('aj-sorteo')} t="El sorteo del premium" que="La gente entra gratis desde el Pase y se sortea solo a la hora."
-          val={S ? 'Se sortea ' + liga.dia(S.sorteo) : 'Sin sorteo'} tono={S ? 'ok' : ''}>
+          val={S ? (msDe(S.sorteo) > Date.now() ? 'Se sortea ' : 'Se sorteó ') + liga.dia(S.sorteo) : 'Sin sorteo'} tono={S && msDe(S.sorteo) > Date.now() ? 'ok' : ''}>
           <AjSorteo liga={liga} aj={aj} hacer={hacer} ocup={ocup} /></Fila>
         <Fila {...f('aj-crews')} t="Las crews" que="Cuánto cuesta crear una, cómo se arma su ranking y quién es el líder."
           val={'Crear: ' + num(aj.crew_precio ?? 2500) + ' PdT'}>
@@ -4492,7 +4521,7 @@ function enPalabras(cual, v, liga) {
   if (cual === 'silencio') return 'de ' + v.desde + ' a ' + v.hasta;
   if (cual === 'aviso_web') return '«' + corte(v.texto, 40) + '»';
   if (cual === 'ritmo') return 'uno cada ' + v.normal + ' min · ' + v.batalla + ' en «Cada batalla»';
-  if (cual === 'apuestas') return (v.montos || []).map(num).join(' · ') + ' · tope ' + num(v.tope || 0);
+  if (cual === 'apuestas') return (v.montos || []).map(num).join(' · ') + (v.minutos ? ' · ' + v.minutos + ' min' : '');
   if (cual === 'pase_sorteo') return v.id + (v.sorteo && liga ? ' · se sortea ' + liga.dia(v.sorteo) : '');
   if (typeof v === 'boolean') return v ? 'sí' : 'no';
   if (typeof v === 'number') return num(v);
@@ -5008,7 +5037,7 @@ export function Dashboard({ dc, liga }) {
       <>
         <SaludPiezas d={d} q={cuotas} logs={logs} ir={ir} />
         {sec('sa-corridas', 'EL CICLO Y EL LECTOR', 'se pone al día solo', <><Corridas corridas={d.corridas} s={d.sistema || {}} github={d.github} /><Sistema s={d.sistema || {}} sesiones={d.sesiones} /></>)}
-        {sec('sa-cuotas', 'LO QUE GASTA CLOUDFLARE HOY', 'el plan gratis · se renueva a las 8 PM', <Cuotas q={cuotas} />)}
+        {sec('sa-cuotas', 'LO QUE GASTA CLOUDFLARE HOY', 'el plan gratis · se renueva a las ' + hora(renuevaKV()), <Cuotas q={cuotas} />)}
         {sec('sa-logs', 'LO QUE AVISÓ LOGS', 'los 🔴 y ⚠️ de los últimos 3 días', <Logs l={logs} />)}
         {sec('sa-errores', 'ERRORES DE LA PÁGINA · 7 DÍAS', 'nunca de quién', <ErroresPagina e={d.errores_pag} />)}
         {d.dash_med !== undefined ? sec('sa-dash', 'EL PROPIO DASHBOARD', 'cuánto tarda lo que llega', <DashMed m={d.dash_med} />) : null}
@@ -5026,7 +5055,7 @@ export function Dashboard({ dc, liga }) {
           <FondosVs F={d.vs_fondos || {}} svs={[...new Set([...svsDe(d.chat, aj), ...((d.tiers || {}).servidores || []).map((x) => x.sv)])]} liga={liga}
             alCambiar={(x) => cambiarD({ vs_fondos: x })} />) : null}
         {ve('fondos') ? sec('co-fondos', 'LOS FONDOS DE LA GENTE QUE YA SE VEN', 'quitar uno que no tenía que pasar',
-          <FondosVistos fs={d.fondos_vistos || []} />) : null}
+          <FondosVistos fs={d.fondos_vistos || []} liga={liga} />) : null}
       </>
     );
   } else if (areaV === 'roles') {

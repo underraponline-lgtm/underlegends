@@ -8,6 +8,8 @@
 
 const YA = new Set();
 let mandados = 0;
+/** Lo que inyectan las extensiones y los navegadores del teléfono: billeteras, Firefox y Chrome de iOS, Zalo */
+const AJENOS = /window\.ethereum|__firefox__|__gCrWeb|webkit\.messageHandlers|zaloJSV2|instantSearchSDKJSBridge/i;
 
 /** El mensaje sin lo que no hace falta: sin el `?…` de un link y con los números largos (un ID) tapados. */
 function limpiarMsg(s) {
@@ -53,6 +55,9 @@ export function escucharErrores() {
     // sólo lo nuestro: un script de otro lado (una extensión, un traductor) no es un error de la página
     const f = String((ev && ev.filename) || '');
     if (!f || !f.startsWith(location.origin)) return;
+    // 🧩 y lo que el navegador mete en la página como si fuera de ella (12/11/2026, Salud del Dashboard: 7 de 10 errores
+    // eran `window.ethereum…` de MetaMask y `window.__firefox__…` de Firefox en el iPhone, con el nombre de nuestra página)
+    if (AJENOS.test(String((ev && ev.message) || (ev && ev.error && ev.error.message) || ''))) return;
     reportarError('global', ev.error || { message: ev.message, stack: f + ':' + ev.lineno + ':' + ev.colno });
   });
   window.addEventListener('unhandledrejection', (ev) => {
