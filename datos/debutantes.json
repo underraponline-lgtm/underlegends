@@ -431,6 +431,18 @@
    "vence": "2026-11-06T20:59:18+00:00",
    "vencido": true
   },
+  "Carlos": {
+   "avisado": "2026-11-12",
+   "con": null,
+   "cumplido": "",
+   "debut": "2026-11-09T03:16:00+00:00",
+   "did": "734172184737480745",
+   "evento": "QCYO RAPEEN 12",
+   "n": 593,
+   "sv": "FFA",
+   "vence": "2026-11-16T03:16:00+00:00",
+   "vencido": false
+  },
   "Carpediem": {
    "avisado": "2026-11-12",
    "con": null,
