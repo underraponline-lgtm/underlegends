@@ -42,10 +42,14 @@ def cargar(web=None):
         claves = {p['raw']: SW._clave(p) for p in padron if p.get('raw')}
         web = LG.para_web(claves=claves) or {}
     POR.clear()
-    for L in web.get('ligas') or []:
+    # 🏆 y las temporadas terminadas (`completadas`, 11/11/2026), cada una con su id `<liga>~<día>`: su carta se dibuja
+    # una vez y se queda así en «Ligas completadas», aunque la liga ya juegue la siguiente
+    for L in (web.get('ligas') or []) + (web.get('completadas') or []):
         if L.get('tabla'):
             POR[L['id']] = {'n': L['n'], 'sv': L['sv'], 'tabla': [list(f) for f in L['tabla']],
                             'fechas': L.get('fechas') or [], 'ks': L.get('ks') or {}}
+            if L.get('lt'):
+                POR[L['id']]['lt'] = L['lt']
     return POR
 
 

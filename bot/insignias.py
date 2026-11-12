@@ -290,7 +290,8 @@ def _ligas(raw_de):
         for h in LG.hitos(d):
             if h.get('que') == 'invicto':
                 poner((h.get('quien') or [''])[0], 'invicto')
-        for x in (LG._decis().get(LG.FIN) or []):
+        # 🏆 los que contestó Dlx y, desde el 11/11/2026, los que anunció su servidor (`ligas.campeones()`)
+        for x in LG.campeones(d=d):
             for i, n in enumerate(x.get('podio') or []):
                 poner(n, 'liga_campeon' if i == 0 else 'liga_podio')
                 if i == 0:

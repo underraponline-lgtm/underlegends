@@ -200,6 +200,8 @@ function TusLigas({ liga, k }) {
   if (!mias.length) return null;
   const nom = {}, svDe = {};
   ((x.lobby && x.lobby.ligas) || []).forEach((L) => { nom[L.id] = L.n; svDe[L.id] = L.sv; });
+  // 🏆 y las de una temporada que terminó (`comp`, 11/11/2026): su liga y cuál fue
+  Object.values(x.comp || {}).forEach((C) => { nom[C.id] = C.n + ' · ' + (C.lt ? 'T' + C.lt : 'terminada'); svDe[C.id] = C.sv; });
   const c = mias[Math.min(sel, mias.length - 1)];
   const de = nom[c[0]] || c[0];
   // 👑 la del dueño no tiene puesto ni OVR (no juega): va «—»

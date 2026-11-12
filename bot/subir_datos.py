@@ -388,13 +388,22 @@ def _cartas_liga():
         with io.open(os.path.join(BASE, 'datos', 'cartas_liga.json'), encoding='utf-8') as f:
             cl = json.load(f).get('cartas') or {}
         with io.open(os.path.join(BASE, 'datos', 'ligas.json'), encoding='utf-8') as f:
-            nom = {lid: (L.get('n') or lid) for lid, L in (json.load(f).get('ligas') or {}).items()}
+            lg = json.load(f).get('ligas') or {}
+        nom = {lid: (L.get('n') or lid) for lid, L in lg.items()}
     except (OSError, ValueError):
         return {}
+
+    def nombre(lid):
+        # 🏆 la de una temporada terminada (`<liga>~<día>`, 11/11/2026): el nombre de su liga y cuál fue
+        if lid in nom or '~' not in lid:
+            return nom.get(lid, lid)
+        base, dia = lid.split('~', 1)
+        lt = next((c.get('n') for c in (lg.get(base) or {}).get('temps') or [] if str(c.get('desde') or '')[:10] == dia), None)
+        return '%s · %s' % (nom.get(base, base), ('T%s' % lt) if lt else 'desde el %s/%s' % (dia[8:10], dia[5:7]))
     por = {}
     for lid, v in cl.items():
         for k, (sello, ovr, puesto) in v.items():
-            por.setdefault(k, []).append([lid, nom.get(lid, lid), sello, ovr, puesto])
+            por.setdefault(k, []).append([lid, nombre(lid), sello, ovr, puesto])
     for k in por:
         por[k].sort(key=lambda c: (-c[3], c[4], c[0]))
     return por

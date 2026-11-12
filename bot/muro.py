@@ -733,7 +733,7 @@ def ligas_hitos(lg):
         return []
     try:
         import ligas as LG
-        return LG.hitos(lg) + LG.campeones_hitos()
+        return LG.hitos(lg) + LG.campeones_hitos(d=lg)
     except Exception as e:                               # noqa: BLE001
         print('   ⚠️ el muro sin las ligas (%s)' % str(e)[:80])
         return []

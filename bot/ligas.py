@@ -51,6 +51,17 @@ liga (`an`), y de ahí salen dos cosas:
 Y la ENCUESTA «¿quién gana la liga?»: las opciones son la tabla y cierra cuando la liga termina (`vota()`). Cuándo
 termina una liga no lo dice nadie —cada servidor la arranca y la cierra cuando quiere—, así que se toma como terminada
 a las `CIERRA_DIAS` sin batallas, salvo que haya una próxima fecha anunciada.
+
+🏆 DESDE EL 11/11/2026 HAY TEMPORADAS, Y LAS LIGAS NUEVAS ENTRAN SOLAS (Dlx: «Sí, del 1 al 3», y «asegúrate de que el bot
+detecte una nueva liga… y cuando una liga acabe que siga en un álbum especial como LIGAS COMPLETADAS»):
+
+    el campeón     lo que su servidor ANUNCIA cierra la temporada (`campeon_en()`); lo que no anuncia nadie se le
+                   pregunta a Dlx en ✅ Decidir, como antes, y la liga que se queda sin canales se pregunta ya
+    la temporada   `temporadas()` parte las batallas en cada cierre: la siguiente arranca de cero, y la que terminó va
+                   entera a «Ligas completadas» (`para_web()`, `completadas`) con sus cartas, que ya no cambian
+    las nuevas     `descubrir()` mira las categorías de los servidores: la que tiene forma de liga, un lector que la
+                   entiende y se está jugando entra a `LIGAS` sola (`datos/ligas.json`, `nuevas`), y su categoría sale
+                   de los eventos (`marcar_fuera()`)
 """
 import datetime as dt
 import difflib
@@ -1142,15 +1153,19 @@ def ubicar(L, lst):
     return out
 
 
-def mapa_canales(s):
-    """`{sv: {g, lst}}`, una lista de canales por servidor. Sin respuesta, ese servidor no está: no se avisa de nada."""
+def mapa_canales(s, sin=()):
+    """`{sv: {g, lst}}`, una lista de canales por servidor. Sin respuesta, ese servidor no está: no se avisa de nada.
+
+    🆕 Los de las ligas y además los confirmados de la Liga: una liga nueva puede aparecer en un servidor que todavía no
+    tiene ninguna (`descubrir()`). `sin`: los que tienen el beneficio de ligas apagado en el Dashboard."""
     try:
         with io.open(os.path.join(BASE, 'datos', 'servidores.json'), encoding='utf-8') as f:
             svs = json.load(f).get('servidores') or {}
     except (OSError, ValueError):
         return {}
     out = {}
-    for sv in sorted({L['sv'] for L in LIGAS.values()}):
+    todos = {L['sv'] for L in LIGAS.values()} | {k for k, v in svs.items() if v.get('confirmado') and v.get('guild_id')}
+    for sv in sorted(todos - set(sin or ())):
         g = str((svs.get(sv) or {}).get('guild_id') or '')
         if not g:
             continue
@@ -1183,6 +1198,470 @@ def _avisar_canales(viejos, ubicados):
         return avisar.mandar('🏟️ Las ligas: cambiaron sus canales', lineas[:12])
     except Exception:                                    # noqa: BLE001
         return False
+
+
+# ── 🆕 LAS LIGAS NUEVAS, SOLAS ──────────────────────────────────────────────────────────────────────────────────────
+# Dlx, 11/11/2026: «asegúrate de que el bot detecte una nueva liga y la agregue automáticamente a la colección de ligas».
+# Hasta ese día cada liga se escribía a mano en `LIGAS`, y la «𝑫𝑰𝑴𝑬𝑵𝑺𝑰𝑶𝑵 𝑾𝑶𝑹𝑫 𝑺𝑬𝑹𝑰𝑬𝑺 𝟐𝟔» de DDF arrancó sin que
+# nadie la viera. Ahora `descubrir()` mira las categorías de cada servidor y la que tiene forma de liga entra sola.
+
+#: 🔴 UNA CATEGORÍA ES UNA LIGA si tiene veredictos (o resultados), algo de liga (tabla, jornadas, line-up) y nada de
+#: torneo con llave, y además su nombre dice liga —o tiene tabla Y jornadas—. Medido el 11/11/2026 sobre los seis
+#: servidores con ligas: pasa sólo la de DDF; «FMS INTERNACIONAL» de FRZ es un torneo con llaves y «Torneos y Eventos» de
+#: Urban, eventos
+NUEVA_NOMBRE = re.compile(r'\b(?:LIGA|LEAGUE|FMS|FMH|SERIES|CHAMPIONS|DIVISION|CONFERENCE)\b', re.I)
+NUEVA_VER = re.compile(r'VEREDICT|RESULTADO', re.I)
+NUEVA_LIGA = re.compile(r'TABLA|JORNADA|LINE.?UP|ROSTER|FECHAS', re.I)
+NUEVA_NO = re.compile(r'LLAVE|INSCRIPCI', re.I)
+#: el canal de anuncios, en este orden: de ahí salen el flyer, la próxima fecha y el campeón
+NUEVA_AN = ('ANUNCIO', 'NOTICIA', 'AVISO', 'INFO', 'FECHA')
+#: cuántas batallas cerradas tiene que entender un lector para que la liga entre: con una sola puede ser casualidad
+NUEVA_MIN = 2
+#: 🌎 el país de una liga por su nombre, cuando no trae bandera: la hora de «hoy» y «el domingo» de sus anuncios
+PAIS_DE = {'ESPANA': 'ES', 'PERU': 'PE', 'MEXICO': 'MX', 'TRICOLOR': 'CO', 'COLOMBIA': 'CO', 'ANDES': 'CL', 'CHILE': 'CL',
+           'ALBICELESTE': 'AR', 'ARGENTINA': 'AR', 'VENEZUELA': 'VE', 'ECUADOR': 'EC', 'BOLIVIA': 'BO', 'URUGUAY': 'UY'}
+_CONECTORES = {'de', 'del', 'la', 'las', 'los', 'el', 'y', 'en'}
+
+
+def _lectores():
+    """🧪 Los lectores que se prueban con una liga nueva: los que no piden más que los mensajes. Snake y FRZ comparten
+    canal entre ligas y piden su emoji o su título, así que una de ésas se suma a mano."""
+    return {'U': _u, 'D1': _d1, 'D2': _d2, 'FD': _fd, 'K': _lk}
+
+
+def nombre_liga(cat):
+    """El nombre de una categoría para mostrar: sin emojis ni adornos, con las letras de fantasía pasadas a normales y
+    las siglas en mayúscula. «𝑫𝑰𝑴𝑬𝑵𝑺𝑰𝑶𝑵 𝑾𝑶𝑹𝑫 𝑺𝑬𝑹𝑰𝑬𝑺 𝟐𝟔 🌌» → «Dimension Word Series 26», como lo escribe DDF."""
+    t = EMOJI.sub(' ', _letras(cat or ''))
+    pal = [p for p in re.split(r'[^0-9A-Za-zÁÉÍÓÚÜÑáéíóúüñ]+', t) if p]
+    out = []
+    for i, p in enumerate(pal):
+        if i and p.lower() in _CONECTORES:
+            out.append(p.lower())
+        elif len(p) <= 3 and p.isalpha():
+            out.append(p.upper())
+        else:
+            out.append(p[:1].upper() + p[1:].lower())
+    return ' '.join(out)[:40]
+
+
+def _vre_de(n):
+    """Un patrón para reconocer la liga por su nombre: su categoría si se mueve y el título de sus videos."""
+    pal = [re.escape(p) for p in _plano(n).upper().split() if len(p) >= 3 and not p.isdigit()][:3]
+    return r'\s+'.join(pal) or re.escape(_plano(n).upper())
+
+
+def cc_de(nombre, sv, conocidas=None):
+    """El país de una liga: la primera bandera de su categoría, si no su nombre (`PAIS_DE`), y si no el de la última liga
+    de su servidor. `''` si no hay nada."""
+    m = re.search('[\U0001F1E6-\U0001F1FF]{2}', nombre or '')
+    if m:
+        return ''.join(chr(ord(c) - 0x1F1E6 + 65) for c in m.group(0))
+    p = _plano(nombre).upper()
+    for k, v in PAIS_DE.items():
+        if re.search(r'\b%s\b' % k, p):
+            return v
+    return next((L.get('cc') or '' for L in reversed(list((conocidas or LIGAS).values())) if L.get('sv') == sv), '')
+
+
+def candidatas(sv, lst, conocidas=None):
+    """🔎 Las categorías de un servidor con forma de liga que ninguna liga conocida usa: `[{cat, n, ver, an, tabla, cc}]`.
+    `lst`: `GET /guilds/{g}/channels`. Ver `NUEVA_NOMBRE` para la regla."""
+    conocidas = LIGAS if conocidas is None else conocidas
+    usados = {str(L.get(q)) for L in conocidas.values() if L.get('sv') == sv for q in ('ver', 'an', 'tabla') if L.get(q)}
+    cats = {str(L.get('cat')) for L in conocidas.values() if L.get('cat')}
+    hijos = {}
+    for c in lst or []:
+        if c.get('type') in (0, 5) and c.get('parent_id'):
+            hijos.setdefault(str(c['parent_id']), []).append(c)
+    out = []
+    for c in lst or []:
+        cid = str(c.get('id'))
+        if c.get('type') != 4 or cid in cats:
+            continue
+        hs = sorted(hijos.get(cid) or [], key=lambda x: x.get('position') or 0)
+        if not hs or any(str(h['id']) in usados for h in hs):
+            continue
+        nom = [(h, _plano(h.get('name'))) for h in hs]
+        ver = next((h for h, n in nom if NUEVA_VER.search(n)), None)
+        if not ver or not any(NUEVA_LIGA.search(n) for _h, n in nom) or any(NUEVA_NO.search(n) for _h, n in nom):
+            continue
+        tb = next((h for h, n in nom if re.search('TABLA', n, re.I)), None)
+        if not NUEVA_NOMBRE.search(_plano(c.get('name'))) and not (tb and any(re.search('JORNADA', n, re.I) for _h, n in nom)):
+            continue
+        an = next((h for rx in NUEVA_AN for h, n in nom if re.search(rx, n, re.I)), None)
+        out.append({'cat': cid, 'n': nombre_liga(c.get('name')), 'ver': str(ver['id']), 'an': str(an['id']) if an else '',
+                    'tabla': str(tb['id']) if tb else '', 'cc': cc_de(c.get('name'), sv, conocidas)})
+    return out
+
+
+def elegir_lector(msgs, preferida=''):
+    """🧪 Qué lector entiende los veredictos de una liga nueva: `({familia: batallas cerradas}, la elegida o '')`. Gana el
+    que cierra más, y con menos de `NUEVA_MIN` no gana ninguno: se vuelve a probar en la corrida siguiente.
+
+    ⚠️ NO SE ADIVINA POR EL SERVIDOR. Medido el 11/11/2026 con la de DDF: el lector de LKR cerró 2 de 2 batallas, el de
+    las otras ligas de DDF 1 y el de Titans 0. Cada liga escribe como quiere su host, no como su servidor."""
+    n = {}
+    for fam, f in _lectores().items():
+        try:
+            n[fam] = sum(1 for b in f(msgs or []) if b.get('gana') and not b.get('df') and not b.get('nulo'))
+        except Exception:                                # noqa: BLE001
+            n[fam] = 0
+    mejor = max(n.values()) if n else 0
+    if mejor < NUEVA_MIN:
+        return n, ''
+    cand = [f for f in n if n[f] == mejor]
+    return n, (preferida if preferida in cand else cand[0])
+
+
+def _id_nueva(sv, n, usados):
+    base = '%s-%s' % (sv.lower(), re.sub(r'[^a-z0-9]+', '-', _plano(n).lower()).strip('-')[:32])
+    lid, i = base, 2
+    while lid in usados:
+        lid, i = '%s-%d' % (base, i), i + 1
+    return lid
+
+
+#: 🆕 cada cuántas horas se vuelve a probar una liga encontrada que todavía no se lee: sus veredictos no cambian de
+#: formato de una vuelta a la otra, y son pedidos a Discord
+NUEVA_PROBAR_H = 6
+
+
+def _desde_el_hueco(bats, dias=CIERRA_DIAS):
+    """Las batallas desde el último parón de más de `dias` sin ninguna: la temporada que se está jugando. Para la primera
+    lectura de una liga nueva —DDS canceló su temporada el 12/10 y anunció la vuelta: lo de antes no es de la que arranca—."""
+    bs = sorted((b for b in bats or [] if b[1]), key=lambda b: b[1])
+    corte = 0
+    for i in range(1, len(bs)):
+        a, b = _instante(bs[i - 1][1]), _instante(bs[i][1])
+        if a and b and (b - a).days > dias:
+            corte = i
+    return bs[corte:]
+
+
+def descubrir(s, mapa, viejas, ahora=None):
+    """🆕 Las ligas nuevas: `{id: liga}` con las de antes. Una recién vista se guarda con `fam: ''` hasta que un lector la
+    entienda (`elegir_lector()`) Y se esté jugando —algún resultado en las últimas `CIERRA_DIAS`—; ahí entra a `LIGAS` y
+    se lee como las demás. La que no, se vuelve a probar cada `NUEVA_PROBAR_H`. `s`: la sesión de Discord (para leer sus
+    veredictos), o `None` para no leer nada.
+
+    ⚠️ Medido el 11/11/2026 en los 13 servidores: diez categorías con forma de liga que no estaban. Dos se leen —la de
+    DDF, que arrancó esa semana, y la de DDS, cancelada el 12/10— y las ocho de FFS y FVS no las entiende ningún lector.
+    Sin la regla de «se está jugando», la de DDS entraba con la temporada cancelada."""
+    ahora = ahora or dt.datetime.now(dt.timezone.utc)
+    ahora_s = ahora.strftime('%Y-%m-%dT%H:%M:%SZ')
+    out = {k: dict(v) for k, v in (viejas or {}).items()}
+    # 🧹 la que nunca se pudo leer y cuya categoría ya no está, se va: no era una liga, o se borró antes de jugarse
+    for lid in list(out):
+        m = (mapa or {}).get(out[lid].get('sv'))
+        if m and not out[lid].get('fam') and str(out[lid].get('ver')) not in {str(c.get('id')) for c in m.get('lst') or []}:
+            del out[lid]
+    for sv, m in sorted((mapa or {}).items()):
+        for c in candidatas(sv, m.get('lst'), dict(LIGAS, **out)):
+            lid = _id_nueva(sv, c['n'], set(LIGAS) | set(out))
+            out[lid] = dict(c, sv=sv, fam='', vre=_vre_de(c['n']), auto=True, visto=ahora.strftime('%Y-%m-%dT%H:%M:%SZ'))
+            print('   🆕 liga nueva en %s: %s (categoría %s)' % (sv, c['n'], c['cat']))
+    corte = (ahora - dt.timedelta(days=CIERRA_DIAS)).strftime('%Y-%m-%dT%H:%M:%SZ')
+    otra_vez = (ahora - dt.timedelta(hours=NUEVA_PROBAR_H)).strftime('%Y-%m-%dT%H:%M:%SZ')
+    for lid, L in out.items():
+        if L.get('fam') or s is None or str(L.get('probado') or '') > otra_vez:
+            continue
+        pref = next((x.get('fam') for x in reversed(list(LIGAS.values())) if x.get('sv') == L['sv']), '')
+        try:
+            ms = _mensajes(s, L['ver'], 1)
+            prueba, fam = elegir_lector(ms, pref)
+        except Exception as e:                           # noqa: BLE001
+            print('   ⚠️ no pude leer los veredictos de %s (%s)' % (L['n'], str(e)[:60]))
+            continue
+        L['prueba'], L['probado'] = prueba, ahora_s
+        # 🎤 y que se esté jugando: lo último que cerró, de las últimas tres semanas
+        ult = max((b['t'] for b in _lectores()[fam](ms) if b.get('gana') and b.get('t')), default='') if fam else ''
+        L['quieta'] = bool(fam) and ult < corte
+        if fam and ult >= corte:
+            L['fam'], L['desde'] = fam, ahora_s
+            L.pop('quieta', None)
+            print('   🆕 %s se lee con el lector %s (%s)' % (L['n'], fam, prueba))
+        elif fam:
+            print('   💤 %s se lee con el lector %s, pero no se juega desde el %s: entra cuando vuelva' % (L['n'], fam, ult[:10]))
+    return out
+
+
+def marcar_fuera(nuevas, ruta=None):
+    """🔴 La categoría de cada liga nueva, a `categorias_fuera` de su servidor (`datos/servidores.json`): de ahí leen el
+    lector de eventos, el de anuncios y el vigía. Sin esto, sus veredictos se leerían como llaves de eventos —ya le pasó a
+    Carimex con una «RÉPLICA FINAL»—. Sólo las que ya tienen lector: una que no es liga no le saca nada a los eventos.
+    Devuelve las que agregó."""
+    ruta = ruta or os.path.join(BASE, 'datos', 'servidores.json')
+    try:
+        with io.open(ruta, encoding='utf-8') as f:
+            todo = json.load(f)
+    except (OSError, ValueError):
+        return []
+    svs = todo.get('servidores') or {}
+    puestas = []
+    for lid, L in (nuevas or {}).items():
+        x = svs.get(L.get('sv'))
+        if not L.get('fam') or not L.get('cat') or x is None:
+            continue
+        cf = x.setdefault('categorias_fuera', {})
+        ids = cf.setdefault('ids', [])
+        if str(L['cat']) not in [str(i) for i in ids]:
+            ids.append(str(L['cat']))
+            puestas.append(lid)
+    if puestas:
+        with io.open(ruta, 'w', encoding='utf-8', newline='\n') as f:
+            json.dump(todo, f, ensure_ascii=False, indent=1)
+            f.write('\n')
+    return puestas
+
+
+def _sumar_nuevas(ligas=None, d=None):
+    """Las ligas nuevas que ya tienen lector, a `LIGAS`: las de arriba mandan si el id choca."""
+    ligas = LIGAS if ligas is None else ligas
+    nuevas = (d if d is not None else leer()).get('nuevas') or {}
+    for lid, L in nuevas.items():
+        if lid not in ligas and L.get('fam') in _lectores() and L.get('ver'):
+            ligas[lid] = dict(L)
+    return ligas
+
+
+# ── 🏆 LAS TEMPORADAS DE CADA LIGA ──────────────────────────────────────────────────────────────────────────────────
+# Dlx, 11/11/2026, a «temporadas de verdad» y «campeón sin preguntarte cuando el servidor lo anuncia»: «Sí, del 1 al 3».
+# Hasta ese día cada liga era una sola lista de batallas: la T6 de FMH España se habría sumado a la tabla de la T5, y el
+# «💍 ORTIZ CAMPEÓN DE FMH ESPAÑA T.5» de su servidor no lo leía nadie. Ahora una temporada se cierra cuando:
+#   · su servidor anuncia el campeón (`campeon_en()`), en los veredictos o en los anuncios
+#   · Dlx contesta quién ganó en ✅ Decidir, para el parón sin anuncio (`ligas_fin` de `datos/decisiones.json`)
+#   · su servidor borra los canales de la liga (`ubicar()`): ahí también se pregunta quién ganó
+# y la siguiente arranca con la primera batalla después del cierre.
+
+CAMPEON = re.compile(r'\bCAMPEONA?\b', re.I)
+#: 🔴 «CAMPEÓN» no alcanza. El día antes del de Ortiz, FMH España publicó «¿QUÉ NECESITA ORTIZ PARA SER CAMPEÓN…?», y al
+#: arrancar la temporada «el actual campeón nacional viene a defender su título» y «CAMPEÓN ARGENTINO Y CAMPEÓN MUNDIAL».
+#: Lo de FZ League es «EL HEPTACAMPEÓN DE LA FZ LEAGUE… ESTARÁ EN LA WORLD SERIES»: `\b` ya lo deja afuera
+NO_CAMPEON = re.compile(r'[?¿]|\bPARA\s+SER\b|\bSER\b|\bSERA\b|\bSERIA\b|\bQUIEN\b|\bQUIER|\bNECESITA|\bBUSCA|\bDEFEND|'
+                        r'\bACTUAL\b|\bVIGENTE\b|\bREINANTE\b|\bANTERIOR\b|\bPASAD[AO]\b|\bDEBUT|\bCANDIDAT|\bFAVORIT|'
+                        r'\bEX\b|\bCONFIRMAD|\bPODRIA|\bPUEDE\b|\bSI\s+GANA|\bJORNADA\b|\bFECHA\b|\bDEL\s+DIA\b|'
+                        r'\bNACIONAL\b|\bMUNDIAL\b|\bDEL\s+MUNDO\b|\bINTERNACIONAL\b', re.I)
+TEMP_NUM = re.compile(r'\bT\s*\.?\s*(\d{1,2})\b|\bTEMPORADA\s*#?\s*(\d{1,2})\b|\bSEASON\s*(\d{1,2})\b', re.I)
+#: ⏳ una batalla que se cierra después del anuncio del campeón —el veredicto que llega tarde, la fecha que faltaba— sigue
+#: siendo de esa temporada si es de los días siguientes y entre dos de su tabla
+GRACIA_DIAS = 7
+#: 🏆 cuántas batallas con resultado tiene que llevar una temporada para que un «CAMPEÓN» la cierre: una que recién
+#: arranca no tiene campeón, y quien ganó la anterior suele estar arriba de la nueva
+CAMPEON_MIN = 6
+#: cuántos caracteres puede haber entre «CAMPEÓN» y el nombre de la liga: «ORTIZ CAMPEÓN DE FMH ESPAÑA T.5» sí;
+#: «ORTIZ, CAMPEÓN DE LA RED BULL, JUEGA HOY EN FMH ESPAÑA» no
+CAMPEON_CERCA = 28
+
+
+def _sin_marcas(t):
+    """Un renglón para buscar: sin emojis propios, menciones ni markdown, en `_plano()` y en mayúsculas."""
+    t = re.sub(r'<[@#][!&]?\d+>|https?://\S+', ' ', EMOJI.sub(' ', str(t or '')))
+    return re.sub(r'[#*_~|`>]+', ' ', _plano(t)).upper()
+
+
+def num_temporada(texto):
+    """El número de temporada que dice un renglón («T.5», «TEMPORADA # 5», «SEASON 2»), o `None`."""
+    m = TEMP_NUM.search(_sin_marcas(texto))
+    return int(next(g for g in m.groups() if g)) if m else None
+
+
+def _nombra(texto, nombre):
+    """¿El texto nombra a esa persona? Por palabras enteras —«AL» no está en «FINAL»—, y juntando hasta cuatro seguidas:
+    «MC KAN» es «MCKAN»."""
+    k = clave(nombre)
+    if not k:
+        return False
+    toks = [x for x in (clave(p) for p in EMOJI.sub(' ', _plano(texto)).split()) if x]
+    for i in range(len(toks)):
+        acc = ''
+        for j in range(i, min(len(toks), i + 4)):
+            acc += toks[j]
+            if acc == k:
+                return True
+            if len(acc) >= len(k):
+                break
+    return False
+
+
+def campeon_en(L, msgs, nombres, desde='', tn=None):
+    """🏆 El campeón que anunció su servidor: `{t, msg, c, n, fuente}` o `None`. `msgs`: los mensajes de la liga
+    (veredictos y anuncios, cada uno con su `canal`); `nombres`: los tres primeros de su tabla, que es entre quienes puede
+    estar; `desde`: el arranque de la temporada (un anuncio de antes es de otra); `tn`: su número, si se sabe.
+
+    Un renglón cuenta si dice CAMPEÓN sin ser pregunta ni otro título (`NO_CAMPEON`), si nombra a la liga pegado a esa
+    palabra (`CAMPEON_CERCA`) —o es un renglón corto en su propio canal de anuncios—, si no es de otra temporada (el
+    número) y si el nombre que trae es uno de esos tres. Gana el más nuevo.
+
+    ⚠️ En el canal de veredictos sólo vale con el nombre de la liga: ahí escriben los jurados, y un «ORTIZ CAMPEÓN» de
+    aliento a mitad de temporada la cerraría."""
+    nombres = [n for n in nombres or [] if clave(n)]
+    if not nombres:
+        return None
+    vre = L.get('vre') or ''
+    for m in sorted(msgs or [], key=lambda m: int(m.get('id') or 0), reverse=True):
+        if desde and str(m.get('t') or '') < desde:
+            break
+        if not _de_la_liga(L, m.get('content') or ''):
+            continue
+        for linea in str(m.get('content') or '').splitlines():
+            t = _sin_marcas(linea)
+            mc = CAMPEON.search(t)
+            if not mc or NO_CAMPEON.search(t):
+                continue
+            cerca = any(0 <= mv.start() - mc.end() <= CAMPEON_CERCA or 0 <= mc.start() - mv.end() <= CAMPEON_CERCA
+                        for mv in re.finditer(vre, t, re.I)) if vre else False
+            propio = bool(L.get('an')) and m.get('canal') == L['an'] and not L.get('tit') and len(t.strip()) <= 90
+            if not cerca and not propio:
+                continue
+            n = num_temporada(linea)
+            if n and tn and n != tn:
+                continue
+            # el nombre va antes de «CAMPEÓN» («ORTIZ CAMPEÓN DE…») o después («CAMPEÓN: ORTIZ», «… ES EL CAMPEÓN»)
+            antes, despues = t[:mc.start()], t[mc.end():]
+            for trozo in (antes, despues):
+                # el más largo primero: si están «SOL» y «SOL MC», gana «SOL MC»
+                c = next((x for x in sorted(nombres, key=lambda x: -len(clave(x))) if _nombra(trozo, x)), None)
+                if c:
+                    return {'t': str(m.get('t') or ''), 'msg': str(m.get('id') or ''), 'canal': str(m.get('canal') or ''),
+                            'c': c, 'n': n, 'fuente': 'anuncio'}
+    return None
+
+
+def num_actual(L, msgs, desde=''):
+    """El número de la temporada que juega, el más alto que nombran sus mensajes desde `desde` («FMH ESPAÑA T.5 - TOLEDO
+    J2»), o `None`. Sólo renglones que nombran a la liga: el canal de anuncios de FZ League habla de las 14 anteriores."""
+    vre = L.get('vre') or ''
+    ns = []
+    for m in msgs or []:
+        if desde and str(m.get('t') or '') < desde:
+            continue
+        for linea in str(m.get('content') or '').splitlines()[:3]:
+            t = _sin_marcas(linea)
+            if vre and re.search(vre, t, re.I):
+                n = num_temporada(linea)
+                if n and n < 60:
+                    ns.append(n)
+    return max(ns) if ns else None
+
+
+def cierres_de(lid, x, decis=None):
+    """Los cierres de temporada de una liga, del más viejo al más nuevo: `[{t, c, fuente, n, msg, p}]`. Los anunciados
+    (`temps` de `datos/ligas.json`), los que Dlx contestó (`ligas_fin`, al final del día de su última batalla) y el de
+    los canales borrados (`cerrada`)."""
+    out = [dict(c) for c in (x or {}).get('temps') or [] if c.get('t')]
+    for f in (_decis(decis).get(FIN) or []):
+        if f.get('liga') == lid and f.get('ult'):
+            out.append({'t': f['ult'] + 'T23:59:59Z', 'c': f.get('campeon') or '', 'p': f.get('podio') or [],
+                        'fuente': 'dlx', 'n': None, 'msg': ''})
+    cer = (x or {}).get('cerrada')
+    if cer and cer.get('t'):
+        out.append({'t': cer['t'], 'c': '', 'fuente': 'canales', 'n': None, 'msg': ''})
+    return sorted(out, key=lambda c: c['t'])
+
+
+def _temp(bats, c):
+    c = c or {}
+    return {'bats': bats, 'desde': bats[0][1] if bats else '', 'hasta': c.get('t') or '', 'c': c.get('c') or '',
+            'p': c.get('p') or [], 'fuente': c.get('fuente') or '', 'n': c.get('n'), 'msg': c.get('msg') or ''}
+
+
+def temporadas(bats, cierres):
+    """Las batallas partidas por temporada, de la más vieja a la más nueva: `[{bats, desde, hasta, c, p, fuente, n}]`. La
+    última no tiene `hasta` si sigue abierta. Un cierre sin batallas después (dos cierres seguidos: el de los canales y
+    el que contestó Dlx) no arma una temporada vacía: la que cerró se queda con el que trae campeón, y si los dos lo
+    traen, con el de Dlx —lo que contestó él manda sobre lo que se leyó—."""
+    bs = sorted((b for b in bats or [] if b[1]), key=lambda b: b[1])
+    cs = sorted((c for c in cierres or [] if c.get('t')), key=lambda c: c['t'])
+    out, cur, i = [], [], 0
+
+    def otro_cierre(c):
+        if out and c.get('c') and (not out[-1]['c'] or (c.get('fuente') == 'dlx' and out[-1]['fuente'] != 'dlx')):
+            out[-1].update({k: v for k, v in _temp(out[-1]['bats'], c).items() if k != 'bats'})
+    for b in bs:
+        while i < len(cs) and b[1] > cs[i]['t']:
+            gr = _instante(cs[i]['t'])
+            nombres = {clave(x) for y in cur for x in (y[3], y[4])}
+            if cur and gr and _instante(b[1]) <= gr + dt.timedelta(days=GRACIA_DIAS) and \
+                    clave(b[3]) in nombres and clave(b[4]) in nombres:
+                break
+            if cur:
+                out.append(_temp(cur, cs[i]))
+            else:
+                otro_cierre(cs[i])
+            cur, i = [], i + 1
+        cur.append(b)
+    while i < len(cs):
+        if cur:
+            out.append(_temp(cur, cs[i]))
+            cur = []
+        else:
+            otro_cierre(cs[i])
+        i += 1
+    if cur:
+        out.append(_temp(cur, None))
+    return out
+
+
+def actual_de(temps):
+    """La temporada que se muestra: la última con algún resultado. Una que arrancó y todavía no tiene ninguno deja ver la
+    que terminó, con su campeón, hasta su primer veredicto."""
+    con = [t for t in temps or [] if any(b[5] for b in t['bats'])]
+    return con[-1] if con else None
+
+
+def _temporada_liga_global():
+    try:
+        import multiplicadores as MU
+        return MU.temporada_actual()
+    except Exception:                                    # noqa: BLE001
+        return ''
+
+
+def campeones(decis=None, d=None, resolver=None, ps=None, desde=None):
+    """🏆 Las temporadas terminadas con campeón, para el Salón, las insignias y la publicación del campeón: las que Dlx
+    contestó (`ligas_fin`) y las que anunció su servidor. `[{liga, n, sv, ult, temporada, lt, campeon, podio, t, fuente}]`.
+
+    Si Dlx contestó la misma parada que después anunció el servidor, vale lo de Dlx: una sola fila por temporada. Y una
+    temporada anunciada cuyas batallas ya no están (FZ League se queda sólo con la más nueva: `reemplaza`) sale con el
+    podio que se guardó al anunciarse. ⚠️ La que terminó antes del arranque de la temporada de la Liga Global (`_desde()`)
+    no entra: se ve en su liga, pero no da insignias ni va al Salón —lo mismo que ya no se le pregunta a Dlx—."""
+    decis = _decis(decis)
+    desde = (_desde() if desde is None else desde)[:10]
+    out = [dict(x, fuente='dlx') for x in (decis.get(FIN) or []) if x.get('campeon')]
+    ya = {(x.get('liga'), x.get('ult')) for x in out}
+    d = d if d is not None else leer()
+    r0 = None
+    for lid, x in (d.get('ligas') or {}).items():
+        anunc = [c for c in x.get('temps') or [] if c.get('c') and c.get('t')]
+        if not anunc:
+            continue
+        if r0 is None:
+            r0 = _resolvedor_de(resolver)
+            ps = por_servidor() if ps is None else ps
+        r = _de_servidor(x.get('sv'), r0, ps)
+        L = LIGAS.get(lid) or {}
+        vistos = set()
+        base = {'liga': lid, 'n': x.get('n') or L.get('n') or lid, 'sv': x.get('sv') or L.get('sv') or '',
+                'temporada': _temporada_liga_global(), 'fuente': 'anuncio'}
+        for t in temporadas(x.get('batallas') or [], cierres_de(lid, x, decis)):
+            if t['fuente'] != 'anuncio' or not t['c']:
+                continue
+            vistos.add(t['msg'])
+            ult = ultima(t['bats'])
+            if (lid, ult) in ya or (desde and ult < desde):
+                continue
+            tb = tabla(t['bats'], r)
+            c = next((f[0] for f in tb if clave(f[0]) == clave(r(t['c']))), r(t['c']))
+            out.append(dict(base, ult=ult, lt=t['n'], campeon=c, podio=podio([f[0] for f in tb], c), t=t['hasta']))
+        for c in anunc:
+            # sólo la que se quedó sin batallas: si las tiene, ya la armó `temporadas()` (con el de Dlx, si contestó)
+            if c.get('msg') in vistos or (lid, c.get('ult')) in ya or (desde and (c.get('ult') or c['t'][:10]) < desde) or \
+                    any(str(c.get('desde') or '') <= str(b[1] or '') <= c['t'] for b in x.get('batallas') or [] if b[1]):
+                continue
+            p = [r(n) for n in c.get('p') or [c['c']]]
+            out.append(dict(base, ult=c.get('ult') or c['t'][:10], lt=c.get('n'), campeon=r(c['c']), podio=p, t=c['t']))
+    return out
 
 
 def para_vigia(d=None):
@@ -1254,21 +1733,31 @@ def correr(aplicar=False):
     viejo0 = leer()
     viejo = viejo0.get('ligas') or {}
     por_canal, por_an, por_tabla = {}, {}, {}
-    # 🔴 dónde está cada canal hoy (`ubicar()`). Sin la lista, como están escritos, y sin avisar de nada
-    mapa = mapa_canales(s)
-    ubicados, vigia = {}, []
-    out = {}
+    ahora = dt.datetime.now(dt.timezone.utc)
+    ahora_s = ahora.strftime('%Y-%m-%dT%H:%M:%SZ')
     # 🎛️ las de un servidor con el beneficio `ligas` apagado en el Dashboard no se leen ni se muestran (`bot/tiers.py`)
     try:
         import tiers as _TI
         sin_ligas = _TI.sin('ligas')
     except Exception:                                    # noqa: BLE001
         sin_ligas = set()
+    # 🔴 dónde está cada canal hoy (`ubicar()`). Sin la lista, como están escritos, y sin avisar de nada
+    mapa = mapa_canales(s, sin=sin_ligas)
+    # 🆕 las ligas nuevas: las categorías con forma de liga (`descubrir()`), y la que ya tiene lector entra a `LIGAS` y se
+    # lee abajo como las demás. Sin la lista de canales, las de antes
+    ligas_nuevas = descubrir(s, mapa, viejo0.get('nuevas'), ahora) if mapa else \
+        {k: dict(v) for k, v in (viejo0.get('nuevas') or {}).items()}
+    _sumar_nuevas(LIGAS, {'nuevas': ligas_nuevas})
+    decis = _decis()
+    ubicados, vigia, anuncios_campeon = {}, [], []
+    out = {}
     for lid, L in LIGAS.items():
         if L['sv'] in sin_ligas:
             continue
         m_sv = mapa.get(L['sv'])
         muerto = set()
+        v = viejo.get(lid) or {}
+        u = None
         if m_sv:
             u = ubicados[lid] = ubicar(L, m_sv['lst'])
             L = dict(L, ver=u['ver'], an=u['an'], tabla=u['tabla'])
@@ -1276,19 +1765,29 @@ def correr(aplicar=False):
             if L['fam'] in FAM_VIGIA and 'ver' not in u['faltan']:
                 vigia.append({'id': lid, 'n': L['n'], 'sv': L['sv'], 'g': m_sv['g'], 'fam': L['fam'], 'ver': u['ver'], 'vis': u['vis'],
                               'beat': u['beat'], 'voz': u['voz']})
-        guardadas = {b[0]: b for b in (viejo.get(lid) or {}).get('batallas') or []}
+        # 🔚 SUS CANALES YA NO ESTÁN: la temporada terminó (`cierres_de()`). Se anota la primera vez que se ve y se va si
+        # vuelven. Sin la lista de canales, lo de antes
+        if u is None:
+            cer = v.get('cerrada')
+        elif 'ver' in u['faltan']:
+            cer = v.get('cerrada') or {'t': ahora_s, 'fuente': 'canales'}
+        else:
+            cer = None
+        guardadas = {b[0]: b for b in v.get('batallas') or []}
         if L['ver'] in muerto:
             por_canal.setdefault(L['ver'], [])
         if L['ver'] not in por_canal:
             # la primera vez con el PTB (17/10/2026) se lee la temporada entera, como la primera vez de todas: sin eso
             # las jornadas viejas no tendrían MVP
-            primera = not guardadas or 'ptb' not in (viejo.get(lid) or {})
+            primera = not guardadas or 'ptb' not in v
             por_canal[L['ver']] = _mensajes(s, L['ver'], PAGINAS_PRIMERA if primera else PAGINAS)
             time.sleep(0.3)
-        v = viejo.get(lid) or {}
         antes = dict(guardadas) if lid in viejo else None
         ptb = dict(v.get('ptb') or {})
         nuevas = leer_liga(lid, por_canal[L['ver']], ptb)
+        # 🆕 la primera lectura de una liga que se encontró sola: sólo la temporada que se juega (`_desde_el_hueco()`)
+        if L.get('auto') and not guardadas:
+            nuevas = _desde_el_hueco(nuevas)
         if L.get('reemplaza') and nuevas:
             # 🔱 la temporada más nueva entera, sin lo guardado de la anterior (ver `_f()`)
             guardadas = {}
@@ -1339,10 +1838,38 @@ def correr(aplicar=False):
         nov = novedades(lid, antes, bats, v.get('prox'), prox, v.get('nov'))
         if nov:
             out[lid]['nov'] = nov
+        # 🏆 LAS TEMPORADAS (`temporadas()`): la abierta se cierra sola cuando su servidor anuncia el campeón
+        # (`campeon_en()`), en los veredictos o en los anuncios. Lo anunciado se guarda: el mensaje sale de la ventana
+        # que se lee, y la temporada tiene que seguir cerrada
+        temps = [dict(c) for c in v.get('temps') or []]
+        msgs = [dict(m, canal=L['ver']) for m in por_canal.get(L['ver']) or []] + [dict(m, canal=an) for m in ms_an]
+        ts = temporadas(bats, cierres_de(lid, {'temps': temps, 'cerrada': cer}, decis))
+        abierta = ts[-1] if ts and not ts[-1]['hasta'] else None
+        tn = v.get('tn')
+        if abierta:
+            tn = num_actual(L, msgs, abierta['desde']) or (tn if str(v.get('tn_desde') or '') == abierta['desde'] else None)
+            tb_a = tabla(abierta['bats'])
+            camp = None
+            if not cer and sum(1 for b in abierta['bats'] if b[5]) >= CAMPEON_MIN:
+                camp = campeon_en(L, msgs, [f[0] for f in tb_a[:3]], abierta['desde'], tn)
+            if camp:
+                c = dict(camp, n=camp.get('n') or tn, p=podio([f[0] for f in tb_a], camp['c']),
+                         ult=ultima(abierta['bats']), desde=abierta['desde'])
+                temps.append(c)
+                anuncios_campeon.append((lid, L, c))
+                print('   🏆 %s: %s campeón%s, lo anunció su servidor (%s)' % (
+                    L['n'], c['c'], (' de la T%s' % c['n']) if c.get('n') else '', c['t'][:16]))
+        if temps:
+            out[lid]['temps'] = temps
+        if tn:
+            out[lid]['tn'], out[lid]['tn_desde'] = tn, abierta['desde'] if abierta else v.get('tn_desde') or ''
+        if cer:
+            out[lid]['cerrada'] = cer
         con = sum(1 for b in bats if b[5])
-        print('   %-26s %3d batalla(s), %3d con resultado%s%s' % (
+        print('   %-26s %3d batalla(s), %3d con resultado%s%s%s' % (
             L['n'], len(bats), con, (' · jornada %d' % max(js)) if js else '',
-            (' · próxima: %s%s' % (prox['d'], ' ' + prox['t'][11:16] + ' UTC' if prox.get('t') else '')) if prox else ''))
+            (' · próxima: %s%s' % (prox['d'], ' ' + prox['t'][11:16] + ' UTC' if prox.get('t') else '')) if prox else '',
+            ' · 🔚 sin canales' if cer else ''))
     d = {'_leeme': 'Las ligas de los servidores: cada batalla y su resultado, y la tabla que sale de eso. Lo arma '
                    'bot/ligas.py en cada corrida; las reglas viven ahí. Sin los mensajes: el repo es público. '
                    '`batallas`: [id del mensaje, instante, jornada, a, b, ganador (vacío: pendiente), directa|replica, '
@@ -1350,8 +1877,15 @@ def correr(aplicar=False):
                    '`flyer`: el último afiche de su canal de anuncios, re-alojado en R2 (`url`); `prox`: la próxima '
                    'fecha que anunció (`d` el día, `t` el instante si lo dijo). Desde el 17/10/2026: `ptb` {id de la '
                    'batalla: [PTB de a, de b]}, `flyers` (la galería, en R2), `staff` [[discord_id, nombre, mensajes en '
-                   'anuncios, en veredictos, último]] y `nov` (lo nuevo de las últimas horas, para «Seguir la liga»).',
-         't': dt.datetime.now(dt.timezone.utc).strftime('%Y-%m-%dT%H:%M:%SZ'), 'ligas': out}
+                   'anuncios, en veredictos, último]] y `nov` (lo nuevo de las últimas horas, para «Seguir la liga»). '
+                   'Desde el 11/11/2026: `temps` [{t, c, n, msg, p, ult, desde}] (cada campeón que anunció su servidor: '
+                   'cierra esa temporada), `tn` (el número de la temporada que juega, si lo dice), `cerrada` {t} (sus '
+                   'canales ya no están) y, arriba, `nuevas` (las ligas que el bot encontró solo: `fam` vacío hasta que '
+                   'un lector entienda sus veredictos).',
+         't': ahora_s, 'ligas': out}
+    # 🆕 las ligas que se encontraron solas: las que todavía no se leen también, así no se vuelven a anunciar
+    if ligas_nuevas:
+        d['nuevas'] = ligas_nuevas
     # 🏟️ y lo del vigía de las batallas. Sin la lista de canales queda lo de antes: una lectura que falló no lo apaga
     d['vigia'] = vigia if mapa else (viejo0.get('vigia') or [])
     # 🔴 los canales que ya no están: en el archivo —es la memoria de lo avisado, sobrevive al runner—, y a Logs una vez
@@ -1363,10 +1897,44 @@ def correr(aplicar=False):
     if aplicar and ubicados:
         _avisar_canales(viejos_f, ubicados)
     if aplicar:
+        # 🔴 la categoría de cada liga nueva, afuera de los eventos (`marcar_fuera()`), y lo nuevo a Logs, una vez
+        puestas = marcar_fuera(ligas_nuevas)
+        if puestas:
+            print('   🆕 afuera de los eventos: %s' % ', '.join(puestas))
+        _avisar_novedades(ligas_nuevas, viejo0.get('nuevas') or {}, anuncios_campeon, mapa)
         with io.open(SALIDA, 'w', encoding='utf-8', newline='\n') as f:
             json.dump(d, f, ensure_ascii=False, indent=1)
             f.write('\n')
     return d
+
+
+def _avisar_novedades(nuevas, viejas, campeones_, mapa=None):
+    """🔔 Al canal de Logs, una vez: las ligas que se encontraron solas (al verlas y cuando empiezan a leerse) y los
+    campeones que anunció cada servidor, con el link al mensaje. Lo de antes está en `datos/ligas.json`, así que una
+    corrida nueva no lo repite: una liga se avisa cuando cambia su `fam`, y un campeón, la corrida en que se lee."""
+    lineas, no_entran = [], []
+    for lid, L in sorted((nuevas or {}).items()):
+        antes = viejas.get(lid)
+        if L.get('fam') and not (antes or {}).get('fam'):
+            lineas.append('🆕 **%s** (%s) · %sya se lee: sale en Ligas, con su tabla y sus cartas' % (
+                L['n'], L['sv'], 'la encontré sola y ' if antes is None else ''))
+        elif antes is None:
+            no_entran.append('%s (%s%s)' % (L['n'], L['sv'], ', parada' if L.get('quieta') else ''))
+    if no_entran:
+        lineas.append('🔎 Vi %d más con forma de liga que todavía no entran: %s. Las paradas entran solas cuando vuelvan a '
+                      'jugar; las otras, cuando sepa leer sus veredictos' % (len(no_entran), ', '.join(no_entran)))
+    for lid, L, c in campeones_ or []:
+        g = ((mapa or {}).get(L['sv']) or {}).get('g') or ''
+        link = ' · https://discord.com/channels/%s/%s/%s' % (g, c.get('canal') or L.get('ver'), c['msg']) if g and c.get('msg') else ''
+        lineas.append('🏆 **%s** · %s campeón%s, lo anunció su servidor: cierra la temporada%s' % (
+            L['n'], c['c'], (' de la T%s' % c['n']) if c.get('n') else '', link))
+    if not lineas:
+        return False
+    try:
+        import avisar
+        return avisar.mandar('🏟️ Las ligas: lo nuevo', lineas[:12])
+    except Exception:                                    # noqa: BLE001
+        return False
 
 
 def por_servidor(ruta=None):
@@ -1538,14 +2106,19 @@ def terminadas(web, decis=None, ahora=None, desde=None):
 
     «Paró» es lo mismo que cierra la encuesta (`vota()`: `CIERRA_DIAS` sin batallas ni una fecha anunciada). No se da
     por terminada sola: una liga puede volver después de un parón, y el campeón puede salir de una final que no es la
-    tabla. Por eso es una pregunta (`decidir.ligas_terminadas()`)."""
+    tabla. Por eso es una pregunta (`decidir.ligas_terminadas()`).
+
+    🏆 Desde el 11/11/2026, dos excepciones: la que tiene campeón porque lo anunció su servidor (`fin`) no se pregunta, y
+    la que se quedó sin canales (`cerrada`) se pregunta ya, sin esperar las tres semanas: no va a volver por ahí."""
     decis = _decis(decis)
     ahora = ahora or dt.datetime.now(dt.timezone.utc)
     desde = _desde() if desde is None else desde
     out = []
     for L in (web or {}).get('ligas') or []:
+        if L.get('fin'):
+            continue
         v = _instante(L.get('vota')) if L.get('vota') else None
-        if not v or v > ahora or L.get('prox'):
+        if not L.get('cerrada') and (not v or v > ahora or L.get('prox')):
             continue
         ult = str(L.get('ult_t') or '')[:10]
         # una liga que paró antes de que arrancara la temporada no es de esta temporada (`_desde()`)
@@ -1556,18 +2129,22 @@ def terminadas(web, decis=None, ahora=None, desde=None):
     return out
 
 
-def salon(decis=None, claves=None):
-    """🏆 EL SALÓN DE CAMPEONES, para la página: `[{id, n, sv, temp, ult, c, p, ks}]`, el más nuevo primero. `p`: el
-    podio entero (el campeón primero); `ks`: el perfil de cada nombre que lo tiene."""
+def salon(decis=None, claves=None, d=None, resolver=None, ps=None, cps=None):
+    """🏆 EL SALÓN DE CAMPEONES, para la página: `[{id, n, sv, temp, ult, c, p, ks, lt}]`, el más nuevo primero. `p`: el
+    podio entero (el campeón primero); `ks`: el perfil de cada nombre que lo tiene; `lt`: el número de esa temporada de
+    la liga, si se sabe. Los que contestó Dlx y, desde el 11/11/2026, los que anunció su servidor (`campeones()`)."""
     claves = {clave(k): v for k, v in (claves or {}).items() if clave(k)}
     out = []
-    for x in (_decis(decis).get(FIN) or []):
+    for x in (cps if cps is not None else campeones(decis, d, resolver, ps)):
         if not x.get('campeon'):
             continue
         p = x.get('podio') or [x['campeon']]
-        out.append({'id': x.get('liga'), 'n': x.get('n') or x.get('liga'), 'sv': x.get('sv') or '',
-                    'temp': x.get('temporada') or '', 'ult': x.get('ult') or '', 'c': x['campeon'], 'p': p,
-                    'ks': {n: claves[clave(n)] for n in p if claves.get(clave(n))}})
+        y = {'id': x.get('liga'), 'n': x.get('n') or x.get('liga'), 'sv': x.get('sv') or '',
+             'temp': x.get('temporada') or '', 'ult': x.get('ult') or '', 'c': x['campeon'], 'p': p,
+             'ks': {n: claves[clave(n)] for n in p if claves.get(clave(n))}}
+        if x.get('lt'):
+            y['lt'] = x['lt']
+        out.append(y)
     out.sort(key=lambda x: x['ult'], reverse=True)
     return out
 
@@ -1582,65 +2159,75 @@ def _resolvedor_de(resolver=None):
         return lambda x: x
 
 
-def hitos(d=None, resolver=None, ps=None, desde=None):
+def hitos(d=None, resolver=None, ps=None, desde=None, decis=None):
     """📣 Lo que el muro publica solo de cada liga, rehaciendo sus batallas EN ORDEN: `[{tipo, que, t, quien, liga, ln,
     sv, …}]`.
 
-    · `invicto`: la batalla en que alguien llega a `INVICTO` ganadas sin perder ninguna (una vez por liga).
+    · `invicto`: la batalla en que alguien llega a `INVICTO` ganadas sin perder ninguna (una vez por temporada).
     · `punta`: quién queda primero al cerrar cada día de batallas, solo —sin empate en puntos— y con `PUNTA_DESDE`
       jugadas; se publica cuando cambia. En la primera fecha la punta cambia en cada batalla: por eso las dos reglas.
     Los nombres, los de la tabla (`para_web()`): el del padrón, y el de ESE servidor si ahí es otra persona.
-    ⚠️ La tabla se rehace con TODAS las batallas —la punta tiene que ser la de la tabla que se ve—, pero sólo sale lo
-    que pasó desde el arranque de la temporada (`_desde()`)."""
+    ⚠️ La tabla se rehace con TODAS las batallas de esa temporada de la liga (`temporadas()`: la que arranca después de
+    un campeón empieza de cero) —la punta tiene que ser la de la tabla que se ve—, pero sólo sale lo que pasó desde el
+    arranque de la temporada de la Liga Global (`_desde()`)."""
     d = d if d is not None else leer()
     desde = _desde() if desde is None else desde
     r0 = _resolvedor_de(resolver)
     ps = por_servidor() if ps is None else ps
+    decis = _decis(decis)
     out = []
     for lid, x in (d.get('ligas') or {}).items():
-        bats = sorted((b for b in x.get('batallas') or [] if len(b) > 6 and b[5] and b[6] in PUNTOS and b[1]),
-                      key=lambda b: b[1])
-        if not bats:
+        todas = sorted((b for b in x.get('batallas') or [] if len(b) > 6 and b[5] and b[6] in PUNTOS and b[1]),
+                       key=lambda b: b[1])
+        if not todas:
             continue
         r = _de_servidor(x.get('sv'), r0, ps)
-        canon = {}
-        for f in tabla(bats, r):
-            canon.setdefault(clave(f[0]), f[0])
-        rc = lambda n: canon.get(clave(r(n)), r(n))  # noqa: E731
         base = {'tipo': 'ligahito', 'liga': lid, 'ln': x.get('n') or (LIGAS.get(lid) or {}).get('n') or lid,
                 'sv': x.get('sv') or (LIGAS.get(lid) or {}).get('sv') or ''}
-        st, invictos, dias = {}, set(), []
-        for b in bats:
-            a, bb, g = rc(b[3]), rc(b[4]), rc(b[5])
-            pg, pp = PUNTOS[b[6]]
-            for lado, nom in (('a', a), ('b', bb)):
-                if lado in (b[7] if len(b) > 7 else ''):
-                    continue
-                s = st.setdefault(clave(nom), [nom, 0, 0, 0, 0])
-                s[1] += 1
-                if clave(nom) == clave(g):
-                    s[2] += 1
-                    s[3] += pg
-                else:
-                    s[3] += pp
-                    s[4] += 1
-                if clave(nom) == clave(g) and s[2] == INVICTO and not s[4] and clave(nom) not in invictos:
-                    invictos.add(clave(nom))
-                    out.append(dict(base, que='invicto', t=b[1], quien=[nom], pg=INVICTO))
-            orden = sorted(st.values(), key=lambda s: (-s[3], -s[2], s[1]))
-            solo = orden[0] if orden and (len(orden) == 1 or orden[0][3] > orden[1][3]) and orden[0][1] >= PUNTA_DESDE else None
-            dia = b[1][:10]
-            if dias and dias[-1][0] == dia:
-                dias[-1] = (dia, solo and (clave(solo[0]), solo[0], solo[3]), b[1])
-            else:
-                dias.append((dia, solo and (clave(solo[0]), solo[0], solo[3]), b[1]))
-        antes = None
-        for _dia, lider, t in dias:
-            if lider and lider[0] != antes:
-                out.append(dict(base, que='punta', t=t, quien=[lider[1]], pts=lider[2]))
-            if lider:
-                antes = lider[0]
+        for temp in temporadas(todas, cierres_de(lid, x, decis)):
+            out += _hitos_de(temp['bats'], r, base)
     return [h for h in out if not desde or str(h.get('t') or '')[:19] >= desde]
+
+
+def _hitos_de(bats, r, base):
+    """Los hitos de UNA temporada de una liga (`hitos()`), con sus batallas en orden."""
+    out = []
+    canon = {}
+    for f in tabla(bats, r):
+        canon.setdefault(clave(f[0]), f[0])
+    rc = lambda n: canon.get(clave(r(n)), r(n))  # noqa: E731
+    st, invictos, dias = {}, set(), []
+    for b in bats:
+        a, bb, g = rc(b[3]), rc(b[4]), rc(b[5])
+        pg, pp = PUNTOS[b[6]]
+        for lado, nom in (('a', a), ('b', bb)):
+            if lado in (b[7] if len(b) > 7 else ''):
+                continue
+            s = st.setdefault(clave(nom), [nom, 0, 0, 0, 0])
+            s[1] += 1
+            if clave(nom) == clave(g):
+                s[2] += 1
+                s[3] += pg
+            else:
+                s[3] += pp
+                s[4] += 1
+            if clave(nom) == clave(g) and s[2] == INVICTO and not s[4] and clave(nom) not in invictos:
+                invictos.add(clave(nom))
+                out.append(dict(base, que='invicto', t=b[1], quien=[nom], pg=INVICTO))
+        orden = sorted(st.values(), key=lambda s: (-s[3], -s[2], s[1]))
+        solo = orden[0] if orden and (len(orden) == 1 or orden[0][3] > orden[1][3]) and orden[0][1] >= PUNTA_DESDE else None
+        dia = b[1][:10]
+        if dias and dias[-1][0] == dia:
+            dias[-1] = (dia, solo and (clave(solo[0]), solo[0], solo[3]), b[1])
+        else:
+            dias.append((dia, solo and (clave(solo[0]), solo[0], solo[3]), b[1]))
+    antes = None
+    for _dia, lider, t in dias:
+        if lider and lider[0] != antes:
+            out.append(dict(base, que='punta', t=t, quien=[lider[1]], pts=lider[2]))
+        if lider:
+            antes = lider[0]
+    return out
 
 
 def tablas(d=None, resolver=None, ps=None, desde=''):
@@ -1655,10 +2242,25 @@ def tablas(d=None, resolver=None, ps=None, desde=''):
             for lid, x in (d.get('ligas') or {}).items()}
 
 
-def campeones_hitos(decis=None):
-    """📣 Y el campeón de cada liga terminada, cuando Dlx lo confirmó: la publicación del Salón."""
+def tabla_temporada(lid, ult, d=None, resolver=None, ps=None, decis=None):
+    """`[nombre, …]`: la tabla de la temporada de esa liga cuya última batalla fue el día `ult` (AAAA-MM-DD), con los
+    nombres como en la página. Para el podio de la que Dlx da por terminada (`decidir._guardar_ligas()`): sin esto, la
+    T6 de una liga que se volvió a parar se llevaría también los puntos de la T5. `[]` si no hay ninguna así; la tabla
+    de la última temporada con resultados si no se dice `ult`."""
+    d = d if d is not None else leer()
+    x = (d.get('ligas') or {}).get(lid)
+    if not x:
+        return []
+    r = _de_servidor(x.get('sv'), _resolvedor_de(resolver), por_servidor() if ps is None else ps)
+    ts = [t for t in temporadas(x.get('batallas') or [], cierres_de(lid, x, decis)) if any(b[5] for b in t['bats'])]
+    t = next((t for t in reversed(ts) if ultima(t['bats']) == ult), None) if ult else (ts[-1] if ts else None)
+    return [f[0] for f in tabla(t['bats'], r)] if t else []
+
+
+def campeones_hitos(decis=None, d=None, resolver=None, ps=None):
+    """📣 Y el campeón de cada liga terminada, cuando Dlx lo confirmó o lo anunció su servidor: la publicación del Salón."""
     out = []
-    for x in (_decis(decis).get(FIN) or []):
+    for x in campeones(decis, d, resolver, ps):
         if x.get('campeon') and x.get('t'):
             out.append({'tipo': 'ligahito', 'que': 'campeon', 't': x['t'], 'quien': [x['campeon']],
                         'liga': x.get('liga'), 'ln': x.get('n') or x.get('liga'), 'sv': x.get('sv') or '',
@@ -1680,6 +2282,11 @@ def para_web(d=None, claves=None, ps=None, ahora=None, resolver=None, decis=None
     si no pasó) y `vota` (hasta cuándo se vota quién gana; `''` si no hay tabla para votar).
     🏆 Y desde el 16/10/2026: `fin` `{c, p}` si Dlx dijo quién la ganó cuando paró (el campeón y el podio), y arriba de
     todo `salon`, el Salón de campeones (`salon()`). `decis`: `datos/decisiones.json`, para el self-check.
+    🏆 Y desde el 11/11/2026, POR TEMPORADA (`temporadas()`): cada liga muestra la última con resultados —con `lt`, su
+    número si lo dijo; `fin` `{c, p, f}` también si el campeón lo anunció su servidor (`f`: anuncio | dlx), y `cerrada`
+    si sus canales ya no están— y `temps` [{id, lt, c, d, h}], las de antes. Esas van enteras, como una liga más, en
+    `completadas` (id `<liga>~<día de su primera batalla>`, con `liga`, `desde`, `hasta` y `fl`): el álbum «Ligas
+    completadas» de la página y sus cartas, que ya no cambian.
     ⚠️ Una liga sin batallas no va: ninguna sección se dibuja vacía."""
     ahora = ahora or dt.datetime.now(dt.timezone.utc)
     d = d if d is not None else leer()
@@ -1712,15 +2319,12 @@ def para_web(d=None, claves=None, ps=None, ahora=None, resolver=None, decis=None
             raw_de_id = {str(p['discord_id']): p['raw'] for p in json.load(f) or [] if p.get('discord_id') and p.get('raw')}
     except (OSError, ValueError):
         raw_de_id = {}
-    nov_web = []
-    for lid, x in ls.items():
-        bats = x.get('batallas') or []
+    nov_web, comp = [], []
+
+    def _una(lid, x, L, r, g, bats, temp, cid=''):
+        """Una temporada de una liga, como la ve la página. `temp`: la de `temporadas()`; `cid`: el id de una temporada
+        TERMINADA que no es la que se muestra (`<liga>~<día de su primera batalla>`), para «Ligas completadas»."""
         con = [b for b in bats if b[5]]
-        if not con:
-            continue
-        L = LIGAS.get(lid) or {}
-        r = _de_servidor(x.get('sv'), r0, ps)
-        g = (svs.get(x.get('sv')) or {}).get('guild_id')
         tb = tabla(bats, r)[:30]
         # 🔤 y en los últimos resultados, el mismo nombre que la tabla (ForceGP, 14/10/2026: «está repetido»): quien no
         # está en la Lista se escribe «Aluvion», «Aluvión» y «ALUVIÓN» según el jurado; la tabla ya era una fila
@@ -1735,42 +2339,68 @@ def para_web(d=None, claves=None, ps=None, ahora=None, resolver=None, decis=None
         nombres = {f[0] for f in tb} | {n for u in ult for n in u[:3] if n} | \
             {n for fe in fechas for y in fe['b'] for n in y[:3] if n}
         ks = {n: claves[clave(n)] for n in sorted(nombres) if claves.get(clave(n))}
-        y = {'id': lid, 'n': x.get('n'), 'sv': x.get('sv'), 'j': x.get('jornada'), 'bat': len(con),
+        js = [b[2] for b in bats if b[2]]
+        y = {'id': cid or lid, 'n': x.get('n'), 'sv': x.get('sv'), 'j': max(js) if js else None, 'bat': len(con),
              'pend': len(bats) - len(con), 'ult_t': con[-1][1],
              'tabla': tb, 'ult': ult, 'fechas': fechas, 'ks': ks,
              'link': 'https://discord.com/channels/%s/%s' % (g, L.get('tabla')) if g and L.get('tabla') else ''}
+        # 🔢 el número de esa temporada de la liga, si lo dijo: el del cierre, o el que se leyó mientras se jugaba
+        lt = (temp or {}).get('n') or (x.get('tn') if temp and str(x.get('tn_desde') or '') == temp['desde'] else None)
+        if lt:
+            y['lt'] = lt
+        # 🏆 terminada: el campeón y el podio —lo anunció su servidor o lo contestó Dlx—, o sólo que terminó (sus canales ya
+        # no están: el campeón se le pregunta a Dlx)
+        if temp and temp['hasta']:
+            if temp['c']:
+                c = rc(temp['c'])
+                p = [rc(n) for n in temp['p']] if temp['p'] else podio([f[0] for f in tb], c)
+                y['fin'] = {'c': c, 'p': p[:3], 'f': temp['fuente']}
+            else:
+                y['cerrada'] = temp['hasta']
+        # 🔚 y si sus canales ya no están, sus links a Discord tampoco: un link que da «canal desconocido» no se muestra
+        if x.get('cerrada'):
+            y['link'] = ''
+        if cid:
+            y.update({'liga': lid, 'desde': temp['desde'], 'hasta': temp['hasta']})
+            # 🖼️ su flyer: el último de la galería que es de esa temporada
+            t0 = _instante(temp['desde'])
+            d0 = (t0 - dt.timedelta(days=30)).strftime('%Y-%m-%dT%H:%M:%SZ') if t0 else ''
+            fl = next((f for f in sorted(x.get('flyers') or [], key=lambda f: f.get('t') or '', reverse=True)
+                       if f.get('url') and d0 <= str(f.get('t') or '') <= temp['hasta']), None)
+            if fl:
+                y['fl'] = fl['url']
+            return y
         # 🖼️ el flyer, sólo si está en R2 (el de Discord vence) y con el link a su mensaje
         fl = x.get('flyer') or {}
         if fl.get('url'):
             y['flyer'] = {'u': fl['url'], 'w': fl.get('w') or 0, 'h': fl.get('h') or 0, 't': fl.get('t') or '',
                           'tit': fl.get('tit') or '',
-                          'link': 'https://discord.com/channels/%s/%s/%s' % (g, L['an'], fl['id']) if g and L.get('an') else ''}
+                          'link': 'https://discord.com/channels/%s/%s/%s' % (g, L['an'], fl['id']) if g and L.get('an') and not x.get('cerrada') else ''}
         # 🗓️ la próxima fecha, si todavía no pasó (en el día de la liga)
         pr = x.get('prox') or {}
         if pr.get('d') and pr['d'] >= ahora.astimezone(z).date().isoformat():
             y['prox'] = {'d': pr['d'], 't': pr.get('t') or '', 'j': pr.get('j'),
                          'link': 'https://discord.com/channels/%s/%s/%s' % (g, L['an'], pr['id'])
-                         if g and L.get('an') and pr.get('id') else ''}
-        # 🗳️ hasta cuándo se vota quién gana: hace falta una tabla de dos o más para elegir
+                         if g and L.get('an') and not x.get('cerrada') and pr.get('id') else ''}
+        # 🗳️ hasta cuándo se vota quién gana: hace falta una tabla de dos o más para elegir. La que terminó cierra al
+        # terminar, y no se borra: la página sigue mostrando cómo votó la gente, y el Worker contesta «cerrada»
         y['vota'] = vota(bats, pr if pr.get('d') else None) if len(tb) >= 2 else ''
-        # 🏆 terminó y Dlx dijo quién la ganó (en esta parada: si después vuelve a jugar, es otra)
-        fn = fin_de(decis, lid, ultima(bats))
-        if fn:
-            y['fin'] = {'c': fn['campeon'], 'p': fn.get('podio') or [fn['campeon']]}
+        if y['vota'] and temp and temp['hasta']:
+            y['vota'] = min(y['vota'], temp['hasta'])
         # 📜 el link al veredicto de cada batalla: el canal, y la página le suma el mensaje
-        if g and L.get('ver'):
+        if g and L.get('ver') and not x.get('cerrada'):
             y['vlink'] = 'https://discord.com/channels/%s/%s/' % (g, L['ver'])
         # 🖼️ la galería, sólo lo que está en R2
         fls = [{'u': f['url'], 'w': f.get('w') or 0, 'h': f.get('h') or 0, 't': f.get('t') or '', 'tit': f.get('tit') or '',
                 'link': 'https://discord.com/channels/%s/%s/%s' % (g, L['an'], f.get('msg') or f['id'].split('-')[0])
-                if g and L.get('an') else ''} for f in x.get('flyers') or [] if f.get('url')]
+                if g and L.get('an') and not x.get('cerrada') else ''} for f in x.get('flyers') or [] if f.get('url')]
         if fls:
             y['flyers'] = fls
         # 🧑‍⚖️ el staff: el nombre de la Lista y su perfil si está; si no, el de Discord
         # ⚠️ quien JUEGA esta liga y no publica anuncios no es staff: comenta sus batallas en el canal de veredictos
         # (Guty en FMH Under, Forza en Carimex). Y con pocos mensajes, tampoco: hace falta haber organizado (2 anuncios)
         # o juzgado (3 veredictos)
-        juegan = {clave(f[0]) for f in tabla(bats, r)}
+        juegan = {clave(f[0]) for f in tabla(x.get('batallas') or [], r)}
         stf = []
         for did, nom, n_an, n_ver, _u in x.get('staff') or []:
             raw = raw_de_id.get(str(did)) or ''
@@ -1788,7 +2418,7 @@ def para_web(d=None, claves=None, ps=None, ahora=None, resolver=None, decis=None
         if inf:
             y['info'] = inf
         # 🔔 lo nuevo, con su texto, para el vigía (`ligasSeguidas()` en bot/avisos.js)
-        por_id = {b[0]: b for b in bats}
+        por_id = {b[0]: b for b in x.get('batallas') or []}
         for n in x.get('nov') or []:
             if n.get('que') == 'res':
                 bs = [por_id[i] for i in n.get('ids') or [] if i in por_id and por_id[i][5]]
@@ -1803,12 +2433,38 @@ def para_web(d=None, claves=None, ps=None, ahora=None, resolver=None, decis=None
                 cuerpo = 'Ya está anunciada: mira los cruces y la tabla.'
             nov_web.append({'id': n['id'], 'liga': lid, 't': n['t'], 'titulo': tit, 'cuerpo': cuerpo,
                             'url': 'https://underlegends.pages.dev/freestyle-rap/ligas/' + lid})
+        return y
+
+    for lid, x in ls.items():
+        todas = x.get('batallas') or []
+        if not any(b[5] for b in todas):
+            continue
+        L = LIGAS.get(lid) or {}
+        r = _de_servidor(x.get('sv'), r0, ps)
+        g = (svs.get(x.get('sv')) or {}).get('guild_id')
+        # 🏆 LAS TEMPORADAS (11/11/2026): se muestra la última con resultados —la que terminó se sigue viendo, con su
+        # campeón, hasta el primer veredicto de la siguiente— y las de antes van a «Ligas completadas»
+        ts = [t for t in temporadas(todas, cierres_de(lid, x, decis)) if any(b[5] for b in t['bats'])]
+        act = ts[-1] if ts else None
+        y = _una(lid, x, L, r, g, act['bats'] if act else todas, act)
+        viejas = []
+        for t in ts[:-1]:
+            if not t['hasta']:
+                continue
+            c = _una(lid, x, L, r, g, t['bats'], t, cid='%s~%s' % (lid, t['desde'][:10]))
+            comp.append(c)
+            viejas.append({k: v for k, v in (('id', c['id']), ('lt', c.get('lt')), ('c', (c.get('fin') or {}).get('c')),
+                                             ('d', t['desde'][:10]), ('h', t['hasta'][:10])) if v})
+        if viejas:
+            y['temps'] = viejas
         out.append(y)
     out.sort(key=lambda x: x['ult_t'], reverse=True)
     if not out:
         return None
     res = {'t': d.get('t'), 'ligas': out, 'nov': sorted(nov_web, key=lambda n: n['t'])}
-    sl = salon(decis, claves)
+    if comp:
+        res['completadas'] = sorted(comp, key=lambda c: c['hasta'], reverse=True)
+    sl = salon(decis, claves, d, r0, ps)
     if sl:
         res['salon'] = sl
     return res
@@ -1828,7 +2484,7 @@ def separar(web):
     if not web:
         return None, None
     lobby, det = [], {}
-    SOLO_DET = ('fechas', 'flyer', 'ks', 'flyers', 'staff', 'vids', 'info', 'vlink')
+    SOLO_DET = ('fechas', 'flyer', 'ks', 'flyers', 'staff', 'vids', 'info', 'vlink', 'temps')
     for L in web.get('ligas') or []:
         y = {k: v for k, v in L.items() if k not in SOLO_DET}
         nombres = {f[0] for f in L.get('tabla') or []} | {n for u in L.get('ult') or [] for n in u[:3] if n}
@@ -1845,6 +2501,9 @@ def separar(web):
     if web.get('salon'):
         lob['salon'] = web['salon']
     det_out = {'t': web.get('t'), 'ligas': det}
+    # 🏆 las temporadas terminadas, enteras (`completadas`): sólo en el detalle, que la página pide al abrir Ligas
+    if web.get('completadas'):
+        det_out['comp'] = {c['id']: c for c in web['completadas']}
     # 🔔 lo nuevo para «Seguir la liga» no es de la página: `subir_web.py` lo saca de acá y lo sube aparte (`para_nov()`)
     if web.get('nov') is not None:
         det_out['_nov'] = web['nov']
@@ -2137,7 +2796,7 @@ def _self_check():
     dfin = {FIN: [{'liga': 'fzl', 'n': 'FZ League', 'sv': 'FRZ', 'ult': '2026-09-08', 'temporada': 'prueba',
                    'campeon': 'CEKO', 'podio': podio(['CEKO', 'JUAS', 'R1'], 'CEKO'), 't': '2026-10-16T12:00:00Z'}]}
     wf = para_web(dz, claves={'CEKO': 'ceko'}, ps={}, ahora=t9, resolver=lambda x: x, decis=dfin)
-    ok(not terminadas(wf, dfin, t9, desde='') and wf['ligas'][0]['fin'] == {'c': 'CEKO', 'p': ['CEKO', 'JUAS', 'R1']}
+    ok(not terminadas(wf, dfin, t9, desde='') and wf['ligas'][0]['fin'] == {'c': 'CEKO', 'p': ['CEKO', 'JUAS', 'R1'], 'f': 'dlx'}
        and wf['salon'][0]['c'] == 'CEKO' and wf['salon'][0]['ks'] == {'CEKO': 'ceko'}
        and separar(wf)[0]['salon'] == wf['salon'],
        'con el campeón confirmado: no se vuelve a preguntar, la liga lo lleva (`fin`) y entra al Salón, que viaja en el lobby')
@@ -2156,8 +2815,165 @@ def _self_check():
     ok(campeones_hitos(dfin)[0]['que'] == 'campeon' and campeones_hitos({}) == [],
        'el campeón confirmado también se publica')
     _self_check_pagina(ok)
+    _self_check_temporadas(ok)
     print('\n  %s\n' % ('todo ok' if not mal else '🔴 %d problema(s)' % mal))
     return 1 if mal else 0
+
+
+def _self_check_temporadas(ok):
+    """🏆 Las temporadas, el campeón que anuncia cada servidor y las ligas que el bot encuentra solo (11/11/2026)."""
+    import tempfile
+    L = dict(LIGAS['fmh-espana'])
+    an, ver = L['an'], L['ver']
+    nom = ['ORTIZ', 'CARLOSMO', 'JOSELIYO']
+    t0 = '2026-08-28T00:00:00Z'
+
+    def m(i, t, txt, canal):
+        return {'id': str(i), 't': t, 'content': txt, 'canal': canal}
+    # los dos renglones de verdad (11/11/2026)
+    c1 = campeon_en(L, [m(10, '2026-11-11T14:57:31Z', '# <a:fuego_rojo:1>💍<:FMHESP:2> ORTIZ🇪🇸 CAMPEÓN<a:Trofeob:3>', an)],
+                    nom, t0, 5)
+    c2 = campeon_en(L, [m(11, '2026-11-11T12:04:24Z', '# <a:fuego_rojo:1>💍ORTIZ🇪🇸  CAMPEÓN DE FMH ESPAÑA<:FMHESP:2> T.5 2026💍',
+                          ver)], nom, t0, 5)
+    ok(bool(c1) and c1['c'] == 'ORTIZ' and c1['canal'] == an and bool(c2) and c2['c'] == 'ORTIZ' and c2['n'] == 5,
+       'el campeón que anuncia su servidor: «ORTIZ CAMPEÓN» en sus anuncios, «ORTIZ CAMPEÓN DE FMH ESPAÑA T.5» en los '
+       'veredictos', [c1, c2])
+    trampas = [('# ¿QUE NECESITA ORTIZ PARA SER CAMPEÓN DE FMH ESPAÑA 🤔💍?', an),
+               ('<@1>, el actual campeón nacional viene a defender su título de **FMH España**', an),
+               ('ORTIZ, CAMPEÓN DE LA RED BULL CABRANA, JUEGA HOY EN FMH ESPAÑA', ver),
+               ('ORTIZ CAMPEÓN', ver),
+               ('Primera Batalla de la Jornada 7 en Segovia, ORTIZ el campeón de FMH España', an),
+               ('ORTIZ CAMPEÓN DE FMH ESPAÑA T.4', ver),
+               ('MATEO CAMPEÓN DE FMH ESPAÑA', ver),
+               ('ORTIZ VA A SER CAMPEÓN DE FMH ESPAÑA', ver)]
+    malas = [t for t, c in trampas if campeon_en(L, [m(20, '2026-11-10T00:00:00Z', t, c)], nom, t0, 5)]
+    ok(not malas, 'y no lo es: una pregunta, «el actual campeón», otro título, el aliento de un jurado, una jornada, otra '
+       'temporada, alguien que no está arriba, un «va a ser»', malas)
+    ok(campeon_en(L, [m(30, '2026-08-20T00:00:00Z', '# ORTIZ CAMPEÓN DE FMH ESPAÑA', ver)], nom, t0) is None,
+       'un anuncio de antes del arranque de esa temporada es de otra')
+    ok(_nombra('LA FINAL DE HOY', 'AL') is False and _nombra('CAMPEÓN: MC KAN', 'MCKAN') and _nombra('ORTIZ🇪🇸 GANA', 'Ortiz'),
+       'el nombre, por palabras enteras: «AL» no está en «FINAL», y «MC KAN» es «MCKAN»')
+    ok(num_temporada('FMH ESPAÑA T.5 - TOLEDO J2') == 5 and num_temporada('TEMPORADA # 3') == 3
+       and num_temporada('SEASON 2') == 2 and num_temporada('JORNADA 4') is None,
+       'el número de la temporada: «T.5», «TEMPORADA # 3», «SEASON 2»; una jornada no')
+
+    # 🏆 las temporadas: el campeón cierra la suya, el veredicto que llega tarde sigue en ella y la siguiente arranca de cero
+    def b(i, dia, a, bb, g='', como='directa'):
+        return [str(i), '2026-%sT20:00:00Z' % dia, None, a, bb, g, como if g else '', '']
+    bs = [b(1, '10-01', 'A', 'B', 'A'), b(2, '10-02', 'C', 'D', 'C'), b(3, '10-03', 'A', 'C', 'A'),
+          b(4, '10-06', 'B', 'D', 'B'), b(5, '10-20', 'E', 'F', 'E'), b(6, '10-21', 'A', 'E', '')]
+    anuncio = {'t': '2026-10-05T12:00:00Z', 'c': 'A', 'p': ['A', 'B', 'C'], 'fuente': 'anuncio', 'n': 5, 'msg': '9',
+               'ult': '2026-10-06', 'desde': bs[0][1]}
+    ts = temporadas(bs, [anuncio])
+    ok([[x[0] for x in t['bats']] for t in ts] == [['1', '2', '3', '4'], ['5', '6']] and ts[0]['c'] == 'A'
+       and ts[0]['n'] == 5 and not ts[1]['hasta'],
+       'las temporadas: el campeón cierra la suya; el veredicto que llega tarde entre dos de su tabla sigue en ella, y la '
+       'siguiente arranca de cero', [[x[0] for x in t['bats']] for t in ts])
+    ts2 = temporadas(bs[:4], [{'t': '2026-10-05T12:00:00Z', 'c': '', 'fuente': 'canales'},
+                              {'t': '2026-10-06T23:59:59Z', 'c': 'B', 'p': ['B'], 'fuente': 'dlx'}])
+    ts3 = temporadas(bs[:4], [anuncio, {'t': '2026-10-06T23:59:59Z', 'c': 'B', 'p': ['B'], 'fuente': 'dlx'}])
+    ok(len(ts2) == 1 and ts2[0]['c'] == 'B' and len(ts3) == 1 and ts3[0]['c'] == 'B' and ts3[0]['fuente'] == 'dlx',
+       'dos cierres seguidos no arman una temporada vacía: queda el que trae campeón, y si los dos, el de Dlx',
+       [(t['c'], t['fuente']) for t in ts2 + ts3])
+    ok(actual_de(temporadas(bs[:4] + [b(7, '10-20', 'E', 'F')], [anuncio]))['c'] == 'A',
+       'la que terminó se sigue viendo hasta el primer resultado de la siguiente')
+
+    # 🖥️ la página: la de ahora, y la que terminó en «Ligas completadas», con sus cartas aparte
+    ahora = dt.datetime(2026, 10, 22, tzinfo=dt.timezone.utc)
+    d1 = {'ligas': {'fmh-espana': {'n': 'FMH España', 'sv': 'URBF', 'batallas': bs, 'temps': [anuncio], 'tn': 6,
+                                   'tn_desde': bs[4][1]}}}
+    w = para_web(d1, claves={}, ps={}, ahora=ahora, resolver=lambda x: x, decis={})
+    y, cid = w['ligas'][0], 'fmh-espana~2026-10-01'
+    ok(y['id'] == 'fmh-espana' and y['bat'] == 1 and y['lt'] == 6 and 'fin' not in y
+       and y['temps'] == [{'id': cid, 'lt': 5, 'c': 'A', 'd': '2026-10-01', 'h': '2026-10-05'}]
+       and [(c['id'], c['fin']['c'], c['bat'], c['liga']) for c in w['completadas']] == [(cid, 'A', 4, 'fmh-espana')]
+       and w['salon'][0]['c'] == 'A' and w['salon'][0].get('lt') == 5,
+       'en la página, la temporada de ahora (`lt`), las de antes en `temps` y enteras en `completadas`, y su campeón en el '
+       'Salón', str((y.get('temps'), w.get('completadas', [{}])[0].get('id'), w.get('salon'))))
+    lob, det = separar(w)
+    ok(det['comp'][cid]['tabla'][0][0] == 'A' and det['ligas']['fmh-espana']['temps'] and 'temps' not in lob['ligas'][0],
+       'las terminadas y la lista de temporadas viajan en el detalle, no en el lobby')
+    d2 = {'ligas': {'fmh-espana': {'n': 'FMH España', 'sv': 'URBF', 'batallas': bs[:4], 'temps': [anuncio], 'tn': 5,
+                                   'tn_desde': bs[0][1]}}}
+    a2 = dt.datetime(2026, 10, 8, tzinfo=dt.timezone.utc)
+    w2 = para_web(d2, claves={}, ps={}, ahora=a2, resolver=lambda x: x, decis={})
+    y2 = w2['ligas'][0]
+    ok(y2['fin'] == {'c': 'A', 'p': ['A', 'B', 'C'], 'f': 'anuncio'} and y2['vota'] == '2026-10-05T12:00:00Z'
+       and y2.get('lt') == 5 and 'completadas' not in w2 and not terminadas(w2, {}, a2, desde=''),
+       'la que acaba de terminar se ve con su campeón y su podio, la encuesta cerró al terminar (y se sigue viendo) y no se '
+       'le pregunta a Dlx', str(y2.get('fin')))
+    d3 = {'ligas': {'fms-titans': {'n': 'FMS Titans', 'sv': 'DDF', 'batallas': bs[:4],
+                                   'cerrada': {'t': '2026-10-08T00:00:00Z', 'fuente': 'canales'}}}}
+    a3 = dt.datetime(2026, 10, 9, tzinfo=dt.timezone.utc)
+    w3 = para_web(d3, claves={}, ps={}, ahora=a3, resolver=lambda x: x, decis={})
+    ok(w3['ligas'][0]['cerrada'] == '2026-10-08T00:00:00Z' and 'fin' not in w3['ligas'][0]
+       and [(x['id'], u) for x, u in terminadas(w3, {}, a3, desde='')] == [('fms-titans', '2026-10-06')],
+       'sin canales: terminó, y se le pregunta a Dlx quién la ganó ya, sin esperar las tres semanas')
+    dfin = {FIN: [{'liga': 'fmh-espana', 'n': 'FMH España', 'sv': 'URBF', 'ult': '2026-10-06', 'campeon': 'B',
+                   'podio': ['B', 'A', 'C'], 't': '2026-10-09T00:00:00Z'}]}
+    cp = campeones(dfin, d2, lambda x: x, {}, desde='')
+    ok(len(cp) == 1 and cp[0]['campeon'] == 'B' and cp[0]['fuente'] == 'dlx',
+       'si Dlx contestó la misma parada que anunció su servidor, una sola fila: la de Dlx', cp)
+    ok(not campeones({}, d2, lambda x: x, {}, desde='2026-11-01T00:00:00')
+       and campeones({}, {'ligas': {'fzl': {'n': 'FZ League', 'sv': 'FRZ', 'batallas': [], 'temps': [dict(anuncio, c='CEKO')]}}},
+                     lambda x: x, {}, desde='')[0]['podio'] == ['A', 'B', 'C'],
+       'lo que terminó antes del arranque de la Liga Global no da insignias; la anunciada que se quedó sin batallas (FZ '
+       'League reemplaza la temporada) sale con el podio guardado')
+    ok(tabla_temporada('fmh-espana', '2026-10-06', d=d1, resolver=lambda x: x, ps={}, decis={})[:2] == ['A', 'B']
+       and tabla_temporada('fmh-espana', '2026-10-20', d=d1, resolver=lambda x: x, ps={}, decis={}) == ['E', 'F'],
+       'el podio que pregunta ✅ Decidir sale de la tabla de ESA temporada')
+
+    # 🆕 las ligas nuevas: qué categoría es una liga, quién la lee y qué entra
+    lst = [{'id': '100', 'type': 4, 'name': '𝑫𝑰𝑴𝑬𝑵𝑺𝑰𝑶𝑵 𝑾𝑶𝑹𝑫 𝑺𝑬𝑹𝑰𝑬𝑺 𝟐𝟔 🌌'},
+           {'id': '101', 'type': 0, 'parent_id': '100', 'name': '📢・noticias', 'position': 1},
+           {'id': '102', 'type': 0, 'parent_id': '100', 'name': '⚖️・veredictos', 'position': 2},
+           {'id': '103', 'type': 0, 'parent_id': '100', 'name': '🗓️・jornadas', 'position': 3},
+           {'id': '200', 'type': 4, 'name': 'FMS INTERNACIONAL'},
+           {'id': '201', 'type': 0, 'parent_id': '200', 'name': 'veredictos'},
+           {'id': '202', 'type': 0, 'parent_id': '200', 'name': 'llaves'},
+           {'id': '203', 'type': 0, 'parent_id': '200', 'name': 'tabla'},
+           {'id': '300', 'type': 4, 'name': 'Torneos y Eventos'},
+           {'id': '301', 'type': 0, 'parent_id': '300', 'name': 'resultados'},
+           {'id': '302', 'type': 0, 'parent_id': '300', 'name': 'fechas'},
+           {'id': '400', 'type': 4, 'name': 'LIGA VACÍA'},
+           {'id': '500', 'type': 4, 'name': 'FMS TITANS'},
+           {'id': '501', 'type': 0, 'parent_id': '500', 'name': 'veredictos'},
+           {'id': '502', 'type': 0, 'parent_id': '500', 'name': 'tabla'}]
+    conocidas = {'x': {'sv': 'DDF', 'ver': '501', 'cc': 'PE'}}
+    cs = candidatas('DDF', lst, conocidas)
+    ok([(c['cat'], c['n'], c['ver'], c['an'], c['tabla'], c['cc']) for c in cs] == [('100', 'Dimension Word Series 26', '102',
+                                                                                    '101', '', 'PE')],
+       'una liga nueva: veredictos, algo de liga y su nombre (en letras de fantasía); un torneo con llaves no, unos '
+       '«Torneos y Eventos» no, una categoría vacía no, y la de una liga que ya está tampoco', cs)
+    km = [{'id': str(3000 + i), 't': '2026-11-0%dT20:00:00Z' % (1 + i), 'content': x} for i, x in
+          enumerate(['# ANA vs BETO', 'ANA 28 - BETO 25', 'GANADOR ANA', '# CARLA vs DANI', 'GANADOR DANI'])]
+    n_k, fam = elegir_lector(km, 'K')
+    ok(fam == 'K' and n_k['K'] == 2 and elegir_lector(km[:3], 'K')[1] == '',
+       'el lector de una liga nueva es el que cierra más batallas; con una sola no alcanza', n_k)
+    hb = [b(1, '09-01', 'A', 'B', 'A'), b(2, '09-05', 'C', 'D', 'C'), b(3, '10-20', 'E', 'F', 'E'), b(4, '10-22', 'G', 'H')]
+    ok([x[0] for x in _desde_el_hueco(hb)] == ['3', '4'] and len(_desde_el_hueco(hb[:2])) == 2,
+       'la primera lectura de una liga nueva empieza después de su último parón de más de tres semanas')
+    a4 = dt.datetime(2026, 11, 11, tzinfo=dt.timezone.utc)
+    nv = descubrir(None, {'DDF': {'g': '1', 'lst': lst}}, {'vieja': {'sv': 'DDF', 'ver': '999', 'fam': ''},
+                                                          'leida': {'sv': 'DDF', 'ver': '998', 'fam': 'K'}}, a4)
+    nueva = [v for v in nv.values() if v.get('cat') == '100']
+    ok(len(nueva) == 1 and nueva[0]['fam'] == '' and nueva[0]['auto'] and nueva[0]['n'] == 'Dimension Word Series 26'
+       and 'vieja' not in nv and 'leida' in nv,
+       'lo que se encuentra se guarda sin lector hasta probarlo; la que nunca se leyó y ya no está, se va', sorted(nv))
+    lg = {'x': {'n': 'X', 'sv': 'DDF', 'fam': 'K', 'ver': '1'}}
+    _sumar_nuevas(lg, {'nuevas': {'x': {'fam': 'K', 'ver': '9'}, 'n1': {'n': 'N', 'sv': 'DDF', 'fam': 'K', 'ver': '2'},
+                                  'n2': {'n': 'M', 'sv': 'DDF', 'fam': '', 'ver': '3'}}})
+    ok(set(lg) == {'x', 'n1'} and lg['x']['ver'] == '1', 'a `LIGAS` entran las nuevas que ya se leen; las de arriba mandan')
+    with tempfile.TemporaryDirectory() as tmp:
+        ruta = os.path.join(tmp, 'servidores.json')
+        with io.open(ruta, 'w', encoding='utf-8') as f:
+            json.dump({'servidores': {'DDF': {'categorias_fuera': {'ids': ['1']}}}}, f)
+        p1 = marcar_fuera({'a': {'sv': 'DDF', 'cat': '100', 'fam': 'K'}, 'b': {'sv': 'DDF', 'cat': '200', 'fam': ''}}, ruta)
+        p2 = marcar_fuera({'a': {'sv': 'DDF', 'cat': '100', 'fam': 'K'}}, ruta)
+        with io.open(ruta, encoding='utf-8') as f:
+            ids = json.load(f)['servidores']['DDF']['categorias_fuera']['ids']
+    ok(p1 == ['a'] and p2 == [] and ids == ['1', '100'],
+       'la categoría de la liga nueva sale de los eventos: sólo la que ya se lee, y una vez', ids)
 
 
 def _self_check_pagina(ok):
@@ -2274,6 +3090,13 @@ def main():
     correr(aplicar='--aplicar' in sys.argv)
     return 0
 
+
+# 🆕 las ligas que el bot encontró solo (`descubrir()`), a `LIGAS`, para todo el que importa este módulo: la página, las
+# cartas de liga, el muro y ✅ Decidir las ven igual que las escritas arriba
+try:
+    _sumar_nuevas()
+except Exception:                                        # noqa: BLE001
+    pass
 
 if __name__ == '__main__':
     sys.exit(main())

@@ -3342,8 +3342,10 @@ def _con_cartas_liga(det):
             return det
         x = _json('datos', 'cartas_liga.json') or {}
         por = {}
+        # 🏆 y las de las temporadas terminadas (`comp`, 11/11/2026): «Ligas completadas»
+        hay = set(det['ligas']) | set(det.get('comp') or {})
         for lid, v in (x.get('cartas') or {}).items():
-            if lid not in det['ligas']:
+            if lid not in hay:
                 continue
             for k, (sello, ovr, puesto) in v.items():
                 por.setdefault(k, []).append([lid, sello, ovr, puesto])

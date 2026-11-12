@@ -1878,13 +1878,14 @@ def _guardar_ligas(ligas_fin, ligas_sigue, estados, dry=True):
         sys.path.append(os.path.join(BASE, 'bot'))
     import ligas as LG
     import multiplicadores as MU
-    tablas = LG.tablas()
     d = _decisiones()
     ahora = _ahora_et()
     t = datetime.datetime.now(datetime.timezone.utc).strftime('%Y-%m-%dT%H:%M:%SZ')
     cierres = []
+    lg = LG.leer()
     for p, (lid, n, ult, quien) in ligas_fin:
-        nombres = tablas.get(lid) or []
+        # 🏆 la tabla de ESA temporada (11/11/2026): una liga que vuelve a jugar y para otra vez no suma la de antes
+        nombres = LG.tabla_temporada(lid, ult, d=lg, decis=d)
         c = next((x for x in nombres if LG.clave(x) == LG.clave(quien)), None)
         if not c:
             estados[p['id']] = '⚠️ «%s» no está en la tabla de %s: elige de la lista' % (quien, n)

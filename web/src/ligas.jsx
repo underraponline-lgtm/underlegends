@@ -89,6 +89,8 @@ function pedirDetalle(t) {
       DET.d = d.ligas;
       // 🏟️ y quién tiene carta de liga (`cartas`, de 05_Liga/ciclo.py): «Los que mandan» y el Álbum
       DET.c = d.cartas || {};
+      // 🏆 y las temporadas que terminaron, enteras (`comp`, `ligas.para_web()`): «Ligas completadas»
+      DET.comp = d.comp || {};
       DET.t = t;
       DET.oyentes.forEach((f) => f());
     })
@@ -287,9 +289,22 @@ function diaCorto(d) {
   if (!y || !m || !dd) return '';
   return DIAS[new Date(Date.UTC(y, m - 1, dd)).getUTCDay()].slice(0, 3).toUpperCase() + ' ' + dd;
 }
+// 🏆 cómo se llama una temporada de una liga: «T5» si su servidor la numeró; si no, hasta cuándo se jugó —su última
+// batalla, no el día en que el bot vio que terminó—. Sólo la que terminó: la que se juega no necesita nombre
+export function etiquetaTemp(L) {
+  if (!L) return '';
+  if (L.lt) return 'T' + L.lt;
+  if (!L.hasta && !L.cerrada && !(L.fin && L.fin.c)) return '';
+  const h = L.ult_t || L.hasta || L.cerrada || '';
+  return h ? 'hasta el ' + String(h).slice(8, 10) + '/' + String(h).slice(5, 7) : '';
+}
 function estadoLiga(liga, L) {
-  // 🏆 terminó y se sabe quién la ganó (✅ Decidir, `fin`): eso manda sobre «sin batallas»
-  if (L.fin && L.fin.c) return { c: 'fin', t: 'TERMINÓ · CAMPEÓN ' + limpio(L.fin.c).toUpperCase(), largo: 'Terminó: la ganó ' + limpio(L.fin.c) };
+  // 🏆 terminó y se sabe quién la ganó (lo anunció su servidor o lo confirmó Dlx en ✅ Decidir, `fin`): eso manda sobre
+  // «sin batallas»
+  const tt = L.lt ? ' la T' + L.lt : '';
+  if (L.fin && L.fin.c) return { c: 'fin', t: 'TERMINÓ · CAMPEÓN ' + limpio(L.fin.c).toUpperCase(), largo: 'Terminó' + tt + ': la ganó ' + limpio(L.fin.c) };
+  // 🔚 su servidor ya cerró sus canales (`cerrada`): terminó, y su campeón todavía no se confirmó
+  if (L.cerrada) return { c: 'fin', t: 'TERMINÓ', largo: 'Terminó' + tt + ': su campeón se confirma pronto' };
   const P = L.prox;
   if (P && P.d) {
     const hoy = liga.diaClave(liga.ahora);
@@ -393,7 +408,8 @@ function Torneo({ liga, L, h }) {
           <div className={'lgt-enc' + (abierta ? '' : ' cerrada')}>
             <p className="lgt-enc-t"><b>🗳️ ¿Quién gana {L.n}?</b>
               {abierta ? <> Toca el % de quien crees que gana: un voto por cuenta de Discord, y lo puedes cambiar hasta que la liga termine.</>
-                : <> La encuesta cerró: la liga lleva tres semanas sin batallas.</>}</p>
+                : (L.fin && L.fin.c) || L.cerrada ? <> La encuesta cerró: la liga terminó.</>
+                  : <> La encuesta cerró: la liga lleva tres semanas sin batallas.</>}</p>
             <small>{tot ? num(tot) + (tot === 1 ? ' voto' : ' votos') + (top ? ' · va ganando ' + limpio(top[0]) : '') : abierta ? 'Todavía nadie votó: ¿eres el primero?' : 'Nadie votó.'}
               {abierta ? ' · cierra el ' + diaDe(liga.diaClave(L.vota)).replace(/^\S+ /, '') + ' si no hay más batallas' : ''}</small>
             {err === 'entrar' ? (
@@ -620,7 +636,11 @@ function Videos({ L }) {
 function Como({ L, h }) {
   const inf = L.info || {};
   const hist = [...(inf.hist || [])];
-  if (L.fin && L.fin.c) hist.push(['Esta temporada', L.fin.c, 'campeón']);
+  // 🏆 lo que el bot vio terminar (11/11/2026): las de antes (`temps`, con el link a su tabla) y la que se ve. La que
+  // ya está en lo que publicó su servidor (el mismo número) no se repite
+  const ya = (n) => !!n && hist.some((x) => new RegExp('\\b' + n + '\\b').test(String(x[0])));
+  (L.temps || []).forEach((t) => { if (t.c && !ya(t.lt)) hist.push([t.lt ? 'Temporada ' + t.lt : 'Hasta el ' + dm(t.h), t.c, '', t.id]); });
+  if (L.fin && L.fin.c && !ya(L.lt)) hist.push([(L.lt ? 'Temporada ' + L.lt : L.liga ? 'Esa temporada' : 'Esta temporada'), L.fin.c, 'campeón']);
   return (
     <div className="lpg-comof">
       {(inf.fmt || []).length ? <ul className="lpg-reglas">{inf.fmt.map((x) => <li key={x}>{x}</li>)}</ul> : null}
@@ -628,8 +648,8 @@ function Como({ L, h }) {
         <>
           <h4 className="lg-st">Los campeones</h4>
           <ol className="lpg-hist">
-            {hist.slice().reverse().map(([t, c, nota]) => (
-              <li key={t + c}><small>{t}</small><b>🏆 {h.nombre(c)}</b>{nota ? <span>{nota}</span> : null}</li>
+            {hist.slice().reverse().map(([t, c, nota, id]) => (
+              <li key={t + c}><small>{id ? <a href={'#/ligas/' + encodeURIComponent(id)}>{t}</a> : t}</small><b>🏆 {h.nombre(c)}</b>{nota ? <span>{nota}</span> : null}</li>
             ))}
           </ol>
         </>
@@ -690,7 +710,7 @@ const PEST = [['tabla', 'La tabla'], ['album', 'Álbum'], ['ascenso', 'Ascenso']
 function hay(L, k) {
   return k === 'tabla' ? true : k === 'album' ? (L.album || []).length > 0 : k === 'ascenso' ? !!(L.asc && (L.asc.filas || []).length) : k === 'fechas' ? (L.fechas || []).length > 0 : k === 'numeros' ? (L.fechas || []).some((f) => f.b.some((b) => b[2]))
     : k === 'staff' ? (L.staff || []).some((x) => x[2] >= 2 || x[3] >= 3) : k === 'flyers' ? (L.flyers || []).length > 0
-      : k === 'videos' ? (L.vids || []).length > 0 : k === 'como' ? !!(L.info || (L.fin && L.fin.c)) : false;
+      : k === 'videos' ? (L.vids || []).length > 0 : k === 'como' ? !!(L.info || (L.fin && L.fin.c) || (L.temps || []).some((t) => t.c)) : false;
 }
 
 // ── 🏟️ EL PERFIL DE CADA LIGA (`#/ligas/<id>`): su servidor, cómo va, el podio, el torneo y las otras ──────────────────
@@ -703,8 +723,13 @@ function LigaPerfil({ liga, id }) {
   useEffect(() => { setTab('tabla'); }, [id]);
   const desliza = useDesliza(tab, PEST.map(([k]) => k));
   const ls = liga.ligas();
-  const L = conDetalle(ls.find((x) => x.id === id), det);
-  if (!L) return <LigasInicio liga={liga} falta={id} />;
+  // 🏆 una temporada que terminó (`<liga>~<día>`, de «Ligas completadas»): viene entera en el detalle, con «Cómo
+  // funciona» de su liga
+  const C = ls.find((x) => x.id === id) ? null : (DET.comp || {})[id];
+  const vieja = !!C;
+  const L = C ? Object.assign({}, C, { info: (det[C.liga] || {}).info }) : conDetalle(ls.find((x) => x.id === id), det);
+  if (!L) return id.indexOf('~') > 0 && !DET.d ? null : <LigasInicio liga={liga} falta={id} />;
+  const et = etiquetaTemp(L);
   const h = herramientas(liga, L);
   // 🃏 el álbum: la carta de liga de cada uno de la tabla que la tiene, en el orden de la tabla
   L.album = (L.tabla || []).map((f, i) => [f, i, h.kDe(f[0])]).map(([f, i, k]) => [f, i, k, k ? cartaLiga(liga, L.id, k) : ''])
@@ -721,20 +746,24 @@ function LigaPerfil({ liga, id }) {
   return (
     <>
       <div className={'escena lgp-esc lgx-' + est.c} style={{ '--mo-c': color, '--mo-o': 0.9, ...silueta(L.sv, color) }}>
-        <nav className="lgp-miga" aria-label="Volver"><a href="#/ligas"><Ico n="flecha" t={16} />Todas las ligas</a></nav>
-        <BatallasAhora liga={liga} id={L.id} />
+        <nav className="lgp-miga" aria-label="Volver">
+          <a href="#/ligas"><Ico n="flecha" t={16} />Todas las ligas</a>
+          {vieja && ls.some((x) => x.id === L.liga) ? <a href={'#/ligas/' + encodeURIComponent(L.liga)}>La temporada de ahora</a> : null}
+        </nav>
+        {vieja ? null : <BatallasAhora liga={liga} id={L.id} />}
         <section className="svp lgp-cab">
           <img className="svp-logo" alt="" src={liga.logo(L.sv, true)} />
           <div className="svp-tx">
-            <span className="tag">LIGA · {sig}</span>
+            <span className="tag">LIGA · {sig}{et ? ' · ' + et.toUpperCase() : ''}</span>
             <h1 className="hero-ev largo">{L.n}</h1>
             <p className="hero-p lgp-p0"><span className={'lgp-est lgx-' + est.c}>{est.largo}</span> · de <a href={'#/sv/' + sig}>{s.nombre || sig}</a></p>
             <div className="hero-acc">
-              <SeguirLiga key={L.id} L={L} />
-              <Compartir cls="btn borde" url={enlace(aLiga(L))} texto={'La tabla de ' + L.n + ' en la Liga Global'} />
+              {/* una temporada que terminó, o una liga cuyos canales ya no están, no tiene nada que seguir */}
+              {vieja || L.cerrada ? null : <SeguirLiga key={L.id} L={L} />}
+              <Compartir cls="btn borde" url={enlace(aLiga(L))} texto={'La tabla de ' + L.n + (et ? ' ' + et : '') + ' en la Liga Global'} />
             </div>
             {/* la suya, como link: tres botones se apilaban en dos renglones (Dlx, 18/10/2026: «está muy pegado») */}
-            {L.link ? <a className="te-link lgp-dc" href={L.link} target="_blank" rel="noopener noreferrer">Su tabla en Discord ↗</a> : null}
+            {L.link && !vieja && !L.cerrada ? <a className="te-link lgp-dc" href={L.link} target="_blank" rel="noopener noreferrer">Su tabla en Discord ↗</a> : null}
           </div>
           <dl className="svp-num lgp-num">
             {L.j ? <div><dt>JORNADA</dt><dd>{L.j}</dd></div> : <div><dt>ÚLTIMA</dt><dd>{ultima || '—'}</dd></div>}
@@ -766,7 +795,8 @@ function LigaPerfil({ liga, id }) {
               <small>{i + 1}º · {limpio(f[0])}</small>
             </li>
           ))}</ul>
-          <p className="pronto-p">Cada uno que juega la liga tiene su carta, y se pone al día con cada jornada.</p>
+          <p className="pronto-p">{vieja ? 'Las cartas de esa temporada, como quedaron al terminar: ya no cambian.'
+            : 'Cada uno que juega la liga tiene su carta, y se pone al día con cada jornada.'}</p>
         </Sec>
       ) : null}
       {tv === 'ascenso' ? (
@@ -991,6 +1021,42 @@ function Cuadro({ liga, L, est }) {
   );
 }
 
+// ── 🏆 LIGAS COMPLETADAS (Dlx, 11/11/2026: «cuando una liga acabe que siga en un álbum especial como LIGAS
+// COMPLETADAS»): cada temporada que terminó, con su campeón, su tabla final y sus cartas, que ya no cambian. Las de ahora
+// que terminaron (`fin` o `cerrada`) y las de antes, enteras en el detalle (`comp`). Sin ninguna, no se dibuja ─────────
+function Completadas({ liga, ls, est }) {
+  const xs = [...ls.filter((L) => est[L.id].c === 'fin').map((L) => [L, L.ult_t]),
+    ...Object.values(DET.comp || {}).map((C) => [C, C.hasta])]
+    .sort((a, b) => String(b[1] || '').localeCompare(String(a[1] || '')));
+  if (!xs.length) return null;
+  return (
+    <Sec id="lgh-comp" titulo={'Ligas completadas · ' + xs.length}>
+      <ul className="lq-cqs">{xs.map(([L]) => <li key={L.id}><Completada liga={liga} L={L} /></li>)}</ul>
+      <p className="pronto-p">Cada temporada que termina queda acá: con su campeón, su tabla final y las cartas de quienes la jugaron.</p>
+    </Sec>
+  );
+}
+function Completada({ liga, L }) {
+  const h = herramientas(liga, L);
+  const et = etiquetaTemp(L);
+  const camp = L.fin && L.fin.c;
+  return (
+    <a className="lq-cq" href={aLiga(L)} style={{ '--c': (liga.svs[L.sv] || {}).color || '#E41373' }}>
+      {L.fl ? <img className="lq-cq-f" src={L.fl} alt="" loading="lazy" decoding="async" />
+        : <span className="lq-cq-f sin"><img alt="" src={liga.logo(L.sv, true)} /></span>}
+      <span className="lq-est lgx-fin">TERMINÓ{et ? ' · ' + et.toUpperCase() : ''}</span>
+      <span className="lq-cq-i">
+        <span className="lq-cq-n"><img alt="" src={liga.logo(L.sv)} /><b>{L.n}</b></span>
+        <span className="lq-camp">
+          {camp ? h.cara(camp, 'cara lq-cara') : null}
+          <span><small>CAMPEÓN</small><b>{camp ? limpio(camp) : 'por confirmar'}</b></span>
+        </span>
+        <small>{num(L.bat)} {L.bat === 1 ? 'batalla' : 'batallas'} · {(L.tabla || []).length} raperos</small>
+      </span>
+    </a>
+  );
+}
+
 // ── 🏟️ LA PORTADA (`#/ligas`): todas, cómo va cada una, las tuyas, las próximas fechas y lo último que pasó ─────────────
 function LigasInicio({ liga, falta = '' }) {
   const ls = liga.ligas();
@@ -1073,6 +1139,7 @@ function LigasInicio({ liga, falta = '' }) {
           })()}
         </Sec>
       ) : null}
+      <Completadas liga={liga} ls={ls} est={est} />
       {ls.length ? <LoMejor liga={liga} ls={ls} hs={hs} /> : null}
       <Salon liga={liga} />
       {/* 🗓️ lo que viene y lo que pasó, en una fila en la compu: una sola fecha por delante dejaba media pantalla vacía */}
@@ -1366,7 +1433,8 @@ function LoMejor({ liga, ls, hs }) {
 }
 
 // ── 🏆 EL SALÓN DE CAMPEONES (Dlx, 16/10/2026): cada liga que terminó, con su campeón y su podio, por temporada.
-// El campeón lo confirma Dlx en ✅ Decidir (`decidir.ligas_terminadas()`): el bot no sabe cuándo termina una liga.
+// El campeón lo anuncia su servidor (`ligas.campeon_en()`, desde el 11/11/2026) o lo confirma Dlx en ✅ Decidir
+// (`decidir.ligas_terminadas()`), cuando para sin decir nada.
 // Viaja en el lobby (`ligas.salon`). Sin ninguna todavía, la sección dice cómo se entra: es lo que se quiere ver ───
 function Salon({ liga }) {
   const xs = ((liga.d.ligas || {}).salon) || [];
@@ -1385,7 +1453,7 @@ function Salon({ liga }) {
           <li key={x.id + x.ult}>
             {cara(x, x.c)}
             <span className="lgh-sc-t">
-              <small><img alt="" src={liga.logo(x.sv)} />{x.n} · {siglaDe(x.sv)}{x.temp ? ' · ' + (x.temp === 'prueba' ? 'T1' : String(x.temp).toUpperCase()) : ''}</small>
+              <small><img alt="" src={liga.logo(x.sv)} />{x.n}{x.lt ? ' T' + x.lt : ''} · {siglaDe(x.sv)}{!x.lt && x.temp ? ' · ' + (x.temp === 'prueba' ? 'T1' : String(x.temp).toUpperCase()) : ''}</small>
               <b>{nombre(x, x.c)}</b>
               {(x.p || []).length > 1 ? <span>2º {nombre(x, x.p[1])}{x.p[2] ? <> · 3º {nombre(x, x.p[2])}</> : null}</span> : null}
             </span>
