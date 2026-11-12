@@ -3242,6 +3242,9 @@ const RUTAS = {
   // 🏷️ los roles de cada uno en la página (13/10/2026): los ve cualquiera; el ciclo manda los que salen solos, con su
   // clave, y Dlx pone o saca. Ver `roles()`, `rolesEstados()` y `duenoRol()`
   '/avisos/roles': 'GET', '/avisos/roles-estados': 'POST', '/avisos/dueno/rol': 'POST', '/avisos/dueno/permisos': 'POST',
+  // 🎚️ LLAVES Y FONDOS (11/11/2026): qué llaves cuentan, el fondo del VS en vivo de cada servidor. Ver `duenoLlaveCuenta()`,
+  // `llavesCiclo()` y `duenoVsFondo()`
+  '/avisos/dueno/llave-cuenta': 'POST', '/avisos/llaves-ciclo': 'POST', '/avisos/dueno/vs-fondo': 'POST', '/avisos/vs-fondos': 'GET',
   // 👤 LA TANDA 2 DEL PERFIL (27/10/2026): tu frase y los emblemas que elegiste (con tu sesión), lo público de un perfil
   // —su frase, sus emblemas, su rol de DRA y lo que hizo en la página, en números— y quitar una frase reportada. Ver
   // `perfilMio()`, `perfilExtra()` y `duenoFrase()` del objeto
@@ -4154,6 +4157,18 @@ export async function filtrarImagen(env, b64, tipo) {
 }
 
 /** ¿Vale este cambio de rol? `{id, rol, si}` (`si`: true lo pone, false lo saca, null vuelve a lo automático). Pura. */
+//: ¿vale este «cuenta / no cuenta»? La clave es la de `datos/decisiones.json`: «evento · servidor · fecha». Pura
+export function validarLlaveCuenta(d) {
+  const clave = String((d && d.clave) || '').replace(/\s+/g, ' ').trim();
+  const p = clave.split(' · ');
+  if (clave.length < 8 || clave.length > 200 || p.length !== 3 || !p[0] || !/^[A-Z0-9]{2,6}$/.test(p[1]) || !/^\d{2}\/\d{2}$/.test(p[2])) {
+    return { error: 'la llave' };
+  }
+  if (d.cuenta !== true && d.cuenta !== false) return { error: 'falta si cuenta' };
+  const n = /^\d{1,6}$/.test(String(d.n || '')) ? String(d.n) : '';
+  return { clave, cuenta: d.cuenta, n, motivo: String(d.motivo || '').replace(/[<>]/g, '').slice(0, 160) };
+}
+
 export function validarRol(d) {
   const id = String((d && d.id) || '');
   if (!/^\d{5,25}$/.test(id)) return { error: 'falta la persona' };
@@ -5938,6 +5953,56 @@ export async function rutaAvisos(req, env, ruta) {
       method: 'POST', body: JSON.stringify(v), headers: { 'content-type': 'application/json' },
     });
   }
+  // 🎚️ QUÉ LLAVES CUENTAN (Dlx, 11/11/2026: «controlar qué llaves cuentan, qué no»): mueve puntos, así que pide lo mismo
+  // que corregir una llave (`reportes`). Lo aplica el ciclo (`bot/reportes.py`, `llaves_del_dashboard()`)
+  if (ruta === '/avisos/dueno/llave-cuenta') {
+    const crudo = await req.text();
+    if (crudo.length > 2048) return json({ error: 'demasiado grande' }, 413);
+    let d = null;
+    try { d = JSON.parse(crudo || '{}'); } catch (e) { d = null; }
+    if (!d || typeof d !== 'object' || (d.token && !/^[A-Za-z0-9._-]{10,300}$/.test(String(d.token)))) {
+      return json({ error: 'faltan datos' }, 400);
+    }
+    const v = validarLlaveCuenta(d);
+    if (v.error) return json(v, 400);
+    const q = await quienPide(req, env, d);
+    if (!q.id) return json({ error: q.error }, q.estado);
+    if (!(await puede(q.id, 'reportes'))) {
+      console.warn('[seguridad] decidir si una llave cuenta lo pidió alguien que no puede');
+      return json({ error: 'no' }, 403);
+    }
+    return elObjeto(env).fetch('https://avisos/dueno-llave-cuenta', { method: 'POST', body: JSON.stringify(Object.assign(v, { por: q.id })),
+      headers: { 'content-type': 'application/json' } });
+  }
+  // 🎚️ y el ciclo: le dice al objeto cuáles no cuentan hoy y se lleva lo que falta aplicar (con la clave del ciclo)
+  if (ruta === '/avisos/llaves-ciclo') {
+    const k = req.headers.get('x-lg-ciclo') || '';
+    if (!env.DISCORD_TOKEN || k !== await claveCiclo(env.DISCORD_TOKEN)) return json({ error: 'no existe' }, 404);
+    const crudo = await req.text();
+    if (crudo.length > 120000) return json({ error: 'demasiado grande' }, 413);
+    return elObjeto(env).fetch('https://avisos/llaves-ciclo', { method: 'POST', body: crudo, headers: { 'content-type': 'application/json' } });
+  }
+  // 🌆 EL FONDO DEL VS EN VIVO DE CADA SERVIDOR (Dlx, 11/11/2026: «los fondos de cada tarjeta, de su en vivo»): lo sube quien
+  // puede los ajustes. Lo lee el kit al dibujar el VS (`bot/kit.py`, `_fondo_vs()`); sin uno subido, el de `bot/vs_fondos/`
+  if (ruta === '/avisos/dueno/vs-fondo') {
+    const crudo = await req.text();
+    if (crudo.length > 1600000) return json({ error: 'demasiado grande' }, 413);
+    let d = null;
+    try { d = JSON.parse(crudo || '{}'); } catch (e) { d = null; }
+    if (!d || typeof d !== 'object' || (d.token && !/^[A-Za-z0-9._-]{10,300}$/.test(String(d.token)))
+        || !/^[A-Z0-9]{2,6}$/.test(String(d.sv || ''))
+        || (d.img !== undefined && (typeof d.img !== 'string' || !/^[A-Za-z0-9+/=]+$/.test(d.img)))) return json({ error: 'faltan datos' }, 400);
+    const q = await quienPide(req, env, d);
+    if (!q.id) return json({ error: q.error }, q.estado);
+    if (!(await puede(q.id, 'ajustes'))) {
+      console.warn('[seguridad] cambiar el fondo de un VS lo pidió alguien que no puede');
+      return json({ error: 'no' }, 403);
+    }
+    return elObjeto(env).fetch('https://avisos/dueno-vs-fondo', { method: 'POST',
+      body: JSON.stringify({ sv: String(d.sv), img: d.img, borrar: d.borrar === true, por: q.id }), headers: { 'content-type': 'application/json' } });
+  }
+  //: cuáles fondos de VS se subieron (público: son links públicos de R2). Lo pide el kit
+  if (ruta === '/avisos/vs-fondos') return elObjeto(env).fetch('https://avisos/vs-fondos');
   // 🎛️ QUÉ PUEDE CADA ROL (11/11/2026): sólo Dlx, como poner un rol. El objeto valida la tabla (`validarPermisos()`)
   if (ruta === '/avisos/dueno/permisos') {
     const crudo = await req.text();
@@ -7412,6 +7477,7 @@ export class Avisos {
       if (ruta === '/niveles') return json(this.delMinuto('/niveles', 300, () => this.niveles()), 200, 300);
       if (ruta === '/pases') return json(this.delMinuto('/pases', 300, () => this.pases()), 200, 300);
       if (ruta === '/roles') return json(this.delMinuto('/roles', 300, () => this.roles()), 200, 300);
+      if (ruta === '/vs-fondos') return json(Object.fromEntries(Object.entries(this.vsFondosDueno()).map(([k, v]) => [k, v.url])), 200, 60);
       if (ruta === '/fondos') return json(this.delMinuto('/fondos', 300, () => this.fondos()), 200, 300);
       if (ruta === '/pase-niveles') return json(this.paseNiveles());
       if (ruta === '/uso-ciclo') return json(this.usoCiclo());
@@ -7499,6 +7565,9 @@ export class Avisos {
       if (ruta === '/dueno-foto-carta') return json(await this.duenoFotoCarta(d));
       if (ruta === '/dueno-rol') return json(this.duenoRol(d));
       if (ruta === '/dueno-permisos') return json(this.duenoPermisos(d));
+      if (ruta === '/dueno-llave-cuenta') return json(this.duenoLlaveCuenta(d));
+      if (ruta === '/llaves-ciclo') return json(this.llavesCiclo(d));
+      if (ruta === '/dueno-vs-fondo') return json(await this.duenoVsFondo(d));
       if (ruta === '/dueno-decidir') return json(this.duenoDecidir(d));
       if (ruta === '/reportes-estados') return json(await this.reportesEstados(d));
       if (ruta === '/alta') return await this.alta(d);
@@ -11746,6 +11815,82 @@ export class Avisos {
     return { ok: true, permisos: this.permisosDueno() };
   }
 
+  // ── 🎚️ LLAVES Y FONDOS (11/11/2026) ──────────────────────────────────
+  /** Lo que se pidió en el Dashboard y todavía no aplicó el ciclo, y cuáles no cuentan hoy (lo dice el ciclo). */
+  llavesDueno() {
+    const x = this.leer('llaves_cuenta') || {};
+    return { t: x.t || null, no_cuentan: x.no_cuentan || [], pedidos: x.pedidos || {}, hist: (x.hist || []).slice(0, 20) };
+  }
+
+  /** «Esta llave cuenta / no cuenta»: queda pedido hasta que el ciclo lo aplica. */
+  duenoLlaveCuenta(d) {
+    const v = validarLlaveCuenta(d);
+    if (v.error) return v;
+    const x = this.leer('llaves_cuenta') || {};
+    const pedidos = Object.assign({}, x.pedidos || {});
+    const ya = (x.no_cuentan || []).includes(v.clave);
+    // pedir lo que ya es así no pide nada: se borra lo pendiente (alguien se arrepintió antes de que corriera el ciclo)
+    if (ya === !v.cuenta) delete pedidos[v.clave];
+    else pedidos[v.clave] = { cuenta: v.cuenta, n: v.n, motivo: v.motivo, por: this.nombrePor(d.por), t: Date.now() };
+    const hist = [{ clave: v.clave, cuenta: v.cuenta, por: this.nombrePor(d.por), t: Date.now() }].concat(x.hist || []).slice(0, 60);
+    this.guardar('llaves_cuenta', Object.assign({}, x, { pedidos, hist }));
+    return { ok: true, llaves_cuenta: this.llavesDueno() };
+  }
+
+  /** El ciclo: `{no_cuentan: [claves]}` como quedaron después de aplicar. Lo que ya está como se pidió sale de la lista. */
+  llavesCiclo(d) {
+    const x = this.leer('llaves_cuenta') || {};
+    const nc = Array.isArray(d && d.no_cuentan) ? d.no_cuentan.filter((c) => typeof c === 'string' && c.length <= 200).slice(0, 2000) : null;
+    if (!nc) return { error: 'faltan datos' };
+    const pedidos = {};
+    for (const [c, p] of Object.entries(x.pedidos || {})) if (nc.includes(c) !== !p.cuenta) pedidos[c] = p;
+    this.guardar('llaves_cuenta', Object.assign({}, x, { t: Date.now(), no_cuentan: nc, pedidos }));
+    return { ok: true, pedidos };
+  }
+
+  /** 🌆 Los fondos de VS subidos: `{SV: {url, t, por}}`. */
+  vsFondosDueno() {
+    return this.leer('vs_fondos') || {};
+  }
+
+  /** Subir (`img`, en base64) o sacar (`borrar`) el fondo del VS de un servidor. Va a R2, público, como las cartas. */
+  async duenoVsFondo(d) {
+    const sv = String((d && d.sv) || '');
+    if (!/^[A-Z0-9]{2,6}$/.test(sv)) return { error: 'el servidor' };
+    const m = Object.assign({}, this.vsFondosDueno());
+    const borrar = async (u) => {
+      const k = String(u || '').split('.r2.dev/')[1];
+      if (k && k.startsWith('vs_fondos/')) { try { await this.env.CARTAS.delete(k); } catch (e) { /* queda huérfano */ } }
+    };
+    if (d.borrar) {
+      if (m[sv]) await borrar(m[sv].url);
+      delete m[sv];
+      this.guardar('vs_fondos', m);
+      return { ok: true, vs_fondos: m };
+    }
+    let b = null;
+    try { b = Uint8Array.from(atob(String(d.img || '')), (c) => c.charCodeAt(0)); } catch (e) { b = null; }
+    const tipo = b && b.length ? tipoImagen(b) : '';
+    if (!tipo) return { error: 'no es una imagen' };
+    if (b.length > 1200000) return { error: 'demasiado grande' };
+    b = limpiarMetadatos(b);
+    if (!b) return { error: 'no es una imagen' };
+    const t = Date.now();
+    const k = 'vs_fondos/' + sv.toLowerCase() + '-' + t + (tipo === 'image/png' ? '.png' : tipo === 'image/webp' ? '.webp' : '.jpg');
+    if (!this.env.CARTAS) return { error: 'sin R2' };
+    await this.env.CARTAS.put(k, b, { httpMetadata: { contentType: tipo, cacheControl: 'public, max-age=31536000' } });
+    if (m[sv]) await borrar(m[sv].url);
+    m[sv] = { url: R2_PUB + '/' + k, t, por: this.nombrePor(d.por) };
+    this.guardar('vs_fondos', m);
+    return { ok: true, vs_fondos: m };
+  }
+
+  /** 🖼️ Los fondos de la gente que ya se ven (para quitar uno que no tenía que pasar). */
+  fondosVistos() {
+    return this.sql.exec("SELECT quien, k, url, t FROM fondos WHERE url != '' ORDER BY t DESC LIMIT 200").toArray()
+      .map((r) => ({ quien: r.quien, k: r.k, url: r.url, t: r.t }));
+  }
+
   /** 🎛️ Para el Dashboard: la tabla vigente, la de siempre y los últimos cambios. */
   permisosDueno() {
     return { tabla: this.tablaPermisos(), siempre: PERMISOS, editables: PERMISOS_EDITABLES, roles: ROLES_PANEL,
@@ -15383,6 +15528,7 @@ export class Avisos {
         reportes_causas: ve('reportes') || ve('reportes_cerrar') ? this.causasDueno(ahora) : [],
         decidir: ve('decidir') ? this.decidirDueno() : {}, videos: ve('videos') ? (this.leer('videos_revisar') || []) : [],
         fondos: ve('fondos') ? this.fondosDueno() : [], filtro: ve('fondos') ? this.filtroDueno() : null,
+        fondos_vistos: ve('fondos') ? this.fondosVistos() : [], llaves_cuenta: ve('reportes') ? this.llavesDueno() : null,
         fotos_carta: ve('fondos') ? this.fotosCartaDueno() : [],
         crews_logos: ve('fondos') ? CW.crewLogosDueno(this) : null,
         pedidos: ve('reportes') || ve('reportes_cerrar') ? this.pedidosDueno() : [],
@@ -15444,6 +15590,8 @@ export class Avisos {
       roles: this.rolesDueno(),
       // 🎛️ y qué puede cada rol (11/11/2026): la tabla vigente, la de siempre y quién la cambió
       permisos_roles: this.permisosDueno(),
+      // 🎚️ llaves y fondos (11/11/2026): qué llaves no cuentan, el fondo del VS de cada servidor y los fondos que ya se ven
+      llaves_cuenta: this.llavesDueno(), vs_fondos: this.vsFondosDueno(), fondos_vistos: this.fondosVistos(),
       // 🖼️ los fondos que esperan revisión (13/10/2026), y lo que hizo el filtro
       fondos: this.fondosDueno(),
       filtro: this.filtroDueno(),

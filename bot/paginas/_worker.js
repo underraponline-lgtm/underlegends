@@ -164,7 +164,7 @@ const AVISOS = {
   '/api/avisos/dueno/decidir': 'POST',
   // 🏷️ los roles de cada perfil (cualquiera) y ponerlos (sólo Dlx), 13/10/2026. ⚠️ `roles-estados` NO va acá
   '/api/avisos/roles': 'GET',
-  '/api/avisos/dueno/rol': 'POST', '/api/avisos/dueno/permisos': 'POST',
+  '/api/avisos/dueno/rol': 'POST', '/api/avisos/dueno/permisos': 'POST', '/api/avisos/dueno/llave-cuenta': 'POST', '/api/avisos/dueno/vs-fondo': 'POST',
   // 🖼️ tu fondo (13/10/2026): subirlo y verlo (con tu sesión), los aprobados (cualquiera) y revisarlos (sólo Dlx)
   '/api/avisos/fondo': 'POST', '/api/avisos/mi-fondo': 'POST', '/api/avisos/fondos': 'GET', '/api/avisos/dueno/fondo': 'POST',
   // 📸 tu foto de tarjeta (13/10/2026): subirla y verla (con tu sesión) y revisarla (quien puede)

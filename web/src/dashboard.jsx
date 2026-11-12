@@ -2226,6 +2226,219 @@ function TablaPermisos({ P, alCambiar }) {
   );
 }
 
+// ── 🎚️ LLAVES Y FONDOS (11/11/2026) ──────────────────────────────────────
+// la lista entera de llaves de la temporada: la misma de «Ver llave» (pública), una vez por visita
+let llavesTodas = null;
+function useLlavesTodas() {
+  const [x, setX] = useState(llavesTodas);
+  useEffect(() => {
+    if (llavesTodas) return undefined;
+    let vivo = true;
+    fetch('/api/llaves').then((r) => (r.ok ? r.json() : null)).catch(() => null).then((j) => {
+      llavesTodas = j && typeof j === 'object' ? j : {};
+      if (vivo) setX(llavesTodas);
+    });
+    return () => { vivo = false; };
+  }, []);
+  return x;
+}
+const claveLlave = (e) => [e.nombre, e.sv, e.fecha].join(' · ');
+
+async function pedirLlaveCuenta(cuerpo) {
+  const r = await fetch('/api/avisos/dueno/llave-cuenta', { method: 'POST', credentials: 'same-origin',
+    headers: { 'content-type': 'application/json' }, body: JSON.stringify(cuerpo) });
+  const j = await r.json().catch(() => ({}));
+  if (!r.ok || j.error) throw new Error(r.status === 401 ? 'la sesión venció: entra de nuevo' : r.status === 404 ? 'el bot todavía no se actualizó' : j.error || String(r.status));
+  return j.llaves_cuenta;
+}
+
+function LlavesCuentan({ L, liga, alCambiar }) {
+  const todas = useLlavesTodas();
+  const [q, setQ] = useState('');
+  const [sv, setSv] = useState('');
+  const [seguro, setSeguro] = useState(null);
+  const [motivo, setMotivo] = useState('');
+  const [ocup, setOcup] = useState(false);
+  const [msg, setMsg] = useState('');
+  if (!L) return <p className="pronto-p">Esto aparece cuando el bot se actualice: la lista de lo que no cuenta vive en el servidor.</p>;
+  if (!todas) return <p className="db-tx">Cargando las llaves de la temporada…</p>;
+  const no = new Set(L.no_cuentan || []);
+  const ped = L.pedidos || {};
+  const xs = Object.values(todas).filter((e) => e && e.nombre && e.sv && e.fecha).sort((a, b) => (b.n || 0) - (a.n || 0));
+  const svs = [...new Set(xs.map((e) => e.sv))].sort();
+  const qn = normN(q);
+  const vis = xs.filter((e) => (!sv || e.sv === sv) && (!qn || normN(e.nombre).includes(qn) || String(e.n) === q.trim().replace('#', '')));
+  // las que no cuentan y ya no están en la lista de «Ver llave» (se fueron con la decisión): también se pueden devolver
+  const sueltas = [...no].filter((c) => !xs.some((e) => claveLlave(e) === c));
+  const estado = (c) => (ped[c] ? (ped[c].cuenta ? 'vuelve' : 'sale') : no.has(c) ? 'no' : 'si');
+  const pedir = async (c, n, cuenta) => {
+    setOcup(true); setMsg('');
+    try { alCambiar(await pedirLlaveCuenta({ clave: c, n: n ? String(n) : '', cuenta, motivo })); setMsg(cuenta ? 'Listo: vuelve a contar en la próxima corrida del ciclo.' : 'Listo: sale del ranking en la próxima corrida del ciclo.'); }
+    catch (e) { setMsg('No se pudo: ' + e.message); }
+    setSeguro(null); setMotivo(''); setOcup(false);
+  };
+  const fila = (c, e) => {
+    const st = estado(c);
+    return (
+      <li key={c} className={'dz-ll' + (st === 'no' || st === 'sale' ? ' fuera' : '')}>
+        <div>
+          <b>{e ? '#' + e.n + ' · ' : ''}{limpio(e ? e.nombre : c.split(' · ')[0])}</b>
+          <small>{siglaDe(e ? e.sv : c.split(' · ')[1])} · {e ? e.fecha : c.split(' · ')[2]}{e && e.participantes ? ' · ' + e.participantes + ' raperos' : ''}</small>
+        </div>
+        <span className={'db-chip' + (st === 'si' ? ' ok' : ' ojo')}>{{ si: 'Cuenta', no: 'No cuenta', sale: 'Sale en la próxima corrida', vuelve: 'Vuelve en la próxima corrida' }[st]}</span>
+        {seguro === c ? (
+          <div className="dz-ll-f">
+            {st === 'si' ? <input type="text" className="db-sel" maxLength={160} placeholder="por qué (opcional)" value={motivo} onChange={(ev) => setMotivo(ev.target.value)} /> : null}
+            <button type="button" className="btn verde chico" disabled={ocup} onClick={() => pedir(c, e && e.n, st !== 'si' && st !== 'vuelve')}>
+              {st === 'si' || st === 'vuelve' ? 'Sí, que no cuente' : 'Sí, que vuelva a contar'}</button>
+            <button type="button" className="dz-lnk" onClick={() => setSeguro(null)}>Cancelar</button>
+          </div>
+        ) : (
+          <button type="button" className="btn borde2 chico" disabled={ocup} onClick={() => { setSeguro(c); setMotivo(''); }}>
+            {st === 'si' || st === 'vuelve' ? 'No cuenta' : 'Vuelve a contar'}</button>
+        )}
+      </li>
+    );
+  };
+  return (
+    <div className="dz-lls">
+      <p className="db-tx">Una llave que no cuenta sale del ranking para todos: sus puntos, sus duelos y sus podios. Lo aplica el ciclo en su próxima corrida. Devolverla la hace entrar de nuevo.</p>
+      <div className="dz-ll-b">
+        <input type="search" className="db-sel" placeholder="nombre o número de la llave" value={q} onChange={(ev) => setQ(ev.target.value)} />
+        <select className="db-sel" value={sv} onChange={(ev) => setSv(ev.target.value)}>
+          <option value="">Todos los servidores</option>
+          {svs.map((x) => <option key={x} value={x}>{siglaDe(x)}</option>)}
+        </select>
+        <small>{no.size} no cuenta{no.size === 1 ? '' : 'n'} · {Object.keys(ped).length} esperando al ciclo</small>
+      </div>
+      {sueltas.length ? <><span className="db-rep-p">Las que no cuentan</span><ul className="dz-ll-l">{sueltas.map((c) => fila(c, null))}</ul></> : null}
+      <ul className="dz-ll-l">{vis.slice(0, 40).map((e) => fila(claveLlave(e), e))}</ul>
+      {vis.length > 40 ? <small>Y {vis.length - 40} más: busca por el nombre o el número.</small> : null}
+      {msg ? <small role="status">{msg}</small> : null}
+    </div>
+  );
+}
+
+// 🌆 la imagen, achicada en el navegador antes de subirla: el VS se dibuja a 1200 px, más no se ve y pesa
+function achicar(file, ancho = 1600) {
+  return new Promise((ok, mal) => {
+    const fr = new FileReader();
+    fr.onerror = () => mal(new Error('no pude leer el archivo'));
+    fr.onload = () => {
+      const im = new Image();
+      im.onerror = () => mal(new Error('no es una imagen'));
+      im.onload = () => {
+        const f = Math.min(1, ancho / im.width);
+        const c = document.createElement('canvas');
+        c.width = Math.round(im.width * f); c.height = Math.round(im.height * f);
+        c.getContext('2d').drawImage(im, 0, 0, c.width, c.height);
+        ok(c.toDataURL('image/jpeg', 0.86).split(',')[1]);
+      };
+      im.src = fr.result;
+    };
+    fr.readAsDataURL(file);
+  });
+}
+
+async function pedirVsFondo(cuerpo) {
+  const r = await fetch('/api/avisos/dueno/vs-fondo', { method: 'POST', credentials: 'same-origin',
+    headers: { 'content-type': 'application/json' }, body: JSON.stringify(cuerpo) });
+  const j = await r.json().catch(() => ({}));
+  if (!r.ok || j.error) throw new Error(r.status === 401 ? 'la sesión venció: entra de nuevo' : r.status === 404 ? 'el bot todavía no se actualizó' : j.error || String(r.status));
+  return j.vs_fondos || {};
+}
+
+function FondosVs({ F, svs, liga, alCambiar }) {
+  const [ocup, setOcup] = useState('');
+  const [msg, setMsg] = useState('');
+  if (!svs.length) return <p className="db-tx">Todavía no sé de ningún servidor con bot en vivo.</p>;
+  const subir = async (sv, file) => {
+    if (!file) return;
+    setOcup(sv); setMsg('');
+    try { alCambiar(await pedirVsFondo({ sv, img: await achicar(file) })); setMsg('Listo: el fondo de ' + siglaDe(sv) + ' va desde el próximo VS.'); }
+    catch (e) { setMsg('No se pudo: ' + e.message); }
+    setOcup('');
+  };
+  const volver = async (sv) => {
+    setOcup(sv); setMsg('');
+    try { alCambiar(await pedirVsFondo({ sv, borrar: true })); setMsg(siglaDe(sv) + ' vuelve a su fondo de siempre.'); }
+    catch (e) { setMsg('No se pudo: ' + e.message); }
+    setOcup('');
+  };
+  return (
+    <div className="dz-vsf">
+      <ul className="dz-vsf-l">{svs.map((sv) => {
+        const x = F[sv];
+        return (
+          <li key={sv}>
+            <div className="dz-vsf-img" style={x ? { backgroundImage: 'url("' + x.url + '")' } : undefined}>
+              {x ? null : <span>el de siempre</span>}
+            </div>
+            <div className="dz-vsf-t">
+              <b><img alt="" src={liga.logo(sv)} />{siglaDe(sv)}</b>
+              <small>{x ? 'subido ' + hace(x.t) + (x.por ? ' por ' + x.por : '') : 'el que viene con el bot'}</small>
+              <span className="dz-vsf-b">
+                <label className={'btn borde2 chico' + (ocup ? ' off' : '')}>
+                  {ocup === sv ? 'Subiendo…' : x ? 'Cambiarlo' : 'Subir uno'}
+                  <input type="file" accept="image/jpeg,image/png,image/webp" hidden disabled={!!ocup}
+                    onChange={(ev) => { subir(sv, ev.target.files && ev.target.files[0]); ev.target.value = ''; }} />
+                </label>
+                {x ? <button type="button" className="dz-lnk" disabled={!!ocup} onClick={() => volver(sv)}>Volver al de siempre</button> : null}
+              </span>
+            </div>
+          </li>
+        );
+      })}</ul>
+      {msg ? <small role="status">{msg}</small> : null}
+    </div>
+  );
+}
+
+function FondosVistos({ fs }) {
+  const [fuera, setFuera] = useState({});
+  const [sel, setSel] = useState('');
+  const [motivo, setMotivo] = useState(MOTIVOS_FONDO[0]);
+  const [ocup, setOcup] = useState(false);
+  const [msg, setMsg] = useState('');
+  const xs = fs.filter((f) => !fuera[f.quien]);
+  if (!xs.length) return <p className="db-tx">Nadie tiene un fondo puesto todavía.</p>;
+  const quitar = async (f) => {
+    setOcup(true); setMsg('');
+    try {
+      const r = await fetch('/api/avisos/dueno/fondo', { method: 'POST', credentials: 'same-origin', headers: { 'content-type': 'application/json' },
+        body: JSON.stringify({ quien: f.quien, si: false, motivo }) });
+      const j = await r.json().catch(() => ({}));
+      if (!r.ok || j.error) throw new Error(j.error || String(r.status));
+      setFuera(Object.assign({}, fuera, { [f.quien]: 1 })); setSel('');
+      setMsg('Quitado: a ' + (f.k || 'esa persona') + ' le llega el aviso a su campana.');
+    } catch (e) { setMsg('No se pudo: ' + e.message); }
+    setOcup(false);
+  };
+  return (
+    <div className="dz-fv">
+      <ul className="dz-fv-l">{xs.map((f) => (
+        <li key={f.quien}>
+          <div className="dz-fv-img" style={{ backgroundImage: 'url("' + f.url + '")' }} />
+          <div className="dz-fv-t">
+            {f.k ? <a href={'#/r/' + f.k}>{f.k}</a> : <span>sin perfil</span>}
+            <small>{hace(f.t)}</small>
+            {sel === f.quien ? (
+              <span className="dz-fv-q">
+                <select className="db-sel" value={motivo} onChange={(ev) => setMotivo(ev.target.value)}>
+                  {MOTIVOS_FONDO.map((m) => <option key={m} value={m}>{m}</option>)}
+                </select>
+                <button type="button" className="btn verde chico" disabled={ocup} onClick={() => quitar(f)}>Quitarlo</button>
+                <button type="button" className="dz-lnk" onClick={() => setSel('')}>Cancelar</button>
+              </span>
+            ) : <button type="button" className="btn borde2 chico" onClick={() => setSel(f.quien)}>Quitar</button>}
+          </div>
+        </li>
+      ))}</ul>
+      {msg ? <small role="status">{msg}</small> : null}
+    </div>
+  );
+}
+
 function QuienTieneRol({ roles, P, alElegir }) {
   const dir = (roles && roles.dir) || [];
   const con = dir.filter((p) => (p[3] || []).some((r) => ['admin', 'moderador', 'asistente'].includes(r[0])));
@@ -3101,6 +3314,9 @@ const AREAS = [
   ['web', 'La página y el bot', 'M4 7h10M18 7h2M4 17h2M10 17h10M14 5v4M6 15v4'],
   ['numeros', 'Números', 'M5 20V11M12 20V5M19 20v-7'],
   ['salud', 'Salud', 'M3 12h4l3-7 4 14 3-7h4'],
+  // 🎚️ LLAVES Y FONDOS (Dlx, 11/11/2026: «opciones donde pueda controlar qué llaves cuentan, qué no, los fondos de cada
+  // tarjeta, de su en vivo»): qué llaves cuentan, el fondo del VS en vivo de cada servidor y los fondos que ya se ven
+  ['control', 'Llaves y fondos', 'M4 6h16M4 12h10M4 18h6M17 14l3 3-3 3'],
   ['historial', 'Historial', 'M12 7v5l3 3M4 12a8 8 0 1 0 2.3-5.7M4 4v4h4'],
   // 🎛️ ROLES, SU PROPIA COLUMNA (Dlx, 11/11/2026: «agrega una nueva columna que diga roles de dashboard, así para navegar
   // de mejor forma el dashboard y dar roles, quitar»): quién tiene uno, qué puede cada uno, y darlos o sacarlos
@@ -3129,6 +3345,8 @@ const BUSCABLES = [
   ['Lo que avisó Logs', 'salud', 'sa-logs'], ['Errores de la página', 'salud', 'sa-errores'], ['El mapa en vivo y los atajos', 'salud', 'sa-atajos'],
   ['Historial de cambios (deshacer)', 'historial', 'hi-hist'], ['Quién tiene un rol del Dashboard', 'roles', 'ro-quien'],
   ['Qué puede cada rol (permisos)', 'roles', 'ro-permisos'], ['Dar o sacar un rol', 'roles', 'ro-dar'],
+  ['Qué llaves cuentan (sacar una del ranking)', 'control', 'co-llaves'], ['El fondo del VS en vivo de cada servidor', 'control', 'co-vs'],
+  ['Los fondos de la gente que ya se ven (quitar uno)', 'control', 'co-fondos'],
 ];
 
 function BuscarTodo({ abierto, cerrar, ir, visibles, liga, abrirFicha, extra }) {
@@ -4288,7 +4506,8 @@ export function Dashboard({ dc, liga }) {
     pedidos: (d.pedidos || []).filter((x) => x.estado === '').length })[k] || 0;
   const verSub = { quien: ve('decidir'), llaves: ve('reportes') || ve('reportes_cerrar'), imagenes: ve('fondos'), videos: ve('videos') || ve('fondos'), pedidos: ve('reportes_cerrar') };
   const visibles = { resumen: true, pendientes: Object.values(verSub).some(Boolean), servidores: ve('ajustes'), web: ve('ajustes'),
-    numeros: ve('ajustes'), salud: ve('ajustes'), historial: ve('ajustes'), roles: ve('roles') };
+    numeros: ve('ajustes'), salud: ve('ajustes'), historial: ve('ajustes'), roles: ve('roles'),
+    control: ve('reportes') || ve('ajustes') || ve('fondos') };
   const areaV = visibles[area] ? area : 'resumen';
   const subV = verSub[sub] ? sub : (SUBP.find(([k]) => verSub[k] && nSub0(k)) || SUBP.find(([k]) => verSub[k]) || ['quien'])[0];
   // lo que espera algo de ti, por cola
@@ -4429,6 +4648,18 @@ export function Dashboard({ dc, liga }) {
         {sec('sa-atajos', 'ATAJOS', null, <ul className="db-atajos">{ATAJOS.map(([t, h]) => (
           <li key={h}><a href={h} target={h[0] === '/' ? undefined : '_blank'} rel={h[0] === '/' ? undefined : 'noopener noreferrer'}>{t} ↗</a></li>
         ))}</ul>)}
+      </>
+    );
+  } else if (areaV === 'control') {
+    vista = (
+      <>
+        {ve('reportes') ? sec('co-llaves', 'QUÉ LLAVES CUENTAN', 'sacar una del ranking, o devolverla',
+          <LlavesCuentan L={d.llaves_cuenta} liga={liga} alCambiar={(x) => cambiarD({ llaves_cuenta: x })} />) : null}
+        {ve('ajustes') ? sec('co-vs', 'EL FONDO DEL VS EN VIVO', 'uno por servidor: el bot lo usa desde el próximo cruce',
+          <FondosVs F={d.vs_fondos || {}} svs={[...new Set([...svsDe(d.chat, aj), ...((d.tiers || {}).servidores || []).map((x) => x.sv)])]} liga={liga}
+            alCambiar={(x) => cambiarD({ vs_fondos: x })} />) : null}
+        {ve('fondos') ? sec('co-fondos', 'LOS FONDOS DE LA GENTE QUE YA SE VEN', 'quitar uno que no tenía que pasar',
+          <FondosVistos fs={d.fondos_vistos || []} />) : null}
       </>
     );
   } else if (areaV === 'roles') {

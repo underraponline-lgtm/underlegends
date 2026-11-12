@@ -765,8 +765,91 @@ def _self_check():
         ok('Reporte' in P.TIPOS, '«Reporte» es un tipo de `Pendientes`')
     except Exception as e:                               # noqa: BLE001
         ok(False, 'no pude leer pendientes.TIPOS (%s)' % str(e)[:40])
+    # 🎚️ las llaves del Dashboard (11/11/2026): «no cuenta» escribe la línea, «cuenta» la saca sólo si era «no cuenta»
+    dl = {'eventos': {'A · FFA · 01/11': {'decision': 'no cuenta'}, 'B · DDF · 02/11': {'decision': 'cuenta'}}}
+    h = aplicar_llaves(dl, {'C · SR · 03/11': {'cuenta': False, 'por': 'Mod'}, 'A · FFA · 01/11': {'cuenta': True},
+                            'B · DDF · 02/11': {'cuenta': True}, 'X': {'cuenta': 'quizás'}}, 1762800000000)
+    ok(dl['eventos']['C · SR · 03/11']['decision'] == 'no cuenta' and 'Mod (Dashboard)' in dl['eventos']['C · SR · 03/11']['por']
+       and 'A · FFA · 01/11' not in dl['eventos'] and dl['eventos']['B · DDF · 02/11']['decision'] == 'cuenta'
+       and dict(h) == {'A · FFA · 01/11': 'cuenta', 'B · DDF · 02/11': 'nada', 'C · SR · 03/11': 'no cuenta'}
+       and no_cuentan(dl) == ['C · SR · 03/11'],
+       'las llaves del Dashboard: «no cuenta» escribe la decisión, «cuenta» sólo saca un «no cuenta», y lo raro no hace nada')
     print('\n  %s\n' % ('todo ok' if not mal else '🔴 %d problema(s)' % mal))
     return 1 if mal else 0
+
+
+# ══ 🎚️ QUÉ LLAVES CUENTAN, DESDE EL DASHBOARD ══════════════════════════════════
+# 🔑 Dlx, 11/11/2026: *«controlar qué llaves cuentan, qué no»*. El Dashboard deja el pedido en el objeto (`duenoLlaveCuenta()`);
+# esto lo aplica a `datos/decisiones.json` con la misma línea que un «No cuenta» de ✅ Decidir o de un reporte
+# (`corregir_no_cuenta()`), y le dice al objeto cómo quedó (`llavesCiclo()`), que borra lo ya aplicado. «Vuelve a contar»
+# saca la línea: la llave vuelve a entrar sola, como dice `corregir_no_cuenta()`. Va en el mismo paso 0c, antes del lector.
+
+def aplicar_llaves(decis, pedidos, ahora_ms):
+    """Lo pedido, sobre `decis` (en el lugar). `[(clave, 'no cuenta' | 'cuenta' | 'nada')]`. Pura."""
+    ev = decis.setdefault('eventos', {})
+    hecho = []
+    for clave, p in sorted((pedidos or {}).items()):
+        if not isinstance(p, dict) or p.get('cuenta') not in (True, False):
+            continue
+        if p['cuenta'] is False:
+            ev[clave] = {'decision': 'no cuenta', 'cuando': _et(ahora_ms), 'por': '%s (Dashboard)' % (p.get('por') or 'Dlx'),
+                         'nota': str(p.get('motivo') or 'desde «Llaves y fondos» del Dashboard')[:200]}
+            hecho.append((clave, 'no cuenta'))
+        elif (ev.get(clave) or {}).get('decision') == 'no cuenta':
+            del ev[clave]
+            hecho.append((clave, 'cuenta'))
+        else:
+            hecho.append((clave, 'nada'))
+    return hecho
+
+
+def no_cuentan(decis):
+    """Las claves que hoy no cuentan, para el Dashboard."""
+    return sorted(k for k, v in ((decis or {}).get('eventos') or {}).items()
+                  if not k.startswith('_') and isinstance(v, dict) and v.get('decision') == 'no cuenta')
+
+
+def llaves_del_dashboard(aplicar=False):
+    """Pide al objeto lo que falta aplicar, lo aplica y le avisa cómo quedó. Cuántas se aplicaron."""
+    import requests
+    import fotos as F
+    import clave_ciclo as CC
+    import decidir as DEC
+    tok = F.env('DISCORD_TOKEN', obligatorio=False)
+    if not tok:
+        print('   ⚠️ sin token del bot: las llaves del Dashboard quedan para otra corrida')
+        return 0
+    decis = DEC._decisiones()
+    cab = {'x-lg-ciclo': CC.clave(tok), 'content-type': 'application/json'}
+
+    def al_objeto():
+        r = requests.post(WORKER + '/avisos/llaves-ciclo', data=json.dumps({'no_cuentan': no_cuentan(decis)}, ensure_ascii=False).encode('utf-8'),
+                          headers=cab, timeout=30)
+        return (r.json() or {}).get('pedidos') if r.ok else None
+    try:
+        pedidos = al_objeto()
+    except (OSError, ValueError):
+        pedidos = None
+    if pedidos is None:
+        print('   ⚠️ el objeto no contestó: las llaves del Dashboard quedan para otra corrida')
+        return 0
+    print('   🎚️ %d llave(s) pedidas desde el Dashboard' % len(pedidos))
+    if not pedidos:
+        return 0
+    hecho = aplicar_llaves(decis, pedidos, int(time.time() * 1000))
+    for clave, que in hecho:
+        print('      %s → %s' % (clave[:80], que))
+    if not aplicar:
+        print('   (simulacro: no escribí nada)')
+        return 0
+    with io.open(DEC.DECISIONES, 'w', encoding='utf-8', newline='\n') as f:
+        json.dump(decis, f, ensure_ascii=False, indent=1)
+        f.write('\n')
+    try:
+        al_objeto()
+    except (OSError, ValueError):
+        print('   ⚠️ no le pude decir al objeto cómo quedó: lo repite la próxima corrida')
+    return sum(1 for _c, q in hecho if q != 'nada')
 
 
 def main():
@@ -774,6 +857,12 @@ def main():
         return _self_check()
     if '--corregir' in sys.argv:
         print('\n══ 📣 LO QUE DLX CORRIGIÓ DESDE EL DASHBOARD ══\n')
+        try:
+            n = llaves_del_dashboard(aplicar='--aplicar' in sys.argv)
+            if n:
+                print('   ✅ %d llave(s) aplicada(s)' % n)
+        except Exception as e:                           # noqa: BLE001  nunca frena las correcciones de los reportes
+            print('   ⚠️ las llaves del Dashboard: %s' % str(e)[:120])
         cola = leer()
         if cola is None:
             print('   ⚠️ no pude leer la cola de KV: nada que corregir')

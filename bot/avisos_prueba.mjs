@@ -1597,6 +1597,31 @@ const ok = (cond, que, det) => {
     ok(c.ok && pa.permisos.includes('decidir') && malo.error && v.ok && !v.permisos.tabla.decidir.includes('asistente')
       && c.permisos.hist.length === 1 && v.permisos.hist.length === 2,
     'la tabla de permisos: Dlx la cambia, el panel la respeta, «roles» no se toca y se puede volver a lo de siempre');
+    // 🎚️ qué llaves cuentan: queda pedido hasta que el ciclo dice que ya está, y pedir lo que ya es así no pide nada
+    const VL = A.validarLlaveCuenta;
+    ok(!VL({ clave: 'X', cuenta: false }).error === false && VL({ clave: 'COPA · FFA · 01/11', cuenta: 'si' }).error
+      && VL({ clave: 'COPA · ffa · 01/11', cuenta: true }).error && VL({ clave: 'COPA · FFA · 01/11', cuenta: false, n: '567' }).n === '567',
+    'validar «cuenta / no cuenta»: la clave de decisiones.json, con el servidor en mayúsculas y la fecha DD/MM');
+    const l1 = o.duenoLlaveCuenta({ clave: 'COPA · FFA · 01/11', cuenta: false, por: A.DUENO });
+    const c1 = o.llavesCiclo({ no_cuentan: [] });
+    const c2 = o.llavesCiclo({ no_cuentan: ['COPA · FFA · 01/11'] });
+    const l2 = o.duenoLlaveCuenta({ clave: 'COPA · FFA · 01/11', cuenta: false, por: A.DUENO });
+    const l3 = o.duenoLlaveCuenta({ clave: 'COPA · FFA · 01/11', cuenta: true, por: A.DUENO });
+    ok(l1.ok && l1.llaves_cuenta.pedidos['COPA · FFA · 01/11'] && Object.keys(c1.pedidos).length === 1 && !Object.keys(c2.pedidos).length
+      && !Object.keys(l2.llaves_cuenta.pedidos).length && l3.llaves_cuenta.pedidos['COPA · FFA · 01/11'].cuenta === true
+      && o.panelDueno().llaves_cuenta.no_cuentan.includes('COPA · FFA · 01/11'),
+    'las llaves del Dashboard: el pedido espera al ciclo, el ciclo lo borra al aplicarlo y lo que ya es así no se pide');
+    // 🌆 el fondo del VS: a R2, uno por servidor, el anterior se borra y se puede volver al de siempre
+    const rDos = { puestos: [], borrados: [], async put(k) { this.puestos.push(k); }, async delete(k) { this.borrados.push(k); } };
+    o.env.CARTAS = rDos;
+    const jpg = Buffer.from([0xff, 0xd8, 0xff, 0xe0, 0, 16, 0x4a, 0x46, 0x49, 0x46, 0, 1, 1, 0, 0, 1, 0, 1, 0, 0, 0xff, 0xda, 0, 8, 1, 1, 0, 0, 0x3f, 0, 0x12, 0xff, 0xd9]).toString('base64');
+    const v1 = await o.duenoVsFondo({ sv: 'FFA', img: jpg, por: A.DUENO });
+    const v2 = await o.duenoVsFondo({ sv: 'FFA', img: jpg, por: A.DUENO });
+    const vNo = await o.duenoVsFondo({ sv: 'FFA', img: Buffer.from('hola').toString('base64') });
+    const v3 = await o.duenoVsFondo({ sv: 'FFA', borrar: true });
+    ok(v1.ok && /\/vs_fondos\/ffa-\d+\.jpg$/.test(v1.vs_fondos.FFA.url) && v2.ok && rDos.borrados.length === 2 && vNo.error
+      && v3.ok && !v3.vs_fondos.FFA && rDos.puestos.length === 2,
+    'el fondo del VS: se sube a R2, el anterior se borra, lo que no es imagen no entra y se vuelve al de siempre', JSON.stringify([v1, rDos]));
   }
 }
 

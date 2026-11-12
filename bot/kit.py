@@ -370,9 +370,42 @@ def _mezcla(hx, otro, f):
     return '#%02x%02x%02x' % tuple(int(round(x + (y - x) * f)) for x, y in zip(a, b))
 
 
+#: los fondos de VS subidos desde el Dashboard, `{SV: url}`: se pide una vez por corrida (`_vs_subidos()`)
+_VS_SUBIDOS = None
+
+
+def _vs_subidos():
+    """🎚️ LO QUE DLX SUBIÓ EN EL DASHBOARD (11/11/2026: «los fondos de cada tarjeta, de su en vivo»). `{}` si no se puede
+    preguntar —el self-check, sin red, o el Worker que no contesta—: entonces vale el del repo."""
+    global _VS_SUBIDOS
+    if _VS_SUBIDOS is None:
+        _VS_SUBIDOS = {}
+        if '--auto' not in sys.argv:
+            try:
+                import requests
+                import avisar as AV
+                r = requests.get(AV.WORKER + '/avisos/vs-fondos', timeout=8)
+                v = r.json() if r.ok else {}
+                _VS_SUBIDOS = {k: u for k, u in (v or {}).items() if isinstance(u, str) and u.startswith('https://pub-')}
+            except Exception:                            # noqa: BLE001
+                _VS_SUBIDOS = {}
+    return _VS_SUBIDOS
+
+
 def _fondo_vs(sv):
     """🌆 EL FONDO ORIGINAL DEL VS DE UN SERVIDOR (Dlx, 04/11/2026: «the background of each server should be original and
-    not the same as the card»): una escena propia en `bot/vs_fondos/<sv>.jpg`, que no sale de su tarjeta. `url(...)` o `''`."""
+    not the same as the card»): una escena propia en `bot/vs_fondos/<sv>.jpg`, que no sale de su tarjeta. `url(...)` o `''`.
+    🎚️ Si Dlx subió otra en el Dashboard, va ésa (`_vs_subidos()`); si no se puede bajar, la del repo."""
+    u = _vs_subidos().get(str(sv or '').upper())
+    if u:
+        try:
+            import requests
+            r = requests.get(u, timeout=15)
+            if r.ok and r.content:
+                tipo = (r.headers.get('content-type') or 'image/jpeg').split(';')[0]
+                return 'url(data:%s;base64,%s) center/cover no-repeat' % (tipo, base64.b64encode(r.content).decode('ascii'))
+        except Exception:                                # noqa: BLE001
+            pass
     p = os.path.join(BASE, 'bot', 'vs_fondos', '%s.jpg' % str(sv or '').lower())
     if not sv or not os.path.exists(p):
         return ''
