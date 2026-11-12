@@ -481,6 +481,38 @@ def cambios(estado, tabla, ahora):
     return pubs, nuevo
 
 
+#: ↩️ cuántas horas tiene una subida de rango para sostenerse antes de quedar como historia (ver `sin_subidas_caidas()`)
+RETIRA_H = 24
+
+
+def sin_subidas_caidas(anotados, estado, tabla, ahora):
+    """↩️ Saca las «pasa a rango X» de menos de `RETIRA_H` horas cuya letra la persona ya no tiene.
+
+    🔴 Dlx, 12/11/2026: *«se supone que Carlosss es SS pero sigue mostrando S»*. A las 4:08 PM tenía 19 eventos y
+    Score 76 (SS) y se publicó; a las 4:14 se le devolvieron 11 resultados que el lector le había dado a otro
+    «Carlos», y con 26 eventos quedó en 64.1 (S). La publicación siguió diciendo SS con su perfil diciendo S.
+    Una subida que se cae en el mismo día es una corrección de datos o un vaivén, no una noticia; una que duró
+    más es historia y se queda, aunque después baje. Sólo se mira a quien se puede ubicar sin dudas por su nombre.
+    """
+    por_nombre = {}
+    for f in tabla or []:
+        if f.get('n') and f.get('k'):
+            por_nombre.setdefault(f['n'], set()).add(f['k'])
+    out = []
+    for x in anotados or []:
+        if x.get('tipo') == 'rango':
+            t = _de_iso(x.get('t'))
+            ks = por_nombre.get((x.get('quien') or [''])[0]) or set()
+            if t and ahora - t < dt.timedelta(hours=RETIRA_H) and len(ks) == 1:
+                hoy = (estado or {}).get(next(iter(ks))) or {}
+                if _nivel(hoy.get('rg')) < _nivel(x.get('rg')):
+                    print('   ↩️ se retira «%s pasa a rango %s»: hoy tiene %s' % (x['quien'][0], x.get('rg'),
+                                                                                 hoy.get('rg') or 'ninguno'))
+                    continue
+        out.append(x)
+    return out
+
+
 # ── la identidad de cada publicación: para 👏 Felicitar ──────────────────
 def id_de(x):
     """12 letras hex, las mismas en cada corrida. Las usa 👏 Felicitar (`validarAplauso()` en `bot/avisos.js`).
@@ -692,7 +724,7 @@ def _todo(p, guardado, ahora, fuentes, promos_por=None):
     """`(todas las publicaciones sin filtrar, estado nuevo, cambios anotados)`."""
     pubs, estado = cambios(guardado.get('estado'), p.get('tabla'), ahora)
     anotados = (guardado.get('cambios') or []) + pubs
-    anotados = anotados[-GUARDA:]
+    anotados = sin_subidas_caidas(anotados, estado, p.get('tabla'), ahora)[-GUARDA:]
     todo = (anotados + campeones(fuentes.get('llaves'), fuentes.get('instantes'))
             + most_wanted(fuentes.get('mw')) + precios_cobrados(fuentes.get('precios'))
             + premios(fuentes.get('mult')) + anuncios(fuentes.get('anuncios'))
@@ -848,6 +880,12 @@ def _self_check():
     ok(est.get('dan') == {'rg': 'A', 'c': []}, 'y quien no vino conserva lo último que se supo')
     p2, _e = cambios({'bea': {'rg': '', 'c': ['temporada']}}, tabla, ahora)
     ok([x['primero'] for x in p2 if x['tipo'] == 'rango'] == [True], 'el primer rango se marca como primero')
+    hace = lambda h: _iso(ahora - dt.timedelta(hours=h))  # noqa: E731
+    sube = lambda n, rg, h: {'tipo': 'rango', 't': hace(h), 'quien': [n], 'rg': rg, 'primero': False}  # noqa: E731
+    quedan = sin_subidas_caidas([sube('Ana', 'A', 2), sube('Ana', 'B', 3), sube('Bea', 'B', 40)], est, tabla, ahora)
+    ok([(x['quien'][0], x['rg']) for x in quedan] == [('Ana', 'B'), ('Bea', 'B')],
+       'una subida que se cayó el mismo día se retira; la que se sostiene o ya es historia se queda  %s'
+       % [(x['quien'][0], x['rg']) for x in quedan])
     fuentes = {
         'llaves': {'7': {'nombre': 'COPA', 'sv': 'SR', 'dia': '2026-10-13', 'participantes': 16,
                          'tabla': [['Ana', 'Campeón', 5000], ['Bea', 'Subcampeón', 3750]]},

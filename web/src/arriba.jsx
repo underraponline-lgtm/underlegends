@@ -1621,9 +1621,9 @@ export function Hero({ liga, vivoL, children }) {
     window.addEventListener('lg:video-abierto', f);
     return () => window.removeEventListener('lg:video-abierto', f);
   }, []);
-  if (!n) return children ? <div className="escena" style={fondoDe(liga, null)}>{children}</div> : null;
+  if (!n) return children ? <div className="escena hero-ini" style={fondoDe(liga, null)}>{children}</div> : null;
   return (
-    <div className="escena" style={fondoDe(liga, mo[j])}>
+    <div className="escena hero-ini" style={fondoDe(liga, mo[j])}>
       <section className="hero carrusel" id="envivo" aria-roledescription="carrusel" aria-label="Lo de ahora"
         onPointerDown={(e) => { x0.current = e.clientX; quieto.current = true; }}
         onPointerLeave={() => { x0.current = null; quieto.current = false; }}
