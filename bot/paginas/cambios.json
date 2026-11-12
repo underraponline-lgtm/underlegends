@@ -11,6 +11,17 @@
  ],
  "cambios": [
     {
+        "version": "4.52",
+        "dia": "2026-11-11",
+        "cuando": "2026-11-11T23:13:00-05:00",
+        "titulo": "El VS en vivo: la apuesta siempre, y el nombre del ranking",
+        "items": [
+            "**La apuesta sale en cada cruce** del bot en vivo, también en los servidores con el bot en «Con datos»: tocas quién gana y se abre la ventana para apostar; si dejas 0, sólo votas.",
+            "**Los botones dicen el nombre del ranking**, no lo que escribió el organizador en la llave. Un equipo que no entra en el botón va con el primero y cuántos más («Ana +1»).",
+            "**«Perfiles» también con equipos** y en los todos contra todos: la cara, el puesto y los números de cada uno, separados por lado."
+        ]
+    },
+    {
         "version": "4.51",
         "dia": "2026-11-11",
         "cuando": "2026-11-11T21:38:03-05:00",
