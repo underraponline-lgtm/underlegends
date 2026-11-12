@@ -3770,6 +3770,27 @@ button.tb-yo.on{background:var(--inv);color:var(--inv-tinta);box-shadow:inset 0 
 .pn-vs{display:grid;grid-template-columns:minmax(0,1fr) auto minmax(0,1fr);align-items:center;gap:10px;padding:12px 14px;
   border:1.5px solid var(--borde2);border-left:4px solid var(--verde);border-right:4px solid var(--mag);background:#0B0C0E}
 .pn-vs.vacio,.pn-busca{display:flex;align-items:center;gap:14px}
+/* 🗓️⚔️ sin batallas: tu próximo evento (verde) y un rival de tu nivel (magenta), mitad y mitad (12/11/2026) */
+.pn-sb{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));border:1.5px solid var(--borde2);border-left:4px solid var(--verde);border-right:4px solid var(--mag);
+  background:linear-gradient(90deg,rgba(41,178,152,.14),transparent 45%,transparent 55%,rgba(228,19,115,.14)),#0B0C0E}
+.pn-sb-ev,.pn-sb-rv{display:flex;align-items:center;gap:12px;padding:10px 14px;min-width:0}
+.pn-sb-rv{border-left:1.5px solid var(--borde2)}
+.pn-sb.solo{grid-template-columns:minmax(0,1fr);border-left-color:var(--mag);background:linear-gradient(90deg,rgba(228,19,115,.16),transparent 60%),#0B0C0E}
+.pn-sb.solo .pn-sb-rv{border:0}
+.pn-sb-logo{width:44px;height:44px;border-radius:50%;flex:none;display:grid;place-items:center;background:#06120f;color:var(--verde);box-shadow:0 0 0 2px var(--verde);object-fit:cover}
+.pn-sb-tx{display:grid;gap:2px;min-width:0;flex:1}
+.pn-sb-tx em{font:800 10px/1 "Barlow Condensed",sans-serif;font-style:normal;letter-spacing:.08em;text-transform:uppercase;color:var(--verde)}
+.pn-sb-rv .pn-sb-tx em{color:var(--mag)}
+.pn-sb-tx b{font:800 15px/1.1 Archivo,sans-serif;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.pn-sb-tx small{font:500 12px/1.2 Archivo,sans-serif;color:#c9cbd1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.pn-sb-t{color:var(--verde);font-weight:700}
+.pn-sb .btn.chico{flex:none;white-space:nowrap}
+.pn-sb .pn-vs-c{width:44px;height:44px}
+.btn.mag{background:var(--mag);color:#000;border-color:var(--mag)}
+.btn.mag:hover,.btn.mag:focus-visible{background:#fff;border-color:#fff}
+@media (max-width: 760px){.pn-sb{grid-template-columns:minmax(0,1fr)}.pn-sb-rv{border-left:0;border-top:1.5px solid var(--borde2)}
+  .pn-sb-ev,.pn-sb-rv{gap:10px;padding:10px}.pn-sb-tx small{white-space:normal}.pn-sb .btn.chico{padding:8px 10px;font-size:12px}
+  .pn-sb-logo,.pn-sb .pn-vs-c{width:38px;height:38px}}
 .pn-rv{display:flex;align-items:center;gap:12px;min-width:0}
 .pn-rv.der{justify-content:flex-end;text-align:right}
 .pn-rv > span{display:grid;gap:2px;min-width:0}

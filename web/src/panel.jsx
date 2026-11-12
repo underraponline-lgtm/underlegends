@@ -21,7 +21,8 @@ import { Escudo, escudoDe } from './escudo.jsx';
 import { avance, pasePost, usePase } from './pase.js';
 import { cuantosNuevos } from './inv_nuevos.js';
 import { cobrarRacha } from './racha.js';
-import { dondeEstoy, nombreDe, useCompetencias } from './competencias_datos.js';
+import { dondeEstoy, faltaTxt, nombreDe, useCompetencias } from './competencias_datos.js';
+import { eventoDelBoton } from './arriba.jsx';
 import { svElegido, useElegidos } from './elegidos.js';
 import { pedirLigas } from './ligas_datos.js';
 import { BarraDia } from './drops.jsx';
@@ -197,6 +198,55 @@ function UltCorto({ liga, u }) {
   );
 }
 
+// ── 🗓️⚔️ SIN BATALLAS: TU PRÓXIMO EVENTO Y UN RIVAL DE TU NIVEL (Dlx, 12/11/2026: «me gusta eso de 1 y 2») ──────────
+// A la izquierda, el próximo evento con su cuenta atrás y el botón para inscribirte. ⚠️ Si el botón grande de arriba ya
+// muestra uno (`eventoDelBoton()`), acá va EL SIGUIENTE: el mismo dos veces es lo que Dlx pidió no repetir (13/10/2026).
+// A la derecha, el que tienes justo arriba en la Temporada (o el que te sigue, si eres el #1), con cuántos puntos te
+// separan, el cara a cara y «Retar», que abre las horas de la batalla libre
+function SinBatallas({ liga, yo, yoF, T, retar }) {
+  const yaArriba = eventoDelBoton(liga).e;
+  const ev = liga.luego().find((x) => x !== yaArriba) || null;
+  const miPos = yoF.pos || yo.pos || 0;
+  let rv = null;
+  if (miPos) {
+    const arriba = T.filter((f) => f.pos < miPos && f.k !== yo.k);
+    rv = arriba.length ? arriba[arriba.length - 1] : T.find((f) => f.pos > miPos && f.k !== yo.k) || null;
+  }
+  const sube = rv && miPos && rv.pos < miPos;
+  const dif = rv ? Math.abs((rv.pts || 0) - (yoF.pts || yo.pts || 0)) : 0;
+  const ins = ev ? ev.ins || ev.link || '' : '';
+  // ⚠️ la hora del anuncio viene en UTC sin «Z»: `new Date()` la leería como la hora de quien mira, `utc()` no
+  const evT = ev ? utc(liga.cuandoDe(ev)).toISOString() : '';
+  // ⚠️ sin un evento que el botón grande no muestre ya, esta mitad no va: «todavía no anunciaron» ya lo dice él, y el
+  // rival toma el ancho entero. Sin rival ni evento (quien todavía no jugó), la franja de antes
+  if (!ev && !rv) {
+    return (
+      <section className="pn-vs vacio">
+        <span className="pn-tx"><b>Sin batallas por ahora</b><small>Las de Competencias aparecen acá.</small></span>
+      </section>
+    );
+  }
+  return (
+    <section className={'pn-sb' + (ev && rv ? '' : ' solo')}>
+      {ev ? <div className="pn-sb-ev">
+        {liga.logo(ev.sv) ? <img className="pn-sb-logo" alt="" src={liga.logo(ev.sv)} /> : <span className="pn-sb-logo"><Ico n="eventos" t={20} /></span>}
+          <span className="pn-sb-tx"><em>{yaArriba ? 'Después' : 'Tu próximo evento'}</em><b>{limpio(ev.nombre)}</b>
+            <small>{siglaDe(ev.sv)} · {cuando(evT)} · <span className="pn-sb-t">en {faltaTxt(evT)}</span></small></span>
+          {ins ? <a className="btn verde chico" href={ins} target="_blank" rel="noopener noreferrer">Inscribirme</a>
+            : <a className="btn verde chico" href="#/eventos">Ver</a>}
+      </div> : null}
+      {rv ? (
+        <div className="pn-sb-rv">
+          <Cara liga={liga} k={rv.k} nombre={rv.n} cls="pn-vs-c otro" />
+          <span className="pn-sb-tx"><em>{sube ? 'El que tienes arriba' : 'El que te sigue'}</em><b>{limpio(rv.n)}</b>
+            <small>#{rv.pos} · {sube ? 'te faltan ' : 'le llevas '}{num(dif)} pts · {caraACara(liga, yo.k, rv.k)}</small></span>
+          <button type="button" className="btn mag chico" onClick={() => retar(rv)}>Retar</button>
+        </div>
+      ) : null}
+    </section>
+  );
+}
+
 // ── ⚔️ TUS PRÓXIMAS BATALLAS, CON EL ESTILO DEL VS ──────────────────────────────────────────────────────
 const ESTIMADO = (ovrR, ovrY) => 1 / (1 + Math.pow(10, ((ovrR || 0) - (ovrY || 0)) / 25));
 function caraACara(liga, a, b) {
@@ -297,14 +347,7 @@ export function Batallas({ liga, dc }) {
     todas.push({ et, f, k: c.rival, n: nombreDe(liga, C, c.rival), cuando: hasta ? 'se define ' + cuando(hasta) : '', p: c.p });
   }
   const p0 = todas[0];
-  if (!p0) {
-    return (
-      <section className="pn-vs vacio">
-        <span className="pn-tx"><b>Sin batallas por ahora</b><small>Las de Competencias aparecen acá. O busca una:</small></span>
-        {candidatos.length ? <button type="button" className="btn verde chico" onClick={buscar}>Batallar</button> : null}
-      </section>
-    );
-  }
+  if (!p0) return <SinBatallas liga={liga} yo={yo} yoF={yoF} T={T} retar={(f) => { setRival(f); setFase('hora'); }} />;
   const pct = Math.round((p0.p || 0) * 100);
   const nom = (x) => limpio((x.f && x.f.n) || x.n || x.k);
   const fila = (x) => (
