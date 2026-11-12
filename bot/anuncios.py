@@ -450,7 +450,11 @@ def nombre_de(texto):
         if valor_abajo and l.strip():
             valor_abajo = False
             continue
-        if re.match(r'\s*[A-ZÁÉÍÓÚÑ]+\s*:', _sin_md(l)):
+        # ⚠️ «ETIQUETA:» no es el título… SALVO UN ENCABEZADO CON VALOR (ACADEMIA, 12/11/2026): «# RBCW: LATAM 🌐» es el
+        # nombre de la nacional, y saltándolo el evento se llamaba con la oración de abajo, «NUESTRO SIGUIENTE DESTINO
+        # ES PARA REPRESENTAR A TODO EL CONTINENTE!!!». Los campos de verdad («# FORMATO : 1vs1») ya los tomó
+        # `campo_de()` arriba, y un encabezado sin valor («## HORARIOS :») se sigue saltando
+        if re.match(r'\s*[A-ZÁÉÍÓÚÑ]+\s*:', _sin_md(l)) and not _encabezado_con_valor(l):
             continue
         t = _titulo(l)
         # ⚠️ y una oración no es un nombre: «ANTES DE ESE MENSAJE NO PONGAN NINGUN OTRO.», «INSCRIBANSE CON SU AKA…
@@ -458,6 +462,15 @@ def nombre_de(texto):
         if t and not (len(t.split()) >= 6 and re.search(r'\.\s*$|\.\s+[^\W\d_(]|\.\s+\(', t)):
             return t
     return reserva
+
+
+def _encabezado_con_valor(l):
+    """¿Un encabezado de Markdown (`#`, `##`, `###`) con letras después de los dos puntos? «# RBCW: LATAM 🌐» sí;
+    «## HORARIOS :» y «REGLAS: …» sin `#`, no."""
+    if not re.match(r'\s*#{1,3}\s', str(l or '')):
+        return False
+    s = _sin_md(l)
+    return bool(re.search(r'[^\W\d_]', s[s.find(':') + 1:]))
 
 
 def _sin_md(l):

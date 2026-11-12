@@ -2474,6 +2474,13 @@ function tarjeta(m) {
   return '';
 }
 
+/** `anuncios._encabezado_con_valor()`: un `#`, `##` o `###` con letras después de los dos puntos. */
+function encabezadoConValor(l) {
+  if (!/^\s*#{1,3}\s/.test(String(l == null ? '' : l))) return false;
+  const s = sinMd(l);
+  return /[\p{L}]/u.test(s.slice(s.indexOf(':') + 1));
+}
+
 function sinMd(l) {
   let s = String(l == null ? '' : l);
   for (const x of ['**', '__', '~~', '`', '*']) s = s.split(x).join('');
@@ -2527,7 +2534,8 @@ export function nombreDe(texto) {
     const c = campoDe(l);
     if (c) { valorAbajo = !valorLinea(l, c[2], []); continue; }
     if (valorAbajo && l.trim()) { valorAbajo = false; continue; }
-    if (ES_CAMPO.test(sinMd(l))) continue;
+    // ⚠️ salvo un encabezado con valor: «# RBCW: LATAM 🌐» (ACADEMIA, 12/11/2026). Ver `anuncios._encabezado_con_valor()`
+    if (ES_CAMPO.test(sinMd(l)) && !encabezadoConValor(l)) continue;
     const t = titulo(l);
     if (t && !(t.split(/\s+/).filter(Boolean).length >= 6 && /\.\s*$|\.\s+[^\P{L}]|\.\s+\(/u.test(t))) return t;
   }

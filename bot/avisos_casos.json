@@ -1187,6 +1187,30 @@
     "horario": "EN 10 MINUTOS",
     "ini": "2026-10-02T00:12:44"
    }
+  },
+  {
+   "sv": "ACAD",
+   "id": "acad0",
+   "timestamp": "2026-11-10T03:08:10.499000+00:00",
+   "content": "@everyone \n\n# RBCW: LATAM 🌐\n\nNUESTRO SIGUIENTE DESTINO ES PARA REPRESENTAR A TODO EL CONTINENTE!!!\n\nLA NACIONAL DE LATAM LLEGA A LA CREW, ESTE DOMINGO 15 DE NOVIEMBRE.\n\n### TODOS PUEDEN INSCRIBIRSE, PERO AL ABRIR LAS INSCRIPCIONES SE TENDRÁ QUE SELECCIONAR A 16, NO PIERDAN LA FÉ E INSCRIBANSE ESE DÍA PARA VER SI SON SELECCIONADOS!!!!\n\nSE LE TOMARÁ MAYOR IMPORTANCIA A LOS SIGUIENTES PAÍSES:\n\n🇧🇴🇺🇾🇪🇨🇵🇾\n\nHORARIOS PROXIMAMENTE ANUNCIADOS\n\nMUCHA SUERTE ESTE DOMINGO!!!!!",
+   "espera": {
+    "es": true,
+    "nombre": "RBCW: LATAM",
+    "horario": "PROXIMAMENTE ANUNCIADOS",
+    "ini": null
+   }
+  },
+  {
+   "sv": "ACAD",
+   "id": "acad1",
+   "timestamp": "2026-11-07T00:14:27.247000+00:00",
+   "content": "# FAT BATTLES PALOOZA FECHA 10 T.3 FINALS \n\n## HORARIOS :\n22:30 🇦🇷🇺🇾\n21:30 🇧🇴🇨🇱\n20:30 🇵🇪🇨🇴\n19:30 🇲🇽🇺🇸\n\n## HOY @everyone",
+   "espera": {
+    "es": true,
+    "nombre": "FAT BATTLES PALOOZA FECHA 10 T.3 FINALS",
+    "horario": "22:30 🇦🇷🇺🇾",
+    "ini": "2026-11-07T01:30:00"
+   }
   }
  ]
 }
