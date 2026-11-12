@@ -3259,8 +3259,8 @@ function LlaveAlCostado({ s }) {
 // ☑️ CONTESTAR EN LOTE (Dlx, 13/10/2026, de las ideas del Dashboard): las elegidas, con una respuesta que tengan TODAS
 // entre sus opciones («Es alguien nuevo», «Ya lo revisé», «Dejar para después»…). Se mandan de a una, como si se
 // tocaran a mano: el objeto y el ciclo no saben que fue en lote
-function Lote({ ps, sel, setSel, alListo, visibles }) {
-  const [nota, setNota] = useState('');
+function Lote({ ps, sel, setSel, alListo, visibles, notaInicial = '' }) {
+  const [nota, setNota] = useState(notaInicial);
   const [ocup, setOcup] = useState('');
   const [msg, setMsg] = useState('');
   const elegidas = ps.filter((p) => sel.has(p.id));
@@ -3273,7 +3273,7 @@ function Lote({ ps, sel, setSel, alListo, visibles }) {
       try { ultimo = await contestarDecidir({ id: p.id, r: resp, nota }); } catch (e) { mal += 1; }
     }
     if (ultimo) alListo(ultimo);
-    setSel(new Set()); setOcup(''); setNota('');
+    setSel(new Set()); setOcup(''); setNota(notaInicial);
     setMsg(mal ? 'Quedaron ' + mal + ' sin contestar: prueba de nuevo.' : '✓ Contestadas ' + elegidas.length + ': «' + resp + '».');
   };
   if (!elegidas.length) {
@@ -3559,10 +3559,27 @@ const FILTROS_B = [['', 'Todo'], ['quien', '¿Quién es quién?'], ['llave', 'Ll
 const linea1 = (s) => String(s || '').split('\n').map((x) => x.trim()).find(Boolean) || '';
 
 // todo lo que espera algo de ti, de las cinco colas, en una sola lista: lo urgente primero y, adentro, lo más nuevo
-function itemsBandeja(d, ver) {
+// 🔎 UNA LLAVE MAL LEÍDA ES UN CASO (la maqueta, la #562 de LKR): si a un evento le faltan más de dos ganadores en la
+// final, el bot leyó la llave mal —todas sus batallas quedaron en «Final»— y no son N preguntas. `sueltas`: los eventos
+// que Dlx pidió contestar de a una igual
+const enFinal = (p) => /\ben final\?$/i.test(linea1(p.que));
+function itemsBandeja(d, ver, sueltas) {
   const xs = [];
   const dec = d.decidir || {}, rs = dec.respuestas || {};
-  if (ver.quien) for (const p of dec.preguntas || []) if (!rs[p.id]) xs.push({ k: 'q' + p.id, tipo: 'quien', t: msDe(dec.t), titulo: linea1(p.que), sub: p.tipo, p, pts: impacto(p) });
+  const abiertas = ver.quien ? (dec.preguntas || []).filter((p) => !rs[p.id]) : [];
+  const fin = {};
+  for (const p of abiertas) if (p.tipo === 'Batalla sin ganador' && enFinal(p)) (fin[p.sec] = fin[p.sec] || []).push(p);
+  const mal = new Set(Object.keys(fin).filter((s) => fin[s].length > 2 && !(sueltas && sueltas.has(s))));
+  for (const s of mal) {
+    xs.push({ k: 'm' + s.replace(/[^0-9A-Za-z]/g, '').slice(0, 60), tipo: 'quien', mal: true, t: msDe(dec.t), pts: 0, ps: fin[s],
+      titulo: 'La llave se leyó mal: ' + fin[s].length + ' batallas en «Final»', sub: 'Una llave, no ' + fin[s].length + ' preguntas',
+      p: { id: 'm', tipo: 'Llave mal leída', sec: s, que: '', opciones: [], efectos: {}, igual: false, vence: 0, link: fin[s][0].link || '' } });
+  }
+  for (const p of abiertas) {
+    if (!(mal.has(p.sec) && p.tipo === 'Batalla sin ganador' && enFinal(p))) {
+      xs.push({ k: 'q' + p.id, tipo: 'quien', t: msDe(dec.t), titulo: linea1(p.que), sub: p.tipo, p, pts: impacto(p) });
+    }
+  }
   if (ver.llave) for (const r of d.reportes || []) if (r.estado === '' || r.estado === 'no_pude') {
     const llave = /^\d+$/.test(r.llave) ? 'Llave #' + r.llave : String(r.llave).startsWith('liga:') ? 'Una liga' : String(r.llave).startsWith('perfil:') ? 'Un perfil' : 'Una llave en vivo';
     xs.push({ k: 'r' + r.id, tipo: 'llave', t: msDe(r.t), titulo: llave + ' · ' + (QUE_REP[r.que] || r.que), sub: r.texto || (r.de ? 'lo mandó ' + r.de : ''), r });
@@ -3829,6 +3846,74 @@ function CuadroEvento({ p, hermanas, elegir }) {
   );
 }
 
+// 🔎 la llave que el bot leyó mal: el cuadro como quedó, «No cuenta» o contestarlas de a una
+function DetalleMal({ it, puede, cambiarD, soltar }) {
+  const [ocup, setOcup] = useState(false);
+  const [msg, setMsg] = useState('');
+  const sec = String(it.p.sec || '');
+  const clave = sec.split(' · ').slice(0, 3).join(' · ');
+  const n = (sec.match(/#(\d+)/) || [])[1] || '';
+  const noCuenta = async () => {
+    setOcup(true); setMsg('');
+    try {
+      cambiarD({ llaves_cuenta: await pedirLlaveCuenta({ clave, n, cuenta: false, motivo: 'la llave se leyó mal: ' + it.ps.length + ' batallas en «Final»' }) });
+      setMsg('Listo: sale del ranking en la próxima corrida del ciclo. Se vuelve a contar en «Llaves y fondos».');
+    } catch (e) { setMsg('No se pudo: ' + e.message); }
+    setOcup(false);
+  };
+  return (
+    <>
+      <p className="dz-dt-tx">El bot dejó las <b>{it.ps.length} batallas</b> de esta llave en «Final», así que a todas les «falta» ganador. No es que el
+        organizador no las marcó: es la lectura. Por eso a las 48 h no se cierra ni se descarta sola.</p>
+      <CuadroEvento p={it.p} hermanas={[]} elegir={() => {}} />
+      <div className="dz-acc">
+        {puede ? <button type="button" className="btn borde2" disabled={ocup} onClick={noCuenta}>No cuenta</button> : null}
+        <button type="button" className="btn borde2" onClick={soltar}>Contestarlas de a una</button>
+        {it.p.link ? <a className="dz-lnk" href={it.p.link} target="_blank" rel="noopener noreferrer">Abrirla en Discord ↗</a> : null}
+      </div>
+      {msg ? <p className="dz-dt-msg" role="status">{msg}</p> : null}
+    </>
+  );
+}
+
+// 🗓️ LOS VIEJOS, EN LOTE (la maqueta: «lo de hace más de 14 días se cierra de una, con su causa»). La fecha del evento sale
+// de su sección («NOMBRE · SV · 06/10»); se contestan por tipo con el lote de siempre, con la causa ya escrita en la nota
+const VIEJO_D = 14;
+function diasDe(sec) {
+  const m = /·\s*(\d{1,2})\/(\d{1,2})(?=\s*(?:·|$))/.exec(String(sec || ''));
+  if (!m) return null;
+  const hoy = new Date();
+  let f = new Date(hoy.getFullYear(), Number(m[2]) - 1, Number(m[1]));
+  if (f - hoy > 31 * 864e5) f = new Date(hoy.getFullYear() - 1, Number(m[2]) - 1, Number(m[1]));
+  return Math.floor((hoy - f) / 864e5);
+}
+function ViejoGrupo({ t, ps, alListo }) {
+  const [sel, setSel] = useState(() => new Set(ps.map((p) => p.id)));
+  const cambiar = (id) => setSel((s) => { const o = new Set(s); if (o.has(id)) o.delete(id); else o.add(id); return o; });
+  return (
+    <section className="dz-vj" aria-label={t}>
+      <h4>{t} · {ps.length}</h4>
+      <details><summary>Ver cuáles</summary>
+        <ul>{ps.map((p) => (
+          <li key={p.id}><label><input type="checkbox" checked={sel.has(p.id)} onChange={() => cambiar(p.id)} /> {linea1(p.que)} <small>{p.sec}</small></label></li>
+        ))}</ul>
+      </details>
+      <Lote ps={ps} sel={sel} setSel={setSel} alListo={alListo} visibles={ps} notaInicial={'Cerrado en lote: evento de hace más de ' + VIEJO_D + ' días'} />
+    </section>
+  );
+}
+function Viejos({ xs, alListo }) {
+  const grupos = {};
+  for (const x of xs) (grupos[x.p.tipo] = grupos[x.p.tipo] || []).push(x.p);
+  return (
+    <div className="dz-viejos">
+      <p className="dz-dt-tx">Son <b>{xs.length}</b> dudas de eventos de hace más de {VIEJO_D} días. Se contestan por tipo, todas juntas, con la causa
+        en la nota. Hasta que el ciclo las aplique se pueden deshacer de a una en «Ver todas las preguntas juntas».</p>
+      {Object.entries(grupos).map(([t, ps]) => <ViejoGrupo key={t} t={t} ps={ps} alListo={alListo} />)}
+    </div>
+  );
+}
+
 // ❓ una pregunta de ✅ Decidir, con la llave al lado (la A) o con el cuadro del evento (la B)
 const CUADRO = 'lg:db-cuadro';
 function DetalleQuien({ it, d, alCambiar, hermanas, elegir, cambiarD }) {
@@ -3884,7 +3969,9 @@ function Bandeja({ d, liga, ve, cambiarD, sub }) {
   const [fuera, setFuera] = useState({});
   const [posp, setPosp0] = useState(leerPosp);
   const setPosp = (o) => { setPosp0(o); try { localStorage.setItem(POSP, JSON.stringify(o)); } catch (e) { /* vuelve al recargar */ } };
-  const todos0 = itemsBandeja(d, ver).filter((x) => !fuera[x.k]);
+  // 🔎 los eventos con la llave mal leída que se pidieron contestar de a una (en este navegador, hasta recargar)
+  const [sueltas, setSueltas] = useState(() => new Set());
+  const todos0 = itemsBandeja(d, ver, sueltas).filter((x) => !fuera[x.k]);
   // lo pospuesto sigue pospuesto mientras no cambie y no pasen 24 h
   const dormido = (x) => { const p0 = posp[x.k]; return !!p0 && p0.f === firmaDe(x) && Date.now() < p0.hasta; };
   const todos = todos0.filter((x) => !dormido(x));
@@ -3895,8 +3982,11 @@ function Bandeja({ d, liga, ve, cambiarD, sub }) {
   const casos = d.casos || {};
   const tomo = (x) => (casos[kViendo(x.k)] || {}).tomo || null;
   const mios = todos.filter((x) => d.yo && (tomo(x) || {}).por === d.yo);
+  // 🗓️ los viejos: dudas de eventos de hace más de `VIEJO_D` días, que se contestan juntas, por tipo
+  const viejos = todos.filter((x) => x.tipo === 'quien' && !x.mal && (diasDe(x.p.sec) || 0) > VIEJO_D);
   const xs = (filtro === 'posp' ? pospuestos : filtro === 'mios' ? mios : todos)
     .filter((x) => (!filtro || filtro === 'posp' || filtro === 'mios' || x.tipo === filtro) && contiene([x.titulo, x.sub, x.p && x.p.sec], q));
+  const verViejos = filtro === 'viejos';
   const viejo = todos.reduce((m, x) => (x.t && (!m || x.t < m) ? x.t : m), 0);
   const i0 = Math.max(0, xs.findIndex((x) => x.k === sel));
   const it = xs[i0] || null;
@@ -3958,7 +4048,8 @@ function Bandeja({ d, liga, ve, cambiarD, sub }) {
         <div className="dz-subs" role="tablist" aria-label="Qué mirar">{FILTROS_B.filter(([k]) => !k || ver[k]).map(([k, t]) => (
           <button key={k || 'todo'} type="button" role="tab" aria-selected={filtro === k} className={'dz-sub' + (filtro === k ? ' on' : '')}
             onClick={() => { setFiltro(k); setSel(''); setListaDec(false); }}>{t}{(k ? cuenta[k] : todos.length) ? <i>{k ? cuenta[k] : todos.length}</i> : null}</button>
-        ))}{mios.length ? <button type="button" role="tab" aria-selected={filtro === 'mios'} className={'dz-sub' + (filtro === 'mios' ? ' on' : '')}
+        ))}{viejos.length ? <button type="button" role="tab" aria-selected={verViejos} className={'dz-sub' + (verViejos ? ' on' : '')}
+          onClick={() => { setFiltro('viejos'); setSel(''); setListaDec(false); }}>🗓️ Viejos<i>{viejos.length}</i></button> : null}{mios.length ? <button type="button" role="tab" aria-selected={filtro === 'mios'} className={'dz-sub' + (filtro === 'mios' ? ' on' : '')}
           onClick={() => { setFiltro('mios'); setSel(''); setListaDec(false); }}>✋ Mis casos<i>{mios.length}</i></button> : null}{pospuestos.length ? <button type="button" role="tab" aria-selected={filtro === 'posp'} className={'dz-sub dz-sub-posp' + (filtro === 'posp' ? ' on' : '')}
           onClick={() => { setFiltro('posp'); setSel(''); setListaDec(false); }}>💤 Pospuestos<i>{pospuestos.length}</i></button> : null}</div>
         <label className="db-buscar dz-band-q"><Ico n="buscar" t={16} />
@@ -3973,6 +4064,8 @@ function Bandeja({ d, liga, ve, cambiarD, sub }) {
       {filtro === 'quien' && listaDec ? (
         <><button type="button" className="dz-lnk" onClick={() => setListaDec(false)}>← Volver a la bandeja</button>
           <Decisiones dec={d.decidir} liga={liga} alCambiar={(y) => cambiarD({ decidir: y })} /></>
+      ) : verViejos ? (
+        <Viejos xs={viejos} alListo={(y) => cambiarD({ decidir: y })} />
       ) : !todos.length && filtro !== 'posp' ? (
         <div className="dz-vacio"><b>✓ Al día</b><span>No hay nada esperando una decisión tuya.</span></div>
       ) : (
@@ -3982,7 +4075,7 @@ function Bandeja({ d, liga, ve, cambiarD, sub }) {
               {/* 🗂️ las de ✅ Decidir, agrupadas por evento (la maqueta, opción A) */}
               {x.tipo === 'quien' && (i === 0 || xs[i - 1].tipo !== 'quien' || xs[i - 1].p.sec !== x.p.sec)
                 ? <li className="dz-ev-h">{x.p.sec || 'Sin evento'}</li> : null}
-              <li><button type="button" className={'dz-it' + (it && x.k === it.k ? ' on' : '') + (x.tipo === 'quien' ? (x.pts ? ' mueve' : ' quieta') : '')}
+              <li><button type="button" className={'dz-it' + (it && x.k === it.k ? ' on' : '') + (x.tipo === 'quien' ? (x.mal ? ' malle' : x.pts ? ' mueve' : ' quieta') : '')}
                 aria-current={it && x.k === it.k ? 'true' : undefined} onClick={() => elegir(x)}>
                 {x.tipo !== 'quien' ? <span className={'dz-tipo ' + TIPO_B[x.tipo][1]}>{TIPO_B[x.tipo][0]}</span> : null}
                 <b>{x.titulo}</b>
@@ -4005,7 +4098,9 @@ function Bandeja({ d, liga, ve, cambiarD, sub }) {
               <span className={'dz-tipo ' + TIPO_B[it.tipo][1]}>{TIPO_B[it.tipo][0]} · {i0 + 1} DE {xs.length}</span>
               <h3 className="dz-det-t">{it.titulo}</h3>
               {quienVe(it) ? <p className="dz-ve">👀 <b>{quienVe(it)}</b> también lo tiene abierto: fíjate antes de decidir para no hacerlo dos veces.</p> : null}
-              {it.tipo === 'quien' ? <DetalleQuien key={it.k} it={it} d={d} alCambiar={alCambiar} cambiarD={cambiarD} elegir={elegir}
+              {it.tipo === 'quien' && it.mal ? <DetalleMal key={it.k} it={it} puede={ve('reportes')} cambiarD={cambiarD}
+                soltar={() => { setSueltas((s) => new Set(s).add(it.p.sec)); setSel(''); }} /> : null}
+              {it.tipo === 'quien' && !it.mal ? <DetalleQuien key={it.k} it={it} d={d} alCambiar={alCambiar} cambiarD={cambiarD} elegir={elegir}
                 hermanas={xs.filter((x) => x.tipo === 'quien' && x.p.sec === it.p.sec)} /> : null}
               {it.tipo === 'llave' ? <DetalleLlave key={it.k} it={it} liga={liga} d={d} alCambiar={alCambiar} corrige={ve('reportes')} /> : null}
               {it.tipo === 'imagen' ? <DetalleImagen key={it.k} it={it} alCambiar={alCambiar} motivo={motivo} setMotivo={setMotivo} /> : null}

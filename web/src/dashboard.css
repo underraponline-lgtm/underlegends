@@ -923,3 +923,13 @@ button.dz-cu-b.duda{border-color:var(--magenta);box-shadow:inset 3px 0 0 var(--m
 button.dz-cu-b.duda em{color:var(--magenta-tx)}
 button.dz-cu-b.duda.on{outline:2px solid var(--linea);outline-offset:1px}
 button.dz-cu-b:focus-visible{outline:2px solid var(--verde);outline-offset:2px}
+
+/* 🗓️ los viejos en lote y 🔎 la llave mal leída (11/11/2026) */
+.dz-viejos{display:grid;gap:12px}
+.dz-vj{display:grid;gap:8px;padding:12px 14px;border:1.5px solid var(--suave);border-radius:4px;background:var(--caja)}
+.dz-vj h4{margin:0;font:800 15px/1.2 Archivo,sans-serif}
+.dz-vj ul{list-style:none;margin:8px 0 0;padding:0;display:grid;gap:4px;max-height:260px;overflow:auto}
+.dz-vj li label{display:flex;gap:8px;align-items:baseline;font-size:13.5px;line-height:1.35;overflow-wrap:anywhere}
+.dz-vj li small{color:var(--gris)}
+.dz-vj summary{cursor:pointer;font:700 13px/1.2 Archivo,sans-serif;color:var(--gris)}
+.dz-it.malle{border-left-color:var(--magenta)}
