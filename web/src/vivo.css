@@ -3777,6 +3777,7 @@ button.tb-yo.on{background:var(--inv);color:var(--inv-tinta);box-shadow:inset 0 
 .pn-sb-rv{border-left:1.5px solid var(--borde2)}
 .pn-sb.solo{grid-template-columns:minmax(0,1fr);border-left-color:var(--mag);background:linear-gradient(90deg,rgba(228,19,115,.16),transparent 60%),#0B0C0E}
 .pn-sb.solo .pn-sb-rv{border:0}
+.pn-sb.solo.ev{border-left-color:var(--verde);border-right-color:var(--verde);background:linear-gradient(90deg,rgba(41,178,152,.16),transparent 60%),#0B0C0E}
 .pn-sb-logo{width:44px;height:44px;border-radius:50%;flex:none;display:grid;place-items:center;background:#06120f;color:var(--verde);box-shadow:0 0 0 2px var(--verde);object-fit:cover}
 .pn-sb-tx{display:grid;gap:2px;min-width:0;flex:1}
 .pn-sb-tx em{font:800 10px/1 "Barlow Condensed",sans-serif;font-style:normal;letter-spacing:.08em;text-transform:uppercase;color:var(--verde)}

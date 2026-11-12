@@ -199,13 +199,13 @@ function UltCorto({ liga, u }) {
 }
 
 // ── 🗓️⚔️ SIN BATALLAS: TU PRÓXIMO EVENTO Y UN RIVAL DE TU NIVEL (Dlx, 12/11/2026: «me gusta eso de 1 y 2») ──────────
-// A la izquierda, el próximo evento con su cuenta atrás y el botón para inscribirte. ⚠️ Si el botón grande de arriba ya
-// muestra uno (`eventoDelBoton()`), acá va EL SIGUIENTE: el mismo dos veces es lo que Dlx pidió no repetir (13/10/2026).
-// A la derecha, el que tienes justo arriba en la Temporada (o el que te sigue, si eres el #1), con cuántos puntos te
+// A la izquierda, el próximo evento con su cuenta atrás y el botón para inscribirte: SIEMPRE, aunque el botón grande de
+// arriba muestre el mismo (Dlx, 12/11/2026: «que salga siempre el próximo evento aunque se repita»; la 4.72 mostraba el
+// siguiente y, sin otro, nada). Es el mismo que elige el botón grande (`eventoDelBoton()`: el tuyo, el de tu servidor),
+// y sin ninguno anunciado, «Todavía no anunciaron» con el calendario. A la derecha, el que tienes justo arriba en la Temporada (o el que te sigue, si eres el #1), con cuántos puntos te
 // separan, el cara a cara y «Retar», que abre las horas de la batalla libre
 function SinBatallas({ liga, yo, yoF, T, retar }) {
-  const yaArriba = eventoDelBoton(liga).e;
-  const ev = liga.luego().find((x) => x !== yaArriba) || null;
+  const ev = eventoDelBoton(liga).e || liga.luego()[0] || null;
   const miPos = yoF.pos || yo.pos || 0;
   let rv = null;
   if (miPos) {
@@ -217,24 +217,22 @@ function SinBatallas({ liga, yo, yoF, T, retar }) {
   const ins = ev ? ev.ins || ev.link || '' : '';
   // ⚠️ la hora del anuncio viene en UTC sin «Z»: `new Date()` la leería como la hora de quien mira, `utc()` no
   const evT = ev ? utc(liga.cuandoDe(ev)).toISOString() : '';
-  // ⚠️ sin un evento que el botón grande no muestre ya, esta mitad no va: «todavía no anunciaron» ya lo dice él, y el
-  // rival toma el ancho entero. Sin rival ni evento (quien todavía no jugó), la franja de antes
-  if (!ev && !rv) {
-    return (
-      <section className="pn-vs vacio">
-        <span className="pn-tx"><b>Sin batallas por ahora</b><small>Las de Competencias aparecen acá.</small></span>
-      </section>
-    );
-  }
+  // sin rival (quien todavía no jugó), el evento solo, a lo ancho
   return (
-    <section className={'pn-sb' + (ev && rv ? '' : ' solo')}>
+    <section className={'pn-sb' + (rv ? '' : ' solo ev')}>
       {ev ? <div className="pn-sb-ev">
         {liga.logo(ev.sv) ? <img className="pn-sb-logo" alt="" src={liga.logo(ev.sv)} /> : <span className="pn-sb-logo"><Ico n="eventos" t={20} /></span>}
-          <span className="pn-sb-tx"><em>{yaArriba ? 'Después' : 'Tu próximo evento'}</em><b>{limpio(ev.nombre)}</b>
+          <span className="pn-sb-tx"><em>Tu próximo evento</em><b>{limpio(ev.nombre)}</b>
             <small>{siglaDe(ev.sv)} · {cuando(evT)} · <span className="pn-sb-t">en {faltaTxt(evT)}</span></small></span>
           {ins ? <a className="btn verde chico" href={ins} target="_blank" rel="noopener noreferrer">Inscribirme</a>
             : <a className="btn verde chico" href="#/eventos">Ver</a>}
-      </div> : null}
+      </div> : (
+        <div className="pn-sb-ev">
+          <span className="pn-sb-logo"><Ico n="eventos" t={20} /></span>
+          <span className="pn-sb-tx"><em>Tu próximo evento</em><b>Todavía no anunciaron</b><small>Se anuncian con poco tiempo</small></span>
+          <a className="btn borde chico" href="#/eventos">Calendario</a>
+        </div>
+      )}
       {rv ? (
         <div className="pn-sb-rv">
           <Cara liga={liga} k={rv.k} nombre={rv.n} cls="pn-vs-c otro" />
