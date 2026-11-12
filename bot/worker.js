@@ -1290,6 +1290,9 @@ const TOPE_MAPA = 5000;
 // eso es lo que ensucia. Un botón contesta con ACTUALIZAR, o sea que pisa el
 // mismo mensaje: aunque lo aprietes cien veces el canal no crece, y lo único
 // que cuesta son peticiones. Por eso el click tiene la mano más suelta.
+// ⏱️ cuánto espera el botón de elegir (`ve`) el saldo antes de abrir el modal sin él: Discord corta a los 3 s
+const ESPERA_MODAL = 1500;
+
 const FRENO = { comando: [4, 30000], click: [10, 10000],
   // 🔴 MI CUENTA ESCRIBE KV, y KV son 1.000 escrituras por día para toda la
   // cuenta: sin freno, alguien con su permiso de Discord podía agotarlas
@@ -4647,13 +4650,25 @@ export default {
       const fila = ((i.data.components || [])[0] || {}).components || [];
       const escrito = String((fila[0] || {}).value || '').replace(/[^0-9]/g, '');
       const monto = escrito ? Math.min(Number(escrito), 1e6) : 0;
-      const voto = await votoChat(env, did, qg, lado);
-      const c = await datosApuesta(env, did);
-      if (!monto) {
-        return aviso(voto + (c ? '\n' + await saldoChat(env, did, ap, c) : ''));
-      }
-      if (!c) return aviso(voto + '\nLas apuestas todavía no están listas: prueba en un rato.');
-      return aviso(voto + '\n' + await apuestaChat(env, did, ap, lado, monto, c, true));
+      // ⏱️ «PENSANDO» PRIMERO Y LA RESPUESTA DESPUÉS (12/11/2026): son tres pedidos seguidos al objeto y a KV, y Discord da
+      // la interacción por fallida a los 3 s (ver el `ve` de abajo, donde pasó). Con el aviso diferido hay 15 minutos
+      const editar = (txt) => fetch(`https://discord.com/api/v10/webhooks/${i.application_id}/${i.token}/messages/@original`, {
+        method: 'PATCH', headers: { 'content-type': 'application/json' },
+        body: JSON.stringify({ content: txt, allowed_mentions: { parse: [] } }),
+      });
+      luego(ctx, (async () => {
+        let txt = '';
+        try {
+          const voto = await votoChat(env, did, qg, lado);
+          const c = await datosApuesta(env, did);
+          if (!monto) txt = voto + (c ? '\n' + await saldoChat(env, did, ap, c) : '');
+          else if (!c) txt = voto + '\nLas apuestas todavía no están listas: prueba en un rato.';
+          else txt = voto + '\n' + await apuestaChat(env, did, ap, lado, monto, c, true);
+        } catch (e) { txt = 'No pude anotarlo: prueba de nuevo.'; }
+        await editar(txt);
+      })());
+      return new Response(JSON.stringify({ type: RESPONDE.PENSANDO, data: { flags: EFIMERO } }),
+        { headers: { 'content-type': 'application/json' } });
     }
 
     if (i.type === RECIBE.COMPONENTE) {
@@ -4730,31 +4745,41 @@ export default {
         if (esperarVe) return espera(esperarVe);
         const did = idDe(i);
         if (!did) return aviso('No pude saber quién eres: prueba de nuevo.');
-        const c = await datosApuesta(env, did);
-        let info = null;
-        if (c) {
-          try {
-            const r = await env.AVISOS.get(env.AVISOS.idFromName('liga')).fetch('https://avisos/apuesta-info', {
-              method: 'POST', headers: { 'content-type': 'application/json' },
-              body: JSON.stringify({ quien: did, ap: dueno, clave: c.clave, inicial: c.inicial, desde: c.desde }),
-            });
-            info = await r.json();
-          } catch (e) { info = null; }
-        }
+        // ⏱️ EL MODAL SALE A TIEMPO AUNQUE EL OBJETO DUERMA (12/11/2026). La primera apuesta de verdad —Dlx, ACADEMIA, 5:42 PM—
+        // no llegó: KV + el objeto recién despertado (se duerme a los 10 s, ver CLAUDE.md) tardaron ~4 s, Discord da la
+        // interacción por fallida a los 3, y no se anotó ni el voto. Ahora se espera lo que se sepa en `ESPERA_MODAL`; si no
+        // llega, el modal sale igual sin el saldo en el título —el envío (`vm`) valida todo: cerrada, propia, saldo— y el
+        // pedido sigue en el fondo, así el objeto ya está despierto cuando se manda
+        const pedir = (async () => {
+          const c = await datosApuesta(env, did);
+          if (!c) return { sinCuenta: true };
+          const r = await env.AVISOS.get(env.AVISOS.idFromName('liga')).fetch('https://avisos/apuesta-info', {
+            method: 'POST', headers: { 'content-type': 'application/json' },
+            body: JSON.stringify({ quien: did, ap: dueno, clave: c.clave, inicial: c.inicial, desde: c.desde }),
+          });
+          return await r.json();
+        })().catch(() => ({ fallo: true }));
+        luego(ctx, pedir);
+        const info = await Promise.race([pedir, new Promise((r) => setTimeout(() => r(null), ESPERA_MODAL))]);
         // 🎲 SIEMPRE SE ABRE, EN 0 (Dlx, 11/11/2026: «cada vez que presiones por quién va a ganar, automáticamente se abra eso de
         // apostar, por default 0, y que se pueda cambiar… para introducir ese sistema»). Sin Puntos o ya en el tope también: así
         // todos ven que se puede apostar. Sólo vota directo si la apuesta cerró, si es su propia batalla o si no tiene cuenta
-        if (!info || !info.abierta || info.propia) return aviso(await votoChat(env, did, quien, extra));
+        if (info && (info.sinCuenta || info.fallo || !info.abierta || info.propia)) return aviso(await votoChat(env, did, quien, extra));
         const mil = (v) => String(Math.round(v || 0)).replace(/\B(?=(\d{3})+(?!\d))/g, '.');
-        // 🏷️ el nombre del ranking, corto: un equipo que no entra va «Liberia +1» (`etiquetaLado()` en avisos.js)
-        const nom = String(extra === 'A' ? info.ea || info.a : info.eb || info.b);
+        // 🏷️ el nombre del ranking, corto: un equipo que no entra va «Liberia +1» (`etiquetaLado()` en avisos.js). Sin la
+        // respuesta del objeto, el del botón que se tocó
+        const delBoton = (((i.message && i.message.components) || []).flatMap((f) => f.components || [])
+          .find((b) => b.custom_id === id) || {}).label || '';
+        const nom = String(info ? (extra === 'A' ? info.ea || info.a : info.eb || info.b) : delBoton || 'él');
+        const corto = nom.length > 12 ? nom.slice(0, 11) + '…' : nom;
         // ⚠️ el título y la etiqueta de un modal van hasta 45 caracteres
         return new Response(JSON.stringify({ type: 9, data: { custom_id: 'vm:' + quien + ':' + extra + ':' + dueno,
-          title: ('Votas por ' + (nom.length > 12 ? nom.slice(0, 11) + '…' : nom) + ' · Tienes ' + mil(info.saldo) + ' Puntos').slice(0, 45),
+          title: ('Votas por ' + corto + (info ? ' · Tienes ' + mil(info.saldo) + ' Puntos' : '')).slice(0, 45),
           components: [{ type: 1, components: [{ type: 4, custom_id: 'monto', style: 1, required: true, min_length: 1, max_length: 6, value: '0',
             // 🎲 sin tope (11/11/2026, Dlx: «que no haya nivel max de apuesta»): lo que tienes ya está en el título
-            label: (info.saldo <= 0 ? 'Todavía no tienes Puntos: deja 0 y votas'
-              : info.ya ? 'Ya pusiste ' + mil(info.ya) + '. ¿Cuánto más? 0 = nada' : '¿Cuánto apuestas? Sin tope · 0 = nada').slice(0, 45) }] }] } }),
+            label: (!info ? '¿Cuánto apuestas? 0 = sólo votar'
+              : info.saldo <= 0 ? 'Todavía no tienes Puntos: deja 0 y votas'
+                : info.ya ? 'Ya pusiste ' + mil(info.ya) + '. ¿Cuánto más? 0 = nada' : '¿Cuánto apuestas? Sin tope · 0 = nada').slice(0, 45) }] }] } }),
         { headers: { 'content-type': 'application/json' } });
       }
 

@@ -2604,8 +2604,15 @@ console.log('\nLAS ENCUESTAS\n');
   env.KV = Object.assign(Object.create(kv0), { get: async (k, o) => (k === 'precios' ? '{"inicial":5000}' : kv0.get(k, o)) });
   const quien = (n) => ({ member: { user: { id: String(700900 + n) } } });
   const boton = (n) => pedir(Object.assign({ type: 3, guild_id: G.DRA, channel_id: '1', data: { custom_id: 've:q1:A:ap1' } }, quien(n)));
-  const modal = (n, v) => pedir(Object.assign({ type: 5, guild_id: G.DRA, channel_id: '1',
-    data: { custom_id: 'vm:q1:A:ap1', components: [{ type: 1, components: [{ type: 4, custom_id: 'monto', value: v }] }] } }, quien(n)));
+  // ⏱️ el modal contesta «pensando» y la respuesta llega después, editando ese aviso (12/11/2026): `t` es lo que queda escrito
+  const modal = async (n, v) => {
+    SEGUIMIENTOS = [];
+    const r = await pedir(Object.assign({ type: 5, guild_id: G.DRA, channel_id: '1', application_id: 'app', token: 'tok',
+      data: { custom_id: 'vm:q1:A:ap1', components: [{ type: 1, components: [{ type: 4, custom_id: 'monto', value: v }] }] } }, quien(n)));
+    await esperarSeguimientos();
+    const s = SEGUIMIENTOS.filter((x) => /\/messages\/@original$/.test(x.url)).pop();
+    return Object.assign(r, { t: s ? s.cuerpo.content : '' });
+  };
   let r = await boton(1);
   const m = r.json?.data || {};
   const campo = m.components?.[0]?.components?.[0] || {};
@@ -2613,16 +2620,36 @@ console.log('\nLAS ENCUESTAS\n');
      && campo.type === 4 && campo.value === '0' && /Sin tope · 0 = nada/.test(campo.label) && campo.label.length <= 45, JSON.stringify(m).slice(0, 220));
   llamadas.length = 0;
   r = await modal(2, '0');
+  ok('el modal contesta «pensando» enseguida, sólo para quien lo mandó', r.json?.type === 5 && r.json?.data?.flags === 64, JSON.stringify(r.json));
   ok('con 0 vota, no apuesta y dice cuánto tiene', llamadas.some((c) => c[0] === '/qg-votar') && !llamadas.some((c) => c[0] === '/apostar')
-     && /Votaste por \*\*Ana\*\*/.test(texto(r)) && /No apostaste: sigues con \*\*5\.000\*\*/.test(texto(r)) && r.json?.data?.flags === 64, texto(r));
+     && /Votaste por \*\*Ana\*\*/.test(r.t) && /No apostaste: sigues con \*\*5\.000\*\*/.test(r.t), r.t);
   llamadas.length = 0;
   r = await modal(3, '1.000');
   const ap = llamadas.find((c) => c[0] === '/apostar');
   ok('con un monto vota y apuesta, leyendo sólo los números', llamadas.some((c) => c[0] === '/qg-votar') && ap && ap[1].monto === 1000 && ap[1].libre === true && ap[1].ap === 'ap1'
-     && /Votaste/.test(texto(r)) && /Apostaste \*\*1\.000\*\*/.test(texto(r)), texto(r));
+     && /Votaste/.test(r.t) && /Apostaste \*\*1\.000\*\*/.test(r.t), r.t);
   llamadas.length = 0;
   r = await modal(4, 'nada');
-  ok('si escribe otra cosa, cuenta como 0', !llamadas.some((c) => c[0] === '/apostar') && /Votaste/.test(texto(r)), texto(r));
+  ok('si escribe otra cosa, cuenta como 0', !llamadas.some((c) => c[0] === '/apostar') && /Votaste/.test(r.t), r.t);
+  // ⏱️ EL OBJETO DORMIDO (12/11/2026, la primera apuesta de Dlx no llegó: ~4 s y Discord corta a los 3). El modal sale igual,
+  // con el nombre del botón y sin el saldo; el envío valida todo
+  const lento = info;
+  const fetch0 = env.AVISOS.get().fetch;
+  env.AVISOS = { idFromName: () => 'liga', get: () => ({ fetch: async (url, opc) => {
+    if (new URL(String(url)).pathname === '/apuesta-info') await new Promise((ok2) => setTimeout(ok2, 3000));
+    return fetch0(url, opc);
+  } }) };
+  const t0 = performance.now();
+  r = await pedir(Object.assign({ type: 3, guild_id: G.DRA, channel_id: '1', data: { custom_id: 've:q1:A:ap1' },
+    message: { components: [{ type: 1, components: [{ type: 2, label: 'Ana', custom_id: 've:q1:A:ap1' }, { type: 2, label: 'Beto', custom_id: 've:q1:B:ap1' }] }] } }, quien(9)));
+  const dt = performance.now() - t0;
+  const ml = r.json?.data || {};
+  ok('con el objeto dormido el modal sale antes de los 3 s, con el nombre del botón y sin el saldo', r.json?.type === 9 && dt < 2200
+     && ml.title === 'Votas por Ana' && ml.custom_id === 'vm:q1:A:ap1' && /0 = sólo votar/.test(ml.components?.[0]?.components?.[0]?.label || ''),
+  Math.round(dt) + ' ms · ' + JSON.stringify(ml).slice(0, 160));
+  await esperarSeguimientos();
+  env.AVISOS = { idFromName: () => 'liga', get: () => ({ fetch: fetch0 }) };
+  info = lento;
   info = Object.assign({}, info, { abierta: false });
   llamadas.length = 0;
   r = await boton(5);
