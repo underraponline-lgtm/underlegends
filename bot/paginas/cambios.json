@@ -11,6 +11,16 @@
  ],
  "cambios": [
     {
+        "version": "4.63",
+        "dia": "2026-11-12",
+        "cuando": "2026-11-12T15:20:00-05:00",
+        "titulo": "El video de la Liga, también al verificarte y al cargar",
+        "items": [
+            "**Al volver de Discord para verificarte**, la bienvenida sigue con el video de fondo en vez de una pantalla negra.",
+            "**La pantalla de carga** muestra un cuadro de ese video detrás del logo, y sale con el corte de colores de siempre."
+        ]
+    },
+    {
         "version": "4.62",
         "dia": "2026-11-12",
         "cuando": "2026-11-12T14:45:00-05:00",
