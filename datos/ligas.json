@@ -1,6 +1,6 @@
 {
  "_leeme": "Las ligas de los servidores: cada batalla y su resultado, y la tabla que sale de eso. Lo arma bot/ligas.py en cada corrida; las reglas viven ahí. Sin los mensajes: el repo es público. `batallas`: [id del mensaje, instante, jornada, a, b, ganador (vacío: pendiente), directa|replica, extras]. Las batallas con resultado cuentan como duelos (Ranking Duelos y Win%; el Score no). `flyer`: el último afiche de su canal de anuncios, re-alojado en R2 (`url`); `prox`: la próxima fecha que anunció (`d` el día, `t` el instante si lo dijo). Desde el 17/10/2026: `ptb` {id de la batalla: [PTB de a, de b]}, `flyers` (la galería, en R2), `staff` [[discord_id, nombre, mensajes en anuncios, en veredictos, último]] y `nov` (lo nuevo de las últimas horas, para «Seguir la liga»). Desde el 11/11/2026: `temps` [{t, c, n, msg, p, ult, desde}] (cada campeón que anunció su servidor: cierra esa temporada), `tn` (el número de la temporada que juega, si lo dice), `cerrada` {t} (sus canales ya no están) y, arriba, `nuevas` (las ligas que el bot encontró solo: `fam` vacío hasta que un lector entienda sus veredictos).",
- "t": "2026-11-12T01:59:01Z",
+ "t": "2026-11-12T02:28:24Z",
  "ligas": {
   "fmh-albiceleste": {
    "n": "FMH Albiceleste",
@@ -7932,15 +7932,23 @@
     ]
    ],
    "flyer": {
-    "id": "1570180972127715389",
-    "t": "2026-11-11T20:58:36Z",
-    "tit": "Freestyle Zone League",
-    "url": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/ligas/fzl/1570180972127715389.webp",
+    "id": "1570261840372695090",
+    "t": "2026-11-12T02:19:56Z",
+    "tit": "FREESTYLE ZONE LEAGUE - JORNADA 1",
+    "url": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/ligas/fzl/1570261840372695090.webp",
     "w": 720,
-    "h": 894
+    "h": 890
    },
    "ptb": {},
    "flyers": [
+    {
+     "id": "1570261840372695090",
+     "t": "2026-11-12T02:19:56Z",
+     "tit": "FREESTYLE ZONE LEAGUE - JORNADA 1",
+     "url": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/ligas/fzl/1570261840372695090.webp",
+     "w": 720,
+     "h": 890
+    },
     {
      "id": "1570180972127715389",
      "t": "2026-11-11T20:58:36Z",
@@ -8034,15 +8042,6 @@
      "url": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/ligas/fzl/1569763144950095932.webp",
      "w": 720,
      "h": 894
-    },
-    {
-     "id": "1569763079837982820",
-     "msg": "1569763079837982820",
-     "t": "2026-11-10T17:18:03Z",
-     "tit": "Freestyle Zone League",
-     "url": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/ligas/fzl/1569763079837982820.webp",
-     "w": 720,
-     "h": 894
     }
    ],
    "staff": [
@@ -8051,7 +8050,7 @@
      "ajoel",
      100,
      200,
-     "2026-11-11T23:15:23Z"
+     "2026-11-12T02:19:56Z"
     ]
    ],
    "tn": 16,
@@ -9638,18 +9637,18 @@
      "2026-11-04T02:15:34Z"
     ],
     [
-     "846870712950194196",
-     "DANU",
-     0,
-     1,
-     "2026-11-11T21:49:59Z"
-    ],
-    [
      "1282772759902162954",
      "Hotaru la perdedora...",
      0,
      1,
      "2026-10-29T21:22:33Z"
+    ],
+    [
+     "645308964141137952",
+     "Soul B",
+     0,
+     1,
+     "2026-11-02T04:33:51Z"
     ]
    ]
   },

@@ -1,5 +1,5 @@
 {
- "cuando": "2026-11-12T01:54:57+00:00",
+ "cuando": "2026-11-12T02:24:54+00:00",
  "anuncios": [
   {
    "nombre": "¡SE LLEGÓ LA GRAN NOCHE!",
@@ -409,12 +409,15 @@
      "🎤 KRAVITZ 🇨🇷"
     ],
     "dj": [
-     "Kravitz"
+     "Kravitz",
+     "la monalisa",
+     "zaik0009"
     ]
    },
    "autor": "Kravitz",
    "staff_cuentas": {
-    "Kravitz": "1345962362615894027"
+    "Kravitz": "1345962362615894027",
+    "la monalisa": "1487658663148785734"
    },
    "categoria_id": "1468478330826260500"
   },
@@ -443,7 +446,7 @@
    "fecha": "",
    "premios": "",
    "staff": {},
-   "autor": "Sonicko",
+   "autor": "Zaik",
    "staff_cuentas": {},
    "categoria_id": "1468478330826260500"
   },
@@ -6591,7 +6594,7 @@
      "id": "987149314591719474"
     },
     {
-     "n": "DANU",
+     "n": "VILCAZ",
      "id": "846870712950194196"
     }
    ],
@@ -6814,6 +6817,15 @@
   }
  ],
  "inscripciones": [
+  {
+   "servidor": "ACAD",
+   "canal": "📝┇inscripciones-1",
+   "texto": "Ariaxer🇦🇷",
+   "quien": "ariaxer",
+   "discord_id": "659687894587277322",
+   "msg_id": "1570256824563925064",
+   "cuando": "2026-11-12T02:00:00"
+  },
   {
    "servidor": "ACAD",
    "canal": "📝┇inscripciones-1",
@@ -42804,15 +42816,6 @@
    "discord_id": "1316490165836972104",
    "msg_id": "1557929282343280691",
    "cuando": "2026-10-09T01:34:45"
-  },
-  {
-   "servidor": "FFA",
-   "canal": "✦📝—inscripciones",
-   "texto": "fleivaman🇨🇦 + belleza🇮🇨",
-   "quien": "provenzaaznevorp",
-   "discord_id": "711076230857752627",
-   "msg_id": "1557929209945391165",
-   "cuando": "2026-10-09T01:34:28"
   }
  ]
 }

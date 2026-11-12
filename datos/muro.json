@@ -347,10 +347,6 @@
 "temporada"
 ]
 },
-"chop": {
-"rg": "D",
-"c": []
-},
 "geoka": {
 "rg": "D",
 "c": [
@@ -377,6 +373,10 @@
 "servidor",
 "temporada"
 ]
+},
+"chop": {
+"rg": "D",
+"c": []
 },
 "dyzz": {
 "rg": "E",

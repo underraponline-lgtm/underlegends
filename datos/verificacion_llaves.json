@@ -25,6 +25,10 @@
    "min": 36,
    "v": 1
   },
+  "(sin titulo)|LKR|11/11": {
+   "min": 35,
+   "v": 1
+  },
   "- FMS CHILE -|FRZ|01/10": {
    "min": 61,
    "v": 1
@@ -145,6 +149,11 @@
   },
   "GALACTICOS DEL FREESTYLE VOL.17|DDF|06/11": {
    "min": 61,
+   "obs": 1,
+   "v": 1
+  },
+  "GALACTICOS DEL FREESTYLE VOL.1|ACAD|11/11": {
+   "min": 26,
    "obs": 1,
    "v": 1
   },
@@ -396,7 +405,7 @@
    "v": 1
   },
   "__ ALL VALLEY __|FFA|11/11": {
-   "min": 43,
+   "min": 75,
    "v": 1
   },
   "__ COCINE FIDEOS __|FFA|01/11": {
