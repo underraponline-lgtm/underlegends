@@ -89,7 +89,7 @@ ARCHIVOS="datos/mejor_pos_pais.json datos/llaves_canceladas.json datos/cartas_li
           datos/bloqueadas_selladas.json datos/web_sello.json \
           datos/bot_en.json datos/alertas.json datos/servidores.json datos/llaves_sin_sumar.json \
           datos/llaves_t1.json datos/llaves_links.json datos/verificacion_llaves.json datos/notas_eventos.json datos/competencias.json \
-          datos/autoverificar.json datos/escala.json \
+          datos/autoverificar.json datos/autoidentificar.json datos/inscritos_hist.json datos/escala.json \
           datos/iconos_sv.json datos/comunidad.json datos/roles_discord.json datos/servidor_elegido.json \
           datos/avisos_personales.json datos/arranque.json \
           datos/fuera_desde.json datos/mw.json \

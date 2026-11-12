@@ -154,11 +154,13 @@ def pais_de(p, suyos, fijado, iso_de):
     return cc or '', por
 
 
-def candidatos(pad, en_dra, con_miembro, saltear, memoria, ahora):
+def candidatos(pad, en_dra, con_miembro, saltear, memoria, ahora, sin_miembro=()):
     """(para_pais, para_verificar): filas del padrón, sin tocar la red.
 
     · país: tiene ID, no tiene país, no se salta, y no se miró hace poco
-    · verificar: tiene ID, está en DRA, no tiene el Miembro, no se salta
+    · verificar: tiene ID, está en DRA, no tiene el Miembro, no se salta, y el ID NO lo puso
+      `bot/autoidentificar.py` (`sin_miembro`): un ID encontrado por la máquina sí recibe su país, pero no
+      verifica solo. Verificar es el portón de las cartas (12/11/2026: lo decide Dlx al final)
     """
     vistos = (memoria or {}).get('sin_pais') or {}
     pp, pv = [], []
@@ -175,7 +177,7 @@ def candidatos(pad, en_dra, con_miembro, saltear, memoria, ahora):
                 viejo = True
             if viejo:
                 pp.append(p)
-        if did in en_dra and did not in con_miembro:
+        if did in en_dra and did not in con_miembro and did not in sin_miembro:
             pv.append(p)
     return pp, pv
 
@@ -408,7 +410,14 @@ def correr(aplicar):
     con_miembro = set(ver['ids'])
     memoria = _json('datos', 'autoverificar.json') or {}
     saltear = _saltear()
-    pp, pv = candidatos(pad, en_dra, con_miembro, saltear, memoria, ahora)
+    try:
+        import autoidentificar as _AI
+        sin_m = _AI.sin_miembro()
+    except Exception as e:                               # noqa: BLE001
+        # ⚠️ si no se puede leer, NO se verifica a nadie: sin esa lista no se sabe qué ID puso la máquina
+        print('   ⚠️ no pude leer lo autoidentificado (%s): hoy no verifico a nadie' % str(e)[:50])
+        sin_m = {str(p.get('discord_id')) for p in pad}
+    pp, pv = candidatos(pad, en_dra, con_miembro, saltear, memoria, ahora, sin_miembro=sin_m)
     print('   candidatos: %d sin país · %d en DRA sin el Miembro' % (len(pp), len(pv)))
 
     rol, invitado = CM._roles_dra()
@@ -598,6 +607,9 @@ def _self_check():
     ok([p['raw'] for p in pv] == ['Bea'], 'verificar: en DRA y sin el Miembro  %s'
        % [p['raw'] for p in pv])
     ok('Dani' not in [p['raw'] for p in pp + pv], 'sin ID no entra a nada')
+    pp2, pv2 = candidatos(pad, {'1', '2'}, {'1'}, {'troll'}, mem, ahora, sin_miembro={'2'})
+    ok(pv2 == [] and [p['raw'] for p in pp2] == ['Ana', 'Eva'],
+       'un ID que puso autoidentificar no verifica solo, y el país sigue igual')
     ok('Troll' not in [p['raw'] for p in pp + pv], 'los que se saltean no entran')
 
     cab = ['Rapero', 'Bandera', 'SV', 'Verificado', 'Discord ID', 'Avatar',

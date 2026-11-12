@@ -1045,6 +1045,21 @@ def _lo_barato(correr):
         if not ok:
             print('      ⚠️ falló: la cola queda para la próxima')
 
+    # 🔎 QUIÉN ES QUIÉN, SOLO (Dlx, 12/11/2026: «autoidentificación de usuarios… busca tú también usuarios así de
+    # frente»). Guarda cada inscripción para siempre —los organizadores vacían el canal— y, cada 3 horas, busca en los
+    # 22 servidores la cuenta de quien jugó sin ID y escribe sólo lo que pasa `identificar.automatico()`.
+    #
+    # ⚠️ ANTES DE 1a2 Y DEL PADRÓN (paso 2), y no después: el ID entra en esta misma corrida. Y `autoverificar` NO
+    # verifica un ID puesto acá (`autoidentificar.sin_miembro()`): eso lo decide Dlx al final.
+    #
+    # ⚠️ NO FRENA EL CICLO: si falla, la búsqueda queda para la vuelta siguiente.
+    paso('1a1', 'quién es quién, solo: el Discord de quien juega sin ID')
+    if not correr:
+        print('      correría bot/autoidentificar.py --aplicar')
+    else:
+        if not corre(['bot/autoidentificar.py', '--aplicar'], callado=False):
+            print('      ⚠️ falló: la búsqueda queda para la próxima')
+
     # 🔑 ENTRE 1a Y 1b A PROPÓSITO: 1b vuelve a leer quién tiene el Miembro
     # y el paso 2 el padrón, así que quien se verifica acá pasa el portón
     # en esta misma corrida. Ver `bot/autoverificar.py` (#8 y #9 de Dlx).
