@@ -431,9 +431,16 @@ recálculo a mano es `gh workflow run recalcular.yml -f leer=<números>` (y
 `-f aplicar=true` para escribir), en la fila del ciclo. Desde una PC,
 `procesar_entrada.py --aplicar` y `recalcular_t1.py --aplicar` se niegan: el
 11/11 un recálculo hecho en una PC y el ciclo se pisaron, y con los datos en
-el repo una PC atrasada reescribiría lo de horas atrás. Falta apagar la
-prueba y la etapa 4 (la Lista, los AKAs, Config y las vitrinas); al final el
-Sheet **se congela como archivo, no se borra**.
+el repo una PC atrasada reescribiría lo de horas atrás.
+
+🏆 **DESDE EL 12/11/2026 LAS TRES HOJAS DE DATOS Y LAS CINCO VITRINAS YA NO
+VIVEN EN EL SHEET** (`espejo_t1.SIN_SHEET`): el archivo es la hoja, y el
+Sheet quedó quieto en lo que tenía esa noche. Las vitrinas las escribe
+`rankings.py` en `datos/t1_vitrina_*.json` y se leen con `fuente_vitrina()`
+o `rankings._leer_vitrina()`, **nunca** con `worksheet('Ranking …')`: un
+lector directo lee una tabla congelada y no falla. Siguen a prueba la Lista,
+AKAs, Pendientes, ✅ Decidir y Config; al final el Sheet **se congela como
+archivo, no se borra**.
 
 ⚠️ **La fórmula está verificada contra las 138 filas de la pre-temporada**,
 con una diferencia máxima de 0.050. Ver el encabezado de

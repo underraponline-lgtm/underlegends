@@ -1078,6 +1078,27 @@ MARCAS = {
 _CACHE_FILA = {}
 
 
+def _sin_sheet(hoja):
+    """🏆 ¿Esta vitrina ya no vive en el Sheet? (etapa 5b: `espejo_t1.SIN_SHEET`)"""
+    try:
+        import espejo_t1 as _EJ
+        return hoja in _EJ.SIN_SHEET
+    except Exception:                                    # noqa: BLE001
+        return False
+
+
+def _leer_vitrina(hoja, rng):
+    """`_leer(OFICIAL, '<hoja>!<rng>')`, o lo mismo desde su archivo si la vitrina ya no vive en el Sheet (etapa
+    5b): `espejo_t1.valores_de()` contesta como la API. Sin archivo, frena."""
+    if _sin_sheet(hoja):
+        import espejo_t1 as _EJ
+        g = _EJ.grilla(hoja)
+        if g is None:
+            _EJ.sin_archivo(hoja)
+        return _EJ.valores_de(g, '%s!%s' % (hoja, rng))
+    return _leer(OFICIAL, '%s!%s' % (hoja, rng))
+
+
 def fila_cabecera(hoja, refresco=False):
     """En qué fila está la cabecera de esa hoja, buscándola. 1-based.
 
@@ -1096,6 +1117,9 @@ def fila_cabecera(hoja, refresco=False):
     ⚠️ Y SE CACHEA POR CORRIDA, porque `tabla_nueva()` la pide varias
     veces y cada una es una lectura de la API.
     """
+    # 🏆 la que ya no vive en el Sheet tiene la cabecera en la 1 de su archivo, siempre: no se lee nada (etapa 5b)
+    if _sin_sheet(hoja):
+        return 1
     if not refresco and hoja in _CACHE_FILA:
         return _CACHE_FILA[hoja]
     marcas = MARCAS.get(hoja) or ('Rapero',)
@@ -1119,6 +1143,13 @@ def cabecera_oficial(hoja=None, fila=None):
     escritor la llene sin tocar código.
     """
     hoja = hoja or HOJA
+    # 🏆 la que ya no vive en el Sheet: la de su archivo (etapa 5b)
+    if _sin_sheet(hoja):
+        import espejo_t1 as _EJ
+        d = _EJ.leer(hoja)
+        if d is None:
+            _EJ.sin_archivo(hoja)
+        return [str(c).strip() for c in d.get('cabecera') or []]
     # ⚠️ SE BUSCA, no se asume la 16. Ver `fila_cabecera()`.
     fila = fila_cabecera(hoja) if fila is None else fila
     v = _leer(OFICIAL, '%s!A%d:%s%d' % (hoja, fila, HASTA, fila))
@@ -1626,7 +1657,7 @@ def tabla_nueva():
     # ⚠️ LO LEÍDO SE GUARDA: `main()` lo compara con lo calculado para no
     # reescribir una vitrina que ya dice lo mismo (`ya_dice()`), sin volver
     # a leerla
-    tabla_nueva.leidas = _leer(OFICIAL, '%s!A%d:%s' % (HOJA, fila_cabecera(HOJA) + 1, HASTA))
+    tabla_nueva.leidas = _leer_vitrina(HOJA, 'A%d:%s' % (fila_cabecera(HOJA) + 1, HASTA))
     for f in tabla_nueva.leidas:
         f = list(f) + [''] * len(cab)
         nom = str(f[icol.get('Rapero', 1)]).strip()
@@ -2558,12 +2589,17 @@ def rehacer_estructura(dry=True):
     pts»* y *«Axinu — 24 oros»*, números de la pre-temporada, con la T1
     ya arrancada.
 
+    🏆 Y DESDE EL 12/11/2026 NO SE CORRE: las vitrinas ya no viven en el Sheet (etapa 5b), su archivo tiene la
+    cabecera en la 1 siempre y el Sheet quedó congelado como estaba.
+
     ⚠️ NO BORRA LO QUE NO SE PUEDE RECALCULAR: se comprueba antes. Ver
     `CAB_TEMPORADA`, donde está medido que hoy no hay nada que perder.
 
     ⚠️ Y DESPUÉS HAY QUE VOLVER A ESCRIBIR EL CUERPO. Esto deja la hoja
     con su cabecera nueva y vacía; `tabla_nueva()` la lee y la llena.
     """
+    if _sin_sheet(HOJA) or _sin_sheet('Ranking Podios'):
+        return {'freno': 'las vitrinas ya no viven en el Sheet (etapa 5b): no hay estructura que rehacer'}
     pendientes = []
     cab_vieja = cabecera_oficial()
     # 🔴 LA COMPROBACIÓN, ANTES DE TOCAR NADA: ninguna columna que no se
@@ -2717,7 +2753,15 @@ def escribir_todas(dry=True):
             out[cual]['muestra'] = filas[:3]
             continue
         # 🏆 lo calculado, también a datos/ (etapa 5b de sacar el Sheet): ver `espejo_t1.al_escribir_vitrina()`
-        EJ.al_escribir_vitrina(nombre, cab, filas)
+        _r = EJ.al_escribir_vitrina(nombre, cab, filas)
+        # 🏆 ya no vive en el Sheet (etapa 5b): el archivo y listo
+        if nombre in EJ.SIN_SHEET:
+            out[cual]['r'] = ({'escritas': 0, 'quedaron': len(filas), 'malas': [], 'total_malas': 0, 'igual': True}
+                              if _r is False else
+                              {'escritas': len(filas), 'quedaron': len(filas), 'malas': [], 'total_malas': 0}
+                              if _r else
+                              {'escritas': 0, 'quedaron': 0, 'malas': ['no pude dejarla en datos/'], 'total_malas': 1})
+            continue
         # 🔑 LA QUE YA DICE LO MISMO NO SE REHACE: una lectura en vez de
         # borrar, escribir, leer de vuelta y vestir. Ver `ya_dice()`.
         if ya_dice(OFICIAL, nombre, fila_cab, cab, filas):
@@ -3435,7 +3479,7 @@ def main():
             # las crudas y esta vitrina (`resetear.VITRINA`); salir con 1 acá
             # hacía que el ciclo avisara «la vitrina no se escribe» cada 6 h
             # hasta el primer evento de la T1.
-            vivas = [f for f in _leer(OFICIAL, '%s!A%d:AZ' % (HOJA, fila_cabecera(HOJA) + 1))
+            vivas = [f for f in _leer_vitrina(HOJA, 'A%d:AZ' % (fila_cabecera(HOJA) + 1))
                      if any(str(c).strip() for c in f)]
             if not vivas:
                 print('\n   ✅ `Resultados` y la vitrina están vacías: nada que '
@@ -3551,7 +3595,16 @@ def main():
 
         # 🏆 lo calculado, también a datos/ (etapa 5b de sacar el Sheet): ver `espejo_t1.al_escribir_vitrina()`
         import espejo_t1 as _EJ
-        _EJ.al_escribir_vitrina(HOJA, cab, filas)
+        _r = _EJ.al_escribir_vitrina(HOJA, cab, filas)
+        # 🏆 YA NO VIVE EN EL SHEET (etapa 5b, 12/11/2026): el archivo es la vitrina, y no se escribe ni se viste nada
+        # en el Oficial. Las puertas de arriba (que no encoja, que el arrastre enganche) siguen valiendo
+        if _sin_sheet(HOJA):
+            if _r is None:
+                print('\n   🔴 no pude dejar la vitrina en datos/ (ver arriba)\n')
+                return 1
+            print('\n   ✓ %s en datos/ (%d fila(s)%s): ya no se escribe en el Sheet\n'
+                  % (HOJA, len(filas), '' if _r else ', igual que antes'))
+            return 0
         # 🔑 SI YA DICE LO MISMO, NO SE TOCA. Ver `ya_dice()`: sin eventos
         # nuevos, la vitrina es igual corrida tras corrida.
         if ya_dice(OFICIAL, HOJA, fila_cabecera(HOJA), cab, filas,
@@ -3652,7 +3705,7 @@ def main():
             return 1
         ag = agregar_temporada(res, uno)   # como la vitrina: multiplicada y con el MW
         cab = cabecera_oficial()
-        viv = _leer(OFICIAL, '%s!A%d:%s' % (HOJA, fila_cabecera(HOJA) + 1, HASTA))
+        viv = _leer_vitrina(HOJA, 'A%d:%s' % (fila_cabecera(HOJA) + 1, HASTA))
         icol = {c: i for i, c in enumerate(cab)}
         iguales = distintos = 0
         for f in viv:

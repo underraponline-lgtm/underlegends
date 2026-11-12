@@ -211,14 +211,13 @@ def en_la_liga():
     API = 'https://sheets.googleapis.com/v4/spreadsheets'
     # ⚠️ el ID vive en `planillas.py`: la T1 estrena planilla y una copia
     # suelta lee la vieja sin fallar. Ver el encabezado de ese modulo.
-    from planillas import OFICIAL as OF
     # 🔴 LA CABECERA SE BUSCA, NO SE CLAVA (ver CLAUDE.md). Esto leía
     # `A16:F` —la fila de la pre-temporada— y hoy la cabecera está en la
     # 1: la primera fila de datos se tomaba por cabecera y `index('Rapero')`
     # reventaba. Y sin mirar la respuesta, un 429 era una tabla vacía.
     import rankings as _R
-    v = _R._leer(OF, 'Ranking Temporada!A%d:F'
-                 % _R.fila_cabecera('Ranking Temporada'))
+    # 🏆 la vitrina, de donde viva: desde el 12/11/2026 su archivo (etapa 5b), no el Sheet
+    v = _R._leer_vitrina('Ranking Temporada', 'A%d:F' % _R.fila_cabecera('Ranking Temporada'))
     cab2 = [str(x).strip() for x in v[0]]
     iR, iE = cab2.index('Rapero'), cab2.index('Ev')
     compitio = {}

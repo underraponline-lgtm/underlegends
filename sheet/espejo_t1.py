@@ -139,7 +139,10 @@ def filas(hoja, temp=ACTUAL, base=BASE):
 #: Sheet, `resultados.reescribir()` y `renombrar_varios()` no lo escriben, y el paso 2g no las copia. Las tres de datos
 #: primero, que tenían siete corridas seguidas en «igual» (7:52 a 10:22 PM) y el contador movido en los dos lugares.
 #: ⚠️ Sin archivo NO se lee el Sheet: frena (`sin_archivo()`). El Sheet de estas hojas quedó congelado el 11/11.
-SIN_SHEET = {'Resultados', '1v1', 'Eventos Procesados'}
+SIN_SHEET = {'Resultados', '1v1', 'Eventos Procesados',
+             # 🏆 y las cinco vitrinas (etapa 5b, 12/11/2026; Dlx: «espera dos corridas y hazlo esta noche»): lo que
+             # calcula `rankings.py` dio igual al Sheet en las corridas de las 11:22 PM, 11:52 PM y 12:22 AM
+             'Ranking Temporada', 'Ranking Competitivo', 'Ranking Podios', 'Ranking Duelos', 'Ranking Mundial'}
 
 
 def sin_archivo(hoja):
@@ -430,6 +433,12 @@ def espejar_vitrinas(aplicar=False):
     ⚠️ Corre ANTES de los pools (paso 2 del ciclo) y otra vez en el 2g: lo de esta corrida tiene que estar."""
     out = {}
     for hoja in VITRINAS:
+        if hoja in SIN_SHEET:
+            d = leer(hoja)
+            print('   %-20s %s' % (hoja, 'la fuente es datos/ (%d fila(s)): el Sheet ya no se escribe'
+                                 % len((d or {}).get('filas') or []) if d else '🔴 sin archivo'))
+            out[hoja] = 'datos' if d else 'no'
+            continue
         try:
             cab, cru = _leer_oficial(hoja)
         except Exception as e:                             # noqa: BLE001
@@ -468,7 +477,7 @@ def al_escribir_vitrina(hoja, cab, filas, base=BASE):
     la escribe en el Sheet (o ve que ya decía eso). La copia de antes de los pools (`espejar_vitrinas()`) compara con
     el Sheet: tiene que dar «igual» varias corridas antes de dejar de escribir las vitrinas en el Sheet.
     Sólo en GitHub (como `marcar_sucias()`). Nunca levanta. `True` si cambió el archivo."""
-    if hoja not in VITRINAS or not _en_github():
+    if hoja not in VITRINAS or (hoja not in SIN_SHEET and not _en_github()):
         return None
     try:
         fs = [normal(f) for f in filas if any(str(c).strip() for c in f)]
@@ -503,6 +512,10 @@ def fuente_vitrina(hoja, del_sheet, lector='', base=BASE):
     """🏆 Lo que usan los pools en vez de `sh.worksheet(hoja).get_all_values()` (etapa 4a). Con `CONTROL`, igual que
     `fuente()`: llama a `del_sheet` (la lectura de siempre), compara y si no coincide usa el Sheet y lo dice."""
     mio = grilla(hoja, base=base)
+    if hoja in SIN_SHEET:
+        if mio is None:
+            sin_archivo(hoja)
+        return mio
     if mio is not None and not CONTROL:
         return mio
     sh = [[str(c) for c in f] for f in del_sheet()]
@@ -921,7 +934,8 @@ def _self_check():
        and ruta('1v1').endswith(os.path.join('datos', ACTUAL + '_1v1.json')), 'las tres hojas, con la temporada en el nombre')
     # 🛑 ETAPA 5: las que ya no viven en el Sheet se leen y se escriben sólo en su archivo, y sin archivo frena
     SIN_SHEET.update(sin_sheet0)
-    ok(SIN_SHEET == {'Resultados', '1v1', 'Eventos Procesados'}, 'las tres de datos ya no viven en el Sheet')
+    ok({'Resultados', '1v1', 'Eventos Procesados'} | set(VITRINAS) == SIN_SHEET,
+       'las tres de datos y las cinco vitrinas ya no viven en el Sheet')
     real, ctrl = sys.modules.get('escribir'), CONTROL
     falso = types.ModuleType('escribir')
 

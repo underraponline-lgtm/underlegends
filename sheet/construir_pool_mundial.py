@@ -146,13 +146,17 @@ def leer(v):
 
 
 def main():
-    creds = os.path.join(RAIZ, 'creds.json')
-    if not os.path.exists(creds):
-        print('falta creds.json en la raiz del proyecto')
-        return
-    sc = ['https://www.googleapis.com/auth/spreadsheets.readonly']
-    gc = gspread.authorize(Credentials.from_service_account_file(creds, scopes=sc))
-    v = gc.open_by_key(SHEET).worksheet(HOJA).get_all_values()
+    import espejo_t1 as EJ
+
+    def del_sheet():
+        creds = os.path.join(RAIZ, 'creds.json')
+        if not os.path.exists(creds):
+            raise SystemExit('falta creds.json en la raiz del proyecto')
+        sc = ['https://www.googleapis.com/auth/spreadsheets.readonly']
+        gc = gspread.authorize(Credentials.from_service_account_file(creds, scopes=sc))
+        return gc.open_by_key(SHEET).worksheet(HOJA).get_all_values()
+    # 🏆 la vitrina, de donde viva: desde el 12/11/2026 su archivo (etapa 5b), no el Sheet
+    v = EJ.fuente_vitrina(HOJA, del_sheet, 'pool mundial')
     d = leer(v)
     d['_hoja'] = HOJA
     d['_nota'] = ('Tres bloques en una hoja, no una tabla. El ❓ de la hoja es '

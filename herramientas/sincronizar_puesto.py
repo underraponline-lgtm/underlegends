@@ -162,13 +162,20 @@ def numerados(pool=None):
 
 
 def ranking():
-    """[(puesto, nombre)] leido de la hoja, sin calcular nada."""
-    import gspread
-    from google.oauth2.service_account import Credentials
-    gc = gspread.authorize(Credentials.from_service_account_file(
-        os.path.join(BASE, 'creds.json'),
-        scopes=['https://www.googleapis.com/auth/spreadsheets.readonly']))
-    v = gc.open_by_key(OFICIAL).worksheet(HOJA).get_all_values()
+    """[(puesto, nombre)] leido de la vitrina, sin calcular nada.
+
+    🏆 DESDE EL 12/11/2026 LA VITRINA ES SU ARCHIVO (etapa 5b de sacar el Sheet): `datos/t1_vitrina_competitivo.json`.
+    El Sheet quedó congelado, y leerlo daría el # de esa noche para siempre. `espejo_t1.fuente_vitrina()` decide."""
+    import espejo_t1 as EJ
+
+    def del_sheet():
+        import gspread
+        from google.oauth2.service_account import Credentials
+        gc = gspread.authorize(Credentials.from_service_account_file(
+            os.path.join(BASE, 'creds.json'),
+            scopes=['https://www.googleapis.com/auth/spreadsheets.readonly']))
+        return gc.open_by_key(OFICIAL).worksheet(HOJA).get_all_values()
+    v = EJ.fuente_vitrina(HOJA, del_sheet, 'el # del apodo')
     cab = next(i for i, f in enumerate(v) if '#' in [x.strip() for x in f]
                and 'Rapero' in [x.strip() for x in f])
     H = [x.strip() for x in v[cab]]
