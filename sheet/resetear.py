@@ -491,6 +491,20 @@ def main():
         return _self_check()
     if '--prueba' in sys.argv:
         return main_prueba()
+    # 🗓️ DESDE EL 12/11/2026 LOS NÚMEROS DE LA TEMPORADA VIVEN EN datos/, NO EN EL SHEET (sacar el Sheet, etapa 6b;
+    # Dlx: «dale, sigue con… todo lo demás»). Borrar estas hojas del Sheet ya no resetea nada —nadie las lee—: la
+    # temporada que viene se arma con sus propios archivos, y los de la anterior quedan como su archivo. Lo de las
+    # cartas de abajo (las Bloqueadas primero) sigue valiendo. El camino viejo, sobre el Sheet, sólo con `--sheet`
+    if '--sheet' not in sys.argv:
+        print('\n══ EL CAMBIO DE TEMPORADA (desde el 12/11/2026, sin el Sheet) ══\n')
+        print('   1. las Bloqueadas que falten, dibujadas y subidas: python bot/bloqueadas.py --generar')
+        print('   2. los archivos de la que viene:  python sheet/espejo_t1.py --nueva-temporada t2 --aplicar')
+        print('      (los resultados y las vitrinas arrancan vacíos; la Lista, AKAs, Config y las colas pasan;')
+        print('       el contador sigue. Los de la T1 no se tocan: son su archivo)')
+        print('   3. en el MISMO commit: `ACTUAL`, `FECHAS` y `TODAS` en comun/temporada.py, y los datos/t1_… de')
+        print('      `ARCHIVOS` en bot/ci/guardar.sh pasan a datos/t2_… (si falta algo, CI se pone rojo)')
+        print('   4. si el ciclo frena porque el pool cae, una corrida con --sin-pools (ver el encabezado)\n')
+        return 0
     aplicar = '--aplicar' in sys.argv
     print('\n══ RESET DE TEMPORADA ══\n')
 

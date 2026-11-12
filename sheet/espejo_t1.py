@@ -1394,6 +1394,73 @@ def escribir_en_archivo(metodo, ruta_api, kw, titulo_de_id=None):
 _ESCRITAS = set()
 
 
+#: 🗓️ LO QUE PASA DE UNA TEMPORADA A LA OTRA. Es la regla de siempre (`sheet/resetear.py`, `INTOCABLES`): «la bandera
+#: es identidad, el número es ranking». La Lista, AKAs y Config son la identidad y las reglas; Pendientes y ✅ Decidir
+#: son la cola de lo que una persona tiene que mirar, que el reset de la pre tampoco tocaba. El resto —los resultados y
+#: las cinco vitrinas— arranca vacío, con su cabecera. Y el contador sigue: los números de evento no se repiten nunca.
+PASAN = {'Lista de Raperos', 'AKAs', 'Config', 'Pendientes', '✅ Decidir'}
+
+
+def nueva_temporada(nueva, de=ACTUAL, base=BASE, aplicar=False):
+    """🗓️ LOS ARCHIVOS DE LA TEMPORADA QUE VIENE (12/11/2026, sacar el Sheet). Con todo en datos/, cambiar `ACTUAL` en
+    `comun/temporada.py` sin esto deja al ciclo frenado en «sin archivo» —a propósito: nunca lee el Sheet viejo—. Arma
+    `datos/<nueva>_*.json` desde los de `de`, sin tocarlos (quedan como el archivo de esa temporada). Nunca pisa uno que
+    ya exista. Devuelve `[(hoja, qué)]`.
+
+    EL CAMBIO DE TEMPORADA, EN ORDEN (los tres en el mismo commit, o el ciclo frena):
+        1. `python sheet/espejo_t1.py --nueva-temporada t2 --aplicar`, después de la última corrida de la anterior
+        2. `ACTUAL`, `FECHAS` y `TODAS` en `comun/temporada.py`
+        3. en `bot/ci/guardar.sh`, los `datos/t1_…` de `ARCHIVOS` pasan a `datos/t2_…`
+    El self-check de este archivo y el paso `guardar.sh` de CI se ponen rojos si falta el 1 o el 3."""
+    if nueva == de:
+        raise ValueError('la temporada nueva es la misma: %s' % nueva)
+    out = []
+    pares = [(h, ruta(h, temp=de, base=base), ruta(h, temp=nueva, base=base)) for h in sorted(SIN_SHEET)]
+    pares.append(('contador', ruta_contador(de, base), ruta_contador(nueva, base)))
+    for h, src, dst in pares:
+        if os.path.exists(dst):
+            out.append((h, 'ya está: no la toco'))
+            continue
+        texto = _texto_de(src)
+        if texto is None:
+            out.append((h, '🔴 falta %s' % os.path.relpath(src, base)))
+            continue
+        if h == 'contador' or h in PASAN:
+            nuevo, que = texto, 'pasa tal cual' if h != 'contador' else 'sigue en %d' % contador(de, base)
+        else:
+            cab = (json.loads(texto) or {}).get('cabecera') or []
+            nuevo, que = volcar(h, cab, []), 'vacía, con su cabecera (%d columnas)' % len(cab)
+        if aplicar:
+            with io.open(dst, 'w', encoding='utf-8', newline='\n') as f:
+                f.write(nuevo)
+        out.append((h, que))
+    return out
+
+
+def archivos(temp=ACTUAL, base=BASE):
+    """Las rutas, relativas a la raíz, de los archivos de `temp` que viven acá: los que tiene que commitear el ciclo."""
+    rs = [ruta(h, temp=temp, base=base) for h in sorted(SIN_SHEET)] + [ruta_contador(temp, base)]
+    return [os.path.relpath(r, base).replace(os.sep, '/') for r in rs]
+
+
+def faltan_para_la_temporada(base=BASE):
+    """🗓️ `[motivo]` de lo que no está listo para `ACTUAL`: un archivo que no existe, o que `guardar.sh` no commitea.
+    Vacío si está todo. Lo mira el self-check, así que CI se pone rojo el día que se cambia `ACTUAL` sin lo demás."""
+    malos = []
+    try:
+        with io.open(os.path.join(base, 'bot', 'ci', 'guardar.sh'), encoding='utf-8') as f:
+            g = f.read()
+    except OSError:
+        g = ''
+    lista = set(g[g.find('ARCHIVOS="'):].split('"')[1].split()) if 'ARCHIVOS="' in g else set()
+    for a in archivos(base=base):
+        if not os.path.exists(os.path.join(base, a)):
+            malos.append('no existe %s (`--nueva-temporada %s --aplicar`)' % (a, ACTUAL))
+        if a not in lista:
+            malos.append('`guardar.sh` no commitea %s' % a)
+    return malos
+
+
 def _self_check():
     import tempfile
     fallas = 0
@@ -1787,6 +1854,36 @@ def _self_check():
        and titulo_de_id(1897286816) == 'Lista de Raperos' and titulo_de_id('nada') is None
        and metadatos('/values/AKAs') is None and all(s['protectedRanges'] == [] for s in meta['sheets']),
        '🧊 los metadatos, de la foto del Operativo: de las grillas, su tamaño en el archivo; sin protecciones ni reglas')
+
+    # 🗓️ LA TEMPORADA QUE VIENE: lo que pasa, lo que arranca vacío, el contador que sigue, y que nada se pise
+    with tempfile.TemporaryDirectory() as tmp:
+        os.makedirs(os.path.join(tmp, 'datos'))
+        for h in SIN_SHEET:
+            with io.open(ruta(h, temp='t1', base=tmp), 'w', encoding='utf-8', newline='\n') as f:
+                f.write(volcar_grilla(h, [['Rapero'], ['Oasis']]) if h in GRILLAS
+                        else volcar(h, ['#', 'Rapero', 'Puntos'], [['1', 'Oasis', '100']]))
+        with io.open(ruta_contador('t1', tmp), 'w', encoding='utf-8', newline='\n') as f:
+            f.write('{"ultimo": 611}\n')
+        t1_antes = {h: _texto_de(ruta(h, temp='t1', base=tmp)) for h in SIN_SHEET}
+        simulacro = nueva_temporada('t2', de='t1', base=tmp)
+        nada_aun = not any(os.path.exists(ruta(h, temp='t2', base=tmp)) for h in SIN_SHEET)
+        plan = dict(nueva_temporada('t2', de='t1', base=tmp, aplicar=True))
+        lista2 = _texto_de(ruta('Lista de Raperos', temp='t2', base=tmp)) == t1_antes['Lista de Raperos']
+        res2 = leer('Resultados', temp='t2', base=tmp) or {}
+        vit2 = leer('Ranking Temporada', temp='t2', base=tmp) or {}
+        pend2 = _texto_de(ruta('Pendientes', temp='t2', base=tmp)) == t1_antes['Pendientes']
+        cont2 = contador('t2', tmp) == 611
+        otra = dict(nueva_temporada('t2', de='t1', base=tmp, aplicar=True))
+        t1_igual = all(_texto_de(ruta(h, temp='t1', base=tmp)) == t1_antes[h] for h in SIN_SHEET)
+    ok(len(simulacro) == len(SIN_SHEET) + 1 and nada_aun and lista2 and pend2 and cont2 and t1_igual
+       and res2.get('cabecera') == ['#', 'Rapero', 'Puntos'] and res2.get('filas') == []
+       and vit2.get('filas') == [] and plan['contador'] == 'sigue en 611'
+       and all(v == 'ya está: no la toco' for v in otra.values()),
+       '🗓️ la temporada que viene: la Lista, AKAs, Config y las colas pasan; resultados y vitrinas vacíos con su '
+       'cabecera; el contador sigue; sin --aplicar no escribe, y nunca pisa ni toca la anterior')
+    faltan = faltan_para_la_temporada()
+    ok(not faltan, '🗓️ los archivos de %s existen y `guardar.sh` los commitea%s'
+       % (ACTUAL, ('  ← ' + '; '.join(faltan[:3])) if faltan else ''))
     print('\n   %s' % ('✅ todo bien' if not fallas else '🔴 %d mal' % fallas))
     return 1 if fallas else 0
 
@@ -1795,6 +1892,23 @@ def main():
     a = sys.argv[1:]
     if '--auto' in a:
         return _self_check()
+    if '--nueva-temporada' in a:
+        i = a.index('--nueva-temporada')
+        nueva = a[i + 1] if i + 1 < len(a) else ''
+        if not nueva or nueva.startswith('-'):
+            print('uso: python sheet/espejo_t1.py --nueva-temporada t2 [--aplicar]')
+            return 1
+        print('\n══ LA TEMPORADA %s, DESDE LA %s ══\n' % (nueva.upper(), ACTUAL.upper()))
+        plan = nueva_temporada(nueva, aplicar='--aplicar' in a)
+        for h, que in plan:
+            print('   %-20s %s' % (h, que))
+        print('\n   %s\n' % ('escrito. Después: `ACTUAL` en comun/temporada.py y los datos/%s_… de guardar.sh, en el mismo '
+                             'commit (ver `nueva_temporada()`)' % nueva if '--aplicar' in a
+                             else '(simulacro: no escribí nada — `--aplicar`)'))
+        return 1 if any(q.startswith('🔴') for _h, q in plan) else 0
+    if '--archivos' in a:
+        print(' '.join(archivos()))
+        return 0
     if '--comparar' in a:
         print('\n══ EL SHEET CONTRA datos/ ══\n')
         return comparar()

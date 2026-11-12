@@ -447,9 +447,21 @@ las lecturas salen de ahí. **Escribirlas es del ciclo**: desde una PC se niega
 sin `--desde-aca` (y entonces `git pull` antes y commit enseguida), y en
 GitHub sólo las escribe `escuchar` —`guardar.sh` es «gana el mío», y dos
 trabajos se pisarían el archivo—. Lo único que sigue en el Sheet son las
-hojas que nadie lee (Log, Anuncios, los apodos) y los paneles con fórmula,
-que quedaron congelados. Al final el Sheet **se congela como archivo, no se
-borra**.
+hojas que nadie lee (Log, Anuncios) y los paneles con fórmula, que quedaron
+congelados. Los nombres de Discord de la Lista («Apodos Discord», lo único
+privado que se guardaba ahí) viven en KV (`priv:apodos_discord`), y los
+metadatos del Operativo, en una foto (`espejo_t1.OPERATIVO_HOJAS`): **el
+ciclo ya no necesita la credencial del Sheet** —probado con ella rota—, y
+`📡 pedidos al Sheet` en el log dice si algo le vuelve a preguntar. El Sheet
+**se congela como archivo, no se borra**.
+
+🗓️ **EL CAMBIO DE TEMPORADA, desde el 12/11/2026:** cada temporada tiene sus
+archivos (`datos/t1_…`, `datos/t2_…`) y los de la anterior quedan como su
+archivo. En el mismo commit: `python sheet/espejo_t1.py --nueva-temporada t2
+--aplicar` (resultados y vitrinas vacíos; la Lista, AKAs, Config y las colas
+pasan; el contador sigue), `ACTUAL` en `comun/temporada.py` y los `datos/t1_…`
+de `guardar.sh` a `t2_…`. Si falta uno, CI se pone rojo. `resetear.py` ya no
+borra el Sheet: dice este orden.
 
 ⚠️ **La fórmula está verificada contra las 138 filas de la pre-temporada**,
 con una diferencia máxima de 0.050. Ver el encabezado de

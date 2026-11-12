@@ -693,10 +693,25 @@ def _lo_barato(correr):
     from comun import temporada as _TMP
     if _TMP.toca_arranque():
         paso(0, 'arranca la %s: la fase de prueba se archiva y se vacía' % _TMP.SELLO)
+        # 🗄️ DESDE EL 12/11/2026 LOS NÚMEROS VIVEN EN datos/ (sacar el Sheet): no hay hojas del Operativo que archivar
+        # ni vaciar. La temporada nueva arranca con sus propios archivos, armados al cambiar `ACTUAL`
+        # (`espejo_t1.py --nueva-temporada`), y los de la anterior quedan como su archivo. Ir al Sheet acá, además,
+        # frenaría el ciclo entero el día que la credencial ya no esté
+        try:
+            import espejo_t1 as _EJ0
+            sin_sheet0 = 'Resultados' in _EJ0.SIN_SHEET
+        except Exception:                                # noqa: BLE001
+            sin_sheet0 = False
         if not correr:
-            print('      correría sheet/resetear.py --prueba --aplicar')
+            print('      %s' % ('los números ya arrancan en sus archivos de datos/: no hay hojas que vaciar' if sin_sheet0
+                                else 'correría sheet/resetear.py --prueba --aplicar'))
         else:
-            ok0 = corre(['sheet/resetear.py', '--prueba', '--aplicar'], callado=False)
+            if sin_sheet0:
+                print('      🗄️ los números viven en datos/: la %s arranca con sus archivos, no hay hojas que vaciar'
+                      % _TMP.SELLO)
+                ok0 = True
+            else:
+                ok0 = corre(['sheet/resetear.py', '--prueba', '--aplicar'], callado=False)
             if not ok0:
                 print('\n   🔴 no pude archivar la fase de prueba: no sigo (se reintenta '
                       'en la próxima corrida)\n')
@@ -719,9 +734,12 @@ def _lo_barato(correr):
             reseteo = True
             try:
                 import alertar as _AL
-                _txt = ('**Arrancó la %s.** La fase de prueba quedó archivada en las pestañas '
-                        '«· prueba» del Operativo y todo arranca de cero: rankings, puntos y '
-                        'llaves. Las tarjetas se redibujan solas.' % _TMP.SELLO)
+                _txt = (('**Arrancó la %s.** La temporada anterior quedó en sus archivos de `datos/` y todo '
+                         'arranca de cero: rankings, puntos y llaves. Las tarjetas se redibujan solas.' % _TMP.SELLO)
+                        if sin_sheet0 else
+                        ('**Arrancó la %s.** La fase de prueba quedó archivada en las pestañas '
+                         '«· prueba» del Operativo y todo arranca de cero: rankings, puntos y '
+                         'llaves. Las tarjetas se redibujan solas.' % _TMP.SELLO))
                 # si antes había fallado, el «volvió» ya dice que arrancó
                 if not _AL.resuelto('arranque', _txt):
                     _AL.dm('🧹 ' + _txt)
