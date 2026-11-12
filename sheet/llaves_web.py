@@ -101,6 +101,19 @@ HUERFANA_HORAS = 24
 #: Más que `PARECIDO`: acá el número ya no ayuda a separar.
 SERIE = 0.9
 
+#: 🏆 EL CIRCUITO DE NACIONALES DE UN SERVIDOR: los nombres con que lo escriben sus anuncios y sus llaves (12/11/2026,
+#: Dlx: *«arregla también lo del cruce de la nacional»*). La ACADEMIA anunció «HOY ES LA NACIONAL DE VENEC» y su llave
+#: dice «Red Bull Crew VENEC»: el mismo evento con un 47 % de parecido, contra el 80 % de `PARECIDO`, así que la llave
+#: quedó retenida como de broma. Su propio anuncio del circuito lo dice: *«RED BULL CREW: EL CIRCUITO DE NACIONALES
+#: OFICIAL DE LA CREW»*, y la de LATAM se anunció «RBCW: LATAM». Si los dos nombres nombran el circuito, se compara lo
+#: que queda (`_mismo_circuito()`). ⚠️ POR SERVIDOR Y NO PARA TODOS: «nacional» suelta es de cualquiera —la FINAL
+#: NACIONAL ALBICELESTE de Urban no es una Red Bull Crew—, y «Red Bull» lo usan LKR y Urban para circuitos suyos
+CIRCUITOS = {'ACAD': ('red bull crew', 'redbull crew', 'rbcw', 'nacional')}
+#: las palabras que no distinguen un evento de otro del mismo circuito: las de `RELLENO` de llave_vivo.js, más
+#: artículos y preposiciones («HOY ES LA NACIONAL DE VENEC»)
+_RELLENO_CIRCUITO = frozenset(('vol', 'volumen', 'edicion', 'fecha', 'the', 'los', 'las', 'del', 'con', 'por', 'una',
+                               'uno', 'hoy', 'para', 'esta', 'este'))
+
 
 def limpio(nombre):
     """El nombre sin el subrayado de Discord: `__ TOKYO __` es `TOKYO`."""
@@ -174,6 +187,40 @@ def _serie(nombre):
 
 def _misma_serie(a, b):
     return bool(a and b and (a == b or difflib.SequenceMatcher(None, a, b).ratio() >= SERIE))
+
+
+def _palabras_circuito(nombre):
+    """Las palabras de un nombre, sin tildes, en minúsculas y sin números: «HOY ES LA NACIONAL DE VENEC 🇻🇪» ->
+    `['hoy', 'es', 'la', 'nacional', 'de', 'venec']`."""
+    s = ''.join(c for c in unicodedata.normalize('NFKD', str(nombre or '').lower()) if not unicodedata.combining(c))
+    return [w for w in re.split(r'[^a-z0-9]+', s) if w and not w.isdigit()]
+
+
+def _resto_circuito(sv, nombre):
+    """Lo que queda del nombre después de sacar el circuito del servidor (`CIRCUITOS`), como conjunto de palabras que
+    distinguen; `None` si el nombre no nombra el circuito. «Red Bull Crew VENEC» -> `{'venec'}`."""
+    ps = _palabras_circuito(nombre)
+    txt = ' %s ' % ' '.join(ps)
+    hay = False
+    for alias in CIRCUITOS.get(sv or '', ()):
+        k = ' %s ' % alias
+        if k in txt:
+            hay = True
+            txt = txt.replace(k, ' ')
+    if not hay:
+        return None
+    return {w for w in txt.split() if len(w) > 2 and w not in _RELLENO_CIRCUITO}
+
+
+def _mismo_circuito(sv, x, y):
+    """¿Dos nombres son el mismo evento del circuito de nacionales del servidor? Los dos lo nombran y lo que distingue
+    a uno está entero en el otro: «HOY ES LA NACIONAL DE VENEC» y «Red Bull Crew VENEC» sí; «RBCW: LATAM» y «RED BULL
+    CREW LATAM 2026» sí; la de VENEC y la de LATAM, no. Los números los mira `_chocan()`, aparte."""
+    rx, ry = _resto_circuito(sv, x), _resto_circuito(sv, y)
+    if rx is None or ry is None:
+        return False
+    wx, wy = set(_palabras_circuito(x)), set(_palabras_circuito(y))
+    return bool((rx and rx <= wy) or (ry and ry <= wx))
 
 
 _FORMA = re.compile(r'(?i)(?<![a-z0-9])(\d+)\s*(?:vs|v)\s*(\d+)(?![a-z0-9])')
@@ -251,6 +298,7 @@ def anuncio_de(nombre, sv, dia, anuncios):
     b = clave_nombre(nombre)
     if not b or not dia:
         return None
+    del_circuito = None
     for p in anuncios or ():
         if (p.get('servidor') or p.get('sv') or '') != sv:
             continue
@@ -261,7 +309,11 @@ def anuncio_de(nombre, sv, dia, anuncios):
         if a and (a == b or (not _chocan(p.get('nombre'), nombre)
                              and difflib.SequenceMatcher(None, a, b).ratio() >= PARECIDO)):
             return p
-    return None
+        # 🏆 el circuito de nacionales (`CIRCUITOS`), sólo si ninguno se parece por el nombre entero
+        if del_circuito is None and a and not _chocan(p.get('nombre'), nombre) \
+                and _mismo_circuito(sv, p.get('nombre'), nombre):
+            del_circuito = p
+    return del_circuito
 
 
 def anunciado(nombre, sv, dia, anuncios):
@@ -778,6 +830,10 @@ def _elegir_con(p, regs):
             continue
         else:
             puntaje = difflib.SequenceMatcher(None, a, b).ratio()
+            # 🏆 «HOY ES LA NACIONAL DE VENEC» y «Red Bull Crew VENEC» (`CIRCUITOS`): pasa con lo justo, así un nombre
+            # que se parece de verdad le gana
+            if puntaje < PARECIDO and _mismo_circuito(p.get('sv') or '', p.get('nombre'), r.get('nombre')):
+                puntaje = PARECIDO
         if puntaje >= PARECIDO:
             # ⚠️ LO MÁS CERCA EN EL TIEMPO, EN MINUTOS Y NO EN DÍAS: dos
             # llaves con el mismo nombre el mismo día empataban siempre y
@@ -1261,6 +1317,31 @@ def _self_check():
        and not anunciado('COMPE DEL VACILE 1', 'URBF', datetime.date(2026, 10, 3), an)
        and not anunciado('COMPE DEL VACILE 2', 'URBF', d28, an),
        'y sin él: otro nombre, otro servidor, otra semana u otra edición')
+
+    # 🏆 el circuito de nacionales de la ACADEMIA (`CIRCUITOS`, 12/11/2026): la nacional de VENEC se anunció «HOY ES LA
+    # NACIONAL DE VENEC» y su llave dice «Red Bull Crew VENEC»
+    d7 = datetime.date(2026, 11, 7)
+    anc = [{'nombre': 'UN PLACER MOSTRAR AL EQUIPO DE TRABAJO DE ESTA NACIONAL', 'servidor': 'ACAD',
+            'cuando': '2026-11-07T16:40:00'},
+           {'nombre': 'HOY ES LA NACIONAL DE VENEC', 'servidor': 'ACAD', 'cuando': '2026-11-07T15:28:44'},
+           {'nombre': 'RBCW LATAM 2026', 'servidor': 'ACAD', 'cuando': '2026-11-15T14:00:00'}]
+    ok((anuncio_de('Red Bull Crew VENEC', 'ACAD', d7, anc) or {}).get('nombre') == 'HOY ES LA NACIONAL DE VENEC'
+       and anunciado('RED BULL CREW LATAM 2026', 'ACAD', datetime.date(2026, 11, 15), anc)
+       and _mismo_circuito('ACAD', 'RBCW: LATAM', 'REDBULL CREW LATAM'),
+       'la nacional con su anuncio aunque una diga «nacional» y la otra «Red Bull Crew» o «RBCW»')
+    ok(not anunciado('Red Bull Crew LATAM', 'ACAD', d7, anc)
+       and not anunciado('Red Bull Crew', 'ACAD', d7, anc)
+       and not anunciado('RED BULL CREW LATAM 2025', 'ACAD', datetime.date(2026, 11, 15), anc)
+       and not anunciado('Red Bull Crew VENEC', 'URBF', d7, [dict(x, servidor='URBF') for x in anc])
+       and not _mismo_circuito('ACAD', 'COMPE DEL BARRIO', 'COMPE DEL BARRIO VENEC'),
+       'y no la de otro país, ni el circuito solo, ni otro año, ni en otro servidor, ni fuera del circuito')
+    regs_c = {'623': {'sv': 'ACAD', 'dia': '2026-11-07', 'nombre': 'Red Bull Crew VENEC', 'links': []},
+              '624': {'sv': 'ACAD', 'dia': '2026-11-07', 'nombre': 'HOY ES LA NACIONAL DE VENEC', 'links': []}}
+    ok(_elegir({'sv': 'ACAD', 'nombre': 'HOY ES LA NACIONAL DE VENEC', 'cuando': '2026-11-07T22:00:00'},
+               {'623': regs_c['623']}) == '623'
+       and _elegir({'sv': 'ACAD', 'nombre': 'HOY ES LA NACIONAL DE VENEC', 'cuando': '2026-11-07T22:00:00'},
+                   regs_c) == '624',
+       'en la página también se juntan, y el nombre igual le gana al del circuito')
 
     print('')
     print('   %s' % ('todo bien' if not mal else '🔴 %d mal' % mal))
