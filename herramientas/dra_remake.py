@@ -88,6 +88,19 @@ def puede(c, base, roles=()):
     return bool(p & VER), bool(p & ESCRIBIR)
 
 
+#: entrar a una voz
+CONECTAR = 1 << 20
+
+
+def entra(c, base):
+    """¿@everyone puede entrar a esta voz? Discord no deja marcar por defecto una en la que no. Pura."""
+    p = int(base)
+    for o in c.get('permission_overwrites') or []:
+        if o['id'] == GUILD:
+            p = (p & ~int(o['deny'])) | int(o['allow'])
+    return bool(p & CONECTAR)
+
+
 def opcion_para_escribir(op):
     """Una opción del onboarding como la pide la escritura: `emoji_*` sueltos en vez del objeto `emoji`. Pura."""
     o = {k: op[k] for k in ('id', 'title', 'description', 'channel_ids', 'role_ids') if k in op}
@@ -155,8 +168,10 @@ def paso1(d):
             # solo). Discord la rechaza entera («DEFAULT_CHANNEL_REQUIRES_EVERYONE_ACCESS», 11/11/2026, 10:28 PM ET):
             # va cada canal visible suyo en su lugar, así siguen marcados para quien entra
             salen.append((i, 'categoría oculta: van sus canales visibles'))
-            for h in sorted((x for x in chs if x.get('parent_id') == i and x['type'] != 4 and puede(x, base)[0]),
-                            key=lambda x: x['position']):
+            # ⏰ y una voz donde @everyone no puede entrar tampoco: «dias restantes 32», el contador, también da
+            # DEFAULT_CHANNEL_REQUIRES_EVERYONE_ACCESS (encontrado probando de a uno, 11/11/2026, con el OK de Dlx)
+            for h in sorted((x for x in chs if x.get('parent_id') == i and x['type'] != 4 and puede(x, base)[0]
+                             and (x['type'] not in (2, 13) or entra(x, base))), key=lambda x: x['position']):
                 if h['id'] not in viejos and h['id'] not in suman:
                     suman.append(h['id'])
         elif not puede(c, base)[0]:
@@ -245,6 +260,9 @@ def _self_check():
        'el onboarding sale entero (preguntas, modo, prendido) con los canales nuevos')
     ok(huella_preguntas(onb) == huella_preguntas(dict(onb, prompts=[dict(onb['prompts'][0], options=[w])])),
        'la huella de las preguntas es la misma leída (emoji) que escrita (emoji_name): se puede comparar antes y después')
+    contador = {'permission_overwrites': [{'id': GUILD, 'type': 0, 'allow': str(VER), 'deny': str(CONECTAR)}]}
+    ok(puede(contador, base)[0] and not entra(contador, base) and entra(abierto, str(CONECTAR)),
+       'una voz que se ve y no se puede entrar (el contador de días) no va por defecto')
     ok(destino_bienvenida('Mira Los Eventos Programados Semanalmente!') == (EVENTOS_HOY, 'Los eventos de hoy de toda la Liga')
        and destino_bienvenida('Pregunta Cualquier Duda Que Tengas!') == (TICKET, 'Pregunta Cualquier Duda Que Tengas!')
        and destino_bienvenida('Chatea Con Los Demás!') is None,
