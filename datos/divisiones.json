@@ -1939,23 +1939,23 @@
      ]
     ],
     [
-     "SOL Y SADIK",
-     1063,
+     "Sadik",
+     1064,
      4,
      4,
      2,
      [
       [
+       19,
+       "Chase"
+      ],
+      [
        15,
-       "ABRAHAM Y CHOP"
+       "Abraham"
       ],
       [
        16,
-       "CHASE Y MCO"
-      ],
-      [
-       16,
-       "KUN Y CARLOS"
+       "Vilca"
       ]
      ]
     ],
@@ -2184,23 +2184,6 @@
       [
        14,
        "mats"
-      ]
-     ]
-    ],
-    [
-     "Sombra",
-     1007,
-     2,
-     4,
-     2,
-     [
-      [
-       -9,
-       "Agus"
-      ],
-      [
-       16,
-       "Kain"
       ]
      ]
     ],
@@ -2776,6 +2759,27 @@
      ]
     ],
     [
+     "Emilio Alva",
+     981,
+     4,
+     4,
+     1,
+     [
+      [
+       -8,
+       "Panchok"
+      ],
+      [
+       17,
+       "Jupiter"
+      ],
+      [
+       -10,
+       "Panchok"
+      ]
+     ]
+    ],
+    [
      "RT",
      979,
      6,
@@ -3117,6 +3121,27 @@
       [
        17,
        "Miniboy"
+      ]
+     ]
+    ],
+    [
+     "Teo",
+     967,
+     4,
+     4,
+     1,
+     [
+      [
+       17,
+       "Jobaking"
+      ],
+      [
+       -15,
+       "Jobaking"
+      ],
+      [
+       -17,
+       "Raizer"
       ]
      ]
     ],
@@ -3499,27 +3524,6 @@
   [
    [
     [
-     "Sadik",
-     1064,
-     4,
-     5,
-     2,
-     [
-      [
-       19,
-       "Chase"
-      ],
-      [
-       15,
-       "Abraham"
-      ],
-      [
-       16,
-       "Vilca"
-      ]
-     ]
-    ],
-    [
      "Dios",
      1063,
      6,
@@ -3806,27 +3810,6 @@
      ]
     ],
     [
-     "ABRAHAM Y CHOP",
-     1017,
-     3,
-     5,
-     2,
-     [
-      [
-       -15,
-       "SOL Y SADIK"
-      ],
-      [
-       17,
-       "VILCA Y DANU"
-      ],
-      [
-       16,
-       "CRIZJ Y PIPA"
-      ]
-     ]
-    ],
-    [
      "Eldinoco🇦🇷",
      1017,
      3,
@@ -3870,27 +3853,6 @@
       [
        17,
        "Tier"
-      ]
-     ]
-    ],
-    [
-     "CHASE Y MCO",
-     1016,
-     3,
-     5,
-     2,
-     [
-      [
-       -16,
-       "SOL Y SADIK"
-      ],
-      [
-       16,
-       "DIOS Y ICON"
-      ],
-      [
-       16,
-       "MANU Y ALEJOZZ"
       ]
      ]
     ],
@@ -4001,27 +3963,6 @@
       [
        15,
        "Richard"
-      ]
-     ]
-    ],
-    [
-     "VILCA Y DANU",
-     1015,
-     3,
-     5,
-     2,
-     [
-      [
-       -17,
-       "ABRAHAM Y CHOP"
-      ],
-      [
-       16,
-       "CRIZJ Y NEXUS"
-      ],
-      [
-       16,
-       "NOBU Y NIT NATION"
       ]
      ]
     ],
@@ -4166,6 +4107,23 @@
       [
        19,
        "MCO"
+      ]
+     ]
+    ],
+    [
+     "Sombra",
+     1007,
+     2,
+     5,
+     2,
+     [
+      [
+       -9,
+       "Agus"
+      ],
+      [
+       16,
+       "Kain"
       ]
      ]
     ],
@@ -4463,40 +4421,6 @@
      ]
     ],
     [
-     "CRIZJ Y NEXUS",
-     1000,
-     2,
-     5,
-     2,
-     [
-      [
-       -16,
-       "VILCA Y DANU"
-      ],
-      [
-       16,
-       "RAIBLES Y V1UDON"
-      ]
-     ]
-    ],
-    [
-     "DIOS Y ICON",
-     1000,
-     2,
-     5,
-     2,
-     [
-      [
-       -16,
-       "CHASE Y MCO"
-      ],
-      [
-       16,
-       "WALKOVER"
-      ]
-     ]
-    ],
-    [
      "Joaco Zeo",
      1000,
      2,
@@ -4714,23 +4638,6 @@
       [
        15,
        "Shadow"
-      ]
-     ]
-    ],
-    [
-     "KUN Y CARLOS",
-     999,
-     2,
-     5,
-     2,
-     [
-      [
-       -16,
-       "SOL Y SADIK"
-      ],
-      [
-       15,
-       "WALKOVER"
       ]
      ]
     ],
@@ -5673,19 +5580,6 @@
      ]
     ],
     [
-     "CRIZJ Y PIPA",
-     984,
-     1,
-     5,
-     2,
-     [
-      [
-       -16,
-       "ABRAHAM Y CHOP"
-      ]
-     ]
-    ],
-    [
      "Choco",
      984,
      1,
@@ -5959,19 +5853,6 @@
      ]
     ],
     [
-     "MANU Y ALEJOZZ",
-     984,
-     1,
-     5,
-     2,
-     [
-      [
-       -16,
-       "CHASE Y MCO"
-      ]
-     ]
-    ],
-    [
      "MAXIMILIANO CALVO",
      984,
      1,
@@ -6033,19 +5914,6 @@
       [
        -16,
        "Sexo"
-      ]
-     ]
-    ],
-    [
-     "NOBU Y NIT NATION",
-     984,
-     1,
-     5,
-     2,
-     [
-      [
-       -16,
-       "VILCA Y DANU"
       ]
      ]
     ],
@@ -6124,19 +5992,6 @@
       [
        -16,
        "MetriOdin"
-      ]
-     ]
-    ],
-    [
-     "RAIBLES Y V1UDON",
-     984,
-     1,
-     5,
-     2,
-     [
-      [
-       -16,
-       "CRIZJ Y NEXUS"
       ]
      ]
     ],
@@ -6635,27 +6490,6 @@
      ]
     ],
     [
-     "Emilio Alva",
-     981,
-     4,
-     5,
-     2,
-     [
-      [
-       -8,
-       "Panchok"
-      ],
-      [
-       17,
-       "Jupiter"
-      ],
-      [
-       -10,
-       "Panchok"
-      ]
-     ]
-    ],
-    [
      "Nitrox",
      981,
      3,
@@ -7098,27 +6932,6 @@
      ]
     ],
     [
-     "Teo",
-     967,
-     4,
-     5,
-     2,
-     [
-      [
-       17,
-       "Jobaking"
-      ],
-      [
-       -15,
-       "Jobaking"
-      ],
-      [
-       -17,
-       "Raizer"
-      ]
-     ]
-    ],
-    [
      "Under",
      967,
      3,
@@ -7461,27 +7274,6 @@
       [
        -16,
        "RT"
-      ]
-     ]
-    ],
-    [
-     "WALKOVER",
-     954,
-     3,
-     5,
-     2,
-     [
-      [
-       -15,
-       "KUN Y CARLOS"
-      ],
-      [
-       -15,
-       "SOL Y SADIK"
-      ],
-      [
-       -16,
-       "DIOS Y ICON"
       ]
      ]
     ],
@@ -8149,7 +7941,6 @@
   "27 🇺🇸": 0,
   "7": 0,
   "71": 0,
-  "ABRAHAM Y CHOP": 0,
   "ACH": 0,
   "AFR": 0,
   "AGUSTÍN51K": 5,
@@ -8217,12 +8008,9 @@
   "Btrece": 0,
   "Bull12r": 0,
   "CEEGE": 0,
-  "CHASE Y MCO": 0,
   "CHOCLITO": 0,
   "CJ": 3,
   "CLENCHOT🇪🇸": 0,
-  "CRIZJ Y NEXUS": 0,
-  "CRIZJ Y PIPA": 0,
   "CROQUETA🇪🇸": 0,
   "CULT": 0,
   "Cabece": 0,
@@ -8253,12 +8041,12 @@
   "Crk": 3,
   "Cronox": 3,
   "DANCOLL": 0,
+  "DANU": 0,
   "DARK ANGEL": 0,
   "DAVIJUAN": 0,
   "DECYS🇦🇷": 0,
   "DEWACHOMEFUI 🇨🇲": 0,
   "DIDYER": 0,
-  "DIOS Y ICON": 0,
   "DLX": 0,
   "DNK": 0,
   "DO-C": 0,
@@ -8375,6 +8163,7 @@
   "Hotaru Adeyemi 🏳️‍⚧️": 7,
   "Humildad": 3,
   "IBAN🇦🇷": 0,
+  "ICON": 0,
   "ISAIAS": 0,
   "Iguana": 0,
   "Imagy": 0,
@@ -8421,7 +8210,7 @@
   "KIPMC 🇧🇷": 0,
   "KIRITO": 0,
   "KRNAN 🇨🇱": 0,
-  "KUN Y CARLOS": 0,
+  "KUN": 0,
   "Kain": 0,
   "Karma": 0,
   "Karumailafmasha🇹🇼": 0,
@@ -8484,8 +8273,7 @@
   "Lvel": 1,
   "MAGMAHK": 0,
   "MALBORO": 0,
-  "MANU Y ALEJOZZ": 0,
-  "MARK Y TOBALSILLO": 0,
+  "MANU": 0,
   "MAT MC": 0,
   "MATICERNA": 5,
   "MATUK 🇦🇷": 3,
@@ -8544,7 +8332,7 @@
   "NAW": 0,
   "NC": 9,
   "NILS": 0,
-  "NOBU Y NIT NATION": 0,
+  "NIT NATION": 0,
   "NOON🇵🇪": 3,
   "NXUZ": 10,
   "NYCO": 0,
@@ -8580,6 +8368,7 @@
   "PARADOJA": 0,
   "PETER🇵🇪": 0,
   "PIERR🇵🇪": 0,
+  "PIPA": 0,
   "PIYI 🇲🇽": 0,
   "PLA PLA": 0,
   "PRAISERIZA": 17,
@@ -8601,12 +8390,12 @@
   "Pomberito": 9,
   "Poxe 🇵🇪": 0,
   "Presagio": 3,
-  "Prodigy": 3,
+  "Prodigy": 0,
   "Prosu": 11,
   "Provenza": 8,
   "QUEEN": 0,
   "RAGE BAIT": 0,
-  "RAIBLES Y V1UDON": 0,
+  "RAIBLES": 0,
   "RC🇲🇽": 0,
   "REPTILE JR": 0,
   "RICKYFORT": 0,
@@ -8646,12 +8435,11 @@
   "SK8": 0,
   "SMAFF": 0,
   "SOL": 10,
-  "SOL Y SADIK": 3,
   "SONIC_DORADITO": 0,
   "SUDAKA🇦🇷": 0,
   "SULTAN": 3,
   "SYEPORUTE🇿🇲": 0,
-  "Sadik": 0,
+  "Sadik": 3,
   "Saiko": 0,
   "Sainos": 0,
   "Saito": 3,
@@ -8675,7 +8463,7 @@
   "Snake": 0,
   "Snow": 8,
   "Soft": 0,
-  "Sombra": 3,
+  "Sombra": 0,
   "Soneto": 2,
   "Sosa": 6,
   "Soulb": 8,
@@ -8685,13 +8473,14 @@
   "Swid": 0,
   "TG": 0,
   "THO": 0,
+  "TOBALSILLO": 0,
   "TONY  🇦🇷": 0,
   "TYPHLOSION": 0,
   "Tam": 12,
   "Tayo": 0,
   "Teito": 1,
   "Tenor": 8,
-  "Teo": 0,
+  "Teo": 3,
   "TheOg": 0,
   "Tiago Context 🇦🇷": 0,
   "Tiagoms": 0,
@@ -8705,10 +8494,10 @@
   "Tusicario": 0,
   "TøKīØ🦠🧠": 7,
   "UDDIZIM": 0,
-  "Under": 0,
+  "Under": 3,
   "V-zir": 0,
+  "V1UDON": 0,
   "VECA 🇧🇱": 0,
-  "VILCA Y DANU": 0,
   "VR": 2,
   "Vacile🇪🇸": 3,
   "Valdoza": 0,
@@ -8716,14 +8505,13 @@
   "Valen": 0,
   "Vandu": 11,
   "Vargas": 0,
-  "Velatz": 6,
+  "Velatz": 4,
   "Verc": 10,
   "Vilca": 6,
   "Vlade": 0,
   "Volg": 0,
   "Volk": 0,
   "WALKER SANITY": 0,
-  "WALKOVER": 0,
   "WHITE": 0,
   "WILLY": 0,
   "Walker": 14,
@@ -8822,7 +8610,6 @@
   "27 🇺🇸": 5,
   "7": 5,
   "71": 5,
-  "ABRAHAM Y CHOP": 5,
   "ACH": 5,
   "AFR": 5,
   "AGUSTÍN51K": 4,
@@ -8890,12 +8677,9 @@
   "Btrece": 5,
   "Bull12r": 5,
   "CEEGE": 5,
-  "CHASE Y MCO": 5,
   "CHOCLITO": 5,
   "CJ": 4,
   "CLENCHOT🇪🇸": 5,
-  "CRIZJ Y NEXUS": 5,
-  "CRIZJ Y PIPA": 5,
   "CROQUETA🇪🇸": 5,
   "CULT": 5,
   "Cabece": 5,
@@ -8926,12 +8710,12 @@
   "Crk": 5,
   "Cronox": 5,
   "DANCOLL": 5,
+  "DANU": 5,
   "DARK ANGEL": 5,
   "DAVIJUAN": 5,
   "DECYS🇦🇷": 5,
   "DEWACHOMEFUI 🇨🇲": 5,
   "DIDYER": 5,
-  "DIOS Y ICON": 5,
   "DLX": 5,
   "DNK": 5,
   "DO-C": 5,
@@ -8976,7 +8760,7 @@
   "Eliot": 4,
   "Elsoolar": 5,
   "EmiZor": 5,
-  "Emilio Alva": 5,
+  "Emilio Alva": 4,
   "Emily Family": 5,
   "Enkil": 5,
   "Erian": 3,
@@ -9048,6 +8832,7 @@
   "Hotaru Adeyemi 🏳️‍⚧️": 3,
   "Humildad": 4,
   "IBAN🇦🇷": 5,
+  "ICON": 5,
   "ISAIAS": 5,
   "Iguana": 5,
   "Imagy": 5,
@@ -9094,7 +8879,7 @@
   "KIPMC 🇧🇷": 5,
   "KIRITO": 5,
   "KRNAN 🇨🇱": 5,
-  "KUN Y CARLOS": 5,
+  "KUN": 5,
   "Kain": 5,
   "Karma": 5,
   "Karumailafmasha🇹🇼": 5,
@@ -9157,8 +8942,7 @@
   "Lvel": 5,
   "MAGMAHK": 5,
   "MALBORO": 5,
-  "MANU Y ALEJOZZ": 5,
-  "MARK Y TOBALSILLO": 5,
+  "MANU": 5,
   "MAT MC": 5,
   "MATICERNA": 4,
   "MATUK 🇦🇷": 4,
@@ -9217,7 +9001,7 @@
   "NAW": 5,
   "NC": 5,
   "NILS": 5,
-  "NOBU Y NIT NATION": 5,
+  "NIT NATION": 5,
   "NOON🇵🇪": 4,
   "NXUZ": 2,
   "NYCO": 5,
@@ -9253,6 +9037,7 @@
   "PARADOJA": 5,
   "PETER🇵🇪": 5,
   "PIERR🇵🇪": 5,
+  "PIPA": 5,
   "PIYI 🇲🇽": 5,
   "PLA PLA": 5,
   "PRAISERIZA": 0,
@@ -9279,7 +9064,7 @@
   "Provenza": 3,
   "QUEEN": 5,
   "RAGE BAIT": 5,
-  "RAIBLES Y V1UDON": 5,
+  "RAIBLES": 5,
   "RC🇲🇽": 5,
   "REPTILE JR": 5,
   "RICKYFORT": 5,
@@ -9319,12 +9104,11 @@
   "SK8": 5,
   "SMAFF": 5,
   "SOL": 2,
-  "SOL Y SADIK": 4,
   "SONIC_DORADITO": 5,
   "SUDAKA🇦🇷": 5,
   "SULTAN": 4,
   "SYEPORUTE🇿🇲": 5,
-  "Sadik": 5,
+  "Sadik": 4,
   "Saiko": 5,
   "Sainos": 5,
   "Saito": 4,
@@ -9348,7 +9132,7 @@
   "Snake": 5,
   "Snow": 3,
   "Soft": 5,
-  "Sombra": 4,
+  "Sombra": 5,
   "Soneto": 5,
   "Sosa": 5,
   "Soulb": 3,
@@ -9358,13 +9142,14 @@
   "Swid": 5,
   "TG": 5,
   "THO": 5,
+  "TOBALSILLO": 5,
   "TONY  🇦🇷": 5,
   "TYPHLOSION": 5,
   "Tam": 1,
   "Tayo": 5,
   "Teito": 5,
   "Tenor": 3,
-  "Teo": 5,
+  "Teo": 4,
   "TheOg": 5,
   "Tiago Context 🇦🇷": 5,
   "Tiagoms": 5,
@@ -9380,8 +9165,8 @@
   "UDDIZIM": 5,
   "Under": 5,
   "V-zir": 5,
+  "V1UDON": 5,
   "VECA 🇧🇱": 5,
-  "VILCA Y DANU": 5,
   "VR": 5,
   "Vacile🇪🇸": 4,
   "Valdoza": 5,
@@ -9396,7 +9181,6 @@
   "Volg": 5,
   "Volk": 5,
   "WALKER SANITY": 5,
-  "WALKOVER": 5,
   "WHITE": 5,
   "WILLY": 5,
   "Walker": 1,
@@ -9980,6 +9764,11 @@
   ],
   [
    "2026-10-05",
+   "Chop",
+   4
+  ],
+  [
+   "2026-10-05",
    "Dominick",
    4
   ],
@@ -9991,11 +9780,6 @@
   [
    "2026-10-05",
    "Tenor",
-   4
-  ],
-  [
-   "2026-10-05",
-   "Prodigy",
    4
   ],
   [
@@ -10095,7 +9879,7 @@
   ],
   [
    "2026-10-05",
-   "SOL Y SADIK",
+   "Under",
    4
   ],
   [
@@ -10180,11 +9964,6 @@
   ],
   [
    "2026-10-12",
-   "Chop",
-   4
-  ],
-  [
-   "2026-10-12",
    "BNA",
    4
   ],
@@ -10201,6 +9980,11 @@
   [
    "2026-10-12",
    "Prosu",
+   4
+  ],
+  [
+   "2026-10-12",
+   "Teo",
    4
   ],
   [
@@ -10265,17 +10049,17 @@
   ],
   [
    "2026-10-12",
+   "Sadik",
+   4
+  ],
+  [
+   "2026-10-12",
    "Kyss",
    4
   ],
   [
    "2026-10-12",
    "Road",
-   4
-  ],
-  [
-   "2026-10-12",
-   "Sombra",
    4
   ],
   [
@@ -10305,17 +10089,17 @@
   ],
   [
    "2026-10-12",
+   "Chop",
+   3
+  ],
+  [
+   "2026-10-12",
    "OG",
    3
   ],
   [
    "2026-10-12",
    "NC",
-   3
-  ],
-  [
-   "2026-10-12",
-   "Velatz",
    3
   ],
   [
@@ -10425,6 +10209,11 @@
   ],
   [
    "2026-10-19",
+   "Carlos",
+   4
+  ],
+  [
+   "2026-10-19",
    "J19",
    4
   ],
@@ -10436,11 +10225,6 @@
   [
    "2026-10-19",
    "Marcos",
-   4
-  ],
-  [
-   "2026-10-19",
-   "Crk",
    4
   ],
   [
@@ -10540,12 +10324,12 @@
   ],
   [
    "2026-10-19",
-   "Carlos",
+   "Zekha",
    3
   ],
   [
    "2026-10-19",
-   "Zekha",
+   "BNA",
    3
   ],
   [
@@ -10650,11 +10434,6 @@
   ],
   [
    "2026-10-26",
-   "Mc arepa",
-   4
-  ],
-  [
-   "2026-10-26",
    "Zignos",
    4
   ],
@@ -10666,6 +10445,11 @@
   [
    "2026-10-26",
    "Number",
+   4
+  ],
+  [
+   "2026-10-26",
+   "Jult",
    4
   ],
   [
@@ -10685,12 +10469,12 @@
   ],
   [
    "2026-10-26",
-   "Evangeline",
+   "Crk",
    4
   ],
   [
    "2026-10-26",
-   "Gus",
+   "Evangeline",
    4
   ],
   [
@@ -10837,6 +10621,7 @@
    "Fazer",
    "Fisics",
    "Flama",
+   "Gus",
    "Hassan",
    "Hotaru Adeyemi 🏳️‍⚧️",
    "Humildad",
@@ -10845,7 +10630,6 @@
    "Juanpa",
    "Juasmio",
    "Julix🇧🇴",
-   "Jult",
    "Jupiter",
    "Kochi",
    "Kravitz",
@@ -10860,6 +10644,8 @@
    "Mark",
    "Masino",
    "Mathhias",
+   "Mc arepa",
+   "Molusco",
    "Mosquitrap 🦟",
    "Motera",
    "Mr Still Ballin",

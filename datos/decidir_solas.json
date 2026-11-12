@@ -3166,6 +3166,301 @@
      350
     ]
    }
+  },
+  {
+   "id": "4e9226a4c5",
+   "tipo": "Nombre desconocido",
+   "sec": "(sin titulo) · DDS · 10/10 · #602",
+   "que": "¿Quién es «ICON»?",
+   "r": "Es alguien nuevo: alta con su cuenta 751542106975240255",
+   "regla": "Discord · su cuenta de Discord: la inscripción, el podio, la llave o la llamada",
+   "rk": "Discord",
+   "por": "el ciclo (su cuenta de Discord)",
+   "porque": "nuevo: entró a la Lista con su Discord (751542106975240255)",
+   "t": 1794463208225,
+   "filas": [
+    1265
+   ],
+   "variantes": [
+    "ICON"
+   ],
+   "escribio": {
+    "alta": [
+     "ICON",
+     "751542106975240255"
+    ]
+   }
+  },
+  {
+   "id": "3eeb0a5b05",
+   "tipo": "Nombre desconocido",
+   "sec": "(sin titulo) · DDS · 10/10 · #602",
+   "que": "¿Quién es «V1UDON»?",
+   "r": "Es alguien nuevo: alta con su cuenta 780548255716474900",
+   "regla": "Discord · su cuenta de Discord: la inscripción, el podio, la llave o la llamada",
+   "rk": "Discord",
+   "por": "el ciclo (su cuenta de Discord)",
+   "porque": "nuevo: entró a la Lista con su Discord (780548255716474900)",
+   "t": 1794463208225,
+   "filas": [
+    1272
+   ],
+   "variantes": [
+    "V1UDON"
+   ],
+   "escribio": {
+    "alta": [
+     "V1UDON",
+     "780548255716474900"
+    ]
+   }
+  },
+  {
+   "id": "f161b52264",
+   "tipo": "Nombre desconocido",
+   "sec": "(sin titulo) · DDS · 10/10 · #602",
+   "que": "¿Quién es «ABRAHAM Y CHOP»?",
+   "r": "Ya no hace falta",
+   "regla": "cierre · ya no hacía falta preguntarlo",
+   "rk": "cierre",
+   "por": "el ciclo",
+   "porque": "ya no está en ningún resultado: el lector lo lee distinto, o ya es alias de alguien",
+   "t": 1794463208225,
+   "filas": [
+    1217
+   ],
+   "variantes": [
+    "ABRAHAM Y CHOP"
+   ],
+   "escribio": {}
+  },
+  {
+   "id": "eca48e136d",
+   "tipo": "Nombre desconocido",
+   "sec": "(sin titulo) · DDS · 10/10 · #602",
+   "que": "¿Quién es «CHASE Y MCO»?",
+   "r": "Ya no hace falta",
+   "regla": "cierre · ya no hacía falta preguntarlo",
+   "rk": "cierre",
+   "por": "el ciclo",
+   "porque": "ya no está en ningún resultado: el lector lo lee distinto, o ya es alias de alguien",
+   "t": 1794463208225,
+   "filas": [
+    1218
+   ],
+   "variantes": [
+    "CHASE Y MCO"
+   ],
+   "escribio": {}
+  },
+  {
+   "id": "5df8de9f4d",
+   "tipo": "Nombre desconocido",
+   "sec": "(sin titulo) · DDS · 10/10 · #602",
+   "que": "¿Quién es «CRIZJ Y NEXUS»?",
+   "r": "Ya no hace falta",
+   "regla": "cierre · ya no hacía falta preguntarlo",
+   "rk": "cierre",
+   "por": "el ciclo",
+   "porque": "ya no está en ningún resultado: el lector lo lee distinto, o ya es alias de alguien",
+   "t": 1794463208225,
+   "filas": [
+    1219
+   ],
+   "variantes": [
+    "CRIZJ Y NEXUS"
+   ],
+   "escribio": {}
+  },
+  {
+   "id": "b9e7c7d5d5",
+   "tipo": "Nombre desconocido",
+   "sec": "(sin titulo) · DDS · 10/10 · #602",
+   "que": "¿Quién es «CRIZJ Y PIPA»?",
+   "r": "Ya no hace falta",
+   "regla": "cierre · ya no hacía falta preguntarlo",
+   "rk": "cierre",
+   "por": "el ciclo",
+   "porque": "ya no está en ningún resultado: el lector lo lee distinto, o ya es alias de alguien",
+   "t": 1794463208225,
+   "filas": [
+    1220
+   ],
+   "variantes": [
+    "CRIZJ Y PIPA"
+   ],
+   "escribio": {}
+  },
+  {
+   "id": "bf7ea901d1",
+   "tipo": "Nombre desconocido",
+   "sec": "(sin titulo) · DDS · 10/10 · #602",
+   "que": "¿Quién es «DIOS Y ICON»?",
+   "r": "Ya no hace falta",
+   "regla": "cierre · ya no hacía falta preguntarlo",
+   "rk": "cierre",
+   "por": "el ciclo",
+   "porque": "ya no está en ningún resultado: el lector lo lee distinto, o ya es alias de alguien",
+   "t": 1794463208225,
+   "filas": [
+    1221
+   ],
+   "variantes": [
+    "DIOS Y ICON"
+   ],
+   "escribio": {}
+  },
+  {
+   "id": "327e848a51",
+   "tipo": "Nombre desconocido",
+   "sec": "(sin titulo) · DDS · 10/10 · #602",
+   "que": "¿Quién es «KUN Y CARLOS»?",
+   "r": "Ya no hace falta",
+   "regla": "cierre · ya no hacía falta preguntarlo",
+   "rk": "cierre",
+   "por": "el ciclo",
+   "porque": "ya no está en ningún resultado: el lector lo lee distinto, o ya es alias de alguien",
+   "t": 1794463208225,
+   "filas": [
+    1222
+   ],
+   "variantes": [
+    "KUN Y CARLOS"
+   ],
+   "escribio": {}
+  },
+  {
+   "id": "2ed3fbe999",
+   "tipo": "Nombre desconocido",
+   "sec": "(sin titulo) · DDS · 10/10 · #602",
+   "que": "¿Quién es «MANU Y ALEJOZZ»?",
+   "r": "Ya no hace falta",
+   "regla": "cierre · ya no hacía falta preguntarlo",
+   "rk": "cierre",
+   "por": "el ciclo",
+   "porque": "ya no está en ningún resultado: el lector lo lee distinto, o ya es alias de alguien",
+   "t": 1794463208225,
+   "filas": [
+    1223
+   ],
+   "variantes": [
+    "MANU Y ALEJOZZ"
+   ],
+   "escribio": {}
+  },
+  {
+   "id": "2c25985da5",
+   "tipo": "Nombre desconocido",
+   "sec": "(sin titulo) · DDS · 10/10 · #602",
+   "que": "¿Quién es «MARK Y TOBALSILLO»?",
+   "r": "Ya no hace falta",
+   "regla": "cierre · ya no hacía falta preguntarlo",
+   "rk": "cierre",
+   "por": "el ciclo",
+   "porque": "ya no está en ningún resultado: el lector lo lee distinto, o ya es alias de alguien",
+   "t": 1794463208225,
+   "filas": [
+    1224
+   ],
+   "variantes": [
+    "MARK Y TOBALSILLO"
+   ],
+   "escribio": {}
+  },
+  {
+   "id": "83e1d212d7",
+   "tipo": "Nombre desconocido",
+   "sec": "(sin titulo) · DDS · 10/10 · #602",
+   "que": "¿Quién es «NOBU Y NIT NATION»?",
+   "r": "Ya no hace falta",
+   "regla": "cierre · ya no hacía falta preguntarlo",
+   "rk": "cierre",
+   "por": "el ciclo",
+   "porque": "ya no está en ningún resultado: el lector lo lee distinto, o ya es alias de alguien",
+   "t": 1794463208225,
+   "filas": [
+    1225
+   ],
+   "variantes": [
+    "NOBU Y NIT NATION"
+   ],
+   "escribio": {}
+  },
+  {
+   "id": "fb1c9b0eb7",
+   "tipo": "Nombre desconocido",
+   "sec": "(sin titulo) · DDS · 10/10 · #602",
+   "que": "¿Quién es «RAIBLES Y V1UDON»?",
+   "r": "Ya no hace falta",
+   "regla": "cierre · ya no hacía falta preguntarlo",
+   "rk": "cierre",
+   "por": "el ciclo",
+   "porque": "ya no está en ningún resultado: el lector lo lee distinto, o ya es alias de alguien",
+   "t": 1794463208225,
+   "filas": [
+    1226
+   ],
+   "variantes": [
+    "RAIBLES Y V1UDON"
+   ],
+   "escribio": {}
+  },
+  {
+   "id": "b694b2e90a",
+   "tipo": "Nombre desconocido",
+   "sec": "(sin titulo) · DDS · 10/10 · #602",
+   "que": "¿Quién es «SOL Y SADIK»?",
+   "r": "Ya no hace falta",
+   "regla": "cierre · ya no hacía falta preguntarlo",
+   "rk": "cierre",
+   "por": "el ciclo",
+   "porque": "ya no está en ningún resultado: el lector lo lee distinto, o ya es alias de alguien",
+   "t": 1794463208225,
+   "filas": [
+    1227
+   ],
+   "variantes": [
+    "SOL Y SADIK"
+   ],
+   "escribio": {}
+  },
+  {
+   "id": "aa2f4740ba",
+   "tipo": "Nombre desconocido",
+   "sec": "(sin titulo) · DDS · 10/10 · #602",
+   "que": "¿Quién es «VILCA Y DANU»?",
+   "r": "Ya no hace falta",
+   "regla": "cierre · ya no hacía falta preguntarlo",
+   "rk": "cierre",
+   "por": "el ciclo",
+   "porque": "ya no está en ningún resultado: el lector lo lee distinto, o ya es alias de alguien",
+   "t": 1794463208225,
+   "filas": [
+    1228
+   ],
+   "variantes": [
+    "VILCA Y DANU"
+   ],
+   "escribio": {}
+  },
+  {
+   "id": "dea9206f4d",
+   "tipo": "Nombre desconocido",
+   "sec": "(sin titulo) · DDS · 10/10 · #602",
+   "que": "¿Quién es «WALKOVER»?",
+   "r": "Ya no hace falta",
+   "regla": "cierre · ya no hacía falta preguntarlo",
+   "rk": "cierre",
+   "por": "el ciclo",
+   "porque": "ya no está en ningún resultado: el lector lo lee distinto, o ya es alias de alguien",
+   "t": 1794463208225,
+   "filas": [
+    1229
+   ],
+   "variantes": [
+    "WALKOVER"
+   ],
+   "escribio": {}
   }
  ],
  "deshechas": []

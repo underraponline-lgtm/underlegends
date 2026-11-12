@@ -7079,16 +7079,16 @@
 "ll": 610,
 "quien": [
 [
-"Park Sung-jong 🇰🇵",
+"YOUNG VLAD",
+""
+],
+[
+"Kminant",
 ""
 ],
 [
 "Tam",
 "tam"
-],
-[
-"kminante 🇦🇷",
-""
 ]
 ]
 }
@@ -7141,16 +7141,18 @@
 "ev": "GALACTICOS DEL FREESTYLE VOL.1"
 },
 {
-"n": "Park Sung-jong 🇰🇵",
+"n": "YOUNG VLAD",
 "k": "",
-"que": "debut",
-"ev": "qcyo rapeen Pandillas"
+"que": "primer",
+"ev": "qcyo rapeen Pandillas",
+"desde": 334
 },
 {
-"n": "kminante 🇦🇷",
+"n": "Kminant",
 "k": "",
-"que": "debut",
-"ev": "qcyo rapeen Pandillas"
+"que": "primer",
+"ev": "qcyo rapeen Pandillas",
+"desde": 401
 }
 ]
 }

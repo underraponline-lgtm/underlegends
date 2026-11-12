@@ -49415,58 +49415,55 @@
     "b": [
      [
       [
-       "ABRAHAM Y CHOP",
-       "CRIZJ Y PIPA"
+       "Abraham, Chop",
+       "CrisZJ, PIPA"
       ],
-      "ABRAHAM Y CHOP",
+      "Abraham, Chop",
       ""
      ],
      [
       [
-       "VILCA Y DANU",
-       "NOBU Y NIT NATION"
+       "Vilca, DANU",
+       "Nobu, NIT NATION"
       ],
-      "VILCA Y DANU",
+      "Vilca, DANU",
       ""
      ],
      [
       [
-       "CRIZJ Y NEXUS",
-       "RAIBLES Y V1UDON"
+       "CrisZJ, NXUZ",
+       "RAIBLES, V1UDON"
       ],
-      "CRIZJ Y NEXUS",
+      "CrisZJ, NXUZ",
       ""
      ],
      [
       [
-       "CHASE Y MCO",
-       "MANU Y ALEJOZZ"
+       "Chase, MCO",
+       "MANU, alejozz"
       ],
-      "CHASE Y MCO",
+      "Chase, MCO",
       ""
      ],
      [
       [
-       "DIOS Y ICON",
-       "WALKOVER"
+       "Dios, ICON"
       ],
-      "DIOS Y ICON",
-      "Revivido: WALKOVER"
-     ],
-     [
-      [
-       "SOL Y SADIK",
-       "WALKOVER"
-      ],
-      "SOL Y SADIK",
+      "Dios, ICON",
       ""
      ],
      [
       [
-       "KUN Y CARLOS",
-       "WALKOVER"
+       "SOL, Sadik"
       ],
-      "KUN Y CARLOS",
+      "SOL, Sadik",
+      ""
+     ],
+     [
+      [
+       "KUN, Carlos"
+      ],
+      "KUN, Carlos",
       ""
      ],
      [
@@ -49484,34 +49481,34 @@
     "b": [
      [
       [
-       "ABRAHAM Y CHOP",
-       "MARK Y TOBALSILLO"
+       "Abraham, Chop",
+       "Mark, TOBALSILLO"
       ],
-      "ABRAHAM Y CHOP",
-      "Walk-in 1: MARK Y TOBALSILLO"
+      "Abraham, Chop",
+      "Walk-in 1: MARK + TOBALSILLO"
      ],
      [
       [
-       "VILCA Y DANU",
-       "CRIZJ Y NEXUS"
+       "Vilca, DANU",
+       "CrisZJ, NXUZ"
       ],
-      "VILCA Y DANU",
+      "Vilca, DANU",
       ""
      ],
      [
       [
-       "CHASE Y MCO",
-       "DIOS Y ICON"
+       "Chase, MCO",
+       "Dios, ICON"
       ],
-      "CHASE Y MCO",
+      "Chase, MCO",
       ""
      ],
      [
       [
-       "SOL Y SADIK",
-       "KUN Y CARLOS"
+       "SOL, Sadik",
+       "KUN, Carlos"
       ],
-      "SOL Y SADIK",
+      "SOL, Sadik",
       ""
      ]
     ],
@@ -49521,18 +49518,18 @@
     "b": [
      [
       [
-       "ABRAHAM Y CHOP",
-       "VILCA Y DANU"
+       "Abraham, Chop",
+       "Vilca, DANU"
       ],
-      "ABRAHAM Y CHOP",
+      "Abraham, Chop",
       ""
      ],
      [
       [
-       "SOL Y SADIK",
-       "CHASE Y MCO"
+       "SOL, Sadik",
+       "Chase, MCO"
       ],
-      "SOL Y SADIK",
+      "SOL, Sadik",
       ""
      ],
      [
@@ -49550,10 +49547,10 @@
     "b": [
      [
       [
-       "SOL Y SADIK",
-       "ABRAHAM Y CHOP"
+       "SOL, Sadik",
+       "Abraham, Chop"
       ],
-      "SOL Y SADIK",
+      "SOL, Sadik",
       ""
      ]
     ],
@@ -49563,69 +49560,119 @@
   "sv": "DDS",
   "tabla": [
    [
-    "SOL Y SADIK",
+    "SOL",
     "Campeón",
-    10000
+    5000
    ],
    [
-    "ABRAHAM Y CHOP",
+    "Sadik",
+    "Campeón",
+    5000
+   ],
+   [
+    "Abraham",
     "Subcampeón",
-    7500
+    3750
    ],
    [
-    "CHASE Y MCO",
+    "Chop",
+    "Subcampeón",
+    3750
+   ],
+   [
+    "Chase",
     "Semifinal",
-    5250
+    2625
    ],
    [
-    "VILCA Y DANU",
+    "DANU",
     "Semifinal",
-    5250
+    2625
    ],
    [
-    "CRIZJ Y NEXUS",
-    "Cuartos",
-    2500
+    "MCO",
+    "Semifinal",
+    2625
    ],
    [
-    "DIOS Y ICON",
-    "Cuartos",
-    2500
+    "Vilca",
+    "Semifinal",
+    2625
    ],
    [
-    "KUN Y CARLOS",
-    "Cuartos",
-    2500
-   ],
-   [
-    "WALKOVER",
-    "Octavos",
-    1875
-   ],
-   [
-    "CRIZJ Y PIPA",
-    "Octavos",
-    1250
-   ],
-   [
-    "MANU Y ALEJOZZ",
-    "Octavos",
-    1250
-   ],
-   [
-    "MARK Y TOBALSILLO",
+    "Carlos",
     "Cuartos",
     1250
    ],
    [
-    "NOBU Y NIT NATION",
-    "Octavos",
+    "CrisZJ",
+    "Cuartos",
     1250
    ],
    [
-    "RAIBLES Y V1UDON",
-    "Octavos",
+    "Dios",
+    "Cuartos",
     1250
+   ],
+   [
+    "ICON",
+    "Cuartos",
+    1250
+   ],
+   [
+    "KUN",
+    "Cuartos",
+    1250
+   ],
+   [
+    "NXUZ",
+    "Cuartos",
+    1250
+   ],
+   [
+    "MANU",
+    "Octavos",
+    625
+   ],
+   [
+    "Mark",
+    "Cuartos",
+    625
+   ],
+   [
+    "NIT NATION",
+    "Octavos",
+    625
+   ],
+   [
+    "Nobu",
+    "Octavos",
+    625
+   ],
+   [
+    "PIPA",
+    "Octavos",
+    625
+   ],
+   [
+    "RAIBLES",
+    "Octavos",
+    625
+   ],
+   [
+    "TOBALSILLO",
+    "Cuartos",
+    625
+   ],
+   [
+    "V1UDON",
+    "Octavos",
+    625
+   ],
+   [
+    "alejozz",
+    "Octavos",
+    625
    ]
   ],
   "ver": {
@@ -50567,16 +50614,16 @@
        "El padre de tu padre 🇻🇪"
       ],
       "Tam, Kminant",
-      "triple (4 bandas, pasan 2); también pasa: kminant 🇦🇷"
+      "triple (4 bandas, pasan 2); también pasa: kminante🇦🇷"
      ],
      [
       [
-       "Park Sung-jong 🇰🇵",
+       "YOUNG VLAD",
        "Oasis",
        "PHOBOS 🇲🇽",
        "Trelok"
       ],
-      "Park Sung-jong 🇰🇵, Oasis",
+      "YOUNG VLAD, Oasis",
       "triple (4 bandas, pasan 2); también pasa: Park-Ji Sung🇰🇷; Drafteado: Park Sung-jong 🇰🇵"
      ]
     ],
@@ -50594,10 +50641,10 @@
      ],
      [
       [
-       "kminante🇦🇷, Tam",
-       "Park Sung-jong 🇰🇵, Oasis"
+       "Kminant, Tam",
+       "YOUNG VLAD, Oasis"
       ],
-      "kminante🇦🇷, Tam",
+      "Kminant, Tam",
       ""
      ]
     ],
@@ -50607,10 +50654,10 @@
     "b": [
      [
       [
-       "kminante 🇦🇷, Tam, Park Sung-jong 🇰🇵",
+       "Kminant, Tam, YOUNG VLAD",
        "k 🇺🇸, Tenor, Erik"
       ],
-      "kminante 🇦🇷, Tam, Park Sung-jong 🇰🇵",
+      "Kminant, Tam, YOUNG VLAD",
       ""
      ]
     ],
@@ -50620,7 +50667,7 @@
   "sv": "FFA",
   "tabla": [
    [
-    "Park Sung-jong 🇰🇵",
+    "YOUNG VLAD",
     "Campeón",
     5958
    ],
@@ -50630,12 +50677,12 @@
     5125
    ],
    [
-    "Tam",
+    "Kminant",
     "Campeón",
     3333
    ],
    [
-    "kminante 🇦🇷",
+    "Tam",
     "Campeón",
     3333
    ],
@@ -50646,11 +50693,6 @@
    ],
    [
     "Oasis",
-    "Semifinal",
-    2625
-   ],
-   [
-    "kminante🇦🇷",
     "Semifinal",
     2625
    ],

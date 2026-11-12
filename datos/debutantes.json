@@ -1508,18 +1508,6 @@
    "vence": "2026-11-05T03:04:48+00:00",
    "vencido": true
   },
-  "Mark": {
-   "avisado_cumplido": "2026-11-09",
-   "con": 580,
-   "cumplido": "2026-10-24T00:02:15+00:00",
-   "debut": "2026-10-17T04:08:41+00:00",
-   "did": "1471344428064178248",
-   "evento": "DISCORD STYLE ED. 16",
-   "n": 579,
-   "sv": "DDS",
-   "vence": "2026-10-24T04:08:41+00:00",
-   "vencido": false
-  },
   "Matias": {
    "avisado": "2026-10-29",
    "avisado_cumplido": "2026-10-30",
@@ -1824,18 +1812,6 @@
    "vence": "2026-10-27T22:07:15+00:00",
    "vencido": true
   },
-  "Park Sung-jong": {
-   "avisado": "2026-11-12",
-   "con": null,
-   "cumplido": "",
-   "debut": "2026-11-12T04:08:19+00:00",
-   "did": "",
-   "evento": "qcyo rapeen Pandillas",
-   "n": 610,
-   "sv": "FFA",
-   "vence": "2026-11-19T04:08:19+00:00",
-   "vencido": false
-  },
   "Pipe": {
    "avisado": "2026-10-23",
    "avisado_cumplido": "2026-10-27",
@@ -1993,17 +1969,6 @@
    "n": 460,
    "sv": "SR",
    "vence": "2026-10-19T22:01:43+00:00",
-   "vencido": true
-  },
-  "Sadik": {
-   "con": null,
-   "cumplido": "",
-   "debut": "2026-10-17T04:08:41+00:00",
-   "did": "1209640635775066182",
-   "evento": "DISCORD STYLE ED. 16",
-   "n": 579,
-   "sv": "DDS",
-   "vence": "2026-10-24T04:08:41+00:00",
    "vencido": true
   },
   "Sainos": {
@@ -2429,17 +2394,6 @@
    "vence": "2026-11-16T03:16:00+00:00",
    "vencido": false
   },
-  "alejozz": {
-   "con": null,
-   "cumplido": "",
-   "debut": "2026-10-20T23:49:06+00:00",
-   "did": "988931536080486420",
-   "evento": "MINI COMPE LLAVES",
-   "n": 606,
-   "sv": "DDS",
-   "vence": "2026-10-27T23:49:06+00:00",
-   "vencido": true
-  },
   "arce": {
    "avisado": "2026-11-06",
    "chat": "2026-11-06",
@@ -2592,18 +2546,6 @@
    "sv": "CH",
    "vence": "2026-10-27T22:07:15+00:00",
    "vencido": true
-  },
-  "kminante": {
-   "avisado": "2026-11-12",
-   "con": null,
-   "cumplido": "",
-   "debut": "2026-11-12T04:08:19+00:00",
-   "did": "",
-   "evento": "qcyo rapeen Pandillas",
-   "n": 610,
-   "sv": "FFA",
-   "vence": "2026-11-19T04:08:19+00:00",
-   "vencido": false
   },
   "kychi": {
    "avisado": "2026-11-11",

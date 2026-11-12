@@ -41519,79 +41519,64 @@
   "canal": "1443793172013776997",
   "duelos": [
    [
-    "ABRAHAM Y CHOP",
-    "CRIZJ Y PIPA",
-    "ABRAHAM Y CHOP"
+    "Abraham, Chop",
+    "CrisZJ, PIPA",
+    "Abraham, Chop"
    ],
    [
-    "VILCA Y DANU",
-    "NOBU Y NIT NATION",
-    "VILCA Y DANU"
+    "Vilca, DANU",
+    "Nobu, NIT NATION",
+    "Vilca, DANU"
    ],
    [
-    "CRIZJ Y NEXUS",
-    "RAIBLES Y V1UDON",
-    "CRIZJ Y NEXUS"
+    "CrisZJ, NXUZ",
+    "RAIBLES, V1UDON",
+    "CrisZJ, NXUZ"
    ],
    [
-    "CHASE Y MCO",
-    "MANU Y ALEJOZZ",
-    "CHASE Y MCO"
+    "Chase, MCO",
+    "MANU, alejozz",
+    "Chase, MCO"
    ],
    [
-    "DIOS Y ICON",
-    "WALKOVER",
-    "DIOS Y ICON"
+    "Abraham, Chop",
+    "Mark, TOBALSILLO",
+    "Abraham, Chop"
    ],
    [
-    "SOL Y SADIK",
-    "WALKOVER",
-    "SOL Y SADIK"
+    "Vilca, DANU",
+    "CrisZJ, NXUZ",
+    "Vilca, DANU"
    ],
    [
-    "KUN Y CARLOS",
-    "WALKOVER",
-    "KUN Y CARLOS"
+    "Chase, MCO",
+    "Dios, ICON",
+    "Chase, MCO"
    ],
    [
-    "ABRAHAM Y CHOP",
-    "MARK Y TOBALSILLO",
-    "ABRAHAM Y CHOP"
+    "SOL, Sadik",
+    "KUN, Carlos",
+    "SOL, Sadik"
    ],
    [
-    "VILCA Y DANU",
-    "CRIZJ Y NEXUS",
-    "VILCA Y DANU"
+    "Abraham, Chop",
+    "Vilca, DANU",
+    "Abraham, Chop"
    ],
    [
-    "CHASE Y MCO",
-    "DIOS Y ICON",
-    "CHASE Y MCO"
+    "SOL, Sadik",
+    "Chase, MCO",
+    "SOL, Sadik"
    ],
    [
-    "SOL Y SADIK",
-    "KUN Y CARLOS",
-    "SOL Y SADIK"
-   ],
-   [
-    "ABRAHAM Y CHOP",
-    "VILCA Y DANU",
-    "ABRAHAM Y CHOP"
-   ],
-   [
-    "SOL Y SADIK",
-    "CHASE Y MCO",
-    "SOL Y SADIK"
-   ],
-   [
-    "SOL Y SADIK",
-    "ABRAHAM Y CHOP",
-    "SOL Y SADIK"
+    "SOL, Sadik",
+    "Abraham, Chop",
+    "SOL, Sadik"
    ]
   ],
   "ev_antes": {},
   "fecha": "10/10",
-  "firma": "b4759d85f5098317",
+  "firma": "364f9b798710b98b",
   "msg": "1569847767734554677",
   "nombre": "(sin titulo)",
   "num": 602,
@@ -41603,69 +41588,119 @@
   "t": "2026-11-10T22:54:32Z",
   "tabla": [
    [
-    "SOL Y SADIK",
+    "SOL",
     "Campeón",
-    10000
+    5000
    ],
    [
-    "ABRAHAM Y CHOP",
+    "Sadik",
+    "Campeón",
+    5000
+   ],
+   [
+    "Abraham",
     "Subcampeón",
-    7500
+    3750
    ],
    [
-    "VILCA Y DANU",
+    "Chop",
+    "Subcampeón",
+    3750
+   ],
+   [
+    "Vilca",
     "Semifinal",
-    5250
+    2625
    ],
    [
-    "CHASE Y MCO",
+    "DANU",
     "Semifinal",
-    5250
+    2625
    ],
    [
-    "CRIZJ Y NEXUS",
-    "Cuartos",
-    2500
+    "Chase",
+    "Semifinal",
+    2625
    ],
    [
-    "DIOS Y ICON",
-    "Cuartos",
-    2500
+    "MCO",
+    "Semifinal",
+    2625
    ],
    [
-    "KUN Y CARLOS",
-    "Cuartos",
-    2500
-   ],
-   [
-    "WALKOVER",
-    "Octavos",
-    1875
-   ],
-   [
-    "MARK Y TOBALSILLO",
+    "CrisZJ",
     "Cuartos",
     1250
    ],
    [
-    "CRIZJ Y PIPA",
-    "Octavos",
+    "NXUZ",
+    "Cuartos",
     1250
    ],
    [
-    "NOBU Y NIT NATION",
-    "Octavos",
+    "Dios",
+    "Cuartos",
     1250
    ],
    [
-    "RAIBLES Y V1UDON",
-    "Octavos",
+    "ICON",
+    "Cuartos",
     1250
    ],
    [
-    "MANU Y ALEJOZZ",
-    "Octavos",
+    "KUN",
+    "Cuartos",
     1250
+   ],
+   [
+    "Carlos",
+    "Cuartos",
+    1250
+   ],
+   [
+    "Mark",
+    "Cuartos",
+    625
+   ],
+   [
+    "TOBALSILLO",
+    "Cuartos",
+    625
+   ],
+   [
+    "PIPA",
+    "Octavos",
+    625
+   ],
+   [
+    "Nobu",
+    "Octavos",
+    625
+   ],
+   [
+    "NIT NATION",
+    "Octavos",
+    625
+   ],
+   [
+    "RAIBLES",
+    "Octavos",
+    625
+   ],
+   [
+    "V1UDON",
+    "Octavos",
+    625
+   ],
+   [
+    "MANU",
+    "Octavos",
+    625
+   ],
+   [
+    "alejozz",
+    "Octavos",
+    625
    ]
   ],
   "v": 2
@@ -43089,14 +43124,14 @@
     "Tam"
    ],
    [
-    "Park Sung-jong 🇰🇵",
+    "YOUNG VLAD",
     "PHOBOS 🇲🇽",
-    "Park Sung-jong 🇰🇵"
+    "YOUNG VLAD"
    ],
    [
-    "Park Sung-jong 🇰🇵",
+    "YOUNG VLAD",
     "Trelok",
-    "Park Sung-jong 🇰🇵"
+    "YOUNG VLAD"
    ],
    [
     "k 🇺🇸, Tenor",
@@ -43104,14 +43139,14 @@
     "k 🇺🇸, Tenor"
    ],
    [
-    "kminante🇦🇷, Tam",
-    "Park Sung-jong 🇰🇵, Oasis",
-    "kminante🇦🇷, Tam"
+    "Kminant, Tam",
+    "YOUNG VLAD, Oasis",
+    "Kminant, Tam"
    ],
    [
-    "kminante 🇦🇷, Tam, Park Sung-jong 🇰🇵",
+    "Kminant, Tam, YOUNG VLAD",
     "k 🇺🇸, Tenor, Erik",
-    "kminante 🇦🇷, Tam, Park Sung-jong 🇰🇵"
+    "Kminant, Tam, YOUNG VLAD"
    ]
   ],
   "ev_antes": {
@@ -43127,7 +43162,7 @@
    "crakero": 6
   },
   "fecha": "11/11",
-  "firma": "a1716913f007a877",
+  "firma": "55bf206d7c5e54d5",
   "msg": "1570306951311532114",
   "nombre": "__qcyo rapeen Pandillas__",
   "num": 610,
@@ -43141,7 +43176,7 @@
   "t": "2026-11-12T05:24:03Z",
   "tabla": [
    [
-    "Park Sung-jong 🇰🇵",
+    "YOUNG VLAD",
     "Campeón",
     5958
    ],
@@ -43151,7 +43186,7 @@
     5125
    ],
    [
-    "kminante 🇦🇷",
+    "Kminant",
     "Campeón",
     3333
    ],
@@ -43167,11 +43202,6 @@
    ],
    [
     "Oasis",
-    "Semifinal",
-    2625
-   ],
-   [
-    "kminante🇦🇷",
     "Semifinal",
     2625
    ],

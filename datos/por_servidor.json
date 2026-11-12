@@ -169,20 +169,6 @@
     }
    }
   },
-  "ABRAHAM Y CHOP": {
-   "DDS": {
-    "duelos": "",
-    "ev": 1,
-    "oro": 0,
-    "ovr": 45,
-    "pod": 1,
-    "pts": 7500,
-    "racha": "1/1",
-    "tg": {
-     "fin": 1
-    }
-   }
-  },
   "ACH": {
    "FFA": {
     "duelos": "",
@@ -420,14 +406,14 @@
   "Abraham": {
    "DDS": {
     "duelos": "",
-    "ev": 3,
+    "ev": 4,
     "oro": 0,
-    "ovr": 47,
-    "pod": 1,
-    "pts": 14750,
-    "racha": "1/1",
+    "ovr": 48,
+    "pod": 2,
+    "pts": 18500,
+    "racha": "1/2",
     "tg": {
-     "fin": 1,
+     "fin": 2,
      "fund": true
     }
    },
@@ -1673,17 +1659,6 @@
     "racha": "0/0"
    }
   },
-  "CHASE Y MCO": {
-   "DDS": {
-    "duelos": "",
-    "ev": 1,
-    "oro": 0,
-    "ovr": 43,
-    "pod": 0,
-    "pts": 5250,
-    "racha": "1/1"
-   }
-  },
   "CHOCLITO": {
    "ACAD": {
     "duelos": "",
@@ -1730,28 +1705,6 @@
     "tg": {
      "fund": true
     }
-   }
-  },
-  "CRIZJ Y NEXUS": {
-   "DDS": {
-    "duelos": "",
-    "ev": 1,
-    "oro": 0,
-    "ovr": 42,
-    "pod": 0,
-    "pts": 2500,
-    "racha": "0/0"
-   }
-  },
-  "CRIZJ Y PIPA": {
-   "DDS": {
-    "duelos": "",
-    "ev": 1,
-    "oro": 0,
-    "ovr": 42,
-    "pod": 0,
-    "pts": 1250,
-    "racha": "0/0"
    }
   },
   "CROQUETA🇪🇸": {
@@ -1946,11 +1899,11 @@
    },
    "DDS": {
     "duelos": "",
-    "ev": 2,
+    "ev": 3,
     "oro": 1,
-    "ovr": 46,
+    "ovr": 47,
     "pod": 1,
-    "pts": 15250,
+    "pts": 16500,
     "racha": "2/2",
     "tg": {
      "fin": 1
@@ -2087,12 +2040,12 @@
   "Chase": {
    "DDS": {
     "duelos": "",
-    "ev": 2,
+    "ev": 3,
     "oro": 1,
-    "ovr": 47,
+    "ovr": 48,
     "pod": 2,
-    "pts": 17500,
-    "racha": "2/2",
+    "pts": 21438,
+    "racha": "3/3",
     "tg": {
      "fin": 2,
      "fund": true
@@ -2177,14 +2130,14 @@
    },
    "DDS": {
     "duelos": "",
-    "ev": 4,
+    "ev": 5,
     "oro": 0,
-    "ovr": 47,
-    "pod": 1,
-    "pts": 13250,
+    "ovr": 48,
+    "pod": 2,
+    "pts": 17000,
     "racha": "1/1",
     "tg": {
-     "fin": 1,
+     "fin": 2,
      "fund": true
     }
    },
@@ -2437,12 +2390,12 @@
    },
    "DDS": {
     "duelos": "",
-    "ev": 8,
+    "ev": 9,
     "oro": 2,
-    "ovr": 50,
+    "ovr": 51,
     "pod": 2,
-    "pts": 38450,
-    "racha": "0/3",
+    "pts": 39700,
+    "racha": "0/2",
     "tg": {
      "fin": 2,
      "fund": true,
@@ -2584,6 +2537,17 @@
     "racha": "0/0"
    }
   },
+  "DANU": {
+   "DDS": {
+    "duelos": "",
+    "ev": 1,
+    "oro": 0,
+    "ovr": 42,
+    "pod": 0,
+    "pts": 2625,
+    "racha": "1/1"
+   }
+  },
   "DARK ANGEL": {
    "FFA": {
     "duelos": "",
@@ -2639,17 +2603,6 @@
     "ovr": 42,
     "pod": 0,
     "pts": 1250,
-    "racha": "0/0"
-   }
-  },
-  "DIOS Y ICON": {
-   "DDS": {
-    "duelos": "",
-    "ev": 1,
-    "oro": 0,
-    "ovr": 42,
-    "pod": 0,
-    "pts": 2500,
     "racha": "0/0"
    }
   },
@@ -3009,15 +2962,14 @@
    },
    "DDS": {
     "duelos": "",
-    "ev": 2,
+    "ev": 3,
     "oro": 1,
     "ovr": 46,
     "pod": 1,
-    "pts": 10250,
+    "pts": 11500,
     "racha": "1/1",
     "tg": {
-     "fin": 1,
-     "nuevo": true
+     "fin": 1
     }
    },
    "FDS": {
@@ -4970,6 +4922,17 @@
     }
    }
   },
+  "ICON": {
+   "DDS": {
+    "duelos": "",
+    "ev": 1,
+    "oro": 0,
+    "ovr": 42,
+    "pod": 0,
+    "pts": 1250,
+    "racha": "0/0"
+   }
+  },
   "ISAIAS": {
    "FFA": {
     "duelos": "0/1",
@@ -5818,14 +5781,14 @@
     "racha": "0/0"
    }
   },
-  "KUN Y CARLOS": {
+  "KUN": {
    "DDS": {
     "duelos": "",
     "ev": 1,
     "oro": 0,
     "ovr": 42,
     "pod": 0,
-    "pts": 2500,
+    "pts": 1250,
     "racha": "0/0"
    }
   },
@@ -5961,12 +5924,15 @@
   "Kminant": {
    "FFA": {
     "duelos": "2/4",
-    "ev": 3,
-    "oro": 0,
-    "ovr": 44,
-    "pod": 0,
-    "pts": 8312,
-    "racha": "0/0"
+    "ev": 4,
+    "oro": 1,
+    "ovr": 47,
+    "pod": 1,
+    "pts": 11645,
+    "racha": "1/1",
+    "tg": {
+     "fin": 1
+    }
    }
   },
   "Kochi": {
@@ -7162,25 +7128,14 @@
     }
    }
   },
-  "MANU Y ALEJOZZ": {
+  "MANU": {
    "DDS": {
     "duelos": "",
     "ev": 1,
     "oro": 0,
     "ovr": 42,
     "pod": 0,
-    "pts": 1250,
-    "racha": "0/0"
-   }
-  },
-  "MARK Y TOBALSILLO": {
-   "DDS": {
-    "duelos": "",
-    "ev": 1,
-    "oro": 0,
-    "ovr": 42,
-    "pod": 0,
-    "pts": 1250,
+    "pts": 625,
     "racha": "0/0"
    }
   },
@@ -7341,11 +7296,11 @@
    },
    "DDS": {
     "duelos": "",
-    "ev": 5,
+    "ev": 6,
     "oro": 1,
-    "ovr": 48,
+    "ovr": 49,
     "pod": 2,
-    "pts": 19000,
+    "pts": 21625,
     "racha": "3/3",
     "tg": {
      "fin": 2
@@ -7810,9 +7765,9 @@
   "Mark": {
    "DDS": {
     "duelos": "",
-    "ev": 3,
+    "ev": 4,
     "oro": 0,
-    "ovr": 44,
+    "ovr": 45,
     "pod": 0,
     "pts": 10250,
     "racha": "1/1"
@@ -8765,14 +8720,14 @@
     "racha": "0/0"
    }
   },
-  "NOBU Y NIT NATION": {
+  "NIT NATION": {
    "DDS": {
     "duelos": "",
     "ev": 1,
     "oro": 0,
     "ovr": 42,
     "pod": 0,
-    "pts": 1250,
+    "pts": 625,
     "racha": "0/0"
    }
   },
@@ -8813,11 +8768,11 @@
    },
    "DDS": {
     "duelos": "",
-    "ev": 11,
+    "ev": 12,
     "oro": 3,
-    "ovr": 52,
+    "ovr": 53,
     "pod": 4,
-    "pts": 47200,
+    "pts": 48450,
     "racha": "0/2",
     "tg": {
      "fin": 4,
@@ -9022,6 +8977,15 @@
    }
   },
   "Nobu": {
+   "DDS": {
+    "duelos": "",
+    "ev": 1,
+    "oro": 0,
+    "ovr": 42,
+    "pod": 0,
+    "pts": 625,
+    "racha": "0/0"
+   },
    "FFA": {
     "duelos": "",
     "ev": 1,
@@ -9495,6 +9459,17 @@
     "racha": "0/0"
    }
   },
+  "PIPA": {
+   "DDS": {
+    "duelos": "",
+    "ev": 1,
+    "oro": 0,
+    "ovr": 42,
+    "pod": 0,
+    "pts": 625,
+    "racha": "0/0"
+   }
+  },
   "PIYI 🇲🇽": {
    "FFA": {
     "duelos": "",
@@ -9683,21 +9658,6 @@
     "racha": "0/0",
     "tg": {
      "fund": true
-    }
-   }
-  },
-  "Park Sung-jong 🇰🇵": {
-   "FFA": {
-    "duelos": "",
-    "ev": 1,
-    "oro": 1,
-    "ovr": 45,
-    "pod": 1,
-    "pts": 5958,
-    "racha": "1/1",
-    "tg": {
-     "fin": 1,
-     "nuevo": true
     }
    }
   },
@@ -10087,14 +10047,14 @@
     }
    }
   },
-  "RAIBLES Y V1UDON": {
+  "RAIBLES": {
    "DDS": {
     "duelos": "",
     "ev": 1,
     "oro": 0,
     "ovr": 42,
     "pod": 0,
-    "pts": 1250,
+    "pts": 625,
     "racha": "0/0"
    }
   },
@@ -10778,6 +10738,18 @@
     "pts": 2500,
     "racha": "1/1"
    },
+   "DDS": {
+    "duelos": "",
+    "ev": 1,
+    "oro": 1,
+    "ovr": 45,
+    "pod": 1,
+    "pts": 5000,
+    "racha": "1/1",
+    "tg": {
+     "fin": 1
+    }
+   },
    "FDS": {
     "duelos": "",
     "ev": 1,
@@ -10809,20 +10781,6 @@
     "racha": "0/0",
     "tg": {
      "fund": true
-    }
-   }
-  },
-  "SOL Y SADIK": {
-   "DDS": {
-    "duelos": "",
-    "ev": 1,
-    "oro": 1,
-    "ovr": 45,
-    "pod": 1,
-    "pts": 10000,
-    "racha": "1/1",
-    "tg": {
-     "fin": 1
     }
    }
   },
@@ -10885,14 +10843,14 @@
   "Sadik": {
    "DDS": {
     "duelos": "",
-    "ev": 1,
-    "oro": 1,
-    "ovr": 45,
-    "pod": 1,
-    "pts": 10000,
-    "racha": "1/1",
+    "ev": 2,
+    "oro": 2,
+    "ovr": 47,
+    "pod": 2,
+    "pts": 20000,
+    "racha": "2/2",
     "tg": {
-     "fin": 1
+     "fin": 2
     }
    }
   },
@@ -11744,6 +11702,17 @@
     }
    }
   },
+  "TOBALSILLO": {
+   "DDS": {
+    "duelos": "",
+    "ev": 1,
+    "oro": 0,
+    "ovr": 42,
+    "pod": 0,
+    "pts": 625,
+    "racha": "0/0"
+   }
+  },
   "TONY  🇦🇷": {
    "CH": {
     "duelos": "1/2",
@@ -12275,6 +12244,17 @@
     "racha": "0/0"
    }
   },
+  "V1UDON": {
+   "DDS": {
+    "duelos": "",
+    "ev": 1,
+    "oro": 0,
+    "ovr": 42,
+    "pod": 0,
+    "pts": 625,
+    "racha": "0/0"
+   }
+  },
   "VECA 🇧🇱": {
    "ACAD": {
     "duelos": "1/2",
@@ -12284,17 +12264,6 @@
     "pod": 0,
     "pts": 12500,
     "racha": "0/0"
-   }
-  },
-  "VILCA Y DANU": {
-   "DDS": {
-    "duelos": "",
-    "ev": 1,
-    "oro": 0,
-    "ovr": 43,
-    "pod": 0,
-    "pts": 5250,
-    "racha": "1/1"
    }
   },
   "VIXOVERSO": {
@@ -12603,12 +12572,12 @@
    },
    "DDS": {
     "duelos": "",
-    "ev": 7,
+    "ev": 8,
     "oro": 0,
-    "ovr": 50,
+    "ovr": 51,
     "pod": 3,
-    "pts": 32500,
-    "racha": "1/1",
+    "pts": 35125,
+    "racha": "1/2",
     "tg": {
      "fin": 2,
      "fund": true,
@@ -12715,17 +12684,6 @@
      "fin": 1,
      "fund": true
     }
-   }
-  },
-  "WALKOVER": {
-   "DDS": {
-    "duelos": "",
-    "ev": 1,
-    "oro": 0,
-    "ovr": 42,
-    "pod": 0,
-    "pts": 1875,
-    "racha": "0/0"
    }
   },
   "WHITE": {
@@ -12933,14 +12891,14 @@
   "YOUNG VLAD": {
    "FFA": {
     "duelos": "",
-    "ev": 1,
-    "oro": 0,
-    "ovr": 46,
-    "pod": 1,
-    "pts": 12375,
-    "racha": "1/1",
+    "ev": 2,
+    "oro": 1,
+    "ovr": 47,
+    "pod": 2,
+    "pts": 18333,
+    "racha": "2/2",
     "tg": {
-     "fin": 1
+     "fin": 2
     }
    }
   },
@@ -13302,11 +13260,11 @@
   "alejozz": {
    "DDS": {
     "duelos": "",
-    "ev": 1,
+    "ev": 2,
     "oro": 0,
-    "ovr": 42,
+    "ovr": 43,
     "pod": 0,
-    "pts": 2000,
+    "pts": 2625,
     "racha": "0/0"
    }
   },
@@ -13755,21 +13713,6 @@
     "pod": 0,
     "pts": 4125,
     "racha": "0/0"
-   }
-  },
-  "kminante 🇦🇷": {
-   "FFA": {
-    "duelos": "",
-    "ev": 1,
-    "oro": 1,
-    "ovr": 45,
-    "pod": 1,
-    "pts": 5958,
-    "racha": "0/1",
-    "tg": {
-     "fin": 1,
-     "nuevo": true
-    }
    }
   },
   "kychi": {

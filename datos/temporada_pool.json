@@ -171,7 +171,6 @@
    "relampago": true,
    "rev": 1,
    "solo": 1,
-   "suelto": true,
    "svc": 2,
    "trios": 12
   }
@@ -641,7 +640,7 @@
   "tg_t": {
    "busc": 2,
    "cab": 1,
-   "dobles": 12,
+   "dobles": 13,
    "infalt": true,
    "perf": 2,
    "svc": 5,
@@ -1079,7 +1078,7 @@
   "rango": "A",
   "tg_t": {
    "busc": 2,
-   "dobles": 9,
+   "dobles": 10,
    "infalt": true,
    "relampago": true,
    "sube": true,
@@ -1282,6 +1281,7 @@
    "perf": 1,
    "relampago": true,
    "rev": 1,
+   "sube": true,
    "svc": 3,
    "trios": 4
   }
@@ -1591,7 +1591,7 @@
   "total": 251,
   "rango": "B",
   "tg_t": {
-   "dobles": 4,
+   "dobles": 5,
    "infalt": true,
    "perf": 1,
    "sube": true,
@@ -1785,6 +1785,7 @@
    "dobles": 4,
    "perf": 2,
    "relampago": true,
+   "rey": true,
    "sube": true,
    "svc": 1,
    "trios": 2
@@ -3061,7 +3062,7 @@
   "rango": "C",
   "tg_t": {
    "cohete": true,
-   "dobles": 3,
+   "dobles": 4,
    "infalt": true,
    "rev": 1,
    "sube": true,
@@ -3430,8 +3431,7 @@
   "total": 251,
   "rango": "D",
   "tg_t": {
-   "dobles": 2,
-   "sube": true
+   "dobles": 2
   }
  },
  {
@@ -4446,6 +4446,7 @@
   "rango": "E",
   "tg_t": {
    "dobles": 2,
+   "sube": true,
    "trios": 2
   }
  },
@@ -4556,6 +4557,7 @@
   "tg_t": {
    "busc": 1,
    "solo": 1,
+   "sube": true,
    "svtag": "llamas"
   }
  },
@@ -5604,6 +5606,7 @@
   "rango": "E",
   "tg_t": {
    "cohete": true,
+   "dobles": 1,
    "svc": 2,
    "svtag": "campeon"
   }
@@ -6854,7 +6857,7 @@
   "caz": 0,
   "czd": 0,
   "sob": 0,
-  "mis": 0,
+  "mis": 1,
   "srv": 4,
   "racha": 3,
   "racha_act": 3,
@@ -6868,7 +6871,7 @@
   "tg_t": {
    "dobles": 1,
    "sube": true,
-   "svc": 1
+   "svc": 2
   }
  },
  {
@@ -8248,7 +8251,11 @@
   "pos": 334,
   "fc": true,
   "total": 251,
-  "rango": "E"
+  "rango": "E",
+  "tg_t": {
+   "svc": 1,
+   "svtag": "campeon"
+  }
  },
  {
   "full": "SAIDEM",
@@ -9123,7 +9130,7 @@
   "caz": 0,
   "czd": 0,
   "sob": 0,
-  "mis": 2,
+  "mis": 3,
   "srv": 1,
   "racha": 1,
   "racha_act": 1,
@@ -9356,7 +9363,7 @@
   "caz": 0,
   "czd": 0,
   "sob": 0,
-  "mis": 1,
+  "mis": 0,
   "srv": 1,
   "racha": 1,
   "racha_act": 1,
@@ -9367,11 +9374,7 @@
   "pos": 358,
   "fc": true,
   "total": 251,
-  "rango": "E",
-  "tg_t": {
-   "dcor": true,
-   "svc": 1
-  }
+  "rango": "E"
  },
  {
   "full": "YIN-SON 🇺🇸",
@@ -9628,7 +9631,7 @@
   "caz": 0,
   "czd": 0,
   "sob": 0,
-  "mis": 1,
+  "mis": 0,
   "srv": 1,
   "racha": 1,
   "racha_act": 1,
@@ -10082,13 +10085,7 @@
   "pos": 373,
   "fc": true,
   "total": 251,
-  "rango": "E",
-  "tg_t": {
-   "dcor": true,
-   "dobles": 1,
-   "reciente": true,
-   "svc": 1
-  }
+  "rango": "E"
  },
  {
   "full": "Park Sung-jong 🇰🇵",
@@ -10120,12 +10117,7 @@
   "pos": 374,
   "fc": true,
   "total": 251,
-  "rango": "E",
-  "tg_t": {
-   "dcor": true,
-   "reciente": true,
-   "svc": 1
-  }
+  "rango": "E"
  },
  {
   "full": "Andresito",
@@ -11608,7 +11600,11 @@
   "pos": 403,
   "fc": true,
   "total": 251,
-  "rango": "E"
+  "rango": "E",
+  "tg_t": {
+   "svc": 1,
+   "svtag": "campeon"
+  }
  },
  {
   "full": "OEP",
@@ -13019,7 +13015,8 @@
   "total": 251,
   "rango": "E",
   "tg_t": {
-   "reciente": true
+   "reciente": true,
+   "rey": true
   }
  },
  {
@@ -19926,10 +19923,7 @@
   "pos": 592,
   "fc": true,
   "total": 251,
-  "rango": "E",
-  "tg_t": {
-   "rev": 1
-  }
+  "rango": "E"
  },
  {
   "full": "23",

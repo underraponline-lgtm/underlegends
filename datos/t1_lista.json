@@ -11,13 +11,13 @@
   ["", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", ""],
   ["Rapero", "Bandera", "SV", "Verificado", "Discord ID", "Avatar", "Notas", "Nombre", "País", "Crew", "", "", "", "", "", "", "", "", "", "", ""],
   ["Ivan 🇨🇴", "Colombia", "", "❌", "206800559372632064", "", "", "Ivan", "co", "", "", "📊 Totales", "", "", "❓ Por verificar", "", "", "", "❌ Por invitar", "", ""],
-  ["S1lence 🇵🇪", "Perú", "", "❓", "1276644368693858356", "", "fusionada con «Silence ❓» (Dlx, 11/11/2026 6:36 PM ET)", "S1lence", "pe", "", "", "Total raperos", "1143", "", "Rapero", "Bandera", "#", "", "Rapero", "Bandera", "#"],
+  ["S1lence 🇵🇪", "Perú", "", "❓", "1276644368693858356", "", "fusionada con «Silence ❓» (Dlx, 11/11/2026 6:36 PM ET)", "S1lence", "pe", "", "", "Total raperos", "1145", "", "Rapero", "Bandera", "#", "", "Rapero", "Bandera", "#"],
   ["Benju ❓", "❓", "", "❓", "", "", "", "Benju", "", "", "", "✅ Verificados", "435", "", "Ivan 🇨🇴", "Colombia", "10", "", "Kminant ❓", "Argentina", "28"],
   ["Astaroth 🇲🇽", "México", "", "❓", "", "", "", "Astaroth", "mx", "Sexosos", "", "❌ No está", "452", "", "S1lence 🇵🇪", "Perú", "11", "", "Incognito 🇨🇱", "Argentina", "93"],
-  ["Cronox 🇨🇱", "Chile", "DRA", "✅", "1487658663148785734", "https://cdn.discordapp.com/avatars/1487658663148785734/96469e94f71dd5e040eb3342c16c96c3.png?size=256", "", "Cronox", "cl", "", "", "❓ Sin verificar", "256", "", "Benju ❓", "❓", "12", "", "Shetet ❓", "Ecuador", "94"],
+  ["Cronox 🇨🇱", "Chile", "DRA", "✅", "1487658663148785734", "https://cdn.discordapp.com/avatars/1487658663148785734/96469e94f71dd5e040eb3342c16c96c3.png?size=256", "", "Cronox", "cl", "", "", "❓ Sin verificar", "258", "", "Benju ❓", "❓", "12", "", "Shetet ❓", "Ecuador", "94"],
   ["Indígena 🇺🇾", "Uruguay", "", "❓", "", "", "", "Indígena", "uy", "", "", "", "", "", "Astaroth 🇲🇽", "México", "14", "", "Fazer ❓", "Argentina", "116"],
-  ["Dominick 🇵🇪", "Perú", "", "❌", "1439048698142134436", "", "", "Dominick", "pe", "", "", "📈 Progreso", "38.1%", "", "Indígena 🇺🇾", "Uruguay", "16", "", "Lucky 🇵🇾", "Paraguay", "178"],
-  ["Z-up 🇦🇷", "Argentina", "", "❓", "", "", "", "Z-up", "ar", "", "", "Con Discord ID", "869", "", "Dominick 🇵🇪", "Perú", "17", "", "Luzzano 🇦🇷", "Argentina", "188"],
+  ["Dominick 🇵🇪", "Perú", "", "❌", "1439048698142134436", "", "", "Dominick", "pe", "", "", "📈 Progreso", "38.0%", "", "Indígena 🇺🇾", "Uruguay", "16", "", "Lucky 🇵🇾", "Paraguay", "178"],
+  ["Z-up 🇦🇷", "Argentina", "", "❓", "", "", "", "Z-up", "ar", "", "", "Con Discord ID", "871", "", "Dominick 🇵🇪", "Perú", "17", "", "Luzzano 🇦🇷", "Argentina", "188"],
   ["Mr Still Ballin 🇺🇾", "Uruguay", "", "✅", "794200141023412244", "https://cdn.discordapp.com/avatars/794200141023412244/9027036d43e59c4faad2afa11694e0a4.png?size=256", "fusionada con «Over 🇺🇾» (Dlx, 11/11/2026 6:36 PM ET)", "Mr Still Ballin", "uy", "", "", "Sin Discord ID", "274", "", "Z-up 🇦🇷", "Argentina", "18", "", "Road 🇪🇸", "España", "189"],
   ["RZ 🇵🇪", "Perú", "", "✅", "447170339320102924", "https://cdn.discordapp.com/avatars/447170339320102924/985d79781acc842a004519cfdab63405.png?size=256", "", "RZ", "pe", "", "", "", "", "", "Mr Still Ballin 🇺🇾", "Uruguay", "19", "", "Oasis 🇨🇱", "Chile", "192"],
   ["Saz 🇨🇴", "Colombia", "", "❌", "558872103554646017", "", "", "Saz", "co", "Follombia", "", "📖 Instrucciones", "", "", "Saz 🇨🇴", "Colombia", "21", "", "Nahu 🇦🇷", "Argentina", "193"],
@@ -1153,6 +1153,8 @@
   ["Nene 🇨🇱", "Chile", "", "❓", "1462907811792031754", "", "alta automática · se anotó así en inscripciones · 2026-11-11 10:15 PM ET", "Nene", "cl", "", "", "", "", "", "", "", "", "", "", "", ""],
   ["kychi 🇨🇱", "Chile", "", "❓", "694702989436387389", "", "alta automática · se anotó así en inscripciones · 2026-11-11 11:06 PM ET", "kychi", "cl", "", "", "", "", "", "", "", "", "", "", "", ""],
   ["letrao 🇨🇱", "Chile", "", "❓", "975881475528491058", "", "alta automática · se anotó así en inscripciones · 2026-11-11 11:06 PM ET", "letrao", "cl", "", "", "", "", "", "", "", "", "", "", "", ""],
-  ["AbrahamSRRL 🇵🇪", "Perú", "", "❓", "727573835033083914", "", "alta automática · una cuenta, dos nombres · 2 prueba(s) · 2026-11-11 11:31 PM ET", "AbrahamSRRL", "pe", "", "", "", "", "", "", "", "", "", "", "", ""]
+  ["AbrahamSRRL 🇵🇪", "Perú", "", "❓", "727573835033083914", "", "alta automática · una cuenta, dos nombres · 2 prueba(s) · 2026-11-11 11:31 PM ET", "AbrahamSRRL", "pe", "", "", "", "", "", "", "", "", "", "", "", ""],
+  ["ICON", "❓", "", "❓", "751542106975240255", "", "alta automática · su nombre en Discord · 2026-11-12 1:00 AM ET", "ICON", "", "", "", "", "", "", "", "", "", "", "", "", ""],
+  ["V1UDON", "❓", "", "❓", "780548255716474900", "", "alta automática · su nombre en Discord · 2026-11-12 1:00 AM ET", "V1UDON", "", "", "", "", "", "", "", "", "", "", "", "", ""]
  ]
 }
