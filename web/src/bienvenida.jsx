@@ -65,7 +65,7 @@ const e = (i, cls) => ({ className: (cls ? cls + ' ' : '') + 'bv-e', style: { '-
 // Socios y el Salón: un solo lugar, o al rearmar el video una página seguiría mostrando el viejo
 function Fondo({ base }) {
   const [sinVideo] = useState(quieto);
-  // 🖥️ EL DE 960 × 540 (fue 1280 × 720 hasta la 4.64: ver fondovideo.jsx) DONDE LA PANTALLA TIENE LOS PÍXELES PARA VERLO
+  // 🖥️ EL DE 854 × 480 (fue 1280 × 720 hasta la 4.64 y 960 × 540 en la 4.66: ver fondovideo.jsx) DONDE LA PANTALLA TIENE LOS PÍXELES PARA VERLO
   // (Dlx: «el video no está en HD»: el de 640 se veía
   // a píxeles en 1454 px; y después, «haz lo mismo en la versión del teléfono»). Se mide en píxeles de verdad, no de CSS:
   // un teléfono de 390 con densidad 3 tiene 1.170, y ahí el de 640 también se veía blando. El de 640 queda para pantallas
@@ -76,7 +76,7 @@ function Fondo({ base }) {
   return (
     <div className="bv-fondo" aria-hidden="true">
       {sinVideo ? <img alt="" src={base + 'poster.jpg' + VV} />
-        : <video ref={arrancar} src={base + (hd ? 'montaje-540.mp4' : 'montaje.mp4') + VV} poster={base + 'poster.jpg' + VV} autoPlay muted loop playsInline preload="auto" />}
+        : <video ref={arrancar} src={base + (hd ? 'montaje-480.mp4' : 'montaje.mp4') + VV} poster={base + 'poster.jpg' + VV} autoPlay muted loop playsInline preload="auto" />}
       <i className="bv-vineta" />
       <svg className="bv-grano"><filter id="bv-gr"><feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="2" stitchTiles="stitch" />
         <feColorMatrix type="saturate" values="0" /></filter><rect width="100%" height="100%" filter="url(#bv-gr)" /></svg>

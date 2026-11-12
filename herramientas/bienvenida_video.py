@@ -14,7 +14,7 @@ ahí (`liga.d.r2`). Si un rapero pide salir, se rearma sin su tramo y se vuelve 
 
 uso:
   python herramientas/bienvenida_video.py --armar <carpeta>   # baja los tramos y arma el montaje (yt-dlp + ffmpeg)
-  python herramientas/bienvenida_video.py --armar <carpeta> --540  # el de 960 × 540, para pantallas grandes
+  python herramientas/bienvenida_video.py --armar <carpeta> --480  # el de 854 × 480, para pantallas grandes
   python herramientas/bienvenida_video.py --subir <carpeta>   # sube montaje, póster y cuadros a R2
   python herramientas/bienvenida_video.py                     # sólo lista los tramos
 
@@ -37,7 +37,11 @@ API_R2 = 'https://api.cloudflare.com/client/v4/accounts/%s/r2/buckets/cartas' % 
 # (video de YouTube, segundo de arranque, quién, canal). El orden es el del montaje: alterna día y noche y países
 TRAMOS = [
     ('B2OyIluaMF8', 104, 'Kain', 'BVS Network'),
-    ('eariGFs-TEM', 115, 'SOL', 'BLDC Freestyle'),
+    # 👩 SOL ES ELLA (Dlx, 12/11/2026, con el link: «la mujer de la derecha es SOL»): la de rulos y remera POLO CLUB.
+    # Hasta la 4.66 este tramo era de «JOSEMA MAYNUN LIONZHOK VS SOL GUILLE WA» (eariGFs-TEM), un 3v3 de Perú elegido
+    # SÓLO porque el título decía «SOL»: era otra persona. ⚠️ Un nombre en el título no es la persona: el tramo se
+    # confirma mirándolo, o lo confirma Dlx
+    ('dMamevsP5ZQ', 167, 'Sol', 'Estrellas del Flow'),
     ('7lIj3Cva3qc', 100, 'Zaylax', 'BVS Network'),
     ('kommY3DfdJQ', 150, 'Sombra', 'BVS Network'),          # Dlx: «subir otro clip de Sombra» (primer plano, rapeando)
     ('CD9HicZ0bU4', 644, 'Panchok', 'DEM Battles'),
@@ -119,11 +123,13 @@ def gamma_para(y):
 
 
 def armar(dst, grande=False):
-    """`grande`: 960 × 540 para las pantallas grandes. Fue 1280 × 720 en la 4.59 (Dlx: «el video no está en HD») y bajó
-    el 12/11/2026 (Dlx: «no se nota mucho el HD… un intermedio entre 720p y 480»): con el mismo peso, 720p tenía que
-    comprimir tanto (crf 35) que se perdía lo que ganaba en píxeles. 540p con menos compresión se ve más nítido. El de
-    640 × 360 queda para las pantallas chicas. Los dos salen de los mismos originales en 1080p."""
-    w, h, crf, nombre = (960, 540, 28, 'montaje-540') if grande else (W, H, 31, 'montaje')
+    """`grande`: 854 × 480 para las pantallas grandes. Fue 1280 × 720 en la 4.59 (Dlx: «el video no está en HD»), 960 × 540
+    en la 4.66 (Dlx: «no se nota mucho el HD… un intermedio entre 720p y 480»: con el mismo peso, 720p tenía que comprimir
+    tanto, crf 35, que se perdía lo que ganaba en píxeles) y 480p el mismo día (Dlx: «480 so the MB is lower but the
+    quality almost the same»). Medido: a la medida de una pantalla de 1.454 px, 540p crf 28, 480p crf 28 y 480p crf 30 no
+    se distinguen, y pesan 6,5, 5,6 y 4,4 MB. El de 640 × 360 queda para las pantallas chicas. Los dos salen de los
+    originales en 1080p."""
+    w, h, crf, nombre = (854, 480, 30, 'montaje-480') if grande else (W, H, 31, 'montaje')
     alto = 1080
     crudos = os.path.join(dst, 'crudos')
     os.makedirs(crudos, exist_ok=True)
@@ -190,7 +196,7 @@ def subir(src):
     s = requests.Session()
     s.headers['Authorization'] = 'Bearer ' + token()
     tipos = {'.mp4': 'video/mp4', '.jpg': 'image/jpeg', '.json': 'application/json'}
-    archivos = ['montaje.mp4', 'montaje-540.mp4', 'poster.jpg'] + ['quieto%d.jpg' % n for n in range(1, len(QUIETOS) + 1)]
+    archivos = ['montaje.mp4', 'montaje-480.mp4', 'poster.jpg'] + ['quieto%d.jpg' % n for n in range(1, len(QUIETOS) + 1)]
     faltan = [a for a in archivos if not os.path.exists(os.path.join(src, a))]
     if faltan:
         sys.exit('faltan en %s: %s' % (src, ', '.join(faltan)))
@@ -207,7 +213,7 @@ def subir(src):
 
 if __name__ == '__main__':
     if '--armar' in sys.argv:
-        armar(sys.argv[sys.argv.index('--armar') + 1], grande='--540' in sys.argv)
+        armar(sys.argv[sys.argv.index('--armar') + 1], grande='--480' in sys.argv)
     elif '--subir' in sys.argv:
         subir(sys.argv[sys.argv.index('--subir') + 1])
     else:
