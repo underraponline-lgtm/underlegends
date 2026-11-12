@@ -3130,6 +3130,10 @@ const RUTAS = {
   '/avisos/panel-socio': 'POST',
   // ⚙️ los ajustes del bot de ese servidor, desde el panel del socio (19/10/2026). Ver `socioAjustes()` del objeto
   '/avisos/socio-ajustes': 'POST',
+  // 🏁 quién ganó una batalla que el bot no entendió, desde el panel del socio (11/11/2026). Ver `socioFinal()` del objeto
+  '/avisos/socio-final': 'POST',
+  // 📊 lo que espera respuesta de cada organizador, para el panel del socio (`bot/finales.py`, con la clave del ciclo)
+  '/avisos/finales-pend': 'POST',
   // 🗳️ a quién votó el público como ganador en el bot en vivo, sumado por nombre (público: sin ningún Discord ID)
   '/avisos/favoritos': 'GET',
   // 📊 una visita sin cuenta, una vez por día y por navegador (04/10/2026). Ver `visita()` del objeto
@@ -6168,6 +6172,34 @@ export async function rutaAvisos(req, env, ruta) {
       method: 'POST', body: await req.text(), headers: { 'content-type': 'application/json' },
     });
   }
+  // 📊 LO QUE ESPERA RESPUESTA DE CADA ORGANIZADOR, DEL CICLO (`finales.publicar()`): con su clave. Para el panel del socio
+  if (ruta === '/avisos/finales-pend') {
+    const k = req.headers.get('x-lg-ciclo') || '';
+    if (!env.DISCORD_TOKEN || k !== await claveCiclo(env.DISCORD_TOKEN)) return json({ error: 'no existe' }, 404);
+    const crudo = await req.text();
+    if (crudo.length > 200000) return json({ error: 'demasiado grande' }, 413);
+    return elObjeto(env).fetch('https://avisos/finales-pend', {
+      method: 'POST', body: crudo, headers: { 'content-type': 'application/json' },
+    });
+  }
+  // 🏁 QUIÉN GANÓ, DESDE EL PANEL DEL SOCIO (Dlx, 11/11/2026: «Panel del socio»): quién pide lo dice Discord; si es dueño
+  // de ese servidor y si la pregunta es suya, el objeto (`socioFinal()`). El cuerpo: `{sv, k, v}`
+  if (ruta === '/avisos/socio-final') {
+    const crudo = await req.text();
+    if (crudo.length > 2048) return json({ error: 'demasiado grande' }, 413);
+    let d = null;
+    try { d = JSON.parse(crudo || '{}'); } catch (e) { d = null; }
+    if (!d || typeof d !== 'object' || !/^[A-Z]{2,6}$/.test(String(d.sv || '')) || !/^\d{5,25}:\d{1,2}$/.test(String(d.k || ''))
+        || !/^[a-z]$/.test(String(d.v || '')) || (d.token && !/^[A-Za-z0-9._-]{10,300}$/.test(String(d.token)))) {
+      return json({ error: 'faltan datos' }, 400);
+    }
+    const q = await quienPide(req, env, d);
+    if (!q.id) return json({ error: q.error }, q.estado);
+    return elObjeto(env).fetch('https://avisos/socio-final', {
+      method: 'POST', body: JSON.stringify({ quien: q.id, sv: d.sv, k: d.k, v: d.v }),
+      headers: { 'content-type': 'application/json' },
+    });
+  }
   // 🏁 LAS FINALES QUE CONTESTÓ CADA ORGANIZADOR, PARA EL CICLO (`bot/finales.py`): con su clave
   if (ruta === '/avisos/finales') {
     const k = req.headers.get('x-lg-ciclo') || '';
@@ -7701,6 +7733,8 @@ export class Avisos {
       if (ruta === '/tutorial') return this.tutorial(d);
       if (ruta === '/seccion') return this.seccion(d);
       if (ruta === '/panel-socio') return this.panelSocio(d);
+      if (ruta === '/finales-pend') return json(this.finalesPend(d));
+      if (ruta === '/socio-final') return json(this.socioFinal(d));
       if (ruta === '/socio-ajustes') return this.socioAjustes(d);
       if (ruta === '/clics') return this.clics(d);
       if (ruta === '/error-pagina') return this.errorPagina(d);
@@ -12940,7 +12974,7 @@ export class Avisos {
     const servidores = lista.map((x) => ({
       sv: x.sv, nombre: x.nombre, tier: x.tier, puntos: x.puntos, antes: x.antes, compara: x.compara !== false,
       compara_desde: x.compara_desde || '', partes: x.partes, m: x.m, ultimo: x.ultimo,
-      sin_jugar: x.sin_jugar, panel: x.panel || null,
+      sin_jugar: x.sin_jugar, panel: x.panel || null, preguntas: this.preguntasDe(x.sv),
       visitas: this.sql.exec('SELECT dia, n FROM secciones WHERE s = ? AND dia >= ? ORDER BY dia', 'sv-' + x.sv, desde).toArray()
         .map((r) => [r.dia, Number(r.n) || 0]),
     }));
@@ -12953,6 +12987,57 @@ export class Avisos {
       } catch (e) { /* es un conteo */ }
     }
     return json({ ok: true, t: T.t || '', semanas: T.semanas || 4, todos: esDlx, servidores });
+  }
+
+  /**
+   * 📊 LO QUE ESPERA RESPUESTA DE CADA ORGANIZADOR (Dlx, 11/11/2026: «Chat de staff, Panel del socio»). El ciclo
+   * (`bot/finales.py`, `publicar()`) deja una vez por corrida las batallas que preguntó y nadie marcó, por servidor:
+   * `{sv: [{k, evento, fecha, ronda, lados, link, autor, vence, nadie}]}`. Se reemplaza entero: lo que ya no está, se
+   * contestó o se cerró. Lo valida acá porque lo muestra una página.
+   */
+  finalesPend(d) {
+    const p = d && d.pend;
+    if (!p || typeof p !== 'object' || Array.isArray(p)) return { error: 'datos' };
+    const txt = (x, n) => String(x == null ? '' : x).slice(0, n);
+    const out = {};
+    for (const [sv, xs] of Object.entries(p).slice(0, 40)) {
+      if (!/^[A-Z]{2,6}$/.test(sv) || !Array.isArray(xs)) continue;
+      out[sv] = xs.slice(0, 40).filter((x) => x && /^\d{5,25}:\d{1,2}$/.test(String(x.k || '')) && Array.isArray(x.lados)
+        && x.lados.length >= 2).map((x) => ({
+        k: String(x.k), evento: txt(x.evento, 100), fecha: txt(x.fecha, 10), ronda: txt(x.ronda, 30),
+        lados: x.lados.slice(0, 24).map((l) => txt(l, 100)),
+        link: /^https:\/\/discord\.com\/channels\/\d+\/\d+\/\d+$/.test(String(x.link || '')) ? String(x.link) : '',
+        autor: /^\d{5,25}$/.test(String(x.autor || '')) ? String(x.autor) : '', vence: Number(x.vence) || 0, nadie: x.nadie !== false,
+      }));
+    }
+    this.guardar('finales_pend', { t: Date.now(), pend: out });
+    return { ok: true, n: Object.values(out).reduce((a, xs) => a + xs.length, 0) };
+  }
+
+  /** Lo que espera respuesta de `sv`, sin lo que ya se marcó (en Discord o en el panel) desde la última corrida */
+  preguntasDe(sv) {
+    const f = this.leer('finales') || {};
+    return (((this.leer('finales_pend') || {}).pend || {})[sv] || []).filter((x) => !f[x.k]);
+  }
+
+  /**
+   * 🏁 QUIÉN GANÓ, DESDE EL PANEL DEL SOCIO: la misma puerta que el panel (el dueño del servidor; Dlx, todos) y la misma
+   * respuesta que un clic en Discord (`finalElegir()`), así el ciclo no sabe de dónde vino. `v` es la letra del lado, o
+   * `z` para «Nadie siguió» (`finales.NADIE_V`), que la final no tiene.
+   */
+  socioFinal(d) {
+    const quien = String((d && d.quien) || ''), sv = String((d && d.sv) || ''), k = String((d && d.k) || '');
+    const v = String((d && d.v) || '');
+    const { esDlx, lista } = this.sociosDe(quien);
+    if (!esDlx && !lista.some((x) => x.sv === sv)) return { error: 'no' };
+    const x = this.preguntasDe(sv).find((y) => y.k === k);
+    if (!x) return { error: 'ya no está' };
+    const i = 'abcdefghijklmnopqrstuvwxy'.indexOf(v);
+    const nombre = v === 'z' && x.nadie ? 'Nadie siguió (fue reemplazado o no se presentó)' : (i >= 0 ? x.lados[i] : '');
+    if (!nombre) return { error: 'datos' };
+    const r = this.finalElegir({ k, v, nombre, quien });
+    if (r.error) return r;
+    return { ok: true, ya: r.ya || '', preguntas: this.preguntasDe(sv) };
   }
 
   /** 🗺️ El guild de un servidor: el mapa que deja el vigía (`guilds`), o el del chat general si todavía no lo dejó */

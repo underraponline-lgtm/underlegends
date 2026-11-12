@@ -4447,6 +4447,13 @@ def main():
             FIN.aplicar_respuestas()
         except Exception as e:                           # noqa: BLE001
             print('   ⚠️ finales: no pude traer las respuestas (%s)' % str(e)[:80])
+        # ⏳ y lo que nadie marcó en 48 h: «Nadie siguió», o la llave entera no cuenta si le falta la mitad o más
+        # (Dlx, 11/11/2026). Después de las respuestas: lo que contestaron a último momento cuenta
+        try:
+            import finales as FIN
+            FIN.cerrar_vencidas()
+        except Exception as e:                           # noqa: BLE001
+            print('   ⚠️ finales: no pude cerrar las vencidas (%s)' % str(e)[:80])
     print('\n══ LAS LLAVES DE DISCORD, A `Entrada` ══\n')
     s = E.sesion()
     # 🖼️ los votos que son una imagen, sólo de verdad: ver `escuchar._voto_de_imagen()`
@@ -5088,6 +5095,12 @@ def main():
         FIN.preguntar(para_org)
     except Exception as e:                               # noqa: BLE001
         print('   ⚠️ finales: no pude preguntar (%s)' % str(e)[:80])
+    # 📊 y lo que espera respuesta, al panel de cada socio (Dlx, 11/11/2026: «Panel del socio»)
+    try:
+        import finales as FIN
+        FIN.publicar()
+    except Exception as e:                               # noqa: BLE001
+        print('   ⚠️ finales: no pude dejarle las preguntas al panel del socio (%s)' % str(e)[:80])
 
     # el nombre que su anuncio le dio a cada llave sin título, sumado a lo de antes: el anuncio se va del canal y la
     # llave no (ver `NOMBRES`)

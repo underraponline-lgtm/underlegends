@@ -16,6 +16,13 @@ export function pedirAjustes(sv, cambio) {
   return W.conCuenta('/api/avisos/socio-ajustes', cambio ? { sv, cambio } : { sv }).then((j) => j || { error: 'red' }).catch(() => ({ error: 'red' }));
 }
 
+/** 🏁 Quién ganó una batalla que el bot no entendió (`v`: la letra del lado, o `z` para «Nadie siguió»). Lo mismo que
+ *  tocar el botón en Discord: lo pasa el ciclo a `datos/decisiones.json`. */
+export function contestarFinal(sv, k, v) {
+  if (!W.conCuenta) return Promise.resolve({ error: 'red' });
+  return W.conCuenta('/api/avisos/socio-final', { sv, k, v }).then((j) => j || { error: 'red' }).catch(() => ({ error: 'red' }));
+}
+
 /** ¿Es dueño de algún socio? Una vez por sesión, en silencio: para el botón de Mi cuenta. */
 export function useSocio(conCuenta) {
   const [si, setSi] = useState(() => { try { return sessionStorage.getItem('lg:socio') === '1'; } catch (e) { return false; } });

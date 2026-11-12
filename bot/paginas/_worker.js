@@ -95,6 +95,7 @@ const AVISOS = {
   '/api/avisos/historias': 'POST',
   '/api/avisos/panel-socio': 'POST',
   '/api/avisos/socio-ajustes': 'POST',
+  '/api/avisos/socio-final': 'POST',
   '/api/avisos/promo-vio': 'POST',
   '/api/avisos/promo-extender': 'POST',
   '/api/avisos/dueno-logs': 'POST',

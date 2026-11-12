@@ -2711,6 +2711,24 @@ const ok = (cond, que, det) => {
     ok((await ps('400000000000000009')).servidores[0].sv === 'SR' && (await ps('400000000000000002')).servidores.length === 0,
       'lo que corrige Dlx en el Dashboard manda sobre el dueño de Discord');
     o.guardar('ajustes_dueno', aj0);
+    // 🏁 lo que espera respuesta del organizador, en el panel del socio (Dlx, 11/11/2026: «Panel del socio»)
+    const fp = o.finalesPend({ pend: {
+      FFA: [{ k: '1561867654464012369:0', evento: 'FATS', fecha: '19/10', ronda: 'CUARTOS', lados: ['A + B', 'C + D'],
+        link: 'https://discord.com/channels/1/2/3', autor: '400000000000000003', vence: 5, nadie: true },
+      { k: '1561867654464012369:1', evento: 'FATS', fecha: '19/10', ronda: 'FINAL', lados: ['E', 'F'], link: 'javascript:x', nadie: false },
+      { k: 'mal', lados: ['a', 'b'] }],
+      ffa: [{ k: '1:0', lados: ['a', 'b'] }] } });
+    const pf = (await ps('400000000000000001')).servidores[0].preguntas;
+    ok(fp.ok && fp.n === 2 && pf.length === 2 && pf[1].link === '' && !(await ps('400000000000000002')).servidores.some((x) => x.preguntas.length),
+      'el ciclo deja lo que espera respuesta; el panel de FFA lo ve, sin links raros ni claves mal formadas, y el de SR no');
+    const sf1 = o.socioFinal({ quien: '400000000000000002', sv: 'FFA', k: '1561867654464012369:0', v: 'b' });
+    const sf2 = o.socioFinal({ quien: '400000000000000001', sv: 'FFA', k: '1561867654464012369:1', v: 'z' });
+    const sf3 = o.socioFinal({ quien: '400000000000000001', sv: 'FFA', k: '1561867654464012369:0', v: 'b' });
+    const sf4 = o.socioFinal({ quien: '400000000000000001', sv: 'FFA', k: '1561867654464012369:0', v: 'a' });
+    ok(sf1.error === 'no' && sf2.error === 'datos' && sf3.ok && sf3.preguntas.length === 1 && sf4.error === 'ya no está'
+      && (o.leer('finales') || {})['1561867654464012369:0'].nombre === 'C + D'
+      && (o.leer('finales') || {})['1561867654464012369:0'].quien === '400000000000000001',
+    'contestar desde el panel: sólo el dueño de ese servidor, «Nadie siguió» no va en la final, queda como un clic en Discord y sale de la lista');
     ok(A.ajusteValido('socios_duenos', { SR: ['400000000000000009'] }).SR.length === 1 && A.ajusteValido('socios_duenos', { SR: ['x'] }) === undefined
       && A.ajusteValido('socios_duenos', null) === null && A.ajusteValido('socios_duenos', { sr: [] }) === undefined,
     'el dueño a mano: siglas en mayúscula e IDs de Discord');

@@ -281,3 +281,16 @@
   /* el texto y el control, uno al lado del otro: ya entra */
   .sp-fila{grid-template-columns:minmax(0,1fr) minmax(0,1.1fr);gap:8px 16px;align-items:start}
 }
+
+/* ── 🏁 para contestar (11/11/2026): lo que el bot no entendió de las llaves de este servidor ── */
+.sp-preg{display:grid;gap:10px;margin:0;padding:0;list-style:none}
+.sp-preg li{padding:14px;border:1.5px solid #3A3A3E;border-left:5px solid var(--magenta,#E5197D);background:#101012}
+.sp-preg-cual{margin:0;font:600 14px/1.4 Archivo,sans-serif;color:#A5A5A0}
+.sp-preg-cual b{color:#F6F6F6;font-weight:900}
+.sp-preg-cual a{color:var(--verde)}
+.sp-preg-q{margin:6px 0 10px;font:900 20px/1.1 Archivo,sans-serif;color:#F6F6F6}
+.sp-preg-opc{display:flex;flex-wrap:wrap;gap:8px}
+.sp-preg-opc .btn{min-height:44px}
+.sp-preg-nadie{opacity:.85}
+.sp-preg-vence,.sp-preg-ayuda,.sp-preg-msg{margin:10px 0 0;font:500 13px/1.45 Archivo,sans-serif;color:#A5A5A0}
+.sp-preg-msg{color:var(--verde);font-weight:700}

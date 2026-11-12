@@ -19,7 +19,7 @@
 // aprieta «Entrar con Discord».
 // ⚠️ SIN EMOJIS (13/10/2026: cada celular los dibuja distinto): los títulos de cada rapero llevan el ícono de la copa.
 import { useEffect, useState } from 'react';
-import { pedirAjustes, pedirPanel } from './panelsocio.js';
+import { contestarFinal, pedirAjustes, pedirPanel } from './panelsocio.js';
 import { limpio, num, siglaDe } from './liga.js';
 import { Ico, Sec, silueta } from './piezas.jsx';
 import { useNumero } from './anima.js';
@@ -484,7 +484,8 @@ function Servidor({ liga, x, svs, onSel, t }) {
   const sugs = p.sugerencias || [];
   const irs = p.sug_ir || [];
   const vu = p.vuelven && p.vuelven.n != null ? p.vuelven : null;
-  const items = [['sp-puntaje', 'Puntaje', null], ['sp-sug', 'Lo que conviene', sugs.length], ['sp-vuelven', '¿Vuelven?', vu ? null : 0], ['sp-cuando', 'Cuándo', null],
+  const preg = x.preguntas || [];
+  const items = [...(preg.length ? [['sp-preg', 'Para contestar', preg.length]] : []), ['sp-puntaje', 'Puntaje', null], ['sp-sug', 'Lo que conviene', sugs.length], ['sp-vuelven', '¿Vuelven?', vu ? null : 0], ['sp-cuando', 'Cuándo', null],
     ['sp-semanas', 'Semanas', null], ['sp-gente', 'Su gente', null], ['sp-visitas', 'Visitas', null], ['sp-ajustes', 'Ajustes', null]];
   return (
     <>
@@ -505,6 +506,11 @@ function Servidor({ liga, x, svs, onSel, t }) {
           // ⚠️ el «vuelve» de abajo, con sus 14 días cumplidos: el de los nuevos de 4 semanas daba otro número al lado del de la sección
           ['NUEVOS · 4 SEMANAS', <>{num(m.nuevos || 0)}{vu && vu.n >= MIN_VUELVEN ? <small className="sp-de"> vuelve el {pc(vu.v, vu.n)} %</small> : null}</>]]} />
       <Indice items={items} />
+      {preg.length ? (
+        <Sec id="sp-preg" titulo="Para contestar" bajada="Batallas de tus llaves donde el bot no encontró quién ganó. Las puede marcar el dueño acá o el staff con los botones de Discord: vale la primera." extra="negra">
+          <Preguntas sv={x.sv} xs={preg} />
+        </Sec>
+      ) : null}
       <Sec id="sp-puntaje" titulo="Su puntaje" bajada="De 0 a 100, con las últimas 4 semanas: es lo que mira la Liga para el nivel de cada socio. Cada parte tiene su tope.">
         <Puntaje x={x} />
         <ComoSubir s={p.subir} />
@@ -547,6 +553,47 @@ function Servidor({ liga, x, svs, onSel, t }) {
       <Sec id="sp-ajustes" titulo="Los ajustes del bot" bajada="Los de /settings en tu Discord —lo último que cambies, acá o allá, es lo que vale— y dos que sólo están acá: el aviso de cada evento y los eventos de Discord.">
         <Ajustes sv={x.sv} />
       </Sec>
+    </>
+  );
+}
+
+// 🏁 PARA CONTESTAR (Dlx, 11/11/2026: «Chat de staff, Panel del socio»): las batallas que el bot no entendió en las llaves
+// de este servidor y nadie marcó en Discord. Las deja el ciclo (`bot/finales.py`, `publicar()`); se contesta como el botón
+// de Discord y vale la primera respuesta, venga de donde venga. A las 48 h lo que falte lo cierra la Liga
+const LETRAS = 'abcdefghijklmnopqrstuvwxy';
+const RONDA = (r) => { const x = String(r || '').toLowerCase(); return x ? x[0].toUpperCase() + x.slice(1) : ''; };
+function Preguntas({ sv, xs }) {
+  const [lista, setLista] = useState(xs);
+  const [ocup, setOcup] = useState('');
+  const [msg, setMsg] = useState('');
+  useEffect(() => { setLista(xs); }, [xs]);
+  const elegir = (x, v, nombre) => {
+    setOcup(x.k); setMsg('');
+    contestarFinal(sv, x.k, v).then((j) => {
+      setOcup('');
+      if (j && j.ok) { setLista(j.preguntas || []); setMsg('Listo: ' + (j.ya || nombre) + '. Entra al ranking en la próxima media hora.'); }
+      else if (j && j.error === 'ya no está') { setLista(lista.filter((y) => y.k !== x.k)); setMsg('Esa ya la había marcado alguien.'); }
+      else setMsg('No se pudo: ' + ((j && j.error) || 'la red') + '.');
+    });
+  };
+  const vence = (t) => (t && W.fmtFecha ? W.fmtFecha(t, { weekday: 'long', day: 'numeric', month: 'numeric' }) + (W.fmtHora ? ' a las ' + W.fmtHora(new Date(t)) : '') : '');
+  if (!lista.length) return msg ? <p className="sp-preg-msg" role="status">{msg}</p> : null;
+  return (
+    <>
+      <ol className="sp-preg">{lista.map((x) => (
+        <li key={x.k}>
+          <p className="sp-preg-cual"><b>{RONDA(x.ronda)}</b> · {x.evento} · {x.fecha}
+            {x.link ? <> · <a href={x.link} target="_blank" rel="noopener noreferrer">ver la llave</a></> : null}</p>
+          <p className="sp-preg-q">¿Quién ganó?</p>
+          <div className="sp-preg-opc">
+            {x.lados.map((l, i) => <button key={i} type="button" className="btn borde" disabled={!!ocup} onClick={() => elegir(x, LETRAS[i], l)}>{limpio(l)}</button>)}
+            {x.nadie ? <button type="button" className="btn borde sp-preg-nadie" disabled={!!ocup} onClick={() => elegir(x, 'z', 'Nadie siguió')}>Nadie siguió</button> : null}
+          </div>
+          {x.vence ? <p className="sp-preg-vence">Si nadie lo marca antes del {vence(x.vence)}, {x.nadie ? 'cuenta como «Nadie siguió»: cobran la ronda y no hay duelo' : 'lo decide la Liga'}.</p> : null}
+        </li>
+      ))}</ol>
+      <p className="sp-preg-ayuda">«Nadie siguió» es para cuando alguien no se presentó o lo reemplazaron. Si a la llave le falta la mitad o más, no cuenta para el ranking.</p>
+      {msg ? <p className="sp-preg-msg" role="status">{msg}</p> : null}
     </>
   );
 }

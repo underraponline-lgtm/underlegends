@@ -11,6 +11,17 @@
  ],
  "cambios": [
     {
+        "version": "4.46",
+        "dia": "2026-11-11",
+        "cuando": "2026-11-11T20:15:22-05:00",
+        "titulo": "Quién ganó, más fácil de contestar",
+        "items": [
+            "**Si el bot no puede escribir en el canal de llaves**, pregunta quién ganó en el chat de staff del servidor, con los mismos botones.",
+            "**El panel de cada servidor socio** trae «Para contestar»: las batallas de tus llaves donde el bot no encontró quién ganó.",
+            "**Hay 48 horas para contestar**: después, lo que falte cuenta como «Nadie siguió» (la final la decide la Liga), y si a la llave le falta la mitad o más, no cuenta para el ranking."
+        ]
+    },
+    {
         "version": "4.45",
         "dia": "2026-11-11",
         "cuando": "2026-11-11T20:10:09-05:00",

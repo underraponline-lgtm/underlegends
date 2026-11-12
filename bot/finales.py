@@ -18,6 +18,23 @@ batalla con sus lados y «Nadie siguió». Cada respuesta se tacha del mensaje (
 en el objeto (`finalElegir()` en `bot/avisos.js`) y la corrida siguiente la pasa a `datos/decisiones.json` como una
 batalla decidida en ✅ Decidir. Lo que no se pregunta —o no se contesta— sigue yendo a ✅ Decidir como siempre.
 
+🛡️ SIN PERMISO EN EL CANAL DE LA LLAVE, AL CHAT DE STAFF (Dlx, 11/11/2026: *«Chat de staff, Panel del socio»*). En 14 de
+55 llaves Discord dijo 403 —ACADEMIA, LKR y DDS no dejan escribir al bot en su canal de llaves— y la duda le llegaba a
+Dlx: la #491 entre ellas. Ahora se prueba en el chat de staff de ese servidor (`canales_staff()`), con los mismos
+botones y el link a la llave; y la pregunta sale también en el panel del socio (`publicar()` → `#/socio`).
+
+⏳ EL ÚLTIMO RECURSO, A LAS 48 HORAS (Dlx, 11/11/2026: *«48 h»*, a la pregunta de cuánto esperar). Lo que nadie marcó
+`VENCE_H` horas después de preguntar se cierra con «Nadie siguió»: los de esa batalla cobran la ronda, nadie gana el
+duelo, y quien aparece más adelante cobra hasta donde llegó (`motor`, `cobra:`). LA FINAL NUNCA: sigue esperando en
+✅ Decidir. Y sólo lo que se preguntó de verdad (`t_pregunta`): si el bot no pudo escribir en ningún lado, nadie tuvo la
+chance de contestar y la duda sigue siendo de Dlx.
+
+🗑️ Y SI FALTA LA MITAD DE LA LLAVE O MÁS, LA LLAVE NO CUENTA (Dlx, 11/11/2026: *«La mitad o más»*; antes, *«si una llave
+tiene bastantes errores que se descarte automáticamente y se le notifique al organizador»*). Se cuenta sobre la llave
+entera como la leyó el bot (`datos/llaves_t1.json`), descontando lo que ya se decidió, y a la misma hora del último
+recurso: el organizador tuvo sus 48 h. Se le avisa contestando a su llave (o en el chat de staff) y a Logs. Medido el
+11/11/2026 sobre las 243 llaves de la T1: hoy caería una sola, la #562 de LKR (7 de 8).
+
 ⚠️ UNA VEZ POR LLAVE, PARA SIEMPRE (`datos/finales.json`, lo guarda `bot/ci/guardar.sh`): sin eso cada corrida
 volvería a mencionar al organizador. Sólo llaves de los últimos `DIAS` días, y como mucho `TOPE` mensajes por corrida.
 """
@@ -25,7 +42,9 @@ import datetime
 import io
 import json
 import os
+import re
 import sys
+import unicodedata
 import clave_ciclo as CC  # noqa: E402  la clave del ciclo, en un solo lugar
 
 BASE = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -36,6 +55,15 @@ TOPE = 5
 MAX_PREGUNTAS = 4
 #: la llave sin final se pregunta después de esta hora quieta (las demás, apenas tienen campeón)
 PREGUNTA_H = 1
+#: ⏳ el último recurso: lo que nadie marcó en estas horas se cierra con «Nadie siguió» (Dlx, 11/11/2026: «48 h»)
+VENCE_H = 48
+#: 🗑️ y la llave no cuenta si a esa hora le falta el ganador de esta parte o más (Dlx, 11/11/2026: «la mitad o más»)
+DESCARTE = 0.5
+#: 🛡️ las que quedaron sin permiso antes del chat de staff se vuelven a preguntar ahí sólo si son de estas últimas horas
+#: (lo mismo que una pregunta nueva: `llaves_a_entrada.PREGUNTA_MAX_H`)
+REPREGUNTA_H = 48
+#: dónde quedó cada llave del ranking como la leyó el bot (para contar cuánto le falta)
+LLAVES = os.path.join(BASE, 'datos', 'llaves_t1.json')
 #: el valor del menú para «nadie siguió» (`decidir.NADIE`)
 NADIE_V = 'z'
 LETRAS = 'abcdefghijklmnopqrstuvwxy'
@@ -62,6 +90,57 @@ def _ahora():
     return t.strftime('%Y-%m-%d %I:%M %p ET').replace(' 0', ' ')
 
 
+def _ts(t=None):
+    """El instante en UTC, para contar las 48 h (`preguntada` es para leer, en ET)."""
+    return (t or datetime.datetime.now(datetime.timezone.utc)).isoformat(timespec='seconds')
+
+
+def _de_ts(x):
+    try:
+        t = datetime.datetime.fromisoformat(str(x or '').replace('Z', '+00:00'))
+    except ValueError:
+        return None
+    return t if t.tzinfo else t.replace(tzinfo=datetime.timezone.utc)
+
+
+def _guild(sv):
+    """El guild de un servidor de la Liga (`datos/servidores.json`), o ''."""
+    try:
+        with io.open(os.path.join(BASE, 'datos', 'servidores.json'), encoding='utf-8') as f:
+            return str((((json.load(f) or {}).get('servidores') or {}).get(sv) or {}).get('guild_id') or '')
+    except (OSError, ValueError):
+        return ''
+
+
+#: 🛡️ el staff de un servidor: la categoría o el canal lo dicen (lo mismo que `escuchar.STAFF`)
+STAFF = re.compile(r'staff|moderat|admin|organiz', re.I)
+#: lo que vive en una categoría de staff y no es para charlar
+NO_ES_CHAT = re.compile(r'regla|anunci|\blogs?\b|registro|jerarq|ticket|postula|sanci|\bban|warn|reporte|votaci|bienven', re.I)
+
+
+def _n(x):
+    return unicodedata.normalize('NFKD', str(x or ''))
+
+
+def canales_staff(canales):
+    """🛡️ Pura. Los canales de texto donde preguntarle al staff, el mejor primero, hasta tres: los de una categoría de
+    staff o con «staff»/«organiz» en el nombre, sin los que no son para charlar, y antes los que dicen «chat». Medido el
+    11/11/2026: ACADEMIA «organizar-eventos», LKR «canal-de-staff-y-organizadores» y DDS «𝐂𝐇𝐀𝐓-𝐎𝐑𝐆𝐀𝐍𝐈𝐙𝐀𝐂𝐈𝐎𝐍» (la negrita
+    matemática se lee con NFKD, como los roles de rango)."""
+    cats = {str(c.get('id')) for c in canales or [] if c.get('type') == 4 and STAFF.search(_n(c.get('name')))}
+    out = []
+    for c in canales or []:
+        n = _n(c.get('name'))
+        if c.get('type') != 0 or NO_ES_CHAT.search(n):
+            continue
+        en_cat = str(c.get('parent_id') or '') in cats
+        if not (en_cat or STAFF.search(n)):
+            continue
+        pts = (2 if re.search(r'chat|general|charla', n, re.I) else 0) + (2 if STAFF.search(n) else 0) + (1 if en_cat else 0)
+        out.append((-pts, int(c.get('position') or 0), str(c.get('id'))))
+    return [x[2] for x in sorted(out)][:3]
+
+
 def _token():
     sys.path.insert(0, os.path.join(BASE, 'bot'))
     import avisar
@@ -79,15 +158,39 @@ def _cual(p):
 #: qué está haciendo con SU llave, qué le falta, y qué tocar
 SALUDO = ('🏁 <@%s> ¡hola! Soy el bot de la **Liga Global**: estoy pasando los resultados de **%s** al ranking de la '
           'Liga.')
-PIE = ('-# Lo puede marcar quien publicó la llave o alguien del staff. Si nadie lo marca, esa batalla queda sin ganador '
-       'en el ranking.')
+SALUDO_STAFF = ('🏁 <@%s> ¡hola! Soy el bot de la **Liga Global**: estoy pasando los resultados de **%s** al ranking '
+                'de la Liga. No puedo escribir en el canal de la llave, así que pregunto acá: [ver la llave](%s).')
+#: ⏳ el pie dice qué pasa si nadie contesta (Dlx, 11/11/2026: «48 h» y «la mitad o más»)
+PIE = ('-# Lo puede marcar quien publicó la llave o alguien del staff. Tienen 48 horas: después, lo que falte lo cierra '
+       'la Liga, y si falta la mitad de la llave o más, la llave no cuenta para el ranking.')
+
+
+def link_llave(f, guild=''):
+    """El link al mensaje de la llave, o ''."""
+    g = guild or _guild(f.get('sv'))
+    return 'https://discord.com/channels/%s/%s/%s' % (g, f['canal'], f['llave']) if g and f.get('canal') else ''
+
+
+def _por_staff(m, f, guild):
+    """La misma pregunta para el chat de staff: sin contestar a la llave (vive en otro canal) y con su link."""
+    m = dict(m)
+    m.pop('message_reference', None)
+    m['content'] = m['content'].replace(SALUDO % (f['autor'], nombre_de(f)),
+                                        SALUDO_STAFF % (f['autor'], nombre_de(f), link_llave(f, guild)), 1)
+    return m
+
+
+def nombre_de(f):
+    """Cómo se nombra la llave en el mensaje: su evento o, si no tiene título, «tu llave del 10/11»."""
+    ev = str(f.get('evento') or '').strip()
+    return ev if ev and not ev.lower().startswith('(sin t') else 'tu llave del %s' % (f.get('fecha') or 'último evento')
 
 
 def mensaje(f):
     """El mensaje: el texto, los componentes y a quién se menciona (sólo al organizador)."""
     ps = f['preguntas'][:MAX_PREGUNTAS]
     base = 'dud:%s:%s' % (f['llave'], f['autor'])
-    saludo = SALUDO % (f['autor'], f['evento'])
+    saludo = SALUDO % (f['autor'], nombre_de(f))
     if len(ps) == 1 and len(ps[0]['lados']) == 2:
         p = ps[0]
         texto = (saludo + '\nEn tu llave no encontré quién ganó %s: **%s** vs **%s**.\n👉 **Toca el nombre de quien '
@@ -136,12 +239,50 @@ def para_preguntar(llaves, estado, hoy=None):
     return out[:TOPE]
 
 
+def _postear(requests, cab, canal, m):
+    """`(código, id)` de mandar `m` a `canal`; `(None, '')` si no hubo red."""
+    try:
+        r = requests.post('%s/channels/%s/messages' % (API, canal), headers=cab, data=json.dumps(m), timeout=20)
+    except Exception as e:                               # noqa: BLE001
+        print('   ⚠️ preguntas: %s' % str(e)[:60])
+        return None, ''
+    if r.status_code in (200, 201):
+        return r.status_code, str(r.json().get('id') or '')
+    print('   ⚠️ preguntas: Discord dijo %s %s' % (r.status_code, r.text[:80]))
+    return r.status_code, ''
+
+
+def _al_staff(requests, cab, f, m):
+    """🛡️ `(id del mensaje, canal)` de la pregunta en el chat de staff del servidor, o `('', '')`."""
+    g = _guild(f.get('sv'))
+    if not g:
+        return '', ''
+    try:
+        r = requests.get('%s/guilds/%s/channels' % (API, g), headers=cab, timeout=20)
+        cs = r.json() if r.ok else []
+    except Exception:                                    # noqa: BLE001
+        cs = []
+    for c in canales_staff(cs if isinstance(cs, list) else []):
+        cod, mid = _postear(requests, cab, c, _por_staff(m, f, g))
+        if mid:
+            return mid, c
+    return '', ''
+
+
 def preguntar(llaves):
     """Manda las preguntas nuevas. `llaves`: `[{llave, canal, autor, evento, sv, fecha, cuando, preguntas:
-    [{ronda, lados}]}]`, la final primero."""
+    [{ronda, lados}]}]`, la final primero. Sin permiso en el canal de la llave, al chat de staff; y las que quedaron
+    sin permiso antes de que existiera eso, una vez, mientras sean de los últimos `DIAS` días."""
     estado = _cargar()
     nuevas = para_preguntar(llaves, estado)
-    if not nuevas:
+    hoy = datetime.datetime.now(datetime.timezone.utc)
+    # ⚠️ las viejas, sólo si están frescas (`REPREGUNTA_H`): con los datos del 11/11/2026 eran 12, nueve de LKR y dos de
+    # hace 11 días, y todas juntas son una pared en el chat de su staff. Lo de antes queda en el panel del socio
+    viejas = [f for f in estado.values() if isinstance(f, dict) and f.get('sin_permiso') and not f.get('staff_probado')
+              and not f.get('retirada') and _de_ts(f.get('cuando'))
+              and (hoy - _de_ts(f.get('cuando'))).total_seconds() <= REPREGUNTA_H * 3600
+              and len(f.get('respondidas') or {}) < len(f.get('preguntas') or [])]
+    if not nuevas and not viejas:
         return 0
     import requests
     t = _token()
@@ -151,23 +292,220 @@ def preguntar(llaves):
     cab = {'Authorization': 'Bot ' + t, 'Content-Type': 'application/json'}
     n = 0
     for f in nuevas:
-        try:
-            r = requests.post('%s/channels/%s/messages' % (API, f['canal']), headers=cab,
-                              data=json.dumps(mensaje(f)), timeout=20)
-        except Exception as e:                           # noqa: BLE001
-            print('   ⚠️ preguntas: %s · %s' % (f['evento'], str(e)[:60]))
+        m = mensaje(f)
+        cod, mid = _postear(requests, cab, f['canal'], m)
+        canal, donde = f['canal'], 'llave'
+        if cod is None or (cod != 403 and not mid):
             continue
-        if r.status_code not in (200, 201):
-            print('   ⚠️ preguntas: %s · Discord dijo %s %s' % (f['evento'], r.status_code, r.text[:80]))
-            # 🔴 sin permiso de escribir ahí no se reintenta cada media hora: queda anotada igual
-            if r.status_code != 403:
-                continue
-        estado[str(f['llave'])] = dict(f, pregunta=(r.json().get('id') if r.status_code in (200, 201) else ''),
-                                       preguntada=_ahora(), sin_permiso=r.status_code == 403, respondidas={})
+        if cod == 403:
+            # 🛡️ sin permiso en el canal de la llave: el chat de staff (Dlx, 11/11/2026)
+            mid, canal = _al_staff(requests, cab, f, m)
+            donde = 'staff' if mid else ''
+        estado[str(f['llave'])] = dict(f, pregunta=mid, canal_pregunta=canal if mid else '', donde=donde,
+                                       preguntada=_ahora(), t_pregunta=_ts() if mid else '',
+                                       sin_permiso=not mid, staff_probado=cod == 403, respondidas={})
         n += 1
-        print('   🏁 le pregunté a <@%s> %d batalla(s) de %s · %s' % (f['autor'], len(f['preguntas']), f['evento'], f['sv']))
+        print('   🏁 le pregunté a <@%s> %d batalla(s) de %s · %s%s' % (
+            f['autor'], len(f['preguntas']), f['evento'], f['sv'],
+            ' (en el chat de staff)' if donde == 'staff' else '' if mid else ' — sin permiso en ningún canal'))
+    for f in viejas[:TOPE]:
+        f['staff_probado'] = True
+        sin = {str(i) for i in (f.get('respondidas') or {})}
+        g = dict(f, preguntas=[p for i, p in enumerate(f['preguntas']) if str(i) not in sin])
+        if len(g['preguntas']) != len(f['preguntas']):
+            continue        # los números de la pregunta tienen que ser los mismos: con alguna contestada, no
+        mid, canal = _al_staff(requests, cab, f, mensaje(f))
+        if mid:
+            f.update(pregunta=mid, canal_pregunta=canal, donde='staff', sin_permiso=False, t_pregunta=_ts(),
+                     preguntada=_ahora())
+            n += 1
+            print('   🛡️ %s · %s: sin permiso en su canal de llaves, se lo pregunté al staff' % (f['evento'], f['sv']))
     _guardar(estado)
     return n
+
+
+# ── ⏳ EL ÚLTIMO RECURSO Y EL DESCARTE ─────────────────────────────────────────────────────────────────────────────────
+
+def vencidas(estado, ahora):
+    """Pura. Las llaves que se preguntaron de verdad hace `VENCE_H` horas o más y todavía no se cerraron."""
+    out = []
+    for k, f in (estado or {}).items():
+        if not isinstance(f, dict) or f.get('retirada') or f.get('cerrada'):
+            continue
+        t = _de_ts(f.get('t_pregunta'))
+        if t and (ahora - t).total_seconds() >= VENCE_H * 3600:
+            out.append(k)
+    return out
+
+
+def llave_de(llaves, k):
+    """La llave del ranking (`datos/llaves_t1.json`) cuyo link es el mensaje `k`, o `None`."""
+    for x in (llaves or {}).values():
+        if isinstance(x, dict) and any(str(u).rstrip('/').endswith('/' + str(k)) for u in x.get('links') or []):
+            return x
+    return None
+
+
+def sin_ganador(L, f, decididas, DEC):
+    """`(sin ganador, batallas)` de la llave `L`, sin contar lo que ya se decidió (en ✅ Decidir o por el organizador).
+    La clave se arma con el nombre de la llave y con el de la pregunta: pueden no ser el mismo."""
+    tot = sin = 0
+    for r in L.get('rondas') or []:
+        for b in r.get('b') or []:
+            tot += 1
+            if b[1]:
+                continue
+            ks = {DEC.clave_batalla(DEC.detalle_batalla(ev, L.get('sv'), L.get('fecha'), r.get('r'), b[0]))
+                  for ev in (L.get('nombre'), f.get('evento'))}
+            if not ks & decididas:
+                sin += 1
+    return sin, tot
+
+
+def cerrar(estado, llaves, dd, ahora, DEC):
+    """⏳ Pura sobre `estado` y `dd` (las cambia en el lugar). `[(llave, 'no cuenta' | 'nadie siguió', n, sin, tot)]`."""
+    hecho = []
+    for k in vencidas(estado, ahora):
+        f = estado[k]
+        L = llave_de(llaves, k)
+        sin, tot = sin_ganador(L, f, set((dd.get('batallas') or {}).keys()), DEC) if L else (0, 0)
+        if tot and sin / tot >= DESCARTE:
+            dd.setdefault('eventos', {})['%s · %s · %s' % (f['evento'], f['sv'], f['fecha'])] = {
+                'decision': 'no cuenta', 'cuando': _ahora(), 'por': 'bot/finales.py (descarte a las %d h)' % VENCE_H,
+                'nota': '%d de %d batallas sin ganador %d h después de preguntar (Dlx, 11/11/2026: «la mitad o más»)'
+                        % (sin, tot, VENCE_H)}
+            f['cerrada'] = {'como': 'no cuenta', 't': _ahora(), 'sin': sin, 'tot': tot}
+            hecho.append((k, 'no cuenta', 0, sin, tot))
+            continue
+        n = 0
+        f.setdefault('respondidas', {})
+        for i, p in enumerate(f.get('preguntas') or []):
+            if str(i) in f['respondidas'] or 'final' in str(p['ronda']).lower():
+                continue        # 🏆 la final nunca se cierra sola: sigue en ✅ Decidir
+            det = DEC.detalle_batalla(f['evento'], f['sv'], f['fecha'], p['ronda'], p['lados'])
+            ck = DEC.clave_batalla(det)
+            ya = (dd.get('batallas') or {}).get(ck)
+            if ya:
+                f['respondidas'][str(i)] = ya.get('ganador') or ''
+                continue
+            dd.setdefault('batallas', {})[ck] = {
+                'ganador': DEC.NADIE, 'batalla': det, 'cuando': _ahora(),
+                'por': 'bot/finales.py: nadie la marcó en %d h' % VENCE_H,
+                'nota': 'el último recurso (Dlx, 11/11/2026: «48 h»): cobran la ronda y no hay duelo'}
+            f['respondidas'][str(i)] = DEC.NADIE
+            n += 1
+        f['cerrada'] = {'como': 'nadie siguió', 't': _ahora(), 'n': n, 'sin': sin, 'tot': tot}
+        hecho.append((k, 'nadie siguió', n, sin, tot))
+    return hecho
+
+
+def texto_descarte(f, sin, tot):
+    """Lo que se le dice al organizador cuando su llave no cuenta."""
+    return ('🏁 <@%s> **%s** no va a contar para el ranking de la **Liga Global**: a la llave le faltó quién ganó %d de '
+            'sus %d batallas, y nadie lo marcó en %d horas.\n-# Si fue un error, escríbele a un Moderador de la Liga y '
+            'la vuelve a contar.' % (f['autor'], nombre_de(f), sin, tot, VENCE_H))
+
+
+def cerrar_vencidas():
+    """⏳ El último recurso y el descarte, con lo de hoy: escribe `datos/decisiones.json` y `datos/finales.json`, le avisa
+    al organizador de cada llave que no cuenta y deja todo en Logs. Devuelve lo hecho."""
+    estado = _cargar()
+    ahora = datetime.datetime.now(datetime.timezone.utc)
+    if not vencidas(estado, ahora):
+        return []
+    sys.path[:0] = [os.path.join(BASE, 'sheet')]
+    import decidir as DEC
+    try:
+        with io.open(LLAVES, encoding='utf-8') as fh:
+            llaves = json.load(fh) or {}
+    except (OSError, ValueError):
+        llaves = {}
+    dd = DEC._decisiones()
+    hecho = cerrar(estado, llaves, dd, ahora, DEC)
+    if not hecho:
+        return []
+    with io.open(DEC.DECISIONES, 'w', encoding='utf-8', newline='\n') as fh:
+        json.dump(dd, fh, ensure_ascii=False, indent=1)
+        fh.write('\n')
+    _guardar(estado)
+    lineas = []
+    t = _token()
+    import requests
+    cab = {'Authorization': 'Bot ' + t, 'Content-Type': 'application/json'} if t else None
+    for k, como, n, sin, tot in hecho:
+        f = estado[k]
+        cual = '%s · %s · %s' % (f['evento'], f['sv'], f['fecha'])
+        if como == 'no cuenta':
+            print('   🗑️ %s no cuenta: %d de %d batallas sin ganador a las %d h' % (cual, sin, tot, VENCE_H))
+            lineas.append('🗑️ **%s** no cuenta: %d de %d batallas sin ganador a las %d h. Si fue un error, se vuelve a '
+                          'contar en «Llaves y fondos» del Dashboard.' % (cual, sin, tot, VENCE_H))
+            if cab:
+                m = {'content': texto_descarte(f, sin, tot), 'allowed_mentions': {'users': [f['autor']], 'replied_user': False}}
+                if f.get('donde') == 'llave':
+                    m['message_reference'] = {'message_id': f['llave'], 'channel_id': f['canal'], 'fail_if_not_exists': False}
+                _postear(requests, cab, f.get('canal_pregunta') or f['canal'], m)
+        elif n:
+            print('   ⏳ %s: %d batalla(s) con «Nadie siguió» a las %d h' % (cual, n, VENCE_H))
+            lineas.append('⏳ **%s**: %d batalla(s) cerradas con «Nadie siguió» (nadie las marcó en %d h).' % (cual, n, VENCE_H))
+    if lineas:
+        try:
+            sys.path.insert(0, os.path.join(BASE, 'bot'))
+            import alertar
+            alertar.normal('\n'.join(lineas))
+        except Exception as e:                           # noqa: BLE001
+            print('   ⚠️ finales: no pude avisar a Logs (%s)' % str(e)[:60])
+    return hecho
+
+
+# ── 📊 LO QUE ESPERA RESPUESTA, PARA EL PANEL DEL SOCIO ──────────────────────────────────────────────────────────────
+
+def para_panel(estado, ahora):
+    """📊 Pura. `{sv: [{k, evento, fecha, ronda, lados, link, autor, vence}]}`: cada batalla preguntada que nadie marcó,
+    de los últimos `DIAS` días (la final, también después de las 48 h: sigue esperando). `vence` en ms, o 0."""
+    out = {}
+    for k, f in sorted((estado or {}).items()):
+        if not isinstance(f, dict) or f.get('retirada') or (f.get('cerrada') or {}).get('como') == 'no cuenta':
+            continue
+        c = _de_ts(f.get('cuando'))
+        if not c or (ahora - c).days > DIAS:
+            continue
+        t = _de_ts(f.get('t_pregunta'))
+        vence = int((t + datetime.timedelta(hours=VENCE_H)).timestamp() * 1000) if t else 0
+        for i, p in enumerate(f.get('preguntas') or []):
+            if str(i) in (f.get('respondidas') or {}):
+                continue
+            out.setdefault(f.get('sv') or '', []).append({
+                'k': '%s:%d' % (k, i), 'evento': f.get('evento') or '', 'fecha': f.get('fecha') or '',
+                'ronda': str(p.get('ronda') or ''), 'lados': [str(x).strip() for x in p.get('lados') or []][:24],
+                'link': f.get('link') or '', 'autor': f.get('autor') or '', 'vence': vence,
+                'nadie': 'final' not in str(p.get('ronda') or '').lower()})
+    return out
+
+
+def publicar():
+    """📊 Le deja al objeto lo que espera respuesta (`/avisos/finales-pend`, con la clave del ciclo), para el panel de
+    cada socio. Una escritura por corrida, a una fila del objeto: no gasta KV."""
+    estado = _cargar()
+    pend = para_panel(estado, datetime.datetime.now(datetime.timezone.utc))
+    for xs in pend.values():
+        for x in xs:
+            f = estado.get(x['k'].split(':')[0]) or {}
+            x['link'] = link_llave(f) if f else ''
+    try:
+        import requests
+        t = _token()
+        if not t:
+            return 0
+        import avisar
+        r = requests.post(avisar.WORKER + '/avisos/finales-pend', headers={'x-lg-ciclo': CC.clave(t), 'content-type':
+                          'application/json'}, data=json.dumps({'pend': pend}), timeout=20)
+        if not r.ok:
+            print('   ⚠️ finales: el panel del socio no recibió las preguntas (%s)' % r.status_code)
+            return 0
+    except Exception as e:                               # noqa: BLE001
+        print('   ⚠️ finales: el panel del socio no recibió las preguntas (%s)' % str(e)[:60])
+        return 0
+    return sum(len(x) for x in pend.values())
 
 
 def respuestas():
@@ -273,10 +611,88 @@ def _self_check():
         malos.append('el tope por corrida')
     if pendientes({'1': dict(f, retirada='junta sin «+»'), '2': f}) != {'2': f}:
         malos.append('una pregunta retirada no se aplica aunque la contesten')
+    malos += _prueba_nuevo()
     for x in malos:
         print('   ❌ %s' % x)
-    print('   %s preguntas al organizador: el mensaje, los botones, el menú y cuándo' % ('❌' if malos else '✅'))
+    print('   %s preguntas al organizador: el mensaje, los botones, el menú y cuándo; el chat de staff, las 48 h y el '
+          'descarte' % ('❌' if malos else '✅'))
     return bool(malos)
+
+
+def _prueba_nuevo():
+    malos = []
+    # 🛡️ el chat de staff, con los canales reales de los tres servidores sin permiso (11/11/2026)
+    cs = [{'id': '1', 'type': 4, 'name': '🛠 〕𝐒𝐓𝐀𝐅𝐅'}, {'id': '2', 'type': 0, 'name': '💎〕𝐉𝐄𝐑𝐀𝐑𝐐𝐔𝐈𝐀', 'parent_id': '1'},
+          {'id': '3', 'type': 0, 'name': '𝐂𝐇𝐀𝐓-𝐎𝐑𝐆𝐀𝐍𝐈𝐙𝐀𝐂𝐈𝐎𝐍', 'parent_id': '1'}, {'id': '4', 'type': 0, 'name': 'general'},
+          {'id': '5', 'type': 0, 'name': 'reglas-staff', 'parent_id': '1'}, {'id': '6', 'type': 2, 'name': 'staff voz'}]
+    if canales_staff(cs) != ['3']:
+        malos.append('el chat de staff: la negrita, sin jerarquía ni reglas, sin el general (%s)' % canales_staff(cs))
+    if canales_staff([{'id': '9', 'type': 0, 'name': 'canal-de-staff-y-organizadores'},
+                      {'id': '8', 'type': 0, 'name': 'organizar-eventos'}]) != ['8', '9']:
+        malos.append('LKR y la ACADEMIA: sin categoría, por el nombre del canal')
+    f = {'llave': '77', 'canal': '55', 'autor': '33', 'evento': 'X', 'sv': 'ACAD', 'fecha': '19/10',
+         'preguntas': [{'ronda': 'CUARTOS', 'lados': ['A + B', 'C + D']}]}
+    m = _por_staff(mensaje(f), f, '11')
+    if 'message_reference' in m or 'https://discord.com/channels/11/55/77' not in m['content'] or '48 horas' not in m['content']:
+        malos.append('la pregunta al staff: sin contestar a la llave, con su link y las 48 h')
+
+    # ⏳ las 48 h y el descarte, con la #491 (3 de 15 sin ganador) y una como la #562 (7 de 8)
+    class D:
+        NADIE = '(nadie siguió)'
+
+        @staticmethod
+        def detalle_batalla(ev, sv, fe, r, lados):
+            return '|'.join([ev, sv, fe, str(r).lower()] + sorted(lados))
+
+        clave_batalla = staticmethod(lambda d: d.lower())
+    ahora = datetime.datetime(2026, 11, 11, 20, tzinfo=datetime.timezone.utc)
+    hace = lambda h: _ts(ahora - datetime.timedelta(hours=h))  # noqa: E731
+    bat = lambda lados, g='': [lados, g, '']  # noqa: E731
+    l491 = {'nombre': 'FATS', 'sv': 'ACAD', 'fecha': '19/10', 'links': ['https://discord.com/channels/1/2/491'],
+            'rondas': [{'r': 'Octavos', 'b': [bat(['a', 'b'], 'a')] * 6 + [bat(['d', 'l', 'i']), bat(['m', 'j', 'e'])]},
+                       {'r': 'Cuartos', 'b': [bat(['x', 'y'], 'x')] * 3 + [bat(['MAJ + MINI', 'MCO + MATH'])]},
+                       {'r': 'Semifinales', 'b': [bat(['p', 'q'], 'p')] * 2}, {'r': 'Final', 'b': [bat(['u', 'v'], 'u')]}]}
+    l562 = {'nombre': 'ZZZ', 'sv': 'LKR', 'fecha': '07/11', 'links': ['https://discord.com/channels/1/2/562'],
+            'rondas': [{'r': 'Cuartos', 'b': [bat(['a', 'b'])] * 4}, {'r': 'Semifinales', 'b': [bat(['c', 'd'])] * 2},
+                       {'r': 'Final', 'b': [bat(['g', 'h'], 'g'), bat(['e', 'f'])]}]}
+    est = {'491': dict(f, llave='491', evento='FATS', fecha='19/10', t_pregunta=hace(49), respondidas={'1': 'd'},
+                       preguntas=[{'ronda': 'CUARTOS', 'lados': ['MAJ + MINI', 'MCO + MATH']},
+                                  {'ronda': 'OCTAVOS', 'lados': ['d', 'l', 'i']},
+                                  {'ronda': 'OCTAVOS', 'lados': ['m', 'j', 'e']}]),
+           '562': dict(f, llave='562', evento='ZZZ', sv='LKR', fecha='07/11', t_pregunta=hace(50), respondidas={},
+                       preguntas=[{'ronda': 'FINAL', 'lados': ['e', 'f']}]),
+           'joven': dict(f, llave='joven', t_pregunta=hace(47), respondidas={}),
+           'nunca': dict(f, llave='nunca', t_pregunta='', sin_permiso=True, respondidas={})}
+    if sorted(vencidas(est, ahora)) != ['491', '562']:
+        malos.append('vencen sólo las preguntadas de verdad hace 48 h o más (%s)' % sorted(vencidas(est, ahora)))
+    dd = {'batallas': {D.clave_batalla(D.detalle_batalla('FATS', 'ACAD', '19/10', 'octavos', ['d', 'l', 'i'])): {'ganador': 'd'}}}
+    h = cerrar(est, {'491': l491, '562': l562}, dd, ahora, D)
+    hm = {x[0]: x for x in h}
+    if hm.get('562', ())[1:] != ('no cuenta', 0, 7, 8) or dd['eventos'].get('ZZZ · LKR · 07/11', {}).get('decision') != 'no cuenta':
+        malos.append('la #562: 7 de 8 sin ganador no cuenta (%s)' % (hm.get('562'),))
+    if hm.get('491', ())[1:] != ('nadie siguió', 2, 2, 15):
+        malos.append('la #491: 2 de 15 sin ganador (la de octavos ya decidida), cierra cuartos y la otra de octavos (%s)'
+                     % (hm.get('491'),))
+    nadies = [v for v in dd['batallas'].values() if v.get('ganador') == D.NADIE]
+    if len(nadies) != 2 or est['491']['respondidas'].get('0') != D.NADIE:
+        malos.append('el último recurso escribe «Nadie siguió» en decisiones.json (%d)' % len(nadies))
+    if vencidas(est, ahora + datetime.timedelta(hours=5)) != ['joven']:
+        malos.append('lo cerrado no se vuelve a cerrar, y la joven vence a su hora')
+    fin = dict(f, llave='fin', t_pregunta=hace(60), cuando=hace(61), respondidas={},
+               preguntas=[{'ronda': 'FINAL', 'lados': ['a', 'b']}, {'ronda': 'SEMIS', 'lados': ['c', 'd']}])
+    e2 = {'fin': fin}
+    cerrar(e2, {}, {}, ahora, D)
+    if '0' in fin['respondidas'] or fin['respondidas'].get('1') != D.NADIE:
+        malos.append('la final nunca se cierra sola; la semifinal sí')
+    pp = para_panel(dict(e2, joven=dict(est['joven'], cuando=hace(10))), ahora)
+    ks = sorted(x['k'] for xs in pp.values() for x in xs)
+    if ks != ['fin:0', 'joven:0'] or not all(x['vence'] for xs in pp.values() for x in xs):
+        malos.append('el panel del socio: lo que nadie marcó, la final también, con cuándo vence (%s)' % ks)
+    if nombre_de({'evento': '(sin titulo)', 'fecha': '10/11'}) != 'tu llave del 10/11' or nombre_de(f) != 'X':
+        malos.append('la llave sin título se nombra por su fecha')
+    if 'Moderador' not in texto_descarte(est['562'], 7, 8) or '<@33>' not in texto_descarte(est['562'], 7, 8):
+        malos.append('el aviso del descarte: al organizador, con qué hacer si fue un error')
+    return malos
 
 
 def main():
