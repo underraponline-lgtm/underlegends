@@ -1,9 +1,9 @@
 {
  "v": 1,
- "cuando": "2026-11-12T09:04:10Z",
+ "cuando": "2026-11-12T09:27:05Z",
  "trabajo": "dibujar",
  "codigo": 0,
- "dur_s": 1086.9,
+ "dur_s": 474.4,
  "pasos": [
   {
    "n": "2f",
@@ -21,61 +21,61 @@
    "n": "3",
    "que": "qué cambió",
    "ok": true,
-   "s": 8.0
+   "s": 9.1
   },
   {
    "n": "4",
    "que": "las caras, desde R2",
    "ok": true,
-   "s": 17.7
+   "s": 17.5
   },
   {
    "n": "5",
-   "que": "tanda 1 de 7 · 40 persona(s)",
+   "que": "tanda 1 de 3 · 40 persona(s)",
    "ok": true,
-   "s": 982.3
+   "s": 378.0
   },
   {
    "n": "5b",
    "que": "las Bloqueadas",
    "ok": true,
-   "s": 10.2
+   "s": 8.9
   },
   {
    "n": "6",
    "que": "refrescar KV",
    "ok": true,
-   "s": 66.7
+   "s": 59.1
   }
  ],
  "fallas": [],
  "ultimo_evento": {
-  "n": "620",
-  "nombre": "TORNEOS",
-  "sv": "LKR",
-  "dia": "2026-11-05"
+  "n": "622",
+  "nombre": "Shaoling Battles 1v1 4",
+  "sv": "FDS",
+  "dia": "2026-10-01"
  },
  "cuotas": {
   "kv": {
-   "write": 434,
-   "read": 18161
+   "write": 458,
+   "read": 18931
   },
   "objeto": {
-   "leidas": 1888115,
-   "escritas": 38454,
-   "pedidos": 8377
+   "leidas": 2052775,
+   "escritas": 40424,
+   "pedidos": 8659
   },
   "worker": {
-   "pedidos": 11059,
+   "pedidos": 11253,
    "errores": 0,
-   "sub": 13896,
+   "sub": 14110,
    "cortados": 0,
-   "p50_ms": 1.43,
+   "p50_ms": 1.42,
    "p99_ms": 14.71,
    "cpu": {
-    "total": 24846,
-    "objeto_10": 2021,
-    "worker_10": 436
+    "total": 25254,
+    "objeto_10": 2036,
+    "worker_10": 438
    }
   },
   "r2": {
