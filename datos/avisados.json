@@ -43002,5 +43002,230 @@
    ]
   ],
   "v": 2
+ },
+ "610": {
+  "antes": {
+   "AbrahamSRRL": [
+    596,
+    582,
+    true
+   ],
+   "Akus": [
+    167,
+    300,
+    false
+   ],
+   "Badterne": [
+    267,
+    74,
+    true
+   ],
+   "Erik": [
+    102,
+    133,
+    false
+   ],
+   "Oasis": [
+    2,
+    2,
+    false
+   ],
+   "PichulaMc": [
+    4,
+    4,
+    false
+   ],
+   "Tam": [
+    254,
+    18,
+    true
+   ],
+   "Tenor": [
+    42,
+    50,
+    false
+   ],
+   "Trelok": [
+    81,
+    103,
+    false
+   ],
+   "crakero": [
+    112,
+    153,
+    false
+   ]
+  },
+  "canal": "1468472443843776659",
+  "duelos": [
+   [
+    "Erik",
+    "crakero",
+    "Erik"
+   ],
+   [
+    "k 🇺🇸",
+    "Ydimekemeamasaunqueseamentira🇧🇾",
+    "k 🇺🇸"
+   ],
+   [
+    "k 🇺🇸",
+    "PichulaMc",
+    "k 🇺🇸"
+   ],
+   [
+    "k 🇺🇸",
+    "Akus",
+    "k 🇺🇸"
+   ],
+   [
+    "Tam",
+    "AbrahamSRRL",
+    "Tam"
+   ],
+   [
+    "Tam",
+    "El padre de tu padre 🇻🇪",
+    "Tam"
+   ],
+   [
+    "Park Sung-jong 🇰🇵",
+    "PHOBOS 🇲🇽",
+    "Park Sung-jong 🇰🇵"
+   ],
+   [
+    "Park Sung-jong 🇰🇵",
+    "Trelok",
+    "Park Sung-jong 🇰🇵"
+   ],
+   [
+    "k 🇺🇸, Tenor",
+    "Badterne, Erik",
+    "k 🇺🇸, Tenor"
+   ],
+   [
+    "kminante🇦🇷, Tam",
+    "Park Sung-jong 🇰🇵, Oasis",
+    "kminante🇦🇷, Tam"
+   ],
+   [
+    "kminante 🇦🇷, Tam, Park Sung-jong 🇰🇵",
+    "k 🇺🇸, Tenor, Erik",
+    "kminante 🇦🇷, Tam, Park Sung-jong 🇰🇵"
+   ]
+  ],
+  "ev_antes": {
+   "AbrahamSRRL": 1,
+   "Akus": 1,
+   "Badterne": 8,
+   "Erik": 4,
+   "Oasis": 40,
+   "PichulaMc": 59,
+   "Tam": 27,
+   "Tenor": 18,
+   "Trelok": 7,
+   "crakero": 6
+  },
+  "fecha": "11/11",
+  "firma": "a1716913f007a877",
+  "msg": "1570306951311532114",
+  "nombre": "__qcyo rapeen Pandillas__",
+  "num": 610,
+  "participantes": 16,
+  "sello": {
+   "Park Sung-jong 🇰🇵": "",
+   "Tam": "",
+   "kminante 🇦🇷": ""
+  },
+  "sv": "FFA",
+  "t": "2026-11-12T05:24:03Z",
+  "tabla": [
+   [
+    "Park Sung-jong 🇰🇵",
+    "Campeón",
+    5958
+   ],
+   [
+    "Erik",
+    "Subcampeón",
+    5125
+   ],
+   [
+    "kminante 🇦🇷",
+    "Campeón",
+    3333
+   ],
+   [
+    "Tam",
+    "Campeón",
+    3333
+   ],
+   [
+    "Badterne",
+    "Semifinal",
+    2625
+   ],
+   [
+    "Oasis",
+    "Semifinal",
+    2625
+   ],
+   [
+    "kminante🇦🇷",
+    "Semifinal",
+    2625
+   ],
+   [
+    "k 🇺🇸",
+    "Subcampeón",
+    2500
+   ],
+   [
+    "Tenor",
+    "Subcampeón",
+    2500
+   ],
+   [
+    "crakero",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Ydimekemeamasaunqueseamentira🇧🇾",
+    "Cuartos",
+    2500
+   ],
+   [
+    "PichulaMc",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Akus",
+    "Cuartos",
+    2500
+   ],
+   [
+    "AbrahamSRRL",
+    "Cuartos",
+    2500
+   ],
+   [
+    "El padre de tu padre 🇻🇪",
+    "Cuartos",
+    2500
+   ],
+   [
+    "PHOBOS 🇲🇽",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Trelok",
+    "Cuartos",
+    2500
+   ]
+  ],
+  "v": 2
  }
 }

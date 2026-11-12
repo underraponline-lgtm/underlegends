@@ -72,10 +72,26 @@
     "nivel": "A",
     "base": 12000,
     "o": 3,
-    "estado": "suelto",
-    "ev": 1,
+    "estado": "cazado",
+    "ev": 2,
     "fase": "Campeón",
-    "valor": 14500
+    "valor": 14500,
+    "caza": {
+     "n": 610,
+     "evento": "qcyo rapeen Pandillas",
+     "sv": "FFA",
+     "t": "2026-11-12T04:08:19Z",
+     "por": [
+      {
+       "n": "Tenor",
+       "cobra": 13250
+      },
+      {
+       "n": "k",
+       "cobra": 14500
+      }
+     ]
+    }
    },
    {
     "n": "Leonart",

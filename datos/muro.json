@@ -143,7 +143,7 @@
 ]
 },
 "tam": {
-"rg": "B",
+"rg": "A",
 "c": []
 },
 "carlosss": {
@@ -347,6 +347,15 @@
 "temporada"
 ]
 },
+"tenor": {
+"rg": "C",
+"c": [
+"competitivo",
+"pais",
+"servidor",
+"temporada"
+]
+},
 "delux": {
 "rg": "C",
 "c": [
@@ -391,15 +400,6 @@
 "rg": "C",
 "c": [
 "competitivo",
-"servidor",
-"temporada"
-]
-},
-"tenor": {
-"rg": "C",
-"c": [
-"competitivo",
-"pais",
 "servidor",
 "temporada"
 ]
@@ -748,6 +748,14 @@
 "rg": "E",
 "c": []
 },
+"trelok": {
+"rg": "",
+"c": [
+"pais",
+"servidor",
+"temporada"
+]
+},
 "darnbless": {
 "rg": "E",
 "c": []
@@ -773,14 +781,6 @@
 "c": []
 },
 "motera": {
-"rg": "",
-"c": [
-"pais",
-"servidor",
-"temporada"
-]
-},
-"trelok": {
 "rg": "",
 "c": [
 "pais",
@@ -902,6 +902,14 @@
 "rg": "",
 "c": []
 },
+"erik": {
+"rg": "",
+"c": [
+"pais",
+"servidor",
+"temporada"
+]
+},
 "eliot": {
 "rg": "",
 "c": []
@@ -969,13 +977,6 @@
 ]
 },
 "prosu": {
-"rg": "",
-"c": [
-"servidor",
-"temporada"
-]
-},
-"erik": {
 "rg": "",
 "c": [
 "servidor",
@@ -1082,17 +1083,17 @@
 "rg": "",
 "c": []
 },
-"ezias": {
-"rg": "",
-"c": [
-"servidor",
-"temporada"
-]
-},
 "crakero": {
 "rg": "",
 "c": [
 "pais",
+"servidor",
+"temporada"
+]
+},
+"ezias": {
+"rg": "",
+"c": [
 "servidor",
 "temporada"
 ]
@@ -2773,23 +2774,6 @@
 }
 },
 "cambios": [
-{
-"tipo": "rango",
-"t": "2026-10-07T05:59:04Z",
-"quien": [
-"Lord Viruzz"
-],
-"rg": "D",
-"primero": true
-},
-{
-"tipo": "tarjeta",
-"t": "2026-10-07T05:59:04Z",
-"quien": [
-"Lord Viruzz"
-],
-"carta": "competitivo"
-},
 {
 "tipo": "tarjeta",
 "t": "2026-10-07T05:59:04Z",
@@ -6146,6 +6130,23 @@
 "BTRX"
 ],
 "carta": "temporada"
+},
+{
+"tipo": "rango",
+"t": "2026-11-12T05:36:46Z",
+"quien": [
+"Tam"
+],
+"rg": "A",
+"primero": false
+},
+{
+"tipo": "tarjeta",
+"t": "2026-11-12T05:36:46Z",
+"quien": [
+"Erik"
+],
+"carta": "pais"
 }
 ],
 "noche_antes": {
@@ -7043,8 +7044,8 @@
 "tipo": "resnoche",
 "t": "2026-11-12T08:00:00Z",
 "dia": "2026-11-11",
-"eventos": 2,
-"part": 44,
+"eventos": 3,
+"part": 60,
 "campeones": [
 {
 "ev": "ALL VALLEY",
@@ -7071,6 +7072,25 @@
 ""
 ]
 ]
+},
+{
+"ev": "qcyo rapeen Pandillas",
+"sv": "FFA",
+"ll": 610,
+"quien": [
+[
+"Park Sung-jong 🇰🇵",
+""
+],
+[
+"Tam",
+"tam"
+],
+[
+"kminante 🇦🇷",
+""
+]
+]
 }
 ],
 "suman": [
@@ -7081,15 +7101,15 @@
 "ev": 1
 },
 {
+"n": "PichulaMc",
+"k": "pichulamc",
+"pts": 7500,
+"ev": 2
+},
+{
 "n": "letrao",
 "k": "letrao",
 "pts": 7500,
-"ev": 1
-},
-{
-"n": "kychi",
-"k": "",
-"pts": 5250,
 "ev": 1
 }
 ],
@@ -7098,19 +7118,19 @@
 "n": "Ryuk",
 "k": "",
 "de": 537,
-"a": 410
+"a": 412
+},
+{
+"n": "AbrahamSRRL",
+"k": "",
+"de": 594,
+"a": 469
 },
 {
 "n": "letrao",
 "k": "letrao",
 "de": 329,
 "a": 299
-},
-{
-"n": "VR",
-"k": "vr",
-"de": 98,
-"a": 79
 }
 ],
 "sorpresas": [
@@ -7119,6 +7139,18 @@
 "k": "",
 "que": "debut",
 "ev": "GALACTICOS DEL FREESTYLE VOL.1"
+},
+{
+"n": "Park Sung-jong 🇰🇵",
+"k": "",
+"que": "debut",
+"ev": "qcyo rapeen Pandillas"
+},
+{
+"n": "kminante 🇦🇷",
+"k": "",
+"que": "debut",
+"ev": "qcyo rapeen Pandillas"
 }
 ]
 }

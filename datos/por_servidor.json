@@ -457,11 +457,11 @@
   "AbrahamSRRL": {
    "FFA": {
     "duelos": "0/1",
-    "ev": 1,
+    "ev": 2,
     "oro": 0,
-    "ovr": 42,
+    "ovr": 43,
     "pod": 0,
-    "pts": 1250,
+    "pts": 5000,
     "racha": "0/0",
     "tg": {
      "nuevo": true
@@ -741,11 +741,11 @@
   "Akus": {
    "FFA": {
     "duelos": "",
-    "ev": 1,
+    "ev": 2,
     "oro": 0,
-    "ovr": 44,
+    "ovr": 45,
     "pod": 0,
-    "pts": 12500,
+    "pts": 16250,
     "racha": "0/0",
     "tg": {
      "nuevo": true
@@ -1301,11 +1301,11 @@
   "Badterne": {
    "FFA": {
     "duelos": "2/4",
-    "ev": 7,
+    "ev": 8,
     "oro": 2,
-    "ovr": 52,
+    "ovr": 53,
     "pod": 4,
-    "pts": 59686,
+    "pts": 62311,
     "racha": "0/4",
     "tg": {
      "fin": 4
@@ -3559,6 +3559,20 @@
     "racha": "0/0"
    }
   },
+  "El padre de tu padre 🇻🇪": {
+   "FFA": {
+    "duelos": "",
+    "ev": 1,
+    "oro": 0,
+    "ovr": 42,
+    "pod": 0,
+    "pts": 2500,
+    "racha": "0/0",
+    "tg": {
+     "nuevo": true
+    }
+   }
+  },
   "Elbesaabuelas": {
    "DDF": {
     "duelos": "0/3",
@@ -3850,14 +3864,14 @@
   "Erik": {
    "FFA": {
     "duelos": "1/3",
-    "ev": 4,
+    "ev": 5,
     "oro": 1,
-    "ovr": 48,
-    "pod": 1,
-    "pts": 29438,
-    "racha": "1/1",
+    "ovr": 49,
+    "pod": 2,
+    "pts": 34563,
+    "racha": "2/2",
     "tg": {
-     "fin": 1
+     "fin": 2
     }
    }
   },
@@ -6594,10 +6608,7 @@
     "ovr": 42,
     "pod": 0,
     "pts": 1500,
-    "racha": "0/0",
-    "tg": {
-     "nuevo": true
-    }
+    "racha": "0/0"
    },
    "FFA": {
     "duelos": "",
@@ -8018,10 +8029,7 @@
     "ovr": 42,
     "pod": 0,
     "pts": 1500,
-    "racha": "0/0",
-    "tg": {
-     "nuevo": true
-    }
+    "racha": "0/0"
    },
    "FFA": {
     "duelos": "",
@@ -9368,12 +9376,12 @@
   "Oasis": {
    "FFA": {
     "duelos": "40/46",
-    "ev": 40,
+    "ev": 41,
     "oro": 24,
     "ovr": 84,
     "pod": 32,
-    "pts": 524540,
-    "racha": "7/13",
+    "pts": 527165,
+    "racha": "0/13",
     "tg": {
      "fin": 31
     }
@@ -9460,6 +9468,20 @@
     "pod": 0,
     "pts": 1875,
     "racha": "0/0"
+   }
+  },
+  "PHOBOS 🇲🇽": {
+   "FFA": {
+    "duelos": "",
+    "ev": 1,
+    "oro": 0,
+    "ovr": 42,
+    "pod": 0,
+    "pts": 2500,
+    "racha": "0/0",
+    "tg": {
+     "nuevo": true
+    }
    }
   },
   "PIERR🇵🇪": {
@@ -9664,6 +9686,21 @@
     }
    }
   },
+  "Park Sung-jong 🇰🇵": {
+   "FFA": {
+    "duelos": "",
+    "ev": 1,
+    "oro": 1,
+    "ovr": 45,
+    "pod": 1,
+    "pts": 5958,
+    "racha": "1/1",
+    "tg": {
+     "fin": 1,
+     "nuevo": true
+    }
+   }
+  },
   "Partim": {
    "FFA": {
     "duelos": "0/1",
@@ -9765,12 +9802,12 @@
    },
    "FFA": {
     "duelos": "19/37",
-    "ev": 44,
+    "ev": 45,
     "oro": 6,
     "ovr": 71,
     "pod": 11,
-    "pts": 251604,
-    "racha": "1/3",
+    "pts": 254104,
+    "racha": "0/3",
     "tg": {
      "bcasa": true,
      "fin": 11,
@@ -11747,14 +11784,14 @@
    },
    "FFA": {
     "duelos": "9/13",
-    "ev": 25,
-    "oro": 4,
-    "ovr": 69,
-    "pod": 10,
-    "pts": 194395,
-    "racha": "0/9",
+    "ev": 26,
+    "oro": 5,
+    "ovr": 70,
+    "pod": 11,
+    "pts": 197728,
+    "racha": "1/9",
     "tg": {
-     "fin": 10,
+     "fin": 11,
      "fund": true
     }
    }
@@ -11829,14 +11866,14 @@
   "Tenor": {
    "FFA": {
     "duelos": "5/9",
-    "ev": 18,
+    "ev": 19,
     "oro": 3,
-    "ovr": 62,
-    "pod": 4,
-    "pts": 102824,
-    "racha": "4/4",
+    "ovr": 63,
+    "pod": 5,
+    "pts": 105324,
+    "racha": "5/5",
     "tg": {
-     "fin": 4
+     "fin": 5
     }
    }
   },
@@ -11986,18 +12023,17 @@
     "pts": 5625,
     "racha": "1/1",
     "tg": {
-     "fin": 1,
-     "nuevo": true
+     "fin": 1
     }
    },
    "FFA": {
     "duelos": "",
-    "ev": 3,
+    "ev": 4,
     "oro": 0,
-    "ovr": 49,
+    "ovr": 50,
     "pod": 2,
-    "pts": 43125,
-    "racha": "2/2",
+    "pts": 45625,
+    "racha": "0/2",
     "tg": {
      "fin": 1
     }
@@ -12922,6 +12958,20 @@
     }
    }
   },
+  "Ydimekemeamasaunqueseamentira🇧🇾": {
+   "FFA": {
+    "duelos": "",
+    "ev": 1,
+    "oro": 0,
+    "ovr": 42,
+    "pod": 0,
+    "pts": 2500,
+    "racha": "0/0",
+    "tg": {
+     "nuevo": true
+    }
+   }
+  },
   "Yeyox": {
    "URBF": {
     "duelos": "1/2",
@@ -13401,11 +13451,11 @@
    },
    "FFA": {
     "duelos": "2/5",
-    "ev": 5,
+    "ev": 6,
     "oro": 0,
-    "ovr": 47,
+    "ovr": 48,
     "pod": 0,
-    "pts": 39563,
+    "pts": 42063,
     "racha": "0/0"
    }
   },
@@ -13659,6 +13709,21 @@
     "racha": "0/0"
    }
   },
+  "k 🇺🇸": {
+   "FFA": {
+    "duelos": "",
+    "ev": 1,
+    "oro": 0,
+    "ovr": 44,
+    "pod": 1,
+    "pts": 2500,
+    "racha": "1/1",
+    "tg": {
+     "fin": 1,
+     "nuevo": true
+    }
+   }
+  },
   "kaiser🇵🇷": {
    "FFA": {
     "duelos": "0/1",
@@ -13690,6 +13755,21 @@
     "pod": 0,
     "pts": 4125,
     "racha": "0/0"
+   }
+  },
+  "kminante 🇦🇷": {
+   "FFA": {
+    "duelos": "",
+    "ev": 1,
+    "oro": 1,
+    "ovr": 45,
+    "pod": 1,
+    "pts": 5958,
+    "racha": "0/1",
+    "tg": {
+     "fin": 1,
+     "nuevo": true
+    }
    }
   },
   "kychi": {

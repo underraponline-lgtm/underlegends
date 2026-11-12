@@ -4349,10 +4349,20 @@
  },
  "erik": {
   "servidor": {
+   "🏅 PODIOS": [
+    "🏅 PODIOS",
+    "t1",
+    1794461845413
+   ],
    "🏆 CAMPEÓN": [
     "🏆 CAMPEÓN",
     "t1",
     1792953978519
+   ],
+   "📆 HABITUÉ": [
+    "📆 HABITUÉ",
+    "t1",
+    1794461845413
    ]
   },
   "temporada": {
@@ -5656,6 +5666,25 @@
    ]
   }
  },
+ "k": {
+  "temporada": {
+   "🌱 PROMESA": [
+    "🌱 PROMESA",
+    "t1",
+    1794461845413
+   ],
+   "💀 REGICIDA": [
+    "💀 REGICIDA",
+    "t1",
+    1794461845413
+   ],
+   "🥉 AL PODIO": [
+    "🥉 AL PODIO",
+    "t1",
+    1794461845413
+   ]
+  }
+ },
  "katalien": {
   "servidor": {
    "🧱 FUNDADOR": [
@@ -5741,6 +5770,30 @@
     "🧱 FUNDADOR",
     "t1",
     1792953978519
+   ]
+  }
+ },
+ "kminante": {
+  "temporada": {
+   "🌱 PROMESA": [
+    "🌱 PROMESA",
+    "t1",
+    1794461845413
+   ],
+   "👑 CAMPEÓN x%d": [
+    "👑 CAMPEÓN x1",
+    "t1",
+    1794461845413
+   ],
+   "🚪 DEBUT CON CORONA": [
+    "🚪 DEBUT CON CORONA",
+    "t1",
+    1794461845413
+   ],
+   "🥉 AL PODIO": [
+    "🥉 AL PODIO",
+    "t1",
+    1794461845413
    ]
   }
  },
@@ -10480,6 +10533,30 @@
    ]
   }
  },
+ "parksungjong": {
+  "temporada": {
+   "🌱 PROMESA": [
+    "🌱 PROMESA",
+    "t1",
+    1794461845413
+   ],
+   "👑 CAMPEÓN x%d": [
+    "👑 CAMPEÓN x1",
+    "t1",
+    1794461845413
+   ],
+   "🚪 DEBUT CON CORONA": [
+    "🚪 DEBUT CON CORONA",
+    "t1",
+    1794461845413
+   ],
+   "🥉 AL PODIO": [
+    "🥉 AL PODIO",
+    "t1",
+    1794461845413
+   ]
+  }
+ },
  "pichu": {
   "servidor": {
    "🏆 CAMPEÓN": [
@@ -13114,6 +13191,11 @@
     "t1",
     1792989121293
    ],
+   "🏯 CIUDADELA": [
+    "🏯 CIUDADELA",
+    "t1",
+    1794461845413
+   ],
    "🏰 FORTALEZA": [
     "🏰 FORTALEZA",
     "t1",
@@ -13136,6 +13218,11 @@
     "t1",
     1794267690865
    ],
+   "⭐ PENTACAMPEÓN": [
+    "⭐ PENTACAMPEÓN",
+    "t1",
+    1794461845413
+   ],
    "🎖️ CURTIDO": [
     "🎖️ CURTIDO",
     "t1",
@@ -13152,7 +13239,7 @@
     1793064764072
    ],
    "👑 CAMPEÓN x%d": [
-    "👑 CAMPEÓN x4",
+    "👑 CAMPEÓN x5",
     "t1",
     1793317391221
    ],
@@ -13325,6 +13412,11 @@
     "👑 CAMPEÓN x3",
     "t1",
     1793684083679
+   ],
+   "💀 REGICIDA": [
+    "💀 REGICIDA",
+    "t1",
+    1794461845413
    ],
    "💯 CENTENARIO": [
     "💯 CENTENARIO",

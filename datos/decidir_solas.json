@@ -3110,6 +3110,62 @@
      "975881475528491058"
     ]
    }
+  },
+  {
+   "id": "fc12cc9bd0",
+   "tipo": "Nombre desconocido",
+   "sec": "qcyo rapeen Pandillas · FFA · 11/11 · #610",
+   "que": "¿Quién es «Park Sung-jong 🇰🇵»?",
+   "r": "Es YOUNG VLAD",
+   "regla": "Discord · su cuenta de Discord: la inscripción, el podio, la llave o la llamada",
+   "rk": "Discord",
+   "por": "el ciclo (su cuenta de Discord)",
+   "porque": "alias de YOUNG VLAD: se anotó así en inscripciones",
+   "t": 1794461828186,
+   "filas": [
+    1259
+   ],
+   "variantes": [
+    "Park Sung-jong 🇰🇵"
+   ],
+   "escribio": {
+    "alias": [
+     "Park Sung-jong",
+     "YOUNG VLAD"
+    ],
+    "filas": [
+     349
+    ]
+   }
+  },
+  {
+   "id": "ada28e88ab",
+   "tipo": "Nombre desconocido",
+   "sec": "qcyo rapeen Pandillas · FFA · 11/11 · #610",
+   "que": "¿Quién es «kminante 🇦🇷»? (también escrito «kminante🇦🇷»)",
+   "r": "Es Kminant",
+   "regla": "Discord · su cuenta de Discord: la inscripción, el podio, la llave o la llamada",
+   "rk": "Discord",
+   "por": "el ciclo (su cuenta de Discord)",
+   "porque": "alias de Kminant: estaba en la llamada del evento con un nombre parecido",
+   "t": 1794461828186,
+   "filas": [
+    1262,
+    1263
+   ],
+   "variantes": [
+    "kminante 🇦🇷",
+    "kminante🇦🇷"
+   ],
+   "escribio": {
+    "alias": [
+     "kminante",
+     "Kminant"
+    ],
+    "filas": [
+     350
+    ]
+   }
   }
  ],
  "deshechas": []

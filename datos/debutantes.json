@@ -145,9 +145,10 @@
   },
   "AbrahamSRRL": {
    "avisado": "2026-11-10",
+   "avisado_cumplido": "2026-11-12",
    "chat": "2026-11-11",
-   "con": null,
-   "cumplido": "",
+   "con": 610,
+   "cumplido": "2026-11-12T04:08:19+00:00",
    "debut": "2026-11-10T01:48:30+00:00",
    "did": "727573835033083914",
    "evento": "TORNEO CLANDESTINO V.1",
@@ -197,9 +198,10 @@
   },
   "Akus": {
    "avisado": "2026-11-06",
+   "avisado_cumplido": "2026-11-12",
    "chat": "2026-11-06",
-   "con": null,
-   "cumplido": "",
+   "con": 610,
+   "cumplido": "2026-11-12T04:08:19+00:00",
    "debut": "2026-11-06T03:10:32+00:00",
    "did": "1065844469762641960",
    "evento": "QCYO RAPEEN 11",
@@ -639,6 +641,18 @@
    "sv": "FFA",
    "vence": "2026-11-09T01:30:37+00:00",
    "vencido": true
+  },
+  "El padre de tu padre": {
+   "avisado": "2026-11-12",
+   "con": null,
+   "cumplido": "",
+   "debut": "2026-11-12T04:08:19+00:00",
+   "did": "",
+   "evento": "qcyo rapeen Pandillas",
+   "n": 610,
+   "sv": "FFA",
+   "vence": "2026-11-19T04:08:19+00:00",
+   "vencido": false
   },
   "Eldinoco": {
    "avisado": "2026-10-29",
@@ -1761,6 +1775,18 @@
    "vence": "2026-10-23T02:35:47+00:00",
    "vencido": true
   },
+  "PHOBOS": {
+   "avisado": "2026-11-12",
+   "con": null,
+   "cumplido": "",
+   "debut": "2026-11-12T04:08:19+00:00",
+   "did": "",
+   "evento": "qcyo rapeen Pandillas",
+   "n": 610,
+   "sv": "FFA",
+   "vence": "2026-11-19T04:08:19+00:00",
+   "vencido": false
+  },
   "PRV": {
    "avisado": "2026-11-09",
    "chat": "2026-11-09",
@@ -1797,6 +1823,18 @@
    "sv": "CH",
    "vence": "2026-10-27T22:07:15+00:00",
    "vencido": true
+  },
+  "Park Sung-jong": {
+   "avisado": "2026-11-12",
+   "con": null,
+   "cumplido": "",
+   "debut": "2026-11-12T04:08:19+00:00",
+   "did": "",
+   "evento": "qcyo rapeen Pandillas",
+   "n": 610,
+   "sv": "FFA",
+   "vence": "2026-11-19T04:08:19+00:00",
+   "vencido": false
   },
   "Pipe": {
    "avisado": "2026-10-23",
@@ -2317,6 +2355,18 @@
    "vence": "2026-11-19T01:06:26+00:00",
    "vencido": false
   },
+  "Ydimekemeamasaunqueseamentira": {
+   "avisado": "2026-11-12",
+   "con": null,
+   "cumplido": "",
+   "debut": "2026-11-12T04:08:19+00:00",
+   "did": "",
+   "evento": "qcyo rapeen Pandillas",
+   "n": 610,
+   "sv": "FFA",
+   "vence": "2026-11-19T04:08:19+00:00",
+   "vencido": false
+  },
   "ZAFK": {
    "avisado": "2026-10-26",
    "con": null,
@@ -2507,6 +2557,18 @@
    "vence": "2026-11-03T02:05:05+00:00",
    "vencido": true
   },
+  "k": {
+   "avisado": "2026-11-12",
+   "con": null,
+   "cumplido": "",
+   "debut": "2026-11-12T04:08:19+00:00",
+   "did": "",
+   "evento": "qcyo rapeen Pandillas",
+   "n": 610,
+   "sv": "FFA",
+   "vence": "2026-11-19T04:08:19+00:00",
+   "vencido": false
+  },
   "kaiser": {
    "avisado": "2026-10-31",
    "chat": "2026-11-01",
@@ -2530,6 +2592,18 @@
    "sv": "CH",
    "vence": "2026-10-27T22:07:15+00:00",
    "vencido": true
+  },
+  "kminante": {
+   "avisado": "2026-11-12",
+   "con": null,
+   "cumplido": "",
+   "debut": "2026-11-12T04:08:19+00:00",
+   "did": "",
+   "evento": "qcyo rapeen Pandillas",
+   "n": 610,
+   "sv": "FFA",
+   "vence": "2026-11-19T04:08:19+00:00",
+   "vencido": false
   },
   "kychi": {
    "avisado": "2026-11-11",

@@ -50525,5 +50525,189 @@
    "min": 176,
    "v": 1
   }
+ },
+ "610": {
+  "dia": "2026-11-11",
+  "escala": "16+",
+  "fecha": "11/11",
+  "links": [
+   "https://discord.com/channels/1468472442925092958/1487207377601040516/1570289113351987272"
+  ],
+  "n": 610,
+  "nombre": "qcyo rapeen Pandillas",
+  "participantes": 16,
+  "rondas": [
+   {
+    "b": [
+     [
+      [
+       "Erik",
+       "Badterne",
+       "crakero"
+      ],
+      "Erik, Badterne",
+      "triple (3 bandas, pasan 2); también pasa: gianla🇨🇦; Drafteado: erik🇦🇷"
+     ],
+     [
+      [
+       "k 🇺🇸",
+       "Tenor",
+       "Ydimekemeamasaunqueseamentira🇧🇾",
+       "PichulaMc",
+       "Akus"
+      ],
+      "k 🇺🇸, Tenor",
+      "triple (5 bandas, pasan 2); también pasa: tenor"
+     ],
+     [
+      [
+       "Tam",
+       "Kminant",
+       "AbrahamSRRL",
+       "El padre de tu padre 🇻🇪"
+      ],
+      "Tam, Kminant",
+      "triple (4 bandas, pasan 2); también pasa: kminant 🇦🇷"
+     ],
+     [
+      [
+       "Park Sung-jong 🇰🇵",
+       "Oasis",
+       "PHOBOS 🇲🇽",
+       "Trelok"
+      ],
+      "Park Sung-jong 🇰🇵, Oasis",
+      "triple (4 bandas, pasan 2); también pasa: Park-Ji Sung🇰🇷; Drafteado: Park Sung-jong 🇰🇵"
+     ]
+    ],
+    "r": "Cuartos"
+   },
+   {
+    "b": [
+     [
+      [
+       "k 🇺🇸, Tenor",
+       "Badterne, Erik"
+      ],
+      "k 🇺🇸, Tenor",
+      ""
+     ],
+     [
+      [
+       "kminante🇦🇷, Tam",
+       "Park Sung-jong 🇰🇵, Oasis"
+      ],
+      "kminante🇦🇷, Tam",
+      ""
+     ]
+    ],
+    "r": "Semifinales"
+   },
+   {
+    "b": [
+     [
+      [
+       "kminante 🇦🇷, Tam, Park Sung-jong 🇰🇵",
+       "k 🇺🇸, Tenor, Erik"
+      ],
+      "kminante 🇦🇷, Tam, Park Sung-jong 🇰🇵",
+      ""
+     ]
+    ],
+    "r": "Final"
+   }
+  ],
+  "sv": "FFA",
+  "tabla": [
+   [
+    "Park Sung-jong 🇰🇵",
+    "Campeón",
+    5958
+   ],
+   [
+    "Erik",
+    "Subcampeón",
+    5125
+   ],
+   [
+    "Tam",
+    "Campeón",
+    3333
+   ],
+   [
+    "kminante 🇦🇷",
+    "Campeón",
+    3333
+   ],
+   [
+    "Badterne",
+    "Semifinal",
+    2625
+   ],
+   [
+    "Oasis",
+    "Semifinal",
+    2625
+   ],
+   [
+    "kminante🇦🇷",
+    "Semifinal",
+    2625
+   ],
+   [
+    "AbrahamSRRL",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Akus",
+    "Cuartos",
+    2500
+   ],
+   [
+    "El padre de tu padre 🇻🇪",
+    "Cuartos",
+    2500
+   ],
+   [
+    "PHOBOS 🇲🇽",
+    "Cuartos",
+    2500
+   ],
+   [
+    "PichulaMc",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Tenor",
+    "Subcampeón",
+    2500
+   ],
+   [
+    "Trelok",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Ydimekemeamasaunqueseamentira🇧🇾",
+    "Cuartos",
+    2500
+   ],
+   [
+    "crakero",
+    "Cuartos",
+    2500
+   ],
+   [
+    "k 🇺🇸",
+    "Subcampeón",
+    2500
+   ]
+  ],
+  "ver": {
+   "min": 71,
+   "v": 1
+  }
  }
 }
