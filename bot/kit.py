@@ -1036,6 +1036,203 @@ def html_vs(v, d):
                             _escudo_html(d, 80, 204), historia(), pie(v.get('a'), 'a'), pie(v.get('b'), 'b'), _evento_html(v, d), _esquinas_html()))
 
 
+# ── 🏟️ EL VS DE LIGA: UN AFICHE PEGADO ─────────────────────────────────────────────────────────────────────────────────
+#: el color de cada liga en su VS (Dlx, 11/11/2026: «que cada liga tenga un fondo especial y una forma distinta»). Las FMH
+#: llevan cada una su corazón en el nombre de su categoría de Discord: 🩵 💙 💚 💛 🧡 ❤️. Una liga que no está acá va con el
+#: color de su servidor
+#: ⚠️ ELEGIDOS PARA LEERSE (Dlx, 11/11/2026: «asegúrate de elegir bien los colores»): el celeste va un tono más hondo que el de la
+#: bandera, porque sobre el papel crema el claro desaparecía. `_paleta_liga()` saca de cada uno lo demás, y el self-check mide
+LIGA_COLOR = {'fmh-albiceleste': '#4E9BDB', 'fmh-andes': '#2E5BFF', 'fmh-carimex': '#1FA34A', 'fmh-tricolor': '#F2C200',
+              'fmh-under': '#FF7A12', 'fmh-espana': '#D7262E'}
+PAPEL = '#EFE9DA'
+
+
+def _contraste(p, q):
+    l1, l2 = sorted((_lum_rel(p), _lum_rel(q)), reverse=True)
+    return (l1 + .05) / (l2 + .05)
+
+
+def _lum_rel(c):
+    f = lambda v: v / 12.92 if v <= .03928 else ((v + .055) / 1.055) ** 2.4   # noqa: E731
+    r, g, b = [x / 255 for x in _rgb(c)]
+    return .2126 * f(r) + .7152 * f(g) + .0722 * f(b)
+
+
+def _paleta_liga(col):
+    """🎨 TODO EL VS EN EL COLOR DE LA LIGA (Dlx, 11/11/2026: «así como las tarjetas cambian de color, que el fondo o algunas
+    cosas cambien de color también»). `sobre_negro`: el color que se lee sobre negro (el pronóstico, la barra); `sobre_papel`: el que
+    se lee sobre el papel crema (el cara a cara, los cuadritos); `tinta`: el texto sobre el color. Los tres pasan 4.5:1."""
+    sn = col
+    while _contraste(sn, '#030304') < 4.5:
+        sn = _mezcla(sn, '#FFFFFF', 0.15)
+    sp = col
+    while _contraste(sp, PAPEL) < 4.5:
+        sp = _mezcla(sp, '#030304', 0.12)
+    tinta = '#030304' if _contraste(col, '#030304') >= _contraste(col, '#F6F6F6') else '#F6F6F6'
+    return {'col': col, 'sobre_negro': sn, 'sobre_papel': sp, 'tinta': tinta,
+            'claro': _mezcla(col, '#FFFFFF', 0.45), 'hondo': _mezcla(col, '#030304', 0.35)}
+
+
+def _fondo_liga(lid, sv):
+    """La escena de esa liga (`bot/vs_fondos/ligas/<liga>.jpg`); sin una, la de su servidor. `data:` URI o `''`."""
+    rutas = ([os.path.join(BASE, 'bot', 'vs_fondos', 'ligas', '%s.jpg' % lid)] if lid else []) +         ([os.path.join(BASE, 'bot', 'vs_fondos', '%s.jpg' % str(sv).lower())] if sv else [])
+    for p in rutas:
+        if os.path.exists(p):
+            with open(p, 'rb') as f:
+                return 'data:image/jpeg;base64,' + base64.b64encode(f.read()).decode('ascii')
+    return ''
+
+
+_CARTAS_LIGA = None
+
+
+def carta_liga(lid, k):
+    """🃏 La carta de liga de esa persona en esa liga: `<r2>/<clave>/liga-<liga>.webp?v=<sello>`, de `datos/cartas_liga.json`
+    (lo escribe `05_Liga/ciclo.py`). Sin carta, `''`. ⚠️ Es pública: la página ya la muestra en el álbum de cada liga."""
+    global _CARTAS_LIGA
+    if _CARTAS_LIGA is None:
+        try:
+            _CARTAS_LIGA = (json.load(io.open(os.path.join(BASE, 'datos', 'cartas_liga.json'), encoding='utf-8')) or {}).get('cartas') or {}
+        except (OSError, ValueError):
+            _CARTAS_LIGA = {}
+    x = ((_CARTAS_LIGA.get(lid) or {}).get(k or '')) if lid and k else None
+    if not x:
+        return ''
+    import subir_cartas as SC
+    return '%s/%s/liga-%s.webp?v=%s' % (SC.PUBLICA, k, lid, x[0])
+
+
+def html_vs_liga(v, d):
+    """🏟️ EL VS DE UNA BATALLA DE LIGA (Dlx, 11/11/2026: «no replicar un flyer de enfrentamiento, sino algo que siga el estilo de
+    las tarjetas de la liga» y, al prototipo, «asegúrate de que todo tenga ese estilo, incluso que use las tarjetas de la liga»).
+
+    Es el VS de siempre —las posiciones que Dlx aprobó— hecho AFICHE PEGADO, el lenguaje de `05_Liga/carta.py`: un papel roto
+    con fibra blanca sobre una pared con restos de afiches viejos, la escena de la liga impresa en duotono con su color, trama,
+    arrugas, pliegue y cinta; el VS en Anton con contorno; la historia, el pie y la etiqueta de la liga en tiras del mismo papel.
+    Y cada uno, con SU CARTA DE LIGA (`carta_liga()`); quien no la tiene, con la que traía el cruce.
+
+    ⚠️ SÓLO PARA LAS LIGAS: los eventos siguen con `html_vs()`. Lo dispara `v['liga']` = `{id, n, j}` (`ligaAnunciar()` de avisos.js)."""
+    import random
+    sys.path.insert(0, os.path.join(BASE, '05_Liga'))
+    import carta as CL
+    L = v.get('liga') or {}
+    lid = str(L.get('id') or '')
+    col = LIGA_COLOR.get(lid) or camiseta(d)['placa']
+    pal = _paleta_liga(col)
+    ink = pal['tinta']
+    from comun.temporada import SELLO
+    # sin jornada (la liga no la escribió), la temporada: así la etiqueta nunca dice el nombre del servidor como si fuera la ronda
+    v2 = dict(v, ev=str(L.get('n') or v.get('ev') or ''), ronda=('Jornada %s' % L['j']) if L.get('j') else (v.get('ronda') or SELLO))
+    for lado in ('a', 'b'):
+        y = dict(v.get(lado) or {})
+        u = carta_liga(lid, y.get('k'))
+        if u:
+            y['carta'] = u
+        v2[lado] = y
+    # 🎨 el VS de siempre, pero vestido con la liga: sin `sv` no toma la camiseta del servidor, y con su color, los dos lados, la
+    # barra, el favorito y los cuadritos salen de la liga (`camiseta()`)
+    htm = html_vs(v2, dict(d, sv='', color=col))
+
+    # el papel: 1136 × 630, arrancado arriba y abajo, con la fibra blanca
+    PW, PH, n = 1136, 630, 90
+    xs = [PW * i / (n - 1) for i in range(n)]
+    top0 = list(zip(xs, CL.cresta(11, n, 9, 7)))
+    bot0 = list(zip(xs, [PH - y for y in CL.cresta(13, n, 10, 8)]))
+    r = random.Random(5)
+    fib = [2 + r.random() * 4.5 for _ in range(n)]
+    afuera = CL.pol(top0 + bot0[::-1])
+    adentro = CL.pol([(x, y + f) for (x, y), f in zip(top0, fib)] + [(x, y - f) for (x, y), f in zip(bot0, fib)][::-1])
+    fondo = _fondo_liga(lid, d.get('sv'))
+    esc = ("<img class='lv-esc' src='%s' alt=''><img class='lv-reg' src='%s' alt=''>" % (fondo, fondo)) if fondo else \
+        "<span class='lv-esc' style='background:%s'></span>" % camiseta(d)['fondo']
+    viejos = ''.join("<div class='lv-viejo' style='left:%dpx;top:%dpx;width:%dpx;height:%dpx;background:%s;transform:rotate(%.1fdeg)'></div>"
+                     % (x, y, w, h, c, g) for x, y, w, h, c, g in
+                     ((-60, 150, 120, 260, pal['claro'], -4), (1140, 170, 120, 250, pal['hondo'], 5),
+                      (380, -40, 200, 70, '#E9E2CF', 3), (640, 640, 220, 60, pal['claro'], -3)))
+    papel = ("<svg width='0' height='0' style='position:absolute'><defs>%s"
+             "<filter id='fibra-v'><feTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' seed='3'/>"
+             "<feColorMatrix values='0 0 0 0 1  0 0 0 0 1  0 0 0 0 .95  0 0 0 .09 0'/></filter>"
+             "<filter id='arruga-v' x='0' y='0' width='100%%' height='100%%'><feTurbulence type='fractalNoise' baseFrequency='.004 .007' numOctaves='2' seed='8' result='n'/>"
+             "<feDiffuseLighting in='n' surfaceScale='3.2' lighting-color='#fff'><feDistantLight azimuth='225' elevation='52'/></feDiffuseLighting></filter>"
+             "</defs></svg>%s"
+             "<div class='lv-papel'><svg class='hoja' viewBox='0 0 %d %d'><path d='%s' fill='#EFE9DA'/><path d='%s' fill='#F6F2E6' filter='url(#fibra-v)'/></svg>"
+             "<div class='lv-tinta'>%s<span class='lv-trama'></span>"
+             "<svg class='lv-arruga' viewBox='0 0 %d %d' preserveAspectRatio='none'><rect width='%d' height='%d' filter='url(#arruga-v)'/></svg>"
+             "<span class='lv-pliegue'></span><span class='lv-luz'></span><span class='lv-vin'></span></div></div>"
+             # la cinta, en los costados: arriba tapaba el porcentaje del pronóstico
+             "<span class='lv-cinta' style='left:-26px;top:300px;width:110px;transform:rotate(78deg)'></span>"
+             "<span class='lv-cinta' style='left:1118px;top:330px;width:110px;transform:rotate(-80deg)'></span>") % (
+        CL.duo('liga', col), viejos, PW, PH, afuera, adentro, esc, PW, PH, PW, PH)
+    fuentes = io.open(os.path.join(BASE, '05_Liga', 'fuentes.css'), encoding='utf-8').read()
+    css = """
+%(fuentes)s
+#c .cami{background:#141416}
+#c .cami-capa{background:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='300' height='300'><filter id='m'><feTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3' seed='4'/><feColorMatrix values='0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  0 0 0 .14 0'/></filter><rect width='100%%' height='100%%' filter='url(%%23m)'/></svg>")}
+#c .sombra,#c .costura{display:none}
+#c .lv-viejo{position:absolute;opacity:.85;clip-path:polygon(0 4%%,12%% 0,40%% 5%%,70%% 0,100%% 6%%,96%% 40%%,100%% 70%%,94%% 100%%,60%% 95%%,30%% 100%%,0 94%%,4%% 60%%)}
+#c .lv-papel{position:absolute;left:32px;top:22px;width:%(pw)dpx;height:%(ph)dpx;transform:rotate(-.8deg)}
+#c .lv-papel>svg.hoja{position:absolute;inset:0;width:100%%;height:100%%}
+#c .lv-tinta{position:absolute;inset:0;overflow:hidden;clip-path:path("%(adentro)s");background:#121214}
+#c .lv-tinta>*{position:absolute}
+#c .lv-esc{inset:0;width:100%%;height:100%%;object-fit:cover;filter:url(#duo-liga) contrast(1.12)}
+#c span.lv-esc{background-size:cover}
+#c .lv-reg{inset:0;width:100%%;height:100%%;object-fit:cover;filter:url(#duo-liga);mix-blend-mode:screen;opacity:.12;transform:translate(4px,2px)}
+#c .lv-trama{inset:0;background:radial-gradient(circle,#0E0E10 1.2px,transparent 1.9px) 0 0 / 7px 7px;mix-blend-mode:multiply;opacity:.22}
+#c .lv-arruga{inset:0;width:100%%;height:100%%;mix-blend-mode:soft-light;opacity:.5}
+#c .lv-pliegue{left:-60px;top:300px;width:1300px;height:2px;transform:rotate(-14deg);
+  background:linear-gradient(#FFFFFF33,#FFFFFF33) 0 0 / 100%% 1px no-repeat,linear-gradient(#0000004D,#0000004D) 0 1px / 100%% 1px no-repeat}
+#c .lv-luz{inset:0;background:linear-gradient(118deg,transparent 30%%,rgba(255,255,255,.12) 42%%,rgba(255,255,255,.04) 48%%,transparent 58%%);mix-blend-mode:screen}
+#c .lv-vin{inset:0;background:radial-gradient(ellipse at 50%% 42%%,transparent 46%%,rgba(0,0,0,.62));mix-blend-mode:multiply}
+#c .lv-cinta{position:absolute;height:30px;background:rgba(238,232,212,.78);box-shadow:0 1px 1px rgba(0,0,0,.25);z-index:40;
+  clip-path:polygon(0 10%%,5%% 0,10%% 12%%,15%% 0,85%% 0,90%% 12%%,95%% 0,100%% 10%%,100%% 90%%,95%% 100%%,90%% 88%%,85%% 100%%,15%% 100%%,10%% 88%%,5%% 100%%,0 90%%);
+  background-image:linear-gradient(90deg,transparent 30%%,rgba(255,255,255,.35) 32%%,transparent 36%%,transparent 62%%,rgba(0,0,0,.08) 64%%,transparent 68%%)}
+/* las cartas de liga ya traen su borde de calcomanía: sólo la sombra dura de un papel pegado */
+#c .ld{filter:drop-shadow(5px 6px 0 rgba(0,0,0,.55))}
+#c .ld .sin{filter:drop-shadow(4px 0 0 #F6F6F6) drop-shadow(-4px 0 0 #F6F6F6) drop-shadow(0 4px 0 #F6F6F6) drop-shadow(0 -4px 0 #F6F6F6)}
+/* el VS: Anton, blanco, con el color de la liga y el negro de contorno, como el nombre de la carta */
+#c .vs-fondo{display:none}
+#c .vs{font-family:Anton,sans-serif;font-style:normal;font-weight:400;font-size:168px;top:80px;letter-spacing:.02em;color:#F6F6F6;
+  -webkit-text-stroke:14px %(col)s;paint-order:stroke fill;
+  filter:drop-shadow(4px 0 0 #030304) drop-shadow(-4px 0 0 #030304) drop-shadow(0 4px 0 #030304) drop-shadow(0 -4px 0 #030304) drop-shadow(8px 9px 0 #030304)}
+/* lo de arriba: el pronóstico en una tira de papel, y el favorito en el color de la liga */
+/* ⚠️ TODO SE LEE (Dlx, 11/11/2026: «asegúrate que todo sea visible: el T1, el logo de UL en blanco, el porcentaje, quién es
+   favorito»): cada cosa sobre negro o sobre papel, con su color pasado por `_paleta_liga()` (4.5:1 o más) */
+#c .pr>b{background:#030304;font-family:Anton,sans-serif;font-weight:400;box-shadow:4px 4px 0 %(col)s}
+#c .pr>b:first-child{color:%(sn)s!important}
+#c .pr>b:last-child{color:#F6F6F6!important}
+#c .pr-b,#c .pr-b .et{background:#030304}
+#c .pr-b i.l{background:%(sn)s!important}
+#c .pr-b i.r{background:#F6F6F6!important}
+#c .fav{background:%(col)s;color:%(ink)s;font-family:Anton,sans-serif;font-style:normal;font-weight:400;letter-spacing:.08em;box-shadow:3px 3px 0 #030304}
+#c .t-m,#c .ul-m{z-index:45;background:#030304;box-shadow:3px 3px 0 %(col)s}
+#c .t-m{padding:2px 10px 0;transform:rotate(-2deg)}
+#c .ul-m{padding:5px;box-sizing:content-box;transform:rotate(2deg)}
+#c .historia .hh u:first-of-type{color:%(sp)s!important}
+#c .historia .hh u:last-of-type{color:#030304!important}
+/* la historia: una tira del mismo papel, arrancada y pegada */
+#c .historia{background:#EFE9DA linear-gradient(180deg,rgba(255,255,255,.35),transparent 40%%,rgba(0,0,0,.06));color:#030304;
+  transform:translateX(-50%%) rotate(-2deg);clip-path:%(tira)s;padding:44px 14px 28px}
+#c .historia .tt{font-family:Anton,sans-serif;font-weight:400;font-size:25px;letter-spacing:.06em}
+#c .historia .hh{font-family:Anton,sans-serif;font-weight:400}
+#c .historia .hh i{color:#7A7466}
+#c .historia .et,#c .historia small{color:#3A3630}
+#c .escudo{border-color:#F6F6F6;box-shadow:0 0 0 3px #030304,5px 6px 0 rgba(0,0,0,.5)}
+/* la etiqueta de la liga, como la de arriba de la carta: su nombre y la jornada en un chip negro */
+#c .evento{background:#EFE9DA;color:#030304;transform:translateX(-50%%) rotate(-1.2deg);clip-path:%(tira2)s;padding:8px 18px}
+#c .evento b{font-family:Anton,sans-serif;font-weight:400;font-size:20px;letter-spacing:.06em;line-height:1.4;padding-top:2px}
+/* ⚠️ con el alto justo, la tilde de la Ñ quedaba afuera: «FMH ESPANA» */
+#c .evento span{display:inline-block;margin-top:3px;padding:3px 7px;background:#030304;color:#F6F6F6;font:700 13px/1 "Barlow Condensed",sans-serif;letter-spacing:.08em}
+#c .pie{background:#EFE9DA;color:#030304;clip-path:%(tira4)s;padding:9px 16px}
+#c .pie .et,#c .noche{font-family:"Barlow Condensed",sans-serif;font-weight:700}
+#c .segs i{box-shadow:inset 0 0 0 2px #3A3630}
+#c .segs i.g{background:%(sp)s}
+""" % {'fuentes': fuentes, 'pw': PW, 'ph': PH, 'adentro': adentro, 'col': col, 'ink': ink, 'sn': pal['sobre_negro'], 'sp': pal['sobre_papel'],
+       'tira': CL.tira(31), 'tira2': CL.tira(77), 'tira3': CL.tira(5, 8), 'tira4': CL.tira(19, 14)}
+    h = htm.replace('</style>', css + '</style>', 1)
+    h = h.replace('<div class="cami"></div><div class="cami-capa"></div>', '<div class="cami"></div><div class="cami-capa"></div>' + papel, 1)
+    return h
+
+
 def foto(htm, ruta, jpeg=False):
     """El PNG (o JPG, más liviano para el chat) del `#c` de ese HTML."""
     import navegador
@@ -1100,7 +1297,8 @@ def correr_vs(sv):
             continue
         ruta = os.path.join(SALIDA, 'vs_%s.jpg' % vid)
         try:
-            foto(html_vs(v, d), ruta, jpeg=True)
+            # 🏟️ una batalla de liga va como afiche pegado (`html_vs_liga()`); un evento, como siempre
+            foto(html_vs_liga(v, d) if v.get('liga') else html_vs(v, d), ruta, jpeg=True)
             url = subir(ruta, 'vs/%s-%s.jpg' % (sv.lower(), vid), 'image/jpeg')
             rr = requests.post(AV.WORKER + '/avisos/vs-listo', headers={'x-lg-ciclo': _clave()}, timeout=20,
                                json={'id': v.get('id'), 'url': url})
@@ -1168,7 +1366,21 @@ def _self_check():
     ll = html_llave('DESGRACIAS EN TOKYO VOL 27', [('SEMIFINALES', ['Ana', 'Beto'], 'Ana'),
                                                    ('SEMIFINALES', ['Caro', 'Dani'], 'Caro'),
                                                    ('FINAL', ['Ana', 'Caro'], 'Ana')], 'FFA', d)
+    # 🏟️ el VS de liga: afiche pegado, el color de la liga, su escena y la carta de liga de quien la tiene
+    global _CARTAS_LIGA
+    _antes_cl, _CARTAS_LIGA = _CARTAS_LIGA, {'fmh-tricolor': {'snow': ['abc123', 80, 1]}}
+    vl = html_vs_liga({'liga': {'id': 'fmh-tricolor', 'n': 'FMH Tricolor', 'j': 5}, 'titulo': 'EL CLÁSICO',
+                       'a': {'n': 'Snow', 'k': 'snow', 'ovr': 92, 'carta': 'https://pub-a.r2.dev/snow/temporada.webp'},
+                       'b': {'n': 'Pepe', 'k': 'pepe', 'ovr': 0, 'carta': ''}}, dict(d, sv='URBF'))
+    _CARTAS_LIGA = _antes_cl
     casos = [
+        ('el VS de liga: afiche pegado con el color de la liga, su escena, la carta de liga de quien la tiene y la jornada',
+         'lv-papel' in vl and '#F2C200' in vl and 'snow/liga-fmh-tricolor.webp?v=abc123' in vl and 'snow/temporada.webp' not in vl
+         and 'Jornada 5' in vl and 'FMH Tricolor' in vl and 'data:image/jpeg;base64,' in vl.split("class='lv-tinta'")[1][:200]
+         and all(os.path.exists(os.path.join(BASE, 'bot', 'vs_fondos', 'ligas', l + '.jpg')) for l in LIGA_COLOR)),
+        ('el VS de liga se lee: en las seis, el color sobre negro, sobre el papel y el texto sobre el color pasan 4.5:1',
+         all(_contraste(p['sobre_negro'], '#030304') >= 4.5 and _contraste(p['sobre_papel'], PAPEL) >= 4.5 and _contraste(p['tinta'], p['col']) >= 4.5
+             for p in (_paleta_liga(c) for c in LIGA_COLOR.values()))),
         ('el afiche: el nombre sin los guiones bajos de Discord, la hora y la modalidad',
          'DESGRACIAS EN TOKYO VOL 27' in h and '9PM ARG' in h and '1VS1' in h and '__' not in h.split('<div class="nom">')[1][:40]),
         ('la llave: una columna por ronda y el campeón', ll.count('class="ronda"') == 2 and 'Campeón' in ll and '>Ana<' in ll),
@@ -1326,9 +1538,13 @@ if __name__ == '__main__':
         if arg('--gano') in ('a', 'b'):
             v['gano'] = arg('--gano')
             v['h2h'] = [3, 1] if v['gano'] == 'a' else [2, 2]
+        # 🏟️ `--liga fmh-tricolor`: el VS de una batalla de liga, con las cartas de liga de los dos (`html_vs_liga()`)
+        if arg('--liga'):
+            v['liga'] = {'id': arg('--liga'), 'n': arg('--liga').replace('-', ' ').upper(), 'j': 5}
+            v['a']['k'], v['b']['k'] = ks[0], ks[1]
         os.makedirs(SALIDA, exist_ok=True)
-        ruta = os.path.join(SALIDA, 'vs_muestra_%s_%s%s.jpg' % (ks[0], ks[1], '_' + v['gano'] if v.get('gano') else ''))
-        foto(html_vs(v, _sv_datos(sv)), ruta, jpeg=True)
+        ruta = os.path.join(SALIDA, 'vs_muestra_%s_%s%s%s.jpg' % (ks[0], ks[1], '_' + v['gano'] if v.get('gano') else '', '_' + arg('--liga') if arg('--liga') else ''))
+        foto(html_vs_liga(v, _sv_datos(sv)) if v.get('liga') else html_vs(v, _sv_datos(sv)), ruta, jpeg=True)
         print(ruta)
         sys.exit(0)
     if tipo == 'vs':

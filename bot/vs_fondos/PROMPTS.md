@@ -37,3 +37,19 @@ porque ahí van las placas.
 
 **DDS.** (11/11/2026, Dlx: «DDS necesita su fondo generado también». Su logo es un «DS» de graffiti con un micrófono y un rayo, y
 su etiqueta, EXCLUSIVIDAD.) Wide cinematic game key art, background plate for a versus screen. An exclusive underground VIP club for freestyle rap battles at night, seen from the center of a raised black stage: a single vintage microphone on a stand stands in the exact center, wrapped in a blazing raspberry-magenta light, with jagged electric lightning bolts crackling up and out of it. Velvet ropes and polished black chrome stanchions guard the left and right sides, beyond them two symmetrical walls of black glossy tile covered in bold abstract magenta and white spray-paint strokes with no letters at all. Low haze, magenta spotlight beams cutting down from the ceiling, floating sparks and glitter, a wet black floor reflecting the magenta. Palette only black, charcoal and deep raspberry magenta (#AD1457) with small white-hot highlights at the core. Symmetrical composition, heavy dark vignette, dark low-contrast lower third. Highly detailed, luxurious, raw, electric, dramatic, not minimalist. Absolutely no text, no letters, no numbers, no glyphs that look like writing, no logos, no people, no watermark.
+
+## Las ligas (`ligas/<liga>.jpg`)
+
+Dlx, 11/11/2026: «que cada liga tenga un fondo especial» y, del VS, «que siga el estilo de las tarjetas de la liga». Van impresas
+en duotono con el color de su liga dentro del afiche pegado (`html_vs_liga()` de `bot/kit.py`), así que lo que importa es la
+forma y la luz, no el color exacto. Figma AI, `gemini-3.1-flash-image`, 1376×768, achicadas a 1200×675. Cada prompt es el mismo
+comienzo y el mismo final de los de arriba, con esta escena:
+
+| liga | color | escena |
+|---|---|---|
+| **fmh-albiceleste** | `#74ACDF` | un barrio de puerto del Río de la Plata de noche: calle empedrada entre conventillos de chapa, un sol pálido enorme sobre el río, grúas del puerto |
+| **fmh-andes** | `#2E5BFF` | una ciudadela andina de noche: terrazas de piedra hacia una portada tallada, picos nevados, luna llena azul eléctrica, dos cóndores |
+| **fmh-carimex** | `#1FA34A` | un cenote en la selva de noche: el pozo verde que brilla, ruinas con cabezas de jaguar tragadas por raíces, una cascada de luz en el medio |
+| **fmh-tricolor** | `#F2C200` | una plaza colonial al pie de los Andes: un sol dorado detrás de un arco, balcones con faroles, cintas azules y rojas |
+| **fmh-under** | `#FF8A1E` | una estación de metro abandonada hecha arena: el túnel encendido en naranja, cables colgando, parlantes viejos a los costados |
+| **fmh-espana** | `#D7262E` | la arena vacía de una plaza española de noche: gradas de arcos encalados, barreras carmesí, una puerta de luz roja y dorada |

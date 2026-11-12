@@ -10334,7 +10334,10 @@ export class Avisos {
       titulo: String(d.titulo || '').slice(0, 40), sub: String(d.sub || '').slice(0, 120) },
     grupos ? { grupos } : { a: lado(d.a), b: lado(d.b) }, h2h && !grupos ? { h2h } : {},
     // 📊 el id de su ficha (el botón «Estadísticas») y 🏁 quién ganó (desde el 11/11/2026 nadie lo pide: la imagen del resultado se sacó)
-    /^[0-9a-f]{12}$/.test(String(d.fid || '')) ? { fid: String(d.fid) } : {}, !grupos && /^[ab]$/.test(String(d.gano || '')) ? { gano: d.gano } : {});
+    /^[0-9a-f]{12}$/.test(String(d.fid || '')) ? { fid: String(d.fid) } : {}, !grupos && /^[ab]$/.test(String(d.gano || '')) ? { gano: d.gano } : {},
+    // 🏟️ una batalla de liga: su id, su nombre y la jornada (`html_vs_liga()` de bot/kit.py). ⚠️ Lo que no está en esta lista no llega
+    d.liga && LIGA_ID.test(String(d.liga.id || '')) ? { liga: { id: String(d.liga.id), n: String(d.liga.n || '').slice(0, 40),
+      j: Math.max(0, Math.min(99, Number(d.liga.j) || 0)) || null } } : {});
     this.sql.exec('INSERT INTO vs_cola (id, sv, canal, msg, datos, t) VALUES (?, ?, ?, ?, ?, ?)', id,
       String(d.sv || '').toUpperCase().slice(0, 6), String(d.canal), String(d.msg), JSON.stringify(datos), ahora);
     return { ok: true, id };
@@ -10525,7 +10528,9 @@ export class Avisos {
         const persona = (y) => personaVs(y, dc, { sv: L.sv });
         const ronda = b.j ? 'Jornada ' + b.j : '';
         vs = { ev: L.n, ronda, titulo: tt ? tt.t : '', sub: tt ? tt.sub || '' : '', a: persona(ga[0]), b: persona(gb[0]), h2h: [x.h2h.ga, x.h2h.gb],
-          fid: codigoDe(b.id + ':vx').slice(0, 12) };
+          fid: codigoDe(b.id + ':vx').slice(0, 12),
+          // 🏟️ la liga: `bot/kit.py` la dibuja como afiche pegado, con su escena y las cartas de liga (`html_vs_liga()`)
+          liga: { id: L.id, n: L.n, j: b.j || null } };
         try {
           this.sql.exec('INSERT OR REPLACE INTO vs_ficha (id, datos, t) VALUES (?, ?, ?)', vs.fid, JSON.stringify(fichaVs(x, dc,
             { sv: L.sv, ev: L.n, ronda, na: ga[0].n, nb: gb[0].n, fla: ga[0].fl, flb: gb[0].fl })), ahora);

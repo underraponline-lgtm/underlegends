@@ -148,6 +148,9 @@ if (!DatabaseSync) {
     && JSON.stringify(mandados[0].allowed_mentions) === '{"parse":[]}', 'el título en los dos canales es UNA batalla: arranca, y sale una vez en el chat sin mencionar a nadie', );
   ok(!(o.leer('ligas_vivo').errores || []).length && !o.leer('ligas_vivo').ult_error, 'sin errores: ' + JSON.stringify(o.leer('ligas_vivo').errores));
   ok(sql.exec('SELECT COUNT(*) AS n FROM vs_cola').toArray()[0].n === 1 && (mandados[0].components || []).length >= 2, 'en «Con datos» lleva el VS y sus botones');
+  const vsL = JSON.parse(sql.exec('SELECT datos FROM vs_cola').toArray()[0].datos);
+  ok(vsL.liga && vsL.liga.id === 'fmh-tricolor' && vsL.liga.n === 'FMH Tricolor' && vsL.a.k === 'bloody',
+    'el VS llega a la cola marcado como de liga, con la clave de cada uno: así se dibuja como afiche con sus cartas de liga');
   await vuelta(1);
   ok(mandados.length === 1, 'y no se repite');
   ok(o.ligasAhora(T0 + M)[0].txt === 'Está arrancando' && !JSON.stringify(o.ligasAhora(T0 + M)).includes(BL), 'la página lo ve, sin IDs de nadie');
