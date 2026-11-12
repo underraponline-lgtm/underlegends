@@ -1,0 +1,448 @@
+{
+ "guild_id": "841017460341604382",
+ "prompts": [
+  {
+   "id": "1265115419925287058",
+   "title": "➣     ❓🎨『¿Qué color va con tu flow?』🔮🪽 ",
+   "options": [
+    {
+     "id": "1265115419925287061",
+     "title": "➜『Aguamarina』",
+     "description": "",
+     "emoji": {
+      "id": "1000479883245391955",
+      "name": "D_LineaCeleste_UL",
+      "animated": false
+     },
+     "role_ids": [
+      "1265110115678425148"
+     ],
+     "channel_ids": []
+    },
+    {
+     "id": "1265115420336066591",
+     "title": "➜『Rosa Cerise』",
+     "description": "",
+     "emoji": {
+      "id": "1201293824765472888",
+      "name": "D_LineaRosa_UL",
+      "animated": false
+     },
+     "role_ids": [
+      "1265110121445589084"
+     ],
+     "channel_ids": []
+    }
+   ],
+   "single_select": true,
+   "required": true,
+   "in_onboarding": true,
+   "type": 0
+  },
+  {
+   "id": "1469871610239647828",
+   "title": "➣    📅🔔『¿Qué notificaciones quieres tener?』📢📲",
+   "options": [
+    {
+     "id": "1469871610239647831",
+     "title": "Competencias Freestyle",
+     "description": "",
+     "emoji": {
+      "id": null,
+      "name": null,
+      "animated": false
+     },
+     "role_ids": [
+      "847499150916321350"
+     ],
+     "channel_ids": []
+    },
+    {
+     "id": "1469871610239647832",
+     "title": "Directos",
+     "description": "",
+     "emoji": {
+      "id": null,
+      "name": null,
+      "animated": false
+     },
+     "role_ids": [
+      "847499149103464538"
+     ],
+     "channel_ids": []
+    }
+   ],
+   "single_select": false,
+   "required": false,
+   "in_onboarding": true,
+   "type": 0
+  },
+  {
+   "id": "1469871610239647833",
+   "title": "➣   🌐💥『¿Cómo llegaste a conocer nuestra comunidad?』 🤔✨",
+   "options": [
+    {
+     "id": "1469871610327466101",
+     "title": "Amigos/Conocidos",
+     "description": "Recomendaciones",
+     "emoji": {
+      "id": null,
+      "name": "🫂",
+      "animated": false
+     },
+     "role_ids": [],
+     "channel_ids": [
+      "882088482284122212"
+     ]
+    },
+    {
+     "id": "1469871610327466102",
+     "title": "YouTube",
+     "description": "Videos/Shorts/Publicaciones",
+     "emoji": {
+      "id": "853067102675271700",
+      "name": "RS_YouTube_UL",
+      "animated": false
+     },
+     "role_ids": [],
+     "channel_ids": [
+      "882088482284122212"
+     ]
+    },
+    {
+     "id": "1469871610327466103",
+     "title": "Instagram",
+     "description": "Publicaciones/Reels/Ads",
+     "emoji": {
+      "id": "988878920382316634",
+      "name": "RS_Instagram_UL",
+      "animated": false
+     },
+     "role_ids": [
+      "1114285122573844583"
+     ],
+     "channel_ids": [
+      "882088482284122212"
+     ]
+    },
+    {
+     "id": "1469871610327466104",
+     "title": "Twitter/X",
+     "description": "Funa/Publicación/Compartidos",
+     "emoji": {
+      "id": "1173303541327216701",
+      "name": "RS_Twitter_UL",
+      "animated": false
+     },
+     "role_ids": [
+      "869304469115002920"
+     ],
+     "channel_ids": []
+    },
+    {
+     "id": "1469871610327466105",
+     "title": "Internet/Google",
+     "description": "Por búsqueda/DISBOARD",
+     "emoji": {
+      "id": null,
+      "name": "🔎",
+      "animated": false
+     },
+     "role_ids": [
+      "847499147115757578"
+     ],
+     "channel_ids": []
+    },
+    {
+     "id": "1469871610327466106",
+     "title": "TikTok",
+     "description": "Videos/Sugerencias",
+     "emoji": {
+      "id": "1064576107766087711",
+      "name": "RS_TIkTok_UL",
+      "animated": false
+     },
+     "role_ids": [
+      "1221986101703741440"
+     ],
+     "channel_ids": []
+    },
+    {
+     "id": "1469871610327466107",
+     "title": "Eventos/Competiciones",
+     "description": "Torneos de lugares externos",
+     "emoji": {
+      "id": null,
+      "name": "🏆",
+      "animated": false
+     },
+     "role_ids": [
+      "1221986101703741440"
+     ],
+     "channel_ids": []
+    },
+    {
+     "id": "1469871610327466108",
+     "title": "La Hermandad",
+     "description": "Snake Rap, TFC, EFA, FMO, Etc",
+     "emoji": {
+      "id": "1201320914910982244",
+      "name": "LaHermandad_UL",
+      "animated": false
+     },
+     "role_ids": [],
+     "channel_ids": [
+      "882088482284122212"
+     ]
+    }
+   ],
+   "single_select": false,
+   "required": true,
+   "in_onboarding": true,
+   "type": 0
+  },
+  {
+   "id": "1205708774871011340",
+   "title": "☾ 》¿Eres Hombre O Mujer? (Sel. Uno)",
+   "options": [
+    {
+     "id": "1205708774871011343",
+     "title": "➜『Hombre』",
+     "description": "",
+     "emoji": {
+      "id": null,
+      "name": "♂️",
+      "animated": false
+     },
+     "role_ids": [
+      "1265223871968186431"
+     ],
+     "channel_ids": [
+      "882088482284122212"
+     ]
+    },
+    {
+     "id": "1205708774871011344",
+     "title": "➜『Mujer』",
+     "description": "",
+     "emoji": {
+      "id": null,
+      "name": "♀️",
+      "animated": false
+     },
+     "role_ids": [
+      "1265223881866874940"
+     ],
+     "channel_ids": [
+      "882088482284122212"
+     ]
+    },
+    {
+     "id": "1205708774871011345",
+     "title": "➜『Otro』",
+     "description": "",
+     "emoji": {
+      "id": null,
+      "name": "🏳️‍🌈",
+      "animated": false
+     },
+     "role_ids": [
+      "1265223888661516289"
+     ],
+     "channel_ids": [
+      "882088482284122212"
+     ]
+    }
+   ],
+   "single_select": true,
+   "required": false,
+   "in_onboarding": false,
+   "type": 0
+  },
+  {
+   "id": "1205708774871011347",
+   "title": "❆ 》¿Cuál es tu edad? (Sel. Uno)",
+   "options": [
+    {
+     "id": "1205708774950834198",
+     "title": "➜『-18』",
+     "description": "",
+     "emoji": {
+      "id": null,
+      "name": "😜",
+      "animated": false
+     },
+     "role_ids": [
+      "1265223892436258836"
+     ],
+     "channel_ids": [
+      "882088482284122212"
+     ]
+    },
+    {
+     "id": "1205708774950834199",
+     "title": "➜『18+』",
+     "description": "",
+     "emoji": {
+      "id": null,
+      "name": "🥵",
+      "animated": false
+     },
+     "role_ids": [
+      "1265223913470951475"
+     ],
+     "channel_ids": [
+      "882088482284122212"
+     ]
+    }
+   ],
+   "single_select": true,
+   "required": false,
+   "in_onboarding": false,
+   "type": 0
+  },
+  {
+   "id": "1265115420336066592",
+   "title": "♚ 》¿Qué te consideras? (Sel. uno)",
+   "options": [
+    {
+     "id": "1265115420336066595",
+     "title": "➜『Freestyler』",
+     "description": "El freestyle se caracteriza por ser improvisando a la vez que se rapea.",
+     "emoji": {
+      "id": null,
+      "name": "🎤",
+      "animated": false
+     },
+     "role_ids": [
+      "1054571965781921834"
+     ],
+     "channel_ids": []
+    },
+    {
+     "id": "1265115420336066596",
+     "title": "➜『Artista』",
+     "description": "Designado a quien usa su voz para realizar melodías musicales.",
+     "emoji": {
+      "id": null,
+      "name": "🎧",
+      "animated": false
+     },
+     "role_ids": [
+      "1091123112562667642"
+     ],
+     "channel_ids": []
+    },
+    {
+     "id": "1265115420336066597",
+     "title": "➜『Rapero』",
+     "description": "Un rapero es quien no produce sonidos melódicos con su voz, simplemente rima.",
+     "emoji": {
+      "id": null,
+      "name": "🧢",
+      "animated": false
+     },
+     "role_ids": [
+      "1091123417664733296"
+     ],
+     "channel_ids": []
+    },
+    {
+     "id": "1265115420336066598",
+     "title": "➜『Fan』",
+     "description": "Aficionado de la movida del hip hop a través del freestyle, rap, competencias, etc.",
+     "emoji": {
+      "id": null,
+      "name": "💙",
+      "animated": false
+     },
+     "role_ids": [
+      "841054967443357708"
+     ],
+     "channel_ids": []
+    },
+    {
+     "id": "1265115420336066599",
+     "title": "➜『Productor』",
+     "description": "El productor musical se dedica a la composición de las canciones, las instrumentales.",
+     "emoji": {
+      "id": null,
+      "name": "🧶",
+      "animated": false
+     },
+     "role_ids": [
+      "858485142981181440"
+     ],
+     "channel_ids": []
+    },
+    {
+     "id": "1265115420336066600",
+     "title": "➜『M.C』",
+     "description": "El MC produce rimas sobre un tema en concreto encima de una base musical realizada por un DJ o por u",
+     "emoji": {
+      "id": null,
+      "name": "🗣️",
+      "animated": false
+     },
+     "role_ids": [
+      "1140814925174939710"
+     ],
+     "channel_ids": []
+    },
+    {
+     "id": "1563023155885248577",
+     "title": "➜『Competidor』",
+     "description": "",
+     "emoji": {
+      "id": null,
+      "name": "👑",
+      "animated": false
+     },
+     "role_ids": [
+      "1562354307121020999"
+     ],
+     "channel_ids": []
+    }
+   ],
+   "single_select": true,
+   "required": false,
+   "in_onboarding": false,
+   "type": 0
+  }
+ ],
+ "default_channel_ids": [
+  "978102683879768064",
+  "1501082150311694337",
+  "1366968782416904202",
+  "1516310064141434890",
+  "1503270941420027924",
+  "1505374550983053473",
+  "1498325135277686826",
+  "1498327465251045418",
+  "1498326090169712812",
+  "1501083045346807978",
+  "1501086026729521202",
+  "1500690475089399858",
+  "1506094409438199988",
+  "1501082427605516338",
+  "1498333240421912637",
+  "1516309951671435455",
+  "1512588733575200959",
+  "1170880071221923911",
+  "1498325279154638920",
+  "1502947500779372745",
+  "1516310097159262289",
+  "1498326774537519315",
+  "1503270617770623066",
+  "1516309931358290013",
+  "882088482284122212",
+  "1516309437403500654",
+  "1512274627408298095"
+ ],
+ "enabled": true,
+ "mode": 1,
+ "below_requirements": false,
+ "responses": [],
+ "onboarding_prompts_seen": {},
+ "onboarding_responses_seen": {}
+}

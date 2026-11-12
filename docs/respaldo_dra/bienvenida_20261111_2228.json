@@ -1,0 +1,29 @@
+{
+ "description": "Somos una comunidad donde hacemos competiciones de rap ,nos conocemos ,charlamos y entrenamos para ser menos y convertirnos en leyendas.",
+ "welcome_channels": [
+  {
+   "channel_id": "978102683879768064",
+   "description": "Lee La Información Y Reglas Del Servidor!",
+   "emoji_id": "1066430959597129779",
+   "emoji_name": "fuego_morado_UL"
+  },
+  {
+   "channel_id": "1100526288759955576",
+   "description": "Mira Los Eventos Programados Semanalmente!",
+   "emoji_id": "990124047021010954",
+   "emoji_name": "fuego_celeste_UL"
+  },
+  {
+   "channel_id": "882088482284122212",
+   "description": "Chatea  Con Los Demás!",
+   "emoji_id": "1066430973408981013",
+   "emoji_name": "fuego_naranja_UL"
+  },
+  {
+   "channel_id": "1071676878072578048",
+   "description": "Pregunta Cualquier Duda Que Tengas!",
+   "emoji_id": "990117183893962782",
+   "emoji_name": "fuegonegro_UL"
+  }
+ ]
+}
