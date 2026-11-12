@@ -1,6 +1,6 @@
 {
  "_leeme": "El ranking de ascenso de cada servidor, al día (bot/ascenso.py): su tabla oficial más lo que vino después, con sus reglas (datos/ascenso_reglas.json). `filas`: [nombre, cc, pts, lo sumado, raw]. `pendiente`: lo que no se sabe y no suma (las preguntas de Dlx a cada servidor).",
- "t": "2026-11-11T23:29:11Z",
+ "t": "2026-11-11T23:59:37Z",
  "sv": {
   "SR": {
    "filas": [
@@ -9,7 +9,7 @@
      "uy",
      12000,
      9000,
-     "Over"
+     "Mr Still Ballin"
     ],
     [
      "AGUS",
@@ -476,7 +476,7 @@
      "rango": "2",
      "puntos": [
       [
-       "Over",
+       "Mr Still Ballin",
        "Campeón",
        6000
       ],
@@ -510,7 +510,7 @@
        4500
       ],
       [
-       "Over",
+       "Mr Still Ballin",
        "Tercero",
        3000
       ]

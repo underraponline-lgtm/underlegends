@@ -11861,11 +11861,6 @@
   "canal": "1468472443843776659",
   "duelos": [
    [
-    "Majiztral",
-    "Geoka",
-    "Majiztral"
-   ],
-   [
     "Vandu",
     "Cinexfilo",
     "Vandu"
@@ -11949,6 +11944,11 @@
     "Marcos",
     "Benjixo",
     ""
+   ],
+   [
+    "Teito",
+    "Geoka",
+    ""
    ]
   ],
   "ev_antes": {
@@ -11964,11 +11964,11 @@
    "Vandu": 20
   },
   "fecha": "14/10",
-  "firma": "2016b59f156a8d5f",
+  "firma": "3dc56f3a3313795a",
   "msg": "1560019837609050254",
   "nombre": "DEM UZBEKISTAN FECHA 3",
   "num": 471,
-  "participantes": 20,
+  "participantes": 22,
   "sello": {
    "Agus": "37a0c947ddbc:7e987c978e23"
   },
@@ -12016,11 +12016,6 @@
     2500
    ],
    [
-    "Geoka",
-    "Octavos",
-    1250
-   ],
-   [
     "Cinexfilo",
     "Octavos",
     1250
@@ -12052,6 +12047,16 @@
    ],
    [
     "Benjixo",
+    "Octavos",
+    1250
+   ],
+   [
+    "Teito",
+    "Octavos",
+    1250
+   ],
+   [
+    "Geoka",
     "Octavos",
     1250
    ],
@@ -13537,9 +13542,9 @@
     "Deluxe"
    ],
    [
-    "Over",
+    "Mr Still Ballin",
     "Makmah",
-    "Over"
+    "Mr Still Ballin"
    ],
    [
     "Bloody",
@@ -13557,9 +13562,9 @@
     "Agus"
    ],
    [
-    "Over",
+    "Mr Still Ballin",
     "Deluxe",
-    "Over"
+    "Mr Still Ballin"
    ],
    [
     "Catarsis",
@@ -13567,9 +13572,9 @@
     "Catarsis"
    ],
    [
-    "Over",
+    "Mr Still Ballin",
     "Agus",
-    "Over"
+    "Mr Still Ballin"
    ],
    [
     "Agus",
@@ -13577,9 +13582,9 @@
     "Agus"
    ],
    [
-    "Over",
+    "Mr Still Ballin",
     "Catarsis",
-    "Over"
+    "Mr Still Ballin"
    ]
   ],
   "ev_antes": {
@@ -13597,7 +13602,7 @@
    "Valdoza": 5
   },
   "fecha": "16/10",
-  "firma": "81bd226985e7443d",
+  "firma": "15e375b7a87a2848",
   "msg": "1560750305312903372",
   "nombre": "SNAKE INSIGNIA 5 8",
   "num": 478,
@@ -13609,7 +13614,7 @@
   "t": "2026-10-16T20:24:28Z",
   "tabla": [
    [
-    "Over",
+    "Mr Still Ballin",
     "Campeón",
     10000
    ],
@@ -18346,19 +18351,19 @@
     "Fazer"
    ],
    [
-    "Over",
+    "Mr Still Ballin",
     "Rubik",
-    "Over"
+    "Mr Still Ballin"
    ],
    [
-    "Over",
+    "Mr Still Ballin",
     "Efimero",
-    "Over"
+    "Mr Still Ballin"
    ],
    [
-    "Over",
+    "Mr Still Ballin",
     "Molt",
-    "Over"
+    "Mr Still Ballin"
    ],
    [
     "Road",
@@ -18376,9 +18381,9 @@
     "Agus"
    ],
    [
-    "Over",
+    "Mr Still Ballin",
     "MCO",
-    "Over"
+    "Mr Still Ballin"
    ],
    [
     "Masino",
@@ -18387,13 +18392,13 @@
    ],
    [
     "Agus",
-    "Over",
+    "Mr Still Ballin",
     "Agus"
    ],
    [
-    "Over",
+    "Mr Still Ballin",
     "Road",
-    "Over"
+    "Mr Still Ballin"
    ],
    [
     "Agus",
@@ -18423,7 +18428,7 @@
    "Velatz": 38
   },
   "fecha": "21/10",
-  "firma": "22d6c8c974aef2c5",
+  "firma": "c04e8a0068a7c67a",
   "msg": "1562607463755161734",
   "nombre": "SNAKE INSIGNIA 6 8",
   "num": 496,
@@ -18445,7 +18450,7 @@
     7500
    ],
    [
-    "Over",
+    "Mr Still Ballin",
     "Tercero",
     6000
    ],
@@ -33671,13 +33676,13 @@
     "Makmah"
    ],
    [
-    "Lizeninn",
+    "Mito",
     "Deuxs",
-    "Lizeninn"
+    "Mito"
    ],
    [
     "Makmah",
-    "Lizeninn",
+    "Mito",
     "Makmah"
    ]
   ],
@@ -33690,7 +33695,7 @@
    "OEP": 2
   },
   "fecha": "03/11",
-  "firma": "b3b71a3f98d0ad4c",
+  "firma": "fb0c455aadfd1736",
   "msg": "1567309579967144037",
   "nombre": "Rayos y Centellas",
   "num": 564,
@@ -33717,7 +33722,7 @@
     2625
    ],
    [
-    "Lizeninn",
+    "Mito",
     "Subcampeón",
     1875
    ],

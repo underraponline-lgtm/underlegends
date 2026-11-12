@@ -1,5 +1,5 @@
 {
- "cuando": "2026-11-11T23:24:35+00:00",
+ "cuando": "2026-11-11T23:55:16+00:00",
  "anuncios": [
   {
    "nombre": "¡SE LLEGÓ LA GRAN NOCHE!",
@@ -376,6 +376,47 @@
    "autor": "Geronimo",
    "staff_cuentas": {},
    "categoria_id": "1497457390637809837"
+  },
+  {
+   "nombre": "ALL VALLEY",
+   "servidor": "FFA",
+   "canal": "✦🏆—eventos",
+   "msg_id": "1570223311718191147",
+   "cuando": "2026-11-11T23:46:50",
+   "canal_id": "1487206325602484295",
+   "guild_id": "1468472442925092958",
+   "organizador": "KRAVITZ",
+   "orgs": [
+    {
+     "n": "KRAVITZ",
+     "id": ""
+    }
+   ],
+   "autor_h": "7cc3316a3e5f345f",
+   "cupos_texto": "",
+   "inscriptos": null,
+   "cupo_total": null,
+   "rango": "BRONCE III",
+   "modalidad": "",
+   "horario": "CUANDO TODO ESTÉ LISTO",
+   "fecha": "HOY",
+   "premios": "ROL CAMPEON Y PUNTOS RANKING",
+   "staff": {
+    "jurado": [
+     "Kravitz"
+    ],
+    "host": [
+     "🎤 KRAVITZ 🇨🇷"
+    ],
+    "dj": [
+     "Kravitz"
+    ]
+   },
+   "autor": "Kravitz",
+   "staff_cuentas": {
+    "Kravitz": "1345962362615894027"
+   },
+   "categoria_id": "1468478330826260500"
   },
   {
    "nombre": "TORNEO CLANDESTINO V.1",
@@ -1123,55 +1164,6 @@
    "staff": {},
    "autor": "Nc",
    "staff_cuentas": {},
-   "categoria_id": "1468478330826260500"
-  },
-  {
-   "nombre": "DETALLES DEL EVENTO",
-   "servidor": "FFA",
-   "canal": "✦🏆—eventos",
-   "msg_id": "1564400559778300125",
-   "cuando": "2026-10-26T22:09:18",
-   "canal_id": "1487206325602484295",
-   "guild_id": "1468472442925092958",
-   "organizador": "",
-   "orgs": [
-    {
-     "n": "Kravitz",
-     "id": "1345962362615894027"
-    }
-   ],
-   "autor_h": "7cc3316a3e5f345f",
-   "cupos_texto": "",
-   "inscriptos": null,
-   "cupo_total": null,
-   "rango": "BRONCE III",
-   "modalidad": "",
-   "horario": "CUANDO TODO ESTÉ LISTO",
-   "fecha": "HOY",
-   "premios": "ROL CAMPEON Y PUNTOS RANKING",
-   "staff": {
-    "jurado": [
-     "Kravitz",
-     "Lewito",
-     "Cornelius",
-     "tenor"
-    ],
-    "host": [
-     "Kravitz",
-     "Lewito"
-    ],
-    "dj": [
-     "Kravitz",
-     "Lewito"
-    ]
-   },
-   "autor": "Kravitz",
-   "staff_cuentas": {
-    "Kravitz": "1345962362615894027",
-    "Lewito": "1086485696572817418",
-    "Cornelius": "1397110475594010700",
-    "tenor": "1370860602972569632"
-   },
    "categoria_id": "1468478330826260500"
   },
   {
@@ -6534,7 +6526,7 @@
      "id": "987149314591719474"
     },
     {
-     "n": "VILCAZ | HHN",
+     "n": "VILCAZ",
      "id": "846870712950194196"
     }
    ],
@@ -6757,6 +6749,60 @@
   }
  ],
  "inscripciones": [
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "Dyzz🇨🇱",
+   "quien": "dyzzmc",
+   "discord_id": "1525996330042921081",
+   "msg_id": "1570224986302455840",
+   "cuando": "2026-11-11T23:53:30"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "Yinn🇲🇦 ft xx🇮🇨",
+   "quien": "provenzaaznevorp",
+   "discord_id": "711076230857752627",
+   "msg_id": "1570224556231360575",
+   "cuando": "2026-11-11T23:51:47"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "nc🇲🇿+gocho🇲🇿 <@1523082259870257315> <@1324178951119175711>",
+   "quien": "nachonc_",
+   "discord_id": "1523082259870257315",
+   "msg_id": "1570224354812493936",
+   "cuando": "2026-11-11T23:50:59"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "Ardean 🇵🇪",
+   "quien": "ardean_rap373",
+   "discord_id": "879849220352393266",
+   "msg_id": "1570224156312608829",
+   "cuando": "2026-11-11T23:50:12"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "Mauzz 🇻🇪",
+   "quien": "mauzzitoemeces_79548",
+   "discord_id": "1463712703658070171",
+   "msg_id": "1570224117246853133",
+   "cuando": "2026-11-11T23:50:02"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "EddyLaSombra🇱🇷",
+   "quien": "malasiafighter",
+   "discord_id": "1357796427191029932",
+   "msg_id": "1570224067120996505",
+   "cuando": "2026-11-11T23:49:50"
+  },
   {
    "servidor": "DDF",
    "canal": "『📑』Inscripciones",
@@ -42702,60 +42748,6 @@
    "discord_id": "639232575461654538",
    "msg_id": "1557892151256551505",
    "cuando": "2026-10-08T23:07:13"
-  },
-  {
-   "servidor": "SR",
-   "canal": "[📝]inscripciones",
-   "texto": "Zeta 🇨🇴",
-   "quien": "zetaenmsi",
-   "discord_id": "535579351710957568",
-   "msg_id": "1557892138665250849",
-   "cuando": "2026-10-08T23:07:10"
-  },
-  {
-   "servidor": "SR",
-   "canal": "[📝]inscripciones",
-   "texto": "Fazer 🇦🇷",
-   "quien": "ignac.07",
-   "discord_id": "936079604207202365",
-   "msg_id": "1557892141643210855",
-   "cuando": "2026-10-08T23:07:10"
-  },
-  {
-   "servidor": "FFA",
-   "canal": "✦📝—inscripciones",
-   "texto": "Geoka 🇦🇷",
-   "quien": "goksito_8",
-   "discord_id": "1325042155819106324",
-   "msg_id": "1557892065268859015",
-   "cuando": "2026-10-08T23:06:52"
-  },
-  {
-   "servidor": "FFA",
-   "canal": "✦📝—inscripciones",
-   "texto": "MCO 🇦🇷",
-   "quien": "mcorap",
-   "discord_id": "1048744067313451050",
-   "msg_id": "1557892056762818582",
-   "cuando": "2026-10-08T23:06:50"
-  },
-  {
-   "servidor": "FFA",
-   "canal": "✦📝—inscripciones",
-   "texto": "Park-Ji Sung🇰🇷",
-   "quien": "fullylo4ded",
-   "discord_id": "979878316846768139",
-   "msg_id": "1557891908951605311",
-   "cuando": "2026-10-08T23:06:15"
-  },
-  {
-   "servidor": "FFA",
-   "canal": "✦📝—inscripciones",
-   "texto": "eldelafoto🇪🇸",
-   "quien": "alexfrndezzz",
-   "discord_id": "600995936872824842",
-   "msg_id": "1557891911417733231",
-   "cuando": "2026-10-08T23:06:15"
   }
  ]
 }

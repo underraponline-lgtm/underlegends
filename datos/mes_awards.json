@@ -7193,7 +7193,7 @@
        "id": "987149314591719474"
       },
       {
-       "n": "VILCAZ | HHN",
+       "n": "VILCAZ",
        "id": "846870712950194196"
       }
      ],
@@ -8353,7 +8353,7 @@
     },
     "DDS|2026-10-27": {
      "1089661639508377630": [
-      "Enecsuz | HHN",
+      "Enecsus",
       "Nxuz ･ω･",
       "n_x_u_z_"
      ],
@@ -9108,6 +9108,32 @@
      ],
      "organizador": "@nachonc_",
      "cuentas": {}
+    },
+    "1570223311718191147": {
+     "sv": "FFA",
+     "nombre": "ALL VALLEY",
+     "mo": "2026-11-11T23:46:50Z",
+     "staff": {
+      "jurado": [
+       "Kravitz"
+      ],
+      "host": [
+       "🎤 KRAVITZ 🇨🇷"
+      ],
+      "dj": [
+       "Kravitz"
+      ]
+     },
+     "orgs": [
+      {
+       "n": "KRAVITZ",
+       "id": ""
+      }
+     ],
+     "organizador": "KRAVITZ",
+     "cuentas": {
+      "Kravitz": "1345962362615894027"
+     }
     }
    },
    "ver": {
@@ -9338,7 +9364,7 @@
       "benji_price16"
      ],
      "1089661639508377630": [
-      "Enecsuz | HHN",
+      "Enecsus",
       "Nxuz ･ω･",
       "n_x_u_z_"
      ]

@@ -355,6 +355,15 @@
 "rg": "C",
 "c": []
 },
+"geoka": {
+"rg": "D",
+"c": [
+"competitivo",
+"pais",
+"servidor",
+"temporada"
+]
+},
 "polosport": {
 "rg": "C",
 "c": [
@@ -376,15 +385,6 @@
 "chop": {
 "rg": "D",
 "c": []
-},
-"geoka": {
-"rg": "D",
-"c": [
-"competitivo",
-"pais",
-"servidor",
-"temporada"
-]
 },
 "mathhias": {
 "rg": "C",
@@ -604,6 +604,15 @@
 "temporada"
 ]
 },
+"teito": {
+"rg": "E",
+"c": [
+"competitivo",
+"pais",
+"servidor",
+"temporada"
+]
+},
 "cinexfilo": {
 "rg": "E",
 "c": [
@@ -652,15 +661,6 @@
 "19": {
 "rg": "",
 "c": []
-},
-"teito": {
-"rg": "E",
-"c": [
-"competitivo",
-"pais",
-"servidor",
-"temporada"
-]
 },
 "crk": {
 "rg": "E",
@@ -7086,10 +7086,10 @@
 "a": 141
 },
 {
-"n": "CJ",
-"k": "cj",
-"de": 288,
-"a": 282
+"n": "Teito",
+"k": "teito",
+"de": 69,
+"a": 63
 }
 ],
 "sorpresas": []
