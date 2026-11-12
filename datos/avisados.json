@@ -24461,7 +24461,7 @@
    "Vilca": 1
   },
   "fecha": "22/10",
-  "firma": "42dc33fb62cb695a",
+  "firma": "21670245dde330b3",
   "msg": "1564147714000953499",
   "nombre": "GG SANGRERAP 4",
   "num": 525,
@@ -26885,7 +26885,7 @@
    "Teo": 17
   },
   "fecha": "27/10",
-  "firma": "d07cf38fa085076d",
+  "firma": "23a9c25c30bd3d27",
   "msg": "1564804334967980113",
   "nombre": "PRADERAP VOL.2",
   "num": 535,
@@ -30294,7 +30294,7 @@
    "mats": 5
   },
   "fecha": "26/10",
-  "firma": "37eed92fffaed0c1",
+  "firma": "a75beef128a88677",
   "msg": "1565899302046277764",
   "nombre": "RAP SIN GROSERIAS 1",
   "num": 548,
@@ -41964,7 +41964,7 @@
    "Vilca": 16
   },
   "fecha": "10/11",
-  "firma": "bb8a916ac059eb13",
+  "firma": "1e1af5d59702d9a1",
   "msg": "1569848635271680124",
   "nombre": "MF DOOM Y MADLIB EDICION 1",
   "num": 604,
@@ -44958,6 +44958,225 @@
     "Replik 🇦🇷",
     "Octavos",
     1250
+   ]
+  ],
+  "v": 2
+ },
+ "621": {
+  "antes": {
+   "Artezzy": [
+    104,
+    137,
+    false
+   ],
+   "Cinexfilo": [
+    64,
+    80,
+    false
+   ],
+   "Raizer": [
+    129,
+    204,
+    false
+   ],
+   "Vilca": [
+    59,
+    75,
+    false
+   ]
+  },
+  "canal": "",
+  "duelos": [
+   [
+    "Habraham 🇭🇳, Raizer",
+    "Cinexfilo, Mato 🇵🇪",
+    "Habraham 🇭🇳, Raizer"
+   ],
+   [
+    "Vilca, Artezzy",
+    "LAST, Leyenda",
+    ""
+   ]
+  ],
+  "ev_antes": {
+   "Artezzy": 12,
+   "Cinexfilo": 19,
+   "Raizer": 5,
+   "Vilca": 21
+  },
+  "fecha": "25/09",
+  "nombre": "2v2 1",
+  "num": 621,
+  "participantes": 9,
+  "sello": {},
+  "sv": "FDS",
+  "t": "2026-11-12T09:05:27Z",
+  "tabla": [
+   [
+    "last 🏳️‍⚧️ - Leyenda x5 🇦🇷:",
+    "Semifinal",
+    3500
+   ],
+   [
+    "Cinexfilo",
+    "Semifinal",
+    1750
+   ],
+   [
+    "Mato 🇵🇪",
+    "Semifinal",
+    1750
+   ],
+   [
+    "Habraham 🇭🇳",
+    "Semifinal",
+    1750
+   ],
+   [
+    "Raizer",
+    "Semifinal",
+    1750
+   ],
+   [
+    "Vilca",
+    "Semifinal",
+    1750
+   ],
+   [
+    "Artezzy",
+    "Semifinal",
+    1750
+   ]
+  ],
+  "v": 2
+ },
+ "622": {
+  "antes": {
+   "Artezzy": [
+    104,
+    137,
+    false
+   ],
+   "Cinexfilo": [
+    64,
+    80,
+    false
+   ],
+   "CrisZJ": [
+    259,
+    36,
+    true
+   ],
+   "Dinamight": [
+    692,
+    687,
+    true
+   ],
+   "NXUZ": [
+    21,
+    24,
+    false
+   ],
+   "Pepe Mujica": [
+    662,
+    653,
+    true
+   ],
+   "Xplicit": [
+    179,
+    343,
+    false
+   ]
+  },
+  "canal": "",
+  "duelos": [
+   [
+    "CrisZJ",
+    "Dinamight",
+    "CrisZJ"
+   ],
+   [
+    "Pepe Mujica",
+    "Artezzy",
+    "Pepe Mujica"
+   ],
+   [
+    "NXUZ",
+    "silence papá de nexus 🇵🇪",
+    "NXUZ"
+   ],
+   [
+    "Xplicit",
+    "Cinexfilo",
+    "Xplicit"
+   ],
+   [
+    "CrisZJ",
+    "Pepe Mujica",
+    ""
+   ],
+   [
+    "NXUZ",
+    "Xplicit",
+    ""
+   ]
+  ],
+  "ev_antes": {
+   "Artezzy": 12,
+   "Cinexfilo": 19,
+   "CrisZJ": 30,
+   "Dinamight": 1,
+   "NXUZ": 43,
+   "Pepe Mujica": 1,
+   "Xplicit": 3
+  },
+  "fecha": "01/10",
+  "nombre": "Shaoling Battles 1v1 4",
+  "num": 622,
+  "participantes": 8,
+  "sello": {},
+  "sv": "FDS",
+  "t": "2026-11-12T09:05:29Z",
+  "tabla": [
+   [
+    "CrisZJ",
+    "Semifinal",
+    3500
+   ],
+   [
+    "Pepe Mujica",
+    "Semifinal",
+    3500
+   ],
+   [
+    "NXUZ",
+    "Semifinal",
+    3500
+   ],
+   [
+    "Xplicit",
+    "Semifinal",
+    3500
+   ],
+   [
+    "Dinamight",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Artezzy",
+    "Cuartos",
+    2000
+   ],
+   [
+    "silence papá de nexus 🇵🇪",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Cinexfilo",
+    "Cuartos",
+    2000
    ]
   ],
   "v": 2

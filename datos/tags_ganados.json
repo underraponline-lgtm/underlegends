@@ -454,6 +454,11 @@
     "t1",
     1793898258653
    ],
+   "🐉 MATADRAGONES": [
+    "🐉 MATADRAGONES",
+    "t1",
+    1794475098196
+   ],
    "🗡️ MATAGIGANTES": [
     "🗡️ MATAGIGANTES",
     "t1",
@@ -1206,6 +1211,11 @@
    ]
   },
   "temporada": {
+   "🏁 SEMIFINALISTA SERIAL": [
+    "🏁 SEMIFINALISTA SERIAL",
+    "t1",
+    1794475098196
+   ],
    "📈 EN ASCENSO": [
     "📈 EN ASCENSO",
     "t1",
@@ -2487,6 +2497,11 @@
     "🌍 TROTAMUNDOS",
     "t1",
     1793131412781
+   ],
+   "🎖️ CURTIDO": [
+    "🎖️ CURTIDO",
+    "t1",
+    1794475098196
    ],
    "🔟 DOBLE DÍGITO": [
     "🔟 DOBLE DÍGITO",
@@ -7889,6 +7904,15 @@
    ]
   }
  },
+ "maticerna": {
+  "temporada": {
+   "📈 EN ASCENSO": [
+    "📈 EN ASCENSO",
+    "t1",
+    1794475098196
+   ]
+  }
+ },
  "mats": {
   "servidor": {
    "🏅 PODIOS": [
@@ -9780,6 +9804,11 @@
     "👑 CAMPEÓN x4",
     "t1",
     1793029252929
+   ],
+   "💯 BICENTENARIO": [
+    "💯 BICENTENARIO",
+    "t1",
+    1794475098196
    ],
    "💯 CENTENARIO": [
     "💯 CENTENARIO",
@@ -11991,6 +12020,11 @@
  },
  "raizer": {
   "servidor": {
+   "📆 HABITUÉ": [
+    "📆 HABITUÉ",
+    "t1",
+    1794475098196
+   ],
    "🧱 FUNDADOR": [
     "🧱 FUNDADOR",
     "t1",
@@ -15013,6 +15047,11 @@
     "t1",
     1794470716773
    ],
+   "🏁 SEMIFINALISTA SERIAL": [
+    "🏁 SEMIFINALISTA SERIAL",
+    "t1",
+    1794475098196
+   ],
    "👑 CAMPEÓN x%d": [
     "👑 CAMPEÓN x1",
     "t1",
@@ -15368,6 +15407,15 @@
     "🧳 VIAJERO",
     "t1",
     1793927666370
+   ]
+  }
+ },
+ "xplicit": {
+  "temporada": {
+   "🧳 VIAJERO": [
+    "🧳 VIAJERO",
+    "t1",
+    1794475098196
    ]
   }
  },

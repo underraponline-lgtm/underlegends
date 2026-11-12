@@ -42746,7 +42746,7 @@
      [
       [
        "HH",
-       "Khat alien 🇬🇹"
+       "KATALIEN"
       ],
       "",
       "cobra: HH 🇲🇽; cobra: Khat alien 🇬🇹; cobra: Higtme🇨🇴; cobra: Ruvi 🇨🇱; nadie siguió: ✅ Decidir"
@@ -42769,7 +42769,7 @@
      ],
      [
       [
-       "CNC 🇲🇽",
+       "CNC",
        "Paria"
       ],
       "",
@@ -42777,7 +42777,7 @@
      ],
      [
       [
-       "CNC 🇲🇽",
+       "CNC",
        "NAW"
       ],
       "",
@@ -42785,7 +42785,7 @@
      ],
      [
       [
-       "CNC 🇲🇽",
+       "CNC",
        "Urbana JJ 🇻🇪"
       ],
       "",
@@ -42919,7 +42919,7 @@
     1250
    ],
    [
-    "CNC 🇲🇽",
+    "CNC",
     "Octavos",
     1250
    ],
@@ -42949,7 +42949,7 @@
     1250
    ],
    [
-    "Khat alien 🇬🇹",
+    "KATALIEN",
     "Octavos",
     1250
    ],
@@ -52528,6 +52528,201 @@
   ],
   "ver": {
    "min": 99,
+   "v": 1
+  }
+ },
+ "621": {
+  "dia": "2026-09-25",
+  "escala": "8-15",
+  "fecha": "25/09",
+  "links": [
+   "https://discord.com/channels/1489848581203689535/1500675902042931280/1553215852508217355"
+  ],
+  "n": 621,
+  "nombre": "2v2 1",
+  "participantes": 9,
+  "rondas": [
+   {
+    "b": [
+     [
+      [
+       "Habraham 🇭🇳, Raizer",
+       "Cinexfilo, Mato 🇵🇪"
+      ],
+      "Habraham 🇭🇳, Raizer",
+      "cobra: Habraham 🇭🇳 + raizer 🇵🇪; sin final: ✅ Decidir (la llave llega sólo a las semis)"
+     ],
+     [
+      [
+       "Vilca, Artezzy",
+       "LAST, Leyenda"
+      ],
+      "",
+      "cobra: Vilca 🇵🇪 + Artezzy 🇵🇪; cobra: last 🏳️‍⚧️ - Leyenda x5 🇦🇷:; sin final: ✅ Decidir (la llave llega sólo a las semis)"
+     ]
+    ],
+    "r": "Semifinales"
+   }
+  ],
+  "sv": "FDS",
+  "tabla": [
+   [
+    "last 🏳️‍⚧️ - Leyenda x5 🇦🇷:",
+    "Semifinal",
+    3500
+   ],
+   [
+    "Artezzy",
+    "Semifinal",
+    1750
+   ],
+   [
+    "Cinexfilo",
+    "Semifinal",
+    1750
+   ],
+   [
+    "Habraham 🇭🇳",
+    "Semifinal",
+    1750
+   ],
+   [
+    "Mato 🇵🇪",
+    "Semifinal",
+    1750
+   ],
+   [
+    "Raizer",
+    "Semifinal",
+    1750
+   ],
+   [
+    "Vilca",
+    "Semifinal",
+    1750
+   ]
+  ],
+  "ver": {
+   "min": 58,
+   "v": 1
+  }
+ },
+ "622": {
+  "dia": "2026-10-01",
+  "escala": "8-15",
+  "fecha": "01/10",
+  "links": [
+   "https://discord.com/channels/1489848581203689535/1500675902042931280/1555372515185139743"
+  ],
+  "n": 622,
+  "nombre": "Shaoling Battles 1v1 4",
+  "participantes": 8,
+  "rondas": [
+   {
+    "b": [
+     [
+      [
+       "CrisZJ",
+       "Dinamight"
+      ],
+      "CrisZJ",
+      ""
+     ],
+     [
+      [
+       "Pepe Mujica",
+       "Artezzy"
+      ],
+      "Pepe Mujica",
+      ""
+     ],
+     [
+      [
+       "NXUZ",
+       "silence papá de nexus 🇵🇪"
+      ],
+      "NXUZ",
+      ""
+     ],
+     [
+      [
+       "Xplicit",
+       "Cinexfilo"
+      ],
+      "Xplicit",
+      ""
+     ]
+    ],
+    "r": "Cuartos"
+   },
+   {
+    "b": [
+     [
+      [
+       "CrisZJ",
+       "Pepe Mujica"
+      ],
+      "",
+      "cobra: CrisZj🇵🇪; cobra: Pepe Mujica 🇦🇷; sin final: ✅ Decidir (la llave llega sólo a las semis)"
+     ],
+     [
+      [
+       "NXUZ",
+       "Xplicit"
+      ],
+      "",
+      "cobra: Nxuz🇵🇪; cobra: Xplicit🇨🇱; sin final: ✅ Decidir (la llave llega sólo a las semis)"
+     ]
+    ],
+    "r": "Semifinales"
+   }
+  ],
+  "sv": "FDS",
+  "tabla": [
+   [
+    "CrisZJ",
+    "Semifinal",
+    3500
+   ],
+   [
+    "NXUZ",
+    "Semifinal",
+    3500
+   ],
+   [
+    "Pepe Mujica",
+    "Semifinal",
+    3500
+   ],
+   [
+    "Xplicit",
+    "Semifinal",
+    3500
+   ],
+   [
+    "Artezzy",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Cinexfilo",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Dinamight",
+    "Cuartos",
+    2000
+   ],
+   [
+    "silence papá de nexus 🇵🇪",
+    "Cuartos",
+    2000
+   ]
+  ],
+  "ver": {
+   "min": 57,
+   "org": "juega",
    "v": 1
   }
  }

@@ -2,12 +2,12 @@
  "hoja": "Ranking Mundial",
  "cabecera": ["#", "País", "Raperos", "Puntos", "Eventos", "🥇", "Mejor", "Pts del mejor"],
  "filas": [
-  [1, "Argentina", 142, 5930514, 968, 94, "PichulaMc", 479354],
-  [2, "Chile", 78, 3154700, 540, 57, "Oasis", 568165],
-  [3, "Venezuela", 50, 2943986, 460, 47, "Makmah", 769345],
-  [4, "Colombia", 61, 2526912, 451, 28, "Vandu", 389026],
-  [5, "Perú", 48, 1537720, 374, 14, "Sin Limites", 213333],
-  [6, "México", 47, 1341801, 284, 13, "yinn", 221397],
+  [1, "Argentina", 143, 5936014, 970, 94, "PichulaMc", 479354],
+  [2, "Chile", 79, 3167800, 543, 57, "Oasis", 568165],
+  [3, "Venezuela", 51, 2947987, 463, 47, "Makmah", 769345],
+  [4, "Colombia", 63, 2537912, 453, 28, "Vandu", 389026],
+  [5, "Perú", 48, 1554720, 380, 14, "Sin Limites", 213333],
+  [6, "México", 47, 1343801, 285, 13, "yinn", 221397],
   [7, "Uruguay", 17, 842139, 129, 11, "Mr Still Ballin", 256138],
   [8, "Panamá", 7, 745078, 108, 16, "Erian", 533790],
   [9, "España", 31, 559454, 112, 4, "Trot", 96314],
@@ -22,7 +22,7 @@
   [18, "Bolivia", 4, 75290, 15, 1, "Evangeline", 49348],
   [19, "Cuba", 3, 44394, 4, 1, "JOSHU", 20225],
   [20, "Emiratos", 1, 21873, 4, 1, "Betelguese", 21873],
-  [21, "Guatemala", 3, 4500, 3, "", "Am", 2625],
+  [21, "Guatemala", 3, 6375, 4, "", "KATALIEN", 3125],
   [22, "Brasil", 1, 2693, 3, "", "UDDIZIM", 2693],
   [23, "El Salvador", 1, 1755, 2, "", "Redstonita", 1755]
  ]

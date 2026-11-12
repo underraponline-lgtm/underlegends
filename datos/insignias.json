@@ -577,6 +577,10 @@
 "trotamundos": [
 "2026-11-09T21:27:39Z",
 "prueba"
+],
+"liga_podio": [
+"2026-11-12T09:08:00Z",
+"prueba"
 ]
 },
 "Adrianex": {
@@ -1599,6 +1603,14 @@
 "duelista": [
 "2026-11-11T03:26:41Z",
 "prueba"
+],
+"liga_campeon": [
+"2026-11-12T09:08:00Z",
+"prueba"
+],
+"liga_podio": [
+"2026-11-12T09:08:00Z",
+"prueba"
 ]
 },
 "Camila": {
@@ -2118,6 +2130,10 @@
 ],
 "clasico": [
 "2026-11-10T23:26:58Z",
+"prueba"
+],
+"liga_podio": [
+"2026-11-12T09:08:00Z",
 "prueba"
 ]
 },
@@ -3109,6 +3125,14 @@
 "mes_sv_staff": [
 "2026-11-04T23:56:59Z",
 "prueba"
+],
+"liga_campeon": [
+"2026-11-12T09:08:00Z",
+"prueba"
+],
+"liga_podio": [
+"2026-11-12T09:08:00Z",
+"prueba"
 ]
 },
 "Erian el papá de colesito": {
@@ -3947,6 +3971,12 @@
 "prueba"
 ]
 },
+"Habraham": {
+"debut": [
+"2026-11-12T09:08:00Z",
+"prueba"
+]
+},
 "Hades": {
 "debut": [
 "2026-11-09T22:27:34Z",
@@ -4340,6 +4370,10 @@
 ],
 "ev10": [
 "2026-11-06T04:27:07Z",
+"prueba"
+],
+"liga_podio": [
+"2026-11-12T09:08:00Z",
 "prueba"
 ]
 },
@@ -4855,6 +4889,10 @@
 "trotamundos": [
 "2026-11-09T21:27:39Z",
 "prueba"
+],
+"liga_podio": [
+"2026-11-12T09:08:00Z",
+"prueba"
 ]
 },
 "Kenny": {
@@ -5033,6 +5071,14 @@
 "liga": [
 "2026-10-16T15:26:51Z",
 "prueba"
+],
+"liga_campeon": [
+"2026-11-12T09:08:00Z",
+"prueba"
+],
+"liga_podio": [
+"2026-11-12T09:08:00Z",
+"prueba"
 ]
 },
 "Kude": {
@@ -5064,6 +5110,10 @@
 ],
 "liga": [
 "2026-10-21T01:55:49Z",
+"prueba"
+],
+"liga_podio": [
+"2026-11-12T09:08:00Z",
 "prueba"
 ]
 },
@@ -5306,6 +5356,14 @@
 "LSD": {
 "liga": [
 "2026-10-16T15:26:51Z",
+"prueba"
+],
+"liga_campeon": [
+"2026-11-12T09:08:00Z",
+"prueba"
+],
+"liga_podio": [
+"2026-11-12T09:08:00Z",
 "prueba"
 ]
 },
@@ -6175,6 +6233,10 @@
 "duelista": [
 "2026-11-10T18:27:01Z",
 "prueba"
+],
+"liga_podio": [
+"2026-11-12T09:08:00Z",
+"prueba"
 ]
 },
 "Magic": {
@@ -6234,6 +6296,10 @@
 ],
 "ev25": [
 "2026-11-09T21:27:39Z",
+"prueba"
+],
+"liga_podio": [
+"2026-11-12T09:08:00Z",
 "prueba"
 ]
 },
@@ -6454,6 +6520,14 @@
 ],
 "duelista": [
 "2026-11-10T18:27:01Z",
+"prueba"
+],
+"liga_campeon": [
+"2026-11-12T09:08:00Z",
+"prueba"
+],
+"liga_podio": [
+"2026-11-12T09:08:00Z",
 "prueba"
 ]
 },
@@ -9473,6 +9547,10 @@
 "debut": [
 "2026-10-10T04:24:54Z",
 "prueba"
+],
+"ascenso": [
+"2026-11-12T09:08:00Z",
+"prueba"
 ]
 },
 "Spray Lirical": {
@@ -9984,6 +10062,10 @@
 ],
 "duelista": [
 "2026-11-12T07:55:15Z",
+"prueba"
+],
+"liga_podio": [
+"2026-11-12T09:08:00Z",
 "prueba"
 ]
 },
@@ -10524,6 +10606,14 @@
 "Xplicit": {
 "debut": [
 "2026-10-03T22:38:07Z",
+"prueba"
+],
+"ascenso": [
+"2026-11-12T09:08:00Z",
+"prueba"
+],
+"trotamundos": [
+"2026-11-12T09:08:00Z",
 "prueba"
 ]
 },
@@ -11283,6 +11373,12 @@
 "prueba"
 ]
 },
+"last 🏳️‍⚧️ - Leyenda x5 :": {
+"debut": [
+"2026-11-12T09:08:00Z",
+"prueba"
+]
+},
 "leletras": {
 "debut": [
 "2026-10-31T03:26:43Z",
@@ -11640,6 +11736,12 @@
 "sh": {
 "debut": [
 "2026-11-09T21:27:39Z",
+"prueba"
+]
+},
+"silence papá de nexus": {
+"debut": [
+"2026-11-12T09:08:00Z",
 "prueba"
 ]
 },

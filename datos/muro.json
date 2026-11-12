@@ -924,6 +924,14 @@
 "temporada"
 ]
 },
+"artezzy": {
+"rg": "",
+"c": [
+"competitivo",
+"servidor",
+"temporada"
+]
+},
 "mosquitrap": {
 "rg": "",
 "c": []
@@ -997,14 +1005,6 @@
 "prosu": {
 "rg": "",
 "c": [
-"servidor",
-"temporada"
-]
-},
-"artezzy": {
-"rg": "",
-"c": [
-"competitivo",
 "servidor",
 "temporada"
 ]
@@ -1229,6 +1229,12 @@
 "rg": "",
 "c": []
 },
+"raizer": {
+"rg": "",
+"c": [
+"servidor"
+]
+},
 "under": {
 "rg": "",
 "c": []
@@ -1372,12 +1378,6 @@
 "pais",
 "servidor",
 "temporada"
-]
-},
-"raizer": {
-"rg": "",
-"c": [
-"servidor"
 ]
 },
 "yor": {
@@ -7138,7 +7138,7 @@
 "n": "AbrahamSRRL",
 "k": "",
 "de": 594,
-"a": 475
+"a": 476
 },
 {
 "n": "Kminant",
