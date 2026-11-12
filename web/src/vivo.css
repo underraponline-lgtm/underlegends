@@ -4075,3 +4075,112 @@ a.mc{color:inherit;text-decoration:none}
 .pn-cr-fondo{position:absolute;right:-18px;top:30px;width:120px;height:136px;color:#2c323b;opacity:.9;pointer-events:none}
 .pn-cr > :not(.pn-cr-fondo){position:relative}
 @media (max-width: 760px){.pn-cr-fondo{width:80px;height:92px;right:-14px}}
+
+/* ═══ 12/11/2026, 2.ª vuelta con Dlx: «en algunos cuadros [de la maqueta] veo que hay un degradado de colores intenso y
+   bonito», «esos botones de cada ranking al costado de la tarjeta que no sean tan grandes», «juntar estas 2 áreas porque
+   hay un espacio entre ellos que gasta espacio, y así podemos hacer un poquito más grande lo de las tarjetas del centro», y
+   «más visual lo que es Tienda y La semana, y quizás Pase rapero y Tu crew».
+   ⚠️ LOS DEGRADADOS SON UNA EXCEPCIÓN PEDIDA a la regla del remake («sin degradés»): sólo en los cuadros del panel, con los
+   mismos valores de la maqueta que Dlx aprobó. No se extienden a otras páginas sin que él lo pida ═══ */
+.pn-racha{background:linear-gradient(90deg,rgba(242,140,40,.16),transparent 55%),#0B0C0E}
+.pn-camp{background:linear-gradient(90deg,rgba(41,178,152,.16),transparent 55%),#0B0C0E}
+.pn-vs{background:linear-gradient(90deg,rgba(41,178,152,.14),transparent 40%,transparent 60%,rgba(228,19,115,.14)),#0B0C0E}
+.pn-ev{background:radial-gradient(110% 70% at 100% 0,rgba(228,19,95,.28),transparent 60%),#0B0C0E}
+.pn-cr{background:linear-gradient(160deg,#1b1f25,#0B0C0E 65%)}
+.pn-mi{background:linear-gradient(170deg,#21170d,#0B0C0E 70%)}
+.pn-pa{background:radial-gradient(120% 80% at 80% 0%,rgba(232,185,35,.28),transparent 60%),linear-gradient(160deg,#17130a,#0B0C0E 70%)}
+.pn-hex{background:linear-gradient(160deg,#F5D76E,#B8860B)}
+.pn-yo{background:radial-gradient(90% 60% at 50% 0,rgba(41,178,152,.10),transparent 65%),#0B0C0E}
+.pn-ti{background:linear-gradient(110deg,rgba(41,178,152,.22),transparent 55%),#0B0C0E}
+.pn-se{background:linear-gradient(250deg,rgba(88,166,255,.22),transparent 55%),#0B0C0E}
+.pn-bat{background:linear-gradient(170deg,rgba(228,19,95,.22),#000 70%) !important}
+.pn-ti-ic{background:linear-gradient(160deg,#4FE0C1,#1d8a74)}
+
+/* los rankings de los costados, más chicos; y la carta del centro, más grande */
+/* ⚠️ en una consulta de ancho: suelta, esta regla pisaba la del teléfono (una columna) y el centro quedaba en tres */
+@container pnyo (min-width:700px){ .pn-yo-in{grid-template-columns:minmax(0,.85fr) minmax(0,1.4fr) minmax(0,.85fr)} }
+.pn-yo-in{row-gap:8px}
+.pn-chip{padding:6px 8px;gap:3px 6px}
+.pn-chip strong{font-size:20px}
+.pn-chip-i{width:20px;height:20px}
+.pn-chip-n{font-size:10px}
+.pn-chip-pie{width:52px}
+.pn-izq,.pn-der{gap:5px}
+.pn-abre{height:268px}
+.pn-abre img{width:min(80%,178px)}
+/* el comentario y los botones, juntos: sin la raya ni el aire de en medio */
+.pn-acc{border-top:0;padding-top:0}
+@container pnyo (max-width:600px){ .pn-abre{height:236px} .pn-chip strong{font-size:18px} }
+@container pnyo (max-width:430px){ .pn-abre{height:236px} }
+
+/* 🎟️ el Pase: la barra de XP del nivel */
+.pn-xp{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:8px;align-items:center}
+.pn-xp i{height:8px;background:#2a2410;position:relative;display:block;outline:1px solid #6b5414}
+.pn-xp u{position:absolute;inset:0 auto 0 0;background:linear-gradient(90deg,#B8860B,#F5D76E);text-decoration:none}
+.pn-xp small{font:700 11px/1 "Barlow Condensed",sans-serif;letter-spacing:.05em;color:#F5D76E !important;white-space:nowrap}
+.pn-hex{box-shadow:0 0 0 3px rgba(245,215,110,.18)}
+/* 👥 tu crew: las caras y la meta de la semana para subir de tier */
+.pn-cr-gente{display:flex;align-items:center;position:relative}
+.pn .pn-cr-cara{width:30px;height:30px;border-radius:50%;box-shadow:0 0 0 2px #14171b;margin-right:-6px;font-size:12px}
+.pn-cr-gente i{font:800 11px/1 Archivo,sans-serif;font-style:normal;margin-left:12px;color:var(--gris2)}
+.pn-cr-meta{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:4px 8px;align-items:center;position:relative}
+.pn-cr-meta small:first-child{grid-column:1/-1;font:700 11px/1 "Barlow Condensed",sans-serif;letter-spacing:.05em;text-transform:uppercase}
+.pn-cr-meta i{height:6px;background:#23272e;position:relative;display:block}
+.pn-cr-meta u{position:absolute;inset:0 auto 0 0;background:var(--c);text-decoration:none}
+.pn-cr-meta b{color:#F6F6F6}
+/* 🛍️ la Tienda: cada cuadrito con su ícono */
+.pn-mini.con-ico{grid-template-columns:auto minmax(0,1fr);column-gap:6px;align-items:center}
+.pn-mini.con-ico svg{grid-row:span 2;color:#4FE0C1}
+.pn-saldo{text-shadow:0 0 18px rgba(79,224,193,.35)}
+/* 📅 La semana: los siete días */
+.pn-dias7{display:flex;gap:3px;margin-top:4px}
+.pn-dias7 i{width:16px;height:16px;display:grid;place-items:center;font:800 9px/1 Archivo,sans-serif;font-style:normal;background:#1f2a3a;color:#7d8da3}
+.pn-dias7 i.si{background:#2b4a75;color:#cfe3ff}
+.pn-dias7 i.hoy{background:var(--azul);color:#000}
+@media (max-width: 760px){.pn-dias7{display:none}}
+
+/* 📊 tus estadísticas y 🎯 misiones + Most Wanted, en pop-up */
+.pn-pop.pn-est,.pn-pop.pn-mis-pop{width:min(640px,calc(100vw - 32px))}
+.pn-est-in,.pn-mis-in{padding:14px;display:grid;gap:12px;overflow:auto;max-height:calc(80vh - 60px)}
+.pn-est-t,.pn-est-r{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:6px}
+.pn-est-t li,.pn-est-r li{background:#000;border:1.5px solid #2A2C31;padding:8px 10px;display:grid;gap:2px;min-width:0}
+.pn-est-t span,.pn-est-r span{font:700 11px/1 "Barlow Condensed",sans-serif;letter-spacing:.06em;text-transform:uppercase;color:#9a9ca3;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.pn-est-t b{font:900 22px/1.1 Archivo,sans-serif}
+.pn-est-r b{font:900 18px/1.1 Archivo,sans-serif;color:#29B298}
+.pn-est-t small,.pn-est-r small{font:500 11px/1.2 Archivo,sans-serif;color:#9a9ca3}
+.pn-est-in h5,.pn-mis-in h5{margin:0;display:flex;gap:10px;align-items:baseline;justify-content:space-between;font:900 15px/1 Archivo,sans-serif;text-transform:uppercase}
+.pn-mis-in h5 small{font:600 12px/1 Archivo,sans-serif;color:#9a9ca3;text-transform:none}
+.pn-est-u{list-style:none;margin:0;padding:0;display:grid;gap:5px}
+.pn-est-u button{width:100%;display:flex;justify-content:space-between;gap:10px;align-items:baseline;background:#000;border:1.5px solid #2A2C31;color:#F6F6F6;padding:8px 10px;cursor:pointer;font:inherit;text-align:left}
+.pn-est-u button:hover{border-color:#29B298}
+.pn-est-u b{font:800 14px/1.2 Archivo,sans-serif;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;min-width:0}
+.pn-est-u small{font:600 12px/1 Archivo,sans-serif;color:#9a9ca3;white-space:nowrap}
+.pn-est-nota{margin:0;color:#9a9ca3;font-size:14px}
+.pn-est-perfil{justify-self:start}
+.pn-mis-in section{display:grid;gap:8px}
+.pn-mis-l,.pn-mw-l{list-style:none;margin:0;padding:0;display:grid;gap:6px}
+.pn-mis-l li{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:6px 10px;align-items:center;padding:8px 10px;background:linear-gradient(170deg,#21170d,#0B0C0E 80%);border:1.5px solid #5b3a1e}
+.pn-mis-l li > span{display:grid;gap:2px;min-width:0}
+.pn-mis-l b{font:700 14px/1.25 Archivo,sans-serif}
+.pn-mis-l small{font:600 12px/1 Archivo,sans-serif;color:#9a9ca3}
+.pn-mis-l em{font:900 15px/1 Archivo,sans-serif;font-style:normal;color:#E0703A}
+.pn-mis-l i{grid-column:1/-1;height:5px;background:#2a1d10;position:relative;display:block}
+.pn-mis-l u{position:absolute;inset:0 auto 0 0;background:#E0703A;text-decoration:none}
+.pn-mis-l li.hecha{border-color:#29B298}
+.pn-mis-l li.hecha small{color:#29B298}
+.pn-mw-l li{display:grid;grid-template-columns:38px minmax(0,1fr) auto;gap:10px;align-items:center;padding:6px 8px;background:#E9DFC4;color:#2b2113}
+.pn-mw-l li.cazado,.pn-mw-l li.escondio{opacity:.6;filter:grayscale(.6)}
+.pn .pn-mw-c,.pn-mw-c{width:38px;height:38px;border-radius:0;filter:sepia(.6)}
+.pn-mw-l li > span{display:grid;gap:2px;min-width:0}
+.pn-mw-l b{font:900 14px/1.1 Archivo,sans-serif;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.pn-mw-l small{font:600 11px/1.2 Archivo,sans-serif;color:#5b4a30;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.pn-mw-v{text-align:right;justify-items:end}
+.pn-mw-v strong{font:900 16px/1 Archivo,sans-serif;color:#7a1d10}
+.pn-mis-pie{display:flex;gap:8px;flex-wrap:wrap}
+@media (max-width: 520px){.pn-est-t,.pn-est-r{grid-template-columns:repeat(2,minmax(0,1fr))}}
+/* las caras de la crew y del Most Wanted: la imagen adentro, del tamaño del círculo (sin esto salía enorme) */
+.pn .pn-cr-cara img,.pn-mw-c img{width:100%;height:100%;object-fit:cover;border-radius:inherit;display:block}
+.pn .pn-cr-cara,.pn-mw-c{overflow:hidden;flex:none;display:grid;place-items:center}
+.pn-acc b{overflow:hidden;text-overflow:ellipsis;min-width:0;max-width:100%}
+.pn-chip strong{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;min-width:0}
+.pn-cu h4{flex-wrap:wrap;row-gap:4px}

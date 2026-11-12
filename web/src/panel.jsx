@@ -23,6 +23,7 @@ import { cuantosNuevos } from './inv_nuevos.js';
 import { cobrarRacha } from './racha.js';
 import { dondeEstoy, nombreDe, useCompetencias } from './competencias_datos.js';
 import { svElegido, useElegidos } from './elegidos.js';
+import { pedirLigas } from './ligas_datos.js';
 
 const W = typeof window !== 'undefined' ? window : {};
 const ET = 'America/New_York';
@@ -312,7 +313,8 @@ function useMios(dc) {
     if (!MIOS.d && !MIOS.va) {
       MIOS.va = true;
       Promise.all([pasePost('tags-mios', {}), pasePost('marcos', {})]).then(([t, m]) => {
-        const tags = t && t._ok ? Object.values(t.ganados || {}).reduce((s, xs) => s + Object.keys(xs || {}).length, 0) : null;
+        // 👑 el dueño los tiene todos (`dueno` de tags-mios): contarle los guardados decía «1»
+        const tags = t && t._ok ? (t.dueno ? 'Todos' : Object.values(t.ganados || {}).reduce((s, xs) => s + Object.keys(xs || {}).length, 0)) : null;
         MIOS.d = { tags, nuevos: t && t._ok ? cuantosNuevos(t) : 0, marcos: m && m._ok && Array.isArray(m.tienes) ? m.tienes.length : null };
         MIOS.oyen.forEach((g) => g());
       }).finally(() => { MIOS.va = false; });
@@ -391,10 +393,28 @@ function Chip({ liga, x, elegida, onElegir }) {
 export function Vestuario({ liga, dc }) {
   const yo = liga.yo;
   const el = useElegidos();
+  // 🏟️ y tu mejor carta de liga (12/11/2026, Dlx: «yo debería tener… al menos el de la mejor liga»): la de más OVR, del
+  // mismo pedido que ya hace el Inicio (`pedirLigas`)
+  const [ligaC, setLigaC] = useState(null);
+  useEffect(() => {
+    if (!yo || !yo.k) return undefined;
+    let vivo = true;
+    pedirLigas(liga.d.sello).then((x) => {
+      const cs = (x && x.cartas && x.cartas[yo.k]) || [];
+      const m = cs.slice().sort((p, q) => (q[2] || 0) - (p[2] || 0))[0];
+      const lg = m && ((x.lobby && x.lobby.ligas) || []).find((l) => l.id === m[0]);
+      if (vivo && m) setLigaC({ src: liga.d.r2 + '/' + yo.k + '/liga-' + m[0] + '.webp?v=' + m[1], nom: lg ? limpio(lg.n || lg.nombre || 'Liga') : 'Liga' });
+    });
+    return () => { vivo = false; };
+  }, [yo && yo.k, liga.d.sello]); // eslint-disable-line react-hooks/exhaustive-deps
   const disp = yo ? CARTAS.filter((c) => liga.cartaUrl(yo.k, c)) : [];
+  const srcs = disp.map((c) => liga.cartaUrl(yo.k, c)).concat(ligaC ? [ligaC.src] : []);
+  const noms = disp.map((c) => NOM[c]).concat(ligaC ? [ligaC.nom] : []);
   const [elegida, setElegida] = useState(0);
   const mios = useMios(dc);
-  const i = disp.length ? Math.min(elegida, disp.length - 1) : 0;
+  const est = useRef(null);
+  const nC = srcs.length;
+  const i = nC ? Math.min(elegida, nC - 1) : 0;
   if (!yo) {
     const top = (liga.d.tabla || []).filter((f) => f.pos && liga.cartaUrl(f.k, 'temporada')).slice(0, 3);
     return (
@@ -425,14 +445,14 @@ export function Vestuario({ liga, dc }) {
       <div className="pn-yo-in">
         <div className="pn-izq">{conCarta.slice(0, 3).map((x) => <Chip key={x[0]} liga={liga} x={x} elegida={i} onElegir={setElegida} />)}</div>
         <div className="pn-car">
-          <div className="pn-abre" role="button" tabIndex={0} aria-label="Ver la siguiente carta" onClick={() => setElegida((i + 1) % Math.max(1, disp.length))}
-            onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); setElegida((i + 1) % Math.max(1, disp.length)); } }}>
-            {disp.map((c, j) => <img key={c} alt={'Tu carta ' + NOM[c]} data-o={(j - i + disp.length) % disp.length} src={liga.cartaUrl(yo.k, c)} />)}
+          <div className="pn-abre" role="button" tabIndex={0} aria-label="Ver la siguiente carta" onClick={() => setElegida((i + 1) % Math.max(1, nC))}
+            onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); setElegida((i + 1) % Math.max(1, nC)); } }}>
+            {srcs.map((src, j) => <img key={src} alt={'Tu carta ' + noms[j]} data-o={Math.min(3, (j - i + nC) % nC)} src={src} />)}
           </div>
-          {disp.length > 1 ? (
-            <div className="pn-nav"><button type="button" aria-label="Carta anterior" onClick={() => setElegida((i - 1 + disp.length) % disp.length)}>‹</button>
-              <b>{NOM[disp[i]]}</b><button type="button" aria-label="Carta siguiente" onClick={() => setElegida((i + 1) % disp.length)}>›</button></div>
-          ) : disp.length ? <div className="pn-nav"><b>{NOM[disp[0]]}</b></div> : <small className="pn-gris">Tus cartas salen con el nivel 1 del Pase</small>}
+          {nC > 1 ? (
+            <div className="pn-nav"><button type="button" aria-label="Carta anterior" onClick={() => setElegida((i - 1 + nC) % nC)}>‹</button>
+              <b>{noms[i]}</b><button type="button" aria-label="Carta siguiente" onClick={() => setElegida((i + 1) % nC)}>›</button></div>
+          ) : nC ? <div className="pn-nav"><b>{noms[0]}</b></div> : <small className="pn-gris">Tus cartas salen con el nivel 1 del Pase</small>}
         </div>
         <div className="pn-der">{conCarta.slice(3).map((x) => <Chip key={x[0]} liga={liga} x={x} elegida={i} onElegir={setElegida} />)}</div>
         <div className="pn-com">
@@ -448,13 +468,45 @@ export function Vestuario({ liga, dc }) {
           ) : null}
         </div>
         <nav className="pn-acc" aria-label="Lo tuyo">
-          <a href={'#/r/' + encodeURIComponent(yo.k)}><Ico n="ranking" t={22} /><b>Estadísticas</b><small>Tus eventos</small></a>
+          <button type="button" onClick={() => est.current && est.current.showModal()}><Ico n="ranking" t={22} /><b>Estadísticas</b><small>Tus números</small></button>
           <a href="#/inventario"><Ico n="tarjetas" t={22} /><b>Inventario</b><small>Tus TAGs</small>
             {mios && mios.nuevos ? <em className="pn-nueva">{mios.nuevos === 1 ? '1 nueva' : mios.nuevos + ' nuevas'}</em> : null}</a>
           <span className="pn-pronto" aria-disabled="true"><Ico n="mira" t={22} /><b>Entrenar</b><small>Pronto</small><em>pronto</em></span>
           <button type="button" className="pn-bat" onClick={() => W.dispatchEvent(new CustomEvent('lg:batallar'))}><Ico n="cruce" t={22} /><b>Batallar</b><small>Busca rival</small><em>simulado</em></button>
         </nav>
       </div>
+      <dialog className="pn-pop pn-est" ref={est} aria-label="Tus estadísticas" onClick={(e) => { if (e.target === est.current) est.current.close(); }}>
+        <div className="pn-pop-cab"><b>Tus estadísticas</b><button type="button" className="btn-ico" aria-label="Cerrar" onClick={() => est.current.close()}><Ico n="cerrar" t={18} /></button></div>
+        <Estadisticas liga={liga} yo={yo} rks={rks} />
+      </dialog>
+    </div>
+  );
+}
+
+// ── 📊 TUS ESTADÍSTICAS, EN UN POP-UP (12/11/2026, Dlx: «cuando abrir estadísticas que abra un pop up con las estadísticas mías
+// en general, no que me mande a mi perfil»). Todo sale de tu fila; abajo, tus últimos eventos y el perfil entero ──────────
+function Estadisticas({ liga, yo, rks }) {
+  const du = Array.isArray(yo.du) ? yo.du : null;
+  const rch = Array.isArray(yo.rch) ? yo.rch : [0, 0];
+  const tiles = [
+    ['OVR', yo.ovr || '—', 'Temporada'], ['Puntos', num(yo.pts || 0), yo.pos ? '#' + yo.pos : ''],
+    ['Eventos', num(yo.ev || 0), ''], ['Podios', num(yo.pod || 0), yo.oro ? yo.oro + ' de oro' : ''],
+    ['Win %', yo.wr || '—', du ? du[0] + ' de ' + du[1] + ' duelos' : ''], ['Racha', rch[0] || 0, 'la mejor: ' + (rch[1] || 0)],
+    ['Score', yo.sc ? String(yo.sc) : '—', yo.rg ? 'rango ' + yo.rg : 'sin rango'], ['Cazas', num(yo.caz || 0), yo.czd ? 'te cazaron ' + yo.czd : ''],
+    ['Misiones', num(yo.mis || 0), 'puntos'],
+  ];
+  const ult = (liga.semanaDe(yo.k) || []).slice(0, 5);
+  return (
+    <div className="pn-est-in">
+      <ul className="pn-est-t">{tiles.map(([t, v, s]) => <li key={t}><span>{t}</span><b>{v}</b>{s ? <small>{s}</small> : null}</li>)}</ul>
+      <ul className="pn-est-r">{rks.map((x) => <li key={x[0]}><span>{x[4]}</span><b>{x[1] ? '#' + x[1] : '—'}</b>{x[1] && x[2] ? <small>de {num(x[2])}</small> : null}</li>)}</ul>
+      {ult.length ? (
+        <><h5>Tus últimos eventos</h5>
+          <ul className="pn-est-u">{ult.map(([ll, r]) => (
+            <li key={ll.n}><button type="button" onClick={() => accion.llave(ll.n)}><b>{limpio(ll.nombre)}</b><small>{r} · {liga.dia(liga.fechaLlave(ll))}</small></button></li>
+          ))}</ul></>
+      ) : Array.isArray(yo.ult) && yo.ult[0] ? <p className="pn-est-nota">Tu último evento: {yo.ult[1]}, el {yo.ult[0].split('-').reverse().slice(0, 2).join('/')}.</p> : null}
+      <a className="btn verde chico pn-est-perfil" href={'#/r/' + encodeURIComponent(yo.k)}>Ver mi perfil completo</a>
     </div>
   );
 }
@@ -513,12 +565,27 @@ export function PnCrew({ liga }) {
   if (mia) {
     const i = crews.findIndex((c) => c.crew === mia.crew);
     const t = tierDe(mia);
+    // 📈 la semana: cuánto lleva contra lo que pide subir de tier (`crews_tiers`: [tier, puntos de la semana, …])
+    const fila = (ct.crews || {})[mia.clave || mia.crew] || [];
+    const tier = fila[0] != null ? fila[0] : null;
+    const sube = tier != null ? (ct.sube || [])[tier] : null;
+    const sig = tier != null ? (ct.nombres || [])[tier + 1] : null;
+    const semana = Number(fila[1]) || 0;
+    const gente = mia.gente || [];
     return (
       <a className="pn-cu pn-cr" href={'#/crew/' + encodeURIComponent(mia.clave || mia.crew)}>
         {fondo}
         <h4>Tu crew</h4>
         <span className="pn-cr-tu">{logo(mia, 'pn-cr-logo')}<span><b>{limpio(mia.crew)}</b>{t ? <em style={{ color: t[1] }}>{t[0]}</em> : null}</span></span>
-        <small>{i >= 0 ? '#' + (i + 1) + ' de ' + crews.length + ' · ' : ''}{num(mia.pts || 0)} pts · {mia.n || (mia.gente || []).length} raperos</small>
+        {gente.length ? <span className="pn-cr-gente">{gente.slice(0, 6).map((n) => { const f = liga.fila(n); return <Cara key={n} liga={liga} k={f ? f.k : ''} nombre={n} cls="pn-cr-cara" />; })}
+          {gente.length > 6 ? <i>+{gente.length - 6}</i> : null}</span> : null}
+        {sube && sig ? (
+          <span className="pn-cr-meta" style={{ '--c': (ct.colores || [])[tier + 1] || '#E8B923' }}>
+            <small>Para {sig} esta semana</small><i aria-hidden="true"><u style={{ width: Math.min(100, Math.round((100 * semana) / sube)) + '%' }} /></i>
+            <small><b>{num(semana)}</b> de {num(sube)}</small>
+          </span>
+        ) : null}
+        <small>{i >= 0 ? '#' + (i + 1) + ' de ' + crews.length + ' · ' : ''}{num(mia.pts || 0)} pts · {mia.n || gente.length} raperos</small>
       </a>
     );
   }
@@ -545,9 +612,44 @@ export function PnMisiones({ liga }) {
     .sort((a, b) => (Number(b.v) || 0) - (Number(a.v) || 0)).slice(0, 3);
   const nSueltos = (mw.b || []).filter((b) => b.e !== 'cazado' && b.e !== 'escondio').length;
   const teBuscan = !!(yo && liga.buscado(yo.k));
+  const dlg = useRef(null);
   if (!lista.length && !sueltos.length) return null;
+  const prog = (mio && M.prog[mio]) || [];
+  const todos = (mw.b || []).slice().sort((a, b) => (a.e === 'suelto' ? 0 : 1) - (b.e === 'suelto' ? 0 : 1) || (Number(b.v) || 0) - (Number(a.v) || 0));
+  const ESTADO = { suelto: 'suelto', cazado: 'cazado', escondio: 'se escondió', sobrevivio: 'sobrevivió' };
   return (
-    <a className="pn-cu pn-mi" href={sueltos.length ? '#/ranking/mw' : '#/ranking/misiones'}>
+    <>
+    <dialog className="pn-pop pn-mis-pop" ref={dlg} aria-label="Misiones y Most Wanted" onClick={(e) => { if (e.target === dlg.current) dlg.current.close(); }}>
+      <div className="pn-pop-cab"><b>Misiones y Most Wanted</b><button type="button" className="btn-ico" aria-label="Cerrar" onClick={() => dlg.current.close()}><Ico n="cerrar" t={18} /></button></div>
+      <div className="pn-mis-in">
+        {lista.length ? (
+          <section><h5>Las misiones de la semana{M.bono ? <span className="pn-bono">+{num(M.bono)} si haces todas</span> : null}</h5>
+            <ul className="pn-mis-l">{lista.map((x, i) => {
+              const v = Math.min(x.m, prog[i] || 0);
+              return (
+                <li key={x.id} className={v >= x.m ? 'hecha' : ''}>
+                  <span><b>{x.t}</b><small>{v >= x.m ? '✓ hecha' : v + ' de ' + x.m}</small></span>
+                  <em>+{num(x.p)}</em>
+                  <i aria-hidden="true"><u style={{ width: Math.round((100 * v) / Math.max(1, x.m)) + '%' }} /></i>
+                </li>
+              );
+            })}</ul></section>
+        ) : null}
+        {todos.length ? (
+          <section><h5>Most Wanted<small>{nSueltos} {nSueltos === 1 ? 'suelto' : 'sueltos'}</small></h5>
+            <ul className="pn-mw-l">{todos.map((b) => (
+              <li key={b.k} className={b.e}>
+                <Cara liga={liga} k={b.k} nombre={b.n} cls="pn-mw-c" />
+                <span><b>{limpio(b.n)}</b><small>{b.cn || ''}{b.m ? ' · ' + b.m : ''}</small></span>
+                <span className="pn-mw-v"><strong>{num(Number(b.v) || 0)}</strong><small>{ESTADO[b.e] || b.e}</small></span>
+              </li>
+            ))}</ul></section>
+        ) : null}
+        <div className="pn-mis-pie"><a className="btn borde2 chico" href="#/ranking/misiones">Ranking de misiones</a><a className="btn borde2 chico" href="#/ranking/mw">Ranking del Most Wanted</a></div>
+      </div>
+    </dialog>
+    <a className="pn-cu pn-mi" href={sueltos.length ? '#/ranking/mw' : '#/ranking/misiones'}
+      onClick={(e) => { if (dlg.current && dlg.current.showModal) { e.preventDefault(); dlg.current.showModal(); } }}>
       <div className="pn-mi-cab"><h4>Misiones</h4>{M.bono ? <span className="pn-bono">+{num(M.bono)} de bono</span> : null}</div>
       {lista.length ? <span className="pn-sellos" aria-label={hechas + ' de ' + lista.length}>{lista.map((x, i) => <i key={x.id} className={i < hechas ? 'si' : ''} />)}</span> : null}
       {sueltos.length ? <span className="pn-carteles">{sueltos.map((b) => (
@@ -555,15 +657,18 @@ export function PnMisiones({ liga }) {
       ))}</span> : null}
       <small>{teBuscan ? 'Te buscan a ti · ' : ''}{nSueltos} {nSueltos === 1 ? 'sigue suelto' : 'siguen sueltos'}</small>
     </a>
+    </>
   );
 }
 
 // ── 🎟️ EL PASE, decorativo: tu nivel en un hexágono, la pista y lo que viene después del último ─────────────────────
 export function PnPase({ dc }) {
   const P = usePase(!!dc);
-  const a = P && P.listo && P.miembro ? avance(P) : null;
+  // ⚠️ `avance()` es null en el último nivel (no hay siguiente): con el 30 completo decía «para los miembros de DRA» (Dlx)
+  const mio = !!(P && P.listo && P.miembro);
+  const a = mio ? avance(P) || { falta: 0 } : null;
   const niveles = (P && P.niveles) || 30;
-  const nivel = a ? P.nivel : 0;
+  const nivel = a ? P.nivel || 0 : 0;
   const tramos = 10;
   const llenos = Math.round((nivel / niveles) * tramos);
   return (
@@ -571,7 +676,9 @@ export function PnPase({ dc }) {
       <h4>Pase rapero</h4>
       <span className="pn-nv"><span className="pn-hex">{a ? nivel : niveles}</span>
         <span><b>{a ? 'Nivel ' + nivel + ' de ' + niveles : niveles + ' niveles'}</b>
-          <small>{a ? (a.falta ? 'te faltan ' + num(a.falta) + ' XP para el ' + (nivel + 1) : 'lo completaste') : dc && P && P.listo ? 'para los miembros de DRA' : 'Tareas que dan premios'}</small></span></span>
+          <small>{a ? (a.falta ? 'te faltan ' + num(a.falta) + ' XP para el ' + (nivel + 1) : '¡lo completaste!') : dc && P && P.listo ? 'para los miembros de DRA' : 'Tareas que dan premios'}</small></span></span>
+      {a && a.de ? <span className="pn-xp" aria-label={num(a.lleva) + ' de ' + num(a.de) + ' XP'}><i><u style={{ width: Math.round((100 * a.lleva) / a.de) + '%' }} /></i><small>{num(a.lleva)} / {num(a.de)} XP</small></span>
+        : mio ? <span className="pn-xp lleno"><i><u style={{ width: '100%' }} /></i><small>Pase completo</small></span> : null}
       <span className="pn-pista" aria-hidden="true">{Array.from({ length: tramos }, (_, j) => <i key={j} className={(j < llenos ? 'si' : '') + ((j + 1) % 5 === 0 ? ' hito' : '')} />)}</span>
       <span className="pn-cola"><Ico n="premio" t={20} /><small>Del {niveles} en adelante, más Puntos por cada 1.000 XP</small></span>
     </a>
@@ -588,9 +695,9 @@ export function PnTienda({ saldo, dc }) {
       <span className="pn-ti-ic" aria-hidden="true">$</span>
       <span className="pn-baja-tx"><b>Tienda</b>{saldo != null ? <span className="pn-saldo">{num(saldo)}</span> : null}<small>{saldo != null ? 'Puntos para gastar' : 'Tus Puntos de Tienda'}</small></span>
       <span className="pn-minis">
-        {tope ? <span className="pn-mini"><span>La cabeza más cara</span><strong>{num(tope)}</strong></span> : null}
-        {mios && mios.marcos != null ? <span className="pn-mini"><span>Marcos</span><strong>{num(mios.marcos)}</strong></span> : null}
-        {mios && mios.tags != null ? <span className="pn-mini"><span>TAGs</span><strong>{num(mios.tags)}</strong></span> : null}
+        {tope ? <span className="pn-mini con-ico"><Ico n="mira" t={16} /><span>La cabeza más cara</span><strong>{num(tope)}</strong></span> : null}
+        {mios && mios.marcos != null ? <span className="pn-mini con-ico"><Ico n="tarjetas" t={16} /><span>Marcos</span><strong>{num(mios.marcos)}</strong></span> : null}
+        {mios && mios.tags != null ? <span className="pn-mini con-ico"><Ico n="premio" t={16} /><span>TAGs</span><strong>{typeof mios.tags === 'number' ? num(mios.tags) : mios.tags}</strong></span> : null}
       </span>
     </a>
   );
@@ -606,7 +713,8 @@ export function PnSemana({ liga }) {
   return (
     <a className="pn-baja-t pn-se" href="#/competencias" style={{ '--p': Math.round((dia / 7) * 100) }}>
       <span className="pn-anillo"><b>{dia}/7</b></span>
-      <span className="pn-baja-tx"><b>La semana</b><small>Competencias ›</small></span>
+      <span className="pn-baja-tx"><b>La semana</b><small>Competencias ›</small>
+        <span className="pn-dias7" aria-hidden="true">{LETRAS.map((l, j) => <i key={j} className={j + 1 < dia ? 'si' : j + 1 === dia ? 'hoy' : ''}>{l}</i>)}</span></span>
       <span className="pn-mini"><span>Ligas</span><strong>{d && d.liga ? d.liga.pos + '.º' : 'J' + (C.ligas.jornada || 1)}</strong></span>
       <span className="pn-mini"><span>Copa</span><strong>{copa}</strong></span>
       <span className="pn-mini"><span>Rapid</span><strong>{rapid}</strong></span>
