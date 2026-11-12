@@ -11,6 +11,18 @@
  ],
  "cambios": [
     {
+        "version": "4.70",
+        "dia": "2026-11-12",
+        "cuando": "2026-11-12T16:35:00-05:00",
+        "titulo": "Publicaciones: avisos y respuestas",
+        "items": [
+            "El menú te dice cuántas **publicaciones nuevas** hay desde la última vez que entraste.",
+            "Si alguien **responde tu comentario**, te llega a la campana.",
+            "Cada comentario se puede **reportar**: con tres reportes de personas distintas se esconde solo.",
+            "Tocar «Responder» en el Inicio te lleva **directo a esa publicación**, con los comentarios abiertos."
+        ]
+    },
+    {
         "version": "4.69",
         "dia": "2026-11-12",
         "cuando": "2026-11-12T17:00:00-05:00",
