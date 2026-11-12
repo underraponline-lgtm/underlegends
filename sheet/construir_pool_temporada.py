@@ -378,7 +378,11 @@ def main():
     # ⚠️ EL `lambda` NO ES ADORNO: sin el, `sh.worksheet(...)` se evalua
     # ANTES de entrar al reintento —y esa llamada TAMBIEN pega a la API—,
     # asi que el 429 se escapaba por la mitad que quedaba afuera.
-    v = _leer_reint(lambda: sh.worksheet('Ranking Temporada').get_all_values())
+    # 🏆 etapa 4a de sacar el Sheet: la vitrina, de datos/ (comparando con el Sheet mientras dura la prueba)
+    import espejo_t1 as _EJ
+    v = _EJ.fuente_vitrina('Ranking Temporada',
+                           lambda: _leer_reint(lambda: sh.worksheet('Ranking Temporada').get_all_values()),
+                           'pool temporada')
 
     # ⚠️ LA ELECCION MANUAL DEL SERVIDOR VIVE EN "Ranking Competitivo".
     # Regla de Dlx: "Konan decidio ser de TWR; eleccion manual supera a la del
@@ -404,7 +408,9 @@ def main():
     # Como el Score vive en esta misma hoja, sale en la misma lectura.
     SV_MANUAL, SCORE = {}, {}
     try:
-        c = _leer_reint(lambda: sh.worksheet('Ranking Competitivo').get_all_values())
+        c = _EJ.fuente_vitrina('Ranking Competitivo',
+                               lambda: _leer_reint(lambda: sh.worksheet('Ranking Competitivo').get_all_values()),
+                               'pool temporada')
         fic, Hc = _cabecera(c, 'Rapero', 'Score')   # ver `_cabecera()`
         ic, isv, isc = Hc.index('Rapero'), Hc.index('Sv'), Hc.index('Score')
         for r in c[fic + 1:]:

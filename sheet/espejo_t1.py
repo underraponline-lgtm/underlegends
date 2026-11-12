@@ -61,8 +61,16 @@ HOJAS = {'Resultados': 'resultados', '1v1': '1v1', 'Eventos Procesados': 'evento
 PISO = 0.5
 
 
+#: 🏆 LAS VITRINAS DEL OFICIAL (etapa 4a, 11/11/2026). Las calcula `rankings.py`, y los pools las volvían a LEER del Sheet
+#: (`Ranking Temporada` para los dos, `Ranking Competitivo` para el servidor elegido y el Score): la vuelta Sheet →
+#: vitrina → Sheet → pool. Medido ese día: las cinco con la cabecera en la fila 1 y 0 celdas que se vean distinto de su
+#: valor de verdad, igual que las tres de arriba.
+VITRINAS = {'Ranking Temporada': 'vitrina_temporada', 'Ranking Competitivo': 'vitrina_competitivo',
+            'Ranking Podios': 'vitrina_podios', 'Ranking Duelos': 'vitrina_duelos', 'Ranking Mundial': 'vitrina_mundial'}
+
+
 def ruta(hoja, temp=ACTUAL, base=BASE):
-    return os.path.join(base, 'datos', '%s_%s.json' % (temp, HOJAS[hoja]))
+    return os.path.join(base, 'datos', '%s_%s.json' % (temp, HOJAS.get(hoja) or VITRINAS[hoja]))
 
 
 def visible(c):
@@ -323,6 +331,90 @@ def comparar():
     return 1 if malas else 0
 
 
+def _leer_oficial(hoja, modo='UNFORMATTED_VALUE'):
+    """`(cabecera, filas)` de una vitrina del Oficial, desde su cabecera (`rankings.fila_cabecera()`), con reintento."""
+    import requests
+    import rankings as RK
+    from escribir import token
+    from reintentar import leer as _reint
+    fc = RK.fila_cabecera(hoja)
+
+    def _pedir():
+        r = requests.get('https://sheets.googleapis.com/v4/spreadsheets/%s/values/%s'
+                         % (RK.OFICIAL, requests.utils.quote("'%s'!A%d:AZ" % (hoja, fc))),
+                         params={'valueRenderOption': modo}, headers={'Authorization': 'Bearer ' + token()}, timeout=90)
+        r.raise_for_status()
+        return r.json().get('values', [])
+    v = _reint(_pedir)
+    if not v:
+        return [], []
+    return [str(c).strip() for c in v[0]], [normal(f) for f in v[1:] if any(str(c).strip() for c in f)]
+
+
+def espejar_vitrinas(aplicar=False):
+    """🏆 Las cinco vitrinas del Oficial, a datos/ (etapa 4a). Devuelve `{hoja: 'igual' | 'cambió' | 'no'}`.
+    ⚠️ Corre ANTES de los pools (paso 2 del ciclo) y otra vez en el 2g: lo de esta corrida tiene que estar."""
+    out = {}
+    for hoja in VITRINAS:
+        try:
+            cab, cru = _leer_oficial(hoja)
+        except Exception as e:                             # noqa: BLE001
+            print('   ⚠️ %s: no pude leerla (%s): queda como estaba' % (hoja, str(e)[:80]))
+            out[hoja] = 'no'
+            continue
+        if not cab:
+            print('   ⚠️ %s: vacía o sin cabecera: queda como estaba' % hoja)
+            out[hoja] = 'no'
+            continue
+        viejo = leer(hoja)
+        ok, motivo = decidir(hoja, viejo, cru)
+        if not ok:
+            print('   ' + motivo)
+            out[hoja] = 'no'
+            continue
+        texto = volcar(hoja, cab, cru)
+        if _texto_de(ruta(hoja)) == texto:
+            print('   %-20s igual (%d fila(s))' % (hoja, len(cru)))
+            out[hoja] = 'igual'
+            continue
+        print('   %-20s %d fila(s), cambió%s' % (hoja, len(cru), '' if aplicar else '  [sin --aplicar: no escribo]'))
+        if aplicar:
+            with io.open(ruta(hoja), 'w', encoding='utf-8', newline='\n') as f:
+                f.write(texto)
+        out[hoja] = 'cambió'
+    return out
+
+
+def grilla(hoja, base=BASE):
+    """La vitrina como la devuelve `worksheet(hoja).get_all_values()` de gspread: la cabecera y las filas, todo como
+    texto y con todas las filas del mismo ancho. `None` si no hay archivo."""
+    d = leer(hoja, base=base)
+    if d is None:
+        return None
+    filas = [[str(c) for c in d.get('cabecera') or []]] + [[visible(c) for c in f] for f in d.get('filas') or []]
+    ancho = max((len(f) for f in filas), default=0)
+    return [f + [''] * (ancho - len(f)) for f in filas]
+
+
+def fuente_vitrina(hoja, del_sheet, lector='', base=BASE):
+    """🏆 Lo que usan los pools en vez de `sh.worksheet(hoja).get_all_values()` (etapa 4a). Con `CONTROL`, igual que
+    `fuente()`: llama a `del_sheet` (la lectura de siempre), compara y si no coincide usa el Sheet y lo dice."""
+    mio = grilla(hoja, base=base)
+    if mio is not None and not CONTROL:
+        return mio
+    sh = [[str(c) for c in f] for f in del_sheet()]
+    de = ' (%s)' % lector if lector else ''
+    if mio is None:
+        print('   ⚠️ %s: no está en datos/, leo el Sheet%s' % (hoja, de))
+        return sh
+    igual = sh == mio
+    if _VISTO.get(hoja) != igual:
+        print('   %s %s desde datos/: %s%s' % ('🗄️' if igual else '🔴', hoja, 'igual al Sheet' if igual else
+              'DISTINTO del Sheet (%d contra %d filas): uso el Sheet' % (len(mio), len(sh)), de))
+    _VISTO[hoja] = igual
+    return mio if igual else sh
+
+
 def _self_check():
     import tempfile
     fallas = 0
@@ -440,8 +532,14 @@ def main():
     if '--comparar' in a:
         print('\n══ EL SHEET CONTRA datos/ ══\n')
         return comparar()
+    if '--vitrinas' in a:
+        print('\n══ LAS VITRINAS DEL OFICIAL, EN datos/ (etapa 4a) ══\n')
+        espejar_vitrinas(aplicar='--aplicar' in a)
+        return 0
     print('\n══ EL OPERATIVO, EN datos/ (etapa 1) ══\n')
     r = espejar(aplicar='--aplicar' in a)
+    print('\n══ LAS VITRINAS DEL OFICIAL, EN datos/ (etapa 4a) ══\n')
+    espejar_vitrinas(aplicar='--aplicar' in a)
     # ⚠️ NUNCA FRENA EL CICLO: una hoja que no se copia queda como estaba, y lo dice arriba
     return 0 if r else 0
 

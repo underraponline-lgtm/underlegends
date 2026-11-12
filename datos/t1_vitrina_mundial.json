@@ -1,0 +1,29 @@
+{
+ "hoja": "Ranking Mundial",
+ "cabecera": ["#", "País", "Raperos", "Puntos", "Eventos", "🥇", "Mejor", "Pts del mejor"],
+ "filas": [
+  [1, "Argentina", 140, 5812108, 931, 91, "PichulaMc", 465604],
+  [2, "Chile", 75, 3038945, 510, 56, "Oasis", 565540],
+  [3, "Venezuela", 50, 2880381, 443, 46, "Makmah", 756844],
+  [4, "Colombia", 61, 2486073, 437, 27, "Vandu", 389026],
+  [5, "Perú", 46, 1436397, 344, 13, "Sin Limites", 211333],
+  [6, "México", 47, 1302082, 267, 13, "yinn", 219004],
+  [7, "Uruguay", 17, 818881, 120, 11, "Mr Still Ballin", 256138],
+  [8, "Panamá", 7, 741953, 106, 16, "Erian", 531915],
+  [9, "España", 31, 558048, 111, 4, "Trot", 96314],
+  [10, "Ecuador", 13, 354443, 62, 9, "Carlosss", 220975],
+  [11, "Costa Rica", 6, 276032, 48, 3, "OKAM", 168557],
+  [12, "República Dominicana", 5, 212230, 33, 6, "Zignos", 180630],
+  [13, "Estados Unidos", 7, 161635, 27, 1, "TøKīØ🦠🧠", 77497],
+  [14, "Honduras", 2, 134737, 25, 1, "Chop", 134112],
+  [15, "Paraguay", 5, 108575, 20, "", "Ezias🥈✒️🧢🐍", 45775],
+  [16, "Nicaragua", 3, 94287, 21, 3, "Adriagner", 90161],
+  [17, "Puerto Rico", 7, 93025, 21, 1, "Rodas", 57425],
+  [18, "Bolivia", 4, 75290, 15, 1, "Evangeline", 49348],
+  [19, "Cuba", 3, 44394, 4, 1, "JOSHU", 20225],
+  [20, "Emiratos", 1, 21873, 4, 1, "Betelguese", 21873],
+  [21, "Guatemala", 3, 4500, 3, "", "Am", 2625],
+  [22, "Brasil", 1, 1755, 2, "", "UDDIZIM", 1755],
+  [23, "El Salvador", 1, 1755, 2, "", "Redstonita", 1755]
+ ]
+}

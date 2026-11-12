@@ -421,7 +421,11 @@ def main():
 
     # de Temporada: WR y racha
     # ⚠️ con `lambda`: ver el mismo comentario en construir_pool_temporada
-    t = _leer_reint(lambda: sh.worksheet('Ranking Temporada').get_all_values())
+    # 🏆 etapa 4a de sacar el Sheet: la vitrina, de datos/ (comparando con el Sheet mientras dura la prueba)
+    import espejo_t1 as _EJ
+    t = _EJ.fuente_vitrina('Ranking Temporada',
+                           lambda: _leer_reint(lambda: sh.worksheet('Ranking Temporada').get_all_values()),
+                           'pool competitivo')
     # 🔴 LA CABECERA SE BUSCA. Ver `_cabecera()` en
     # `construir_pool_temporada.py`: la fila 16 describe el DISENIO de la
     # hoja, no el dato, y el dia que la vitrina se rehaga con la cabecera

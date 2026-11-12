@@ -1123,6 +1123,11 @@ def _lo_barato(correr):
         # lo que no sirve es no dibujar. Se avisa y se sigue — que es la
         # regla opuesta a la de los pools, y a propósito: sin pools se
         # dibujarían cartas viejas y se sellarían como nuevas.
+        #
+        # 🏆 Y ANTES, LAS VITRINAS A datos/ (etapa 4a de sacar el Sheet, 11/11/2026): los pools las leen de ahí
+        # (`espejo_t1.fuente_vitrina()`, comparando con el Sheet mientras dura la prueba). Las acaban de escribir el
+        # paso 1c y el de Podios, Duelos y Mundial. Nunca frena el ciclo: sin archivo, el pool lee el Sheet
+        corre(['sheet/espejo_t1.py', '--vitrinas', '--aplicar'], callado=False)
         import construir_padron as _PAD
         # 🔴 SE GUARDA UNA COPIA ANTES, Y ESA ES LA DIFERENCIA CON LOS
         # POOLS. Ahí el guardián **frena el ciclo**, y con eso alcanza:
