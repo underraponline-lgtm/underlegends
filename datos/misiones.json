@@ -3412,13 +3412,6 @@
      0,
      0
     ],
-    "Carlos": [
-     0,
-     0,
-     2,
-     0,
-     0
-    ],
     "Carlosss": [
      0,
      4,
@@ -4944,7 +4937,6 @@
     "Badterne": 1000,
     "Bloody": 1000,
     "CJ": 1800,
-    "Carlos": 1000,
     "Carlosss": 1600,
     "Colesito": 1000,
     "Corvo": 1000,
@@ -5291,13 +5283,6 @@
      0,
      0
     ],
-    "Carlos": [
-     0,
-     3,
-     0,
-     0,
-     0
-    ],
     "Carlosmo": [
      0,
      1,
@@ -5307,7 +5292,7 @@
     ],
     "Carlosss": [
      0,
-     3,
+     6,
      0,
      0,
      0
@@ -5854,7 +5839,7 @@
     "Lord Viruzz": [
      0,
      3,
-     0,
+     1,
      0,
      0
     ],
@@ -6288,7 +6273,7 @@
     "Ryuk": [
      0,
      1,
-     1,
+     0,
      0,
      0
     ],
@@ -6526,7 +6511,7 @@
     "Walker": [
      0,
      5,
-     2,
+     1,
      0,
      0
     ],
@@ -6699,7 +6684,6 @@
     "BastyRetro": 600,
     "Bau": 1000,
     "Calíz": 900,
-    "Carlos": 600,
     "Carlosss": 600,
     "Cazafla anti cazanova🇭🇹": 300,
     "Chop": 600,
@@ -6732,7 +6716,7 @@
     "Lautaro la sinceridad 🇨🇨": 600,
     "Liberia": 900,
     "Lilñaño": 600,
-    "Lord Viruzz": 600,
+    "Lord Viruzz": 1600,
     "Luck": 900,
     "Lvel": 300,
     "MATUK 🇦🇷": 300,
@@ -6766,7 +6750,6 @@
     "Provenza": 900,
     "Ragna": 1000,
     "Richard": 600,
-    "Ryuk": 1000,
     "SULTAN": 300,
     "Santi": 1000,
     "Scritura": 300,
@@ -6993,14 +6976,14 @@
      0
     ],
     "Carlos": [
-     2,
+     1,
      0,
      16,
      0,
      0
     ],
     "Carlosss": [
-     4,
+     5,
      0,
      1,
      0,
@@ -7260,7 +7243,7 @@
     ],
     "JJ": [
      1,
-     1,
+     2,
      1,
      0,
      0
@@ -7567,15 +7550,15 @@
      0
     ],
     "Number": [
-     4,
+     3,
      0,
      8,
      0,
      0
     ],
     "Number VE": [
-     3,
-     0,
+     4,
+     1,
      8,
      0,
      0
@@ -8015,7 +7998,6 @@
     "Berrun": 600,
     "Black Demon🇪🇨": 600,
     "Calíz": 1300,
-    "Carlos": 300,
     "Carlosss": 1300,
     "Cinexfilo": 300,
     "Cronox": 1300,
@@ -8055,7 +8037,7 @@
     "Molusco": 300,
     "NXUZ": 1300,
     "Number": 300,
-    "Number VE": 300,
+    "Number VE": 900,
     "OKAM": 900,
     "Oasis": 1300,
     "PRAISERIZA": 300,
@@ -8220,7 +8202,7 @@
      0,
      0
     ],
-    "Carlos": [
+    "Carlosss": [
      0,
      0,
      0,
@@ -8868,7 +8850,6 @@
   "CJ": 2100,
   "Cajita": 300,
   "Calíz": 3100,
-  "Carlos": 1900,
   "Carlosmo": 1600,
   "Carlosss": 5700,
   "Catarsis": 900,
@@ -8989,7 +8970,7 @@
   "Liberia": 8000,
   "Lilñaño": 900,
   "LitKunai": 300,
-  "Lord Viruzz": 3100,
+  "Lord Viruzz": 4100,
   "Luck": 900,
   "Luzzano": 900,
   "Lvel": 2400,
@@ -9039,7 +9020,7 @@
   "Noone": 300,
   "Nova": 300,
   "Number": 3500,
-  "Number VE": 300,
+  "Number VE": 900,
   "OG": 7700,
   "OKAM": 4200,
   "ONDADISKO": 600,
@@ -9075,7 +9056,6 @@
   "Rodas": 900,
   "Rosmel 🇻🇪": 300,
   "Ruvick": 300,
-  "Ryuk": 1000,
   "SAEVA": 300,
   "SAIDEM": 2900,
   "SINTEXT": 600,

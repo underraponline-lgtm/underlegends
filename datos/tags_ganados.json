@@ -2177,6 +2177,11 @@
     "t1",
     1793899870631
    ],
+   "🎯 COMPLETO": [
+    "🎯 COMPLETO",
+    "t1",
+    1794519479281
+   ],
    "🎯 FRANCOTIRADOR": [
     "🎯 FRANCOTIRADOR",
     "t1",
@@ -2261,15 +2266,35 @@
    ]
   },
   "temporada": {
+   "⚡ MARATONISTA": [
+    "⚡ MARATONISTA",
+    "t1",
+    1794519479281
+   ],
    "⚡ RELÁMPAGO": [
     "⚡ RELÁMPAGO",
     "t1",
     1793029252929
    ],
+   "⭐ DECACAMPEÓN": [
+    "⭐ DECACAMPEÓN",
+    "t1",
+    1794519479281
+   ],
    "⭐ PENTACAMPEÓN": [
     "⭐ PENTACAMPEÓN",
     "t1",
     1793029252929
+   ],
+   "🌍 TROTAMUNDOS": [
+    "🌍 TROTAMUNDOS",
+    "t1",
+    1794519479281
+   ],
+   "🌐 IMPERIO": [
+    "🌐 IMPERIO",
+    "t1",
+    1794519479281
    ],
    "🎖️ CURTIDO": [
     "🎖️ CURTIDO",
@@ -2287,7 +2312,7 @@
     1793029252929
    ],
    "👑 CAMPEÓN x%d": [
-    "👑 CAMPEÓN x9",
+    "👑 CAMPEÓN x10",
     "t1",
     1793029252929
    ],
@@ -2300,6 +2325,11 @@
     "💯 CENTENARIO",
     "t1",
     1792953978519
+   ],
+   "📅 INFALTABLE": [
+    "📅 INFALTABLE",
+    "t1",
+    1794519479281
    ],
    "📈 EN ASCENSO": [
     "📈 EN ASCENSO",
@@ -2320,6 +2350,11 @@
     "🚪 DEBUT CON CORONA",
     "t1",
     1793029252929
+   ],
+   "🛫 NÓMADA": [
+    "🛫 NÓMADA",
+    "t1",
+    1794519479281
    ],
    "🥉 AL PODIO": [
     "🥉 AL PODIO",
@@ -9720,6 +9755,16 @@
    ]
   },
   "temporada": {
+   "⚡ MARATONISTA": [
+    "⚡ MARATONISTA",
+    "t1",
+    1794519479281
+   ],
+   "🎖️ CURTIDO": [
+    "🎖️ CURTIDO",
+    "t1",
+    1794519479281
+   ],
    "📈 EN ASCENSO": [
     "📈 EN ASCENSO",
     "t1",
@@ -10234,6 +10279,11 @@
     "INTERNACIONAL",
     "t1",
     1793029252929
+   ],
+   "SIN FRONTERAS": [
+    "SIN FRONTERAS",
+    "t1",
+    1794519479281
    ]
   },
   "servidor": {

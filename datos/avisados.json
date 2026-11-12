@@ -20495,7 +20495,7 @@
   "duelos": [
    [
     "LAST, PichulaMc",
-    "Calíz, Lizeninn",
+    "Calíz, Mito",
     "LAST, PichulaMc"
    ],
    [
@@ -20504,14 +20504,14 @@
     "Bloody, Volk"
    ],
    [
-    "DANCOLL🇻🇪, Sin Limites",
-    "BELIKKO 🇻🇪, Luck",
-    "DANCOLL🇻🇪, Sin Limites"
+    "DANCOLL, Sin Limites",
+    "BELIKKO, Luck",
+    "DANCOLL, Sin Limites"
    ],
    [
-    "Carlos, MATKMA 🇻🇪",
-    "Teo, Edd🇮🇹",
-    "Carlos, MATKMA 🇻🇪"
+    "Carlosss, Makmah",
+    "Teo, Dominick",
+    "Carlosss, Makmah"
    ],
    [
     "Erian, Vandu",
@@ -20524,13 +20524,13 @@
     "BNA, Velatz"
    ],
    [
-    "Calíz, Lizeninn",
+    "Calíz, Mito",
     "Leonart, Lord Viruzz",
-    "Calíz, Lizeninn"
+    "Calíz, Mito"
    ],
    [
     "Mathhias, LUIS 🇦🇷",
-    "HOTARU 🇦🇷, TøKīØ🦠🧠",
+    "Hotaru Adeyemi 🏳️‍⚧️, TøKīØ🦠🧠",
     "Mathhias, LUIS 🇦🇷"
    ],
    [
@@ -20539,9 +20539,9 @@
     "LAST, PichulaMc"
    ],
    [
-    "Carlos, Makmah",
-    "DANCOLL🇻🇪, Sin Limites",
-    "Carlos, Makmah"
+    "Carlosss, Makmah",
+    "DANCOLL, Sin Limites",
+    "Carlosss, Makmah"
    ],
    [
     "BNA, Velatz",
@@ -20550,13 +20550,13 @@
    ],
    [
     "Mathhias, Molusco",
-    "Calíz, Lizeninn",
+    "Calíz, Mito",
     "Mathhias, Molusco"
    ],
    [
-    "Carlos, Makmah",
+    "Carlosss, Makmah",
     "LAST, PichulaMc",
-    "Carlos, Makmah"
+    "Carlosss, Makmah"
    ],
    [
     "Mathhias, Molusco",
@@ -20565,7 +20565,7 @@
    ],
    [
     "Mathhias, Molusco",
-    "Carlos, Makmah",
+    "Carlosss, Makmah",
     "Mathhias, Molusco"
    ]
   ],
@@ -20597,7 +20597,7 @@
    "Volk": 3
   },
   "fecha": "23/10",
-  "firma": "5338aa5ba470c659",
+  "firma": "03648b37f47018f9",
   "msg": "1563339799069331628",
   "nombre": "FATS BATTLES PALOOZA FECHA 8",
   "num": 504,
@@ -20620,7 +20620,7 @@
     5000
    ],
    [
-    "Carlos",
+    "Carlosss",
     "Subcampeón",
     3750
    ],
@@ -20660,7 +20660,7 @@
     1250
    ],
    [
-    "DANCOLL🇻🇪",
+    "DANCOLL",
     "Cuartos",
     1250
    ],
@@ -20685,7 +20685,7 @@
     1250
    ],
    [
-    "Lizeninn",
+    "Mito",
     "Cuartos",
     1250
    ],
@@ -20700,7 +20700,7 @@
     625
    ],
    [
-    "BELIKKO 🇻🇪",
+    "BELIKKO",
     "Octavos",
     625
    ],
@@ -20715,7 +20715,7 @@
     625
    ],
    [
-    "Edd🇮🇹",
+    "Dominick",
     "Octavos",
     625
    ],
@@ -20750,12 +20750,17 @@
     625
    ],
    [
-    "HOTARU 🇦🇷",
+    "Hotaru Adeyemi 🏳️‍⚧️",
     "Octavos",
     625
    ],
    [
     "TøKīØ🦠🧠",
+    "Octavos",
+    625
+   ],
+   [
+    "LUIS 🇦🇷",
     "Octavos",
     625
    ]
@@ -38296,9 +38301,9 @@
     "MCO"
    ],
    [
-    "Carlos",
+    "Carlosss",
     "MAT MC",
-    "Carlos"
+    "Carlosss"
    ],
    [
     "Keider",
@@ -38317,13 +38322,13 @@
    ],
    [
     "MCO",
-    "Lizenin",
+    "Mito",
     "MCO"
    ],
    [
-    "Carlos",
+    "Carlosss",
     "Keider",
-    "Carlos"
+    "Carlosss"
    ],
    [
     "Chop",
@@ -38331,14 +38336,14 @@
     "Chop"
    ],
    [
-    "Carlos",
+    "Carlosss",
     "MCO",
-    "Carlos"
+    "Carlosss"
    ],
    [
-    "Carlos",
+    "Carlosss",
     "Chop",
-    "Carlos"
+    "Carlosss"
    ]
   ],
   "ev_antes": {
@@ -38358,7 +38363,7 @@
    "replisan": 3
   },
   "fecha": "01/11",
-  "firma": "1d81ddc85055b206",
+  "firma": "caec188d6dbaca6a",
   "msg": "1569508030054142025",
   "nombre": "LLAVES PARA LA DISCORD STYLE 19",
   "num": 584,
@@ -38370,7 +38375,7 @@
   "t": "2026-11-10T00:24:34Z",
   "tabla": [
    [
-    "Carlos",
+    "Carlosss",
     "Campeón",
     10000
    ],
@@ -38395,7 +38400,7 @@
     2500
    ],
    [
-    "Lizenin",
+    "Mito",
     "Cuartos",
     2500
    ],

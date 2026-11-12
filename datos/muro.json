@@ -94,6 +94,14 @@
 "temporada"
 ]
 },
+"carlosss": {
+"rg": "S",
+"c": [
+"competitivo",
+"servidor",
+"temporada"
+]
+},
 "agus": {
 "rg": "S",
 "c": [
@@ -138,14 +146,6 @@
 "c": [
 "competitivo",
 "pais",
-"servidor",
-"temporada"
-]
-},
-"carlosss": {
-"rg": "SS",
-"c": [
-"competitivo",
 "servidor",
 "temporada"
 ]
@@ -441,14 +441,6 @@
 "rg": "C",
 "c": []
 },
-"number": {
-"rg": "C",
-"c": [
-"competitivo",
-"servidor",
-"temporada"
-]
-},
 "tøkiø": {
 "rg": "",
 "c": [
@@ -486,6 +478,14 @@
 "paria": {
 "rg": "D",
 "c": []
+},
+"number": {
+"rg": "D",
+"c": [
+"competitivo",
+"servidor",
+"temporada"
+]
 },
 "masino": {
 "rg": "B",
@@ -672,10 +672,6 @@
 "temporada"
 ]
 },
-"carlos": {
-"rg": "",
-"c": []
-},
 "jult": {
 "rg": "E",
 "c": [
@@ -724,6 +720,15 @@
 "rg": "E",
 "c": [
 "competitivo",
+"servidor",
+"temporada"
+]
+},
+"numberve": {
+"rg": "E",
+"c": [
+"competitivo",
+"pais",
 "servidor",
 "temporada"
 ]
@@ -807,15 +812,6 @@
 "emizor": {
 "rg": "D",
 "c": []
-},
-"numberve": {
-"rg": "E",
-"c": [
-"competitivo",
-"pais",
-"servidor",
-"temporada"
-]
 },
 "rodas": {
 "rg": "E",
@@ -1338,6 +1334,10 @@
 "c": []
 },
 "lautarolasinceridad": {
+"rg": "",
+"c": []
+},
+"carlos": {
 "rg": "",
 "c": []
 },
