@@ -3071,8 +3071,23 @@ export function faseDeLlave(L) {
   if (!rondas.some((R) => batallasDe(R).length)) return null;
   const F = rondas.find((R) => /^final$/i.test(String(R.r || '')));
   const fb = F ? batallasDe(F)[0] : null;
-  if (fb && fb[1]) return { fase: 'fin', camp: cortarRed(limpioRed(fb[1]), 80) };
+  if (fb && fb[1]) return { fase: 'fin', camp: cortarRed(limpioRed(fb[1]), 80), lado: String(fb[1]) };
   return { fase: 'vivo', n: (L && L.participantes) || 0 };
+}
+
+/**
+ * 🏆 El campeón con su nombre de la Liga y su tarjeta (Dlx, 11/11/2026, a «¿la imagen pasa a ser la tarjeta del campeón?»:
+ * «Sí, su tarjeta»): `{camp, img}` para la fase `fin`. Lo mismo que el cierre del chat (`genteChat()` + `cartaDe()` de
+ * `datosCruce()`): la carta de ese servidor si es de ahí, si no la de Temporada. Un equipo campeón no tiene una tarjeta: se
+ * queda la imagen que había. Pura, con `dc` de afuera.
+ */
+export function campeonRed(f, dc, sv) {
+  if (!f || f.fase !== 'fin' || !f.lado || !dc) return f;
+  const gs = genteChat(f.lado, dc.buscar, dc.tabla);
+  if (!gs.length) return f;
+  const camp = cortarRed(gs.map((y) => y.n + (y.fl ? ' ' + y.fl : '')).join(', '), 80);
+  const img = gs.length === 1 && gs[0].k && dc.cartaDe ? dc.cartaDe(gs[0].k, sv) : '';
+  return Object.assign({}, f, { camp }, img ? { img } : {});
 }
 
 /** La primera imagen del anuncio (un adjunto o la imagen de un embed), para el afiche de la tarjeta; o `''`. Pura. */
@@ -3137,7 +3152,9 @@ export function mensajeRed(c, f = {}) {
   if (c.svn || c.sv) e.author = { name: String(c.svn && c.svn !== c.sv ? c.svn + ' · ' + c.sv : c.svn || c.sv).slice(0, 256) };
   if (lineas.length) e.description = lineas.join('\n').slice(0, 4000);
   if (v.ico) e.thumbnail = { url: v.ico };
-  if (v.img || v.ban) e.image = { url: v.img || v.ban };
+  // 🏆 al terminar, la tarjeta del campeón (`campeonRed()`); si no, el afiche o el banner
+  const im = (fase === 'fin' && f.img) || v.img || v.ban;
+  if (im) e.image = { url: im };
   return {
     allowed_mentions: { parse: [] },
     embeds: [e],
@@ -10385,15 +10402,21 @@ export class Avisos {
         if (c.ini && ahora >= c.ini) nuevas.set(r.id, { fase: 'empezo' });
       }
     }
-    let n = 0;
-    for (const [id, f] of nuevas) {
+    let n = 0, dc = null;
+    for (const [id, f0] of nuevas) {
       const r = por.get(id);
-      if (FASES_RED.indexOf(f.fase) <= FASES_RED.indexOf(r.fase)) continue;
+      if (FASES_RED.indexOf(f0.fase) <= FASES_RED.indexOf(r.fase)) continue;
       let c = {};
       try { c = JSON.parse(r.cuerpo) || {}; } catch (e) { c = {}; }
       if (!c.vis || !/^\d+$/.test(r.msg)) continue;
       if (n >= RED_FASES_TOPE) break;
       n++;
+      // 🏆 el campeón con su nombre de la Liga y su tarjeta: la tabla se lee sólo si alguna llegó a la final
+      let f = f0;
+      if (f0.fase === 'fin') {
+        if (dc === null) { try { dc = await this.datosCruce(ahora); } catch (e) { dc = false; } }
+        if (dc) f = campeonRed(f0, dc, c.sv);
+      }
       let est = 0;
       try {
         const rr = await fetch(`${DC}/channels/${CANAL_RED}/messages/${r.msg}`, {

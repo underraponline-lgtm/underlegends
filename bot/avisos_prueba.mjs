@@ -656,6 +656,16 @@ const ok = (cond, que, det) => {
     && A.imagenDe({ embeds: [{ image: { url: 'https://cdn.discordapp.com/b.jpg' } }] }) === 'https://cdn.discordapp.com/b.jpg',
   'el afiche: la primera imagen del anuncio, adjunta o de un embed; un video no');
   ok(A.FASES_RED.join() === ',empezo,vivo,fin', 'las fases, en orden: sólo se avanza');
+  // 🏆 al terminar, la tarjeta del campeón (Dlx, 11/11/2026: «Sí, su tarjeta»)
+  const dcc = { tabla: { teito: { k: 'teito', n: 'Teito', cc: 'ar' } }, buscar: (n) => (/teito/i.test(n) ? 'teito' : ''),
+    cartaDe: (k, sv) => 'https://r2/' + k + '/' + (sv === 'DDF' ? 'sv-ddf' : 'temporada') + '.webp' };
+  const fc = A.campeonRed(A.faseDeLlave(L('TEITO 🇦🇷')), dcc, 'DDF');
+  ok(fc.camp.startsWith('Teito') && fc.img === 'https://r2/teito/sv-ddf.webp', 'el campeón con su nombre de la Liga y su tarjeta de ese servidor');
+  ok(A.mensajeRed(cn, fc).embeds[0].image.url === fc.img && A.mensajeRed(cn, { fase: 'vivo' }).embeds[0].image.url === vd.ban,
+    'la tarjeta del campeón reemplaza al banner sólo al terminar');
+  const feq = A.campeonRed(A.faseDeLlave(L('TEITO, OTRO')), dcc, 'DDF');
+  ok(!feq.img && A.campeonRed(A.faseDeLlave(L('NADIE')), dcc, 'DDF').img === undefined,
+    'un equipo campeón, o alguien sin tarjeta, deja la imagen que había');
   const mcx = A.mensajeRedCancelado(Object.assign({}, cn, { vis: vd }), 'borrado');
   ok(mcx.embeds[0].thumbnail.url === vd.ico && !mcx.embeds[0].image, 'la cancelada conserva el ícono y pierde la imagen');
 }
