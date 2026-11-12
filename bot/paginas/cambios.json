@@ -11,6 +11,18 @@
  ],
  "cambios": [
     {
+        "version": "4.67",
+        "dia": "2026-11-12",
+        "cuando": "2026-11-12T16:00:00-05:00",
+        "titulo": "El panel del Inicio, más visual",
+        "items": [
+            "Los cuadros del panel con más color, y tu carta más grande en el centro.",
+            "Tu mejor carta de liga, junto a las demás.",
+            "**Estadísticas** y **Misiones** se abren en una ventana: tus números, y las misiones de la semana con el Most Wanted.",
+            "Tu crew muestra a su gente y cuánto le falta para subir de tier; el Pase, tu barra de XP."
+        ]
+    },
+    {
         "version": "4.66",
         "dia": "2026-11-12",
         "cuando": "2026-11-12T15:29:00-05:00",
