@@ -11,9 +11,20 @@
  ],
  "cambios": [
     {
+        "version": "4.64",
+        "dia": "2026-11-12",
+        "cuando": "2026-11-12T14:57:00-05:00",
+        "titulo": "La bienvenida tiene su propia página",
+        "items": [
+            "**La bienvenida vive en `/freestyle-rap/bienvenida`**: si es tu primera vez en la Liga (o abres una pestaña privada), el Inicio te lleva ahí solo.",
+            "**Puedes volver a verla entera cuando quieras**: con ese link o desde **Ajustes → La introducción**.",
+            "Al cerrarla vuelves al Inicio, y el botón de «atrás» ya no rebota entre las dos."
+        ]
+    },
+    {
         "version": "4.63",
         "dia": "2026-11-12",
-        "cuando": "2026-11-12T15:20:00-05:00",
+        "cuando": "2026-11-12T14:42:00-05:00",
         "titulo": "El video de la Liga, también al verificarte y al cargar",
         "items": [
             "**Al volver de Discord para verificarte**, la bienvenida sigue con el video de fondo en vez de una pantalla negra.",
@@ -23,7 +34,7 @@
     {
         "version": "4.62",
         "dia": "2026-11-12",
-        "cuando": "2026-11-12T14:45:00-05:00",
+        "cuando": "2026-11-12T14:33:00-05:00",
         "titulo": "El video de la Liga, en Socios y en el Salón de la Fama",
         "items": [
             "**Socios y el Salón de la Fama tienen el video de la bienvenida** en su franja de arriba: raperos de la Liga batallando, en blanco y negro.",
