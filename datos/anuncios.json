@@ -1,5 +1,5 @@
 {
- "cuando": "2026-11-12T02:24:54+00:00",
+ "cuando": "2026-11-12T02:52:43+00:00",
  "anuncios": [
   {
    "nombre": "¡SE LLEGÓ LA GRAN NOCHE!",
@@ -411,13 +411,15 @@
     "dj": [
      "Kravitz",
      "la monalisa",
-     "zaik0009"
+     "zaik0009",
+     "Lizeninn"
     ]
    },
    "autor": "Kravitz",
    "staff_cuentas": {
     "Kravitz": "1345962362615894027",
-    "la monalisa": "1487658663148785734"
+    "la monalisa": "1487658663148785734",
+    "Lizeninn": "1493416945037611140"
    },
    "categoria_id": "1468478330826260500"
   },
@@ -6817,6 +6819,15 @@
   }
  ],
  "inscripciones": [
+  {
+   "servidor": "ACAD",
+   "canal": "📝┇inscripciones-1",
+   "texto": "Lrs🇦🇷",
+   "quien": "lrs0378",
+   "discord_id": "1385452830684614697",
+   "msg_id": "1570269514824810567",
+   "cuando": "2026-11-12T02:50:26"
+  },
   {
    "servidor": "ACAD",
    "canal": "📝┇inscripciones-1",
@@ -42807,15 +42818,6 @@
    "discord_id": "1144100773844766811",
    "msg_id": "1557929307311968339",
    "cuando": "2026-10-09T01:34:51"
-  },
-  {
-   "servidor": "DDF",
-   "canal": "『📑』Inscripciones",
-   "texto": "Mc fleivagner🇳🇮",
-   "quien": "adriagner",
-   "discord_id": "1316490165836972104",
-   "msg_id": "1557929282343280691",
-   "cuando": "2026-10-09T01:34:45"
   }
  ]
 }

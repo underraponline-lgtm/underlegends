@@ -3017,6 +3017,27 @@
     "DUPLICADO: #555 «DESGRACIAS EN TOKYO VOL 29 PANDILLAS» · FFA · 20/10 = #493 «DESGRACIAS EN TOKYO VOL 29 PANDILLAS» · 7 de 7 batallas"
    ],
    "escribio": {}
+  },
+  {
+   "id": "79d8fa425c",
+   "tipo": "Batalla sin ganador",
+   "sec": "FATS BATTLES PALOOZA FECHA 7 · ACAD · 19/10 · #491",
+   "que": "¿Quién ganó en cuartos?\nMAJIZTRAL 🇨🇴 + MINIBOY 🇨🇱 🆚 MCO 🇦🇷 + MATHIAS 🇻🇪",
+   "r": "Nadie siguió (cobran la ronda)",
+   "regla": "R22 · una batalla de equipos: cualquier respuesta paga lo mismo, porque quien gana y no sigue cobra su parte",
+   "rk": "R22",
+   "por": "el ciclo",
+   "porque": "es de equipos (MAJIZTRAL 🇨🇴 + MINIBOY 🇨🇱 vs MCO 🇦🇷 + MATHIAS 🇻🇪): quien gana y no sigue cobra su parte, así que cualquier respuesta paga lo mismo, y en equipos no hay duelo",
+   "t": 1794452311154,
+   "filas": [
+    762
+   ],
+   "variantes": [
+    "FATS BATTLES PALOOZA FECHA 7 · ACAD · 19/10 · cuartos · MAJIZTRAL 🇨🇴 + MINIBOY 🇨🇱 🆚 MCO 🇦🇷 + MATHIAS 🇻🇪"
+   ],
+   "escribio": {
+    "batalla": "FATS BATTLES PALOOZA FECHA 7 · ACAD · 19/10 · cuartos · MAJIZTRAL 🇨🇴 + MINIBOY 🇨🇱 🆚 MCO 🇦🇷 + MATHIAS 🇻🇪"
+   }
   }
  ],
  "deshechas": []
