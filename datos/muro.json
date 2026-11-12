@@ -1035,7 +1035,10 @@
 },
 "akuseru": {
 "rg": "",
-"c": []
+"c": [
+"pais",
+"servidor"
+]
 },
 "zetryko": {
 "rg": "",
@@ -2789,22 +2792,6 @@
 }
 },
 "cambios": [
-{
-"tipo": "tarjeta",
-"t": "2026-10-07T18:44:15Z",
-"quien": [
-"Oasis"
-],
-"carta": "competitivo"
-},
-{
-"tipo": "tarjeta",
-"t": "2026-10-07T18:44:15Z",
-"quien": [
-"Cronox"
-],
-"carta": "pais"
-},
 {
 "tipo": "rango",
 "t": "2026-10-07T19:57:42Z",
@@ -6161,6 +6148,22 @@
 "BastyRetro"
 ],
 "carta": "pais"
+},
+{
+"tipo": "tarjeta",
+"t": "2026-11-12T20:33:19Z",
+"quien": [
+"Akuseru"
+],
+"carta": "pais"
+},
+{
+"tipo": "tarjeta",
+"t": "2026-11-12T20:33:19Z",
+"quien": [
+"Akuseru"
+],
+"carta": "servidor"
 }
 ],
 "noche_antes": {
