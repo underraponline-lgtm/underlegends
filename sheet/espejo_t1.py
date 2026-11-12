@@ -73,7 +73,13 @@ VITRINAS = {'Ranking Temporada': 'vitrina_temporada', 'Ranking Competitivo': 'vi
 #: fila 9) y AKAs (dos bloques lado a lado y un panel). `construir_padron` y `construir_akas` piden la grilla completa
 #: con `get_all_values()`, así que se guarda la grilla completa, COMO TEXTO —lo que muestra el Sheet—: un Discord ID
 #: de 19 cifras como número perdería las últimas. `datos/padron.json`, ya en el repo, trae todo lo de la Lista.
-GRILLAS = {'Lista de Raperos': 'lista', 'AKAs': 'akas'}
+GRILLAS = {'Lista de Raperos': 'lista', 'AKAs': 'akas',
+           # 📋 y la cola de preguntas, la vista de ✅ Decidir y lo que se lee de Config (etapa 4c, 11/11/2026)
+           'Pendientes': 'pendientes', '✅ Decidir': 'decidir', 'Config': 'config'}
+#: ⚠️ DE `Config`, SÓLO LO QUE SE LEE: las tablas de puntos (`A7:B14`, `C7:D12`, `A18:B23`), los modificadores
+#: (`F5:G15`) y el contador (`B27:B28`). El resto del tablero trae el registro viejo del Most Wanted (`J2:M22`), que no
+#: lee nadie y no tiene por qué ir a un repo público.
+GRILLAS_RANGO = {'Config': 'A1:H30'}
 
 
 def ruta(hoja, temp=ACTUAL, base=BASE):
@@ -443,9 +449,11 @@ def _leer_grilla_sheet(hoja):
     from escribir import token, id_operativo
     from reintentar import leer as _reint
 
+    rng = "'%s'" % hoja + ('!' + GRILLAS_RANGO[hoja] if hoja in GRILLAS_RANGO else '')
+
     def _pedir():
         r = requests.get('https://sheets.googleapis.com/v4/spreadsheets/%s/values/%s'
-                         % (id_operativo(), requests.utils.quote("'%s'" % hoja)),
+                         % (id_operativo(), requests.utils.quote(rng)),
                          headers={'Authorization': 'Bearer ' + token()}, timeout=90)
         r.raise_for_status()
         return r.json().get('values', [])
@@ -589,7 +597,7 @@ def _al_salir():
     for hoja in sorted(_SUCIAS):
         refrescar(hoja)
     if _COMPARADAS['iguales'] or _COMPARADAS['distintas']:
-        print('   %s lecturas de la Lista y AKAs desde datos/: %d iguales al Sheet%s'
+        print('   %s lecturas del Operativo (Lista, AKAs, Pendientes, ✅ Decidir, Config) desde datos/: %d iguales al Sheet%s'
               % ('🗄️' if not _COMPARADAS['distintas'] else '🔴', _COMPARADAS['iguales'],
                  ', %d DISTINTAS' % _COMPARADAS['distintas'] if _COMPARADAS['distintas'] else ''))
 
@@ -647,9 +655,14 @@ def comparar_lectura(ruta_get, respuesta):
         if '?' in crudo:
             return                                         # con opciones (UNFORMATTED, etc.): no es lo que se guarda
         a1 = unquote(crudo)
-        hoja = _celdas(a1)[0]
+        hoja, _f1, _c1, f2, c2 = _celdas(a1)
         if hoja not in GRILLAS or hoja in _SUCIAS:
             return
+        if hoja in GRILLAS_RANGO:
+            # sólo se guardó un pedazo (ver `GRILLAS_RANGO`): lo que se pide afuera de él no se puede comparar
+            _h, _a, _b, lf, lc = _celdas('%s!%s' % (hoja, GRILLAS_RANGO[hoja]))
+            if not f2 or not c2 or f2 > lf or c2 > lc:
+                return
         g = grilla_guardada(hoja)
         if g is None:
             return

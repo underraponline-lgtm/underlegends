@@ -332,18 +332,11 @@ def _leer(rng):
     # eventos del ciclo, y un 429 acá tumbaba la carga entera. Es el mismo
     # agujero que mató el ciclo de las 6:52 AM ET del 24/09/2026 desde otro
     # archivo. Ver `sheet/reintentar.py`.
+    # 🗄️ POR `escribir._pedir()` (etapa 4c de sacar el Sheet, 11/11/2026): reintenta el 429 y el 5xx igual que
+    # `reintentar`, y es donde se compara cada lectura de `Config` con su archivo de `datos/` (`espejo_t1`)
     import requests
-    from escribir import token, API, id_operativo
-    from reintentar import leer
-
-    def _pedir():
-        r = requests.get('%s/%s/values/%s'
-                         % (API, id_operativo(), requests.utils.quote(rng)),
-                         headers={'Authorization': 'Bearer ' + token()},
-                         timeout=60)
-        r.raise_for_status()
-        return r.json().get('values', [])
-    return leer(_pedir)
+    from escribir import _pedir
+    return _pedir('GET', '/values/%s' % requests.utils.quote(rng)).get('values', [])
 
 
 def _pct(v):
