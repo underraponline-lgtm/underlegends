@@ -923,6 +923,13 @@ def _lo_barato(correr):
     # `tabla_nueva()`, que **arrastra** las columnas que no se calculan
     # —Rango, Most Wanted—; las otras tres se calculan enteras. Meterlas
     # en el mismo flujo obligaria a que una sepa del arrastre de la otra.
+    # 🔢 QUIÉN PASA EL PORTÓN AL NUMERAR LA VITRINA (12/11/2026): se vuelve a mirar en el paso 2, con el padrón nuevo.
+    # Ver `verificados.miembros()` y el paso 2
+    try:
+        import verificados as _VER1c
+        porton_1c = _VER1c.miembros()
+    except Exception:                                    # noqa: BLE001
+        porton_1c = None
     paso('1c', 'las vitrinas del Oficial')
     if not correr:
         print('      correría sheet/rankings.py --escribir --aplicar')
@@ -1197,6 +1204,26 @@ def _lo_barato(correr):
         else:
             print('      %-42s %d -> %d'
                   % ('sheet/construir_padron.py', antes_p, hay_p))
+
+        # 🔢 SI ALGUIEN ENTRÓ O SALIÓ DEL PORTÓN DESPUÉS DE LAS VITRINAS, SE VUELVEN A ESCRIBIR, Y ANTES DE LOS POOLS
+        # (12/11/2026; Dlx: «Que el puesto de la carta no se corra al verificarse»). El paso 1c numera a los miembros
+        # con el padrón de la vuelta anterior, y el 1a2 y el 1b —que van después a propósito, ver arriba— pueden
+        # verificar a alguien o ponerle país. El pool, con el padrón nuevo, lo numeraba y la vitrina no: «🔴 la carta y
+        # el ranking no dan el mismo puesto en 70» el 12/11 a las 11:22 AM, todos los de abajo corridos uno, hasta la
+        # vuelta siguiente. Mover los pasos no servía: el número también depende del padrón, que se rehace recién acá,
+        # y el 1a1 lee lo que deja el 1c. Las vitrinas viven en datos/ y reescribirlas cuesta segundos; sólo pasa cuando
+        # cambió el portón. ⚠️ Nunca frena el ciclo: si falla, queda como antes y lo arregla la vuelta siguiente
+        try:
+            import verificados as _VER2
+            porton_2 = _VER2.miembros()
+        except Exception:                                # noqa: BLE001
+            porton_2 = None
+        if porton_1c is not None and porton_2 is not None and porton_1c != porton_2:
+            entran, salen = len(porton_2 - porton_1c), len(porton_1c - porton_2)
+            print('      🔢 %d entraron y %d salieron del portón después de las vitrinas: las vuelvo a numerar'
+                  % (entran, salen))
+            corre(['sheet/rankings.py', '--escribir', '--aplicar'], mostrar=('🔴', 'en datos/'))
+            corre(['sheet/rankings.py', '--otras', '--aplicar'], mostrar=('🔴',))
 
         # 🔴 SE MIDE EL POOL ANTES Y DESPUES, Y UNA CAIDA GRANDE FRENA.
         #

@@ -346,6 +346,21 @@ def por_nombre():
     ⚠️ `None` NO ES «NADIE», igual que `cargar()`: sin el archivo no se
     sabe quién es miembro, y el que pregunta no filtra.
     """
+    pasan = miembros()
+    if pasan is None:
+        return None
+    import construir_padron as _PAD
+    return lambda nombre: _PAD.norm(nombre or '') in pasan
+
+
+def miembros():
+    """🔑 Los nombres (normalizados como el padrón) de quienes pasan el portón hoy, o `None` si no se sabe. Es lo que
+    pregunta `por_nombre()`, y por eso lo que decide quién lleva número en las vitrinas y en los pools.
+
+    🔢 EL CICLO LO MIRA DOS VECES (12/11/2026): antes de escribir las vitrinas (paso 1c) y después de rehacer el
+    padrón (paso 2). Si cambió en el medio —alguien se verificó en el 1a2 o en el 1b—, la vitrina numeró sin esa
+    persona y el pool con ella, y la carta y el ranking decían puestos distintos hasta la vuelta siguiente («🔴 la
+    carta y el ranking no dan el mismo puesto en 70», 11:22 AM). Ver `bot/pipeline.py`, paso 2."""
     ids, _c = cargar()
     if ids is None:
         return None
@@ -354,9 +369,7 @@ def por_nombre():
     except ImportError:
         sys.path.insert(0, os.path.join(BASE, 'sheet'))
         import construir_padron as _PAD
-    pasan = {_PAD.norm(x['raw']) for x in _PAD.cargar()
-             if x.get('raw') and pasa(x, ids)}
-    return lambda nombre: _PAD.norm(nombre or '') in pasan
+    return frozenset(_PAD.norm(x['raw']) for x in _PAD.cargar() if x.get('raw') and pasa(x, ids))
 
 
 def numerar(nombres, oficial):
