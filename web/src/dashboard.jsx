@@ -1406,30 +1406,28 @@ function svsDe(chat, aj) {
   const c = chat || {};
   return [...new Set([...(c.generales || []).map((x) => x.sv), ...Object.keys(c.admin || {}), ...Object.keys(aj.en_vivo || {})])].sort();
 }
-const DEF_AP = { montos: [50, 100, 250, 500], minutos: 3, tope: 500 };
+// 🎲 sin tope desde el 11/11/2026 (Dlx: «que no haya nivel max de apuesta»): «Tope por batalla» se fue
+const DEF_AP = { montos: [50, 100, 250, 500], minutos: 3 };
 const DEF_RIT = { normal: 10, batalla: 2 };
 
-// 🎲 las apuestas: los botones, cuánto quedan abiertas, el tope por batalla, dónde van en cualquier nivel y dónde no van
+// 🎲 las apuestas: los botones, cuánto quedan abiertas y dónde no van. Sin tope (11/11/2026)
 function AjApuestas({ liga, aj, hacer, ocup, chat, general }) {
   const def = ((chat || {}).def || {}).apuestas || DEF_AP;
   const a = aj.apuestas || null;
   const firma = JSON.stringify(a);
   const [montos, setMontos] = useState((a || def).montos.join(', '));
   const [minutos, setMinutos] = useState((a || def).minutos);
-  const [tope, setTope] = useState((a || def).tope);
   const [fuera, setFuera] = useState((a && a.apagadas) || {});
   // 🎲 prendidas a mano, en cualquier nivel del bot en vivo (13/10/2026, ver `hayApuestas()` en avisos.js)
   const [dentro, setDentro] = useState((a && a.prendidas) || {});
   useEffect(() => {
     const r = a || def;
-    setMontos(r.montos.join(', ')); setMinutos(r.minutos); setTope(r.tope); setFuera((a && a.apagadas) || {});
+    setMontos(r.montos.join(', ')); setMinutos(r.minutos); setFuera((a && a.apagadas) || {});
     setDentro((a && a.prendidas) || {});
   }, [firma]); // eslint-disable-line react-hooks/exhaustive-deps
   const ms = montos.split(/[\s,;.]+/).filter(Boolean).map(Number);
-  const t = Number(tope);
   const mal = ms.length < 2 || ms.length > 4 ? 'De 2 a 4 botones.'
-    : ms.some((m, i) => !Number.isInteger(m) || m < 10 || m > 5000 || (i && m <= ms[i - 1])) ? 'Los botones van de menor a mayor, de 10 a 5.000.'
-      : !Number.isInteger(t) || t < ms[ms.length - 1] || t > 20000 ? 'El tope va desde el botón más alto hasta 20.000.' : '';
+    : ms.some((m, i) => !Number.isInteger(m) || m < 10 || m > 5000 || (i && m <= ms[i - 1])) ? 'Los botones van de menor a mayor, de 10 a 5.000.' : '';
   const svs = svsDe(chat, aj);
   return (
     <div className="db-aj">
@@ -1437,7 +1435,7 @@ function AjApuestas({ liga, aj, hacer, ocup, chat, general }) {
       <p className="db-tx">Salen <b>siempre</b>, en todo servidor con el bot en vivo y elija lo que elija su admin: en <b>Con datos</b> y <b>A full</b>, en el mensaje de cada cruce; en los otros niveles, en un mensaje con la batalla que viene. Se toca a quién gana y se abre la ventana para apostar, con Puntos de Tienda; el pozo se reparte entre los que aciertan. Sólo las saca «No hay apuestas en».</p>
       <form className="db-form uno" onSubmit={(e) => {
         e.preventDefault();
-        if (!mal) hacer('apuestas', { montos: ms, minutos: Number(minutos), tope: t, apagadas: fuera, prendidas: dentro }, 'Guardado: vale para la próxima apuesta.');
+        if (!mal) hacer('apuestas', { montos: ms, minutos: Number(minutos), apagadas: fuera, prendidas: dentro }, 'Guardado: vale para la próxima apuesta.');
       }}>
         <label className="db-campo"><span>Los botones <small>de menor a mayor, separados por coma</small></span>
           <input value={montos} inputMode="numeric" placeholder="50, 100, 250, 500" onChange={(e) => setMontos(e.target.value)} /></label>
@@ -1446,8 +1444,6 @@ function AjApuestas({ liga, aj, hacer, ocup, chat, general }) {
             <select value={minutos} onChange={(e) => setMinutos(Number(e.target.value))}>
               {Array.from({ length: 15 }, (_, i) => i + 1).map((x) => <option key={x} value={x}>{x} {x === 1 ? 'minuto' : 'minutos'}</option>)}
             </select></label>
-          <label className="db-campo db-corto"><span>Tope por batalla</span>
-            <input type="number" min={10} max={20000} step={10} value={tope} onChange={(e) => setTope(e.target.value)} /></label>
         </div>
         {/* 🎲 «Prendidas en» se fue el 11/11/2026: las apuestas salen siempre (`hayApuestas()` en avisos.js) */}
         {!general && svs.length ? (
@@ -1912,7 +1908,7 @@ function AjServidores({ liga, aj, hacer, ocup, chat }) {
   const prendido = (sv) => dash[sv] !== false && (!!admin[sv] || dash[sv] === true);
   const defAp = (c.def || {}).apuestas || DEF_AP;
   const ap = aj.apuestas || null;
-  const apBase = { montos: (ap || defAp).montos, minutos: (ap || defAp).minutos, tope: (ap || defAp).tope,
+  const apBase = { montos: (ap || defAp).montos, minutos: (ap || defAp).minutos,
     apagadas: (ap && ap.apagadas) || {}, prendidas: (ap && ap.prendidas) || {} };
   // 🎲 prendidas o apagadas: desde el 11/11/2026 salen siempre, así que «prendidas a mano» ya no existe (`hayApuestas()`)
   const apDe = (sv) => (apBase.apagadas[sv] ? 'no' : '');
@@ -4193,7 +4189,7 @@ function ServidoresTabla({ liga, aj, hacer, ocup, chat, T, origen }) {
   const prendido = (sv) => dash[sv] !== false && (!!admin[sv] || dash[sv] === true);
   const defAp = (c.def || {}).apuestas || DEF_AP;
   const ap = aj.apuestas || null;
-  const apBase = { montos: (ap || defAp).montos, minutos: (ap || defAp).minutos, tope: (ap || defAp).tope,
+  const apBase = { montos: (ap || defAp).montos, minutos: (ap || defAp).minutos,
     apagadas: (ap && ap.apagadas) || {}, prendidas: (ap && ap.prendidas) || {} };
   // 🎲 prendidas o apagadas: desde el 11/11/2026 salen siempre, así que «prendidas a mano» ya no existe (`hayApuestas()`)
   const apDe = (sv) => (apBase.apagadas[sv] ? 'no' : '');
@@ -4367,7 +4363,7 @@ function AjustesFilas({ liga, aj, hacer, ocup, chat, ir, abrir, sis }) {
         <Fila {...f('aj-silencio')} t="Horario de silencio" que="Horas (en hora del este) en que el bot en vivo no habla en ningún chat."
           val={s ? '🌙 De ' + s.desde + ' a ' + s.hasta : 'Sin silencio'} tono={s ? 'ojo' : ''}>
           <AjSilencio aj={aj} hacer={hacer} ocup={ocup} /></Fila>
-        <Fila {...f('aj-apuestas')} t="Las apuestas" que="Los botones, cuánto quedan abiertas y el tope por batalla."
+        <Fila {...f('aj-apuestas')} t="Las apuestas" que="Los botones, cuánto quedan abiertas y dónde no van. Sin tope."
           val={(a || defA).montos.map(num).join(' · ') + ' · tope ' + num((a || defA).tope) + (a ? ' · ✍' : '')} tono={a ? 'ojo' : ''}>
           <AjApuestas liga={liga} aj={aj} hacer={hacer} ocup={ocup} chat={chat} general /></Fila>
       </ul>

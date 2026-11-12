@@ -4752,9 +4752,9 @@ export default {
         return new Response(JSON.stringify({ type: 9, data: { custom_id: 'vm:' + quien + ':' + extra + ':' + dueno,
           title: ('Votas por ' + (nom.length > 12 ? nom.slice(0, 11) + '…' : nom) + ' · Tienes ' + mil(info.saldo) + ' Puntos').slice(0, 45),
           components: [{ type: 1, components: [{ type: 4, custom_id: 'monto', style: 1, required: true, min_length: 1, max_length: 6, value: '0',
+            // 🎲 sin tope (11/11/2026, Dlx: «que no haya nivel max de apuesta»): lo que tienes ya está en el título
             label: (info.saldo <= 0 ? 'Todavía no tienes Puntos: deja 0 y votas'
-              : info.queda <= 0 ? 'Ya pusiste el máximo: deja 0 y votas'
-                : info.ya ? 'Ya pusiste ' + mil(info.ya) + '. ¿Cuánto más? Máx. ' + mil(info.queda) : '¿Cuánto apuestas? Máx. ' + mil(Math.min(info.queda, info.saldo)) + ' · 0 = nada').slice(0, 45) }] }] } }),
+              : info.ya ? 'Ya pusiste ' + mil(info.ya) + '. ¿Cuánto más? 0 = nada' : '¿Cuánto apuestas? Sin tope · 0 = nada').slice(0, 45) }] }] } }),
         { headers: { 'content-type': 'application/json' } });
       }
 

@@ -789,19 +789,20 @@ export function favoritosDe(L, tabla) {
 // Las apuestas, como las decidió: «Botones en el chat», «Pozo compartido», «Hasta 500, cierra a los 3 min»
 // ═════════════════════════════════════════════════════════════════════
 export const AP_MONTOS = [50, 100, 250, 500];
-export const AP_TOPE = 500;
+//: 🎲 SIN TOPE desde el 11/11/2026 (Dlx: «que no haya nivel max de apuesta»): se apuesta lo que se tenga de Puntos de
+//: Tienda, y el único freno es el saldo (`apostar()`). Era 500 por batalla y persona, y el Dashboard lo dejaba cambiar
+//: («Tope por batalla», que se fue): un `tope` guardado de antes se acepta al validar y no se usa
 export const AP_CIERRA = 3 * MIN;
 
 // 🎛️ MÁS AJUSTES DEL DASHBOARD (Dlx, 07/10/2026: «dame más configuraciones», y a la lista: «Apuestas», «Aviso de cada
 // evento», «Horario de silencio»). Sin ajuste vale lo de siempre: los de arriba, `CHAT_ENTRE` y `CHAT_ENTRE_TODO`
 
-/** Las apuestas como las dejó Dlx: `{montos, cierra (ms), tope, apagadas: {SV: true}, prendidas: {SV: true}}` */
+/** Las apuestas como las dejó Dlx: `{montos, cierra (ms), apagadas: {SV: true}, prendidas: {SV: true}}`. Sin tope (11/11/2026) */
 export function apuestasCfg(aj) {
   const a = (aj && aj.apuestas) || {};
   return {
     montos: Array.isArray(a.montos) && a.montos.length ? a.montos : AP_MONTOS,
     cierra: (Number(a.minutos) || AP_CIERRA / MIN) * MIN,
-    tope: Number(a.tope) || AP_TOPE,
     apagadas: (a.apagadas && typeof a.apagadas === 'object') ? a.apagadas : {},
     prendidas: (a.prendidas && typeof a.prendidas === 'object') ? a.prendidas : {},
   };
@@ -1704,10 +1705,10 @@ export function datoCurioso(x, semilla, cabeza) {
 /** La línea de la apuesta en el mensaje del cruce, según cómo esté. ⚠️ Siempre empieza con 🎲: se reemplaza por eso */
 export function lineaApuesta(estado, d = {}) {
   if (estado === 'abierta') {
-    const mins = Math.round((d.cierra || AP_CIERRA) / MIN), ms = d.montos || AP_MONTOS;
-    return '🎲 **Apuestas abiertas ' + mins + (mins === 1 ? ' minuto' : ' minutos') + '**: toca a quién y cuánto, de '
-      + milesAp(ms[0]) + ' a ' + milesAp(d.tope || AP_TOPE) + ' Puntos de Tienda. Lo de los que pierden se reparte entre '
-      + 'los que aciertan.';
+    // 🎲 sin tope (11/11/2026): lo que tengas de Puntos de Tienda
+    const mins = Math.round((d.cierra || AP_CIERRA) / MIN);
+    return '🎲 **Apuestas abiertas ' + mins + (mins === 1 ? ' minuto' : ' minutos') + '**: toca a quién y pon lo que quieras '
+      + 'de tus Puntos de Tienda, sin tope. Lo de los que pierden se reparte entre los que aciertan.';
   }
   if (estado === 'cerrada') return '🎲 🔒 Apuestas cerradas · pozo de **' + milesAp(d.pozo) + '** entre ' + (d.cuantos || 0);
   if (estado === 'pagada') {
@@ -4830,13 +4831,13 @@ export function ajusteValido(cual, valor) {
   if (cual === 'apuestas') {
     if (valor === null) return null;
     if (!valor || typeof valor !== 'object') return undefined;
-    // de 2 a 4 botones, de menor a mayor, de 10 a 5.000; de 1 a 15 minutos; el tope, desde el botón más alto
+    // de 2 a 4 botones, de menor a mayor, de 10 a 5.000; de 1 a 15 minutos. 🎲 Sin tope desde el 11/11/2026: un `tope` que
+    // mande una página vieja se ignora (no se guarda ni frena nada)
     const montos = (Array.isArray(valor.montos) ? valor.montos : []).map(Number);
     if (montos.length < 2 || montos.length > 4 || montos.some((m, i) => !Number.isInteger(m) || m < 10 || m > 5000
         || (i && m <= montos[i - 1]))) return undefined;
-    const minutos = Number(valor.minutos), tope = Number(valor.tope);
+    const minutos = Number(valor.minutos);
     if (!Number.isInteger(minutos) || minutos < 1 || minutos > 15) return undefined;
-    if (!Number.isInteger(tope) || tope < montos[montos.length - 1] || tope > 20000) return undefined;
     const apagadas = {}, prendidas = {};
     for (const [k, v] of Object.entries(valor.apagadas || {})) {
       if (!/^[A-Z]{2,6}$/.test(k) || v !== true) return undefined;
@@ -4847,7 +4848,7 @@ export function ajusteValido(cual, valor) {
       if (!/^[A-Z]{2,6}$/.test(k) || v !== true) return undefined;
       prendidas[k] = true;
     }
-    return { montos, minutos, tope, apagadas, prendidas };
+    return { montos, minutos, apagadas, prendidas };
   }
   if (cual === 'aviso_evento') {
     if (valor === null) return null;
@@ -9636,7 +9637,7 @@ export class Avisos {
     const nomAp = (l) => (l === 'A' ? nombreLado(gap[0], ap.a) : nombreLado(gap[1], ap.b));
     if (ya && ya.lado !== lado) return json({ error: 'otro lado', lado: ya.lado, nombre: nomAp(ya.lado) }, 409);
     const antes = ya ? ya.monto : 0;
-    if (antes + m > apc.tope) return json({ error: 'tope', queda: Math.max(0, apc.tope - antes), tope: apc.tope }, 409);
+    // 🎲 sin tope (11/11/2026, Dlx: «que no haya nivel max de apuesta»): el único freno es lo que tiene
     const s = this.saldo(quien, Number(d.desde) || 0, Number(d.inicial));
     if (m > s) return json({ error: 'saldo', saldo: s }, 409);
     this.state.storage.transactionSync(() => {
@@ -9658,10 +9659,11 @@ export class Avisos {
     const yo = claveTurno(d.clave || '');
     const propia = !!yo && [ap.a, ap.b].some((n) => String(n).split(/\s*[,+&]\s*/).some((x) => claveTurno(x) === yo));
     const ya = this.sql.exec('SELECT lado, monto FROM apostado WHERE ap = ? AND quien = ?', ap.id, quien).toArray()[0];
-    const tope = apuestasCfg(this.ajustes()).tope;
-    // 🏷️ el título del modal, con el nombre del ranking (`nombreLado()`)
+    // 🏷️ el título del modal, con el nombre del ranking (`nombreLado()`). 🎲 Sin tope (11/11/2026): lo que puede poner es lo
+    // que tiene, así que `queda` es el saldo
     const gap = genteDe(ap);
-    return { abierta: true, propia, saldo: this.saldo(quien, Number(d.desde) || 0, Number(d.inicial)), tope, ya: ya ? ya.monto : 0, queda: Math.max(0, tope - (ya ? ya.monto : 0)),
+    const saldo = this.saldo(quien, Number(d.desde) || 0, Number(d.inicial));
+    return { abierta: true, propia, saldo, ya: ya ? ya.monto : 0, queda: Math.max(0, saldo),
       a: nombreLado(gap[0], ap.a), b: nombreLado(gap[1], ap.b), ea: etiquetaLado(gap[0], ap.a, 12), eb: etiquetaLado(gap[1], ap.b, 12) };
   }
 
@@ -16748,7 +16750,7 @@ export class Avisos {
         // 📅 los eventos de Discord de cada servidor en los últimos 7 días: cuántos se crearon y el último error
         evd: this.eventosDiscordEstado(ahora),
         // 🎛️ lo de siempre, para que el Dashboard lo muestre sin escribir los números (ver `apuestasCfg()`)
-        def: { apuestas: { montos: AP_MONTOS, minutos: AP_CIERRA / MIN, tope: AP_TOPE },
+        def: { apuestas: { montos: AP_MONTOS, minutos: AP_CIERRA / MIN },
           ritmo: { normal: CHAT_ENTRE / MIN, batalla: CHAT_ENTRE_TODO / MIN } } },
       // 🤝 los errores reportados en las llaves (los 10 últimos), con la clave de la página de quien lo mandó si se la
       // conoce. Las postulaciones de /sumate se fueron con la página (13/10/2026)

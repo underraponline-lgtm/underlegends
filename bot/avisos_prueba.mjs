@@ -290,19 +290,22 @@ const ok = (cond, que, det) => {
     && A.ajusteValido('en_vivo_nivel', { FFA: 'mucho' }) === undefined, 'el ajuste del Dashboard acepta los cinco, y nada más');
   // 🎛️ los ajustes de más del Dashboard (07/10/2026): apuestas, aviso de cada evento, silencio y ritmo
   {
+    // 🎲 sin tope desde el 11/11/2026 (Dlx: «que no haya nivel max de apuesta»): un `tope` de una página vieja se acepta y no
+    // se guarda, y ni el texto ni la configuración lo tienen
     const ap = A.ajusteValido('apuestas', { montos: [20, 50, 100], minutos: 5, tope: 300, apagadas: { DRA: true } });
-    ok(ap && ap.montos.join() === '20,50,100' && ap.minutos === 5 && ap.tope === 300 && ap.apagadas.DRA === true
-      && A.ajusteValido('apuestas', { montos: [100, 50], minutos: 3, tope: 500 }) === undefined
-      && A.ajusteValido('apuestas', { montos: [50, 100], minutos: 3, tope: 80 }) === undefined
-      && A.ajusteValido('apuestas', { montos: [50, 100], minutos: 30, tope: 500 }) === undefined
+    ok(ap && ap.montos.join() === '20,50,100' && ap.minutos === 5 && !('tope' in ap) && ap.apagadas.DRA === true
+      && A.ajusteValido('apuestas', { montos: [100, 50], minutos: 3 }) === undefined
+      && !!A.ajusteValido('apuestas', { montos: [50, 100], minutos: 3, tope: 80 })
+      && !!A.ajusteValido('apuestas', { montos: [50, 100], minutos: 3 })
+      && A.ajusteValido('apuestas', { montos: [50, 100], minutos: 30 }) === undefined
       && A.ajusteValido('apuestas', null) === null,
-    'las apuestas: botones de menor a mayor, de 1 a 15 minutos, el tope desde el botón más alto');
-    const c = A.apuestasCfg({ apuestas: ap }), c0 = A.apuestasCfg({});
-    ok(c.cierra === 5 * 60000 && c.tope === 300 && c0.montos.join() === '50,100,250,500' && c0.cierra === 3 * 60000
-      && c0.tope === 500 && A.botonesApuesta('x', 'Ana', 'Beto', false, c.montos)[0].components.length === 3
-      && /5 minutos/.test(A.lineaApuesta('abierta', c)) && /de 20 a 300/.test(A.lineaApuesta('abierta', c))
-      && /3 minutos/.test(A.lineaApuesta('abierta', c0)),
-    'sin ajuste vale lo de siempre, y con ajuste los botones y el texto lo dicen', A.lineaApuesta('abierta', c));
+    'las apuestas: botones de menor a mayor y de 1 a 15 minutos; el tope ya no existe (uno viejo se ignora)');
+    const c = A.apuestasCfg({ apuestas: ap }), c0 = A.apuestasCfg({ apuestas: { montos: [50, 100], minutos: 3, tope: 500 } });
+    ok(c.cierra === 5 * 60000 && !('tope' in c) && !('tope' in c0) && A.apuestasCfg({}).montos.join() === '50,100,250,500'
+      && c0.cierra === 3 * 60000 && A.botonesApuesta('x', 'Ana', 'Beto', false, c.montos)[0].components.length === 3
+      && /5 minutos/.test(A.lineaApuesta('abierta', c)) && /sin tope/.test(A.lineaApuesta('abierta', c))
+      && !/\b500\b|\b300\b/.test(A.lineaApuesta('abierta', c0)) && /3 minutos/.test(A.lineaApuesta('abierta', c0)),
+    'sin ajuste vale lo de siempre, con ajuste los botones y los minutos lo dicen, y el renglón dice «sin tope»', A.lineaApuesta('abierta', c));
     // 🎲 prendidas a mano en cualquier nivel (13/10/2026, Dlx: «sin la necesidad de que el bot esté en full o con datos»)
     const ap2 = A.ajusteValido('apuestas', { montos: [50, 100], minutos: 3, tope: 500, apagadas: { DDF: true }, prendidas: { URBF: true } });
     const c2 = A.apuestasCfg({ apuestas: ap2 });
@@ -2018,25 +2021,28 @@ const ok = (cond, que, det) => {
     const a4 = await pedir({ quien: U2, ap: ap.id, lado: 'B', monto: 250 });
     const a5 = await pedir({ quien: U3, ap: ap.id, lado: 'A', monto: 50, clave: 'Ana' });
     const a6 = await pedir({ quien: U3, ap: ap.id, lado: 'A', monto: 75 });
-    ok(a1.ok && a1.saldo === 4900 && a2.error === 'tope' && a3.error === 'otro lado' && a4.ok && a4.pozo === 350
-      && a5.error === 'propia' && a6.error === 'datos', 'los frenos: el tope de 500, un solo lado, no en tu batalla, sólo los montos de los botones',
-    JSON.stringify([a1, a2, a3, a4, a5, a6]));
-    // 🎲 el modal (04/11/2026): cualquier monto hasta el tope, y lo que muestra antes de apostar
+    // 🎲 sin tope (11/11/2026): U1 suma 500 a sus 100 sin freno; el único freno es lo que tiene
+    const a7 = await (o.apostar({ quien: U2, ap: ap.id, lado: 'B', monto: 999999, inicial: 5000, libre: true }, T + 60000)).json();
+    ok(a1.ok && a1.saldo === 4900 && a2.ok && a2.total === 600 && a3.error === 'otro lado' && a4.ok && a4.pozo === 850
+      && a5.error === 'propia' && a6.error === 'datos' && a7.error === 'saldo' && a7.saldo === 4750,
+    'los frenos: sin tope (sólo el saldo), un solo lado, no en tu batalla, sólo los montos de los botones',
+    JSON.stringify([a1, a2, a3, a4, a5, a6, a7]));
+    // 🎲 el modal (04/11/2026): cualquier monto hasta lo que tenga (sin tope desde el 11/11), y lo que muestra antes de apostar
     const libre = (o.apostar({ quien: U3, ap: ap.id, lado: 'A', monto: 137, inicial: 5000, libre: true }, T + 2 * 60000), 0);
     const libreJ = await (o.apostar({ quien: U3, ap: ap.id, lado: 'A', monto: 13, inicial: 5000, libre: true }, T + 2 * 60000)).json();
     const sinLibre = await (o.apostar({ quien: U3, ap: ap.id, lado: 'A', monto: 13, inicial: 5000 }, T + 2 * 60000)).json();
     const cero = await (o.apostar({ quien: U3, ap: ap.id, lado: 'A', monto: 0, inicial: 5000, libre: true }, T + 2 * 60000)).json();
     const info = o.apuestaInfo({ quien: U3, ap: ap.id, inicial: 5000 }, T + 2 * 60000);
-    ok(libre === 0 && libreJ.ok && libreJ.total === 150 && sinLibre.error === 'datos' && cero.error === 'datos' && info.abierta && info.saldo === 4850 && info.queda === 350 && info.ya === 150
-      && !o.apuestaInfo({ quien: U3, ap: ap.id, inicial: 5000 }, T + 60 * 60000).abierta,
-    'desde el modal vale cualquier monto de 1 al tope, y antes dice cuánto tiene y cuánto puede poner', JSON.stringify([libreJ, sinLibre, cero, info]));
+    ok(libre === 0 && libreJ.ok && libreJ.total === 150 && sinLibre.error === 'datos' && cero.error === 'datos' && info.abierta && info.saldo === 4850 && info.queda === 4850 && info.ya === 150
+      && !('tope' in info) && !o.apuestaInfo({ quien: U3, ap: ap.id, inicial: 5000 }, T + 60 * 60000).abierta,
+    'desde el modal vale cualquier monto de 1 a lo que tenga, y antes dice cuánto tiene', JSON.stringify([libreJ, sinLibre, cero, info]));
     await (o.apostar({ quien: U3, ap: ap.id, lado: 'A', monto: 150, inicial: 5000, libre: true }, T + 2 * 60000)).json();
     sql.exec("DELETE FROM apostado WHERE ap = ? AND quien = ?", ap.id, U3);
     sql.exec("DELETE FROM tienda WHERE quien = ? AND id LIKE 'ap:%'", U3);
     pedidos.length = 0;
     await o.chatVivo(T + 4 * 60000);
     const cierre = pedidos.find((p) => p.m === 'PATCH');
-    ok(cierre && /🔒 Apuestas cerradas · pozo de \*\*350\*\* entre 2/.test(cierre.b.content) && cierre.b.components[0].components.every((c) => !c.disabled)
+    ok(cierre && /🔒 Apuestas cerradas · pozo de \*\*850\*\* entre 2/.test(cierre.b.content) && cierre.b.components[0].components.every((c) => !c.disabled)
       && /🗳️ /.test(cierre.b.content) && cierre.b.components.length === 4 && /^qg:/.test(cierre.b.components[0].components[0].custom_id) && cierre.b.components.flatMap((f) => f.components).some((x) => x.url === A.HUB_TARJETAS)
       && cierre.b.components.flatMap((f) => f.components).some((x) => /^vx:/.test(x.custom_id || ''))
       && (await pedir({ quien: U3, ap: ap.id, lado: 'A', monto: 50 }, T + 4 * 60000)).error === 'cerrada', 'a los 3 minutos cierra la apuesta: dice el pozo, no se puede apostar y quedan los botones del voto, sin perder su renglón');
@@ -2044,10 +2050,10 @@ const ok = (cond, que, det) => {
     llave(CU + '`[ SEMIFINALES ]`\n⌞Ana 🇦🇷⌝ 🆚 ⌞⌝\n', T + 6 * 60000);
     await o.chatVivo(T + 6 * 60000);
     const pago = pedidos.find((p) => p.m === 'PATCH' && /🏆 Ganó/.test(p.b.content));
-    ok(pago && /Ganó \*\*Ana\*\*: el pozo de \*\*350\*\* se repartió entre 1 que acertó/.test(pago.b.content)
+    ok(pago && /Ganó \*\*Ana\*\*: el pozo de \*\*850\*\* se repartió entre 1 que acertó/.test(pago.b.content)
       && pago.b.components.flatMap((f) => f.components).some((x) => x.url === A.HUB_TARJETAS) && !pago.b.components.flatMap((f) => f.components).some((x) => /^(ve|qg|ap):/.test(x.custom_id || ''))
       && o.saldo(U1, 0, 5000) === 5250 && o.saldo(U2, 0, 5000) === 4750 && sql.exec('SELECT estado FROM apuestas WHERE id = ?', ap.id).toArray()[0].estado === 'pagada',
-    'gana Ana: U1 se lleva el pozo entero (350, puso 100), U2 pierde sus 250, y el mensaje lo dice', JSON.stringify({ ped: pedidos.map((x) => [x.m, String((x.b && x.b.content) || '').slice(0, 90)]), est: sql.exec('SELECT estado, ganador, ronda, a, b FROM apuestas').toArray(), s1: o.saldo(U1, 0, 5000), s2: o.saldo(U2, 0, 5000) }));
+    'gana Ana: U1 se lleva el pozo entero (850, puso 600), U2 pierde sus 250, y el mensaje lo dice', JSON.stringify({ ped: pedidos.map((x) => [x.m, String((x.b && x.b.content) || '').slice(0, 90)]), est: sql.exec('SELECT estado, ganador, ronda, a, b FROM apuestas').toArray(), s1: o.saldo(U1, 0, 5000), s2: o.saldo(U2, 0, 5000) }));
     // 🏁 la imagen del resultado ya no se dibuja (Dlx, 11/11/2026: «si gasta mucho, sólo quítalo, es innecesario»): era la mitad
     // de los dibujos del VS. El «✅ Pasa Ana» sigue en el texto; el vs queda como salió
     ok(!sql.exec('SELECT datos FROM vs_cola').toArray().some((x) => JSON.parse(x.datos).gano),

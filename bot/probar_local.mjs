@@ -2610,7 +2610,7 @@ console.log('\nLAS ENCUESTAS\n');
   const m = r.json?.data || {};
   const campo = m.components?.[0]?.components?.[0] || {};
   ok('el botón abre el modal, con su dinero a la vista', r.json?.type === 9 && m.custom_id === 'vm:q1:A:ap1' && /5\.000 Puntos/.test(m.title) && m.title.length <= 45
-     && campo.type === 4 && campo.value === '0' && /Máx\. 500 · 0 = nada/.test(campo.label) && campo.label.length <= 45, JSON.stringify(m).slice(0, 220));
+     && campo.type === 4 && campo.value === '0' && /Sin tope · 0 = nada/.test(campo.label) && campo.label.length <= 45, JSON.stringify(m).slice(0, 220));
   llamadas.length = 0;
   r = await modal(2, '0');
   ok('con 0 vota, no apuesta y dice cuánto tiene', llamadas.some((c) => c[0] === '/qg-votar') && !llamadas.some((c) => c[0] === '/apostar')
