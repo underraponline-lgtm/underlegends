@@ -1,0 +1,97 @@
+name: recalcular
+
+# ══════════════════════════════════════════════════════════════════
+# 🔁 VOLVER A LEER Y A PAGAR UNOS EVENTOS, DESDE GITHUB Y NO DESDE UNA PC.
+#
+# Etapa 3c de sacar el Sheet (11/11/2026). El recálculo a mano
+# (`herramientas/recalcular_t1.py --aplicar`) corría en una PC y
+# escribía las mismas hojas que el ciclo: ese mismo día, la #471 y la
+# corrida de las 6:52 PM se pisaron. Con los datos en el repo es peor:
+# una PC con el repo atrasado reescribiría `Resultados` con lo de horas
+# atrás. Un solo escritor: el ciclo y esto, en la MISMA fila.
+#
+#   gh workflow run recalcular.yml -f leer=471                  el informe, sin escribir
+#   gh workflow run recalcular.yml -f leer=471 -f aplicar=true  y lo aplica (sólo esos)
+#
+# ⚠️ EL GRUPO ES `escuchar`, EL DEL CICLO: nunca corren a la vez. Si ya
+# hay una corrida esperando en ese grupo, la nueva la reemplaza (así
+# funciona GitHub): o el ciclo pierde esa vuelta —la siguiente relee
+# todo— o hay que volver a pedir esto. No cancela la que está corriendo.
+# ⚠️ NO DE 3 A 11 AM ET, como el ciclo (`forzar` para saltearlo).
+# ══════════════════════════════════════════════════════════════════
+
+on:
+  workflow_dispatch:
+    inputs:
+      leer:
+        description: 'Los números de evento a releer, separados por coma (ej. 471,495)'
+        required: true
+        type: string
+      aplicar:
+        description: 'Escribir lo que cambie (si no, sólo el informe)'
+        type: boolean
+        default: false
+      solo:
+        description: 'Aplicar sólo estos (vacío: los mismos de «leer»)'
+        type: string
+        default: ''
+      sin:
+        description: 'No aplicar estos (separados por coma)'
+        type: string
+        default: ''
+      forzar:
+        description: 'Correr aunque sea de madrugada (3 a 11 AM ET)'
+        type: boolean
+        default: false
+
+concurrency:
+  group: escuchar
+  cancel-in-progress: false
+
+jobs:
+  recalcular:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.ref_name }}
+
+      - uses: ./.github/actions/preparar
+        with:
+          creds_json: ${{ secrets.CREDS_JSON }}
+          env_file: ${{ secrets.ENV_FILE }}
+
+      - name: la hora
+        if: inputs.forzar != true
+        run: |
+          python - <<'PY'
+          import datetime, sys, zoneinfo
+          h = datetime.datetime.now(zoneinfo.ZoneInfo('America/New_York')).hour
+          if 3 <= h < 11:
+              sys.exit('🌙 de 3 a 11 AM ET no corre nada (como el ciclo). Pídelo después o con forzar=true')
+          PY
+
+      - name: leer
+        env:
+          LEER: ${{ inputs.leer }}
+        run: |
+          python herramientas/recalcular_t1.py --leer "$LEER" --json /tmp/recalcular.json
+          python herramientas/recalcular_t1.py --informe /tmp/recalcular.json
+
+      - name: aplicar
+        if: inputs.aplicar == true
+        env:
+          LEER: ${{ inputs.leer }}
+          SOLO: ${{ inputs.solo }}
+          SIN: ${{ inputs.sin }}
+        run: |
+          args="--informe /tmp/recalcular.json --aplicar --solo ${SOLO:-$LEER}"
+          if [ -n "$SIN" ]; then args="$args --sin $SIN"; fi
+          python herramientas/recalcular_t1.py $args
+
+      - name: guardar
+        if: always() && inputs.aplicar == true
+        run: bash bot/ci/guardar.sh

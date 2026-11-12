@@ -113,6 +113,25 @@ def filas(hoja, temp=ACTUAL, base=BASE):
     return [[visible(c) for c in f] for f in crudas(hoja, temp, base)]
 
 
+def un_escritor(que, entorno=None, argv=None):
+    """🖊️ UN SOLO ESCRITOR (etapa 3c, 11/11/2026): lo que escribe los resultados corre en GitHub —el ciclo y
+    `.github/workflows/recalcular.yml`, en la misma fila—, nunca desde una PC. El 11/11 un recálculo hecho en una PC y la
+    corrida de las 6:52 PM se pisaron; con los datos en el repo, una PC atrasada reescribiría lo de horas atrás.
+    `--desde-aca` lo saltea a propósito (sabiendo que el ciclo no corre). Devuelve `None` o el motivo, y sale con él."""
+    entorno = os.environ if entorno is None else entorno
+    argv = sys.argv if argv is None else argv
+    if entorno.get('GITHUB_ACTIONS') == 'true' or '--desde-aca' in argv:
+        return None
+    motivo = ('🔴 %s escribe los resultados, y eso corre en GitHub para que nunca haya dos escritores a la vez:\n'
+              '      gh workflow run recalcular.yml -f leer=<números> -f aplicar=true\n'
+              '   (Si sabes que el ciclo no está corriendo y lo quieres igual desde acá: --desde-aca.)' % que)
+    try:
+        sys.stderr.reconfigure(encoding='utf-8', errors='replace')
+    except AttributeError:
+        pass
+    sys.exit(motivo)
+
+
 #: 🔎 LA PRUEBA DE LA ETAPA 2 (11/11/2026). Prendida, `fuente()` lee el archivo Y el Sheet, los compara, y si dan
 #: distinto usa el Sheet —todavía es la fuente— y lo dice en rojo: lo que calcula cada lector sale idéntico a antes por
 #: construcción. Se apaga, y con eso el Sheet deja de leerse, cuando varias corridas seguidas del ciclo dieron «igual»
@@ -335,6 +354,16 @@ def _self_check():
             sys.modules['escribir'] = real
         else:
             sys.modules.pop('escribir', None)
+    # 🖊️ un solo escritor: en GitHub pasa, en una PC no (salvo --desde-aca)
+    try:
+        un_escritor('x', entorno={}, argv=['p', '--aplicar'])
+        en_pc = 'pasó'
+    except SystemExit as e:
+        en_pc = str(e)
+    ok(un_escritor('x', entorno={'GITHUB_ACTIONS': 'true'}, argv=['p']) is None
+       and un_escritor('x', entorno={}, argv=['p', '--desde-aca']) is None
+       and 'gh workflow run recalcular.yml' in en_pc,
+       'un solo escritor: en GitHub escribe; en una PC se niega y dice cómo pedirlo, salvo --desde-aca')
     ok(set(HOJAS) == {'Resultados', '1v1', 'Eventos Procesados'}
        and ruta('1v1').endswith(os.path.join('datos', ACTUAL + '_1v1.json')), 'las tres hojas, con la temporada en el nombre')
     print('\n   %s' % ('✅ todo bien' if not fallas else '🔴 %d mal' % fallas))

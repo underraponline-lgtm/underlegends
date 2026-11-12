@@ -392,6 +392,10 @@ def aplicar(d):
 
     ⚠️ NO A LAS :22 NI A LAS :52: el ciclo escribe las mismas hojas y `datos/`."""
     sys.path[:0] = [os.path.join(BASE, 'bot'), os.path.join(BASE, 'sheet'), BASE]
+    # 🖊️ un solo escritor (etapa 3c, 11/11/2026): desde una PC, no. Ver `espejo_t1.un_escritor()` y
+    # `.github/workflows/recalcular.yml`
+    import espejo_t1 as _EJ
+    _EJ.un_escritor('recalcular_t1.py --aplicar')
     import decidir as DEC
     filas = []
     for n in d.get('_cambian') or []:
@@ -433,7 +437,8 @@ def aplicar(d):
             f.write('\n')
         print('   ✅ %d duplicado(s) a `sacar` (datos/decisiones.json): salen en la corrida siguiente' % len(dups))
     if filas:
-        r = subprocess.run([sys.executable, os.path.join(BASE, 'sheet', 'procesar_entrada.py'), '--aplicar', '--limpiar'],
+        r = subprocess.run([sys.executable, os.path.join(BASE, 'sheet', 'procesar_entrada.py'), '--aplicar', '--limpiar']
+                           + (['--desde-aca'] if '--desde-aca' in sys.argv else []),
                            cwd=BASE, env=dict(os.environ, PYTHONIOENCODING='utf-8'))
         if r.returncode != 0:
             raise SystemExit('   🔴 procesar_entrada.py no terminó bien: mirá datos/entrada_buzon.json')

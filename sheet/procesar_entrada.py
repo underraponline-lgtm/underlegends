@@ -342,6 +342,10 @@ def avisar_rutas(raros):
 def main():
     aplicar = '--aplicar' in sys.argv
     limpiar = '--limpiar' in sys.argv
+    # 🖊️ un solo escritor (etapa 3c): con --aplicar, sólo en GitHub. Ver `espejo_t1.un_escritor()`
+    if aplicar:
+        import espejo_t1 as _EJ
+        _EJ.un_escritor('procesar_entrada.py --aplicar')
     print('\n══ `Entrada` → `Resultados` · `1v1` · `Eventos Procesados` ══\n')
 
     # 🔴 PRIMERO LO QUE NO CUENTA, aunque `Entrada` esté vacía: un evento que
