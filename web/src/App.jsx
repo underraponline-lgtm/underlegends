@@ -13,7 +13,7 @@ import { LosQueMandan, Noticias } from './medio.jsx';
 import { Menu, Merch, Pie, Subir, Tabbar, Visor } from './abajo.jsx';
 import { Encuestas } from './encuestas.jsx';
 import { Lobby } from './lobby.jsx';
-import { SemanaComp } from './semana_comp.jsx';
+// (SemanaComp, de semana_comp.jsx, ya no va en el Inicio: la reemplaza PnSemana del panel)
 import { MarcoSolo } from './marco_solo.jsx';
 // 🧭 el tutorial (Dlx, 12/10/2026, «A … B … C … D … E. Dale»): quién es nuevo se decide al cargar (primera.js, chico);
 // lo que se dibuja se baja sólo si hace falta
@@ -752,7 +752,8 @@ export default function App() {
         <Aislada n="LigasAhora"><BatallasAhora liga={liga} cls="sec" /></Aislada>
         {/* 🏆 la semana: en qué vas en cada competencia (26/10/2026, Dlx: «me gustan… las posiciones de los mini eventos»,
             y el Inicio, como está). Se apaga sola sin datos */}
-        <Aislada n="SemanaComp"><SemanaComp liga={liga} dc={yo.dc} /></Aislada>
+        {/* 📅 y desde el 12/11/2026 vive en el panel, al lado de la Tienda (Dlx: «eso de la semana día 3 de 7 creo que
+            deberíamos hacerlo un botón dentro del panel al costado de tienda»): ver `PnSemana` en panel.jsx */}
         {pasosEnInicio(yo.dc) ? <Aislada n="PrimerosPasos"><Suspense fallback={null}><PrimerosPasos liga={liga} dc={yo.dc} /></Suspense></Aislada> : null}
         {/* 🚪 EL INICIO ES UN LOBBY (Dlx, 13/10/2026: «que se sienta como un inicio, un home, un lobby»): el escenario,
             las puertas, y después todo lo de antes. ⚠️ NO SE SACA NADA SIN NÚMEROS (Dlx, el mismo día, al ver el Inicio

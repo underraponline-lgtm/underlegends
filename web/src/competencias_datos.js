@@ -128,13 +128,16 @@ export function dondeEstoy(C, k) {
   }
   for (const r of C.copa || []) { const e = enLlave(r, k); if (e) { out.copa = e; break; } }
   for (const r of C.rapid || []) { const e = enLlave(r, k); if (e) { out.rapid = e; break; } }
+  // `[qué, cruce, hasta cuándo]`: el tercero es el cierre de esa jornada o de esa ronda (lo usa el VS del Inicio, 12/11/2026)
   const pend = [];
-  if (out.liga && out.liga.cruce && !out.liga.cruce.m[2]) pend.push(['Liga ' + nombreLiga(C, out.liga.g) + ' · jornada ' + L.jornada, out.liga.cruce]);
-  if (out.elite && out.elite.cruce && !out.elite.cruce.m[2]) pend.push(['Élite · jornada ' + L.jornada, out.elite.cruce]);
+  const cierreLiga = (L.cierres || [])[(L.jornada || 1) - 1] || '';
+  if (out.liga && out.liga.cruce && !out.liga.cruce.m[2]) pend.push(['Liga ' + nombreLiga(C, out.liga.g) + ' · jornada ' + L.jornada, out.liga.cruce, cierreLiga]);
+  if (out.elite && out.elite.cruce && !out.elite.cruce.m[2]) pend.push(['Élite · jornada ' + L.jornada, out.elite.cruce, cierreLiga]);
   const pc = porJugar(out.copa, k);
-  if (pc) pend.push(['Copa ' + out.copa.r.id + ' · ' + out.copa.ronda.r, pc]);
+  if (pc) pend.push(['Copa ' + out.copa.r.id + ' · ' + out.copa.ronda.r, pc, out.copa.ronda.hasta || '']);
   const pr = porJugar(out.rapid, k);
-  if (pr) pend.push(['Rapid · ' + out.rapid.ronda.r, pr]);
+  if (pr) pend.push(['Rapid · ' + out.rapid.ronda.r, pr, out.rapid.ronda.hasta || '']);
   out.prox = pend[0] || null;
+  out.pend = pend.slice().sort((a, b) => ((a[2] || '9') < (b[2] || '9') ? -1 : (a[2] || '9') > (b[2] || '9') ? 1 : 0));
   return out.liga || out.elite || out.copa || out.rapid ? out : null;
 }

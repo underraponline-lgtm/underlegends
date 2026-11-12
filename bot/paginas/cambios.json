@@ -11,6 +11,21 @@
  ],
  "cambios": [
     {
+        "version": "4.58",
+        "dia": "2026-11-12",
+        "cuando": "2026-11-12T06:20:00-05:00",
+        "titulo": "El panel nuevo del Inicio",
+        "items": [
+            "**Tus tarjetas, al centro del Inicio**, con tus rankings a los costados: Temporada, Competitivo, ELO, tu país, tu servidor y tu crew. Toca uno y ves la carta que lo mide.",
+            "**Tu próxima batalla, cara a cara**: tú contra tu rival de Competencias, con tu chance de ganar, los duelos de cada uno y si ya se cruzaron. «Ver las N» abre las demás.",
+            "**Batallar** (de prueba): busca un rival cerca tuyo en el ranking y elige la hora. Más adelante las batallas se van a jugar solas a esa hora.",
+            "**La racha y la campana, más chicas**. Con la campana ya activada, no aparece.",
+            "**Eventos te muestra cuántos jugaste tú** contra todos los de la semana; Misiones trae los carteles de Se busca, y en lugar de Ranking va tu Crew.",
+            "**La tira de «Esta semana» corre**, con los multiplicadores de todos los servidores. Se frena al pasar el mouse.",
+            "**La Tienda y La semana van juntas abajo**, en una línea."
+        ]
+    },
+    {
         "version": "4.57",
         "dia": "2026-11-12",
         "cuando": "2026-11-12T05:50:00-05:00",

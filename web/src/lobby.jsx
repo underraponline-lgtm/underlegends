@@ -17,6 +17,7 @@ import { Cara, Ico, aDiscord, accion, useCampana } from './piezas.jsx';
 import { avance, usePase } from './pase.js';
 // 🎉 «¡Subiste!» también en el Inicio (Dlx, 25/10/2026: «como un pop up incluso en la página principal»)
 import { PopPase } from './pase_pop.jsx';
+import { Batallas, FilaRacha, PnCrew, PnEventos, PnMisiones, PnPase, PnSemana, PnTienda, Vestuario, campanaPide } from './panel.jsx';
 import { cobrarRacha, useRacha } from './racha.js';
 import { esDoble, eventoDelBoton, ganador, lados, llaveEnVivo, momentosLlave } from './arriba.jsx';
 
@@ -33,6 +34,7 @@ function falta(ms) {
   return h < 48 ? h + ' H' : Math.round(h / 24) + ' D';
 }
 // cuánto falta para la medianoche del este, cuando vencen las Tareas diarias
+// eslint-disable-next-line no-unused-vars
 function hastaMedianocheET(ahora) {
   const p = new Intl.DateTimeFormat('en-US', { timeZone: 'America/New_York', hour12: false, hour: '2-digit', minute: '2-digit' })
     .formatToParts(new Date(ahora));
@@ -60,6 +62,7 @@ function useSaldo(dc) {
   return W.BILL && W.BILL.ok ? W.BILL.saldo : null;
 }
 
+// eslint-disable-next-line no-unused-vars
 function TuBarra({ liga, dc, P, R, saldo }) {
   const yo = liga.yo;
   const [fest, setFest] = useState(null);
@@ -111,6 +114,7 @@ function TuBarra({ liga, dc, P, R, saldo }) {
 // todas»). La fecha es la de `comun/temporada.py` (`fase.termina` del payload): el último día entero, en hora del este
 // —en diciembre, EST—. El top 16 es el del torneo de cierre, contado igual que el Ranking (`clasificados()` de
 // ranking.jsx): los primeros 16 CON NÚMERO de la Temporada, por OVR. Sin número tuyo, sólo los días
+// eslint-disable-next-line no-unused-vars
 function cuentaT1(liga) {
   const fin = (liga.d.fase || {}).termina;
   const hoy = new Intl.DateTimeFormat('en-CA', { timeZone: 'America/New_York' }).format(new Date(liga.ahora));
@@ -215,6 +219,7 @@ function Racha({ R }) {
 // 🌱 «TUS PRIMEROS 7 DÍAS» (Dlx, 13/10/2026: «hacer así también uno especial para los nuevos», y «Así, con tareas»): en
 // vez de la racha, la primera semana. Un paso por día; cada uno pide algo chico que enseña una parte de la Liga
 const IR_PASO = { seguir: '#/ranking', campana: '#/avisos', llave: '#/eventos', verificar: '#/cuenta/verificar', anotarse: '#/eventos' };
+// eslint-disable-next-line no-unused-vars
 function Bienvenida({ B }) {
   const [ocup, setOcup] = useState(false);
   const [msg, setMsg] = useState('');
@@ -326,6 +331,7 @@ function Seguidos({ liga }) {
 // rival»). Lo que hacía «Tus seguidos hoy» ya lo dice la fila de arriba (los campeones y los que juegan). Esto es tuyo y
 // no se repite: quién está justo arriba tuyo en la Temporada, cuántos puntos te faltan para pasarlo y su próximo evento
 // (si está anotado). El primero ve al segundo, que lo persigue. Sin puesto, cómo conseguir uno; sin cuenta, nada
+// eslint-disable-next-line no-unused-vars
 function Rival({ liga, dc }) {
   const yo = liga.yo;
   if (!dc) return null;
@@ -444,8 +450,9 @@ function ElBoton({ liga }) {
   const { e, anotado } = eventoDelBoton(liga);
   if (!e) {
     // 🔔 CON LA CAMPANA YA PRENDIDA EN ESTE DISPOSITIVO, NO SE PIDE (Dlx, 19/10/2026, con la captura: «ya lo tengo
-    // activado pero esto no desaparece»). El botón de abajo pedía activarla siempre, sin preguntarle a `campana.js`
-    if (camp && camp.activa) return null;
+    // activado pero esto no desaparece»). Y desde el panel nuevo (12/11/2026) la pide la campana chica de arriba: acá,
+    // sólo si este teléfono no la puede tener (para que igual sepa que los eventos se anuncian con poco tiempo)
+    if (camp && (camp.activa || campanaPide(camp, null))) return null;
     return (
       <div className="lb-boton nada">
         <span className="lb-b-et">TODAVÍA NO ANUNCIARON EL PRÓXIMO</span>
@@ -497,6 +504,7 @@ function ElBoton({ liga }) {
 // quien ya jugó (ya le puede pasar algo), con su sesión, debajo de su próximo evento; no donde el botón grande ya la
 // ofrece (sin evento anunciado, o ya anotado) ni a quien ya la tiene vinculada. Son dos pasos: activarla en este
 // teléfono y vincularla con tu Discord (los tuyos). «Ahora no» la esconde una semana
+// eslint-disable-next-line no-unused-vars
 function PedirCampana({ liga, dc }) {
   const c = useCampana();
   const [no, setNo] = useState(() => { const t = leer('lg:lb-camp-no'); return !!(t && Date.now() - t < 7 * 864e5); });
@@ -528,142 +536,31 @@ function PedirCampana({ liga, dc }) {
 // Tareas de hoy, hechas o no. Sin dato no hay dibujo
 //: el ícono de cada Tarea, por cómo empieza su id (`bot/pase.py`: DIARIAS y SEMANALES)
 const ICO_TAREA = [['entrar', 'yo'], ['dias', 'reloj'], ['felicitar', 'premio'], ['vivo', 'mira'], ['dra', 'micro'], ['precio', 'moneda']];
+// eslint-disable-next-line no-unused-vars
 const icoTarea = (id) => (ICO_TAREA.find(([p]) => String(id || '').startsWith(p)) || [0, 'pase'])[1];
 
 export function Lobby({ liga, dc }) {
   const P = usePase(!!dc);
   const R = useRacha(!!dc);
   const saldo = useSaldo(dc);
-  const ahora = liga.ahora;
-  const yo = liga.yo;
-  // 🎯 Se busca: los sueltos primero, sus caras como afiches. Sin globito: no es algo tuyo (salvo que te busquen a vos)
-  const mw = liga.d.mw || {};
-  const bus = mw.b || [];
-  const sueltos = bus.filter((b) => b.e !== 'cazado' && b.e !== 'escondio');
-  const caras = (sueltos.length ? sueltos : bus).slice(0, 3);
-  const tope = bus.reduce((mx, b) => Math.max(mx, Number(b.v) || 0), 0);
-  const vence = mw.fin ? falta(utc(mw.fin) - ahora) : '';
-  const teBuscan = !!(yo && liga.buscado(yo.k));
-  // 📅 la semana: cuántos eventos (lunes a domingo, en tu hora) y si hay alguno en vivo
-  const l0 = lunes(ahora);
-  const evSemana = (liga.d.calendario || []).filter((c) => !liga.canceladoCal(c) && utc(c.t) >= l0 && utc(c.t) < l0 + 7 * 86400000);
-  const semana = evSemana.length;
-  const vivos = liga.vivo();
-  const enVivo = vivos.length;
-  // 🖼️ los servidores de la semana, de más eventos a menos; el que está en vivo, primero
-  const svVivo = new Set(vivos.map((e) => e.sv).filter(Boolean));
-  const porSv = {};
-  for (const c of evSemana) if (c.sv) porSv[c.sv] = (porSv[c.sv] || 0) + 1;
-  const logos = Object.entries(porSv).filter(([sv]) => liga.logo(sv))
-    .sort((x, y) => (svVivo.has(y[0]) - svVivo.has(x[0])) || y[1] - x[1]);
-  // 🖼️ el podio: #2, #1 y #3, con el color de su letra
-  const podio = [2, 1, 3].map((p) => (liga.d.tabla || []).find((f) => f.pos === p)).filter(Boolean);
-  // ⏳ cuánto falta de la temporada: una etiqueta en la puerta del Ranking, como «VENCE EN» de Se busca (Dlx: «puede
-  // estar en cualquier otro lado así ocupa menos espacio»)
-  const t1 = cuentaT1(liga);
-  // 🏆 tu puesto y si cambió desde la última vez que miraste (el globito, sólo por algo tuyo)
-  const pos = yo && yo.pos ? yo.pos : 0;
-  const [vistoPos, setVistoPos] = useState(() => leer('lg:lb-pos'));
-  useEffect(() => { if (pos && vistoPos == null) { guardar('lg:lb-pos', pos); setVistoPos(pos); } }, [pos, vistoPos]);
-  const subio = pos && vistoPos && vistoPos !== pos ? vistoPos - pos : 0;
-  const uno = (liga.d.tabla || []).find((f) => f.pos === 1);
-  // 🃏 tu carta más nueva, con «NUEVA» si cambió desde la última vez
-  const tuya = yo ? ['temporada', 'competitivo', 'servidor'].map((c) => liga.cartaUrl(yo.k, c)).find(Boolean) : null;
-  const [vistaCarta, setVistaCarta] = useState(() => leer('lg:lb-carta'));
-  useEffect(() => { if (tuya && vistaCarta == null) { guardar('lg:lb-carta', tuya); setVistaCarta(tuya); } }, [tuya, vistaCarta]);
-  const cartaNueva = !!(tuya && vistaCarta && vistaCarta !== tuya);
-  const otras = (liga.d.tabla || []).filter((f) => f.pos && liga.cartaUrl(f.k, 'temporada')).slice(0, 3);
-  // 🎟️ el Pase: tu nivel, y cuándo vencen las Tareas de hoy
-  const a = P && P.listo && P.miembro ? avance(P) : null;
-  const hoy = a && P.hoy && Array.isArray(P.hoy.tareas) && P.hoy.tareas.length ? P.hoy.tareas : null;
-  const hechas = hoy ? hoy.filter((t) => t.hecha).length : 0;
-  // 💰 la cabeza más cara de la semana (`valorCabezas()` de app.js; se redibuja con `lg:precios`, como el saldo)
-  const valor = typeof window.valorCabezas === 'function' ? window.valorCabezas() || {} : {};
-  const cara = Object.keys(valor).filter((c) => valor[c] > 0).sort((x, y) => valor[y] - valor[x])[0] || '';
-  // 🔒 LA PUERTA SIN NADA TUYO DICE QUÉ LA ABRE (Dlx, 13/10/2026, «me gusta»; el research: como la Bloqueada dice cuánto
-  // falta). Sin entrar con Discord no: eso ya lo pide tu barra, y tres puertas diciéndolo sería repetirlo
-  const sinVerif = !!(dc && P && P.listo && !P.miembro);
+  // 🎛️ EL PANEL NUEVO (12/11/2026): ver panel.jsx, que explica cada pieza con las palabras de Dlx. De lo de antes se
+  // quedan el botón grande (tu evento: el 42 % juega una sola vez y ahí se pierde la gente) y el pop-up del Pase
   return (
-    <section className="lobby" aria-label="Tu lobby">
-      <TuBarra liga={liga} dc={dc} P={P} R={R} saldo={saldo} />
+    <section className="lobby pn" aria-label="Tu lobby">
       {dc && P && P.listo ? <PopPase P={P} /> : null}
-      {/* 🔥 la racha (o 🌱 la bienvenida, si sos nuevo) reemplaza al premio de la semana (Dlx: «La racha lo reemplaza») */}
-      {dc && R ? (R.bienvenida ? <Bienvenida B={R.bienvenida} /> : <Racha R={R} />) : null}
+      <FilaRacha dc={dc} R={R} />
       <ElBoton liga={liga} />
-      <PedirCampana liga={liga} dc={dc} />
-      <Rival liga={liga} dc={dc} />
-      <div className="lb-grid aparece">
-        {bus.length ? (
-          <a className="pu lb lb-mw" href="#/ranking/mw">
-            <span className="lb-t">{teBuscan ? 'TE BUSCAN' : 'SE BUSCA'}</span>
-            {vence ? <span className="lb-reloj">VENCE EN {vence}</span> : null}
-            {teBuscan ? <span className="lb-glob" aria-label="te buscan">!</span> : null}
-            <span className="lb-afiches">{caras.map((b) => (
-              <span key={b.k} className="lb-afiche"><Cara liga={liga} k={b.k} nombre={b.n} cls="lb-af-c" /><b>{limpio(b.n)}</b></span>
-            ))}</span>
-            <small>{sueltos.length} {sueltos.length === 1 ? 'sigue suelto' : 'siguen sueltos'}{tope ? ' · cobras hasta ' + num(tope) + ' pts' : ''}</small>
-          </a>
-        ) : null}
-        <a className="pu lb lb-ev" href="#/eventos">
-          <span className="lb-t">EVENTOS</span>
-          {enVivo ? <span className="lb-reloj vivo">EN VIVO</span> : null}
-          <span className="lb-fila">
-            <span className="lb-nivel"><b>{semana}</b><small>{semana === 1 ? 'EVENTO' : 'EVENTOS'}</small></span>
-            {logos.length ? <span className="lb-vis lb-logos" aria-hidden="true">{logos.slice(0, 4).map(([sv, n]) => (
-              <span key={sv} className={'lb-logo' + (svVivo.has(sv) ? ' vivo' : '')}><img alt="" loading="lazy" src={liga.logo(sv)} /><i>{n}</i></span>
-            ))}{logos.length > 4 ? <span className="lb-mas">+{logos.length - 4}</span> : null}</span> : null}
-          </span>
-          <small>esta semana en la Liga</small>
-        </a>
-        <a className="pu lb lb-rk" href="#/ranking" onClick={() => { if (pos) guardar('lg:lb-pos', pos); }}>
-          <span className="lb-t">RANKING</span>
-          {t1 ? <span className="lb-reloj">{t1.tag}</span> : null}
-          {subio ? <span className="lb-glob" aria-label="cambió tu puesto">{subio > 0 ? '▲' : '▼'}</span> : null}
-          <span className="lb-fila">
-            {pos ? <span className="lb-nivel"><b>#{pos}</b><small>{subio ? (subio > 0 ? 'SUBISTE ' + subio : 'BAJASTE ' + -subio) : 'TU PUESTO'}</small></span>
-              : <span className="lb-nivel"><b>#1</b><small>{uno ? limpio(uno.n).toUpperCase() : 'LA TEMPORADA'}</small></span>}
-            {podio.length === 3 ? <span className="lb-vis lb-podio" aria-hidden="true">{podio.map((f) => (
-              <span key={f.k} className={'lb-pod p' + f.pos} style={{ '--rgc': f.rgc || '#F5C542' }}>
-                <Cara liga={liga} k={f.k} nombre={f.n} cls="lb-pod-c" /><b>{f.pos}</b></span>
-            ))}</span> : null}
-          </span>
-          <small>{pos ? (t1 && t1.top ? t1.top : 'en la Temporada') : dc && !yo ? 'Juega un evento y entras a la tabla'
-            : dc && (sinVerif || yo.fc) ? 'Verifícate en DRA y entras al ranking oficial' : 'Las tablas de la temporada'}</small>
-        </a>
-        <a className="pu lb lb-tj" href="#/tarjetas" onClick={() => { if (tuya) guardar('lg:lb-carta', tuya); }}>
-          <span className="lb-t">TARJETAS</span>
-          {cartaNueva ? <span className="lb-glob nueva">NUEVA</span> : null}
-          <span className="lb-abanico">{tuya ? <img alt="" loading="lazy" src={tuya} className="sola" />
-            : otras.map((f) => <img key={f.k} alt="" loading="lazy" src={liga.cartaUrl(f.k, 'temporada')} />)}</span>
-          <small>{tuya ? (cartaNueva ? 'Tu carta cambió' : 'La tuya') : sinVerif ? 'Verifícate en DRA y tienes tu primera carta'
-            : 'Las de cada rapero'}</small>
-        </a>
-        {/* 🔁 CADA DATO UNA VEZ, también adentro del lobby (Dlx, 13/10/2026: «evitar que se repitan las cosas»): tu nivel
-            y tus Puntos ya están en tu barra, así que la puerta del Pase muestra las Tareas de hoy y la de la Tienda, la
-            cabeza más cara de la semana */}
-        <a className="pu lb lb-pa" href="#/pase">
-          <span className="lb-t">PASE</span>
-          {a ? <span className="lb-reloj">VENCEN EN {falta(hastaMedianocheET(ahora))}</span> : null}
-          <span className="lb-fila">
-            {a && hoy ? <span className="lb-nivel"><b>{hechas}/{hoy.length}</b><small>{hechas === hoy.length ? 'HECHAS HOY' : 'TAREAS DE HOY'}</small></span>
-              : <span className="lb-nivel"><b>30</b><small>NIVELES</small></span>}
-            {a && hoy ? <span className="lb-vis lb-tareas">{hoy.map((t) => (
-              <span key={t.id} className={'lb-tarea' + (t.hecha ? ' hecha' : '')} title={t.t + (t.hecha ? ' · hecha' : '')}>
-                <Ico n={icoTarea(t.id)} t={22} />{t.hecha ? <i aria-hidden="true">✓</i> : null}</span>
-            ))}</span> : <span className="lb-vis lb-ticket" aria-hidden="true"><Ico n="pase" t={34} /></span>}
-          </span>
-          <i className="lb-barra"><u style={{ width: (a && hoy ? Math.round((100 * hechas) / hoy.length) : 0) + '%' }} /></i>
-          {/* 🎟️ la línea del Pase (Dlx, 25/10/2026): cuánto te falta para el siguiente nivel; el nivel ya está en tu barra */}
-          <small>{a && a.falta ? 'Te faltan ' + num(a.falta) + ' XP para el nivel ' + (P.nivel + 1) + (hechas < (hoy || []).length ? ': las de hoy te acercan' : '')
-            : a && hoy ? (hechas === hoy.length ? 'Mañana vienen otras' : 'Cada una te da XP')
-            : sinVerif ? 'Es de los miembros de DRA: verifícate para subir de nivel' : 'Tareas que dan premios'}</small>
-        </a>
-        <a className="pu lb lb-ti" href="#/tienda">
-          <span className="lb-big"><Ico n="moneda" t={34} /></span>
-          <span className="lb-ti-t"><span className="lb-t">TIENDA</span>
-            <small>{cara ? 'La cabeza más cara: ' + limpio((liga.fila(cara) || {}).n || cara) + ' · ' + num(valor[cara])
-              : saldo != null ? 'Ponle precio a la cabeza de alguien' : 'Todos arrancan con Puntos de Tienda'}</small></span>
-        </a>
+      <Batallas liga={liga} dc={dc} />
+      <div className="pn-grid aparece">
+        <PnEventos liga={liga} />
+        <Vestuario liga={liga} dc={dc} />
+        <PnCrew liga={liga} />
+        <PnMisiones liga={liga} />
+        <PnPase dc={dc} />
+      </div>
+      <div className="pn-baja">
+        <PnTienda saldo={saldo} />
+        <PnSemana liga={liga} />
       </div>
     </section>
   );

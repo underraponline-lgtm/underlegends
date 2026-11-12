@@ -1688,12 +1688,21 @@ export function Tira({ liga }) {
       <div className="ts-cab"><b className="ts-t">ESTA SEMANA</b>
         {nov && nov.link ? <a className="ts-a" href={nov.link} target="_blank" rel="noopener noreferrer">Lunes de la Liga <Ico n="flecha" t={14} /></a> : null}
       </div>
-      <ul className="ts-l">
-        {svs.map((sv) => {
-          const x = xs[sv];
-          return <li key={sv} className={x > 1 ? 'sube' : (x < 1 ? 'baja' : '')}><a className="ts-sv" href={'#/sv/' + siglaDe(sv)} aria-label={'Perfil de ' + siglaDe(sv)}><span className="ts-id"><img alt="" src={liga.logo(sv)} /><b>{siglaDe(sv)}</b></span><span className="ts-x">{mult(x)}</span></a></li>;
-        })}
-      </ul>
+      {/* 🎞️ UNA TIRA QUE CORRE (Dlx, 12/11/2026: «la fila esa que dice esta semana se veía bien cuando había pocos
+          servidores pero ahora que son varios…», y a las opciones, «me gusta una tira que corre… queda más visual»). Del
+          más alto al más bajo, dos veces seguidas para que la vuelta no se note (la segunda, escondida para el lector de
+          pantalla y el teclado). Se frena al pasar el mouse o con el foco adentro; con «Menos animaciones» o el
+          movimiento reducido del teléfono, quieta y se desliza a mano */}
+      <div className="ts-corre" style={{ '--ts-dur': Math.max(18, svs.length * 3) + 's' }}>
+        <ul className="ts-l ts-pista">
+          {[0, 1].map((vuelta) => svs.map((sv) => {
+            const x = xs[sv];
+            return <li key={vuelta + sv} className={(x > 1 ? 'sube' : (x < 1 ? 'baja' : '')) + (vuelta ? ' ts-eco' : '')} aria-hidden={vuelta ? 'true' : undefined}>
+              <a className="ts-sv" href={'#/sv/' + siglaDe(sv)} aria-label={'Perfil de ' + siglaDe(sv)} tabIndex={vuelta ? -1 : undefined}>
+                <span className="ts-id"><img alt="" src={liga.logo(sv)} /><b>{siglaDe(sv)}</b></span><span className="ts-x">{mult(x)}</span></a></li>;
+          }))}
+        </ul>
+      </div>
       {g ? <p className="ts-dor"><b>DORADO ×3</b><span>{limpio(g.n)} · {siglaDe(g.sv)} · {utc(g.t) <= liga.ahora ? 'se juega ahora' : liga.dia(g.t)}</span></p> : null}
     </section>
   );
