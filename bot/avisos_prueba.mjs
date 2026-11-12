@@ -1315,6 +1315,10 @@ const ok = (cond, que, det) => {
     ok(!vv1.viendo.length && vv2.viendo.length === 1 && vv2.viendo[0].k === 'r12' && vv3.viendo.length === 1 && vv3.viendo[0].k === 'qn1'
       && vv4.viendo.length === 1 && vv4.viendo[0].k === 'r13',
     '«lo estoy viendo»: se ven los casos que miran los otros, uno por persona, y una clave rara no se guarda', JSON.stringify([vv2, vv3, vv4]));
+    // 🔐 cada caso pide su permiso, y el panel corto sólo trae los casos de lo que ese rol ve (la revisión del 11/11)
+    ok(A.permisoDeCaso('qb1').join() === 'decidir' && A.permisoDeCaso('r12').includes('reportes_cerrar')
+      && A.permisoDeCaso('fx').join() === 'fondos' && A.permisoDeCaso('zz').join() === 'ajustes',
+    'cada caso de Pendientes pide el permiso de lo que es');
     // ✋ «Lo tomo» y las notas internas (11/11/2026): uno lo toma y se le saca al otro; soltar sólo el suyo (o Dlx);
     // la nota queda aunque se suelte; una clave rara no se guarda; sin Discord ID en lo que ve el Dashboard
     const cs1 = o.duenoCaso({ quien: '100000021', k: 'qn1', tomo: true });
@@ -1322,6 +1326,8 @@ const ok = (cond, que, det) => {
     const cs3 = o.duenoCaso({ quien: '100000022', k: 'qn1', tomo: false });
     const cs4 = o.duenoCaso({ quien: '100000021', k: 'qn1', tomo: false });
     const cs5 = o.duenoCaso({ quien: '100000021', k: '<x>', nota: 'no' });
+    ok(!Object.keys(o.casosDueno(['fondos'])).includes('qn1') && Object.keys(o.casosDueno(['decidir'])).includes('qn1'),
+      'el panel corto trae sólo los casos de lo que ese rol ve');
     ok(cs1.casos.qn1.tomo && cs2.casos.qn1.notas[0].txt === 'le escribí, espero respuesta' && cs3.casos.qn1.tomo
       && !cs4.casos.qn1.tomo && cs4.casos.qn1.notas.length === 1 && !cs5.casos['<x>'] && !JSON.stringify(cs4).includes('100000021'),
     '«Lo tomo» y las notas internas: soltar sólo el suyo, la nota queda, y sin el Discord ID de nadie', JSON.stringify([cs1, cs4]));

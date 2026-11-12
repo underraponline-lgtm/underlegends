@@ -4045,6 +4045,14 @@ const ROLES_PANEL = ['admin', 'moderador', 'asistente'];
 // yo como owner»). Lo de arriba es lo de siempre; lo que Dlx cambia en el Dashboard (Roles) se guarda en el objeto
 // (`permisos_roles`) y gana. «roles» no se cambia nunca: dar y sacar roles es sólo del owner
 export const PERMISOS_EDITABLES = Object.keys(PERMISOS).filter((k) => k !== 'roles');
+
+/** ✋ Qué permiso pide un caso de Pendientes, por la letra de su clave (`itemsBandeja()` del Dashboard): `q` y `m` son de
+ *  ✅ Decidir; `r`, una llave reportada; `f`, `p` y `l`, imágenes; `v`, videos; `d`, pedidos. Alcanza con uno. */
+export function permisoDeCaso(k) {
+  const c = String(k || '')[0];
+  return c === 'q' || c === 'm' ? ['decidir'] : c === 'r' ? ['reportes', 'reportes_cerrar'] : c === 'f' || c === 'p' || c === 'l' ? ['fondos']
+    : c === 'v' ? ['videos', 'fondos'] : c === 'd' ? ['reportes_cerrar'] : ['ajustes'];
+}
 //: la tabla vigente: lo de siempre, con lo que Dlx cambió encima. Sólo roles del Dashboard, sólo permisos que existen
 export function tablaPermisos(cambios) {
   const t = Object.assign({}, PERMISOS);
@@ -6331,6 +6339,8 @@ export async function rutaAvisos(req, env, ruta) {
   }
   // ✋ LO TOMO Y LAS NOTAS INTERNAS (Dlx, 11/11/2026, la maqueta de ✅ Decidir: «Dale, arma A»). Quien ve el panel
   if (ruta === '/avisos/dueno/caso') {
+    // 🔐 cada caso pide el permiso de lo que es (la revisión del 11/11/2026): antes cualquier rol del panel escribía en
+    // cualquier clave, también en las de reportes o ✅ Decidir que no ve
     const crudo = await req.text();
     if (crudo.length > 1024) return json({ error: 'demasiado grande' }, 413);
     let d = null;
@@ -6341,7 +6351,9 @@ export async function rutaAvisos(req, env, ruta) {
     }
     const q = await quienPide(req, env, d);
     if (!q.id) return json({ error: q.error }, q.estado);
-    if (!(await puede(q.id, 'panel'))) return json({ error: 'no' }, 403);
+    let deja = false;
+    for (const p of permisoDeCaso(String(d.k))) if (!deja && await puede(q.id, p)) deja = true;
+    if (!deja) return json({ error: 'no' }, 403);
     return elObjeto(env).fetch('https://avisos/dueno-caso', {
       method: 'POST', body: JSON.stringify({ k: d.k, tomo: d.tomo, nota: d.nota, quien: q.id }), headers: { 'content-type': 'application/json' },
     });
@@ -11808,10 +11820,12 @@ export class Avisos {
     return { ok: true, casos: this.casosDueno() };
   }
 
-  /** Los casos con dueño o con notas, para el Dashboard: sin el Discord ID de quien lo tomó */
-  casosDueno() {
+  /** Los casos con dueño o con notas, para el Dashboard: sin el Discord ID de quien lo tomó. Con `permisos`, sólo los
+   *  de lo que ese rol ve (`permisoDeCaso()`); sin, todos (Dlx) */
+  casosDueno(permisos) {
     const cs = this.leer('casos') || {};
-    return Object.fromEntries(Object.entries(cs).map(([k, c]) => [k, {
+    const ve = (k) => !permisos || permisoDeCaso(k).some((p) => permisos.includes(p));
+    return Object.fromEntries(Object.entries(cs).filter(([k]) => ve(k)).map(([k, c]) => [k, {
       tomo: c.tomo ? { por: c.tomo.por, t: c.tomo.t } : null, notas: (c.notas || []).map((n) => ({ por: n.por, t: n.t, txt: n.txt })) }]));
   }
 
@@ -16507,7 +16521,12 @@ export class Avisos {
     const roles = d && Array.isArray(d.roles) ? d.roles : ['owner'];
     const tabla = this.tablaPermisos();
     const permisos = Object.keys(PERMISOS).filter((k) => puedeRol(roles, k, tabla));
-    if (!roles.includes('owner') && !roles.includes('admin')) {
+    // 🔐 LOS DATOS SIGUEN LA TABLA, NO EL NOMBRE DEL ROL (la revisión del 11/11/2026). Antes el Admin recibía todo aunque
+    // Dlx le sacara un permiso, y un Moderador al que se le daban los ajustes recibía el panel corto, sin con qué
+    // dibujarlos. Ahora el panel entero es para quien puede cambiar los ajustes (Dlx siempre); los demás, el corto. Y en
+    // el entero, los reportes, ✅ Decidir y los pedidos siguen pidiendo su permiso
+    const veT = (k) => roles.includes('owner') || permisos.includes(k);
+    if (!veT('ajustes')) {
       const ve = (k) => permisos.includes(k);
       return { limitado: true, permisos, mis_roles: roles, yo: this.nombrePor(d && d.quien),
         reportes: ve('reportes') || ve('reportes_cerrar') ? this.reportesDueno(ahora) : [],
@@ -16515,7 +16534,7 @@ export class Avisos {
         decidir: ve('decidir') ? this.decidirDueno() : {}, videos: ve('videos') ? (this.leer('videos_revisar') || []) : [],
         fondos: ve('fondos') ? this.fondosDueno() : [], filtro: ve('fondos') ? this.filtroDueno() : null,
         fondos_vistos: ve('fondos') ? this.fondosVistos() : [], llaves_cuenta: ve('reportes') ? this.llavesDueno() : null,
-        casos: this.casosDueno(), organizadores: ve('reportes') ? (this.leer('finales_org') || null) : null,
+        casos: this.casosDueno(permisos), organizadores: ve('reportes') ? (this.leer('finales_org') || null) : null,
         fotos_carta: ve('fondos') ? this.fotosCartaDueno() : [],
         crews_logos: ve('fondos') ? CW.crewLogosDueno(this) : null,
         pedidos: ve('reportes') || ve('reportes_cerrar') ? this.pedidosDueno() : [],
@@ -16558,8 +16577,8 @@ export class Avisos {
       // 🤝 los errores reportados en las llaves (los 10 últimos), con la clave de la página de quien lo mandó si se la
       // conoce. Las postulaciones de /sumate se fueron con la página (13/10/2026)
       // 📣 con qué decidió Dlx y qué hizo el ciclo (13/10/2026): ver `reportesDueno()`
-      reportes: this.reportesDueno(ahora),
-      reportes_causas: this.causasDueno(ahora),
+      reportes: veT('reportes') || veT('reportes_cerrar') ? this.reportesDueno(ahora) : [],
+      reportes_causas: veT('reportes') || veT('reportes_cerrar') ? this.causasDueno(ahora) : [],
       // 🔁 quién jugó una sola vez y quién se enfrió (`bot/primerizos.py`), y a quién ya se le avisó
       primerizos: this.leer('primerizos'),
       // 🗂️ las sanciones activas (`{k: hasta}`, 0 sin fecha): la página las marca al lado del nombre
@@ -16570,7 +16589,7 @@ export class Avisos {
       economia: d && d.billetera ? this.economiaDueno(ahora, Number(d.billetera.desde) || 0, Number(d.billetera.inicial)) : null,
       vuelve: this.vuelveDueno(),
       // ✅ las preguntas de ✅ Decidir y lo contestado desde el Dashboard (13/10/2026)
-      decidir: this.decidirDueno(),
+      decidir: veT('decidir') ? this.decidirDueno() : {},
       // 🔐 qué puede quien lo pide (Admin: todo menos Roles)
       permisos, mis_roles: roles, yo: this.nombrePor(d && d.quien),
       // 🏷️ los roles: el directorio, lo puesto a mano y el historial (13/10/2026)
@@ -16578,7 +16597,8 @@ export class Avisos {
       // 🎛️ y qué puede cada rol (11/11/2026): la tabla vigente, la de siempre y quién la cambió
       permisos_roles: this.permisosDueno(),
       // 🎚️ llaves y fondos (11/11/2026): qué llaves no cuentan, el fondo del VS de cada servidor y los fondos que ya se ven
-      llaves_cuenta: this.llavesDueno(), vs_fondos: this.vsFondosDueno(), fondos_vistos: this.fondosVistos(), casos: this.casosDueno(),
+      llaves_cuenta: this.llavesDueno(), vs_fondos: this.vsFondosDueno(), fondos_vistos: this.fondosVistos(),
+      casos: this.casosDueno(roles.includes('owner') ? null : permisos),
       organizadores: this.leer('finales_org') || null,
       // 🖼️ los fondos que esperan revisión (13/10/2026), y lo que hizo el filtro
       fondos: this.fondosDueno(),
@@ -16588,7 +16608,7 @@ export class Avisos {
       // 👥 los logos de las crews: los que esperan y los que el filtro aprobó hace poco (19/10/2026)
       crews_logos: CW.crewLogosDueno(this),
       // 🙋 los pedidos de la gente (17/10/2026)
-      pedidos: this.pedidosDueno(),
+      pedidos: veT('reportes') || veT('reportes_cerrar') ? this.pedidosDueno() : [],
       dias,
       sesiones: this.sql.exec('SELECT COUNT(DISTINCT quien) AS n FROM sesiones WHERE vence > ?', ahora).toArray()[0].n,
       sistema: {
