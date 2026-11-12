@@ -11,6 +11,18 @@
  ],
  "cambios": [
     {
+        "version": "4.73",
+        "dia": "2026-11-12",
+        "cuando": "2026-11-12T17:04:00-05:00",
+        "titulo": "La bienvenida, más fluida y con corona",
+        "items": [
+            "**El video de fondo va en cámara lenta fluida**, sin saltos y sin deformar a nadie.",
+            "**Las tablas de la bienvenida ya no son cajas**: el ranking, las crews y los eventos se leen sobre el video.",
+            "**La tabla del ranking muestra el OVR**, que es por lo que se ordena; los puntos van debajo del nombre.",
+            "Los títulos de cada página llevan el video adentro, como «Liga Global», y **el #1 lleva su corona**."
+        ]
+    },
+    {
         "version": "4.72",
         "dia": "2026-11-12",
         "cuando": "2026-11-12T17:05:00-05:00",
