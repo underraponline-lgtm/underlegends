@@ -724,11 +724,6 @@
      0,
      8
     ],
-    "Letrao🇨🇱": [
-     1,
-     0,
-     1
-    ],
     "Liam": [
      1,
      0,
@@ -1469,6 +1464,11 @@
      0,
      16
     ],
+    "letrao": [
+     1,
+     0,
+     1
+    ],
     "mats": [
      0,
      0,
@@ -1622,7 +1622,6 @@
     "Launok": 300,
     "Left🇺🇾": 300,
     "Leonart": 300,
-    "Letrao🇨🇱": 1300,
     "Liam": 300,
     "Liberia": 2900,
     "Lilñaño": 300,
@@ -1738,6 +1737,7 @@
     "francis": 300,
     "ikonoxx": 300,
     "kerkoide": 300,
+    "letrao": 1300,
     "melomaniaco": 300,
     "nebu": 300,
     "rodrilp": 300,
@@ -7775,7 +7775,7 @@
      0,
      0
     ],
-    "AbrahamSRRL🇵🇪": [
+    "AbrahamSRRL": [
      0,
      0,
      0,
@@ -8038,13 +8038,6 @@
      0,
      0,
      0,
-     0,
-     0
-    ],
-    "Letrao": [
-     0,
-     0,
-     1,
      0,
      0
     ],
@@ -8363,6 +8356,13 @@
      0,
      0
     ],
+    "letrao": [
+     0,
+     0,
+     1,
+     0,
+     0
+    ],
     "xx🇮🇨": [
      0,
      0,
@@ -8544,7 +8544,6 @@
   "Left🇺🇾": 300,
   "Leonart": 1200,
   "Leopold sedar 🇸🇳": 300,
-  "Letrao🇨🇱": 1300,
   "Leyenda": 1200,
   "Liam": 300,
   "Liberia": 8000,
@@ -8703,6 +8702,7 @@
   "giansito": 1000,
   "ikonoxx": 900,
   "kerkoide": 300,
+  "letrao": 1300,
   "mats": 4200,
   "melomaniaco": 600,
   "nebu": 300,

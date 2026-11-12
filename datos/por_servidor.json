@@ -454,7 +454,7 @@
     "racha": "0/0"
    }
   },
-  "AbrahamSRRL🇵🇪": {
+  "AbrahamSRRL": {
    "FFA": {
     "duelos": "0/1",
     "ev": 1,
@@ -6715,20 +6715,6 @@
     "pod": 0,
     "pts": 23540,
     "racha": "0/1"
-   }
-  },
-  "Letrao🇨🇱": {
-   "FFA": {
-    "duelos": "",
-    "ev": 1,
-    "oro": 1,
-    "ovr": 46,
-    "pod": 1,
-    "pts": 16500,
-    "racha": "1/1",
-    "tg": {
-     "fin": 2
-    }
    }
   },
   "Leyenda": {
@@ -13748,12 +13734,12 @@
   "letrao": {
    "FFA": {
     "duelos": "1/1",
-    "ev": 1,
-    "oro": 0,
-    "ovr": 45,
-    "pod": 1,
-    "pts": 7500,
-    "racha": "1/1",
+    "ev": 2,
+    "oro": 1,
+    "ovr": 48,
+    "pod": 2,
+    "pts": 24000,
+    "racha": "2/2",
     "tg": {
      "fin": 2
     }

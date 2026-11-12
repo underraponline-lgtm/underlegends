@@ -1516,5 +1516,31 @@
   "staff_probado": true,
   "sv": "LKR"
  },
+ "1570252248234201243": {
+  "autor": "1548906948307451906",
+  "canal": "1558611505040064607",
+  "canal_pregunta": "",
+  "cuando": "2026-11-12T01:41:49.855000+00:00",
+  "donde": "",
+  "evento": "(sin titulo)",
+  "fecha": "11/11",
+  "llave": "1570252248234201243",
+  "pregunta": "",
+  "preguntada": "2026-11-11 11:53 PM ET",
+  "preguntas": [
+   {
+    "lados": [
+     "Hammer 🇺🇾",
+     "99 🇨🇱"
+    ],
+    "ronda": "FINAL"
+   }
+  ],
+  "respondidas": {},
+  "sin_permiso": true,
+  "staff_probado": true,
+  "sv": "LKR",
+  "t_pregunta": ""
+ },
  "_leeme": "Las llaves que el ciclo no entendió y se las preguntó a quien las publicó, con botones o un menú (bot/finales.py). Una vez por llave, por su ID: así nunca se pregunta dos veces. Dlx, 12/10/2026."
 }
