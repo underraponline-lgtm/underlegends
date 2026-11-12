@@ -1573,29 +1573,153 @@ def otro_en_servidor(filas, sv, mapa=None):
     m = (_otros_por_servidor() if mapa is None else mapa).get(sv) or {}
     if not m:
         return filas
+    return _en_cada_nombre(filas, lambda p: m.get(E.norm(p), p))
 
-    # 🔗 TAMBIÉN « y »: un equipo escrito «KUN Y CARLOS» (la #602 de DDS, 12/11/2026) se parte en KUN + CARLOS DESPUÉS
-    # de esto, así que sin la « y » acá «CARLOS» nunca se miraba solo y la regla de DDS no lo alcanzaba: el paso 0c lo
-    # corregía y el lector, al releer la llave en la misma corrida, lo volvía a escribir. Sólo cambia una parte que el
-    # servidor tiene en su lista: un nombre con « y » que no está ahí queda igual
+
+def _partes(x, f):
+    """`x` con `f` aplicada a cada integrante: «INN🇦🇷&CARLOS🇪🇨» -> `f('INN🇦🇷') & f('CARLOS🇪🇨')`.
+
+    🔗 TAMBIÉN « y »: un equipo escrito «KUN Y CARLOS» (la #602 de DDS, 12/11/2026) se parte en KUN + CARLOS DESPUÉS
+    de esto, así que sin la « y » acá «CARLOS» nunca se miraba solo y la regla de DDS no lo alcanzaba: el paso 0c lo
+    corregía y el lector, al releer la llave en la misma corrida, lo volvía a escribir. Sólo cambia una parte que `f`
+    cambia: un nombre con « y » que `f` no conoce queda igual."""
+    partes = re.split(r'(\s*[,+&]\s*|\s+[yY]\s+)', str(x or ''))
+    return ''.join(p if i % 2 else f(p) for i, p in enumerate(partes))
+
+
+def _nombres_de_fila(fila):
+    """Los textos con nombres de una fila: los lados, el ganador, el `cobra: X` y «también pasa:» de la nota."""
+    out = [fila.get(k) for k in ('ladoA', 'ladoB', 'ganador') if fila.get(k)]
+    notas = str(fila.get('notas') or '')
+    out += [q.group(2) for q in re.finditer(r'(cobra\s*:\s*)([^;|]+)', notas, re.I)]
+    out += [x.strip() for q in re.finditer(r'(también pasa\s*:\s*)([^;|]+)', notas) for x in q.group(2).split(' / ')]
+    return out
+
+
+def _en_cada_nombre(filas, f):
+    """Las filas con `f` aplicada a cada integrante de cada nombre (ver `_partes()`): los lados, el ganador, el
+    `cobra: X` y «también pasa:» de la nota."""
     def cambia(x):
-        partes = re.split(r'(\s*[,+&]\s*|\s+[yY]\s+)', str(x or ''))
-        return ''.join(p if i % 2 else m.get(E.norm(p), p) for i, p in enumerate(partes))
-    for f in filas:
+        return _partes(x, f)
+    for fila in filas:
         for k in ('ladoA', 'ladoB', 'ganador'):
-            if f.get(k):
-                f[k] = cambia(f[k])
+            if fila.get(k):
+                fila[k] = cambia(fila[k])
         # y el `cobra: X` de la nota: el motor lo busca en la Lista sin saber del servidor, así que «cobra: Yo mc»
         # le pagaba al «Yo mc» de la ACADEMIA y no a Cronox (DEM UZBEKISTAN, FFA, 07/10/2026)
-        if 'cobra' in str(f.get('notas') or '').lower():
-            f['notas'] = re.sub(r'(cobra\s*:\s*)([^;|]+)', lambda q: q.group(1) + cambia(q.group(2)),
-                                f['notas'], flags=re.I)
+        if 'cobra' in str(fila.get('notas') or '').lower():
+            fila['notas'] = re.sub(r'(cobra\s*:\s*)([^;|]+)', lambda q: q.group(1) + cambia(q.group(2)),
+                                   fila['notas'], flags=re.I)
         # 🏆 y los demás que pasan de un grupo (14/10/2026): son nombres de ese servidor como los de los lados
-        if TAMBIEN_PASA in str(f.get('notas') or ''):
-            f['notas'] = re.sub(r'(también pasa\s*:\s*)([^;|]+)',
-                                lambda q: q.group(1) + ' / '.join(cambia(x.strip()) for x in q.group(2).split(' / ')),
-                                f['notas'])
+        if TAMBIEN_PASA in str(fila.get('notas') or ''):
+            fila['notas'] = re.sub(r'(también pasa\s*:\s*)([^;|]+)',
+                                   lambda q: q.group(1) + ' / '.join(cambia(x.strip()) for x in q.group(2).split(' / ')),
+                                   fila['notas'])
     return filas
+
+
+#: lo que `por_bandera()` lee una sola vez por corrida: el padrón y las inscripciones (ver `_datos_bandera()`)
+_POR_BANDERA = {}
+
+
+def _datos_bandera():
+    """`(padrón, firmas)` para `por_bandera()`: `{clave: (nombre, país, cuenta)}` de la Lista y `{(clave, país):
+    {cuentas}}` de `datos/inscritos_hist.json` —con qué nombre y qué bandera se anotó cada cuenta—. Vacíos si no se
+    pueden leer: entonces la regla no cambia nada."""
+    if 'd' not in _POR_BANDERA:
+        from comun.claves import clave
+        try:
+            from padron import seguro
+            pad = {clave(d['nombre']): (d['nombre'], str(d.get('cc') or '').lower(), str(d.get('discord_id') or ''))
+                   for d in seguro().values() if d.get('nombre')}
+        except Exception:                                # noqa: BLE001
+            pad = {}
+        firmas = collections.defaultdict(set)
+        try:
+            with io.open(os.path.join(BASE, 'datos', 'inscritos_hist.json'), encoding='utf-8') as fh:
+                for fila in (json.load(fh) or {}).get('filas') or ():
+                    if len(fila) >= 5 and fila[2] and fila[3]:
+                        firmas[(clave(fila[3]), str(fila[4] or '').lower())].add(str(fila[2]))
+        except (OSError, ValueError):
+            pass
+        _POR_BANDERA['d'] = (pad, dict(firmas))
+    return _POR_BANDERA['d']
+
+
+def quien_por_bandera(nombre, padron, firmas):
+    """El nombre de la Lista que la BANDERA escrita señala cuando el nombre es el comienzo de otro, o `None`.
+
+    🔑 Dlx, 12/11/2026: *«arregla también lo de la bandera de Carlos y Carlosss»*. «CARLOS🇪🇨» iba a Carlos 🇲🇽 y no a
+    Carlosss 🇪🇨, y «NUMBER🇻🇪» a Number 🇺🇾 y no a Number VE: el padrón compara sin bandera y tiene un solo «Carlos», así
+    que la bandera sólo servía entre dos que se llaman IGUAL. Se arregló a mano en 16 eventos (`quien` y `por_servidor`).
+
+    Cambia sólo con las TRES cosas a la vez —una sola no alcanza, regla de [[identidad-no-se-interpreta]]:
+      1 · una sola bandera, y quien se llama así en la Lista es de otro país (Carlos es 🇲🇽 y la llave dice 🇪🇨);
+      2 · UNA sola persona de la Lista cuyo nombre empieza con éste, de 4 letras o más, es de ese país (Carlosss 🇪🇨;
+          Carlosmo es 🇪🇸). «SOL🇨🇱» no es Solar: tres letras;
+      3 · su cuenta se anotó alguna vez con ESE nombre y ESA bandera, y la de quien se llama así nunca
+          (`datos/inscritos_hist.json`: Carlosss se anota «carlos 🇪🇨» en la ACADEMIA, DDF, LKR y Urban; Carlos 🇲🇽,
+          «carlos 🇲🇽»).
+    """
+    from comun.claves import clave
+    bs = set(E._banderas(nombre))
+    if len(bs) != 1:
+        return None
+    cc = ''.join(chr(ord(c) - 0x1F1E6 + 97) for c in next(iter(bs)))
+    k = clave(nombre)
+    if len(k) < 4 or k == 'sinnombre':
+        return None
+    p = padron.get(k)
+    if not p or not p[1] or p[1] == cc:
+        return None
+    cs = [v for k2, v in padron.items() if k2 != k and k2.startswith(k) and v[1] == cc]
+    if len(cs) != 1:
+        return None
+    ya = firmas.get((k, cc)) or set()
+    if not cs[0][2] or cs[0][2] not in ya or (p[2] and p[2] in ya):
+        return None
+    return cs[0][0]
+
+
+def por_bandera(filas, padron=None, firmas=None):
+    """Las filas de un evento con «CARLOS🇪🇨» cambiado por Carlosss: ver `quien_por_bandera()`.
+
+    ⚠️ Y EL MISMO NOMBRE SIN BANDERA, EN ESE EVENTO, TAMBIÉN: si la final dice «CARLOS» y las semis «CARLOS🇪🇨», son la
+    misma persona, y cambiar sólo una partiría sus puntos en dos —el motor cuenta hasta dónde llegó cada nombre—. Sólo
+    si todas las veces que el evento lo escribe con bandera señalan a la misma persona: con «CARLOS🇲🇽» también en el
+    evento, el que va sin bandera puede ser cualquiera de los dos y se queda como está.
+    Corre después de `otro_en_servidor()` y `otro_en_evento()`: lo que Dlx decidió a mano manda.
+    """
+    if not filas:
+        return filas
+    memo = None
+    if padron is None or firmas is None:
+        padron, firmas = _datos_bandera()
+        memo = _POR_BANDERA.setdefault('memo', {})
+    if not padron:
+        return filas
+    from comun.claves import clave
+    a_quien = {}            # nombre tal cual -> el de la Lista
+    por_k = collections.defaultdict(set)
+    for fila in filas:
+        for txt in _nombres_de_fila(fila):
+            for i, p in enumerate(re.split(r'(\s*[,+&]\s*|\s+[yY]\s+)', str(txt or ''))):
+                if i % 2 or not E._banderas(p):
+                    continue
+                if memo is not None and p in memo:
+                    q = memo[p]
+                else:
+                    q = quien_por_bandera(p, padron, firmas)
+                    if memo is not None:
+                        memo[p] = q
+                if q:
+                    a_quien[p] = q
+                por_k[clave(p)].add(q)
+    if not a_quien:
+        return filas
+    # el que va sin bandera sigue al que la lleva, si todos los que la llevan dicen lo mismo
+    sin = {k: next(iter(v)) for k, v in por_k.items() if len(v) == 1 and None not in v}
+    return _en_cada_nombre(filas, lambda p: a_quien.get(p) or (sin.get(clave(p)) if not E._banderas(p) else None) or p)
 
 
 def _del_evento(filas):
@@ -3984,8 +4108,35 @@ def _self_check():
     _gf = ganador_forzado([dict(f, evento='X', servidor='FFA', fecha='07/10') for f in _gf_t], decidir=lambda *a: [
         {'ronda': 'octavos', 'lados': ['MATICERNA', 'Agus', 'Henry'], 'ganador': 'Henry'},
         {'ronda': 'final', 'lados': ['PRAISERIZA', 'Liberia'], 'ganador': 'PRAISERIZA'}])
+    # 🇪🇨 la bandera entre un nombre y el que empieza igual (12/11/2026): Carlos 🇲🇽 / Carlosss 🇪🇨 / Carlosmo 🇪🇸, con las
+    # cuentas inventadas y cómo se anota cada una
+    _pb_pad = {'carlos': ('Carlos', 'mx', '1'), 'carlosss': ('Carlosss', 'ec', '2'), 'carlosmo': ('Carlosmo', 'es', '3'),
+               'number': ('Number', 'uy', '4'), 'numberve': ('Number VE', 've', '5'), 'sol': ('SOL', 'pe', '6'),
+               'solar': ('Solar', 'cl', '7')}
+    _pb_fir = {('carlos', 'ec'): {'2'}, ('carlos', 'mx'): {'1'}, ('number', 've'): {'5'}, ('number', 'uy'): {'4'},
+               ('sol', 'cl'): {'7'}, ('carlos', 'es'): {'1'}}
+    _pb = por_bandera([{'ladoA': 'INN🇦🇷&CARLOS🇪🇨', 'ladoB': 'NUMBER🇻🇪', 'ganador': 'INN🇦🇷&CARLOS🇪🇨', 'notas': ''},
+                       {'ladoA': 'CARLOS', 'ladoB': 'Y', 'ganador': 'CARLOS', 'notas': 'cobra: CARLOS 🇪🇨'}],
+                      padron=_pb_pad, firmas=_pb_fir)
+    _pb_dos = por_bandera([{'ladoA': 'CARLOS🇪🇨', 'ladoB': 'CARLOS', 'ganador': 'CARLOS', 'notas': ''},
+                           {'ladoA': 'CARLOS🇲🇽', 'ladoB': 'X', 'ganador': 'X', 'notas': ''}], padron=_pb_pad, firmas=_pb_fir)
     _DISFRACES = ['payaso', 'doctor', 'pinata', 'scarface', 'conejita', 'aceite', 'momia', 'vampiro']
     casos = [
+        ('la bandera elige entre un nombre y el que empieza igual: «CARLOS🇪🇨» es Carlosss y «NUMBER🇻🇪» Number VE, '
+         'también en un equipo y en «cobra:»; «carlos🇲🇽» sigue siendo Carlos (12/11/2026)',
+         (_pb[0]['ladoA'], _pb[0]['ladoB'], _pb[0]['ganador']) == ('INN🇦🇷&Carlosss', 'Number VE', 'INN🇦🇷&Carlosss')
+         and _pb[1]['notas'] == 'cobra: Carlosss' and quien_por_bandera('carlos🇲🇽', _pb_pad, _pb_fir) is None),
+        ('… y el mismo nombre sin bandera lo sigue, salvo que el evento lo escriba también con la del otro',
+         _pb[1]['ladoA'] == 'Carlosss' and (_pb_dos[0]['ladoA'], _pb_dos[0]['ladoB'], _pb_dos[1]['ladoA'])
+         == ('Carlosss', 'CARLOS', 'CARLOS🇲🇽')),
+        ('… y no cambia sin las tres pruebas: tres letras («SOL🇨🇱» no es Solar), la cuenta que nunca se anotó así '
+         '(«CARLOS🇪🇸» y Carlosmo), dos candidatos, dos banderas o el nombre que ya es de ese país',
+         quien_por_bandera('SOL🇨🇱', _pb_pad, _pb_fir) is None
+         and quien_por_bandera('CARLOS🇪🇸', _pb_pad, _pb_fir) is None
+         and quien_por_bandera('CARLOS🇪🇨', dict(_pb_pad, carloss=('Carloss', 'ec', '8')), _pb_fir) is None
+         and quien_por_bandera('CARLOS🇪🇨🇲🇽', _pb_pad, _pb_fir) is None
+         and quien_por_bandera('NUMBER🇺🇾', _pb_pad, _pb_fir) is None
+         and quien_por_bandera('CARLOS🇪🇨', _pb_pad, {('carlos', 'ec'): {'2', '1'}}) is None),
         ('un nombre corregido desde un reporte cambia SÓLO en ese evento, también adentro de un equipo, y en otra fecha '
          'no (Agus en la IDS V.2 era AGUSTÍN51K, 13/10/2026)',
          _oe[0]['ladoA'] == 'AGUSTÍN51K' and _oe[0]['ganador'] == 'AGUSTÍN51K' and _oe[0]['ladoB'] == 'Korey'
@@ -4813,6 +4964,8 @@ def main():
             limpias = otro_en_servidor(limpias, codigo_servidor((g['llaves'][0] if g['llaves'] else {}).get('guild'))[0])
             # y el que en ESE evento era otra persona, si Dlx lo dijo desde un reporte (13/10/2026): `otro_en_evento()`
             limpias = otro_en_evento(limpias)
+            # y el nombre que es el comienzo de otro, con la bandera de ese otro: «CARLOS🇪🇨» es Carlosss (`por_bandera()`)
+            limpias = por_bandera(limpias)
 
         # 🔴 SIN CAMPEÓN NO SE SUMA NADA. La guía de formatos de Dlx
         # (23/09/2026) abre con *«esto se decide ANTES de sumar nada»*, y
@@ -4983,7 +5136,7 @@ def main():
         # y las filas que sumó ✅ Decidir, con los nombres que en ESE servidor son otra persona (`otro_en_servidor()` ya
         # corrió sobre las leídas; aplicarlo otra vez no cambia lo que ya estaba): «Yo mc» en FFA es Cronox (07/10/2026)
         if decididas and ligas:
-            limpias = otro_en_evento(otro_en_servidor(limpias, ligas[0]))
+            limpias = por_bandera(otro_en_evento(otro_en_servidor(limpias, ligas[0])))
         # 🔑 y el ganador que Dlx corrigió desde un reporte, aunque la llave diga otro (13/10/2026): `ganador_forzado()`.
         # Al final, con todas las filas —también las de ✅ Decidir— y los nombres ya corregidos
         limpias = ganador_forzado(limpias)
