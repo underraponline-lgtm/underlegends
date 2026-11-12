@@ -228,6 +228,20 @@ jobs:
         if: always()
         run: python herramientas/quien_puede_card.py || true
 
+      - name: cuánto espacio queda
+        # 📦 Dlx, 12/11/2026, a «¿cuántas temporadas puede la página aguantar
+        # de información?»: «dale, agrega la alarma a la auditoría semanal..
+        # aunque recuerda q va haber un ranking histórico tmb para el
+        # competitivo, elo y temporada». Falla —y te llega el DM— si el repo
+        # pasa 700 MB (GitHub recomienda menos de 1 GB) o R2 pasa 7 GB (10
+        # gratis), y si falta un archivo de alguna temporada pasada: de ahí
+        # salen los rankings históricos. Sin poder medir, avisa sin fallar.
+        # Ver herramientas/espacio.py.
+        if: always()
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        run: python herramientas/espacio.py
+
       - name: qué espera a que alguien lo mire
         if: always()
         run: |
