@@ -933,3 +933,18 @@ button.dz-cu-b:focus-visible{outline:2px solid var(--verde);outline-offset:2px}
 .dz-vj li small{color:var(--gris)}
 .dz-vj summary{cursor:pointer;font:700 13px/1.2 Archivo,sans-serif;color:var(--gris)}
 .dz-it.malle{border-left-color:var(--magenta)}
+
+/* 📊 los organizadores y el bot (11/11/2026) */
+.dz-org{display:grid;gap:10px}
+.dz-org-alerta{margin:0;padding:10px 12px;border-left:4px solid var(--magenta);background:var(--caja);font-size:14px;line-height:1.45}
+.dz-org-t{overflow-x:auto}
+.dz-org-t:focus-visible{outline:2px solid var(--verde);outline-offset:2px}
+.dz-org-t table{border-collapse:collapse;width:100%;min-width:620px;font-size:14px;font-variant-numeric:tabular-nums}
+.dz-org-t th,.dz-org-t td{padding:7px 8px;border-bottom:1px solid var(--suave);text-align:right;white-space:nowrap}
+.dz-org-t thead th{font:700 12px/1.2 "Barlow Condensed",sans-serif;letter-spacing:.06em;text-transform:uppercase;color:var(--gris)}
+.dz-org-t th:first-child{text-align:left}
+.dz-org-t td.mal{color:var(--magenta-tx);font-weight:800}
+.dz-org-h{margin:4px 0 0;font:800 14px/1.2 Archivo,sans-serif}
+.dz-org-l{margin:0;padding-left:20px;display:grid;gap:4px;font-size:14px}
+.dz-org-l small{color:var(--gris);margin:0 6px}
+.dz-org-l span{color:var(--gris)}

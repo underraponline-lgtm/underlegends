@@ -4133,6 +4133,47 @@ function Bandeja({ d, liga, ve, cambiarD, sub }) {
   );
 }
 
+// 📊 LOS ORGANIZADORES Y EL BOT (Dlx, 11/11/2026: «Organizadores», de las ideas para el Dashboard). Cuando el lector no
+// entiende una llave, el bot le pregunta a quien la publicó (`bot/finales.py`); acá, por servidor y por organizador,
+// cuánto contestan, cuánto tardan y dónde no lo dejan escribir. Es lo que decide cuánto llega a Pendientes
+const pc = (a, b) => (b ? Math.round((100 * a) / b) + ' %' : '—');
+const tarda = (m) => (m == null ? '—' : m < 60 ? m + ' min' : m < 48 * 60 ? Math.round(m / 60) + ' h' : Math.round(m / 1440) + ' días');
+function Organizadores({ o }) {
+  const svs = o.sv || [], orgs = (o.org || []).filter((x) => x.batallas > x.contestadas);
+  const sinP = svs.filter((x) => x.sin_permiso);
+  return (
+    <div className="dz-org">
+      {sinP.length ? (
+        <p className="dz-org-alerta"><b>{sinP.map((x) => siglaDe(x.sv)).join(', ')}</b> no deja{sinP.length === 1 ? '' : 'n'} escribir al bot en su canal de
+          llaves: ahí pregunta en el chat de staff, si lo encuentra, y en el panel del socio. Darle permiso de escribir ahí es lo que más baja Pendientes.</p>
+      ) : null}
+      <div className="dz-org-t" role="region" aria-label="Por servidor" tabIndex={0}>
+        <table>
+          <thead><tr><th>Servidor</th><th>Llaves</th><th>Batallas</th><th>Contestaron</th><th>Tardan</th><th>Sin permiso</th><th>Cerró el bot</th><th>No contaron</th></tr></thead>
+          <tbody>{svs.map((x) => (
+            <tr key={x.sv}>
+              <th scope="row">{siglaDe(x.sv)}</th><td>{num(x.llaves)}</td><td>{num(x.batallas)}</td>
+              <td className={x.batallas && x.contestadas / x.batallas < 0.5 ? 'mal' : ''}>{num(x.contestadas)} · {pc(x.contestadas, x.batallas)}</td>
+              <td>{tarda(x.tarda_min)}</td><td className={x.sin_permiso ? 'mal' : ''}>{x.sin_permiso ? num(x.sin_permiso) : '—'}</td>
+              <td>{x.nadie48 ? num(x.nadie48) : '—'}</td><td>{x.descartadas ? num(x.descartadas) : '—'}</td>
+            </tr>
+          ))}</tbody>
+        </table>
+      </div>
+      {orgs.length ? (
+        <>
+          <h4 className="dz-org-h">Quiénes dejan más sin contestar</h4>
+          <ol className="dz-org-l">{orgs.slice(0, 8).map((x, i) => (
+            <li key={i}><b>{x.n}</b> <small>{siglaDe(x.sv)}</small>
+              <span>{num(x.batallas - x.contestadas)} sin contestar de {num(x.batallas)}{x.sin_permiso ? ' · en ' + x.sin_permiso + ' el bot no pudo escribir' : ''}</span></li>
+          ))}</ol>
+        </>
+      ) : null}
+      <p className="db-tx">«Cerró el bot» son las que nadie marcó en 48 h y cuentan como «Nadie siguió»; «Tardan» se mide desde el 11/11/2026.</p>
+    </div>
+  );
+}
+
 // ── 🏟️ LOS SERVIDORES, EN UNA TABLA (la maqueta: «todo lo de cada servidor en una fila: se cambia ahí mismo»). Eran
 // tarjetas sueltas con seis selectores cada una, y el tier y el dueño vivían en otra pestaña. Ahora una fila por servidor
 // —tier, multiplicador, bot en vivo, cuánto habla, apuestas, aviso de cada evento y eventos de Discord— y «Ficha» abre
@@ -4644,9 +4685,14 @@ function HistorialDeA({ hist, hacer, ocup, liga }) {
 // secciones una abajo de la otra y la que importaba quedaba al final. Cada pestaña es una pregunta; la que no tiene
 // datos no aparece (sin dato no hay pieza). La elegida se recuerda en este navegador
 const NUM_TAB = 'lg:db-num';
-function NumerosTabs({ tabs }) {
+// 🔗 en qué pestaña vive cada sección, para que un atajo (Ctrl+K, un cuadrado del Resumen) abra la pestaña correcta: antes
+// «El tutorial» llevaba a Números y no aparecía si estabas en otra pestaña (11/11/2026)
+const TAB_DE = { 'nu-vuelta': 'gente', 'nu-lobby': 'gente', 'nu-embudo': 'gente', 'nu-primerizos': 'gente', 'nu-uso': 'semana',
+  'nu-semanas': 'semana', 'nu-clics': 'pagina', 'nu-tuto': 'pagina', 'nu-pase': 'pase', 'nu-puntos': 'puntos', 'nu-crews': 'crews' };
+function NumerosTabs({ tabs, abrir }) {
   const [t, setT0] = useState(() => { try { return localStorage.getItem(NUM_TAB) || ''; } catch (e) { return ''; } });
   const setT = (k) => { setT0(k); try { localStorage.setItem(NUM_TAB, k); } catch (e) { /* sin guardar */ } };
+  useEffect(() => { if (abrir && TAB_DE[abrir]) setT(TAB_DE[abrir]); }, [abrir]);
   const xs = tabs.filter(Boolean);
   const actual = xs.find(([k]) => k === t) || xs[0];
   if (!actual) return <p className="pronto-p">Todavía no hay números.</p>;
@@ -4970,6 +5016,9 @@ export function Dashboard({ dc, liga }) {
           <ServidoresTabla liga={liga} aj={aj} hacer={hacer} ocup={ocup} chat={d.chat} T={d.tiers} origen={(d.primerizos || {}).por_sv} />)}
         {d.tiers ? sec('sv-sumar', 'SUMAR UN SERVIDOR', d.tiers.t ? 'el puntaje, medido ' + hace(d.tiers.t) : null,
           <SumarServidor T={d.tiers} aj={aj} hacer={hacer} ocup={ocup} />) : null}
+        {d.organizadores && (d.organizadores.sv || []).length ? sec('sv-org', 'LOS ORGANIZADORES Y EL BOT',
+          'cuando el bot no entiende una llave, le pregunta a quien la publicó · ' + hace(d.organizadores.t),
+          <Organizadores o={d.organizadores} />) : null}
       </>
     );
   } else if (areaV === 'web') {
@@ -4982,14 +5031,17 @@ export function Dashboard({ dc, liga }) {
   } else if (areaV === 'numeros') {
     const S = d.secciones && Object.keys(d.secciones.n || {}).length ? d.secciones : null;
     vista = (
-      <NumerosTabs tabs={[
-        ['gente', 'La gente', <>
+      <NumerosTabs abrir={abrir} tabs={[
+        // 👥 «La gente» tenía siete secciones (11/11/2026, Dlx: «Números en pestañas»): lo de quién vuelve y lo de la semana
+        ['gente', 'Quién vuelve', <>
           {sec('nu-vuelta', 'LA VUELTA AL SEGUNDO EVENTO', 'el número del 42 %', <VueltaSegundo r={retencion} marcas={marcasPorSemana(cambios, d.ajustes_hist)} />)}
+          {sec('nu-lobby', '¿VUELVE LA GENTE?', 'la meta del research', <MetaLobby r={retencion} />)}
           {d.primerizos ? sec('nu-embudo', 'EL EMBUDO DEL PRIMERIZO', 'dónde se queda la gente nueva', <Embudo e={d.primerizos.embudo} />) : null}
           {d.primerizos !== undefined ? sec('nu-primerizos', 'A QUIÉN TRAER DE VUELTA', 'con nombre: sólo lo ve el staff',
             <PrimerizosLista P={d.primerizos} vuelve={d.vuelve} liga={liga} alVuelve={(v) => cambiarD({ vuelve: v })} />) : null}
+        </>],
+        ['semana', 'La semana', <>
           {sec('nu-uso', 'ESTA SEMANA · EL BOT Y LA PÁGINA', u.desde ? 'se cuenta desde el ' + corto(u.desde) : null, <Cajas u={u} />)}
-          {sec('nu-lobby', '¿VUELVE LA GENTE?', 'la meta del research', <MetaLobby r={retencion} />)}
           {sec('nu-semanas', 'COMPARAR SEMANAS', 'de lunes a domingo, en hora del este', <CompararSemanas S={semanas} uso={d.uso_semanas} liga={liga} />)}
           {(d.dias || []).length ? sec('', 'DÍA POR DÍA · DOS SEMANAS', 'hasta hoy', <Dias dias={d.dias} />) : null}
         </>],

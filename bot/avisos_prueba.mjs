@@ -2801,6 +2801,18 @@ const ok = (cond, que, det) => {
       { k: '1561867654464012369:1', evento: 'FATS', fecha: '19/10', ronda: 'FINAL', lados: ['E', 'F'], link: 'javascript:x', nadie: false },
       { k: 'mal', lados: ['a', 'b'] }],
       ffa: [{ k: '1:0', lados: ['a', 'b'] }] } });
+    o.finalesPend({ pend: {}, org: { sv: [{ sv: 'LKR', llaves: 11, batallas: 12, contestadas: 2, sin_permiso: 9, tarda_min: null },
+      { sv: '<x>', llaves: 1 }], org: [{ n: 'Calíz 🇲🇽', sv: 'LKR', llaves: 2, batallas: 2, contestadas: 0 }, { llaves: 3 }] } });
+    const ogz = o.leer('finales_org');
+    ok(ogz.sv.length === 1 && ogz.sv[0].sin_permiso === 9 && ogz.sv[0].tarda_min === null && ogz.org.length === 1 && ogz.org[0].n === 'Calíz 🇲🇽'
+      && o.panelDueno({}).organizadores.sv[0].sv === 'LKR',
+    'Organizadores: el resumen del ciclo se guarda limpio (sin siglas raras ni filas sin nombre) y lo ve el Dashboard', JSON.stringify(ogz));
+    o.finalesPend({ pend: {
+      FFA: [{ k: '1561867654464012369:0', evento: 'FATS', fecha: '19/10', ronda: 'CUARTOS', lados: ['A + B', 'C + D'],
+        link: 'https://discord.com/channels/1/2/3', autor: '400000000000000003', vence: 5, nadie: true },
+      { k: '1561867654464012369:1', evento: 'FATS', fecha: '19/10', ronda: 'FINAL', lados: ['E', 'F'], link: 'javascript:x', nadie: false },
+      { k: 'mal', lados: ['a', 'b'] }],
+      ffa: [{ k: '1:0', lados: ['a', 'b'] }] } });
     const pf = (await ps('400000000000000001')).servidores[0].preguntas;
     ok(fp.ok && fp.n === 2 && pf.length === 2 && pf[1].link === '' && !(await ps('400000000000000002')).servidores.some((x) => x.preguntas.length),
       'el ciclo deja lo que espera respuesta; el panel de FFA lo ve, sin links raros ni claves mal formadas, y el de SR no');

@@ -13864,6 +13864,19 @@ export class Avisos {
       }));
     }
     this.guardar('finales_pend', { t: Date.now(), pend: out });
+    // 📊 ORGANIZADORES (11/11/2026): por servidor y por organizador, quién contesta lo que pregunta el bot
+    // (`finales.resumen()`). Sin Discord ID: el nombre de la Lista. Lo ve el Dashboard
+    const num = (x) => Math.max(0, Math.min(100000, Math.round(Number(x) || 0)));
+    const fila = (x) => ({ llaves: num(x.llaves), batallas: num(x.batallas), contestadas: num(x.contestadas), nadie48: num(x.nadie48),
+      sin_permiso: num(x.sin_permiso), staff: num(x.staff), descartadas: num(x.descartadas),
+      tarda_min: x.tarda_min == null ? null : num(x.tarda_min) });
+    const o = d && d.org && typeof d.org === 'object' ? d.org : null;
+    if (o) {
+      this.guardar('finales_org', { t: Date.now(),
+        sv: (Array.isArray(o.sv) ? o.sv : []).slice(0, 40).filter((x) => x && /^[A-Z0-9?]{1,6}$/.test(String(x.sv || ''))).map((x) => ({ sv: String(x.sv), ...fila(x) })),
+        org: (Array.isArray(o.org) ? o.org : []).slice(0, 20).filter((x) => x && x.n).map((x) => ({ n: String(x.n).slice(0, 60),
+          sv: String(x.sv || '').slice(0, 6), ...fila(x) })) });
+    }
     // 📲 a su equipo, una vez por batalla (Dlx, 11/11/2026: «Avisos en su teléfono»)
     let avisos = 0;
     for (const [sv, xs] of Object.entries(out)) {
@@ -16495,7 +16508,7 @@ export class Avisos {
         decidir: ve('decidir') ? this.decidirDueno() : {}, videos: ve('videos') ? (this.leer('videos_revisar') || []) : [],
         fondos: ve('fondos') ? this.fondosDueno() : [], filtro: ve('fondos') ? this.filtroDueno() : null,
         fondos_vistos: ve('fondos') ? this.fondosVistos() : [], llaves_cuenta: ve('reportes') ? this.llavesDueno() : null,
-        casos: this.casosDueno(),
+        casos: this.casosDueno(), organizadores: ve('reportes') ? (this.leer('finales_org') || null) : null,
         fotos_carta: ve('fondos') ? this.fotosCartaDueno() : [],
         crews_logos: ve('fondos') ? CW.crewLogosDueno(this) : null,
         pedidos: ve('reportes') || ve('reportes_cerrar') ? this.pedidosDueno() : [],
@@ -16559,6 +16572,7 @@ export class Avisos {
       permisos_roles: this.permisosDueno(),
       // 🎚️ llaves y fondos (11/11/2026): qué llaves no cuentan, el fondo del VS de cada servidor y los fondos que ya se ven
       llaves_cuenta: this.llavesDueno(), vs_fondos: this.vsFondosDueno(), fondos_vistos: this.fondosVistos(), casos: this.casosDueno(),
+      organizadores: this.leer('finales_org') || null,
       // 🖼️ los fondos que esperan revisión (13/10/2026), y lo que hizo el filtro
       fondos: this.fondosDueno(),
       filtro: this.filtroDueno(),

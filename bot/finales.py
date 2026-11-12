@@ -411,6 +411,7 @@ def cerrar(estado, llaves, dd, ahora, DEC):
                 'por': 'bot/finales.py: nadie la marcó en %d h' % VENCE_H,
                 'nota': 'el último recurso (Dlx, 11/11/2026: «48 h»): cobran la ronda y no hay duelo'}
             f['respondidas'][str(i)] = DEC.NADIE
+            f.setdefault('resp', {})[str(i)] = {'por': '48h', 't': int(ahora.timestamp() * 1000)}
             n += 1
         f['cerrada'] = {'como': 'nadie siguió', 't': _ahora(), 'n': n, 'sin': sin, 'tot': tot}
         hecho.append((k, 'nadie siguió', n, sin, tot))
@@ -504,6 +505,59 @@ def para_panel(estado, ahora):
     return out
 
 
+def _nombres():
+    """`{discord_id: nombre}` de la Lista (`datos/padron.json`), para nombrar a cada organizador."""
+    try:
+        with io.open(os.path.join(BASE, 'datos', 'padron.json'), encoding='utf-8') as fh:
+            return {str(x.get('discord_id')): str(x.get('full') or x.get('raw') or '')
+                    for x in json.load(fh) or [] if isinstance(x, dict) and x.get('discord_id')}
+    except (OSError, ValueError):
+        return {}
+
+
+def resumen(estado, nombres=None):
+    """📊 ORGANIZADORES (Dlx, 11/11/2026: «Organizadores», de las ideas para el Dashboard). Pura. Por servidor: cuántas
+    llaves y batallas se preguntaron, cuántas contestó alguien (el organizador o el staff), cuántas cerró el ciclo a las
+    48 h, en cuántas no pudo escribir en ningún lado y en cuántas preguntó en el chat de staff, cuántas se descartaron y
+    cuánto tardan en contestar (la mediana, en minutos, de las que tienen hora: desde el 11/11/2026). Por organizador:
+    lo mismo, para ver quién nunca contesta. Sin Discord ID: el nombre de la Lista o «sin nombre en la Lista»."""
+    nombres = nombres or {}
+    sv, org = {}, {}
+    for k, f in sorted((estado or {}).items()):
+        if not isinstance(f, dict) or f.get('retirada') or not f.get('preguntas'):
+            continue
+        q = len(f['preguntas'])
+        resp = f.get('resp') or {}
+        nadie48 = sum(1 for v in resp.values() if (v or {}).get('por') == '48h')
+        alguien = len(f.get('respondidas') or {}) - nadie48
+        t0 = _de_ts(f.get('t_pregunta'))
+        tardas = [int(((v or {}).get('t') or 0) / 60000 - t0.timestamp() / 60) for v in resp.values()
+                  if t0 and (v or {}).get('por') in ('org', 'otro') and (v or {}).get('t')]
+        sin = bool(f.get('sin_permiso'))
+        cer = (f.get('cerrada') or {}).get('como') or ''
+        for d, clave, base in ((sv, f.get('sv') or '?', {'sv': f.get('sv') or '?'}),
+                               (org, str(f.get('autor') or ''), {'n': nombres.get(str(f.get('autor') or '')) or 'sin nombre en la Lista',
+                                                                  'sv': f.get('sv') or '?'})):
+            x = d.setdefault(clave, dict(base, llaves=0, batallas=0, contestadas=0, nadie48=0, sin_permiso=0, staff=0,
+                                         descartadas=0, _t=[]))
+            x['llaves'] += 1
+            x['batallas'] += q
+            x['contestadas'] += max(0, alguien)
+            x['nadie48'] += nadie48
+            x['sin_permiso'] += 1 if sin else 0
+            x['staff'] += 1 if f.get('donde') == 'staff' else 0
+            x['descartadas'] += 1 if cer == 'no cuenta' else 0
+            x['_t'] += [t for t in tardas if t >= 0]
+
+    def cerrar_t(x):
+        ts = sorted(x.pop('_t'))
+        x['tarda_min'] = ts[len(ts) // 2] if ts else None
+        return x
+    lsv = sorted((cerrar_t(x) for x in sv.values()), key=lambda x: (-x['batallas'], x['sv']))
+    lorg = sorted((cerrar_t(x) for x in org.values()), key=lambda x: (-(x['batallas'] - x['contestadas']), -x['batallas'], x['n']))
+    return {'sv': lsv, 'org': lorg[:20]}
+
+
 def publicar():
     """📊 Le deja al objeto lo que espera respuesta (`/avisos/finales-pend`, con la clave del ciclo), para el panel de
     cada socio. Una escritura por corrida, a una fila del objeto: no gasta KV."""
@@ -520,7 +574,7 @@ def publicar():
             return 0
         import avisar
         r = requests.post(avisar.WORKER + '/avisos/finales-pend', headers={'x-lg-ciclo': CC.clave(t), 'content-type':
-                          'application/json'}, data=json.dumps({'pend': pend}), timeout=20)
+                          'application/json'}, data=json.dumps({'pend': pend, 'org': resumen(estado, _nombres())}), timeout=20)
         if not r.ok:
             print('   ⚠️ finales: el panel del socio no recibió las preguntas (%s)' % r.status_code)
             return 0
@@ -585,6 +639,9 @@ def aplicar_respuestas(resp=None):
                                                            else 'el menú', x.get('quien', '')),
                 'nota': 'bot/finales.py: el lector no entendió esa batalla y se la preguntó a quien publicó la llave'}
             f.setdefault('respondidas', {})[str(i)] = gano
+            # 📊 quién y cuándo, para «Organizadores» del Dashboard: el que publicó la llave u otro (staff, Dlx)
+            f.setdefault('resp', {})[str(i)] = {'por': 'org' if str(x.get('quien') or '') == str(f.get('autor') or '') else 'otro',
+                                                't': int(x.get('t') or 0)}
             n += 1
             print('   🏁 %s · %s · %s: %s (lo marcó %s)' % (f['evento'], f['sv'], p['ronda'], gano, x.get('quien', '')))
     if n:
@@ -720,6 +777,19 @@ def _prueba_nuevo():
         malos.append('el panel del socio: lo que nadie marcó, la final también, con cuándo vence (%s)' % ks)
     if nombre_de({'evento': '(sin titulo)', 'fecha': '10/11'}) != 'tu llave del 10/11' or nombre_de(f) != 'X':
         malos.append('la llave sin título se nombra por su fecha')
+    # 📊 Organizadores: por servidor y por organizador, con quién contestó y cuánto tardó
+    eo = {'a': {'sv': 'FFA', 'autor': '1', 'preguntas': [{}, {}], 'respondidas': {'0': 'x', '1': 'y'}, 't_pregunta': hace(10),
+                'resp': {'0': {'por': 'org', 't': int((ahora - datetime.timedelta(hours=9)).timestamp() * 1000)},
+                         '1': {'por': '48h', 't': 1}}},
+          'b': {'sv': 'FFA', 'autor': '2', 'preguntas': [{}], 'respondidas': {}, 'sin_permiso': True},
+          'c': {'sv': 'LKR', 'autor': '2', 'preguntas': [{}], 'respondidas': {'0': 'z'}, 'donde': 'staff', 'cerrada': {'como': 'no cuenta'}},
+          'r': {'sv': 'LKR', 'autor': '3', 'preguntas': [{}], 'retirada': 'x'}}
+    ro = resumen(eo, {'1': 'Ana 🇦🇷'})
+    rf = next(x for x in ro['sv'] if x['sv'] == 'FFA')
+    if (rf['llaves'], rf['batallas'], rf['contestadas'], rf['nadie48'], rf['sin_permiso'], rf['tarda_min']) != (2, 3, 1, 1, 1, 60) \
+            or next(x for x in ro['org'] if x['n'] == 'sin nombre en la Lista')['batallas'] != 2 \
+            or next(x for x in ro['sv'] if x['sv'] == 'LKR')['descartadas'] != 1 or len(ro['sv']) != 2:
+        malos.append('Organizadores: por servidor y por organizador, sin las retiradas (%s)' % ro)
     if 'Moderador' not in texto_descarte(est['562'], 7, 8) or '<@33>' not in texto_descarte(est['562'], 7, 8):
         malos.append('el aviso del descarte: al organizador, con qué hacer si fue un error')
     return malos
