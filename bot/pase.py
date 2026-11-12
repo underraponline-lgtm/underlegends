@@ -65,7 +65,10 @@ for _p in (SCR, BASE, os.path.join(BASE, 'sheet')):
 
 #: la primera semana del Pase: la de prueba, que arrancó el lunes 05/10/2026 a las 11 AM ET
 DESDE = '2026-10-05'
-NIVELES = 30
+# 🐉 HASTA EL 50 DESDE EL 12/11/2026 (Dlx: «sorpresa… y cheto», y al balance, «no me gusta que después del nivel 30 en
+# cada nivel haya un drop»). Del 31 al 50 cuesta lo mismo que del 9 al 30 (`XP_NIVEL`): la mitad de los miembros va por el
+# 5, y más caro sólo lo completaría el dueño. Lo que da cada uno, en `ESPECIALES`; los drops, en bot/avisos.js
+NIVELES = 50
 #: la XP de cada nivel: los primeros, baratos (el arranque tiene que sentirse), y después todos iguales
 XP_PRIMEROS, PRIMEROS, XP_NIVEL = 300, 3, 1000
 #: 🎯 LA CURVA SIN LA PARED DEL 4 (Dlx, 25/10/2026: «dale», al informe «Pase de rapero enganche», cambio 2). Del 3 al 4 el
@@ -231,18 +234,31 @@ ESPECIALES = {
     # 🏛️ «Pilar de UL» y no «de DRA» (Dlx, 25/10/2026: «cambiemos el título de PILAR DE DRA a PILAR DE UL»)
     25: ('titulo', 'Pilar de UL'),
     30: ('insignia', 'Pase Oro'),
+    # 🐉 del 31 al 50 (12/11/2026): Puntos en los comunes, un premio fijo en el 33, 38, 43 y 48, un Dragón Drop en el 35 y
+    # el 45 y la Caja del Campeón (a la vista) en el 40 y el 50. Lo que trae cada caja: `CAJAS` de bot/avisos.js
+    33: ('titulo', 'Escama de Oro'),
+    35: ('drop', 'Dragón Drop'),
+    38: ('insignia', 'Pase Platino'),
+    40: ('caja', '40'),
+    43: ('titulo', 'Rey Dragón'),
+    45: ('drop', 'Dragón Drop'),
+    48: ('insignia', 'Pase Diamante'),
+    50: ('caja', '50'),
 }
+#: 🐉 después del último nivel, un Dragón Drop cada tantos XP (además de la cola de Puntos): lo cuenta el objeto
+DROP_COLA = 3000
 #: ✨ LA EDICIÓN LIMITADA TAMBIÉN VA POR CARTA (Dlx, 26/10/2026: «recuerda cada carta tiene sus tags, eso de edición
 #: limitada… en cada tarjeta no»). Cada título del Pase se pone en UNA carta, la que dice: `{título: carta}`. Lo leen el
 #: objeto (`tagElige()`, viaja en `cfg.titulo_carta`), el Inventario y `tags_inventario.revisar()`. Un título que no está
 #: acá no se puede poner en ninguna: uno nuevo tiene que decir su carta (el self-check lo pide).
-TITULO_CARTA = {'Del Pase': 'competitivo', 'De la casa': 'servidor', 'Pilar de UL': 'temporada'}
+TITULO_CARTA = {'Del Pase': 'competitivo', 'De la casa': 'servidor', 'Pilar de UL': 'temporada',
+                'Escama de Oro': 'temporada', 'Rey Dragón': 'competitivo'}
 #: ✨ desde qué nivel brilla tu carta en las llaves (lo lee `subir_web.py` para la página, con `nivel_brillo()`): el 8
 #: con la curva de antes; el 4 desde `CURVA_DESDE` (Dlx, 25/10/2026: «dale», el informe, cambio 7)
 NIVEL_BRILLO_VIEJO, NIVEL_BRILLO = 8, 4
 #: los niveles que salen en Publicaciones para que te feliciten (Dlx, 06/10/2026: «5. c»). El último, además, es el
 #: Salón del Pase (Dlx, 06/10: «4. B»)
-PUBLICAR = (10, 30)
+PUBLICAR = (10, 30, 50)
 
 WORKER = 'https://liga-global-bot.liga-global-ul.workers.dev'
 
@@ -337,7 +353,7 @@ def config(temp, dra=True, nuevas=True, curva=True):
     (`paseRevisar()`), así que una semanal nueva se pagaría también en las semanas que ya pasaron. Para sumar una sin
     eso, el objeto tiene que saber desde qué semana vale cada una: es un cambio del Worker, y se despliega aparte."""
     lista = lambda xs: [list(SIN_DRA[t[0]]) if not dra and t[0] in SIN_DRA else list(t) for t in xs]
-    out = {'temp': temp or 'prueba', 'niveles': NIVELES, 'umbrales': umbrales(curva), 'cola': list(COLA),
+    out = {'temp': temp or 'prueba', 'niveles': NIVELES, 'umbrales': umbrales(curva), 'cola': list(COLA), 'drop_cola': DROP_COLA,
            'diarias': lista(DIARIAS_SIEMPRE if nuevas and curva else DIARIAS_NUEVAS if nuevas else DIARIAS), 'por_dia': POR_DIA,
            'semanales': lista(SEMANALES),
            'temporada': lista(TEMPORADA + (TEMPORADA_NUEVAS if nuevas else ())), 'premios': premios(curva),
@@ -592,7 +608,7 @@ def _self_check():
     ps = premios()
     u = umbrales()
     ok(len(ps) == NIVELES and [p[0] for p in ps] == list(range(1, NIVELES + 1)) and len(u) == NIVELES,
-       'treinta niveles, cada uno con su XP')
+       'cincuenta niveles, cada uno con su XP')
     ok(u[:8] == [300, 600, 900, 1400, 2000, 2700, 3500, 4400] and u[8] - u[7] == XP_NIVEL
        and all(b > a for a, b in zip(u, u[1:])),
        'la curva nueva: 300 tres veces, del 4 al 8 de 500 a 900, y 1.000 desde el 9; la XP pedida sólo crece  %s' % u[:9])
@@ -604,11 +620,15 @@ def _self_check():
        and nivel_brillo(_lun - dt.timedelta(hours=1)) == 8 and premios(False)[7][2] == 'llave' and premios()[3][2] == 'llave'
        and premios()[7][2] == '',
        'la curva y el brillo en el 4 arrancan con la semana del lunes 26/10, no a mitad de una')
-    ok(ps[-1][2] == 'insignia' and all(p[1] > 0 for p in ps), 'todos pagan Tienda y el último es una insignia')
+    ok(ps[-1][2] == 'caja' and ps[29][2] == 'insignia' and all(p[1] > 0 for p in ps),
+       'todos pagan Tienda; el 30 es la insignia de Oro y el 50, la Caja del Campeón')
+    ok([p[0] for p in ps if p[2] == 'drop'] == [35, 45] and [p[0] for p in ps if p[2] == 'caja'] == [40, 50]
+       and all(not p[2] or p[0] in (33, 35, 38, 40, 43, 45, 48, 50) for p in ps[30:]),
+       'del 31 al 50, un drop no en cada nivel (Dlx): el 35 y el 45, y las cajas en el 40 y el 50')
     _tits = {str(p[3]) for p in ps + premios_premium() if p[2] == 'titulo'}
     ok(_tits == set(TITULO_CARTA) and set(TITULO_CARTA.values()) <= {'temporada', 'competitivo', 'servidor', 'pais'},
        'cada título del Pase dice en qué carta va (✨ edición limitada, una carta cada uno)  %s' % sorted(_tits))
-    ok({p[2] for p in ps if p[2]} == {'tarjeta', 'insignia', 'titulo', 'color', 'llave'} and ps[0][2] == 'tarjeta'
+    ok({p[2] for p in ps if p[2]} == {'tarjeta', 'insignia', 'titulo', 'color', 'llave', 'drop', 'caja'} and ps[0][2] == 'tarjeta'
        and ps[NIVEL_BRILLO - 1][2] == 'llave',
        'el nivel 1 es la tarjeta de Temporada; los demás premios: insignias, títulos, color y el brillo en las llaves (el 4)')
     todas = DIARIAS_NUEVAS + SEMANALES + TEMPORADA + TEMPORADA_NUEVAS
@@ -637,14 +657,15 @@ def _self_check():
     semanas_t1 = 11
     tope = semanas_t1 * (sum(t[5] for t in SEMANALES) + 7 * sum(t[5] for t in diarias_de('2026-10-12')))
     tope += sum(t[5] for t in TEMPORADA)
-    ok(u[-1] <= tope / 2, 'completarlo pide %d XP de los %d que se pueden juntar en la T1: menos de la mitad'
-       % (u[-1], tope))
+    # 🐉 con 50 niveles la regla mira el 30 (el Salón de antes): el 31–50 es para los que juegan todo, y aun así entra
+    ok(u[29] <= tope / 2 and u[-1] <= tope, 'llegar al 30 pide %d XP de los %d que se pueden juntar en la T1 (menos de la '
+       'mitad), y el 50 %d: alcanzable' % (u[29], tope, u[-1]))
     d1, d2 = diarias_de('2026-10-12'), diarias_de('2026-10-13')
     ok(len(d1) == POR_DIA and d1[0][0] == 'entrar' and d2[0][0] == 'entrar' and d1[1][0] != d2[1][0],
        'las diarias: «Entra hoy» siempre, y la otra se turna día por día  %s %s' % ([x[0] for x in d1],
                                                                                     [x[0] for x in d2]))
     c = config('t1')
-    ok(c['temp'] == 't1' and c['umbrales'] == u and c['cola'] == [1000, 300] and c['publicar'] == [10, 30]
+    ok(c['temp'] == 't1' and c['umbrales'] == u and c['cola'] == [1000, 300] and c['publicar'] == [10, 30, 50]
        and all(len(t) == 6 for t in c['diarias'] + c['semanales'] + c['temporada']),
        'lo que va al objeto: umbrales, cola, las tres listas de Tareas y qué se publica')
     # 🆕 las Tareas nuevas (14/10/2026), desde la semana del 19/10
@@ -688,7 +709,7 @@ def _self_check():
        'la especial de Halloween: seis horas, se muestra con tiempo y se va después')
     ok(all(b - a == 7 * 86400000 and m == 2 for a, b, m in c2['doble']) and c2['boost'] == 20 and len(c2['premium']) == NIVELES
        and c2['premium'][0][2] == 'marco' and c2['premium'][29][2] == 'carta' and c2['crew'] == [300, 5, 10, 60],
-       'la XP doble son semanas enteras; el premium: 30 niveles, +20 %, del marco a la carta; la crew: 300 XP')
+       'la XP doble son semanas enteras; el premium: del marco a la carta (en el 30), +20 %; la crew: 300 XP')
     # 🔴 los frenos de los niveles (revisión del 05/10/2026): sobre una copia, nunca sobre el archivo de verdad
     global NIVELES_ARCHIVO
     import tempfile

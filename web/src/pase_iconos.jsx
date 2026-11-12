@@ -28,6 +28,13 @@ function Dorado({ t }) {
 function Brilla({ t }) {
   return <Svg t={t}><rect x="9" y="7" width="18" height="28" fill="none" stroke="#29B298" strokeWidth="3" /><path d="M31 3l2 5 5 2-5 2-2 5-2-5-5-2 5-2z" fill="#F5C542" /></Svg>;
 }
+// 🐉 el Dragón Drop (un huevo) y la Caja del Campeón (12/11/2026)
+export function HuevoI({ t, c = '#9B5CFF' }) {
+  return <Svg t={t}><path d="M20 3c7 0 13 10 13 19a13 13 0 0 1-26 0C7 13 13 3 20 3z" fill={c} /><path d="M14 13l4 4-3 4 5 3" fill="none" stroke="#030304" strokeWidth="2" /></Svg>;
+}
+function CajaI({ t }) {
+  return <Svg t={t}><rect x="4" y="14" width="32" height="22" fill="#F5C542" /><rect x="2" y="9" width="36" height="7" fill="#C99A1E" /><rect x="17" y="9" width="6" height="27" fill="#030304" /><path d="M20 9c-4-7-11-6-9-1M20 9c4-7 11-6 9-1" fill="none" stroke="#F5C542" strokeWidth="2.5" /></Svg>;
+}
 function Prem({ tipo, t }) {
   if (tipo === 'marco') return <Svg t={t}><rect x="8" y="3" width="24" height="34" fill="none" stroke={MAG} strokeWidth="3" /><rect x="13" y="8" width="14" height="24" fill="none" stroke={MAG} strokeWidth="2" /></Svg>;
   if (tipo === 'reaccion') return <Svg t={t}><path d="M5 7h30v20H17l-8 7v-7H5z" fill="none" stroke={MAG} strokeWidth="3" /><path d="M20 12v10M15 17h10" stroke={MAG} strokeWidth="3" /></Svg>;
@@ -48,10 +55,12 @@ export function PaseIcono({ p, prem = false, t = 38 }) {
   if (tipo === 'titulo') return <TituloI c="#F6F6F6" t={t} />;
   if (tipo === 'color') return <Dorado t={t} />;
   if (tipo === 'llave') return <Brilla t={t} />;
+  if (tipo === 'drop') return <HuevoI t={t} />;
+  if (tipo === 'caja') return <CajaI t={t} />;
   return <Monedas t={t} />;
 }
 
-const CORTO = { tarjeta: 'Tu carta', insignia: 'Insignia', titulo: 'Título', color: 'Dorado', llave: 'Brilla' };
+const CORTO = { tarjeta: 'Tu carta', insignia: 'Insignia', titulo: 'Título', color: 'Dorado', llave: 'Brilla', drop: 'Drop', caja: 'Caja' };
 const CORTO_P = { marco: 'Marco', reaccion: 'Reacción', fondo: 'Fondo', color: 'Color', titulo: 'Título', emblema: 'Emblema', carta: 'Carta' };
 
 /** Lo que da un premio: corto («Insignia») o largo («Insignia Pase Bronce»). Sin nada más que Tienda, «+150» */
@@ -80,6 +89,9 @@ export function premioLargo(p, prem = false) {
   if (tipo === 'titulo') return 'Título «' + valor + '»';
   if (tipo === 'color') return 'Tu nombre en dorado';
   if (tipo === 'llave') return 'Tu carta brilla en las llaves';
+  if (tipo === 'drop') return 'Un Dragón Drop';
+  if (tipo === 'caja') return valor === '50' ? 'Caja del Campeón: un Micrófono de Oro seguro y 5.000 Puntos'
+    : 'Caja del Campeón: 3 drops de Vinilo o más y 2.000 Puntos';
   return '+' + num(tienda) + ' Puntos de Tienda';
 }
 

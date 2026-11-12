@@ -548,7 +548,7 @@ export function Lobby({ liga, dc }) {
   return (
     <section className="lobby pn" aria-label="Tu lobby">
       {dc && P && P.listo ? <PopPase P={P} /> : null}
-      <FilaRacha dc={dc} R={R} />
+      <FilaRacha dc={dc} R={R} liga={liga} />
       <ElBoton liga={liga} />
       <Batallas liga={liga} dc={dc} />
       <div className="pn-grid aparece">

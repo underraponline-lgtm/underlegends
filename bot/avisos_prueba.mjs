@@ -3520,6 +3520,109 @@ const ok = (cond, que, det) => {
   ok(/3 comentarios/.test(av.titulo) && av.cuerpo === 'Six: «grande»', 'la campana del dueño dice cuántos y el último');
 }
 
+// 🐉 LOS DRAGÓN DROPS (12/11/2026): la rareza, la garantía, el premio, la barra del día y abrir, sobre el objeto de verdad
+{
+  console.log('\n🐉 los Dragón Drops');
+  ok(A.rarezaDrop(0) === 0 && A.rarezaDrop(0.4999) === 0 && A.rarezaDrop(0.5) === 1 && A.rarezaDrop(0.999) === 4,
+    'las rarezas salen de su peso (50 % Maqueta … 1,5 % Micrófono de Oro)');
+  ok(A.rarezaDrop(0, 2) === 2 && A.rarezaDrop(0, 0, A.DROP_GARANTIA - 1) === 4,
+    'una caja manda la rareza mínima, y el décimo sin legendario es legendario');
+  const pr0 = A.premioDrop(0, 0.5, []), pr4 = A.premioDrop(4, 0.1, []), pr4b = A.premioDrop(4, 0.1, ['Corona de Escamas']);
+  ok(pr0.puntos >= 100 && pr0.puntos <= 300 && pr0.puntos % 50 === 0 && pr4.puntos === 10000 && pr4.titulo === 'Corona de Escamas'
+    && pr4b.titulo === '', 'el premio crece con la rareza y un título que ya tienes no se repite', JSON.stringify([pr0, pr4, pr4b]));
+  let DatabaseSync = null;
+  try { ({ DatabaseSync } = await import('node:sqlite')); } catch (e) { DatabaseSync = null; }
+  if (!DatabaseSync) {
+    console.log('  ⓘ sin node:sqlite: los drops no se prueban sobre el objeto');
+  } else {
+    const db = new DatabaseSync(':memory:');
+    const sql = {
+      exec(q, ...ps) {
+        const t = String(q).trim();
+        if (!ps.length && /;\s*\S/.test(t)) { db.exec(t); return { toArray: () => [] }; }
+        const st = db.prepare(t);
+        if (/^\s*(SELECT|WITH|PRAGMA)/i.test(t)) { const rows = st.all(...ps); return { toArray: () => rows }; }
+        const r = st.run(...ps);
+        return { toArray: () => [], rowsWritten: r.changes };
+      },
+    };
+    const o = new A.Avisos({ storage: { sql, setAlarm() {}, getAlarm() { return null; }, transactionSync: (f) => f() },
+      blockConcurrencyWhile: async (f) => f() }, { DISCORD_TOKEN: 'x', KV: { get: async () => null } });
+    await new Promise((r) => setTimeout(r, 5));
+    const Q = '300000000000000001';
+    o.pasoDia(Q, 'cm'); o.pasoDia(Q, 'cm'); o.pasoDia(Q, 'fel'); o.pasoDia(Q, 'voto');
+    let d = o.dropsDe(Q);
+    ok(d.dia.pasos === 3 && d.cerrados.length === 2, 'la barra del día: cada cosa una vez, y drop en el paso 1 y el 3',
+      JSON.stringify(d.dia) + ' ' + d.cerrados.length);
+    o.pasoDia(Q, 'nada');
+    ok(o.dropsDe(Q).dia.pasos === 3, 'lo que no es un paso no suma');
+    ok(!o.dropDar(Q, 'dia:' + A.diaET() + ':1'), 'el mismo drop no se da dos veces');
+    const id = d.cerrados[0].id;
+    const a1 = o.dropAbrir(Q, id), a2 = o.dropAbrir(Q, id);
+    ok(a1.ok && a1.rareza >= 0 && a1.rareza <= 4 && a2.ya && a2.rareza === a1.rareza && a2.puntos === a1.puntos,
+      'abrirlo da una rareza y un premio, y abrirlo de nuevo devuelve lo mismo', JSON.stringify([a1, a2]));
+    ok(o.dropAbrir('300000000000000002', d.cerrados[1].id).error === 'no_existe', 'nadie abre un drop ajeno');
+    const pago = o.sql.exec("SELECT monto FROM tienda WHERE id = ?", 'drop:' + id).toArray()[0];
+    ok(!a1.puntos || (pago && pago.monto === a1.puntos), 'los Puntos van a la billetera, una vez');
+    // la garantía: nueve abiertos sin legendario, y el décimo lo es
+    for (let i = 0; i < 12; i++) o.dropDar(Q, 'prueba:' + i);
+    o.sql.exec("UPDATE drops SET rareza = 0 WHERE quien = ? AND abierto = 1", Q);
+    let leg = -1;
+    for (const c of o.dropsDe(Q).cerrados) {
+      const r = o.dropAbrir(Q, c.id);
+      if (r.rareza === 4) { leg = o.sql.exec('SELECT COUNT(*) AS n FROM drops WHERE quien = ? AND abierto = 1', Q).toArray()[0].n; break; }
+      o.sql.exec('UPDATE drops SET rareza = 0 WHERE id = ?', c.id);
+    }
+    ok(leg > 0 && leg <= A.DROP_GARANTIA, 'en diez drops sale un legendario sí o sí', leg);
+  }
+}
+
+// 🐉 EL PASE DA DROPS (12/11/2026): el del 35, las tres de la caja del 40 (Vinilo o más) con sus Puntos, y uno cada
+// `drop_cola` XP pasado el 50. Sobre el objeto de verdad, con el Pase de 50 armado acá
+{
+  let DatabaseSync = null;
+  try { ({ DatabaseSync } = await import('node:sqlite')); } catch (e) { DatabaseSync = null; }
+  if (DatabaseSync) {
+    const db = new DatabaseSync(':memory:');
+    const sql = {
+      exec(q, ...ps) {
+        const t = String(q).trim();
+        if (!ps.length && /;\s*\S/.test(t)) { db.exec(t); return { toArray: () => [] }; }
+        const st = db.prepare(t);
+        if (/^\s*(SELECT|WITH|PRAGMA)/i.test(t)) { const rows = st.all(...ps); return { toArray: () => rows }; }
+        const r = st.run(...ps);
+        return { toArray: () => [], rowsWritten: r.changes };
+      },
+    };
+    const o = new A.Avisos({ storage: { sql, setAlarm() {}, getAlarm() { return null; }, transactionSync: (f) => f() },
+      blockConcurrencyWhile: async (f) => f() }, { DISCORD_TOKEN: 'x', KV: { get: async () => null } });
+    await new Promise((r) => setTimeout(r, 5));
+    const Q = '300000000000000009';
+    const ESP = { 35: ['drop', 'Dragón Drop'], 40: ['caja', '40'], 45: ['drop', 'Dragón Drop'], 50: ['caja', '50'] };
+    const premios = Array.from({ length: 50 }, (_, i) => [i + 1, 150].concat(ESP[i + 1] || ['', '']));
+    const umbrales = Array.from({ length: 50 }, (_, i) => 1000 * (i + 1));
+    const cfg = { temp: 't1', niveles: 50, umbrales, premios, cola: [1000, 300], drop_cola: 3000, premium: [] };
+    o.paseDatos = () => ({ cfg, miembros: new Set([Q]), sem: [], hechas: {} });
+    o.pasePremium = () => null;
+    let xp = 41000;
+    o.paseXP = () => xp;
+    o.premiarPase(Q);
+    const origenes = () => o.sql.exec('SELECT origen, min FROM drops WHERE quien = ? ORDER BY origen', Q).toArray();
+    const a = origenes();
+    const caja = o.sql.exec("SELECT monto FROM tienda WHERE id = ?", 'pase:t1:' + Q + ':caja40').toArray()[0];
+    ok(a.length === 4 && a.some((x) => x.origen === 'pase:t1:35') && a.filter((x) => /:40:/.test(x.origen)).every((x) => x.min === 2)
+      && caja && caja.monto === 2000, 'en el 41: el drop del 35 y la caja del 40 (tres de Vinilo o más, y 2.000 Puntos)', JSON.stringify(a));
+    o.premiarPase(Q);
+    ok(origenes().length === 4, 'cobrar de nuevo no da más drops');
+    xp = 50000 + 7000;
+    o.premiarPase(Q);
+    const b = origenes();
+    ok(b.some((x) => x.origen === 'pase:t1:45') && b.some((x) => x.origen === 'pase:t1:50:1' && x.min === 4)
+      && b.filter((x) => /:dc\d+$/.test(x.origen)).length === 2,
+    'en el 50: el del 45, el Micrófono de Oro de la caja, y pasado el 50 uno cada 3.000 XP', JSON.stringify(b));
+  }
+}
+
 if (fallas) {
   console.log(`\n❌ ${fallas} prueba(s) fallaron`);
   process.exit(1);

@@ -4184,3 +4184,74 @@ a.mc{color:inherit;text-decoration:none}
 .pn-acc b{overflow:hidden;text-overflow:ellipsis;min-width:0;max-width:100%}
 .pn-chip strong{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;min-width:0}
 .pn-cu h4{flex-wrap:wrap;row-gap:4px}
+
+/* ═══ 🐉 DRAGÓN DROPS (12/11/2026): la fila de arriba de a tres (racha · campana o último evento · barra del día) y la
+   ventana para abrirlos. Los colores de las rarezas salen de `COLOR_RZ` (drops.jsx) ═══ */
+.pn-fila.tres{grid-template-columns:repeat(3,minmax(0,1fr))}
+@media (max-width: 1000px){.pn-fila.tres{grid-template-columns:repeat(2,minmax(0,1fr))}.pn-fila.tres > .pn-dia{grid-column:1/-1}}
+@media (max-width: 760px){.pn-fila.tres{grid-template-columns:minmax(0,1fr)}}
+.pn-ultc{display:flex;align-items:center;gap:12px;padding:8px 12px;min-height:58px;border:1.5px solid #1d5a4e;color:#F6F6F6;cursor:pointer;font:inherit;text-align:left;min-width:0;
+  background:linear-gradient(90deg,rgba(41,178,152,.12),transparent 60%),#0B0C0E}
+.pn-ultc:hover,.pn-ultc:focus-visible{border-color:var(--verde);outline:none}
+.pn-ultc .pn-tx b{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.pn-dia{display:flex;align-items:center;gap:12px;padding:8px 12px;min-height:58px;border:1.5px solid #6b2bd1;color:#F6F6F6;cursor:pointer;font:inherit;text-align:left;min-width:0;
+  background:radial-gradient(120% 90% at 100% 0,rgba(155,92,255,.32),transparent 60%),linear-gradient(90deg,#120a1f,#0B0C0E 70%)}
+.pn-dia:hover,.pn-dia:focus-visible{border-color:#B48CFF;outline:none}
+.dd-huevo-m{width:34px;height:42px;flex:none;position:relative;border-radius:50% 50% 46% 46%/58% 58% 42% 42%;
+  background:radial-gradient(60% 50% at 35% 30%,rgba(255,255,255,.45),transparent 60%),linear-gradient(160deg,#B48CFF,#5A2BB0);box-shadow:0 0 16px rgba(155,92,255,.55)}
+.dd-huevo-m em{position:absolute;right:-9px;top:-7px;background:#E41373;color:#fff;font:900 11px/1 Archivo,sans-serif;font-style:normal;padding:3px 5px;min-width:18px;text-align:center}
+.dd-pasos{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:3px;margin:3px 0 1px}
+.dd-pasos i{height:7px;background:#2A2240;position:relative}
+.dd-pasos i.si{background:linear-gradient(90deg,#9B5CFF,#FF4F93)}
+.dd-pasos i.drop::after{content:"";position:absolute;right:-1px;top:-5px;width:10px;height:12px;border-radius:50% 50% 46% 46%/58% 58% 42% 42%;
+  background:linear-gradient(160deg,#B48CFF,#5A2BB0);border:1.5px solid #000}
+.dd-pasos i.drop.si::after{background:linear-gradient(160deg,#F5C542,#B8860B)}
+/* la ventana */
+dialog.pn-pop.dd-pop{width:min(760px,calc(100vw - 32px));border-color:#9B5CFF}
+.dd-in{display:grid;max-height:calc(86vh - 10px)}
+.dd-cuerpo{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1fr);gap:14px;padding:14px;overflow:auto}
+@media (max-width: 680px){.dd-cuerpo{grid-template-columns:minmax(0,1fr)}}
+.dd-escena{position:relative;min-height:360px;border:1.5px solid #2A2C31;overflow:hidden;display:grid;place-items:center;align-content:center;gap:12px;
+  background:radial-gradient(60% 50% at 50% 55%,color-mix(in srgb,var(--c) 38%,transparent),transparent 70%),radial-gradient(120% 80% at 50% 120%,#1a1030,#060607 60%)}
+.dd-rayos{position:absolute;inset:-40%;background:repeating-conic-gradient(from 0deg,color-mix(in srgb,var(--c) 22%,transparent) 0 8deg,transparent 8deg 20deg);
+  animation:dd-girar 18s linear infinite;opacity:.55;pointer-events:none}
+@keyframes dd-girar{to{transform:rotate(360deg)}}
+.dd-rz{position:absolute;top:14px;left:50%;transform:translateX(-50%);font:900 14px/1 "Barlow Condensed",sans-serif;letter-spacing:.14em;text-transform:uppercase;
+  padding:7px 12px;background:#000;border:1.5px solid var(--c);color:var(--c);white-space:nowrap;z-index:2}
+.dd-huevo{width:150px;height:188px;border:0;cursor:pointer;position:relative;z-index:1;border-radius:50% 50% 46% 46%/58% 58% 42% 42%;
+  background:radial-gradient(55% 45% at 35% 28%,rgba(255,255,255,.55),transparent 60%),linear-gradient(160deg,color-mix(in srgb,var(--c) 70%,#fff),var(--c) 45%,color-mix(in srgb,var(--c) 55%,#000));
+  box-shadow:0 0 50px color-mix(in srgb,var(--c) 70%,transparent),inset 0 -14px 30px rgba(0,0,0,.35)}
+.dd-huevo span{position:absolute;inset:auto 0 22%;text-align:center;font:900 28px/1 Archivo,sans-serif;color:rgba(0,0,0,.45)}
+.dd-huevo:focus-visible{outline:3px solid #fff;outline-offset:6px}
+.dd-huevo.tiembla{animation:dd-tiembla .32s}
+@keyframes dd-tiembla{20%{transform:rotate(-6deg) scale(1.03)}50%{transform:rotate(5deg) scale(1.06)}80%{transform:rotate(-3deg)}}
+.dd-huevo.grietas::after{content:"";position:absolute;inset:0;border-radius:inherit;
+  background:linear-gradient(115deg,transparent 46%,rgba(0,0,0,.55) 47%,transparent 48%),linear-gradient(70deg,transparent 58%,rgba(0,0,0,.5) 59%,transparent 60%)}
+.dd-toques{position:relative;z-index:1;color:#9a9ca3;font:700 13px/1 "Barlow Condensed",sans-serif;letter-spacing:.08em;text-transform:uppercase}
+.dd-premio{position:relative;z-index:2;display:grid;justify-items:center;gap:8px;text-align:center;padding:0 12px;animation:dd-sale .5s cubic-bezier(.2,1.4,.4,1)}
+@keyframes dd-sale{from{transform:scale(.4) rotate(-8deg);opacity:0}to{transform:none;opacity:1}}
+.dd-ficha{width:120px;aspect-ratio:3/4;display:grid;place-items:center;border:2px solid var(--c);font-size:44px;
+  background:linear-gradient(170deg,color-mix(in srgb,var(--c) 35%,#000),#000 75%);box-shadow:0 0 40px color-mix(in srgb,var(--c) 60%,transparent)}
+.dd-premio b{font:900 18px/1.15 Archivo,sans-serif;text-transform:uppercase}
+.dd-premio small{color:var(--c);font:800 12px/1 "Barlow Condensed",sans-serif;letter-spacing:.1em;text-transform:uppercase}
+.dd-vacio{position:relative;z-index:1;margin:0;padding:0 18px;text-align:center;color:#c9c9d0;font:500 14px/1.5 Archivo,sans-serif}
+.dd-msg{position:relative;z-index:2;color:#FF4F93}
+.dd-lado{display:grid;gap:8px;align-content:start;min-width:0}
+.dd-lado h5{margin:4px 0 0;display:flex;justify-content:space-between;align-items:baseline;font:900 14px/1 Archivo,sans-serif;text-transform:uppercase}
+.dd-lado h5 small{font:700 12px/1 Archivo,sans-serif;color:#B48CFF;text-transform:none}
+.dd-hoy,.dd-rzs,.dd-ult{list-style:none;margin:0;padding:0;display:grid;gap:4px}
+.dd-hoy li{display:flex;gap:8px;align-items:center;font:500 13px/1.3 Archivo,sans-serif;color:#9a9ca3}
+.dd-hoy li i{width:16px;height:16px;border:1.5px solid #3a2f55;display:grid;place-items:center;font:900 11px/1 Archivo,sans-serif;font-style:normal;flex:none}
+.dd-hoy li.si{color:#F6F6F6}.dd-hoy li.si i{background:#9B5CFF;border-color:#9B5CFF;color:#000}
+.dd-rzs li,.dd-ult li{display:grid;grid-template-columns:12px minmax(0,1fr) auto;gap:8px;align-items:center;padding:5px 8px;background:#000;border:1.5px solid #2A2C31;border-left:3px solid var(--c)}
+.dd-rzs li i,.dd-ult li i{width:12px;height:15px;border-radius:50% 50% 46% 46%/58% 58% 42% 42%;background:var(--c)}
+.dd-rzs b{font:800 13px/1.2 Archivo,sans-serif}
+.dd-rzs strong{font:900 13px/1 Archivo,sans-serif;color:var(--c);font-variant-numeric:tabular-nums}
+.dd-ult span{font:600 13px/1.2 Archivo,sans-serif;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.dd-ult small{font:700 11px/1 "Barlow Condensed",sans-serif;letter-spacing:.06em;text-transform:uppercase;color:var(--c)}
+.dd-nota{margin:0;color:#9a9ca3;font:500 13px/1.4 Archivo,sans-serif}
+.dd-nota b{color:#F6F6F6}
+@media (prefers-reduced-motion: reduce){.dd-rayos,.dd-huevo.tiembla,.dd-premio{animation:none}}
+.app.calma .dd-rayos{animation:none}
+.pn-fila.dos{grid-template-columns:repeat(2,minmax(0,1fr))}
+@media (max-width: 760px){.pn-fila.dos{grid-template-columns:minmax(0,1fr)}}

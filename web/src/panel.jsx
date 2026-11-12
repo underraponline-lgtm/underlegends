@@ -24,6 +24,7 @@ import { cobrarRacha } from './racha.js';
 import { dondeEstoy, nombreDe, useCompetencias } from './competencias_datos.js';
 import { svElegido, useElegidos } from './elegidos.js';
 import { pedirLigas } from './ligas_datos.js';
+import { BarraDia } from './drops.jsx';
 
 const W = typeof window !== 'undefined' ? window : {};
 const ET = 'America/New_York';
@@ -142,22 +143,49 @@ function Festejo({ R }) {
 }
 
 /** La fila de arriba: la racha y la campana, o la racha sola a lo ancho; sin cuenta, la invitación */
-export function FilaRacha({ dc, R }) {
+// 🐉 LA FILA DE ARRIBA, DE A TRES (12/11/2026, la opción A de la maqueta; Dlx: «uno que activa la campana… sería para todos
+// hasta que la activen; si la activan, aparecería en vez el último evento»): la racha, la campana o tu último evento, y la
+// barra del día de los Dragón Drops. Sin cuenta, entrar y la campana
+export function FilaRacha({ dc, R, liga }) {
   const c = useCampana();
   const camp = campanaPide(c, dc);
+  const ult = dc && !camp && liga && liga.yo ? ultimoDe(liga, liga.yo) : null;
+  // ⚠️ la racha no se dibuja hasta que llega (`R`): contarla sin estar dejaba una columna vacía
+  const n = dc ? (R ? 1 : 0) + (camp || ult ? 1 : 0) + 1 : 1 + (camp ? 1 : 0);
   return (
     <>
       <Festejo R={R} />
-      <div className={'pn-fila' + (camp ? '' : ' sola')}>
-        {dc ? <RachaCorta R={R} sola={!camp} /> : (
+      <div className={'pn-fila' + (n === 3 ? ' tres' : n === 1 ? ' sola' : ' dos')}>
+        {dc ? <RachaCorta R={R} sola={n === 1} /> : (
           <section className="pn-racha invita">
             <span className="pn-tx"><b>¿Juegas en la Liga?</b><small>Entra con Discord: tu racha, tus tarjetas y tu Pase</small></span>
             <button type="button" className="btn verde chico" onClick={accion.entrar}>Entrar</button>
           </section>
         )}
-        {camp ? <CampanaCorta dc={dc} /> : null}
+        {camp ? <CampanaCorta dc={dc} /> : ult ? <UltCorto liga={liga} u={ult} /> : null}
+        {dc ? <BarraDia dc={dc} /> : null}
       </div>
     </>
+  );
+}
+
+/** Tu último evento: el más nuevo de las llaves que viajan, o el de tu fila (`ult` y el número de tu perfil, `ue`) */
+function ultimoDe(liga, yo) {
+  const u = (liga.semanaDe(yo.k) || [])[0] || null;
+  if (u) return { ll: u[0], t: utc(liga.fechaLlave(u[0])), ronda: u[1] };
+  if (Array.isArray(yo.ult) && yo.ult[0]) {
+    const n = (yo.ue && yo.ue[0]) || 0;
+    return { ll: { n, nombre: n ? 'la llave #' + n : 'tu último evento' }, t: utc(yo.ult[0] + 'T23:00:00Z'), ronda: yo.ult[1] };
+  }
+  return null;
+}
+function UltCorto({ liga, u }) {
+  const f = new Date(u.t);
+  return (
+    <button type="button" className="pn-ultc" onClick={() => (u.ll.n ? accion.llave(u.ll.n) : (location.hash = '#/r/' + encodeURIComponent(liga.yo.k)))}>
+      <span className="pn-cal"><i>{f.toLocaleDateString('es', { weekday: 'short' }).replace('.', '')}</i><b>{f.getDate()}</b></span>
+      <span className="pn-tx"><b>{limpio(u.ll.nombre)}</b><small>Tu último evento{u.ronda ? ' · ' + u.ronda : ''}</small></span>
+    </button>
   );
 }
 
@@ -413,6 +441,9 @@ export function Vestuario({ liga, dc }) {
   const [elegida, setElegida] = useState(0);
   const mios = useMios(dc);
   const est = useRef(null);
+  const camp = useCampana();
+  // 🐉 con la campana activa, tu último evento sube a la fila de arriba (`FilaRacha`): acá no se repite
+  const ultArriba = !!dc && !campanaPide(camp, dc);
   const nC = srcs.length;
   const i = nC ? Math.min(elegida, nC - 1) : 0;
   if (!yo) {
@@ -460,7 +491,7 @@ export function Vestuario({ liga, dc }) {
             <b>{bot[0]}<span className="pn-tag-bot">bot</span><small>{fechaUlt ? '· ' + hace(fechaUlt) : ''}</small></b>
             <p>{ll ? textoBot(ronda, limpio(ll.nombre)) : 'Todavía no jugaste en la ' + (liga.temp || 'T1') + '. ¿Te anotas al próximo?'}</p></span>
           <a className="pn-resp" href={ll ? '#/publicaciones' : '#/eventos'}>{ll ? 'Responder' : 'Ver eventos'}</a>
-          {ll ? (
+          {ll && !ultArriba ? (
             <button type="button" className="pn-ult" onClick={() => (ll.n ? accion.llave(ll.n) : (location.hash = '#/r/' + encodeURIComponent(yo.k)))}>
               <span className="pn-cal"><i>{new Date(fechaUlt).toLocaleDateString('es', { weekday: 'short' }).replace('.', '')}</i><b>{new Date(fechaUlt).getDate()}</b></span>
               <span className="pn-ult-t"><em>Tu último evento · {ronda}</em><strong>{limpio(ll.nombre)}</strong></span><small>Ver el evento ›</small>
@@ -680,7 +711,7 @@ export function PnPase({ dc }) {
       {a && a.de ? <span className="pn-xp" aria-label={num(a.lleva) + ' de ' + num(a.de) + ' XP'}><i><u style={{ width: Math.round((100 * a.lleva) / a.de) + '%' }} /></i><small>{num(a.lleva)} / {num(a.de)} XP</small></span>
         : mio ? <span className="pn-xp lleno"><i><u style={{ width: '100%' }} /></i><small>Pase completo</small></span> : null}
       <span className="pn-pista" aria-hidden="true">{Array.from({ length: tramos }, (_, j) => <i key={j} className={(j < llenos ? 'si' : '') + ((j + 1) % 5 === 0 ? ' hito' : '')} />)}</span>
-      <span className="pn-cola"><Ico n="premio" t={20} /><small>Del {niveles} en adelante, más Puntos por cada 1.000 XP</small></span>
+      <span className="pn-cola"><Ico n="premio" t={20} /><small>Del {niveles} en adelante, un Dragón Drop cada 3.000 XP y más Puntos</small></span>
     </a>
   );
 }

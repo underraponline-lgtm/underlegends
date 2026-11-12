@@ -3465,6 +3465,8 @@ const RUTAS = {
   // (Mi cuenta y el Dashboard). Ver `validarComentario()` y `comentar()`
   '/avisos/comentar': 'POST', '/avisos/comentarios': 'GET', '/avisos/comentario-borrar': 'POST',
   '/avisos/cm-mio': 'POST', '/avisos/dueno/cm-permiso': 'POST', '/avisos/dueno/cm-permisos': 'POST',
+  // 🐉 los Dragón Drops: los tuyos y la barra del día, y abrir uno (con tu sesión). Ver `dropsDe()` y `dropAbrir()`
+  '/avisos/drops': 'POST', '/avisos/drop-abrir': 'POST',
   // 📣 abrir una promo paga Tienda y XP: ver `validarPromo()` y `promoVio()`
   '/avisos/promo-vio': 'POST',
   // 📣 una semana más de tu promo, desde la Tienda (`validarExtender()`, `promoExtender()`); y hasta cuándo va cada una
@@ -3867,6 +3869,52 @@ export function validarComentario(items, d, id, mio, ahora) {
   const ks = Array.isArray(x.ks) ? x.ks.map((k) => (claveValida(k) ? k : '')) : [];
   return { pub: { id: x.id, tipo: String(x.tipo || '').slice(0, 20), ks: ks.slice(0, 8),
     quien: (x.quien || []).slice(0, 8).map((n) => String(n).slice(0, 60)) }, tx: l.tx, resp };
+}
+
+// ── 🐉 DRAGÓN DROPS (12/11/2026) ──────────────────────────────────────
+// 🔑 Dlx: «sorpresa… y cheto… cofres, drops, etc., como Brawl Stars pero con nuestra temática», «de todos lados», y a la
+// maqueta, «Sí, constrúyelos». Un drop se GANA —el Pase (35, 45, las cajas del 40 y el 50, y uno cada `drop_cola` XP
+// después del 50) y la barra del día (pasos 1, 3 y 6)— y NUNCA se vende por plata. La rareza la decide el objeto al
+// abrirlo (`dropAbrir()`), con azar del sistema; la página sólo anima hasta lo que salió.
+//: las rarezas, de la más común a la legendaria, y su peso sobre 10.000 (las probabilidades se muestran tal cual)
+export const DROP_RAREZAS = [['Maqueta', 5000], ['Mixtape', 2800], ['Vinilo', 1500], ['Disco de Oro', 550], ['Micrófono de Oro', 150]];
+//: el décimo drop sin un legendario es legendario
+export const DROP_GARANTIA = 10;
+//: los pasos del día que dan un drop
+export const DROP_PASOS = [1, 3, 6];
+//: lo que trae cada Caja del Campeón (a la vista): cuántos drops, desde qué rareza, y Puntos de Tienda
+export const CAJAS = { 40: { drops: 3, min: 2, puntos: 2000 }, 50: { drops: 1, min: 4, puntos: 5000 } };
+//: los títulos que sólo salen de un drop, por rareza (2 Vinilo, 3 Disco de Oro, 4 Micrófono de Oro)
+export const DROP_TITULOS = { 2: ['Lengua de Fuego', 'Garra Dorada'], 3: ['Aliento de Dragón'], 4: ['Corona de Escamas'] };
+//: qué suma un paso de la barra del día (cada cosa, una vez por día)
+export const PASOS_QUE = { jugo: 'Jugar un evento', cm: 'Comentar', fel: 'Felicitar', voto: 'Votar o apostar',
+  tarea: 'Una Tarea del Pase', promo: 'Abrir una promo o seguir a alguien' };
+
+/** La rareza de un drop: `r` en [0, 1) del azar, `min` la rareza mínima, `sin` cuántos van sin legendario. Pura. */
+export function rarezaDrop(r, min = 0, sin = 0) {
+  if (sin >= DROP_GARANTIA - 1) return DROP_RAREZAS.length - 1;
+  const tot = DROP_RAREZAS.reduce((s, x) => s + x[1], 0);
+  let x = Math.floor(Math.max(0, Math.min(0.999999, r)) * tot), i = 0;
+  for (; i < DROP_RAREZAS.length - 1; i++) { if (x < DROP_RAREZAS[i][1]) break; x -= DROP_RAREZAS[i][1]; }
+  return Math.max(i, Math.min(min, DROP_RAREZAS.length - 1));
+}
+
+/**
+ * El premio de una rareza: `{puntos, titulo}`. `r` en [0, 1) del azar y `tiene` los títulos que ya tiene: un título
+ * repetido no sale (se cambia por Puntos). Pura.
+ */
+export function premioDrop(rareza, r, tiene) {
+  const ya = new Set(tiene || []);
+  const libres = (DROP_TITULOS[rareza] || []).filter((t) => !ya.has(t));
+  const entre = (a, b) => a + Math.floor(r * ((b - a) / 50 + 1)) * 50;
+  if (rareza <= 0) return { puntos: entre(100, 300), titulo: '' };
+  if (rareza === 1) return { puntos: entre(400, 800), titulo: '' };
+  if (rareza === 2) {
+    return libres.length && r < 0.5 ? { puntos: 0, titulo: libres[Math.floor(r * 2 * libres.length) % libres.length] }
+      : { puntos: entre(1200, 2000), titulo: '' };
+  }
+  if (rareza === 3) return libres.length && r < 0.5 ? { puntos: 1000, titulo: libres[0] } : { puntos: entre(3000, 5000), titulo: '' };
+  return { puntos: 10000, titulo: libres[0] || '' };
 }
 
 /** Lo que dice la campana del dueño de la publicación: cuántos comentaron y el último. Pura. */
@@ -6082,6 +6130,20 @@ export async function rutaAvisos(req, env, ruta) {
       headers: { 'content-type': 'application/json' },
     });
   }
+  // 🐉 TUS DRAGÓN DROPS Y ABRIR UNO: quién lo dice Discord (o la sesión); qué sale, el objeto
+  if (ruta === '/avisos/drops' || ruta === '/avisos/drop-abrir') {
+    const crudo = await req.text();
+    if (crudo.length > 1024) return json({ error: 'demasiado grande' }, 413);
+    let d = null;
+    try { d = JSON.parse(crudo || '{}'); } catch (e) { d = null; }
+    if (!d || typeof d !== 'object' || (d.token && !/^[A-Za-z0-9._-]{10,300}$/.test(String(d.token))) ||
+        (ruta === '/avisos/drop-abrir' && !/^[0-9]{1,12}$/.test(String(d.id || '')))) return json({ error: 'faltan datos' }, 400);
+    const q = await quienPide(req, env, d);
+    if (!q.id) return json({ error: q.error }, q.estado);
+    return elObjeto(env).fetch('https://avisos' + ruta.slice('/avisos'.length), {
+      method: 'POST', body: JSON.stringify({ quien: q.id, id: Number(d.id) || 0 }), headers: { 'content-type': 'application/json' },
+    });
+  }
   // 💬 A QUIÉN LE PREGUNTÓ DLX (el Dashboard): poner el permiso de un perfil, y la lista entera
   if (ruta === '/avisos/dueno/cm-permiso' || ruta === '/avisos/dueno/cm-permisos') {
     const crudo = await req.text();
@@ -7404,6 +7466,14 @@ export class Avisos {
       this.sql.exec('CREATE INDEX IF NOT EXISTS comentario_pub ON comentario (pub)');
       this.sql.exec('CREATE TABLE IF NOT EXISTS cm_permiso (k TEXT PRIMARY KEY, estado TEXT NOT NULL, ' +
         "por TEXT NOT NULL DEFAULT '', t INTEGER NOT NULL)");
+      // 🐉 LOS DRAGÓN DROPS (12/11/2026): uno por fila, ganado por algo (`origen`, único por persona: ganarlo dos veces no
+      // da dos) y, al abrirlo, su rareza y su premio. Y los pasos de la barra del día (`dia_pasos`). Ver `dropDar()`
+      this.sql.exec('CREATE TABLE IF NOT EXISTS drops (id INTEGER PRIMARY KEY AUTOINCREMENT, quien TEXT NOT NULL, ' +
+        "origen TEXT NOT NULL, min INTEGER NOT NULL DEFAULT 0, t INTEGER NOT NULL, abierto INTEGER NOT NULL DEFAULT 0, " +
+        "rareza INTEGER NOT NULL DEFAULT -1, premio TEXT NOT NULL DEFAULT '', t_abierto INTEGER NOT NULL DEFAULT 0, UNIQUE (quien, origen))");
+      this.sql.exec('CREATE INDEX IF NOT EXISTS drops_quien ON drops (quien, abierto)');
+      this.sql.exec('CREATE TABLE IF NOT EXISTS dia_pasos (quien TEXT NOT NULL, dia TEXT NOT NULL, que TEXT NOT NULL, ' +
+        't INTEGER NOT NULL, PRIMARY KEY (quien, dia, que))');
       // 🔔 LA BANDEJA (02/10/2026): lo que se le avisó a cada uno, para el panel de la campana (Dlx: «que sea como un
       // panel de notificaciones recientes, quizás algo como Instagram»). Se anota aunque esa persona no tenga la
       // campana en ningún dispositivo: el panel se ve igual. El mismo aviso (`clave`) se pisa y vuelve a «nueva»:
@@ -8231,6 +8301,8 @@ export class Avisos {
       if (ruta === '/comentario-borrar') return json(this.comentarioBorrar(d));
       if (ruta === '/cm-mio') return await this.cmMio(d);
       if (ruta === '/cm-permiso') return await this.cmPermiso(d);
+      if (ruta === '/drops') return json(this.dropsDe(String(d.quien || '')));
+      if (ruta === '/drop-abrir') { const v = this.dropAbrir(String(d.quien || ''), Number(d.id)); return json(v, v.error ? 400 : 200); }
       if (ruta === '/promo-vio') return this.promoVio(d);
       if (ruta === '/promo-extender') return this.promoExtender(d);
       if (ruta === '/pedir') return this.pedir(d);
@@ -8718,6 +8790,8 @@ export class Avisos {
       this.sql.exec('DELETE FROM subs WHERE enviados = 0 AND fallos >= 5 AND prueba = 0');
       // 🔢 y los contadores de cambios de días que ya pasaron
       this.sql.exec('DELETE FROM cambios_dia WHERE dia < ?', new Date(ahora - DIA_MS).toISOString().slice(0, 10));
+      // 🐉 los pasos de la barra del día: alcanza con una semana (los drops ganados quedan en `drops`)
+      this.sql.exec('DELETE FROM dia_pasos WHERE t < ?', ahora - 7 * DIA_MS);
       // 🎤 y lo que dijo el bot en vivo: dos días (de una llave sólo se habla mientras se mueve)
       this.sql.exec('DELETE FROM chat_vivo WHERE t < ?', ahora - 2 * DIA_MS);
       // ⚡ y lo que antes se borraba CADA MINUTO recorriendo la tabla entera (09/11/2026: 160.000 filas por día entre las
@@ -9818,6 +9892,7 @@ export class Avisos {
     this.state.storage.transactionSync(() => {
       this.sql.exec('INSERT OR REPLACE INTO apostado (ap, quien, lado, monto, t) VALUES (?, ?, ?, ?, ?)', ap.id, quien, lado, antes + m, ahora);
       this.xpVio(quien, 'apuesta', ap.id, ahora);
+      this.pasoDia(quien, 'voto', ahora);
       this.sql.exec('INSERT OR REPLACE INTO tienda (id, ref, quien, monto, t) VALUES (?, 0, ?, ?, ?)', 'ap:' + ap.id + ':' + quien,
         quien, -(antes + m), ahora);
     });
@@ -11865,6 +11940,9 @@ export class Avisos {
     const ap = this.sql.exec('DELETE FROM aplausos WHERE quien = ?', String(d.quien));
     // 💬 y lo que comentó: va con su Discord ID
     this.sql.exec('DELETE FROM comentario WHERE quien = ?', String(d.quien));
+    // 🐉 y sus drops y su barra del día
+    this.sql.exec('DELETE FROM drops WHERE quien = ?', String(d.quien));
+    this.sql.exec('DELETE FROM dia_pasos WHERE quien = ?', String(d.quien));
     // 📖 y qué historias vio
     this.sql.exec('DELETE FROM hvistas WHERE quien = ?', String(d.quien));
     // 🎟️ y su Pase: las Tareas que cumplió y las llaves en vivo que miró
@@ -13083,6 +13161,7 @@ export class Avisos {
         this.sql.exec('INSERT INTO sigue (quien, a, t, de, creada, avisado) VALUES (?, ?, ?, ?, ?, 0)',
           quien, a, ahora, de, creadaEn(quien));
         this.xpVio(quien, 'sigue', a, ahora);
+        this.pasoDia(quien, 'promo', ahora);
         lugar--;
       }
     }
@@ -13598,6 +13677,7 @@ export class Avisos {
     }
     // ⭐ y la XP: la del nivel (todos) y la del Pase (sus Tareas cuentan las promos abiertas)
     this.xpVio(quien, 'promo', pid, ahora);
+    this.pasoDia(quien, 'promo', ahora);
     if (this.paseVio(quien, 'promo', pid, ahora)) this.paseRevisar(quien);
     return json({ ok: true, nuevo: true, pago: paga, hoy: hoy(), tope: PROMO_TOPE_DIA });
   }
@@ -13616,6 +13696,7 @@ export class Avisos {
     const r = this.sql.exec('INSERT OR IGNORE INTO aplausos (id, quien, t) VALUES (?, ?, ?)', p.id, quien, ahora);
     // 🎟️ y las Tareas del Pase de felicitar: queda anotado en `pase_log`, que dura toda la temporada
     if (r.rowsWritten) {
+      this.pasoDia(quien, 'fel', ahora);
       this.paseVio(quien, 'fel', p.id, ahora);
       this.paseRevisar(quien);
       this.xpVio(quien, 'fel', p.id, ahora);
@@ -13647,6 +13728,7 @@ export class Avisos {
     n = (n || k).slice(0, 60);
     this.sql.exec('INSERT INTO comentario (pub, quien, k, n, tx, resp, t) VALUES (?, ?, ?, ?, ?, ?, ?)', p.id, quien, k, n, l.tx, resp, ahora);
     const r = this.sql.exec('SELECT last_insert_rowid() AS id').toArray()[0] || {};
+    this.pasoDia(quien, 'cm', ahora);
     // 🔔 a los dueños de la publicación
     try {
       const ks = Array.isArray(p.ks) ? p.ks : [], quienes = Array.isArray(p.quien) ? p.quien : [];
@@ -13737,6 +13819,88 @@ export class Avisos {
       this.guardar('cmperm_t', ahora);
       this.guardar('cmperm_pend', 0);
     } catch (e) { this.guardar('cmperm_pend', 1); }
+  }
+
+  // ── 🐉 DRAGÓN DROPS ───────────────────────────────────────────────────
+  /** Le da un drop a `quien` por `origen` (una vez por origen: repetir no da otro). `min`, la rareza mínima. */
+  dropDar(quien, origen, min = 0, t = Date.now()) {
+    if (!/^[0-9]{5,25}$/.test(String(quien || '')) || !origen) return false;
+    const antes = this.sql.exec('SELECT 1 AS x FROM drops WHERE quien = ? AND origen = ?', String(quien), String(origen)).toArray()[0];
+    if (antes) return false;
+    this.sql.exec('INSERT OR IGNORE INTO drops (quien, origen, min, t) VALUES (?, ?, ?, ?)', String(quien), String(origen).slice(0, 80),
+      Math.max(0, Math.min(4, Number(min) || 0)), t);
+    return true;
+  }
+
+  /**
+   * 🐉 Un paso de la barra del día: `que` (`PASOS_QUE`) cuenta una vez por día (hora del este). Al llegar a 1, 3 o 6
+   * pasos, un drop. Nunca frena lo que lo llamó: va en try.
+   */
+  pasoDia(quien, que, t = Date.now()) {
+    try {
+      if (!/^[0-9]{5,25}$/.test(String(quien || '')) || !PASOS_QUE[que]) return;
+      const dia = diaET(t);
+      if (this.sql.exec('SELECT 1 AS x FROM dia_pasos WHERE quien = ? AND dia = ? AND que = ?', String(quien), dia, que).toArray()[0]) return;
+      this.sql.exec('INSERT OR IGNORE INTO dia_pasos (quien, dia, que, t) VALUES (?, ?, ?, ?)', String(quien), dia, que, t);
+      const n = this.sql.exec('SELECT COUNT(*) AS n FROM dia_pasos WHERE quien = ? AND dia = ?', String(quien), dia).toArray()[0].n;
+      if (DROP_PASOS.includes(n)) this.dropDar(quien, 'dia:' + dia + ':' + n, 0, t);
+    } catch (e) { /* la barra no frena nada */ }
+  }
+
+  /** 🐉 Los títulos que ganó en drops (salen en sus títulos, como los del Pase) */
+  titulosDrop(quien) {
+    return this.sql.exec("SELECT premio FROM drops WHERE quien = ? AND abierto = 1 AND premio LIKE '%titulo%'", String(quien)).toArray()
+      .map((r) => { try { return String((JSON.parse(r.premio) || {}).titulo || ''); } catch (e) { return ''; } }).filter(Boolean);
+  }
+
+  /** 🐉 Cuántos abrió desde el último legendario (la garantía) */
+  dropSin(quien) {
+    const ult = this.sql.exec('SELECT MAX(t_abierto) AS t FROM drops WHERE quien = ? AND abierto = 1 AND rareza = ?', String(quien),
+      DROP_RAREZAS.length - 1).toArray()[0];
+    return this.sql.exec('SELECT COUNT(*) AS n FROM drops WHERE quien = ? AND abierto = 1 AND t_abierto > ?', String(quien),
+      (ult && ult.t) || 0).toArray()[0].n;
+  }
+
+  /** 🐉 Lo tuyo (`/avisos/drops`): los cerrados, los últimos que abriste, la barra de hoy y la garantía */
+  dropsDe(quien) {
+    if (!/^[0-9]{5,25}$/.test(quien)) return { error: 'faltan datos' };
+    const dia = diaET();
+    const cerrados = this.sql.exec('SELECT id, origen, min, t FROM drops WHERE quien = ? AND abierto = 0 ORDER BY t LIMIT 60', quien).toArray();
+    const abiertos = this.sql.exec('SELECT id, origen, rareza, premio, t_abierto FROM drops WHERE quien = ? AND abierto = 1 ' +
+      'ORDER BY t_abierto DESC LIMIT 12', quien).toArray().map((r) => {
+      let pr = {};
+      try { pr = JSON.parse(r.premio) || {}; } catch (e) { pr = {}; }
+      return { id: r.id, origen: r.origen, rareza: r.rareza, puntos: pr.puntos || 0, titulo: pr.titulo || '', t: r.t_abierto };
+    });
+    const hechos = this.sql.exec('SELECT que FROM dia_pasos WHERE quien = ? AND dia = ?', quien, dia).toArray().map((r) => r.que);
+    return { ok: true, cerrados, abiertos, dia: { pasos: hechos.length, hechos, de: Object.keys(PASOS_QUE).length, drops: DROP_PASOS },
+      sin: this.dropSin(quien), garantia: DROP_GARANTIA, rarezas: DROP_RAREZAS, que: PASOS_QUE };
+  }
+
+  /** 🐉 Abrir un drop (`/avisos/drop-abrir`): la rareza y el premio los decide el objeto, una sola vez */
+  dropAbrir(quien, id) {
+    if (!/^[0-9]{5,25}$/.test(quien) || !Number.isInteger(id)) return { error: 'faltan datos' };
+    const f = this.sql.exec('SELECT id, min, abierto, rareza, premio FROM drops WHERE id = ? AND quien = ?', id, quien).toArray()[0];
+    if (!f) return { error: 'no_existe' };
+    if (f.abierto) {
+      let pr = {};
+      try { pr = JSON.parse(f.premio) || {}; } catch (e) { pr = {}; }
+      return { ok: true, ya: true, id, rareza: f.rareza, puntos: pr.puntos || 0, titulo: pr.titulo || '' };
+    }
+    const azar = () => { const a = new Uint32Array(1); crypto.getRandomValues(a); return a[0] / 4294967296; };
+    const rareza = rarezaDrop(azar(), f.min, this.dropSin(quien));
+    const tiene = [...this.titulosDrop(quien)];
+    const pr = premioDrop(rareza, azar(), tiene);
+    // un título que ya tenía (no debería salir: `premioDrop()` lo saca) se cambia por Puntos
+    if (pr.titulo && tiene.includes(pr.titulo)) { pr.puntos += 1500; pr.titulo = ''; }
+    const ahora = Date.now();
+    const r = this.sql.exec('UPDATE drops SET abierto = 1, rareza = ?, premio = ?, t_abierto = ? WHERE id = ? AND quien = ? AND abierto = 0',
+      rareza, JSON.stringify(pr), ahora, id, quien);
+    if (r && r.rowsWritten === 0) return this.dropAbrir(quien, id);
+    if (pr.puntos > 0) {
+      this.sql.exec('INSERT OR IGNORE INTO tienda (id, ref, quien, monto, t) VALUES (?, 0, ?, ?, ?)', 'drop:' + id, quien, pr.puntos, ahora);
+    }
+    return { ok: true, id, rareza, nombre: DROP_RAREZAS[rareza][0], puntos: pr.puntos, titulo: pr.titulo };
   }
 
   /** Lo público, para `/avisos/aplausos`: cuántos lleva cada publicación. ⚠️ Nunca quién. */
@@ -14599,6 +14763,7 @@ export class Avisos {
       'ON CONFLICT(enc, quien) DO UPDATE SET op = excluded.op, t = excluded.t',
     d.enc.slice(0, 40), String(d.quien), d.op.slice(0, 80), ahora);
     this.xpVio(String(d.quien), 'voto', d.enc.slice(0, 40), ahora);
+    this.pasoDia(String(d.quien), 'voto', ahora);
     // lo viejo se va: el ciclo lee el resultado cuando la encuesta cierra
     this.sql.exec('DELETE FROM votos WHERE t < ?', ahora - VOTOS_DIAS * DIA_MS);
     const cuenta = {};
@@ -14632,6 +14797,7 @@ export class Avisos {
     }
     this.sql.exec('DELETE FROM liga_voto WHERE cierra < ?', ahora - LIGA_VOTOS_DIAS * DIA_MS);
     this.xpVio(quien, 'voto', 'liga:' + liga, ahora);
+    this.pasoDia(quien, 'voto', ahora);
     const cuenta = {};
     for (const r of this.sql.exec('SELECT op, COUNT(*) AS n FROM liga_voto WHERE liga = ? GROUP BY op', liga).toArray()) {
       cuenta[r.op] = r.n;
@@ -14903,6 +15069,8 @@ export class Avisos {
             this.sql.exec('INSERT OR IGNORE INTO activo (quien, dia) VALUES (?, ?)', quien, String(dia));
           }
         }
+        // 🐉 jugó hoy: un paso de la barra del día
+        if (Array.isArray(x[2]) && x[2].includes(diaET())) this.pasoDia(quien, 'jugo');
         this.premiarRacha(quien);
         // 🎟️ jugar también cuenta días para la Tarea del Pase
         this.paseRevisar(quien);
@@ -15498,10 +15666,12 @@ export class Avisos {
       temp: String(c.temp || 'prueba').replace(/[^a-z0-9]/gi, '').slice(0, 20) || 'prueba',
       niveles, umbrales,
       cola: Array.isArray(c.cola) && Number.isInteger(c.cola[0]) && c.cola[0] > 0 ? [c.cola[0], entero(c.cola[1], 0, 100000, 0)] : null,
+      // 🐉 un Dragón Drop cada tantos XP después del último nivel (`bot/pase.py` DROP_COLA)
+      drop_cola: entero(c.drop_cola, 0, 1000000, 0),
       diarias: tareas(c.diarias), por_dia: entero(c.por_dia, 1, 10, 2), semanales: tareas(c.semanales),
       temporada: tareas(c.temporada), legado,
       premios: (Array.isArray(c.premios) ? c.premios : []).filter((p) => Array.isArray(p) && Number.isInteger(p[0]))
-        .map((p) => [p[0], entero(p[1], 0, 100000, 0), ['tarjeta', 'insignia', 'titulo', 'color'].includes(p[2]) ? p[2] : '',
+        .map((p) => [p[0], entero(p[1], 0, 100000, 0), ['tarjeta', 'insignia', 'titulo', 'color', 'drop', 'caja'].includes(p[2]) ? p[2] : '',
           String(p[3] || '').slice(0, 40)]),
       publicar: (Array.isArray(c.publicar) ? c.publicar : []).filter((n) => Number.isInteger(n) && n >= 1 && n <= niveles)
         .slice(0, 10),
@@ -15794,6 +15964,8 @@ export class Avisos {
       if (c && c.hechas >= c.meta) anotar(s[0], [{ id: 'crew', hecha: true }]);
     }
     if (!nuevas) return 0;
+    // 🐉 cumplió una Tarea del Pase: un paso de la barra del día
+    this.pasoDia(quien, 'tarea');
     this.pxpParche(quien, cfg);
     const { nivel, cola } = this.premiarPase(quien);
     // 🏛️ los niveles que se publican (y el último es el Salón del Pase): cuándo llegó a cada uno, una vez
@@ -15838,6 +16010,23 @@ export class Avisos {
       if (p) pagar(n, p[1]);
     }
     for (let j = 1; j <= cola; j++) pagar('c' + j, cfg.cola[1]);
+    // 🐉 los Dragón Drops del Pase: el de su nivel (35, 45), las Cajas del Campeón (40, 50: sus drops y sus Puntos) y,
+    // pasado el último nivel, uno cada `drop_cola` XP
+    for (let n = 1; n <= nivel; n++) {
+      const p = (cfg.premios || [])[n - 1];
+      if (!p) continue;
+      if (p[2] === 'drop') this.dropDar(quien, 'pase:' + cfg.temp + ':' + n, 0, ahora);
+      if (p[2] === 'caja' && CAJAS[p[3]]) {
+        const C = CAJAS[p[3]];
+        for (let i = 1; i <= C.drops; i++) this.dropDar(quien, 'pase:' + cfg.temp + ':' + n + ':' + i, C.min, ahora);
+        pagar('caja' + n, C.puntos);
+      }
+    }
+    const u = cfg.umbrales || [];
+    if (cfg.drop_cola > 0 && u.length && xp > u[u.length - 1]) {
+      const k = Math.min(200, Math.floor((xp - u[u.length - 1]) / cfg.drop_cola));
+      for (let j = 1; j <= k; j++) this.dropDar(quien, 'pase:' + cfg.temp + ':dc' + j, 0, ahora);
+    }
     // 💎 y la fila premium, si la tiene: al desbloquearla cobra de una vez lo de los niveles que ya pasó
     if (this.pasePremium(quien, cfg.temp)) {
       for (let n = 1; n <= nivel; n++) {
@@ -16265,7 +16454,7 @@ export class Avisos {
     const nivel = quien === DUENO ? P.cfg.niveles || 30 : P.miembros.has(quien) ? this.paseNivel(quien, P.cfg) : 0;
     const filas = [...(P.cfg.premios || [])];
     if (this.pasePremium(quien, P.cfg.temp)) filas.push(...(P.cfg.premium || []));
-    return [...new Set(filas.filter((p) => p[2] === 'titulo' && p[0] <= nivel).map((p) => String(p[3])))];
+    return [...new Set(filas.filter((p) => p[2] === 'titulo' && p[0] <= nivel).map((p) => String(p[3])).concat(this.titulosDrop(quien)))];
   }
 
   /** 🏷️ Tus TAGs (`/avisos/tags-mios`, con tu sesión): lo que ganó tu carta, tus títulos del Pase y lo que elegiste */
