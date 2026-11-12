@@ -4939,7 +4939,7 @@ export function Dashboard({ dc, liga }) {
         {ve('ajustes') ? (
           <div className={'dz-salud' + (sal.ok ? '' : ' mal')}>
             <span className="dz-pt" aria-hidden="true" />
-            <p>{sal.ok ? <b>Todo anda.</b> : <b>Ojo: {sal.mal.join(' · ')}.</b>} {sal.partes.join(' · ')}{sal.partes.length ? '.' : ''}</p>
+            <p>{sal.ok ? <b>Todo anda.</b> : <b>Ojo: {sal.mal.join(' · ')}.</b>} {sal.partes.join(' · ').replace(/^./, (c) => c.toUpperCase())}{sal.partes.length ? '.' : ''}</p>
             <button type="button" className="dz-lnk" onClick={() => ir('salud')}>Ver la salud</button>
           </div>
         ) : null}
