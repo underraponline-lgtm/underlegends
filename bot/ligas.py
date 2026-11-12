@@ -2842,7 +2842,8 @@ def _self_check():
         'fmh-andes': {'n': 'FMH Andes', 'sv': 'URBF', 'batallas': [['5', '2026-09-01T00:00:00Z', 1, 'A', 'B', 'A', 'directa', '']],
                       'flyer': {'id': '79', 't': '2026-09-01T00:00:00Z', 'tit': '', 'url': 'https://r2/ligas/x.webp', 'w': 720,
                                 'h': 900}, 'prox': {'d': '2026-10-01', 't': '', 'j': None, 'id': '80'}}}}
-    w = para_web(dd, claves={}, ps={}, ahora=ahora, resolver=lambda x: x)
+    # sin las decisiones de verdad: una liga de esta prueba que Dlx dé por terminada en ✅ Decidir la pondría roja
+    w = para_web(dd, claves={}, ps={}, ahora=ahora, resolver=lambda x: x, decis={})
     lp = [x for x in w['ligas'] if x['id'] == 'fms-peru'][0]
     la = [x for x in w['ligas'] if x['id'] == 'fmh-andes'][0]
     ok([(f['j'], f['d'], len(f['b'])) for f in lp['fechas']] == [(None, '2026-10-13', 1), (2, '2026-10-13', 1), (1, '2026-10-07', 2)]
