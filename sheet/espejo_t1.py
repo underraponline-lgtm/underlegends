@@ -69,8 +69,15 @@ VITRINAS = {'Ranking Temporada': 'vitrina_temporada', 'Ranking Competitivo': 'vi
             'Ranking Podios': 'vitrina_podios', 'Ranking Duelos': 'vitrina_duelos', 'Ranking Mundial': 'vitrina_mundial'}
 
 
+#: 🪪 LAS HOJAS QUE SE LEEN ENTERAS (etapa 4b, 11/11/2026): la Lista de Raperos (el banner arriba, la cabecera en la
+#: fila 9) y AKAs (dos bloques lado a lado y un panel). `construir_padron` y `construir_akas` piden la grilla completa
+#: con `get_all_values()`, así que se guarda la grilla completa, COMO TEXTO —lo que muestra el Sheet—: un Discord ID
+#: de 19 cifras como número perdería las últimas. `datos/padron.json`, ya en el repo, trae todo lo de la Lista.
+GRILLAS = {'Lista de Raperos': 'lista', 'AKAs': 'akas'}
+
+
 def ruta(hoja, temp=ACTUAL, base=BASE):
-    return os.path.join(base, 'datos', '%s_%s.json' % (temp, HOJAS.get(hoja) or VITRINAS[hoja]))
+    return os.path.join(base, 'datos', '%s_%s.json' % (temp, HOJAS.get(hoja) or VITRINAS.get(hoja) or GRILLAS[hoja]))
 
 
 def visible(c):
@@ -415,6 +422,90 @@ def fuente_vitrina(hoja, del_sheet, lector='', base=BASE):
     return mio if igual else sh
 
 
+def rectangular(filas):
+    """Todas las filas del mismo ancho, como `get_all_values()` de gspread (`fill_gaps`)."""
+    filas = [[str(c) for c in f] for f in filas]
+    ancho = max((len(f) for f in filas), default=0)
+    return [f + [''] * (ancho - len(f)) for f in filas]
+
+
+def volcar_grilla(hoja, grilla):
+    """El texto del archivo de una hoja entera: una fila por línea, siempre igual para lo mismo."""
+    lineas = [json.dumps(list(f), ensure_ascii=False) for f in grilla]
+    return ('{\n "hoja": %s,\n "grilla": [\n%s\n ]\n}\n' % (json.dumps(hoja, ensure_ascii=False),
+                                                           ',\n'.join('  ' + x for x in lineas))
+            if grilla else '{\n "hoja": %s,\n "grilla": []\n}\n' % json.dumps(hoja, ensure_ascii=False))
+
+
+def _leer_grilla_sheet(hoja):
+    """La hoja entera del Operativo, como la ve gspread: lo que se muestra, y rectangular."""
+    import requests
+    from escribir import token, id_operativo
+    from reintentar import leer as _reint
+
+    def _pedir():
+        r = requests.get('https://sheets.googleapis.com/v4/spreadsheets/%s/values/%s'
+                         % (id_operativo(), requests.utils.quote("'%s'" % hoja)),
+                         headers={'Authorization': 'Bearer ' + token()}, timeout=90)
+        r.raise_for_status()
+        return r.json().get('values', [])
+    return rectangular(_reint(_pedir))
+
+
+def grilla_guardada(hoja, base=BASE):
+    """La grilla guardada de una hoja entera, o `None`."""
+    d = leer(hoja, base=base)
+    return None if d is None else rectangular(d.get('grilla') or [])
+
+
+def espejar_grillas(aplicar=False):
+    """🪪 La Lista y AKAs, enteras, a datos/ (etapa 4b). Corre antes de quien las lee (`construir_padron`, paso 2;
+    `construir_akas`, paso 2d) y en el 2g. Devuelve `{hoja: 'igual' | 'cambió' | 'no'}`."""
+    out = {}
+    for hoja in GRILLAS:
+        try:
+            g = _leer_grilla_sheet(hoja)
+        except Exception as e:                             # noqa: BLE001
+            print('   ⚠️ %s: no pude leerla (%s): queda como estaba' % (hoja, str(e)[:80]))
+            out[hoja] = 'no'
+            continue
+        viejo = grilla_guardada(hoja)
+        if viejo and len(g) < len(viejo) * PISO:
+            print('   🔴 %s: el Sheet trajo %d fila(s) y el archivo tiene %d: no la copio' % (hoja, len(g), len(viejo)))
+            out[hoja] = 'no'
+            continue
+        texto = volcar_grilla(hoja, g)
+        if _texto_de(ruta(hoja)) == texto:
+            print('   %-20s igual (%d fila(s))' % (hoja, len(g)))
+            out[hoja] = 'igual'
+            continue
+        print('   %-20s %d fila(s), cambió%s' % (hoja, len(g), '' if aplicar else '  [sin --aplicar: no escribo]'))
+        if aplicar:
+            with io.open(ruta(hoja), 'w', encoding='utf-8', newline='\n') as f:
+                f.write(texto)
+        out[hoja] = 'cambió'
+    return out
+
+
+def fuente_grilla(hoja, del_sheet, lector='', base=BASE):
+    """🪪 Lo que usan `construir_padron` y `construir_akas` en vez de `worksheet(hoja).get_all_values()` (etapa 4b).
+    Con `CONTROL`, como `fuente()`: compara con la lectura de siempre (`del_sheet`) y si no coincide usa el Sheet."""
+    mio = grilla_guardada(hoja, base=base)
+    if mio is not None and not CONTROL:
+        return mio
+    sh = rectangular(del_sheet())
+    de = ' (%s)' % lector if lector else ''
+    if mio is None:
+        print('   ⚠️ %s: no está en datos/, leo el Sheet%s' % (hoja, de))
+        return sh
+    igual = sh == mio
+    if _VISTO.get(hoja) != igual:
+        print('   %s %s desde datos/: %s%s' % ('🗄️' if igual else '🔴', hoja, 'igual al Sheet' if igual else
+              'DISTINTO del Sheet (%d contra %d filas): uso el Sheet' % (len(mio), len(sh)), de))
+    _VISTO[hoja] = igual
+    return mio if igual else sh
+
+
 def _self_check():
     import tempfile
     fallas = 0
@@ -535,11 +626,18 @@ def main():
     if '--vitrinas' in a:
         print('\n══ LAS VITRINAS DEL OFICIAL, EN datos/ (etapa 4a) ══\n')
         espejar_vitrinas(aplicar='--aplicar' in a)
+        if '--grillas' not in a:
+            return 0
+    if '--grillas' in a:
+        print('\n══ LA LISTA Y AKAs, EN datos/ (etapa 4b) ══\n')
+        espejar_grillas(aplicar='--aplicar' in a)
         return 0
     print('\n══ EL OPERATIVO, EN datos/ (etapa 1) ══\n')
     r = espejar(aplicar='--aplicar' in a)
     print('\n══ LAS VITRINAS DEL OFICIAL, EN datos/ (etapa 4a) ══\n')
     espejar_vitrinas(aplicar='--aplicar' in a)
+    print('\n══ LA LISTA Y AKAs, EN datos/ (etapa 4b) ══\n')
+    espejar_grillas(aplicar='--aplicar' in a)
     # ⚠️ NUNCA FRENA EL CICLO: una hoja que no se copia queda como estaba, y lo dice arriba
     return 0 if r else 0
 

@@ -66,7 +66,9 @@ def leer():
         sys.exit('falta creds.json en la raiz del proyecto')
     gc = gspread.authorize(Credentials.from_service_account_file(
         cred, scopes=['https://www.googleapis.com/auth/spreadsheets.readonly']))
-    v = gc.open_by_key(PAD.OPERATIVO).worksheet(HOJA).get_all_values()
+    # 🪪 etapa 4b de sacar el Sheet: AKAs, de datos/ (comparando con el Sheet mientras dura la prueba)
+    import espejo_t1 as _EJ
+    v = _EJ.fuente_grilla(HOJA, lambda: gc.open_by_key(PAD.OPERATIVO).worksheet(HOJA).get_all_values(), 'akas')
 
     pares, cuidado = [], []
 

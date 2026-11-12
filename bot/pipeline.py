@@ -1127,7 +1127,8 @@ def _lo_barato(correr):
         # 🏆 Y ANTES, LAS VITRINAS A datos/ (etapa 4a de sacar el Sheet, 11/11/2026): los pools las leen de ahí
         # (`espejo_t1.fuente_vitrina()`, comparando con el Sheet mientras dura la prueba). Las acaban de escribir el
         # paso 1c y el de Podios, Duelos y Mundial. Nunca frena el ciclo: sin archivo, el pool lee el Sheet
-        corre(['sheet/espejo_t1.py', '--vitrinas', '--aplicar'], callado=False)
+        # 🪪 y la Lista y AKAs (etapa 4b): el padrón las lee de ahí
+        corre(['sheet/espejo_t1.py', '--vitrinas', '--grillas', '--aplicar'], callado=False)
         import construir_padron as _PAD
         # 🔴 SE GUARDA UNA COPIA ANTES, Y ESA ES LA DIFERENCIA CON LOS
         # POOLS. Ahí el guardián **frena el ciclo**, y con eso alcanza:
@@ -1515,6 +1516,8 @@ def _lo_barato(correr):
             m = _re.search(r'(\d+) pregunta\(s\)', _ULTIMA_SALIDA[0])
             if m:
                 _ESTADO['decidir'] = int(m.group(1))
+        # 🪪 AKAs recién tocada por ✅ Decidir, a datos/ antes de armar los alias (etapa 4b de sacar el Sheet)
+        corre(['sheet/espejo_t1.py', '--grillas', '--aplicar'], callado=False)
         corre(['sheet/construir_akas.py'], callado=False)
 
     # ── 2e · las tarjetas de quien se fue, a la semana ──────────────

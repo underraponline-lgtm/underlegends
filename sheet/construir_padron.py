@@ -196,7 +196,10 @@ def leer():
         cred, scopes=['https://www.googleapis.com/auth/spreadsheets.readonly']))
     from reintentar import leer as _leer_reint   # ver `sheet/reintentar.py`
     # ⚠️ con `lambda`: `open_by_key` y `worksheet` tambien pegan a la API
-    v = _leer_reint(lambda: gc.open_by_key(OPERATIVO).worksheet(HOJA).get_all_values())
+    # 🪪 etapa 4b de sacar el Sheet: la Lista, de datos/ (comparando con el Sheet mientras dura la prueba)
+    import espejo_t1 as _EJ
+    v = _EJ.fuente_grilla(HOJA, lambda: _leer_reint(lambda: gc.open_by_key(OPERATIVO).worksheet(HOJA).get_all_values()),
+                          'padrón')
 
     i = _cabecera(v)
     H = [x.strip() for x in v[i]]
