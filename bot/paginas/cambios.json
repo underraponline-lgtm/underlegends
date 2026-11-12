@@ -11,6 +11,16 @@
  ],
  "cambios": [
     {
+        "version": "4.76",
+        "dia": "2026-11-12",
+        "cuando": "2026-11-12T18:10:00-05:00",
+        "titulo": "¿Quién gana la final?",
+        "items": [
+            "Cuando un evento llega a la final, en **Publicaciones** puedes votar **quién gana**. Al terminar, se ve si el público acertó.",
+            "Nueva Tarea diaria del Pase: **comenta una publicación**."
+        ]
+    },
+    {
         "version": "4.75",
         "dia": "2026-11-12",
         "cuando": "2026-11-12T17:47:00-05:00",
