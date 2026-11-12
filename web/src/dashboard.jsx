@@ -2109,7 +2109,8 @@ const PERMISO_TXT = {
   fondos: ['Aprobar fondos, fotos y logos', ''],
   roles: ['Dar y sacar roles', 'sólo tú'],
 };
-const ROLES_DASH = [['admin', 'Admin'], ['moderador', 'Moderador'], ['asistente', 'Asistente']];
+// el mismo nombre que en «Quién tiene un rol» y en `ROLES_MANO`: era «Moderador» acá y «Moderador de la página» allá
+const ROLES_DASH = [['admin', 'Admin'], ['moderador', 'Moderador de la página'], ['asistente', 'Asistente']];
 //: lo que abre un rol, en palabras, con la tabla vigente
 function queAbre(rol, tabla) {
   const t = (tabla && tabla.tabla) || null;
