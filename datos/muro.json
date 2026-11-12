@@ -6050,15 +6050,6 @@
 },
 {
 "tipo": "rango",
-"t": "2026-11-12T01:37:34Z",
-"quien": [
-"Player"
-],
-"rg": "D",
-"primero": false
-},
-{
-"tipo": "rango",
 "t": "2026-11-12T03:15:31Z",
 "quien": [
 "MaYeuTyK"
@@ -6147,15 +6138,6 @@
 "Akuseru"
 ],
 "carta": "servidor"
-},
-{
-"tipo": "rango",
-"t": "2026-11-12T21:07:44Z",
-"quien": [
-"Carlosss"
-],
-"rg": "SS",
-"primero": false
 },
 {
 "tipo": "rango",
