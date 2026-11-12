@@ -2900,7 +2900,9 @@ def _self_check():
        'invicto: una vez, en la batalla de su quinta ganada sin perder', str(inv))
     ok([(h['quien'], h['t'][:10]) for h in pun] == [(['CEKO'], '2026-09-04')],
        'la punta: recién con 3 jugadas, sola, y se publica cuando cambia (no en cada fecha)', str(pun))
-    ok(campeones_hitos(dfin)[0]['que'] == 'campeon' and campeones_hitos({}) == [],
+    # ⚠️ con `d={}`: sin eso lee las ligas de verdad, y desde que un servidor anunció un campeón (FMH España, 11/11/2026)
+    # «nada confirmado» dejaba de dar vacío y el self-check se ponía rojo sin que nada estuviera mal
+    ok(campeones_hitos(dfin, d={})[0]['que'] == 'campeon' and campeones_hitos({}, d={}) == [],
        'el campeón confirmado también se publica')
     _self_check_pagina(ok)
     _self_check_temporadas(ok)
