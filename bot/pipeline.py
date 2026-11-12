@@ -1526,6 +1526,18 @@ def _lo_barato(correr):
         print('      correría bot/fuera.py --aplicar')
     else:
         corre(['bot/fuera.py', '--aplicar'], callado=False)
+
+    # ── 2g · el Operativo, en datos/ ─────────────────────────────────
+    #
+    # 🗄️ LA ETAPA 1 DE SACAR EL SHEET (Dlx, 11/11/2026: «adelante, pero asegúrate de que todo esté bien»):
+    # `Resultados`, `1v1` y `Eventos Procesados`, tal cual, en `datos/t1_*.json`. Todavía no los lee nadie: se mira
+    # que sigan iguales al Sheet corrida tras corrida. Ver `sheet/espejo_t1.py`.
+    # ⚠️ VA AL FINAL: después de todo lo que escribe esas hojas en esta corrida (1, 0c, 2d). Nunca frena el ciclo.
+    paso('2g', 'el Operativo, en datos/')
+    if not correr:
+        print('      correría sheet/espejo_t1.py --aplicar')
+    else:
+        corre(['sheet/espejo_t1.py', '--aplicar'], callado=False)
     return None
 
 
