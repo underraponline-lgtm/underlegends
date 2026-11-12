@@ -452,10 +452,24 @@ def _leer_grilla_sheet(hoja):
     return rectangular(_reint(_pedir))
 
 
+_GRILLA_MEM = {}
+
+
 def grilla_guardada(hoja, base=BASE):
-    """La grilla guardada de una hoja entera, o `None`."""
+    """La grilla guardada de una hoja entera, o `None`. Se lee una vez por versión del archivo (fecha y tamaño)."""
+    p = ruta(hoja, base=base)
+    try:
+        st = os.stat(p)
+        firma = (st.st_mtime_ns, st.st_size)
+    except OSError:
+        return None
+    m = _GRILLA_MEM.get(p)
+    if m and m[0] == firma:
+        return m[1]
     d = leer(hoja, base=base)
-    return None if d is None else rectangular(d.get('grilla') or [])
+    g = None if d is None else rectangular(d.get('grilla') or [])
+    _GRILLA_MEM[p] = (firma, g)
+    return g
 
 
 def espejar_grillas(aplicar=False):
@@ -487,9 +501,176 @@ def espejar_grillas(aplicar=False):
     return out
 
 
+def _celdas(a1):
+    """`(hoja, fila1, col1, fila2, col2)` de un rango A1, base 1 y con `None` donde el rango no dice (`A2:C` no tiene
+    fila final; `AKAs` sola es la hoja entera). Pura."""
+    import re as _re
+    hoja, _, celdas = str(a1).rpartition('!')
+    if not hoja:
+        hoja, celdas = celdas, ''
+    if len(hoja) >= 2 and hoja[0] == hoja[-1] == "'":
+        hoja = hoja[1:-1].replace("''", "'")
+
+    def col(s):
+        n = 0
+        for ch in s.upper():
+            n = n * 26 + ord(ch) - 64
+        return n
+
+    partes = [p for p in celdas.split(':') if p] if celdas else []
+    ext = []
+    for p in partes:
+        m = _re.match(r'^([A-Za-z]*)(\d*)$', p)
+        if not m:
+            return hoja, None, None, None, None
+        ext.append((col(m.group(1)) if m.group(1) else None, int(m.group(2)) if m.group(2) else None))
+    if not ext:
+        return hoja, None, None, None, None
+    (c1, f1), (c2, f2) = ext[0], ext[-1]
+    if len(ext) == 1:
+        c2, f2 = c1, f1
+    return hoja, f1, c1, f2, c2
+
+
+def valores_de(grilla, a1):
+    """Lo que la API contestaría a `GET /values/<a1>` (texto formateado) desde la grilla guardada: sin las celdas
+    vacías del final de cada fila, sin las filas vacías del final, y una del medio vacía como `[]`. Pura."""
+    _h, f1, c1, f2, c2 = _celdas(a1)
+    f1, c1 = (f1 or 1), (c1 or 1)
+    filas = grilla[f1 - 1:(f2 if f2 else len(grilla))]
+    out = []
+    for f in filas:
+        f = list(f[c1 - 1:(c2 if c2 else len(f))])
+        while f and f[-1] == '':
+            f.pop()
+        out.append(f)
+    while out and not out[-1]:
+        out.pop()
+    return out
+
+
+def hojas_de_pedido(metodo, ruta, kw, titulo_de_id=None):
+    """🖊️ Qué hojas toca un pedido de ESCRITURA a la API (`escribir._pedir()`): `PUT /values/<a1>`, `/values/<a1>:clear`
+    o `:append`, `/values:batchUpdate` (cada `range`) y `:batchUpdate` (cada `sheetId`, con `titulo_de_id`). Pura."""
+    from urllib.parse import unquote
+    if metodo not in ('PUT', 'POST'):
+        return set()
+    cuerpo = (kw or {}).get('json') or {}
+    if ruta.startswith('/values:batchUpdate'):
+        return {_celdas(d.get('range', ''))[0] for d in cuerpo.get('data') or []}
+    if ruta.startswith('/values/'):
+        a1 = ruta[len('/values/'):].split('?')[0]
+        for suf in (':clear', ':append'):
+            if a1.endswith(suf):
+                a1 = a1[:-len(suf)]
+        return {_celdas(unquote(a1))[0]}
+    if ruta.startswith(':batchUpdate'):
+        ids = set()
+        for r in cuerpo.get('requests') or []:
+            for v in r.values():
+                if isinstance(v, dict):
+                    sid = v.get('sheetId', (v.get('range') or {}).get('sheetId') if isinstance(v.get('range'), dict) else None)
+                    if sid is not None:
+                        ids.add(sid)
+        if titulo_de_id is None:
+            return set(GRILLAS) if ids else set()
+        return {titulo_de_id(i) for i in ids} - {None}
+    return set()
+
+
+#: 🖊️ las hojas enteras que este proceso escribió: su archivo se refresca al terminar (o antes de leerlas)
+_SUCIAS = set()
+#: 🔎 cuántas lecturas de la Lista y AKAs se compararon con su archivo en este proceso, y cuántas dieron distinto
+_COMPARADAS = {'iguales': 0, 'distintas': 0}
+_AL_SALIR = []
+
+
+def _al_salir():
+    for hoja in sorted(_SUCIAS):
+        refrescar(hoja)
+    if _COMPARADAS['iguales'] or _COMPARADAS['distintas']:
+        print('   %s lecturas de la Lista y AKAs desde datos/: %d iguales al Sheet%s'
+              % ('🗄️' if not _COMPARADAS['distintas'] else '🔴', _COMPARADAS['iguales'],
+                 ', %d DISTINTAS' % _COMPARADAS['distintas'] if _COMPARADAS['distintas'] else ''))
+
+
+def _registrar_salida():
+    if not _AL_SALIR:
+        import atexit
+        atexit.register(_al_salir)
+        _AL_SALIR.append(True)
+
+
+def _en_github():
+    """⚠️ SÓLO EN GITHUB (o con `ESPEJO_SIEMPRE=1` para probar): una PC escribe la Lista con `lista_raperos.py`, y
+    refrescar su `datos/` dejaría el repo de esa PC modificado contra lo que commitea el ciclo, que es el que vale."""
+    return os.environ.get('GITHUB_ACTIONS') == 'true' or os.environ.get('ESPEJO_SIEMPRE') == '1'
+
+
+def marcar_sucias(hojas):
+    """🖊️ Lo llama `escribir._pedir()` después de cada escritura que salió bien. Nunca levanta."""
+    if not _en_github():
+        return
+    nuevas = {h for h in hojas if h in GRILLAS}
+    if nuevas:
+        _SUCIAS.update(nuevas)
+        _registrar_salida()
+
+
+def refrescar(hoja):
+    """Vuelve a copiar una hoja entera del Sheet a su archivo (después de que alguien la escribió). Nunca levanta."""
+    try:
+        g = _leer_grilla_sheet(hoja)
+        viejo = grilla_guardada(hoja)
+        if viejo and len(g) < len(viejo) * PISO:
+            print('   🔴 %s: el Sheet trajo %d fila(s) y el archivo tiene %d: no la copio' % (hoja, len(g), len(viejo)))
+            return False
+        texto = volcar_grilla(hoja, g)
+        if _texto_de(ruta(hoja)) != texto:
+            with io.open(ruta(hoja), 'w', encoding='utf-8', newline='\n') as f:
+                f.write(texto)
+        _SUCIAS.discard(hoja)
+        return True
+    except Exception as e:                                 # noqa: BLE001
+        print('   ⚠️ no pude refrescar %s en datos/ (%s): lo copia el paso 2g' % (hoja, str(e)[:80]))
+        return False
+
+
+def comparar_lectura(ruta_get, respuesta):
+    """🔎 Lo llama `escribir._pedir()` después de cada `GET /values/<a1>` de la Lista o AKAs (etapa 4b): lo que habría
+    contestado el archivo contra lo que contestó el Sheet. Sólo mide y avisa; nunca cambia lo que se devuelve."""
+    try:
+        from urllib.parse import unquote
+        if not ruta_get.startswith('/values/') or not _en_github():
+            return
+        crudo = ruta_get[len('/values/'):]
+        if '?' in crudo:
+            return                                         # con opciones (UNFORMATTED, etc.): no es lo que se guarda
+        a1 = unquote(crudo)
+        hoja = _celdas(a1)[0]
+        if hoja not in GRILLAS or hoja in _SUCIAS:
+            return
+        g = grilla_guardada(hoja)
+        if g is None:
+            return
+        _registrar_salida()
+        real = [[str(c) for c in f] for f in (respuesta or {}).get('values') or []]
+        if valores_de(g, a1) == real:
+            _COMPARADAS['iguales'] += 1
+        else:
+            _COMPARADAS['distintas'] += 1
+            if _COMPARADAS['distintas'] <= 3:
+                print('   🔴 %s: lo leído del Sheet no coincide con datos/ (%d filas contra %d)'
+                      % (a1, len(real), len(valores_de(g, a1))))
+    except Exception:                                      # noqa: BLE001
+        pass
+
+
 def fuente_grilla(hoja, del_sheet, lector='', base=BASE):
     """🪪 Lo que usan `construir_padron` y `construir_akas` en vez de `worksheet(hoja).get_all_values()` (etapa 4b).
     Con `CONTROL`, como `fuente()`: compara con la lectura de siempre (`del_sheet`) y si no coincide usa el Sheet."""
+    if hoja in _SUCIAS and base == BASE:
+        refrescar(hoja)                                    # este mismo proceso la escribió: primero, al día
     mio = grilla_guardada(hoja, base=base)
     if mio is not None and not CONTROL:
         return mio
@@ -600,6 +781,25 @@ def _self_check():
         ok(c0 == 0 and s1 and not s2 and s3 and c1 == 608, 'el contador sólo sube (un número nunca se reusa)')
     finally:
         CONTROL = ctrl0
+    # 🪪 la Lista y AKAs: los rangos, las lecturas emuladas y qué hojas toca cada escritura
+    ok(_celdas("'Lista de Raperos'!A1001:J1001") == ('Lista de Raperos', 1001, 1, 1001, 10)
+       and _celdas('AKAs!A2:C') == ('AKAs', 2, 1, None, 3) and _celdas('AKAs') == ('AKAs', None, None, None, None)
+       and _celdas("'Lista de Raperos'!E12") == ('Lista de Raperos', 12, 5, 12, 5),
+       'los rangos A1: con comillas, sin fila final, la hoja entera y una sola celda')
+    g = rectangular([['Alias', 'Nombre Real', '', 'x'], ['a', 'A'], ['', ''], ['b', 'B', '', ''], ['', '', '', '']])
+    ok(valores_de(g, 'AKAs!A1:C') == [['Alias', 'Nombre Real'], ['a', 'A'], [], ['b', 'B']]
+       and valores_de(g, 'AKAs!B2:B2') == [['A']] and valores_de(g, 'AKAs') == [['Alias', 'Nombre Real', '', 'x'],
+                                                                              ['a', 'A'], [], ['b', 'B']],
+       'leer de la grilla da lo mismo que la API: sin vacías al final de la fila ni filas vacías al final')
+    ok(hojas_de_pedido('PUT', "/values/%27Lista%20de%20Raperos%27%21E12?valueInputOption=RAW", {}) == {'Lista de Raperos'}
+       and hojas_de_pedido('POST', '/values:batchUpdate', {'json': {'data': [{'range': 'AKAs!A3:C3'},
+                                                                               {'range': "'Lista de Raperos'!B4"}]}})
+       == {'AKAs', 'Lista de Raperos'}
+       and hojas_de_pedido('POST', '/values/AKAs%21A2%3AC:clear', {'json': {}}) == {'AKAs'}
+       and hojas_de_pedido('POST', ':batchUpdate', {'json': {'requests': [{'deleteDimension': {'range': {'sheetId': 7}}}]}},
+                           lambda i: {7: 'Entrada'}.get(i)) == {'Entrada'}
+       and hojas_de_pedido('GET', '/values/AKAs', {}) == set(),
+       'qué hoja toca cada escritura: un rango, varios, un clear y un cambio de filas (por su sheetId)')
     # 🖊️ un solo escritor: en GitHub pasa, en una PC no (salvo --desde-aca)
     try:
         un_escritor('x', entorno={}, argv=['p', '--aplicar'])

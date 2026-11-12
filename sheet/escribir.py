@@ -112,7 +112,9 @@ def _pedir(metodo, ruta, **kw):
                              headers={'Authorization': 'Bearer ' + token()},
                              timeout=90, **kw)
         if r.status_code < 300:
-            return r.json() if r.content else {}
+            out = r.json() if r.content else {}
+            _despues(metodo, ruta, kw, out)
+            return out
         if r.status_code != 429 and r.status_code < 500:
             break
         if i < len(REINTENTOS):
@@ -123,6 +125,34 @@ def _pedir(metodo, ruta, **kw):
     except ValueError:
         m = r.text[:200]
     raise RuntimeError('%s %s -> %s: %s' % (metodo, ruta, r.status_code, m[:200]))
+
+
+_TITULOS = {}
+
+
+def _titulo_de_id(sid):
+    """El nombre de la hoja con ese `sheetId` (una lectura por proceso, la primera vez que hace falta)."""
+    if not _TITULOS:
+        d = _pedir('GET', '?fields=sheets.properties(sheetId,title)')
+        for s_ in d.get('sheets') or []:
+            p = s_.get('properties') or {}
+            _TITULOS[p.get('sheetId')] = p.get('title')
+    return _TITULOS.get(sid)
+
+
+def _despues(metodo, ruta, kw, out):
+    """🗄️ SACAR EL SHEET, ETAPA 4b (11/11/2026): todo lo que lee o escribe la Lista de Raperos y AKAs pasa por acá.
+    Una escritura que salió bien deja esa hoja «sucia» y su archivo de `datos/` se refresca al terminar el proceso
+    (`espejo_t1.marcar_sucias()`); una lectura se compara con lo que habría dado el archivo
+    (`espejo_t1.comparar_lectura()`). Ninguna de las dos cambia lo que se devuelve, y nunca levanta."""
+    try:
+        import espejo_t1 as _EJ
+        if metodo == 'GET':
+            _EJ.comparar_lectura(ruta, out)
+        else:
+            _EJ.marcar_sucias(_EJ.hojas_de_pedido(metodo, ruta, kw, _titulo_de_id))
+    except Exception:                                    # noqa: BLE001
+        pass
 
 
 def _fin_de(a1):

@@ -231,7 +231,11 @@ def corre(args, callado=True, mostrar=(), eco=False):
         _ULTIMA_SALIDA[0] = r.stdout or ''
     if r.returncode:
         _marcar_falla(args)
-    if callado and mostrar:
+    # 🗄️ Y LO DE SACAR EL SHEET SE VE SIEMPRE (11/11/2026): la comparación de cada lector con su archivo de `datos/`
+    # («🗄️ … desde datos/», o lo que dio distinto) es la prueba de que se puede apagar el Sheet, y los pools y el
+    # padrón corrían callados: un «DISTINTO» ahí no lo habría visto nadie. Ver `sheet/espejo_t1.py`
+    if callado:
+        mostrar = tuple(mostrar) + ('desde datos/', 'DISTINTO del Sheet', 'no coincide con datos/')
         for l in (r.stdout or '').splitlines():
             if any(m in l for m in mostrar):
                 print('      %s' % l.strip())
