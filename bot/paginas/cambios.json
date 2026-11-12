@@ -11,6 +11,16 @@
  ],
  "cambios": [
     {
+        "version": "4.72",
+        "dia": "2026-11-12",
+        "cuando": "2026-11-12T17:05:00-05:00",
+        "titulo": "Sin batallas: tu próximo evento y tu rival",
+        "items": [
+            "Cuando no tienes batallas, el Inicio te muestra **el próximo evento** con su cuenta atrás y el botón para inscribirte.",
+            "Y **el rival que tienes justo arriba** en la Temporada: cuántos puntos te faltan y un botón para **retarlo**."
+        ]
+    },
+    {
         "version": "4.71",
         "dia": "2026-11-12",
         "cuando": "2026-11-12T16:50:00-05:00",
