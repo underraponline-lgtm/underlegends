@@ -11,6 +11,16 @@
  ],
  "cambios": [
     {
+        "version": "4.61",
+        "dia": "2026-11-12",
+        "cuando": "2026-11-12T07:10:00-05:00",
+        "titulo": "La bienvenida en el teléfono, con el video a la vista",
+        "items": [
+            "**En el teléfono el video de la bienvenida va en HD** y se ve en toda la pantalla: el borde oscuro es más fino y el video, más claro.",
+            "La portada del teléfono quedó más liviana: sin la línea del último campeón y con las cartas un poco más chicas."
+        ]
+    },
+    {
         "version": "4.60",
         "dia": "2026-11-12",
         "cuando": "2026-11-12T06:55:00-05:00",
