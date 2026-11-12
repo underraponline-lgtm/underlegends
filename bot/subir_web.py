@@ -584,8 +584,18 @@ def armar():
         n_eventos = len(regs)
         # 👀 Y LAS DE LOS SERVIDORES QUE NO SUMAN (Dlx, 20/10/2026: «las llaves tienen que estar ahí. Simplemente no
         # cuentan para el ranking»): SÓLO acá, para el calendario y «Ver llave». Ver `llaves_a_entrada.para_ver()`
+        # 🔁 SALVO LA QUE YA SE CARGÓ (12/11/2026, Dlx mirando «Qué llaves cuentan»): cuando un servidor pasa a sumar, sus
+        # llaves entran como eventos con su número (la DISCORD STYLE ED. 15, #578) y la copia de `llaves_sin_sumar.json`
+        # se quedaba —`para_ver()` no borra lo que Discord ya no muestra—, así que la misma llave salía dos veces: 19 de
+        # las 27. Mismo mensaje de Discord = la misma llave
+        # 🔁 y el mismo evento publicado en otro mensaje (MF DOOM Y MADLIB EDICION 1, DDS 07/11: la llave de 12 y la de 9,
+        # cargada como #586): mismo nombre, servidor y fecha que una cargada
+        _cargadas = {l for _r in regs.values() if isinstance(_r, dict) for l in _r.get('links') or []}
+        _mismo = {(_LW.clave_nombre(_r.get('nombre')), _r.get('sv'), _r.get('fecha')) for _r in regs.values() if isinstance(_r, dict)}
         for _k, _v in (_json('datos', 'llaves_sin_sumar.json') or {}).items():
-            if not _k.startswith('_') and isinstance(_v, dict) and _k not in regs:
+            if (not _k.startswith('_') and isinstance(_v, dict) and _k not in regs
+                    and not _cargadas & set(_v.get('links') or [])
+                    and (_LW.clave_nombre(_v.get('nombre')), _v.get('sv'), _v.get('fecha')) not in _mismo):
                 regs[_k] = _v
         # ⚠️ CON TODOS LOS ANUNCIOS DE CONTEXTO: «Lo que pasó» muestra seis, y
         # la llave de un séptimo no es huérfana (`llaves_web._huerfanas()`)

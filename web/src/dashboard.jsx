@@ -2219,7 +2219,9 @@ function LlavesCuentan({ L, liga, alCambiar }) {
   if (!todas) return <p className="db-tx">Cargando las llaves de la temporada…</p>;
   const no = new Set(L.no_cuentan || []);
   const ped = L.pedidos || {};
-  const xs = Object.values(todas).filter((e) => e && e.nombre && e.sv && e.fecha).sort((a, b) => (b.n || 0) - (a.n || 0));
+  // 👀 sin las de los servidores que no suman (`ns`, `llaves_sin_sumar.json`): nunca contaron y sacarlas no hace nada. Su
+  // número era el final del mensaje de Discord (#195217675) y salían con «Cuenta» (12/11/2026, mirándolo con Dlx)
+  const xs = Object.values(todas).filter((e) => e && e.nombre && e.sv && e.fecha && !e.ns).sort((a, b) => (b.n || 0) - (a.n || 0));
   const svs = [...new Set(xs.map((e) => e.sv))].sort();
   const qn = normN(q);
   const vis = xs.filter((e) => (!sv || e.sv === sv) && (!qn || normN(e.nombre).includes(qn) || String(e.n) === q.trim().replace('#', '')));
