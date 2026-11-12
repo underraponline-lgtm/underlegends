@@ -5790,6 +5790,13 @@
     "t1",
     1794463224757
    ]
+  },
+  "temporada": {
+   "🥉 AL PODIO": [
+    "🥉 AL PODIO",
+    "t1",
+    1794464975569
+   ]
   }
  },
  "kminante": {
@@ -9174,6 +9181,15 @@
    ]
   }
  },
+ "nobu": {
+  "temporada": {
+   "🧳 VIAJERO": [
+    "🧳 VIAJERO",
+    "t1",
+    1794464975569
+   ]
+  }
+ },
  "noone": {
   "servidor": {
    "📆 HABITUÉ": [
@@ -9400,6 +9416,11 @@
     "INTERNACIONAL",
     "t1",
     1793029252929
+   ],
+   "KILÓMETROS": [
+    "KILÓMETROS",
+    "t1",
+    1794464975569
    ],
    "SIN FRONTERAS": [
     "SIN FRONTERAS",
@@ -11964,7 +11985,7 @@
  "sadik": {
   "temporada": {
    "👑 CAMPEÓN x%d": [
-    "👑 CAMPEÓN x1",
+    "👑 CAMPEÓN x2",
     "t1",
     1794260565889
    ],
@@ -12803,7 +12824,7 @@
     1793029252929
    ],
    "👑 CAMPEÓN x%d": [
-    "👑 CAMPEÓN x1",
+    "👑 CAMPEÓN x2",
     "t1",
     1793029252929
    ],
@@ -13436,6 +13457,11 @@
     "⚡ RELÁMPAGO",
     "t1",
     1793925416194
+   ],
+   "🎯 CAZADOR CAZADO": [
+    "🎯 CAZADOR CAZADO",
+    "t1",
+    1794464975569
    ],
    "🏁 SEMIFINALISTA SERIAL": [
     "🏁 SEMIFINALISTA SERIAL",

@@ -285,6 +285,15 @@
 "temporada"
 ]
 },
+"tenor": {
+"rg": "C",
+"c": [
+"competitivo",
+"pais",
+"servidor",
+"temporada"
+]
+},
 "cronox": {
 "rg": "D",
 "c": [
@@ -338,17 +347,12 @@
 "temporada"
 ]
 },
+"chop": {
+"rg": "D",
+"c": []
+},
 "geoka": {
 "rg": "D",
-"c": [
-"competitivo",
-"pais",
-"servidor",
-"temporada"
-]
-},
-"tenor": {
-"rg": "C",
 "c": [
 "competitivo",
 "pais",
@@ -382,10 +386,6 @@
 "servidor",
 "temporada"
 ]
-},
-"chop": {
-"rg": "D",
-"c": []
 },
 "dyzz": {
 "rg": "E",
@@ -680,6 +680,10 @@
 "temporada"
 ]
 },
+"carlos": {
+"rg": "",
+"c": []
+},
 "ariaxer": {
 "rg": "E",
 "c": [
@@ -688,10 +692,6 @@
 "servidor",
 "temporada"
 ]
-},
-"carlos": {
-"rg": "",
-"c": []
 },
 "jeixder": {
 "rg": "D",
@@ -983,6 +983,10 @@
 "temporada"
 ]
 },
+"abraham": {
+"rg": "",
+"c": []
+},
 "benji": {
 "rg": "",
 "c": []
@@ -1042,16 +1046,19 @@
 "rg": "",
 "c": []
 },
-"andy": {
+"dios": {
 "rg": "",
 "c": [
 "servidor",
 "temporada"
 ]
 },
-"abraham": {
+"andy": {
 "rg": "",
-"c": []
+"c": [
+"servidor",
+"temporada"
+]
 },
 "artezzy": {
 "rg": "",
@@ -1061,16 +1068,15 @@
 "temporada"
 ]
 },
-"dios": {
-"rg": "",
-"c": [
-"servidor",
-"temporada"
-]
-},
 "cj": {
 "rg": "",
 "c": []
+},
+"sol": {
+"rg": "",
+"c": [
+"servidor"
+]
 },
 "zeta": {
 "rg": "",
@@ -1156,12 +1162,22 @@
 "rg": "",
 "c": []
 },
+"chase": {
+"rg": "",
+"c": [
+"servidor"
+]
+},
 "lewito": {
 "rg": "",
 "c": [
 "servidor",
 "temporada"
 ]
+},
+"sadik": {
+"rg": "",
+"c": []
 },
 "berrun": {
 "rg": "",
@@ -1245,21 +1261,13 @@
 "rg": "",
 "c": []
 },
-"sol": {
+"youngvlad": {
 "rg": "",
-"c": [
-"servidor"
-]
+"c": []
 },
 "noa": {
 "rg": "",
 "c": []
-},
-"chase": {
-"rg": "",
-"c": [
-"servidor"
-]
 },
 "j19": {
 "rg": "",
@@ -1277,6 +1285,10 @@
 "c": []
 },
 "scot": {
+"rg": "",
+"c": []
+},
+"k": {
 "rg": "",
 "c": []
 },
@@ -1312,6 +1324,10 @@
 "servidor",
 "temporada"
 ]
+},
+"kminant": {
+"rg": "",
+"c": []
 },
 "lautarolasinceridad": {
 "rg": "",
@@ -1500,10 +1516,6 @@
 "pais",
 "servidor"
 ]
-},
-"youngvlad": {
-"rg": "",
-"c": []
 },
 "sami": {
 "rg": "",
@@ -7080,11 +7092,11 @@
 "quien": [
 [
 "YOUNG VLAD",
-""
+"youngvlad"
 ],
 [
 "Kminant",
-""
+"kminant"
 ],
 [
 "Tam",
@@ -7115,22 +7127,22 @@
 ],
 "suben": [
 {
-"n": "Ryuk",
-"k": "",
-"de": 537,
-"a": 412
-},
-{
 "n": "AbrahamSRRL",
 "k": "",
 "de": 594,
-"a": 469
+"a": 463
 },
 {
-"n": "letrao",
-"k": "letrao",
-"de": 329,
-"a": 299
+"n": "Ryuk",
+"k": "",
+"de": 537,
+"a": 409
+},
+{
+"n": "Kminant",
+"k": "kminant",
+"de": 401,
+"a": 325
 }
 ],
 "sorpresas": [
@@ -7142,14 +7154,14 @@
 },
 {
 "n": "YOUNG VLAD",
-"k": "",
+"k": "youngvlad",
 "que": "primer",
 "ev": "qcyo rapeen Pandillas",
 "desde": 334
 },
 {
 "n": "Kminant",
-"k": "",
+"k": "kminant",
 "que": "primer",
 "ev": "qcyo rapeen Pandillas",
 "desde": 401

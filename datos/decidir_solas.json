@@ -2,54 +2,6 @@
  "_leeme": "Lo que ✅ Decidir cerró o contestó solo, con la regla y la prueba (sheet/decidir.py, resolver_solo()), para «Lo que se resolvió solo» del Dashboard y su «Deshacer». «deshechas»: lo que Dlx deshizo; ninguna regla lo vuelve a tocar. Dlx, 13/10/2026.",
  "solas": [
   {
-   "id": "22e8a113ba",
-   "tipo": "Nombre desconocido",
-   "sec": "QCYO RAPEEN 6 · FFA · 28/10 · #542",
-   "que": "¿Quién es «Jobacastrado🇨🇱»?",
-   "r": "Es Jobaking (en este evento)",
-   "regla": "R21 · la cuenta que se anotó así para ese evento es de alguien de la Lista que esa noche no jugó con su nombre",
-   "rk": "R21",
-   "por": "el ciclo",
-   "porque": "la cuenta @jobains (en Discord: «#51 | Jobaking», «𝐉𝐨𝐛𝐚𝐤𝟏𝐧𝐠 :v») · en la Lista: Jobaking se anotó como «Jobacastrado» para ese evento, no es staff de FFA y esa noche no jugó con su nombre",
-   "t": 1793253916663,
-   "filas": [
-    935
-   ],
-   "variantes": [
-    "Jobacastrado🇨🇱"
-   ],
-   "escribio": {
-    "quien": "QCYO RAPEEN 6 · FFA · 28/10 · Jobacastrado🇨🇱"
-   }
-  },
-  {
-   "id": "479810593c",
-   "tipo": "Nombre desconocido",
-   "sec": "QCYO RAPEEN 6 · FFA · 28/10 · #542",
-   "que": "¿Quién es «Jahno El Melomaníaco 🇦🇷»?",
-   "r": "Es melomaniaco",
-   "regla": "Discord · su cuenta de Discord: la inscripción, el podio, la llave o la llamada",
-   "rk": "Discord",
-   "por": "el ciclo (su cuenta de Discord)",
-   "porque": "alias de melomaniaco: estaba en la llamada del evento con un nombre parecido",
-   "t": 1793253916663,
-   "filas": [
-    934
-   ],
-   "variantes": [
-    "Jahno El Melomaníaco 🇦🇷"
-   ],
-   "escribio": {
-    "alias": [
-     "Jahno El Melomaníaco",
-     "melomaniaco"
-    ],
-    "filas": [
-     325
-    ]
-   }
-  },
-  {
    "id": "98d7e54f8d",
    "tipo": "Alias posible",
    "sec": "🪪 Identidad",
@@ -3461,6 +3413,132 @@
     "WALKOVER"
    ],
    "escribio": {}
+  },
+  {
+   "id": "8d598807e7",
+   "tipo": "Batalla sin ganador",
+   "sec": "LLAVES PARA LA DISCORD STYLE 19 · DDS · 01/11 · #584",
+   "que": "¿Quién ganó en semifinales?\nJULIX 🆚 MCO 🇦🇷",
+   "r": "No se jugó",
+   "regla": "R23 · el tercer puesto que la llave escribe como otra semifinal, sin ganador: los dos quedan semifinalistas",
+   "rk": "R23",
+   "por": "el ciclo",
+   "porque": "es el tercer puesto (JULIX y MCO 🇦🇷 perdieron las semis) y la llave no dice quién lo ganó: los dos quedan como semifinalistas, el promedio de 3.º y 4.º",
+   "t": 1794464960602,
+   "filas": [
+    1135
+   ],
+   "variantes": [
+    "LLAVES PARA LA DISCORD STYLE 19 · DDS · 01/11 · semifinales · JULIX 🆚 MCO 🇦🇷"
+   ],
+   "escribio": {
+    "batalla": "LLAVES PARA LA DISCORD STYLE 19 · DDS · 01/11 · semifinales · JULIX 🆚 MCO 🇦🇷"
+   }
+  },
+  {
+   "id": "3d4bd12663",
+   "tipo": "Batalla sin ganador",
+   "sec": "LLAVES PARA LA DISCORD STYLE 18 · DDS · 30/10 · #583",
+   "que": "¿Quién ganó en semifinales?\nMiniboy🇨🇱 🆚 Mark",
+   "r": "No se jugó",
+   "regla": "R23 · el tercer puesto que la llave escribe como otra semifinal, sin ganador: los dos quedan semifinalistas",
+   "rk": "R23",
+   "por": "el ciclo",
+   "porque": "es el tercer puesto (Miniboy🇨🇱 y Mark perdieron las semis) y la llave no dice quién lo ganó: los dos quedan como semifinalistas, el promedio de 3.º y 4.º",
+   "t": 1794464960602,
+   "filas": [
+    1136
+   ],
+   "variantes": [
+    "LLAVES PARA LA DISCORD STYLE 18 · DDS · 30/10 · semifinales · Miniboy🇨🇱 🆚 Mark"
+   ],
+   "escribio": {
+    "batalla": "LLAVES PARA LA DISCORD STYLE 18 · DDS · 30/10 · semifinales · Miniboy🇨🇱 🆚 Mark"
+   }
+  },
+  {
+   "id": "f2fef1e249",
+   "tipo": "Batalla sin ganador",
+   "sec": "SIX SEVEN STYLE · DDS · 03/11 · #585",
+   "que": "¿Quién ganó en semifinales?\nBenji 🇵🇪 🆚 Oriuz 🇦🇷",
+   "r": "No se jugó",
+   "regla": "R23 · el tercer puesto que la llave escribe como otra semifinal, sin ganador: los dos quedan semifinalistas",
+   "rk": "R23",
+   "por": "el ciclo",
+   "porque": "es el tercer puesto (Benji 🇵🇪 y Oriuz 🇦🇷 perdieron las semis) y la llave no dice quién lo ganó: los dos quedan como semifinalistas, el promedio de 3.º y 4.º",
+   "t": 1794464960602,
+   "filas": [
+    1144
+   ],
+   "variantes": [
+    "SIX SEVEN STYLE · DDS · 03/11 · semifinales · Benji 🇵🇪 🆚 Oriuz 🇦🇷"
+   ],
+   "escribio": {
+    "batalla": "SIX SEVEN STYLE · DDS · 03/11 · semifinales · Benji 🇵🇪 🆚 Oriuz 🇦🇷"
+   }
+  },
+  {
+   "id": "b17749c974",
+   "tipo": "Batalla sin ganador",
+   "sec": "DISCORD STYLE ED. 16 · DDS · 17/10 · #579",
+   "que": "¿Quién ganó en semifinales?\nAbraham 🆚 CRIZJ",
+   "r": "No se jugó",
+   "regla": "R23 · el tercer puesto que la llave escribe como otra semifinal, sin ganador: los dos quedan semifinalistas",
+   "rk": "R23",
+   "por": "el ciclo",
+   "porque": "es el tercer puesto (Abraham y CRIZJ perdieron las semis) y la llave no dice quién lo ganó: los dos quedan como semifinalistas, el promedio de 3.º y 4.º",
+   "t": 1794464960602,
+   "filas": [
+    1190
+   ],
+   "variantes": [
+    "DISCORD STYLE ED. 16 · DDS · 17/10 · semifinales · Abraham 🆚 CRIZJ"
+   ],
+   "escribio": {
+    "batalla": "DISCORD STYLE ED. 16 · DDS · 17/10 · semifinales · Abraham 🆚 CRIZJ"
+   }
+  },
+  {
+   "id": "7a5448618e",
+   "tipo": "Batalla sin ganador",
+   "sec": "(sin titulo) · DDS · 12/10 · #603",
+   "que": "¿Quién ganó en semifinales?\nwalkover 🆚 walkover",
+   "r": "No se jugó",
+   "regla": "R23 · el tercer puesto que la llave escribe como otra semifinal, sin ganador: los dos quedan semifinalistas",
+   "rk": "R23",
+   "por": "el ciclo",
+   "porque": "es una batalla entre dos lugares vacíos (walkover vs walkover): no hay nadie que cobre",
+   "t": 1794464960602,
+   "filas": [
+    1213
+   ],
+   "variantes": [
+    "(sin titulo) · DDS · 12/10 · semifinales · walkover 🆚 walkover"
+   ],
+   "escribio": {
+    "batalla": "(sin titulo) · DDS · 12/10 · semifinales · walkover 🆚 walkover"
+   }
+  },
+  {
+   "id": "3d463cf9ea",
+   "tipo": "Batalla sin ganador",
+   "sec": "(sin titulo) · DDS · 10/10 · #444",
+   "que": "¿Quién ganó en semifinales?\nVILCA Y DANU 🆚 CHASE Y MCO",
+   "r": "No se jugó",
+   "regla": "R23 · el tercer puesto que la llave escribe como otra semifinal, sin ganador: los dos quedan semifinalistas",
+   "rk": "R23",
+   "por": "el ciclo",
+   "porque": "es el tercer puesto (VILCA Y DANU y CHASE Y MCO perdieron las semis) y la llave no dice quién lo ganó: los dos quedan como semifinalistas, el promedio de 3.º y 4.º",
+   "t": 1794464960602,
+   "filas": [
+    1215
+   ],
+   "variantes": [
+    "(sin titulo) · DDS · 10/10 · semifinales · VILCA Y DANU 🆚 CHASE Y MCO"
+   ],
+   "escribio": {
+    "batalla": "(sin titulo) · DDS · 10/10 · semifinales · VILCA Y DANU 🆚 CHASE Y MCO"
+   }
   }
  ],
  "deshechas": []
