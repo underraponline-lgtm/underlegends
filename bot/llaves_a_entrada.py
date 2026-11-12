@@ -4494,7 +4494,7 @@ def main():
     conocidos = autores_conocidos(hallazgos)
     # 🔎 las llaves ya cargadas y los organizadores observados, una vez por corrida (`bot/verificar_llaves.py`)
     import verificar_llaves as VL
-    _prev_v, _obs_v, ver_llaves = VL.previas(), VL.observados(), {}
+    _prev_v, _obs_v, ver_llaves, ver_ret = VL.previas(), VL.observados(), {}, []
     try:
         with io.open(os.path.join(BASE, 'datos', 'anuncios.json'), encoding='utf-8') as _f:
             anuncios_l = (json.load(_f) or {}).get('anuncios') or []
@@ -4859,6 +4859,8 @@ def main():
                 ver_llaves[_kv] = _ver
             if not motivo and _mv and dec != 'cuenta':
                 motivo = _mv
+                # 📣 y Dlx se entera, una vez por llave (Dlx, 11/11/2026: «avísame también qué retuvo la verificación»)
+                ver_ret.append((_kv or '|'.join((nom, ligas[0], fec)), nom, ligas[0], fec, _mv, _lk[0] if _lk else ''))
             if not _mv or dec == 'cuenta':
                 VL.sumar(_prev_v, (nom, ligas[0], fec), limpias, ligas[0], _dia_v, g)
         if ligas and motivo and dec != 'cuenta':
@@ -5195,6 +5197,11 @@ def main():
         VL.guardar(ver_llaves)
     except OSError as e:
         print('   ⚠️ no pude guardar la verificación de las llaves (%s)' % str(e)[:60])
+    # 📣 lo que retuvo, al canal de Logs: una vez por llave (`VL.avisar()`)
+    try:
+        VL.avisar(ver_ret)
+    except Exception as e:                               # noqa: BLE001
+        print('   ⚠️ no pude avisar lo que retuvo la verificación (%s)' % str(e)[:60])
     # y quién ya publicó una llave que se cargó, para las de broma
     try:
         with io.open(AUTORES, 'w', encoding='utf-8', newline='\n') as _f:

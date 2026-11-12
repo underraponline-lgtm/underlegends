@@ -288,6 +288,44 @@ def guardar(ver_por_clave, archivo=SALIDA):
             f.write('\n')
 
 
+def avisar(retenidas, archivo=SALIDA, mandar=None):
+    """📣 Avisa en el canal de Logs cada llave que retuvo la verificación, UNA VEZ por llave.
+
+    🔑 Dlx, 11/11/2026: *«avísame también qué retuvo la verificación»*. Al canal de Logs y no por DM: es lo que Dlx
+    decidió el 25/09 para lo normal (*«por DM a mí únicamente… si es algo normal avísalo en el canal»*), y una llave
+    retenida espera su decisión pero no traba nada.
+
+    ⚠️ El ciclo relee cada llave cada media hora: sin recordar qué ya se avisó, la misma llave sonaría hasta que Dlx
+    la decida. Lo avisado vive en `datos/verificacion_llaves.json` (`avisadas`), que el ciclo commitea; y se marca
+    sólo si el mensaje SALIÓ, así uno que falló se vuelve a intentar en la corrida siguiente.
+    `retenidas`: `[(clave, nombre, servidor, fecha, motivo, link)]`. Devuelve cuántos avisos salieron."""
+    if not retenidas:
+        return 0
+    if mandar is None:
+        import alertar as AL
+        mandar = AL.normal
+    try:
+        with io.open(archivo, encoding='utf-8') as f:
+            d = json.load(f) or {}
+    except (OSError, ValueError):
+        d = {}
+    ya = d.setdefault('avisadas', {})
+    salieron = 0
+    for clave, nom, sv, fec, motivo, link in retenidas:
+        if clave in ya:
+            continue
+        texto = ('🔎 **Llave retenida por la verificación: %s** (%s, %s)\n%s.\nNo suma hasta que la decidas en ✅ Decidir.%s'
+                 % (nom, sv, fec, str(motivo).rstrip('.'), ('\n' + link) if link else ''))
+        if mandar(texto):
+            ya[clave] = dt.datetime.now(dt.timezone.utc).strftime('%Y-%m-%dT%H:%M:%SZ')
+            salieron += 1
+    if salieron:
+        with io.open(archivo, 'w', encoding='utf-8', newline='\n') as f:
+            json.dump(d, f, ensure_ascii=False, indent=1, sort_keys=True)
+            f.write('\n')
+    return salieron
+
+
 def leer(archivo=SALIDA):
     try:
         with io.open(archivo, encoding='utf-8') as f:
@@ -347,6 +385,20 @@ def _self_check():
                    [F('Ana, Adriagner', 'Beto, Caro', 'Ana, Adriagner', 'final')]) == 'gana',
        'en una de equipos, ganar con su equipo también es ganar')
     ok(campeon([]) == set() and organizador(gn, []) == '', 'sin final no hay campeón ni nada que retener')
+    # 📣 el aviso: una vez por llave, y sólo se recuerda si salió
+    import tempfile
+    tmp = os.path.join(tempfile.mkdtemp(), 'v.json')
+    vistos, cae = [], [True]
+    manda = lambda t: (vistos.append(t), cae[0])[1]
+    r = [('EL ULTIMO DIA DE DDF|DDF|11/11', 'EL ULTIMO DIA DE DDF', 'DDF', '11/11', m, 'https://discord.com/x')]
+    cae[0] = False
+    n0 = avisar(r, tmp, manda)
+    cae[0] = True
+    n1, n2 = avisar(r, tmp, manda), avisar(r, tmp, manda)
+    ok(n0 == 0 and n1 == 1 and n2 == 0 and len(vistos) == 2 and 'campeón de su propia llave' in vistos[-1]
+       and 'EL ULTIMO DIA DE DDF' in vistos[-1] and 'https://discord.com/x' in vistos[-1],
+       'cada retenida se avisa una vez; la que no salió se vuelve a intentar')
+    ok(avisar([], tmp, manda) == 0, 'sin retenidas, nada')
     _PAD[:] = []
     print('\n  %s' % ('todo ok' if not mal else '%d fallaron' % len(mal)))
     return not mal
