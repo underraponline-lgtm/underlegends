@@ -163,7 +163,8 @@ def _hijo(salida):
     import procesar_entrada as PE
     from escribir import Hoja
     evs = PE.agrupar(filas)
-    ya = PE.numeros_por_evento(Hoja('Eventos Procesados'))
+    import espejo_t1 as _EJ
+    ya = PE.numeros_por_evento(_EJ.hoja('Eventos Procesados'))
     tab, mods = motor.tablas(), motor.modificadores()
     resolver, _n = motor._resolvedor()
     nuevos = {}
@@ -182,7 +183,7 @@ def _hijo(salida):
                          'avisos': ev['avisos'], 'sin_resolver': ev['sin_resolver']}
     # lo de hoy: `Resultados` = [n, fecha, sv, escala, rapero, cc, posición, puntos, mw, total]
     hoy = {}
-    for f in Hoja('Resultados').filas():
+    for f in _EJ.hoja('Resultados').filas():
         f = list(f) + [''] * 10
         n = str(f[0]).strip()
         if not n.isdigit():

@@ -3635,7 +3635,8 @@ def main():
     if '--comparar' in sys.argv:
         from escribir import Hoja
         print('\n══ EL REGISTRO CRUDO CONTRA LA VITRINA ══\n')
-        res, uno = Hoja('Resultados').filas(), Hoja('1v1').filas()
+        import espejo_t1 as _EJ
+        res, uno = _EJ.fuente('Resultados', 'rankings --comparar'), _EJ.fuente('1v1', 'rankings --comparar')
         print('   `Resultados` %d filas · `1v1` %d filas' % (len(res), len(uno)))
         if not res:
             print('\n   🔴 El registro crudo está VACÍO, así que la vitrina')

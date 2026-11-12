@@ -260,8 +260,8 @@ def sacar_descartados(hproc, ya, aplicar):
     if not fuera or not aplicar:
         return fuera
     nums = [n for n, *_r in fuera]
-    RES.reescribir(Hoja('Resultados'), nums, [])
-    RES.reescribir(Hoja('1v1'), nums, [])
+    RES.reescribir(__import__('espejo_t1').hoja('Resultados'), nums, [])
+    RES.reescribir(__import__('espejo_t1').hoja('1v1'), nums, [])
     RES.reescribir(hproc, nums, [])
     try:
         p = os.path.join(BASE, 'datos', 'llaves_t1.json')
@@ -355,7 +355,7 @@ def main():
     # Dlx sacó en ✅ Decidir no vuelve a entrar, así que nada lo va a
     # reprocesar — si no se saca acá, no se saca nunca.
     if _no_cuentan():
-        _hp = Hoja('Eventos Procesados')
+        _hp = __import__('espejo_t1').hoja('Eventos Procesados')
         sacar_descartados(_hp, numeros_por_evento(_hp), aplicar)
 
     batallas, buzon = leer_entrada()
@@ -374,7 +374,7 @@ def main():
     resolver, cuantos = motor._resolvedor()
     print('   el padrón resuelve %d nombre(s)\n' % cuantos)
 
-    hproc = Hoja('Eventos Procesados')
+    hproc = __import__('espejo_t1').hoja('Eventos Procesados')
     ya = numeros_por_evento(hproc)
     planes, tope, sin_resolver, alias_mal, raros = [], num, [], [], []
     # 🔴 EN EL ORDEN EN QUE SE JUGARON, NO EN ORDEN ALFABÉTICO. Era

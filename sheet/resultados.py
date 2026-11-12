@@ -220,6 +220,11 @@ def reescribir(h, nums, nuevas):
     if total == [list(f) + [''] * (h.ancho - len(f)) for f in viejas]:
         _al_archivo(h, total)
         return 0
+    # 🛑 LA QUE YA NO VIVE EN EL SHEET (`espejo_t1.SIN_SHEET`, 11/11/2026): sólo su archivo
+    if h.nombre in _EJ.SIN_SHEET:
+        if _EJ.al_escribir(h.nombre, h.cabecera, total) is None:
+            raise RuntimeError('%s: no pude dejarla en datos/ (ver arriba): no la doy por escrita' % h.nombre)
+        return len(viejas) - len(quedan)
     ult = chr(ord('A') + h.ancho - 1)
     hasta = h.fila_datos + len(total) - 1
     if total:
@@ -285,8 +290,8 @@ def renombrar_varios(cambios, dry=True):
         cs.append((str(num).strip(), kv, kn, nuevo, cc))
     planes, choques = [], []
     for hoja, cols in (('Resultados', (4,)), ('1v1', (4, 5, 6, 7))):
-        h = Hoja(hoja)
         import espejo_t1 as _EJ
+        h = _EJ.hoja(hoja)
         filas = [list(f) + [''] * (h.ancho - len(f)) for f in _EJ.base_para_escribir(hoja, lambda: _filas_crudas(h))]
         n = 0
         for num, kv, kn, nuevo, cc in cs:
@@ -309,6 +314,11 @@ def renombrar_varios(cambios, dry=True):
     if not dry:
         for h, filas, n in planes:
             if not n:
+                continue
+            # 🛑 la que ya no vive en el Sheet: sólo su archivo (`espejo_t1.SIN_SHEET`)
+            if h.nombre in _EJ.SIN_SHEET:
+                if _EJ.al_escribir(h.nombre, h.cabecera, filas) is None:
+                    raise RuntimeError('%s: no pude dejarla en datos/ (ver arriba)' % h.nombre)
                 continue
             ult = chr(ord('A') + h.ancho - 1)
             _pedir('PUT', '/values/%s?valueInputOption=RAW' % requests.utils.quote(
@@ -334,7 +344,8 @@ def guardar_varios(evs, dry=True):
         uno += u
         cuentas[ev['num']] = (len(r), len(u))
 
-    hr, hu = Hoja('Resultados'), Hoja('1v1')
+    import espejo_t1 as _EJ
+    hr, hu = _EJ.hoja('Resultados'), _EJ.hoja('1v1')
     for h, cols in ((hr, COLS_RES), (hu, COLS_UNO)):
         if h.cabecera[:len(cols)] != cols:
             raise RuntimeError(

@@ -134,10 +134,57 @@ def filas(hoja, temp=ACTUAL, base=BASE):
     return [[visible(c) for c in f] for f in crudas(hoja, temp, base)]
 
 
+#: 🛑 LAS HOJAS QUE YA NO SE LEEN NI SE ESCRIBEN EN EL SHEET (etapa 5, 11/11/2026; Dlx: «dale, sigue con dejar de
+#: escribir el Sheet»). Su fuente es el archivo de `datos/` y nada más: `fuente()` y `base_para_escribir()` no leen el
+#: Sheet, `resultados.reescribir()` y `renombrar_varios()` no lo escriben, y el paso 2g no las copia. Las tres de datos
+#: primero, que tenían siete corridas seguidas en «igual» (7:52 a 10:22 PM) y el contador movido en los dos lugares.
+#: ⚠️ Sin archivo NO se lee el Sheet: frena (`sin_archivo()`). El Sheet de estas hojas quedó congelado el 11/11.
+SIN_SHEET = {'Resultados', '1v1', 'Eventos Procesados'}
+
+
+def sin_archivo(hoja):
+    """Una hoja de `SIN_SHEET` sin su archivo es un error que hay que ver, no un caso para leer el Sheet viejo."""
+    raise RuntimeError('🔴 %s ya no vive en el Sheet y no está su archivo (%s): no sigo con datos viejos o vacíos'
+                       % (hoja, os.path.relpath(ruta(hoja), BASE)))
+
+
+class HojaLocal(object):
+    """🛑 Lo que `escribir.Hoja` sabía de una hoja (nombre, cabecera, ancho, `filas()`), desde su archivo: para las de
+    `SIN_SHEET`, que ya no se leen del Sheet. Lo devuelve `hoja()`."""
+
+    def __init__(self, nombre, base=BASE):
+        d = leer(nombre, base=base)
+        if d is None:
+            sin_archivo(nombre)
+        self.nombre, self._base = nombre, base
+        self.cabecera = [str(c) for c in d.get('cabecera') or []]
+        self.ancho = len(self.cabecera)
+        self.fila_cab, self.fila_datos = 0, 0
+
+    def __repr__(self):
+        return '<HojaLocal %s ancho=%d>' % (self.nombre, self.ancho)
+
+    def filas(self):
+        return filas(self.nombre, base=self._base)
+
+
+def hoja(nombre):
+    """La hoja para leer o escribir: `HojaLocal` si ya no vive en el Sheet (`SIN_SHEET`), y si no `escribir.Hoja`."""
+    if nombre in SIN_SHEET:
+        return HojaLocal(nombre)
+    from escribir import Hoja
+    return Hoja(nombre)
+
+
 def base_para_escribir(hoja, del_sheet, base=BASE):
     """🖊️ DE QUÉ FILAS PARTE QUIEN ESCRIBE (etapa 3d, 11/11/2026): las de datos/, que van a ser la fuente. Mientras
     `CONTROL` está prendido también lee el Sheet (`del_sheet`, una función: sólo se llama si hace falta) y, si no
-    coinciden, parte del Sheet —todavía es la referencia— y lo dice en rojo. Sin archivo, el Sheet."""
+    coinciden, parte del Sheet —todavía es la referencia— y lo dice en rojo. Sin archivo, el Sheet.
+    🛑 Las de `SIN_SHEET`, sólo del archivo."""
+    if hoja in SIN_SHEET:
+        if leer(hoja, base=base) is None:
+            sin_archivo(hoja)
+        return crudas(hoja, base=base)
     mio = crudas(hoja, base=base) if leer(hoja, base=base) is not None else None
     if mio is not None and not CONTROL:
         return mio
@@ -208,7 +255,11 @@ _VISTO = {}
 
 def fuente(hoja, lector='', base=BASE):
     """🗄️ Las filas de `hoja` como las da `Hoja(hoja).filas()`, pero desde datos/: lo que usan los lectores en vez de
-    leer el Sheet (etapa 2). Sin archivo, el Sheet. Con `CONTROL`, ver arriba."""
+    leer el Sheet (etapa 2). Sin archivo, el Sheet. Con `CONTROL`, ver arriba. 🛑 Las de `SIN_SHEET`, sólo del archivo."""
+    if hoja in SIN_SHEET:
+        if leer(hoja, base=base) is None:
+            sin_archivo(hoja)
+        return filas(hoja, base=base)
     mio = filas(hoja, base=base) if leer(hoja, base=base) is not None else None
     if mio is not None and not CONTROL:
         return mio
@@ -290,6 +341,13 @@ def espejar(aplicar=False):
     import resultados as RES
     out = {}
     for hoja in HOJAS:
+        if hoja in SIN_SHEET:
+            # 🛑 ya no vive en el Sheet: copiarla de ahí pisaría lo nuevo con lo congelado el 11/11
+            d = leer(hoja)
+            print('   %-20s %s' % (hoja, 'la fuente es datos/ (%d fila(s)): el Sheet ya no se escribe'
+                                 % len((d or {}).get('filas') or []) if d else '🔴 sin archivo'))
+            out[hoja] = 'datos' if d else 'no'
+            continue
         h = Hoja(hoja)
         cru = [normal(f) for f in RES._filas_crudas(h)]
         # ⚠️ lo que se ve tiene que ser lo que sale del valor de verdad: si no, los lectores leerían otra cosa
@@ -332,6 +390,9 @@ def comparar():
     import resultados as RES
     malas = 0
     for hoja in HOJAS:
+        if hoja in SIN_SHEET:
+            print('   ·  %-20s la fuente es datos/: el Sheet quedó congelado el 11/11, no hay con qué comparar' % hoja)
+            continue
         cru = [normal(f) for f in RES._filas_crudas(Hoja(hoja))]
         mio = crudas(hoja)
         if cru == mio:
@@ -712,6 +773,10 @@ def _self_check():
 
     cab = ['Evento #', 'Fecha', 'Rapero', 'Puntos', 'Notas']
     fs = [[471, '14/10', 'Teito', 1250], [471, '14/10', 'Geoka', 1250.0, 'Nadie siguió'], [472, '15/10', 'Ñandú 🇦🇷', 833.5]]
+    # ⚠️ las pruebas de las etapas 1 a 4 son de una hoja que TODAVÍA vive en el Sheet: se corren con `SIN_SHEET` vacío,
+    # y las de la etapa 5 (sin el Sheet), al final, con lo de verdad
+    sin_sheet0 = set(SIN_SHEET)
+    SIN_SHEET.clear()
     t = volcar('Resultados', cab, fs)
     d = json.loads(t)
     ok(d['filas'] == [list(f) for f in fs] and d['cabecera'] == cab and volcar('Resultados', cab, d['filas']) == t,
@@ -825,6 +890,39 @@ def _self_check():
        'un solo escritor: en GitHub escribe; en una PC se niega y dice cómo pedirlo, salvo --desde-aca')
     ok(set(HOJAS) == {'Resultados', '1v1', 'Eventos Procesados'}
        and ruta('1v1').endswith(os.path.join('datos', ACTUAL + '_1v1.json')), 'las tres hojas, con la temporada en el nombre')
+    # 🛑 ETAPA 5: las que ya no viven en el Sheet se leen y se escriben sólo en su archivo, y sin archivo frena
+    SIN_SHEET.update(sin_sheet0)
+    ok(SIN_SHEET == {'Resultados', '1v1', 'Eventos Procesados'}, 'las tres de datos ya no viven en el Sheet')
+    real, ctrl = sys.modules.get('escribir'), CONTROL
+    falso = types.ModuleType('escribir')
+
+    def _no_al_sheet(*a, **k):
+        raise AssertionError('leyó el Sheet')
+    falso.Hoja = _no_al_sheet
+    sys.modules['escribir'] = falso
+    try:
+        with tempfile.TemporaryDirectory() as tmp:
+            os.makedirs(os.path.join(tmp, 'datos'))
+            try:
+                fuente('Resultados', base=tmp)
+                frena = False
+            except RuntimeError as e:
+                frena = 'no está su archivo' in str(e)
+            al_escribir('Resultados', cab, fs, base=tmp)
+            CONTROL = True
+            lee = fuente('Resultados', base=tmp)
+            parte = base_para_escribir('Resultados', _no_al_sheet, base=tmp)
+            h = HojaLocal('Resultados', base=tmp)
+            hf = h.filas()
+        ok(frena and lee == [[visible(c) for c in normal(f)] for f in fs] and parte == [normal(f) for f in fs]
+           and h.cabecera == cab and h.ancho == 5 and hf == lee,
+           'sin el Sheet: aun con la prueba prendida lee y parte sólo del archivo, nunca del Sheet; sin archivo, frena')
+    finally:
+        CONTROL = ctrl
+        if real is not None:
+            sys.modules['escribir'] = real
+        else:
+            sys.modules.pop('escribir', None)
     print('\n   %s' % ('✅ todo bien' if not fallas else '🔴 %d mal' % fallas))
     return 1 if fallas else 0
 
