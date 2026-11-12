@@ -106,6 +106,15 @@ export function quiereBienvenida(dc) {
   return !!(T && T.nuevo && !T.bienv && !T.tour && PRIMERA_VISITA && LLEGADA === '' && !(dc && dc.id));
 }
 
+/**
+ * Ir a otra ruta EN EL MISMO LUGAR DEL HISTORIAL (`replaceState` + `lg:ruta`, que App.jsx escucha). Para la bienvenida: ir
+ * a ella desde el Inicio o volver de ella al Inicio con un paso nuevo dejaría el «atrás» rebotando entre las dos
+ */
+export function irSinHistoria(r) {
+  try { history.replaceState(history.state, '', window.urlLG ? window.urlLG(r) : r); } catch (e) { try { location.hash = r; } catch (e2) { /* queda */ } }
+  try { window.dispatchEvent(new Event('lg:ruta')); } catch (e) { /* nada */ }
+}
+
 /** Pedir el recorrido (la Guía, «Ver el recorrido»): lo escucha App.jsx */
 export function pedirRecorrido() {
   try { window.dispatchEvent(new CustomEvent('lg:tour')); } catch (e) { /* nada */ }

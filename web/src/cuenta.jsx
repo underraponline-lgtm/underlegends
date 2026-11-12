@@ -148,6 +148,9 @@ function grupos(liga, dc, tema, temaSv) {
       ['privacidad', 'candado', 'Privacidad y mis datos', 'tu foto, lo que guardamos y este dispositivo'],
       // 🙋 los pedidos (17/10/2026): perdí mi cuenta, ese no soy yo, mi país, un video que no es mío
       ['algo-mal', 'aviso', 'Algo está mal', 'perdí mi cuenta, mi país, un video…'],
+      // 🎮 la bienvenida otra vez, entera (Dlx, 12/11/2026: «que la gente pueda ver completamente todo eso como introducción
+      // nuevamente, ya sea por ese link o por una opción dentro de configuraciones»): es la página `#/bienvenida`
+      ['introduccion', 'micro', 'La introducción', 'la bienvenida de la Liga, otra vez'],
       ['guia', 'guia', 'Guía', 'cómo funciona la Liga'],
       ['novedades', 'novedades', 'Novedades', ult ? 'v' + ult + (nuevo ? ' · NUEVO' : '') : 'el changelog'],
       ['legal', 'legal', 'Términos y privacidad', 'las reglas y lo que guardamos'],
@@ -1050,6 +1053,13 @@ function Parte({ id, liga, dc, tema, onTema, temaSv, onTemaSv }) {
   if (id === 'verificar') return <Verificar liga={liga} dc={dc} />;
   if (id === 'novedades') {
     return <Caja t="Novedades" d="Lo que cambió en la página y en el bot."><a className="btn verde chico" href="#/cambios">Ver el changelog</a></Caja>;
+  }
+  if (id === 'introduccion') {
+    return (
+      <Caja t="La introducción" d="La bienvenida de la Liga, entera y desde el principio: qué es, las cartas, los eventos, el ranking, el Pase y la comunidad. También se abre con el link underlegends.pages.dev/freestyle-rap/bienvenida.">
+        <a className="btn verde chico" href="#/bienvenida">Ver la introducción</a>
+      </Caja>
+    );
   }
   if (id === 'guia') {
     return <Caja t="Guía" d="Cómo se suman puntos, qué pide cada tarjeta y cómo funcionan los rangos."><a className="btn verde chico" href="#/guia">Abrir la guía</a></Caja>;

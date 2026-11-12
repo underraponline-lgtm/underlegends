@@ -17,7 +17,7 @@ import { Lobby } from './lobby.jsx';
 import { MarcoSolo } from './marco_solo.jsx';
 // 🧭 el tutorial (Dlx, 12/10/2026, «A … B … C … D … E. Dale»): quién es nuevo se decide al cargar (primera.js, chico);
 // lo que se dibuja se baja sólo si hace falta
-import { pasosEnInicio, quiereBienvenida, quiereTutorial } from './primera.js';
+import { irSinHistoria, pasosEnInicio, quiereBienvenida, quiereTutorial } from './primera.js';
 import { AvisoVersion } from './novedad.jsx';
 // 📊 las secciones que se cuentan: la misma lista que `SECC_EV` de bot/avisos.js
 const SECC = new Set(['inicio', 'eventos', 'ranking', 'competencias', 'inventario', 'publicaciones', 'tarjetas', 'ligas', 'salon', 'pase', 'tienda', 'socios', 'guia',
@@ -564,6 +564,14 @@ export default function App() {
   if (pagina === 'crew') { const r = partes.slice(1).join('/'); try { crewId = decodeURIComponent(r); } catch (e) { crewId = r; } }
   let ligaId = '';
   if (pagina === 'ligas' && partes[1]) { try { ligaId = decodeURIComponent(partes[1]); } catch (e) { ligaId = partes[1]; } }
+  // 🎮 LA BIENVENIDA ES UNA PÁGINA, `/freestyle-rap/bienvenida` (Dlx, 12/11/2026: «haz que todo eso del intro sea una tab,
+  // que si eres nuevo o pestaña privada te lleve automáticamente a esta desde la página Inicio»). Quien llega por
+  // primera vez al Inicio —una pestaña privada lo es: el navegador no tiene nada guardado— va ahí solo, y quien vuelve
+  // de Discord en el medio (el paso 2) también. Va EN EL MISMO LUGAR DEL HISTORIAL: con un paso nuevo, «atrás» lo
+  // devolvía al Inicio y el Inicio lo volvía a mandar. Y como es una dirección, se puede abrir con un link
+  useEffect(() => {
+    if (pagina !== 'bienvenida' && quiereBienvenida(yo.dc)) irSinHistoria('#/bienvenida');
+  }, [pagina, yo.dc]);
   // la del menú: `#/duelos` es el Ranking, y `#/mundo` es Socios
   const paginaMenu = pagina === 'duelos' ? 'ranking' : pagina === 'avisos' ? 'eventos' : pagina === 'mundo' ? 'socios' : pagina;
   // 🔝 CADA PÁGINA ABRE ARRIBA (revisión del 04/11/2026). Era «¿estás en una de esta lista?»: de Publicaciones a Socios la
@@ -715,7 +723,7 @@ export default function App() {
       <Aislada n="AvisoWeb"><AvisoWeb aviso={aviso} /></Aislada>
       {/* 🆕 «hay una actualización» (13/10/2026): ver web/src/novedad.jsx */}
       <Aislada n="AvisoVersion"><AvisoVersion pagina={pagina} /></Aislada>
-      {quiereBienvenida(yo.dc) ? <Aislada n="Bienvenida"><Suspense fallback={null}><Bienvenida liga={liga} dc={yo.dc} /></Suspense></Aislada> : null}
+      {pagina === 'bienvenida' ? <Aislada n="Bienvenida"><Suspense fallback={null}><Bienvenida liga={liga} dc={yo.dc} /></Suspense></Aislada> : null}
       {quiereTutorial() || repite ? <Aislada n="Tutorial"><Suspense fallback={null}><Tutorial liga={liga} dc={yo.dc} pagina={paginaMenu} sv={sv} repite={repite} /></Suspense></Aislada> : null}
       <span id="contenido" tabIndex={-1} />
       {sv ? <Aislada key="PerfilSv" n="PerfilSv" pagina><Suspense fallback={<Cargando />}><PerfilSv liga={liga} sv={sv} enc={enc} /></Suspense></Aislada>

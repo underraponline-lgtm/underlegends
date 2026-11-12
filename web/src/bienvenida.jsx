@@ -18,7 +18,7 @@
 import { Suspense, lazy, useEffect, useRef, useState } from 'react';
 import { Ico } from './piezas.jsx';
 import { limpio, num, srcLogo, utc } from './liga.js';
-import { contar, pedirRecorrido, tutoPoner } from './primera.js';
+import { contar, irSinHistoria, pedirRecorrido, tutoPoner } from './primera.js';
 import { pedirLigas } from './ligas_datos.js';
 import { VV, baseVideo, elegirHd, quieto } from './fondovideo.jsx';
 import ESTILO from './bienvenida.css?inline';
@@ -462,11 +462,10 @@ export default function Bienvenida({ liga, dc }) {
     setSale(true);
     setTimeout(() => {
       setCerrada(true);
-      // desde el paso 2 se vuelve al Inicio y arranca el recorrido (desde el 1 ya está ahí y arranca solo)
-      if (paso === 2) {
-        try { W.location.hash = '#/'; } catch (e) { /* queda */ }
-        setTimeout(pedirRecorrido, 400);
-      }
+      // 🎮 desde el 12/11/2026 la bienvenida es una página (`#/bienvenida`): al cerrarla se va al Inicio, en el mismo lugar
+      // del historial. Desde el paso 2 además arranca el recorrido (desde el 1, el Inicio lo arranca solo, como antes)
+      irSinHistoria('#/');
+      if (paso === 2) setTimeout(pedirRecorrido, 400);
     }, 380);
   };
   const unirme = () => {
