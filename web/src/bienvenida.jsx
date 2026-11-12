@@ -20,6 +20,7 @@ import { Ico } from './piezas.jsx';
 import { limpio, num, srcLogo, utc } from './liga.js';
 import { contar, pedirRecorrido, tutoPoner } from './primera.js';
 import { pedirLigas } from './ligas_datos.js';
+import { VV, baseVideo, elegirHd, quieto } from './fondovideo.jsx';
 import ESTILO from './bienvenida.css?inline';
 
 const W = typeof window !== 'undefined' ? window : {};
@@ -58,20 +59,16 @@ const e = (i, cls) => ({ className: (cls ? cls + ' ' : '') + 'bv-e', style: { '-
 // cambien»). 19 tramos de los nuestros en batallas en cámara, en loop y sin sonido: 50 s, 1,7 MB. Lo arma y lo sube
 // `herramientas/bienvenida_video.py`, y vive en R2 y NO en el repo (son caras de gente real). Los créditos de los canales
 // viajan con el video (`creditos.json`).
-// ⚠️ Con «Menos animaciones», movimiento reducido o ahorro de datos, un cuadro quieto del mismo montaje
-const VIDEO = 't1';
-// (la versión del video: se sube con el mismo nombre, así que se cambia acá cada vez que se rearma, o el navegador y el
-// borde de R2 siguen sirviendo el de antes. 2 = el del 12/11 con el segundo tramo de Sombra y los oscuros más claros)
-const VV = '?v=2';
-const quieto = () => (W.matchMedia && W.matchMedia('(prefers-reduced-motion: reduce)').matches) || !!document.querySelector('.calma')
-  || !!(W.navigator && W.navigator.connection && W.navigator.connection.saveData);
+// ⚠️ Con «Menos animaciones», movimiento reducido o ahorro de datos, un cuadro quieto del mismo montaje.
+// ⚠️ Qué video (la carpeta, la versión `VV`, cuándo va el HD y cuándo ninguno) sale de fondovideo.jsx, que lo comparten
+// Socios y el Salón: un solo lugar, o al rearmar el video una página seguiría mostrando el viejo
 function Fondo({ base }) {
   const [sinVideo] = useState(quieto);
   // 🖥️ EL DE 1280 × 720 DONDE LA PANTALLA TIENE LOS PÍXELES PARA VERLO (Dlx: «el video no está en HD»: el de 640 se veía
   // a píxeles en 1454 px; y después, «haz lo mismo en la versión del teléfono»). Se mide en píxeles de verdad, no de CSS:
   // un teléfono de 390 con densidad 3 tiene 1.170, y ahí el de 640 también se veía blando. El de 640 queda para pantallas
   // de verdad chicas; con ahorro de datos no va ninguno (el cuadro quieto). Se elige una vez, al abrir
-  const [hd] = useState(() => (W.innerWidth || 0) * (W.devicePixelRatio || 1) >= 900);
+  const [hd] = useState(elegirHd);
   // `muted` como propiedad Y antes de play(): React no lo pone como atributo y sin eso el navegador no lo arranca solo
   const arrancar = (v) => { if (v) { v.muted = true; const p = v.play(); if (p && p.catch) p.catch(() => { /* queda el póster */ }); } };
   return (
@@ -235,7 +232,7 @@ function Paso1({ liga, unirme, cerrar, tit }) {
   // Es una suma de membresías: quien está en dos servidores cuenta dos veces, y por eso dice «miembros» y no «personas»
   const miembros = (liga.d.svs || []).reduce((s, x) => s + ((x && x.miembros) || 0), 0);
   const nMiembros = useCuenta(miembros);
-  const base = liga.d.r2 + '/bienvenida/' + VIDEO + '/';
+  const base = baseVideo(liga);
   const [lider, setLider] = useState(null);
   useEffect(() => {
     let vivo = true;

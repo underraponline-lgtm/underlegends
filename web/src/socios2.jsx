@@ -21,6 +21,7 @@ import { Miniatura, abrirVideo } from './video.jsx';
 import CSS_VIEJO from './css/socios.css?inline';
 import CSS_PAGINA from './css/socios2.css?inline';
 import { usarCss } from './css.js';
+import FondoVideo from './fondovideo.jsx';
 
 // las cajas de «lo que gana tu servidor», su ejemplo y las redes de Under Legends son las de siempre, con su CSS
 usarCss('socios', CSS_VIEJO);
@@ -133,12 +134,15 @@ export function Socios({ liga }) {
   const mm = (liga.d.mult || {}).sv || {};
   return (
     <>
-      <div className="escena sk-esc" style={{ '--mo-c': '#29B298', '--mo-o': 0.85, '--mo-c2': '#E41373' }}>
+      {/* 🎬 «así se ve la Liga» (Dlx, 12/11/2026: «sí, las dos»): el montaje de los nuestros batallando detrás de la franja.
+          Es lo que contesta el miedo de los dueños al «bot de raid»: gente real, todas las semanas */}
+      <div className="escena sk-esc con-video" style={{ '--mo-c': '#29B298', '--mo-o': 0.85, '--mo-c2': '#E41373' }}>
+        <FondoVideo liga={liga} />
         <section className="sk-cab">
           <div className="sk-cab-tx">
             <span className="tag">SOCIOS · {liga.temp}</span>
             <h1 className="hero-ev largo">Socios</h1>
-            <p className="hero-p">Los servidores que hacen la Liga: cada uno organiza sus eventos, y todos suman para la misma tabla.</p>
+            <p className="hero-p">Los servidores que hacen la Liga: cada uno organiza sus eventos, y todos suman para la misma tabla. Esto pasa todas las semanas en sus servidores.</p>
             <dl className="sk-tot">
               <div><dt>SERVIDORES</dt><dd>{svs.length}</dd></div>
               {/* «sumados»: la misma persona en dos servidores cuenta dos veces (la Liga en números, abajo, cuenta personas) */}

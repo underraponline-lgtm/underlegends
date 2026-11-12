@@ -1,0 +1,19 @@
+/* 🎬 EL FONDO DE VIDEO DE LA LIGA (fondovideo.jsx): el montaje oscurecido para que el texto se lea encima, con viñeta y
+   grano. El grano lo pone la página y no el video (en el video es lo que más pesa). Va detrás de todo lo de su franja:
+   `.escena>*` pone a cada hijo en z-index 1, así que el fondo se baja a 0 con un selector más fuerte, y los triángulos
+   de color de la franja (sus :before y :after) suben arriba del video para que no queden tapados */
+.escena>.fv,.fv{position:absolute;inset:0;z-index:0;overflow:hidden;pointer-events:none}
+.escena.con-video:before,.escena.con-video:after{z-index:2}
+.fv video,.fv img{position:absolute;left:-4%;top:-4%;width:108%;height:108%;object-fit:cover;filter:contrast(1.2) brightness(.42);
+  animation:fv-deriva 24s ease-in-out infinite alternate}
+.fv-vineta{position:absolute;inset:0;box-shadow:inset 0 0 200px 80px #030304}
+.fv-grano{position:absolute;left:-10%;top:-10%;width:120%;height:120%;opacity:.16;mix-blend-mode:overlay;animation:fv-grano .6s steps(5) infinite}
+@keyframes fv-deriva{from{transform:none}to{transform:scale(1.06) translate3d(-1%,-1%,0)}}
+@keyframes fv-grano{0%,100%{transform:none}20%{transform:translate3d(-3%,2%,0)}40%{transform:translate3d(2%,-3%,0)}60%{transform:translate3d(-2%,-1%,0)}80%{transform:translate3d(3%,3%,0)}}
+/* 🏛️ el Salón: más oscuro (además va más lento, desde el componente): un recuerdo, no acción */
+.fv.tenue video,.fv.tenue img{filter:contrast(1.15) brightness(.3)}
+/* 📱 en el teléfono la viñeta fina: 200 px de sombra en 390 de ancho tapaban casi todo el video (lo mismo que la bienvenida) */
+@media (max-width:899.98px){.fv-vineta{box-shadow:inset 0 0 70px 12px #030304}.fv video,.fv img{filter:contrast(1.2) brightness(.5)}
+  .fv.tenue video,.fv.tenue img{filter:contrast(1.15) brightness(.36)}}
+@media (prefers-reduced-motion:reduce){.fv video,.fv img,.fv-grano{animation:none}}
+.calma .fv video,.calma .fv img,.calma .fv-grano{animation:none}

@@ -18,6 +18,7 @@ import { Nominado, reparto, useSalon } from './mesawards.jsx';
 import { useIndice } from './indice.js';
 import CSS_PAGINA from './css/salon2.css?inline';
 import { usarCss } from './css.js';
+import FondoVideo from './fondovideo.jsx';
 
 usarCss('salon2', CSS_PAGINA);
 
@@ -444,7 +445,10 @@ export function SalonFama({ liga, enc }) {
   const numero = (t, v, id) => <div><dt>{t}</dt><dd>{id ? <button type="button" className="sl-num-b" onClick={() => ir(id)}>{v}</button> : v}</dd></div>;
   return (
     <>
-      <div className="escena sl-esc" style={{ '--mo-c': '#E5B800', '--mo-o': 0.9, '--mo-c2': '#E41373' }}>
+      {/* 🎬 «la historia de la Liga» (Dlx, 12/11/2026: «sí, las dos»): el mismo montaje, más oscuro y al 75 % de la
+          velocidad: se lee como un recuerdo y no como acción. La caja del trofeo queda adelante */}
+      <div className="escena sl-esc con-video" style={{ '--mo-c': '#E5B800', '--mo-o': 0.9, '--mo-c2': '#E41373' }}>
+        <FondoVideo liga={liga} lento={0.75} cls="tenue" />
         <section className="sl-cab">
           <div className="sl-cab-tx">
             <span className="tag">LIGA GLOBAL · {liga.temp && liga.temp !== 'prueba' ? liga.temp.toUpperCase() : 'T1'}</span>
