@@ -123,6 +123,10 @@ DE_LLAVE = {
     # §3.6). La clasificatoria y las preliminares dependen de DÓNDE
     # están en la llave, así que no se mapean: se avisan (ver abajo).
     'filtros': 'r32',
+    # 🔑 y la CLASIFICATORIA, como dieciseisavos (Dlx, 12/11/2026, por QCYO RAPEEN 12, #593: «Como dieciseisavos (625)»).
+    # Cobraba 0 y se avisaba como ESCALA. Las preliminares siguen sin mapear: se avisan
+    'clasificatorias': 'r32',
+    'clasificatoria': 'r32',
     'semifinales': 'semifinal',
     'tercer lugar': 'tercer puesto',
     'dieciseisavos': 'r32',
@@ -1590,6 +1594,15 @@ def _self_check():
        and _sc['Ana']['posicion'] == ETIQUETA['subcampeon'] and 'sin campeón' in _sc['Ana']['notas'].lower()
        and _sc.get('Beto', {}).get('puntos') == t16['16+']['semifinal']
        and not any(r.get('posicion') == ETIQUETA['campeon'] for r in _sc.values()), '%s' % _sc)
+    # 🥈 R26: sin final, los de las semis cobran la semifinal con `cobra:` (también el que ganó la suya)
+    _sf, _ = _pp([{'ronda': 'semifinales', 'ladoA': 'Ana', 'ladoB': 'Beto', 'ganador': 'Ana',
+                   'notas': 'cobra: Ana; sin final: ✅ Decidir'},
+                  {'ronda': 'semifinales', 'ladoA': 'Caro', 'ladoB': 'Dani', 'ganador': '',
+                   'notas': 'cobra: Caro; cobra: Dani; sin final: ✅ Decidir'},
+                  {'ronda': 'clasificatorias', 'ladoA': 'Eze', 'ladoB': 'Fer', 'ganador': 'Eze'}])
+    ok('sin final, los cuatro de las semis cobran la semifinal; la clasificatoria paga como dieciseisavos',
+       all(_sf.get(x, {}).get('puntos') == t16['16+']['semifinal'] for x in ('Ana', 'Beto', 'Caro', 'Dani'))
+       and _sf.get('Fer', {}).get('puntos') == t16['16+']['r32'], '%s' % _sf)
     ok('… y con «cobra: Geo», el octavo, como quien lo perdió',
        con_c.get('Geo', {}).get('puntos') == 1250 and con_c.get('Geo', {}).get('posicion') == ETIQUETA['octavos']
        and con_c.get('Ana', {}).get('puntos') == 10000,

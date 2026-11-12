@@ -2080,8 +2080,13 @@ YA_NO = 'Ya no hace falta'
 #: como «ganador» en la decisión: no es nadie
 SIN_CAMPEON = 'Sin campeón: los dos finalistas cobran el promedio'
 CAMPEON_PROMEDIO = '(sin campeón)'
-#: los días que espera R24 desde la fecha del evento
-SIN_CAMPEON_DIAS = 7
+#: los días que esperan R24 y R26 desde la fecha del evento. 🔴 ERAN 7 Y SON 28 (Dlx, 12/11/2026: «siempre dar un periodo
+#: de 28 días para todo si posible porfa»). Las 10 que R24 cerró esa noche con 7 se quedan: si el organizador completa
+#: la final en Discord, el campeón de verdad manda solo (`con_campeon()` aplica el promedio sólo sin ganador)
+SIN_CAMPEON_DIAS = 28
+#: 🥈 R26 (Dlx, 12/11/2026: «semifinal para los 4, al menos que diga lo contrario alguien después o que se arregle»):
+#: la respuesta de un «Bracket incompleto» que llega sólo a las semis
+SIN_FINAL = 'Sin final: los de las semis cobran la semifinal'
 #: ⏳ R25 (Dlx, 12/11/2026, a «¿cierro solas las de octavos y cuartos que llevan 7 días, aunque el bot no haya podido
 #: preguntar?»: «28 días»): los días desde la fecha del evento
 NADIE_DIAS = 28
@@ -2103,7 +2108,8 @@ REGLAS = {
     'R21': 'la cuenta que se anotó así para ese evento es de alguien de la Lista que esa noche no jugó con su nombre',
     'R22': 'una batalla de equipos: cualquier respuesta paga lo mismo, porque quien gana y no sigue cobra su parte',
     'R23': 'el tercer puesto que la llave escribe como otra semifinal, sin ganador: los dos quedan semifinalistas',
-    'R24': 'una final sin campeón, a los 7 días: los dos finalistas cobran el promedio de 1.º y 2.º',
+    'R24': 'una final sin campeón, a los 28 días: los dos finalistas cobran el promedio de 1.º y 2.º',
+    'R26': 'una llave que llega sólo a las semis, a los 28 días: los de las semis cobran la semifinal',
     'R25': 'una batalla sin ganador de dieciseisavos, octavos o cuartos, a los 28 días: «nadie siguió»',
 }
 
@@ -3129,6 +3135,9 @@ def reglas(preguntas, eventos, dry=True, todas=None):
           «sin campeón», y los dos finalistas cobran el promedio de 1.º y 2.º (8.750 en la 16+), como la semifinal es el
           de 3.º y 4.º. Dlx, 12/11/2026: «me gustan todas». Había 16 así —10 de LKR, que no deja escribir al bot— y no le
           sumaban nada a nadie de la llave
+      R26 el «Bracket incompleto» cuya última ronda es la semifinal, a los `SIN_CAMPEON_DIAS` días: «sin final», y los
+          de las semis cobran la semifinal (5.250 en la 16+), también el que ganó la suya; la final no la cobra nadie.
+          Dlx, 12/11/2026: «semifinal para los 4, al menos que diga lo contrario alguien después o que se arregle»
       R25 la «Batalla sin ganador» de dieciseisavos, octavos o cuartos (`se_cierra_sola()`), a los `NADIE_DIAS` días de
           la fecha del evento: «nadie siguió», la misma respuesta que las 48 h de `bot/finales.py`. Ésas cierran sólo lo
           que se le pudo preguntar al organizador; en un servidor donde el bot no escribe, la pregunta no se cerraba
@@ -3297,6 +3306,12 @@ def reglas(preguntas, eventos, dry=True, todas=None):
             if m and MO is not None:
                 puesto = dict(MO.CAIDA).get(MO.ronda_de(m.group(1)))
                 pago = MO.pago_fuera_de_escala(m.group(2), puesto) if puesto else 0
+                # 🔑 o que la escala sí paga: «clasificatorias» paga como dieciseisavos desde el 12/11/2026 (Dlx)
+                if puesto and not pago:
+                    try:
+                        pago = int((MO.tablas_guardadas()[0].get(m.group(2)) or {}).get(puesto) or 0)
+                    except Exception:                    # noqa: BLE001
+                        pago = 0
                 # ⚠️ (la revisión del 14/10/2026) Y QUE YA PAGUE DE VERDAD: el evento cargado tiene que haberse
                 # recalculado con la regla —los de esa ronda con puntos—. Hasta entonces el aviso sigue siendo cierto
                 ya = cobran_ronda(ll, _nums(p), puesto) if pago else ''
@@ -3324,7 +3339,14 @@ def reglas(preguntas, eventos, dry=True, todas=None):
                     q = interpretar(p, SIN_CAMPEON)
                     if q[0] == 'campeon':
                         con_camp.append((p, q[1], 'la llave no dice el campeón y pasaron %d días: los dos finalistas '
-                                         '(%s) cobran el promedio de 1.º y 2.º' % (dias, ' y '.join(q[1]['batallas'][0]))))
+                                         '(%s) cobran el promedio de 1.º y 2.º' % (dias, ' y '.join(q[1]['batallas'][0])),
+                                         SIN_CAMPEON, 'R24'))
+                    else:
+                        # ── R26 · la llave que llega sólo a las semis: los de las semis cobran la semifinal
+                        q = interpretar(p, SIN_FINAL)
+                        if q[0] == 'campeon':
+                            con_camp.append((p, q[1], 'la llave llega sólo a las semis y pasaron %d días: los de las semis '
+                                             'cobran la semifinal' % dias, SIN_FINAL, 'R26'))
             continue
         # ── R16 · la única cuenta con ese nombre es de alguien que Dlx dijo que NO es
         # ⚠️ sin el caché de apodos no se sabe si hay OTRA cuenta con ese nombre: no actúa
@@ -3381,8 +3403,8 @@ def reglas(preguntas, eventos, dry=True, todas=None):
             raise
     # 🏆 R24: la decisión del evento (`poner_campeon()`), como si Dlx hubiera contestado «Sin campeón»
     camp, ids_c = {}, set()
-    for p, c, porque in con_camp:
-        if resolver_solo(p, SIN_CAMPEON, 'R24', porque, escribio={'campeon': p['detalle']}):
+    for p, c, porque, resp, regla in con_camp:
+        if resolver_solo(p, resp, regla, porque, escribio={'campeon': p['detalle']}):
             ids_c.add(p['id'])
             hechas.add(p['id'])
             camp[p['detalle']] = c
@@ -3391,7 +3413,8 @@ def reglas(preguntas, eventos, dry=True, todas=None):
         try:
             d = _decisiones()
             for det, c in camp.items():
-                poner_campeon(d.setdefault('eventos', {}), det, c, _ahora_et(), 'el ciclo (R24)')
+                poner_campeon(d.setdefault('eventos', {}), det, c, _ahora_et(),
+                              'el ciclo (%s)' % ('R26' if c.get('sin_final') else 'R24'))
             with io.open(DECISIONES, 'w', encoding='utf-8', newline='\n') as f:
                 json.dump(d, f, ensure_ascii=False, indent=1)
                 f.write('\n')
@@ -3399,7 +3422,7 @@ def reglas(preguntas, eventos, dry=True, todas=None):
             retirar_pendientes(ids_c, dry=False)
             hechas.difference_update(ids_c)
             raise
-        releer_por_r24([p for p, _c, _q in con_camp if p['id'] in ids_c])
+        releer_por_r24([x[0] for x in con_camp if x[0]['id'] in ids_c])
     if nuevas_dec and not dry:
         anotar_pendientes(ids_dec, dry=False)
         try:
@@ -3857,9 +3880,10 @@ def _pregunta(p):
         return ('Esta llave no dice quién ganó y lleva más de 12 h sin cambios, así que no sumó nada. Si sabes quién '
                 'salió campeón, elegilo: %s. Si no, ¿cuenta?%s' % (
                     como_cobra(ult), ' A los %d días sin campeón, el ciclo la carga solo: los dos finalistas cobran el '
-                    'promedio de 1.º y 2.º.' % SIN_CAMPEON_DIAS if ult == 'final' else ''),
-                '—', ['Ganó %s' % x for x in gan] + ([SIN_CAMPEON] if ult == 'final' else [])
-                + ['No cuenta', 'La completo en Discord'])
+                    'promedio de 1.º y 2.º.' % SIN_CAMPEON_DIAS if ult == 'final' else ' A los %d días sin final, el ciclo '
+                    'la carga sola: los de las semis cobran la semifinal.' % SIN_CAMPEON_DIAS if ult == 'semifinal' else ''),
+                '—', ['Ganó %s' % x for x in gan] + ([SIN_CAMPEON] if ult == 'final' else [SIN_FINAL] if ult == 'semifinal'
+                                                     else []) + ['No cuenta', 'La completo en Discord'])
     if t == 'Evento dudoso' and 'llaves' in p['origen'].lower():
         mot = re.sub(r'\.?\s*NO se sumó nada\.?\s*$', '', match).strip()
         return ('No sumó nada porque %s' % mot[0].lower() + mot[1:] if mot
@@ -3953,6 +3977,14 @@ def interpretar(p, respuesta):
     # 🏆 «Ganó X» en un «Bracket incompleto» (Dlx, 13/10/2026): X campeón. Ver `llaves_a_entrada.con_campeon()`
     if p['tipo'] == 'Bracket incompleto':
         # 🏆 R24: la final sin campeón, cada finalista con el promedio de 1.º y 2.º
+        # 🥈 R26: sin final, los de las semis cobran la semifinal
+        if r == SIN_FINAL:
+            ult, bats = ultima_ronda(p.get('match'))
+            sin = [lados for _r, lados, paso in bats if not paso]
+            if ult != 'semifinal' or not sin:
+                return ('error', 'sólo vale cuando la última ronda de la llave es la semifinal')
+            return ('campeon', {'ganador': CAMPEON_PROMEDIO, 'sin_final': True, 'ronda': 'semifinal', 'batallas': sin,
+                                'pasaron': [paso for _r, _l, paso in bats if paso]})
         if r == SIN_CAMPEON:
             ult, bats = ultima_ronda(p.get('match'))
             sin = [lados for _r, lados, paso in bats if not paso]
@@ -4105,7 +4137,9 @@ def poner_campeon(eventos, det, c, cuando, por):
     clave, v0 = entrada_evento(eventos, det)
     destino = clave if clave and clave.split(' · ')[-1].strip() != '*' else det
     v = dict(v0 or {})
-    nueva = ('%s: sin campeón. La llave no lo decía: los dos finalistas cobran el promedio de 1.º y 2.º '
+    nueva = ('%s: sin final. La llave llegaba sólo a las semis: los de las semis cobran la semifinal '
+             '(`llaves_a_entrada.con_campeon()`)' % _NOTA_CAMPEON if c.get('sin_final') else
+             '%s: sin campeón. La llave no lo decía: los dos finalistas cobran el promedio de 1.º y 2.º '
              '(`llaves_a_entrada.con_campeon()`)' % _NOTA_CAMPEON if c.get('promedio') else
              '%s: ganó %s. La llave no decía el campeón: %s %s (`llaves_a_entrada.con_campeon()`)'
              % (_NOTA_CAMPEON, c['ganador'], c['ganador'], como_cobra(c['ronda'])))
@@ -4150,7 +4184,8 @@ def campeon_decidido(ev, sv, fecha):
         return None
     return {'ganador': str(c['ganador']).strip(), 'ronda': ronda_canon(c.get('ronda')),
             'batallas': [[str(x) for x in b] for b in c.get('batallas') or [] if isinstance(b, list)],
-            'pasaron': [str(x) for x in c.get('pasaron') or []], 'promedio': bool(c.get('promedio'))}
+            'pasaron': [str(x) for x in c.get('pasaron') or []], 'promedio': bool(c.get('promedio')),
+            'sin_final': bool(c.get('sin_final'))}
 
 
 def integrantes_equipo(ev, sv, fecha, equipo):
@@ -4589,7 +4624,8 @@ def aplicar(preguntas, respuestas, repetidas, dry=True):
             cierres += [(n, 'sigue: se vuelve a preguntar si juega y para otra vez') for n in p['filas']]
         elif que == 'campeon':
             campeones[p['detalle']] = (dato, p)
-            cierres += [(n, 'sin campeón: los dos finalistas cobran el promedio en la corrida siguiente' if dato.get('promedio')
+            cierres += [(n, 'sin final: los de las semis cobran la semifinal en la corrida siguiente' if dato.get('sin_final')
+                         else 'sin campeón: los dos finalistas cobran el promedio en la corrida siguiente' if dato.get('promedio')
                          else 'ganó %s: entra como campeón en la corrida siguiente' % dato['ganador']) for n in p['filas']]
         elif que == 'sacar_num':
             dup, orig, nd, sv, fe = dato
@@ -6266,7 +6302,7 @@ def _self_check():
         _b = {'id': 'b1', 'tipo': 'Bracket incompleto', 'detalle': '(sin titulo) · FFA · 22/09', 'match': _m22,
               'origen': 'llaves de Discord', 'sug': '—'}
         _pb = _pregunta(_b)
-        ok(_pb[2] == ['Ganó los 3', 'Ganó nacho', 'Ganó baltrip', 'No cuenta', 'La completo en Discord']
+        ok(_pb[2] == ['Ganó los 3', 'Ganó nacho', 'Ganó baltrip', SIN_FINAL, 'No cuenta', 'La completo en Discord']
            and 'las semifinales cobran esa ronda' in _pb[0],
            'el bracket incompleto ofrece «Ganó X» por cada lado de la última ronda, y dice cómo paga')
         ok('el otro, subcampeón' in _pregunta(dict(_b, match=_m19))[0], 'si la última ronda es la final, el otro es subcampeón')
@@ -6372,6 +6408,10 @@ def _self_check():
         _pi = {'tipo': 'Bracket incompleto', 'detalle': 'X · LKR · 05/11', 'match': 'x | final: LARRIX🇦🇷 vs Gazir🇪🇸'}
         _ps = dict(_pi, match='x | semifinales: A vs B | semifinales: C vs D')
         _qi = interpretar(_pi, SIN_CAMPEON)
+        _q26 = interpretar(_ps, SIN_FINAL)
+        ok(SIN_CAMPEON_DIAS == 28 and _q26[0] == 'campeon' and _q26[1]['sin_final'] and len(_q26[1]['batallas']) == 2
+           and interpretar(_pi, SIN_FINAL)[0] == 'error' and SIN_FINAL in _pregunta(_ps)[2] and 'R26' in REGLAS,
+           'R26: «sin final» sólo con la semifinal como última ronda; R24 y R26 esperan 28 días (Dlx: «28 días para todo»)')
         ok(dias_desde('05/11', _hoy) == 7 and dias_desde('06/11', _hoy) == 6 and dias_desde('20/12', _hoy) > 300
            and _qi[0] == 'campeon' and _qi[1]['promedio'] and _qi[1]['batallas'] == [['LARRIX🇦🇷', 'Gazir🇪🇸']]
            and interpretar(_ps, SIN_CAMPEON)[0] == 'error' and SIN_CAMPEON in _pregunta(_pi)[2]

@@ -16,9 +16,10 @@
         "cuando": "2026-11-12T02:19:00-05:00",
         "titulo": "Las finales sin campeón ya suman",
         "items": [
-            "**Si la llave no dice quién ganó la final y pasan 7 días, el evento suma igual**: los dos finalistas cobran el promedio de 1.º y 2.º (8.750 en un evento de 16 o más), y los demás, la ronda a la que llegaron. Antes esos eventos no le sumaban nada a nadie.",
-            "Si el organizador dice el campeón antes de los 7 días, cuenta como siempre: campeón y subcampeón.",
-            "Hoy entran así 10 eventos de LKR, FDS, DDS y LCW que estaban quietos."
+            "**Si la llave no dice quién ganó la final y pasan 28 días, el evento suma igual**: los dos finalistas cobran el promedio de 1.º y 2.º (8.750 en un evento de 16 o más), y los demás, la ronda a la que llegaron. Antes esos eventos no le sumaban nada a nadie.",
+            "**Y si la llave llega sólo a las semis**, a los 28 días los cuatro de las semis cobran la semifinal (5.250).",
+            "Si el organizador completa la llave en Discord, aunque sea después, cuenta como siempre: campeón y subcampeón.",
+            "**La ronda clasificatoria paga como dieciseisavos** (625): antes los que caían ahí cobraban 0."
         ]
     },
     {
