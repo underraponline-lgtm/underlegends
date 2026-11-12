@@ -18,7 +18,7 @@ LOS QUE SALEN SOLOS
 · SOCIO: el dueño de un servidor de la Liga, según Discord.
 · OWNER: Dlx (`verificados.DUENO`), y nadie más.
 
-Los que pone Dlx —Moderador, Asistente, Admin— y lo que corrige de los de arriba viven en el objeto (`roles_manual`), y
+Los que pone Dlx —Admin, Moderador, Asistente (de más a menos desde el 11/11/2026)— y lo que corrige de los de arriba viven en el objeto (`roles_manual`), y
 el objeto junta las dos cosas para la página (`/avisos/roles`). Esto le manda el DIRECTORIO: cada persona de la Lista con
 Discord ID, su clave de perfil, su nombre y sus roles solos. Con eso el Dashboard la encuentra por el nombre.
 

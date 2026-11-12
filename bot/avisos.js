@@ -3241,7 +3241,7 @@ const RUTAS = {
   '/avisos/decidir-ciclo': 'GET', '/avisos/decidir-estados': 'POST', '/avisos/dueno/decidir': 'POST',
   // 🏷️ los roles de cada uno en la página (13/10/2026): los ve cualquiera; el ciclo manda los que salen solos, con su
   // clave, y Dlx pone o saca. Ver `roles()`, `rolesEstados()` y `duenoRol()`
-  '/avisos/roles': 'GET', '/avisos/roles-estados': 'POST', '/avisos/dueno/rol': 'POST',
+  '/avisos/roles': 'GET', '/avisos/roles-estados': 'POST', '/avisos/dueno/rol': 'POST', '/avisos/dueno/permisos': 'POST',
   // 👤 LA TANDA 2 DEL PERFIL (27/10/2026): tu frase y los emblemas que elegiste (con tu sesión), lo público de un perfil
   // —su frase, sus emblemas, su rol de DRA y lo que hizo en la página, en números— y quitar una frase reportada. Ver
   // `perfilMio()`, `perfilExtra()` y `duenoFrase()` del objeto
@@ -3854,27 +3854,55 @@ function decisionReporte0(d) {
 // staff, o roles superiores ÚNICAMENTE decididos por mí: Moderador de la página web, asistente, Admin y owner únicamente
 // yo», y «el título de socio para los owners de los servidores asociados». En el orden en que se muestran: primero los
 // que pone Dlx, después los que salen solos (`bot/roles.py`). Owner es sólo Dlx: no se pone ni se saca
-export const ORDEN_ROLES = ['owner', 'admin', 'asistente', 'moderador', 'socio', 'staff', 'organizador', 'jurado', 'host', 'competidor'];
+// 🔁 MODERADOR VA ARRIBA DE ASISTENTE DESDE EL 11/11/2026. Dlx: «asistente debería ser menor que moderador… intercambia
+// esos nombres», y a quién le pasa: «cada uno conserva sus permisos». O sea que se cambiaron los NOMBRES: quien era
+// Asistente (y podía decidir y corregir) ahora se llama Moderador, y al revés. Lo guardado se dio vuelta una vez
+// (`rolesV2()` del objeto)
+export const ORDEN_ROLES = ['owner', 'admin', 'moderador', 'asistente', 'socio', 'staff', 'organizador', 'jurado', 'host', 'competidor'];
 //: los que Dlx puede poner o sacar a mano (todos menos owner)
 export const ROLES_A_MANO = ORDEN_ROLES.filter((r) => r !== 'owner');
 
-// 🔐 QUÉ PUEDE CADA ROL EN EL DASHBOARD (13/10/2026). Dlx, a la tabla de qué hace cada uno: Asistente *«directo, con
-// historial»*; Moderador, lo que no mueve puntos; Admin, todo el Dashboard menos los Roles; Owner (Dlx), todo. Cada acción
-// queda con quién la hizo (`por`). Staff y Organizador vienen después (su servidor; sugerencias de sus eventos)
+// 🔐 QUÉ PUEDE CADA ROL EN EL DASHBOARD (13/10/2026). Dlx, a la tabla de qué hace cada uno: el de arriba *«directo, con
+// historial»*; el de abajo, lo que no mueve puntos; Admin, todo el Dashboard menos los Roles; Owner (Dlx), todo. Cada acción
+// queda con quién la hizo (`por`). Desde el 11/11 el de arriba se llama Moderador y el de abajo Asistente (ver arriba)
 export const PERMISOS = {
-  panel: ['admin', 'asistente', 'moderador'],
+  panel: ['admin', 'moderador', 'asistente'],
   ajustes: ['admin'], ciclo: ['admin'],
-  reportes: ['admin', 'asistente'],
-  reportes_cerrar: ['admin', 'asistente', 'moderador'],
-  decidir: ['admin', 'asistente'],
-  videos: ['admin', 'asistente', 'moderador'],
-  fondos: ['admin', 'asistente', 'moderador'],
+  reportes: ['admin', 'moderador'],
+  reportes_cerrar: ['admin', 'moderador', 'asistente'],
+  decidir: ['admin', 'moderador'],
+  videos: ['admin', 'moderador', 'asistente'],
+  fondos: ['admin', 'moderador', 'asistente'],
   roles: [],
 };
-//: ¿esos roles pueden hacer eso? Owner, todo
-export const puedeRol = (roles, que) => (roles || []).includes('owner') || (roles || []).some((r) => (PERMISOS[que] || []).includes(r));
 //: los roles que abren el Dashboard (los que pone Dlx)
-const ROLES_PANEL = ['admin', 'asistente', 'moderador'];
+const ROLES_PANEL = ['admin', 'moderador', 'asistente'];
+// 🎛️ Y LA TABLA LA CAMBIA DLX (11/11/2026: «asegurarte que las personas que tengan rangos puedan hacer X tipo de cosas…
+// yo como owner»). Lo de arriba es lo de siempre; lo que Dlx cambia en el Dashboard (Roles) se guarda en el objeto
+// (`permisos_roles`) y gana. «roles» no se cambia nunca: dar y sacar roles es sólo del owner
+export const PERMISOS_EDITABLES = Object.keys(PERMISOS).filter((k) => k !== 'roles');
+//: la tabla vigente: lo de siempre, con lo que Dlx cambió encima. Sólo roles del Dashboard, sólo permisos que existen
+export function tablaPermisos(cambios) {
+  const t = Object.assign({}, PERMISOS);
+  for (const k of PERMISOS_EDITABLES) {
+    const v = cambios && cambios[k];
+    if (Array.isArray(v)) t[k] = ROLES_PANEL.filter((r) => v.includes(r));
+  }
+  return t;
+}
+//: ¿vale este cambio de la tabla? `{permiso: [roles]}` con todo lo editable, o `null`
+export function validarPermisos(v) {
+  if (!v || typeof v !== 'object' || Array.isArray(v)) return null;
+  const out = {};
+  for (const k of Object.keys(v)) {
+    if (!PERMISOS_EDITABLES.includes(k) || !Array.isArray(v[k]) || v[k].some((r) => !ROLES_PANEL.includes(r))) return null;
+    out[k] = ROLES_PANEL.filter((r) => v[k].includes(r));
+  }
+  return out;
+}
+//: ¿esos roles pueden hacer eso? Owner, todo. `tabla`, la vigente (sin ella, la de siempre)
+export const puedeRol = (roles, que, tabla) => (roles || []).includes('owner')
+  || (roles || []).some((r) => ((tabla || PERMISOS)[que] || []).includes(r));
 
 // 🖼️ TU FONDO (13/10/2026). Dlx, a «una imagen propia para tu cuenta para el fondo»: «Sí, y mientras tanto con el Pase
 // gratis», y dónde se ve, «ambos pero que sea personalizable… que él decida, pero por default en ambos». Se desbloquea con
@@ -4936,15 +4964,19 @@ export async function rutaAvisos(req, env, ruta) {
   }
   if (!env.AVISOS) return json({ error: 'los avisos todavía no están enchufados' }, 503);
   // 🔐 los roles de quien pide (Dlx es `owner`; los demás, los que Dlx le puso en el objeto) y si le alcanzan para `que`
+  // 🎛️ y la tabla vigente (lo que Dlx cambió en Roles, 11/11/2026): viaja con los roles, en el mismo pedido
+  let tablaVig = null;
   const rolesPanel = async (id) => {
     if (id === DUENO) return ['owner'];
     try {
       const r = await elObjeto(env).fetch('https://avisos/rol-de', { method: 'POST', body: JSON.stringify({ quien: id }),
         headers: { 'content-type': 'application/json' } });
-      return ((await r.json()) || {}).roles || [];
+      const j = (await r.json()) || {};
+      tablaVig = j.tabla || null;
+      return j.roles || [];
     } catch (e) { return []; }
   };
-  const puede = async (id, que) => puedeRol(await rolesPanel(id), que);
+  const puede = async (id, que) => { const rs = await rolesPanel(id); return puedeRol(rs, que, tablaVig); };
   // 🔒 EL DASHBOARD DEL DUEÑO (Dlx, 04/10/2026: «una página nueva creada sólo para el owner… la única manera de iniciar
   // sesión ahí es con mi cuenta»). Quién es lo dice Discord o la sesión —nunca la página—, y si no es Dlx no se
   // contesta nada: ni qué habría. El 403 queda en los registros
@@ -5007,7 +5039,7 @@ export async function rutaAvisos(req, env, ruta) {
     const q = await quienPide(req, env, d);
     if (!q.id) return json({ error: q.error }, q.estado);
     const rs = await rolesPanel(q.id);
-    if (!puedeRol(rs, 'panel')) {
+    if (!puedeRol(rs, 'panel', tablaVig)) {
       console.warn('[seguridad] el Dashboard lo pidió alguien que no puede');
       return json({ error: 'no' }, 403);
     }
@@ -5032,7 +5064,7 @@ export async function rutaAvisos(req, env, ruta) {
     }
     const q = await quienPide(req, env, d);
     if (!q.id) return json({ error: q.error }, q.estado);
-    if (!puedeRol(await rolesPanel(q.id), 'ajustes')) return json({ error: 'no' }, 403);
+    if (!(await puede(q.id, 'ajustes'))) return json({ error: 'no' }, 403);
     if (!env.DISCORD_TOKEN) return json({ error: 'sin token' }, 503);
     const r = await fetch(`https://discord.com/api/v10/channels/${CANAL_LOGS}/messages?limit=60`,
       { headers: { authorization: 'Bot ' + env.DISCORD_TOKEN } });
@@ -5763,7 +5795,7 @@ export async function rutaAvisos(req, env, ruta) {
     if (v.error) return json(v, 400);
     const q = await quienPide(req, env, d);
     if (!q.id) return json({ error: q.error }, q.estado);
-    // 🔐 cerrarlo (Listo, Era una prueba) lo puede un Moderador; corregirlo, Asistente para arriba
+    // 🔐 cerrarlo (Listo, Era una prueba) lo puede un Asistente; corregirlo, Moderador para arriba (los nombres, desde el 11/11)
     if (!(await puede(q.id, v.fix ? 'reportes' : 'reportes_cerrar'))) {
       console.warn('[seguridad] decidir un reporte lo pidió alguien que no puede');
       return json({ error: 'no' }, 403);
@@ -5906,6 +5938,27 @@ export async function rutaAvisos(req, env, ruta) {
       method: 'POST', body: JSON.stringify(v), headers: { 'content-type': 'application/json' },
     });
   }
+  // 🎛️ QUÉ PUEDE CADA ROL (11/11/2026): sólo Dlx, como poner un rol. El objeto valida la tabla (`validarPermisos()`)
+  if (ruta === '/avisos/dueno/permisos') {
+    const crudo = await req.text();
+    if (crudo.length > 2048) return json({ error: 'demasiado grande' }, 413);
+    let d = null;
+    try { d = JSON.parse(crudo || '{}'); } catch (e) { d = null; }
+    if (!d || typeof d !== 'object' || (d.token && !/^[A-Za-z0-9._-]{10,300}$/.test(String(d.token)))) {
+      return json({ error: 'faltan datos' }, 400);
+    }
+    const q = await quienPide(req, env, d);
+    if (!q.id) return json({ error: q.error }, q.estado);
+    if (q.id !== DUENO) {
+      console.warn('[seguridad] cambiar los permisos lo pidió alguien que no es el dueño');
+      return json({ error: 'no' }, 403);
+    }
+    const cuerpo = d.siempre === true ? { siempre: true, por: q.id } : { cambios: validarPermisos(d.cambios), por: q.id };
+    if (!cuerpo.siempre && !cuerpo.cambios) return json({ error: 'cambios' }, 400);
+    return elObjeto(env).fetch('https://avisos/dueno-permisos', {
+      method: 'POST', body: JSON.stringify(cuerpo), headers: { 'content-type': 'application/json' },
+    });
+  }
   // ✅ Y CONTESTAR UNA: sólo Dlx, como los reportes
   if (ruta === '/avisos/vuelve-ciclo') {
     const k = req.headers.get('x-lg-ciclo') || '';
@@ -5962,12 +6015,12 @@ export async function rutaAvisos(req, env, ruta) {
     const q = await quienPide(req, env, d);
     if (!q.id) return json({ error: q.error }, q.estado);
     const roles = await rolesPanel(q.id);
-    if (!puedeRol(roles, ruta === '/avisos/dueno/nota' ? 'reportes_cerrar' : 'panel')) return json({ error: 'no' }, 403);
+    if (!puedeRol(roles, ruta === '/avisos/dueno/nota' ? 'reportes_cerrar' : 'panel', tablaVig)) return json({ error: 'no' }, 403);
     let cuerpo;
     if (ruta === '/avisos/dueno/nota') {
       const v = validarNota(d);
       if (v.error) return json(v, 400);
-      cuerpo = Object.assign({}, v, { por: q.id, jefe: puedeRol(roles, 'ajustes') });
+      cuerpo = Object.assign({}, v, { por: q.id, jefe: puedeRol(roles, 'ajustes', tablaVig) });
     } else {
       if (!/^[a-z0-9]{1,40}$/.test(String(d.k || ''))) return json({ error: 'falta quién' }, 400);
       let pcfg = null;
@@ -7437,7 +7490,7 @@ export class Avisos {
       }
       if (ruta === '/decidir-estados') return json(this.decidirEstados(d));
       if (ruta === '/roles-estados') return json(this.rolesEstados(d));
-      if (ruta === '/rol-de') return json({ roles: this.rolesPanelDe(String(d.quien || '')) });
+      if (ruta === '/rol-de') return json({ roles: this.rolesPanelDe(String(d.quien || '')), tabla: this.tablaPermisos() });
       if (ruta === '/fondo') return json(await this.fondo(d));
       if (ruta === '/mi-fondo') return json(this.fondoDe(String(d.quien || '')));
       if (ruta === '/dueno-fondo') return json(await this.duenoFondo(d));
@@ -7445,6 +7498,7 @@ export class Avisos {
       if (ruta === '/mi-foto-carta') return json(this.fotoCartaDe(String(d.quien || '')));
       if (ruta === '/dueno-foto-carta') return json(await this.duenoFotoCarta(d));
       if (ruta === '/dueno-rol') return json(this.duenoRol(d));
+      if (ruta === '/dueno-permisos') return json(this.duenoPermisos(d));
       if (ruta === '/dueno-decidir') return json(this.duenoDecidir(d));
       if (ruta === '/reportes-estados') return json(await this.reportesEstados(d));
       if (ruta === '/alta') return await this.alta(d);
@@ -11582,6 +11636,7 @@ export class Avisos {
   rolesPanelDe(quien) {
     if (quien === DUENO) return ['owner'];
     if (!/^\d{5,25}$/.test(quien)) return [];
+    this.rolesV2();
     return this.sql.exec('SELECT rol FROM roles_manual WHERE quien = ? AND si = 1', quien).toArray()
       .map((r) => r.rol).filter((r) => ROLES_PANEL.includes(r));
   }
@@ -11615,6 +11670,7 @@ export class Avisos {
 
   /** `{id: {rol: 1|0}}`: lo que puso o sacó Dlx. */
   rolesManual() {
+    this.rolesV2();
     const m = {};
     for (const r of this.sql.exec('SELECT quien, rol, si FROM roles_manual').toArray()) (m[r.quien] = m[r.quien] || {})[r.rol] = r.si;
     return m;
@@ -11651,8 +11707,54 @@ export class Avisos {
     return { t: x.t || null, r };
   }
 
+  /** 🔁 LOS NOMBRES DADOS VUELTA, UNA VEZ (11/11/2026, Dlx: «intercambia esos nombres»; «cada uno conserva sus
+   *  permisos»). Lo guardado como `asistente` pasa a `moderador` y al revés, también en el historial, así cada uno sigue
+   *  pudiendo lo mismo con el nombre nuevo. Va antes de leer o escribir un rol, y queda anotado en `roles_v2` */
+  rolesV2() {
+    if (this._rolesV2) return;
+    this._rolesV2 = true;
+    if (this.leer('roles_v2')) return;
+    this.sql.exec("UPDATE roles_manual SET rol = '_cambio' WHERE rol = 'asistente'");
+    this.sql.exec("UPDATE roles_manual SET rol = 'asistente' WHERE rol = 'moderador'");
+    this.sql.exec("UPDATE roles_manual SET rol = 'moderador' WHERE rol = '_cambio'");
+    const otro = { asistente: 'moderador', moderador: 'asistente' };
+    const h = this.leer('roles_hist');
+    if (Array.isArray(h)) this.guardar('roles_hist', h.map((x) => (x && otro[x.rol] ? Object.assign({}, x, { rol: otro[x.rol] }) : x)));
+    this.guardar('roles_v2', { t: Date.now() });
+    this._roles = null;
+  }
+
+  /** 🎛️ La tabla de permisos vigente: la de siempre con lo que Dlx cambió en Roles (`permisos_roles`). */
+  tablaPermisos() {
+    return tablaPermisos(this.leer('permisos_roles'));
+  }
+
+  /** 🎛️ Dlx cambia qué puede cada rol (`{cambios: {permiso: [roles]}}`), o vuelve a lo de siempre (`{siempre: true}`). */
+  duenoPermisos(d) {
+    const antes = this.tablaPermisos();
+    let nuevo;
+    if (d && d.siempre === true) nuevo = {};
+    else {
+      const v = validarPermisos(d && d.cambios);
+      if (!v || !Object.keys(v).length) return { error: 'cambios' };
+      nuevo = Object.assign({}, this.leer('permisos_roles') || {}, v);
+    }
+    this.guardar('permisos_roles', nuevo);
+    const despues = this.tablaPermisos();
+    const h = [{ t: Date.now(), por: this.nombrePor(d && d.por), antes, despues }].concat(this.leer('permisos_hist') || []).slice(0, 30);
+    this.guardar('permisos_hist', h);
+    return { ok: true, permisos: this.permisosDueno() };
+  }
+
+  /** 🎛️ Para el Dashboard: la tabla vigente, la de siempre y los últimos cambios. */
+  permisosDueno() {
+    return { tabla: this.tablaPermisos(), siempre: PERMISOS, editables: PERMISOS_EDITABLES, roles: ROLES_PANEL,
+      hist: (this.leer('permisos_hist') || []).slice(0, 10) };
+  }
+
   /** Dlx pone (`si` true), saca (false) o vuelve a lo automático (null) un rol. Queda en el historial. */
   duenoRol(d) {
+    this.rolesV2();
     const v = validarRol(d);
     if (v.error) return v;
     const ahora = Date.now();
@@ -12288,7 +12390,7 @@ export class Avisos {
     };
     const [titulo, cuerpo] = est === 'hecho' ? (T[p.tipo] || T.identidad)
       : est === 'no_pude' ? ['⚠️ Tu pedido está aprobado, pero falta un paso', 'Lo termina Dlx a mano.']
-        : ['Tu pedido no se aprobó', nota ? nota.slice(0, 160) : 'Si crees que es un error, escribile a un Moderador.'];
+        : ['Tu pedido no se aprobó', nota ? nota.slice(0, 160) : 'Si crees que es un error, escríbele a un Moderador.'];
     this.aBandeja(p.quien, 'pedido:' + p.id, 'pedido', titulo, cuerpo, HUB + '/cuenta/algo-mal', '', ahora);
   }
 
@@ -15272,7 +15374,8 @@ export class Avisos {
     // 🔐 QUIÉN LO PIDE Y QUÉ PUEDE (13/10/2026). Sin roles es Dlx (las pruebas y los llamados de siempre). Admin ve todo;
     // Asistente y Moderador, sólo sus partes
     const roles = d && Array.isArray(d.roles) ? d.roles : ['owner'];
-    const permisos = Object.keys(PERMISOS).filter((k) => puedeRol(roles, k));
+    const tabla = this.tablaPermisos();
+    const permisos = Object.keys(PERMISOS).filter((k) => puedeRol(roles, k, tabla));
     if (!roles.includes('owner') && !roles.includes('admin')) {
       const ve = (k) => permisos.includes(k);
       return { limitado: true, permisos, mis_roles: roles, yo: this.nombrePor(d && d.quien),
@@ -15339,6 +15442,8 @@ export class Avisos {
       permisos, mis_roles: roles, yo: this.nombrePor(d && d.quien),
       // 🏷️ los roles: el directorio, lo puesto a mano y el historial (13/10/2026)
       roles: this.rolesDueno(),
+      // 🎛️ y qué puede cada rol (11/11/2026): la tabla vigente, la de siempre y quién la cambió
+      permisos_roles: this.permisosDueno(),
       // 🖼️ los fondos que esperan revisión (13/10/2026), y lo que hizo el filtro
       fondos: this.fondosDueno(),
       filtro: this.filtroDueno(),

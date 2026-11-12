@@ -1527,12 +1527,19 @@ const ok = (cond, que, det) => {
     'favorito del público: el más votado con 3 votos o más, sin empate arriba y sin equipos');
     // 🔐 los permisos del Dashboard (13/10/2026)
     const PR = A.puedeRol;
-    ok(PR(['owner'], 'roles') && !PR(['admin'], 'roles') && PR(['admin'], 'ajustes') && PR(['asistente'], 'reportes')
-      && !PR(['moderador'], 'reportes') && PR(['moderador'], 'reportes_cerrar') && PR(['moderador'], 'fondos')
-      && !PR(['asistente'], 'ajustes') && !PR([], 'panel') && !PR(['competidor', 'staff'], 'panel'),
-    'qué puede cada rol: Owner todo, Admin todo menos Roles, Asistente corrige, Moderador sólo lo que no mueve puntos, los demás nada');
-    o.duenoRol({ id: '100000061', rol: 'moderador', si: true });
-    o.duenoRol({ id: '100000062', rol: 'asistente', si: true });
+    ok(PR(['owner'], 'roles') && !PR(['admin'], 'roles') && PR(['admin'], 'ajustes') && PR(['moderador'], 'reportes')
+      && !PR(['asistente'], 'reportes') && PR(['asistente'], 'reportes_cerrar') && PR(['asistente'], 'fondos')
+      && !PR(['moderador'], 'ajustes') && !PR([], 'panel') && !PR(['competidor', 'staff'], 'panel'),
+    'qué puede cada rol: Owner todo, Admin todo menos Roles, Moderador corrige, Asistente sólo lo que no mueve puntos, los demás nada');
+    // 🎛️ la tabla la cambia Dlx (11/11/2026): sólo roles del Dashboard y permisos que existen; «roles» nunca
+    const TP = A.tablaPermisos, VP = A.validarPermisos;
+    const tp = TP({ decidir: ['asistente', 'competidor'], roles: ['admin'], nada: ['admin'] });
+    ok(JSON.stringify(tp.decidir) === '["asistente"]' && JSON.stringify(tp.roles) === '[]' && !tp.nada
+      && PR(['asistente'], 'decidir', tp) && !PR(['moderador'], 'decidir', tp) && PR(['moderador'], 'reportes', tp)
+      && VP({ decidir: ['asistente'] }) && !VP({ roles: ['admin'] }) && !VP({ decidir: ['staff'] }) && !VP([]) && !VP(null),
+    'la tabla de permisos: lo que cambia Dlx gana, sin roles ni permisos inventados, y dar roles sigue siendo sólo del owner');
+    o.duenoRol({ id: '100000061', rol: 'asistente', si: true });
+    o.duenoRol({ id: '100000062', rol: 'moderador', si: true });
     o.duenoRol({ id: '100000063', rol: 'staff', si: true });
     o.rolesEstados({ dir: [{ k: 'mod', n: 'Mod Test', id: '100000061', a: {} }, { k: 'asis', n: 'Asis Test', id: '100000062', a: {} }] });
     const pm = o.panelDueno({ quien: '100000061', roles: o.rolesPanelDe('100000061') });
@@ -1541,14 +1548,55 @@ const ok = (cond, que, det) => {
     o.sql.exec("INSERT INTO reportes (quien, llave, que, texto, t) VALUES ('100000071', '466', 'otro', 'x', ?)", Date.now() - 60000);
     const rid = o.sql.exec('SELECT MAX(id) AS id FROM reportes').toArray()[0].id;
     const rp2 = await o.duenoReporte(Object.assign(V({ id: rid, accion: 'listo' }), { por: '100000061' }));
-    ok(JSON.stringify(o.rolesPanelDe('100000061')) === '["moderador"]' && o.rolesPanelDe('100000063').length === 0
+    ok(JSON.stringify(o.rolesPanelDe('100000061')) === '["asistente"]' && o.rolesPanelDe('100000063').length === 0
       && JSON.stringify(o.rolesPanelDe(A.DUENO)) === '["owner"]'
       && pm.limitado && pm.permisos.includes('fondos') && !pm.permisos.includes('decidir') && pm.yo === 'Mod Test' && !pm.uso
       && pa.limitado && pa.permisos.includes('decidir') && pa.decidir && !pa.ajustes
       && !pd.limitado && pd.permisos.includes('roles') && pd.yo === ''
       && rp2.reportes.find((x) => x.id === rid).por === 'Mod Test',
-    'el panel de cada rol: el Moderador y el Asistente ven sólo lo suyo, Dlx todo, y queda quién cerró cada reporte',
+    'el panel de cada rol: el Asistente y el Moderador ven sólo lo suyo, Dlx todo, y queda quién cerró cada reporte',
     JSON.stringify([pm.permisos, pa.permisos]));
+  }
+}
+
+// 🔁 ASISTENTE Y MODERADOR, CON LOS NOMBRES DADOS VUELTA (11/11/2026): lo guardado de antes cambia de nombre una sola
+// vez y cada uno conserva lo que podía
+{
+  let DatabaseSync = null;
+  try { ({ DatabaseSync } = await import('node:sqlite')); } catch (e) { DatabaseSync = null; }
+  if (DatabaseSync) {
+    const db = new DatabaseSync(':memory:');
+    const sql = {
+      exec(q, ...ps) {
+        const t = String(q).trim();
+        if (!ps.length && /;\s*\S/.test(t)) { db.exec(t); return { toArray: () => [] }; }
+        const st = db.prepare(t);
+        if (/^\s*(SELECT|WITH|PRAGMA)/i.test(t)) { const rows = st.all(...ps); return { toArray: () => rows }; }
+        const r = st.run(...ps);
+        return { toArray: () => [], rowsWritten: r.changes };
+      },
+    };
+    const o = new A.Avisos({ storage: { sql, setAlarm() {}, getAlarm() { return null; } }, blockConcurrencyWhile: async (f) => f() },
+      { DISCORD_TOKEN: 'x', KV: { get: async () => null } });
+    await new Promise((r) => setTimeout(r, 0));
+    // lo que había antes del cambio: el de arriba se llamaba asistente y el de abajo moderador
+    o.sql.exec('INSERT INTO roles_manual (quien, rol, si, t) VALUES (?, ?, 1, 1)', '200000001', 'asistente');
+    o.sql.exec('INSERT INTO roles_manual (quien, rol, si, t) VALUES (?, ?, 1, 1)', '200000002', 'moderador');
+    o.guardar('roles_hist', [{ id: '200000001', rol: 'asistente', si: true, t: 1 }]);
+    const r1 = o.rolesPanelDe('200000001'), r2 = o.rolesPanelDe('200000002');
+    o._rolesV2 = false;
+    const r1b = o.rolesPanelDe('200000001');
+    ok(JSON.stringify(r1) === '["moderador"]' && JSON.stringify(r2) === '["asistente"]' && JSON.stringify(r1b) === '["moderador"]'
+      && A.puedeRol(r1, 'decidir') && !A.puedeRol(r2, 'decidir') && o.leer('roles_hist')[0].rol === 'moderador',
+    'el cambio de nombre se hace una sola vez y cada uno sigue pudiendo lo mismo', JSON.stringify([r1, r2, r1b]));
+    // 🎛️ y la tabla: Dlx le da «decidir» al Asistente, el panel lo muestra, y «lo de siempre» lo saca
+    const c = o.duenoPermisos({ cambios: { decidir: ['admin', 'moderador', 'asistente'] }, por: A.DUENO });
+    const pa = o.panelDueno({ quien: '200000002', roles: o.rolesPanelDe('200000002') });
+    const malo = o.duenoPermisos({ cambios: { roles: ['admin'] } });
+    const v = o.duenoPermisos({ siempre: true, por: A.DUENO });
+    ok(c.ok && pa.permisos.includes('decidir') && malo.error && v.ok && !v.permisos.tabla.decidir.includes('asistente')
+      && c.permisos.hist.length === 1 && v.permisos.hist.length === 2,
+    'la tabla de permisos: Dlx la cambia, el panel la respeta, «roles» no se toca y se puede volver a lo de siempre');
   }
 }
 

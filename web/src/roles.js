@@ -22,7 +22,8 @@ export function useRoles() {
 
 // cómo se llama cada uno, y si es de los que pone Dlx (van marcados)
 export const ROL = {
-  owner: ['Owner', true], admin: ['Admin', true], asistente: ['Asistente', true], moderador: ['Moderador de la página', true],
+  // de más a menos (11/11/2026: Moderador va arriba de Asistente)
+  owner: ['Owner', true], admin: ['Admin', true], moderador: ['Moderador de la página', true], asistente: ['Asistente', true],
   socio: ['Socio', false], staff: ['Staff', false], organizador: ['Organizador', false], jurado: ['Jurado', false],
   host: ['Host', false], competidor: ['Competidor', false],
 };

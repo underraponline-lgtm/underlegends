@@ -2044,7 +2044,7 @@ function Historial({ hist, hacer, ocup }) {
 // ── 🏷️ LOS ROLES DE LA PÁGINA (13/10/2026). Dlx: «roles superiores ÚNICAMENTE decididos por mí: Moderador de la página
 // web, asistente, Admin y owner únicamente yo». Los que salen solos (Competidor, Socio, Staff, Organizador, Jurado,
 // Host) los arma el ciclo desde Discord; acá se ponen los de Dlx y se corrige cualquiera. Owner es sólo Dlx ──
-const ROLES_MANO = [['admin', 'Admin'], ['asistente', 'Asistente'], ['moderador', 'Moderador de la página'], ['socio', 'Socio'],
+const ROLES_MANO = [['admin', 'Admin'], ['moderador', 'Moderador de la página'], ['asistente', 'Asistente'], ['socio', 'Socio'],
   ['staff', 'Staff'], ['organizador', 'Organizador'], ['jurado', 'Jurado'], ['host', 'Host'], ['competidor', 'Competidor']];
 const nombreRol = (r) => ((ROLES_MANO.find((x) => x[0] === r) || [r, r === 'owner' ? 'Owner' : r])[1]);
 const normN = (s) => String(s || '').normalize('NFKD').replace(/[^\p{L}\p{N}]/gu, '').toLowerCase();
@@ -2057,12 +2057,14 @@ async function ponerRol(cuerpo) {
   return j.roles || {};
 }
 
-function Roles({ roles, alCambiar }) {
+function Roles({ roles, alCambiar, tabla, elegido }) {
   const [x, setX0] = useState(roles || {});
   useEffect(() => { setX0(roles || {}); }, [roles]);
   const setX = (y) => { setX0(y); if (alCambiar) alCambiar(y); };
   const [busca, setBusca] = useState('');
   const [sel, setSel] = useState(null);
+  // «Cambiar» en la lista de quién tiene un rol abre a esa persona acá
+  useEffect(() => { if (elegido && elegido.id) setSel(elegido.id); }, [elegido]);
   const [pide, setPide] = useState(null);
   const [escrito, setEscrito] = useState('');
   const [ocup, setOcup] = useState(false);
@@ -2080,7 +2082,8 @@ function Roles({ roles, alCambiar }) {
   };
   // 🛑 DAR UN ROL ALTO PIDE ESCRIBIR SU NOMBRE (25/10/2026, el research: «el freno se mide por el daño»). Admin,
   // Asistente y Moderador abren el Dashboard a esa persona; sacarlo, o los roles que no abren nada, van directo
-  const ALTOS = { admin: 'todo el Dashboard menos los roles', asistente: 'decidir y corregir, con historial', moderador: 'cerrar lo que no mueve puntos' };
+  const ALTOS = { admin: 1, moderador: 1, asistente: 1 };
+  const abre = (rol) => queAbre(rol, tabla);
   const elegir = (rol, v) => {
     const si = v === 'si' ? true : v === 'no' ? false : null;
     if (si === true && ALTOS[rol]) { setPide(rol); setEscrito(''); return; }
@@ -2116,7 +2119,7 @@ function Roles({ roles, alCambiar }) {
           })}</ul>
           {pide ? (
             <div className="dz-freno" role="group" aria-label="Confirmar el rol">
-              <p>Darle <b>{nombreRol(pide)}</b> a <b>{p[1]}</b> le abre {ALTOS[pide]}. Para confirmar, escribe su nombre:</p>
+              <p>Darle <b>{nombreRol(pide)}</b> a <b>{p[1]}</b> le abre: {abre(pide)}. Para confirmar, escribe su nombre:</p>
               <div className="dz-freno-f">
                 <input type="text" value={escrito} aria-label={'Escribe ' + p[1] + ' para confirmar'} placeholder={p[1]} onChange={(e) => setEscrito(e.target.value)} />
                 <button type="button" className="btn verde chico" disabled={ocup || normN(escrito) !== normN(p[1])} onClick={() => cambiar(pide, true)}>Darle {nombreRol(pide)}</button>
@@ -2135,6 +2138,114 @@ function Roles({ roles, alCambiar }) {
         <ul className="db-roles-c">{x.hist.slice(0, 8).map((h) => (
           <li key={h.t + h.rol}><small>{hace(h.t)}</small> {h.n || h.id}: {h.si === null ? 'como sale solo' : h.si ? 'sí' : 'no'} {nombreRol(h.rol)}</li>))}</ul></> : null}
     </div>
+  );
+}
+
+// 🎛️ QUÉ PUEDE CADA ROL (11/11/2026, Dlx: «asegurarte que las personas que tengan rangos puedan hacer X tipo de cosas…
+// yo como owner»). Lo que dice cada permiso, en palabras; «roles» no se edita: dar y sacar roles es sólo tuyo
+const PERMISO_TXT = {
+  panel: ['Entrar al Dashboard', 'sin esto no ve nada'],
+  ajustes: ['Cambiar los ajustes', 'la página, el bot, los servidores, los números y la salud'],
+  ciclo: ['Correr el ciclo a mano', ''],
+  reportes: ['Corregir llaves reportadas', 'cambia nombres, ganadores y si una llave cuenta'],
+  reportes_cerrar: ['Cerrar reportes y pedidos', 'lo que no mueve puntos'],
+  decidir: ['Contestar «¿Quién es quién?»', 'une y separa personas'],
+  videos: ['Revisar videos', ''],
+  fondos: ['Aprobar fondos, fotos y logos', ''],
+  roles: ['Dar y sacar roles', 'sólo tú'],
+};
+const ROLES_DASH = [['admin', 'Admin'], ['moderador', 'Moderador'], ['asistente', 'Asistente']];
+//: lo que abre un rol, en palabras, con la tabla vigente
+function queAbre(rol, tabla) {
+  const t = (tabla && tabla.tabla) || null;
+  if (!t) return 'su parte del Dashboard';
+  const xs = Object.keys(PERMISO_TXT).filter((k) => (t[k] || []).includes(rol)).map((k) => PERMISO_TXT[k][0].toLowerCase());
+  return xs.length ? xs.join(', ') : 'nada';
+}
+
+async function ponerPermisos(cuerpo) {
+  const r = await fetch('/api/avisos/dueno/permisos', { method: 'POST', credentials: 'same-origin',
+    headers: { 'content-type': 'application/json' }, body: JSON.stringify(cuerpo) });
+  const j = await r.json().catch(() => ({}));
+  if (!r.ok || j.error) throw new Error(r.status === 401 ? 'la sesión venció: entra de nuevo' : j.error || String(r.status));
+  return j.permisos || null;
+}
+
+function TablaPermisos({ P, alCambiar }) {
+  const [t, setT] = useState((P && P.tabla) || {});
+  useEffect(() => { setT((P && P.tabla) || {}); }, [P]);
+  const [ocup, setOcup] = useState(false);
+  const [msg, setMsg] = useState('');
+  if (!P || !P.tabla) return <p className="pronto-p">Esto aparece cuando el bot se actualice: la tabla vive en el servidor.</p>;
+  const siempre = P.siempre || {};
+  const tiene = (k, r) => (t[k] || []).includes(r);
+  const poner = (k, r) => setT(Object.assign({}, t, { [k]: tiene(k, r) ? (t[k] || []).filter((x) => x !== r) : [...(t[k] || []), r] }));
+  const igual = (a, b) => JSON.stringify([...(a || [])].sort()) === JSON.stringify([...(b || [])].sort());
+  const cambios = Object.fromEntries((P.editables || []).filter((k) => !igual(t[k], P.tabla[k])).map((k) => [k, t[k] || []]));
+  const distinto = (P.editables || []).some((k) => !igual(P.tabla[k], siempre[k]));
+  const sinPanel = ROLES_DASH.filter(([r]) => !tiene('panel', r)).map((x) => x[1]);
+  const guardar = async (cuerpo, ok) => {
+    setOcup(true); setMsg('');
+    try { const n = await ponerPermisos(cuerpo); if (n && alCambiar) alCambiar(n); setMsg(ok); } catch (e) { setMsg('No se pudo: ' + e.message); }
+    setOcup(false);
+  };
+  return (
+    <div className="dz-perm">
+      <p className="db-tx">Marca qué puede hacer cada rol. Tú, como owner, puedes todo siempre. Se guarda al tocar «Guardar» y vale desde el próximo pedido de cada uno.</p>
+      <div className="db-tabla"><table>
+        <thead><tr><th scope="col">Puede…</th>{ROLES_DASH.map(([r, n]) => <th key={r} scope="col">{n}</th>)}</tr></thead>
+        <tbody>{Object.keys(PERMISO_TXT).map((k) => {
+          const fijo = !(P.editables || []).includes(k);
+          return (
+            <tr key={k}>
+              <th scope="row"><b>{PERMISO_TXT[k][0]}</b>{PERMISO_TXT[k][1] ? <small>{PERMISO_TXT[k][1]}</small> : null}</th>
+              {ROLES_DASH.map(([r, n]) => {
+                const cambiado = !fijo && tiene(k, r) !== (siempre[k] || []).includes(r);
+                return (
+                  <td key={r} className={cambiado ? 'dz-perm-cam' : ''}>
+                    <input type="checkbox" disabled={fijo || ocup} checked={tiene(k, r)} aria-label={n + ': ' + PERMISO_TXT[k][0]}
+                      onChange={() => poner(k, r)} />
+                  </td>
+                );
+              })}
+            </tr>
+          );
+        })}</tbody>
+      </table></div>
+      {sinPanel.length ? <p className="db-tx"><b>Ojo:</b> {sinPanel.join(' y ')} no {sinPanel.length > 1 ? 'pueden' : 'puede'} entrar al Dashboard, así que lo demás no {sinPanel.length > 1 ? 'les' : 'le'} sirve.</p> : null}
+      <div className="dz-perm-b">
+        <button type="button" className="btn verde chico" disabled={ocup || !Object.keys(cambios).length} onClick={() => guardar({ cambios }, 'Guardado.')}>Guardar</button>
+        {Object.keys(cambios).length ? <button type="button" className="dz-lnk" disabled={ocup} onClick={() => setT(P.tabla)}>Descartar</button> : null}
+        {distinto ? <button type="button" className="dz-lnk" disabled={ocup} onClick={() => guardar({ siempre: true }, 'Volvió a lo de siempre.')}>Volver a lo de siempre</button> : null}
+        {msg ? <small role="status">{msg}</small> : null}
+      </div>
+      {(P.hist || []).length ? <><span className="db-rep-p">Los últimos cambios de la tabla</span>
+        <ul className="db-roles-c">{P.hist.slice(0, 6).map((h) => (
+          <li key={h.t}><small>{hace(h.t)}</small> {h.por || 'Dlx'}: {(P.editables || []).filter((k) => !igual((h.antes || {})[k], (h.despues || {})[k])).map((k) => PERMISO_TXT[k][0]).join(', ') || 'nada'}</li>))}</ul></> : null}
+    </div>
+  );
+}
+
+function QuienTieneRol({ roles, P, alElegir }) {
+  const dir = (roles && roles.dir) || [];
+  const con = dir.filter((p) => (p[3] || []).some((r) => ['admin', 'moderador', 'asistente'].includes(r[0])));
+  if (!dir.length) return <p className="pronto-p">El ciclo todavía no mandó la lista de la gente: aparece en su próxima corrida.</p>;
+  if (!con.length) return <p className="db-tx">Nadie tiene un rol del Dashboard todavía, además de ti.</p>;
+  return (
+    <div className="db-tabla"><table>
+      <thead><tr><th scope="col">Persona</th><th scope="col">Rol</th><th scope="col">Puede</th><th scope="col" /></tr></thead>
+      <tbody>{con.map((p) => {
+        const rs = (p[3] || []).map((r) => r[0]).filter((r) => ['admin', 'moderador', 'asistente'].includes(r));
+        return (
+          <tr key={p[2]}>
+            <td><b>{p[1]}</b>{p[0] ? <> · <BotonFicha k={p[0]} n={p[1]} /></> : null}</td>
+            <td>{rs.map((r) => <span key={r} className="db-chip">{nombreRol(r)}</span>)}</td>
+            <td className="dz-perm-que">{rs.map((r) => queAbre(r, P)).join(' · ')}</td>
+            <td><button type="button" className="btn borde2 chico" onClick={() => alElegir(p[2])}>Cambiar</button></td>
+          </tr>
+        );
+      })}</tbody>
+    </table></div>
   );
 }
 
@@ -2990,7 +3101,10 @@ const AREAS = [
   ['web', 'La página y el bot', 'M4 7h10M18 7h2M4 17h2M10 17h10M14 5v4M6 15v4'],
   ['numeros', 'Números', 'M5 20V11M12 20V5M19 20v-7'],
   ['salud', 'Salud', 'M3 12h4l3-7 4 14 3-7h4'],
-  ['historial', 'Historial y roles', 'M12 7v5l3 3M4 12a8 8 0 1 0 2.3-5.7M4 4v4h4'],
+  ['historial', 'Historial', 'M12 7v5l3 3M4 12a8 8 0 1 0 2.3-5.7M4 4v4h4'],
+  // 🎛️ ROLES, SU PROPIA COLUMNA (Dlx, 11/11/2026: «agrega una nueva columna que diga roles de dashboard, así para navegar
+  // de mejor forma el dashboard y dar roles, quitar»): quién tiene uno, qué puede cada uno, y darlos o sacarlos
+  ['roles', 'Roles', 'M9 11a4 4 0 1 0 0-8 4 4 0 0 0 0 8M3 21v-1a6 6 0 0 1 12 0v1M17 11l2 2 4-4'],
 ];
 // las cuatro colas de Pendientes
 const SUBP = [['quien', '¿Quién es quién?'], ['llaves', 'Errores en las llaves'], ['imagenes', 'Imágenes y videos'], ['pedidos', 'Pedidos']];
@@ -3013,7 +3127,8 @@ const BUSCABLES = [
   ['Qué se toca en la página', 'numeros', 'nu-clics'], ['¿El lobby hace volver a la gente?', 'numeros', 'nu-lobby'], ['Las crews (números)', 'numeros', 'nu-crews'],
   ['El Pase de rapero (números)', 'numeros', 'nu-pase'], ['Correr el ciclo ahora', 'salud', 'sa-corridas'], ['Lo que gasta Cloudflare hoy', 'salud', 'sa-cuotas'],
   ['Lo que avisó Logs', 'salud', 'sa-logs'], ['Errores de la página', 'salud', 'sa-errores'], ['El mapa en vivo y los atajos', 'salud', 'sa-atajos'],
-  ['Historial de cambios (deshacer)', 'historial', 'hi-hist'], ['Roles de la página', 'historial', 'hi-roles'],
+  ['Historial de cambios (deshacer)', 'historial', 'hi-hist'], ['Quién tiene un rol del Dashboard', 'roles', 'ro-quien'],
+  ['Qué puede cada rol (permisos)', 'roles', 'ro-permisos'], ['Dar o sacar un rol', 'roles', 'ro-dar'],
 ];
 
 function BuscarTodo({ abierto, cerrar, ir, visibles, liga, abrirFicha, extra }) {
@@ -4148,6 +4263,8 @@ export function Dashboard({ dc, liga }) {
   const [masNav, setMasNav] = useState(false);
   // 🗂️ la ficha abierta: `[clave, nombre]`
   const [ficha, setFicha] = useState(null);
+  // 🎛️ a quién abrir en «Dar o sacar un rol» cuando se toca «Cambiar» en la lista
+  const [elegido, setElegido] = useState(null);
   const abrirFicha = useCallbackFicha(setFicha);
 
   let cuerpo;
@@ -4171,7 +4288,7 @@ export function Dashboard({ dc, liga }) {
     pedidos: (d.pedidos || []).filter((x) => x.estado === '').length })[k] || 0;
   const verSub = { quien: ve('decidir'), llaves: ve('reportes') || ve('reportes_cerrar'), imagenes: ve('fondos'), videos: ve('videos') || ve('fondos'), pedidos: ve('reportes_cerrar') };
   const visibles = { resumen: true, pendientes: Object.values(verSub).some(Boolean), servidores: ve('ajustes'), web: ve('ajustes'),
-    numeros: ve('ajustes'), salud: ve('ajustes'), historial: ve('ajustes') };
+    numeros: ve('ajustes'), salud: ve('ajustes'), historial: ve('ajustes'), roles: ve('roles') };
   const areaV = visibles[area] ? area : 'resumen';
   const subV = verSub[sub] ? sub : (SUBP.find(([k]) => verSub[k] && nSub0(k)) || SUBP.find(([k]) => verSub[k]) || ['quien'])[0];
   // lo que espera algo de ti, por cola
@@ -4314,11 +4431,21 @@ export function Dashboard({ dc, liga }) {
         ))}</ul>)}
       </>
     );
+  } else if (areaV === 'roles') {
+    vista = (
+      <>
+        {sec('ro-quien', 'QUIÉN TIENE UN ROL DEL DASHBOARD', 'y qué puede hacer hoy',
+          <QuienTieneRol roles={d.roles} P={d.permisos_roles} alElegir={(id) => { setElegido({ id, t: Date.now() }); ir('roles', 'ro-dar'); }} />)}
+        {sec('ro-permisos', 'QUÉ PUEDE CADA ROL', 'sólo tú lo cambias',
+          <TablaPermisos P={d.permisos_roles} alCambiar={(n) => cambiarD({ permisos_roles: n })} />)}
+        {sec('ro-dar', 'DAR O SACAR UN ROL', 'los del Dashboard, y corregir los que salen solos',
+          <Roles roles={d.roles} tabla={d.permisos_roles} elegido={elegido} alCambiar={(y) => cambiarD({ roles: y })} />)}
+      </>
+    );
   } else {
     vista = (
       <>
         {sec('hi-hist', 'LOS ÚLTIMOS CAMBIOS', 'deshacer vuelve a como estaba', <HistorialDeA hist={d.ajustes_hist} hacer={hacer} ocup={ocup} liga={liga} />)}
-        {ve('roles') ? sec('hi-roles', 'ROLES DE LA PÁGINA', 'sólo tú los pones', <Roles roles={d.roles} alCambiar={(y) => cambiarD({ roles: y })} />) : null}
       </>
     );
   }

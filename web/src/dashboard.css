@@ -831,3 +831,14 @@
 .dz-san{display:inline-flex;align-items:center;min-height:22px;padding:0 6px;margin-right:4px;border-radius:3px;background:var(--magenta);color:#fff;font:800 11px/1 "Barlow Condensed",sans-serif;letter-spacing:.06em;text-transform:uppercase;vertical-align:middle}
 .dz-semana .dz-lista li span b{font-weight:800}
 @media (max-width:640px){.dz-emb-l li{grid-template-columns:minmax(0,1fr) 46px 40px}.dz-emb-l li>i{grid-column:1 / -1;order:3}}
+
+/* 🎛️ Roles: qué puede cada rol (11/11/2026) */
+.dz-perm{display:grid;gap:10px}
+.dz-perm th[scope=row]{white-space:normal;color:var(--tinta);text-transform:none;letter-spacing:0;font:700 14px/1.3 Archivo,sans-serif;padding:8px 12px 8px 0}
+.dz-perm th[scope=row] small{display:block;font:500 12px/1.3 Archivo,sans-serif;color:var(--gris)}
+.dz-perm td{text-align:center}
+.dz-perm td input{width:18px;height:18px;accent-color:var(--verde);cursor:pointer}
+.dz-perm td input:disabled{cursor:not-allowed;opacity:.5}
+.dz-perm-cam{background:color-mix(in srgb,var(--magenta) 10%,transparent)}
+.dz-perm-b{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+.dz-perm-que{white-space:normal!important;color:var(--gris);font-size:13px;max-width:420px}
