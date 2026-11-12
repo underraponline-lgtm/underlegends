@@ -438,9 +438,12 @@ VIVEN EN EL SHEET** (`espejo_t1.SIN_SHEET`): el archivo es la hoja, y el
 Sheet quedó quieto en lo que tenía esa noche. Las vitrinas las escribe
 `rankings.py` en `datos/t1_vitrina_*.json` y se leen con `fuente_vitrina()`
 o `rankings._leer_vitrina()`, **nunca** con `worksheet('Ranking …')`: un
-lector directo lee una tabla congelada y no falla. Siguen a prueba la Lista,
-AKAs, Pendientes, ✅ Decidir y Config; al final el Sheet **se congela como
-archivo, no se borra**.
+lector directo lee una tabla congelada y no falla. La Lista, AKAs,
+Pendientes, ✅ Decidir y Config **se siguen escribiendo en el Sheet**, pero el
+ciclo las copia a `datos/` al arrancar (`espejo_t1.al_dia()`) y las lee de
+ahí; lo que escribe en la corrida se vuelve a copiar antes de leerlo. Una PC,
+`recalcular.yml` y `dibujar` las leen del Sheet. Al final el Sheet **se
+congela como archivo, no se borra**.
 
 ⚠️ **La fórmula está verificada contra las 138 filas de la pre-temporada**,
 con una diferencia máxima de 0.050. Ver el encabezado de
