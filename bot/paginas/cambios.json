@@ -11,6 +11,17 @@
  ],
  "cambios": [
     {
+        "version": "4.66",
+        "dia": "2026-11-12",
+        "cuando": "2026-11-12T15:29:00-05:00",
+        "titulo": "El video de la bienvenida, más nítido y sin deformarse",
+        "items": [
+            "**La cámara lenta del video ya no deforma** manos ni caras: usa sólo cuadros reales de cada batalla.",
+            "**El video se ve más nítido** en pantallas grandes.",
+            "**La bienvenida pasa sola cada 12 segundos**, y desde Comunidad vuelve a la primera página."
+        ]
+    },
+    {
         "version": "4.65",
         "dia": "2026-11-12",
         "cuando": "2026-11-12T15:15:00-05:00",
