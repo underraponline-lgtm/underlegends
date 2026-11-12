@@ -189,15 +189,6 @@
 "temporada"
 ]
 },
-"miniboy": {
-"rg": "D",
-"c": [
-"competitivo",
-"pais",
-"servidor",
-"temporada"
-]
-},
 "guess": {
 "rg": "C",
 "c": [
@@ -211,6 +202,15 @@
 "rg": "B",
 "c": [
 "competitivo",
+"servidor",
+"temporada"
+]
+},
+"miniboy": {
+"rg": "D",
+"c": [
+"competitivo",
+"pais",
 "servidor",
 "temporada"
 ]
@@ -254,8 +254,12 @@
 "rg": "A",
 "c": []
 },
-"mito": {
-"rg": "C",
+"tuca": {
+"rg": "B",
+"c": []
+},
+"sinlimites": {
+"rg": "D",
 "c": [
 "competitivo",
 "pais",
@@ -263,20 +267,8 @@
 "temporada"
 ]
 },
-"adriagner": {
-"rg": "B",
-"c": [
-"competitivo",
-"servidor",
-"temporada"
-]
-},
-"tuca": {
-"rg": "B",
-"c": []
-},
-"sinlimites": {
-"rg": "D",
+"mito": {
+"rg": "C",
 "c": [
 "competitivo",
 "pais",
@@ -399,6 +391,14 @@
 "c": [
 "competitivo",
 "pais",
+"servidor",
+"temporada"
+]
+},
+"adriagner": {
+"rg": "C",
+"c": [
+"competitivo",
 "servidor",
 "temporada"
 ]
@@ -604,15 +604,6 @@
 "temporada"
 ]
 },
-"teito": {
-"rg": "E",
-"c": [
-"competitivo",
-"pais",
-"servidor",
-"temporada"
-]
-},
 "cinexfilo": {
 "rg": "E",
 "c": [
@@ -666,6 +657,15 @@
 "rg": "E",
 "c": [
 "competitivo",
+"servidor",
+"temporada"
+]
+},
+"teito": {
+"rg": "E",
+"c": [
+"competitivo",
+"pais",
 "servidor",
 "temporada"
 ]
@@ -730,14 +730,6 @@
 "rg": "",
 "c": [
 "pais",
-"servidor",
-"temporada"
-]
-},
-"evangeline": {
-"rg": "E",
-"c": [
-"competitivo",
 "servidor",
 "temporada"
 ]
@@ -923,6 +915,13 @@
 "servidor"
 ]
 },
+"evangeline": {
+"rg": "",
+"c": [
+"servidor",
+"temporada"
+]
+},
 "zekha": {
 "rg": "",
 "c": [
@@ -962,10 +961,6 @@
 "servidor",
 "temporada"
 ]
-},
-"cj": {
-"rg": "",
-"c": []
 },
 "prosu": {
 "rg": "",
@@ -1010,10 +1005,6 @@
 ]
 },
 "akuseru": {
-"rg": "",
-"c": []
-},
-"goblin": {
 "rg": "",
 "c": []
 },
@@ -1062,6 +1053,10 @@
 "servidor",
 "temporada"
 ]
+},
+"cj": {
+"rg": "",
+"c": []
 },
 "zeta": {
 "rg": "",
@@ -1342,6 +1337,10 @@
 "servidor",
 "temporada"
 ]
+},
+"goblin": {
+"rg": "",
+"c": []
 },
 "scritura": {
 "rg": "",

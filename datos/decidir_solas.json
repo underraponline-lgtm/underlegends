@@ -2,27 +2,6 @@
  "_leeme": "Lo que ✅ Decidir cerró o contestó solo, con la regla y la prueba (sheet/decidir.py, resolver_solo()), para «Lo que se resolvió solo» del Dashboard y su «Deshacer». «deshechas»: lo que Dlx deshizo; ninguna regla lo vuelve a tocar. Dlx, 13/10/2026.",
  "solas": [
   {
-   "id": "b6fcb8786f",
-   "tipo": "Batalla sin ganador",
-   "sec": "ZONA MORTAL · DDF · 28/10 · #540",
-   "que": "¿Quién ganó en final?\nCarlos 🆚 Tuca 🇦🇷",
-   "r": "No se jugó",
-   "regla": "R4 · una batalla que es copia de otra ya cargada",
-   "rk": "R4",
-   "por": "el ciclo",
-   "porque": "es la misma batalla que «Tuca vs Carlosss» (ganó Tuca), ya cargada en el #540: contestar «Ganó» la contaría dos veces",
-   "t": 1793214272936,
-   "filas": [
-    932
-   ],
-   "variantes": [
-    "ZONA MORTAL · DDF · 28/10 · final · Carlos 🆚 Tuca 🇦🇷"
-   ],
-   "escribio": {
-    "batalla": "ZONA MORTAL · DDF · 28/10 · final · Carlos 🆚 Tuca 🇦🇷"
-   }
-  },
-  {
    "id": "22e8a113ba",
    "tipo": "Nombre desconocido",
    "sec": "QCYO RAPEEN 6 · FFA · 28/10 · #542",
@@ -2943,6 +2922,44 @@
      "988931536080486420"
     ]
    }
+  },
+  {
+   "id": "7f9ff3f834",
+   "tipo": "Nombre desconocido",
+   "sec": "👤 Nombre",
+   "que": "¿Quién es «Goblin🇳🇮»?",
+   "r": "Ya no hace falta",
+   "regla": "R1 · lo que ya no existe: un evento sacado, un 5 vidas ya decidido, un duplicado ya sacado",
+   "rk": "R1",
+   "por": "el ciclo",
+   "porque": "el #605 ya no está en Eventos Procesados",
+   "t": 1794443982954,
+   "filas": [
+    1236
+   ],
+   "variantes": [
+    "Goblin🇳🇮"
+   ],
+   "escribio": {}
+  },
+  {
+   "id": "0bf7f8c245",
+   "tipo": "Nombre desconocido",
+   "sec": "👤 Nombre",
+   "que": "¿Quién es «Sourlate🇳🇮»?",
+   "r": "Ya no hace falta",
+   "regla": "R1 · lo que ya no existe: un evento sacado, un 5 vidas ya decidido, un duplicado ya sacado",
+   "rk": "R1",
+   "por": "el ciclo",
+   "porque": "el #605 ya no está en Eventos Procesados",
+   "t": 1794443982954,
+   "filas": [
+    1237
+   ],
+   "variantes": [
+    "Sourlate🇳🇮"
+   ],
+   "escribio": {}
   }
  ],
  "deshechas": []

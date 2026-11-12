@@ -789,18 +789,6 @@
    "vence": "2026-10-27T22:07:15+00:00",
    "vencido": true
   },
-  "Goblin": {
-   "chat": "2026-11-11",
-   "con": 607,
-   "cumplido": "2026-11-11T18:06:19+00:00",
-   "debut": "2026-11-11T05:09:58+00:00",
-   "did": "",
-   "evento": "EL ULTIMO DIA DE DDF",
-   "n": 605,
-   "sv": "DDF",
-   "vence": "2026-11-18T05:09:58+00:00",
-   "vencido": false
-  },
   "Guaicurús": {
    "avisado": "2026-10-29",
    "chat": "2026-10-30",
@@ -2059,18 +2047,6 @@
    "n": 468,
    "sv": "FFA",
    "vence": "2026-10-20T23:50:48+00:00",
-   "vencido": false
-  },
-  "Sourlate": {
-   "chat": "2026-11-11",
-   "con": null,
-   "cumplido": "",
-   "debut": "2026-11-11T05:09:58+00:00",
-   "did": "",
-   "evento": "EL ULTIMO DIA DE DDF",
-   "n": 605,
-   "sv": "DDF",
-   "vence": "2026-11-18T05:09:58+00:00",
    "vencido": false
   },
   "Stt": {

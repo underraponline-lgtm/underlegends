@@ -541,16 +541,16 @@
   },
   "Adriagner": {
    "DDF": {
-    "duelos": "14/21",
-    "ev": 12,
-    "oro": 5,
-    "ovr": 63,
-    "pod": 7,
-    "pts": 108813,
-    "racha": "2/3",
+    "duelos": "8/15",
+    "ev": 10,
+    "oro": 3,
+    "ovr": 59,
+    "pod": 5,
+    "pts": 63813,
+    "racha": "0/3",
     "tg": {
      "dv": true,
-     "fin": 7
+     "fin": 5
     }
    },
    "DDS": {
@@ -1668,18 +1668,6 @@
    }
   },
   "CJ": {
-   "DDF": {
-    "duelos": "0/2",
-    "ev": 2,
-    "oro": 0,
-    "ovr": 44,
-    "pod": 0,
-    "pts": 12000,
-    "racha": "0/0",
-    "tg": {
-     "nuevo": true
-    }
-   },
    "FFA": {
     "duelos": "4/4",
     "ev": 4,
@@ -3851,12 +3839,12 @@
   },
   "Evangeline": {
    "DDF": {
-    "duelos": "2/10",
-    "ev": 10,
+    "duelos": "2/8",
+    "ev": 8,
     "oro": 0,
-    "ovr": 53,
+    "ovr": 50,
     "pod": 1,
-    "pts": 56373,
+    "pts": 44373,
     "racha": "0/1",
     "tg": {
      "fin": 1
@@ -4542,21 +4530,6 @@
     "racha": "1/1",
     "tg": {
      "fin": 1
-    }
-   }
-  },
-  "Goblin🇳🇮": {
-   "DDF": {
-    "duelos": "4/6",
-    "ev": 2,
-    "oro": 0,
-    "ovr": 49,
-    "pod": 2,
-    "pts": 37500,
-    "racha": "2/2",
-    "tg": {
-     "fin": 2,
-     "nuevo": true
     }
    }
   },
@@ -8141,12 +8114,12 @@
     }
    },
    "DDF": {
-    "duelos": "10/25",
-    "ev": 21,
+    "duelos": "8/21",
+    "ev": 19,
     "oro": 0,
-    "ovr": 60,
+    "ovr": 59,
     "pod": 2,
-    "pts": 121988,
+    "pts": 99938,
     "racha": "0/2",
     "tg": {
      "fin": 2,
@@ -8239,12 +8212,12 @@
     "racha": "1/1"
    },
    "DDF": {
-    "duelos": "5/9",
-    "ev": 6,
+    "duelos": "4/7",
+    "ev": 5,
     "oro": 1,
-    "ovr": 50,
+    "ovr": 49,
     "pod": 1,
-    "pts": 46763,
+    "pts": 36263,
     "racha": "0/1",
     "tg": {
      "fin": 1,
@@ -11562,20 +11535,6 @@
     }
    }
   },
-  "Sourlate🇳🇮": {
-   "DDF": {
-    "duelos": "1/2",
-    "ev": 1,
-    "oro": 0,
-    "ovr": 44,
-    "pod": 0,
-    "pts": 10500,
-    "racha": "0/0",
-    "tg": {
-     "nuevo": true
-    }
-   }
-  },
   "Spartan": {
    "DDF": {
     "duelos": "0/1",
@@ -11739,13 +11698,13 @@
     "racha": "0/0"
    },
    "DDF": {
-    "duelos": "2/10",
-    "ev": 9,
+    "duelos": "2/8",
+    "ev": 7,
     "oro": 0,
-    "ovr": 50,
+    "ovr": 49,
     "pod": 1,
-    "pts": 39350,
-    "racha": "0/1",
+    "pts": 27350,
+    "racha": "1/1",
     "tg": {
      "fin": 1
     }
@@ -14010,18 +13969,6 @@
    }
   },
   "tormen": {
-   "DDF": {
-    "duelos": "0/2",
-    "ev": 2,
-    "oro": 0,
-    "ovr": 44,
-    "pod": 0,
-    "pts": 12000,
-    "racha": "0/0",
-    "tg": {
-     "nuevo": true
-    }
-   },
    "FFA": {
     "duelos": "0/2",
     "ev": 3,
