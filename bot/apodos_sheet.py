@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 """📇 LOS NOMBRES DE DISCORD DE LA GENTE DE LA LISTA, GUARDADOS EN EL OPERATIVO.
 
-    python bot/apodos_sheet.py --guardar   después del paso 1b: los de la Lista, a la hoja «Apodos Discord» (si cambió)
+    python bot/apodos_sheet.py --guardar   después del paso 1b: los de la Lista, a KV `priv:apodos_discord` (si cambió)
     python bot/apodos_sheet.py --traer     antes del paso 0b: si falta el caché, lo arma desde esa hoja
     python bot/apodos_sheet.py --auto      el self-check (sin red)
 
@@ -12,7 +12,7 @@ persona —el usuario siempre; el apodo y el visible si dicen algo—, y ese dat
 (`bot/multiplicadores.py`), ANTES, así que quien sólo se reconoce por su usuario de Discord no salía nunca. Los pasos
 no se pueden dar vuelta: el 0b va antes de las vitrinas (1c), que multiplican con lo que deja.
 
-⚠️ SÓLO LA GENTE DE LA LISTA, y en el Operativo, que es privado: el caché tiene ~12.000 cuentas de cuatro servidores y
+⚠️ SÓLO LA GENTE DE LA LISTA, y en un lugar privado (KV desde el 12/11/2026; antes el Operativo): el caché tiene ~12.000 cuentas de cuatro servidores y
 las listas de otro servidor no son nuestras (`herramientas/servidores_de.py`). El reconocedor sólo usa las cuentas que
 están en la Lista, así que no se pierde nada. Nunca al repo, nunca a la página; y este script no imprime nombres.
 
@@ -97,45 +97,96 @@ def _rango(a1):
     return requests.utils.quote("'%s'!%s" % (HOJA, a1))
 
 
-def guardar():
-    """Los de la Lista, a la hoja, sólo si cambió. Devuelve cuántas filas quedaron (o -1 si no había caché)."""
+#: 🗄️ DESDE EL 12/11/2026 VIVEN EN KV, NO EN EL SHEET (sacar el Sheet; Dlx: «dale, sigue con… todo lo demás»). Es la
+#: única hoja que el ciclo todavía usaba para guardar algo, y no podía ir a `datos/`: el repo es público y esto son
+#: nombres de cuentas de Discord («nunca al repo»). KV es privado —ninguna ruta del Worker lee una clave que venga de
+#: afuera sin su prefijo— y se escribe sólo si cambió (el cupo es de 1.000 por día).
+CLAVE_KV = 'priv:apodos_discord'
+
+
+def _kv():
+    import requests
+    import subir_datos as SD
+    import fotos as F
+    s = requests.Session()
+    s.headers['Authorization'] = 'Bearer ' + F.env('CLOUDFLARE_API_TOKEN')
+    return s, SD.API
+
+
+def _kv_leer():
+    """Las filas guardadas en KV, `[]` si todavía no hay, o `None` si no se pudo leer (no es lo mismo)."""
+    s, api = _kv()
+    try:
+        # ⚠️ POR `bulk/get`, como `reportes.leer()`: el de a una da el valor viejo un rato después de escribir
+        r = s.post('%s/bulk/get' % api, json={'keys': [CLAVE_KV]}, timeout=30)
+        v = ((r.json().get('result') or {}).get('values') or {}).get(CLAVE_KV)
+        v = v.get('value') if isinstance(v, dict) else v
+        return (json.loads(v) or {}).get('filas') or [] if isinstance(v, str) else []
+    except (ValueError, OSError):
+        return None
+
+
+def _kv_poner(fs):
+    s, api = _kv()
+    r = s.put('%s/values/%s' % (api, CLAVE_KV),
+              files={'value': (None, json.dumps({'filas': fs}, ensure_ascii=False, separators=(',', ':'))),
+                     'metadata': (None, '{}')}, timeout=60)
+    if r.status_code != 200:
+        raise RuntimeError('KV contestó %d al guardar los nombres de Discord' % r.status_code)
+
+
+def _del_sheet():
+    """🗄️ Lo que quedó en la hoja «Apodos Discord» del Operativo: sólo para pasarlo a KV la primera vez."""
     from escribir import _pedir
+    if _hoja(crear=False) is None:
+        return []
+    return [list(map(str, f)) + [''] * (3 - len(f)) for f in _pedir('GET', '/values/%s' % _rango('A2:C')).get('values', [])]
+
+
+def guardar():
+    """Los de la Lista, a KV, sólo si cambió. Devuelve cuántas filas quedaron (o -1 si no había caché)."""
     cache = _leer(APODOS, None)
     if not cache or not cache.get('nombres'):
         print('   (sin el caché de apodos de esta corrida: no hay nada que guardar)')
         return -1
     nuevas = filas(cache['nombres'], _dids_lista())
-    _hoja(crear=True)
-    hay = _pedir('GET', '/values/%s' % _rango('A2:C')).get('values', [])
-    if [list(map(str, f)) + [''] * (3 - len(f)) for f in hay] == nuevas:
+    hay = _kv_leer()
+    if hay is not None and [list(map(str, f)) + [''] * (3 - len(f)) for f in hay] == nuevas:
         print('   %d personas de la Lista, igual que lo guardado: no se escribe' % len(nuevas))
         return len(nuevas)
-    _pedir('POST', '/values/%s:clear' % _rango('A:C'), json={})
-    _pedir('PUT', '/values/%s?valueInputOption=RAW' % _rango('A1'), json={'values': [CAB] + nuevas})
+    _kv_poner(nuevas)
     # comprobar leyendo (ver `escribir.poner()`): el 200 no dice que quedó
-    leidas = _pedir('GET', '/values/%s' % _rango('A2:C')).get('values', [])
+    leidas = _kv_leer() or []
     if len(leidas) != len(nuevas) or any(str(a[0]) != b[0] for a, b in zip(leidas, nuevas)):
-        raise RuntimeError('la hoja «%s» no quedó como se mandó (%d filas de %d)' % (HOJA, len(leidas), len(nuevas)))
-    print('   %d personas de la Lista guardadas en «%s»' % (len(nuevas), HOJA))
+        raise RuntimeError('KV no quedó como se mandó (%d filas de %d)' % (len(leidas), len(nuevas)))
+    print('   %d personas de la Lista guardadas en KV (privado)' % len(nuevas))
     return len(nuevas)
 
 
 def traer():
-    """Si falta el caché (el runner arranca limpio), lo arma con lo guardado. Devuelve cuántas cuentas trajo."""
-    from escribir import _pedir
+    """Si falta el caché (el runner arranca limpio), lo arma con lo guardado en KV. Devuelve cuántas cuentas trajo.
+    🗄️ La primera vez KV está vacío: se trae UNA vez de la hoja del Sheet y se guarda en KV, así no se pierde nada."""
     if os.path.exists(APODOS):
         print('   el caché de apodos ya está: no hace falta traerlo')
         return 0
-    if _hoja(crear=False) is None:
-        print('   todavía no hay hoja «%s»: el paso 1b la crea' % HOJA)
+    fs = _kv_leer()
+    if fs is None:
+        print('   ⚠️ no pude leer KV: el paso 1b los rehace')
         return 0
-    n = nombres_de(_pedir('GET', '/values/%s' % _rango('A2:C')).get('values', []))
+    if not fs:
+        fs = _del_sheet()
+        if not fs:
+            print('   todavía no hay nada guardado: el paso 1b los trae')
+            return 0
+        _kv_poner(fs)
+        print('   %d fila(s) pasadas de la hoja «%s» del Sheet a KV (una sola vez)' % (len(fs), HOJA))
+    n = nombres_de(fs)
     os.makedirs(os.path.dirname(APODOS), exist_ok=True)
     with io.open(APODOS, 'w', encoding='utf-8') as f:
-        json.dump({'_leeme': 'Los nombres de Discord de la gente de la Lista, traídos de la hoja «%s» del Operativo para '
-                             'los pasos de antes del 1b (que lo rehace entero). NO SE COMMITEA.' % HOJA,
-                   'nombres': n, 'servidores': {}, 'de': 'sheet'}, f, ensure_ascii=False)
-    print('   %d cuentas de la Lista traídas de «%s» (el 1b las rehace)' % (len(n), HOJA))
+        json.dump({'_leeme': 'Los nombres de Discord de la gente de la Lista, traídos de KV (`%s`, privado) para '
+                             'los pasos de antes del 1b (que lo rehace entero). NO SE COMMITEA.' % CLAVE_KV,
+                   'nombres': n, 'servidores': {}, 'de': 'kv'}, f, ensure_ascii=False)
+    print('   %d cuentas de la Lista traídas de KV (el 1b las rehace)' % len(n))
     return len(n)
 
 

@@ -76,6 +76,16 @@ VITRINAS = {'Ranking Temporada': 'vitrina_temporada', 'Ranking Competitivo': 'vi
 GRILLAS = {'Lista de Raperos': 'lista', 'AKAs': 'akas',
            # 📋 y la cola de preguntas, la vista de ✅ Decidir y lo que se lee de Config (etapa 4c, 11/11/2026)
            'Pendientes': 'pendientes', '✅ Decidir': 'decidir', 'Config': 'config'}
+#: 🧊 LAS HOJAS DEL OPERATIVO, CONGELADO (foto del 12/11/2026, 5:20 AM ET): `{sheetId: (título, filas, columnas)}`.
+#: Con todo lo que se lee y se escribe en datos/, lo único que el código le seguía preguntando al Sheet era esto —de
+#: qué hoja es un `sheetId` (`escribir._titulo_de_id()`) y cuántas filas tiene (recortar, agrandar)—, y eso era lo
+#: que todavía pedía la credencial. Lo contesta `metadatos()`; de las grillas, con su tamaño de verdad en el archivo.
+OPERATIVO_HOJAS = {711525823: ('✅ Decidir', 1000, 26), 1238282777: ('Entrada', 2206, 16),
+                   360228157: ('Pendientes', 1521, 15), 1897286816: ('Lista de Raperos', 1184, 21),
+                   353944109: ('AKAs', 1000, 11), 2037983559: ('Resultados', 6762, 11), 1038110176: ('1v1', 4216, 9),
+                   2021508817: ('Eventos Procesados', 1342, 20), 613746027: ('Anuncios', 998, 12),
+                   1589665255: ('Config', 1002, 23), 395753548: ('Log', 1000, 9), 229847105: ('Consola', 50, 6),
+                   809080378: ('MW Puntos', 122, 4), 232851627: ('Apodos Discord', 1000, 3)}
 #: ⚠️ DE `Config`, SÓLO LO QUE SE LEE: las tablas de puntos (`A7:B14`, `C7:D12`, `A18:B23`), los modificadores
 #: (`F5:G15`) y el contador (`B27:B28`). El resto del tablero trae el registro viejo del Most Wanted (`J2:M22`), que no
 #: lee nadie y no tiene por qué ir a un repo público.
@@ -936,6 +946,35 @@ def de_archivo(hoja):
         return False
 
 
+def titulo_de_id(sid):
+    """🧊 El título de la hoja con ese `sheetId` del Operativo congelado, o `None` (`OPERATIVO_HOJAS`)."""
+    try:
+        h = OPERATIVO_HOJAS.get(int(sid))
+    except (TypeError, ValueError):
+        return None
+    return h[0] if h else None
+
+
+def metadatos(ruta_get):
+    """🧊 Lo que contestaría `GET ?fields=…` del Operativo, sin preguntarle: título, `sheetId`, filas y columnas de cada
+    hoja (de las grillas, con su tamaño en el archivo), y sin protecciones ni reglas de formato —son de la hoja
+    congelada, y en el archivo no hacen nada—. `None` si no es un pedido de metadatos. Nunca levanta."""
+    try:
+        if not str(ruta_get).startswith('?'):
+            return None
+        hojas = []
+        for i, (sid, (t, filas, cols)) in enumerate(OPERATIVO_HOJAS.items()):
+            if t in GRILLAS and t in SIN_SHEET:
+                g = grilla_guardada(t) or []
+                filas, cols = max(len(g), 1), max([len(f) for f in g] + [1])
+            hojas.append({'properties': {'sheetId': sid, 'title': t, 'index': i,
+                                         'gridProperties': {'rowCount': filas, 'columnCount': cols}},
+                          'protectedRanges': [], 'conditionalFormats': []})
+        return {'properties': {'title': 'Liga Global - Operativo'}, 'sheets': hojas}
+    except Exception:                                      # noqa: BLE001
+        return None
+
+
 def leer_de_archivo(ruta_get):
     """🗄️ Lo que `escribir._pedir('GET', '/values/<a1>')` contesta desde datos/ sin ir al Sheet, o `None` (y va al
     Sheet). Sólo el texto que se ve (sin `?valueRenderOption`…) y sólo lo que se guarda (`GRILLAS_RANGO`). Nunca
@@ -1721,6 +1760,8 @@ def _self_check():
             cfg = grilla_guardada('Config')
             pend = grilla_guardada('Pendientes')
             r_leer = (leer_de_archivo('/values/AKAs%21A1%3AB?valueRenderOption=UNFORMATTED_VALUE') or {}).get('values')
+            meta = metadatos('?fields=sheets.properties(sheetId,title,gridProperties)') or {}
+            props = {s['properties']['title']: s['properties'] for s in meta.get('sheets') or []}
             refresca = refrescar('AKAs') and espejar_grillas(aplicar=True) == {h: 'datos' for h in GRILLAS}
             g_fuente = fuente_grilla('AKAs', _no)
     finally:
@@ -1741,6 +1782,11 @@ def _self_check():
        'el corte, en el ciclo: lo escrito va a su archivo; lo de otra hoja, a la API; lo que no se sabe escribir, frena')
     ok(r_leer == [['Alias', 'Nombre Real'], ['a', 'A'], ['b', 'B']] and refresca and g_fuente == akas and not al_sheet6,
        'el corte: se lee del archivo aun con opciones, y nada se copia ni se compara con el Sheet')
+    ok(len(props) == len(OPERATIVO_HOJAS) and props['AKAs']['gridProperties'] == {'rowCount': 3, 'columnCount': 2}
+       and props['Log']['gridProperties']['rowCount'] == 1000 and props['✅ Decidir']['sheetId'] == 711525823
+       and titulo_de_id(1897286816) == 'Lista de Raperos' and titulo_de_id('nada') is None
+       and metadatos('/values/AKAs') is None and all(s['protectedRanges'] == [] for s in meta['sheets']),
+       '🧊 los metadatos, de la foto del Operativo: de las grillas, su tamaño en el archivo; sin protecciones ni reglas')
     print('\n   %s' % ('✅ todo bien' if not fallas else '🔴 %d mal' % fallas))
     return 1 if fallas else 0
 

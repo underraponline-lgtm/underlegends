@@ -361,27 +361,31 @@ def _calcular_scores(dentro):
 
 
 def main():
-    creds = os.path.join(RAIZ, 'creds.json')
-    if not os.path.exists(creds):
-        print('falta creds.json en la raiz del proyecto'); return
-
-    # solo lectura: este script lee el Sheet y escribe JSON local. Ver
-    # explorar_sheet.py para el porque.
-    sc = ['https://www.googleapis.com/auth/spreadsheets.readonly']
-    gc = gspread.authorize(Credentials.from_service_account_file(creds, scopes=sc))
     from reintentar import leer as _leer_reint   # ver `sheet/reintentar.py`
-    # 🔴 ABRIR TAMBIÉN GASTA CUOTA. `open_by_key()` pide los metadatos del
-    # documento; era la única lectura de este archivo sin reintento. El
-    # 24/09/2026 el mismo agujero tumbó el ciclo de las 6:52 AM ET desde
-    # `construir_pool_competitivo.py`. Ver allá.
-    sh = _leer_reint(lambda: gc.open_by_key(SHEET))
+    _abierta = []
+
+    def sh():
+        """🗄️ EL OFICIAL, RECIÉN CUANDO HACE FALTA (12/11/2026, sacar el Sheet). Las vitrinas viven en datos/ desde la
+        etapa 5b y `fuente_vitrina()` no llama a esto: abrir la planilla —y pedir `creds.json`— de entrada era una
+        lectura al Sheet en cada corrida, y lo único que hoy obliga a tener la credencial."""
+        if not _abierta:
+            creds = os.path.join(RAIZ, 'creds.json')
+            if not os.path.exists(creds):
+                raise SystemExit('falta creds.json en la raiz del proyecto')
+            # solo lectura: este script lee el Sheet y escribe JSON local. Ver explorar_sheet.py para el porque.
+            sc = ['https://www.googleapis.com/auth/spreadsheets.readonly']
+            gc = gspread.authorize(Credentials.from_service_account_file(creds, scopes=sc))
+            # 🔴 ABRIR TAMBIÉN GASTA CUOTA: `open_by_key()` pide los metadatos del documento. Con reintento (el
+            # 24/09/2026 el mismo agujero tumbó el ciclo de las 6:52 AM ET).
+            _abierta.append(_leer_reint(lambda: gc.open_by_key(SHEET)))
+        return _abierta[0]
     # ⚠️ EL `lambda` NO ES ADORNO: sin el, `sh.worksheet(...)` se evalua
     # ANTES de entrar al reintento —y esa llamada TAMBIEN pega a la API—,
     # asi que el 429 se escapaba por la mitad que quedaba afuera.
     # 🏆 etapa 4a de sacar el Sheet: la vitrina, de datos/ (comparando con el Sheet mientras dura la prueba)
     import espejo_t1 as _EJ
     v = _EJ.fuente_vitrina('Ranking Temporada',
-                           lambda: _leer_reint(lambda: sh.worksheet('Ranking Temporada').get_all_values()),
+                           lambda: _leer_reint(lambda: sh().worksheet('Ranking Temporada').get_all_values()),
                            'pool temporada')
 
     # ⚠️ LA ELECCION MANUAL DEL SERVIDOR VIVE EN "Ranking Competitivo".
@@ -409,7 +413,7 @@ def main():
     SV_MANUAL, SCORE = {}, {}
     try:
         c = _EJ.fuente_vitrina('Ranking Competitivo',
-                               lambda: _leer_reint(lambda: sh.worksheet('Ranking Competitivo').get_all_values()),
+                               lambda: _leer_reint(lambda: sh().worksheet('Ranking Competitivo').get_all_values()),
                                'pool temporada')
         fic, Hc = _cabecera(c, 'Rapero', 'Score')   # ver `_cabecera()`
         ic, isv, isc = Hc.index('Rapero'), Hc.index('Sv'), Hc.index('Score')

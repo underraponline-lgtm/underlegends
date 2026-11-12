@@ -56,19 +56,22 @@ def _donde(v, texto, hasta=4):
 
 
 def leer():
-    """Las dos tablas, desde el Sheet. Pide creds.json."""
-    import gspread
-    from google.oauth2.service_account import Credentials
+    """Las dos tablas, de AKAs (desde el 12/11/2026, su archivo de datos/; ver `espejo_t1`)."""
     import construir_padron as PAD
 
-    cred = os.path.join(BASE, 'creds.json')
-    if not os.path.exists(cred):
-        sys.exit('falta creds.json en la raiz del proyecto')
-    gc = gspread.authorize(Credentials.from_service_account_file(
-        cred, scopes=['https://www.googleapis.com/auth/spreadsheets.readonly']))
+    def gc():
+        """🗄️ La credencial, recién si algo va de verdad al Sheet (12/11/2026): la grilla vive en datos/ (etapa 6b de
+        sacar el Sheet) y `fuente_grilla()` no llama a esto."""
+        import gspread
+        from google.oauth2.service_account import Credentials
+        cred = os.path.join(BASE, 'creds.json')
+        if not os.path.exists(cred):
+            sys.exit('falta creds.json en la raiz del proyecto')
+        return gspread.authorize(Credentials.from_service_account_file(
+            cred, scopes=['https://www.googleapis.com/auth/spreadsheets.readonly']))
     # 🪪 etapa 4b de sacar el Sheet: AKAs, de datos/ (comparando con el Sheet mientras dura la prueba)
     import espejo_t1 as _EJ
-    v = _EJ.fuente_grilla(HOJA, lambda: gc.open_by_key(PAD.OPERATIVO).worksheet(HOJA).get_all_values(), 'akas')
+    v = _EJ.fuente_grilla(HOJA, lambda: gc().open_by_key(PAD.OPERATIVO).worksheet(HOJA).get_all_values(), 'akas')
 
     pares, cuidado = [], []
 

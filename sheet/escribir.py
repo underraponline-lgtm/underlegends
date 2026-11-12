@@ -64,7 +64,22 @@ from explorar_operativo import id_operativo      # noqa: E402
 _TOKEN = [None]
 
 
+#: 📡 cuántos pedidos salieron al Sheet en este proceso (12/11/2026, sacar el Sheet): todo pedido a la API pide
+#: `token()` justo antes —`_pedir()`, `rankings._leer()`/`_api()`, las copias de `espejo_t1`—, así que contar acá es
+#: contarlos a todos. Al terminar se dice, si hubo alguno: con todo en datos/, el número esperado es cero
+_AL_SHEET = [0]
+
+
+def _al_sheet_al_salir():
+    if _AL_SHEET[0]:
+        print('   📡 pedidos al Sheet en este proceso: %d' % _AL_SHEET[0])
+
+
 def token():
+    if not _AL_SHEET[0]:
+        import atexit
+        atexit.register(_al_sheet_al_salir)
+    _AL_SHEET[0] += 1
     if _TOKEN[0] is None:
         from google.oauth2 import service_account
         from google.auth.transport.requests import Request
@@ -111,6 +126,14 @@ def _pedir(metodo, ruta, **kw):
         r0 = _de_archivo(ruta)
         if r0 is not None:
             return r0
+        # 🧊 y lo que se pregunta del documento (`?fields=…`: hojas, ids, tamaños), de la foto del Operativo congelado
+        try:
+            import espejo_t1 as _EJ
+            m = _EJ.metadatos(ruta)
+            if m is not None:
+                return m
+        except Exception:                                # noqa: BLE001
+            pass
     # 🖊️ LAS GRILLAS, SIN EL SHEET (etapa 6b, 12/11/2026): lo que se le escribe a la Lista, AKAs, Pendientes,
     # ✅ Decidir o Config va a su archivo de datos/ (`espejo_t1.escribir_en_archivo()`); a la API, sólo lo de otras
     # hojas. ⚠️ Sin `try`: si no se puede escribir el archivo, frena, como frenaría un error de la API
@@ -149,7 +172,15 @@ _TITULOS = {}
 
 
 def _titulo_de_id(sid):
-    """El nombre de la hoja con ese `sheetId` (una lectura por proceso, la primera vez que hace falta)."""
+    """El nombre de la hoja con ese `sheetId` (una lectura por proceso, la primera vez que hace falta).
+    🧊 Desde el 12/11/2026, de la foto del Operativo congelado (`espejo_t1.OPERATIVO_HOJAS`), sin preguntarle."""
+    try:
+        import espejo_t1 as _EJ
+        t = _EJ.titulo_de_id(sid)
+        if t is not None:
+            return t
+    except Exception:                                    # noqa: BLE001
+        pass
     if not _TITULOS:
         d = _pedir('GET', '?fields=sheets.properties(sheetId,title)')
         for s_ in d.get('sheets') or []:

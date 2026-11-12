@@ -235,7 +235,8 @@ def corre(args, callado=True, mostrar=(), eco=False):
     # («🗄️ … desde datos/», o lo que dio distinto) es la prueba de que se puede apagar el Sheet, y los pools y el
     # padrón corrían callados: un «DISTINTO» ahí no lo habría visto nadie. Ver `sheet/espejo_t1.py`
     if callado:
-        mostrar = tuple(mostrar) + ('desde datos/', 'DISTINTO del Sheet', 'no coincide con datos/')
+        mostrar = tuple(mostrar) + ('desde datos/', 'DISTINTO del Sheet', 'no coincide con datos/',
+                                    'pedidos al Sheet', 'escritas en datos/', 'no sé escribir')
         for l in (r.stdout or '').splitlines():
             if any(m in l for m in mostrar):
                 print('      %s' % l.strip())
@@ -738,7 +739,7 @@ def _lo_barato(correr):
     if correr:
         # 📇 los nombres de Discord de la gente de la Lista, guardados en el Operativo: el organizador de la semana los
         # necesita y el 1b, que los trae de Discord, va después (pasada del 19/10/2026; ver `bot/apodos_sheet.py`)
-        paso('0a', 'los nombres de Discord de la Lista, del Operativo')
+        paso('0a', 'los nombres de Discord de la Lista, de KV')
         if not corre(['bot/apodos_sheet.py', '--traer'], callado=False):
             print('      ⚠️ sin los nombres de Discord: el organizador de la semana sale sin ellos')
         # 👥 las crews que arma la gente (19/10/2026, `bot/crews_vivas.py`): del objeto a `datos/crews.json`, ANTES de
@@ -1084,9 +1085,9 @@ def _lo_barato(correr):
         else:
             print('      %-42s %d -> %d'
                   % ('en qué servidores está cada uno', antes_s, hay_s))
-            # 📇 y los de la Lista, al Operativo, para el paso 0b de la próxima corrida (`bot/apodos_sheet.py`)
+            # 📇 y los de la Lista, a KV (privado; hasta el 12/11/2026 el Operativo), para el paso 0b de la próxima corrida (`bot/apodos_sheet.py`)
             if not corre(['bot/apodos_sheet.py', '--guardar'], callado=False):
-                print('      ⚠️ no pude guardar los nombres de Discord en el Operativo: quedan los de antes')
+                print('      ⚠️ no pude guardar los nombres de Discord en KV: quedan los de antes')
 
     # 🎙️ QUIÉN ESTÁ EN LA LLAMADA, sólo con un evento en vivo. Dlx,
     # 29/09/2026: «fíjate muy bien para no gastar recursos y solo cuando en

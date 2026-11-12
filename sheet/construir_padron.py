@@ -186,19 +186,22 @@ def _id_discord(v, quien):
 
 
 def leer():
-    """El padron, desde el Sheet. Pide creds.json."""
-    import gspread
-    from google.oauth2.service_account import Credentials
-    cred = os.path.join(BASE, 'creds.json')
-    if not os.path.exists(cred):
-        sys.exit('falta creds.json en la raiz del proyecto')
-    gc = gspread.authorize(Credentials.from_service_account_file(
-        cred, scopes=['https://www.googleapis.com/auth/spreadsheets.readonly']))
+    """El padron, de la Lista (desde el 12/11/2026, su archivo de datos/; ver `espejo_t1`)."""
+    def gc():
+        """🗄️ La credencial, recién si algo va de verdad al Sheet (12/11/2026): la grilla vive en datos/ (etapa 6b de
+        sacar el Sheet) y `fuente_grilla()` no llama a esto."""
+        import gspread
+        from google.oauth2.service_account import Credentials
+        cred = os.path.join(BASE, 'creds.json')
+        if not os.path.exists(cred):
+            sys.exit('falta creds.json en la raiz del proyecto')
+        return gspread.authorize(Credentials.from_service_account_file(
+            cred, scopes=['https://www.googleapis.com/auth/spreadsheets.readonly']))
     from reintentar import leer as _leer_reint   # ver `sheet/reintentar.py`
     # ⚠️ con `lambda`: `open_by_key` y `worksheet` tambien pegan a la API
     # 🪪 etapa 4b de sacar el Sheet: la Lista, de datos/ (comparando con el Sheet mientras dura la prueba)
     import espejo_t1 as _EJ
-    v = _EJ.fuente_grilla(HOJA, lambda: _leer_reint(lambda: gc.open_by_key(OPERATIVO).worksheet(HOJA).get_all_values()),
+    v = _EJ.fuente_grilla(HOJA, lambda: _leer_reint(lambda: gc().open_by_key(OPERATIVO).worksheet(HOJA).get_all_values()),
                           'padrón')
 
     i = _cabecera(v)
