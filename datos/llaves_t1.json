@@ -42434,12 +42434,19 @@
      ],
      [
       [
-       "GEOKA🇦🇷",
-       "VELATZ🇨🇱",
+       "Geoka",
+       "Velatz"
+      ],
+      "",
+      "cobra: GEOKA🇦🇷; cobra: VELATZ🇨🇱; cobra: FIERRO🇦🇷; nadie siguió: ✅ Decidir"
+     ],
+     [
+      [
+       "Geoka",
        "FIERRO🇦🇷"
       ],
       "",
-      "sin ganador: espera en ✅ Decidir"
+      "cobra: GEOKA🇦🇷; cobra: VELATZ🇨🇱; cobra: FIERRO🇦🇷; nadie siguió: ✅ Decidir"
      ]
     ],
     "r": "Octavos"
@@ -42584,7 +42591,17 @@
     1250
    ],
    [
+    "FIERRO🇦🇷",
+    "Octavos",
+    1250
+   ],
+   [
     "GATO🇨🇱",
+    "Octavos",
+    1250
+   ],
+   [
+    "Geoka",
     "Octavos",
     1250
    ],
@@ -42635,6 +42652,11 @@
    ],
    [
     "Sin Limites",
+    "Octavos",
+    1250
+   ],
+   [
+    "Velatz",
     "Octavos",
     1250
    ],
@@ -42723,23 +42745,51 @@
      ],
      [
       [
-       "CNC 🇲🇽",
-       "Paria🇦🇷",
-       "Naw 🇺🇾",
-       "Urbana JJ 🇻🇪"
+       "HH",
+       "Khat alien 🇬🇹"
       ],
       "",
-      "sin ganador: espera en ✅ Decidir"
+      "cobra: HH 🇲🇽; cobra: Khat alien 🇬🇹; cobra: Higtme🇨🇴; cobra: Ruvi 🇨🇱; nadie siguió: ✅ Decidir"
      ],
      [
       [
-       "HH 🇲🇽",
-       "Khat alien 🇬🇹",
-       "Higtme🇨🇴",
-       "Ruvi 🇨🇱"
+       "HH",
+       "Higtme🇨🇴"
       ],
       "",
-      "sin ganador: espera en ✅ Decidir"
+      "cobra: HH 🇲🇽; cobra: Khat alien 🇬🇹; cobra: Higtme🇨🇴; cobra: Ruvi 🇨🇱; nadie siguió: ✅ Decidir"
+     ],
+     [
+      [
+       "HH",
+       "Ruvi"
+      ],
+      "",
+      "cobra: HH 🇲🇽; cobra: Khat alien 🇬🇹; cobra: Higtme🇨🇴; cobra: Ruvi 🇨🇱; nadie siguió: ✅ Decidir"
+     ],
+     [
+      [
+       "CNC 🇲🇽",
+       "Paria"
+      ],
+      "",
+      "cobra: CNC 🇲🇽; cobra: Paria🇦🇷; cobra: Naw 🇺🇾; cobra: Urbana JJ 🇻🇪; nadie siguió: ✅ Decidir"
+     ],
+     [
+      [
+       "CNC 🇲🇽",
+       "NAW"
+      ],
+      "",
+      "cobra: CNC 🇲🇽; cobra: Paria🇦🇷; cobra: Naw 🇺🇾; cobra: Urbana JJ 🇻🇪; nadie siguió: ✅ Decidir"
+     ],
+     [
+      [
+       "CNC 🇲🇽",
+       "Urbana JJ 🇻🇪"
+      ],
+      "",
+      "cobra: CNC 🇲🇽; cobra: Paria🇦🇷; cobra: Naw 🇺🇾; cobra: Urbana JJ 🇻🇪; nadie siguió: ✅ Decidir"
      ]
     ],
     "r": "Octavos"
@@ -42869,6 +42919,11 @@
     1250
    ],
    [
+    "CNC 🇲🇽",
+    "Octavos",
+    1250
+   ],
+   [
     "Cronox",
     "Octavos",
     1250
@@ -42879,7 +42934,22 @@
     1250
    ],
    [
+    "HH",
+    "Octavos",
+    1250
+   ],
+   [
+    "Higtme🇨🇴",
+    "Octavos",
+    1250
+   ],
+   [
     "Iguana",
+    "Octavos",
+    1250
+   ],
+   [
+    "Khat alien 🇬🇹",
     "Octavos",
     1250
    ],
@@ -42894,12 +42964,32 @@
     1250
    ],
    [
+    "NAW",
+    "Octavos",
+    1250
+   ],
+   [
     "NC",
     "Octavos",
     1250
    ],
    [
+    "Paria",
+    "Octavos",
+    1250
+   ],
+   [
     "Polosport",
+    "Octavos",
+    1250
+   ],
+   [
+    "Ruvi",
+    "Octavos",
+    1250
+   ],
+   [
+    "Urbana JJ 🇻🇪",
     "Octavos",
     1250
    ],
@@ -44680,11 +44770,11 @@
      ],
      [
       [
-       "shadow",
+       "Shadow",
        "xd"
       ],
       "",
-      "sin ganador: espera en ✅ Decidir"
+      "cobra: shadow; cobra: xd; nadie siguió: ✅ Decidir"
      ]
     ],
     "r": "Octavos"
@@ -44838,6 +44928,16 @@
    ],
    [
     "RODRO",
+    "Octavos",
+    1250
+   ],
+   [
+    "Shadow",
+    "Octavos",
+    1250
+   ],
+   [
+    "xd",
     "Octavos",
     1250
    ]
@@ -47654,11 +47754,6 @@
     2500
    ],
    [
-    "Provenza",
-    "Semifinal",
-    1937
-   ],
-   [
     "Leandro Katana",
     "Semifinal",
     1750
@@ -47667,6 +47762,11 @@
     "akasha🇦🇷",
     "Semifinal",
     1750
+   ],
+   [
+    "Provenza",
+    "Semifinal",
+    1624
    ],
    [
     "Erian",
@@ -47714,14 +47814,39 @@
     625
    ],
    [
+    "Monet",
+    "R32",
+    625
+   ],
+   [
+    "Player",
+    "R32",
+    625
+   ],
+   [
     "Surya",
     "Octavos",
+    625
+   ],
+   [
+    "Under",
+    "R32",
+    625
+   ],
+   [
+    "romeo",
+    "R32",
     625
    ],
    [
     "sh🇧🇿",
     "Octavos",
     625
+   ],
+   [
+    "yinn",
+    "R32",
+    312
    ]
   ],
   "ver": {
@@ -49436,11 +49561,11 @@
      ],
      [
       [
-       "TOBALSILLO Y MARK",
-       "DOMINICK Y SAMGAMING"
+       "TOBALSILLO, Mark",
+       "Dominick, SAMGAMING"
       ],
       "",
-      "sin ganador: espera en ✅ Decidir"
+      "cobra: TOBALSILLO + MARK; cobra: DOMINICK + SAMGAMING; nadie siguió: ✅ Decidir"
      ]
     ],
     "r": "Octavos"
@@ -49590,6 +49715,11 @@
     1250
    ],
    [
+    "Dominick",
+    "Octavos",
+    625
+   ],
+   [
     "MANU",
     "Octavos",
     625
@@ -49616,6 +49746,11 @@
    ],
    [
     "RAIBLES",
+    "Octavos",
+    625
+   ],
+   [
+    "SAMGAMING",
     "Octavos",
     625
    ],
@@ -50735,11 +50870,11 @@
      ],
      [
       [
-       "MCO 🇦🇷",
-       "Vilca🇵🇪"
+       "MCO",
+       "Vilca"
       ],
       "",
-      "sin ganador: espera en ✅ Decidir"
+      "cobra: MCO 🇦🇷; cobra: Vilca🇵🇪; nadie siguió: ✅ Decidir"
      ]
     ],
     "r": "Cuartos"
@@ -50802,12 +50937,22 @@
     3500
    ],
    [
+    "MCO",
+    "Cuartos",
+    2000
+   ],
+   [
     "SOL",
     "Cuartos",
     2000
    ],
    [
     "Sol 2da 🇵🇪",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Vilca",
     "Cuartos",
     2000
    ]
@@ -50994,10 +51139,10 @@
      ],
      [
       [
-       "Hedorah 🇨🇱",
+       "Hedorah",
        "Joshema"
       ],
-      "Hedorah 🇨🇱",
+      "Hedorah",
       ""
      ],
      [
@@ -51047,10 +51192,10 @@
      ],
      [
       [
-       "Hedorah 🇨🇱",
+       "Hedorah",
        "Dominick"
       ],
-      "Hedorah 🇨🇱",
+      "Hedorah",
       ""
      ],
      [
@@ -51077,7 +51222,7 @@
      [
       [
        "BTRX",
-       "Hedorah 🇨🇱"
+       "Hedorah"
       ],
       "BTRX",
       ""
@@ -51120,7 +51265,7 @@
     8750
    ],
    [
-    "Hedorah 🇨🇱",
+    "Hedorah",
     "Semifinal",
     5250
    ],
@@ -51227,7 +51372,7 @@
      [
       [
        "Shadow",
-       "Hedorah 🇨🇱"
+       "Hedorah"
       ],
       "Shadow",
       ""
@@ -51311,7 +51456,7 @@
     2000
    ],
    [
-    "Hedorah 🇨🇱",
+    "Hedorah",
     "Cuartos",
     2000
    ]
@@ -51652,7 +51797,7 @@
       [
        "Lord Viruzz",
        "Ariaxer",
-       "Baut_N 🇻🇪"
+       "Baut_N"
       ],
       "Lord Viruzz",
       "triple (3 bandas)"
@@ -51830,7 +51975,7 @@
     1250
    ],
    [
-    "Baut_N 🇻🇪",
+    "Baut_N",
     "Octavos",
     1250
    ],
@@ -51916,18 +52061,18 @@
      ],
      [
       [
-       "GERONIMO🇻🇪",
+       "Makmah",
        "Geoka"
       ],
-      "GERONIMO🇻🇪",
+      "Makmah",
       ""
      ],
      [
       [
-       "LRSLASUSTANCIA🇦🇷",
+       "LRS",
        "Mochi DG"
       ],
-      "LRSLASUSTANCIA🇦🇷",
+      "LRS",
       ""
      ]
     ],
@@ -51945,10 +52090,10 @@
      ],
      [
       [
-       "GERONIMO🇻🇪",
-       "LRSLASUSTANCIA🇦🇷"
+       "Makmah",
+       "LRS"
       ],
-      "GERONIMO🇻🇪",
+      "Makmah",
       ""
      ]
     ],
@@ -51959,7 +52104,7 @@
      [
       [
        "Mito",
-       "GERONIMO🇻🇪"
+       "Makmah"
       ],
       "",
       "sin campeón: ✅ Decidir (los dos finalistas cobran el promedio de 1.º y 2.º)"
@@ -51971,7 +52116,7 @@
   "sv": "ACAD",
   "tabla": [
    [
-    "GERONIMO🇻🇪",
+    "Makmah",
     "Subcampeón",
     6250
    ],
@@ -51981,7 +52126,7 @@
     6250
    ],
    [
-    "LRSLASUSTANCIA🇦🇷",
+    "LRS",
     "Semifinal",
     3500
    ],
@@ -52030,16 +52175,16 @@
     "b": [
      [
       [
-       "LARRIX🇦🇷",
-       "EXE 🇦🇷"
+       "Terry",
+       "luisito 🏆"
       ],
-      "LARRIX🇦🇷",
+      "Terry",
       ""
      ],
      [
       [
        "NAVAS 🇪🇸",
-       "Letra 🇻🇪"
+       "Adriagner"
       ],
       "NAVAS 🇪🇸",
       ""
@@ -52067,10 +52212,10 @@
     "b": [
      [
       [
-       "LARRIX🇦🇷",
+       "Terry",
        "NAVAS 🇪🇸"
       ],
-      "LARRIX🇦🇷",
+      "Terry",
       ""
      ],
      [
@@ -52121,12 +52266,12 @@
     3500
    ],
    [
-    "Carpediem 🇨🇴",
+    "Adriagner",
     "Cuartos",
     2000
    ],
    [
-    "EXE 🇦🇷",
+    "Carpediem 🇨🇴",
     "Cuartos",
     2000
    ],
@@ -52136,7 +52281,7 @@
     2000
    ],
    [
-    "Letra 🇻🇪",
+    "luisito 🏆",
     "Cuartos",
     2000
    ]
@@ -52161,10 +52306,10 @@
     "b": [
      [
       [
-       "Letra 🇻🇪",
-       "MP 🇦🇷"
+       "Adriagner",
+       "LRS"
       ],
-      "Letra 🇻🇪",
+      "Adriagner",
       ""
      ],
      [
@@ -52177,24 +52322,24 @@
      ],
      [
       [
-       "CHUTY 🇪🇸",
-       "VALLES-T 🇨🇴"
+       "Carlosss",
+       "VALLES-T"
       ],
-      "CHUTY 🇪🇸",
+      "Carlosss",
       ""
      ],
      [
       [
-       "JONY B 🇲🇽",
+       "Mc dl",
        "LOBO ES 🇲🇽"
       ],
-      "JONY B 🇲🇽",
+      "Mc dl",
       ""
      ],
      [
       [
        "LARRIX🇦🇷",
-       "BNET 🇪🇸"
+       "Kravitz"
       ],
       "LARRIX🇦🇷",
       ""
@@ -52202,7 +52347,7 @@
      [
       [
        "Teorema 🇨🇱",
-       "Trueno🇦🇷"
+       "Trueno"
       ],
       "Teorema 🇨🇱",
       ""
@@ -52217,10 +52362,10 @@
      ],
      [
       [
-       "URKO 🇨🇴",
-       "Replik 🇦🇷"
+       "URKO",
+       "Soulb"
       ],
-      "URKO 🇨🇴",
+      "URKO",
       ""
      ]
     ],
@@ -52230,18 +52375,18 @@
     "b": [
      [
       [
-       "Letra 🇻🇪",
+       "Adriagner",
        "Sweet pain🇻🇪"
       ],
-      "Letra 🇻🇪",
+      "Adriagner",
       ""
      ],
      [
       [
-       "CHUTY 🇪🇸",
-       "JONY BEL 🇲🇽"
+       "Carlosss",
+       "Mc dl"
       ],
-      "CHUTY 🇪🇸",
+      "Carlosss",
       ""
      ],
      [
@@ -52254,10 +52399,10 @@
      ],
      [
       [
-       "URKO 🇨🇴",
+       "URKO",
        "WOS"
       ],
-      "URKO 🇨🇴",
+      "URKO",
       ""
      ]
     ],
@@ -52267,18 +52412,18 @@
     "b": [
      [
       [
-       "Letra 🇻🇪",
-       "CHUTY 🇪🇸"
+       "Adriagner",
+       "Carlosss"
       ],
-      "Letra 🇻🇪",
+      "Adriagner",
       ""
      ],
      [
       [
-       "URKO 🇨🇴",
+       "URKO",
        "Teorema 🇨🇱"
       ],
-      "URKO 🇨🇴",
+      "URKO",
       ""
      ]
     ],
@@ -52288,8 +52433,8 @@
     "b": [
      [
       [
-       "Letra 🇻🇪",
-       "URKO 🇨🇴"
+       "Adriagner",
+       "URKO"
       ],
       "",
       "sin campeón: ✅ Decidir (los dos finalistas cobran el promedio de 1.º y 2.º)"
@@ -52301,17 +52446,17 @@
   "sv": "LKR",
   "tabla": [
    [
-    "Letra 🇻🇪",
+    "Adriagner",
     "Subcampeón",
     8750
    ],
    [
-    "URKO 🇨🇴",
+    "URKO",
     "Subcampeón",
     8750
    ],
    [
-    "CHUTY 🇪🇸",
+    "Carlosss",
     "Semifinal",
     5250
    ],
@@ -52321,12 +52466,12 @@
     5250
    ],
    [
-    "JONY BEL 🇲🇽",
+    "LARRIX🇦🇷",
     "Cuartos",
     2500
    ],
    [
-    "LARRIX🇦🇷",
+    "Mc dl",
     "Cuartos",
     2500
    ],
@@ -52341,12 +52486,12 @@
     2500
    ],
    [
-    "BNET 🇪🇸",
+    "Hardcore",
     "Octavos",
     1250
    ],
    [
-    "Hardcore",
+    "Kravitz",
     "Octavos",
     1250
    ],
@@ -52356,7 +52501,7 @@
     1250
    ],
    [
-    "MP 🇦🇷",
+    "LRS",
     "Octavos",
     1250
    ],
@@ -52366,17 +52511,17 @@
     1250
    ],
    [
-    "Replik 🇦🇷",
+    "Soulb",
     "Octavos",
     1250
    ],
    [
-    "Trueno🇦🇷",
+    "Trueno",
     "Octavos",
     1250
    ],
    [
-    "VALLES-T 🇨🇴",
+    "VALLES-T",
     "Octavos",
     1250
    ]

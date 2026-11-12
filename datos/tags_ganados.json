@@ -1856,6 +1856,11 @@
     "t1",
     1794261790120
    ],
+   "😈 BESTIA NEGRA": [
+    "😈 BESTIA NEGRA",
+    "t1",
+    1794473112962
+   ],
    "🤝 SIN MIEDO": [
     "🤝 SIN MIEDO",
     "t1",
@@ -2817,6 +2822,11 @@
     "🗡️ MATAGIGANTES",
     "t1",
     1793143003505
+   ],
+   "🤜 CLÁSICO": [
+    "🤜 CLÁSICO",
+    "t1",
+    1794473112962
    ],
    "🤝 SIN MIEDO": [
     "🤝 SIN MIEDO",
@@ -6112,6 +6122,11 @@
     "🥉 AL PODIO",
     "t1",
     1792989121293
+   ],
+   "🧳 VIAJERO": [
+    "🧳 VIAJERO",
+    "t1",
+    1794473112962
    ]
   }
  },
@@ -6232,6 +6247,11 @@
     "🗡️ MATAGIGANTES",
     "t1",
     1794260565889
+   ],
+   "🤝 SIN MIEDO": [
+    "🤝 SIN MIEDO",
+    "t1",
+    1794473112962
    ]
   },
   "servidor": {
@@ -6303,6 +6323,13 @@
   }
  },
  "leonart": {
+  "competitivo": {
+   "🤝 SIN MIEDO": [
+    "🤝 SIN MIEDO",
+    "t1",
+    1794473112962
+   ]
+  },
   "pais": {
    "DA LA CARA": [
     "DA LA CARA",
@@ -6313,6 +6340,11 @@
     "EMBAJADOR",
     "t1",
     1793029252929
+   ],
+   "INTERNACIONAL": [
+    "INTERNACIONAL",
+    "t1",
+    1794473112962
    ],
    "PRIMER CAMPEÓN": [
     "PRIMER CAMPEÓN",
@@ -7002,6 +7034,11 @@
     "t1",
     1792953978519
    ],
+   "🏁 SEMIFINALISTA SERIAL": [
+    "🏁 SEMIFINALISTA SERIAL",
+    "t1",
+    1794473112962
+   ],
    "💯 CENTENARIO": [
     "💯 CENTENARIO",
     "t1",
@@ -7021,6 +7058,11 @@
     "🔟 DOBLE DÍGITO",
     "t1",
     1793029252929
+   ],
+   "🛫 NÓMADA": [
+    "🛫 NÓMADA",
+    "t1",
+    1794473112962
    ],
    "🥉 AL PODIO": [
     "🥉 AL PODIO",
@@ -7095,6 +7137,11 @@
  },
  "luisito": {
   "temporada": {
+   "🌍 TROTAMUNDOS": [
+    "🌍 TROTAMUNDOS",
+    "t1",
+    1794473112962
+   ],
    "🧳 VIAJERO": [
     "🧳 VIAJERO",
     "t1",
@@ -8075,6 +8122,11 @@
     "t1",
     1792953978519
    ],
+   "🌪️ ARRASADOR": [
+    "🌪️ ARRASADOR",
+    "t1",
+    1794473112962
+   ],
    "🔁 VENGADOR": [
     "🔁 VENGADOR",
     "t1",
@@ -8481,6 +8533,11 @@
     "🤝 SIN MIEDO",
     "t1",
     1794261790120
+   ],
+   "🦁 TEMERARIO": [
+    "🦁 TEMERARIO",
+    "t1",
+    1794473112962
    ]
   },
   "pais": {
@@ -10823,6 +10880,11 @@
     "🧟 RESUCITADO",
     "t1",
     1792953978519
+   ],
+   "🧳 VIAJERO": [
+    "🧳 VIAJERO",
+    "t1",
+    1794473112962
    ]
   }
  },
@@ -12052,6 +12114,11 @@
     "🗡️ MATAGIGANTES",
     "t1",
     1794265338455
+   ],
+   "🤝 SIN MIEDO": [
+    "🤝 SIN MIEDO",
+    "t1",
+    1794473112962
    ]
   },
   "servidor": {

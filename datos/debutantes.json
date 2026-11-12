@@ -330,18 +330,6 @@
    "vence": "2026-10-29T00:30:05+00:00",
    "vencido": true
   },
-  "BNET": {
-   "avisado": "2026-11-12",
-   "con": null,
-   "cumplido": "",
-   "debut": "2026-11-06T03:25:32+00:00",
-   "did": "",
-   "evento": "TORNEOS",
-   "n": 620,
-   "sv": "LKR",
-   "vence": "2026-11-13T03:25:32+00:00",
-   "vencido": false
-  },
   "BROTAXX": {
    "con": null,
    "cumplido": "",
@@ -370,7 +358,7 @@
    "con": null,
    "cumplido": "",
    "debut": "2026-10-31T22:31:17+00:00",
-   "did": "",
+   "did": "1314608320014979192",
    "evento": "FAT BATTLES PALOOZA EDICIÓN HALOWEEN",
    "n": 617,
    "sv": "ACAD",
@@ -416,18 +404,6 @@
    "sv": "FFA",
    "vence": "2026-11-01T00:48:12+00:00",
    "vencido": true
-  },
-  "CHUTY": {
-   "avisado": "2026-11-12",
-   "con": null,
-   "cumplido": "",
-   "debut": "2026-11-06T03:25:32+00:00",
-   "did": "",
-   "evento": "TORNEOS",
-   "n": 620,
-   "sv": "LKR",
-   "vence": "2026-11-13T03:25:32+00:00",
-   "vencido": false
   },
   "Cannox": {
    "avisado": "2026-10-30",
@@ -690,18 +666,6 @@
    "vence": "2026-11-10T03:59:09+00:00",
    "vencido": true
   },
-  "EXE": {
-   "avisado": "2026-11-12",
-   "con": null,
-   "cumplido": "",
-   "debut": "2026-11-06T02:03:35+00:00",
-   "did": "",
-   "evento": "(sin titulo)",
-   "n": 619,
-   "sv": "LKR",
-   "vence": "2026-11-13T02:03:35+00:00",
-   "vencido": false
-  },
   "El novio de tu novia": {
    "avisado": "2026-11-02",
    "chat": "2026-11-02",
@@ -866,17 +830,6 @@
    "vence": "2026-11-04T01:58:48+00:00",
    "vencido": true
   },
-  "GERONIMO": {
-   "con": null,
-   "cumplido": "",
-   "debut": "2026-11-01T03:58:07+00:00",
-   "did": "",
-   "evento": "CALLE DEL TERROR",
-   "n": 618,
-   "sv": "ACAD",
-   "vence": "2026-11-08T03:58:07+00:00",
-   "vencido": true
-  },
   "GGWAN": {
    "avisado": "2026-10-25",
    "chat": "2026-10-25",
@@ -1016,7 +969,7 @@
    "con": 614,
    "cumplido": "2026-10-20T02:09:59+00:00",
    "debut": "2026-10-18T20:30:10+00:00",
-   "did": "",
+   "did": "1168982381156388998",
    "evento": "RED BULL",
    "n": 613,
    "sv": "LKR",
@@ -1176,18 +1129,6 @@
    "sv": "LKR",
    "vence": "2026-11-08T20:39:59+00:00",
    "vencido": true
-  },
-  "JONY BEL": {
-   "avisado": "2026-11-12",
-   "con": null,
-   "cumplido": "",
-   "debut": "2026-11-06T03:25:32+00:00",
-   "did": "",
-   "evento": "TORNEOS",
-   "n": 620,
-   "sv": "LKR",
-   "vence": "2026-11-13T03:25:32+00:00",
-   "vencido": false
   },
   "Jahno Afrodisiaco": {
    "avisado": "2026-10-28",
@@ -1457,17 +1398,6 @@
    "vence": "2026-11-13T03:25:32+00:00",
    "vencido": false
   },
-  "LRSLASUSTANCIA": {
-   "con": null,
-   "cumplido": "",
-   "debut": "2026-11-01T03:58:07+00:00",
-   "did": "",
-   "evento": "CALLE DEL TERROR",
-   "n": 618,
-   "sv": "ACAD",
-   "vence": "2026-11-08T03:58:07+00:00",
-   "vencido": true
-  },
   "LSO": {
    "avisado": "2026-10-25",
    "avisado_cumplido": "2026-10-27",
@@ -1566,18 +1496,6 @@
    "n": 563,
    "sv": "FFA",
    "vence": "2026-11-10T02:50:33+00:00",
-   "vencido": false
-  },
-  "Letra": {
-   "avisado_cumplido": "2026-11-12",
-   "con": 620,
-   "cumplido": "2026-11-06T03:25:32+00:00",
-   "debut": "2026-11-06T02:03:35+00:00",
-   "did": "",
-   "evento": "(sin titulo)",
-   "n": 619,
-   "sv": "LKR",
-   "vence": "2026-11-13T02:03:35+00:00",
    "vencido": false
   },
   "Luck": {
@@ -1683,18 +1601,6 @@
    "sv": "SR",
    "vence": "2026-10-28T21:05:52+00:00",
    "vencido": true
-  },
-  "MP": {
-   "avisado": "2026-11-12",
-   "con": null,
-   "cumplido": "",
-   "debut": "2026-11-06T03:25:32+00:00",
-   "did": "",
-   "evento": "TORNEOS",
-   "n": 620,
-   "sv": "LKR",
-   "vence": "2026-11-13T03:25:32+00:00",
-   "vencido": false
   },
   "Magic": {
    "avisado": "2026-10-12",
@@ -2113,18 +2019,6 @@
    "vence": "2026-11-03T18:35:17+00:00",
    "vencido": true
   },
-  "Replik": {
-   "avisado": "2026-11-12",
-   "con": null,
-   "cumplido": "",
-   "debut": "2026-11-06T03:25:32+00:00",
-   "did": "",
-   "evento": "TORNEOS",
-   "n": 620,
-   "sv": "LKR",
-   "vence": "2026-11-13T03:25:32+00:00",
-   "vencido": false
-  },
   "Revo": {
    "avisado": "2026-10-19",
    "avisado_cumplido": "2026-10-21",
@@ -2494,7 +2388,7 @@
    "con": null,
    "cumplido": "",
    "debut": "2026-11-06T03:25:32+00:00",
-   "did": "",
+   "did": "1537962502283984918",
    "evento": "TORNEOS",
    "n": 620,
    "sv": "LKR",
@@ -2506,7 +2400,7 @@
    "con": null,
    "cumplido": "",
    "debut": "2026-11-06T03:25:32+00:00",
-   "did": "",
+   "did": "1317231402697363507",
    "evento": "TORNEOS",
    "n": 620,
    "sv": "LKR",
@@ -2518,7 +2412,7 @@
    "con": null,
    "cumplido": "",
    "debut": "2026-11-06T03:25:32+00:00",
-   "did": "",
+   "did": "1548906948307451906",
    "evento": "TORNEOS",
    "n": 620,
    "sv": "LKR",

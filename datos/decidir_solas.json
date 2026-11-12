@@ -4293,6 +4293,161 @@
     "AZUKY🇲🇽"
    ],
    "escribio": {}
+  },
+  {
+   "id": "b218499242",
+   "tipo": "Evento dudoso",
+   "sec": "QCYO RAPEEN 12 · FFA · 08/11 · #593",
+   "que": "Algo raro al puntuar: ESCALA: la ronda «clasificatorias» no tiene valor en la escala 16+ y sus eliminados cobran 0 — revisar (guía §2 y §3.6)",
+   "r": "Está bien así",
+   "regla": "R19 · la ronda que la escala 8-15 no tenía ahora paga 625",
+   "rk": "R19",
+   "por": "el ciclo",
+   "porque": "la ronda «clasificatorias» de la escala 16+ paga 625 desde la regla de Dlx del 13/10 («la ronda que la escala 8-15 no tiene paga 625»), y en el evento cargado ya cobran: #593: Monet 625, Player 625, Under 625, romeo 625 y 1 más",
+   "t": 1794473098058,
+   "filas": [
+    1151
+   ],
+   "variantes": [
+    "ESCALA: la ronda «clasificatorias» no tiene valor en la escala 16+ y sus eliminados cobran 0 — revisar (guía §2 y §3.6)"
+   ],
+   "escribio": {}
+  },
+  {
+   "id": "cc958e4466",
+   "tipo": "Bracket incompleto",
+   "sec": "Shaoling Battles 1v1 4 · FDS · 01/10",
+   "que": "Esta llave no dice quién ganó y lleva más de 12 h sin cambios, así que no sumó nada. Si sabes quién salió campeón, elegilo: cobra campeón; el que ganó la otra semifinal, si la llave lo dice, cobra subcampeón, y los demás de las semifinales cobran esa ronda. Si la llave no dice quién llegó a la final del otro lado, ese lugar no lo cobra nadie. Si no, ¿cuenta? A los 28 días sin final, el ciclo la ca",
+   "r": "Sin final: los de las semis cobran la semifinal",
+   "regla": "R26 · una llave que llega sólo a las semis, a los 28 días: los de las semis cobran la semifinal",
+   "rk": "R26",
+   "por": "el ciclo",
+   "porque": "la llave llega sólo a las semis y pasaron 42 días: los de las semis cobran la semifinal",
+   "t": 1794473098058,
+   "filas": [
+    861
+   ],
+   "variantes": [
+    "Shaoling Battles 1v1 4 · FDS · 01/10"
+   ],
+   "escribio": {
+    "campeon": "Shaoling Battles 1v1 4 · FDS · 01/10"
+   }
+  },
+  {
+   "id": "cc80b3b348",
+   "tipo": "Bracket incompleto",
+   "sec": "2v2 1 · FDS · 25/09",
+   "que": "Esta llave no dice quién ganó y lleva más de 12 h sin cambios, así que no sumó nada. Si sabes quién salió campeón, elegilo: cobra campeón; el que ganó la otra semifinal, si la llave lo dice, cobra subcampeón, y los demás de las semifinales cobran esa ronda. Si la llave no dice quién llegó a la final del otro lado, ese lugar no lo cobra nadie. Si no, ¿cuenta? A los 28 días sin final, el ciclo la ca",
+   "r": "Sin final: los de las semis cobran la semifinal",
+   "regla": "R26 · una llave que llega sólo a las semis, a los 28 días: los de las semis cobran la semifinal",
+   "rk": "R26",
+   "por": "el ciclo",
+   "porque": "la llave llega sólo a las semis y pasaron 48 días: los de las semis cobran la semifinal",
+   "t": 1794473098058,
+   "filas": [
+    863
+   ],
+   "variantes": [
+    "2v2 1 · FDS · 25/09"
+   ],
+   "escribio": {
+    "campeon": "2v2 1 · FDS · 25/09"
+   }
+  },
+  {
+   "id": "c8c5f72265",
+   "tipo": "Nombre desconocido",
+   "sec": "MANIJA Y NUEVA ERA VOL.1 · CH · 29/09 · #569",
+   "que": "¿Quién es «CNC 🇲🇽»?",
+   "r": "Es alguien nuevo: alta con su cuenta 536857764782407681",
+   "regla": "Discord · su cuenta de Discord: la inscripción, el podio, la llave o la llamada",
+   "rk": "Discord",
+   "por": "el ciclo (su cuenta de Discord)",
+   "porque": "nuevo: entró a la Lista con su Discord (536857764782407681)",
+   "t": 1794473098058,
+   "filas": [
+    1312
+   ],
+   "variantes": [
+    "CNC 🇲🇽"
+   ],
+   "escribio": {
+    "alta": [
+     "CNC",
+     "536857764782407681"
+    ]
+   }
+  },
+  {
+   "id": "a983663f12",
+   "tipo": "Nombre desconocido",
+   "sec": "(sin titulo) · DDS · 10/10 · #602",
+   "que": "¿Quién es «SAMGAMING»?",
+   "r": "Es alguien nuevo: alta con su cuenta 1506719060165922858",
+   "regla": "Discord · su cuenta de Discord: la inscripción, el podio, la llave o la llamada",
+   "rk": "Discord",
+   "por": "el ciclo (su cuenta de Discord)",
+   "porque": "nuevo: entró a la Lista con su Discord (1506719060165922858)",
+   "t": 1794473098058,
+   "filas": [
+    1317
+   ],
+   "variantes": [
+    "SAMGAMING"
+   ],
+   "escribio": {
+    "alta": [
+     "SAMGAMING",
+     "1506719060165922858"
+    ]
+   }
+  },
+  {
+   "id": "0af9a47e7f",
+   "tipo": "Nombre desconocido",
+   "sec": "MANIJA Y NUEVA ERA VOL.1 · CH · 29/09 · #569",
+   "que": "¿Quién es «Khat alien 🇬🇹»?",
+   "r": "Es KATALIEN",
+   "regla": "tipeo · el nombre de alguien de la Lista con una letra de diferencia",
+   "rk": "tipeo",
+   "por": "el ciclo (una letra de diferencia)",
+   "porque": "alias de KATALIEN: «Khat alien» con una letra de diferencia, del mismo país, y KATALIEN juega en CH",
+   "t": 1794473098058,
+   "filas": [
+    1314
+   ],
+   "variantes": [
+    "Khat alien 🇬🇹"
+   ],
+   "escribio": {
+    "alias": [
+     "Khat alien",
+     "KATALIEN"
+    ],
+    "filas": [
+     359
+    ]
+   }
+  },
+  {
+   "id": "f8dc5b0c2b",
+   "tipo": "Alias posible",
+   "sec": "🪪 Identidad",
+   "que": "¿«GERONIMO» es Makmah? La cuenta de Makmah en la Lista se anotó como «GERONIMO», y en el ranking suman aparte. Si es la misma persona, los puntos de «GERONIMO» pasan a Makmah.\nLa cuenta: https://discord.com/users/897942226955563068",
+   "r": "Es la misma persona",
+   "regla": "cierre · ya no hacía falta preguntarlo",
+   "rk": "cierre",
+   "por": "el ciclo",
+   "porque": "la misma persona: «GERONIMO» ya es alias de Makmah",
+   "t": 1794473098058,
+   "filas": [
+    1310
+   ],
+   "variantes": [
+    "DOS NOMBRES: «GERONIMO» → «Makmah» · cuenta 897942226955563068"
+   ],
+   "escribio": {}
   }
  ],
  "deshechas": []

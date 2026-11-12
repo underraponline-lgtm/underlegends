@@ -332,6 +332,46 @@
    "cuando": "2026-11-12 2:29 AM ET",
    "por": "el ciclo (R24)",
    "nota": "Dlx en ✅ Decidir, a «Bracket incompleto»: sin campeón. La llave no lo decía: los dos finalistas cobran el promedio de 1.º y 2.º (`llaves_a_entrada.con_campeon()`)"
+  },
+  "Shaoling Battles 1v1 4 · FDS · 01/10": {
+   "campeon": {
+    "ganador": "(sin campeón)",
+    "sin_final": true,
+    "ronda": "semifinal",
+    "batallas": [
+     [
+      "CrisZJ🇵🇪",
+      "Pepe Mujica🇦🇷"
+     ],
+     [
+      "nxuz 🇵🇪",
+      "Xplicit🇨🇱"
+     ]
+    ],
+    "pasaron": []
+   },
+   "cuando": "2026-11-12 3:44 AM ET",
+   "por": "el ciclo (R26)",
+   "nota": "Dlx en ✅ Decidir, a «Bracket incompleto»: sin final. La llave llegaba sólo a las semis: los de las semis cobran la semifinal (`llaves_a_entrada.con_campeon()`)"
+  },
+  "2v2 1 · FDS · 25/09": {
+   "campeon": {
+    "ganador": "(sin campeón)",
+    "sin_final": true,
+    "ronda": "semifinal",
+    "batallas": [
+     [
+      "Vilca 🇵🇪 + Artezzy 🇵🇪",
+      "last  🏳️‍⚧️ - Leyenda x5 🇦🇷:"
+     ]
+    ],
+    "pasaron": [
+     "Habraham 🇭🇳 + raizer 🇵🇪"
+    ]
+   },
+   "cuando": "2026-11-12 3:44 AM ET",
+   "por": "el ciclo (R26)",
+   "nota": "Dlx en ✅ Decidir, a «Bracket incompleto»: sin final. La llave llegaba sólo a las semis: los de las semis cobran la semifinal (`llaves_a_entrada.con_campeon()`)"
   }
  },
  "no_rankear": {
@@ -1683,5 +1723,94 @@
   "pichulamc": 555,
   "player": 555,
   "sultan": 555
+ },
+ "ligas_fin": [
+  {
+   "liga": "fms-peru",
+   "n": "FMS Perú",
+   "sv": "DDF",
+   "ult": "2026-10-15",
+   "temporada": "prueba",
+   "campeon": "LSD",
+   "podio": [
+    "LSD",
+    "JEIXDER",
+    "CrisZJ"
+   ],
+   "cuando": "2026-11-12 3:44 AM ET",
+   "t": "2026-11-12T08:44:58Z",
+   "por": "Dlx (✅ Decidir)"
+  },
+  {
+   "liga": "fmh-under",
+   "n": "FMH Under",
+   "sv": "URBF",
+   "ult": "2026-10-19",
+   "temporada": "prueba",
+   "campeon": "Erian",
+   "podio": [
+    "Erian",
+    "TøKīØ🦠🧠",
+    "Majiztral"
+   ],
+   "cuando": "2026-11-12 3:44 AM ET",
+   "t": "2026-11-12T08:44:58Z",
+   "por": "Dlx (✅ Decidir)"
+  },
+  {
+   "liga": "lkr-champions",
+   "n": "Champions League LKR",
+   "sv": "LKR",
+   "ult": "2026-10-21",
+   "temporada": "prueba",
+   "campeon": "Mathhias",
+   "podio": [
+    "Mathhias",
+    "MaYeuTyK",
+    "Kusoh"
+   ],
+   "cuando": "2026-11-12 3:44 AM ET",
+   "t": "2026-11-12T08:44:58Z",
+   "por": "Dlx (✅ Decidir)"
+  },
+  {
+   "liga": "lkr-fms-tricolor",
+   "n": "FMS Tricolor LKR",
+   "sv": "LKR",
+   "ult": "2026-11-06",
+   "temporada": "prueba",
+   "campeon": "Calíz",
+   "podio": [
+    "Calíz",
+    "Mathhias",
+    "MaYeuTyK"
+   ],
+   "cuando": "2026-11-12 3:44 AM ET",
+   "t": "2026-11-12T08:44:58Z",
+   "por": "Dlx (✅ Decidir)"
+  },
+  {
+   "liga": "fms-titans",
+   "n": "FMS Titans",
+   "sv": "DDF",
+   "ult": "2026-10-29",
+   "temporada": "prueba",
+   "campeon": "Krtman",
+   "podio": [
+    "Krtman",
+    "Adriagner",
+    "Keider"
+   ],
+   "cuando": "2026-11-12 3:44 AM ET",
+   "t": "2026-11-12T08:44:58Z",
+   "por": "Dlx (✅ Decidir)"
+  }
+ ],
+ "ligas_sigue": {
+  "fds-mexico": {
+   "ult": "2026-10-18",
+   "cuando": "2026-11-12 3:44 AM ET",
+   "por": "Dlx (✅ Decidir)"
+  }
  }
 }
