@@ -94,7 +94,10 @@ from rankings import cod                                # noqa: E402
 def _piso():
     try:
         import sys as _s
-        _s.path.insert(0, BASE)
+        # 🔴 ERA `BASE`, QUE ACÁ NO EXISTE (11/11/2026, lo encontró pyflakes): el `NameError` caía en el `except` y
+        # devolvía 1 siempre. Daba bien de casualidad —el requisito más flojo también es 1—, pero si cambiaba, el pool no
+        # lo seguía, que es justo lo que este encabezado promete
+        _s.path.insert(0, RAIZ)
         from comun.requisitos import REQUISITOS
         pisos = [min(n for n, _c, _e in cs) for cs in REQUISITOS.values() if cs]
         return min(pisos) if pisos else 1
@@ -346,9 +349,9 @@ def _calcular_scores(dentro):
     en cero. Es lo que ya hacía; el arreglo no puede empeorarlo.
     """
     try:
-        from escribir import Hoja
+        import espejo_t1 as EJ
         from competitivo import calcular
-        res = Hoja('Resultados').filas()
+        res = EJ.fuente('Resultados', 'pool temporada')
         for quien, v in calcular(res).items():
             dentro[norm(quien)] = v.get('score') or 0.0
         print('   ⚠️ la vitrina no dio Scores (puerta de 10 ev): '

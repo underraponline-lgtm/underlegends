@@ -214,11 +214,11 @@ def datos():
     El segundo son las celdas que llevan **formula** y no texto: hoy la
     cuenta atras. Ver `_formula_cuenta()` y `escribir()`.
     """
-    from escribir import Hoja
+    import espejo_t1 as EJ
     import rankings as RK
 
-    res = Hoja('Resultados').filas()
-    uno = Hoja('1v1').filas()
+    res = EJ.fuente('Resultados', 'lobby')
+    uno = EJ.fuente('1v1', 'lobby')
     # los mismos Puntos que la vitrina: con los multiplicadores y el Most Wanted
     ag = RK.agregar_temporada(res, uno)
     # 🔑 LOS TOPS Y LAS STATS DE LA PORTADA SON DE LOS MIEMBROS («fuera de
@@ -565,9 +565,9 @@ def datos():
 def _nombres_de_evento():
     """`{numero: nombre}` desde `Eventos Procesados`."""
     try:
-        from escribir import Hoja
+        import espejo_t1 as EJ
         out = {}
-        for f in Hoja('Eventos Procesados').filas():
+        for f in EJ.fuente('Eventos Procesados', 'lobby'):
             f = list(f) + [''] * 4
             n = str(f[0]).strip()
             if n.isdigit():

@@ -82,9 +82,9 @@ def armar():
     # ¿la hoja ya es el índice? Entonces alcanza con los números
     a1 = ((vr[-1].get('values') or [['']])[0] or [''])[0] if vr else ''
     ids['_ya_es'] = str(a1).strip() == TITULO
-    from escribir import Hoja
+    import espejo_t1 as EJ
     evs = []
-    for f in Hoja('Eventos Procesados').filas():
+    for f in EJ.fuente('Eventos Procesados', 'indice'):
         f = [str(x).strip() for x in list(f) + [''] * 7]
         if f[0].isdigit():
             evs.append(f[:6])

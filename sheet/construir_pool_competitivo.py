@@ -485,12 +485,11 @@ def main():
     TRI = defaultdict(lambda: [0, 0])
     try:
         from padron import seguro as _pad_seguro          # noqa: F401
-        from escribir import Hoja as _Hoja
         import construir_padron as _PAD
         pais_de = {_PAD.norm(x['raw']): (x.get('pais') or '').strip()
                    for x in _PAD.cargar()}
-        h1 = _Hoja('1v1')
-        DE_1V1, NAC, INT = clasificar_duelos(h1.filas(), pais_de)
+        import espejo_t1 as _EJ
+        DE_1V1, NAC, INT = clasificar_duelos(_EJ.fuente('1v1', 'pool competitivo'), pais_de)
         # 🤝 y los cruces de los triples, para el requisito de País (ver `cruces_triples()`)
         try:
             with open(os.path.join(RAIZ, 'datos', 'llaves_t1.json'), encoding='utf-8') as _f:
@@ -540,10 +539,10 @@ def main():
     #
     # ⚠️ Y ES LA MISMA FUNCION QUE ESCRIBE LA VITRINA, con otro piso:
     # una sola definición del Score y de las cinco dimensiones.
-    from escribir import Hoja as _Hoja
+    import espejo_t1 as _EJ
     import rankings as _RK
-    _res = _Hoja('Resultados').filas()
-    _uno = _Hoja('1v1').filas()
+    _res = _EJ.fuente('Resultados', 'pool competitivo')
+    _uno = _EJ.fuente('1v1', 'pool competitivo')
     _ag = _RK.agregar(_res, _uno)
     _por_pts = sorted(_ag.items(), key=lambda kv: -int(kv[1].get('Puntos') or 0))
     _orden = {k: i for i, (k, _v) in enumerate(_por_pts, 1)}

@@ -594,9 +594,9 @@ def correr(res=None, uno=None, ahora=None, aplicar=False):
     import rankings as RK
     ahora = ahora or dt.datetime.now(dt.timezone.utc)
     if res is None or uno is None:
-        from escribir import Hoja
-        res = Hoja('Resultados').filas() if res is None else res
-        uno = Hoja('1v1').filas() if uno is None else uno
+        import espejo_t1 as EJ
+        res = EJ.fuente('Resultados', 'misiones') if res is None else res
+        uno = EJ.fuente('1v1', 'misiones') if uno is None else uno
     # ⚠️ EL ARRANQUE CORTA SÓLO CUANDO YA PASÓ, como en las divisiones (ver `divisiones.correr()`)
     desde = MU._arranque()
     if desde and desde > ahora:

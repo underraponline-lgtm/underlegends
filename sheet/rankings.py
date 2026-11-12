@@ -1609,8 +1609,8 @@ def tabla_nueva():
     correcto: no tiene registro de Most Wanted todavia, y su `Rango` lo
     pone el pipeline del Competitivo.
     """
-    from escribir import Hoja
-    res, uno = Hoja('Resultados').filas(), Hoja('1v1').filas()
+    import espejo_t1 as EJ
+    res, uno = EJ.fuente('Resultados', 'rankings'), EJ.fuente('1v1', 'rankings')
     avisos = []
     if not res:
         return None, ['`Resultados` está vacía: no hay de dónde calcular']
@@ -2649,8 +2649,8 @@ def escribir_todas(dry=True):
     escritura pasa por `tabla_nueva()`, que las conserva. Estas tres se
     calculan enteras, así que no hay nada que arrastrar.
     """
-    from escribir import Hoja
-    res, uno = Hoja('Resultados').filas(), Hoja('1v1').filas()
+    import espejo_t1 as EJ
+    res, uno = EJ.fuente('Resultados', 'rankings'), EJ.fuente('1v1', 'rankings')
     # los mismos Puntos que la Temporada: con multiplicadores y MW
     ag = agregar_temporada(res, uno)
     # 🔑 Y LO DE CADA UNO EN CADA SERVIDOR, para su carta de Servidor (Dlx, 03/10/2026). Ver `por_servidor()`. No frena

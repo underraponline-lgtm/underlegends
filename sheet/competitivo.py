@@ -591,8 +591,8 @@ def main():
     if '--auto' in sys.argv:
         return _self_check()
 
-    from escribir import Hoja
-    res = Hoja('Resultados').filas()
+    import espejo_t1 as EJ
+    res = EJ.fuente('Resultados', 'competitivo')
     if not res:
         print('\n   `Resultados` está vacía: no hay de dónde calcular.\n')
         return 0

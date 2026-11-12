@@ -543,13 +543,13 @@ def _tiene_campeon(nombre_evento):
     abierta, que es el lado seguro.
     """
     try:
-        from escribir import Hoja
         objetivo = norm_simple(nombre_evento)
         # ⚠️ LAS DOS HOJAS, UNA VEZ POR CORRIDA: esto se pregunta por cada
         # llave incompleta de la cola, y eran dos lecturas por fila.
         if 'ep' not in _HOJAS:
-            _HOJAS['ep'] = Hoja('Eventos Procesados').filas()
-            _HOJAS['res'] = Hoja('Resultados').filas()
+            import espejo_t1 as EJ
+            _HOJAS['ep'] = EJ.fuente('Eventos Procesados', 'pendientes')
+            _HOJAS['res'] = EJ.fuente('Resultados', 'pendientes')
         nums = set()
         for f in _HOJAS['ep']:
             f = list(f) + [''] * 3

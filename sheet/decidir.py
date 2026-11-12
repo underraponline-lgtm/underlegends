@@ -1952,9 +1952,9 @@ def _nombres_en_resultados():
     if 'resultados' in _DATOS:
         return _DATOS['resultados']
     try:
-        from escribir import Hoja
+        import espejo_t1 as EJ
         out, con_b = {}, set()
-        for f in Hoja('Resultados').filas():
+        for f in EJ.fuente('Resultados', 'decidir'):
             f = [str(x).strip() for x in list(f) + [''] * 5]
             k = norm(_sin_bandera(f[4]))
             if k:
@@ -3319,9 +3319,9 @@ def tipeos(preguntas, respuestas, eventos, dry=True):
     if not cand:
         return set()
     try:
-        from escribir import Hoja
+        import espejo_t1 as EJ
         jugo = {}
-        for f in Hoja('Resultados').filas():
+        for f in EJ.fuente('Resultados', 'decidir'):
             f = [str(x).strip() for x in list(f) + [''] * 5]
             jugo.setdefault(norm(_sin_bandera(f[4])), set()).add(f[2])
     except Exception as e:                               # noqa: BLE001
@@ -4094,9 +4094,9 @@ def _abiertas_de_pendientes():
 def _eventos():
     """{'353': ('ELRAP FECHA 6', 'FFA', '24/09')} desde `Eventos Procesados`."""
     try:
-        from escribir import Hoja
+        import espejo_t1 as EJ
         out = {}
-        for f in Hoja('Eventos Procesados').filas():
+        for f in EJ.fuente('Eventos Procesados', 'decidir'):
             f = [str(x).strip() for x in list(f) + [''] * 4]
             if f[0].isdigit():
                 out[f[0]] = (f[1], f[2], f[3])

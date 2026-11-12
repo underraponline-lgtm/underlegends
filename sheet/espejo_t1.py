@@ -113,6 +113,35 @@ def filas(hoja, temp=ACTUAL, base=BASE):
     return [[visible(c) for c in f] for f in crudas(hoja, temp, base)]
 
 
+#: 🔎 LA PRUEBA DE LA ETAPA 2 (11/11/2026). Prendida, `fuente()` lee el archivo Y el Sheet, los compara, y si dan
+#: distinto usa el Sheet —todavía es la fuente— y lo dice en rojo: lo que calcula cada lector sale idéntico a antes por
+#: construcción. Se apaga, y con eso el Sheet deja de leerse, cuando varias corridas seguidas del ciclo dieron «igual»
+#: en todos los lectores (se ve en el log: una línea por hoja y por proceso).
+CONTROL = True
+#: lo que ya se comparó en este proceso, `{hoja: igual}`: un lector que pide la misma hoja dos veces la dice una vez
+_VISTO = {}
+
+
+def fuente(hoja, lector='', base=BASE):
+    """🗄️ Las filas de `hoja` como las da `Hoja(hoja).filas()`, pero desde datos/: lo que usan los lectores en vez de
+    leer el Sheet (etapa 2). Sin archivo, el Sheet. Con `CONTROL`, ver arriba."""
+    mio = filas(hoja, base=base) if leer(hoja, base=base) is not None else None
+    if mio is not None and not CONTROL:
+        return mio
+    from escribir import Hoja
+    sh = [[str(c) for c in f] for f in Hoja(hoja).filas()]
+    de = ' (%s)' % lector if lector else ''
+    if mio is None:
+        print('   ⚠️ %s: no está en datos/, leo el Sheet%s' % (hoja, de))
+        return sh
+    igual = sh == mio
+    if _VISTO.get(hoja) != igual:
+        print('   %s %s desde datos/: %s%s' % ('🗄️' if igual else '🔴', hoja, 'igual al Sheet' if igual else
+              'DISTINTO del Sheet (%d contra %d filas): uso el Sheet' % (len(mio), len(sh)), de))
+    _VISTO[hoja] = igual
+    return mio if igual else sh
+
+
 def _num(f):
     return visible(f[0]).strip() if f else ''
 
@@ -276,6 +305,36 @@ def _self_check():
            and crudas('Resultados', base=tmp)[3] == [473, '16/10', 'Otro', 1]
            and al_escribir('Lista de Raperos', cab, fs, base=tmp) is None,
            'quien escribe deja el archivo: con relleno o sin él es el mismo texto, no lo achica y sólo las tres hojas')
+    # 🔎 fuente(): con la prueba prendida compara con el Sheet (acá, uno de mentira) y si dan distinto gana el Sheet
+    global CONTROL
+    import types
+    real, ctrl = sys.modules.get('escribir'), CONTROL
+    hoja_falsa = {'filas': [['471', '14/10', 'Teito', '1250'], ['471', '14/10', 'Geoka', '1250', 'Nadie siguió']]}
+    falso = types.ModuleType('escribir')
+    falso.Hoja = lambda nombre: types.SimpleNamespace(filas=lambda: [list(f) for f in hoja_falsa['filas']])
+    sys.modules['escribir'] = falso
+    try:
+        with tempfile.TemporaryDirectory() as tmp:
+            os.makedirs(os.path.join(tmp, 'datos'))
+            sin = fuente('Resultados', base=tmp)
+            al_escribir('Resultados', cab, fs[:2], base=tmp)
+            _VISTO.clear()
+            igual = fuente('Resultados', base=tmp)
+            hoja_falsa['filas'] = hoja_falsa['filas'] + [['472', '15/10', 'Nuevo', '1']]
+            distinto = fuente('Resultados', base=tmp)
+            CONTROL = False
+            hoja_falsa['filas'] = []
+            apagado = fuente('Resultados', base=tmp)
+        ok(sin == [['471', '14/10', 'Teito', '1250'], ['471', '14/10', 'Geoka', '1250', 'Nadie siguió']]
+           and igual == sin and len(distinto) == 3 and distinto[2][2] == 'Nuevo' and apagado == sin,
+           'fuente(): sin archivo lee el Sheet; igual, el archivo; distinto, el Sheet; con la prueba apagada, sólo el archivo')
+    finally:
+        CONTROL = ctrl
+        _VISTO.clear()
+        if real is not None:
+            sys.modules['escribir'] = real
+        else:
+            sys.modules.pop('escribir', None)
     ok(set(HOJAS) == {'Resultados', '1v1', 'Eventos Procesados'}
        and ruta('1v1').endswith(os.path.join('datos', ACTUAL + '_1v1.json')), 'las tres hojas, con la temporada en el nombre')
     print('\n   %s' % ('✅ todo bien' if not fallas else '🔴 %d mal' % fallas))
