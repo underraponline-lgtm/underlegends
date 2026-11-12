@@ -1574,8 +1574,12 @@ def otro_en_servidor(filas, sv, mapa=None):
     if not m:
         return filas
 
+    # 🔗 TAMBIÉN « y »: un equipo escrito «KUN Y CARLOS» (la #602 de DDS, 12/11/2026) se parte en KUN + CARLOS DESPUÉS
+    # de esto, así que sin la « y » acá «CARLOS» nunca se miraba solo y la regla de DDS no lo alcanzaba: el paso 0c lo
+    # corregía y el lector, al releer la llave en la misma corrida, lo volvía a escribir. Sólo cambia una parte que el
+    # servidor tiene en su lista: un nombre con « y » que no está ahí queda igual
     def cambia(x):
-        partes = re.split(r'(\s*[,+&]\s*)', str(x or ''))
+        partes = re.split(r'(\s*[,+&]\s*|\s+[yY]\s+)', str(x or ''))
         return ''.join(p if i % 2 else m.get(E.norm(p), p) for i, p in enumerate(partes))
     for f in filas:
         for k in ('ladoA', 'ladoB', 'ganador'):
@@ -3960,6 +3964,9 @@ def _self_check():
     _mo = {'DDF': {'carlos': 'Carlosss', 'number': 'Number VE'}}
     _fo_ddf = otro_en_servidor([dict(f) for f in _fo], 'DDF', mapa=_mo)
     _fo_ffa = otro_en_servidor([dict(f) for f in _fo], 'FFA', mapa=_mo)
+    # 🔗 el equipo escrito con « Y » (la #602 de DDS, 12/11/2026): «KUN Y CARLOS» → «KUN Y Carlosss»
+    _fo_y = otro_en_servidor([{'ladoA': 'KUN Y CARLOS', 'ladoB': 'Fernando y Lucas', 'ganador': 'KUN Y CARLOS',
+                               'notas': ''}], 'DDS', mapa={'DDS': {'carlos': 'Carlosss'}})
     _fo_cob = otro_en_servidor([{'ladoA': 'Sin límites 🇵🇪', 'ladoB': 'Yo mc 🇨🇱', 'ganador': '',
                                  'notas': 'cobra: Sin límites 🇵🇪; cobra: Yo mc 🇨🇱; nadie siguió: ✅ Decidir'}],
                                'FFA', mapa={'FFA': {'yomc': 'Cronox'}})
@@ -4021,6 +4028,8 @@ def _self_check():
         ('en DDF, CARLOS es Carlosss y NUMBER es Number VE (también dentro de un equipo); en FFA, nadie cambia',
          (_fo_ddf[0]['ladoA'], _fo_ddf[0]['ladoB'], _fo_ddf[0]['ganador']) == ('Carlosss', 'Number VE, Xplicit', 'Carlosss')
          and _fo_ffa[0]['ladoA'] == 'CARLOS🇪🇨'),
+        ('y en un equipo escrito con « Y » (DDS, #602): «KUN Y CARLOS» es KUN y Carlosss; lo que no está en la lista, igual',
+         (_fo_y[0]['ladoA'], _fo_y[0]['ganador'], _fo_y[0]['ladoB']) == ('KUN Y Carlosss', 'KUN Y Carlosss', 'Fernando y Lucas')),
         ('y el «cobra: X» de la nota también: en FFA «Yo mc» es Cronox, y quien no cambia queda igual',
          _fo_cob[0]['ladoB'] == 'Cronox'
          and _fo_cob[0]['notas'] == 'cobra: Sin límites 🇵🇪; cobra: Cronox; nadie siguió: ✅ Decidir'),
