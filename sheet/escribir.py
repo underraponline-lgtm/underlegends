@@ -111,6 +111,14 @@ def _pedir(metodo, ruta, **kw):
         r0 = _de_archivo(ruta)
         if r0 is not None:
             return r0
+    # 🖊️ LOS ESCRITORES, A PRUEBA (etapa 6a, 12/11/2026): la base de lo que se va a escribir, antes de escribirlo.
+    # Ver `espejo_t1.antes_de_escribir()`
+    if metodo in ('PUT', 'POST'):
+        try:
+            import espejo_t1 as _EJ
+            _EJ.antes_de_escribir(metodo, ruta, kw, _titulo_de_id)
+        except Exception:                                # noqa: BLE001
+            pass
     for i, espera in enumerate((0,) + REINTENTOS):
         if espera:
             time.sleep(espera)
@@ -165,6 +173,7 @@ def _despues(metodo, ruta, kw, out):
         if metodo == 'GET':
             _EJ.comparar_lectura(ruta, out)
         else:
+            _EJ.imitar(metodo, ruta, kw, _titulo_de_id)    # 🖊️ la misma escritura, en la copia (etapa 6a)
             _EJ.marcar_sucias(_EJ.hojas_de_pedido(metodo, ruta, kw, _titulo_de_id))
     except Exception:                                    # noqa: BLE001
         pass

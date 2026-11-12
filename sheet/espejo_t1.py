@@ -703,6 +703,11 @@ _AL_SALIR = []
 def _al_salir():
     for hoja in sorted(_SUCIAS):
         refrescar(hoja)
+    if _IMITADAS['iguales'] or _IMITADAS['distintas'] or _IMITADAS['no_se']:
+        print('   %s escrituras del Operativo imitadas en datos/: %d hoja(s) igual al Sheet%s%s'
+              % ('🖊️' if not (_IMITADAS['distintas'] or _IMITADAS['no_se']) else '🔴', _IMITADAS['iguales'],
+                 ', %d DISTINTA(S)' % _IMITADAS['distintas'] if _IMITADAS['distintas'] else '',
+                 ', %d sin poder imitar' % _IMITADAS['no_se'] if _IMITADAS['no_se'] else ''))
     if _COMPARADAS['archivo']:
         print('   🗄️ lecturas del Operativo (Lista, AKAs, Pendientes, ✅ Decidir, Config) desde datos/: %d, sin pedirle '
               'al Sheet' % _COMPARADAS['archivo'])
@@ -751,6 +756,7 @@ def refrescar(hoja):
         if viejo and len(g) < len(viejo) * PISO:
             print('   🔴 %s: el Sheet trajo %d fila(s) y el archivo tiene %d: no la copio' % (hoja, len(g), len(viejo)))
             return False
+        _comparar_imitada(hoja, g)                         # 🖊️ la prueba de los escritores (etapa 6a)
         texto = volcar_grilla(hoja, g)
         if _texto_de(ruta(hoja)) != texto:
             with io.open(ruta(hoja), 'w', encoding='utf-8', newline='\n') as f:
@@ -760,6 +766,7 @@ def refrescar(hoja):
         return True
     except Exception as e:                                 # noqa: BLE001
         print('   ⚠️ no pude refrescar %s en datos/ (%s): lo copia el paso 2g' % (hoja, str(e)[:80]))
+        _IMITADA.pop(hoja, None)
         return False
 
 
@@ -921,6 +928,261 @@ def leer_de_archivo(ruta_get):
         return out
     except Exception:                                      # noqa: BLE001
         return None
+
+
+# 🖊️ LOS ESCRITORES DE LAS GRILLAS, A PRUEBA (etapa 6a, 12/11/2026; Dlx: «dale, sigue con que los escritores escriban
+# sólo el archivo»). Antes de que la Lista, AKAs, Pendientes, ✅ Decidir y Config dejen de escribirse en el Sheet, cada
+# escritura que hace el ciclo se le aplica TAMBIÉN a una copia de su grilla (`aplicar()`, puro), y cuando la hoja se
+# vuelve a copiar del Sheet (`refrescar()`) las dos se comparan. Si en varias corridas da igual, `aplicar()` pasa a ser
+# la escritura: la misma función, sobre el archivo, sin el Sheet.
+#
+# ⚠️ SE IMITA LO QUE CAMBIA EL TEXTO QUE SE VE y nada más: los valores (`PUT`, `:append`, `:clear`, `values:batchUpdate`,
+# `updateCells` con texto) y las filas que se borran o se meten. Combinar celdas, formatos, reglas condicionales,
+# validaciones y protecciones no cambian ningún valor. Lo que no se sabe imitar (una fórmula, un pedido de otro tipo)
+# deja a esa hoja fuera de la comparación y lo dice: comparar mal sería peor que no comparar.
+#
+# ⚠️ LA BASE SE TOMA ANTES DE ESCRIBIR (`antes_de_escribir()`): después, una hoja «sucia» se vuelve a copiar del Sheet
+# con la escritura ya adentro, y un `:append` o un `deleteDimension` se aplicarían dos veces.
+_IMITADA = {}
+_IMITADAS = {'iguales': 0, 'distintas': 0, 'no_se': 0}
+_NO_SE = {}
+#: lo que no cambia ningún valor
+_SIN_VALORES = {'appendDimension', 'mergeCells', 'unmergeCells', 'addConditionalFormatRule',
+                'deleteConditionalFormatRule', 'updateConditionalFormatRule', 'setDataValidation', 'updateBorders',
+                'updateDimensionProperties', 'updateSheetProperties', 'addProtectedRange', 'deleteProtectedRange',
+                'updateProtectedRange', 'addBanding', 'deleteBanding', 'updateBanding', 'autoResizeDimensions',
+                'setBasicFilter', 'clearBasicFilter', 'addFilterView', 'deleteFilterView', 'addSheet'}
+
+
+class NoSe(Exception):
+    """Un pedido que `aplicar()` no sabe imitar."""
+
+
+def _txt(v):
+    """El texto que queda en la celda al escribir `v` con `RAW`, como lo muestra el Sheet. Pura."""
+    if isinstance(v, bool):
+        return 'TRUE' if v else 'FALSE'
+    if isinstance(v, float) and v.is_integer():
+        return str(int(v))
+    return str(v)
+
+
+def _limite(hoja):
+    """`(filas, columnas)` de lo que se guarda de esa hoja, o `(None, None)`: de Config, sólo `GRILLAS_RANGO`."""
+    if hoja in GRILLAS_RANGO:
+        _h, _a, _b, lf, lc = _celdas('%s!%s' % (hoja, GRILLAS_RANGO[hoja]))
+        return lf, lc
+    return None, None
+
+
+def _celda(g, hoja, f, c, txt):
+    """Pone `txt` en la fila `f` y la columna `c` (base 1) de la grilla `g`, agrandándola. Fuera de lo que se guarda, nada."""
+    lf, lc = _limite(hoja)
+    if (lf and f > lf) or (lc and c > lc):
+        return
+    while len(g) < f:
+        g.append([])
+    fila = g[f - 1]
+    while len(fila) < c:
+        fila.append('')
+    fila[c - 1] = txt
+
+
+def _poner(g, hoja, f1, c1, valores):
+    """Los valores de un `PUT` desde `(f1, c1)`. Un `None` deja la celda como estaba, como la API."""
+    for i, fila in enumerate(valores or []):
+        for j, v in enumerate(fila or []):
+            if v is not None:
+                _celda(g, hoja, f1 + i, c1 + j, _txt(v))
+
+
+def _ultima(g, desde=1):
+    """La última fila con algo, desde `desde` (base 1), o `desde - 1`."""
+    n = desde - 1
+    for i in range(desde - 1, len(g)):
+        if any(str(x).strip() for x in g[i]):
+            n = i + 1
+    return n
+
+
+def _de_celda(c):
+    """El texto de un `CellData` de `updateCells`/`repeatCell`. Una fórmula no se puede calcular acá."""
+    v = (c or {}).get('userEnteredValue')
+    if v is None:
+        return ''
+    if 'formulaValue' in v:
+        raise NoSe('una fórmula')
+    for k in ('stringValue', 'numberValue', 'boolValue'):
+        if k in v:
+            return _txt(v[k])
+    return ''
+
+
+def aplicar(grillas, metodo, ruta_api, kw, titulo_de_id=None):
+    """🖊️ Le aplica a `{hoja: grilla}` (listas de texto, base 1 como el Sheet) un pedido de escritura a la API del
+    Operativo, tal como lo manda `escribir._pedir()`. Toca sólo las hojas que están en `grillas`; las demás se ignoran.
+    Levanta `NoSe` con lo que no sabe imitar. Pura salvo `titulo_de_id`."""
+    from urllib.parse import unquote
+    cuerpo = (kw or {}).get('json') or {}
+    if metodo not in ('PUT', 'POST'):
+        return
+    if ruta_api.startswith('/values:batchUpdate'):
+        for d in cuerpo.get('data') or []:
+            hoja, f1, c1, _f2, _c2 = _celdas(d.get('range', ''))
+            if hoja in grillas:
+                _poner(grillas[hoja], hoja, f1 or 1, c1 or 1, d.get('values'))
+        return
+    if ruta_api.startswith('/values/'):
+        a1 = ruta_api[len('/values/'):].split('?')[0]
+        suf = ''
+        for s in (':clear', ':append'):
+            if a1.endswith(s):
+                a1, suf = a1[:-len(s)], s
+        hoja, f1, c1, f2, c2 = _celdas(unquote(a1))
+        if hoja not in grillas:
+            return
+        g = grillas[hoja]
+        if suf == ':clear':
+            for f in range((f1 or 1), (f2 or len(g)) + 1):
+                if f - 1 < len(g):
+                    fila = g[f - 1]
+                    for c in range((c1 or 1), (c2 or len(fila)) + 1):
+                        if c - 1 < len(fila):
+                            fila[c - 1] = ''
+        elif suf == ':append':
+            _poner(g, hoja, _ultima(g, f1 or 1) + 1, c1 or 1, cuerpo.get('values'))
+        else:
+            _poner(g, hoja, f1 or 1, c1 or 1, cuerpo.get('values'))
+        return
+    if ruta_api.startswith(':batchUpdate'):
+        for r in cuerpo.get('requests') or []:
+            for tipo, v in r.items():
+                if tipo in _SIN_VALORES:
+                    continue
+                rng = (v or {}).get('range') or {}
+                sid = rng.get('sheetId', ((v or {}).get('start') or {}).get('sheetId'))
+                hoja = titulo_de_id(sid) if titulo_de_id else None
+                if hoja not in grillas:
+                    if hoja is None and titulo_de_id is None:
+                        raise NoSe('%s sin saber de qué hoja' % tipo)
+                    continue
+                g = grillas[hoja]
+                if tipo in ('deleteDimension', 'insertDimension'):
+                    a, b = int(rng.get('startIndex') or 0), int(rng.get('endIndex') or 0)
+                    if rng.get('dimension') == 'ROWS':
+                        if tipo == 'deleteDimension':
+                            del g[a:b]
+                        elif a < len(g):
+                            g[a:a] = [[] for _ in range(b - a)]
+                    elif rng.get('dimension') == 'COLUMNS':
+                        for fila in g:
+                            if tipo == 'deleteDimension':
+                                del fila[a:b]
+                            elif a < len(fila):
+                                fila[a:a] = [''] * (b - a)
+                    continue
+                if tipo in ('updateCells', 'repeatCell'):
+                    campos = str(v.get('fields') or '')
+                    if 'userEnteredValue' not in campos and campos.strip() != '*':
+                        continue                           # sólo formato: no cambia el texto
+                    f0 = int(rng.get('startRowIndex') or ((v.get('start') or {}).get('rowIndex') or 0))
+                    c0 = int(rng.get('startColumnIndex') or ((v.get('start') or {}).get('columnIndex') or 0))
+                    if tipo == 'updateCells':
+                        for i, fila in enumerate(v.get('rows') or []):
+                            for j, c in enumerate(fila.get('values') or []):
+                                _celda(g, hoja, f0 + i + 1, c0 + j + 1, _de_celda(c))
+                    else:
+                        txt = _de_celda(v.get('cell'))
+                        for f in range(f0, int(rng.get('endRowIndex') or f0)):
+                            for c in range(c0, int(rng.get('endColumnIndex') or c0)):
+                                _celda(g, hoja, f + 1, c + 1, txt)
+                    continue
+                raise NoSe(tipo)
+        return
+    raise NoSe('%s %s' % (metodo, ruta_api.split('?')[0][:40]))
+
+
+def _normal_grilla(g):
+    """Para comparar: sin celdas vacías al final de cada fila ni filas vacías al final, como contesta la API. Pura."""
+    out = []
+    for f in g or []:
+        f = [str(x) for x in f]
+        while f and f[-1] == '':
+            f.pop()
+        out.append(f)
+    while out and not out[-1]:
+        out.pop()
+    return out
+
+
+def antes_de_escribir(metodo, ruta_api, kw, titulo_de_id=None):
+    """🖊️ Lo llama `escribir._pedir()` ANTES de mandar una escritura: guarda la base de cada grilla que va a tocar, si
+    el archivo está al día (`de_archivo()`). Sólo en el ciclo de GitHub. Nunca levanta."""
+    try:
+        if not os.environ.get(ENV_AL_DIA) or not _en_github():
+            return
+        for hoja in hojas_de_pedido(metodo, ruta_api, kw, titulo_de_id) & set(GRILLAS):
+            if hoja in _IMITADA or hoja in _NO_SE:
+                continue
+            if de_archivo(hoja):
+                _IMITADA[hoja] = [list(f) for f in grilla_guardada(hoja)]
+    except Exception:                                      # noqa: BLE001
+        pass
+
+
+def imitar(metodo, ruta_api, kw, titulo_de_id=None):
+    """🖊️ Lo llama `escribir._pedir()` DESPUÉS de una escritura que salió bien: se la aplica a la copia. Nunca levanta."""
+    try:
+        if not _IMITADA:
+            return
+        aplicar(_IMITADA, metodo, ruta_api, kw, titulo_de_id)
+    except NoSe as e:
+        for hoja in hojas_de_pedido(metodo, ruta_api, kw, titulo_de_id) & set(_IMITADA):
+            _IMITADA.pop(hoja, None)
+            _NO_SE[hoja] = str(e)
+            _IMITADAS['no_se'] += 1
+            _registrar_salida()
+            print('   ⚠️ %s: no sé imitar «%s»: esta vez no se compara' % (hoja, e))
+    except Exception as e:                                 # noqa: BLE001
+        for hoja in list(_IMITADA):
+            _NO_SE[hoja] = str(e)
+        _IMITADAS['no_se'] += len(_IMITADA)
+        _IMITADA.clear()
+        _registrar_salida()
+        print('   ⚠️ la imitación de las escrituras falló (%s): esta vez no se compara' % str(e)[:80])
+
+
+def _comparar_imitada(hoja, del_sheet):
+    """🖊️ La copia imitada de `hoja` contra lo que quedó en el Sheet. Cuenta, dice dónde difiere y la suelta."""
+    g = _IMITADA.pop(hoja, None)
+    if g is None:
+        return None
+    _registrar_salida()
+    a, b = _normal_grilla(g), _normal_grilla(del_sheet)
+    if a == b:
+        _IMITADAS['iguales'] += 1
+        return True
+    _IMITADAS['distintas'] += 1
+    malas = []
+    for i in range(max(len(a), len(b))):
+        fa = a[i] if i < len(a) else []
+        fb = b[i] if i < len(b) else []
+        for j in range(max(len(fa), len(fb))):
+            x = fa[j] if j < len(fa) else ''
+            y = fb[j] if j < len(fb) else ''
+            if x != y:
+                malas.append('%s%d «%s» / Sheet «%s»' % (_letra(j + 1), i + 1, x[:30], y[:30]))
+    print('   🔴 %s: lo imitado no coincide con el Sheet en %d celda(s) (%d contra %d filas): %s'
+          % (hoja, len(malas), len(a), len(b), ' · '.join(malas[:3])))
+    return False
+
+
+def _letra(c):
+    s = ''
+    while c:
+        c, r = divmod(c - 1, 26)
+        s = chr(65 + r) + s
+    return s
 
 
 def _self_check():
@@ -1152,6 +1414,81 @@ def _self_check():
        'grillas: lo escrito en la corrida queda sucio en disco y se vuelve a copiar antes de leerlo')
     ok(r3 is None and al_sheet == [['Rapero', 'País'], ['Oasis', 'ar']],
        'grillas: sucia de otro proceso y sin poder copiarla, se lee del Sheet')
+
+    # 🖊️ LOS ESCRITORES, A PRUEBA (etapa 6a): cada forma de escribir que usa el código, sobre una grilla chica
+    q = quote
+    ids = {7: 'Lista de Raperos', 9: 'Config', 3: 'Resultados'}.get
+    t = {'Lista de Raperos': [['Rapero', 'País', 'ID'], ['Oasis', 'ar', '1'], ['Mito', 'cl', '2']],
+         'Config': [['Puesto', 'Puntos'], ['1', '1000']]}
+    lista = "'Lista de Raperos'!"
+    aplicar(t, 'PUT', '/values/%s?valueInputOption=RAW' % q(lista + 'C3'), {'json': {'values': [['22']]}}, ids)
+    aplicar(t, 'POST', '/values:batchUpdate', {'json': {'valueInputOption': 'RAW', 'data': [
+        {'range': lista + 'B2', 'values': [['mx']]}, {'range': 'AKAs!A1', 'values': [['otra hoja']]}]}}, ids)
+    aplicar(t, 'POST', '/values/%s:append?valueInputOption=RAW' % q(lista + 'A2'),
+            {'json': {'values': [['Nuevo', '', 3, None]]}}, ids)
+    aplicar(t, 'POST', ':batchUpdate', {'json': {'requests': [
+        {'deleteDimension': {'range': {'sheetId': 7, 'dimension': 'ROWS', 'startIndex': 2, 'endIndex': 3}}},
+        {'mergeCells': {'range': {'sheetId': 7, 'startRowIndex': 0, 'endRowIndex': 1}}},
+        {'repeatCell': {'range': {'sheetId': 7, 'startRowIndex': 0, 'endRowIndex': 9}, 'cell': {'userEnteredFormat': {}},
+                        'fields': 'userEnteredFormat'}},
+        {'updateCells': {'range': {'sheetId': 7, 'startRowIndex': 0, 'startColumnIndex': 0},
+                         'rows': [{'values': [{'userEnteredValue': {'stringValue': 'RAPERO'}}]}],
+                         'fields': 'userEnteredValue,textFormatRuns'}},
+        {'deleteDimension': {'range': {'sheetId': 3, 'dimension': 'ROWS', 'startIndex': 0, 'endIndex': 1}}}]}}, ids)
+    aplicar(t, 'POST', '/values/%s:clear' % q(lista + 'C2:C3'), {'json': {}}, ids)
+    aplicar(t, 'PUT', '/values/%s?valueInputOption=RAW' % q('Config!B27'), {'json': {'values': [[610.0]]}}, ids)
+    aplicar(t, 'PUT', '/values/%s?valueInputOption=RAW' % q('Config!J2'), {'json': {'values': [['mw']]}}, ids)
+    no_se = []
+    for pedido in ((':batchUpdate', {'requests': [{'sortRange': {'range': {'sheetId': 7}}}]}),
+                   (':batchUpdate', {'requests': [{'updateCells': {
+                       'range': {'sheetId': 7}, 'fields': 'userEnteredValue',
+                       'rows': [{'values': [{'userEnteredValue': {'formulaValue': '=1+1'}}]}]}}]})):
+        try:
+            aplicar(t, 'POST', pedido[0], {'json': pedido[1]}, ids)
+        except NoSe:
+            no_se.append(True)
+    ok(t['Lista de Raperos'] == [['RAPERO', 'País', 'ID'], ['Oasis', 'mx', ''], ['Nuevo', '', '']]
+       and t['Config'][26] == ['', '610'] and len(t['Config']) == 27 and 'AKAs' not in t and len(no_se) == 2,
+       'escritores: PUT, batchUpdate, append (None no toca), borrar filas, updateCells y clear como la API; formato y otra '
+       'hoja, nada; de Config sólo A1:H30; una fórmula o un sortRange, «no sé»')
+    ok(_normal_grilla([['a', '', ''], ['', ''], []]) == [['a']] and _txt(True) == 'TRUE' and _txt(3.0) == '3'
+       and _letra(28) == 'AB', 'escritores: se compara sin vacías al final, y el texto de cada tipo de valor')
+
+    # y la vuelta entera, en el ciclo: la base antes, la imitación después, y la comparación al volver a copiarla
+    env1 = {k: os.environ.get(k) for k in ('GITHUB_ACTIONS', 'ESPEJO_SIEMPRE', ENV_AL_DIA)}
+    del_sheet['AKAs'] = [['Alias', 'Nombre Real'], ['a', 'A']]
+    sheet_despues = {}
+    try:
+        with tempfile.TemporaryDirectory() as tmp:
+            os.makedirs(os.path.join(tmp, 'datos'))
+            G['ruta'] = lambda hoja, temp=ACTUAL, base=BASE: os.path.join(tmp, 'datos', '%s_%s.json' % (temp, GRILLAS[hoja]))
+            G['_leer_grilla_sheet'] = lambda h: [list(f) for f in sheet_despues.get(h, del_sheet[h])]
+            os.environ['ESPEJO_SIEMPRE'] = '1'
+            al_dia()
+            pedido = ('PUT', '/values/%s?valueInputOption=RAW' % q('AKAs!A3'), {'json': {'values': [['b', 'B']]}})
+            antes_de_escribir(*pedido)
+            sheet_despues['AKAs'] = del_sheet['AKAs'] + [['b', 'B']]   # lo que quedó en el Sheet
+            imitar(*pedido)
+            marcar_sucias({'AKAs'})
+            igual = refrescar('AKAs') and _IMITADAS['iguales'] == 1 and not _IMITADA
+            antes_de_escribir(*pedido)
+            sheet_despues['AKAs'] = del_sheet['AKAs'] + [['b', 'otra cosa']]
+            imitar(*pedido)
+            distinta = refrescar('AKAs') and _IMITADAS['distintas'] == 1
+    finally:
+        G['ruta'], G['_leer_grilla_sheet'] = ruta0, leer0
+        for k, v in env1.items():
+            if v is None:
+                os.environ.pop(k, None)
+            else:
+                os.environ[k] = v
+        _SUCIAS.clear()
+        _IMITADA.clear()
+        _NO_SE.clear()
+        for k in _IMITADAS:
+            _IMITADAS[k] = 0
+        _COMPARADAS['archivo'] = 0
+    ok(igual and distinta, 'escritores en el ciclo: la copia imitada se compara con el Sheet al volver a copiarla')
     print('\n   %s' % ('✅ todo bien' if not fallas else '🔴 %d mal' % fallas))
     return 1 if fallas else 0
 
