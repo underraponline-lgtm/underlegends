@@ -84,13 +84,19 @@
 .bv-pag-vis{position:relative;isolation:isolate;display:grid;justify-items:center;align-content:center;min-width:0;order:-1}
 .bv-kick{justify-self:start;font:700 14px/1 "Barlow Condensed",sans-serif;letter-spacing:.16em;text-transform:uppercase;color:#E41373}
 .bv-h{margin:0;font:900 clamp(28px,8vw,56px)/.95 Archivo,sans-serif;font-stretch:118%;text-transform:uppercase;text-wrap:balance}
-/* 🎞️ LOS TÍTULOS, RELLENOS CON UN CUADRO DEL VIDEO, como «LIGA GLOBAL» (Dlx, 12/11/2026: «intenta mejor la calidad…
-   el texto en blanco en grande, como "tu crew, tus ligas y tu gente", "cada batalla suma»»; de la maqueta, la A). Un
-   cuadro quieto por página (los mismos `quieto1-3` de la portada), con una capa blanca encima para que se lea, y el
-   contorno blanco */
-.bv-h.relleno{color:transparent;-webkit-background-clip:text;background-clip:text;
+/* 🎞️ LOS TÍTULOS, RELLENOS CON EL VIDEO Y ANIMADOS COMO «LIGA GLOBAL» (Dlx, 12/11/2026: «intenta mejor la calidad… el
+   texto en blanco en grande», de la maqueta la A, y después «las texturas no tienen su animación como la primera página»).
+   Entra en blanco; por debajo entran los tres cuadros del montaje (`quieto1-3`), que se turnan y se corren con el mismo
+   `bv-relleno` de la portada; el blanco se va cuando la textura ya está. Arranca cada vez que se llega a la página
+   (`.vista`). Con «Menos animaciones» o movimiento reducido queda el título en blanco, entero */
+.bv-h.con-tex{position:relative}
+.bv-h-bl{display:block}
+.bv-h-rel{position:absolute;inset:0;color:transparent;-webkit-background-clip:text;background-clip:text;
   background-image:linear-gradient(rgba(246,246,246,.3),rgba(246,246,246,.3)),var(--q);background-blend-mode:screen;
-  background-size:cover;background-position:center 35%;-webkit-text-stroke:1.2px rgba(246,246,246,.6)}
+  background-size:180% auto;background-repeat:no-repeat;-webkit-text-stroke:1.2px rgba(246,246,246,.6);opacity:0;pointer-events:none}
+.bv-pag.vista .bv-h-bl{animation:bv-apaga 1.2s ease-in-out 2.4s both}
+.bv-pag.vista .bv-h-rel{animation:bv-relleno 18s linear infinite both}
+.bv-pag.vista .bv-h-rel.r1{animation-delay:1s}.bv-pag.vista .bv-h-rel.r2{animation-delay:7s}.bv-pag.vista .bv-h-rel.r3{animation-delay:13s}
 .bv-puntos{display:grid;gap:10px;margin:4px 0 0;padding:0;list-style:none}
 .bv-puntos li{display:grid;grid-template-columns:auto minmax(0,1fr);gap:10px;align-items:center;color:#E9E9E4;font:600 15px/1.35 Archivo,sans-serif}
 .bv-puntos svg{color:#E41373}
@@ -299,7 +305,7 @@
   .bv-ovr{font-size:22px}
   .bv-v-lista li:first-child .bv-ovr{font-size:26px}
   /* (en el teléfono el video va más claro: la capa blanca del relleno, más fuerte, para que el título se lea igual) */
-  .bv-h.relleno{background-image:linear-gradient(rgba(246,246,246,.42),rgba(246,246,246,.42)),var(--q)}
+  .bv-h-rel{background-image:linear-gradient(rgba(246,246,246,.42),rgba(246,246,246,.42)),var(--q)}
   .bv-v-lista li:nth-child(n+4){display:none}
   .bv-niveles{gap:10px}
   .bv-niveles:before{left:21px}

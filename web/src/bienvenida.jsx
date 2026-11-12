@@ -161,7 +161,13 @@ function Pagina({ id, vista, sello, titulo, etiqueta, texto, puntos, extra, visu
     <section className={'bv-pag bv-pag-' + id + (vista ? ' vista' : '')} aria-roledescription="página" aria-label={sello}>
       <div className="bv-pag-tx">
         {primera ? <span className="bv-sello">{sello}</span> : <span {...e(0, 'bv-kick')}>{sello}</span>}
-        {primera ? <h1 className="bv-t" id="bv-t" tabIndex={-1} ref={tit} aria-label={etiqueta}>{titulo}</h1> : <h2 {...e(1, 'bv-h' + (relleno ? ' relleno' : ''))} style={relleno ? { '--i': 1, '--q': relleno } : undefined}>{titulo}</h2>}
+        {primera ? <h1 className="bv-t" id="bv-t" tabIndex={-1} ref={tit} aria-label={etiqueta}>{titulo}</h1> : <h2 {...e(1, 'bv-h' + (relleno ? ' con-tex' : ''))}>{relleno ? <>
+          {/* 🎞️ COMO «LIGA GLOBAL» (Dlx, 12/11/2026: «las texturas no tienen su animación como la primera página»): entra en
+              blanco, después el video por debajo, y los tres cuadros se turnan y se corren. La misma letra tres veces más,
+              encima y sin lectura (`aria-hidden`): el lector de pantalla lee el título una sola vez */}
+          <span className="bv-h-bl">{titulo}</span>
+          {relleno.map((q, k) => <span key={k} aria-hidden="true" className={'bv-h-rel r' + (k + 1)} style={{ '--q': q }}>{titulo}</span>)}
+        </> : titulo}</h2>}
         <p {...e(o + 2, 'bv-p')}>{texto}</p>
         {extra ? <div {...e(o + 3)}>{extra}</div> : null}
         {puntos ? <ul className="bv-puntos">{puntos.map(([ico, t], k) => <li key={t} {...e(o + 3 + k)}><Ico n={ico} t={18} /><span>{t}</span></li>)}</ul> : null}
@@ -424,7 +430,7 @@ function Paso1({ liga, unirme, cerrar, tit }) {
       <div className="bv-pista" ref={pista} tabIndex={-1}>
         {paginas.map((p, i) => (
           <Pagina key={p.id} {...p} vista={vistas.has(i)} primera={i === 0} tit={tit} visual={visuales[p.id]}
-            relleno={i ? 'url(' + base + 'quieto' + (((i - 1) % 3) + 1) + '.jpg' + VV + ')' : null} />
+            relleno={i ? [1, 2, 3].map((q) => 'url(' + base + 'quieto' + (((q + i - 2) % 3) + 1) + '.jpg' + VV + ')') : null} />
         ))}
       </div>
       {/* 🔒 LA BARRA DE ABAJO NO SE MUEVE: Dlx, «que siempre aparezca la opción de UNIRME CON DISCORD o en otro momento».

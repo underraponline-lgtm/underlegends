@@ -21,7 +21,8 @@ export const VIDEO = 't1';
 // 3 = el del 12/11 a la tarde: cámara lenta sin cuadros inventados (no deforma) y el grande en 960 × 540 en vez de 720p
 // 4 = con el tramo de Sol de verdad (el de antes era otra persona: el título decía «SOL») y el grande en 854 × 480
 // 5 = la cámara lenta con RIFE ×2: fluida y sin deformar (herramientas/bienvenida_video.py)
-export const VV = '?v=5';
+// 6 = Liberia también por RIFE: su video dice 60 cuadros y trae 30 repetidos («muy laggeado»)
+export const VV = '?v=6';
 export const baseVideo = (liga) => liga.d.r2 + '/bienvenida/' + VIDEO + '/';
 // con «Menos animaciones», movimiento reducido o ahorro de datos: un cuadro quieto en vez del video
 export const quieto = () => (W.matchMedia && W.matchMedia('(prefers-reduced-motion: reduce)').matches) || !!document.querySelector('.calma')

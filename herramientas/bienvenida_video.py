@@ -112,7 +112,18 @@ def fps_de(src):
     return float(a) / float(b or 1) if a else 30.0
 
 
-def rife(src, desde, vf_caja, dst_mp4, vf_tono):
+def distintos_por_segundo(src, desde):
+    """Cuántos cuadros DISTINTOS por segundo tiene el tramo. ⚠️ No es lo mismo que los cuadros del archivo: el de Liberia
+    dice 59,94 y trae 30 distintos, cada uno dos veces (subido a 60 desde una cámara de 30). Tomado como de 60, iba sin
+    RIFE y en cámara lenta quedaba en 15 cuadros reales por segundo: Dlx, 12/11/2026, «el frame de Liberia está muy
+    laggeado». Medido con `mpdecimate` sobre el mismo SEG que se usa."""
+    import re
+    r = subprocess.run([ffmpeg(), '-v', 'info', '-ss', str(desde), '-t', str(SEG), '-i', src, '-an',
+                        '-vf', 'scale=320:-2,mpdecimate=hi=200:lo=100:frac=0.5,showinfo', '-f', 'null', '-'], capture_output=True, text=True)
+    return len(re.findall(r'showinfo.*n:\s*\d+', r.stderr)) / SEG
+
+
+def rife(src, desde, vf_caja, dst_mp4, vf_tono, antes=''):
     """El tramo con los cuadros intermedios de RIFE: SEG del original, hasta SEG × LENTO × 30 cuadros (3 s a 30)."""
     import shutil, tempfile
     exe = os.path.join(RIFE_DIR, 'rife-ncnn-vulkan.exe')
@@ -122,7 +133,7 @@ def rife(src, desde, vf_caja, dst_mp4, vf_tono):
     ent, sal = os.path.join(tmp, 'in'), os.path.join(tmp, 'out')
     os.makedirs(ent); os.makedirs(sal)
     try:
-        correr(['-ss', str(desde), '-t', str(SEG), '-i', src, '-an', '-vf', vf_caja, os.path.join(ent, '%06d.png')])
+        correr(['-ss', str(desde), '-t', str(SEG), '-i', src, '-an', '-vf', (antes + ',' if antes else '') + vf_caja, os.path.join(ent, '%06d.png')])
         r = subprocess.run([exe, '-i', ent, '-o', sal, '-n', str(int(round(SEG * LENTO * 30))), '-m', os.path.join(RIFE_DIR, RIFE_MODELO)],
                            capture_output=True, text=True, cwd=RIFE_DIR)
         if r.returncode or not os.listdir(sal):
@@ -168,18 +179,22 @@ def armar(dst, grande=False):
         desde = min(3, t)
         src = os.path.join(crudos, '%02d.mp4' % i)
         fps = fps_de(src)
+        reales = distintos_por_segundo(src, desde) if fps >= 50 else fps
         g = gamma_para(luz(src, desde))
         caja = 'scale=%d:%d:force_original_aspect_ratio=increase,crop=%d:%d' % (w, h, w, h)
         tono = 'format=gray,eq=contrast=1.12:brightness=-0.03:gamma=%s' % g
-        if fps >= 50:
+        if reales >= 50:
             # (`-ss` y `-t` ANTES de `-i`, como opciones de la entrada: el tramo arranca en 0 y dura 1,5 s del original.
             # Después de `-i` cortaban lo ya estirado, a la mitad, y los fundidos quedaban fuera de tiempo)
             correr(['-ss', str(desde), '-t', str(SEG), '-i', src, '-an', '-vf', '%s,setpts=%s*PTS,fps=30,%s' % (caja, LENTO, tono),
                     '-c:v', 'libx264', '-crf', '14', '-preset', 'fast', '-pix_fmt', 'yuv420p', p])
+        elif fps >= 50:
+            # «de 60» con cuadros repetidos: uno de cada dos (los de verdad) y RIFE, como uno de 30
+            rife(src, desde, caja, p, tono, antes='fps=%g' % (fps / 2))
         else:
             rife(src, desde, caja, p, tono)
         partes.append(p)
-        print(i, quien, '%g cps' % fps, 'real' if fps >= 50 else 'RIFE', 'gamma %s' % g if g > 1 else '')
+        print(i, quien, '%g cps (%g distintos)' % (fps, round(reales, 1)), 'real' if reales >= 50 else 'RIFE', 'gamma %s' % g if g > 1 else '')
     ins, fil, prev, off = [], [], '0:v', 0.0
     for p in partes:
         ins += ['-i', p]
