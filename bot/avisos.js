@@ -3463,7 +3463,7 @@ const RUTAS = {
   '/avisos/felicitar': 'POST', '/avisos/aplausos': 'GET',
   // 💬 los comentarios de Publicaciones: escribir (verificado), leerlos, borrar el tuyo, y quién deja usar su cara
   // (Mi cuenta y el Dashboard). Ver `validarComentario()` y `comentar()`
-  '/avisos/comentar': 'POST', '/avisos/comentarios': 'GET', '/avisos/comentario-borrar': 'POST',
+  '/avisos/comentar': 'POST', '/avisos/comentarios': 'GET', '/avisos/comentario-borrar': 'POST', '/avisos/comentario-reportar': 'POST',
   '/avisos/cm-mio': 'POST', '/avisos/dueno/cm-permiso': 'POST', '/avisos/dueno/cm-permisos': 'POST',
   // 🐉 los Dragón Drops: los tuyos y la barra del día, y abrir uno (con tu sesión). Ver `dropsDe()` y `dropAbrir()`
   '/avisos/drops': 'POST', '/avisos/drop-abrir': 'POST',
@@ -3834,6 +3834,8 @@ export function validarAplauso(items, d, id, mios, ahora) {
 export const COMENT_MAX = 200;
 export const COMENT_DIA = 15;
 export const COMENT_DIAS = 30;
+//: 🚩 con cuántos reportes de personas distintas un comentario se esconde solo (Dlx lo puede borrar igual)
+export const COMENT_REPORTES = 3;
 //: los estados que se guardan; «pre» (sin preguntar) es no tener fila
 export const CM_ESTADOS = { si: 1, no: 1, pre: 1 };
 
@@ -6096,6 +6098,20 @@ export async function rutaAvisos(req, env, ruta) {
       headers: { 'content-type': 'application/json' },
     });
   }
+  // 🚩 REPORTAR UN COMENTARIO: quién lo dice Discord (o la sesión); con `COMENT_REPORTES` de personas distintas se esconde
+  if (ruta === '/avisos/comentario-reportar') {
+    const crudo = await req.text();
+    if (crudo.length > 1024) return json({ error: 'demasiado grande' }, 413);
+    let d = null;
+    try { d = JSON.parse(crudo || '{}'); } catch (e) { d = null; }
+    if (!d || typeof d !== 'object' || !/^[0-9]{1,12}$/.test(String(d.c || '')) ||
+        (d.token && !/^[A-Za-z0-9._-]{10,300}$/.test(String(d.token)))) return json({ error: 'faltan datos' }, 400);
+    const q = await quienPide(req, env, d);
+    if (!q.id) return json({ error: q.error }, q.estado);
+    return elObjeto(env).fetch('https://avisos/comentario-reportar', {
+      method: 'POST', body: JSON.stringify({ quien: q.id, c: Number(d.c) }), headers: { 'content-type': 'application/json' },
+    });
+  }
   // 💬 BORRAR UN COMENTARIO: el tuyo, o cualquiera si puedes los ajustes del Dashboard
   if (ruta === '/avisos/comentario-borrar') {
     const crudo = await req.text();
@@ -7464,6 +7480,7 @@ export class Avisos {
         't INTEGER NOT NULL, borrado INTEGER NOT NULL DEFAULT 0)');
       this.sql.exec('CREATE INDEX IF NOT EXISTS comentario_t ON comentario (t)');
       this.sql.exec('CREATE INDEX IF NOT EXISTS comentario_pub ON comentario (pub)');
+      this.sql.exec('CREATE TABLE IF NOT EXISTS cm_reporte (c INTEGER NOT NULL, quien TEXT NOT NULL, t INTEGER NOT NULL, PRIMARY KEY (c, quien))');
       this.sql.exec('CREATE TABLE IF NOT EXISTS cm_permiso (k TEXT PRIMARY KEY, estado TEXT NOT NULL, ' +
         "por TEXT NOT NULL DEFAULT '', t INTEGER NOT NULL)");
       // 🐉 LOS DRAGÓN DROPS (12/11/2026): uno por fila, ganado por algo (`origen`, único por persona: ganarlo dos veces no
@@ -8299,6 +8316,7 @@ export class Avisos {
       if (ruta === '/aplaudir') return this.aplaudir(d);
       if (ruta === '/comentar') return await this.comentar(d);
       if (ruta === '/comentario-borrar') return json(this.comentarioBorrar(d));
+      if (ruta === '/comentario-reportar') return json(this.comentarioReportar(d));
       if (ruta === '/cm-mio') return await this.cmMio(d);
       if (ruta === '/cm-permiso') return await this.cmPermiso(d);
       if (ruta === '/drops') return json(this.dropsDe(String(d.quien || '')));
@@ -11942,6 +11960,7 @@ export class Avisos {
     this.sql.exec('DELETE FROM comentario WHERE quien = ?', String(d.quien));
     // 🐉 y sus drops y su barra del día
     this.sql.exec('DELETE FROM drops WHERE quien = ?', String(d.quien));
+    this.sql.exec('DELETE FROM cm_reporte WHERE quien = ?', String(d.quien));
     this.sql.exec('DELETE FROM dia_pasos WHERE quien = ?', String(d.quien));
     // 📖 y qué historias vio
     this.sql.exec('DELETE FROM hvistas WHERE quien = ?', String(d.quien));
@@ -13742,10 +13761,20 @@ export class Avisos {
           const did = await this.cuentaDe(ks[i], ahora, idx, quienes[i]);
           if (!did || did === quien || avisados.indexOf(did) >= 0) continue;
           avisados.push(did);
-          this.aBandeja(did, 'cm:' + p.id, 'comentario', titulo, cuerpo, HUB + '/freestyle-rap/publicaciones', k, ahora);
+          this.aBandeja(did, 'cm:' + p.id, 'comentario', titulo, cuerpo, HUB + '/freestyle-rap/publicaciones/' + p.id, k, ahora);
         }
       }
     } catch (e) { /* el comentario ya quedó: el aviso no lo frena */ }
+    // 💬 y a quien le respondieron, si es un comentario de verdad y no es uno mismo (la campana, sin push)
+    try {
+      if (/^c[0-9]+$/.test(resp)) {
+        const a = this.sql.exec('SELECT quien FROM comentario WHERE id = ? AND borrado = 0', Number(resp.slice(1))).toArray()[0];
+        if (a && a.quien !== quien) {
+          this.aBandeja(a.quien, 'cmr:' + p.id, 'comentario', '💬 Te respondieron', `${n}: «${l.tx.slice(0, 120)}»`,
+            HUB + '/freestyle-rap/publicaciones/' + p.id, k, ahora);
+        }
+      }
+    } catch (e) { /* el aviso no lo frena */ }
     return json({ ok: true, c: r.id, k, n, tx: l.tx, resp, t: ahora });
   }
 
@@ -13756,6 +13785,20 @@ export class Avisos {
     const r = d.jefe === true ? this.sql.exec('UPDATE comentario SET borrado = 1 WHERE id = ?', c)
       : this.sql.exec('UPDATE comentario SET borrado = 1 WHERE id = ? AND quien = ?', c, quien);
     return r.rowsWritten ? { ok: true, c } : { error: 'no' };
+  }
+
+  /** 🚩 Reportar un comentario: uno por persona; con `COMENT_REPORTES` se esconde (`borrado = 2`). El propio no se reporta */
+  comentarioReportar(d) {
+    const quien = String(d.quien || ''), c = Number(d.c);
+    if (!/^[0-9]{5,25}$/.test(quien) || !Number.isInteger(c)) return { error: 'faltan datos' };
+    const f = this.sql.exec('SELECT quien FROM comentario WHERE id = ? AND borrado = 0', c).toArray()[0];
+    if (!f) return { error: 'no_existe' };
+    if (f.quien === quien) return { error: 'tuyo' };
+    if (!this.cuentaCambio(quien, 'reporte_cm', 20)) return { error: 'espera' };
+    this.sql.exec('INSERT OR IGNORE INTO cm_reporte (c, quien, t) VALUES (?, ?, ?)', c, quien, Date.now());
+    const n = this.sql.exec('SELECT COUNT(*) AS n FROM cm_reporte WHERE c = ?', c).toArray()[0].n;
+    if (n >= COMENT_REPORTES) this.sql.exec('UPDATE comentario SET borrado = 2 WHERE id = ? AND borrado = 0', c);
+    return { ok: true, c, oculto: n >= COMENT_REPORTES };
   }
 
   /** 💬 Lo público, para `/avisos/comentarios`: los de los últimos días, por publicación. ⚠️ Nunca el Discord ID. */

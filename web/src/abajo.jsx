@@ -5,7 +5,7 @@
 import { useEffect, useId, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import { limpio, nuevaQue, num } from './liga.js';
 import { Cara, Chevron, Compartir, Ico, Poster, Sec, accion, enlace, promoAbierta, subirSiEsta } from './piezas.jsx';
-import { Buscar, CaraDc, CaraH, CrewCirculo, MENU, MENU_TODO, Orbe, QUE_ES } from './arriba.jsx';
+import { Buscar, CaraDc, CaraH, CrewCirculo, MENU, MENU_TODO, Orbe, QUE_ES, pubNuevas } from './arriba.jsx';
 import { abrirVideo } from './video.jsx';
 import { YoMenu } from './yomenu.jsx';
 import { useAplausos } from './aplausos.js';
@@ -372,7 +372,8 @@ export function Tabbar({ liga, dc, pagina = '' }) {
         {MENU.map(([n, r]) => {
           const k = r.replace(/^#\/?/, '') || 'inicio';
           // la de la página que se ve: el Inicio sin ruta, y las que dibuja el Inicio nuevo por su nombre (el Ranking)
-          return <a key={k} href={r} onClick={subirSiEsta(r)} className={(k === 'inicio' ? !pagina : pagina === k) ? 'on' : ''}><Ico n={k} t={22} /><span>{n}</span></a>;
+          const nv = k === 'publicaciones' ? pubNuevas(liga, pagina) : 0;
+          return <a key={k} href={r} onClick={subirSiEsta(r)} className={(k === 'inicio' ? !pagina : pagina === k) ? 'on' : ''}><Ico n={k} t={22} /><span>{n}</span>{nv ? <i className="tb-nuevas" aria-label={nv + ' nuevas'}>{nv}</i> : null}</a>;
         })}
       </div>
       {/* 👤 con tu cuenta, abre el menú de lo tuyo (yomenu.jsx: el Inventario primero); sin cuenta, Tu cuenta como siempre */}

@@ -4255,3 +4255,9 @@ dialog.pn-pop.dd-pop{width:min(760px,calc(100vw - 32px));border-color:#9B5CFF}
 .app.calma .dd-rayos{animation:none}
 .pn-fila.dos{grid-template-columns:repeat(2,minmax(0,1fr))}
 @media (max-width: 760px){.pn-fila.dos{grid-template-columns:minmax(0,1fr)}}
+/* 📰 «N nuevas» en Publicaciones, en el menú de arriba y en la tira del celular (12/11/2026) */
+.app .menu a .m-nuevas{display:inline-grid;place-items:center;min-width:18px;height:16px;margin-left:5px;padding:0 4px;vertical-align:2px;background:#E41373;color:#fff;font:800 10px/1 Archivo,sans-serif;font-style:normal;letter-spacing:0}
+.tabbar .tb-tira a{position:relative}
+.tabbar .tb-nuevas{position:absolute;top:4px;right:calc(50% - 22px);min-width:16px;height:15px;display:grid;place-items:center;padding:0 3px;background:#E41373;color:#fff;font:800 9px/1 Archivo,sans-serif;font-style:normal;border-radius:2px}
+.pn .pn-bot-av.cara{overflow:hidden;background:#2A2C31}
+.pn .pn-bot-av img{width:100%;height:100%;object-fit:cover;border-radius:50%;display:block}

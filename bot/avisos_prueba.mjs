@@ -3623,6 +3623,45 @@ const ok = (cond, que, det) => {
   }
 }
 
+// 💬 COMENTAR, RESPONDER Y REPORTAR SOBRE EL OBJETO (12/11/2026): la respuesta le avisa a quien le respondieron, y con tres
+// reportes de personas distintas el comentario se esconde
+{
+  let DatabaseSync = null;
+  try { ({ DatabaseSync } = await import('node:sqlite')); } catch (e) { DatabaseSync = null; }
+  if (DatabaseSync) {
+    const db = new DatabaseSync(':memory:');
+    const sql = {
+      exec(q, ...ps) {
+        const t = String(q).trim();
+        if (!ps.length && /;\s*\S/.test(t)) { db.exec(t); return { toArray: () => [] }; }
+        const st = db.prepare(t);
+        if (/^\s*(SELECT|WITH|PRAGMA)/i.test(t)) { const rows = st.all(...ps); return { toArray: () => rows }; }
+        const r = st.run(...ps);
+        return { toArray: () => [], rowsWritten: r.changes };
+      },
+    };
+    const o = new A.Avisos({ storage: { sql, setAlarm() {}, getAlarm() { return null; }, transactionSync: (f) => f() },
+      blockConcurrencyWhile: async (f) => f() }, { DISCORD_TOKEN: 'x', KV: { get: async () => null } });
+    await new Promise((r) => setTimeout(r, 5));
+    o.indiceNombres = async () => ({});
+    o.cuentaDe = async () => '';
+    const pub = { id: 'abcdefabcdef', ks: ['tam'], quien: ['Tam'] };
+    const U1 = '400000000000000001', U2 = '400000000000000002';
+    const r1 = await (await o.comentar({ quien: U1, k: 'six', pub, tx: 'grande Tam' })).json();
+    const r2 = await (await o.comentar({ quien: U2, k: 'oasis', pub, tx: 'ni lo sueñes', resp: 'c' + r1.c })).json();
+    const av = o.sql.exec("SELECT titulo, url FROM bandeja WHERE quien = ? AND clave = ?", U1, 'cmr:abcdefabcdef').toArray()[0];
+    ok(r1.ok && r2.ok && av && /Te respondieron/.test(av.titulo) && /publicaciones\/abcdefabcdef$/.test(av.url),
+      'responder un comentario le avisa a su autor, con el link a la publicación', JSON.stringify(av));
+    ok(o.comentarioReportar({ quien: U1, c: r1.c }).error === 'tuyo', 'el propio no se reporta');
+    o.comentarioReportar({ quien: U2, c: r1.c });
+    o.comentarioReportar({ quien: U2, c: r1.c });
+    ok(!o.comentarios().por.abcdefabcdef.every((x) => x[0] !== r1.c), 'una persona reportando dos veces no lo esconde');
+    o.comentarioReportar({ quien: '400000000000000003', c: r1.c });
+    const z = o.comentarioReportar({ quien: '400000000000000004', c: r1.c });
+    ok(z.oculto && o.comentarios().por.abcdefabcdef.every((x) => x[0] !== r1.c), 'con tres personas distintas se esconde solo');
+  }
+}
+
 if (fallas) {
   console.log(`\n❌ ${fallas} prueba(s) fallaron`);
   process.exit(1);

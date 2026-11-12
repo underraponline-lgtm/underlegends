@@ -61,7 +61,7 @@ function hace(t, ahora) {
   return 'hace ' + d + (d === 1 ? ' día' : ' días');
 }
 
-function Comentario({ liga, c, ahora, yo, dueno, onResponder, onBorrar, todos }) {
+function Comentario({ liga, c, ahora, yo, dueno, onResponder, onBorrar, onReportar, todos }) {
   const pj = c.et === 'l' ? PJ[c.k] || ['LG', '#E41373'] : null;
   const f = !pj ? liga.T[c.k] : null;
   const a = c.resp ? todos.find((x) => x.id === c.resp) : null;
@@ -81,6 +81,7 @@ function Comentario({ liga, c, ahora, yo, dueno, onResponder, onBorrar, todos })
         <div className="cmh-acc">
           <button type="button" onClick={() => onResponder(c)}>Responder</button>
           {c.c && (c.k === yo || dueno) ? <button type="button" onClick={() => onBorrar(c)}>Borrar</button> : null}
+          {c.c && yo && c.k !== yo && !dueno ? <button type="button" onClick={() => onReportar(c)}>Reportar</button> : null}
         </div>
       </div>
     </li>
@@ -93,7 +94,7 @@ function Comentario({ liga, c, ahora, yo, dueno, onResponder, onBorrar, todos })
  */
 export function Hilo({ liga, it, chico }) {
   useComentarios();
-  const [abierto, setAbierto] = useState(false);
+  const [abierto, setAbierto] = useState(() => !!it.id && W.__pubFoco === it.id);
   const [tx, setTx] = useState('');
   const [resp, setResp] = useState(null);
   const [msg, setMsg] = useState('');
@@ -116,6 +117,13 @@ export function Hilo({ liga, it, chico }) {
     if (!W.conCuenta) return;
     const j = await W.conCuenta('/api/avisos/comentario-borrar', { c: c.c }, 'p');
     if (j && j.ok) { E.mios.borrados = Object.assign({}, E.mios.borrados, { [c.c]: 1 }); avisar(); }
+  };
+  // 🚩 reportar: con tres personas distintas se esconde solo (`comentarioReportar()`); para quien reporta, se va ya
+  const reportar = async (c) => {
+    if (!W.conCuenta) return;
+    const j = await W.conCuenta('/api/avisos/comentario-reportar', { c: c.c }, 'p');
+    if (j && j.ok) { E.mios.borrados = Object.assign({}, E.mios.borrados, { [c.c]: 1 }); setMsg('Gracias: lo vamos a revisar.'); avisar(); }
+    else if (j) setMsg(j.error === 'espera' ? 'Ya reportaste mucho hoy.' : 'No se pudo reportar.');
   };
   const enviar = async (e) => {
     e.preventDefault();
@@ -145,7 +153,7 @@ export function Hilo({ liga, it, chico }) {
           {!abierto && n > 1 ? <button type="button" className="cmh-mas" onClick={() => setAbierto(true)}>Ver los {n} comentarios</button> : null}
           <ul className="cmh-l">
             {ver.map((c) => <Comentario key={c.id} liga={liga} c={c} ahora={ahora} yo={yo} dueno={dueno} todos={todos}
-              onResponder={responder} onBorrar={borrar} />)}
+              onResponder={responder} onBorrar={borrar} onReportar={reportar} />)}
           </ul>
         </>
       ) : null}

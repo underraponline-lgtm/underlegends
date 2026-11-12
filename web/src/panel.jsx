@@ -25,6 +25,7 @@ import { dondeEstoy, nombreDe, useCompetencias } from './competencias_datos.js';
 import { svElegido, useElegidos } from './elegidos.js';
 import { pedirLigas } from './ligas_datos.js';
 import { BarraDia } from './drops.jsx';
+import { delHilo, useComentarios } from './comentarios.jsx';
 
 const W = typeof window !== 'undefined' ? window : {};
 const ET = 'America/New_York';
@@ -442,6 +443,7 @@ export function Vestuario({ liga, dc }) {
   const mios = useMios(dc);
   const est = useRef(null);
   const camp = useCampana();
+  useComentarios();
   // 🐉 con la campana activa, tu último evento sube a la fila de arriba (`FilaRacha`): acá no se repite
   const ultArriba = !!dc && !campanaPide(camp, dc);
   const nC = srcs.length;
@@ -471,6 +473,19 @@ export function Vestuario({ liga, dc }) {
   const fechaUlt = ult ? utc(liga.fechaLlave(ll)) : viejo ? utc(viejo.t) : 0;
   const ronda = ult ? ult[1] : viejo ? viejo.r : '';
   const bot = BOTS[(ll ? String(ll.n).split('').reduce((s, ch) => s + ch.charCodeAt(0), 0) : 0) % BOTS.length];
+  // 💬 el último comentario en una publicación tuya (las de los últimos días del muro)
+  const comTuyo = (() => {
+    const ahoraMs = Date.now();
+    let mejor = null;
+    for (const it of liga.muro || []) {
+      const ks = Array.isArray(it.ks) ? it.ks : [];
+      if (!it.id || !ks.includes(yo.k)) continue;
+      const hs = delHilo(it, ahoraMs).filter((c) => c.k !== yo.k);
+      const c = hs[hs.length - 1];
+      if (c && (!mejor || c.t > mejor.c.t)) mejor = { id: it.id, c };
+    }
+    return mejor;
+  })();
   return (
     <div className="pn-cu pn-yo">
       <div className="pn-yo-in">
@@ -487,10 +502,20 @@ export function Vestuario({ liga, dc }) {
         </div>
         <div className="pn-der">{conCarta.slice(3).map((x) => <Chip key={x[0]} liga={liga} x={x} elegida={i} onElegir={setElegida} />)}</div>
         <div className="pn-com">
-          <span className="pn-dice"><span className="pn-bot-av" aria-hidden="true">{bot[1]}</span>
-            <b>{bot[0]}<span className="pn-tag-bot">bot</span><small>{fechaUlt ? '· ' + hace(fechaUlt) : ''}</small></b>
-            <p>{ll ? textoBot(ronda, limpio(ll.nombre)) : 'Todavía no jugaste en la ' + (liga.temp || 'T1') + '. ¿Te anotas al próximo?'}</p></span>
-          <a className="pn-resp" href={ll ? '#/publicaciones' : '#/eventos'}>{ll ? 'Responder' : 'Ver eventos'}</a>
+          {/* 💬 lo último que te comentaron en una publicación tuya (de verdad o simulado, con su etiqueta), y Responder te
+              lleva a ESA publicación con el hilo abierto (12/11/2026); sin ninguno, el personaje de la Liga de antes */}
+          {comTuyo ? (
+            <span className="pn-dice">{comTuyo.c.et === 'l' ? <span className="pn-bot-av" aria-hidden="true">{comTuyo.c.k.toUpperCase()}</span>
+              : <Cara liga={liga} k={comTuyo.c.k} nombre={comTuyo.c.n} cls="cara pn-bot-av" />}
+              <b>{limpio(comTuyo.c.n)}{comTuyo.c.et === 's' ? <span className="pn-tag-bot">simulado</span> : comTuyo.c.et === 'l' ? <span className="pn-tag-bot">Liga</span> : null}
+                <small>· {hace(comTuyo.c.t)}</small></b>
+              <p>{comTuyo.c.tx}</p></span>
+          ) : (
+            <span className="pn-dice"><span className="pn-bot-av" aria-hidden="true">{bot[1]}</span>
+              <b>{bot[0]}<span className="pn-tag-bot">bot</span><small>{fechaUlt ? '· ' + hace(fechaUlt) : ''}</small></b>
+              <p>{ll ? textoBot(ronda, limpio(ll.nombre)) : 'Todavía no jugaste en la ' + (liga.temp || 'T1') + '. ¿Te anotas al próximo?'}</p></span>
+          )}
+          <a className="pn-resp" href={comTuyo ? '#/publicaciones/' + comTuyo.id : ll ? '#/publicaciones' : '#/eventos'}>{comTuyo || ll ? 'Responder' : 'Ver eventos'}</a>
           {ll && !ultArriba ? (
             <button type="button" className="pn-ult" onClick={() => (ll.n ? accion.llave(ll.n) : (location.hash = '#/r/' + encodeURIComponent(yo.k)))}>
               <span className="pn-cal"><i>{new Date(fechaUlt).toLocaleDateString('es', { weekday: 'short' }).replace('.', '')}</i><b>{new Date(fechaUlt).getDate()}</b></span>

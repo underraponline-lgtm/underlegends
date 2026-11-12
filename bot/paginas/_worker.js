@@ -96,6 +96,7 @@ const AVISOS = {
   '/api/avisos/comentar': 'POST',
   '/api/avisos/comentarios': 'GET',
   '/api/avisos/comentario-borrar': 'POST',
+  '/api/avisos/comentario-reportar': 'POST',
   '/api/avisos/cm-mio': 'POST',
   '/api/avisos/dueno/cm-permiso': 'POST',
   '/api/avisos/dueno/cm-permisos': 'POST',

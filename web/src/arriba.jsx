@@ -79,13 +79,25 @@ function Grupo({ n, items, on, pagina }) {
   );
 }
 
-function MenuArriba({ pagina }) {
+// 📰 «N NUEVAS» EN PUBLICACIONES (12/11/2026, la maqueta: «Publicaciones · 3 nuevas»): lo que salió desde la última vez que
+// la abriste (`lg:pub-visto`, lo anota publicaciones2.jsx). La primera vez, nada: si no, a quien nunca entró le saldrían
+// cien. Con tope en 99
+export function pubNuevas(liga, pagina) {
+  if (!liga || pagina === 'publicaciones') return 0;
+  let visto = 0;
+  try { visto = Number(localStorage.getItem('lg:pub-visto')) || 0; } catch (e) { visto = 0; }
+  if (!visto) return 0;
+  return Math.min(99, (liga.muro || []).filter((it) => { const t = Date.parse(it.t || ''); return t > visto; }).length);
+}
+
+function MenuArriba({ pagina, nuevas }) {
   return (
     <nav className="menu" aria-label="Secciones">
       {GRUPOS.map(([n, r, items]) => {
         if (!items) {
           const on = n === 'Inicio' ? !pagina : pagina && r === '#/' + pagina;
-          return <a key={n} href={r} title={QUE_ES[r]} onClick={subirSiEsta(r)} className={on ? 'on' : ''}>{n}</a>;
+          const badge = r === '#/publicaciones' && nuevas ? <i className="m-nuevas" aria-label={nuevas + ' nuevas'}>{nuevas}</i> : null;
+          return <a key={n} href={r} title={QUE_ES[r]} onClick={subirSiEsta(r)} className={on ? 'on' : ''}>{n}{badge}</a>;
         }
         return <Grupo key={n} n={n} items={items} pagina={pagina} on={!!pagina && (PAGINAS_DE[n] || []).includes(pagina)} />;
       })}
@@ -289,7 +301,7 @@ export function Cabecera({ liga, dc, onMenu, pagina = '' }) {
   return (
     <header className="cab negra">
       <Marca liga={liga} />
-      <MenuArriba pagina={pagina} />
+      <MenuArriba pagina={pagina} nuevas={pubNuevas(liga, pagina)} />
       <div className="cab-der">
         <Buscar liga={liga} />
         <button className="btn-ico lupa-b" type="button" aria-label="Buscar" onClick={() => setBusca(true)}><Ico n="buscar" t={20} /></button>

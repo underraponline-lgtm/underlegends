@@ -249,7 +249,7 @@ function Post({ liga, it, A, nuevo }) {
   if (!c) return null;
   const logro = !!LOGROS[it.tipo];
   return (
-    <article className={'pb-post ' + it.tipo + (c.media ? ' media' : fuerte(it) ? ' caja' : ' renglon')}>
+    <article className={'pb-post ' + it.tipo + (c.media ? ' media' : fuerte(it) ? ' caja' : ' renglon')} data-pub={it.id || undefined}>
       {c.vis ? <div className="pb-v">{c.vis}</div> : null}
       <div className="pb-c">
         <span className="pb-cat">{c.cat}{nuevo ? <i className="pb-nuevo">NUEVO</i> : null}</span>
@@ -339,7 +339,7 @@ function Rangos({ liga, xs, A, visto }) {
             const ks = ksDe(it);
             const n0 = limpio((it.quien || [])[0] || '');
             return (
-              <li key={it.id || it.t + n0}>
+              <li key={it.id || it.t + n0} data-pub={it.id || undefined}>
                 <Cara liga={liga} k={ks[0] || ''} nombre={n0} cls="cara pb-fcara" />
                 <span className="pb-fn">{ks[0] && liga.T[ks[0]] ? <a href={'#/r/' + encodeURIComponent(ks[0])}>{n0}</a> : <b>{n0}</b>}
                   <small>{it.primero ? 'su primera letra' : 'pasa a rango'}</small></span>
@@ -364,7 +364,7 @@ function Anuncios({ liga, xs, visto }) {
         <span className="pb-cat">Eventos anunciados · {xs.length}{visto && xs.some((it) => utc(it.t) > visto) ? <i className="pb-nuevo">NUEVO</i> : null}</span>
         <ul className="pb-filas ag">
           {xs.map((it) => (
-            <li key={it.id || it.t + it.ev}>
+            <li key={it.id || it.t + it.ev} data-pub={it.id || undefined}>
               <img className="pb-flogo" alt="" src={liga.logo(it.sv)} />
               <span className="pb-fn"><b>{limpio(it.ev)}</b>
                 <small>{[hora(it.t), siglaDe(it.sv), it.mod, it.pre ? 'premio: ' + it.pre : ''].filter(Boolean).join(' · ')}</small></span>
@@ -477,8 +477,11 @@ function useVisto(muro) {
 
 const FILTROS = [['', 'Todo'], ['liga', 'En la Liga'], ['anuncios', 'Anuncios'], ['promos', 'Promos'], ['sigo', '★ A quien sigo']];
 
-export function Publicaciones({ liga, enc }) {
+export function Publicaciones({ liga, enc, foco = '' }) {
   const A = useAplausos();
+  // 🎯 LA PUBLICACIÓN EXACTA (`#/publicaciones/<id>`, 12/11/2026): la de «Responder» en el Inicio y la de la campana. Su
+  // hilo se abre solo (`Hilo` lee `W.__pubFoco`) y la página baja hasta ella
+  if (typeof window !== 'undefined') window.__pubFoco = /^[0-9a-f]{12}$/.test(foco) ? foco : '';
   const [fil, setFil] = useState('');
   const [ver, setVer] = useState(40);
   const [votaste] = useState(() => {
@@ -497,6 +500,18 @@ export function Publicaciones({ liga, enc }) {
   };
   const cuenta = useMemo(() => Object.fromEntries(FILTROS.map(([f]) => [f, todos.filter((it) => pasa(it, f)).length])), [todos, sigo]);
   const pubs = useMemo(() => todos.filter((it) => pasa(it, fil)), [todos, fil, sigo]);
+  // 🎯 que la del foco entre en lo que se dibuja, y bajar hasta ella cuando está
+  useEffect(() => {
+    if (!/^[0-9a-f]{12}$/.test(foco)) return undefined;
+    const i = pubs.findIndex((it) => it.id === foco);
+    if (i >= ver) setVer(i + 10);
+    const id = setTimeout(() => {
+      const raiz = document.querySelector('#inicio-nuevo');
+      const el = raiz && raiz.shadowRoot && raiz.shadowRoot.querySelector('[data-pub="' + foco + '"]');
+      if (el) el.scrollIntoView({ block: 'center', behavior: 'smooth' });
+    }, 400);
+    return () => clearTimeout(id);
+  }, [foco, pubs.length]); // eslint-disable-line react-hooks/exhaustive-deps
   const nuevas = visto ? todos.filter((it) => utc(it.t) > visto).length : 0;
   // por día; en cada día lo que va junto (cartas, rangos, anuncios) en el lugar del primero
   // ✂️ el corte llega hasta el final del último día: cortado a la mitad, el día decía «4 publicaciones» de 24 y sus
