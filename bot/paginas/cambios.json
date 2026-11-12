@@ -11,6 +11,17 @@
  ],
  "cambios": [
     {
+        "version": "4.55",
+        "dia": "2026-11-12",
+        "cuando": "2026-11-12T02:19:00-05:00",
+        "titulo": "Las finales sin campeón ya suman",
+        "items": [
+            "**Si la llave no dice quién ganó la final y pasan 7 días, el evento suma igual**: los dos finalistas cobran el promedio de 1.º y 2.º (8.750 en un evento de 16 o más), y los demás, la ronda a la que llegaron. Antes esos eventos no le sumaban nada a nadie.",
+            "Si el organizador dice el campeón antes de los 7 días, cuenta como siempre: campeón y subcampeón.",
+            "Hoy entran así 10 eventos de LKR, FDS, DDS y LCW que estaban quietos."
+        ]
+    },
+    {
         "version": "4.54",
         "dia": "2026-11-12",
         "cuando": "2026-11-12T02:16:17-05:00",
