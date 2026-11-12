@@ -1,4 +1,35 @@
 {
 "_leeme":"Lo que bot/autoidentificar.py hizo solo: `hechos` = {cuenta: quién, cuándo (ET), qué se escribió y con qué pruebas}. Un ID de acá no verifica a nadie (autoverificar.sin_miembro).",
-"hechos":{}
+"hechos":{
+"883943680304635954":{
+"n":"Lucho",
+"cuando":"12/11/2026 05:54 AM ET",
+"como":"id",
+"por":"se anotó así 1 vez/veces + su apodo o nombre visible"
+},
+"1355393300672020570":{
+"n":"Senticide",
+"cuando":"12/11/2026 05:54 AM ET",
+"como":"id",
+"por":"se anotó así 5 vez/veces + su apodo o nombre visible + la misma bandera"
+},
+"877285342158397500":{
+"n":"Ragna",
+"cuando":"12/11/2026 05:54 AM ET",
+"como":"fila nueva",
+"por":"se anotó así 1 vez/veces + su apodo o nombre visible + la misma bandera",
+"pais":"cl"
+}
+},
+"ultima":"2026-11-12T05:54-05:00",
+"ultimo_conteo":{
+"nada":90,
+"no":25,
+"empate":16,
+"probable":19,
+"disfraz":46,
+"seguro":5,
+"sin_id":201,
+"auto":3
+}
 }
