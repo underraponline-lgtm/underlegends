@@ -441,7 +441,10 @@ function PrimerizosLista({ P, vuelve, liga, alVuelve }) {
 // cada movimiento: lo que no está en la lista se muestra tal cual
 const ORIGEN_PDT = { ap: 'apuestas', precio: 'precios por cabeza', semana: 'premio de la semana', rdia: 'racha diaria', rhito: 'hitos de racha',
   bien: 'bienvenida', crew: 'crear una crew', 'crew-nombre': 'nombre de crew', 'crew-logo': 'logo de crew', mw: 'Most Wanted', div: 'divisiones',
-  mis: 'misiones', caza: 'cazas', mes: 'MES AWARDS', comp: 'Competencias', promo: 'promos', salon: 'Salón' };
+  mis: 'misiones', caza: 'cazas', mes: 'MES AWARDS', comp: 'Competencias', promo: 'promos', salon: 'Salón',
+  // los que salían con su código (12/11/2026, mirándolo con Dlx): «deb», «promox», «pase»
+  pase: 'Pase de rapero', 'pase-premium': 'Pase premium', deb: 'reto del debut', wr: 'Writing Challenge',
+  promox: 'una semana más de promo' };
 function Economia({ e, liga }) {
   if (!e) return <p className="pronto-p">La billetera de la temporada todavía no está configurada.</p>;
   const ent = e.dias.reduce((t, x) => t + x[1], 0), sal = e.dias.reduce((t, x) => t + x[2], 0);
@@ -456,7 +459,8 @@ function Economia({ e, liga }) {
         <div className="dz-num"><span>14 días</span><b>{ent >= sal ? '+' : '−'}{num(Math.abs(ent - sal))}</b><small>entraron {num(ent)} · salieron {num(sal)}</small></div>
       </div>
       {e.dias.length ? (
-        <div className="dz-eco-d" role="img" aria-label={'Día por día, lo que entró y lo que salió en 14 días'}>
+        <div className="dz-eco-d" role="img" aria-label={'Día por día, lo que entró y lo que salió en 14 días'}
+          style={{ gridTemplateColumns: 'repeat(' + e.dias.length + ', minmax(0, 1fr))' }}>{/* llegan 15 días (hoy incluido) y la grilla era de 14: hoy caía abajo */}
           {e.dias.map(([d, a, b]) => (
             <div key={d} title={corto(d) + ': entró ' + num(a) + ' · salió ' + num(b)}>
               <i><u className="e" style={{ height: (100 * a / max).toFixed(1) + '%' }} /><u className="s" style={{ height: (100 * b / max).toFixed(1) + '%' }} /></i>
@@ -1067,6 +1071,8 @@ const NOMBRE_SECC = { inicio: 'Inicio', eventos: 'Eventos', ranking: 'Ranking', 
   'i-raperos': 'Los que mandan', 'i-panel': 'Misiones', 'i-merch': 'Merchandising', 'i-numeros': 'La Liga en números',
   'p-eventos': 'Puerta · Eventos', 'p-ranking': 'Puerta · Ranking', 'p-mw': 'Puerta · Se busca', 'p-tarjetas': 'Puerta · Tarjetas',
   'p-pase': 'Puerta · Pase', 'p-tienda': 'Puerta · Tienda' };
+// la página de cada servidor llega como «sv-URBF»: con la sigla que se lee (URB, LCW, CYH), no el código (12/11/2026)
+const nombreSecc = (k) => NOMBRE_SECC[k] || (/^sv-/i.test(k) ? 'Servidor ' + siglaDe(k.slice(3).toUpperCase()) : k);
 // 👥 LOS NÚMEROS DE LAS CREWS (19/10/2026, `crewNumeros()` de bot/crews.js): esta semana contra la anterior, y hoy
 const CREW_NUM = [['creada', 'Crews armadas'], ['entro', 'Entraron a una crew'], ['link', '… con un link'],
   ['invito', 'Invitaciones mandadas'], ['se_cambio', 'Se cambiaron de crew'], ['link_nuevo', 'Links armados'],
@@ -1101,7 +1107,7 @@ function SeccionesNumeros({ s, toques }) {
   return (
     <div className="db-aj">
       <div className="db-q">{filas.map(([k, n, ant]) => (
-        <div key={k} className="db-q-f"><span>{NOMBRE_SECC[k] || k}</span><i><u style={{ width: ((100 * n) / tope).toFixed(1) + '%' }} /></i>
+        <div key={k} className="db-q-f"><span>{nombreSecc(k)}</span><i><u style={{ width: ((100 * n) / tope).toFixed(1) + '%' }} /></i>
           <b>{num(n)} <small>{ant ? 'antes ' + num(ant) : 'esta semana'}</small></b></div>
       ))}</div>
       <p className="db-tx">{toques ? 'Cuántos celus o compus tocaron algo de cada bloque del Inicio, o cada puerta, en los últimos 7 días (una vez por día cada uno). Para decidir qué sube, qué baja y qué sobra con números.'
@@ -1123,7 +1129,7 @@ function ClicsNumeros({ c }) {
         const i = k.indexOf(':');
         const sec = k.slice(0, i), et = k.slice(i + 1);
         return (
-          <div key={k} className="db-q-f"><span><small>{NOMBRE_SECC_C[sec] || sec}</small> {et}</span>
+          <div key={k} className="db-q-f"><span><small>{NOMBRE_SECC_C[sec] || nombreSecc(sec)}</small> {et}</span>
             <i><u style={{ width: ((100 * n) / tope).toFixed(1) + '%' }} /></i>
             <b>{num(n)} <small>{ant ? 'antes ' + num(ant) : 'esta semana'}</small></b></div>
         );
@@ -3819,7 +3825,7 @@ function CuadroEvento({ p, hermanas, elegir }) {
   const esta = ladosDe(p).join('|');
   if (!rondas.length) return <p className="db-tx">Esta llave todavía no tiene cuadro: contéstala en «Una por vez».</p>;
   return (
-    <div className="dz-cuadro" aria-label={'El cuadro de ' + (p.sec || 'este evento')}>{rondas.map((r) => (
+    <div className="dz-cuadroev" aria-label={'El cuadro de ' + (p.sec || 'este evento')}>{rondas.map((r) => (
       <div key={r.r} className="dz-cu-col"><b>{r.r}</b>{(r.b || []).map((b, i) => {
         const key = (b[0] || []).map(sinB).sort().join('|');
         const h = !b[1] ? porLados.get(key) : null;
@@ -4546,7 +4552,21 @@ function deA(x, liga) {
       return ks.map((k) => [siglaDe(k), ver(A, k), ver(D, k)]);
     }
   }
-  return [['', enPalabras(cual, x.antes, liga), enPalabras(cual, x.despues, liga)]];
+  // 🔎 «Sumar un servidor: 1 ajuste → 2 ajustes» no decía cuál (12/11/2026, mirándolo con Dlx): en los que se guardan
+  // por servidor, qué servidor entró, salió o cambió
+  if ((cual === 'altas' || cual === 'socios_duenos') && (a == null || typeof a === 'object') && (d == null || typeof d === 'object')) {
+    const A = a || {}, D = d || {};
+    const filas = [...new Set([...Object.keys(A), ...Object.keys(D)])].filter((k) => JSON.stringify(A[k]) !== JSON.stringify(D[k]))
+      .map((k) => [siglaDe(k), k in A ? 'estaba' : '—', k in D ? (k in A ? 'cambió' : 'se sumó') : 'se sacó']);
+    if (filas.length && filas.length <= 6) return filas;
+  }
+  // 🎲 las apuestas: lo de antes del 12/11 que cambiaba «dónde no van» se veía igual de los dos lados
+  const ea = enPalabras(cual, x.antes, liga), ed = enPalabras(cual, x.despues, liga);
+  if (cual === 'apuestas' && ea === ed) {
+    const no = (v) => Object.keys((v && v.apagadas) || {}).map(siglaDe).join(', ') || 'ninguno';
+    return [['no van en', no(x.antes), no(x.despues)]];
+  }
+  return [['', ea, ed]];
 }
 
 // 🗂️ LO QUE TOCARON LOS SOCIOS (Dlx, 11/11/2026: «que haya un registro para nosotros, no para ellos, de las cosas que
