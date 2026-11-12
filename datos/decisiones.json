@@ -372,6 +372,12 @@
    "cuando": "2026-11-12 3:44 AM ET",
    "por": "el ciclo (R26)",
    "nota": "Dlx en ✅ Decidir, a «Bracket incompleto»: sin final. La llave llegaba sólo a las semis: los de las semis cobran la semifinal (`llaves_a_entrada.con_campeon()`)"
+  },
+  "Red Bull Crew VENEC · ACAD · 07/11": {
+   "decision": "cuenta",
+   "cuando": "2026-11-12 3:39 PM ET",
+   "por": "Claude, con la prueba (Makmah se lo pidió a Dlx, 12/11/2026)",
+   "nota": "la retuvo la verificación de llaves: «la publicó zinox33, que nunca había publicado una llave, y ningún anuncio de ACAD la respalda». Las dos cosas tienen respuesta en el #torneos de la ACADEMIA: «HOY ES LA NACIONAL DE VENEC» (07/11, Leonar-T, con los horarios por país), «UN PLACER MOSTRAR AL EQUIPO DE TRABAJO DE ESTA NACIONAL» (07/11) con ZINOX 🇨🇱 de host, y el resultado del 08/11: CARLOS 🇪🇨 (<@958103803616444528>) primero y OG 🇻🇪 (<@425356695309516810>) segundo, lo mismo que dice la llave. El anuncio no se encontró porque el lector toma mal el título de los anuncios de la ACADEMIA (pendiente aparte)"
   }
  },
  "no_rankear": {
@@ -1679,6 +1685,13 @@
    "cuando": "2026-11-12 3:04 AM ET",
    "por": "el ciclo (R21)",
    "nota": "la cuenta @lrs0378 (en Discord: «#70 | LRS», «Lrs la sustancia 💫») · en la Lista: LRS se anotó como «MP» para ese evento, no es staff de LKR y esa noche no jugó con su nombre"
+  },
+  "Red Bull Crew VENEC · ACAD · 07/11 · Carlos": {
+   "es": "Carlosss",
+   "antes": "Carlos",
+   "cuando": "2026-11-12 3:39 PM ET",
+   "por": "Claude, con la prueba (Makmah se lo pidió a Dlx, 12/11/2026)",
+   "nota": "el campeón: la ACADEMIA lo menciona como <@958103803616444528>, que es carlosss.mc23, Carlosss 🇪🇨 en la Lista (verificado). En la ACADEMIA «Carlos» suele ir a Carlos 🇲🇽: por eso va por evento y no por servidor"
   }
  },
  "sacados_quien": {
