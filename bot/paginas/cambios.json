@@ -11,6 +11,19 @@
  ],
  "cambios": [
     {
+        "version": "4.56",
+        "dia": "2026-11-12",
+        "cuando": "2026-11-12T05:10:00-05:00",
+        "titulo": "La bienvenida, con video",
+        "items": [
+            "**La pantalla de bienvenida tiene video de fondo**: raperos de la Liga en batallas de verdad, en blanco y negro y en cámara lenta. Arriba dice de qué canales son los clips.",
+            "**«LIGA GLOBAL» cae letra por letra y se llena con el video**, y la carta de la portada se turna: la de Temporada del #1, la Competitiva del #1 del competitivo y la de liga del líder.",
+            "**Cuántos miembros tienen los servidores de la Liga**, sumados, en grande.",
+            "**Las páginas pasan solas cada 10 segundos**, con una barrita que se llena abajo. En cuanto tocas algo, se quedan quietas y manejas tú.",
+            "Con «Menos animaciones» o el ahorro de datos del teléfono, en lugar del video va un cuadro quieto."
+        ]
+    },
+    {
         "version": "4.55",
         "dia": "2026-11-12",
         "cuando": "2026-11-12T02:19:00-05:00",
