@@ -6554,14 +6554,13 @@
   "LARRIX🇦🇷": {
    "LKR": {
     "duelos": "",
-    "ev": 2,
+    "ev": 1,
     "oro": 0,
-    "ovr": 46,
-    "pod": 1,
-    "pts": 11000,
-    "racha": "0/1",
+    "ovr": 42,
+    "pod": 0,
+    "pts": 2750,
+    "racha": "0/0",
     "tg": {
-     "fin": 1,
      "nuevo": true
     }
    }
@@ -12463,6 +12462,21 @@
     "pts": 5775,
     "racha": "1/1",
     "tg": {
+     "nuevo": true
+    }
+   }
+  },
+  "Terry": {
+   "LKR": {
+    "duelos": "",
+    "ev": 1,
+    "oro": 0,
+    "ovr": 45,
+    "pod": 1,
+    "pts": 6875,
+    "racha": "1/1",
+    "tg": {
+     "fin": 1,
      "nuevo": true
     }
    }

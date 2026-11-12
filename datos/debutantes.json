@@ -1338,15 +1338,16 @@
    "vencido": true
   },
   "LARRIX": {
+   "avisado": "2026-11-12",
    "avisado_cumplido": "2026-11-12",
-   "con": 620,
-   "cumplido": "2026-11-06T03:25:32+00:00",
-   "debut": "2026-11-06T02:03:35+00:00",
+   "con": null,
+   "cumplido": "",
+   "debut": "2026-11-06T03:25:32+00:00",
    "did": "",
-   "evento": "(sin titulo)",
-   "n": 619,
+   "evento": "TORNEOS",
+   "n": 620,
    "sv": "LKR",
-   "vence": "2026-11-13T02:03:35+00:00",
+   "vence": "2026-11-13T03:25:32+00:00",
    "vencido": false
   },
   "LEITAN": {
@@ -2306,6 +2307,18 @@
    "n": 620,
    "sv": "LKR",
    "vence": "2026-11-13T03:25:32+00:00",
+   "vencido": false
+  },
+  "Terry": {
+   "avisado": "2026-11-12",
+   "con": null,
+   "cumplido": "",
+   "debut": "2026-11-06T02:03:35+00:00",
+   "did": "1562656457034440835",
+   "evento": "(sin titulo)",
+   "n": 619,
+   "sv": "LKR",
+   "vence": "2026-11-13T02:03:35+00:00",
    "vencido": false
   },
   "TheOg": {
