@@ -4990,8 +4990,15 @@ def efectos(p, llaves, tab):
     pts = int(((tab or {}).get(L.get('escala')) or {}).get(puesto) or 0)
     despues = {norm(_sin_bandera(m)) for r in rs[i + 1:] for b in r.get('b') or [] for lado in (b[0] or [])
                for m in _mie(lado)}
+    # 🪙 Y QUIEN YA PERDIÓ OTRA BATALLA DE LA LLAVE, TAMPOCO (12/11/2026, mirándolo con Dlx): ya cobra por ésa. «CARLOS
+    # vs MARTINES» (DDS, #580) decía «CARLOS queda en 0», y Carlos cobra 5.250 por la semi que perdió con Vilca
+    def _k(x):
+        return norm(_sin_bandera(lado_limpio(x)))
+    cayo = {_k(m) for r in rs for b in r.get('b') or [] if len(b) > 1 and str(b[1] or '').strip()
+            for lado in (b[0] or []) if _k(lado) != _k(b[1]) for m in _mie(lado)}
     equipos = de_equipos([_ys.get(str(l or '').strip(), l) for l in lados])
-    quedan = [(lado, m) for lado in lados for m in _mie(lado) if norm(_sin_bandera(m)) not in despues]
+    quedan = [(lado, m) for lado in lados for m in _mie(lado)
+              if norm(_sin_bandera(m)) not in despues and _k(m) not in cayo]
     cuota = {lado: pts // max(1, len(_mie(lado))) for lado in lados}
     out = {}
     for op in p.get('opciones') or []:
