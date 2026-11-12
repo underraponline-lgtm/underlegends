@@ -1321,6 +1321,17 @@
    "b": "Assuan 🇨🇱",
    "ganador": "Assuan 🇨🇱",
    "votos": "1–0"
+  },
+  "1570575651965116528": {
+   "id": "1570575651965116528",
+   "sv": "#FDS ╏FREESTYLE DISCORD SERIES",
+   "g": "1489848581203689535",
+   "canal": "1536574435761332334",
+   "pub": 1794524815313,
+   "a": "CRK",
+   "b": "RAIZER",
+   "ganador": "CRK",
+   "votos": "1–0"
   }
  },
  "llaves": {
@@ -6099,6 +6110,57 @@
      ],
      "ARTEZZY",
      "veredicto",
+     []
+    ]
+   ]
+  },
+  "1570572793651798197": {
+   "id": "1570572793651798197",
+   "sv": "#FDS ╏FREESTYLE DISCORD SERIES",
+   "g": "1489848581203689535",
+   "canal": "1500675902042931280",
+   "pub": 1794524133838,
+   "ed": 1794524133838,
+   "texto": "`[ CUARTOS ]`\n⌞crk⌝ 🆚 ⌞raizer⌝\n⌞Nito nanel⌝ 🆚 ⌞mcarepa⌝\n⌞mco⌝ 🆚 ⌞limitsz⌝\n⌞tokio⌝ 🆚 ⌞showsero⌝\n`[ SEMIFINALES ]`\n`[ FINAL ]`",
+   "batallas": [
+    [
+     "CUARTOS",
+     [
+      "crk",
+      "raizer"
+     ],
+     null,
+     "última ronda y no dice campeón",
+     []
+    ],
+    [
+     "CUARTOS",
+     [
+      "Nito nanel",
+      "mcarepa"
+     ],
+     null,
+     "última ronda y no dice campeón",
+     []
+    ],
+    [
+     "CUARTOS",
+     [
+      "mco",
+      "limitsz"
+     ],
+     null,
+     "última ronda y no dice campeón",
+     []
+    ],
+    [
+     "CUARTOS",
+     [
+      "tokio",
+      "showsero"
+     ],
+     null,
+     "última ronda y no dice campeón",
      []
     ]
    ]

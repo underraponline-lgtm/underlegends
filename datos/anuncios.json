@@ -1,5 +1,5 @@
 {
- "cuando": "2026-11-12T22:55:00+00:00",
+ "cuando": "2026-11-12T23:25:04+00:00",
  "anuncios": [
   {
    "nombre": "¡SE LLEGÓ LA GRAN NOCHE!",
@@ -6975,6 +6975,42 @@
   }
  ],
  "inscripciones": [
+  {
+   "servidor": "FRZ",
+   "canal": "➣「📝」inscripciones",
+   "texto": "RIOLU🇪🇸",
+   "quien": "alvaroriolu03",
+   "discord_id": "522777983921029162",
+   "msg_id": "1570576308646187161",
+   "cuando": "2026-11-12T23:09:31"
+  },
+  {
+   "servidor": "FDS",
+   "canal": "✅╏inscripciones-express",
+   "texto": "tomyhilfiger🇾🇹",
+   "quien": "crakero_crew_1312",
+   "discord_id": "1374555884868337738",
+   "msg_id": "1570575800678490229",
+   "cuando": "2026-11-12T23:07:30"
+  },
+  {
+   "servidor": "FDS",
+   "canal": "✅╏inscripciones-express",
+   "texto": "okam",
+   "quien": "okam77_25976",
+   "discord_id": "1512148565890306153",
+   "msg_id": "1570574376850694285",
+   "cuando": "2026-11-12T23:01:51"
+  },
+  {
+   "servidor": "FDS",
+   "canal": "✅╏inscripciones-express",
+   "texto": "Dios 🇲🇽",
+   "quien": "dan666._",
+   "discord_id": "1204164715350196284",
+   "msg_id": "1570573352152596553",
+   "cuando": "2026-11-12T22:57:46"
+  },
   {
    "servidor": "ACAD",
    "canal": "📝┇inscripciones-1",
@@ -42938,42 +42974,6 @@
    "discord_id": "742442337028014090",
    "msg_id": "1558239185889005649",
    "cuando": "2026-10-09T22:06:12"
-  },
-  {
-   "servidor": "ACAD",
-   "canal": "📝┇inscripciones-1",
-   "texto": "Efimero",
-   "quien": "efimero001",
-   "discord_id": "742442337028014090",
-   "msg_id": "1558239012009939127",
-   "cuando": "2026-10-09T22:05:31"
-  },
-  {
-   "servidor": "ACAD",
-   "canal": "📝┇inscripciones-1",
-   "texto": "Shisui🇯🇵",
-   "quien": "funhorlavild",
-   "discord_id": "1426686911908675628",
-   "msg_id": "1558238606550769756",
-   "cuando": "2026-10-09T22:03:54"
-  },
-  {
-   "servidor": "FFA",
-   "canal": "✦📝—inscripciones",
-   "texto": "Mitosis🇦🇷",
-   "quien": "lizeninn.",
-   "discord_id": "1493416945037611140",
-   "msg_id": "1558238292028297378",
-   "cuando": "2026-10-09T22:02:39"
-  },
-  {
-   "servidor": "FFA",
-   "canal": "✦📝—inscripciones",
-   "texto": "Antoniokast🇨🇱",
-   "quien": "antonioutkast",
-   "discord_id": "1535790068395024454",
-   "msg_id": "1558237920534593768",
-   "cuando": "2026-10-09T22:01:10"
   }
  ]
 }

@@ -416,6 +416,14 @@
 "temporada"
 ]
 },
+"tøkiø": {
+"rg": "",
+"c": [
+"competitivo",
+"servidor",
+"temporada"
+]
+},
 "caliz": {
 "rg": "D",
 "c": [
@@ -423,10 +431,6 @@
 "servidor",
 "temporada"
 ]
-},
-"dominick": {
-"rg": "D",
-"c": []
 },
 "dyzz": {
 "rg": "E",
@@ -437,22 +441,19 @@
 "temporada"
 ]
 },
+"dominick": {
+"rg": "D",
+"c": []
+},
 "bna": {
 "rg": "C",
 "c": []
-},
-"tøkiø": {
-"rg": "",
-"c": [
-"competitivo",
-"servidor",
-"temporada"
-]
 },
 "mats": {
 "rg": "C",
 "c": [
 "competitivo",
+"pais",
 "servidor",
 "temporada"
 ]
@@ -478,14 +479,6 @@
 "paria": {
 "rg": "D",
 "c": []
-},
-"number": {
-"rg": "D",
-"c": [
-"competitivo",
-"servidor",
-"temporada"
-]
 },
 "masino": {
 "rg": "B",
@@ -563,6 +556,14 @@
 "temporada"
 ]
 },
+"number": {
+"rg": "D",
+"c": [
+"competitivo",
+"servidor",
+"temporada"
+]
+},
 "eclipsito": {
 "rg": "C",
 "c": []
@@ -595,6 +596,7 @@
 "rg": "E",
 "c": [
 "competitivo",
+"pais",
 "servidor",
 "temporada"
 ]
@@ -610,6 +612,15 @@
 },
 "kochi": {
 "rg": "C",
+"c": [
+"competitivo",
+"pais",
+"servidor",
+"temporada"
+]
+},
+"numberve": {
+"rg": "E",
 "c": [
 "competitivo",
 "pais",
@@ -635,11 +646,7 @@
 "temporada"
 ]
 },
-"jj": {
-"rg": "",
-"c": []
-},
-"sosa": {
+"sosaatr": {
 "rg": "E",
 "c": [
 "competitivo",
@@ -647,6 +654,10 @@
 "servidor",
 "temporada"
 ]
+},
+"jj": {
+"rg": "",
+"c": []
 },
 "presagio": {
 "rg": "",
@@ -720,15 +731,6 @@
 "rg": "E",
 "c": [
 "competitivo",
-"servidor",
-"temporada"
-]
-},
-"numberve": {
-"rg": "E",
-"c": [
-"competitivo",
-"pais",
 "servidor",
 "temporada"
 ]
@@ -885,6 +887,14 @@
 "temporada"
 ]
 },
+"zetryko": {
+"rg": "",
+"c": [
+"pais",
+"servidor",
+"temporada"
+]
+},
 "bastyretro": {
 "rg": "",
 "c": [
@@ -1017,6 +1027,14 @@
 "temporada"
 ]
 },
+"crakero": {
+"rg": "",
+"c": [
+"pais",
+"servidor",
+"temporada"
+]
+},
 "hotaruadeyemi": {
 "rg": "",
 "c": []
@@ -1034,14 +1052,6 @@
 "c": [
 "pais",
 "servidor"
-]
-},
-"zetryko": {
-"rg": "",
-"c": [
-"pais",
-"servidor",
-"temporada"
 ]
 },
 "giansito": {
@@ -1086,14 +1096,6 @@
 "fazer": {
 "rg": "",
 "c": []
-},
-"crakero": {
-"rg": "",
-"c": [
-"pais",
-"servidor",
-"temporada"
-]
 },
 "ezias": {
 "rg": "",
@@ -1307,6 +1309,14 @@
 "rg": "",
 "c": []
 },
+"sosa": {
+"rg": "",
+"c": [
+"pais",
+"servidor",
+"temporada"
+]
+},
 "warap": {
 "rg": "",
 "c": []
@@ -1438,13 +1448,6 @@
 "joshu": {
 "rg": "",
 "c": []
-},
-"sosaatr": {
-"rg": "",
-"c": [
-"servidor",
-"temporada"
-]
 },
 "eze": {
 "rg": "",
@@ -2792,31 +2795,6 @@
 }
 },
 "cambios": [
-{
-"tipo": "rango",
-"t": "2026-10-07T20:27:04Z",
-"quien": [
-"Soneto"
-],
-"rg": "E",
-"primero": true
-},
-{
-"tipo": "tarjeta",
-"t": "2026-10-07T20:27:04Z",
-"quien": [
-"Soneto"
-],
-"carta": "competitivo"
-},
-{
-"tipo": "tarjeta",
-"t": "2026-10-07T21:08:01Z",
-"quien": [
-"RT"
-],
-"carta": "temporada"
-},
 {
 "tipo": "rango",
 "t": "2026-10-07T21:57:14Z",
@@ -6147,6 +6125,47 @@
 ],
 "rg": "D",
 "primero": false
+},
+{
+"tipo": "tarjeta",
+"t": "2026-11-12T23:36:34Z",
+"quien": [
+"mats"
+],
+"carta": "pais"
+},
+{
+"tipo": "tarjeta",
+"t": "2026-11-12T23:36:34Z",
+"quien": [
+"LAST"
+],
+"carta": "pais"
+},
+{
+"tipo": "rango",
+"t": "2026-11-12T23:36:34Z",
+"quien": [
+".SosaATR"
+],
+"rg": "E",
+"primero": true
+},
+{
+"tipo": "tarjeta",
+"t": "2026-11-12T23:36:34Z",
+"quien": [
+".SosaATR"
+],
+"carta": "competitivo"
+},
+{
+"tipo": "tarjeta",
+"t": "2026-11-12T23:36:34Z",
+"quien": [
+".SosaATR"
+],
+"carta": "pais"
 }
 ],
 "noche_antes": {
@@ -7188,6 +7207,67 @@
 "desde": 401
 }
 ]
+},
+"2026-11-12": {
+"tipo": "resnoche",
+"t": "2026-11-13T08:00:00Z",
+"dia": "2026-11-12",
+"eventos": 1,
+"part": 8,
+"campeones": [
+{
+"ev": "CUPO A LA MULTIVERS",
+"sv": "ACAD",
+"ll": 624,
+"quien": [
+[
+"Zetryko",
+"zetryko"
+]
+]
+}
+],
+"suman": [
+{
+"n": "Zetryko",
+"k": "zetryko",
+"pts": 7500,
+"ev": 1
+},
+{
+"n": "LICENCIADO 🇲🇽",
+"k": "",
+"pts": 5000,
+"ev": 1
+},
+{
+"n": "TøKīØ🦠🧠",
+"k": "tøkiø",
+"pts": 4000,
+"ev": 1
+}
+],
+"suben": [
+{
+"n": "Number VE",
+"k": "numberve",
+"de": 84,
+"a": 64
+},
+{
+"n": "Zetryko",
+"k": "zetryko",
+"de": 107,
+"a": 93
+},
+{
+"n": "crakero",
+"k": "crakero",
+"de": 112,
+"a": 107
+}
+],
+"sorpresas": []
 }
 }
 }

@@ -11,23 +11,53 @@
     "pts": 1875,
     "racha": "0/0"
    },
-   "FDS": {
+   "DDS": {
     "duelos": "",
-    "ev": 1,
+    "ev": 4,
     "oro": 0,
-    "ovr": 43,
-    "pod": 0,
-    "pts": 3500,
-    "racha": "0/0"
+    "ovr": 46,
+    "pod": 1,
+    "pts": 10250,
+    "racha": "0/1",
+    "tg": {
+     "fin": 1
+    }
    },
-   "FFA": {
+   "FDS": {
     "duelos": "",
     "ev": 3,
     "oro": 0,
     "ovr": 45,
     "pod": 0,
-    "pts": 14438,
+    "pts": 14662,
+    "racha": "1/1"
+   },
+   "FFA": {
+    "duelos": "0/3",
+    "ev": 14,
+    "oro": 0,
+    "ovr": 50,
+    "pod": 0,
+    "pts": 56825,
     "racha": "0/0"
+   },
+   "SR": {
+    "duelos": "",
+    "ev": 1,
+    "oro": 0,
+    "ovr": 42,
+    "pod": 0,
+    "pts": 1250,
+    "racha": "0/0"
+   },
+   "URBF": {
+    "duelos": "0/1",
+    "ev": 2,
+    "oro": 0,
+    "ovr": 44,
+    "pod": 0,
+    "pts": 10400,
+    "racha": "0/1"
    }
   },
   "0223🇧🇧": {
@@ -3271,12 +3301,12 @@
   },
   "Drexx": {
    "ACAD": {
-    "duelos": "4/10",
-    "ev": 8,
+    "duelos": "5/12",
+    "ev": 9,
     "oro": 0,
-    "ovr": 48,
+    "ovr": 49,
     "pod": 0,
-    "pts": 43281,
+    "pts": 50031,
     "racha": "0/1"
    },
    "CH": {
@@ -3420,12 +3450,12 @@
   },
   "Dyzz": {
    "ACAD": {
-    "duelos": "1/3",
-    "ev": 4,
+    "duelos": "1/4",
+    "ev": 5,
     "oro": 0,
     "ovr": 45,
     "pod": 0,
-    "pts": 9937,
+    "pts": 14437,
     "racha": "0/0"
    },
    "CH": {
@@ -3914,8 +3944,7 @@
     "racha": "0/2",
     "tg": {
      "fin": 2,
-     "fund": true,
-     "llave": true
+     "fund": true
     }
    },
    "CH": {
@@ -6762,6 +6791,21 @@
     "racha": "0/0"
    }
   },
+  "LICENCIADO 🇲🇽": {
+   "ACAD": {
+    "duelos": "2/3",
+    "ev": 1,
+    "oro": 0,
+    "ovr": 45,
+    "pod": 1,
+    "pts": 11250,
+    "racha": "1/1",
+    "tg": {
+     "fin": 1,
+     "nuevo": true
+    }
+   }
+  },
   "LKS 🇨🇱": {
    "FFA": {
     "duelos": "",
@@ -9241,6 +9285,20 @@
     "racha": "0/0"
    }
   },
+  "NITO NANEL 🇵🇪": {
+   "ACAD": {
+    "duelos": "0/1",
+    "ev": 1,
+    "oro": 0,
+    "ovr": 43,
+    "pod": 0,
+    "pts": 4500,
+    "racha": "0/0",
+    "tg": {
+     "nuevo": true
+    }
+   }
+  },
   "NOON🇵🇪": {
    "ACAD": {
     "duelos": "0/1",
@@ -9619,26 +9677,15 @@
   "Number": {
    "CH": {
     "duelos": "3/4",
-    "ev": 3,
+    "ev": 2,
     "oro": 1,
     "ovr": 46,
     "pod": 1,
     "pts": 13750,
     "racha": "1/1",
     "tg": {
-     "fin": 1,
-     "fund": true,
-     "llave": true
+     "fin": 1
     }
-   },
-   "DDS": {
-    "duelos": "",
-    "ev": 3,
-    "oro": 0,
-    "ovr": 44,
-    "pod": 0,
-    "pts": 5250,
-    "racha": "0/0"
    },
    "FFA": {
     "duelos": "4/9",
@@ -9649,22 +9696,13 @@
     "pts": 38638,
     "racha": "0/1"
    },
-   "SR": {
-    "duelos": "",
+   "URBF": {
+    "duelos": "0/1",
     "ev": 1,
     "oro": 0,
     "ovr": 42,
     "pod": 0,
-    "pts": 625,
-    "racha": "0/0"
-   },
-   "URBF": {
-    "duelos": "1/3",
-    "ev": 2,
-    "oro": 0,
-    "ovr": 44,
-    "pod": 0,
-    "pts": 10125,
+    "pts": 1875,
     "racha": "0/0"
    }
   },
@@ -9692,13 +9730,25 @@
   },
   "Number VE": {
    "ACAD": {
-    "duelos": "3/6",
-    "ev": 4,
+    "duelos": "3/7",
+    "ev": 5,
     "oro": 0,
-    "ovr": 45,
+    "ovr": 46,
     "pod": 0,
-    "pts": 15063,
+    "pts": 19563,
     "racha": "0/1"
+   },
+   "CH": {
+    "duelos": "",
+    "ev": 1,
+    "oro": 0,
+    "ovr": 42,
+    "pod": 0,
+    "pts": 1250,
+    "racha": "0/0",
+    "tg": {
+     "fund": true
+    }
    },
    "DDF": {
     "duelos": "1/16",
@@ -9706,10 +9756,40 @@
     "oro": 0,
     "ovr": 51,
     "pod": 0,
-    "pts": 59763,
+    "pts": 58763,
     "racha": "0/0",
     "tg": {
      "fund": true
+    }
+   },
+   "DDS": {
+    "duelos": "",
+    "ev": 3,
+    "oro": 0,
+    "ovr": 44,
+    "pod": 0,
+    "pts": 5250,
+    "racha": "0/0"
+   },
+   "SR": {
+    "duelos": "",
+    "ev": 1,
+    "oro": 0,
+    "ovr": 42,
+    "pod": 0,
+    "pts": 625,
+    "racha": "0/0"
+   },
+   "URBF": {
+    "duelos": "1/2",
+    "ev": 1,
+    "oro": 0,
+    "ovr": 43,
+    "pod": 0,
+    "pts": 8250,
+    "racha": "0/0",
+    "tg": {
+     "nuevo": true
     }
    }
   },
@@ -12128,37 +12208,25 @@
      "fund": true
     }
    },
-   "DDS": {
-    "duelos": "",
-    "ev": 4,
-    "oro": 0,
-    "ovr": 46,
-    "pod": 1,
-    "pts": 10750,
-    "racha": "0/1",
-    "tg": {
-     "fin": 1
-    }
-   },
    "FDS": {
     "duelos": "",
-    "ev": 3,
+    "ev": 1,
     "oro": 1,
-    "ovr": 46,
+    "ovr": 44,
     "pod": 1,
-    "pts": 11831,
-    "racha": "2/2",
+    "pts": 5000,
+    "racha": "1/1",
     "tg": {
      "fin": 1
     }
    },
    "FFA": {
-    "duelos": "0/3",
-    "ev": 12,
+    "duelos": "",
+    "ev": 1,
     "oro": 0,
-    "ovr": 49,
+    "ovr": 42,
     "pod": 0,
-    "pts": 45513,
+    "pts": 1750,
     "racha": "0/0",
     "tg": {
      "fund": true
@@ -12178,24 +12246,15 @@
    },
    "SR": {
     "duelos": "",
-    "ev": 2,
+    "ev": 1,
     "oro": 0,
-    "ovr": 43,
+    "ovr": 42,
     "pod": 0,
-    "pts": 2500,
+    "pts": 1250,
     "racha": "0/0",
     "tg": {
      "fund": true
     }
-   },
-   "URBF": {
-    "duelos": "0/1",
-    "ev": 2,
-    "oro": 0,
-    "ovr": 44,
-    "pod": 0,
-    "pts": 10400,
-    "racha": "0/1"
    }
   },
   "Soulb": {
@@ -12861,13 +12920,13 @@
   },
   "TøKīØ🦠🧠": {
    "ACAD": {
-    "duelos": "2/3",
-    "ev": 2,
+    "duelos": "3/5",
+    "ev": 3,
     "oro": 0,
-    "ovr": 43,
-    "pod": 0,
-    "pts": 6000,
-    "racha": "1/1"
+    "ovr": 47,
+    "pod": 1,
+    "pts": 15000,
+    "racha": "0/1"
    },
    "DDF": {
     "duelos": "2/4",
@@ -13965,16 +14024,16 @@
   },
   "Zetryko": {
    "ACAD": {
-    "duelos": "7/8",
-    "ev": 3,
-    "oro": 2,
-    "ovr": 48,
-    "pod": 2,
-    "pts": 30000,
-    "racha": "3/3",
+    "duelos": "10/11",
+    "ev": 4,
+    "oro": 3,
+    "ovr": 50,
+    "pod": 3,
+    "pts": 46875,
+    "racha": "4/4",
     "tg": {
      "bcasa": true,
-     "fin": 2,
+     "fin": 3,
      "fund": true
     }
    },
@@ -14210,12 +14269,12 @@
   },
   "crakero": {
    "ACAD": {
-    "duelos": "",
-    "ev": 1,
+    "duelos": "0/1",
+    "ev": 2,
     "oro": 0,
-    "ovr": 43,
+    "ovr": 44,
     "pod": 0,
-    "pts": 4500,
+    "pts": 9000,
     "racha": "0/0",
     "tg": {
      "nuevo": true

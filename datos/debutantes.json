@@ -1425,6 +1425,17 @@
    "vence": "2026-11-05T21:10:39+00:00",
    "vencido": true
   },
+  "LICENCIADO": {
+   "con": null,
+   "cumplido": "",
+   "debut": "2026-11-12T22:38:21+00:00",
+   "did": "",
+   "evento": "CUPO A LA MULTIVERS",
+   "n": 624,
+   "sv": "ACAD",
+   "vence": "2026-11-19T22:38:21+00:00",
+   "vencido": false
+  },
   "LOBO ES": {
    "avisado": "2026-11-12",
    "con": null,
@@ -1809,6 +1820,17 @@
    "sv": "FFA",
    "vence": "2026-11-01T00:48:12+00:00",
    "vencido": true
+  },
+  "NITO NANEL": {
+   "con": null,
+   "cumplido": "",
+   "debut": "2026-11-12T22:38:21+00:00",
+   "did": "",
+   "evento": "CUPO A LA MULTIVERS",
+   "n": 624,
+   "sv": "ACAD",
+   "vence": "2026-11-19T22:38:21+00:00",
+   "vencido": false
   },
   "Nain sdp": {
    "avisado": "2026-10-30",

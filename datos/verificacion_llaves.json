@@ -53,6 +53,10 @@
    "min": 123,
    "v": 1
   },
+  "- LIGA INMORTAL -|FRZ|12/11": {
+   "min": 38,
+   "v": 1
+  },
   "- RED BULL NACIONAL PERÚ 2026 -|FDS|04/10": {
    "min": 220,
    "org": "juega",
@@ -105,6 +109,10 @@
   },
   "COPA DE GRUPOS LCW|ACAD|03/10": {
    "min": 92,
+   "v": 1
+  },
+  "CUPO A LA MULTIVERS|ACAD|12/11": {
+   "min": 38,
    "v": 1
   },
   "DISCORD STYLE ED. 15|DDS|07/10": {

@@ -37702,9 +37702,9 @@
   "canal": "1443793172013776997",
   "duelos": [
    [
-    "Sosa",
-    "Number",
-    "Sosa"
+    ".SosaATR",
+    "Number VE",
+    ".SosaATR"
    ],
    [
     "Vilca",
@@ -37722,9 +37722,9 @@
     "CrisZJ"
    ],
    [
-    "Sosa",
+    ".SosaATR",
     "Vilca",
-    "Sosa"
+    ".SosaATR"
    ],
    [
     "CrisZJ",
@@ -37733,7 +37733,7 @@
    ],
    [
     "CrisZJ",
-    "Sosa",
+    ".SosaATR",
     "CrisZJ"
    ]
   ],
@@ -37748,7 +37748,7 @@
    "replisan": 3
   },
   "fecha": "27/10",
-  "firma": "60293a2c60fc65d5",
+  "firma": "1b80bd1cc646a2cb",
   "msg": "1569508012169633877",
   "nombre": "MASTER STYLE REMAKE",
   "num": 581,
@@ -37765,7 +37765,7 @@
     7500
    ],
    [
-    "Sosa",
+    ".SosaATR",
     "Subcampeón",
     5000
    ],
@@ -37780,7 +37780,7 @@
     3500
    ],
    [
-    "Number",
+    "Number VE",
     "Cuartos",
     2000
    ],
@@ -45436,6 +45436,145 @@
     "Player",
     "Octavos",
     1250
+   ]
+  ],
+  "v": 2
+ },
+ "624": {
+  "antes": {
+   "Drexx": [
+    32,
+    38,
+    false
+   ],
+   "Dyzz": [
+    45,
+    55,
+    false
+   ],
+   "Number VE": [
+    76,
+    94,
+    false
+   ],
+   "TøKīØ🦠🧠": [
+    46,
+    57,
+    false
+   ],
+   "Zetryko": [
+    108,
+    142,
+    false
+   ],
+   "crakero": [
+    113,
+    151,
+    false
+   ]
+  },
+  "canal": "925213294703300649",
+  "duelos": [
+   [
+    "Drexx",
+    "crakero",
+    "Drexx"
+   ],
+   [
+    "LICENCIADO 🇲🇽",
+    "Number VE",
+    "LICENCIADO 🇲🇽"
+   ],
+   [
+    "Zetryko",
+    "NITO NANEL 🇵🇪",
+    "Zetryko"
+   ],
+   [
+    "TøKīØ🦠🧠",
+    "Dyzz",
+    "TøKīØ🦠🧠"
+   ],
+   [
+    "LICENCIADO 🇲🇽",
+    "Drexx",
+    "LICENCIADO 🇲🇽"
+   ],
+   [
+    "Zetryko",
+    "TøKīØ🦠🧠",
+    "Zetryko"
+   ],
+   [
+    "Zetryko",
+    "LICENCIADO 🇲🇽",
+    "Zetryko"
+   ],
+   [
+    "TøKīØ🦠🧠",
+    "Drexx",
+    "TøKīØ🦠🧠"
+   ]
+  ],
+  "ev_antes": {
+   "Drexx": 39,
+   "Dyzz": 29,
+   "Number VE": 22,
+   "TøKīØ🦠🧠": 11,
+   "Zetryko": 4,
+   "crakero": 7
+  },
+  "fecha": "12/11",
+  "firma": "5509696a9f206263",
+  "msg": "1570578147399827479",
+  "nombre": "CUPO A LA MULTIVERS",
+  "num": 624,
+  "participantes": 8,
+  "sello": {
+   "Zetryko": "c27f92b14326:7a510334494e"
+  },
+  "sv": "ACAD",
+  "t": "2026-11-12T23:24:16Z",
+  "tabla": [
+   [
+    "Zetryko",
+    "Campeón",
+    7500
+   ],
+   [
+    "LICENCIADO 🇲🇽",
+    "Subcampeón",
+    5000
+   ],
+   [
+    "TøKīØ🦠🧠",
+    "Tercero",
+    4000
+   ],
+   [
+    "Drexx",
+    "Cuarto",
+    3000
+   ],
+   [
+    "crakero",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Number VE",
+    "Cuartos",
+    2000
+   ],
+   [
+    "NITO NANEL 🇵🇪",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Dyzz",
+    "Cuartos",
+    2000
    ]
   ],
   "v": 2
