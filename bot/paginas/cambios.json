@@ -11,6 +11,18 @@
  ],
  "cambios": [
     {
+        "version": "4.65",
+        "dia": "2026-11-12",
+        "cuando": "2026-11-12T15:15:00-05:00",
+        "titulo": "Comentarios en Publicaciones",
+        "items": [
+            "**Ya se puede comentar** debajo de las publicaciones, con tu cuenta verificada. Al dueño de la publicación le llega a la campana.",
+            "Algunos comentarios los escribe la Liga para arrancar la conversación: llevan la etiqueta **SIMULADO**, o **Liga** si son de un personaje. En Mi cuenta → Privacidad puedes pedir no salir en ellos.",
+            "Si estás más allá del puesto 200, el Inicio y el Inventario ya te muestran tus cartas, tu puesto y tu último evento.",
+            "La campana se vincula sola con tu cuenta si ya entraste con Discord."
+        ]
+    },
+    {
         "version": "4.64",
         "dia": "2026-11-12",
         "cuando": "2026-11-12T14:57:00-05:00",
