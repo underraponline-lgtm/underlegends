@@ -415,6 +415,26 @@ O sea que la segunda mitad de esa frase —*«no hay ninguna hoja de datos
 crudos»*— tampoco vale: las tres del Operativo son exactamente eso, y se
 llenan solas desde `sheet/procesar_entrada.py`.
 
+🗄️ **Y DESDE EL 11/11/2026 EL SHEET SALE DEL SISTEMA, POR ETAPAS** (Dlx:
+*«adelante, pero asegúrate de que todo esté bien»*; *«nadie más mira el
+Sheet, solo yo»*). Las tres hojas viven también en `datos/t1_resultados.json`,
+`t1_1v1.json` y `t1_eventos.json`, y el contador en `datos/t1_contador.json`.
+Todo pasa por **`sheet/espejo_t1.py`**: los lectores leen con `fuente()`, los
+escritores parten de `base_para_escribir()` y dejan el archivo con
+`al_escribir()`. Mientras `CONTROL = True` comparan con el Sheet y, si no
+coincide, usan el Sheet y lo dicen en rojo; el paso 2g del ciclo tiene que
+decir «igual». La hoja `Entrada` ya no se usa: el buzón es
+`datos/entrada_buzon.json`, de cada máquina.
+
+🔴 **UN SOLO ESCRITOR: los resultados se escriben sólo en GitHub.** El
+recálculo a mano es `gh workflow run recalcular.yml -f leer=<números>` (y
+`-f aplicar=true` para escribir), en la fila del ciclo. Desde una PC,
+`procesar_entrada.py --aplicar` y `recalcular_t1.py --aplicar` se niegan: el
+11/11 un recálculo hecho en una PC y el ciclo se pisaron, y con los datos en
+el repo una PC atrasada reescribiría lo de horas atrás. Falta apagar la
+prueba y la etapa 4 (la Lista, los AKAs, Config y las vitrinas); al final el
+Sheet **se congela como archivo, no se borra**.
+
 ⚠️ **La fórmula está verificada contra las 138 filas de la pre-temporada**,
 con una diferencia máxima de 0.050. Ver el encabezado de
 `sheet/competitivo.py`, que dice de cada dimensión **cuánto se pudo
