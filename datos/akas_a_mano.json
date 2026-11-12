@@ -151,7 +151,8 @@
   "09/11/2026: «tomyhilfiger», «tomyhilfiger1312» y «tomyhilfiger🇾🇹» son crakero (la fila de la Lista con la cuenta 1374555884868337738, crakero_crew_1312): esa cuenta se anotó «tomyhilfiger🇾🇹» el 19/10 y el 22/10 y «tomyhilfiger1312🇾🇹» el 03/11 y el 09/11 en FFA, y lo reportó ella misma desde la página (reporte #14: «pork no me toma que soy tomyhilfiger1312»). El 05/11 se habían unido a «tomyhilfiger🇾🇹», una fila sin cuenta.",
   "09/11/2026: en FFA «QZ» es QUEEN: la única cuenta que se llama así en FFA es la de QUEEN (regla A, Dlx: «Sí, los 20»). Sólo en FFA: dos letras no prueban nada en otro servidor.",
   "🔑 ZTR es Shadow, 🇨🇴 (Dlx, 10/11/2026: «Yes, the same person», a «¿Shadow y ZTR son la misma persona?»). Los 18 eventos de «Shadow» caen en su cuenta de la Lista (1461433944237936829, @alejo008715, «DRAGON XX»), que nunca se anotó desde que se guardan las inscripciones (02/10); quien se anota «SHADOW 🇨🇴» es @tenacious_dragon_23394 («DJ SHADOW🐉», 1548906948307451906), que en la Lista era la fila ZTR, con 1 evento. En el menú de la #505 contestó esa cuenta que ganó SHADOW. Va como Rodas y Roda: ZTR es alias y esa cuenta va en `cuentas` (abre las cartas de Shadow con /card); la fila ZTR de la Lista se fusiona en Shadow.",
-  "🇪🇨 2026-11-12 4:16 PM ET: en ACAD, LKR y DDS «Carlos» es Carlosss: Carlos 🇲🇽 no está en esos servidores y ahí sólo la cuenta de Carlosss se anota como «carlos». Makmah se lo pidió a Dlx; Claude, con la prueba (Makmah se lo pidió a Dlx, 12/11/2026)."
+  "🇪🇨 2026-11-12 4:16 PM ET: en ACAD, LKR y DDS «Carlos» es Carlosss: Carlos 🇲🇽 no está en esos servidores y ahí sólo la cuenta de Carlosss se anota como «carlos». Makmah se lo pidió a Dlx; Claude, con la prueba (Makmah se lo pidió a Dlx, 12/11/2026).",
+  "🇻🇪 2026-11-12 4:18 PM ET: en ACAD «Number» es Number VE (como en DDF): en la ACADEMIA la única cuenta que se anota como «number» es la de Number VE (1310075576991875144, 14 de 14 en datos/inscritos_hist.json); Number 🇺🇾 está en el servidor y nunca se anotó."
  ],
  "cuentas": {
   "Monet": [
@@ -563,7 +564,8 @@
   },
   "ACAD": {
    "ATR": ".SosaATR",
-   "Carlos": "Carlosss"
+   "Carlos": "Carlosss",
+   "Number": "Number VE"
   },
   "CH": {
    "akvmolt": "Molt",
