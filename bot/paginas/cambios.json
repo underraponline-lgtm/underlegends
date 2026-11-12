@@ -11,6 +11,18 @@
  ],
  "cambios": [
     {
+        "version": "4.71",
+        "dia": "2026-11-12",
+        "cuando": "2026-11-12T16:50:00-05:00",
+        "titulo": "El panel: carta más grande y más datos",
+        "items": [
+            "En el Inicio, **tu carta se ve más grande** y los rankings de los costados, más chicos.",
+            "Tu racha muestra **el próximo premio** y tu mejor racha.",
+            "Tu último evento dice **cuántas ganaste y perdiste** y el rival más fuerte que te tocó.",
+            "**La semana** suma tus duelos de la semana y tu rival más fuerte."
+        ]
+    },
+    {
         "version": "4.70",
         "dia": "2026-11-12",
         "cuando": "2026-11-12T16:35:00-05:00",

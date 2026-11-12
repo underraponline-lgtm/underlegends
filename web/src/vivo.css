@@ -4098,19 +4098,35 @@ a.mc{color:inherit;text-decoration:none}
 
 /* los rankings de los costados, más chicos; y la carta del centro, más grande */
 /* ⚠️ en una consulta de ancho: suelta, esta regla pisaba la del teléfono (una columna) y el centro quedaba en tres */
-@container pnyo (min-width:700px){ .pn-yo-in{grid-template-columns:minmax(0,.85fr) minmax(0,1.4fr) minmax(0,.85fr)} }
+/* 🃏 los 6 rankings más chicos y la carta más grande (Dlx, 12/11/2026: «los 6 rankings menor tamaño para que la tarjeta
+   sea aún más grande») */
+@container pnyo (min-width:700px){ .pn-yo-in{grid-template-columns:minmax(0,.62fr) minmax(0,1.76fr) minmax(0,.62fr)} }
 .pn-yo-in{row-gap:8px}
-.pn-chip{padding:6px 8px;gap:3px 6px}
-.pn-chip strong{font-size:20px}
-.pn-chip-i{width:20px;height:20px}
-.pn-chip-n{font-size:10px}
-.pn-chip-pie{width:52px}
-.pn-izq,.pn-der{gap:5px}
-.pn-abre{height:268px}
-.pn-abre img{width:min(80%,178px)}
+.pn-chip{padding:4px 6px;gap:2px 5px}
+.pn-chip strong{font-size:16px}
+.pn-chip-i{width:16px;height:16px}
+.pn .pn-chip-flag{width:18px;height:12px}
+.pn-chip-sv{width:16px;height:16px}
+.pn-chip-n{font-size:9px;letter-spacing:.03em}
+.pn-chip-pie{width:42px;gap:3px}
+.pn-chip-pie small{font-size:9px}
+.pn-chip-pie i{height:3px}
+@container pnyo (min-width:601px){ .pn-chip{grid-template-columns:16px minmax(0,1fr) auto} .pn-der .pn-chip{grid-template-columns:auto minmax(0,1fr) 16px} }
+.pn-izq,.pn-der{gap:4px}
+.pn-abre{height:316px}
+.pn-abre img{width:min(84%,214px)}
 /* el comentario y los botones, juntos: sin la raya ni el aire de en medio */
 .pn-acc{border-top:0;padding-top:0}
-@container pnyo (max-width:600px){ .pn-abre{height:236px} .pn-chip strong{font-size:18px} }
+@container pnyo (max-width:600px){ .pn-abre{height:236px} .pn-abre img{width:min(80%,178px)} .pn-chip strong{font-size:16px} }
+/* ⚠️ a 1375 px el panel mide ~594: cae en este tramo y no en el de escritorio. Acá también, la carta manda */
+@container pnyo (min-width:431px) and (max-width:600px){
+  .pn-yo-in{grid-template-columns:minmax(0,.68fr) minmax(0,1.64fr) minmax(0,.68fr);gap:8px}
+  .pn-abre{height:300px}
+  .pn-abre img{width:min(88%,204px)}
+  .pn-chip,.pn-der .pn-chip{padding:4px 6px;row-gap:2px}
+  .pn-chip strong{font-size:15px}
+  .pn-chip-pie small{font-size:9px}
+}
 @container pnyo (max-width:430px){ .pn-abre{height:236px} }
 
 /* 🎟️ el Pase: la barra de XP del nivel */
@@ -4194,6 +4210,32 @@ a.mc{color:inherit;text-decoration:none}
   background:linear-gradient(90deg,rgba(41,178,152,.12),transparent 60%),#0B0C0E}
 .pn-ultc:hover,.pn-ultc:focus-visible{border-color:var(--verde);outline:none}
 .pn-ultc .pn-tx b{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+/* 🔥⚔️ más cosas arriba y en La semana (12/11/2026): tu mejor racha, el próximo premio, la G y la P, el rival más fuerte */
+.pn-rsub{font:700 11px/1.1 "Barlow Condensed",sans-serif;letter-spacing:.04em;text-transform:uppercase;color:#F5B36B;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-top:2px}
+.pn-rnum{margin-left:auto;display:grid;justify-items:center;gap:2px;flex:none;padding-left:10px;border-left:1px solid #3a2a18}
+.pn-rnum small{font:700 9px/1 "Barlow Condensed",sans-serif;letter-spacing:.06em;text-transform:uppercase;color:var(--gris2)}
+.pn-rnum b{font:900 18px/1 Archivo,sans-serif;color:#F28C28}
+.pn-ultc .pn-tx{min-width:0}
+.pn-ultc-r{display:flex;gap:4px;min-width:0;font:700 11px/1.1 "Barlow Condensed",sans-serif;letter-spacing:.03em;text-transform:uppercase;color:var(--gris2);white-space:nowrap}
+.pn-ultc-r span{overflow:hidden;text-overflow:ellipsis;min-width:0}
+.pn-ultc-r i{font-style:normal;color:var(--verde);flex:none}
+.pn-gp{margin-left:auto;display:flex;align-items:baseline;gap:3px;flex:none;padding-left:10px;border-left:1px solid #1d5a4e}
+.pn-gp b,.pn-gpm b{font:900 18px/1 Archivo,sans-serif}
+.pn-gp i{font:700 10px/1 "Barlow Condensed",sans-serif;font-style:normal;color:var(--gris2);margin-right:4px}
+.pn-gp .g,.pn-gpm .g{color:var(--verde)}
+.pn-gp .p,.pn-gpm .p{color:#FF6B8B}
+.pn-gpm strong{font-size:12px;color:var(--gris2)}
+.pn-gpm b{font-size:15px}
+.pn-rivm strong{display:flex;align-items:center;gap:5px;min-width:0;font-size:13px}
+.pn .pn-rivm-c{width:18px;height:18px;border-radius:50%;flex:none;font-size:9px}
+.pn-rivm em{font-style:normal;overflow:hidden;text-overflow:ellipsis;max-width:92px}
+.pn-rivm i{font:700 11px/1 "Barlow Condensed",sans-serif;font-style:normal;color:var(--azul)}
+.pn-se .pn-mini{flex:none}
+.pn-se .pn-rivm{flex:0 1 auto}
+@media (max-width: 1500px){.pn-se .pn-rivm ~ .pn-mini:last-child{display:none}}
+@media (max-width: 1300px){.pn-rivm em{max-width:70px}}
+@media (max-width: 1180px){.pn-se .pn-rivm,.pn-fila.tres .pn-gp,.pn-fila.tres .pn-rnum{display:none}
+  .pn-fila.tres .pn-racha .btn.chico{padding:8px 10px;font-size:12px;white-space:nowrap}}
 .pn-dia{display:flex;align-items:center;gap:12px;padding:8px 12px;min-height:58px;border:1.5px solid #6b2bd1;color:#F6F6F6;cursor:pointer;font:inherit;text-align:left;min-width:0;
   background:radial-gradient(120% 90% at 100% 0,rgba(155,92,255,.32),transparent 60%),linear-gradient(90deg,#120a1f,#0B0C0E 70%)}
 .pn-dia:hover,.pn-dia:focus-visible{border-color:#B48CFF;outline:none}

@@ -95,6 +95,9 @@ function Comentario({ liga, c, ahora, yo, dueno, onResponder, onBorrar, onReport
 export function Hilo({ liga, it, chico }) {
   useComentarios();
   const [abierto, setAbierto] = useState(() => !!it.id && W.__pubFoco === it.id);
+  // 🎯 y si el foco cambia estando ya en Publicaciones (otro aviso de la campana), también se abre
+  const foco = W.__pubFoco;
+  useEffect(() => { if (it.id && foco === it.id) setAbierto(true); }, [foco, it.id]);
   const [tx, setTx] = useState('');
   const [resp, setResp] = useState(null);
   const [msg, setMsg] = useState('');

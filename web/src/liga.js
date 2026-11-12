@@ -789,6 +789,26 @@ export class Liga {
     });
     return [g, j];
   }
+  // ⚔️ TUS CRUCES 1v1 (12/11/2026, Dlx: «cuántas victorias, derrotas y el rival más fuerte enfrentado»): desde una fecha
+  // o en una sola llave. `{g, p, fuerte}`; el más fuerte es el mejor ubicado en la Temporada de los que tienen fila
+  crucesDe(k, { desde = null, ll = null } = {}) {
+    let g = 0;
+    let p = 0;
+    let fuerte = null;
+    const lista = ll ? [ll] : Object.values(this.d.llaves || {}).filter((x) => !desde || utc(this.fechaLlave(x)) >= desde);
+    lista.forEach((x) => (x.rondas || []).forEach((r) => (r.b || []).forEach((b) => {
+      const lados = (b[0] || []).map((y) => (typeof y === 'string' ? y : y.join(' & ')));
+      if (lados.length !== 2) return;
+      const i = lados.findIndex((y) => this.esDe(y, k));
+      if (i < 0) return;
+      const gan = typeof b[1] === 'string' ? b[1] : (b[1] || []).join(' & ');
+      if (!gan) return;
+      if (this.esDe(gan, k)) g += 1; else p += 1;
+      const f = this.fila(lados[1 - i]);
+      if (f && f.k !== k && f.pos && (!fuerte || f.pos < fuerte.pos)) fuerte = { k: f.k, n: limpio(f.n), pos: f.pos, gane: this.esDe(gan, k) };
+    })));
+    return { g, p, fuerte };
+  }
 }
 
 // ── quién mira: lo que dejó «Entrar con Discord» (`lg:dc`) o el «quién soy» elegido a mano (`lg:yo`) ──

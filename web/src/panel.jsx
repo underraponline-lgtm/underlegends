@@ -90,8 +90,11 @@ function RachaCorta({ R, sola }) {
     <section className="pn-racha" aria-label="Tu racha">
       <span className="pn-fuego"><Ico n="fuego" t={22} />{actual}</span>
       <span className="pn-tx"><b>{actual === 1 ? '1 día seguido' : actual + ' días seguidos'}</b>
-        {ps.length ? <span className="pn-dias" aria-hidden="true">{ps.map(([d, , cobrado], i) => <i key={d} title={LETRAS[i]} className={(cobrado ? 'si' : '') + (d === R.hoy ? ' hoy' : '')} />)}</span> : null}</span>
-      {sola && R.hito ? <span className="pn-prox">a los {R.hito[0]}: +{num(R.hito[1])}</span> : null}
+        {ps.length ? <span className="pn-dias" aria-hidden="true">{ps.map(([d, , cobrado], i) => <i key={d} title={LETRAS[i]} className={(cobrado ? 'si' : '') + (d === R.hoy ? ' hoy' : '')} />)}</span> : null}
+        {/* 🔥 más cosas en la racha (Dlx, 12/11/2026): el próximo premio, siempre, y si te queda el día de perdón */}
+        {R.hito || r.gracia ? <small className="pn-rsub">{R.hito ? 'Día ' + R.hito[0] + ': +' + num(R.hito[1]) : ''}
+          {R.hito && r.gracia ? ' · ' : ''}{r.gracia ? 'perdón libre' : ''}</small> : null}</span>
+      {r.maxima ? <span className="pn-rnum"><small>Tu mejor</small><b>{r.maxima}</b></span> : null}
       {hoy && hoy[3] ? <button type="button" className="btn verde chico" disabled={ocup} onClick={cobrar}>{ocup ? '…' : 'Cobrar ' + num(hoy[1])}</button>
         : msg ? <small className="pn-ok" role="status">{msg}</small> : null}
     </section>
@@ -173,7 +176,7 @@ export function FilaRacha({ dc, R, liga }) {
 /** Tu último evento: el más nuevo de las llaves que viajan, o el de tu fila (`ult` y el número de tu perfil, `ue`) */
 function ultimoDe(liga, yo) {
   const u = (liga.semanaDe(yo.k) || [])[0] || null;
-  if (u) return { ll: u[0], t: utc(liga.fechaLlave(u[0])), ronda: u[1] };
+  if (u) return { ll: u[0], t: utc(liga.fechaLlave(u[0])), ronda: u[1], pts: Number(u[2]) || 0 };
   if (Array.isArray(yo.ult) && yo.ult[0]) {
     const n = (yo.ue && yo.ue[0]) || 0;
     return { ll: { n, nombre: n ? 'la llave #' + n : 'tu último evento' }, t: utc(yo.ult[0] + 'T23:00:00Z'), ronda: yo.ult[1] };
@@ -182,10 +185,14 @@ function ultimoDe(liga, yo) {
 }
 function UltCorto({ liga, u }) {
   const f = new Date(u.t);
+  // ⚔️ cómo te fue en esa llave (Dlx, 12/11/2026: «poner más cosas… la llave»): ganadas, perdidas y los puntos
+  const c = u.ll.rondas ? liga.crucesDe(liga.yo.k, { ll: u.ll }) : null;
   return (
     <button type="button" className="pn-ultc" onClick={() => (u.ll.n ? accion.llave(u.ll.n) : (location.hash = '#/r/' + encodeURIComponent(liga.yo.k)))}>
       <span className="pn-cal"><i>{f.toLocaleDateString('es', { weekday: 'short' }).replace('.', '')}</i><b>{f.getDate()}</b></span>
-      <span className="pn-tx"><b>{limpio(u.ll.nombre)}</b><small>Tu último evento{u.ronda ? ' · ' + u.ronda : ''}</small></span>
+      <span className="pn-tx"><b>{limpio(u.ll.nombre)}</b><small>Tu último evento{u.ronda ? ' · ' + u.ronda : ''}{u.pts ? ' · +' + num(u.pts) + ' pts' : ''}</small>
+        {c && c.fuerte ? <small className="pn-ultc-r"><span>Más fuerte: {c.fuerte.n}</span><i>#{c.fuerte.pos}</i></small> : null}</span>
+      {c && c.g + c.p ? <span className="pn-gp" aria-label={c.g + ' ganadas, ' + c.p + ' perdidas'}><b className="g">{c.g}</b><i>G</i><b className="p">{c.p}</b><i>P</i></span> : null}
     </button>
   );
 }
@@ -766,11 +773,16 @@ export function PnSemana({ liga }) {
   const d = yo ? dondeEstoy(C, yo.k) : null;
   const copa = d && d.copa ? (d.copa.campeon ? 'Campeón' : d.copa.fuera ? 'Afuera' : (d.copa.ronda || {}).r || '—') : String((C.copa || []).length);
   const rapid = d && d.rapid ? (d.rapid.campeon ? 'Campeón' : d.rapid.fuera ? 'Afuera' : (d.rapid.ronda || {}).r || '—') : String((C.rapid || []).length);
+  // ⚔️ tus duelos de esta semana y el rival más fuerte que te tocó (Dlx, 12/11/2026)
+  const cr = yo ? liga.crucesDe(yo.k, { desde: liga.desdeLunes() }) : null;
   return (
     <a className="pn-baja-t pn-se" href="#/competencias" style={{ '--p': Math.round((dia / 7) * 100) }}>
       <span className="pn-anillo"><b>{dia}/7</b></span>
       <span className="pn-baja-tx"><b>La semana</b><small>Competencias ›</small>
         <span className="pn-dias7" aria-hidden="true">{LETRAS.map((l, j) => <i key={j} className={j + 1 < dia ? 'si' : j + 1 === dia ? 'hoy' : ''}>{l}</i>)}</span></span>
+      {cr ? <span className="pn-mini pn-gpm"><span>Duelos</span><strong><b className="g">{cr.g}</b>G <b className="p">{cr.p}</b>P</strong></span> : null}
+      {cr && cr.fuerte ? <span className="pn-mini pn-rivm"><span>Rival más fuerte</span>
+        <strong><Cara liga={liga} k={cr.fuerte.k} nombre={cr.fuerte.n} cls="cara pn-rivm-c" /><em>{cr.fuerte.n}</em><i>#{cr.fuerte.pos}</i></strong></span> : null}
       <span className="pn-mini"><span>Ligas</span><strong>{d && d.liga ? d.liga.pos + '.º' : 'J' + (C.ligas.jornada || 1)}</strong></span>
       <span className="pn-mini"><span>Copa</span><strong>{copa}</strong></span>
       <span className="pn-mini"><span>Rapid</span><strong>{rapid}</strong></span>
