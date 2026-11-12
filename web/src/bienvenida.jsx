@@ -46,6 +46,7 @@ const DISCORD = 'M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079
 // deslizan de costado (`scroll-snap`, sin librería) y una barra de abajo que no se mueve: los puntos con el nombre de cada
 // página, las flechas y el botón. Cada página dice UNA cosa que trae la Liga y la muestra con lo de verdad —las cartas del
 // #1, el calendario, la tabla, las crews—: «sin dato no hay pieza», así que una que no tiene con qué se arma con palabras.
+const AVANCE_MS = 12000;   // cada cuánto pasa sola de página: lo que tarda en llenarse la barrita (`.bv-avance`)
 const PAGINAS = [['liga', 'La Liga'], ['cartas', 'Tu carta'], ['eventos', 'Eventos'], ['ranking', 'Ranking'], ['pase', 'Pase y Tienda'], ['gente', 'Comunidad']];
 const TIPOS = [['servidor', 'Servidor', 'Al verificarte'], ['temporada', 'Temporada', 'Nivel 1 del Pase'],
   ['competitivo', 'Competitiva', 'Con 10 eventos'], ['pais', 'País', '3 cruces de tu país y 3 de afuera']];
@@ -64,7 +65,8 @@ const e = (i, cls) => ({ className: (cls ? cls + ' ' : '') + 'bv-e', style: { '-
 // Socios y el Salón: un solo lugar, o al rearmar el video una página seguiría mostrando el viejo
 function Fondo({ base }) {
   const [sinVideo] = useState(quieto);
-  // 🖥️ EL DE 1280 × 720 DONDE LA PANTALLA TIENE LOS PÍXELES PARA VERLO (Dlx: «el video no está en HD»: el de 640 se veía
+  // 🖥️ EL DE 960 × 540 (fue 1280 × 720 hasta la 4.64: ver fondovideo.jsx) DONDE LA PANTALLA TIENE LOS PÍXELES PARA VERLO
+  // (Dlx: «el video no está en HD»: el de 640 se veía
   // a píxeles en 1454 px; y después, «haz lo mismo en la versión del teléfono»). Se mide en píxeles de verdad, no de CSS:
   // un teléfono de 390 con densidad 3 tiene 1.170, y ahí el de 640 también se veía blando. El de 640 queda para pantallas
   // de verdad chicas; con ahorro de datos no va ninguno (el cuadro quieto). Se elige una vez, al abrir
@@ -74,7 +76,7 @@ function Fondo({ base }) {
   return (
     <div className="bv-fondo" aria-hidden="true">
       {sinVideo ? <img alt="" src={base + 'poster.jpg' + VV} />
-        : <video ref={arrancar} src={base + (hd ? 'montaje-hd.mp4' : 'montaje.mp4') + VV} poster={base + 'poster.jpg' + VV} autoPlay muted loop playsInline preload="auto" />}
+        : <video ref={arrancar} src={base + (hd ? 'montaje-540.mp4' : 'montaje.mp4') + VV} poster={base + 'poster.jpg' + VV} autoPlay muted loop playsInline preload="auto" />}
       <i className="bv-vineta" />
       <svg className="bv-grano"><filter id="bv-gr"><feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="2" stitchTiles="stitch" />
         <feColorMatrix type="saturate" values="0" /></filter><rect width="100%" height="100%" filter="url(#bv-gr)" /></svg>
@@ -208,8 +210,13 @@ function Paso1({ liga, unirme, cerrar, tit }) {
     W.addEventListener('keydown', tecla);
     return () => W.removeEventListener('keydown', tecla);
   });
-  // ⏩ PASA SOLA A LA DERECHA CADA 10 s (Dlx, 12/11/2026: «que se mueva solo para la derecha… cada 10 s ponle»), con una
-  // barrita celeste que se llena debajo de la página en la que estás. Llega a la última y se queda.
+  // ⏩ PASA SOLA A LA DERECHA CADA 12 s (Dlx, 12/11/2026: «que se mueva solo para la derecha… cada 10 s ponle», y el mismo
+  // día «agranda la duración de cada vista de 10 s a 12 s»), con una barrita celeste que se llena debajo de la página en la
+  // que estás. 🔁 Y DESDE LA ÚLTIMA, COMUNIDAD, VUELVE A LA PRIMERA (Dlx: «cuando alcance al último que es comunidad, se
+  // regrese al inicio»): antes se quedaba ahí.
+  // ⏱️ PASA CUANDO LA BARRITA TERMINA DE LLENARSE (`onAnimationEnd`), no con un reloj aparte: la pantalla de carga pausa
+  // las animaciones de abajo (`.app.tapado`) y el reloj no, así que la primera página pasaba unos 2,5 s antes de que la
+  // barrita se llenara (medido: se iba con la barra al 80 %). Atada a la barrita, lo que se ve y lo que pasa son lo mismo
   // ♿ En cuanto la persona toca algo —desliza, una flecha, un punto, el teclado— deja de moverse sola: ya maneja ella, y
   // un carrusel que sigue avanzando debajo del dedo es justo lo que no tiene que pasar. Quieta, nunca arranca
   const [auto, setAuto] = useState(() => !quieto());
@@ -220,11 +227,6 @@ function Paso1({ liga, unirme, cerrar, tit }) {
     ev.forEach((x) => W.addEventListener(x, para, { passive: true }));
     return () => ev.forEach((x) => W.removeEventListener(x, para));
   }, [auto]);
-  useEffect(() => {
-    if (!auto || pag >= PAGINAS.length - 1) return undefined;
-    const t = setTimeout(() => ir(pag + 1), 10000);
-    return () => clearTimeout(t);
-  }, [auto, pag]);
 
   const top = liga.oficiales().filter((f) => f.k && liga.cartaDe(f.k)).slice(0, 3);
   const svs = (liga.d.svs || []).map((s) => (typeof s === 'string' ? s : s && s.sv)).filter(Boolean);
@@ -387,7 +389,6 @@ function Paso1({ liga, unirme, cerrar, tit }) {
       texto: 'Arma tu crew o súmate a una, sigue las ligas de cada servidor y a los raperos que te gustan.',
       puntos: [['socios', 'Crews con sus propios tiers'], ['ligas', 'Las ligas de los servidores, fecha a fecha'], ['seguir', 'Sigue a quien quieras y entérate cuando gana']] },
   ];
-  const ultima = pag >= PAGINAS.length - 1;
 
   return (
     <>
@@ -412,7 +413,8 @@ function Paso1({ liga, unirme, cerrar, tit }) {
         <nav className="bv-nav" aria-label="Páginas de la bienvenida">
           <ol className="bv-puntos-nav">{PAGINAS.map(([id, n], i) => (
             <li key={id}><button type="button" className={i === pag ? 'on' : ''} aria-current={i === pag ? 'step' : undefined} onClick={() => ir(i)}>
-              <i aria-hidden="true" /><span>{n}{auto && i === pag && !ultima ? <em className="bv-avance" key={pag} aria-hidden="true" /> : null}</span></button></li>
+              <i aria-hidden="true" /><span>{n}{auto && i === pag ? <em className="bv-avance" key={pag} aria-hidden="true" style={{ animationDuration: AVANCE_MS + 'ms' }}
+                onAnimationEnd={() => ir((pag + 1) % PAGINAS.length)} /> : null}</span></button></li>
           ))}</ol>
         </nav>
         <div className="bv-acc">

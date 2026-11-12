@@ -201,8 +201,8 @@
 .bv-puntos-nav .on{color:#F6F6F6}
 .bv-puntos-nav .on i{background:#E41373;transform:scale(1.3)}
 .bv-puntos-nav .on span{position:relative;animation:bv-lbl .28s var(--ease-out) both}
-/* ⏩ pasa sola cada 10 s: la barrita celeste se llena en ese tiempo (y se va en cuanto la persona toca algo) */
-.bv-avance{position:absolute;left:0;right:0;bottom:-7px;height:3px;background:#29B298;transform-origin:left center;animation:bv-avance 10s linear both}
+/* ⏩ pasa sola cada 12 s (AVANCE_MS en bienvenida.jsx, que pone la duración y pasa de página al terminar): la barrita celeste se llena en ese tiempo (y se va en cuanto la persona toca algo) */
+.bv-avance{position:absolute;left:0;right:0;bottom:-7px;height:3px;background:#29B298;transform-origin:left center;animation:bv-avance 12s linear both}
 @keyframes bv-avance{from{transform:scaleX(0)}to{transform:scaleX(1)}}
 @media (hover:hover) and (pointer:fine){.bv-puntos-nav button:not(.on):hover i{background:rgba(246,246,246,.7)}}
 /* sólo el nombre de la página en la que estás: los seis no entran al lado del botón (medido: 620 px en 578) */

@@ -14,7 +14,7 @@ ahí (`liga.d.r2`). Si un rapero pide salir, se rearma sin su tramo y se vuelve 
 
 uso:
   python herramientas/bienvenida_video.py --armar <carpeta>   # baja los tramos y arma el montaje (yt-dlp + ffmpeg)
-  python herramientas/bienvenida_video.py --armar <carpeta> --hd   # el de 1280 × 720, para la compu
+  python herramientas/bienvenida_video.py --armar <carpeta> --540  # el de 960 × 540, para pantallas grandes
   python herramientas/bienvenida_video.py --subir <carpeta>   # sube montaje, póster y cuadros a R2
   python herramientas/bienvenida_video.py                     # sólo lista los tramos
 
@@ -62,6 +62,15 @@ SEG, LENTO, XF, W, H = 1.5, 2.0, 0.4, 640, 360   # 1,5 s del original, cámara l
 # Se mide el gris medio de cada tramo y, si queda por debajo de LUZ, se le sube con gamma hasta ahí: los claros no se
 # tocan, y la gamma levanta los medios sin quemar las luces (subir el brillo parejo lavaba los negros)
 LUZ, GAMMA_MAX = 92, 1.9
+# 🎞️ LA CÁMARA LENTA REPITE CUADROS REALES, NO INVENTA (Dlx, 12/11/2026: «el video está a veces distorsionado»). Hasta
+# la 4.64 era `minterpolate` en modo `mci`: inventa el cuadro de en medio estimando el movimiento, y donde algo se mueve
+# rápido contra el fondo —una mano, un brazo, una cara que gira— lo dibuja estirado o partido. Comparadas sobre el mismo
+# tramo de SOL, cuadro por cuadro: `mci` con `aobmc` (el de antes) y con `obmc` deforman las manos, `blend` las deja
+# dobles (fantasmas), y repetir cada cuadro real sale nítido en todos. Cada tramo sale a 15 cuadros reales por
+# segundo, cada uno dos veces (la cámara lenta «a pasos» del cine), salvo los grabados a 60, que tienen cuadros de
+# sobra y salen a 30 reales: cámara lenta de verdad. Por eso la lentitud es de cada tramo (`lento_de()`) y el
+# pedazo que se toma del original también: todos duran SEG × LENTO = 3 s en el montaje
+CUADROS_REALES = 15
 # ⚠️ AL REARMAR, subir `VV` en web/src/bienvenida.jsx: se sube con el mismo nombre y si no, se sigue viendo el de antes
 QUIETOS = (7.4, 20.2, 42.6)                         # los cuadros que rellenan «LIGA GLOBAL»
 CREDITOS = sorted({t[3] for t in TRAMOS}, key=lambda c: (-sum(1 for t in TRAMOS if t[3] == c), c))
@@ -87,6 +96,21 @@ def luz(src, desde):
     return sum(v) / len(v) if v else 255.0
 
 
+def fps_de(src):
+    """Los cuadros por segundo de un video (ffprobe, al lado de ffmpeg)."""
+    probe = os.path.join(os.path.dirname(ffmpeg()), 'ffprobe.exe')
+    r = subprocess.run([probe if os.path.exists(probe) else 'ffprobe', '-v', 'error', '-select_streams', 'v:0',
+                        '-show_entries', 'stream=r_frame_rate', '-of', 'csv=p=0', src], capture_output=True, text=True)
+    # la primera línea y sin la coma del final: con algunos videos ffprobe escribe `60/1,` (medido con el de Guty y Andres)
+    a, _, b = (r.stdout.strip().splitlines() or [''])[0].strip(' ,').partition('/')
+    return float(a) / float(b or 1) if a else 30.0
+
+
+def lento_de(fps):
+    """Cuánto se estira un tramo: los de 60 ×2 (30 cuadros reales), los demás hasta CUADROS_REALES por segundo."""
+    return 2.0 if fps >= 50 else round(fps / CUADROS_REALES, 3)
+
+
 def gamma_para(y):
     import math
     if y >= LUZ or y <= 1:
@@ -94,11 +118,14 @@ def gamma_para(y):
     return round(min(GAMMA_MAX, math.log(y / 255) / math.log(LUZ / 255)), 2)
 
 
-def armar(dst, hd=False):
-    """`hd`: 1280 × 720 para la compu (Dlx, 12/11/2026: «el video no está en HD»: a 640 × 360 en una pantalla de
-    1.454 px se ve cada píxel). El de 640 queda para el teléfono, donde pesa menos y no se nota."""
-    w, h, alto, crf, nombre = (1280, 720, 720, 35, 'montaje-hd') if hd else (W, H, 480, 34, 'montaje')
-    crudos = os.path.join(dst, 'crudos' + ('-hd' if hd else ''))
+def armar(dst, grande=False):
+    """`grande`: 960 × 540 para las pantallas grandes. Fue 1280 × 720 en la 4.59 (Dlx: «el video no está en HD») y bajó
+    el 12/11/2026 (Dlx: «no se nota mucho el HD… un intermedio entre 720p y 480»): con el mismo peso, 720p tenía que
+    comprimir tanto (crf 35) que se perdía lo que ganaba en píxeles. 540p con menos compresión se ve más nítido. El de
+    640 × 360 queda para las pantallas chicas. Los dos salen de los mismos originales en 1080p."""
+    w, h, crf, nombre = (960, 540, 28, 'montaje-540') if grande else (W, H, 31, 'montaje')
+    alto = 1080
+    crudos = os.path.join(dst, 'crudos')
     os.makedirs(crudos, exist_ok=True)
     # ⚡ SÓLO EL PEDAZO DE CADA VIDEO (`--download-sections`): de 3 s antes a 5 s después del tramo, no el video entero.
     # En 480p los 23 enteros eran 588 MB. `--force-keyframes-at-cuts` corta en el segundo exacto: sin eso arranca en el
@@ -115,16 +142,18 @@ def armar(dst, hd=False):
         p = os.path.join(dst, 'p%02d.mp4' % i)
         # el pedazo arranca 3 s antes del tramo (o en el 0, si el tramo empieza antes del segundo 3)
         desde = min(3, t)
-        g = gamma_para(luz(os.path.join(crudos, '%02d.mp4' % i), desde))
-        vf = ('scale=%d:%d:force_original_aspect_ratio=increase,crop=%d:%d,setpts=%s*PTS,'
-              'minterpolate=fps=30:mi_mode=mci:mc_mode=aobmc:vsbmc=1,format=gray,eq=contrast=1.12:brightness=-0.03:gamma=%s'
-              % (w, h, w, h, LENTO, g))
+        src = os.path.join(crudos, '%02d.mp4' % i)
+        lento = lento_de(fps_de(src))
+        seg = round(SEG * LENTO / lento, 3)               # el pedazo del original que, estirado, dura 3 s
+        g = gamma_para(luz(src, desde))
+        vf = ('scale=%d:%d:force_original_aspect_ratio=increase,crop=%d:%d,setpts=%s*PTS,fps=30,'
+              'format=gray,eq=contrast=1.12:brightness=-0.03:gamma=%s' % (w, h, w, h, lento, g))
         # (`-ss` y `-t` ANTES de `-i`, como opciones de la entrada: el tramo arranca en 0 y dura 1,5 s del original. Después
         # de `-i` cortaban lo ya estirado, a la mitad, y los fundidos quedaban fuera de tiempo: el HD salió de 3 s y 234 KB)
-        correr(['-ss', str(desde), '-t', str(SEG), '-i', os.path.join(crudos, '%02d.mp4' % i), '-an', '-vf', vf,
+        correr(['-ss', str(desde), '-t', str(seg), '-i', src, '-an', '-vf', vf,
                 '-c:v', 'libx264', '-crf', '14', '-preset', 'fast', '-pix_fmt', 'yuv420p', p])
         partes.append(p)
-        print(i, quien, 'gamma %s' % g if g > 1 else '')
+        print(i, quien, '×%s' % lento, 'gamma %s' % g if g > 1 else '')
     ins, fil, prev, off = [], [], '0:v', 0.0
     for p in partes:
         ins += ['-i', p]
@@ -136,7 +165,7 @@ def armar(dst, hd=False):
     # el grano NO va en el video: lo pone la página encima (en el video, el grano es lo que más pesa)
     correr(ins + ['-filter_complex', ';'.join(fil), '-map', '[%s]' % prev, '-an', '-c:v', 'libx264', '-crf', str(crf),
                   '-preset', 'veryslow', '-tune', 'grain', '-pix_fmt', 'yuv420p', '-movflags', '+faststart', final])
-    if not hd:
+    if not grande:
         correr(['-ss', '1', '-i', final, '-frames:v', '1', '-q:v', '4', os.path.join(dst, 'poster.jpg')])
         for n, t in enumerate(QUIETOS, 1):
             correr(['-ss', str(t), '-i', final, '-frames:v', '1', '-q:v', '3', os.path.join(dst, 'quieto%d.jpg' % n)])
@@ -161,7 +190,7 @@ def subir(src):
     s = requests.Session()
     s.headers['Authorization'] = 'Bearer ' + token()
     tipos = {'.mp4': 'video/mp4', '.jpg': 'image/jpeg', '.json': 'application/json'}
-    archivos = ['montaje.mp4', 'montaje-hd.mp4', 'poster.jpg'] + ['quieto%d.jpg' % n for n in range(1, len(QUIETOS) + 1)]
+    archivos = ['montaje.mp4', 'montaje-540.mp4', 'poster.jpg'] + ['quieto%d.jpg' % n for n in range(1, len(QUIETOS) + 1)]
     faltan = [a for a in archivos if not os.path.exists(os.path.join(src, a))]
     if faltan:
         sys.exit('faltan en %s: %s' % (src, ', '.join(faltan)))
@@ -178,7 +207,7 @@ def subir(src):
 
 if __name__ == '__main__':
     if '--armar' in sys.argv:
-        armar(sys.argv[sys.argv.index('--armar') + 1], hd='--hd' in sys.argv)
+        armar(sys.argv[sys.argv.index('--armar') + 1], grande='--540' in sys.argv)
     elif '--subir' in sys.argv:
         subir(sys.argv[sys.argv.index('--subir') + 1])
     else:

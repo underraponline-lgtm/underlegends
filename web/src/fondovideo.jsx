@@ -3,7 +3,7 @@
 // (Dlx, a las ideas de dónde más ponerlo: «me gustan todas… sí, las dos»).
 //
 // ⚠️ UN SOLO LUGAR para lo que decide qué video se ve: la carpeta de la temporada (`VIDEO`), la versión (`VV`), cuándo
-// va el de 1280 × 720 (`elegirHd`) y cuándo no va ninguno (`quieto`). La bienvenida los importa de acá: si cada página
+// va el de 960 × 540 (`elegirHd`) y cuándo no va ninguno (`quieto`). La bienvenida los importa de acá: si cada página
 // tuviera su copia, al rearmar el video una seguiría mostrando el viejo.
 // ⚠️ El video lo arma y lo sube `herramientas/bienvenida_video.py` y vive en R2 (son caras de gente real: no al repo).
 // ⚠️ SÓLO CORRE MIENTRAS SE VE: una franja de arriba que quedó atrás al bajar por la página se pausa (no gasta batería
@@ -17,13 +17,15 @@ usarCss('fondovideo', CSS);
 const W = typeof window !== 'undefined' ? window : {};
 export const VIDEO = 't1';
 // la versión del video: se sube con el mismo nombre, así que se cambia acá cada vez que se rearma, o el navegador y el
-// borde de R2 siguen sirviendo el de antes. 2 = el del 12/11 con el segundo tramo de Sombra y los oscuros más claros
-export const VV = '?v=2';
+// borde de R2 siguen sirviendo el de antes. 2 = el del 12/11 con el segundo tramo de Sombra y los oscuros más claros.
+// 3 = el del 12/11 a la tarde: cámara lenta sin cuadros inventados (no deforma) y el grande en 960 × 540 en vez de 720p
+export const VV = '?v=3';
 export const baseVideo = (liga) => liga.d.r2 + '/bienvenida/' + VIDEO + '/';
 // con «Menos animaciones», movimiento reducido o ahorro de datos: un cuadro quieto en vez del video
 export const quieto = () => (W.matchMedia && W.matchMedia('(prefers-reduced-motion: reduce)').matches) || !!document.querySelector('.calma')
   || !!(W.navigator && W.navigator.connection && W.navigator.connection.saveData);
-// el de 1280 × 720 donde la pantalla tiene los píxeles para verlo (Dlx: «el video no está en HD»): se mide en píxeles de
+// el de 960 × 540 donde la pantalla tiene los píxeles para verlo (Dlx: «el video no está en HD», y después «un intermedio
+// entre 720p y 480»: el de 720p, para pesar lo mismo, iba tan comprimido que no se notaba): se mide en píxeles de
 // verdad, así un teléfono de 390 con densidad 3 (1.170) también lo recibe; el de 640, para pantallas de verdad chicas
 export const elegirHd = () => (W.innerWidth || 0) * (W.devicePixelRatio || 1) >= 900;
 
@@ -49,7 +51,7 @@ export default function FondoVideo({ liga, lento = 1, cls = '' }) {
   return (
     <div className={'fv' + (cls ? ' ' + cls : '')} aria-hidden="true">
       {sinVideo ? <img alt="" src={base + 'poster.jpg' + VV} />
-        : <video ref={ref} src={base + (hd ? 'montaje-hd.mp4' : 'montaje.mp4') + VV} poster={base + 'poster.jpg' + VV} muted loop playsInline preload="auto" />}
+        : <video ref={ref} src={base + (hd ? 'montaje-540.mp4' : 'montaje.mp4') + VV} poster={base + 'poster.jpg' + VV} muted loop playsInline preload="auto" />}
       <i className="fv-vineta" />
       <svg className="fv-grano"><filter id="fv-gr"><feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="2" stitchTiles="stitch" />
         <feColorMatrix type="saturate" values="0" /></filter><rect width="100%" height="100%" filter="url(#fv-gr)" /></svg>
