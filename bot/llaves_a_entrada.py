@@ -1576,14 +1576,23 @@ def otro_en_servidor(filas, sv, mapa=None):
     return _en_cada_nombre(filas, lambda p: m.get(E.norm(p), p))
 
 
+#: cómo `_partes()` separa a los integrantes: «+», «,», «&», « y » y el guion con un espacio antes
+_SEP_PARTES = r'(\s*[,+&]\s*|\s+[yY]\s+|\s+-\s*)'
+
+
 def _partes(x, f):
     """`x` con `f` aplicada a cada integrante: «INN🇦🇷&CARLOS🇪🇨» -> `f('INN🇦🇷') & f('CARLOS🇪🇨')`.
 
     🔗 TAMBIÉN « y »: un equipo escrito «KUN Y CARLOS» (la #602 de DDS, 12/11/2026) se parte en KUN + CARLOS DESPUÉS
     de esto, así que sin la « y » acá «CARLOS» nunca se miraba solo y la regla de DDS no lo alcanzaba: el paso 0c lo
     corregía y el lector, al releer la llave en la misma corrida, lo volvía a escribir. Sólo cambia una parte que `f`
-    cambia: un nombre con « y » que `f` no conoce queda igual."""
-    partes = re.split(r'(\s*[,+&]\s*|\s+[yY]\s+)', str(x or ''))
+    cambia: un nombre con « y » que `f` no conoce queda igual.
+
+    ➖ Y EL GUION CON UN ESPACIO ANTES (12/11/2026): la FDS escribe la pareja «okam🇨🇷 -sosa🇺🇾» y «Scot 🇵🇪 - Sosa 🇺🇾».
+    Sin partir ahí, la regla de Sosa (`quien`) y la de la bandera veían UN nombre con dos banderas y no lo tocaban, y
+    después el motor separaba «-sosa» por su cuenta y le daba el campeonato de la #527 a Sosa 🇦🇷. Sólo con el espacio
+    antes: «Leonar-T» y «VALLES-T» son un nombre."""
+    partes = re.split(_SEP_PARTES, str(x or ''))
     return ''.join(p if i % 2 else f(p) for i, p in enumerate(partes))
 
 
@@ -1703,7 +1712,7 @@ def por_bandera(filas, padron=None, firmas=None):
     por_k = collections.defaultdict(set)
     for fila in filas:
         for txt in _nombres_de_fila(fila):
-            for i, p in enumerate(re.split(r'(\s*[,+&]\s*|\s+[yY]\s+)', str(txt or ''))):
+            for i, p in enumerate(re.split(_SEP_PARTES, str(txt or ''))):
                 if i % 2 or not E._banderas(p):
                     continue
                 if memo is not None and p in memo:
@@ -4118,6 +4127,12 @@ def _self_check():
     _pb = por_bandera([{'ladoA': 'INN🇦🇷&CARLOS🇪🇨', 'ladoB': 'NUMBER🇻🇪', 'ganador': 'INN🇦🇷&CARLOS🇪🇨', 'notas': ''},
                        {'ladoA': 'CARLOS', 'ladoB': 'Y', 'ganador': 'CARLOS', 'notas': 'cobra: CARLOS 🇪🇨'}],
                       padron=_pb_pad, firmas=_pb_fir)
+    _pb_guion = por_bandera([{'ladoA': 'okam🇨🇷 -sosa🇺🇾', 'ladoB': 'Scot 🇵🇪 - Sosa 🇺🇾', 'ganador': 'okam🇨🇷 -sosa🇺🇾',
+                              'notas': ''}],
+                            padron=dict(_pb_pad, sosa=('Sosa', 'ar', '9'), sosaatr=('.SosaATR', 'uy', '10')),
+                            firmas={('sosa', 'uy'): {'10'}})
+    _q_guion = otro_en_servidor([{'ladoA': 'okam🇨🇷 -sosa🇺🇾', 'ladoB': 'Leonar-T', 'ganador': '', 'notas': ''}], 'FDS',
+                                mapa={'FDS': {'sosa': '.SosaATR', 'leonar': 'X'}})
     _pb_dos = por_bandera([{'ladoA': 'CARLOS🇪🇨', 'ladoB': 'CARLOS', 'ganador': 'CARLOS', 'notas': ''},
                            {'ladoA': 'CARLOS🇲🇽', 'ladoB': 'X', 'ganador': 'X', 'notas': ''}], padron=_pb_pad, firmas=_pb_fir)
     _DISFRACES = ['payaso', 'doctor', 'pinata', 'scarface', 'conejita', 'aceite', 'momia', 'vampiro']
@@ -4126,6 +4141,9 @@ def _self_check():
          'también en un equipo y en «cobra:»; «carlos🇲🇽» sigue siendo Carlos (12/11/2026)',
          (_pb[0]['ladoA'], _pb[0]['ladoB'], _pb[0]['ganador']) == ('INN🇦🇷&Carlosss', 'Number VE', 'INN🇦🇷&Carlosss')
          and _pb[1]['notas'] == 'cobra: Carlosss' and quien_por_bandera('carlos🇲🇽', _pb_pad, _pb_fir) is None),
+        ('… también en la pareja con guion de la FDS («okam🇨🇷 -sosa🇺🇾»), y «Leonar-T» sigue siendo un nombre',
+         (_pb_guion[0]['ladoA'], _pb_guion[0]['ladoB']) == ('okam🇨🇷 -.SosaATR', 'Scot 🇵🇪 - .SosaATR')
+         and (_q_guion[0]['ladoA'], _q_guion[0]['ladoB']) == ('okam🇨🇷 -.SosaATR', 'Leonar-T')),
         ('… y el mismo nombre sin bandera lo sigue, salvo que el evento lo escriba también con la del otro',
          _pb[1]['ladoA'] == 'Carlosss' and (_pb_dos[0]['ladoA'], _pb_dos[0]['ladoB'], _pb_dos[1]['ladoA'])
          == ('Carlosss', 'CARLOS', 'CARLOS🇲🇽')),
