@@ -104,6 +104,8 @@ const T = {
   vivo: <><circle cx="20" cy="20" r="7" fill={MAG} /><circle cx="20" cy="20" r="14" fill="none" stroke={MAG} strokeWidth="3" /></>,
   sigue: <path d="M20 4l4.8 10 11 1.5-8 7.6 2 10.9L20 28.8 10.2 34l2-10.9-8-7.6 11-1.5z" fill="none" stroke="currentColor" strokeWidth="3" />,
   fel: <path d="M9 22l8-14 4 2-4 9h14l-3 13H12z" fill="none" stroke="currentColor" strokeWidth="3" />,
+  // 💬 comentar (12/11/2026): un globo de diálogo
+  cm: <><path d="M5 7h30v20H17l-8 7v-7H5z" fill="none" stroke="currentColor" strokeWidth="3" /><path d="M11 14h18M11 20h12" stroke="currentColor" strokeWidth="3" /></>,
   voto: <><rect x="7" y="18" width="26" height="16" fill="none" stroke="currentColor" strokeWidth="3" /><path d="M14 18l6-12 6 3-5 9" fill="none" stroke="currentColor" strokeWidth="3" /></>,
   precio: <><circle cx="20" cy="20" r="14" fill="none" stroke="currentColor" strokeWidth="3" /><text x="20" y="26" textAnchor="middle" fontFamily="Archivo, sans-serif" fontWeight="900" fontSize="16" fill="currentColor">$</text></>,
   apuesta: <><rect x="6" y="6" width="28" height="28" fill="none" stroke="currentColor" strokeWidth="3" /><circle cx="14" cy="14" r="3" fill="currentColor" /><circle cx="26" cy="26" r="3" fill="currentColor" /><circle cx="20" cy="20" r="3" fill="currentColor" /></>,

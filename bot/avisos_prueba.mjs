@@ -3662,6 +3662,61 @@ const ok = (cond, que, det) => {
   }
 }
 
+// 🗳️ «¿QUIÉN GANA LA FINAL?» PARA LA PÁGINA Y LA TAREA DE COMENTAR (12/11/2026): la final de una llave en vivo abre un voto
+// una sola vez, la página lo ve con el nombre del evento, se cierra con el lado que ganó; y un comentario cuenta para el Pase
+{
+  let DatabaseSync = null;
+  try { ({ DatabaseSync } = await import('node:sqlite')); } catch (e) { DatabaseSync = null; }
+  if (DatabaseSync) {
+    const db = new DatabaseSync(':memory:');
+    const sql = {
+      exec(q, ...ps) {
+        const t = String(q).trim();
+        if (!ps.length && /;\s*\S/.test(t)) { db.exec(t); return { toArray: () => [] }; }
+        const st = db.prepare(t);
+        if (/^\s*(SELECT|WITH|PRAGMA)/i.test(t)) { const rows = st.all(...ps); return { toArray: () => rows }; }
+        const r = st.run(...ps);
+        return { toArray: () => [], rowsWritten: r.changes };
+      },
+    };
+    const o = new A.Avisos({ storage: { sql, setAlarm() {}, getAlarm() { return null; }, transactionSync: (f) => f() },
+      blockConcurrencyWhile: async (f) => f() }, { DISCORD_TOKEN: 'x', KV: { get: async () => null } });
+    await new Promise((r) => setTimeout(r, 5));
+    const U1 = '400000000000000011', U2 = '400000000000000012';
+    const ahora = Date.now();
+    const L = { id: 'v:prueba', sv: 'FFA', ed: ahora, rondas: [{ r: 'Semifinal', b: [[['Ana', 'Caro'], 'Ana'], [['Beto', 'Dani'], 'Beto']] },
+      { r: 'Final', b: [[['Ana', 'Beto'], '']] }] };
+    const llaves = new Map([[L.id, L]]);
+    const n1 = o.qgFinales(ahora, llaves, () => 'COPA DE PRUEBA');
+    const n2 = o.qgFinales(ahora + 60000, llaves, () => 'COPA DE PRUEBA');
+    const l1 = o.qgFinalesLista(ahora).f;
+    ok(n1 === 1 && n2 === 0 && l1.length === 1 && l1[0].ev === 'COPA DE PRUEBA' && l1[0].abierta && l1[0].a === 'Ana',
+      'la final armada abre UN voto para la página, con el nombre del evento', JSON.stringify(l1));
+    const v = o.qgVotar({ quien: U1, id: l1[0].id, lado: 'A' });
+    o.qgVotar({ quien: U2, id: l1[0].id, lado: 'B' });
+    o.qgVotar({ quien: U2, id: l1[0].id, lado: 'A' });
+    ok(v.ok && o.qgFinalesLista(ahora).f[0].na === 2 && o.qgFinalesLista(ahora).f[0].nb === 0,
+      'un voto por persona, que se puede cambiar', JSON.stringify(o.qgFinalesLista(ahora).f[0]));
+    L.rondas[1].b[0][1] = 'Ana';
+    await o.qgRevisar(ahora + 120000, llaves);
+    const l2 = o.qgFinalesLista(ahora).f[0];
+    ok(!l2.abierta && l2.g === 'A', 'cuando la llave dice quién ganó, se cierra con el lado ganador (sin tocar Discord)', JSON.stringify(l2));
+    const sinFinal = { id: 'v:otra', sv: 'DRA', ed: ahora, rondas: [{ r: 'Final', b: [[['Eva'], '']] }] };
+    ok(o.qgFinales(ahora, new Map([[sinFinal.id, sinFinal]]), () => '') === 0, 'sin los dos finalistas no hay voto');
+    // 💬 la Tarea de comentar: un comentario por publicación queda en `pase_log`
+    o.indiceNombres = async () => ({});
+    o.cuentaDe = async () => '';
+    o.paseDatos = () => ({ v: 'x', cfg: { temp: 't1', umbrales: [300] }, sem: [], miembros: new Set([U1]), hechas: {} });
+    o.paseRevisar = () => 0;
+    const pub = { id: 'aaaaaaaaaaaa', ks: ['tam'], quien: ['Tam'] };
+    await o.comentar({ quien: U1, k: 'six', pub, tx: 'qué final' });
+    await o.comentar({ quien: U1, k: 'six', pub, tx: 'otra vez acá' });
+    const P = o.paseDatos();
+    ok(o.paseCuenta(U1, 'cm', ahora - 1000, ahora + 3600000, P) === 1 && A.PASE_MIDE.includes('cm'),
+      'comentar cuenta para la Tarea del Pase: uno por publicación');
+  }
+}
+
 if (fallas) {
   console.log(`\n❌ ${fallas} prueba(s) fallaron`);
   process.exit(1);

@@ -82,7 +82,7 @@ COLA = (1000, 300)
 #: lo que el objeto sabe contar. `activo`: días de la racha · `fel`: felicitaciones · `vivo`: llaves en vivo
 #: distintas · `precio`: precios por cabeza · `dra`: eventos jugados en DRA · `caza`: buscados cazados (estos dos, del
 #: ciclo). Si se agrega uno, también en `PASE_MIDE` de `bot/avisos.js`
-MIDE = ('activo', 'fel', 'vivo', 'precio', 'dra', 'caza', 'voto', 'apuesta', 'sigue', 'promo')
+MIDE = ('activo', 'fel', 'vivo', 'precio', 'dra', 'caza', 'voto', 'apuesta', 'sigue', 'promo', 'cm')
 #: las Tareas: `(id, texto, cómo se cumple, qué mide, meta, xp)`, en el orden en que se muestran
 DIARIAS = (
     ('entrar', 'Entra hoy', 'Con tu cuenta en la página, usando el bot o jugando un evento.', 'activo', 1, 150),
@@ -111,6 +111,19 @@ DIARIAS_SIEMPRE = (
     DIARIAS[0],
     DIARIAS_NUEVAS[2],
     DIARIAS[1],
+)
+#: 💬 «COMENTA UNA PUBLICACIÓN» (Dlx, 12/11/2026: «sí a las dos, hazlas»): una diaria más en el turno, desde el
+#: `COMENTAR_DESDE`. ⚠️ EN ESTE ORDEN A PROPÓSITO, como las de antes: el objeto revisa hoy y ayer cuando le llega la lista
+#: nueva, y con éste el 11/11 sigue dando «Sigue a un rapero» y el 12/11 «Felicita a alguien» (los dos con la lista de
+#: antes). La primera «Comenta» es el 13/11. Vale lo mismo que las otras: la XP de un día no cambia. Cuenta un comentario
+#: por publicación (`pase_log`, `comentar()` en bot/avisos.js)
+COMENTAR_DESDE = '2026-11-12'
+DIARIAS_CM = (
+    DIARIAS[0],
+    DIARIAS[1],
+    ('comentar1', 'Comenta una publicación', 'En Publicaciones, con tu cuenta: un comentario en cualquier publicación.',
+     'cm', 1, 150),
+    DIARIAS_NUEVAS[2],
 )
 #: cuántas diarias hay cada día: la primera siempre, y las demás se turnan día por día
 POR_DIA = 2
@@ -330,7 +343,8 @@ def diarias_de(dia, lista=None):
 
     ⚠️ LA MISMA CUENTA QUE `paseDelDia()` DE `bot/avisos.js`: el día como número (días desde 1970) elige."""
     if lista is None:
-        lista = DIARIAS_SIEMPRE if dia >= CURVA_DESDE else DIARIAS_NUEVAS if dia >= TAREAS_DESDE else DIARIAS
+        lista = (DIARIAS_CM if dia >= COMENTAR_DESDE else DIARIAS_SIEMPRE if dia >= CURVA_DESDE
+                 else DIARIAS_NUEVAS if dia >= TAREAS_DESDE else DIARIAS)
     n = (dt.date.fromisoformat(dia) - dt.date(1970, 1, 1)).days
     resto = lista[1:]
     if not resto:
@@ -344,7 +358,7 @@ def dra_activo(evs, ahora):
     return any(ev.get('sv') == 'DRA' and ev.get('t') and desde <= ev['t'] <= ahora for ev in evs or [])
 
 
-def config(temp, dra=True, nuevas=True, curva=True):
+def config(temp, dra=True, nuevas=True, curva=True, cm=True):
     """Lo que lee el objeto: los números y los textos. La temporada (`temp`) separa un Pase del siguiente. Sin `dra`
     (DRA no está organizando), sus Tareas van cambiadas por las de `SIN_DRA`. Sin `nuevas` (antes de `TAREAS_DESDE`),
     las diarias y las de temporada de antes.
@@ -354,7 +368,8 @@ def config(temp, dra=True, nuevas=True, curva=True):
     eso, el objeto tiene que saber desde qué semana vale cada una: es un cambio del Worker, y se despliega aparte."""
     lista = lambda xs: [list(SIN_DRA[t[0]]) if not dra and t[0] in SIN_DRA else list(t) for t in xs]
     out = {'temp': temp or 'prueba', 'niveles': NIVELES, 'umbrales': umbrales(curva), 'cola': list(COLA), 'drop_cola': DROP_COLA,
-           'diarias': lista(DIARIAS_SIEMPRE if nuevas and curva else DIARIAS_NUEVAS if nuevas else DIARIAS), 'por_dia': POR_DIA,
+           'diarias': lista(DIARIAS_CM if nuevas and curva and cm else DIARIAS_SIEMPRE if nuevas and curva
+                            else DIARIAS_NUEVAS if nuevas else DIARIAS), 'por_dia': POR_DIA,
            'semanales': lista(SEMANALES),
            'temporada': lista(TEMPORADA + (TEMPORADA_NUEVAS if nuevas else ())), 'premios': premios(curva),
            'publicar': list(PUBLICAR)}
@@ -472,7 +487,10 @@ def armar(ahora=None):
     # 🆕 las Tareas nuevas entran con la semana del 19/10 (`TAREAS_DESDE`), no a mitad de ésta
     nuevas = MU.periodo(ahora)[0] >= TAREAS_DESDE
     # 🎯 la curva nueva y el brillo en el 4, desde la semana del 26/10 (`CURVA_DESDE`)
-    cfg = config(MU.temporada_actual(ahora), dra=dra_activo(evs, ahora), nuevas=nuevas, curva=curva_activa(ahora))
+    import zoneinfo
+    hoy_et = ahora.astimezone(zoneinfo.ZoneInfo('America/New_York')).strftime('%Y-%m-%d')
+    cfg = config(MU.temporada_actual(ahora), dra=dra_activo(evs, ahora), nuevas=nuevas, curva=curva_activa(ahora),
+                 cm=hoy_et >= COMENTAR_DESDE)
     cfg['especiales'] = especiales(ahora)
     # 💎 quién tiene el premium: los del rol `ROL_PREMIUM` de DRA (`verificados.refrescar()` los deja en
     # datos/pase_premium.json). Son Discord IDs: van aparte, nunca en `cfg` (que es público)
@@ -696,9 +714,16 @@ def _self_check():
        and all('vivo1' not in _d26('2026-10-%d' % k) for k in range(26, 32))
        and {_d26('2026-10-%d' % k)[1] for k in (27, 28)} == {'sigue1', 'felicitar1'},
        'desde el 26/10 la diaria ya no pide una llave en vivo (un día sin evento era imposible), y el 26 da lo mismo que antes')
-    ok([t[0] for t in config('t1')['diarias']] == ['entrar', 'sigue1', 'felicitar1']
+    ok([t[0] for t in config('t1', cm=False)['diarias']] == ['entrar', 'sigue1', 'felicitar1']
        and [t[0] for t in config('t1', curva=False)['diarias']] == [t[0] for t in DIARIAS_NUEVAS],
        'y la lista que va al objeto es la nueva desde la curva (el objeto turna con ésa, no con la fecha)')
+    # 💬 la de comentar (12/11/2026): el 11 y el 12 dan lo mismo con la lista de antes, y el 13 es la primera
+    ok(all(_d(dia, DIARIAS_CM) == _d(dia, DIARIAS_SIEMPRE) for dia in ('2026-11-11', '2026-11-12'))
+       and _d('2026-11-13', None)[1] == 'comentar1' and _d('2026-11-11', None)[1] == 'sigue1'
+       and [t[0] for t in config('t1')['diarias']] == ['entrar', 'felicitar1', 'comentar1', 'sigue1']
+       and all(sum(t[5] for t in diarias_de('2026-11-%d' % k)) == 300 for k in range(12, 20)),
+       'la diaria de comentar: no cambia ni el 11 ni el 12 (el objeto los revisa al llegarle la lista), entra el 13, '
+       'y la XP de un día sigue en 300')
     c2 = config('t1')
     ids2 = [t[0] for t in c2['diarias'] + c2['semanales'] + c2['temporada'] + c2['bienvenida']]
     ok(len(ids2) == len(set(ids2)) and all(t[3] in MIDE for t in c2['bienvenida']) and sum(t[5] for t in c2['bienvenida']) == 600,

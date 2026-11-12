@@ -2751,7 +2751,7 @@ export function xpDeFuentes(cuentas) {
 // DRA) y `caza` (buscados cazados) los manda el ciclo; los días (`activo`), las felicitaciones y las llaves en vivo
 // (`pase_log`) y los precios (`precios`) los ve pasar el objeto
 //: 🏠 `voto`, `apuesta` y `sigue`: las Tareas que reemplazan a las de DRA mientras DRA no organice (`pase.SIN_DRA`)
-export const PASE_MIDE = ['activo', 'fel', 'vivo', 'precio', 'dra', 'caza', 'voto', 'apuesta', 'sigue', 'promo'];
+export const PASE_MIDE = ['activo', 'fel', 'vivo', 'precio', 'dra', 'caza', 'voto', 'apuesta', 'sigue', 'promo', 'cm'];
 const diaNum = (s) => Math.round(Date.UTC(+s.slice(0, 4), +s.slice(5, 7) - 1, +s.slice(8, 10)) / DIA_MS);
 //: «hasta el final de la temporada», para las cuentas de temporada (un número y no `Infinity`: va a SQLite)
 const SIEMPRE = Number.MAX_SAFE_INTEGER;
@@ -3472,6 +3472,7 @@ const RUTAS = {
   // 💬 los comentarios de Publicaciones: escribir (verificado), leerlos, borrar el tuyo, y quién deja usar su cara
   // (Mi cuenta y el Dashboard). Ver `validarComentario()` y `comentar()`
   '/avisos/comentar': 'POST', '/avisos/comentarios': 'GET', '/avisos/comentario-borrar': 'POST', '/avisos/comentario-reportar': 'POST',
+  '/avisos/qg-finales': 'GET', '/avisos/qg-votar-web': 'POST',
   '/avisos/cm-mio': 'POST', '/avisos/dueno/cm-permiso': 'POST', '/avisos/dueno/cm-permisos': 'POST',
   // 🐉 los Dragón Drops: los tuyos y la barra del día, y abrir uno (con tu sesión). Ver `dropsDe()` y `dropAbrir()`
   '/avisos/drops': 'POST', '/avisos/drop-abrir': 'POST',
@@ -6106,6 +6107,21 @@ export async function rutaAvisos(req, env, ruta) {
       headers: { 'content-type': 'application/json' },
     });
   }
+  // 🗳️ «¿QUIÉN GANA LA FINAL?» DESDE LA PÁGINA (12/11/2026): el mismo voto que el botón del chat (`qgVotar()`), con
+  // quién lo dice Discord o la sesión
+  if (ruta === '/avisos/qg-votar-web') {
+    const crudo = await req.text();
+    if (crudo.length > 1024) return json({ error: 'demasiado grande' }, 413);
+    let d = null;
+    try { d = JSON.parse(crudo || '{}'); } catch (e) { d = null; }
+    if (!d || typeof d !== 'object' || !/^[0-9a-f]{12}$/.test(String(d.id || '')) || (d.lado !== 'A' && d.lado !== 'B') ||
+        (d.token && !/^[A-Za-z0-9._-]{10,300}$/.test(String(d.token)))) return json({ error: 'faltan datos' }, 400);
+    const q = await quienPide(req, env, d);
+    if (!q.id) return json({ error: q.error }, q.estado);
+    return elObjeto(env).fetch('https://avisos/qg-votar', {
+      method: 'POST', body: JSON.stringify({ quien: q.id, id: String(d.id), lado: d.lado }), headers: { 'content-type': 'application/json' },
+    });
+  }
   // 🚩 REPORTAR UN COMENTARIO: quién lo dice Discord (o la sesión); con `COMENT_REPORTES` de personas distintas se esconde
   if (ruta === '/avisos/comentario-reportar') {
     const crudo = await req.text();
@@ -7471,6 +7487,9 @@ export class Avisos {
       // 🏷️ la gente de cada lado, con el nombre del ranking, para los botones y los renglones (11/11/2026, ver `etiquetaLado()`).
       // Lo crudo de la llave (`a`, `b`, `mas`) sigue siendo lo que decide quién ganó
       try { this.sql.exec("ALTER TABLE qg ADD COLUMN gente TEXT NOT NULL DEFAULT '[]'"); } catch (e) { /* ya estaba */ }
+      // 🗳️ para la página (12/11/2026): el nombre del evento y el lado que ganó, al cerrarse. Ver `qgFinales()`
+      try { this.sql.exec("ALTER TABLE qg ADD COLUMN ev TEXT NOT NULL DEFAULT ''"); } catch (e) { /* ya estaba */ }
+      try { this.sql.exec("ALTER TABLE qg ADD COLUMN g TEXT NOT NULL DEFAULT ''"); } catch (e) { /* ya estaba */ }
       try { this.sql.exec("ALTER TABLE apuestas ADD COLUMN gente TEXT NOT NULL DEFAULT '[]'"); } catch (e) { /* ya estaba */ }
       // 🗳️ a quién votó el público en cada cruce cerrado (19/10/2026): `qg` se borra a la semana y el TAG 🗳️ FAVORITO
       // DEL PÚBLICO cuenta la temporada entera. Uno por cruce; ver `favoritoDe()` y `favoritos()`
@@ -8203,6 +8222,7 @@ export class Avisos {
       if (ruta === '/aplausos') return json(this.aplausosCuenta(), 200, 20);
       // 💬 los comentarios de verdad de cada publicación: perfil, nombre y texto, nunca el Discord ID
       if (ruta === '/comentarios') return json(this.comentarios(), 200, 20);
+      if (ruta === '/qg-finales') return json(this.qgFinalesLista(), 200, 20);
       if (ruta === '/cm-permisos') return json(this.cmPermisos());
       // 🗳️ cuántas veces el público votó a cada uno como ganador, en la temporada (el ciclo: `bot/hechos_vivo.py`)
       if (ruta === '/favoritos') return json(this.favoritos(), 200, 300);
@@ -9463,6 +9483,8 @@ export class Avisos {
     // 🎲 y las apuestas: cerrar, pagar o devolver (ver `apuestasRevisar()`)
     try { await this.apuestasRevisar(ahora, llaves); } catch (e) { this.guardar('apuestas', { t: ahora, error: String(e).slice(0, 160) }); }
     // 🗳️ y los votos de «¿Quién gana?»: cómo va y, con el resultado, si el público acertó (ver `qgRevisar()`)
+    // 🗳️ y la final de cada llave en vivo tiene su voto para la página, aunque su servidor no tenga al bot en el chat
+    try { this.qgFinales(ahora, llaves, nombreDe); } catch (e) { this.guardar('qg_finales', { t: ahora, error: String(e).slice(0, 160) }); }
     try { await this.qgRevisar(ahora, llaves); } catch (e) { this.guardar('qg', { t: ahora, error: String(e).slice(0, 160) }); }
     if (cambio) {
       for (const [k, v] of Object.entries(nombres)) if (ahora - (v.t || 0) > 12 * HORA) delete nombres[k];
@@ -9819,6 +9841,7 @@ export class Avisos {
     const antes = this.sql.exec('SELECT lado FROM qg_voto WHERE id = ? AND quien = ?', q.id, quien).toArray()[0];
     this.sql.exec('INSERT OR REPLACE INTO qg_voto (id, quien, lado, t) VALUES (?, ?, ?, ?)', q.id, quien, lado, ahora);
     this.xpVio(quien, 'qg', q.id, ahora);
+    if (!antes) this.pasoDia(quien, 'voto', ahora);
     const cuenta = {};
     for (const r of this.sql.exec('SELECT lado, COUNT(*) AS n FROM qg_voto WHERE id = ? GROUP BY lado', q.id).toArray()) cuenta[r.lado] = Number(r.n) || 0;
     const na = cuenta.A || 0, nb = cuenta.B || 0;
@@ -9828,6 +9851,41 @@ export class Avisos {
     const mio = [na, nb].concat(nmas)[i] || 0;
     return { ok: true, lado, nombre: nombreLado(genteDe(q)[i], lados[i] || ''), cambio: !!(antes && antes.lado !== lado), na, nb, nmas, n,
       pct: n ? Math.round((100 * mio) / n) : 0 };
+  }
+
+  /**
+   * 🗳️ «¿QUIÉN GANA LA FINAL?» PARA LA PÁGINA (Dlx, 12/11/2026: «sí»): cuando una llave en vivo tiene su final armada —los
+   * dos finalistas y sin ganador—, un voto en `qg`. Si el chat ya abrió el de ese cruce, se usa ése (los votos del chat y
+   * de la página son los mismos) y sólo se le pone el nombre del evento. Sin canal ni mensaje: `qgRevisar()` lo cierra
+   * cuando la llave dice quién ganó, o a los `QG_VENCE`, sin editar nada en Discord
+   */
+  qgFinales(ahora, llaves, nombreDe) {
+    let n = 0;
+    for (const L of llaves.values()) {
+      if (ahora - (L.ed || 0) > CHAT_FRESCA) continue;
+      const F = (L.rondas || []).find((R) => /^final$/i.test(String(R.r || '')));
+      const b = F && (F.b || [])[0];
+      const lados = b ? (b[0] || []).filter(Boolean).map((x) => (Array.isArray(x) ? x.join(', ') : String(x))) : [];
+      if (lados.length !== 2 || b[1]) continue;
+      let ev = '';
+      try { ev = String(nombreDe(L) || '').slice(0, 80); } catch (e) { ev = ''; }
+      const ya = this.sql.exec('SELECT id FROM qg WHERE llave = ? AND ronda = ? AND a = ? AND b = ?', L.id, F.r, lados[0], lados[1]).toArray()[0];
+      if (ya) { this.sql.exec("UPDATE qg SET ev = ? WHERE id = ? AND ev = ''", ev, ya.id); continue; }
+      const id = codigoDe(L.id + ':final:' + lados.join('|') + ':qgw').slice(0, 12);
+      this.sql.exec("INSERT OR IGNORE INTO qg (id, canal, msg, sv, llave, ronda, a, b, dicho, abre, mas, gente, ev) " +
+        "VALUES (?, '', '', ?, ?, ?, ?, ?, '', ?, '[]', '[]', ?)", id, L.sv || '', L.id, F.r, lados[0], lados[1], ahora, ev);
+      n++;
+    }
+    return n;
+  }
+
+  /** 🗳️ Lo público, para `/avisos/qg-finales`: los votos de las finales de las últimas 12 h, con cuántos tiene cada lado y,
+   *  cerrados, quién ganó (`g`: 'A', 'B' o 'x' sin resultado). ⚠️ Nunca quién votó */
+  qgFinalesLista(ahora = Date.now()) {
+    const fs = this.sql.exec("SELECT id, ev, sv, ronda, a, b, na, nb, estado, g, abre FROM qg WHERE abre > ? AND estado != 'borrada' " +
+      'ORDER BY abre DESC LIMIT 40', ahora - 12 * HORA).toArray().filter((q) => /^final$/i.test(String(q.ronda || '')));
+    return { t: ahora, f: fs.slice(0, 6).map((q) => ({ id: q.id, ev: q.ev || '', sv: q.sv || '', a: q.a, b: q.b,
+      na: Number(q.na) || 0, nb: Number(q.nb) || 0, abierta: q.estado === 'abierta', g: q.g || '', abre: q.abre })) };
   }
 
   /**
@@ -9862,7 +9920,7 @@ export class Avisos {
       const h = this.sql.exec('SELECT texto FROM chat_vivo WHERE canal = ? AND msg = ? ORDER BY t DESC LIMIT 1', q.canal, q.msg).toArray()[0];
       // ⚠️ sin el texto del mensaje no se edita: se pisaría todo con el renglón solo
       if (!h || !h.texto) {
-        if (g) this.sql.exec("UPDATE qg SET estado = 'cerrada' WHERE id = ?", q.id);
+        if (g) this.sql.exec("UPDATE qg SET estado = 'cerrada', g = ? WHERE id = ?", g, q.id);
         continue;
       }
       const texto = conLineaVoto(h.texto, linea);
@@ -9878,7 +9936,7 @@ export class Avisos {
       } catch (e) { r = null; }
       if (r && r.ok) {
         this.sql.exec('UPDATE chat_vivo SET texto = ? WHERE canal = ? AND msg = ?', texto, q.canal, q.msg);
-        this.sql.exec('UPDATE qg SET dicho = ?, estado = ? WHERE id = ?', linea, g ? 'cerrada' : 'abierta', q.id);
+        this.sql.exec('UPDATE qg SET dicho = ?, estado = ?, g = ? WHERE id = ?', linea, g ? 'cerrada' : 'abierta', g || '', q.id);
       } else if (r && r.status === 404) {
         this.sql.exec("UPDATE qg SET estado = 'borrada' WHERE id = ?", q.id);
       }
@@ -13756,6 +13814,8 @@ export class Avisos {
     this.sql.exec('INSERT INTO comentario (pub, quien, k, n, tx, resp, t) VALUES (?, ?, ?, ?, ?, ?, ?)', p.id, quien, k, n, l.tx, resp, ahora);
     const r = this.sql.exec('SELECT last_insert_rowid() AS id').toArray()[0] || {};
     this.pasoDia(quien, 'cm', ahora);
+    // 🎟️ la Tarea del Pase de comentar (Dlx, 12/11/2026: «sí»): una por publicación, en `pase_log` como felicitar
+    try { if (this.paseVio(quien, 'cm', p.id, ahora)) this.paseRevisar(quien); } catch (e) { /* la Tarea no frena el comentario */ }
     // 🔔 a los dueños de la publicación
     try {
       const ks = Array.isArray(p.ks) ? p.ks : [], quienes = Array.isArray(p.quien) ? p.quien : [];
@@ -15798,7 +15858,7 @@ export class Avisos {
         return t >= ini && t < fin;
       }).length;
     }
-    if (mide === 'fel' || mide === 'vivo' || mide === 'promo') {
+    if (mide === 'fel' || mide === 'vivo' || mide === 'promo' || mide === 'cm') {
       return this.sql.exec('SELECT COUNT(*) AS n FROM pase_log WHERE quien = ? AND temp = ? AND que = ? AND t >= ? AND t < ?',
         quien, P.cfg.temp, mide, ini, fin).toArray()[0].n;
     }

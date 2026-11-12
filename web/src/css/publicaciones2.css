@@ -290,3 +290,30 @@
 .pb-filas.ag li:has(> .cmh-chico){grid-template-columns:32px minmax(0,1fr) auto auto}
 .pb-filas li > .cmh.en-fila{grid-column:1 / -1;margin-top:0}
 @media (max-width:420px){ .cmh-env{padding:0 10px} }
+
+/* 🗳️ «¿Quién gana la final?» (12/11/2026): las dos caras, el % de cada una y, al cerrarse, quién ganó */
+.qg{display:grid;gap:10px;margin:0 0 18px}
+.qg-i{border:1.5px solid var(--linea);border-left:4px solid var(--magenta);background:linear-gradient(90deg,rgba(228,19,115,.12),transparent 55%),var(--caja);padding:12px 14px;display:grid;gap:10px}
+.qg-i header{display:flex;flex-wrap:wrap;align-items:baseline;gap:4px 10px}
+.qg-i header em{font:900 18px/1 Archivo,sans-serif;font-style:normal;text-transform:uppercase}
+.qg-i header small{font:700 12px/1.2 "Barlow Condensed",sans-serif;letter-spacing:.05em;text-transform:uppercase;color:var(--gris)}
+.qg-vivo{color:var(--magenta)}
+.qg-vs{display:grid;grid-template-columns:minmax(0,1fr) auto minmax(0,1fr);align-items:center;gap:10px}
+.qg-x{font:900 22px/1 Archivo,sans-serif;color:var(--magenta)}
+.qg-lado{display:grid;grid-template-columns:44px minmax(0,1fr);grid-template-rows:auto auto;column-gap:10px;row-gap:2px;align-items:center;text-align:left;
+  padding:8px 10px;border:1.5px solid var(--linea);background:var(--fondo);color:var(--tinta);font:inherit;cursor:pointer;min-width:0;position:relative}
+.qg-lado:disabled{cursor:default}
+.qg-lado:not(:disabled):hover,.qg-lado:focus-visible{border-color:var(--magenta);outline:none}
+.qg-lado.qg-si{border-color:var(--magenta);box-shadow:inset 0 0 0 1px var(--magenta)}
+.qg-lado.qg-gano{border-color:var(--verde);box-shadow:inset 0 0 0 1px var(--verde)}
+.qg .qg-c{grid-row:span 2;width:44px;height:44px;border-radius:50%;overflow:hidden;display:grid;place-items:center}
+.qg .qg-c img{width:100%;height:100%;object-fit:cover;display:block}
+.qg-lado b{font:800 15px/1.1 Archivo,sans-serif;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.qg-lado small{font:600 12px/1.1 Archivo,sans-serif;color:var(--gris)}
+.qg-lado em{position:absolute;top:-8px;right:8px;font:800 10px/1 "Barlow Condensed",sans-serif;font-style:normal;letter-spacing:.06em;text-transform:uppercase;
+  padding:3px 6px;background:var(--magenta);color:#000}
+.qg-lado.qg-gano em{background:var(--verde)}
+.qg-barra{display:block;height:6px;background:var(--magenta);position:relative}
+.qg-barra i{position:absolute;inset:0 auto 0 0;background:var(--verde)}
+.qg-pie,.qg-msg{font:600 12px/1.3 Archivo,sans-serif;color:var(--gris)}
+@media (max-width:520px){.qg-vs{grid-template-columns:minmax(0,1fr)}.qg-x{justify-self:center;font-size:16px}}

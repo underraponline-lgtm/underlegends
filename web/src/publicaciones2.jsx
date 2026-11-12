@@ -21,6 +21,7 @@ import { Miniatura, abrirVideo } from './video.jsx';
 import { Elegido, X2 } from './encuestas.jsx';
 import { useAplausos } from './aplausos.js';
 import { Hilo } from './comentarios.jsx';
+import { QuienGana } from './quiengana.jsx';
 import { PLATAFORMA } from './publicaciones.jsx';
 import CSS_PAGINA from './css/publicaciones2.css?inline';
 import { usarCss } from './css.js';
@@ -584,6 +585,8 @@ export function Publicaciones({ liga, enc, foco = '' }) {
       </nav>
       <div className="pb-t2">
         <main className="pb-feed">
+          {/* 🗳️ la final de cada evento en vivo, para votar quién gana (12/11/2026): arriba de todo mientras se juega */}
+          {fil !== 'anuncios' && fil !== 'promos' ? <QuienGana liga={liga} /> : null}
           {dias.length ? dias.map((d, n) => {
             const [t] = tituloDia(d.k);
             return (

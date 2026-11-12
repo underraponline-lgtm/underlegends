@@ -97,6 +97,9 @@ const AVISOS = {
   '/api/avisos/comentarios': 'GET',
   '/api/avisos/comentario-borrar': 'POST',
   '/api/avisos/comentario-reportar': 'POST',
+  // 🗳️ «¿Quién gana la final?» en Publicaciones (12/11/2026): los votos abiertos y votar. Ver `qgFinales()`
+  '/api/avisos/qg-finales': 'GET',
+  '/api/avisos/qg-votar-web': 'POST',
   '/api/avisos/cm-mio': 'POST',
   '/api/avisos/dueno/cm-permiso': 'POST',
   '/api/avisos/dueno/cm-permisos': 'POST',
@@ -318,7 +321,7 @@ async function avisos(req, url, ctx) {
     // la clave pública no cambia: una hora en el borde
     ttl = 3600;
   } else if (url.pathname.endsWith('/vivo') || url.pathname.endsWith('/encuestas') || url.pathname.endsWith('/ligas-votos') ||
-             url.pathname.endsWith('/precios') || url.pathname.endsWith('/aplausos') || url.pathname.endsWith('/comentarios') ||
+             url.pathname.endsWith('/precios') || url.pathname.endsWith('/aplausos') || url.pathname.endsWith('/comentarios') || url.pathname.endsWith('/qg-finales') ||
              url.pathname.endsWith('/estado')) {
     // ⚡ `/estado` también (revisión del 04/10/2026): la campana lo pide en cada visita, es público —cuántos,
     // cuándo, nunca quién— y cada pedido eran once lecturas de tablas enteras en el objeto que vigila
