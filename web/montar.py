@@ -114,7 +114,7 @@ HTML_CARGA = """<body>
      sesión) el corte espera a que la entrada termine (`MIN`, ~1,9 s: Dlx, 18/10, «la veo completa pero pasa bien
      rápido», después «1 segundo menos» y el 19/10 «medio segundo más»), con la barra llenándose de a poco y un momento llena; al recargar en la misma visita, sin espera. Con
      «reducir movimiento», nada de esto: se apaga con un fundido. Sin este script, se apaga como antes. -->
-<div id="lg-carga" aria-hidden="true"><i class="lg-capa v"></i><i class="lg-capa m"></i><i class="lg-capa n"></i><div class="lg-c"><span class="lg-sello"><span class="lg-sombra"></span><span class="lg-onda"></span><img src="/ul.png" alt="" width="96" height="96"></span><b class="lg-tit"><i style="--i:0">L</i><i style="--i:1">I</i><i style="--i:2">G</i><i style="--i:3">A</i><i class="lg-esp" style="--i:4"></i><i style="--i:5">G</i><i style="--i:6">L</i><i style="--i:7">O</i><i style="--i:8">B</i><i style="--i:9">A</i><i style="--i:10">L</i></b><small>DE FREESTYLE</small><span class="lg-seg"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></span><span class="lg-tip"><span>Cargando el ranking</span></span></div></div>
+<div id="lg-carga" aria-hidden="true"><i class="lg-capa v"></i><i class="lg-capa m"></i><i class="lg-capa n"><b class="lg-foto"></b></i><div class="lg-c"><span class="lg-sello"><span class="lg-sombra"></span><span class="lg-onda"></span><img src="/ul.png" alt="" width="96" height="96"></span><b class="lg-tit"><i style="--i:0">L</i><i style="--i:1">I</i><i style="--i:2">G</i><i style="--i:3">A</i><i class="lg-esp" style="--i:4"></i><i style="--i:5">G</i><i style="--i:6">L</i><i style="--i:7">O</i><i style="--i:8">B</i><i style="--i:9">A</i><i style="--i:10">L</i></b><small>DE FREESTYLE</small><span class="lg-seg"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></span><span class="lg-tip"><span>Cargando el ranking</span></span></div></div>
 <script>
 (function () {
   var h = document.documentElement, el = document.getElementById('lg-carga');
@@ -309,6 +309,35 @@ SCRIPTS = """<script src="llave_vivo.js"></script>
 """
 
 
+def foto_carga():
+    """🎬 LA PANTALLA DE CARGA CON UN CUADRO DEL MONTAJE (12/11/2026, Dlx: «sí, sigue», a la idea de darle cara de juego
+    desde el primer segundo también a quien ya es de la Liga y no ve la bienvenida). Es el póster del video de fondo
+    (25 KB): un cuadro quieto, no el video, para no hacer esperar a la carga.
+
+    ⚠️ NO VA AL REPO: son caras de gente real, así que se pide a R2 como el video. Y la dirección no se escribe acá: la
+    carpeta y la versión salen de web/src/fondovideo.jsx (`VIDEO`, `VV`) y R2 de bot/subir_web.py (`R2`), así al
+    rearmar el video la pantalla de carga toma el póster nuevo con el mismo cambio de `VV`."""
+    fv = io.open(os.path.join(WEB, 'src', 'fondovideo.jsx'), encoding='utf-8').read()
+    sw = io.open(os.path.join(BASE, 'bot', 'subir_web.py'), encoding='utf-8').read()
+    video = re.search(r"export const VIDEO = '([^']+)'", fv)
+    vv = re.search(r"export const VV = '([^']*)'", fv)
+    r2 = re.search(r"^R2 = '([^']+)'", sw, re.M)
+    if not (video and vv and r2):
+        raise SystemExit('🔴 no encontré VIDEO/VV en fondovideo.jsx o R2 en subir_web.py: la pantalla de carga no sabe de dónde '
+                         'sacar el póster')
+    return '%s/bienvenida/%s/poster.jpg%s' % (r2.group(1), video.group(1), vv.group(1))
+
+
+#: 🎬 el cuadro del montaje DENTRO de la capa negra, enderezado: la capa va girada 30° y corrida 5vmax, así que la foto
+#: lleva la transformación inversa y queda derecha y a pantalla completa. Al salir, se va con la capa en el corte.
+#: Oscurecida y con viñeta (fina en el teléfono, como la bienvenida), para que el sello y el título se lean encima
+CSS_FOTO = """#lg-carga .lg-foto{display:none}
+html.lg-carga-js #lg-carga .lg-foto{display:block;position:absolute;left:50%;top:50%;width:100vw;height:100vh;margin:-50vh 0 0 -50vw;
+  transform:translateY(5vmax) rotate(-30deg);background:#030304 url(@FOTO@) center/cover no-repeat;filter:grayscale(1) contrast(1.15) brightness(.4);
+  box-shadow:inset 0 0 180px 70px #030304}
+@media (max-width:899.98px){html.lg-carga-js #lg-carga .lg-foto{box-shadow:inset 0 0 70px 12px #030304}}"""
+
+
 def cabeza(html):
     """El `<head>` de index.html hasta las fuentes: título, metas para Discord, manifiesto. Se conserva tal cual."""
     marca = '<link rel="preconnect" href="https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev" crossorigin>\n'
@@ -323,7 +352,7 @@ def pagina(html):
             '     (web/src/fuentes.css). La IP de cada visita dejó de ir a Google. Todo lo de abajo lo arma web/montar.py:\n'
             '     no se edita a mano -->\n'
             '<link rel="stylesheet" href="/inicio/inicio.css">\n'
-            '<style id="ini-css">\n' + CSS + '\n</style>\n'
+            '<style id="ini-css">\n' + CSS + '\n' + CSS_FOTO.replace('@FOTO@', foto_carga()) + '\n</style>\n'
             '<script>\n' + script() + '\n</script>\n</head>\n' +
             HTML_CARGA +
             '\n<!-- 🛠️ acá se monta la página (web/src/main.jsx) -->\n'

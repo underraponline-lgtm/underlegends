@@ -101,6 +101,11 @@ html.lg-sale #lg-carga .lg-capa.v{animation-delay:.55s}
 }
 html.calma #lg-carga *{animation:none!important}
 html.calma.lg-sale #lg-carga{opacity:0;transition:opacity .25s ease}
+#lg-carga .lg-foto{display:none}
+html.lg-carga-js #lg-carga .lg-foto{display:block;position:absolute;left:50%;top:50%;width:100vw;height:100vh;margin:-50vh 0 0 -50vw;
+  transform:translateY(5vmax) rotate(-30deg);background:#030304 url(https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/bienvenida/t1/poster.jpg?v=2) center/cover no-repeat;filter:grayscale(1) contrast(1.15) brightness(.4);
+  box-shadow:inset 0 0 180px 70px #030304}
+@media (max-width:899.98px){html.lg-carga-js #lg-carga .lg-foto{box-shadow:inset 0 0 70px 12px #030304}}
 </style>
 <script>
 (function () {
@@ -235,7 +240,7 @@ html.calma.lg-sale #lg-carga{opacity:0;transition:opacity .25s ease}
      sesión) el corte espera a que la entrada termine (`MIN`, ~1,9 s: Dlx, 18/10, «la veo completa pero pasa bien
      rápido», después «1 segundo menos» y el 19/10 «medio segundo más»), con la barra llenándose de a poco y un momento llena; al recargar en la misma visita, sin espera. Con
      «reducir movimiento», nada de esto: se apaga con un fundido. Sin este script, se apaga como antes. -->
-<div id="lg-carga" aria-hidden="true"><i class="lg-capa v"></i><i class="lg-capa m"></i><i class="lg-capa n"></i><div class="lg-c"><span class="lg-sello"><span class="lg-sombra"></span><span class="lg-onda"></span><img src="/ul.png" alt="" width="96" height="96"></span><b class="lg-tit"><i style="--i:0">L</i><i style="--i:1">I</i><i style="--i:2">G</i><i style="--i:3">A</i><i class="lg-esp" style="--i:4"></i><i style="--i:5">G</i><i style="--i:6">L</i><i style="--i:7">O</i><i style="--i:8">B</i><i style="--i:9">A</i><i style="--i:10">L</i></b><small>DE FREESTYLE</small><span class="lg-seg"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></span><span class="lg-tip"><span>Cargando el ranking</span></span></div></div>
+<div id="lg-carga" aria-hidden="true"><i class="lg-capa v"></i><i class="lg-capa m"></i><i class="lg-capa n"><b class="lg-foto"></b></i><div class="lg-c"><span class="lg-sello"><span class="lg-sombra"></span><span class="lg-onda"></span><img src="/ul.png" alt="" width="96" height="96"></span><b class="lg-tit"><i style="--i:0">L</i><i style="--i:1">I</i><i style="--i:2">G</i><i style="--i:3">A</i><i class="lg-esp" style="--i:4"></i><i style="--i:5">G</i><i style="--i:6">L</i><i style="--i:7">O</i><i style="--i:8">B</i><i style="--i:9">A</i><i style="--i:10">L</i></b><small>DE FREESTYLE</small><span class="lg-seg"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></span><span class="lg-tip"><span>Cargando el ranking</span></span></div></div>
 <script>
 (function () {
   var h = document.documentElement, el = document.getElementById('lg-carga');

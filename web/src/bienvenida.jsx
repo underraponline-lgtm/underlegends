@@ -484,7 +484,10 @@ export default function Bienvenida({ liga, dc }) {
       <style>{ESTILO}</style>
       {paso === 1 ? (
         <Paso1 liga={liga} unirme={unirme} cerrar={cerrar} tit={tit} />
-      ) : (
+      ) : (<>
+        {/* 🎬 el paso 2 con el mismo video detrás (Dlx, 12/11/2026: «sí, sigue», a la idea de que la vuelta de Discord se
+            sienta parte de la misma entrada y no una pantalla negra). Es el mismo archivo: ya está en caché del paso 1 */}
+        <Fondo base={baseVideo(liga)} />
         <div className="bv-c bv-p2">
           <span className="bv-sello">{listo ? 'YA ESTÁS ADENTRO' : 'UN PASO MÁS'}</span>
           <h1 className="bv-t chico" id="bv-t" tabIndex={-1} ref={tit}><span>{listo ? 'BIENVENIDO A LA' : 'COMIENZA A SER PARTE DE LA'}</span><span>LIGA GLOBAL</span></h1>
@@ -493,7 +496,7 @@ export default function Bienvenida({ liga, dc }) {
           <button type="button" className={listo ? 'bv-si' : 'bv-luego'} onClick={() => cerrar(listo ? 'listo' : 'luego')}>
             {listo ? <>Empezar<Ico n="flecha" t={22} /></> : 'Seguir después'}</button>
         </div>
-      )}
+      </>)}
     </div>
   );
 }
