@@ -143,7 +143,7 @@ jobs:
                    comun/temporada.py comun/rangos.py comun/servidor_elegido.py \
                    herramientas/quien_puede_card.py herramientas/roles_de_rango.py herramientas/dra_hub.py herramientas/sombras.py \
                    herramientas/simular_score.py herramientas/unir_sellos.py herramientas/sin_dm.py \
-                   herramientas/sincronizar_puesto.py herramientas/uso.py herramientas/emojis_vs.py herramientas/que_pide_cada_carta.py; do
+                   herramientas/sincronizar_puesto.py herramientas/uso.py herramientas/emojis_vs.py herramientas/que_pide_cada_carta.py \n                   herramientas/banners_eventos.py; do
             echo "::group::$f"
             if ! python "$f" --auto; then
               echo "::error::$f falló su self-check"

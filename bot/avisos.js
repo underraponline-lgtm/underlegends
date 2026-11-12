@@ -1800,12 +1800,13 @@ export function mensajeRedCancelado(c, por) {
     : por === 'mensaje' ? 'El organizador avisó que se cancela.' : 'El servidor borró el anuncio: el evento no se hace.');
   return {
     allowed_mentions: { parse: [] },
-    embeds: [{
+    embeds: [Object.assign({
       title: ('❌ CANCELADO · ' + (c.t || 'evento')).slice(0, 256),
       description: lineas.join('\n').slice(0, 4000),
       color: 0xE41373,
-      footer: { text: 'Liga Global · se publica solo, al minuto de anunciarse', icon_url: HUB + '/aviso.png' },
-    }],
+      footer: { text: 'Liga Global de Freestyle · Under Legends', icon_url: HUB + '/aviso.png' },
+    // 🎨 con el ícono de su servidor si la tarjeta lo tenía (`mensajeRed()`), y sin la imagen: ya no hay evento que mostrar
+    }, c.vis && c.vis.ico ? { thumbnail: { url: c.vis.ico } } : {})],
     // el anuncio borrado ya no existe: sin «Ir al anuncio»
     components: [{
       type: 1,
@@ -2978,8 +2979,115 @@ const MUERTA = (e) => e === 404 || e === 410;
 // LA RE-PUBLICACION EN `eventos-hoy`
 // ═════════════════════════════════════════════════════════════════════
 
+// 🎨 LA TARJETA NUEVA (Dlx, 11/11/2026, a la maqueta: «Toda, y que bueno cada sv tenga un banner o un thumbnail generado
+// por nosotros si su evento no tiene flyer»). Medido ese día sobre los últimos 100 de `eventos-hoy`: todas del mismo verde,
+// 47 sin hora, «Empieza hace 19 horas» para siempre en las que sí, los datos tal cual los escribió cada organizador
+// («🏅 Un beso mio», «cupos: INFINITOS»), un pie que hablaba del bot y «Inscribite» en voseo
+//: el verde de antes, para un servidor sin color
+const RED_COLOR = 0x29B298;
+//: las fases de una tarjeta, en orden: sólo se avanza (`redFases()`)
+export const FASES_RED = ['', 'empezo', 'vivo', 'fin'];
+//: hasta cuántas horas después de publicada se sigue editando
+export const RED_FASES_H = 36;
+//: cuántas ediciones por vuelta del vigía, como mucho
+export const RED_FASES_TOPE = 4;
+//: el afiche más grande que se copia a R2
+export const AFICHE_MAX = 8 * 1024 * 1024;
+
+/** Un dato del anuncio sin el maquillaje de Discord: emojis propios, `**`, `#`, espacios de más. Pura. */
+export function limpioRed(s) {
+  return String(s || '').replace(/<a?:\w+:\d+>/g, ' ').replace(/[*_~`|#>]+/g, ' ').replace(/\s+/g, ' ').trim();
+}
+
+/** «HONOR Y UN RECONOCIMIENTO» → «Honor y un reconocimiento»: lo escrito todo en mayúsculas pasa a oración. Pura. */
+export function fraseRed(s) {
+  const t = limpioRed(s);
+  const letras = t.replace(/[^A-Za-zÁÉÍÓÚÜÑáéíóúüñ]/g, '');
+  const u = letras.length >= 3 && letras === letras.toUpperCase() ? t.toLowerCase() : t;
+  return u.charAt(0).toUpperCase() + u.slice(1);
+}
+
+/** Corta en la última palabra entera antes de `n`, con «…», y sin dejar un paréntesis o una coma colgando. Pura. */
+export function cortarRed(s, n) {
+  const t = String(s || '');
+  if (t.length <= n) return t;
+  const c = t.slice(0, n);
+  const i = c.lastIndexOf(' ');
+  return (i > n * 0.5 ? c.slice(0, i) : c).replace(/[\s,.;:(\-–]+$/, '') + '…';
+}
+
+/** La modalidad: «1 VS 1», «1V1» y «1vs1» son «1 vs 1»; lo demás, como oración. Pura. */
+export function modalidadRed(s) {
+  const t = limpioRed(s);
+  if (!t) return '';
+  const m = /^(\d)\s*(?:v|vs|x)\.?\s*(\d)$/i.exec(t);
+  return m ? m[1] + ' vs ' + m[2] : cortarRed(fraseRed(t), 32);
+}
+
+/** Los cupos: «8» → «8 cupos», «(8/12/16)» → «8/12/16 cupos», «INFINITOS» → «cupos libres». Pura. */
+export function cuposRed(s) {
+  const t = limpioRed(s).replace(/^\((.*)\)$/, '$1').trim();
+  if (!t) return '';
+  if (/^[\d\s/\-–]+$/.test(t)) return t.replace(/\s+/g, '') + ' cupos';
+  if (/^(infinit|indefinid|ilimitad|sin l[ií]mite|libre)/i.test(t)) return 'cupos libres';
+  return 'cupos: ' + cortarRed(fraseRed(t).toLowerCase(), 24);
+}
+
+/** El premio, como oración y corto. Pura. */
+export function premioRed(s) {
+  const t = limpioRed(s);
+  return t ? 'Premio: ' + cortarRed(fraseRed(t).toLowerCase(), 48) : '';
+}
+
 /**
- * El mensaje que el bot deja en `eventos-hoy` por cada anuncio nuevo.
+ * 🎨 Cómo se ve la tarjeta de ese servidor: `{col, ico, ban, mult, dorado}`. Sale de `meta.eh` (`_eventos_hoy()` de
+ * bot/subir_datos.py: el color de `datos/colores_sv_marca.json`, el ícono de `datos/iconos_sv.json`, el banner de
+ * `bot/paginas/banners/` y la semana de `datos/multiplicadores.json`), así ningún color vive en el Worker. Pura.
+ */
+export function visualRed(sv, meta, ahora) {
+  const eh = (meta && meta.eh) || {};
+  const hex = String((eh.col || {})[sv] || '').replace('#', '');
+  const ic = String((eh.ico || {})[sv] || '');
+  const ban = String((eh.ban || {})[sv] || '');
+  const sem = eh.sem || {};
+  const vale = !!sem.hasta && ahora < Date.parse(sem.hasta) && !(ahora < Date.parse(sem.desde || 0));
+  const mult = vale ? Number((sem.mult || {})[sv]) || 0 : 0;
+  const d = sem.dorado || null;
+  return {
+    col: /^[0-9a-f]{6}$/i.test(hex) ? parseInt(hex, 16) : RED_COLOR,
+    ico: /^\d{5,25}\/(a_)?[0-9a-f]{16,40}$/.test(ic) ? 'https://cdn.discordapp.com/icons/' + ic + '.png?size=128' : '',
+    ban: /^https:\/\/underlegends\.pages\.dev\//.test(ban) ? ban : '',
+    mult: mult > 1 ? mult : 0,
+    dorado: !!(vale && d && d.sv === sv && !(ahora < Date.parse(d.desde || 0))),
+  };
+}
+
+/**
+ * En qué va una llave, para la tarjeta de su evento: `{fase: 'vivo', n}` con batallas jugadas, `{fase: 'fin', camp}`
+ * con la final ganada, o `null` si todavía no se jugó nada. El campeón, como lo escribió el organizador. Pura.
+ */
+export function faseDeLlave(L) {
+  const rondas = (L && L.rondas) || [];
+  if (!rondas.some((R) => batallasDe(R).length)) return null;
+  const F = rondas.find((R) => /^final$/i.test(String(R.r || '')));
+  const fb = F ? batallasDe(F)[0] : null;
+  if (fb && fb[1]) return { fase: 'fin', camp: cortarRed(limpioRed(fb[1]), 80) };
+  return { fase: 'vivo', n: (L && L.participantes) || 0 };
+}
+
+/** La primera imagen del anuncio (un adjunto o la imagen de un embed), para el afiche de la tarjeta; o `''`. Pura. */
+export function imagenDe(m) {
+  const a = ((m && m.attachments) || []).find((x) => /^image\/(png|jpeg|webp|gif)$/.test(String((x && x.content_type) || ''))
+    && x.width && (x.size || 0) <= AFICHE_MAX);
+  if (a && a.url) return String(a.url);
+  const e = ((m && m.embeds) || []).find((x) => x && x.image && x.image.url);
+  return e ? String(e.image.url) : '';
+}
+
+/**
+ * El mensaje que el bot deja en `eventos-hoy` por cada anuncio nuevo, y cómo queda en cada fase (`f`: `{fase, n, camp}`,
+ * ver `redFases()`). `c` es el cuerpo del aviso con lo que le suma `publicar()`: `ins` (adónde lleva «Inscríbete ya») y
+ * `vis` (`visualRed()`, más `img`, el afiche copiado a R2).
  *
  * ⚠️ SOLO EMBED, SIN TEXTO. El lector de anuncios —el de acá y el de
  * Python— lee `content`; un mensaje sin texto no se puede confundir con un
@@ -2988,32 +3096,51 @@ const MUERTA = (e) => e === 404 || e === 410;
  * zona —Dlx en hora del este, el resto de la Liga en la suya—.
  * ⚠️ SIN MENCIONES (`allowed_mentions: []`): esto no hace ping a nadie; el
  * ping de rol de cada servidor sigue siendo el suyo.
+ * 🔁 LA MISMA TARJETA SE EDITA, Y EDITAR NO SUENA: «en 3 horas» antes, «Empezó» al pasar la hora, «En vivo» con la llave
+ * en juego y el campeón con la final jugada. Antes decía «Empieza hace 19 horas» para siempre.
+ * 🖼️ LA IMAGEN: el afiche del anuncio si tenía; si no, el banner de su servidor (`herramientas/banners_eventos.py`).
  */
-export function mensajeRed(c) {
+export function mensajeRed(c, f = {}) {
+  const fase = (f && f.fase) || '';
+  const v = (c && c.vis) || {};
   const seg = c.ini ? Math.floor(c.ini / 1000) : 0;
-  const lineas = [`**${c.svn || c.sv}** · ${c.sv}`];
-  if (seg) lineas.push(`⏰ Empieza <t:${seg}:R> · <t:${seg}:t>`);
-  const extra = [c.mod && `🎤 ${c.mod}`, c.cup && `🎟️ cupos: ${c.cup}`,
-    c.pre && `🏅 ${c.pre}`].filter(Boolean);
-  if (extra.length) lineas.push(extra.join(' · '));
-  // 🔑 «INSCRIBITE YA», NO EL LINK AL MENSAJE (Dlx, 03/10/2026: «que sea el link de invitación al canal… el de
+  const lineas = [];
+  if (fase === 'fin' && f.camp) lineas.push('🏆 **Campeón: ' + escMd(f.camp) + '**');
+  else if (fase === 'vivo' || fase === 'fin') lineas.push('🔴 **En vivo ahora**' + (f.n ? ' · ' + f.n + ' en la llave' : ''));
+  else if (fase === 'empezo' && seg) lineas.push(`▶️ Empezó <t:${seg}:f>`);
+  else if (seg) lineas.push(`⏰ <t:${seg}:R> · <t:${seg}:f>`);
+  const datos = [modalidadRed(c.mod) && '🎤 ' + modalidadRed(c.mod), cuposRed(c.cup) && '🎟️ ' + cuposRed(c.cup),
+    premioRed(c.pre) && '🏅 ' + premioRed(c.pre)].filter(Boolean);
+  if (datos.length) lineas.push(datos.join(' · '));
+  // ⚡ lo de la semana, mientras todavía se puede jugar
+  if (fase !== 'vivo' && fase !== 'fin') {
+    if (v.dorado) lineas.push(`🌟 El próximo evento de ${c.sv} es el **evento dorado**: vale ×3`);
+    else if (v.mult) lineas.push(`⚡ Esta semana, ${c.sv} vale **×${String(v.mult).replace('.', ',')}**`);
+  }
+  // 🔑 «INSCRÍBETE YA», NO EL LINK AL MENSAJE (Dlx, 03/10/2026: «que sea el link de invitación al canal… el de
   // inscripciones mejor… porque la gente no puede entrar de esa forma»): un link a un mensaje sólo abre si ya estás en
   // ese servidor, y quien mira `eventos-hoy` casi nunca lo está. `c.ins` lo pone `publicar()` (ver `invitacionPara()`);
-  // sin invitación al canal de inscripciones, la del servidor; sin ninguna, el anuncio, como antes
+  // sin invitación al canal de inscripciones, la del servidor; sin ninguna, el anuncio, como antes. Con la llave en
+  // juego ya no hay a qué anotarse: lleva a la llave en la página
   const ins = c.ins && c.ins.url ? c.ins : null;
-  const boton = ins && ins.tipo === 'inscribir' ? { type: 2, style: 5, label: 'Inscribite ya', emoji: { name: '✍️' }, url: ins.url }
-    : ins ? { type: 2, style: 5, label: 'Entrar al servidor', url: ins.url }
-      : { type: 2, style: 5, label: 'Ir al anuncio', url: c.url };
+  const boton = fase === 'vivo' ? { type: 2, style: 5, label: 'Síguela en vivo', emoji: { name: '🔴' }, url: WEB_EVENTOS }
+    : fase === 'fin' ? { type: 2, style: 5, label: 'Ver la llave', emoji: { name: '🏆' }, url: WEB_EVENTOS }
+      : ins && ins.tipo === 'inscribir' ? { type: 2, style: 5, label: 'Inscríbete ya', emoji: { name: '✍️' }, url: ins.url }
+        : ins ? { type: 2, style: 5, label: 'Entrar al servidor', url: ins.url }
+          : { type: 2, style: 5, label: 'Ir al anuncio', url: c.url };
+  const e = {
+    title: String(c.t || 'Nuevo evento').slice(0, 256),
+    url: boton.url,
+    color: v.col || RED_COLOR,
+    footer: { text: 'Liga Global de Freestyle · Under Legends', icon_url: HUB + '/aviso.png' },
+  };
+  if (c.svn || c.sv) e.author = { name: String(c.svn && c.svn !== c.sv ? c.svn + ' · ' + c.sv : c.svn || c.sv).slice(0, 256) };
+  if (lineas.length) e.description = lineas.join('\n').slice(0, 4000);
+  if (v.ico) e.thumbnail = { url: v.ico };
+  if (v.img || v.ban) e.image = { url: v.img || v.ban };
   return {
     allowed_mentions: { parse: [] },
-    embeds: [{
-      title: ('🏆 ' + (c.t || 'Nuevo evento')).slice(0, 256),
-      url: boton.url,
-      description: lineas.join('\n').slice(0, 4000),
-      color: 0x29B298,
-      footer: { text: 'Liga Global · se publica solo, al minuto de anunciarse',
-        icon_url: HUB + '/aviso.png' },
-    }],
+    embeds: [e],
     components: [{
       type: 1,
       components: [
@@ -6575,6 +6702,9 @@ export class Avisos {
       // que alguien va a creer que sirve. (La columna `cursor_dm` de `avisos`
       // queda donde ya existía: no la lee nada.)
       this.sql.exec('DROP TABLE IF EXISTS dms');
+      // 🎨 EN QUÉ VA CADA TARJETA DE `eventos-hoy` (11/11/2026): '' (antes), empezo, vivo, fin, o cx (cancelada) y movido
+      // (el anuncio volvió a salir y la tarjeta la tomó el nuevo). Ver `redFases()` y `revivible()`
+      try { this.sql.exec("ALTER TABLE posts ADD COLUMN fase TEXT NOT NULL DEFAULT ''"); } catch (e) { /* ya estaba */ }
       // 🔑 LOS AVISOS DE CADA UNO (25/09/2026): de quién es cada dispositivo
       // —si lo vinculó entrando con Discord— y qué aviso personal ya salió.
       // `ADD COLUMN` falla si ya está: es la migración de una sola vez.
@@ -8265,6 +8395,9 @@ export class Avisos {
     for (const b of bloques) {
       try { const L = LV.aLlave(b); if (L) llaves.set(b.id, L); } catch (e) { /* una llave que no se lee no frena */ }
     }
+    // 🔁 la tarjeta de `eventos-hoy` de cada evento que se está jugando: «En vivo» y, con la final, el campeón. Con las
+    // llaves ya armadas, y también en el horario de silencio (editar no suena). Nunca frena al chat
+    try { await this.redFases(ahora, llaves, LV); } catch (e) { this.guardar('red_fases', { t: ahora, error: String(e).slice(0, 160) }); }
     // 🔑 LA MISMA ASIGNACIÓN QUE LA PÁGINA Y EL CICLO (`LlaveVivo.asignar()`), sobre los anuncios de 36 horas, y EL
     // NOMBRE QUE YA SE LE DIO se queda (revisión del 05/10/2026): un evento anunciado la noche anterior salía de la
     // ventana a mitad de la llave, y el mensaje de las rondas se editaba a «… VOL 22», el título copiado
@@ -9817,20 +9950,24 @@ export class Avisos {
       });
       // 🔑 Y LA COPIA DE `eventos-hoy` (Dlx, 01/10/2026: «A», que el bot la edite): si todavía no salió, no sale; si
       // salió, dice «❌ CANCELADO». Una edición no le suena a nadie: Discord no notifica un PATCH
-      const post = this.sql.exec('SELECT hecho, msg FROM posts WHERE id = ?', f.id).toArray()[0];
+      const post = this.sql.exec('SELECT hecho, msg, cuerpo FROM posts WHERE id = ?', f.id).toArray()[0];
       if (post && post.hecho === 0) {
         this.sql.exec('UPDATE posts SET hecho = 2 WHERE id = ?', f.id);
       } else if (post && post.hecho === 1 && /^\d+$/.test(post.msg || '')) {
+        // 🎨 el cuerpo de la tarjeta (con su ícono, `vis`), no sólo el del aviso
+        let pc = {};
+        try { pc = JSON.parse(post.cuerpo) || {}; } catch (e) { pc = {}; }
         let est = 0;
         try {
           const r = await fetch(`${DC}/channels/${CANAL_RED}/messages/${post.msg}`, {
             method: 'PATCH',
             headers: { Authorization: 'Bot ' + this.env.DISCORD_TOKEN, 'User-Agent': UA, 'Content-Type': 'application/json' },
-            body: JSON.stringify(mensajeRedCancelado(c, por)),
+            body: JSON.stringify(mensajeRedCancelado(Object.assign({}, c, pc.vis ? { vis: pc.vis } : {}), por)),
           });
           est = r.status;
         } catch (e) { est = 0; }
-        this.sql.exec('UPDATE posts SET error = ? WHERE id = ?', 'cancelado: editado ' + est, f.id);
+        // `cx`: ya no avanza de fase (`redFases()`), y si el anuncio vuelve a salir igual, se revive (`revivible()`)
+        this.sql.exec("UPDATE posts SET error = ?, fase = 'cx' WHERE id = ?", 'cancelado: editado ' + est, f.id);
       }
     }
     if (pedidos || hubo) this.guardar('cancelados', { t: ahora, pedidos, hubo });
@@ -9947,8 +10084,10 @@ export class Avisos {
     } catch (e) { /* sigue */ }
     // y a la cola de `eventos-hoy`, salvo que el anuncio haya salido de ahí
     if (c.id !== CANAL_RED) {
+      // 🖼️ con su afiche, si trae: lo copia `publicar()` a R2. Va sólo acá y no en el aviso, que viaja a los teléfonos
+      const img = imagenDe(m);
       this.sql.exec('INSERT OR IGNORE INTO posts (id, cuerpo, creado) VALUES (?, ?, ?)',
-        m.id, JSON.stringify(cuerpo), ahora);
+        m.id, JSON.stringify(img ? Object.assign({}, cuerpo, { img }) : cuerpo), ahora);
     }
     // 🔑 Y SI FALTA MAS DE UNA HORA, UN RECORDATORIO. Snake Rap anuncia
     // con horas —«INICIO DEL TORNEO: <t:…>»— y el aviso de las 12 del
@@ -10122,15 +10261,27 @@ export class Avisos {
         this.sql.exec('UPDATE posts SET hecho = 2 WHERE id = ?', p.id);
         continue;
       }
-      // «Inscribite ya»: ver `invitacionPara()`. La meta, una vez por vuelta y sólo si hay algo que publicar
-      if (meta === null) {
-        try { meta = JSON.parse((await this.env.KV.get('meta')) || '{}'); } catch (e) { meta = {}; }
+      // «Inscríbete ya» (`invitacionPara()`) y cómo se ve (`visualRed()`): la meta, una vez por vuelta y sólo si hay algo
+      // que publicar. Se guarda en el cuerpo: así un reintento no vuelve a copiar el afiche, y las ediciones de
+      // `redFases()` no tienen que leer KV
+      if (!c.vis) {
+        if (meta === null) {
+          try { meta = JSON.parse((await this.env.KV.get('meta')) || '{}'); } catch (e) { meta = {}; }
+        }
+        c.ins = invitacionPara(c, this.leer('canales'), meta);
+        c.vis = visualRed(c.sv, meta, ahora);
+        if (c.img) c.vis.img = await this.copiarAfiche(p.id, c.img);
+        delete c.img;
+        this.sql.exec('UPDATE posts SET cuerpo = ? WHERE id = ?', JSON.stringify(c), p.id);
       }
-      c.ins = invitacionPara(c, this.leer('canales'), meta);
+      // 🔁 EL MISMO ANUNCIO, BORRADO Y VUELTO A PUBLICAR: se revive su tarjeta en vez de dejarla tachada y sacar otra.
+      // Medido el 11/11/2026: de los 19 «❌ CANCELADO» de los últimos 100, 8 eran eso (FFA borra y vuelve a publicar
+      // «qcyo rapeen»), y el canal quedaba con la tarjeta tachada arriba de la buena
+      const viejo = this.revivible(c, p.id, ahora);
       let estado = 0, msg = '';
       try {
-        const r = await fetch(`${DC}/channels/${CANAL_RED}/messages`, {
-          method: 'POST',
+        const r = await fetch(`${DC}/channels/${CANAL_RED}/messages` + (viejo ? '/' + viejo.msg : ''), {
+          method: viejo ? 'PATCH' : 'POST',
           headers: {
             Authorization: 'Bot ' + this.env.DISCORD_TOKEN, 'User-Agent': UA,
             'Content-Type': 'application/json',
@@ -10144,12 +10295,120 @@ export class Avisos {
         msg = String(e).slice(0, 160);
       }
       if (estado === 200) {
-        this.sql.exec('UPDATE posts SET hecho = 1, msg = ? WHERE id = ?', msg, p.id);
+        this.state.storage.transactionSync(() => {
+          this.sql.exec('UPDATE posts SET hecho = 1, msg = ? WHERE id = ?', msg, p.id);
+          if (viejo) this.sql.exec("UPDATE posts SET fase = 'movido', error = ? WHERE id = ?", 'revivido por ' + p.id, viejo.id);
+        });
+      } else if (viejo && estado === 404) {
+        // la tarjeta vieja ya no está (la borró alguien): la próxima vuelta sale una nueva
+        this.sql.exec("UPDATE posts SET fase = 'movido', error = 'no estaba' WHERE id = ?", viejo.id);
       } else {
         this.sql.exec('UPDATE posts SET intentos = intentos + 1, error = ? WHERE id = ?',
           `${estado} ${msg}`.slice(0, 200), p.id);
       }
     }
+    // 🔁 y las que ya salieron, a su fase de hoy por la hora (lo de la llave lo hace `chatVivo()`)
+    try { await this.redFases(ahora); } catch (e) { this.guardar('red_fases', { t: ahora, error: String(e).slice(0, 160) }); }
+  }
+
+  /**
+   * 🔁 La tarjeta de `eventos-hoy` que se canceló porque el servidor BORRÓ el anuncio, del mismo servidor y con el mismo
+   * nombre, en las últimas 24 horas: `{id, msg}` o `null`. Sólo `borrado`: si el organizador avisó que se cancela, o el
+   * servidor lo marcó cancelado, eso sí es un evento distinto la próxima vez.
+   */
+  revivible(c, id, ahora) {
+    const norm = (s) => String(s || '').normalize('NFKD').toLowerCase().replace(/[^a-z0-9]+/g, '');
+    const n = norm(c && c.t);
+    if (!n) return null;
+    const rs = this.sql.exec("SELECT p.id, p.msg, p.cuerpo FROM posts p JOIN cancelados x ON x.id = p.id WHERE x.por = 'borrado' " +
+      "AND x.sv = ? AND x.t > ? AND p.fase = 'cx' AND p.hecho = 1 AND p.msg != '' AND p.id != ? ORDER BY x.t DESC LIMIT 5",
+    String((c && c.sv) || ''), ahora - 24 * HORA, String(id)).toArray();
+    for (const r of rs) {
+      let v = {};
+      try { v = JSON.parse(r.cuerpo) || {}; } catch (e) { v = {}; }
+      if (/^\d+$/.test(r.msg) && norm(v.t) === n) return { id: r.id, msg: r.msg };
+    }
+    return null;
+  }
+
+  /**
+   * 🖼️ El afiche del anuncio, copiado a R2 (`afiches/<id>.<ext>`): la URL pública, o `''`. Un adjunto de Discord vence
+   * (su URL lleva firma), así que la tarjeta no puede apuntar ahí: a los días se vería rota. Sólo imágenes de Discord y
+   * de hasta `AFICHE_MAX`.
+   */
+  async copiarAfiche(id, url) {
+    if (!/^https:\/\/(cdn\.discordapp\.com|media\.discordapp\.net)\//.test(String(url || '')) || !this.env.CARTAS) return '';
+    try {
+      const r = await fetch(url);
+      if (!r.ok) return '';
+      const tipo = String(r.headers.get('content-type') || '').split(';')[0].trim();
+      if (!/^image\/(png|jpeg|webp|gif)$/.test(tipo)) return '';
+      const b = await r.arrayBuffer();
+      if (!b.byteLength || b.byteLength > AFICHE_MAX) return '';
+      const clave = 'afiches/' + String(id).replace(/\D/g, '') + '.' + tipo.split('/')[1].replace('jpeg', 'jpg');
+      await this.env.CARTAS.put(clave, b, { httpMetadata: { contentType: tipo, cacheControl: 'public, max-age=31536000' } });
+      return R2_PUB + '/' + clave;
+    } catch (e) {
+      return '';
+    }
+  }
+
+  /**
+   * 🔁 LA TARJETA DE `eventos-hoy` VA CAMBIANDO CON EL EVENTO (Dlx, 11/11/2026): pasada la hora, «Empezó»; con su llave en
+   * juego, «En vivo»; con la final jugada, el campeón. Sólo hacia adelante (`FASES_RED`), sólo las tarjetas nuevas (las
+   * que tienen `vis`) y de las últimas `RED_FASES_H` horas, y hasta `RED_FASES_TOPE` ediciones por vuelta. Sin `llaves`
+   * (desde `publicar()`) mira sólo la hora; con `llaves` (desde `chatVivo()`, que ya las armó) mira cada llave con la
+   * misma asignación que la página (`LlaveVivo.asignar()`). Una edición no le suena a nadie.
+   */
+  async redFases(ahora, llaves = null, LV = null) {
+    const abiertas = this.sql.exec("SELECT id, cuerpo, msg, fase FROM posts WHERE hecho = 1 AND msg != '' AND creado > ? " +
+      "AND fase IN ('', 'empezo', 'vivo')", ahora - RED_FASES_H * HORA).toArray();
+    if (!abiertas.length) return 0;
+    const por = new Map(abiertas.map((r) => [r.id, r]));
+    const nuevas = new Map();
+    if (llaves && llaves.size && LV) {
+      const anuncios = this.anunciosVistos(ahora, 36, 40).map((a) => ({ nombre: a.n, sv: a.sv, cuando: a.ini, link: a.url, mod: a.mod }));
+      let asig = {};
+      try { asig = LV.asignar(anuncios, [...llaves.values()]).deLlave || {}; } catch (e) { asig = {}; }
+      for (const L of llaves.values()) {
+        const a = asig[L.id];
+        const id = a && a.link ? (/\/(\d+)$/.exec(String(a.link)) || [])[1] : '';
+        if (!id || !por.has(id)) continue;
+        const f = faseDeLlave(L);
+        if (f) nuevas.set(id, f);
+      }
+    } else {
+      for (const r of abiertas) {
+        if (r.fase) continue;
+        let c = {};
+        try { c = JSON.parse(r.cuerpo) || {}; } catch (e) { c = {}; }
+        if (c.ini && ahora >= c.ini) nuevas.set(r.id, { fase: 'empezo' });
+      }
+    }
+    let n = 0;
+    for (const [id, f] of nuevas) {
+      const r = por.get(id);
+      if (FASES_RED.indexOf(f.fase) <= FASES_RED.indexOf(r.fase)) continue;
+      let c = {};
+      try { c = JSON.parse(r.cuerpo) || {}; } catch (e) { c = {}; }
+      if (!c.vis || !/^\d+$/.test(r.msg)) continue;
+      if (n >= RED_FASES_TOPE) break;
+      n++;
+      let est = 0;
+      try {
+        const rr = await fetch(`${DC}/channels/${CANAL_RED}/messages/${r.msg}`, {
+          method: 'PATCH',
+          headers: { Authorization: 'Bot ' + this.env.DISCORD_TOKEN, 'User-Agent': UA, 'Content-Type': 'application/json' },
+          body: JSON.stringify(mensajeRed(c, f)),
+        });
+        est = rr.status;
+      } catch (e) { est = 0; }
+      if (est === 200) this.sql.exec('UPDATE posts SET fase = ? WHERE id = ?', f.fase, id);
+      // 404: la tarjeta ya no está; no se insiste
+      else if (est === 404) this.sql.exec("UPDATE posts SET fase = 'fin', error = 'fase: no estaba' WHERE id = ?", id);
+      else this.sql.exec('UPDATE posts SET error = ? WHERE id = ?', ('fase ' + f.fase + ': ' + est).slice(0, 200), id);
+    }
+    return n;
   }
 
   async despertar(ahora) {

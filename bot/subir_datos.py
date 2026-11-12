@@ -840,6 +840,10 @@ def armar():
         # 📈 los servidores que tienen ranking de ascenso con sus reglas cargadas (`datos/ascenso_reglas.json`): lo lee
         # `/settings` para decir si ahí se puede prender (17/10/2026). `{sv: [a qué liga se asciende, su id en la página]}`
         'asc': _ascensos(),
+        # 🎨 LA TARJETA DE `eventos-hoy` (Dlx, 11/11/2026: «Toda, y que bueno cada sv tenga un banner…»): el color, el
+        # ícono y el banner de cada servidor, y la semana (multiplicadores y dorado). Lo lee `visualRed()` de
+        # bot/avisos.js, así ningún color vive en el Worker. ~1,5 KB, y cambia con el sorteo de los lunes
+        'eh': _eventos_hoy(),
         # 🔴 QUIEN YA ESTA CARGADO EN EL PADRON Y AUN ASI NO TIENE CARTA.
         # Son los que tienen Discord ID en el padron y no entran a KV —hoy
         # 184: 156 que no se verificaron en DRA y 28 sin bandera—. El
@@ -1055,6 +1059,70 @@ def _llave(s):
     import unicodedata
     s = unicodedata.normalize('NFKD', str(s or ''))
     return ''.join(c for c in s if c.isalnum()).lower()
+
+
+#: 🖼️ los banners de cada servidor para `eventos-hoy` (`herramientas/banners_eventos.py`); Pages los sirve en /banners/
+BANNERS = os.path.join(BASE, 'bot', 'paginas', 'banners')
+HUB = 'https://underlegends.pages.dev'
+
+
+def _eventos_hoy(ahora=None):
+    """🎨 `{col, ico, ban, sem}` de los servidores de la Liga, para la tarjeta de `eventos-hoy` (`visualRed()` en
+    bot/avisos.js). `col` sale de `datos/colores_sv_marca.json`, `ico` de `datos/iconos_sv.json` (lo escribe
+    `subir_web.py`), `ban` de los archivos de `bot/paginas/banners/` —con `?v=` del contenido, para que Discord no se quede
+    con uno viejo— y `sem` de la semana en curso de `datos/multiplicadores.json`: los que valen más de ×1, y el dorado
+    mientras no se jugó (`n`)."""
+    import datetime as _dt
+    import hashlib
+
+    def _j(n):
+        try:
+            with io.open(os.path.join(BASE, 'datos', n), encoding='utf-8') as f:
+                return json.load(f) or {}
+        except (OSError, ValueError):
+            return {}
+
+    liga = sorted(k for k, v in ((_json_servidores().get('servidores') or {}).items()) if v.get('confirmado'))
+    col = _j('colores_sv_marca.json').get('usar') or {}
+    ico = _j('iconos_sv.json').get('iconos') or {}
+
+    def _visible(h):
+        """🎨 la barra de color va sobre el gris oscuro de Discord: un color casi negro (FFA, #26045B, luz 0,01) no se ve.
+        Se aclara hacia el blanco, como hace `kit.camiseta()` con los acentos oscuros; los demás quedan como son."""
+        try:
+            r, g, b = (int(h.lstrip('#')[i:i + 2], 16) for i in (0, 2, 4))
+        except ValueError:
+            return ''
+        lin = [((x / 255) / 12.92 if x / 255 <= 0.04045 else (((x / 255) + 0.055) / 1.055) ** 2.4) for x in (r, g, b)]
+        if 0.2126 * lin[0] + 0.7152 * lin[1] + 0.0722 * lin[2] >= 0.05:
+            return '#%02X%02X%02X' % (r, g, b)
+        return '#%02X%02X%02X' % tuple(round(x + (255 - x) * 0.45) for x in (r, g, b))
+
+    out = {'col': {s: _visible(col[s]) for s in liga if col.get(s) and _visible(col[s])},
+           'ico': {s: ico[s] for s in liga if ico.get(s)}, 'ban': {}}
+    for s in liga:
+        p = os.path.join(BANNERS, s.lower() + '.jpg')
+        if os.path.exists(p):
+            with open(p, 'rb') as f:
+                out['ban'][s] = '%s/banners/%s.jpg?v=%s' % (HUB, s.lower(), hashlib.sha1(f.read()).hexdigest()[:8])
+    ahora = ahora or _dt.datetime.now(_dt.timezone.utc)
+
+    def _t(x):
+        try:
+            return _dt.datetime.fromisoformat(str(x).replace('Z', '+00:00'))
+        except ValueError:
+            return None
+    for sem in reversed(_j('multiplicadores.json').get('semanas') or []):
+        ini, fin = _t(sem.get('inicio')), _t(sem.get('fin'))
+        if not ini or not fin or not ini <= ahora < fin:
+            continue
+        out['sem'] = {'desde': sem['inicio'], 'hasta': sem['fin'],
+                      'mult': {k: v for k, v in (sem.get('sv') or {}).items() if isinstance(v, (int, float)) and v > 1}}
+        d = sem.get('dorado') or {}
+        if d.get('sv') and not d.get('n'):
+            out['sem']['dorado'] = {'sv': d['sv'], 'desde': d.get('desde') or sem['inicio']}
+        break
+    return out
 
 
 def _ascensos():
@@ -1643,6 +1711,17 @@ def _self_check():
     cl = ['p:ana', 'dn:111', 'dx:111', 'd:222', 'dn:333', 'p:viejo']
     ok(protegidas(cl, ['d:111', 'p:bea']) == {'dn:111', 'dx:111'} and protegidas(cl, []) == set(),
        'se verificó y su `d:` espera: su `dn:` no se borra todavía; lo demás de la limpieza, sí')
+    # 🎨 la tarjeta de `eventos-hoy`: el color de cada servidor se ve sobre el gris de Discord, y la semana es la de hoy
+    import datetime as _dt
+    eh = _eventos_hoy(_dt.datetime(2026, 11, 12, 12, tzinfo=_dt.timezone.utc))
+    ok(set(eh) >= {'col', 'ico', 'ban'} and all(len(v) == 7 and v.startswith('#') for v in eh['col'].values())
+       and eh['col'].get('FFA', '#8875A5') != '#26045B',
+       'eventos-hoy: un color por servidor, y el casi negro de FFA aclarado para que la barra se vea')
+    ok(all(u.startswith(HUB + '/banners/') and '?v=' in u for u in eh['ban'].values()),
+       'eventos-hoy: los banners son de la página y llevan la huella del archivo')
+    sem = eh.get('sem')
+    ok(sem is None or (sem['desde'] < sem['hasta'] and all(v > 1 for v in sem['mult'].values())),
+       'eventos-hoy: la semana en curso, sólo los multiplicadores de más de ×1')
     print('\n  %s\n' % ('todo ok' if not mal else '🔴 %d problema(s)' % mal))
     return 1 if mal else 0
 

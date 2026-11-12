@@ -599,11 +599,65 @@ const ok = (cond, que, det) => {
   const mi = A.mensajeRed({ t: 'X', sv: 'URBF', url: 'https://discord.com/channels/9/300/7',
     ins: { url: 'https://discord.gg/BBB', tipo: 'inscribir' } });
   const b0 = mi.components[0].components[0];
-  ok(b0.label === 'Inscribite ya' && b0.url === 'https://discord.gg/BBB' && mi.embeds[0].url === b0.url,
-    '«Inscribite ya» en el botón y en el título, no el link al mensaje');
+  ok(b0.label === 'Inscríbete ya' && b0.url === 'https://discord.gg/BBB' && mi.embeds[0].url === b0.url,
+    '«Inscríbete ya» (en tú) en el botón y en el título, no el link al mensaje');
   const ms = A.mensajeRed({ t: 'X', sv: 'SR', url: 'https://discord.com/channels/9/1/7', ins: sr });
   ok(ms.components[0].components[0].label === 'Entrar al servidor', 'con la del servidor, «Entrar al servidor»');
   ok(m.components[0].components[0].label === 'Ir al anuncio', 'y sin ninguna, el anuncio, como antes');
+
+  // 🎨 LA TARJETA NUEVA (Dlx, 11/11/2026: «Toda, y que bueno cada sv tenga un banner…»)
+  ok(A.modalidadRed('1 VS 1') === '1 vs 1' && A.modalidadRed('1V1') === '1 vs 1' && A.modalidadRed('1vs1') === '1 vs 1'
+    && A.modalidadRed('2v2') === '2 vs 2' && A.modalidadRed('MULTIVERSE') === 'Multiverse' && A.modalidadRed('') === '',
+  'la modalidad, una sola forma: «1 vs 1», y lo demás como oración');
+  ok(A.cuposRed('8') === '8 cupos' && A.cuposRed('(8/12/16)') === '8/12/16 cupos' && A.cuposRed('0/8-16') === '0/8-16 cupos'
+    && A.cuposRed('INFINITOS') === 'cupos libres' && A.cuposRed('INDEFINIDOS') === 'cupos libres' && A.cuposRed('') === '',
+  'los cupos, legibles: «8 cupos», «cupos libres»');
+  const pr = A.premioRed('HONOR Y UN RECONOCIMIENTO EN EL APARTADO VITRINA (SI QUIERES');
+  ok(pr.startsWith('Premio: honor y un reconocimiento') && pr.endsWith('…') && !pr.includes('(') && pr.length <= 60,
+    'el premio en mayúsculas pasa a oración y se corta en una palabra entera, sin el paréntesis colgando');
+  ok(A.premioRed('<:FFA:1514509117459533954> **aura**') === 'Premio: aura', 'sin los emojis del servidor ni los asteriscos');
+  const ahora = Date.UTC(2026, 10, 12, 12);
+  const metaEh = { eh: { col: { DDF: '#00ADEC' }, ico: { DDF: '1469009547971526659/5804cd58babd2d5483cccd7377f5e602' },
+    ban: { DDF: 'https://underlegends.pages.dev/banners/ddf.jpg?v=1', XX: 'https://otro.com/x.jpg' },
+    sem: { desde: '2026-11-09T16:00:00Z', hasta: '2026-11-16T16:00:00Z', mult: { DDF: 3, ACAD: 2.25 },
+      dorado: { sv: 'SR', desde: '2026-11-10T05:00:00Z' } } } };
+  const vd = A.visualRed('DDF', metaEh, ahora);
+  ok(vd.col === 0x00ADEC && vd.ico.startsWith('https://cdn.discordapp.com/icons/1469009547971526659/') && vd.mult === 3
+    && vd.ban.endsWith('ddf.jpg?v=1') && !vd.dorado, 'el color, el ícono, el banner y el ×3 de DDF salen de meta');
+  ok(A.visualRed('SR', metaEh, ahora).dorado && A.visualRed('XX', metaEh, ahora).ban === ''
+    && A.visualRed('DDF', metaEh, Date.UTC(2026, 10, 17)).mult === 0 && A.visualRed('ZZ', {}, ahora).col === 0x29B298,
+  'el dorado de SR; un banner que no es de la página no entra; la semana vencida no multiplica; sin datos, el verde de antes');
+  const cn = { t: 'ZONA MORTAL', sv: 'DDF', svn: 'Dimensión del Freestyle', ini: Date.UTC(2026, 10, 12, 21), mod: '1 VS 1',
+    cup: '8', pre: 'PUNTOS', url: 'https://discord.com/channels/9/1/7', ins: { url: 'https://discord.gg/DDF', tipo: 'inscribir' },
+    vis: Object.assign({}, vd, { img: '' }) };
+  const t0 = A.mensajeRed(cn).embeds[0];
+  ok(t0.color === 0x00ADEC && t0.author.name === 'Dimensión del Freestyle · DDF' && t0.thumbnail.url === vd.ico
+    && t0.image.url === vd.ban && t0.title === 'ZONA MORTAL', 'con su color, su servidor arriba, su ícono y su banner');
+  ok(t0.description.includes('🎤 1 vs 1 · 🎟️ 8 cupos · 🏅 Premio: puntos') && t0.description.includes('×3')
+    && !t0.footer.text.includes('al minuto'), 'los datos limpios, el ×3 de la semana y un pie que no habla del bot');
+  ok(A.mensajeRed(Object.assign({}, cn, { vis: Object.assign({}, vd, { img: 'https://pub-x.r2.dev/afiches/7.png' }) }))
+    .embeds[0].image.url.endsWith('afiches/7.png'), 'con afiche, el afiche y no el banner');
+  const t1 = A.mensajeRed(cn, { fase: 'empezo' });
+  ok(t1.embeds[0].description.startsWith('▶️ Empezó <t:') && !t1.embeds[0].description.includes(':R>'),
+    'pasada la hora: «Empezó», y nunca más «Empieza hace 19 horas»');
+  const t2 = A.mensajeRed(cn, { fase: 'vivo', n: 16 });
+  ok(t2.embeds[0].description.startsWith('🔴 **En vivo ahora** · 16 en la llave') && !t2.embeds[0].description.includes('×3')
+    && t2.components[0].components[0].label === 'Síguela en vivo', 'en vivo: lo dice, lleva a la llave y ya no ofrece el ×3');
+  const t3 = A.mensajeRed(cn, { fase: 'fin', camp: 'TEITO' });
+  ok(t3.embeds[0].description.startsWith('🏆 **Campeón: TEITO**') && t3.components[0].components[0].label === 'Ver la llave',
+    'terminado: el campeón y «Ver la llave»');
+  ok(A.mensajeRed({ t: 'X', sv: 'FFA', url: 'https://discord.com/channels/9/1/7' }).embeds[0].description === undefined,
+    'sin hora ni datos no hay descripción vacía (Discord la rechaza)');
+  const L = (final) => ({ participantes: 8, rondas: [{ r: 'Cuartos', b: [[['A', 'B'], 'A']] }].concat(final ? [{ r: 'Final', b: [[['A', 'C'], final]] }] : []) });
+  ok(A.faseDeLlave(L('')).fase === 'vivo' && A.faseDeLlave(L('')).n === 8 && A.faseDeLlave(L('C **🇦🇷**')).camp === 'C 🇦🇷'
+    && A.faseDeLlave({ rondas: [{ r: 'Cuartos', b: [] }] }) === null, 'la fase sale de la llave: jugada, con campeón, o nada');
+  ok(A.imagenDe({ attachments: [{ content_type: 'image/png', width: 900, size: 1000, url: 'https://cdn.discordapp.com/a.png' }] })
+    === 'https://cdn.discordapp.com/a.png' && A.imagenDe({ attachments: [{ content_type: 'video/mp4', width: 900, url: 'v' }] }) === ''
+    && A.imagenDe({ embeds: [{ image: { url: 'https://cdn.discordapp.com/b.jpg' } }] }) === 'https://cdn.discordapp.com/b.jpg',
+  'el afiche: la primera imagen del anuncio, adjunta o de un embed; un video no');
+  ok(A.FASES_RED.join() === ',empezo,vivo,fin', 'las fases, en orden: sólo se avanza');
+  const mcx = A.mensajeRedCancelado(Object.assign({}, cn, { vis: vd }), 'borrado');
+  ok(mcx.embeds[0].thumbnail.url === vd.ico && !mcx.embeds[0].image, 'la cancelada conserva el ícono y pierde la imagen');
 }
 
 // ── 4 · el ida y vuelta: lo que se cifra se puede abrir ─────────────
