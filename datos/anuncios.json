@@ -1,5 +1,5 @@
 {
- "cuando": "2026-11-12T17:25:05+00:00",
+ "cuando": "2026-11-12T17:55:32+00:00",
  "anuncios": [
   {
    "nombre": "¡SE LLEGÓ LA GRAN NOCHE!",
@@ -6819,6 +6819,15 @@
   }
  ],
  "inscripciones": [
+  {
+   "servidor": "LKR",
+   "canal": "📋・INSCRIPCIONES",
+   "texto": "Mosquitrap 🦟🇦🇷",
+   "quien": "3decopas.",
+   "discord_id": "1494178897908990136",
+   "msg_id": "1570490174696333464",
+   "cuando": "2026-11-12T17:27:15"
+  },
   {
    "servidor": "LKR",
    "canal": "📋・INSCRIPCIONES",
@@ -42809,15 +42818,6 @@
    "discord_id": "897942226955563068",
    "msg_id": "1557962824817451179",
    "cuando": "2026-10-09T03:48:02"
-  },
-  {
-   "servidor": "FFA",
-   "canal": "✦📝—inscripciones",
-   "texto": "presagio 🇦🇷",
-   "quien": "eltractorjonshon",
-   "discord_id": "852667585593868288",
-   "msg_id": "1557962491907022880",
-   "cuando": "2026-10-09T03:46:43"
   }
  ]
 }
