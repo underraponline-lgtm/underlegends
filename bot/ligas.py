@@ -788,6 +788,83 @@ def _lk(msgs):
     return bats
 
 
+# ── familia FF: las ligas regionales de FFS (Dlx, 11/11/2026: «Sí, escríbelo») ──────────────────────────────────────
+# Un mensaje por batalla en «veredictos», todas sus ligas igual (Argentina, Chile, Caribe, Tricolor y Sudamérica):
+#   # PCYKA 🇦🇷 VS VIZE 🇦🇷
+#   **PCYKA VENCE A VIZE DIRECTO**          · «EN REPLICA», «CON REPLICA», «DESPUES DE DOS REPLICAS»; «LE GANA A», «DERROTA A»
+#   **JURADOS**
+#   **34.5 PTB - BOCAMIO - 32.5 PTB**       · el PTB que dio cada jurado, en el orden del título
+#   **PTB TOTAL PCYKA : 172.5** / PTB TOTAL VIZE : 162.5
+# 🔴 «X DEFAULT», «DIRECTO X DEFAULT» y «(POR DEFAULT)»: el otro no se presentó. No es una batalla —como el «por df» de
+# FDS—, y un mensaje «# DEFAULTS» con varios juntos tampoco: no tiene título. ⚠️ El cierre a veces nombra mal al que
+# perdió («GP VENCE A LUZ» en un GP VS SALMON): manda el ganador, que tiene que ser uno de los dos del título. Y un cierre
+# sin «directo» ni «réplica» queda pendiente: sin eso no se sabe cuántos puntos da
+#: el ganador va antes del verbo; lo de después sólo dice cómo («… LE GANÓ DIRECTA A SNE», «… VENCE A X EN RÉPLICA»)
+CIERRE_FF = re.compile(r'^\W*(.+?)\s+(?:VENCE|LE\s+GAN[AO]|DERROTA)\b\s*(.*?)\s*$', re.I)
+DEFAULT_FF = re.compile(r'\bDEFAULT\b', re.I)
+REPLICA_FF = re.compile(r'\bR[EÉ]PL?ICAS?\b', re.I)
+DIRECTA_FF = re.compile(r'\bDIRECT[AO]\b', re.I)
+TOTAL_FF = re.compile(r'PTB\s+TOTAL\s+(?:DE\s+)?(.+?)\s*:\s*(\d+(?:[.,]\d+)?)', re.I)
+NUMS_FF = re.compile(r'(?<![\w.,])(\d{1,3}(?:[.,]\d+)?)(?![\w.,])')
+EX_FF = re.compile(r'\s+EX$', re.I)
+
+
+def _ff(msgs):
+    bats = []
+    for m in msgs:
+        b, n = None, 0
+        for l in (m.get('content') or '').splitlines():
+            ls = lados(l)
+            if ls:
+                n += 1
+                # 🎮 en 2025 el invitado se marcaba con «EX» al final («SKILER VS PROSU EX»): es el mismo PROSU, invitado
+                a, bb, ea, eb = ls
+                if EX_FF.search(a):
+                    a, ea = EX_FF.sub('', a), True
+                if EX_FF.search(bb):
+                    bb, eb = EX_FF.sub('', bb), True
+                b = {'id': m['id'] if n == 1 else '%s-%d' % (m['id'], n), 't': m['t'], 'a': a, 'b': bb,
+                     'ea': ea, 'eb': eb, 'j': None, 'gana': '', 'como': '', '_jur': [], '_tot': {}}
+                bats.append(b)
+                continue
+            if not b:
+                continue
+            sin = re.sub(r'[*_~`|]+', ' ', EMOJI.sub(' ', _plano(l))).strip()
+            mt = TOTAL_FF.search(sin)
+            if mt:
+                lado = _quien(mt.group(1), b['a'], b['b'])
+                if lado:
+                    b['_tot'][lado] = _num(mt.group(2))
+                continue
+            if b['gana'] or b.get('df'):
+                # el PTB de cada jurado: un renglón con PTB y dos números
+                ns = NUMS_FF.findall(sin) if re.search(r'\bPTB\b', sin, re.I) else []
+                if len(ns) == 2:
+                    b['_jur'].append((_num(ns[0]), _num(ns[1])))
+                continue
+            mc = CIERRE_FF.match(sin)
+            if not mc:
+                continue
+            if DEFAULT_FF.search(sin):
+                b['df'] = True
+                continue
+            # «RICARD VENCE A XHAY»: el apodo corto del ganador también vale (`_cual()`, el mismo de FDS)
+            lado = _cual(mc.group(1), b['a'], b['b'])
+            como = 'replica' if REPLICA_FF.search(mc.group(2)) else 'directa' if DIRECTA_FF.search(mc.group(2)) else ''
+            if lado and como:
+                b['gana'], b['como'] = b[lado], como
+    for b in bats:
+        jur, tot = b.pop('_jur'), b.pop('_tot')
+        if jur:
+            pa, pb = sum(x[0] for x in jur) / len(jur), sum(x[1] for x in jur) / len(jur)
+            # el orden del renglón del jurado es el del título; si el PTB TOTAL de cada uno (por su nombre) dice lo
+            # contrario, se da vuelta: «ALVIN VS JUNIOR» con «33.5 - 31» y el TOTAL de JUNIOR más alto
+            if len(tot) == 2 and tot['a'] != tot['b'] and pa != pb and (tot['a'] > tot['b']) != (pa > pb):
+                pa, pb = pb, pa
+            b['ptbv'] = (pa, pb)
+    return bats
+
+
 def leer_liga(lid, msgs, ptb=None):
     """Las batallas de una liga, de sus mensajes en orden: `[[id, iso, jornada, a, b, gana, como, extras]]`.
 
@@ -797,7 +874,8 @@ def leer_liga(lid, msgs, ptb=None):
     L = LIGAS[lid]
     f = L['fam']
     bats = _u(msgs) if f == 'U' else _d1(msgs) if f == 'D1' else _d2(msgs) if f == 'D2' else \
-        _f(msgs, L['tit']) if f == 'F' else _fd(msgs) if f == 'FD' else _lk(msgs) if f == 'K' else _s(msgs, L['emoji'])
+        _f(msgs, L['tit']) if f == 'F' else _fd(msgs) if f == 'FD' else _lk(msgs) if f == 'K' else \
+        _ff(msgs) if f == 'FF' else _s(msgs, L['emoji'])
     out = []
     for i, b in enumerate(bats):
         if b.get('df') or b.get('nulo'):
@@ -1226,7 +1304,7 @@ _CONECTORES = {'de', 'del', 'la', 'las', 'los', 'el', 'y', 'en'}
 def _lectores():
     """🧪 Los lectores que se prueban con una liga nueva: los que no piden más que los mensajes. Snake y FRZ comparten
     canal entre ligas y piden su emoji o su título, así que una de ésas se suma a mano."""
-    return {'U': _u, 'D1': _d1, 'D2': _d2, 'FD': _fd, 'K': _lk}
+    return {'U': _u, 'D1': _d1, 'D2': _d2, 'FD': _fd, 'K': _lk, 'FF': _ff}
 
 
 def nombre_liga(cat):
@@ -2979,6 +3057,38 @@ def _self_check_temporadas(ok):
     _sumar_nuevas(lg, {'nuevas': {'x': {'fam': 'K', 'ver': '9'}, 'n1': {'n': 'N', 'sv': 'DDF', 'fam': 'K', 'ver': '2'},
                                   'n2': {'n': 'M', 'sv': 'DDF', 'fam': '', 'ver': '3'}}})
     ok(set(lg) == {'x', 'n1'} and lg['x']['ver'] == '1', 'a `LIGAS` entran las nuevas que ya se leen; las de arriba mandan')
+    # 📜 el lector de FFS (familia FF, 11/11/2026), con renglones de verdad de sus cinco ligas
+    def mf(*textos):
+        return [{'id': str(5000 + i), 't': '2026-04-0%dT20:00:00Z' % (1 + i % 9), 'content': x} for i, x in enumerate(textos)]
+    ff = _ff(mf(
+        '# PCYKA 🇦🇷 VS FRANCISCOPRRR 🇦🇷\n**PCYKA VENCE A FRANCISCOPRRR DIRECTO**\n**JURADOS**\n**34.5 PTB - BOCAMIO - 32.5 PTB**\n'
+        '**PTB TOTAL PCYKA : 172.5**\nPTB TOTAL FRANCISCOPRRR : 162.5\n@everyone <@&1427829282566311967>',
+        '# ZETRYCO 🇨🇱 VS NUMBER 🇺🇾\n**ZETRYCO VENCE A NUMBER DESPUES DE DOS REPLICAS**\n**JURADOS**\n**42 PTB - BOCAMIO - 41 PTB**',
+        '# PCYKA 🇦🇷 VS VIZE 🇦🇷\n**PCYKA VENCE A VIZE X DEFAULT**\n**JURADOS**\n**30 PTB - BOCAMIO - 20 PTB**',
+        '# HUMILDA🇨🇴 VS ELITE🇨🇱\n**HUMILDA VENCE A ELITE EN REPLICA (POR DEFAULT)**\n**JURADOS**\n**140 PTB - DEFAULT - 140 PTB**',
+        '# GP 🇻🇪🎮 VS SALMON 🇨🇱\n**GP VENCE A LUZ DIRECTO**',
+        '# RICARDFLEX🇪🇨 VS SNE🇨🇴\n**RICARD LE GANÓ DIRECTA A SNE**',
+        '# ALVIN🇦🇷 VS JUNIOR🇪🇸🎮\n**JUNIOR LE GANA A ALVIN DIRECTA**\n**JURADOS**\n**33.5 PTB - BOCAMIO - 31 PTB**\n'
+        '**PTB TOTAL JUNIOR: 185 PTB**\nPTB TOTAL ALVIN: 155 PTB',
+        '# SNOW VS CAMILA\n**SNOW VENCE A CAMILA**',
+        '# SKILER VS PROSU EX\n**PROSU VENCE A SKILER EN REPICA**',
+        '# BELGAN 🇨🇱 VS JOBAINS 🇨🇱 (EXHIBICIÓN)\n**BELGAN VENCE A JOBAINS DIRECTO**',
+        '# DEFAULTS +0 - +3 (30-32)\n## VARGAS🇨🇴 VENCE CINEXFILO🇻🇪\n## FEAR🇨🇴 VENCE A NFK🇨🇴'))
+    res = [(x['a'], x['b'], x['gana'], x['como'], bool(x.get('df')), x.get('ea'), x.get('eb'), x.get('ptbv')) for x in ff]
+    ok(res == [('PCYKA', 'FRANCISCOPRRR', 'PCYKA', 'directa', False, False, False, (34.5, 32.5)),
+               ('ZETRYCO', 'NUMBER', 'ZETRYCO', 'replica', False, False, False, (42.0, 41.0)),
+               ('PCYKA', 'VIZE', '', '', True, False, False, (30.0, 20.0)),
+               ('HUMILDA', 'ELITE', '', '', True, False, False, (140.0, 140.0)),
+               ('GP', 'SALMON', 'GP', 'directa', False, True, False, None),
+               ('RICARDFLEX', 'SNE', 'RICARDFLEX', 'directa', False, False, False, None),
+               ('ALVIN', 'JUNIOR', 'JUNIOR', 'directa', False, False, True, (31.0, 33.5)),
+               ('SNOW', 'CAMILA', '', '', False, False, False, None),
+               ('SKILER', 'PROSU', 'PROSU', 'replica', False, False, True, None)],
+       'FFS: directo, dos réplicas, el default no es batalla, el cierre que nombra mal al que perdió, el apodo («RICARD»), '
+       '«le ganó», el PTB del jurado dado vuelta por el TOTAL, sin «directo» ni «réplica» queda pendiente, el «EX» de 2025 '
+       'es el invitado; la exhibición y la lista de defaults no son batallas', res)
+    ok(elegir_lector(mf(*(['# A%d VS B%d\n**A%d VENCE A B%d DIRECTO**' % (i, i, i, i) for i in range(3)])))[1] == 'FF',
+       'y una liga nueva que escribe así se lee con FF')
     with tempfile.TemporaryDirectory() as tmp:
         ruta = os.path.join(tmp, 'servidores.json')
         with io.open(ruta, 'w', encoding='utf-8') as f:
