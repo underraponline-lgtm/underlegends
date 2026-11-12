@@ -416,14 +416,6 @@
 "temporada"
 ]
 },
-"btrx": {
-"rg": "C",
-"c": [
-"competitivo",
-"pais",
-"servidor"
-]
-},
 "dominick": {
 "rg": "D",
 "c": []
@@ -440,6 +432,15 @@
 "rg": "C",
 "c": [
 "competitivo",
+"servidor",
+"temporada"
+]
+},
+"btrx": {
+"rg": "C",
+"c": [
+"competitivo",
+"pais",
 "servidor",
 "temporada"
 ]
@@ -2772,14 +2773,6 @@
 }
 },
 "cambios": [
-{
-"tipo": "tarjeta",
-"t": "2026-10-07T05:59:04Z",
-"quien": [
-"Molusco"
-],
-"carta": "pais"
-},
 {
 "tipo": "rango",
 "t": "2026-10-07T05:59:04Z",
@@ -6145,6 +6138,14 @@
 "VR"
 ],
 "carta": "competitivo"
+},
+{
+"tipo": "tarjeta",
+"t": "2026-11-12T03:41:27Z",
+"quien": [
+"BTRX"
+],
+"carta": "temporada"
 }
 ],
 "noche_antes": {
