@@ -1,0 +1,75 @@
+name: autoidentificar
+
+# ══════════════════════════════════════════════════════════════════
+# 🔎 QUIÉN ES QUIÉN, SOLO, A PEDIDO Y SIN ESPERAR AL CICLO.
+#
+# Es el paso 1a1 del ciclo (`bot/autoidentificar.py`) suelto, para
+# correrlo cuando hace falta (Dlx, 12/11/2026, de madrugada: «córrelo
+# ahora»). Escribe la Lista, así que corre en GitHub y en la MISMA fila
+# que el ciclo: un solo escritor ([[sheet-no-en-la-corrida]]).
+#
+#   gh workflow run autoidentificar.yml                       qué haría
+#   gh workflow run autoidentificar.yml -f aplicar=true       y lo escribe
+#   … -f aplicar=true -f forzar=true                          de 3 a 11 AM ET
+#
+# ⚠️ EL GRUPO ES `escuchar`, EL DEL CICLO: nunca corren a la vez.
+# ⚠️ De 3 a 11 AM ET no corre sin `forzar`, como el ciclo; y con
+# `forzar` no manda nada a Discord (ni el aviso de Logs).
+# ══════════════════════════════════════════════════════════════════
+
+on:
+  workflow_dispatch:
+    inputs:
+      aplicar:
+        description: 'Escribir los IDs (si no, sólo dice qué haría)'
+        type: boolean
+        default: false
+      forzar:
+        description: 'Correr aunque sea de madrugada (3 a 11 AM ET)'
+        type: boolean
+        default: false
+
+concurrency:
+  group: escuchar
+  cancel-in-progress: false
+
+jobs:
+  autoidentificar:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.ref_name }}
+
+      - uses: ./.github/actions/preparar
+        with:
+          creds_json: ${{ secrets.CREDS_JSON }}
+          env_file: ${{ secrets.ENV_FILE }}
+
+      - name: la hora
+        if: inputs.forzar != true
+        run: |
+          python - <<'PY'
+          import datetime, sys, zoneinfo
+          h = datetime.datetime.now(zoneinfo.ZoneInfo('America/New_York')).hour
+          if 3 <= h < 11:
+              sys.exit('🌙 de 3 a 11 AM ET no corre nada (como el ciclo). Pídelo después o con forzar=true')
+          PY
+
+      - name: buscar
+        env:
+          PYTHONIOENCODING: utf-8
+          APLICAR: ${{ inputs.aplicar }}
+        run: |
+          if [ "$APLICAR" = "true" ]; then
+            python bot/autoidentificar.py --ya --aplicar
+          else
+            python bot/autoidentificar.py --ya
+          fi
+
+      - name: guardar
+        if: always() && inputs.aplicar == true
+        run: bash bot/ci/guardar.sh

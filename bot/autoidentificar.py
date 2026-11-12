@@ -79,6 +79,11 @@ def _ahora_et():
     return datetime.datetime.now(zoneinfo.ZoneInfo('America/New_York'))
 
 
+def madrugada(t):
+    """De 3 a 11 AM ET: ni el ciclo ni el vigía corren, y no se manda nada a Discord (Dlx, 27/09/2026)."""
+    return 3 <= t.hour < 11
+
+
 def _leer(ruta, defecto):
     try:
         with io.open(ruta, encoding='utf-8') as f:
@@ -250,7 +255,7 @@ def correr(aplicar=False):
         msg = ('🔎 autoidentificar: salieron %d IDs de golpe (el tope es %d). No escribí ninguno: eso no es el goteo '
                'de cada día. Mirar con `python herramientas/identificar.py`.' % (len(cands), FRENO))
         print('   🔴 ' + msg)
-        if aplicar:
+        if aplicar and not madrugada(ahora):
             try:
                 import alertar
                 alertar.alertar('autoidentificar_freno', msg)
@@ -303,7 +308,8 @@ def correr(aplicar=False):
         except Exception as e:                                                # noqa: BLE001
             print('   ⚠️ las filas nuevas: %s' % str(e)[:80])
     _escribir(MEMORIA, mem)
-    if hechos_ahora:
+    # 🌙 de 3 a 11 AM ET no se manda nada a Discord ([[madrugada-sin-ciclo]]): queda en `hechos`
+    if hechos_ahora and not madrugada(ahora):
         try:
             import alertar
             alertar.normal('🔎 Identificados solos (%d): %s. Sin verificar: eso sigue siendo el Miembro de DRA.'
