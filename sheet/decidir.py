@@ -2075,6 +2075,13 @@ SOLAS = os.path.join(BASE, 'datos', 'decidir_solas.json')
 SOLAS_DIAS = 14
 #: la respuesta de lo que sólo se cierra: no hay nada que decidir
 YA_NO = 'Ya no hace falta'
+#: 🏆 R24 (Dlx, 12/11/2026, a «si nadie dice el campeón en 7 días, los dos finalistas cobran el promedio de 1.º y 2.º»:
+#: «me gustan todas»). La respuesta de un «Bracket incompleto» cuya última ronda es la final, y lo que queda escrito
+#: como «ganador» en la decisión: no es nadie
+SIN_CAMPEON = 'Sin campeón: los dos finalistas cobran el promedio'
+CAMPEON_PROMEDIO = '(sin campeón)'
+#: los días que espera R24 desde la fecha del evento
+SIN_CAMPEON_DIAS = 7
 #: qué hace cada regla, en palabras: va con cada pregunta que cerró o contestó
 REGLAS = {
     'Discord': 'su cuenta de Discord: la inscripción, el podio, la llave o la llamada',
@@ -2093,6 +2100,7 @@ REGLAS = {
     'R21': 'la cuenta que se anotó así para ese evento es de alguien de la Lista que esa noche no jugó con su nombre',
     'R22': 'una batalla de equipos: cualquier respuesta paga lo mismo, porque quien gana y no sigue cobra su parte',
     'R23': 'el tercer puesto que la llave escribe como otra semifinal, sin ganador: los dos quedan semifinalistas',
+    'R24': 'una final sin campeón, a los 7 días: los dos finalistas cobran el promedio de 1.º y 2.º',
 }
 
 
@@ -2106,6 +2114,59 @@ SE_CIERRAN = ('r32', 'octavos', 'cuartos')
 def se_cierra_sola(ronda):
     """¿Esta ronda se puede cerrar sola con «nadie siguió»? Dieciseisavos, octavos o cuartos."""
     return _CAE.get(norm(ronda)) in SE_CIERRAN or norm(ronda) in ('dieciseisavos', 'cuartosdefinal', 'octavosdefinal')
+
+
+def dias_desde(fecha, hoy=None):
+    """Días desde «dd/mm» (en hora del este) hasta hoy, o `None`. Una fecha «en el futuro» es del año anterior."""
+    m = re.match(r'\s*(\d{1,2})/(\d{1,2})', str(fecha or ''))
+    if not m:
+        return None
+    try:
+        import zoneinfo
+        hoy = hoy or datetime.datetime.now(zoneinfo.ZoneInfo('America/New_York')).date()
+    except Exception:                                    # noqa: BLE001
+        hoy = hoy or datetime.date.today()
+    try:
+        f = datetime.date(hoy.year, int(m.group(2)), int(m.group(1)))
+    except ValueError:
+        return None
+    if f > hoy:
+        f = f.replace(year=hoy.year - 1)
+    return (hoy - f).days
+
+
+def _msg_de_link(link):
+    """`(canal, mensaje)` de un link de Discord, o `None`."""
+    m = re.search(r'/channels/\d+/(\d+)/(\d+)', str(link or ''))
+    return (m.group(1), m.group(2)) if m else None
+
+
+def releer_por_r24(ps, ruta=None, ahora=None):
+    """🔁 Las llaves que R24 decidió, a la cola de relectura (`escuchar.RELEER`): el lector aplica el «sin campeón» al
+    releer la llave (`llaves_a_entrada.con_campeon()`), y una llave que ya se releyó tres veces —casi todas: R24 espera 7
+    días— no se volvía a pedir nunca. Con `vistas` 0, la corrida siguiente la trae. Devuelve cuántas anotó."""
+    ruta = ruta or os.path.join(BASE, 'datos', 'releer_llaves.json')
+    try:
+        with io.open(ruta, encoding='utf-8') as f:
+            d = json.load(f) or {}
+    except (OSError, ValueError):
+        d = {}
+    ll = d.setdefault('llaves', {})
+    n = 0
+    for p in ps:
+        cm = _msg_de_link(p.get('link'))
+        partes = [x.strip() for x in str(p.get('detalle') or '').split(' · ')]
+        if not cm or len(partes) != 3:
+            continue
+        ll[cm[1]] = {'canal': cm[0], 'evento': partes[0], 'sv': partes[1], 'fecha': partes[2], 'vistas': 0,
+                     'desde': ahora or datetime.datetime.now(datetime.timezone.utc).isoformat(timespec='seconds'),
+                     'por': 'R24'}
+        n += 1
+    if n:
+        with io.open(ruta, 'w', encoding='utf-8', newline='\n') as f:
+            json.dump(d, f, ensure_ascii=False, indent=1, sort_keys=True)
+            f.write('\n')
+    return n
 
 
 def tercer_puesto(x, L):
@@ -3059,6 +3120,10 @@ def reglas(preguntas, eventos, dry=True, todas=None):
           batalla de dos lugares vacíos («walkover vs walkover»): «no se jugó» (`tercer_puesto()`). Dlx, 12/11/2026:
           «el sistema o guía dice que es un promedio de 3ero y 4to», y eso es la Semifinal (5.250 = (6.000 + 4.500) / 2),
           lo que los dos ya cobran por la semi que perdieron. Contestarla no cambiaba nada
+      R24 el «Bracket incompleto» cuya última ronda es la final, a los `SIN_CAMPEON_DIAS` días de la fecha del evento:
+          «sin campeón», y los dos finalistas cobran el promedio de 1.º y 2.º (8.750 en la 16+), como la semifinal es el
+          de 3.º y 4.º. Dlx, 12/11/2026: «me gustan todas». Había 16 así —10 de LKR, que no deja escribir al bot— y no le
+          sumaban nada a nadie de la llave
 
     ⚠️ R4 y R6 ESCRIBEN una decisión de batalla (`datos/decisiones.json`, `por: el ciclo (R4)`): así el lector no la
     vuelve a dejar «sin ganador». «Deshacer» la saca. ⚠️ Y CIERRAN DESPUÉS DE ESCRIBIRLA: si la escritura falla, la
@@ -3106,6 +3171,8 @@ def reglas(preguntas, eventos, dry=True, todas=None):
     con_dec = []
     # R21: ídem, con su regla `quien`
     con_quien = []
+    # R24: el campeón «sin campeón», que se escribe en la decisión del evento
+    con_camp = []
 
     def sola(p, r, regla, porque, escribio=None):
         if resolver_solo(p, r, regla, porque, escribio=escribio):
@@ -3229,6 +3296,16 @@ def reglas(preguntas, eventos, dry=True, todas=None):
                 if pd:
                     sola(p, YA_NO, 'R12', 'sus batallas ya están en el #%s «%s», que ya cuenta: es un pedazo de ese '
                          'evento' % (pd[0], _limpio(pd[1])))
+                    continue
+                # ── R24 · la final sin campeón, a los 7 días: los dos finalistas cobran el promedio
+                dias = dias_desde(partes[2])
+                # ⚠️ CON SU LINK: la decisión la aplica el lector al RELEER la llave (`releer_por_r24()`), y sin el
+                # mensaje no hay qué releer: cerrarla la dejaba sin puntos y sin pregunta
+                if dias is not None and dias >= SIN_CAMPEON_DIAS and _msg_de_link(p.get('link')):
+                    q = interpretar(p, SIN_CAMPEON)
+                    if q[0] == 'campeon':
+                        con_camp.append((p, q[1], 'la llave no dice el campeón y pasaron %d días: los dos finalistas '
+                                         '(%s) cobran el promedio de 1.º y 2.º' % (dias, ' y '.join(q[1]['batallas'][0]))))
             continue
         # ── R16 · la única cuenta con ese nombre es de alguien que Dlx dijo que NO es
         # ⚠️ sin el caché de apodos no se sabe si hay OTRA cuenta con ese nombre: no actúa
@@ -3283,6 +3360,27 @@ def reglas(preguntas, eventos, dry=True, todas=None):
             retirar_pendientes(ids_q, dry=False)
             hechas.difference_update(ids_q)
             raise
+    # 🏆 R24: la decisión del evento (`poner_campeon()`), como si Dlx hubiera contestado «Sin campeón»
+    camp, ids_c = {}, set()
+    for p, c, porque in con_camp:
+        if resolver_solo(p, SIN_CAMPEON, 'R24', porque, escribio={'campeon': p['detalle']}):
+            ids_c.add(p['id'])
+            hechas.add(p['id'])
+            camp[p['detalle']] = c
+    if camp and not dry:
+        anotar_pendientes(ids_c, dry=False)
+        try:
+            d = _decisiones()
+            for det, c in camp.items():
+                poner_campeon(d.setdefault('eventos', {}), det, c, _ahora_et(), 'el ciclo (R24)')
+            with io.open(DECISIONES, 'w', encoding='utf-8', newline='\n') as f:
+                json.dump(d, f, ensure_ascii=False, indent=1)
+                f.write('\n')
+        except Exception:
+            retirar_pendientes(ids_c, dry=False)
+            hechas.difference_update(ids_c)
+            raise
+        releer_por_r24([p for p, _c, _q in con_camp if p['id'] in ids_c])
     if nuevas_dec and not dry:
         anotar_pendientes(ids_dec, dry=False)
         try:
@@ -3735,8 +3833,11 @@ def _pregunta(p):
                     'cambios, así que no sumó nada. ¿Cuenta?',
                     '—', ['No cuenta', 'La completo en Discord'])
         return ('Esta llave no dice quién ganó y lleva más de 12 h sin cambios, así que no sumó nada. Si sabes quién '
-                'salió campeón, elegilo: %s. Si no, ¿cuenta?' % como_cobra(ult),
-                '—', ['Ganó %s' % x for x in gan] + ['No cuenta', 'La completo en Discord'])
+                'salió campeón, elegilo: %s. Si no, ¿cuenta?%s' % (
+                    como_cobra(ult), ' A los %d días sin campeón, el ciclo la carga solo: los dos finalistas cobran el '
+                    'promedio de 1.º y 2.º.' % SIN_CAMPEON_DIAS if ult == 'final' else ''),
+                '—', ['Ganó %s' % x for x in gan] + ([SIN_CAMPEON] if ult == 'final' else [])
+                + ['No cuenta', 'La completo en Discord'])
     if t == 'Evento dudoso' and 'llaves' in p['origen'].lower():
         mot = re.sub(r'\.?\s*NO se sumó nada\.?\s*$', '', match).strip()
         return ('No sumó nada porque %s' % mot[0].lower() + mot[1:] if mot
@@ -3829,6 +3930,14 @@ def interpretar(p, respuesta):
         return ('cuenta', c) if c else ('error', '@%s no es una de las cuentas de «%s»' % (m.group(1), p['detalle']))
     # 🏆 «Ganó X» en un «Bracket incompleto» (Dlx, 13/10/2026): X campeón. Ver `llaves_a_entrada.con_campeon()`
     if p['tipo'] == 'Bracket incompleto':
+        # 🏆 R24: la final sin campeón, cada finalista con el promedio de 1.º y 2.º
+        if r == SIN_CAMPEON:
+            ult, bats = ultima_ronda(p.get('match'))
+            sin = [lados for _r, lados, paso in bats if not paso]
+            if ult != 'final' or len(sin) != 1 or len(sin[0]) != 2:
+                return ('error', 'sólo vale cuando la última ronda de la llave es la final, sin ganador')
+            return ('campeon', {'ganador': CAMPEON_PROMEDIO, 'promedio': True, 'ronda': 'final', 'batallas': sin,
+                                'pasaron': []})
         m = re.match(r'gan[oó]\s+(.+)$', r, re.I)
         if m:
             ult, bats = ultima_ronda(p.get('match'))
@@ -3974,7 +4083,9 @@ def poner_campeon(eventos, det, c, cuando, por):
     clave, v0 = entrada_evento(eventos, det)
     destino = clave if clave and clave.split(' · ')[-1].strip() != '*' else det
     v = dict(v0 or {})
-    nueva = ('%s: ganó %s. La llave no decía el campeón: %s %s (`llaves_a_entrada.con_campeon()`)'
+    nueva = ('%s: sin campeón. La llave no lo decía: los dos finalistas cobran el promedio de 1.º y 2.º '
+             '(`llaves_a_entrada.con_campeon()`)' % _NOTA_CAMPEON if c.get('promedio') else
+             '%s: ganó %s. La llave no decía el campeón: %s %s (`llaves_a_entrada.con_campeon()`)'
              % (_NOTA_CAMPEON, c['ganador'], c['ganador'], como_cobra(c['ronda'])))
     vieja = _sin_nota_campeon(v.get('nota'))
     v.update({'campeon': c, 'cuando': cuando, 'por': por, 'nota': (vieja + ' · ' if vieja else '') + nueva})
@@ -4017,7 +4128,7 @@ def campeon_decidido(ev, sv, fecha):
         return None
     return {'ganador': str(c['ganador']).strip(), 'ronda': ronda_canon(c.get('ronda')),
             'batallas': [[str(x) for x in b] for b in c.get('batallas') or [] if isinstance(b, list)],
-            'pasaron': [str(x) for x in c.get('pasaron') or []]}
+            'pasaron': [str(x) for x in c.get('pasaron') or []], 'promedio': bool(c.get('promedio'))}
 
 
 def integrantes_equipo(ev, sv, fecha, equipo):
@@ -4456,7 +4567,8 @@ def aplicar(preguntas, respuestas, repetidas, dry=True):
             cierres += [(n, 'sigue: se vuelve a preguntar si juega y para otra vez') for n in p['filas']]
         elif que == 'campeon':
             campeones[p['detalle']] = (dato, p)
-            cierres += [(n, 'ganó %s: entra como campeón en la corrida siguiente' % dato['ganador']) for n in p['filas']]
+            cierres += [(n, 'sin campeón: los dos finalistas cobran el promedio en la corrida siguiente' if dato.get('promedio')
+                         else 'ganó %s: entra como campeón en la corrida siguiente' % dato['ganador']) for n in p['filas']]
         elif que == 'sacar_num':
             dup, orig, nd, sv, fe = dato
             sacar[str(dup)] = {'es': orig, 'nombre': nd, 'sv': sv, 'fecha': fe}
@@ -6217,6 +6329,24 @@ def _self_check():
            and not tercer_puesto(_x3[:3] + ('cuartos', ['Miniboy🇨🇱', 'Mark']), _L3)
            and tercer_puesto(_x3[:3] + ('octavos', ['walkover', 'WALKOVER']), _L3) and 'R23' in REGLAS,
            'R23: la «semifinal» de más entre los dos que perdieron las semis es el tercer puesto; con uno que no la jugó, no')
+        _hoy = datetime.date(2026, 11, 12)
+        _pi = {'tipo': 'Bracket incompleto', 'detalle': 'X · LKR · 05/11', 'match': 'x | final: LARRIX🇦🇷 vs Gazir🇪🇸'}
+        _ps = dict(_pi, match='x | semifinales: A vs B | semifinales: C vs D')
+        _qi = interpretar(_pi, SIN_CAMPEON)
+        ok(dias_desde('05/11', _hoy) == 7 and dias_desde('06/11', _hoy) == 6 and dias_desde('20/12', _hoy) > 300
+           and _qi[0] == 'campeon' and _qi[1]['promedio'] and _qi[1]['batallas'] == [['LARRIX🇦🇷', 'Gazir🇪🇸']]
+           and interpretar(_ps, SIN_CAMPEON)[0] == 'error' and SIN_CAMPEON in _pregunta(_pi)[2]
+           and SIN_CAMPEON not in _pregunta(_ps)[2] and 'R24' in REGLAS,
+           'R24: «sin campeón» sólo con la final como última ronda; los días se cuentan desde la fecha del evento')
+        import tempfile
+        _rt = os.path.join(tempfile.mkdtemp(), 'releer.json')
+        _nr = releer_por_r24([dict(_pi, link='https://discord.com/channels/1/22/333'), dict(_pi, link='')], ruta=_rt,
+                             ahora='x')
+        with io.open(_rt, encoding='utf-8') as _f:
+            _rl = json.load(_f)['llaves']
+        ok(_nr == 1 and _rl['333'] == {'canal': '22', 'evento': 'X', 'sv': 'LKR', 'fecha': '05/11', 'vistas': 0,
+                                      'desde': 'x', 'por': 'R24'},
+           'R24 manda la llave a releer (con su canal y su mensaje); sin link no la anota')
         ok(se_cierra_sola('OCTAVOS') and se_cierra_sola('cuartos') and not se_cierra_sola('SEMIFINALES')
            and not se_cierra_sola('Tercer puesto') and not se_cierra_sola('final'),
            'se cierran solas sólo dieciseisavos, octavos y cuartos: ni la semi, ni el tercer puesto, ni la final')

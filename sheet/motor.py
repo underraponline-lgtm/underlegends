@@ -876,7 +876,22 @@ def procesar(batallas, num, fecha, servidor, participantes=None,
     final = (por('final') or [None])[0]
     tercer = (por('tercer puesto') or [None])[0]
 
-    if final and not doble:
+    # 🏆 R24 DE ✅ DECIDIR: LA FINAL SIN CAMPEÓN (Dlx, 12/11/2026: «me gustan todas»). Nadie dijo quién ganó en 7 días: los
+    # dos finalistas cobran el promedio de 1.º y 2.º, como la semifinal es el de 3.º y 4.º. Quedan como Subcampeón
+    # —llegaron a la final y no se sabe más— y el campeonato no lo cobra nadie
+    sin_campeon = (final and not doble and not str(final.get('ganador') or '').strip()
+                   and 'sin campeón' in str(final.get('notas') or '').lower())
+    if sin_campeon:
+        prom = (tab.get('campeon', 0) + tab.get('subcampeon', 0)) // 2
+        for lado in (final.get('ladoA'), final.get('ladoB')):
+            if not lado:
+                continue
+            sumar(lado, prom, 'subcampeon', fuera=_pk(final))
+            for m in equipo(lado) or [lado]:
+                q = resolver(m)
+                if q in res:
+                    res[q]['notas'] += 'Final sin campeón '
+    if final and not doble and not sin_campeon:
         sumar(final.get('ganador'), tab.get('campeon', 0), 'campeon',
               fuera=_pk(final))
         sub = _perdedor(final)
@@ -1565,6 +1580,16 @@ def _self_check():
        and _cy.get('Sol', {}).get('puntos') == _cy.get('Sad', {}).get('puntos') == t16['16+']['campeon'] // 2
        and _cy.get('Kun', {}).get('puntos') == _cy.get('Car', {}).get('puntos') < t16['16+']['subcampeon'] // 2
        and _cy.get('Dio', {}).get('puntos') == t16['16+']['cuartos'] // 2, '%s' % _cy)
+    # 🏆 R24: la final sin campeón, los dos con el promedio de 1.º y 2.º; los de antes, su ronda
+    _sc, _ = _pp([{'ronda': 'semifinales', 'ladoA': 'Ana', 'ladoB': 'Beto', 'ganador': 'Ana'},
+                  {'ronda': 'semifinales', 'ladoA': 'Caro', 'ladoB': 'Dani', 'ganador': 'Caro'},
+                  {'ronda': 'final', 'ladoA': 'Ana', 'ladoB': 'Caro', 'ganador': '', 'notas': 'sin campeón: ✅ Decidir'}])
+    _pr = (t16['16+']['campeon'] + t16['16+']['subcampeon']) // 2
+    ok('una final sin campeón paga a los dos finalistas el promedio de 1.º y 2.º, y nadie es campeón',
+       _sc.get('Ana', {}).get('puntos') == _sc.get('Caro', {}).get('puntos') == _pr
+       and _sc['Ana']['posicion'] == ETIQUETA['subcampeon'] and 'sin campeón' in _sc['Ana']['notas'].lower()
+       and _sc.get('Beto', {}).get('puntos') == t16['16+']['semifinal']
+       and not any(r.get('posicion') == ETIQUETA['campeon'] for r in _sc.values()), '%s' % _sc)
     ok('… y con «cobra: Geo», el octavo, como quien lo perdió',
        con_c.get('Geo', {}).get('puntos') == 1250 and con_c.get('Geo', {}).get('posicion') == ETIQUETA['octavos']
        and con_c.get('Ana', {}).get('puntos') == 10000,

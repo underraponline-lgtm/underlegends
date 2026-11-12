@@ -27,9 +27,11 @@ leccion que las 188 alarmas falsas del `audit` del repo de sync.
 Discord no contesta, el evento ya esta cargado y lo unico que se pierde
 es el aviso. Todas las funciones devuelven True/False y no levantan.
 """
+import datetime
 import io
 import json
 import os
+import re
 import sys
 
 BASE = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -256,6 +258,26 @@ def _guardar(ya):
         pass
 
 
+#: 🗓️ un evento cargado con más días que esto desde su fecha no se anuncia en el chat (ver `evento()`)
+DIAS_AVISO = 3
+
+
+def _dias_de(fecha, hoy=None):
+    """Días desde «dd/mm» (hora del este) hasta hoy; 0 si no se entiende (en la duda, se avisa como siempre)."""
+    m = re.match(r'\s*(\d{1,2})/(\d{1,2})', str(fecha or ''))
+    if not m:
+        return 0
+    try:
+        import zoneinfo
+        hoy = hoy or datetime.datetime.now(zoneinfo.ZoneInfo('America/New_York')).date()
+        f = datetime.date(hoy.year, int(m.group(2)), int(m.group(1)))
+    except (ValueError, ImportError):
+        return 0
+    if f > hoy:
+        f = f.replace(year=hoy.year - 1)
+    return (hoy - f).days
+
+
 def evento(ev, n_res, n_duelos, dudas=(), equipos=0):
     """El aviso de un evento, para la Liga (`bot/aviso_evento.py`. Dlx, 07/10/2026: «dale, me gusta», «para la liga
     global, pero añade nivel de intensidad»).
@@ -288,6 +310,11 @@ def evento(ev, n_res, n_duelos, dudas=(), equipos=0):
         if cc is None:
             return False                              # no se pudo preguntar: la próxima corrida
         canal = cc.get(str(ev.get('servidor') or ev.get('sv') or reg.get('sv') or '').upper(), '')
+        # 🗓️ NI UN EVENTO VIEJO QUE SE CARGA TARDE (12/11/2026): R24 de ✅ Decidir carga a los 7 días las finales sin
+        # campeón, y un recálculo o una respuesta tardía también traen eventos de hace semanas. Anunciarlos en el chat
+        # como si fueran de hoy confunde: se anota como visto, igual que sin chat, y no sale
+        if canal and _dias_de(ev.get('fecha') or reg.get('fecha')) > DIAS_AVISO:
+            canal = ''
         if not canal:
             reg['canal'] = ''
             ya[num] = reg
@@ -470,7 +497,9 @@ def _self_check():
     try:
         if os.path.exists(YA):
             os.remove(YA)
-        ev2 = {'num': 999, 'nombre': 'X', 'servidor': 'FFA', 'fecha': '1/1'}
+        _h = datetime.date.today()
+        # ⚠️ con la fecha de HOY: uno de hace más de `DIAS_AVISO` días ya no se anuncia (12/11/2026)
+        ev2 = {'num': 999, 'nombre': 'X', 'servidor': 'FFA', 'fecha': '%d/%d' % (_h.day, _h.month)}
         f1 = _firma(ev2, 5, 2, (), 0)
         f2 = _firma(ev2, 5, 2, (), 0)
         f3 = _firma(ev2, 5, 9, (), 0)        # cambiaron los duelos
@@ -554,6 +583,14 @@ def _self_check():
             ok = r3 is False and r4 is False and not visto.get('n') and _avisados().get('999', {}).get('canal') == ''
             mal += not ok
             print('   %s sin chat prendido no se manda, ni la vez siguiente' % ('ok' if ok else '🔴'))
+            # 🗓️ un evento de hace semanas que se carga tarde (R24, un recálculo) no se anuncia: queda como visto
+            os.remove(YA)
+            visto.clear()
+            r5 = evento(dict(ev2, fecha='29/9' if _h.month > 9 else '1/1'), 5, 2)
+            ok = r5 is False and not visto.get('n') and _avisados().get('999', {}).get('canal') == '' \
+                and _dias_de('5/11', datetime.date(2026, 11, 12)) == 7 and _dias_de('x') == 0
+            mal += not ok
+            print('   %s un evento viejo que se carga tarde no se anuncia en el chat' % ('ok' if ok else '🔴'))
             # el de antes, en LIGA GLOBAL, se sigue editando donde está
             with io.open(YA, 'w', encoding='utf-8') as f:
                 json.dump({'999': {'v': 2, 'firma': 'otra', 'msg': 'viejo'}}, f)

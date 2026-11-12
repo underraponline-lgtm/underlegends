@@ -1885,6 +1885,18 @@ def con_campeon(limpias, d_grupo, cd, base):
     contar y sin preguntar."""
     import decidir as DEC
     k, igual = DEC.clave_lado, DEC.mismo_lado
+    # 🏆 R24: sin campeón. La final tal como la trae la llave, sin ganador y con la nota que el motor lee: los dos
+    # finalistas cobran el promedio de 1.º y 2.º. Si la llave ya no tiene esa final sin ganador, la pregunta vuelve
+    if cd.get('promedio'):
+        quiero = [{k(x) for x in lados} for lados in cd.get('batallas') or []]
+        usadas = [d for d in d_grupo if len(d) >= 5 and DEC.ronda_canon(d[1]) == 'final' and {k(x) for x in d[4]} in quiero]
+        if len(usadas) != 1 or len(usadas[0][4]) != 2:
+            return limpias, d_grupo, False
+        a, c = [DEC.lado_limpio(x) for x in usadas[0][4]]
+        return (list(limpias) + [dict(base, ronda='final', ladoA=a, ladoB=c, ganador='',
+                                      notas='%s: ✅ Decidir (los dos finalistas cobran el promedio de 1.º y 2.º)'
+                                      % SIN_CAMPEON_NOTA)],
+                [d for d in d_grupo if d not in usadas], True)
     x_dec = cd.get('ganador')
     ronda = DEC.ronda_canon(cd.get('ronda'))
     orden = DEC.ORDEN_RONDAS
@@ -3423,7 +3435,13 @@ def tiene_campeon(filas):
     fin = [f for f in filas if es(f, 'final')]
     if any(es(f, 'llave de perdedores') for f in filas):
         return bool(fin) and bool(str(fin[-1].get('ganador') or '').strip())
-    return any(str(f.get('ganador') or '').strip() for f in fin)
+    # 🏆 R24: la final «sin campeón» también está resuelta (los dos cobran el promedio): si no, se volvía a preguntar
+    return any(str(f.get('ganador') or '').strip() or SIN_CAMPEON_NOTA in str(f.get('notas') or '').lower()
+               for f in fin)
+
+
+#: 🏆 la nota de la final que se carga sin campeón (R24 de ✅ Decidir): la lee `motor.procesar()`
+SIN_CAMPEON_NOTA = 'sin campeón'
 
 
 def horas_quieta(grupo, ahora=None):
@@ -4115,6 +4133,14 @@ def _self_check():
                          {'ganador': 'ANA', 'ronda': 'semifinal', 'batallas': [['ANA', 'BEA']]}, {}),
              con_campeon([], [('X', 'FINAL', 'WALKER SANITY vs NOXVELL', 'x', ['WALKER SANITY', 'NOXVELL'])],
                          {'ganador': 'WALKER SANITY', 'ronda': 'final', 'batallas': [['WALKER SANITY', 'NOXVELL']]}, {}))),
+        # 🏆 R24 (12/11/2026): «sin campeón», la final tal cual, sin ganador y con su nota; y ya no se vuelve a preguntar
+        ('R24: «sin campeón» carga la final sin ganador con su nota, y cuenta como resuelta',
+         (lambda r: r[2] is True and r[1] == [] and len(r[0]) == 1 and r[0][0]['ganador'] == ''
+          and {r[0][0]['ladoA'], r[0][0]['ladoB']} == {'A', 'B'} and SIN_CAMPEON_NOTA in r[0][0]['notas']
+          and tiene_campeon(r[0]))(
+             con_campeon([], [('X', 'FINAL', 'A vs B', 'x', ['A', 'B'])],
+                         {'ganador': '(sin campeón)', 'promedio': True, 'ronda': 'final', 'batallas': [['A', 'B']]},
+                         {'evento': 'X', 'servidor': 'LKR', 'fecha': '05/11', 'participantes': 8}))),
         ('… y si la decisión ya no calza con la llave, no toca nada y lo dice (la pregunta vuelve)',
          (lambda r: r[1] == [('X', 'FINAL', 'A vs B', 'x', ['A', 'B'])] and r[2] is False)(
              con_campeon([], [('X', 'FINAL', 'A vs B', 'x', ['A', 'B'])],
