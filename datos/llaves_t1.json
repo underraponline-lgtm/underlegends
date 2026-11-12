@@ -50223,8 +50223,7 @@
   "escala": "16+",
   "fecha": "11/11",
   "links": [
-   "https://discord.com/channels/1468472442925092958/1487207377601040516/1570243340652257341",
-   "https://discord.com/channels/1468472442925092958/1487206164864438513/1570243601487761539"
+   "https://discord.com/channels/1468472442925092958/1487207377601040516/1570243340652257341"
   ],
   "n": 609,
   "nombre": "ALL VALLEY",
@@ -50279,19 +50278,19 @@
      ],
      [
       [
-       "letrao🇨🇱",
+       "letrao",
        "Majiztral",
        "Verc"
       ],
-      "letrao🇨🇱",
+      "letrao",
       "triple (3 bandas)"
      ],
      [
       [
-       "kychi 🇨🇱",
+       "kychi",
        "Zignos, SULTAN"
       ],
-      "kychi 🇨🇱",
+      "kychi",
       ""
      ]
     ],
@@ -50317,18 +50316,18 @@
      ],
      [
       [
-       "letrao🇨🇱",
+       "letrao",
        "Gus, 0223 🇧🇧, NC"
       ],
-      "letrao🇨🇱",
+      "letrao",
       ""
      ],
      [
       [
-       "kychi 🇨🇱",
+       "kychi",
        "Ariaxer, Cronox"
       ],
-      "kychi 🇨🇱",
+      "kychi",
       ""
      ]
     ],
@@ -50346,10 +50345,10 @@
      ],
      [
       [
-       "letrao🇨🇱",
-       "kychi 🇨🇱"
+       "letrao",
+       "kychi"
       ],
-      "letrao🇨🇱",
+      "letrao",
       ""
      ]
     ],
@@ -50360,18 +50359,10 @@
      [
       [
        "Liberia, PichulaMc",
-       "letrao🇨🇱"
+       "letrao"
       ],
       "Liberia, PichulaMc",
       ""
-     ],
-     [
-      [
-       "EddyLaSombra🇱🇷+Pichulamc🇦🇷",
-       "letrao🇨🇱"
-      ],
-      "",
-      "sin ganador: espera en ✅ Decidir"
      ]
     ],
     "r": "Final"
@@ -50380,12 +50371,12 @@
   "sv": "FFA",
   "tabla": [
    [
-    "letrao🇨🇱",
+    "letrao",
     "Subcampeón",
     7500
    ],
    [
-    "kychi 🇨🇱",
+    "kychi",
     "Semifinal",
     5250
    ],
@@ -50531,7 +50522,7 @@
    ]
   ],
   "ver": {
-   "min": 164,
+   "min": 176,
    "v": 1
   }
  }
