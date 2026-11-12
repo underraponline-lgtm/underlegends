@@ -24,10 +24,11 @@ const corto = (dia) => Number(dia.slice(8, 10)) + '/' + Number(dia.slice(5, 7));
 // los que se pueden elegir a mano (el servidor acepta de ×0,5 a ×5)
 const FACTORES = [0.5, 1, 1.5, 2, 3, 5];
 const DURACIONES = [['1 hora', 1], ['6 horas', 6], ['1 día', 24], ['3 días', 72], ['1 semana', 168]];
-// ✅ Decidir vive en el Operativo (sheet/construir_padron.py); las corridas del ciclo, en GitHub
+// 🗄️ la Lista vive en datos/ desde el 12/11/2026 (el Sheet quedó congelado, sheet/espejo_t1.py): se mira en el repo,
+// una fila por línea. ✅ Decidir es «Para decidir», acá mismo. Las corridas del ciclo, en GitHub
 const ATAJOS = [
   ['El mapa en vivo', '/mapa'],
-  ['✅ Decidir y la Lista', 'https://docs.google.com/spreadsheets/d/1DFar2NSlC9YvkMQ_uKzLmfOrmthJ1lp-l3exP0NFHm8/edit'],
+  ['La Lista de Raperos', 'https://github.com/underraponline-lgtm/underlegends/blob/main/datos/t1_lista.json'],
   ['Las corridas del ciclo', 'https://github.com/underraponline-lgtm/underlegends/actions'],
   ['Cloudflare', 'https://dash.cloudflare.com'],
 ];
