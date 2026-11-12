@@ -48,32 +48,66 @@ const PAGINAS = [['liga', 'La Liga'], ['cartas', 'Tu carta'], ['eventos', 'Event
 const TIPOS = [['servidor', 'Servidor', 'Al verificarte'], ['temporada', 'Temporada', 'Nivel 1 del Pase'],
   ['competitivo', 'Competitiva', 'Con 10 eventos'], ['pais', 'País', '3 cruces de tu país y 3 de afuera']];
 
-function Pagina({ id, sello, titulo, texto, puntos, extra, visual, primera, tit }) {
+// 🎬 LAS ENTRADAS (12/11/2026, Dlx: «que esté bonito todo y con buenas animaciones de transición»): cada pieza lleva `bv-e`
+// y su lugar en la fila (`--i`, en ella misma: nunca un transform desde una variable del padre), y entra cuando su página
+// se ve por primera vez (`vista`). La portada ya trae las suyas (el sello, el título, el abanico): sus piezas entran detrás
+const e = (i, cls) => ({ className: (cls ? cls + ' ' : '') + 'bv-e', style: { '--i': i } });
+
+function Pagina({ id, i, vista, sello, titulo, texto, puntos, extra, visual, primera, tit }) {
+  const o = primera ? 8 : 0;
   return (
-    <section className={'bv-pag bv-pag-' + id} aria-roledescription="página" aria-label={sello}>
+    <section className={'bv-pag bv-pag-' + id + (vista ? ' vista' : '')} aria-roledescription="página" aria-label={sello}>
       <div className="bv-pag-tx">
-        {primera ? <span className="bv-sello">{sello}</span> : <span className="bv-kick">{sello}</span>}
-        {primera ? <h1 className="bv-t" id="bv-t" tabIndex={-1} ref={tit}>{titulo}</h1> : <h2 className="bv-h">{titulo}</h2>}
-        <p className="bv-p">{texto}</p>
-        {extra || null}
-        {puntos ? <ul className="bv-puntos">{puntos.map(([ico, t]) => <li key={t}><Ico n={ico} t={18} /><span>{t}</span></li>)}</ul> : null}
+        {primera ? <span className="bv-sello">{sello}</span> : <span {...e(0, 'bv-kick')}>{sello}</span>}
+        {primera ? <h1 className="bv-t" id="bv-t" tabIndex={-1} ref={tit}>{titulo}</h1> : <h2 {...e(1, 'bv-h')}>{titulo}</h2>}
+        <p {...e(o + 2, 'bv-p')}>{texto}</p>
+        {extra ? <div {...e(o + 3)}>{extra}</div> : null}
+        {puntos ? <ul className="bv-puntos">{puntos.map(([ico, t], k) => <li key={t} {...e(o + 3 + k)}><Ico n={ico} t={18} /><span>{t}</span></li>)}</ul> : null}
       </div>
-      <div className="bv-pag-vis">{visual}</div>
+      {/* el número grande de atrás va más lento que todo al deslizar: es lo que da la profundidad */}
+      <div className="bv-pag-vis"><span className="bv-num" aria-hidden="true">{String(i + 1).padStart(2, '0')}</span>{visual}</div>
     </section>
   );
 }
 
 function Paso1({ liga, unirme, cerrar, tit }) {
   const [pag, setPag] = useState(0);
+  const [vistas, setVistas] = useState(() => new Set([0]));
   const pista = useRef(null);
-  // la página que se ve sale del scroll (deslizar con el dedo también cuenta), no de un estado aparte que se desfasa
+  useEffect(() => { setVistas((v) => (v.has(pag) ? v : new Set([...v, pag]))); }, [pag]);
+  // la página que se ve sale del scroll (deslizar con el dedo también cuenta), no de un estado aparte que se desfasa.
+  // 🎬 Y EL PARALAJE, ATADO AL DEDO: en la misma vuelta de cuadro, cada página sabe a qué distancia está del centro (`d`,
+  // de -1 a 1) y sus tres capas se corren distinto —el texto casi con la página, la imagen más lenta y un poco más chica,
+  // el número de atrás más lento todavía—. Es transform y opacidad puestos en cada pieza: no hay layout ni pintura, y
+  // como sale del scroll se frena, vuelve y sigue al dedo sin que haya una animación que interrumpir
   useEffect(() => {
     const el = pista.current;
     if (!el) return undefined;
     let t = 0;
-    const ver = () => { cancelAnimationFrame(t); t = requestAnimationFrame(() => setPag(Math.round(el.scrollLeft / Math.max(1, el.clientWidth)))); };
+    const mover = () => {
+      const w = Math.max(1, el.clientWidth), x = el.scrollLeft;
+      setPag(Math.round(x / w));
+      const quieto = (W.matchMedia && W.matchMedia('(prefers-reduced-motion: reduce)').matches) || !!document.querySelector('.calma');
+      Array.prototype.forEach.call(el.children, (pg, i) => {
+        const tx = pg.firstElementChild, vis = pg.lastElementChild, num = vis && vis.firstElementChild;
+        if (!tx || !vis || !num) return;
+        const d = Math.max(-1, Math.min(1, (i * w - x) / w)), a = Math.abs(d);
+        if (quieto || a < 0.001) {
+          tx.style.transform = vis.style.transform = num.style.transform = tx.style.opacity = vis.style.opacity = '';
+          return;
+        }
+        tx.style.transform = 'translate3d(' + (-d * 36).toFixed(1) + 'px,0,0)';
+        tx.style.opacity = (1 - a * 0.45).toFixed(3);
+        vis.style.transform = 'translate3d(' + (-d * 120).toFixed(1) + 'px,0,0) scale(' + (1 - a * 0.06).toFixed(3) + ')';
+        vis.style.opacity = (1 - a * 0.65).toFixed(3);
+        num.style.transform = 'translate3d(' + (-d * 240).toFixed(1) + 'px,0,0)';
+      });
+    };
+    const ver = () => { cancelAnimationFrame(t); t = requestAnimationFrame(mover); };
     el.addEventListener('scroll', ver, { passive: true });
-    return () => { el.removeEventListener('scroll', ver); cancelAnimationFrame(t); };
+    W.addEventListener('resize', ver);
+    ver();
+    return () => { el.removeEventListener('scroll', ver); W.removeEventListener('resize', ver); cancelAnimationFrame(t); };
   }, []);
   const ir = (i) => {
     const el = pista.current;
@@ -126,55 +160,55 @@ function Paso1({ liga, unirme, cerrar, tit }) {
           <span key={f.k} className={'bv-carta c' + i + (abanico.length === 3 && i === 1 ? ' uno' : '')}>{carta(f.k, liga.cartaDe(f.k), '')}</span>
         ))}</div> : null}
         <p className="bv-top">{abanico.length === 3 ? <>Los tres primeros de la temporada: <b>{limpio(top[0].n)}</b>, {limpio(top[1].n)} y {limpio(top[2].n)}</> : null}</p>
-        {ult ? <p className="bv-ult"><Ico n="copa" t={16} /><span>{ult[1]}</span><small>{ult[3]}</small></p> : null}
+        {ult ? <p {...e(10, 'bv-ult')}><Ico n="copa" t={16} /><span>{ult[1]}</span><small>{ult[3]}</small></p> : null}
       </div>
     ),
     cartas: conTodas ? (
       <div className="bv-v-cartas">
-        <ol>{TIPOS.map(([t, n, como]) => (
-          <li key={t}>
+        <ol>{TIPOS.map(([t, n, como], k) => (
+          <li key={t} {...e(2 + k, 'bv-ec')}>
             {(conTodas.c || []).includes(t) ? carta(conTodas.k, t, 'bv-c4') : <span className="bv-sil grande" aria-hidden="true">?</span>}
             <b>{n}</b><small>{como}</small>
           </li>
         ))}</ol>
-        <p className="bv-pie">Las cartas de {limpio(conTodas.n)}, #{conTodas.pos} de la temporada</p>
+        <p {...e(7, 'bv-pie')}>Las cartas de {limpio(conTodas.n)}, #{conTodas.pos} de la temporada</p>
       </div>
     ) : null,
     eventos: evs.length ? (
-      <div className="bv-v-lista">
+      <div {...e(1, 'bv-v-lista')}>
         <p className="bv-v-t">{vienen.length ? 'Lo que viene' : 'Lo último que se jugó'}{enVivo ? <em>● {enVivo} en vivo ahora</em> : null}</p>
-        <ul>{evs.map((e) => (
-          <li key={e.t + e.n}><img alt="" src={liga.logo(e.sv)} /><span><b>{limpio(e.n)}</b><small>{nombreSv(e.sv)}</small></span>
-            <time>{vienen.length ? liga.dia(e.t) : liga.cuando(e.t)}</time></li>
+        <ul>{evs.map((ev, k) => (
+          <li key={ev.t + ev.n} {...e(3 + k)}><img alt="" src={liga.logo(ev.sv)} /><span><b>{limpio(ev.n)}</b><small>{nombreSv(ev.sv)}</small></span>
+            <time>{vienen.length ? liga.dia(ev.t) : liga.cuando(ev.t)}</time></li>
         ))}</ul>
       </div>
     ) : null,
     ranking: ofi.length ? (
-      <div className="bv-v-lista">
+      <div {...e(1, 'bv-v-lista')}>
         <p className="bv-v-t">La tabla de hoy</p>
-        <ol className="bv-tabla">{ofi.slice(0, 5).map((f) => (
-          <li key={f.k || f.n}><span className="bv-pos">{f.pos}</span><b>{limpio(f.n)}</b>
+        <ol className="bv-tabla">{ofi.slice(0, 5).map((f, k) => (
+          <li key={f.k || f.n} {...e(3 + k)}><span className="bv-pos">{f.pos}</span><b>{limpio(f.n)}</b>
             {f.rg ? <i className="bv-rg" style={{ '--c': f.rgc || liga.colorRg(f.rg) }}>{f.rg}</i> : null}<span className="bv-pts">{num(f.pts || 0)}</span></li>
         ))}</ol>
-        {rangos.length ? <p className="bv-rangos" aria-label="Los rangos, de arriba a abajo">{rangos.map((r) => <i key={r.r} style={{ '--c': r.color }}>{r.r}</i>)}</p> : null}
+        {rangos.length ? <p {...e(8, 'bv-rangos')} aria-label="Los rangos, de arriba a abajo">{rangos.map((r) => <i key={r.r} style={{ '--c': r.color }}>{r.r}</i>)}</p> : null}
       </div>
     ) : null,
     pase: (
       <div className="bv-v-pase">
-        <ol className="bv-niveles">{[[1, 'Tu carta de Temporada'], [8, 'Tu carta brilla en las llaves'], [30, 'El Salón del Pase']].map(([n, t]) => (
-          <li key={n}><b>{n}</b><span>{t}</span></li>
+        <ol className="bv-niveles">{[[1, 'Tu carta de Temporada'], [8, 'Tu carta brilla en las llaves'], [30, 'El Salón del Pase']].map(([n, t], k) => (
+          <li key={n} {...e(2 + k)}><b>{n}</b><span>{t}</span></li>
         ))}</ol>
-        {tienda.inicial ? <p className="bv-moneda"><Ico n="moneda" t={22} /><span><b>{num(tienda.inicial)}</b> Puntos de Tienda para empezar</span></p> : null}
+        {tienda.inicial ? <p {...e(5, 'bv-moneda')}><Ico n="moneda" t={22} /><span><b>{num(tienda.inicial)}</b> Puntos de Tienda para empezar</span></p> : null}
       </div>
     ),
     gente: (
-      <div className="bv-v-lista">
+      <div {...e(1, 'bv-v-lista')}>
         {crews.length ? <><p className="bv-v-t">Las crews de arriba</p>
           <ol className="bv-crews">{crews.map((c, i) => (
-            <li key={c.clave || c.crew}><span className="bv-pos">{i + 1}</span>{c.logo ? <img alt="" src={srcLogo(c.logo)} /> : <i className="bv-sinlogo" aria-hidden="true" />}
+            <li key={c.clave || c.crew} {...e(3 + i)}><span className="bv-pos">{i + 1}</span>{c.logo ? <img alt="" src={srcLogo(c.logo)} /> : <i className="bv-sinlogo" aria-hidden="true" />}
               <span><b>{limpio(c.crew)}</b><small>{c.n} raperos</small></span><span className="bv-pts">{num(c.pts || 0)}</span></li>
           ))}</ol></> : null}
-        <p className="bv-cifras">{com.personas ? <span><b>{num(com.personas)}</b> personas en los servidores</span> : null}
+        <p {...e(7, 'bv-cifras')}>{com.personas ? <span><b>{num(com.personas)}</b> personas en los servidores</span> : null}
           {ligas.length ? <span><b>{ligas.length}</b> ligas de los servidores</span> : null}</p>
       </div>
     ),
@@ -211,7 +245,7 @@ function Paso1({ liga, unirme, cerrar, tit }) {
     <>
       <div className="bv-pista" ref={pista} tabIndex={-1}>
         {paginas.map((p, i) => (
-          <Pagina key={p.id} {...p} primera={i === 0} tit={tit} visual={visuales[p.id]} />
+          <Pagina key={p.id} {...p} i={i} vista={vistas.has(i)} primera={i === 0} tit={tit} visual={visuales[p.id]} />
         ))}
       </div>
       {/* 🔒 LA BARRA DE ABAJO NO SE MUEVE: Dlx, «que siempre aparezca la opción de UNIRME CON DISCORD o en otro momento» */}

@@ -8,7 +8,7 @@
    el texto a la izquierda y lo de verdad a la derecha; en el teléfono, lo de verdad arriba y el texto abajo.
    🔴 El título de la portada se pasaba de su columna y quedaba debajo de las cartas: ahora su tamaño sale del ANCHO DE
    LA COLUMNA (`cqi`), no del de la pantalla: «DE FREESTYLE» mide 10 veces su letra, así que 9,4 cqi entra con aire. */
-.bv{position:fixed;inset:0;z-index:2000;display:flex;flex-direction:column;overflow:hidden;
+.bv{--ease-out:cubic-bezier(0.23,1,0.32,1);position:fixed;inset:0;z-index:2000;display:flex;flex-direction:column;overflow:hidden;
   background:#030304;color:#F6F6F6}
 .bv-tape{position:fixed;width:260px;height:58px;pointer-events:none;transform:rotate(32deg);z-index:0}
 .bv-tape.a{right:-120px;top:-24px;background:#E41373;opacity:.85}
@@ -42,7 +42,12 @@
 .bv-pag{flex:0 0 100%;min-width:0;scroll-snap-align:start;scroll-snap-stop:always;overflow-y:auto;overflow-x:hidden;
   display:grid;grid-template-columns:minmax(0,1fr);align-content:start;gap:18px;padding:20px 16px 16px}
 .bv-pag-tx{container-type:inline-size;display:grid;gap:12px;align-content:start;min-width:0}
-.bv-pag-vis{display:grid;justify-items:center;align-content:center;min-width:0;order:-1}
+.bv-pag-vis{position:relative;isolation:isolate;display:grid;justify-items:center;align-content:center;min-width:0;order:-1}
+/* el número de la página, enorme y sólo el contorno, detrás de la imagen: al deslizar va más lento que todo */
+.bv-num{position:absolute;z-index:-1;right:0;top:-6px;font:900 clamp(110px,38vw,170px)/.8 Archivo,sans-serif;letter-spacing:-.04em;
+  color:transparent;-webkit-text-stroke:2px #34343D;pointer-events:none;user-select:none}
+/* (en la compu asoma por arriba a la derecha de la imagen: centrado quedaba entero detrás de los paneles) */
+@media (min-width:900px){.bv-num{top:auto;bottom:calc(100% - .42em);right:-2%;font-size:clamp(150px,15vw,240px)}}
 .bv-kick{justify-self:start;font:700 14px/1 "Barlow Condensed",sans-serif;letter-spacing:.16em;text-transform:uppercase;color:#E41373}
 .bv-h{margin:0;font:900 clamp(28px,8vw,56px)/.95 Archivo,sans-serif;font-stretch:118%;text-transform:uppercase;text-wrap:balance}
 .bv-puntos{display:grid;gap:10px;margin:4px 0 0;padding:0;list-style:none}
@@ -96,7 +101,8 @@
 .bv-pie{margin:0;text-align:center;color:#9A9AA6;font:600 13px/1.3 "Barlow Condensed",sans-serif;letter-spacing:.05em;text-transform:uppercase}
 
 /* las listas (eventos, tabla, crews): un panel con filas */
-.bv-v-lista{display:grid;gap:10px;width:100%;max-width:520px;padding:16px;border:2px solid #2A2A30;background:#0D0D10;border-radius:3px}
+.bv-v-lista{display:grid;gap:10px;width:100%;max-width:520px;padding:16px;border:2px solid #2A2A30;background:#0D0D10;border-radius:3px;
+  box-shadow:6px 6px 0 #29B298}
 .bv-v-t{display:flex;flex-wrap:wrap;gap:6px 14px;align-items:baseline;margin:0;font:700 14px/1 "Barlow Condensed",sans-serif;letter-spacing:.12em;text-transform:uppercase;color:#9A9AA6}
 .bv-v-t em{font-style:normal;color:#FF4D8F}
 .bv-v-lista ul,.bv-v-lista ol{display:grid;gap:8px;margin:0;padding:0;list-style:none}
@@ -139,7 +145,11 @@
   padding:12px 16px calc(12px + env(safe-area-inset-bottom,0px))}
 .bv-nav{display:flex;align-items:center;justify-content:center;gap:8px;min-width:0}
 .bv-fl{flex:none;display:grid;place-items:center;width:44px;height:44px;border:2px solid #3A3A42;background:#030304;color:#F6F6F6;border-radius:3px;cursor:pointer}
+.bv-fl svg{transition:transform .16s var(--ease-out)}
 .bv-fl.izq svg{transform:rotate(180deg)}
+@media (hover:hover) and (pointer:fine){.bv-fl.der:not(:disabled):hover svg{transform:translateX(3px)}.bv-fl.izq:not(:disabled):hover svg{transform:rotate(180deg) translateX(3px)}}
+.bv-fl:not(:disabled):active{transform:scale(.94)}
+.bv-fl{transition:transform .12s var(--ease-out),border-color .16s ease}
 .bv-fl:disabled{opacity:.3;cursor:default}
 @media (hover:hover) and (pointer:fine){.bv-fl:not(:disabled):hover{border-color:#F6F6F6}}
 /* la flecha de seguir llama la atención dos veces al llegar, y se queda quieta (nada que no termina) */
@@ -147,9 +157,11 @@
 .bv-puntos-nav{display:flex;align-items:center;gap:2px;margin:0;padding:0;list-style:none;min-width:0}
 .bv-puntos-nav button{display:flex;align-items:center;gap:8px;min-height:44px;padding:0 6px;border:0;background:none;color:#9A9AA6;cursor:pointer;
   font:700 14px/1 "Barlow Condensed",sans-serif;letter-spacing:.06em;text-transform:uppercase;white-space:nowrap}
-.bv-puntos-nav i{display:block;width:10px;height:10px;border-radius:50%;background:#3A3A42;transition:width .2s,background .2s,border-radius .2s}
+.bv-puntos-nav i{display:block;width:10px;height:10px;border-radius:50%;background:#3A3A42;transition:transform .22s var(--ease-out),background-color .22s ease}
 .bv-puntos-nav .on{color:#F6F6F6}
-.bv-puntos-nav .on i{width:26px;border-radius:2px;background:#E41373}
+.bv-puntos-nav .on i{background:#E41373;transform:scale(1.3)}
+.bv-puntos-nav .on span{animation:bv-lbl .28s var(--ease-out) both}
+@media (hover:hover) and (pointer:fine){.bv-puntos-nav button:not(.on):hover i{background:#6A6A74}}
 /* sólo el nombre de la página en la que estás: los seis no entran al lado del botón (medido: 620 px en 578) */
 .bv-puntos-nav button:not(.on) span{display:none}
 .bv-acc{display:grid;justify-items:center;gap:6px;width:100%}
@@ -173,8 +185,50 @@
   .bv-luego{padding-left:2px}
   .bv-si{width:auto}
 }
-/* un teléfono bajito: el abanico y las cartas más chicos, la nota fuera */
-@media (max-height:700px) and (max-width:899.98px){.bv-cartas{height:clamp(110px,20svh,160px)}.bv-nota{display:none}.bv-c4{max-width:90px}}
+/* 📱 EN EL TELÉFONO TODO TIENE QUE ENTRAR SIN SCROLL (medido el 12/11/2026: con la barra de 226 px, en 390 × 844 dos
+   páginas pedían 59 y 102 px más, y en 375 × 667 cinco de seis). La barra se compacta, las páginas se aprietan y las listas
+   muestran tres filas: la cuarta y la quinta están en la página de verdad */
+@media (max-width:899.98px){
+  .bv-barra{gap:8px;padding:10px 16px calc(10px + env(safe-area-inset-bottom,0px))}
+  .bv-acc{gap:0}
+  .bv-si{min-height:52px;padding:12px 18px;font-size:17px}
+  .bv-luego{min-height:40px;padding:8px 12px}
+  .bv-nota{font-size:12px;line-height:1.35}
+  .bv-pag{gap:14px;padding:14px 16px 12px}
+  /* centrada en la altura con márgenes automáticos: si alguna vez no entra, no se corta arriba (`align-content:center` sí cortaba) */
+  .bv-pag{display:flex;flex-direction:column}
+  .bv-pag-vis{margin-top:auto}
+  .bv-pag-tx{margin-bottom:auto}
+  .bv-h{font-size:clamp(26px,7.4vw,40px)}
+  .bv-p{font-size:15px}
+  .bv-puntos{gap:7px}
+  .bv-puntos li{font-size:14px}
+  .bv-v-liga{padding-top:14px}
+  .bv-v-lista{padding:12px 14px;gap:6px}
+  .bv-v-lista li{min-height:40px;padding:4px 0}
+  .bv-v-lista li:nth-child(n+4){display:none}
+  .bv-niveles{gap:10px}
+  .bv-niveles:before{left:21px}
+  .bv-niveles b{width:44px;height:44px;font-size:18px}
+  .bv-niveles span{font-size:15px}
+}
+/* un teléfono bajito (un iPhone SE, 667 de alto): sin la nota, sin los rangos sueltos ni el número de atrás, todo más chico */
+@media (max-width:899.98px) and (max-height:760px){
+  .bv-nota,.bv-rangos,.bv-num{display:none}
+  .bv-cartas{height:clamp(110px,19svh,150px)}
+  /* (más angostas: a 15 y 18 svh la del medio medía 175 de alto en una caja de 127 y asomaba por arriba) */
+  .bv-carta{width:clamp(66px,11.5svh,96px)}
+  .bv-carta.uno{width:clamp(78px,13.5svh,110px)}
+  .bv-c4{max-width:78px}
+  .bv-v-cartas small{display:none}
+  .bv-pie{display:none}
+  .bv-h{font-size:clamp(24px,6.8vw,34px)}
+  .bv-p{font-size:14px;line-height:1.42}
+  .bv-pag{gap:10px;padding-top:10px}
+  .bv-pag-tx{gap:8px}
+  .bv-v-lista li:nth-child(n+3){display:none}
+  .bv-moneda{padding:8px 12px}
+}
 
 /* ── paso 2: la verificación de Mi cuenta, en una caja con el tema de cada uno ── */
 .bv-c{position:relative;z-index:1;flex:1 0 auto;width:100%;max-width:1180px;margin:0 auto;display:grid;grid-template-columns:minmax(0,1fr);
@@ -186,10 +240,22 @@
 .bv-p2 .bv-si{flex-direction:row}
 
 .bv.sale{animation:bv-fuera .38s ease-in forwards}
+/* 🎬 LAS ENTRADAS (12/11/2026): cada pieza de una página entra la primera vez que llegas a ella, de a una (55 ms entre
+   piezas), desde abajo y con la curva fuerte. Las cartas además giran un poco: caen sobre la mesa. Mientras la página no se
+   vio, sus piezas esperan escondidas; ya vista, quedan quietas (volver no las repite) */
+.bv-pag:not(.vista) .bv-e{opacity:0}
+.bv-pag.vista .bv-e{animation:bv-e .52s var(--ease-out) calc(var(--i,0) * 55ms + 60ms) both}
+.bv-pag.vista .bv-ec{animation-name:bv-ec;animation-duration:.6s}
+@keyframes bv-e{from{opacity:0;transform:translate3d(0,14px,0)}to{opacity:1;transform:none}}
+@keyframes bv-ec{from{opacity:0;transform:translate3d(0,28px,0) rotate(-4deg) scale(.95)}to{opacity:1;transform:none}}
+@keyframes bv-lbl{from{opacity:0;transform:translate3d(-6px,0,0)}to{opacity:1;transform:none}}
 @keyframes bv-carta{from{opacity:0;transform:var(--t) translateY(70px) scale(.86)}to{opacity:1;transform:var(--t)}}
 @keyframes bv-sello{from{opacity:0;transform:rotate(-3deg) scale(1.4)}to{opacity:1;transform:rotate(-3deg)}}
 @keyframes bv-sube{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:none}}
 @keyframes bv-llama{50%{transform:translateX(5px)}}
 @keyframes bv-fuera{to{opacity:0;transform:scale(1.04)}}
-@media (prefers-reduced-motion:reduce){.bv,.bv *{animation:none!important;transition:none!important}}
-.calma .bv,.calma .bv *{animation:none!important;transition:none!important}
+@media (prefers-reduced-motion:reduce){.bv,.bv *:not(.bv-e){animation:none!important;transition:none!important}
+  .bv-pag.vista .bv-e{animation:bv-fundido .2s ease both!important}}
+.calma .bv,.calma .bv *:not(.bv-e){animation:none!important;transition:none!important}
+.calma .bv-pag.vista .bv-e{animation:bv-fundido .2s ease both!important}
+@keyframes bv-fundido{from{opacity:0}to{opacity:1}}
