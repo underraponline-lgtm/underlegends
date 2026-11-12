@@ -410,10 +410,10 @@
    "temporada": "4b775ed1fde1:7a510334494e"
   },
   "Dev": {
-   "competitivo": "6faa43a1cac8:624f5e322311",
+   "competitivo": "be84e6ef479c:624f5e322311",
    "pais": "5af400171bdc:733ce66bf5fa",
    "servidor": "2bc97b42fa1b:2415c901692f:16bc7a",
-   "temporada": "4e7689a421a1:7a510334494e"
+   "temporada": "d94ba3aa1edc:7a510334494e"
   },
   "Diablo": {
    "servidor": "a9e63879d519:2415c901692f:055f77"
@@ -630,10 +630,10 @@
    "servidor": "b5c0c86d6f27:2415c901692f:055f77"
   },
   "Global Hustler": {
-   "competitivo": "5cb93d6b3901:624f5e322311",
+   "competitivo": "d6ffc7bb7e3f:624f5e322311",
    "pais": "e681b9970db0:733ce66bf5fa",
    "servidor": "94e694bd274c:2415c901692f:aa8232",
-   "temporada": "57d9eb9558ed:7a510334494e"
+   "temporada": "f89ef3d63aef:7a510334494e"
   },
   "Gocho": {
    "competitivo": "20d4d28d98a8:624f5e322311",
@@ -1699,7 +1699,7 @@
   },
   "TG": {},
   "THO": {
-   "competitivo": "ab84d33a3a2a:624f5e322311",
+   "competitivo": "bfb9b2d2bf02:624f5e322311",
    "pais": "b1320af69286:733ce66bf5fa",
    "servidor": "50427e3bb9e3:2415c901692f:9e75da"
   },
@@ -2035,7 +2035,7 @@
    "servidor": "88d5f50de984:2415c901692f:86e978"
   },
   "nueve7": {
-   "competitivo": "94f566caa8ce:624f5e322311",
+   "competitivo": "313df4c91e65:624f5e322311",
    "pais": "4fb2863dfda5:733ce66bf5fa",
    "servidor": "930225a09cd2:2415c901692f:943e25"
   },
@@ -2097,5 +2097,5 @@
    "servidor": "7f8885a35a6d:2415c901692f:93a344"
   }
  },
- "cuando": "2026-11-12T04:27:11+00:00"
+ "cuando": "2026-11-12T04:33:55+00:00"
 }
