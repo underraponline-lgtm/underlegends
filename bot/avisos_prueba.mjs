@@ -1315,6 +1315,16 @@ const ok = (cond, que, det) => {
     ok(!vv1.viendo.length && vv2.viendo.length === 1 && vv2.viendo[0].k === 'r12' && vv3.viendo.length === 1 && vv3.viendo[0].k === 'qn1'
       && vv4.viendo.length === 1 && vv4.viendo[0].k === 'r13',
     '«lo estoy viendo»: se ven los casos que miran los otros, uno por persona, y una clave rara no se guarda', JSON.stringify([vv2, vv3, vv4]));
+    // ✋ «Lo tomo» y las notas internas (11/11/2026): uno lo toma y se le saca al otro; soltar sólo el suyo (o Dlx);
+    // la nota queda aunque se suelte; una clave rara no se guarda; sin Discord ID en lo que ve el Dashboard
+    const cs1 = o.duenoCaso({ quien: '100000021', k: 'qn1', tomo: true });
+    const cs2 = o.duenoCaso({ quien: '100000022', k: 'qn1', nota: '  le escribí,   espero respuesta ' });
+    const cs3 = o.duenoCaso({ quien: '100000022', k: 'qn1', tomo: false });
+    const cs4 = o.duenoCaso({ quien: '100000021', k: 'qn1', tomo: false });
+    const cs5 = o.duenoCaso({ quien: '100000021', k: '<x>', nota: 'no' });
+    ok(cs1.casos.qn1.tomo && cs2.casos.qn1.notas[0].txt === 'le escribí, espero respuesta' && cs3.casos.qn1.tomo
+      && !cs4.casos.qn1.tomo && cs4.casos.qn1.notas.length === 1 && !cs5.casos['<x>'] && !JSON.stringify(cs4).includes('100000021'),
+    '«Lo tomo» y las notas internas: soltar sólo el suyo, la nota queda, y sin el Discord ID de nadie', JSON.stringify([cs1, cs4]));
     // 🔁 avisarle a uno de la lista de primerizos que vuelva: a su campana, con un texto fijo; sin cuenta no; una vez
     // cada 7 días; y queda quién lo mandó
     o.sql.exec("INSERT OR REPLACE INTO idk (id, k, t) VALUES ('100000031', 'primerizo', 1)");
@@ -1411,6 +1421,13 @@ const ok = (cond, que, det) => {
     const dd1 = o.duenoDecidir({ id: 'b1', r: 'Ganó A' });
     const dd2 = o.duenoDecidir({ id: 'n1', r: 'Es Zorrito', nota: 'su cuenta es zorrito_' });
     const ciclo1 = o.decidirCiclo();
+    // 🧮 lo que paga cada respuesta, cuándo se cierra sola y la sugerencia del bot pasan; lo raro, no
+    const def = o.decidirEstados({ preguntas: [Object.assign({ efectos: { 'Ganó A': [['A', 2000], ['B', 'x']], mal: 'no' }, igual: true,
+      vence: 123, sug: 'Ganó A' }, PS[0])] });
+    const pef = (o.leer('decidir_preguntas') || {}).preguntas[0];
+    ok(def.ok && pef.efectos['Ganó A'][0][1] === 2000 && pef.efectos['Ganó A'][1][1] === 0 && !('mal' in pef.efectos) && pef.igual
+      && pef.vence === 123 && pef.sug === 'Ganó A', 'las preguntas guardan qué paga cada respuesta, cuándo vencen y la sugerencia', JSON.stringify(pef));
+    o.decidirEstados({ preguntas: PS });
     o.decidirEstados({ preguntas: PS.slice(0, 1) });     // la b1 se aplicó: ya no está
     const ciclo2 = o.decidirCiclo();
     ok(de1.n === 2 && dd1.ok && dd2.decidir.preguntas[0].link === '' && ciclo1.respuestas.b1.r === 'Ganó A'

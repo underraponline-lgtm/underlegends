@@ -979,6 +979,30 @@ def procesar(batallas, num, fecha, servidor, participantes=None,
                 res[q]['notas'] += ('Nadie siguió ' if 'nadie siguió' in str(b.get('notas') or '').lower()
                                     else 'Ganó y no siguió ')
 
+    # 👥 Y EN UNA BATALLA DE EQUIPOS LO COBRA SOLO (Dlx, 11/11/2026: «Sí, cobra solo»). En la #491 (pandillas) ganaron
+    # MCO + MATHIAS y a la semi siguió MCO con otros: Mathias se quedaba en 0 si se contestaba «Ganaron MCO + MATHIAS», y
+    # en 1.250 con «Nadie siguió». En equipos no hay duelo, así que pagarle su parte de la ronda que ganó hace que TODAS
+    # las respuestas paguen lo mismo, y la pregunta se cierra sola (`decidir.R22`). Lo de Geoka sigue igual para el 1 contra
+    # 1: ahí quien no sigue puede ser un nombre troll y se decide por persona. Cobra su parte —la ronda dividida por el
+    # equipo, como la cobra el equipo que la perdió— y sólo quien no tiene ya un puesto
+    for b in batallas:
+        g = str(b.get('ganador') or '').strip()
+        puesto = COBRA.get(ronda_de(b.get('ronda')))
+        if not g or not puesto or (nadie and _clave_lado(g) in nadie):
+            continue
+        pk = _pk(b)
+        ms = [m for m in (equipo(g) or []) if resolver(m) not in pk]
+        if len(equipo(g) or []) < 2 or not ms:
+            continue
+        cuota = (tab.get(puesto, 0) or _paga(b) or pago_fuera_de_escala(esc, puesto)) // len(ms)
+        for m in ms:
+            q = resolver(m)
+            if not q or q in res:
+                continue
+            sumar(m, cuota, puesto)
+            if q in res:
+                res[q]['notas'] += 'Ganó en equipo y no siguió '
+
     # 🔴 EL REVIVIDO: 50 % DE SU PUESTO FINAL + LA PRIMERA DERROTA ENTERA.
     # Guía de formatos de Dlx (23/09/2026, §3.7): «TORNEO DE PLAZAS — RBK
     # pierde octavos vs Ragna, revive vs Ian → 1250 completos + 625 (el
@@ -1477,6 +1501,15 @@ def _self_check():
     ok('dos walk-ins en la misma batalla: cobran menos los dos, no sólo el primero',
        all(_dos_w.get(x, {}).get('puntos', 0) < _un_w.get(x, {}).get('puntos', 0) for x in ('Pro', 'Saz')),
        '%s' % {x: (_dos_w.get(x, {}).get('puntos'), _un_w.get(x, {}).get('puntos')) for x in ('Pro', 'Saz')})
+    # 👥 en equipos, quien gana y no sigue cobra su parte solo (Dlx, 11/11/2026: «Sí, cobra solo»): la #491
+    _eq = [{'ronda': 'cuartos', 'ladoA': 'Maj + Mini', 'ladoB': 'Mco + Math', 'ganador': 'Mco + Math'},
+           {'ronda': 'final', 'ladoA': 'Mco + Mak', 'ladoB': 'Ana + Bea', 'ganador': 'Ana + Bea'}]
+    con_eq, _ = _pp([dict(b) for b in _eq])
+    ok('en equipos, quien ganó y no siguió cobra su parte de la ronda, como el equipo que la perdió; el de la final, lo suyo',
+       con_eq.get('Math', {}).get('puntos') == con_eq.get('Mini', {}).get('puntos') > 0
+       and con_eq.get('Math', {}).get('posicion') == ETIQUETA['cuartos']
+       and con_eq.get('Mco', {}).get('posicion') == ETIQUETA['subcampeon'], '%s' % con_eq)
+    ok('… y en el 1 contra 1 sigue sin cobrar (Geoka): ahí se decide por persona', 'Geo' not in sin_c)
     ok('… y con «cobra: Geo», el octavo, como quien lo perdió',
        con_c.get('Geo', {}).get('puntos') == 1250 and con_c.get('Geo', {}).get('posicion') == ETIQUETA['octavos']
        and con_c.get('Ana', {}).get('puntos') == 10000,

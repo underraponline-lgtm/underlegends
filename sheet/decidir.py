@@ -2091,7 +2091,14 @@ REGLAS = {
     'R16': 'Dlx dijo que no es esa persona, y no hay otra cuenta con ese nombre',
     'R19': 'la ronda que la escala 8-15 no tenía ahora paga 625',
     'R21': 'la cuenta que se anotó así para ese evento es de alguien de la Lista que esa noche no jugó con su nombre',
+    'R22': 'una batalla de equipos: cualquier respuesta paga lo mismo, porque quien gana y no sigue cobra su parte',
 }
+
+
+def de_equipos(lados):
+    """👥 R22: ¿todos los lados son equipos (dos o más, con «+», «,» o «&»)? Un trío de personas sueltas no: ahí cada
+    rival es un cruce del requisito de País y quién ganó importa."""
+    return len(lados or []) >= 2 and all(len([x for x in re.split(r'[+,&]', str(l)) if x.strip()]) >= 2 for l in lados)
 #: lo resuelto solo en esta corrida, hasta `flush_solas()`
 _SOLAS = []
 _SOLAS_D = {}
@@ -2996,6 +3003,9 @@ def reglas(preguntas, eventos, dry=True, todas=None):
           cobra (`cobran_ronda()`)
       R21 el nombre que se anotó desde la cuenta de alguien de la Lista que esa noche no jugó con su nombre (`r21()`):
           es él, EN ESE EVENTO (`quien` de `datos/decisiones.json`)
+      R22 la batalla de EQUIPOS sin ganador, que no sea la final (`de_equipos()`): «nadie siguió». Dlx, 11/11/2026, a
+          «¿quien gana y no sigue cobra su ronda automáticamente?»: «Sí, cobra solo» (`motor`, «Ganó en equipo y no
+          siguió»). Con eso cualquier respuesta paga lo mismo, y en equipos no hay duelo: preguntarla no cambia nada
 
     ⚠️ R4 y R6 ESCRIBEN una decisión de batalla (`datos/decisiones.json`, `por: el ciclo (R4)`): así el lector no la
     vuelve a dejar «sin ganador». «Deshacer» la saca. ⚠️ Y CIERRAN DESPUÉS DE ESCRIBIRLA: si la escritura falla, la
@@ -3099,6 +3109,14 @@ def reglas(preguntas, eventos, dry=True, todas=None):
                 nuevas_dec[clave_batalla(det)] = {'ganador': '', 'batalla': det, 'cuando': _ahora_et(),
                                                   'por': 'el ciclo (R4)', 'nota': porque}
                 con_dec.append((p, NO_SE_JUGO, 'R4', porque, {'batalla': det}))
+                continue
+            # ── R22 · la de equipos: cualquier respuesta paga lo mismo (Dlx, 11/11/2026: «Sí, cobra solo»)
+            if de_equipos(x[4]) and 'final' not in norm(x[3]):
+                porque = ('es de equipos (%s): quien gana y no sigue cobra su parte, así que cualquier respuesta paga lo '
+                          'mismo, y en equipos no hay duelo' % ' vs '.join(x[4])[:160])
+                nuevas_dec[clave_batalla(det)] = {'ganador': NADIE, 'batalla': det, 'cuando': _ahora_et(),
+                                                  'por': 'el ciclo (R22)', 'nota': porque}
+                con_dec.append((p, NADIE_SIGUIO, 'R22', porque, {'batalla': det}))
                 continue
             if 'no aparece nadie' in (p.get('match') or ''):
                 # ⚠️ contra TODAS, también las contestadas sin aplicar: un «Ganó X» de una hermana no es «nadie»
@@ -4673,19 +4691,115 @@ def secciones(preguntas):
 WORKER = 'https://liga-global-bot.liga-global-ul.workers.dev'
 
 
+# ── 🧮 LO QUE PAGA CADA RESPUESTA (Dlx, 11/11/2026, la maqueta de ✅ Decidir: «Dale, arma A»). Cada respuesta a una
+# «Batalla sin ganador» dice qué cobra DE ESA RONDA cada uno de los que no siguen en la llave; los que siguen cobran lo de
+# más adelante pase lo que pase y no se nombran. Las reglas son las del motor: el que pierde cobra la ronda; el que gana y
+# no sigue, 0 en el 1 contra 1 (Geoka) y su parte en equipos (11/11, «Sí, cobra solo»); «Nadie siguió», todos la ronda;
+# «No se jugó», nadie. Los puntos salen de `datos/escala.json` (la copia de Config): es para mostrar, no para pagar
+_CAE = {'r32': 'r32', 'octavos': 'octavos', 'cuartos': 'cuartos', 'semifinal': 'semifinal', 'semifinales': 'semifinal'}
+
+
+def _miembros(lado):
+    return [x.strip() for x in re.split(r'[+,&]', lado_limpio(lado)) if x.strip()]
+
+
+def efectos(p, llaves, tab):
+    """`({respuesta: [[nombre, puntos]]}, igual)` de una «Batalla sin ganador», o `({}, False)` si no se puede saber
+    (otra pregunta, una llave que no está, una ronda que no paga). `igual`: «Ganó X» y «Nadie siguió» pagan lo mismo a
+    todos. Pura."""
+    x = partes_batalla(p.get('detalle')) if p.get('tipo') == 'Batalla sin ganador' else None
+    if not x:
+        return {}, False
+    ev, sv, fe, ronda, lados = x
+    puesto = _CAE.get(norm(ronda))
+    L = next((v for v in (llaves or {}).values() if isinstance(v, dict) and norm(v.get('nombre')) == norm(ev)
+              and v.get('sv') == sv and v.get('fecha') == fe), None)
+    if not puesto or not L:
+        return {}, False
+    rs = L.get('rondas') or []
+    i = next((k for k, r in enumerate(rs) if _CAE.get(norm(r.get('r'))) == puesto), None)
+    if i is None:
+        return {}, False
+    pts = int(((tab or {}).get(L.get('escala')) or {}).get(puesto) or 0)
+    despues = {norm(_sin_bandera(m)) for r in rs[i + 1:] for b in r.get('b') or [] for lado in (b[0] or [])
+               for m in _miembros(lado)}
+    equipos = de_equipos(lados)
+    quedan = [(lado, m) for lado in lados for m in _miembros(lado) if norm(_sin_bandera(m)) not in despues]
+    cuota = {lado: pts // max(1, len(_miembros(lado))) for lado in lados}
+    out = {}
+    for op in p.get('opciones') or []:
+        if op.startswith(('Ganó ', 'Pasó ')):
+            g = op.split(' ', 1)[1]
+            out[op] = [[m, cuota[lado] if (lado != g or equipos) else 0] for lado, m in quedan]
+        elif op == NADIE_SIGUIO:
+            out[op] = [[m, cuota[lado]] for lado, m in quedan]
+        elif op == NO_SE_JUGO:
+            out[op] = [[m, 0] for lado, m in quedan]
+    cuentan = [json.dumps(v) for k, v in out.items() if k != NO_SE_JUGO]
+    return out, len(set(cuentan)) <= 1
+
+
+def vence_de(p, fin):
+    """⏳ Cuándo se cierra sola una «Batalla sin ganador» que se le preguntó al organizador (`bot/finales.py`, 48 h):
+    ms, o 0. Sólo las que se preguntaron desde el 11/11/2026 (`t_pregunta`); la final, nunca. Pura con `fin`."""
+    x = partes_batalla(p.get('detalle')) if p.get('tipo') == 'Batalla sin ganador' else None
+    if not x or 'final' in norm(x[3]):
+        return 0
+    ks = sorted(norm(_sin_bandera(lado)) for lado in x[4])
+    for f in (fin or {}).values():
+        if not isinstance(f, dict) or not f.get('t_pregunta') or f.get('cerrada') or norm(f.get('evento')) != norm(x[0]):
+            continue
+        for q in f.get('preguntas') or []:
+            if norm(q.get('ronda')) == norm(x[3]) and sorted(norm(_sin_bandera(lado)) for lado in q.get('lados') or []) == ks:
+                try:
+                    t = datetime.datetime.fromisoformat(str(f['t_pregunta']).replace('Z', '+00:00'))
+                except ValueError:
+                    return 0
+                return int((t + datetime.timedelta(hours=48)).timestamp() * 1000)
+    return 0
+
+
+def lista_web():
+    """🔎 `[[nombre con bandera, país]]` de la Lista (`datos/padron.json`), para el buscador del Dashboard (11/11/2026: la
+    maqueta, «Es alguien de la Lista» con lista desplegable). Sin Discord ID: el buscador sólo muestra nombres."""
+    try:
+        with io.open(os.path.join(BASE, 'datos', 'padron.json'), encoding='utf-8') as f:
+            pad = json.load(f) or []
+    except (OSError, ValueError):
+        return []
+    return [[str(x.get('full') or x.get('raw') or '')[:60], str(x.get('pais') or '')[:30]]
+            for x in pad if isinstance(x, dict) and (x.get('full') or x.get('raw'))][:3000]
+
+
 def para_web(preguntas):
     """`[{id, tipo, sec, que, pistas, opciones, link, libre, grupo, imp}]`: las preguntas como las ve Dlx en el
     Dashboard, por evento y en el orden de la hoja. Sin los «Reporte»: ésos tienen su pestaña. `libre`: se puede
     escribir «Es <nombre>». `grupo` y `imp` son para los filtros (`GRUPO`, `IMPORTANCIA`)."""
     out = []
+    try:
+        import motor as MO
+        tab = MO.tablas_guardadas()[0]
+    except Exception:                                    # noqa: BLE001
+        tab = {}
+    try:
+        with io.open(os.path.join(BASE, 'datos', 'finales.json'), encoding='utf-8') as f:
+            fin = json.load(f) or {}
+    except (OSError, ValueError):
+        fin = {}
+    ll = _llaves_t1()
     for tit, ps in secciones([p for p in preguntas if p['tipo'] != 'Reporte']):
         for p in ps:
             link = str(p.get('link') or '')
+            ef, igual = efectos(p, ll, tab)
             out.append({'id': p['id'], 'tipo': p['tipo'], 'sec': str(tit)[:120], 'que': str(p.get('que') or '')[:400],
                         'pistas': str(p.get('pistas') or '')[:900], 'opciones': [str(x)[:80] for x in p.get('opciones') or []][:14],
                         'link': link if link.startswith('https://discord.com/') else '',
                         'libre': p['tipo'] == 'Nombre desconocido',
-                        'grupo': GRUPO.get(p['tipo'], (4, p['tipo']))[1], 'imp': IMPORTANCIA.get(p['tipo'], 'media')})
+                        'grupo': GRUPO.get(p['tipo'], (4, p['tipo']))[1], 'imp': IMPORTANCIA.get(p['tipo'], 'media'),
+                        # 🧮 qué cobra cada uno con cada respuesta, y ⏳ cuándo se cierra sola (11/11/2026)
+                        'efectos': {k[:80]: [[str(n)[:40], int(v)] for n, v in xs[:12]] for k, xs in ef.items()},
+                        'igual': bool(ef) and igual, 'vence': vence_de(p, fin),
+                        'sug': str(p.get('sug') or '')[:120] if str(p.get('sug') or '') not in ('—', '') else ''})
     return out[:150]
 
 
@@ -4731,7 +4845,8 @@ def deshacer_web():
 def publicar_web(preguntas):
     """Las preguntas abiertas, al Dashboard, y lo que se resolvió solo en los últimos `SOLAS_DIAS` días (`solas`, con
     la regla y la prueba, para «Deshacer»). El objeto borra lo contestado de las que ya no están (se aplicaron)."""
-    d = _objeto('POST', '/avisos/decidir-estados', {'preguntas': para_web(preguntas), 'solas': solas_web()})
+    d = _objeto('POST', '/avisos/decidir-estados', {'preguntas': para_web(preguntas), 'solas': solas_web(),
+                                                     'lista': lista_web()})
     print('   🌐 %s' % ('%d pregunta(s) en el Dashboard' % len(para_web(preguntas)) if d else
                         '⚠️ el objeto no contestó: el Dashboard queda con las de antes'))
     return bool(d)
@@ -5929,6 +6044,34 @@ def _self_check():
            and nadie_como_las_demas(_d6, dict(_bd, **{'demuzbekistanfecha2|FFA|13/10|octavos|x|y': {'ganador': 'X'}}), []) is None
            and nadie_como_las_demas(_d6.replace('octavos', 'cuartos'), _bd, []) is None,
            'R6: si todas las demás de esa ronda son «nadie siguió», ésta también; con otra abierta o un ganador, no')
+        # R22 · la de equipos (la #491): cualquier respuesta paga lo mismo; un trío de personas sueltas, no
+        ok(de_equipos(['MAJIZTRAL 🇨🇴 + MINIBOY 🇨🇱', 'MCO 🇦🇷 + MATHIAS 🇻🇪']) and de_equipos(['Oasis, Letrao', 'Verc & Tam'])
+           and not de_equipos(['Dios 🇲🇽', 'Lvel 🇻🇪', 'Iguana 🇵🇪']) and not de_equipos(['YIN - SON', 'Ana + Bea'])
+           and not de_equipos(['Ana + Bea']) and 'R22' in REGLAS,
+           'R22: todos los lados son equipos («+», «,» o «&»); un trío suelto o un lado de uno, no')
+        # 🧮 lo que paga cada respuesta: la NOCHE DE BOOMBAP (8-15) y la #491 (pandillas, 16+)
+        _llb = {'415': {'nombre': 'NOCHE DE BOOMBAP', 'sv': 'DDF', 'fecha': '06/10', 'escala': '8-15', 'rondas': [
+            {'r': 'Cuartos', 'b': [[['ERIAN EL MAS WACK🇱🇰', 'XNOAH🇦🇷'], '', '']]},
+            {'r': 'Semifinales', 'b': [[['Erian', 'CrisZJ'], 'Erian', '']]}]},
+            '491': {'nombre': 'FATS', 'sv': 'ACAD', 'fecha': '19/10', 'escala': '16+', 'rondas': [
+                {'r': 'Cuartos', 'b': [[['MAJIZTRAL 🇨🇴 + MINIBOY 🇨🇱', 'MCO 🇦🇷 + MATHIAS 🇻🇪'], '', '']]},
+                {'r': 'Semifinales', 'b': [[['Erian', 'Makmah, MCO, Majiztral'], 'Erian', '']]}]}}
+        _tb = {'8-15': {'cuartos': 2000}, '16+': {'cuartos': 2500}}
+        _pb = {'tipo': 'Batalla sin ganador', 'detalle': 'NOCHE DE BOOMBAP · DDF · 06/10 · cuartos · ERIAN EL MAS WACK🇱🇰 🆚 XNOAH🇦🇷'}
+        _pb['opciones'] = _pregunta(dict(_pb, match=''))[2]
+        _eb, _ib = efectos(_pb, _llb, _tb)
+        _pe = {'tipo': 'Batalla sin ganador', 'detalle': 'FATS · ACAD · 19/10 · cuartos · MAJIZTRAL 🇨🇴 + MINIBOY 🇨🇱 🆚 MCO 🇦🇷 + MATHIAS 🇻🇪'}
+        _pe['opciones'] = _pregunta(dict(_pe, match=''))[2]
+        _ee, _ie = efectos(_pe, _llb, _tb)
+        ok(_eb['Ganó XNOAH🇦🇷'] == [['ERIAN EL MAS WACK🇱🇰', 2000], ['XNOAH🇦🇷', 0]] and _eb[NADIE_SIGUIO][1] == ['XNOAH🇦🇷', 2000]
+           and not _ib and _ie and _ee[NADIE_SIGUIO] == [['MINIBOY 🇨🇱', 1250], ['MATHIAS 🇻🇪', 1250]]
+           and _ee[NO_SE_JUGO] == [['MINIBOY 🇨🇱', 0], ['MATHIAS 🇻🇪', 0]] and efectos(dict(_pb, detalle='X · Y · 1/1 · final · a 🆚 b'), _llb, _tb) == ({}, False),
+           'lo que paga cada respuesta: en el 1 contra 1 el que gana y no sigue, 0; en equipos todas pagan lo mismo; quien sigue no se nombra')
+        _fin = {'1': {'evento': 'NOCHE DE BOOMBAP', 't_pregunta': '2026-11-11T20:00:00+00:00',
+                      'preguntas': [{'ronda': 'CUARTOS', 'lados': ['XNOAH🇦🇷', 'ERIAN EL MAS WACK🇱🇰']}]}}
+        ok(vence_de(_pb, _fin) == int(datetime.datetime(2026, 11, 13, 20, tzinfo=datetime.timezone.utc).timestamp() * 1000)
+           and vence_de(_pb, {'1': dict(_fin['1'], t_pregunta='')}) == 0 and vence_de(_pe, _fin) == 0,
+           'cuándo se cierra sola: 48 h después de preguntarle al organizador; lo que no se le preguntó, nunca')
         # R3 · el alta que buscó otro, y el texto
         _qa = {'id': 'a9', 'tipo': 'alta', 'detalle': 'Seba = 1382549511775191060', 'match': 'sv FFA', 'sug': '—'}
         ok(_por_otro('sv FFA') and _por_otro('sv FFA · lo buscó otra persona con /card')

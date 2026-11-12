@@ -11,6 +11,16 @@
  ],
  "cambios": [
     {
+        "version": "4.51",
+        "dia": "2026-11-11",
+        "cuando": "2026-11-11T21:38:03-05:00",
+        "titulo": "En equipos, ganar y no seguir también cobra",
+        "items": [
+            "**En las batallas de equipos** (pandillas, 2v2), quien gana y no sigue en la llave cobra su parte de esa ronda, como el equipo que la perdió.",
+            "**En el 1 contra 1** sigue igual: si alguien gana y no sigue, se decide caso por caso."
+        ]
+    },
+    {
         "version": "4.50",
         "dia": "2026-11-11",
         "cuando": "2026-11-11T21:12:55-05:00",

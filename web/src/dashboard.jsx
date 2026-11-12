@@ -3066,7 +3066,82 @@ const HACE = [
 ];
 const haceQue = (o) => (HACE.find(([re]) => re.test(o)) || [0, ''])[1];
 
-function Pregunta({ p, r, alListo, marcada, alMarcar }) {
+// 🧮 LO QUE PAGA CADA RESPUESTA (Dlx, 11/11/2026, la maqueta de ✅ Decidir: «Dale, arma A»). Lo calcula el ciclo
+// (`decidir.efectos()`): qué cobra DE ESA RONDA cada uno de los que no siguen. Acá se muestra sólo a quien le cambia algo
+// según la respuesta: el resto cobra lo mismo pase lo que pase
+const NO_JUGO = 'No se jugó';
+function varian(p) {
+  const por = {};
+  for (const [k, xs] of Object.entries((p && p.efectos) || {})) {
+    if (k !== NO_JUGO) for (const [n, v] of xs) (por[n] = por[n] || new Set()).add(v);
+  }
+  return new Set(Object.keys(por).filter((n) => por[n].size > 1));
+}
+// cuánto mueve una pregunta: la mayor diferencia, para una misma persona, entre dos respuestas
+function impacto(p) {
+  if (!p || p.igual) return 0;
+  const por = {};
+  for (const [k, xs] of Object.entries(p.efectos || {})) {
+    if (k !== NO_JUGO) for (const [n, v] of xs) (por[n] = por[n] || []).push(v);
+  }
+  return Math.max(0, ...Object.values(por).map((vs) => Math.max(...vs) - Math.min(...vs)));
+}
+function efectoDe(p, op, vs) {
+  const xs = (p.efectos || {})[op];
+  if (!xs || !xs.length) return '';
+  if (op === NO_JUGO) return 'nadie cobra esta ronda';
+  return xs.filter(([n]) => vs.has(n)).map(([n, v]) => limpio(n) + (v ? ' cobra ' + num(v) : ' queda en 0')).join(' · ');
+}
+const ordenOps = (p) => (p.sug && p.opciones.includes(p.sug) ? [p.sug, ...p.opciones.filter((x) => x !== p.sug)] : p.opciones);
+const enHoras = (t) => { const h = Math.round((t - Date.now()) / 36e5); return h >= 1 ? h + ' h' : 'menos de una hora'; };
+// ⏳ el anillo de las 48 h (`bot/finales.py`): se vacía hasta que el ciclo la cierra con «Nadie siguió»
+function Anillo({ vence }) {
+  const f = Math.max(0, Math.min(1, (vence - Date.now()) / (48 * 36e5)));
+  const ya = vence <= Date.now();
+  return (
+    <p className="dz-anillo"><svg viewBox="0 0 36 36" width="30" height="30" aria-hidden="true"><circle cx="18" cy="18" r="15" className="dz-an-f" />
+      <circle cx="18" cy="18" r="15" className="dz-an-v" strokeDasharray={(94.2 * f).toFixed(1) + ' 94.2'} transform="rotate(-90 18 18)" /></svg>
+      <span>{ya ? 'Ya pasaron las 48 h: el ciclo la cierra con «Nadie siguió» en su próxima vuelta.'
+        : <>Se le preguntó al organizador. Si nadie contesta, en <b>{enHoras(vence)}</b> cuenta como «Nadie siguió».</>}</span></p>
+  );
+}
+// 🔎 EL BUSCADOR DE LA LISTA (la maqueta: «en vez de hacerme buscar un usuario… un dropdown»). La Lista la manda el ciclo
+// (`decidir.lista_web()`); primero los de la MISMA bandera que el nombre de la pregunta, que es lo que separa a dos
+// desconocidos con el mismo nombre (MATHIAS 🇻🇪 es Mathhias 🇻🇪, no MathiasMC 🇨🇴)
+const planoB = (s) => String(s || '').toLowerCase().normalize('NFD').replace(/[^\p{L}\p{N}]/gu, '');
+const BANDERA_RE = /\p{Regional_Indicator}{2}/u;
+const sinMarcas = (s) => String(s || '').replace(/\p{Regional_Indicator}|❓/gu, '').replace(/\s+/g, ' ').trim();
+function BuscaLista({ lista, nombre, ocup, onElegir }) {
+  const [q, setQ] = useState(() => sinMarcas(nombre));
+  const [act, setAct] = useState(0);
+  const flag = (String(nombre || '').match(BANDERA_RE) || [])[0] || '';
+  const k = planoB(q);
+  const xs = k.length < 2 ? [] : (lista || []).filter(([n]) => planoB(n).includes(k))
+    .sort((a, b) => (flag ? b[0].includes(flag) - a[0].includes(flag) : 0) || planoB(a[0]).indexOf(k) - planoB(b[0]).indexOf(k)
+      || a[0].length - b[0].length).slice(0, 8);
+  const elegir = (n) => onElegir(sinMarcas(n));
+  const tecla = (e) => {
+    if (e.key === 'ArrowDown' || e.key === 'ArrowUp') { e.preventDefault(); setAct((i) => Math.max(0, Math.min(xs.length - 1, i + (e.key === 'ArrowDown' ? 1 : -1)))); }
+    else if (e.key === 'Enter' && xs[act]) { e.preventDefault(); elegir(xs[act][0]); }
+  };
+  return (
+    <div className="dz-bus">
+      <label htmlFor={'bus-' + k.slice(0, 8)}>Es alguien de la Lista</label>
+      <input id={'bus-' + k.slice(0, 8)} type="text" value={q} autoComplete="off" maxLength={56} disabled={ocup} role="combobox"
+        aria-expanded={xs.length > 0} aria-controls="dz-bus-l" onChange={(e) => { setQ(e.target.value); setAct(0); }} onKeyDown={tecla} />
+      {xs.length ? (
+        <ul id="dz-bus-l" role="listbox">{xs.map(([n, pais], i) => (
+          <li key={n} role="option" aria-selected={i === act}><button type="button" disabled={ocup} className={i === act ? 'on' : ''} onClick={() => elegir(n)}>
+            <span><b>{n}</b><small>{pais || 'sin país en la Lista'}</small></span>
+            {flag ? <em className={n.includes(flag) ? 'ok' : 'no'}>{n.includes(flag) ? 'misma bandera' : BANDERA_RE.test(n) ? 'otra bandera' : 'sin bandera'}</em> : null}
+          </button></li>
+        ))}</ul>
+      ) : k.length >= 2 ? <p className="dz-bus-nada">Nadie en la Lista se llama así.</p> : null}
+    </div>
+  );
+}
+
+function Pregunta({ p, r, alListo, marcada, alMarcar, lista }) {
   const [libre, setLibre] = useState('');
   const [nota, setNota] = useState((r && r.nota) || '');
   const [ocup, setOcup] = useState(false);
@@ -3091,12 +3166,24 @@ function Pregunta({ p, r, alListo, marcada, alMarcar }) {
           <button type="button" className="btn borde2 chico" disabled={ocup} onClick={() => mandar({ borrar: true })}>Deshacer</button>
         </div>
       ) : <>
-        <div className="db-opc">{p.opciones.map((x) => <button key={x} type="button" disabled={ocup} title={haceQue(x)} onClick={() => mandar({ r: x, nota })}>{x}</button>)}</div>
+        {p.igual ? <p className="dz-igual">Cualquier respuesta paga lo mismo a todos.</p> : null}
+        <div className="db-opc">{ordenOps(p).map((x) => {
+          const ef = efectoDe(p, x, varian(p));
+          const su = !!p.sug && x === p.sug;
+          return (
+            <button key={x} type="button" disabled={ocup} title={haceQue(x)} className={(ef || su ? 'dz-op' : '') + (su ? ' sug' : '')} onClick={() => mandar({ r: x, nota })}>
+              {su ? <em className="dz-op-sug">Lo que sugiere el bot</em> : null}<span>{x}</span>{ef ? <small className="dz-op-ef">{ef}</small> : null}</button>
+          );
+        })}</div>
+        {p.vence ? <Anillo vence={p.vence} /> : null}
         {p.opciones.some(haceQue) ? (
           <details className="db-dec-hace"><summary>Qué hace cada respuesta</summary>
             <ul>{p.opciones.filter(haceQue).map((x) => <li key={x}><b>{x}</b>: {haceQue(x)}</li>)}</ul>
           </details>) : null}
-        {p.libre ? (
+        {p.libre && (lista || []).length ? (
+          <BuscaLista lista={lista} nombre={((String(p.que || '').match(/«([^»]+)»/) || [])[1]) || ''} ocup={ocup}
+            onElegir={(n) => mandar({ r: 'Es ' + n, nota })} />
+        ) : p.libre ? (
           <div className="db-rep-q"><label>Es otro de la Lista:
             <input type="text" value={libre} placeholder="su nombre como figura en la Lista" maxLength={56} onChange={(e) => setLibre(e.target.value)} />
             <button type="button" className="btn verde chico" disabled={ocup || !libre.trim()} onClick={() => mandar({ r: 'Es ' + libre.trim(), nota })}>Es éste</button>
@@ -3475,7 +3562,7 @@ const linea1 = (s) => String(s || '').split('\n').map((x) => x.trim()).find(Bool
 function itemsBandeja(d, ver) {
   const xs = [];
   const dec = d.decidir || {}, rs = dec.respuestas || {};
-  if (ver.quien) for (const p of dec.preguntas || []) if (!rs[p.id]) xs.push({ k: 'q' + p.id, tipo: 'quien', t: msDe(dec.t), titulo: linea1(p.que), sub: p.sec || p.tipo, p });
+  if (ver.quien) for (const p of dec.preguntas || []) if (!rs[p.id]) xs.push({ k: 'q' + p.id, tipo: 'quien', t: msDe(dec.t), titulo: linea1(p.que), sub: p.tipo, p, pts: impacto(p) });
   if (ver.llave) for (const r of d.reportes || []) if (r.estado === '' || r.estado === 'no_pude') {
     const llave = /^\d+$/.test(r.llave) ? 'Llave #' + r.llave : String(r.llave).startsWith('liga:') ? 'Una liga' : String(r.llave).startsWith('perfil:') ? 'Un perfil' : 'Una llave en vivo';
     xs.push({ k: 'r' + r.id, tipo: 'llave', t: msDe(r.t), titulo: llave + ' · ' + (QUE_REP[r.que] || r.que), sub: r.texto || (r.de ? 'lo mandó ' + r.de : ''), r });
@@ -3488,7 +3575,12 @@ function itemsBandeja(d, ver) {
   if (ver.video) for (const v of d.videos || []) xs.push({ k: 'v' + v[0], tipo: 'video', t: 0, titulo: v[2] || v[3], sub: 'lo reclama ' + limpio(v[1]) + ' · ' + v[4], v });
   if (ver.pedido) for (const p of d.pedidos || []) if (p.estado === '') xs.push({ k: 'd' + p.id, tipo: 'pedido', t: msDe(p.t), titulo: PED_TIPO[p.tipo] || p.tipo, sub: p.k ? 'de ' + p.k : '', ped: p });
   const urg = (x) => (TIPO_B[x.tipo][1] === 'urg' ? 0 : 1);
-  return xs.sort((a, b) => urg(a) - urg(b) || b.t - a.t);
+  // 🧮 las de ✅ Decidir, por evento: primero el evento que más puntos mueve, y adentro la que más mueve (11/11/2026)
+  const evMax = {};
+  for (const x of xs) if (x.tipo === 'quien') evMax[x.p.sec] = Math.max(evMax[x.p.sec] || 0, x.pts || 0);
+  return xs.sort((a, b) => urg(a) - urg(b) || (a.tipo === 'quien' && b.tipo === 'quien'
+    ? (evMax[b.p.sec] || 0) - (evMax[a.p.sec] || 0) || String(a.p.sec || '').localeCompare(String(b.p.sec || '')) || (b.pts || 0) - (a.pts || 0)
+    : b.t - a.t));
 }
 
 // 🖼️ una imagen para revisar: aprobar, o no con su motivo (el mismo pedido que hacían las tres cajas de antes)
@@ -3671,14 +3763,98 @@ function DetallePedido({ p, liga, alCambiar }) {
   );
 }
 
-// ❓ una pregunta de ✅ Decidir, con la llave al lado
-function DetalleQuien({ it, d, alCambiar }) {
-  const p = it.p;
+// ✋ «LO TOMO» Y LAS NOTAS INTERNAS (11/11/2026, la maqueta: «dos del staff no hacen el mismo»). Lo guarda el objeto
+// (`duenoCaso()`); a diferencia de «lo está viendo», no vence a los 10 minutos. La nota la ve el staff, nunca la persona
+function Caso({ k, casos, yo, cambiarD }) {
+  const c = (casos || {})[k] || {};
+  const [nota, setNota] = useState('');
+  const [ocup, setOcup] = useState(false);
+  const [msg, setMsg] = useState('');
+  const pedir = (cuerpo) => {
+    setOcup(true); setMsg('');
+    fetch('/api/avisos/dueno/caso', { method: 'POST', credentials: 'same-origin', headers: { 'content-type': 'application/json' },
+      body: JSON.stringify(Object.assign({ k }, cuerpo)) })
+      .then(async (rq) => ({ rq, j: await rq.json().catch(() => ({})) }))
+      .then(({ rq, j }) => { setOcup(false); if (rq.ok && j.casos) { cambiarD({ casos: j.casos }); if (cuerpo.nota) setNota(''); } else setMsg('No se pudo: ' + (j.error || rq.status)); })
+      .catch(() => { setOcup(false); setMsg('No se pudo: la red.'); });
+  };
+  const mio = !!c.tomo && !!yo && c.tomo.por === yo;
   return (
-    <div className="db-dec-cuerpo dz-quien">
-      <ul className="dz-solo"><Pregunta p={p} r={null} alListo={(y) => alCambiar({ decidir: y })} /></ul>
-      <LlaveAlCostado s={{ sec: p.sec, ps: [p] }} />
+    <div className="dz-caso">
+      <div className="dz-caso-t">
+        <span>{c.tomo ? <>✋ Lo tomó <b>{mio ? 'tú' : c.tomo.por}</b> {hace(c.tomo.t)}</> : 'Nadie lo tomó todavía.'}</span>
+        <button type="button" className="btn borde2 chico" disabled={ocup} onClick={() => pedir({ tomo: !mio })}>{mio ? 'Soltarlo' : c.tomo ? 'Tomarlo yo' : 'Lo tomo'}</button>
+      </div>
+      {(c.notas || []).map((n, i) => <p key={i} className="dz-nota"><b>{n.por}</b> <small>{hace(n.t)}</small> {n.txt}</p>)}
+      <form className="dz-nota-f" onSubmit={(e) => { e.preventDefault(); if (nota.trim()) pedir({ nota }); }}>
+        <input type="text" value={nota} maxLength={300} disabled={ocup} aria-label="Nota interna" placeholder="Nota interna: la ve el staff, nunca la persona"
+          onChange={(e) => setNota(e.target.value)} />
+        <button type="submit" className="btn borde2 chico" disabled={ocup || !nota.trim()}>Anotar</button>
+      </form>
+      {msg ? <small role="status">{msg}</small> : null}
     </div>
+  );
+}
+
+// 🏆 EL CUADRO DEL EVENTO (la opción B de la maqueta, para alternar con la A: «muéstrame cómo se vería B también»): la
+// llave entera de ese evento, y cada batalla que espera respuesta se toca para contestarla ahí mismo
+const ladosDe = (p) => {
+  const l = String((p && p.que) || '').split('\n').find((x) => x.includes('🆚'));
+  return l ? l.split('🆚').map(sinB).filter(Boolean).sort() : [];
+};
+function CuadroEvento({ p, hermanas, elegir }) {
+  const n = (String(p.sec || '').match(/#(\d+)/) || [])[1] || '';
+  const [ll, setLl] = useState(null);
+  useEffect(() => {
+    let vivo = true;
+    if (n) pedirLlaves().then((t) => { if (vivo && t) setLl(t[n] || null); });
+    return () => { vivo = false; };
+  }, [n]);
+  const rondas = ll && (ll.rondas || []).length ? ll.rondas : rondasDePistas(hermanas.map((h) => h.p));
+  const porLados = new Map(hermanas.map((h) => [ladosDe(h.p).join('|'), h]));
+  const esta = ladosDe(p).join('|');
+  if (!rondas.length) return <p className="db-tx">Esta llave todavía no tiene cuadro: contéstala en «Una por vez».</p>;
+  return (
+    <div className="dz-cuadro" aria-label={'El cuadro de ' + (p.sec || 'este evento')}>{rondas.map((r) => (
+      <div key={r.r} className="dz-cu-col"><b>{r.r}</b>{(r.b || []).map((b, i) => {
+        const key = (b[0] || []).map(sinB).sort().join('|');
+        const h = !b[1] ? porLados.get(key) : null;
+        const lados = (b[0] || []).map((x, j) => <span key={j} className={b[1] && sinB(x) === sinB(b[1]) ? 'g' : ''}>{limpio(x)}</span>);
+        return h ? (
+          <button key={i} type="button" className={'dz-cu-b duda' + (key === esta ? ' on' : '')} onClick={() => elegir(h)} aria-current={key === esta ? 'true' : undefined}>
+            {lados}<em>{key === esta ? 'contestando' : 'contestar'}</em></button>
+        ) : <div key={i} className={'dz-cu-b' + (b[1] ? '' : ' sin')}>{lados}{!b[1] ? <em>sin ganador</em> : null}</div>;
+      })}</div>
+    ))}</div>
+  );
+}
+
+// ❓ una pregunta de ✅ Decidir, con la llave al lado (la A) o con el cuadro del evento (la B)
+const CUADRO = 'lg:db-cuadro';
+function DetalleQuien({ it, d, alCambiar, hermanas, elegir, cambiarD }) {
+  const p = it.p;
+  const [cuadro, setCuadro0] = useState(() => { try { return localStorage.getItem(CUADRO) === '1'; } catch (e) { return false; } });
+  const setCuadro = (v) => { setCuadro0(v); try { localStorage.setItem(CUADRO, v ? '1' : '0'); } catch (e) { /* vuelve a la A */ } };
+  const bat = ladosDe(p).length >= 2;
+  const enCuadro = cuadro && bat;
+  return (
+    <>
+      {bat ? (
+        <div className="dz-vista" role="group" aria-label="Cómo verla">
+          <button type="button" className={'dz-sub' + (!enCuadro ? ' on' : '')} aria-pressed={!enCuadro} onClick={() => setCuadro(false)}>Una por vez</button>
+          <button type="button" className={'dz-sub' + (enCuadro ? ' on' : '')} aria-pressed={enCuadro} onClick={() => setCuadro(true)}>
+            Cuadro del evento{(hermanas || []).length > 1 ? <i>{hermanas.length}</i> : null}</button>
+        </div>
+      ) : null}
+      <div className={'db-dec-cuerpo dz-quien' + (enCuadro ? ' dz-con-cuadro' : '')}>
+        {enCuadro ? <CuadroEvento p={p} hermanas={hermanas || [it]} elegir={elegir} /> : null}
+        <div className="dz-q-col">
+          <ul className="dz-solo"><Pregunta p={p} r={null} lista={(d.decidir || {}).lista} alListo={(y) => alCambiar({ decidir: y })} /></ul>
+          <Caso k={kViendo(it.k)} casos={d.casos} yo={d.yo} cambiarD={cambiarD} />
+        </div>
+        {!enCuadro ? <LlaveAlCostado s={{ sec: p.sec, ps: [p] }} /> : null}
+      </div>
+    </>
   );
 }
 
@@ -3715,7 +3891,12 @@ function Bandeja({ d, liga, ve, cambiarD, sub }) {
   const pospuestos = todos0.filter(dormido);
   const cuenta = {};
   for (const x of todos) cuenta[x.tipo] = (cuenta[x.tipo] || 0) + 1;
-  const xs = (filtro === 'posp' ? pospuestos : todos).filter((x) => (!filtro || filtro === 'posp' || x.tipo === filtro) && contiene([x.titulo, x.sub], q));
+  // ✋ «Mis casos»: los que tomé yo (`duenoCaso()` del objeto)
+  const casos = d.casos || {};
+  const tomo = (x) => (casos[kViendo(x.k)] || {}).tomo || null;
+  const mios = todos.filter((x) => d.yo && (tomo(x) || {}).por === d.yo);
+  const xs = (filtro === 'posp' ? pospuestos : filtro === 'mios' ? mios : todos)
+    .filter((x) => (!filtro || filtro === 'posp' || filtro === 'mios' || x.tipo === filtro) && contiene([x.titulo, x.sub, x.p && x.p.sec], q));
   const viejo = todos.reduce((m, x) => (x.t && (!m || x.t < m) ? x.t : m), 0);
   const i0 = Math.max(0, xs.findIndex((x) => x.k === sel));
   const it = xs[i0] || null;
@@ -3777,7 +3958,8 @@ function Bandeja({ d, liga, ve, cambiarD, sub }) {
         <div className="dz-subs" role="tablist" aria-label="Qué mirar">{FILTROS_B.filter(([k]) => !k || ver[k]).map(([k, t]) => (
           <button key={k || 'todo'} type="button" role="tab" aria-selected={filtro === k} className={'dz-sub' + (filtro === k ? ' on' : '')}
             onClick={() => { setFiltro(k); setSel(''); setListaDec(false); }}>{t}{(k ? cuenta[k] : todos.length) ? <i>{k ? cuenta[k] : todos.length}</i> : null}</button>
-        ))}{pospuestos.length ? <button type="button" role="tab" aria-selected={filtro === 'posp'} className={'dz-sub dz-sub-posp' + (filtro === 'posp' ? ' on' : '')}
+        ))}{mios.length ? <button type="button" role="tab" aria-selected={filtro === 'mios'} className={'dz-sub' + (filtro === 'mios' ? ' on' : '')}
+          onClick={() => { setFiltro('mios'); setSel(''); setListaDec(false); }}>✋ Mis casos<i>{mios.length}</i></button> : null}{pospuestos.length ? <button type="button" role="tab" aria-selected={filtro === 'posp'} className={'dz-sub dz-sub-posp' + (filtro === 'posp' ? ' on' : '')}
           onClick={() => { setFiltro('posp'); setSel(''); setListaDec(false); }}>💤 Pospuestos<i>{pospuestos.length}</i></button> : null}</div>
         <label className="db-buscar dz-band-q"><Ico n="buscar" t={16} />
           <input ref={buscar} type="search" value={q} placeholder="Buscar un nombre o una llave ( / )" aria-label="Buscar en los pendientes" onChange={(e) => setQ(e.target.value)} /></label>
@@ -3795,21 +3977,36 @@ function Bandeja({ d, liga, ve, cambiarD, sub }) {
         <div className="dz-vacio"><b>✓ Al día</b><span>No hay nada esperando una decisión tuya.</span></div>
       ) : (
         <div className="dz-band-g">
-          <ol className="dz-band-l" aria-label="Lo que espera">{xs.map((x) => (
-            <li key={x.k}><button type="button" className={'dz-it' + (it && x.k === it.k ? ' on' : '')} aria-current={it && x.k === it.k ? 'true' : undefined} onClick={() => elegir(x)}>
-              <span className={'dz-tipo ' + TIPO_B[x.tipo][1]}>{TIPO_B[x.tipo][0]}</span>
-              <b>{x.titulo}</b>
-              {x.sub ? <small>{x.sub}</small> : null}
-              {x.t ? <small className={'dz-it-t ' + edadDe(x.t)}>{hace(x.t)}{edadDe(x.t) === 'mal' ? ' · VIEJO' : ''}</small> : null}
-              {quienVe(x) ? <small className="dz-it-ve">👀 {quienVe(x)} lo está viendo</small> : null}
-            </button></li>
+          <ol className="dz-band-l" aria-label="Lo que espera">{xs.map((x, i) => (
+            <Fragment key={x.k}>
+              {/* 🗂️ las de ✅ Decidir, agrupadas por evento (la maqueta, opción A) */}
+              {x.tipo === 'quien' && (i === 0 || xs[i - 1].tipo !== 'quien' || xs[i - 1].p.sec !== x.p.sec)
+                ? <li className="dz-ev-h">{x.p.sec || 'Sin evento'}</li> : null}
+              <li><button type="button" className={'dz-it' + (it && x.k === it.k ? ' on' : '') + (x.tipo === 'quien' ? (x.pts ? ' mueve' : ' quieta') : '')}
+                aria-current={it && x.k === it.k ? 'true' : undefined} onClick={() => elegir(x)}>
+                {x.tipo !== 'quien' ? <span className={'dz-tipo ' + TIPO_B[x.tipo][1]}>{TIPO_B[x.tipo][0]}</span> : null}
+                <b>{x.titulo}</b>
+                {x.sub ? <small>{x.sub}</small> : null}
+                {x.tipo === 'quien' && (x.pts || x.p.igual || x.p.vence || tomo(x)) ? (
+                  <span className="dz-chips">
+                    {x.pts ? <em className="dz-ch v">mueve {num(x.pts)}</em> : null}
+                    {x.p.igual ? <em className="dz-ch">no mueve puntos</em> : null}
+                    {x.p.vence ? <em className="dz-ch a">{x.p.vence > Date.now() ? 'se cierra en ' + enHoras(x.p.vence) : 'se cierra ya'}</em> : null}
+                    {tomo(x) ? <em className="dz-ch t">✋ {tomo(x).por === d.yo ? 'tú' : tomo(x).por}</em> : null}
+                  </span>
+                ) : null}
+                {x.t && x.tipo !== 'quien' ? <small className={'dz-it-t ' + edadDe(x.t)}>{hace(x.t)}{edadDe(x.t) === 'mal' ? ' · VIEJO' : ''}</small> : null}
+                {quienVe(x) ? <small className="dz-it-ve">👀 {quienVe(x)} lo está viendo</small> : null}
+              </button></li>
+            </Fragment>
           ))}{!xs.length ? <li className="dz-it-nada">Nada con este filtro{q ? ' y «' + q + '»' : ''}.</li> : null}</ol>
           <article className="dz-det" ref={det} aria-live="polite">
             {it ? <>
               <span className={'dz-tipo ' + TIPO_B[it.tipo][1]}>{TIPO_B[it.tipo][0]} · {i0 + 1} DE {xs.length}</span>
               <h3 className="dz-det-t">{it.titulo}</h3>
               {quienVe(it) ? <p className="dz-ve">👀 <b>{quienVe(it)}</b> también lo tiene abierto: fíjate antes de decidir para no hacerlo dos veces.</p> : null}
-              {it.tipo === 'quien' ? <DetalleQuien key={it.k} it={it} d={d} alCambiar={alCambiar} /> : null}
+              {it.tipo === 'quien' ? <DetalleQuien key={it.k} it={it} d={d} alCambiar={alCambiar} cambiarD={cambiarD} elegir={elegir}
+                hermanas={xs.filter((x) => x.tipo === 'quien' && x.p.sec === it.p.sec)} /> : null}
               {it.tipo === 'llave' ? <DetalleLlave key={it.k} it={it} liga={liga} d={d} alCambiar={alCambiar} corrige={ve('reportes')} /> : null}
               {it.tipo === 'imagen' ? <DetalleImagen key={it.k} it={it} alCambiar={alCambiar} motivo={motivo} setMotivo={setMotivo} /> : null}
               {it.tipo === 'video' ? <DetalleVideo key={it.k} it={it} alCambiar={alCambiar} /> : null}

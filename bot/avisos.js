@@ -3393,6 +3393,8 @@ const RUTAS = {
   '/avisos/dueno/reporte': 'POST', '/avisos/reportes-estados': 'POST',
   // 👀 quién está mirando qué caso de Pendientes (25/10/2026). Ver `duenoViendo()`
   '/avisos/dueno/viendo': 'POST',
+  // ✋ «Lo tomo» y las notas internas de cada caso de Pendientes (11/11/2026). Ver `duenoCaso()`
+  '/avisos/dueno/caso': 'POST',
   // 🗂️ la ficha de una persona para el staff, y las notas del staff sobre ella (25/10/2026). Ver `duenoFicha()`
   '/avisos/dueno/ficha': 'POST', '/avisos/dueno/nota': 'POST',
   // ✅ Decidir en el Dashboard (13/10/2026, Dlx: «Sí, con Reportes»): el ciclo publica las preguntas y lee lo
@@ -6327,6 +6329,23 @@ export async function rutaAvisos(req, env, ruta) {
       method: 'POST', body: JSON.stringify(cuerpo), headers: { 'content-type': 'application/json' },
     });
   }
+  // ✋ LO TOMO Y LAS NOTAS INTERNAS (Dlx, 11/11/2026, la maqueta de ✅ Decidir: «Dale, arma A»). Quien ve el panel
+  if (ruta === '/avisos/dueno/caso') {
+    const crudo = await req.text();
+    if (crudo.length > 1024) return json({ error: 'demasiado grande' }, 413);
+    let d = null;
+    try { d = JSON.parse(crudo || '{}'); } catch (e) { d = null; }
+    if (!d || typeof d !== 'object' || !/^[a-z][0-9A-Za-z:_.-]{1,80}$/.test(String(d.k || ''))
+        || (d.tomo !== undefined && typeof d.tomo !== 'boolean') || (d.nota !== undefined && typeof d.nota !== 'string')) {
+      return json({ error: 'faltan datos' }, 400);
+    }
+    const q = await quienPide(req, env, d);
+    if (!q.id) return json({ error: q.error }, q.estado);
+    if (!(await puede(q.id, 'panel'))) return json({ error: 'no' }, 403);
+    return elObjeto(env).fetch('https://avisos/dueno-caso', {
+      method: 'POST', body: JSON.stringify({ k: d.k, tomo: d.tomo, nota: d.nota, quien: q.id }), headers: { 'content-type': 'application/json' },
+    });
+  }
   if (ruta === '/avisos/dueno/viendo') {
     const crudo = await req.text();
     if (crudo.length > 512) return json({ error: 'demasiado grande' }, 413);
@@ -7856,6 +7875,7 @@ export class Avisos {
       if (ruta === '/dueno-video') return json(this.duenoVideo(d));
       if (ruta === '/dueno-reporte') return json(await this.duenoReporte(d));
       if (ruta === '/dueno-viendo') return json(this.duenoViendo(d));
+      if (ruta === '/dueno-caso') return json(this.duenoCaso(d));
       if (ruta === '/dueno-vuelve') return json(this.avisoVuelve(d));
       if (ruta === '/dueno-ficha') return json(this.duenoFicha(d));
       if (ruta === '/dueno-nota') return json(this.duenoNota(d));
@@ -11764,6 +11784,37 @@ export class Avisos {
    * (`k`, la clave del caso en la bandeja); los demás ven su nombre en la fila. Dura 10 minutos sin volver a anotarlo. Sin
    * `k` sólo lee. Devuelve los de los otros: el propio no hace falta verlo
    */
+  /**
+   * ✋ «LO TOMO» Y LAS NOTAS INTERNAS DE CADA CASO (11/11/2026). `{k, tomo?, nota?, quien}`: `tomo` true lo toma (y se lo
+   * saca a otro: Dlx decide quién sigue), false lo suelta; `nota` suma una línea que ve el staff del Dashboard, nunca la
+   * persona. A diferencia de «lo está viendo», no vence: dura hasta que el caso se cierra y nadie lo vuelve a tocar en 30 días.
+   */
+  duenoCaso(d) {
+    const quien = String((d && d.quien) || ''), k = String((d && d.k) || '');
+    const cs = this.leer('casos') || {};
+    if (/^[a-z][0-9A-Za-z:_.-]{1,80}$/.test(k)) {
+      const c = cs[k] || { tomo: null, notas: [] };
+      if (d.tomo === true) c.tomo = { por: this.nombrePor(quien), quien, t: Date.now() };
+      else if (d.tomo === false && c.tomo && (c.tomo.quien === quien || quien === DUENO)) c.tomo = null;
+      const txt = String(d.nota || '').replace(/\s+/g, ' ').trim().slice(0, 300);
+      if (txt) c.notas = (c.notas || []).concat([{ por: this.nombrePor(quien), t: Date.now(), txt }]).slice(-20);
+      c.t = Date.now();
+      cs[k] = c;
+    }
+    const corte = Date.now() - 30 * DIA_MS;
+    const vivos = Object.entries(cs).filter(([, c]) => c && (c.tomo || (c.notas || []).length) && (c.t || 0) > corte)
+      .sort((a, b) => (b[1].t || 0) - (a[1].t || 0)).slice(0, 300);
+    this.guardar('casos', Object.fromEntries(vivos));
+    return { ok: true, casos: this.casosDueno() };
+  }
+
+  /** Los casos con dueño o con notas, para el Dashboard: sin el Discord ID de quien lo tomó */
+  casosDueno() {
+    const cs = this.leer('casos') || {};
+    return Object.fromEntries(Object.entries(cs).map(([k, c]) => [k, {
+      tomo: c.tomo ? { por: c.tomo.por, t: c.tomo.t } : null, notas: (c.notas || []).map((n) => ({ por: n.por, t: n.t, txt: n.txt })) }]));
+  }
+
   duenoViendo(d) {
     const ahora = Date.now();
     const quien = String(d.quien || '');
@@ -12403,8 +12454,21 @@ export class Avisos {
       link: /^https:\/\/discord\.com\//.test(String(p.link || '')) ? String(p.link) : '', libre: p.libre === true,
       // 🔎 para los filtros (13/10/2026): el grupo y la importancia (`decidir.GRUPO`, `decidir.IMPORTANCIA`). ⚠️ Esto se
       // los comía, así que el filtro de importancia nunca tenía con qué
-      grupo: String(p.grupo || '').slice(0, 40), imp: ['alta', 'media', 'baja'].includes(p.imp) ? p.imp : '' }));
+       grupo: String(p.grupo || '').slice(0, 40), imp: ['alta', 'media', 'baja'].includes(p.imp) ? p.imp : '',
+       // 🧮 qué cobra cada uno con cada respuesta, ⏳ cuándo se cierra sola y 💡 lo que sugiere el bot (11/11/2026,
+       // `decidir.efectos()`, `vence_de()`): sin esto el objeto se los comía, como pasó con el grupo
+       efectos: Object.fromEntries(Object.entries((p.efectos && typeof p.efectos === 'object' && !Array.isArray(p.efectos)) ? p.efectos : {})
+         .slice(0, 14).filter(([, xs]) => Array.isArray(xs)).map(([k, xs]) => [String(k).slice(0, 80),
+           xs.slice(0, 12).filter((y) => Array.isArray(y)).map((y) => [String(y[0] || '').slice(0, 40), Math.max(0, Math.min(100000, Number(y[1]) || 0))])])),
+       igual: p.igual === true, vence: Number(p.vence) > 0 ? Number(p.vence) : 0, sug: String(p.sug || '').slice(0, 120) }));
     this.guardar('decidir_preguntas', { t: Date.now(), preguntas: ps });
+    // 🔎 la Lista entera para el buscador de «Es alguien de la Lista» (11/11/2026): `[nombre con bandera, país]`. Se
+    // reemplaza sólo si cambió (`h`): son ~1.100 nombres y casi nunca se mueven
+    if (Array.isArray(d && d.lista) && d.lista.length) {
+      const lista = d.lista.slice(0, 3000).filter((x) => Array.isArray(x) && x[0]).map((x) => [String(x[0]).slice(0, 60), String(x[1] || '').slice(0, 30)]);
+      const h = String(lista.length) + ':' + lista.map((x) => x[0]).join('|').length;
+      if ((this.leer('decidir_lista') || {}).h !== h) this.guardar('decidir_lista', { h, lista });
+    }
     // 🤖 LO QUE SE RESOLVIÓ SOLO (13/10/2026): lo que una regla del ciclo cerró o contestó, con su prueba. Lo manda el
     // ciclo entero (los últimos 14 días) cada vez: se reemplaza
     if (Array.isArray(d && d.solas)) {
@@ -12454,7 +12518,8 @@ export class Avisos {
     const x = this.leer('decidir_preguntas') || {};
     const c = this.decidirCiclo();
     return { t: x.t || null, preguntas: x.preguntas || [], respuestas: c.respuestas,
-      solas: (this.leer('decidir_solas') || {}).solas || [], deshacer: c.deshacer };
+      solas: (this.leer('decidir_solas') || {}).solas || [], deshacer: c.deshacer,
+      lista: (this.leer('decidir_lista') || {}).lista || [] };
   }
 
   /** Los reportes para el Dashboard: los abiertos y los que esperan al ciclo, y lo decidido en los últimos 3 días. */
@@ -16430,6 +16495,7 @@ export class Avisos {
         decidir: ve('decidir') ? this.decidirDueno() : {}, videos: ve('videos') ? (this.leer('videos_revisar') || []) : [],
         fondos: ve('fondos') ? this.fondosDueno() : [], filtro: ve('fondos') ? this.filtroDueno() : null,
         fondos_vistos: ve('fondos') ? this.fondosVistos() : [], llaves_cuenta: ve('reportes') ? this.llavesDueno() : null,
+        casos: this.casosDueno(),
         fotos_carta: ve('fondos') ? this.fotosCartaDueno() : [],
         crews_logos: ve('fondos') ? CW.crewLogosDueno(this) : null,
         pedidos: ve('reportes') || ve('reportes_cerrar') ? this.pedidosDueno() : [],
@@ -16492,7 +16558,7 @@ export class Avisos {
       // 🎛️ y qué puede cada rol (11/11/2026): la tabla vigente, la de siempre y quién la cambió
       permisos_roles: this.permisosDueno(),
       // 🎚️ llaves y fondos (11/11/2026): qué llaves no cuentan, el fondo del VS de cada servidor y los fondos que ya se ven
-      llaves_cuenta: this.llavesDueno(), vs_fondos: this.vsFondosDueno(), fondos_vistos: this.fondosVistos(),
+      llaves_cuenta: this.llavesDueno(), vs_fondos: this.vsFondosDueno(), fondos_vistos: this.fondosVistos(), casos: this.casosDueno(),
       // 🖼️ los fondos que esperan revisión (13/10/2026), y lo que hizo el filtro
       fondos: this.fondosDueno(),
       filtro: this.filtroDueno(),
