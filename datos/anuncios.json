@@ -1,5 +1,5 @@
 {
- "cuando": "2026-11-12T19:25:06+00:00",
+ "cuando": "2026-11-12T19:55:20+00:00",
  "anuncios": [
   {
    "nombre": "¡SE LLEGÓ LA GRAN NOCHE!",
@@ -4616,31 +4616,6 @@
    "categoria_id": "1469944166137073857"
   },
   {
-   "nombre": "Red Bull TODOS",
-   "servidor": "DDF",
-   "canal": "『📢』Eventos",
-   "msg_id": "1569435032559550574",
-   "cuando": "2026-11-09T19:34:30",
-   "canal_id": "1470097121284980736",
-   "guild_id": "1469009547971526659",
-   "organizador": "",
-   "orgs": [],
-   "autor_h": "da271da7c68d79b3",
-   "cupos_texto": "",
-   "inscriptos": null,
-   "cupo_total": null,
-   "rango": "",
-   "modalidad": "",
-   "horario": "",
-   "fecha": "9 DE NOVIEMBRE 2026",
-   "premios": "",
-   "staff": {},
-   "autor": "Number Eurodepor",
-   "staff_cuentas": {},
-   "de_imagen": true,
-   "categoria_id": "1469944166137073857"
-  },
-  {
    "nombre": "EL ULTIMO DIA DE DDF",
    "servidor": "DDF",
    "canal": "『📢』Eventos",
@@ -6819,6 +6794,15 @@
   }
  ],
  "inscripciones": [
+  {
+   "servidor": "LKR",
+   "canal": "📋・INSCRIPCIONES",
+   "texto": "Snx🇻🇪",
+   "quien": "ismel_0555",
+   "discord_id": "1458603256292053037",
+   "msg_id": "1570523943939350551",
+   "cuando": "2026-11-12T19:41:27"
+  },
   {
    "servidor": "LKR",
    "canal": "📋・INSCRIPCIONES",
@@ -42809,15 +42793,6 @@
    "discord_id": "1503540314948898937",
    "msg_id": "1557962866479472661",
    "cuando": "2026-10-09T03:48:12"
-  },
-  {
-   "servidor": "FFA",
-   "canal": "✦📝—inscripciones",
-   "texto": "makmah 🇻🇪",
-   "quien": "makmah_g",
-   "discord_id": "897942226955563068",
-   "msg_id": "1557962824817451179",
-   "cuando": "2026-10-09T03:48:02"
   }
  ]
 }
