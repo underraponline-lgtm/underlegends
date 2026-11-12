@@ -216,6 +216,7 @@ def reescribir(h, nums, nuevas):
     # (`_filas_crudas()`): un número que hoy es texto en la hoja NO da igual
     # y se reescribe, que es lo que tiene que pasar.
     if total == [list(f) + [''] * (h.ancho - len(f)) for f in viejas]:
+        _al_archivo(h, total)
         return 0
     ult = chr(ord('A') + h.ancho - 1)
     hasta = h.fila_datos + len(total) - 1
@@ -235,7 +236,18 @@ def reescribir(h, nums, nuevas):
         _pedir('POST', '/values/%s:clear' % requests.utils.quote(
             '%s!A%d:%s%d' % (h.nombre, hasta + 1, ult,
                              h.fila_datos + len(viejas) - 1)))
+    _al_archivo(h, total)
     return len(viejas) - len(quedan)
+
+
+def _al_archivo(h, total):
+    """🗄️ La tabla que quedó en el Sheet, también en `datos/` (etapa 1 de sacar el Sheet: `sheet/espejo_t1.py`).
+    Va DESPUÉS de escribir: si el Sheet falla, levanta antes y el archivo no queda adelantado. Nunca levanta."""
+    try:
+        import espejo_t1
+        espejo_t1.al_escribir(h.nombre, h.cabecera, total)
+    except Exception as e:                                 # noqa: BLE001
+        print('   ⚠️ %s no quedó en datos/ (%s): lo copia el paso 2g' % (h.nombre, str(e)[:80]))
 
 
 def renombrar(num, viejo, nuevo, cc='', dry=True):
@@ -299,6 +311,7 @@ def renombrar_varios(cambios, dry=True):
             _pedir('PUT', '/values/%s?valueInputOption=RAW' % requests.utils.quote(
                 '%s!A%d:%s%d' % (h.nombre, h.fila_datos, ult, h.fila_datos + len(filas) - 1)),
                 json={'values': filas})
+            _al_archivo(h, filas)
     return {h.nombre: n for h, _f, n in planes}
 
 

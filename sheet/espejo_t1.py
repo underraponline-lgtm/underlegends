@@ -74,9 +74,18 @@ def visible(c):
     return str(c)
 
 
+def normal(f):
+    """La fila como la devuelve el Sheet al leerla: sin las celdas vacías del final, `None` como vacío y un `1250.0`
+    como `1250` (la API no manda «.0»). Así lo que deja quien escribe y lo que copia el paso 2g dan el mismo texto."""
+    f = ['' if c is None else (int(c) if isinstance(c, float) and c.is_integer() else c) for c in f]
+    while f and f[-1] == '':
+        f.pop()
+    return f
+
+
 def volcar(hoja, cabecera, filas):
     """El texto del archivo: siempre el mismo para lo mismo, una fila por línea."""
-    lineas = [json.dumps(list(f), ensure_ascii=False) for f in filas]
+    lineas = [json.dumps(normal(f), ensure_ascii=False) for f in filas]
     return ('{\n "hoja": %s,\n "cabecera": %s,\n "filas": [\n%s\n ]\n}\n'
             % (json.dumps(hoja, ensure_ascii=False), json.dumps(list(cabecera), ensure_ascii=False),
                ',\n'.join('  ' + x for x in lineas))) if filas else (
@@ -128,6 +137,40 @@ def decidir(hoja, viejo, nuevas):
     return True, ''
 
 
+def _texto_de(p):
+    try:
+        with io.open(p, encoding='utf-8', newline='') as f:
+            return f.read().replace('\r\n', '\n')
+    except OSError:
+        return None
+
+
+def al_escribir(hoja, cabecera, filas, base=BASE):
+    """🖊️ Lo llaman los que escriben estas hojas (`resultados.reescribir()` y `renombrar_varios()`) con la tabla
+    ENTERA que acaban de dejar en el Sheet: el archivo queda al día en el mismo momento, no al final de la corrida,
+    que es lo que necesita un lector que lea de acá en la misma corrida (etapa 2). `True` si cambió el archivo.
+    ⚠️ NUNCA LEVANTA: si no puede, lo dice y lo copia el paso 2g. El Sheet sigue siendo la fuente en esta etapa."""
+    if hoja not in HOJAS:
+        return None
+    try:
+        fs = [normal(f) for f in filas if any(str(c).strip() for c in f)]
+        p = ruta(hoja, base=base)
+        viejo = leer(hoja, base=base)
+        ok, motivo = decidir(hoja, viejo, fs)
+        if not ok:
+            print('   ' + motivo)
+            return None
+        texto = volcar(hoja, cabecera, fs)
+        if _texto_de(p) == texto:
+            return False
+        with io.open(p, 'w', encoding='utf-8', newline='\n') as f:
+            f.write(texto)
+        return True
+    except Exception as e:                                 # noqa: BLE001
+        print('   ⚠️ no pude dejar %s en datos/ (%s): lo copia el paso 2g' % (hoja, str(e)[:80]))
+        return None
+
+
 def espejar(aplicar=False):
     """Lee las tres hojas y las deja en datos/. Devuelve `{hoja: 'igual' | 'cambió' | 'no'}`."""
     from escribir import Hoja
@@ -135,7 +178,7 @@ def espejar(aplicar=False):
     out = {}
     for hoja in HOJAS:
         h = Hoja(hoja)
-        cru = RES._filas_crudas(h)
+        cru = [normal(f) for f in RES._filas_crudas(h)]
         # ⚠️ lo que se ve tiene que ser lo que sale del valor de verdad: si no, los lectores leerían otra cosa
         vis = h.filas()
         emul = [[visible(c) for c in f] for f in cru]
@@ -152,18 +195,16 @@ def espejar(aplicar=False):
             out[hoja] = 'no'
             continue
         texto = volcar(hoja, h.cabecera, cru)
-        try:
-            with io.open(ruta(hoja), encoding='utf-8', newline='') as f:
-                ya = f.read()
-        except OSError:
-            ya = None
+        ya = _texto_de(ruta(hoja))
         if ya == texto:
             print('   %-20s igual (%d fila(s))' % (hoja, len(cru)))
             out[hoja] = 'igual'
             continue
         entran, salen, cambian = resumen((viejo or {}).get('filas') or [], cru)
-        print('   %-20s %d fila(s) · eventos: %d nuevo(s), %d cambiado(s), %d que ya no está(n)%s'
-              % (hoja, len(cru), len(entran), len(cambian), len(salen),
+        # 🔴 desde que los que escriben dejan el archivo (`al_escribir()`), acá tiene que dar siempre «igual»: si no,
+        # alguien escribió el Sheet por otro camino, y en la etapa 2 un lector habría leído algo viejo
+        print('   %s%-20s %d fila(s) · eventos: %d nuevo(s), %d cambiado(s), %d que ya no está(n)%s'
+              % ('🔴 atrasado: ' if viejo else '', hoja, len(cru), len(entran), len(cambian), len(salen),
                  '' if aplicar else '  [sin --aplicar: no escribo]'))
         if aplicar:
             with io.open(ruta(hoja), 'w', encoding='utf-8', newline='\n') as f:
@@ -178,7 +219,7 @@ def comparar():
     import resultados as RES
     malas = 0
     for hoja in HOJAS:
-        cru = RES._filas_crudas(Hoja(hoja))
+        cru = [normal(f) for f in RES._filas_crudas(Hoja(hoja))]
         mio = crudas(hoja)
         if cru == mio:
             print('   ✅ %-20s igual: %d fila(s)' % (hoja, len(mio)))
@@ -222,6 +263,19 @@ def _self_check():
            and filas('Resultados', 't9', tmp)[1] == ['471', '14/10', 'Geoka', '1250', 'Nadie siguió']
            and leer('1v1', 't9', tmp) is None and filas('1v1', 't9', tmp) == [],
            'los archivos se leen como el Sheet: crudas, visibles, y sin archivo no hay filas')
+    ok(normal([471, 1250.0, '', 'x', '', None]) == [471, 1250, '', 'x'] and normal(['', '']) == [],
+       'una fila como la devuelve el Sheet: sin vacías al final, «1250.0» es 1250')
+    with tempfile.TemporaryDirectory() as tmp:
+        os.makedirs(os.path.join(tmp, 'datos'))
+        pad = [list(f) + [''] * (5 - len(f)) for f in fs]
+        r1 = al_escribir('Resultados', cab, pad, base=tmp)
+        r2 = al_escribir('Resultados', cab, fs, base=tmp)
+        mal = al_escribir('Resultados', cab, fs[:1], base=tmp)
+        r4 = al_escribir('Resultados', cab, fs + [[473, '16/10', 'Otro', 1.0, '']], base=tmp)
+        ok(r1 is True and r2 is False and mal is None and len(crudas('Resultados', base=tmp)) == 4 and r4 is True
+           and crudas('Resultados', base=tmp)[3] == [473, '16/10', 'Otro', 1]
+           and al_escribir('Lista de Raperos', cab, fs, base=tmp) is None,
+           'quien escribe deja el archivo: con relleno o sin él es el mismo texto, no lo achica y sólo las tres hojas')
     ok(set(HOJAS) == {'Resultados', '1v1', 'Eventos Procesados'}
        and ruta('1v1').endswith(os.path.join('datos', ACTUAL + '_1v1.json')), 'las tres hojas, con la temporada en el nombre')
     print('\n   %s' % ('✅ todo bien' if not fallas else '🔴 %d mal' % fallas))
