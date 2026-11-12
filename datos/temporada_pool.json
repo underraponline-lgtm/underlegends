@@ -164,7 +164,6 @@
   "rango": "SS",
   "tg_t": {
    "busc": 3,
-   "cab": 1,
    "dobles": 21,
    "infalt": true,
    "perf": 2,
@@ -1332,7 +1331,7 @@
   "crew": "",
   "discord_id": "458702447913861130",
   "verificado": false,
-  "pts": 128929,
+  "pts": 127929,
   "ev": 13,
   "wr": "75.0%",
   "pod": 5,
@@ -1356,7 +1355,6 @@
   "total": 254,
   "rango": "B",
   "tg_t": {
-   "cobro": 1,
    "dobles": 2,
    "perf": 1,
    "solo": 1,
@@ -4017,7 +4015,6 @@
   "rango": "D",
   "tg_t": {
    "busc": 1,
-   "cab": 1,
    "sube": true,
    "svc": 1
   }
