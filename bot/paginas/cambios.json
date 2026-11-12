@@ -11,6 +11,17 @@
  ],
  "cambios": [
     {
+        "version": "4.54",
+        "dia": "2026-11-12",
+        "cuando": "2026-11-12T02:16:17-05:00",
+        "titulo": "Una bienvenida nueva, para quien llega por primera vez",
+        "items": [
+            "**Seis páginas que se deslizan**: la Liga, tu carta, los eventos, el ranking, el Pase y la Tienda, y la comunidad, cada una con lo de verdad.",
+            "**«Unirme con Discord» siempre a la vista**, abajo, en todas las páginas, junto a «En otro momento».",
+            "**Se mueve con el dedo**: cada página entra por partes y las capas se corren a distinta velocidad al deslizar. Con «Menos animaciones», quieta."
+        ]
+    },
+    {
         "version": "4.53",
         "dia": "2026-11-12",
         "cuando": "2026-11-12T00:13:00-05:00",
