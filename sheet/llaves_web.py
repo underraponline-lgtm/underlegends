@@ -489,7 +489,7 @@ def _sin_ganador(archivo=SIN_GANADOR):
     return out
 
 
-def armar(ev, links=(), pendientes=None):
+def armar(ev, links=(), pendientes=None, ver=None):
     """El registro de un evento ya procesado por el motor.
 
     Cada batalla es `[lados, ganador, nota]`.
@@ -582,6 +582,8 @@ def armar(ev, links=(), pendientes=None):
         'tabla': [[r.get('rapero') or '', r.get('posicion') or '',
                    int(r.get('puntos') or 0)] for r in res],
         'links': list(links or ()),
+        # 🔎 lo que se pudo comprobar de la llave, para la franja de «Ver llave» (`bot/verificar_llaves.py`)
+        **({'ver': ver} if ver else {}),
         **({'sin': sin} if sin else {}),
         **({'funa': fase} if fase else {}),
     }
@@ -602,6 +604,14 @@ def guardar(planes, archivo=ARCHIVO, links_archivo=LINKS):
     archivo, así el ciclo no commitea lo mismo cada media hora.
     """
     links = leer(links_archivo)
+    # 🔎 la verificación de cada llave, que deja el lector en la misma corrida (`bot/verificar_llaves.py`)
+    try:
+        if os.path.join(BASE, 'bot') not in sys.path:
+            sys.path.insert(0, os.path.join(BASE, 'bot'))
+        import verificar_llaves as _VL
+        vers = _VL.leer()
+    except Exception:                                    # noqa: BLE001
+        vers = {}
     d = leer(archivo)
     antes = json.dumps(d, ensure_ascii=False, sort_keys=True)
     cambiaron = 0
@@ -612,7 +622,7 @@ def guardar(planes, archivo=ARCHIVO, links_archivo=LINKS):
         # ⚠️ SI ESTA CORRIDA NO TRAJO LINKS SE CONSERVAN LOS DE ANTES: el
         # archivo de links lo deja el lector con `--aplicar`, y un
         # reproceso a mano sin él no puede borrarle el link a nadie.
-        nuevo = armar(ev, links.get(k) or viejo.get('links') or ())
+        nuevo = armar(ev, links.get(k) or viejo.get('links') or (), ver=vers.get(k) or viejo.get('ver'))
         if nuevo != viejo:
             cambiaron += 1
         d[str(ev['num'])] = nuevo

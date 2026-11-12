@@ -21,6 +21,11 @@
 .lk-orgs a{display:inline-flex;align-items:center;gap:5px}
 .lk-oc{width:20px;height:20px;font:800 11px/1 Archivo,sans-serif}
 .lk-datos .lk-mult{border-color:var(--magenta)}
+/* 🔎 lo que se comprobó de la llave (11/11/2026): más chico que los datos, porque informa y no es el tema de la página */
+.lk-ver{list-style:none;margin:0;padding:0;display:flex;flex-wrap:wrap;gap:4px 14px;font:700 14px/1.3 "Barlow Condensed",sans-serif;
+  letter-spacing:0.02em;color:var(--esc-gris)}
+.lk-ver .si{color:var(--verde)}
+.lk-ver .ojo{color:var(--magenta)}
 .lk-vivo{margin:0;font:700 15px/1.5 "Barlow Condensed",sans-serif;letter-spacing:0.02em;color:var(--esc-gris)}
 .lk-pd-caras{display:flex;justify-content:center}
 .lk-pd-ns{display:flex;flex-wrap:wrap;justify-content:center;gap:0 10px;min-width:0;max-width:100%}

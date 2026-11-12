@@ -1066,6 +1066,18 @@ export function Llave({ liga, vivoL, n: n0, raiz, dc }) {
             {inf.pre ? <li><Ico n="premio" t={16} />{inf.pre}</li> : null}
             {mult && mult !== 1 ? <li className="lk-mult">×{String(mult).replace('.', ',')} esta semana</li> : null}
           </ul>
+          {/* 🔎 LO QUE SE PUDO COMPROBAR DE LA LLAVE (Dlx, 11/11/2026: «construye la verificación de llaves»): lo arma el
+              ciclo (`bot/verificar_llaves.py`) y viaja como `ver`. Sólo informa —lo que retiene, lo retiene antes de sumar—
+              y no dice nunca si un organizador está observado: eso es de la Liga. Las llaves de antes no la traen */}
+          {L.ver && !L.vivo ? (
+            <ul className="lk-ver" aria-label="Lo que se comprobó de esta llave">
+              <li className={inf.anuncio ? 'si' : ''}>{inf.anuncio ? '✓ Anunciada antes' : '· Sin anuncio leído'}</li>
+              {L.ver.min != null ? <li>· Completa en {L.ver.min < 60 ? L.ver.min + ' min' : Math.floor(L.ver.min / 60) + ' h ' + (L.ver.min % 60) + ' min'}</li> : null}
+              <li className={L.ver.org ? (L.ver.org === 'gana' ? 'ojo' : '') : 'si'}>{L.ver.org === 'gana' ? '⚠ La ganó quien la organizó' : L.ver.org === 'juega' ? '· Quien la organizó también jugó' : '✓ Quien la organizó no jugó'}</li>
+              <li className={L.ver.copia ? 'ojo' : 'si'}>{L.ver.copia ? '⚠ Se parece a la llave #' + L.ver.copia : '✓ No es copia de otra llave'}</li>
+              {L.ver.rev ? <li className="si">✓ Revisada por la Liga</li> : null}
+            </ul>
+          ) : null}
           {L.vivo ? (
             <p className="lk-vivo">{L.terminada ? 'Terminó: los puntos llegan cuando el ciclo la procese' : (L.enJuego || 'En juego') + ' en juego'}
               {' · se actualiza sola cada minuto · último cambio ' + hace(L.ed || L.pub || Date.now())}</p>

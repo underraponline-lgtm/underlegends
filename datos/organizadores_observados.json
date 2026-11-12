@@ -1,0 +1,9 @@
+{
+ "_leeme": "Organizadores con una llave sacada por falsa (bot/verificar_llaves.py): de acá en adelante, una llave suya en la que juega no suma hasta que Dlx la mire en ✅ Decidir. Por huella (sha1 recortado de la cuenta, como datos/autores_llaves.json), no por la cuenta. Se agrega a mano cuando Dlx saca una llave por falsa; para perdonar a alguien, se borra su línea. La confianza baja con una trampa confirmada, no sube con la cantidad.",
+ "huellas": [
+  "0f624d80ff313923"
+ ],
+ "por_que": {
+  "0f624d80ff313923": "Adriagner (DDF): la #567 (05/11), la #605 y la #607 (11/11), las tres sacadas por Dlx: sale campeón de su propia llave. Dlx, 11/11/2026: «Sí, sácalas»"
+ }
+}

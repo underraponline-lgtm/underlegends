@@ -4482,6 +4482,9 @@ def main():
     # 🔑 QUIÉN YA PUBLICÓ UNA LLAVE, con la lista entera —la pre-temporada
     # también cuenta—, antes de filtrar. Ver `llave_de_broma()`.
     conocidos = autores_conocidos(hallazgos)
+    # 🔎 las llaves ya cargadas y los organizadores observados, una vez por corrida (`bot/verificar_llaves.py`)
+    import verificar_llaves as VL
+    _prev_v, _obs_v, ver_llaves = VL.previas(), VL.observados(), {}
     try:
         with io.open(os.path.join(BASE, 'datos', 'anuncios.json'), encoding='utf-8') as _f:
             anuncios_l = (json.load(_f) or {}).get('anuncios') or []
@@ -4829,6 +4832,25 @@ def main():
         if ligas and not motivo and dec != 'cuenta':
             motivo = llave_de_broma(g, conocidos, anuncios_l, nom, ligas[0], fec,
                                     inferido=inferido, por_hora=por_hora)
+        # 🔎 Y LA QUE PUDO FALSIFICAR SU ORGANIZADOR (Dlx, 11/11/2026: «construye la verificación de llaves»): el que
+        # gana su propia llave, la copia de otra ya cargada, y el organizador observado que juega. Ver
+        # `bot/verificar_llaves.py`, con lo medido sobre la T1. Lo demás que mira sólo se muestra en «Ver llave»
+        if ligas and limpias:
+            try:
+                import llaves_web as _LWv
+                _dia_v = _LWv.fecha_iso(fec)
+            except Exception:                                # noqa: BLE001
+                _dia_v = ''
+            _mv, _ver = VL.revisar(g, limpias, nom, ligas[0], fec, _dia_v, prev=_prev_v, obs=_obs_v)
+            _kv = '|'.join(str(limpias[0].get(c) or '').strip() for c in ('evento', 'servidor', 'fecha'))
+            if _mv and dec == 'cuenta':
+                _ver['rev'] = 1
+            if _kv:
+                ver_llaves[_kv] = _ver
+            if not motivo and _mv and dec != 'cuenta':
+                motivo = _mv
+            if not _mv or dec == 'cuenta':
+                VL.sumar(_prev_v, (nom, ligas[0], fec), limpias, ligas[0], _dia_v, g)
         if ligas and motivo and dec != 'cuenta':
             retenidos.append((nom, ligas[0], fec, motivo))
             continue
@@ -5158,6 +5180,11 @@ def main():
                       sort_keys=True)
     except OSError as e:
         print('   ⚠️ no pude dejar los links de las llaves (%s)' % str(e)[:60])
+    # 🔎 y lo que ve «Ver llave» de cada una (`bot/verificar_llaves.py`): lo cuelga `sheet/llaves_web.py`
+    try:
+        VL.guardar(ver_llaves)
+    except OSError as e:
+        print('   ⚠️ no pude guardar la verificación de las llaves (%s)' % str(e)[:60])
     # y quién ya publicó una llave que se cargó, para las de broma
     try:
         with io.open(AUTORES, 'w', encoding='utf-8', newline='\n') as _f:

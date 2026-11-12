@@ -11,6 +11,16 @@
  ],
  "cambios": [
     {
+        "version": "4.47",
+        "dia": "2026-11-11",
+        "cuando": "2026-11-11T20:30:00-05:00",
+        "titulo": "Las llaves, verificadas",
+        "items": [
+            "**Cada llave se revisa antes de sumar**: si quien la organizó sale campeón, o es la copia de otra llave ya cargada, no suma hasta que la Liga la revise.",
+            "**En «Ver llave» ves lo que se comprobó**: si se anunció antes, en cuántos minutos se completó, si quien la organizó también jugó y si es copia de otra. Sale en las llaves que se jueguen desde hoy."
+        ]
+    },
+    {
         "version": "4.46",
         "dia": "2026-11-11",
         "cuando": "2026-11-11T20:15:22-05:00",
