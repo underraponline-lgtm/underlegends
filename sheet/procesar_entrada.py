@@ -139,20 +139,12 @@ def vaciar_buzon(ruta=None):
 
 
 def _get(rng):
-    # 🔴 CON REINTENTO: corre en el ciclo y es una lectura como cualquier
-    # otra. Sin él, un 429 —la cuota es por minuto— tumba la carga de
-    # eventos entera; es el agujero que mató el ciclo de las 6:52 AM ET del
-    # 24/09/2026 desde otro archivo. Ver `sheet/reintentar.py`.
-    from reintentar import leer
-
-    def _pedir():
-        r = requests.get('%s/%s/values/%s'
-                         % (API, id_operativo(), requests.utils.quote(rng)),
-                         headers={'Authorization': 'Bearer ' + token()},
-                         timeout=60)
-        r.raise_for_status()
-        return r.json().get('values', [])
-    return leer(_pedir)
+    """🗄️ Por `escribir._pedir()`, como el `_put()` de abajo (12/11/2026): `Config` vive en datos/ desde la etapa 6b
+    de sacar el Sheet, y `_pedir()` la contesta del archivo. Esto pedía `Config!B27` directo a la API —el único
+    pedido al Sheet que le quedaba al ciclo (`📡 pedidos al Sheet: 1` en el paso 1)— y comparaba el contador con una
+    celda congelada. `_pedir()` también reintenta el 429 (el agujero del 24/09/2026, ver `sheet/reintentar.py`)."""
+    from escribir import _pedir
+    return _pedir('GET', '/values/%s' % requests.utils.quote(rng)).get('values', [])
 
 
 def _put(rng, filas):

@@ -815,13 +815,12 @@ def main():
                   if str((list(f) + [''] * ANCHO)[3]).strip() != '__PRUEBA__']
         quedan = [list(f) + [''] * (ANCHO - len(f)) for f in quedan]
         vacias = [[''] * ANCHO for _ in range(len(_filas(h)) - len(quedan))]
-        requests.put('%s/%s/values/%s?valueInputOption=RAW'
-                     % (API, id_operativo(),
-                        requests.utils.quote('%s!A%d:%s%d'
-                                             % (HOJA, h.fila_datos, ULTIMA,
-                                                h.fila_datos + len(_filas(h)) - 1))),
-                     headers={'Authorization': 'Bearer ' + token()},
-                     json={'values': quedan + vacias}, timeout=60)
+        # 🗄️ por `_pedir()` (12/11/2026): `Pendientes` vive en datos/ desde la etapa 6b de sacar el Sheet, y esto la
+        # escribía directo a la API —`anotar()` ya escribe el archivo, así que la fila de prueba se habría sacado de la
+        # hoja congelada y quedado en el archivo—
+        _pedir('PUT', '/values/%s?valueInputOption=RAW'
+               % requests.utils.quote('%s!A%d:%s%d' % (HOJA, h.fila_datos, ULTIMA, h.fila_datos + len(_filas(h)) - 1)),
+               json={'values': quedan + vacias})
         print('   sacada · quedan %d\n' % len(leer()))
         return 0
 
