@@ -1,5 +1,5 @@
 {
- "cuando": "2026-11-12T16:54:54+00:00",
+ "cuando": "2026-11-12T17:25:05+00:00",
  "anuncios": [
   {
    "nombre": "¡SE LLEGÓ LA GRAN NOCHE!",
@@ -6819,6 +6819,42 @@
   }
  ],
  "inscripciones": [
+  {
+   "servidor": "LKR",
+   "canal": "📋・INSCRIPCIONES",
+   "texto": "Adriagner🇳🇮",
+   "quien": "adriagner",
+   "discord_id": "1316490165836972104",
+   "msg_id": "1570484647601639587",
+   "cuando": "2026-11-12T17:05:18"
+  },
+  {
+   "servidor": "LKR",
+   "canal": "📋・INSCRIPCIONES",
+   "texto": "Lizenin🇦🇷",
+   "quien": "vilca_16",
+   "discord_id": "846870712950194196",
+   "msg_id": "1570484557835272273",
+   "cuando": "2026-11-12T17:04:56"
+  },
+  {
+   "servidor": "LKR",
+   "canal": "⟡・INSCRIPCIONES",
+   "texto": "Showsero🇧🇸",
+   "quien": "vilca_16",
+   "discord_id": "846870712950194196",
+   "msg_id": "1570484469612290090",
+   "cuando": "2026-11-12T17:04:35"
+  },
+  {
+   "servidor": "LKR",
+   "canal": "📋・INSCRIPCIONES",
+   "texto": "Richard 🇪🇨",
+   "quien": "ricardflex",
+   "discord_id": "750718442050551858",
+   "msg_id": "1570484360686207016",
+   "cuando": "2026-11-12T17:04:09"
+  },
   {
    "servidor": "LKR",
    "canal": "📋・INSCRIPCIONES",
@@ -42782,42 +42818,6 @@
    "discord_id": "852667585593868288",
    "msg_id": "1557962491907022880",
    "cuando": "2026-10-09T03:46:43"
-  },
-  {
-   "servidor": "FFA",
-   "canal": "✦📝—inscripciones",
-   "texto": "Emily Family 🇵🇾",
-   "quien": "plapla23",
-   "discord_id": "839707244069126174",
-   "msg_id": "1557962423179415625",
-   "cuando": "2026-10-09T03:46:27"
-  },
-  {
-   "servidor": "FFA",
-   "canal": "✦📝—inscripciones",
-   "texto": "Greyfitsh🇵🇦",
-   "quien": "rodaaa_mc",
-   "discord_id": "1492592375812587551",
-   "msg_id": "1557962390811971649",
-   "cuando": "2026-10-09T03:46:19"
-  },
-  {
-   "servidor": "FFA",
-   "canal": "✦📝—inscripciones",
-   "texto": "Nemi 🇦🇷 primera",
-   "quien": "nemmii_as_26264",
-   "discord_id": "1458311513667276830",
-   "msg_id": "1557962377691930676",
-   "cuando": "2026-10-09T03:46:16"
-  },
-  {
-   "servidor": "FFA",
-   "canal": "✦📝—inscripciones",
-   "texto": "nc🇰🇷 primera",
-   "quien": "nachonc_",
-   "discord_id": "1523082259870257315",
-   "msg_id": "1557962343235977257",
-   "cuando": "2026-10-09T03:46:08"
   }
  ]
 }
