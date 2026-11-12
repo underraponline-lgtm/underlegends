@@ -113,6 +113,50 @@ def filas(hoja, temp=ACTUAL, base=BASE):
     return [[visible(c) for c in f] for f in crudas(hoja, temp, base)]
 
 
+def base_para_escribir(hoja, del_sheet, base=BASE):
+    """🖊️ DE QUÉ FILAS PARTE QUIEN ESCRIBE (etapa 3d, 11/11/2026): las de datos/, que van a ser la fuente. Mientras
+    `CONTROL` está prendido también lee el Sheet (`del_sheet`, una función: sólo se llama si hace falta) y, si no
+    coinciden, parte del Sheet —todavía es la referencia— y lo dice en rojo. Sin archivo, el Sheet."""
+    mio = crudas(hoja, base=base) if leer(hoja, base=base) is not None else None
+    if mio is not None and not CONTROL:
+        return mio
+    sh = [normal(f) for f in del_sheet()]
+    if mio is None:
+        return sh
+    if sh != mio:
+        entran, salen, cambian = resumen(mio, sh)
+        print('   🔴 %s: el archivo no coincide con el Sheet (en el Sheet y no acá: %s · cambian: %s · acá y no en el '
+              'Sheet: %s): parto del Sheet' % (hoja, sorted(entran)[:6], sorted(cambian)[:6], sorted(salen)[:6]))
+        return sh
+    return mio
+
+
+#: 🔢 EL CONTADOR DE EVENTOS, TAMBIÉN ACÁ (etapa 3d). Era sólo `Config!B27` del Operativo. Un número nunca se reusa
+#: —un evento sacado deja su hueco—, así que vale el mayor de los dos lugares y se escribe en los dos.
+CONTADOR = 'contador'
+
+
+def ruta_contador(temp=ACTUAL, base=BASE):
+    return os.path.join(base, 'datos', '%s_%s.json' % (temp, CONTADOR))
+
+
+def contador(temp=ACTUAL, base=BASE):
+    try:
+        with io.open(ruta_contador(temp, base), encoding='utf-8') as f:
+            return int((json.load(f) or {}).get('ultimo') or 0)
+    except (OSError, ValueError, TypeError):
+        return 0
+
+
+def guardar_contador(n, temp=ACTUAL, base=BASE):
+    """Sólo sube: un contador que baja reusaría un número."""
+    if int(n) <= contador(temp, base):
+        return False
+    with io.open(ruta_contador(temp, base), 'w', encoding='utf-8', newline='\n') as f:
+        f.write(json.dumps({'ultimo': int(n)}, ensure_ascii=False) + '\n')
+    return True
+
+
 def un_escritor(que, entorno=None, argv=None):
     """🖊️ UN SOLO ESCRITOR (etapa 3c, 11/11/2026): lo que escribe los resultados corre en GitHub —el ciclo y
     `.github/workflows/recalcular.yml`, en la misma fila—, nunca desde una PC. El 11/11 un recálculo hecho en una PC y la
@@ -354,6 +398,25 @@ def _self_check():
             sys.modules['escribir'] = real
         else:
             sys.modules.pop('escribir', None)
+    # 🖊️ la base de quien escribe y el contador
+    ctrl0 = CONTROL
+    try:
+        with tempfile.TemporaryDirectory() as tmp:
+            os.makedirs(os.path.join(tmp, 'datos'))
+            sin = base_para_escribir('Resultados', lambda: [list(f) for f in fs], base=tmp)
+            al_escribir('Resultados', cab, fs, base=tmp)
+            igual = base_para_escribir('Resultados', lambda: [list(f) for f in fs], base=tmp)
+            distinto = base_para_escribir('Resultados', lambda: [list(f) for f in fs[:2]], base=tmp)
+            CONTROL = False
+            apagado = base_para_escribir('Resultados', lambda: 1 / 0, base=tmp)
+            c0 = contador(base=tmp)
+            s1, s2, s3 = guardar_contador(607, base=tmp), guardar_contador(600, base=tmp), guardar_contador(608, base=tmp)
+            c1 = contador(base=tmp)
+        ok(sin == [normal(f) for f in fs] and igual == sin and distinto == [normal(f) for f in fs[:2]] and apagado == sin,
+           'quien escribe parte del archivo si coincide con el Sheet; si no, del Sheet; con la prueba apagada, sin leerlo')
+        ok(c0 == 0 and s1 and not s2 and s3 and c1 == 608, 'el contador sólo sube (un número nunca se reusa)')
+    finally:
+        CONTROL = ctrl0
     # 🖊️ un solo escritor: en GitHub pasa, en una PC no (salvo --desde-aca)
     try:
         un_escritor('x', entorno={}, argv=['p', '--aplicar'])

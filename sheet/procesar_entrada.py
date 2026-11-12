@@ -188,10 +188,13 @@ def agrupar(batallas):
 
 
 def ultimo_numero():
+    """El último número de evento usado: el mayor entre `Config!B27` y `datos/t1_contador.json` (etapa 3d: un número
+    nunca se reusa, así que manda el que más subió). Ver `espejo_t1.contador()`."""
     v = _get(CELDA_ULTIMO)
     s = str(v[0][0]) if v and v[0] else ''
     d = ''.join(c for c in s if c.isdigit())
-    return int(d) if d else 0
+    import espejo_t1 as _EJ
+    return max(int(d) if d else 0, _EJ.contador())
 
 
 def numeros_por_evento(h):
@@ -570,7 +573,10 @@ def main():
     if tope > num:
         _put(CELDA_ULTIMO, [['#%d' % tope]])
         _put(CELDA_PROXIMO, [['#%d' % (tope + 1)]])
-        print('   ✅ `Config`: último #%d · próximo #%d' % (tope, tope + 1))
+        # 🔢 y en datos/ (etapa 3d): ver `espejo_t1.contador()`
+        import espejo_t1 as _EJ
+        _EJ.guardar_contador(tope)
+        print('   ✅ `Config` y datos/t1_contador.json: último #%d · próximo #%d' % (tope, tope + 1))
     else:
         print('   (el contador no se mueve: no hubo eventos nuevos)')
 

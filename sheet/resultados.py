@@ -198,7 +198,9 @@ def reescribir(h, nums, nuevas):
     `""` cuenta para `COUNTA` y aparenta datos.
     """
     import requests
-    viejas = _filas_crudas(h)
+    # 🗄️ etapa 3d: parte de datos/ (comparando con el Sheet mientras dura la prueba). Ver `espejo_t1.base_para_escribir()`
+    import espejo_t1 as _EJ
+    viejas = _EJ.base_para_escribir(h.nombre, lambda: _filas_crudas(h))
     nums = {str(n).strip() for n in nums}
     quedan = [list(f) + [''] * (h.ancho - len(f)) for f in viejas
               if str(f[0]).strip() not in nums]
@@ -284,7 +286,8 @@ def renombrar_varios(cambios, dry=True):
     planes, choques = [], []
     for hoja, cols in (('Resultados', (4,)), ('1v1', (4, 5, 6, 7))):
         h = Hoja(hoja)
-        filas = [list(f) + [''] * (h.ancho - len(f)) for f in _filas_crudas(h)]
+        import espejo_t1 as _EJ
+        filas = [list(f) + [''] * (h.ancho - len(f)) for f in _EJ.base_para_escribir(hoja, lambda: _filas_crudas(h))]
         n = 0
         for num, kv, kn, nuevo, cc in cs:
             del_ev = [f for f in filas if str(f[0]).strip() == num]
