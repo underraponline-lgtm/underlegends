@@ -11,6 +11,17 @@
  ],
  "cambios": [
     {
+        "version": "4.62",
+        "dia": "2026-11-12",
+        "cuando": "2026-11-12T14:45:00-05:00",
+        "titulo": "El video de la Liga, en Socios y en el Salón de la Fama",
+        "items": [
+            "**Socios y el Salón de la Fama tienen el video de la bienvenida** en su franja de arriba: raperos de la Liga batallando, en blanco y negro.",
+            "En el Salón va más oscuro y más lento, como un recuerdo.",
+            "El video corre sólo mientras lo ves: si bajas por la página, se pausa. Con «Menos animaciones» o el ahorro de datos va un cuadro quieto."
+        ]
+    },
+    {
         "version": "4.61",
         "dia": "2026-11-12",
         "cuando": "2026-11-12T07:10:00-05:00",
