@@ -11,6 +11,19 @@
  ],
  "cambios": [
     {
+        "version": "4.48",
+        "dia": "2026-11-11",
+        "cuando": "2026-11-11T20:34:02-05:00",
+        "titulo": "Las ligas tienen temporadas, y las que terminan quedan en «Ligas completadas»",
+        "items": [
+            "**Cuando un servidor anuncia el campeón de su liga, la temporada se cierra sola**: el campeón y su podio pasan al **Salón de campeones** y se llevan la insignia de Campeón de liga. El primero: **Ortiz**, campeón de la **FMH España T5**.",
+            "**Ligas completadas**: en la portada de Ligas, cada temporada que terminó, con su flyer, su campeón y su tabla final. Las de antes se abren con sus fechas y sus cartas, como quedaron al terminar.",
+            "**La temporada nueva arranca de cero**: su tabla, su encuesta y las cartas de liga ya no se mezclan con las de la anterior.",
+            "**Las ligas nuevas aparecen solas** cuando un servidor arranca una y se empieza a jugar, con su tabla y sus cartas. La primera: la **Dimension Word Series 26** de DDF.",
+            "Una liga que terminó ya no muestra «Seguir la liga» ni links a canales de Discord que ya no existen."
+        ]
+    },
+    {
         "version": "4.47",
         "dia": "2026-11-11",
         "cuando": "2026-11-11T20:30:00-05:00",
