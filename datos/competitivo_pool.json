@@ -411,22 +411,22 @@
   "arc_sv": 100,
   "tg_c": {
    "bestia": 3,
-   "clasico": 7,
-   "dg": 40,
+   "clasico": 8,
+   "dg": 48,
    "fg": 10,
    "fp": 2,
-   "riv": 38,
-   "venc": 32,
+   "riv": 50,
+   "venc": 40,
    "vengo": 1
   },
   "tg_p": {
-   "paises": 12,
-   "paisesg": 10,
+   "paises": 13,
+   "paisesg": 11,
    "primer": true
   },
   "nac": {
    "evn": 1,
-   "evi": 21,
+   "evi": 28,
    "com": 1,
    "top": [
     1,
@@ -1044,12 +1044,12 @@
   },
   "tg_p": {
    "paises": 8,
-   "paisesg": 8
+   "paisesg": 7
   },
   "nac": {
    "evn": 4,
    "evi": 17,
-   "com": 1,
+   "com": 2,
    "top": [
     1,
     "ar"
@@ -1345,13 +1345,13 @@
   "arc_sv": 92,
   "tg_c": {
    "bestia": 4,
-   "clasico": 7,
+   "clasico": 8,
    "dg": 71,
    "fg": 5,
    "fp": 13,
-   "mata": 5,
-   "riv": 84,
-   "venc": 54,
+   "mata": 6,
+   "riv": 83,
+   "venc": 53,
    "vengo": 7
   },
   "tg_p": {
@@ -1542,7 +1542,7 @@
    "vengo": 3
   },
   "tg_p": {
-   "paises": 15,
+   "paises": 16,
    "paisesg": 13
   },
   "nac": {
@@ -2520,8 +2520,10 @@
    "dg": 12,
    "fg": 1,
    "fp": 2,
-   "riv": 19,
-   "venc": 10
+   "mata": 1,
+   "riv": 18,
+   "venc": 10,
+   "vengo": 1
   },
   "tg_p": {
    "paises": 10,
@@ -2532,8 +2534,8 @@
    "evi": 15,
    "com": 0,
    "top": [
-    3,
-    "co"
+    1,
+    "ec"
    ]
   }
  },
@@ -3760,16 +3762,16 @@
    "venc": 10
   },
   "tg_p": {
-   "paises": 5,
-   "paisesg": 4
+   "paises": 6,
+   "paisesg": 5
   },
   "nac": {
    "evn": 1,
    "evi": 3,
    "com": 3,
    "top": [
-    2,
-    "pe"
+    1,
+    "ec"
    ]
   }
  },
@@ -4122,12 +4124,12 @@
    "clasico": 2,
    "dg": 14,
    "fp": 3,
-   "riv": 29,
+   "riv": 28,
    "venc": 13,
    "vengo": 1
   },
   "tg_p": {
-   "paises": 11,
+   "paises": 10,
    "paisesg": 6
   },
   "nac": {
@@ -4305,12 +4307,13 @@
    "bestia": 1,
    "clasico": 1,
    "dg": 8,
+   "mata": 1,
    "riv": 20,
    "venc": 8
   },
   "tg_p": {
-   "paises": 9,
-   "paisesg": 4,
+   "paises": 10,
+   "paisesg": 5,
    "pionero": true
   },
   "nac": {
@@ -5008,18 +5011,18 @@
   "tg_c": {
    "bestia": 1,
    "clasico": 2,
-   "dg": 12,
+   "dg": 9,
    "fg": 1,
-   "riv": 25,
-   "venc": 12
+   "riv": 19,
+   "venc": 9
   },
   "tg_p": {
    "paises": 7,
-   "paisesg": 6
+   "paisesg": 4
   },
   "nac": {
    "evn": 0,
-   "evi": 22,
+   "evi": 19,
    "com": 0,
    "top": [
     2,
@@ -5263,7 +5266,7 @@
    "venc": 14
   },
   "tg_p": {
-   "paises": 10,
+   "paises": 11,
    "paisesg": 8,
    "pionero": true,
    "primer": true,
@@ -5564,7 +5567,7 @@
    "venc": 5
   },
   "tg_p": {
-   "paises": 10,
+   "paises": 9,
    "paisesg": 4
   },
   "nac": {
@@ -7384,8 +7387,8 @@
    "paisesg": 2
   },
   "nac": {
-   "evn": 2,
-   "evi": 11,
+   "evn": 3,
+   "evi": 10,
    "com": 0,
    "top": [
     1,
@@ -8104,7 +8107,7 @@
    "venc": 5
   },
   "tg_p": {
-   "paises": 6,
+   "paises": 5,
    "paisesg": 2
   },
   "nac": {
@@ -8436,21 +8439,23 @@
   "tg_c": {
    "bestia": 1,
    "clasico": 3,
-   "dg": 1,
-   "riv": 13,
-   "venc": 1
+   "dg": 4,
+   "mata": 1,
+   "riv": 18,
+   "venc": 4,
+   "vengo": 1
   },
   "tg_p": {
-   "paises": 7,
-   "paisesg": 1
+   "paises": 8,
+   "paisesg": 3
   },
   "nac": {
-   "evn": 7,
-   "evi": 19,
-   "com": 0,
+   "evn": 8,
+   "evi": 21,
+   "com": 1,
    "top": [
-    11,
-    "mx"
+    13,
+    "cl"
    ]
   }
  },
@@ -15651,8 +15656,8 @@
    "evi": 17,
    "com": 6,
    "top": [
-    8,
-    "cl"
+    1,
+    "ec"
    ]
   }
  },
@@ -19485,8 +19490,8 @@
    "evi": 2,
    "com": 0,
    "top": [
-    3,
-    "uy"
+    10,
+    "ve"
    ]
   }
  },
@@ -25479,8 +25484,8 @@
    "paises": 2
   },
   "nac": {
-   "evn": 2,
-   "evi": 2,
+   "evn": 1,
+   "evi": 3,
    "com": 0
   }
  },
@@ -34773,25 +34778,10 @@
   "arc_pais": 0,
   "pos_sv": "",
   "arc_sv": 0,
-  "tg_c": {
-   "bestia": 1,
-   "clasico": 1,
-   "dg": 8,
-   "riv": 14,
-   "venc": 8
-  },
-  "tg_p": {
-   "paises": 8,
-   "paisesg": 6
-  },
   "nac": {
-   "evn": 1,
-   "evi": 7,
-   "com": 1,
-   "top": [
-    5,
-    "ar"
-   ]
+   "evn": 0,
+   "evi": 0,
+   "com": 0
   }
  },
  {

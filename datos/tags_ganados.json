@@ -6973,6 +6973,11 @@
  },
  "lordviruzz": {
   "competitivo": {
+   "🗡️ MATAGIGANTES": [
+    "🗡️ MATAGIGANTES",
+    "t1",
+    1794520903236
+   ],
    "🤝 SIN MIEDO": [
     "🤝 SIN MIEDO",
     "t1",
@@ -6989,6 +6994,11 @@
     "EMBAJADOR",
     "t1",
     1793327725986
+   ],
+   "INTERNACIONAL": [
+    "INTERNACIONAL",
+    "t1",
+    1794520903236
    ],
    "PIONERO": [
     "PIONERO",
@@ -7902,6 +7912,11 @@
     "⚔️ DUELISTA",
     "t1",
     1794337378583
+   ],
+   "🗡️ MATAGIGANTES": [
+    "🗡️ MATAGIGANTES",
+    "t1",
+    1794520903236
    ],
    "🤝 SIN MIEDO": [
     "🤝 SIN MIEDO",
@@ -9725,6 +9740,18 @@
   }
  },
  "numberve": {
+  "competitivo": {
+   "🗡️ MATAGIGANTES": [
+    "🗡️ MATAGIGANTES",
+    "t1",
+    1794520903236
+   ],
+   "🤝 SIN MIEDO": [
+    "🤝 SIN MIEDO",
+    "t1",
+    1794520903236
+   ]
+  },
   "pais": {
    "DA LA CARA": [
     "DA LA CARA",
@@ -15912,6 +15939,13 @@
   }
  },
  "zekha": {
+  "pais": {
+   "INTERNACIONAL": [
+    "INTERNACIONAL",
+    "t1",
+    1794520903236
+   ]
+  },
   "servidor": {
    "⚔️ DUELISTA": [
     "⚔️ DUELISTA",
