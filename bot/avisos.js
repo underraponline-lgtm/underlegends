@@ -819,12 +819,14 @@ export function apuestasCfg(aj) {
  * que elija el admin. 🔴 Y «CON DATOS» NO LA PONÍA NUNCA, NI PRENDIDA: el cruce la pedía sólo en «A full» y la apuesta
  * suelta sólo va debajo de «Con datos», así que FFA, ACAD, URBF, CH y DDS —prendidas en el Dashboard y en «Con datos»—
  * mostraban el voto solo, y el modal de la 4.44 no se abría nunca. Lo único que la saca es «No hay apuestas en», de Dlx.
- * En los niveles de abajo no hay cruce: ahí sigue saliendo sólo prendida, porque es un mensaje más por batalla.
+ *
+ * 🎲 Y EN TODOS LOS NIVELES, EL MISMO 11/11 (Dlx, a «¿pongo la apuesta también en SR, DDF, FRZ y FDS?», que están en «Lo
+ * justo» y «Normal»: «Sí, también ahí»). Donde no hay cruce sale la apuesta sola, un mensaje por batalla (ver abajo, en
+ * `chatVivo()`). Así `prendidas` del Dashboard y `apuestas` de /settings ya no cambian nada: se dejan en los datos para que
+ * un valor viejo no rompa la validación, y sus interruptores se sacaron. `nivel` y `cfg` quedan en la firma por quien llama.
  */
-export function hayApuestas(sv, nivel, apc, cfg) {
-  if (apc.apagadas[sv]) return false;
-  if (nivel === 'datos' || nivel === 'full') return true;
-  return !!(apc.prendidas[sv] || (cfg && cfg.apuestas === true));
+export function hayApuestas(sv, nivel, apc, cfg) { // eslint-disable-line no-unused-vars
+  return !apc.apagadas[sv];
 }
 
 /** Cada cuánto puede hablar el bot en vivo en un canal, en ms: `normal` (y lo justo) y `batalla` (cada batalla y más) */
@@ -9002,11 +9004,13 @@ export class Avisos {
           }
         }
       }
-      // 🎲 LA APUESTA SOLA, CON EL BOT EN UN NIVEL DE ABAJO Y LAS APUESTAS PRENDIDAS A MANO (13/10/2026, ver
-      // `hayApuestas()`). En «Con datos» y «A full» va en el mensaje del cruce (arriba); acá no hay cruce, así que sale
-      // un mensaje propio con la batalla que viene y sus botones. ⚠️ VA APARTE DEL PLAN DE LA CHARLA, a propósito: en
-      // «normal» el plan manda sólo el último momento y como mucho uno cada 10 minutos, y la apuesta cierra a los 3 —
-      // frenada, saldría con la batalla ya jugada—. Una por batalla (`v:<ronda>:<i>`, la misma clave del cruce)
+      // 🎲 LA APUESTA SOLA, CON EL BOT EN UN NIVEL DE ABAJO (13/10/2026, prendida a mano; SIEMPRE desde el 11/11/2026, ver
+      // `hayApuestas()`). En «Con datos» y «A full» va en el mensaje del cruce (arriba); acá no hay cruce, así que sale un
+      // mensaje propio con la batalla que viene, la apuesta y el voto, con los botones del cruce: tocas a quién y se abre la
+      // ventana para apostar (`botonesElegir()`; hasta el 11/11 eran los cuatro montos de cada lado, de antes de la 4.27, y
+      // sin voto). ⚠️ VA APARTE DEL PLAN DE LA CHARLA, a propósito: en «normal» el plan manda sólo el último momento y como
+      // mucho uno cada 10 minutos, y la apuesta cierra a los 3 —frenada, saldría con la batalla ya jugada—. Una por batalla
+      // (`v:<ronda>:<i>`, la misma clave del cruce)
       if (nivel !== 'datos' && nivel !== 'full' && fresca && pedidos < CHAT_TOPE && hayApuestas(b.sv, nivel, apc, cfgs.get(b.g))) {
         const bat = batallaChat(L);
         const mv = bat ? 'v:' + bat.r + ':' + bat.i : '';
@@ -9014,10 +9018,14 @@ export class Avisos {
           const clave = bat.r + ':' + bat.lados.map(claveTurno).sort().join('|');
           const [ga, gb] = bat.lados.map((l) => genteChat(l, buscar, dc.tabla, opc.ids, opc.enSv));
           const titEv = escMd(String(nombre || L.nombre || 'el evento').replace(/^[\s_*~]+|[\s_*~]+$/g, ''));
-          const texto = ['⚔️ **' + titEv + '**', '⚔️ ' + bat.r + ': **' + nombresChat(ga) + '** vs **' + nombresChat(gb) + '**',
-            lineaApuesta('abierta', apc)].join('\n');
           // 🏷️ con la gente de cada lado, para el nombre del ranking en los botones (`etiquetaLado()`)
-          const ap = { id: codigoDe(L.id + ':' + clave).slice(0, 12), ronda: bat.r, a: bat.lados[0], b: bat.lados[1], gente: [genteLado(ga), genteLado(gb)] };
+          const gente = [genteLado(ga), genteLado(gb)];
+          const ap = { id: codigoDe(L.id + ':' + clave).slice(0, 12), ronda: bat.r, a: bat.lados[0], b: bat.lados[1], gente };
+          // 🗳️ y el voto, con la misma clave que el del cruce: el modal lo anota siempre, apueste o no (`vm:` en worker.js)
+          const voto = { id: codigoDe(L.id + ':' + clave + ':qg').slice(0, 12), ronda: bat.r, a: bat.lados[0], b: bat.lados[1], gente };
+          const lineaV = lineaVoto(voto.a, voto.b, 0, 0);
+          const texto = ['⚔️ **' + titEv + '**', '⚔️ ' + bat.r + ': **' + nombresChat(ga) + '** vs **' + nombresChat(gb) + '**',
+            lineaApuesta('abierta', apc), lineaV].join('\n');
           pedidos++;
           let r = null;
           try {
@@ -9025,7 +9033,7 @@ export class Avisos {
               method: 'POST',
               headers: { Authorization: 'Bot ' + this.env.DISCORD_TOKEN, 'User-Agent': UA, 'content-type': 'application/json' },
               body: JSON.stringify({ content: texto.slice(0, 1900), allowed_mentions: { parse: [] }, flags: 4,
-                components: botonesApuesta(ap.id, ap.a, ap.b, false, apc.montos, ap.gente) }),
+                components: botonesElegir(voto, ap.id) }),
             });
           } catch (e) { r = null; }
           let id = '';
@@ -9037,10 +9045,19 @@ export class Avisos {
             hechos[mv] = { m: mv, msg: id, texto };
             this.sql.exec('INSERT OR IGNORE INTO apuestas (id, canal, msg, sv, llave, ronda, a, b, texto, abre, cierra, gente) ' +
               'VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)', ap.id, canal, id, b.sv || '', L.id, ap.ronda, ap.a, ap.b,
-            texto.slice(0, 1900), ahora, ahora + apc.cierra, JSON.stringify(ap.gente || []));
+            texto.slice(0, 1900), ahora, ahora + apc.cierra, JSON.stringify(gente));
+            this.sql.exec('INSERT OR IGNORE INTO qg (id, canal, msg, sv, llave, ronda, a, b, dicho, abre, mas, gente) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)',
+              voto.id, canal, id, b.sv || '', L.id, voto.ronda, voto.a, voto.b, lineaV, ahora, '[]', JSON.stringify(gente));
             mandados++;
           } else {
             errores.push(b.sv + ' apuesta ' + (r ? r.status : 'red'));
+            // ⛔ un canal donde Discord no lo deja escribir se vuelve a probar a la media hora, como la charla (`pausaChat()`):
+            // desde que la apuesta sale siempre, este mensaje llega también a servidores donde antes no hablaba
+            let ra = 0;
+            if (r && r.status === 429) { try { ra = Number((await r.json()).retry_after) || 0; } catch (e) { ra = 0; } }
+            const espera = pausaChat(r ? r.status : 0, ra);
+            if (espera) this.guardar('chat_pausa:' + canal, ahora + espera);
+            if (r && !r.ok) await this.chatSinPermiso(b.sv, canal, r.status, ahora);
           }
         }
       }

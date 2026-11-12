@@ -472,9 +472,9 @@ function Ajustes({ sv }) {
             <select value={c.vivo_nivel || 'normal'} disabled={ocup} onChange={(e) => cambiar('vivo_nivel', e.target.value)}>
               {niveles.map(([k, n]) => <option key={k} value={k}>{n}</option>)}
             </select></Fila>
-          <Fila t="Apuestas" sello={sello === 'apuestas'} ayuda="Antes de cada batalla se apuesta con Puntos de Tienda desde el chat, y el pozo se reparte entre los que aciertan. Con el bot en «Con datos» o «A full» van siempre.">
-            <Interruptor t="Apuestas" on={c.apuestas} ocup={ocup} cambiar={(v) => cambiar('apuestas', v)}
-              si="Prendidas, también en los otros niveles" no="Como siempre: en cada cruce de «Con datos» y «A full»" /></Fila>
+          {/* 🎲 sin interruptor desde el 11/11/2026: las apuestas salen siempre, en todos los niveles (`hayApuestas()` en avisos.js) */}
+          <Fila t="Apuestas" ayuda="Antes de cada batalla se apuesta con Puntos de Tienda desde el chat, y el pozo se reparte entre los que aciertan.">
+            <span>Van siempre, con el bot en cualquier nivel</span></Fila>
           <Fila t="Eventos de Discord" sello={sello === 'eventos_discord'} ayuda="El bot necesita «Crear eventos» en tu servidor.">
             <Interruptor t="Eventos de Discord" on={evDiscord} ocup={ocup} cambiar={(v) => cambiar('eventos_discord', v)}
               si="Cada anuncio, un evento de tu Discord" no="Apagados" /></Fila>

@@ -309,16 +309,16 @@ const ok = (cond, que, det) => {
     ok(ap2 && ap2.prendidas.URBF === true
       && A.ajusteValido('apuestas', { montos: [50, 100], minutos: 3, tope: 500, prendidas: { URBF: 'si' } }) === undefined
       && A.hayApuestas('URBF', 'normal', c2, {}) && A.hayApuestas('URBF', 'poco', c2, null)
-      && !A.hayApuestas('FFA', 'normal', c2, {}) && A.hayApuestas('FFA', 'todo', c2, { apuestas: true })
+      && A.hayApuestas('FFA', 'normal', c2, {}) && A.hayApuestas('FFA', 'todo', c2, { apuestas: true })
       && A.hayApuestas('FFA', 'full', c2, {}) && A.hayApuestas('FFA', 'full', c0, {})
       && !A.hayApuestas('DDF', 'full', c2, { apuestas: true }) && !A.hayApuestas('DDF', 'normal', c2, {}),
-    'las apuestas: «No hay apuestas en» gana; prendidas a mano (Dashboard o /settings) van en cualquier nivel; si no, sólo con cruce');
-    // 🎲 en «Con datos» también, siempre (11/11/2026, Dlx: «sin importar lo que los demás tengan seleccionado»): antes ahí no
-    // salía nunca, ni prendida
+    'las apuestas: «No hay apuestas en» gana; lo demás (prendidas viejas incluidas) ya no cambia nada');
+    // 🎲 SIEMPRE, EN TODOS LOS NIVELES (11/11/2026, Dlx: «sin importar lo que los demás tengan seleccionado» y, para los
+    // servidores sin cruce, «Sí, también ahí»): antes «Con datos» no la ponía nunca, ni prendida, y abajo iba sólo prendida
     ok(A.hayApuestas('FFA', 'datos', c0, {}) && A.hayApuestas('FFA', 'datos', c0, { apuestas: false }) && A.hayApuestas('URBF', 'datos', c2, null)
-      && !A.hayApuestas('DDF', 'datos', c2, { apuestas: true }) && !A.hayApuestas('FFA', 'normal', c0, {})
-      && !A.hayApuestas('FFA', 'poco', c0, { apuestas: false }) && !A.hayApuestas('FFA', 'todo', c0, {}),
-    'las apuestas en «Con datos»: siempre, elija lo que elija el admin, y sólo «No hay apuestas en» las saca; abajo, sólo prendidas');
+      && !A.hayApuestas('DDF', 'datos', c2, { apuestas: true }) && A.hayApuestas('FFA', 'normal', c0, {})
+      && A.hayApuestas('FFA', 'poco', c0, { apuestas: false }) && A.hayApuestas('FFA', 'todo', c0, {}) && !A.hayApuestas('DDF', 'poco', c2, {}),
+    'las apuestas, siempre: en todos los niveles y elija lo que elija el admin; sólo «No hay apuestas en» las saca');
     // 🏷️ los botones con el nombre del ranking (11/11/2026): un equipo que no entra entero va con el primero y cuántos más
     const lbl = (bs) => bs.flatMap((f) => f.components).map((x) => x.label);
     ok(A.etiquetaLado(['Liberia', 'Pichulamc'], 'EddyLaSombra + Pichulamc') === 'Liberia +1' && A.etiquetaLado(['Ana', 'Bea']) === 'Ana y Bea'
@@ -970,6 +970,10 @@ const ok = (cond, que, det) => {
     const o = new A.Avisos({ storage: { sql, setAlarm() {}, getAlarm() { return null; } }, blockConcurrencyWhile: async (f) => f() },
       { DISCORD_TOKEN: 'x', KV: { get: async (k) => kv.get(k) ?? null } });
     await new Promise((r) => setTimeout(r, 5));
+    // 🎲 SIN APUESTAS ACÁ, CON «No hay apuestas en»: desde el 11/11/2026 salen siempre, también en «normal», un mensaje por
+    // batalla, y esta prueba cuenta los mensajes de la charla. La apuesta de los niveles de abajo tiene su propia prueba
+    const SIN_AP = { apuestas: { apagadas: { FFA: true } } };
+    o.guardar('ajustes_dueno', SIN_AP);
     const antesF = globalThis.fetch;
     const pedidos = [];
     globalThis.fetch = async (u, op = {}) => {
@@ -999,18 +1003,18 @@ const ok = (cond, que, det) => {
     ok(a5 === 1 && a12 === 2 && pedidos.length === 3 && /La final/.test(pedidos[1].b.content)
       && /🏆 \*\*Dora 🇲🇽\*\* es el campeón de \*\*COPA SOOLAR\*\*/.test(pedidos[2].b.content),
     'la final y el campeón, cada uno a los 10 minutos del anterior: tres mensajes en total');
-    o.guardar('ajustes_dueno', { en_vivo: { FFA: false } });
+    o.guardar('ajustes_dueno', Object.assign({ en_vivo: { FFA: false } }, SIN_AP));
     sql.exec('DELETE FROM chat_vivo');
     await o.chatVivo(T + 40 * 60000);
     const apagado = pedidos.length === 3;
-    o.guardar('ajustes_dueno', { en_vivo: { FFA: true } });
+    o.guardar('ajustes_dueno', Object.assign({ en_vivo: { FFA: true } }, SIN_AP));
     kv.set('cfg:111', '{}');
     o.guardar('canales', { generales: [{ sv: 'FFA', g: '111', id: GENERAL }] });
     llave(FI + '\nCAMPEÓN: Dora 🇲🇽\n', T + 41 * 60000);
     await o.chatVivo(T + 41 * 60000);
     ok(apagado && pedidos.length === 4 && pedidos[3].u.endsWith('/channels/' + GENERAL + '/messages'),
       'apagado desde el Dashboard no escribe aunque el admin lo prendió; prendido desde ahí, va al chat general');
-    o.guardar('ajustes_dueno', {});
+    o.guardar('ajustes_dueno', SIN_AP);
     sql.exec('DELETE FROM chat_vivo');
     await o.chatVivo(T + 60 * 60000);
     ok(pedidos.length === 4, 'sin canal del admin ni el Dashboard, no escribe');
@@ -1880,6 +1884,57 @@ const ok = (cond, que, det) => {
     && !fq({ grupos: [[{ n: 'A' }], [{ n: 'B' }]] }).some((x) => /^vp:/.test(x))
     && fq({ a: { n: 'Ana', k: 'ana', carta: 'x' }, b: { n: 'Bea', k: 'bea', carta: 'x' }, fid: '0123456789ab' }).join('|') === 'vx:0123456789ab|vp:0123456789ab',
   'la fila del vs: «Perfiles» con equipos sólo con su ficha; el mano a mano, igual que antes');
+}
+
+// 🎲 LA APUESTA SOLA, EN LOS NIVELES DE ABAJO (11/11/2026, Dlx: «Sí, también ahí»): sin prender nada, un mensaje por
+// batalla con la apuesta y el voto y los botones del cruce (`ve:`), con el nombre del ranking; el voto y la apuesta quedan
+// anotados para el mismo mensaje
+{
+  let DatabaseSync = null;
+  try { ({ DatabaseSync } = await import('node:sqlite')); } catch (e) { DatabaseSync = null; }
+  if (DatabaseSync) {
+    const db = new DatabaseSync(':memory:');
+    const sql = {
+      exec(q, ...ps) {
+        const t = String(q).trim();
+        if (!ps.length && /;\s*\S/.test(t)) { db.exec(t); return { toArray: () => [] }; }
+        const st = db.prepare(t);
+        if (/^\s*(SELECT|WITH|PRAGMA)/i.test(t)) { const rows = st.all(...ps); return { toArray: () => rows }; }
+        st.run(...ps);
+        return { toArray: () => [] };
+      },
+    };
+    const CANAL = '555000000000000031';
+    const kv = new Map([['cfg:111', JSON.stringify({ vivo: CANAL, vivo_nivel: 'normal' })],
+      ['web:lobby', JSON.stringify({ tabla: [{ n: 'Ana', k: 'ana', ovr: 88, cc: 'ar' }, { n: 'Bea', k: 'bea', ovr: 60, cc: 'cl' }] })]]);
+    const o = new A.Avisos({ storage: { sql, setAlarm() {}, getAlarm() { return null; }, transactionSync: (f) => f() },
+      blockConcurrencyWhile: async (f) => f() }, { DISCORD_TOKEN: 'x', KV: { get: async (k) => kv.get(k) ?? null } });
+    await new Promise((r) => setTimeout(r, 5));
+    const antesF = globalThis.fetch;
+    const pedidos = [];
+    globalThis.fetch = async (u, op = {}) => {
+      pedidos.push({ u: String(u), m: op.method || 'GET', b: op.body ? JSON.parse(op.body) : null });
+      return new Response(JSON.stringify({ id: 'm' + pedidos.length }), { status: 200 });
+    };
+    const T = Date.parse('2026-11-11T23:00:00Z');
+    sql.exec('INSERT INTO vivo (id, canal, sv, g, autor, pub, ed, texto, visto, men) ' +
+      "VALUES ('9', '2', 'SR', '111', 'x', ?, ?, ?, ?, '[]')", T - 60000, T,
+    '# COPA N\n`[ CUARTOS ]`\n⌞ana 🇦🇷⌝ 🆚 ⌞bea 🇨🇱⌝\n⌞Cami 🇻🇪⌝ 🆚 ⌞Dora 🇲🇽⌝\n', T);
+    await o.chatVivo(T);
+    const sola = pedidos.find((p) => p.m === 'POST' && /🎲 \*\*Apuestas abiertas/.test((p.b && p.b.content) || ''));
+    const bs = ((sola && sola.b.components) || []).flatMap((f) => f.components || []);
+    const apS = sql.exec('SELECT * FROM apuestas').toArray()[0];
+    const qS = sql.exec('SELECT * FROM qg').toArray()[0];
+    ok(!!sola && bs.length === 2 && bs.every((x) => /^ve:/.test(x.custom_id)) && bs.map((x) => x.label).join('|') === 'Ana|Bea'
+      && /🗳️ /.test(sola.b.content) && !!apS && !!qS && apS.msg === qS.msg && JSON.parse(qS.gente)[0][0] === 'Ana'
+      && bs[0].custom_id === 've:' + qS.id + ':A:' + apS.id,
+    'en «Normal», la apuesta sale sola sin prenderla: la batalla, la apuesta y el voto, con los botones del cruce y el nombre del ranking',
+    JSON.stringify(pedidos.map((p) => [p.m, p.b && p.b.content, p.b && p.b.components])));
+    // 🗳️ y el voto del modal anda sobre ese mensaje (el `vm:` de worker.js vota siempre, apueste o no)
+    const vS = qS ? o.qgVotar({ quien: '700000301', id: qS.id, lado: 'B' }, T + 60000) : {};
+    ok(vS.ok && vS.nombre === 'Bea', 'y se puede votar en ese mensaje, con el nombre del ranking', JSON.stringify(vS));
+    globalThis.fetch = antesF;
+  }
 }
 
 // 🎲 LAS APUESTAS SOBRE EL OBJETO DE VERDAD (07/10/2026, «A full»): se abre con botones, se apuesta con sus frenos, se

@@ -2047,11 +2047,11 @@ function panelAjustes(sv, cfg) {
     'mensaje cada 10 minutos) o **cada batalla** (quién gana cada una apenas se sabe; como mucho uno cada 2 ' +
     'minutos). Nunca menciona a nadie.',
     '',
-    // 🎲 en «Con datos» y «A full», siempre (11/11/2026, ver `hayApuestas()` en avisos.js)
-    `**Apuestas** · ${nivel === 'datos' || nivel === 'full' ? '🟢 en cada cruce' : cfg.apuestas === true ? '🟢 prendidas' : '🔴 apagadas en este nivel'}`,
+    // 🎲 siempre, en todos los niveles (11/11/2026, ver `hayApuestas()` en avisos.js)
+    '**Apuestas** · 🟢 siempre',
     '> Con el bot en vivo, antes de cada batalla se puede apostar con Puntos de Tienda desde unos botones en el chat, ' +
-    'y el pozo se reparte entre los que aciertan. En «Con datos» y «A full» van siempre; prendidas, van en cualquier nivel. ' +
-    'Desde la Liga se pueden apagar para un servidor, y eso gana.',
+    'y el pozo se reparte entre los que aciertan. En «Con datos» y «A full» van en el mensaje de cada cruce; en los otros ' +
+    'niveles, en un mensaje con la batalla que viene. Desde la Liga se pueden apagar para un servidor.',
     '',
     `**📈 El ascenso de sus ligas** · ${cfg.ascenso ? `<#${cfg.ascenso}>` : '**apagado**'}`,
     '> El bot mantiene su ranking de ascenso al día en ese canal. Se elige con el botón **Ascenso**.',
@@ -2066,14 +2066,8 @@ function panelAjustes(sv, cfg) {
         label: cfg.nick ? 'Apagar el #N para el servidor' : 'Activar el #N para el servidor',
         custom_id: 'cfg:nick',
       },
-      // 🎲 las apuestas, prendidas a mano en cualquier nivel (13/10/2026): va en la fila del #N porque las cinco filas que
-      // Discord deja ya están usadas, y una fila lleva hasta cinco botones. Ver `hayApuestas()` en avisos.js
-      {
-        type: COMP.BOTON,
-        style: cfg.apuestas === true ? ESTILO.SECUNDARIO : ESTILO.PRIMARIO,
-        label: cfg.apuestas === true ? 'Apagar las apuestas' : 'Prender las apuestas',
-        custom_id: 'cfg:apuestas',
-      },
+      // 🎲 «Prender las apuestas» se fue el 11/11/2026: salen siempre, en todos los niveles (`hayApuestas()` en avisos.js).
+      // El `cfg:apuestas` de abajo queda para los paneles viejos que alguien todavía tenga abiertos, y no cambia nada
       // 📈 el ascenso tiene su propio panel: las cinco filas ya están usadas (17/10/2026)
       {
         type: COMP.BOTON,
