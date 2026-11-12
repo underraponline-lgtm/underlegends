@@ -12409,7 +12409,9 @@ export class Avisos {
 
   /** 🖼️ Los fondos de la gente que ya se ven (para quitar uno que no tenía que pasar). */
   fondosVistos() {
-    return this.sql.exec("SELECT quien, k, url, t FROM fondos WHERE url != '' ORDER BY t DESC LIMIT 200").toArray()
+    // ⚠️ SIN LOS QUE TIENEN UNO NUEVO ESPERANDO (la revisión del 11/11/2026): ahí «Quitar» (`duenoFondo()` con `si:false`)
+    // rechazaba el pendiente y dejaba el que se ve. Ésos se deciden en Pendientes, y aprobar el nuevo reemplaza al viejo
+    return this.sql.exec("SELECT quien, k, url, t FROM fondos WHERE url != '' AND pend = '' ORDER BY t DESC LIMIT 200").toArray()
       .map((r) => ({ quien: r.quien, k: r.k, url: r.url, t: r.t }));
   }
 
@@ -12466,7 +12468,12 @@ export class Avisos {
     // reemplaza sólo si cambió (`h`): son ~1.100 nombres y casi nunca se mueven
     if (Array.isArray(d && d.lista) && d.lista.length) {
       const lista = d.lista.slice(0, 3000).filter((x) => Array.isArray(x) && x[0]).map((x) => [String(x[0]).slice(0, 60), String(x[1] || '').slice(0, 30)]);
-      const h = String(lista.length) + ':' + lista.map((x) => x[0]).join('|').length;
+      // 🔴 un hash de verdad (FNV-1a) sobre nombre y país (la revisión del 11/11/2026): el largo de los nombres no veía un
+      // cambio de bandera (🇦🇷 → 🇨🇱 mide lo mismo) ni uno de país, y el buscador quedaba viejo para siempre
+      let fnv = 0x811c9dc5;
+      const txt = JSON.stringify(lista);
+      for (let i = 0; i < txt.length; i += 1) { fnv ^= txt.charCodeAt(i); fnv = Math.imul(fnv, 0x01000193) >>> 0; }
+      const h = lista.length + ':' + fnv.toString(16);
       if ((this.leer('decidir_lista') || {}).h !== h) this.guardar('decidir_lista', { h, lista });
     }
     // 🤖 LO QUE SE RESOLVIÓ SOLO (13/10/2026): lo que una regla del ciclo cerró o contestó, con su prueba. Lo manda el

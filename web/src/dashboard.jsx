@@ -4064,8 +4064,10 @@ function Bandeja({ d, liga, ve, cambiarD, sub }) {
       {filtro === 'quien' && listaDec ? (
         <><button type="button" className="dz-lnk" onClick={() => setListaDec(false)}>← Volver a la bandeja</button>
           <Decisiones dec={d.decidir} liga={liga} alCambiar={(y) => cambiarD({ decidir: y })} /></>
-      ) : verViejos ? (
+      ) : verViejos && viejos.length ? (
         <Viejos xs={viejos} alListo={(y) => cambiarD({ decidir: y })} />
+      ) : verViejos ? (
+        <div className="dz-vacio"><b>✓ Sin viejos</b><span>No queda ninguna duda de hace más de {VIEJO_D} días.</span></div>
       ) : !todos.length && filtro !== 'posp' ? (
         <div className="dz-vacio"><b>✓ Al día</b><span>No hay nada esperando una decisión tuya.</span></div>
       ) : (

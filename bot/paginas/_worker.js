@@ -295,7 +295,10 @@ async function avisos(req, url, ctx) {
     // logo de una crew (19/10/2026): viaja en el mismo pedido que la crea
     const grande = url.pathname === '/api/avisos/fondo' || url.pathname === '/api/avisos/foto-carta' || url.pathname === '/api/avisos/crew'
       || url.pathname === '/api/avisos/socio-pagina';
-    if (cuerpo.length > (grande ? 900000 : 4096)) return new Response('demasiado grande', { status: 413 });
+    // 🌆 el fondo del VS del Dashboard (11/11/2026): una foto de 1.600 px, más grande que las otras. Sin esto la página la
+    // cortaba en 4 KB y «Subir» daba 413 siempre (la revisión del 11/11). El Worker la vuelve a medir (1,6 MB)
+    const vsf = url.pathname === '/api/avisos/dueno/vs-fondo';
+    if (cuerpo.length > (vsf ? 1700000 : grande ? 900000 : 4096)) return new Response('demasiado grande', { status: 413 });
     init.body = cuerpo;
     init.headers['content-type'] = 'application/json';
     if (sesion(req)) init.headers['x-lg-ses'] = sesion(req);
