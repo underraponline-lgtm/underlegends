@@ -86,7 +86,9 @@ def _guardar(d):
 
 
 def _ahora():
-    t = datetime.datetime.now(datetime.timezone.utc) - datetime.timedelta(hours=4)
+    # 🕐 la hora del este de verdad (con el cambio de horario): «-4 h» fijo daba una hora de más de noviembre a marzo
+    from zoneinfo import ZoneInfo
+    t = datetime.datetime.now(ZoneInfo('America/New_York'))
     return t.strftime('%Y-%m-%d %I:%M %p ET').replace(' 0', ' ')
 
 
@@ -348,12 +350,17 @@ def llave_de(llaves, k):
 
 def sin_ganador(L, f, decididas, DEC):
     """`(sin ganador, batallas)` de la llave `L`, sin contar lo que ya se decidió (en ✅ Decidir o por el organizador).
-    La clave se arma con el nombre de la llave y con el de la pregunta: pueden no ser el mismo."""
+    La clave se arma con el nombre de la llave y con el de la pregunta: pueden no ser el mismo.
+
+    🔴 SIN GANADOR ES LO QUE EL LECTOR MARCÓ «sin ganador» (la revisión del 11/11/2026): una batalla sin nombre en el
+    ganador también puede ser un «nadie siguió» ya aplicado (`cobra: …`), un trío donde pasan dos o un campeón elegido.
+    Contándolas, una llave contestada entera podía descartarse a las 48 h. Medido sobre las llaves del 11/11: 12
+    «nadie siguió» ya decididos no coincidían con su clave en `decisiones.json`."""
     tot = sin = 0
     for r in L.get('rondas') or []:
         for b in r.get('b') or []:
             tot += 1
-            if b[1]:
+            if b[1] or 'sin ganador' not in str((b[2] if len(b) > 2 else '') or '').lower():
                 continue
             ks = {DEC.clave_batalla(DEC.detalle_batalla(ev, L.get('sv'), L.get('fecha'), r.get('r'), b[0]))
                   for ev in (L.get('nombre'), f.get('evento'))}
@@ -387,19 +394,25 @@ def cerrar(estado, llaves, dd, ahora, DEC):
             hecho.append((k, 'mal leída', 0, 0, 0))
             continue
         sin, tot = sin_ganador(L, f, set((dd.get('batallas') or {}).keys()), DEC) if L else (0, 0)
-        if tot and sin / tot >= DESCARTE:
-            dd.setdefault('eventos', {})['%s · %s · %s' % (f['evento'], f['sv'], f['fecha'])] = {
+        # ⚠️ con el nombre de la LLAVE (`llaves_t1`), que es el que muestra «Llaves y fondos» para volver a contarla: el de la
+        # pregunta puede ser el título crudo («__ Cuentas Pendientes V.1 __») y entonces no se podía deshacer
+        clave_ev = '%s · %s · %s' % ((L or {}).get('nombre') or f['evento'], f['sv'], f['fecha'])
+        ya = (dd.get('eventos') or {}).get(clave_ev) or {}
+        contestadas = len(f.get('respondidas') or {}) >= len(f.get('preguntas') or [])
+        if tot and sin / tot >= DESCARTE and ya.get('decision') != 'cuenta' and not contestadas:
+            # sin pisar el campeón o el «paga» que ya tenga, y nunca contra un «cuenta» de Dlx
+            dd.setdefault('eventos', {})[clave_ev] = dict(ya, **{
                 'decision': 'no cuenta', 'cuando': _ahora(), 'por': 'bot/finales.py (descarte a las %d h)' % VENCE_H,
                 'nota': '%d de %d batallas sin ganador %d h después de preguntar (Dlx, 11/11/2026: «la mitad o más»)'
-                        % (sin, tot, VENCE_H)}
+                        % (sin, tot, VENCE_H)})
             f['cerrada'] = {'como': 'no cuenta', 't': _ahora(), 'sin': sin, 'tot': tot}
             hecho.append((k, 'no cuenta', 0, sin, tot))
             continue
         n = 0
         f.setdefault('respondidas', {})
         for i, p in enumerate(f.get('preguntas') or []):
-            if str(i) in f['respondidas'] or 'final' in str(p['ronda']).lower():
-                continue        # 🏆 la final nunca se cierra sola: sigue en ✅ Decidir
+            if str(i) in f['respondidas'] or not DEC.se_cierra_sola(p['ronda']):
+                continue        # 🏆 ni la final, ni la semi, ni el tercer puesto: siguen en ✅ Decidir
             det = DEC.detalle_batalla(f['evento'], f['sv'], f['fecha'], p['ronda'], p['lados'])
             ck = DEC.clave_batalla(det)
             ya = (dd.get('batallas') or {}).get(ck)
@@ -440,6 +453,10 @@ def cerrar_vencidas():
     except (OSError, ValueError):
         llaves = {}
     dd = DEC._decisiones()
+    # 🔴 si `decisiones.json` existe y no se pudo leer, `_decisiones()` da {} y escribirlo de vuelta lo borraría entero
+    if not dd and os.path.exists(DEC.DECISIONES) and os.path.getsize(DEC.DECISIONES) > 2:
+        print('   ⚠️ finales: no pude leer decisiones.json; no cierro nada esta corrida')
+        return []
     hecho = cerrar(estado, llaves, dd, ahora, DEC)
     if not hecho:
         return []
@@ -501,7 +518,7 @@ def para_panel(estado, ahora):
                 'k': '%s:%d' % (k, i), 'evento': f.get('evento') or '', 'fecha': f.get('fecha') or '',
                 'ronda': str(p.get('ronda') or ''), 'lados': [str(x).strip() for x in p.get('lados') or []][:24],
                 'link': f.get('link') or '', 'autor': f.get('autor') or '', 'vence': vence,
-                'nadie': 'final' not in str(p.get('ronda') or '').lower()})
+                'nadie': 'final' not in str(p.get('ronda') or '').lower() or 'semi' in str(p.get('ronda') or '').lower()})
     return out
 
 
@@ -724,9 +741,10 @@ def _prueba_nuevo():
             return '|'.join([ev, sv, fe, str(r).lower()] + sorted(lados))
 
         clave_batalla = staticmethod(lambda d: d.lower())
+        se_cierra_sola = staticmethod(lambda r: str(r).lower() in ('r32', 'octavos', 'cuartos'))
     ahora = datetime.datetime(2026, 11, 11, 20, tzinfo=datetime.timezone.utc)
     hace = lambda h: _ts(ahora - datetime.timedelta(hours=h))  # noqa: E731
-    bat = lambda lados, g='': [lados, g, '']  # noqa: E731
+    bat = lambda lados, g='': [lados, g, '' if g else 'sin ganador: espera en ✅ Decidir']  # noqa: E731
     l491 = {'nombre': 'FATS', 'sv': 'ACAD', 'fecha': '19/10', 'links': ['https://discord.com/channels/1/2/491'],
             'rondas': [{'r': 'Octavos', 'b': [bat(['a', 'b'], 'a')] * 6 + [bat(['d', 'l', 'i']), bat(['m', 'j', 'e'])]},
                        {'r': 'Cuartos', 'b': [bat(['x', 'y'], 'x')] * 3 + [bat(['MAJ + MINI', 'MCO + MATH'])]},
@@ -769,11 +787,17 @@ def _prueba_nuevo():
                preguntas=[{'ronda': 'FINAL', 'lados': ['a', 'b']}, {'ronda': 'SEMIS', 'lados': ['c', 'd']}])
     e2 = {'fin': fin}
     cerrar(e2, {}, {}, ahora, D)
-    if '0' in fin['respondidas'] or fin['respondidas'].get('1') != D.NADIE:
-        malos.append('la final nunca se cierra sola; la semifinal sí')
+    if fin['respondidas']:
+        malos.append('ni la final ni la semifinal se cierran solas (la revisión del 11/11: la semi decide quién juega la final)')
+    # 🔴 lo ya resuelto no cuenta como «sin ganador»: un «nadie siguió» aplicado (`cobra:`) o un trío donde pasan dos
+    lres = {'nombre': 'R', 'sv': 'FFA', 'fecha': '01/11', 'rondas': [{'r': 'Cuartos', 'b': [
+        [['a + b', 'c + d'], '', 'cobra: a + b; cobra: c + d; nadie siguió: ✅ Decidir'], [['e', 'f', 'g'], 'e, f', 'pasan 2'],
+        [['h', 'i'], '', 'sin ganador: espera en ✅ Decidir']]}]}
+    if sin_ganador(lres, {'evento': 'R'}, set(), D) != (1, 3):
+        malos.append('sin ganador es sólo lo que el lector marcó así (%s)' % (sin_ganador(lres, {'evento': 'R'}, set(), D),))
     pp = para_panel(dict(e2, joven=dict(est['joven'], cuando=hace(10))), ahora)
     ks = sorted(x['k'] for xs in pp.values() for x in xs)
-    if ks != ['fin:0', 'joven:0'] or not all(x['vence'] for xs in pp.values() for x in xs):
+    if ks != ['fin:0', 'fin:1', 'joven:0'] or not all(x['vence'] for xs in pp.values() for x in xs):
         malos.append('el panel del socio: lo que nadie marcó, la final también, con cuándo vence (%s)' % ks)
     if nombre_de({'evento': '(sin titulo)', 'fecha': '10/11'}) != 'tu llave del 10/11' or nombre_de(f) != 'X':
         malos.append('la llave sin título se nombra por su fecha')

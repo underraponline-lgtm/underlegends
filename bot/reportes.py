@@ -792,11 +792,17 @@ def aplicar_llaves(decis, pedidos, ahora_ms):
         if not isinstance(p, dict) or p.get('cuenta') not in (True, False):
             continue
         if p['cuenta'] is False:
-            ev[clave] = {'decision': 'no cuenta', 'cuando': _et(ahora_ms), 'por': '%s (Dashboard)' % (p.get('por') or 'Dlx'),
-                         'nota': str(p.get('motivo') or 'desde «Llaves y fondos» del Dashboard')[:200]}
+            # 🔴 SIN PISAR LO DEMÁS DE ESE EVENTO (la revisión del 11/11/2026): una entrada de `eventos` puede traer el
+            # `campeon`, el `paga` o la `final` que decidió Dlx, y reemplazarla entera los perdía para siempre
+            ev[clave] = dict(ev.get(clave) or {}, decision='no cuenta', cuando=_et(ahora_ms), por='%s (Dashboard)' % (p.get('por') or 'Dlx'),
+                             nota=str(p.get('motivo') or 'desde «Llaves y fondos» del Dashboard')[:200])
             hecho.append((clave, 'no cuenta'))
         elif (ev.get(clave) or {}).get('decision') == 'no cuenta':
-            del ev[clave]
+            resto = {k: v for k, v in ev[clave].items() if k not in ('decision', 'cuando', 'por', 'nota')}
+            if resto:
+                ev[clave] = resto
+            else:
+                del ev[clave]
             hecho.append((clave, 'cuenta'))
         else:
             hecho.append((clave, 'nada'))

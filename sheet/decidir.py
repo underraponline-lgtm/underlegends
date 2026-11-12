@@ -2095,6 +2095,18 @@ REGLAS = {
 }
 
 
+#: 🔴 LAS RONDAS QUE SE CIERRAN SOLAS con «nadie siguió» (R22, las 48 h de `bot/finales.py`): ni la final, ni la semi, ni el
+#: tercer puesto (la revisión del 11/11/2026). «Nadie siguió» en un tercer puesto dejaba en 0 a los dos de la semi —el motor
+#: no paga semifinal cuando hay tercer puesto, y el tercer puesto no se cobra—, y la semi decide quién juega la final. El
+#: chequeo de antes era `'final' not in ronda`, que dejaba pasar «tercer puesto» y frenaba «semifinales» sin querer
+SE_CIERRAN = ('r32', 'octavos', 'cuartos')
+
+
+def se_cierra_sola(ronda):
+    """¿Esta ronda se puede cerrar sola con «nadie siguió»? Dieciseisavos, octavos o cuartos."""
+    return _CAE.get(norm(ronda)) in SE_CIERRAN or norm(ronda) in ('dieciseisavos', 'cuartosdefinal', 'octavosdefinal')
+
+
 def de_equipos(lados):
     """👥 R22: ¿todos los lados son equipos (dos o más, con «+», «,» o «&»)? Un trío de personas sueltas no: ahí cada
     rival es un cruce del requisito de País y quién ganó importa."""
@@ -3111,7 +3123,7 @@ def reglas(preguntas, eventos, dry=True, todas=None):
                 con_dec.append((p, NO_SE_JUGO, 'R4', porque, {'batalla': det}))
                 continue
             # ── R22 · la de equipos: cualquier respuesta paga lo mismo (Dlx, 11/11/2026: «Sí, cobra solo»)
-            if de_equipos(x[4]) and 'final' not in norm(x[3]):
+            if de_equipos(x[4]) and se_cierra_sola(x[3]):
                 porque = ('es de equipos (%s): quien gana y no sigue cobra su parte, así que cualquier respuesta paga lo '
                           'mismo, y en equipos no hay duelo' % ' vs '.join(x[4])[:160])
                 nuevas_dec[clave_batalla(det)] = {'ganador': NADIE, 'batalla': det, 'cuando': _ahora_et(),
@@ -4793,11 +4805,12 @@ def vence_de(p, fin):
     """⏳ Cuándo se cierra sola una «Batalla sin ganador» que se le preguntó al organizador (`bot/finales.py`, 48 h):
     ms, o 0. Sólo las que se preguntaron desde el 11/11/2026 (`t_pregunta`); la final, nunca. Pura con `fin`."""
     x = partes_batalla(p.get('detalle')) if p.get('tipo') == 'Batalla sin ganador' else None
-    if not x or 'final' in norm(x[3]):
+    if not x or not se_cierra_sola(x[3]):
         return 0
     ks = sorted(norm(_sin_bandera(lado)) for lado in x[4])
     for f in (fin or {}).values():
-        if not isinstance(f, dict) or not f.get('t_pregunta') or f.get('cerrada') or norm(f.get('evento')) != norm(x[0]):
+        if (not isinstance(f, dict) or not f.get('t_pregunta') or f.get('cerrada') or norm(f.get('evento')) != norm(x[0])
+                or str(f.get('sv') or '') != x[1] or str(f.get('fecha') or '') != x[2]):
             continue
         for q in f.get('preguntas') or []:
             if norm(q.get('ronda')) == norm(x[3]) and sorted(norm(_sin_bandera(lado)) for lado in q.get('lados') or []) == ks:
@@ -6127,7 +6140,10 @@ def _self_check():
            and sugerencia(dict(_pb, detalle=_pb['detalle'].replace('cuartos', 'semifinales')), _llb) == ('', '')
            and not _parecido('Al', 'Alan') and _parecido('MATI🇦🇷', 'MATICERNA 🇦🇷'),
            'lo que sugiere el bot: el único lado que sigue después, con su nombre más largo o más corto; si siguen los dos, nada')
-        _fin = {'1': {'evento': 'NOCHE DE BOOMBAP', 't_pregunta': '2026-11-11T20:00:00+00:00',
+        ok(se_cierra_sola('OCTAVOS') and se_cierra_sola('cuartos') and not se_cierra_sola('SEMIFINALES')
+           and not se_cierra_sola('Tercer puesto') and not se_cierra_sola('final'),
+           'se cierran solas sólo dieciseisavos, octavos y cuartos: ni la semi, ni el tercer puesto, ni la final')
+        _fin = {'1': {'evento': 'NOCHE DE BOOMBAP', 'sv': 'DDF', 'fecha': '06/10', 't_pregunta': '2026-11-11T20:00:00+00:00',
                       'preguntas': [{'ronda': 'CUARTOS', 'lados': ['XNOAH🇦🇷', 'ERIAN EL MAS WACK🇱🇰']}]}}
         ok(vence_de(_pb, _fin) == int(datetime.datetime(2026, 11, 13, 20, tzinfo=datetime.timezone.utc).timestamp() * 1000)
            and vence_de(_pb, {'1': dict(_fin['1'], t_pregunta='')}) == 0 and vence_de(_pe, _fin) == 0,

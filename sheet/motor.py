@@ -961,16 +961,26 @@ def procesar(batallas, num, fecha, servidor, participantes=None,
     for b in batallas:
         for mq in re.finditer(r'cobra\s*:\s*([^;|]+)', str(b.get('notas') or ''), re.I):
             x = mq.group(1).strip()
-            q = resolver(x)
             puesto = COBRA.get(ronda_de(b.get('ronda')))
-            if not q or not puesto or q in res:
+            if not puesto:
                 continue
-            # 🔑 y «nadie siguió» en una ronda que la escala 8-15 no tiene cobra lo mismo (R19): cobraba 0
-            sumar(x, tab.get(puesto, 0) or _paga(b) or pago_fuera_de_escala(esc, puesto), puesto)
-            if q in res:
-                # «nadie siguió» (`decidir.NADIE`, 07/10/2026): no se sabe quién ganó, así que no dice «ganó»
-                res[q]['notas'] += ('Nadie siguió ' if 'nadie siguió' in str(b.get('notas') or '').lower()
-                                    else 'Ganó y no siguió ')
+            # 🔴 UN EQUIPO SE COBRA INTEGRANTE POR INTEGRANTE (la revisión del 11/11/2026). `cobra: MCO + MATHIAS` es el
+            # LADO entero, y `resolver()` de un lado entero no es nadie de `res`: así que se le pagaba la ronda a los dos,
+            # también a MCO, que siguió y ya cobraba la final —y se le pisaba el puesto con «Cuartos»—. Pasó de verdad: la
+            # #491, con el «Nadie siguió» que escribió R22, dio a MCO 4.500 en vez de 3.250 y bajó a Majiztral de
+            # Semifinal a Cuartos. Ahora cobra su parte sólo quien no tiene ya un puesto, como el equipo que la perdió
+            ms = equipo(x) or [x]
+            pts = tab.get(puesto, 0) or _paga(b) or pago_fuera_de_escala(esc, puesto)
+            for m in ms:
+                q = resolver(m)
+                if not q or q in res:
+                    continue
+                # 🔑 y «nadie siguió» en una ronda que la escala 8-15 no tiene cobra lo mismo (R19): cobraba 0
+                sumar(m, pts // len(ms), puesto)
+                if q in res:
+                    # «nadie siguió» (`decidir.NADIE`, 07/10/2026): no se sabe quién ganó, así que no dice «ganó»
+                    res[q]['notas'] += ('Nadie siguió ' if 'nadie siguió' in str(b.get('notas') or '').lower()
+                                        else 'Ganó y no siguió ')
 
     # 👥 Y EN UNA BATALLA DE EQUIPOS LO COBRA SOLO (Dlx, 11/11/2026: «Sí, cobra solo»). En la #491 (pandillas) ganaron
     # MCO + MATHIAS y a la semi siguió MCO con otros: Mathias se quedaba en 0 si se contestaba «Ganaron MCO + MATHIAS», y
@@ -1503,6 +1513,14 @@ def _self_check():
        and con_eq.get('Math', {}).get('posicion') == ETIQUETA['cuartos']
        and con_eq.get('Mco', {}).get('posicion') == ETIQUETA['subcampeon'], '%s' % con_eq)
     ok('… y en el 1 contra 1 sigue sin cobrar (Geoka): ahí se decide por persona', 'Geo' not in sin_c)
+    # 🔴 «nadie siguió» en una de equipos paga sólo a quien no siguió (la #491, 11/11/2026: MCO cobraba dos veces)
+    _nd, _ = _pp([{'ronda': 'cuartos', 'ladoA': 'Maj + Mini', 'ladoB': 'Mco + Math', 'ganador': '',
+                   'notas': 'cobra: Maj + Mini; cobra: Mco + Math; nadie siguió: ✅ Decidir'},
+                  {'ronda': 'final', 'ladoA': 'Mco + Mak', 'ladoB': 'Ana + Bea', 'ganador': 'Ana + Bea'}])
+    ok('«nadie siguió» en equipos: quien siguió no cobra dos veces ni pierde su puesto; los que no, su parte',
+       _nd.get('Mco') == con_eq.get('Mco') and _nd.get('Mak') == con_eq.get('Mak')
+       and _nd.get('Math', {}).get('puntos') == _nd.get('Mini', {}).get('puntos') == con_eq.get('Mini', {}).get('puntos'),
+       '%s' % _nd)
     ok('… y con «cobra: Geo», el octavo, como quien lo perdió',
        con_c.get('Geo', {}).get('puntos') == 1250 and con_c.get('Geo', {}).get('posicion') == ETIQUETA['octavos']
        and con_c.get('Ana', {}).get('puntos') == 10000,
