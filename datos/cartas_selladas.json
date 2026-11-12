@@ -57,7 +57,7 @@
    "competitivo": "67ac8e44d80f:624f5e322311",
    "pais": "f079bfec4f02:733ce66bf5fa",
    "servidor": "bf1d70a33e5f:2415c901692f:cde293",
-   "temporada": "2f9b9d6287ec:7a510334494e"
+   "temporada": "ef1b93eaa49b:7a510334494e"
   },
   "Adrianex": {
    "competitivo": "9b1bf86ef27a:624f5e322311",
@@ -180,10 +180,10 @@
   "Benshi": {},
   "Betelguese": {},
   "Bishop": {
-   "competitivo": "6938e3b35c81:624f5e322311",
+   "competitivo": "74c046dd0828:624f5e322311",
    "pais": "7a68e65a02ab:733ce66bf5fa",
    "servidor": "3e84013607d4:2415c901692f:51cb66",
-   "temporada": "9dcec1690465:7a510334494e"
+   "temporada": "e255e4b07c96:7a510334494e"
   },
   "Blaxx": {
    "competitivo": "93454baf4a64:624f5e322311",
@@ -512,7 +512,7 @@
    "competitivo": "77c87cf586d9:624f5e322311",
    "pais": "49f1ad7a95ff:733ce66bf5fa",
    "servidor": "574a9e7d63bd:2415c901692f:80c07f",
-   "temporada": "af1a173fd611:7a510334494e"
+   "temporada": "deef6ffb947d:7a510334494e"
   },
   "Eze": {
    "competitivo": "8c611169d5ba:624f5e322311",
@@ -1186,7 +1186,7 @@
    "competitivo": "014b6e39b4ef:624f5e322311",
    "pais": "8243671ace9b:733ce66bf5fa",
    "servidor": "37c369c0b7ab:2415c901692f:0bce64",
-   "temporada": "aee3c0dcbeca:7a510334494e"
+   "temporada": "ed099e66b7b0:7a510334494e"
   },
   "Minipekka505": {
    "servidor": "c3e39b4d3573:2415c901692f:77728e"
@@ -1195,7 +1195,7 @@
    "competitivo": "6b6e22b91b90:624f5e322311",
    "pais": "fc8e1f52b429:733ce66bf5fa",
    "servidor": "e9f6f55d4023:2415c901692f:3d0a1b",
-   "temporada": "2937052b6a86:7a510334494e"
+   "temporada": "1be19d3bce01:7a510334494e"
   },
   "Mknoli": {
    "servidor": "0995b01c57e5:2415c901692f:2fe2e1"
@@ -1711,7 +1711,7 @@
    "competitivo": "375818c4d8c3:624f5e322311",
    "pais": "8a56b78a8d41:733ce66bf5fa",
    "servidor": "b904f1829ef1:2415c901692f:d6a988",
-   "temporada": "7246b7ede21d:7a510334494e"
+   "temporada": "47fe712a3d5b:7a510334494e"
   },
   "Telmex": {
    "servidor": "a44b3afc37b9:2415c901692f:3544cb"
@@ -2080,7 +2080,7 @@
   },
   "tkl": {},
   "tormen": {
-   "competitivo": "8772e0f4462b:624f5e322311",
+   "competitivo": "0cba0a5e4cbb:624f5e322311",
    "pais": "4ca841029f2e:733ce66bf5fa",
    "servidor": "c31227bc64ae:2415c901692f:94d46a"
   },
@@ -2096,5 +2096,5 @@
    "servidor": "7f8885a35a6d:2415c901692f:93a344"
   }
  },
- "cuando": "2026-11-12T01:18:24+00:00"
+ "cuando": "2026-11-12T01:21:04+00:00"
 }
