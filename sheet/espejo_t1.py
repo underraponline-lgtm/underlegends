@@ -602,12 +602,15 @@ def espejar_grillas(aplicar=False):
         texto = volcar_grilla(hoja, g)
         if _texto_de(ruta(hoja)) == texto:
             print('   %-20s igual (%d fila(s))' % (hoja, len(g)))
+            if aplicar:
+                _sin_marca(hoja)
             out[hoja] = 'igual'
             continue
         print('   %-20s %d fila(s), cambió%s' % (hoja, len(g), '' if aplicar else '  [sin --aplicar: no escribo]'))
         if aplicar:
             with io.open(ruta(hoja), 'w', encoding='utf-8', newline='\n') as f:
                 f.write(texto)
+            _sin_marca(hoja)                               # 🗄️ recién copiada: ya no está «sucia»
         out[hoja] = 'cambió'
     return out
 
@@ -691,14 +694,18 @@ def hojas_de_pedido(metodo, ruta, kw, titulo_de_id=None):
 
 #: 🖊️ las hojas enteras que este proceso escribió: su archivo se refresca al terminar (o antes de leerlas)
 _SUCIAS = set()
-#: 🔎 cuántas lecturas de la Lista y AKAs se compararon con su archivo en este proceso, y cuántas dieron distinto
-_COMPARADAS = {'iguales': 0, 'distintas': 0}
+#: 🔎 cuántas lecturas de la Lista y AKAs se compararon con su archivo en este proceso, y cuántas dieron distinto; y
+#: cuántas se contestaron desde el archivo sin ir al Sheet (`leer_de_archivo()`, desde el 12/11/2026)
+_COMPARADAS = {'iguales': 0, 'distintas': 0, 'archivo': 0}
 _AL_SALIR = []
 
 
 def _al_salir():
     for hoja in sorted(_SUCIAS):
         refrescar(hoja)
+    if _COMPARADAS['archivo']:
+        print('   🗄️ lecturas del Operativo (Lista, AKAs, Pendientes, ✅ Decidir, Config) desde datos/: %d, sin pedirle '
+              'al Sheet' % _COMPARADAS['archivo'])
     if _COMPARADAS['iguales'] or _COMPARADAS['distintas']:
         print('   %s lecturas del Operativo (Lista, AKAs, Pendientes, ✅ Decidir, Config) desde datos/: %d iguales al Sheet%s'
               % ('🗄️' if not _COMPARADAS['distintas'] else '🔴', _COMPARADAS['iguales'],
@@ -726,6 +733,14 @@ def marcar_sucias(hojas):
     if nuevas:
         _SUCIAS.update(nuevas)
         _registrar_salida()
+        # 🗄️ Y SE DEJA DICHO EN DISCO, no sólo en la memoria de este proceso: si muere antes de refrescarla, el
+        # próximo que la lea no tiene que creerle al archivo (`de_archivo()`)
+        for h in nuevas:
+            try:
+                with io.open(_marca(h), 'w', encoding='utf-8') as f:
+                    f.write('escrita en el Sheet y sin copiar todavía\n')
+            except OSError:
+                pass
 
 
 def refrescar(hoja):
@@ -741,6 +756,7 @@ def refrescar(hoja):
             with io.open(ruta(hoja), 'w', encoding='utf-8', newline='\n') as f:
                 f.write(texto)
         _SUCIAS.discard(hoja)
+        _sin_marca(hoja)
         return True
     except Exception as e:                                 # noqa: BLE001
         print('   ⚠️ no pude refrescar %s en datos/ (%s): lo copia el paso 2g' % (hoja, str(e)[:80]))
@@ -785,6 +801,10 @@ def comparar_lectura(ruta_get, respuesta):
 def fuente_grilla(hoja, del_sheet, lector='', base=BASE):
     """🪪 Lo que usan `construir_padron` y `construir_akas` en vez de `worksheet(hoja).get_all_values()` (etapa 4b).
     Con `CONTROL`, como `fuente()`: compara con la lectura de siempre (`del_sheet`) y si no coincide usa el Sheet."""
+    if base == BASE and de_archivo(hoja):
+        _registrar_salida()
+        _COMPARADAS['archivo'] += 1
+        return grilla_guardada(hoja)                       # 🗄️ la prueba apagada: el archivo, al día (12/11/2026)
     if hoja in _SUCIAS and base == BASE:
         refrescar(hoja)                                    # este mismo proceso la escribió: primero, al día
     mio = grilla_guardada(hoja, base=base)
@@ -801,6 +821,106 @@ def fuente_grilla(hoja, del_sheet, lector='', base=BASE):
               'DISTINTO del Sheet (%d contra %d filas): uso el Sheet' % (len(mio), len(sh)), de))
     _VISTO[hoja] = igual
     return mio if igual else sh
+
+
+# 🗄️ LA PRUEBA DE LAS GRILLAS, APAGADA (12/11/2026; Dlx: «dale, sigue con apagar la prueba de la Lista»). La Lista,
+# AKAs, Pendientes, ✅ Decidir y Config se siguen ESCRIBIENDO en el Sheet, pero el ciclo ya no les pregunta para
+# leerlas: las copia a datos/ al arrancar (`al_dia()`) y de ahí en más las contesta el archivo
+# (`leer_de_archivo()`, que llama `escribir._pedir()` ANTES de ir a la API, y `fuente_grilla()`).
+#
+# ⚠️ AL ARRANCAR Y NO EN EL PASO 2: medido en la corrida de las 11:52 PM del 11/11, `procesar_entrada` (paso 1) leyó
+# `Pendientes` distinto de su archivo dos veces. Alguien la había cambiado desde una PC entre dos corridas, y una
+# escritura desde una PC no refresca `datos/` (`_en_github()`). Con la copia al arrancar, eso entra en esa misma vuelta.
+#
+# ⚠️ LO QUE SE ESCRIBE EN LA CORRIDA SE VUELVE A COPIAR ANTES DE LEERLO: `marcar_sucias()` la deja «sucia» en memoria y
+# en disco (`<archivo>.sucia`), y `de_archivo()` la refresca primero. Si no puede, esa lectura va al Sheet. Lo mismo si
+# la copia de arranque falló para esa hoja: sólo se le cree al archivo de las que quedaron al día.
+#
+# ⚠️ SÓLO EN EL CICLO DE GITHUB, y sólo después de `al_dia()`: lo dice `ESPEJO_GRILLAS` en el entorno, que heredan los
+# pasos. Una PC, `recalcular.yml` y el trabajo `dibujar` siguen leyendo el Sheet como antes: su `datos/` puede ser de
+# hace media hora.
+ENV_AL_DIA = 'ESPEJO_GRILLAS'
+
+
+def _marca(hoja):
+    return ruta(hoja) + '.sucia'
+
+
+def _sin_marca(hoja):
+    try:
+        os.remove(_marca(hoja))
+    except OSError:
+        pass
+
+
+def al_dia():
+    """🗄️ Copia las cinco grillas del Sheet a datos/ y deja dicho en el entorno (`ESPEJO_GRILLAS`) cuáles quedaron al
+    día: ésas se leen del archivo en el resto de la corrida. Sólo en GitHub. Devuelve ese conjunto. Nunca levanta."""
+    if not _en_github():
+        return set()
+    try:
+        r = espejar_grillas(aplicar=True)
+    except Exception as e:                                 # noqa: BLE001
+        print('   ⚠️ no pude copiar las grillas (%s): se leen del Sheet, como antes' % str(e)[:80])
+        r = {}
+    listas = {h for h, v in r.items() if v in ('igual', 'cambió')}
+    for h in listas:
+        _sin_marca(h)
+    os.environ[ENV_AL_DIA] = '|'.join(sorted(listas))
+    faltan = sorted(set(GRILLAS) - listas)
+    print('   🗄️ %d de %d grillas al día en datos/: se leen de ahí%s'
+          % (len(listas), len(GRILLAS), '' if not faltan else ' (%s, del Sheet)' % ', '.join(faltan)))
+    return listas
+
+
+def de_archivo(hoja):
+    """🗄️ ¿Esta grilla se lee de su archivo, sin preguntarle al Sheet? Sólo si `al_dia()` la dejó al día en esta
+    corrida y, si alguien la escribió después, se pudo volver a copiar. Nunca levanta."""
+    try:
+        if hoja not in GRILLAS or not _en_github():
+            return False
+        if hoja not in (os.environ.get(ENV_AL_DIA) or '').split('|'):
+            return False
+        if (hoja in _SUCIAS or os.path.exists(_marca(hoja))) and not refrescar(hoja):
+            return False
+        return grilla_guardada(hoja) is not None
+    except Exception:                                      # noqa: BLE001
+        return False
+
+
+def leer_de_archivo(ruta_get):
+    """🗄️ Lo que `escribir._pedir('GET', '/values/<a1>')` contesta desde datos/ sin ir al Sheet, o `None` (y va al
+    Sheet). Sólo el texto que se ve (sin `?valueRenderOption`…) y sólo lo que se guarda (`GRILLAS_RANGO`). Nunca
+    levanta."""
+    try:
+        from urllib.parse import unquote
+        if not ruta_get.startswith('/values/'):
+            return None
+        crudo = ruta_get[len('/values/'):]
+        if '?' in crudo:
+            return None
+        a1 = unquote(crudo)
+        hoja, _f1, _c1, f2, c2 = _celdas(a1)
+        if hoja not in GRILLAS:
+            return None
+        if hoja in GRILLAS_RANGO:
+            _h, _a, _b, lf, lc = _celdas('%s!%s' % (hoja, GRILLAS_RANGO[hoja]))
+            if not f2 or not c2 or f2 > lf or c2 > lc:
+                return None
+        if not de_archivo(hoja):
+            return None
+        g = grilla_guardada(hoja)
+        if g is None:
+            return None
+        _registrar_salida()
+        _COMPARADAS['archivo'] += 1
+        out = {'range': a1, 'majorDimension': 'ROWS'}
+        v = valores_de(g, a1)
+        if v:
+            out['values'] = v                              # como la API: sin nada, la clave no viene
+        return out
+    except Exception:                                      # noqa: BLE001
+        return None
 
 
 def _self_check():
@@ -966,6 +1086,72 @@ def _self_check():
             sys.modules['escribir'] = real
         else:
             sys.modules.pop('escribir', None)
+
+    # 🗄️ LA PRUEBA DE LAS GRILLAS, APAGADA (12/11/2026): en el ciclo se copian al arrancar y se leen del archivo; lo que
+    # se escribe se vuelve a copiar antes de leerlo, y lo que no se pudo copiar se lee del Sheet
+    from urllib.parse import quote
+    G = globals()
+    ruta0, leer0 = G['ruta'], G['_leer_grilla_sheet']
+    env0 = {k: os.environ.get(k) for k in ('GITHUB_ACTIONS', 'ESPEJO_SIEMPRE', ENV_AL_DIA)}
+    del_sheet = {'Lista de Raperos': [['Rapero', 'País'], ['Oasis', 'ar']], 'AKAs': [['Alias', 'Nombre Real'], ['a', 'A']],
+                 'Pendientes': [['x']], '✅ Decidir': [['¿?']], 'Config': [['Puesto', 'Puntos'], ['1', '1000']]}
+    pedidas = []
+
+    def _falso(h):
+        pedidas.append(h)
+        if h == 'Pendientes':
+            raise RuntimeError('429')                      # ésta no se pudo copiar al arrancar
+        return [list(f) for f in del_sheet[h]]
+
+    def _caido(h):
+        raise RuntimeError('caído')
+    try:
+        with tempfile.TemporaryDirectory() as tmp:
+            os.makedirs(os.path.join(tmp, 'datos'))
+            G['ruta'] = lambda hoja, temp=ACTUAL, base=BASE: os.path.join(tmp, 'datos', '%s_%s.json' % (temp, GRILLAS[hoja]))
+            G['_leer_grilla_sheet'] = _falso
+            for k in env0:
+                os.environ.pop(k, None)
+            en_pc = al_dia() == set() and leer_de_archivo('/values/AKAs%21A1%3AC') is None and not pedidas
+            os.environ['ESPEJO_SIEMPRE'] = '1'
+            listas = al_dia()
+            n0 = len(pedidas)
+            r1 = leer_de_archivo('/values/AKAs%21A1%3AC')
+            otras = [leer_de_archivo(x) for x in ('/values/AKAs%21A1%3AC?valueRenderOption=UNFORMATTED_VALUE',
+                                                   '/values/Pendientes%21A2%3AH', '/values/Config%21J2%3AM22',
+                                                   '/values/Config', '?fields=sheets.properties', '/values/Resultados%21A1')]
+            r_cfg = leer_de_archivo('/values/Config%21A2%3AB2')
+            sin_pedir = len(pedidas) == n0
+            del_sheet['AKAs'].append(['b', 'B'])            # alguien escribe AKAs en esta corrida
+            marcar_sucias({'AKAs'})
+            marcada = os.path.exists(_marca('AKAs'))
+            r2 = leer_de_archivo('/values/AKAs')
+            recopiada = pedidas[n0:] == ['AKAs'] and not os.path.exists(_marca('AKAs')) and 'AKAs' not in _SUCIAS
+            io.open(_marca('Lista de Raperos'), 'w', encoding='utf-8').write('otro proceso\n')
+            G['_leer_grilla_sheet'] = _caido                # quedó sucia en otro proceso y ahora no se puede copiar
+            r3 = leer_de_archivo('/values/' + quote("'Lista de Raperos'!A1:B2"))
+            al_sheet = fuente_grilla('Lista de Raperos', lambda: [['Rapero', 'País'], ['Oasis', 'ar']])
+    finally:
+        G['ruta'], G['_leer_grilla_sheet'] = ruta0, leer0
+        for k, v in env0.items():
+            if v is None:
+                os.environ.pop(k, None)
+            else:
+                os.environ[k] = v
+        _SUCIAS.clear()
+        _COMPARADAS['archivo'] = 0
+        _VISTO.clear()
+    ok(en_pc, 'grillas en una PC: nada cambia, se leen del Sheet')
+    ok(listas == set(GRILLAS) - {'Pendientes'} and sin_pedir
+       and r1 == {'range': 'AKAs!A1:C', 'majorDimension': 'ROWS', 'values': [['Alias', 'Nombre Real'], ['a', 'A']]}
+       and r_cfg == {'range': 'Config!A2:B2', 'majorDimension': 'ROWS', 'values': [['1', '1000']]}
+       and otras == [None] * 6,
+       'grillas en el ciclo: al día al arrancar y del archivo sin pedirle al Sheet; con opciones, fuera de lo guardado, '
+       'otra hoja o la que no se copió, al Sheet')
+    ok(marcada and recopiada and (r2 or {}).get('values') == [['Alias', 'Nombre Real'], ['a', 'A'], ['b', 'B']],
+       'grillas: lo escrito en la corrida queda sucio en disco y se vuelve a copiar antes de leerlo')
+    ok(r3 is None and al_sheet == [['Rapero', 'País'], ['Oasis', 'ar']],
+       'grillas: sucia de otro proceso y sin poder copiarla, se lee del Sheet')
     print('\n   %s' % ('✅ todo bien' if not fallas else '🔴 %d mal' % fallas))
     return 1 if fallas else 0
 

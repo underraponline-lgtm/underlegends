@@ -105,6 +105,12 @@ def _pedir(metodo, ruta, **kw):
     de espera.
     """
     import time
+    # 🗄️ LA PRUEBA DE LAS GRILLAS, APAGADA (12/11/2026): en el ciclo, una lectura de la Lista, AKAs, Pendientes,
+    # ✅ Decidir o Config la contesta su archivo de datos/ sin ir al Sheet. Ver `espejo_t1.leer_de_archivo()`
+    if metodo == 'GET' and not kw:
+        r0 = _de_archivo(ruta)
+        if r0 is not None:
+            return r0
     for i, espera in enumerate((0,) + REINTENTOS):
         if espera:
             time.sleep(espera)
@@ -138,6 +144,15 @@ def _titulo_de_id(sid):
             p = s_.get('properties') or {}
             _TITULOS[p.get('sheetId')] = p.get('title')
     return _TITULOS.get(sid)
+
+
+def _de_archivo(ruta):
+    """🗄️ `espejo_t1.leer_de_archivo()`, o `None` si no se puede (y entonces se lee del Sheet). Nunca levanta."""
+    try:
+        import espejo_t1 as _EJ
+        return _EJ.leer_de_archivo(ruta)
+    except Exception:                                    # noqa: BLE001
+        return None
 
 
 def _despues(metodo, ruta, kw, out):

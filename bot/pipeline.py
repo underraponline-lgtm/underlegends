@@ -1571,6 +1571,19 @@ def main():
         print('   ⚠️ no confirmé el ID del Operativo (%s): cada paso lo busca solo'
               % str(e)[:60])
 
+    # 🗄️ LAS GRILLAS DEL OPERATIVO, AL DÍA ANTES QUE NADA (12/11/2026, «dale, sigue con apagar la prueba de la Lista»):
+    # la Lista, AKAs, Pendientes, ✅ Decidir y Config se copian a datos/ y el resto de la corrida las lee de ahí, sin
+    # preguntarle al Sheet (`espejo_t1.al_dia()`, que deja `ESPEJO_GRILLAS` en el entorno que heredan los pasos). Va
+    # ACÁ y no en el paso 2 porque el paso 1 ya las lee. Sólo en `escuchar`: `dibujar` no las necesita al día.
+    # ⚠️ NUNCA FRENA: la que no se pudo copiar se lee del Sheet, como antes
+    if correr and '--solo-dibujar' not in sys.argv:
+        try:
+            sys.path.insert(0, os.path.join(BASE, 'sheet'))
+            import espejo_t1 as _EJ
+            _EJ.al_dia()
+        except Exception as e:                           # noqa: BLE001
+            print('   ⚠️ no puse las grillas al día (%s): se leen del Sheet' % str(e)[:60])
+
     # 🔴 `--solo-dibujar`: EL TRABAJO `dibujar` NO REPITE LO DE `escuchar`.
     # Corría el ciclo entero otra vez —leer Discord, cargar los eventos,
     # recalcular las vitrinas, rebajar los pools y desplegar el hub— un
