@@ -3644,6 +3644,13 @@ def _pistas(p):
             out.append('Esa cuenta: ' + _cuenta(m2.group(1)))
         elif m3:
             out.append('Esa cuenta: ' + _cuenta(m3.group(3)))
+    elif t == 'conflicto':
+        # 🪪 las dos cuentas, con lo que se sabe de cada una (12/11/2026): la bandeja muestra la pregunta en una línea
+        nuevo = p['detalle'].split(' = ', 1)[1].strip() if ' = ' in p['detalle'] else ''
+        mv = re.search(r'(\d{6,})', p.get('match') or '')
+        for et, did in (('La que usó /card', nuevo), ('La de la Lista', mv.group(1) if mv else '')):
+            if did.isdigit():
+                out.append('%s: https://discord.com/users/%s%s' % (et, did, (' · ' + _cuenta(did)) if _cuenta(did) else ''))
     elif t == 'Vidas cargado':
         # cómo quedó: las batallas, el campeón y el orden en que cayeron
         out += [x.strip() for x in (p['match'] or '').split(' | ') if x.strip()]
@@ -3847,6 +3854,22 @@ def _pregunta(p):
                                 if did.isdigit() else ''),
                 ', '.join(sug) if sug else '—',
                 ['Es %s' % x for x in sug] + [NUEVO, 'Ya está resuelto'])
+    if t == 'conflicto':
+        # 🪪 QUIÉN ES QUIÉN, CON LAS DOS CUENTAS (12/11/2026). Decía «Revísalo en Discord» y sólo dejaba «Ya lo revisé»:
+        # no decía de quién era la fila ni dejaba decir qué pasó
+        quien, nuevo = [x.strip() for x in det.split(' = ', 1)] if ' = ' in det else (det.strip(), '')
+        mv = re.search(r'(\d{6,})', match or '')
+        viejo = mv.group(1) if mv else ''
+        fila = _lista_por_id().get(viejo, '') if viejo else ''
+        otra = _lista_por_id().get(nuevo, '') if nuevo.isdigit() else ''
+        if fila and otra and otra != fila:
+            return ('«%s» usó /card desde una cuenta que en la Lista es «%s», y «%s» tiene otra: ¿es la misma persona '
+                    'con dos filas, u otra con el mismo nombre?' % (quien, otra, fila),
+                    '—', [JUNTAR_FILAS, OTRA_CUENTA, 'Dejar para después'])
+        return ('«%s» usó /card desde una cuenta que no es la de la Lista (ahí %s tiene otra): ¿es la misma persona, '
+                'que cambió de cuenta, u otra con el mismo nombre?' % (quien, ('«%s»' % fila) if fila else 'esa fila'),
+                '—',
+                ([CAMBIO_CUENTA] if fila and nuevo.isdigit() else []) + [OTRA_CUENTA, 'Dejar para después'])
     if t in ('conflicto', 'ambiguo'):
         quien = det.split(' = ')[0].strip()
         return ('«%s» usó /card y su nombre choca con la lista (%s). '
@@ -3912,6 +3935,13 @@ def _pregunta(p):
 
 #: lo que cierra la pregunta tal cual, sin hacer nada más
 MISMA, OTRA = 'Es la misma persona', 'Es otra persona'
+#: 🪪 el conflicto de /card (12/11/2026, Dlx: «sure lets go», a que la pregunta diga quién es quién y qué pasó): la cuenta
+#: nueva es de la misma persona —la fila pasa a ella, `lista_raperos.cuenta_nueva()`— o de otra con el mismo nombre
+CAMBIO_CUENTA = 'Es la misma persona: cambió de cuenta'
+OTRA_CUENTA = 'Es otra persona con el mismo nombre'
+#: ⚠️ y si la cuenta nueva YA TIENE SU FILA (₁₉: su cuenta nueva era «19 FLEIVA WACK»), pasarle la fila no se puede —una
+#: cuenta es de una sola fila—: «es la misma» junta las dos, como «dos cuentas, una persona» (`que == 'dos_cuentas'`)
+JUNTAR_FILAS = 'Es la misma persona: juntar las dos filas'
 CIERRAN = {'Ya lo revisé', 'Ya está resuelto', 'La completo en Discord',
            'Está bien así', 'La corrijo en Discord', 'Déjala así', 'Hecho',
            MISMA, OTRA}
@@ -3965,6 +3995,25 @@ def interpretar(p, respuesta):
         g = re.match(r'termin[oó]\s*:?\s*(?:la\s+)?gan[oó]\s+(.+)$', r, re.I)
         if g:
             return ('liga_fin', (m.group(1), m.group(2), m.group(3), g.group(1).strip()))
+    # 🪪 el conflicto de /card: la fila pasa a la cuenta nueva, o queda como está
+    if p['tipo'] == 'conflicto' and r == CAMBIO_CUENTA:
+        nuevo = p['detalle'].split(' = ', 1)[1].strip() if ' = ' in p['detalle'] else ''
+        mv = re.search(r'(\d{6,})', p.get('match') or '')
+        fila = _lista_por_id().get(mv.group(1), '') if mv else ''
+        if not (fila and nuevo.isdigit()):
+            return ('error', 'no encuentro la fila de la Lista de esa cuenta')
+        return ('cuenta_nueva', (fila, nuevo))
+    if p['tipo'] == 'conflicto' and r == JUNTAR_FILAS:
+        nuevo = p['detalle'].split(' = ', 1)[1].strip() if ' = ' in p['detalle'] else ''
+        mv = re.search(r'(\d{6,})', p.get('match') or '')
+        fila = _lista_por_id().get(mv.group(1), '') if mv else ''
+        otra = _lista_por_id().get(nuevo, '') if nuevo.isdigit() else ''
+        if not (fila and otra and otra != fila):
+            return ('error', 'no encuentro las dos filas de la Lista')
+        # la de la cuenta nueva pasa a ser alias de la que ya estaba, y su cuenta, la otra cuenta de esa
+        return ('dos_cuentas', (otra, fila, nuevo))
+    if p['tipo'] == 'conflicto' and r == OTRA_CUENTA:
+        return ('cerrar', 'es otra persona con el mismo nombre: la Lista queda como está')
     if r in CIERRAN:
         return ('cerrar', r)
     # ⚠️ ANTES QUE EL ALIAS: «Es un troll» empieza con «es », y la rama de
@@ -4442,7 +4491,7 @@ def _respuestas():
 #: las líneas que escribe `_pistas()`, de esta versión y de las anteriores
 _PISTA_SISTEMA = re.compile(
     r'^(—|¿Será .*\?|Terminó .*\(.* pts\)|[^:]{1,40}: (le ganó a|perdió con) .*'
-    r'|(La que tiene|La otra|Su cuenta|Esa cuenta): .*|[^:]{1,40}: .+ vs .+|En Discord .*|✍️ Se anotó así .*'
+    r'|(La que tiene|La otra|Su cuenta|Esa cuenta|La que usó /card|La de la Lista): .*|[^:]{1,40}: .+ vs .+|En Discord .*|✍️ Se anotó así .*'
     r'|Ninguno aparece en la ronda siguiente.*|Es la última ronda.*)$')
 
 
@@ -4558,6 +4607,8 @@ def aplicar(preguntas, respuestas, repetidas, dry=True):
     distintos = []
     # 🔎 las altas con la cuenta que eligió Dlx (`Es la cuenta @usuario`)
     altas = []
+    # 🪪 las filas que pasan a la cuenta nueva (el conflicto de /card)
+    cuentas_nuevas = []
     batallas = {}
     trolls = []
     # 👯 los números que Dlx dijo que son otro evento contado dos veces, y los pares que no
@@ -4607,6 +4658,8 @@ def aplicar(preguntas, respuestas, repetidas, dry=True):
                 cierres += [(n, 'alias de %s: es su cuenta (@%s)' % (real, dato['usuario'])) for n in p['filas']]
             else:
                 altas.append((p, _sin_bandera(p['detalle']).strip(), dato))
+        elif que == 'cuenta_nueva':
+            cuentas_nuevas.append((p, dato))
         elif que == 'troll':
             trolls.append(dato)
             cierres += [(n, 'troll: no cuenta') for n in p['filas']]
@@ -4684,7 +4737,7 @@ def aplicar(preguntas, respuestas, repetidas, dry=True):
     for det, (c, _p) in campeones.items():
         print('      campeón: %s -> %s' % (det, c['ganador']))
     aplicar.hubo = bool(cierres or pares or eventos or ids or trolls or batallas or altas or distintos or campeones
-                        or sin_campeon)
+                        or sin_campeon or cuentas_nuevas)
     # ⚠️ LAS NOTAS DE LO QUE SE CIERRA NO SE PIERDEN: van a
     # `datos/decisiones.json` con la pregunta, para quien tenga que actuar.
     cerradas = {n for n, _d in cierres}
@@ -4693,6 +4746,13 @@ def aplicar(preguntas, respuestas, repetidas, dry=True):
     if dry:
         return estados
 
+    if cuentas_nuevas:
+        import lista_raperos as LR
+        for p, (fila, did) in cuentas_nuevas:
+            if LR.cuenta_nueva(fila, did, 'en ✅ Decidir: usó /card desde esta cuenta', aplicar=True):
+                cierres += [(n, 'la fila de %s pasó a la cuenta %s' % (fila, did)) for n in p['filas']]
+            else:
+                estados[p['id']] = '⚠️ no pude pasar la fila a la cuenta nueva: mira la Lista'
     if altas:
         # la bandera de la llave, si es una (como `por_discord()`); si no, sin país: lo completa autoverificar
         import lista_raperos as LR
@@ -6422,6 +6482,24 @@ def _self_check():
         ok('R25' in REGLAS and NADIE_DIAS == 28 and se_cierra_sola('octavos') and not se_cierra_sola('semifinales')
            and dias_desde('15/10', datetime.date(2026, 11, 12)) == 28,
            'R25: dieciseisavos, octavos y cuartos, a los 28 días de la fecha del evento; la semi y la final, no')
+        _DATOS['lista_por_id'] = {k: v for k, v in dict(_lista_por_id(), **{'1087195409685954561': 'NUEVE'}).items()
+                                  if k != '1345454905325781012'}
+        _pc = {'tipo': 'conflicto', 'detalle': '₁₉ = 1345454905325781012', 'match': 'la fila ya tiene 1087195409685954561',
+               'origen': 'bot /card'}
+        _qc = _pregunta(_pc)
+        ok(_qc[2][:2] == [CAMBIO_CUENTA, OTRA_CUENTA] and '«NUEVE»' in _qc[0] and '\n' not in _qc[0]
+           and 'users/1345454905325781012' in _pistas(dict(_pc, sug=_qc[1]))
+           and 'La de la Lista: https://discord.com/users/1087195409685954561' in _pistas(dict(_pc, sug=_qc[1]))
+           and interpretar(_pc, CAMBIO_CUENTA) == ('cuenta_nueva', ('NUEVE', '1345454905325781012'))
+           and interpretar(_pc, OTRA_CUENTA)[0] == 'cerrar'
+           and CAMBIO_CUENTA not in _pregunta(dict(_pc, match='la fila ya tiene 999999999'))[2],
+           'el conflicto de /card dice de quién es la fila, con las dos cuentas, y deja decir si cambió de cuenta')
+        _DATOS['lista_por_id'].update({'1345454905325781012': 'NUEVE FW'})
+        _qj = _pregunta(_pc)
+        ok(_qj[2][0] == JUNTAR_FILAS and CAMBIO_CUENTA not in _qj[2] and '«NUEVE FW»' in _qj[0]
+           and interpretar(_pc, JUNTAR_FILAS) == ('dos_cuentas', ('NUEVE FW', 'NUEVE', '1345454905325781012')),
+           'si la cuenta nueva ya tiene su fila, «es la misma» junta las dos filas en vez de pisar la cuenta')
+        _DATOS.pop('lista_por_id', None)
         _hoy = datetime.date(2026, 11, 12)
         _pi = {'tipo': 'Bracket incompleto', 'detalle': 'X · LKR · 05/11', 'match': 'x | final: LARRIX🇦🇷 vs Gazir🇪🇸'}
         _ps = dict(_pi, match='x | semifinales: A vs B | semifinales: C vs D')

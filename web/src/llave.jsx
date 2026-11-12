@@ -32,6 +32,13 @@ const normB = (b) => [(b[0] || []).map(texto), texto(b[1]), String(b[2] || ''), 
 // los integrantes de un lado («a, b, c» es un equipo)
 // los integrantes de un lado: la llave procesada escribe «A, B» y la en vivo «A + B» (LA REDENCION, 03/10/2026)
 const partes = (s) => String(s || '').split(/\s*[,+&]\s*/).filter(Boolean);
+// los nombres de una llave, una vez: la tabla y cada parte de cada lado (como `Corregir` del Dashboard)
+const nombresDe = (L) => {
+  const out = [];
+  for (const f of (L && L.tabla) || []) if (f[0] && !out.includes(f[0])) out.push(f[0]);
+  for (const ro of (L && L.rondas) || []) for (const b of ro.b || []) for (const lado of b[0] || []) for (const p of partes(lado)) if (!out.includes(p)) out.push(p);
+  return out;
+};
 const miembros = (x) => String(x || '').split(/[,+&]/).map((s) => s.replace(BANDERAS, '').trim().toLowerCase()).filter(Boolean);
 const comparten = (a, b) => { const mb = miembros(b); return miembros(a).some((x) => mb.includes(x)); };
 const gana = (b, s) => !!b[1] && (b[1] === s || comparten(b[1], s));
@@ -701,9 +708,13 @@ function Barra({ ctx, tb }) {
 
 // ── ¿algo está mal en esta llave? Lo revisa la Liga, nunca por DM (Dlx, 28/09/2026: «ok») ──
 const REP_QUE = [['ganador', 'El ganador está mal'], ['gente', 'Falta o sobra alguien'], ['nombre', 'Un nombre está mal'], ['otro', 'Otra cosa']];
-function Reporte({ n }) {
+// 🏷️ «UN NOMBRE ESTÁ MAL» PIDE CUÁL Y QUIÉN ES (Dlx, 12/11/2026, al reporte de Forza «no esta en la liga xd»: *«he
+// didn't specify who is not but who really is then»*). Llegaba sin decir qué nombre ni de quién era, y no había nada
+// que corregir. Ahora se elige el nombre de la llave (va en `batalla`, como el de las ligas) y se escribe quién es
+function Reporte({ n, nombres }) {
   const [abierto, setAbierto] = useState(false);
   const [que, setQue] = useState('');
+  const [nombre, setNombre] = useState('');
   const [txt, setTxt] = useState('');
   const [est, setEst] = useState('');
   const [va, setVa] = useState(false);
@@ -714,10 +725,12 @@ function Reporte({ n }) {
     const t = txt.replace(/\s+/g, ' ').trim();
     if (!que || va) return;
     if (que === 'otro' && t.length < 3) { setEst('Cuenta qué pasó.'); return; }
+    if (que === 'nombre' && nombres.length && !nombre) { setEst('Elige el nombre que está mal.'); return; }
+    if (que === 'nombre' && t.length < 2) { setEst('Escribe quién es en realidad.'); return; }
     if (!window.conCuenta) { setEst('No pude mandarlo. Prueba de nuevo en un rato.'); return; }
     setVa(true);
     setEst('');
-    window.conCuenta('/api/avisos/reportar', { llave: String(n), que, texto: t }).then((j) => {
+    window.conCuenta('/api/avisos/reportar', Object.assign({ llave: String(n), que, texto: t }, que === 'nombre' && nombre ? { batalla: nombre } : {})).then((j) => {
       setVa(false);
       if (j && j.ok) { setOk(true); return; }
       const e = (j && j.error) || '';
@@ -732,9 +745,18 @@ function Reporte({ n }) {
       <div className="lk-rep-q" role="group" aria-label="Qué está mal">
         {REP_QUE.map(([id, et]) => <button key={id} type="button" aria-pressed={que === id} className={que === id ? 'on' : ''} onClick={() => setQue(id)}>{et}</button>)}
       </div>
-      <textarea aria-label="Qué está mal en la llave" maxLength={300} rows={3} value={txt} onChange={(e) => setTxt(e.target.value)} placeholder={'Qué batalla y qué pasó' + (que === 'otro' ? '' : ' (si quieres)')} />
+      {que === 'nombre' && nombres.length ? <>
+        <p className="lk-rep-t">¿Qué nombre está mal?</p>
+        <div className="lk-rep-q" role="group" aria-label="El nombre que está mal">
+          {nombres.map((x) => <button key={x} type="button" aria-pressed={nombre === x} className={nombre === x ? 'on' : ''} onClick={() => setNombre(x)}>{limpio(x)}</button>)}
+        </div>
+      </> : null}
+      {que === 'nombre'
+        ? <textarea aria-label="Quién es en realidad" maxLength={300} rows={2} value={txt} onChange={(e) => setTxt(e.target.value)}
+          placeholder={nombre ? '¿Quién es en realidad «' + limpio(nombre) + '»? Su nombre en la Liga o su Discord (o «soy yo»)' : '¿Qué nombre está mal y quién es en realidad?'} />
+        : <textarea aria-label="Qué está mal en la llave" maxLength={300} rows={3} value={txt} onChange={(e) => setTxt(e.target.value)} placeholder={'Qué batalla y qué pasó' + (que === 'otro' ? '' : ' (si quieres)')} />}
       <div className="lk-rep-pie">
-        <button type="button" className="btn verde chico" disabled={!que || va} onClick={enviar}>{va ? 'Enviando…' : 'Enviar'}</button>
+        <button type="button" className="btn verde chico" disabled={!que || va || (que === 'nombre' && ((nombres.length && !nombre) || txt.trim().length < 2))} onClick={enviar}>{va ? 'Enviando…' : 'Enviar'}</button>
         <span aria-live="polite">{est}</span>
       </div>
       <p className="lk-rep-nota">Se guarda con tu cuenta de Discord 30 días, para revisarlo.</p>
@@ -1089,7 +1111,7 @@ export function Llave({ liga, vivoL, n: n0, raiz, dc }) {
           <div className="lk-acc-b">
             {(L.links || []).map((u, i, t) => <a key={u} className="btn borde2 chico" href={u} target="_blank" rel="noopener noreferrer">{t.length > 1 ? 'Llave ' + (i + 1) : 'La llave en Discord'} ↗</a>)}
             {L.vivo ? null : <Compartir cls="btn borde2 chico" url={enlace('#/llave/' + encodeURIComponent(n))} texto={'La llave de ' + limpio(L.nombre)} etiqueta="Compartir" />}
-            <Reporte n={n} />
+            <Reporte n={n} nombres={nombresDe(L)} />
           </div>
         </section>
         {/* ⚔️ lo que se juega ahora, en grande; y al final, el campeón */}

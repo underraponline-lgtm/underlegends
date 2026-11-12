@@ -2576,7 +2576,8 @@ function CorregirLiga({ r, liga, alListo }) {
 function Corregir({ r, liga, alListo, hermanos }) {
   const [L, setL] = useState(undefined);
   const [modo, setModo] = useState(r.que === 'ganador' ? 'ganador' : 'nombre');
-  const [nombre, setNombre] = useState('');
+  // 🏷️ el nombre que eligió quien lo reportó (`batalla`, desde el 12/11/2026) viene puesto
+  const [nombre, setNombre] = useState(r.que === 'nombre' && r.batalla ? r.batalla : '');
   const [quien, setQuien] = useState('reporta');
   const [conHermanos, setConHermanos] = useState(true);
   const [es, setEs] = useState('');
@@ -3006,7 +3007,7 @@ const QUE_ES = {
   'Nombre desconocido': 'Este nombre está en una llave y el bot no sabe de quién es. Elige la cuenta, escribe quién es, o márcalo como nuevo.',
   'Alias posible': 'Una misma cuenta de Discord usó dos nombres. Di si son la misma persona: así suma todo junto.',
   'alta': 'Alguien que no está en la Lista apareció en el bot. Si es alguien nuevo de verdad, súmalo; si no, ciérralo.',
-  'conflicto': 'Una cuenta de Discord apareció con un nombre que en la Lista ya tiene otra cuenta. Revísalo y ciérralo.',
+  'conflicto': 'Alguien usó /card con un nombre que en la Lista tiene otra cuenta. Mira las dos cuentas abajo: si es la misma persona, la Lista pasa a la cuenta nueva (o junta las dos filas); si es otra, queda como está.',
   'ambiguo': 'Esta cuenta se parece a más de una persona de la Lista.',
   'Vidas cargado': 'El bot cargó solo un 5 vidas desde #veredictos. Confirma que está bien o sácalo.',
   'Evento duplicado': 'El mismo evento quedó cargado dos veces. Si es el mismo, se saca el repetido.',
