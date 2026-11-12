@@ -2449,7 +2449,6 @@ sheet/            el puente con el Google Sheet: explorar + los dos builders
                   rankings.py     las cinco vitrinas, desde Resultados y 1v1
                   estilo.py       como se ve una vitrina. Un lugar para las 5
                   competitivo.py  el Score y las cinco dimensiones
-                  lobby.py        la portada, calculada + la cuenta atras
                   llaves_web.py   la llave de cada evento, para «Ver llave»
                   lista_raperos.py agregar, poner un ID y fusionar dobles
                   webapp_subir.py sube al Apps Script sin pisar lo ajeno

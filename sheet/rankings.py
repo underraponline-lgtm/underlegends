@@ -1292,8 +1292,8 @@ def sumar_mw(ag, suma=None):
 
     ⚠️ NUNCA AL COMPETITIVO (Dlx: *«MW no cuenta para competitivo»*). Por
     eso no va dentro de `agregar()`, que también alimenta el Score, sino en
-    las vitrinas de la Temporada: `tabla_nueva()`, `escribir_todas()` y la
-    portada (`sheet/lobby.py`).
+    las vitrinas de la Temporada: `tabla_nueva()` y `escribir_todas()` (y la
+    portada del Sheet, `sheet/lobby.py`, hasta que se borró el 12/11/2026).
 
     ⚠️ VA UNA CORRIDA ATRÁS: las vitrinas (paso 1c) leen el `datos/mw.json`
     de la corrida anterior, porque el MW (2b) necesita los pools que salen

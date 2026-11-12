@@ -958,11 +958,11 @@ def _lo_barato(correr):
         # 🔴 EL LOBBY YA NO ES UN AFICHE: ES EL ÍNDICE DE LOS DATOS EN
         # CRUDO. Dlx, 24/09/2026: *«el hub será esta página y principalmente
         # nuestro servidor… el sheet es más que todo información raw»*. Ver
-        # `sheet/indice.py`. `lobby.py` queda en el repo, pero no se llama:
-        # repintaría el afiche encima del índice.
+        # `sheet/indice.py`.
         # 🗄️ Y DESDE EL 12/11/2026 TAMPOCO EL ÍNDICE: las vitrinas ya no se escriben en el Oficial (etapa 5b de sacar
         # el Sheet), así que el índice contaría filas de tablas congeladas. Queda como estaba, como el resto del Sheet.
-        # corre(['sheet/indice.py', '--aplicar'], callado=False)
+        # 🗑️ Y ese mismo día se borraron `sheet/indice.py`, `sheet/lobby.py` y `sheet/entrada_instrucciones.py` (Dlx:
+        # «dale, borra lobby.py, indice.py y entrada_instrucciones.py»): sólo escribían el Sheet. Están en el historial.
 
     # ── 1b · la identidad, desde Discord ────────────────────────────
     #

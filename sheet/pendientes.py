@@ -567,7 +567,7 @@ def _tiene_campeon(nombre_evento):
 
 
 def _es_campeon(pos):
-    """⚠️ `'campe' in pos` DA True PARA «Subcampeón». Ver `lobby.py`."""
+    """⚠️ `'campe' in pos` DA True PARA «Subcampeón». Pasó en `lobby.py` (borrado el 12/11/2026: está en el historial)."""
     import unicodedata
     s = unicodedata.normalize('NFD', str(pos or '').strip().lower())
     return ''.join(c for c in s
@@ -662,7 +662,7 @@ def _self_check():
     ok(cuatro == '', 'lo que ya tiene Estado no se vuelve a tocar')
 
     # 🔴 «SUBCAMPEON» CONTIENE «CAMPEON». Es el error que ya costó una
-    # vuelta en `lobby.py`: con `'campe' in pos` el subcampeón cierra la
+    # vuelta en `lobby.py` (ya borrado): con `'campe' in pos` el subcampeón cierra la
     # fila como si hubiera ganado, y entonces una llave que se corta
     # JUSTO en la final —que es el caso que esta fila denuncia— se daría
     # por resuelta.
