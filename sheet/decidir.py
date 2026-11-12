@@ -4901,7 +4901,14 @@ def _ys_de(L):
         from equipos import con_y
     except Exception:                                    # noqa: BLE001
         return {}
-    return con_y([lado for r in (L or {}).get('rondas') or [] for b in r.get('b') or [] for lado in (b[0] or [])])
+    lados = [lado for r in (L or {}).get('rondas') or [] for b in r.get('b') or [] for lado in (b[0] or [])]
+    # 🔴 YA CARGADA, LA LLAVE TRAE LOS EQUIPOS CON COMA (12/11/2026, la #602): `llaves_t1.json` escribe lo resuelto como
+    # «SOL, Sadik» y deja con su « Y » sólo lo que no se resolvió —la batalla sin ganador—, y con comas a la vista
+    # `con_y()` decía «no es una llave con y» y R22 no la veía de equipos. Para contar, la coma y el « + » son « y »
+    def comoy(x):
+        return re.sub(r'\s*[+,]\s*', ' y ', str(x or '')).strip()
+    m = con_y([comoy(x) for x in lados])
+    return {x: m[comoy(x)] for x in lados if comoy(x) in m and comoy(x) == str(x or '').strip()}
 
 
 def _llave_de(ev, sv, fe, llaves):
@@ -6347,6 +6354,13 @@ def _self_check():
            and not tercer_puesto(_x3[:3] + ('cuartos', ['Miniboy🇨🇱', 'Mark']), _L3)
            and tercer_puesto(_x3[:3] + ('octavos', ['walkover', 'WALKOVER']), _L3) and 'R23' in REGLAS,
            'R23: la «semifinal» de más entre los dos que perdieron las semis es el tercer puesto; con uno que no la jugó, no')
+        # 👥 la llave ya cargada trae los equipos con coma, y la batalla sin ganador con su « Y » (la #602)
+        _L602 = {'rondas': [{'r': 'Octavos', 'b': [[['Abraham, Chop', 'CrisZJ, PIPA'], 'Abraham, Chop'],
+                                                   [['SOL, Sadik'], ''], [['KUN, Carlos', 'Dios, ICON'], 'KUN, Carlos'],
+                                                   [['TOBALSILLO Y MARK', 'DOMINICK Y SAMGAMING'], '']]}]}
+        ok(_ys_de(_L602) == {'TOBALSILLO Y MARK': 'TOBALSILLO + MARK', 'DOMINICK Y SAMGAMING': 'DOMINICK + SAMGAMING'}
+           and _ys_de({'rondas': [{'r': 'Final', 'b': [[['Ana y Beto', 'Caro'], 'Caro']]}]}) == {},
+           'una llave ya cargada (equipos con coma) sigue viendo de equipos la batalla que quedó con « Y »')
         ok('R25' in REGLAS and NADIE_DIAS == 28 and se_cierra_sola('octavos') and not se_cierra_sola('semifinales')
            and dias_desde('15/10', datetime.date(2026, 11, 12)) == 28,
            'R25: dieciseisavos, octavos y cuartos, a los 28 días de la fecha del evento; la semi y la final, no')
