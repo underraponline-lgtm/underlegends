@@ -4,6 +4,8 @@ import { DIAS, hora, limpio, minutosDelDia, num, resultado, siglaDe, srcLogo, ut
 import { Escudo, escudoDe } from './escudo.jsx';
 import { Bandera, Cara, Carta, Compartir, Ico, Pest, Rango, Sec, aDiscord, accion, enlace, nombrePais } from './piezas.jsx';
 import { avance, premioTexto, proximoEspecial, usePase, usePases } from './pase.js';
+import { useEffect, useState } from 'react';
+import { pedirLigas } from './ligas_datos.js';
 
 // 🗓️ HOY SUELE HABER (Dlx, 12/10/2026, «5. B»: casi todos anuncian a último momento, así que lo que no se ve con
 // tiempo se adivina por costumbre). Un servidor que jugó este mismo día de la semana dos veces o más en las últimas
@@ -166,11 +168,13 @@ export function Noticias({ liga, raiz }) {
 // la tarjeta ya dice quién es, de dónde, su puesto y sus números: abajo va sólo lo que la tarjeta NO dice (los duelos
 // ganados, los podios, la racha). Dlx, 01/10/2026: «las cosas de abajo son innecesarias porque la tarjeta ya tiene esa
 // info». El perfil sigue a un toque: la tarjeta abre su visor, que tiene «Ver su perfil»
-export function McPersona({ liga, f, dato, cual = 'temporada' }) {
+export function McPersona({ liga, f, dato, cual = 'temporada', arriba = '' }) {
   // ⏳ mientras la carta se redibuja, su número puede no coincidir con el orden de acá: se dice
   const vieja = liga.cartaVieja(f.k, cual);
   return (
     <article className="mc">
+      {/* el puesto de ESTE ranking, arriba y aparte, cuando la carta trae el «#» de otro (ELO, Ligas) */}
+      {arriba ? <span className="mc-arriba">{arriba}</span> : null}
       <Carta liga={liga} k={f.k} cual={cual} cls="ci mc-ci" />
       {dato || vieja ? <div className="mc-pie"><small>{dato}{dato && vieja ? ' · ' : ''}{vieja ? '⏳ SE ESTÁ REDIBUJANDO' : ''}</small></div> : null}
     </article>
@@ -208,6 +212,10 @@ function puestoDe(liga, lista, esMio, valor, unidad, dec = 0, posDe = null) {
 }
 
 export function LosQueMandan({ liga, dc }) {
+  const [ligasR, setLigasR] = useState(null);
+  useEffect(() => { let vivo = true; pedirLigas(liga.d.sello).then((d) => { if (vivo && d) setLigasR(d); }); return () => { vivo = false; }; }, [liga.d.sello]);
+  const ligasC = ligasR && ligasR.cartas;
+  const ligasL = ligasR && ligasR.lobby;
   const T = liga.oficiales();
   const yo = liga.yo;
   const cara = yo ? <Cara liga={liga} k={yo.k} nombre={yo.n} cls="mc-yo-c" /> : null;
@@ -225,13 +233,48 @@ export function LosQueMandan({ liga, dc }) {
     yoComp = fila(puestoDe(liga, compT, (f) => f.k === yo.k, (f) => f.sc || 0, 'de Score', 1), '#/ranking/competitivo');
   }
   cats.push(['competitivo', 'Competitivo', compT.slice(0, 5).map((f) => <McPersona key={f.k} liga={liga} f={f} cual="competitivo" />), yoComp]);
+  // ⚔️ ELO (Dlx, 12/11/2026: «los rankings que faltan»): las batallas uno contra uno por divisiones. La carta es la
+  // Competitiva (la que habla de batallas); su «#» es el del Competitivo, así que el puesto en ELO va ARRIBA y aparte, y
+  // abajo el número de ELO, que no está en ninguna carta
+  const eloT = [];
+  for (const g of ((liga.d.div || {}).d || [])) for (const gg of g || []) for (const x of gg || []) eloT.push(x);
+  eloT.sort((a, b) => (b[1] || 0) - (a[1] || 0));
+  // sin los de «fuera de concurso», como los demás rankings de acá (`oficiales()`)
+  const eloF = eloT.map((x) => [x, liga.fila(x[0])]).filter(([, f]) => f && f.k && liga.T[f.k] && !liga.T[f.k].fc);
+  const yoElo = yo ? puestoDe(liga, eloF, ([, f]) => f.k === yo.k, ([x]) => x[1] || 0, 'de ELO') : null;
+  cats.push(['elo', 'ELO', eloF.slice(0, 5).map(([x, f], i) => <McPersona key={f.k} liga={liga} f={liga.T[f.k]} cual={liga.cartaDe(f.k, { comp: 1 }) || 'temporada'}
+    arriba={(i + 1) + '.º EN ELO'} dato={num(x[1] || 0) + ' DE ELO'} />), yoElo ? fila(yoElo, '#/ranking/divisiones') : null]);
   // ⚔️ de la tabla (`du: [ganados, jugados]`, 29/10/2026): la lista entera de Duelos ya no viaja en el lobby, y acá sólo
   // se mira a los de la tabla. El mismo orden que el Ranking de Duelos: ganados, jugados y nombre
   const duT = (liga.d.duelos || T.filter((f) => f.du).map((f) => ({ k: f.k, n: f.n, g: f.du[0], t: f.du[1], fc: f.fc }))
     .sort((a, b) => b.g - a.g || b.t - a.t || ((a.n || '') < (b.n || '') ? -1 : (a.n || '') > (b.n || '') ? 1 : 0)))
     .filter((d) => !d.fc && liga.T[d.k]);
-  cats.push(['duelos', 'Duelos', duT.slice(0, 5).map((d) => <McPersona key={d.k} liga={liga} f={liga.T[d.k]} cual={liga.cartaDe(d.k, { comp: 1 }) || 'temporada'} dato={d.g + ' DE ' + d.t + ' DUELOS GANADOS'} />),
+  // 🔁 abajo, nada que la carta ya diga (Dlx, 12/11/2026: «no pongas abajo información que ya está en la tarjeta»): la
+  // Competitiva trae los duelos; la de Temporada no, y ahí sí van
+  cats.push(['duelos', 'Duelos', duT.slice(0, 5).map((d) => { const cual = liga.cartaDe(d.k, { comp: 1 }) || 'temporada';
+    return <McPersona key={d.k} liga={liga} f={liga.T[d.k]} cual={cual} dato={cual === 'competitivo' ? '' : d.g + ' DE ' + d.t + ' DUELOS GANADOS'} />; }),
     yo ? fila(puestoDe(liga, duT, (d) => d.k === yo.k, (d) => d.g || 0, 'duelos ganados'), '#/ranking/duelos') : null]);
+  // 🏟️ LIGAS (Dlx, 12/11/2026): los cinco mejores OVR de liga, sumando todas las ligas, con su carta de liga (que ya dice
+  // de qué liga es: abajo no va nada). Quién tiene
+  // carta y con qué OVR viene en `/api/ligas` (`cartas`), el mismo pedido que la página ya hace una vez por lobby
+  if (ligasC && Object.keys(ligasC).length) {
+    const nomLiga = {};
+    ((ligasL || {}).ligas || []).forEach((L) => { nomLiga[L.id] = L.n; });
+    const todas = [];
+    Object.entries(ligasC).forEach(([k, xs]) => (xs || []).forEach((x) => { if (liga.T[k] && !liga.T[k].fc) todas.push({ k, lid: x[0], v: x[1], ovr: x[2] || 0 }); }));
+    todas.sort((a, b) => b.ovr - a.ovr);
+    const vistos = new Set();
+    const mejores = todas.filter((x) => (vistos.has(x.k) ? false : vistos.add(x.k))).slice(0, 5);
+    const miL = yo ? todas.filter((x) => x.k === yo.k)[0] : null;
+    const iMiL = miL ? todas.filter((x, j) => todas.findIndex((y) => y.k === x.k) === j).findIndex((x) => x.k === yo.k) : -1;
+    cats.push(['ligas', 'Ligas', mejores.map((x, i) => (
+      <a key={x.k} className="mc" href={'#/ligas/' + encodeURIComponent(x.lid)}>
+        <span className="mc-arriba">{(i + 1) + '.º DE LAS LIGAS'}</span>
+        <img className="ci mc-ci" alt={'Carta de liga de ' + limpio(liga.T[x.k].n)} loading="lazy"
+          src={liga.d.r2 + '/' + encodeURIComponent(x.k) + '/liga-' + x.lid + '.chica.webp?v=' + x.v} />
+      </a>)),
+    iMiL >= 5 ? <Puesto cara={cara} quien={quien} pos={'#' + (iMiL + 1)} txt={'OVR de liga ' + miL.ovr + (nomLiga[miL.lid] ? ' · ' + nomLiga[miL.lid] : '')} href="#/ligas" /> : null]);
+  }
   const medT = T.filter((f) => (f.oro || 0) + (f.seg || 0) + (f.ter || 0))
     .sort((a, b) => (b.oro || 0) - (a.oro || 0) || (b.seg || 0) - (a.seg || 0) || (b.ter || 0) - (a.ter || 0) || a.pos - b.pos);
   const iMed = yo ? medT.findIndex((f) => f.k === yo.k) : -1;
@@ -241,7 +284,7 @@ export function LosQueMandan({ liga, dc }) {
   const vivas = con.filter((f) => f.rch[0]);
   const raT = (vivas.length ? vivas : con).slice().sort((a, b) => (vivas.length ? b.rch[0] - a.rch[0] : b.rch[1] - a.rch[1]) || a.pos - b.pos);
   const racha = (f) => (vivas.length ? f.rch[0] : f.rch[1]);
-  cats.push(['rachas', 'Rachas', raT.slice(0, 5).map((f) => <McPersona key={f.k} liga={liga} f={f} dato={racha(f) + ' EVENTOS SEGUIDOS'} />),
+  cats.push(['rachas', 'Rachas', raT.slice(0, 5).map((f) => <McPersona key={f.k} liga={liga} f={f} />),
     yo ? fila(puestoDe(liga, raT, (f) => f.k === yo.k, racha, 'eventos seguidos'), '#/ranking/rachas') : null]);
   const paT = (liga.d.paises || []).filter((p) => p.n);
   const miPais = yo && yo.cc ? puestoDe(liga, paT, (p) => p.cc === yo.cc, (p) => p.pts || 0, 'pts') : null;

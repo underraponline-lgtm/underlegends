@@ -4063,3 +4063,6 @@ a.pn-cu:hover{border-color:#F6F6F6}
 .pn .lb-boton > *{min-width:0;max-width:100%}
 .pn .lb-boton .btn{white-space:normal;text-align:center}
 .pn .lb-b-et{overflow-wrap:anywhere}
+/* 🏅 el puesto de ESTE ranking arriba de la carta, cuando la carta trae el «#» de otro (ELO, Ligas · 12/11/2026) */
+.mc-arriba{display:block;text-align:center;font:900 15px/1 Archivo,sans-serif;font-stretch:112%;letter-spacing:.02em;color:#F6F6F6;margin:0}
+a.mc{color:inherit;text-decoration:none}

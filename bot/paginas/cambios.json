@@ -11,6 +11,17 @@
  ],
  "cambios": [
     {
+        "version": "4.60",
+        "dia": "2026-11-12",
+        "cuando": "2026-11-12T06:55:00-05:00",
+        "titulo": "Los que mandan, con ELO y Ligas",
+        "items": [
+            "**Dos rankings nuevos en Los que mandan**: ELO (los que más ganan uno contra uno, por divisiones) y Ligas (los mejores de todas las ligas, con su carta de liga).",
+            "Arriba de cada carta va su puesto en ese ranking, y abajo, sólo lo que la carta no dice: en ELO, su número de ELO.",
+            "En Duelos y Rachas ya no se repite debajo lo que trae la carta."
+        ]
+    },
+    {
         "version": "4.59",
         "dia": "2026-11-12",
         "cuando": "2026-11-12T06:40:00-05:00",
