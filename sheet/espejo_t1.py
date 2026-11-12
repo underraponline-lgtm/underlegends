@@ -451,12 +451,41 @@ def espejar_vitrinas(aplicar=False):
             print('   %-20s igual (%d fila(s))' % (hoja, len(cru)))
             out[hoja] = 'igual'
             continue
-        print('   %-20s %d fila(s), cambió%s' % (hoja, len(cru), '' if aplicar else '  [sin --aplicar: no escribo]'))
+        # 🏆 en GitHub, `rankings.py` ya dejó acá lo que calculó (etapa 5b): distinto es que el cálculo y el Sheet no
+        # coinciden, y mientras tanto manda el Sheet
+        print('   %s%-20s %d fila(s), %s%s' % ('🔴 ' if _en_github() else '', hoja, len(cru),
+                                           'lo calculado NO coincide con el Sheet: copio el Sheet' if _en_github()
+                                           else 'cambió', '' if aplicar else '  [sin --aplicar: no escribo]'))
         if aplicar:
             with io.open(ruta(hoja), 'w', encoding='utf-8', newline='\n') as f:
                 f.write(texto)
         out[hoja] = 'cambió'
     return out
+
+
+def al_escribir_vitrina(hoja, cab, filas, base=BASE):
+    """🏆 ETAPA 5b (11/11/2026): lo que `rankings.py` CALCULA de una vitrina, a su archivo, en el mismo momento en que
+    la escribe en el Sheet (o ve que ya decía eso). La copia de antes de los pools (`espejar_vitrinas()`) compara con
+    el Sheet: tiene que dar «igual» varias corridas antes de dejar de escribir las vitrinas en el Sheet.
+    Sólo en GitHub (como `marcar_sucias()`). Nunca levanta. `True` si cambió el archivo."""
+    if hoja not in VITRINAS or not _en_github():
+        return None
+    try:
+        fs = [normal(f) for f in filas if any(str(c).strip() for c in f)]
+        viejo = leer(hoja, base=base)
+        ok, motivo = decidir(hoja, viejo, fs)
+        if not ok:
+            print('   ' + motivo)
+            return None
+        texto = volcar(hoja, [str(c).strip() for c in cab], fs)
+        if _texto_de(ruta(hoja, base=base)) == texto:
+            return False
+        with io.open(ruta(hoja, base=base), 'w', encoding='utf-8', newline='\n') as f:
+            f.write(texto)
+        return True
+    except Exception as e:                                 # noqa: BLE001
+        print('   ⚠️ no pude dejar %s en datos/ (%s): la copia el paso 2' % (hoja, str(e)[:80]))
+        return None
 
 
 def grilla(hoja, base=BASE):

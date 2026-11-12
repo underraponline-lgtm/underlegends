@@ -2716,6 +2716,8 @@ def escribir_todas(dry=True):
         if dry:
             out[cual]['muestra'] = filas[:3]
             continue
+        # 🏆 lo calculado, también a datos/ (etapa 5b de sacar el Sheet): ver `espejo_t1.al_escribir_vitrina()`
+        EJ.al_escribir_vitrina(nombre, cab, filas)
         # 🔑 LA QUE YA DICE LO MISMO NO SE REHACE: una lectura en vez de
         # borrar, escribir, leer de vuelta y vestir. Ver `ya_dice()`.
         if ya_dice(OFICIAL, nombre, fila_cab, cab, filas):
@@ -3547,6 +3549,9 @@ def main():
                       'engancharon: es gente nueva)'
                       % (n, len(viejo_ids) - len(huerfanas)))
 
+        # 🏆 lo calculado, también a datos/ (etapa 5b de sacar el Sheet): ver `espejo_t1.al_escribir_vitrina()`
+        import espejo_t1 as _EJ
+        _EJ.al_escribir_vitrina(HOJA, cab, filas)
         # 🔑 SI YA DICE LO MISMO, NO SE TOCA. Ver `ya_dice()`: sin eventos
         # nuevos, la vitrina es igual corrida tras corrida.
         if ya_dice(OFICIAL, HOJA, fila_cabecera(HOJA), cab, filas,
