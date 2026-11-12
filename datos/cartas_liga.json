@@ -1,6 +1,33 @@
 {
  "_leeme": "Las cartas de liga subidas a R2: {liga: {clave: [sello, ovr, puesto desde 1]}}. Lo escribe 05_Liga/ciclo.py (paso 2b9c) y lo lee subir_web.py. La imagen: <r2>/<clave>/liga-<liga>.webp?v=<sello>.",
  "cartas": {
+  "ddf-dimension-word-series-26": {
+   "carlosss": [
+    "60faf3c646",
+    65,
+    2
+   ],
+   "chop": [
+    "6fe2b99789",
+    48,
+    4
+   ],
+   "dlx": [
+    "0784485593",
+    0,
+    0
+   ],
+   "nebu": [
+    "63c61101cb",
+    57,
+    3
+   ],
+   "walker": [
+    "5de7a5cdf5",
+    74,
+    1
+   ]
+  },
   "fds-mexico": {
    "dlx": [
     "7a5868a66f",

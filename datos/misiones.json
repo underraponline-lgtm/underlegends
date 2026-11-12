@@ -2651,9 +2651,9 @@
      0
     ],
     "Scritura": [
-     2,
-     4,
-     4,
+     1,
+     8,
+     8,
      0
     ],
     "Senticide": [
@@ -3019,7 +3019,6 @@
     "Rodas": 300,
     "SINTEXT": 300,
     "Sadik": 1600,
-    "Scritura": 900,
     "Senticide": 600,
     "Shadow": 300,
     "Sin Limites": 900,
@@ -8446,7 +8445,7 @@
   "Santo Trinidad 🇨🇴": 300,
   "Saz": 300,
   "Scot": 300,
-  "Scritura": 1200,
+  "Scritura": 300,
   "Selek": 300,
   "Senticide": 600,
   "Shadow": 600,
