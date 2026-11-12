@@ -1,5 +1,5 @@
 {
- "cuando": "2026-11-12T16:29:01+00:00",
+ "cuando": "2026-11-12T16:54:54+00:00",
  "anuncios": [
   {
    "nombre": "¡SE LLEGÓ LA GRAN NOCHE!",
@@ -6819,6 +6819,33 @@
   }
  ],
  "inscripciones": [
+  {
+   "servidor": "LKR",
+   "canal": "📋・INSCRIPCIONES",
+   "texto": "Player🇻🇪",
+   "quien": "jesuslgamer31",
+   "discord_id": "817387658656874536",
+   "msg_id": "1570481273846108343",
+   "cuando": "2026-11-12T16:51:53"
+  },
+  {
+   "servidor": "LKR",
+   "canal": "📋・INSCRIPCIONES",
+   "texto": "Monet 🇨🇳",
+   "quien": "monet_x.",
+   "discord_id": "1501320596485701642",
+   "msg_id": "1570480975849201665",
+   "cuando": "2026-11-12T16:50:42"
+  },
+  {
+   "servidor": "LKR",
+   "canal": "📋・INSCRIPCIONES",
+   "texto": "Teo 🇨🇴",
+   "quien": "teitomc.",
+   "discord_id": "1503540314948898937",
+   "msg_id": "1570480911781208166",
+   "cuando": "2026-11-12T16:50:27"
+  },
   {
    "servidor": "FFA",
    "canal": "✦📝—inscripciones",
@@ -42791,33 +42818,6 @@
    "discord_id": "1523082259870257315",
    "msg_id": "1557962343235977257",
    "cuando": "2026-10-09T03:46:08"
-  },
-  {
-   "servidor": "FFA",
-   "canal": "✦📝—inscripciones",
-   "texto": "Mi ser 🇨🇱",
-   "quien": "cronoxzito",
-   "discord_id": "1487658663148785734",
-   "msg_id": "1557962345316356120",
-   "cuando": "2026-10-09T03:46:08"
-  },
-  {
-   "servidor": "FFA",
-   "canal": "✦📝—inscripciones",
-   "texto": "tenor",
-   "quien": "tenor_25499",
-   "discord_id": "1370860602972569632",
-   "msg_id": "1557956640378978418",
-   "cuando": "2026-10-09T03:23:28"
-  },
-  {
-   "servidor": "DDF",
-   "canal": "『📑』Inscripciones",
-   "texto": "Lrs🇦🇷",
-   "quien": "lrs0378",
-   "discord_id": "1385452830684614697",
-   "msg_id": "1557952299786178641",
-   "cuando": "2026-10-09T03:06:13"
   }
  ]
 }
