@@ -3062,6 +3062,54 @@
      "1462907811792031754"
     ]
    }
+  },
+  {
+   "id": "7dce734f50",
+   "tipo": "Nombre desconocido",
+   "sec": "ALL VALLEY · FFA · 11/11 · #609",
+   "que": "¿Quién es «kychi 🇨🇱»?",
+   "r": "Es alguien nuevo: alta con su cuenta 694702989436387389",
+   "regla": "Discord · su cuenta de Discord: la inscripción, el podio, la llave o la llamada",
+   "rk": "Discord",
+   "por": "el ciclo (su cuenta de Discord)",
+   "porque": "nuevo: entró a la Lista con la cuenta con que se anotó (694702989436387389)",
+   "t": 1794456423194,
+   "filas": [
+    1253
+   ],
+   "variantes": [
+    "kychi 🇨🇱"
+   ],
+   "escribio": {
+    "alta": [
+     "kychi",
+     "694702989436387389"
+    ]
+   }
+  },
+  {
+   "id": "f1cd2718e5",
+   "tipo": "Nombre desconocido",
+   "sec": "ALL VALLEY · FFA · 11/11 · #609",
+   "que": "¿Quién es «letrao🇨🇱»?",
+   "r": "Es alguien nuevo: alta con su cuenta 975881475528491058",
+   "regla": "Discord · su cuenta de Discord: la inscripción, el podio, la llave o la llamada",
+   "rk": "Discord",
+   "por": "el ciclo (su cuenta de Discord)",
+   "porque": "nuevo: entró a la Lista con la cuenta con que se anotó (975881475528491058)",
+   "t": 1794456423194,
+   "filas": [
+    1254
+   ],
+   "variantes": [
+    "letrao🇨🇱"
+   ],
+   "escribio": {
+    "alta": [
+     "letrao",
+     "975881475528491058"
+    ]
+   }
   }
  ],
  "deshechas": []

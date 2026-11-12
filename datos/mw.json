@@ -73,9 +73,9 @@
     "base": 12000,
     "o": 3,
     "estado": "suelto",
-    "ev": 0,
-    "fase": "",
-    "valor": 12000
+    "ev": 1,
+    "fase": "Campeón",
+    "valor": 14500
    },
    {
     "n": "Leonart",

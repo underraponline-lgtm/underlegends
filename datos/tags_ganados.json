@@ -2728,6 +2728,13 @@
   }
  },
  "crakero": {
+  "servidor": {
+   "📆 HABITUÉ": [
+    "📆 HABITUÉ",
+    "t1",
+    1794456441384
+   ]
+  },
   "temporada": {
    "📈 EN ASCENSO": [
     "📈 EN ASCENSO",
@@ -6379,7 +6386,7 @@
     1793029252929
    ],
    "👑 CAMPEÓN x%d": [
-    "👑 CAMPEÓN x7",
+    "👑 CAMPEÓN x8",
     "t1",
     1793029252929
    ],
@@ -6911,6 +6918,11 @@
     "t1",
     1792953978519
    ],
+   "🏛️ PILAR": [
+    "🏛️ PILAR",
+    "t1",
+    1794456441384
+   ],
    "📆 HABITUÉ": [
     "📆 HABITUÉ",
     "t1",
@@ -6937,6 +6949,11 @@
     "🏁 SEMIFINALISTA SERIAL",
     "t1",
     1793029252929
+   ],
+   "👑 CAMPEÓN x%d": [
+    "👑 CAMPEÓN x2",
+    "t1",
+    1794456441384
    ],
    "💯 CENTENARIO": [
     "💯 CENTENARIO",
@@ -8236,6 +8253,11 @@
     "🥉 AL PODIO",
     "t1",
     1793491575234
+   ],
+   "🧟 RESUCITADO": [
+    "🧟 RESUCITADO",
+    "t1",
+    1794456441384
    ],
    "🧳 VIAJERO": [
     "🧳 VIAJERO",
@@ -10676,7 +10698,7 @@
     1793029252929
    ],
    "👑 CAMPEÓN x%d": [
-    "👑 CAMPEÓN x10",
+    "👑 CAMPEÓN x11",
     "t1",
     1793029252929
    ],
@@ -13281,6 +13303,11 @@
     "⚡ RELÁMPAGO",
     "t1",
     1793925416194
+   ],
+   "🏁 SEMIFINALISTA SERIAL": [
+    "🏁 SEMIFINALISTA SERIAL",
+    "t1",
+    1794456441384
    ],
    "👑 CAMPEÓN x%d": [
     "👑 CAMPEÓN x3",

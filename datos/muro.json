@@ -320,15 +320,6 @@
 "temporada"
 ]
 },
-"polosport": {
-"rg": "C",
-"c": [
-"competitivo",
-"pais",
-"servidor",
-"temporada"
-]
-},
 "xubaru": {
 "rg": "C",
 "c": [
@@ -356,15 +347,16 @@
 "temporada"
 ]
 },
-"mathhias": {
+"delux": {
 "rg": "C",
 "c": [
 "competitivo",
+"pais",
 "servidor",
 "temporada"
 ]
 },
-"delux": {
+"polosport": {
 "rg": "C",
 "c": [
 "competitivo",
@@ -391,6 +383,14 @@
 "c": [
 "competitivo",
 "pais",
+"servidor",
+"temporada"
+]
+},
+"mathhias": {
+"rg": "C",
+"c": [
+"competitivo",
 "servidor",
 "temporada"
 ]
@@ -445,14 +445,6 @@
 "temporada"
 ]
 },
-"tøkiø": {
-"rg": "",
-"c": [
-"competitivo",
-"servidor",
-"temporada"
-]
-},
 "caliz": {
 "rg": "D",
 "c": [
@@ -479,6 +471,14 @@
 "c": [
 "competitivo",
 "pais",
+"servidor",
+"temporada"
+]
+},
+"tøkiø": {
+"rg": "",
+"c": [
+"competitivo",
 "servidor",
 "temporada"
 ]
@@ -680,10 +680,6 @@
 "temporada"
 ]
 },
-"carlos": {
-"rg": "",
-"c": []
-},
 "ariaxer": {
 "rg": "E",
 "c": [
@@ -692,6 +688,10 @@
 "servidor",
 "temporada"
 ]
+},
+"carlos": {
+"rg": "",
+"c": []
 },
 "jeixder": {
 "rg": "D",
@@ -772,14 +772,6 @@
 "rg": "E",
 "c": []
 },
-"marcos": {
-"rg": "D",
-"c": [
-"competitivo",
-"servidor",
-"temporada"
-]
-},
 "motera": {
 "rg": "",
 "c": [
@@ -836,13 +828,6 @@
 "temporada"
 ]
 },
-"dxg": {
-"rg": "E",
-"c": [
-"competitivo",
-"servidor"
-]
-},
 "gocho": {
 "rg": "E",
 "c": [
@@ -850,6 +835,21 @@
 "pais",
 "servidor",
 "temporada"
+]
+},
+"marcos": {
+"rg": "D",
+"c": [
+"competitivo",
+"servidor",
+"temporada"
+]
+},
+"dxg": {
+"rg": "E",
+"c": [
+"competitivo",
+"servidor"
 ]
 },
 "benjixo": {
@@ -1037,14 +1037,6 @@
 "rg": "",
 "c": []
 },
-"zaik": {
-"rg": "E",
-"c": [
-"competitivo",
-"servidor",
-"temporada"
-]
-},
 "oriuz": {
 "rg": "",
 "c": []
@@ -1139,6 +1131,14 @@
 "rg": "",
 "c": []
 },
+"zaik": {
+"rg": "E",
+"c": [
+"competitivo",
+"servidor",
+"temporada"
+]
+},
 "agustin51k": {
 "rg": "",
 "c": [
@@ -1151,7 +1151,7 @@
 "rg": "",
 "c": []
 },
-"emilioalva": {
+"letrao": {
 "rg": "",
 "c": []
 },
@@ -1239,6 +1239,10 @@
 "servidor",
 "temporada"
 ]
+},
+"emilioalva": {
+"rg": "",
+"c": []
 },
 "sol": {
 "rg": "",
@@ -1448,10 +1452,6 @@
 "c": []
 },
 "chekialo": {
-"rg": "",
-"c": []
-},
-"letrao": {
 "rg": "",
 "c": []
 },
@@ -7043,9 +7043,24 @@
 "tipo": "resnoche",
 "t": "2026-11-12T08:00:00Z",
 "dia": "2026-11-11",
-"eventos": 1,
-"part": 13,
+"eventos": 2,
+"part": 44,
 "campeones": [
+{
+"ev": "ALL VALLEY",
+"sv": "FFA",
+"ll": 609,
+"quien": [
+[
+"Liberia",
+"liberia"
+],
+[
+"PichulaMc",
+"pichulamc"
+]
+]
+},
 {
 "ev": "GALACTICOS DEL FREESTYLE VOL.1",
 "sv": "ACAD",
@@ -7066,15 +7081,15 @@
 "ev": 1
 },
 {
-"n": "Assuan",
-"k": "assuan",
-"pts": 5000,
+"n": "letrao🇨🇱",
+"k": "letrao",
+"pts": 7500,
 "ev": 1
 },
 {
-"n": "0223 🇧🇧",
-"k": "0223",
-"pts": 3500,
+"n": "kychi 🇨🇱",
+"k": "",
+"pts": 5250,
 "ev": 1
 }
 ],
@@ -7086,16 +7101,16 @@
 "a": 410
 },
 {
+"n": "letrao🇨🇱",
+"k": "letrao",
+"de": 329,
+"a": 299
+},
+{
 "n": "VR",
 "k": "vr",
 "de": 98,
 "a": 79
-},
-{
-"n": "0223 🇧🇧",
-"k": "0223",
-"de": 325,
-"a": 308
 }
 ],
 "sorpresas": [

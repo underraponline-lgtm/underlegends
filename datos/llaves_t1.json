@@ -27935,14 +27935,14 @@
     6250
    ],
    [
-    "MCO",
-    "Subcampeón",
-    4500
-   ],
-   [
     "Corvo",
     "Campeón",
     3750
+   ],
+   [
+    "MCO",
+    "Subcampeón",
+    3250
    ],
    [
     "Makmah",
@@ -27953,11 +27953,6 @@
     "Panchok",
     "Campeón",
     3250
-   ],
-   [
-    "Majiztral",
-    "Cuartos",
-    3000
    ],
    [
     "Erian",
@@ -27976,6 +27971,11 @@
    ],
    [
     "Leonart",
+    "Semifinal",
+    1750
+   ],
+   [
+    "Majiztral",
     "Semifinal",
     1750
    ],
@@ -50215,6 +50215,323 @@
   "ver": {
    "min": 66,
    "obs": 1,
+   "v": 1
+  }
+ },
+ "609": {
+  "dia": "2026-11-11",
+  "escala": "16+",
+  "fecha": "11/11",
+  "links": [
+   "https://discord.com/channels/1468472442925092958/1487207377601040516/1570243340652257341",
+   "https://discord.com/channels/1468472442925092958/1487206164864438513/1570243601487761539"
+  ],
+  "n": 609,
+  "nombre": "ALL VALLEY",
+  "participantes": 31,
+  "rondas": [
+   {
+    "b": [
+     [
+      [
+       "Liberia",
+       "MauzzitoEmeces",
+       "Drexx, Miniboy"
+      ],
+      "Liberia",
+      "triple (3 bandas)"
+     ],
+     [
+      [
+       "NC, Gocho, Tenor",
+       "Jult",
+       "Pipe"
+      ],
+      "NC, Gocho, Tenor",
+      "triple (3 bandas); Revivido: nc🇲🇿"
+     ],
+     [
+      [
+       "yinn, xx🇮🇨, Tam",
+       "crakero",
+       "Yahweh"
+      ],
+      "yinn, xx🇮🇨, Tam",
+      "triple (3 bandas)"
+     ],
+     [
+      [
+       "Cronox",
+       "Mito, Makmah"
+      ],
+      "Cronox",
+      "Revivido: Mito🇦🇷"
+     ],
+     [
+      [
+       "Gus",
+       "Soul🇲🇽",
+       "Soulb",
+       "Abyssus"
+      ],
+      "Gus",
+      "triple (4 bandas)"
+     ],
+     [
+      [
+       "letrao🇨🇱",
+       "Majiztral",
+       "Verc"
+      ],
+      "letrao🇨🇱",
+      "triple (3 bandas)"
+     ],
+     [
+      [
+       "kychi 🇨🇱",
+       "Zignos, SULTAN"
+      ],
+      "kychi 🇨🇱",
+      ""
+     ]
+    ],
+    "r": "Octavos"
+   },
+   {
+    "b": [
+     [
+      [
+       "Liberia",
+       "NC, Gocho, Tenor"
+      ],
+      "Liberia",
+      ""
+     ],
+     [
+      [
+       "Mito, Gocho, Tenor",
+       "yinn, xx🇮🇨, Tam"
+      ],
+      "Mito, Gocho, Tenor",
+      ""
+     ],
+     [
+      [
+       "letrao🇨🇱",
+       "Gus, 0223 🇧🇧, NC"
+      ],
+      "letrao🇨🇱",
+      ""
+     ],
+     [
+      [
+       "kychi 🇨🇱",
+       "Ariaxer, Cronox"
+      ],
+      "kychi 🇨🇱",
+      ""
+     ]
+    ],
+    "r": "Cuartos"
+   },
+   {
+    "b": [
+     [
+      [
+       "Liberia, PichulaMc",
+       "Mito, Gocho, Tenor"
+      ],
+      "Liberia, PichulaMc",
+      ""
+     ],
+     [
+      [
+       "letrao🇨🇱",
+       "kychi 🇨🇱"
+      ],
+      "letrao🇨🇱",
+      ""
+     ]
+    ],
+    "r": "Semifinales"
+   },
+   {
+    "b": [
+     [
+      [
+       "Liberia, PichulaMc",
+       "letrao🇨🇱"
+      ],
+      "Liberia, PichulaMc",
+      ""
+     ],
+     [
+      [
+       "EddyLaSombra🇱🇷+Pichulamc🇦🇷",
+       "letrao🇨🇱"
+      ],
+      "",
+      "sin ganador: espera en ✅ Decidir"
+     ]
+    ],
+    "r": "Final"
+   }
+  ],
+  "sv": "FFA",
+  "tabla": [
+   [
+    "letrao🇨🇱",
+    "Subcampeón",
+    7500
+   ],
+   [
+    "kychi 🇨🇱",
+    "Semifinal",
+    5250
+   ],
+   [
+    "Liberia",
+    "Campeón",
+    5000
+   ],
+   [
+    "PichulaMc",
+    "Campeón",
+    5000
+   ],
+   [
+    "Gocho",
+    "Semifinal",
+    1750
+   ],
+   [
+    "Tenor",
+    "Semifinal",
+    1750
+   ],
+   [
+    "Mito",
+    "Semifinal",
+    1500
+   ],
+   [
+    "Abyssus",
+    "Octavos",
+    1250
+   ],
+   [
+    "Ariaxer",
+    "Cuartos",
+    1250
+   ],
+   [
+    "Cronox",
+    "Cuartos",
+    1250
+   ],
+   [
+    "Jult",
+    "Octavos",
+    1250
+   ],
+   [
+    "Majiztral",
+    "Octavos",
+    1250
+   ],
+   [
+    "MauzzitoEmeces",
+    "Octavos",
+    1250
+   ],
+   [
+    "Pipe",
+    "Octavos",
+    1250
+   ],
+   [
+    "Soulb",
+    "Octavos",
+    1250
+   ],
+   [
+    "Soul🇲🇽",
+    "Octavos",
+    1250
+   ],
+   [
+    "Verc",
+    "Octavos",
+    1250
+   ],
+   [
+    "Yahweh",
+    "Octavos",
+    1250
+   ],
+   [
+    "crakero",
+    "Octavos",
+    1250
+   ],
+   [
+    "NC",
+    "Cuartos",
+    1249
+   ],
+   [
+    "0223 🇧🇧",
+    "Cuartos",
+    833
+   ],
+   [
+    "Gus",
+    "Cuartos",
+    833
+   ],
+   [
+    "Tam",
+    "Cuartos",
+    833
+   ],
+   [
+    "xx🇮🇨",
+    "Cuartos",
+    833
+   ],
+   [
+    "yinn",
+    "Cuartos",
+    833
+   ],
+   [
+    "Drexx",
+    "Octavos",
+    625
+   ],
+   [
+    "Makmah",
+    "Octavos",
+    625
+   ],
+   [
+    "Miniboy",
+    "Octavos",
+    625
+   ],
+   [
+    "SULTAN",
+    "Octavos",
+    625
+   ],
+   [
+    "Zignos",
+    "Octavos",
+    625
+   ]
+  ],
+  "ver": {
+   "min": 164,
    "v": 1
   }
  }

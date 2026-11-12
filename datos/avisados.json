@@ -2516,7 +2516,7 @@
    "Zeta": 4
   },
   "fecha": "08/10",
-  "firma": "da5c93b27d9817de",
+  "firma": "a3fb439a639130db",
   "msg": "1557926456259248232",
   "nombre": "SNAKE INSIGNIA 4 8",
   "num": 430,
@@ -6508,7 +6508,7 @@
    "Trot": 13
   },
   "fecha": "11/10",
-  "firma": "45b48326e5a85440",
+  "firma": "26e0658be06fb2c4",
   "msg": "1558907910707224587",
   "nombre": "RED BULL NACIONAL ESPAÑA T.5",
   "num": 448,
@@ -9436,7 +9436,7 @@
    "Zignos": 19
   },
   "fecha": "12/10",
-  "firma": "3db651ddc5423f33",
+  "firma": "227a161b4cf6e9b1",
   "msg": "1559587802864295988",
   "nombre": "GODZ",
   "num": 460,
@@ -12534,7 +12534,7 @@
    "Vargas": 1
   },
   "fecha": "14/10",
-  "firma": "dc8ab3f4fc763323",
+  "firma": "b7e1cb9c19ef6569",
   "msg": "1560070688113688601",
   "nombre": "FF Freestyle Clasico",
   "num": 473,
@@ -16836,7 +16836,7 @@
    "Trot": 23
   },
   "fecha": "19/10",
-  "firma": "6900c7c3d5bc072f",
+  "firma": "e069fe08997fedef",
   "msg": "1561897867122184213",
   "nombre": "FATS BATTLES PALOOZA FECHA 7",
   "num": 491,
@@ -16857,11 +16857,6 @@
     6250
    ],
    [
-    "MCO",
-    "Subcampeón",
-    4500
-   ],
-   [
     "Corvo",
     "Campeón",
     3750
@@ -16872,14 +16867,14 @@
     3250
    ],
    [
-    "Makmah",
+    "MCO",
     "Subcampeón",
     3250
    ],
    [
-    "Majiztral",
-    "Cuartos",
-    3000
+    "Makmah",
+    "Subcampeón",
+    3250
    ],
    [
     "Erian",
@@ -16895,6 +16890,11 @@
     "Liberia",
     "Campeón",
     2000
+   ],
+   [
+    "Majiztral",
+    "Semifinal",
+    1750
    ],
    [
     "Leonart",
@@ -22459,7 +22459,7 @@
    "Zekha": 4
   },
   "fecha": "25/10",
-  "firma": "0db1ce65dc5ae4bc",
+  "firma": "18955ba3c1619b33",
   "msg": "1564056930748469309",
   "nombre": "REDBULL CREW ARGENTINA 2026",
   "num": 515,
@@ -24193,7 +24193,7 @@
    "Vilca": 1
   },
   "fecha": "21/10",
-  "firma": "436ba19249369f71",
+  "firma": "6e2fcbdd4c3c036f",
   "msg": "1564147707952758815",
   "nombre": "- RED BULL TORNEO DE PLAZAS 2026 -",
   "num": 523,
@@ -24461,7 +24461,7 @@
    "Vilca": 1
   },
   "fecha": "22/10",
-  "firma": "fdca8bb6cb12d2db",
+  "firma": "42dc33fb62cb695a",
   "msg": "1564147714000953499",
   "nombre": "GG SANGRERAP 4",
   "num": 525,
@@ -30294,7 +30294,7 @@
    "mats": 5
   },
   "fecha": "26/10",
-  "firma": "c2af3a737613ae00",
+  "firma": "af0a0dec62593296",
   "msg": "1565899302046277764",
   "nombre": "RAP SIN GROSERIAS 1",
   "num": 548,
@@ -31509,7 +31509,7 @@
    "Velatz": 41
   },
   "fecha": "31/10",
-  "firma": "873a04034e079387",
+  "firma": "67b2cd6c7393adbe",
   "msg": "1566227272355020941",
   "nombre": "SNAKE INSIGNIA 7 8",
   "num": 553,
@@ -32654,7 +32654,7 @@
    "Zignos": 27
   },
   "fecha": "01/11",
-  "firma": "a45e1c2aa68a0750",
+  "firma": "1b9bc490b3d56181",
   "msg": "1566645439611011152",
   "nombre": "__ COCINE FIDEOS __",
   "num": 558,
@@ -33071,7 +33071,7 @@
    "mats": 7
   },
   "fecha": "02/11",
-  "firma": "03fd3c883e358f77",
+  "firma": "090ecbd8be609749",
   "msg": "1566714400314884126",
   "nombre": "RAP PARA RAPEROS",
   "num": 560,
@@ -36424,7 +36424,7 @@
    "ikonoxx": 8
   },
   "fecha": "06/11",
-  "firma": "21dd22dd078f79b9",
+  "firma": "6951127faed3c9f2",
   "msg": "1568364084817297492",
   "nombre": "GALACTICOS DEL FREESTYLE VOL.17",
   "num": 575,
@@ -36650,7 +36650,7 @@
    "Yor": 4
   },
   "fecha": "06/11",
-  "firma": "d93663e02fdb6040",
+  "firma": "ba172ca015da09ae",
   "msg": "1568457450267484231",
   "nombre": "FAT BATTLES PALOOZA FECHA 10 FINALS",
   "num": 576,
@@ -38668,7 +38668,7 @@
    "NXUZ": 36
   },
   "fecha": "07/11",
-  "firma": "f235844d0bb1517e",
+  "firma": "8c43876e9b1190ae",
   "msg": "1569508050510028801",
   "nombre": "MF DOOM Y MADLIB EDICION 1",
   "num": 586,
@@ -39779,7 +39779,7 @@
    "Vilca": 15
   },
   "fecha": "08/11",
-  "firma": "3ddf1ff576398894",
+  "firma": "ee44e174eadccfc1",
   "msg": "1569508065508593856",
   "nombre": "RAP SIN GROSERIAS 4",
   "num": 591,
@@ -40422,7 +40422,7 @@
    "black live": 1
   },
   "fecha": "09/11",
-  "firma": "4b17d00394f68879",
+  "firma": "81cc3a9d199e0aba",
   "msg": "1569508072605618221",
   "nombre": "COMPE MAÑANERA",
   "num": 594,
@@ -41929,7 +41929,7 @@
    "Vilca": 16
   },
   "fecha": "10/11",
-  "firma": "6252514a82b6da57",
+  "firma": "13f03e95a0300b6e",
   "msg": "1569848635271680124",
   "nombre": "MF DOOM Y MADLIB EDICION 1",
   "num": 604,
@@ -42581,6 +42581,424 @@
     "Ryuk",
     "Cuartos",
     2000
+   ]
+  ],
+  "v": 2
+ },
+ "609": {
+  "antes": {
+   "Abyssus": [
+    17,
+    20,
+    false
+   ],
+   "Ariaxer": [
+    71,
+    90,
+    false
+   ],
+   "Cronox": [
+    31,
+    36,
+    false
+   ],
+   "Drexx": [
+    32,
+    37,
+    false
+   ],
+   "Gocho": [
+    88,
+    112,
+    false
+   ],
+   "Gus": [
+    91,
+    116,
+    false
+   ],
+   "Jult": [
+    70,
+    88,
+    false
+   ],
+   "Liberia": [
+    10,
+    11,
+    false
+   ],
+   "Majiztral": [
+    30,
+    35,
+    false
+   ],
+   "Makmah": [
+    1,
+    1,
+    false
+   ],
+   "MauzzitoEmeces": [
+    418,
+    351,
+    true
+   ],
+   "Miniboy": [
+    22,
+    25,
+    false
+   ],
+   "Mito": [
+    29,
+    34,
+    false
+   ],
+   "NC": [
+    19,
+    22,
+    false
+   ],
+   "PichulaMc": [
+    4,
+    4,
+    false
+   ],
+   "Pipe": [
+    136,
+    210,
+    false
+   ],
+   "SULTAN": [
+    273,
+    101,
+    true
+   ],
+   "Soulb": [
+    54,
+    65,
+    false
+   ],
+   "Tam": [
+    254,
+    18,
+    true
+   ],
+   "Tenor": [
+    42,
+    50,
+    false
+   ],
+   "Verc": [
+    7,
+    8,
+    false
+   ],
+   "Zignos": [
+    21,
+    24,
+    false
+   ],
+   "crakero": [
+    113,
+    154,
+    false
+   ],
+   "yinn": [
+    253,
+    16,
+    true
+   ]
+  },
+  "canal": "1468472443843776659",
+  "duelos": [
+   [
+    "Liberia",
+    "MauzzitoEmeces",
+    "Liberia"
+   ],
+   [
+    "Liberia",
+    "Drexx, Miniboy",
+    "Liberia"
+   ],
+   [
+    "NC, Gocho, Tenor",
+    "Jult",
+    "NC, Gocho, Tenor"
+   ],
+   [
+    "NC, Gocho, Tenor",
+    "Pipe",
+    "NC, Gocho, Tenor"
+   ],
+   [
+    "yinn, xx🇮🇨, Tam",
+    "crakero",
+    "yinn, xx🇮🇨, Tam"
+   ],
+   [
+    "yinn, xx🇮🇨, Tam",
+    "Yahweh",
+    "yinn, xx🇮🇨, Tam"
+   ],
+   [
+    "Cronox",
+    "Mito, Makmah",
+    "Cronox"
+   ],
+   [
+    "Gus",
+    "Soul🇲🇽",
+    "Gus"
+   ],
+   [
+    "Gus",
+    "Soulb",
+    "Gus"
+   ],
+   [
+    "Gus",
+    "Abyssus",
+    "Gus"
+   ],
+   [
+    "letrao🇨🇱",
+    "Majiztral",
+    "letrao🇨🇱"
+   ],
+   [
+    "letrao🇨🇱",
+    "Verc",
+    "letrao🇨🇱"
+   ],
+   [
+    "kychi 🇨🇱",
+    "Zignos, SULTAN",
+    "kychi 🇨🇱"
+   ],
+   [
+    "Liberia",
+    "NC, Gocho, Tenor",
+    "Liberia"
+   ],
+   [
+    "Mito, Gocho, Tenor",
+    "yinn, xx🇮🇨, Tam",
+    "Mito, Gocho, Tenor"
+   ],
+   [
+    "letrao🇨🇱",
+    "Gus, 0223 🇧🇧, NC",
+    "letrao🇨🇱"
+   ],
+   [
+    "kychi 🇨🇱",
+    "Ariaxer, Cronox",
+    "kychi 🇨🇱"
+   ],
+   [
+    "Liberia, PichulaMc",
+    "Mito, Gocho, Tenor",
+    "Liberia, PichulaMc"
+   ],
+   [
+    "letrao🇨🇱",
+    "kychi 🇨🇱",
+    "letrao🇨🇱"
+   ],
+   [
+    "Liberia, PichulaMc",
+    "letrao🇨🇱",
+    "Liberia, PichulaMc"
+   ]
+  ],
+  "ev_antes": {
+   "Abyssus": 21,
+   "Ariaxer": 15,
+   "Cronox": 34,
+   "Drexx": 37,
+   "Gocho": 10,
+   "Gus": 12,
+   "Jult": 17,
+   "Liberia": 25,
+   "Majiztral": 27,
+   "Makmah": 108,
+   "MauzzitoEmeces": 3,
+   "Miniboy": 52,
+   "Mito": 33,
+   "NC": 53,
+   "PichulaMc": 58,
+   "Pipe": 4,
+   "SULTAN": 11,
+   "Soulb": 21,
+   "Tam": 26,
+   "Tenor": 17,
+   "Verc": 26,
+   "Zignos": 28,
+   "crakero": 5,
+   "yinn": 33
+  },
+  "fecha": "11/11",
+  "firma": "5bc4022fc87549f1",
+  "msg": "1570284302720307283",
+  "nombre": "__ ALL VALLEY __",
+  "num": 609,
+  "participantes": 31,
+  "sello": {
+   "Liberia": "4e08e32cb202:7a510334494e",
+   "PichulaMc": "a0b32e1b7733:7a510334494e"
+  },
+  "sv": "FFA",
+  "t": "2026-11-12T03:53:47Z",
+  "tabla": [
+   [
+    "letrao🇨🇱",
+    "Subcampeón",
+    7500
+   ],
+   [
+    "kychi 🇨🇱",
+    "Semifinal",
+    5250
+   ],
+   [
+    "Liberia",
+    "Campeón",
+    5000
+   ],
+   [
+    "PichulaMc",
+    "Campeón",
+    5000
+   ],
+   [
+    "Gocho",
+    "Semifinal",
+    1750
+   ],
+   [
+    "Tenor",
+    "Semifinal",
+    1750
+   ],
+   [
+    "Mito",
+    "Semifinal",
+    1500
+   ],
+   [
+    "Ariaxer",
+    "Cuartos",
+    1250
+   ],
+   [
+    "Cronox",
+    "Cuartos",
+    1250
+   ],
+   [
+    "MauzzitoEmeces",
+    "Octavos",
+    1250
+   ],
+   [
+    "Jult",
+    "Octavos",
+    1250
+   ],
+   [
+    "Pipe",
+    "Octavos",
+    1250
+   ],
+   [
+    "crakero",
+    "Octavos",
+    1250
+   ],
+   [
+    "Yahweh",
+    "Octavos",
+    1250
+   ],
+   [
+    "Soul🇲🇽",
+    "Octavos",
+    1250
+   ],
+   [
+    "Soulb",
+    "Octavos",
+    1250
+   ],
+   [
+    "Abyssus",
+    "Octavos",
+    1250
+   ],
+   [
+    "Majiztral",
+    "Octavos",
+    1250
+   ],
+   [
+    "Verc",
+    "Octavos",
+    1250
+   ],
+   [
+    "NC",
+    "Cuartos",
+    1249
+   ],
+   [
+    "yinn",
+    "Cuartos",
+    833
+   ],
+   [
+    "xx🇮🇨",
+    "Cuartos",
+    833
+   ],
+   [
+    "Tam",
+    "Cuartos",
+    833
+   ],
+   [
+    "Gus",
+    "Cuartos",
+    833
+   ],
+   [
+    "0223 🇧🇧",
+    "Cuartos",
+    833
+   ],
+   [
+    "Drexx",
+    "Octavos",
+    625
+   ],
+   [
+    "Miniboy",
+    "Octavos",
+    625
+   ],
+   [
+    "Makmah",
+    "Octavos",
+    625
+   ],
+   [
+    "Zignos",
+    "Octavos",
+    625
+   ],
+   [
+    "SULTAN",
+    "Octavos",
+    625
    ]
   ],
   "v": 2
