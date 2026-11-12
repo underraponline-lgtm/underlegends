@@ -11,6 +11,19 @@
  ],
  "cambios": [
     {
+        "version": "4.50",
+        "dia": "2026-11-11",
+        "cuando": "2026-11-11T21:12:55-05:00",
+        "titulo": "El panel de cada servidor, para su equipo",
+        "items": [
+            "**Los dueños suman a sus admins**: entran al panel de su servidor con su propia cuenta de Discord.",
+            "**Las batallas de las ligas** pueden ir a su propio canal, y cada liga al suyo.",
+            "**La página de cada servidor** puede llevar su texto, sus redes y un banner, elegidos por su equipo.",
+            "**El resumen de la semana** llega los lunes al canal que elija cada servidor.",
+            "**Avisos al teléfono** del equipo cuando una batalla espera quién ganó o el bot no puede escribir en su canal."
+        ]
+    },
+    {
         "version": "4.49",
         "dia": "2026-11-11",
         "cuando": "2026-11-11T20:58:00-05:00",
