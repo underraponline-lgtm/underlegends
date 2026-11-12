@@ -4066,3 +4066,12 @@ a.pn-cu:hover{border-color:#F6F6F6}
 /* 🏅 el puesto de ESTE ranking arriba de la carta, cuando la carta trae el «#» de otro (ELO, Ligas · 12/11/2026) */
 .mc-arriba{display:block;text-align:center;font:900 15px/1 Archivo,sans-serif;font-stretch:112%;letter-spacing:.02em;color:#F6F6F6;margin:0}
 a.mc{color:inherit;text-decoration:none}
+/* 🎒 la Tienda con sus tres cuadritos y el «N nueva» del Inventario, como la maqueta (12/11/2026) */
+.pn-minis{display:flex;gap:6px;margin-left:auto;min-width:0}
+.pn-ti .pn-minis .pn-mini{margin-left:0}
+.pn-nueva{background:var(--mag);color:#fff}
+@media (max-width: 1180px){.pn-minis .pn-mini:nth-child(3){display:none}}
+@media (max-width: 760px){.pn-minis{display:none}}
+.pn-cr-fondo{position:absolute;right:-18px;top:30px;width:120px;height:136px;color:#2c323b;opacity:.9;pointer-events:none}
+.pn-cr > :not(.pn-cr-fondo){position:relative}
+@media (max-width: 760px){.pn-cr-fondo{width:80px;height:92px;right:-14px}}

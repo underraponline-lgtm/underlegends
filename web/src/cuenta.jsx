@@ -795,6 +795,45 @@ function OcultarFoto({ dc }) {
   );
 }
 
+// 💬 «COMENTARIOS CON MI CARA» (12/11/2026). Los comentarios simulados de Publicaciones pueden salir con tu foto y tu
+// nombre: con la etiqueta «simulado» hasta que le digas que sí a Dlx, sin ella después. Apagado, no apareces nunca.
+// Lo guarda el objeto (`cmMio()`) y llega al ciclo en su próxima vuelta
+function CaraComentarios({ dc }) {
+  const [st, setSt] = useState(null);
+  const [va, setVa] = useState(false);
+  const [msg, setMsg] = useState('');
+  useEffect(() => {
+    let vivo = true;
+    if (dc && W.conCuenta) W.conCuenta('/api/avisos/cm-mio', {}).then((j) => { if (vivo && j) setSt(j); }).catch(() => {});
+    return () => { vivo = false; };
+  }, [dc && dc.id]); // eslint-disable-line react-hooks/exhaustive-deps
+  const d = 'Debajo de las publicaciones salen comentarios cortos que escribe la Liga. Pueden salir con tu foto y tu nombre, con la etiqueta «simulado». Si lo apagas, no apareces nunca.';
+  if (!dc) return <Caja t="Comentarios con tu cara" d={d + ' Entra con Discord para elegir.'}><BotonEntrar /></Caja>;
+  if (st && st.sin_perfil) return null;
+  const on = !!st && st.estado !== 'no';
+  const cambiar = async (quiero) => {
+    if (!W.conCuenta) return;
+    setVa(true);
+    setMsg('');
+    try {
+      const j = await W.conCuenta('/api/avisos/cm-mio', { quiero }, 'p');
+      if (j && j.ok) setSt(j);
+      else if (j) setMsg(j.error === 'espera' ? 'Ya lo cambiaste muchas veces hoy: prueba mañana.' : 'No se pudo: prueba de nuevo.');
+    } finally { setVa(false); }
+  };
+  const nota = !st ? 'Cargando…' : msg || (va ? 'Guardando…'
+    : !on ? 'Apagado: no apareces en ningún comentario simulado.'
+      : st.estado === 'si' ? 'Prendido, sin etiqueta: le dijiste que sí a Dlx.'
+        : 'Prendido: sales con la etiqueta «simulado».');
+  return (
+    <Caja t="Comentarios con tu cara" d={d}>
+      <label className="cu-sw"><span><b>Dejar que la Liga comente con mi foto</b><small role="status">{nota}</small></span>
+        <input type="checkbox" checked={on} disabled={!st || va} onChange={(ev) => cambiar(ev.target.checked)} />
+        <i aria-hidden="true" /></label>
+    </Caja>
+  );
+}
+
 // quién te sigue: cuántos, y de ésos los que son raperos (los demás no tienen perfil)
 function TeSiguen({ liga }) {
   const est = useCuentaEst();
@@ -989,6 +1028,7 @@ function Parte({ id, liga, dc, tema, onTema, temaSv, onTemaSv }) {
     return (
       <>
         <OcultarFoto dc={dc} />
+        <CaraComentarios dc={dc} />
         <Caja t="Tus datos" d="En Discord, /borrar-mis-datos borra todo lo tuyo de la Liga: tus tarjetas, tu foto y lo que el bot sabe de ti." />
         <Caja t="Este dispositivo" d="Olvida quién eres, tus ajustes y los avisos de este dispositivo. Tus tarjetas y tu cuenta no se tocan.">
           <DosToques className="btn borde2 chico" confirmar="¿Seguro? Toca de nuevo" onClick={() => { if (W.cuentaOlvidarTodo) W.cuentaOlvidarTodo(); }}>Olvidar este dispositivo</DosToques>

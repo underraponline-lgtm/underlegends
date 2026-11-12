@@ -20,6 +20,7 @@ import { Cara, Carta, Ico, Vacio, accion, promoAbierta, useCampana } from './pie
 import { Miniatura, abrirVideo } from './video.jsx';
 import { Elegido, X2 } from './encuestas.jsx';
 import { useAplausos } from './aplausos.js';
+import { Hilo } from './comentarios.jsx';
 import { PLATAFORMA } from './publicaciones.jsx';
 import CSS_PAGINA from './css/publicaciones2.css?inline';
 import { usarCss } from './css.js';
@@ -255,6 +256,7 @@ function Post({ liga, it, A, nuevo }) {
         <p className="pb-t">{c.txt}</p>
         {c.det ? <small className="pb-d">{c.det}</small> : null}
         {logro || c.acc ? <div className="pb-acc">{logro ? <Felicitar liga={liga} it={it} A={A} /> : null}{c.acc}</div> : null}
+        {it.id && it.tipo !== 'promo' && it.tipo !== 'flyer' ? <Hilo liga={liga} it={it} /> : null}
       </div>
     </article>
   );
@@ -343,6 +345,7 @@ function Rangos({ liga, xs, A, visto }) {
                   <small>{it.primero ? 'su primera letra' : 'pasa a rango'}</small></span>
                 <span className="pb-rg chico" style={{ background: liga.colorRg(it.rg) }}>{it.rg}</span>
                 <Felicitar liga={liga} it={it} A={A} chico />
+                <Hilo liga={liga} it={it} chico />
               </li>
             );
           })}
@@ -366,6 +369,7 @@ function Anuncios({ liga, xs, visto }) {
               <span className="pb-fn"><b>{limpio(it.ev)}</b>
                 <small>{[hora(it.t), siglaDe(it.sv), it.mod, it.pre ? 'premio: ' + it.pre : ''].filter(Boolean).join(' · ')}</small></span>
               {it.link ? <a className="pb-a" href={it.link} target="_blank" rel="noopener noreferrer" aria-label={'Ver ' + limpio(it.ev) + ' en Discord'}>Discord ↗</a> : null}
+              <Hilo liga={liga} it={it} chico />
             </li>
           ))}
         </ul>

@@ -2731,6 +2731,14 @@ def _cartas(p, r2, comp=None, puede=None):
     tiene = r2.get(_clave(p)) or {}
     # los duelos de País viven en el pool competitivo; el resto acá
     fila = dict(comp or {}, **p)
+    # 👑 EL DUEÑO, TODAS LAS QUE TENGA (12/11/2026, Dlx: «yo como dueño tengo que tener todo desbloqueado»). Ya valía
+    # para el staff que no juega (`_cartas_staff()`); desde que Dlx jugó su primer evento (09/11) entró al pool y caía
+    # acá, donde la Competitiva y la de País le pedían 10 eventos y los cruces aunque estaban dibujadas en R2
+    try:
+        import verificados as _VER
+        dueno = str(p.get('discord_id') or '') == _VER.DUENO
+    except Exception:                                    # noqa: BLE001
+        dueno = False
     out = []
     for c in CARTAS:
         # 🔴 PRIMERO EL PORTÓN, como `/card`, y por carta: ver `_del_porton()`
@@ -2739,7 +2747,7 @@ def _cartas(p, r2, comp=None, puede=None):
         if c not in tiene:
             continue
         try:
-            if RQ.falta(c, fila, p.get('sv')) is None:
+            if dueno or RQ.falta(c, fila, p.get('sv')) is None:
                 out.append(c)
         except Exception:                                    # noqa: BLE001
             # ⚠️ SI NO SE PUEDE PREGUNTAR, NO SE OFRECE. Al revés —dar la

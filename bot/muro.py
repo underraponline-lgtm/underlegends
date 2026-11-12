@@ -745,10 +745,11 @@ def _tabla_entera(p, perfiles):
     return (p.get('tabla') or []) + [f for f in extra if f and not f.get('solo')]
 
 
-def armar(p, guardado=None, ahora=None, fuentes=None, perfiles=None):
+def armar(p, guardado=None, ahora=None, fuentes=None, perfiles=None, permisos=None):
     """`(muro para la página, lo que se guarda)` con el payload del lobby `p`.
 
-    `fuentes` es para el self-check: `{llaves, instantes, mw, precios, mult, anuncios}`.
+    `fuentes` es para el self-check: `{llaves, instantes, mw, precios, mult, anuncios}`. `permisos`, de quién se puede
+    usar la cara en los comentarios simulados (`comentarios_sim.permisos()`); sin ellos, todos con la etiqueta.
     """
     ahora = ahora or dt.datetime.now(dt.timezone.utc)
     guardado = guardado if guardado is not None else (_j('datos', 'muro.json') or {})
@@ -780,6 +781,19 @@ def armar(p, guardado=None, ahora=None, fuentes=None, perfiles=None):
     muro = {'_leeme': 'El muro de Publicaciones: lo arma bot/muro.py desde bot/subir_web.py (paso 2c).',
             # 📣 y las promos que siguen viajan aunque pasen de `VIAJAN`: una alargada en la Tienda es vieja y pagó
             'items': con_claves([x for i, x in enumerate(con_ids(lista)) if i < VIAJAN or sigue(x)], p.get('tabla'), _tabla_entera(p, perfiles))}
+    # 💬 Y LOS COMENTARIOS SIMULADOS de cada publicación (Dlx, 12/11/2026: «Sí, constrúyelo»): ver bot/comentarios_sim.py.
+    # ⚠️ Después de los ids y las claves: el `id` no los mira, así felicitar y comentar siguen apuntando a lo mismo
+    try:
+        import comentarios_sim as CS
+        try:
+            import fotos as _FT
+            oc = _FT.ocultas(None).get('nombres') or []
+        except Exception:                                # noqa: BLE001
+            oc = []
+        muro['items'] = CS.poner(muro['items'], p.get('tabla'), permisos or CS.permisos(None), ahora,
+                                 (fuentes or {}).get('llaves'), oc)
+    except Exception as e:                               # noqa: BLE001
+        print('   ⚠️ los comentarios simulados: %s' % str(e)[:80])
     guardar = {'_leeme': 'El muro de Publicaciones: cómo estaba cada uno (rango y tarjetas) y los cambios '
                          'que se anotaron. Lo escribe bot/muro.py; lo demás del muro se arma en cada corrida.',
                'estado': estado, 'cambios': anotados, 'noche_antes': n_antes, 'noches': n_guarda}
@@ -788,7 +802,20 @@ def armar(p, guardado=None, ahora=None, fuentes=None, perfiles=None):
 
 def publicar(p, subir=None, perfiles=None):
     """Arma el muro, lo guarda y lo sube a KV. `subir` es `subir_web.subir`."""
-    muro, guardar = armar(p, perfiles=perfiles)
+    # 💬 los permisos de los comentarios, de KV (`cm:permisos`); sin token o sin red, la copia (`comentarios_sim.permisos()`)
+    perm = None
+    try:
+        import comentarios_sim as CS
+        import fotos as _FT
+        tk = _FT.env('CLOUDFLARE_API_TOKEN', obligatorio=False)
+        if tk:
+            import requests as _rq
+            s = _rq.Session()
+            s.headers['Authorization'] = 'Bearer ' + tk
+            perm = CS.permisos(s)
+    except Exception:                                    # noqa: BLE001
+        perm = None
+    muro, guardar = armar(p, perfiles=perfiles, permisos=perm)
     with io.open(SALIDA, 'w', encoding='utf-8') as f:
         json.dump(guardar, f, ensure_ascii=False, indent=0)
     ok = subir(muro, solo_si_cambio=True, clave=CLAVE) if subir else None

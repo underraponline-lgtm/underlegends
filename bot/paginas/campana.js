@@ -248,7 +248,23 @@
 
   // 🔑 VINCULAR: se entra con Discord (sin pedir nada nuevo: `prompt=none`)
   // y a la vuelta `vincularAvisos()` de app.js anota el dispositivo.
-  function vincular() {
+  // 🔑 Y SI YA ENTRASTE CON DISCORD, CON TU SESIÓN, SIN IR A DISCORD (12/11/2026, Dlx: «arriba salía mi cuenta de
+  // Discord… pero en la campanita me pedía vincular mi cuenta cuando ya estaba vinculada»). Lo vinculado se guardaba
+  // sólo en este navegador (`campana:yo`) y únicamente a la vuelta de Discord: quien entró con su cuenta y activó la
+  // campana por otro camino quedaba «sin vincular». La sesión (`lg_ses`) ya dice quién eres: el Worker la acepta
+  // igual que el permiso de Discord (`quienPide()`)
+  async function vincularConSesion() {
+    if (!SUB || !window.DC || !window.DC.id) return false;
+    try {
+      var r = await fetch('/api/avisos/vincular', { method: 'POST', credentials: 'same-origin',
+        headers: { 'content-type': 'application/json' }, body: JSON.stringify({ endpoint: SUB.endpoint }) });
+      if (!r.ok) return false;
+      guardar('campana:yo', { id: window.DC.id, n: window.DC.rapero || window.DC.n || '' });
+      return true;
+    } catch (e) { return false; }
+  }
+  async function vincular() {
+    if (await vincularConSesion()) { window.dispatchEvent(new Event('lg:vinculado')); return; }
     if (typeof window.urlLogin !== 'function') throw new Error('recarga la página');
     location.href = window.urlLogin('v');
   }
@@ -471,6 +487,8 @@
     refrescarEstado();
     if (!SUB) return;
     aplicarPedido();
+    // 🔑 con la campana activa y tu cuenta adentro, se vincula sola (una vez: después queda en `campana:yo`)
+    if (!leer('campana:yo', null) && window.DC && window.DC.id) { if (await vincularConSesion()) pinta(); }
     try {
       // 🔴 SI LA CLAVE DEL WORKER CAMBIO, LA SUSCRIPCION VIEJA NO SIRVE: se
       // rehace sola acá, sin preguntar de nuevo —el permiso ya está—. Es

@@ -135,3 +135,12 @@
   .iv10-guardar{bottom:0}
   .iv10-guardar button{flex:1}
 }
+/* 🃏 sin carta, en las miniaturas (12/11/2026, la captura de Dlx: «DLX SIN CARTA» se salía de cada cuadrito). En chico
+   va sólo la cara: el nombre ya está arriba y «sin carta» lo dice el borde punteado */
+.iv10-mci.sincarta,.iv10-qci.sincarta{padding:4px;gap:0;border-width:1.5px;border-radius:5px;max-width:none;max-height:none}
+.iv10-mci.sincarta{width:52px;height:76px}
+.iv10-qci.sincarta{width:66px;height:96px}
+.iv10-mci.sincarta b,.iv10-mci.sincarta small,.iv10-mci.sincarta .sc-flag,
+.iv10-qci.sincarta b,.iv10-qci.sincarta small,.iv10-qci.sincarta .sc-flag{display:none}
+.iv10-mci.sincarta .sc-cara,.iv10-qci.sincarta .sc-cara{width:80%;font-size:18px;box-shadow:none}
+.iv10-carta .iv9-ci.sincarta{grid-auto-flow:row;justify-items:center;width:100%;max-width:230px}

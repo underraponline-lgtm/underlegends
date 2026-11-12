@@ -535,8 +535,24 @@ export default function App() {
     const d = D && !D.ligas && ligasL ? Object.assign({}, D, { ligas: ligasL }) : D;
     return juntarCalendario(d, calE);
   }, [D, ligasL, calE]);
+  // 🙋 TU FILA SI NO ESTÁS ENTRE LOS 200 DEL LOBBY (12/11/2026): viene en tu perfil (`/api/perfiles`, `p[k].f`), que se
+  // pide sólo en ese caso. Sin esto, el panel, el inventario y tus cartas te trataban como a alguien que nunca jugó
+  const [yoFila, setYoFila] = useState(null);
+  const fueraDe200 = !!(D2 && yo.k && !(D2.tabla || []).some((r) => r.k === yo.k));
+  useEffect(() => {
+    if (!fueraDe200 || typeof window.perfiles !== 'function') return undefined;
+    let vivo = true;
+    Promise.resolve(window.perfiles()).then((d) => {
+      const pp = d && d.p && d.p[yo.k];
+      const f = pp && pp.f;
+      // con tu puesto en el país y en la crew (`rk`) y el número de tu último evento (`ue`), que la fila no trae
+      const ue = ((pp && pp.ev) || []).slice().sort((a, b) => (b[0] || 0) - (a[0] || 0))[0] || null;
+      if (vivo && f && !f.solo) setYoFila(Object.assign({ k: yo.k, rk: pp.rk || null, ue }, f));
+    }).catch(() => {});
+    return () => { vivo = false; };
+  }, [fueraDe200, yo.k]); // eslint-disable-line react-hooks/exhaustive-deps
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  const liga = useMemo(() => (D2 ? new Liga(D2, muro, ahora, yo.k, aQuienSigo()) : null), [D2, muro, ahora, yo, sigoV]);
+  const liga = useMemo(() => (D2 ? new Liga(D2, muro, ahora, yo.k, aQuienSigo(), yoFila) : null), [D2, muro, ahora, yo, sigoV, yoFila]);
   // ⏳ con los datos, se va la pantalla de carga del HTML (`#lg-carga`, web/montar.py)
   useEffect(() => { if (liga) document.documentElement.classList.add('lg-listo'); }, [!!liga]);
   // el perfil de un servidor (#/sv/<SIGLA>)

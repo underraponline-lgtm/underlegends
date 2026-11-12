@@ -3461,6 +3461,10 @@ const RUTAS = {
   '/avisos/mi-foto': 'POST',
   // 👏 felicitar un logro de Publicaciones, y cuántos lleva cada uno: ver `validarAplauso()` y `aplaudir()`
   '/avisos/felicitar': 'POST', '/avisos/aplausos': 'GET',
+  // 💬 los comentarios de Publicaciones: escribir (verificado), leerlos, borrar el tuyo, y quién deja usar su cara
+  // (Mi cuenta y el Dashboard). Ver `validarComentario()` y `comentar()`
+  '/avisos/comentar': 'POST', '/avisos/comentarios': 'GET', '/avisos/comentario-borrar': 'POST',
+  '/avisos/cm-mio': 'POST', '/avisos/dueno/cm-permiso': 'POST', '/avisos/dueno/cm-permisos': 'POST',
   // 📣 abrir una promo paga Tienda y XP: ver `validarPromo()` y `promoVio()`
   '/avisos/promo-vio': 'POST',
   // 📣 una semana más de tu promo, desde la Tienda (`validarExtender()`, `promoExtender()`); y hasta cuándo va cada una
@@ -3814,6 +3818,63 @@ export function validarAplauso(items, d, id, mios, ahora) {
   if ((mios || []).some((k) => k && ks.indexOf(k) >= 0)) return { error: 'tú', estado: 403 };
   return { id: x.id, tipo: x.tipo, quien: (x.quien || []).slice(0, 8).map((n) => String(n).slice(0, 60)),
     ks: ks.slice(0, 8), motivo: motivoAplauso(x), t: String(x.t || '').slice(0, 30) };
+}
+
+// ── 💬 COMENTARIOS EN PUBLICACIONES (12/11/2026) ────────────────────────
+// 🔑 Dlx, a la maqueta: «Sí, constrúyelo». Dos clases, y no se mezclan:
+// - LOS DE VERDAD los escribe la gente con su cuenta VERIFICADA (`d:`, nunca `dn:`), se guardan acá (`comentario`) y
+//   le avisan al dueño de la publicación por la campana (`aBandeja()`, sin push).
+// - LOS SIMULADOS los arma el ciclo (`bot/comentarios_sim.py`) y viajan adentro del muro. ⚠️ Con la cara de alguien
+//   real SÓLO según `cm_permiso`: «si» (se lo preguntó Dlx) va sin etiqueta, sin fila va con «simulado» y «no» —lo
+//   marcó Dlx o la persona en Mi cuenta— no aparece nunca. Dlx lo marca en su Dashboard; el ciclo se entera por KV
+//   (`cm:permisos`, `espejarPermisos()`), que NO va al repo: quién dijo que no es un dato de esa persona.
+//: el largo de un comentario, cuántos por persona y por día, y cuánto se guardan (el muro trae 21 días)
+export const COMENT_MAX = 200;
+export const COMENT_DIA = 15;
+export const COMENT_DIAS = 30;
+//: los estados que se guardan; «pre» (sin preguntar) es no tener fila
+export const CM_ESTADOS = { si: 1, no: 1, pre: 1 };
+
+/** El texto de un comentario, limpio: `{tx}` o `{error}`. Sin links, sin @everyone, una sola línea. Pura. */
+export function limpiarComentario(s) {
+  // eslint-disable-next-line no-control-regex
+  const t = String(s || '').replace(/[\u0000-\u001f\u007f​-‏‪-‮⁦-⁩]/g, ' ')
+    .replace(/\s+/g, ' ').trim();
+  if (!t) return { error: 'vacio' };
+  if (t.length > COMENT_MAX) return { error: 'largo' };
+  if (/https?:\/\/|www\.|discord\.gg|\b[a-z0-9-]+\.(com|net|org|gg|io|ly|me|tv|xyz)\b/i.test(t)) return { error: 'link' };
+  if (/@(everyone|here)\b/i.test(t)) return { error: 'mencion' };
+  return { tx: t };
+}
+
+/**
+ * ¿Vale este comentario? `{pub, tx, resp}` si vale; `{error, estado}` si no. `items` es el muro de KV, `id` el
+ * Discord ID que dijo Discord y `mio` su perfil VERIFICADO (`d:`): sin él no se comenta, porque el comentario sale con
+ * su nombre y su cara. `resp` es a qué comentario contesta: `c<n>` uno de verdad, `s<n>` uno simulado. Pura.
+ */
+export function validarComentario(items, d, id, mio, ahora) {
+  const x = (Array.isArray(items) ? items : []).find((it) => it && it.id === (d && d.id));
+  if (!x) return { error: 'no_existe', estado: 404 };
+  if (!claveValida(mio)) return { error: 'sin_verificar', estado: 403 };
+  const creada = creadaEn(id);
+  if (!creada || ahora - creada < EDAD_MIN_DIAS * DIA_MS) {
+    return { error: 'nueva', estado: 403, desde: new Date(creada + EDAD_MIN_DIAS * DIA_MS).toISOString() };
+  }
+  const l = limpiarComentario(d.tx);
+  if (l.error) return { error: l.error, estado: 400 };
+  const resp = d.resp == null || d.resp === '' ? '' : String(d.resp);
+  if (resp && !/^(c[0-9]{1,12}|s[0-9])$/.test(resp)) return { error: 'resp', estado: 400 };
+  const ks = Array.isArray(x.ks) ? x.ks.map((k) => (claveValida(k) ? k : '')) : [];
+  return { pub: { id: x.id, tipo: String(x.tipo || '').slice(0, 20), ks: ks.slice(0, 8),
+    quien: (x.quien || []).slice(0, 8).map((n) => String(n).slice(0, 60)) }, tx: l.tx, resp };
+}
+
+/** Lo que dice la campana del dueño de la publicación: cuántos comentaron y el último. Pura. */
+export function avisoComentario(n, nombre, tx) {
+  return {
+    titulo: n === 1 ? '💬 Te comentaron una publicación' : `💬 ${n} comentarios en tu publicación`,
+    cuerpo: `${String(nombre || 'Alguien').slice(0, 40)}: «${String(tx || '').slice(0, 120)}»`,
+  };
 }
 
 // ── 📣 ABRIR UNA PROMO PAGA (Dlx, 16/10/2026: «dar puntos y puntos de tienda a aquellos que… dan click», y a las
@@ -5593,15 +5654,25 @@ export async function rutaAvisos(req, env, ruta) {
     let d = null;
     try { d = JSON.parse(crudo); } catch (e) { d = null; }
     const t = String((d && d.token) || '');
-    if (!d || typeof d.endpoint !== 'string' || !/^[A-Za-z0-9._-]{10,300}$/.test(t)) {
+    // 🔑 el permiso de Discord es optativo desde el 12/11/2026: sin él, vale la sesión (`quienPide()`), como al votar.
+    // Quien ya entró con Discord no tiene que volver a Discord para que la campana le traiga lo suyo
+    if (!d || typeof d.endpoint !== 'string' || d.endpoint.length > 1000 || (t && !/^[A-Za-z0-9._-]{10,300}$/.test(t))) {
       return json({ error: 'faltan datos' }, 400);
     }
-    // por `discordDe()`: el permiso tiene que ser de esta app (ver su comentario)
-    const q = await discordDe(t);
-    const u = q.u || null;
-    if (!u || !u.id) return json({ error: q.error === 'ocupado' ? 'discord_ocupado' : 'discord' }, q.error === 'ocupado' ? 503 : 401);
+    let id = '';
+    if (t) {
+      // por `discordDe()`: el permiso tiene que ser de esta app (ver su comentario)
+      const q = await discordDe(t);
+      const u = q.u || null;
+      if (!u || !u.id) return json({ error: q.error === 'ocupado' ? 'discord_ocupado' : 'discord' }, q.error === 'ocupado' ? 503 : 401);
+      id = String(u.id);
+    } else {
+      const q = await quienPide(req, env, d);
+      if (!q.id) return json({ error: q.error }, q.estado);
+      id = String(q.id);
+    }
     return elObjeto(env).fetch('https://avisos/vincular', {
-      method: 'POST', body: JSON.stringify({ endpoint: d.endpoint, quien: String(u.id) }),
+      method: 'POST', body: JSON.stringify({ endpoint: d.endpoint, quien: id }),
       headers: { 'content-type': 'application/json' },
     });
   }
@@ -5953,6 +6024,83 @@ export async function rutaAvisos(req, env, ruta) {
     if (v.error) return json(v, v.estado);
     return elObjeto(env).fetch('https://avisos/aplaudir', {
       method: 'POST', body: JSON.stringify({ quien: q.id, pub: v }), headers: { 'content-type': 'application/json' },
+    });
+  }
+  // 💬 COMENTAR: quién lo dice Discord (o la sesión), con su perfil VERIFICADO (`d:`); qué publicación, el muro
+  // (`validarComentario()`). ⚠️ Necesita su rama, como felicitar
+  if (ruta === '/avisos/comentar') {
+    const crudo = await req.text();
+    if (crudo.length > 2048) return json({ error: 'demasiado grande' }, 413);
+    let d = null;
+    try { d = JSON.parse(crudo || '{}'); } catch (e) { d = null; }
+    if (!d || typeof d !== 'object' || !/^[0-9a-f]{12}$/.test(String(d.id || '')) ||
+        (d.token && !/^[A-Za-z0-9._-]{10,300}$/.test(String(d.token)))) return json({ error: 'faltan datos' }, 400);
+    const q = await quienPide(req, env, d);
+    if (!q.id) return json({ error: q.error }, q.estado);
+    let items = [];
+    try { items = (JSON.parse((await env.KV.get('web:muro', { cacheTtl: 60 })) || '{}').items) || []; } catch (e) { items = []; }
+    let mio = '';
+    try { mio = (await env.KV.get('d:' + q.id)) || ''; } catch (e) { mio = ''; }
+    const v = validarComentario(items, d, q.id, mio, Date.now());
+    if (v.error) return json(v, v.estado);
+    return elObjeto(env).fetch('https://avisos/comentar', {
+      method: 'POST', body: JSON.stringify({ quien: q.id, k: mio, pub: v.pub, tx: v.tx, resp: v.resp }),
+      headers: { 'content-type': 'application/json' },
+    });
+  }
+  // 💬 BORRAR UN COMENTARIO: el tuyo, o cualquiera si puedes los ajustes del Dashboard
+  if (ruta === '/avisos/comentario-borrar') {
+    const crudo = await req.text();
+    if (crudo.length > 1024) return json({ error: 'demasiado grande' }, 413);
+    let d = null;
+    try { d = JSON.parse(crudo || '{}'); } catch (e) { d = null; }
+    if (!d || typeof d !== 'object' || !/^[0-9]{1,12}$/.test(String(d.c || '')) ||
+        (d.token && !/^[A-Za-z0-9._-]{10,300}$/.test(String(d.token)))) return json({ error: 'faltan datos' }, 400);
+    const q = await quienPide(req, env, d);
+    if (!q.id) return json({ error: q.error }, q.estado);
+    const jefe = await puede(q.id, 'ajustes');
+    return elObjeto(env).fetch('https://avisos/comentario-borrar', {
+      method: 'POST', body: JSON.stringify({ quien: q.id, c: Number(d.c), jefe }), headers: { 'content-type': 'application/json' },
+    });
+  }
+  // 💬 «COMENTARIOS CON MI CARA», en Mi cuenta: con `quiero` (sí/no) lo cambia; sin él, dice cómo está
+  if (ruta === '/avisos/cm-mio') {
+    const crudo = await req.text();
+    if (crudo.length > 1024) return json({ error: 'demasiado grande' }, 413);
+    let d = null;
+    try { d = JSON.parse(crudo || '{}'); } catch (e) { d = null; }
+    if (!d || typeof d !== 'object' || (d.token && !/^[A-Za-z0-9._-]{10,300}$/.test(String(d.token)))) {
+      return json({ error: 'faltan datos' }, 400);
+    }
+    const q = await quienPide(req, env, d);
+    if (!q.id) return json({ error: q.error }, q.estado);
+    let k = '';
+    try { k = (await env.KV.get('d:' + q.id)) || (await env.KV.get('dn:' + q.id)) || ''; } catch (e) { k = ''; }
+    if (!claveValida(k)) return json({ ok: true, sin_perfil: true });
+    return elObjeto(env).fetch('https://avisos/cm-mio', {
+      method: 'POST', body: JSON.stringify(Object.assign({ quien: q.id, k }, typeof d.quiero === 'boolean' ? { quiero: d.quiero } : {})),
+      headers: { 'content-type': 'application/json' },
+    });
+  }
+  // 💬 A QUIÉN LE PREGUNTÓ DLX (el Dashboard): poner el permiso de un perfil, y la lista entera
+  if (ruta === '/avisos/dueno/cm-permiso' || ruta === '/avisos/dueno/cm-permisos') {
+    const crudo = await req.text();
+    if (crudo.length > 4096) return json({ error: 'demasiado grande' }, 413);
+    let d = null;
+    try { d = JSON.parse(crudo || '{}'); } catch (e) { d = null; }
+    if (!d || typeof d !== 'object' || (d.token && !/^[A-Za-z0-9._-]{10,300}$/.test(String(d.token)))) {
+      return json({ error: 'faltan datos' }, 400);
+    }
+    const q = await quienPide(req, env, d);
+    if (!q.id) return json({ error: q.error }, q.estado);
+    if (!(await puede(q.id, 'ajustes'))) {
+      console.warn('[seguridad] los permisos de los comentarios los pidió alguien que no puede');
+      return json({ error: 'no' }, 403);
+    }
+    if (ruta === '/avisos/dueno/cm-permisos') return elObjeto(env).fetch('https://avisos/cm-permisos');
+    if (!claveValida(d.k) || !CM_ESTADOS[d.estado]) return json({ error: 'faltan datos' }, 400);
+    return elObjeto(env).fetch('https://avisos/cm-permiso', {
+      method: 'POST', body: JSON.stringify({ k: d.k, estado: d.estado, por: q.id }), headers: { 'content-type': 'application/json' },
     });
   }
   // 📣 ABRIR UNA PROMO: quién lo dice Discord (o la sesión); qué promo, el muro (`validarPromo()`). Paga el objeto
@@ -7246,6 +7394,16 @@ export class Avisos {
       this.sql.exec('CREATE TABLE IF NOT EXISTS aplausos (id TEXT NOT NULL, quien TEXT NOT NULL, ' +
         't INTEGER NOT NULL, PRIMARY KEY (id, quien))');
       this.sql.exec('CREATE INDEX IF NOT EXISTS aplausos_quien ON aplausos (quien)');
+      // 💬 LOS COMENTARIOS DE VERDAD (12/11/2026): uno por fila, con el perfil y el nombre que se ven; el Discord ID
+      // (`quien`) nunca sale de acá. `resp`, a qué comentario contesta (`c<n>` o `s<n>`). Y de quién se puede usar la
+      // cara en los simulados (`cm_permiso`: sin fila es «sin preguntar»). Ver `comentar()` y `cmPermiso()`
+      this.sql.exec('CREATE TABLE IF NOT EXISTS comentario (id INTEGER PRIMARY KEY AUTOINCREMENT, pub TEXT NOT NULL, ' +
+        "quien TEXT NOT NULL, k TEXT NOT NULL, n TEXT NOT NULL DEFAULT '', tx TEXT NOT NULL, resp TEXT NOT NULL DEFAULT '', " +
+        't INTEGER NOT NULL, borrado INTEGER NOT NULL DEFAULT 0)');
+      this.sql.exec('CREATE INDEX IF NOT EXISTS comentario_t ON comentario (t)');
+      this.sql.exec('CREATE INDEX IF NOT EXISTS comentario_pub ON comentario (pub)');
+      this.sql.exec('CREATE TABLE IF NOT EXISTS cm_permiso (k TEXT PRIMARY KEY, estado TEXT NOT NULL, ' +
+        "por TEXT NOT NULL DEFAULT '', t INTEGER NOT NULL)");
       // 🔔 LA BANDEJA (02/10/2026): lo que se le avisó a cada uno, para el panel de la campana (Dlx: «que sea como un
       // panel de notificaciones recientes, quizás algo como Instagram»). Se anota aunque esa persona no tenga la
       // campana en ningún dispositivo: el panel se ve igual. El mismo aviso (`clave`) se pisa y vuelve a «nueva»:
@@ -7948,6 +8106,9 @@ export class Avisos {
       // 👥 todas las crews, sin ningún Discord ID: la página y el ciclo (`bot/crews_vivas.py`)
       if (ruta === '/crews') { const r = CW.crewsPublico(this); await this.vaciarBasuraCrews(); return json(r, 200, 60); }
       if (ruta === '/aplausos') return json(this.aplausosCuenta(), 200, 20);
+      // 💬 los comentarios de verdad de cada publicación: perfil, nombre y texto, nunca el Discord ID
+      if (ruta === '/comentarios') return json(this.comentarios(), 200, 20);
+      if (ruta === '/cm-permisos') return json(this.cmPermisos());
       // 🗳️ cuántas veces el público votó a cada uno como ganador, en la temporada (el ciclo: `bot/hechos_vivo.py`)
       if (ruta === '/favoritos') return json(this.favoritos(), 200, 300);
       if (ruta === '/promos-extra') return json(this.promosExtra(), 200, 60);
@@ -8066,6 +8227,10 @@ export class Avisos {
       if (ruta === '/historias') return this.historiasVistas(d);
       if (ruta === '/sigo') return this.sigo(d);
       if (ruta === '/aplaudir') return this.aplaudir(d);
+      if (ruta === '/comentar') return await this.comentar(d);
+      if (ruta === '/comentario-borrar') return json(this.comentarioBorrar(d));
+      if (ruta === '/cm-mio') return await this.cmMio(d);
+      if (ruta === '/cm-permiso') return await this.cmPermiso(d);
       if (ruta === '/promo-vio') return this.promoVio(d);
       if (ruta === '/promo-extender') return this.promoExtender(d);
       if (ruta === '/pedir') return this.pedir(d);
@@ -8530,6 +8695,8 @@ export class Avisos {
       this.guardarAplausosRec();
       this.sql.exec('DELETE FROM aplausos WHERE t < ? OR id IN (SELECT id FROM aplaudidas WHERE primero < ?)', viejo, viejo);
       this.sql.exec('DELETE FROM aplaudidas WHERE primero < ?', viejo);
+      // 💬 y los comentarios: el muro trae 21 días
+      this.sql.exec('DELETE FROM comentario WHERE t < ?', ahora - COMENT_DIAS * DIA_MS);
       // 🔔 y la bandeja de cada uno: 30 días
       this.sql.exec('DELETE FROM bandeja WHERE t < ?', viejo);
       // 📖 y las historias que vio cada uno: para entonces ya no está ninguna
@@ -8587,6 +8754,10 @@ export class Avisos {
     // 🙈 y la lista de fotos ocultas, si quedó pendiente (ver `espejarOcultas()`)
     if (this.leer('ocultas_pend')) {
       try { await this.espejarOcultas(); } catch (e) { /* la próxima vuelta */ }
+    }
+    // 💬 y la de los permisos de los comentarios (ver `espejarPermisos()`)
+    if (this.leer('cmperm_pend')) {
+      try { await this.espejarPermisos(); } catch (e) { /* la próxima vuelta */ }
     }
     // ⭐ y quién empezó a seguirte. Nunca frena al vigía: ver `avisarSeguidores()`
     try { await this.avisarSeguidores(ahora); } catch (e) {
@@ -11692,6 +11863,8 @@ export class Avisos {
     if (rp.rowsWritten) await this.colaReportes(Date.now());
     // 👏 y a quién felicitó: también va con su Discord ID
     const ap = this.sql.exec('DELETE FROM aplausos WHERE quien = ?', String(d.quien));
+    // 💬 y lo que comentó: va con su Discord ID
+    this.sql.exec('DELETE FROM comentario WHERE quien = ?', String(d.quien));
     // 📖 y qué historias vio
     this.sql.exec('DELETE FROM hvistas WHERE quien = ?', String(d.quien));
     // 🎟️ y su Pase: las Tareas que cumplió y las llaves en vivo que miró
@@ -13449,6 +13622,121 @@ export class Avisos {
     }
     const n = this.sql.exec('SELECT COUNT(*) AS n FROM aplausos WHERE id = ?', p.id).toArray()[0].n;
     return json({ ok: true, id: p.id, n, ya: !r.rowsWritten, t: ahora });
+  }
+
+  /**
+   * 💬 UN COMENTARIO DE VERDAD (ver `validarComentario()`). Con tope por día, sin repetir el mismo texto en la misma
+   * publicación, y con aviso a la bandeja de cada dueño de la publicación —nunca a uno mismo—: el aviso se pisa
+   * (`cm:<publicación>`) con cuántos van. ⚠️ Sólo la bandeja, sin push: un comentario no es urgente.
+   */
+  async comentar(d) {
+    const quien = String(d.quien || ''), p = d.pub || {}, k = String(d.k || '');
+    if (!/^[0-9]{5,25}$/.test(quien) || !/^[0-9a-f]{12}$/.test(String(p.id || '')) || !claveValida(k)) {
+      return json({ error: 'faltan datos' }, 400);
+    }
+    const l = limpiarComentario(d.tx);
+    if (l.error) return json({ error: l.error }, 400);
+    const resp = /^(c[0-9]{1,12}|s[0-9])$/.test(String(d.resp || '')) ? String(d.resp) : '';
+    const ahora = Date.now();
+    const igual = this.sql.exec('SELECT id FROM comentario WHERE pub = ? AND quien = ? AND tx = ? AND borrado = 0 LIMIT 1',
+      p.id, quien, l.tx).toArray()[0];
+    if (igual) return json({ ok: true, ya: true, c: igual.id });
+    if (!this.cuentaCambio(quien, 'comentario', COMENT_DIA)) return json({ error: 'espera' }, 429);
+    let n = '';
+    try { n = String((JSON.parse(this.persona('p:' + k) || (await this.env.KV.get('p:' + k)) || '{}') || {}).n || ''); } catch (e) { n = ''; }
+    n = (n || k).slice(0, 60);
+    this.sql.exec('INSERT INTO comentario (pub, quien, k, n, tx, resp, t) VALUES (?, ?, ?, ?, ?, ?, ?)', p.id, quien, k, n, l.tx, resp, ahora);
+    const r = this.sql.exec('SELECT last_insert_rowid() AS id').toArray()[0] || {};
+    // 🔔 a los dueños de la publicación
+    try {
+      const ks = Array.isArray(p.ks) ? p.ks : [], quienes = Array.isArray(p.quien) ? p.quien : [];
+      if (ks.some(claveValida) && ks.indexOf(k) < 0) {
+        const idx = await this.indiceNombres(ahora);
+        const cuantos = this.sql.exec('SELECT COUNT(*) AS n FROM comentario WHERE pub = ? AND borrado = 0', p.id).toArray()[0].n;
+        const { titulo, cuerpo } = avisoComentario(cuantos, n, l.tx);
+        const avisados = [];
+        for (let i = 0; i < ks.length; i++) {
+          if (!claveValida(ks[i])) continue;
+          const did = await this.cuentaDe(ks[i], ahora, idx, quienes[i]);
+          if (!did || did === quien || avisados.indexOf(did) >= 0) continue;
+          avisados.push(did);
+          this.aBandeja(did, 'cm:' + p.id, 'comentario', titulo, cuerpo, HUB + '/freestyle-rap/publicaciones', k, ahora);
+        }
+      }
+    } catch (e) { /* el comentario ya quedó: el aviso no lo frena */ }
+    return json({ ok: true, c: r.id, k, n, tx: l.tx, resp, t: ahora });
+  }
+
+  /** 💬 Borrar un comentario: el tuyo, o cualquiera con `jefe` (lo dice el Worker). Queda marcado, no se borra la fila. */
+  comentarioBorrar(d) {
+    const quien = String(d.quien || ''), c = Number(d.c);
+    if (!/^[0-9]{5,25}$/.test(quien) || !Number.isInteger(c)) return { error: 'faltan datos' };
+    const r = d.jefe === true ? this.sql.exec('UPDATE comentario SET borrado = 1 WHERE id = ?', c)
+      : this.sql.exec('UPDATE comentario SET borrado = 1 WHERE id = ? AND quien = ?', c, quien);
+    return r.rowsWritten ? { ok: true, c } : { error: 'no' };
+  }
+
+  /** 💬 Lo público, para `/avisos/comentarios`: los de los últimos días, por publicación. ⚠️ Nunca el Discord ID. */
+  comentarios() {
+    const desde = Date.now() - COMENT_DIAS * DIA_MS, por = {};
+    for (const r of this.sql.exec('SELECT id, pub, k, n, tx, resp, t FROM comentario WHERE t > ? AND borrado = 0 ' +
+      'ORDER BY t LIMIT 3000', desde).toArray()) {
+      (por[r.pub] = por[r.pub] || []).push([r.id, r.k, r.n, r.tx, r.resp, r.t]);
+    }
+    return { t: Date.now(), por };
+  }
+
+  /**
+   * 💬 «COMENTARIOS CON MI CARA» (Mi cuenta): `quiero` falso es «no» y le gana a todo; verdadero saca un «no» (vuelve a
+   * «sin preguntar», o queda en el «sí» de Dlx). Sin `quiero`, dice cómo está.
+   */
+  async cmMio(d) {
+    const quien = String(d.quien || ''), k = String(d.k || '');
+    if (!/^[0-9]{5,25}$/.test(quien) || !claveValida(k)) return json({ error: 'faltan datos' }, 400);
+    if (typeof d.quiero === 'boolean') {
+      const f = this.sql.exec('SELECT estado FROM cm_permiso WHERE k = ?', k).toArray()[0];
+      const antes = f ? f.estado : 'pre';
+      const despues = d.quiero ? (antes === 'no' ? 'pre' : antes) : 'no';
+      if (despues !== antes) {
+        if (!this.cuentaCambio(quien, 'cm', 10)) return json({ error: 'espera' }, 429);
+        if (despues === 'pre') this.sql.exec('DELETE FROM cm_permiso WHERE k = ?', k);
+        else this.sql.exec('INSERT OR REPLACE INTO cm_permiso (k, estado, por, t) VALUES (?, ?, ?, ?)', k, despues, 'yo', Date.now());
+        await this.espejarPermisos(false);
+      }
+    }
+    const f = this.sql.exec('SELECT estado FROM cm_permiso WHERE k = ?', k).toArray()[0];
+    return json({ ok: true, estado: f ? f.estado : 'pre' });
+  }
+
+  /** 💬 El permiso de un perfil, desde el Dashboard (ya comprobado en el Worker). `pre` saca la fila. */
+  async cmPermiso(d) {
+    const k = String(d.k || ''), estado = String(d.estado || '');
+    if (!claveValida(k) || !CM_ESTADOS[estado]) return json({ error: 'faltan datos' }, 400);
+    if (estado === 'pre') this.sql.exec('DELETE FROM cm_permiso WHERE k = ?', k);
+    else this.sql.exec('INSERT OR REPLACE INTO cm_permiso (k, estado, por, t) VALUES (?, ?, ?, ?)', k, estado, 'dueno', Date.now());
+    await this.espejarPermisos(false);
+    return json({ ok: true, k, estado });
+  }
+
+  /** 💬 Para el Dashboard: todos los que tienen fila (el resto está «sin preguntar»), y si lo marcó él o Dlx. */
+  cmPermisos() {
+    const filas = this.sql.exec('SELECT k, estado, por, t FROM cm_permiso ORDER BY k').toArray()
+      .map((r) => ({ k: r.k, estado: r.estado, yo: r.por === 'yo', t: r.t }));
+    return { ok: true, filas };
+  }
+
+  /** 💬 La lista para el ciclo, en KV (`cm:permisos`), como `espejarOcultas()`: como mucho cada 15 minutos. */
+  async espejarPermisos(ya = true) {
+    const ahora = Date.now();
+    if (!ya && ahora - (this.leer('cmperm_t') || 0) < 15 * MIN) { this.guardar('cmperm_pend', 1); return; }
+    if (this.leer('cmperm_pend') && ahora - (this.leer('cmperm_t') || 0) < 15 * MIN) return;
+    const filas = this.sql.exec('SELECT k, estado FROM cm_permiso ORDER BY k').toArray();
+    try {
+      await this.env.KV.put('cm:permisos', JSON.stringify({ v: 1, si: filas.filter((r) => r.estado === 'si').map((r) => r.k),
+        no: filas.filter((r) => r.estado === 'no').map((r) => r.k) }));
+      this.guardar('cmperm_t', ahora);
+      this.guardar('cmperm_pend', 0);
+    } catch (e) { this.guardar('cmperm_pend', 1); }
   }
 
   /** Lo público, para `/avisos/aplausos`: cuántos lleva cada publicación. ⚠️ Nunca quién. */
@@ -15596,7 +15884,10 @@ export class Avisos {
     const P = this.paseDatos();
     if (!P.cfg) return { listo: false };
     const cfg = P.cfg;
-    const miembro = P.miembros.has(quien);
+    // 👑 el dueño ve su Pase aunque no lleve el rol de Miembro (12/11/2026, Dlx: «yo como dueño tengo que tener todo
+    // desbloqueado»: su Pase decía «para los miembros de DRA»). ⚠️ Sólo acá, en lo que ve él: no entra a `miembros`,
+    // que arma las listas públicas del Pase
+    const miembro = P.miembros.has(quien) || quien === DUENO;
     if (miembro) this.paseRevisar(quien);
     const ahora = Date.now();
     const s = P.sem.filter((x) => x[1] <= ahora).slice(-1)[0] || null;

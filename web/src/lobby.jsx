@@ -559,7 +559,7 @@ export function Lobby({ liga, dc }) {
         <PnPase dc={dc} />
       </div>
       <div className="pn-baja">
-        <PnTienda saldo={saldo} />
+        <PnTienda saldo={saldo} dc={dc} />
         <PnSemana liga={liga} />
       </div>
     </section>

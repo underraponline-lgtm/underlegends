@@ -152,7 +152,7 @@ function horaNum(d) {
 }
 
 export class Liga {
-  constructor(D, muro, ahora, yo, sigue) {
+  constructor(D, muro, ahora, yo, sigue, yoFila) {
     this.d = D;
     this.muro = (muro && muro.items) || [];
     // ⏳ el muro llega después del lobby: «no hay nada» y «todavía no llegó» son cosas distintas
@@ -180,7 +180,11 @@ export class Liga {
     (D.svs || []).forEach((s) => { if (s.sigla && s.sigla !== s.sv) SIGLAS[s.sv] = s.sigla; });
     this.rg = {};
     (D.rangos || []).forEach((r) => { this.rg[r.r] = r.color; });
-    this.yo = yo && this.T[yo] ? this.T[yo] : null;
+    // 🙋 TU FILA AUNQUE NO ESTÉS ENTRE LOS 200 (12/11/2026: Dlx es #228 y el panel le decía «juega tu primer evento» y el
+    // inventario «sin carta» con cuatro cartas arriba). La trae `App.jsx` de tu perfil (`p[k].f`) y entra como las
+    // que se abren desde un perfil (`fuera()`): así `cartaDe()` y todo lo que lee `liga.yo` la encuentran
+    if (yoFila && yoFila.k === yo) this.fuera(yoFila);
+    this.yo = yo ? (this.T[yo] || this.X[yo] || null) : null;
     // la temporada sale del payload: «T1» escrito a mano quedaría viejo el día que arranque la T2
     this.temp = String(D.temporada || 'T1').toUpperCase();
     this.tempLarga = 'TEMPORADA ' + this.temp.replace(/^T/, '');

@@ -91,6 +91,14 @@ const AVISOS = {
   // 👏 felicitar un logro de Publicaciones, y cuántos lleva cada uno (02/10/2026). Ver `validarAplauso()` en
   // bot/avisos.js: quién felicita lo dice Discord; qué publicación, el muro
   '/api/avisos/felicitar': 'POST',
+  // 💬 los comentarios de Publicaciones (12/11/2026): escribir, leer, borrar el tuyo, y quién deja usar su cara. Ver
+  // `validarComentario()` y `comentar()` en bot/avisos.js
+  '/api/avisos/comentar': 'POST',
+  '/api/avisos/comentarios': 'GET',
+  '/api/avisos/comentario-borrar': 'POST',
+  '/api/avisos/cm-mio': 'POST',
+  '/api/avisos/dueno/cm-permiso': 'POST',
+  '/api/avisos/dueno/cm-permisos': 'POST',
   // 📖 las historias que viste, en tu cuenta (18/10/2026)
   '/api/avisos/historias': 'POST',
   '/api/avisos/panel-socio': 'POST',
@@ -306,7 +314,7 @@ async function avisos(req, url, ctx) {
     // la clave pública no cambia: una hora en el borde
     ttl = 3600;
   } else if (url.pathname.endsWith('/vivo') || url.pathname.endsWith('/encuestas') || url.pathname.endsWith('/ligas-votos') ||
-             url.pathname.endsWith('/precios') || url.pathname.endsWith('/aplausos') ||
+             url.pathname.endsWith('/precios') || url.pathname.endsWith('/aplausos') || url.pathname.endsWith('/comentarios') ||
              url.pathname.endsWith('/estado')) {
     // ⚡ `/estado` también (revisión del 04/10/2026): la campana lo pide en cada visita, es público —cuántos,
     // cuándo, nunca quién— y cada pedido eran once lecturas de tablas enteras en el objeto que vigila

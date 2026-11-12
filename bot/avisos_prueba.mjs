@@ -3498,6 +3498,28 @@ const ok = (cond, que, det) => {
   }
 }
 
+// 💬 LOS COMENTARIOS DE PUBLICACIONES (12/11/2026): el texto, quién puede y a qué publicación
+{
+  console.log('\n💬 los comentarios');
+  ok(A.limpiarComentario('  hola\n\n crack ').tx === 'hola crack', 'una sola línea y sin espacios de más');
+  ok(A.limpiarComentario('mira https://x.com').error === 'link' && A.limpiarComentario('entra a discord.gg/abc').error === 'link',
+    'sin links');
+  ok(A.limpiarComentario('@everyone vengan').error === 'mencion', 'sin @everyone');
+  ok(A.limpiarComentario('x'.repeat(201)).error === 'largo' && A.limpiarComentario('   ').error === 'vacio', 'ni largo ni vacío');
+  const muro = [{ id: 'abcdefabcdef', tipo: 'campeon', quien: ['Tam'], ks: ['tam'] }];
+  const viejo = '100000000000000000';                  // una cuenta de 2015: pasa la edad
+  ok(A.validarComentario(muro, { id: 'abcdefabcdef', tx: 'grande' }, viejo, '', Date.now()).error === 'sin_verificar',
+    'sin perfil verificado no se comenta');
+  ok(A.validarComentario(muro, { id: '000000000000', tx: 'grande' }, viejo, 'six', Date.now()).error === 'no_existe',
+    'sólo a una publicación del muro');
+  const v = A.validarComentario(muro, { id: 'abcdefabcdef', tx: 'grande', resp: 's1' }, viejo, 'six', Date.now());
+  ok(!v.error && v.tx === 'grande' && v.resp === 's1' && v.pub.ks[0] === 'tam', 'el que vale, con a quién contesta', JSON.stringify(v));
+  ok(A.validarComentario(muro, { id: 'abcdefabcdef', tx: 'x', resp: 'zz' }, viejo, 'six', Date.now()).error === 'resp',
+    'una respuesta a algo que no es un comentario no entra');
+  const av = A.avisoComentario(3, 'Six', 'grande');
+  ok(/3 comentarios/.test(av.titulo) && av.cuerpo === 'Six: «grande»', 'la campana del dueño dice cuántos y el último');
+}
+
 if (fallas) {
   console.log(`\n❌ ${fallas} prueba(s) fallaron`);
   process.exit(1);

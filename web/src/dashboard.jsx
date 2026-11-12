@@ -3396,6 +3396,7 @@ const BUSCABLES = [
   ['Aviso arriba de la página', 'web', 'aj-aviso'], ['El bot en vivo', 'web', 'aj-vivo'], ['Cada cuánto habla el bot en vivo', 'web', 'aj-ritmo'],
   ['Horario de silencio', 'web', 'aj-silencio'], ['Las apuestas', 'web', 'aj-apuestas'], ['El aviso de cada evento', 'web', 'aj-avisos'],
   ['Las crews: precios, ranking y tiers', 'web', 'aj-crews'], ['MES AWARDS: sacar un nominado', 'web', 'aj-mes'], ['Promos a mano', 'web', 'aj-promos'],
+  ['Comentarios simulados: a quién le preguntaste', 'web', 'aj-comentarios'],
   ['El multiplicador de la semana', 'servidores', 'sv-cada'], ['Bot en vivo, apuestas y aviso de cada servidor', 'servidores', 'sv-cada'],
   ['Los tiers de los servidores', 'servidores', 'sv-tiers'], ['Sumar un servidor', 'servidores', 'sv-tiers'], ['El dueño de un servidor socio', 'servidores', 'sv-tiers'],
   ['¿Quién es quién? (✅ Decidir)', 'pendientes', '', 'quien'], ['Errores en las llaves', 'pendientes', '', 'llaves'],
@@ -4298,6 +4299,72 @@ function ServidoresTabla({ liga, aj, hacer, ocup, chat, T, origen }) {
 // para saber cómo estaba algo había que leerlas enteras. Ahora la fila dice cómo está; «Cambiar» abre el formulario de
 // siempre debajo (el mismo componente, sin su cabecera). Lo de un toque —pausar la campana— se hace en la fila misma
 const corte = (s, n) => (String(s || '').length > n ? String(s).slice(0, n - 1) + '…' : String(s || ''));
+// ── 💬 A QUIÉN LE PREGUNTASTE (12/11/2026, Dlx: «iré preguntando a cada gente de la liga si les molesta»). Los más
+// activos primero, que son los que más van a comentar. Sólo los que tienen fila en el objeto tienen estado; el resto
+// está «sin preguntar». Lo que la persona apagó en Mi cuenta dice «lo apagó él». El cambio llega al ciclo por KV en
+// hasta 15 minutos, y a la página en la vuelta siguiente
+async function pedirCm(ruta, cuerpo) {
+  const r = await fetch('/api/avisos/dueno/' + ruta, { method: 'POST', credentials: 'same-origin',
+    headers: { 'content-type': 'application/json' }, body: JSON.stringify(cuerpo || {}) });
+  const j = await r.json().catch(() => ({}));
+  if (!r.ok || j.error) throw new Error(r.status === 401 ? 'Entra con Discord de nuevo.' : j.error || String(r.status));
+  return j;
+}
+
+function CmPermisosDueno({ liga }) {
+  const [filas, setFilas] = useState(null);
+  const [msg, setMsg] = useState('');
+  const [q, setQ] = useState('');
+  const [ver, setVer] = useState(30);
+  useEffect(() => {
+    let vivo = true;
+    pedirCm('cm-permisos').then((j) => { if (vivo) setFilas(Object.fromEntries((j.filas || []).map((f) => [f.k, f]))); })
+      .catch((e) => { if (vivo) setMsg(e.message); });
+    return () => { vivo = false; };
+  }, []);
+  if (!filas) return <p className="dz-nota">{msg || 'Cargando…'}</p>;
+  const gente = (liga.d.tabla || []).filter((f) => f.k && f.av).slice().sort((a, b) => (b.ev || 0) - (a.ev || 0));
+  const est = (k) => (filas[k] ? filas[k].estado : 'pre');
+  const cu = { si: 0, pre: 0, no: 0 };
+  gente.forEach((f) => { cu[est(f.k)] += 1; });
+  const qq = limpio(q).toLowerCase();
+  const lista = gente.filter((f) => !qq || limpio(f.n).toLowerCase().includes(qq));
+  const poner = async (k, estado) => {
+    setMsg('');
+    const antes = filas[k];
+    setFilas(Object.assign({}, filas, { [k]: estado === 'pre' ? undefined : { k, estado, yo: false } }));
+    try { await pedirCm('cm-permiso', { k, estado }); } catch (e) {
+      setFilas(Object.assign({}, filas, { [k]: antes }));
+      setMsg(e.message);
+    }
+  };
+  return (
+    <div className="cmd">
+      <div className="cmd-cu">
+        <span><b>{cu.si}</b> dijeron que sí</span><span><b>{cu.pre}</b> sin preguntar</span><span><b>{cu.no}</b> dijeron que no</span>
+      </div>
+      <input className="cmd-bus" id="cm-buscar" type="search" value={q} onChange={(e) => setQ(e.target.value)} placeholder="Buscar a alguien" aria-label="Buscar a alguien" />
+      <ul className="cmd-l">
+        {lista.slice(0, qq ? 60 : ver).map((f) => {
+          const e = est(f.k);
+          return (
+            <li key={f.k}>
+              <span className="cmd-n"><b>{limpio(f.n)}</b><small>{siglaDe(f.sv)} · {f.ev || 0} eventos{filas[f.k] && filas[f.k].yo ? ' · lo apagó él' : ''}</small></span>
+              <span className="cmd-seg" role="group" aria-label={'Permiso de ' + limpio(f.n)}>
+                {[['si', 'Sí'], ['pre', 'Sin preguntar'], ['no', 'No']].map(([v, t]) => (
+                  <button key={v} type="button" className={v} aria-pressed={e === v} onClick={() => e !== v && poner(f.k, v)}>{t}</button>
+                ))}
+              </span>
+            </li>
+          );
+        })}
+      </ul>
+      {!qq && lista.length > ver ? <button type="button" className="btn borde2 chico" onClick={() => setVer(ver + 60)}>Ver más ({lista.length - ver})</button> : null}
+      {msg ? <p className="dz-nota" role="alert">{msg}</p> : null}
+    </div>
+  );
+}
+
 function Fila({ id, t, que, val, tono, abierta, alAbrir, accion, children }) {
   return (
     <li className={'dz-fila' + (abierta ? ' on' : '')} id={id}>
@@ -4376,6 +4443,12 @@ function AjustesFilas({ liga, aj, hacer, ocup, chat, ir, abrir, sis }) {
         <Fila {...f('aj-promos')} t="Promos a mano" que="Agregar una promo que el lector no vio, o sacar una que no va."
           val={promos ? promos + ' a mano' : 'Ninguna'}>
           <PromosMano aj={aj} hacer={hacer} ocup={ocup} /></Fila>
+      </ul>
+      <h3 className="dz-h">Publicaciones</h3>
+      <ul>
+        <Fila {...f('aj-comentarios')} t="Comentarios simulados" que="A quién le preguntaste si su cara puede comentar. Sí va sin etiqueta, sin preguntar va con «simulado» y No no aparece nunca."
+          val="Por persona">
+          <CmPermisosDueno liga={liga} /></Fila>
       </ul>
     </div>
   );

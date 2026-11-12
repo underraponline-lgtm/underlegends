@@ -18,7 +18,8 @@ import { useEffect, useMemo, useRef, useState } from 'react';
 import { limpio, num, siglaDe, srcLogo, utc } from './liga.js';
 import { Bandera, Cara, Ico, accion, nombrePais, useCampana } from './piezas.jsx';
 import { Escudo, escudoDe } from './escudo.jsx';
-import { avance, usePase } from './pase.js';
+import { avance, pasePost, usePase } from './pase.js';
+import { cuantosNuevos } from './inv_nuevos.js';
 import { cobrarRacha } from './racha.js';
 import { dondeEstoy, nombreDe, useCompetencias } from './competencias_datos.js';
 import { svElegido, useElegidos } from './elegidos.js';
@@ -299,6 +300,28 @@ export function Batallas({ liga, dc }) {
   );
 }
 
+// ── 🎒 LO TUYO DEL INVENTARIO, para la Tienda y el botón de Inventario (como la maqueta: «MARCOS 12 · TAGS 25» y «1 NUEVA»).
+// Una vez por visita y sólo con cuenta: los mismos dos pedidos que hace el inventario
+const MIOS = { d: null, va: false, oyen: new Set() };
+function useMios(dc) {
+  const [, setN] = useState(0);
+  useEffect(() => {
+    if (!dc) return undefined;
+    const f = () => setN((n) => n + 1);
+    MIOS.oyen.add(f);
+    if (!MIOS.d && !MIOS.va) {
+      MIOS.va = true;
+      Promise.all([pasePost('tags-mios', {}), pasePost('marcos', {})]).then(([t, m]) => {
+        const tags = t && t._ok ? Object.values(t.ganados || {}).reduce((s, xs) => s + Object.keys(xs || {}).length, 0) : null;
+        MIOS.d = { tags, nuevos: t && t._ok ? cuantosNuevos(t) : 0, marcos: m && m._ok && Array.isArray(m.tienes) ? m.tienes.length : null };
+        MIOS.oyen.forEach((g) => g());
+      }).finally(() => { MIOS.va = false; });
+    }
+    return () => { MIOS.oyen.delete(f); };
+  }, [!!dc]); // eslint-disable-line react-hooks/exhaustive-deps
+  return dc ? MIOS.d : null;
+}
+
 // ── 🃏 EL CENTRO: tus tarjetas, tus rankings a los costados, lo último que te dijeron y tu último evento ──────────────
 const CARTAS = ['temporada', 'competitivo', 'servidor', 'pais'];
 const NOM = { temporada: 'Temporada', competitivo: 'Competitiva', servidor: 'Servidor', pais: 'País' };
@@ -334,11 +357,15 @@ function rankingsDe(liga, yo, svEl) {
   const mia = liga.crewDe(yo);
   const iCrew = mia ? crews.findIndex((c) => c.crew === mia.crew) : -1;
   const iDe = (l, fn) => { const i = l.findIndex(fn); return i >= 0 ? i + 1 : null; };
+  // 🙋 quien está afuera de los 200 del lobby trae su puesto en el país y en su crew en su perfil (`rk`, App.jsx)
+  const rk = yo.rk || {};
   return [
-    ['Temporada', yo.pos || null, T.length, 0, 'Temporada'],
+    // ⚠️ el total es la gente de la temporada (`gente`), no las 200 filas que viajan: con 200, el #228 era «top 114 %»
+    ['Temporada', yo.pos || null, Math.max(T.length, Number(liga.d.gente) || 0), 0, 'Temporada'],
     ['Competitivo', iDe(comp, (f) => f.k === yo.k), comp.length, 1, 'Competitivo'],
     ['ELO', iDe(elo, (x) => x[0] === yo.n), elo.length, -1, 'ELO'],
-    ['País', yo.cc ? iDe(delPais, (f) => f.k === yo.k) : null, delPais.length, 3, yo.cc ? limpio(nombrePais(yo.cc)) : 'País'],
+    ['País', yo.cc ? (iDe(delPais, (f) => f.k === yo.k) || (rk.pa && rk.pa[0]) || null) : null,
+      Math.max(delPais.length, (rk.pa && rk.pa[1]) || 0), 3, yo.cc ? limpio(nombrePais(yo.cc)) : 'País'],
     ['Servidor', sv ? iDe(delSv, (f) => f.k === yo.k) : null, delSv.length, 2, sv ? siglaDe(sv) : 'Servidor', sv],
     ['Crew', iCrew >= 0 ? iCrew + 1 : null, crews.length, -1, mia ? limpio(mia.crew) : 'Crew'],
   ];
@@ -356,7 +383,7 @@ function Chip({ liga, x, elegida, onElegir }) {
       <span className="pn-chip-i">{ico}</span><span className="pn-chip-n">{et}</span>
       <strong>{p ? '#' + p : '—'}</strong>
       <span className="pn-chip-pie">{p ? <><i><u style={{ width: Math.max(4, Math.round((1 - (p - 1) / Math.max(1, de)) * 100)) + '%' }} /></i><small>top {top} %</small></>
-        : <small>{n === 'Crew' ? 'sin crew' : 'sin puesto'}</small>}</span>
+        : <small>{n === 'Crew' && et === 'Crew' ? 'sin crew' : 'sin puesto'}</small>}</span>
     </button>
   );
 }
@@ -366,6 +393,7 @@ export function Vestuario({ liga, dc }) {
   const el = useElegidos();
   const disp = yo ? CARTAS.filter((c) => liga.cartaUrl(yo.k, c)) : [];
   const [elegida, setElegida] = useState(0);
+  const mios = useMios(dc);
   const i = disp.length ? Math.min(elegida, disp.length - 1) : 0;
   if (!yo) {
     const top = (liga.d.tabla || []).filter((f) => f.pos && liga.cartaUrl(f.k, 'temporada')).slice(0, 3);
@@ -383,8 +411,14 @@ export function Vestuario({ liga, dc }) {
   const conCarta = rks.map((x) => { const y = x.slice(); y[3] = x[3] >= 0 ? cartaDeChip(x[3]) : -1; return y; });
   // lo último: tu último evento y lo que dijo de él un personaje de la Liga (bot)
   const ult = (liga.semanaDe(yo.k) || [])[0] || null;
-  const ll = ult ? ult[0] : null;
-  const fechaUlt = ll ? utc(liga.fechaLlave(ll)) : 0;
+  // 🗓️ y si tu último evento ya no viaja en el lobby (sólo van las llaves más nuevas), el de tu fila (`ult`: el día y
+  // hasta dónde llegaste) con su número, que trae tu perfil (`ue`, App.jsx). Antes decía «Todavía no jugaste» a quien
+  // sí jugó (Dlx, 12/11/2026: «yo he participado en un evento, debería estar ahí con más info»)
+  const viejo = !ult && Array.isArray(yo.ult) && yo.ult[0]
+    ? { n: (yo.ue && yo.ue[0]) || 0, nombre: yo.ue && yo.ue[0] ? 'la llave #' + yo.ue[0] : 'tu último evento', t: yo.ult[0] + 'T23:00:00Z', r: yo.ult[1] } : null;
+  const ll = ult ? ult[0] : viejo;
+  const fechaUlt = ult ? utc(liga.fechaLlave(ll)) : viejo ? utc(viejo.t) : 0;
+  const ronda = ult ? ult[1] : viejo ? viejo.r : '';
   const bot = BOTS[(ll ? String(ll.n).split('').reduce((s, ch) => s + ch.charCodeAt(0), 0) : 0) % BOTS.length];
   return (
     <div className="pn-cu pn-yo">
@@ -404,18 +438,19 @@ export function Vestuario({ liga, dc }) {
         <div className="pn-com">
           <span className="pn-dice"><span className="pn-bot-av" aria-hidden="true">{bot[1]}</span>
             <b>{bot[0]}<span className="pn-tag-bot">bot</span><small>{fechaUlt ? '· ' + hace(fechaUlt) : ''}</small></b>
-            <p>{ll ? textoBot(ult[1], limpio(ll.nombre)) : 'Todavía no jugaste en la ' + (liga.temp || 'T1') + '. ¿Te anotas al próximo?'}</p></span>
+            <p>{ll ? textoBot(ronda, limpio(ll.nombre)) : 'Todavía no jugaste en la ' + (liga.temp || 'T1') + '. ¿Te anotas al próximo?'}</p></span>
           <a className="pn-resp" href={ll ? '#/publicaciones' : '#/eventos'}>{ll ? 'Responder' : 'Ver eventos'}</a>
           {ll ? (
-            <button type="button" className="pn-ult" onClick={() => accion.llave(ll.n)}>
+            <button type="button" className="pn-ult" onClick={() => (ll.n ? accion.llave(ll.n) : (location.hash = '#/r/' + encodeURIComponent(yo.k)))}>
               <span className="pn-cal"><i>{new Date(fechaUlt).toLocaleDateString('es', { weekday: 'short' }).replace('.', '')}</i><b>{new Date(fechaUlt).getDate()}</b></span>
-              <span className="pn-ult-t"><em>Tu último evento · {ult[1]}</em><strong>{limpio(ll.nombre)}</strong></span><small>Ver el evento ›</small>
+              <span className="pn-ult-t"><em>Tu último evento · {ronda}</em><strong>{limpio(ll.nombre)}</strong></span><small>Ver el evento ›</small>
             </button>
           ) : null}
         </div>
         <nav className="pn-acc" aria-label="Lo tuyo">
           <a href={'#/r/' + encodeURIComponent(yo.k)}><Ico n="ranking" t={22} /><b>Estadísticas</b><small>Tus eventos</small></a>
-          <a href="#/inventario"><Ico n="tarjetas" t={22} /><b>Inventario</b><small>Tus TAGs</small></a>
+          <a href="#/inventario"><Ico n="tarjetas" t={22} /><b>Inventario</b><small>Tus TAGs</small>
+            {mios && mios.nuevos ? <em className="pn-nueva">{mios.nuevos === 1 ? '1 nueva' : mios.nuevos + ' nuevas'}</em> : null}</a>
           <span className="pn-pronto" aria-disabled="true"><Ico n="mira" t={22} /><b>Entrenar</b><small>Pronto</small><em>pronto</em></span>
           <button type="button" className="pn-bat" onClick={() => W.dispatchEvent(new CustomEvent('lg:batallar'))}><Ico n="cruce" t={22} /><b>Batallar</b><small>Busca rival</small><em>simulado</em></button>
         </nav>
@@ -469,6 +504,10 @@ export function PnCrew({ liga }) {
   const ct = liga.d.crews_tiers || {};
   const tierDe = (c) => { const t = ((ct.crews || {})[c.clave || c.crew] || [])[0]; return t != null ? [(ct.nombres || [])[t], (ct.colores || [])[t]] : null; };
   const crews = (liga.d.crews || []).filter((c) => c.rk !== 0);
+  // 🛡️ el escudo grande de fondo, como la maqueta (`.grande`): decorado, no dice nada
+  const fondo = <svg className="pn-cr-fondo" viewBox="0 0 100 114" aria-hidden="true"><path d="M50 2 96 18v38c0 28-20 46-46 56C24 102 4 84 4 56V18Z" fill="currentColor" /></svg>;
+  // las de la lista, también las que todavía no tienen puesto (menos de 3): eran 2 donde la maqueta mostraba 3
+  const todas = (liga.d.crews || []).slice().sort((a, b) => (b.pts || 0) - (a.pts || 0));
   const logo = (c, cls) => (escudoDe(c.logo, limpio(c.crew)) ? <span className={cls}><Escudo e={escudoDe(c.logo, limpio(c.crew))} /></span>
     : c.logo ? <img className={cls} alt="" src={srcLogo(c.logo)} /> : <span className={cls + ' ini'}>{limpio(c.crew).slice(0, 2).toUpperCase()}</span>);
   if (mia) {
@@ -476,6 +515,7 @@ export function PnCrew({ liga }) {
     const t = tierDe(mia);
     return (
       <a className="pn-cu pn-cr" href={'#/crew/' + encodeURIComponent(mia.clave || mia.crew)}>
+        {fondo}
         <h4>Tu crew</h4>
         <span className="pn-cr-tu">{logo(mia, 'pn-cr-logo')}<span><b>{limpio(mia.crew)}</b>{t ? <em style={{ color: t[1] }}>{t[0]}</em> : null}</span></span>
         <small>{i >= 0 ? '#' + (i + 1) + ' de ' + crews.length + ' · ' : ''}{num(mia.pts || 0)} pts · {mia.n || (mia.gente || []).length} raperos</small>
@@ -484,9 +524,10 @@ export function PnCrew({ liga }) {
   }
   return (
     <a className="pn-cu pn-cr" href="#/crews">
+      {fondo}
       <h4>Crew</h4>
       <span className="pn-q">Sin crew</span><small>Súmate a una o arma la tuya</small>
-      <ul className="pn-cr-l">{crews.slice(0, 3).map((c) => { const t = tierDe(c); return (
+      <ul className="pn-cr-l">{todas.slice(0, 3).map((c) => { const t = tierDe(c); return (
         <li key={c.crew}>{logo(c, 'pn-cr-mini')}<b>{limpio(c.crew)}</b>{t ? <em style={{ color: t[1] }}>{t[0]}</em> : null}</li>); })}</ul>
     </a>
   );
@@ -538,14 +579,19 @@ export function PnPase({ dc }) {
 }
 
 // ── 🛍️ Tienda y 📅 La semana, en la misma línea ──────────────────────────────────────────────────────────────────
-export function PnTienda({ saldo }) {
+export function PnTienda({ saldo, dc }) {
   const valor = typeof W.valorCabezas === 'function' ? W.valorCabezas() || {} : {};
   const tope = Object.values(valor).reduce((m, v) => Math.max(m, Number(v) || 0), 0);
+  const mios = useMios(dc);
   return (
     <a className="pn-baja-t pn-ti" href="#/tienda">
       <span className="pn-ti-ic" aria-hidden="true">$</span>
       <span className="pn-baja-tx"><b>Tienda</b>{saldo != null ? <span className="pn-saldo">{num(saldo)}</span> : null}<small>{saldo != null ? 'Puntos para gastar' : 'Tus Puntos de Tienda'}</small></span>
-      {tope ? <span className="pn-mini"><span>La cabeza más cara</span><strong>{num(tope)}</strong></span> : null}
+      <span className="pn-minis">
+        {tope ? <span className="pn-mini"><span>La cabeza más cara</span><strong>{num(tope)}</strong></span> : null}
+        {mios && mios.marcos != null ? <span className="pn-mini"><span>Marcos</span><strong>{num(mios.marcos)}</strong></span> : null}
+        {mios && mios.tags != null ? <span className="pn-mini"><span>TAGs</span><strong>{num(mios.tags)}</strong></span> : null}
+      </span>
     </a>
   );
 }

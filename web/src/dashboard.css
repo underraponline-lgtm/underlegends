@@ -949,3 +949,22 @@ button.dz-cu-b:focus-visible{outline:2px solid var(--verde);outline-offset:2px}
 .dz-org-l{margin:0;padding-left:20px;display:grid;gap:4px;font-size:14px}
 .dz-org-l small{color:var(--gris);margin:0 6px}
 .dz-org-l span{color:var(--gris)}
+
+/* 💬 a quién le preguntaste por los comentarios simulados (12/11/2026) */
+.cmd{display:grid;gap:10px}
+.cmd-cu{display:flex;flex-wrap:wrap;gap:6px 16px;font:500 14px/1.3 Archivo,sans-serif;color:var(--gris)}
+.cmd-cu b{font:900 18px/1 Archivo,sans-serif;color:var(--tinta);font-variant-numeric:tabular-nums}
+.cmd-bus{height:38px;padding:0 10px;border:1.5px solid var(--suave);background:var(--caja);color:var(--tinta);font:400 14px/1 Archivo,sans-serif;max-width:320px;width:100%}
+.cmd-l{list-style:none;margin:0;padding:0;display:grid}
+.cmd-l li{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:10px;align-items:center;padding:8px 0;border-top:1px solid var(--suave)}
+.cmd-n{display:flex;flex-direction:column;min-width:0}
+.cmd-n b{font:800 14px/1.3 Archivo,sans-serif;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.cmd-n small{font:500 12px/1.3 Archivo,sans-serif;color:var(--gris)}
+.cmd-seg{display:flex;border:1.5px solid var(--suave)}
+.cmd-seg button{border:0;border-right:1.5px solid var(--suave);background:none;color:var(--gris);font:700 12px/1 Archivo,sans-serif;padding:8px 9px;cursor:pointer;min-height:34px}
+.cmd-seg button:last-child{border-right:0}
+.cmd-seg button[aria-pressed="true"].si{background:var(--verde);color:#030304}
+.cmd-seg button[aria-pressed="true"].pre{background:var(--tinta);color:var(--fondo)}
+.cmd-seg button[aria-pressed="true"].no{background:var(--magenta);color:#fff}
+.dz-nota{margin:0;font:500 14px/1.4 Archivo,sans-serif;color:var(--gris)}
+@media (max-width:520px){ .cmd-l li{grid-template-columns:minmax(0,1fr)} .cmd-seg{justify-self:start} }
