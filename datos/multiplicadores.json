@@ -1254,23 +1254,30 @@
      "Guess",
      21,
      1
+    ],
+    [
+     "Adriagner",
+     12,
+     1
     ]
    ],
    "semillero": {
     "nuevos": {
      "FFA": 6,
      "DDF": 2,
-     "LKR": 2
+     "LKR": 2,
+     "ACAD": 2
     },
     "gente": {
      "FFA": 32,
      "LKR": 23,
-     "DDS": 10
+     "DDS": 10,
+     "ACAD": 12
     },
     "gana": "FFA"
    },
    "meta_va": {
-    "ACAD": 0,
+    "ACAD": 12,
     "CH": 0,
     "DDF": 0,
     "DDS": 10,
