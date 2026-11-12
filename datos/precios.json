@@ -2,34 +2,6 @@
  "_leeme": "El precio por cabeza: lo arma bot/precios.py en el ciclo (paso 2b4). Las reglas y los números viven en ese archivo.",
  "precios": [
   {
-   "id": 22,
-   "cabeza": "Motera",
-   "monto": 1000,
-   "t": "2026-10-13T18:13:40Z",
-   "fin": "2026-10-19T15:00:00Z",
-   "e": "devuelto"
-  },
-  {
-   "id": 23,
-   "cabeza": "Erian",
-   "monto": 1000,
-   "t": "2026-10-13T18:14:02Z",
-   "fin": "2026-10-19T15:00:00Z",
-   "e": "cazado",
-   "por": [
-    [
-     "Tuca",
-     1000
-    ]
-   ],
-   "ev": {
-    "n": 471,
-    "nombre": "DEM UZBEKISTAN FECHA 3",
-    "sv": "FFA",
-    "t": "2026-10-14T19:38:23Z"
-   }
-  },
-  {
    "id": 24,
    "cabeza": "Lvel",
    "monto": 2500,
@@ -299,7 +271,6 @@
   }
  ],
  "suma": {
-  "Tuca": 1000,
   "1200": 3000,
   "Guess": 5000,
   "BLUE BURKA": 375,
