@@ -11,6 +11,16 @@
  ],
  "cambios": [
     {
+        "version": "4.98",
+        "dia": "2026-11-13",
+        "cuando": "2026-11-13T05:00:00-05:00",
+        "titulo": "El tier de cada socio",
+        "items": [
+            "En **Socios**, cada servidor dice su **tier** y si sus eventos suman a la Temporada y al Competitivo.",
+            "Arriba de la lista, qué es cada tier y quiénes están en cada uno."
+        ]
+    },
+    {
         "version": "4.97",
         "dia": "2026-11-13",
         "cuando": "2026-11-13T04:40:00-05:00",
