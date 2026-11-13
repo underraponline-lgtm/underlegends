@@ -458,7 +458,7 @@ export function Cabecera({ liga, dc, onMenu, pagina = '' }) {
               {/* 🔥 la racha, salvo en el Inicio, donde ya está abajo con sus días (Dlx, 13/11/2026: «que desaparezca eso de la
                   racha si eso está abajo») */}
               {fuego && !enInicio ? <span className="yo-racha" aria-hidden="true"><Ico n="fuego" t={13} />{fuego}</span> : null}</button>
-            {yoM ? <YoMenu k={yo ? yo.k : (dc && dc.clave) || ''} nombre={nombre} cara={cara} onCerrar={() => setYoM(false)} /> : null}
+            {yoM ? <YoMenu k={yo ? yo.k : (dc && dc.clave) || ''} dc={dc} nombre={nombre} cara={cara} onCerrar={() => setYoM(false)} /> : null}
           </span>
         ) : (
           <button type="button" className="btn verde chico entrar" onClick={accion.entrar}>Entrar</button>

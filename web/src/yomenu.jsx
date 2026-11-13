@@ -12,9 +12,18 @@ import { useEffect, useRef, useState } from 'react';
 import { pasePost } from './pase.js';
 import { cuantosNuevos } from './inv_nuevos.js';
 import { Ico } from './piezas.jsx';
+import { DUENO } from './liga.js';
+import { useRoles } from './roles.js';
+import { useSocio } from './panelsocio.js';
 
-export function YoMenu({ k, nombre, cara, abajo = false, onCerrar }) {
+export function YoMenu({ k, dc, nombre, cara, abajo = false, onCerrar }) {
   const [nuevos, setNuevos] = useState(0);
+  // 🛠️ TUS PANELES, A UN TOQUE (Dlx, 13/11/2026: «quizás ahí que me aparezca opciones como Dashboard, mi servidor
+  // directamente»): los mismos dos botones de arriba de Tu cuenta, con las mismas reglas. El Dashboard, para Dlx y para
+  // quien tiene un rol que lo abre; Mi servidor, para el dueño de un socio. Son atajos: la puerta de verdad es el servidor
+  const misRoles = ((useRoles() || {})[k] || []).map((x) => x[0]);
+  const dashboard = !!dc && (String(dc.id) === DUENO || misRoles.some((r) => ['admin', 'asistente', 'moderador'].includes(r)));
+  const socio = useSocio(!!dc);
   const caja = useRef(null);
   useEffect(() => {
     let vivo = true;
@@ -34,7 +43,12 @@ export function YoMenu({ k, nombre, cara, abajo = false, onCerrar }) {
     if (p) p.focus();
     return () => { window.removeEventListener('keydown', tecla); window.removeEventListener('pointerdown', fuera); clearTimeout(t); };
   }, [onCerrar]);
+  const paneles = [
+    dashboard ? ['#/dashboard', '📊', 'Dashboard', 'lo que espera que decidas'] : null,
+    socio ? ['#/socio', '🏠', 'Mi servidor', 'el panel de tu servidor'] : null,
+  ].filter(Boolean);
   const secciones = [
+    paneles.length ? ['Tus paneles', paneles] : null,
     ['Lo tuyo', [
       ['#/inventario', '🎒', 'Inventario', nuevos ? nuevos + (nuevos === 1 ? ' cosa nueva' : ' cosas nuevas') : 'tus TAGs, marcos y cartas', nuevos > 0],
       [k ? '#/r/' + encodeURIComponent(k) : '#/cuenta/perfil', '👤', 'Mi perfil', 'lo que ven los demás'],
@@ -47,7 +61,7 @@ export function YoMenu({ k, nombre, cara, abajo = false, onCerrar }) {
       ['#/cuenta', '⚙️', 'Tu cuenta', 'foto, redes, avisos y la app'],
       ['#/cuenta/algo-mal', '🛟', 'Soporte', 'perdí mi cuenta, mi país, algo está mal'],
     ]],
-  ];
+  ].filter(Boolean);
   return (
     <div className={'yo-menu' + (abajo ? ' abajo' : '')} ref={caja} role="menu" aria-label="Lo tuyo">
       <div className="nt-h">
