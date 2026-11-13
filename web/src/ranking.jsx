@@ -770,12 +770,16 @@ function Versus({ x, a, b, cats, lados }) {
   );
 }
 
-// 💪 SUS FORTALEZAS EN EL COMPETITIVO: las cinco dimensiones del Score, cuando no hay «TÚ CONTRA» que ya las compare
-// (sin cuenta, o en tu propia fila). La barra va del color de su rango, que sale del payload
-function Dims({ D, val, color }) {
+// 💪 SUS FORTALEZAS EN EL COMPETITIVO: las cinco dimensiones del Score. La barra va del color de su rango, que sale del
+// payload. Y desde el 13/11/2026 (Dlx: «a veces la gente no sabe cómo mejorar la eficiencia, consistencia, dominancia,
+// racha o diversidad… crea un botón ahí, cómo mejorar mis fortalezas») cada una dice cómo se sube: el texto y su vara
+// vienen en la Guía del payload (`_como_subir()` de subir_web.py, desde `competitivo.ANCLAS`)
+function Dims({ D, val, color, tuyas, conf }) {
+  const [como, setComo] = useState(false);
+  const hay = D.some((d) => d[4]);
   return (
     <div className="rk-dims-c">
-      <span className="rk-det-t">SUS FORTALEZAS</span>
+      <span className="rk-det-t">{tuyas ? 'TUS FORTALEZAS' : 'SUS FORTALEZAS'}</span>
       <ul className="rk-dims">
         {D.map((d, i) => (
           <li key={d[1]} title={d[2]}>
@@ -785,6 +789,13 @@ function Dims({ D, val, color }) {
           </li>
         ))}
       </ul>
+      {hay ? <button type="button" className="rk-dims-como" aria-expanded={como} onClick={() => setComo(!como)}>{como ? 'Cerrar' : '¿Cómo mejorar mis fortalezas?'}</button> : null}
+      {hay && como ? (
+        <div className="rk-dims-tips">
+          <dl>{D.map((d) => (d[4] ? <div key={d[1]}><dt>{d[0]} {d[1]}<small>{d[3]} % del Score</small></dt><dd>{d[4]}</dd></div> : null))}</dl>
+          <p>Sólo cuentan los eventos de servidores <b>Tier 1</b>.{conf ? <> Y hasta los {conf} eventos el Score se multiplica por la confianza: jugar más también lo sube.</> : null}</p>
+        </div>
+      ) : null}
     </div>
   );
 }
@@ -877,8 +888,15 @@ function Detalle({ x, cfg, f, perf }) {
         <dl className="rk-det-n">
           {nums.det(t, c).filter(Boolean).map(([dt, dd]) => <div key={dt}><dt>{dt}</dt><dd>{dd}</dd></div>)}
         </dl>
-        {vs ? <Versus x={x} a={yo} b={t} cats={nums.vs(yo, t, c)} />
-          : nums === NUMEROS.competitivo && c.dims(t) ? <Dims D={c.D} val={c.dims(t)} color={t.rg ? liga.colorRg(t.rg) : ''} /> : null}
+        {/* 💪 EN EL COMPETITIVO, SUS FORTALEZAS SIEMPRE Y LAS TUYAS CONTRA LAS SUYAS AL COSTADO (Dlx, 13/11/2026: «al
+            costado, si es que fuese competitivo, aparecería mis estadísticas, comparándome»). Antes una tapaba a la otra */}
+        {nums === NUMEROS.competitivo && c.dims(t) ? (
+          <div className={'rk-dims-par' + (vs ? ' con-vs' : '')}>
+            <Dims D={c.D} val={c.dims(t)} color={t.rg ? liga.colorRg(t.rg) : ''} tuyas={!!x.yoK && x.yoK === f.k}
+              conf={((liga.d.guia || {}).conf || [])[2] ? liga.d.guia.conf[2][0] : 0} />
+            {vs ? <Versus x={x} a={yo} b={t} cats={nums.vs(yo, t, c)} /> : null}
+          </div>
+        ) : vs ? <Versus x={x} a={yo} b={t} cats={nums.vs(yo, t, c)} /> : null}
         {!nums.sinSemanas && x.sem && x.sem.g[f.k] ? <Semanas g={x.sem.g[f.k]} lunes={x.sem.lunes} /> : null}
         <span className="rk-det-t">SUS EVENTOS{evs && evs.length ? ' · ' + evs.length : ''}</span>
         {evs === null ? <p className="rk-det-c">Cargando…</p> : !evs.length ? <p className="rk-det-c">Todavía no jugó en la temporada.</p> : (

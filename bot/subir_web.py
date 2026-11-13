@@ -1320,6 +1320,28 @@ _DIM = {'E': ['⚡', 'Eficiencia', 'puntos por evento'],
         # cuántos servidores competís»: «asegurate que eso de la diversidad
         # del rework aplique». Aplicaba; el que estaba mal era este texto.
         'V': ['🌍', 'Diversidad', 'dónde sumas tus puntos: repartidos entre servidores vale más']}
+
+
+def _como_subir(k, anclas):
+    """💪 CÓMO SE SUBE CADA DIMENSIÓN, en palabras (Dlx, 13/11/2026: «a veces la gente no sabe cómo mejorar la
+    eficiencia, consistencia, dominancia, racha o diversidad… crea un botón ahí, cómo mejorar mis fortalezas»). La vara
+    de cada una sale de `competitivo.ANCLAS`, que es la que las lleva a 0-100: si se mueve, el texto la sigue solo."""
+    a = anclas or {}
+    pct = lambda x: int(round(float(x) * 100))           # noqa: E731
+    return {
+        'E': 'Son tus puntos promedio por evento. Sube llegando más lejos en cada uno: el puesto pesa, y un evento con '
+             'más gente da más puntos. Llega a 100 con %s pts por evento.' % '{:,}'.format(int(a.get('E') or 0)).replace(',', '.'),
+        'C': 'Es qué tan seguido llegas a semifinal o más. Sube llegando a semis evento tras evento; cada vez que caes '
+             'antes, baja. Llega a 100 si llegas a semis en el %d %% de tus eventos.' % pct(a.get('C') or 0),
+        'Dm': 'Son los eventos que ganas sobre los que juegas. Sube ganando eventos. Llega a 100 si ganas el %d %% de '
+              'los que juegas.' % pct(a.get('Dm') or 0),
+        'T': 'Es tu mejor racha de eventos seguidos llegando a semifinal o más. Sube encadenando semis; caer antes la '
+             'corta. Llega a 100 con %d seguidos.' % int(a.get('T') or 0),
+        'V': 'Es cómo se reparten tus puntos entre servidores. Sube sumando puntos en varios servidores, no sólo en uno: '
+             'si todo sale de un mismo servidor, da 0.',
+    }.get(k, '')
+
+
 #: el orden de los componentes del OVR, como los recibe `sheet/ovr.calcular()`
 _OVR_COMP = ['Puntos', 'Eventos', 'Win%', 'Podios', 'Most Wanted']
 #: cómo se escribe cada puesto de `Config` en la página
@@ -1341,7 +1363,7 @@ def _guia():
         import ovr as _O
         import competitivo as _C
         out['ovr'] = [[n, int(round(w * 100))] for n, w in zip(_OVR_COMP, _O.PESOS)]
-        out['score'] = [_DIM[k] + [int(round(w * 100))] for k, w in _C.PESOS if k in _DIM]
+        out['score'] = [_DIM[k] + [int(round(w * 100)), _como_subir(k, _C.ANCLAS)] for k, w in _C.PESOS if k in _DIM]
         out['conf'] = [[1, int(round(_C.confianza(1) * 100))],
                        [_C.CONF_DESDE[0], int(round(_C.CONF_DESDE[1] * 100))],
                        [_C.CONF_HASTA[0], int(round(_C.CONF_HASTA[1] * 100))]]

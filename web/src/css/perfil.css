@@ -581,3 +581,6 @@
 @media (max-width: 520px){.iv9-grid,.iv9-grid.cartas{grid-template-columns:minmax(0,1fr)}.iv9-pest button{flex:1;justify-content:center;padding:10px 8px}}
 @media (hover: hover) and (pointer: fine){.iv9-seg button:not(.on):hover,.iv9-pest button:not(.on):hover,.iv9-filtros button:not(.on):hover{color:var(--esc-tinta)}
   .iv9-f:not(.on):hover,.iv9-puesto button:not(.on):hover{border-color:#6A6A72}}
+
+/* 💪 cómo se sube la de «A TRABAJAR» (13/11/2026) */
+.pf-fz-tip{margin:0 0 12px;font-size:13.5px;line-height:1.45;opacity:.85}

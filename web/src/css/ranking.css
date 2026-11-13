@@ -303,3 +303,15 @@ dialog.pn-pop.rk-pq-pop{--pc:#29B298;width:min(560px,calc(100vw - 32px));max-hei
 .rk-pq-sv b{font:800 13px/1.1 Archivo,sans-serif}
 .rk-pq-sv small{font:700 11px/1.1 "Barlow Condensed",sans-serif;letter-spacing:.05em;color:#5FD3BC}
 .rk-pq-soc{justify-self:start;margin-top:2px}
+/* 💪 sus fortalezas y, al costado, tú contra él (13/11/2026); en el celular, una abajo de la otra */
+.rk-dims-par.con-vs{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:20px;align-items:start}
+.rk-dims-par.con-vs .rk-vs{margin-top:0}
+@media (max-width:760px){.rk-dims-par.con-vs{grid-template-columns:minmax(0,1fr)}}
+.rk-dims-como{margin-top:10px;padding:8px 12px;border:2px solid var(--linea);background:none;color:var(--tinta);font:800 12px/1 "Barlow Condensed",sans-serif;letter-spacing:.06em;text-transform:uppercase;cursor:pointer}
+@media (hover:hover) and (pointer:fine){.rk-dims-como:hover{border-color:var(--tinta)}}
+.rk-dims-tips{margin-top:10px;padding:12px 14px;border-left:3px solid var(--linea);font-size:13.5px;line-height:1.45}
+.rk-dims-tips dl{display:grid;gap:10px;margin:0}
+.rk-dims-tips dt{font-weight:800}
+.rk-dims-tips dt small{margin-left:8px;font-weight:600;opacity:.65}
+.rk-dims-tips dd{margin:2px 0 0}
+.rk-dims-tips p{margin:10px 0 0;opacity:.8}
