@@ -4,7 +4,7 @@
   "raw": "Oasis",
   "cc": "cl",
   "sv": "FFA",
-  "crew": "",
+  "crew": "Desierto de Atacama",
   "discord_id": "979878316846768139",
   "verificado": true,
   "ev": 41,
@@ -37,6 +37,7 @@
   "arc_pais": 100,
   "pos_sv": "1/169",
   "arc_sv": 100,
+  "pos_crew": "",
   "tg_c": {
    "bestia": 4,
    "clasico": 4,

@@ -1576,5 +1576,38 @@
   "sv": "FFA",
   "t_pregunta": "2026-11-13T05:24:15+00:00"
  },
+ "1570644564551671840": {
+  "autor": "1548906948307451906",
+  "canal": "1558611505040064607",
+  "canal_pregunta": "",
+  "cuando": "2026-11-13T03:40:45.354000+00:00",
+  "donde": "",
+  "evento": "COMPETENCIA 1 VS 1",
+  "fecha": "12/11",
+  "llave": "1570644564551671840",
+  "pregunta": "",
+  "preguntada": "2026-11-13 1:54 AM ET",
+  "preguntas": [
+   {
+    "lados": [
+     "Calíz 🇲🇽",
+     "Tokio🇭🇷"
+    ],
+    "ronda": "FINAL"
+   },
+   {
+    "lados": [
+     "SHADOW 🇨🇴",
+     "Vilca🇵🇪"
+    ],
+    "ronda": "CUARTOS"
+   }
+  ],
+  "respondidas": {},
+  "sin_permiso": true,
+  "staff_probado": true,
+  "sv": "LKR",
+  "t_pregunta": ""
+ },
  "_leeme": "Las llaves que el ciclo no entendió y se las preguntó a quien las publicó, con botones o un menú (bot/finales.py). Una vez por llave, por su ID: así nunca se pregunta dos veces. Dlx, 12/10/2026."
 }
