@@ -1,9 +1,9 @@
 {
  "v": 1,
- "cuando": "2026-11-13T22:50:54Z",
+ "cuando": "2026-11-13T23:54:00Z",
  "trabajo": "dibujar",
  "codigo": 0,
- "dur_s": 1103.5,
+ "dur_s": 909.6,
  "pasos": [
   {
    "n": "2f",
@@ -15,67 +15,67 @@
    "n": "2f2",
    "que": "los TAGs elegidos",
    "ok": true,
-   "s": 0.8
+   "s": 0.7
   },
   {
    "n": "3",
    "que": "qué cambió",
    "ok": true,
-   "s": 10.3
+   "s": 9.6
   },
   {
    "n": "4",
    "que": "las caras, desde R2",
    "ok": true,
-   "s": 23.5
+   "s": 32.7
   },
   {
    "n": "5",
-   "que": "tanda 1 de 7 · 40 persona(s)",
+   "que": "tanda 1 de 5 · 40 persona(s)",
    "ok": true,
-   "s": 1004.0
+   "s": 802.9
   },
   {
    "n": "5b",
    "que": "las Bloqueadas",
    "ok": true,
-   "s": 5.7
+   "s": 9.9
   },
   {
    "n": "6",
    "que": "refrescar KV",
    "ok": true,
-   "s": 57.9
+   "s": 52.5
   }
  ],
  "fallas": [],
  "ultimo_evento": {
-  "n": "629",
-  "nombre": "PANDILLAS DE RAP VOL.1",
+  "n": "630",
+  "nombre": "ELITE FESTIVAL VOL. 1",
   "sv": "ACAD",
   "dia": "2026-11-13"
  },
  "cuotas": {
   "kv": {
-   "write": 728,
-   "read": 33339
+   "write": 767,
+   "read": 35457
   },
   "objeto": {
-   "leidas": 3008153,
-   "escritas": 55906,
-   "pedidos": 18819
+   "leidas": 3162644,
+   "escritas": 60415,
+   "pedidos": 19522
   },
   "worker": {
-   "pedidos": 19148,
+   "pedidos": 18367,
    "errores": 0,
-   "sub": 20743,
+   "sub": 19816,
    "cortados": 0,
    "p50_ms": 1.1,
    "p99_ms": 14.47,
    "cpu": {
-    "total": 39844,
-    "objeto_10": 2400,
-    "worker_10": 544
+    "total": 38115,
+    "objeto_10": 2340,
+    "worker_10": 533
    }
   },
   "r2": {
