@@ -36,11 +36,13 @@ export const GRUPOS = [
   ['Pase rapero', '#/pase'],
   ['Publicaciones', '#/publicaciones'],
   ['Comunidad', '', [['Crews', '#/crews', 'Arma la tuya o súmate a una', 'crews'], ['Tarjetas', '#/tarjetas', 'Las de cada rapero', 'tarjetas'],
-    ['Salón de la fama', '#/salon', 'Los que ya ganaron', 'salon'], ['Socios', '#/socios', 'Los servidores de la Liga', 'socios'],
-    ['Guía', '#/guia', 'Cómo funciona todo', 'guia']]],
+    ['Salón de la fama', '#/salon', 'Los que ya ganaron', 'salon'], ['Socios', '#/socios', 'Los servidores de la Liga', 'socios']]],
+  // 📖 la Guía, suelta al lado de Comunidad (Dlx, 12/11/2026: «agreguemos la opción llamada Guía al costado de
+  // Comunidad»): adentro de la lista no se encontraba
+  ['Guía', '#/guia'],
 ];
 // las páginas de cada grupo, para marcarlo cuando estás adentro
-const PAGINAS_DE = { Ranking: ['ranking', 'duelos'], Eventos: ['eventos', 'competencias', 'ligas', 'avisos'], Comunidad: ['crews', 'crew', 'tarjetas', 'salon', 'socios', 'mundo', 'guia'] };
+const PAGINAS_DE = { Ranking: ['ranking', 'duelos'], Eventos: ['eventos', 'competencias', 'ligas', 'avisos'], Comunidad: ['crews', 'crew', 'tarjetas', 'salon', 'socios', 'mundo'] };
 
 function Grupo({ n, items, on, pagina }) {
   const [abierto, setAbierto] = useState(false);

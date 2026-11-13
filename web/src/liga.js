@@ -481,8 +481,27 @@ export class Liga {
       .map((a) => ({ nombre: a.n, sv: a.sv, cuando: new Date(a.ini).toISOString(), cupos: a.cup || '', link: a.url || '',
         modalidad: a.mod || '', premios: a.pre || '', vigia: 1 }));
     this.proxV = V;
-    this.proxCache = extra.length ? base.concat(extra) : base;
+    this.proxCache = this.sinRepetir(extra.length ? base.concat(extra) : base, idDe);
     return this.proxCache;
+  }
+  // 🔁 UN EVENTO ANUNCIADO DOS VECES ES UNO (Dlx, 12/11/2026, con una captura del Inicio: tres círculos «EN VIVO» de FDS
+  // con el mismo «RAP SIN G…»: «arreglemos ese tipo de errores»). FDS publicó «RAP SIN GROSERIAS» en dos mensajes con 37
+  // segundos de diferencia, y cada anuncio era un evento: en vivo, en «Hoy», en las historias y en el escenario. Mismo
+  // servidor, mismo nombre y a menos de 2 h es el mismo evento —la regla que ya usa el cruce de las llaves
+  // (`MISMO_EVENTO_H` de bot/subir_web.py)—. Se queda el que no está cancelado y, entre los vivos, el anuncio más
+  // nuevo (el número del mensaje de Discord crece con el tiempo): si el organizador lo corrigió, vale lo corregido
+  sinRepetir(evs, idDe) {
+    const H2 = 2 * 3600000;
+    const grupos = [];
+    evs.forEach((e) => {
+      const n = limpio(e.nombre).toLowerCase();
+      const g = grupos.find((x) => x.sv === e.sv && x.n === n && Math.abs(utc(x.e.cuando) - utc(e.cuando)) < H2);
+      if (!g) { grupos.push({ sv: e.sv, n, e }); return; }
+      const cancA = this.esCancelado(g.e), cancB = this.esCancelado(e);
+      const masNuevo = (idDe(e.link) || '').padStart(22, '0') > (idDe(g.e.link) || '').padStart(22, '0');
+      if ((cancA && !cancB) || (cancA === cancB && masNuevo)) g.e = e;
+    });
+    return grupos.length === evs.length ? evs : grupos.map((g) => g.e);
   }
   vivo() {
     const m = this.d.vivo_min || 90;
