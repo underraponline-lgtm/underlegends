@@ -11,6 +11,15 @@
  ],
  "cambios": [
     {
+        "version": "5.18",
+        "dia": "2026-11-13",
+        "cuando": "2026-11-13T04:23:00-05:00",
+        "titulo": "El Inicio, sin saltos",
+        "items": [
+            "Mientras carga tu racha, su lugar queda guardado: la fila de arriba ya no salta."
+        ]
+    },
+    {
         "version": "5.17",
         "dia": "2026-11-13",
         "cuando": "2026-11-13T04:20:00-05:00",
