@@ -539,7 +539,7 @@ const ICO_TAREA = [['entrar', 'yo'], ['dias', 'reloj'], ['felicitar', 'premio'],
 // eslint-disable-next-line no-unused-vars
 const icoTarea = (id) => (ICO_TAREA.find(([p]) => String(id || '').startsWith(p)) || [0, 'pase'])[1];
 
-export function Lobby({ liga, dc }) {
+export function Lobby({ liga, dc, enc }) {
   const P = usePase(!!dc);
   const R = useRacha(!!dc);
   const saldo = useSaldo(dc);
@@ -548,7 +548,7 @@ export function Lobby({ liga, dc }) {
   return (
     <section className="lobby pn" aria-label="Tu lobby">
       {dc && P && P.listo ? <PopPase P={P} /> : null}
-      <FilaRacha dc={dc} R={R} liga={liga} />
+      <FilaRacha dc={dc} R={R} liga={liga} enc={enc} />
       <ElBoton liga={liga} />
       <Batallas liga={liga} dc={dc} />
       {/* 🧩 EL PANEL, OPCIÓN B (12/11/2026, Dlx): la Tienda arriba a la izquierda, tu liga y Misiones partidos (Misiones, la

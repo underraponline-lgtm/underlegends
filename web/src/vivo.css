@@ -4639,3 +4639,219 @@ dialog.pn-pop.dd-pop{width:min(760px,calc(100vw - 32px));border-color:#9B5CFF}
 @media (max-width: 899.98px){.pn-cr-pos.tier{display:none}.pn-cr-pos strong{font-size:20px}}
 /* 📱 en el celular, dos carteles de Se busca y no tres (Dlx, 12/11/2026): más grandes y sin apretar los nombres */
 @media (max-width: 760px){.pn-mi .pn-carteles{grid-template-columns:repeat(2,minmax(0,1fr))}.pn-mi .pn-cartel:nth-child(n+3){display:none}}
+
+/* ═══ 🪟 LOS POP-UPS DEL PANEL (12/11/2026, Dlx: «haz que los pop ups tengan un mejor diseño… usa 21st»): de 21st salen la
+   entrada corta y la hoja que sube en el celular («Animated Dialog»), la cabecera con color propio, las barras de ranking
+   («Rank Bars»), la lista de misiones con su número y su premio («Achievement List»), el VS de cada batalla y el cartel
+   del Se busca. Sin vidrio, sin blur y sin radios de más de 4 px (las reglas del remake) ═══ */
+dialog.pn-pop{--pc:#E41373;border:1.5px solid color-mix(in srgb,var(--pc) 70%,#000);border-radius:4px;overflow:hidden;
+  box-shadow:0 24px 60px rgba(0,0,0,.65),0 0 0 1px rgba(255,255,255,.04);display:none;flex-direction:column}
+dialog.pn-pop[open]{display:flex;animation:pop-entra .2s cubic-bezier(.2,.8,.2,1)}
+dialog.pn-pop::backdrop{background:rgba(4,5,8,.78)}
+@keyframes pop-entra{from{opacity:0;transform:translateY(10px) scale(.98)}to{opacity:1;transform:none}}
+.app.calma dialog.pn-pop[open]{animation:none}
+@media (prefers-reduced-motion:reduce){dialog.pn-pop[open]{animation:none}}
+dialog.pn-pop.pop-est{--pc:#29B298}
+dialog.pn-pop.pop-mis{--pc:#E0703A}
+dialog.pn-pop.pop-bat{--pc:#E41373}
+dialog.pn-pop.dd-pop{--pc:#9B5CFF}
+/* la cabecera: el ícono en su color, el título con su línea, y cerrar como un botón de verdad (sin la caja rosa al abrir) */
+.pop-cab{display:grid;grid-template-columns:40px minmax(0,1fr) 36px;align-items:center;gap:12px;padding:14px 16px;flex:none;position:relative;
+  border-bottom:1.5px solid #1f2126;background:linear-gradient(100deg,color-mix(in srgb,var(--pc) 22%,transparent),transparent 65%),#0B0C0E}
+.pop-cab::before{content:"";position:absolute;inset:0 0 auto;height:3px;background:var(--pc)}
+.pop-ic{width:40px;height:40px;display:grid;place-items:center;background:color-mix(in srgb,var(--pc) 18%,#000);color:var(--pc);
+  border:1.5px solid color-mix(in srgb,var(--pc) 55%,#000);border-radius:4px}
+.pop-tt{display:grid;gap:3px;min-width:0}
+.pop-tt b{font:900 19px/1 Archivo,sans-serif;text-transform:uppercase;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.pop-tt small{font:600 12px/1.2 Archivo,sans-serif;color:#9a9ca3;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.pop-x{width:36px;height:36px;display:grid;place-items:center;background:#000;border:1.5px solid #2A2C31;color:#F6F6F6;cursor:pointer;border-radius:4px}
+.pop-x:hover{border-color:var(--pc);color:var(--pc)}
+.pop-x:focus{outline:none}
+
+.pn-est-in,.pn-mis-in{flex:1 1 auto;min-height:0;max-height:none}
+dialog.pn-pop{max-height:min(86vh,760px)}
+/* 📊 estadísticas: tres grandes arriba, lo demás abajo, y los rankings como barras */
+.pop-est-h{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:6px}
+.pop-est-h li{display:grid;gap:3px;padding:12px;border:1.5px solid #1d5a4e;min-width:0;
+  background:radial-gradient(120% 120% at 0 0,rgba(41,178,152,.22),transparent 60%),#06120f}
+.pop-est-h span{font:700 11px/1 "Barlow Condensed",sans-serif;letter-spacing:.08em;text-transform:uppercase;color:#4FE0C1}
+.pop-est-h b{font:900 32px/1 Archivo,sans-serif;font-variant-numeric:tabular-nums}
+.pop-est-h small{font:600 11px/1.2 Archivo,sans-serif;color:#c9cbd1}
+.pop-est .pn-est-t b{font-size:19px}
+.pop-rk{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:6px}
+.pop-rk li{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:5px 10px;align-items:baseline;padding:8px 10px;background:#000;
+  border:1.5px solid #2A2C31;border-left:3px solid var(--c,#29B298);min-width:0}
+.pop-rk span{font:700 11px/1 "Barlow Condensed",sans-serif;letter-spacing:.06em;text-transform:uppercase;color:#9a9ca3;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.pop-rk b{font:900 18px/1 Archivo,sans-serif;color:#F6F6F6;font-variant-numeric:tabular-nums}
+.pop-rk i{grid-column:1/-1;height:4px;background:#1f2126;position:relative;display:block}
+.pop-rk u{position:absolute;inset:0 auto 0 0;background:var(--c,#29B298);text-decoration:none}
+.pop-rk small{grid-column:1/-1;font:600 11px/1 Archivo,sans-serif;color:#9a9ca3}
+.pop-rk li.vacio{opacity:.45}
+.pop-est .pn-est-u button{border-left:3px solid #29B298}
+/* 🎯 misiones: el avance de la semana en segmentos, y cada misión con su número (o ✓), su barra y su premio */
+.pop-seg{display:grid;grid-auto-flow:column;grid-auto-columns:minmax(0,1fr);gap:4px}
+.pop-seg i{height:6px;background:#2a1d10}
+.pop-seg i.si{background:#E0703A}
+.pop-mis .pn-mis-l li{grid-template-columns:30px minmax(0,1fr) auto;padding:10px 12px}
+.pop-mis .pn-mis-l i{grid-column:2/-1}
+.pop-n{grid-row:span 2;width:30px;height:30px;display:grid;place-items:center;border:1.5px solid #5b3a1e;color:#E0703A;font:900 13px/1 Archivo,sans-serif;border-radius:4px;align-self:center}
+.pop-mis .pn-mis-l li.hecha .pop-n{background:#29B298;border-color:#29B298;color:#000}
+.pop-mis .pn-mis-l em{background:color-mix(in srgb,#E0703A 16%,#000);border:1px solid #5b3a1e;padding:5px 8px;font-size:14px}
+.pop-mis .pn-mis-l li.hecha em{color:#29B298;border-color:#1d5a4e;background:#06120f}
+/* el Most Wanted como carteles de Se busca, con su sello si ya no anda suelto */
+.pop-mis .pn-mw-l{grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+.pop-mis .pn-mw-l li{grid-template-columns:minmax(0,1fr);justify-items:center;text-align:center;gap:4px;padding:8px 8px 10px;position:relative;
+  box-shadow:0 3px 0 #000;overflow:hidden}
+.pop-mis .pn-mw-l li::before{content:"SE BUSCA";font:900 10px/1 Archivo,sans-serif;letter-spacing:.12em;color:#2b2113}
+.pop-mis .pn-mw-l .pn-mw-c{width:100%;aspect-ratio:1;height:auto;border-radius:0;filter:sepia(.35) contrast(1.05)}
+.pop-mis .pn-mw-l li > span{justify-items:center;width:100%}
+.pop-mis .pn-mw-v{text-align:center;justify-items:center}
+.pop-mis .pn-mw-v strong{font-size:17px}
+.pop-mis .pn-mw-l li.cazado,.pop-mis .pn-mw-l li.escondio,.pop-mis .pn-mw-l li.sobrevivio{opacity:1;filter:none}
+.pop-mis .pn-mw-l li:is(.cazado,.escondio,.sobrevivio)::after{position:absolute;top:44%;left:50%;transform:translate(-50%,-50%) rotate(-14deg);
+  font:900 15px/1 Archivo,sans-serif;letter-spacing:.06em;padding:5px 8px;border:2.5px solid currentColor;background:rgba(233,223,196,.85)}
+.pop-mis .pn-mw-l li.cazado::after{content:"CAZADO";color:#B3261E}
+.pop-mis .pn-mw-l li.escondio::after{content:"SE ESCONDIÓ";color:#5b4a30}
+.pop-mis .pn-mw-l li.sobrevivio::after{content:"SOBREVIVIÓ";color:#1d6b4e}
+/* ⚔️ cada batalla como un VS */
+.pop-bat .pn-pop-l{padding:14px 16px}
+.pop-vs{grid-template-columns:auto minmax(0,1fr) auto !important;gap:12px !important;padding:10px 12px !important;
+  background:linear-gradient(90deg,rgba(41,178,152,.1),transparent 35%,transparent 65%,rgba(228,19,115,.12)),#000 !important}
+.pop-vs-m{display:grid;gap:4px;justify-items:center;text-align:center;min-width:0}
+.pop-vs-m b{font:800 16px/1.1 Archivo,sans-serif;max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.pop-vs-p{width:100%;max-width:220px;height:6px;background:#E41373;display:block;position:relative}
+.pop-vs-p i{position:absolute;inset:0 auto 0 0;background:#29B298}
+.pop-vs .pn-bt-c{width:44px;height:44px;box-shadow:0 0 0 2px #29B298}
+.pop-vs .pn-bt-c.otro{box-shadow:0 0 0 2px #E41373}
+.pop-vs > .pn-x{grid-column:1/-1;justify-self:center}
+/* 📱 en el celular, la hoja que sube desde abajo, con su manija */
+@media (max-width: 600px){
+  dialog.pn-pop,dialog.pn-pop.dd-pop{width:100%;max-width:100%;margin:auto 0 0;max-height:90vh;border-radius:6px 6px 0 0;border-bottom:0}
+  dialog.pn-pop[open]{animation:pop-sube .26s cubic-bezier(.2,.8,.2,1)}
+  @keyframes pop-sube{from{transform:translateY(40px);opacity:.4}to{transform:none;opacity:1}}
+  .pop-cab{padding-top:20px}
+  .pop-cab::after{content:"";position:absolute;top:8px;left:50%;width:40px;height:4px;margin-left:-20px;background:#3a3c42;border-radius:2px}
+  .pop-est-h b{font-size:24px}
+  .pop-est-h li{padding:10px}
+  .pop-rk{grid-template-columns:minmax(0,1fr)}
+  .pop-mis .pn-mw-l{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+.pop-mis .pn-mw-l small{white-space:normal;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;text-align:center}
+.pop-mis .pn-mw-l b{max-width:100%}
+.pop-x:focus-visible{outline:none;border-color:var(--pc);color:var(--pc)}
+
+/* 🃏 la carta un poco más chica en la misma caja, para que se vean enteros el marco y los efectos que cada uno lleva puestos;
+   y los rankings un poco más chicos (Dlx, 12/11/2026: «un poquititito nada más») */
+@container pnyo (min-width:431px) and (max-width:600px){ .pn-abre img{width:min(88%,250px)} }
+@container pnyo (min-width:601px){ .pn-abre img{width:min(80%,254px)} }
+@container pnyo (min-width:431px){
+  .pn-chip strong{font-size:13.5px}
+  .pn-chip-n{font-size:9px}
+  .pn-chip-i,.pn .pn-chip-flag,.pn-chip-sv{width:14px;height:14px}
+  .pn .pn-chip-flag{height:10px}
+  .pn-chip,.pn-der .pn-chip{grid-template-columns:14px auto minmax(0,1fr);padding:3px 0 3px 7px;row-gap:2px}
+  .pn-der .pn-chip{grid-template-columns:minmax(0,1fr) auto 14px;padding:3px 7px 3px 0}
+}
+@container pnyo (max-width:430px){ .pn-abre img{width:min(82%,128px)} }
+@media (max-width: 600px){ .pop-tt b{font-size:16px} }
+
+
+/* ═══ 🏅 EL VS DE ARRIBA, A LO CLASH ROYALE (12/11/2026, Dlx: «que cada lado tenga como su fondo por su parte y 5 grandes
+   logros… debajo de los circulitos»; y después: «en ningún momento te dije que lo hagas más grande», «los logros son
+   demasiado grandes», «mis tarjetas tienen un marco especial, eso debería aparecer ahí en el medio»). Del MISMO ALTO que
+   antes: cada mitad con su fondo (el suyo o su bandera) y los logros en una línea chica debajo de la cara. La carta chica
+   con su marco al lado del VS se probó y se sacó (Dlx: «casi no se ve… es tonto hacer eso») ═══ */
+.pn-vs.con-lg{position:relative;overflow:hidden;isolation:isolate;
+  grid-template-columns:minmax(0,1fr) auto minmax(0,1fr);grid-template-areas:"a m b" "la m lb";
+  column-gap:14px;row-gap:6px;padding:10px 14px}
+.pn-vs.con-lg > .pn-rv:not(.der){grid-area:a}
+.pn-vs.con-lg > .pn-rv.der{grid-area:b}
+.pn-vs.con-lg > .pn-mid{grid-area:m;align-self:center;padding:5px 10px;background:rgba(11,12,14,.82);outline:1.5px solid #1f2126}
+.pn-vs.con-lg > .pn-lg.izq{grid-area:la}
+.pn-vs.con-lg > .pn-lg.der{grid-area:lb}
+.pn-vs-f{position:absolute;top:0;bottom:0;width:50%;z-index:-1;pointer-events:none;background-repeat:no-repeat;background-size:cover;background-position:center}
+.pn-vs-f.izq{left:0;background-image:linear-gradient(90deg,rgba(41,178,152,.30),rgba(11,12,14,.72) 60%,#0B0C0E),var(--bf,none)}
+.pn-vs-f.der{right:0;background-image:linear-gradient(270deg,rgba(228,19,115,.30),rgba(11,12,14,.72) 60%,#0B0C0E),var(--bf,none)}
+.pn-vs-f::after{content:"";position:absolute;inset:0;background:rgba(6,7,9,.38)}
+/* los logros: chicos, en una línea — un hexágono del color del lado, el número y qué es */
+.pn-lg{list-style:none;margin:0;padding:0;display:flex;flex-wrap:nowrap;gap:4px;min-width:0;--lc:var(--verde)}
+.pn-lg.der{--lc:var(--mag);justify-content:flex-end}
+.pn-lg li{display:flex;align-items:center;gap:4px;padding:2px 6px 2px 3px;background:rgba(0,0,0,.6);border:1px solid color-mix(in srgb,var(--lc) 40%,#000)}
+.pn-lg-i{width:15px;height:17px;display:grid;place-items:center;color:#0B0C0E;background:var(--lc);flex:none;
+  clip-path:polygon(50% 0,100% 25%,100% 75%,50% 100%,0 75%,0 25%)}
+.pn-lg b{font:900 12px/1 Archivo,sans-serif;font-variant-numeric:tabular-nums;color:#F6F6F6}
+.pn-lg small{font:700 9px/1 "Barlow Condensed",sans-serif;letter-spacing:.05em;text-transform:uppercase;color:#a9abb2;white-space:nowrap}
+.pn-lg li.cero{opacity:.45}
+.pn-lg li.cero .pn-lg-i{background:#3a3c42;color:#9a9ca3}
+@media (max-width: 1180px){ .pn-lg small{display:none} }
+@media (max-width: 760px){
+  .pn-vs.con-lg{grid-template-columns:auto minmax(0,1fr) minmax(0,1fr) auto;grid-template-areas:"a m m b" "la la lb lb";padding:8px;column-gap:6px;row-gap:6px}
+  .pn-vs.con-lg .pn-rv{gap:3px;max-width:62px}
+  .pn-vs.con-lg .pn-rv small{display:none}
+  .pn-vs.con-lg .pn-rv b{font-size:12px;max-width:62px}
+  .pn-vs.con-lg .pn-vs-c{width:40px;height:40px}
+  .pn-vs.con-lg .pn-mid{gap:2px}
+  .pn-vs.con-lg .pn-mid em{font-size:9px}
+  .pn-vs.con-lg .pn-vs-x{font-size:18px}
+  .pn-vs.con-lg .pn-mid > small{font-size:10px}
+  .pn-vs.con-lg > .pn-mid{padding:4px 6px}
+  .pn-lg{gap:2px}
+  .pn-lg li{padding:1px 3px 1px 1px;gap:2px}
+  .pn-lg-i{width:12px;height:14px}
+  .pn-lg-i .ico{width:8px;height:8px}
+  .pn-lg b{font-size:10px}
+  .pn-vs.con-lg .pn-prob{grid-template-columns:auto minmax(30px,70px) auto;gap:4px}
+  .pn-vs.con-lg .pn-prob b{font-size:11px}
+  .pn-lg.der{justify-content:flex-end}
+}
+/* que los cinco entren en una línea al lado de la carta (a 1375 px el costado mide ~330) */
+.pn-vs.con-lg .pn-lg{gap:3px}
+.pn-vs.con-lg .pn-lg li{padding:2px 5px 2px 2px;gap:3px}
+.pn-vs.con-lg .pn-lg small{letter-spacing:.02em;font-size:8.5px}
+.pn-vs.con-lg .pn-prob{grid-template-columns:auto minmax(60px,140px) auto}
+
+
+/* ═══ 🎁 PREMIO GRATIS: el cuarto cuadro de la fila de arriba (12/11/2026). Dorado y con su número, para que llame la
+   atención; apagado cuando ya hiciste todo lo de hoy ═══ */
+.pn-fila.cuatro{grid-template-columns:repeat(4,minmax(0,1fr))}
+@media (max-width: 1180px){.pn-fila.cuatro{grid-template-columns:repeat(2,minmax(0,1fr))}.pn-fila.cuatro > .pn-dia{grid-column:auto}}
+@media (max-width: 760px){.pn-fila.cuatro{grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+  .pn-fila.cuatro > .pn-racha,.pn-fila.cuatro > .pn-ultc,.pn-fila.cuatro > .pn-camp{grid-column:1/-1}}
+.pn-gratis{display:flex;align-items:center;gap:12px;padding:10px 14px;min-width:0;text-align:left;cursor:pointer;color:#F6F6F6;font:inherit;
+  border:1.5px solid #6b5414;border-left:4px solid #F5C542;
+  background:linear-gradient(100deg,rgba(245,197,66,.20),rgba(245,197,66,.04) 60%),#0B0C0E}
+.pn-gratis:hover,.pn-gratis:focus-visible{border-color:#F5C542;outline:none}
+.pn-gr-ic{position:relative;width:40px;height:40px;flex:none;display:grid;place-items:center;color:#0B0C0E;background:#F5C542;
+  clip-path:polygon(50% 0,100% 25%,100% 75%,50% 100%,0 75%,0 25%);animation:pn-gr-late 2.4s ease-in-out infinite}
+.pn-gr-ic em{position:absolute;right:2px;top:5px;font:900 10px/1 Archivo,sans-serif;font-style:normal;color:#F5C542;background:#0B0C0E;padding:1px 3px}
+@keyframes pn-gr-late{0%,70%,100%{transform:none}80%{transform:scale(1.08) rotate(-4deg)}90%{transform:scale(1.04) rotate(3deg)}}
+.app.calma .pn-gr-ic,.app.tapado .pn-gr-ic{animation:none}
+@media (prefers-reduced-motion:reduce){.pn-gr-ic{animation:none}}
+.pn-gratis .pn-tx{display:grid;gap:2px;min-width:0}
+.pn-gr-et{font:800 10px/1 "Barlow Condensed",sans-serif;font-style:normal;letter-spacing:.1em;text-transform:uppercase;color:#F5C542}
+.pn-gratis b{font:800 14px/1.15 Archivo,sans-serif;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.pn-gratis small{font:500 12px/1.2 Archivo,sans-serif;color:#c9cbd1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.pn-gratis.listo{border-left-color:#6b5414;background:#0B0C0E}
+.pn-gratis.listo .pn-gr-ic{background:#3a3c42;color:#c9cbd1;animation:none}
+dialog.pn-pop.pop-gratis{--pc:#F5C542;width:min(640px,calc(100vw - 32px))}
+.pop-gratis .en-g{display:grid;gap:8px}
+.pop-gr-ok{font:700 11px/1 "Barlow Condensed",sans-serif;letter-spacing:.06em;color:#29B298;margin-left:6px}
+.pop-gr-l{list-style:none;margin:0;padding:0;display:grid;gap:6px}
+.pop-gr-l li{display:grid;grid-template-columns:30px minmax(0,1fr) auto;gap:10px;align-items:center;padding:8px 10px;background:#000;border:1.5px solid #2A2C31}
+.pop-gr-l li .pop-n{grid-row:auto;border-color:#6b5414;color:#F5C542;font-size:11px}
+.pop-gr-l li.si .pop-n{background:#29B298;border-color:#29B298;color:#000}
+.pop-gr-l b{font:700 14px/1.2 Archivo,sans-serif}
+.pop-gr-l small{font:700 11px/1 "Barlow Condensed",sans-serif;letter-spacing:.06em;text-transform:uppercase;color:#29B298}
+.pop-gr-l a.pn-ver{border-color:#F5C542;text-decoration:none}
+.pop-gr-l a.pn-ver:hover{background:#F5C542;color:#000}
+@media (max-width: 760px){.pn-gratis{padding:8px 10px;gap:8px}.pn-gr-ic{width:32px;height:32px}.pn-gratis small{white-space:normal}}
+/* de a cuatro, la racha entra: sin «tu mejor» al costado, los días más finos y el botón más chico */
+.pn-fila.cuatro .pn-rnum{display:none}
+.pn-fila.cuatro .pn-racha{gap:10px;padding:8px 10px}
+.pn-fila.cuatro .pn-racha .pn-tx{min-width:0;flex:1}
+.pn-fila.cuatro .pn-dias{gap:2px}
+.pn-fila.cuatro .pn-dias i{width:11px}
+.pn-fila.cuatro .pn-racha .btn.chico{padding:7px 8px;font-size:12px}
+.pn-fila.cuatro .pn-racha b{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+@media (min-width: 761px){.pn-fila.cuatro .pn-ultc .pn-cal{flex:none}}
+.pn-vs.con-lg .pn-prob b{white-space:nowrap}

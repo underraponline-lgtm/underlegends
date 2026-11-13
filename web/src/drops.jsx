@@ -7,6 +7,7 @@
 // - `AbrirDrops`: la ventana para abrirlos.
 import { useEffect, useRef, useState } from 'react';
 import { num } from './liga.js';
+import { PopCab } from './pop.jsx';
 
 const W = typeof window !== 'undefined' ? window : {};
 const E = { d: null, va: false, oyen: new Set() };
@@ -108,7 +109,7 @@ export function AbrirDrops({ D, cerrar }) {
   const tot = (D.rarezas || []).reduce((s, x) => s + x[1], 0) || 1;
   return (
     <div className="dd-in">
-      <div className="pn-pop-cab"><b>Dragón Drops</b><button type="button" className="btn-ico" aria-label="Cerrar" onClick={cerrar}>×</button></div>
+      <PopCab ico="premio" t="Dragón Drops" sub="Cofres sorpresa de la Liga: se abren a toques" cerrar={cerrar} />
       <div className="dd-cuerpo">
         <div className="dd-escena" style={{ '--c': c }}>
           <div className="dd-rayos" aria-hidden="true" />

@@ -17,6 +17,7 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { limpio, num, siglaDe, srcLogo, utc } from './liga.js';
 import { Bandera, Cara, Ico, accion, nombrePais, useCampana } from './piezas.jsx';
+import { urlFondo, useFondos } from './fondos.js';
 import { Escudo, escudoDe } from './escudo.jsx';
 import { avance, pasePost, usePase } from './pase.js';
 import { cuantosNuevos } from './inv_nuevos.js';
@@ -25,7 +26,9 @@ import { dondeEstoy, faltaTxt, nombreDe, useCompetencias } from './competencias_
 import { eventoDelBoton } from './arriba.jsx';
 import { svElegido, useElegidos } from './elegidos.js';
 import { pedirLigas } from './ligas_datos.js';
-import { BarraDia } from './drops.jsx';
+import { BarraDia, useDrops } from './drops.jsx';
+import { Elegido, X2 } from './encuestas.jsx';
+import { PopCab } from './pop.jsx';
 import { delHilo, useComentarios } from './comentarios.jsx';
 
 const W = typeof window !== 'undefined' ? window : {};
@@ -147,20 +150,80 @@ function Festejo({ R }) {
   );
 }
 
+// 🎁 PREMIO GRATIS (12/11/2026, Dlx: «un 4to cuadro encima de todo al costado de racha y llave… un cuadrado de premio
+// gratis o algo así que llame la atención, donde pedimos simplemente tareas, así como votar encuestas… así borramos la
+// parte de abajo que dice encuestas, tus eventos y divisiones»). Lo que pide son los pasos de la barra del día de los
+// Dragón Drops (`PASOS_QUE` de bot/avisos.js) que se hacen en un toque: votar (las encuestas se votan ADENTRO del pop-up,
+// las mismas `X2` y `Elegido` de Publicaciones), felicitar, comentar, una promo y una Tarea del Pase. Jugar un evento no:
+// no es «simplemente». El premio es de verdad: cada paso suma a la barra, y en el 1, el 3 y el 6 sale un drop
+const GRATIS = ['voto', 'fel', 'cm', 'promo', 'tarea'];
+const IR_GRATIS = { fel: '#/publicaciones', cm: '#/publicaciones', promo: '#/publicaciones', tarea: '#/pase' };
+function PremioGratis({ liga, enc, dc }) {
+  const D = useDrops(dc);
+  const dlg = useRef(null);
+  if (!dc) return null;
+  const x2 = liga.encuesta('x2');
+  const el = liga.encuesta('elegido');
+  const abiertas = [x2, el].filter(Boolean);
+  const sinVotar = enc ? abiertas.filter((E) => !enc.mio[E.id]) : [];
+  const hechos = (D && D.dia && D.dia.hechos) || [];
+  const que = (D && D.que) || {};
+  const faltan = GRATIS.filter((k) => que[k] && !hechos.includes(k));
+  const x = x2 ? String(x2.x || 2).replace('.', ',') : '';
+  const tit = sinVotar.length && !hechos.includes('voto') ? (sinVotar[0] === x2 ? 'Vota quién se lleva el ×' + x : 'Vota a El Elegido')
+    : faltan.length ? que[faltan[0]] : D ? 'Hiciste lo de hoy' : 'Vota y suma';
+  const prox = D ? (D.dia.drops || [1, 3, 6]).find((m) => m > D.dia.pasos) : null;
+  const sub = !D ? 'Suma a tu Dragón Drop de hoy'
+    : prox ? (prox - D.dia.pasos === 1 ? 'Uno más y te llevas un Dragón Drop' : 'Te faltan ' + (prox - D.dia.pasos) + ' para un Dragón Drop')
+      : 'Completaste la barra de hoy';
+  const n = faltan.length;
+  const cerrar = () => dlg.current && dlg.current.close();
+  return (
+    <>
+      <button type="button" id="encuestas" className={'pn-gratis' + (n ? '' : ' listo')} onClick={() => dlg.current && dlg.current.showModal()}
+        aria-label={'Premio gratis: ' + tit + '. ' + sub}>
+        <span className="pn-gr-ic" aria-hidden="true"><Ico n="premio" t={22} />{n ? <em>{n}</em> : null}</span>
+        <span className="pn-tx"><i className="pn-gr-et">Premio gratis</i><b>{tit}</b><small>{sub}</small></span>
+      </button>
+      <dialog className="pn-pop pop-gratis" ref={dlg} aria-label="Premio gratis" onClick={(e) => { if (e.target === dlg.current) cerrar(); }}>
+        <PopCab ico="premio" t="Premio gratis" sub={D ? 'Hoy: ' + D.dia.pasos + ' de ' + D.dia.de + ' · drop en el paso 1, el 3 y el 6' : 'Cosas rápidas que suman a tu Dragón Drop'} cerrar={cerrar} />
+        <div className="pn-est-in">
+          {abiertas.length && enc ? <>
+            <h5>Vota {hechos.includes('voto') ? <span className="pop-gr-ok">✓ hecho hoy</span> : null}</h5>
+            <div className={'en-g' + (x2 && el ? ' dos' : '')}>
+              {x2 ? <X2 liga={liga} enc={enc} E={x2} corta /> : null}
+              {el ? <Elegido liga={liga} enc={enc} E={el} corta /> : null}
+            </div>
+          </> : null}
+          <h5>Más cosas rápidas</h5>
+          <ul className="pop-gr-l">{GRATIS.filter((k) => que[k] && (k !== 'voto' || !abiertas.length)).map((k) => {
+            const si = hechos.includes(k);
+            return (
+              <li key={k} className={si ? 'si' : ''}><span className="pop-n" aria-hidden="true">{si ? '✓' : '+1'}</span><b>{que[k]}</b>
+                {si ? <small>hecho</small> : IR_GRATIS[k] ? <a className="pn-ver" href={IR_GRATIS[k]} onClick={cerrar}>Ir</a> : null}</li>
+            );
+          })}</ul>
+        </div>
+      </dialog>
+    </>
+  );
+}
+
 /** La fila de arriba: la racha y la campana, o la racha sola a lo ancho; sin cuenta, la invitación */
 // 🐉 LA FILA DE ARRIBA, DE A TRES (12/11/2026, la opción A de la maqueta; Dlx: «uno que activa la campana… sería para todos
 // hasta que la activen; si la activan, aparecería en vez el último evento»): la racha, la campana o tu último evento, y la
 // barra del día de los Dragón Drops. Sin cuenta, entrar y la campana
-export function FilaRacha({ dc, R, liga }) {
+export function FilaRacha({ dc, R, liga, enc }) {
   const c = useCampana();
   const camp = campanaPide(c, dc);
   const ult = dc && !camp && liga && liga.yo ? ultimoDe(liga, liga.yo) : null;
   // ⚠️ la racha no se dibuja hasta que llega (`R`): contarla sin estar dejaba una columna vacía
-  const n = dc ? (R ? 1 : 0) + (camp || ult ? 1 : 0) + 1 : 1 + (camp ? 1 : 0);
+  // 🎁 con cuenta va también el Premio gratis: de a cuatro
+  const n = dc ? (R ? 1 : 0) + (camp || ult ? 1 : 0) + 2 : 1 + (camp ? 1 : 0);
   return (
     <>
       <Festejo R={R} />
-      <div className={'pn-fila' + (n === 3 ? ' tres' : n === 1 ? ' sola' : ' dos')}>
+      <div className={'pn-fila' + (n === 4 ? ' tres cuatro' : n === 3 ? ' tres' : n === 1 ? ' sola' : ' dos')}>
         {dc ? <RachaCorta R={R} sola={n === 1} /> : (
           <section className="pn-racha invita">
             <span className="pn-tx"><b>¿Juegas en la Liga?</b><small>Entra con Discord: tu racha, tus tarjetas y tu Pase</small></span>
@@ -169,6 +232,7 @@ export function FilaRacha({ dc, R, liga }) {
         )}
         {camp ? <CampanaCorta dc={dc} /> : ult ? <UltCorto liga={liga} u={ult} /> : null}
         {dc ? <BarraDia dc={dc} /> : null}
+        {dc ? <PremioGratis liga={liga} enc={enc} dc={dc} /> : null}
       </div>
     </>
   );
@@ -256,6 +320,38 @@ function duelos(f) {
   const du = f && f.du;
   return du && du[1] ? <><span className="pn-largo">Duelos </span>{du[0]}/{du[1]} · {Math.round((du[0] / du[1]) * 100)} %</> : 'Sin duelos todavía';
 }
+// 🏅 LOS 5 GRANDES LOGROS DE CADA LADO DEL VS (12/11/2026, Dlx: «que cada lado tenga su fondo por su parte y 5 grandes logros,
+// así como lo hace Clash Royale»). Salen de la fila de la Temporada de cada uno, los dos con las mismas cinco, en el mismo
+// orden, así se comparan de un vistazo; un cero se ve apagado y no se esconde (si se escondiera, los dos lados no
+// quedarían parejos)
+function logrosDe(f) {
+  if (!f) return null;
+  const du = Array.isArray(f.du) ? f.du : null;
+  const rch = Array.isArray(f.rch) ? f.rch : [0, 0];
+  return [
+    ['copa', f.oro || 0, 'Títulos'], ['premio', f.pod || 0, 'Podios'], ['fuego', rch[1] || 0, 'Racha'],
+    ['mira', f.caz || 0, 'Cazas'], ['cruce', du ? du[0] : 0, 'Duelos'],
+  ];
+}
+// (Dlx, el mismo día: «los logros son demasiado grandes» y «en ningún momento te dije que lo hagas más grande»: chicos,
+// en una sola línea, y el VS del mismo alto que antes)
+const TIT_LG = { Títulos: 'Títulos', Podios: 'Podios', Racha: 'Mejor racha', Cazas: 'Cazas', Duelos: 'Duelos ganados' };
+function Logros({ f, cls }) {
+  const L = logrosDe(f);
+  if (!L) return null;
+  return (
+    <ul className={'pn-lg ' + cls} aria-label="Sus logros">
+      {L.map(([i, v, t]) => <li key={t} className={v ? '' : 'cero'} title={TIT_LG[t] + ': ' + num(v)}><span className="pn-lg-i"><Ico n={i} t={11} /></span><b>{num(v)}</b><small>{t}</small></li>)}
+    </ul>
+  );
+}
+// 🖼️ el fondo de cada lado: el SUYO si eligió mostrarlo en su perfil (Dlx: «en este caso me gustaría que aparezca ahí mi
+// fondo»); si no, su bandera, grande y apagada («eso del fondo de tu bandera está genial… por default»)
+const fondoLado = (f, fo) => {
+  const propio = fo && fo[1] ? urlFondo(fo[0]) : '';
+  if (propio) return { '--bf': propio };
+  return f && f.cc ? { '--bf': 'url("/banderas/g/' + f.cc + '.webp")' } : {};
+};
 // las horas para una batalla libre: las cuatro próximas de 6 y 9 PM del este
 function horasLibres() {
   const out = [];
@@ -282,6 +378,7 @@ export function Batallas({ liga, dc }) {
   const [cara, setCara] = useState('');
   const dlg = useRef(null);
   const giro = useRef(null);
+  const fondos = useFondos();
   const T = useMemo(() => (liga.d.tabla || []).filter((f) => f.pos).sort((a, b) => a.pos - b.pos), [liga]);
   const d = useMemo(() => (C && yo ? dondeEstoy(C, yo.k) : null), [C, yo]);
   const pend = (d && d.pend) || [];
@@ -348,13 +445,24 @@ export function Batallas({ liga, dc }) {
   if (!p0) return <SinBatallas liga={liga} yo={yo} yoF={yoF} T={T} retar={(f) => { setRival(f); setFase('hora'); }} />;
   const pct = Math.round((p0.p || 0) * 100);
   const nom = (x) => limpio((x.f && x.f.n) || x.n || x.k);
-  const fila = (x) => (
-    <li key={x.et + x.k}><Cara liga={liga} k={x.k} nombre={nom(x)} cls="pn-bt-c" />
-      <span><em className={x.libre ? 'libre' : ''}>{x.et}</em><b>vs {nom(x)}</b><small>{x.cuando}{x.p != null ? ' · ' + Math.round(x.p * 100) + ' % a favor' : ''}</small></span>
-      {x.libre ? <button type="button" className="pn-x" onClick={cancelar}>cancelar</button> : null}</li>
-  );
+  const FO = fondos || {};
+  // ⚔️ cada una como un VS (12/11/2026, los pop-ups nuevos): tu cara, la barra de a quién le dan más chance, la del rival
+  const fila = (x) => {
+    const pc = x.p != null ? Math.round(x.p * 100) : null;
+    return (
+      <li key={x.et + x.k} className="pop-vs">
+        <Cara liga={liga} k={yo.k} nombre={yo.n} cls="pn-bt-c" />
+        <span className="pop-vs-m"><em className={x.libre ? 'libre' : ''}>{x.et}</em><b>vs {nom(x)}</b>
+          {pc != null ? <span className="pop-vs-p" aria-hidden="true"><i style={{ width: pc + '%' }} /></span> : null}
+          <small>{x.cuando}{pc != null ? ' · ' + pc + ' % a favor' : ''}</small></span>
+        <Cara liga={liga} k={x.k} nombre={nom(x)} cls="pn-bt-c otro" />
+        {x.libre ? <button type="button" className="pn-x" onClick={cancelar}>cancelar</button> : null}
+      </li>
+    );
+  };
   return (
-    <section className="pn-vs">
+    <section className="pn-vs con-lg">
+      <span className="pn-vs-f izq" aria-hidden="true" style={fondoLado(yoF, FO[yo.k])} /><span className="pn-vs-f der" aria-hidden="true" style={fondoLado(p0.f, FO[p0.k])} />
       <div className="pn-rv"><Cara liga={liga} k={yo.k} nombre={yo.n} cls="pn-vs-c" />
         <span><b>{limpio(yo.n)}</b><small><span className="pn-pos">#{yoF.pos || '—'} · </span>OVR {yoF.ovr || '—'}</small><small className="pn-du">{duelos(yoF)}</small></span></div>
       <div className="pn-mid">
@@ -370,8 +478,10 @@ export function Batallas({ liga, dc }) {
       </div>
       <div className="pn-rv der"><span><b>{nom(p0)}</b><small>{p0.f ? <><span className="pn-pos">#{p0.f.pos || '—'} · </span>OVR {p0.f.ovr || '—'}</> : ''}</small>
         <small className="pn-du">{duelos(p0.f)}</small></span><Cara liga={liga} k={p0.k} nombre={nom(p0)} cls="pn-vs-c otro" /></div>
-      <dialog className="pn-pop" ref={dlg} aria-label="Tus próximas batallas" onClick={(e) => { if (e.target === dlg.current) dlg.current.close(); }}>
-        <div className="pn-pop-cab"><b>Tus próximas batallas</b><button type="button" className="btn-ico" aria-label="Cerrar" onClick={() => dlg.current.close()}><Ico n="cerrar" t={18} /></button></div>
+      <Logros f={yoF} cls="izq" />
+      <Logros f={p0.f} cls="der" />
+      <dialog className="pn-pop pop-bat" ref={dlg} aria-label="Tus próximas batallas" onClick={(e) => { if (e.target === dlg.current) dlg.current.close(); }}>
+        <PopCab ico="cruce" t="Tus próximas batallas" sub={todas.length === 1 ? '1 por jugar' : todas.length + ' por jugar'} cerrar={() => dlg.current.close()} />
         <ul className="pn-pop-l">{todas.map(fila)}</ul>
       </dialog>
     </section>
@@ -579,8 +689,8 @@ export function Vestuario({ liga, dc }) {
           <button type="button" className="pn-bat" onClick={() => W.dispatchEvent(new CustomEvent('lg:batallar'))}><Ico n="cruce" t={22} /><b>Batallar</b><small>Busca rival</small><em>simulado</em></button>
         </nav>
       </div>
-      <dialog className="pn-pop pn-est" ref={est} aria-label="Tus estadísticas" onClick={(e) => { if (e.target === est.current) est.current.close(); }}>
-        <div className="pn-pop-cab"><b>Tus estadísticas</b><button type="button" className="btn-ico" aria-label="Cerrar" onClick={() => est.current.close()}><Ico n="cerrar" t={18} /></button></div>
+      <dialog className="pn-pop pn-est pop-est" ref={est} aria-label="Tus estadísticas" onClick={(e) => { if (e.target === est.current) est.current.close(); }}>
+        <PopCab ico="ranking" t="Tus estadísticas" sub={(liga.temp || 'T1') + (yo.pos ? ' · #' + yo.pos + ' de la Temporada' : ' · tus números')} cerrar={() => est.current.close()} />
         <Estadisticas liga={liga} yo={yo} rks={rks} />
       </dialog>
     </div>
@@ -701,18 +811,33 @@ export function PnMiLiga({ liga }) {
 function Estadisticas({ liga, yo, rks }) {
   const du = Array.isArray(yo.du) ? yo.du : null;
   const rch = Array.isArray(yo.rch) ? yo.rch : [0, 0];
+  // 📊 arriba lo que más se mira, grande (OVR, puntos, Win %); abajo lo demás, y los rankings como barras de cuán arriba vas
+  const heroes = [
+    ['OVR', yo.ovr || '—', 'Temporada'], ['Puntos', num(yo.pts || 0), yo.pos ? '#' + yo.pos + ' de la Temporada' : ''],
+    ['Win %', yo.wr || '—', du ? du[0] + ' de ' + du[1] + ' duelos' : 'sin duelos'],
+  ];
   const tiles = [
-    ['OVR', yo.ovr || '—', 'Temporada'], ['Puntos', num(yo.pts || 0), yo.pos ? '#' + yo.pos : ''],
     ['Eventos', num(yo.ev || 0), ''], ['Podios', num(yo.pod || 0), yo.oro ? yo.oro + ' de oro' : ''],
-    ['Win %', yo.wr || '—', du ? du[0] + ' de ' + du[1] + ' duelos' : ''], ['Racha', rch[0] || 0, 'la mejor: ' + (rch[1] || 0)],
+    ['Racha', rch[0] || 0, 'la mejor: ' + (rch[1] || 0)],
     ['Score', yo.sc ? String(yo.sc) : '—', yo.rg ? 'rango ' + yo.rg : 'sin rango'], ['Cazas', num(yo.caz || 0), yo.czd ? 'te cazaron ' + yo.czd : ''],
     ['Misiones', num(yo.mis || 0), 'puntos'],
   ];
   const ult = (liga.semanaDe(yo.k) || []).slice(0, 5);
   return (
     <div className="pn-est-in">
+      <ul className="pop-est-h">{heroes.map(([t, v, s]) => <li key={t}><span>{t}</span><b>{v}</b>{s ? <small>{s}</small> : null}</li>)}</ul>
       <ul className="pn-est-t">{tiles.map(([t, v, s]) => <li key={t}><span>{t}</span><b>{v}</b>{s ? <small>{s}</small> : null}</li>)}</ul>
-      <ul className="pn-est-r">{rks.map((x) => <li key={x[0]}><span>{x[4]}</span><b>{x[1] ? '#' + x[1] : '—'}</b>{x[1] && x[2] ? <small>de {num(x[2])}</small> : null}</li>)}</ul>
+      <h5>Tus rankings</h5>
+      <ul className="pop-rk">{rks.map((x) => {
+        const top = x[1] && x[2] ? Math.max(4, Math.round(100 * (1 - (x[1] - 1) / x[2]))) : 0;
+        return (
+          <li key={x[0]} className={x[1] ? '' : 'vacio'} style={{ '--c': COLOR_RK[x[0]] }}>
+            <span>{x[4]}</span><b>{x[1] ? '#' + x[1] : '—'}</b>
+            <i aria-hidden="true"><u style={{ width: top + '%' }} /></i>
+            <small>{x[1] && x[2] ? 'de ' + num(x[2]) : 'sin puesto'}</small>
+          </li>
+        );
+      })}</ul>
       {ult.length ? (
         <><h5>Tus últimos eventos</h5>
           <ul className="pn-est-u">{ult.map(([ll, r]) => (
@@ -840,15 +965,18 @@ export function PnMisiones({ liga, chica = false }) {
   const ESTADO = { suelto: 'suelto', cazado: 'cazado', escondio: 'se escondió', sobrevivio: 'sobrevivió' };
   return (
     <>
-    <dialog className="pn-pop pn-mis-pop" ref={dlg} aria-label="Misiones y Most Wanted" onClick={(e) => { if (e.target === dlg.current) dlg.current.close(); }}>
-      <div className="pn-pop-cab"><b>Misiones y Most Wanted</b><button type="button" className="btn-ico" aria-label="Cerrar" onClick={() => dlg.current.close()}><Ico n="cerrar" t={18} /></button></div>
+    <dialog className="pn-pop pn-mis-pop pop-mis" ref={dlg} aria-label="Misiones y Most Wanted" onClick={(e) => { if (e.target === dlg.current) dlg.current.close(); }}>
+      <PopCab ico="mira" t="Misiones y Most Wanted" sub={(lista.length ? hechas + ' de ' + lista.length + ' misiones' : '') + (lista.length && todos.length ? ' · ' : '') + (todos.length ? nSueltos + (nSueltos === 1 ? ' suelto' : ' sueltos') : '')}
+        cerrar={() => dlg.current.close()} />
       <div className="pn-mis-in">
         {lista.length ? (
           <section><h5>Las misiones de la semana{M.bono ? <span className="pn-bono">+{num(M.bono)} si haces todas</span> : null}</h5>
+            <span className="pop-seg" aria-hidden="true">{lista.map((x, i) => <i key={x.id} className={i < hechas ? 'si' : ''} />)}</span>
             <ul className="pn-mis-l">{lista.map((x, i) => {
               const v = Math.min(x.m, prog[i] || 0);
               return (
                 <li key={x.id} className={v >= x.m ? 'hecha' : ''}>
+                  <span className="pop-n" aria-hidden="true">{v >= x.m ? '✓' : i + 1}</span>
                   <span><b>{x.t}</b><small>{v >= x.m ? '✓ hecha' : v + ' de ' + x.m}</small></span>
                   <em>+{num(x.p)}</em>
                   <i aria-hidden="true"><u style={{ width: Math.round((100 * v) / Math.max(1, x.m)) + '%' }} /></i>

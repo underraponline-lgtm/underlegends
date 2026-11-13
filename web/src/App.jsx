@@ -11,7 +11,6 @@ import { AvisoPromo, nombrePais } from './piezas.jsx';
 import { Cabecera, Hero, Historias, Instalar, IrA, MENU, Tira, gruposHistorias, ordenHistorias } from './arriba.jsx';
 import { LosQueMandan, Noticias } from './medio.jsx';
 import { Menu, Merch, Pie, Subir, Tabbar, Visor } from './abajo.jsx';
-import { Encuestas } from './encuestas.jsx';
 import { Lobby } from './lobby.jsx';
 // (SemanaComp, de semana_comp.jsx, ya no va en el Inicio: la reemplaza PnSemana del panel)
 import { MarcoSolo } from './marco_solo.jsx';
@@ -784,7 +783,7 @@ export default function App() {
             de seis bloques: «enfoquémonos en cambiar, mejorar o mover; remover, al último de la lista»): volvieron los
             cinco, Se busca subió (le gusta en el Inicio) y Encuestas se achicó. Qué se toca acá lo cuenta `TOQUES` */}
         <Aislada n="IrA"><IrA raiz={raiz} /></Aislada>
-        <Aislada n="Lobby"><Lobby liga={liga} dc={yo.dc} /></Aislada>
+        <Aislada n="Lobby"><Lobby liga={liga} dc={yo.dc} enc={enc} /></Aislada>
         <Aislada n="Instalar"><Instalar /></Aislada>
         {/* 🎮 con el lobby, cada dato una vez (Dlx, 13/10/2026, «3. A» y «4. A»): tu próximo evento va en el botón y la
             semana en la puerta de Eventos, y Se busca es el destacado amarillo; el tablero entero sigue en el Ranking.
@@ -792,7 +791,9 @@ export default function App() {
             «hay uno de panel pero abajo hay misiones y el pase de rapero… quita esa parte de abajo»): el Pase ya es una
             puerta y está en tu barra, y las Misiones viven en el Ranking. `Panel` de medio.jsx queda, sin usar */}
         <Aislada n="Noticias"><Noticias liga={liga} raiz={raiz} /></Aislada>
-        <Aislada n="Encuestas"><Encuestas liga={liga} enc={enc} dc={yo.dc} corta /></Aislada>
+        {/* 🗳️ Encuestas, Tus eventos y Divisiones ya no van acá (Dlx, 12/11/2026: «así borramos la parte de abajo que dice
+            encuestas, tus eventos y divisiones»): las encuestas se votan en el Premio gratis de la fila de arriba (y en
+            Publicaciones), tus eventos están en tu perfil y las divisiones en el Ranking. `Encuestas` queda, sin usar acá */}
         <Aislada n="LosQueMandan"><LosQueMandan liga={liga} dc={yo.dc} /></Aislada>
         <Aislada n="Merch"><Merch liga={liga} /></Aislada>
         {/* 📊 La Liga en números ya no va en el Inicio (Dlx, 13/10/2026: «QUITA LA liga en numeros de inicio»): vive en
