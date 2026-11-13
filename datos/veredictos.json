@@ -2,28 +2,6 @@
  "_leeme": "Los eventos de vidas de #veredictos ya armados —quién peleó con quién y quién ganó—, para cargarlos aunque ya no estén entre los últimos mensajes del canal; y cada batalla con su ganador (`batallas`), para la llave que no lo dice; y cada llave como se jugó (`llaves`), que manda sobre la del organizador. Sin los mensajes: el repo es público. Lo escribe bot/escuchar.py (vidas()).",
  "eventos": {},
  "batallas": {
-  "1568110180401684581": {
-   "id": "1568110180401684581",
-   "sv": "🔥LKR (Champios Legue)🐉",
-   "g": "1558611504046153750",
-   "canal": "1560448027490001067",
-   "pub": 1793937001086,
-   "a": "MP 🇦🇷",
-   "b": "LETRA 🇻🇪",
-   "ganador": "LETRA 🇻🇪",
-   "votos": "1–0"
-  },
-  "1568110848310911017": {
-   "id": "1568110848310911017",
-   "sv": "🔥LKR (Champios Legue)🐉",
-   "g": "1558611504046153750",
-   "canal": "1560448027490001067",
-   "pub": 1793937160328,
-   "a": "SWEET 🇪🇸",
-   "b": "NITRO 🇨🇱",
-   "ganador": "SWEET 🇪🇸",
-   "votos": "1–0"
-  },
   "1568112397049397281": {
    "id": "1568112397049397281",
    "sv": "[FFA] Freestyle For All 👾",
@@ -1518,6 +1496,17 @@
    "a": "NC + AKUS",
    "b": "MINIBOY + OKAM",
    "ganador": "MINIBOY + OKAM",
+   "votos": "1–0"
+  },
+  "1570643678224060498": {
+   "id": "1570643678224060498",
+   "sv": "#FDS ╏FREESTYLE DISCORD SERIES",
+   "g": "1489848581203689535",
+   "canal": "1536574435761332334",
+   "pub": 1794541034037,
+   "a": "JORNADA 9 --> ARTEZZY",
+   "b": "MC AREPA",
+   "ganador": "MC AREPA",
    "votos": "1–0"
   }
  },
@@ -6354,6 +6343,27 @@
      [
       "dios",
       "showsero"
+     ],
+     null,
+     "última ronda y no dice campeón",
+     []
+    ]
+   ]
+  },
+  "1570646942361583662": {
+   "id": "1570646942361583662",
+   "sv": "🔥LKR (Champios Legue)🐉",
+   "g": "1558611504046153750",
+   "canal": "1560448027490001067",
+   "pub": 1794541812268,
+   "ed": 1794541948040,
+   "texto": "`[ FINAL ]`\n⌞MATTHIAS 🇻🇪⌝ 🆚 ⌞LAST🇺🇾⌝",
+   "batallas": [
+    [
+     "FINAL",
+     [
+      "MATTHIAS 🇻🇪",
+      "LAST🇺🇾"
      ],
      null,
      "última ronda y no dice campeón",

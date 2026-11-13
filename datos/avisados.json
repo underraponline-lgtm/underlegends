@@ -6508,7 +6508,7 @@
    "Trot": 13
   },
   "fecha": "11/10",
-  "firma": "e482abdab9416ed4",
+  "firma": "6e8ab39d1709a5ea",
   "msg": "1558907910707224587",
   "nombre": "RED BULL NACIONAL ESPAÑA T.5",
   "num": 448,
@@ -9436,7 +9436,7 @@
    "Zignos": 19
   },
   "fecha": "12/10",
-  "firma": "e00dc5d0c776ed51",
+  "firma": "fa84e1d6c066d945",
   "msg": "1559587802864295988",
   "nombre": "GODZ",
   "num": 460,
@@ -12534,7 +12534,7 @@
    "Vargas": 1
   },
   "fecha": "14/10",
-  "firma": "bf491872b2939cd4",
+  "firma": "a105dd956b597ea6",
   "msg": "1560070688113688601",
   "nombre": "FF Freestyle Clasico",
   "num": 473,
@@ -22464,7 +22464,7 @@
    "Zekha": 4
   },
   "fecha": "25/10",
-  "firma": "2af0bdc85c472d07",
+  "firma": "c7e899248c06acdc",
   "msg": "1564056930748469309",
   "nombre": "REDBULL CREW ARGENTINA 2026",
   "num": 515,
@@ -24466,7 +24466,7 @@
    "Vilca": 1
   },
   "fecha": "22/10",
-  "firma": "beb0429fc23f34ed",
+  "firma": "5f13d34ea8cf082e",
   "msg": "1564147714000953499",
   "nombre": "GG SANGRERAP 4",
   "num": 525,
@@ -30299,7 +30299,7 @@
    "mats": 5
   },
   "fecha": "26/10",
-  "firma": "1d1cfd7414daa8ce",
+  "firma": "59eb60e24678a44b",
   "msg": "1565899302046277764",
   "nombre": "RAP SIN GROSERIAS 1",
   "num": 548,
@@ -45591,7 +45591,7 @@
    "crakero": 7
   },
   "fecha": "12/11",
-  "firma": "8135f73b19b3b1dd",
+  "firma": "452ddd3b26dcee5c",
   "msg": "1570578147399827479",
   "nombre": "CUPO A LA MULTIVERS",
   "num": 624,
@@ -45732,7 +45732,7 @@
    "crakero": 8
   },
   "fecha": "12/11",
-  "firma": "c9375dc7aa39c78c",
+  "firma": "e20bfc2b1e4f6aee",
   "msg": "1570581400896278600",
   "nombre": "- LIGA INMORTAL -",
   "num": 625,
@@ -46191,6 +46191,7 @@
   "v": 2
  },
  "628": {
+  "al_dia": true,
   "antes": {
    "Akus": [
     147,

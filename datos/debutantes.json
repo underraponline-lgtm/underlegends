@@ -628,6 +628,17 @@
    "vence": "2026-11-01T21:03:19+00:00",
    "vencido": false
   },
+  "Diz": {
+   "con": null,
+   "cumplido": "",
+   "debut": "2026-11-13T01:52:37+00:00",
+   "did": "",
+   "evento": "TORNEO CLANDESTINO V.2",
+   "n": 628,
+   "sv": "FFA",
+   "vence": "2026-11-20T01:52:37+00:00",
+   "vencido": false
+  },
   "Dobell": {
    "avisado": "2026-11-09",
    "chat": "2026-11-10",
@@ -3004,6 +3015,17 @@
    "n": 609,
    "sv": "FFA",
    "vence": "2026-11-19T01:06:26+00:00",
+   "vencido": false
+  },
+  "y Jahno": {
+   "con": null,
+   "cumplido": "",
+   "debut": "2026-11-13T01:52:37+00:00",
+   "did": "",
+   "evento": "TORNEO CLANDESTINO V.2",
+   "n": 628,
+   "sv": "FFA",
+   "vence": "2026-11-20T01:52:37+00:00",
    "vencido": false
   },
   "🏳️‍⚧️ VEPG 🏳️‍⚧️": {

@@ -189,11 +189,7 @@
 "temporada"
 ]
 },
-"velatz": {
-"rg": "C",
-"c": []
-},
-"nxuz": {
+"okam": {
 "rg": "C",
 "c": [
 "competitivo",
@@ -202,7 +198,11 @@
 "temporada"
 ]
 },
-"okam": {
+"velatz": {
+"rg": "C",
+"c": []
+},
+"nxuz": {
 "rg": "C",
 "c": [
 "competitivo",
@@ -748,17 +748,17 @@
 "temporada"
 ]
 },
-"artezzy": {
+"mcarepa": {
 "rg": "",
 "c": [
-"competitivo",
 "servidor",
 "temporada"
 ]
 },
-"mcarepa": {
+"artezzy": {
 "rg": "",
 "c": [
+"competitivo",
 "servidor",
 "temporada"
 ]
@@ -1206,11 +1206,7 @@
 "rg": "",
 "c": []
 },
-"monet": {
-"rg": "",
-"c": []
-},
-"valdoza": {
+"0223": {
 "rg": "",
 "c": []
 },
@@ -1221,11 +1217,15 @@
 "temporada"
 ]
 },
-"ortiz": {
+"monet": {
 "rg": "",
 "c": []
 },
-"0223": {
+"valdoza": {
+"rg": "",
+"c": []
+},
+"ortiz": {
 "rg": "",
 "c": []
 },

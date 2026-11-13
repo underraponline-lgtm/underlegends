@@ -53652,19 +53652,19 @@
      ],
      [
       [
-       "0223 🇧🇧 + y Jahno 🇧🇧",
-       "Diz🇨🇱 + MCAREPA 🇻🇪"
+       "0223 🇧🇧, y Jahno 🇧🇧",
+       "Diz🇨🇱, Mc arepa"
       ],
       "",
-      "sin ganador: espera en ✅ Decidir"
+      "cobra: 0223 🇧🇧 + y Jahno 🇧🇧; cobra: Diz🇨🇱 + MCAREPA 🇻🇪; nadie siguió: ✅ Decidir"
      ],
      [
       [
-       "RIOLU🇪🇸+ ROMEO🇲🇽",
-       "mats 🇺🇾 + kuni 🇦🇷"
+       "Riolu, romeo",
+       "mats, Kuni"
       ],
       "",
-      "sin ganador: espera en ✅ Decidir"
+      "cobra: RIOLU🇪🇸+ ROMEO🇲🇽; cobra: mats 🇺🇾 + kuni 🇦🇷; nadie siguió: ✅ Decidir"
      ]
     ],
     "r": "Cuartos"
@@ -53737,12 +53737,37 @@
     2625
    ],
    [
+    "0223 🇧🇧",
+    "Cuartos",
+    1250
+   ],
+   [
+    "Diz🇨🇱",
+    "Cuartos",
+    1250
+   ],
+   [
+    "Kuni",
+    "Cuartos",
+    1250
+   ],
+   [
     "LAST",
     "Cuartos",
     1250
    ],
    [
+    "Mc arepa",
+    "Cuartos",
+    1250
+   ],
+   [
     "Paria",
+    "Cuartos",
+    1250
+   ],
+   [
+    "Riolu",
     "Cuartos",
     1250
    ],
@@ -53758,6 +53783,16 @@
    ],
    [
     "Vandu",
+    "Cuartos",
+    1250
+   ],
+   [
+    "romeo",
+    "Cuartos",
+    1250
+   ],
+   [
+    "y Jahno 🇧🇧",
     "Cuartos",
     1250
    ]
