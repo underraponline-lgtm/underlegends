@@ -322,9 +322,14 @@ function ultimoAnuncio(liga) {
 // 📢 …y OFICIAL, no de un evento (Dlx, el mismo día: «cuando me refiero, que sea un anuncio oficial, no un anuncio de
 // evento»): lo último que publicó la Liga en su canal de DRA (`novedades`, de `_novedades()` en bot/subir_web.py, lo mismo
 // que Publicaciones). Sin ninguno, el último anuncio de evento; y sin eso, el próximo evento
+// …y DE TODOS LOS SERVIDORES (Dlx: «Sí, de todos»): los anuncios de sus canales que no son eventos (`oficiales` del
+// payload, de `oficial_de()` en bot/anuncios.py) junto con los de la Liga; gana el más nuevo
 function anuncioOficial(liga) {
-  const n = (liga.d.novedades || []).filter((x) => x && x.t && (x.tit || x.tx)).sort((a, b) => utc(b.t) - utc(a.t))[0];
-  return n ? { tit: limpio(n.tit || String(n.tx).split(/\r?\n/)[0]).slice(0, 80), tx: limpio(n.tx || ''), t: utc(n.t).toISOString(), link: n.link || '' } : null;
+  const xs = (liga.d.novedades || []).filter((x) => x && x.t && (x.tit || x.tx))
+    .map((n) => ({ sv: '', tit: limpio(n.tit || String(n.tx).split(/\r?\n/)[0]).slice(0, 80), t: utc(n.t).toISOString(), link: n.link || '' }))
+    .concat((liga.d.oficiales || []).filter((o) => o && o.t && o.tit)
+      .map((o) => ({ sv: o.sv || '', tit: limpio(o.tit).slice(0, 80), t: utc(o.t).toISOString(), link: o.link || '' })));
+  return xs.sort((a, b) => new Date(b.t) - new Date(a.t))[0] || null;
 }
 function SinBatallas({ liga, yo, yoF, T, retar }) {
   const of = anuncioOficial(liga);
@@ -346,9 +351,9 @@ function SinBatallas({ liga, yo, yoF, T, retar }) {
     <section className={'pn-sb' + (rv ? '' : ' solo ev')}>
       {of ? (
         <div className="pn-sb-ev">
-          <img className="pn-sb-logo" alt="" src="/ul.png" />
+          <img className="pn-sb-logo" alt="" src={(of.sv && liga.logo(of.sv)) || '/ul.png'} />
           <span className="pn-sb-tx"><em>Último anuncio oficial</em><b>{of.tit}</b>
-            <small>La Liga · <span className="pn-sb-t">hace {hace(new Date(of.t).getTime())}</span></small></span>
+            <small>{of.sv ? siglaDe(of.sv) : 'La Liga'} · <span className="pn-sb-t">hace {hace(new Date(of.t).getTime())}</span></small></span>
           {of.link ? <a className="btn verde chico" href={of.link} target="_blank" rel="noopener noreferrer">Ver anuncio</a>
             : <a className="btn verde chico" href="#/publicaciones">Ver</a>}
         </div>

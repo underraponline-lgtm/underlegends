@@ -798,6 +798,11 @@ def armar():
         # Dlx, 25/09/2026: «lo último de la liga que sea como novedades,
         # información», y las redes en grande aparte, arriba del top 5.
         'novedades': _novedades(tope=8),
+        # 📢 LOS ANUNCIOS OFICIALES DE CADA SERVIDOR (12/11/2026, Dlx: «un anuncio oficial, no un anuncio de evento… de
+        # todos»): los guarda `bot/anuncios.py` (`oficiales`, ver `oficial_de()`); acá van los 8 más nuevos
+        'oficiales': [{'sv': o.get('servidor') or '', 'tit': o.get('tit') or '', 'tx': o.get('tx') or '',
+                       't': o.get('cuando') or '', 'link': o.get('link') or ''}
+                      for o in sorted(_an.get('oficiales') or [], key=lambda x: str(x.get('cuando') or ''), reverse=True)[:8]],
         # 🔑 EL FEED: lo de DRA y los últimos videos de YouTube de cada
         # servidor, del más nuevo al más viejo. Ver `_feed()`.
         'feed': _feed(),

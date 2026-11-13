@@ -1130,6 +1130,44 @@ def marca_inscripcion(txt):
 #: unico que no se puede deducir de ningun otro lado. Ver `leer()`.
 POR_CANAL = {'eventos': 25, 'inscripciones': 600}
 
+# 📢 LOS ANUNCIOS OFICIALES DE CADA SERVIDOR (12/11/2026, Dlx: «que sea un anuncio oficial, no un anuncio de evento» y, a
+# la pregunta, «Sí, de todos»). Los canales de anuncios ya se leen para los eventos; lo que en un canal de ANUNCIOS o
+# NOVEDADES no es un evento ni una marca de inscripciones es un anuncio del servidor, y antes se tiraba. Se guardan los
+# más nuevos de cada uno (`OFICIALES_POR_SV`) y van al Inicio (`oficiales` del payload, `bot/subir_web.py`).
+#: qué canal es de anuncios oficiales (no «eventos» ni «torneos»: ahí todo es de eventos)
+OFICIAL = re.compile(r'anuncio|novedad|noticia|announce|news|comunicad', re.I)
+#: el bot de la Liga (ULAYA, el `APP_ID` de bot/avisos.js): lo que publica en esos canales es de la Liga, no del servidor
+BOT_ID = '1550026808404217926'
+OFICIALES_POR_SV = 3
+OFICIALES_TOPE = 30
+OFICIALES_DIAS = 45
+
+
+def oficial_de(m, servidor, canal, guild, canal_id):
+    """Un mensaje de un canal de anuncios -> `{servidor, tit, tx, cuando, msg_id, link}`, o `None`.
+
+    Sólo texto: las menciones y el Markdown se van; el título es la primera línea con letras. Sin texto, el del primer
+    embed. Lo que publicó el bot de la Liga, o es muy corto para decir algo (un «@everyone» solo), no cuenta.
+    """
+    if str((m.get('author') or {}).get('id') or '') == BOT_ID:
+        return None
+    txt = _sin_menciones(m.get('content') or '')
+    if not txt.strip():
+        em = (m.get('embeds') or [{}])[0] or {}
+        txt = '\n'.join(x for x in (em.get('title') or '', em.get('description') or '') if x)
+    # los emojis propios de cada servidor (`<:RedBull:149…>`), los spoilers (`||`) y las líneas que son sólo un link se van:
+    # medido sobre los canales de verdad el 12/11/2026, salían «<:RedBull:1496620418172194886> RED BULL BATALLA 2026»
+    # y anuncios que eran un link de invitación solo
+    txt = re.sub(r'<a?:\w+:\d+>', ' ', str(txt)).replace('||', ' ')
+    lineas = [re.sub(r'\s+', ' ', _sin_md(l)).strip() for l in txt.splitlines()]
+    lineas = [l for l in lineas if re.search(r'\w', l) and not re.fullmatch(r'<?https?://\S+>?', l)]
+    if not lineas or len(' '.join(lineas)) < 25:
+        return None
+    mid = str(m.get('id') or '')
+    return {'servidor': servidor, 'canal': canal, 'tit': lineas[0][:90], 'tx': ' '.join(lineas[1:])[:220],
+            'cuando': (m.get('timestamp') or '')[:19], 'msg_id': mid,
+            'link': 'https://discord.com/channels/%s/%s/%s' % (guild, canal_id, mid) if guild and canal_id and mid else ''}
+
 
 def leer(s, por_canal=None):
     """`(anuncios, inscripciones)` de todos los canales que se puedan.
@@ -1139,6 +1177,7 @@ def leer(s, por_canal=None):
     """
     import requests
     anuncios, inscr = [], []
+    oficiales = []
     estados = {}
     #: los servidores cuyo canal de eventos no se pudo leer: ver `main()`
     leer.fallaron = set()
@@ -1234,6 +1273,11 @@ def leer(s, por_canal=None):
                     # de la misma categoría (Dlx, 03/10/2026). Ver `subir_web._inscribir()`
                     a['categoria_id'] = cat
                     anuncios.append(a)
+                # 📢 y lo que no es un evento, en un canal de anuncios: un anuncio oficial del servidor
+                elif not mk and OFICIAL.search(nombre or '') and not STAFF.search(nombre or ''):
+                    o = oficial_de(m, cod, nombre, gid, cid)
+                    if o:
+                        oficiales.append(o)
             else:
                 # ⚠️ EN INSCRIPCIONES LA GENTE SE ANOTA POSTEANDO SU
                 # NOMBRE. No hay plantilla: lo que vale es **quién**
@@ -1262,7 +1306,29 @@ def leer(s, por_canal=None):
         if e and _vigente(e['cuando']):
             a['inscripciones'] = e['estado']
             a['inscripciones_cuando'] = e['cuando']
+    leer.oficiales = oficiales
     return anuncios, inscr
+
+
+def juntar_oficiales(nuevos, previos, ahora=None):
+    """Los oficiales que se guardan: los de esta corrida y los de antes (un canal que hoy no se pudo leer no los
+    borra), uno por mensaje, los más nuevos `OFICIALES_POR_SV` de cada servidor, de los últimos `OFICIALES_DIAS`."""
+    import datetime as _dt
+    hoy = ahora or _dt.datetime.utcnow()
+    desde = (hoy - _dt.timedelta(days=OFICIALES_DIAS)).strftime('%Y-%m-%dT%H:%M:%S')
+    fuera = anuncios_fuera()
+    vistos, por_sv, out = set(), {}, []
+    for o in sorted(list(nuevos or []) + list(previos or []), key=lambda x: str(x.get('cuando') or ''), reverse=True):
+        mid = str(o.get('msg_id') or '')
+        if not mid or mid in vistos or mid in fuera or str(o.get('cuando') or '') < desde:
+            continue
+        vistos.add(mid)
+        sv = o.get('servidor') or ''
+        if por_sv.get(sv, 0) >= OFICIALES_POR_SV:
+            continue
+        por_sv[sv] = por_sv.get(sv, 0) + 1
+        out.append(o)
+    return out[:OFICIALES_TOPE]
 
 
 def _vigente(cuando, ahora=None):
@@ -1365,7 +1431,7 @@ def es_inscripcion(txt):
 TOPE_INSCR = 4000
 
 
-def guardar(anuncios, inscr):
+def guardar(anuncios, inscr, oficiales=None):
     """Deja el cache en disco. **Las inscripciones se ACUMULAN.**
 
     🔴 PISARLAS ERA PERDERLAS, Y ESA ERA LA CAUSA DE LOS 21 SIN FILA.
@@ -1453,6 +1519,8 @@ def guardar(anuncios, inscr):
         json.dump({'cuando': time.strftime('%Y-%m-%dT%H:%M:%S+00:00',
                                            time.gmtime()),
                    'anuncios': anuncios,
+                   # 📢 los anuncios oficiales de cada servidor (ver `oficial_de()`): se juntan con los de antes
+                   'oficiales': juntar_oficiales(oficiales, (cargar() or {}).get('oficiales')),
                    'inscripciones': juntas[:TOPE_INSCR]},
                   f, ensure_ascii=False, indent=1)
 
@@ -1690,6 +1758,34 @@ def _self_check():
     mal += not ok
     print('   %s un afiche sin hora ni fecha no es un anuncio' % ('✅' if ok else '🔴'))
 
+    # 📢 LOS ANUNCIOS OFICIALES: un anuncio de verdad sí; un «@everyone» solo, lo del bot de la Liga y lo vacío, no
+    real = {'id': '1560000000000000001', 'timestamp': '2026-11-12T18:00:00+00:00', 'author': {'id': '9'},
+            'content': '<@&123> **📢 NUEVA TEMPORADA DE LA LIGA FFA**\nEl lunes arrancamos con premios y cupos nuevos. ¡Los esperamos!'}
+    o = oficial_de(real, 'FFA', 'anuncios', '11', '22')
+    ok = (bool(o) and o['tit'] == '📢 NUEVA TEMPORADA DE LA LIGA FFA' and o['tx'].startswith('El lunes')
+          and o['link'] == 'https://discord.com/channels/11/22/1560000000000000001'
+          and oficial_de(dict(real, content='@everyone'), 'FFA', 'anuncios', '11', '22') is None
+          and oficial_de(dict(real, author={'id': BOT_ID}), 'FFA', 'anuncios', '11', '22') is None
+          and oficial_de({'id': '3', 'timestamp': 'x', 'author': {'id': '9'}, 'content': '',
+                          'embeds': [{'title': 'Torneo de verano', 'description': 'Abren las inscripciones el viernes a la noche'}]},
+                         'SR', 'novedades', '1', '2')['tit'] == 'Torneo de verano')
+    rb = oficial_de(dict(real, content='<:RedBull:1496620418172194886> **RED BULL BATALLA 2026**\n|| 🚨 LA ÚLTIMA   INTERNACIONAL ||'),
+                    'FRZ', 'anuncios', '1', '2')
+    ok = ok and rb['tit'] == 'RED BULL BATALLA 2026' and rb['tx'] == '🚨 LA ÚLTIMA INTERNACIONAL' \
+        and oficial_de(dict(real, content='https://discord.gg/xa3f4ABcU'), 'DDF', 'anuncios', '1', '2') is None
+    mal += not ok
+    print('   %s un anuncio oficial: el de verdad sí (con su link, sin emojis propios ni spoilers); un @everyone solo, un link '
+          'solo y lo del bot de la Liga, no' % ('✅' if ok else '🔴'))
+    import datetime as _dt2
+    hoy = _dt2.datetime(2026, 11, 12, 20, 0)
+    xs = [{'servidor': 'FFA', 'msg_id': str(i), 'cuando': '2026-11-%02dT10:00:00' % (1 + i)} for i in range(5)]
+    viejo = {'servidor': 'SR', 'msg_id': '99', 'cuando': '2026-08-01T10:00:00'}
+    j = juntar_oficiales(xs[:2], xs[1:] + [viejo], hoy)
+    ok = [x['msg_id'] for x in j] == ['4', '3', '2'] and len(j) == OFICIALES_POR_SV
+    mal += not ok
+    print('   %s los oficiales: sin repetir, los %d más nuevos de cada servidor y nada de hace más de %d días'
+          % ('✅' if ok else '🔴', OFICIALES_POR_SV, OFICIALES_DIAS))
+
     print('\n  %s\n' % ('todo ok' if not mal else '🔴 %d problema(s)' % mal))
     return 1 if mal else 0
 
@@ -1737,8 +1833,11 @@ def main():
     if de_img:
         print('\n   🖼️ leídos de un afiche: %s' % ' · '.join('%s (%s)' % (a['nombre'][:30], a['servidor'])
                                                        for a in de_img))
+    ofi = getattr(leer, 'oficiales', None) or []
+    if ofi:
+        print('\n   📢 anuncios oficiales: %s' % ' · '.join('%s «%s»' % (o['servidor'], o['tit'][:30]) for o in ofi[:6]))
     if '--aplicar' in sys.argv:
-        guardar(anuncios, inscr)
+        guardar(anuncios, inscr, ofi)
         print('\n   -> %s' % os.path.relpath(SALIDA, BASE))
         if (getattr(leer, 'ocr', None) or {}).get('cambio'):
             _ocr_guardar(leer.ocr)
