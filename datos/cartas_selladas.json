@@ -969,10 +969,10 @@
    "servidor": "ab139f32400c:2415c901692f:5579b8"
   },
   "LRS": {
-   "competitivo": "efeb46249620:624f5e322311",
-   "pais": "a1e11f2d8f67:733ce66bf5fa",
-   "servidor": "1801f0e79731:2415c901692f:0bce64",
-   "temporada": "a764cf765ebf:7a510334494e"
+   "competitivo": "eda5f6981048:624f5e322311",
+   "pais": "6671d4d0dc8c:733ce66bf5fa",
+   "servidor": "52a8844052dc:2415c901692f:0bce64",
+   "temporada": "827628e5f964:7a510334494e"
   },
   "LVS": {
    "servidor": "79f6e18db568:2415c901692f:c4a5ef"
@@ -2115,5 +2115,5 @@
    "servidor": "7f8885a35a6d:2415c901692f:93a344"
   }
  },
- "cuando": "2026-11-13T02:23:24+00:00"
+ "cuando": "2026-11-13T02:26:29+00:00"
 }
