@@ -5401,3 +5401,5 @@ dialog.pn-pop.pop-gratis{--pc:#F5C542;width:min(640px,calc(100vw - 32px))}
 /* «Último: …» de Eventos en dos renglones y no cortado con puntos: entre 900 y 1180 px no entraba en uno */
 .pn-baja3 .pn-ev.ancho .pn-ult3{align-items:flex-start}
 .pn-baja3 .pn-ev.ancho .pn-ult3 span{white-space:normal;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+/* la racha mientras viene: su lugar guardado, apagado, para que la fila no salte (13/11/2026) */
+.pn-racha.espera{opacity:.55}

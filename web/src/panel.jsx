@@ -234,6 +234,13 @@ export function FilaRacha({ dc, R, liga, enc }) {
   const ult = dc && !camp && liga && liga.yo ? ultimoDe(liga, liga.yo) : null;
   const [S, setS] = useSorteo(dc);
   const [recien, setRecien] = useState(false);
+  // 🔥 la racha llega como `null` mientras viene y también si falló: a los 4 s sin ella, su lugar lo toma el que sigue
+  const [sinRacha, setSinRacha] = useState(false);
+  useEffect(() => {
+    if (!dc || R) { setSinRacha(false); return undefined; }
+    const t = setTimeout(() => setSinRacha(true), 4000);
+    return () => clearTimeout(t);
+  }, [!!dc, !!R]); // eslint-disable-line react-hooks/exhaustive-deps
   const ahora = Date.now();
   const s = S && S.sorteo;
   const soAbierto = !!(s && ahora < s.cierra);
@@ -254,6 +261,8 @@ export function FilaRacha({ dc, R, liga, enc }) {
   const mm = liga ? (liga.d.mult || {}) : {};
   const mx = Object.entries(mm.sv || {}).sort((p, q) => q[1] - p[1])[0];
   if (mx && mx[1] > 1) extras.push('semana');
+  // el 1.º: tu racha; mientras viene, su lugar guardado (así no salta), y si no llega, el que sigue de la lista
+  const primero = !dc ? 'invita' : R ? 'racha' : sinRacha ? extras.shift() || null : 'espera';
   const segundo = camp ? 'campana' : ult ? 'ultimo' : extras.shift() || null;
   const cuarto = extras.shift() || null;
   const pinta = (q) => (q === 'campana' ? <CampanaCorta key="c" dc={dc} /> : q === 'ultimo' ? <UltCorto key="u" liga={liga} u={ult} />
@@ -265,19 +274,23 @@ export function FilaRacha({ dc, R, liga, enc }) {
             : q === 'semana' ? <AnuncioCorto key="w" liga={liga} a={{ sv: mx[0], et: 'Esta semana', link: '#/sv/' + encodeURIComponent(mx[0]),
               tit: 'Sus eventos, ×' + String(mx[1]).replace('.', ','),
               sub: (mx[1] === 2 ? 'Valen el doble' : mx[1] === 3 ? 'Valen el triple' : 'Valen más') + (mm.fin ? ' · quedan ' + faltaTxt(mm.fin) : ' hasta el lunes') }} /> : null);
-  // ⚠️ la racha no se dibuja hasta que llega (`R`): contarla sin estar dejaba una columna vacía. Sin cuenta, el 3.º es el
-  // Premio gratis de entrar (los Puntos de Tienda de arranque)
-  const n = (dc ? (R ? 1 : 0) : 1) + (segundo ? 1 : 0) + 1 + (cuarto ? 1 : 0);
+  // Sin cuenta, el 3.º es el Premio gratis de entrar (los Puntos de Tienda de arranque)
+  const n = (primero ? 1 : 0) + (segundo ? 1 : 0) + 1 + (cuarto ? 1 : 0);
   return (
     <>
       <Festejo R={R} />
       <div className={'pn-fila' + (n === 4 ? ' tres cuatro' : n === 3 ? ' tres' : n === 1 ? ' sola' : ' dos')}>
-        {dc ? <RachaCorta R={R} sola={n === 1} /> : (
-          <section className="pn-racha invita">
-            <span className="pn-tx"><b>¿Juegas en la Liga?</b><small>Entra con Discord: tu racha, tus tarjetas y tu Pase</small></span>
-            <button type="button" className="btn verde chico" onClick={accion.entrar}>Entrar</button>
-          </section>
-        )}
+        {primero === 'racha' ? <RachaCorta R={R} sola={n === 1} />
+          : primero === 'espera' ? (
+            <section className="pn-racha espera" aria-busy="true">
+              <span className="pn-tx"><b>Tu racha</b><small>Un momento…</small></span>
+            </section>
+          ) : primero === 'invita' ? (
+            <section className="pn-racha invita">
+              <span className="pn-tx"><b>¿Juegas en la Liga?</b><small>Entra con Discord: tu racha, tus tarjetas y tu Pase</small></span>
+              <button type="button" className="btn verde chico" onClick={accion.entrar}>Entrar</button>
+            </section>
+          ) : pinta(primero)}
         {pinta(segundo)}
         {dc ? <BarraDia dc={dc} /> : <PremioGratis liga={liga} enc={enc} dc={dc} />}
         {pinta(cuarto)}
