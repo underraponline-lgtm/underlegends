@@ -302,13 +302,25 @@ export function Cabecera({ liga, dc, onMenu, pagina = '' }) {
   // 🔥 tu racha diaria, al lado de tu cuenta (sólo si entraste con Discord: pedirla cuenta el día)
   const R = useRacha(!!dc);
   const fuego = R && R.racha.actual ? R.racha.actual : 0;
+  // ⌨️ Ctrl K (o ⌘ K, o «/» fuera de un campo) abre el buscador, como la paleta de 21st que se tomó de referencia
+  useEffect(() => {
+    const tecla = (e) => {
+      const enCampo = /^(INPUT|TEXTAREA|SELECT)$/.test((e.composedPath ? e.composedPath()[0] : e.target).tagName || '');
+      if (((e.ctrlKey || e.metaKey) && String(e.key).toLowerCase() === 'k') || (e.key === '/' && !enCampo)) { e.preventDefault(); setBusca(true); }
+    };
+    window.addEventListener('keydown', tecla);
+    return () => window.removeEventListener('keydown', tecla);
+  }, []);
   return (
-    <header className="cab negra">
+    // 🅰 UNA FILA (13/11/2026, la A de la maqueta; Dlx: «la A, pero asegúrate de que se vea bien en todas las pantallas»):
+    // marca, menú y lo tuyo en una sola línea en la compu (de 131 a ~62 px), y en el celular una línea con botones
+    // livianos. El título es LIGA GLOBAL · T1; el buscador, una lupa que abre el mismo buscador. Ver `.cab.una` en vivo.css
+    <header className="cab negra una">
       <Marca liga={liga} />
       <MenuArriba pagina={pagina} nuevas={pubNuevas(liga, pagina)} />
       <div className="cab-der">
         <Buscar liga={liga} />
-        <button className="btn-ico lupa-b" type="button" aria-label="Buscar" onClick={() => setBusca(true)}><Ico n="buscar" t={20} /></button>
+        <button className="btn-ico lupa-b" type="button" aria-label="Buscar (Ctrl K)" title="Buscar · Ctrl K" onClick={() => setBusca(true)}><Ico n="buscar" t={20} /></button>
         <Campanita liga={liga} />
         {/* ⚙️ SIN EL ENGRANAJE (Dlx, 12/11/2026: «quitar eso del ícono de ajustes porque se puede entrar desde tu cuenta»):
             los ajustes están en Tu cuenta, que abre tu cara arriba y «Tu cuenta» abajo en el celular, y en el ☰ */}

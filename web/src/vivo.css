@@ -4922,3 +4922,78 @@ dialog.pn-pop.pop-gratis{--pc:#F5C542;width:min(640px,calc(100vw - 32px))}
 /* ⬅️ la tira arranca pegada a la izquierda, como termina a la derecha (Dlx, 12/11/2026: «a la izquierda, o sea el espacio
    moverlo a la izquierda»): sin el margen de la página de ese lado */
 @media (min-width: 900px){.app .h-tira .historias{padding-left:16px;scroll-padding-left:16px}}
+
+/* ═══ 🅰 LA CABECERA EN UNA FILA (13/11/2026, Dlx: «la A, pero asegúrate de que se vea bien en todas las pantallas y que
+   todo esté bien posicionado»). En la compu, marca · menú · lo tuyo en una línea; el menú se achica con el ancho y, si
+   igual no entra, la marca deja el texto y queda el logo. En el celular, una línea: logo con LIGA GLOBAL · T1 y tres
+   botones livianos. El título es el `small.lg` de la marca; «DISCORD RAP EN ESPAÑOL» queda para quien lee la página ═══ */
+.app .cab.una .lockup b{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+.app .cab.una .marca small.lg{font:900 15px/1 Archivo,sans-serif;font-stretch:125%;color:#F6F6F6;margin:0;letter-spacing:0;white-space:nowrap}
+.app .cab.una .nt-n{background:#E41373;color:#fff;border:2px solid #030304}
+.app .cab.una .btn-ico{border:1.5px solid #2A2C31;background:#0B0C0E}
+.app .cab.una .btn-ico:hover,.app .cab.una .btn-ico:focus-visible{border-color:#F6F6F6}
+@media (min-width: 900px){
+  .app .cab.una{grid-template-columns:auto minmax(0,1fr) auto;grid-template-areas:"marca menu der";align-items:center;
+    column-gap:clamp(14px,2vw,28px);padding:10px var(--gut)}
+  .app .cab.una .marca{font-size:15px;min-width:0}
+  .app .cab.una .marca img{width:36px;height:36px}
+  .app .cab.una .menu{margin-top:0;border-top:0;justify-content:center;min-width:0;font-size:clamp(11px,calc(.45vw + 6.5px),13.5px);
+    gap:clamp(8px,calc(1.6vw - 6px),24px)}
+  .app .cab.una .menu a,.app .cab.una .menu .grp-b{padding:10px 0;white-space:nowrap}
+  .app .cab.una .buscar-w{display:none}
+  .app .cab.una .lupa-b{display:inline-flex}
+  .app .cab.una .btn-ico{width:40px;height:40px}
+  .app .cab.una .yo-chip{border:1.5px solid #2A2C31;padding:3px 10px 3px 3px}
+  .app .cab.una .yo-chip:hover{border-color:#F6F6F6}
+  .app .cab.una .yo-chip .cara{width:32px;height:32px}
+  .app .cab.una .yo-chip > span:not(.cara):not(.yo-racha){display:none}
+  .app .cab.una .cab-der{gap:8px}
+}
+/* entre 900 y 1199 el menú no entra con la marca entera: queda el logo (y el título vuelve en cuanto hay lugar) */
+@media (min-width: 900px) and (max-width: 1199.98px){
+  .app .cab.una .marca small.lg{display:none}
+  .app .cab.una .marca{gap:0}
+  .app .cab.una .yo-racha{display:none}
+  .app .cab.una .yo-chip{padding:3px}
+}
+@media (max-width: 899.98px){
+  .app .cab.una{padding:10px 12px;gap:8px}
+  .app .cab.una .marca{flex:1 1 auto;min-width:0}
+  .app .cab.una .lockup{min-width:0}
+  .app .cab.una .marca img{width:34px;height:34px}
+  .app .cab.una .marca small.lg{font-size:14px;overflow:hidden;text-overflow:ellipsis}
+  .app .cab.una .cab-der{flex:none}
+  .app .cab.una .btn-ico{width:38px;height:38px}
+}
+@media (max-width: 359.98px){
+  .app .cab.una .marca small.lg{font-size:12px}
+  .app .cab.una .btn-ico{width:34px;height:34px}
+  .app .cab.una .cab-der{gap:4px}
+}
+/* en 320 un regla vieja escondía la marca entera (`.lockup`): con la cabecera de una fila entra «LIGA GLOBAL…» */
+@media (max-width: 359.98px){ .app .cab.una .lockup{display:block} }
+/* entre 900 y 1023 (compus chicas, tablets acostadas) el menú no entra con «Entrar»: va ☰, como en el celular, y el título */
+@media (min-width: 900px) and (max-width: 1023.98px){
+  .app .cab.una .menu{display:none}
+  .app .cab.una .hamb{display:inline-flex}
+  .app .cab.una .marca small.lg{display:block}
+  .app .cab.una .marca{gap:10px}
+}
+/* ⚠️ `nav.menu`: la regla vieja (`.app .cab nav.menu`) gana a `.menu` y subía la letra a 14 px en pantallas grandes, donde
+   el ancho del contenido no crece: sin cuenta, a 1600 px quedaban 3 px entre el menú y la marca. Tope 13 px */
+@media (min-width: 1024px){
+  .app .cab.una nav.menu{font-size:clamp(11px,calc(.45vw + 6.5px),13px);gap:clamp(8px,calc(1.6vw - 6px),22px)}
+}
+/* y el espacio entre las palabras del menú, con tope: el contenido no se ensancha pasado ~1300 px */
+@media (min-width: 1024px){ .app .cab.una nav.menu{gap:clamp(8px,calc(1.6vw - 6px),16px)} }
+@media (min-width: 900px){ .app .cab.una .entrar{padding:10px 14px;font-size:13px} }
+
+/* 🔎 el buscador de la lupa: en la compu, una caja al centro (como una paleta de comandos) y no el panel del costado del
+   celular. ⚠️ El campo vive adentro de la cabecera, donde `.cab.una .buscar-w` está escondido: hay que volver a mostrarlo */
+.app .cab.una .x-busca-celu .buscar-w{display:block}
+@media (min-width: 900px){
+  .app .cab.una .x-busca-celu{justify-content:center;align-items:flex-start;padding-top:12vh}
+  .app .cab.una .x-busca-celu .x-caja{width:min(640px,92vw);height:auto;max-height:70vh;border:1.5px solid #2A2C31;border-radius:4px;
+    padding:14px 16px 18px;box-shadow:0 24px 60px rgba(0,0,0,.6)}
+  .app .cab.una .x-busca-celu .buscar{width:100%;min-width:0}
+}
