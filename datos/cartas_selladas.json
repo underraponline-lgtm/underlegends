@@ -918,7 +918,7 @@
    "competitivo": "e4b2ead87705:624f5e322311",
    "pais": "c8f0a590d867:733ce66bf5fa",
    "servidor": "c328b0a73d76:2415c901692f:6b534c",
-   "temporada": "00b0d19dbe48:7a510334494e"
+   "temporada": "4c6b67e678af:7a510334494e"
   },
   "Krozakeo": {
    "servidor": "2de415aac9b8:2415c901692f:055f77"
@@ -1991,7 +1991,8 @@
   "dxg": {
    "competitivo": "10c1a42d3d98:624f5e322311",
    "pais": "fe433d4cf8cb:733ce66bf5fa",
-   "servidor": "6d5a01217a0d:2415c901692f:3c7154"
+   "servidor": "6d5a01217a0d:2415c901692f:3c7154",
+   "temporada": "e30b33877977:7a510334494e"
   },
   "elzurdo": {
    "servidor": "10f4113a45d7:2415c901692f:9e75da"
@@ -2111,5 +2112,5 @@
    "servidor": "7f8885a35a6d:2415c901692f:93a344"
   }
  },
- "cuando": "2026-11-13T22:02:39+00:00"
+ "cuando": "2026-11-13T22:11:49+00:00"
 }

@@ -846,7 +846,8 @@
 "rg": "E",
 "c": [
 "competitivo",
-"servidor"
+"servidor",
+"temporada"
 ]
 },
 "benjixo": {
@@ -2836,14 +2837,6 @@
 }
 },
 "cambios": [
-{
-"tipo": "tarjeta",
-"t": "2026-10-09T01:56:34Z",
-"quien": [
-"Makmah"
-],
-"carta": "pais"
-},
 {
 "tipo": "tarjeta",
 "t": "2026-10-09T02:07:29Z",
@@ -6204,6 +6197,14 @@
 "Jupiter"
 ],
 "carta": "pais"
+},
+{
+"tipo": "tarjeta",
+"t": "2026-11-13T22:12:51Z",
+"quien": [
+"dxg"
+],
+"carta": "temporada"
 }
 ],
 "noche_antes": {
