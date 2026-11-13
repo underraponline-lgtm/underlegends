@@ -71,23 +71,22 @@ html.ini-nuevo.lg-fuera #lg-carga{display:none}
   background:radial-gradient(ellipse at center,rgba(3,3,4,.82) 0,rgba(3,3,4,.55) 45%,transparent 72%)}
 #lg-carga .lg-sello{display:inline-block;padding:7px 12px 6px;background:#E41373;color:#fff;border-radius:2px;
   font:700 clamp(12px,1vw,17px)/1 "Barlow Condensed",system-ui,sans-serif;letter-spacing:.14em;text-transform:uppercase;transform:rotate(-3deg);
-  box-shadow:4px 4px 0 #29B298;animation:lg-sello .5s cubic-bezier(.2,.9,.25,1.2) .2s both}
+  box-shadow:4px 4px 0 #29B298}
 #lg-carga .lg-t{display:grid;gap:2px;font:900 clamp(30px,3.9vw,76px)/.9 Archivo,system-ui,sans-serif;font-stretch:125%;letter-spacing:.01em;
-  word-spacing:.08em;white-space:nowrap;filter:drop-shadow(0 4px 16px rgba(0,0,0,.65));animation:lg-entra .6s cubic-bezier(.2,.9,.2,1) both}
+  word-spacing:.08em;white-space:nowrap;filter:drop-shadow(0 4px 16px rgba(0,0,0,.65))}
 #lg-carga .lg-t1{color:transparent;-webkit-background-clip:text;background-clip:text;
   background-image:linear-gradient(rgba(246,246,246,.34),rgba(246,246,246,.34)),var(--q,linear-gradient(#bdbdbd,#efefef));
-  background-blend-mode:screen;background-size:160% auto;background-position:30% 40%;-webkit-text-stroke:1.5px rgba(246,246,246,.75);
-  animation:lg-deriva 6s ease-in-out infinite alternate}
+  background-blend-mode:screen;background-size:160% auto;background-position:40% 45%;-webkit-text-stroke:1.5px rgba(246,246,246,.75)}
 #lg-carga .lg-t2{color:#E41373}
 /* ⏳ abajo al centro, la barrita celeste de la bienvenida: el consejo, el porcentaje y la barra */
-#lg-carga .lg-pie{position:absolute;left:50%;bottom:max(20px,3.2vw);translate:-50% 0;width:min(560px,34vw);display:grid;gap:12px;
-  animation:lg-aparece .35s .3s both}
+#lg-carga .lg-pie{position:absolute;left:50%;bottom:max(20px,3.2vw);translate:-50% 0;width:min(560px,34vw);display:grid;gap:12px}
 #lg-carga .lg-fila{display:flex;justify-content:space-between;align-items:baseline;gap:12px}
 #lg-carga .lg-tip{font:700 clamp(12px,1.1vw,17px)/1.2 "Barlow Condensed",system-ui,sans-serif;letter-spacing:.16em;text-transform:uppercase;
   color:#C9C9C4;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 #lg-carga .lg-pct{font:900 clamp(14px,1.3vw,22px)/1 Archivo,system-ui,sans-serif;font-stretch:125%;font-variant-numeric:tabular-nums}
 #lg-carga .lg-barra{position:relative;height:4px;background:rgba(246,246,246,.2);border-radius:2px;overflow:hidden}
-#lg-carga .lg-barra i{position:absolute;left:0;top:0;bottom:0;width:0;background:#29B298;border-radius:2px}
+#lg-carga .lg-barra i{position:absolute;inset:0;background:#29B298;border-radius:2px;transform-origin:0 50%;transform:scaleX(0);
+  will-change:transform;transition:transform .4s cubic-bezier(.3,.6,.3,1)}
 #lg-carga.lleno .lg-barra i{background:#F6F6F6}
 @media (max-width:899.98px){
   #lg-carga .lg-marca{top:max(16px,6vw);left:5.5vw;gap:2.4vw}
@@ -114,10 +113,19 @@ html.lg-sale #lg-carga .lg-c{animation:lg-fuera .35s ease-in forwards}
 html.lg-sale #lg-carga .lg-capa{will-change:transform;animation:lg-corte 1s .25s cubic-bezier(.65,0,.35,1) forwards}
 html.lg-sale #lg-carga .lg-capa.m{animation-delay:.4s}
 html.lg-sale #lg-carga .lg-capa.v{animation-delay:.55s}
-@keyframes lg-sello{0%{transform:scale(1.9) rotate(-14deg);opacity:0}45%{opacity:1}70%{transform:scale(.94) rotate(-2deg)}100%{transform:rotate(-3deg);opacity:1}}
-@keyframes lg-entra{from{opacity:0;transform:scale(1.12)}to{opacity:1;transform:none}}
-@keyframes lg-deriva{to{background-position:60% 55%}}
-@keyframes lg-aparece{from{opacity:0}to{opacity:1}}
+/* 🌅 QUE EMPIECE DE A POCO (Dlx, 12/11/2026: «se lagea un poquito cuando la página de carga empieza… que empiece poco a
+   poco»). Tironeaba por tres cosas a la vez: el título salía con la letra del sistema y saltaba a la nuestra al llegar,
+   todo entraba en el mismo instante en que la página baja su código, y el relleno del título se movía (repintarlo en
+   cada cuadro). Ahora nada aparece hasta que están las letras (`va`: document.fonts.ready, o 0,9 s), y entra en
+   escalera: la marca, el título, el sello y la barra; la foto, con un fundido largo, recién decodificada */
+#lg-carga .lg-marca,#lg-carga .lg-sello,#lg-carga .lg-t,#lg-carga .lg-pie{opacity:0}
+#lg-carga.va .lg-marca{animation:lg-sube .8s ease-out .05s both}
+#lg-carga.va .lg-t{animation:lg-sube 1s cubic-bezier(.2,.7,.2,1) .2s both}
+#lg-carga.va .lg-sello{animation:lg-sello .8s cubic-bezier(.2,.7,.3,1) .7s both}
+#lg-carga.va .lg-pie{animation:lg-sube .8s ease-out .9s both}
+#lg-carga.va.quieto .lg-marca,#lg-carga.va.quieto .lg-sello,#lg-carga.va.quieto .lg-t,#lg-carga.va.quieto .lg-pie{opacity:1}
+@keyframes lg-sube{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
+@keyframes lg-sello{from{opacity:0;transform:rotate(-3deg) scale(1.25)}to{opacity:1;transform:rotate(-3deg)}}
 @keyframes lg-fuera{to{transform:scale(1.14);opacity:0}}
 @keyframes lg-corte{to{transform:rotate(30deg) translateY(-125vmax)}}
 @keyframes lg-grano{0%,100%{transform:none}20%{transform:translate3d(-3%,2%,0)}40%{transform:translate3d(2%,-3%,0)}60%{transform:translate3d(-2%,-1%,0)}80%{transform:translate3d(3%,3%,0)}}
@@ -130,12 +138,14 @@ html.calma.lg-sale #lg-carga{opacity:0;transition:opacity .25s ease}
 #lg-carga .lg-foto{display:none}
 html.lg-carga-js #lg-carga .lg-foto{display:block;position:absolute;left:50%;top:50%;width:100vw;height:100vh;margin:-50vh 0 0 -50vw;
   transform:translateY(5vmax) rotate(-30deg);overflow:hidden;background:#030304}
-#lg-carga .lg-img{position:absolute;inset:0;background:#030304 center/cover no-repeat;opacity:0;scale:1.06;
-  transition:opacity .5s ease,scale 4.5s cubic-bezier(.2,.7,.2,1)}
+#lg-carga .lg-img{position:absolute;inset:0;background:#030304 center/cover no-repeat;opacity:0;scale:1.04;will-change:opacity,scale;
+  transition:opacity 1.4s cubic-bezier(.3,0,.2,1),scale 6s cubic-bezier(.2,.6,.2,1)}
 #lg-carga.con-foto .lg-img{opacity:1;scale:1}
 #lg-carga .lg-velo{position:absolute;inset:0;box-shadow:inset 0 0 200px 80px #030304;
   background:linear-gradient(180deg,rgba(3,3,4,.6) 0,rgba(3,3,4,0) 30%,rgba(3,3,4,0) 72%,rgba(3,3,4,.85) 94%,#030304)}
-#lg-carga .lg-grano{position:absolute;left:-10%;top:-10%;width:120%;height:120%;opacity:.16;mix-blend-mode:overlay;animation:lg-grano .6s steps(5) infinite}
+#lg-carga .lg-grano{position:absolute;left:-10%;top:-10%;width:120%;height:120%;opacity:0;mix-blend-mode:overlay;transition:opacity 1.2s ease 1s;
+  animation:lg-grano .6s steps(5) 1.6s infinite}
+#lg-carga.con-foto .lg-grano{opacity:.16}
 @media (max-width:899.98px){#lg-carga .lg-velo{box-shadow:inset 0 0 70px 12px #030304}}
 </style>
 <script>
@@ -289,13 +299,22 @@ html.lg-carga-js #lg-carga .lg-foto{display:block;position:absolute;left:50%;top
   var fmt = innerWidth / Math.max(1, innerHeight) < 0.8 ? 'cel' : 'pc';
   var d = new Date(), dia = d.getUTCFullYear() * 1e4 + (d.getUTCMonth() + 1) * 100 + d.getUTCDate();
   var src = C.r2 + '/carga/' + C.t + '/' + nom + '-' + fmt + '.webp?d=' + dia;
-  var im = new Image();
-  im.onload = function () {
+  // 🌅 de a poco: nada aparece hasta que están las letras (si tardan, a los 0,9 s igual)
+  if (quieto) el.classList.add('quieto');
+  var va = function () { el.classList.add('va'); };
+  try { if (document.fonts && document.fonts.ready) document.fonts.ready.then(va); else va(); } catch (e) { va(); }
+  setTimeout(va, 900);
+  // y la foto, decodificada ANTES de mostrarla: decodificar 1920 px en el cuadro que entra es lo que tironea
+  var im = new Image(), puesta = false;
+  var mostrar = function () {
+    if (puesta) return; puesta = true;
     el.querySelector('.lg-img').style.backgroundImage = 'url("' + src + '")';
     el.querySelector('.lg-t1').style.setProperty('--q', 'url("' + src + '")');
-    el.classList.add('con-foto');
+    requestAnimationFrame(function () { requestAnimationFrame(function () { el.classList.add('con-foto'); }); });
   };
+  im.onload = function () { if (!im.decode) mostrar(); };
   im.src = src;
+  if (im.decode) im.decode().then(mostrar, function () {});
   var barra = el.querySelector('.lg-barra i'), pct = el.querySelector('.lg-pct'), tip = el.querySelector('.lg-tip');
   var TIPS = ['Cargando el ranking', 'Preparando las llaves', 'Contando los puntos', 'Buscando tus tarjetas'];
   var k = 0, p = 0, ya = false, pre = false;
@@ -314,7 +333,8 @@ html.lg-carga-js #lg-carga .lg-foto{display:block;position:absolute;left:50%;top
     if (MIN) meta = Math.min(meta, t / MIN);
     p += (meta - p) * 0.25;
     if (meta >= 1 && p > 0.995) p = 1;
-    barra.style.width = (p * 100).toFixed(1) + '%';
+    // con transform y una transición: si la página está ocupada armándose, la barra sigue suave en vez de saltar
+    barra.style.transform = 'scaleX(' + p.toFixed(3) + ')';
     pct.textContent = Math.round(p * 100) + '%';
     if (listo && p >= 1 && t >= MIN && !ya) {
       ya = true; clearInterval(tic); clearInterval(tt);
@@ -322,7 +342,7 @@ html.lg-carga-js #lg-carga .lg-foto{display:block;position:absolute;left:50%;top
       setTimeout(function () {
         h.classList.add('lg-sale');
         setTimeout(function () { h.classList.add('lg-fuera'); }, quieto ? 300 : 1700);
-      }, quieto ? 80 : 250);
+      }, quieto ? 80 : 450);   // que la barra llegue a llenarse a la vista antes del corte
     }
   }, 60);
 })();
