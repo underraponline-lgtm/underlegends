@@ -142,7 +142,7 @@
   },
   "Artezzy": {
    "competitivo": "a0c741d6f29a:624f5e322311",
-   "pais": "e55963613ad7:733ce66bf5fa",
+   "pais": "e9a99d8da764:733ce66bf5fa",
    "servidor": "8b06f03c5c5c:2415c901692f:655d26",
    "temporada": "fecf719118e1:7a510334494e"
   },
@@ -294,7 +294,7 @@
   },
   "Cinexfilo": {
    "competitivo": "ffe827ea1c1f:624f5e322311",
-   "pais": "9fc550c9e1c7:733ce66bf5fa",
+   "pais": "f509e275345e:733ce66bf5fa",
    "servidor": "e21349d1df03:2415c901692f:6a5f1a",
    "temporada": "2e118663d2df:7a510334494e"
   },
@@ -427,7 +427,7 @@
   },
   "Dios": {
    "competitivo": "42b533c582ed:624f5e322311",
-   "pais": "954d3b6b97e7:733ce66bf5fa",
+   "pais": "648a30c52abc:733ce66bf5fa",
    "servidor": "7a9ec3f25288:2415c901692f:514274",
    "temporada": "5789bf9fcbf0:7a510334494e"
   },
@@ -452,7 +452,7 @@
   },
   "Dynoco": {
    "competitivo": "534b38d0dec2:624f5e322311",
-   "pais": "b71ae208b907:733ce66bf5fa",
+   "pais": "cdd3cd3b3c52:733ce66bf5fa",
    "servidor": "f2fa2c8783db:2415c901692f:3c4903",
    "temporada": "232fcdb8e198:7a510334494e"
   },
@@ -909,7 +909,8 @@
   "Kourier": {
    "competitivo": "2c74d87ab72f:624f5e322311",
    "pais": "bed065fbf65b:733ce66bf5fa",
-   "servidor": "44dcc594c241:2415c901692f:cda7f5"
+   "servidor": "44dcc594c241:2415c901692f:c2c488",
+   "temporada": "01665683522c:7a510334494e"
   },
   "Kravitz": {
    "competitivo": "aaec0b668e1d:624f5e322311",
@@ -1085,7 +1086,7 @@
   "MCNadie": {
    "competitivo": "318e06073762:624f5e322311",
    "pais": "fdc989cbc43c:733ce66bf5fa",
-   "servidor": "f9a6bbb6f96c:2415c901692f:15af16",
+   "servidor": "f9a6bbb6f96c:2415c901692f:74d240",
    "temporada": "d9691ecce147:7a510334494e"
   },
   "MCO": {
@@ -1178,7 +1179,7 @@
   },
   "Mc arepa": {
    "competitivo": "2a1981e9262d:624f5e322311",
-   "pais": "12da8d1a07b4:733ce66bf5fa",
+   "pais": "08712ea53b23:733ce66bf5fa",
    "servidor": "78c18a6a3dbe:2415c901692f:abdb4a",
    "temporada": "23214fcc4295:7a510334494e"
   },
@@ -1226,7 +1227,7 @@
   },
   "Molt": {
    "competitivo": "d52daca288b6:624f5e322311",
-   "pais": "bf24be7d74ff:733ce66bf5fa",
+   "pais": "dc919194c3c6:733ce66bf5fa",
    "servidor": "171ef6509ab7:2415c901692f:1a1450",
    "temporada": "17ed72dad813:7a510334494e"
   },
@@ -1253,7 +1254,7 @@
   "Mr Still Ballin": {
    "competitivo": "e872ead27e84:624f5e322311",
    "pais": "349734fe6acc:733ce66bf5fa",
-   "servidor": "0df2a7dc5bae:2415c901692f:c0bf45",
+   "servidor": "0df2a7dc5bae:2415c901692f:ed8290",
    "temporada": "96a410a3455d:7a510334494e"
   },
   "Mspedrito": {
@@ -1644,7 +1645,7 @@
   },
   "Sin Limites": {
    "competitivo": "ad4d2d27be71:624f5e322311",
-   "pais": "873961aa2408:733ce66bf5fa",
+   "pais": "6631cdaf2927:733ce66bf5fa",
    "servidor": "29782417df7a:2415c901692f:3d0a1b",
    "temporada": "b75f3a23aff0:7a510334494e"
   },
@@ -1734,7 +1735,7 @@
    "servidor": "a44b3afc37b9:2415c901692f:3544cb"
   },
   "Tema": {
-   "servidor": "8c84bee8607e:2415c901692f:43d041"
+   "servidor": "8c84bee8607e:2415c901692f:9b3a50"
   },
   "Tenor": {
    "competitivo": "098be4c24ee8:624f5e322311",
@@ -2108,5 +2109,5 @@
    "servidor": "7f8885a35a6d:2415c901692f:93a344"
   }
  },
- "cuando": "2026-11-13T04:53:22+00:00"
+ "cuando": "2026-11-13T05:04:18+00:00"
 }
