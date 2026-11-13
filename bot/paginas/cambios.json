@@ -11,6 +11,17 @@
  ],
  "cambios": [
     {
+        "version": "5.01",
+        "dia": "2026-11-13",
+        "cuando": "2026-11-13T02:48:00-05:00",
+        "titulo": "La campana, rehecha",
+        "items": [
+            "Arriba, **Para hacer**: si alguien te retó a una batalla libre, aparece ahí, y cuando ya se jugó dices quién ganó sin salir de la campana.",
+            "Lo demás va **por día** (Hoy, Ayer, Esta semana) y con **filtros**: Gente, Ranking, Pase y Liga.",
+            "El ícono de cada aviso va en la esquina de la cara, y los Puntos de Tienda que ganaste se ven en una pastilla."
+        ]
+    },
+    {
         "version": "5.00",
         "dia": "2026-11-13",
         "cuando": "2026-11-13T02:45:00-05:00",
