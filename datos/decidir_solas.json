@@ -4540,6 +4540,27 @@
     "baggio🇮🇹"
    ],
    "escribio": {}
+  },
+  {
+   "id": "9e777185f4",
+   "tipo": "Nombre desconocido",
+   "sec": "PANDILLAS DE RAP VOL.1 · ACAD · 13/11 · #629",
+   "que": "¿Quién es «Maximiliano calvo 🇲🇽»?",
+   "r": "Es Emilio Alva (en este evento)",
+   "regla": "R21 · la cuenta que se anotó así para ese evento es de alguien de la Lista que esa noche no jugó con su nombre",
+   "rk": "R21",
+   "por": "el ciclo",
+   "porque": "la cuenta @emilioalvauwu (en Discord: «Lic Erizardo») · en la Lista: Emilio Alva se anotó como «Maximiliano calvo» para ese evento, no es staff de ACAD y esa noche no jugó con su nombre",
+   "t": 1794596910920,
+   "filas": [
+    1345
+   ],
+   "variantes": [
+    "Maximiliano calvo 🇲🇽"
+   ],
+   "escribio": {
+    "quien": "PANDILLAS DE RAP VOL.1 · ACAD · 13/11 · Maximiliano calvo 🇲🇽"
+   }
   }
  ],
  "deshechas": []

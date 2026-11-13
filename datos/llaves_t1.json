@@ -53826,5 +53826,192 @@
    "min": 89,
    "v": 1
   }
+ },
+ "629": {
+  "dia": "2026-11-13",
+  "escala": "16+",
+  "fecha": "13/11",
+  "links": [
+   "https://discord.com/channels/765045834647339038/1309234583023124531/1570854212542144554"
+  ],
+  "n": 629,
+  "nombre": "PANDILLAS DE RAP VOL.1",
+  "participantes": 21,
+  "rondas": [
+   {
+    "b": [
+     [
+      [
+       "Monet",
+       "Leyenda",
+       "Dominick",
+       "Calíz"
+      ],
+      "Monet, Leyenda",
+      "triple (4 bandas, pasan 2); también pasa: Leyenda.X5 🇦🇷; Revivido: Damián 🇵🇪"
+     ],
+     [
+      [
+       "Chuwin",
+       "Oasis",
+       "yinn",
+       "Molusco"
+      ],
+      "Chuwin, Oasis",
+      "triple (4 bandas, pasan 2); también pasa: Park-Ji Sung🇰🇷; Drafteado: Chuwin 🇳🇮; Revivido: yinn"
+     ],
+     [
+      [
+       "Zanti",
+       "Keider",
+       "Jupiter",
+       "Maximiliano calvo 🇲🇽"
+      ],
+      "Zanti, Keider",
+      "triple (4 bandas, pasan 2); también pasa: KEIDER🇧🇷; Drafteado: Zanti🇦🇷"
+     ],
+     [
+      [
+       "Miniboy",
+       "MaYeuTyK",
+       "Marcos",
+       "Trueno",
+       "Molusco",
+       "Dominick",
+       "yinn"
+      ],
+      "Miniboy, MaYeuTyK",
+      "triple (7 bandas, pasan 2); también pasa: MaYeuTyK 🇺🇾"
+     ]
+    ],
+    "r": "Cuartos"
+   },
+   {
+    "b": [
+     [
+      [
+       "Leyenda, Monet",
+       "Park ji sunk🇰🇷, Chuwin"
+      ],
+      "Leyenda, Monet",
+      "ganador según #veredictos"
+     ],
+     [
+      [
+       "MaYeuTyK, Miniboy",
+       "Zanti, Keider"
+      ],
+      "MaYeuTyK, Miniboy",
+      ""
+     ]
+    ],
+    "r": "Semifinales"
+   },
+   {
+    "b": [
+     [
+      [
+       "MaYeuTyK, Miniboy, Zanti",
+       "Leyenda, Chuwin, Oasis"
+      ],
+      "MaYeuTyK, Miniboy, Zanti",
+      ""
+     ]
+    ],
+    "r": "Final"
+   }
+  ],
+  "sv": "ACAD",
+  "tabla": [
+   [
+    "Zanti",
+    "Campeón",
+    5958
+   ],
+   [
+    "Chuwin",
+    "Subcampeón",
+    5125
+   ],
+   [
+    "Molusco",
+    "Cuartos",
+    3750
+   ],
+   [
+    "yinn",
+    "Cuartos",
+    3750
+   ],
+   [
+    "MaYeuTyK",
+    "Campeón",
+    3333
+   ],
+   [
+    "Miniboy",
+    "Campeón",
+    3333
+   ],
+   [
+    "Keider",
+    "Semifinal",
+    2625
+   ],
+   [
+    "Monet",
+    "Semifinal",
+    2625
+   ],
+   [
+    "Park ji sunk🇰🇷",
+    "Semifinal",
+    2625
+   ],
+   [
+    "Calíz",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Dominick",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Jupiter",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Leyenda",
+    "Subcampeón",
+    2500
+   ],
+   [
+    "Marcos",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Maximiliano calvo 🇲🇽",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Oasis",
+    "Subcampeón",
+    2500
+   ],
+   [
+    "Trueno",
+    "Cuartos",
+    2500
+   ]
+  ],
+  "ver": {
+   "min": 65,
+   "v": 1
+  }
  }
 }

@@ -46385,5 +46385,275 @@
    ]
   ],
   "v": 2
+ },
+ "629": {
+  "antes": {
+   "Calíz": [
+    45,
+    53,
+    false
+   ],
+   "Chuwin": [
+    505,
+    458,
+    true
+   ],
+   "Dominick": [
+    262,
+    54,
+    true
+   ],
+   "Jupiter": [
+    58,
+    71,
+    false
+   ],
+   "Keider": [
+    52,
+    63,
+    false
+   ],
+   "Leyenda": [
+    295,
+    157,
+    true
+   ],
+   "MaYeuTyK": [
+    49,
+    59,
+    false
+   ],
+   "Marcos": [
+    87,
+    110,
+    false
+   ],
+   "Miniboy": [
+    20,
+    22,
+    false
+   ],
+   "Molusco": [
+    27,
+    30,
+    false
+   ],
+   "Monet": [
+    307,
+    176,
+    true
+   ],
+   "Oasis": [
+    2,
+    2,
+    false
+   ],
+   "Trueno": [
+    625,
+    610,
+    true
+   ],
+   "Zanti": [
+    744,
+    744,
+    true
+   ],
+   "yinn": [
+    17,
+    18,
+    false
+   ]
+  },
+  "canal": "925213294703300649",
+  "duelos": [
+   [
+    "Monet",
+    "Dominick",
+    "Monet"
+   ],
+   [
+    "Monet",
+    "Calíz",
+    "Monet"
+   ],
+   [
+    "Chuwin",
+    "yinn",
+    "Chuwin"
+   ],
+   [
+    "Chuwin",
+    "Molusco",
+    "Chuwin"
+   ],
+   [
+    "Zanti",
+    "Jupiter",
+    "Zanti"
+   ],
+   [
+    "Zanti",
+    "Maximiliano calvo 🇲🇽",
+    "Zanti"
+   ],
+   [
+    "Miniboy",
+    "Marcos",
+    "Miniboy"
+   ],
+   [
+    "Miniboy",
+    "Trueno",
+    "Miniboy"
+   ],
+   [
+    "Miniboy",
+    "Molusco",
+    "Miniboy"
+   ],
+   [
+    "Miniboy",
+    "Dominick",
+    "Miniboy"
+   ],
+   [
+    "Miniboy",
+    "yinn",
+    "Miniboy"
+   ],
+   [
+    "Leyenda, Monet",
+    "Park ji sunk🇰🇷, Chuwin",
+    "Leyenda, Monet"
+   ],
+   [
+    "MaYeuTyK, Miniboy",
+    "Zanti, Keider",
+    "MaYeuTyK, Miniboy"
+   ],
+   [
+    "MaYeuTyK, Miniboy, Zanti",
+    "Leyenda, Chuwin, Oasis",
+    "MaYeuTyK, Miniboy, Zanti"
+   ]
+  ],
+  "ev_antes": {
+   "Calíz": 32,
+   "Chuwin": 1,
+   "Dominick": 41,
+   "Jupiter": 14,
+   "Keider": 19,
+   "Leyenda": 12,
+   "MaYeuTyK": 17,
+   "Marcos": 10,
+   "Miniboy": 58,
+   "Molusco": 27,
+   "Monet": 8,
+   "Oasis": 42,
+   "Trueno": 1,
+   "Zanti": 1,
+   "yinn": 35
+  },
+  "fecha": "13/11",
+  "firma": "91d7432f032815c9",
+  "msg": "1570870557455417427",
+  "nombre": "PANDILLAS DE RAP VOL.1",
+  "num": 629,
+  "participantes": 21,
+  "sello": {
+   "MaYeuTyK": "0d69f3e02d83:7a510334494e",
+   "Miniboy": "a367eaa214c8:7a510334494e",
+   "Zanti": ""
+  },
+  "sv": "ACAD",
+  "t": "2026-11-13T18:54:17Z",
+  "tabla": [
+   [
+    "Zanti",
+    "Campeón",
+    5958
+   ],
+   [
+    "Chuwin",
+    "Subcampeón",
+    5125
+   ],
+   [
+    "yinn",
+    "Cuartos",
+    3750
+   ],
+   [
+    "Molusco",
+    "Cuartos",
+    3750
+   ],
+   [
+    "MaYeuTyK",
+    "Campeón",
+    3333
+   ],
+   [
+    "Miniboy",
+    "Campeón",
+    3333
+   ],
+   [
+    "Park ji sunk🇰🇷",
+    "Semifinal",
+    2625
+   ],
+   [
+    "Keider",
+    "Semifinal",
+    2625
+   ],
+   [
+    "Monet",
+    "Semifinal",
+    2625
+   ],
+   [
+    "Leyenda",
+    "Subcampeón",
+    2500
+   ],
+   [
+    "Oasis",
+    "Subcampeón",
+    2500
+   ],
+   [
+    "Dominick",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Calíz",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Jupiter",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Maximiliano calvo 🇲🇽",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Marcos",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Trueno",
+    "Cuartos",
+    2500
+   ]
+  ],
+  "v": 2
  }
 }

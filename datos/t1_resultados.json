@@ -4072,6 +4072,23 @@
   [628, "12/11", "FFA", "16+", "Riolu", "es", "Cuartos", 1250, "", 1250, "Nadie siguió"],
   [628, "12/11", "FFA", "16+", "romeo", "mx", "Cuartos", 1250, "", 1250, "Nadie siguió"],
   [628, "12/11", "FFA", "16+", "Kuni", "ar", "Cuartos", 1250, "", 1250, "Nadie siguió"],
-  [628, "12/11", "FFA", "16+", "Paria", "ar", "Cuartos", 1250, "", 1250, "Ganó en equipo y no siguió"]
+  [628, "12/11", "FFA", "16+", "Paria", "ar", "Cuartos", 1250, "", 1250, "Ganó en equipo y no siguió"],
+  [629, "13/11", "ACAD", "16+", "Zanti", "ar", "Campeón", 5958, "", 5958, "Drafteado"],
+  [629, "13/11", "ACAD", "16+", "Chuwin", "es", "Subcampeón", 5125, "", 5125, "Drafteado"],
+  [629, "13/11", "ACAD", "16+", "yinn", "mx", "Cuartos", 3750, "", 3750, "(R)"],
+  [629, "13/11", "ACAD", "16+", "Molusco", "ar", "Cuartos", 3750, "", 3750, "(R)"],
+  [629, "13/11", "ACAD", "16+", "MaYeuTyK", "uy", "Campeón", 3333, "", 3333],
+  [629, "13/11", "ACAD", "16+", "Miniboy", "cl", "Campeón", 3333, "", 3333],
+  [629, "13/11", "ACAD", "16+", "Park ji sunk🇰🇷", "", "Semifinal", 2625, "", 2625],
+  [629, "13/11", "ACAD", "16+", "Keider", "ve", "Semifinal", 2625, "", 2625],
+  [629, "13/11", "ACAD", "16+", "Monet", "mx", "Semifinal", 2625, "", 2625, "Ganó en equipo y no siguió"],
+  [629, "13/11", "ACAD", "16+", "Leyenda", "ar", "Subcampeón", 2500, "", 2500],
+  [629, "13/11", "ACAD", "16+", "Oasis", "cl", "Subcampeón", 2500, "", 2500],
+  [629, "13/11", "ACAD", "16+", "Dominick", "pe", "Cuartos", 2500, "", 2500],
+  [629, "13/11", "ACAD", "16+", "Calíz", "mx", "Cuartos", 2500, "", 2500],
+  [629, "13/11", "ACAD", "16+", "Jupiter", "mx", "Cuartos", 2500, "", 2500],
+  [629, "13/11", "ACAD", "16+", "Maximiliano calvo 🇲🇽", "", "Cuartos", 2500, "", 2500],
+  [629, "13/11", "ACAD", "16+", "Marcos", "es", "Cuartos", 2500, "", 2500],
+  [629, "13/11", "ACAD", "16+", "Trueno", "ar", "Cuartos", 2500, "", 2500]
  ]
 }

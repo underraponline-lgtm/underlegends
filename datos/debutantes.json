@@ -1694,6 +1694,17 @@
    "vence": "2026-11-06T00:12:24+00:00",
    "vencido": false
   },
+  "Maximiliano calvo": {
+   "con": null,
+   "cumplido": "",
+   "debut": "2026-11-13T17:33:49+00:00",
+   "did": "",
+   "evento": "PANDILLAS DE RAP VOL.1",
+   "n": 629,
+   "sv": "ACAD",
+   "vence": "2026-11-20T17:33:49+00:00",
+   "vencido": false
+  },
   "Mc arepa": {
    "avisado_cumplido": "2026-10-26",
    "con": 527,
@@ -2033,6 +2044,17 @@
    "sv": "CH",
    "vence": "2026-10-27T22:07:15+00:00",
    "vencido": true
+  },
+  "Park ji sunk": {
+   "con": null,
+   "cumplido": "",
+   "debut": "2026-11-13T17:33:49+00:00",
+   "did": "",
+   "evento": "PANDILLAS DE RAP VOL.1",
+   "n": 629,
+   "sv": "ACAD",
+   "vence": "2026-11-20T17:33:49+00:00",
+   "vencido": false
   },
   "Pipe": {
    "avisado": "2026-10-23",
