@@ -4,7 +4,8 @@
 // estando abajo es algo tonto porque ya están arriba»), y El Elegido se mudó a Encuestas.
 import { useEffect, useId, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import { limpio, nuevaQue, num } from './liga.js';
-import { Cara, Chevron, Compartir, Ico, Poster, Sec, accion, enlace, promoAbierta, subirSiEsta } from './piezas.jsx';
+import { Cara, Chevron, Compartir, Ico, Poster, Sec, accion, enlace, https, promoAbierta, subirSiEsta } from './piezas.jsx';
+import { RED_NOMBRE, RED_SVG } from './redes_ico.jsx';
 import { Buscar, CaraDc, CaraH, CrewCirculo, MENU, MENU_TODO, Orbe, QUE_ES, pubNuevas } from './arriba.jsx';
 import { abrirVideo } from './video.jsx';
 import { YoMenu } from './yomenu.jsx';
@@ -255,15 +256,42 @@ export function Merch({ liga }) {
 // ── el pie ────────────────────────────────────────────────────────────────────────────────────────
 // sin «10.143 personas en 5 servidores · 346 verificados»: es lo mismo que La Liga en números, justo arriba (Dlx,
 // 01/10/2026: «hay info que se repite»)
+// 🧱 REHECHO EL 13/11/2026 (Dlx, a la maqueta de tres: «La C diría pero menos cosas… es muy grande esa parte de abajo y
+// asegúrate que todo tenga su ícono de verdad… de las redes sociales»): UNA fila con la marca, los links y las redes de
+// Under Legends con su ícono (`RED_SVG`), y la temporada como el borde de arriba del pie —se llena con los días— y en la
+// línea de la marca («Temporada 1 · día 53 de 101»). Sin las columnas ni los números grandes de la maqueta, y del mismo
+// alto que el de antes: medido, una franja aparte lo subía de 94 a 139 px a 1333 de ancho
+const DIA_MS = 864e5;
+const fechaLocal = (s) => { const m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(String(s || '')); return m ? new Date(+m[1], m[2] - 1, +m[3]) : null; };
+function diaDeTemporada(fase, ahora = new Date()) {
+  const a = fechaLocal(fase && fase.arranca), b = fechaLocal(fase && fase.termina);
+  if (!a || !b || b < a) return null;
+  const total = Math.round((b - a) / DIA_MS) + 1;
+  const dia = Math.floor((ahora - a) / DIA_MS) + 1;
+  if (dia < 1 || dia > total) return null;
+  return { dia, total, fin: b };
+}
+const MES_CORTO = ['ene', 'feb', 'mar', 'abr', 'may', 'jun', 'jul', 'ago', 'sep', 'oct', 'nov', 'dic'];
 export function Pie({ liga }) {
+  const T = diaDeTemporada(liga.d && liga.d.fase);
+  const redes = ((liga.d && liga.d.redes) || []).filter((r) => r && RED_SVG[r[0]] && https(r[1]));
   return (
-    <footer className="pie negra">
-      <div className="pie-marca"><img alt="" src="/ul.png" /><span>UNDER LEGENDS<small>LIGA GLOBAL · {liga.tempLarga}</small></span></div>
-      <nav><a href="#/guia">Guía</a><a href="#/publicaciones">Publicaciones</a><a href="#/tienda">Tienda</a><a href="#/socios">Socios</a>
-        <a href="#/cambios">Cambios</a><a href="/privacidad.html">Privacidad</a><a href="/terminos.html">Términos</a></nav>
-      {/* 🗓️ desde cuándo existe (Dlx, 07/10/2026: «cuándo fue creado el proyecto… el mes, el día y el año»): el primer
-          commit del proyecto, «Estado inicial: generadores andando en Windows», 29/07/2026 a las 2:04 AM ET */}
-      <small>Los datos se actualizan solos cada media hora.<br />Creado el 29 de julio de 2026.</small>
+    <footer className="pie negra pie2">
+      {T ? <span className="pie2-reg" aria-hidden="true"><i style={{ width: (100 * T.dia / T.total).toFixed(1) + '%' }} /></span> : null}
+      <div className="pie2-fila">
+        {/* 🗓️ desde cuándo existe (Dlx, 07/10/2026: «cuándo fue creado el proyecto… el mes, el día y el año»): el primer
+            commit del proyecto, «Estado inicial: generadores andando en Windows», 29/07/2026 a las 2:04 AM ET */}
+        <div className="pie-marca"><img alt="" src="/ul.png" /><span>UNDER LEGENDS
+          <small title={'Creado el 29 de julio de 2026' + (T ? ' · la temporada cierra el ' + T.fin.getDate() + ' ' + MES_CORTO[T.fin.getMonth()] : '')}>
+            {T ? liga.tempLarga.toLowerCase().replace(/^t/, 'T') + ' · día ' + T.dia + ' de ' + T.total : 'Creado el 29 de julio de 2026'}</small></span></div>
+        <nav><a href="#/guia">Guía</a><a href="#/publicaciones">Publicaciones</a><a href="#/tienda">Tienda</a><a href="#/socios">Socios</a>
+          <a href="#/cambios">Cambios</a><a href="/privacidad.html">Privacidad</a><a href="/terminos.html">Términos</a></nav>
+        {redes.length ? (
+          <span className="pie2-redes">{redes.map(([r, u]) => (
+            <a key={u} href={https(u)} target="_blank" rel="noopener noreferrer" title={RED_NOMBRE[r] || r} aria-label={RED_NOMBRE[r] || r}>
+              <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true">{RED_SVG[r]}</svg></a>))}</span>
+        ) : null}
+      </div>
     </footer>
   );
 }
