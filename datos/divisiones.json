@@ -2404,23 +2404,6 @@
      ]
     ],
     [
-     "Marley🇦🇷",
-     1001,
-     2,
-     4,
-     2,
-     [
-      [
-       -14,
-       "Abyssus"
-      ],
-      [
-       15,
-       "Andres"
-      ]
-     ]
-    ],
-    [
      "erpi",
      1001,
      2,
@@ -2779,19 +2762,6 @@
      ]
     ],
     [
-     "Spartan",
-     986,
-     1,
-     4,
-     2,
-     [
-      [
-       -14,
-       "Tuca"
-      ]
-     ]
-    ],
-    [
      "dxg",
      985,
      5,
@@ -2830,6 +2800,19 @@
       [
        -7,
        "Oasis"
+      ]
+     ]
+    ],
+    [
+     "Campoy",
+     984,
+     1,
+     4,
+     2,
+     [
+      [
+       -16,
+       "Trot"
       ]
      ]
     ],
@@ -3583,6 +3566,27 @@
       [
        18,
        "Koffi"
+      ]
+     ]
+    ],
+    [
+     "Gocho",
+     946,
+     4,
+     4,
+     0,
+     [
+      [
+       -15,
+       "nemmii_as"
+      ],
+      [
+       -8,
+       "Liberia"
+      ],
+      [
+       -16,
+       "LitKunai"
       ]
      ]
     ],
@@ -4542,6 +4546,23 @@
      ]
     ],
     [
+     "Marley🇦🇷",
+     1001,
+     2,
+     5,
+     2,
+     [
+      [
+       -14,
+       "Abyssus"
+      ],
+      [
+       15,
+       "Andres"
+      ]
+     ]
+    ],
+    [
      "Baltrip",
      1000,
      2,
@@ -5494,6 +5515,19 @@
      ]
     ],
     [
+     "Spartan",
+     986,
+     1,
+     5,
+     2,
+     [
+      [
+       -14,
+       "Tuca"
+      ]
+     ]
+    ],
+    [
      "Xowee",
      986,
      1,
@@ -5787,19 +5821,6 @@
       [
        -16,
        "Mito"
-      ]
-     ]
-    ],
-    [
-     "Campoy",
-     984,
-     1,
-     5,
-     2,
-     [
-      [
-       -16,
-       "Trot"
       ]
      ]
     ],
@@ -7753,27 +7774,6 @@
      ]
     ],
     [
-     "Gocho",
-     946,
-     4,
-     5,
-     2,
-     [
-      [
-       -15,
-       "nemmii_as"
-      ],
-      [
-       -8,
-       "Liberia"
-      ],
-      [
-       -16,
-       "LitKunai"
-      ]
-     ]
-    ],
-    [
      "Drexx",
      942,
      34,
@@ -8474,7 +8474,7 @@
   "Cajita": 3,
   "Calíz": 3,
   "Camila": 0,
-  "Campoy": 0,
+  "Campoy": 3,
   "Cannox": 0,
   "Carlosmo": 9,
   "Carlosss": 15,
@@ -8482,7 +8482,7 @@
   "Cazafla anti cazanova🇭🇹": 0,
   "Char": 0,
   "Chase": 11,
-  "Chente": 0,
+  "Chente": 3,
   "Choka": 0,
   "Chop": 7,
   "Chuwin": 0,
@@ -8604,7 +8604,7 @@
   "Goohan MVP": 0,
   "Gosu Z": 0,
   "Guaicurús🇰🇷": 3,
-  "Guess": 8,
+  "Guess": 9,
   "Gus": 3,
   "Gustavo Urrutia Perez 🇲🇽": 0,
   "Gutty": 0,
@@ -8706,7 +8706,7 @@
   "LKS 🇨🇱": 0,
   "LOCOLOCO🇪🇸": 0,
   "LOLOELGAUCHO 🇦🇷": 0,
-  "LRS": 3,
+  "LRS": 6,
   "LRS LA MARIHUANA🇵🇰": 0,
   "LSO": 0,
   "LUIS": 3,
@@ -8762,7 +8762,7 @@
   "Manteca mantecosa 🇨🇾": 0,
   "Marcos": 3,
   "Mark98": 6,
-  "Marley🇦🇷": 3,
+  "Marley🇦🇷": 0,
   "Marto AR": 0,
   "Masino": 7,
   "Mathhias": 7,
@@ -8878,7 +8878,7 @@
   "Respawn": 0,
   "Revo": 0,
   "Reyes": 0,
-  "ReyexXMC": 3,
+  "ReyexXMC": 0,
   "Richard": 3,
   "Riolu": 4,
   "Risa": 0,
@@ -8933,7 +8933,7 @@
   "Soneto": 2,
   "Sosa": 0,
   "Soulb": 7,
-  "Spartan": 3,
+  "Spartan": 0,
   "Steven🇨🇴": 0,
   "Stt🇮🇨": 0,
   "Swid": 0,
@@ -9013,7 +9013,6 @@
   "alejozz": 0,
   "araya": 0,
   "atari": 0,
-  "baggio🇮🇹": 3,
   "bastty": 0,
   "benjadsantis": 0,
   "botrax": 0,
@@ -9163,7 +9162,7 @@
   "Cajita": 5,
   "Calíz": 5,
   "Camila": 5,
-  "Campoy": 5,
+  "Campoy": 4,
   "Cannox": 5,
   "Carlosmo": 2,
   "Carlosss": 0,
@@ -9288,7 +9287,7 @@
   "Ghost": 5,
   "Gian": 5,
   "Global Hustler": 5,
-  "Gocho": 5,
+  "Gocho": 4,
   "Gonorrea": 5,
   "Goohan MVP": 5,
   "Gosu Z": 5,
@@ -9451,7 +9450,7 @@
   "Manteca mantecosa 🇨🇾": 5,
   "Marcos": 5,
   "Mark98": 3,
-  "Marley🇦🇷": 4,
+  "Marley🇦🇷": 5,
   "Marto AR": 5,
   "Masino": 3,
   "Mathhias": 3,
@@ -9567,7 +9566,7 @@
   "Respawn": 5,
   "Revo": 5,
   "Reyes": 5,
-  "ReyexXMC": 4,
+  "ReyexXMC": 5,
   "Richard": 4,
   "Riolu": 4,
   "Risa": 5,
@@ -9622,7 +9621,7 @@
   "Soneto": 5,
   "Sosa": 5,
   "Soulb": 3,
-  "Spartan": 4,
+  "Spartan": 5,
   "Steven🇨🇴": 5,
   "Stt🇮🇨": 5,
   "Swid": 5,
@@ -9702,7 +9701,6 @@
   "alejozz": 5,
   "araya": 5,
   "atari": 5,
-  "baggio🇮🇹": 4,
   "bastty": 5,
   "benjadsantis": 5,
   "botrax": 5,
@@ -9998,7 +9996,7 @@
   ],
   [
    "2026-09-28",
-   "PRAISERIZA",
+   "Juasmio",
    4
   ],
   [
@@ -10058,22 +10056,22 @@
   ],
   [
    "2026-09-28",
-   "Dyzz",
-   4
-  ],
-  [
-   "2026-09-28",
    "Ragna",
    4
   ],
   [
    "2026-09-28",
-   "Gocho",
+   "Dyzz",
    4
   ],
   [
    "2026-09-28",
    "Mosquitrap 🦟",
+   4
+  ],
+  [
+   "2026-09-28",
+   "Gocho",
    4
   ],
   [
@@ -10098,7 +10096,7 @@
   ],
   [
    "2026-09-28",
-   "Crk",
+   "Eclipsito",
    4
   ],
   [
@@ -10123,7 +10121,7 @@
   ],
   [
    "2026-09-28",
-   "ReyexXMC",
+   "ARDEAN",
    4
   ],
   [
@@ -10173,7 +10171,7 @@
   ],
   [
    "2026-09-28",
-   "baggio🇮🇹",
+   "Chente",
    4
   ],
   [
@@ -10203,6 +10201,11 @@
   ],
   [
    "2026-10-05",
+   "PRAISERIZA",
+   4
+  ],
+  [
+   "2026-10-05",
    "Agus",
    4
   ],
@@ -10223,17 +10226,17 @@
   ],
   [
    "2026-10-05",
-   "ONZASS",
-   4
-  ],
-  [
-   "2026-10-05",
    "Xclusivo",
    4
   ],
   [
    "2026-10-05",
    "Tam",
+   4
+  ],
+  [
+   "2026-10-05",
+   "Delux",
    4
   ],
   [
@@ -10248,7 +10251,7 @@
   ],
   [
    "2026-10-05",
-   "Eclipsito",
+   "EIDP",
    4
   ],
   [
@@ -10273,16 +10276,6 @@
   ],
   [
    "2026-10-05",
-   "Tenor",
-   4
-  ],
-  [
-   "2026-10-05",
-   "EIDP",
-   4
-  ],
-  [
-   "2026-10-05",
    "Presagio",
    4
   ],
@@ -10299,6 +10292,16 @@
   [
    "2026-10-05",
    "SINTEXT",
+   4
+  ],
+  [
+   "2026-10-05",
+   "Chase",
+   4
+  ],
+  [
+   "2026-10-05",
+   "Mr Still Ballin",
    4
   ],
   [
@@ -10323,16 +10326,6 @@
   ],
   [
    "2026-10-05",
-   "Marley🇦🇷",
-   4
-  ],
-  [
-   "2026-10-05",
-   "Mr Still Ballin",
-   4
-  ],
-  [
-   "2026-10-05",
    "19 FLEIVA WACK",
    4
   ],
@@ -10353,12 +10346,22 @@
   ],
   [
    "2026-10-05",
+   "Noa",
+   4
+  ],
+  [
+   "2026-10-05",
    "Verc",
    4
   ],
   [
    "2026-10-05",
    "Walker",
+   4
+  ],
+  [
+   "2026-10-05",
+   "Number",
    4
   ],
   [
@@ -10373,17 +10376,7 @@
   ],
   [
    "2026-10-05",
-   "Spartan",
-   4
-  ],
-  [
-   "2026-10-05",
    "Carlosmo",
-   4
-  ],
-  [
-   "2026-10-05",
-   "Number",
    4
   ],
   [
@@ -10403,6 +10396,11 @@
   ],
   [
    "2026-10-05",
+   "Campoy",
+   4
+  ],
+  [
+   "2026-10-05",
    "Snow",
    3
   ],
@@ -10413,17 +10411,17 @@
   ],
   [
    "2026-10-05",
-   "PRAISERIZA",
-   3
-  ],
-  [
-   "2026-10-05",
    "Provenza",
    3
   ],
   [
    "2026-10-05",
    "Colesito",
+   3
+  ],
+  [
+   "2026-10-05",
+   "Velatz",
    3
   ],
   [
@@ -10488,12 +10486,12 @@
   ],
   [
    "2026-10-12",
-   "Delux",
+   "Xubaru",
    4
   ],
   [
    "2026-10-12",
-   "Xubaru",
+   "Tenor",
    4
   ],
   [
@@ -10589,6 +10587,11 @@
   [
    "2026-10-12",
    "Colesito",
+   2
+  ],
+  [
+   "2026-10-12",
+   "Makmah",
    2
   ],
   [
@@ -10793,8 +10796,13 @@
   ],
   [
    "2026-10-19",
-   "Erian",
+   "Makmah",
    1
+  ],
+  [
+   "2026-10-19",
+   "PichulaMc",
+   3
   ],
   [
    "2026-10-19",
@@ -10818,11 +10826,6 @@
   ],
   [
    "2026-10-19",
-   "Vilca",
-   3
-  ],
-  [
-   "2026-10-19",
    "Sin Limites",
    3
   ],
@@ -10838,18 +10841,13 @@
   ],
   [
    "2026-10-19",
-   "Velatz",
+   "LRS",
    3
   ],
   [
    "2026-10-19",
    "Bloody",
    3
-  ],
-  [
-   "2026-10-19",
-   "Makmah",
-   2
   ],
   [
    "2026-10-19",
@@ -10868,7 +10866,7 @@
   ],
   [
    "2026-10-19",
-   "PichulaMc",
+   "Guess",
    2
   ],
   [
@@ -10913,12 +10911,12 @@
   ],
   [
    "2026-10-26",
-   "Adriagner",
+   "OG",
    3
   ],
   [
    "2026-10-26",
-   "Chop",
+   "Adriagner",
    3
   ],
   [
@@ -11048,6 +11046,11 @@
   ],
   [
    "2026-10-26",
+   "PichulaMc",
+   2
+  ],
+  [
+   "2026-10-26",
    "Carlosss",
    2
   ],
@@ -11068,12 +11071,12 @@
   ],
   [
    "2026-10-26",
-   "Makmah",
+   "Erian",
    1
   ],
   [
    "2026-10-26",
-   "PichulaMc",
+   "Oasis",
    1
   ]
  ],
@@ -11097,6 +11100,7 @@
    "EmiZor",
    "Erian",
    "Geoka",
+   "Guess",
    "Keider",
    "Marcos",
    "Miniboy",
@@ -11129,6 +11133,7 @@
    "Carlosss",
    "Catarsis",
    "Chase",
+   "Chop",
    "Colesito",
    "CrisZJ",
    "DarnBless",
@@ -11166,20 +11171,22 @@
    "Masino",
    "Mathhias",
    "Mc arepa",
+   "Molusco",
    "Mosquitrap 🦟",
    "Motera",
    "Mr Still Ballin",
    "Mr.Kude",
    "NXUZ",
-   "Noa",
    "Noone",
    "Noxvell",
    "Number",
    "OG",
+   "ONZASS",
    "Oasis",
    "PRAISERIZA",
    "Panchok",
    "Paria",
+   "PichulaMc",
    "Player",
    "Polosport",
    "Pomberito",
