@@ -11,6 +11,18 @@
  ],
  "cambios": [
     {
+        "version": "5.10",
+        "dia": "2026-11-13",
+        "cuando": "2026-11-13T03:44:00-05:00",
+        "titulo": "Lo último, en mosaico",
+        "items": [
+            "**Lo último**, en el Inicio, ahora es un **mosaico**: cada novedad con su forma. La carta nueva con sus números, el afiche de la liga entero, la letra del rango en su color y los campeones con sus caras.",
+            "Felicitas con 👏 y ves cuántos comentarios tiene cada una sin salir del Inicio.",
+            "Nuevo: **Anoche en la Liga**, cuántos eventos y raperos hubo y quiénes ganaron.",
+            "En el celular, se desliza de costado."
+        ]
+    },
+    {
         "version": "5.09",
         "dia": "2026-11-13",
         "cuando": "2026-11-13T03:40:00-05:00",
