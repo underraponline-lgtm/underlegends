@@ -54013,5 +54013,278 @@
    "min": 65,
    "v": 1
   }
+ },
+ "630": {
+  "dia": "2026-11-13",
+  "escala": "16+",
+  "fecha": "13/11",
+  "links": [
+   "https://discord.com/channels/765045834647339038/1309234583023124531/1570917198128615515"
+  ],
+  "n": 630,
+  "nombre": "ELITE FESTIVAL VOL. 1",
+  "participantes": 28,
+  "rondas": [
+   {
+    "b": [
+     [
+      [
+       "MaYeuTyK",
+       "Miniboy"
+      ],
+      "MaYeuTyK",
+      ""
+     ],
+     [
+      [
+       "Hotaru Adeyemi 🏳️‍⚧️",
+       "BTRX",
+       "Ruvick"
+      ],
+      "Hotaru Adeyemi 🏳️‍⚧️",
+      "triple (3 bandas)"
+     ],
+     [
+      [
+       "3\\. CHOP 🇭🇳",
+       "Number VE",
+       "KARDIOLOGO 🇬🇹"
+      ],
+      "3\\. CHOP 🇭🇳",
+      "triple (3 bandas)"
+     ],
+     [
+      [
+       "Makmah",
+       "Ryuk",
+       "Lord Viruzz"
+      ],
+      "Makmah",
+      "triple (3 bandas)"
+     ],
+     [
+      [
+       "Carlosss",
+       "Rbk",
+       "Sosa"
+      ],
+      "Carlosss",
+      "triple (3 bandas)"
+     ],
+     [
+      [
+       "Drexx",
+       "Krish",
+       "Fisics"
+      ],
+      "Drexx",
+      "triple (3 bandas)"
+     ],
+     [
+      [
+       "Molusco",
+       "Izaya",
+       "NXUZ",
+       "Vandu"
+      ],
+      "Molusco, Izaya",
+      "triple (4 bandas, pasan 2); también pasa: Izaya 🇨🇱"
+     ],
+     [
+      [
+       "Calíz 🇲🇽",
+       "erian",
+       "KRAVITZ 🇦🇷"
+      ],
+      "",
+      "sin ganador: espera en ✅ Decidir"
+     ]
+    ],
+    "r": "Octavos"
+   },
+   {
+    "b": [
+     [
+      [
+       "Hotaru Adeyemi 🏳️‍⚧️",
+       "MaYeuTyK"
+      ],
+      "Hotaru Adeyemi 🏳️‍⚧️",
+      ""
+     ],
+     [
+      [
+       "Chop",
+       "Makmah"
+      ],
+      "Chop",
+      ""
+     ],
+     [
+      [
+       "Carlosss",
+       "Drexx"
+      ],
+      "Carlosss",
+      ""
+     ],
+     [
+      [
+       "Izaya",
+       "Molusco"
+      ],
+      "Izaya",
+      ""
+     ]
+    ],
+    "r": "Cuartos"
+   },
+   {
+    "b": [
+     [
+      [
+       "Chop",
+       "Hotaru Adeyemi 🏳️‍⚧️"
+      ],
+      "Chop",
+      ""
+     ],
+     [
+      [
+       "Carlosss",
+       "Izaya"
+      ],
+      "Carlosss",
+      ""
+     ]
+    ],
+    "r": "Semifinales"
+   },
+   {
+    "b": [
+     [
+      [
+       "Carlosss",
+       "Chop"
+      ],
+      "Carlosss",
+      "ganador según #veredictos"
+     ]
+    ],
+    "r": "Final"
+   }
+  ],
+  "sv": "ACAD",
+  "tabla": [
+   [
+    "Carlosss",
+    "Campeón",
+    10000
+   ],
+   [
+    "Chop",
+    "Subcampeón",
+    7500
+   ],
+   [
+    "Hotaru Adeyemi 🏳️‍⚧️",
+    "Semifinal",
+    5250
+   ],
+   [
+    "Izaya",
+    "Semifinal",
+    5250
+   ],
+   [
+    "Drexx",
+    "Cuartos",
+    2500
+   ],
+   [
+    "MaYeuTyK",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Makmah",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Molusco",
+    "Cuartos",
+    2500
+   ],
+   [
+    "BTRX",
+    "Octavos",
+    1250
+   ],
+   [
+    "Fisics",
+    "Octavos",
+    1250
+   ],
+   [
+    "KARDIOLOGO 🇬🇹",
+    "Octavos",
+    1250
+   ],
+   [
+    "Krish",
+    "Octavos",
+    1250
+   ],
+   [
+    "Lord Viruzz",
+    "Octavos",
+    1250
+   ],
+   [
+    "Miniboy",
+    "Octavos",
+    1250
+   ],
+   [
+    "NXUZ",
+    "Octavos",
+    1250
+   ],
+   [
+    "Number VE",
+    "Octavos",
+    1250
+   ],
+   [
+    "Rbk",
+    "Octavos",
+    1250
+   ],
+   [
+    "Ruvick",
+    "Octavos",
+    1250
+   ],
+   [
+    "Ryuk",
+    "Octavos",
+    1250
+   ],
+   [
+    "Sosa",
+    "Octavos",
+    1250
+   ],
+   [
+    "Vandu",
+    "Octavos",
+    1250
+   ]
+  ],
+  "ver": {
+   "min": 99,
+   "v": 1
+  }
  }
 }

@@ -40,7 +40,7 @@
 "rg": "SS",
 "c": []
 },
-"six": {
+"snow": {
 "rg": "B",
 "c": [
 "competitivo",
@@ -49,7 +49,7 @@
 "temporada"
 ]
 },
-"snow": {
+"six": {
 "rg": "B",
 "c": [
 "competitivo",
@@ -85,6 +85,14 @@
 "temporada"
 ]
 },
+"carlosss": {
+"rg": "S",
+"c": [
+"competitivo",
+"servidor",
+"temporada"
+]
+},
 "liberia": {
 "rg": "S",
 "c": [
@@ -95,14 +103,6 @@
 ]
 },
 "mrstillballin": {
-"rg": "S",
-"c": [
-"competitivo",
-"servidor",
-"temporada"
-]
-},
-"carlosss": {
 "rg": "S",
 "c": [
 "competitivo",
@@ -258,10 +258,6 @@
 "temporada"
 ]
 },
-"tuca": {
-"rg": "B",
-"c": []
-},
 "hassan": {
 "rg": "A",
 "c": []
@@ -279,7 +275,20 @@
 "rg": "C",
 "c": []
 },
+"tuca": {
+"rg": "B",
+"c": []
+},
 "majiztral": {
+"rg": "C",
+"c": [
+"competitivo",
+"pais",
+"servidor",
+"temporada"
+]
+},
+"drexx": {
 "rg": "C",
 "c": [
 "competitivo",
@@ -297,14 +306,9 @@
 "temporada"
 ]
 },
-"drexx": {
-"rg": "C",
-"c": [
-"competitivo",
-"pais",
-"servidor",
-"temporada"
-]
+"chop": {
+"rg": "D",
+"c": []
 },
 "tenor": {
 "rg": "C",
@@ -344,10 +348,6 @@
 },
 "xclusivo": {
 "rg": "C",
-"c": []
-},
-"chop": {
-"rg": "D",
 "c": []
 },
 "mathhias": {
@@ -432,6 +432,14 @@
 "temporada"
 ]
 },
+"mayeutyk": {
+"rg": "C",
+"c": [
+"competitivo",
+"servidor",
+"temporada"
+]
+},
 "dyzz": {
 "rg": "E",
 "c": [
@@ -463,23 +471,6 @@
 "temporada"
 ]
 },
-"mayeutyk": {
-"rg": "C",
-"c": [
-"competitivo",
-"servidor",
-"temporada"
-]
-},
-"keider": {
-"rg": "D",
-"c": [
-"competitivo",
-"pais",
-"servidor",
-"temporada"
-]
-},
 "andres": {
 "rg": "C",
 "c": [
@@ -497,6 +488,15 @@
 "rg": "B",
 "c": [
 "competitivo",
+"servidor",
+"temporada"
+]
+},
+"keider": {
+"rg": "D",
+"c": [
+"competitivo",
+"pais",
 "servidor",
 "temporada"
 ]
@@ -528,19 +528,6 @@
 "temporada"
 ]
 },
-"jupiter": {
-"rg": "D",
-"c": [
-"competitivo",
-"pais",
-"servidor",
-"temporada"
-]
-},
-"neo": {
-"rg": "C",
-"c": []
-},
 "lvel": {
 "rg": "E",
 "c": [
@@ -558,11 +545,24 @@
 "temporada"
 ]
 },
+"jupiter": {
+"rg": "D",
+"c": [
+"competitivo",
+"pais",
+"servidor",
+"temporada"
+]
+},
 "eidp": {
 "rg": "D",
 "c": []
 },
 "eclipsito": {
+"rg": "C",
+"c": []
+},
+"neo": {
 "rg": "C",
 "c": []
 },
@@ -928,6 +928,10 @@
 "rg": "",
 "c": []
 },
+"hotaruadeyemi": {
+"rg": "",
+"c": []
+},
 "catarsis": {
 "rg": "",
 "c": [
@@ -1021,10 +1025,6 @@
 "servidor",
 "temporada"
 ]
-},
-"hotaruadeyemi": {
-"rg": "",
-"c": []
 },
 "krish": {
 "rg": "E",
@@ -1135,10 +1135,6 @@
 "servidor"
 ]
 },
-"millonario": {
-"rg": "",
-"c": []
-},
 "zaik": {
 "rg": "E",
 "c": [
@@ -1210,6 +1206,10 @@
 "rg": "",
 "c": []
 },
+"millonario": {
+"rg": "",
+"c": []
+},
 "0223": {
 "rg": "",
 "c": []
@@ -1249,10 +1249,6 @@
 "c": []
 },
 "doc": {
-"rg": "",
-"c": []
-},
-"eldinoco": {
 "rg": "",
 "c": []
 },
@@ -1310,6 +1306,13 @@
 "temporada"
 ]
 },
+"rbk": {
+"rg": "",
+"c": [
+"servidor",
+"temporada"
+]
+},
 "ragna": {
 "rg": "",
 "c": []
@@ -1322,18 +1325,23 @@
 "rg": "",
 "c": []
 },
-"rbk": {
-"rg": "",
-"c": [
-"servidor",
-"temporada"
-]
-},
 "martoar": {
 "rg": "",
 "c": []
 },
 "lautarolasinceridad": {
+"rg": "",
+"c": []
+},
+"romeo": {
+"rg": "",
+"c": [
+"pais",
+"servidor",
+"temporada"
+]
+},
+"eldinoco": {
 "rg": "",
 "c": []
 },
@@ -1433,14 +1441,6 @@
 "francis": {
 "rg": "",
 "c": []
-},
-"romeo": {
-"rg": "",
-"c": [
-"pais",
-"servidor",
-"temporada"
-]
 },
 "yor": {
 "rg": "",
@@ -7388,8 +7388,8 @@
 "tipo": "resnoche",
 "t": "2026-11-14T08:00:00Z",
 "dia": "2026-11-13",
-"eventos": 1,
-"part": 21,
+"eventos": 2,
+"part": 49,
 "campeones": [
 {
 "ev": "PANDILLAS DE RAP VOL.1",
@@ -7409,26 +7409,37 @@
 "miniboy"
 ]
 ]
+},
+{
+"ev": "ELITE FESTIVAL VOL. 1",
+"sv": "ACAD",
+"ll": 630,
+"quien": [
+[
+"Carlosss",
+"carlosss"
+]
+]
 }
 ],
 "suman": [
 {
-"n": "Zanti",
-"k": "",
-"pts": 5958,
+"n": "Carlosss",
+"k": "carlosss",
+"pts": 10000,
 "ev": 1
 },
 {
-"n": "Chuwin",
-"k": "",
-"pts": 5125,
+"n": "Chop",
+"k": "chop",
+"pts": 7500,
 "ev": 1
 },
 {
 "n": "Molusco",
 "k": "molusco",
-"pts": 3750,
-"ev": 1
+"pts": 6250,
+"ev": 2
 }
 ],
 "suben": [
@@ -7442,7 +7453,7 @@
 "n": "Trueno",
 "k": "",
 "de": 625,
-"a": 417
+"a": 415
 },
 {
 "n": "Chuwin",

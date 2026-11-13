@@ -353,6 +353,7 @@
   "replik": "Soulb",
   "khatalien": "KATALIEN",
   "limtsz": "Noone",
+  "3chop": "Chop",
   "zetryco": "Zetryko",
   "martynez": "MaYeuTyK",
   "basty": "BastyRetro",
@@ -1835,6 +1836,10 @@
   [
    "Limtsz",
    "Noone"
+  ],
+  [
+   "3\\. CHOP",
+   "Chop"
   ],
   [
    "Zetryco",

@@ -46655,5 +46655,353 @@
    ]
   ],
   "v": 2
+ },
+ "630": {
+  "antes": {
+   "BTRX": [
+    41,
+    49,
+    false
+   ],
+   "Carlosss": [
+    12,
+    13,
+    false
+   ],
+   "Chop": [
+    260,
+    44,
+    true
+   ],
+   "Drexx": [
+    32,
+    38,
+    false
+   ],
+   "Fisics": [
+    366,
+    270,
+    true
+   ],
+   "Hotaru Adeyemi 🏳️‍⚧️": [
+    287,
+    140,
+    true
+   ],
+   "Izaya": [
+    480,
+    425,
+    true
+   ],
+   "Krish": [
+    106,
+    141,
+    false
+   ],
+   "Lord Viruzz": [
+    43,
+    51,
+    false
+   ],
+   "MaYeuTyK": [
+    49,
+    59,
+    false
+   ],
+   "Makmah": [
+    1,
+    1,
+    false
+   ],
+   "Miniboy": [
+    18,
+    19,
+    false
+   ],
+   "Molusco": [
+    26,
+    29,
+    false
+   ],
+   "NXUZ": [
+    23,
+    26,
+    false
+   ],
+   "Number VE": [
+    59,
+    73,
+    false
+   ],
+   "Rbk": [
+    128,
+    198,
+    false
+   ],
+   "Ruvick": [
+    411,
+    332,
+    true
+   ],
+   "Ryuk": [
+    424,
+    353,
+    true
+   ],
+   "Sosa": [
+    221,
+    516,
+    false
+   ],
+   "Vandu": [
+    9,
+    10,
+    false
+   ]
+  },
+  "canal": "925213294703300649",
+  "duelos": [
+   [
+    "MaYeuTyK",
+    "Miniboy",
+    "MaYeuTyK"
+   ],
+   [
+    "Hotaru Adeyemi 🏳️‍⚧️",
+    "BTRX",
+    "Hotaru Adeyemi 🏳️‍⚧️"
+   ],
+   [
+    "Hotaru Adeyemi 🏳️‍⚧️",
+    "Ruvick",
+    "Hotaru Adeyemi 🏳️‍⚧️"
+   ],
+   [
+    "3\\. CHOP 🇭🇳",
+    "Number VE",
+    "3\\. CHOP 🇭🇳"
+   ],
+   [
+    "3\\. CHOP 🇭🇳",
+    "KARDIOLOGO 🇬🇹",
+    "3\\. CHOP 🇭🇳"
+   ],
+   [
+    "Makmah",
+    "Ryuk",
+    "Makmah"
+   ],
+   [
+    "Makmah",
+    "Lord Viruzz",
+    "Makmah"
+   ],
+   [
+    "Carlosss",
+    "Rbk",
+    "Carlosss"
+   ],
+   [
+    "Carlosss",
+    "Sosa",
+    "Carlosss"
+   ],
+   [
+    "Drexx",
+    "Krish",
+    "Drexx"
+   ],
+   [
+    "Drexx",
+    "Fisics",
+    "Drexx"
+   ],
+   [
+    "Molusco",
+    "NXUZ",
+    "Molusco"
+   ],
+   [
+    "Molusco",
+    "Vandu",
+    "Molusco"
+   ],
+   [
+    "Hotaru Adeyemi 🏳️‍⚧️",
+    "MaYeuTyK",
+    "Hotaru Adeyemi 🏳️‍⚧️"
+   ],
+   [
+    "Chop",
+    "Makmah",
+    "Chop"
+   ],
+   [
+    "Carlosss",
+    "Drexx",
+    "Carlosss"
+   ],
+   [
+    "Izaya",
+    "Molusco",
+    "Izaya"
+   ],
+   [
+    "Chop",
+    "Hotaru Adeyemi 🏳️‍⚧️",
+    "Chop"
+   ],
+   [
+    "Carlosss",
+    "Izaya",
+    "Carlosss"
+   ],
+   [
+    "Carlosss",
+    "Chop",
+    "Carlosss"
+   ]
+  ],
+  "ev_antes": {
+   "BTRX": 19,
+   "Carlosss": 32,
+   "Chop": 27,
+   "Drexx": 40,
+   "Fisics": 4,
+   "Hotaru Adeyemi 🏳️‍⚧️": 4,
+   "Izaya": 2,
+   "Krish": 14,
+   "Lord Viruzz": 25,
+   "MaYeuTyK": 18,
+   "Makmah": 113,
+   "Miniboy": 59,
+   "Molusco": 28,
+   "NXUZ": 45,
+   "Number VE": 33,
+   "Rbk": 5,
+   "Ruvick": 2,
+   "Ryuk": 2,
+   "Sosa": 2,
+   "Vandu": 50
+  },
+  "fecha": "13/11",
+  "firma": "e686fa495c50d097",
+  "msg": "1570942520354017351",
+  "nombre": "ELITE FESTIVAL VOL. 1",
+  "num": 630,
+  "participantes": 28,
+  "sello": {
+   "Carlosss": "60d15f9e1dee:7a510334494e"
+  },
+  "sv": "ACAD",
+  "t": "2026-11-13T23:24:41Z",
+  "tabla": [
+   [
+    "Carlosss",
+    "Campeón",
+    10000
+   ],
+   [
+    "Chop",
+    "Subcampeón",
+    7500
+   ],
+   [
+    "Hotaru Adeyemi 🏳️‍⚧️",
+    "Semifinal",
+    5250
+   ],
+   [
+    "Izaya",
+    "Semifinal",
+    5250
+   ],
+   [
+    "MaYeuTyK",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Makmah",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Drexx",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Molusco",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Miniboy",
+    "Octavos",
+    1250
+   ],
+   [
+    "BTRX",
+    "Octavos",
+    1250
+   ],
+   [
+    "Ruvick",
+    "Octavos",
+    1250
+   ],
+   [
+    "Number VE",
+    "Octavos",
+    1250
+   ],
+   [
+    "KARDIOLOGO 🇬🇹",
+    "Octavos",
+    1250
+   ],
+   [
+    "Ryuk",
+    "Octavos",
+    1250
+   ],
+   [
+    "Lord Viruzz",
+    "Octavos",
+    1250
+   ],
+   [
+    "Rbk",
+    "Octavos",
+    1250
+   ],
+   [
+    "Sosa",
+    "Octavos",
+    1250
+   ],
+   [
+    "Krish",
+    "Octavos",
+    1250
+   ],
+   [
+    "Fisics",
+    "Octavos",
+    1250
+   ],
+   [
+    "NXUZ",
+    "Octavos",
+    1250
+   ],
+   [
+    "Vandu",
+    "Octavos",
+    1250
+   ]
+  ],
+  "v": 2
  }
 }

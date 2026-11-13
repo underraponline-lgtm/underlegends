@@ -2075,6 +2075,11 @@
     "t1",
     1794453370864
    ],
+   "🎖️ CURTIDO": [
+    "🎖️ CURTIDO",
+    "t1",
+    1794613070581
+   ],
    "🐺 LOBO SOLITARIO": [
     "🐺 LOBO SOLITARIO",
     "t1",
@@ -2084,6 +2089,11 @@
     "👑 CAMPEÓN x1",
     "t1",
     1793651614877
+   ],
+   "💯 CENTENARIO": [
+    "💯 CENTENARIO",
+    "t1",
+    1794613070581
    ],
    "📅 INFALTABLE": [
     "📅 INFALTABLE",
@@ -2472,7 +2482,7 @@
     1793029252929
    ],
    "👑 CAMPEÓN x%d": [
-    "👑 CAMPEÓN x10",
+    "👑 CAMPEÓN x11",
     "t1",
     1793029252929
    ],
@@ -4982,6 +4992,11 @@
  },
  "fisics": {
   "temporada": {
+   "🌍 TROTAMUNDOS": [
+    "🌍 TROTAMUNDOS",
+    "t1",
+    1794613070581
+   ],
    "📈 EN ASCENSO": [
     "📈 EN ASCENSO",
     "t1",
@@ -9309,6 +9324,11 @@
     "👑 CAMPEÓN x3",
     "t1",
     1793029252929
+   ],
+   "💯 BICENTENARIO": [
+    "💯 BICENTENARIO",
+    "t1",
+    1794613070581
    ],
    "💯 CENTENARIO": [
     "💯 CENTENARIO",

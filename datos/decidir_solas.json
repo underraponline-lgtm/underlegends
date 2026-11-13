@@ -2,344 +2,6 @@
  "_leeme": "Lo que ✅ Decidir cerró o contestó solo, con la regla y la prueba (sheet/decidir.py, resolver_solo()), para «Lo que se resolvió solo» del Dashboard y su «Deshacer». «deshechas»: lo que Dlx deshizo; ninguna regla lo vuelve a tocar. Dlx, 13/10/2026.",
  "solas": [
   {
-   "id": "1ca2a84ebb",
-   "tipo": "Nombre desconocido",
-   "sec": "Galacticos del Freestyle vol.13 · DDF · 30/10 · #546",
-   "que": "¿Quién es «Black dmon🇪🇨»? (también escrito «black dmon🇪🇨»)",
-   "r": "Es Lilñaño",
-   "regla": "Discord · su cuenta de Discord: la inscripción, el podio, la llave o la llamada",
-   "rk": "Discord",
-   "por": "el ciclo (su cuenta de Discord)",
-   "porque": "alias de Lilñaño: la misma cuenta de Discord",
-   "t": 1793390588500,
-   "filas": [
-    950,
-    953
-   ],
-   "variantes": [
-    "Black dmon🇪🇨",
-    "black dmon🇪🇨"
-   ],
-   "escribio": {
-    "alias": [
-     "Black dmon",
-     "Lilñaño"
-    ],
-    "filas": [
-     326
-    ]
-   }
-  },
-  {
-   "id": "fdb8820f7f",
-   "tipo": "Nombre desconocido",
-   "sec": "Galacticos del Freestyle vol.13 · DDF · 30/10 · #546",
-   "que": "¿Quién es «SikoV 🇲🇽»?",
-   "r": "Es alguien nuevo: alta con su cuenta 855279570953437195",
-   "regla": "Discord · su cuenta de Discord: la inscripción, el podio, la llave o la llamada",
-   "rk": "Discord",
-   "por": "el ciclo (su cuenta de Discord)",
-   "porque": "nuevo: entró a la Lista con la cuenta con que se anotó (855279570953437195)",
-   "t": 1793390588500,
-   "filas": [
-    951
-   ],
-   "variantes": [
-    "SikoV 🇲🇽"
-   ],
-   "escribio": {
-    "alta": [
-     "SikoV",
-     "855279570953437195"
-    ]
-   }
-  },
-  {
-   "id": "7e963db629",
-   "tipo": "Nombre desconocido",
-   "sec": "Galacticos del Freestyle vol.13 · DDF · 30/10 · #546",
-   "que": "¿Quién es «Skiller🇨🇱»?",
-   "r": "Es alguien nuevo: alta con su cuenta 1258968231809384470",
-   "regla": "Discord · su cuenta de Discord: la inscripción, el podio, la llave o la llamada",
-   "rk": "Discord",
-   "por": "el ciclo (su cuenta de Discord)",
-   "porque": "nuevo: entró a la Lista con la cuenta con que se anotó (1258968231809384470)",
-   "t": 1793390588500,
-   "filas": [
-    952
-   ],
-   "variantes": [
-    "Skiller🇨🇱"
-   ],
-   "escribio": {
-    "alta": [
-     "Skiller",
-     "1258968231809384470"
-    ]
-   }
-  },
-  {
-   "id": "29103e91a8",
-   "tipo": "Alias posible",
-   "sec": "🪪 Identidad",
-   "que": "¿«Black dmon» es Lilñaño? La cuenta de Lilñaño en la Lista se anotó como «Black dmon», y en el ranking suman aparte. Si es la misma persona, los puntos de «Black dmon» pasan a Lilñaño.\nLa cuenta: https://discord.com/users/698611862031433779",
-   "r": "Es la misma persona",
-   "regla": "cierre · ya no hacía falta preguntarlo",
-   "rk": "cierre",
-   "por": "el ciclo",
-   "porque": "la misma persona: «Black dmon» ya es alias de Lilñaño",
-   "t": 1793392255431,
-   "filas": [
-    954
-   ],
-   "variantes": [
-    "DOS NOMBRES: «Black dmon» → «Lilñaño» · cuenta 698611862031433779"
-   ],
-   "escribio": {}
-  },
-  {
-   "id": "0ffb93d137",
-   "tipo": "Batalla sin ganador",
-   "sec": "LA ISLA DE OKINAWA V.4 · FFA · 30/10 · #547",
-   "que": "¿Quién pasó en octavos?\nLAMBRO 🇦🇷 🆚 19 FLEIVA WACK 🇦🇷 🆚 KEIDER🇧🇷 🆚 Nain sdp🇦🇷 🆚 Lukas sin escrupulos 🇦🇷",
-   "r": "No se jugó",
-   "regla": "R4 · una batalla que es copia de otra ya cargada",
-   "rk": "R4",
-   "por": "el ciclo",
-   "porque": "es la misma batalla que «19 FLEIVA WACK 🇦🇷 vs LAMBRO 🇦🇷 vs Keider vs Nain sdp🇦🇷 vs Lukas» (ganó 19 FLEIVA WACK 🇦🇷), ya cargada en el #547: contestar «Ganó» la contaría dos veces",
-   "t": 1793401463776,
-   "filas": [
-    955
-   ],
-   "variantes": [
-    "__ LA ISLA DE OKINAWA V.4 __ · FFA · 30/10 · octavos · LAMBRO 🇦🇷 🆚 19 FLEIVA WACK 🇦🇷 🆚 KEIDER🇧🇷 🆚 Nain sdp🇦🇷 🆚 Lukas sin escrupulos 🇦🇷"
-   ],
-   "escribio": {
-    "batalla": "__ LA ISLA DE OKINAWA V.4 __ · FFA · 30/10 · octavos · LAMBRO 🇦🇷 🆚 19 FLEIVA WACK 🇦🇷 🆚 KEIDER🇧🇷 🆚 Nain sdp🇦🇷 🆚 Lukas sin escrupulos 🇦🇷"
-   }
-  },
-  {
-   "id": "0ff4b5deaf",
-   "tipo": "Batalla sin ganador",
-   "sec": "LA ISLA DE OKINAWA V.4 · FFA · 30/10 · #547",
-   "que": "¿Quién ganó en cuartos?\nBlack Dmon 🇪🇨🇺🇸 🆚 Erian 🇩🇴",
-   "r": "No se jugó",
-   "regla": "R4 · una batalla que es copia de otra ya cargada",
-   "rk": "R4",
-   "por": "el ciclo",
-   "porque": "es la misma batalla que «Erian vs Lilñaño» (ganó Erian), ya cargada en el #547: contestar «Ganó» la contaría dos veces",
-   "t": 1793401463776,
-   "filas": [
-    957
-   ],
-   "variantes": [
-    "__ LA ISLA DE OKINAWA V.4 __ · FFA · 30/10 · cuartos · Black Dmon 🇪🇨🇺🇸 🆚 Erian 🇩🇴"
-   ],
-   "escribio": {
-    "batalla": "__ LA ISLA DE OKINAWA V.4 __ · FFA · 30/10 · cuartos · Black Dmon 🇪🇨🇺🇸 🆚 Erian 🇩🇴"
-   }
-  },
-  {
-   "id": "bb6ea235be",
-   "tipo": "Batalla sin ganador",
-   "sec": "LA ISLA DE OKINAWA V.4 · FFA · 30/10 · #547",
-   "que": "¿Quién ganó en cuartos?\nCannox🇩🇴 🆚 BastyRetro🇨🇱",
-   "r": "No se jugó",
-   "regla": "R4 · una batalla que es copia de otra ya cargada",
-   "rk": "R4",
-   "por": "el ciclo",
-   "porque": "es la misma batalla que «BastyRetro vs Cannox» (ganó BastyRetro), ya cargada en el #547: contestar «Ganó» la contaría dos veces",
-   "t": 1793401463776,
-   "filas": [
-    958
-   ],
-   "variantes": [
-    "__ LA ISLA DE OKINAWA V.4 __ · FFA · 30/10 · cuartos · Cannox🇩🇴 🆚 BastyRetro🇨🇱"
-   ],
-   "escribio": {
-    "batalla": "__ LA ISLA DE OKINAWA V.4 __ · FFA · 30/10 · cuartos · Cannox🇩🇴 🆚 BastyRetro🇨🇱"
-   }
-  },
-  {
-   "id": "45c9d9cfa3",
-   "tipo": "Nombre desconocido",
-   "sec": "LA ISLA DE OKINAWA V.4 · FFA · 30/10 · #547",
-   "que": "¿Quién es «Chaz🇵🇪»?",
-   "r": "Es Dominick (en este evento)",
-   "regla": "R21 · la cuenta que se anotó así para ese evento es de alguien de la Lista que esa noche no jugó con su nombre",
-   "rk": "R21",
-   "por": "el ciclo",
-   "porque": "la cuenta @equisde_xd23 (en Discord: «ZD🇧🇷») · en la Lista: Dominick se anotó como «Chaz» para ese evento, no es staff de FFA y esa noche no jugó con su nombre",
-   "t": 1793401463776,
-   "filas": [
-    961
-   ],
-   "variantes": [
-    "Chaz🇵🇪"
-   ],
-   "escribio": {
-    "quien": "LA ISLA DE OKINAWA V.4 · FFA · 30/10 · Chaz🇵🇪"
-   }
-  },
-  {
-   "id": "56ff7ef52f",
-   "tipo": "Nombre desconocido",
-   "sec": "LA ISLA DE OKINAWA V.4 · FFA · 30/10 · #547",
-   "que": "¿Quién es «matias la flauta 🇦🇷»?",
-   "r": "Es Matias (en este evento)",
-   "regla": "R21 · la cuenta que se anotó así para ese evento es de alguien de la Lista que esa noche no jugó con su nombre",
-   "rk": "R21",
-   "por": "el ciclo",
-   "porque": "la cuenta @matias999999999 · en la Lista: Matias se anotó como «matias la flauta» para ese evento, no es staff de FFA y esa noche no jugó con su nombre",
-   "t": 1793401463776,
-   "filas": [
-    966
-   ],
-   "variantes": [
-    "matias la flauta 🇦🇷"
-   ],
-   "escribio": {
-    "quien": "LA ISLA DE OKINAWA V.4 · FFA · 30/10 · matias la flauta 🇦🇷"
-   }
-  },
-  {
-   "id": "0fb4006991",
-   "tipo": "Nombre desconocido",
-   "sec": "LA ISLA DE OKINAWA V.4 · FFA · 30/10 · #547",
-   "que": "¿Quién es «LAMBRO 🇦🇷»?",
-   "r": "Es Lambroggini",
-   "regla": "Discord · su cuenta de Discord: la inscripción, el podio, la llave o la llamada",
-   "rk": "Discord",
-   "por": "el ciclo (su cuenta de Discord)",
-   "porque": "alias de Lambroggini: estaba en la llamada del evento con un nombre parecido",
-   "t": 1793401463776,
-   "filas": [
-    962
-   ],
-   "variantes": [
-    "LAMBRO 🇦🇷"
-   ],
-   "escribio": {
-    "alias": [
-     "LAMBRO",
-     "Lambroggini"
-    ],
-    "filas": [
-     327
-    ]
-   }
-  },
-  {
-   "id": "e53c1d957e",
-   "tipo": "Nombre desconocido",
-   "sec": "LA ISLA DE OKINAWA V.4 · FFA · 30/10 · #547",
-   "que": "¿Quién es «19 FLEIVA WACK 🇦🇷»?",
-   "r": "Es alguien nuevo: alta con su cuenta 1345454905325781012",
-   "regla": "Discord · su cuenta de Discord: la inscripción, el podio, la llave o la llamada",
-   "rk": "Discord",
-   "por": "el ciclo (su cuenta de Discord)",
-   "porque": "nuevo: entró a la Lista con la cuenta con que se anotó (1345454905325781012)",
-   "t": 1793401463776,
-   "filas": [
-    959
-   ],
-   "variantes": [
-    "19 FLEIVA WACK 🇦🇷"
-   ],
-   "escribio": {
-    "alta": [
-     "19 FLEIVA WACK",
-     "1345454905325781012"
-    ]
-   }
-  },
-  {
-   "id": "0fe4c295c2",
-   "tipo": "Nombre desconocido",
-   "sec": "LA ISLA DE OKINAWA V.4 · FFA · 30/10 · #547",
-   "que": "¿Quién es «Akuseru 🇦🇷»?",
-   "r": "Es alguien nuevo: alta con su cuenta 1564834243039731832",
-   "regla": "Discord · su cuenta de Discord: la inscripción, el podio, la llave o la llamada",
-   "rk": "Discord",
-   "por": "el ciclo (su cuenta de Discord)",
-   "porque": "nuevo: entró a la Lista con la cuenta con que se anotó (1564834243039731832)",
-   "t": 1793401463776,
-   "filas": [
-    960
-   ],
-   "variantes": [
-    "Akuseru 🇦🇷"
-   ],
-   "escribio": {
-    "alta": [
-     "Akuseru",
-     "1564834243039731832"
-    ]
-   }
-  },
-  {
-   "id": "e8e9d66b2c",
-   "tipo": "Nombre desconocido",
-   "sec": "LA ISLA DE OKINAWA V.4 · FFA · 30/10 · #547",
-   "que": "¿Quién es «Nain sdp🇦🇷»?",
-   "r": "Es alguien nuevo: alta con su cuenta 434469958295093260",
-   "regla": "Discord · su cuenta de Discord: la inscripción, el podio, la llave o la llamada",
-   "rk": "Discord",
-   "por": "el ciclo (su cuenta de Discord)",
-   "porque": "nuevo: entró a la Lista con la cuenta con que se anotó (434469958295093260)",
-   "t": 1793401463776,
-   "filas": [
-    963
-   ],
-   "variantes": [
-    "Nain sdp🇦🇷"
-   ],
-   "escribio": {
-    "alta": [
-     "Nain sdp",
-     "434469958295093260"
-    ]
-   }
-  },
-  {
-   "id": "ae84daf418",
-   "tipo": "Alias posible",
-   "sec": "🪪 Identidad",
-   "que": "¿«Chaz» es Dominick? La cuenta de Dominick en la Lista se anotó como «Chaz», y en el ranking suman aparte. Si es la misma persona, los puntos de «Chaz» pasan a Dominick.\nLa cuenta: https://discord.com/users/1439048698142134436",
-   "r": "Ya no hace falta",
-   "regla": "cierre · ya no hacía falta preguntarlo",
-   "rk": "cierre",
-   "por": "el ciclo",
-   "porque": "ya no hace falta: «Chaz» ya no suma aparte en el ranking",
-   "t": 1793403279724,
-   "filas": [
-    968
-   ],
-   "variantes": [
-    "DOS NOMBRES: «Chaz» → «Dominick» · cuenta 1439048698142134436"
-   ],
-   "escribio": {}
-  },
-  {
-   "id": "a4953203ce",
-   "tipo": "Alias posible",
-   "sec": "🪪 Identidad",
-   "que": "¿«matias la flauta» es Matias? La cuenta de Matias en la Lista se anotó como «matias la flauta», y en el ranking suman aparte. Si es la misma persona, los puntos de «matias la flauta» pasan a Matias.\nLa cuenta: https://discord.com/users/896877041704644618",
-   "r": "Ya no hace falta",
-   "regla": "cierre · ya no hacía falta preguntarlo",
-   "rk": "cierre",
-   "por": "el ciclo",
-   "porque": "ya no hace falta: «matias la flauta» ya no suma aparte en el ranking",
-   "t": 1793403279724,
-   "filas": [
-    969
-   ],
-   "variantes": [
-    "DOS NOMBRES: «matias la flauta» → «Matias» · cuenta 896877041704644618"
-   ],
-   "escribio": {}
-  },
-  {
    "id": "a7a9224d56",
    "tipo": "Batalla sin ganador",
    "sec": "RAP SIN GROSERIAS 1 · FDS · 26/10 · #548",
@@ -4560,6 +4222,57 @@
    ],
    "escribio": {
     "quien": "PANDILLAS DE RAP VOL.1 · ACAD · 13/11 · Maximiliano calvo 🇲🇽"
+   }
+  },
+  {
+   "id": "0a14898c82",
+   "tipo": "Nombre desconocido",
+   "sec": "ELITE FESTIVAL VOL. 1 · ACAD · 13/11 · #630",
+   "que": "¿Quién es «3\\. CHOP 🇭🇳»?",
+   "r": "Es Chop",
+   "regla": "Discord · su cuenta de Discord: la inscripción, el podio, la llave o la llamada",
+   "rk": "Discord",
+   "por": "el ciclo (su cuenta de Discord)",
+   "porque": "alias de Chop: estaba en la llamada del evento con un nombre parecido",
+   "t": 1794613063367,
+   "filas": [
+    1349
+   ],
+   "variantes": [
+    "3\\. CHOP 🇭🇳"
+   ],
+   "escribio": {
+    "alias": [
+     "3\\. CHOP",
+     "Chop"
+    ],
+    "filas": [
+     361
+    ]
+   }
+  },
+  {
+   "id": "2ccfe4e28a",
+   "tipo": "Nombre desconocido",
+   "sec": "ELITE FESTIVAL VOL. 1 · ACAD · 13/11 · #630",
+   "que": "¿Quién es «KARDIOLOGO 🇬🇹»?",
+   "r": "Es alguien nuevo: alta con su cuenta 1565484501520490647",
+   "regla": "Discord · su cuenta de Discord: la inscripción, el podio, la llave o la llamada",
+   "rk": "Discord",
+   "por": "el ciclo (su cuenta de Discord)",
+   "porque": "nuevo: entró a la Lista con la cuenta que estaba en la llamada con ese nombre (1565484501520490647)",
+   "t": 1794613063367,
+   "filas": [
+    1350
+   ],
+   "variantes": [
+    "KARDIOLOGO 🇬🇹"
+   ],
+   "escribio": {
+    "alta": [
+     "KARDIOLOGO",
+     "1565484501520490647"
+    ]
    }
   }
  ],
