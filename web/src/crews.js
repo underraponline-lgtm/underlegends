@@ -9,7 +9,7 @@ export const ROL_NOMBRE = { lider: 'Líder', colider: 'Colíder', veterano: 'Vet
 export const ENTRADA_NOMBRE = { abierta: 'Abierta: entra quien quiera', pedido: 'Con pedido: el Líder o un Colíder acepta',
   invitacion: 'Sólo por invitación' };
 
-const E = { todas: null, mia: null, pidiendo: false, pidiendoMia: false, oyentes: new Set() };
+const E = { todas: null, mia: null, miaNo: '', pidiendo: false, pidiendoMia: false, oyentes: new Set() };
 const avisar = () => E.oyentes.forEach((f) => f());
 
 export function pedirCrews(forzar = false) {
@@ -26,7 +26,11 @@ export function pedirMia(forzar = false) {
   E.pidiendoMia = true;
   W.conCuenta('/api/avisos/crew-mia', {}).then((j) => {
     E.pidiendoMia = false;
-    if (j && j.ok) { E.mia = j; avisar(); }
+    if (j && j.ok) { E.mia = j; E.miaNo = ''; avisar(); }
+    // 🔑 LA SESIÓN VENCIDA (Oasis, 13/11/2026: «no se puede crear crews»): el navegador recuerda quién eres (`lg:dc`)
+    // pero la cookie ya no vale, y el Worker contesta 401. Sin esto `mia` se quedaba en null: «Fundar una» no abría
+    // nada y Mi crew decía «Mirando tu crew…» para siempre. Se anota para pedir entrar de nuevo.
+    else if (j && j.status === 401) { E.miaNo = j.error || 'sin_sesion'; avisar(); }
   }).catch(() => { E.pidiendoMia = false; });
 }
 
@@ -39,11 +43,11 @@ export function useCrews() {
     pedirCrews();
     pedirMia();
     // al entrar con Discord (o salir), lo tuyo cambia: `lg:cuenta` (bot/paginas/cuenta.js), como en App.jsx
-    const dc = () => { E.mia = null; pedirMia(true); };
+    const dc = () => { E.mia = null; E.miaNo = ''; pedirMia(true); };
     W.addEventListener('lg:cuenta', dc);
     return () => { E.oyentes.delete(f); W.removeEventListener('lg:cuenta', dc); };
   }, []);
-  return { todas: E.todas, mia: E.mia };
+  return { todas: E.todas, mia: E.mia, miaNo: E.miaNo };
 }
 
 /** La crew en vivo de una clave de crew (o de su nombre). */

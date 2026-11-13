@@ -21,7 +21,7 @@ import { Bandera, Cara, ConMas, Vacio, accion } from './piezas.jsx';
 import { CrewCirculo } from './arriba.jsx';
 import { escudoDe, tinta } from './escudo.jsx';
 import { accionCrew, armarCrews as armar, errorCrew, useCrews } from './crews.js';
-import { Anillo, CrearCrew, SemanaCrew, TierChip } from './crewpanel.jsx';
+import { Anillo, CrearCrew, EntrarDeNuevo, SemanaCrew, TierChip } from './crewpanel.jsx';
 import CSS_PAGINA from './css/crews.css?inline';
 import { usarCss } from './css.js';
 
@@ -41,7 +41,7 @@ const ORDENES = [['reco', 'Para ti'], ['activas', 'Más activas esta semana'], [
   ['puntos', 'Más puntos en la temporada'], ['nuevas', 'Las más nuevas']];
 
 export function CrewsPagina({ liga, dc, qs }) {
-  const { todas, mia } = useCrews();
+  const { todas, mia, miaNo } = useCrews();
   const [filElegido, setFil] = useState(null);
   // 🧱 «Fundar una» abre el formulario acá mismo (Dlx, 19/10/2026: «la gente no sabe dónde crear crews»); `?armar=1`
   // lo trae abierto (el botón de Mi crew). ⚠️ No se llama `armar`: así se llama la función importada que arma la lista,
@@ -90,7 +90,7 @@ export function CrewsPagina({ liga, dc, qs }) {
           <p className="hero-p">Funda la tuya o súmate a una. Cada lunes, como en el fútbol, cada crew sube, baja o se mantiene de tier por lo que jugó su gente.</p>
           {jugaronSem ? <p className="crw-vivo"><i aria-hidden="true" />{jugaronSem === 1 ? '1 crew ya jugó' : jugaronSem + ' crews ya jugaron'} esta semana · cierra el lunes a las 11 AM</p> : null}
           <div className="crw-cta">
-            {!dc ? <button type="button" className="btn verde" onClick={accion.entrar}>Entrar con Discord</button>
+            {!dc || (!mia && miaNo) ? <button type="button" className="btn verde" onClick={accion.entrar}>{dc ? 'Entrar de nuevo con Discord' : 'Entrar con Discord'}</button>
               : mias ? <a className="btn verde" href={enlaceCrew(mias.c.id)}>Ir a mi crew</a>
                 : mia && !mia.de ? <a className="btn verde" href="#/cuenta/verificar">Verificarme para entrar</a>
                   : <>
@@ -107,7 +107,7 @@ export function CrewsPagina({ liga, dc, qs }) {
       </div>
       <div className="pub-t2 crw-t2">
         <main className="pub-feed crw-main">
-          <TuCrew liga={liga} dc={dc} mia={mia} x={mias} T={T} armar={abierto} setArmar={setAbierto} />
+          <TuCrew liga={liga} dc={dc} mia={mia} miaNo={miaNo} x={mias} T={T} armar={abierto} setArmar={setAbierto} />
           {reco.length ? (
             <section className="crw-sec" id="crw-mazo" aria-labelledby="crw-mazo-h">
               <h2 className="crw-h2" id="crw-mazo-h">Para ti</h2>
@@ -231,7 +231,8 @@ function SemanaCrews({ xs, T }) {
 }
 
 /** Arriba de todo: tu crew (con su semana) o, sin crew, fundar una; y las invitaciones que tienes. */
-function TuCrew({ liga, dc, mia, x, T, armar, setArmar }) {
+function TuCrew({ liga, dc, mia, miaNo, x, T, armar, setArmar }) {
+  if (dc && !mia && miaNo && armar) return <section className="crw-tu armando" id="crw-tu" aria-label="Tu crew"><EntrarDeNuevo /></section>;
   if (!dc || !mia) return null;
   const inv = mia.inv || [];
   if (x) {

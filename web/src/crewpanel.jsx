@@ -765,10 +765,21 @@ export function CasaCrew({ liga, c, T }) {
   );
 }
 
+/** 🔑 La sesión de Discord venció (13/11/2026): el navegador recuerda quién eres, pero hay que volver a entrar. */
+export function EntrarDeNuevo() {
+  return (
+    <div className="cw-bloque">
+      <p className="cu-d">Tu sesión de Discord venció: entra de nuevo para ver tu crew, fundar una o aceptar una invitación.</p>
+      <button type="button" className="btn verde" onClick={() => { if (window.urlLogin) location.href = window.urlLogin('s'); }}>Entrar con Discord</button>
+    </div>
+  );
+}
+
 export function MiCrew({ liga, dc }) {
-  const { mia } = useCrews();
+  const { mia, miaNo } = useCrews();
   const { va, msg, hacer, setMsg } = useAccion();
   if (!dc) return <p className="cu-d">Entra con Discord para armar tu crew o aceptar una invitación.</p>;
+  if (!mia && miaNo) return <EntrarDeNuevo />;
   if (!mia) return <p className="cu-d">Mirando tu crew…</p>;
   if (!mia.de) return <p className="cu-d">Las crews son de los Miembros de Discord Rap Español: <a href="#/cuenta/verificar">verifícate</a> y arma la tuya o súmate a una.</p>;
   if (mia.crew) {
