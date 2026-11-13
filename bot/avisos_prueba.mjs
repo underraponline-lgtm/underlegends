@@ -628,6 +628,19 @@ const ok = (cond, que, det) => {
   ok(m.components[0].components[0].label === 'Ir al anuncio', 'y sin ninguna, el anuncio, como antes');
 
   // 🎨 LA TARJETA NUEVA (Dlx, 11/11/2026: «Toda, y que bueno cada sv tenga un banner…»)
+  // 🔁 el mismo evento anunciado dos veces avisa una (12/11/2026, FDS: «RAP SIN GROSERIAS» dos veces en 37 s)
+  {
+    const t1 = Date.UTC(2026, 10, 12, 23, 44, 50), t2 = Date.UTC(2026, 10, 12, 23, 45, 20);
+    const c1 = A.clavesEvento('RAP SIN GROSERIAS', t1), c2 = A.clavesEvento('Rap sin groserías!', t2);
+    ok(c1.guardar !== c2.guardar && c2.buscar.includes(c1.guardar),
+      'dos anuncios a 30 s, a los dos lados de un redondeo, se reconocen como el mismo evento');
+    const sin = A.clavesEvento('RAP SIN GROSERIAS', null);
+    ok(c2.buscar.includes(sin.guardar) && c1.guardar.startsWith(sin.prefijo),
+      'y uno sin hora se cruza con el mismo con hora, en los dos sentidos');
+    ok(!A.clavesEvento('RAP SIN GROSERIAS', t1 + 40 * 60000).buscar.includes(c1.guardar)
+      && !A.clavesEvento('RAP SIN GROSERIAS 2', t1).buscar.includes(c1.guardar),
+      'pero el mismo nombre 40 min después, u otro nombre, es otro evento');
+  }
   ok(A.modalidadRed('1 VS 1') === '1 vs 1' && A.modalidadRed('1V1') === '1 vs 1' && A.modalidadRed('1vs1') === '1 vs 1'
     && A.modalidadRed('2v2') === '2 vs 2' && A.modalidadRed('MULTIVERSE') === 'Multiverse' && A.modalidadRed('') === '',
   'la modalidad, una sola forma: «1 vs 1», y lo demás como oración');

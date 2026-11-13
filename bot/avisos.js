@@ -2860,6 +2860,22 @@ function diaDe(texto) {
 }
 /** `cuando.dia_del_nombre()`: el día de la semana que dice el NOMBRE del anuncio, o `''`: la fecha cuando el anuncio
  *  no trae una aparte («( DOMINGO - MAÑANA )» en el título de la FAT BATTLES Fecha 4, 12/10/2026) */
+/**
+ * 🔁 LAS CLAVES DE «¿ES EL MISMO EVENTO?» de la campana: el nombre (sólo letras y números) y la hora de arranque
+ * redondeada a 10 minutos. Devuelve la que se guarda y las que se buscan.
+ * ⚠️ SE BUSCAN TAMBIÉN LAS DOS DE AL LADO, y la de sin hora (Dlx, 12/11/2026: «arregla también lo de la campana»,
+ * después de que FDS anunciara «RAP SIN GROSERIAS» dos veces en 37 segundos). Redondear deja un borde: 6:44:50 y 6:45:20
+ * caen en tramos distintos y eran dos avisos. Y un anuncio sin hora no se cruzaba con el mismo con hora. Sin hora,
+ * busca el nombre con cualquier hora (`prefijo`)
+ */
+export function clavesEvento(nombre, ini) {
+  // (sin tildes: «GROSERÍAS» y «GROSERIAS» son el mismo nombre)
+  const n = String(nombre || '').normalize('NFD').replace(/\p{M}/gu, '').toLowerCase().replace(/[^\p{L}\p{N}]+/gu, '');
+  if (ini == null) return { guardar: n + '|', buscar: [], prefijo: n + '|' };
+  const b = Math.round(ini / (10 * MIN));
+  return { guardar: n + '|' + b, buscar: [n + '|' + (b - 1), n + '|' + b, n + '|' + (b + 1), n + '|'], prefijo: null };
+}
+
 export function diaDelNombre(nombre) {
   const d = diaDe(nombre);
   return d == null ? '' : DIAS_JS[d];
@@ -10724,10 +10740,12 @@ export class Avisos {
     // de FFA, son dos mensajes distintos del mismo evento. Se reconoce por
     // el nombre y la hora de arranque —redondeada a 10 minutos, porque
     // «EN 15» publicado con un minuto de diferencia da un minuto distinto—.
-    const clave = a.nombre.toLowerCase().replace(/[^\p{L}\p{N}]+/gu, '') + '|' +
-      (ini != null ? Math.round(ini / (10 * MIN)) : '');
-    const prev = this.sql.exec('SELECT id FROM claves WHERE clave = ? AND t > ?', clave,
-      ahora - EDAD_MAX).toArray()[0];
+    // (las claves, en `clavesEvento()`: también los tramos de al lado y la de sin hora)
+    const ce = clavesEvento(a.nombre, ini);
+    const clave = ce.guardar;
+    const prev = (ce.prefijo
+      ? this.sql.exec('SELECT id FROM claves WHERE clave LIKE ? AND t > ? LIMIT 1', ce.prefijo + '%', ahora - EDAD_MAX)
+      : this.sql.exec('SELECT id FROM claves WHERE clave IN (?, ?, ?, ?) AND t > ? LIMIT 1', ...ce.buscar, ahora - EDAD_MAX)).toArray()[0];
     if (prev) {
       // 🔴 Y SE ANOTA DE QUIÉN ES COPIA (revisión del 04/10/2026): un anuncio borrado y vuelto a publicar igual —LA
       // REDENCION, FFA, 03/10/2026, 6:26 PM— cae acá por repetido, y sin saber que existía, `cancelaciones()` leía el
