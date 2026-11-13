@@ -22,7 +22,8 @@ export function pedirCrews(forzar = false) {
   E.pidiendo = true;
   fetch('/api/avisos/crews').then((r) => r.json()).then((j) => {
     E.pidiendo = false;
-    if (j && Array.isArray(j.crews)) { E.todas = j; E.tTodas = Date.now(); avisar(); }
+    // 🗑️ y queda en `window.CREWS_VIVAS` para `liga.crewDe()` (13/11/2026): ver el porqué allá
+    if (j && Array.isArray(j.crews)) { E.todas = j; E.tTodas = Date.now(); W.CREWS_VIVAS = j; avisar(); }
   }).catch(() => { E.pidiendo = false; });
 }
 

@@ -31,6 +31,7 @@ import { BarraDia } from './drops.jsx';
 import { Elegido, Opinion, X2 } from './encuestas.jsx';
 import { PopCab } from './pop.jsx';
 import { delHilo, useComentarios } from './comentarios.jsx';
+import { conCrewsVivas, useCrews } from './crews.js';
 
 const W = typeof window !== 'undefined' ? window : {};
 const ET = 'America/New_York';
@@ -1137,6 +1138,8 @@ export function PnEventos({ liga, ancho = false }) {
 // ── 🛡️ CREW: la tuya, o súmate (en el lugar del Ranking, que ya está arriba) ─────────────────────────────────────
 export function PnCrew({ liga }) {
   const yo = liga.yo;
+  // 🗑️ la lista en vivo, si tienes crew: borrarla o salir se ve al instante (`liga.crewDe()`)
+  useCrews(yo && yo.crew ? 'todas' : 'nada');
   const mia = yo ? liga.crewDe(yo) : null;
   const ct = liga.d.crews_tiers || {};
   const tierDe = (c) => { const t = ((ct.crews || {})[c.clave || c.crew] || [])[0]; return t != null ? [(ct.nombres || [])[t], (ct.colores || [])[t]] : null; };
@@ -1144,7 +1147,7 @@ export function PnCrew({ liga }) {
   // 🛡️ el escudo grande de fondo, como la maqueta (`.grande`): decorado, no dice nada
   const fondo = <svg className="pn-cr-fondo" viewBox="0 0 100 114" aria-hidden="true"><path d="M50 2 96 18v38c0 28-20 46-46 56C24 102 4 84 4 56V18Z" fill="currentColor" /></svg>;
   // las de la lista, también las que todavía no tienen puesto (menos de 3): eran 2 donde la maqueta mostraba 3
-  const todas = (liga.d.crews || []).slice().sort((a, b) => (b.pts || 0) - (a.pts || 0));
+  const todas = conCrewsVivas(liga.d.crews || []).slice().sort((a, b) => (b.pts || 0) - (a.pts || 0));
   const logo = (c, cls) => (escudoDe(c.logo, limpio(c.crew)) ? <span className={cls}><Escudo e={escudoDe(c.logo, limpio(c.crew))} /></span>
     : c.logo ? <img className={cls} alt="" src={srcLogo(c.logo)} /> : <span className={cls + ' ini'}>{limpio(c.crew).slice(0, 2).toUpperCase()}</span>);
   if (mia) {

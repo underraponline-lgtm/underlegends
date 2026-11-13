@@ -676,7 +676,19 @@ export class Liga {
     // historia «TU CREW», ni el link en el visor
     const c = limpio(f.crew).toLowerCase();
     const cs = this.d.crews || [];
-    return cs.find((x) => x.clave === f.crew) || cs.find((x) => limpio(x.crew).toLowerCase() === c) || null;
+    const x = cs.find((y) => y.clave === f.crew) || cs.find((y) => limpio(y.crew).toLowerCase() === c) || null;
+    // 🗑️ AL INSTANTE (13/11/2026, Dlx: «yo eliminé la crew ULEYES pero sigue saliendo que estoy ahí… asegúrate que
+    // algunos cambios sean inmediatos, no todos pero este sí»): la fila sale del ciclo, que pasa cada media hora. Si la
+    // página ya tiene la lista en vivo (`window.CREWS_VIVAS`, de crews.js), una crew que ya no existe, o de la que esta
+    // persona ya no es parte, deja de contar. Sumarse sigue esperando al ciclo: ahí los puntos y el tier salen de él
+    const V = typeof window !== 'undefined' ? window.CREWS_VIVAS : null;
+    if (x && V && Array.isArray(V.crews)) {
+      const nx = limpio(x.crew).toLowerCase();
+      const viva = V.crews.find((y) => y.id === x.clave || y.id === x.crew || limpio(y.nombre).toLowerCase() === nx);
+      if (!viva) return null;
+      if (f.k && Array.isArray(viva.gente) && !viva.gente.some((g) => g && g[0] === f.k)) return null;
+    }
+    return x;
   }
   // un país: su puesto en la Liga y su gente, en el orden del ranking
   paisDe(cc) {
