@@ -11,6 +11,16 @@
  ],
  "cambios": [
     {
+        "version": "4.99",
+        "dia": "2026-11-13",
+        "cuando": "2026-11-13T02:20:00-05:00",
+        "titulo": "El pie del Inicio, rehecho",
+        "items": [
+            "Abajo del todo, una sola fila: la marca, los links y las **redes de la Liga con su ícono**.",
+            "El borde de arriba se llena con la temporada: dice en qué día vas de los 101."
+        ]
+    },
+    {
         "version": "4.98",
         "dia": "2026-11-13",
         "cuando": "2026-11-13T02:03:00-05:00",
