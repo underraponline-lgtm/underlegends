@@ -11,6 +11,16 @@
  ],
  "cambios": [
     {
+        "version": "4.92",
+        "dia": "2026-11-13",
+        "cuando": "2026-11-13T02:10:00-05:00",
+        "titulo": "La cabecera, en una fila",
+        "items": [
+            "La parte de arriba ahora es **una sola fila**, en la compu y en el celular: el resto de la página sube.",
+            "Para buscar: la lupa, o **Ctrl K** en la compu."
+        ]
+    },
+    {
         "version": "4.91",
         "dia": "2026-11-13",
         "cuando": "2026-11-13T00:20:00-05:00",
