@@ -11,6 +11,17 @@
  ],
  "cambios": [
     {
+        "version": "4.78",
+        "dia": "2026-11-12",
+        "cuando": "2026-11-12T20:05:00-05:00",
+        "titulo": "El Inicio, ordenado",
+        "items": [
+            "Tu panel del Inicio se reacomodó: la **Tienda** te dice qué te alcanza y **tu liga** aparece con tu puesto (o una recomendada para ti).",
+            "**La semana** muestra cuándo cierra, la Meta de la Liga y el Equipo de la semana; **Misiones**, los carteles de Se busca más grandes.",
+            "Nuevo: **Tu servidor**, con su multiplicador, la guerra de servidores y su próximo evento."
+        ]
+    },
+    {
         "version": "4.77",
         "dia": "2026-11-12",
         "cuando": "2026-11-12T19:26:00-05:00",
