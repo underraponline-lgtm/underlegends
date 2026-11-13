@@ -684,12 +684,15 @@ function ListaCel({ x, cfg, vis, abierta, setAbierta, miFila, corteK, directoK, 
 
 // ── ⚔️ TÚ CONTRA ÉSE, POR CATEGORÍAS (a «Us vs Them» de 21st; la maqueta C): al abrir una fila, seis categorías con una
 // barra por lado y quién gana cada una. Sólo con cuenta y sobre otra persona ─────────────────────────────────────────
-function Versus({ x, a, b, cats }) {
+// `lados` (13/11/2026, Países y Crews): `[tu dibujo, el suyo, quién eres, su nombre, «ganas»]`; sin él, dos personas
+function Versus({ x, a, b, cats, lados }) {
+  const [visA, visB, yoT, suN, ganas] = lados || [<Cara liga={x.liga} k={a.k} nombre={a.n} cls="cara rk-vs-cara" />,
+    <Cara liga={x.liga} k={b.k} nombre={b.n} cls="cara rk-vs-cara" />, 'TÚ', limpio(b.n), 'Ganas'];
   const gana = cats.filter(([, v1, v2]) => v1 > v2).length;
   const peor = cats.filter(([, v1, v2]) => v2 > v1).sort((p, q) => (q[2] - q[1]) / (q[2] || 1) - (p[2] - p[1]) / (p[2] || 1))[0];
   return (
     <div className="rk-vs">
-      <div className="rk-vs-cab"><Cara liga={x.liga} k={a.k} nombre={a.n} cls="cara rk-vs-cara" /><b>TÚ CONTRA {limpio(b.n).toUpperCase()}</b><Cara liga={x.liga} k={b.k} nombre={b.n} cls="cara rk-vs-cara" /></div>
+      <div className="rk-vs-cab">{visA}<b>{yoT} CONTRA {suN.toUpperCase()}</b>{visB}</div>
       {cats.map(([t, v1, v2, fmt]) => {
         const m = Math.max(v1, v2, 1);
         return (
@@ -702,7 +705,7 @@ function Versus({ x, a, b, cats }) {
           </div>
         );
       })}
-      <p className="rk-det-c">Ganas {gana} de {cats.length} categorías.{peor ? ' Lo que más te separa: ' + peor[0].toLowerCase() + '.' : ''}</p>
+      <p className="rk-det-c">{ganas} {gana} de {cats.length} categorías.{peor ? (lados ? ' Lo que más los separa: ' : ' Lo que más te separa: ') + peor[0].toLowerCase() + '.' : ''}</p>
     </div>
   );
 }
@@ -754,9 +757,22 @@ function Detalle({ x, cfg, f, perf }) {
     const gente = cfg.grupo === 'pais' ? ((liga.paisDe(f.cc) || {}).gente || [])
       : (f.gente || []).map((n) => liga.fila(n)).filter(Boolean).sort((a, b) => (a.o || 999) - (b.o || 999));
     const href = cfg.grupo === 'pais' ? '#/pais/' + f.cc : '#/crew/' + encodeURIComponent(f.clave || f.crew);
+    // 🆚 TU PAÍS / TU CREW CONTRA (Dlx, 13/11/2026: «cuando uno presiona… debería aparecer una comparativa… para cada
+    // ranking»): las personas ya la tenían; acá, tu fila de esta misma tabla contra la que abriste
+    const esPais = cfg.grupo === 'pais';
+    const mia = (x.base || []).find((g) => (esPais ? x.miCc && g.cc === x.miCc : x.miCrew && limpio(g.crew).toLowerCase() === x.miCrew));
+    const T = liga.d.crews_tiers;
+    const prom = (g) => Math.round((g.pts || 0) / (g.n || 1));
+    const cats = !mia || mia === f || (esPais ? mia.cc === f.cc : mia.crew === f.crew) ? null : [
+      ['Puntos', mia.pts || 0, f.pts || 0, num], ['Raperos', mia.n || 0, f.n || 0, String], ['Por rapero', prom(mia), prom(f), num],
+    ].concat(!esPais && T && T.nombres ? [['Tier', mia.tier || 0, f.tier || 0, (n) => T.nombres[n] || '—']] : []);
+    const lados = cats ? (esPais
+      ? [<Bandera cc={mia.cc} cls="rk-vs-flag" />, <Bandera cc={f.cc} cls="rk-vs-flag" />, 'TU PAÍS', nombrePais(f.cc), 'Tu país gana']
+      : [<LogoCrew c={mia} cls="rk-clogo rk-vs-logo" />, <LogoCrew c={f} cls="rk-clogo rk-vs-logo" />, 'TU CREW', limpio(f.crew), 'Tu crew gana']) : null;
     return (
       <div className="rk-det-in">
         <div className="rk-det-l">
+          {cats ? <Versus x={x} a={mia} b={f} cats={cats} lados={lados} /> : null}
           <span className="rk-det-t">SU GENTE{gente.length ? ' · ' + gente.length : ''}</span>
           {gente.length ? (
             <ol className="rk-det-g">
@@ -929,6 +945,7 @@ export function Ranking({ liga, sub: subRuta, ver: abre = '', dc, raiz }) {
   // 🆕 las crews recién fundadas, sin esperar al ciclo (`conCrewsVivas()`): la lista pública, sólo en esta pestaña
   const { todas: crewsVivas } = useCrews(sub === 'crews' ? 'todas' : 'nada');
   const base = useMemo(() => (pronto ? [] : armar(liga, cfg)), [liga, sub, pronto, due, crewsVivas]); // eslint-disable-line react-hooks/exhaustive-deps
+  x.base = base; // tu fila de esta tabla, para «TU PAÍS / TU CREW CONTRA» del detalle
   // 🏆 los que clasifican al torneo de cierre (ver `clasificados()`), y la fila después de la cual va la línea
   const clas = useMemo(() => clasificados(cfg, base), [base, sub]); // eslint-disable-line react-hooks/exhaustive-deps
   const corteK = clas && clas.length === cfg.final ? clave(clas[clas.length - 1]) : null;

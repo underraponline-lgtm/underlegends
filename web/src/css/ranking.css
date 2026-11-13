@@ -235,6 +235,9 @@ tr.yo .rk-bar,.rk-fila.yo .rk-bar{background:#E41373}
 .rk-vs{display:grid;gap:6px;margin:12px 0 14px}
 .rk-vs-cab{display:flex;justify-content:space-between;align-items:center;gap:8px;font:800 13px/1 Archivo,sans-serif;letter-spacing:.02em;margin-bottom:2px}
 .rk-vs-cara{width:28px;height:28px;font-size:12px}
+.rk-vs-flag{width:36px;height:24px;object-fit:cover;flex:none}
+.rk-clogo.rk-vs-logo{width:28px;height:28px}
+.rk-clogo.con-esc.rk-vs-logo{padding:3px}
 .rk-vs-f{display:grid;grid-template-columns:64px minmax(0,1fr) 84px minmax(0,1fr) 64px;align-items:center;gap:8px;height:22px}
 .rk-vs-n{font:800 13px/1 Archivo,sans-serif;font-variant-numeric:tabular-nums;color:var(--gris)}
 .rk-vs-n:first-child{text-align:right}
