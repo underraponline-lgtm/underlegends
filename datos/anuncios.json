@@ -1,5 +1,5 @@
 {
- "cuando": "2026-11-13T18:55:11+00:00",
+ "cuando": "2026-11-13T19:25:26+00:00",
  "anuncios": [
   {
    "nombre": "¡SE LLEGÓ LA GRAN NOCHE!",
@@ -6944,30 +6944,39 @@
  "oficiales": [
   {
    "servidor": "LKR",
-   "canal": "🐉ANUNCIOS",
-   "tit": "CAMPEÓN DEL PRIMER 5 VIDAS",
+   "canal": "fms-anuncios",
+   "tit": "PRIMER CONFIRMADO MARTINEZ 🇺🇾",
    "tx": "",
-   "cuando": "2026-11-12T01:04:14",
-   "msg_id": "1570242786576306206",
-   "link": "https://discord.com/channels/1558611504046153750/1564463277348487219/1570242786576306206"
+   "cuando": "2026-11-13T19:24:46",
+   "msg_id": "1570882136154710230",
+   "link": "https://discord.com/channels/1558611504046153750/1570881485055983686/1570882136154710230"
   },
   {
    "servidor": "LKR",
-   "canal": "『🔔』Anuncios",
-   "tit": "POR EL MOMENTO TENEMOS LA MITAD DEL LINE UP HECHO SIENDO NUESTROS PROTAGONISTAS",
-   "tx": "1- SOL 🇵🇪 ( VERSO CONSCIENTE 💜🖤 ) 2- CARLOS 🇪🇨 ( DIMENSIÓN FREESTYLE 💜🖤 ) 3- MONET 🇲🇽 ( TFL 💜🖤 ) 4- VANDU 🇨🇦 ( ACADEMIA DE RAP 💛🖤 ) 5- LEONAR-T 🇲🇽 ( URBAN ART 💜🖤 ) 6- LORDVIRUZZ 🇨🇴 ( TAKKERS 💜🖤 ) 7- MAKMAH 🇻🇪 ( FFA 💜🖤 ) ",
-   "cuando": "2026-11-11T23:51:01",
-   "msg_id": "1570224363742044262",
-   "link": "https://discord.com/channels/1558611504046153750/1567688556460244992/1570224363742044262"
+   "canal": "fms-anuncios",
+   "tit": "FMS ARGENTINA🇦🇷",
+   "tx": "UN SOLO CAMPEÓN 🏆",
+   "cuando": "2026-11-13T19:23:29",
+   "msg_id": "1570881813205876818",
+   "link": "https://discord.com/channels/1558611504046153750/1570881485055983686/1570881813205876818"
+  },
+  {
+   "servidor": "ACAD",
+   "canal": "📢┇anuncios・",
+   "tit": "LAS FAT BATTLES PALOOZA T.3 LLEGARON A SU FIN!!!",
+   "tx": "Y CON ESO TENEMOS EL RANKING OFICIAL DESPUÉS DE LAS 10 FECHAS!!!! 🏆 FAT BATTLES PALOOZA — RANKING FINAL 1. MCO 🇦🇷 62 pts 👑 2. VANDU 🇨🇴 53 pts 🥈 3. PANCHOK 🇨🇱 51 pts 🥉 | 4 | MAKMA 🇻🇪 | 49 | | 5 | ERIAN 🇩🇴 | 47 | | 6 | ECL",
+   "cuando": "2026-11-13T19:22:50",
+   "msg_id": "1570881649737212041",
+   "link": "https://discord.com/channels/765045834647339038/922299202904653844/1570881649737212041"
   },
   {
    "servidor": "LKR",
    "canal": "anuncios",
-   "tit": "EL RESURGIMIENTO DE LA LEYENDA ES UNA COMPE DÓNDE SOLO SOBREVIVE UNA",
-   "tx": "LEYENDA EL CAMPEÓN SERA LA MAXIMA LEYENDA Y OTENDRA UN ROL LLAMADO LA MAXIMA LEYENDA",
-   "cuando": "2026-11-11T17:14:58",
-   "msg_id": "1570124692193419486",
-   "link": "https://discord.com/channels/1558611504046153750/1558611505040064604/1570124692193419486"
+   "tit": "nos dió like los que hacen los sorteos de fms chile y somos el comentario con más likes, a",
+   "tx": "",
+   "cuando": "2026-11-13T19:13:29",
+   "msg_id": "1570879293230424138",
+   "link": "https://discord.com/channels/1558611504046153750/1558611505040064604/1570879293230424138"
   },
   {
    "servidor": "ACAD",
@@ -7141,15 +7150,6 @@
    "link": "https://discord.com/channels/1467763447117778989/1553080521096044584/1558879174142464051"
   },
   {
-   "servidor": "ACAD",
-   "canal": "📢-anuncios-📢",
-   "tit": "LOS 4 CUPOS QUE QUEDAN SERÁN POR INVITACIÓN, Y TENDREMOS ESTE 17 DE OCTUBRE LA REGIONAL",
-   "tx": "QUIEN LA GANE SE LLEVA EL CUPO QUE QUEDA PARA LA NACIONAL EL 25 DE OCTUBRE 🇦🇷 MUCHA SUERTE!",
-   "cuando": "2026-10-11T14:04:16",
-   "msg_id": "1558842676978388993",
-   "link": "https://discord.com/channels/765045834647339038/857123098469859328/1558842676978388993"
-  },
-  {
    "servidor": "FDS",
    "canal": "╭🔵📢╏anuncios-redbull",
    "tit": "🇵🇪 ¡TODO LISTO PARA LAS INSCRIPCIONES DE RED BULL!〡REDBULL #2026 🇵🇪",
@@ -7169,6 +7169,87 @@
   }
  ],
  "inscripciones": [
+  {
+   "servidor": "LKR",
+   "canal": "⟡・INSCRIPCIONES",
+   "texto": "🇦🇷",
+   "quien": "microcrack",
+   "discord_id": "1358539185778327612",
+   "msg_id": "1570880934545199196",
+   "cuando": "2026-11-13T19:20:00"
+  },
+  {
+   "servidor": "LKR",
+   "canal": "⟡・INSCRIPCIONES",
+   "texto": "🇦🇷",
+   "quien": "lizeninn.",
+   "discord_id": "1493416945037611140",
+   "msg_id": "1570880018773450926",
+   "cuando": "2026-11-13T19:16:22"
+  },
+  {
+   "servidor": "LKR",
+   "canal": "⟡・INSCRIPCIONES",
+   "texto": "mito🇦🇷",
+   "quien": "lizeninn.",
+   "discord_id": "1493416945037611140",
+   "msg_id": "1570880012683579454",
+   "cuando": "2026-11-13T19:16:20"
+  },
+  {
+   "servidor": "LKR",
+   "canal": "⟡・INSCRIPCIONES",
+   "texto": "🇦🇷",
+   "quien": "taurrusss",
+   "discord_id": "1533933094673973260",
+   "msg_id": "1570879978151612467",
+   "cuando": "2026-11-13T19:16:12"
+  },
+  {
+   "servidor": "LKR",
+   "canal": "⟡・INSCRIPCIONES",
+   "texto": "🇨🇴",
+   "quien": "tenacious_dragon_23394",
+   "discord_id": "1548906948307451906",
+   "msg_id": "1570879934535303330",
+   "cuando": "2026-11-13T19:16:01"
+  },
+  {
+   "servidor": "LKR",
+   "canal": "⟡・INSCRIPCIONES",
+   "texto": "Hedorah 🇨🇱",
+   "quien": "dbbdhdhfbdjdj_31533",
+   "discord_id": "1168982381156388998",
+   "msg_id": "1570879882442051687",
+   "cuando": "2026-11-13T19:15:49"
+  },
+  {
+   "servidor": "LKR",
+   "canal": "⟡・INSCRIPCIONES",
+   "texto": "🇪🇸",
+   "quien": "krishsss11111",
+   "discord_id": "1513620494199558295",
+   "msg_id": "1570879768960962563",
+   "cuando": "2026-11-13T19:15:22"
+  },
+  {
+   "servidor": "LKR",
+   "canal": "⟡・INSCRIPCIONES",
+   "texto": "🇺🇾",
+   "quien": "last5724",
+   "discord_id": "483070865081237505",
+   "msg_id": "1570879713763659940",
+   "cuando": "2026-11-13T19:15:09"
+  },
+  {
+   "servidor": "LKR",
+   "canal": "⟡・INSCRIPCIONES",
+   "texto": "🇺🇾",
+   "quien": "martinez4080",
+   "discord_id": "756958777126682674",
+   "msg_id": "1570879567332384929",
+   "cuando": "2026-11-13T19:14:34"
+  },
   {
    "servidor": "ACAD",
    "canal": "📝┇inscripciones-1",
@@ -43087,87 +43168,6 @@
    "discord_id": "1363285354442133778",
    "msg_id": "1558640457330851872",
    "cuando": "2026-10-11T00:40:43"
-  },
-  {
-   "servidor": "URBF",
-   "canal": "《📑》Inscripciones",
-   "texto": "Pichulamc",
-   "quien": "dariel.ivo",
-   "discord_id": "578697503130779649",
-   "msg_id": "1558639769162874981",
-   "cuando": "2026-10-11T00:37:59"
-  },
-  {
-   "servidor": "URBF",
-   "canal": "《📑》Inscripciones",
-   "texto": "Yo 🇨🇱 (vs leyenda)",
-   "quien": "cronoxzito",
-   "discord_id": "1487658663148785734",
-   "msg_id": "1558639623755010109",
-   "cuando": "2026-10-11T00:37:24"
-  },
-  {
-   "servidor": "URBF",
-   "canal": "《📑》Inscripciones",
-   "texto": "Partim",
-   "quien": "essencesteez",
-   "discord_id": "917207293496557578",
-   "msg_id": "1558639524693807226",
-   "cuando": "2026-10-11T00:37:00"
-  },
-  {
-   "servidor": "URBF",
-   "canal": "《📑》Inscripciones",
-   "texto": "Aby🇦🇷",
-   "quien": "raquetazzzomaster67_15647",
-   "discord_id": "1522725640560709726",
-   "msg_id": "1558639319126904984",
-   "cuando": "2026-10-11T00:36:11"
-  },
-  {
-   "servidor": "URBF",
-   "canal": "《📑》Inscripciones",
-   "texto": "Leyenda.X5 🇦🇷",
-   "quien": "microcrack",
-   "discord_id": "1358539185778327612",
-   "msg_id": "1558639256648552470",
-   "cuando": "2026-10-11T00:35:56"
-  },
-  {
-   "servidor": "URBF",
-   "canal": "《📑》Inscripciones",
-   "texto": "Bna",
-   "quien": "benjaclink31",
-   "discord_id": "849765868819972166",
-   "msg_id": "1558639069443924099",
-   "cuando": "2026-10-11T00:35:12"
-  },
-  {
-   "servidor": "URBF",
-   "canal": "《📑》Inscripciones",
-   "texto": "mr still ballin 🇳🇴",
-   "quien": "imstillplayin",
-   "discord_id": "794200141023412244",
-   "msg_id": "1558639047898038313",
-   "cuando": "2026-10-11T00:35:07"
-  },
-  {
-   "servidor": "URBF",
-   "canal": "《📑》Inscripciones",
-   "texto": "agustin51k 🇨🇱",
-   "quien": "agustin51k",
-   "discord_id": "1114241587262783631",
-   "msg_id": "1558639039018573917",
-   "cuando": "2026-10-11T00:35:05"
-  },
-  {
-   "servidor": "URBF",
-   "canal": "《📑》Inscripciones",
-   "texto": "Makma 🇻🇪",
-   "quien": "makmah_g",
-   "discord_id": "897942226955563068",
-   "msg_id": "1558639040784498822",
-   "cuando": "2026-10-11T00:35:05"
   }
  ]
 }

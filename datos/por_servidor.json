@@ -3943,12 +3943,12 @@
   "Emilio Alva": {
    "ACAD": {
     "duelos": "1/4",
-    "ev": 4,
+    "ev": 5,
     "oro": 0,
-    "ovr": 47,
+    "ovr": 48,
     "pod": 1,
-    "pts": 19938,
-    "racha": "1/1",
+    "pts": 26126,
+    "racha": "0/1",
     "tg": {
      "fin": 1
     }
@@ -8576,20 +8576,6 @@
     "pod": 0,
     "pts": 5000,
     "racha": "0/0"
-   }
-  },
-  "Maximiliano calvo 🇲🇽": {
-   "ACAD": {
-    "duelos": "",
-    "ev": 1,
-    "oro": 0,
-    "ovr": 43,
-    "pod": 0,
-    "pts": 6188,
-    "racha": "0/0",
-    "tg": {
-     "nuevo": true
-    }
    }
   },
   "Mc Glock": {

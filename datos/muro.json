@@ -532,6 +532,7 @@
 "rg": "D",
 "c": [
 "competitivo",
+"pais",
 "servidor",
 "temporada"
 ]
@@ -1157,6 +1158,10 @@
 "rg": "",
 "c": []
 },
+"emilioalva": {
+"rg": "",
+"c": []
+},
 "cj": {
 "rg": "",
 "c": []
@@ -1270,10 +1275,6 @@
 "c": []
 },
 "nmb": {
-"rg": "",
-"c": []
-},
-"emilioalva": {
 "rg": "",
 "c": []
 },
@@ -2835,14 +2836,6 @@
 }
 },
 "cambios": [
-{
-"tipo": "tarjeta",
-"t": "2026-10-09T01:27:25Z",
-"quien": [
-"MCO"
-],
-"carta": "competitivo"
-},
 {
 "tipo": "tarjeta",
 "t": "2026-10-09T01:56:34Z",
@@ -6203,6 +6196,14 @@
 ],
 "rg": "C",
 "primero": false
+},
+{
+"tipo": "tarjeta",
+"t": "2026-11-13T19:31:23Z",
+"quien": [
+"Jupiter"
+],
+"carta": "pais"
 }
 ],
 "noche_antes": {
