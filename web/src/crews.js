@@ -9,15 +9,20 @@ export const ROL_NOMBRE = { lider: 'Líder', colider: 'Colíder', veterano: 'Vet
 export const ENTRADA_NOMBRE = { abierta: 'Abierta: entra quien quiera', pedido: 'Con pedido: el Líder o un Colíder acepta',
   invitacion: 'Sólo por invitación' };
 
-const E = { todas: null, mia: null, miaNo: '', pidiendo: false, pidiendoMia: false, oyentes: new Set() };
+const E = { todas: null, tTodas: 0, mia: null, miaNo: '', pidiendo: false, pidiendoMia: false, oyentes: new Set() };
 const avisar = () => E.oyentes.forEach((f) => f());
 
+// 🕐 la lista se vuelve a pedir si tiene más de un minuto (13/11/2026, Dlx: «Oasis creó una crew pero no se actualizó en
+// vivo, yinn no lo ve»): antes se pedía UNA vez por carga de la página, y quien la tenía abierta no veía las nuevas nunca.
+// Es pública y el borde la guarda 20 s: volver a pedirla no le cuesta al objeto
+const VIEJA_MS = 60 * 1000;
+
 export function pedirCrews(forzar = false) {
-  if ((E.todas && !forzar) || E.pidiendo) return;
+  if ((E.todas && !forzar && Date.now() - E.tTodas < VIEJA_MS) || E.pidiendo) return;
   E.pidiendo = true;
   fetch('/api/avisos/crews').then((r) => r.json()).then((j) => {
     E.pidiendo = false;
-    if (j && Array.isArray(j.crews)) { E.todas = j; avisar(); }
+    if (j && Array.isArray(j.crews)) { E.todas = j; E.tTodas = Date.now(); avisar(); }
   }).catch(() => { E.pidiendo = false; });
 }
 
@@ -34,20 +39,42 @@ export function pedirMia(forzar = false) {
   }).catch(() => { E.pidiendoMia = false; });
 }
 
-/** Todas las crews y la tuya, y que la pantalla se entere cuando cambian. */
-export function useCrews() {
+/** Todas las crews y la tuya, y que la pantalla se entere cuando cambian. `que`: 'todo'; 'todas', sólo la lista pública
+ *  (el ranking: para ordenar crews no hace falta preguntarle a Discord quién eres); 'nada', escuchar sin pedir. */
+export function useCrews(que = 'todo') {
   const [, setN] = useState(0);
+  useEffect(() => {
+    if (que !== 'nada') pedirCrews();
+    if (que === 'todo') pedirMia();
+  }, [que]);
   useEffect(() => {
     const f = () => setN((n) => n + 1);
     E.oyentes.add(f);
-    pedirCrews();
-    pedirMia();
     // al entrar con Discord (o salir), lo tuyo cambia: `lg:cuenta` (bot/paginas/cuenta.js), como en App.jsx
     const dc = () => { E.mia = null; E.miaNo = ''; pedirMia(true); };
     W.addEventListener('lg:cuenta', dc);
     return () => { E.oyentes.delete(f); W.removeEventListener('lg:cuenta', dc); };
   }, []);
   return { todas: E.todas, mia: E.mia, miaNo: E.miaNo };
+}
+
+/**
+ * 🆕 LAS FILAS DEL RANKING DE CREWS, AL DÍA (13/11/2026). Las arma el ciclo (`_crews()` de bot/subir_web.py) cada media
+ * hora, y de madrugada no corre: una crew recién fundada no aparecía hasta la corrida siguiente —la de Oasis, fundada a
+ * la 1:38 AM, cinco minutos después de una—. Con la lista en vivo (`/api/avisos/crews`) se suman las que el ciclo todavía
+ * no trae, sin puntos ni puesto (los puntos los cuenta el ciclo), y se sacan las que ya no existen.
+ */
+export function conCrewsVivas(filas) {
+  const vivas = E.todas && E.todas.crews;
+  if (!vivas || !vivas.length) return filas;
+  const n = (x) => String(x || '').toLowerCase();
+  const existen = new Set(vivas.flatMap((c) => [n(c.id), n(c.nombre)]));
+  const ya = new Set(filas.flatMap((f) => [n(f.clave), n(f.crew)]));
+  const quedan = filas.filter((f) => existen.has(n(f.clave)) || existen.has(n(f.crew)));
+  const nuevas = vivas.filter((c) => !ya.has(n(c.id)) && !ya.has(n(c.nombre))).map((c) => ({
+    crew: c.nombre, clave: c.id, n: (c.gente || []).length, pts: 0, mejor: '', gente: [], rk: 0, tier: 0, logo: c.logo || '',
+  }));
+  return quedan.concat(nuevas);
 }
 
 /** La crew en vivo de una clave de crew (o de su nombre). */

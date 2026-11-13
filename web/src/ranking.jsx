@@ -28,6 +28,7 @@ import { svElegido, useElegidos } from './elegidos.js';
 import { Ascenso, useDetalle } from './ligas.jsx';
 import { usePases } from './pase.js';
 import { TierChip } from './crewpanel.jsx';
+import { conCrewsVivas, useCrews } from './crews.js';
 import CSS_PAGINA from './css/ranking.css?inline';
 import { usarCss } from './css.js';
 
@@ -428,7 +429,7 @@ const SUBS = {
     valor: [(f) => f.pts || 0, 'pts'], dato: (f) => num(f.pts) + ' PTS',
   },
   crews: {
-    et: 'Crews', grupo: 'crew', filas: (L) => L.d.crews || [], sinChips: 1, nombre: (f) => limpio(f.crew),
+    et: 'Crews', grupo: 'crew', filas: (L) => conCrewsVivas(L.d.crews || []), sinChips: 1, nombre: (f) => limpio(f.crew),
     orden: (a, b) => ((b.rk !== 0) - (a.rk !== 0)) || (b.pts - a.pts) || (b.n - a.n), sinPuesto: (f) => f.rk === 0,
     cols: ['i', 'crew', 'tier', 'nc', 'pts', 'mejor'], movil: ['i', 'crew', 'tier', 'pts'], que: ['crew', 'crews'],
     baj: <>Por los puntos que suman. Para tener puesto una crew necesita <b>tres raperos</b> en la temporada: las que no llegan se ven, sin número. Y cada lunes, como en el fútbol, cada crew <b>sube, baja o se mantiene de tier</b> según lo que sumó en la semana. Para armar una o sumarte, <a className="te-link" href="#/crews">la página de crews</a>.</>,
@@ -925,7 +926,9 @@ export function Ranking({ liga, sub: subRuta, ver: abre = '', dc, raiz }) {
     barra: sub === 'temporada', maxPts,
   };
 
-  const base = useMemo(() => (pronto ? [] : armar(liga, cfg)), [liga, sub, pronto, due]); // eslint-disable-line react-hooks/exhaustive-deps
+  // 🆕 las crews recién fundadas, sin esperar al ciclo (`conCrewsVivas()`): la lista pública, sólo en esta pestaña
+  const { todas: crewsVivas } = useCrews(sub === 'crews' ? 'todas' : 'nada');
+  const base = useMemo(() => (pronto ? [] : armar(liga, cfg)), [liga, sub, pronto, due, crewsVivas]); // eslint-disable-line react-hooks/exhaustive-deps
   // 🏆 los que clasifican al torneo de cierre (ver `clasificados()`), y la fila después de la cual va la línea
   const clas = useMemo(() => clasificados(cfg, base), [base, sub]); // eslint-disable-line react-hooks/exhaustive-deps
   const corteK = clas && clas.length === cfg.final ? clave(clas[clas.length - 1]) : null;
