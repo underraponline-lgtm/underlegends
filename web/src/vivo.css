@@ -4855,3 +4855,13 @@ dialog.pn-pop.pop-gratis{--pc:#F5C542;width:min(640px,calc(100vw - 32px))}
 .pn-fila.cuatro .pn-racha b{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 @media (min-width: 761px){.pn-fila.cuatro .pn-ultc .pn-cal{flex:none}}
 .pn-vs.con-lg .pn-prob b{white-space:nowrap}
+
+
+/* ═══ 👤 EL PANEL DE ALGUIEN NUEVO (12/11/2026, Dlx: «así lo ve una persona nueva… hay botones que desaparecen»): el centro
+   lleva abajo los cuatro botones con candado, y la liga y el servidor dicen algo en vez de dejar un hueco ═══ */
+.pn-yo.sin{display:flex;flex-direction:column;gap:12px}
+.pn-yo.sin .pn-sin-in{flex:1 1 auto;height:auto}
+.pn-acc.bloq > button,.pn-acc.bloq > a{position:relative}
+.pn-acc.bloq > button > .ico:last-child{position:absolute;top:8px;right:8px;color:#9a9ca3}
+.pn-acc.bloq > button{opacity:.82}
+.pn-acc.bloq > button:hover,.pn-acc.bloq > button:focus-visible{opacity:1}

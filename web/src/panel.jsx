@@ -161,7 +161,18 @@ const IR_GRATIS = { fel: '#/publicaciones', cm: '#/publicaciones', promo: '#/pub
 function PremioGratis({ liga, enc, dc }) {
   const D = useDrops(dc);
   const dlg = useRef(null);
-  if (!dc) return null;
+  // 👤 sin cuenta (Dlx, 12/11/2026, mirando el Inicio de alguien nuevo: «hay botones que desaparecen»): lo que de verdad te
+  // dan al entrar, los Puntos de Tienda de arranque (`liga.d.tienda.inicial`, de bot/precios.py)
+  if (!dc) {
+    const ini = (liga.d.tienda || {}).inicial;
+    return (
+      <button type="button" className="pn-gratis" onClick={accion.entrar} aria-label="Premio gratis: entra con Discord">
+        <span className="pn-gr-ic" aria-hidden="true"><Ico n="premio" t={22} /></span>
+        <span className="pn-tx"><i className="pn-gr-et">Premio gratis</i><b>{ini ? num(ini) + ' Puntos de Tienda' : 'Tu Pase y tus drops'}</b>
+          <small>{ini ? 'Para empezar: entra con Discord' : 'Entra con Discord y empieza a sumar'}</small></span>
+      </button>
+    );
+  }
   const x2 = liga.encuesta('x2');
   const el = liga.encuesta('elegido');
   const abiertas = [x2, el].filter(Boolean);
@@ -219,7 +230,7 @@ export function FilaRacha({ dc, R, liga, enc }) {
   const ult = dc && !camp && liga && liga.yo ? ultimoDe(liga, liga.yo) : null;
   // ⚠️ la racha no se dibuja hasta que llega (`R`): contarla sin estar dejaba una columna vacía
   // 🎁 con cuenta va también el Premio gratis: de a cuatro
-  const n = dc ? (R ? 1 : 0) + (camp || ult ? 1 : 0) + 2 : 1 + (camp ? 1 : 0);
+  const n = dc ? (R ? 1 : 0) + (camp || ult ? 1 : 0) + 2 : 2 + (camp ? 1 : 0);
   return (
     <>
       <Festejo R={R} />
@@ -232,7 +243,7 @@ export function FilaRacha({ dc, R, liga, enc }) {
         )}
         {camp ? <CampanaCorta dc={dc} /> : ult ? <UltCorto liga={liga} u={ult} /> : null}
         {dc ? <BarraDia dc={dc} /> : null}
-        {dc ? <PremioGratis liga={liga} enc={enc} dc={dc} /> : null}
+        <PremioGratis liga={liga} enc={enc} dc={dc} />
       </div>
     </>
   );
@@ -609,12 +620,25 @@ export function Vestuario({ liga, dc }) {
   if (!yo) {
     const top = (liga.d.tabla || []).filter((f) => f.pos && liga.cartaUrl(f.k, 'temporada')).slice(0, 3);
     return (
-      <div className="pn-cu pn-yo sin"><div className="pn-sin-in">
+      <div className="pn-cu pn-yo sin">
+      <div className="pn-sin-in">
         <div className="pn-abre">{top.map((f, j) => <img key={f.k} alt="" data-o={j === 0 ? 0 : j === 1 ? 2 : 1} src={liga.cartaUrl(f.k, 'temporada')} />)}</div>
         <div className="pn-sin-tx"><b>Tus tarjetas</b>
           <small>{dc ? 'Juega tu primer evento y entras al ranking: tu carta sale con el nivel 1 del Pase.' : 'Entra con Discord: acá van tus tarjetas, tus rankings y lo que te dicen.'}</small>
           {dc ? <a className="btn verde chico" href="#/eventos">Ver los próximos eventos</a> : <button type="button" className="btn verde chico" onClick={accion.entrar}>Entrar con Discord</button>}</div>
-      </div></div>
+      </div>
+        {/* 🔒 los cuatro de siempre, también acá (Dlx, 12/11/2026: «hay botones que desaparecen»): con candado y qué los abre.
+            Sin cuenta llevan a entrar; con cuenta y sin jugar, a los eventos (el Inventario ya se puede mirar) */}
+        <nav className="pn-acc bloq" aria-label="Lo tuyo, cuando juegues">
+          <button type="button" onClick={dc ? () => { location.hash = '#/eventos'; } : accion.entrar}><Ico n="ranking" t={22} /><b>Estadísticas</b>
+            <small>{dc ? 'Con tu primer evento' : 'Entra con Discord'}</small><Ico n="candado" t={14} /></button>
+          {dc ? <a href="#/inventario"><Ico n="tarjetas" t={22} /><b>Inventario</b><small>Tus TAGs</small></a>
+            : <button type="button" onClick={accion.entrar}><Ico n="tarjetas" t={22} /><b>Inventario</b><small>Entra con Discord</small><Ico n="candado" t={14} /></button>}
+          <span className="pn-pronto" aria-disabled="true"><Ico n="mira" t={22} /><b>Entrenar</b><small>Pronto</small><em>pronto</em></span>
+          <button type="button" onClick={dc ? () => { location.hash = '#/eventos'; } : accion.entrar}><Ico n="cruce" t={22} /><b>Batallar</b>
+            <small>{dc ? 'Cuando entres al ranking' : 'Entra con Discord'}</small><Ico n="candado" t={14} /></button>
+        </nav>
+      </div>
     );
   }
   const rks = rankingsDe(liga, yo, svElegido(liga, el, yo.k));
@@ -738,6 +762,16 @@ export function recomendarLiga(liga, ls, yoK) {
   }
   return mejor;
 }
+/** La liga más jugada ahora: activa, con gente, y con más batallas por jugar (después, la que se jugó más recién) */
+function masJugada(liga, ls) {
+  const ahora = liga.ahora.getTime ? liga.ahora.getTime() : Number(liga.ahora);
+  const act = ls.map((L) => ({ L, dias: L.ult_t ? (ahora - utc(L.ult_t).getTime()) / 86400000 : 99, n: Object.keys(L.ks || {}).length }))
+    .filter((x) => x.dias <= LIGA_ACTIVA_DIAS && x.n >= 2)
+    .sort((a, b) => (b.L.pend || 0) - (a.L.pend || 0) || a.dias - b.dias);
+  const x = act[0];
+  if (!x) return null;
+  return { L: x.L, n: x.n, por: [x.dias < 1 ? 'se jugó hoy' : x.dias < 3 ? 'activa esta semana' : 'activa', siglaDe(x.L.sv)] };
+}
 export function PnMiLiga({ liga }) {
   const yo = liga.yo;
   const [X, setX] = useState(null);
@@ -746,16 +780,15 @@ export function PnMiLiga({ liga }) {
     pedirLigas(liga.d.sello).then((x) => { if (vivo) setX(x || {}); });
     return () => { vivo = false; };
   }, [liga.d.sello]);
-  if (!yo) return null;
   const ls = (X && X.lobby && X.lobby.ligas) || [];
   const cab = (t) => <div className="pn-ml-cab"><h4>{t}</h4></div>;
   // 🖼️ el afiche de la liga a la derecha, visible (Dlx, 12/11/2026: «ligas tiene su vacío en la parte derecha»); sin
   // afiche, el escudo de su servidor
   const afiche = (L) => (L.fl ? <img className="pn-ml-afiche" alt="" src={L.fl} />
     : liga.logo(L.sv) ? <img className="pn-ml-afiche logo" alt="" src={liga.logo(L.sv)} /> : null);
-  if (!X) return <div className="pn-cu pn-ml">{cab('Tu liga')}<small className="pn-gris">Buscando tu liga…</small></div>;
+  if (!X) return <div className="pn-cu pn-ml">{cab(yo ? 'Tu liga' : 'Ligas')}<small className="pn-gris">{yo ? 'Buscando tu liga…' : 'Buscando las ligas…'}</small></div>;
   // las tuyas: donde estás en la tabla; la que se jugó más recién primero
-  const mias = ls.map((L) => {
+  const mias = !yo ? [] : ls.map((L) => {
     const i = (L.tabla || []).findIndex((r) => (L.ks || {})[r[0]] === yo.k);
     return i >= 0 ? { L, i, r: L.tabla[i] } : null;
   }).filter(Boolean).sort((a, b) => String(b.L.ult_t || '').localeCompare(String(a.L.ult_t || '')));
@@ -779,7 +812,9 @@ export function PnMiLiga({ liga }) {
       </a>
     );
   }
-  const rec = recomendarLiga(liga, ls, yo.k);
+  // 👤 sin fila en el ranking (sin cuenta, o sin jugar todavía; Dlx: «así lo ve una persona nueva… hay botones que
+  // desaparecen»): la liga que más se está jugando, en vez de un hueco
+  const rec = yo ? recomendarLiga(liga, ls, yo.k) : masJugada(liga, ls);
   if (!rec) {
     return (
       <a className="pn-cu pn-ml" href="#/ligas">{cab('Ligas')}
@@ -791,8 +826,8 @@ export function PnMiLiga({ liga }) {
     <a className="pn-cu pn-ml rec" href={'#/ligas/' + encodeURIComponent(rec.L.id)}>
       {rec.L.fl ? <img className="pn-ml-fl" alt="" src={rec.L.fl} /> : null}
       {afiche(rec.L)}
-      <div className="pn-ml-cab"><h4>Ligas</h4><em>Para ti</em></div>
-      <span className="pn-ml-n"><small>Todavía no juegas en una liga. Te recomendamos:</small><b>{limpio(rec.L.n)}</b>
+      <div className="pn-ml-cab"><h4>Ligas</h4><em>{yo ? 'Para ti' : 'En juego'}</em></div>
+      <span className="pn-ml-n"><small>{yo ? 'Todavía no juegas en una liga. Te recomendamos:' : 'La que más se está jugando:'}</small><b>{limpio(rec.L.n)}</b>
         <small>{siglaDe(rec.L.sv)} · {rec.n} raperos</small></span>
       {rec.por.length ? <span className="pn-ml-por">{rec.por.slice(0, 3).map((p) => <i key={p}>{p}</i>)}</span> : null}
       <small className="pn-ml-dato">{rec.L.pend ? num(rec.L.pend) + ' batallas por jugar · ' : ''}{rec.L.ult_t ? 'se jugó ' + hace(utc(rec.L.ult_t).getTime()) : ''}</small>
@@ -1145,17 +1180,19 @@ export function PnSemana({ liga, chica = false }) {
 export function PnServidor({ liga }) {
   const yo = liga.yo;
   const el = useElegidos();
-  if (!yo) return null;
-  const sv = svElegido(liga, el, yo.k) || yo.sv;
-  if (!sv) return null;
   const M = liga.d.mult || {};
+  // 👤 sin servidor tuyo (sin cuenta o sin jugar): el servidor de la semana, el del multiplicador más alto, en vez de un hueco
+  const delaSemana = () => Object.keys(M.sv || {}).sort((a, b) => (M.sv[b] - M.sv[a]) || (a < b ? -1 : 1))[0] || '';
+  const propio = yo ? svElegido(liga, el, yo.k) || yo.sv : '';
+  const sv = propio || delaSemana();
+  if (!sv) return null;
   const x = (M.sv || {})[sv];
   const par = (((M.guerra || {}).pares) || []).find((pp) => pp.includes(sv));
   const rival = par ? par.find((y) => y !== sv) : '';
   const meta = (M.metas || {})[sv] || 0;
   const va = (M.meta_va || {})[sv] || 0;
   const delSv = liga.oficiales().filter((f) => f.sv === sv).sort((a, b) => a.pos - b.pos);
-  const i = delSv.findIndex((f) => f.k === yo.k);
+  const i = yo ? delSv.findIndex((f) => f.k === yo.k) : -1;
   const ev = liga.luego().find((e) => e.sv === sv) || null;
   const evT = ev ? utc(liga.cuandoDe(ev)).toISOString() : '';
   // 🏠 más cosas (Dlx: «tu servidor, que haya más cosas, hay un espacio vacío»): sus tres de arriba, los eventos de esta
@@ -1170,7 +1207,7 @@ export function PnServidor({ liga }) {
   return (
     <a className="pn-baja-t pn-sv" href={'#/sv/' + encodeURIComponent(sv)}>
       {liga.logo(sv) ? <img className="pn-sv-logo" alt="" src={liga.logo(sv)} /> : <span className="pn-sv-logo">{siglaDe(sv)}</span>}
-      <span className="pn-baja-tx"><b>Tu servidor</b><small>{siglaDe(sv)}{i >= 0 ? ' · tú vas #' + (i + 1) + ' de ' + delSv.length : ''}</small>
+      <span className="pn-baja-tx"><b>{propio ? 'Tu servidor' : 'Servidor de la semana'}</b><small>{siglaDe(sv)}{i >= 0 ? ' · tú vas #' + (i + 1) + ' de ' + delSv.length : ''}</small>
         {/* ✅ sólo lo que hay (Dlx, 12/11/2026, la regla de «ninguna sección se dibuja vacía»): sin próximo evento, el último;
             los eventos de la semana sólo si hubo, y el dorado si le toca */}
         {ev ? <small className="pn-sv-ev">Próximo: {limpio(ev.nombre)} · en {faltaTxt(evT)}</small>
