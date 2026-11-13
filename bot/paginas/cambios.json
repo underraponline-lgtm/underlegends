@@ -11,6 +11,16 @@
  ],
  "cambios": [
     {
+        "version": "4.96",
+        "dia": "2026-11-13",
+        "cuando": "2026-11-13T03:40:00-05:00",
+        "titulo": "La cabecera, más ordenada",
+        "items": [
+            "Al lado de tu cara dice **Nivel** con su rayo de XP, y en el Inicio ya no repite la racha.",
+            "El buscador se cierra tocando en cualquier lado, y la lupa lo abre y lo cierra."
+        ]
+    },
+    {
         "version": "4.95",
         "dia": "2026-11-13",
         "cuando": "2026-11-13T01:10:00-05:00",
