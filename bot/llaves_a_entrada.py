@@ -5210,6 +5210,10 @@ def main():
                 campeon_viejo.add('%s · %s · %s' % (nom, ligas[0], fec))
             else:
                 campeon_bien.add('%s · %s · %s' % (nom, ligas[0], fec))
+            # 🔀 y las filas que sumó, con las mismas reglas por nombre que las leídas: salen de la decisión con el nombre
+            # tal cual, y «Pepe Mujica🇦🇷» de una semifinal sin final (#622, FDS) seguía siendo Pepe Mujica y no LRS —el
+            # paso 0c lo corregía y esto lo volvía a escribir—. Aplicarlas otra vez no cambia lo ya cambiado (12/11/2026)
+            limpias = por_bandera(otro_en_evento(otro_en_servidor(limpias, ligas[0])))
         if ligas and not tiene_campeon(limpias):
             hq = horas_quieta(g)
             # 📢 o en pausa, si el organizador avisó que sigue otro día (`pausada()`; sólo se le pregunta al vigía
