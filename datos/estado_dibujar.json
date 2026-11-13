@@ -1,9 +1,9 @@
 {
  "v": 1,
- "cuando": "2026-11-13T03:32:01Z",
+ "cuando": "2026-11-13T04:01:33Z",
  "trabajo": "dibujar",
  "codigo": 0,
- "dur_s": 1357.2,
+ "dur_s": 1200.3,
  "pasos": [
   {
    "n": "2f",
@@ -15,67 +15,67 @@
    "n": "2f2",
    "que": "los TAGs elegidos",
    "ok": true,
-   "s": 1.1
+   "s": 0.9
   },
   {
    "n": "3",
    "que": "qué cambió",
    "ok": true,
-   "s": 13.9
+   "s": 9.4
   },
   {
    "n": "4",
    "que": "las caras, desde R2",
    "ok": true,
-   "s": 28.1
+   "s": 29.0
   },
   {
    "n": "5",
    "que": "tanda 1 de 7 · 40 persona(s)",
    "ok": true,
-   "s": 1241.8
+   "s": 1080.8
   },
   {
    "n": "5b",
    "que": "las Bloqueadas",
    "ok": true,
-   "s": 6.9
+   "s": 10.2
   },
   {
    "n": "6",
    "que": "refrescar KV",
    "ok": true,
-   "s": 63.8
+   "s": 68.6
   }
  ],
  "fallas": [],
  "ultimo_evento": {
-  "n": "627",
-  "nombre": "RANKED 1",
-  "sv": "FDS",
+  "n": "628",
+  "nombre": "TORNEO CLANDESTINO V.2",
+  "sv": "FFA",
   "dia": "2026-11-12"
  },
  "cuotas": {
   "kv": {
-   "write": 279,
-   "read": 7948
+   "write": 313,
+   "read": 9058
   },
   "objeto": {
-   "leidas": 763923,
-   "escritas": 16371,
-   "pedidos": 4070
+   "leidas": 929268,
+   "escritas": 21065,
+   "pedidos": 4596
   },
   "worker": {
-   "pedidos": 15662,
+   "pedidos": 15682,
    "errores": 0,
-   "sub": 18632,
+   "sub": 18667,
    "cortados": 0,
-   "p50_ms": 1.23,
-   "p99_ms": 15.21,
+   "p50_ms": 1.24,
+   "p99_ms": 15.22,
    "cpu": {
-    "total": 34204,
-    "objeto_10": 2320,
-    "worker_10": 580
+    "total": 34261,
+    "objeto_10": 2323,
+    "worker_10": 574
    }
   },
   "r2": {
