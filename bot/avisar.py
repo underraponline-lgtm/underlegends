@@ -497,8 +497,12 @@ def _self_check():
     try:
         if os.path.exists(YA):
             os.remove(YA)
-        _h = datetime.date.today()
+        import zoneinfo
+        _h = datetime.datetime.now(zoneinfo.ZoneInfo('America/New_York')).date()
         # ⚠️ con la fecha de HOY: uno de hace más de `DIAS_AVISO` días ya no se anuncia (12/11/2026)
+        # ⚠️ Y HOY EN HORA DEL ESTE, como `_dias_de()`: con `date.today()` el runner de GitHub (UTC) ya está en mañana
+        # desde las 7 PM ET; la llave «de mañana» se lee como del año pasado y esta prueba se ponía roja cada noche
+        # (12/11/2026, 7:26 PM ET: rojo en un commit que no tocaba este archivo)
         ev2 = {'num': 999, 'nombre': 'X', 'servidor': 'FFA', 'fecha': '%d/%d' % (_h.day, _h.month)}
         f1 = _firma(ev2, 5, 2, (), 0)
         f2 = _firma(ev2, 5, 2, (), 0)
