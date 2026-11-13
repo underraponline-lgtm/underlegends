@@ -1,5 +1,5 @@
 {
- "cuando": "2026-11-13T17:55:33+00:00",
+ "cuando": "2026-11-13T18:25:09+00:00",
  "anuncios": [
   {
    "nombre": "¡SE LLEGÓ LA GRAN NOCHE!",
@@ -7169,6 +7169,33 @@
   }
  ],
  "inscripciones": [
+  {
+   "servidor": "ACAD",
+   "canal": "📝┇inscripciones-1",
+   "texto": "Last",
+   "quien": "last5724",
+   "discord_id": "483070865081237505",
+   "msg_id": "1570861138223177881",
+   "cuando": "2026-11-13T18:01:20"
+  },
+  {
+   "servidor": "ACAD",
+   "canal": "📝┇inscripciones-1",
+   "texto": "yinn",
+   "quien": "yinnmtz",
+   "discord_id": "1538896358679908437",
+   "msg_id": "1570861005657866301",
+   "cuando": "2026-11-13T18:00:48"
+  },
+  {
+   "servidor": "ACAD",
+   "canal": "📝┇inscripciones-1",
+   "texto": "e marcos 🇪🇸",
+   "quien": "marcosq_14",
+   "discord_id": "1294600140815990858",
+   "msg_id": "1570860285194010747",
+   "cuando": "2026-11-13T17:57:57"
+  },
   {
    "servidor": "ACAD",
    "canal": "📝┇inscripciones-1",
@@ -43141,33 +43168,6 @@
    "discord_id": "897942226955563068",
    "msg_id": "1558639040784498822",
    "cuando": "2026-10-11T00:35:05"
-  },
-  {
-   "servidor": "URBF",
-   "canal": "《📑》Inscripciones",
-   "texto": "Rosa🇵🇦",
-   "quien": "rodaaa_mc",
-   "discord_id": "1492592375812587551",
-   "msg_id": "1558639032236245135",
-   "cuando": "2026-10-11T00:35:03"
-  },
-  {
-   "servidor": "URBF",
-   "canal": "《📑》Inscripciones",
-   "texto": "Guess 🇦🇷",
-   "quien": "sinergiabreak",
-   "discord_id": "1515482513106272366",
-   "msg_id": "1558639001642995773",
-   "cuando": "2026-10-11T00:34:56"
-  },
-  {
-   "servidor": "URBF",
-   "canal": "《📑》Inscripciones",
-   "texto": "Rayden🇲🇽+saturn🇲🇽",
-   "quien": "alexandropro826._97672",
-   "discord_id": "1491471988386959411",
-   "msg_id": "1558638988649037887",
-   "cuando": "2026-10-11T00:34:53"
   }
  ]
 }
