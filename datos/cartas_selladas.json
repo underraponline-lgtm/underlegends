@@ -288,10 +288,6 @@
    "servidor": "6a096bb2c9bf:2415c901692f:6066c5"
   },
   "Chop": {},
-  "Christopher": {
-   "servidor": "63ec335b127a:2415c901692f:0492f4",
-   "temporada": "163744b064f3:7a510334494e"
-  },
   "Cinexfilo": {
    "competitivo": "35ee63318416:624f5e322311",
    "pais": "b8bd2d6a66c6:733ce66bf5fa",
@@ -504,7 +500,7 @@
    "competitivo": "8f4e1311724d:624f5e322311",
    "pais": "bba48bcc4d80:733ce66bf5fa",
    "servidor": "16512c219318:2415c901692f:3d0a1b",
-   "temporada": "e18012dc2e41:7a510334494e"
+   "temporada": "2dee8dadac75:7a510334494e"
   },
   "EricRJ": {},
   "Erik": {
@@ -1349,14 +1345,14 @@
   "Nox": {},
   "Noxvell": {},
   "Number": {
-   "competitivo": "9a29258a0f27:624f5e322311",
-   "pais": "4270fed64c70:733ce66bf5fa",
+   "competitivo": "e924d89ae4fc:624f5e322311",
+   "pais": "e00d6c9cdc79:733ce66bf5fa",
    "servidor": "bba3d615c649:2415c901692f:fdb28b",
    "temporada": "3b622094e026:7a510334494e"
   },
   "Number VE": {
-   "competitivo": "d5ad6ef93567:624f5e322311",
-   "pais": "7e723858a0ed:733ce66bf5fa",
+   "competitivo": "80de6655abed:624f5e322311",
+   "pais": "e2fb945479bd:733ce66bf5fa",
    "servidor": "27a473888595:2415c901692f:62e67f",
    "temporada": "7aa19690ec64:7a510334494e"
   },
@@ -2114,5 +2110,5 @@
    "servidor": "7f8885a35a6d:2415c901692f:93a344"
   }
  },
- "cuando": "2026-11-13T16:41:51+00:00"
+ "cuando": "2026-11-13T17:35:10+00:00"
 }
