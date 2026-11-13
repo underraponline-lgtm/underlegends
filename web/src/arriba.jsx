@@ -169,8 +169,21 @@ function useEjemplo(activo) {
   return EJEMPLOS[i];
 }
 
-export function Buscar({ liga, onIr }) {
+// 🕘 LO ÚLTIMO QUE ABRISTE DESDE EL BUSCADOR (13/11/2026, Dlx: «que por default te muestre recomendaciones»): sólo en este
+// navegador, los cinco últimos, con lo justo para dibujarlos
+const REC_K = 'lg:busca-rec';
+const leerRec = () => { try { const v = JSON.parse(localStorage.getItem(REC_K) || '[]'); return Array.isArray(v) ? v.slice(0, 5) : []; } catch (e) { return []; } };
+const guardarRec = (r) => {
+  const x = { tipo: r.tipo, id: r.id, n: r.n, href: r.href, k: r.k, cc: r.cc, logo: r.logo, ico: r.ico, sub: r.sub,
+    crew: r.crew ? { crew: r.crew.crew, clave: r.crew.clave, logo: r.crew.logo } : undefined };
+  try { localStorage.setItem(REC_K, JSON.stringify([x].concat(leerRec().filter((y) => y.id !== x.id)).slice(0, 5))); } catch (e) { /* sin guardar */ }
+};
+// los atajos de abajo del panel: las páginas que más se abren
+const ATAJOS_BUSCA = [['Ranking', '#/ranking'], ['Eventos', '#/eventos'], ['Pase rapero', '#/pase'], ['Crews', '#/crews'], ['Publicaciones', '#/publicaciones'], ['Tienda', '#/tienda']];
+
+export function Buscar({ liga, onIr, sugerencias = false }) {
   const [q, setQ] = useState('');
+  const [rec, setRec] = useState(leerRec);
   const ejemplo = useEjemplo(!q);
   // 🔴 TODOS LOS QUE TIENEN PERFIL, NO SÓLO LOS 200 DE LA TABLA (13/10/2026, Dlx: «a pesar de que existe Lil Drako no
   // aparece en el buscador»). Desde la 2.97 tiene perfil todo el que jugó, pero los que no están en el top 200 viajan en
@@ -255,7 +268,7 @@ export function Buscar({ liga, onIr }) {
       });
     return todo.filter((r) => r.x < 9).sort((a, b) => (a.x - b.x) || (TIPOS[a.tipo] - TIPOS[b.tipo]) || a.n.localeCompare(b.n)).slice(0, 8);
   }, [q, liga, todos]);
-  const ir = () => { setQ(''); if (onIr) onIr(); };
+  const ir = (r) => { if (r && r.href) guardarRec(r); setQ(''); if (onIr) onIr(); };
   // ⚠️ se cierra al tocar afuera y al cambiar de página: quedaba abierto encima de la siguiente (revisión del 03/10/2026)
   const caja = useRef(null);
   useEffect(() => {
@@ -279,13 +292,64 @@ export function Buscar({ liga, onIr }) {
       <label className="buscar">
         <Ico n="buscar" t={18} />
         <input type="search" placeholder={ejemplo} aria-label="Buscar raperos, servidores, países, crews, páginas y eventos" value={q} onChange={(e) => setQ(e.target.value)}
-          onKeyDown={(e) => { if (e.key === 'Enter' && res[0]) { location.hash = res[0].href; ir(); } if (e.key === 'Escape') setQ(''); }} />
+          onKeyDown={(e) => { if (e.key === 'Enter' && res[0]) { location.hash = res[0].href; ir(res[0]); } if (e.key === 'Escape') setQ(''); }} />
       </label>
       {res.length ? (
         <ul className="busca-res">
-          {res.map((r) => <li key={r.id}><a href={r.href} onClick={ir}>{icono(r)}<span>{r.n}{r.aka ? <small className="br-aka">aka «{r.aka}»</small> : null}</span><small className="br-t">{ETIQUETA_TIPO[r.tipo]}{r.sub && r.sub !== r.n ? ' · ' + r.sub : ''}</small></a></li>)}
+          {res.map((r) => <li key={r.id}><a href={r.href} onClick={() => ir(r)}>{icono(r)}<span>{r.n}{r.aka ? <small className="br-aka">aka «{r.aka}»</small> : null}</span><small className="br-t">{ETIQUETA_TIPO[r.tipo]}{r.sub && r.sub !== r.n ? ' · ' + r.sub : ''}</small></a></li>)}
         </ul>
+      ) : sugerencias && !q.trim() ? <Sugerencias liga={liga} rec={rec} icono={icono} ir={ir} borrar={() => { try { localStorage.removeItem(REC_K); } catch (e) { /* nada */ } setRec([]); }} />
+        : sugerencias && q.trim() ? <div className="bs-panel"><p className="bs-nada">Nada con «{q.trim()}». Prueba con otro nombre o un aka.</p></div> : null}
+    </div>
+  );
+}
+
+// 💡 LO QUE MUESTRA EL BUSCADOR ANTES DE ESCRIBIR (13/11/2026, Dlx: «que por default te muestre recomendaciones sobre lo de
+// abajo, o sea un panel semi transparente»): lo último que abriste, lo de hoy en la Liga, raperos (los que sigues o los de
+// arriba de la Temporada) y atajos. Cada parte se apaga sola si no tiene con qué
+function Sugerencias({ liga, rec, icono, ir, borrar }) {
+  const hoy = liga.diaClave(liga.ahora);
+  const vivos = liga.vivo();
+  const hoyEv = vivos.concat(liga.luego().filter((x) => liga.diaClave(x.cuando) === hoy && !vivos.includes(x))).slice(0, 3);
+  const sigo = (liga.sigue || []).slice(0, 5);
+  const raperos = (sigo.length ? sigo.map((k) => liga.T[k]) : liga.oficiales().slice(0, 5)).filter(Boolean);
+  return (
+    <div className="bs-panel">
+      {rec.length ? (
+        <section>
+          <p className="bs-s">Lo último que abriste <button type="button" className="bs-borrar" onClick={borrar}>Borrar</button></p>
+          <ul className="bs-lista">{rec.map((r) => (
+            <li key={r.id}><a href={r.href} onClick={() => ir(r)}>{icono(r)}<span>{r.n}</span><small className="br-t">{ETIQUETA_TIPO[r.tipo]}</small></a></li>
+          ))}</ul>
+        </section>
       ) : null}
+      {hoyEv.length ? (
+        <section>
+          <p className="bs-s">Hoy en la Liga</p>
+          <ul className="bs-lista">{hoyEv.map((x, i) => {
+            const v = vivos.includes(x);
+            return (
+              <li key={'ev' + i}><a href="#/eventos" onClick={() => ir()}>
+                <span className="cara"><img alt="" src={liga.logo(x.sv)} /></span><span>{limpio(x.nombre)}</span>
+                <small className={'br-t' + (v ? ' bs-vivo' : '')}>{v ? 'EN VIVO' : liga.dia(x.cuando).replace(/^hoy /, '')}</small></a></li>
+            );
+          })}</ul>
+        </section>
+      ) : null}
+      {raperos.length ? (
+        <section>
+          <p className="bs-s">{sigo.length ? 'Los que sigues' : 'Arriba en la Temporada'}</p>
+          <ul className="bs-caras">{raperos.map((f) => (
+            <li key={f.k}><a href={'#/r/' + encodeURIComponent(f.k)} onClick={() => ir({ tipo: 'rapero', id: 'r' + f.k, n: limpio(f.n), href: '#/r/' + encodeURIComponent(f.k), k: f.k })}>
+              <Cara liga={liga} k={f.k} nombre={f.n} cls="cara" /><span>{limpio(f.n)}</span></a></li>
+          ))}</ul>
+        </section>
+      ) : null}
+      <section>
+        <p className="bs-s">Ir a</p>
+        <div className="bs-atajos">{ATAJOS_BUSCA.map(([n, h]) => <a key={h} href={h} onClick={() => ir()}>{n}</a>)}</div>
+      </section>
+      <p className="bs-pie">Busca raperos (también por su aka), servidores, países, crews, páginas y eventos<span> · Ctrl K abre · Esc cierra</span></p>
     </div>
   );
 }
@@ -302,8 +366,23 @@ export function CaraDc({ dc, cls = 'cara' }) {
 
 // 🔎 EL BUSCADOR EN EL CELULAR, CON SU LUPA ARRIBA (Dlx, 16/10/2026: «agrega el ícono de búsqueda para celulares»): hasta
 // ahora vivía sólo adentro del menú ☰. La lupa abre el mismo buscador solo, con el teclado listo
+// 🔝 Y SE ABRE ENCIMA DEL MENÚ, EN LA MISMA LÍNEA (13/11/2026, Dlx: «para que no alargue la línea de la nada, o sea esa
+// búsqueda aparezca sobre el menú»): en la compu tapa justo el menú (se mide dónde está); en el celular, la fila entera.
+// Las sugerencias y los resultados bajan en un panel por encima de la página
 function BarraBuscar({ liga, onCerrar }) {
   const caja = useRef(null);
+  const [lugar, setLugar] = useState(null);
+  useEffect(() => {
+    const medir = () => {
+      const el = caja.current, cab = el && el.parentElement;
+      const nav = cab && cab.querySelector('nav.menu');
+      const r = nav && nav.getBoundingClientRect(), rc = cab && cab.getBoundingClientRect();
+      setLugar(r && r.width > 120 && rc ? { left: Math.round(r.left - rc.left), width: Math.round(r.width) } : null);
+    };
+    medir();
+    window.addEventListener('resize', medir);
+    return () => window.removeEventListener('resize', medir);
+  }, []);
   useEffect(() => {
     const t = setTimeout(() => { const i = caja.current && caja.current.querySelector('input'); if (i) i.focus(); }, 30);
     const esc = (e) => { if (e.key === 'Escape') onCerrar(); };
@@ -324,8 +403,8 @@ function BarraBuscar({ liga, onCerrar }) {
     };
   }, [onCerrar]);
   return (
-    <div className="cab-busca" role="search" ref={caja}>
-      <Buscar liga={liga} onIr={onCerrar} />
+    <div className={'cab-busca sobre' + (lugar ? '' : ' fila')} role="search" ref={caja} style={lugar || undefined}>
+      <Buscar liga={liga} onIr={onCerrar} sugerencias />
       <button className="btn-ico cab-busca-x" type="button" aria-label="Cerrar el buscador" onClick={onCerrar}><Ico n="cerrar" t={18} /></button>
     </div>
   );

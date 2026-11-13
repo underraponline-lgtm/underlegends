@@ -5093,6 +5093,55 @@ dialog.pn-pop.pop-gratis{--pc:#F5C542;width:min(640px,calc(100vw - 32px))}
 .app .cab.una .cab-busca .buscar{display:flex;align-items:center;gap:8px;border:2px solid #29B298;min-height:44px;padding:0 12px;color:#A5A5A0}
 .app .cab.una .cab-busca .buscar input{font-size:16px;color:#F6F6F6}
 
+/* 🔝 EL BUSCADOR ENCIMA DEL MENÚ (13/11/2026, Dlx: «para que no alargue la línea de la nada, o sea esa búsqueda aparezca
+   sobre el menú», y «que por default te muestre recomendaciones… un panel semi transparente»). La barra tapa el menú en la
+   misma fila (el `left`/`width` los mide arriba.jsx; en el celular, `.fila`, la fila entera) y la cabecera no crece. Las
+   sugerencias y los resultados bajan en un panel por encima de la página */
+.app .cab.una{position:relative}
+/* ⚠️ `grid-column:auto`: la barra vieja ocupaba `1 / -1`, y en una grilla eso hace que el absoluto se mida desde el
+   contenido y no desde el borde: quedaba corrida los 59 px del relleno de la cabecera */
+.app .cab.una .cab-busca.sobre{position:absolute;grid-column:auto;top:50%;transform:translateY(-50%);z-index:70;padding:0;margin:0;animation:bs-aparece .14s ease-out}
+.app .cab.una .cab-busca.sobre.fila{left:12px;right:12px}
+/* el panel se mide contra la barra entera (con la ✕), no contra el campo */
+.app .cab.una .cab-busca.sobre .buscar-w{position:static}
+.app .cab.una .cab-busca.sobre .buscar{min-height:42px;background:#0B0C0E}
+.app .cab.una .cab-busca.sobre .cab-busca-x{width:42px;height:42px}
+@keyframes bs-aparece{from{opacity:0}to{opacity:1}}
+.app.calma .cab-busca.sobre{animation:none}
+@media (prefers-reduced-motion:reduce){.app .cab.una .cab-busca.sobre{animation:none}}
+/* el panel: semitransparente, del ancho de la barra (en la compu, al menos 460 px) */
+.app .cab.una .cab-busca.sobre .busca-res,.bs-panel{position:absolute;top:calc(100% + 8px);left:0;right:0;z-index:71;max-height:min(70vh,560px);overflow-y:auto;
+  background:rgba(11,12,14,.95);border:1.5px solid #2A2C31;border-radius:4px;box-shadow:0 18px 40px rgba(0,0,0,.55);text-align:left}
+@media (min-width: 900px){
+  .app .cab.una .cab-busca.sobre .busca-res,.bs-panel{min-width:460px}
+}
+.bs-panel{padding:6px 0 0;color:#F6F6F6}
+.bs-panel section + section{border-top:1px solid #1E1F23}
+.bs-s{display:flex;justify-content:space-between;align-items:center;margin:0;padding:10px 14px 6px;color:#A5A5A0;
+  font:700 13px/1 "Barlow Condensed",sans-serif;letter-spacing:.07em;text-transform:uppercase}
+.bs-borrar{background:none;border:0;padding:0;color:#A5A5A0;cursor:pointer;font:inherit;letter-spacing:inherit;text-transform:inherit}
+.bs-borrar:hover{color:#F6F6F6}
+.bs-lista{list-style:none;margin:0;padding:0 0 6px}
+.bs-lista a{display:flex;align-items:center;gap:10px;padding:8px 14px;color:#F6F6F6;font:800 14px/1.2 Archivo,sans-serif}
+.bs-lista a > span:not(.cara){min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.bs-lista .cara{width:28px;height:28px;flex:none;border-radius:50%;overflow:hidden}
+.bs-lista .cara img{width:100%;height:100%;object-fit:cover}
+.bs-lista .br-t{margin-left:auto;flex:none;color:#A5A5A0;font:700 14px/1 "Barlow Condensed",sans-serif;letter-spacing:.04em;text-transform:uppercase}
+.bs-lista .bs-vivo{color:#E41373}
+@media (hover: hover) and (pointer: fine){.bs-lista a:hover,.bs-caras a:hover,.bs-atajos a:hover{background:#1A1B1F}}
+.bs-caras{list-style:none;margin:0;padding:2px 10px 10px;display:flex;gap:4px;overflow-x:auto;scrollbar-width:none}
+.bs-caras a{display:grid;justify-items:center;gap:6px;width:72px;padding:6px 4px;border-radius:4px;color:#F6F6F6;text-align:center;
+  font:700 12px/1.2 Archivo,sans-serif}
+.bs-caras a span{max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.bs-caras .cara{width:44px;height:44px;border-radius:50%;overflow:hidden}
+.bs-caras .cara img{width:100%;height:100%;object-fit:cover}
+.bs-atajos{display:flex;flex-wrap:wrap;gap:6px;padding:2px 14px 12px}
+.bs-atajos a{padding:7px 10px;border:1.5px solid #2A2C31;border-radius:4px;color:#F6F6F6;
+  font:700 14px/1 "Barlow Condensed",sans-serif;letter-spacing:.05em;text-transform:uppercase}
+.bs-pie{margin:0;padding:10px 14px;border-top:1px solid #1E1F23;color:#A5A5A0;font-size:12.5px}
+.bs-nada{margin:0;padding:14px;color:#A5A5A0;font-size:14px}
+@media (max-width: 899.98px){ .bs-pie span{display:none} }
+
 
 /* ═══ 🅰 LA CABECERA, TERCERA MANO (13/11/2026, Dlx: «Nivel 6 y el ícono de XP», «un poquito más de separación entre
    LIGA GLOBAL T1, las categorías del medio y la parte de la derecha») ═══ */
