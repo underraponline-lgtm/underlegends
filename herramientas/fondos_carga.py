@@ -411,6 +411,12 @@ def batalla(b, fmt):
     im = im.resize(tam, Image.LANCZOS)
     im = ImageEnhance.Brightness(ImageEnhance.Contrast(ImageOps.autocontrast(im, cutoff=1)).enhance(1.2)).enhance(b.get('luz', .8))
     a = np.asarray(im, dtype=np.float32)
+    # 🌗 `gamma` (13/11/2026, Dlx: «fíjate que las luces… estén bien»): un cuadro de noche con luces fuertes no se arregla con
+    # `luz`, que quema las luces antes de aclarar lo oscuro. La gamma levanta las sombras y deja las luces donde están.
+    # Medido sobre los ocho: Eucalipto tenía media 19 (los demás, 36–75); con 1,5 queda en 37. Con 1,7 ya se ven los
+    # bloques de la compresión en lo oscuro
+    if b.get('gamma'):
+        a = 255 * (a / 255) ** (1 / float(b['gamma']))
     H, W = a.shape
     yy, xx = np.mgrid[0:H, 0:W]
     v = 1 - .5 * (((xx - W / 2) / (W / 2)) ** 2 + ((yy - H * b['foco']) / (H / 2)) ** 2) ** 1.2
@@ -496,14 +502,17 @@ def render(cuales):
         nav.close()
 
 
-def subir():
-    """Todo lo de .cache/carga/out/ a R2, carga/<temporada>/. La página lo pide de ahí (web/montar.py)."""
+def subir(solo=()):
+    """Todo lo de .cache/carga/out/ a R2, carga/<temporada>/. La página lo pide de ahí (web/montar.py).
+
+    `solo`: sólo los archivos que empiezan así (`--subir 2-` sube las batallas). ⚠️ Desde una PC conviene: en out/ pueden
+    quedar el 1, el 3 y el 4 de otro día, y subirlos pisaría los que el ciclo rehízo hoy."""
     import requests
     import bienvenida_video as bv          # token() y la API de R2, los mismos que sube el video de la bienvenida
     s = requests.Session()
     s.headers['Authorization'] = 'Bearer ' + bv.token()
     for f in sorted(os.listdir(OUT)):
-        if not f.endswith('.webp'):
+        if not f.endswith('.webp') or (solo and not f.startswith(tuple(solo))):
             continue
         r = s.put(f'{bv.API_R2}/objects/carga/{TEMP}/{f}', data=open(os.path.join(OUT, f), 'rb').read(),
                   headers={'Content-Type': 'image/webp'}, timeout=120)
@@ -521,7 +530,7 @@ if __name__ == '__main__':
     elif '--caras' in sys.argv:
         armar_caras(forzar='--forzar' in sys.argv)
     elif '--subir' in sys.argv:
-        subir()
+        subir([a for a in sys.argv[sys.argv.index('--subir') + 1:] if not a.startswith('--')])
     else:
         cuales = [a for a in sys.argv[1:] if a in ('1', '3', '4')] or ['1', '3', '4']
         render([c for c in cuales if c in HTML])

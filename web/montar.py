@@ -58,7 +58,8 @@ html.ini-nuevo.lg-listo:not(.lg-carga-js) #lg-carga{opacity:0;visibility:hidden}
 html.ini-nuevo.lg-fuera #lg-carga{display:none}
 #lg-carga .lg-c{position:absolute;inset:0;z-index:3}
 /* 🏷️ arriba a la izquierda, la marca de la bienvenida: el UL y la temporada en blanco */
-#lg-carga .lg-marca{position:absolute;top:22px;left:max(56px,calc((100% - 1320px) / 2));display:flex;align-items:center;gap:10px}
+#lg-carga .lg-marca{position:absolute;top:22px;left:max(56px,calc((100% - 1320px) / 2));display:flex;align-items:center;gap:10px;
+  filter:drop-shadow(0 1px 6px rgba(3,3,4,.8))}
 #lg-carga .lg-marca img{display:block;width:auto;height:42px}
 #lg-carga .lg-marca i{width:2px;height:28px;background:rgba(246,246,246,.5)}
 #lg-carga .lg-marca b{font:900 28px/1 Archivo,system-ui,sans-serif;font-stretch:125%}
@@ -76,10 +77,14 @@ html.ini-nuevo.lg-fuera #lg-carga{display:none}
 #lg-carga .lg-t{display:grid;gap:2px;font:900 clamp(30px,3.9vw,76px)/.9 Archivo,system-ui,sans-serif;font-stretch:125%;letter-spacing:.01em;
   word-spacing:.08em;white-space:nowrap;filter:drop-shadow(0 4px 16px rgba(0,0,0,.65))}
 #lg-carga .lg-t1{color:#F6F6F6}
-#lg-carga .lg-t2{color:#E41373}
+#lg-carga .lg-t2{color:#E41373;text-shadow:0 0 3px rgba(3,3,4,.85),0 0 14px rgba(3,3,4,.75)}
+/* 🔦 el magenta, con su sombra (13/11/2026, Dlx: «fíjate… el contraste»). Medido letra contra lo que la rodea: «DE FREESTYLE»
+   quedaba bajo 3:1 (lo mínimo para texto grande) en 11 de 78 casos, con la gente iluminada de dos batallas detrás. El
+   magenta tiene poca luz propia (contra negro puro da 4,8:1), así que no alcanza con el velo del título: va su sombra */
 /* ⏳ abajo al centro, la barrita celeste de la bienvenida: el consejo, el porcentaje y la barra */
 #lg-carga .lg-pie{position:absolute;left:50%;bottom:max(20px,3.2vw);translate:-50% 0;width:min(560px,34vw);display:grid;gap:12px}
-#lg-carga .lg-fila{display:flex;justify-content:space-between;align-items:baseline;gap:12px}
+#lg-carga .lg-fila{display:flex;justify-content:space-between;align-items:baseline;gap:12px;text-shadow:0 1px 8px rgba(3,3,4,.9)}
+/* 🔦 la marca y el consejo, con sombra (13/11/2026): con el teléfono acostado, sobre los afiches y el 3D bajaban de 4,5:1 */
 /* 🎞️ LOS CONSEJOS, EL PORCENTAJE Y LA BARRA LOS MUEVE EL COMPOSITOR, no el JS (13/11/2026, Dlx: «asegúrate que esto sea
    smooth»). Mientras está la pantalla, la app se arma atrás y en un celular modesto eso traba el hilo principal 1,5–2 s
    seguidos: lo que se movía con JS se congelaba. Los consejos van en una animación de CSS (uno cada 1,3 s), la barra con
@@ -101,17 +106,21 @@ html.ini-nuevo.lg-fuera #lg-carga{display:none}
 #lg-carga .lg-barra i{position:absolute;inset:0;background:#29B298;border-radius:2px;transform-origin:0 50%;transform:scaleX(0);
   will-change:transform;transition:background-color .3s ease}
 #lg-carga.lleno .lg-barra i{background:#F6F6F6}
-@media (max-width:899.98px){
-  #lg-carga .lg-marca{top:max(16px,6vw);left:5.5vw;gap:2.4vw}
-  #lg-carga .lg-marca img{height:max(24px,7.4vw)}
-  #lg-carga .lg-marca i{height:max(16px,5vw)}
-  #lg-carga .lg-marca b{font-size:max(18px,5vw)}
-  #lg-carga .lg-logo{top:16vw;gap:2.4vw}
-  #lg-carga .lg-sello{font-size:max(11px,3.2vw)}
-  #lg-carga .lg-t{font-size:9.4vw}
-  #lg-carga .lg-pie{width:82vw;bottom:calc(11vw + env(safe-area-inset-bottom,0px))}
-  #lg-carga .lg-tip{font-size:max(12px,3.6vw)}
-  #lg-carga .lg-pct{font-size:max(14px,4.2vw)}
+/* 📱 el teléfono PARADO (13/11/2026): acostado (844×390) usaba estos tamaños y el título le tapaba media pantalla y la
+   barra. Acostado va como la compu, que se mide por el ancho */
+@media (max-width:899.98px) and (orientation:portrait){
+  /* 📏 con tope por el ALTO (13/11/2026): medido por el ancho, en una tablet parada (3:4) el título bajaba hasta el 28 %
+     de la pantalla y tapaba el fondo. En un teléfono (≈ 9:19,5) el ancho y el alto dan lo mismo, y queda igual */
+  #lg-carga .lg-marca{top:max(16px,min(6vw,2.8vh));left:5.5vw;gap:2.4vw}
+  #lg-carga .lg-marca img{height:max(24px,min(7.4vw,3.4vh))}
+  #lg-carga .lg-marca i{height:max(16px,min(5vw,2.3vh))}
+  #lg-carga .lg-marca b{font-size:max(18px,min(5vw,2.3vh))}
+  #lg-carga .lg-logo{top:min(16vw,7.4vh);gap:min(2.4vw,1.1vh)}
+  #lg-carga .lg-sello{font-size:max(11px,min(3.2vw,1.5vh))}
+  #lg-carga .lg-t{font-size:min(9.4vw,4.3vh)}
+  #lg-carga .lg-pie{width:82vw;bottom:calc(min(11vw,5vh) + env(safe-area-inset-bottom,0px))}
+  #lg-carga .lg-tip{font-size:max(12px,min(3.6vw,1.7vh))}
+  #lg-carga .lg-pct{font-size:max(14px,min(4.2vw,1.95vh))}
 }
 /* ✂️ el corte de salida (18/10/2026): tres capas —negra, magenta, verde— se van en diagonal; el fondo vive en la negra */
 #lg-carga .lg-capa{display:none}
@@ -262,6 +271,7 @@ def html_carga():
     // 🌅 de a poco: nada aparece hasta que están las letras (si tardan, a los 0,7 s igual). Se piden a propósito:
     // `document.fonts.ready` contesta «listo» antes de que nadie las haya pedido
     if (quieto) el.classList.add('quieto');
+    if ((src.indexOf('/3-cel.webp') > 0 || src.indexOf('/4-cel.webp') > 0) && innerWidth / Math.max(1, innerHeight) > 0.6) el.classList.add('entero');
     var va = function () { if (vaYa) return; vaYa = true; el.classList.add('va'); entrada(); };
     try {
       Promise.all([document.fonts.load('900 1em Archivo'), document.fonts.load('700 1em "Barlow Condensed"')]).then(va, va);
@@ -541,6 +551,12 @@ html.lg-carga-js #lg-carga .lg-foto{display:block;position:absolute;left:50%;top
 #lg-carga .lg-img{position:absolute;inset:0;background:#030304 center/cover no-repeat;opacity:0;scale:1.04;will-change:opacity,scale;
   transition:opacity 1.4s cubic-bezier(.3,0,.2,1),scale 6s cubic-bezier(.2,.6,.2,1)}
 #lg-carga.con-foto .lg-img{opacity:1;scale:1}
+/* 📐 EN LA TABLET, EL 3D Y EL COMPETITIVO VAN ENTEROS (13/11/2026). Se arman para el celular (1080×2340) y una tablet
+   parada (3:4) se come un 20 % de arriba y otro de abajo: las franjas y las tarjetas quedaban debajo del título y de la
+   barra. Ahí la imagen va entera, del 2 al 90 % del alto (entera hasta abajo, la última franja del Competitivo caía en la
+   barra), y los costados se funden en negro. Los afiches y las batallas se recortan bien y siguen a pantalla completa */
+#lg-carga.entero .lg-img{top:2%;bottom:10%;left:50%;right:auto;width:auto;aspect-ratio:1080/2340;translate:-50% 0;
+  -webkit-mask-image:linear-gradient(90deg,transparent,#000 14%,#000 86%,transparent);mask-image:linear-gradient(90deg,transparent,#000 14%,#000 86%,transparent)}
 #lg-carga .lg-velo{position:absolute;inset:0;box-shadow:inset 0 0 200px 80px #030304;
   background:linear-gradient(180deg,rgba(3,3,4,.6) 0,rgba(3,3,4,0) 30%,rgba(3,3,4,0) 72%,rgba(3,3,4,.85) 94%,#030304)}
 #lg-carga .lg-grano{position:absolute;left:-10%;top:-10%;width:120%;height:120%;opacity:0;mix-blend-mode:overlay;transition:opacity 1.2s ease 1s;

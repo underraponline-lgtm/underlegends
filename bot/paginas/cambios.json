@@ -11,6 +11,17 @@
  ],
  "cambios": [
     {
+        "version": "5.08",
+        "dia": "2026-11-13",
+        "cuando": "2026-11-13T03:40:00-05:00",
+        "titulo": "La pantalla de carga, bien en todas las pantallas",
+        "items": [
+            "Con el **celular acostado** la pantalla de carga ya no se tapa: antes el título quedaba encima de la barra.",
+            "En **tablet**, el fondo de las tarjetas y el del Competitivo se ven enteros, sin quedar debajo del título ni de la barra.",
+            "«DE FREESTYLE» se lee mejor sobre los fondos claros, y tres fotos de batalla muy oscuras ahora tienen más luz."
+        ]
+    },
+    {
         "version": "5.07",
         "dia": "2026-11-13",
         "cuando": "2026-11-13T03:31:00-05:00",

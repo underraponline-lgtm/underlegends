@@ -6,13 +6,13 @@
   "fondos": [1, 2, 3, 4],
   "batallas": [
     {"id": "kainheat", "video": "B2OyIluaMF8", "seg": 104.3, "cx": 0.40, "foco": 0.50, "marca": "bvs"},
-    {"id": "sombra", "video": "kommY3DfdJQ", "seg": 141, "cx": 0.21, "foco": 0.45, "marca": "bvs"},
+    {"id": "sombra", "video": "kommY3DfdJQ", "seg": 141, "cx": 0.21, "foco": 0.45, "marca": "bvs", "gamma": 1.2},
     {"id": "sol", "video": "dMamevsP5ZQ", "seg": 163, "cx": 0.65, "foco": 0.45},
     {"id": "liberia", "video": "hR4EH1DvwKA", "seg": 314.3, "cx": 0.52, "foco": 0.50},
     {"id": "kourier", "video": "dlfZzEmTmqU", "seg": 221, "cx": 0.30, "foco": 0.42, "marca": "ko"},
     {"id": "zaylax", "video": "7lIj3Cva3qc", "seg": 81, "cx": 0.30, "foco": 0.45, "marca": "bvs"},
-    {"id": "makma", "video": "NWO5AIKRzHw", "seg": 167, "cx": 0.10, "foco": 0.40},
-    {"id": "eucalipto", "video": "4lhocjDBorw", "seg": 73, "cx": 0.55, "foco": 0.45, "luz": 1.25}
+    {"id": "makma", "video": "NWO5AIKRzHw", "seg": 167, "cx": 0.10, "foco": 0.40, "gamma": 1.2},
+    {"id": "eucalipto", "video": "4lhocjDBorw", "seg": 73, "cx": 0.55, "foco": 0.45, "luz": 1.25, "gamma": 1.5}
   ],
   "competitivo": {
     "_leeme": "Quiénes del Competitivo tienen de avatar una foto suya (Dlx: «avatares reales como Liberia»), y dónde está su cara: [x, y, zoom]. Mirado a ojo sobre cada avatar con una grilla; quien no está acá no sale en el fondo 4. Mito salió el 13/11/2026: su foto de perfil es un dibujo y quedaba como una mancha (Dlx: «si algo no se ve bien, busca otro rapero»); entró Majiztral (Walker se probó y no: su foto está acostada y en una franja alta quedaba la oreja). Un cuarto número, si está, es cuánta más luz lleva la foto. La de Liberia, que es de noche, va con las sombras levantadas en el archivo (Dlx: «hazlo más claro»). Las caras en HD están en R2 (carga/<temporada>/caras/, ver `caras_hd()` de herramientas/fondos_carga.py): las de Oasis y Makmah son cuadros de sus videos (Oasis: oHRGI7jc_Gc 6:08, el de la campera, de frente; Makmah: NWO5AIKRzHw 0:09.8, remera negra, gorra y cadena, de frente: el más nítido medido cuadro por cuadro, pasado por Real-ESRGAN; Dlx: «usa el video de makma»), así que sus coordenadas son sobre esos cuadros. Liberia y Six, la foto del espejo agrandada ×4.",
