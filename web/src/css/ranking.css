@@ -340,3 +340,5 @@ dialog.pn-pop.rk-dims-pop{--pc:#E41373;width:min(760px,calc(100vw - 32px))}
 .fz-notas p{margin:0;padding:10px 12px;border:1.5px dashed #2A2C31;border-radius:4px;font:500 12.5px/1.4 Archivo,sans-serif;color:#9a9ca3}
 .fz-notas b{display:block;margin-bottom:3px;font:800 11px/1 "Barlow Condensed",sans-serif;letter-spacing:.1em;text-transform:uppercase;color:#F6F6F6}
 @media (max-width:600px){dialog.pn-pop.rk-dims-pop{width:100%}.fz-l,.fz-notas{grid-template-columns:minmax(0,1fr)}.fz-c:last-child:nth-child(odd){grid-column:auto}}
+/* 🤝 unirte a los Tier 1 desde el pop-up del Competitivo (13/11/2026) */
+.rk-pq-acc{display:flex;flex-wrap:wrap;gap:8px;margin-top:2px}

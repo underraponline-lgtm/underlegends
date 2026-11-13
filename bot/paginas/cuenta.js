@@ -153,14 +153,45 @@ function urlLogin(modo) {
   // 'p' felicitar en Publicaciones, o entrar
   var conRedes = modo === true || modo === 'r';
   // 'o' el Dashboard del dueño (04/10/2026): vuelve a /dashboard; 's' el panel de tu servidor: vuelve a #/socio
+  // 'u' unirte a los servidores Tier 1 que elegiste (13/11/2026): pide `guilds.join` y SIEMPRE con la pantalla de Discord
   var st = (conRedes ? 'r' : modo === 'v' || modo === 'f' || modo === 'e' || modo === 't' || modo === 'd' ||
-    modo === 'p' || modo === 'o' || modo === 's' ? modo : 'i') +
+    modo === 'p' || modo === 'o' || modo === 's' || modo === 'u' ? modo : 'i') +
     Math.random().toString(36).slice(2) + Date.now().toString(36);
   try { sessionStorage.setItem('lg:estado', st); } catch (e) { /* sin sesión: igual anda */ }
   return 'https://discord.com/oauth2/authorize?client_id=' + DC_APP + '&response_type=token' +
     '&redirect_uri=' + encodeURIComponent(location.origin + '/') +
-    '&scope=' + encodeURIComponent(conRedes ? 'identify connections' : modo === 'd' ? 'identify guilds.join' : 'identify') +
-    '&prompt=' + (conRedes ? 'consent' : 'none') + '&state=' + encodeURIComponent(st);
+    '&scope=' + encodeURIComponent(conRedes ? 'identify connections' : modo === 'd' || modo === 'u' ? 'identify guilds.join' : 'identify') +
+    '&prompt=' + (conRedes || modo === 'u' ? 'consent' : 'none') + '&state=' + encodeURIComponent(st);
+}
+
+/* 🤝 UNIRTE A LOS SERVIDORES TIER 1 QUE ELEGISTE (Dlx, 13/11/2026: «Yes, the safe way»). La página nueva elige cuáles
+   (`web/src/unirse.jsx`), esto los guarda y va a Discord a pedir el permiso de «unirse a servidores por ti», APARTE y con
+   su pantalla (`prompt=consent`); a la vuelta el Worker te suma a esos y nada más (`cuentaUnirse()` en bot/worker.js) y el
+   permiso se tira. Lo que contesta queda en `UNIRSE` y la página se entera por `lg:unirse`. */
+var UNIRSE = null;
+function avisarUnirse() {
+  try { window.dispatchEvent(new Event('lg:unirse')); } catch (e) { /* navegador viejo */ }
+}
+function unirmeTier1(svs) {
+  var xs = (svs || []).map(function (x) { return String(x); }).filter(Boolean);
+  if (!xs.length) return;
+  try { sessionStorage.setItem('lg:unirse-svs', JSON.stringify(xs)); } catch (e) { /* sin sesión: no se puede recordar cuáles */ }
+  location.href = urlLogin('u');
+}
+function unirseConPermiso(token) {
+  var xs = [];
+  try { xs = JSON.parse(sessionStorage.getItem('lg:unirse-svs') || '[]') || []; sessionStorage.removeItem('lg:unirse-svs'); } catch (e) { xs = []; }
+  if (!xs.length) { UNIRSE = { error: 'nada' }; avisarUnirse(); return; }
+  UNIRSE = { cargando: true, svs: xs };
+  avisarUnirse();
+  fetch('/api/cuenta/unirse', { method: 'POST', headers: { 'content-type': 'application/json' },
+    body: JSON.stringify({ token: token, svs: xs }) })
+    .then(function (r) {
+      return r.json().catch(function () { return { error: 'red' }; })
+        .then(function (j) { j = j || {}; j.estadoHttp = r.status; return j; });
+    })
+    .then(function (j) { UNIRSE = Object.assign({ svs: xs }, j); avisarUnirse(); })
+    .catch(function () { UNIRSE = { error: 'red', svs: xs }; avisarUnirse(); });
 }
 /* 🔑 «SALIR» CIERRA LA SESIÓN: el Worker la borra y le saca la cookie al
    navegador. Y lo que se sabía de la billetera se olvida acá. */
@@ -294,7 +325,7 @@ function volverDeDiscord() {
   var aCuenta = nuevaCuenta() && (modo0 === 'i' || modo0 === 'f' || modo0 === 'r');
   // 🔒 y quien vino a su Dashboard vuelve al Dashboard, sin la ventana vieja de Mi cuenta encima (revisión del 05/10/2026)
   var destino = '#/' + (aCuenta ? (modo0 === 'i' ? 'cuenta' : 'cuenta/perfil') : modo0 === 'o' ? 'dashboard' : modo0 === 's' ? 'socio' : modo0 === 'v' ? 'avisos'
-    : modo0 === 'd' ? 'cuenta/verificar' : modo0 === 'p' ? 'publicaciones' : modo0 === 't'
+    : modo0 === 'd' ? 'cuenta/verificar' : modo0 === 'u' ? 'socios' : modo0 === 'p' ? 'publicaciones' : modo0 === 't'
     ? String((pp && pp.volver) || 'tienda').replace(/^#?\/?/, '') : '');
   try { history.replaceState(null, '', urlDe(destino)); } catch (e) { location.hash = destino; }
   var st = '';
@@ -303,6 +334,12 @@ function volverDeDiscord() {
   if (modo0 === 'd' && !q.access_token && q.error) {
     VERIF = { error: q.error === 'access_denied' ? 'cancelado' : 'discord_error' };
     avisarVerif();
+  }
+  // 🤝 y quien canceló el de unirse a los Tier 1, igual: no se suma a nadie y se dice
+  if (modo0 === 'u' && !q.access_token && q.error) {
+    try { sessionStorage.removeItem('lg:unirse-svs'); } catch (e) { /* igual */ }
+    UNIRSE = { error: q.error === 'access_denied' ? 'cancelado' : 'discord_error' };
+    avisarUnirse();
   }
   if (!q.access_token || !st || q.state !== st) return;
   var porRedes = st.charAt(0) === 'r';
@@ -319,6 +356,8 @@ function volverDeDiscord() {
   var porAplauso = st.charAt(0) === 'p';
   if (porRedes || porFoto || porVoto || porTienda || porVerif || porAplauso) DC_TOKEN = q.access_token;
   // y se mira ya, sin esperar a `/api/cuenta`: el Worker le pregunta a Discord por su cuenta
+  // 🤝 unirte a los Tier 1 que elegiste: el permiso se usa ya y no queda en ningún lado
+  if (st.charAt(0) === 'u') unirseConPermiso(q.access_token);
   if (porVerif) {
     var vp = '';
     try { vp = sessionStorage.getItem('lg:verif-pais') || ''; sessionStorage.removeItem('lg:verif-pais'); } catch (e) { vp = ''; }

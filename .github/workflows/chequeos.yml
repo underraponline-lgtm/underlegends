@@ -118,6 +118,8 @@ jobs:
           node bot/llave_vivo_prueba.mjs
           # 🎟️ el Pase del 25/10: gracia, bienvenida, especiales, XP doble, crew, premium y sorteo
           node bot/pase_prueba.mjs
+          # 🤝 unirse a los Tier 1: sólo los elegidos y socios, con su permiso, y cada respuesta de Discord bien leída
+          node bot/unirse_prueba.mjs
           # 👤 la tanda 2 del perfil: la frase, los emblemas elegidos, el rol de DRA, Aplausos y Voz del pueblo, y «Lo último»
           # con lo que hizo en la página sin decir nunca a quién ni qué
           node bot/perfil_prueba.mjs

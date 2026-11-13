@@ -1301,7 +1301,9 @@ const FRENO = { comando: [4, 30000], click: [10, 10000],
   cuenta: [6, 60000],
   // 🔴 Y LO QUE TAMBIÉN ESCRIBE KV (revisión del 04/10/2026): el panel de ajustes guardaba en cada click, y anotar a
   // un tercero desde `/card quien:` o `/versus` era una escritura por persona nombrada. Por persona y por isolate
-  ajuste: [5, 60000], otro: [3, 3600000] };
+  ajuste: [5, 60000], otro: [3, 3600000],
+  // 🤝 unirte a los Tier 1 (13/11/2026): un pedido son hasta 9 llamadas a Discord con el bot; tres intentos cada diez minutos
+  unirse: [3, 600000] };
 
 function frenado(id, tipo) {
   if (!id) return 0;
@@ -1586,6 +1588,61 @@ async function cuentaMira(req, env) {
   const h = { 'content-type': 'application/json; charset=utf-8', 'cache-control': 'no-store' };
   const id = await sesionDe(env, req);
   return new Response(JSON.stringify({ mira: id ? await miraDe(env, id) : '' }), { headers: h });
+}
+
+// ── 🤝 UNIRTE A LOS SERVIDORES TIER 1 CON UN TOQUE (Dlx, 13/11/2026: «Yes, the safe way»). Lo mismo que hace «Verificarme»
+// con DRA (`cuentaVerificar()`): el bot te suma con el permiso `guilds.join` que diste recién, y el permiso se tira. Hecho
+// como pide la Developer Policy de Discord (8/7/2024): «adding the account to a server» pide informar claramente y un
+// permiso explícito (regla 1), y no se puede inflar la cantidad de miembros (regla 13). Por eso:
+// - el permiso se pide APARTE, sólo al tocar el botón (`urlLogin('u')`, con `prompt=consent`): entrar sigue pidiendo `identify`;
+// - TÚ ELIGES los servidores en la página antes de ir a Discord, y sólo esos viajan acá;
+// - NO HAY PREMIO por unirse (ni Puntos de Tienda ni XP): sería pagar por miembros;
+// - sólo los socios de la Liga (`SERVIDORES`, sin los `fuera`) y nunca los que pidieron no recibir gente así (`UNIRSE_NO`).
+// El bot necesita «Crear invitación» en cada servidor: sin eso Discord contesta 50013 y la página ofrece su invitación
+const UNIRSE_NO = new Set([]);
+const RAZON_UNIRSE = encodeURIComponent('Se unió desde underlegends.pages.dev, con su permiso');
+export async function cuentaUnirse(req, env) {
+  const h = { 'content-type': 'application/json; charset=utf-8', 'cache-control': 'no-store' };
+  const json = (o, status) => new Response(JSON.stringify(o), { status: status || 200, headers: h });
+  let d = null;
+  try { d = await req.json(); } catch (e) { d = null; }
+  const t = String((d && d.token) || '');
+  if (!/^[A-Za-z0-9._-]{10,300}$/.test(t)) return json({ error: 'token' }, 400);
+  const pide = [...new Set((Array.isArray(d && d.svs) ? d.svs : []).map((x) => String(x || '').toUpperCase()))]
+    .filter((x) => /^[A-Z0-9]{2,6}$/.test(x)).slice(0, 15);
+  if (!pide.length) return json({ error: 'nada' }, 400);
+  if (!env.DISCORD_TOKEN) return json({ error: 'bot' }, 503);
+  const q = await discordDe(t);
+  if (q.error === 'ocupado') return json({ error: 'discord_ocupado' }, 503);
+  const u = q.u;
+  if (!u || !u.id) return json({ error: 'discord' }, 401);
+  const esperar = frenado(u.id, 'unirse');
+  if (esperar) return json({ error: 'espera', s: esperar }, 429);
+  const bot = { 'Authorization': 'Bot ' + env.DISCORD_TOKEN, 'X-Audit-Log-Reason': RAZON_UNIRSE, 'content-type': 'application/json' };
+  const res = {};
+  for (const sv of pide) {
+    const S = SERVIDORES.find((x) => x.sv === sv && x.guild && !x.fuera);
+    if (!S || UNIRSE_NO.has(sv)) { res[sv] = 'no'; continue; }
+    let r = null;
+    try {
+      r = await fetch(`${DC_API}/guilds/${S.guild}/members/${u.id}`, { method: 'PUT', headers: bot, body: JSON.stringify({ access_token: t }) });
+    } catch (e) { r = null; }
+    if (!r) { res[sv] = 'error'; continue; }
+    // 201: entró · 204: ya estaba
+    if (r.status === 201 || r.status === 204) { res[sv] = r.status === 201 ? 'ok' : 'ya'; continue; }
+    let c = 0;
+    try { c = Number((await r.json()).code) || 0; } catch (e) { c = 0; }
+    // 30001: tu cuenta está en el máximo de servidores · 40007: ese servidor no te deja entrar (te echaron) · 50013: al bot le
+    // falta «Crear invitación» ahí · 401/403: el permiso no trae `guilds.join` o se venció · 429: Discord pide esperar
+    res[sv] = c === 30001 ? 'lleno' : c === 40007 ? 'no_deja' : c === 50013 ? 'sin_permiso' : r.status === 429 ? 'espera'
+      : (r.status === 401 || r.status === 403) ? 'permiso' : 'error';
+    // con la cuenta llena o sin el permiso, los que siguen fallarían igual
+    if (res[sv] === 'lleno' || res[sv] === 'permiso') {
+      for (const x of pide) if (!res[x]) res[x] = res[sv];
+      break;
+    }
+  }
+  return json({ ok: true, res });
 }
 
 // ── 🔗 Los roles vinculados de Discord ─────────────────────────────────────
@@ -4554,6 +4611,8 @@ export default {
     if (camino === '/cuenta/rol' && req.method === 'POST') return cuentaRol(req, env);
     // 👀 a quién mira como propio quien no está verificado, con su sesión (13/11/2026, ver `cuentaMira()`)
     if (camino === '/cuenta/mira' && req.method === 'POST') return cuentaMira(req, env);
+    // 🤝 unirte a los Tier 1 que elegiste, con tu permiso (13/11/2026, ver `cuentaUnirse()`)
+    if (camino === '/cuenta/unirse' && req.method === 'POST') return cuentaUnirse(req, env);
 
     if (req.method === 'GET') {
       const ruta = camino;

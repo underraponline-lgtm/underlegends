@@ -218,6 +218,8 @@ const CUENTA = {
   '/api/cuenta/rol': '/cuenta/rol',
   // 👀 a quién mira como propio quien no está verificado, para marcarle su lugar en el Ranking (13/11/2026)
   '/api/cuenta/mira': '/cuenta/mira',
+  // 🤝 unirte a los Tier 1 que elegiste, con tu permiso (13/11/2026)
+  '/api/cuenta/unirse': '/cuenta/unirse',
 };
 
 // 🔑 LA SESIÓN (28/09/2026): entrar con Discord una vez. La cookie `lg_ses`

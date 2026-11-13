@@ -21,6 +21,7 @@ import { useEffect, useRef, useState } from 'react';
 import { limpio, num, siglaDe } from './liga.js';
 import { Ico, nombrePais } from './piezas.jsx';
 import { PopCab } from './pop.jsx';
+import { abrirUnirse } from './unirse.jsx';
 
 const pct = (x) => parseFloat(String(x == null ? '' : x).replace(',', '.')) || 0;
 const coma = (x, d = 1) => Number(x || 0).toFixed(d).replace('.', ',');
@@ -330,7 +331,11 @@ export function Porque({ sub, c, n, titulo, linea }) {
                       : <span><img alt="" src={c.liga.logo(s.sv)} /><b>{siglaDe(s.sv)}</b></span>}
                   </li>
                 ))}</ul>
-                <a className="btn borde2 chico rk-pq-soc" href="#/socios" onClick={cerrar}>Ver los tiers en Socios</a>
+                <span className="rk-pq-acc">
+                  {/* 🤝 unirte a todos los que elijas, con tu permiso: la lista vive en Socios (unirse.jsx) */}
+                  <button type="button" className="btn verde chico" onClick={() => { cerrar(); abrirUnirse(); }}>Unirme a los Tier 1</button>
+                  <a className="btn borde2 chico" href="#/socios" onClick={cerrar}>Ver los tiers en Socios</a>
+                </span>
               </section>
             ) : null}
           </div>

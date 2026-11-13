@@ -22,6 +22,7 @@ import CSS_VIEJO from './css/socios.css?inline';
 import CSS_PAGINA from './css/socios2.css?inline';
 import { usarCss } from './css.js';
 import FondoVideo from './fondovideo.jsx';
+import { UnirseTier1 } from './unirse.jsx';
 
 // las cajas de «lo que gana tu servidor», su ejemplo y las redes de Under Legends son las de siempre, con su CSS
 usarCss('socios', CSS_VIEJO);
@@ -71,6 +72,8 @@ function Tiers({ liga, svs }) {
               <button type="button" key={s.sv} style={{ '--c': s.color || '#29B298' }} onClick={() => irA(idDe(s.sv))} aria-label={'Ir a ' + (s.nombre || s.sv)}>
                 <img alt="" src={liga.logo(s.sv)} />{siglaDe(s.sv)}</button>
             ))}</p>
+            {/* 🤝 unirte a los Tier 1 con un toque, eligiendo a cuáles (13/11/2026, ver unirse.jsx) */}
+            {t === 1 ? <UnirseTier1 liga={liga} /> : null}
           </li>
         ))}
       </ul>
