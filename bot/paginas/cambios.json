@@ -11,6 +11,15 @@
  ],
  "cambios": [
     {
+        "version": "4.90",
+        "dia": "2026-11-12",
+        "cuando": "2026-11-13T00:15:00-05:00",
+        "titulo": "Todo en HD",
+        "items": [
+            "Las caras grandes, las miniaturas de los videos, los banners, los afiches de las ligas y las banderas se ven **en HD**."
+        ]
+    },
+    {
         "version": "4.89",
         "dia": "2026-11-12",
         "cuando": "2026-11-12T23:45:00-05:00",
