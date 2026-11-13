@@ -72,6 +72,10 @@
 .rk-gflag{flex:none;width:42px;height:28px;object-fit:cover;box-shadow:0 0 0 1px var(--suave)}
 .rk-clogo{flex:none;display:grid;place-items:center;width:36px;height:36px;object-fit:cover;background:var(--inv);color:var(--inv-tinta);
   font:900 13px/1 Archivo,sans-serif}
+/* 🛡️ el escudo armado (Dlx, 13/11/2026, la captura de Los ULEYES): `.con-esc` trae `padding:11%`, y un % de padding se
+   mide contra el ANCHO DE LA FILA, no del logo — 58 px por lado, el cuadro crecía a 116 px negros y el escudo quedaba en 0.
+   En píxeles, el 11 % de 36 */
+.rk-clogo.con-esc{padding:4px;box-sizing:border-box}
 .rk-qn small{display:flex;align-items:center;gap:6px;min-width:0;overflow:hidden;white-space:nowrap;
   font:700 15px/1.1 "Barlow Condensed",sans-serif;letter-spacing:0.03em;text-transform:uppercase;color:var(--gris)}
 .rk-qn small:empty{display:none}
