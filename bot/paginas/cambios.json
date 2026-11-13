@@ -11,6 +11,15 @@
  ],
  "cambios": [
     {
+        "version": "4.88",
+        "dia": "2026-11-12",
+        "cuando": "2026-11-12T23:35:00-05:00",
+        "titulo": "La pantalla de carga, más suave",
+        "items": [
+            "La pantalla de carga **entra de a poco**: primero la marca y el título, después el sello y la barra, y el fondo aparece con un fundido."
+        ]
+    },
+    {
         "version": "4.87",
         "dia": "2026-11-12",
         "cuando": "2026-11-12T23:30:00-05:00",
