@@ -11,6 +11,17 @@
  ],
  "cambios": [
     {
+        "version": "5.02",
+        "dia": "2026-11-13",
+        "cuando": "2026-11-13T02:57:00-05:00",
+        "titulo": "La tira de historias, más clara",
+        "items": [
+            "El aro **magenta** dice que tienes algo sin ver; lo que no tiene nada nuevo queda gris y al final.",
+            "**Tu país y tu crew** aparecen justo después de La Liga, sin tener que deslizar.",
+            "Los nombres ya no se cortan («EE. UU.») y el círculo crece un poco al pasar el mouse."
+        ]
+    },
+    {
         "version": "5.01",
         "dia": "2026-11-13",
         "cuando": "2026-11-13T02:48:00-05:00",
