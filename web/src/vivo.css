@@ -5063,3 +5063,32 @@ dialog.pn-pop.pop-gratis{--pc:#F5C542;width:min(640px,calc(100vw - 32px))}
    menú pedía 703 px y a 1375 su columna tenía 691, así que se desbordaba y la separación quedaba en 27 px */
 @media (min-width: 1024px){ .app .cab.una nav.menu{gap:clamp(8px,calc(1.2vw - 4px),12px)} }
 @media (min-width: 900px){ .app .cab.una{column-gap:clamp(24px,2.6vw,40px)} }
+
+/* ═══ 🎞️ LA TIRA DE HISTORIAS, OPCIÓN A (Dlx, 13/11/2026, de la maqueta: «La A») ═══
+   Dos estados y no tres: aro magenta = tienes algo sin ver; aro gris fino y el logo apagado = nada (ya lo viste, o no
+   tiene nada nuevo: `apagadoH()` en arriba.jsx). El verde estaba en casi todos y se leía como adorno. El magenta es el
+   acento de la página, así que acá dice una sola cosa. «Seguir» chico y punteado, y el círculo crece un poco al pasar el
+   mouse (sólo con mouse, y quieto con «Menos animaciones») */
+.historias .h:is(.liga,.yo,.promos,.en-vivo,.sv,.pais,.crew,.gente) .h-c{box-shadow:0 0 0 3px var(--magenta)}
+.historias .h.visto .h-c{box-shadow:0 0 0 1.5px var(--suave)!important}
+.historias .h.visto .h-c>*{filter:grayscale(.75);opacity:.5}
+/* con foto, el fondo del círculo es el de la página: el de las caras (`--inv`, blanco de noche) se veía a través de la foto apagada */
+.historias .h.visto .h-c:has(img){background:var(--fondo)}
+.historias .h.visto .h-c.con-bandera{filter:grayscale(.75);opacity:.6}
+.historias .h.visto small{color:var(--gris)}
+.historias .h.sumar .h-c.mas{width:56px;height:56px;margin:6px;padding:0;background:transparent;box-shadow:none;border:2px dashed var(--gris);color:var(--gris);font:500 26px/1 Archivo,sans-serif}
+.historias .h.sumar small{color:var(--gris)}
+.historias .h.pais small,.historias .h.crew small{max-width:88px}
+.historias .h em{font-size:12px;text-transform:uppercase;letter-spacing:.06em;margin-top:-3px}
+.historias .h-sep{width:1px;align-self:flex-start;height:58px;margin:8px 2px 0}
+@media (hover: hover){
+  .historias .h .h-c{transition:transform .15s ease-out}
+  .historias .h:hover .h-c{transform:scale(1.07)}
+}
+.app.calma .historias .h:hover .h-c{transform:none}
+@media (prefers-reduced-motion: reduce){.historias .h:hover .h-c{transform:none}}
+@media (max-width: 899.98px){
+  .app .historias .h.sumar .h-c.mas{width:46px;height:46px;margin:5px;font-size:22px}
+  .app .historias .h-sep{height:48px;margin-top:5px}
+  .app .historias .h em{font-size:11px}
+}

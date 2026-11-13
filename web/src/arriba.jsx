@@ -740,11 +740,25 @@ const masViejo = (a, b) => (!a.t - !b.t) || String(a.t || '').localeCompare(Stri
 /** La fila de círculos como Instagram: lo en vivo primero, después lo que tiene algo sin ver y al final lo ya visto
  * (gris), cada parte en su orden de siempre. `vistos` es una foto de cuando el visor estaba cerrado (ver App.jsx): así
  * los círculos no se corren mientras mirás. */
+// 🎞️ LA TIRA, OPCIÓN A (Dlx, 13/11/2026, de la maqueta https://claude.ai/artifact/YH2C21cWzGMPVaFL1sxUev: «La A»). Dos
+// estados y no tres: aro magenta = tienes algo sin ver; aro gris fino y logo apagado = nada (ya lo viste, o el servidor,
+// tu país, tu crew o alguien que sigues no tiene nada nuevo). Antes el aro verde estaba en casi todos y se leía como
+// adorno, y SNK, CYH y FVS sin novedades quedaban en un tercer estado, ni verdes ni grises, en el medio de la tira
+export const apagadoH = (g, vistos) => g.slides.every((s) => vistos[s.id])
+  || (['sv', 'pais', 'crew', 'gente'].includes(g.tipo) && !g.nuevo && !g.espera);
+// y lo tuyo adelante: tu país y tu crew justo después de La Liga, Promos y Tu semana. Iban después de los trece
+// servidores, o sea detrás de la flecha a 1333 px, y son lo único de la tira que es tuyo
+const TRAMO_H = { vivo: 0, liga: 1, yo: 1, promos: 1, pais: 2, crew: 2, sv: 3, gente: 4 };
+export const tramoH = (g) => (g.tipo in TRAMO_H ? TRAMO_H[g.tipo] : 3);
+// los nombres que no entran en el círculo: «Estados Un…» se cortaba (el de la crew sale de su sigla, si tiene)
+const PAIS_CORTO = { us: 'EE. UU.', do: 'R. Dominicana', gb: 'R. Unido', ae: 'EAU' };
+// logos con mucho borde vacío alrededor: el de la Academia es un escudo chico sobre negro y se veía la mitad que los demás
+const ZOOM_LOGO = { ACAD: 1.2 };
 export function ordenHistorias(grupos, vistos) {
-  const todoVisto = (g) => g.slides.every((s) => vistos[s.id]);
   const vivo = grupos.filter((g) => g.tipo === 'vivo');
   const resto = grupos.filter((g) => g.tipo !== 'vivo');
-  return vivo.concat(resto.filter((g) => !todoVisto(g)), resto.filter(todoVisto));
+  const conAlgo = resto.filter((g) => !apagadoH(g, vistos)).sort((a, b) => tramoH(a) - tramoH(b));
+  return vivo.concat(conAlgo, resto.filter((g) => apagadoH(g, vistos)));
 }
 
 // las caras de una lista de filas de la tabla, con lo que dice debajo de cada una
@@ -879,6 +893,8 @@ export function gruposHistorias(liga) {
   // 🖼️ y los flyers de las ligas (14/10/2026): van al círculo de su servidor (`svDe()`: el flyer trae su `sv`)
   const muro = liga.muroLimpio().filter((it) => ['campeon', 'anuncio', 'caza', 'tarjeta', 'rango', 'flyer'].includes(it.tipo));
   const grupos = [];
+  // ⏳ mientras el muro no llega, «no tiene nada nuevo» no se sabe todavía: nadie se apaga por eso (`apagadoH`)
+  const espera = !liga.muroListo;
   liga.vivo().forEach((e) => {
     const m = liga.multSv(e.sv);
     const dd = aDiscord(liga, e, true);
@@ -983,7 +999,7 @@ export function gruposHistorias(liga) {
       'vacio:' + sv));
     }
     slides.sort(masViejo);
-    grupos.push({ id: 'sv-' + sv.toLowerCase(), tipo: 'sv', nombre: s.nombre, logo: liga.logo(sv), nom: siglaDe(sv), nuevo: propios.length > 0, firma: firma(propios, 'sem:' + (mm.ini || '')), slides });
+    grupos.push({ id: 'sv-' + sv.toLowerCase(), tipo: 'sv', sv, nombre: s.nombre, logo: liga.logo(sv), nom: siglaDe(sv), espera, nuevo: propios.length > 0, firma: firma(propios, 'sem:' + (mm.ini || '')), slides });
   });
   // ── después, lo tuyo: tu país, tu crew y la gente que seguís. Dlx, 30/09/2026: «no hay necesidad de seguir a
   // todos… que ahí arriba aparezca simplemente tu país, tu crew si estás en una y las personas que tú sigues». Antes
@@ -1002,7 +1018,7 @@ export function gruposHistorias(liga) {
     'esta temporada', 'Ver ' + nom, { ruta: '#/pais/' + pa.cc }, 'pais:' + pa.cc + ':' + (mm.ini || ''), String(mm.ini || ''))];
     slidesDe(liga, propios).slice(0, 3).forEach((x) => slides.push(x));
     slides.sort(masViejo);
-    grupos.push({ id: 'pais-' + pa.cc, tipo: 'pais', nombre: nom, cc: pa.cc, nom, nuevo: propios.length > 0, firma: firma(propios, 'pais'), slides });
+    grupos.push({ id: 'pais-' + pa.cc, tipo: 'pais', nombre: nom, cc: pa.cc, nom: PAIS_CORTO[pa.cc] || nom, espera, nuevo: propios.length > 0, firma: firma(propios, 'pais'), slides });
   }
   const c = yo ? liga.crewDe(yo) : null;
   if (c) {
@@ -1016,7 +1032,7 @@ export function gruposHistorias(liga) {
     const propios = muro.filter((it) => ksDe(it).some((k) => ks.has(k)));
     slidesDe(liga, propios).slice(0, 3).forEach((x) => slides.push(x));
     slides.sort(masViejo);
-    grupos.push({ id: 'crew-' + claveCrew(c.crew), tipo: 'crew', nombre: limpio(c.crew), crew: c, nom: limpio(c.crew), nuevo: propios.length > 0, firma: firma(propios, 'crew'), slides });
+    grupos.push({ id: 'crew-' + claveCrew(c.crew), tipo: 'crew', nombre: limpio(c.crew), crew: c, nom: c.sigla ? limpio(c.sigla) : limpio(c.crew), espera, nuevo: propios.length > 0, firma: firma(propios, 'crew'), slides });
   }
   const ETIQUETA = { tarjeta: 'carta nueva', campeon: 'campeón', caza: 'cazó' };
   const sig = liga.sigue.map((k) => {
@@ -1032,7 +1048,7 @@ export function gruposHistorias(liga) {
     }
     const u = propios[0];
     const et = u ? (u.tipo === 'rango' ? 'rango ' + (u.rg || '') : ETIQUETA[u.tipo] || '') : (f.pos ? '#' + f.pos : '');
-    return { id: 'p-' + k, tipo: 'gente', nombre: limpio(f.n), k, cc: f.cc, nom: limpio(f.n), et, nuevo: !!u, t: u ? String(u.t) : '', pos: f.pos || 1e9, firma: firma(propios, 'perfil'), slides };
+    return { id: 'p-' + k, tipo: 'gente', nombre: limpio(f.n), k, cc: f.cc, nom: limpio(f.n), et, espera, nuevo: !!u, t: u ? String(u.t) : '', pos: f.pos || 1e9, firma: firma(propios, 'perfil'), slides };
   });
   // primero los que tienen algo nuevo, lo más reciente adelante; después por el ranking
   sig.sort((a, b) => (Number(b.nuevo) - Number(a.nuevo)) || b.t.localeCompare(a.t) || (a.pos - b.pos));
@@ -1111,19 +1127,22 @@ export function Historias({ liga, grupos, vistos, onAbrir }) {
   // ➕ seguir a alguien, primero (Dlx: «mover el círculo de agregar o seguir a alguien a la izquierda»): se sigue desde el
   // perfil de cada uno, así que lleva al Ranking
   if ((liga.d.tabla || []).length) {
-    partes.push(<a key="sumar" className="h sumar" href="#/ranking"><span className="h-c mas" aria-hidden="true">+</span>
-      <small>{liga.sigue.length ? 'Seguir a más' : 'Sigue a alguien'}</small><em>desde su perfil</em></a>);
+    // 🎞️ opción A (13/11/2026): chico, punteado y una sola palabra. Era lo más fuerte de la tira (aro blanco y dos
+    // líneas) y sólo lleva al Ranking
+    partes.push(<a key="sumar" className="h sumar" href="#/ranking" title="Sigue a alguien desde su perfil" aria-label="Seguir a alguien: se hace desde su perfil">
+      <span className="h-c mas" aria-hidden="true">+</span><small>Seguir</small></a>);
   }
   let antes = null;
-  let antesVisto = false;
+  let antesApagado = false;
   grupos.forEach((g, i) => {
-    // gris cuando ya viste TODAS sus historias (se cuenta historia por historia: ver `Visor`). Los vistos van al final
-    // (`ordenHistorias`): una raya antes de ellos y ninguna entre ellos, que ahí ya se mezclan los tipos
-    const todo = g.slides.every((s) => vistos[s.id]);
-    if ((antes && (todo !== antesVisto || (!todo && g.tipo !== antes))) || (i === 0 && partes.length)) partes.push(<span key={'s' + i} className="h-sep" aria-hidden="true" />);
-    antes = g.tipo;
-    antesVisto = todo;
-    const visto = todo ? ' visto' : '';
+    // gris cuando ya viste TODAS sus historias (se cuenta historia por historia: ver `Visor`) o cuando no tiene nada
+    // nuevo (`apagadoH`). Los apagados van al final (`ordenHistorias`): una raya antes de ellos y ninguna entre ellos,
+    // que ahí ya se mezclan los tipos. Entre los que tienen algo, una raya por tramo: La Liga, lo tuyo, los servidores
+    const apag = apagadoH(g, vistos);
+    if ((antes != null && (apag !== antesApagado || (!apag && tramoH(g) !== antes))) || (i === 0 && partes.length)) partes.push(<span key={'s' + i} className="h-sep" aria-hidden="true" />);
+    antes = tramoH(g);
+    antesApagado = apag;
+    const visto = apag ? ' visto' : '';
     const abrir = () => onAbrir(i);
     if (g.tipo === 'vivo') {
       partes.push(<button type="button" key={g.id} className={'h en-vivo' + visto} onClick={abrir}><span className="h-w"><span className="h-c"><img alt="" src={g.logo} /></span>
@@ -1135,7 +1154,7 @@ export function Historias({ liga, grupos, vistos, onAbrir }) {
     } else if (g.tipo === 'promos') {
       partes.push(<button type="button" key={g.id} className={'h promos nuevo' + visto} onClick={abrir}><span className="h-c"><Orbe /></span><small>Promos</small></button>);
     } else if (g.tipo === 'sv') {
-      partes.push(<button type="button" key={g.id} className={'h sv' + (g.nuevo ? ' nuevo' : '') + visto} onClick={abrir}><span className="h-c"><img alt="" src={g.logo} /></span><small>{g.nom}</small></button>);
+      partes.push(<button type="button" key={g.id} className={'h sv' + (g.nuevo ? ' nuevo' : '') + visto} onClick={abrir}><span className="h-c"><img alt="" src={g.logo} style={ZOOM_LOGO[g.sv] ? { transform: 'scale(' + ZOOM_LOGO[g.sv] + ')' } : undefined} /></span><small>{g.nom}</small></button>);
     } else if (g.tipo === 'pais') {
       partes.push(<button type="button" key={g.id} className={'h pais' + (g.nuevo ? ' nuevo' : '') + visto} onClick={abrir}>
         <span className="h-c bandera"><img alt="" src={'/banderas/g/' + g.cc + '.webp'} /></span><small>{g.nom}</small><em>tu país</em></button>);
