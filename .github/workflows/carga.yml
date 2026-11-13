@@ -1,0 +1,84 @@
+# LOS FONDOS DE LA PANTALLA DE CARGA, REHECHOS SOLOS TODOS LOS DÍAS.
+#
+# La página elige uno al azar en cada entrada (web/montar.py). Tres salen de lo que pasa en la Liga y se rehacen acá:
+#   1  Afiches      del ranking de la Temporada y las fotos
+#   3  Tarjetas 3D  el top de la Temporada y el del Competitivo, con sus cartas de hoy (Blender)
+#   4  Competitivo  los mejores del Competitivo que tienen una foto suya
+# El 2 (La batalla) son momentos de videos y no cambia en la temporada: se arma una vez a mano
+# (`python herramientas/fondos_carga.py --batallas`). Todo va a R2 (carga/<temporada>/), nunca al repo: son caras de
+# gente real.
+#
+# ⚠️ UNA VEZ POR DÍA Y NO EN EL CICLO. El top cambia de a poco y un fondo de ayer no miente nada; en cada corrida del
+# ciclo serían 48 renders de Blender por día para casi la misma imagen. La página pide la del día (`?d=`).
+# ⚠️ EN LA NUBE NO HAY PLACA DE VIDEO: el 3D va con Cycles en la CPU (`CARGA_CYCLES`), ~4 min por formato.
+name: carga
+
+on:
+  workflow_dispatch:
+  schedule:
+    # 21:00 UTC  =  17:00 EDT (marzo–noviembre)
+    #            =  16:00 EST (noviembre–marzo)
+    # De tarde, lejos de la madrugada sin ciclo (3 a 11 AM ET), y con el ranking del día ya movido.
+    - cron: '0 21 * * *'
+
+concurrency:
+  group: carga
+  cancel-in-progress: false
+
+jobs:
+  fondos:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 60
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+          cache: pip
+
+      - name: instalar
+        # ⚠️ las bibliotecas de abajo las pide Blender aunque corra sin pantalla (`-b`)
+        run: |
+          pip install -r requirements.txt
+          python -m playwright install --with-deps chromium
+          sudo apt-get install -y --no-install-recommends libxi6 libxxf86vm1 libxfixes3 libxrender1 libgl1 libxkbcommon0 libsm6 libegl1
+
+      - name: Blender, del caché
+        uses: actions/cache@v4
+        with:
+          path: ~/blender
+          key: blender-5.2.3-linux-x64
+
+      - name: Blender, si no estaba
+        run: |
+          if [ ! -x ~/blender/blender ]; then
+            mkdir -p ~/blender
+            curl -sSL https://download.blender.org/release/Blender5.2/blender-5.2.3-linux-x64.tar.xz | tar -xJ -C ~/blender --strip-components=1
+          fi
+          ~/blender/blender --version | head -1
+
+      - name: credenciales
+        env:
+          ENV_FILE: ${{ secrets.ENV_FILE }}
+        run: |
+          if [ -z "$ENV_FILE" ]; then
+            echo "Falta el secret ENV_FILE."
+            exit 1
+          fi
+          printf '%s' "$ENV_FILE" > .env
+          # 🛡️ cada valor de adentro, tapado en el log (ver bot/ci/enmascarar.sh)
+          bash bot/ci/enmascarar.sh .env
+
+      - name: las fotos (el espejo de R2)
+        run: python bot/fotos.py --espejo
+
+      - name: armar los fondos 1, 3 y 4
+        env:
+          CARGA_CYCLES: '1'
+          BLENDER: /home/runner/blender/blender
+        run: python herramientas/fondos_carga.py
+
+      - name: subirlos a R2
+        run: python herramientas/fondos_carga.py --subir

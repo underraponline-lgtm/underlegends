@@ -1,0 +1,23 @@
+{
+  "_leeme": "La pantalla de carga (Dlx, 12/11/2026): cinco fondos por temporada, cada uno con la misma chance (20 %), y en «La batalla» cada video con su parte. Lo leen web/montar.py (qué fondos sortea la página) y herramientas/fondos_carga.py (cómo se arman). El 5 entra cuando esté su imagen: se agrega a `fondos`.",
+  "temporada": "t1",
+  "fondos": [1, 2, 3, 4],
+  "batallas": [
+    {"id": "kainheat", "video": "B2OyIluaMF8", "seg": 104.3, "cx": 0.40, "foco": 0.50, "marca": "bvs"},
+    {"id": "sombra", "video": "kommY3DfdJQ", "seg": 141, "cx": 0.21, "foco": 0.45, "marca": "bvs"},
+    {"id": "sol", "video": "dMamevsP5ZQ", "seg": 163, "cx": 0.65, "foco": 0.45},
+    {"id": "liberia", "video": "hR4EH1DvwKA", "seg": 314.3, "cx": 0.52, "foco": 0.50},
+    {"id": "kourier", "video": "dlfZzEmTmqU", "seg": 221, "cx": 0.30, "foco": 0.42, "marca": "ko"},
+    {"id": "zaylax", "video": "7lIj3Cva3qc", "seg": 81, "cx": 0.30, "foco": 0.45, "marca": "bvs"},
+    {"id": "makma", "video": "NWO5AIKRzHw", "seg": 167, "cx": 0.10, "foco": 0.40},
+    {"id": "eucalipto", "video": "4lhocjDBorw", "seg": 73, "cx": 0.55, "foco": 0.45, "luz": 1.25}
+  ],
+  "competitivo": {
+    "_leeme": "Quiénes del Competitivo tienen de avatar una foto suya (Dlx: «avatares reales como Liberia»), y dónde está su cara: [x, y, zoom]. Mirado a ojo sobre cada avatar con una grilla; quien no está acá no sale en el fondo 4.",
+    "oasis": [0.86, 0.28, 1.5],
+    "liberia": [0.45, 0.22, 1.5],
+    "six": [0.52, 0.25, 1.5],
+    "makmah": [0.46, 0.28, 1.6],
+    "mito": [0.55, 0.36, 1.2]
+  }
+}

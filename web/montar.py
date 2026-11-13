@@ -52,26 +52,54 @@ html.sin-pagina #sin-pagina{display:grid;min-height:100vh;min-height:100dvh;plac
   letter-spacing:.04em;text-transform:uppercase;cursor:pointer}
 #sin-pagina button:focus-visible{outline:3px solid #29B298;outline-offset:3px}
 #lg-carga{display:none}
-html.ini-nuevo #lg-carga{display:grid;position:fixed;inset:0;z-index:1000;place-items:center;overflow:hidden;background:#030304;color:#F6F6F6;
+html.ini-nuevo #lg-carga{display:block;position:fixed;inset:0;z-index:1000;overflow:hidden;background:#030304;color:#F6F6F6;
   transition:opacity .35s ease,visibility 0s linear .35s}
 html.ini-nuevo.lg-listo:not(.lg-carga-js) #lg-carga{opacity:0;visibility:hidden}
 html.ini-nuevo.lg-fuera #lg-carga{display:none}
-#lg-carga .lg-c{position:relative;z-index:3;display:grid;justify-items:center;gap:10px}
-#lg-carga .lg-sello{position:relative;width:96px;height:96px}
-#lg-carga .lg-sello img{position:relative;z-index:2;display:block;width:96px;height:96px;animation:lg-sello .65s cubic-bezier(.2,.8,.25,1.15) both}
-#lg-carga .lg-sombra{position:absolute;inset:0;background:#E41373;animation:lg-sombra .35s .42s cubic-bezier(.2,.9,.3,1.3) both}
-#lg-carga .lg-onda{position:absolute;inset:0;border:3px solid #29B298;opacity:0;animation:lg-onda .6s .38s ease-out both}
-#lg-carga .lg-tit{display:flex;overflow:hidden;padding-top:4px;font:900 23px/1 Archivo,system-ui,sans-serif;font-stretch:118%;letter-spacing:.04em}
-#lg-carga .lg-tit i{display:inline-block;font-style:normal;animation:lg-sube .5s cubic-bezier(.2,.9,.2,1) both;animation-delay:calc(.32s + var(--i) * .04s)}
-#lg-carga .lg-tit .lg-esp{width:.32em}
-#lg-carga small{font:700 13px/1 "Barlow Condensed",system-ui,sans-serif;letter-spacing:.24em;color:#29B298;animation:lg-abre .6s .75s cubic-bezier(.2,.8,.2,1) both}
-#lg-carga .lg-seg{display:grid;grid-template-columns:repeat(12,10px);gap:4px;margin-top:10px;animation:lg-aparece .35s .85s both}
-#lg-carga .lg-seg i{height:7px;background:#1d1d24;transform:skewX(-20deg);transition:background .12s}
-#lg-carga .lg-seg i.on{background:#E41373}
-#lg-carga .lg-seg.lleno i{background:#29B298}
-#lg-carga .lg-tip{display:block;height:16px;overflow:hidden;font:700 13px/16px "Barlow Condensed",system-ui,sans-serif;letter-spacing:.12em;
-  text-transform:uppercase;color:#A5A5A0;animation:lg-aparece .35s .85s both}
-#lg-carga .lg-tip span{display:block;animation:lg-tip .3s ease-out}
+#lg-carga .lg-c{position:absolute;inset:0;z-index:3}
+/* 🏷️ arriba a la izquierda, la marca de la bienvenida: el UL y la temporada en blanco */
+#lg-carga .lg-marca{position:absolute;top:22px;left:max(56px,calc((100% - 1320px) / 2));display:flex;align-items:center;gap:10px}
+#lg-carga .lg-marca img{display:block;width:auto;height:42px}
+#lg-carga .lg-marca i{width:2px;height:28px;background:rgba(246,246,246,.5)}
+#lg-carga .lg-marca b{font:900 28px/1 Archivo,system-ui,sans-serif;font-stretch:125%}
+/* 🎬 el título de la bienvenida, SIEMPRE EN EL MISMO LUGAR (Dlx: «como Brawl Stars, que siempre tiene su estilo pero
+   diferentes fondos»): el sello, «LIGA GLOBAL» relleno con el fondo que tocó y «DE FREESTYLE» en magenta */
+#lg-carga .lg-logo{position:absolute;left:50%;top:max(24px,5.2vw);translate:-50% 0;display:grid;justify-items:center;gap:max(10px,.9vw);text-align:center}
+#lg-carga .lg-logo::before{content:'';position:absolute;left:50%;top:50%;width:150%;height:210%;translate:-50% -50%;z-index:-1;
+  background:radial-gradient(ellipse at center,rgba(3,3,4,.82) 0,rgba(3,3,4,.55) 45%,transparent 72%)}
+#lg-carga .lg-sello{display:inline-block;padding:7px 12px 6px;background:#E41373;color:#fff;border-radius:2px;
+  font:700 clamp(12px,1vw,17px)/1 "Barlow Condensed",system-ui,sans-serif;letter-spacing:.14em;text-transform:uppercase;transform:rotate(-3deg);
+  box-shadow:4px 4px 0 #29B298;animation:lg-sello .5s cubic-bezier(.2,.9,.25,1.2) .2s both}
+#lg-carga .lg-t{display:grid;gap:2px;font:900 clamp(30px,3.9vw,76px)/.9 Archivo,system-ui,sans-serif;font-stretch:125%;letter-spacing:.01em;
+  word-spacing:.08em;white-space:nowrap;filter:drop-shadow(0 4px 16px rgba(0,0,0,.65));animation:lg-entra .6s cubic-bezier(.2,.9,.2,1) both}
+#lg-carga .lg-t1{color:transparent;-webkit-background-clip:text;background-clip:text;
+  background-image:linear-gradient(rgba(246,246,246,.34),rgba(246,246,246,.34)),var(--q,linear-gradient(#bdbdbd,#efefef));
+  background-blend-mode:screen;background-size:160% auto;background-position:30% 40%;-webkit-text-stroke:1.5px rgba(246,246,246,.75);
+  animation:lg-deriva 6s ease-in-out infinite alternate}
+#lg-carga .lg-t2{color:#E41373}
+/* ⏳ abajo al centro, la barrita celeste de la bienvenida: el consejo, el porcentaje y la barra */
+#lg-carga .lg-pie{position:absolute;left:50%;bottom:max(20px,3.2vw);translate:-50% 0;width:min(560px,34vw);display:grid;gap:12px;
+  animation:lg-aparece .35s .3s both}
+#lg-carga .lg-fila{display:flex;justify-content:space-between;align-items:baseline;gap:12px}
+#lg-carga .lg-tip{font:700 clamp(12px,1.1vw,17px)/1.2 "Barlow Condensed",system-ui,sans-serif;letter-spacing:.16em;text-transform:uppercase;
+  color:#C9C9C4;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+#lg-carga .lg-pct{font:900 clamp(14px,1.3vw,22px)/1 Archivo,system-ui,sans-serif;font-stretch:125%;font-variant-numeric:tabular-nums}
+#lg-carga .lg-barra{position:relative;height:4px;background:rgba(246,246,246,.2);border-radius:2px;overflow:hidden}
+#lg-carga .lg-barra i{position:absolute;left:0;top:0;bottom:0;width:0;background:#29B298;border-radius:2px}
+#lg-carga.lleno .lg-barra i{background:#F6F6F6}
+@media (max-width:899.98px){
+  #lg-carga .lg-marca{top:max(16px,6vw);left:5.5vw;gap:2.4vw}
+  #lg-carga .lg-marca img{height:max(24px,7.4vw)}
+  #lg-carga .lg-marca i{height:max(16px,5vw)}
+  #lg-carga .lg-marca b{font-size:max(18px,5vw)}
+  #lg-carga .lg-logo{top:16vw;gap:2.4vw}
+  #lg-carga .lg-sello{font-size:max(11px,3.2vw)}
+  #lg-carga .lg-t{font-size:9.4vw}
+  #lg-carga .lg-pie{width:82vw;bottom:calc(11vw + env(safe-area-inset-bottom,0px))}
+  #lg-carga .lg-tip{font-size:max(12px,3.6vw)}
+  #lg-carga .lg-pct{font-size:max(14px,4.2vw)}
+}
+/* ✂️ el corte de salida (18/10/2026): tres capas —negra, magenta, verde— se van en diagonal; el fondo vive en la negra */
 #lg-carga .lg-capa{display:none}
 html.lg-carga-js #lg-carga{background:none}
 html.lg-carga-js #lg-carga .lg-capa{display:block;position:absolute;left:50%;top:50%;width:130vmax;height:130vmax;margin:-65vmax 0 0 -65vmax;will-change:transform;
@@ -84,15 +112,13 @@ html.lg-sale #lg-carga .lg-c{animation:lg-fuera .35s ease-in forwards}
 html.lg-sale #lg-carga .lg-capa{will-change:transform;animation:lg-corte 1s .25s cubic-bezier(.65,0,.35,1) forwards}
 html.lg-sale #lg-carga .lg-capa.m{animation-delay:.4s}
 html.lg-sale #lg-carga .lg-capa.v{animation-delay:.55s}
-@keyframes lg-sello{0%{transform:scale(1.9) rotate(-14deg);opacity:0}45%{opacity:1}70%{transform:scale(.94) rotate(2deg)}100%{transform:none;opacity:1}}
-@keyframes lg-sombra{from{transform:none}to{transform:translate(7px,7px)}}
-@keyframes lg-onda{0%{transform:scale(1);opacity:.9}100%{transform:scale(1.7);opacity:0}}
-@keyframes lg-sube{from{transform:translateY(110%)}to{transform:none}}
-@keyframes lg-abre{from{transform:scaleX(1.9);opacity:0}to{transform:none;opacity:1}}
+@keyframes lg-sello{0%{transform:scale(1.9) rotate(-14deg);opacity:0}45%{opacity:1}70%{transform:scale(.94) rotate(-2deg)}100%{transform:rotate(-3deg);opacity:1}}
+@keyframes lg-entra{from{opacity:0;transform:scale(1.12)}to{opacity:1;transform:none}}
+@keyframes lg-deriva{to{background-position:60% 55%}}
 @keyframes lg-aparece{from{opacity:0}to{opacity:1}}
-@keyframes lg-tip{from{transform:translateY(100%);opacity:0}to{transform:none;opacity:1}}
 @keyframes lg-fuera{to{transform:scale(1.14);opacity:0}}
 @keyframes lg-corte{to{transform:rotate(30deg) translateY(-125vmax)}}
+@keyframes lg-grano{0%,100%{transform:none}20%{transform:translate3d(-3%,2%,0)}40%{transform:translate3d(2%,-3%,0)}60%{transform:translate3d(-2%,-1%,0)}80%{transform:translate3d(3%,3%,0)}}
 @media (prefers-reduced-motion: reduce){
   #lg-carga *{animation:none!important}
   html.lg-sale #lg-carga{opacity:0;transition:opacity .25s ease}
@@ -101,53 +127,93 @@ html.calma #lg-carga *{animation:none!important}
 html.calma.lg-sale #lg-carga{opacity:0;transition:opacity .25s ease}'''
 
 
-#: ⏳ LA PANTALLA DE CARGA (Dlx, 17/10/2026: «¿y si hacemos una pestaña de carga?»): lo primero del <body>
-HTML_CARGA = """<body>
+#: ⏳ LA PANTALLA DE CARGA (Dlx, 17/10/2026: «¿y si hacemos una pestaña de carga?»): lo primero del <body>. Desde el
+#: 12/11/2026, con los fondos de la temporada (Dlx: «como lo hace Brawl Stars pero con nuestros integrantes»)
+def html_carga():
+    """La pantalla de carga: el HTML y su script. Los fondos los arma herramientas/fondos_carga.py y viven en R2; acá
+    sólo se dice cuáles hay (web/carga.json), y la página elige uno."""
+    import json
+    conf = json.load(io.open(os.path.join(WEB, 'carga.json'), encoding='utf-8'))
+    sw = io.open(os.path.join(BASE, 'bot', 'subir_web.py'), encoding='utf-8').read()
+    r2 = re.search(r"^R2 = '([^']+)'", sw, re.M)
+    if not r2:
+        raise SystemExit('🔴 no encontré R2 en bot/subir_web.py: la pantalla de carga no sabe de dónde sacar los fondos')
+    # 📦 lo que se precarga mientras está la pantalla: las páginas del menú (no el Dashboard ni el panel del socio,
+    # que son de pocos y pesan la mitad de todo)
+    fuera = {'inicio.js', 'inicio-dashboard.js', 'inicio-socio2.js', 'inicio-panelsocio.js', 'inicio-verificar.js'}
+    trozos = sorted(f for f in os.listdir(os.path.join(PAG, 'inicio')) if f.endswith('.js') and f not in fuera)
+    c = json.dumps({'r2': r2.group(1), 't': conf['temporada'], 'f': conf['fondos'], 'b': [b['id'] for b in conf['batallas']],
+                    'p': trozos}, ensure_ascii=False, separators=(',', ':'))
+    temp = conf['temporada'].upper()
+    return ("""<body>
 <!-- ⏳ LA PANTALLA DE CARGA (Dlx, 17/10/2026: «¿y si hacemos una pestaña de carga?»). Va en el HTML y no en la app: se ve
-     al instante, también con 3G lento (la app tarda ~7 s en bajar; ver el plan B de arriba). Se va cuando la app tiene
-     los datos (`lg-listo`, App.jsx) o cuando sale el aviso de «no pude cargar» (`sin-pagina`). La pone
-     web/montar.py.
-     ✂️ Y SE VA CON UN CORTE (Dlx, 18/10/2026: «la transición… es demasiado básica»; de tres, eligió el Corte): el logo
-     cae como un sello, la barra se llena por partes y tres capas —negra, magenta, verde— se van en diagonal. Con
-     transform y no con clip-path: en un Android modesto mover una capa es barato y recortar la pantalla entera no.
-     ⚠️ «LA PÁGINA CARGA RÁPIDO Y LA ANIMACIÓN NO SE NOTA» (Dlx): la primera vez de cada visita (`lg:intro`, de la
-     sesión) el corte espera a que la entrada termine (`MIN`, ~1,9 s: Dlx, 18/10, «la veo completa pero pasa bien
-     rápido», después «1 segundo menos» y el 19/10 «medio segundo más»), con la barra llenándose de a poco y un momento llena; al recargar en la misma visita, sin espera. Con
-     «reducir movimiento», nada de esto: se apaga con un fundido. Sin este script, se apaga como antes. -->
-<div id="lg-carga" aria-hidden="true"><i class="lg-capa v"></i><i class="lg-capa m"></i><i class="lg-capa n"><b class="lg-foto"></b></i><div class="lg-c"><span class="lg-sello"><span class="lg-sombra"></span><span class="lg-onda"></span><img src="/ul.png" alt="" width="96" height="96"></span><b class="lg-tit"><i style="--i:0">L</i><i style="--i:1">I</i><i style="--i:2">G</i><i style="--i:3">A</i><i class="lg-esp" style="--i:4"></i><i style="--i:5">G</i><i style="--i:6">L</i><i style="--i:7">O</i><i style="--i:8">B</i><i style="--i:9">A</i><i style="--i:10">L</i></b><small>DE FREESTYLE</small><span class="lg-seg"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></span><span class="lg-tip"><span>Cargando el ranking</span></span></div></div>
+     al instante, también con 3G lento. Se va cuando la app tiene los datos (`lg-listo`, App.jsx) o cuando sale el aviso
+     de «no pude cargar» (`sin-pagina`). La pone web/montar.py.
+     🎲 LOS FONDOS (Dlx, 12/11/2026): cinco por temporada, cada uno con la misma chance, y en «La batalla» cada video con
+     su parte. Los arma herramientas/fondos_carga.py y viven en R2 (carga/<temporada>/); cuáles hay, web/carga.json.
+     El título, la marca y la barra son los de la bienvenida y van SIEMPRE en el mismo lugar: cambia el fondo, no el estilo.
+     ⏳ 4 SEGUNDOS LA PRIMERA VEZ (Dlx: «que la página se demore un poco más… para que se contemple»), mientras se
+     precarga todo; si vuelve en los siguientes 30 minutos (`lg:carga`), lo que tarde en cargar.
+     ✂️ Y SE VA CON EL CORTE (18/10/2026): tres capas —negra, magenta, verde— en diagonal; el fondo vive en la negra. -->
+<div id="lg-carga" aria-hidden="true"><i class="lg-capa v"></i><i class="lg-capa m"></i><i class="lg-capa n"><b class="lg-foto"><b class="lg-img"></b><b class="lg-velo"></b><svg class="lg-grano"><filter id="lg-gr"><feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="2" stitchTiles="stitch"/></filter><rect width="100%" height="100%" filter="url(#lg-gr)"/></svg></b></i><div class="lg-c"><span class="lg-marca"><img src="/ul-blanco.png" alt="" width="160" height="130"><i></i><b>@TEMP@</b></span><div class="lg-logo"><span class="lg-sello">Temporada @NUM@ · en juego</span><span class="lg-t"><span class="lg-t1">LIGA GLOBAL</span><span class="lg-t2">DE FREESTYLE</span></span></div><div class="lg-pie"><div class="lg-fila"><span class="lg-tip">Cargando el ranking</span><b class="lg-pct">0%</b></div><span class="lg-barra"><i></i></span></div></div></div>
 <script>
 (function () {
   var h = document.documentElement, el = document.getElementById('lg-carga');
   if (!el || !h.classList.contains('ini-nuevo')) return;
   h.classList.add('lg-carga-js');
+  var C = @CONF@;
   var t0 = Date.now(), quieto = false, primera = true;
   try { quieto = matchMedia('(prefers-reduced-motion: reduce)').matches; } catch (e) {}
   // 🧘 y «Menos animaciones» de Tu cuenta, que nucleo.js pone recién al llegar: acá se lee del navegador
   try { if ((JSON.parse(localStorage.getItem('lg:ajustes') || 'null') || {}).calma) { quieto = true; h.classList.add('calma'); } } catch (e) {}
-  try { primera = !sessionStorage.getItem('lg:intro'); sessionStorage.setItem('lg:intro', '1'); } catch (e) {}
-  var MIN = quieto ? 0 : (primera ? 1900 : 0);
-  var segs = el.querySelectorAll('.lg-seg i'), tip = el.querySelector('.lg-tip');
+  // ⏳ la primera vez, 4 s; si volvió en los últimos 30 minutos, lo que tarde
+  try { primera = t0 - (+localStorage.getItem('lg:carga') || 0) > 18e5; localStorage.setItem('lg:carga', String(t0)); } catch (e) {}
+  var MIN = primera ? 4000 : 0;
+  // 🎲 el fondo: cada uno con la misma chance; en «La batalla», cada video con la suya
+  var n = C.f[Math.floor(Math.random() * C.f.length)];
+  var nom = n === 2 ? '2-' + C.b[Math.floor(Math.random() * C.b.length)] : String(n);
+  var fmt = innerWidth / Math.max(1, innerHeight) < 0.8 ? 'cel' : 'pc';
+  var d = new Date(), dia = d.getUTCFullYear() * 1e4 + (d.getUTCMonth() + 1) * 100 + d.getUTCDate();
+  var src = C.r2 + '/carga/' + C.t + '/' + nom + '-' + fmt + '.webp?d=' + dia;
+  var im = new Image();
+  im.onload = function () {
+    el.querySelector('.lg-img').style.backgroundImage = 'url("' + src + '")';
+    el.querySelector('.lg-t1').style.setProperty('--q', 'url("' + src + '")');
+    el.classList.add('con-foto');
+  };
+  im.src = src;
+  var barra = el.querySelector('.lg-barra i'), pct = el.querySelector('.lg-pct'), tip = el.querySelector('.lg-tip');
   var TIPS = ['Cargando el ranking', 'Preparando las llaves', 'Contando los puntos', 'Buscando tus tarjetas'];
-  var k = 0, p = 0, ya = false;
-  var tt = setInterval(function () { k = (k + 1) % TIPS.length; tip.innerHTML = '<span>' + TIPS[k] + '</span>'; }, 1300);
-  // la barra avanza sola hasta casi el final; el último tramo, cuando la app tiene los datos
+  var k = 0, p = 0, ya = false, pre = false;
+  var tt = setInterval(function () { k = (k + 1) % TIPS.length; tip.textContent = TIPS[k]; }, 1300);
+  // 📦 mientras tanto, las demás páginas: que después no haya esperas (no con ahorro de datos ni en 2G)
+  function precargar() {
+    try { var cx = navigator.connection; if (cx && (cx.saveData || /2g/.test(cx.effectiveType || ''))) return; } catch (e) {}
+    C.p.forEach(function (f) { var l = document.createElement('link'); l.rel = 'modulepreload'; l.href = '/inicio/' + f; document.head.appendChild(l); });
+  }
   var tic = setInterval(function () {
     if (h.classList.contains('sin-pagina')) { clearInterval(tic); clearInterval(tt); return; }
-    var listo = h.classList.contains('lg-listo');
-    p = listo ? Math.min(1, p + (primera ? 0.14 : 0.34)) : p + (0.86 - p) * 0.06;
-    for (var j = 0, n = Math.floor(p * 12 + 1e-6); j < 12; j++) segs[j].className = j < n ? 'on' : '';
-    if (listo && p >= 1 && !ya) {
+    var t = Date.now() - t0, listo = h.classList.contains('lg-listo');
+    if (listo && !pre) { pre = true; precargar(); }
+    // la barra va con lo que de verdad cargó, y no pasa del tiempo de la primera vez
+    var meta = listo ? 1 : 0.9 * (1 - Math.exp(-t / 1600));
+    if (MIN) meta = Math.min(meta, t / MIN);
+    p += (meta - p) * 0.25;
+    if (meta >= 1 && p > 0.995) p = 1;
+    barra.style.width = (p * 100).toFixed(1) + '%';
+    pct.textContent = Math.round(p * 100) + '%';
+    if (listo && p >= 1 && t >= MIN && !ya) {
       ya = true; clearInterval(tic); clearInterval(tt);
-      el.querySelector('.lg-seg').className = 'lg-seg lleno';
+      el.classList.add('lleno'); tip.textContent = 'Listo';
       setTimeout(function () {
         h.classList.add('lg-sale');
         setTimeout(function () { h.classList.add('lg-fuera'); }, quieto ? 300 : 1700);
-      }, Math.max(primera && !quieto ? 200 : 80, MIN - (Date.now() - t0)));
+      }, quieto ? 80 : 250);
     }
-  }, 70);
+  }, 60);
 })();
 </script>
-"""
+""".replace('@CONF@', c).replace('@TEMP@', temp).replace('@NUM@', temp.lstrip('T')))
 
 
 #: 🔑 LA LIGA VIVE EN `/freestyle-rap` (Dlx, 01/10/2026: «/freestyle-rap, put it like that, better»): Under Legends
@@ -309,33 +375,19 @@ SCRIPTS = """<script src="llave_vivo.js"></script>
 """
 
 
-def foto_carga():
-    """🎬 LA PANTALLA DE CARGA CON UN CUADRO DEL MONTAJE (12/11/2026, Dlx: «sí, sigue», a la idea de darle cara de juego
-    desde el primer segundo también a quien ya es de la Liga y no ve la bienvenida). Es el póster del video de fondo
-    (25 KB): un cuadro quieto, no el video, para no hacer esperar a la carga.
-
-    ⚠️ NO VA AL REPO: son caras de gente real, así que se pide a R2 como el video. Y la dirección no se escribe acá: la
-    carpeta y la versión salen de web/src/fondovideo.jsx (`VIDEO`, `VV`) y R2 de bot/subir_web.py (`R2`), así al
-    rearmar el video la pantalla de carga toma el póster nuevo con el mismo cambio de `VV`."""
-    fv = io.open(os.path.join(WEB, 'src', 'fondovideo.jsx'), encoding='utf-8').read()
-    sw = io.open(os.path.join(BASE, 'bot', 'subir_web.py'), encoding='utf-8').read()
-    video = re.search(r"export const VIDEO = '([^']+)'", fv)
-    vv = re.search(r"export const VV = '([^']*)'", fv)
-    r2 = re.search(r"^R2 = '([^']+)'", sw, re.M)
-    if not (video and vv and r2):
-        raise SystemExit('🔴 no encontré VIDEO/VV en fondovideo.jsx o R2 en subir_web.py: la pantalla de carga no sabe de dónde '
-                         'sacar el póster')
-    return '%s/bienvenida/%s/poster.jpg%s' % (r2.group(1), video.group(1), vv.group(1))
-
-
-#: 🎬 el cuadro del montaje DENTRO de la capa negra, enderezado: la capa va girada 30° y corrida 5vmax, así que la foto
-#: lleva la transformación inversa y queda derecha y a pantalla completa. Al salir, se va con la capa en el corte.
-#: Oscurecida y con viñeta (fina en el teléfono, como la bienvenida), para que el sello y el título se lean encima
+#: 🎬 EL FONDO, DENTRO DE LA CAPA NEGRA y enderezado: la capa va girada 30° y corrida 5vmax, así que la foto lleva la
+#: transformación inversa y queda derecha y a pantalla completa. Al salir, se va con la capa en el corte. La viñeta y el
+#: grano son los de la bienvenida. El zoom de entrada va con `scale` (no `transform`, que ya endereza)
 CSS_FOTO = """#lg-carga .lg-foto{display:none}
 html.lg-carga-js #lg-carga .lg-foto{display:block;position:absolute;left:50%;top:50%;width:100vw;height:100vh;margin:-50vh 0 0 -50vw;
-  transform:translateY(5vmax) rotate(-30deg);background:#030304 url(@FOTO@) center/cover no-repeat;filter:grayscale(1) contrast(1.15) brightness(.4);
-  box-shadow:inset 0 0 180px 70px #030304}
-@media (max-width:899.98px){html.lg-carga-js #lg-carga .lg-foto{box-shadow:inset 0 0 70px 12px #030304}}"""
+  transform:translateY(5vmax) rotate(-30deg);overflow:hidden;background:#030304}
+#lg-carga .lg-img{position:absolute;inset:0;background:#030304 center/cover no-repeat;opacity:0;scale:1.06;
+  transition:opacity .5s ease,scale 4.5s cubic-bezier(.2,.7,.2,1)}
+#lg-carga.con-foto .lg-img{opacity:1;scale:1}
+#lg-carga .lg-velo{position:absolute;inset:0;box-shadow:inset 0 0 200px 80px #030304;
+  background:linear-gradient(180deg,rgba(3,3,4,.6) 0,rgba(3,3,4,0) 30%,rgba(3,3,4,0) 72%,rgba(3,3,4,.85) 94%,#030304)}
+#lg-carga .lg-grano{position:absolute;left:-10%;top:-10%;width:120%;height:120%;opacity:.16;mix-blend-mode:overlay;animation:lg-grano .6s steps(5) infinite}
+@media (max-width:899.98px){#lg-carga .lg-velo{box-shadow:inset 0 0 70px 12px #030304}}"""
 
 
 def cabeza(html):
@@ -352,9 +404,9 @@ def pagina(html):
             '     (web/src/fuentes.css). La IP de cada visita dejó de ir a Google. Todo lo de abajo lo arma web/montar.py:\n'
             '     no se edita a mano -->\n'
             '<link rel="stylesheet" href="/inicio/inicio.css">\n'
-            '<style id="ini-css">\n' + CSS + '\n' + CSS_FOTO.replace('@FOTO@', foto_carga()) + '\n</style>\n'
+            '<style id="ini-css">\n' + CSS + '\n' + CSS_FOTO + '\n</style>\n'
             '<script>\n' + script() + '\n</script>\n</head>\n' +
-            HTML_CARGA +
+            html_carga() +
             '\n<!-- 🛠️ acá se monta la página (web/src/main.jsx) -->\n'
             '<div id="inicio-nuevo"></div>\n\n' +
             SIN_PAGINA + '\n' + SCRIPTS + '</body>\n</html>\n')
