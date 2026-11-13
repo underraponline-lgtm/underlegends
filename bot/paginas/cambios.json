@@ -11,6 +11,16 @@
  ],
  "cambios": [
     {
+        "version": "4.94",
+        "dia": "2026-11-13",
+        "cuando": "2026-11-13T02:55:00-05:00",
+        "titulo": "Tu nivel arriba y el buscador nuevo",
+        "items": [
+            "Al lado de tu cara, **tu nivel** y cuánto te falta para el siguiente.",
+            "La lupa abre **una barra** debajo de la cabecera, y ahora busca también páginas y eventos."
+        ]
+    },
+    {
         "version": "4.93",
         "dia": "2026-11-13",
         "cuando": "2026-11-13T00:50:00-05:00",
