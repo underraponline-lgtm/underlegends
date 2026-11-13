@@ -556,6 +556,11 @@
    "Kochi 🇨🇱",
    "Kochi2011",
    "Dlx, 12/11/2026 («Sí, pásalos»): dos personas, dos cuentas; el de la Lista no es miembro de DDS y el de DDS es el que se anota ahí"
+  ],
+  [
+   "Marto 🇨🇱",
+   "Marto AR",
+   "Dlx, 12/11/2026: «Theres 2 lucks... Then 2 martos I think but Kourier is the same person»: dos personas, dos cuentas"
   ]
  ],
  "por_servidor": {
@@ -564,14 +569,16 @@
    "Number": "Number VE",
    "AGUSTIN": "EIDP",
    "19": "19 FLEIVA WACK",
-   "Teo": "Teito"
+   "Teo": "Teito",
+   "Luck": "Lucky"
   },
   "FFA": {
    "Yo mc": "Cronox",
    "223": "Six",
    "233": "Six",
    "QZ": "QUEEN",
-   "Teo": "Teito"
+   "Teo": "Teito",
+   "Luck": "Lucky"
   },
   "FVS": {
    "Agustin": "AGUSTÍN51K",
@@ -595,7 +602,8 @@
    "Carlos": "Carlosss",
    "Number": "Number VE",
    "Damian": "Dominick",
-   "Teo": "Teito"
+   "Teo": "Teito",
+   "Luck": "Lucky"
   },
   "CH": {
    "akvmolt": "Molt",
@@ -616,7 +624,11 @@
   "FDS": {
    "Sosa": ".SosaATR",
    "Pepe Mujica": "LRS",
-   "Teo": "Teito"
+   "Teo": "Teito",
+   "Luck": "Lucky"
+  },
+  "FRZ": {
+   "Luck": "Lucky"
   }
  }
 }
