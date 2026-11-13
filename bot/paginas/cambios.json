@@ -13,7 +13,7 @@
     {
         "version": "4.98",
         "dia": "2026-11-13",
-        "cuando": "2026-11-13T05:00:00-05:00",
+        "cuando": "2026-11-13T02:03:00-05:00",
         "titulo": "El tier de cada socio",
         "items": [
             "En **Socios**, cada servidor dice su **tier** y si sus eventos suman a la Temporada y al Competitivo.",
@@ -23,7 +23,7 @@
     {
         "version": "4.97",
         "dia": "2026-11-13",
-        "cuando": "2026-11-13T04:40:00-05:00",
+        "cuando": "2026-11-13T01:53:00-05:00",
         "titulo": "Cada ranking, con sus números",
         "items": [
             "Al abrir a alguien en el **Competitivo** ves su Score, su rango y sus cinco fortalezas, no los números de la Temporada.",
@@ -33,7 +33,7 @@
     {
         "version": "4.96",
         "dia": "2026-11-13",
-        "cuando": "2026-11-13T03:40:00-05:00",
+        "cuando": "2026-11-13T01:27:00-05:00",
         "titulo": "La cabecera, más ordenada",
         "items": [
             "Al lado de tu cara dice **Nivel** con su rayo de XP, y en el Inicio ya no repite la racha.",
@@ -54,7 +54,7 @@
     {
         "version": "4.94",
         "dia": "2026-11-13",
-        "cuando": "2026-11-13T02:55:00-05:00",
+        "cuando": "2026-11-13T00:54:00-05:00",
         "titulo": "Tu nivel arriba y el buscador nuevo",
         "items": [
             "Al lado de tu cara, **tu nivel** y cuánto te falta para el siguiente.",
