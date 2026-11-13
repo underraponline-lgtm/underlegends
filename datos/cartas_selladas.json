@@ -344,10 +344,10 @@
    "servidor": "0e8f51b25221:2415c901692f:055f77"
   },
   "DLX": {
-   "competitivo": "e1e4c50ff023:624f5e322311",
-   "pais": "4152b358a586:733ce66bf5fa",
-   "servidor": "70689e7bb883:2415c901692f:0bce64",
-   "temporada": "86c7536d0143:7a510334494e"
+   "competitivo": "ba2c2844ec11:624f5e322311",
+   "pais": "af67c075ed64:733ce66bf5fa",
+   "servidor": "8c470d81a0d7:2415c901692f:0bce64",
+   "temporada": "f94f397d5277:7a510334494e"
   },
   "DNK": {
    "competitivo": "ac0979a73760:624f5e322311",
@@ -2114,5 +2114,5 @@
    "servidor": "7f8885a35a6d:2415c901692f:93a344"
   }
  },
- "cuando": "2026-11-13T08:09:37+00:00"
+ "cuando": "2026-11-13T16:41:51+00:00"
 }
