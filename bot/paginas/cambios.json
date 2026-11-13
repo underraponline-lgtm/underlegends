@@ -11,6 +11,15 @@
  ],
  "cambios": [
     {
+        "version": "5.15",
+        "dia": "2026-11-13",
+        "cuando": "2026-11-13T04:16:00-05:00",
+        "titulo": "Tu crew, al día",
+        "items": [
+            "Si **borras tu crew** o **sales de ella**, deja de aparecer como tuya **al instante**, en el Inicio, el ranking y tu perfil. Antes tardaba hasta media hora."
+        ]
+    },
+    {
         "version": "5.14",
         "dia": "2026-11-13",
         "cuando": "2026-11-13T04:10:00-05:00",
