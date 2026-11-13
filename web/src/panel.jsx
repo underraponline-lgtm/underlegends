@@ -1151,8 +1151,8 @@ export function PnEventos({ liga, ancho = false }) {
 // ── 🛡️ CREW: la tuya, o súmate (en el lugar del Ranking, que ya está arriba) ─────────────────────────────────────
 export function PnCrew({ liga }) {
   const yo = liga.yo;
-  // 🗑️ la lista en vivo, si tienes crew: borrarla o salir se ve al instante (`liga.crewDe()`)
-  useCrews(yo && yo.crew ? 'todas' : 'nada');
+  // 🗑️ la lista en vivo, si tienes perfil: borrar tu crew, salir o entrar a una se ve al instante (`liga.crewDe()`)
+  useCrews(yo ? 'todas' : 'nada');
   const mia = yo ? liga.crewDe(yo) : null;
   const ct = liga.d.crews_tiers || {};
   const tierDe = (c) => { const t = ((ct.crews || {})[c.clave || c.crew] || [])[0]; return t != null ? [(ct.nombres || [])[t], (ct.colores || [])[t]] : null; };

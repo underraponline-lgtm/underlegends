@@ -670,7 +670,22 @@ export class Liga {
   buscado(k) { return ((this.d.mw || {}).b || []).find((b) => b.k === k) || null; }
   // la crew de alguien (la de su fila), con su gente
   crewDe(f) {
-    if (!f || !f.crew) return null;
+    if (!f) return null;
+    // 🆕 ENTRAR A UNA CREW, AL INSTANTE (13/11/2026, Dlx: «Sí, claro» a las cuatro cosas al instante): si la lista en vivo
+    // dice que esta persona está en una crew, ésa es la suya aunque la fila del ciclo todavía no lo sepa. Con la fila del
+    // payload si la crew ya está ahí (sus puntos y su tier), con el nombre y el logo de ahora; si es nueva, en cero
+    const V0 = typeof window !== 'undefined' ? window.CREWS_VIVAS : null;
+    if (f.k && V0 && Array.isArray(V0.crews)) {
+      const viva = V0.crews.find((y) => Array.isArray(y.gente) && y.gente.some((g) => g && g[0] === f.k));
+      if (viva) {
+        const n0 = limpio(viva.nombre).toLowerCase();
+        const fila = (this.d.crews || []).find((y) => y.clave === viva.id || limpio(y.crew).toLowerCase() === n0);
+        if (fila) return Object.assign({}, fila, { crew: viva.nombre, logo: viva.logo || fila.logo });
+        return { crew: viva.nombre, clave: viva.id, logo: viva.logo || '', n: viva.gente.length, pts: 0, rk: 0, tier: 0, mejor: '',
+          gente: viva.gente.map((g) => (this.T[g[0]] ? this.T[g[0]].n : '')).filter(Boolean) };
+      }
+    }
+    if (!f.crew) return null;
     // 🔴 POR LA CLAVE PRIMERO (19/10/2026): la fila trae la CLAVE de la crew («KS») y `crew` es el nombre que se ve
     // («Knowledge Sombrío»): comparando con el nombre, los seis de KS de la T1 no tenían crew en su perfil, ni la
     // historia «TU CREW», ni el link en el visor

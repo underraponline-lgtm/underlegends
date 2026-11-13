@@ -2606,6 +2606,11 @@ async function fotoAR2(env, quien, id, hash, arranco) {
   } catch (e) {
     return { ok: false, paso: 'r2', error: String(e).slice(0, 60) };
   }
+  // 📸 y tus cartas se redibujan ya con ella (13/11/2026): el objeto pide el redibujo como el Inventario. Nunca frena
+  try {
+    await env.AVISOS.get(env.AVISOS.idFromName('liga')).fetch('https://avisos/redibujo-foto', { method: 'POST',
+      body: JSON.stringify({ quien: String(id) }), headers: { 'content-type': 'application/json' } });
+  } catch (e) { /* queda para el ciclo, como antes */ }
   if (!arranco) return { ok: true, libre: true };
   try {
     // ⚠️ QUIEN YA TIENE SU USO ANOTADO NO SE VUELVE A ANOTAR: es el del pase de
@@ -2671,9 +2676,9 @@ async function avisoFoto(env, i, quien, g) {
   if (!res.ok) return;
   const vuelta = proximaVuelta(Date.now());
   // `<t:…:t>`: Discord la muestra en la hora de quien la lee
-  return seguir(i, '📸 Tu tarjeta no tenía tu foto: **ya la guardé**. Sale en la ' +
-                   'próxima vuelta del bot' +
-                   (vuelta ? ', a las <t:' + Math.floor(vuelta.getTime() / 1000) + ':t>' : '') + '.');
+  // (con `vuelta` por si el redibujo no sale: el ciclo la toma igual)
+  return seguir(i, '📸 Tu tarjeta no tenía tu foto: **ya la guardé**. Se vuelve a dibujar en unos minutos' +
+                   (vuelta ? ' (a más tardar a las <t:' + Math.floor(vuelta.getTime() / 1000) + ':t>)' : '') + '.');
 }
 
 // 🔑 HASTA CUÁNDO LA FOTO ES LIBRE: el instante que `bot/desplegar.py` saca

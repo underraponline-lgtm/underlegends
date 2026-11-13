@@ -11,6 +11,18 @@
  ],
  "cambios": [
     {
+        "version": "5.19",
+        "dia": "2026-11-13",
+        "cuando": "2026-11-13T04:31:00-05:00",
+        "titulo": "Más cosas al instante",
+        "items": [
+            "Cuando **cambias tu foto** (la de tarjeta, ocultarla, volver a la de Discord o con `/foto`), tus tarjetas se vuelven a dibujar **en unos minutos**, también de madrugada. Antes esperaban al ciclo.",
+            "Si **entras a una crew**, ya aparece como tuya en el Inicio, el ranking y tu perfil, sin esperar media hora.",
+            "Si **le cambias el nombre o el escudo a tu crew**, se ve al instante en el ranking de Crews.",
+            "La tarjeta que **desbloqueas con el Pase** sale en unos minutos (de 3 a 11 AM, hora del este, sale a las 11)."
+        ]
+    },
+    {
         "version": "5.18",
         "dia": "2026-11-13",
         "cuando": "2026-11-13T04:23:00-05:00",

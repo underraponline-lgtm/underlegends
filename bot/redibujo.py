@@ -90,6 +90,16 @@ def correr(quienes, simulacro=False):
     navegador.hace_falta()
     from pipeline import bajar_las_caras
     bajar_las_caras()
+    # 🙈 quién ocultó su foto, fresco de KV: sin esto un runner limpio no tiene la copia y la dibujaba CON la cara (también
+    # al cambiar un TAG). Es lo que hace el ciclo antes de dibujar (`fotos.ocultas()`)
+    try:
+        import requests
+        import fotos as F
+        s = requests.Session()
+        s.headers['Authorization'] = 'Bearer ' + F.env('CLOUDFLARE_API_TOKEN')
+        print('   🙈 %d con la foto oculta' % len(F.ocultas(s).get('ids') or []))
+    except Exception as e:                               # noqa: BLE001
+        print('   ⚠️ sin la lista de fotos ocultas (%s)' % str(e)[:70])
     # lo elegido, fresco del objeto (el TAG que acaba de cambiar)
     subprocess.run([sys.executable, 'bot/tags_inventario.py', '--aplicar'], cwd=BASE, capture_output=True)
     pngs = dibujar(quienes)

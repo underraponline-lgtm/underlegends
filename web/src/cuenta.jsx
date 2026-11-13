@@ -474,9 +474,9 @@ export function FotoCartaCaja({ dc }) {
       setSt(j);
       if (cuerpo.img) {
         setArchivo(null); setVista(''); setSel(null);
-        setMsg(j.filtro === 'ok' ? 'Listo: sale en ' + nombresCartas(cuerpo.cartas) + ' en la próxima vuelta del ciclo (cada media hora; de 3 a 11 AM, hora del este, no corre).'
+        setMsg(j.filtro === 'ok' ? 'Listo: ' + nombresCartas(cuerpo.cartas) + ' se vuelven a dibujar con ella en unos minutos.'
           : 'El filtro automático no estuvo seguro: la mira la Liga y, cuando la apruebe, sale en tus tarjetas.');
-      } else setMsg('Listo: esa tarjeta vuelve a tu foto de Discord en la próxima vuelta del ciclo.');
+      } else setMsg('Listo: esa tarjeta vuelve a tu foto de Discord en unos minutos.');
     } catch (er) { setMsg(er.message); }
     setOcup(false);
   };
@@ -529,7 +529,7 @@ function FotoCaja({ liga, dc }) {
   } else if (!dc.clave) {
     cuerpo = <a className="btn verde chico" href="#/cuenta/verificar">Verificarme</a>;
   } else if (F && F.hecho) {
-    cuerpo = <p className="cu-d"><b>Listo</b>: ésa es tu foto de la {T}. Tus tarjetas se vuelven a dibujar en la próxima vuelta del ciclo (cada media hora; de 3 a 11 AM, hora del este, no corre).{F.libre ? ' ' + libre(F) : ''}</p>;
+    cuerpo = <p className="cu-d"><b>Listo</b>: ésa es tu foto de la {T}. Tus tarjetas se vuelven a dibujar con ella en unos minutos.{F.libre ? ' ' + libre(F) : ''}</p>;
   } else if (F && F.error) {
     const m = F.error === 'sin_foto' ? 'No tienes foto puesta en Discord: tu tarjeta va con la inicial, que con el color de tu rango queda bien. Si te pones una, vuelve.'
       : F.error === 'sin_perfil' ? 'Primero necesitas tu tarjeta: verifícate en la página.'
@@ -786,7 +786,7 @@ function ServidorCaja({ liga, dc, paso }) {
 function OcultarFoto({ dc }) {
   const est = useCuentaEst();
   useEffect(() => { if (dc && W.pedirMiFoto) W.pedirMiFoto(); }, [dc && dc.id]);
-  const d = 'Si la ocultas, la página y tus tarjetas (también las de Discord) te muestran con tu inicial. Se aplica en la próxima vuelta del ciclo: cada media hora, salvo de 3 a 11 AM (hora del este).';
+  const d = 'Si la ocultas, la página y tus tarjetas (también las de Discord) te muestran con tu inicial. Se aplica en unos minutos.';
   if (!dc) return <Caja t="Tu foto" d={d + ' Entra con Discord para usarlo.'}><BotonEntrar /></Caja>;
   const M = est.MIFOTO || {};
   const e = est.MIFOTO_EST || {};
@@ -794,7 +794,7 @@ function OcultarFoto({ dc }) {
     : e.error ? e.error
     : M.error ? ((W.errorCuenta && W.errorCuenta(M.error)) || 'No pude leerlo. Prueba en un rato.')
     : e.va ? 'Guardando…'
-    : M.oculta ? (e.ok ? '✓ Oculta. ' : '') + 'Tus tarjetas se vuelven a dibujar con tu inicial en la próxima vuelta.'
+    : M.oculta ? (e.ok ? '✓ Oculta. ' : '') + 'Tus tarjetas se vuelven a dibujar con tu inicial en unos minutos.'
     : (e.ok ? '✓ Visible. ' : '') + 'Tu foto se ve en la página y en tus tarjetas.';
   return (
     <Caja t="Tu foto" d={d}>

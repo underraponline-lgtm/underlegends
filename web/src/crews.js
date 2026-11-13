@@ -71,7 +71,10 @@ export function conCrewsVivas(filas) {
   const n = (x) => String(x || '').toLowerCase();
   const existen = new Set(vivas.flatMap((c) => [n(c.id), n(c.nombre)]));
   const ya = new Set(filas.flatMap((f) => [n(f.clave), n(f.crew)]));
-  const quedan = filas.filter((f) => existen.has(n(f.clave)) || existen.has(n(f.crew)));
+  // ✏️ y con el nombre y el logo de ahora (13/11/2026): renombrar la crew se ve al instante, no con el ciclo
+  const vivaDe = (f) => vivas.find((c) => n(c.id) === n(f.clave) || n(c.nombre) === n(f.crew) || n(c.id) === n(f.crew));
+  const quedan = filas.filter((f) => existen.has(n(f.clave)) || existen.has(n(f.crew)))
+    .map((f) => { const v = vivaDe(f); return v ? Object.assign({}, f, { crew: v.nombre, logo: v.logo || f.logo }) : f; });
   const nuevas = vivas.filter((c) => !ya.has(n(c.id)) && !ya.has(n(c.nombre))).map((c) => ({
     crew: c.nombre, clave: c.id, n: (c.gente || []).length, pts: 0, mejor: '', gente: [], rk: 0, tier: 0, logo: c.logo || '',
   }));

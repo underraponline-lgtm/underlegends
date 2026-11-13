@@ -8387,6 +8387,7 @@ export class Avisos {
       if (ruta === '/mi-fondo') return json(this.fondoDe(String(d.quien || '')));
       if (ruta === '/dueno-fondo') return json(await this.duenoFondo(d));
       if (ruta === '/foto-carta') return json(await this.fotoCarta(d));
+      if (ruta === '/redibujo-foto') return json({ ok: true, redibujo: await this.redibujarFoto(d.quien) });
       if (ruta === '/mi-foto-carta') return json(this.fotoCartaDe(String(d.quien || '')));
       if (ruta === '/dueno-foto-carta') return json(await this.duenoFotoCarta(d));
       if (ruta === '/dueno-rol') return json(this.duenoRol(d));
@@ -8741,6 +8742,12 @@ export class Avisos {
     // Guardar en el Inventario ya lo larga en el momento (`/tag-elige`, `/marco-elige`); esto recoge lo que quedó
     // esperando el freno o un trabajo que estaba corriendo
     try { await this.redibujos(ahora); } catch (e) { this.guardar('redibujos', { t: ahora, error: String(e).slice(0, 160) }); }
+    // 🃏 el ciclo que pidió alguien (su primera tarjeta por el Pase): sólo despierto, con el tope de `cicloAMano()`
+    const cp = this.leer('ciclo_pedir');
+    if (cp && cp.t && !(d && d.dormido)) {
+      const v = await this.cicloAMano(ahora, cp.por || 'pase');
+      if (v.ok || v.error === 'espera') this.guardar('ciclo_pedir', null);
+    }
     if (d && d.dormido) {
       this.guardar('vigia', { t: ahora, dormido: true, canales: previo.canales, limpio: previo.limpio });
       return { ok: true, dormido: true };
@@ -12705,6 +12712,7 @@ export class Avisos {
         // ⚠️ `t` se queda: la semana sigue contando desde que se puso
         this.sql.exec("UPDATE fotos_carta SET estado = '', pend = '' WHERE quien = ? AND carta = ?", quien, carta);
       }
+      await this.redibujarFoto(quien);
       return this.fotoCartaDe(quien);
     }
     if (!d.img) return { error: 'faltan datos' };
@@ -12743,6 +12751,7 @@ export class Avisos {
         if (filas[carta]) await borrarPend(filas[carta].pend);
         fila(carta, 'ok', '', ahora);
       }
+      await this.redibujarFoto(quien);
       return Object.assign(this.fotoCartaDe(quien), { filtro: 'ok' });
     }
     // 🤔 dudosa: queda afuera de la carpeta de las caras (si no, el espejo del ciclo la dibujaría) hasta que se apruebe,
@@ -12775,8 +12784,9 @@ export class Avisos {
         this.sql.exec("UPDATE fotos_carta SET estado = 'ok', pend = '', motivo = '' WHERE quien = ? AND carta = ?", quien, r.carta);
       }
       try { await this.env.CARTAS.delete(kp); } catch (e) { /* queda huérfano */ }
-      this.aBandeja(quien, 'foto-carta', 'fondo', '📸 Tu foto de tarjeta, aprobada', 'Sale en tus tarjetas en la próxima vuelta del ciclo.',
+      this.aBandeja(quien, 'foto-carta', 'fondo', '📸 Tu foto de tarjeta, aprobada', 'Tus tarjetas se vuelven a dibujar con ella en unos minutos.',
         HUB + '/cuenta/perfil', '', ahora);
+      await this.redibujarFoto(quien);
     } else if (pend.length) {
       try { await this.env.CARTAS.delete(kp); } catch (e) { /* queda huérfano */ }
       // ⚠️ `t` vuelve a 0: lo que no se aprobó no gasta la semana
@@ -12796,6 +12806,7 @@ export class Avisos {
       }
       this.aBandeja(quien, 'foto-carta', 'fondo', '📸 Tu foto de tarjeta se quitó', (d.motivo ? d.motivo + '. ' : '') +
         'Tus tarjetas vuelven a la foto de Discord.', HUB + '/cuenta/perfil', '', ahora);
+      await this.redibujarFoto(quien);
     } else {
       return { error: 'no hay nada para revisar' };
     }
@@ -13217,7 +13228,10 @@ export class Avisos {
         if (!this.cuentaCambio(quien, 'foto', 10)) return json({ error: 'espera' }, 429);
         if (d.ocultar) this.sql.exec('INSERT OR REPLACE INTO foto_oculta (quien, t) VALUES (?, ?)', quien, Date.now());
         else this.sql.exec('DELETE FROM foto_oculta WHERE quien = ?', quien);
-        await this.espejarOcultas(false);
+        // 📸 al instante (13/11/2026): la lista va a KV ya —el redibujo la lee de ahí— y se piden tus cartas. Las
+        // escrituras quedan acotadas por el tope de arriba (10 cambios por persona y día)
+        await this.espejarOcultas(true);
+        await this.redibujarFoto(quien);
       }
     }
     const oculta = !!this.sql.exec('SELECT 1 FROM foto_oculta WHERE quien = ?', quien).toArray()[0];
@@ -16262,7 +16276,10 @@ export class Avisos {
       const tienda = nuevos.reduce((a, p) => a + (p[1] || 0), 0);
       const extra = nuevos.map((p) => (p[2] === 'titulo' ? ' Ganaste el título «' + p[3] + '».'
         : p[2] === 'insignia' ? ' Ganaste la insignia ' + p[3] + '.' : p[2] === 'color' ? ' Tu nombre ya va en dorado.'
-          : p[2] === 'tarjeta' ? ' Desbloqueaste tu tarjeta de ' + p[3] + ': sale en la próxima vuelta del ciclo.' : '')).join('');
+          : p[2] === 'tarjeta' ? ' Desbloqueaste tu tarjeta de ' + p[3] + ': sale en unos minutos (de 3 a 11 AM, hora del este, a las 11).' : '')).join('');
+      // 🃏 TU PRIMERA TARJETA, AL INSTANTE (13/11/2026): la dibuja el ciclo, que es quien decide qué cartas te tocan. Se
+      // anota y el vigía lo larga en su próxima vuelta (`ciclo_pedir`): de madrugada duerme, así que espera a las 11
+      if (nuevos.some((p) => p[2] === 'tarjeta')) this.guardar('ciclo_pedir', { t: ahora, por: 'pase' });
       const salon = nivel >= cfg.niveles ? ' Completaste el Pase: ya estás en el Salón del Pase.' : '';
       this.aBandeja(quien, 'pase:' + cfg.temp, 'pase', '🎟️ Nivel ' + nivel + ' del Pase de rapero',
         (tienda ? '+' + tienda + ' Puntos de Tienda.' : '') + extra + salon, url, '', ahora);
@@ -16991,6 +17008,17 @@ export class Avisos {
     this.sql.exec('INSERT INTO redibujo (k, n, pedido) VALUES (?, ?, ?) ON CONFLICT(k) DO UPDATE SET n = excluded.n, ' +
       'pedido = excluded.pedido', k, n, ahora);
     return { en: Math.max(0, ((r && r.hecho) || 0) + REDIBUJO_ESPERA - ahora) };
+  }
+
+  /**
+   * 📸 TU FOTO, AL INSTANTE (13/11/2026, Dlx: a «¿qué otras cosas necesitan ser al instante?», «Sí, claro»): ocultarla o
+   * mostrarla, la foto de tarjeta (aprobada, quitada o la que el filtro deja pasar sola) y `/foto` piden el redibujo de
+   * tus cartas como el Inventario: en el momento, también de madrugada, con el mismo freno. `quien` es el Discord ID
+   */
+  async redibujarFoto(quien) {
+    const v = { redibujo: this.pedirRedibujo(String(quien || '')) };
+    try { await this.redibujoYa(v); } catch (e) { /* el vigía lo recoge en el minuto */ }
+    return v.redibujo;
   }
 
   /** ⚡ Guardar en el Inventario larga el redibujo EN EL MOMENTO, sin esperar la vuelta del vigía (Dlx, 26/10/2026: «al o
