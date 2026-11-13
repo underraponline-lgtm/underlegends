@@ -297,6 +297,77 @@ function Ascensos({ liga }) {
   );
 }
 
+// 📊 LOS NÚMEROS DE CADA RANKING, AL ABRIR UNA FILA (Dlx, 13/11/2026: «en el competitivo, cuando uno presiona un rapero
+// aparece las estadísticas, pero el ranking de temporada, no del respectivo ranking»). `det` son los números de arriba,
+// `vs` las categorías de «TÚ CONTRA» —cada una [título, el tuyo, el de él, cómo se escribe]— y `sinSemanas` saca las
+// barritas de puntos por semana, que son de la Temporada. Un ranking sin los suyos usa los de la Temporada. `c` trae la
+// liga, la fila de este ranking (`fila`: en Duelos y Most Wanted no es la de la tabla), la semana (`sem`), el perfil
+// (`P`) y las cinco dimensiones del Score (`D`, `dims`)
+const wrDe = (f) => Math.round(pct(f.wr) || 0);
+const duDe = (f) => (f && Array.isArray(f.du) ? f.du : [0, 0]);
+const pctDe = (g, j) => (j ? Math.round((100 * g) / j) : 0);
+const rdDe = (c, f) => ((c.P(f.k) || {}).rd || [0, 0]);
+const porEv = (f) => (f.ev ? Math.round((f.pts || 0) / f.ev) : 0);
+const ultDe = (f) => { const u = f.ult || []; return u[0] ? ['Último evento', resultado(u[1], true)] : null; };
+const mwDe = (c, k) => ((c.liga.d.mw && c.liga.d.mw.caz) || []).find((m) => m.k === k) || {};
+const SEMANA = ['Esta semana', 0, 0, (v) => (v ? '+' + num(v) : '0')];
+const NUMEROS = {
+  temporada: {
+    det: (t) => [['OVR', t.ovr || '—'], ['Puntos', num(t.pts)], ['Eventos', t.ev || 0], ['Podios', t.pod || 0], t.wr ? ['Win%', wrDe(t) + '%'] : null],
+    vs: (a, b, c) => [['OVR', a.ovr || 0, b.ovr || 0, String], ['Puntos', a.pts || 0, b.pts || 0, num], [SEMANA[0], c.sem(a), c.sem(b), SEMANA[3]],
+      ['Eventos', a.ev || 0, b.ev || 0, String], ['Win%', wrDe(a), wrDe(b), (v) => v + '%'], ['Racha', (a.rch || [0])[0], (b.rch || [0])[0], String]],
+  },
+  // el Score, la letra y lo que mide: «TÚ CONTRA» compara las cinco dimensiones, y sin él van sus fortalezas (`Dims`)
+  competitivo: {
+    sinSemanas: 1,
+    det: (t, c) => [['Score', t.sc ? coma(t.sc) : '—'],
+      ['Rango', t.rg ? <span className="rg rk-rg" style={{ background: c.liga.colorRg(t.rg) }}>{t.rg}</span> : '—'],
+      ['Eventos', t.ev || 0], t.wr ? ['Win%', wrDe(t) + '%'] : null, duDe(t)[1] ? ['Duelos', duDe(t)[0] + ' de ' + duDe(t)[1]] : null],
+    vs: (a, b, c) => {
+      const sc = ['Score', a.sc || 0, b.sc || 0, (v) => (v ? coma(v) : '—')];
+      const da = c.dims(a);
+      const db = c.dims(b);
+      if (da && db) return [sc, ...c.D.map((d, i) => [d[1], da[i] || 0, db[i] || 0, String])];
+      return [sc, ['Eventos', a.ev || 0, b.ev || 0, String], ['Win%', wrDe(a), wrDe(b), (v) => v + '%'], ['Duelos', duDe(a)[0], duDe(b)[0], String]];
+    },
+  },
+  duelos: {
+    sinSemanas: 1,
+    det: (t, c) => {
+      const [g, j] = c.fila.t != null ? [c.fila.g || 0, c.fila.t || 0] : duDe(t);
+      const rd = rdDe(c, t);
+      return [['Ganados', g], ['Jugados', j], j ? ['Ganó el', pctDe(g, j) + '%'] : null, rd[1] ? ['Racha', rd[0]] : null, rd[1] ? ['Mejor racha', rd[1]] : null];
+    },
+    vs: (a, b, c) => [['Ganados', duDe(a)[0], duDe(b)[0], String], ['Jugados', duDe(a)[1], duDe(b)[1], String],
+      ['% ganados', pctDe(...duDe(a)), pctDe(...duDe(b)), (v) => v + '%'], ['Racha', rdDe(c, a)[0], rdDe(c, b)[0], String],
+      ['Mejor racha', rdDe(c, a)[1], rdDe(c, b)[1], String]],
+  },
+  podios: {
+    det: (t) => [['1.º', t.oro || 0], ['2.º', t.seg || 0], ['3.º', t.ter || 0], ['Semis', t.sem || 0], ['Eventos', t.ev || 0]],
+    vs: (a, b) => [['Primeros', a.oro || 0, b.oro || 0, String], ['Segundos', a.seg || 0, b.seg || 0, String], ['Terceros', a.ter || 0, b.ter || 0, String],
+      ['Semis', a.sem || 0, b.sem || 0, String], ['Podios', a.pod || 0, b.pod || 0, String], ['Eventos', a.ev || 0, b.ev || 0, String]],
+  },
+  rachas: {
+    det: (t) => [['Ahora', (t.rch || [0])[0]], ['La más larga', (t.rch || [0, 0])[1]], ['Semis', t.sem || 0], ['Eventos', t.ev || 0], ultDe(t)],
+    vs: (a, b) => [['Ahora', (a.rch || [0])[0], (b.rch || [0])[0], String], ['La más larga', (a.rch || [0, 0])[1], (b.rch || [0, 0])[1], String],
+      ['Semis', a.sem || 0, b.sem || 0, String], ['Eventos', a.ev || 0, b.ev || 0, String]],
+  },
+  eventos: {
+    det: (t) => [['Eventos', t.ev || 0], ['Puntos', num(t.pts)], ['Por evento', num(porEv(t))], ['Podios', t.pod || 0], ultDe(t)],
+    vs: (a, b, c) => [['Eventos', a.ev || 0, b.ev || 0, String], ['Puntos', a.pts || 0, b.pts || 0, num], [SEMANA[0], c.sem(a), c.sem(b), SEMANA[3]],
+      ['Por evento', porEv(a), porEv(b), num], ['Podios', a.pod || 0, b.pod || 0, String]],
+  },
+  // ⚠️ lo cobrado vive en la fila de Most Wanted (`mw.caz`), no en la de la tabla: ahí `pts` son los de la Temporada
+  mw: {
+    det: (t, c) => [['Cobró', num(c.fila.pts)], ['Cazó', c.fila.caz || 0], ['Cazado', c.fila.czd || 0], ['Sobrevivió', c.fila.sob || 0]],
+    vs: (a, b, c) => {
+      const ma = mwDe(c, a.k);
+      const mb = mwDe(c, b.k);
+      return [['Cobró', ma.pts || 0, mb.pts || 0, num], ['Cazó', ma.caz || 0, mb.caz || 0, String], ['Sobrevivió', ma.sob || 0, mb.sob || 0, String]];
+    },
+  },
+};
+
 const SUBS = {
   temporada: {
     et: 'Temporada', filas: (L) => L.d.tabla || [], orden: 'pos',
@@ -395,6 +466,7 @@ const SUBS = {
     baj: <>Una tabla por semana, de a 30: juegas un evento y entras. Los <b>primeros</b> de cada grupo suben de división y ganan <b>Puntos de Tienda</b>; los últimos bajan.</>,
   },
 };
+for (const id of Object.keys(NUMEROS)) SUBS[id].nums = NUMEROS[id];
 // 📈 DESDE EL 02/11/2026 LAS DIVISIONES SON EL RANKING ELO (Dlx, 26/10/2026: «divisiones ahora serían Ranking ELO»): el
 // ciclo lo avisa con `div.m === 'elo'` y acá cambian el nombre y la explicación. La ruta sigue siendo
 // `#/ranking/divisiones` —es la que circula— y `#/ranking/elo` lleva ahí
@@ -611,11 +683,7 @@ function ListaCel({ x, cfg, vis, abierta, setAbierta, miFila, corteK, directoK, 
 
 // ── ⚔️ TÚ CONTRA ÉSE, POR CATEGORÍAS (a «Us vs Them» de 21st; la maqueta C): al abrir una fila, seis categorías con una
 // barra por lado y quién gana cada una. Sólo con cuenta y sobre otra persona ─────────────────────────────────────────
-function Versus({ x, a, b }) {
-  const sem = (f) => (x.sem && x.sem.g && x.sem.g[f.k] ? x.sem.g[f.k][x.sem.g[f.k].length - 1] || 0 : 0);
-  const wr = (f) => Math.round(pct(f.wr) || 0);
-  const cats = [['OVR', a.ovr || 0, b.ovr || 0, (v) => String(v)], ['Puntos', a.pts || 0, b.pts || 0, num], ['Esta semana', sem(a), sem(b), (v) => (v ? '+' + num(v) : '0')],
-    ['Eventos', a.ev || 0, b.ev || 0, String], ['Win%', wr(a), wr(b), (v) => v + '%'], ['Racha', (a.rch || [0])[0], (b.rch || [0])[0], String]];
+function Versus({ x, a, b, cats }) {
   const gana = cats.filter(([, v1, v2]) => v1 > v2).length;
   const peor = cats.filter(([, v1, v2]) => v2 > v1).sort((p, q) => (q[2] - q[1]) / (q[2] || 1) - (p[2] - p[1]) / (p[2] || 1))[0];
   return (
@@ -634,6 +702,25 @@ function Versus({ x, a, b }) {
         );
       })}
       <p className="rk-det-c">Ganas {gana} de {cats.length} categorías.{peor ? ' Lo que más te separa: ' + peor[0].toLowerCase() + '.' : ''}</p>
+    </div>
+  );
+}
+
+// 💪 SUS FORTALEZAS EN EL COMPETITIVO: las cinco dimensiones del Score, cuando no hay «TÚ CONTRA» que ya las compare
+// (sin cuenta, o en tu propia fila). La barra va del color de su rango, que sale del payload
+function Dims({ D, val, color }) {
+  return (
+    <div className="rk-dims-c">
+      <span className="rk-det-t">SUS FORTALEZAS</span>
+      <ul className="rk-dims">
+        {D.map((d, i) => (
+          <li key={d[1]} title={d[2]}>
+            <span>{d[0]} {d[1]}</span>
+            <i><u style={{ width: Math.max(2, Math.min(100, val[i] || 0)) + '%', background: color || undefined }} /></i>
+            <b>{val[i] || 0}</b>
+          </li>
+        ))}
+      </ul>
     </div>
   );
 }
@@ -694,19 +781,28 @@ function Detalle({ x, cfg, f, perf }) {
   const deAca = cfg.podio || (cfg.et === 'Duelos' ? 'competitivo' : '');
   const cp = pub && pub.cp ? pub.cp[f.k] : '';
   const cual = deAca && tiene(deAca) ? deAca : cp && tiene(cp) ? cp : tiene('temporada') ? 'temporada' : (t.c || [])[0];
+  // 📊 los números de ESTE ranking (`NUMEROS`); las cinco dimensiones, sólo con la Competitiva desbloqueada, como en
+  // el perfil (Dlx, 07/10/2026: «para q te muestre sus fortalezas necesita tener desbloqueada la tarjeta competitiva»)
+  const nums = cfg.nums || NUMEROS.temporada;
+  const D = (liga.d.guia || {}).score || [];
+  const c = {
+    liga, fila: f, D,
+    P: (k) => (perf && perf.p ? perf.p[k] : null),
+    sem: (g) => (x.sem && x.sem.g && x.sem.g[g.k] ? x.sem.g[g.k][x.sem.g[g.k].length - 1] || 0 : 0),
+    dims: (g) => { const dm = ((perf && perf.p && perf.p[g.k]) || {}).dm; return D.length && dm && (g.c || []).includes('competitivo') ? dm : null; },
+  };
+  const yo = x.yoK && x.yoK !== f.k ? liga.T[x.yoK] : null;
+  const vs = yo && !cfg.grupo;
   return (
     <div className="rk-det-in">
       {cual ? <div className="rk-det-carta"><Carta liga={liga} k={f.k} cual={cual} cls="rk-det-ci" /></div> : null}
       <div className="rk-det-l">
         <dl className="rk-det-n">
-          <div><dt>OVR</dt><dd>{t.ovr || '—'}</dd></div>
-          <div><dt>Puntos</dt><dd>{num(t.pts)}</dd></div>
-          <div><dt>Eventos</dt><dd>{t.ev || 0}</dd></div>
-          <div><dt>Podios</dt><dd>{t.pod || 0}</dd></div>
-          {t.wr ? <div><dt>Win%</dt><dd>{Math.round(pct(t.wr))}%</dd></div> : null}
+          {nums.det(t, c).filter(Boolean).map(([dt, dd]) => <div key={dt}><dt>{dt}</dt><dd>{dd}</dd></div>)}
         </dl>
-        {x.yoK && x.yoK !== f.k && liga.T[x.yoK] && !cfg.grupo ? <Versus x={x} a={liga.T[x.yoK]} b={t} /> : null}
-        {x.sem && x.sem.g[f.k] ? <Semanas g={x.sem.g[f.k]} lunes={x.sem.lunes} /> : null}
+        {vs ? <Versus x={x} a={yo} b={t} cats={nums.vs(yo, t, c)} />
+          : nums === NUMEROS.competitivo && c.dims(t) ? <Dims D={c.D} val={c.dims(t)} color={t.rg ? liga.colorRg(t.rg) : ''} /> : null}
+        {!nums.sinSemanas && x.sem && x.sem.g[f.k] ? <Semanas g={x.sem.g[f.k]} lunes={x.sem.lunes} /> : null}
         <span className="rk-det-t">SUS EVENTOS{evs && evs.length ? ' · ' + evs.length : ''}</span>
         {evs === null ? <p className="rk-det-c">Cargando…</p> : !evs.length ? <p className="rk-det-c">Todavía no jugó en la temporada.</p> : (
           <ol className="rk-det-e">

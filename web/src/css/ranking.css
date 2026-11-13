@@ -247,3 +247,11 @@ tr.yo .rk-bar,.rk-fila.yo .rk-bar{background:#E41373}
 .rk-vs-b.l.g::after{background:var(--magenta)}
 .rk-vs-b.r.g::after{background:var(--tinta)}
 @media (max-width: 480px){.rk-vs-f{grid-template-columns:52px minmax(0,1fr) 70px minmax(0,1fr) 52px}.rk-vs-n{font-size:12px}}
+/* 💪 sus fortalezas en el Competitivo (13/11/2026): las cinco dimensiones del Score, del color de su rango */
+.rk-dims-c{display:grid;gap:8px}
+.rk-dims{display:grid;gap:6px;margin:0;padding:0;list-style:none;max-width:420px}
+.rk-dims li{display:grid;grid-template-columns:132px minmax(0,1fr) 30px;align-items:center;gap:10px}
+.rk-dims span{font:700 14px/1 "Barlow Condensed",sans-serif;letter-spacing:.05em;text-transform:uppercase;color:var(--gris);white-space:nowrap}
+.rk-dims i{display:block;height:9px;border-radius:2px;background:var(--suave);position:relative;overflow:hidden}
+.rk-dims u{position:absolute;left:0;top:0;bottom:0;background:var(--tinta);border-radius:2px}
+.rk-dims b{font:800 14px/1 Archivo,sans-serif;font-variant-numeric:tabular-nums;text-align:right}
