@@ -11,6 +11,17 @@
  ],
  "cambios": [
     {
+        "version": "5.20",
+        "dia": "2026-11-13",
+        "cuando": "2026-11-13T04:35:00-05:00",
+        "titulo": "Cómo mejorar tus fortalezas",
+        "items": [
+            "**En el Competitivo, al abrir a alguien**: el botón «¿Cómo mejorar mis fortalezas?» explica qué mide cada una y qué hace falta para llegar a 100.",
+            "**Y al costado, tú contra esa persona** en el Score y las cinco fortalezas, sin tapar las suyas.",
+            "**En tu perfil**, debajo de «A trabajar», cómo se sube esa."
+        ]
+    },
+    {
         "version": "5.19",
         "dia": "2026-11-13",
         "cuando": "2026-11-13T04:31:00-05:00",
