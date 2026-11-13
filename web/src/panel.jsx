@@ -221,14 +221,40 @@ function PremioGratis({ liga, enc, dc }) {
 // 🐉 LA FILA DE ARRIBA, DE A TRES (12/11/2026, la opción A de la maqueta; Dlx: «uno que activa la campana… sería para todos
 // hasta que la activen; si la activan, aparecería en vez el último evento»): la racha, la campana o tu último evento, y la
 // barra del día de los Dragón Drops. Sin cuenta, entrar y la campana
+// 🔢 SIEMPRE CUATRO (Dlx, 13/11/2026: «en este caso hay sorteo… que el 4to cuadrado sea el del sorteo para participar…
+// recuerda siempre son 4 mini paneles, no 3… si no hay premio semanal o sorteo, debería aparecer el de último anuncio de
+// cualquier servidor»). Con las encuestas votadas el Premio gratis se iba y la fila quedaba de a tres. Ahora los dos
+// lugares que pueden quedar libres —el 2.º si no hay campana ni último evento, y el 4.º— se llenan en este orden:
+// el sorteo abierto en el que todavía no entraste · el Premio gratis (las encuestas) · el sorteo que ya cerró o en el que
+// ya estás (cuándo se sortea, quién ganó) · el último anuncio de un servidor
 export function FilaRacha({ dc, R, liga, enc }) {
   const c = useCampana();
   const camp = campanaPide(c, dc);
   const ult = dc && !camp && liga && liga.yo ? ultimoDe(liga, liga.yo) : null;
-  // ⚠️ la racha no se dibuja hasta que llega (`R`): contarla sin estar dejaba una columna vacía
-  // 🎁 con cuenta va también el Premio gratis, pero sólo con encuestas de la semana sin votar (13/11/2026): de a cuatro, o de a tres
-  const gratis = dc ? encuestasDeLaSemana(liga, enc).faltan.length > 0 : true;
-  const n = dc ? (R ? 1 : 0) + (camp || ult ? 1 : 0) + 1 + (gratis ? 1 : 0) : 2 + (camp ? 1 : 0);
+  const [S, setS] = useSorteo(dc);
+  const [recien, setRecien] = useState(false);
+  const ahora = Date.now();
+  const s = S && S.sorteo;
+  const soAbierto = !!(s && ahora < s.cierra);
+  // hasta un día después de sortearse, para que se vea quién ganó
+  const resT = S && S.resultado ? Number(S.resultado.t) || Date.parse(S.resultado.t) || 0 : 0;
+  const soVer = !!(s && (soAbierto || ahora < s.cuando + 86400000 || (resT && ahora < resT + 86400000)));
+  const gratis = dc ? encuestasDeLaSemana(liga, enc).faltan.length > 0 : false;
+  const an = anuncioDeServidor(liga);
+  const extras = [];
+  if (soAbierto && (!S.mio || recien)) extras.push('sorteo');
+  if (gratis) extras.push('gratis');
+  if (soVer && !extras.includes('sorteo')) extras.push('sorteo');
+  if (an) extras.push('anuncio');
+  const segundo = camp ? 'campana' : ult ? 'ultimo' : extras.shift() || null;
+  const cuarto = extras.shift() || null;
+  const pinta = (q) => (q === 'campana' ? <CampanaCorta key="c" dc={dc} /> : q === 'ultimo' ? <UltCorto key="u" liga={liga} u={ult} />
+    : q === 'gratis' ? <PremioGratis key="g" liga={liga} enc={enc} dc={dc} />
+      : q === 'sorteo' ? <SorteoCorto key="s" liga={liga} dc={dc} S={S} entro={(d) => { setRecien(true); setS(d); }} />
+        : q === 'anuncio' ? <AnuncioCorto key="a" liga={liga} a={an} /> : null);
+  // ⚠️ la racha no se dibuja hasta que llega (`R`): contarla sin estar dejaba una columna vacía. Sin cuenta, el 3.º es el
+  // Premio gratis de entrar (los Puntos de Tienda de arranque)
+  const n = (dc ? (R ? 1 : 0) : 1) + (segundo ? 1 : 0) + 1 + (cuarto ? 1 : 0);
   return (
     <>
       <Festejo R={R} />
@@ -239,11 +265,100 @@ export function FilaRacha({ dc, R, liga, enc }) {
             <button type="button" className="btn verde chico" onClick={accion.entrar}>Entrar</button>
           </section>
         )}
-        {camp ? <CampanaCorta dc={dc} /> : ult ? <UltCorto liga={liga} u={ult} /> : null}
-        {dc ? <BarraDia dc={dc} /> : null}
-        <PremioGratis liga={liga} enc={enc} dc={dc} />
+        {pinta(segundo)}
+        {dc ? <BarraDia dc={dc} /> : <PremioGratis liga={liga} enc={enc} dc={dc} />}
+        {pinta(cuarto)}
       </div>
     </>
+  );
+}
+
+// 🎟️ EL SORTEO DEL PASE PREMIUM, PARA EL CUADRO: lo que programó Dlx en el Dashboard (`sorteoDe()` de bot/avisos.js, lo
+// mismo que la página del Pase). Se pide una vez cada 10 minutos por pestaña (`lg:sorteo-ini`): cada pedido despierta al
+// objeto, y el Inicio se abre seguido
+const SORTEO_MS = 10 * 60000;
+function sorteoGuardado(id) {
+  try {
+    const x = JSON.parse(sessionStorage.getItem('lg:sorteo-ini') || 'null');
+    return x && x.id === id && Date.now() - x.t < SORTEO_MS ? x.d : undefined;
+  } catch (e) { return undefined; }
+}
+function useSorteo(dc) {
+  const id = dc && dc.id ? String(dc.id) : '';
+  const [S, setS] = useState(() => sorteoGuardado(id));
+  const guardar = (v) => {
+    try { sessionStorage.setItem('lg:sorteo-ini', JSON.stringify({ id, t: Date.now(), d: v })); } catch (e) { /* igual */ }
+    setS(v);
+  };
+  useEffect(() => {
+    const ya = sorteoGuardado(id);
+    if (ya !== undefined) { setS(ya); return undefined; }
+    let vivo = true;
+    pasePost('sorteo', {}).then((d) => {
+      if (!vivo) return;
+      guardar(d && d.sorteo ? { sorteo: d.sorteo, mio: d.mio || 0, resultado: d.resultado || null } : null);
+    });
+    return () => { vivo = false; };
+  }, [id]); // eslint-disable-line react-hooks/exhaustive-deps
+  return [S || null, (d) => guardar(d && d.sorteo ? { sorteo: d.sorteo, mio: d.mio || 0, resultado: d.resultado || null } : S)];
+}
+function SorteoCorto({ liga, dc, S, entro }) {
+  const [ocup, setOcup] = useState(false);
+  const [msg, setMsg] = useState('');
+  const s = S.sorteo;
+  const res = S.resultado;
+  const ahora = Date.now();
+  const abierto = ahora < s.cierra;
+  const iso = (ms) => new Date(ms).toISOString();
+  const nombre = (k) => (liga.T && liga.T[k] ? limpio(liga.T[k].n) : k);
+  const entrar = async () => {
+    if (!dc) { accion.entrar(); return; }
+    setOcup(true); setMsg('');
+    const d = await pasePost('sorteo-entrar', {});
+    if (d && d._ok) entro(d);
+    else setMsg(d && d.error === 'miembro' ? 'Es de los miembros de DRA: verifícate' : d && d.error === 'cerrado' ? 'Ya cerró' : 'No se pudo: prueba de nuevo');
+    setOcup(false);
+  };
+  const puedeEntrar = abierto && !S.mio;
+  const tit = res ? 'Ganó ' + nombre(res.k) : S.mio ? 'Estás adentro con ' + S.mio + (S.mio === 1 ? ' boleto' : ' boletos')
+    : abierto ? 'Entra gratis al sorteo' : 'Se sortea en ' + faltaTxt(iso(s.cuando));
+  const sub = msg || (res ? 'El sorteo del Pase premium · míralo en el Pase'
+    : puedeEntrar ? 'Pase premium · cierra en ' + faltaTxt(iso(s.cierra))
+      : abierto ? 'Se sortea en ' + faltaTxt(iso(s.cuando)) + ', en vivo en el Pase'
+        : num(s.personas || 0) + (s.personas === 1 ? ' entró' : ' entraron') + ' · en vivo en el Pase');
+  const props = { className: 'pn-gratis pn-srt' + (puedeEntrar ? ' hacer' : ' listo'), 'aria-label': 'Sorteo: ' + tit + '. ' + sub };
+  const cuerpo = (
+    <>
+      <span className="pn-gr-ic" aria-hidden="true"><Ico n="pase" t={22} /></span>
+      <span className="pn-tx"><i className="pn-gr-et">Sorteo{puedeEntrar ? ' · gratis' : ''}</i><b>{ocup ? '…' : tit}</b><small>{sub}</small></span>
+    </>
+  );
+  return puedeEntrar ? <button type="button" {...props} disabled={ocup} onClick={entrar}>{cuerpo}</button>
+    : <a {...props} href="#/pase">{cuerpo}</a>;
+}
+
+// 📢 EL ÚLTIMO ANUNCIO DE UN SERVIDOR, PARA EL CUADRO: el más nuevo de los canales de anuncios de los socios (`oficiales`
+// del payload); si ése es el que ya muestra «Último anuncio oficial» más abajo, el que le sigue. Sin ninguno, el último
+// anuncio de un evento
+function anuncioDeServidor(liga) {
+  if (!liga) return null;
+  const of = (Array.isArray(liga.d.oficiales) ? liga.d.oficiales : []).filter((o) => o && o.t && o.tit && o.sv)
+    .map((o) => ({ sv: o.sv, tit: limpio(o.tit).slice(0, 80), t: utc(o.t).toISOString(), link: o.link || '' }))
+    .sort((a, b) => new Date(b.t) - new Date(a.t));
+  const yaArriba = anuncioOficial(liga);
+  const a = of.find((o) => !(yaArriba && o.link && o.link === yaArriba.link && o.t === yaArriba.t)) || null;
+  if (a) return a;
+  const ua = ultimoAnuncio(liga);
+  return ua ? { sv: ua.sv, tit: limpio(ua.nombre), t: ua.t, link: ua.link, ev: true } : null;
+}
+function AnuncioCorto({ liga, a }) {
+  const fut = new Date(a.t).getTime() > Date.now();
+  return (
+    <a className="pn-anc" href={a.link || '#/publicaciones'} target={a.link ? '_blank' : undefined} rel={a.link ? 'noopener noreferrer' : undefined}>
+      {(a.sv && liga.logo(a.sv)) ? <img className="pn-anc-logo" alt="" src={liga.logo(a.sv)} /> : <span className="pn-anc-logo"><Ico n="publicaciones" t={20} /></span>}
+      <span className="pn-tx"><i className="pn-anc-et">Último anuncio · {a.sv ? siglaDe(a.sv) : 'La Liga'}</i><b>{a.tit}</b>
+        <small>{fut ? 'en ' + faltaTxt(a.t) : 'hace ' + hace(new Date(a.t).getTime())}</small></span>
+    </a>
   );
 }
 
@@ -1301,15 +1416,19 @@ export function PnServidor({ liga }) {
       {top.length ? <span className="pn-sv-top">{top.map((f, j) => (
         <span key={f.k}><em>{j + 1}</em><Cara liga={liga} k={f.k} nombre={f.n} cls="cara pn-sv-c" /><b>{limpio(f.n)}</b></span>
       ))}</span> : null}
-      {x ? <span className="pn-mini"><span>Esta semana</span><strong>×{String(x).replace('.', ',')}</strong></span> : null}
-      {/* ⚔️ la guerra de servidores, con los dos escudos: lo que más dice esta caja */}
-      {rival ? <span className="pn-sv-gu" aria-label={'Guerra de servidores: ' + siglaDe(sv) + ' contra ' + siglaDe(rival)}>
-        <i>Guerra</i>
-        <span>{liga.logo(sv) ? <img alt="" src={liga.logo(sv)} /> : <b>{siglaDe(sv)}</b>}<em>VS</em>{liga.logo(rival) ? <img alt="" src={liga.logo(rival)} /> : <b>{siglaDe(rival)}</b>}</span>
-        <small>{siglaDe(sv)} contra {siglaDe(rival)}</small>
+      {/* 📐 LAS TRES CAJAS, JUNTAS Y DEL MISMO ANCHO (Dlx, 13/11/2026: «posiciona bien… las cosas dentro de tu servidor»):
+          sueltas con `space-between` quedaban a distintas alturas y con huecos desparejos */}
+      {x || rival || meta ? <span className="pn-sv-st">
+        {x ? <span className="pn-mini"><span>Esta semana</span><strong>×{String(x).replace('.', ',')}</strong></span> : null}
+        {/* ⚔️ la guerra de servidores, con los dos escudos: lo que más dice esta caja */}
+        {rival ? <span className="pn-sv-gu" aria-label={'Guerra de servidores: ' + siglaDe(sv) + ' contra ' + siglaDe(rival)}>
+          <i>Guerra</i>
+          <span>{liga.logo(sv) ? <img alt="" src={liga.logo(sv)} /> : <b>{siglaDe(sv)}</b>}<em>VS</em>{liga.logo(rival) ? <img alt="" src={liga.logo(rival)} /> : <b>{siglaDe(rival)}</b>}</span>
+          <small>{siglaDe(sv)} contra {siglaDe(rival)}</small>
+        </span> : null}
+        {meta ? <span className="pn-mini pn-sv-meta"><span>Meta de la semana</span><strong>{num(va)}/{num(meta)}</strong>
+          <i aria-hidden="true"><u style={{ width: Math.min(100, Math.round((100 * va) / meta)) + '%' }} /></i></span> : null}
       </span> : null}
-      {meta ? <span className="pn-mini pn-sv-meta"><span>Meta</span><strong>{num(va)}/{num(meta)}</strong>
-        <i aria-hidden="true"><u style={{ width: Math.min(100, Math.round((100 * va) / meta)) + '%' }} /></i></span> : null}
     </a>
   );
 }

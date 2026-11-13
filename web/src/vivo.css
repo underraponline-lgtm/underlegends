@@ -5277,3 +5277,48 @@ dialog.pn-pop.pop-gratis{--pc:#F5C542;width:min(640px,calc(100vw - 32px))}
   .lu-datos{display:none}
   .lu-camp,.lu-noche{grid-template-columns:1fr}
 }
+
+/* ═══ 🔢 LA FILA DE ARRIBA, SIEMPRE CUATRO (13/11/2026, Dlx: «recuerda siempre son 4 mini paneles… no 3»): el sorteo para
+   participar y el último anuncio de un servidor, cuando no hay Premio gratis ═══ */
+.pn-srt{border-color:#6a1238;border-left-color:#E41373;background:linear-gradient(100deg,rgba(228,19,115,.22),rgba(228,19,115,.04) 60%),#0B0C0E;text-decoration:none}
+.pn-srt:hover,.pn-srt:focus-visible{border-color:#E41373}
+.pn-srt .pn-gr-ic{background:#E41373;color:#FFF}
+.pn-srt .pn-gr-et{color:#FF5FA2}
+.pn-srt.listo{border-left-color:#E41373;background:linear-gradient(100deg,rgba(228,19,115,.12),transparent 60%),#0B0C0E}
+.pn-srt.listo .pn-gr-ic{background:#3a1424;color:#FF5FA2}
+.pn-anc{display:flex;align-items:center;gap:12px;padding:10px 14px;min-width:0;color:#F6F6F6;text-decoration:none;border:1.5px solid #24384f;border-left:4px solid var(--azul);
+  background:linear-gradient(100deg,rgba(88,166,255,.16),rgba(88,166,255,.03) 60%),#0B0C0E}
+.pn-anc:hover,.pn-anc:focus-visible{border-color:var(--azul);outline:none}
+.pn-anc-logo{width:40px;height:40px;border-radius:50%;object-fit:cover;flex:none;display:grid;place-items:center;background:#14171b;color:var(--azul);box-shadow:0 0 0 2px #24384f}
+.pn-anc .pn-tx{display:grid;gap:2px;min-width:0}
+.pn-anc-et{font:800 10px/1 "Barlow Condensed",sans-serif;font-style:normal;letter-spacing:.1em;text-transform:uppercase;color:var(--azul)}
+.pn-anc b{font:800 14px/1.15 Archivo,sans-serif;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.pn-anc small{font:500 12px/1.2 Archivo,sans-serif;color:#c9cbd1}
+@media (max-width: 760px){.pn-anc{padding:8px 10px;gap:8px}.pn-anc-logo{width:32px;height:32px}}
+
+/* 📐 TU SERVIDOR Y EVENTOS, BIEN UBICADOS (13/11/2026, Dlx: «posiciona bien las estadísticas de eventos y las cosas dentro de tu
+   servidor»): las tres cajas de tu servidor juntas, del mismo ancho y alto, a la derecha; y en Eventos la gráfica a la altura
+   de los números, con los días debajo */
+.pn-sv{justify-content:flex-start}
+.pn-sv .pn-baja-tx{flex:1 1 auto}
+.pn-sv-st{display:grid;grid-auto-flow:column;grid-auto-columns:minmax(0,1fr);gap:8px;flex:0 1 56%;align-self:stretch;margin-left:auto;min-width:0}
+.pn .pn-sv-st > .pn-mini,.pn .pn-sv-st > .pn-sv-gu{display:grid;align-content:center;justify-items:center;gap:5px;padding:8px 10px;background:#000;border:1.5px solid var(--borde2);text-align:center;min-width:0}
+.pn .pn-sv-st .pn-mini > span,.pn .pn-sv-st .pn-sv-gu > i{font:700 10px/1 "Barlow Condensed",sans-serif;font-style:normal;letter-spacing:.07em;text-transform:uppercase;color:var(--azul);white-space:nowrap}
+.pn .pn-sv-st .pn-mini strong{font:900 18px/1 Archivo,sans-serif}
+.pn .pn-sv-st .pn-sv-meta i{width:100%;max-width:96px}
+@media (max-width: 760px){.pn .pn-sv-st > .pn-mini{display:none}.pn-sv-st{flex-basis:auto}}
+.pn-baja3 .pn-ev.ancho{grid-template-columns:minmax(140px,auto) minmax(0,1fr);grid-template-areas:"h b" "n b" "t b" "u l";column-gap:22px;align-items:center}
+.pn-baja3 .pn-ev.ancho .pn-barras{align-self:stretch;min-height:56px}
+.pn-baja3 .pn-ev.ancho .pn-letras{align-self:start}
+/* abajo, Tu servidor en dos pisos: arriba el escudo, el nombre y sus tres de arriba; abajo las tres cajas a lo ancho. En un piso
+   no entraba todo y las cajas se encimaban (medido a 1621 px, con el top 3) */
+.pn-baja3 .pn-sv{display:grid;grid-template-columns:auto minmax(0,1fr) auto;grid-template-areas:"logo tx top" "st st st";align-items:center;gap:10px 12px}
+.pn-baja3 .pn-sv > .pn-sv-logo{grid-area:logo}
+.pn-baja3 .pn-sv > .pn-baja-tx{grid-area:tx;min-width:0}
+.pn-baja3 .pn-sv > .pn-sv-top{grid-area:top;margin-left:0;width:170px}
+.pn-baja3 .pn-sv > .pn-sv-st{grid-area:st;margin-left:0;flex:none}
+.pn .pn-baja3 .pn-sv-st > .pn-mini,.pn .pn-baja3 .pn-sv-st > .pn-sv-gu{padding:6px 10px}
+.pn-baja3 .pn-sv-gu img,.pn-baja3 .pn-sv-gu b{width:24px;height:24px}
+.pn-baja3 .pn-sv-gu > span{gap:5px}
+.pn-baja3 .pn-sv-gu small{max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+@media (max-width: 760px){.pn-baja3 .pn-sv{grid-template-columns:auto minmax(0,1fr);grid-template-areas:"logo tx" "st st"}}
