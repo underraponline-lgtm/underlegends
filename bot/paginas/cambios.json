@@ -11,6 +11,17 @@
  ],
  "cambios": [
     {
+        "version": "5.11",
+        "dia": "2026-11-13",
+        "cuando": "2026-11-13T03:49:00-05:00",
+        "titulo": "El sorteo, arriba en el Inicio",
+        "items": [
+            "Arriba del Inicio siempre hay cuatro cuadros: cuando hay **sorteo**, entras con un toque, gratis.",
+            "Sin sorteo ni premio de la semana, el **último anuncio** de un servidor de la Liga.",
+            "**Tu servidor** y **Eventos**, más ordenados."
+        ]
+    },
+    {
         "version": "5.10",
         "dia": "2026-11-13",
         "cuando": "2026-11-13T03:44:00-05:00",
