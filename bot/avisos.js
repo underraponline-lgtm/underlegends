@@ -3475,6 +3475,8 @@ const RUTAS = {
   '/avisos/veredictos-vivo': 'POST',
   // 🔁 y avisarle a uno de ésos por su campana, con un texto de la lista (`PLANTILLAS_VUELVE`): ver `avisoVuelve()`
   '/avisos/dueno/vuelve': 'POST',
+  // 🎟️ el sorteo del premium para el Dashboard: quién entró, los anteriores y volver a sortear (sólo con ajustes)
+  '/avisos/dueno/sorteo': 'POST',
   // 🤝 el anti-raid que prende Dlx en un servidor (con la clave del ciclo): ver `antiraidDlx()`
   '/avisos/antiraid-dlx': 'POST',
   // ⚙️ un ajuste del Dashboard (sólo Dlx) y los ajustes para el ciclo (con su clave)
@@ -6727,6 +6729,20 @@ export async function rutaAvisos(req, env, ruta) {
       method: 'POST', body: JSON.stringify({ k: String(d.k), que: String(d.que), por: q.id }), headers: { 'content-type': 'application/json' },
     });
   }
+  // 🎟️ el sorteo del premium para el Dashboard: quién entró, los anteriores y volver a sortear (12/11/2026). Ver `sorteoDueno()`
+  if (ruta === '/avisos/dueno/sorteo') {
+    const crudo = await req.text();
+    if (crudo.length > 512) return json({ error: 'demasiado grande' }, 413);
+    let d = null;
+    try { d = JSON.parse(crudo || '{}'); } catch (e) { d = null; }
+    if (!d || typeof d !== 'object' || (d.accion !== undefined && !['ver', 'rehacer'].includes(d.accion))) return json({ error: 'faltan datos' }, 400);
+    const q = await quienPide(req, env, d);
+    if (!q.id) return json({ error: q.error }, q.estado);
+    if (!(await puede(q.id, 'ajustes'))) return json({ error: 'no' }, 403);
+    return elObjeto(env).fetch('https://avisos/dueno-sorteo', {
+      method: 'POST', body: JSON.stringify({ accion: d.accion || 'ver', por: q.id }), headers: { 'content-type': 'application/json' },
+    });
+  }
   // 🗂️ la ficha de alguien (cualquiera que abre el Dashboard) y las notas del staff (quien puede cerrar reportes)
   if (ruta === '/avisos/dueno/ficha' || ruta === '/avisos/dueno/nota') {
     const crudo = await req.text();
@@ -7645,6 +7661,10 @@ export class Avisos {
         't INTEGER NOT NULL, PRIMARY KEY (sorteo, quien))');
       this.sql.exec('CREATE TABLE IF NOT EXISTS sorteo_res (sorteo TEXT PRIMARY KEY, ganador TEXT NOT NULL, semilla TEXT NOT NULL, ' +
         'n INTEGER NOT NULL, boletos INTEGER NOT NULL, rol INTEGER NOT NULL DEFAULT 0, t INTEGER NOT NULL)');
+      // 🔁 y los resultados que se rehicieron (12/11/2026, Dlx: «Volver a sortear» si el ganador ya no está en DRA): el
+      // ganador de antes, por qué, y cuándo se rehizo. Ver `sorteoDueno()`
+      this.sql.exec('CREATE TABLE IF NOT EXISTS sorteo_hist (sorteo TEXT NOT NULL, ganador TEXT NOT NULL, semilla TEXT NOT NULL, ' +
+        'n INTEGER NOT NULL, boletos INTEGER NOT NULL, t INTEGER NOT NULL, motivo TEXT NOT NULL, rehecho INTEGER NOT NULL)');
       // ⭐ LO QUE SUBE EL NIVEL ADEMÁS DE JUGAR (14/10/2026): cada cosa hecha, una vez cada una (`que` de `XP_FUENTES`,
       // `ref` qué fue). No se borra con el tiempo —los aplausos se van a los 30 días y la XP no tiene que bajar—: sólo
       // con «olvidarme». Ver `xpVio()` y `xpDe()`
@@ -8343,6 +8363,7 @@ export class Avisos {
       if (ruta === '/dueno-viendo') return json(this.duenoViendo(d));
       if (ruta === '/dueno-caso') return json(this.duenoCaso(d));
       if (ruta === '/dueno-vuelve') return json(this.avisoVuelve(d));
+      if (ruta === '/dueno-sorteo') return json(this.sorteoDueno(d));
       if (ruta === '/dueno-ficha') return json(this.duenoFicha(d));
       if (ruta === '/dueno-nota') return json(this.duenoNota(d));
       if (ruta === '/veredictos-vivo') return json(this.veredictosVivo(d));
@@ -12095,6 +12116,7 @@ export class Avisos {
     for (const t of ['pase_premium', 'pase_aviso', 'pase_color', 'marcos', 'marco_elige', 'sorteo_part', 'tag_elige']) {
       this.sql.exec('DELETE FROM ' + t + ' WHERE quien = ?', String(d.quien));
     }
+    this.sql.exec('DELETE FROM sorteo_hist WHERE ganador = ?', String(d.quien));
     // ⭐ y lo que le sumaba nivel
     this.sql.exec('DELETE FROM xp_log WHERE quien = ?', String(d.quien));
     // 🙋 y sus pedidos
@@ -16483,6 +16505,38 @@ export class Avisos {
         .map((x) => this.claveDe(x.quien)).filter(Boolean);
     }
     return out;
+  }
+
+  /**
+   * 🎟️ EL SORTEO PARA EL DASHBOARD (12/11/2026, Dlx: «make better the sorteo thing», y eligió las cuatro mejoras): quién
+   * entró al de ahora y con cuántos boletos, los sorteos anteriores con su ganador y los que se rehicieron. Por CLAVE
+   * de perfil, nunca por cuenta: la página no necesita los IDs. Sólo quien puede tocar los ajustes (la ruta lo mira).
+   *
+   * 🔁 `accion: 'rehacer'`: si el ganador ya no está en DRA (`rol` -1, el bot no pudo ponerle el rol), su resultado
+   * pasa a `sorteo_hist`, su boleto se saca y el vigía vuelve a sortear en su vuelta siguiente entre los demás —la misma
+   * cuenta de siempre, con la lista nueva, así que sigue siendo repetible—. Con el rol puesto no se rehace nunca
+   */
+  sorteoDueno(d) {
+    const S = this.ajustes().pase_sorteo;
+    let rehecho = false;
+    if (d && d.accion === 'rehacer') {
+      if (!S) return { error: 'no hay sorteo' };
+      const r = this.sql.exec('SELECT ganador, semilla, n, boletos, rol, t FROM sorteo_res WHERE sorteo = ?', S.id).toArray()[0];
+      if (!r) return { error: 'todavía no se sorteó' };
+      if (r.rol !== -1) return { error: 'el ganador está en DRA: no se vuelve a sortear' };
+      this.sql.exec('INSERT INTO sorteo_hist (sorteo, ganador, semilla, n, boletos, t, motivo, rehecho) VALUES (?, ?, ?, ?, ?, ?, ?, ?)',
+        S.id, r.ganador, r.semilla, r.n, r.boletos, r.t, 'ya no estaba en DRA', Date.now());
+      this.sql.exec('DELETE FROM sorteo_part WHERE sorteo = ? AND quien = ?', S.id, r.ganador);
+      this.sql.exec('DELETE FROM sorteo_res WHERE sorteo = ?', S.id);
+      rehecho = true;
+    }
+    const partes = S ? this.sql.exec('SELECT quien, boletos, t FROM sorteo_part WHERE sorteo = ? ORDER BY t', S.id).toArray()
+      .map((p) => ({ k: this.claveDe(p.quien) || '', b: p.boletos, t: p.t })) : [];
+    const hist = this.sql.exec('SELECT sorteo, ganador, n, boletos, rol, t FROM sorteo_res ORDER BY t DESC LIMIT 20').toArray()
+      .map((r) => ({ id: r.sorteo, k: this.claveDe(r.ganador) || '', n: r.n, b: r.boletos, rol: r.rol, t: r.t }));
+    const rehechos = this.sql.exec('SELECT sorteo, ganador, motivo, rehecho FROM sorteo_hist ORDER BY rehecho DESC LIMIT 20').toArray()
+      .map((r) => ({ id: r.sorteo, k: this.claveDe(r.ganador) || '', motivo: r.motivo, t: r.rehecho }));
+    return { ok: true, rehecho, partes, hist, rehechos };
   }
 
   /** Entrar al sorteo (`/avisos/sorteo-entrar`, con su sesión): gratis, una vez; boletos = 1 + semanas con las 5 semanales, hasta 3 */

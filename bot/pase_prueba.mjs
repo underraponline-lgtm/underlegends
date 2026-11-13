@@ -228,6 +228,21 @@ try {
     globalThis.fetch = antesF;
   }
 
+  // ── 🎟️ el sorteo en el Dashboard (12/11/2026): quién entró y los anteriores, por clave; volver a sortear sólo si el
+  // ganador ya no está en DRA (`rol` -1), y entonces sale de la lista y el vigía sortea entre los demás ──
+  const dv = o.sorteoDueno({});
+  ok(dv.ok && dv.partes.length === 2 && dv.partes.some((p) => p.k === 'ana' && p.b === 2) && dv.hist.length === 1
+    && dv.hist[0].id === 'premium-t1' && !JSON.stringify(dv).includes(ANA) && !JSON.stringify(dv).includes(BEA)
+    && o.sorteoDueno({ accion: 'rehacer' }).error,
+  'el Dashboard ve quién entró y con cuántos boletos, por clave y nunca por cuenta; con el rol puesto no se rehace', JSON.stringify(dv));
+  sql.exec("UPDATE sorteo_res SET rol = -1 WHERE sorteo = 'premium-t1'");
+  const rh = o.sorteoDueno({ accion: 'rehacer' });
+  const g2 = await o.sortear(AHORA + 120000);
+  ok(rh.rehecho && rh.partes.length === 1 && rh.hist.length === 0 && rh.rehechos.length === 1 && g2 && g2 !== g
+    && o.sorteoDueno({}).hist[0].k === (g2 === ANA ? 'ana' : 'bea'),
+  'si el ganador ya no está en DRA: su resultado va al historial, su boleto sale y el vigía sortea entre los demás',
+  JSON.stringify({ rh, g2 }));
+
   // ── el fondo: el nivel 5 del perfil, el premium desde su 5, o quien ya lo tenía ──
   sql.exec("INSERT INTO fondos (quien, estado, t) VALUES (?, 'ok', 1)", CAMI);
   ok(A.FONDO_NIVEL === 5 && o.puedeFondo(CAMI).si && !o.puedeFondo(DANI).si, 'el fondo: quien ya lo tenía lo conserva; sin nada, no');

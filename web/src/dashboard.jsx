@@ -7,7 +7,7 @@
 // (`/avisos/dueno/ajuste`), y el servidor valida cada valor antes de guardarlo.
 import { Fragment, createContext, useContext, useEffect, useRef, useState } from 'react';
 import { diaISO, hora, limpio, mult, num, siglaDe } from './liga.js';
-import { DosToques, Ico, usePerfiles } from './piezas.jsx';
+import { Cara, DosToques, Ico, usePerfiles } from './piezas.jsx';
 import { urlFondo } from './fondos.js';
 import { pedirCrews, useCrews } from './crews.js';
 import { useNumero } from './anima.js';
@@ -1223,37 +1223,131 @@ function AjCampana({ aj, hacer, ocup }) {
 // suscripción del servidor y nadie puede ponerlo a mano ──
 const aLocal = (iso) => { if (!iso) return ''; const d = new Date(iso); const z = (n) => String(n).padStart(2, '0');
   return d.getFullYear() + '-' + z(d.getMonth() + 1) + '-' + z(d.getDate()) + 'T' + z(d.getHours()) + ':' + z(d.getMinutes()); };
-function AjSorteo({ liga, aj, hacer, ocup }) {
+// 🎟️ LAS MEJORAS DEL 12/11/2026 (Dlx: «make better the sorteo thing», y eligió las cuatro): el código del sorteo se arma
+// solo (`premium-AAAAMMDD`), las fechas tienen botones de un toque (cierra a las 10 PM de ese día y se sortea una hora
+// después), ya sorteado se ve el resultado y un «Nuevo sorteo» en vez del formulario viejo, la lista de quién entró y
+// los anteriores (`/api/avisos/dueno/sorteo`, sólo con el permiso de ajustes) y «Volver a sortear» si el ganador ya no
+// está en DRA. ⚠️ Esa ruta es del Worker: hasta que se despliegue, la lista y el historial no salen (no rompe nada)
+const SORTEO_DIAS = [[1, 'Mañana'], [3, 'En 3 días'], [7, 'En una semana']];
+const cierreEn = (dias) => { const d = new Date(Date.now() + dias * 864e5); d.setHours(22, 0, 0, 0); return d; };
+const idSorteo = (sorteo, usados) => {
+  const d = new Date(sorteo); const z = (n) => String(n).padStart(2, '0');
+  const base = 'premium-' + d.getFullYear() + z(d.getMonth() + 1) + z(d.getDate());
+  let id = base, i = 2;
+  while (usados.has(id)) id = base + '-' + i++;
+  return id;
+};
+export function AjSorteo({ liga, aj, hacer, ocup }) {
   const S = aj.pase_sorteo || null;
-  const [f, setF] = useState({ id: (S && S.id) || 'premium-t1', cierra: aLocal(S && S.cierra), sorteo: aLocal(S && S.sorteo) });
-  const [est, setEst] = useState(null);
-  useEffect(() => { setF({ id: (S && S.id) || 'premium-t1', cierra: aLocal(S && S.cierra), sorteo: aLocal(S && S.sorteo) }); }, [S && S.id, S && S.cierra, S && S.sorteo]); // eslint-disable-line react-hooks/exhaustive-deps
-  useEffect(() => {
-    if (!S) { setEst(null); return; }
+  const [f, setF] = useState(null);           // el formulario abierto: `{cierra, sorteo, nuevo}`, o null
+  const [est, setEst] = useState(null);       // lo público: cuántos entraron y el resultado
+  const [du, setDu] = useState(null);         // lo del dueño: quién entró, los anteriores
+  const [busy, setBusy] = useState(false);
+  const [msj, setMsj] = useState('');
+  const pedir = () => {
     fetch('/api/avisos/sorteo', { method: 'POST', headers: { 'content-type': 'application/json' }, body: '{}' })
       .then((r) => (r.ok ? r.json() : null)).then(setEst).catch(() => setEst(null));
-  }, [S && S.id, ocup]); // eslint-disable-line react-hooks/exhaustive-deps
-  const ok = /^[a-z0-9-]{3,30}$/.test(f.id) && f.cierra && f.sorteo && Date.parse(f.cierra) <= Date.parse(f.sorteo);
-  const guardar = () => hacer('pase_sorteo', { id: f.id, cierra: new Date(f.cierra).toISOString(), sorteo: new Date(f.sorteo).toISOString() },
-    'El sorteo quedó programado: la gente ya puede entrar desde el Pase.');
+    fetch('/api/avisos/dueno/sorteo', { method: 'POST', credentials: 'same-origin', headers: { 'content-type': 'application/json' }, body: '{"accion":"ver"}' })
+      .then((r) => (r.ok ? r.json() : null)).then((j) => setDu(j && j.ok ? j : null)).catch(() => setDu(null));
+  };
+  useEffect(() => { if (S) pedir(); else setEst(null); }, [S && S.id, S && S.cierra, S && S.sorteo, ocup]); // eslint-disable-line react-hooks/exhaustive-deps
   const s = est && est.sorteo, res = est && est.resultado;
-  const nom = (k) => (liga.T && liga.T[k] ? limpio(liga.T[k].n) : k);
+  const nom = (k) => (k && liga.T && liga.T[k] ? limpio(liga.T[k].n) : k || '(sin perfil)');
+  const ahora = Date.now();
+  const abierto = !!S && ahora < Date.parse(S.cierra), porSortear = !!S && !res && ahora >= Date.parse(S.cierra);
+  const usados = new Set([...((du && du.hist) || []).map((h) => h.id), S && S.id].filter(Boolean));
+  const ok = !!f && f.cierra && f.sorteo && Date.parse(f.cierra) <= Date.parse(f.sorteo);
+  const abrirNuevo = () => { const c = cierreEn(3); setF({ cierra: aLocal(c), sorteo: aLocal(new Date(+c + 3600000)), nuevo: true }); };
+  const abrirCambio = () => setF({ cierra: aLocal(S.cierra), sorteo: aLocal(S.sorteo), nuevo: false });
+  const rapido = (dias) => { const c = cierreEn(dias); setF({ ...f, cierra: aLocal(c), sorteo: aLocal(new Date(+c + 3600000)) }); };
+  const guardar = async () => {
+    const nuevoId = f.nuevo || !S;
+    const id = nuevoId ? idSorteo(f.sorteo, usados) : S.id;
+    await hacer('pase_sorteo', { id, cierra: new Date(f.cierra).toISOString(), sorteo: new Date(f.sorteo).toISOString() },
+      nuevoId ? 'Sorteo programado: la gente ya puede entrar desde el Pase.' : 'Fechas cambiadas.');
+    setF(null);
+  };
+  // sin la hora en el texto: la verían igual en todas las zonas. El aviso se va solo cuando cierra (`hasta`)
+  const avisar = () => hacer('aviso_web', { texto: '🎟️ El sorteo del Pase premium está abierto: entra gratis desde la pestaña Premium del Pase.',
+    hasta: new Date(S.cierra).toISOString() }, 'Aviso puesto arriba de la página hasta que cierre.');
+  const rehacer = async () => {
+    setBusy(true); setMsj('');
+    try {
+      const r = await fetch('/api/avisos/dueno/sorteo', { method: 'POST', credentials: 'same-origin', headers: { 'content-type': 'application/json' }, body: '{"accion":"rehacer"}' });
+      const j = r.ok ? await r.json() : null;
+      setMsj(j && j.rehecho ? 'Listo: en menos de un minuto sale el ganador nuevo, entre los demás.' : 'No se pudo: ' + ((j && j.error) || 'el servidor no contestó'));
+      pedir();
+    } finally { setBusy(false); }
+  };
+  const estado = res ? '✓ Sorteado' : abierto ? '● Abierto' : porSortear ? '⏳ Por sortear' : 'Sin sorteo';
   return (
     <div className="db-aj">
-      <div className="db-aj-c"><h3>El sorteo del premium</h3><span className={'db-est' + (S ? ' ok' : '')}>{res ? '✓ Sorteado' : S ? '● Programado' : 'Sin sorteo'}</span></div>
+      <div className="db-aj-c"><h3>El sorteo del premium</h3><span className={'db-est' + (S && !res ? ' ok' : '')}>{estado}</span></div>
       <p className="db-tx">La gente entra gratis desde la pestaña Premium del Pase: 1 boleto, y uno más por cada semana con las cinco semanales (hasta 3). A la hora se sortea solo, se ve en vivo en la página y sale en Publicaciones. El bot le pone el rol «Pase Premium» al ganador.</p>
-      {s ? <p className="db-tx"><b>{num(s.personas)}</b> {s.personas === 1 ? 'entró' : 'entraron'} · <b>{num(s.boletos)}</b> boletos.
-        {res ? <> Ganó <b>{nom(res.k)}</b>{res.rol === 1 ? ': ya tiene el rol «Pase Premium».' : res.rol === -1 ? ': ya no está en DRA, el bot no pudo ponerle el rol.' : ': el bot le está poniendo el rol.'}</> : null}</p> : null}
-      <div className="db-sorteo">
-        <label>Nombre<input type="text" value={f.id} onChange={(e) => setF({ ...f, id: e.target.value.toLowerCase() })} maxLength={30} placeholder="premium-t1" /></label>
-        <label>Cierra (tu hora)<input type="datetime-local" value={f.cierra} onChange={(e) => setF({ ...f, cierra: e.target.value })} /></label>
-        <label>Se sortea (tu hora)<input type="datetime-local" value={f.sorteo} onChange={(e) => setF({ ...f, sorteo: e.target.value })} /></label>
-      </div>
-      <div className="cu-btns">
-        <button type="button" className="btn verde chico" disabled={ocup || !ok} onClick={guardar}>{S ? 'Guardar cambios' : 'Programar'}</button>
-        {S ? <DosToques className="btn borde2 chico" disabled={ocup} confirmar="Toca de nuevo para sacarlo" onClick={() => hacer('pase_sorteo', null, 'El sorteo se sacó de la página.')}>Sacar el sorteo</DosToques> : null}
-      </div>
-      {!ok && (f.cierra || f.sorteo) ? <p className="db-tx">El nombre va en minúsculas, números y guiones; y tiene que cerrar antes de sortearse.</p> : null}
+
+      {S && res && !f ? (
+        <div className="db-sr-res">
+          <Cara liga={liga} k={res.k} nombre={nom(res.k)} cls="db-sr-cara" />
+          <div className="db-sr-txt">
+            <span className="db-sr-et">Ganó</span>
+            <b className="db-sr-gan">{nom(res.k)}</b>
+            <span className="db-sr-dato">{liga.dia(res.t)} · entre {num(res.personas)} {res.personas === 1 ? 'persona' : 'personas'} y {num(res.boletos)} boletos</span>
+            <span className={'db-sr-rol' + (res.rol === -1 ? ' mal' : res.rol === 1 ? ' bien' : '')}>
+              {res.rol === 1 ? '✓ Ya tiene el rol «Pase Premium»' : res.rol === -1 ? '✕ Ya no está en DRA: el bot no pudo ponerle el rol' : '… el bot le está poniendo el rol'}</span>
+            {res.semilla ? <span className="db-sr-dato" title={res.semilla}>Cuenta para verificar: {res.semilla.slice(0, 12)}…</span> : null}
+          </div>
+        </div>
+      ) : null}
+
+      {S && !res && !f ? (
+        <p className="db-tx">{abierto ? <>Cierra el <b>{liga.dia(S.cierra)}</b> y se sortea el <b>{liga.dia(S.sorteo)}</b>.</>
+          : <>Ya cerró. Se sortea el <b>{liga.dia(S.sorteo)}</b>.</>}
+        {s ? <> Van <b>{num(s.personas)}</b> {s.personas === 1 ? 'persona' : 'personas'} y <b>{num(s.boletos)}</b> boletos.</> : null}</p>
+      ) : null}
+
+      {f ? (
+        <>
+          <div className="db-sr-rap">
+            <span className="db-sr-et">Cierra</span>
+            {SORTEO_DIAS.map(([d, t]) => <button key={d} type="button" className="btn borde2 chico" onClick={() => rapido(d)}>{t}</button>)}
+            <span className="db-sr-nota">a las 10 PM, y se sortea una hora después</span>
+          </div>
+          <div className="db-sorteo">
+            <label>Cierra (tu hora)<input type="datetime-local" value={f.cierra} onChange={(e) => setF({ ...f, cierra: e.target.value })} /></label>
+            <label>Se sortea (tu hora)<input type="datetime-local" value={f.sorteo} onChange={(e) => setF({ ...f, sorteo: e.target.value })} /></label>
+          </div>
+          {!ok && f.cierra && f.sorteo ? <p className="db-tx">Tiene que cerrar antes de sortearse.</p> : null}
+          <div className="cu-btns">
+            <button type="button" className="btn verde chico" disabled={ocup || !ok} onClick={guardar}>{f.nuevo || !S ? 'Programar el sorteo' : 'Guardar las fechas'}</button>
+            <button type="button" className="btn borde2 chico" onClick={() => setF(null)}>Cancelar</button>
+          </div>
+        </>
+      ) : (
+        <div className="cu-btns">
+          {!S || res ? <button type="button" className="btn verde chico" disabled={ocup} onClick={abrirNuevo}>Nuevo sorteo</button> : null}
+          {S && !res ? <button type="button" className="btn borde2 chico" disabled={ocup} onClick={abrirCambio}>Cambiar fechas</button> : null}
+          {abierto ? <button type="button" className="btn borde2 chico" disabled={ocup} onClick={avisar}>Avisar que está abierto</button> : null}
+          {res && res.rol === -1 && du ? <DosToques className="btn borde2 chico" disabled={ocup || busy} confirmar="Toca de nuevo: se sortea entre los demás" onClick={rehacer}>Volver a sortear</DosToques> : null}
+          {S ? <DosToques className="btn borde2 chico" disabled={ocup} confirmar="Toca de nuevo para sacarlo" onClick={() => hacer('pase_sorteo', null, 'El sorteo se sacó de la página.')}>{res ? 'Sacarlo de la página' : 'Sacar el sorteo'}</DosToques> : null}
+        </div>
+      )}
+      {msj ? <p className="db-tx">{msj}</p> : null}
+
+      {du && du.partes.length ? (
+        <details className="db-sr-lista">
+          <summary>Quién entró ({num(du.partes.length)})</summary>
+          <ul>{du.partes.map((p, i) => <li key={i}><span>{nom(p.k)}</span><b>{p.b} {p.b === 1 ? 'boleto' : 'boletos'}</b></li>)}</ul>
+        </details>
+      ) : null}
+      {du && (du.hist.length || du.rehechos.length) ? (
+        <details className="db-sr-lista">
+          <summary>Los sorteos anteriores ({num(du.hist.length)})</summary>
+          <ul>
+            {du.hist.map((h) => <li key={h.id}><span>{liga.dia(h.t)} · <b>{nom(h.k)}</b></span><span>{num(h.n)} personas · {num(h.b)} boletos</span></li>)}
+            {du.rehechos.map((h, i) => <li key={'r' + i} className="db-sr-tachado"><span>{nom(h.k)} (se volvió a sortear: {h.motivo})</span><span>{liga.dia(h.t)}</span></li>)}
+          </ul>
+        </details>
+      ) : null}
     </div>
   );
 }

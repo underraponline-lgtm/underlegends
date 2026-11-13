@@ -180,6 +180,8 @@ const AVISOS = {
   '/api/avisos/dueno/caso': 'POST',
   // 🔁 avisarle a alguien de la lista de primerizos que vuelva (25/10/2026). ⚠️ `primerizos-ciclo` NO va acá: es del ciclo
   '/api/avisos/dueno/vuelve': 'POST',
+  // 🎟️ el sorteo del premium para el Dashboard (12/11/2026): quién entró, los anteriores y volver a sortear
+  '/api/avisos/dueno/sorteo': 'POST',
   // 🗂️ la ficha de una persona para el staff y sus notas (25/10/2026)
   '/api/avisos/dueno/ficha': 'POST', '/api/avisos/dueno/nota': 'POST',
   // ✅ contestar ✅ Decidir desde el Dashboard (13/10/2026, sólo Dlx). ⚠️ `decidir-ciclo` y `decidir-estados` NO van acá
