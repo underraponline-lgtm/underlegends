@@ -1542,5 +1542,31 @@
   "sv": "LKR",
   "t_pregunta": ""
  },
+ "1570617351177507008": {
+  "autor": "1555067257376346122",
+  "canal": "1487207377601040516",
+  "canal_pregunta": "1487207377601040516",
+  "cuando": "2026-11-13T01:52:37.180000+00:00",
+  "donde": "llave",
+  "evento": "TORNEO CLANDESTINO V.2",
+  "fecha": "12/11",
+  "llave": "1570617351177507008",
+  "pregunta": "1570670608130375770",
+  "preguntada": "2026-11-13 12:24 AM ET",
+  "preguntas": [
+   {
+    "lados": [
+     "Geoka 🇺🇦 +Jahno 🇺🇦",
+     "nc 🇨🇲 +paria 🇦🇷"
+    ],
+    "ronda": "SEMIFINALES"
+   }
+  ],
+  "respondidas": {},
+  "sin_permiso": false,
+  "staff_probado": false,
+  "sv": "FFA",
+  "t_pregunta": "2026-11-13T05:24:15+00:00"
+ },
  "_leeme": "Las llaves que el ciclo no entendió y se las preguntó a quien las publicó, con botones o un menú (bot/finales.py). Una vez por llave, por su ID: así nunca se pregunta dos veces. Dlx, 12/10/2026."
 }

@@ -45503,11 +45503,11 @@
      ],
      [
       [
-       "nxus",
+       "NXUZ",
        "ramses"
       ],
       "",
-      "sin ganador: espera en ✅ Decidir"
+      "cobra: nxus; cobra: ramses; nadie siguió: ✅ Decidir; Walk-in 1: ramses"
      ]
     ],
     "r": "Semifinales"
@@ -45567,6 +45567,11 @@
     "replisan",
     "Cuartos",
     2000
+   ],
+   [
+    "ramses",
+    "Semifinal",
+    1750
    ]
   ],
   "ver": {
@@ -50685,13 +50690,13 @@
      ],
      [
       [
-       "k 🇺🇸",
+       "Provenza",
        "Tenor",
        "Ydimekemeamasaunqueseamentira🇧🇾",
        "PichulaMc",
        "Akus"
       ],
-      "k 🇺🇸, Tenor",
+      "Provenza, Tenor",
       "triple (5 bandas, pasan 2); también pasa: TENOR🇵🇪"
      ],
      [
@@ -50721,10 +50726,10 @@
     "b": [
      [
       [
-       "k 🇺🇸, Tenor",
+       "Provenza, Tenor",
        "Badterne, Erik"
       ],
-      "k 🇺🇸, Tenor",
+      "Provenza, Tenor",
       ""
      ],
      [
@@ -50743,7 +50748,7 @@
      [
       [
        "Kminant, Tam, YOUNG VLAD",
-       "k 🇺🇸, Tenor, Erik"
+       "Provenza, Tenor, Erik"
       ],
       "Kminant, Tam, YOUNG VLAD",
       ""
@@ -50810,6 +50815,11 @@
     2500
    ],
    [
+    "Provenza",
+    "Subcampeón",
+    2500
+   ],
+   [
     "Tenor",
     "Subcampeón",
     2500
@@ -50827,11 +50837,6 @@
    [
     "crakero",
     "Cuartos",
-    2500
-   ],
-   [
-    "k 🇺🇸",
-    "Subcampeón",
     2500
    ]
   ],
@@ -51677,11 +51682,11 @@
      ],
      [
       [
-       "dante",
+       "Dantemx",
        "criz"
       ],
       "",
-      "sin ganador: espera en ✅ Decidir"
+      "cobra: dante; cobra: criz; nadie siguió: ✅ Decidir; Walk-in 1: dante"
      ]
     ],
     "r": "Semifinales"
@@ -51721,6 +51726,16 @@
     "Delux",
     "Semifinal",
     5250
+   ],
+   [
+    "criz",
+    "Semifinal",
+    5250
+   ],
+   [
+    "Dantemx",
+    "Semifinal",
+    2625
    ],
    [
     "Artezzy",

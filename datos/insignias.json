@@ -2413,6 +2413,10 @@
 "debut": [
 "2026-10-29T23:35:40Z",
 "prueba"
+],
+"trotamundos": [
+"2026-11-13T05:26:32Z",
+"prueba"
 ]
 },
 "DarkoMC": {
@@ -8619,6 +8623,14 @@
 "tricampeon": [
 "2026-11-02T02:56:37Z",
 "prueba"
+],
+"cazador": [
+"2026-11-13T05:26:32Z",
+"prueba"
+],
+"regicida": [
+"2026-11-13T05:26:32Z",
+"prueba"
 ]
 },
 "QUEEN": {
@@ -11417,6 +11429,12 @@
 "prueba"
 ]
 },
+"criz": {
+"debut": [
+"2026-11-13T05:26:32Z",
+"prueba"
+]
+},
 "cronox el estilo pupilo": {
 "debut": [
 "2026-10-07T04:25:06Z",
@@ -12012,6 +12030,12 @@
 "publicenemy": {
 "debut": [
 "2026-10-30T02:56:35Z",
+"prueba"
+]
+},
+"ramses": {
+"debut": [
+"2026-11-13T05:26:32Z",
 "prueba"
 ]
 },

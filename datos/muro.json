@@ -1226,6 +1226,13 @@
 "rg": "",
 "c": []
 },
+"dantemx": {
+"rg": "",
+"c": [
+"servidor",
+"temporada"
+]
+},
 "noone": {
 "rg": "",
 "c": [
@@ -1254,13 +1261,6 @@
 "rg": "",
 "c": []
 },
-"dantemx": {
-"rg": "",
-"c": [
-"servidor",
-"temporada"
-]
-},
 "emilioalva": {
 "rg": "",
 "c": []
@@ -1268,6 +1268,7 @@
 "akus": {
 "rg": "",
 "c": [
+"pais",
 "servidor",
 "temporada"
 ]
@@ -1302,10 +1303,6 @@
 "temporada"
 ]
 },
-"k": {
-"rg": "",
-"c": []
-},
 "ragna": {
 "rg": "",
 "c": []
@@ -1329,6 +1326,17 @@
 "rg": "",
 "c": []
 },
+"saiko": {
+"rg": "",
+"c": [
+"servidor",
+"temporada"
+]
+},
+"k": {
+"rg": "",
+"c": []
+},
 "luck": {
 "rg": "",
 "c": [
@@ -1339,13 +1347,6 @@
 "marto": {
 "rg": "",
 "c": []
-},
-"saiko": {
-"rg": "",
-"c": [
-"servidor",
-"temporada"
-]
 },
 "nemi": {
 "rg": "E",
@@ -2829,15 +2830,6 @@
 }
 },
 "cambios": [
-{
-"tipo": "rango",
-"t": "2026-10-08T05:26:47Z",
-"quien": [
-"NC"
-],
-"rg": "D",
-"primero": false
-},
 {
 "tipo": "tarjeta",
 "t": "2026-10-08T05:47:25Z",
@@ -6200,6 +6192,14 @@
 ],
 "rg": "B",
 "primero": true
+},
+{
+"tipo": "tarjeta",
+"t": "2026-11-13T05:30:47Z",
+"quien": [
+"Akus"
+],
+"carta": "pais"
 }
 ],
 "noche_antes": {
@@ -7334,7 +7334,7 @@
 "n": "MAT MC",
 "k": "",
 "de": 514,
-"a": 423
+"a": 421
 },
 {
 "n": "Dios",

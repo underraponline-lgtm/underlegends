@@ -2145,6 +2145,27 @@
      ]
     ],
     [
+     "Eldinoco🇦🇷",
+     1016,
+     3,
+     4,
+     2,
+     [
+      [
+       -14,
+       "Makmah"
+      ],
+      [
+       16,
+       "Miniboy"
+      ],
+      [
+       15,
+       "LRS"
+      ]
+     ]
+    ],
+    [
      "FanDAbel",
      1016,
      1,
@@ -2154,6 +2175,19 @@
       [
        16,
        "Drexx"
+      ]
+     ]
+    ],
+    [
+     "Guaicurús🇰🇷",
+     1016,
+     1,
+     4,
+     2,
+     [
+      [
+       16,
+       "Karumailafmasha🇹🇼"
       ]
      ]
     ],
@@ -2383,6 +2417,23 @@
       [
        15,
        "Andres"
+      ]
+     ]
+    ],
+    [
+     "erpi",
+     1001,
+     2,
+     4,
+     2,
+     [
+      [
+       -14,
+       "Tam"
+      ],
+      [
+       15,
+       "Dyzz"
       ]
      ]
     ],
@@ -2792,19 +2843,6 @@
       [
        -16,
        "Andres"
-      ]
-     ]
-    ],
-    [
-     "El novio de tu novia 🇧🇧",
-     982,
-     1,
-     4,
-     1,
-     [
-      [
-       -18,
-       "Gus"
       ]
      ]
     ],
@@ -3772,23 +3810,6 @@
      ]
     ],
     [
-     "Gazir🇪🇸",
-     1031,
-     2,
-     5,
-     2,
-     [
-      [
-       15,
-       "AZUKI"
-      ],
-      [
-       16,
-       "Carpediem 🇨🇴"
-      ]
-     ]
-    ],
-    [
      "Terry",
      1031,
      2,
@@ -3992,27 +4013,6 @@
      ]
     ],
     [
-     "Eldinoco🇦🇷",
-     1016,
-     3,
-     5,
-     2,
-     [
-      [
-       -14,
-       "Makmah"
-      ],
-      [
-       16,
-       "Miniboy"
-      ],
-      [
-       15,
-       "LRS"
-      ]
-     ]
-    ],
-    [
      "Karma",
      1016,
      3,
@@ -4093,19 +4093,6 @@
       [
        16,
        "DIDYER"
-      ]
-     ]
-    ],
-    [
-     "Guaicurús🇰🇷",
-     1016,
-     1,
-     5,
-     2,
-     [
-      [
-       16,
-       "Karumailafmasha🇹🇼"
       ]
      ]
     ],
@@ -4551,23 +4538,6 @@
       [
        16,
        "Lilñaño"
-      ]
-     ]
-    ],
-    [
-     "erpi",
-     1001,
-     2,
-     5,
-     2,
-     [
-      [
-       -14,
-       "Tam"
-      ],
-      [
-       15,
-       "Dyzz"
       ]
      ]
     ],
@@ -5587,7 +5557,7 @@
      [
       [
        -15,
-       "Gazir🇪🇸"
+       "gazir"
       ]
      ]
     ],
@@ -5842,7 +5812,7 @@
      [
       [
        -16,
-       "Gazir🇪🇸"
+       "gazir"
       ]
      ]
     ],
@@ -6730,6 +6700,19 @@
       [
        -17,
        "Miniboy"
+      ]
+     ]
+    ],
+    [
+     "El novio de tu novia 🇧🇧",
+     982,
+     1,
+     5,
+     2,
+     [
+      [
+       -18,
+       "Gus"
       ]
      ]
     ],
@@ -8455,7 +8438,7 @@
   "BELIKKO": 0,
   "BENJI 🇵🇪": 6,
   "BLANKO 🇺🇸": 0,
-  "BLITZ": 3,
+  "BLITZ": 2,
   "BLUE BURKA🇦🇪": 0,
   "BM": 0,
   "BNA": 9,
@@ -8557,9 +8540,9 @@
   "Efimero": 0,
   "El Hombre Eyau": 0,
   "El Wachin": 0,
-  "El novio de tu novia 🇧🇧": 3,
+  "El novio de tu novia 🇧🇧": 0,
   "Elbesaabuelas": 0,
-  "Eldinoco🇦🇷": 0,
+  "Eldinoco🇦🇷": 3,
   "Elinge_TIMP": 0,
   "Eliot": 3,
   "Elsoolar": 0,
@@ -8620,7 +8603,7 @@
   "Gonorrea": 0,
   "Goohan MVP": 0,
   "Gosu Z": 0,
-  "Guaicurús🇰🇷": 0,
+  "Guaicurús🇰🇷": 3,
   "Guess": 8,
   "Gus": 3,
   "Gustavo Urrutia Perez 🇲🇽": 0,
@@ -9037,12 +9020,13 @@
   "cardozo": 0,
   "chekialo 🇧🇯": 0,
   "crakero": 6,
+  "criz": 0,
   "doble h": 0,
   "dxg": 5,
   "effar": 0,
   "el familiar": 0,
   "el hnito de leitan 🇦🇷": 0,
-  "erpi": 0,
+  "erpi": 3,
   "fenix": 0,
   "fleivaman": 3,
   "francis": 0,
@@ -9072,6 +9056,7 @@
   "oriuz": 9,
   "papa": 0,
   "publicenemy🇦🇷": 0,
+  "ramses": 0,
   "rayito": 0,
   "replisan": 0,
   "roda mc 🇵🇦": 0,
@@ -9244,9 +9229,9 @@
   "Efimero": 5,
   "El Hombre Eyau": 5,
   "El Wachin": 5,
-  "El novio de tu novia 🇧🇧": 4,
+  "El novio de tu novia 🇧🇧": 5,
   "Elbesaabuelas": 5,
-  "Eldinoco🇦🇷": 5,
+  "Eldinoco🇦🇷": 4,
   "Elinge_TIMP": 5,
   "Eliot": 4,
   "Elsoolar": 5,
@@ -9307,7 +9292,7 @@
   "Gonorrea": 5,
   "Goohan MVP": 5,
   "Gosu Z": 5,
-  "Guaicurús🇰🇷": 5,
+  "Guaicurús🇰🇷": 4,
   "Guess": 3,
   "Gus": 4,
   "Gustavo Urrutia Perez 🇲🇽": 5,
@@ -9724,12 +9709,13 @@
   "cardozo": 5,
   "chekialo 🇧🇯": 5,
   "crakero": 3,
+  "criz": 5,
   "doble h": 5,
   "dxg": 4,
   "effar": 5,
   "el familiar": 5,
   "el hnito de leitan 🇦🇷": 5,
-  "erpi": 5,
+  "erpi": 4,
   "fenix": 5,
   "fleivaman": 4,
   "francis": 5,
@@ -9759,6 +9745,7 @@
   "oriuz": 2,
   "papa": 5,
   "publicenemy🇦🇷": 5,
+  "ramses": 5,
   "rayito": 5,
   "replisan": 5,
   "roda mc 🇵🇦": 5,
@@ -10986,17 +10973,7 @@
   ],
   [
    "2026-10-26",
-   "Keider",
-   4
-  ],
-  [
-   "2026-10-26",
    "Ezze",
-   4
-  ],
-  [
-   "2026-10-26",
-   "Lilñaño",
    4
   ],
   [
@@ -11011,7 +10988,27 @@
   ],
   [
    "2026-10-26",
+   "Eldinoco🇦🇷",
+   4
+  ],
+  [
+   "2026-10-26",
+   "Guaicurús🇰🇷",
+   4
+  ],
+  [
+   "2026-10-26",
+   "Keider",
+   4
+  ],
+  [
+   "2026-10-26",
    "Xclusivo",
+   4
+  ],
+  [
+   "2026-10-26",
+   "Lilñaño",
    4
   ],
   [
@@ -11022,16 +11019,6 @@
   [
    "2026-10-26",
    "BastyRetro",
-   4
-  ],
-  [
-   "2026-10-26",
-   "BLITZ",
-   4
-  ],
-  [
-   "2026-10-26",
-   "oriuz",
    4
   ],
   [
@@ -11056,7 +11043,7 @@
   ],
   [
    "2026-10-26",
-   "El novio de tu novia 🇧🇧",
+   "erpi",
    4
   ],
   [
@@ -11103,7 +11090,6 @@
    ".SosaATR",
    "Andres",
    "Artezzy",
-   "BLITZ",
    "Calíz",
    "Crk",
    "Dominick",

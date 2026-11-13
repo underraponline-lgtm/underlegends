@@ -551,14 +551,14 @@
    "avisado": "2026-10-29",
    "avisado_cumplido": "2026-11-12",
    "chat": "2026-10-30",
-   "con": 617,
-   "cumplido": "2026-10-31T22:31:17+00:00",
-   "debut": "2026-10-29T21:10:39+00:00",
+   "con": 543,
+   "cumplido": "2026-10-29T21:10:39+00:00",
+   "debut": "2026-10-29T00:50:11+00:00",
    "did": "1491486652739092623",
-   "evento": "Rap para Raperos #1",
-   "n": 543,
-   "sv": "FFA",
-   "vence": "2026-11-05T21:10:39+00:00",
+   "evento": "no se k poner style",
+   "n": 616,
+   "sv": "DDS",
+   "vence": "2026-11-05T00:50:11+00:00",
    "vencido": false
   },
   "DarkoMC": {
@@ -878,18 +878,6 @@
    "n": 495,
    "sv": "DDF",
    "vence": "2026-10-28T21:09:28+00:00",
-   "vencido": true
-  },
-  "Gazir": {
-   "avisado": "2026-11-12",
-   "con": null,
-   "cumplido": "",
-   "debut": "2026-11-06T02:03:35+00:00",
-   "did": "",
-   "evento": "(sin titulo)",
-   "n": 619,
-   "sv": "LKR",
-   "vence": "2026-11-13T02:03:35+00:00",
    "vencido": true
   },
   "Ghost": {
@@ -2777,6 +2765,17 @@
    "vence": "2026-11-04T01:58:48+00:00",
    "vencido": true
   },
+  "criz": {
+   "con": null,
+   "cumplido": "",
+   "debut": "2026-10-29T00:50:11+00:00",
+   "did": "",
+   "evento": "no se k poner style",
+   "n": 616,
+   "sv": "DDS",
+   "vence": "2026-11-05T00:50:11+00:00",
+   "vencido": true
+  },
   "dyzzcord": {
    "avisado": "2026-11-09",
    "chat": "2026-11-09",
@@ -2842,19 +2841,6 @@
    "sv": "FDS",
    "vence": "2026-11-03T02:05:05+00:00",
    "vencido": true
-  },
-  "k": {
-   "avisado": "2026-11-12",
-   "chat": "2026-11-13",
-   "con": null,
-   "cumplido": "",
-   "debut": "2026-11-12T04:08:19+00:00",
-   "did": "",
-   "evento": "qcyo rapeen Pandillas",
-   "n": 610,
-   "sv": "FFA",
-   "vence": "2026-11-19T04:08:19+00:00",
-   "vencido": false
   },
   "kaiser": {
    "avisado": "2026-10-31",
@@ -2943,6 +2929,17 @@
    "n": 545,
    "sv": "FFA",
    "vence": "2026-11-06T00:12:24+00:00",
+   "vencido": true
+  },
+  "ramses": {
+   "con": null,
+   "cumplido": "",
+   "debut": "2026-10-28T00:13:40+00:00",
+   "did": "",
+   "evento": "MASTER STYLE REMAKE",
+   "n": 581,
+   "sv": "DDS",
+   "vence": "2026-11-04T00:13:40+00:00",
    "vencido": true
   },
   "replisan": {
