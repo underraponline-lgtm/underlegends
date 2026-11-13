@@ -1191,6 +1191,13 @@
    "batalla": "no se k poner style · DDS · 28/10 · semifinales · dante 🆚 criz",
    "cuando": "2026-11-13 12:01 AM ET",
    "por": "Dlx (✅ Decidir)"
+  },
+  "torneoclandestinov2|FFA|12/11|semifinales|geokajahno|ncparia": {
+   "ganador": "nc 🇨🇲 +paria 🇦🇷",
+   "batalla": "TORNEO CLANDESTINO V.2 · FFA · 12/11 · semifinales · Geoka 🇺🇦 +Jahno 🇺🇦 🆚 nc 🇨🇲 +paria 🇦🇷",
+   "cuando": "2026-11-13 12:53 AM ET",
+   "por": "el organizador, con el botón (<@1523082259870257315>)",
+   "nota": "bot/finales.py: el lector no entendió esa batalla y se la preguntó a quien publicó la llave"
   }
  },
  "anuncios_fuera": {

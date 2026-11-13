@@ -1562,7 +1562,15 @@
     "ronda": "SEMIFINALES"
    }
   ],
-  "respondidas": {},
+  "resp": {
+   "0": {
+    "por": "otro",
+    "t": 1794547863580
+   }
+  },
+  "respondidas": {
+   "0": "nc 🇨🇲 +paria 🇦🇷"
+  },
   "sin_permiso": false,
   "staff_probado": false,
   "sv": "FFA",

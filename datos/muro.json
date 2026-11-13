@@ -119,6 +119,15 @@
 "temporada"
 ]
 },
+"provenza": {
+"rg": "C",
+"c": [
+"competitivo",
+"pais",
+"servidor",
+"temporada"
+]
+},
 "colesito": {
 "rg": "B",
 "c": [
@@ -140,15 +149,6 @@
 "yinn": {
 "rg": "C",
 "c": []
-},
-"provenza": {
-"rg": "C",
-"c": [
-"competitivo",
-"pais",
-"servidor",
-"temporada"
-]
 },
 "tam": {
 "rg": "A",
@@ -1257,6 +1257,13 @@
 "rg": "",
 "c": []
 },
+"melomaniaco": {
+"rg": "",
+"c": [
+"servidor",
+"temporada"
+]
+},
 "scot": {
 "rg": "",
 "c": []
@@ -1457,13 +1464,6 @@
 "evangeline-pe": {
 "rg": "",
 "c": []
-},
-"melomaniaco": {
-"rg": "",
-"c": [
-"servidor",
-"temporada"
-]
 },
 "korey": {
 "rg": "",

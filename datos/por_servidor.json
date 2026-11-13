@@ -4788,11 +4788,11 @@
    },
    "FFA": {
     "duelos": "4/12",
-    "ev": 20,
+    "ev": 21,
     "oro": 1,
     "ovr": 58,
     "pod": 1,
-    "pts": 100540,
+    "pts": 103165,
     "racha": "0/3",
     "tg": {
      "fin": 1
@@ -14825,11 +14825,11 @@
   "melomaniaco": {
    "FFA": {
     "duelos": "",
-    "ev": 5,
+    "ev": 6,
     "oro": 0,
-    "ovr": 45,
+    "ovr": 46,
     "pod": 0,
-    "pts": 14582,
+    "pts": 17207,
     "racha": "0/0",
     "tg": {
      "fund": true
