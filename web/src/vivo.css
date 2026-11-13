@@ -2041,7 +2041,7 @@ a.rk-z:hover{border-color:var(--linea)}
 /* 🔔 LA CAMPANA, COMO LA MAQUETA (13/11/2026, Dlx: «que sea igual al de la maqueta así exactamente»): las medidas y los
    colores son los de la opción A de https://claude.ai/artifact/APL7sTvmkpADw1GyMqupHJ. La cabecera (título y filtros) y el
    pie quedan fijos; el medio es lo que se mueve, y los títulos de día se pegan arriba como allá.
-   ⚠️ El título va en Anton: si la página todavía no la trae, sale en Archivo angosta (la más parecida de las que carga) */
+   El título y el «VS» van en Anton, como allá (fuentes.css) */
 .nt-p{--nt-panel:#0B0B0D;--nt-caja:#141417;--nt-linea:#232326;--nt-tinta:#F6F6F6;--nt-gris:#A5A5A0;--nt-oro:#F2B705;--nt-verde:#29B298;--nt-mag:#E41373;
   position:absolute;right:0;top:calc(100% + 10px);z-index:40;width:390px;max-height:min(78vh,700px);display:flex;flex-direction:column;
   background:var(--nt-panel);color:var(--nt-tinta);border:1px solid var(--nt-linea);border-radius:4px;overflow:hidden;
@@ -2050,7 +2050,7 @@ a.rk-z:hover{border-color:var(--linea)}
 .nt-p,.nt-p *,.nt-p *::after{box-sizing:border-box}
 .nt-arr{flex:none;background:var(--nt-panel)}
 .nt-h{display:flex;align-items:center;gap:8px;padding:14px 14px 12px 16px;border-bottom:1px solid var(--nt-linea)}
-.nt-h h2{flex:1;margin:0;font:900 22px/1 Anton,Archivo,sans-serif;font-stretch:62%;font-synthesis:none;letter-spacing:.02em;text-transform:uppercase}
+.nt-h h2{flex:1;margin:0;font:400 22px/1 Anton,Archivo,sans-serif;letter-spacing:.02em;text-transform:uppercase}
 .nt-lnk{background:none;border:0;padding:6px;color:var(--nt-gris);cursor:pointer;
   font:700 13px/1 "Barlow Condensed",sans-serif;letter-spacing:.05em;text-transform:uppercase}
 .nt-lnk:hover{color:var(--nt-tinta)}
@@ -2092,7 +2092,7 @@ li.nt-f{cursor:default}
 .nt-acc{display:flex;flex-wrap:wrap;gap:6px;margin-top:9px}
 .nt-vs{display:grid;grid-template-columns:1fr auto 1fr;gap:6px;align-items:center;margin-top:9px}
 .nt-vs .nt-btn{padding:10px 8px;text-align:center;line-height:1.25}
-.nt-vs > span{font:900 15px/1 Anton,Archivo,sans-serif;font-stretch:62%;font-synthesis:none;color:var(--nt-gris)}
+.nt-vs > span{font:400 15px/1 Anton,Archivo,sans-serif;color:var(--nt-gris)}
 .nt-btn{border:1px solid var(--nt-linea);background:var(--nt-caja);color:var(--nt-tinta);border-radius:4px;padding:8px 10px;cursor:pointer;
   font:800 12.5px/1 Archivo,sans-serif}
 .nt-btn.v{background:var(--nt-verde);border-color:var(--nt-verde);color:#030304}
