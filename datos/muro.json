@@ -182,12 +182,7 @@
 },
 "velatz": {
 "rg": "C",
-"c": [
-"competitivo",
-"pais",
-"servidor",
-"temporada"
-]
+"c": []
 },
 "nxuz": {
 "rg": "C",
@@ -200,6 +195,15 @@
 },
 "miniboy": {
 "rg": "D",
+"c": [
+"competitivo",
+"pais",
+"servidor",
+"temporada"
+]
+},
+"okam": {
+"rg": "C",
 "c": [
 "competitivo",
 "pais",
@@ -242,15 +246,6 @@
 ]
 },
 "guess": {
-"rg": "C",
-"c": [
-"competitivo",
-"pais",
-"servidor",
-"temporada"
-]
-},
-"okam": {
 "rg": "C",
 "c": [
 "competitivo",
@@ -337,10 +332,6 @@
 "servidor",
 "temporada"
 ]
-},
-"19": {
-"rg": "",
-"c": []
 },
 "xubaru": {
 "rg": "C",
@@ -432,6 +423,10 @@
 "temporada"
 ]
 },
+"dominick": {
+"rg": "D",
+"c": []
+},
 "dyzz": {
 "rg": "E",
 "c": [
@@ -441,9 +436,14 @@
 "temporada"
 ]
 },
-"dominick": {
+"soulb": {
 "rg": "D",
-"c": []
+"c": [
+"competitivo",
+"pais",
+"servidor",
+"temporada"
+]
 },
 "bna": {
 "rg": "C",
@@ -466,15 +466,6 @@
 "temporada"
 ]
 },
-"soulb": {
-"rg": "D",
-"c": [
-"competitivo",
-"pais",
-"servidor",
-"temporada"
-]
-},
 "andres": {
 "rg": "C",
 "c": [
@@ -492,6 +483,15 @@
 "rg": "B",
 "c": [
 "competitivo",
+"servidor",
+"temporada"
+]
+},
+"teito": {
+"rg": "E",
+"c": [
+"competitivo",
+"pais",
 "servidor",
 "temporada"
 ]
@@ -556,17 +556,18 @@
 "temporada"
 ]
 },
-"number": {
-"rg": "D",
-"c": [
-"competitivo",
-"servidor",
-"temporada"
-]
-},
 "eclipsito": {
 "rg": "C",
 "c": []
+},
+"numberve": {
+"rg": "D",
+"c": [
+"competitivo",
+"pais",
+"servidor",
+"temporada"
+]
 },
 "badterne": {
 "rg": "",
@@ -610,15 +611,6 @@
 "temporada"
 ]
 },
-"kochi": {
-"rg": "C",
-"c": [
-"competitivo",
-"pais",
-"servidor",
-"temporada"
-]
-},
 "sosaatr": {
 "rg": "E",
 "c": [
@@ -628,25 +620,15 @@
 "temporada"
 ]
 },
-"numberve": {
+"crk": {
 "rg": "E",
 "c": [
 "competitivo",
-"pais",
 "servidor",
 "temporada"
 ]
 },
 "player": {
-"rg": "E",
-"c": [
-"competitivo",
-"pais",
-"servidor",
-"temporada"
-]
-},
-"nemi": {
 "rg": "E",
 "c": [
 "competitivo",
@@ -662,23 +644,6 @@
 "presagio": {
 "rg": "",
 "c": [
-"servidor",
-"temporada"
-]
-},
-"crk": {
-"rg": "E",
-"c": [
-"competitivo",
-"servidor",
-"temporada"
-]
-},
-"teito": {
-"rg": "E",
-"c": [
-"competitivo",
-"pais",
 "servidor",
 "temporada"
 ]
@@ -727,14 +692,6 @@
 "temporada"
 ]
 },
-"shadow": {
-"rg": "E",
-"c": [
-"competitivo",
-"servidor",
-"temporada"
-]
-},
 "mcnadie": {
 "rg": "",
 "c": [
@@ -751,10 +708,15 @@
 "temporada"
 ]
 },
-"teo": {
+"nemmiias": {
 "rg": "E",
 "c": [
-"competitivo",
+"servidor"
+]
+},
+"19fleivawack": {
+"rg": "",
+"c": [
 "pais",
 "servidor",
 "temporada"
@@ -764,6 +726,35 @@
 "rg": "",
 "c": [
 "pais",
+"servidor",
+"temporada"
+]
+},
+"dios": {
+"rg": "",
+"c": [
+"servidor",
+"temporada"
+]
+},
+"vallest": {
+"rg": "E",
+"c": [
+"servidor",
+"temporada"
+]
+},
+"artezzy": {
+"rg": "",
+"c": [
+"competitivo",
+"servidor",
+"temporada"
+]
+},
+"mcarepa": {
+"rg": "",
+"c": [
 "servidor",
 "temporada"
 ]
@@ -914,7 +905,7 @@
 "rg": "",
 "c": []
 },
-"mcarepa": {
+"number": {
 "rg": "",
 "c": [
 "servidor",
@@ -925,22 +916,10 @@
 "rg": "",
 "c": []
 },
-"abraham": {
-"rg": "",
-"c": []
-},
 "erik": {
 "rg": "",
 "c": [
 "pais",
-"servidor",
-"temporada"
-]
-},
-"artezzy": {
-"rg": "",
-"c": [
-"competitivo",
 "servidor",
 "temporada"
 ]
@@ -1015,13 +994,6 @@
 "rg": "",
 "c": []
 },
-"dios": {
-"rg": "",
-"c": [
-"servidor",
-"temporada"
-]
-},
 "benji": {
 "rg": "",
 "c": []
@@ -1061,6 +1033,13 @@
 "servidor"
 ]
 },
+"kochi": {
+"rg": "",
+"c": [
+"servidor",
+"temporada"
+]
+},
 "giansito": {
 "rg": "",
 "c": []
@@ -1088,6 +1067,14 @@
 "rg": "",
 "c": [
 "servidor"
+]
+},
+"shadow": {
+"rg": "",
+"c": [
+"competitivo",
+"servidor",
+"temporada"
 ]
 },
 "zeta": {
@@ -1133,6 +1120,12 @@
 "leyenda": {
 "rg": "",
 "c": []
+},
+"raizer": {
+"rg": "",
+"c": [
+"servidor"
+]
 },
 "millonario": {
 "rg": "",
@@ -1183,6 +1176,10 @@
 "rg": "",
 "c": []
 },
+"abrahamh": {
+"rg": "",
+"c": []
+},
 "nmb": {
 "rg": "",
 "c": []
@@ -1200,6 +1197,10 @@
 "c": []
 },
 "santi": {
+"rg": "",
+"c": []
+},
+"19": {
 "rg": "",
 "c": []
 },
@@ -1226,12 +1227,6 @@
 "rg": "",
 "c": []
 },
-"raizer": {
-"rg": "",
-"c": [
-"servidor"
-]
-},
 "noone": {
 "rg": "",
 "c": [
@@ -1256,6 +1251,10 @@
 "rg": "",
 "c": []
 },
+"scot": {
+"rg": "",
+"c": []
+},
 "dantemx": {
 "rg": "",
 "c": [
@@ -1271,11 +1270,11 @@
 "rg": "",
 "c": []
 },
-"scot": {
+"noa": {
 "rg": "",
 "c": []
 },
-"noa": {
+"abraham": {
 "rg": "",
 "c": []
 },
@@ -1327,6 +1326,24 @@
 "saiko": {
 "rg": "",
 "c": [
+"servidor",
+"temporada"
+]
+},
+"nemi": {
+"rg": "E",
+"c": [
+"competitivo",
+"pais",
+"servidor",
+"temporada"
+]
+},
+"teo": {
+"rg": "E",
+"c": [
+"competitivo",
+"pais",
 "servidor",
 "temporada"
 ]
@@ -2795,15 +2812,6 @@
 }
 },
 "cambios": [
-{
-"tipo": "rango",
-"t": "2026-10-07T21:57:14Z",
-"quien": [
-"Cronox"
-],
-"rg": "E",
-"primero": true
-},
 {
 "tipo": "tarjeta",
 "t": "2026-10-07T21:57:14Z",
@@ -6166,6 +6174,15 @@
 ".SosaATR"
 ],
 "carta": "pais"
+},
+{
+"tipo": "rango",
+"t": "2026-11-13T01:10:55Z",
+"quien": [
+"Number VE"
+],
+"rg": "D",
+"primero": false
 }
 ],
 "noche_antes": {
@@ -7212,8 +7229,8 @@
 "tipo": "resnoche",
 "t": "2026-11-13T08:00:00Z",
 "dia": "2026-11-12",
-"eventos": 2,
-"part": 16,
+"eventos": 4,
+"part": 40,
 "campeones": [
 {
 "ev": "CUPO A LA MULTIVERS",
@@ -7236,46 +7253,68 @@
 "mtz"
 ]
 ]
+},
+{
+"ev": "RAP SIN GROSERIAS 5",
+"sv": "FDS",
+"ll": 626,
+"quien": [
+[
+"Dios",
+"dios"
+]
+]
+},
+{
+"ev": "RANKED 1",
+"sv": "FDS",
+"ll": 627,
+"quien": [
+[
+"Artezzy",
+"artezzy"
+]
+]
 }
 ],
 "suman": [
 {
-"n": "MTZ",
-"k": "mtz",
-"pts": 7500,
+"n": "Dios",
+"k": "dios",
+"pts": 17000,
+"ev": 3
+},
+{
+"n": "Artezzy",
+"k": "artezzy",
+"pts": 10000,
 "ev": 1
 },
 {
 "n": "TøKīØ🦠🧠",
 "k": "tøkiø",
-"pts": 7500,
-"ev": 2
-},
-{
-"n": "Zetryko",
-"k": "zetryko",
-"pts": 7500,
-"ev": 1
+"pts": 9500,
+"ev": 3
 }
 ],
 "suben": [
 {
+"n": "MAT MC",
+"k": "",
+"de": 514,
+"a": 423
+},
+{
+"n": "Dios",
+"k": "dios",
+"de": 108,
+"a": 77
+},
+{
 "n": "Number VE",
 "k": "numberve",
 "de": 84,
-"a": 65
-},
-{
-"n": "Zetryko",
-"k": "zetryko",
-"de": 107,
-"a": 93
-},
-{
-"n": "Berrun",
-"k": "berrun",
-"de": 304,
-"a": 292
+"a": 58
 }
 ],
 "sorpresas": [
@@ -7285,6 +7324,13 @@
 "que": "primer",
 "ev": "- LIGA INMORTAL -",
 "desde": 103
+},
+{
+"n": "Artezzy",
+"k": "artezzy",
+"que": "primer",
+"ev": "RANKED 1",
+"desde": 96
 }
 ]
 }

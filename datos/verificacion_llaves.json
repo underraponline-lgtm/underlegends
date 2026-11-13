@@ -306,6 +306,9 @@
    "org": "juega",
    "v": 1
   },
+  "RANKED 1|FDS|12/11": {
+   "v": 1
+  },
   "RAP PARA RAPEROS|FFA|02/11": {
    "min": 52,
    "org": "juega",
@@ -330,7 +333,7 @@
    "v": 1
   },
   "RAP SIN GROSERIAS 5|FDS|12/11": {
-   "min": 88,
+   "min": 101,
    "v": 1
   },
   "RED BULL CARACAS REGIONAL T.5|URBF|08/11": {
@@ -339,6 +342,7 @@
   },
   "RED BULL COLOMBIA|LKR|09/11": {
    "min": 123,
+   "org": "juega",
    "v": 1
   },
   "RED BULL CREW CHILE 2026|ACAD|26/09": {

@@ -1453,6 +1453,17 @@
    "b": "DIOS",
    "ganador": "DIOS",
    "votos": "1–0"
+  },
+  "1570597486953889854": {
+   "id": "1570597486953889854",
+   "sv": "#FDS ╏FREESTYLE DISCORD SERIES",
+   "g": "1489848581203689535",
+   "canal": "1536574435761332334",
+   "pub": 1794530021180,
+   "a": "CRK",
+   "b": "DIOS",
+   "ganador": "DIOS",
+   "votos": "1–0"
   }
  },
  "llaves": {
@@ -6241,9 +6252,140 @@
    "g": "1489848581203689535",
    "canal": "1500675902042931280",
    "pub": 1794524133838,
-   "ed": 1794529407594,
+   "ed": 1794530168824,
    "texto": "`[ CUARTOS ]`\n⌞crk⌝ 🆚 ⌞raizer⌝\n⌞Nito nanel⌝ 🆚 ⌞mcarepa⌝\n⌞OKAM⌝ 🆚 ⌞DIOS⌝\n⌞tokio⌝ 🆚 ⌞showsero⌝\n`[ SEMIFINALES ]`\n⌞crk⌝ 🆚 ⌞mcarepa⌝\n⌞dios⌝ 🆚 ⌞showsero⌝\n`[ FINAL ]`",
    "batallas": [
+    [
+     "CUARTOS",
+     [
+      "crk",
+      "raizer"
+     ],
+     "crk",
+     "ronda siguiente",
+     []
+    ],
+    [
+     "CUARTOS",
+     [
+      "Nito nanel",
+      "mcarepa"
+     ],
+     "mcarepa",
+     "ronda siguiente",
+     []
+    ],
+    [
+     "CUARTOS",
+     [
+      "OKAM",
+      "DIOS"
+     ],
+     "DIOS",
+     "ronda siguiente",
+     []
+    ],
+    [
+     "CUARTOS",
+     [
+      "tokio",
+      "showsero"
+     ],
+     "showsero",
+     "ronda siguiente",
+     []
+    ],
+    [
+     "SEMIFINALES",
+     [
+      "crk",
+      "mcarepa"
+     ],
+     null,
+     "última ronda y no dice campeón",
+     []
+    ],
+    [
+     "SEMIFINALES",
+     [
+      "dios",
+      "showsero"
+     ],
+     null,
+     "última ronda y no dice campeón",
+     []
+    ]
+   ]
+  },
+  "1570597974667432037": {
+   "id": "1570597974667432037",
+   "sv": "#FDS ╏FREESTYLE DISCORD SERIES",
+   "g": "1489848581203689535",
+   "canal": "1500675902042931280",
+   "pub": 1794530137460,
+   "ed": 1794530220224,
+   "texto": "`[ OCTAVOS ]`\n⌞Scot 🇦🇷⌝ 🆚 ⌞Raizer🇵🇪⌝\n⌞Dios 🇲🇽⌝ 🆚 ⌞Lrs🇦🇷⌝\n⌞CRK 🇲🇽⌝ 🆚 ⌞Soul B 🇨🇱⌝\n⌞Leyenda.X5 🇦🇷⌝ 🆚 ⌞Artezzy 🇵🇪⌝\n⌞Scot 🇦🇷⌝ 🆚 ⌞Nxuz🇵🇪⌝\n⌞CrisZJ 🇵🇪⌝ 🆚 ⌞Mat MC 🇧🇴⌝\n`[ CUARTOS ]`\n⌞crk⌝ 🆚 ⌞raizer⌝\n⌞Nito nanel⌝ 🆚 ⌞mcarepa⌝\n⌞OKAM⌝ 🆚 ⌞DIOS⌝\n⌞tokio⌝ 🆚 ⌞showsero⌝\n`[ SEMIFINALES ]`\n⌞crk⌝ 🆚 ⌞mcarepa⌝\n⌞dios⌝ 🆚 ⌞showsero⌝\n`[ FINAL ]`",
+   "batallas": [
+    [
+     "OCTAVOS",
+     [
+      "Scot 🇦🇷",
+      "Raizer🇵🇪"
+     ],
+     "Raizer🇵🇪",
+     "ronda siguiente",
+     []
+    ],
+    [
+     "OCTAVOS",
+     [
+      "Dios 🇲🇽",
+      "Lrs🇦🇷"
+     ],
+     "Dios 🇲🇽",
+     "ronda siguiente",
+     []
+    ],
+    [
+     "OCTAVOS",
+     [
+      "CRK 🇲🇽",
+      "Soul B 🇨🇱"
+     ],
+     "CRK 🇲🇽",
+     "ronda siguiente",
+     []
+    ],
+    [
+     "OCTAVOS",
+     [
+      "Leyenda.X5 🇦🇷",
+      "Artezzy 🇵🇪"
+     ],
+     null,
+     "no aparece nadie después",
+     []
+    ],
+    [
+     "OCTAVOS",
+     [
+      "Scot 🇦🇷",
+      "Nxuz🇵🇪"
+     ],
+     null,
+     "no aparece nadie después",
+     []
+    ],
+    [
+     "OCTAVOS",
+     [
+      "CrisZJ 🇵🇪",
+      "Mat MC 🇧🇴"
+     ],
+     null,
+     "no aparece nadie después",
+     []
+    ],
     [
      "CUARTOS",
      [

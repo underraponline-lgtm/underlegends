@@ -6508,7 +6508,7 @@
    "Trot": 13
   },
   "fecha": "11/10",
-  "firma": "20ca97a07f2df765",
+  "firma": "d7d23481fb6a5fcf",
   "msg": "1558907910707224587",
   "nombre": "RED BULL NACIONAL ESPAÑA T.5",
   "num": 448,
@@ -9436,7 +9436,7 @@
    "Zignos": 19
   },
   "fecha": "12/10",
-  "firma": "2300403d645be3d6",
+  "firma": "cd9e91ee402a11e1",
   "msg": "1559587802864295988",
   "nombre": "GODZ",
   "num": 460,
@@ -10169,9 +10169,9 @@
     "Guess"
    ],
    [
-    "Sosa",
-    "JB🇦🇷",
-    "Sosa"
+    ".SosaATR",
+    "JHEYSON",
+    ".SosaATR"
    ],
    [
     "AGUSTÍN51K",
@@ -10189,9 +10189,9 @@
     "Makmah"
    ],
    [
-    "Guess, Nemi",
-    "Sosa, ONDADISKO",
-    "Guess, Nemi"
+    "Guess, nemmii_as",
+    ".SosaATR, ONDADISKO",
+    "Guess, nemmii_as"
    ],
    [
     "Presagio, AGUSTÍN51K",
@@ -10200,7 +10200,7 @@
    ],
    [
     "Presagio, NC, AGUSTÍN51K",
-    "Guess, Nemi, ONDADISKO",
+    "Guess, nemmii_as, ONDADISKO",
     "Presagio, NC, AGUSTÍN51K"
    ]
   ],
@@ -10218,7 +10218,7 @@
    "Tusicario": 6
   },
   "fecha": "12/10",
-  "firma": "17bc6e43497c2e88",
+  "firma": "3ecdfe8c761546b6",
   "msg": "1559414143948431441",
   "nombre": "IDS V.2",
   "num": 464,
@@ -10257,12 +10257,12 @@
     2000
    ],
    [
-    "Nemi",
+    "nemmii_as",
     "Subcampeón",
     2000
    ],
    [
-    "Sosa",
+    ".SosaATR",
     "Semifinal",
     2000
    ],
@@ -10277,7 +10277,7 @@
     2000
    ],
    [
-    "JB🇦🇷",
+    "JHEYSON",
     "Cuartos",
     2000
    ],
@@ -22464,7 +22464,7 @@
    "Zekha": 4
   },
   "fecha": "25/10",
-  "firma": "ab56527bf11a24c2",
+  "firma": "c476c4afe153b342",
   "msg": "1564056930748469309",
   "nombre": "REDBULL CREW ARGENTINA 2026",
   "num": 515,
@@ -23832,7 +23832,7 @@
    ],
    [
     "MAT MC",
-    "Shadow",
+    "VALLES-T",
     "MAT MC"
    ],
    [
@@ -23884,7 +23884,7 @@
    "Vilca": 1
   },
   "fecha": "14/10",
-  "firma": "cadde8b97653095b",
+  "firma": "52671741251de5fc",
   "msg": "1564147696351191051",
   "nombre": "GG SANGRERAP 1",
   "num": 521,
@@ -23966,7 +23966,7 @@
     1250
    ],
    [
-    "Shadow",
+    "VALLES-T",
     "Octavos",
     1250
    ]
@@ -24198,7 +24198,7 @@
    "Vilca": 1
   },
   "fecha": "21/10",
-  "firma": "1e3d2f3c2fda8cfb",
+  "firma": "fd475a35826312d8",
   "msg": "1564147707952758815",
   "nombre": "- RED BULL TORNEO DE PLAZAS 2026 -",
   "num": 523,
@@ -33720,7 +33720,7 @@
    "OEP": 2
   },
   "fecha": "03/11",
-  "firma": "02aa35aeafde522e",
+  "firma": "fe07e58635a27197",
   "msg": "1567309579967144037",
   "nombre": "Rayos y Centellas",
   "num": 564,
@@ -36800,9 +36800,9 @@
     "Carlosss"
    ],
    [
-    "19",
+    "19 FLEIVA WACK",
     "MaYeuTyK",
-    "19"
+    "19 FLEIVA WACK"
    ],
    [
     "Drexx",
@@ -36810,9 +36810,9 @@
     "Drexx"
    ],
    [
-    "19",
+    "19 FLEIVA WACK",
     "Carlosss",
-    "19"
+    "19 FLEIVA WACK"
    ],
    [
     "Drexx",
@@ -36820,9 +36820,14 @@
     "Drexx"
    ],
    [
-    "19",
+    "19 FLEIVA WACK",
     "Drexx",
-    "19"
+    "19 FLEIVA WACK"
+   ],
+   [
+    "Jupiter",
+    "LAST",
+    "Jupiter"
    ]
   ],
   "ev_antes": {
@@ -36835,7 +36840,7 @@
    "Xclusivo": 23
   },
   "fecha": "07/11",
-  "firma": "8d3462615952fcb4",
+  "firma": "31b93801b1807ca1",
   "msg": "1568746606562509004",
   "nombre": "ZONA MORTAL",
   "num": 577,
@@ -36847,7 +36852,7 @@
   "t": "2026-11-07T22:25:02Z",
   "tabla": [
    [
-    "19",
+    "19 FLEIVA WACK",
     "Campeón",
     7500
    ],
@@ -36873,6 +36878,11 @@
    ],
    [
     "Crk",
+    "Cuartos",
+    2000
+   ],
+   [
+    "LAST",
     "Cuartos",
     2000
    ],
@@ -36970,9 +36980,9 @@
     "Infecte"
    ],
    [
-    "Abraham",
+    "AbrahamH",
     "NXUZ",
-    "Abraham"
+    "AbrahamH"
    ],
    [
     "Vilca",
@@ -36981,7 +36991,7 @@
    ],
    [
     "oriuz",
-    "Mato  🇧🇴",
+    "Mato 🇧🇴",
     "oriuz"
    ],
    [
@@ -36995,9 +37005,9 @@
     "CrisZJ"
    ],
    [
-    "Abraham",
+    "AbrahamH",
     "oriuz",
-    "Abraham"
+    "AbrahamH"
    ],
    [
     "Vilca",
@@ -37010,14 +37020,19 @@
     "Chase"
    ],
    [
-    "Abraham",
+    "AbrahamH",
     "Vilca",
-    "Abraham"
+    "AbrahamH"
    ],
    [
     "Chase",
-    "Abraham",
+    "AbrahamH",
     "Chase"
+   ],
+   [
+    "Shadow",
+    "xd",
+    ""
    ]
   ],
   "ev_antes": {
@@ -37036,7 +37051,7 @@
    "oriuz": 7
   },
   "fecha": "07/10",
-  "firma": "511b0ed8c642e2e5",
+  "firma": "928e4c5a2ee3c8fe",
   "msg": "1569507985938714665",
   "nombre": "DISCORD STYLE ED. 15",
   "num": 578,
@@ -37053,7 +37068,7 @@
     10000
    ],
    [
-    "Abraham",
+    "AbrahamH",
     "Subcampeón",
     7500
    ],
@@ -37113,7 +37128,17 @@
     1250
    ],
    [
-    "Mato  🇧🇴",
+    "Mato 🇧🇴",
+    "Octavos",
+    1250
+   ],
+   [
+    "Shadow",
+    "Octavos",
+    1250
+   ],
+   [
+    "xd",
     "Octavos",
     1250
    ]
@@ -39784,7 +39809,7 @@
    "Vilca": 15
   },
   "fecha": "08/11",
-  "firma": "9f047510eead0264",
+  "firma": "c4cc0c3e01205f17",
   "msg": "1569508065508593856",
   "nombre": "RAP SIN GROSERIAS 4",
   "num": 591,
@@ -39923,7 +39948,7 @@
    "yinn": 33
   },
   "fecha": "08/11",
-  "firma": "cee5903bcb9e531c",
+  "firma": "fcd45413062e334d",
   "msg": "1569128640363364464",
   "nombre": "K.O.M VOL.10",
   "num": 592,
@@ -41524,9 +41549,9 @@
   "canal": "1443793172013776997",
   "duelos": [
    [
-    "Abraham, Chop",
+    "AbrahamH, Chop",
     "CrisZJ, PIPA",
-    "Abraham, Chop"
+    "AbrahamH, Chop"
    ],
    [
     "Vilca, DANU",
@@ -41544,9 +41569,9 @@
     "Chase, MCO"
    ],
    [
-    "Abraham, Chop",
-    "Mark, TOBALSILLO",
-    "Abraham, Chop"
+    "AbrahamH, Chop",
+    "Mark98, TOBALSILLO",
+    "AbrahamH, Chop"
    ],
    [
     "Vilca, DANU",
@@ -41560,13 +41585,13 @@
    ],
    [
     "SOL, Sadik",
-    "KUN, Carlos",
+    "KUN, Carlosss",
     "SOL, Sadik"
    ],
    [
-    "Abraham, Chop",
+    "AbrahamH, Chop",
     "Vilca, DANU",
-    "Abraham, Chop"
+    "AbrahamH, Chop"
    ],
    [
     "SOL, Sadik",
@@ -41575,13 +41600,18 @@
    ],
    [
     "SOL, Sadik",
-    "Abraham, Chop",
+    "AbrahamH, Chop",
     "SOL, Sadik"
+   ],
+   [
+    "TOBALSILLO, Mark98",
+    "Dominick, SAMGAMING",
+    ""
    ]
   ],
   "ev_antes": {},
   "fecha": "10/10",
-  "firma": "364f9b798710b98b",
+  "firma": "b5a744e853aa3b22",
   "msg": "1569847767734554677",
   "nombre": "(sin titulo)",
   "num": 602,
@@ -41603,7 +41633,7 @@
     5000
    ],
    [
-    "Abraham",
+    "AbrahamH",
     "Subcampeón",
     3750
    ],
@@ -41658,12 +41688,12 @@
     1250
    ],
    [
-    "Carlos",
+    "Carlosss",
     "Cuartos",
     1250
    ],
    [
-    "Mark",
+    "Mark98",
     "Cuartos",
     625
    ],
@@ -41704,6 +41734,16 @@
    ],
    [
     "alejozz",
+    "Octavos",
+    625
+   ],
+   [
+    "Dominick",
+    "Octavos",
+    625
+   ],
+   [
+    "SAMGAMING",
     "Octavos",
     625
    ]
@@ -41969,7 +42009,7 @@
    "Vilca": 16
   },
   "fecha": "10/11",
-  "firma": "4bfb3984bb588f03",
+  "firma": "d67c9d5f29c780c4",
   "msg": "1569848635271680124",
   "nombre": "MF DOOM Y MADLIB EDICION 1",
   "num": 604,
@@ -45665,7 +45705,7 @@
    "crakero": 8
   },
   "fecha": "12/11",
-  "firma": "d2e7dd72be5be7db",
+  "firma": "13d281f0a37468e9",
   "msg": "1570581400896278600",
   "nombre": "- LIGA INMORTAL -",
   "num": 625,
@@ -45715,6 +45755,408 @@
     "Noone",
     "Cuartos",
     2000
+   ]
+  ],
+  "v": 2
+ },
+ "626": {
+  "antes": {
+   "Crk": [
+    69,
+    87,
+    false
+   ],
+   "Dios": [
+    106,
+    138,
+    false
+   ],
+   "Mc arepa": [
+    96,
+    121,
+    false
+   ],
+   "OKAM": [
+    28,
+    31,
+    false
+   ],
+   "Raizer": [
+    122,
+    178,
+    false
+   ],
+   "TøKīØ🦠🧠": [
+    44,
+    53,
+    false
+   ]
+  },
+  "canal": "1489848582189224104",
+  "duelos": [
+   [
+    "Crk",
+    "Raizer",
+    "Crk"
+   ],
+   [
+    "Mc arepa",
+    "Nito nanel",
+    "Mc arepa"
+   ],
+   [
+    "Dios",
+    "OKAM",
+    "Dios"
+   ],
+   [
+    "Showsero🇧🇮",
+    "TøKīØ🦠🧠",
+    "Showsero🇧🇮"
+   ],
+   [
+    "Crk",
+    "Mc arepa",
+    "Crk"
+   ],
+   [
+    "Dios",
+    "Showsero🇧🇮",
+    "Dios"
+   ],
+   [
+    "Dios",
+    "Crk",
+    "Dios"
+   ],
+   [
+    "Mc arepa",
+    "Showsero🇧🇮",
+    "Mc arepa"
+   ]
+  ],
+  "ev_antes": {
+   "Crk": 17,
+   "Dios": 7,
+   "Mc arepa": 5,
+   "OKAM": 27,
+   "Raizer": 6,
+   "TøKīØ🦠🧠": 13
+  },
+  "fecha": "12/11",
+  "firma": "01541fcc62040775",
+  "msg": "1570602754639007937",
+  "nombre": "RAP SIN GROSERIAS 5",
+  "num": 626,
+  "participantes": 8,
+  "sello": {
+   "Dios": "20e8d27f1882:7a510334494e"
+  },
+  "sv": "FDS",
+  "t": "2026-11-13T00:54:36Z",
+  "tabla": [
+   [
+    "Dios",
+    "Campeón",
+    7500
+   ],
+   [
+    "Crk",
+    "Subcampeón",
+    5000
+   ],
+   [
+    "Mc arepa",
+    "Tercero",
+    4000
+   ],
+   [
+    "Showsero🇧🇮",
+    "Cuarto",
+    3000
+   ],
+   [
+    "Raizer",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Nito nanel",
+    "Cuartos",
+    2000
+   ],
+   [
+    "OKAM",
+    "Cuartos",
+    2000
+   ],
+   [
+    "TøKīØ🦠🧠",
+    "Cuartos",
+    2000
+   ]
+  ],
+  "v": 2
+ },
+ "627": {
+  "antes": {
+   "Artezzy": [
+    98,
+    125,
+    false
+   ],
+   "Calíz": [
+    45,
+    54,
+    false
+   ],
+   "CrisZJ": [
+    260,
+    36,
+    true
+   ],
+   "Crk": [
+    69,
+    87,
+    false
+   ],
+   "Dios": [
+    106,
+    138,
+    false
+   ],
+   "LRS": [
+    37,
+    45,
+    false
+   ],
+   "Leyenda": [
+    296,
+    158,
+    true
+   ],
+   "MAT MC": [
+    518,
+    474,
+    true
+   ],
+   "Mc arepa": [
+    96,
+    121,
+    false
+   ],
+   "NXUZ": [
+    21,
+    24,
+    false
+   ],
+   "OKAM": [
+    28,
+    31,
+    false
+   ],
+   "Raizer": [
+    122,
+    178,
+    false
+   ],
+   "Scot": [
+    317,
+    187,
+    true
+   ],
+   "Soulb": [
+    49,
+    60,
+    false
+   ],
+   "Vilca": [
+    59,
+    75,
+    false
+   ]
+  },
+  "canal": "1489848582189224104",
+  "duelos": [
+   [
+    "Raizer",
+    "Scot",
+    "Raizer"
+   ],
+   [
+    "Dios",
+    "LRS",
+    "Dios"
+   ],
+   [
+    "Soulb",
+    "Crk",
+    "Soulb"
+   ],
+   [
+    "Artezzy",
+    "Leyenda",
+    "Artezzy"
+   ],
+   [
+    "NXUZ",
+    "Scot",
+    "NXUZ"
+   ],
+   [
+    "CrisZJ",
+    "MAT MC",
+    "CrisZJ"
+   ],
+   [
+    "Mc arepa",
+    "Calíz",
+    "Mc arepa"
+   ],
+   [
+    "OKAM",
+    "Vilca",
+    "OKAM"
+   ],
+   [
+    "Dios",
+    "Raizer",
+    "Dios"
+   ],
+   [
+    "NXUZ",
+    "CrisZJ",
+    "NXUZ"
+   ],
+   [
+    "Artezzy",
+    "Soulb",
+    "Artezzy"
+   ],
+   [
+    "OKAM",
+    "Mc arepa",
+    "OKAM"
+   ],
+   [
+    "Dios",
+    "NXUZ",
+    "Dios"
+   ],
+   [
+    "Artezzy",
+    "OKAM",
+    "Artezzy"
+   ],
+   [
+    "Artezzy",
+    "Dios",
+    "Artezzy"
+   ]
+  ],
+  "ev_antes": {
+   "Artezzy": 14,
+   "Calíz": 31,
+   "CrisZJ": 31,
+   "Crk": 17,
+   "Dios": 7,
+   "LRS": 36,
+   "Leyenda": 11,
+   "MAT MC": 2,
+   "Mc arepa": 5,
+   "NXUZ": 44,
+   "OKAM": 27,
+   "Raizer": 6,
+   "Scot": 10,
+   "Soulb": 27,
+   "Vilca": 22
+  },
+  "fecha": "12/11",
+  "firma": "454a49026fc366cb",
+  "msg": "1570602758506151978",
+  "nombre": "RANKED 1",
+  "num": 627,
+  "participantes": 16,
+  "sello": {
+   "Artezzy": "6b0af80b4e45:7a510334494e"
+  },
+  "sv": "FDS",
+  "t": "2026-11-13T00:54:37Z",
+  "tabla": [
+   [
+    "Artezzy",
+    "Campeón",
+    10000
+   ],
+   [
+    "Dios",
+    "Subcampeón",
+    7500
+   ],
+   [
+    "NXUZ",
+    "Semifinal",
+    5250
+   ],
+   [
+    "OKAM",
+    "Semifinal",
+    5250
+   ],
+   [
+    "Raizer",
+    "Cuartos",
+    2500
+   ],
+   [
+    "CrisZJ",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Soulb",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Mc arepa",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Scot",
+    "Octavos",
+    1875
+   ],
+   [
+    "LRS",
+    "Octavos",
+    1250
+   ],
+   [
+    "Crk",
+    "Octavos",
+    1250
+   ],
+   [
+    "Leyenda",
+    "Octavos",
+    1250
+   ],
+   [
+    "MAT MC",
+    "Octavos",
+    1250
+   ],
+   [
+    "Calíz",
+    "Octavos",
+    1250
+   ],
+   [
+    "Vilca",
+    "Octavos",
+    1250
    ]
   ],
   "v": 2

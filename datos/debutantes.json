@@ -5,7 +5,7 @@
   "CH": "2026-11-06",
   "DDF": "2026-11-11",
   "DDS": "2026-11-09",
-  "FDS": "2026-10-30",
+  "FDS": "2026-11-12",
   "FFA": "2026-11-12",
   "FRZ": "2026-11-12",
   "FVS": "2026-10-15",
@@ -26,19 +26,6 @@
    "sv": "FFA",
    "vence": "2026-11-10T02:50:33+00:00",
    "vencido": false
-  },
-  "19 FLEIVA WACK": {
-   "avisado": "2026-10-30",
-   "chat": "2026-10-31",
-   "con": null,
-   "cumplido": "",
-   "debut": "2026-10-30T20:59:18+00:00",
-   "did": "1345454905325781012",
-   "evento": "LA ISLA DE OKINAWA V.4",
-   "n": 547,
-   "sv": "FFA",
-   "vence": "2026-11-06T20:59:18+00:00",
-   "vencido": true
   },
   "23": {
    "con": null,
@@ -1327,6 +1314,18 @@
    "vence": "2026-11-03T20:14:48+00:00",
    "vencido": true
   },
+  "Kochi2011": {
+   "avisado_cumplido": "2026-11-12",
+   "con": 545,
+   "cumplido": "2026-10-30T00:12:24+00:00",
+   "debut": "2026-10-29T00:50:11+00:00",
+   "did": "1564405977493545130",
+   "evento": "no se k poner style",
+   "n": 616,
+   "sv": "DDS",
+   "vence": "2026-11-05T00:50:11+00:00",
+   "vencido": false
+  },
   "Koffi": {
    "con": null,
    "cumplido": "",
@@ -1426,6 +1425,7 @@
    "vencido": true
   },
   "LICENCIADO": {
+   "avisado": "2026-11-12",
    "con": null,
    "cumplido": "",
    "debut": "2026-11-12T22:38:21+00:00",
@@ -1822,6 +1822,7 @@
    "vencido": true
   },
   "NITO NANEL": {
+   "avisado": "2026-11-12",
    "con": null,
    "cumplido": "",
    "debut": "2026-11-12T22:38:21+00:00",
@@ -2254,6 +2255,19 @@
    "vence": "2026-11-03T02:05:05+00:00",
    "vencido": true
   },
+  "Showsero": {
+   "avisado": "2026-11-12",
+   "chat": "2026-11-12",
+   "con": null,
+   "cumplido": "",
+   "debut": "2026-11-12T22:55:33+00:00",
+   "did": "",
+   "evento": "RAP SIN GROSERIAS 5",
+   "n": 626,
+   "sv": "FDS",
+   "vence": "2026-11-19T22:55:33+00:00",
+   "vencido": false
+  },
   "SikoV": {
    "avisado": "2026-10-30",
    "avisado_cumplido": "2026-11-05",
@@ -2475,18 +2489,6 @@
    "cumplido": "",
    "debut": "2026-11-06T03:25:32+00:00",
    "did": "1317231402697363507",
-   "evento": "TORNEOS",
-   "n": 620,
-   "sv": "LKR",
-   "vence": "2026-11-13T03:25:32+00:00",
-   "vencido": false
-  },
-  "VALLES-T": {
-   "avisado": "2026-11-12",
-   "con": null,
-   "cumplido": "",
-   "debut": "2026-11-06T03:25:32+00:00",
-   "did": "1548906948307451906",
    "evento": "TORNEOS",
    "n": 620,
    "sv": "LKR",
