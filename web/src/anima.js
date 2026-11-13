@@ -2,7 +2,7 @@
 // accesibilidad "menos animaciones" tenga sentido»). Todo lo que anima desde JS pregunta acá primero: con «Menos
 // animaciones» (Mi cuenta → `html.calma`) o con la opción del celular (`prefers-reduced-motion`), llega quieto.
 // Lo que se mueve con CSS se apaga en vivo.css (`.app.calma` y la media query, juntos).
-import { useEffect, useRef, useState } from 'react';
+import { startTransition, useEffect, useRef, useState } from 'react';
 
 export function quieto() {
   try {
@@ -113,10 +113,25 @@ export function useTapado() {
     if (!tapadoAhora()) { setT(false); return undefined; }
     let ob = null;
     try {
-      // ⏱️ y cuando el corte ya pasó casi entero (25/10/2026). Con 600 ms, todas las animaciones de la página
-      // arrancaban de golpe EN MEDIO del corte y lo trababan: medido, un cuadro de 83 ms a los 0,7 s, el «laggy» que vio
-      // Dlx en la compu. La última capa termina a los ~1,55 s; las filas arrancan a los 1650 ms, cuando ya se ve la página
-      ob = new MutationObserver(() => { if (!tapadoAhora()) { if (ob) ob.disconnect(); setTimeout(() => setT(false), 1650); } });
+      // ⏱️ CUÁNDO: a los 800 ms del corte, que es cuando la última capa empieza a destapar la página (13/11/2026, Dlx:
+      // «sí, dale», a acortar la pausa). Con 1650 ms el corte destapaba una página EN BLANCO —todo quieto en el primer
+      // cuadro de su entrada— y quedaba así 0,6 s en la compu y 1 s en un celular lento. A 800 ms, 0,1 y 0,24 s.
+      // ⚠️ El 25/10 se había ido de 600 a 1650 porque soltarla trababa el corte (un cuadro de 83 ms). Medido con un
+      // trace: de los 593 ms que costaba en un celular lento, 492 eran React dibujando la página entera de nuevo sólo
+      // para sacar una clase. Ahora la clase se saca DIRECTO del DOM (queda el recálculo de estilos: ~0,1 s ahí, 25 ms
+      // en la compu) y React se pone al día con `startTransition`, en pedacitos que no traban. Si React vuelve a
+      // dibujar antes con la clase todavía en su estado, no la repone: sólo escribe el atributo si el texto cambió
+      ob = new MutationObserver(() => {
+        if (tapadoAhora()) return;
+        if (ob) ob.disconnect();
+        setTimeout(() => {
+          try {
+            const r = document.getElementById('inicio-nuevo');
+            if (r && r.shadowRoot) r.shadowRoot.querySelectorAll('.app.tapado').forEach((a) => a.classList.remove('tapado'));
+          } catch (e) { /* sin DOM: lo hace React */ }
+          startTransition(() => setT(false));
+        }, 800);
+      });
       ob.observe(document.documentElement, { attributes: true, attributeFilter: ['class'] });
     } catch (e) { setT(false); }
     return () => { if (ob) ob.disconnect(); };
