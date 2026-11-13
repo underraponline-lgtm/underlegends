@@ -79,12 +79,26 @@ html.ini-nuevo.lg-fuera #lg-carga{display:none}
 /* ⏳ abajo al centro, la barrita celeste de la bienvenida: el consejo, el porcentaje y la barra */
 #lg-carga .lg-pie{position:absolute;left:50%;bottom:max(20px,3.2vw);translate:-50% 0;width:min(560px,34vw);display:grid;gap:12px}
 #lg-carga .lg-fila{display:flex;justify-content:space-between;align-items:baseline;gap:12px}
-#lg-carga .lg-tip{font:700 clamp(12px,1.1vw,17px)/1.2 "Barlow Condensed",system-ui,sans-serif;letter-spacing:.16em;text-transform:uppercase;
-  color:#C9C9C4;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-#lg-carga .lg-pct{font:900 clamp(14px,1.3vw,22px)/1 Archivo,system-ui,sans-serif;font-stretch:125%;font-variant-numeric:tabular-nums}
+/* 🎞️ LOS CONSEJOS, EL PORCENTAJE Y LA BARRA LOS MUEVE EL COMPOSITOR, no el JS (13/11/2026, Dlx: «asegúrate que esto sea
+   smooth»). Mientras está la pantalla, la app se arma atrás y en un celular modesto eso traba el hilo principal 1,5–2 s
+   seguidos: lo que se movía con JS se congelaba. Los consejos van en una animación de CSS (uno cada 1,3 s), la barra con
+   `animate()` y el número es una TIRA con 0 %…100 % que sube a saltos (`steps`), con la misma curva que la barra */
+#lg-carga .lg-tip{display:grid;min-width:0;font:700 clamp(12px,1.1vw,17px)/1.2 "Barlow Condensed",system-ui,sans-serif;letter-spacing:.16em;
+  text-transform:uppercase;color:#C9C9C4}
+#lg-carga .lg-tip>span{grid-area:1/1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;opacity:0}
+#lg-carga .lg-tip>span:first-child{opacity:1}
+#lg-carga .lg-tip>span:not(.lg-ya){animation:lg-tip 5.2s linear infinite both}
+#lg-carga .lg-tip>span:nth-child(2){animation-delay:1.3s}
+#lg-carga .lg-tip>span:nth-child(3){animation-delay:2.6s}
+#lg-carga .lg-tip>span:nth-child(4){animation-delay:3.9s}
+#lg-carga.lleno .lg-tip>span{animation:none;opacity:0}
+#lg-carga.lleno .lg-tip>.lg-ya{opacity:1}
+#lg-carga .lg-pct{display:block;flex:none;height:1.15em;overflow:hidden;font:900 clamp(14px,1.3vw,22px)/1.15 Archivo,system-ui,sans-serif;
+  font-stretch:125%;font-variant-numeric:tabular-nums;text-align:right}
+#lg-carga .lg-cifras{display:block;will-change:transform}
 #lg-carga .lg-barra{position:relative;height:4px;background:rgba(246,246,246,.2);border-radius:2px;overflow:hidden}
 #lg-carga .lg-barra i{position:absolute;inset:0;background:#29B298;border-radius:2px;transform-origin:0 50%;transform:scaleX(0);
-  will-change:transform;transition:transform .4s cubic-bezier(.3,.6,.3,1)}
+  will-change:transform;transition:background-color .3s ease}
 #lg-carga.lleno .lg-barra i{background:#F6F6F6}
 @media (max-width:899.98px){
   #lg-carga .lg-marca{top:max(16px,6vw);left:5.5vw;gap:2.4vw}
@@ -114,8 +128,12 @@ html.lg-sale #lg-carga .lg-capa.v{animation-delay:.55s}
 /* 🌅 QUE EMPIECE DE A POCO (Dlx, 12/11/2026: «se lagea un poquito cuando la página de carga empieza… que empiece poco a
    poco»). Tironeaba por tres cosas a la vez: el título salía con la letra del sistema y saltaba a la nuestra al llegar,
    todo entraba en el mismo instante en que la página baja su código, y el relleno del título se movía (repintarlo en
-   cada cuadro). Ahora nada aparece hasta que están las letras (`va`: document.fonts.ready, o 0,9 s), y entra en
-   escalera: la marca, el título, el sello y la barra; la foto, con un fundido largo, recién decodificada */
+   cada cuadro). Ahora nada aparece hasta que están las letras (`va`: document.fonts.ready, o 0,7 s), y entra en
+   escalera: la marca, el título, el sello y la barra; la foto, con un fundido largo, recién decodificada.
+   🔴 Y ESO SOLO NO ALCANZÓ (13/11/2026): medido con un trace (CPU ×4), la app se arma en UNA tarea de 1,7 s que
+   arrancaba a los 1,36 s, justo después de `va`: la escalera no llegaba a empezar y la pantalla quedaba en negro hasta
+   los ~3 s. Ahora la app ESPERA a que la pantalla entre (`__lgApp`, ver SCRIPTS) y todo lo que se mueve después lo
+   anima el compositor, que sigue andando aunque el hilo principal esté trabado */
 #lg-carga .lg-marca,#lg-carga .lg-sello,#lg-carga .lg-t,#lg-carga .lg-pie{opacity:0}
 #lg-carga.va .lg-marca{animation:lg-sube .8s ease-out .05s both}
 #lg-carga.va .lg-t{animation:lg-sube 1s cubic-bezier(.2,.7,.2,1) .2s both}
@@ -124,6 +142,7 @@ html.lg-sale #lg-carga .lg-capa.v{animation-delay:.55s}
 #lg-carga.va.quieto .lg-marca,#lg-carga.va.quieto .lg-sello,#lg-carga.va.quieto .lg-t,#lg-carga.va.quieto .lg-pie{opacity:1}
 @keyframes lg-sube{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
 @keyframes lg-sello{from{opacity:0;transform:rotate(-3deg) scale(1.25)}to{opacity:1;transform:rotate(-3deg)}}
+@keyframes lg-tip{0%{opacity:0;transform:translateY(.4em)}5%,22%{opacity:1;transform:none}27%,100%{opacity:0;transform:translateY(-.4em)}}
 @keyframes lg-fuera{to{transform:scale(1.14);opacity:0}}
 @keyframes lg-corte{to{transform:rotate(30deg) translateY(-125vmax)}}
 @keyframes lg-grano{0%,100%{transform:none}20%{transform:translate3d(-3%,2%,0)}40%{transform:translate3d(2%,-3%,0)}60%{transform:translate3d(-2%,-1%,0)}80%{transform:translate3d(3%,3%,0)}}
@@ -135,11 +154,15 @@ html.calma #lg-carga *{animation:none!important}
 html.calma.lg-sale #lg-carga{opacity:0;transition:opacity .25s ease}'''
 
 
-#: ⏳ LA PANTALLA DE CARGA (Dlx, 17/10/2026: «¿y si hacemos una pestaña de carga?»): lo primero del <body>. Desde el
-#: 12/11/2026, con los fondos de la temporada (Dlx: «como lo hace Brawl Stars pero con nuestros integrantes»)
-def html_carga():
-    """La pantalla de carga: el HTML y su script. Los fondos los arma herramientas/fondos_carga.py y viven en R2; acá
-    sólo se dice cuáles hay (web/carga.json), y la página elige uno."""
+#: 🔤 las dos letras de la pantalla de carga (el título, la marca y el número en Archivo; el sello y los consejos en
+#: Barlow Condensed 700). Se piden en el <head>, antes que nada: si llegan tarde, el título sale con la letra del sistema
+#: y salta. Tienen que ser las MISMAS direcciones que pide /inicio/inicio.css, o se bajarían dos veces
+FUENTES_CARGA = ('archivo-latin-wdth-normal.woff2', 'barlow-condensed-latin-700-normal.woff2')
+
+
+def conf_carga():
+    """Lo que la pantalla de carga sabe de los fondos: de dónde salen (R2), la temporada, cuáles hay y qué precargar.
+    Los fondos los arma herramientas/fondos_carga.py y viven en R2; cuáles hay lo dice web/carga.json."""
     import json
     conf = json.load(io.open(os.path.join(WEB, 'carga.json'), encoding='utf-8'))
     sw = io.open(os.path.join(BASE, 'bot', 'subir_web.py'), encoding='utf-8').read()
@@ -150,88 +173,184 @@ def html_carga():
     # que son de pocos y pesan la mitad de todo)
     fuera = {'inicio.js', 'inicio-dashboard.js', 'inicio-socio2.js', 'inicio-panelsocio.js', 'inicio-verificar.js'}
     trozos = sorted(f for f in os.listdir(os.path.join(PAG, 'inicio')) if f.endswith('.js') and f not in fuera)
-    c = json.dumps({'r2': r2.group(1), 't': conf['temporada'], 'f': conf['fondos'], 'b': [b['id'] for b in conf['batallas']],
-                    'p': trozos}, ensure_ascii=False, separators=(',', ':'))
-    temp = conf['temporada'].upper()
+    return json.dumps({'r2': r2.group(1), 't': conf['temporada'], 'f': conf['fondos'], 'b': [b['id'] for b in conf['batallas']],
+                       'p': trozos}, ensure_ascii=False, separators=(',', ':')), conf['temporada'].upper()
+
+
+def cabeza_carga():
+    """🚀 LO PRIMERO DE LA PANTALLA DE CARGA, EN EL <head> Y ANTES DE LA HOJA DE ESTILOS (13/11/2026). Un <script> que
+    viene después de una hoja de estilos espera a que baje; acá no espera nada, así que el fondo sale a pedirse a los
+    ~0,2 s en vez de a los ~0,6 (medido con un trace, CPU ×4). Lo mismo las dos letras y el código de la app, que se
+    baja ya pero NO corre hasta que la pantalla entró (ver SCRIPTS)."""
+    css = io.open(os.path.join(PAG, 'inicio', 'inicio.css'), encoding='utf-8').read()
+    for f in FUENTES_CARGA:
+        if not os.path.isfile(os.path.join(PAG, 'inicio', 'f', f)) or ('/inicio/f/' + f) not in css:
+            raise SystemExit('🔴 la letra %s no está en /inicio/f/ o inicio.css no la pide así: la pantalla de carga la '
+                             'precargaría de balde' % f)
+    c, _ = conf_carga()
+    letras = ''.join('<link rel="preload" href="/inicio/f/%s" as="font" type="font/woff2" crossorigin>\n' % f
+                     for f in FUENTES_CARGA)
+    return (letras + '<link rel="modulepreload" href="/inicio/inicio.js">\n<script>\n' + """(function () {
+  // 🎲 EL FONDO, ELEGIDO YA: cada uno con la misma chance; en «La batalla», cada video con la suya (Dlx, 12/11/2026)
+  var C = window.__lgC = @CONF@;
+  try {
+    var n = C.f[Math.floor(Math.random() * C.f.length)];
+    var nom = n === 2 ? '2-' + C.b[Math.floor(Math.random() * C.b.length)] : String(n);
+    var fmt = innerWidth / Math.max(1, innerHeight) < 0.8 ? 'cel' : 'pc';
+    var d = new Date(), dia = d.getUTCFullYear() * 1e4 + (d.getUTCMonth() + 1) * 100 + d.getUTCDate();
+    var src = window.__lgFondo = C.r2 + '/carga/' + C.t + '/' + nom + '-' + fmt + '.webp?d=' + dia;
+    var l = document.createElement('link');
+    l.rel = 'preload'; l.as = 'image'; l.href = src;
+    l.setAttribute('fetchpriority', 'high');
+    document.head.appendChild(l);
+  } catch (e) { /* sin fondo: la pantalla sale en negro, con el título y la barra */ }
+})();
+</script>
+""".replace('@CONF@', c))
+
+
+#: ⏳ LA PANTALLA DE CARGA (Dlx, 17/10/2026: «¿y si hacemos una pestaña de carga?»): lo primero del <body>. Desde el
+#: 12/11/2026, con los fondos de la temporada (Dlx: «como lo hace Brawl Stars pero con nuestros integrantes»)
+def html_carga():
+    """La pantalla de carga: el HTML y su script. El fondo ya lo eligió `cabeza_carga()` (`__lgFondo`)."""
+    _, temp = conf_carga()
+    tips = ''.join('<span>%s</span>' % t for t in
+                   ('Cargando el ranking', 'Preparando las llaves', 'Contando los puntos', 'Buscando tus tarjetas'))
     return ("""<body>
 <!-- ⏳ LA PANTALLA DE CARGA (Dlx, 17/10/2026: «¿y si hacemos una pestaña de carga?»). Va en el HTML y no en la app: se ve
-     al instante, también con 3G lento. Se va cuando la app tiene los datos (`lg-listo`, App.jsx) o cuando sale el aviso
-     de «no pude cargar» (`sin-pagina`). La pone web/montar.py.
+     al instante, también con 3G lento. Se va cuando la app tiene los datos (`lg-listo`, App.jsx) y terminó de
+     acomodarse, o cuando sale el aviso de «no pude cargar» (`sin-pagina`). La pone web/montar.py.
      🎲 LOS FONDOS (Dlx, 12/11/2026): cinco por temporada, cada uno con la misma chance, y en «La batalla» cada video con
      su parte. Los arma herramientas/fondos_carga.py y viven en R2 (carga/<temporada>/); cuáles hay, web/carga.json.
      El título, la marca y la barra son los de la bienvenida y van SIEMPRE en el mismo lugar: cambia el fondo, no el estilo.
      ⏳ 4 SEGUNDOS LA PRIMERA VEZ (Dlx: «que la página se demore un poco más… para que se contemple»), mientras se
      precarga todo; si vuelve en los siguientes 30 minutos (`lg:carga`), lo que tarde en cargar.
+     🎞️ SUAVE (Dlx, 13/11/2026: «asegúrate que esto sea smooth»): la app espera a que la pantalla entre, y lo que se
+     mueve después lo anima el compositor, que no se traba cuando la app se arma atrás.
      ✂️ Y SE VA CON EL CORTE (18/10/2026): tres capas —negra, magenta, verde— en diagonal; el fondo vive en la negra. -->
-<div id="lg-carga" aria-hidden="true"><i class="lg-capa v"></i><i class="lg-capa m"></i><i class="lg-capa n"><b class="lg-foto"><b class="lg-img"></b><b class="lg-velo"></b><svg class="lg-grano"><filter id="lg-gr"><feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="2" stitchTiles="stitch"/></filter><rect width="100%" height="100%" filter="url(#lg-gr)"/></svg></b></i><div class="lg-c"><span class="lg-marca"><img src="/ul-blanco.png" alt="" width="160" height="130"><i></i><b>@TEMP@</b></span><div class="lg-logo"><span class="lg-sello">Temporada @NUM@ · en juego</span><span class="lg-t"><span class="lg-t1">LIGA GLOBAL</span><span class="lg-t2">DE FREESTYLE</span></span></div><div class="lg-pie"><div class="lg-fila"><span class="lg-tip">Cargando el ranking</span><b class="lg-pct">0%</b></div><span class="lg-barra"><i></i></span></div></div></div>
+<div id="lg-carga" aria-hidden="true"><i class="lg-capa v"></i><i class="lg-capa m"></i><i class="lg-capa n"><b class="lg-foto"><b class="lg-img"></b><b class="lg-velo"></b><svg class="lg-grano"><filter id="lg-gr"><feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="2" stitchTiles="stitch"/></filter><rect width="100%" height="100%" filter="url(#lg-gr)"/></svg></b></i><div class="lg-c"><span class="lg-marca"><img src="/ul-blanco.png" alt="" width="160" height="130"><i></i><b>@TEMP@</b></span><div class="lg-logo"><span class="lg-sello">Temporada @NUM@ · en juego</span><span class="lg-t"><span class="lg-t1">LIGA GLOBAL</span><span class="lg-t2">DE FREESTYLE</span></span></div><div class="lg-pie"><div class="lg-fila"><span class="lg-tip">@TIPS@<span class="lg-ya">Listo</span></span><b class="lg-pct"><span class="lg-cifras">0%</span></b></div><span class="lg-barra"><i></i></span></div></div></div>
 <script>
 (function () {
   var h = document.documentElement, el = document.getElementById('lg-carga');
-  if (!el || !h.classList.contains('ini-nuevo')) return;
-  h.classList.add('lg-carga-js');
-  var C = @CONF@;
-  var t0 = Date.now(), quieto = false, primera = true;
-  try { quieto = matchMedia('(prefers-reduced-motion: reduce)').matches; } catch (e) {}
-  // 🧘 y «Menos animaciones» de Tu cuenta, que nucleo.js pone recién al llegar: acá se lee del navegador
-  try { if ((JSON.parse(localStorage.getItem('lg:ajustes') || 'null') || {}).calma) { quieto = true; h.classList.add('calma'); } } catch (e) {}
-  // ⏳ la primera vez, 4 s; si volvió en los últimos 30 minutos, lo que tarde
-  try { primera = t0 - (+localStorage.getItem('lg:carga') || 0) > 18e5; localStorage.setItem('lg:carga', String(t0)); } catch (e) {}
-  var MIN = primera ? 4000 : 0;
-  // 🎲 el fondo: cada uno con la misma chance; en «La batalla», cada video con la suya
-  var n = C.f[Math.floor(Math.random() * C.f.length)];
-  var nom = n === 2 ? '2-' + C.b[Math.floor(Math.random() * C.b.length)] : String(n);
-  var fmt = innerWidth / Math.max(1, innerHeight) < 0.8 ? 'cel' : 'pc';
-  var d = new Date(), dia = d.getUTCFullYear() * 1e4 + (d.getUTCMonth() + 1) * 100 + d.getUTCDate();
-  var src = C.r2 + '/carga/' + C.t + '/' + nom + '-' + fmt + '.webp?d=' + dia;
-  // 🌅 de a poco: nada aparece hasta que están las letras (si tardan, a los 0,9 s igual)
-  if (quieto) el.classList.add('quieto');
-  var va = function () { el.classList.add('va'); };
-  try { if (document.fonts && document.fonts.ready) document.fonts.ready.then(va); else va(); } catch (e) { va(); }
-  setTimeout(va, 900);
-  // y la foto, decodificada ANTES de mostrarla: decodificar 1920 px en el cuadro que entra es lo que tironea
-  var im = new Image(), puesta = false;
-  var mostrar = function () {
-    if (puesta) return; puesta = true;
-    el.querySelector('.lg-img').style.backgroundImage = 'url("' + src + '")';
-    el.querySelector('.lg-t1').style.setProperty('--q', 'url("' + src + '")');
-    requestAnimationFrame(function () { requestAnimationFrame(function () { el.classList.add('con-foto'); }); });
+  // 🚦 LA APP ESPERA A QUE LA PANTALLA ENTRE (ver `__lgApp`, al final de la página): `entro()` la suelta. Si algo de
+  // acá falla, la suelta igual: una pantalla de carga rota no puede dejar a nadie sin página
+  var entro = function () {
+    if (window.__lgEntro) return;
+    window.__lgEntro = true;
+    if (window.__lgApp) window.__lgApp();
   };
-  im.onload = function () { if (!im.decode) mostrar(); };
-  im.src = src;
-  if (im.decode) im.decode().then(mostrar, function () {});
-  var barra = el.querySelector('.lg-barra i'), pct = el.querySelector('.lg-pct'), tip = el.querySelector('.lg-tip');
-  var TIPS = ['Cargando el ranking', 'Preparando las llaves', 'Contando los puntos', 'Buscando tus tarjetas'];
-  var k = 0, p = 0, ya = false, pre = false;
-  var tt = setInterval(function () { k = (k + 1) % TIPS.length; tip.textContent = TIPS[k]; }, 1300);
-  // 📦 mientras tanto, las demás páginas: que después no haya esperas (no con ahorro de datos ni en 2G)
-  function precargar() {
-    try { var cx = navigator.connection; if (cx && (cx.saveData || /2g/.test(cx.effectiveType || ''))) return; } catch (e) {}
-    C.p.forEach(function (f) { var l = document.createElement('link'); l.rel = 'modulepreload'; l.href = '/inicio/' + f; document.head.appendChild(l); });
-  }
-  var tic = setInterval(function () {
-    if (h.classList.contains('sin-pagina')) { clearInterval(tic); clearInterval(tt); return; }
-    var t = Date.now() - t0, listo = h.classList.contains('lg-listo');
-    if (listo && !pre) { pre = true; precargar(); }
-    // la barra va con lo que de verdad cargó, y no pasa del tiempo de la primera vez
-    var meta = listo ? 1 : 0.9 * (1 - Math.exp(-t / 1600));
-    if (MIN) meta = Math.min(meta, t / MIN);
-    p += (meta - p) * 0.25;
-    if (meta >= 1 && p > 0.995) p = 1;
-    // con transform y una transición: si la página está ocupada armándose, la barra sigue suave en vez de saltar
-    barra.style.transform = 'scaleX(' + p.toFixed(3) + ')';
-    pct.textContent = Math.round(p * 100) + '%';
-    if (listo && p >= 1 && t >= MIN && !ya) {
-      ya = true; clearInterval(tic); clearInterval(tt);
-      el.classList.add('lleno'); tip.textContent = 'Listo';
-      setTimeout(function () {
-        h.classList.add('lg-sale');
-        setTimeout(function () { h.classList.add('lg-fuera'); }, quieto ? 300 : 1700);
-      }, quieto ? 80 : 450);   // que la barra llegue a llenarse a la vista antes del corte
+  if (!el || !h.classList.contains('ini-nuevo')) { entro(); return; }
+  try {
+    h.classList.add('lg-carga-js');
+    var C = window.__lgC || { p: [] }, src = window.__lgFondo || '';
+    var t0 = Date.now(), quieto = false, primera = true;
+    try { quieto = matchMedia('(prefers-reduced-motion: reduce)').matches; } catch (e) {}
+    // 🧘 y «Menos animaciones» de Tu cuenta, que nucleo.js pone recién al llegar: acá se lee del navegador
+    try { if ((JSON.parse(localStorage.getItem('lg:ajustes') || 'null') || {}).calma) { quieto = true; h.classList.add('calma'); } } catch (e) {}
+    // ⏳ la primera vez, 4 s; si volvió en los últimos 30 minutos, lo que tarde
+    try { primera = t0 - (+localStorage.getItem('lg:carga') || 0) > 18e5; localStorage.setItem('lg:carga', String(t0)); } catch (e) {}
+    var MIN = primera ? 4000 : 0;
+    // la app no espera más que esto, aunque las letras o la foto no lleguen
+    setTimeout(entro, primera ? 1400 : 700);
+    var vaYa = false, fotoYa = !src;
+    function entrada() {
+      if (!vaYa || !fotoYa) return;
+      // dos cuadros: en el primero se dibuja la escalera con la foto, y al segundo ya las tiene el compositor
+      requestAnimationFrame(function () { requestAnimationFrame(entro); });
     }
-  }, 60);
+    // 🌅 de a poco: nada aparece hasta que están las letras (si tardan, a los 0,7 s igual). Se piden a propósito:
+    // `document.fonts.ready` contesta «listo» antes de que nadie las haya pedido
+    if (quieto) el.classList.add('quieto');
+    var va = function () { if (vaYa) return; vaYa = true; el.classList.add('va'); entrada(); };
+    try {
+      Promise.all([document.fonts.load('900 1em Archivo'), document.fonts.load('700 1em "Barlow Condensed"')]).then(va, va);
+    } catch (e) { va(); }
+    setTimeout(va, 700);
+    // la foto, decodificada ANTES de mostrarla: decodificar 1920 px en el cuadro que entra es lo que tironea
+    if (src) {
+      var im = new Image();
+      var mostrar = function () {
+        if (fotoYa) return; fotoYa = true;
+        el.querySelector('.lg-img').style.backgroundImage = 'url("' + src + '")';
+        el.querySelector('.lg-t1').style.setProperty('--q', 'url("' + src + '")');
+        requestAnimationFrame(function () { el.classList.add('con-foto'); entrada(); });
+      };
+      var sinFoto = function () { if (fotoYa) return; fotoYa = true; entrada(); };
+      im.onload = function () { if (!im.decode) mostrar(); };
+      im.onerror = sinFoto;
+      im.src = src;
+      if (im.decode) im.decode().then(mostrar, function () { if (im.complete && im.naturalWidth) mostrar(); else sinFoto(); });
+    }
+    // 🎞️ LA BARRA Y EL NÚMERO, EN EL COMPOSITOR: los dos siguen la misma curva, de 0 a 92 % en 4 s la primera vez (en
+    // 2,6 las demás); el resto, cuando la app está lista. El número es una tira de 0 % a 100 % que sube a saltos
+    var barra = el.querySelector('.lg-barra i'), cifras = el.querySelector('.lg-cifras');
+    var A = 0.92, K = 2.2, T = MIN || 2600, E = 1 - Math.exp(-K), LIN = 1.15, tA = performance.now(), anims = [];
+    var avance = function (ms) { return A * (1 - Math.exp(-K * Math.min(ms, T) / T)) / E; };
+    var cuando = function (y) { return -T / K * Math.log(1 - y * E / A); };
+    var fila = function (q) { return { transform: 'translateY(-' + (q * LIN).toFixed(2) + 'em)', easing: 'steps(1, end)' }; };
+    var tira = '';
+    for (var q = 0; q <= 100; q++) tira += (q ? '<br>' : '') + q + '%';
+    cifras.innerHTML = tira;
+    try {
+      var kb = [], kc = [];
+      for (var i = 0; i <= 24; i++) kb.push({ offset: i / 24, transform: 'scaleX(' + avance(i / 24 * T).toFixed(4) + ')' });
+      for (var q2 = 0; q2 <= 92; q2++) { var f = fila(q2); f.offset = Math.min(1, cuando(q2 / 100) / T); kc.push(f); }
+      // ⚠️ el último, en 1 JUSTO: con 0,9999999 el navegador agrega uno en 1 con el valor de base, y al terminar la
+      // subida el número volvía a «0 %» (pasó: lo mostró el video)
+      kc[0].offset = 0; kc[kc.length - 1].offset = 1;
+      anims = [barra.animate(kb, { duration: T, fill: 'forwards' }), cifras.animate(kc, { duration: T, fill: 'forwards' })];
+    } catch (e) { anims = []; }
+    // 📦 mientras tanto, las demás páginas: que después no haya esperas (no con ahorro de datos ni en 2G)
+    function precargar() {
+      try { var cx = navigator.connection; if (cx && (cx.saveData || /2g/.test(cx.effectiveType || ''))) return; } catch (e) {}
+      (C.p || []).forEach(function (f) { var l = document.createElement('link'); l.rel = 'modulepreload'; l.href = '/inicio/' + f; document.head.appendChild(l); });
+    }
+    // 🧘 EL FINAL ARRANCA EN UN MOMENTO TRANQUILO. Con los datos, la app sigue armándose atrás: medido en un celular
+    // modesto, tareas de 0,5 y 1 s después de `lg-listo`. Lo que se mueve lo anima el compositor, pero ARRANCARLO pide un
+    // cuadro del hilo principal: si cae en medio de una de esas tareas, sale tarde y de golpe (y la barra se quedaba en
+    // «100 % · Listo» dos segundos sin irse). Se espera a ver cuatro cuadros seguidos sin trabas, como mucho `tope` ms
+    // (el setTimeout, por si la pestaña está atrás y no hay cuadros); mientras, la barra sigue en su 92 %
+    function suelto(f, tope) {
+      var hecho = false, prev = 0, seguidos = 0;
+      var ir = function () { if (!hecho) { hecho = true; f(); } };
+      setTimeout(ir, tope);
+      requestAnimationFrame(function paso(ts) {
+        if (hecho) return;
+        seguidos = prev && ts - prev < 50 ? seguidos + 1 : 0;
+        prev = ts;
+        if (seguidos >= 4) ir(); else requestAnimationFrame(paso);
+      });
+    }
+    // ✅ el final: la barra se completa (la primera vez, a los 4 s), «Listo», y el corte
+    function terminar() {
+      var dur = Math.max(quieto ? 150 : 400, MIN - (Date.now() - t0));
+      var y = avance(performance.now() - tA), q0 = Math.min(99, Math.floor(y * 100)), kc = [];
+      anims.forEach(function (a) { try { a.cancel(); } catch (e) {} });
+      for (var q = q0; q <= 100; q++) { var f = fila(q); f.offset = (q - q0) / (100 - q0); kc.push(f); }
+      try {
+        barra.animate([{ transform: 'scaleX(' + y.toFixed(4) + ')' }, { transform: 'scaleX(1)' }], { duration: dur, fill: 'forwards' });
+        cifras.animate(kc, { duration: dur, fill: 'forwards' });
+      } catch (e) { barra.style.transform = 'scaleX(1)'; cifras.style.transform = fila(100).transform; }
+      setTimeout(function () {
+        el.classList.add('lleno');
+        setTimeout(function () {
+          h.classList.add('lg-sale');
+          setTimeout(function () { h.classList.add('lg-fuera'); }, quieto ? 300 : 1700);
+        }, quieto ? 80 : 300);   // que se vea llena antes del corte
+      }, dur);
+    }
+    var tic = setInterval(function () {
+      if (h.classList.contains('sin-pagina')) { clearInterval(tic); return; }
+      if (!h.classList.contains('lg-listo')) return;
+      clearInterval(tic);
+      precargar();
+      // la primera vez, la barra se completa en los últimos 0,4 s de los 4: hasta ahí no hay nada que esperar
+      setTimeout(function () { suelto(terminar, 1500); }, Math.max(0, MIN - 400 - (Date.now() - t0)));
+    }, 100);
+  } catch (e) { entro(); }
 })();
 </script>
-""".replace('@CONF@', c).replace('@TEMP@', temp).replace('@NUM@', temp.lstrip('T')))
+""".replace('@TEMP@', temp).replace('@NUM@', temp.lstrip('T')).replace('@TIPS@', tips))
 
 
 #: 🔑 LA LIGA VIVE EN `/freestyle-rap` (Dlx, 01/10/2026: «/freestyle-rap, put it like that, better»): Under Legends
@@ -388,7 +507,27 @@ SCRIPTS = """<script src="llave_vivo.js"></script>
 <script src="social.js"></script>
 <script src="datos.js"></script>
 <script src="nucleo.js"></script>
-<script type="module" src="/inicio/inicio.js"></script>
+<script>
+// 🚦 LA APP ARRANCA CUANDO LA PANTALLA DE CARGA YA ENTRÓ (13/11/2026, Dlx: «asegúrate que esto sea smooth»). Medido con
+// un trace en un celular modesto: la app se arma en una sola tarea de 1,7 s, y arrancaba justo cuando la pantalla tenía
+// que aparecer, así que ésta quedaba en negro ~3 s. Ahora el código se BAJA desde el <head> (modulepreload) pero CORRE
+// cuando la pantalla avisa que entró (`__lgEntro`), o a los 1,6 s pase lo que pase. Va acá, después de la cañería: la
+// app tiene que correr después de nucleo.js. Sin modulepreload (Safari < 17), arranca ya, como antes
+(function () {
+  var ya = false;
+  window.__lgApp = function () {
+    if (ya) return;
+    ya = true;
+    var s = document.createElement('script');
+    s.type = 'module';
+    s.src = '/inicio/inicio.js';
+    document.body.appendChild(s);
+  };
+  var rl = document.createElement('link').relList;
+  if (window.__lgEntro || !(rl && rl.supports && rl.supports('modulepreload'))) window.__lgApp();
+  else setTimeout(window.__lgApp, 1600);
+})();
+</script>
 <script src="campana.js" defer></script>
 """
 
@@ -419,7 +558,7 @@ def cabeza(html):
 
 
 def pagina(html):
-    return (cabeza(html) +
+    return (cabeza(html) + cabeza_carga() +
             '<!-- 🛡️ SIN GOOGLE FONTS (04/10/2026, la lista de seguridad de Dlx): las fuentes salen de /inicio/inicio.css\n'
             '     (web/src/fuentes.css). La IP de cada visita dejó de ir a Google. Todo lo de abajo lo arma web/montar.py:\n'
             '     no se edita a mano -->\n'

@@ -11,6 +11,16 @@
  ],
  "cambios": [
     {
+        "version": "4.91",
+        "dia": "2026-11-13",
+        "cuando": "2026-11-13T00:20:00-05:00",
+        "titulo": "La pantalla de carga, sin trabones",
+        "items": [
+            "La pantalla de carga **aparece al instante**: en algunos celulares quedaba unos segundos en negro antes de mostrarse.",
+            "La barra, el porcentaje y los consejos **ya no se congelan** mientras la página se arma por detrás."
+        ]
+    },
+    {
         "version": "4.90",
         "dia": "2026-11-12",
         "cuando": "2026-11-13T00:15:00-05:00",
