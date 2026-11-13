@@ -11,6 +11,16 @@
  ],
  "cambios": [
     {
+        "version": "5.06",
+        "dia": "2026-11-13",
+        "cuando": "2026-11-13T03:25:00-05:00",
+        "titulo": "El buscador, encima del menú",
+        "items": [
+            "La **lupa** abre el buscador **encima del menú**, en la misma fila: la cabecera ya no se estira.",
+            "Antes de escribir te muestra **sugerencias**: lo último que abriste, lo que se juega hoy, los raperos que sigues (o los de arriba de la Temporada) y atajos a las páginas."
+        ]
+    },
+    {
         "version": "5.05",
         "dia": "2026-11-13",
         "cuando": "2026-11-13T03:24:00-05:00",
