@@ -930,6 +930,13 @@
   [543, "29/10", "FFA", "final", "OG", "Ezze", "OG", "Ezze"],
   [543, "29/10", "FFA", "octavos", "Teo", "Jobaking", "Teo", "Jobaking", "ganador: ✅ Decidir"],
   [545, "29/10", "FFA", "cuartos", "Guaicurús🇰🇷", "Karumailafmasha🇹🇼", "Guaicurús🇰🇷", "Karumailafmasha🇹🇼"],
+  [625, "12/11", "FRZ", "cuartos", "TøKīØ🦠🧠", "OKAM", "TøKīØ🦠🧠", "OKAM"],
+  [625, "12/11", "FRZ", "cuartos", "Berrun", "Dios", "Berrun", "Dios"],
+  [625, "12/11", "FRZ", "cuartos", "MTZ", "crakero", "MTZ", "crakero"],
+  [625, "12/11", "FRZ", "cuartos", "MaYeuTyK", "Noone", "MaYeuTyK", "Noone"],
+  [625, "12/11", "FRZ", "semifinales", "Berrun", "TøKīØ🦠🧠", "Berrun", "TøKīØ🦠🧠"],
+  [625, "12/11", "FRZ", "semifinales", "MTZ", "MaYeuTyK", "MTZ", "MaYeuTyK"],
+  [625, "12/11", "FRZ", "final", "MTZ", "Berrun", "MTZ", "Berrun"],
   [363, "22/09", "SR", "cuartos", "Six", "MCO", "Six", "MCO"],
   [363, "22/09", "SR", "cuartos", "Polosport", "Juanpa", "Polosport", "Juanpa"],
   [363, "22/09", "SR", "cuartos", "Luzzano", "MAXIMILIANO CALVO", "Luzzano", "MAXIMILIANO CALVO"],
@@ -1432,13 +1439,6 @@
   [624, "12/11", "ACAD", "cuartos", "TøKīØ🦠🧠", "Dyzz", "TøKīØ🦠🧠", "Dyzz"],
   [624, "12/11", "ACAD", "semifinales", "LICENCIADO 🇲🇽", "Drexx", "LICENCIADO 🇲🇽", "Drexx"],
   [624, "12/11", "ACAD", "semifinales", "Zetryko", "TøKīØ🦠🧠", "Zetryko", "TøKīØ🦠🧠"],
-  [624, "12/11", "ACAD", "final", "Zetryko", "LICENCIADO 🇲🇽", "Zetryko", "LICENCIADO 🇲🇽"],
-  [625, "12/11", "FRZ", "cuartos", "TøKīØ🦠🧠", "OKAM", "TøKīØ🦠🧠", "OKAM"],
-  [625, "12/11", "FRZ", "cuartos", "Berrun", "Dios", "Berrun", "Dios"],
-  [625, "12/11", "FRZ", "cuartos", "MTZ", "crakero", "MTZ", "crakero"],
-  [625, "12/11", "FRZ", "cuartos", "MaYeuTyK", "Noone", "MaYeuTyK", "Noone"],
-  [625, "12/11", "FRZ", "semifinales", "Berrun", "TøKīØ🦠🧠", "Berrun", "TøKīØ🦠🧠"],
-  [625, "12/11", "FRZ", "semifinales", "MTZ", "MaYeuTyK", "MTZ", "MaYeuTyK"],
-  [625, "12/11", "FRZ", "final", "MTZ", "Berrun", "MTZ", "Berrun"]
+  [624, "12/11", "ACAD", "final", "Zetryko", "LICENCIADO 🇲🇽", "Zetryko", "LICENCIADO 🇲🇽"]
  ]
 }

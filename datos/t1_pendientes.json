@@ -1334,6 +1334,7 @@
   ["", "Nombre desconocido", "evento #626", "Nito nanel", "Noone", "Pendiente", "", "", "", ""],
   ["", "Nombre desconocido", "evento #626", "Showsero🇧🇮", "Provenza", "Pendiente", "", "", "", ""],
   ["", "Alias posible", "el ciclo · una cuenta, dos nombres", "DOS NOMBRES: «Showsero» → «Vilca» · cuenta 846870712950194196", "5 prueba(s) · se anotó como «Showsero»", "Pendiente", "", "", "", ""],
-  ["", "Alias posible", "el ciclo · dos cuentas, una persona", "DOS CUENTAS: «Kochi2011» → «Kochi» · cuentas 1564405977493545130 y 1357885526404894870", "el mismo país, nombres parecidos y nunca jugaron el mismo evento", "Pendiente", "", "", "", ""]
+  ["", "Alias posible", "el ciclo · dos cuentas, una persona", "DOS CUENTAS: «Kochi2011» → «Kochi» · cuentas 1564405977493545130 y 1357885526404894870", "el mismo país, nombres parecidos y nunca jugaron el mismo evento", "Pendiente", "", "", "", ""],
+  ["", "Evento dudoso", "llaves de Discord", "- LIGA INMORTAL - · FRZ · 12/11", "es casi la misma llave que la #625 (misma final o las mismas batallas, FRZ): parece la misma cargada dos veces. Si es otro evento, «Sí cuenta». NO se sumó nada. · https://discord.com/channels/838593179187544064/838595860275003402/1570624328968699945", "Resuelto", "el evento ya se cargó", "el ciclo", "", ""]
  ]
 }

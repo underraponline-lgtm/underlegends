@@ -1475,80 +1475,20 @@
    "b": "Tokyo",
    "ganador": "Soul b",
    "votos": "2–0"
+  },
+  "1570624363986686024": {
+   "id": "1570624363986686024",
+   "sv": "[FFA] Freestyle For All 👾",
+   "g": "1468472442925092958",
+   "canal": "1487206164864438513",
+   "pub": 1794536429164,
+   "a": "NC+ PARIA",
+   "b": "COLE+VANDU",
+   "ganador": "NC+ PARIA",
+   "votos": "1–0"
   }
  },
  "llaves": {
-  "1563011223958585405": {
-   "id": "1563011223958585405",
-   "sv": "#FDS ╏FREESTYLE DISCORD SERIES",
-   "g": "1489848581203689535",
-   "canal": "1500675902042931280",
-   "pub": 1792721315136,
-   "ed": 1792725756267,
-   "texto": "`[ CUARTOS ]`\n⌞SHADOW 🇨🇴⌝ 🆚 ⌞Vilca🇵🇪👑⌝\n⌞Sin límites 🇵🇪⌝ 🆚 ⌞Artezzy 🇵🇪⌝\n⌞Tokio🇬🇩⌝ 🆚 ⌞Last 🇺🇾⌝\n⌞Lrs 🇦🇷⌝ 🆚 ⌞Soul B 🇨🇱⌝\n`[ SEMIFINALES ]`\n⌞Vilca🇵🇪👑⌝ 🆚 ⌞Artezzy 🇵🇪⌝\n⌞Last 🇺🇾⌝ 🆚 ⌞Soul B 🇨🇱⌝\n`[ FINAL ]`",
-   "batallas": [
-    [
-     "CUARTOS",
-     [
-      "SHADOW 🇨🇴",
-      "Vilca🇵🇪👑"
-     ],
-     "Vilca🇵🇪👑",
-     "ronda siguiente",
-     []
-    ],
-    [
-     "CUARTOS",
-     [
-      "Sin límites 🇵🇪",
-      "Artezzy 🇵🇪"
-     ],
-     "Artezzy 🇵🇪",
-     "ronda siguiente",
-     []
-    ],
-    [
-     "CUARTOS",
-     [
-      "Tokio🇬🇩",
-      "Last 🇺🇾"
-     ],
-     "Last 🇺🇾",
-     "ronda siguiente",
-     []
-    ],
-    [
-     "CUARTOS",
-     [
-      "Lrs 🇦🇷",
-      "Soul B 🇨🇱"
-     ],
-     "Soul B 🇨🇱",
-     "ronda siguiente",
-     []
-    ],
-    [
-     "SEMIFINALES",
-     [
-      "Vilca🇵🇪👑",
-      "Artezzy 🇵🇪"
-     ],
-     null,
-     "última ronda y no dice campeón",
-     []
-    ],
-    [
-     "SEMIFINALES",
-     [
-      "Last 🇺🇾",
-      "Soul B 🇨🇱"
-     ],
-     null,
-     "última ronda y no dice campeón",
-     []
-    ]
-   ]
-  },
   "1563025630545838173": {
    "id": "1563025630545838173",
    "sv": "🔥LKR (Champios Legue)🐉",

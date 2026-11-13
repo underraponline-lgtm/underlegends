@@ -140,7 +140,7 @@
    "n": 619,
    "sv": "LKR",
    "vence": "2026-11-13T02:03:35+00:00",
-   "vencido": false
+   "vencido": true
   },
   "AbrahamSRRL": {
    "avisado": "2026-11-10",
@@ -440,7 +440,7 @@
    "n": 619,
    "sv": "LKR",
    "vence": "2026-11-13T02:03:35+00:00",
-   "vencido": false
+   "vencido": true
   },
   "Cazafla anti cazanova": {
    "avisado": "2026-10-18",
@@ -816,7 +816,7 @@
    "n": 619,
    "sv": "LKR",
    "vence": "2026-11-13T02:03:35+00:00",
-   "vencido": false
+   "vencido": true
   },
   "Forza": {
    "avisado": "2026-11-09",
@@ -876,7 +876,7 @@
    "n": 619,
    "sv": "LKR",
    "vence": "2026-11-13T02:03:35+00:00",
-   "vencido": false
+   "vencido": true
   },
   "Ghost": {
    "con": null,
@@ -1794,7 +1794,7 @@
    "n": 619,
    "sv": "LKR",
    "vence": "2026-11-13T02:03:35+00:00",
-   "vencido": false
+   "vencido": true
   },
   "NEXOR": {
    "avisado": "2026-11-09",
@@ -2407,7 +2407,7 @@
    "n": 619,
    "sv": "LKR",
    "vence": "2026-11-13T02:03:35+00:00",
-   "vencido": false
+   "vencido": true
   },
   "TheOg": {
    "con": null,
