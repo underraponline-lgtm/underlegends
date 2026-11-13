@@ -127,9 +127,9 @@
   "jota": "Jotap",
   "juasimo": "Juasmio",
   "kassax": "KSX",
-  "limisz": "Limtsz",
-  "limitsz": "Limtsz",
-  "limitz": "Limtsz",
+  "limisz": "Noone",
+  "limitsz": "Noone",
+  "limitz": "Noone",
   "loorviruz": "Lord Viruzz",
   "luchov": "Lucho",
   "lucas": "Lukas",
@@ -352,6 +352,7 @@
   "jonybel": "Mc dl",
   "replik": "Soulb",
   "khatalien": "KATALIEN",
+  "limtsz": "Noone",
   "zetryco": "Zetryko",
   "martynez": "MaYeuTyK",
   "basty": "BastyRetro",
@@ -1830,6 +1831,10 @@
   [
    "Khat alien",
    "KATALIEN"
+  ],
+  [
+   "Limtsz",
+   "Noone"
   ],
   [
    "Zetryco",

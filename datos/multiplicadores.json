@@ -1264,6 +1264,16 @@
      "Adriagner",
      12,
      1
+    ],
+    [
+     "Ragna",
+     4,
+     1
+    ],
+    [
+     "Ragnaa.bdy",
+     4,
+     1
     ]
    ],
    "semillero": {
@@ -1277,7 +1287,8 @@
      "FFA": 63,
      "LKR": 23,
      "DDS": 10,
-     "ACAD": 19
+     "ACAD": 19,
+     "FRZ": 8
     },
     "gana": "ACAD"
    },
@@ -1290,7 +1301,7 @@
     "FDS": 0,
     "FFA": 63,
     "FFS": 0,
-    "FRZ": 0,
+    "FRZ": 8,
     "FVS": 0,
     "LKR": 23,
     "SR": 0,

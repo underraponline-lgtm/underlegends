@@ -2,99 +2,6 @@
  "_leeme": "Lo que ✅ Decidir cerró o contestó solo, con la regla y la prueba (sheet/decidir.py, resolver_solo()), para «Lo que se resolvió solo» del Dashboard y su «Deshacer». «deshechas»: lo que Dlx deshizo; ninguna regla lo vuelve a tocar. Dlx, 13/10/2026.",
  "solas": [
   {
-   "id": "e118a4581b",
-   "tipo": "Nombre desconocido",
-   "sec": "Rap para Raperos #1 · FFA · 29/10 · #543",
-   "que": "¿Quién es «La gonorrea del bajo 🇨🇴»?",
-   "r": "Es LGBD (en este evento)",
-   "regla": "R21 · la cuenta que se anotó así para ese evento es de alguien de la Lista que esa noche no jugó con su nombre",
-   "rk": "R21",
-   "por": "el ciclo",
-   "porque": "la cuenta @sblk2130 (en Discord: «La gonorrea del bajo») · en la Lista: LGBD se anotó como «La gonorrea del bajo» para ese evento, no es staff de FFA y esa noche no jugó con su nombre",
-   "t": 1793317377394,
-   "filas": [
-    941
-   ],
-   "variantes": [
-    "La gonorrea del bajo 🇨🇴"
-   ],
-   "escribio": {
-    "quien": "Rap para Raperos #1 · FFA · 29/10 · La gonorrea del bajo 🇨🇴"
-   }
-  },
-  {
-   "id": "94b7ed96a0",
-   "tipo": "Nombre desconocido",
-   "sec": "Rap para Raperos #1 · FFA · 29/10 · #543",
-   "que": "¿Quién es «Ezze 🇦🇷»?",
-   "r": "Es alguien nuevo: alta con su cuenta 1564832348766343232",
-   "regla": "Discord · su cuenta de Discord: la inscripción, el podio, la llave o la llamada",
-   "rk": "Discord",
-   "por": "el ciclo (su cuenta de Discord)",
-   "porque": "nuevo: entró a la Lista con la cuenta con que se anotó (1564832348766343232)",
-   "t": 1793317377394,
-   "filas": [
-    939
-   ],
-   "variantes": [
-    "Ezze 🇦🇷"
-   ],
-   "escribio": {
-    "alta": [
-     "Ezze",
-     "1564832348766343232"
-    ]
-   }
-  },
-  {
-   "id": "cdb20b57c6",
-   "tipo": "Nombre desconocido",
-   "sec": "Rap para Raperos #1 · FFA · 29/10 · #543",
-   "que": "¿Quién es «Fear🇨🇴»?",
-   "r": "Es alguien nuevo: alta con su cuenta 1033742542967144509",
-   "regla": "Discord · su cuenta de Discord: la inscripción, el podio, la llave o la llamada",
-   "rk": "Discord",
-   "por": "el ciclo (su cuenta de Discord)",
-   "porque": "nuevo: entró a la Lista con la cuenta con que se anotó (1033742542967144509)",
-   "t": 1793317377394,
-   "filas": [
-    940
-   ],
-   "variantes": [
-    "Fear🇨🇴"
-   ],
-   "escribio": {
-    "alta": [
-     "Fear",
-     "1033742542967144509"
-    ]
-   }
-  },
-  {
-   "id": "1430f5c8cb",
-   "tipo": "Nombre desconocido",
-   "sec": "Rap para Raperos #1 · FFA · 29/10 · #543",
-   "que": "¿Quién es «fenix 🇪🇸»?",
-   "r": "Es alguien nuevo: alta con su cuenta 913093970026987561",
-   "regla": "Discord · su cuenta de Discord: la inscripción, el podio, la llave o la llamada",
-   "rk": "Discord",
-   "por": "el ciclo (su cuenta de Discord)",
-   "porque": "nuevo: entró a la Lista con la cuenta con que se anotó (913093970026987561)",
-   "t": 1793317377394,
-   "filas": [
-    942
-   ],
-   "variantes": [
-    "fenix 🇪🇸"
-   ],
-   "escribio": {
-    "alta": [
-     "fenix",
-     "913093970026987561"
-    ]
-   }
-  },
-  {
    "id": "1ca2a84ebb",
    "tipo": "Nombre desconocido",
    "sec": "Galacticos del Freestyle vol.13 · DDF · 30/10 · #546",
@@ -4526,6 +4433,33 @@
     "campy89_ = 1502684639062659122"
    ],
    "escribio": {}
+  },
+  {
+   "id": "73767baf9e",
+   "tipo": "Alias posible",
+   "sec": "🪪 Identidad",
+   "que": "¿«Limtsz» es Noone? La cuenta de Noone en la Lista se anotó como «Limtsz», y en el ranking suman aparte. Si es la misma persona, los puntos de «Limtsz» pasan a Noone.\nLa cuenta: https://discord.com/users/754749179410251847",
+   "r": "Es la misma persona",
+   "regla": "R2 · una cuenta de la Lista que se anota con otro nombre donde su dueño no jugó",
+   "rk": "R2",
+   "por": "el ciclo",
+   "porque": "«Limtsz» se anotó 4 vez/veces sola desde la cuenta de Noone («LIMITSZ», «Limitsz», «Limitz», en DDS, FDS, FRZ, URBF) y Noone no jugó esos eventos con su nombre; nadie más usa ese nombre y Noone no es organizador, staff, host ni socio ahí",
+   "t": 1794528913485,
+   "filas": [
+    1330
+   ],
+   "variantes": [
+    "DOS NOMBRES: «Limtsz» → «Noone» · cuenta 754749179410251847"
+   ],
+   "escribio": {
+    "alias": [
+     "Limtsz",
+     "Noone"
+    ],
+    "filas": [
+     360
+    ]
+   }
   }
  ],
  "deshechas": []
