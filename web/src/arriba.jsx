@@ -458,9 +458,10 @@ function Campanita({ liga }) {
 }
 
 // 🔔 EL PANEL, REHECHO (Dlx, 13/11/2026, a la maqueta https://claude.ai/artifact/APL7sTvmkpADw1GyMqupHJ: «A pero que
-// aparezca todo, y que si alguien te reta que aparezca ahí pues también»). Arriba lo de hoy en la Liga; después «Para hacer»
-// —lo que pide algo de ti y se contesta ahí: quién ganó tu batalla libre, la batalla que espera ganador en tu panel—; y lo
-// demás por día (Hoy, Ayer, Esta semana, Antes), con filtros por tipo. El emoji del título va en la esquina de la cara
+// aparezca todo, y que si alguien te reta que aparezca ahí pues también»; y después, «que sea igual al de la maqueta así
+// exactamente»: las piezas y las medidas son las de la opción A —`.nt-*` en vivo.css copia su CSS—). Arriba lo de hoy en
+// la Liga como tira; después «Para hacer» —lo que pide algo de ti y se contesta ahí: quién ganó tu batalla libre, la
+// batalla que espera ganador en tu panel—; y lo demás por día (Hoy, Ayer, Esta semana, Antes), con filtros por tipo.
 // 🗂️ CUATRO FILTROS Y NO SEIS (Dlx, 13/11/2026: «creo que sólo debería haber 4 categorías… renombra alguna para meter a las
 // que quedan fuera»): la gente por un lado, y tu ranking, el Pase, los eventos y las correcciones juntos en «Liga»
 const CAT_AVISO = { seguidor: 'gente', aplauso: 'gente', comentario: 'gente', seguido: 'gente', organiza: 'gente' };
@@ -472,6 +473,8 @@ const PDT_RE = /\s*\+\s?([\d.]+)\s+Puntos de Tienda\.?/;
 // lo que pide una respuesta del dueño o su equipo: vence a las 48 h (`finales.py`), después lo cierra la Liga
 const esFinal = (x) => /^se:fin:/.test(String(x.clave || ''));
 const sinEmoji = (t) => String(t || '').replace(/^\p{Extended_Pictographic}️?\s*/u, '');
+// el color de la esquina de la cara, por lo que dice el emoji (en la maqueta: rojo si bajaste, magenta lo de la gente)
+const TINTE_AVISO = { '📉': '#E5484D', '📈': '#29B298', '⭐': '#E41373', '★': '#E41373', '👏': '#E41373', '💬': '#E41373', '⚔️': '#F2B705', '🏁': '#F2B705' };
 
 function PanelAvisos({ liga, B, onCerrar }) {
   const e = useCampana();
@@ -479,6 +482,8 @@ function PanelAvisos({ liga, B, onCerrar }) {
   const [fil, setFil] = useState('todo');
   const [ocup, setOcup] = useState(0);
   const [msg, setMsg] = useState('');
+  // «Marcar leídas»: abrir ya las da por vistas (`pedirBandeja(true)`); esto apaga el resaltado de las que eran nuevas
+  const [leidas, setLeidas] = useState(false);
   const dc = !B.sinCuenta && !!window.DC;
   const LBd = useLibres(dc);
   // lo de las batallas libres se vuelve a preguntar al abrir: pudo cambiar desde que se bajó
@@ -510,9 +515,20 @@ function PanelAvisos({ liga, B, onCerrar }) {
       : (j && ERR_LIBRE[j.error]) || 'No se pudo guardar: prueba de nuevo.');
   };
   const nombre = (k) => { const f = liga.T[k]; return f ? limpio(f.n) : k; };
+  const nueva = (x) => !x.visto && !leidas;
 
+  // la cara con su esquinita, o el ícono solo en el círculo cuando no hay cara
+  const cara = (k, ico) => {
+    const f = k ? liga.T[k] : null;
+    if (!f) return <span className="nt-cara nt-ico" aria-hidden="true">{ico}</span>;
+    return (
+      <span className="nt-cara">
+        <Cara liga={liga} k={f.k} nombre={f.n} cls="nt-c" />
+        {ico ? <i className="nt-badge" style={TINTE_AVISO[ico] ? { background: TINTE_AVISO[ico] } : null} aria-hidden="true">{ico}</i> : null}
+      </span>
+    );
+  };
   const fila = (x) => {
-    const f = x.cara ? liga.T[x.cara] : null;
     const emoji = /^(\p{Extended_Pictographic}️?)\s*/u.exec(String(x.titulo || ''));
     const tit = emoji ? x.titulo.slice(emoji[0].length) : x.titulo;
     const ico = emoji ? emoji[1] : ICONO_AVISO[x.tipo] || '🔔';
@@ -520,11 +536,10 @@ function PanelAvisos({ liga, B, onCerrar }) {
     const cuerpo = pdt ? x.cuerpo.replace(PDT_RE, '').trim() : x.cuerpo;
     return (
       <li key={x.clave}>
-        <button type="button" className={'nt-i' + (x.visto ? '' : ' nueva')} onClick={() => ir(rutaDe(x.url))}>
-          {f ? <span className="nt-cw"><Cara liga={liga} k={f.k} nombre={f.n} cls="nt-c" /><i className="nt-badge" aria-hidden="true">{ico}</i></span>
-            : <span className="nt-c nt-ico" aria-hidden="true">{ico}</span>}
+        <button type="button" className={'nt-f' + (nueva(x) ? ' nueva' : '')} onClick={() => ir(rutaDe(x.url))}>
+          {cara(x.cara, ico)}
           <span className="nt-t"><b>{tit}{pdt ? <span className="nt-pdt">+{pdt[1]} PdT</span> : null}</b>{cuerpo ? <small>{cuerpo}</small> : null}</span>
-          <em>{liga.cuando(new Date(x.t))}</em>
+          <span className="nt-hora">{liga.cuando(new Date(x.t))}</span>
         </button>
       </li>
     );
@@ -539,76 +554,87 @@ function PanelAvisos({ liga, B, onCerrar }) {
   // la campana del teléfono, al pie: lo que falta para que también llegue ahí
   let pie = null;
   if (e && C) {
-    if (e.activa && e.yo && e.yo.id) pie = <p className="nt-ok">También te llega al teléfono. <a href="#/avisos" onClick={onCerrar}>Ajustes de avisos</a></p>;
-    else if (!e.soporta || e.negado) pie = <a className="pub-a" href="#/avisos" onClick={onCerrar}>Cómo hacer que te llegue al teléfono</a>;
-    else if (!e.activa) pie = <><p className="nt-tx">Que también te llegue al teléfono, al momento:</p><button type="button" className="btn verde chico" onClick={() => C.activar()}><Ico n="campana" t={16} />Activar avisos</button></>;
-    else pie = <><p className="nt-tx">Este teléfono recibe los eventos. Para que te lleguen también los tuyos:</p><button type="button" className="btn borde2 chico" onClick={() => C.vincular()}>Vincular con mi Discord</button></>;
+    if (e.activa && e.yo && e.yo.id) pie = <><span><b className="nt-ok-p">●</b> También te llega al teléfono</span><a href="#/avisos" onClick={onCerrar}>Ajustes</a></>;
+    else if (!e.soporta || e.negado) pie = <><span>No te llega al teléfono</span><a href="#/avisos" onClick={onCerrar}>Cómo hacerlo</a></>;
+    else if (!e.activa) pie = <><span>Que también te llegue al teléfono</span><button type="button" className="nt-btn v" onClick={() => C.activar()}>Activar avisos</button></>;
+    else pie = <><span>Para que te lleguen también los tuyos</span><button type="button" className="nt-btn" onClick={() => C.vincular()}>Vincular Discord</button></>;
   }
   const filtros = FILTROS_AVISO.filter(([k]) => k === 'todo' || cuenta[k]);
+  const hayNuevas = !leidas && (B.items || []).some((x) => !x.visto);
   return (
     <div className="nt-p" role="dialog" aria-label="Notificaciones">
-      <div className="nt-h"><b>Notificaciones</b><button type="button" className="nt-x" aria-label="Cerrar" onClick={onCerrar}><Ico n="cerrar" t={20} /></button></div>
-      {filtros.length > 2 ? (
-        <div className="nt-chips" role="group" aria-label="Filtrar">{filtros.map(([k, t]) => (
-          <button key={k} type="button" className={'nt-chip' + (fil === k ? ' on' : '')} aria-pressed={fil === k} onClick={() => setFil(k)}>
-            {t}<em>{cuenta[k] || 0}</em></button>
-        ))}</div>
-      ) : null}
-      {hoyEv.length && ver('liga') ? (
-        <>
-          <p className="nt-s">Hoy en la Liga</p>
-          <ul>{hoyEv.map((x, i) => (
-            <li key={'ev' + i}><button type="button" className="nt-i" onClick={() => ir('#/eventos')}>
-              <img className="nt-c" alt="" src={liga.logo(x.sv)} />
-              <span className="nt-t"><b>{limpio(x.nombre)}</b><small>{vivos.includes(x) ? 'se está jugando ahora' : liga.dia(x.cuando).replace(/^hoy /, 'hoy a las ')} · {siglaDe(x.sv)}</small></span>
-              <em className={vivos.includes(x) ? 'vivo-late' : ''}>{vivos.includes(x) ? 'EN VIVO' : ''}</em>
-            </button></li>
-          ))}</ul>
-        </>
-      ) : null}
+      <div className="nt-arr">
+        <div className="nt-h">
+          <h2>Notificaciones</h2>
+          {hayNuevas ? <button type="button" className="nt-lnk" onClick={() => setLeidas(true)}>Marcar leídas</button> : null}
+          <a className="nt-ib" href="#/avisos" aria-label="Ajustes de avisos" onClick={onCerrar}>⚙</a>
+          <button type="button" className="nt-ib" aria-label="Cerrar" onClick={onCerrar}><Ico n="cerrar" t={16} /></button>
+        </div>
+        {filtros.length > 2 ? (
+          <div className="nt-chips" role="group" aria-label="Filtrar">{filtros.map(([k, t]) => (
+            <button key={k} type="button" className={'nt-chip' + (fil === k ? ' on' : '')} aria-pressed={fil === k} onClick={() => setFil(k)}>
+              {t}<em>{cuenta[k] || 0}</em></button>
+          ))}</div>
+        ) : null}
+      </div>
+      <div className="nt-cuerpo">
+      {hoyEv.length && ver('liga') ? hoyEv.map((x, i) => {
+        const v = vivos.includes(x);
+        return (
+          <button key={'ev' + i} type="button" className={'nt-vivo' + (v ? '' : ' luego')} onClick={() => ir('#/eventos')}>
+            <span className="nt-pt" aria-hidden="true" />
+            <b>{limpio(x.nombre)}<small>{siglaDe(x.sv)}{v ? ' · se está jugando' : ''}</small></b>
+            <em>{v ? 'EN VIVO' : liga.dia(x.cuando).replace(/^hoy /, '').toUpperCase()}</em>
+          </button>
+        );
+      }) : null}
       {nHacer && ver('hacer') ? (
         <>
-          <p className="nt-s nt-hacer">Para hacer <span>{nHacer}</span></p>
+          <p className="nt-s hacer">Para hacer <span>{nHacer}</span></p>
           <ul>
             {libres.map((x) => {
               const otro = x.a === yoK ? x.b : x.a;
               const ya = utc(x.t) <= ahora;
               return (
-                <li key={'lb' + x.id} className="nt-tarea">
-                  <Cara liga={liga} k={otro} nombre={nombre(otro)} cls="nt-c" />
+                <li key={'lb' + x.id} className="nt-f nueva">
+                  {cara(otro, '⚔️')}
                   <span className="nt-t">
-                    <b>{ya ? '¿Quién ganó tu batalla libre con ' + nombre(otro) + '?' : 'Batalla libre con ' + nombre(otro)}</b>
-                    <small>{ya ? (x.suyo ? nombre(otro) + ' ya lo dijo: falta que lo digas tú.' : 'Cada uno dice quién ganó; si coinciden, queda en su cara a cara.')
-                      : liga.dia(x.t).replace(/^hoy /, 'hoy a las ') + (x.a === yoK ? ' · la propusiste tú' : ' · te retó')}</small>
+                    <b>{ya ? '¿Quién ganó tu batalla libre con ' + nombre(otro) + '?' : nombre(otro) + (x.a === yoK ? ': tu batalla libre' : ' te retó a una batalla libre')}</b>
+                    <small>{ya ? (x.suyo ? nombre(otro) + ' ya lo dijo: falta que lo digas tú' : 'Si los dos dicen lo mismo, queda en su cara a cara')
+                      : 'Es ' + liga.dia(x.t).replace(/^hoy /, 'hoy a las ') + '. Cuando la jueguen, dicen quién ganó'}</small>
                     {ya ? (
-                      <span className="nt-acc">
-                        <button type="button" className="btn verde chico" disabled={!!ocup} onClick={() => decir(x.id, true)}>Gané yo</button>
-                        <button type="button" className="btn borde2 chico" disabled={!!ocup} onClick={() => decir(x.id, false)}>Ganó {nombre(otro)}</button>
+                      <span className="nt-vs">
+                        <button type="button" className="nt-btn" disabled={!!ocup} onClick={() => decir(x.id, true)}>Yo</button>
+                        <span>VS</span>
+                        <button type="button" className="nt-btn" disabled={!!ocup} onClick={() => decir(x.id, false)}>{nombre(otro)}</button>
                       </span>
-                    ) : <span className="nt-acc"><button type="button" className="btn borde2 chico" onClick={() => ir('#/')}>Verla en tu Inicio</button></span>}
+                    ) : <span className="nt-acc"><button type="button" className="nt-btn" onClick={() => ir('#/')}>Ver</button></span>}
                   </span>
+                  <span className="nt-hora">{ya ? 'ya' : liga.cuando(x.t)}</span>
                 </li>
               );
             })}
             {finales.map((x) => (
-              <li key={x.clave} className="nt-tarea">
-                <span className="nt-c nt-ico" aria-hidden="true">🏁</span>
+              <li key={x.clave} className={'nt-f' + (nueva(x) ? ' nueva' : '')}>
+                {cara('', '🏁')}
                 <span className="nt-t"><b>{sinEmoji(x.titulo)}</b><small>{String(x.cuerpo || '').replace(/\s*Márcalo en tu panel\.?$/, '')}</small>
-                  <span className="nt-acc"><button type="button" className="btn verde chico" onClick={() => ir(rutaDe(x.url))}>Marcarlo en tu panel</button></span></span>
+                  <span className="nt-acc"><button type="button" className="nt-btn v" onClick={() => ir(rutaDe(x.url))}>Marcarlo en tu panel</button></span></span>
+                <span className="nt-hora">{liga.cuando(new Date(x.t))}</span>
               </li>
             ))}
           </ul>
-          {msg ? <p className="nt-tx nt-msg" role="status">{msg}</p> : null}
+          {msg ? <p className="nt-msg" role="status">{msg}</p> : null}
         </>
       ) : null}
       {B.sinCuenta ? (
         <div className="nt-vacio">
-          <p className="nt-tx">Entra con Discord y acá te llega lo tuyo: quién te sigue, quién te felicita, quién te reta, tus rangos y tus cartas, y cuando gana alguien que sigues.</p>
-          <button type="button" className="btn verde chico" onClick={() => { onCerrar(); accion.entrar(); }}>Entrar con Discord</button>
+          <p>Entra con Discord y acá te llega lo tuyo: quién te sigue, quién te felicita, quién te reta, tus rangos y tus cartas, y cuando gana alguien que sigues.</p>
+          <button type="button" className="nt-btn v" onClick={() => { onCerrar(); accion.entrar(); }}>Entrar con Discord</button>
         </div>
-      ) : !B.listo ? <p className="nt-tx nt-vacio">Cargando…</p> : resto.length || nHacer ? (
+      ) : !B.listo ? <p className="nt-vacio">Cargando…</p> : resto.length || nHacer ? (
         grupos.filter(([, xs]) => xs.length).map(([t, xs]) => <div key={t}><p className="nt-s">{t}</p><ul>{xs.map(fila)}</ul></div>)
-      ) : <p className="nt-tx nt-vacio">Todavía no te llegó nada. Cuando alguien te siga, te felicite, te rete o subas de rango, aparece acá.</p>}
+      ) : <p className="nt-vacio">Todavía no te llegó nada. Cuando alguien te siga, te felicite, te rete o subas de rango, aparece acá.</p>}
+      </div>
       {pie ? <div className="nt-pie">{pie}</div> : null}
     </div>
   );
