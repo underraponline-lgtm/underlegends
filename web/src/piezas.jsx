@@ -53,6 +53,9 @@ const TRAZOS = {
   // ⚡ la XP (13/11/2026): el rayo, para el nivel de la cabecera
   xp: <path d="M13.5 2.5 5 13.5h6l-1.5 8 8.5-11h-6z" />,
   fuego: <path d="M12 3c.6 3 4.8 5.2 4.8 10.2A4.8 4.8 0 0112 18a4.8 4.8 0 01-4.8-4.8c0-2.6 1.4-4 2.4-5 .2 1.6.9 2.6 1.9 3.1C11.6 8.6 12 6 12 3z" />,
+  // ⚡ Actividad: un pulso; 📈 Ascensos: una escalera que sube (13/11/2026, cada ranking con el suyo)
+  pulso: <path d="M2 12h4.5l2.5-6.5 4.5 13 2.5-6.5H22" />,
+  subir: <path d="M3 20h5v-5h5v-5h5V5h3M15 3.5h6v6" />,
   mira: <><circle cx="12" cy="12" r="7.5" /><circle cx="12" cy="12" r="2.5" /><path d="M12 2v4M12 18v4M2 12h4M18 12h4" /></>,
   micro: <><path d="M9 3h6v10H9z" /><path d="M5.5 11a6.5 6.5 0 0013 0M12 17.5V21M8 21h8" /></>,
   jurado: <path d="M12 4v16M7 20h10M4 7h16M6.5 7L4 13.5h5zM17.5 7L15 13.5h5z" />,

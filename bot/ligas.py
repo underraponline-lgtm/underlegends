@@ -2332,6 +2332,21 @@ def tablas(d=None, resolver=None, ps=None, desde=''):
             for lid, x in (d.get('ligas') or {}).items()}
 
 
+def jugadas(desde='', d=None, resolver=None, ps=None):
+    """`{clave(nombre de la Lista): batallas de liga jugadas}`, sumando todas las ligas, desde ese instante (ISO). Para
+    el ranking de Actividad («En general», Dlx 13/11/2026: «se calcula los más activos en general en la liga global»).
+    Cuenta como `tabla()`: las que tienen resultado y sin los invitados (ExtraPlayers)."""
+    d = d if d is not None else leer()
+    r0 = _resolvedor_de(resolver)
+    ps = por_servidor() if ps is None else ps
+    out = {}
+    for x in (d.get('ligas') or {}).values():
+        bats = [b for b in x.get('batallas') or [] if not desde or str(b[1] or '')[:19] >= desde[:19]]
+        for f in tabla(bats, _de_servidor(x.get('sv'), r0, ps)):
+            out[clave(f[0])] = out.get(clave(f[0]), 0) + f[1]
+    return out
+
+
 def tabla_temporada(lid, ult, d=None, resolver=None, ps=None, decis=None):
     """`[nombre, …]`: la tabla de la temporada de esa liga cuya última batalla fue el día `ult` (AAAA-MM-DD), con los
     nombres como en la página. Para el podio de la que Dlx da por terminada (`decidir._guardar_ligas()`): sin esto, la

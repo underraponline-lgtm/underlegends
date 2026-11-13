@@ -30,6 +30,9 @@ const RK_SUBS = [['Temporada', 'temporada', 'Los puntos y el OVR de la temporada
   ['ELO', 'divisiones', 'Las batallas uno contra uno, por divisiones', 'cruce'], ['Duelos', 'duelos', 'Quién gana más duelos', 'micro'],
   ['Podios', 'podios', 'Campeones y finalistas', 'copa'], ['Rachas', 'rachas', 'Eventos seguidos llegando lejos', 'fuego'],
   ['Países', 'paises', 'Por los puntos de su gente', 'mundo'], ['Crews', 'crews', 'Por los puntos de sus miembros', 'crews'],
+  // ⚡📈 Actividad (lo que era Eventos) y Ascensos (Dlx, 13/11/2026: «puedes hacer que aparezca el de ascensos y eventos
+  // pero eventos renombrados actividad»): estaban en las pestañas del Ranking y no en esta lista
+  ['Actividad', 'eventos', 'Quién juega más: en general y en eventos', 'pulso'], ['Ascensos', 'ascensos', 'El ascenso de cada servidor, al día', 'subir'],
   ['Most Wanted', 'mw', 'Los buscados de la semana', 'mira'], ['Misiones', 'misiones', 'Las de la semana, para todos', 'ok']];
 export const GRUPOS = [
   ['Inicio', '#/'],

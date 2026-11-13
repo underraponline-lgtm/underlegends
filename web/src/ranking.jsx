@@ -227,6 +227,11 @@ const COL = {
   ten: { t: 'Esta semana', tc: 'Sem.', tit: 'Lo que sumó esta semana; las barritas, cada semana de la temporada',
     s: (f) => (((SEM && SEM.g[f.k]) || []).slice(-1)[0] || 0), v: (f, x) => <Tendencia g={x.sem && x.sem.g[f.k]} lunes={x.sem && x.sem.lunes} /> },
   ev: { t: 'Eventos', tc: 'Ev', tit: 'Eventos jugados en la temporada', s: (f) => f.ev || 0, v: (f) => f.ev || 0 },
+  // ⚡ ACTIVIDAD · EN GENERAL (Dlx, 13/11/2026: «se calcula los más activos en general en la liga global» → «todo lo que
+  // juegas»): eventos + batallas de liga + duelos de la temporada. `lg` lo manda el ciclo (`_lgj_de()`), sólo si jugó
+  act: { t: 'Actividad', tc: 'Act.', tit: 'Todo lo que jugó en la temporada: eventos, batallas de liga y duelos', s: (f) => actDe(f), v: (f) => num(actDe(f)) },
+  lgj: { t: 'Liga', tit: 'Batallas de liga jugadas en la temporada', s: (f) => f.lg || 0, v: (f) => f.lg || 0 },
+  duj: { t: 'Duelos', tit: 'Duelos uno contra uno jugados en las llaves', s: (f) => duDe(f)[1] || 0, v: (f) => duDe(f)[1] || 0 },
   // 🎯 los del Competitivo: sólo los de servidores Tier 1 (`evc`, 13/11/2026; sin él son los mismos que `ev`)
   evc: { t: 'Eventos', tc: 'Ev', tit: 'Eventos en servidores Tier 1: los que cuentan para el Competitivo', s: (f) => evcDe(f), v: (f) => evcDe(f) },
   wr: { t: 'Win%', tit: 'Duelos ganados sobre duelos jugados', s: (f) => (f.wr ? pct(f.wr) : ''), v: (f) => (f.wr ? Math.round(pct(f.wr)) + '%' : NADA) },
@@ -311,6 +316,8 @@ function Ascensos({ liga }) {
 // (`P`) y las cinco dimensiones del Score (`D`, `dims`)
 const wrDe = (f) => Math.round(pct(f.wr) || 0);
 const duDe = (f) => (f && Array.isArray(f.du) ? f.du : [0, 0]);
+// ⚡ la actividad en general: cada evento, cada batalla de liga y cada duelo de la temporada
+function actDe(f) { return (f.ev || 0) + (f.lg || 0) + (duDe(f)[1] || 0); }
 const pctDe = (g, j) => (j ? Math.round((100 * g) / j) : 0);
 const rdDe = (c, f) => ((c.P(f.k) || {}).rd || [0, 0]);
 const porEv = (f) => (f.ev ? Math.round((f.pts || 0) / f.ev) : 0);
@@ -358,9 +365,11 @@ const NUMEROS = {
     vs: (a, b) => [['Ahora', (a.rch || [0])[0], (b.rch || [0])[0], String], ['La más larga', (a.rch || [0, 0])[1], (b.rch || [0, 0])[1], String],
       ['Semis', a.sem || 0, b.sem || 0, String], ['Eventos', a.ev || 0, b.ev || 0, String]],
   },
+  // ⚡ Actividad: lo que jugó, en general y por tipo, y lo de los eventos
   eventos: {
-    det: (t) => [['Eventos', t.ev || 0], ['Puntos', num(t.pts)], ['Por evento', num(porEv(t))], ['Podios', t.pod || 0], ultDe(t)],
-    vs: (a, b, c) => [['Eventos', a.ev || 0, b.ev || 0, String], ['Puntos', a.pts || 0, b.pts || 0, num], [SEMANA[0], c.sem(a), c.sem(b), SEMANA[3]],
+    det: (t) => [['Actividad', num(actDe(t))], ['Eventos', t.ev || 0], ['Liga', t.lg || 0], ['Duelos', duDe(t)[1] || 0], ['Puntos', num(t.pts)], ultDe(t)],
+    vs: (a, b, c) => [['Actividad', actDe(a), actDe(b), num], ['Eventos', a.ev || 0, b.ev || 0, String], ['Liga', a.lg || 0, b.lg || 0, String],
+      ['Puntos', a.pts || 0, b.pts || 0, num], [SEMANA[0], c.sem(a), c.sem(b), SEMANA[3]],
       ['Por evento', porEv(a), porEv(b), num], ['Podios', a.pod || 0, b.pod || 0, String]],
   },
   // ⚠️ lo cobrado vive en la fila de Most Wanted (`mw.caz`), no en la de la tabla: ahí `pts` son los de la Temporada
@@ -420,12 +429,28 @@ const SUBS = {
   },
   // 🎤 QUIÉN PARTICIPÓ MÁS (Dlx, 07/10/2026: «en Ranking agrega la sección de eventos… las personas que participaron
   // más»). Los eventos jugados en la temporada, en todos los servidores; a igual cantidad, el de más puntos
+  // ⚡ Y DESDE EL 13/11/2026 SE LLAMA «ACTIVIDAD» (Dlx: «eventos renombrados actividad, donde aparte se calcula los más
+  // activos de eventos, se calcula los más activos en general en la liga global»). Dos vistas (`modos`): «En general»
+  // —eventos, batallas de liga y duelos— y «En eventos», la de antes. La ruta sigue siendo `#/ranking/eventos`, que
+  // circula; `#/ranking/actividad` lleva ahí
   eventos: {
-    et: 'Eventos', filas: (L) => (L.d.tabla || []).filter((f) => (f.ev || 0) > 0),
-    orden: (a, b) => ((b.ev || 0) - (a.ev || 0)) || ((b.pts || 0) - (a.pts || 0)),
-    cols: ['i', 'n', 'ev', 'ult', 'pts'], movil: ['i', 'n', 'ev', 'ult'],
-    baj: <>Quién <b>participó más</b>: los eventos jugados en la temporada, en todos los servidores. A igual cantidad, el que tiene más puntos.</>,
-    valor: [(f) => f.ev || 0, ['evento', 'eventos']], dato: (f) => f.ev + (f.ev === 1 ? ' EVENTO' : ' EVENTOS'),
+    et: 'Actividad',
+    modos: [
+      ['En general', {
+        filas: (L) => (L.d.tabla || []).filter((f) => actDe(f) > 0),
+        orden: (a, b) => (actDe(b) - actDe(a)) || ((b.ev || 0) - (a.ev || 0)) || ((b.pts || 0) - (a.pts || 0)),
+        cols: ['i', 'n', 'act', 'ev', 'lgj', 'duj', 'ult'], movil: ['i', 'n', 'act', 'ev'],
+        baj: <>Quién <b>juega más</b> en toda la Liga: cada evento, cada batalla de liga y cada duelo de la temporada suman uno. A igual cantidad, el que jugó más eventos.</>,
+        valor: [actDe, ['jugada', 'jugadas']], dato: (f) => num(actDe(f)) + ' JUGADAS',
+      }],
+      ['En eventos', {
+        filas: (L) => (L.d.tabla || []).filter((f) => (f.ev || 0) > 0),
+        orden: (a, b) => ((b.ev || 0) - (a.ev || 0)) || ((b.pts || 0) - (a.pts || 0)),
+        cols: ['i', 'n', 'ev', 'ult', 'pts'], movil: ['i', 'n', 'ev', 'ult'],
+        baj: <>Quién <b>participó más</b> en eventos: los jugados en la temporada, en todos los servidores. A igual cantidad, el que tiene más puntos.</>,
+        valor: [(f) => f.ev || 0, ['evento', 'eventos']], dato: (f) => f.ev + (f.ev === 1 ? ' EVENTO' : ' EVENTOS'),
+      }],
+    ],
   },
   paises: {
     et: 'Países', grupo: 'pais', filas: (L) => L.d.paises || [], sinChips: 1, nombre: (f) => nombrePais(f.cc), orden: 'pts',
@@ -936,7 +961,7 @@ const VER = 50;
 // `ver`: lo que va después del ranking en la dirección: qué abre su vista propia (lo usaban las Ligas, que desde el
 // 16/10/2026 son su propia sección: `#/ranking/ligas` lleva a `#/ligas`, en App.jsx)
 export function Ranking({ liga, sub: subRuta, ver: abre = '', dc, raiz }) {
-  const ruta = subRuta === 'elo' ? 'divisiones' : subRuta;
+  const ruta = subRuta === 'elo' ? 'divisiones' : subRuta === 'actividad' ? 'eventos' : subRuta;
   const [sub, setSub] = useState(SUBS[ruta] ? ruta : 'temporada');
   const deslizaRk = useDesliza(sub, RANKINGS);
   useEffect(() => { setSub(SUBS[ruta] ? ruta : 'temporada'); }, [ruta]);
@@ -962,7 +987,10 @@ export function Ranking({ liga, sub: subRuta, ver: abre = '', dc, raiz }) {
 
   // 🏠 de dónde es cada uno, sólo si lo eligió (Dlx, 12/10/2026). Ver elegidos.js
   const eleg = useElegidos();
-  const cfg = subDe(liga, sub) || SUBS.temporada;
+  // ⚡ un ranking con dos vistas (Actividad): la elegida pisa filas, orden, columnas y la explicación
+  const [modo, setModo] = useState(0);
+  const cfg0 = subDe(liga, sub) || SUBS.temporada;
+  const cfg = cfg0.modos ? { ...cfg0, ...(cfg0.modos[modo] || cfg0.modos[0])[1] } : cfg0;
   const pronto = cfg.pronto || (cfg.hay && !cfg.hay(liga) ? cfg.siNo : null);
   const mwOn = !!((liga.d.mw && (liga.d.mw.b || []).length) || (liga.d.tabla || []).some((f) => f.caz || f.czd || f.sob));
   // 👀 tú: el verificado (`liga.yo`) o, si no lo estás, el perfil al que te ata tu Discord (`useMira`, 13/11/2026)
@@ -981,7 +1009,7 @@ export function Ranking({ liga, sub: subRuta, ver: abre = '', dc, raiz }) {
 
   // 🆕 las crews recién fundadas, sin esperar al ciclo (`conCrewsVivas()`): la lista pública, sólo en esta pestaña
   const { todas: crewsVivas } = useCrews(sub === 'crews' ? 'todas' : 'nada');
-  const base = useMemo(() => (pronto ? [] : armar(liga, cfg)), [liga, sub, pronto, due, crewsVivas]); // eslint-disable-line react-hooks/exhaustive-deps
+  const base = useMemo(() => (pronto ? [] : armar(liga, cfg)), [liga, sub, modo, pronto, due, crewsVivas]); // eslint-disable-line react-hooks/exhaustive-deps
   x.base = base; // tu fila de esta tabla, para «TU PAÍS / TU CREW CONTRA» del detalle
   // 🏆 los que clasifican al torneo de cierre (ver `clasificados()`), y la fila después de la cual va la línea
   const clas = useMemo(() => clasificados(cfg, base), [base, sub]); // eslint-disable-line react-hooks/exhaustive-deps
@@ -992,7 +1020,9 @@ export function Ranking({ liga, sub: subRuta, ver: abre = '', dc, raiz }) {
 
   // al cambiar de ranking: orden, búsqueda y «ver más» vuelven a cero (los filtros de servidor y país se quedan:
   // quien mira «sólo FFA» quiere seguir viendo FFA en Duelos)
-  useEffect(() => { setOrden(null); setVer(VER); setTodas(false); setAbierta(null); }, [sub]);
+  useEffect(() => { setOrden(null); setVer(VER); setTodas(false); setAbierta(null); setModo(0); }, [sub]);
+  // al cambiar de vista, el orden vuelve al de esa vista
+  useEffect(() => { setOrden(null); setVer(VER); setAbierta(null); }, [modo]);
   // el historial de cada uno (`/api/perfiles`), la primera vez que se abre una fila: lo pide app.js y lo guarda
   useEffect(() => {
     if (!abierta || perf || typeof window.perfiles !== 'function') return undefined;
@@ -1229,6 +1259,14 @@ export function Ranking({ liga, sub: subRuta, ver: abre = '', dc, raiz }) {
           <>
             {/* con el ranking vacío (el día que arranca la temporada) no hay qué buscar ni qué filtrar */}
             {base.length ? <div className="rk-fil">
+              {/* ⚡ las dos vistas de Actividad, en su propia fila: adentro de la del buscador se pisaban */}
+              {cfg0.modos ? (
+                <div className="rk-seg rk-modos" role="group" aria-label="Qué medir">
+                  {cfg0.modos.map(([et], i) => (
+                    <button key={et} type="button" className={modo === i ? 'on' : ''} aria-pressed={modo === i} onClick={() => setModo(i)}>{et}</button>
+                  ))}
+                </div>
+              ) : null}
               <div className="rk-fil-top">
               <label className="rk-buscar"><Ico n="buscar" t={18} />
                 <input type="search" value={q} onChange={(e) => setQ(e.target.value)} placeholder={'Buscar ' + que[0]} aria-label={'Buscar ' + que[0]} enterKeyHint="search" />

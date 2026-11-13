@@ -207,6 +207,9 @@ tr.yo .rk-bar,.rk-fila.yo .rk-bar{background:#E41373}
 .rk-seg{display:inline-flex;border:2px solid var(--linea);background:var(--fondo)}
 .rk-seg button{padding:0 10px;border:0;background:none;color:var(--tinta);font:800 11.5px/1 "Barlow Condensed",sans-serif;letter-spacing:.08em;text-transform:uppercase;cursor:pointer;white-space:nowrap}
 .rk-seg button.on{background:var(--inv);color:var(--inv-tinta)}
+/* ⚡ las dos vistas de Actividad (En general · En eventos), arriba del buscador */
+.rk-modos{grid-column:1/-1;justify-self:start}
+.rk-modos button{min-height:40px;padding:0 16px;font-size:13px}
 /* la lista del celular */
 .rk-tw.lista{border-top:0}
 .rk-lista{list-style:none;margin:0;padding:0}

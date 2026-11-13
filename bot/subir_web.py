@@ -315,6 +315,9 @@ def armar():
         # ✍️ y con el Writing Challenge de FFA (`bot/writing.py`): la columna «Writing» del ranking. Sólo si sumó
         # algo, como `fc`: son pocos y el lobby ya pasó dos veces los 120 KB
         **({'wch': _wch_de(p.get('raw'))} if _wch_de(p.get('raw')) else {}),
+        # 🏟️ las batallas de liga jugadas en la temporada (`_lgj_de()`), para «Actividad · En general». Sólo si jugó
+        # alguna, como `wch`: el lobby tiene tope de peso
+        **({'lg': _lgj_de(p.get('raw'))} if _lgj_de(p.get('raw')) else {}),
         'seg': p.get('seg') or 0,
         'ter': p.get('ter') or 0,
         'sem': p.get('sem') or 0,
@@ -3529,6 +3532,26 @@ def _wch_de(raw):
         except Exception:                                # noqa: BLE001
             _WCH['_'] = {}
     return _WCH['_'].get(_norm_mis(raw)) or 0
+
+
+
+_LGJ = {}
+
+
+def _lgj_de(raw):
+    """🏟️ Las batallas de liga que esa persona jugó en la temporada, o 0 (la columna «Liga» del ranking de Actividad;
+    Dlx, 13/11/2026: «se calcula los más activos en general en la liga global» → «todo lo que juegas»). Todas las ligas,
+    desde el arranque de la temporada (`comun/temporada.inicio()`), sin invitados: `ligas.jugadas()`."""
+    if '_' not in _LGJ:
+        try:
+            import ligas as _LGx
+            from comun import temporada as _TMP
+            j = _LGx.jugadas(str(_TMP.inicio()))
+            _LGJ['_'] = lambda r: j.get(_LGx.clave(r or '')) or 0
+        except Exception as e:                           # noqa: BLE001
+            print('   ⚠️ las batallas de liga no entran a Actividad: %s' % str(e)[:120])
+            _LGJ['_'] = lambda r: 0
+    return _LGJ['_'](raw)
 
 
 def _div():
