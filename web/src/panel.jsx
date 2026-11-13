@@ -587,6 +587,115 @@ export function Vestuario({ liga, dc }) {
   );
 }
 
+// ── 🏟️ TU LIGA, O LA QUE TE RECOMENDAMOS (12/11/2026, Dlx: «la posición en tu liga verdadera… y si no está, que se una a
+// una liga, recomendación basada en el ELO, actividad y nivel competitivo»). Las ligas de los servidores (`/api/ligas`):
+// si estás en alguna, tu puesto en su tabla; si no, la que más se parece a ti entre las que se jugaron en las últimas tres
+// semanas: la gente de cada una contra tu ELO, tu OVR y tu Score, con la actividad y tu servidor a favor ──────────────
+const LIGA_ACTIVA_DIAS = 21;
+function nivelesDe(liga) {
+  const elo = {};
+  for (const g of ((liga.d.div || {}).d || [])) for (const gg of g || []) for (const x of gg || []) if (x && x[0]) elo[limpio(x[0]).toLowerCase()] = Number(x[1]) || 0;
+  return (k) => {
+    // ⚠️ quien está más allá de los 200 del lobby no está en `T`: su fila es `liga.yo` (la trae su perfil, App.jsx)
+    const f = liga.T[k] || (liga.yo && liga.yo.k === k ? liga.yo : null);
+    if (!f) return null;
+    return { elo: elo[limpio(f.n).toLowerCase()] || 0, ovr: Number(f.ovr) || 0, sc: Number(f.sc) || 0 };
+  };
+}
+export function recomendarLiga(liga, ls, yoK) {
+  const de = nivelesDe(liga);
+  const yo = de(yoK);
+  if (!yo) return null;
+  const ahora = liga.ahora.getTime ? liga.ahora.getTime() : Number(liga.ahora);
+  let mejor = null;
+  for (const L of ls) {
+    const dias = L.ult_t ? (ahora - utc(L.ult_t).getTime()) / 86400000 : 99;
+    if (dias > LIGA_ACTIVA_DIAS) continue;
+    const gente = Object.values(L.ks || {}).map(de).filter(Boolean);
+    if (gente.length < 2) continue;
+    const prom = (c) => { const xs = gente.map((g) => g[c]).filter((v) => v > 0); return xs.length ? xs.reduce((a, b) => a + b, 0) / xs.length : 0; };
+    const e = prom('elo'), o = prom('ovr'), s = prom('sc');
+    let d = 0;
+    const por = [];
+    if (yo.elo && e) { d += Math.abs(yo.elo - e) / 25; if (Math.abs(yo.elo - e) < 60) por.push('ELO parecido al tuyo'); }
+    if (yo.ovr && o) { d += Math.abs(yo.ovr - o) / 5; if (Math.abs(yo.ovr - o) < 8) por.push('nivel parecido (OVR ' + Math.round(o) + ')'); }
+    if (yo.sc && s) d += Math.abs(yo.sc - s) / 5;
+    d += dias * 0.4;
+    if (dias < 3) por.push(dias < 1 ? 'se jugó hoy' : 'activa esta semana');
+    const sv = (liga.T[yoK] || liga.yo || {}).sv;
+    if (sv && L.sv === sv) { d -= 3; por.push('de tu servidor'); }
+    if (!mejor || d < mejor.d) mejor = { L, d, por, n: gente.length };
+  }
+  return mejor;
+}
+export function PnMiLiga({ liga }) {
+  const yo = liga.yo;
+  const [X, setX] = useState(null);
+  useEffect(() => {
+    let vivo = true;
+    pedirLigas(liga.d.sello).then((x) => { if (vivo) setX(x || {}); });
+    return () => { vivo = false; };
+  }, [liga.d.sello]);
+  if (!yo) return null;
+  const ls = (X && X.lobby && X.lobby.ligas) || [];
+  const cab = (t) => <div className="pn-ml-cab"><h4>{t}</h4></div>;
+  // 🖼️ el afiche de la liga a la derecha, visible (Dlx, 12/11/2026: «ligas tiene su vacío en la parte derecha»); sin
+  // afiche, el escudo de su servidor
+  const afiche = (L) => (L.fl ? <img className="pn-ml-afiche" alt="" src={L.fl} />
+    : liga.logo(L.sv) ? <img className="pn-ml-afiche logo" alt="" src={liga.logo(L.sv)} /> : null);
+  if (!X) return <div className="pn-cu pn-ml">{cab('Tu liga')}<small className="pn-gris">Buscando tu liga…</small></div>;
+  // las tuyas: donde estás en la tabla; la que se jugó más recién primero
+  const mias = ls.map((L) => {
+    const i = (L.tabla || []).findIndex((r) => (L.ks || {})[r[0]] === yo.k);
+    return i >= 0 ? { L, i, r: L.tabla[i] } : null;
+  }).filter(Boolean).sort((a, b) => String(b.L.ult_t || '').localeCompare(String(a.L.ult_t || '')));
+  const m = mias[0];
+  if (m) {
+    const ovrL = ((X.cartas || {})[yo.k] || []).find((c) => c[0] === m.L.id);
+    return (
+      <a className="pn-cu pn-ml" href={'#/ligas/' + encodeURIComponent(m.L.id)}>
+        {m.L.fl ? <img className="pn-ml-fl" alt="" src={m.L.fl} /> : null}
+        {afiche(m.L)}
+        {cab('Tu liga')}
+        <span className="pn-ml-n"><b>{limpio(m.L.n)}</b><small>{siglaDe(m.L.sv)}{mias.length > 1 ? ' · y ' + (mias.length - 1) + ' más' : ''}</small></span>
+        <span className="pn-ml-pos"><strong>#{m.i + 1}</strong><small>de {(m.L.tabla || []).length}</small></span>
+        <small className="pn-ml-dato">{m.L.pend ? num(m.L.pend) + ' batallas por jugar · ' : ''}{m.L.ult_t ? 'se jugó ' + hace(utc(m.L.ult_t).getTime()) : ''}</small>
+        <span className="pn-ml-m">
+          <span><i>Puntos</i><b>{num(m.r[3] || 0)}</b></span>
+          <span><i>Jugadas</i><b>{num(m.r[1] || 0)}</b></span>
+          {ovrL ? <span><i>OVR</i><b>{ovrL[2]}</b></span> : <span><i>Ganadas</i><b>{num(m.r[2] || 0)}</b></span>}
+        </span>
+        <small className="pn-ml-ir">Ver la liga ›</small>
+      </a>
+    );
+  }
+  const rec = recomendarLiga(liga, ls, yo.k);
+  if (!rec) {
+    return (
+      <a className="pn-cu pn-ml" href="#/ligas">{cab('Ligas')}
+        <span className="pn-ml-n"><b>Todavía no juegas en ninguna</b><small>Las ligas de los servidores, con su tabla y sus fechas</small></span>
+        <small className="pn-ml-ir">Ver las ligas ›</small></a>
+    );
+  }
+  return (
+    <a className="pn-cu pn-ml rec" href={'#/ligas/' + encodeURIComponent(rec.L.id)}>
+      {rec.L.fl ? <img className="pn-ml-fl" alt="" src={rec.L.fl} /> : null}
+      {afiche(rec.L)}
+      <div className="pn-ml-cab"><h4>Ligas</h4><em>Para ti</em></div>
+      <span className="pn-ml-n"><small>Todavía no juegas en una liga. Te recomendamos:</small><b>{limpio(rec.L.n)}</b>
+        <small>{siglaDe(rec.L.sv)} · {rec.n} raperos</small></span>
+      {rec.por.length ? <span className="pn-ml-por">{rec.por.slice(0, 3).map((p) => <i key={p}>{p}</i>)}</span> : null}
+      <small className="pn-ml-dato">{rec.L.pend ? num(rec.L.pend) + ' batallas por jugar · ' : ''}{rec.L.ult_t ? 'se jugó ' + hace(utc(rec.L.ult_t).getTime()) : ''}</small>
+      {/* quién va arriba en esa liga: las caras de su tabla, para saber contra quién te tocaría */}
+      {(rec.L.tabla || []).length ? <span className="pn-ml-top">{rec.L.tabla.slice(0, 3).map((r, i) => {
+        const k = (rec.L.ks || {})[r[0]] || '';
+        return <span key={r[0]}><em>{i + 1}</em><Cara liga={liga} k={k} nombre={r[0]} cls="cara pn-ml-c" /><b>{limpio(r[0])}</b><small>{num(r[3] || 0)}</small></span>;
+      })}</span> : null}
+      <small className="pn-ml-ir">Ver la liga y sumarte ›</small>
+    </a>
+  );
+}
+
 // ── 📊 TUS ESTADÍSTICAS, EN UN POP-UP (12/11/2026, Dlx: «cuando abrir estadísticas que abra un pop up con las estadísticas mías
 // en general, no que me mande a mi perfil»). Todo sale de tu fila; abajo, tus últimos eventos y el perfil entero ──────────
 function Estadisticas({ liga, yo, rks }) {
@@ -616,7 +725,7 @@ function Estadisticas({ liga, yo, rks }) {
 }
 
 // ── 📅 EVENTOS: los de la semana, todos contra los tuyos ─────────────────────────────────────────────────────────
-export function PnEventos({ liga }) {
+export function PnEventos({ liga, ancho = false }) {
   const ahora = liga.ahora;
   const l0 = lunes(ahora);
   const hoyI = Math.floor((ahora - l0) / DIA_MS);
@@ -639,7 +748,7 @@ export function PnEventos({ liga }) {
   const vivos = liga.vivo();
   const ult = (liga.d.pasados || [])[0];
   return (
-    <a className="pn-cu pn-ev" href="#/eventos">
+    <a className={'pn-cu pn-ev' + (ancho ? ' ancho' : '')} href="#/eventos">
       <h4>Eventos{vivos.length ? <span className="pn-vivo">EN VIVO</span> : null}</h4>
       <div className="pn-ev-n"><span className="pn-n">{total}</span><small>esta semana</small></div>
       {yo ? <small className="pn-tuyos">jugaste <b>{jugaste}</b> · la pasada {pasada}</small> : null}
@@ -689,7 +798,15 @@ export function PnCrew({ liga }) {
             <small><b>{num(semana)}</b> de {num(sube)}</small>
           </span>
         ) : null}
-        <small>{i >= 0 ? '#' + (i + 1) + ' de ' + crews.length + ' · ' : ''}{num(mia.pts || 0)} pts · {mia.n || gente.length} raperos</small>
+        {/* 🛡️ sin hueco (12/11/2026, Dlx: «tu crew tiene un hueco»): su puesto entre las crews arriba a la derecha y sus
+            números en cajitas, como las demás piezas del panel */}
+        {i >= 0 ? <span className="pn-cr-pos"><strong>#{i + 1}</strong><small>de {crews.length}</small></span>
+          : t ? <span className="pn-cr-pos tier"><strong style={{ color: t[1] }}>{t[0]}</strong><small>su tier</small></span> : null}
+        <span className="pn-cr-m">
+          <span><i>Puntos</i><b>{num(mia.pts || 0)}</b></span>
+          <span><i>Raperos</i><b>{num(mia.n || gente.length)}</b></span>
+          <span><i>Esta semana</i><b>{num(semana)}</b></span>
+        </span>
       </a>
     );
   }
@@ -705,7 +822,7 @@ export function PnCrew({ liga }) {
 }
 
 // ── 🎯 MISIONES, con los carteles de Se busca ─────────────────────────────────────────────────────────────────────
-export function PnMisiones({ liga }) {
+export function PnMisiones({ liga, chica = false }) {
   const M = liga.d.mis || {};
   const lista = M.lista || [];
   const yo = liga.yo;
@@ -752,21 +869,21 @@ export function PnMisiones({ liga }) {
         <div className="pn-mis-pie"><a className="btn borde2 chico" href="#/ranking/misiones">Ranking de misiones</a><a className="btn borde2 chico" href="#/ranking/mw">Ranking del Most Wanted</a></div>
       </div>
     </dialog>
-    <a className="pn-cu pn-mi" href={sueltos.length ? '#/ranking/mw' : '#/ranking/misiones'}
+    <a className={'pn-cu pn-mi' + (chica ? ' chica' : '')} href={sueltos.length ? '#/ranking/mw' : '#/ranking/misiones'}
       onClick={(e) => { if (dlg.current && dlg.current.showModal) { e.preventDefault(); dlg.current.showModal(); } }}>
       <div className="pn-mi-cab"><h4>Misiones</h4>{M.bono ? <span className="pn-bono">+{num(M.bono)} de bono</span> : null}</div>
-      {lista.length ? <span className="pn-sellos" aria-label={hechas + ' de ' + lista.length}>{lista.map((x, i) => <i key={x.id} className={i < hechas ? 'si' : ''} />)}</span> : null}
+      <span className="pn-mi-sub">{lista.length ? <span className="pn-sellos" aria-label={hechas + ' de ' + lista.length}>{lista.map((x, i) => <i key={x.id} className={i < hechas ? 'si' : ''} />)}</span> : null}
+        <small>{teBuscan ? 'Te buscan a ti · ' : ''}{nSueltos} {nSueltos === 1 ? 'sigue suelto' : 'siguen sueltos'}</small></span>
       {sueltos.length ? <span className="pn-carteles">{sueltos.map((b) => (
         <span key={b.k} className="pn-cartel"><em>SE BUSCA</em><Cara liga={liga} k={b.k} nombre={b.n} cls="pn-cartel-c" /><b>{limpio(b.n)}</b><span>{num(Number(b.v) || 0)}</span></span>
       ))}</span> : null}
-      <small>{teBuscan ? 'Te buscan a ti · ' : ''}{nSueltos} {nSueltos === 1 ? 'sigue suelto' : 'siguen sueltos'}</small>
     </a>
     </>
   );
 }
 
 // ── 🎟️ EL PASE, decorativo: tu nivel en un hexágono, la pista y lo que viene después del último ─────────────────────
-export function PnPase({ dc }) {
+export function PnPase({ dc, chico = false }) {
   const P = usePase(!!dc);
   // ⚠️ `avance()` es null en el último nivel (no hay siguiente): con el 30 completo decía «para los miembros de DRA» (Dlx)
   const mio = !!(P && P.listo && P.miembro);
@@ -776,7 +893,7 @@ export function PnPase({ dc }) {
   const tramos = 10;
   const llenos = Math.round((nivel / niveles) * tramos);
   return (
-    <a className="pn-cu pn-pa" href="#/pase">
+    <a className={'pn-cu pn-pa' + (chico ? ' chico' : '')} href="#/pase">
       <h4>Pase rapero</h4>
       <span className="pn-nv"><span className="pn-hex">{a ? nivel : niveles}</span>
         <span><b>{a ? 'Nivel ' + nivel + ' de ' + niveles : niveles + ' niveles'}</b>
@@ -790,10 +907,47 @@ export function PnPase({ dc }) {
 }
 
 // ── 🛍️ Tienda y 📅 La semana, en la misma línea ──────────────────────────────────────────────────────────────────
-export function PnTienda({ saldo, dc }) {
+export function PnTienda({ saldo, dc, cuadro = false, liga = null }) {
   const valor = typeof W.valorCabezas === 'function' ? W.valorCabezas() || {} : {};
   const tope = Object.values(valor).reduce((m, v) => Math.max(m, Number(v) || 0), 0);
   const mios = useMios(dc);
+  // 🔁 cuadrada, en el lugar de Eventos (12/11/2026, Dlx: «intercambiar tienda x eventos»)
+  if (cuadro) {
+    // 🛍️ COMO UNA TIENDA DE VERDAD (12/11/2026, Dlx: «creo que tienda… puede ser mejor»): la cabeza más cara con su cara
+    // (lo que más se mira), y lo que se vende hoy con su precio y si te alcanza (los mismos que `Catalogo` de tienda2.jsx)
+    const T = liga.d.tienda || {};
+    const caraK = Object.keys(valor).reduce((m, k) => (!m || (Number(valor[k]) || 0) > (Number(valor[m]) || 0) ? k : m), '');
+    const fc = caraK ? liga.fila(caraK) : null;
+    const tieneCrew = !!(liga.yo && liga.crewDe(liga.yo));
+    const items = [
+      ['mira', 'Precio por cabeza', Number(T.min) || 500, true],
+      ['novedades', '+1 semana de tu promo', 2500, false],
+      tieneCrew ? null : ['crews', 'Fundar tu crew', 2500, false],
+    ].filter(Boolean);
+    return (
+      <a className="pn-cu pn-ti2" href="#/tienda">
+        <div className="pn-ti2-cab"><h4>Tienda</h4>
+          <span className="pn-ti2-bill"><i aria-hidden="true">$</i><b>{saldo != null ? num(saldo) : '—'}</b></span></div>
+        {tope ? (
+          <span className="pn-ti2-top">
+            <Cara liga={liga} k={fc ? fc.k : ''} nombre={fc ? fc.n : caraK} cls="cara pn-ti2-c" />
+            <span><em>La cabeza más cara</em><b>{limpio(fc ? fc.n : caraK)}</b></span>
+            <strong>{num(tope)}</strong>
+          </span>
+        ) : null}
+        <span className="pn-ti2-l">
+          {items.map(([ic, t, p, desde]) => {
+            const ok = saldo != null && saldo >= p;
+            return (
+              <span key={t} className={ok ? 'si' : ''}><Ico n={ic} t={16} /><i>{t}</i>
+                <strong>{desde ? 'desde ' : ''}{num(p)}</strong><u aria-label={ok ? 'te alcanza' : 'no te alcanza'}>{ok ? '✓' : '–'}</u></span>
+            );
+          })}
+        </span>
+        <small className="pn-ti2-ir">{mios && mios.marcos != null ? num(mios.marcos) + ' marcos · ' : ''}Ir a la Tienda ›</small>
+      </a>
+    );
+  }
   return (
     <a className="pn-baja-t pn-ti" href="#/tienda">
       <span className="pn-ti-ic" aria-hidden="true">$</span>
@@ -806,7 +960,7 @@ export function PnTienda({ saldo, dc }) {
     </a>
   );
 }
-export function PnSemana({ liga }) {
+export function PnSemana({ liga, chica = false }) {
   const C = useCompetencias();
   if (!C || !C.ligas) return null;
   const dia = C.dia || 1;
@@ -816,6 +970,32 @@ export function PnSemana({ liga }) {
   const rapid = d && d.rapid ? (d.rapid.campeon ? 'Campeón' : d.rapid.fuera ? 'Afuera' : (d.rapid.ronda || {}).r || '—') : String((C.rapid || []).length);
   // ⚔️ tus duelos de esta semana y el rival más fuerte que te tocó (Dlx, 12/11/2026)
   const cr = yo ? liga.crucesDe(yo.k, { desde: liga.desdeLunes() }) : null;
+  // ✂️ chica, en la mitad de abajo del Pase (12/11/2026, Dlx: «dividir pase rapero a la mitad y poner ahí la semana»)
+  const metaL = (C.mini || []).find((x) => x.id === 'meta' && x.objetivo);
+  const eq = (C.equipo || [])[0];
+  if (chica) {
+    return (
+      <a className="pn-cu pn-se2" href="#/competencias" style={{ '--p': Math.round((dia / 7) * 100) }}>
+        <div className="pn-se2-cab"><h4>La semana</h4><span className="pn-anillo"><b>{dia}/7</b></span></div>
+        <span className="pn-dias7" aria-hidden="true">{LETRAS.map((l, j) => <i key={j} className={j + 1 < dia ? 'si' : j + 1 === dia ? 'hoy' : ''}>{l}</i>)}</span>
+        <span className="pn-se2-m">
+          {cr ? <span className="pn-gpm"><i>Duelos</i><strong><b className="g">{cr.g}</b>G <b className="p">{cr.p}</b>P</strong></span> : null}
+          <span><i>Ligas</i><strong>{d && d.liga ? d.liga.pos + '.º' : 'J' + (C.ligas.jornada || 1)}</strong></span>
+          <span><i>Copa</i><strong>{copa}</strong></span>
+          <span><i>Rapid</i><strong>{rapid}</strong></span>
+        </span>
+        {cr && cr.fuerte ? <small className="pn-se2-r">Rival más fuerte: <b>{cr.fuerte.n}</b> #{cr.fuerte.pos}</small> : null}
+        {/* 📅 más vida (12/11/2026, Dlx: «la semana y ligas se ve sin vida… agrega más cosas»): cuándo cierra y cuántos
+            compiten, la meta de toda la Liga y el mejor del equipo de la semana */}
+        <span className="pn-se2-x">
+          <small>{C.fin ? <>Cierra en <b>{faltaTxt(C.fin)}</b></> : null}{C.activos ? <> · <b>{num(C.activos)}</b> compiten</> : null}</small>
+          {metaL ? <span className="pn-se2-meta"><i>{metaL.nombre}</i><b>{num(metaL.n)}/{num(metaL.objetivo)}</b>
+            <u aria-hidden="true"><s style={{ width: Math.min(100, Math.round((100 * metaL.n) / Math.max(1, metaL.objetivo))) + '%' }} /></u></span> : null}
+          {eq ? <small className="pn-se2-eq">Equipo de la semana: <b>{limpio(nombreDe(liga, C, eq[0]))}</b> · {String(eq[1]).replace('.', ',')}</small> : null}
+        </span>
+      </a>
+    );
+  }
   return (
     <a className="pn-baja-t pn-se" href="#/competencias" style={{ '--p': Math.round((dia / 7) * 100) }}>
       <span className="pn-anillo"><b>{dia}/7</b></span>
@@ -827,6 +1007,60 @@ export function PnSemana({ liga }) {
       <span className="pn-mini"><span>Ligas</span><strong>{d && d.liga ? d.liga.pos + '.º' : 'J' + (C.ligas.jornada || 1)}</strong></span>
       <span className="pn-mini"><span>Copa</span><strong>{copa}</strong></span>
       <span className="pn-mini"><span>Rapid</span><strong>{rapid}</strong></span>
+    </a>
+  );
+}
+
+// ── 🏠 TU SERVIDOR (12/11/2026, Dlx: «al costado de eventos… hay un espacio, posicionemos todo bien»): lo que el panel no
+// mostraba en ningún lado: el multiplicador de esta semana, la guerra de servidores, la meta de raperos de la semana, tu
+// puesto ahí y su próximo evento. El servidor es el que elegiste o, si no, donde más jugaste (el de tu carta de Servidor)
+export function PnServidor({ liga }) {
+  const yo = liga.yo;
+  const el = useElegidos();
+  if (!yo) return null;
+  const sv = svElegido(liga, el, yo.k) || yo.sv;
+  if (!sv) return null;
+  const M = liga.d.mult || {};
+  const x = (M.sv || {})[sv];
+  const par = (((M.guerra || {}).pares) || []).find((pp) => pp.includes(sv));
+  const rival = par ? par.find((y) => y !== sv) : '';
+  const meta = (M.metas || {})[sv] || 0;
+  const va = (M.meta_va || {})[sv] || 0;
+  const delSv = liga.oficiales().filter((f) => f.sv === sv).sort((a, b) => a.pos - b.pos);
+  const i = delSv.findIndex((f) => f.k === yo.k);
+  const ev = liga.luego().find((e) => e.sv === sv) || null;
+  const evT = ev ? utc(liga.cuandoDe(ev)).toISOString() : '';
+  // 🏠 más cosas (Dlx: «tu servidor, que haya más cosas, hay un espacio vacío»): sus tres de arriba, los eventos de esta
+  // semana y si le toca el dorado
+  const top = delSv.slice(0, 3);
+  const lun = liga.desdeLunes();
+  const evSem = (liga.d.calendario || []).filter((c) => c.sv === sv && utc(c.t) >= lun && utc(c.t) <= liga.ahora).length;
+  const dorado = !!(M.dorado && M.dorado.sv === sv);
+  // y su último evento (todos los servidores tienen uno, aunque nadie de ahí esté entre los 200 del lobby)
+  const ultSv = (liga.d.calendario || []).filter((c) => c.sv === sv && utc(c.t) <= liga.ahora).sort((a, b) => utc(b.t) - utc(a.t))[0]
+    || (() => { const ll = liga.llavesPorFecha().find((x) => x.sv === sv); return ll ? { n: ll.nombre, t: liga.fechaLlave(ll) } : null; })();
+  return (
+    <a className="pn-baja-t pn-sv" href={'#/sv/' + encodeURIComponent(sv)}>
+      {liga.logo(sv) ? <img className="pn-sv-logo" alt="" src={liga.logo(sv)} /> : <span className="pn-sv-logo">{siglaDe(sv)}</span>}
+      <span className="pn-baja-tx"><b>Tu servidor</b><small>{siglaDe(sv)}{i >= 0 ? ' · tú vas #' + (i + 1) + ' de ' + delSv.length : ''}</small>
+        {/* ✅ sólo lo que hay (Dlx, 12/11/2026, la regla de «ninguna sección se dibuja vacía»): sin próximo evento, el último;
+            los eventos de la semana sólo si hubo, y el dorado si le toca */}
+        {ev ? <small className="pn-sv-ev">Próximo: {limpio(ev.nombre)} · en {faltaTxt(evT)}</small>
+          : ultSv ? <small className="pn-sv-ev">Último: {limpio(ultSv.n)} · hace {hace(utc(ultSv.t).getTime())}</small> : null}
+        {evSem || dorado ? <small>{evSem ? evSem + (evSem === 1 ? ' evento' : ' eventos') + ' esta semana' : ''}{evSem && dorado ? ' · ' : ''}{dorado ? '✨ es el servidor dorado' : ''}</small> : null}
+        {!ev && !ultSv && delSv.length ? <small>{delSv.length} {delSv.length === 1 ? 'rapero' : 'raperos'} de aquí en el ranking</small> : null}</span>
+      {top.length ? <span className="pn-sv-top">{top.map((f, j) => (
+        <span key={f.k}><em>{j + 1}</em><Cara liga={liga} k={f.k} nombre={f.n} cls="cara pn-sv-c" /><b>{limpio(f.n)}</b></span>
+      ))}</span> : null}
+      {x ? <span className="pn-mini"><span>Esta semana</span><strong>×{String(x).replace('.', ',')}</strong></span> : null}
+      {/* ⚔️ la guerra de servidores, con los dos escudos: lo que más dice esta caja */}
+      {rival ? <span className="pn-sv-gu" aria-label={'Guerra de servidores: ' + siglaDe(sv) + ' contra ' + siglaDe(rival)}>
+        <i>Guerra</i>
+        <span>{liga.logo(sv) ? <img alt="" src={liga.logo(sv)} /> : <b>{siglaDe(sv)}</b>}<em>VS</em>{liga.logo(rival) ? <img alt="" src={liga.logo(rival)} /> : <b>{siglaDe(rival)}</b>}</span>
+        <small>{siglaDe(sv)} contra {siglaDe(rival)}</small>
+      </span> : null}
+      {meta ? <span className="pn-mini pn-sv-meta"><span>Meta</span><strong>{num(va)}/{num(meta)}</strong>
+        <i aria-hidden="true"><u style={{ width: Math.min(100, Math.round((100 * va) / meta)) + '%' }} /></i></span> : null}
     </a>
   );
 }

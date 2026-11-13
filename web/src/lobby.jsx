@@ -17,7 +17,7 @@ import { Cara, Ico, aDiscord, accion, useCampana } from './piezas.jsx';
 import { avance, usePase } from './pase.js';
 // 🎉 «¡Subiste!» también en el Inicio (Dlx, 25/10/2026: «como un pop up incluso en la página principal»)
 import { PopPase } from './pase_pop.jsx';
-import { Batallas, FilaRacha, PnCrew, PnEventos, PnMisiones, PnPase, PnSemana, PnTienda, Vestuario, campanaPide } from './panel.jsx';
+import { Batallas, FilaRacha, PnCrew, PnEventos, PnMiLiga, PnMisiones, PnPase, PnSemana, PnServidor, PnTienda, Vestuario, campanaPide } from './panel.jsx';
 import { cobrarRacha, useRacha } from './racha.js';
 import { esDoble, eventoDelBoton, ganador, lados, llaveEnVivo, momentosLlave } from './arriba.jsx';
 
@@ -551,16 +551,21 @@ export function Lobby({ liga, dc }) {
       <FilaRacha dc={dc} R={R} liga={liga} />
       <ElBoton liga={liga} />
       <Batallas liga={liga} dc={dc} />
+      {/* 🧩 EL PANEL, OPCIÓN B (12/11/2026, Dlx): la Tienda arriba a la izquierda, tu liga y Misiones partidos (Misiones, la
+          mitad alta), el Pase y La semana partidos a la derecha, y abajo Eventos con Tu servidor al costado */}
       <div className="pn-grid aparece">
-        <PnEventos liga={liga} />
+        <PnTienda saldo={saldo} dc={dc} liga={liga} cuadro />
         <Vestuario liga={liga} dc={dc} />
         <PnCrew liga={liga} />
-        <PnMisiones liga={liga} />
-        <PnPase dc={dc} />
+        {/* ⚖️ (Dlx: «intercambia La semana con Misiones…», «simetría», y después «¿intercambiar La semana con Ligas? La semana
+            tiene más para visualizar»): a la izquierda tu liga (la fila del medio, la justa) y La semana (la de abajo, la
+            alta); a la derecha el Pase y Misiones */}
+        <div className="pn-mitades mi"><PnMiLiga liga={liga} /><PnSemana liga={liga} chica /></div>
+        <div className="pn-mitades pa"><PnPase dc={dc} chico /><PnMisiones liga={liga} chica /></div>
       </div>
-      <div className="pn-baja">
-        <PnTienda saldo={saldo} dc={dc} />
-        <PnSemana liga={liga} />
+      <div className="pn-baja pn-baja3">
+        <PnEventos liga={liga} ancho />
+        <PnServidor liga={liga} />
       </div>
     </section>
   );

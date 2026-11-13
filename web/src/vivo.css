@@ -4328,3 +4328,314 @@ dialog.pn-pop.dd-pop{width:min(760px,calc(100vw - 32px));border-color:#9B5CFF}
 .tabbar .tb-nuevas{position:absolute;top:4px;right:calc(50% - 22px);min-width:16px;height:15px;display:grid;place-items:center;padding:0 3px;background:#E41373;color:#fff;font:800 9px/1 Archivo,sans-serif;font-style:normal;border-radius:2px}
 .pn .pn-bot-av.cara{overflow:hidden;background:#2A2C31}
 .pn .pn-bot-av img{width:100%;height:100%;object-fit:cover;border-radius:50%;display:block}
+
+/* ═══ ✂️ OPCIÓN B (12/11/2026, Dlx: «eso de las ligas lo cortamos a la mitad… misiones se queda arriba y ligas para
+   abajo»): el cuadro de Misiones partido, como el Pase y La semana de la opción A ═══ */
+.pn-mitades{display:grid;grid-template-rows:auto minmax(0,1fr);gap:12px;min-width:0}
+.pn-mitades.mi{grid-area:mi}
+.pn-mitades > .pn-mi{grid-area:auto;min-height:0}
+.pn-mi.chica{gap:6px;padding:10px 12px}
+.pn-mi.chica .pn-carteles{margin-top:2px}
+.pn-mi.chica .pn-cartel{grid-template-columns:auto;padding:3px 3px 4px}
+.pn-mi.chica .pn-cartel em{font-size:7px}
+.pn .pn-mi.chica .pn-cartel-c{width:100%;aspect-ratio:1;height:auto;max-height:52px}
+.pn-mi.chica .pn-cartel b{font-size:10px}
+.pn-mi.chica .pn-cartel > span:last-child{font-size:10px}
+.pn-mi.chica .pn-sellos i{width:14px;height:14px}
+.pn-mitades > .pn-ml{min-height:0;padding:10px 12px;gap:5px}
+/* 🏟️ tu liga */
+.pn-ml{border-color:#3b2a63;background:radial-gradient(120% 90% at 100% 0,rgba(155,92,255,.24),transparent 60%),#0B0C0E;gap:7px;min-height:0}
+.pn-ml.rec{border-style:dashed}
+.pn-ml-fl{position:absolute;right:-18px;top:-18px;width:96px;height:96px;object-fit:cover;opacity:.22;transform:rotate(8deg);pointer-events:none}
+.pn-ml-cab{display:flex;align-items:center;justify-content:space-between;gap:8px;position:relative}
+.pn-ml-cab em{font:800 10px/1 "Barlow Condensed",sans-serif;font-style:normal;letter-spacing:.08em;text-transform:uppercase;color:#000;background:#B48CFF;padding:3px 6px}
+.pn-ml-n{display:grid;gap:2px;min-width:0;position:relative}
+.pn-ml-n b{font:800 15px/1.15 Archivo,sans-serif;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.pn-ml-n small{font:600 11px/1.25 Archivo,sans-serif;color:var(--gris2)}
+.pn-ml-pos{display:flex;align-items:baseline;gap:6px}
+.pn-ml-pos strong{font:900 34px/1 Archivo,sans-serif;color:#B48CFF;font-variant-numeric:tabular-nums}
+.pn-ml-pos small{font:700 12px/1 "Barlow Condensed",sans-serif;letter-spacing:.05em;text-transform:uppercase;color:var(--gris2)}
+.pn-ml-m{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:4px}
+.pn-ml-m > span{background:#000;border:1.5px solid var(--borde2);padding:4px 6px;display:grid;gap:2px;min-width:0}
+.pn-ml-m i{font:700 9px/1 "Barlow Condensed",sans-serif;font-style:normal;letter-spacing:.05em;text-transform:uppercase;color:#B48CFF}
+.pn-ml-m b{font:900 14px/1 Archivo,sans-serif}
+.pn-ml-por{display:flex;flex-wrap:wrap;gap:4px}
+.pn-ml-por i{font:700 10px/1 "Barlow Condensed",sans-serif;font-style:normal;letter-spacing:.04em;text-transform:uppercase;padding:4px 6px;border:1px solid #5b3fa0;color:#D9C6FF}
+.pn-ml-ir{margin-top:auto;font:700 11px/1 "Barlow Condensed",sans-serif;letter-spacing:.06em;text-transform:uppercase;color:#B48CFF}
+.pn-ml-top{display:grid;gap:4px}
+.pn-ml-top > span{display:grid;grid-template-columns:12px 20px minmax(0,1fr) auto;align-items:center;gap:6px}
+.pn-ml-top em{font:900 11px/1 Archivo,sans-serif;font-style:normal;color:#B48CFF;text-align:center}
+.pn .pn-ml-c{width:20px;height:20px;border-radius:50%;overflow:hidden;display:grid;place-items:center;font-size:8px}
+.pn .pn-ml-c img{width:100%;height:100%;object-fit:cover}
+.pn-ml-top b{font:700 12px/1 Archivo,sans-serif;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.pn-ml-top small{font:700 11px/1 Archivo,sans-serif;color:var(--gris2);font-variant-numeric:tabular-nums}
+
+.pn-mitades .pn-ml-n b{-webkit-line-clamp:1}
+.pn-mitades .pn-ml-n small:first-child{display:none}
+.pn-mitades .pn-ml-pos{position:absolute;right:12px;top:8px}
+.pn-mitades .pn-ml-pos strong{font-size:26px}
+.pn-mitades .pn-ml-cab{padding-right:72px}
+.pn-mitades .pn-ml.rec .pn-ml-cab{padding-right:0}
+.pn-mitades .pn-ml-por{flex-wrap:nowrap;overflow:hidden}
+.pn-mitades .pn-ml-por i{padding:3px 5px;white-space:nowrap;flex:none}
+.pn-mitades .pn-ml-top{display:flex;gap:0;align-items:center}
+.pn-mitades .pn-ml-top > span{display:block}
+.pn-mitades .pn-ml-top em,.pn-mitades .pn-ml-top b,.pn-mitades .pn-ml-top small{display:none}
+.pn-mitades .pn-ml-top .pn-ml-c{width:24px;height:24px;margin-left:-6px;box-shadow:0 0 0 2px #0B0C0E}
+.pn-mitades .pn-ml-top > span:first-child .pn-ml-c{margin-left:0}
+.pn-mitades .pn-ml-fl{width:72px;height:72px}
+
+/* ═══ 🧩 OPCIÓN B, segunda mano (12/11/2026, Dlx): de la opción A vienen la Tienda cuadrada, el Pase y La semana partidos
+   y Eventos a lo ancho; lo nuevo es Tu servidor ═══ */
+.pn-ti2{grid-area:ev;border-color:#1d5a4e;background:radial-gradient(110% 70% at 100% 0,rgba(41,178,152,.26),transparent 60%),#0B0C0E}
+.pn-ti2-s{display:flex;align-items:center;gap:12px;min-width:0}
+.pn-ti2-s > span:last-child{display:grid;gap:3px;min-width:0}
+.pn-ti2-s .pn-saldo{font-size:26px}
+.pn-ti2-s small{font:500 12px/1.2 Archivo,sans-serif}
+.pn-ti2-l{display:grid;gap:5px;margin-top:auto}
+.pn-ti2-l > span{display:grid;grid-template-columns:16px minmax(0,1fr) auto;align-items:center;gap:8px;background:#000;border:1.5px solid var(--borde2);padding:5px 8px}
+.pn-ti2-l svg{color:#4FE0C1}
+.pn-ti2-l i{font:700 10px/1 "Barlow Condensed",sans-serif;font-style:normal;letter-spacing:.05em;text-transform:uppercase;color:#4FE0C1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.pn-ti2-l strong{font:900 14px/1 Archivo,sans-serif;white-space:nowrap}
+.pn-ti2-ir{font:700 11px/1 "Barlow Condensed",sans-serif;letter-spacing:.06em;text-transform:uppercase;color:#4FE0C1}
+.pn-mitades{grid-area:pa;display:grid;grid-template-rows:auto minmax(0,1fr);gap:12px;min-width:0}
+.pn-mitades > .pn-pa{grid-area:auto}
+.pn-pa.chico{min-height:0}
+.pn-pa.chico .pn-pista,.pn-pa.chico .pn-cola{display:none}
+.pn-se2{border-color:#1f3d63;background:radial-gradient(110% 80% at 100% 0,rgba(88,166,255,.24),transparent 60%),#0B0C0E;min-height:0;gap:7px}
+.pn-se2-cab{display:flex;align-items:center;justify-content:space-between;gap:8px}
+.pn-se2 .pn-anillo{width:36px;height:36px}
+.pn-se2 .pn-anillo b{width:28px;height:28px;font-size:10px}
+.pn-se2-m{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:4px}
+.pn-se2-m > span{background:#000;border:1.5px solid var(--borde2);padding:4px 5px;display:grid;gap:2px;min-width:0}
+.pn-se2-m i{font:700 9px/1 "Barlow Condensed",sans-serif;font-style:normal;letter-spacing:.05em;text-transform:uppercase;color:var(--azul);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.pn-se2-m strong{font:900 13px/1 Archivo,sans-serif;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.pn-se2-m .pn-gpm strong{font-size:10px;color:var(--gris2)}
+.pn-se2-m .pn-gpm b{font-size:13px}
+.pn-se2-r{font:500 11px/1.2 Archivo,sans-serif;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.pn-ev.ancho{grid-area:auto;min-height:0;display:grid;grid-template-columns:minmax(0,.9fr) minmax(0,1.1fr);
+  grid-template-areas:"h b" "n b" "t l" "u y";column-gap:18px;row-gap:4px;align-items:center}
+.pn-ev.ancho h4{grid-area:h}.pn-ev.ancho .pn-ev-n{grid-area:n}.pn-ev.ancho .pn-tuyos{grid-area:t}.pn-ev.ancho .pn-ult3{grid-area:u}
+.pn-ev.ancho .pn-barras{grid-area:b;height:auto;min-height:64px;align-self:stretch;margin-top:0}
+.pn-ev.ancho .pn-letras{grid-area:l}.pn-ev.ancho .pn-ley{grid-area:y}
+.pn-ti2-cab{display:flex;align-items:center;justify-content:space-between;gap:8px}
+.pn-ti2-bill{display:inline-flex;align-items:center;gap:6px;padding:4px 10px 4px 4px;background:#06120f;border:1.5px solid #1d5a4e;border-radius:999px}
+.pn-ti2-bill i{width:22px;height:22px;border-radius:50%;background:#4FE0C1;color:#000;display:grid;place-items:center;font:900 13px/1 Archivo,sans-serif;font-style:normal}
+.pn-ti2-bill b{font:900 16px/1 Archivo,sans-serif;color:#4FE0C1;font-variant-numeric:tabular-nums}
+.pn-ti2-top{display:grid;grid-template-columns:44px minmax(0,1fr) auto;align-items:center;gap:10px;padding:8px 10px;
+  background:linear-gradient(100deg,rgba(232,185,35,.16),transparent 70%),#000;border:1.5px solid #5b4a1e}
+.pn .pn-ti2-c{width:44px;height:44px;border-radius:50%;overflow:hidden;display:grid;place-items:center;box-shadow:0 0 0 2px var(--oro)}
+.pn .pn-ti2-c img{width:100%;height:100%;object-fit:cover}
+.pn-ti2-top > span{display:grid;gap:2px;min-width:0}
+.pn-ti2-top em{font:800 9px/1 "Barlow Condensed",sans-serif;font-style:normal;letter-spacing:.08em;text-transform:uppercase;color:var(--oro)}
+.pn-ti2-top b{font:800 14px/1.1 Archivo,sans-serif;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.pn-ti2-top strong{font:900 17px/1 Archivo,sans-serif;color:var(--oro);font-variant-numeric:tabular-nums}
+.pn-ti2-l{margin-top:2px}
+.pn-ti2-l > span{grid-template-columns:16px minmax(0,1fr) auto 14px}
+.pn-ti2-l u{text-decoration:none;font:900 12px/1 Archivo,sans-serif;color:var(--gris2);text-align:center}
+.pn-ti2-l > span.si u{color:#4FE0C1}
+.pn-ti2-l > span:not(.si) strong{color:var(--gris2)}
+.pn-ti2-l i{text-transform:none;font:600 12px/1.1 Archivo,sans-serif;letter-spacing:0;color:#d6d7db}
+.pn-ti2{container:ti2/inline-size}
+@container ti2 (max-width:240px){
+  .pn-ti2-cab{flex-direction:column;align-items:flex-start;gap:6px}
+  .pn-ti2-top{grid-template-columns:32px minmax(0,1fr);gap:4px 8px;padding:6px 8px}
+  .pn .pn-ti2-c{width:32px;height:32px}
+  .pn-ti2-top strong{grid-column:1 / -1;font-size:15px}
+  .pn-ti2-l > span{grid-template-columns:minmax(0,1fr) 12px;grid-template-areas:"t t" "p ok";gap:3px 6px;padding:5px 7px}
+  .pn-ti2-l i{grid-area:t;white-space:normal}.pn-ti2-l strong{grid-area:p}.pn-ti2-l u{grid-area:ok}
+  .pn-ti2-l svg{display:none}
+  .pn-ti2-l i{font-size:11px}
+  .pn-ti2-l strong{font-size:12px}
+}
+
+.pn-mitades.pa{grid-area:pa}
+.pn-mitades.mi{grid-template-rows:auto minmax(0,1fr)}
+/* abajo: Eventos (los números a la izquierda y la gráfica al costado) y Tu servidor, de la misma altura */
+.pn-baja3{align-items:stretch}
+.pn-baja3 .pn-ev.ancho{min-height:0;padding:10px 12px;grid-template-areas:"h b" "n b" "t l" "u y";column-gap:16px;row-gap:3px}
+.pn-baja3 .pn-ev.ancho h4{font-size:15px}
+.pn-baja3 .pn-ev.ancho .pn-n{font-size:28px}
+.pn-baja3 .pn-ev.ancho .pn-barras{min-height:46px}
+.pn-baja3 .pn-ev.ancho .pn-ley{display:none}
+.pn-sv{border-color:#3b4048;background:radial-gradient(110% 120% at 0 0,rgba(88,166,255,.16),transparent 60%),#0B0C0E}
+.pn-sv-logo{width:46px;height:46px;border-radius:50%;object-fit:cover;flex:none;display:grid;place-items:center;background:#14171b;font:900 13px/1 Archivo,sans-serif;box-shadow:0 0 0 2px #3b4048}
+.pn-sv .pn-baja-tx small{color:#c9cbd1}
+.pn-sv-ev{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:var(--azul) !important}
+.pn-sv .pn-mini span{color:var(--azul)}
+.pn-sv-meta i{display:block;height:3px;background:#1f2a3a;position:relative;margin-top:2px}
+.pn-sv-meta u{position:absolute;inset:0 auto 0 0;background:var(--azul);text-decoration:none}
+@media (max-width: 1180px){.pn-sv .pn-mini:nth-of-type(2){display:none}}
+@media (max-width: 760px){.pn-baja3{grid-template-columns:minmax(0,1fr)}}
+
+/* ⚖️ las tres columnas de la misma altura: Misiones con carteles más chicos y la carta un poco más grande (a 1375 px el
+   panel cae en el tramo de 431–600) */
+@container pnyo (min-width:431px) and (max-width:600px){ .pn-abre{height:332px} .pn-abre img{width:min(92%,226px)} }
+@container pnyo (min-width:601px){ .pn-abre{height:350px} .pn-abre img{width:min(86%,236px)} }
+
+/* 📱 en el celular, los rankings al costado de la carta (como en la compu), en renglones chicos */
+@container pnyo (max-width:430px){
+  .pn-yo-in{grid-template-columns:minmax(0,.78fr) minmax(0,1.44fr) minmax(0,.78fr);grid-template-areas:"izq car der" "com com com" "acc acc acc";gap:6px}
+  .pn-abre{height:236px}
+  .pn-abre img{width:min(96%,150px)}
+  .pn-chip,.pn-der .pn-chip{grid-template-columns:12px auto minmax(0,1fr);grid-template-areas:"ico nm nm" "pos pos pie";padding:2px 0 2px 5px;row-gap:2px;column-gap:4px;
+    background:transparent;border:0;border-left:2px solid var(--c)}
+  .pn-der .pn-chip{grid-template-columns:minmax(0,1fr) auto 12px;grid-template-areas:"nm nm ico" "pie pos pos";padding:2px 5px 2px 0;border-left:0;border-right:2px solid var(--c)}
+  .pn-chip-i,.pn .pn-chip-flag,.pn-chip-sv{width:12px;height:12px}
+  .pn-chip-n{font-size:8px;letter-spacing:.02em;white-space:normal;line-height:1.05}
+  .pn-chip strong{font-size:13px}
+  .pn-chip-pie,.pn-der .pn-chip-pie{width:100%;align-self:center}
+  .pn-chip-pie small{display:none}
+  .pn-izq,.pn-der{gap:8px;grid-template-columns:minmax(0,1fr)}
+  .pn-abre{height:206px}
+  .pn-abre img{width:min(88%,136px)}
+  .pn-abre img[data-o="1"]{transform:translate(-50%,-50%) translateX(6%) rotate(4deg) scale(.9);opacity:.35}
+  .pn-abre img[data-o="2"]{transform:translate(-50%,-50%) translateX(-6%) rotate(-4deg) scale(.9);opacity:.35}
+}
+@media (max-width: 760px){.pn-se2-m{grid-template-columns:repeat(2,minmax(0,1fr))}.pn-se2 h4{font-size:17px}}
+
+/* ═══ ⚖️ OPCIÓN B, tercera mano (12/11/2026, Dlx: «los rankings en PC… como la A», «simetría»): los rankings en renglones sin
+   caja, y las dos mitades de cada costado del mismo alto, así La semana mide lo que el Pase y tu liga lo que Misiones ═══ */
+@container pnyo (min-width:431px){
+  /* renglones sin caja: el nombre entero arriba, el puesto y su barra abajo, y la raya de color al costado */
+  .pn-chip,.pn-der .pn-chip{grid-template-columns:16px auto minmax(0,1fr);grid-template-areas:"ico nm nm" "pos pos pie";padding:4px 0 4px 8px;row-gap:3px;column-gap:6px;
+    background:transparent;border:0;border-left:3px solid var(--c)}
+  .pn-der .pn-chip{grid-template-columns:minmax(0,1fr) auto 16px;grid-template-areas:"nm nm ico" "pie pos pos";padding:4px 8px 4px 0;border-left:0;border-right:3px solid var(--c)}
+  .pn-chip.on{background:linear-gradient(90deg,rgba(255,255,255,.07),transparent)}
+  .pn-der .pn-chip.on{background:linear-gradient(270deg,rgba(255,255,255,.07),transparent)}
+  .pn-chip-pie,.pn-der .pn-chip-pie{width:100%;align-self:center}
+  .pn-chip-pie small{display:none}
+  .pn-chip strong{font-size:15px}
+  .pn-chip-n{font-size:10px;white-space:normal;line-height:1.1}
+  .pn-izq,.pn-der{gap:12px}
+}
+.pn-mitades.mi,.pn-mitades.pa{grid-template-rows:minmax(0,1fr) minmax(0,1fr)}
+.pn-mitades > *{min-height:0}
+.pn-mitades > .pn-se2,.pn-mitades > .pn-ml,.pn-mitades > .pn-pa,.pn-mitades > .pn-mi{padding:10px 12px}
+.pn-mitades .pn-se2-m{margin-top:auto}
+/* el Pase tenía dos barras (la de XP y la pista de niveles): queda una, la de XP (Dlx: «elimina la de abajo») */
+.pn-mitades .pn-pa.chico .pn-pista{display:none}
+.pn-mitades .pn-ml-ir{margin-top:auto}
+@container pnyo (min-width:431px) and (max-width:600px){ .pn-abre{height:360px} .pn-abre img{width:min(94%,246px)} }
+
+/* ⚖️ LA SIMETRÍA, EN LA GRILLA (12/11/2026): las seis cajas de los costados van en las MISMAS filas de la grilla —La semana
+   con el Pase, tu liga con Misiones— y las dos filas son `1fr`: miden lo mismo a los dos lados y entre sí, sin depender
+   de qué trae cada una. Cada «mitades» se deshace (`display:contents`) y sus dos hijos van a su lugar */
+.pn-grid{grid-template-areas:"yo yo" "ev cr" "s1 p1" "s2 p2";grid-template-rows:auto auto minmax(0,1fr) minmax(0,1fr)}
+@media (min-width: 900px){.app .pn-grid{grid-template-areas:"ev yo yo cr" "s1 yo yo p1" "s2 yo yo p2";grid-template-rows:auto minmax(0,1fr) minmax(0,1fr)}}
+.pn-mitades.mi,.pn-mitades.pa{display:contents}
+.pn-mitades.mi > :first-child{grid-area:s1}.pn-mitades.mi > :last-child{grid-area:s2}
+.pn-mitades.pa > :first-child{grid-area:p1}.pn-mitades.pa > :last-child{grid-area:p2}
+
+/* ═══ 🅲🅳 OPCIONES C Y D (12/11/2026, Dlx): el Pase y La semana más bajos y tu liga y Misiones más altos; Misiones con
+   «siguen sueltos» arriba y los carteles grandes; La semana, Ligas y Tu servidor con más cosas. D es simétrica (las filas
+   de la grilla, compartidas). Se eligió la D (y después la F); la C, cada costado con su reparto, se descartó ═══ */
+/* la fila del medio (La semana y el Pase) mide lo justo para La semana; tu liga y Misiones se llevan el resto */
+@media (min-width: 900px){.app .pn-grid{grid-template-rows:auto auto minmax(0,1fr)}}
+.pn-grid{grid-template-rows:auto auto auto minmax(0,1fr)}
+/* 🎯 Misiones: «siguen sueltos» al lado de los sellos, y los carteles llenan lo que queda */
+.pn-mi-sub{display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap}
+.pn-mi-sub small{font:600 12px/1 Archivo,sans-serif;color:#E9DFC4}
+.pn-mitades .pn-mi .pn-carteles{flex:1 1 auto;min-height:0;align-items:stretch;margin-top:2px}
+.pn-mitades .pn-mi .pn-cartel{grid-template-rows:auto minmax(0,1fr) auto auto;align-content:stretch;padding:4px 4px 5px}
+.pn-mitades .pn-mi .pn-cartel em{font-size:9px}
+.pn .pn-mitades .pn-mi .pn-cartel-c{width:100%;height:100%;min-height:64px;max-height:none;aspect-ratio:auto;border-radius:0}
+.pn .pn-mitades .pn-mi .pn-cartel-c img{width:100%;height:100%;object-fit:cover}
+.pn-mitades .pn-mi .pn-cartel b{font-size:12px}
+.pn-mitades .pn-mi .pn-cartel > span:last-child{font-size:12px}
+/* 📅 La semana con más vida */
+.pn-se2-x{display:grid;gap:5px}
+.pn-se2-x small{font:500 11px/1.25 Archivo,sans-serif;color:#c9cbd1}
+.pn-se2-x small b{color:#F6F6F6;font-weight:800}
+.pn-se2-meta{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:3px 8px;align-items:center}
+.pn-se2-meta i{font:700 10px/1 "Barlow Condensed",sans-serif;font-style:normal;letter-spacing:.05em;text-transform:uppercase;color:var(--azul)}
+.pn-se2-meta b{font:900 12px/1 Archivo,sans-serif;font-variant-numeric:tabular-nums}
+.pn-se2-meta u{grid-column:1 / -1;height:4px;background:#1f2a3a;display:block;position:relative;text-decoration:none}
+.pn-se2-meta s{position:absolute;inset:0 auto 0 0;background:var(--azul);text-decoration:none}
+.pn-se2-eq{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+/* 🏟️ Ligas: el dato y los de arriba con nombre cuando hay lugar */
+.pn-ml-dato{font:600 11px/1.2 Archivo,sans-serif;color:#D9C6FF;position:relative}
+.pn-mitades .pn-ml-top{display:grid;gap:4px}
+.pn-mitades .pn-ml-top > span{display:grid;grid-template-columns:12px 20px minmax(0,1fr) auto;align-items:center;gap:6px}
+.pn-mitades .pn-ml-top em,.pn-mitades .pn-ml-top b,.pn-mitades .pn-ml-top small{display:block}
+.pn-mitades .pn-ml-top .pn-ml-c{width:20px;height:20px;margin-left:0}
+.pn-mitades .pn-ml-fl{width:88px;height:88px;opacity:.3}
+/* 🏠 Tu servidor: sus tres de arriba */
+.pn-sv-top{display:grid;gap:4px;margin-left:auto;min-width:0;flex:0 1 150px}
+.pn-sv-top > span{display:grid;grid-template-columns:10px 20px minmax(0,1fr);align-items:center;gap:6px;min-width:0}
+.pn-sv-top em{font:900 11px/1 Archivo,sans-serif;font-style:normal;color:var(--azul)}
+.pn .pn-sv-c{width:20px;height:20px;border-radius:50%;overflow:hidden;display:grid;place-items:center;font-size:8px}
+.pn .pn-sv-c img{width:100%;height:100%;object-fit:cover}
+.pn-sv-top b{font:700 12px/1 Archivo,sans-serif;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.pn-sv .pn-baja-tx{flex:1 1 auto}
+@media (max-width: 1180px){.pn-sv-top{display:none}}
+@container pnyo (min-width:431px) and (max-width:600px){ .pn-abre{height:392px} .pn-abre img{width:min(94%,268px)} }
+@container pnyo (min-width:601px){ .pn-abre{height:400px} .pn-abre img{width:min(86%,272px)} }
+/* el anillo «4/7» ya dice el día: la tira de días, fuera, y esa altura pasa a tu liga y a Misiones */
+.pn-se2 .pn-dias7{display:none}
+.pn-sv-gu{display:grid;justify-items:center;gap:3px;padding:0 6px;flex:none}
+.pn-sv-gu > i{font:700 9px/1 "Barlow Condensed",sans-serif;font-style:normal;letter-spacing:.08em;text-transform:uppercase;color:var(--azul)}
+.pn-sv-gu > span{display:flex;align-items:center;gap:6px}
+.pn-sv-gu img{width:30px;height:30px;border-radius:50%;object-fit:cover;box-shadow:0 0 0 2px #2A2C31}
+.pn-sv-gu b{width:30px;height:30px;border-radius:50%;display:grid;place-items:center;background:#14171b;font:900 9px/1 Archivo,sans-serif}
+.pn-sv-gu em{font:900 13px/1 Archivo,sans-serif;font-style:normal;color:var(--mag)}
+.pn-sv-gu small{font:600 10px/1 Archivo,sans-serif;color:var(--gris2)}
+.pn-sv{justify-content:space-between}
+.pn-sv .pn-baja-tx{flex:0 1 auto;min-width:0}
+.pn-sv .pn-mini{flex:none}
+
+/* 🏟️ tu liga en la fila del medio (la justa): los tres de arriba como fila de caras, y La semana abajo con sus cosas al pie */
+.pn-mitades.mi > .pn-ml .pn-ml-top{display:flex;gap:0;align-items:center}
+.pn-mitades.mi > .pn-ml .pn-ml-top > span{display:block}
+.pn-mitades.mi > .pn-ml .pn-ml-top em,.pn-mitades.mi > .pn-ml .pn-ml-top b,.pn-mitades.mi > .pn-ml .pn-ml-top small{display:none}
+.pn-mitades.mi > .pn-ml .pn-ml-top .pn-ml-c{width:24px;height:24px;margin-left:-6px;box-shadow:0 0 0 2px #0B0C0E}
+.pn-mitades.mi > .pn-ml .pn-ml-top > span:first-child .pn-ml-c{margin-left:0}
+.pn-mitades.mi > .pn-se2 .pn-se2-x{margin-top:auto}
+.pn-mitades.mi > .pn-se2 .pn-se2-m{margin-top:0}
+.pn-mitades.mi > .pn-se2 .pn-dias7{display:flex}
+/* lo de adentro, repartido de arriba a abajo (sin un hueco en el medio) */
+.pn-mitades.mi > .pn-se2,.pn-mitades.pa > .pn-pa{justify-content:space-between}
+.pn-mitades.mi > .pn-se2 .pn-se2-x{margin-top:0}
+
+/* ═══ 🧩 SIN HUECOS (12/11/2026, Dlx: «ligas tiene su vacío en la parte derecha… lo mismo con tu crew») ═══ */
+/* 🏟️ el afiche de la liga, a la derecha, como pegado; lo demás le deja su lugar */
+.pn-ml-afiche{position:absolute;right:12px;top:40px;width:76px;aspect-ratio:3/4;object-fit:cover;transform:rotate(3deg);
+  border:2px solid #000;box-shadow:0 6px 14px rgba(0,0,0,.6),0 0 0 1px #5b3fa0;z-index:1}
+.pn-ml-afiche.logo{aspect-ratio:1;border-radius:50%;width:64px;transform:none;object-fit:cover}
+.pn-ml:has(.pn-ml-afiche) .pn-ml-fl{display:none}
+.pn-ml:has(.pn-ml-afiche) > :not(.pn-ml-cab):not(.pn-ml-afiche):not(.pn-ml-fl):not(.pn-ml-ir){margin-right:92px}
+@media (max-width: 899.98px){
+  .pn-ml-afiche{width:48px;top:36px;right:8px}
+  .pn-ml:has(.pn-ml-afiche) > :not(.pn-ml-cab):not(.pn-ml-afiche):not(.pn-ml-fl):not(.pn-ml-ir){margin-right:56px}
+}
+/* 🛡️ tu crew: el puesto arriba a la derecha, y sus números en cajitas */
+.pn-cr-pos{position:absolute;right:12px;top:10px;display:grid;justify-items:end;gap:1px;z-index:1}
+.pn-cr-pos strong{font:900 28px/1 Archivo,sans-serif;color:#F6F6F6;font-variant-numeric:tabular-nums}
+.pn-cr-pos small{font:700 11px/1 "Barlow Condensed",sans-serif;letter-spacing:.05em;text-transform:uppercase;color:var(--gris2)}
+.pn-cr-m{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:4px;position:relative}
+.pn-cr-m > span{background:#000;border:1.5px solid var(--borde2);padding:4px 6px;display:grid;gap:2px;min-width:0}
+.pn-cr-m i{font:700 9px/1 "Barlow Condensed",sans-serif;font-style:normal;letter-spacing:.05em;text-transform:uppercase;color:#9aa4b2;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.pn-cr-m b{font:900 13px/1 Archivo,sans-serif;white-space:nowrap;font-variant-numeric:tabular-nums}
+.pn-cr-fondo{top:46px}
+@media (max-width: 899.98px){
+  .pn-ml-afiche.logo{width:38px;top:38px}
+  .pn-cr-m{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .pn-cr-m > span:last-child{display:none}
+}
+
+/* ═══ 🅴 OPCIÓN E (12/11/2026, Dlx: «sí, hazlas todas»): el comentario de la A en el centro, Tu servidor sin negativos,
+   los rankings sin puesto apagados, la crew con su tier en la esquina y los nombres largos de La semana en dos renglones ═══ */
+/* (el comentario de la A no va: Dlx, 12/11/2026, «no me gustó que el comentario se hiciera más grande») */
+/* 3 · lo que no tiene puesto se apaga: se leen primero los que sí */
+@container pnyo (min-width:431px){ .pn-chip.vacio{opacity:.42} .pn-chip.vacio:hover{opacity:.8} }
+/* 4 · el tier en la esquina de la crew */
+.pn-cr-pos.tier strong{font-size:20px;text-transform:uppercase;letter-spacing:.02em}
+/* 5 · los nombres largos de La semana, en dos renglones (en la compu hay lugar) */
+@media (min-width: 900px){.pn-se2-eq{white-space:normal;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}}
+/* ⚠️ `.pn-cr > :not(.pn-cr-fondo)` pone todo en `relative` y le ganaba al puesto: éste va a la esquina */
+.pn-cr > .pn-cr-pos{position:absolute}
+.pn-ti2 .pn-ti2-ir{margin-top:auto}
+.pn-cr > .pn-cr-m{margin-top:auto}
+@media (max-width: 899.98px){.pn-cr-pos.tier{display:none}.pn-cr-pos strong{font-size:20px}}
+/* 📱 en el celular, dos carteles de Se busca y no tres (Dlx, 12/11/2026): más grandes y sin apretar los nombres */
+@media (max-width: 760px){.pn-mi .pn-carteles{grid-template-columns:repeat(2,minmax(0,1fr))}.pn-mi .pn-cartel:nth-child(n+3){display:none}}
