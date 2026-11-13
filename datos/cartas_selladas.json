@@ -241,7 +241,7 @@
   },
   "CJ": {},
   "CULT": {
-   "competitivo": "9e0e9dd44ce6:624f5e322311",
+   "competitivo": "2dedff3b3acf:624f5e322311",
    "pais": "65761f05cbd2:733ce66bf5fa",
    "servidor": "471ec3225589:2415c901692f:e4fbfa"
   },
@@ -383,7 +383,7 @@
    "servidor": "5326ca7e9e57:2415c901692f:ce9c52"
   },
   "Dcet": {
-   "competitivo": "11f3a54ec13a:624f5e322311",
+   "competitivo": "f0a31687adb2:624f5e322311",
    "pais": "87c1db6f7d83:733ce66bf5fa",
    "servidor": "5e1d0730dc5f:2415c901692f:3c7154"
   },
@@ -2110,5 +2110,5 @@
    "servidor": "7f8885a35a6d:2415c901692f:93a344"
   }
  },
- "cuando": "2026-11-13T17:35:10+00:00"
+ "cuando": "2026-11-13T18:04:17+00:00"
 }
