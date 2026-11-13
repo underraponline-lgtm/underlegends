@@ -11,6 +11,16 @@
  ],
  "cambios": [
     {
+        "version": "5.03",
+        "dia": "2026-11-13",
+        "cuando": "2026-11-13T02:59:00-05:00",
+        "titulo": "Tu lugar en cada ranking, y cómo subir",
+        "items": [
+            "Arriba de cada ranking ves **tu lugar** aunque todavía no estés verificado.",
+            "Toca **«Por qué estás #N y cómo subir»**: en qué te gana el de arriba y qué te conviene hacer para pasarlo."
+        ]
+    },
+    {
         "version": "5.02",
         "dia": "2026-11-13",
         "cuando": "2026-11-13T02:57:00-05:00",
