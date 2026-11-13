@@ -711,6 +711,8 @@
 "nemmiias": {
 "rg": "E",
 "c": [
+"competitivo",
+"pais",
 "servidor"
 ]
 },
@@ -740,6 +742,7 @@
 "vallest": {
 "rg": "E",
 "c": [
+"competitivo",
 "servidor",
 "temporada"
 ]
@@ -2812,31 +2815,6 @@
 }
 },
 "cambios": [
-{
-"tipo": "tarjeta",
-"t": "2026-10-07T21:57:14Z",
-"quien": [
-"Cronox"
-],
-"carta": "competitivo"
-},
-{
-"tipo": "rango",
-"t": "2026-10-08T01:59:51Z",
-"quien": [
-"PRAISERIZA"
-],
-"rg": "S",
-"primero": true
-},
-{
-"tipo": "tarjeta",
-"t": "2026-10-08T03:11:05Z",
-"quien": [
-"Delux"
-],
-"carta": "temporada"
-},
 {
 "tipo": "tarjeta",
 "t": "2026-10-08T04:14:20Z",
@@ -6183,6 +6161,30 @@
 ],
 "rg": "D",
 "primero": false
+},
+{
+"tipo": "tarjeta",
+"t": "2026-11-13T01:47:54Z",
+"quien": [
+"nemmii_as"
+],
+"carta": "competitivo"
+},
+{
+"tipo": "tarjeta",
+"t": "2026-11-13T01:47:54Z",
+"quien": [
+"nemmii_as"
+],
+"carta": "pais"
+},
+{
+"tipo": "tarjeta",
+"t": "2026-11-13T01:47:54Z",
+"quien": [
+"VALLES-T"
+],
+"carta": "competitivo"
 }
 ],
 "noche_antes": {
