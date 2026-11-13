@@ -11,6 +11,15 @@
  ],
  "cambios": [
     {
+        "version": "4.89",
+        "dia": "2026-11-12",
+        "cuando": "2026-11-12T23:45:00-05:00",
+        "titulo": "Tu fondo, en HD",
+        "items": [
+            "Los fondos de perfil se guardan en **más resolución**: si el tuyo se ve borroso, vuelve a subirlo desde Mi cuenta."
+        ]
+    },
+    {
         "version": "4.88",
         "dia": "2026-11-12",
         "cuando": "2026-11-12T23:35:00-05:00",
