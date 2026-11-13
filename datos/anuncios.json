@@ -1,5 +1,5 @@
 {
- "cuando": "2026-11-13T19:25:26+00:00",
+ "cuando": "2026-11-13T19:55:24+00:00",
  "anuncios": [
   {
    "nombre": "¡SE LLEGÓ LA GRAN NOCHE!",
@@ -6945,20 +6945,29 @@
   {
    "servidor": "LKR",
    "canal": "fms-anuncios",
-   "tit": "PRIMER CONFIRMADO MARTINEZ 🇺🇾",
+   "tit": "MCO 🇦🇷 ÚLTIMO EN FMS ARGENTINA CIERRA SU LINEA UP",
    "tx": "",
-   "cuando": "2026-11-13T19:24:46",
-   "msg_id": "1570882136154710230",
-   "link": "https://discord.com/channels/1558611504046153750/1570881485055983686/1570882136154710230"
+   "cuando": "2026-11-13T19:50:26",
+   "msg_id": "1570888595882119371",
+   "link": "https://discord.com/channels/1558611504046153750/1570881485055983686/1570888595882119371"
   },
   {
    "servidor": "LKR",
    "canal": "fms-anuncios",
-   "tit": "FMS ARGENTINA🇦🇷",
-   "tx": "UN SOLO CAMPEÓN 🏆",
-   "cuando": "2026-11-13T19:23:29",
-   "msg_id": "1570881813205876818",
-   "link": "https://discord.com/channels/1558611504046153750/1570881485055983686/1570881813205876818"
+   "tit": "DESDE ESPAÑA KRISH🇪🇸 NOVENO",
+   "tx": "",
+   "cuando": "2026-11-13T19:48:42",
+   "msg_id": "1570888157350600820",
+   "link": "https://discord.com/channels/1558611504046153750/1570881485055983686/1570888157350600820"
+  },
+  {
+   "servidor": "LKR",
+   "canal": "fms-anuncios",
+   "tit": "LSR 🇦🇷 SEPTIMO CONFIRMADL",
+   "tx": "",
+   "cuando": "2026-11-13T19:37:17",
+   "msg_id": "1570885285992997025",
+   "link": "https://discord.com/channels/1558611504046153750/1570881485055983686/1570885285992997025"
   },
   {
    "servidor": "ACAD",
@@ -6968,15 +6977,6 @@
    "cuando": "2026-11-13T19:22:50",
    "msg_id": "1570881649737212041",
    "link": "https://discord.com/channels/765045834647339038/922299202904653844/1570881649737212041"
-  },
-  {
-   "servidor": "LKR",
-   "canal": "anuncios",
-   "tit": "nos dió like los que hacen los sorteos de fms chile y somos el comentario con más likes, a",
-   "tx": "",
-   "cuando": "2026-11-13T19:13:29",
-   "msg_id": "1570879293230424138",
-   "link": "https://discord.com/channels/1558611504046153750/1558611505040064604/1570879293230424138"
   },
   {
    "servidor": "ACAD",
@@ -7169,6 +7169,24 @@
   }
  ],
  "inscripciones": [
+  {
+   "servidor": "LKR",
+   "canal": "inscripciones",
+   "texto": "Toxiko🇦🇷",
+   "quien": "_toxiko33",
+   "discord_id": "1543681134842618027",
+   "msg_id": "1570886138699194379",
+   "cuando": "2026-11-13T19:40:41"
+  },
+  {
+   "servidor": "LKR",
+   "canal": "⟡・INSCRIPCIONES",
+   "texto": "Leyenda.X5 🇦🇷",
+   "quien": "microcrack",
+   "discord_id": "1358539185778327612",
+   "msg_id": "1570882313385148447",
+   "cuando": "2026-11-13T19:25:29"
+  },
   {
    "servidor": "LKR",
    "canal": "⟡・INSCRIPCIONES",
@@ -43150,24 +43168,6 @@
    "discord_id": "1385452830684614697",
    "msg_id": "1558647163725283329",
    "cuando": "2026-10-11T01:07:22"
-  },
-  {
-   "servidor": "URBF",
-   "canal": "《📑》Inscripciones",
-   "texto": "vandu",
-   "quien": "dfelipetor",
-   "discord_id": "613552853302378527",
-   "msg_id": "1558641394543755285",
-   "cuando": "2026-10-11T00:44:26"
-  },
-  {
-   "servidor": "URBF",
-   "canal": "《📑》Inscripciones",
-   "texto": "Molusco",
-   "quien": "moluscoanvriento_79058",
-   "discord_id": "1363285354442133778",
-   "msg_id": "1558640457330851872",
-   "cuando": "2026-10-11T00:40:43"
   }
  ]
 }
