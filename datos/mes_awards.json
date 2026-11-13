@@ -9520,6 +9520,32 @@
      ],
      "organizador": "Zaik",
      "cuentas": {}
+    },
+    "1570848615402962956": {
+     "sv": "ACAD",
+     "nombre": "DATOS DEL EVENTO",
+     "mo": "2026-11-13T17:41:34Z",
+     "staff": {
+      "jurado": [
+       "Krish el adivino (la revolucion)"
+      ],
+      "host": [
+       "Krish el adivino (la revolucion)"
+      ],
+      "dj": [
+       "Krish el adivino (la revolucion)"
+      ]
+     },
+     "orgs": [
+      {
+       "n": "Krish el adivino (la revolucion)",
+       "id": "1513620494199558295"
+      }
+     ],
+     "organizador": "",
+     "cuentas": {
+      "Krish el adivino (la revolucion)": "1513620494199558295"
+     }
     }
    },
    "ver": {

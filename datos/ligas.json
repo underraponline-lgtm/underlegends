@@ -1,6 +1,6 @@
 {
  "_leeme": "Las ligas de los servidores: cada batalla y su resultado, y la tabla que sale de eso. Lo arma bot/ligas.py en cada corrida; las reglas viven ahí. Sin los mensajes: el repo es público. `batallas`: [id del mensaje, instante, jornada, a, b, ganador (vacío: pendiente), directa|replica, extras]. Las batallas con resultado cuentan como duelos (Ranking Duelos y Win%; el Score no). `flyer`: el último afiche de su canal de anuncios, re-alojado en R2 (`url`); `prox`: la próxima fecha que anunció (`d` el día, `t` el instante si lo dijo). Desde el 17/10/2026: `ptb` {id de la batalla: [PTB de a, de b]}, `flyers` (la galería, en R2), `staff` [[discord_id, nombre, mensajes en anuncios, en veredictos, último]] y `nov` (lo nuevo de las últimas horas, para «Seguir la liga»). Desde el 11/11/2026: `temps` [{t, c, n, msg, p, ult, desde}] (cada campeón que anunció su servidor: cierra esa temporada), `tn` (el número de la temporada que juega, si lo dice), `cerrada` {t} (sus canales ya no están) y, arriba, `nuevas` (las ligas que el bot encontró solo: `fam` vacío hasta que un lector entienda sus veredictos).",
- "t": "2026-11-13T16:59:20Z",
+ "t": "2026-11-13T17:30:19Z",
  "ligas": {
   "fmh-albiceleste": {
    "n": "FMH Albiceleste",
@@ -10245,14 +10245,24 @@
      "KUSOH",
      "directa",
      ""
+    ],
+    [
+     "1570852980230455447",
+     "2026-11-13T17:28:55Z",
+     null,
+     "KUSOH",
+     "MONET",
+     "KUSOH",
+     "directa",
+     ""
     ]
    ],
    "tabla": [
     [
      "KUSOH",
-     1,
-     1,
-     3
+     2,
+     2,
+     6
     ],
     [
      "TEITO",
@@ -10265,6 +10275,12 @@
      1,
      0,
      1
+    ],
+    [
+     "MONET",
+     1,
+     0,
+     0
     ],
     [
      "RICARDFLEX MAIN EVENT",
@@ -10306,8 +10322,8 @@
      "1513620494199558295",
      "Krish el adivino (la revolucion)",
      6,
-     25,
-     "2026-11-12T19:51:58Z"
+     27,
+     "2026-11-13T17:29:16Z"
     ]
    ],
    "nov": [
@@ -10317,6 +10333,14 @@
      "que": "res",
      "ids": [
       "1570525483467022408"
+     ]
+    },
+    {
+     "id": "r:lkr-fms-latam:1570852980230455447",
+     "t": "2026-11-13T17:31:01Z",
+     "que": "res",
+     "ids": [
+      "1570852980230455447"
      ]
     }
    ]

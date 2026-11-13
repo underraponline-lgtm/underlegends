@@ -165,6 +165,7 @@
   "rango": "SS",
   "tg_t": {
    "busc": 3,
+   "cab": 1,
    "dobles": 21,
    "infalt": true,
    "perf": 2,
