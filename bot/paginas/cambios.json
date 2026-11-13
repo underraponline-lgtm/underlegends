@@ -11,6 +11,17 @@
  ],
  "cambios": [
     {
+        "version": "4.79",
+        "dia": "2026-11-12",
+        "cuando": "2026-11-12T20:45:00-05:00",
+        "titulo": "Ventanas nuevas y Premio gratis",
+        "items": [
+            "Las ventanas del Inicio (Estadísticas, Misiones, Tus batallas y Dragón Drops) tienen **diseño nuevo**; en el celular suben desde abajo.",
+            "Tu próxima batalla ahora muestra **tu fondo** (o tu bandera) y **tus logros** frente a los de tu rival.",
+            "Nuevo: **Premio gratis**, arriba de todo: vota las encuestas y haz cosas rápidas para sumar a tu Dragón Drop del día."
+        ]
+    },
+    {
         "version": "4.78",
         "dia": "2026-11-12",
         "cuando": "2026-11-12T20:05:00-05:00",
