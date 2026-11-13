@@ -5195,7 +5195,7 @@ dialog.pn-pop.pop-gratis{--pc:#F5C542;width:min(640px,calc(100vw - 32px))}
    la carta nueva 2×2, el afiche 1×2, los campeones y la noche 2×1, el rango y lo demás 1×1. En el celular, una fila que se
    desliza. Cada pieza abre lo suyo; 👏 y 💬 no la abren ═══ */
 .lu-mos{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));grid-auto-rows:132px;grid-auto-flow:dense;gap:10px}
-.lu-t{position:relative;overflow:hidden;min-width:0;display:flex;flex-direction:column;gap:6px;padding:12px;border:2px solid var(--linea);
+.lu-t{position:relative;overflow:visible;min-width:0;display:flex;flex-direction:column;gap:6px;padding:12px;border:2px solid var(--linea);
   background:var(--caja);color:var(--tinta);cursor:pointer;text-align:left}
 @media (hover: hover) and (pointer: fine){.lu-t:hover{border-color:var(--magenta)}}
 .lu-t:focus-visible{outline:2px solid var(--magenta);outline-offset:2px}
@@ -5228,6 +5228,7 @@ dialog.pn-pop.pop-gratis{--pc:#F5C542;width:min(640px,calc(100vw - 32px))}
 .lu-datos span{padding:4px 7px;border:1.5px solid var(--linea);font:700 13px/1 "Barlow Condensed",sans-serif;letter-spacing:.05em;text-transform:uppercase}
 /* el afiche entero */
 .lu-fly{grid-row:span 2;padding:0}
+.lu-fly-w{position:absolute;inset:0;overflow:hidden}
 .lu-fly-i{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
 .lu-fly-p{position:absolute;left:0;right:0;bottom:0;display:grid;gap:5px;padding:10px 12px;background:rgba(3,3,4,.86);color:#F6F6F6}
 .lu-fly-p .lu-hora{color:#C9C9C4}
@@ -5262,7 +5263,7 @@ dialog.pn-pop.pop-gratis{--pc:#F5C542;width:min(640px,calc(100vw - 32px))}
 .lu-ch-i{width:44px;height:44px;object-fit:cover;object-position:top;display:grid;place-items:center}
 .lu-ch-i img{width:100%;height:100%;object-fit:cover;object-position:top}
 .lu-ch-t{display:flex;flex-direction:column;gap:5px;min-width:0;height:100%}
-.lu-ch-t b{display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
+.lu-ch-t b{display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
 @media (min-width: 900px) and (max-width: 1199.98px){ .lu-feat-v{width:120px} .lu-tit{font-size:19px !important} }
 /* 📱 en el celular, una fila que se desliza */
 @media (max-width: 899.98px){
@@ -5322,3 +5323,54 @@ dialog.pn-pop.pop-gratis{--pc:#F5C542;width:min(640px,calc(100vw - 32px))}
 .pn-baja3 .pn-sv-gu > span{gap:5px}
 .pn-baja3 .pn-sv-gu small{max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 @media (max-width: 760px){.pn-baja3 .pn-sv{grid-template-columns:auto minmax(0,1fr);grid-template-areas:"logo tx" "st st"}}
+
+/* 🙂 LA CARITA Y SUS REACCIONES, Y ☁️ LA NUBE CON EL ÚLTIMO COMENTARIO (13/11/2026, Dlx: «una nube transparente… una preview
+   de un comentario», «el botón de emoji ese regular con carita… y se muestran las reacciones», «que todo esté bien posicionado
+   y de buen tamaño»). Los botones miden lo mismo: 28 px de alto */
+.lu-fel,.lu-cm,.lu-car{min-height:28px}
+.lu-car{display:inline-flex;align-items:center;gap:5px;padding:4px 8px 4px 6px;border:1.5px solid var(--linea);border-radius:14px;background:var(--fondo);
+  color:var(--tinta);cursor:pointer;font:800 12.5px/1 Archivo,sans-serif}
+.lu-car em{font-style:normal}
+.lu-car-i{font-size:15px;line-height:1}
+.lu-car.on,.lu-car:focus-visible{border-color:var(--magenta);outline:none}
+@media (hover: hover) and (pointer: fine){.lu-car:hover{border-color:var(--magenta)}}
+.lu-soc{position:relative}
+.lu-reac{position:absolute;left:0;bottom:calc(100% + 8px);z-index:30;display:grid;gap:6px;min-width:232px;padding:10px;border:1.5px solid var(--linea);
+  border-radius:4px;background:var(--fondo);color:var(--tinta);box-shadow:0 10px 24px rgba(0,0,0,.28);cursor:default}
+.lu-reac-f{display:grid;grid-template-columns:22px auto 1fr auto;align-items:center;gap:6px}
+.lu-reac-e{font-size:16px;line-height:1}
+.lu-reac-f b{font:900 15px/1 Archivo,sans-serif}
+.lu-reac-f small{color:var(--gris);font:700 13px/1 "Barlow Condensed",sans-serif;letter-spacing:.04em;text-transform:uppercase}
+.lu-reac .lu-btn{padding:6px 9px;font-size:11.5px}
+.lu-reac-tuyo{justify-self:end}
+/* la nube: blanca y medio transparente, con su colita; en la destacada va debajo de los botones */
+.lu-nube{position:relative;display:grid;gap:3px;max-width:100%;padding:8px 11px;border-radius:12px;background:rgba(255,255,255,.78);
+  border:1px solid rgba(3,3,4,.14);color:#030304;box-shadow:0 6px 16px rgba(0,0,0,.14);margin-top:4px}
+.lu-nube::before{content:"";position:absolute;left:16px;top:-6px;width:12px;height:12px;background:inherit;border-left:1px solid rgba(3,3,4,.14);
+  border-top:1px solid rgba(3,3,4,.14);transform:rotate(45deg)}
+.lu-nube-q{display:flex;align-items:center;gap:6px;font:800 12px/1 Archivo,sans-serif}
+.lu-nube-q i{font-style:normal;padding:2px 5px;border-radius:3px;background:rgba(3,3,4,.1);color:#55554f;font:700 10.5px/1 "Barlow Condensed",sans-serif;letter-spacing:.04em;text-transform:uppercase}
+.lu-nube-q small{margin-left:auto;color:#6E6E6A;font:700 12px/1 "Barlow Condensed",sans-serif}
+.lu-nube-t{font:500 13px/1.3 Archivo,sans-serif;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+/* en las demás piezas, flota arriba al pasar o al enfocar, sin tapar lo de la pieza */
+.lu-nube.flota{position:absolute;left:10px;right:auto;width:max-content;max-width:min(360px,calc(100% - 20px));bottom:calc(100% - 4px);z-index:20;margin:0;opacity:0;transform:translateY(4px);
+  pointer-events:none;transition:opacity .15s ease,transform .15s ease}
+.lu-nube.flota::before{top:auto;bottom:-6px;transform:rotate(225deg)}
+@media (hover: hover) and (pointer: fine){.lu-t:hover > .lu-nube.flota{opacity:1;transform:none}}
+.lu-t:focus-visible > .lu-nube.flota,.lu-t:focus-within > .lu-nube.flota{opacity:1;transform:none}
+@media (prefers-reduced-motion: reduce){.lu-nube.flota{transition:none}}
+.app.calma .lu-nube.flota{transition:none}
+/* la nube de la destacada no se pasa del alto de la pieza */
+.lu-feat .lu-nube{max-width:380px}
+@media (max-width: 899.98px){
+  /* en el celular la fila desliza: lo que flota se cortaría, así que la nube va sólo en la destacada y en una línea */
+  .lu-nube.flota{display:none}
+  .lu-feat .lu-nube{display:none}
+  .lu-mos{padding-top:2px}
+  /* la fila que desliza corta lo que se sale: el globito va adentro de la pieza, de lado a lado, encima de los botones */
+  .lu-t .lu-soc{position:static}
+  .lu-reac{left:8px;right:8px;bottom:44px;min-width:0}
+  /* angosto: el emoji, el número y su botón, sin la palabra («felicitaciones» no entraba al lado de «Felicitar») */
+  .lu-reac-f{grid-template-columns:22px minmax(0,1fr) auto}
+  .lu-reac-f small{display:none}
+}
