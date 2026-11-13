@@ -23,14 +23,16 @@ export const MENU_TODO = [...MENU, ['Tienda', '#/tienda']];
 // idea: «INICIO, Ranking ahí con todos sus rankings… la sección de eventos que abre Torneos, Competencias y Ligas… PASE
 // RAPERO solo, Publicaciones solo y comunidad»; eligió esa, la D de la maqueta). Eran 13 en fila y medido a 1100 px no
 // entraban. Seis botones entran en cualquier compu; los que llevan lista la abren al tocarlos o al pasar el mouse
-const RK_SUBS = [['Temporada', 'temporada', 'Los puntos y el OVR de la temporada'], ['Competitivo', 'competitivo', 'El Score y el rango'],
-  ['ELO', 'divisiones', 'Las batallas uno contra uno, por divisiones'], ['Duelos', 'duelos', 'Quién gana más duelos'],
-  ['Podios', 'podios', 'Campeones y finalistas'], ['Rachas', 'rachas', 'Eventos seguidos llegando lejos'],
-  ['Países', 'paises', 'Por los puntos de su gente'], ['Crews', 'crews', 'Por los puntos de sus miembros'],
-  ['Most Wanted', 'mw', 'Los buscados de la semana'], ['Misiones', 'misiones', 'Las de la semana, para todos']];
+// 🎨 cada ranking con su ícono (Dlx, 12/11/2026: «que cada ícono de cada ranking en ese submenú sea diferente»): eran diez
+// iguales. El cuarto lugar es el ícono (`Ico` de piezas.jsx)
+const RK_SUBS = [['Temporada', 'temporada', 'Los puntos y el OVR de la temporada', 'ranking'], ['Competitivo', 'competitivo', 'El Score y el rango', 'escudo'],
+  ['ELO', 'divisiones', 'Las batallas uno contra uno, por divisiones', 'cruce'], ['Duelos', 'duelos', 'Quién gana más duelos', 'micro'],
+  ['Podios', 'podios', 'Campeones y finalistas', 'copa'], ['Rachas', 'rachas', 'Eventos seguidos llegando lejos', 'fuego'],
+  ['Países', 'paises', 'Por los puntos de su gente', 'mundo'], ['Crews', 'crews', 'Por los puntos de sus miembros', 'crews'],
+  ['Most Wanted', 'mw', 'Los buscados de la semana', 'mira'], ['Misiones', 'misiones', 'Las de la semana, para todos', 'ok']];
 export const GRUPOS = [
   ['Inicio', '#/'],
-  ['Ranking', '#/ranking', RK_SUBS.map(([n, s, d]) => [n, '#/ranking/' + s, d, 'ranking'])],
+  ['Ranking', '#/ranking', RK_SUBS.map(([n, s, d, i]) => [n, '#/ranking/' + s, d, i])],
   ['Eventos', '#/eventos', [['Calendario', '#/eventos', 'Todos los torneos y la campana', 'eventos'], ['Competencias', '#/competencias', 'La Copa, la Liga de 10 y la Rapid', 'competencias'],
     ['Ligas', '#/ligas', 'Las ligas de cada servidor', 'ligas']]],
   ['Pase rapero', '#/pase'],
