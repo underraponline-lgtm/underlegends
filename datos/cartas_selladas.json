@@ -894,7 +894,8 @@
   "Kochi2011": {
    "competitivo": "2f007cc7f5b9:624f5e322311",
    "pais": "a919fa71597b:733ce66bf5fa",
-   "servidor": "7d043bd3486f:2415c901692f:19bb57"
+   "servidor": "7d043bd3486f:2415c901692f:19bb57",
+   "temporada": "6abe54b8f966:7a510334494e"
   },
   "Konan": {
    "competitivo": "e5fdc4cb0417:624f5e322311",
@@ -2115,5 +2116,5 @@
    "servidor": "7f8885a35a6d:2415c901692f:93a344"
   }
  },
- "cuando": "2026-11-13T02:26:29+00:00"
+ "cuando": "2026-11-13T02:33:37+00:00"
 }
