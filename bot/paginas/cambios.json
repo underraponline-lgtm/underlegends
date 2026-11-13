@@ -11,6 +11,16 @@
  ],
  "cambios": [
     {
+        "version": "5.12",
+        "dia": "2026-11-13",
+        "cuando": "2026-11-13T04:00:00-05:00",
+        "titulo": "Reacciones y comentarios en Lo último",
+        "items": [
+            "En **Lo último**, cuando una novedad junta más de una reacción, aparece la **carita 🙂** con el total: tócala y ves cuántas felicitaciones y comentarios tiene, y felicitas o los lees desde ahí.",
+            "Una **nube** muestra el último comentario: en la novedad grande siempre, y en las demás al pasar el mouse."
+        ]
+    },
+    {
         "version": "5.11",
         "dia": "2026-11-13",
         "cuando": "2026-11-13T03:49:00-05:00",
