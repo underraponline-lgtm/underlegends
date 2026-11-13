@@ -180,12 +180,8 @@
 "temporada"
 ]
 },
-"velatz": {
-"rg": "C",
-"c": []
-},
-"nxuz": {
-"rg": "C",
+"miniboy": {
+"rg": "D",
 "c": [
 "competitivo",
 "pais",
@@ -193,8 +189,12 @@
 "temporada"
 ]
 },
-"miniboy": {
-"rg": "D",
+"velatz": {
+"rg": "C",
+"c": []
+},
+"nxuz": {
+"rg": "C",
 "c": [
 "competitivo",
 "pais",
@@ -227,7 +227,7 @@
 "temporada"
 ]
 },
-"molusco": {
+"mito": {
 "rg": "C",
 "c": [
 "competitivo",
@@ -236,7 +236,7 @@
 "temporada"
 ]
 },
-"mito": {
+"molusco": {
 "rg": "C",
 "c": [
 "competitivo",
@@ -408,7 +408,7 @@
 ]
 },
 "tøkiø": {
-"rg": "",
+"rg": "B",
 "c": [
 "competitivo",
 "servidor",
@@ -1267,6 +1267,13 @@
 "emilioalva": {
 "rg": "",
 "c": []
+},
+"akus": {
+"rg": "",
+"c": [
+"servidor",
+"temporada"
+]
 },
 "youngvlad": {
 "rg": "",
@@ -2814,14 +2821,6 @@
 }
 },
 "cambios": [
-{
-"tipo": "tarjeta",
-"t": "2026-10-08T04:56:31Z",
-"quien": [
-"Polosport"
-],
-"carta": "pais"
-},
 {
 "tipo": "rango",
 "t": "2026-10-08T05:26:47Z",
@@ -6184,6 +6183,15 @@
 "AbrahamH"
 ],
 "carta": "servidor"
+},
+{
+"tipo": "rango",
+"t": "2026-11-13T03:40:05Z",
+"quien": [
+"TøKīØ🦠🧠"
+],
+"rg": "B",
+"primero": true
 }
 ],
 "noche_antes": {
@@ -7230,8 +7238,8 @@
 "tipo": "resnoche",
 "t": "2026-11-13T08:00:00Z",
 "dia": "2026-11-12",
-"eventos": 4,
-"part": 40,
+"eventos": 5,
+"part": 60,
 "campeones": [
 {
 "ev": "CUPO A LA MULTIVERS",
@@ -7276,6 +7284,21 @@
 "artezzy"
 ]
 ]
+},
+{
+"ev": "TORNEO CLANDESTINO V.2",
+"sv": "FFA",
+"ll": 628,
+"quien": [
+[
+"Miniboy",
+"miniboy"
+],
+[
+"OKAM",
+"okam"
+]
+]
 }
 ],
 "suman": [
@@ -7286,16 +7309,16 @@
 "ev": 3
 },
 {
-"n": "Artezzy",
-"k": "artezzy",
-"pts": 10000,
-"ev": 1
+"n": "OKAM",
+"k": "okam",
+"pts": 14250,
+"ev": 4
 },
 {
 "n": "TøKīØ🦠🧠",
 "k": "tøkiø",
-"pts": 9500,
-"ev": 3
+"pts": 10750,
+"ev": 4
 }
 ],
 "suben": [
@@ -7332,6 +7355,13 @@
 "que": "primer",
 "ev": "RANKED 1",
 "desde": 96
+},
+{
+"n": "Miniboy",
+"k": "miniboy",
+"que": "primer",
+"ev": "TORNEO CLANDESTINO V.2",
+"desde": 23
 }
 ]
 }

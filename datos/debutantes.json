@@ -974,7 +974,7 @@
    "n": 620,
    "sv": "LKR",
    "vence": "2026-11-13T03:25:32+00:00",
-   "vencido": false
+   "vencido": true
   },
   "Hedorah": {
    "avisado_cumplido": "2026-11-12",
@@ -1398,7 +1398,7 @@
    "n": 620,
    "sv": "LKR",
    "vence": "2026-11-13T03:25:32+00:00",
-   "vencido": false
+   "vencido": true
   },
   "LEITAN": {
    "con": null,
@@ -1446,7 +1446,7 @@
    "n": 620,
    "sv": "LKR",
    "vence": "2026-11-13T03:25:32+00:00",
-   "vencido": false
+   "vencido": true
   },
   "LSO": {
    "avisado": "2026-10-25",
@@ -1882,7 +1882,7 @@
    "n": 620,
    "sv": "LKR",
    "vence": "2026-11-13T03:25:32+00:00",
-   "vencido": false
+   "vencido": true
   },
   "Nitrox": {
    "con": null,
@@ -2359,7 +2359,7 @@
    "n": 620,
    "sv": "LKR",
    "vence": "2026-11-13T03:25:32+00:00",
-   "vencido": false
+   "vencido": true
   },
   "Swid": {
    "avisado": "2026-10-26",
@@ -2395,7 +2395,7 @@
    "n": 620,
    "sv": "LKR",
    "vence": "2026-11-13T03:25:32+00:00",
-   "vencido": false
+   "vencido": true
   },
   "Terry": {
    "avisado": "2026-11-12",
@@ -2481,7 +2481,7 @@
    "n": 620,
    "sv": "LKR",
    "vence": "2026-11-13T03:25:32+00:00",
-   "vencido": false
+   "vencido": true
   },
   "URKO": {
    "avisado": "2026-11-12",
@@ -2493,7 +2493,7 @@
    "n": 620,
    "sv": "LKR",
    "vence": "2026-11-13T03:25:32+00:00",
-   "vencido": false
+   "vencido": true
   },
   "VECA": {
    "avisado": "2026-10-16",
@@ -2583,7 +2583,7 @@
    "n": 620,
    "sv": "LKR",
    "vence": "2026-11-13T03:25:32+00:00",
-   "vencido": false
+   "vencido": true
   },
   "Warap": {
    "avisado": "2026-10-13",
@@ -2710,7 +2710,7 @@
    "n": 574,
    "sv": "FFA",
    "vence": "2026-11-13T03:10:32+00:00",
-   "vencido": false
+   "vencido": true
   },
   "atari": {
    "avisado": "2026-10-31",

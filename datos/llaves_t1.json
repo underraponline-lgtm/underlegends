@@ -53620,5 +53620,151 @@
   "ver": {
    "v": 1
   }
+ },
+ "628": {
+  "dia": "2026-11-12",
+  "escala": "16+",
+  "fecha": "12/11",
+  "links": [
+   "https://discord.com/channels/1468472442925092958/1487207377601040516/1570617351177507008"
+  ],
+  "n": 628,
+  "nombre": "TORNEO CLANDESTINO V.2",
+  "participantes": 20,
+  "rondas": [
+   {
+    "b": [
+     [
+      [
+       "NC, Paria",
+       "Soulb, LAST"
+      ],
+      "NC, Paria",
+      ""
+     ],
+     [
+      [
+       "Miniboy, OKAM",
+       "Vandu, TøKīØ🦠🧠"
+      ],
+      "Miniboy, OKAM",
+      ""
+     ],
+     [
+      [
+       "0223 🇧🇧 + y Jahno 🇧🇧",
+       "Diz🇨🇱 + MCAREPA 🇻🇪"
+      ],
+      "",
+      "sin ganador: espera en ✅ Decidir"
+     ],
+     [
+      [
+       "RIOLU🇪🇸+ ROMEO🇲🇽",
+       "mats 🇺🇾 + kuni 🇦🇷"
+      ],
+      "",
+      "sin ganador: espera en ✅ Decidir"
+     ]
+    ],
+    "r": "Cuartos"
+   },
+   {
+    "b": [
+     [
+      [
+       "OKAM, Miniboy",
+       "Mito, mats"
+      ],
+      "OKAM, Miniboy",
+      ""
+     ],
+     [
+      [
+       "Geoka 🇺🇦 +Jahno 🇺🇦",
+       "nc 🇨🇲 +paria 🇦🇷"
+      ],
+      "",
+      "sin ganador: espera en ✅ Decidir"
+     ]
+    ],
+    "r": "Semifinales"
+   },
+   {
+    "b": [
+     [
+      [
+       "OKAM, Miniboy",
+       "NC, Akus"
+      ],
+      "OKAM, Miniboy",
+      ""
+     ]
+    ],
+    "r": "Final"
+   }
+  ],
+  "sv": "FFA",
+  "tabla": [
+   [
+    "Miniboy",
+    "Campeón",
+    5000
+   ],
+   [
+    "OKAM",
+    "Campeón",
+    5000
+   ],
+   [
+    "Akus",
+    "Subcampeón",
+    3750
+   ],
+   [
+    "NC",
+    "Subcampeón",
+    3750
+   ],
+   [
+    "Mito",
+    "Semifinal",
+    2625
+   ],
+   [
+    "mats",
+    "Semifinal",
+    2625
+   ],
+   [
+    "LAST",
+    "Cuartos",
+    1250
+   ],
+   [
+    "Paria",
+    "Cuartos",
+    1250
+   ],
+   [
+    "Soulb",
+    "Cuartos",
+    1250
+   ],
+   [
+    "TøKīØ🦠🧠",
+    "Cuartos",
+    1250
+   ],
+   [
+    "Vandu",
+    "Cuartos",
+    1250
+   ]
+  ],
+  "ver": {
+   "min": 89,
+   "v": 1
+  }
  }
 }

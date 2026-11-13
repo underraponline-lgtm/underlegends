@@ -999,6 +999,20 @@
    ]
   }
  },
+ "akus": {
+  "temporada": {
+   "🌱 PROMESA": [
+    "🌱 PROMESA",
+    "t1",
+    1794541228472
+   ],
+   "🥉 AL PODIO": [
+    "🥉 AL PODIO",
+    "t1",
+    1794541228472
+   ]
+  }
+ },
  "akuseru": {
   "servidor": {
    "🏆 CAMPEÓN": [
@@ -1257,6 +1271,13 @@
   }
  },
  "ariaxer": {
+  "competitivo": {
+   "🗡️ MATAGIGANTES": [
+    "🗡️ MATAGIGANTES",
+    "t1",
+    1794541228472
+   ]
+  },
   "pais": {
    "DA LA CARA": [
     "DA LA CARA",
@@ -8233,6 +8254,11 @@
  },
  "mats": {
   "pais": {
+   "DA LA CARA": [
+    "DA LA CARA",
+    "t1",
+    1794541228472
+   ],
    "SIN FRONTERAS": [
     "SIN FRONTERAS",
     "t1",
@@ -8818,6 +8844,11 @@
     "🏁 SEMIFINALISTA SERIAL",
     "t1",
     1793029252929
+   ],
+   "👑 CAMPEÓN x%d": [
+    "👑 CAMPEÓN x1",
+    "t1",
+    1794541228472
    ],
    "💯 BICENTENARIO": [
     "💯 BICENTENARIO",
@@ -10786,6 +10817,11 @@
  },
  "okam": {
   "competitivo": {
+   "⚔️ DUELISTA": [
+    "⚔️ DUELISTA",
+    "t1",
+    1794541228472
+   ],
    "🎯 FRANCOTIRADOR": [
     "🎯 FRANCOTIRADOR",
     "t1",
@@ -10865,6 +10901,16 @@
     "t1",
     1793604826687
    ],
+   "🏟️ FINALISTA DE CASA": [
+    "🏟️ FINALISTA DE CASA",
+    "t1",
+    1794541228472
+   ],
+   "🏰 FORTALEZA": [
+    "🏰 FORTALEZA",
+    "t1",
+    1794541228472
+   ],
    "📆 HABITUÉ": [
     "📆 HABITUÉ",
     "t1",
@@ -10893,7 +10939,7 @@
     1793599452998
    ],
    "👑 CAMPEÓN x%d": [
-    "👑 CAMPEÓN x3",
+    "👑 CAMPEÓN x4",
     "t1",
     1793029252929
    ],
@@ -14041,6 +14087,11 @@
    ]
   },
   "temporada": {
+   "⚡ MARATONISTA": [
+    "⚡ MARATONISTA",
+    "t1",
+    1794541228472
+   ],
    "🌍 TROTAMUNDOS": [
     "🌍 TROTAMUNDOS",
     "t1",
@@ -14916,6 +14967,23 @@
   }
  },
  "tøkiø": {
+  "competitivo": {
+   "⚔️ DUELISTA": [
+    "⚔️ DUELISTA",
+    "t1",
+    1794541228472
+   ],
+   "🎯 COMPLETO": [
+    "🎯 COMPLETO",
+    "t1",
+    1794541228472
+   ],
+   "🤝 SIN MIEDO": [
+    "🤝 SIN MIEDO",
+    "t1",
+    1794541228472
+   ]
+  },
   "servidor": {
    "🏆 CAMPEÓN": [
     "🏆 CAMPEÓN",

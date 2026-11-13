@@ -1462,8 +1462,8 @@
    "pub": 1794533708697,
    "a": "Soul b",
    "b": "Tokyo",
-   "ganador": "Soul b",
-   "votos": "2–0"
+   "ganador": "Tokyo",
+   "votos": "4–2"
   },
   "1570624363986686024": {
    "id": "1570624363986686024",
@@ -1497,80 +1497,31 @@
    "b": "SOL",
    "ganador": "SOL",
    "votos": "1–0"
+  },
+  "1570634286439202820": {
+   "id": "1570634286439202820",
+   "sv": "[FFA] Freestyle For All 👾",
+   "g": "1468472442925092958",
+   "canal": "1487206164864438513",
+   "pub": 1794538794861,
+   "a": "MATS + MITO",
+   "b": "MINIBOY + OKAM",
+   "ganador": "MINIBOY + OKAM",
+   "votos": "1–0"
+  },
+  "1570637762036629595": {
+   "id": "1570637762036629595",
+   "sv": "[FFA] Freestyle For All 👾",
+   "g": "1468472442925092958",
+   "canal": "1487206164864438513",
+   "pub": 1794539623508,
+   "a": "NC + AKUS",
+   "b": "MINIBOY + OKAM",
+   "ganador": "MINIBOY + OKAM",
+   "votos": "1–0"
   }
  },
  "llaves": {
-  "1563025630545838173": {
-   "id": "1563025630545838173",
-   "sv": "🔥LKR (Champios Legue)🐉",
-   "g": "1558611504046153750",
-   "canal": "1560448027490001067",
-   "pub": 1792724749934,
-   "ed": 1792728335907,
-   "texto": "`[ CUARTOS ]`\n⌞HEDORAH 🇨🇱⌝ 🆚 ⌞CALÍZ🇲🇽⌝\n⌞LRS 🇦🇷⌝ 🆚 ⌞SHADOW 🇨🇴⌝\n⌞CALÍZ 🇲🇽⌝ 🆚 ⌞SHADOW 🇨🇴⌝\n`[ SEMIFINALES ]`\n⌞HEDORAH 🇨🇱⌝ 🆚 ⌞LRS 🇦🇷⌝\n⌞CALÍZ 🇲🇽⌝ 🆚 ⌞MR.KUDE 🇦🇷⌝\n`[ FINAL ]`\n⌞HEDORAH 🇨🇱⌝ 🆚 ⌞CÁLIZ🇲🇽⌝",
-   "batallas": [
-    [
-     "CUARTOS",
-     [
-      "HEDORAH 🇨🇱",
-      "CALÍZ🇲🇽"
-     ],
-     "HEDORAH 🇨🇱",
-     "veredicto",
-     []
-    ],
-    [
-     "CUARTOS",
-     [
-      "LRS 🇦🇷",
-      "SHADOW 🇨🇴"
-     ],
-     "LRS 🇦🇷",
-     "veredicto",
-     []
-    ],
-    [
-     "CUARTOS",
-     [
-      "CALÍZ 🇲🇽",
-      "SHADOW 🇨🇴"
-     ],
-     "CALÍZ 🇲🇽",
-     "veredicto",
-     []
-    ],
-    [
-     "SEMIFINALES",
-     [
-      "HEDORAH 🇨🇱",
-      "LRS 🇦🇷"
-     ],
-     "HEDORAH 🇨🇱",
-     "veredicto",
-     []
-    ],
-    [
-     "SEMIFINALES",
-     [
-      "CALÍZ 🇲🇽",
-      "MR.KUDE 🇦🇷"
-     ],
-     "CALÍZ 🇲🇽",
-     "veredicto",
-     []
-    ],
-    [
-     "FINAL",
-     [
-      "HEDORAH 🇨🇱",
-      "CÁLIZ🇲🇽"
-     ],
-     "HEDORAH 🇨🇱",
-     "veredicto",
-     []
-    ]
-   ]
-  },
   "1563297808834895945": {
    "id": "1563297808834895945",
    "sv": "🔥LKR (Champios Legue)🐉",

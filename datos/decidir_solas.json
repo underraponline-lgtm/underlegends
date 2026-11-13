@@ -4460,6 +4460,48 @@
      360
     ]
    }
+  },
+  {
+   "id": "6132c346a3",
+   "tipo": "Batalla sin ganador",
+   "sec": "TORNEO CLANDESTINO V.2 · FFA · 12/11 · #628",
+   "que": "¿Quién ganó en cuartos?\n0223 🇧🇧 + y Jahno 🇧🇧 🆚 Diz🇨🇱 + MCAREPA 🇻🇪",
+   "r": "Nadie siguió (cobran la ronda)",
+   "regla": "R22 · una batalla de equipos: cualquier respuesta paga lo mismo, porque quien gana y no sigue cobra su parte",
+   "rk": "R22",
+   "por": "el ciclo",
+   "porque": "es de equipos (0223 🇧🇧 + y Jahno 🇧🇧 vs Diz🇨🇱 + MCAREPA 🇻🇪): quien gana y no sigue cobra su parte, así que cualquier respuesta paga lo mismo, y en equipos no hay duelo",
+   "t": 1794541222221,
+   "filas": [
+    1336
+   ],
+   "variantes": [
+    "TORNEO CLANDESTINO V.2 · FFA · 12/11 · cuartos · 0223 🇧🇧 + y Jahno 🇧🇧 🆚 Diz🇨🇱 + MCAREPA 🇻🇪"
+   ],
+   "escribio": {
+    "batalla": "TORNEO CLANDESTINO V.2 · FFA · 12/11 · cuartos · 0223 🇧🇧 + y Jahno 🇧🇧 🆚 Diz🇨🇱 + MCAREPA 🇻🇪"
+   }
+  },
+  {
+   "id": "9c8c9b54d2",
+   "tipo": "Batalla sin ganador",
+   "sec": "TORNEO CLANDESTINO V.2 · FFA · 12/11 · #628",
+   "que": "¿Quién ganó en cuartos?\nRIOLU🇪🇸+ ROMEO🇲🇽 🆚 mats 🇺🇾 + kuni 🇦🇷",
+   "r": "Nadie siguió (cobran la ronda)",
+   "regla": "R22 · una batalla de equipos: cualquier respuesta paga lo mismo, porque quien gana y no sigue cobra su parte",
+   "rk": "R22",
+   "por": "el ciclo",
+   "porque": "es de equipos (RIOLU🇪🇸+ ROMEO🇲🇽 vs mats 🇺🇾 + kuni 🇦🇷): quien gana y no sigue cobra su parte, así que cualquier respuesta paga lo mismo, y en equipos no hay duelo",
+   "t": 1794541222221,
+   "filas": [
+    1337
+   ],
+   "variantes": [
+    "TORNEO CLANDESTINO V.2 · FFA · 12/11 · cuartos · RIOLU🇪🇸+ ROMEO🇲🇽 🆚 mats 🇺🇾 + kuni 🇦🇷"
+   ],
+   "escribio": {
+    "batalla": "TORNEO CLANDESTINO V.2 · FFA · 12/11 · cuartos · RIOLU🇪🇸+ ROMEO🇲🇽 🆚 mats 🇺🇾 + kuni 🇦🇷"
+   }
   }
  ],
  "deshechas": []

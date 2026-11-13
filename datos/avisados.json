@@ -46189,5 +46189,170 @@
    ]
   ],
   "v": 2
+ },
+ "628": {
+  "antes": {
+   "Akus": [
+    147,
+    245,
+    false
+   ],
+   "LAST": [
+    61,
+    78,
+    false
+   ],
+   "Miniboy": [
+    21,
+    25,
+    false
+   ],
+   "Mito": [
+    26,
+    30,
+    false
+   ],
+   "NC": [
+    19,
+    22,
+    false
+   ],
+   "OKAM": [
+    22,
+    26,
+    false
+   ],
+   "Paria": [
+    265,
+    61,
+    true
+   ],
+   "Soulb": [
+    46,
+    56,
+    false
+   ],
+   "TøKīØ🦠🧠": [
+    43,
+    52,
+    false
+   ],
+   "Vandu": [
+    9,
+    10,
+    false
+   ],
+   "mats": [
+    47,
+    58,
+    false
+   ]
+  },
+  "canal": "1468472443843776659",
+  "duelos": [
+   [
+    "NC, Paria",
+    "Soulb, LAST",
+    "NC, Paria"
+   ],
+   [
+    "Miniboy, OKAM",
+    "Vandu, TøKīØ🦠🧠",
+    "Miniboy, OKAM"
+   ],
+   [
+    "OKAM, Miniboy",
+    "Mito, mats",
+    "OKAM, Miniboy"
+   ],
+   [
+    "OKAM, Miniboy",
+    "NC, Akus",
+    "OKAM, Miniboy"
+   ]
+  ],
+  "ev_antes": {
+   "Akus": 2,
+   "LAST": 17,
+   "Miniboy": 57,
+   "Mito": 36,
+   "NC": 55,
+   "OKAM": 29,
+   "Paria": 18,
+   "Soulb": 28,
+   "TøKīØ🦠🧠": 14,
+   "Vandu": 49,
+   "mats": 11
+  },
+  "fecha": "12/11",
+  "firma": "235e0c3f9879d9eb",
+  "msg": "1570639296652640288",
+  "nombre": "TORNEO CLANDESTINO V.2",
+  "num": 628,
+  "participantes": 20,
+  "sello": {
+   "Miniboy": "d73870b8c099:7a510334494e",
+   "OKAM": "cf7943871ccb:7a510334494e"
+  },
+  "sv": "FFA",
+  "t": "2026-11-13T03:24:22Z",
+  "tabla": [
+   [
+    "OKAM",
+    "Campeón",
+    5000
+   ],
+   [
+    "Miniboy",
+    "Campeón",
+    5000
+   ],
+   [
+    "NC",
+    "Subcampeón",
+    3750
+   ],
+   [
+    "Akus",
+    "Subcampeón",
+    3750
+   ],
+   [
+    "Mito",
+    "Semifinal",
+    2625
+   ],
+   [
+    "mats",
+    "Semifinal",
+    2625
+   ],
+   [
+    "Soulb",
+    "Cuartos",
+    1250
+   ],
+   [
+    "LAST",
+    "Cuartos",
+    1250
+   ],
+   [
+    "Vandu",
+    "Cuartos",
+    1250
+   ],
+   [
+    "TøKīØ🦠🧠",
+    "Cuartos",
+    1250
+   ],
+   [
+    "Paria",
+    "Cuartos",
+    1250
+   ]
+  ],
+  "v": 2
  }
 }

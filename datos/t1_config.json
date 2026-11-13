@@ -27,8 +27,8 @@
   ["", "", "", "", "", "", ""],
   ["🔧 SISTEMA", "", "", "", "", "📏 REGLAS ADICIONALES", ""],
   ["Parámetro", "Valor", "", "", "", "Regla", "Detalle"],
-  ["Último evento", "#627", "", "", "", "Sin 3er puesto", "SF perdedores = promedio(3ro, 4to)"],
-  ["Próximo evento", "#628", "", "", "", "WO", "Victoria normal, avanza"],
+  ["Último evento", "#628", "", "", "", "Sin 3er puesto", "SF perdedores = promedio(3ro, 4to)"],
+  ["Próximo evento", "#629", "", "", "", "WO", "Victoria normal, avanza"],
   ["Temporada actual", "T1", "", "", "", "MVP", "No cuenta para ranking"],
   ["Versión", "v3.5", "", "", "", "Cypher", "❌ No cuenta"]
  ]
