@@ -6508,7 +6508,7 @@
    "Trot": 13
   },
   "fecha": "11/10",
-  "firma": "d7d23481fb6a5fcf",
+  "firma": "e482abdab9416ed4",
   "msg": "1558907910707224587",
   "nombre": "RED BULL NACIONAL ESPAÑA T.5",
   "num": 448,
@@ -9436,7 +9436,7 @@
    "Zignos": 19
   },
   "fecha": "12/10",
-  "firma": "cd9e91ee402a11e1",
+  "firma": "e00dc5d0c776ed51",
   "msg": "1559587802864295988",
   "nombre": "GODZ",
   "num": 460,
@@ -12495,7 +12495,7 @@
    ],
    [
     "Trot",
-    "Shadow",
+    "VALLES-T",
     "Trot"
    ],
    [
@@ -12534,7 +12534,7 @@
    "Vargas": 1
   },
   "fecha": "14/10",
-  "firma": "26ed45c6c33cf58f",
+  "firma": "bf491872b2939cd4",
   "msg": "1560070688113688601",
   "nombre": "FF Freestyle Clasico",
   "num": 473,
@@ -12576,7 +12576,7 @@
     2000
    ],
    [
-    "Shadow",
+    "VALLES-T",
     "Cuartos",
     2000
    ],
@@ -22464,7 +22464,7 @@
    "Zekha": 4
   },
   "fecha": "25/10",
-  "firma": "c476c4afe153b342",
+  "firma": "2af0bdc85c472d07",
   "msg": "1564056930748469309",
   "nombre": "REDBULL CREW ARGENTINA 2026",
   "num": 515,
@@ -23884,7 +23884,7 @@
    "Vilca": 1
   },
   "fecha": "14/10",
-  "firma": "52671741251de5fc",
+  "firma": "2bb77335920b6138",
   "msg": "1564147696351191051",
   "nombre": "GG SANGRERAP 1",
   "num": 521,
@@ -24052,7 +24052,7 @@
    "Vandu": 35
   },
   "fecha": "20/10",
-  "firma": "c674d9d0b2627d8d",
+  "firma": "f7d40fbf022d796d",
   "msg": "1564147704035151906",
   "nombre": "RAP SIN GROSERIAS 2",
   "num": 522,
@@ -24198,7 +24198,7 @@
    "Vilca": 1
   },
   "fecha": "21/10",
-  "firma": "fd475a35826312d8",
+  "firma": "4ad7cb077ddfbdf1",
   "msg": "1564147707952758815",
   "nombre": "- RED BULL TORNEO DE PLAZAS 2026 -",
   "num": 523,
@@ -36655,7 +36655,7 @@
    "Yor": 4
   },
   "fecha": "06/11",
-  "firma": "007ab041e8fccf46",
+  "firma": "f364d92a9177f9ec",
   "msg": "1568457450267484231",
   "nombre": "FAT BATTLES PALOOZA FECHA 10 FINALS",
   "num": 576,
@@ -36840,7 +36840,7 @@
    "Xclusivo": 23
   },
   "fecha": "07/11",
-  "firma": "31b93801b1807ca1",
+  "firma": "12164fc4c6c77b7e",
   "msg": "1568746606562509004",
   "nombre": "ZONA MORTAL",
   "num": 577,
@@ -37514,9 +37514,9 @@
     "NXUZ"
    ],
    [
-    "Mark",
+    "Mark98",
     "CrisZJ",
-    "Mark"
+    "Mark98"
    ],
    [
     "Vilca",
@@ -37545,7 +37545,7 @@
    ],
    [
     "Vilca",
-    "Mark",
+    "Mark98",
     "Vilca"
    ],
    [
@@ -37587,7 +37587,7 @@
    "oriuz": 7
   },
   "fecha": "23/10",
-  "firma": "66bcb3e6cd191906",
+  "firma": "274b1d07d8f5d72d",
   "msg": "1569508003776823307",
   "nombre": "LLAVES PARA LA DISCORD STYLE 17",
   "num": 580,
@@ -37629,7 +37629,7 @@
     2500
    ],
    [
-    "Mark",
+    "Mark98",
     "Cuartos",
     2500
    ],
@@ -38388,7 +38388,7 @@
    "replisan": 3
   },
   "fecha": "01/11",
-  "firma": "3c9e9cb6b06085d8",
+  "firma": "fa4391d0b71c18c9",
   "msg": "1569508030054142025",
   "nombre": "LLAVES PARA LA DISCORD STYLE 19",
   "num": 584,
@@ -38552,7 +38552,7 @@
    "oriuz": 7
   },
   "fecha": "03/11",
-  "firma": "193f16f2020dcd12",
+  "firma": "f6fa1bf620dac19a",
   "msg": "1569508038820237324",
   "nombre": "SIX SEVEN STYLE",
   "num": 585,
@@ -38924,7 +38924,7 @@
    "yinn": 33
   },
   "fecha": "07/11",
-  "firma": "478ac07974cb162b",
+  "firma": "b8c03c39c8d5e032",
   "msg": "1568849280746393691",
   "nombre": "KISS OF SHINIGAMI",
   "num": 587,
@@ -39809,7 +39809,7 @@
    "Vilca": 15
   },
   "fecha": "08/11",
-  "firma": "c4cc0c3e01205f17",
+  "firma": "30316f2dee2b337e",
   "msg": "1569508065508593856",
   "nombre": "RAP SIN GROSERIAS 4",
   "num": 591,
@@ -40208,7 +40208,7 @@
    "crakero": 4
   },
   "fecha": "08/11",
-  "firma": "a304f5566a3ed700",
+  "firma": "66cbad09f046b170",
   "msg": "1569234841730547736",
   "nombre": "__ QCYO RAPEEN 12 __",
   "num": 593,
@@ -40255,11 +40255,6 @@
     2500
    ],
    [
-    "Provenza",
-    "Semifinal",
-    1937
-   ],
-   [
     "Leandro Katana",
     "Semifinal",
     1750
@@ -40268,6 +40263,11 @@
     "akasha🇦🇷",
     "Semifinal",
     1750
+   ],
+   [
+    "Provenza",
+    "Semifinal",
+    1624
    ],
    [
     "Paria",
@@ -40323,6 +40323,31 @@
     "Carlos",
     "Octavos",
     625
+   ],
+   [
+    "romeo",
+    "R32",
+    625
+   ],
+   [
+    "Monet",
+    "R32",
+    625
+   ],
+   [
+    "Under",
+    "R32",
+    625
+   ],
+   [
+    "Player",
+    "R32",
+    625
+   ],
+   [
+    "yinn",
+    "R32",
+    312
    ]
   ],
   "v": 2
@@ -40394,7 +40419,7 @@
    ],
    [
     "Mathhias",
-    "Shadow",
+    "VALLES-T",
     "Mathhias"
    ],
    [
@@ -40452,7 +40477,7 @@
    "black live": 1
   },
   "fecha": "09/11",
-  "firma": "e8c537a3f00ced80",
+  "firma": "77fe034e58be8020",
   "msg": "1569508072605618221",
   "nombre": "COMPE MAÑANERA",
   "num": 594,
@@ -40489,7 +40514,7 @@
     2000
    ],
    [
-    "Shadow",
+    "VALLES-T",
     "Cuartos",
     2000
    ],
@@ -42009,7 +42034,7 @@
    "Vilca": 16
   },
   "fecha": "10/11",
-  "firma": "d67c9d5f29c780c4",
+  "firma": "8b7e1f876ffaac58",
   "msg": "1569848635271680124",
   "nombre": "MF DOOM Y MADLIB EDICION 1",
   "num": 604,
@@ -42283,7 +42308,7 @@
    "oriuz": 7
   },
   "fecha": "20/10",
-  "firma": "56c3e6c7f37b2e80",
+  "firma": "46be029aff70e84c",
   "msg": "1570247714254360748",
   "nombre": "MINI COMPE LLAVES",
   "num": 606,
@@ -45481,6 +45506,7 @@
   "v": 2
  },
  "624": {
+  "al_dia": true,
   "antes": {
    "Drexx": [
     32,
@@ -45565,7 +45591,7 @@
    "crakero": 7
   },
   "fecha": "12/11",
-  "firma": "1d731d173f91bb2b",
+  "firma": "8135f73b19b3b1dd",
   "msg": "1570578147399827479",
   "nombre": "CUPO A LA MULTIVERS",
   "num": 624,
@@ -45620,6 +45646,7 @@
   "v": 2
  },
  "625": {
+  "al_dia": true,
   "antes": {
    "Berrun": [
     301,
@@ -45705,7 +45732,7 @@
    "crakero": 8
   },
   "fecha": "12/11",
-  "firma": "13d281f0a37468e9",
+  "firma": "c9375dc7aa39c78c",
   "msg": "1570581400896278600",
   "nombre": "- LIGA INMORTAL -",
   "num": 625,
@@ -45760,6 +45787,7 @@
   "v": 2
  },
  "626": {
+  "al_dia": true,
   "antes": {
    "Crk": [
     69,
@@ -45844,7 +45872,7 @@
    "TøKīØ🦠🧠": 13
   },
   "fecha": "12/11",
-  "firma": "01541fcc62040775",
+  "firma": "b515a149af9326ac",
   "msg": "1570602754639007937",
   "nombre": "RAP SIN GROSERIAS 5",
   "num": 626,
@@ -45899,6 +45927,7 @@
   "v": 2
  },
  "627": {
+  "al_dia": true,
   "antes": {
    "Artezzy": [
     98,
@@ -46072,7 +46101,7 @@
    "Vilca": 22
   },
   "fecha": "12/11",
-  "firma": "454a49026fc366cb",
+  "firma": "992a9dd5b735df9b",
   "msg": "1570602758506151978",
   "nombre": "RANKED 1",
   "num": 627,
