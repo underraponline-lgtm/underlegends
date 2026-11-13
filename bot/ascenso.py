@@ -153,7 +153,47 @@ def leer_urbf(texto):
     return {'filas': filas, 'nota': '', 'desde': ''}
 
 
-LECTORES = {'sr': leer_sr, 'urbf': leer_urbf}
+_FFA_FILA = re.compile(r'(?:^|\n)\s*(?:🥇|🥈|🥉|`#\d+`)\s*\*\*(.+?)\*\*\s*(\S*)\s*-\s*<@!?(\d+)>\s*·\s*\*\*([\d.,]+)\*\*\s*pts')
+
+
+def leer_ffa(texto):
+    """El top 10 que el bot de FFA deja a la vista en #ascenso (el embed «🏆 RANKING DE ASCENSO»):
+    `🥇 **Park Ji Sung** 🇨🇱 - <@979…> · **14,620** pts` y `#04` en adelante. `{filas: [[nombre, cc, pts, did]]}`.
+    ⚠️ ES SÓLO EL TOP 10: el resto está detrás de su botón «Ver ranking completo», que un bot no puede apretar. La tabla
+    entera sale de la base (`ascenso_ffa_base.json`) más los podios; esto es con qué se la compara."""
+    filas = [[limpio(m.group(1)), cc_de(m.group(2)), numero(m.group(4)), m.group(3)] for m in _FFA_FILA.finditer(str(texto or ''))]
+    return {'filas': filas, 'nota': '', 'desde': ''}
+
+
+LECTORES = {'sr': leer_sr, 'urbf': leer_urbf, 'ffa': leer_ffa}
+
+_FFA_PUESTO = (('Campeón', r'__\s*campe[oó]n\s*:?\s*__'), ('Subcampeón', r'__\s*sub\W*campe[oó]n\s*:?\s*__'),
+               ('Tercero', r'__\s*(?:3\s*er|tercer)\s*(?:puesto|lugar)\s*:?\s*__'))
+
+
+def leer_podio_ffa(texto):
+    """Un podio de #podios de FFA, como lo publica su bot desde el 25/10/2026:
+        # [ • 🥇 |qcyo rapeen 10| 🥇 • ]
+        ### [RANGO PLATA III 🥈]
+        │ 🥇 |: __CAMPEÓN:__ <@id> + <@id> + <@id> 🇦🇷 🇦🇷 🇦🇷
+    → `{titulo, rango: 'plata iii', filas: [['', instancia, did]]}` (una fila por INTEGRANTE: en un podio de equipo cada
+    uno se lleva los puntos enteros), o `None` si no es un podio con rango (los de antes del 25/10 no lo traen)."""
+    t = unicodedata.normalize('NFKC', str(texto or ''))
+    rg = re.search(r'RANGO\s+(DIAMANTE|ORO|PLATA|BRONCE)\b\s*(I{1,3})?(?![A-Z])', t, re.I)
+    if not rg:
+        return None
+    rango = rg.group(1).lower() + (' ' + rg.group(2).lower() if rg.group(2) else '')
+    tit = re.search(r'\|([^|\n]+)\|', t)
+    filas = []
+    for l in t.splitlines():
+        for inst, pat in _FFA_PUESTO:
+            m = re.search(pat + r'(.*)$', l, re.I)
+            if m:
+                filas += [['', inst, d] for d in re.findall(r'<@!?(\d+)>', m.group(1))]
+                break
+    if not filas:
+        return None
+    return {'titulo': limpio(tit.group(1)) if tit else '', 'rango': rango, 'filas': filas}
 
 
 def rango_de_llave(texto):
@@ -321,8 +361,9 @@ def embed(sv, R, A, color):
     base = ('Base: su tabla oficial' + (' del ' + oficial['dia'][8:10] + '/' + oficial['dia'][5:7] if oficial.get('dia') else ''))
     leyenda = ('⬆️ sube' + (' · 🔁 play-off' if po else '') + ' · `+N` lo que se sumó')
     return {
-        'title': '📈 Ascenso a la %s · al día' % R.get('n', ''),
-        'url': HUB + '/freestyle-rap/ligas/' + R.get('destino', ''),
+        # sin liga a la que se sube (FFA): el ranking a secas, y el link a la vista «Ascensos»
+        'title': ('📈 Ascenso a la %s · al día' if R.get('destino') else '📈 Ranking de ascenso de %s · al día') % R.get('n', ''),
+        'url': HUB + ('/freestyle-rap/ligas/' + R['destino'] if R.get('destino') else '/freestyle-rap/ranking/ascensos'),
         'description': desc[:4000],
         'color': color,
         'fields': campos,
@@ -438,6 +479,11 @@ def correr(aplicar=False):
         del nombres_cache[_d0]
     for sv, R in RR.items():
         T = R.get('tabla') or {}
+        if T.get('formato') == 'ffa':
+            A = _correr_ffa(s, sv, R, canon, nombres_cache)
+            if A:
+                out['sv'][sv] = A
+            continue
         try:
             r = s.get('%s/channels/%s/messages/%s' % (API, T['canal'], T['msg']), timeout=20)
         except OSError as e:
@@ -524,6 +570,93 @@ def correr(aplicar=False):
     _guardar(SALIDA, out)
     _discord(s, RR, out)
     return len(out['sv'])
+
+
+def _podios_desde(s, canal, hasta):
+    """Todos los mensajes de un canal posteriores a `hasta` (un ID: los IDs de Discord crecen con el tiempo), de a 100."""
+    ms, despues = [], str(hasta or '0')
+    for _ in range(20):
+        try:
+            r = s.get('%s/channels/%s/messages?limit=100&after=%s' % (API, canal, despues), timeout=20)
+            b = r.json() if r.ok else []
+        except (OSError, ValueError):
+            return None
+        if not isinstance(b, list):
+            return None
+        ms += b
+        if len(b) < 100:
+            break
+        despues = max(b, key=lambda m: int(m['id']))['id']
+    return sorted(ms, key=lambda m: int(m['id']))
+
+
+def _correr_ffa(s, sv, R, canon, nombres_cache):
+    """📈 FFA (Dlx, 13/11/2026: «en ranking de ascensos quiero que agregues el ranking de FFA»). Su ranking lo lleva SU
+    bot y sólo deja ver el top 10: lo demás está detrás de un botón que nuestro bot no puede apretar, y rehacerlo desde
+    #podios no da —los podios de antes del 25/10 no traen rango—. Así que la base son las 12 páginas que pasó Dlx
+    (`datos/ascenso_ffa_base.json`), más los podios POSTERIORES a la base con la escala de su #sistema. Cada corrida
+    compara el top 10 nuestro con el de su bot: si no coincide se avisa en el log y queda en `no_coincide` [nombre,
+    el de ellos, el nuestro]. ⚠️ Lo oficial es SU tabla: si no coincide, lo que hay que revisar es la base o la escala."""
+    T = R.get('tabla') or {}
+    B = _json(os.path.join(BASE, 'datos', T.get('base') or 'ascenso_ffa_base.json'), {}) or {}
+    if not B.get('filas'):
+        print('   ⚠️ %s: falta su base (datos/%s)' % (sv, T.get('base')))
+        return None
+    of = {'filas': [list(f) for f in B['filas']], 'nota': '', 'desde': B.get('dia', '')}
+    por_id = {f[3]: f[0] for f in of['filas'] if f[3]}
+    ms = _podios_desde(s, R['podios'], B.get('hasta'))
+    if ms is None:
+        print('   ⚠️ %s: #podios no contestó' % sv)
+        return None
+    compes = []
+    for pm in ms:
+        po = leer_podio_ffa(pm.get('content') or '')
+        if not po:
+            continue
+        filas = []
+        for _n, inst, did in po['filas']:
+            k, raw, ver, _cc = canon('', did)
+            filas.append([por_id.get(did) or (ver if raw else '') or _nombre_dc(s, did, nombres_cache) or 'una cuenta de Discord',
+                          inst, did])
+        compes.append({'n': None, 'nombre': po['titulo'], 'dia': _dia_et(pm['timestamp']), 'rango': po['rango'], 'filas': filas})
+    # el top 10 que muestra su bot: con qué se compara
+    top = {}
+    try:
+        r = s.get('%s/channels/%s/messages?limit=20' % (API, T['canal']), timeout=20)
+        for m in (r.json() if r.ok else []):
+            for e in m.get('embeds') or []:
+                if 'RANKING DE ASCENSO' in (e.get('title') or '').upper() and not top:
+                    top = {f[3]: f[2] for f in leer_ffa(e.get('description') or '')['filas']}
+    except (OSError, ValueError):
+        pass
+    # 🔑 EN FFA MANDA EL ID. `canon()` busca por nombre cuando el ID no está en la Lista, y así «deko» (#82) y «Deko»
+    # (#117), dos cuentas distintas, caían en la misma persona de la Lista y se sumaban en una fila. Con ID y sin estar en
+    # la Lista, es esa cuenta y nadie más; el nombre sólo decide para las filas de la base que no tienen ID
+    en_lista = {str(p.get('discord_id')) for p in (_json(os.path.join(BASE, 'datos', 'padron.json'), []) or [])
+                if p.get('discord_id')}
+
+    def canon_ffa(n, did=''):
+        if did and str(did) not in en_lista:
+            return 'id' + str(did), '', limpio(n), ''
+        return canon(n, did)
+    A = calcular(R, of, compes, canon_ffa, set())
+    # lo calculado de cada ID, contra lo que dice su bot
+    suma = {}
+    for f in of['filas']:
+        if f[3]:
+            suma[f[3]] = suma.get(f[3], 0) + f[2]
+    for c in compes:
+        esc = (R.get('escala') or {}).get(c['rango']) or {}
+        for _n, inst, did in c['filas']:
+            suma[did] = suma.get(did, 0) + (esc.get(inst) or 0)
+    no = [[por_id.get(d) or d, p, suma.get(d, 0)] for d, p in top.items() if suma.get(d, 0) != p]
+    A['oficial'] = {'dia': B.get('dia', ''), 'nota': 'base de las 12 páginas', 'filas': len(of['filas']), 'top': len(top)}
+    A['no_coincide'] = no
+    A.update({'n': R.get('n'), 'destino': R.get('destino'), 'suben': R.get('suben', 0), 'playoff': R.get('playoff', 0)})
+    print('   📈 %s: base de %d, +%d podio(s) posteriores · top 10 de su bot: %s'
+          % (sv, len(of['filas']), len(A['sumado']), 'coincide' if top and not no else
+             ('no lo pude leer' if not top else '⚠️ NO coincide en %d: %s' % (len(no), no[:3]))))
+    return A
 
 
 def _d(dia):
@@ -717,8 +850,29 @@ def _self_check():
        'dos cuentas que no están en la Lista y de las que Discord no dio el nombre NO se juntan: van por su ID',
        B['filas'])
     RR = reglas()
-    ok({'SR', 'URBF'} <= set(RR) and all(R2.get('tabla', {}).get('formato') in LECTORES for R2 in RR.values()),
-       'las reglas: Snake Rap y Urban Freestyle, cada una con un lector')
+    ok({'SR', 'URBF', 'FFA'} <= set(RR) and all(R2.get('tabla', {}).get('formato') in LECTORES for R2 in RR.values()),
+       'las reglas: Snake Rap, Urban Freestyle y FFA, cada una con un lector')
+    # ── FFA (13/11/2026): el top 10 de su bot, sus podios (uno por integrante) y la base
+    t10 = ('🥇 **Park Ji Sung** 🇨🇱 - <@979878316846768139> · **14,620** pts\n'
+           '`#04` **Makma** 🇻🇪 - <@897942226955563068> · **7,245** pts')
+    ok(leer_ffa(t10)['filas'] == [['Park Ji Sung', 'cl', 14620, '979878316846768139'], ['Makma', 've', 7245, '897942226955563068']],
+       'FFA: el top 10 de su bot, con medalla o con `#04`', leer_ffa(t10)['filas'])
+    pd = leer_podio_ffa('# [ • 🥇 |qcyo rapeen 10| 🥇 • ]\n\n### [RANGO PLATA III 🥈]\n┌──\n'
+                        '│ 🥇 |: __CAMPEÓN:__ <@1> + <@2> + <@3> 🇦🇷 🇦🇷\n│ 🥈 |: __SUBCAMPEÓN:__ <@4> 🇻🇪\n'
+                        '│ 🥉 |: __3ER PUESTO:__ <@5> + <@6>\n│ 🎤 |: __ORGANIZADOR:__ <@7>\n└──')
+    ok(pd and pd['rango'] == 'plata iii' and pd['titulo'] == 'qcyo rapeen 10'
+       and [(f[1], f[2]) for f in pd['filas']] == [('Campeón', '1'), ('Campeón', '2'), ('Campeón', '3'), ('Subcampeón', '4'),
+                                                   ('Tercero', '5'), ('Tercero', '6')],
+       'FFA: un podio de equipo da una fila por integrante, y el organizador no suma', pd)
+    ok(leer_podio_ffa('**Compe chill**\nCampeón: <@1>') is None, 'FFA: un podio sin «RANGO …» (los de antes del 25/10) no suma')
+    ok(all(leer_podio_ffa('### [RANGO %s]\n🥇 __CAMPEÓN:__ <@1>' % r.upper())['rango'] in RR.get('FFA', {}).get('escala', {})
+           for r in ('diamante', 'oro ii', 'oro i', 'plata iii', 'plata ii', 'plata i', 'bronce iii', 'bronce ii', 'bronce i')),
+       'FFA: los nueve rangos de su sistema están en la escala')
+    bf = _json(os.path.join(BASE, 'datos', 'ascenso_ffa_base.json'), {}) or {}
+    pts = [f[2] for f in bf.get('filas') or []]
+    ids = [f[3] for f in bf.get('filas') or [] if f[3]]
+    ok(len(pts) > 100 and pts == sorted(pts, reverse=True) and len(ids) == len(set(ids)) and bf.get('hasta'),
+       'FFA: la base está ordenada, sin IDs repetidos y dice hasta qué podio contó', (len(pts), len(ids), len(set(ids))))
     print('\n   %s\n' % ('todo bien' if not mal else '🔴 %d mal' % mal))
     return mal
 

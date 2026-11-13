@@ -3462,6 +3462,11 @@ def _con_ascenso(det, claves):
                 'pend': [[p['evento'], p['dia'], 'rango' if p['que'] == 'rango' else (p.get('detalle') or '')]
                          for p in X.get('pendiente') or []],
             }
+            # 📈 un servidor SIN liga a la que se asciende (FFA, 13/11/2026: su ascenso es sólo el ranking) no cuelga de
+            # ninguna: va aparte, en `ascsv`, y lo lee la vista «Ascensos» del Ranking
+            if not X.get('destino'):
+                det.setdefault('ascsv', {})[sv] = a
+                continue
             for lid in L:
                 if (_LGx.LIGAS.get(lid) or {}).get('sv') == sv:
                     L[lid]['asc'] = a
@@ -3477,6 +3482,8 @@ def _asc_de(raw):
     if 'raw' not in _ASC:
         idx = {}
         for sv, X in (_asc_json().get('sv') or {}).items():
+            if not X.get('destino'):           # sin liga a la que se sube (FFA): el perfil linkea a la liga
+                continue
             filas = X.get('filas') or []
             suben = int(X.get('suben') or 0)
             corte = filas[suben - 1][2] if suben and len(filas) >= suben else 0

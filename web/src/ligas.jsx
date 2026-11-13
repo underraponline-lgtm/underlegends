@@ -91,6 +91,8 @@ function pedirDetalle(t) {
       DET.c = d.cartas || {};
       // 🏆 y las temporadas que terminaron, enteras (`comp`, `ligas.para_web()`): «Ligas completadas»
       DET.comp = d.comp || {};
+      // 📈 el ascenso de los servidores que no suben a ninguna liga (FFA): va aparte (`_con_ascenso()`)
+      DET.ascsv = d.ascsv || {};
       DET.t = t;
       DET.oyentes.forEach((f) => f());
     })
@@ -106,6 +108,8 @@ export function useDetalle(t) {
   }, [t]);
   return DET.d || {};
 }
+// 📈 el ranking de ascenso de un servidor sin liga a la que se sube (FFA), o undefined si todavía no llegó
+export const ascensoSinLiga = (sv) => (DET.ascsv || {})[sv];
 
 // ── 🗳️ los votos de «¿quién gana la liga?» ─────────────────────────────────────────────────────────────────────────────
 // Cuántos lleva cada uno lo dice `/api/avisos/ligas-votos` (30 s en el borde; nunca quién); lo que votaste lo recuerda
@@ -854,7 +858,7 @@ export function Ascenso({ A, h, desde = '' }) {
         ))}
       </ol>
       {filas.length > 12 ? <button type="button" className="btn borde2 chico" onClick={() => setTodo(!todo)}>{todo ? 'Ver menos' : 'Ver los ' + filas.length}</button> : null}
-      <p className="asc-ley"><span className="asc-c sube">Sube</span>{po ? <span className="asc-c po">Play-off</span> : null}<em className="asc-mas">+N</em> lo que se sumó a la oficial</p>
+      <p className="asc-ley">{suben ? <span className="asc-c sube">Sube</span> : null}{po ? <span className="asc-c po">Play-off</span> : null}<em className="asc-mas">+N</em> lo que se sumó a la oficial</p>
       {(A.sum || []).length ? <p className="asc-p">🆕 Se sumó: {A.sum.map(([e, d, r]) => limpio(e) + ' (' + dm(d) + ', rango ' + String(r).toUpperCase() + ')').join(' · ')}.</p> : null}
       {(A.pend || []).length ? <p className="asc-p">⏳ Todavía no suma: {A.pend.map(([e, d, q]) => limpio(e) + ' (' + dm(d) + '): ' + (q === 'rango' ? 'falta saber su rango' : q)).join(' · ')}</p> : null}
     </div>

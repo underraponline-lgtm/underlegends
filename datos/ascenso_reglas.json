@@ -47,5 +47,27 @@
   "suben": 2,
   "playoff": 0,
   "fuente": "«Ascenso⋅Cuarta⋅Temp» de Urban Freestyle; la escala, de «Rangos⋅Compes» (19/08/2026). «Semis» = llegó a semifinales sin ser 3º. Sin partido por el 3º, los dos semifinalistas se llevan los puntos de «Semifinal» (Valen, de URBF, por Dlx el 18/10/2026)"
+ },
+ "FFA": {
+  "n": "Freestyle For All",
+  "destino": null,
+  "fuera": [],
+  "compes": "podios_ffa",
+  "tabla": {"canal": "1498182688186695791", "formato": "ffa", "base": "ascenso_ffa_base.json"},
+  "podios": "1498183026062921791",
+  "escala": {
+   "diamante": {"Campeón": 4000, "Subcampeón": 3000, "Tercero": 2400},
+   "oro ii": {"Campeón": 1500, "Subcampeón": 1125, "Tercero": 900},
+   "oro i": {"Campeón": 1000, "Subcampeón": 750, "Tercero": 600},
+   "plata iii": {"Campeón": 500, "Subcampeón": 375, "Tercero": 300},
+   "plata ii": {"Campeón": 400, "Subcampeón": 300, "Tercero": 240},
+   "plata i": {"Campeón": 300, "Subcampeón": 225, "Tercero": 180},
+   "bronce iii": {"Campeón": 200, "Subcampeón": 150, "Tercero": 110},
+   "bronce ii": {"Campeón": 150, "Subcampeón": 110, "Tercero": 90},
+   "bronce i": {"Campeón": 100, "Subcampeón": 75, "Tercero": 60}
+  },
+  "suben": 0,
+  "playoff": 0,
+  "fuente": "«SISTEMA DE ASCENSO 2026» de FFA (#sistema y el botón «Sistema de puntos» de su bot). Su ranking lo lleva su propio bot y sólo deja ver el top 10: la base son las 12 páginas completas que pasó Dlx el 13/11/2026 (datos/ascenso_ffa_base.json) y se suman los podios posteriores de #podios, cada uno con su «RANGO …». En un podio de equipo cada integrante se lleva los puntos enteros (lo dice su «RANKING ACTUALIZADO»: +400 a cada uno de los tres). Cada corrida compara el top 10 calculado con el de su bot."
  }
 }

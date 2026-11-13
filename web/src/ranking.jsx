@@ -25,7 +25,7 @@ import { W, aPng, armarYCompartir, carta, lienzo, pie } from './historia.js';
 import { Divisiones } from './divisiones.jsx';
 import { Misiones } from './misiones.jsx';
 import { svElegido, useElegidos } from './elegidos.js';
-import { Ascenso, useDetalle } from './ligas.jsx';
+import { Ascenso, ascensoSinLiga, useDetalle } from './ligas.jsx';
 import { usePases } from './pase.js';
 import { TierChip } from './crewpanel.jsx';
 import { Porque, useMira } from './porque.jsx';
@@ -278,7 +278,8 @@ function Ascensos({ liga }) {
   const det = useDetalle(liga.d.ligas ? liga.d.ligas.t : null);
   const elegido = mapa[sv] ? sv : svs[0];
   const dest = (mapa[elegido] || [])[1];
-  const A = dest && det[dest] && det[dest].asc;
+  // 📈 FFA no sube a ninguna liga: su tabla viaja aparte (`ascsv`) y no lleva el link a la liga
+  const A = dest ? det[dest] && det[dest].asc : ascensoSinLiga(elegido);
   const miK = (window.DC && window.DC.clave) || (liga.yo && liga.yo.k) || '';
   return (
     <div className="rk-asc">
@@ -293,9 +294,9 @@ function Ascensos({ liga }) {
       ) : null}
       {A ? (
         <>
-          <h3 className="rk-asc-t">Ascenso a la {A.n}</h3>
+          <h3 className="rk-asc-t">{dest ? 'Ascenso a la ' + A.n : 'Ranking de ascenso de ' + A.n}</h3>
           <Ascenso A={A} h={{ miK }} />
-          <p className="rk-asc-l"><a className="te-link" href={'#/ligas/' + encodeURIComponent(dest)}>Ver la {A.n} →</a></p>
+          {dest ? <p className="rk-asc-l"><a className="te-link" href={'#/ligas/' + encodeURIComponent(dest)}>Ver la {A.n} →</a></p> : null}
         </>
       ) : <div className="cargando">Cargando…</div>}
     </div>
