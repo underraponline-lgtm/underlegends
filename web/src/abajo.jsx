@@ -411,7 +411,7 @@ export function Tabbar({ liga, dc, pagina = '' }) {
       ) : (
         <a href="#/cuenta" className={'tb-yo' + (pagina === 'cuenta' ? ' on' : '')} aria-label="Tu cuenta"><Ico n="yo" t={22} /><span>Tu cuenta</span></a>
       )}
-      {yoM ? <YoMenu k={yo ? yo.k : (dc && dc.clave) || ''} abajo onCerrar={() => setYoM(false)} /> : null}
+      {yoM ? <YoMenu k={yo ? yo.k : (dc && dc.clave) || ''} nombre={limpio(yo ? yo.n : (dc ? dc.n : ''))} cara={cara} abajo onCerrar={() => setYoM(false)} /> : null}
     </nav>
   );
 }
