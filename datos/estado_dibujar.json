@@ -1,9 +1,9 @@
 {
  "v": 1,
- "cuando": "2026-11-12T22:34:33Z",
+ "cuando": "2026-11-13T00:17:47Z",
  "trabajo": "dibujar",
  "codigo": 0,
- "dur_s": 138.7,
+ "dur_s": 2389.5,
  "pasos": [
   {
    "n": "2f",
@@ -15,67 +15,67 @@
    "n": "2f2",
    "que": "los TAGs elegidos",
    "ok": true,
-   "s": 1.0
+   "s": 1.3
   },
   {
    "n": "3",
    "que": "qué cambió",
    "ok": true,
-   "s": 13.7
+   "s": 13.3
   },
   {
    "n": "4",
    "que": "las caras, desde R2",
    "ok": true,
-   "s": 21.3
+   "s": 20.9
   },
   {
    "n": "5",
-   "que": "tanda 1 de 1 · 1 persona(s)",
+   "que": "tanda 1 de 6 · 40 persona(s)",
    "ok": true,
-   "s": 35.2
+   "s": 2277.2
   },
   {
    "n": "5b",
    "que": "las Bloqueadas",
    "ok": true,
-   "s": 7.8
+   "s": 11.3
   },
   {
    "n": "6",
    "que": "refrescar KV",
    "ok": true,
-   "s": 58.9
+   "s": 64.1
   }
  ],
  "fallas": [],
  "ultimo_evento": {
-  "n": "623",
-  "nombre": "Red Bull Crew VENEC",
+  "n": "624",
+  "nombre": "CUPO A LA MULTIVERS",
   "sv": "ACAD",
-  "dia": "2026-11-07"
+  "dia": "2026-11-12"
  },
  "cuotas": {
   "kv": {
-   "write": 693,
-   "read": 31985
+   "write": 25,
+   "read": 431
   },
   "objeto": {
-   "leidas": 3088504,
-   "escritas": 63716,
-   "pedidos": 16150
+   "leidas": 53887,
+   "escritas": 886,
+   "pedidos": 389
   },
   "worker": {
-   "pedidos": 14415,
+   "pedidos": 15542,
    "errores": 0,
-   "sub": 17339,
+   "sub": 18569,
    "cortados": 0,
-   "p50_ms": 1.3,
-   "p99_ms": 15.3,
+   "p50_ms": 1.28,
+   "p99_ms": 15.28,
    "cpu": {
-    "total": 31741,
-    "objeto_10": 2144,
-    "worker_10": 552
+    "total": 34042,
+    "objeto_10": 2203,
+    "worker_10": 586
    }
   },
   "r2": {
