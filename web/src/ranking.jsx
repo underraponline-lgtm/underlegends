@@ -686,8 +686,8 @@ function ListaCel({ x, cfg, vis, abierta, setAbierta, miFila, corteK, directoK, 
 // barra por lado y quién gana cada una. Sólo con cuenta y sobre otra persona ─────────────────────────────────────────
 // `lados` (13/11/2026, Países y Crews): `[tu dibujo, el suyo, quién eres, su nombre, «ganas»]`; sin él, dos personas
 function Versus({ x, a, b, cats, lados }) {
-  const [visA, visB, yoT, suN, ganas] = lados || [<Cara liga={x.liga} k={a.k} nombre={a.n} cls="cara rk-vs-cara" />,
-    <Cara liga={x.liga} k={b.k} nombre={b.n} cls="cara rk-vs-cara" />, 'TÚ', limpio(b.n), 'Ganas'];
+  const [visA, visB, yoT, suN, ganas] = lados || [<Cara key="a" liga={x.liga} k={a.k} nombre={a.n} cls="cara rk-vs-cara" />,
+    <Cara key="b" liga={x.liga} k={b.k} nombre={b.n} cls="cara rk-vs-cara" />, 'TÚ', limpio(b.n), 'Ganas'];
   const gana = cats.filter(([, v1, v2]) => v1 > v2).length;
   const peor = cats.filter(([, v1, v2]) => v2 > v1).sort((p, q) => (q[2] - q[1]) / (q[2] || 1) - (p[2] - p[1]) / (p[2] || 1))[0];
   return (
@@ -767,8 +767,8 @@ function Detalle({ x, cfg, f, perf }) {
       ['Puntos', mia.pts || 0, f.pts || 0, num], ['Raperos', mia.n || 0, f.n || 0, String], ['Por rapero', prom(mia), prom(f), num],
     ].concat(!esPais && T && T.nombres ? [['Tier', mia.tier || 0, f.tier || 0, (n) => T.nombres[n] || '—']] : []);
     const lados = cats ? (esPais
-      ? [<Bandera cc={mia.cc} cls="rk-vs-flag" />, <Bandera cc={f.cc} cls="rk-vs-flag" />, 'TU PAÍS', nombrePais(f.cc), 'Tu país gana']
-      : [<LogoCrew c={mia} cls="rk-clogo rk-vs-logo" />, <LogoCrew c={f} cls="rk-clogo rk-vs-logo" />, 'TU CREW', limpio(f.crew), 'Tu crew gana']) : null;
+      ? [<Bandera key="a" cc={mia.cc} cls="rk-vs-flag" />, <Bandera key="b" cc={f.cc} cls="rk-vs-flag" />, 'TU PAÍS', nombrePais(f.cc), 'Tu país gana']
+      : [<LogoCrew key="a" c={mia} cls="rk-clogo rk-vs-logo" />, <LogoCrew key="b" c={f} cls="rk-clogo rk-vs-logo" />, 'TU CREW', limpio(f.crew), 'Tu crew gana']) : null;
     return (
       <div className="rk-det-in">
         <div className="rk-det-l">
