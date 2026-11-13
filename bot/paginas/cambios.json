@@ -11,6 +11,16 @@
  ],
  "cambios": [
     {
+        "version": "5.22",
+        "dia": "2026-11-13",
+        "cuando": "2026-11-13T05:01:00-05:00",
+        "titulo": "Únete a los Tier 1 con un toque",
+        "items": [
+            "En **Socios**, «Unirme a los Tier 1»: eliges a cuáles y Discord te pide permiso. Lo usamos una vez y no lo guardamos.",
+            "Si en alguno no se puede, te queda su invitación de siempre."
+        ]
+    },
+    {
         "version": "5.21",
         "dia": "2026-11-13",
         "cuando": "2026-11-13T04:59:00-05:00",
