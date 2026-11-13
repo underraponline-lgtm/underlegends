@@ -11,6 +11,15 @@
  ],
  "cambios": [
     {
+        "version": "4.86",
+        "dia": "2026-11-12",
+        "cuando": "2026-11-12T23:20:00-05:00",
+        "titulo": "Los anuncios de todos los servidores",
+        "items": [
+            "Sin batallas, tu Inicio muestra **el último anuncio oficial** de cualquier servidor de la Liga, con su logo."
+        ]
+    },
+    {
         "version": "4.85",
         "dia": "2026-11-12",
         "cuando": "2026-11-12T22:55:00-05:00",
