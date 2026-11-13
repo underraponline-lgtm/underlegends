@@ -1,6 +1,7 @@
 // El medio del Inicio: Fechas, Lo último, Los que mandan y el panel de abajo. Traducido de docs/remake/reales.py
 // (fechas, noticias, raperos, panel, tus_eventos, tu_temporada, numeros).
-import { DIAS, hora, limpio, minutosDelDia, num, resultado, siglaDe, srcLogo, utc } from './liga.js';
+import { DIAS, hora, ksDe, limpio, minutosDelDia, num, resultado, siglaDe, srcLogo, utc } from './liga.js';
+import { useAplausos } from './aplausos.js';
 import { Escudo, escudoDe } from './escudo.jsx';
 import { Bandera, Cara, Carta, Compartir, Ico, Pest, Rango, Sec, aDiscord, accion, enlace, nombrePais } from './piezas.jsx';
 import { avance, premioTexto, proximoEspecial, usePase, usePases } from './pase.js';
@@ -119,17 +120,6 @@ export function Vis({ liga, v, cls = 'n-vis' }) {
   if (v[0] === 'img') return <img className={cls + ' n-img'} alt="" src={v[1]} loading="lazy" />;
   return <img className={cls} alt="" src="/ul.png" />;
 }
-// una encuesta abierta, como novedad: lleva a Encuestas (Dlx, 30/09: «¿por qué no lo ponemos en la sección de lo
-// último?», del ×2)
-function notaEncuesta(liga) {
-  const x2 = liga.encuesta('x2');
-  const el = liga.encuesta('elegido');
-  const E = x2 || el;
-  if (!E) return null;
-  const x = String(E.x || 2).replace('.', ',');
-  const tit = x2 ? '¿Qué servidor se lleva el ×' + x + ' la semana que viene? Vota' : '¿A quién salimos a buscar? Vota a El Elegido';
-  return ['ENCUESTA', tit, ['enc', x2 ? '×' + x : '?'], 'cierra ' + liga.dia(E.hasta), { ancla: 'encuestas' }];
-}
 function irA(d, raiz) {
   if (!d) return;
   if (d.carta) accion.carta(d.carta, d.cual);
@@ -139,27 +129,140 @@ function irA(d, raiz) {
   else if (d.link) window.open(d.link, '_blank', 'noopener');
   else if (d.ancla) accion.ir(d.ancla);
 }
+// 🧩 LO ÚLTIMO, EN MOSAICO (Dlx, 13/11/2026, a la maqueta https://claude.ai/artifact/B1Dm8t3hxPJdLvektfRob5: «Mosaico
+// pero saca de ahí las encuestas y asegúrate que sea interactuable y sociable y que no todo sea tan grande tampoco»). Cada
+// tipo con su pieza: la carta nueva (la más grande), el afiche de la liga entero, la letra del rango, los campeones juntos
+// y la noche en números; lo demás, en piezas chicas. Las encuestas ya tienen su sección. Cada logro se felicita ahí mismo
+// (el mismo 👏 de Publicaciones: `window.felicitar`, `useAplausos`) y dice cuántos comentarios tiene. En el celular se desliza
+// 4 columnas por 3 filas en la compu: la carta ocupa 4 celdas, el afiche, los campeones y la noche 2, el rango y las chicas 1
+const LU_CELDAS = 12;
+const luHace = (liga, t) => { const c = liga.cuando(t); return c ? c.charAt(0).toUpperCase() + c.slice(1) : ''; };
+// lo de una persona (o dos) se felicita; la noche, los flyers y lo de la Liga no
+const LU_LOGRO = new Set(['tarjeta', 'rango', 'campeon', 'ligahito', 'caza', 'pase']);
+function LuSocial({ liga, it, A, chico = true }) {
+  const id = it.id;
+  const nc = Array.isArray(it.cm) ? it.cm.length : 0;
+  const n = id ? Number(A.cu[id] || 0) : 0;
+  const mio = id ? !!A.mios[id] : false;
+  const yo = liga.yo;
+  const propio = !!(yo && ksDe(it).includes(yo.k));
+  const fel = id && LU_LOGRO.has(it.tipo);
+  if (!fel && !nc) return null;
+  const parar = (e) => e.stopPropagation();
+  return (
+    <span className="lu-soc" onClick={parar} onKeyDown={parar}>
+      {fel ? (propio ? (n ? <span className="lu-fel tuyo" title="Te felicitaron">👏 {num(n)}</span> : null) : (
+        <button type="button" className={'lu-fel' + (mio ? ' on' : '')} aria-pressed={mio} disabled={mio || !!A.va[id]}
+          onClick={() => { if (window.felicitar) window.felicitar(id); }} aria-label={(mio ? 'Felicitaste' : 'Felicitar') + (n ? ' · ' + n : '')}>
+          <span aria-hidden="true">👏</span>{chico ? null : (mio ? 'Felicitaste' : 'Felicitar')}{n ? <em>{num(n)}</em> : null}
+        </button>
+      )) : null}
+      {nc ? <a className="lu-cm" href={'#/publicaciones/' + encodeURIComponent(id || '')} aria-label={nc + (nc === 1 ? ' comentario' : ' comentarios')}>💬 <em>{nc}</em></a> : null}
+    </span>
+  );
+}
 export function Noticias({ liga, raiz }) {
-  const items = liga.variados(6);
-  if (!items.length) return null;
-  const dest = items.find((x) => x[2][0] === 'carta') || items[0];
-  const enc = notaEncuesta(liga);
-  const resto = (enc ? [enc] : []).concat(items.filter((x) => x !== dest)).slice(0, 4);
+  const A = useAplausos();
+  const muro = liga.muroLimpio().filter((it) => it.tipo !== 'anuncio' && it.tipo !== 'promo');
+  if (!muro.length) return null;
+  // la grande: la última carta nueva; si no hay, el último logro
+  const feat = muro.find((it) => it.tipo === 'tarjeta') || muro.find((it) => LU_LOGRO.has(it.tipo)) || null;
+  const usados = new Set(feat ? [feat] : []);
+  const de = (tipo) => { const x = muro.find((it) => it.tipo === tipo && !usados.has(it)); if (x) usados.add(x); return x || null; };
+  const flyer = de('flyer');
+  const rango = de('rango');
+  const camp = de('campeon');
+  const noche = de('resnoche');
+  const otros = [];
+  const celdas = (feat ? 4 : 0) + (flyer ? 2 : 0) + (rango ? 1 : 0) + (camp ? 2 : 0) + (noche ? 2 : 0);
+  for (const it of muro) {
+    if (celdas + otros.length >= LU_CELDAS) break;
+    if (usados.has(it) || it.tipo === 'resnoche' || !liga.itemMuro(it)) continue;
+    // no dos cartas de la misma persona seguidas: llegan juntas (temporada, servidor y competitiva)
+    if (it.tipo === 'tarjeta' && feat && JSON.stringify(ksDe(it)) === JSON.stringify(ksDe(feat))) continue;
+    if (otros.some((o) => o.tipo === it.tipo && JSON.stringify(ksDe(o)) === JSON.stringify(ksDe(it)))) continue;
+    otros.push(it);
+  }
+  const ir = (it) => { const x = liga.itemMuro(it); if (x) irA(x[4], raiz); };
+  const tecla = (fn) => (e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); fn(); } };
+  const pieza = (it, cls, cuerpo) => (
+    <div key={it.id || it.t + it.tipo} role="link" tabIndex={0} className={'lu-t ' + cls} onClick={() => ir(it)} onKeyDown={tecla(() => ir(it))}>{cuerpo}</div>
+  );
+  const piezas = [];
+  if (feat) {
+    const x = liga.itemMuro(feat);
+    const k = ksDe(feat)[0];
+    const f = k ? liga.T[k] : null;
+    const esCarta = feat.tipo === 'tarjeta';
+    piezas.push(pieza(feat, 'lu-feat', <>
+      <span className="lu-feat-v"><Vis liga={liga} v={x[2]} cls="lu-feat-i" />{esCarta ? <span className="sticker">NUEVA</span> : null}</span>
+      <span className="lu-feat-t">
+        <span className="lu-cat">{x[0]} · {luHace(liga, feat.t)}</span>
+        <b className="lu-tit">{x[1]}</b>
+        {f ? <span className="lu-datos">
+          {f.rg ? <span>Rango <b style={{ color: f.rgc || undefined }}>{f.rg}</b></span> : null}
+          {f.pos ? <span>#{f.pos} Temporada</span> : null}
+          {f.ev ? <span>{f.ev} eventos</span> : null}
+        </span> : null}
+        <span className="lu-acc">
+          {esCarta ? <button type="button" className="lu-btn v" onClick={(e) => { e.stopPropagation(); accion.carta(k, feat.carta); }}>Ver la carta</button> : null}
+          {k ? <a className="lu-btn" href={'#/r/' + encodeURIComponent(k)} onClick={(e) => e.stopPropagation()}>Su perfil</a> : null}
+          <LuSocial liga={liga} it={feat} A={A} chico={false} />
+        </span>
+      </span>
+    </>));
+  }
+  if (flyer) {
+    const x = liga.itemMuro(flyer);
+    piezas.push(pieza(flyer, 'lu-fly', <>
+      <img className="lu-fly-i" alt="" src={flyer.img} loading="lazy" />
+      <span className="lu-fly-p"><span className="lu-cat">{x[0]}</span><b>{x[1]}</b><span className="lu-hora">{luHace(liga, flyer.t)}</span></span>
+    </>));
+  }
+  if (rango) {
+    piezas.push(pieza(rango, 'lu-rg', <>
+      <span className="lu-cat">Rango · {luHace(liga, rango.t)}</span>
+      <b>{(rango.quien || []).map(limpio)[0]}{rango.primero ? ' consigue su primera letra' : ' sube de rango'}</b>
+      <span className="lu-rg-l" style={{ color: liga.colorRg(rango.rg) }} aria-label={'Rango ' + rango.rg}>{rango.rg}</span>
+      <LuSocial liga={liga} it={rango} A={A} />
+    </>));
+  }
+  if (camp) {
+    const q = (camp.quien || []).map(limpio);
+    const ks = ksDe(camp);
+    piezas.push(pieza(camp, 'lu-camp', <>
+      <span className="lu-par">{ks.slice(0, 2).map((k, i) => <Cara key={k || i} liga={liga} k={k} nombre={q[i]} cls="cara lu-par-c" />)}</span>
+      <span className="lu-camp-t">
+        <span className="lu-cat">{q.length > 1 ? 'Campeones' : 'Campeón'} · {siglaDe(camp.sv)} · {luHace(liga, camp.t)}</span>
+        <b>{q.join(' y ')} {q.length > 1 ? 'se quedan' : 'se queda'} con {limpio(camp.ev)}</b>
+        <span className="lu-pie">{camp.part ? <span className="lu-hora">{camp.part} raperos</span> : null}<LuSocial liga={liga} it={camp} A={A} /></span>
+      </span>
+    </>));
+  }
+  if (noche) {
+    const cs = (noche.campeones || []);
+    const caras = [];
+    cs.forEach((c) => (c.quien || []).forEach(([n, k]) => { if (caras.length < 5 && !caras.some((y) => y[1] === k)) caras.push([n, k]); }));
+    piezas.push(pieza(noche, 'lu-noche', <>
+      <span className="lu-noche-t">
+        <span className="lu-cat">Anoche en la Liga</span>
+        <span className="lu-num">{noche.eventos}<small>{noche.eventos === 1 ? 'evento' : 'eventos'}</small> {noche.part}<small>raperos</small></span>
+        <span className="lu-hora">{cs.length} {cs.length === 1 ? 'campeón' : 'campeones'}: {cs.slice(0, 2).map((c) => (c.quien || []).map((y) => limpio(y[0])).join(' y ')).join(', ')}{cs.length > 2 ? ' y ' + (cs.length - 2) + ' más' : ''}</span>
+      </span>
+      <span className="lu-caras">{caras.map(([n, k]) => <Cara key={k} liga={liga} k={k} nombre={n} cls="cara lu-caras-c" />)}</span>
+    </>));
+  }
+  otros.forEach((it) => {
+    const x = liga.itemMuro(it);
+    piezas.push(pieza(it, 'lu-ch', <>
+      <span className="lu-ch-v"><Vis liga={liga} v={x[2]} cls="lu-ch-i" /></span>
+      <span className="lu-ch-t"><span className="lu-cat">{x[0]}</span><b>{x[1]}</b>
+        <span className="lu-pie"><span className="lu-hora">{luHace(liga, it.t)}</span><LuSocial liga={liga} it={it} A={A} /></span></span>
+    </>));
+  });
   return (
     <Sec id="noticias" titulo="Lo último" enlace="Publicaciones" href="#/publicaciones">
-      <div className="notas-g">
-        <button type="button" className="destacada" onClick={() => irA(dest[4], raiz)}>
-          <div className="d-img"><Vis liga={liga} v={dest[2]} cls="d-vis" /><span className="sticker">NUEVA</span></div>
-          <div className="d-txt"><span className="cat">{dest[0]}</span><h3>{dest[1]}</h3><small>{dest[3].charAt(0).toUpperCase() + dest[3].slice(1)}</small></div>
-        </button>
-        <ul className="notas">
-          {resto.map((x, i) => (
-            <li key={i}><button type="button" className="sin-boton nota-b" onClick={() => irA(x[4], raiz)}>
-              <Vis liga={liga} v={x[2]} /><div><span className="cat">{x[0]}</span><b>{x[1]}</b><small>{x[3].charAt(0).toUpperCase() + x[3].slice(1)}</small></div>
-            </button></li>
-          ))}
-        </ul>
-      </div>
+      <div className="lu-mos">{piezas}</div>
     </Sec>
   );
 }

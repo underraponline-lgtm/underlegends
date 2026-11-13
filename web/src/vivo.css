@@ -5188,3 +5188,92 @@ dialog.pn-pop.pop-gratis{--pc:#F5C542;width:min(640px,calc(100vw - 32px))}
   .app .historias .h-sep{height:48px;margin-top:5px}
   .app .historias .h em{font-size:11px}
 }
+
+
+/* ═══ 🧩 LO ÚLTIMO, EN MOSAICO (13/11/2026, la B de la maqueta; Dlx: «Mosaico pero saca de ahí las encuestas y asegúrate
+   que sea interactuable y sociable y que no todo sea tan grande tampoco»). En la compu, 4 columnas por 3 filas de 132 px:
+   la carta nueva 2×2, el afiche 1×2, los campeones y la noche 2×1, el rango y lo demás 1×1. En el celular, una fila que se
+   desliza. Cada pieza abre lo suyo; 👏 y 💬 no la abren ═══ */
+.lu-mos{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));grid-auto-rows:132px;grid-auto-flow:dense;gap:10px}
+.lu-t{position:relative;overflow:hidden;min-width:0;display:flex;flex-direction:column;gap:6px;padding:12px;border:2px solid var(--linea);
+  background:var(--caja);color:var(--tinta);cursor:pointer;text-align:left}
+@media (hover: hover) and (pointer: fine){.lu-t:hover{border-color:var(--magenta)}}
+.lu-t:focus-visible{outline:2px solid var(--magenta);outline-offset:2px}
+.lu-cat{font:700 13px/1 "Barlow Condensed",sans-serif;letter-spacing:.07em;text-transform:uppercase;color:var(--magenta)}
+.lu-t b{font:800 14px/1.25 Archivo,sans-serif;overflow-wrap:anywhere}
+.lu-hora{font:700 13px/1 "Barlow Condensed",sans-serif;letter-spacing:.04em;text-transform:uppercase;color:var(--gris)}
+.lu-pie{display:flex;align-items:center;gap:10px;margin-top:auto;flex-wrap:wrap}
+/* 👏 y 💬 */
+.lu-soc{display:inline-flex;align-items:center;gap:6px}
+.lu-fel,.lu-cm{display:inline-flex;align-items:center;gap:5px;padding:5px 8px;border:1.5px solid var(--linea);border-radius:2px;background:none;
+  color:var(--tinta);cursor:pointer;font:800 12.5px/1 Archivo,sans-serif;text-decoration:none}
+.lu-fel em,.lu-cm em{font-style:normal}
+.lu-fel.on{background:var(--magenta);border-color:var(--magenta);color:#fff;cursor:default}
+.lu-fel.tuyo{cursor:default;color:var(--gris)}
+.lu-fel:disabled{opacity:1}
+@media (hover: hover) and (pointer: fine){.lu-fel:not(:disabled):hover,.lu-cm:hover{border-color:var(--magenta)}}
+.lu-btn{display:inline-flex;align-items:center;padding:7px 11px;border:2px solid var(--tinta);background:none;color:var(--tinta);cursor:pointer;
+  font:800 12px/1 Archivo,sans-serif;text-transform:uppercase;text-decoration:none}
+.lu-btn.v{background:var(--verde);border-color:var(--verde);color:#030304}
+.lu-acc{display:flex;flex-wrap:wrap;align-items:center;gap:6px;margin-top:4px}
+/* la carta nueva */
+.lu-feat{grid-column:span 2;grid-row:span 2;display:grid;grid-template-columns:auto minmax(0,1fr);gap:18px;align-items:center;padding:14px 18px}
+.lu-feat-v{position:relative;display:block;width:150px}
+.lu-feat-i{width:100%;display:block}
+.lu-feat-i img{width:100%;display:block}
+.lu-feat-v .sticker{right:-10px;bottom:12px}
+.lu-feat-t{display:grid;gap:8px;min-width:0}
+.lu-tit{font:900 22px/1.05 Archivo,sans-serif !important;font-stretch:112%;text-transform:uppercase}
+.lu-datos{display:flex;flex-wrap:wrap;gap:5px}
+.lu-datos span{padding:4px 7px;border:1.5px solid var(--linea);font:700 13px/1 "Barlow Condensed",sans-serif;letter-spacing:.05em;text-transform:uppercase}
+/* el afiche entero */
+.lu-fly{grid-row:span 2;padding:0}
+.lu-fly-i{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.lu-fly-p{position:absolute;left:0;right:0;bottom:0;display:grid;gap:5px;padding:10px 12px;background:rgba(3,3,4,.86);color:#F6F6F6}
+.lu-fly-p .lu-hora{color:#C9C9C4}
+.lu-fly-p .lu-cat{color:#FF4F9A}
+/* el rango: la letra grande en su color */
+.lu-rg{padding-right:64px}
+.lu-rg-l{position:absolute;right:10px;bottom:2px;font:900 64px/1 Archivo,sans-serif;font-stretch:112%}
+.lu-rg .lu-soc{margin-top:auto}
+/* los campeones */
+/* «Lo último» va en una sección clara: el dorado es el borde y el color de la etiqueta, no el fondo */
+.lu-camp{grid-column:span 2;display:grid;grid-template-columns:auto minmax(0,1fr);gap:14px;align-items:center;border-color:#D9A400;box-shadow:inset 4px 0 0 #D9A400}
+.lu-camp .lu-cat{color:#A87800}
+.negra .lu-camp .lu-cat,.noche .lu-camp .lu-cat{color:#F2B705}
+.lu-camp-t{display:grid;gap:6px;min-width:0;height:100%;align-content:center}
+.lu-par{display:flex}
+.lu-par-c{width:64px;height:64px;border-radius:50%;overflow:hidden;border:2px solid #F2B705}
+.lu-par-c + .lu-par-c{margin-left:-14px}
+.lu-par-c img{width:100%;height:100%;object-fit:cover}
+/* la noche */
+.lu-noche{grid-column:span 2;display:grid;grid-template-columns:minmax(0,1fr) auto;gap:12px;align-items:center}
+.lu-noche-t{display:grid;gap:6px;min-width:0}
+.lu-num{font:900 34px/1 Archivo,sans-serif;font-stretch:112%}
+.lu-num small{margin:0 10px 0 5px;font:700 14px/1 "Barlow Condensed",sans-serif;letter-spacing:.05em;text-transform:uppercase;color:var(--gris)}
+.lu-noche .lu-hora{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.lu-caras{display:flex}
+.lu-caras-c{width:42px;height:42px;border-radius:50%;overflow:hidden;border:2px solid var(--caja)}
+.lu-caras-c + .lu-caras-c{margin-left:-10px}
+.lu-caras-c img{width:100%;height:100%;object-fit:cover}
+/* las chicas */
+.lu-ch{display:grid;grid-template-columns:44px minmax(0,1fr);gap:10px;align-items:start}
+.lu-ch-v{width:44px;height:44px;display:block;overflow:hidden}
+.lu-ch-i{width:44px;height:44px;object-fit:cover;object-position:top;display:grid;place-items:center}
+.lu-ch-i img{width:100%;height:100%;object-fit:cover;object-position:top}
+.lu-ch-t{display:flex;flex-direction:column;gap:5px;min-width:0;height:100%}
+.lu-ch-t b{display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
+@media (min-width: 900px) and (max-width: 1199.98px){ .lu-feat-v{width:120px} .lu-tit{font-size:19px !important} }
+/* 📱 en el celular, una fila que se desliza */
+@media (max-width: 899.98px){
+  .lu-mos{grid-template-columns:none;grid-auto-flow:column;grid-auto-columns:minmax(230px,78%);grid-auto-rows:auto;grid-template-rows:212px;
+    overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none;padding-bottom:4px}
+  .lu-mos > .lu-t{grid-column:auto;grid-row:auto;scroll-snap-align:start}
+  .lu-feat{grid-template-columns:82px minmax(0,1fr);gap:10px;padding:12px}
+  .lu-feat-v{width:82px}
+  /* sin cortar palabras («COMPETI-TIVA»), y sólo «Ver la carta» y 👏: el perfil se abre tocando la pieza */
+  .lu-tit{font-size:15px !important;overflow-wrap:normal !important}
+  .lu-feat .lu-acc .lu-btn:not(.v){display:none}
+  .lu-datos{display:none}
+  .lu-camp,.lu-noche{grid-template-columns:1fr}
+}
