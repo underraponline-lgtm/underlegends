@@ -40,7 +40,7 @@
 "rg": "SS",
 "c": []
 },
-"six": {
+"snow": {
 "rg": "B",
 "c": [
 "competitivo",
@@ -49,7 +49,7 @@
 "temporada"
 ]
 },
-"snow": {
+"six": {
 "rg": "B",
 "c": [
 "competitivo",
@@ -85,19 +85,19 @@
 "temporada"
 ]
 },
-"carlosss": {
-"rg": "S",
-"c": [
-"competitivo",
-"servidor",
-"temporada"
-]
-},
 "liberia": {
 "rg": "S",
 "c": [
 "competitivo",
 "pais",
+"servidor",
+"temporada"
+]
+},
+"carlosss": {
+"rg": "S",
+"c": [
+"competitivo",
 "servidor",
 "temporada"
 ]
@@ -148,7 +148,11 @@
 },
 "yinn": {
 "rg": "C",
-"c": []
+"c": [
+"competitivo",
+"servidor",
+"temporada"
+]
 },
 "tam": {
 "rg": "A",
@@ -171,6 +175,15 @@
 "temporada"
 ]
 },
+"nc": {
+"rg": "D",
+"c": [
+"competitivo",
+"pais",
+"servidor",
+"temporada"
+]
+},
 "miniboy": {
 "rg": "D",
 "c": [
@@ -182,15 +195,6 @@
 },
 "okam": {
 "rg": "C",
-"c": [
-"competitivo",
-"pais",
-"servidor",
-"temporada"
-]
-},
-"nc": {
-"rg": "D",
 "c": [
 "competitivo",
 "pais",
@@ -271,10 +275,6 @@
 "temporada"
 ]
 },
-"criszj": {
-"rg": "C",
-"c": []
-},
 "majiztral": {
 "rg": "C",
 "c": [
@@ -283,6 +283,10 @@
 "servidor",
 "temporada"
 ]
+},
+"criszj": {
+"rg": "C",
+"c": []
 },
 "cronox": {
 "rg": "D",
@@ -301,6 +305,10 @@
 "servidor",
 "temporada"
 ]
+},
+"xclusivo": {
+"rg": "C",
+"c": []
 },
 "tenor": {
 "rg": "C",
@@ -346,10 +354,6 @@
 "servidor",
 "temporada"
 ]
-},
-"xclusivo": {
-"rg": "C",
-"c": []
 },
 "chop": {
 "rg": "D",
@@ -487,8 +491,8 @@
 "temporada"
 ]
 },
-"keider": {
-"rg": "D",
+"teito": {
+"rg": "E",
 "c": [
 "competitivo",
 "pais",
@@ -496,8 +500,8 @@
 "temporada"
 ]
 },
-"teito": {
-"rg": "E",
+"keider": {
+"rg": "D",
 "c": [
 "competitivo",
 "pais",
@@ -725,6 +729,14 @@
 "temporada"
 ]
 },
+"trelok": {
+"rg": "",
+"c": [
+"pais",
+"servidor",
+"temporada"
+]
+},
 "dios": {
 "rg": "",
 "c": [
@@ -743,6 +755,14 @@
 "mcarepa": {
 "rg": "",
 "c": [
+"servidor",
+"temporada"
+]
+},
+"artezzy": {
+"rg": "",
+"c": [
+"competitivo",
 "servidor",
 "temporada"
 ]
@@ -779,25 +799,9 @@
 "temporada"
 ]
 },
-"trelok": {
-"rg": "",
-"c": [
-"pais",
-"servidor",
-"temporada"
-]
-},
 "emizor": {
 "rg": "D",
 "c": []
-},
-"artezzy": {
-"rg": "",
-"c": [
-"competitivo",
-"servidor",
-"temporada"
-]
 },
 "rodas": {
 "rg": "E",
@@ -883,6 +887,14 @@
 "temporada"
 ]
 },
+"bastyretro": {
+"rg": "",
+"c": [
+"pais",
+"servidor",
+"temporada"
+]
+},
 "mtz": {
 "rg": "",
 "c": [
@@ -929,14 +941,6 @@
 "rg": "",
 "c": []
 },
-"bastyretro": {
-"rg": "",
-"c": [
-"pais",
-"servidor",
-"temporada"
-]
-},
 "lilnano": {
 "rg": "",
 "c": [
@@ -961,16 +965,16 @@
 "rg": "",
 "c": []
 },
+"blitz": {
+"rg": "E",
+"c": []
+},
 "rt": {
 "rg": "",
 "c": [
 "servidor",
 "temporada"
 ]
-},
-"blitz": {
-"rg": "E",
-"c": []
 },
 "juasmio": {
 "rg": "",
@@ -1169,6 +1173,10 @@
 "temporada"
 ]
 },
+"sadik": {
+"rg": "",
+"c": []
+},
 "abrahamh": {
 "rg": "",
 "c": [
@@ -1264,10 +1272,6 @@
 "rg": "",
 "c": []
 },
-"sadik": {
-"rg": "",
-"c": []
-},
 "emilioalva": {
 "rg": "",
 "c": []
@@ -1291,6 +1295,13 @@
 "abraham": {
 "rg": "",
 "c": []
+},
+"j19": {
+"rg": "",
+"c": [
+"pais",
+"servidor"
+]
 },
 "fleivaman": {
 "rg": "",
@@ -1325,17 +1336,6 @@
 "martoar": {
 "rg": "",
 "c": []
-},
-"lautarolasinceridad": {
-"rg": "",
-"c": []
-},
-"j19": {
-"rg": "",
-"c": [
-"pais",
-"servidor"
-]
 },
 "saiko": {
 "rg": "",
@@ -1378,6 +1378,10 @@
 ]
 },
 "kminant": {
+"rg": "",
+"c": []
+},
+"lautarolasinceridad": {
 "rg": "",
 "c": []
 },
@@ -2830,32 +2834,6 @@
 }
 },
 "cambios": [
-{
-"tipo": "tarjeta",
-"t": "2026-10-08T05:47:25Z",
-"quien": [
-"Erik"
-],
-"carta": "temporada"
-},
-{
-"tipo": "rango",
-"t": "2026-10-08T17:57:47Z",
-"quien": [
-"Cronox"
-],
-"rg": "D",
-"primero": false
-},
-{
-"tipo": "rango",
-"t": "2026-10-08T21:57:13Z",
-"quien": [
-"Geoka"
-],
-"rg": "E",
-"primero": true
-},
 {
 "tipo": "tarjeta",
 "t": "2026-10-08T21:57:13Z",
@@ -6200,6 +6178,30 @@
 "Akus"
 ],
 "carta": "pais"
+},
+{
+"tipo": "tarjeta",
+"t": "2026-11-13T07:52:36Z",
+"quien": [
+"yinn"
+],
+"carta": "competitivo"
+},
+{
+"tipo": "tarjeta",
+"t": "2026-11-13T07:52:36Z",
+"quien": [
+"yinn"
+],
+"carta": "servidor"
+},
+{
+"tipo": "tarjeta",
+"t": "2026-11-13T07:52:36Z",
+"quien": [
+"yinn"
+],
+"carta": "temporada"
 }
 ],
 "noche_antes": {
@@ -7340,7 +7342,7 @@
 "n": "Dios",
 "k": "dios",
 "de": 108,
-"a": 77
+"a": 78
 },
 {
 "n": "Number VE",
