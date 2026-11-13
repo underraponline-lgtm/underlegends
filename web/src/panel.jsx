@@ -307,8 +307,21 @@ function UltCorto({ liga, u }) {
 // siguiente y, sin otro, nada). Es el mismo que elige el botón grande (`eventoDelBoton()`: el tuyo, el de tu servidor),
 // y sin ninguno anunciado, «Todavía no anunciaron» con el calendario. A la derecha, el que tienes justo arriba en la Temporada (o el que te sigue, si eres el #1), con cuántos puntos te
 // separan, el cara a cara y «Retar», que abre las horas de la batalla libre
+// 📣 EL ÚLTIMO ANUNCIO DE LA LIGA (Dlx, 12/11/2026: «en vez de lo que viene que sea último anuncio… cualquier anuncio de
+// cualquier servidor de la Liga, pero el más reciente»): el de número de mensaje de Discord más alto —crece con el tiempo—
+// entre los próximos (los del vigía incluidos) y el calendario. Sin ninguno con número, el próximo evento, como antes
+const idMsg = (u) => { const m = /\/(\d{15,22})\/?$/.exec(String(u || '')); return m ? m[1] : ''; };
+const masNuevo = (a, b) => (a.length !== b.length ? a.length > b.length : a > b);
+function ultimoAnuncio(liga) {
+  let mejor = null, mid = '';
+  const ver = (id, x) => { if (id && (!mejor || masNuevo(id, mid))) { mejor = x; mid = id; } };
+  for (const e of liga.proximos()) if (!liga.esCancelado(e)) ver(idMsg(e.link), { nombre: e.nombre, sv: e.sv, t: utc(liga.cuandoDe(e)).toISOString(), ins: e.ins || '', link: e.link || '' });
+  for (const c of liga.d.calendario || []) if (!liga.canceladoCal(c)) ver(idMsg(c.link), { nombre: c.n, sv: c.sv, t: utc(c.t).toISOString(), ins: '', link: c.link || '' });
+  return mejor;
+}
 function SinBatallas({ liga, yo, yoF, T, retar }) {
-  const ev = eventoDelBoton(liga).e || liga.luego()[0] || null;
+  const ua = ultimoAnuncio(liga);
+  const ev = ua ? null : eventoDelBoton(liga).e || liga.luego()[0] || null;
   const miPos = yoF.pos || yo.pos || 0;
   let rv = null;
   if (miPos) {
@@ -323,7 +336,19 @@ function SinBatallas({ liga, yo, yoF, T, retar }) {
   // sin rival (quien todavía no jugó), el evento solo, a lo ancho
   return (
     <section className={'pn-sb' + (rv ? '' : ' solo ev')}>
-      {ev ? <div className="pn-sb-ev">
+      {ua ? (() => {
+        const fut = new Date(ua.t).getTime() > Date.now();
+        return (
+          <div className="pn-sb-ev">
+            {liga.logo(ua.sv) ? <img className="pn-sb-logo" alt="" src={liga.logo(ua.sv)} /> : <span className="pn-sb-logo"><Ico n="eventos" t={20} /></span>}
+            <span className="pn-sb-tx"><em>Último anuncio</em><b>{limpio(ua.nombre)}</b>
+              <small>{siglaDe(ua.sv)} · {cuando(ua.t)} · <span className="pn-sb-t">{fut ? 'en ' + faltaTxt(ua.t) : 'fue hace ' + hace(new Date(ua.t).getTime())}</span></small></span>
+            {ua.ins && fut ? <a className="btn verde chico" href={ua.ins} target="_blank" rel="noopener noreferrer">Inscribirme</a>
+              : ua.link ? <a className="btn verde chico" href={ua.link} target="_blank" rel="noopener noreferrer">Ver anuncio</a>
+                : <a className="btn verde chico" href="#/eventos">Ver</a>}
+          </div>
+        );
+      })() : ev ? <div className="pn-sb-ev">
         {liga.logo(ev.sv) ? <img className="pn-sb-logo" alt="" src={liga.logo(ev.sv)} /> : <span className="pn-sb-logo"><Ico n="eventos" t={20} /></span>}
           <span className="pn-sb-tx"><em>Tu próximo evento</em><b>{limpio(ev.nombre)}</b>
             <small>{siglaDe(ev.sv)} · {cuando(evT)} · <span className="pn-sb-t">en {faltaTxt(evT)}</span></small></span>
@@ -458,9 +483,19 @@ export function Batallas({ liga, dc }) {
   const d = useMemo(() => (C && yo ? dondeEstoy(C, yo.k) : null), [C, yo]);
   const pend = (d && d.pend) || [];
   const enPend = new Set(pend.map((x) => x[1].rival));
-  const candidatos = useMemo(() => (yo && yo.pos ? T.filter((f) => f.k !== yo.k && Math.abs(f.pos - yo.pos) <= 25 && !enPend.has(f.k)) : []),
+  // ⚠️ tu puesto sale de la tabla, no de tu cuenta: con `liga.yo.pos` vacío «Otro rival» no encontraba a nadie y no hacía
+  // nada (Dlx, 12/11/2026: «estoy clickeando otro rival y no me deja»)
+  const miPos = yo ? ((T.find((f) => f.k === yo.k) || {}).pos || yo.pos || 0) : 0;
+  // 🔴 y la tabla del payload trae los 200 primeros: para quien va más abajo (Dlx, #229) no había nadie a ±25 puestos. Si
+  // pasa eso, los 15 más cercanos que haya
+  const candidatos = useMemo(() => {
+    if (!yo || !miPos) return [];
+    const libres = T.filter((f) => f.k !== yo.k && !enPend.has(f.k));
+    const cerca = libres.filter((f) => Math.abs(f.pos - miPos) <= 25);
+    return cerca.length >= 3 ? cerca : libres.slice().sort((x, y) => Math.abs(x.pos - miPos) - Math.abs(y.pos - miPos)).slice(0, 15);
+  },
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    [T, yo, pend.length]);
+    [T, yo, miPos, pend.length]);
   const buscar = () => {
     if (!candidatos.length) return;
     clearInterval(giro.current);
