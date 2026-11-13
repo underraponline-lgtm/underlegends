@@ -6508,7 +6508,7 @@
    "Trot": 13
   },
   "fecha": "11/10",
-  "firma": "f64181088a3c5ac4",
+  "firma": "6e8ab39d1709a5ea",
   "msg": "1558907910707224587",
   "nombre": "RED BULL NACIONAL ESPAÑA T.5",
   "num": 448,
@@ -9436,7 +9436,7 @@
    "Zignos": 19
   },
   "fecha": "12/10",
-  "firma": "b634bf881758c414",
+  "firma": "fa84e1d6c066d945",
   "msg": "1559587802864295988",
   "nombre": "GODZ",
   "num": 460,
@@ -12534,7 +12534,7 @@
    "Vargas": 1
   },
   "fecha": "14/10",
-  "firma": "a105dd956b597ea6",
+  "firma": "bf491872b2939cd4",
   "msg": "1560070688113688601",
   "nombre": "FF Freestyle Clasico",
   "num": 473,
@@ -22464,7 +22464,7 @@
    "Zekha": 4
   },
   "fecha": "25/10",
-  "firma": "f6e54688850a5bad",
+  "firma": "c7e899248c06acdc",
   "msg": "1564056930748469309",
   "nombre": "REDBULL CREW ARGENTINA 2026",
   "num": 515,
@@ -23884,7 +23884,7 @@
    "Vilca": 1
   },
   "fecha": "14/10",
-  "firma": "e8372e892d6756fd",
+  "firma": "295efd8ddb868038",
   "msg": "1564147696351191051",
   "nombre": "GG SANGRERAP 1",
   "num": 521,
@@ -24052,7 +24052,7 @@
    "Vandu": 35
   },
   "fecha": "20/10",
-  "firma": "e99fa597023adad2",
+  "firma": "c674d9d0b2627d8d",
   "msg": "1564147704035151906",
   "nombre": "RAP SIN GROSERIAS 2",
   "num": 522,
@@ -24198,7 +24198,7 @@
    "Vilca": 1
   },
   "fecha": "21/10",
-  "firma": "cf908e4b71b43a92",
+  "firma": "5a4f2a8b5a984e2f",
   "msg": "1564147707952758815",
   "nombre": "- RED BULL TORNEO DE PLAZAS 2026 -",
   "num": 523,
@@ -31514,7 +31514,7 @@
    "Velatz": 41
   },
   "fecha": "31/10",
-  "firma": "c1e8d2d6ea7a32cd",
+  "firma": "e80cee519492c29f",
   "msg": "1566227272355020941",
   "nombre": "SNAKE INSIGNIA 7 8",
   "num": 553,
@@ -33076,7 +33076,7 @@
    "mats": 7
   },
   "fecha": "02/11",
-  "firma": "9e7ae186a86f5e4b",
+  "firma": "1a8125b11b0e3bc7",
   "msg": "1566714400314884126",
   "nombre": "RAP PARA RAPEROS",
   "num": 560,
@@ -36429,7 +36429,7 @@
    "ikonoxx": 8
   },
   "fecha": "06/11",
-  "firma": "e9f71a2e1d4a13a9",
+  "firma": "4e07ce625fd44b95",
   "msg": "1568364084817297492",
   "nombre": "GALACTICOS DEL FREESTYLE VOL.17",
   "num": 575,
@@ -36655,7 +36655,7 @@
    "Yor": 4
   },
   "fecha": "06/11",
-  "firma": "27905a9ffce75ea2",
+  "firma": "cd3c52a40b2a74ef",
   "msg": "1568457450267484231",
   "nombre": "FAT BATTLES PALOOZA FECHA 10 FINALS",
   "num": 576,
@@ -36840,7 +36840,7 @@
    "Xclusivo": 23
   },
   "fecha": "07/11",
-  "firma": "066384324aea7da0",
+  "firma": "d4190d387a9e2520",
   "msg": "1568746606562509004",
   "nombre": "ZONA MORTAL",
   "num": 577,
@@ -37587,7 +37587,7 @@
    "oriuz": 7
   },
   "fecha": "23/10",
-  "firma": "1cb236460ac18ff0",
+  "firma": "7d17b4f6bc881463",
   "msg": "1569508003776823307",
   "nombre": "LLAVES PARA LA DISCORD STYLE 17",
   "num": 580,
@@ -38552,7 +38552,7 @@
    "oriuz": 7
   },
   "fecha": "03/11",
-  "firma": "3ed3a61f6a82eec4",
+  "firma": "03ae97f8aecb6077",
   "msg": "1569508038820237324",
   "nombre": "SIX SEVEN STYLE",
   "num": 585,
@@ -39809,7 +39809,7 @@
    "Vilca": 15
   },
   "fecha": "08/11",
-  "firma": "431fc5b7e6f8be18",
+  "firma": "db4df4d7a23717a9",
   "msg": "1569508065508593856",
   "nombre": "RAP SIN GROSERIAS 4",
   "num": 591,
@@ -40477,7 +40477,7 @@
    "black live": 1
   },
   "fecha": "09/11",
-  "firma": "9a3e81a4363f133b",
+  "firma": "ec55c932a7fc314a",
   "msg": "1569508072605618221",
   "nombre": "COMPE MAÑANERA",
   "num": 594,
@@ -41335,6 +41335,21 @@
     "yinn",
     "Guess",
     "yinn"
+   ],
+   [
+    "Soneto",
+    "AbrahamSRRL",
+    "Soneto"
+   ],
+   [
+    "Kourier",
+    "Sentpa",
+    "Kourier"
+   ],
+   [
+    "Delux",
+    "Number VE",
+    "Delux"
    ]
   ],
   "ev_antes": {
@@ -41351,7 +41366,7 @@
    "yinn": 33
   },
   "fecha": "09/11",
-  "firma": "7e0449f309c2dfde",
+  "firma": "459d7d9ace74222a",
   "msg": "1569560949965197485",
   "nombre": "TORNEO CLANDESTINO V.1",
   "num": 600,
@@ -41419,6 +41434,21 @@
    ],
    [
     "0223 🇧🇧",
+    "Octavos",
+    1250
+   ],
+   [
+    "AbrahamSRRL",
+    "Octavos",
+    1250
+   ],
+   [
+    "Sentpa",
+    "Octavos",
+    1250
+   ],
+   [
+    "Number VE",
     "Octavos",
     1250
    ]
@@ -42034,7 +42064,7 @@
    "Vilca": 16
   },
   "fecha": "10/11",
-  "firma": "a551db7d058dea09",
+  "firma": "30d0f09096a37cae",
   "msg": "1569848635271680124",
   "nombre": "MF DOOM Y MADLIB EDICION 1",
   "num": 604,
@@ -42308,7 +42338,7 @@
    "oriuz": 7
   },
   "fecha": "20/10",
-  "firma": "edb0f23f69935466",
+  "firma": "1c40a6d743561375",
   "msg": "1570247714254360748",
   "nombre": "MINI COMPE LLAVES",
   "num": 606,
@@ -45591,7 +45621,7 @@
    "crakero": 7
   },
   "fecha": "12/11",
-  "firma": "b783496ca5ccd747",
+  "firma": "96200ffbd0334830",
   "msg": "1570578147399827479",
   "nombre": "CUPO A LA MULTIVERS",
   "num": 624,
@@ -45732,7 +45762,7 @@
    "crakero": 8
   },
   "fecha": "12/11",
-  "firma": "b1e83bd9ada09d3d",
+  "firma": "e20bfc2b1e4f6aee",
   "msg": "1570581400896278600",
   "nombre": "- LIGA INMORTAL -",
   "num": 625,
@@ -45872,7 +45902,7 @@
    "TøKīØ🦠🧠": 13
   },
   "fecha": "12/11",
-  "firma": "c41389098a833791",
+  "firma": "cfd7c911b3b44bf4",
   "msg": "1570602754639007937",
   "nombre": "RAP SIN GROSERIAS 5",
   "num": 626,
@@ -46101,7 +46131,7 @@
    "Vilca": 22
   },
   "fecha": "12/11",
-  "firma": "61aebf4e3430bf45",
+  "firma": "24a333159a683cb8",
   "msg": "1570602758506151978",
   "nombre": "RANKED 1",
   "num": 627,
