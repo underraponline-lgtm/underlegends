@@ -1324,22 +1324,29 @@ _DIM = {'E': ['⚡', 'Eficiencia', 'puntos por evento'],
 
 def _como_subir(k, anclas):
     """💪 CÓMO SE SUBE CADA DIMENSIÓN, en palabras (Dlx, 13/11/2026: «a veces la gente no sabe cómo mejorar la
-    eficiencia, consistencia, dominancia, racha o diversidad… crea un botón ahí, cómo mejorar mis fortalezas»). La vara
-    de cada una sale de `competitivo.ANCLAS`, que es la que las lleva a 0-100: si se mueve, el texto la sigue solo."""
+    eficiencia, consistencia, dominancia, racha o diversidad… crea un botón ahí, cómo mejorar mis fortalezas»; y al
+    verlo: «que sea mejor visto y explicado»). `[qué mide, cómo se sube, qué hace falta para el 100]`: la página arma
+    una tarjeta con las tres partes. La vara sale de `competitivo.ANCLAS`, la que las lleva a 0-100: si se mueve, el
+    texto la sigue solo."""
     a = anclas or {}
     pct = lambda x: int(round(float(x) * 100))           # noqa: E731
     return {
-        'E': 'Son tus puntos promedio por evento. Sube llegando más lejos en cada uno: el puesto pesa, y un evento con '
-             'más gente da más puntos. Llega a 100 con %s pts por evento.' % '{:,}'.format(int(a.get('E') or 0)).replace(',', '.'),
-        'C': 'Es qué tan seguido llegas a semifinal o más. Sube llegando a semis evento tras evento; cada vez que caes '
-             'antes, baja. Llega a 100 si llegas a semis en el %d %% de tus eventos.' % pct(a.get('C') or 0),
-        'Dm': 'Son los eventos que ganas sobre los que juegas. Sube ganando eventos. Llega a 100 si ganas el %d %% de '
-              'los que juegas.' % pct(a.get('Dm') or 0),
-        'T': 'Es tu mejor racha de eventos seguidos llegando a semifinal o más. Sube encadenando semis; caer antes la '
-             'corta. Llega a 100 con %d seguidos.' % int(a.get('T') or 0),
-        'V': 'Es cómo se reparten tus puntos entre servidores. Sube sumando puntos en varios servidores, no sólo en uno: '
-             'si todo sale de un mismo servidor, da 0.',
-    }.get(k, '')
+        'E': ['Tus puntos promedio por evento.',
+              'Llega más lejos en cada evento: el puesto es lo que más pesa, y un evento con más gente reparte más puntos.',
+              '%s pts por evento' % '{:,}'.format(int(a.get('E') or 0)).replace(',', '.')],
+        'C': ['Qué tan seguido llegas a semifinal o más.',
+              'Llega a semis evento tras evento: cada vez que caes antes, baja.',
+              'semis en el %d %% de tus eventos' % pct(a.get('C') or 0)],
+        'Dm': ['Los eventos que ganas, sobre los que juegas.',
+               'Gana eventos: es lo único que la sube.',
+               'ganar el %d %% de los que juegas' % pct(a.get('Dm') or 0)],
+        'T': ['Tu mejor racha de eventos seguidos en semifinal o más.',
+              'Encadena semis sin caer antes: una caída la corta y vuelve a empezar.',
+              '%d eventos seguidos' % int(a.get('T') or 0)],
+        'V': ['Cómo se reparten tus puntos entre servidores.',
+              'Suma puntos en varios servidores, no sólo en uno: si todo sale del mismo, da 0.',
+              'puntos repartidos parejo entre servidores'],
+    }.get(k, [])
 
 
 #: el orden de los componentes del OVR, como los recibe `sheet/ovr.calcular()`

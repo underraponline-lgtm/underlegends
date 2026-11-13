@@ -16,6 +16,7 @@
 // Lo que agrega el remake (estructura, no pintura): el podio con las cartas de verdad, «tu lugar» siempre a la vista
 // con «Encontrarme», los filtros de servidor, país y a quién seguís, y en el celular las columnas que entran.
 import { Fragment, useEffect, useMemo, useRef, useState } from 'react';
+import { PopCab } from './pop.jsx';
 import { MESES, limpio, norm, num, resultado, siglaDe, srcLogo, utc } from './liga.js';
 import { Escudo, escudoDe } from './escudo.jsx';
 import { Bandera, Cara, Carta, Chevron, Compartir, Ico, accion, enlace, nombrePais } from './piezas.jsx';
@@ -774,9 +775,18 @@ function Versus({ x, a, b, cats, lados }) {
 // payload. Y desde el 13/11/2026 (Dlx: «a veces la gente no sabe cómo mejorar la eficiencia, consistencia, dominancia,
 // racha o diversidad… crea un botón ahí, cómo mejorar mis fortalezas») cada una dice cómo se sube: el texto y su vara
 // vienen en la Guía del payload (`_como_subir()` de subir_web.py, desde `competitivo.ANCLAS`)
-function Dims({ D, val, color, tuyas, conf }) {
-  const [como, setComo] = useState(false);
-  const hay = D.some((d) => d[4]);
+// 🪟 Y SE ABRE COMO POP-UP, NO DESPLEGADO (Dlx, el mismo día: «que no sea algo que agrande la página… que sea un pop up
+// así como lo que hicimos con lo otro»): el `dialog` de los pop-ups del panel (`pn-pop` + `PopCab`)
+// 🎨 Y CADA UNA EN SU TARJETA (Dlx, al verlo: «que sea mejor visto y explicado… que se vea estético»): su ícono y su
+// color, cuánto pesa en el Score, qué mide, cómo se sube y qué pide el 100; con cuenta, tu número, con «tu fuerte» y
+// «a trabajar» marcados. El color es de esa fortaleza, no de un rango
+const COLOR_DIM = { Eficiencia: '#F5B700', Consistencia: '#29B298', Dominancia: '#E41373', Racha: '#E0703A', Diversidad: '#4C8DFF' };
+function Dims({ D, val, color, tuyas, conf, mias }) {
+  const dlg = useRef(null);
+  const hay = D.some((d) => Array.isArray(d[4]) && d[4].length === 3);
+  const mx = mias ? mias.indexOf(Math.max(...mias)) : -1;
+  const mn = mias ? mias.indexOf(Math.min(...mias)) : -1;
+  const pesoMax = Math.max(1, ...D.map((d) => d[3] || 0));
   return (
     <div className="rk-dims-c">
       <span className="rk-det-t">{tuyas ? 'TUS FORTALEZAS' : 'SUS FORTALEZAS'}</span>
@@ -789,12 +799,45 @@ function Dims({ D, val, color, tuyas, conf }) {
           </li>
         ))}
       </ul>
-      {hay ? <button type="button" className="rk-dims-como" aria-expanded={como} onClick={() => setComo(!como)}>{como ? 'Cerrar' : '¿Cómo mejorar mis fortalezas?'}</button> : null}
-      {hay && como ? (
-        <div className="rk-dims-tips">
-          <dl>{D.map((d) => (d[4] ? <div key={d[1]}><dt>{d[0]} {d[1]}<small>{d[3]} % del Score</small></dt><dd>{d[4]}</dd></div> : null))}</dl>
-          <p>Sólo cuentan los eventos de servidores <b>Tier 1</b>.{conf ? <> Y hasta los {conf} eventos el Score se multiplica por la confianza: jugar más también lo sube.</> : null}</p>
-        </div>
+      {hay ? <button type="button" className="rk-dims-como" aria-haspopup="dialog" onClick={() => dlg.current && dlg.current.showModal()}>¿Cómo mejorar mis fortalezas?</button> : null}
+      {hay ? (
+        <dialog className="pn-pop rk-dims-pop" ref={dlg} aria-label="Cómo mejorar tus fortalezas" onClick={(e) => { e.stopPropagation(); if (e.target === dlg.current) dlg.current.close(); }}>
+          <PopCab ico="escudo" t={mias ? 'Tus fortalezas' : 'Las fortalezas'} sub="Qué mide cada una y cómo subirla" cerrar={() => dlg.current.close()} />
+          <div className="fz-pop">
+            <p className="fz-intro">El <b>Score</b> sale de estas cinco, cada una de 0 a 100. Las que más pesan son las que más lo mueven.</p>
+            <ul className="fz-l">
+              {D.map((d, i) => {
+                const [mide, sube, cien] = Array.isArray(d[4]) ? d[4] : ['', '', ''];
+                const v = mias ? Math.max(0, Math.min(100, mias[i] || 0)) : null;
+                return (
+                  <li key={d[1]} className="fz-c" style={{ '--fz': COLOR_DIM[d[1]] || '#E41373' }}>
+                    <div className="fz-cab">
+                      <span className="fz-ic" aria-hidden="true">{d[0]}</span>
+                      <b>{d[1]}</b>
+                      {mias && i === mx && mx !== mn ? <em className="fz-tag bien">Tu fuerte</em> : null}
+                      {mias && i === mn && mx !== mn ? <em className="fz-tag mal">A trabajar</em> : null}
+                      <span className="fz-peso" title="Cuánto pesa en el Score"><i><u style={{ width: Math.round(100 * (d[3] || 0) / pesoMax) + '%' }} /></i>{d[3]} %</span>
+                    </div>
+                    <p className="fz-mide">{mide}</p>
+                    <p className="fz-sube"><small>CÓMO SUBIRLA</small>{sube}</p>
+                    <div className="fz-pie">
+                      <span className="fz-cien"><small>PARA EL 100</small>{cien}</span>
+                      {v !== null ? (
+                        <span className="fz-tuyo" aria-label={'Tú: ' + v + ' de 100'}>
+                          <small>TÚ</small><i><u style={{ width: Math.max(2, v) + '%' }} /></i><b>{v}</b>
+                        </span>
+                      ) : null}
+                    </div>
+                  </li>
+                );
+              })}
+            </ul>
+            <div className="fz-notas">
+              <p><b>Tier 1</b>Sólo cuentan los eventos de servidores Tier 1.</p>
+              {conf ? <p><b>Confianza</b>Hasta los {conf} eventos el Score se multiplica por menos de 1: jugar más también lo sube.</p> : null}
+            </div>
+          </div>
+        </dialog>
       ) : null}
     </div>
   );
@@ -893,6 +936,7 @@ function Detalle({ x, cfg, f, perf }) {
         {nums === NUMEROS.competitivo && c.dims(t) ? (
           <div className={'rk-dims-par' + (vs ? ' con-vs' : '')}>
             <Dims D={c.D} val={c.dims(t)} color={t.rg ? liga.colorRg(t.rg) : ''} tuyas={!!x.yoK && x.yoK === f.k}
+              mias={x.yoK === f.k ? c.dims(t) : yo ? c.dims(yo) : null}
               conf={((liga.d.guia || {}).conf || [])[2] ? liga.d.guia.conf[2][0] : 0} />
             {vs ? <Versus x={x} a={yo} b={t} cats={nums.vs(yo, t, c)} /> : null}
           </div>

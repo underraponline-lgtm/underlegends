@@ -309,9 +309,34 @@ dialog.pn-pop.rk-pq-pop{--pc:#29B298;width:min(560px,calc(100vw - 32px));max-hei
 @media (max-width:760px){.rk-dims-par.con-vs{grid-template-columns:minmax(0,1fr)}}
 .rk-dims-como{margin-top:10px;padding:8px 12px;border:2px solid var(--linea);background:none;color:var(--tinta);font:800 12px/1 "Barlow Condensed",sans-serif;letter-spacing:.06em;text-transform:uppercase;cursor:pointer}
 @media (hover:hover) and (pointer:fine){.rk-dims-como:hover{border-color:var(--tinta)}}
-.rk-dims-tips{margin-top:10px;padding:12px 14px;border-left:3px solid var(--linea);font-size:13.5px;line-height:1.45}
-.rk-dims-tips dl{display:grid;gap:10px;margin:0}
-.rk-dims-tips dt{font-weight:800}
-.rk-dims-tips dt small{margin-left:8px;font-weight:600;opacity:.65}
-.rk-dims-tips dd{margin:2px 0 0}
-.rk-dims-tips p{margin:10px 0 0;opacity:.8}
+/* 🪟🎨 el pop-up de las fortalezas (13/11/2026): una tarjeta por fortaleza, con su color (`--fz`) */
+dialog.pn-pop.rk-dims-pop{--pc:#E41373;width:min(760px,calc(100vw - 32px))}
+.fz-pop{padding:14px 16px 16px;overflow:auto;min-height:0}
+.fz-intro{margin:0 0 12px;font:500 14px/1.45 Archivo,sans-serif;color:#c9cbd1}
+.fz-intro b{color:#F6F6F6}
+.fz-l{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.fz-c{display:grid;gap:8px;align-content:start;padding:12px 12px 12px 14px;background:#000;border:1.5px solid #1f2126;border-left:3px solid var(--fz);border-radius:4px}
+.fz-c:last-child:nth-child(odd){grid-column:1/-1}
+.fz-cab{display:flex;flex-wrap:wrap;align-items:center;gap:8px;min-width:0}
+.fz-ic{width:30px;height:30px;flex:none;display:grid;place-items:center;font-size:16px;background:color-mix(in srgb,var(--fz) 16%,#000);border:1.5px solid color-mix(in srgb,var(--fz) 55%,#000);border-radius:4px}
+.fz-cab b{font:900 16px/1 Archivo,sans-serif;text-transform:uppercase;color:#F6F6F6}
+.fz-tag{white-space:nowrap;font:800 10.5px/1 "Barlow Condensed",sans-serif;font-style:normal;letter-spacing:.08em;text-transform:uppercase;padding:3px 6px;border-radius:3px}
+.fz-tag.bien{background:#29B298;color:#000}
+.fz-tag.mal{background:#E41373;color:#fff}
+.fz-peso{margin-left:auto;display:flex;align-items:center;gap:6px;font:800 12px/1 "Barlow Condensed",sans-serif;letter-spacing:.06em;color:#9a9ca3;white-space:nowrap}
+.fz-peso i{display:block;width:40px;height:4px;background:#1f2126;border-radius:2px;overflow:hidden}
+.fz-peso u{display:block;height:100%;background:var(--fz)}
+.fz-mide{margin:0;font:700 14px/1.35 Archivo,sans-serif;color:#F6F6F6}
+.fz-sube{margin:0;font:500 13.5px/1.45 Archivo,sans-serif;color:#c9cbd1}
+.fz-sube small,.fz-cien small,.fz-tuyo small{display:block;margin-bottom:3px;font:800 10.5px/1 "Barlow Condensed",sans-serif;letter-spacing:.1em;color:var(--fz)}
+.fz-pie{display:flex;align-items:end;gap:12px;flex-wrap:wrap;padding-top:8px;border-top:1px solid #1a1c20}
+.fz-cien{font:700 13px/1.25 Archivo,sans-serif;color:#F6F6F6;flex:1 1 140px}
+.fz-tuyo{display:grid;grid-template-columns:auto 70px auto;align-items:center;gap:6px;flex:none}
+.fz-tuyo small{margin:0}
+.fz-tuyo i{display:block;height:6px;background:#1f2126;border-radius:2px;overflow:hidden}
+.fz-tuyo u{display:block;height:100%;background:var(--fz)}
+.fz-tuyo b{font:900 16px/1 Archivo,sans-serif;color:#F6F6F6;min-width:22px;text-align:right}
+.fz-notas{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin-top:12px}
+.fz-notas p{margin:0;padding:10px 12px;border:1.5px dashed #2A2C31;border-radius:4px;font:500 12.5px/1.4 Archivo,sans-serif;color:#9a9ca3}
+.fz-notas b{display:block;margin-bottom:3px;font:800 11px/1 "Barlow Condensed",sans-serif;letter-spacing:.1em;text-transform:uppercase;color:#F6F6F6}
+@media (max-width:600px){dialog.pn-pop.rk-dims-pop{width:100%}.fz-l,.fz-notas{grid-template-columns:minmax(0,1fr)}.fz-c:last-child:nth-child(odd){grid-column:auto}}

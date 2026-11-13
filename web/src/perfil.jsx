@@ -871,7 +871,7 @@ function Fortalezas({ liga, f, p, dmp, esYo }) {
             {mn !== mx ? <p><small>A TRABAJAR</small><b>{dims[mn][0]} {dims[mn][1]}</b></p> : null}
           </div>
           {/* 💪 cómo se sube la que hay que trabajar (13/11/2026, el mismo texto que «¿Cómo mejorar mis fortalezas?» del Ranking), sólo en tu perfil: habla de tú */}
-          {esYo && mn !== mx && dims[mn][4] ? <p className="pf-fz-tip">{dims[mn][4]}</p> : null}
+          {esYo && mn !== mx && Array.isArray(dims[mn][4]) ? <p className="pf-fz-tip">{dims[mn][4][1]} Para el 100: {dims[mn][4][2]}.</p> : null}
           <ul className="pf-dims">
             {dims.map((d, i) => (
               <li key={d[1]}>
