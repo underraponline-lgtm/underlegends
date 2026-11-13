@@ -1,5 +1,5 @@
 {
- "cuando": "2026-11-13T22:13:04+00:00",
+ "cuando": "2026-11-13T22:25:42+00:00",
  "anuncios": [
   {
    "nombre": "¡SE LLEGÓ LA GRAN NOCHE!",
@@ -376,6 +376,35 @@
    "autor": "Geronimo",
    "staff_cuentas": {},
    "categoria_id": "1497457390637809837"
+  },
+  {
+   "nombre": "KISS OF SHINIGAMI",
+   "servidor": "FFA",
+   "canal": "✦🏆—eventos",
+   "msg_id": "1570924418727813193",
+   "cuando": "2026-11-13T22:12:47",
+   "canal_id": "1487206325602484295",
+   "guild_id": "1468472442925092958",
+   "organizador": "AZILLMOYTA",
+   "orgs": [
+    {
+     "n": "> Azillmoyta",
+     "id": ""
+    }
+   ],
+   "autor_h": "8910173aff35c0bf",
+   "cupos_texto": "",
+   "inscriptos": null,
+   "cupo_total": null,
+   "rango": "E",
+   "modalidad": "1v1",
+   "horario": "20-30 m",
+   "fecha": "",
+   "premios": "puntos",
+   "staff": {},
+   "autor": "Gocho.",
+   "staff_cuentas": {},
+   "categoria_id": "1468478330826260500"
   },
   {
    "nombre": "TORNEO CLANDESTINO V.2",
@@ -1071,77 +1100,6 @@
    "canal": "✦🏆—eventos",
    "msg_id": "1565514666250076324",
    "cuando": "2026-10-29T23:56:22",
-   "canal_id": "1487206325602484295",
-   "guild_id": "1468472442925092958",
-   "organizador": "@nachonc_",
-   "orgs": [
-    {
-     "n": "nachonc_",
-     "id": ""
-    }
-   ],
-   "autor_h": "d83234c3da26ac85",
-   "cupos_texto": "",
-   "inscriptos": null,
-   "cupo_total": null,
-   "rango": "bronce",
-   "modalidad": "MULTIVERSE",
-   "horario": "en 15",
-   "fecha": "",
-   "premios": "aura",
-   "staff": {},
-   "autor": "Nc",
-   "staff_cuentas": {},
-   "categoria_id": "1468478330826260500"
-  },
-  {
-   "nombre": "Rap para Raperos #1",
-   "servidor": "FFA",
-   "canal": "✦🏆—eventos",
-   "msg_id": "1565464466961989734",
-   "cuando": "2026-10-29T20:36:53",
-   "canal_id": "1487206325602484295",
-   "guild_id": "1468472442925092958",
-   "organizador": "",
-   "orgs": [
-    {
-     "n": "Okam",
-     "id": "1512148565890306153"
-    }
-   ],
-   "autor_h": "9d1c0ccb4b38f08d",
-   "cupos_texto": "",
-   "inscriptos": null,
-   "cupo_total": null,
-   "rango": "BRONCE III",
-   "modalidad": "",
-   "horario": "CUANDO TODO ESTÉ LISTO",
-   "fecha": "HOY",
-   "premios": "ROL CAMPEON Y PUNTOS RANKING",
-   "staff": {
-    "jurado": [
-     "Kravitz"
-    ],
-    "host": [
-     "Okam"
-    ],
-    "dj": [
-     "Kravitz"
-    ]
-   },
-   "autor": "Okam",
-   "staff_cuentas": {
-    "Kravitz": "1345962362615894027",
-    "Okam": "1512148565890306153"
-   },
-   "categoria_id": "1468478330826260500"
-  },
-  {
-   "nombre": "qcyo rapeen 6",
-   "servidor": "FFA",
-   "canal": "✦🏆—eventos",
-   "msg_id": "1565195047480070246",
-   "cuando": "2026-10-29T02:46:19",
    "canal_id": "1487206325602484295",
    "guild_id": "1468472442925092958",
    "organizador": "@nachonc_",
@@ -7157,6 +7115,141 @@
   }
  ],
  "inscripciones": [
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "Krav 🇰🇷",
+   "quien": "thekravitz777",
+   "discord_id": "1345962362615894027",
+   "msg_id": "1570927418452086785",
+   "cuando": "2026-11-13T22:24:42"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "Neo 🇦🇷",
+   "quien": "hatshepsut_neo",
+   "discord_id": "1562255292358725828",
+   "msg_id": "1570926882885738547",
+   "cuando": "2026-11-13T22:22:35"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "mats 🇺🇾",
+   "quien": "matttt.15",
+   "discord_id": "597240876573392946",
+   "msg_id": "1570926376062681241",
+   "cuando": "2026-11-13T22:20:34"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "Molusco 🇦🇷",
+   "quien": "moluscoanvriento_79058",
+   "discord_id": "1363285354442133778",
+   "msg_id": "1570925884397981717",
+   "cuando": "2026-11-13T22:18:37"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "number eres un estupido 🇩🇪",
+   "quien": "deslanofthemind",
+   "discord_id": "1055474244089286706",
+   "msg_id": "1570925871655559222",
+   "cuando": "2026-11-13T22:18:34"
+  },
+  {
+   "servidor": "SR",
+   "canal": "[📝]inscripciones",
+   "texto": "colesito",
+   "quien": "colesito",
+   "discord_id": "790016013680771102",
+   "msg_id": "1570925170158346323",
+   "cuando": "2026-11-13T22:15:46"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "McK 🇨🇴",
+   "quien": "mchades227",
+   "discord_id": "740307349809397841",
+   "msg_id": "1570924940620730519",
+   "cuando": "2026-11-13T22:14:52"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "Bootrax🇵🇪",
+   "quien": "gianfraxruizescor11",
+   "discord_id": "1122273746099638354",
+   "msg_id": "1570924869871210548",
+   "cuando": "2026-11-13T22:14:35"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "87antifleivasprototipo87 🇨🇳",
+   "quien": "numbyng",
+   "discord_id": "1310075576991875144",
+   "msg_id": "1570924780155052054",
+   "cuando": "2026-11-13T22:14:13"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "Krish 🇪🇸",
+   "quien": "krishsss11111",
+   "discord_id": "1513620494199558295",
+   "msg_id": "1570924760164999230",
+   "cuando": "2026-11-13T22:14:09"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "sasuke🇰🇷",
+   "quien": "nachonc_",
+   "discord_id": "1523082259870257315",
+   "msg_id": "1570924712974880831",
+   "cuando": "2026-11-13T22:13:57"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "xxxxxx🇩🇪",
+   "quien": ".livinginitinere.",
+   "discord_id": "1531087656275152917",
+   "msg_id": "1570924695757258886",
+   "cuando": "2026-11-13T22:13:53"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "makmah 🇻🇪",
+   "quien": "makmah_g",
+   "discord_id": "897942226955563068",
+   "msg_id": "1570924668066599013",
+   "cuando": "2026-11-13T22:13:47"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "Ruvick 🇨🇴",
+   "quien": "soy_rubick_96712",
+   "discord_id": "1399489326701871164",
+   "msg_id": "1570924654690832545",
+   "cuando": "2026-11-13T22:13:44"
+  },
+  {
+   "servidor": "SR",
+   "canal": "[📝]inscripciones",
+   "texto": "Fazer 🇦🇷 (anteultima )",
+   "quien": "ignac.07",
+   "discord_id": "936079604207202365",
+   "msg_id": "1570924646369333279",
+   "cuando": "2026-11-13T22:13:42"
+  },
   {
    "servidor": "ACAD",
    "canal": "📝┇inscripciones-1",
@@ -43021,141 +43114,6 @@
    "discord_id": "1357796427191029932",
    "msg_id": "1558884269634359327",
    "cuando": "2026-10-11T16:49:32"
-  },
-  {
-   "servidor": "FFA",
-   "canal": "✦📝—inscripciones",
-   "texto": "PHSIACAIA🇧🇸 (primera)",
-   "quien": "sinergiabreak",
-   "discord_id": "1515482513106272366",
-   "msg_id": "1558884251217301537",
-   "cuando": "2026-10-11T16:49:28"
-  },
-  {
-   "servidor": "FFA",
-   "canal": "✦📝—inscripciones",
-   "texto": "Leonar-T 🇲🇽",
-   "quien": "leonart95.",
-   "discord_id": "1440039366654165212",
-   "msg_id": "1558884239871578173",
-   "cuando": "2026-10-11T16:49:25"
-  },
-  {
-   "servidor": "FFA",
-   "canal": "✦📝—inscripciones",
-   "texto": "Hinjkybesuk🇦🇫",
-   "quien": "benjaclink31",
-   "discord_id": "849765868819972166",
-   "msg_id": "1558884159752114219",
-   "cuando": "2026-10-11T16:49:06"
-  },
-  {
-   "servidor": "FFA",
-   "canal": "✦📝—inscripciones",
-   "texto": "Majiztral 🇨🇴",
-   "quien": "majiztral",
-   "discord_id": "1492228152691396720",
-   "msg_id": "1558884150902132757",
-   "cuando": "2026-10-11T16:49:04"
-  },
-  {
-   "servidor": "FFA",
-   "canal": "✦📝—inscripciones",
-   "texto": "Molusco 🇦🇷",
-   "quien": "moluscoanvriento_79058",
-   "discord_id": "1363285354442133778",
-   "msg_id": "1558884137123975300",
-   "cuando": "2026-10-11T16:49:00"
-  },
-  {
-   "servidor": "FFA",
-   "canal": "✦📝—inscripciones",
-   "texto": "Teo 🇨🇴",
-   "quien": "teitomc.",
-   "discord_id": "1503540314948898937",
-   "msg_id": "1558884125195247629",
-   "cuando": "2026-10-11T16:48:58"
-  },
-  {
-   "servidor": "FFA",
-   "canal": "✦📝—inscripciones",
-   "texto": "Lvel 🇻🇪",
-   "quien": "soycoma__42587",
-   "discord_id": "1241407042195816459",
-   "msg_id": "1558884113929207860",
-   "cuando": "2026-10-11T16:48:55"
-  },
-  {
-   "servidor": "FFA",
-   "canal": "✦📝—inscripciones",
-   "texto": "vandu 🇨🇦",
-   "quien": "dfelipetor",
-   "discord_id": "613552853302378527",
-   "msg_id": "1558884105725157457",
-   "cuando": "2026-10-11T16:48:53"
-  },
-  {
-   "servidor": "FFA",
-   "canal": "✦📝—inscripciones",
-   "texto": "nc🇰🇷",
-   "quien": "nachonc_",
-   "discord_id": "1523082259870257315",
-   "msg_id": "1558884099995738113",
-   "cuando": "2026-10-11T16:48:52"
-  },
-  {
-   "servidor": "FFA",
-   "canal": "✦📝—inscripciones",
-   "texto": "LITkunai 🇨🇴",
-   "quien": "litkunai",
-   "discord_id": "528573847339925524",
-   "msg_id": "1558884094610514111",
-   "cuando": "2026-10-11T16:48:50"
-  },
-  {
-   "servidor": "FFA",
-   "canal": "✦📝—inscripciones",
-   "texto": "Teo 🇨🇴(2do xfa)",
-   "quien": "teitomc.",
-   "discord_id": "1503540314948898937",
-   "msg_id": "1558883866650087468",
-   "cuando": "2026-10-11T16:47:56"
-  },
-  {
-   "servidor": "FFA",
-   "canal": "✦📝—inscripciones",
-   "texto": "PHSIACAIA🇧🇸 (primera)",
-   "quien": "csgo47.",
-   "discord_id": "1493317254581063680",
-   "msg_id": "1558883860035534920",
-   "cuando": "2026-10-11T16:47:54"
-  },
-  {
-   "servidor": "FFA",
-   "canal": "✦📝—inscripciones",
-   "texto": "Sebita🇱🇷",
-   "quien": "malasiafighter",
-   "discord_id": "1357796427191029932",
-   "msg_id": "1558883799872446518",
-   "cuando": "2026-10-11T16:47:40"
-  },
-  {
-   "servidor": "FFA",
-   "canal": "✦📝—inscripciones",
-   "texto": "LITkunai 🇨🇴",
-   "quien": "litkunai",
-   "discord_id": "528573847339925524",
-   "msg_id": "1558883753177387072",
-   "cuando": "2026-10-11T16:47:29"
-  },
-  {
-   "servidor": "FFA",
-   "canal": "✦📝—inscripciones",
-   "texto": "Leonar-T 🇲🇽",
-   "quien": "leonart95.",
-   "discord_id": "1440039366654165212",
-   "msg_id": "1558883747221217341",
-   "cuando": "2026-10-11T16:47:27"
   }
  ]
 }

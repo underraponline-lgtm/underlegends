@@ -31,6 +31,16 @@
    "sv-sr": "2026-11-07",
    "temporada": "2026-11-07"
   },
+  "jazi": {
+   "bloq-competitivo": "2026-11-13",
+   "bloq-pais": "2026-11-13",
+   "competitivo": "2026-11-13",
+   "pais": "2026-11-13",
+   "servidor": "2026-11-13",
+   "sv-ch": "2026-11-13",
+   "sv-dra": "2026-11-13",
+   "sv-sr": "2026-11-13"
+  },
   "stormed": {
    "bloq-competitivo": "2026-11-12",
    "bloq-pais": "2026-11-12",
@@ -82,8 +92,8 @@
    "temporada": "2026-11-10"
   }
  },
- "pasaban": 432,
- "cuando": "2026-11-13T22:19:11Z",
+ "pasaban": 431,
+ "cuando": "2026-11-13T22:31:34Z",
  "borradas": [
   [
    "7",
