@@ -11,6 +11,18 @@
  ],
  "cambios": [
     {
+        "version": "4.81",
+        "dia": "2026-11-12",
+        "cuando": "2026-11-12T21:45:00-05:00",
+        "titulo": "Batallas libres de verdad y el cofre de las encuestas",
+        "items": [
+            "**Retar** ya es de verdad: tu rival lo ve en su Inicio y, cuando la juegan, cada uno dice quién ganó. Si coinciden, queda en su cara a cara.",
+            "Las encuestas del ×2 y El Elegido se votan **una vez por semana**. Si votas las dos, te llevas un **cofre** con 3 Dragón Drops.",
+            "**Premio gratis** te muestra qué reclamar, qué te falta y tu próximo premio del Pase.",
+            "Los círculos de arriba se arrastran y tienen flechas."
+        ]
+    },
+    {
         "version": "4.80",
         "dia": "2026-11-12",
         "cuando": "2026-11-12T21:00:00-05:00",
