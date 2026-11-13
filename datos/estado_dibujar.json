@@ -1,9 +1,9 @@
 {
  "v": 1,
- "cuando": "2026-11-13T18:05:19Z",
+ "cuando": "2026-11-13T19:32:34Z",
  "trabajo": "dibujar",
  "codigo": 0,
- "dur_s": 128.5,
+ "dur_s": 1362.8,
  "pasos": [
   {
    "n": "2f",
@@ -15,67 +15,67 @@
    "n": "2f2",
    "que": "los TAGs elegidos",
    "ok": true,
-   "s": 1.0
+   "s": 1.2
   },
   {
    "n": "3",
    "que": "qué cambió",
    "ok": true,
-   "s": 10.2
+   "s": 13.6
   },
   {
    "n": "4",
    "que": "las caras, desde R2",
    "ok": true,
-   "s": 38.1
+   "s": 27.5
   },
   {
    "n": "5",
-   "que": "tanda 1 de 1 · 2 persona(s)",
+   "que": "tanda 1 de 6 · 40 persona(s)",
    "ok": true,
-   "s": 14.9
+   "s": 1232.7
   },
   {
    "n": "5b",
    "que": "las Bloqueadas",
    "ok": true,
-   "s": 6.1
+   "s": 6.8
   },
   {
    "n": "6",
    "que": "refrescar KV",
    "ok": true,
-   "s": 56.7
+   "s": 79.3
   }
  ],
  "fallas": [],
  "ultimo_evento": {
-  "n": "628",
-  "nombre": "TORNEO CLANDESTINO V.2",
-  "sv": "FFA",
-  "dia": "2026-11-12"
+  "n": "629",
+  "nombre": "PANDILLAS DE RAP VOL.1",
+  "sv": "ACAD",
+  "dia": "2026-11-13"
  },
  "cuotas": {
   "kv": {
-   "write": 567,
-   "read": 22584
+   "write": 605,
+   "read": 24990
   },
   "objeto": {
-   "leidas": 2531728,
-   "escritas": 44930,
-   "pedidos": 15477
+   "leidas": 2720072,
+   "escritas": 50497,
+   "pedidos": 16422
   },
   "worker": {
-   "pedidos": 20255,
+   "pedidos": 20346,
    "errores": 0,
-   "sub": 21882,
+   "sub": 21927,
    "cortados": 0,
-   "p50_ms": 1.11,
-   "p99_ms": 14.5,
+   "p50_ms": 1.1,
+   "p99_ms": 14.46,
    "cpu": {
-    "total": 43020,
-    "objeto_10": 2390,
-    "worker_10": 0
+    "total": 42233,
+    "objeto_10": 2433,
+    "worker_10": 578
    }
   },
   "r2": {
