@@ -11,6 +11,16 @@
  ],
  "cambios": [
     {
+        "version": "4.80",
+        "dia": "2026-11-12",
+        "cuando": "2026-11-12T21:00:00-05:00",
+        "titulo": "El Inicio para quien recién llega",
+        "items": [
+            "Si todavía no entraste o no jugaste, tu Inicio ya no tiene huecos: ves la **liga más jugada** y el **servidor de la semana**.",
+            "Los botones de Estadísticas, Inventario y Batallar te dicen **qué los abre**."
+        ]
+    },
+    {
         "version": "4.79",
         "dia": "2026-11-12",
         "cuando": "2026-11-12T20:45:00-05:00",
