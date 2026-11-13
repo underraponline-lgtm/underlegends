@@ -2695,7 +2695,8 @@ console.log('\nLAS ENCUESTAS\n');
     { id: 'mw:2026-09-27', tipo: 'elegido', hasta: new Date(RELOJ - 60000).toISOString(), op: ['Hassan'] },
   ], sv: { [VIEJO]: 'FFA' }, yo: { [VIEJO]: 'Zeta' } };
   const v = (enc, op, id) => A.validarVoto(defs, { enc, op }, id || VIEJO, RELOJ);
-  ok('un voto bueno vale', JSON.stringify(v('x2:2026-10-05', 'SR')) === '{"enc":"x2:2026-10-05","op":"SR"}');
+  // 🔒 y el ×2 va con `fijo` (12/11/2026, Dlx: «se vota 1 vez por semana»): el objeto no deja cambiarlo
+  ok('un voto bueno vale', JSON.stringify(v('x2:2026-10-05', 'SR')) === '{"enc":"x2:2026-10-05","op":"SR","fijo":true}');
   // 🔑 Dlx, 28/09/2026: «3. B y C» — en el ×2 cualquiera vota a cualquiera
   ok('a tu servidor, también (desde el 28/09)', !v('x2:2026-10-05', 'FFA').error);
   ok('a ti, no; a otro, sí', v('mw:2026-09-28', 'Zeta').error === 'tú' && !v('mw:2026-09-28', 'Hassan').error);
