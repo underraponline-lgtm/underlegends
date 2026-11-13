@@ -8565,6 +8565,7 @@ export class Avisos {
         return json(p);
       }
       if (ruta === '/ciclo-mano') return json(await this.cicloAMano(Date.now()));
+      if (ruta === '/ciclo-verificar') return json(await this.cicloAMano(Date.now(), 'verificar'));
       if (ruta === '/precio') return this.precio(d);
       // 🎲 una apuesta, desde el botón del chat (`worker.js`, firmado por Discord): ver `apostar()`
       if (ruta === '/apostar') return this.apostar(d);
@@ -17709,7 +17710,11 @@ export class Avisos {
    * el mismo `workflow_dispatch` que larga el cron del Worker cada media hora. 🛑 Una vez cada 10 minutos: dos corridas
    * seguidas se encolan (GitHub las pone una detrás de otra) y la segunda no cambia nada.
    */
-  async cicloAMano(ahora) {
+  //
+  // 🪪 Y AL VERIFICARSE (13/11/2026, Dlx: «yinn se verificó pero no aparece que se ha verificado… debería actualizarse al
+  // instante»): `cuentaVerificar()` del Worker la llama con `por: 'verificar'`, la misma puerta y el mismo tope —quien
+  // se verifica a los 5 minutos de otro entra en esa corrida o en la del cron—. De madrugada no la llama: ahí no hay ciclo
+  async cicloAMano(ahora, por = '') {
     const ult = this.leer('ciclo_mano') || {};
     const falta = 10 * MIN - (ahora - (ult.t || 0));
     if (ult.ok && falta > 0) return { error: 'espera', minutos: Math.ceil(falta / MIN) };
@@ -17719,7 +17724,7 @@ export class Avisos {
       const r = await this.gh('/actions/workflows/ciclo.yml/dispatches', { method: 'POST', body: JSON.stringify({ ref: 'main' }) });
       estado = r.status;
     } catch (e) { estado = 0; }
-    const v = { t: ahora, ok: estado === 204, estado };
+    const v = Object.assign({ t: ahora, ok: estado === 204, estado }, por ? { por } : {});
     this.guardar('ciclo_mano', v);
     return v.ok ? v : { error: 'GitHub contestó ' + (estado || 'nada'), estado };
   }

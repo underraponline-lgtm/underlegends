@@ -1732,19 +1732,31 @@ export async function cuentaVerificar(req, env, ctx) {
   const revisa = (P.revisa || []).indexOf(String(u.id)) >= 0;
   const completo = !pendiente && dg.paises.length === 1 && !revisa;
   // lo tuyo está completo: el Miembro en el momento (`darMiembro()`), y el ciclo hace la tarjeta: para eso te anota
-  let dimos = false;
+  let dimos = false, ya_corre = false;
   if (completo) {
     if (!dg.rol && await darMiembro(env, P, u.id, 'Liga Global: se verificó en la página (en DRA + país)')) {
       dimos = true;
       dg = Object.assign({}, dg, { rol: true });
     }
     anotar(env, ctx, u.id, miembro.nick || '', u.username || '', u.global_name || '', P.guild, 'yo');
+    // ▶️ Y EL CICLO EN ESE MOMENTO (13/11/2026, Dlx: «yinn se verificó pero no aparece que se ha verificado… creo que
+    // debería actualizarse al instante»): yinn se verificó a las 2:04 AM, dos minutos después de una corrida, y su
+    // perfil, el ranking y sus tarjetas esperaban a la siguiente. La misma puerta que el botón del Dashboard (`cicloAMano()`,
+    // una vez cada 10 minutos). ⚠️ De madrugada no: ahí no hay ciclo (`enMadrugada()`), y la página ya dice la vuelta
+    // (y nunca tumba la verificación: si el objeto no está, queda la vuelta de siempre)
+    if (!enMadrugada(new Date(Date.now())) && env.AVISOS) {
+      try {
+        luego(ctx, env.AVISOS.get(env.AVISOS.idFromName('liga')).fetch('https://avisos/ciclo-verificar', { method: 'POST', body: '{}' })
+          .then((r) => r.json()).catch(() => null));
+        ya_corre = true;
+      } catch (e) { ya_corre = false; }
+    }
   }
   const vuelta = proximaVuelta(Date.now());
   return json({
     enDra: true, entro, pendiente, rol: dg.rol, paises: dg.paises,
     // con varios países: si alguno es rol, se arregla en DRA; si son banderas del nombre, eligiendo acá
-    porRol: conRol.length > 0, puso, revisa, completo, dimos,
+    porRol: conRol.length > 0, puso, revisa, completo, dimos, corre: ya_corre,
     vuelta: vuelta ? vuelta.toISOString() : '', opciones,
   });
 }

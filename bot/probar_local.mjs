@@ -2099,7 +2099,15 @@ console.log('\nVERIFICARSE DESDE LA PÁGINA, ENTRANDO A DRA\n');
     r = await ver({ token: 'permisoNuevo1234567890' });
     ok('aceptó las reglas y no tiene país: lo pide', !r.json.pendiente && !r.json.paises.length &&
        !r.json.completo && !pusoRol('700601').length, JSON.stringify(r.json));
+    // ▶️ al completarse, el ciclo en ese momento (13/11/2026): de día sí, de madrugada no
+    const CICLOS = [];
+    const avisos0 = env.AVISOS;
+    env.AVISOS = { idFromName: () => 'liga', get: () => ({ fetch: async (u) => { if (String(u).endsWith('/ciclo-verificar')) CICLOS.push(String(u)); return new Response('{"ok":true}'); } }) };
+    RELOJ = Math.max(RELOJ, Date.parse('2026-11-13T18:00:00Z'));   // 1 PM ET
     r = await ver({ token: 'permisoNuevo1234567890', pais: 'ar' });
+    await esperarSeguimientos();
+    ok('▶️ completo de día: larga el ciclo en ese momento y la página lo sabe',
+       r.json.corre === true && CICLOS.length === 1, JSON.stringify([r.json.corre, CICLOS]));
     const deMiembro = (id) => pusoRol(id).filter((l) => l.u.endsWith('/roles/' + P.rol));
     const dePais = (id) => pusoRol(id).filter((l) => /\/roles\/R_/.test(l.u));
     ok('elige Argentina: el bot le pone ESE rol de DRA, y una sola vez',
@@ -2112,7 +2120,12 @@ console.log('\nVERIFICARSE DESDE LA PÁGINA, ENTRANDO A DRA\n');
     ok('completo: queda anotado como «yo», así la vuelta del ciclo lo encuentra',
        reg.id === '700601' && reg.por === 'yo' && reg.sv === 'DRA', JSON.stringify(reg));
     ok('y dice cuándo es esa vuelta', /^\d{4}-\d\d-\d\dT\d\d:(22|52):00/.test(r.json.vuelta || ''), r.json.vuelta);
+    RELOJ = Math.max(RELOJ, Date.parse('2026-11-14T09:00:00Z'));   // 4 AM ET: madrugada
     r = await ver({ token: 'permisoNuevo1234567890', pais: 'cl' });
+    await esperarSeguimientos();
+    ok('🌙 completo de madrugada: no larga el ciclo (ahí no hay), queda la vuelta de las 11:22',
+       r.json.corre === false && CICLOS.length === 1 && /T16:22:00/.test(r.json.vuelta || ''), JSON.stringify([r.json.corre, r.json.vuelta, CICLOS]));
+    env.AVISOS = avisos0;
     ok('con rol de país ya puesto, otro país no se pone: cambiarlo es cosa de DRA (y el Miembro, una sola vez)',
        dePais('700601').length === 1 && deMiembro('700601').length === 1 && r.json.paises.join() === 'ar' && !r.json.puso);
 

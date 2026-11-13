@@ -1253,10 +1253,12 @@ export function Verificar({ liga, dc, nota = true }) {
       : 'Elígelo y el bot te pone ese rol en DRA.', <ElegirPais key="p" v={v} />];
   }
   const vuelta = v.vuelta ? hora(v.vuelta) : '';
+  // ▶️ el Worker ya largó el ciclo (13/11/2026): no hace falta esperar a la vuelta
+  const yaVa = !!v.corre;
   // ✅ con todo completo, el Worker te lo da en el momento (`darMiembro()`, Dlx 12/10/2026: «A y B»)
   const miembro = v.rol ? ['ok', 'Tienes el rol de Miembro', v.dimos ? 'Te lo dimos recién.' : '']
     : v.revisa ? ['aviso', 'Tu caso lo revisa un admin', 'No hace falta que hagas nada más.']
-      : v.completo ? ['espera', 'Tu rol de Miembro', 'Te lo da el bot solo' + (vuelta ? ', en la vuelta de las ' + vuelta + ' o en la siguiente' : '') + '. Con él sale tu tarjeta de Servidor.']
+      : v.completo ? ['espera', 'Tu rol de Miembro', 'Te lo da el bot solo' + (yaVa ? ': ya te está cargando, en unos minutos' : vuelta ? ', en la vuelta de las ' + vuelta + ' o en la siguiente' : '') + '. Con él sale tu tarjeta de Servidor.']
         : ['espera', 'Tu rol de Miembro', 'Te lo da el bot cuando completes lo de arriba.'];
   const filas = [
     ['ok', 'Tu Discord', dc ? limpio(dc.n) : 'Conectado'],
@@ -1267,7 +1269,7 @@ export function Verificar({ liga, dc, nota = true }) {
     miembro,
   ];
   const resumen = v.completo
-    ? (v.rol ? 'Estás verificado en DRA. Tus tarjetas salen cuando el bot te cargue' + (vuelta ? ': en la vuelta de las ' + vuelta + ' o en la siguiente.' : '.')
+    ? (v.rol ? 'Estás verificado en DRA. Tus tarjetas salen cuando el bot te cargue' + (yaVa ? ': ya te está cargando, en unos minutos.' : vuelta ? ': en la vuelta de las ' + vuelta + ' o en la siguiente.' : '.')
       : 'Lo tuyo está completo. El resto lo hace el bot solo.')
     : v.revisa ? 'Lo tuyo está completo. Tu caso lo revisa un admin.' : 'Te falta lo que está marcado abajo.';
   // cuántos van, y cuál toca ahora: el primero que no está listo

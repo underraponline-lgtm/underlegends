@@ -150,7 +150,7 @@ function Corridas({ corridas, s, github }) {
   const m = s.ciclo_mano || {};
   return (
     <div className="db-aj">
-      <div className="db-aj-c"><h3>Las corridas del ciclo</h3>{m.t ? <span className="db-est">a mano: {hace(m.t)}</span> : null}</div>
+      <div className="db-aj-c"><h3>Las corridas del ciclo</h3>{m.t ? <span className="db-est">{m.por === 'verificar' ? 'por alguien que se verificó' : 'a mano'}: {hace(m.t)}</span> : null}</div>
       {github ? (
         <p className="db-vig"><b>⚠️ A GitHub Actions le pasa algo ahora</b><small>{github.incidente || 'Anda lento'}{github.desde ? ' · desde ' + hora(github.desde) : ''}. Las corridas pueden quedar en cola o cancelarse solas; vuelven cuando GitHub se arregla. La página en vivo, la campana y el bot no dependen de esto.</small></p>
       ) : null}
