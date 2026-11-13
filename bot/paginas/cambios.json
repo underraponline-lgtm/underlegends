@@ -11,6 +11,17 @@
  ],
  "cambios": [
     {
+        "version": "4.95",
+        "dia": "2026-11-13",
+        "cuando": "2026-11-13T01:10:00-05:00",
+        "titulo": "El Premio gratis, una vez por semana",
+        "items": [
+            "El **Premio gratis** del Inicio aparece cuando hay encuestas de la semana para votar, y se va cuando las votaste.",
+            "Trae una encuesta nueva: **¿Qué te parece la página?** Nadie ve qué votaste, y la puedes cambiar hasta que cierre.",
+            "Felicitar, comentar y las Tareas del Pase siguen sumando a tu barra del día."
+        ]
+    },
+    {
         "version": "4.94",
         "dia": "2026-11-13",
         "cuando": "2026-11-13T02:55:00-05:00",

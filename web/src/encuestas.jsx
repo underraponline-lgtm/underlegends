@@ -69,6 +69,33 @@ export function X2({ liga, enc, E, corta }) {
   );
 }
 
+// 💬 «¿QUÉ TE PARECE LA PÁGINA?» (Dlx, 13/11/2026: «podrías añadir otra encuesta de qué te parece la página»): una por
+// semana, en el Premio gratis. Las claves son las de `OPINION` de bot/encuestas.py, en el mismo orden: si se cambia una, se
+// cambia en los dos lados. ⚠️ La página NO muestra cómo va: es para saber qué le parece a la gente (lo mira Dlx con
+// `python bot/encuestas.py`), y un «va ganando No me gusta» a la vista de todos no le sirve a nadie. Se cambia hasta que cierra
+export const OPINION = { encanta: 'Me encanta', buena: 'Está buena', normal: 'Normal', falta: 'Le falta algo', no: 'No me gusta' };
+export function Opinion({ liga, enc, E }) {
+  const mio = enc.mio[E.id];
+  const est = enc.est[E.id] || {};
+  const nombre = (op) => OPINION[op] || op;
+  return (
+    <article className="en en-opina">
+      <div className="en-cab"><span>LA PÁGINA · ESTA SEMANA</span><em>CIERRA {liga.dia(E.hasta).toUpperCase()}</em></div>
+      <h3 className="en-p">¿Qué te parece la página?</h3>
+      <div className="en-ops">
+        {E.op.map((op) => (
+          <button type="button" key={op} className={'en-op' + (mio === op ? ' mia' : '') + (est.va === op ? ' va' : '')}
+            aria-pressed={mio === op} onClick={() => { if (mio !== op) accion.votar(E.id, op); }}>
+            <b>{mio === op ? '✓ ' : ''}{nombre(op)}</b>
+          </button>
+        ))}
+      </div>
+      <p className="en-e" aria-live="polite">{est.va || est.error ? enc.pie(E, nombre)
+        : mio ? '¡Gracias! Lo puedes cambiar hasta que cierre. Nadie ve qué votaste.' : 'Toca una. Nadie ve qué votaste.'}</p>
+    </article>
+  );
+}
+
 export function Elegido({ liga, enc, E, corta }) {
   const [q, setQ] = useState('');
   const cu = enc.cuenta(E.id);

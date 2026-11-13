@@ -4836,14 +4836,6 @@ dialog.pn-pop{max-height:min(86vh,760px)}
 dialog.pn-pop.pop-gratis{--pc:#F5C542;width:min(640px,calc(100vw - 32px))}
 .pop-gratis .en-g{display:grid;gap:8px}
 .pop-gr-ok{font:700 11px/1 "Barlow Condensed",sans-serif;letter-spacing:.06em;color:#29B298;margin-left:6px}
-.pop-gr-l{list-style:none;margin:0;padding:0;display:grid;gap:6px}
-.pop-gr-l li{display:grid;grid-template-columns:30px minmax(0,1fr) auto;gap:10px;align-items:center;padding:8px 10px;background:#000;border:1.5px solid #2A2C31}
-.pop-gr-l li .pop-n{grid-row:auto;border-color:#6b5414;color:#F5C542;font-size:11px}
-.pop-gr-l li.si .pop-n{background:#29B298;border-color:#29B298;color:#000}
-.pop-gr-l b{font:700 14px/1.2 Archivo,sans-serif}
-.pop-gr-l small{font:700 11px/1 "Barlow Condensed",sans-serif;letter-spacing:.06em;text-transform:uppercase;color:#29B298}
-.pop-gr-l a.pn-ver{border-color:#F5C542;text-decoration:none}
-.pop-gr-l a.pn-ver:hover{background:#F5C542;color:#000}
 @media (max-width: 760px){.pn-gratis{padding:8px 10px;gap:8px}.pn-gr-ic{width:32px;height:32px}.pn-gratis small{white-space:normal}}
 /* de a cuatro, la racha entra: sin «tu mejor» al costado, los días más finos y el botón más chico */
 .pn-fila.cuatro .pn-rnum{display:none}
@@ -4870,19 +4862,18 @@ dialog.pn-pop.pop-gratis{--pc:#F5C542;width:min(640px,calc(100vw - 32px))}
 /* ═══ 🎁 PREMIO GRATIS, segunda mano (12/11/2026, Dlx: «deberíamos quitar que se pueda cambiar de voto», «una vez hechas
    todas esas encuestas uno recibe un cofre», «debería reclamar ese premio pero no sé dónde», «una vez hecho todo… que
    sea reemplazado»). Tres caras: para reclamar (verde, con «Abrir»), por hacer (dorado) y lo que viene del Pase (gris) ═══ */
-.pn-gratis.reclamar{border-color:#1d5a4e;border-left-color:#29B298;background:linear-gradient(100deg,rgba(41,178,152,.22),rgba(41,178,152,.04) 60%),#0B0C0E}
-.pn-gratis.reclamar .pn-gr-ic{background:#29B298}
-.pn-gratis.reclamar .pn-gr-et{color:#4FE0C1}
-.pn-gratis.pase{border-color:#3a3c42;border-left-color:#9a9ca3;background:#0B0C0E}
-.pn-gratis.pase .pn-gr-ic{background:#3a3c42;color:#F5C542;animation:none}
-.pn-gratis.pase .pn-gr-et{color:#9a9ca3}
-.pn-gr-btn{margin-left:auto;flex:none;font:900 12px/1 Archivo,sans-serif;text-transform:uppercase;background:#29B298;color:#000;padding:8px 10px}
-.pn-gr-ic.cofre{background:#F5C542}
 .pop-gr-cofre{font:700 11px/1 "Barlow Condensed",sans-serif;letter-spacing:.06em;color:#F5C542;margin-left:6px;text-transform:uppercase}
 /* las encuestas adentro del pop-up van siempre oscuras: con el tema claro salían blancas y con el texto lavado */
 .pop-gratis .en{--fondo:#0B0C0E;--tinta:#F6F6F6;--linea:#2A2C31;--gris:#9a9ca3;background:#0B0C0E;color:#F6F6F6}
 .pop-gratis .en-cab{color:#c9cbd1}
 .pop-gratis .en-va{color:#F6F6F6}
+/* 💬 «¿Qué te parece la página?» (13/11/2026): las cinco, en botones que se acomodan en filas (en una columna eran cinco renglones) */
+.en-opina .en-ops{grid-template-columns:repeat(5,minmax(0,1fr))}
+.en-opina .en-op{justify-content:center;text-align:center;padding:6px 8px}
+.en-opina .en-op b{flex:0 1 auto;min-width:0;white-space:normal;overflow:visible;line-height:1.15;overflow-wrap:anywhere}
+/* en el teléfono, tres y dos (en una columna eran cinco renglones; de a cuatro, «No me gusta» quedaba sola abajo) */
+@media (max-width: 560px){.en-opina .en-ops{grid-template-columns:repeat(6,minmax(0,1fr))}.en-opina .en-op{grid-column:span 2;padding:6px 4px;font-size:14px}
+  .en-opina .en-op:nth-child(n+4){grid-column:span 3}}
 /* ⚔️ las batallas libres de verdad: quién ganó, en el medio del VS */
 .pn-lb-q{display:grid;justify-items:center;gap:5px}
 .pn-lb-q > b{font:900 13px/1 Archivo,sans-serif;text-transform:uppercase;color:#F5C542}

@@ -119,10 +119,28 @@ def x2(ahora=None):
             'min': MIN_VOTOS, 'x': MU.VOTADO_X, 'op': sorted(svs)}
 
 
+#: 💬 «¿QUÉ TE PARECE LA PÁGINA?» (Dlx, 13/11/2026: «podrías añadir otra encuesta de qué te parece la página»): una por
+#: semana, en el Premio gratis del Inicio, junto al ×2 y El Elegido. Las opciones son claves cortas que no cambian (la
+#: página pone el texto: `OPINION` de web/src/encuestas.jsx); si se cambia una, se cambia en los dos lados.
+#: ⚠️ No decide nada y NO es de las que dan el cofre (ésas son el ×2 y El Elegido, en el Worker): es para saber qué le
+#: parece a la gente. El resultado, con `python bot/encuestas.py`; la página no lo muestra
+OPINION = ['encanta', 'buena', 'normal', 'falta', 'no']
+
+
+def pagina(ahora=None):
+    """La de «¿qué te parece la página?» de esta semana (de lunes a lunes, 11 AM ET), o `None`."""
+    import multiplicadores as MU
+    ahora = ahora or dt.datetime.now(dt.timezone.utc)
+    pid, ini, fin = MU.periodo(ahora)
+    if ini < _de_iso(DESDE):
+        return None
+    return {'id': 'pg:' + pid, 'tipo': 'pagina', 'hasta': _iso(fin), 'min': MIN_VOTOS, 'op': list(OPINION)}
+
+
 def abiertas(ahora=None, datos=None):
     """Las que se pueden votar ahora. Para la página y para el Worker."""
     out = []
-    for f in (lambda: elegido(ahora, datos), lambda: x2(ahora)):
+    for f in (lambda: elegido(ahora, datos), lambda: x2(ahora), lambda: pagina(ahora)):
         try:
             e = f()
         except Exception as ex:                          # noqa: BLE001
@@ -271,6 +289,15 @@ def _self_check():
            % ACTUAL.upper())
     ok(x2(dt.datetime(2026, 9, 20, 15, 0, tzinfo=et)) is None,
        'nada para atrás: la semana del 21/09 no se votó')
+
+    # «¿qué te parece la página?»: la de la semana de ahora, hasta el lunes que viene
+    pg = pagina(dt.datetime(2026, 11, 13, 1, 0, tzinfo=et))
+    ok(pg and pg['id'] == 'pg:2026-11-09' and pg['hasta'] == '2026-11-16T16:00:00Z' and pg['op'] == OPINION
+       and pg['tipo'] == 'pagina',
+       'la de la página: una por semana, de lunes a lunes, hasta las 11 AM ET  %s' % (pg and pg['id'],))
+    ok(len(set(OPINION)) == len(OPINION) and all(len(o) <= 20 and o.isascii() for o in OPINION),
+       'sus opciones son claves cortas y distintas (el Worker acepta hasta 80)')
+    ok(pagina(dt.datetime(2026, 9, 20, 15, 0, tzinfo=et)) is None, 'tampoco para atrás')
 
     # cuándo se vota El Elegido
     s = MW.siguiente(dt.datetime(2026, 9, 27, 15, 0, tzinfo=et))

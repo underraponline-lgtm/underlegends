@@ -19,15 +19,15 @@ import { limpio, num, siglaDe, srcLogo, utc } from './liga.js';
 import { Bandera, Cara, Ico, accion, nombrePais, useCampana } from './piezas.jsx';
 import { urlFondo, useFondos } from './fondos.js';
 import { Escudo, escudoDe } from './escudo.jsx';
-import { avance, pasePost, premioTexto, proximoEspecial, usePase } from './pase.js';
+import { avance, pasePost, usePase } from './pase.js';
 import { cuantosNuevos } from './inv_nuevos.js';
 import { cobrarRacha } from './racha.js';
 import { dondeEstoy, faltaTxt, nombreDe, useCompetencias } from './competencias_datos.js';
 import { eventoDelBoton } from './arriba.jsx';
 import { svElegido, useElegidos } from './elegidos.js';
 import { pedirLigas } from './ligas_datos.js';
-import { BarraDia, useDrops } from './drops.jsx';
-import { Elegido, X2 } from './encuestas.jsx';
+import { BarraDia } from './drops.jsx';
+import { Elegido, Opinion, X2 } from './encuestas.jsx';
 import { PopCab } from './pop.jsx';
 import { delHilo, useComentarios } from './comentarios.jsx';
 
@@ -151,21 +151,23 @@ function Festejo({ R }) {
 }
 
 // 🎁 PREMIO GRATIS (12/11/2026, Dlx: «un 4to cuadro encima de todo al costado de racha y llave… un cuadrado de premio
-// gratis o algo así que llame la atención, donde pedimos simplemente tareas, así como votar encuestas… así borramos la
-// parte de abajo que dice encuestas, tus eventos y divisiones»). Lo que pide son los pasos de la barra del día de los
-// Dragón Drops (`PASOS_QUE` de bot/avisos.js) que se hacen en un toque: votar (las encuestas se votan ADENTRO del pop-up,
-// las mismas `X2` y `Elegido` de Publicaciones), felicitar, comentar, una promo y una Tarea del Pase. Jugar un evento no:
-// no es «simplemente». El premio es de verdad: cada paso suma a la barra, y en el 1, el 3 y el 6 sale un drop
-const GRATIS = ['voto', 'fel', 'cm', 'promo', 'tarea'];
-const IR_GRATIS = { voto: '#/publicaciones', fel: '#/publicaciones', cm: '#/publicaciones', promo: '#/publicaciones', tarea: '#/pase' };
-// con las encuestas ya votadas, el paso de «votar» se hace con «¿Quién gana la final?» o apostando en un VS
-const QUE_GRATIS = { voto: 'Vota quién gana una final o apuesta en un VS' };
-const esCofre = (x) => /^cofre:/.test(String((x && x.origen) || ''));
-// 🔓 abrir la ventana de los drops desde otro lado (el Premio gratis): `BarraDia` la escucha
-const abrirDrops = () => W.dispatchEvent(new Event('lg:abrir-drops'));
+// gratis o algo así que llame la atención, donde pedimos simplemente tareas, así como votar encuestas»).
+// 🗳️ DESDE EL 13/11/2026, SÓLO LAS ENCUESTAS Y UNA VEZ POR SEMANA (Dlx: «que aparezca una vez por semana, que eso de cosas
+// más rápidas desaparezca… sólo eso de la encuesta. También podrías añadir otra encuesta de qué te parece la página»): el
+// cuadro sale mientras haya una encuesta de la semana sin votar —el ×2, El Elegido y «¿Qué te parece la página?»— y se va
+// cuando votaste las tres, hasta las de la semana que viene. Lo de la barra del día (felicitar, comentar, la Tarea del
+// Pase) y los drops para abrir siguen en su cuadro, `BarraDia`. Votar el ×2 y El Elegido sigue dando el cofre
+/** Las encuestas de la semana para el cuadro: las que hay y las que te faltan. Sin saber todavía tus votos (`enc`), ninguna:
+ *  el cuadro aparece cuando se sabe, en vez de aparecer y desaparecer */
+function encuestasDeLaSemana(liga, enc) {
+  const x2 = liga.encuesta('x2');
+  const el = liga.encuesta('elegido');
+  const pg = liga.encuesta('pagina');
+  const todas = [x2, el, pg].filter(Boolean);
+  const faltan = enc ? todas.filter((E) => !enc.mio[E.id]) : [];
+  return { x2, el, pg, cofre: [x2, el].filter(Boolean), faltan };
+}
 function PremioGratis({ liga, enc, dc }) {
-  const D = useDrops(dc);
-  const P = usePase(!!dc);
   const dlg = useRef(null);
   // 👤 sin cuenta (Dlx, 12/11/2026, mirando el Inicio de alguien nuevo: «hay botones que desaparecen»): lo que de verdad te
   // dan al entrar, los Puntos de Tienda de arranque (`liga.d.tienda.inicial`, de bot/precios.py)
@@ -179,69 +181,35 @@ function PremioGratis({ liga, enc, dc }) {
       </button>
     );
   }
-  const x2 = liga.encuesta('x2');
-  const el = liga.encuesta('elegido');
-  const abiertas = [x2, el].filter(Boolean);
-  const sinVotar = enc ? abiertas.filter((E) => !enc.mio[E.id]) : abiertas;
-  const hechos = (D && D.dia && D.dia.hechos) || [];
-  const que = (D && D.que) || {};
-  const faltan = GRATIS.filter((k) => que[k] && !hechos.includes(k));
-  const cerrados = (D && D.cerrados) || [];
-  const cofres = cerrados.filter(esCofre);
+  const S = encuestasDeLaSemana(liga, enc);
+  if (!S.faltan.length) return null;
+  const { x2, el, pg, cofre, faltan } = S;
   const x = x2 ? String(x2.x || 2).replace('.', ',') : '';
-  const prox = D ? (D.dia.drops || [1, 3, 6]).find((m) => m > D.dia.pasos) : null;
-  // 🎟️ y cuando hiciste todo: tu próximo premio del Pase (Dlx: «una vez que haya hecho… que desaparezca eso y que sea
-  // reemplazado por…»; la propuesta: lo que hay para reclamar, y si no, lo que viene)
-  const a = P && P.listo && P.miembro ? avance(P) : null;
-  const sig = P && P.listo ? proximoEspecial(P.premios, P.nivel || 0) : null;
-  // ① lo que hay para reclamar; ② las encuestas sin votar y lo que falta hoy; ③ tu próximo premio del Pase
-  let modo, tit, sub;
-  if (cerrados.length) {
-    modo = 'reclamar';
-    tit = cofres.length ? 'Reclama tu cofre' : cerrados.length === 1 ? 'Reclama tu Dragón Drop' : 'Reclama tus ' + cerrados.length + ' Dragón Drops';
-    sub = cofres.length ? 'El de las encuestas: ' + cofres.length + ' drops adentro' : 'Ya los ganaste: ábrelos';
-  } else if (sinVotar.length || faltan.length) {
-    modo = 'hacer';
-    tit = sinVotar.length ? (sinVotar[0] === x2 ? 'Vota quién se lleva el ×' + x : 'Vota a El Elegido') : QUE_GRATIS[faltan[0]] || que[faltan[0]];
-    sub = sinVotar.length ? 'Vota las ' + abiertas.length + ' de la semana y te llevas un cofre'
-      : prox ? (prox - D.dia.pasos === 1 ? 'Uno más y te llevas un Dragón Drop' : 'Te faltan ' + (prox - D.dia.pasos) + ' para un Dragón Drop') : 'Suma a tu barra de hoy';
-  } else {
-    modo = 'pase';
-    tit = sig ? 'Nivel ' + sig[0] + ': ' + premioTexto(sig) : 'Hiciste todo lo de hoy';
-    sub = a && a.falta ? 'Tu próximo premio del Pase · te faltan ' + num(a.falta) + ' XP para el ' + ((P.nivel || 0) + 1) : 'Mañana hay barra nueva';
-  }
-  const n = cerrados.length || sinVotar.length + faltan.filter((k) => k !== 'voto' || !sinVotar.length).length;
+  const sinCofre = cofre.filter((E) => faltan.includes(E));
+  const tit = faltan[0] === x2 ? 'Vota quién se lleva el ×' + x : faltan[0] === el ? 'Vota a El Elegido' : '¿Qué te parece la página?';
+  const sub = sinCofre.length ? (cofre.length > 1 ? 'Vota las ' + cofre.length + ' de la semana y te llevas un cofre' : 'Vótala y te llevas un cofre')
+    : 'Tu opinión, en un toque';
+  const hasta = (faltan[0] || {}).hasta;
   const cerrar = () => dlg.current && dlg.current.close();
-  const tocar = () => {
-    if (modo === 'reclamar') { abrirDrops(); return; }
-    if (modo === 'pase') { location.hash = '#/pase'; return; }
-    if (dlg.current) dlg.current.showModal();
-  };
   return (
     <>
-      <button type="button" id="encuestas" className={'pn-gratis ' + modo} onClick={tocar} aria-label={'Premio gratis: ' + tit + '. ' + sub}>
-        <span className={'pn-gr-ic' + (cofres.length ? ' cofre' : '')} aria-hidden="true"><Ico n={modo === 'pase' ? 'pase' : 'premio'} t={22} />{n && modo !== 'pase' ? <em>{n}</em> : null}</span>
-        <span className="pn-tx"><i className="pn-gr-et">{modo === 'reclamar' ? 'Para reclamar' : modo === 'pase' ? 'Lo que viene' : 'Premio gratis'}</i><b>{tit}</b><small>{sub}</small></span>
-        {modo === 'reclamar' ? <span className="pn-gr-btn">Abrir</span> : null}
+      <button type="button" id="encuestas" className="pn-gratis hacer" onClick={() => dlg.current && dlg.current.showModal()}
+        aria-label={'Premio gratis: ' + tit + '. ' + sub}>
+        <span className="pn-gr-ic" aria-hidden="true"><Ico n="premio" t={22} /><em>{faltan.length}</em></span>
+        <span className="pn-tx"><i className="pn-gr-et">Premio gratis</i><b>{tit}</b><small>{sub}</small></span>
       </button>
       <dialog className="pn-pop pop-gratis" ref={dlg} aria-label="Premio gratis" onClick={(e) => { if (e.target === dlg.current) cerrar(); }}>
-        <PopCab ico="premio" t="Premio gratis" sub={D ? 'Hoy: ' + D.dia.pasos + ' de ' + D.dia.de + ' · drop en el paso 1, el 3 y el 6' : 'Cosas rápidas que suman a tu Dragón Drop'} cerrar={cerrar} />
+        <PopCab ico="premio" t="Premio gratis" sub={'Las encuestas de la semana' + (hasta ? ' · cierran ' + liga.dia(hasta) : '')} cerrar={cerrar} />
         <div className="pn-est-in">
-          {abiertas.length && enc ? <>
-            <h5>Las encuestas de la semana {sinVotar.length ? <span className="pop-gr-cofre">vótalas todas: un cofre</span> : <span className="pop-gr-ok">✓ votaste las {abiertas.length}</span>}</h5>
+          {cofre.length ? <>
+            <h5>Las encuestas de la semana {sinCofre.length ? <span className="pop-gr-cofre">{cofre.length > 1 ? 'vótalas todas' : 'vótala'}: un cofre</span>
+              : <span className="pop-gr-ok">✓ {cofre.length > 1 ? 'votaste las ' + cofre.length : 'ya votaste'}</span>}</h5>
             <div className={'en-g' + (x2 && el ? ' dos' : '')}>
               {x2 ? <X2 liga={liga} enc={enc} E={x2} corta /> : null}
               {el ? <Elegido liga={liga} enc={enc} E={el} corta /> : null}
             </div>
           </> : null}
-          <h5>Más cosas rápidas</h5>
-          <ul className="pop-gr-l">{GRATIS.filter((k) => que[k] && (k !== 'voto' || !sinVotar.length)).map((k) => {
-            const si = hechos.includes(k);
-            return (
-              <li key={k} className={si ? 'si' : ''}><span className="pop-n" aria-hidden="true">{si ? '✓' : '+1'}</span><b>{(k === 'voto' && QUE_GRATIS.voto) || que[k]}</b>
-                {si ? <small>hecho</small> : IR_GRATIS[k] ? <a className="pn-ver" href={IR_GRATIS[k]} onClick={cerrar}>Ir</a> : null}</li>
-            );
-          })}</ul>
+          {pg ? <><h5>Y tu opinión</h5><Opinion liga={liga} enc={enc} E={pg} /></> : null}
         </div>
       </dialog>
     </>
@@ -257,8 +225,9 @@ export function FilaRacha({ dc, R, liga, enc }) {
   const camp = campanaPide(c, dc);
   const ult = dc && !camp && liga && liga.yo ? ultimoDe(liga, liga.yo) : null;
   // ⚠️ la racha no se dibuja hasta que llega (`R`): contarla sin estar dejaba una columna vacía
-  // 🎁 con cuenta va también el Premio gratis: de a cuatro
-  const n = dc ? (R ? 1 : 0) + (camp || ult ? 1 : 0) + 2 : 2 + (camp ? 1 : 0);
+  // 🎁 con cuenta va también el Premio gratis, pero sólo con encuestas de la semana sin votar (13/11/2026): de a cuatro, o de a tres
+  const gratis = dc ? encuestasDeLaSemana(liga, enc).faltan.length > 0 : true;
+  const n = dc ? (R ? 1 : 0) + (camp || ult ? 1 : 0) + 1 + (gratis ? 1 : 0) : 2 + (camp ? 1 : 0);
   return (
     <>
       <Festejo R={R} />
