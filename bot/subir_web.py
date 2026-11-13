@@ -2966,6 +2966,15 @@ def _servidores(gente):
     _guardar_iconos(miembros)
     pags = _paginas_socios()
     logos = os.path.join(SCR, 'paginas', 'logos')
+    # 🏅 los tiers: si `bot/tiers.py` no se puede leer, la página no dice nada (sin dato no hay pieza)
+    nivel, sin_t, sin_c, min_solo = {}, set(), set(), 0
+    try:
+        import tiers as _TI
+        _niv = _json('datos', 'niveles.json') or {}
+        nivel = {k: v for k, v in (_niv.get('niveles') or {}).items() if v in _TI.TIERS}
+        sin_t, sin_c, min_solo = _TI.sin('suma', _niv), _TI.sin('competitivo', _niv), _TI.MIN_SOLO_TEMPORADA
+    except Exception:                                    # noqa: BLE001
+        pass
     out = []
     for sv in list(svs) + [s for s in acc if s not in svs]:
         a = acc.get(sv) or {'sv': sv, 'n': 0, 'pts': 0, 'ev': 0}
@@ -3002,6 +3011,15 @@ def _servidores(gente):
             a['logo'] = 'logos/%s.webp' % sv.lower()
         if (miembros.get(sv) or {}).get('miembros'):
             a['miembros'] = miembros[sv]['miembros']
+        # 🏅 SU TIER Y QUÉ LE CUENTA (Dlx, 13/11/2026: «en socios especificar qué TIER son cada socio… si cuentan puntos
+        # para el ranking de temporada y qué sv dan puntos para el ranking competitivo»). De `datos/niveles.json`, lo
+        # mismo que leen el lector de llaves y el Score (`tiers.sin()`): `cu.t` suma a la Temporada, `cu.c` cuenta para
+        # el Competitivo y los duelos, y `cu.min` los participantes que pide cuando suma sólo a la Temporada
+        if sv in nivel:
+            a['tier'] = nivel[sv]
+            a['cu'] = {'t': int(sv not in sin_t), 'c': int(sv not in sin_c)}
+            if a['cu']['t'] and not a['cu']['c'] and min_solo:
+                a['cu']['min'] = min_solo
         out.append(a)
     # primero los que tienen gente en la T1, por puntos; después, por tamaño
     return sorted(out, key=lambda a: (-a['pts'], -a.get('miembros', 0), a['sv']))
@@ -4241,6 +4259,13 @@ def _self_check():
     ok(not _sin_logo, 'y con su logo  %s' % (_sin_logo or '—'))
     ok(all('miembros' not in s for s in p['svs']),
        'sin red no hay cantidad de miembros (sin dato no hay pieza)')
+    # 🏅 el tier de cada socio y qué le cuenta, igual que `datos/niveles.json` (Dlx, 13/11/2026)
+    import tiers as _TT
+    _nv = _json('datos', 'niveles.json') or {}
+    _sc = _TT.sin('competitivo', _nv)
+    _mal_tier = [s for s in _svs if s in _ps and (_nv.get('niveles') or {}).get(s) in (1, 2, 3)
+                 and (_ps[s].get('tier') != _nv['niveles'][s] or _ps[s].get('cu', {}).get('c') != int(s not in _sc))]
+    ok(not _mal_tier, 'cada socio con su tier y si cuenta para el Competitivo, como niveles.json  %s' % (_mal_tier or '—'))
     ok(len(p['tabla']) <= TOPE, 'y no pasa de %d filas' % TOPE)
 
     # 🔴 LA LETRA SIGUE LA MISMA PUERTA QUE LA CARTA. Si la web mostrara

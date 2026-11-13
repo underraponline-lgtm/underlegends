@@ -34,6 +34,51 @@ const irA = (id) => {
   if (s) window.scrollTo({ top: s.getBoundingClientRect().top + window.scrollY - 16, behavior: 'smooth' });
 };
 
+// ── 🏅 SU TIER Y QUÉ LE CUENTA (Dlx, 13/11/2026: «en socios especificar qué TIER son cada socio y ver qué significa eso,
+// para ver si cuentan puntos para el ranking de temporada y qué sv dan puntos para el ranking competitivo»). El tier y
+// `cu` (t: suma a la Temporada, c: cuenta para el Competitivo, min: los participantes que pide si suma sólo a la
+// Temporada) vienen del payload, de `datos/niveles.json`: lo mismo que leen el lector de llaves y el Score. Sin dato no
+// hay pieza. Lo de cada tier es el PRESET de bot/tiers.py; lo de cada servidor —que Dlx puede cambiar en el Dashboard—
+// va en su tarjeta ──
+const TierChip = ({ s }) => (s.tier ? <em className={'sk-tier t' + s.tier}>TIER {s.tier}</em> : null);
+const sumaTx = (min) => 'Suma a la Temporada' + (min ? ' (eventos de ' + min + ' o más)' : '');
+function Cuenta({ s, chico }) {
+  if (!s.cu) return null;
+  return (
+    <ul className={'sk-cu' + (chico ? ' chico' : '')} aria-label={'Qué cuenta de los eventos de ' + (s.nombre || s.sv)}>
+      <li className={s.cu.t ? 'si' : 'no'}><Ico n={s.cu.t ? 'ok' : 'cerrar'} t={14} />{s.cu.t ? sumaTx(s.cu.min) : 'No suma a la Temporada'}</li>
+      <li className={s.cu.c ? 'si' : 'no'}><Ico n={s.cu.c ? 'ok' : 'cerrar'} t={14} />{s.cu.c ? 'Cuenta para el Competitivo' : 'No cuenta para el Competitivo'}</li>
+    </ul>
+  );
+}
+function Tiers({ liga, svs }) {
+  const min = (svs.find((s) => s.cu && s.cu.min) || { cu: {} }).cu.min;
+  const QUE = {
+    1: ['Suma a la Temporada y al Competitivo', 'Sus ligas cuentan como duelos', 'Su carta de Servidor'],
+    2: [sumaTx(min), 'Su carta de Servidor', 'No cuenta para el Competitivo'],
+    3: [sumaTx(min), 'No cuenta para el Competitivo'],
+  };
+  const por = [1, 2, 3].map((t) => [t, svs.filter((s) => s.tier === t)]).filter(([, l]) => l.length);
+  if (!por.length) return null;
+  return (
+    <div className="sk-tiers">
+      <ul>
+        {por.map(([t, l]) => (
+          <li key={t}>
+            <TierChip s={{ tier: t }} />
+            <ul className="sk-tier-q">{QUE[t].map((q) => <li key={q}>{q}</li>)}</ul>
+            <p className="sk-tier-sv">{l.map((s) => (
+              <button type="button" key={s.sv} style={{ '--c': s.color || '#29B298' }} onClick={() => irA(idDe(s.sv))} aria-label={'Ir a ' + (s.nombre || s.sv)}>
+                <img alt="" src={liga.logo(s.sv)} />{siglaDe(s.sv)}</button>
+            ))}</p>
+          </li>
+        ))}
+      </ul>
+      <p className="sk-tiers-p">Y todos, sea cual sea su tier: sus eventos en el calendario, la campana y Publicaciones, su página y sus ligas.</p>
+    </div>
+  );
+}
+
 // ── un servidor que ya jugó la temporada: su número, su gente, su mejor con la carta de Servidor y lo que sigue ──
 function Socio({ liga, s, n }) {
   const mm = liga.d.mult || {};
@@ -48,7 +93,7 @@ function Socio({ liga, s, n }) {
       <span className="sk-n" aria-hidden="true">{String(n).padStart(2, '0')}</span>
       <header className="sk-soc-cab">
         <img className="sk-logo" alt="" src={liga.logo(s.sv, true)} />
-        <div><h3><span className="sk-oculto">{n}.º por puntos: </span>{s.nombre || s.sv}</h3><small>{siglaDe(s.sv)}{s.tag ? ' · ' + String(s.tag).toUpperCase() : ''}</small></div>
+        <div><h3><span className="sk-oculto">{n}.º por puntos: </span>{s.nombre || s.sv}</h3><small>{siglaDe(s.sv)}{s.tag ? ' · ' + String(s.tag).toUpperCase() : ''}<TierChip s={s} /></small></div>
       </header>
       <dl className="sk-num">
         <div><dt>RAPEROS</dt><dd>{num(s.n || 0)}</dd></div>
@@ -56,6 +101,7 @@ function Socio({ liga, s, n }) {
         <div><dt>EN SU DISCORD</dt><dd>{s.miembros ? num(s.miembros) : '—'}</dd></div>
         <div><dt>ESTA SEMANA</dt><dd className={x > 1 ? 'sube' : ''}>{x ? mult(x) : '×1'}</dd></div>
       </dl>
+      <Cuenta s={s} />
       <div className="sk-medio">
         {mejor && (mejor.c || []).includes('servidor') ? (
           <a className="sk-carta" href={'#/r/' + encodeURIComponent(mejor.k)} aria-label={'El mejor de ' + siglaDe(s.sv) + ': ' + limpio(mejor.n)}>
@@ -163,7 +209,8 @@ export function Socios({ liga }) {
           </nav>
         </section>
       </div>
-      <Sec id="sk-servidores" titulo="Los servidores" bajada={'En orden por los puntos que hizo su gente en la ' + liga.temp + '.'}>
+      <Sec id="sk-servidores" titulo="Los servidores" bajada={'En orden por los puntos que hizo su gente en la ' + liga.temp + '.' + (svs.some((s) => s.tier) ? ' Cada uno tiene su tier, que dice qué cuenta de sus eventos.' : '')}>
+        <Tiers liga={liga} svs={svs} />
         <div className="sk-lista">
           {activos.map((s, i) => <Socio key={s.sv} liga={liga} s={s} n={i + 1} />)}
           {/* con un número impar, el lugar que sobra en la compu invita al que falta (sin huecos grandes) */}
@@ -185,7 +232,7 @@ export function Socios({ liga }) {
               return (
                 <li key={s.sv} id={idDe(s.sv)} style={{ '--c': s.color || '#29B298' }}>
                   <img className="sk-logo chico" alt="" src={liga.logo(s.sv, true)} />
-                  <span className="sk-esp-t"><b>{s.nombre || s.sv}</b><small>{siglaDe(s.sv)}{s.tag ? ' · ' + String(s.tag).toUpperCase() : ''}</small></span>
+                  <span className="sk-esp-t"><b>{s.nombre || s.sv}</b><small>{siglaDe(s.sv)}{s.tag ? ' · ' + String(s.tag).toUpperCase() : ''}<TierChip s={s} /></small><Cuenta s={s} chico /></span>
                   <span className="sk-esp-d"><b>{s.miembros ? num(s.miembros) : '—'}</b><small>en su Discord</small></span>
                   <span className="sk-esp-d"><b className={x > 1 ? 'sube' : ''}>{x ? mult(x) : '×1'}</b><small>esta semana</small></span>
                   <span className="sk-esp-acc">
