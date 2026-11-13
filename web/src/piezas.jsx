@@ -50,6 +50,8 @@ const TRAZOS = {
   // 🎨 LOS QUE REEMPLAZAN A LOS EMOJIS (Dlx, 13/10/2026, la lista de «sitio vibecodeado»: un emoji se ve distinto en
   // cada celular y dice «plantilla»). Mismo trazo que los de arriba
   copa: <path d="M7 4h10v5a5 5 0 01-10 0zM7 6H4v1.5A3 3 0 007 10.5M17 6h3v1.5a3 3 0 01-3 3M12 14v3.5M8 20.5h8M9.5 17.5h5" />,
+  // ⚡ la XP (13/11/2026): el rayo, para el nivel de la cabecera
+  xp: <path d="M13.5 2.5 5 13.5h6l-1.5 8 8.5-11h-6z" />,
   fuego: <path d="M12 3c.6 3 4.8 5.2 4.8 10.2A4.8 4.8 0 0112 18a4.8 4.8 0 01-4.8-4.8c0-2.6 1.4-4 2.4-5 .2 1.6.9 2.6 1.9 3.1C11.6 8.6 12 6 12 3z" />,
   mira: <><circle cx="12" cy="12" r="7.5" /><circle cx="12" cy="12" r="2.5" /><path d="M12 2v4M12 18v4M2 12h4M18 12h4" /></>,
   micro: <><path d="M9 3h6v10H9z" /><path d="M5.5 11a6.5 6.5 0 0013 0M12 17.5V21M8 21h8" /></>,

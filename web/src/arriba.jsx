@@ -306,9 +306,21 @@ function BarraBuscar({ liga, onCerrar }) {
   useEffect(() => {
     const t = setTimeout(() => { const i = caja.current && caja.current.querySelector('input'); if (i) i.focus(); }, 30);
     const esc = (e) => { if (e.key === 'Escape') onCerrar(); };
+    // 👆 tocar en cualquier otro lado de la página lo cierra (Dlx, 13/11/2026: «si se presiona en cualquier lado de la página
+    // se quita el buscador»). La lupa no cuenta: ella misma abre y cierra. Por `composedPath`: vive en el shadow root
+    const fuera = (e) => {
+      const p = e.composedPath ? e.composedPath() : [];
+      if (caja.current && p.includes(caja.current)) return;
+      if (p.some((n) => n && n.classList && n.classList.contains('lupa-b'))) return;
+      onCerrar();
+    };
     window.addEventListener('keydown', esc);
     window.addEventListener('lg:dir', onCerrar);
-    return () => { clearTimeout(t); window.removeEventListener('keydown', esc); window.removeEventListener('lg:dir', onCerrar); };
+    document.addEventListener('pointerdown', fuera, true);
+    return () => {
+      clearTimeout(t); window.removeEventListener('keydown', esc); window.removeEventListener('lg:dir', onCerrar);
+      document.removeEventListener('pointerdown', fuera, true);
+    };
   }, [onCerrar]);
   return (
     <div className="cab-busca" role="search" ref={caja}>
@@ -331,6 +343,7 @@ export function Cabecera({ liga, dc, onMenu, pagina = '' }) {
   // ⭐ tu nivel (el general: el de entrar, jugar y lo que hacés en la Liga; no el del Pase), con su barra hasta el siguiente
   // (Dlx, 13/11/2026: «al costado del círculo de perfil una barra… no de Pase de rapero sino nivel de XP en general»)
   const nv = R && R.nivel && R.nivel.n ? R.nivel : null;
+  const enInicio = !pagina || pagina === 'inicio';
   const nvPct = nv && nv.sig > nv.base ? Math.max(0, Math.min(100, Math.round((100 * (nv.xp - nv.base)) / (nv.sig - nv.base)))) : 0;
   // ⌨️ Ctrl K (o ⌘ K, o «/» fuera de un campo) abre el buscador, como la paleta de 21st que se tomó de referencia
   useEffect(() => {
@@ -350,7 +363,8 @@ export function Cabecera({ liga, dc, onMenu, pagina = '' }) {
       <MenuArriba pagina={pagina} nuevas={pubNuevas(liga, pagina)} />
       <div className="cab-der">
         <Buscar liga={liga} />
-        <button className="btn-ico lupa-b" type="button" aria-label="Buscar (Ctrl K)" title="Buscar · Ctrl K" onClick={() => setBusca(true)}><Ico n="buscar" t={20} /></button>
+        <button className={'btn-ico lupa-b' + (busca ? ' on' : '')} type="button" aria-label={busca ? 'Cerrar el buscador' : 'Buscar (Ctrl K)'} aria-expanded={busca}
+          title="Buscar · Ctrl K" onClick={() => setBusca((v) => !v)}><Ico n="buscar" t={20} /></button>
         <Campanita liga={liga} />
         {/* ⚙️ SIN EL ENGRANAJE (Dlx, 12/11/2026: «quitar eso del ícono de ajustes porque se puede entrar desde tu cuenta»):
             los ajustes están en Tu cuenta, que abre tu cara arriba y «Tu cuenta» abajo en el celular, y en el ☰ */}
@@ -360,8 +374,10 @@ export function Cabecera({ liga, dc, onMenu, pagina = '' }) {
               aria-label={'Lo tuyo: inventario, perfil y cuenta' + (fuego ? ' · ' + fuego + (fuego === 1 ? ' día seguido' : ' días seguidos') : '')}>
               {cara}<span>{nombre}</span>
               {nv ? <span className="yo-nv" title={'Nivel ' + nv.n + ' · ' + num(nv.sig - nv.xp) + ' XP para el ' + (nv.n + 1)} aria-hidden="true">
-                <b>NV {nv.n}</b><i><u style={{ width: nvPct + '%' }} /></i></span> : null}
-              {fuego ? <span className="yo-racha" aria-hidden="true"><Ico n="fuego" t={13} />{fuego}</span> : null}</button>
+                <b><Ico n="xp" t={12} />Nivel {nv.n}</b><i><u style={{ width: nvPct + '%' }} /></i></span> : null}
+              {/* 🔥 la racha, salvo en el Inicio, donde ya está abajo con sus días (Dlx, 13/11/2026: «que desaparezca eso de la
+                  racha si eso está abajo») */}
+              {fuego && !enInicio ? <span className="yo-racha" aria-hidden="true"><Ico n="fuego" t={13} />{fuego}</span> : null}</button>
             {yoM ? <YoMenu k={yo ? yo.k : (dc && dc.clave) || ''} onCerrar={() => setYoM(false)} /> : null}
           </span>
         ) : (

@@ -5029,3 +5029,18 @@ dialog.pn-pop.pop-gratis{--pc:#F5C542;width:min(640px,calc(100vw - 32px))}
    16 px para que el iPhone no haga zoom al escribir */
 .app .cab.una .cab-busca .buscar{display:flex;align-items:center;gap:8px;border:2px solid #29B298;min-height:44px;padding:0 12px;color:#A5A5A0}
 .app .cab.una .cab-busca .buscar input{font-size:16px;color:#F6F6F6}
+
+
+/* ═══ 🅰 LA CABECERA, TERCERA MANO (13/11/2026, Dlx: «Nivel 6 y el ícono de XP», «un poquito más de separación entre
+   LIGA GLOBAL T1, las categorías del medio y la parte de la derecha») ═══ */
+@media (min-width: 900px){
+  .app .cab.una{column-gap:clamp(24px,2.8vw,44px)}
+  .app .cab.una .yo-nv b{display:flex;align-items:center;gap:4px;font:800 12px/1 Archivo,sans-serif;letter-spacing:.02em;white-space:nowrap}
+  .app .cab.una .yo-nv b svg{color:#29B298;fill:#29B298;flex:none}
+  .app .cab.una .yo-nv,.app .cab.una .yo-nv i{min-width:64px;width:64px}
+  .app .cab.una .lupa-b.on{border-color:#29B298;color:#29B298}
+}
+/* el espacio sale de entre las palabras del menú (16 → 12 px) y va a la separación entre las tres partes: medido, con 16 el
+   menú pedía 703 px y a 1375 su columna tenía 691, así que se desbordaba y la separación quedaba en 27 px */
+@media (min-width: 1024px){ .app .cab.una nav.menu{gap:clamp(8px,calc(1.2vw - 4px),12px)} }
+@media (min-width: 900px){ .app .cab.una{column-gap:clamp(24px,2.6vw,40px)} }
