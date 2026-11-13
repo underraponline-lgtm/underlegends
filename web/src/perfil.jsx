@@ -472,7 +472,7 @@ function Cabeza({ liga, f, k, p, dc, esYo, onEmblemas, ems, numeros, ex }) {
       <section className="pf8-cab">
         {/* 👤 SU FOTO, EN UN CÍRCULO, en vez de la carta (Dlx, 21/10/2026: «en vez de la tarjeta que sea la foto elegida en
             mi perfil… en un círculo»): la de /foto, o la inicial si no tiene. Las cartas siguen en la puerta de Tarjetas */}
-        <div className="pf8-carta"><Cara liga={liga} k={k} nombre={f.n} cls="cara pf8-cara" /></div>
+        <div className="pf8-carta"><Cara liga={liga} k={k} nombre={f.n} cls="cara pf8-cara" grande /></div>
         <div className="pf8-tx">
           <span className="tag">{f.solo ? 'EN LA LIGA' : f.pos ? '#' + f.pos + ' DE LA TEMPORADA' : 'FUERA DE CONCURSO'} · {liga.temp}</span>
           <div className="pf8-nom">

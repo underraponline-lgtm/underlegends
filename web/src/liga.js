@@ -233,15 +233,17 @@ export class Liga {
     const i = (this.d.cartas || []).indexOf(cual);
     return !!(f && i >= 0 && typeof f.vj === 'string' && f.vj.indexOf(String(i)) >= 0);
   }
-  avUrl(k) {
+  // a 256: las caras de las listas y las historias se dibujan a ~100 px, el doble en una pantalla de celular. 🔎 `t`: más
+  // grande donde la cara se dibuja grande (el perfil, ~240 px; Dlx, 12/11/2026: «que todo esté siempre en HD»). El CDN
+  // de Discord devuelve lo que la persona subió, nunca más: pedir 1024 no agranda nada, sólo deja de achicar
+  avUrl(k, t = 256) {
     const f = this.T[k];
-    // a 256: las caras de las historias y del perfil se dibujan a ~100 px, el doble en una pantalla de celular
-    return f && f.av ? 'https://cdn.discordapp.com/avatars/' + f.av + '.webp?size=256' : null;
+    return f && f.av ? 'https://cdn.discordapp.com/avatars/' + f.av + '.webp?size=' + t : null;
   }
   // la cara de alguien que jugó y no está en la tabla (corta en 200): la piden `Cara` y `CaraH` cuando no hay clave
-  avNombre(nombre) {
+  avNombre(nombre, t = 256) {
     const av = nombre ? this.A[limpio(nombre).toLowerCase()] : null;
-    return av ? 'https://cdn.discordapp.com/avatars/' + av + '.webp?size=256' : null;
+    return av ? 'https://cdn.discordapp.com/avatars/' + av + '.webp?size=' + t : null;
   }
   // el logo de HOY de cada servidor: el payload trae el ícono actual de Discord (`svs[].logo`, ver `subir_web.py`) y
   // el guardado sólo de respaldo. Dlx, 30/09/2026: «usa los LOGOS actuales de cada servidor». El Inicio usaba

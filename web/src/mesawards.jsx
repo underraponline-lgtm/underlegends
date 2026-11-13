@@ -9,6 +9,7 @@
 import { useEffect, useState } from 'react';
 import { limpio, num, siglaDe } from './liga.js';
 import { Cara, accion } from './piezas.jsx';
+import { Miniatura } from './video.jsx';
 
 const SAL = { d: null, pedido: 0, oyentes: new Set() };
 function pedirSalon() {
@@ -36,7 +37,7 @@ export function Nominado({ liga, cat, x }) {
   // imagen, el escudo del servidor, la bandera o la cara de `q`
   if (x.d !== undefined) {
     const fq = x.q ? liga.fila(x.q) : null;
-    const vis = x.vid ? <img className="ma-vid" alt="" src={'https://i.ytimg.com/vi/' + x.vid + '/mqdefault.jpg'} loading="lazy" />
+    const vis = x.vid ? <Miniatura vid={x.vid} cls="ma-vid" />
       : x.img ? <img className="ma-vid" alt="" src={x.img} loading="lazy" />
         : x.cc ? <img className="ma-cara ma-flag" alt="" src={'/banderas/g/' + x.cc + '.webp'} />
           : x.sv && !x.q ? <img className="ma-cara" alt="" src={liga.logo(x.sv)} />
@@ -44,7 +45,8 @@ export function Nominado({ liga, cat, x }) {
     return <>{vis}<span className="ma-t"><b>{limpio(x.n)}</b><small>{x.d}</small></span></>;
   }
   const f = (cat === 'rapero' || cat === 'revelacion') ? liga.fila(x.op) : null;
-  const vis = cat === 'batalla' ? <img className="ma-vid" alt="" src={'https://i.ytimg.com/vi/' + x.op + '/mqdefault.jpg'} loading="lazy" />
+  // 🔎 la miniatura grande (`Miniatura`, 1280×720) en vez de la de 320×180
+  const vis = cat === 'batalla' ? <Miniatura vid={x.op} cls="ma-vid" />
     : cat === 'servidor' ? <img className="ma-cara" alt="" src={liga.logo(x.op)} />
       : <Cara liga={liga} k={f ? f.k : ''} nombre={x.n} cls="ma-cara" />;
   const dato = cat === 'batalla' ? siglaDe(x.sv) + ' · ' + num(x.vistas) + ' vistas'

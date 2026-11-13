@@ -154,7 +154,9 @@ CIERRA_DIAS = 21
 #: la clave de KV que lee el Worker para validar cada voto (`validarVotoLiga()` en bot/avisos.js). Ver `para_kv()`
 CLAVE_KV = 'ligas:votar'
 #: 🖼️ el flyer re-alojado: a qué ancho se achica y con qué calidad (lo más grande que lo dibuja la página son ~520 px)
-ANCHO_FLYER, CALIDAD_FLYER = 720, 82
+# 🔎 1200 y 88 (antes 720 y 82; Dlx, 12/11/2026: «que todo esté siempre en HD»): el afiche se ve a pantalla completa en
+# las historias y grande en la página de cada liga. Los ya subidos quedan como están; los nuevos salen así
+ANCHO_FLYER, CALIDAD_FLYER = 1200, 88
 #: cuántos mensajes del canal de anuncios se leen por corrida (un solo pedido: los flyers, la fecha y quién organiza)
 ANUNCIOS_LEER = 100
 #: cuántas fechas (jornadas) de cada liga viajan a la página, las más nuevas (van en el detalle, no en el lobby)

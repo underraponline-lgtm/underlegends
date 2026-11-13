@@ -294,10 +294,12 @@ export function Bandera({ cc, cls = 'r-flag' }) {
 
 // ⚠️ lo que falló se recuerda POR DIRECCIÓN, no como un sí/no: el mismo lugar de una lista pasa a mostrar a otra
 // persona y, con un sí/no, heredaba la inicial aunque su foto anduviera (revisión del 01/10/2026)
-export function Cara({ liga, k, nombre, cls = 'cara', lazy = false }) {
+export function Cara({ liga, k, nombre, cls = 'cara', lazy = false, grande = false }) {
   const [mal, setMal] = useState(null);
-  // la de la tabla; si no está (corta en 200), la que viene aparte por nombre (`avNombre()`)
-  const src = (k && liga.avUrl(k)) || (liga.avNombre ? liga.avNombre(nombre) : null);
+  // la de la tabla; si no está (corta en 200), la que viene aparte por nombre (`avNombre()`). `grande`: donde se dibuja
+  // a más de ~130 px, la más grande que tenga Discord
+  const t = grande ? 1024 : 256;
+  const src = (k && liga.avUrl(k, t)) || (liga.avNombre ? liga.avNombre(nombre, t) : null);
   // `lazy` en las listas largas (el Ranking: 200 caras): sin eso el navegador pedía las 200 al abrir
   if (src && mal !== src) return <span className={cls}><img alt="" src={src} loading={lazy ? 'lazy' : undefined} decoding={lazy ? 'async' : undefined} onError={() => setMal(src)} /></span>;
   return <span className={cls + ' ini'}>{(limpio(nombre).slice(0, 1) || '?').toUpperCase()}</span>;

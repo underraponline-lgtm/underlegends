@@ -634,7 +634,9 @@ function TuPagina({ sv }) {
     const a = e.target.files && e.target.files[0];
     e.target.value = '';
     if (!a) return;
-    try { const b = await achicar(a, 1600, 600, 550 * 1024); mandar({ img: await aBase64(b) }, 'Listo: tu banner sale en la página en la próxima media hora.'); }
+    // 🔎 2400×900 (antes 1600×600): va a lo ancho de la página como el fondo de perfil (Dlx, 12/11/2026: «que todo esté
+    // siempre en HD»); el tope del Worker (600 KB) no cambia y `achicar()` baja el tamaño si no entra
+    try { const b = await achicar(a, 2400, 900, 550 * 1024); mandar({ img: await aBase64(b) }, 'Listo: tu banner sale en la página en la próxima media hora.'); }
     catch (er) { setMsg('No pude usar esa imagen: ' + er.message); }
   };
   if (!j) return <p className="pronto-p">Buscando tu página…</p>;

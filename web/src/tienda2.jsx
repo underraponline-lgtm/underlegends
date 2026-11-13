@@ -18,6 +18,7 @@ import { useCrews } from './crews.js';
 import { useSalon } from './mesawards.jsx';
 import CSS_PAGINA from './css/tienda2.css?inline';
 import { usarCss } from './css.js';
+import { Miniatura } from './video.jsx';
 
 usarCss('tienda2', CSS_PAGINA);
 
@@ -281,11 +282,12 @@ function TuPromo({ liga, dc }) {
             <ul className="tn-promos">
               {xs.map((it) => {
                 const e = est[it.id] || {};
-                const img = it.vid ? 'https://i.ytimg.com/vi/' + it.vid + '/mqdefault.jpg' : it.img || '';
+                // 🔎 de un video, la miniatura grande (`Miniatura`, 1280×720); la de 320×180 se veía borrosa
+                const img = it.vid ? '' : it.img || '';
                 const hasta = utc(it.hasta).getTime();
                 return (
                   <li key={it.id}>
-                    {img ? <img alt="" src={img} loading="lazy" /> : <span className="tn-promo-sin" aria-hidden="true">▶</span>}
+                    {it.vid ? <Miniatura vid={it.vid} /> : img ? <img alt="" src={img} loading="lazy" /> : <span className="tn-promo-sin" aria-hidden="true">▶</span>}
                     <div>
                       <b>{limpio(it.tit || it.url)}</b>
                       <small>{it.alargada ? 'Alargada · ' : ''}sale {dia(hasta)} → con una semana más, {dia(hasta + 7 * 86400000)}</small>

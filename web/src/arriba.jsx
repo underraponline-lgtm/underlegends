@@ -536,12 +536,12 @@ function slidesDe(liga, items) {
         );
       };
       const vis = top.length >= 2 ? <ol className="st-podio3" aria-label="El podio">{[pieza(lugares[1]), pieza(lugares[0]), pieza(lugares[2])]}</ol>
-        : f && (f.c || []).includes('temporada') ? <Carta liga={liga} k={k} cual="temporada" cls="st-carta" abre={false} /> : <Cara liga={liga} k={k} nombre={q[0]} cls="st-cara" />;
+        : f && (f.c || []).includes('temporada') ? <Carta liga={liga} k={k} cual="temporada" cls="st-carta" abre={false} /> : <Cara liga={liga} k={k} nombre={q[0]} cls="st-cara" grande />;
       out.push(Slide('CAMPEÓN · ' + siglaDe(it.sv), <><h3 className="st-h">{limpio(it.ev)}</h3>{vis}
         <small className="st-s">{top.length >= 2 ? 'Campeón: ' + q.join(' y ') + ' · ' : ''}{it.part || 0} raperos</small></>, c, 'Ver la llave', { llave: it.ll }));
     } else if (it.tipo === 'caza') {
       const a = liga.fila(it.a);
-      out.push(Slide('SE BUSCA · CAZADO', <><div className="st-caza"><Cara liga={liga} k={a ? a.k : ''} nombre={it.a} cls="st-cara" /><span className="sello">CAZADO</span></div>
+      out.push(Slide('SE BUSCA · CAZADO', <><div className="st-caza"><Cara liga={liga} k={a ? a.k : ''} nombre={it.a} cls="st-cara" grande /><span className="sello">CAZADO</span></div>
         <h3 className="st-h">{q[0]} cazó a {it.a}</h3><small className="st-s">{it.cat} · cobra {num(it.pts)}</small></>, c, 'Ver Se busca', { ancla: 'sebusca' }));
     } else if (it.tipo === 'anuncio') {
       const e = liga.proximos().find((x) => limpio(x.nombre) === limpio(it.ev));
@@ -608,7 +608,7 @@ function historiasTuyas(liga, mm) {
   const mueve = mv > 0 ? '▲ subiste ' + mv + (mv === 1 ? ' puesto' : ' puestos') : mv < 0 ? '▼ bajaste ' + (-mv) + (mv === -1 ? ' puesto' : ' puestos') : '';
   const out = [];
   const ultimo = mios.length ? liga.fechaLlave(mios[mios.length - 1][0]) : String(mm.ini || '');
-  out.push(Slide('TU SEMANA', <><Cara liga={liga} k={yo.k} nombre={yo.n} cls="st-cara" />
+  out.push(Slide('TU SEMANA', <><Cara liga={liga} k={yo.k} nombre={yo.n} cls="st-cara" grande />
     <h3 className="st-h">{mios.length ? 'Jugaste ' + mios.length + (mios.length === 1 ? ' evento' : ' eventos') : 'Esta semana todavía no jugaste'}</h3>
     {mios.length ? <ul className="st-l">{mios.slice(-5).map(([ll, p, n], i) => <li key={i}><b>{limpio(String(p || ''))}</b>{limpio(ll.nombre)} · {num(Number(n) || 0)} pts</li>)}</ul> : null}
     <small className="st-s">{[yo.pos ? '#' + yo.pos + ' en el Ranking' : '', mueve ? mueve + ' desde el lunes' : '', mios.length ? num(pts) + ' pts esta semana' : 'Juega uno y sumas para tu Temporada'].filter(Boolean).join(' · ')}</small></>,
@@ -676,7 +676,7 @@ function historiasLiga(liga, mm) {
   // 🔥 la racha más larga de las que siguen vivas
   const r = (liga.d.rachas || []).filter((x) => x.r >= 2)[0];
   if (r) {
-    out.push(Slide('EN RACHA', <><Cara liga={liga} k={r.k} nombre={r.n} cls="st-cara" /><h3 className="st-h">{limpio(r.n)} lleva {r.r} seguidos</h3>
+    out.push(Slide('EN RACHA', <><Cara liga={liga} k={r.k} nombre={r.n} cls="st-cara" grande /><h3 className="st-h">{limpio(r.n)} lleva {r.r} seguidos</h3>
       <small className="st-s">eventos seguidos llegando arriba de la llave</small></>,
     'ahora', 'Ver las rachas', { ruta: '#/ranking/rachas' }, 'racha:' + r.k + ':' + r.r));
   }
@@ -690,8 +690,8 @@ function historiasLiga(liga, mm) {
   const fa = cl ? liga.T[cl.a] : null;
   const fb = cl ? liga.T[cl.b] : null;
   if (fa && fb) {
-    out.push(Slide('EL CLÁSICO', <><ul className="st-gente st-vs"><li><Cara liga={liga} k={fa.k} nombre={fa.n} cls="st-cara" /><span>{limpio(fa.n)}</span></li>
-      <li className="st-vs-n">{cl.ga}–{cl.gb}</li><li><Cara liga={liga} k={fb.k} nombre={fb.n} cls="st-cara" /><span>{limpio(fb.n)}</span></li></ul>
+    out.push(Slide('EL CLÁSICO', <><ul className="st-gente st-vs"><li><Cara liga={liga} k={fa.k} nombre={fa.n} cls="st-cara" grande /><span>{limpio(fa.n)}</span></li>
+      <li className="st-vs-n">{cl.ga}–{cl.gb}</li><li><Cara liga={liga} k={fb.k} nombre={fb.n} cls="st-cara" grande /><span>{limpio(fb.n)}</span></li></ul>
       <small className="st-s">se cruzaron {cl.n} veces en la temporada</small></>,
     'esta temporada', 'Ver a ' + limpio(fa.n), { perfil: fa.k }, 'clasico:' + cl.a + '|' + cl.b + ':' + cl.n));
   }
@@ -776,8 +776,9 @@ export function gruposHistorias(liga) {
     const slides = proms.map((it) => {
       const qs = (it.quien || []).map(limpio).filter(Boolean);
       const q = qs[0] || '';
-      const vis = it.vid ? <img className="st-promo" alt="" src={'https://i.ytimg.com/vi/' + it.vid + '/hqdefault.jpg'} />
-        : it.img ? <img className="st-promo" alt="" src={it.img} /> : <Cara liga={liga} k={ksDe(it)[0] || ''} nombre={q} cls="st-cara" />;
+      // 🔎 la miniatura grande (1280×720, `Miniatura`): la historia va a pantalla completa y la de 480×360 se veía borrosa
+      const vis = it.vid ? <Miniatura vid={it.vid} cls="st-promo" />
+        : it.img ? <img className="st-promo" alt="" src={it.img} /> : <Cara liga={liga} k={ksDe(it)[0] || ''} nombre={q} cls="st-cara" grande />;
       // ✋ las que agrega Dlx a mano (`o: 'mano'`) se presentan como las de la Liga
       const deLiga = it.o === 'liga' || it.o === 'mano';
       // 📏 los títulos de YouTube vienen largos y sin espacios («MAKMA VS TRUST/SEMIFINAL/LIGA…»): se cortan en las barras
@@ -1622,7 +1623,7 @@ function momentos(liga, vivoL) {
         txt: <><div className="hero-t"><span className="tag tg-seguis">DE LOS QUE SIGUES · {x[3].toUpperCase()}</span></div><Tit c={largo(x[1])}>{x[1]}</Tit>
           <p className="hero-p">{x[0].charAt(0) + x[0].slice(1).toLowerCase()}.</p>
           <div className="hero-acc"><a className="btn verde" href={'#/r/' + encodeURIComponent(k)}>Ver su perfil</a></div></>,
-        vis: <div className="mo-cara"><Cara liga={liga} k={k} nombre={liga.T[k].n} cls="st-cara" /></div>,
+        vis: <div className="mo-cara"><Cara liga={liga} k={k} nombre={liga.T[k].n} cls="st-cara" grande /></div>,
       });
       break;
     }

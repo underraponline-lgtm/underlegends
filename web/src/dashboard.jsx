@@ -2385,7 +2385,9 @@ function LlavesCuentan({ L, liga, alCambiar }) {
 }
 
 // 🌆 la imagen, achicada en el navegador antes de subirla: el VS se dibuja a 1200 px, más no se ve y pesa
-function achicar(file, ancho = 1600) {
+// 🔎 2400 de ancho (antes 1600) y la calidad más alta que entre en lo que acepta el Worker (1.600.000 caracteres en
+// base64, ~1,2 MB): los VS en vivo van a pantalla completa (Dlx, 12/11/2026: «que todo esté siempre en HD»)
+function achicar(file, ancho = 2400) {
   return new Promise((ok, mal) => {
     const fr = new FileReader();
     fr.onerror = () => mal(new Error('no pude leer el archivo'));
@@ -2396,8 +2398,12 @@ function achicar(file, ancho = 1600) {
         const f = Math.min(1, ancho / im.width);
         const c = document.createElement('canvas');
         c.width = Math.round(im.width * f); c.height = Math.round(im.height * f);
-        c.getContext('2d').drawImage(im, 0, 0, c.width, c.height);
-        ok(c.toDataURL('image/jpeg', 0.86).split(',')[1]);
+        const x = c.getContext('2d');
+        x.imageSmoothingQuality = 'high';
+        x.drawImage(im, 0, 0, c.width, c.height);
+        let b64 = '';
+        for (const q of [0.92, 0.86, 0.78, 0.7]) { b64 = c.toDataURL('image/jpeg', q).split(',')[1]; if (b64.length < 1500000) break; }
+        ok(b64);
       };
       im.src = fr.result;
     };

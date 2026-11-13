@@ -472,7 +472,9 @@ function Logros({ f, cls }) {
 const fondoLado = (f, fo) => {
   const propio = fo && fo[1] ? urlFondo(fo[0]) : '';
   if (propio) return { '--bf': propio };
-  return f && f.cc ? { '--bf': 'url("/banderas/g/' + f.cc + '.webp")' } : {};
+  // 🔎 la bandera en HD (`/banderas/xl/`, 1280 de ancho, de 04_Pais/banderas): la de `/banderas/g/` mide 240×160 y acá se
+  // estira a media pantalla. Va encima de la chica: si un país no tiene la grande, se ve la de siempre
+  return f && f.cc ? { '--bf': 'url("/banderas/xl/' + f.cc + '.webp"), url("/banderas/g/' + f.cc + '.webp")' } : {};
 };
 // las horas para una batalla libre: las cuatro próximas de 6 y 9 PM del este
 function horasLibres() {
