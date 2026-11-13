@@ -360,6 +360,9 @@ function volverDeDiscord() {
         clave: c.clave || '', cs: c.cs || [], bl: c.bl || [], ev: c.ev || 0,
         sv: c.sv || '', cc: c.cc || '', svs: c.svs || [] };
       guardarLS('lg:dc', DC);
+      // 👀 quien no está verificado: a quién mira como propio, aparte y sólo para el Ranking (13/11/2026, `cuentaMira()`
+      // del Worker). NUNCA en `lg:yo`: eso abriría lo de la cuenta, que es de los verificados
+      guardarLS('lg:mira', c.mira ? { id: c.id, k: c.mira } : null);
       YO = c.clave && porK(c.clave) ? c.clave : c.rapero ? kDe(c.rapero) : '';
       guardarLS('lg:yo', YO || null);
       // ★ a quién seguís, del servidor (y lo de este dispositivo sube)
@@ -448,6 +451,7 @@ function cuentaSalir() {
   YO = '';
   DC = null;
   guardarLS('lg:yo', null);
+  guardarLS('lg:mira', null);
   guardarLS('lg:dc', null);
   pintaCuenta();
   pintaPopCuenta();
@@ -469,6 +473,7 @@ function cuentaOlvidarTodo() {
   DC = null;
   guardarLS('lg:ajustes', null);
   guardarLS('lg:yo', null);
+  guardarLS('lg:mira', null);
   guardarLS('lg:dc', null);
   aplicarCalma();
   pintaCuenta();

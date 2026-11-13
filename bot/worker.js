@@ -39,7 +39,7 @@
 // Cloudflare busca ahí las clases de los Durable Objects.
 import { anotarUso, DUENO, NIVELES_CHAT, CFG_BASE, claveMedida, claveFoto, claveCiclo, APP_ID, claveValida, quienPide } from './avisos.js';
 import { Avisos, CRON_VIGIA, rutaAvisos, vigilar, marcarDisparo, olvidarAvisos, discordDe, sesionNueva,
-  sesionFin, cookieSesion, SESION_DIAS } from './avisos.js';
+  sesionFin, sesionDe, cookieSesion, SESION_DIAS } from './avisos.js';
 // 🛡️ el anti-raid (18/10/2026): `/antiraid` y sus botones. La vuelta de cada minuto vive en el objeto (avisos.js)
 import * as AR from './antiraid.js';
 // 👥 las crews (19/10/2026): la forma de comparar nombres, la misma que el objeto
@@ -1567,8 +1567,25 @@ async function cuentaDiscord(req, env) {
         svs: p.svs || [] };
     }
   } catch (e) { rapero = ''; yo = {}; }
+  // 👀 y quien NO está verificado, a quién mira como propio (ver `cuentaMira()`): sólo para marcarle su lugar
+  const mira = rapero ? '' : await miraDe(env, u.id);
   return new Response(JSON.stringify(Object.assign({ id: u.id, n: u.global_name || u.username || '',
-    av: u.avatar ? u.id + '/' + u.avatar : '', rapero }, rapero ? yo : {})), { headers: h });
+    av: u.avatar ? u.id + '/' + u.avatar : '', rapero }, rapero ? yo : {}, mira ? { mira } : {})), { headers: h });
+}
+
+// ── 👀 A QUIÉN MIRA COMO PROPIO QUIEN NO ESTÁ VERIFICADO (Dlx, 13/11/2026: «que en el ranking uno muestre la posición
+// arriba de cada uno, sin o al estar verificado»). La clave de su `dn:` (o `dx:`, su cuenta extra), que hasta hoy leía
+// sólo `/card`, y SÓLO para que el Ranking le marque su lugar: la página la guarda aparte (`lg:mira`) y no en `lg:yo`,
+// así no abre nada de la cuenta —foto, redes, seguir, avisos—, que sigue siendo de los verificados (`d:`). Para quien
+// ya había entrado antes de esto, `/cuenta/mira` la da con la sesión, sin volver a Discord.
+async function miraDe(env, id) {
+  if (!id || await env.KV.get('d:' + id)) return '';
+  return (await env.KV.get('dn:' + id)) || (await env.KV.get('dx:' + id)) || '';
+}
+async function cuentaMira(req, env) {
+  const h = { 'content-type': 'application/json; charset=utf-8', 'cache-control': 'no-store' };
+  const id = await sesionDe(env, req);
+  return new Response(JSON.stringify({ mira: id ? await miraDe(env, id) : '' }), { headers: h });
 }
 
 // ── 🔗 Los roles vinculados de Discord ─────────────────────────────────────
@@ -4530,6 +4547,8 @@ export default {
     if (camino === '/cuenta/verificar' && req.method === 'POST') return cuentaVerificar(req, env, ctx);
     // 🔗 los roles vinculados de Discord (19/10/2026)
     if (camino === '/cuenta/rol' && req.method === 'POST') return cuentaRol(req, env);
+    // 👀 a quién mira como propio quien no está verificado, con su sesión (13/11/2026, ver `cuentaMira()`)
+    if (camino === '/cuenta/mira' && req.method === 'POST') return cuentaMira(req, env);
 
     if (req.method === 'GET') {
       const ruta = camino;

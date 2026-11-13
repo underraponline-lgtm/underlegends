@@ -258,3 +258,13 @@ tr.yo .rk-bar,.rk-fila.yo .rk-bar{background:#E41373}
 .rk-dims i{display:block;height:9px;border-radius:2px;background:var(--suave);position:relative;overflow:hidden}
 .rk-dims u{position:absolute;left:0;top:0;bottom:0;background:var(--tinta);border-radius:2px}
 .rk-dims b{font:800 14px/1 Archivo,sans-serif;font-variant-numeric:tabular-nums;text-align:right}
+/* 🧭 por qué estás ahí y cómo subir (13/11/2026, porque.jsx): plegado adentro de «TU LUGAR» */
+.rk-pq{grid-column:1/-1;padding-top:8px;border-top:1px solid rgba(255,255,255,.12)}
+.rk-pq-b{display:inline-flex;align-items:center;gap:6px;min-height:32px;padding:4px 0;background:none;border:0;color:#29B298;font:800 13px/1.2 Archivo,sans-serif;text-align:left;cursor:pointer}
+.rk-pq-fl{width:7px;height:7px;margin-left:4px;border-right:2px solid currentColor;border-bottom:2px solid currentColor;transform:translateY(-2px) rotate(45deg);transition:transform .15s}
+.rk-pq.abierto .rk-pq-fl{transform:translateY(1px) rotate(-135deg)}
+.rk-pq-c{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:10px 18px;margin-top:6px}
+.rk-pq-t{display:block;margin-bottom:5px;font:700 12px/1 "Barlow Condensed",sans-serif;letter-spacing:.08em;color:#A5A5A0}
+.rk-pq ul{display:grid;gap:5px;margin:0;padding:0 0 0 16px;font:500 13.5px/1.4 Archivo,sans-serif;color:#E7E7E2}
+.rk-pq b{color:#FFF}
+.rk-pq .te-link{color:#29B298}

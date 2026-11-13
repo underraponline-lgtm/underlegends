@@ -216,6 +216,8 @@ const CUENTA = {
   '/api/cuenta/verificar': '/cuenta/verificar',
   // 🔗 los roles vinculados de Discord (19/10/2026, `bot/paginas/vincular/`)
   '/api/cuenta/rol': '/cuenta/rol',
+  // 👀 a quién mira como propio quien no está verificado, para marcarle su lugar en el Ranking (13/11/2026)
+  '/api/cuenta/mira': '/cuenta/mira',
 };
 
 // 🔑 LA SESIÓN (28/09/2026): entrar con Discord una vez. La cookie `lg_ses`

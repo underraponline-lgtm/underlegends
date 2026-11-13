@@ -28,6 +28,7 @@ import { svElegido, useElegidos } from './elegidos.js';
 import { Ascenso, useDetalle } from './ligas.jsx';
 import { usePases } from './pase.js';
 import { TierChip } from './crewpanel.jsx';
+import { Porque, useMira } from './porque.jsx';
 import { conCrewsVivas, useCrews } from './crews.js';
 import CSS_PAGINA from './css/ranking.css?inline';
 import { usarCss } from './css.js';
@@ -582,8 +583,12 @@ function distancia(cfg, a, b) {
 // el Verme en la lista podría estar mucho mejor… un botón mejorado ahí mismo»): tu foto, tu puesto, a cuánto estás del
 // de arriba, quién tienes arriba y abajo en chips, y el botón «Ver mi fila». Reemplaza a «Los que tenés cerca» (que
 // vivía debajo de los filtros) y a la invitación a entrar con Discord. En tú, no en vos (Dlx: «nada argentino») ──────
-function TuTira({ x, cfg, base, iYo, lugar, yo, dc, encontrarme, tira }) {
+function TuTira({ x, cfg, sub, base, iYo, lugar, yo, dc, encontrarme, tira, miraEst }) {
   const { liga } = x;
+  const nombreDe = (g) => (cfg.grupo === 'pais' ? nombrePais(g.cc) : cfg.grupo === 'crew' ? limpio(g.crew) : limpio(g.n));
+  // 🧭 lo que va en «Por qué estás ahí y cómo subir» (porque.jsx): tu fila de ESTE ranking y quién tienes arriba
+  const ctx = (f, n, arriba) => ({ liga, yo, f, n, arriba, base, iYo, grupo: cfg.grupo, nombreDe, numero: (g) => numero(cfg, g),
+    sinPuesto: !!(f && cfg.sinPuesto && cfg.sinPuesto(f)), lugarTxt: lugar && !f ? lugar.txt : '' });
   if (!yo && !dc) {
     return (
       <div className="rk-tu invita" ref={tira}>
@@ -592,16 +597,41 @@ function TuTira({ x, cfg, base, iYo, lugar, yo, dc, encontrarme, tira }) {
       </div>
     );
   }
-  if (!lugar) {
+  if (!yo && miraEst === 'buscando') {
+    return (
+      <div className="rk-tu invita" ref={tira} aria-busy="true">
+        <span className="rk-tu-l"><Ico n="yo" t={22} /><b>Buscando tu lugar…</b></span>
+      </div>
+    );
+  }
+  if (!yo && dc && dc.clave) {
+    // verificado, pero sin fila en la temporada: todavía no jugó
     return (
       <div className="rk-tu invita" ref={tira}>
         <span className="rk-tu-l"><Ico n="yo" t={22} /><b>Todavía no estás en este ranking: juega un evento y apareces.</b></span>
       </div>
     );
   }
+  if (!yo) {
+    // entraste, pero tu Discord no está atado a ningún rapero de la Liga: verificarte lo ata
+    return (
+      <div className="rk-tu invita" ref={tira}>
+        <span className="rk-tu-l"><Ico n="yo" t={22} /><b>No encontramos tu perfil de rapero: si ya jugaste, verifícate y te marcamos en cada ranking.</b></span>
+        <a className="btn verde chico rk-tu-btn" href="#/cuenta/verificar">Verificarme</a>
+      </div>
+    );
+  }
+  if (!lugar) {
+    return (
+      <div className="rk-tu invita" ref={tira}>
+        <span className="rk-tu-l"><Ico n="yo" t={22} /><b>Todavía no estás en este ranking: juega un evento y apareces.</b></span>
+        <Porque sub={sub} c={ctx(null, 0, null)} n={0} />
+      </div>
+    );
+  }
   const f = iYo >= 0 ? base[iYo] : null;
-  const n = f ? numero(cfg, f) : 0;
-  const nombreDe = (g) => (cfg.grupo === 'pais' ? nombrePais(g.cc) : cfg.grupo === 'crew' ? limpio(g.crew) : limpio(g.n));
+  // ⚠️ sin fila en esta tabla (fuera de las 200 que viajan), el número es el de tu fila (`lugar.n`)
+  const n = f ? numero(cfg, f) : lugar.n || 0;
   const arriba = f && n ? base.slice(0, iYo).reverse().find((g) => numero(cfg, g)) : null;
   const abajo = f && n ? base.slice(iYo + 1).find((g) => numero(cfg, g)) : null;
   const dA = arriba ? distancia(cfg, arriba, f) : null;
@@ -612,7 +642,7 @@ function TuTira({ x, cfg, base, iYo, lugar, yo, dc, encontrarme, tira }) {
     const [val] = cfg.valor;
     const d = val(arriba) - val(f);
     frase = 'A ' + dA + ' de ' + nombreDe(arriba) + ', el #' + numero(cfg, arriba) + (d <= 2 && !cfg.grupo ? ': si ganas el próximo, lo pasas.' : '.');
-  } else if (n && !arriba) frase = 'Eres el #1' + (abajo && dB ? ': le sacas ' + dB + ' a ' + nombreDe(abajo) + '.' : '.');
+  } else if (f && n && !arriba) frase = 'Eres el #1' + (abajo && dB ? ': le sacas ' + dB + ' a ' + nombreDe(abajo) + '.' : '.');
   const chip = (g, d, cls, txt) => (
     <span className={'rk-tu-chip ' + cls}><i aria-hidden="true" />
       {cfg.grupo === 'pais' ? <Bandera cc={g.cc} cls="rk-tu-flag" /> : cfg.grupo === 'crew' ? <LogoCrew c={g} cls="rk-tu-logo" /> : <Cara liga={liga} k={g.k} nombre={g.n} cls="cara rk-tu-cara" />}
@@ -633,6 +663,7 @@ function TuTira({ x, cfg, base, iYo, lugar, yo, dc, encontrarme, tira }) {
       ) : null}
       {lugar.verificar ? <a className="btn verde chico rk-tu-btn" href="#/cuenta/verificar">Verificarme</a>
         : lugar.ir ? <button type="button" className="btn verde chico rk-tu-btn" onClick={encontrarme}>Ver mi fila ↓</button> : null}
+      <Porque sub={sub} c={ctx(f, n, arriba)} n={n} />
     </div>
   );
 }
@@ -930,7 +961,9 @@ export function Ranking({ liga, sub: subRuta, ver: abre = '', dc, raiz }) {
   const cfg = subDe(liga, sub) || SUBS.temporada;
   const pronto = cfg.pronto || (cfg.hay && !cfg.hay(liga) ? cfg.siNo : null);
   const mwOn = !!((liga.d.mw && (liga.d.mw.b || []).length) || (liga.d.tabla || []).some((f) => f.caz || f.czd || f.sob));
-  const yo = liga.yo;
+  // 👀 tú: el verificado (`liga.yo`) o, si no lo estás, el perfil al que te ata tu Discord (`useMira`, 13/11/2026)
+  const [miraF, miraEst] = useMira(liga, dc);
+  const yo = liga.yo || miraF;
   const miCrewF = yo ? liga.crewDe(yo) : null;
   const sem = useSemanas(sub === 'temporada');
   const due = useDuelos(sub === 'duelos' && !liga.d.duelos, liga.d.sello);
@@ -1043,6 +1076,14 @@ export function Ranking({ liga, sub: subRuta, ver: abre = '', dc, raiz }) {
         } else txt = '1.º ×' + (f.oro || 0) + ' · 2.º ×' + (f.seg || 0) + ' · 3.º ×' + (f.ter || 0);
       }
       lugar = { cara, quien, n, txt, ir: true, verificar: !n && f.fc, mov: sub === 'temporada' ? f.mv || 0 : 0 };
+    } else if (sub === 'temporada' && (yo.pos || yo.fc)) {
+      // 🙋 fuera de las 200 filas que viajan (Dlx es #228): tu puesto oficial viene en tu fila
+      lugar = { cara, quien, n: yo.fc ? 0 : yo.pos, txt: yo.fc ? 'Fuera de concurso: verifícate en Discord Rap Español y tienes número'
+        : 'Estás más abajo de lo que muestra la tabla', verificar: !!yo.fc, mov: yo.mv || 0 };
+    } else if (!cfg.grupo && sub !== 'duelos' && sub !== 'mw' && !(liga.d.tabla || []).some((r) => r.k === yo.k)
+      && cfg.filas({ d: { tabla: [yo] } }).length) {
+      // 🙋 y en los demás: estás en este ranking, pero más abajo de las 200 filas que viajan
+      lugar = { cara, quien, n: 0, txt: 'Estás más abajo de los que muestra la tabla' };
     } else if (sub === 'competitivo' && !yo.rg) {
       const falta = Math.max(0, (req(liga, 'competitivo') || 10) - (yo.ev || 0));
       lugar = { cara, quien, n: 0, txt: falta ? 'Te falta participar en ' + falta + (falta === 1 ? ' evento' : ' eventos') + ' más, de cualquier servidor de la Liga, para tu letra' : 'Tu letra llega con la próxima corrida' };
@@ -1169,7 +1210,7 @@ export function Ranking({ liga, sub: subRuta, ver: abre = '', dc, raiz }) {
             {!pronto && base.length ? <div className="hero-acc"><Compartir cls="btn borde chico" url={enlace('#/ranking/' + sub)} texto={'El ranking de ' + cfg.et + ' de la Liga Global'} etiqueta="Compartir el ranking" /></div> : null}
           </div>
           {top.length ? <Podio liga={liga} cfg={cfg} top={top} sem={sub === 'temporada' ? sem : null} /> : null}
-          {!pronto && base.length ? <TuTira x={x} cfg={cfg} base={base} iYo={iYo} lugar={lugar} yo={yo} dc={dc} encontrarme={encontrarme} tira={tira} /> : null}
+          {!pronto && base.length ? <TuTira x={x} cfg={cfg} sub={sub} base={base} iYo={iYo} lugar={lugar} yo={yo} dc={dc} encontrarme={encontrarme} tira={tira} miraEst={miraEst} /> : null}
         </section>
       </div>
       {/* 🎯 los buscados de esta semana, arriba de quién cazó a quién (vivían en el Inicio hasta el 13/10/2026) */}
