@@ -85,7 +85,10 @@ html.ini-nuevo.lg-fuera #lg-carga{display:none}
 #lg-carga .lg-marca i{width:2px;height:28px;background:rgba(246,246,246,.5)}
 #lg-carga .lg-marca b{font:900 28px/1 Archivo,system-ui,sans-serif;font-stretch:125%}
 /* 🎬 el título de la bienvenida, SIEMPRE EN EL MISMO LUGAR (Dlx: «como Brawl Stars, que siempre tiene su estilo pero
-   diferentes fondos»): el sello, «LIGA GLOBAL» relleno con el fondo que tocó y «DE FREESTYLE» en magenta */
+   diferentes fondos»): el sello, «LIGA GLOBAL» en blanco y «DE FREESTYLE» en magenta.
+   ⚪ BLANCO LISO, NO RELLENO CON LA FOTO (Dlx, 13/11/2026: «los fondos de carga no deberían tener el texto de textura
+   esa… simplemente color blanco»). Hasta la 4.95 iba relleno con el fondo que tocó, como el de la bienvenida; ESE de la
+   bienvenida (`.bv-t-rel`, con el video) no se toca: es otra pieza */
 #lg-carga .lg-logo{position:absolute;left:50%;top:max(24px,5.2vw);translate:-50% 0;display:grid;justify-items:center;gap:max(10px,.9vw);text-align:center}
 #lg-carga .lg-logo::before{content:'';position:absolute;left:50%;top:50%;width:150%;height:210%;translate:-50% -50%;z-index:-1;
   background:radial-gradient(ellipse at center,rgba(3,3,4,.82) 0,rgba(3,3,4,.55) 45%,transparent 72%)}
@@ -94,9 +97,7 @@ html.ini-nuevo.lg-fuera #lg-carga{display:none}
   box-shadow:4px 4px 0 #29B298}
 #lg-carga .lg-t{display:grid;gap:2px;font:900 clamp(30px,3.9vw,76px)/.9 Archivo,system-ui,sans-serif;font-stretch:125%;letter-spacing:.01em;
   word-spacing:.08em;white-space:nowrap;filter:drop-shadow(0 4px 16px rgba(0,0,0,.65))}
-#lg-carga .lg-t1{color:transparent;-webkit-background-clip:text;background-clip:text;
-  background-image:linear-gradient(rgba(246,246,246,.34),rgba(246,246,246,.34)),var(--q,linear-gradient(#bdbdbd,#efefef));
-  background-blend-mode:screen;background-size:160% auto;background-position:40% 45%;-webkit-text-stroke:1.5px rgba(246,246,246,.75)}
+#lg-carga .lg-t1{color:#F6F6F6}
 #lg-carga .lg-t2{color:#E41373}
 /* ⏳ abajo al centro, la barrita celeste de la bienvenida: el consejo, el porcentaje y la barra */
 #lg-carga .lg-pie{position:absolute;left:50%;bottom:max(20px,3.2vw);translate:-50% 0;width:min(560px,34vw);display:grid;gap:12px}
@@ -364,7 +365,6 @@ html.lg-carga-js #lg-carga .lg-foto{display:block;position:absolute;left:50%;top
       var mostrar = function () {
         if (fotoYa) return; fotoYa = true;
         el.querySelector('.lg-img').style.backgroundImage = 'url("' + src + '")';
-        el.querySelector('.lg-t1').style.setProperty('--q', 'url("' + src + '")');
         requestAnimationFrame(function () { el.classList.add('con-foto'); entrada(); });
       };
       var sinFoto = function () { if (fotoYa) return; fotoYa = true; entrada(); };
