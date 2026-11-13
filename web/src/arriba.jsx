@@ -461,9 +461,10 @@ function Campanita({ liga }) {
 // aparezca todo, y que si alguien te reta que aparezca ahí pues también»). Arriba lo de hoy en la Liga; después «Para hacer»
 // —lo que pide algo de ti y se contesta ahí: quién ganó tu batalla libre, la batalla que espera ganador en tu panel—; y lo
 // demás por día (Hoy, Ayer, Esta semana, Antes), con filtros por tipo. El emoji del título va en la esquina de la cara
-const CAT_AVISO = { seguidor: 'gente', aplauso: 'gente', comentario: 'gente', seguido: 'gente', organiza: 'gente',
-  personal: 'ranking', libre: 'ranking', racha: 'pase', pase: 'pase' };
-const FILTROS_AVISO = [['todo', 'Todo'], ['hacer', 'Para hacer'], ['gente', 'Gente'], ['ranking', 'Ranking'], ['pase', 'Pase'], ['liga', 'Liga']];
+// 🗂️ CUATRO FILTROS Y NO SEIS (Dlx, 13/11/2026: «creo que sólo debería haber 4 categorías… renombra alguna para meter a las
+// que quedan fuera»): la gente por un lado, y tu ranking, el Pase, los eventos y las correcciones juntos en «Liga»
+const CAT_AVISO = { seguidor: 'gente', aplauso: 'gente', comentario: 'gente', seguido: 'gente', organiza: 'gente' };
+const FILTROS_AVISO = [['todo', 'Todo'], ['hacer', 'Para hacer'], ['gente', 'Gente'], ['liga', 'Liga']];
 const catDe = (x) => CAT_AVISO[x.tipo] || 'liga';
 const DIA_MS_AV = 86400000;
 // «+150 Puntos de Tienda» del cuerpo pasa a una pastilla: el número se ve de un vistazo
