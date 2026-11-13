@@ -139,8 +139,12 @@ function Marca({ liga }) {
 // ── el buscador: raperos, y también servidores, países y crews (Dlx, 01/10/2026: «sí», la E). Primero lo que es
 // exactamente lo buscado, después lo que empieza así y al final lo que lo contiene; a igual coincidencia, raperos
 // primero. Vive arriba en la computadora y en el menú ☰ en el celular, donde arriba no entra
-const TIPOS = { rapero: 0, servidor: 1, pais: 2, crew: 3 };
-const ETIQUETA_TIPO = { rapero: 'rapero', servidor: 'servidor', pais: 'país', crew: 'crew' };
+const TIPOS = { rapero: 0, servidor: 1, pais: 2, crew: 3, pagina: 4, evento: 5 };
+const ETIQUETA_TIPO = { rapero: 'rapero', servidor: 'servidor', pais: 'país', crew: 'crew', pagina: 'página', evento: 'evento' };
+// 🔎 «QUE TE DEJE BUSCAR CUALQUIER COSA» (Dlx, 13/11/2026): también las páginas (las del menú, cada ranking y lo de tu
+// cuenta) y los eventos (los que vienen y los de las últimas semanas)
+const PAGINAS_EXTRA = [['Tienda', '#/tienda', 'tienda'], ['Inventario', '#/inventario', 'tarjetas'], ['Tu cuenta', '#/cuenta', 'perfil'],
+  ['Ajustes', '#/ajustes', 'engranaje'], ['Novedades de la página', '#/cambios', 'novedades']];
 // 🔑 Y POR SUS AKAS (Dlx, 07/10/2026: «cuando buscan a alguien con cualquiera de sus akas, que le aparezca el mismo
 // rapero… si alguien busca vice, que aparezca el nombre principal»). El payload ya trae `alias` —{aka: clave}, los de
 // quien tiene perfil; lo arma `subir_web._alias()` y lo usa la llave en vivo—, con la clave como `respaldo._norm()`:
@@ -226,6 +230,28 @@ export function Buscar({ liga, onIr }) {
       x: nota(s.sv, siglaDe(s.sv), s.nombre || '') }));
     (liga.d.paises || []).filter((p) => p.n).forEach((p) => todo.push({ tipo: 'pais', id: 'p' + p.cc, n: nombrePais(p.cc), href: '#/pais/' + p.cc, cc: p.cc, x: nota(nombrePais(p.cc)) }));
     (liga.d.crews || []).forEach((c) => todo.push({ tipo: 'crew', id: 'c' + (c.clave || c.crew), n: limpio(c.crew), href: '#/crew/' + encodeURIComponent(c.clave || c.crew), crew: c, x: nota(c.crew) }));
+    // las páginas: las del menú de arriba (con lo de adentro de cada grupo) y lo de tu cuenta
+    const vistas = new Set();
+    const pagina = (n, href, ico, sub) => {
+      if (!href || vistas.has(href + n)) return;
+      vistas.add(href + n);
+      todo.push({ tipo: 'pagina', id: 'g' + href + n, n, href, ico, sub, x: nota(n, sub ? sub + ' ' + n : n) });
+    };
+    GRUPOS.forEach(([n, href, sub]) => {
+      if (href) pagina(n, href, sub ? (sub[0] || [])[3] : 'inicio');
+      (sub || []).forEach(([sn, sh, , si]) => pagina(n === 'Ranking' ? 'Ranking ' + sn : sn, sh, si, n === 'Ranking' ? '' : n));
+    });
+    PAGINAS_EXTRA.forEach(([n, href, ico]) => pagina(n, href, ico));
+    // los eventos: los que vienen y los que pasaron hace poco, por su nombre
+    const evVistos = new Set();
+    (liga.proximos ? liga.proximos() : []).concat((liga.d.calendario || []).map((c) => ({ nombre: c.n, sv: c.sv, cuando: c.t })))
+      .forEach((e) => {
+        const n = limpio(e.nombre || '');
+        const id = (e.sv || '') + '|' + norm(n);
+        if (!n || evVistos.has(id)) return;
+        evVistos.add(id);
+        todo.push({ tipo: 'evento', id: 'e' + id, n, sub: siglaDe(e.sv), href: '#/eventos', logo: e.sv ? liga.logo(e.sv) : '', x: nota(n) + 0.5 });
+      });
     return todo.filter((r) => r.x < 9).sort((a, b) => (a.x - b.x) || (TIPOS[a.tipo] - TIPOS[b.tipo]) || a.n.localeCompare(b.n)).slice(0, 8);
   }, [q, liga, todos]);
   const ir = () => { setQ(''); if (onIr) onIr(); };
@@ -243,13 +269,15 @@ export function Buscar({ liga, onIr }) {
     if (r.tipo === 'rapero') return <Cara liga={liga} k={r.k} nombre={r.n} cls="cara" />;
     if (r.tipo === 'servidor') return <span className="cara"><img alt="" src={r.logo} /></span>;
     if (r.tipo === 'pais') return <span className="cara"><img alt="" src={'/banderas/g/' + r.cc + '.webp'} /></span>;
+    if (r.tipo === 'pagina') return <span className="cara br-ico"><Ico n={r.ico || 'flecha'} t={16} /></span>;
+    if (r.tipo === 'evento') return r.logo ? <span className="cara"><img alt="" src={r.logo} /></span> : <span className="cara br-ico"><Ico n="eventos" t={16} /></span>;
     return <CrewCirculo c={r.crew} cls="cara" />;
   };
   return (
     <div className="buscar-w" ref={caja}>
       <label className="buscar">
         <Ico n="buscar" t={18} />
-        <input type="search" placeholder={ejemplo} aria-label="Buscar raperos, servidores, países y crews" value={q} onChange={(e) => setQ(e.target.value)}
+        <input type="search" placeholder={ejemplo} aria-label="Buscar raperos, servidores, países, crews, páginas y eventos" value={q} onChange={(e) => setQ(e.target.value)}
           onKeyDown={(e) => { if (e.key === 'Enter' && res[0]) { location.hash = res[0].href; ir(); } if (e.key === 'Escape') setQ(''); }} />
       </label>
       {res.length ? (
@@ -273,21 +301,19 @@ export function CaraDc({ dc, cls = 'cara' }) {
 
 // 🔎 EL BUSCADOR EN EL CELULAR, CON SU LUPA ARRIBA (Dlx, 16/10/2026: «agrega el ícono de búsqueda para celulares»): hasta
 // ahora vivía sólo adentro del menú ☰. La lupa abre el mismo buscador solo, con el teclado listo
-function BuscarCelu({ liga, onCerrar }) {
+function BarraBuscar({ liga, onCerrar }) {
   const caja = useRef(null);
   useEffect(() => {
     const t = setTimeout(() => { const i = caja.current && caja.current.querySelector('input'); if (i) i.focus(); }, 30);
     const esc = (e) => { if (e.key === 'Escape') onCerrar(); };
     window.addEventListener('keydown', esc);
-    return () => { clearTimeout(t); window.removeEventListener('keydown', esc); };
+    window.addEventListener('lg:dir', onCerrar);
+    return () => { clearTimeout(t); window.removeEventListener('keydown', esc); window.removeEventListener('lg:dir', onCerrar); };
   }, [onCerrar]);
   return (
-    <div className="x-menu x-busca-celu" onClick={(e) => { if (e.target === e.currentTarget) onCerrar(); }}>
-      <div className="x-caja" role="dialog" aria-modal="true" aria-label="Buscar" ref={caja}>
-        <div className="x-caja-cab"><b>BUSCAR</b>
-          <button className="btn-ico x-cerrar" type="button" aria-label="Cerrar el buscador" onClick={onCerrar}><Ico n="cerrar" t={22} /></button></div>
-        <div className="x-busca"><Buscar liga={liga} onIr={onCerrar} /></div>
-      </div>
+    <div className="cab-busca" role="search" ref={caja}>
+      <Buscar liga={liga} onIr={onCerrar} />
+      <button className="btn-ico cab-busca-x" type="button" aria-label="Cerrar el buscador" onClick={onCerrar}><Ico n="cerrar" t={18} /></button>
     </div>
   );
 }
@@ -302,6 +328,10 @@ export function Cabecera({ liga, dc, onMenu, pagina = '' }) {
   // 🔥 tu racha diaria, al lado de tu cuenta (sólo si entraste con Discord: pedirla cuenta el día)
   const R = useRacha(!!dc);
   const fuego = R && R.racha.actual ? R.racha.actual : 0;
+  // ⭐ tu nivel (el general: el de entrar, jugar y lo que hacés en la Liga; no el del Pase), con su barra hasta el siguiente
+  // (Dlx, 13/11/2026: «al costado del círculo de perfil una barra… no de Pase de rapero sino nivel de XP en general»)
+  const nv = R && R.nivel && R.nivel.n ? R.nivel : null;
+  const nvPct = nv && nv.sig > nv.base ? Math.max(0, Math.min(100, Math.round((100 * (nv.xp - nv.base)) / (nv.sig - nv.base)))) : 0;
   // ⌨️ Ctrl K (o ⌘ K, o «/» fuera de un campo) abre el buscador, como la paleta de 21st que se tomó de referencia
   useEffect(() => {
     const tecla = (e) => {
@@ -328,7 +358,10 @@ export function Cabecera({ liga, dc, onMenu, pagina = '' }) {
           <span className="yo-envol">
             <button type="button" className="yo-chip" aria-haspopup="menu" aria-expanded={yoM} onClick={() => setYoM((v) => !v)}
               aria-label={'Lo tuyo: inventario, perfil y cuenta' + (fuego ? ' · ' + fuego + (fuego === 1 ? ' día seguido' : ' días seguidos') : '')}>
-              {cara}<span>{nombre}</span>{fuego ? <span className="yo-racha" aria-hidden="true"><Ico n="fuego" t={13} />{fuego}</span> : null}</button>
+              {cara}<span>{nombre}</span>
+              {nv ? <span className="yo-nv" title={'Nivel ' + nv.n + ' · ' + num(nv.sig - nv.xp) + ' XP para el ' + (nv.n + 1)} aria-hidden="true">
+                <b>NV {nv.n}</b><i><u style={{ width: nvPct + '%' }} /></i></span> : null}
+              {fuego ? <span className="yo-racha" aria-hidden="true"><Ico n="fuego" t={13} />{fuego}</span> : null}</button>
             {yoM ? <YoMenu k={yo ? yo.k : (dc && dc.clave) || ''} onCerrar={() => setYoM(false)} /> : null}
           </span>
         ) : (
@@ -336,7 +369,10 @@ export function Cabecera({ liga, dc, onMenu, pagina = '' }) {
         )}
         <button className="btn-ico hamb" type="button" aria-label="Menú" onClick={onMenu}><Ico n="menu" t={22} /></button>
       </div>
-      {busca ? <BuscarCelu liga={liga} onCerrar={() => setBusca(false)} /> : null}
+      {/* 🔎 EL BUSCADOR, UNA BARRA DEBAJO DE LA CABECERA (Dlx, 13/11/2026: «que no aparezca un pop up sino que aparezca una
+          barra abajo de eso y te deje buscar cualquier cosa»): la lupa (o Ctrl K) la abre con el teclado listo; se cierra con
+          la ✕, con Escape o al elegir algo */}
+      {busca ? <BarraBuscar liga={liga} onCerrar={() => setBusca(false)} /> : null}
     </header>
   );
 }

@@ -4997,3 +4997,44 @@ dialog.pn-pop.pop-gratis{--pc:#F5C542;width:min(640px,calc(100vw - 32px))}
     padding:14px 16px 18px;box-shadow:0 24px 60px rgba(0,0,0,.6)}
   .app .cab.una .x-busca-celu .buscar{width:100%;min-width:0}
 }
+
+
+/* ═══ 🔎⭐🎯 LA CABECERA, SEGUNDA MANO (13/11/2026, Dlx: «una barra de nivel al costado del círculo de perfil… no de Pase
+   sino de XP en general», «que la lupa esté centrada», «que no aparezca un pop up sino una barra abajo… buscar cualquier
+   cosa») ═══ */
+/* la lupa (y ☰) centradas: `display:inline-flex` les sacaba el `place-items:center` de los botones de ícono */
+.app .cab.una :is(.lupa-b,.hamb){display:inline-grid;place-items:center;padding:0}
+@media (min-width: 1024px){ .app .cab.una .hamb{display:none} }
+/* tu nivel: NV y la barra hasta el siguiente, entre tu cara y la racha */
+.yo-nv{display:none}
+@media (min-width: 900px){
+  .app .cab.una .yo-nv{display:grid;gap:3px;min-width:52px}
+  .app .cab.una .yo-nv b{font:900 11px/1 Archivo,sans-serif;letter-spacing:.04em;color:#F6F6F6}
+  .app .cab.una .yo-nv i{display:block;height:4px;background:#2A2C31;position:relative;width:52px}
+  .app .cab.una .yo-nv u{position:absolute;inset:0 auto 0 0;background:#29B298;text-decoration:none}
+  .app .cab.una .yo-chip{gap:9px}
+}
+@media (min-width: 900px) and (max-width: 1199.98px){ .app .cab.una .yo-nv{display:none} }
+/* la barra del buscador: una fila más, de lado a lado, debajo de todo */
+.cab-busca{display:flex;align-items:center;gap:8px;padding:10px 0 2px}
+.app .cab.una .cab-busca .buscar-w{display:block;flex:1 1 auto;min-width:0}
+.app .cab.una .cab-busca .buscar{width:100%;min-width:0;border-color:#29B298;background:#0B0C0E}
+.app .cab.una .cab-busca .busca-res{z-index:70;max-height:min(60vh,520px);overflow-y:auto;border:1.5px solid #2A2C31;background:#0B0C0E}
+.cab-busca-x{flex:none}
+.br-ico{display:grid;place-items:center;background:#1A1B1F;color:#29B298}
+@media (min-width: 900px){
+  .app .cab.una .cab-busca{grid-column:1 / -1;padding:2px 0 10px;animation:cab-baja .16s ease-out}
+}
+@media (max-width: 899.98px){
+  .app .cab.una{flex-wrap:wrap}
+  .app .cab.una .cab-busca{flex:1 1 100%;order:9;animation:cab-baja .16s ease-out}
+}
+@keyframes cab-baja{from{opacity:0;transform:translateY(-6px)}to{opacity:1;transform:none}}
+.app.calma .cab-busca{animation:none}
+@media (prefers-reduced-motion:reduce){.cab-busca{animation:none}}
+/* ⚠️ la regla que esconde tu nombre en el chip (`.yo-chip > span:not(.cara):not(.yo-racha)`) escondía también tu nivel */
+@media (min-width: 1200px){ .app .cab.una .yo-chip > span.yo-nv:not(.cara):not(.yo-racha){display:grid} }
+/* 📱 el campo de la barra en el celular: el estilo de `.buscar` sólo existía desde 900 px (quedaba aplastado), y la letra a
+   16 px para que el iPhone no haga zoom al escribir */
+.app .cab.una .cab-busca .buscar{display:flex;align-items:center;gap:8px;border:2px solid #29B298;min-height:44px;padding:0 12px;color:#A5A5A0}
+.app .cab.una .cab-busca .buscar input{font-size:16px;color:#F6F6F6}
