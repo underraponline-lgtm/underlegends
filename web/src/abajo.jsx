@@ -219,35 +219,60 @@ export function Stickers({ logos }) {
   );
 }
 
+// 👕 EL DROP, OPCIÓN A (13/11/2026, Dlx: «A y A», de https://claude.ai/artifact/Rumigw5P7eu1sFKJqaa8T9): una remera
+// grande sobre negro y, al lado, los colores de los servidores; tocas uno y la remera cambia a la de ese socio. El buzo,
+// la gorra y los stickers, al costado. «Ejemplos, todavía no se vende nada» una sola vez, arriba, y no en cada tarjeta
+// como antes, y sin la caja gris de cada dibujo. Ideas de 21st, sólo miradas: «Featured Product Showcase» (ziegfiroyt),
+// «Product Drop Card» (ravikatiyar162) y «ProductCard» de colores (youcefbnm)
 export function Merch({ liga }) {
   // los socios: los servidores de la Liga que vienen en el lobby, con su color y su logo
   const svs = liga ? Object.values(liga.svs || {}).filter((s) => s.color && s.sv) : [];
-  const socios = svs.filter((s) => s.logo).slice(0, 4);
-  // (cada ítem es una tupla [clave, título, texto, dibujo]: el dibujo no se pinta como lista, la clave va en el <li>)
-  /* eslint-disable react/jsx-key */
-  const items = [
-    ['remera', 'Remera Under Legends', 'Negra, con el logo al pecho', <Prenda tipo="remera" color="#141414" logo="/ul.png" />],
-    ['buzo', 'Buzo Liga Global', 'Magenta, con el logo y «LIGA GLOBAL»', <Prenda tipo="buzo" color="#E41373" logo="/ul.png" texto="LIGA GLOBAL" />],
-    ['gorra', 'Gorra UL', 'Blanca, con el logo bordado', <Prenda tipo="gorra" color="#F2F2F2" logo="/ul.png" />],
-    ...socios.map((s) => ['sv-' + s.sv, 'Remera ' + (s.sigla || s.sv), s.nombre + ', socio de la Liga',
-      <Prenda tipo="remera" color={s.color} logo={liga.logo(s.sv)} texto={String(s.sigla || s.sv).toUpperCase()} />]),
-    ...(svs.length ? [['stickers', 'Stickers de la Liga', 'Los logos de los socios',
-      <Stickers logos={['/ul.png', ...svs.filter((s) => s.logo).map((s) => liga.logo(s.sv))]} />]] : []),
+  const socios = svs.filter((s) => s.logo).slice(0, 7);
+  const remeras = [
+    { k: 'ul', sig: 'UL', marca: 'Under Legends', n: 'Remera Under Legends', d: 'Negra, con el logo al pecho', col: '#141414',
+      dib: <Prenda tipo="remera" color="#141414" logo="/ul.png" /> },
+    ...socios.map((s) => {
+      const sig = String(s.sigla || s.sv).toUpperCase();
+      return { k: s.sv, sig, marca: s.nombre, n: 'Remera ' + sig, d: s.nombre + ', socio de la Liga', col: s.color,
+        dib: <Prenda tipo="remera" color={s.color} logo={liga.logo(s.sv)} texto={sig} /> };
+    }),
   ];
-  /* eslint-enable react/jsx-key */
+  const [i0, setI] = useState(0);
+  const i = Math.min(i0, remeras.length - 1);
+  const r = remeras[i];
   return (
-    <Sec id="merch" titulo="Merchandising">
+    <Sec id="merch" titulo="Merchandising" extra="negra mqa">
       {/* el texto en UN span: la nota es flex, y cada pedazo suelto quedaba como un ítem con su hueco («nada : cuando») */}
       <p className="mq-nota"><span className="tag-pronto">EJEMPLOS</span><span>Así podría ser la ropa de Under Legends y de sus socios. <b>Todavía no se vende nada</b>: cuando salga, la ves acá primero.</span></p>
-      <div className="mq-rail">
-        {items.map(([k, n, d, dibujo]) => (
-          <article className="mq" key={k}>
-            <div className="mq-img">{dibujo}</div>
-            <b>{n}</b>
-            <small>{d}</small>
-            <span className="mq-ej">EJEMPLO · NO ESTÁ A LA VENTA</span>
-          </article>
-        ))}
+      <div className="mqa-g">
+        <div className="mqa-uno" style={{ '--mqa-c': r.col }}>
+          <div className="mqa-img" key={r.k}>{r.dib}</div>
+          <div className="mqa-t">
+            <span className="mqa-k">Remeras · {r.marca}</span>
+            <b>{r.n}</b>
+            <span className="mqa-d">{r.d}</span>
+            {remeras.length > 1 ? <>
+              <span className="mqa-k gris">Elige el servidor</span>
+              <div className="mqa-sw" role="radiogroup" aria-label="Elige el servidor">
+                {remeras.map((x, j) => (
+                  <button type="button" key={x.k} role="radio" aria-checked={j === i} aria-label={x.marca} className={'mqa-c' + (j === i ? ' on' : '')} onClick={() => setI(j)}>
+                    <i style={{ background: x.col }} />{x.sig}
+                  </button>
+                ))}
+              </div>
+            </> : null}
+          </div>
+        </div>
+        <div className="mqa-otros">
+          <article className="mqa-p"><div className="mqa-p-img"><Prenda tipo="buzo" color="#E41373" logo="/ul.png" texto="LIGA GLOBAL" /></div>
+            <div><b>Buzo Liga Global</b><small>Magenta, con el logo y «LIGA GLOBAL»</small></div></article>
+          <article className="mqa-p"><div className="mqa-p-img"><Prenda tipo="gorra" color="#F2F2F2" logo="/ul.png" /></div>
+            <div><b>Gorra UL</b><small>Blanca, con el logo bordado</small></div></article>
+          {svs.length ? (
+            <article className="mqa-p ancho"><div className="mqa-p-img"><Stickers logos={['/ul.png', ...svs.filter((s) => s.logo).map((s) => liga.logo(s.sv))]} /></div>
+              <div><b>Stickers de la Liga</b><small>Los logos de los socios, para la laptop, el celular o la tabla</small></div></article>
+          ) : null}
+        </div>
       </div>
     </Sec>
   );

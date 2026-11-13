@@ -352,16 +352,20 @@ function McGrupo({ n, img, nombre, dato, href }) {
 }
 // ── tu puesto, debajo del top 5 (Dlx, 30/09/2026: «me gustan todas», la A): dónde estás y a cuánto del de arriba.
 // Sólo si no estás en el top 5 —ahí ya te ves—; sin haber entrado, la invitación a entrar.
-function Puesto({ cara, quien, pos, txt, href }) {
+// 🏁 CON SU BARRA DESDE EL 13/11/2026 (la opción A de la maqueta, «Progress Card»): cuánto te falta para el de arriba,
+// dicho con su nombre («Te faltan 9.714 pts para pasar a Tenor (#33)»), y la barra de lo tuyo contra lo suyo
+function Puesto({ cara, quien, pos, txt, href, pct }) {
   return (
     <div className="mc-yo">
       {cara}
       <span className="mc-yo-q"><small>{quien}</small><b>{pos}</b></span>
-      <span className="mc-yo-t">{txt}</span>
+      <span className="mc-yo-t">{pct != null ? <span className="mc-yo-barra" aria-hidden="true"><i style={{ width: pct + '%' }} /></span> : null}{txt}</span>
       {href ? <a className="mc-yo-a" href={href}>Ver el ranking <Ico n="flecha" t={14} /></a> : null}
     </div>
   );
 }
+// el nombre de lo que va en una lista: una fila de la tabla, un `[x, fila]` del ELO, un duelo, un país o una crew
+const nomDe = (o) => (Array.isArray(o) ? limpio((o[1] || {}).n || '') : o.crew ? limpio(o.crew) : o.n && typeof o.n === 'string' ? limpio(o.n) : o.cc ? nombrePais(o.cc) : '');
 function puestoDe(liga, lista, esMio, valor, unidad, dec = 0, posDe = null) {
   const i = lista.findIndex(esMio);
   if (i < 5) return null;
@@ -370,8 +374,64 @@ function puestoDe(liga, lista, esMio, valor, unidad, dec = 0, posDe = null) {
   // el puesto: el oficial si la lista lo trae (la Temporada tiene empates), si no el lugar en la lista
   const pos = posDe ? posDe(lista[i]) : i + 1;
   const arriba = posDe ? posDe(lista[i - 1]) : i;
-  return { i, pos, txt: d > 0 ? 'a ' + dist + ' ' + unidad + ' del #' + arriba : 'empatado con el #' + arriba };
+  const nom = nomDe(lista[i - 1]);
+  const pct = valor(lista[i - 1]) > 0 ? Math.max(2, Math.min(100, Math.round((100 * valor(lista[i])) / valor(lista[i - 1])))) : null;
+  return {
+    i, pos, pct,
+    txt: d > 0 ? 'Te faltan ' + dist + ' ' + unidad + ' para pasar a ' + (nom ? nom + ' (#' + arriba + ')' : 'el #' + arriba) : 'Empatado con ' + (nom || 'el #' + arriba),
+  };
 }
+
+// 👑 LOS QUE MANDAN, OPCIÓN A (Dlx, 13/11/2026: «x último remakea estas 2 últimas secciones», y a la maqueta
+// https://claude.ai/artifact/Rumigw5P7eu1sFKJqaa8T9, «A y A»): la carta del #1 grande y sus números al lado; del #2 al
+// #5 en filas, cada uno con su carta chica, su bandera, su letra y una barra contra el #1, y abajo tu fila. Las cartas
+// son las de verdad: no se tocan. Cada fila es `{key, href, grande, mini, nom, cc, rg, sub, v, vt, vl}`: `v` el número
+// de la barra, `vt` cómo se lee y `vl` qué es (OVR, SCORE…). Ideas de 21st, sólo miradas: «First Place Leaderboard»,
+// «Leaderboard Card» (trophyso) y «Rank Bars» (eugeneshilow)
+const QUIEN_MANDA = {
+  temporada: 'El que manda en la temporada', competitivo: 'El mejor Score de la temporada', elo: 'El de más ELO',
+  duelos: 'El que más duelos ganó', ligas: 'El mejor OVR de las ligas', podios: 'El de más campeonatos',
+  rachas: 'La racha más larga', paises: 'El país que manda', crews: 'La crew que manda',
+};
+function Mandan({ liga, c, xs, yoFila }) {
+  const uno = xs[0];
+  const tope = Math.max(1, Number(uno.v) || 0);
+  return (
+    <div className="mn">
+      <div className="mn-uno">{uno.grande}</div>
+      <div className="mn-lado">
+        <a className="mn-top" href={uno.href}>
+          <span className="mn-n1">#1</span>
+          <span className="mn-top-t">
+            <small>{QUIEN_MANDA[c] || ''}</small>
+            <b>{uno.cc ? <Bandera cc={uno.cc} cls="mn-flag" /> : null}{uno.nom}</b>
+            <span>{uno.sub1 || uno.sub}</span>
+          </span>
+        </a>
+        <ol className="mn-lista">
+          {xs.slice(1).map((x, i) => (
+            <li key={x.key}>
+              <a className="mn-f" href={x.href}>
+                <span className="mn-n">{i + 2}</span>
+                <span className="mn-mini">{x.mini}</span>
+                <span className="mn-t">
+                  <b>{x.cc ? <Bandera cc={x.cc} cls="mn-flag" /> : null}<span className="mn-nom">{x.nom}</span>{x.rg ? <Rango liga={liga} rg={x.rg} /> : null}</b>
+                  <small>{x.sub}</small>
+                </span>
+                <span className="mn-barra" aria-hidden="true"><i style={{ width: Math.max(3, Math.min(100, Math.round((100 * (Number(x.v) || 0)) / tope))) + '%' }} /></span>
+                <span className="mn-v">{x.vt}<small>{x.vl}</small></span>
+              </a>
+            </li>
+          ))}
+        </ol>
+        {yoFila}
+      </div>
+    </div>
+  );
+}
+
+// los números grandes en corto: 786.861 → 787K, 1.250.000 → 1,25M
+const corto = (n) => (n >= 1e6 ? (Math.round(n / 1e4) / 100).toString().replace('.', ',') + 'M' : n >= 1e4 ? Math.round(n / 1e3) + 'K' : num(n));
 
 export function LosQueMandan({ liga, dc }) {
   const [ligasR, setLigasR] = useState(null);
@@ -381,43 +441,50 @@ export function LosQueMandan({ liga, dc }) {
   const T = liga.oficiales();
   const yo = liga.yo;
   const cara = yo ? <Cara liga={liga} k={yo.k} nombre={yo.n} cls="mc-yo-c" /> : null;
-  const quien = yo ? limpio(yo.n).toUpperCase() : '';
-  const fila = (x, href) => (x ? <Puesto cara={cara} quien={quien} pos={'#' + x.pos} txt={x.txt} href={href} /> : null);
+  const quien = yo ? 'TÚ · ' + limpio(yo.n).toUpperCase() : '';
+  const fila = (x, href) => (x ? <Puesto cara={cara} quien={quien} pos={'#' + x.pos} txt={x.txt} pct={x.pct} href={href} /> : null);
+  // una persona de la tabla: su carta grande (abre su visor) y la chica en la fila, que lleva a su perfil
+  // `sub1`: lo que dice el #1, que tiene más lugar (si no, lo mismo que las filas)
+  const per = (f, cual, v, vt, vl, sub, sub1) => ({
+    key: f.k, href: '#/r/' + encodeURIComponent(f.k), nom: limpio(f.n), cc: f.cc, rg: f.rg, sub, sub1: sub1 || sub, v, vt, vl,
+    grande: <Carta liga={liga} k={f.k} cual={cual} cls="ci mn-carta" />,
+    mini: <Carta liga={liga} k={f.k} cual={cual} cls="ci mn-ci" abre={false} />,
+  });
+  const evs = (f) => num(f.pts || 0) + ' pts · ' + (f.ev || 0) + (f.ev === 1 ? ' evento' : ' eventos');
   const cats = [];
-  cats.push(['temporada', 'Temporada', T.slice(0, 5).map((f) => <McPersona key={f.k} liga={liga} f={f} />),
+  cats.push(['temporada', 'Temporada', T.slice(0, 5).map((f) => per(f, 'temporada', f.ovr || 0, f.ovr || '—', 'OVR', evs(f),
+    (f.ovr || '—') + ' de OVR · ' + evs(f) + (f.oro ? ' · ' + f.oro + (f.oro === 1 ? ' campeonato' : ' campeonatos') : ''))),
     yo ? fila(puestoDe(liga, T, (f) => f.k === yo.k, (f) => f.pts || 0, 'pts', 0, (f) => f.pos), '#/ranking/temporada') : null]);
   const compT = T.filter((f) => f.rg).sort((a, b) => (b.sc || 0) - (a.sc || 0));
   let yoComp = null;
   if (yo && !yo.rg) {
     const falta = Math.max(0, 10 - (yo.ev || 0));
-    yoComp = <Puesto cara={cara} quien={quien} pos="—" txt={falta ? 'Te faltan ' + falta + (falta === 1 ? ' evento' : ' eventos') + ' para tu letra' : 'Tu letra llega con la próxima corrida'} href="#/ranking/competitivo" />;
+    yoComp = <Puesto cara={cara} quien={quien} pos="—" pct={Math.round((100 * Math.min(10, yo.ev || 0)) / 10)}
+      txt={falta ? 'Te faltan ' + falta + (falta === 1 ? ' evento' : ' eventos') + ' para tu letra' : 'Tu letra llega con la próxima corrida'} href="#/ranking/competitivo" />;
   } else if (yo) {
     yoComp = fila(puestoDe(liga, compT, (f) => f.k === yo.k, (f) => f.sc || 0, 'de Score', 1), '#/ranking/competitivo');
   }
-  cats.push(['competitivo', 'Competitivo', compT.slice(0, 5).map((f) => <McPersona key={f.k} liga={liga} f={f} cual="competitivo" />), yoComp]);
+  const sc1 = (x) => (Number(x) || 0).toFixed(1).replace('.', ',');
+  cats.push(['competitivo', 'Competitivo', compT.slice(0, 5).map((f) => per(f, 'competitivo', f.sc || 0, sc1(f.sc), 'SCORE', 'Rango ' + f.rg + ' · ' + (f.ev || 0) + ' eventos')), yoComp]);
   // ⚔️ ELO (Dlx, 12/11/2026: «los rankings que faltan»): las batallas uno contra uno por divisiones. La carta es la
-  // Competitiva (la que habla de batallas); su «#» es el del Competitivo, así que el puesto en ELO va ARRIBA y aparte, y
-  // abajo el número de ELO, que no está en ninguna carta
+  // Competitiva (la que habla de batallas); su «#» es el del Competitivo: el puesto en ELO es el de esta lista
   const eloT = [];
   for (const g of ((liga.d.div || {}).d || [])) for (const gg of g || []) for (const x of gg || []) eloT.push(x);
   eloT.sort((a, b) => (b[1] || 0) - (a[1] || 0));
   // sin los de «fuera de concurso», como los demás rankings de acá (`oficiales()`)
   const eloF = eloT.map((x) => [x, liga.fila(x[0])]).filter(([, f]) => f && f.k && liga.T[f.k] && !liga.T[f.k].fc);
   const yoElo = yo ? puestoDe(liga, eloF, ([, f]) => f.k === yo.k, ([x]) => x[1] || 0, 'de ELO') : null;
-  cats.push(['elo', 'ELO', eloF.slice(0, 5).map(([x, f], i) => <McPersona key={f.k} liga={liga} f={liga.T[f.k]} cual={liga.cartaDe(f.k, { comp: 1 }) || 'temporada'}
-    arriba={(i + 1) + '.º EN ELO'} dato={num(x[1] || 0) + ' DE ELO'} />), yoElo ? fila(yoElo, '#/ranking/divisiones') : null]);
+  cats.push(['elo', 'ELO', eloF.slice(0, 5).map(([x, f]) => per(liga.T[f.k], liga.cartaDe(f.k, { comp: 1 }) || 'temporada', x[1] || 0, num(x[1] || 0), 'ELO',
+    'Batallas 1 contra 1 por divisiones')), yoElo ? fila(yoElo, '#/ranking/divisiones') : null]);
   // ⚔️ de la tabla (`du: [ganados, jugados]`, 29/10/2026): la lista entera de Duelos ya no viaja en el lobby, y acá sólo
   // se mira a los de la tabla. El mismo orden que el Ranking de Duelos: ganados, jugados y nombre
   const duT = (liga.d.duelos || T.filter((f) => f.du).map((f) => ({ k: f.k, n: f.n, g: f.du[0], t: f.du[1], fc: f.fc }))
     .sort((a, b) => b.g - a.g || b.t - a.t || ((a.n || '') < (b.n || '') ? -1 : (a.n || '') > (b.n || '') ? 1 : 0)))
     .filter((d) => !d.fc && liga.T[d.k]);
-  // 🔁 abajo, nada que la carta ya diga (Dlx, 12/11/2026: «no pongas abajo información que ya está en la tarjeta»): la
-  // Competitiva trae los duelos; la de Temporada no, y ahí sí van
-  cats.push(['duelos', 'Duelos', duT.slice(0, 5).map((d) => { const cual = liga.cartaDe(d.k, { comp: 1 }) || 'temporada';
-    return <McPersona key={d.k} liga={liga} f={liga.T[d.k]} cual={cual} dato={cual === 'competitivo' ? '' : d.g + ' DE ' + d.t + ' DUELOS GANADOS'} />; }),
+  cats.push(['duelos', 'Duelos', duT.slice(0, 5).map((d) => per(liga.T[d.k], liga.cartaDe(d.k, { comp: 1 }) || 'temporada', d.g || 0, d.g || 0, 'GANADOS',
+    'de ' + (d.t || 0) + ' duelos jugados')),
     yo ? fila(puestoDe(liga, duT, (d) => d.k === yo.k, (d) => d.g || 0, 'duelos ganados'), '#/ranking/duelos') : null]);
-  // 🏟️ LIGAS (Dlx, 12/11/2026): los cinco mejores OVR de liga, sumando todas las ligas, con su carta de liga (que ya dice
-  // de qué liga es: abajo no va nada). Quién tiene
+  // 🏟️ LIGAS (Dlx, 12/11/2026): los cinco mejores OVR de liga, sumando todas las ligas, con su carta de liga. Quién tiene
   // carta y con qué OVR viene en `/api/ligas` (`cartas`), el mismo pedido que la página ya hace una vez por lobby
   if (ligasC && Object.keys(ligasC).length) {
     const nomLiga = {};
@@ -429,44 +496,54 @@ export function LosQueMandan({ liga, dc }) {
     const mejores = todas.filter((x) => (vistos.has(x.k) ? false : vistos.add(x.k))).slice(0, 5);
     const miL = yo ? todas.filter((x) => x.k === yo.k)[0] : null;
     const iMiL = miL ? todas.filter((x, j) => todas.findIndex((y) => y.k === x.k) === j).findIndex((x) => x.k === yo.k) : -1;
-    cats.push(['ligas', 'Ligas', mejores.map((x, i) => (
-      <a key={x.k} className="mc" href={'#/ligas/' + encodeURIComponent(x.lid)}>
-        <span className="mc-arriba">{(i + 1) + '.º DE LAS LIGAS'}</span>
-        <img className="ci mc-ci" alt={'Carta de liga de ' + limpio(liga.T[x.k].n)} loading="lazy"
-          src={liga.d.r2 + '/' + encodeURIComponent(x.k) + '/liga-' + x.lid + '.chica.webp?v=' + x.v} />
-      </a>)),
+    const src = (x, chica) => liga.d.r2 + '/' + encodeURIComponent(x.k) + '/liga-' + x.lid + (chica ? '.chica' : '') + '.webp?v=' + x.v;
+    cats.push(['ligas', 'Ligas', mejores.map((x) => {
+      const f = liga.T[x.k];
+      return {
+        key: x.k, href: '#/ligas/' + encodeURIComponent(x.lid), nom: limpio(f.n), cc: f.cc, sub: nomLiga[x.lid] ? limpio(nomLiga[x.lid]) : 'Su liga', v: x.ovr, vt: x.ovr, vl: 'OVR',
+        grande: <img className="ci mn-carta" alt={'Carta de liga de ' + limpio(f.n)} loading="lazy" src={src(x, true)} />,
+        mini: <img className="ci mn-ci" alt="" loading="lazy" src={src(x, true)} />,
+      };
+    }),
     iMiL >= 5 ? <Puesto cara={cara} quien={quien} pos={'#' + (iMiL + 1)} txt={'OVR de liga ' + miL.ovr + (nomLiga[miL.lid] ? ' · ' + nomLiga[miL.lid] : '')} href="#/ligas" /> : null]);
   }
   const medT = T.filter((f) => (f.oro || 0) + (f.seg || 0) + (f.ter || 0))
     .sort((a, b) => (b.oro || 0) - (a.oro || 0) || (b.seg || 0) - (a.seg || 0) || (b.ter || 0) - (a.ter || 0) || a.pos - b.pos);
   const iMed = yo ? medT.findIndex((f) => f.k === yo.k) : -1;
-  cats.push(['podios', 'Podios', medT.slice(0, 5).map((f) => <McPersona key={f.k} liga={liga} f={f} dato={'1.º ×' + (f.oro || 0) + ' · 2.º ×' + (f.seg || 0) + ' · 3.º ×' + (f.ter || 0)} />),
+  cats.push(['podios', 'Podios', medT.slice(0, 5).map((f) => per(f, 'temporada', f.oro || 0, f.oro || 0, '1.º', '2.º ×' + (f.seg || 0) + ' · 3.º ×' + (f.ter || 0))),
     iMed >= 5 ? <Puesto cara={cara} quien={quien} pos={'#' + (iMed + 1)} txt={'1.º ×' + (yo.oro || 0) + ' · 2.º ×' + (yo.seg || 0) + ' · 3.º ×' + (yo.ter || 0)} href="#/ranking/podios" /> : null]);
   const con = T.filter((f) => (f.rch || []).length > 1 && f.rch[1]);
   const vivas = con.filter((f) => f.rch[0]);
   const raT = (vivas.length ? vivas : con).slice().sort((a, b) => (vivas.length ? b.rch[0] - a.rch[0] : b.rch[1] - a.rch[1]) || a.pos - b.pos);
   const racha = (f) => (vivas.length ? f.rch[0] : f.rch[1]);
-  cats.push(['rachas', 'Rachas', raT.slice(0, 5).map((f) => <McPersona key={f.k} liga={liga} f={f} />),
+  cats.push(['rachas', 'Rachas', raT.slice(0, 5).map((f) => per(f, 'temporada', racha(f), racha(f), 'SEGUIDOS', vivas.length ? 'Eventos seguidos, y sigue' : 'Su mejor racha de la temporada')),
     yo ? fila(puestoDe(liga, raT, (f) => f.k === yo.k, racha, 'eventos seguidos'), '#/ranking/rachas') : null]);
   const paT = (liga.d.paises || []).filter((p) => p.n);
   const miPais = yo && yo.cc ? puestoDe(liga, paT, (p) => p.cc === yo.cc, (p) => p.pts || 0, 'pts') : null;
-  cats.push(['paises', 'Países', paT.slice(0, 5).map((p, i) => <McGrupo key={p.cc} n={i + 1} href={'#/pais/' + p.cc} img={<Bandera cc={p.cc} cls="mc-bandera" />}
-    nombre={nombrePais(p.cc)} dato={num(p.pts) + ' PTS · ' + p.n + ' RAPEROS'} />),
-  miPais ? <Puesto cara={<Bandera cc={yo.cc} cls="mc-yo-flag" />} quien={'TU PAÍS · ' + nombrePais(yo.cc).toUpperCase()} pos={'#' + miPais.pos} txt={miPais.txt} href="#/ranking/paises" /> : null]);
+  cats.push(['paises', 'Países', paT.slice(0, 5).map((p) => ({
+    key: p.cc, href: '#/pais/' + p.cc, nom: nombrePais(p.cc), sub: p.n + (p.n === 1 ? ' rapero' : ' raperos'), sub1: num(p.pts || 0) + ' pts · ' + p.n + (p.n === 1 ? ' rapero' : ' raperos'), v: p.pts || 0, vt: corto(p.pts || 0), vl: 'PTS',
+    grande: <a className="mn-tile" href={'#/pais/' + p.cc}><Bandera cc={p.cc} cls="mn-tile-bandera" /></a>,
+    mini: <Bandera cc={p.cc} cls="mn-ci bandera" />,
+  })),
+  miPais ? <Puesto cara={<Bandera cc={yo.cc} cls="mc-yo-flag" />} quien={'TU PAÍS · ' + nombrePais(yo.cc).toUpperCase()} pos={'#' + miPais.pos} txt={miPais.txt} pct={miPais.pct} href="#/ranking/paises" /> : null]);
   const crT = (liga.d.crews || []).filter((c) => c.rk !== 0);
   const miCrew = yo ? liga.crewDe(yo) : null;
   const xCrew = miCrew ? puestoDe(liga, crT, (c) => c.crew === miCrew.crew, (c) => c.pts || 0, 'pts') : null;
-  cats.push(['crews', 'Crews', crT.slice(0, 5).map((c, i) => <McGrupo key={c.crew} n={i + 1} href={'#/crew/' + encodeURIComponent(c.clave || c.crew)}
-    img={escudoDe(c.logo, limpio(c.crew)) ? <span className="mc-logo con-esc"><Escudo e={escudoDe(c.logo, limpio(c.crew))} /></span> : <img className="mc-logo" alt="" src={srcLogo(c.logo)} />}
-    nombre={limpio(c.crew)} dato={num(c.pts) + ' PTS · ' + c.n + ' RAPEROS'} />),
-  xCrew ? <Puesto cara={null} quien={'TU CREW · ' + limpio(miCrew.crew).toUpperCase()} pos={'#' + xCrew.pos} txt={xCrew.txt} href="#/ranking/crews" /> : null]);
+  const escudo = (c, cls) => (escudoDe(c.logo, limpio(c.crew)) ? <span className={cls + ' con-esc'}><Escudo e={escudoDe(c.logo, limpio(c.crew))} /></span>
+    : <img className={cls} alt="" src={srcLogo(c.logo)} />);
+  cats.push(['crews', 'Crews', crT.slice(0, 5).map((c) => ({
+    key: c.crew, href: '#/crew/' + encodeURIComponent(c.clave || c.crew), nom: limpio(c.crew), sub: c.n + (c.n === 1 ? ' rapero' : ' raperos'), sub1: num(c.pts || 0) + ' pts · ' + c.n + (c.n === 1 ? ' rapero' : ' raperos'), v: c.pts || 0, vt: corto(c.pts || 0), vl: 'PTS',
+    grande: <a className="mn-tile" href={'#/crew/' + encodeURIComponent(c.clave || c.crew)}>{escudo(c, 'mn-tile-logo')}</a>,
+    mini: escudo(c, 'mn-ci logo'),
+  })),
+  xCrew ? <Puesto cara={null} quien={'TU CREW · ' + limpio(miCrew.crew).toUpperCase()} pos={'#' + xCrew.pos} txt={xCrew.txt} pct={xCrew.pct} href="#/ranking/crews" /> : null]);
   // sin haber entrado (ni con Discord ni eligiendo quién eres), la invitación a verse
   const invita = !yo && !dc ? (
     <div className="mc-yo invita"><span className="mc-yo-t">¿Y tú? Entra con Discord y ves tu puesto en cada categoría.</span>
       <button type="button" className="btn verde chico" onClick={accion.entrar}>Entrar</button></div>
   ) : null;
-  const items = cats.filter((c) => c[2].length).map(([c, et, h, yoFila]) => ({ c, et, t: 'Los que mandan', cuerpo: <><div className="rail mcs2">{h}</div>{yoFila || invita}</> }));
-  return <Pest id="raperos" titulo="Los que mandan" bajada="Los cinco primeros de cada ranking de la temporada." enlace="Todos los raperos" href="#/ranking" items={items} extra="negra" />;
+  const items = cats.filter((x) => x[2].length).map(([c, et, xs, yoFila]) => ({ c, et, t: 'Los que mandan', cuerpo: <Mandan liga={liga} c={c} xs={xs} yoFila={yoFila || invita} /> }));
+  return <Pest id="raperos" titulo="Los que mandan" bajada="Los cinco primeros de cada ranking de la temporada." enlace="Todos los raperos" href="#/ranking" items={items} extra="negra raya" />;
 }
 
 // ── el panel de abajo: Misiones + el Pase · Tus eventos + Tu temporada · La Liga en números ──────────
