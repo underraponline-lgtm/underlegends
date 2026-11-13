@@ -246,12 +246,24 @@ export function FilaRacha({ dc, R, liga, enc }) {
   if (gratis) extras.push('gratis');
   if (soVer && !extras.includes('sorteo')) extras.push('sorteo');
   if (an) extras.push('anuncio');
+  // 🗓️ y si todavía falta uno —sin cuenta y sin sorteo quedaban tres—, el próximo evento de la Liga, con su inscripción
+  const prox = liga ? liga.luego()[0] || null : null;
+  if (prox) extras.push('proximo');
+  // ✖️ y el que no falta nunca: el multiplicador más alto de la semana (a las 4 AM no hay eventos anunciados)
+  const mm = liga ? (liga.d.mult || {}) : {};
+  const mx = Object.entries(mm.sv || {}).sort((p, q) => q[1] - p[1])[0];
+  if (mx && mx[1] > 1) extras.push('semana');
   const segundo = camp ? 'campana' : ult ? 'ultimo' : extras.shift() || null;
   const cuarto = extras.shift() || null;
   const pinta = (q) => (q === 'campana' ? <CampanaCorta key="c" dc={dc} /> : q === 'ultimo' ? <UltCorto key="u" liga={liga} u={ult} />
     : q === 'gratis' ? <PremioGratis key="g" liga={liga} enc={enc} dc={dc} />
       : q === 'sorteo' ? <SorteoCorto key="s" liga={liga} dc={dc} S={S} entro={(d) => { setRecien(true); setS(d); }} />
-        : q === 'anuncio' ? <AnuncioCorto key="a" liga={liga} a={an} /> : null);
+        : q === 'anuncio' ? <AnuncioCorto key="a" liga={liga} a={an} />
+          : q === 'proximo' ? <AnuncioCorto key="p" liga={liga} a={{ sv: prox.sv, tit: limpio(prox.nombre), t: utc(liga.cuandoDe(prox)).toISOString(),
+            link: prox.ins || prox.link || '', et: 'Próximo evento', ins: !!prox.ins }} />
+            : q === 'semana' ? <AnuncioCorto key="w" liga={liga} a={{ sv: mx[0], et: 'Esta semana', link: '#/sv/' + encodeURIComponent(mx[0]),
+              tit: 'Sus eventos, ×' + String(mx[1]).replace('.', ','),
+              sub: (mx[1] === 2 ? 'Valen el doble' : mx[1] === 3 ? 'Valen el triple' : 'Valen más') + (mm.fin ? ' · quedan ' + faltaTxt(mm.fin) : ' hasta el lunes') }} /> : null);
   // ⚠️ la racha no se dibuja hasta que llega (`R`): contarla sin estar dejaba una columna vacía. Sin cuenta, el 3.º es el
   // Premio gratis de entrar (los Puntos de Tienda de arranque)
   const n = (dc ? (R ? 1 : 0) : 1) + (segundo ? 1 : 0) + 1 + (cuarto ? 1 : 0);
@@ -352,12 +364,13 @@ function anuncioDeServidor(liga) {
   return ua ? { sv: ua.sv, tit: limpio(ua.nombre), t: ua.t, link: ua.link, ev: true } : null;
 }
 function AnuncioCorto({ liga, a }) {
-  const fut = new Date(a.t).getTime() > Date.now();
+  const fut = a.t ? new Date(a.t).getTime() > Date.now() : false;
+  const afuera = /^https?:/.test(a.link || '');
   return (
-    <a className="pn-anc" href={a.link || '#/publicaciones'} target={a.link ? '_blank' : undefined} rel={a.link ? 'noopener noreferrer' : undefined}>
+    <a className="pn-anc" href={a.link || '#/publicaciones'} target={afuera ? '_blank' : undefined} rel={afuera ? 'noopener noreferrer' : undefined}>
       {(a.sv && liga.logo(a.sv)) ? <img className="pn-anc-logo" alt="" src={liga.logo(a.sv)} /> : <span className="pn-anc-logo"><Ico n="publicaciones" t={20} /></span>}
-      <span className="pn-tx"><i className="pn-anc-et">Último anuncio · {a.sv ? siglaDe(a.sv) : 'La Liga'}</i><b>{a.tit}</b>
-        <small>{fut ? 'en ' + faltaTxt(a.t) : 'hace ' + hace(new Date(a.t).getTime())}</small></span>
+      <span className="pn-tx"><i className="pn-anc-et">{a.et || 'Último anuncio'} · {a.sv ? siglaDe(a.sv) : 'La Liga'}</i><b>{a.tit}</b>
+        <small>{a.sub || (fut ? 'en ' + faltaTxt(a.t) : 'hace ' + hace(new Date(a.t).getTime()))}{a.ins ? ' · inscríbete' : ''}</small></span>
     </a>
   );
 }

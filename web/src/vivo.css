@@ -5307,7 +5307,7 @@ dialog.pn-pop.pop-gratis{--pc:#F5C542;width:min(640px,calc(100vw - 32px))}
 .pn .pn-sv-st .pn-mini > span,.pn .pn-sv-st .pn-sv-gu > i{font:700 10px/1 "Barlow Condensed",sans-serif;font-style:normal;letter-spacing:.07em;text-transform:uppercase;color:var(--azul);white-space:nowrap}
 .pn .pn-sv-st .pn-mini strong{font:900 18px/1 Archivo,sans-serif}
 .pn .pn-sv-st .pn-sv-meta i{width:100%;max-width:96px}
-@media (max-width: 760px){.pn .pn-sv-st > .pn-mini{display:none}.pn-sv-st{flex-basis:auto}}
+@media (max-width: 760px){.pn-sv-st{flex-basis:auto}}
 .pn-baja3 .pn-ev.ancho{grid-template-columns:minmax(140px,auto) minmax(0,1fr);grid-template-areas:"h b" "n b" "t b" "u l";column-gap:22px;align-items:center}
 .pn-baja3 .pn-ev.ancho .pn-barras{align-self:stretch;min-height:56px}
 .pn-baja3 .pn-ev.ancho .pn-letras{align-self:start}
@@ -5374,3 +5374,30 @@ dialog.pn-pop.pop-gratis{--pc:#F5C542;width:min(640px,calc(100vw - 32px))}
   .lu-reac-f{grid-template-columns:22px minmax(0,1fr) auto}
   .lu-reac-f small{display:none}
 }
+
+/* 📏 EVENTOS Y TU SERVIDOR, DEL TAMAÑO CORRECTO EN TODOS LOS ANCHOS (13/11/2026, Dlx: «asegúrate que eso de eventos y tu
+   servidor, sus cosas, estén del tamaño correcto y bien posicionados»). Medido de 1920 a 390 px (scratchpad/medir_baja3.py):
+   - Eventos: la columna de los números era del ancho de «Último: …» y a 1000 px dejaba la gráfica en 180; ahora como mucho el
+     42 %, y «Último» se corta con puntos. En el celular la gráfica va abajo, a lo ancho (a 390 quedaba de 70 px en un rincón).
+   - Tu servidor: las tres cajas siempre, también en el celular (ahí se escondían dos y la guerra quedaba sola en una caja
+     enorme), con el rótulo un punto más grande y el número de 20 */
+.pn-baja3 .pn-ev.ancho{grid-template-columns:minmax(130px,42%) minmax(0,1fr)}
+.pn-baja3 .pn-ev.ancho .pn-ult3{min-width:0;max-width:100%}
+.pn .pn-sv-st .pn-mini > span,.pn .pn-sv-st .pn-sv-gu > i{font-size:11px}
+.pn .pn-sv-st .pn-mini strong{font-size:20px}
+@media (max-width: 760px){
+  .pn .pn-baja3 .pn-sv-st > .pn-mini{display:grid}
+  .pn .pn-baja3 .pn-sv-st{gap:6px}
+  .pn .pn-baja3 .pn-sv-st > .pn-mini,.pn .pn-baja3 .pn-sv-st > .pn-sv-gu{padding:6px 4px}
+  .pn .pn-baja3 .pn-sv-st .pn-mini > span,.pn .pn-baja3 .pn-sv-st .pn-sv-gu > i{white-space:normal;line-height:1.1}
+  .pn .pn-baja3 .pn-sv-st .pn-mini strong{font-size:17px}
+  .pn-baja3 .pn-sv-gu small{display:none}
+}
+@media (max-width: 600px){
+  .pn-baja3 .pn-ev.ancho{grid-template-columns:minmax(0,1fr) auto;grid-template-areas:"h n" "t t" "b b" "l l" "u u";row-gap:6px}
+  .pn-baja3 .pn-ev.ancho .pn-ev-n{justify-self:end}
+  .pn-baja3 .pn-ev.ancho .pn-barras{min-height:48px}
+}
+/* «Último: …» de Eventos en dos renglones y no cortado con puntos: entre 900 y 1180 px no entraba en uno */
+.pn-baja3 .pn-ev.ancho .pn-ult3{align-items:flex-start}
+.pn-baja3 .pn-ev.ancho .pn-ult3 span{white-space:normal;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
