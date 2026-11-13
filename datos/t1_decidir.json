@@ -3,7 +3,7 @@
  "grilla": [
   ["✅  DECIDIR", "", "", "", "", "", "", ""],
   ["Lo que el sistema no pudo resolver solo. Elige una respuesta en la columna amarilla ✍️ —si es alguien que ya está en la Lista de Raperos, escribe su nombre como figura ahí— y el ciclo la aplica en menos de media hora. La fila se pone verde cuando está contestada. Para aclarar algo, 📝 NOTA: se guarda.", "", "", "", "", "", "", ""],
-  ["89 para decidir   —   🏆 10 eventos   ·   ⚔️ 10 batallas   ·   📣 1 📣 Reporte   ·   👤 37 nombres   ·   🪪 31 de identidad   ·   actualizado 13/11 12:33 PM ET", "", "", "", "", "", "", ""],
+  ["90 para decidir   —   🏆 10 eventos   ·   ⚔️ 10 batallas   ·   📣 1 📣 Reporte   ·   👤 37 nombres   ·   🪪 32 de identidad   ·   actualizado 13/11 01:01 PM ET", "", "", "", "", "", "", ""],
   ["", "", "", "", "", "", "", ""],
   ["#", "Tipo", "Qué hay que decidir", "Pistas", "✍️ RESPUESTA", "📝 NOTA", "Estado", "id"],
   ["▸  FVS UNDER · FVS · 26/09 · #461   ·   ver la llave ↗", "", "", "", "", "", "", ""],
@@ -149,6 +149,7 @@
   ["87", "🪪 Identidad", "¿«Number Elixir» es Number VE? La cuenta de Number VE en la Lista se anotó como «Number Elixir», y en el ranking suman aparte. Si es la misma persona, los puntos de «Number Elixir» pasan a Number VE.\nLa cuenta: perfil ↗", "Esa cuenta: en DRA, FFA, SR, URBF, DDF, ACAD, LKR, CH y DDS · en Discord: «#58 | 🐊 𝒩ᵤₘ𝒷ₑᵣ(𝒥𝒶𝓂𝒶𝓁 𝒱ℯ», «𝐍ᴜᴍʙᴇʀ 𝐔ɴʟᴇᴀsʜᴇᴅ» · Miembro de DRA · en la Lista como Number VE · 33 eventos en la T1", "", "", "", "480595927f"],
   ["88", "🪪 Identidad", "¿«Showsero» es Vilca? La cuenta de Vilca en la Lista se anotó como «Showsero», y en el ranking suman aparte. Si es la misma persona, los puntos de «Showsero» pasan a Vilca.\nLa cuenta: perfil ↗", "Esa cuenta: en DRA, FFA, SR, DDF, ACAD, FRZ, FDS, LKR, CH y DDS · en Discord: «🐉 | Vilca», «VILCAZ» · Miembro de DRA · en la Lista como Vilca · 23 eventos en la T1", "", "", "", "b61e509f31"],
   ["89", "🪪 Identidad", "¿«Kochi2011» es otra cuenta de Kochi? Tienen cuentas de Discord distintas, son del mismo país, los nombres se parecen y nunca jugaron el mismo evento. Si es la misma persona, los puntos de «Kochi2011» pasan a Kochi y esa cuenta abre sus cartas.\nLa de «Kochi2011»: perfil ↗\nLa de Kochi: perfil ↗", "La de «Kochi2011»: en DRA, FFA, URBF, FFS, ACAD y DDS · en Discord: «👤 | kochi13/07/2011», «kochi2011.7.13» · Miembro de DRA · en la Lista como Kochi2011 · 5 eventos en la T1\nLa de Kochi: en DRA, FFA, SR, URBF, FFS, DDF, ACAD y CH · en Discord: «Kochi», «ricardocortes0758» · Miembro de DRA · en la Lista como Kochi · 7 eventos en la T1", "", "", "", "039b1519c5"],
+  ["90", "🪪 Identidad", "¿«MAXIMILIANO CALVO» es Emilio Alva? La cuenta de Emilio Alva en la Lista se anotó como «MAXIMILIANO CALVO», y en el ranking suman aparte. Si es la misma persona, los puntos de «MAXIMILIANO CALVO» pasan a Emilio Alva.\nLa cuenta: perfil ↗", "Esa cuenta: en SR, ACAD y CH · en Discord: «Lic Erizardo», «emilioalvauwu» · en la Lista como Emilio Alva · 4 eventos en la T1", "", "", "", "6bc02f4282"],
   ["", "", "", "", "", "", "", ""],
   ["✔️  Lo último que se aplicó", "", "", "", "", "", "", ""],
   ["", "👤 Nombre", "Gazir🇪🇸", "evento #619", "troll: no cuenta", "", "✔️ aplicado", ""],
