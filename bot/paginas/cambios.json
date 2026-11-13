@@ -11,6 +11,16 @@
  ],
  "cambios": [
     {
+        "version": "5.13",
+        "dia": "2026-11-13",
+        "cuando": "2026-11-13T04:02:00-05:00",
+        "titulo": "El ranking de ascenso de FFA",
+        "items": [
+            "**En Ranking → Ascensos ya está FFA**: su tabla entera, no sólo el top 10.",
+            "**Se actualiza sola** con cada podio nuevo de FFA, con sus mismos puntos. Lo oficial lo decide su staff."
+        ]
+    },
+    {
         "version": "5.12",
         "dia": "2026-11-13",
         "cuando": "2026-11-13T04:00:00-05:00",
