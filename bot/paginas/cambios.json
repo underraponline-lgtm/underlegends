@@ -11,6 +11,16 @@
  ],
  "cambios": [
     {
+        "version": "4.84",
+        "dia": "2026-11-12",
+        "cuando": "2026-11-12T22:40:00-05:00",
+        "titulo": "Otro rival y el último anuncio",
+        "items": [
+            "**Otro rival** ya cambia de rival también si vas más abajo en el ranking.",
+            "Sin batallas, tu Inicio muestra **el último anuncio** de cualquier servidor de la Liga."
+        ]
+    },
+    {
         "version": "4.83",
         "dia": "2026-11-12",
         "cuando": "2026-11-12T22:20:00-05:00",
