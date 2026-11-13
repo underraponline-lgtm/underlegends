@@ -146,6 +146,18 @@
   }
  },
  "19fleivawack": {
+  "pais": {
+   "INTERNACIONAL": [
+    "INTERNACIONAL",
+    "t1",
+    1794533437549
+   ],
+   "SIN FRONTERAS": [
+    "SIN FRONTERAS",
+    "t1",
+    1794533437549
+   ]
+  },
   "servidor": {
    "⚔️ DUELISTA": [
     "⚔️ DUELISTA",
@@ -176,6 +188,11 @@
     "📆 HABITUÉ",
     "t1",
     1794532281126
+   ],
+   "🪓 VERDUGO DEL DUEÑO": [
+    "🪓 VERDUGO DEL DUEÑO",
+    "t1",
+    1794533437549
    ]
   },
   "temporada": {
@@ -3159,6 +3176,11 @@
     "🗡️ MATAGIGANTES",
     "t1",
     1792992179190
+   ],
+   "🤝 SIN MIEDO": [
+    "🤝 SIN MIEDO",
+    "t1",
+    1794533437549
    ]
   },
   "servidor": {
@@ -9713,6 +9735,13 @@
   }
  },
  "nemmiias": {
+  "competitivo": {
+   "🗡️ MATAGIGANTES": [
+    "🗡️ MATAGIGANTES",
+    "t1",
+    1794533437549
+   ]
+  },
   "pais": {
    "DA LA CARA": [
     "DA LA CARA",
@@ -10013,6 +10042,11 @@
     "🗡️ MATAGIGANTES",
     "t1",
     1794520903236
+   ],
+   "🤜 CLÁSICO": [
+    "🤜 CLÁSICO",
+    "t1",
+    1794533437549
    ],
    "🤝 SIN MIEDO": [
     "🤝 SIN MIEDO",
@@ -15025,6 +15059,13 @@
   }
  },
  "vallest": {
+  "competitivo": {
+   "🤝 SIN MIEDO": [
+    "🤝 SIN MIEDO",
+    "t1",
+    1794533437549
+   ]
+  },
   "servidor": {
    "📆 HABITUÉ": [
     "📆 HABITUÉ",
@@ -15755,6 +15796,11 @@
     "😈 BESTIA NEGRA",
     "t1",
     1793477231914
+   ],
+   "🤜 CLÁSICO": [
+    "🤜 CLÁSICO",
+    "t1",
+    1794533437549
    ],
    "🤝 SIN MIEDO": [
     "🤝 SIN MIEDO",

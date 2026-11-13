@@ -9316,6 +9316,20 @@
      "cuentas": {
       "Abraham": "1489469731168845894"
      }
+    },
+    "1570606422650257569": {
+     "sv": "FFA",
+     "nombre": "TORNEO CLANDESTINO V.2",
+     "mo": "2026-11-13T01:09:11Z",
+     "staff": {},
+     "orgs": [
+      {
+       "n": "Zaik",
+       "id": ""
+      }
+     ],
+     "organizador": "Zaik",
+     "cuentas": {}
     }
    },
    "ver": {
