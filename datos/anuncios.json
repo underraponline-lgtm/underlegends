@@ -1,5 +1,5 @@
 {
- "cuando": "2026-11-13T21:55:26+00:00",
+ "cuando": "2026-11-13T22:03:48+00:00",
  "anuncios": [
   {
    "nombre": "¡SE LLEGÓ LA GRAN NOCHE!",
@@ -7157,6 +7157,24 @@
   }
  ],
  "inscripciones": [
+  {
+   "servidor": "ACAD",
+   "canal": "📝┇inscripciones-1",
+   "texto": "bishop 🇦🇷",
+   "quien": "bishop_143",
+   "discord_id": "1194757521185980436",
+   "msg_id": "1570921867894726768",
+   "cuando": "2026-11-13T22:02:39"
+  },
+  {
+   "servidor": "ACAD",
+   "canal": "📝┇inscripciones-1",
+   "texto": "Teo 🇨🇴",
+   "quien": "teitomc.",
+   "discord_id": "1503540314948898937",
+   "msg_id": "1570920358142542018",
+   "cuando": "2026-11-13T21:56:39"
+  },
   {
    "servidor": "SR",
    "canal": "[📝]inscripciones",
@@ -43138,24 +43156,6 @@
    "discord_id": "1440039366654165212",
    "msg_id": "1558883747221217341",
    "cuando": "2026-10-11T16:47:27"
-  },
-  {
-   "servidor": "FFA",
-   "canal": "✦📝—inscripciones",
-   "texto": "Majiztral 🇨🇴",
-   "quien": "majiztral",
-   "discord_id": "1492228152691396720",
-   "msg_id": "1558883696340238377",
-   "cuando": "2026-10-11T16:47:15"
-  },
-  {
-   "servidor": "FFA",
-   "canal": "✦📝—inscripciones",
-   "texto": "🇦🇫",
-   "quien": "benjaclink31",
-   "discord_id": "849765868819972166",
-   "msg_id": "1558883687221956762",
-   "cuando": "2026-10-11T16:47:13"
   }
  ]
 }
