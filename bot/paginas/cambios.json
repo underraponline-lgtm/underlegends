@@ -11,6 +11,17 @@
  ],
  "cambios": [
     {
+        "version": "5.17",
+        "dia": "2026-11-13",
+        "cuando": "2026-11-13T04:20:00-05:00",
+        "titulo": "Los que mandan y el merchandising, renovados",
+        "items": [
+            "En **Los que mandan**, la carta del #1 grande y del #2 al #5 en una lista, con cuánto le sacan.",
+            "Abajo, tu puesto y cuánto te falta para pasar al de arriba.",
+            "En el **Merchandising**, toca el color de un servidor y ves su remera."
+        ]
+    },
+    {
         "version": "5.16",
         "dia": "2026-11-13",
         "cuando": "2026-11-13T04:18:00-05:00",
