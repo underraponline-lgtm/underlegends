@@ -327,7 +327,9 @@ function ultimoAnuncio(liga) {
 function anuncioOficial(liga) {
   const xs = (liga.d.novedades || []).filter((x) => x && x.t && (x.tit || x.tx))
     .map((n) => ({ sv: '', tit: limpio(n.tit || String(n.tx).split(/\r?\n/)[0]).slice(0, 80), t: utc(n.t).toISOString(), link: n.link || '' }))
-    .concat((liga.d.oficiales || []).filter((o) => o && o.t && o.tit)
+    // ⚠️ SÓLO UNA LISTA (12/11/2026, «a veces el panel no aparece»): `oficiales` del payload fue un NÚMERO hasta la 4.86 —el
+    // «#3 de N» de los perfiles, con el mismo nombre— y `.filter` de un número rompía el panel entero (`Aislada` lo apaga)
+    .concat((Array.isArray(liga.d.oficiales) ? liga.d.oficiales : []).filter((o) => o && o.t && o.tit)
       .map((o) => ({ sv: o.sv || '', tit: limpio(o.tit).slice(0, 80), t: utc(o.t).toISOString(), link: o.link || '' })));
   return xs.sort((a, b) => new Date(b.t) - new Date(a.t))[0] || null;
 }

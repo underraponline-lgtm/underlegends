@@ -698,8 +698,10 @@ def armar():
         'temporada': SELLO,
         'fase': {'arranca': _f[0], 'termina': _f[1]} if _f else None,
         'gente': len(pool),
-        # 🔑 cuántos tienen número (los miembros): el «#3 de N» del perfil
-        'oficiales': sum(1 for p in pool if p.get('raw') and not p.get('fc')),
+        # 🔑 cuántos tienen número (los miembros): el «#3 de N» del perfil. ⚠️ Se llamaba `oficiales`, igual que la lista
+        # de anuncios oficiales de más abajo (12/11/2026): en un dict literal gana la última y no avisa, y mientras el
+        # payload publicado traía el número, el panel del Inicio se rompía con `.filter is not a function`
+        'n_oficiales': sum(1 for p in pool if p.get('raw') and not p.get('fc')),
         'tabla': tabla,
         'avs': avs_fuera,
         'proximos': prox,
