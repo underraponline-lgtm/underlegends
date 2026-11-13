@@ -33586,7 +33586,7 @@
   "raw": "DLX",
   "cc": "us",
   "sv": "FFA",
-  "crew": "Los ULEYES",
+  "crew": "",
   "discord_id": "739338101603696681",
   "verificado": true,
   "ev": 1,
@@ -33619,7 +33619,6 @@
   "arc_pais": 20,
   "pos_sv": "169/170",
   "arc_sv": 1,
-  "pos_crew": "",
   "nac": {
    "evn": 0,
    "evi": 1,

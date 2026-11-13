@@ -1,5 +1,5 @@
 {
- "cuando": "2026-11-13T07:54:55+00:00",
+ "cuando": "2026-11-13T16:28:20+00:00",
  "anuncios": [
   {
    "nombre": "¡SE LLEGÓ LA GRAN NOCHE!",
@@ -1289,6 +1289,30 @@
    "nombre": "SNAKE INSIGNIA",
    "servidor": "SR",
    "canal": "[🏆]eventos",
+   "msg_id": "1570805755534118953",
+   "cuando": "2026-11-13T14:21:16",
+   "canal_id": "863208020900184084",
+   "guild_id": "492346406976356374",
+   "organizador": "",
+   "orgs": [],
+   "autor_h": "8e948c1829a61df0",
+   "cupos_texto": "Ilimitados",
+   "inscriptos": null,
+   "cupo_total": null,
+   "rango": "",
+   "modalidad": "",
+   "horario": "30 minutos después de la apertura de .",
+   "fecha": "",
+   "premios": "13.000 puntos",
+   "staff": {},
+   "autor": "ＳＮＡＫＥ 🐍 ＲＡＰ",
+   "staff_cuentas": {},
+   "categoria_id": "863207988739309600"
+  },
+  {
+   "nombre": "SNAKE INSIGNIA",
+   "servidor": "SR",
+   "canal": "[🏆]eventos",
    "msg_id": "1565886212093378801",
    "cuando": "2026-10-31T00:32:45",
    "canal_id": "863208020900184084",
@@ -1966,45 +1990,6 @@
    "staff": {},
    "autor": "Velatz",
    "staff_cuentas": {},
-   "categoria_id": "863207988739309600"
-  },
-  {
-   "nombre": "SNAKE LEAGUE: NEW CHAPTER",
-   "servidor": "SR",
-   "canal": "[🏆]eventos",
-   "msg_id": "1542945321863356456",
-   "cuando": "2026-08-28T17:13:51",
-   "canal_id": "863208020900184084",
-   "guild_id": "492346406976356374",
-   "organizador": "@CANTU",
-   "orgs": [
-    {
-     "n": "CANTU",
-     "id": "776271601221763103"
-    }
-   ],
-   "autor_h": "d38ce51b292fbc64",
-   "cupos_texto": "ILIMITADOS ♾️",
-   "inscriptos": null,
-   "cupo_total": null,
-   "rango": "3️⃣",
-   "modalidad": "1vs1",
-   "horario": "<t:1787943600:F>",
-   "fecha": "",
-   "premios": "CUPO A LA LIGA SNAKE LEAGUE: NEW CHAPTER  + PUNTOS DE ASCENSO",
-   "staff": {
-    "jurado": [
-     "CANTU",
-     "Yeye Fazer",
-     "King🇦🇷"
-    ]
-   },
-   "autor": "CANTU",
-   "staff_cuentas": {
-    "CANTU": "776271601221763103",
-    "Yeye Fazer": "936079604207202365",
-    "King🇦🇷": "451552733422682124"
-   },
    "categoria_id": "863207988739309600"
   },
   {
@@ -6103,8 +6088,8 @@
    "autor": "Mosquitrap 🦟🇦🇷",
    "staff_cuentas": {},
    "categoria_id": "1558611505040064605",
-   "inscripciones": "abiertas",
-   "inscripciones_cuando": "2026-11-13T04:23:38"
+   "inscripciones": "cerradas",
+   "inscripciones_cuando": "2026-11-13T16:11:19"
   },
   {
    "nombre": "COMPE ATERRADORA",
@@ -7166,6 +7151,42 @@
   }
  ],
  "inscripciones": [
+  {
+   "servidor": "LKR",
+   "canal": "inscripciones",
+   "texto": "Snx 🇻🇪",
+   "quien": "ismel_0555",
+   "discord_id": "1458603256292053037",
+   "msg_id": "1570823019549692069",
+   "cuando": "2026-11-13T15:29:52"
+  },
+  {
+   "servidor": "LKR",
+   "canal": "📋・INSCRIPCIONES",
+   "texto": "Lvel 🇻🇪",
+   "quien": "soycoma__42587",
+   "discord_id": "1241407042195816459",
+   "msg_id": "1570772536827052045",
+   "cuando": "2026-11-13T12:09:16"
+  },
+  {
+   "servidor": "LKR",
+   "canal": "📋・INSCRIPCIONES",
+   "texto": "Snx🇻🇪",
+   "quien": "ismel_0555",
+   "discord_id": "1458603256292053037",
+   "msg_id": "1570772303996780545",
+   "cuando": "2026-11-13T12:08:20"
+  },
+  {
+   "servidor": "LKR",
+   "canal": "📋・INSCRIPCIONES",
+   "texto": "Number 🇻🇪",
+   "quien": "numbyng",
+   "discord_id": "1310075576991875144",
+   "msg_id": "1570749921261392014",
+   "cuando": "2026-11-13T10:39:24"
+  },
   {
    "servidor": "LKR",
    "canal": "inscripciones",
@@ -43129,42 +43150,6 @@
    "discord_id": "494965289042182164",
    "msg_id": "1558523502619926610",
    "cuando": "2026-10-10T16:55:58"
-  },
-  {
-   "servidor": "DDF",
-   "canal": "『📑』Inscripciones",
-   "texto": "MaYeuTyK 🇺🇾",
-   "quien": "martinez4080",
-   "discord_id": "756958777126682674",
-   "msg_id": "1558521636083204209",
-   "cuando": "2026-10-10T16:48:33"
-  },
-  {
-   "servidor": "DDF",
-   "canal": "『📑』Inscripciones",
-   "texto": "spartan🇺🇾",
-   "quien": "fanta4341",
-   "discord_id": "685188086589947930",
-   "msg_id": "1558521497142697985",
-   "cuando": "2026-10-10T16:48:00"
-  },
-  {
-   "servidor": "DDF",
-   "canal": "『📑』Inscripciones",
-   "texto": "xclusivo",
-   "quien": "wackmc1",
-   "discord_id": "1493013247488430202",
-   "msg_id": "1558521345590034525",
-   "cuando": "2026-10-10T16:47:24"
-  },
-  {
-   "servidor": "DDF",
-   "canal": "『📑』Inscripciones",
-   "texto": "yinn",
-   "quien": "yinnmtz",
-   "discord_id": "1538896358679908437",
-   "msg_id": "1558521297892413441",
-   "cuando": "2026-10-10T16:47:13"
   }
  ]
 }

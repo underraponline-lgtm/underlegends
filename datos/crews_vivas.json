@@ -14,7 +14,7 @@
   {
    "id": "Follombia",
    "nombre": "Follombia",
-   "sigla": "",
+   "sigla": "FLB",
    "entrada": "pedido",
    "oficial": true,
    "creada": 1792404668196,
@@ -88,7 +88,7 @@
   {
    "id": "KS",
    "nombre": "Knowledge Sombrío",
-   "sigla": "KS",
+   "sigla": "KWS",
    "entrada": "pedido",
    "oficial": true,
    "creada": 1792404668196,
@@ -118,32 +118,6 @@
     "ev": 0
    },
    "fund": ""
-  },
-  {
-   "id": "Los ULEYES",
-   "nombre": "Los ULEYES",
-   "sigla": "ULY",
-   "entrada": "abierta",
-   "oficial": false,
-   "creada": 1792439945419,
-   "reps": [
-    "dlx"
-   ],
-   "gente": [
-    [
-     "dlx",
-     "lider",
-     1792439945419
-    ]
-   ],
-   "vence": 0,
-   "logo": "",
-   "desc": "Probando. D",
-   "req": {
-    "rg": "E",
-    "ev": 1
-   },
-   "fund": "dlx"
   },
   {
    "id": "Desierto de Atacama",
