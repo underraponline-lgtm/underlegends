@@ -11,6 +11,16 @@
  ],
  "cambios": [
     {
+        "version": "5.14",
+        "dia": "2026-11-13",
+        "cuando": "2026-11-13T04:10:00-05:00",
+        "titulo": "Eventos y Tu servidor, bien en cualquier pantalla",
+        "items": [
+            "**Eventos** y **Tu servidor** del tamaño justo en la compu y en el celular: nada cortado ni encimado.",
+            "Arriba del Inicio siempre hay cuatro cuadros, también si todavía no entraste."
+        ]
+    },
+    {
         "version": "5.13",
         "dia": "2026-11-13",
         "cuando": "2026-11-13T04:02:00-05:00",
