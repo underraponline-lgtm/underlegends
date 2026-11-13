@@ -11,6 +11,16 @@
  ],
  "cambios": [
     {
+        "version": "5.16",
+        "dia": "2026-11-13",
+        "cuando": "2026-11-13T04:18:00-05:00",
+        "titulo": "Actividad y Ascensos, en el menú de Ranking",
+        "items": [
+            "**El ranking de Eventos ahora se llama Actividad** y tiene dos vistas: **En general** (cada evento, batalla de liga y duelo de la temporada suma uno) y **En eventos**.",
+            "**Actividad y Ascensos ya están en el menú de Ranking**, cada uno con su ícono."
+        ]
+    },
+    {
         "version": "5.15",
         "dia": "2026-11-13",
         "cuando": "2026-11-13T04:16:00-05:00",
