@@ -1866,7 +1866,8 @@
   "Xervoe": {
    "competitivo": "da1bc09cdf7c:624f5e322311",
    "pais": "636be34c1f53:733ce66bf5fa",
-   "servidor": "e34a96ca362a:2415c901692f:35630e"
+   "servidor": "e34a96ca362a:2415c901692f:35630e",
+   "temporada": "b4841dac2858:7a510334494e"
   },
   "Xhay": {
    "servidor": "49b45c822ffe:2415c901692f:255fe9"
@@ -2110,5 +2111,5 @@
    "servidor": "7f8885a35a6d:2415c901692f:93a344"
   }
  },
- "cuando": "2026-11-13T19:38:46+00:00"
+ "cuando": "2026-11-13T20:22:18+00:00"
 }
