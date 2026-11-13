@@ -11,6 +11,16 @@
  ],
  "cambios": [
     {
+        "version": "4.77",
+        "dia": "2026-11-12",
+        "cuando": "2026-11-12T19:26:00-05:00",
+        "titulo": "Sin eventos repetidos, y la Guía a mano",
+        "items": [
+            "**Un evento que su servidor anunció dos veces ya sale una sola vez** en vivo, en Hoy y en las historias.",
+            "**La Guía tiene su lugar en el menú de arriba**, al lado de Comunidad."
+        ]
+    },
+    {
         "version": "4.76",
         "dia": "2026-11-12",
         "cuando": "2026-11-12T18:10:00-05:00",
