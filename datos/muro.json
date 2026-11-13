@@ -458,6 +458,14 @@
 "temporada"
 ]
 },
+"mayeutyk": {
+"rg": "D",
+"c": [
+"competitivo",
+"servidor",
+"temporada"
+]
+},
 "soulb": {
 "rg": "D",
 "c": [
@@ -482,14 +490,6 @@
 },
 "masino": {
 "rg": "B",
-"c": [
-"competitivo",
-"servidor",
-"temporada"
-]
-},
-"mayeutyk": {
-"rg": "D",
 "c": [
 "competitivo",
 "servidor",
@@ -619,6 +619,15 @@
 "temporada"
 ]
 },
+"sosaatr": {
+"rg": "E",
+"c": [
+"competitivo",
+"pais",
+"servidor",
+"temporada"
+]
+},
 "numberve": {
 "rg": "E",
 "c": [
@@ -638,15 +647,6 @@
 ]
 },
 "nemi": {
-"rg": "E",
-"c": [
-"competitivo",
-"pais",
-"servidor",
-"temporada"
-]
-},
-"sosaatr": {
 "rg": "E",
 "c": [
 "competitivo",
@@ -907,6 +907,13 @@
 "rg": "",
 "c": []
 },
+"mtz": {
+"rg": "",
+"c": [
+"servidor",
+"temporada"
+]
+},
 "mcarepa": {
 "rg": "",
 "c": [
@@ -997,13 +1004,6 @@
 "temporada"
 ]
 },
-"mtz": {
-"rg": "",
-"c": [
-"servidor",
-"temporada"
-]
-},
 "prosu": {
 "rg": "",
 "c": [
@@ -1014,6 +1014,13 @@
 "mosquitrap": {
 "rg": "",
 "c": []
+},
+"dios": {
+"rg": "",
+"c": [
+"servidor",
+"temporada"
+]
 },
 "benji": {
 "rg": "",
@@ -1066,12 +1073,9 @@
 "rg": "",
 "c": []
 },
-"dios": {
+"berrun": {
 "rg": "",
-"c": [
-"servidor",
-"temporada"
-]
+"c": []
 },
 "andy": {
 "rg": "",
@@ -1176,10 +1180,6 @@
 ]
 },
 "sadik": {
-"rg": "",
-"c": []
-},
-"berrun": {
 "rg": "",
 "c": []
 },
@@ -1309,14 +1309,6 @@
 "rg": "",
 "c": []
 },
-"sosa": {
-"rg": "",
-"c": [
-"pais",
-"servidor",
-"temporada"
-]
-},
 "warap": {
 "rg": "",
 "c": []
@@ -1346,6 +1338,14 @@
 "lautarolasinceridad": {
 "rg": "",
 "c": []
+},
+"sosa": {
+"rg": "",
+"c": [
+"pais",
+"servidor",
+"temporada"
+]
 },
 "carlos": {
 "rg": "",
@@ -7212,8 +7212,8 @@
 "tipo": "resnoche",
 "t": "2026-11-13T08:00:00Z",
 "dia": "2026-11-12",
-"eventos": 1,
-"part": 8,
+"eventos": 2,
+"part": 16,
 "campeones": [
 {
 "ev": "CUPO A LA MULTIVERS",
@@ -7225,25 +7225,36 @@
 "zetryko"
 ]
 ]
+},
+{
+"ev": "- LIGA INMORTAL -",
+"sv": "FRZ",
+"ll": 625,
+"quien": [
+[
+"MTZ",
+"mtz"
+]
+]
 }
 ],
 "suman": [
 {
-"n": "Zetryko",
-"k": "zetryko",
+"n": "MTZ",
+"k": "mtz",
 "pts": 7500,
-"ev": 1
-},
-{
-"n": "LICENCIADO 🇲🇽",
-"k": "",
-"pts": 5000,
 "ev": 1
 },
 {
 "n": "TøKīØ🦠🧠",
 "k": "tøkiø",
-"pts": 4000,
+"pts": 7500,
+"ev": 2
+},
+{
+"n": "Zetryko",
+"k": "zetryko",
+"pts": 7500,
 "ev": 1
 }
 ],
@@ -7252,7 +7263,7 @@
 "n": "Number VE",
 "k": "numberve",
 "de": 84,
-"a": 64
+"a": 65
 },
 {
 "n": "Zetryko",
@@ -7261,13 +7272,21 @@
 "a": 93
 },
 {
-"n": "crakero",
-"k": "crakero",
-"de": 112,
-"a": 107
+"n": "Berrun",
+"k": "berrun",
+"de": 304,
+"a": 292
 }
 ],
-"sorpresas": []
+"sorpresas": [
+{
+"n": "MTZ",
+"k": "mtz",
+"que": "primer",
+"ev": "- LIGA INMORTAL -",
+"desde": 103
+}
+]
 }
 }
 }

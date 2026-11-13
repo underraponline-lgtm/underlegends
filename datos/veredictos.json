@@ -1332,6 +1332,61 @@
    "b": "RAIZER",
    "ganador": "CRK",
    "votos": "1–0"
+  },
+  "1570578845973745735": {
+   "id": "1570578845973745735",
+   "sv": "#FDS ╏FREESTYLE DISCORD SERIES",
+   "g": "1489848581203689535",
+   "canal": "1536574435761332334",
+   "pub": 1794525576824,
+   "a": "MCAREPA",
+   "b": "NITO NANEL",
+   "ganador": "MCAREPA",
+   "votos": "1–0"
+  },
+  "1570582869502464193": {
+   "id": "1570582869502464193",
+   "sv": "#FDS ╏FREESTYLE DISCORD SERIES",
+   "g": "1489848581203689535",
+   "canal": "1536574435761332334",
+   "pub": 1794526536108,
+   "a": "DIOS",
+   "b": "OKAM",
+   "ganador": "DIOS",
+   "votos": "2–1"
+  },
+  "1570584743597178971": {
+   "id": "1570584743597178971",
+   "sv": "#FDS ╏FREESTYLE DISCORD SERIES",
+   "g": "1489848581203689535",
+   "canal": "1536574435761332334",
+   "pub": 1794526982927,
+   "a": "VILCA",
+   "b": "SHOWSERO",
+   "ganador": "VILCA",
+   "votos": "1–0"
+  },
+  "1570585262864605235": {
+   "id": "1570585262864605235",
+   "sv": "🔥LKR (Champios Legue)🐉",
+   "g": "1558611504046153750",
+   "canal": "1560448027490001067",
+   "pub": 1794527106730,
+   "a": "DREXX 🇵🇪",
+   "b": "ERIAN 🇩🇴",
+   "ganador": "ERIAN 🇩🇴",
+   "votos": "1–0"
+  },
+  "1570586623702204530": {
+   "id": "1570586623702204530",
+   "sv": "🔥LKR (Champios Legue)🐉",
+   "g": "1558611504046153750",
+   "canal": "1560448027490001067",
+   "pub": 1794527431179,
+   "a": "CRAKERO 🇦🇷",
+   "b": "LVS 🇪🇸",
+   "ganador": "LVS 🇪🇸",
+   "votos": "1–0"
   }
  },
  "llaves": {
@@ -6120,8 +6175,8 @@
    "g": "1489848581203689535",
    "canal": "1500675902042931280",
    "pub": 1794524133838,
-   "ed": 1794524133838,
-   "texto": "`[ CUARTOS ]`\n⌞crk⌝ 🆚 ⌞raizer⌝\n⌞Nito nanel⌝ 🆚 ⌞mcarepa⌝\n⌞mco⌝ 🆚 ⌞limitsz⌝\n⌞tokio⌝ 🆚 ⌞showsero⌝\n`[ SEMIFINALES ]`\n`[ FINAL ]`",
+   "ed": 1794527392166,
+   "texto": "`[ CUARTOS ]`\n⌞crk⌝ 🆚 ⌞raizer⌝\n⌞Nito nanel⌝ 🆚 ⌞mcarepa⌝\n⌞OKAM⌝ 🆚 ⌞DIOS⌝\n⌞tokio⌝ 🆚 ⌞showsero⌝\n`[ SEMIFINALES ]`\n⌞crk⌝ 🆚 ⌞mcarepa⌝\n⌞dios⌝ 🆚 ⌞showsero⌝\n`[ FINAL ]`",
    "batallas": [
     [
      "CUARTOS",
@@ -6129,8 +6184,8 @@
       "crk",
       "raizer"
      ],
-     null,
-     "última ronda y no dice campeón",
+     "crk",
+     "ronda siguiente",
      []
     ],
     [
@@ -6139,24 +6194,44 @@
       "Nito nanel",
       "mcarepa"
      ],
-     null,
-     "última ronda y no dice campeón",
+     "mcarepa",
+     "ronda siguiente",
      []
     ],
     [
      "CUARTOS",
      [
-      "mco",
-      "limitsz"
+      "OKAM",
+      "DIOS"
      ],
-     null,
-     "última ronda y no dice campeón",
+     "DIOS",
+     "ronda siguiente",
      []
     ],
     [
      "CUARTOS",
      [
       "tokio",
+      "showsero"
+     ],
+     "showsero",
+     "ronda siguiente",
+     []
+    ],
+    [
+     "SEMIFINALES",
+     [
+      "crk",
+      "mcarepa"
+     ],
+     null,
+     "última ronda y no dice campeón",
+     []
+    ],
+    [
+     "SEMIFINALES",
+     [
+      "dios",
       "showsero"
      ],
      null,

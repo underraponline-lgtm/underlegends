@@ -1912,6 +1912,11 @@
     "INTERNACIONAL",
     "t1",
     1794269804894
+   ],
+   "SIN FRONTERAS": [
+    "SIN FRONTERAS",
+    "t1",
+    1794528421510
    ]
   },
   "servidor": {
@@ -2898,6 +2903,11 @@
     "📈 EN ASCENSO",
     "t1",
     1794260565889
+   ],
+   "🧳 VIAJERO": [
+    "🧳 VIAJERO",
+    "t1",
+    1794528421510
    ]
   }
  },
@@ -3638,6 +3648,11 @@
     "🥈 A UN PASO",
     "t1",
     1794091121070
+   ],
+   "🦁 TEMERARIO": [
+    "🦁 TEMERARIO",
+    "t1",
+    1794528421510
    ]
   },
   "pais": {
@@ -8205,6 +8220,11 @@
     "t1",
     1793579346538
    ],
+   "🛫 NÓMADA": [
+    "🛫 NÓMADA",
+    "t1",
+    1794528421510
+   ],
    "🥉 AL PODIO": [
     "🥉 AL PODIO",
     "t1",
@@ -9290,6 +9310,11 @@
     "🌍 TROTAMUNDOS",
     "t1",
     1793131412781
+   ],
+   "👑 CAMPEÓN x%d": [
+    "👑 CAMPEÓN x1",
+    "t1",
+    1794528421510
    ],
    "📅 INFALTABLE": [
     "📅 INFALTABLE",
@@ -12518,6 +12543,11 @@
     "t1",
     1792953978519
    ],
+   "📈 EN ASCENSO": [
+    "📈 EN ASCENSO",
+    "t1",
+    1794528421510
+   ],
    "🔟 DOBLE DÍGITO": [
     "🔟 DOBLE DÍGITO",
     "t1",
@@ -13625,6 +13655,13 @@
   }
  },
  "sosaatr": {
+  "competitivo": {
+   "🤝 SIN MIEDO": [
+    "🤝 SIN MIEDO",
+    "t1",
+    1794528421510
+   ]
+  },
   "pais": {
    "DA LA CARA": [
     "DA LA CARA",
@@ -13635,13 +13672,28 @@
     "EMBAJADOR",
     "t1",
     1794526619416
+   ],
+   "PIONERO": [
+    "PIONERO",
+    "t1",
+    1794528421510
    ]
   },
   "servidor": {
+   "🏛️ PILAR": [
+    "🏛️ PILAR",
+    "t1",
+    1794528421510
+   ],
    "📆 HABITUÉ": [
     "📆 HABITUÉ",
     "t1",
     1794526619416
+   ],
+   "🧱 FUNDADOR": [
+    "🧱 FUNDADOR",
+    "t1",
+    1794528421510
    ]
   },
   "temporada": {
@@ -13660,10 +13712,20 @@
     "t1",
     1794526619416
    ],
+   "👑 CAMPEÓN x%d": [
+    "👑 CAMPEÓN x1",
+    "t1",
+    1794528421510
+   ],
    "💯 CENTENARIO": [
     "💯 CENTENARIO",
     "t1",
     1794526619416
+   ],
+   "🔋 INAGOTABLE": [
+    "🔋 INAGOTABLE",
+    "t1",
+    1794528421510
    ],
    "🔟 DOBLE DÍGITO": [
     "🔟 DOBLE DÍGITO",

@@ -24798,9 +24798,9 @@
     "Mc arepa, roda mc 🇵🇦"
    ],
    [
-    "OKAM, Sosa",
+    "OKAM, .SosaATR",
     "LRS, Artezzy",
-    "OKAM, Sosa"
+    "OKAM, .SosaATR"
    ],
    [
     "Mc arepa, roda mc 🇵🇦",
@@ -24808,9 +24808,9 @@
     "Mc arepa, roda mc 🇵🇦"
    ],
    [
-    "OKAM, Sosa",
+    "OKAM, .SosaATR",
     "Mc arepa, roda mc 🇵🇦",
-    "OKAM, Sosa"
+    "OKAM, .SosaATR"
    ]
   ],
   "ev_antes": {
@@ -24823,7 +24823,7 @@
    "Tayo": 1
   },
   "fecha": "23/10",
-  "firma": "50f5269fe94b1469",
+  "firma": "947c1e5f79cd7da0",
   "msg": "1564147718501433356",
   "nombre": "2v2 2",
   "num": 527,
@@ -24841,7 +24841,7 @@
     5000
    ],
    [
-    "Sosa",
+    ".SosaATR",
     "Campeón",
     5000
    ],
@@ -45573,6 +45573,146 @@
    ],
    [
     "Dyzz",
+    "Cuartos",
+    2000
+   ]
+  ],
+  "v": 2
+ },
+ "625": {
+  "antes": {
+   "Berrun": [
+    301,
+    167,
+    true
+   ],
+   "Dios": [
+    110,
+    147,
+    false
+   ],
+   "MTZ": [
+    104,
+    135,
+    false
+   ],
+   "MaYeuTyK": [
+    51,
+    63,
+    false
+   ],
+   "OKAM": [
+    28,
+    31,
+    false
+   ],
+   "TøKīØ🦠🧠": [
+    44,
+    53,
+    false
+   ],
+   "crakero": [
+    107,
+    140,
+    false
+   ]
+  },
+  "canal": "838593179744731229",
+  "duelos": [
+   [
+    "TøKīØ🦠🧠",
+    "OKAM",
+    "TøKīØ🦠🧠"
+   ],
+   [
+    "Berrun",
+    "Dios",
+    "Berrun"
+   ],
+   [
+    "MTZ",
+    "crakero",
+    "MTZ"
+   ],
+   [
+    "MaYeuTyK",
+    "Limtsz",
+    "MaYeuTyK"
+   ],
+   [
+    "Berrun",
+    "TøKīØ🦠🧠",
+    "Berrun"
+   ],
+   [
+    "MTZ",
+    "MaYeuTyK",
+    "MTZ"
+   ],
+   [
+    "MTZ",
+    "Berrun",
+    "MTZ"
+   ]
+  ],
+  "ev_antes": {
+   "Berrun": 1,
+   "Dios": 6,
+   "MTZ": 8,
+   "MaYeuTyK": 16,
+   "OKAM": 26,
+   "TøKīØ🦠🧠": 12,
+   "crakero": 8
+  },
+  "fecha": "12/11",
+  "firma": "7e500b29ea570df5",
+  "msg": "1570581400896278600",
+  "nombre": "- LIGA INMORTAL -",
+  "num": 625,
+  "participantes": 8,
+  "sello": {
+   "MTZ": "7a046bd51f62:7a510334494e"
+  },
+  "sv": "FRZ",
+  "t": "2026-11-12T23:54:13Z",
+  "tabla": [
+   [
+    "MTZ",
+    "Campeón",
+    7500
+   ],
+   [
+    "Berrun",
+    "Subcampeón",
+    5000
+   ],
+   [
+    "TøKīØ🦠🧠",
+    "Semifinal",
+    3500
+   ],
+   [
+    "MaYeuTyK",
+    "Semifinal",
+    3500
+   ],
+   [
+    "OKAM",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Dios",
+    "Cuartos",
+    2000
+   ],
+   [
+    "crakero",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Limtsz",
     "Cuartos",
     2000
    ]
