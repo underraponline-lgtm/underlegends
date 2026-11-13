@@ -4919,3 +4919,6 @@ dialog.pn-pop.pop-gratis{--pc:#F5C542;width:min(640px,calc(100vw - 32px))}
 .h-tira.hay-der::after{right:0;background:linear-gradient(270deg,var(--fondo,#000),transparent)}
 @media (pointer: coarse){.h-fl{display:none}}
 @media (max-width: 899.98px){.h-fl{top:22px}}
+/* ⬅️ la tira arranca pegada a la izquierda, como termina a la derecha (Dlx, 12/11/2026: «a la izquierda, o sea el espacio
+   moverlo a la izquierda»): sin el margen de la página de ese lado */
+@media (min-width: 900px){.app .h-tira .historias{padding-left:16px;scroll-padding-left:16px}}
