@@ -153,7 +153,9 @@
   "🔑 ZTR es Shadow, 🇨🇴 (Dlx, 10/11/2026: «Yes, the same person», a «¿Shadow y ZTR son la misma persona?»). Los 18 eventos de «Shadow» caen en su cuenta de la Lista (1461433944237936829, @alejo008715, «DRAGON XX»), que nunca se anotó desde que se guardan las inscripciones (02/10); quien se anota «SHADOW 🇨🇴» es @tenacious_dragon_23394 («DJ SHADOW🐉», 1548906948307451906), que en la Lista era la fila ZTR, con 1 evento. En el menú de la #505 contestó esa cuenta que ganó SHADOW. Va como Rodas y Roda: ZTR es alias y esa cuenta va en `cuentas` (abre las cartas de Shadow con /card); la fila ZTR de la Lista se fusiona en Shadow.",
   "🇪🇨 2026-11-12 4:16 PM ET: en ACAD, LKR y DDS «Carlos» es Carlosss: Carlos 🇲🇽 no está en esos servidores y ahí sólo la cuenta de Carlosss se anota como «carlos». Makmah se lo pidió a Dlx; Claude, con la prueba (Makmah se lo pidió a Dlx, 12/11/2026).",
   "🇻🇪 2026-11-12 4:18 PM ET: en ACAD «Number» es Number VE (como en DDF): en la ACADEMIA la única cuenta que se anota como «number» es la de Number VE (1310075576991875144, 14 de 14 en datos/inscritos_hist.json); Number 🇺🇾 está en el servidor y nunca se anotó.",
-  "🇺🇾 12/11/2026 6:09 PM ET: en DDS y FDS «Sosa» es .SosaATR: Sosa 🇦🇷 no es miembro de esos servidores y ahí sólo se anota .SosaATR. Claude, con la prueba (Dlx, 12/11/2026: «arregla también lo de Sosa»)."
+  "🇺🇾 12/11/2026 6:09 PM ET: en DDS y FDS «Sosa» es .SosaATR: Sosa 🇦🇷 no es miembro de esos servidores y ahí sólo se anota .SosaATR. Claude, con la prueba (Dlx, 12/11/2026: «arregla también lo de Sosa»).",
+  "🔀 12/11/2026 7:45 PM ET: en DDS «Abraham» es AbrahamH, «Mark» es Mark98 y «Kochi» es Kochi2011, y en DDF «19» es 19 FLEIVA WACK: los de la Lista no son miembros de esos servidores y ahí se anotan esas cuentas. Claude, con la prueba (Dlx, 12/11/2026: «Sí, pásalos»).",
+  "🔀 12/11/2026 7:45 PM ET: ACAD: Damian -> Dominick; URBF: Nemi -> nemmii_as; URBF: Number -> Number VE; FDS: Pepe Mujica -> LRS; LKR: Shadow -> VALLES-T; ACAD: Teo -> Teito; DDF: Teo -> Teito; FDS: Teo -> Teito; FFA: Teo -> Teito (el de la Lista no es miembro de ese servidor y ahí se anota el otro). Claude, con la prueba (Dlx, 12/11/2026: «mira y pasa todo lo demás que tú consideres»)."
  ],
  "cuentas": {
   "Monet": [
@@ -539,19 +541,37 @@
    "Sosa 🇦🇷",
    ".SosaATR 🇺🇾",
    "Dlx, 12/11/2026 («arregla también lo de Sosa»): dos personas, dos cuentas (1338912904614903849 y 1471153954254622774); en FFA, DDS, FDS, URBF y SR sólo .SosaATR se anota «sosa»"
+  ],
+  [
+   "Abraham 🇻🇪",
+   "AbrahamH",
+   "Dlx, 12/11/2026 («Sí, pásalos»): dos personas, dos cuentas; el de la Lista no es miembro de DDS y el de DDS es el que se anota ahí"
+  ],
+  [
+   "Mark 🇨🇴",
+   "Mark98",
+   "Dlx, 12/11/2026 («Sí, pásalos»): dos personas, dos cuentas; el de la Lista no es miembro de DDS y el de DDS es el que se anota ahí"
+  ],
+  [
+   "Kochi 🇨🇱",
+   "Kochi2011",
+   "Dlx, 12/11/2026 («Sí, pásalos»): dos personas, dos cuentas; el de la Lista no es miembro de DDS y el de DDS es el que se anota ahí"
   ]
  ],
  "por_servidor": {
   "DDF": {
    "Carlos": "Carlosss",
    "Number": "Number VE",
-   "AGUSTIN": "EIDP"
+   "AGUSTIN": "EIDP",
+   "19": "19 FLEIVA WACK",
+   "Teo": "Teito"
   },
   "FFA": {
    "Yo mc": "Cronox",
    "223": "Six",
    "233": "Six",
-   "QZ": "QUEEN"
+   "QZ": "QUEEN",
+   "Teo": "Teito"
   },
   "FVS": {
    "Agustin": "AGUSTÍN51K",
@@ -566,12 +586,16 @@
    "Agustin 51": "AGUSTÍN51K",
    "AGUSTIN51K": "AGUSTÍN51K",
    "FORCE": "ForceGP",
-   "BENJA": "BenjaMVP"
+   "BENJA": "BenjaMVP",
+   "Nemi": "nemmii_as",
+   "Number": "Number VE"
   },
   "ACAD": {
    "ATR": ".SosaATR",
    "Carlos": "Carlosss",
-   "Number": "Number VE"
+   "Number": "Number VE",
+   "Damian": "Dominick",
+   "Teo": "Teito"
   },
   "CH": {
    "akvmolt": "Molt",
@@ -579,14 +603,20 @@
    "JAZII": "JaZi"
   },
   "LKR": {
-   "Carlos": "Carlosss"
+   "Carlos": "Carlosss",
+   "Shadow": "VALLES-T"
   },
   "DDS": {
    "Carlos": "Carlosss",
-   "Sosa": ".SosaATR"
+   "Sosa": ".SosaATR",
+   "Abraham": "AbrahamH",
+   "Mark": "Mark98",
+   "Kochi": "Kochi2011"
   },
   "FDS": {
-   "Sosa": ".SosaATR"
+   "Sosa": ".SosaATR",
+   "Pepe Mujica": "LRS",
+   "Teo": "Teito"
   }
  }
 }
