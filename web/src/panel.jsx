@@ -319,9 +319,17 @@ function ultimoAnuncio(liga) {
   for (const c of liga.d.calendario || []) if (!liga.canceladoCal(c)) ver(idMsg(c.link), { nombre: c.n, sv: c.sv, t: utc(c.t).toISOString(), ins: '', link: c.link || '' });
   return mejor;
 }
+// 📢 …y OFICIAL, no de un evento (Dlx, el mismo día: «cuando me refiero, que sea un anuncio oficial, no un anuncio de
+// evento»): lo último que publicó la Liga en su canal de DRA (`novedades`, de `_novedades()` en bot/subir_web.py, lo mismo
+// que Publicaciones). Sin ninguno, el último anuncio de evento; y sin eso, el próximo evento
+function anuncioOficial(liga) {
+  const n = (liga.d.novedades || []).filter((x) => x && x.t && (x.tit || x.tx)).sort((a, b) => utc(b.t) - utc(a.t))[0];
+  return n ? { tit: limpio(n.tit || String(n.tx).split(/\r?\n/)[0]).slice(0, 80), tx: limpio(n.tx || ''), t: utc(n.t).toISOString(), link: n.link || '' } : null;
+}
 function SinBatallas({ liga, yo, yoF, T, retar }) {
-  const ua = ultimoAnuncio(liga);
-  const ev = ua ? null : eventoDelBoton(liga).e || liga.luego()[0] || null;
+  const of = anuncioOficial(liga);
+  const ua = of ? null : ultimoAnuncio(liga);
+  const ev = of || ua ? null : eventoDelBoton(liga).e || liga.luego()[0] || null;
   const miPos = yoF.pos || yo.pos || 0;
   let rv = null;
   if (miPos) {
@@ -336,7 +344,15 @@ function SinBatallas({ liga, yo, yoF, T, retar }) {
   // sin rival (quien todavía no jugó), el evento solo, a lo ancho
   return (
     <section className={'pn-sb' + (rv ? '' : ' solo ev')}>
-      {ua ? (() => {
+      {of ? (
+        <div className="pn-sb-ev">
+          <img className="pn-sb-logo" alt="" src="/ul.png" />
+          <span className="pn-sb-tx"><em>Último anuncio oficial</em><b>{of.tit}</b>
+            <small>La Liga · <span className="pn-sb-t">hace {hace(new Date(of.t).getTime())}</span></small></span>
+          {of.link ? <a className="btn verde chico" href={of.link} target="_blank" rel="noopener noreferrer">Ver anuncio</a>
+            : <a className="btn verde chico" href="#/publicaciones">Ver</a>}
+        </div>
+      ) : ua ? (() => {
         const fut = new Date(ua.t).getTime() > Date.now();
         return (
           <div className="pn-sb-ev">
