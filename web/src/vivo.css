@@ -2063,6 +2063,25 @@ a.rk-z:hover{border-color:var(--linea)}
 .nt-ok{margin:0;font:600 13.5px/1.45 Archivo,sans-serif}
 .nt-ok a{color:inherit;font-weight:800;text-decoration:underline;text-underline-offset:3px}
 .nt-pie{display:grid;gap:10px;justify-items:start;margin-top:8px;padding:14px 16px 16px;border-top:2px solid var(--linea)}
+/* 🔔 la campana rehecha (13/11/2026, la A de la maqueta): filtros, «Para hacer», el ícono en la esquina de la cara y los PdT */
+.nt-chips{position:sticky;top:66px;z-index:1;display:flex;gap:6px;padding:10px 16px;overflow-x:auto;background:var(--fondo);border-bottom:1px solid var(--suave);scrollbar-width:none}
+.nt-chip{flex:none;display:inline-flex;align-items:center;gap:5px;padding:7px 9px;border:1.5px solid var(--suave);border-radius:4px;background:none;color:var(--gris);
+  font:700 14px/1 "Barlow Condensed",sans-serif;letter-spacing:.05em;text-transform:uppercase;cursor:pointer}
+.nt-chip em{font-style:normal;color:var(--tinta)}
+.nt-chip.on{background:var(--tinta);border-color:var(--tinta);color:var(--fondo)}
+.nt-chip.on em{color:var(--magenta)}
+.nt-chip:focus-visible{outline:2px solid var(--magenta);outline-offset:2px}
+.nt-s.nt-hacer{display:flex;justify-content:space-between;color:#F2B705}
+.nt-tarea{display:grid;grid-template-columns:42px minmax(0,1fr);gap:11px;padding:10px 16px;background:#121006;box-shadow:inset 3px 0 0 #F2B705}
+.nt-tarea + .nt-tarea{border-top:1px solid #2a2508}
+.nt-acc{display:flex;flex-wrap:wrap;gap:6px;margin-top:6px}
+.nt-msg{padding:8px 16px 4px;font-size:13px}
+.nt-cw{position:relative;width:42px;height:42px}
+.nt-badge{position:absolute;right:-4px;bottom:-4px;width:21px;height:21px;border-radius:50%;display:grid;place-items:center;background:var(--caja);
+  border:2px solid var(--fondo);font-size:11px;font-style:normal;line-height:1}
+.nt-i.nueva .nt-badge{border-color:var(--caja)}
+.nt-pdt{display:inline-block;margin-left:6px;padding:2px 6px;border-radius:3px;background:#1d1a08;color:#F2B705;vertical-align:1px;
+  font:700 12.5px/1.2 "Barlow Condensed",sans-serif;letter-spacing:.04em;white-space:nowrap}
 @media (max-width: 899.98px){
   .nt-p{position:fixed;inset:0;width:auto;max-height:none;z-index:60;border:0;box-shadow:none}
 }

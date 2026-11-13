@@ -24,6 +24,7 @@ import { cuantosNuevos } from './inv_nuevos.js';
 import { cobrarRacha } from './racha.js';
 import { dondeEstoy, faltaTxt, nombreDe, useCompetencias } from './competencias_datos.js';
 import { eventoDelBoton } from './arriba.jsx';
+import { ERR_LIBRE, LB, libreAccion, useLibres } from './libres.js';
 import { svElegido, useElegidos } from './elegidos.js';
 import { pedirLigas } from './ligas_datos.js';
 import { BarraDia } from './drops.jsx';
@@ -381,32 +382,6 @@ function caraACara(liga, a, b) {
 // la batalla se borraba sola. Ahora vive en el objeto (`libreCrear()` en bot/avisos.js): tu rival la ve en su Inicio (y le
 // llega a su campana), y pasada la hora cada uno dice quién ganó. Si coinciden, queda en su cara a cara; si no, «sin
 // acuerdo». No toca el ranking
-const LB = { d: null, va: false, oyen: new Set() };
-const avisarLB = () => LB.oyen.forEach((f) => f());
-function pedirLibres() {
-  if (LB.va || !W.conCuenta) return;
-  LB.va = true;
-  W.conCuenta('/api/avisos/libres', {}).then((j) => { LB.va = false; if (j && j.ok) { LB.d = j; avisarLB(); } })
-    .catch(() => { LB.va = false; });
-}
-async function libreAccion(ruta, cuerpo) {
-  const j = W.conCuenta ? await W.conCuenta('/api/avisos/' + ruta, cuerpo).catch(() => null) : null;
-  if (j && j.ok) { LB.d = Object.assign({}, LB.d || {}, { libres: j.libres || [] }); avisarLB(); }
-  return j;
-}
-function useLibres(dc) {
-  const [, setN] = useState(0);
-  useEffect(() => {
-    if (!dc) return undefined;
-    const f = () => setN((n) => n + 1);
-    LB.oyen.add(f);
-    if (!LB.d) pedirLibres();
-    return () => { LB.oyen.delete(f); };
-  }, [!!dc]); // eslint-disable-line react-hooks/exhaustive-deps
-  return dc ? LB.d : null;
-}
-const ERR_LIBRE = { ya: 'Ya tienes una batalla libre pendiente con esa persona.', muchas: 'Tienes 3 batallas libres pendientes: juega o cancela una.',
-  hora: 'Esa hora ya no se puede: elige otra.', sin_perfil: 'Necesitas haber jugado para retar.', todavia: 'Todavía no es la hora de la batalla.' };
 function duelos(f) {
   const du = f && f.du;
   return du && du[1] ? <><span className="pn-largo">Duelos </span>{du[0]}/{du[1]} · {Math.round((du[0] / du[1]) * 100)} %</> : 'Sin duelos todavía';

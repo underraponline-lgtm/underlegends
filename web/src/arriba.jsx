@@ -7,6 +7,7 @@ import { Anotados, Cara, Carta, Chevron, Compartir, Ico, Poster, aDiscord, accio
 import { Miniatura, abrirVideo } from './video.jsx';
 import { useRacha } from './racha.js';
 import { YoMenu } from './yomenu.jsx';
+import { ERR_LIBRE, libreAccion, pedirLibres, useLibres } from './libres.js';
 
 // 🧭 EL ORDEN, EL DEL MENÚ DE ARRIBA AGRUPADO (12/11/2026, ver `GRUPOS`): lo que va suelto arriba, primero, y después lo
 // de cada grupo. Es el de la tira de abajo del celular, así que las cuatro y media que se ven sin deslizar son Inicio,
@@ -456,33 +457,84 @@ function Campanita({ liga }) {
   );
 }
 
+// 🔔 EL PANEL, REHECHO (Dlx, 13/11/2026, a la maqueta https://claude.ai/artifact/APL7sTvmkpADw1GyMqupHJ: «A pero que
+// aparezca todo, y que si alguien te reta que aparezca ahí pues también»). Arriba lo de hoy en la Liga; después «Para hacer»
+// —lo que pide algo de ti y se contesta ahí: quién ganó tu batalla libre, la batalla que espera ganador en tu panel—; y lo
+// demás por día (Hoy, Ayer, Esta semana, Antes), con filtros por tipo. El emoji del título va en la esquina de la cara
+const CAT_AVISO = { seguidor: 'gente', aplauso: 'gente', comentario: 'gente', seguido: 'gente', organiza: 'gente',
+  personal: 'ranking', libre: 'ranking', racha: 'pase', pase: 'pase' };
+const FILTROS_AVISO = [['todo', 'Todo'], ['hacer', 'Para hacer'], ['gente', 'Gente'], ['ranking', 'Ranking'], ['pase', 'Pase'], ['liga', 'Liga']];
+const catDe = (x) => CAT_AVISO[x.tipo] || 'liga';
+const DIA_MS_AV = 86400000;
+// «+150 Puntos de Tienda» del cuerpo pasa a una pastilla: el número se ve de un vistazo
+const PDT_RE = /\s*\+\s?([\d.]+)\s+Puntos de Tienda\.?/;
+// lo que pide una respuesta del dueño o su equipo: vence a las 48 h (`finales.py`), después lo cierra la Liga
+const esFinal = (x) => /^se:fin:/.test(String(x.clave || ''));
+const sinEmoji = (t) => String(t || '').replace(/^\p{Extended_Pictographic}️?\s*/u, '');
+
 function PanelAvisos({ liga, B, onCerrar }) {
   const e = useCampana();
   const C = window.Campana;
-  const hoy = liga.diaClave(liga.ahora);
+  const [fil, setFil] = useState('todo');
+  const [ocup, setOcup] = useState(0);
+  const [msg, setMsg] = useState('');
+  const dc = !B.sinCuenta && !!window.DC;
+  const LBd = useLibres(dc);
+  // lo de las batallas libres se vuelve a preguntar al abrir: pudo cambiar desde que se bajó
+  useEffect(() => { if (dc) pedirLibres(); }, [dc]);
+  const ahora = liga.ahora;
+  const hoy = liga.diaClave(ahora);
+  const ayer = liga.diaClave(new Date(ahora - DIA_MS_AV));
   // 📅 lo de hoy en la Liga, para todos: lo que se está jugando y lo que viene hoy
   const vivos = liga.vivo();
   const hoyEv = vivos.concat(liga.luego().filter((x) => liga.diaClave(x.cuando) === hoy && !vivos.includes(x))).slice(0, 4);
-  const items = B.items || [];
-  const nuevas = items.filter((x) => !x.visto);
-  const antes = items.filter((x) => x.visto);
   const ir = (ruta) => { onCerrar(); location.hash = ruta; };
+
+  // ⚔️ PARA HACER: tus batallas libres pendientes (libres.js, la misma lista que el Inicio) y lo que espera ganador
+  const yoK = LBd && LBd.yo;
+  const libres = ((LBd && LBd.libres) || []).filter((x) => x.estado === 'pend' && !(utc(x.t) <= ahora && x.mio));
+  const pendientes = new Set(libres.map((x) => 'libre:' + x.id));
+  const items = (B.items || []).filter((x) => !pendientes.has(x.clave));
+  const finales = items.filter((x) => esFinal(x) && ahora - x.t < 2 * DIA_MS_AV);
+  const resto = items.filter((x) => !esFinal(x));
+  const nHacer = libres.length + finales.length;
+  const cuenta = { todo: resto.length + nHacer, hacer: nHacer, liga: hoyEv.length };
+  for (const x of resto) cuenta[catDe(x)] = (cuenta[catDe(x)] || 0) + 1;
+  const ver = (c) => fil === 'todo' || fil === c;
+  const decir = async (id, gane) => {
+    setOcup(id); setMsg('');
+    const j = await libreAccion('libre-resultado', { id, gane });
+    setOcup(0);
+    setMsg(j && j.ok ? (j.estado === 'hecha' ? 'Listo: los dos dijeron lo mismo.' : j.estado === 'sin_acuerdo' ? 'Cada uno dijo otro ganador: queda sin acuerdo.' : 'Listo: falta que tu rival lo diga.')
+      : (j && ERR_LIBRE[j.error]) || 'No se pudo guardar: prueba de nuevo.');
+  };
+  const nombre = (k) => { const f = liga.T[k]; return f ? limpio(f.n) : k; };
+
   const fila = (x) => {
     const f = x.cara ? liga.T[x.cara] : null;
-    // el emoji del principio del aviso va en el círculo cuando no hay cara: no se repite al lado
     const emoji = /^(\p{Extended_Pictographic}️?)\s*/u.exec(String(x.titulo || ''));
-    const tit = !f && emoji ? x.titulo.slice(emoji[0].length) : x.titulo;
+    const tit = emoji ? x.titulo.slice(emoji[0].length) : x.titulo;
+    const ico = emoji ? emoji[1] : ICONO_AVISO[x.tipo] || '🔔';
+    const pdt = PDT_RE.exec(String(x.cuerpo || ''));
+    const cuerpo = pdt ? x.cuerpo.replace(PDT_RE, '').trim() : x.cuerpo;
     return (
       <li key={x.clave}>
         <button type="button" className={'nt-i' + (x.visto ? '' : ' nueva')} onClick={() => ir(rutaDe(x.url))}>
-          {f ? <Cara liga={liga} k={f.k} nombre={f.n} cls="nt-c" />
-            : <span className="nt-c nt-ico" aria-hidden="true">{emoji ? emoji[1] : ICONO_AVISO[x.tipo] || '🔔'}</span>}
-          <span className="nt-t"><b>{tit}</b>{x.cuerpo ? <small>{x.cuerpo}</small> : null}</span>
+          {f ? <span className="nt-cw"><Cara liga={liga} k={f.k} nombre={f.n} cls="nt-c" /><i className="nt-badge" aria-hidden="true">{ico}</i></span>
+            : <span className="nt-c nt-ico" aria-hidden="true">{ico}</span>}
+          <span className="nt-t"><b>{tit}{pdt ? <span className="nt-pdt">+{pdt[1]} PdT</span> : null}</b>{cuerpo ? <small>{cuerpo}</small> : null}</span>
           <em>{liga.cuando(new Date(x.t))}</em>
         </button>
       </li>
     );
   };
+  // lo demás, por día
+  const grupos = [['Hoy', []], ['Ayer', []], ['Esta semana', []], ['Antes', []]];
+  for (const x of resto) {
+    if (!ver(catDe(x))) continue;
+    const d = liga.diaClave(new Date(x.t));
+    grupos[d === hoy ? 0 : d === ayer ? 1 : ahora - x.t < 7 * DIA_MS_AV ? 2 : 3][1].push(x);
+  }
   // la campana del teléfono, al pie: lo que falta para que también llegue ahí
   let pie = null;
   if (e && C) {
@@ -491,10 +543,17 @@ function PanelAvisos({ liga, B, onCerrar }) {
     else if (!e.activa) pie = <><p className="nt-tx">Que también te llegue al teléfono, al momento:</p><button type="button" className="btn verde chico" onClick={() => C.activar()}><Ico n="campana" t={16} />Activar avisos</button></>;
     else pie = <><p className="nt-tx">Este teléfono recibe los eventos. Para que te lleguen también los tuyos:</p><button type="button" className="btn borde2 chico" onClick={() => C.vincular()}>Vincular con mi Discord</button></>;
   }
+  const filtros = FILTROS_AVISO.filter(([k]) => k === 'todo' || cuenta[k]);
   return (
     <div className="nt-p" role="dialog" aria-label="Notificaciones">
       <div className="nt-h"><b>Notificaciones</b><button type="button" className="nt-x" aria-label="Cerrar" onClick={onCerrar}><Ico n="cerrar" t={20} /></button></div>
-      {hoyEv.length ? (
+      {filtros.length > 2 ? (
+        <div className="nt-chips" role="group" aria-label="Filtrar">{filtros.map(([k, t]) => (
+          <button key={k} type="button" className={'nt-chip' + (fil === k ? ' on' : '')} aria-pressed={fil === k} onClick={() => setFil(k)}>
+            {t}<em>{cuenta[k] || 0}</em></button>
+        ))}</div>
+      ) : null}
+      {hoyEv.length && ver('liga') ? (
         <>
           <p className="nt-s">Hoy en la Liga</p>
           <ul>{hoyEv.map((x, i) => (
@@ -506,17 +565,49 @@ function PanelAvisos({ liga, B, onCerrar }) {
           ))}</ul>
         </>
       ) : null}
+      {nHacer && ver('hacer') ? (
+        <>
+          <p className="nt-s nt-hacer">Para hacer <span>{nHacer}</span></p>
+          <ul>
+            {libres.map((x) => {
+              const otro = x.a === yoK ? x.b : x.a;
+              const ya = utc(x.t) <= ahora;
+              return (
+                <li key={'lb' + x.id} className="nt-tarea">
+                  <Cara liga={liga} k={otro} nombre={nombre(otro)} cls="nt-c" />
+                  <span className="nt-t">
+                    <b>{ya ? '¿Quién ganó tu batalla libre con ' + nombre(otro) + '?' : 'Batalla libre con ' + nombre(otro)}</b>
+                    <small>{ya ? (x.suyo ? nombre(otro) + ' ya lo dijo: falta que lo digas tú.' : 'Cada uno dice quién ganó; si coinciden, queda en su cara a cara.')
+                      : liga.dia(x.t).replace(/^hoy /, 'hoy a las ') + (x.a === yoK ? ' · la propusiste tú' : ' · te retó')}</small>
+                    {ya ? (
+                      <span className="nt-acc">
+                        <button type="button" className="btn verde chico" disabled={!!ocup} onClick={() => decir(x.id, true)}>Gané yo</button>
+                        <button type="button" className="btn borde2 chico" disabled={!!ocup} onClick={() => decir(x.id, false)}>Ganó {nombre(otro)}</button>
+                      </span>
+                    ) : <span className="nt-acc"><button type="button" className="btn borde2 chico" onClick={() => ir('#/')}>Verla en tu Inicio</button></span>}
+                  </span>
+                </li>
+              );
+            })}
+            {finales.map((x) => (
+              <li key={x.clave} className="nt-tarea">
+                <span className="nt-c nt-ico" aria-hidden="true">🏁</span>
+                <span className="nt-t"><b>{sinEmoji(x.titulo)}</b><small>{String(x.cuerpo || '').replace(/\s*Márcalo en tu panel\.?$/, '')}</small>
+                  <span className="nt-acc"><button type="button" className="btn verde chico" onClick={() => ir(rutaDe(x.url))}>Marcarlo en tu panel</button></span></span>
+              </li>
+            ))}
+          </ul>
+          {msg ? <p className="nt-tx nt-msg" role="status">{msg}</p> : null}
+        </>
+      ) : null}
       {B.sinCuenta ? (
         <div className="nt-vacio">
-          <p className="nt-tx">Entra con Discord y acá te llega lo tuyo: quién te sigue, quién te felicita, tus rangos y tus cartas, y cuando gana alguien que sigues.</p>
+          <p className="nt-tx">Entra con Discord y acá te llega lo tuyo: quién te sigue, quién te felicita, quién te reta, tus rangos y tus cartas, y cuando gana alguien que sigues.</p>
           <button type="button" className="btn verde chico" onClick={() => { onCerrar(); accion.entrar(); }}>Entrar con Discord</button>
         </div>
-      ) : !B.listo ? <p className="nt-tx nt-vacio">Cargando…</p> : items.length ? (
-        <>
-          {nuevas.length ? <><p className="nt-s">Nuevas</p><ul>{nuevas.map(fila)}</ul></> : null}
-          {antes.length ? <><p className="nt-s">Antes</p><ul>{antes.map(fila)}</ul></> : null}
-        </>
-      ) : <p className="nt-tx nt-vacio">Todavía no te llegó nada. Cuando alguien te siga, te felicite o subas de rango, aparece acá.</p>}
+      ) : !B.listo ? <p className="nt-tx nt-vacio">Cargando…</p> : resto.length || nHacer ? (
+        grupos.filter(([, xs]) => xs.length).map(([t, xs]) => <div key={t}><p className="nt-s">{t}</p><ul>{xs.map(fila)}</ul></div>)
+      ) : <p className="nt-tx nt-vacio">Todavía no te llegó nada. Cuando alguien te siga, te felicite, te rete o subas de rango, aparece acá.</p>}
       {pie ? <div className="nt-pie">{pie}</div> : null}
     </div>
   );
