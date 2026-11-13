@@ -69,6 +69,12 @@ const TRAZOS = {
   // tres personas
   competencias: <path d="M3 5h5v4H3zM3 15h5v4H3zM8 7h3v10H8M11 12h4M15 9.5h6v5h-6z" />,
   crews: <><circle cx="12" cy="7.5" r="3" /><circle cx="5.5" cy="10" r="2.3" /><circle cx="18.5" cy="10" r="2.3" /><path d="M6.5 20c.6-3.6 2.8-5.8 5.5-5.8s4.9 2.2 5.5 5.8M2 18.5c.4-2 1.6-3.4 3.3-3.8M22 18.5c-.4-2-1.6-3.4-3.3-3.8" /></>,
+  // 👤 los del menú de tu cara (13/11/2026, Dlx: «crea tus propios iconos, no usemos emojis»): el Inventario es una
+  // mochila, el Dashboard un tablero, el panel de un servidor sus barras adentro de una ventana y Soporte un salvavidas
+  mochila: <><path d="M5.5 20.5V10.5a6.5 6.5 0 0113 0v10z" /><path d="M9.5 4.5V3h5v1.5M5.5 12h13M9 15h6v3.5H9z" /></>,
+  tablero: <path d="M4 4h7v9H4zM13 4h7v5h-7zM13 11h7v9h-7zM4 15h7v5H4z" />,
+  servidor: <><rect x="3.5" y="4" width="17" height="16" rx="1" /><path d="M7.5 16.5v-3M11 16.5V9M14.5 16.5v-5M18 16.5v-7" /></>,
+  soporte: <><circle cx="12" cy="12" r="8.5" /><circle cx="12" cy="12" r="3.5" /><path d="M9.5 9.5L6 6M14.5 9.5L18 6M9.5 14.5L6 18M14.5 14.5L18 18" /></>,
   moneda: <><circle cx="12" cy="12" r="8.5" /><path d="M14.5 8.5h-3.2a1.8 1.8 0 000 3.6h1.4a1.8 1.8 0 010 3.6H9.5M12 6.5v2M12 15.7v1.8" /></>,
 };
 // ✏️ EL TRAZO ES NUESTRO, NO EL DE LUCIDE (13/10/2026): punta y esquina rectas, un poco más grueso. Redondeado y en 2

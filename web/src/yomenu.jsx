@@ -8,6 +8,7 @@
 // estilo», y «añade la opción de soporte»): las mismas piezas `.nt-*` del panel de notificaciones —el título en Anton,
 // los rótulos de sección, cada fila con su ícono en un círculo, el punto magenta de lo nuevo—, así los dos paneles de la
 // cabecera se ven como uno. Soporte lleva a «Algo está mal» de Tu cuenta, que ya es el formulario de los pedidos.
+// Los íconos son los de la página (`Ico` de piezas.jsx), no emojis (Dlx: «crea tus propios iconos, no usemos emojis»).
 import { useEffect, useRef, useState } from 'react';
 import { pasePost } from './pase.js';
 import { cuantosNuevos } from './inv_nuevos.js';
@@ -23,7 +24,9 @@ export function YoMenu({ k, dc, nombre, cara, abajo = false, onCerrar }) {
   // quien tiene un rol que lo abre; Mi servidor, para el dueño de un socio. Son atajos: la puerta de verdad es el servidor
   const misRoles = ((useRoles() || {})[k] || []).map((x) => x[0]);
   const dashboard = !!dc && (String(dc.id) === DUENO || misRoles.some((r) => ['admin', 'asistente', 'moderador'].includes(r)));
-  const socio = useSocio(!!dc);
+  const esDlx = !!dc && String(dc.id) === DUENO;
+  // Dlx ve todos los servidores en el panel (`sociosDe()` del objeto): su fila sale de entrada, sin esperar la pregunta
+  const socio = useSocio(!!dc) || esDlx;
   const caja = useRef(null);
   useEffect(() => {
     let vivo = true;
@@ -44,22 +47,22 @@ export function YoMenu({ k, dc, nombre, cara, abajo = false, onCerrar }) {
     return () => { window.removeEventListener('keydown', tecla); window.removeEventListener('pointerdown', fuera); clearTimeout(t); };
   }, [onCerrar]);
   const paneles = [
-    dashboard ? ['#/dashboard', '📊', 'Dashboard', 'lo que espera que decidas'] : null,
-    socio ? ['#/socio', '🏠', 'Mi servidor', 'el panel de tu servidor'] : null,
+    dashboard ? ['#/dashboard', 'tablero', 'Dashboard', 'lo que espera que decidas', false, true] : null,
+    socio ? ['#/socio', 'servidor', esDlx ? 'Los servidores' : 'Mi servidor', esDlx ? 'las estadísticas de todos los socios' : 'las estadísticas de tu servidor', false, true] : null,
   ].filter(Boolean);
   const secciones = [
     paneles.length ? ['Tus paneles', paneles] : null,
     ['Lo tuyo', [
-      ['#/inventario', '🎒', 'Inventario', nuevos ? nuevos + (nuevos === 1 ? ' cosa nueva' : ' cosas nuevas') : 'tus TAGs, marcos y cartas', nuevos > 0],
-      [k ? '#/r/' + encodeURIComponent(k) : '#/cuenta/perfil', '👤', 'Mi perfil', 'lo que ven los demás'],
-      ['#/pase', '🎟️', 'Pase rapero', 'tu nivel y tus premios'],
+      ['#/inventario', 'mochila', 'Inventario', nuevos ? nuevos + (nuevos === 1 ? ' cosa nueva' : ' cosas nuevas') : 'tus TAGs, marcos y cartas', nuevos > 0],
+      [k ? '#/r/' + encodeURIComponent(k) : '#/cuenta/perfil', 'perfil', 'Mi perfil', 'lo que ven los demás'],
+      ['#/pase', 'pase', 'Pase rapero', 'tu nivel y tus premios'],
       // 🛍️ la Tienda vive acá desde que salió del menú de arriba (Dlx, 12/11/2026: «Tienda me gusta en tu cuenta… ahí nos
       // ahorramos un espacio»): es donde se gastan tus Puntos
-      ['#/tienda', '🛍️', 'Tienda', 'tus Puntos y el precio por cabeza'],
+      ['#/tienda', 'tienda', 'Tienda', 'tus Puntos y el precio por cabeza'],
     ]],
     ['Cuenta y ayuda', [
-      ['#/cuenta', '⚙️', 'Tu cuenta', 'foto, redes, avisos y la app'],
-      ['#/cuenta/algo-mal', '🛟', 'Soporte', 'perdí mi cuenta, mi país, algo está mal'],
+      ['#/cuenta', 'engranaje', 'Tu cuenta', 'foto, redes, avisos y la app'],
+      ['#/cuenta/algo-mal', 'soporte', 'Soporte', 'perdí mi cuenta, mi país, algo está mal'],
     ]],
   ].filter(Boolean);
   return (
@@ -73,10 +76,10 @@ export function YoMenu({ k, dc, nombre, cara, abajo = false, onCerrar }) {
         {secciones.map(([t, xs]) => (
           <div key={t}>
             <p className="nt-s">{t}</p>
-            <ul>{xs.map(([h, ic, n, d, nuevo]) => (
+            <ul>{xs.map(([h, ic, n, d, nuevo, panel]) => (
               <li key={h}>
-                <a href={h} role="menuitem" className={'nt-f' + (nuevo ? ' nueva' : '')} onClick={onCerrar}>
-                  <span className="nt-cara"><span className="nt-c nt-ico" aria-hidden="true">{ic}</span></span>
+                <a href={h} role="menuitem" className={'nt-f' + (nuevo ? ' nueva' : '') + (panel ? ' panel' : '')} onClick={onCerrar}>
+                  <span className="nt-cara"><span className="nt-c nt-ico" aria-hidden="true"><Ico n={ic} t={20} /></span></span>
                   <span className="nt-t"><b>{n}</b><small className={nuevo ? 'nv' : ''}>{d}</small></span>
                   <span className="nt-hora" aria-hidden="true">›</span>
                 </a>
