@@ -1,5 +1,5 @@
 {
- "cuando": "2026-11-13T02:25:46+00:00",
+ "cuando": "2026-11-13T02:55:26+00:00",
  "anuncios": [
   {
    "nombre": "¡SE LLEGÓ LA GRAN NOCHE!",
@@ -7001,6 +7001,24 @@
   }
  ],
  "inscripciones": [
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "yo mc 🇨🇱",
+   "quien": "curtirelmambonuncafueunaopcion",
+   "discord_id": "1487658663148785734",
+   "msg_id": "1570626152484179969",
+   "cuando": "2026-11-13T02:27:35"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "Calíz 🇲🇽",
+   "quien": "caliz123_",
+   "discord_id": "1546111597343146044",
+   "msg_id": "1570625551134367865",
+   "cuando": "2026-11-13T02:25:12"
+  },
   {
    "servidor": "FRZ",
    "canal": "➣「📝」inscripciones",
@@ -42982,24 +43000,6 @@
    "discord_id": "1492592375812587551",
    "msg_id": "1558321346289602561",
    "cuando": "2026-10-10T03:32:41"
-  },
-  {
-   "servidor": "FFA",
-   "canal": "✦📝—inscripciones",
-   "texto": "Molusco 🇦🇷 + Mco🇦🇷",
-   "quien": "moluscoanvriento_79058",
-   "discord_id": "1363285354442133778",
-   "msg_id": "1558314798158979295",
-   "cuando": "2026-10-10T03:06:39"
-  },
-  {
-   "servidor": "FFA",
-   "canal": "✦📝—inscripciones",
-   "texto": "MCO 🇦🇷",
-   "quien": "mcorap",
-   "discord_id": "1048744067313451050",
-   "msg_id": "1558314369853554730",
-   "cuando": "2026-10-10T03:04:57"
   }
  ]
 }

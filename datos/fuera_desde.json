@@ -47,6 +47,16 @@
    "sv-urbf": "2026-11-12",
    "temporada": "2026-11-12"
   },
+  "vr": {
+   "bloq-competitivo": "2026-11-12",
+   "bloq-pais": "2026-11-12",
+   "competitivo": "2026-11-12",
+   "pais": "2026-11-12",
+   "servidor": "2026-11-12",
+   "sv-dra": "2026-11-12",
+   "sv-sr": "2026-11-12",
+   "temporada": "2026-11-12"
+  },
   "ztr": {
    "bloq-competitivo": "2026-11-10",
    "bloq-pais": "2026-11-10",
@@ -65,8 +75,8 @@
    "temporada": "2026-11-10"
   }
  },
- "pasaban": 430,
- "cuando": "2026-11-13T02:31:43Z",
+ "pasaban": 432,
+ "cuando": "2026-11-13T03:08:09Z",
  "borradas": [
   [
    "19",
