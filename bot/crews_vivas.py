@@ -100,6 +100,53 @@ def armar(pub, viejo, nombres):
     return out
 
 
+SIGLAS = os.path.join(BASE, 'datos', 'crews_siglas.json')
+
+
+def pendientes_siglas(pub, pedidas=None):
+    """🔤 Las siglas de `datos/crews_siglas.json` que todavía faltan en el objeto: la crew existe, tiene la sigla de
+    `antes` y no la nueva. Las demás —aplicadas, o cambiadas por su Líder— no se piden nunca más (Dlx, 13/11/2026)."""
+    if pedidas is None:
+        pedidas = (_json(SIGLAS, {}) or {}).get('siglas') or []
+    hay = {c.get('id'): str(c.get('sigla') or '').upper() for c in (pub or {}).get('crews') or []}
+    return [{'id': x['id'], 'antes': x.get('antes') or '', 'sigla': x['sigla']} for x in pedidas
+            if x.get('id') in hay and hay[x['id']] == str(x.get('antes') or '').upper() and hay[x['id']] != str(x.get('sigla') or '').upper()]
+
+
+def aplicar_siglas(lista):
+    """Las manda al objeto con la clave del ciclo. `True` si cambió alguna. Si el Worker todavía no tiene la ruta (hay que
+    desplegarlo), avisa y sigue: el archivo espera a la próxima corrida."""
+    try:
+        import requests
+        import clave_ciclo as CC
+        import fotos as F
+        tok = F.env('DISCORD_TOKEN', obligatorio=False)
+        if not tok:
+            print('   🔤 %d siglas esperan, sin DISCORD_TOKEN para mandarlas' % len(lista))
+            return False
+        r = requests.post(WORKER + '/avisos/crews-siglas', data=json.dumps({'siglas': lista}, ensure_ascii=False).encode('utf-8'),
+                          headers={'x-lg-ciclo': CC.clave(tok), 'content-type': 'application/json'}, timeout=20)
+        j = r.json() if r.headers.get('content-type', '').startswith('application/json') else {}
+    except Exception as e:                               # noqa: BLE001
+        print('   ⚠️ las siglas no salieron (%s): la próxima corrida' % str(e)[:80])
+        return False
+    if not r.ok or not j.get('ok'):
+        print('   🔤 %d siglas esperan: el Worker contestó %s (¿falta desplegarlo?)' % (len(lista), r.status_code))
+        return False
+    print('   🔤 siglas puestas: %s' % (', '.join(j.get('hechas') or []) or 'ninguna'))
+    return bool(j.get('hechas'))
+
+
+def bajar_pub(timeout=15):
+    try:
+        import requests
+        r = requests.get(URL, headers={'accept': 'application/json'}, timeout=timeout)
+        r.raise_for_status()
+        return r.json()
+    except Exception:                                    # noqa: BLE001
+        return None
+
+
 def bajar(timeout=15):
     """Trae las crews del objeto y escribe los dos archivos si cambiaron. Devuelve lo público, o `None`."""
     try:
@@ -110,6 +157,8 @@ def bajar(timeout=15):
     except Exception as e:                               # noqa: BLE001
         print('   ⚠️ no pude leer las crews (%s): quedan las de antes' % str(e)[:80])
         return None
+    if pendientes_siglas(pub) and aplicar_siglas(pendientes_siglas(pub)):
+        pub = bajar_pub(timeout) or pub
     viejo = _json(RUTA, {}) or {}
     if not (pub.get('crews') or []) and (viejo.get('crews') or {}):
         print('   ⚠️ el objeto todavía no tiene crews y datos/crews.json sí: falta `python bot/crews_vivas.py --sembrar`. '
@@ -219,6 +268,13 @@ def _auto():
                                                                           'Follombia': ['Lázaro']}})
     ok(s[0] == {'id': 'KS', 'nombre': 'Knowledge Sombrío', 'sigla': 'KS', 'gente': ['zignos', 'abyssus']}
        and s[1]['gente'] == ['lazaro'] and s[1]['sigla'] == '', 'sembrar: por clave, sin repetidos, la sigla si el id es una')
+    pub = {'crews': [{'id': 'Follombia', 'sigla': ''}, {'id': 'KS', 'sigla': 'KWS'}, {'id': 'X', 'sigla': 'ZZ'}]}
+    pedidas = [{'id': 'Follombia', 'antes': '', 'sigla': 'FLB'}, {'id': 'KS', 'antes': 'KS', 'sigla': 'KWS'},
+               {'id': 'X', 'antes': 'XX', 'sigla': 'YY'}, {'id': 'Nadie', 'antes': '', 'sigla': 'NN'}]
+    ok(pendientes_siglas(pub, pedidas) == [{'id': 'Follombia', 'antes': '', 'sigla': 'FLB'}],
+       'siglas: sólo la que sigue con la de antes; ni la ya puesta, ni la que cambió su Líder, ni una crew que no existe')
+    ok(all(x.get('id') and x.get('sigla') and 'antes' in x for x in (_json(SIGLAS, {}) or {}).get('siglas') or []),
+       'datos/crews_siglas.json: cada una con id, antes y sigla')
     # el seguro: un objeto vacío no borra las crews del archivo
     print('   %s' % ('🔴 %d mal' % len(mal) if mal else 'todo bien'))
     return 1 if mal else 0

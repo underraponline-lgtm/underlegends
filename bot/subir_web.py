@@ -3298,6 +3298,8 @@ def _crews():
     reps_de = {c.get('id'): c.get('reps') or [] for c in vivas.get('crews') or []}
     # 🖼️ el logo que subió el líder (19/10/2026): de R2, con su URL entera; si no hay, el del repo (`logos/crews/`)
     logo_de = {c.get('id'): c.get('logo') for c in vivas.get('crews') or [] if str(c.get('logo') or '').startswith(('https://', 'esc:'))}
+    # 🔤 y su sigla (13/11/2026): la tira de historias la muestra en vez del nombre, que no entra en el círculo
+    sigla_de = {c.get('id'): c.get('sigla') for c in vivas.get('crews') or [] if c.get('sigla')}
     # 🏆 y su tier (`bot/crews_tiers.py`): Bronce si todavía no tiene
     tier_de = (_json('datos', 'crews_tiers.json') or {}).get('tier') or {}
     from comun.claves import clave as _ck
@@ -3321,6 +3323,8 @@ def _crews():
         a.pop('mejor_pos', None)
         a['rk'] = 1 if a['n'] >= 3 else 0
         a['tier'] = int(tier_de.get(a['clave'], 0) or 0)
+        if sigla_de.get(a['clave']):
+            a['sigla'] = sigla_de[a['clave']]
         if logo_de.get(a['clave']):
             a['logo'] = logo_de[a['clave']]
         elif os.path.exists(os.path.join(logos, a['clave'] + '.webp')):

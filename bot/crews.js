@@ -1110,6 +1110,31 @@ export function sembrar(o, d) {
 }
 
 /**
+ * 🔤 LAS SIGLAS QUE PONE LA LIGA (Dlx, 13/11/2026: «KWS para Knowledge Sombrío… Follombia debería ser FLB»): las manda
+ * el ciclo con su clave, desde `datos/crews_siglas.json` (`bot/crews_vivas.py`). Cada una dice qué sigla tenía (`antes`):
+ * si ya no es esa —porque se aplicó, o porque el Líder la cambió después— no se toca. Así el archivo puede quedarse para
+ * siempre sin pisar nada. Gratis: lo decide la Liga, no el Líder.
+ */
+export function crewsSiglas(o, d) {
+  if (!d || !Array.isArray(d.siglas) || d.siglas.length > 100) return mal('datos');
+  const ahora = Date.now();
+  const hechas = [], no = [];
+  for (const x of d.siglas) {
+    const c = x ? crewDe(o, String(x.id || '')) : null;
+    const sigla = siglaCrew(x && x.sigla, true);
+    const antes = siglaCrew(x && x.antes);
+    if (!c || sigla === null || antes === null || (c.sigla || '') !== antes || c.sigla === sigla) {
+      no.push(String((x && x.id) || ''));
+      continue;
+    }
+    o.sql.exec('UPDATE crews SET sigla = ?, t = ? WHERE id = ?', sigla, ahora, c.id);
+    anotar(o, c.id, 'sigla', sigla, 'liga');
+    hechas.push(c.id);
+  }
+  return { ok: true, hechas, no };
+}
+
+/**
  * 🪪 LOS QUE NO ESTÁN VERIFICADOS, ADENTRO DE UNA CREW (19/10/2026). Las 34 de antes se sembraron con la lista de Dlx y
  * 41 de sus 101 no son Miembros de DRA; crear y entrar ya lo piden (`personaDe()`), así que Dlx: «darles 7 días pero
  * mencionarles en el sv más activo que están». El ciclo manda quiénes (`bot/crews_verificar.py`, con la regla del

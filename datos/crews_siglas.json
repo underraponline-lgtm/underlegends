@@ -1,0 +1,7 @@
+{
+  "_leeme": "Las siglas que pone la Liga a una crew (no su Líder). Las aplica bot/crews_vivas.py en el objeto, con la clave del ciclo, SÓLO si la crew todavía tiene la sigla de `antes` («» = ninguna): después de aplicarse, o si el Líder la cambia, no se toca más. Por eso el archivo puede quedarse. `id` es la clave de la crew en el objeto (datos/crews_vivas.json).",
+  "siglas": [
+    {"id": "Follombia", "antes": "", "sigla": "FLB", "pidio": "Dlx, 13/11/2026: «follombia debería ser FLB»"},
+    {"id": "KS", "antes": "KS", "sigla": "KWS", "pidio": "Dlx, 13/11/2026: «KWS para Knowledge Sombrío»"}
+  ]
+}

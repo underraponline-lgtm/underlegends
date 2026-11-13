@@ -3415,7 +3415,7 @@ const RUTAS = {
   // 👥 LAS CREWS QUE ARMA LA GENTE (19/10/2026, bot/crews.js): todas (pública), una acción, la tuya; lo del dueño, y las
   // 34 de antes, una vez, con la clave del ciclo
   '/avisos/crews': 'GET', '/avisos/crew': 'POST', '/avisos/crew-mia': 'POST', '/avisos/dueno/crew': 'POST',
-  '/avisos/crews-sembrar': 'POST',
+  '/avisos/crews-sembrar': 'POST', '/avisos/crews-siglas': 'POST',
   // 🆕 el relanzamiento: cerrar varias y avisarle a su gente, con la clave del ciclo (`bot/crews_vivas.py --cerrar`).
   // ⚠️ Sin esta línea la ruta da 404 aunque su manejador exista: pasó el 29/10/2026
   '/avisos/crews-cerrar': 'POST',
@@ -5929,7 +5929,7 @@ export async function rutaAvisos(req, env, ruta) {
   }
   // 🌱 las 34 de antes, una vez: lo manda el ciclo, con su clave (`bot/crews_vivas.py --sembrar`); y 🪪 quiénes de las
   // crews no están verificados, cada corrida (`bot/crews_verificar.py`)
-  if (ruta === '/avisos/crews-sembrar' || ruta === '/avisos/crews-verificar' || ruta === '/avisos/crews-tiers' || ruta === '/avisos/crews-cerrar') {
+  if (ruta === '/avisos/crews-sembrar' || ruta === '/avisos/crews-siglas' || ruta === '/avisos/crews-verificar' || ruta === '/avisos/crews-tiers' || ruta === '/avisos/crews-cerrar') {
     const k = req.headers.get('x-lg-ciclo') || '';
     if (!env.DISCORD_TOKEN || k !== await claveCiclo(env.DISCORD_TOKEN)) return json({ error: 'no existe' }, 404);
     const crudo = await req.text();
@@ -8457,6 +8457,8 @@ export class Avisos {
         return json(r, r.estado || 200);
       }
       if (ruta === '/crews-sembrar') { const r = CW.sembrar(this, d); return json(r, r.estado || 200); }
+      // 🔤 las siglas que pone la Liga (`datos/crews_siglas.json`, 13/11/2026): sólo donde la de antes sigue igual
+      if (ruta === '/crews-siglas') { const r = CW.crewsSiglas(this, d); return json(r, r.estado || 200); }
       // 🆕 el relanzamiento (29/10/2026): cerrar varias y avisarle a su gente (`bot/crews_vivas.py --cerrar`)
       if (ruta === '/crews-cerrar') { const r = CW.crewsCerrar(this, d); await this.vaciarBasuraCrews(); return json(r, r.estado || 200); }
       if (ruta === '/crews-tiers') { const r = CW.crewTiersAvisar(this, d); return json(r, r.estado || 200); }

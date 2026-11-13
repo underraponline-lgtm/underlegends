@@ -94,6 +94,13 @@ if (!DatabaseSync) {
     && pub0.crews.find((c) => c.id === 'KS').gente.length === 1 && pub0.crews.every((c) => c.oficial),
   'las de antes: con su gente, el primero de líder, nadie en dos crews, oficiales');
   ok(CW.sembrar(o, { crews: [{ id: 'Follombia', gente: ['dora'] }] }).nuevas === 0, 'sembrar dos veces no toca lo que ya está');
+  // 🔤 las siglas que pone la Liga (13/11/2026): sólo donde sigue la de antes; la segunda vez no toca nada
+  const sg = CW.crewsSiglas(o, { siglas: [{ id: 'KS', antes: '', sigla: 'kws' }, { id: 'Follombia', antes: 'XX', sigla: 'FLB' },
+    { id: 'Nadie', antes: '', sigla: 'NN' }, { id: 'Follombia', antes: '', sigla: 'demasiado' }] });
+  const siglaDe = (id) => CW.crewsPublico(o).crews.find((c) => c.id === id).sigla;
+  ok(sg.ok && sg.hechas.join() === 'KS' && siglaDe('KS') === 'KWS' && siglaDe('Follombia') === ''
+    && CW.crewsSiglas(o, { siglas: [{ id: 'KS', antes: '', sigla: 'ZZZ' }] }).hechas.length === 0 && siglaDe('KS') === 'KWS',
+  'siglas de la Liga: sólo si la de antes sigue igual, en mayúsculas, y una vez');
 
   const c1 = yo(1, 'dora', { accion: 'crear', nombre: 'Los del Barrio', sigla: 'ldb', entrada: 'pedido' });
   ok(c1.ok && c1.saldo === 2500 && c1.precio === CW.PRECIO_CREW, 'crear cuesta 2.500 Puntos de Tienda');
