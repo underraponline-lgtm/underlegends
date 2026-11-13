@@ -1486,100 +1486,31 @@
    "b": "CARLOS 🇪🇨",
    "ganador": "CARLOS 🇪🇨",
    "votos": "1–0"
+  },
+  "1570931435760656515": {
+   "id": "1570931435760656515",
+   "sv": "#LaCrew ||🎤ACADEMIA DE RAP 🎤",
+   "g": "765045834647339038",
+   "canal": "1309238412976590908",
+   "pub": 1794609640780,
+   "a": "MARTYENEZZ 🇺🇾",
+   "b": "HOTARU 🇦🇷",
+   "ganador": "HOTARU 🇦🇷",
+   "votos": "1–0"
+  },
+  "1570932239003418651": {
+   "id": "1570932239003418651",
+   "sv": "#LaCrew ||🎤ACADEMIA DE RAP 🎤",
+   "g": "765045834647339038",
+   "canal": "1309238412976590908",
+   "pub": 1794609832288,
+   "a": "CHOP 🇭🇳",
+   "b": "MAKMAH 🇻🇪",
+   "ganador": "CHOP 🇭🇳",
+   "votos": "1–0"
   }
  },
  "llaves": {
-  "1563320443950071973": {
-   "id": "1563320443950071973",
-   "sv": "🌌┃𝐃𝐈𝐌𝐄𝐍𝐒𝐈Ó𝐍 𝐃𝐄𝐋 𝐅𝐑𝐄𝐄𝐒𝐓𝐘𝐋𝐄┃🌌",
-   "g": "1469009547971526659",
-   "canal": "1498009509036163173",
-   "pub": 1792795038927,
-   "ed": 1792796992750,
-   "texto": "`[ CUARTOS ]`\n⌞ECLIPSE⌝ 🆚 ⌞DOMINICK⌝\n⌞MINIBOY⌝ 🆚 ⌞SIN LIMITES⌝\n⌞MAKMAH⌝ 🆚 ⌞PIPE⌝\n⌞CARLOS⌝ 🆚 ⌞LIZENIN⌝\n`[ SEMIFINALES ]`\n⌞MINIBOY⌝ 🆚 ⌞ECLIPSE⌝\n⌞REPLICA: MINIBOY⌝ 🆚 ⌞ECLIPSE⌝\n⌞CARLOS⌝ 🆚 ⌞MAKMA⌝\n`[ FINAL ]`\n⌞MAKMA⌝ 🆚 ⌞ECLIPSE⌝",
-   "batallas": [
-    [
-     "CUARTOS",
-     [
-      "ECLIPSE",
-      "DOMINICK"
-     ],
-     "ECLIPSE",
-     "ronda siguiente",
-     []
-    ],
-    [
-     "CUARTOS",
-     [
-      "MINIBOY",
-      "SIN LIMITES"
-     ],
-     "MINIBOY",
-     "ronda siguiente",
-     []
-    ],
-    [
-     "CUARTOS",
-     [
-      "MAKMAH",
-      "PIPE"
-     ],
-     null,
-     "no aparece nadie después",
-     []
-    ],
-    [
-     "CUARTOS",
-     [
-      "CARLOS",
-      "LIZENIN"
-     ],
-     "CARLOS",
-     "ronda siguiente",
-     []
-    ],
-    [
-     "SEMIFINALES",
-     [
-      "MINIBOY",
-      "ECLIPSE"
-     ],
-     "ECLIPSE",
-     "ronda siguiente",
-     []
-    ],
-    [
-     "SEMIFINALES",
-     [
-      "REPLICA: MINIBOY",
-      "ECLIPSE"
-     ],
-     "ECLIPSE",
-     "ronda siguiente",
-     []
-    ],
-    [
-     "SEMIFINALES",
-     [
-      "CARLOS",
-      "MAKMA"
-     ],
-     "MAKMA",
-     "ronda siguiente",
-     []
-    ],
-    [
-     "FINAL",
-     [
-      "MAKMA",
-      "ECLIPSE"
-     ],
-     null,
-     "última ronda y no dice campeón",
-     []
-    ]
-   ]
-  },
   "1563384237233676330": {
    "id": "1563384237233676330",
    "sv": "#FDS ╏FREESTYLE DISCORD SERIES",
