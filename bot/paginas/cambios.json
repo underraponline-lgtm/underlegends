@@ -11,6 +11,16 @@
  ],
  "cambios": [
     {
+        "version": "5.21",
+        "dia": "2026-11-13",
+        "cuando": "2026-11-13T04:59:00-05:00",
+        "titulo": "Tus fortalezas, en una ventana",
+        "items": [
+            "**«¿Cómo mejorar mis fortalezas?» abre una ventana** en vez de alargar la página: una tarjeta por fortaleza, con qué mide, cómo subirla y qué pide el 100.",
+            "**Si entraste con tu cuenta, cada tarjeta trae tu número**, con tu fuerte y lo que tienes que trabajar marcados."
+        ]
+    },
+    {
         "version": "5.20",
         "dia": "2026-11-13",
         "cuando": "2026-11-13T04:35:00-05:00",
