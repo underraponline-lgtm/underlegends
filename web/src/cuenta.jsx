@@ -323,8 +323,10 @@ function Caja({ t, children, d }) {
 // ── 🖼️ TU FONDO (13/10/2026). Dlx, a «una imagen propia para tu cuenta para el fondo»: «Sí, y mientras tanto con el Pase
 // gratis», y dónde, «que él decida, pero por default en ambos». Con el nivel 10 del Pase subís una imagen; la ven los
 // demás recién cuando la aprueba la Liga, y elegís si va en tu perfil, de fondo de tu página, o los dos. La imagen se
-// achica acá antes de mandarla: 1600×640 recortada al centro, en webp, bajo los 600 KB (ver `fondo()` en avisos.js) ──
-const FONDO_W = 1600, FONDO_H = 640, FONDO_TOPE = 600 * 1024;
+// achica acá antes de mandarla: recortada al centro, en webp, bajo los 600 KB (ver `fondo()` en avisos.js) ──
+// 🔎 2400×960 desde el 12/11/2026 (Dlx: «el fondo no se ve en HD»): con 1600×640 la cabecera del perfil, a 1850 px de
+// ancho y en una pantalla de alta densidad, la estiraba más del doble. El tope del Worker (600 KB) no cambia: entra igual
+const FONDO_W = 2400, FONDO_H = 960, FONDO_TOPE = 600 * 1024;
 
 const achicar = (archivo, AN = FONDO_W, AL = FONDO_H, TOPE = FONDO_TOPE) => achicarImagen(archivo, AN, AL, TOPE);
 
@@ -363,7 +365,16 @@ export function FondoCaja({ dc }) {
     const a = e.target.files && e.target.files[0];
     if (!a) return;
     setMsg('');
-    try { const b = await achicar(a); setArchivo(b); setVista(URL.createObjectURL(b)); } catch (er) { setMsg('No pude usar esa imagen: ' + er.message); }
+    try {
+      const b = await achicar(a);
+      setArchivo(b); setVista(URL.createObjectURL(b));
+      // 🔎 una imagen más chica que el fondo se estira: se avisa, con cuánto mide y cuánto pide
+      const o = b.origen;
+      if (o && (o.w < FONDO_W * 0.75 || o.h < FONDO_H * 0.75)) {
+        setMsg('Tu imagen mide ' + o.w + '×' + o.h + ' px: en pantallas grandes se va a ver un poco borrosa. Para verla en HD, usa una de '
+          + FONDO_W + '×' + FONDO_H + ' o más.');
+      }
+    } catch (er) { setMsg('No pude usar esa imagen: ' + er.message); }
   };
   const mandar = async (cuerpo) => {
     setOcup(true); setMsg('');
