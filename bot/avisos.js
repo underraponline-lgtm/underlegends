@@ -3492,6 +3492,8 @@ const RUTAS = {
   '/avisos/cm-mio': 'POST', '/avisos/dueno/cm-permiso': 'POST', '/avisos/dueno/cm-permisos': 'POST',
   // 🐉 los Dragón Drops: los tuyos y la barra del día, y abrir uno (con tu sesión). Ver `dropsDe()` y `dropAbrir()`
   '/avisos/drops': 'POST', '/avisos/drop-abrir': 'POST',
+  // ⚔️ las batallas libres, de verdad (12/11/2026): las tuyas, retar, decir quién ganó y cancelar. Ver `libreCrear()`
+  '/avisos/libres': 'POST', '/avisos/libre-crear': 'POST', '/avisos/libre-resultado': 'POST', '/avisos/libre-cancelar': 'POST',
   // 📣 abrir una promo paga Tienda y XP: ver `validarPromo()` y `promoVio()`
   '/avisos/promo-vio': 'POST',
   // 📣 una semana más de tu promo, desde la Tienda (`validarExtender()`, `promoExtender()`); y hasta cuándo va cada una
@@ -3909,6 +3911,9 @@ export const DROP_RAREZAS = [['Maqueta', 5000], ['Mixtape', 2800], ['Vinilo', 15
 export const DROP_GARANTIA = 10;
 //: los pasos del día que dan un drop
 export const DROP_PASOS = [1, 3, 6];
+//: 🎁 el cofre de votar todas las encuestas de la semana: cuántos drops y desde qué rareza el primero (2 = Vinilo)
+export const COFRE_ENC = 3;
+export const COFRE_ENC_MIN = 2;
 //: lo que trae cada Caja del Campeón (a la vista): cuántos drops, desde qué rareza, y Puntos de Tienda
 export const CAJAS = { 40: { drops: 3, min: 2, puntos: 2000 }, 50: { drops: 1, min: 4, puntos: 5000 } };
 //: los títulos que sólo salen de un drop, por rareza (2 Vinilo, 3 Disco de Oro, 4 Micrófono de Oro)
@@ -4078,7 +4083,9 @@ export function validarVoto(defs, d, id, ahora) {
     const s = (defs.solo || {})[e.id];
     if (!Array.isArray(s) || s.indexOf(id) < 0) return { error: 'no_jugo', estado: 403, sv: e.sv };
   }
-  return { enc: e.id, op: d.op };
+  // 🔒 el ×2 y El Elegido se votan UNA VEZ (Dlx, 12/11/2026: «se vota 1 vez por semana, deberíamos quitar eso de que se
+  // pueda cambiar de voto»). Los MES AWARDS siguen cambiándose hasta que cierran, como dicen sus páginas
+  return { enc: e.id, op: d.op, fijo: e.tipo === 'x2' || e.tipo === 'elegido' };
 }
 
 // ── 🗳️ «¿QUIÉN GANA LA LIGA?» ──────────────────────────────────────────
@@ -5768,10 +5775,15 @@ export async function rutaAvisos(req, env, ruta) {
     const id = q.id;
     let defs = null;
     try { defs = JSON.parse((await env.KV.get('encuestas', { cacheTtl: 60 })) || 'null'); } catch (e) { defs = null; }
-    const v = validarVoto(defs, d, id, Date.now());
+    const ahoraV = Date.now();
+    const v = validarVoto(defs, d, id, ahoraV);
     if (v.error) return json(v, v.estado);
+    // 🎁 las de la semana que esta persona puede votar (el ×2 y El Elegido): votarlas todas da el cofre (`votar()`)
+    const sem = ((defs && Array.isArray(defs.lista)) ? defs.lista : [])
+      .filter((e) => e && (e.tipo === 'x2' || e.tipo === 'elegido') && ahoraV < Date.parse(e.hasta)).slice(0, 6);
     return elObjeto(env).fetch('https://avisos/votar', {
-      method: 'POST', body: JSON.stringify({ enc: v.enc, op: v.op, quien: id }),
+      method: 'POST', body: JSON.stringify({ enc: v.enc, op: v.op, quien: id, fijo: v.fijo === true,
+        semana: sem.map((e) => String(e.id).slice(0, 40)), hasta: sem.map((e) => String(e.hasta).slice(0, 10)).sort().pop() || '' }),
       headers: { 'content-type': 'application/json' },
     });
   }
@@ -6198,6 +6210,20 @@ export async function rutaAvisos(req, env, ruta) {
     if (!q.id) return json({ error: q.error }, q.estado);
     return elObjeto(env).fetch('https://avisos' + ruta.slice('/avisos'.length), {
       method: 'POST', body: JSON.stringify({ quien: q.id, id: Number(d.id) || 0 }), headers: { 'content-type': 'application/json' },
+    });
+  }
+  // ⚔️ LAS BATALLAS LIBRES (12/11/2026): quién lo dice la sesión; con quién y cuándo, la página; el resto, el objeto
+  if (ruta === '/avisos/libres' || ruta === '/avisos/libre-crear' || ruta === '/avisos/libre-resultado' || ruta === '/avisos/libre-cancelar') {
+    const crudo = await req.text();
+    if (crudo.length > 1024) return json({ error: 'demasiado grande' }, 413);
+    let d = null;
+    try { d = JSON.parse(crudo || '{}'); } catch (e) { d = null; }
+    if (!d || typeof d !== 'object' || (d.token && !/^[A-Za-z0-9._-]{10,300}$/.test(String(d.token)))) return json({ error: 'faltan datos' }, 400);
+    const q = await quienPide(req, env, d);
+    if (!q.id) return json({ error: q.error }, q.estado);
+    return elObjeto(env).fetch('https://avisos' + ruta.slice('/avisos'.length), {
+      method: 'POST', headers: { 'content-type': 'application/json' },
+      body: JSON.stringify({ quien: q.id, id: Number(d.id) || 0, rival: String(d.rival || '').slice(0, 60), t: String(d.t || '').slice(0, 40), gane: d.gane === true }),
     });
   }
   // 💬 A QUIÉN LE PREGUNTÓ DLX (el Dashboard): poner el permiso de un perfil, y la lista entera
@@ -7532,6 +7558,13 @@ export class Avisos {
         "origen TEXT NOT NULL, min INTEGER NOT NULL DEFAULT 0, t INTEGER NOT NULL, abierto INTEGER NOT NULL DEFAULT 0, " +
         "rareza INTEGER NOT NULL DEFAULT -1, premio TEXT NOT NULL DEFAULT '', t_abierto INTEGER NOT NULL DEFAULT 0, UNIQUE (quien, origen))");
       this.sql.exec('CREATE INDEX IF NOT EXISTS drops_quien ON drops (quien, abierto)');
+      // ⚔️ LAS BATALLAS LIBRES (12/11/2026, Dlx: «Hacerla real»): `a` retó a `b` (claves de perfil) para la hora `t`. Pasada
+      // la hora, cada uno dice quién ganó (`ga`, `gb`: la clave del ganador): si coinciden, `hecha`; si no, `sin_acuerdo`.
+      // No tocan el ranking. Ver `libreCrear()` y `libreResultado()`
+      this.sql.exec('CREATE TABLE IF NOT EXISTS libres (id INTEGER PRIMARY KEY AUTOINCREMENT, a TEXT NOT NULL, b TEXT NOT NULL, ' +
+        "t INTEGER NOT NULL, creada INTEGER NOT NULL, ga TEXT NOT NULL DEFAULT '', gb TEXT NOT NULL DEFAULT '', estado TEXT NOT NULL DEFAULT 'pend')");
+      this.sql.exec('CREATE INDEX IF NOT EXISTS libres_a ON libres (a, t)');
+      this.sql.exec('CREATE INDEX IF NOT EXISTS libres_b ON libres (b, t)');
       this.sql.exec('CREATE TABLE IF NOT EXISTS dia_pasos (quien TEXT NOT NULL, dia TEXT NOT NULL, que TEXT NOT NULL, ' +
         't INTEGER NOT NULL, PRIMARY KEY (quien, dia, que))');
       // 🔔 LA BANDEJA (02/10/2026): lo que se le avisó a cada uno, para el panel de la campana (Dlx: «que sea como un
@@ -8364,6 +8397,11 @@ export class Avisos {
       if (ruta === '/cm-mio') return await this.cmMio(d);
       if (ruta === '/cm-permiso') return await this.cmPermiso(d);
       if (ruta === '/drops') return json(this.dropsDe(String(d.quien || '')));
+      if (ruta === '/libres') return json(this.libresDe(String(d.quien || '')));
+      if (ruta === '/libre-crear' || ruta === '/libre-resultado' || ruta === '/libre-cancelar') {
+        const v = ruta === '/libre-crear' ? this.libreCrear(d) : ruta === '/libre-resultado' ? this.libreResultado(d) : this.libreCancelar(d);
+        return json(v, v.error ? 400 : 200);
+      }
       if (ruta === '/drop-abrir') { const v = this.dropAbrir(String(d.quien || ''), Number(d.id)); return json(v, v.error ? 400 : 200); }
       if (ruta === '/promo-vio') return this.promoVio(d);
       if (ruta === '/promo-extender') return this.promoExtender(d);
@@ -13976,6 +14014,89 @@ export class Avisos {
     } catch (e) { /* la barra no frena nada */ }
   }
 
+  /**
+   * 🎁 EL COFRE DE LAS ENCUESTAS (12/11/2026, Dlx: «una vez que se haya hecho todas esas encuestas ahí uno recibe un cofre
+   * mejor en vez de un Dragón Drop»): votar TODAS las de la semana (`semana`, las ids que esa persona puede votar; `hasta`,
+   * su cierre, que hace al cofre único por semana) da `COFRE_ENC` drops, el primero desde la rareza `COFRE_ENC_MIN`. Son
+   * drops como los demás (se abren en la misma ventana) con origen `cofre:`: la página los muestra como cofre
+   */
+  cofreEncuestas(quien, semana, hasta, t = Date.now()) {
+    try {
+      const ids = Array.isArray(semana) ? semana.map(String).filter(Boolean) : [];
+      if (!ids.length || !/^\d{4}-\d{2}-\d{2}$/.test(String(hasta || ''))) return false;
+      const n = this.sql.exec('SELECT COUNT(DISTINCT enc) AS n FROM votos WHERE quien = ? AND enc IN (' + ids.map(() => '?').join(',') + ')',
+        quien, ...ids).toArray()[0].n;
+      if (n < ids.length) return false;
+      let dio = false;
+      for (let i = 1; i <= COFRE_ENC; i++) dio = this.dropDar(quien, 'cofre:' + hasta + ':' + i, i === 1 ? COFRE_ENC_MIN : 0, t) || dio;
+      return dio;
+    } catch (e) { return false; }
+  }
+
+  // ── ⚔️ LAS BATALLAS LIBRES ─────────────────────────────────────────────
+  /** Retar (`/avisos/libre-crear`): `rival` es su clave y `t` la hora (ISO). Hasta 3 pendientes por persona, una por pareja */
+  libreCrear(d) {
+    const quien = String(d.quien || '');
+    const a = this.claveDe(quien), b = String(d.rival || '');
+    const t = Date.parse(String(d.t || '')), ahora = Date.now();
+    if (!a) return { error: 'sin_perfil' };
+    if (!claveValida(b) || b === a) return { error: 'rival' };
+    if (!(t > ahora - 5 * 60000 && t < ahora + 8 * DIA_MS)) return { error: 'hora' };
+    if (this.sql.exec("SELECT 1 AS x FROM libres WHERE estado = 'pend' AND ((a = ? AND b = ?) OR (a = ? AND b = ?))", a, b, b, a).toArray()[0]) {
+      return { error: 'ya' };
+    }
+    if (this.sql.exec("SELECT COUNT(*) AS n FROM libres WHERE a = ? AND estado = 'pend'", a).toArray()[0].n >= 3) return { error: 'muchas' };
+    this.sql.exec('INSERT INTO libres (a, b, t, creada) VALUES (?, ?, ?, ?)', a, b, t, ahora);
+    const id = this.sql.exec('SELECT last_insert_rowid() AS id').toArray()[0].id;
+    // 🔔 a quien retaron le llega a su bandeja (la campana de la página; nunca por DM)
+    for (const q of this.quienesDeClave(b)) this.aBandeja(q, 'libre:' + id, 'libre', '⚔️ Te retaron a una batalla libre', 'Míralo en tu Inicio: cuando la jueguen, cada uno dice quién ganó.', '/freestyle-rap/', a, ahora);
+    return { ok: true, id, libres: this.libresDe(quien).libres };
+  }
+
+  /** Las tuyas (`/avisos/libres`): las pendientes y las de los últimos 14 días, lo más nuevo arriba */
+  libresDe(quien) {
+    const k = this.claveDe(String(quien || ''));
+    if (!k) return { ok: true, libres: [] };
+    const desde = Date.now() - 14 * DIA_MS;
+    const filas = this.sql.exec("SELECT * FROM libres WHERE (a = ? OR b = ?) AND (estado = 'pend' OR t > ?) AND estado != 'cancelada' " +
+      'ORDER BY t DESC LIMIT 20', k, k, desde).toArray();
+    return { ok: true, yo: k, libres: filas.map((f) => ({ id: f.id, a: f.a, b: f.b, t: new Date(f.t).toISOString(), estado: f.estado,
+      mio: f.a === k ? f.ga : f.gb, suyo: f.a === k ? (f.gb ? 1 : 0) : (f.ga ? 1 : 0), ganador: f.estado === 'hecha' ? f.ga : '' })) };
+  }
+
+  /** Quién ganó (`/avisos/libre-resultado`, `gane`: true si ganaste tú). Después de la hora, una vez cada uno */
+  libreResultado(d) {
+    const quien = String(d.quien || '');
+    const k = this.claveDe(quien);
+    const f = this.sql.exec('SELECT * FROM libres WHERE id = ?', Number(d.id) || 0).toArray()[0];
+    if (!f || !k || (f.a !== k && f.b !== k)) return { error: 'no_existe' };
+    if (f.estado !== 'pend') return { error: 'cerrada' };
+    if (Date.now() < f.t) return { error: 'todavia' };
+    const otro = f.a === k ? f.b : f.a;
+    const gan = d.gane ? k : otro;
+    const ga = f.a === k ? gan : f.ga, gb = f.b === k ? gan : f.gb;
+    const estado = ga && gb ? (ga === gb ? 'hecha' : 'sin_acuerdo') : 'pend';
+    this.sql.exec('UPDATE libres SET ga = ?, gb = ?, estado = ? WHERE id = ?', ga, gb, estado, f.id);
+    const ahora = Date.now();
+    for (const q of this.quienesDeClave(otro)) {
+      this.aBandeja(q, 'libre:' + f.id, 'libre', estado === 'pend' ? '⚔️ Falta que digas quién ganó' : estado === 'hecha' ? '⚔️ Batalla libre: confirmada' : '⚔️ Batalla libre: no coinciden',
+        estado === 'pend' ? 'Tu rival ya dijo quién ganó la batalla libre: dilo tú en tu Inicio.' : estado === 'hecha' ? 'Los dos dijeron lo mismo: quedó en su cara a cara.' : 'Cada uno dijo un ganador distinto: queda sin acuerdo.',
+        '/freestyle-rap/', k, ahora);
+    }
+    return { ok: true, estado, libres: this.libresDe(quien).libres };
+  }
+
+  /** Cancelarla (`/avisos/libre-cancelar`): cualquiera de los dos, mientras nadie dijo quién ganó */
+  libreCancelar(d) {
+    const quien = String(d.quien || '');
+    const k = this.claveDe(quien);
+    const f = this.sql.exec('SELECT * FROM libres WHERE id = ?', Number(d.id) || 0).toArray()[0];
+    if (!f || !k || (f.a !== k && f.b !== k)) return { error: 'no_existe' };
+    if (f.estado !== 'pend' || f.ga || f.gb) return { error: 'cerrada' };
+    this.sql.exec("UPDATE libres SET estado = 'cancelada' WHERE id = ?", f.id);
+    return { ok: true, libres: this.libresDe(quien).libres };
+  }
+
   /** 🐉 Los títulos que ganó en drops (salen en sus títulos, como los del Pase) */
   titulosDrop(quien) {
     return this.sql.exec("SELECT premio FROM drops WHERE quien = ? AND abierto = 1 AND premio LIKE '%titulo%'", String(quien)).toArray()
@@ -14888,18 +15009,24 @@ export class Avisos {
       return json({ error: 'faltan datos' }, 400);
     }
     const ahora = Date.now();
+    // 🔒 el ×2 y El Elegido, una vez (`fijo`, de `validarVoto()`): el segundo voto no cambia nada
+    if (d.fijo) {
+      const ya = this.sql.exec('SELECT op FROM votos WHERE enc = ? AND quien = ?', d.enc.slice(0, 40), String(d.quien)).toArray()[0];
+      if (ya) return json({ error: 'ya_votaste', op: ya.op }, 409);
+    }
     this.sql.exec('INSERT INTO votos (enc, quien, op, t) VALUES (?, ?, ?, ?) ' +
       'ON CONFLICT(enc, quien) DO UPDATE SET op = excluded.op, t = excluded.t',
     d.enc.slice(0, 40), String(d.quien), d.op.slice(0, 80), ahora);
     this.xpVio(String(d.quien), 'voto', d.enc.slice(0, 40), ahora);
     this.pasoDia(String(d.quien), 'voto', ahora);
+    const cofre = this.cofreEncuestas(String(d.quien), d.semana, d.hasta, ahora);
     // lo viejo se va: el ciclo lee el resultado cuando la encuesta cierra
     this.sql.exec('DELETE FROM votos WHERE t < ?', ahora - VOTOS_DIAS * DIA_MS);
     const cuenta = {};
     for (const r of this.sql.exec('SELECT op, COUNT(*) AS n FROM votos WHERE enc = ? GROUP BY op', d.enc)
       .toArray()) cuenta[r.op] = r.n;
     // `t`: la página compara contra la de `/avisos/encuestas`, que puede venir de la caché
-    return json({ ok: true, enc: d.enc, op: d.op, cuenta, t: ahora });
+    return json({ ok: true, enc: d.enc, op: d.op, cuenta, t: ahora, cofre });
   }
 
   /**

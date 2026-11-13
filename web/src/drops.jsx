@@ -45,6 +45,14 @@ const NOMBRES = ['Maqueta', 'Mixtape', 'Vinilo', 'Disco de Oro', 'Micrófono de 
 export function BarraDia({ dc }) {
   const D = useDrops(dc);
   const dlg = useRef(null);
+  // 🔓 el Premio gratis la abre (`lg:abrir-drops`), y votar todas las encuestas trae el cofre (`lg:cofre`): se vuelven a pedir
+  useEffect(() => {
+    const abrir = () => { pedirDrops(); if (dlg.current && !dlg.current.open) dlg.current.showModal(); };
+    const cofre = () => { E.va = false; pedirDrops(); };
+    W.addEventListener('lg:abrir-drops', abrir);
+    W.addEventListener('lg:cofre', cofre);
+    return () => { W.removeEventListener('lg:abrir-drops', abrir); W.removeEventListener('lg:cofre', cofre); };
+  }, []);
   if (!dc) return null;
   const pasos = D ? D.dia.pasos : 0;
   const de = D ? D.dia.de : 6;
@@ -105,7 +113,9 @@ export function AbrirDrops({ D, cerrar }) {
     if (t >= 3) pedirDrops();
   };
   const otro = () => { setRes(null); setToques(0); setNivel(0); setMsg(''); };
-  const c = COLOR_RZ[listo ? res.rareza : nivel];
+  // la rareza que se muestra antes de abrir: nunca menos que la mínima de ese drop (el primero del cofre sale desde Vinilo)
+  const nv = listo ? res.rareza : Math.max(nivel, (actual && actual.min) || 0);
+  const c = COLOR_RZ[nv];
   const tot = (D.rarezas || []).reduce((s, x) => s + x[1], 0) || 1;
   return (
     <div className="dd-in">
@@ -113,7 +123,7 @@ export function AbrirDrops({ D, cerrar }) {
       <div className="dd-cuerpo">
         <div className="dd-escena" style={{ '--c': c }}>
           <div className="dd-rayos" aria-hidden="true" />
-          {actual || listo ? <span className="dd-rz">{NOMBRES[listo ? res.rareza : nivel]}</span> : null}
+          {actual || listo ? <span className="dd-rz">{NOMBRES[nv]}{!listo && actual && actual.min ? ' o más' : ''}</span> : null}
           {listo ? (
             <div className="dd-premio">
               <span className="dd-ficha">{ICONO_RZ[res.rareza]}</span>
@@ -125,7 +135,9 @@ export function AbrirDrops({ D, cerrar }) {
             </div>
           ) : actual ? (
             <>
-              <button type="button" key={tiembla} className={'dd-huevo' + (tiembla ? ' tiembla' : '') + (toques >= 2 ? ' grietas' : '')}
+              {/* 🎁 los del cofre de las encuestas se ven como cofre (origen `cofre:`, ver `cofreEncuestas()` en bot/avisos.js) */}
+              {/^cofre:/.test(String(actual.origen || '')) ? <span className="dd-cofre-et">Cofre de las encuestas</span> : null}
+              <button type="button" key={tiembla} className={'dd-huevo' + (/^cofre:/.test(String(actual.origen || '')) ? ' cofre' : '') + (tiembla ? ' tiembla' : '') + (toques >= 2 ? ' grietas' : '')}
                 onClick={tocar} aria-label="Tocar el drop"><span>UL</span></button>
               <span className="dd-toques">{toques ? 'Toca ' + (3 - toques) + (3 - toques === 1 ? ' vez más' : ' veces más') : 'Tócalo 3 veces'}</span>
             </>

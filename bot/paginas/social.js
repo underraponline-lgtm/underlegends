@@ -50,6 +50,13 @@ function votar(id, op) {
         guardarLS('lg:votos', ENC_MIO);
         ENC_POST[id] = { t: j.t || 0, cuenta: j.cuenta || {} };
         ENC_EST[id] = {};
+        /* 🎁 votaste todas las de la semana: el cofre ya está entre tus drops (la página se entera por `lg:cofre`) */
+        if (j.cofre) { try { window.dispatchEvent(new Event('lg:cofre')); } catch (e) { /* navegador viejo */ } }
+      } else if (j.error === 'ya_votaste' && j.op) {
+        /* 🔒 el ×2 y El Elegido, una vez: ya habías votado (quizás en otro dispositivo) y queda ese */
+        ENC_MIO[id] = j.op;
+        guardarLS('lg:votos', ENC_MIO);
+        ENC_EST[id] = {};
       } else {
         ENC_EST[id] = j;
       }
@@ -174,6 +181,7 @@ function errorEnc(E) {
       esc(fmtFecha(E.desde, { day: 'numeric', month: 'long' })) + '.'
     : e === 'opcion' ? 'Esa opción ya no está: la lista se actualiza cada media hora.'
     : e === 'no_existe' ? 'Esa votación ya no está.'
+    : e === 'ya_votaste' ? 'Ya votaste esta semana: el voto no se cambia.'
     : e === 'no_jugo' ? 'Los MES AWARDS de ' + esc(E.sv || 'este servidor') + ' los votan los que jugaron ahí este mes.'
     : 'No pude guardar tu voto. Prueba de nuevo en un rato.');
 }

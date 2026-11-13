@@ -904,15 +904,64 @@ export function Orbe() {
   return <span className="orbe" aria-hidden="true"><i /><i /><i /><i /></span>;
 }
 
+// 🎠 LA TIRA DE LOS CÍRCULOS (12/11/2026, Dlx: «arreglar esos de los círculos de arriba y hacer que se pueda jalar y mover y
+// agregar flechitas. Mover el círculo de agregar o seguir a alguien a la izquierda y que todo sea de izquierda a
+// derecha»): se arrastra con el mouse (en el celular ya se deslizaba con el dedo), lleva flechas a los costados cuando hay
+// más para un lado, y «+ Sigue a alguien» va primero, siempre
+function useTira() {
+  const ref = useRef(null);
+  const [lados, setLados] = useState([false, false]);
+  const arr = useRef(null);
+  const medir = () => {
+    const el = ref.current;
+    if (!el) return;
+    const n = [el.scrollLeft > 4, el.scrollLeft + el.clientWidth < el.scrollWidth - 4];
+    setLados((v) => (v[0] === n[0] && v[1] === n[1] ? v : n));
+  };
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return undefined;
+    medir();
+    el.addEventListener('scroll', medir, { passive: true });
+    window.addEventListener('resize', medir);
+    const t = setTimeout(medir, 800);
+    return () => { el.removeEventListener('scroll', medir); window.removeEventListener('resize', medir); clearTimeout(t); };
+  });
+  const mover = (dir) => { const el = ref.current; if (el) el.scrollBy({ left: dir * Math.max(200, el.clientWidth * 0.7), behavior: sinMovimiento() ? 'auto' : 'smooth' }); };
+  // arrastrar con el mouse: el dedo ya lo hace el navegador. Si se movió, el clic de soltar no abre la historia
+  const handlers = {
+    onPointerDown: (e) => { if (e.pointerType !== 'mouse' || e.button !== 0) return; arr.current = { x: e.clientX, s: ref.current.scrollLeft, movio: false }; },
+    onPointerMove: (e) => {
+      const a = arr.current;
+      if (!a) return;
+      const dx = e.clientX - a.x;
+      if (!a.movio && Math.abs(dx) > 6) { a.movio = true; ref.current.classList.add('arrastra'); }
+      if (a.movio) ref.current.scrollLeft = a.s - dx;
+    },
+    onPointerUp: () => { const a = arr.current; if (a && a.movio) setTimeout(() => { arr.current = null; }, 0); else arr.current = null; if (ref.current) ref.current.classList.remove('arrastra'); },
+    onPointerLeave: () => { if (arr.current && !arr.current.movio) arr.current = null; if (ref.current) ref.current.classList.remove('arrastra'); },
+    onClickCapture: (e) => { if (arr.current && arr.current.movio) { e.preventDefault(); e.stopPropagation(); arr.current = null; } },
+  };
+  return { ref, lados, mover, handlers };
+}
+const sinMovimiento = () => !!(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches);
+
 export function Historias({ liga, grupos, vistos, onAbrir }) {
+  const tira = useTira();
   const partes = [];
+  // ➕ seguir a alguien, primero (Dlx: «mover el círculo de agregar o seguir a alguien a la izquierda»): se sigue desde el
+  // perfil de cada uno, así que lleva al Ranking
+  if ((liga.d.tabla || []).length) {
+    partes.push(<a key="sumar" className="h sumar" href="#/ranking"><span className="h-c mas" aria-hidden="true">+</span>
+      <small>{liga.sigue.length ? 'Seguir a más' : 'Sigue a alguien'}</small><em>desde su perfil</em></a>);
+  }
   let antes = null;
   let antesVisto = false;
   grupos.forEach((g, i) => {
     // gris cuando ya viste TODAS sus historias (se cuenta historia por historia: ver `Visor`). Los vistos van al final
     // (`ordenHistorias`): una raya antes de ellos y ninguna entre ellos, que ahí ya se mezclan los tipos
     const todo = g.slides.every((s) => vistos[s.id]);
-    if (antes && (todo !== antesVisto || (!todo && g.tipo !== antes))) partes.push(<span key={'s' + i} className="h-sep" aria-hidden="true" />);
+    if ((antes && (todo !== antesVisto || (!todo && g.tipo !== antes))) || (i === 0 && partes.length)) partes.push(<span key={'s' + i} className="h-sep" aria-hidden="true" />);
     antes = g.tipo;
     antesVisto = todo;
     const visto = todo ? ' visto' : '';
@@ -938,13 +987,14 @@ export function Historias({ liga, grupos, vistos, onAbrir }) {
         <CaraH liga={liga} k={g.k} nombre={g.nom} cc={g.cc} /><small>{g.nom}</small><em>{g.et}</em></button>);
     }
   });
-  // sin nadie a quien seguir, el lugar de esa gente invita a empezar: se sigue desde el perfil de cada uno
-  if (!liga.sigue.length && (liga.d.tabla || []).length) {
-    if (partes.length) partes.push(<span key="s-sumar" className="h-sep" aria-hidden="true" />);
-    partes.push(<a key="sumar" className="h sumar" href="#/ranking"><span className="h-c mas" aria-hidden="true">+</span><small>Sigue a alguien</small><em>desde su perfil</em></a>);
-  }
   if (!partes.length) return null;
-  return <nav className="historias" aria-label="Historias: en vivo, servidores, tu país, tu crew y a quién sigues">{partes}</nav>;
+  return (
+    <div className={'h-tira' + (tira.lados[0] ? ' hay-izq' : '') + (tira.lados[1] ? ' hay-der' : '')}>
+      <nav className="historias" ref={tira.ref} aria-label="Historias: en vivo, servidores, tu país, tu crew y a quién sigues" {...tira.handlers}>{partes}</nav>
+      {tira.lados[0] ? <button type="button" className="h-fl izq" aria-label="Ver los anteriores" onClick={() => tira.mover(-1)}><Chevron /></button> : null}
+      {tira.lados[1] ? <button type="button" className="h-fl der" aria-label="Ver más" onClick={() => tira.mover(1)}><Chevron /></button> : null}
+    </div>
+  );
 }
 
 // ── el cuadro de cruces: cuartos, semis, final y el campeón, con líneas ─────────────────────────────

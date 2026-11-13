@@ -318,7 +318,10 @@ function estadoEnc() {
     const e = est[E.id] || {};
     if (e.va) return 'Guardando tu voto…';
     if (e.error) return w.errorEnc ? w.errorEnc(e).replace(/<[^>]+>/g, '') : 'No pude guardar tu voto.';
-    if (mio[E.id] && E.op.includes(mio[E.id])) return 'Votaste por ' + nombre(mio[E.id]) + '. Lo puedes cambiar hasta que cierre.';
+    // 🔒 el ×2 y El Elegido, una vez por semana; los MES AWARDS se siguen cambiando hasta que cierran
+    if (mio[E.id] && E.op.includes(mio[E.id])) {
+      return 'Votaste por ' + nombre(mio[E.id]) + (E.tipo === 'x2' || E.tipo === 'elegido' ? '. Un voto por semana: ya quedó.' : '. Lo puedes cambiar hasta que cierre.');
+    }
     return (w.DC ? 'Toca una opción para votar.' : 'Para votar entras con Discord: toca una opción.') + ' Nadie ve a quién votaste.';
   };
   const yoDiscord = w.DC && w.DC.clave ? w.DC.clave : null;

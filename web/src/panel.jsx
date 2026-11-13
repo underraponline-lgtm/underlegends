@@ -19,7 +19,7 @@ import { limpio, num, siglaDe, srcLogo, utc } from './liga.js';
 import { Bandera, Cara, Ico, accion, nombrePais, useCampana } from './piezas.jsx';
 import { urlFondo, useFondos } from './fondos.js';
 import { Escudo, escudoDe } from './escudo.jsx';
-import { avance, pasePost, usePase } from './pase.js';
+import { avance, pasePost, premioTexto, proximoEspecial, usePase } from './pase.js';
 import { cuantosNuevos } from './inv_nuevos.js';
 import { cobrarRacha } from './racha.js';
 import { dondeEstoy, faltaTxt, nombreDe, useCompetencias } from './competencias_datos.js';
@@ -157,9 +157,15 @@ function Festejo({ R }) {
 // las mismas `X2` y `Elegido` de Publicaciones), felicitar, comentar, una promo y una Tarea del Pase. Jugar un evento no:
 // no es «simplemente». El premio es de verdad: cada paso suma a la barra, y en el 1, el 3 y el 6 sale un drop
 const GRATIS = ['voto', 'fel', 'cm', 'promo', 'tarea'];
-const IR_GRATIS = { fel: '#/publicaciones', cm: '#/publicaciones', promo: '#/publicaciones', tarea: '#/pase' };
+const IR_GRATIS = { voto: '#/publicaciones', fel: '#/publicaciones', cm: '#/publicaciones', promo: '#/publicaciones', tarea: '#/pase' };
+// con las encuestas ya votadas, el paso de «votar» se hace con «¿Quién gana la final?» o apostando en un VS
+const QUE_GRATIS = { voto: 'Vota quién gana una final o apuesta en un VS' };
+const esCofre = (x) => /^cofre:/.test(String((x && x.origen) || ''));
+// 🔓 abrir la ventana de los drops desde otro lado (el Premio gratis): `BarraDia` la escucha
+const abrirDrops = () => W.dispatchEvent(new Event('lg:abrir-drops'));
 function PremioGratis({ liga, enc, dc }) {
   const D = useDrops(dc);
+  const P = usePase(!!dc);
   const dlg = useRef(null);
   // 👤 sin cuenta (Dlx, 12/11/2026, mirando el Inicio de alguien nuevo: «hay botones que desaparecen»): lo que de verdad te
   // dan al entrar, los Puntos de Tienda de arranque (`liga.d.tienda.inicial`, de bot/precios.py)
@@ -176,41 +182,63 @@ function PremioGratis({ liga, enc, dc }) {
   const x2 = liga.encuesta('x2');
   const el = liga.encuesta('elegido');
   const abiertas = [x2, el].filter(Boolean);
-  const sinVotar = enc ? abiertas.filter((E) => !enc.mio[E.id]) : [];
+  const sinVotar = enc ? abiertas.filter((E) => !enc.mio[E.id]) : abiertas;
   const hechos = (D && D.dia && D.dia.hechos) || [];
   const que = (D && D.que) || {};
   const faltan = GRATIS.filter((k) => que[k] && !hechos.includes(k));
+  const cerrados = (D && D.cerrados) || [];
+  const cofres = cerrados.filter(esCofre);
   const x = x2 ? String(x2.x || 2).replace('.', ',') : '';
-  const tit = sinVotar.length && !hechos.includes('voto') ? (sinVotar[0] === x2 ? 'Vota quién se lleva el ×' + x : 'Vota a El Elegido')
-    : faltan.length ? que[faltan[0]] : D ? 'Hiciste lo de hoy' : 'Vota y suma';
   const prox = D ? (D.dia.drops || [1, 3, 6]).find((m) => m > D.dia.pasos) : null;
-  const sub = !D ? 'Suma a tu Dragón Drop de hoy'
-    : prox ? (prox - D.dia.pasos === 1 ? 'Uno más y te llevas un Dragón Drop' : 'Te faltan ' + (prox - D.dia.pasos) + ' para un Dragón Drop')
-      : 'Completaste la barra de hoy';
-  const n = faltan.length;
+  // 🎟️ y cuando hiciste todo: tu próximo premio del Pase (Dlx: «una vez que haya hecho… que desaparezca eso y que sea
+  // reemplazado por…»; la propuesta: lo que hay para reclamar, y si no, lo que viene)
+  const a = P && P.listo && P.miembro ? avance(P) : null;
+  const sig = P && P.listo ? proximoEspecial(P.premios, P.nivel || 0) : null;
+  // ① lo que hay para reclamar; ② las encuestas sin votar y lo que falta hoy; ③ tu próximo premio del Pase
+  let modo, tit, sub;
+  if (cerrados.length) {
+    modo = 'reclamar';
+    tit = cofres.length ? 'Reclama tu cofre' : cerrados.length === 1 ? 'Reclama tu Dragón Drop' : 'Reclama tus ' + cerrados.length + ' Dragón Drops';
+    sub = cofres.length ? 'El de las encuestas: ' + cofres.length + ' drops adentro' : 'Ya los ganaste: ábrelos';
+  } else if (sinVotar.length || faltan.length) {
+    modo = 'hacer';
+    tit = sinVotar.length ? (sinVotar[0] === x2 ? 'Vota quién se lleva el ×' + x : 'Vota a El Elegido') : QUE_GRATIS[faltan[0]] || que[faltan[0]];
+    sub = sinVotar.length ? 'Vota las ' + abiertas.length + ' de la semana y te llevas un cofre'
+      : prox ? (prox - D.dia.pasos === 1 ? 'Uno más y te llevas un Dragón Drop' : 'Te faltan ' + (prox - D.dia.pasos) + ' para un Dragón Drop') : 'Suma a tu barra de hoy';
+  } else {
+    modo = 'pase';
+    tit = sig ? 'Nivel ' + sig[0] + ': ' + premioTexto(sig) : 'Hiciste todo lo de hoy';
+    sub = a && a.falta ? 'Tu próximo premio del Pase · te faltan ' + num(a.falta) + ' XP para el ' + ((P.nivel || 0) + 1) : 'Mañana hay barra nueva';
+  }
+  const n = cerrados.length || sinVotar.length + faltan.filter((k) => k !== 'voto' || !sinVotar.length).length;
   const cerrar = () => dlg.current && dlg.current.close();
+  const tocar = () => {
+    if (modo === 'reclamar') { abrirDrops(); return; }
+    if (modo === 'pase') { location.hash = '#/pase'; return; }
+    if (dlg.current) dlg.current.showModal();
+  };
   return (
     <>
-      <button type="button" id="encuestas" className={'pn-gratis' + (n ? '' : ' listo')} onClick={() => dlg.current && dlg.current.showModal()}
-        aria-label={'Premio gratis: ' + tit + '. ' + sub}>
-        <span className="pn-gr-ic" aria-hidden="true"><Ico n="premio" t={22} />{n ? <em>{n}</em> : null}</span>
-        <span className="pn-tx"><i className="pn-gr-et">Premio gratis</i><b>{tit}</b><small>{sub}</small></span>
+      <button type="button" id="encuestas" className={'pn-gratis ' + modo} onClick={tocar} aria-label={'Premio gratis: ' + tit + '. ' + sub}>
+        <span className={'pn-gr-ic' + (cofres.length ? ' cofre' : '')} aria-hidden="true"><Ico n={modo === 'pase' ? 'pase' : 'premio'} t={22} />{n && modo !== 'pase' ? <em>{n}</em> : null}</span>
+        <span className="pn-tx"><i className="pn-gr-et">{modo === 'reclamar' ? 'Para reclamar' : modo === 'pase' ? 'Lo que viene' : 'Premio gratis'}</i><b>{tit}</b><small>{sub}</small></span>
+        {modo === 'reclamar' ? <span className="pn-gr-btn">Abrir</span> : null}
       </button>
       <dialog className="pn-pop pop-gratis" ref={dlg} aria-label="Premio gratis" onClick={(e) => { if (e.target === dlg.current) cerrar(); }}>
         <PopCab ico="premio" t="Premio gratis" sub={D ? 'Hoy: ' + D.dia.pasos + ' de ' + D.dia.de + ' · drop en el paso 1, el 3 y el 6' : 'Cosas rápidas que suman a tu Dragón Drop'} cerrar={cerrar} />
         <div className="pn-est-in">
           {abiertas.length && enc ? <>
-            <h5>Vota {hechos.includes('voto') ? <span className="pop-gr-ok">✓ hecho hoy</span> : null}</h5>
+            <h5>Las encuestas de la semana {sinVotar.length ? <span className="pop-gr-cofre">vótalas todas: un cofre</span> : <span className="pop-gr-ok">✓ votaste las {abiertas.length}</span>}</h5>
             <div className={'en-g' + (x2 && el ? ' dos' : '')}>
               {x2 ? <X2 liga={liga} enc={enc} E={x2} corta /> : null}
               {el ? <Elegido liga={liga} enc={enc} E={el} corta /> : null}
             </div>
           </> : null}
           <h5>Más cosas rápidas</h5>
-          <ul className="pop-gr-l">{GRATIS.filter((k) => que[k] && (k !== 'voto' || !abiertas.length)).map((k) => {
+          <ul className="pop-gr-l">{GRATIS.filter((k) => que[k] && (k !== 'voto' || !sinVotar.length)).map((k) => {
             const si = hechos.includes(k);
             return (
-              <li key={k} className={si ? 'si' : ''}><span className="pop-n" aria-hidden="true">{si ? '✓' : '+1'}</span><b>{que[k]}</b>
+              <li key={k} className={si ? 'si' : ''}><span className="pop-n" aria-hidden="true">{si ? '✓' : '+1'}</span><b>{(k === 'voto' && QUE_GRATIS.voto) || que[k]}</b>
                 {si ? <small>hecho</small> : IR_GRATIS[k] ? <a className="pn-ver" href={IR_GRATIS[k]} onClick={cerrar}>Ir</a> : null}</li>
             );
           })}</ul>
@@ -325,8 +353,43 @@ const ESTIMADO = (ovrR, ovrY) => 1 / (1 + Math.pow(10, ((ovrR || 0) - (ovrY || 0
 function caraACara(liga, a, b) {
   const R = liga.d.rivales || {};
   const par = R[[a, b].sort().join('|')];
-  return par ? 'Cara a cara ' + (par[a] || 0) + '–' + (par[b] || 0) : 'Primer cruce';
+  // ⚔️ y las libres confirmadas entre los dos (no tocan el ranking: van aparte)
+  const L = ((LB.d && LB.d.libres) || []).filter((x) => x.estado === 'hecha' && [x.a, x.b].sort().join('|') === [a, b].sort().join('|'));
+  const lib = L.length ? ' · libres ' + L.filter((x) => x.ganador === a).length + '–' + L.filter((x) => x.ganador === b).length : '';
+  return (par ? 'Cara a cara ' + (par[a] || 0) + '–' + (par[b] || 0) : 'Primer cruce') + lib;
 }
+
+// ── ⚔️ LAS BATALLAS LIBRES, DE VERDAD (12/11/2026, Dlx: «tuve una batalla con Saiko a las 9pm pero ni idea quién ganó y no
+// sé dónde se ve eso», y a la pregunta, «Hacerla real»). Hasta acá Retar guardaba la hora sólo en tu navegador y a esa hora
+// la batalla se borraba sola. Ahora vive en el objeto (`libreCrear()` en bot/avisos.js): tu rival la ve en su Inicio (y le
+// llega a su campana), y pasada la hora cada uno dice quién ganó. Si coinciden, queda en su cara a cara; si no, «sin
+// acuerdo». No toca el ranking
+const LB = { d: null, va: false, oyen: new Set() };
+const avisarLB = () => LB.oyen.forEach((f) => f());
+function pedirLibres() {
+  if (LB.va || !W.conCuenta) return;
+  LB.va = true;
+  W.conCuenta('/api/avisos/libres', {}).then((j) => { LB.va = false; if (j && j.ok) { LB.d = j; avisarLB(); } })
+    .catch(() => { LB.va = false; });
+}
+async function libreAccion(ruta, cuerpo) {
+  const j = W.conCuenta ? await W.conCuenta('/api/avisos/' + ruta, cuerpo).catch(() => null) : null;
+  if (j && j.ok) { LB.d = Object.assign({}, LB.d || {}, { libres: j.libres || [] }); avisarLB(); }
+  return j;
+}
+function useLibres(dc) {
+  const [, setN] = useState(0);
+  useEffect(() => {
+    if (!dc) return undefined;
+    const f = () => setN((n) => n + 1);
+    LB.oyen.add(f);
+    if (!LB.d) pedirLibres();
+    return () => { LB.oyen.delete(f); };
+  }, [!!dc]); // eslint-disable-line react-hooks/exhaustive-deps
+  return dc ? LB.d : null;
+}
+const ERR_LIBRE = { ya: 'Ya tienes una batalla libre pendiente con esa persona.', muchas: 'Tienes 3 batallas libres pendientes: juega o cancela una.',
+  hora: 'Esa hora ya no se puede: elige otra.', sin_perfil: 'Necesitas haber jugado para retar.', todavia: 'Todavía no es la hora de la batalla.' };
 function duelos(f) {
   const du = f && f.du;
   return du && du[1] ? <><span className="pn-largo">Duelos </span>{du[0]}/{du[1]} · {Math.round((du[0] / du[1]) * 100)} %</> : 'Sin duelos todavía';
@@ -385,7 +448,8 @@ export function Batallas({ liga, dc }) {
   const yo = liga.yo;
   const [fase, setFase] = useState('nada');
   const [rival, setRival] = useState(null);
-  const [libre, setLibre] = useState(() => { const x = leer('lg:batalla-libre'); return x && utc(x.t) > Date.now() ? x : null; });
+  const LBd = useLibres(dc);
+  const [msg, setMsg] = useState('');
   const [cara, setCara] = useState('');
   const dlg = useRef(null);
   const giro = useRef(null);
@@ -414,18 +478,19 @@ export function Batallas({ liga, dc }) {
     return () => W.removeEventListener('lg:batallar', f);
   });
   if (!dc || !yo) return null;
-  const elegir = (iso) => {
-    const x = { k: rival.k, t: iso };
-    guardar('lg:batalla-libre', x); setLibre(x); setFase('nada'); setRival(null);
+  const elegir = async (iso) => {
+    setMsg('');
+    const j = await libreAccion('libre-crear', { rival: rival.k, t: iso });
+    if (j && j.ok) { setFase('nada'); setRival(null); } else setMsg((j && ERR_LIBRE[j.error]) || 'No se pudo guardar: prueba de nuevo.');
   };
-  const cancelar = () => { guardar('lg:batalla-libre', null); setLibre(null); if (dlg.current && dlg.current.open) dlg.current.close(); };
+  const cancelar = async (id) => { await libreAccion('libre-cancelar', { id }); if (dlg.current && dlg.current.open) dlg.current.close(); };
+  const decir = async (id, gane) => { setMsg(''); const j = await libreAccion('libre-resultado', { id, gane }); if (!(j && j.ok)) setMsg((j && ERR_LIBRE[j.error]) || 'No se pudo guardar.'); };
   const yoF = T.find((f) => f.k === yo.k) || yo;
   if (fase === 'busca') {
     return (
       <section className="pn-vs pn-busca" aria-live="polite">
         <span className="pn-gira"><Cara liga={liga} k={cara || (candidatos[0] || {}).k} nombre="" cls="pn-gira-c" /></span>
         <span className="pn-tx"><b>Buscando rival…</b><small>Entre los que están cerca tuyo en el ranking</small></span>
-        <span className="pn-sim">simulado</span>
       </section>
     );
   }
@@ -440,14 +505,23 @@ export function Batallas({ liga, dc }) {
         <div className="pn-elige"><b>¿Cuándo batallan?</b>
           <div className="pn-horas">{horasLibres().map((h) => <button key={h} type="button" onClick={() => elegir(h)}>{cuando(h)}</button>)}</div>
           <div className="pn-elige-pie"><button type="button" className="pn-x" onClick={buscar}>Otro rival</button>
-            <button type="button" className="pn-x" onClick={() => setFase('nada')}>Cancelar</button><span className="pn-sim">simulado</span></div></div>
+            <button type="button" className="pn-x" onClick={() => setFase('nada')}>Cancelar</button></div>
+          {msg ? <small className="pn-lb-msg" role="alert">{msg}</small> : <small className="pn-lb-nota">Le llega a su Inicio. Cuando la jueguen, cada uno dice quién ganó.</small>}</div>
       </section>
     );
   }
-  // la lista: la libre (si hay) y las de Competencias, por cierre
-  const libreF = libre ? T.find((f) => f.k === libre.k) : null;
+  // la lista: primero las libres que ya pasaron y esperan que digas quién ganó, después las que vienen, y las de Competencias
+  const ahoraMs = Date.now();
   const todas = [];
-  if (libre && libreF) todas.push({ et: 'Batalla libre', f: libreF, k: libre.k, cuando: cuando(libre.t), p: ESTIMADO(libreF.ovr, yoF.ovr), libre: true });
+  const libres = ((LBd && LBd.libres) || []).filter((x) => x.estado === 'pend').sort((a, b) => utc(a.t) - utc(b.t));
+  for (const x of libres) {
+    const otro = x.a === yo.k ? x.b : x.a;
+    const f = liga.T[otro] || T.find((r) => r.k === otro) || null;
+    const paso = utc(x.t).getTime() <= ahoraMs;
+    todas.push({ et: (x.a === yo.k ? '' : 'Te retó · ') + 'Batalla libre', f, k: otro, n: f ? f.n : otro, id: x.id, libre: true, paso, mio: x.mio, suyo: x.suyo,
+      cuando: paso ? 'era ' + cuando(x.t) : cuando(x.t), p: f ? ESTIMADO(f.ovr, yoF.ovr) : 0.5 });
+  }
+  todas.sort((a, b) => (b.paso ? 1 : 0) - (a.paso ? 1 : 0));
   for (const [et, c, hasta] of pend) {
     const f = liga.T[c.rival] || null;
     todas.push({ et, f, k: c.rival, n: nombreDe(liga, C, c.rival), cuando: hasta ? 'se define ' + cuando(hasta) : '', p: c.p });
@@ -467,7 +541,7 @@ export function Batallas({ liga, dc }) {
           {pc != null ? <span className="pop-vs-p" aria-hidden="true"><i style={{ width: pc + '%' }} /></span> : null}
           <small>{x.cuando}{pc != null ? ' · ' + pc + ' % a favor' : ''}</small></span>
         <Cara liga={liga} k={x.k} nombre={nom(x)} cls="pn-bt-c otro" />
-        {x.libre ? <button type="button" className="pn-x" onClick={cancelar}>cancelar</button> : null}
+        {x.libre && !x.paso ? <button type="button" className="pn-x" onClick={() => cancelar(x.id)}>cancelar</button> : null}
       </li>
     );
   };
@@ -479,11 +553,17 @@ export function Batallas({ liga, dc }) {
       <div className="pn-mid">
         <em className={p0.libre ? 'libre' : ''}>{p0.et}</em>
         <b className="pn-vs-x">VS</b>
-        <span className="pn-prob" aria-label={'Chance de ganar: ' + pct + ' % contra ' + (100 - pct) + ' %'}><b>{pct} %</b><i style={{ '--p': pct + '%' }} /><b>{100 - pct} %</b></span>
+        {/* ⚔️ una libre que ya pasó: quién ganó (cada uno lo dice; si coinciden, queda) */}
+        {p0.paso && !p0.mio ? <span className="pn-lb-q"><b>¿Quién ganó?</b>
+          <span><button type="button" className="pn-lb-b yo" onClick={() => decir(p0.id, true)}>Gané yo</button>
+            <button type="button" className="pn-lb-b" onClick={() => decir(p0.id, false)}>Ganó {nom(p0)}</button></span></span>
+          : p0.paso ? <small className="pn-lb-esp">{p0.mio === yo.k ? 'Dijiste que ganaste tú' : 'Dijiste que ganó ' + nom(p0)} · falta {nom(p0)}</small>
+            : <span className="pn-prob" aria-label={'Chance de ganar: ' + pct + ' % contra ' + (100 - pct) + ' %'}><b>{pct} %</b><i style={{ '--p': pct + '%' }} /><b>{100 - pct} %</b></span>}
         <small>{p0.cuando}</small>
-        <small className="pn-cac">{caraACara(liga, yo.k, p0.k)}{p0.libre ? ' · % estimado' : ''}</small>
+        <small className="pn-cac">{caraACara(liga, yo.k, p0.k)}{p0.libre && !p0.paso ? ' · % estimado' : ''}</small>
+        {msg ? <small className="pn-lb-msg" role="alert">{msg}</small> : null}
         <span className="pn-acc-v">
-          {p0.libre ? <button type="button" className="pn-x" onClick={cancelar}>cancelar</button> : null}
+          {p0.libre && !p0.paso ? <button type="button" className="pn-x" onClick={() => cancelar(p0.id)}>cancelar</button> : null}
           {todas.length > 1 ? <button type="button" className="pn-ver" onClick={() => dlg.current && dlg.current.showModal()}>Ver las {todas.length}</button> : null}
         </span>
       </div>
@@ -710,7 +790,7 @@ export function Vestuario({ liga, dc }) {
           <a href="#/inventario"><Ico n="tarjetas" t={22} /><b>Inventario</b><small>Tus TAGs</small>
             {mios && mios.nuevos ? <em className="pn-nueva">{mios.nuevos === 1 ? '1 nueva' : mios.nuevos + ' nuevas'}</em> : null}</a>
           <span className="pn-pronto" aria-disabled="true"><Ico n="mira" t={22} /><b>Entrenar</b><small>Pronto</small><em>pronto</em></span>
-          <button type="button" className="pn-bat" onClick={() => W.dispatchEvent(new CustomEvent('lg:batallar'))}><Ico n="cruce" t={22} /><b>Batallar</b><small>Busca rival</small><em>simulado</em></button>
+          <button type="button" className="pn-bat" onClick={() => W.dispatchEvent(new CustomEvent('lg:batallar'))}><Ico n="cruce" t={22} /><b>Batallar</b><small>Busca rival</small></button>
         </nav>
       </div>
       <dialog className="pn-pop pn-est pop-est" ref={est} aria-label="Tus estadísticas" onClick={(e) => { if (e.target === est.current) est.current.close(); }}>

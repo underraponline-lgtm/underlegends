@@ -59,6 +59,8 @@ const AVISOS = {
   // `validarVoto()` en bot/avisos.js: quién vota lo dice Discord, no la página
   '/api/avisos/encuestas': 'GET',
   '/api/avisos/votar': 'POST',
+  // ⚔️ las batallas libres, de verdad (12/11/2026): ver `libreCrear()` en bot/avisos.js
+  '/api/avisos/libres': 'POST', '/api/avisos/libre-crear': 'POST', '/api/avisos/libre-resultado': 'POST', '/api/avisos/libre-cancelar': 'POST',
   // 🗳️ «¿quién gana la liga?» (14/10/2026): cuántos votos lleva cada uno, y votar. Ver `validarVotoLiga()` en
   // bot/avisos.js: quién vota lo dice la sesión; qué liga y entre quiénes, el ciclo
   '/api/avisos/ligas-votos': 'GET',

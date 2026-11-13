@@ -3590,6 +3590,72 @@ const ok = (cond, que, det) => {
   }
 }
 
+// 🔒🎁⚔️ EL VOTO FIJO, EL COFRE DE LAS ENCUESTAS Y LAS BATALLAS LIBRES (12/11/2026): sobre el objeto de verdad
+{
+  let DatabaseSync = null;
+  try { ({ DatabaseSync } = await import('node:sqlite')); } catch (e) { DatabaseSync = null; }
+  if (DatabaseSync) {
+    const db = new DatabaseSync(':memory:');
+    const sql = {
+      exec(q, ...ps) {
+        const t = String(q).trim();
+        if (!ps.length && /;\s*\S/.test(t)) { db.exec(t); return { toArray: () => [] }; }
+        const st = db.prepare(t);
+        if (/^\s*(SELECT|WITH|PRAGMA)/i.test(t)) { const rows = st.all(...ps); return { toArray: () => rows }; }
+        const r = st.run(...ps);
+        return { toArray: () => [], rowsWritten: r.changes };
+      },
+    };
+    const o = new A.Avisos({ storage: { sql, setAlarm() {}, getAlarm() { return null; }, transactionSync: (f) => f() },
+      blockConcurrencyWhile: async (f) => f() }, { DISCORD_TOKEN: 'x', KV: { get: async () => null } });
+    await new Promise((r) => setTimeout(r, 5));
+    const Q = '300000000000000011', S = '300000000000000012';
+    const sem = ['x2-a', 'el-a'];
+    const v1 = await (o.votar({ enc: 'x2-a', op: 'FFA', quien: Q, fijo: true, semana: sem, hasta: '2026-11-16' })).json();
+    const v2 = await (o.votar({ enc: 'x2-a', op: 'DDF', quien: Q, fijo: true, semana: sem, hasta: '2026-11-16' }));
+    const v2j = await v2.json();
+    ok(v1.ok && !v1.cofre && v2.status === 409 && v2j.error === 'ya_votaste' && v2j.op === 'FFA',
+      'el ×2 se vota una vez: el segundo voto no cambia nada y dice cuál quedó', JSON.stringify([v1, v2j]));
+    const v3 = await (o.votar({ enc: 'el-a', op: 'Ana', quien: Q, fijo: true, semana: sem, hasta: '2026-11-16' })).json();
+    const cof = o.dropsDe(Q).cerrados.filter((c) => /^cofre:/.test(c.origen));
+    ok(v3.ok && v3.cofre === true && cof.length === A.COFRE_ENC && cof.filter((c) => c.min >= A.COFRE_ENC_MIN).length === 1,
+      'votar las dos de la semana da el cofre: ' + A.COFRE_ENC + ' drops, uno desde Vinilo', JSON.stringify([v3, cof]));
+    o.sql.exec('DELETE FROM votos WHERE quien = ? AND enc = ?', Q, 'el-a');
+    const v4 = await (o.votar({ enc: 'el-a', op: 'Ana', quien: Q, fijo: true, semana: sem, hasta: '2026-11-16' })).json();
+    ok(!v4.cofre && o.dropsDe(Q).cerrados.filter((c) => /^cofre:/.test(c.origen)).length === A.COFRE_ENC, 'el cofre es uno por semana');
+    const m1 = await (o.votar({ enc: 'mes-a', op: 'B', quien: Q, fijo: false })).json();
+    const m2 = await (o.votar({ enc: 'mes-a', op: 'C', quien: Q, fijo: false })).json();
+    ok(m1.ok && m2.ok && m2.cuenta.C === 1 && !m2.cuenta.B, 'los MES AWARDS se siguen cambiando hasta que cierran', JSON.stringify(m2));
+    // ⚔️ las libres: Q es «ana», S es «beto»
+    o.sql.exec('INSERT INTO idk (id, k, t) VALUES (?, ?, ?), (?, ?, ?)', Q, 'ana', 1, S, 'beto', 1);
+    const ya = Date.now();
+    const c1 = o.libreCrear({ quien: Q, rival: 'beto', t: new Date(ya + 3600000).toISOString() });
+    const c2 = o.libreCrear({ quien: S, rival: 'ana', t: new Date(ya + 7200000).toISOString() });
+    const c3 = o.libreCrear({ quien: Q, rival: 'ana', t: new Date(ya + 3600000).toISOString() });
+    const c4 = o.libreCrear({ quien: Q, rival: 'carla', t: new Date(ya - 86400000).toISOString() });
+    ok(c1.ok && c2.error === 'ya' && c3.error === 'rival' && c4.error === 'hora', 'retar: una pendiente por pareja, no a uno mismo, no al pasado',
+      JSON.stringify([c1, c2, c3, c4]));
+    const deB = o.libresDe(S).libres;
+    const banB = o.sql.exec("SELECT titulo FROM bandeja WHERE quien = ? AND clave = ?", S, 'libre:' + c1.id).toArray()[0];
+    ok(deB.length === 1 && deB[0].a === 'ana' && deB[0].b === 'beto' && banB, 'a quien retaron la ve en su Inicio y le llega a su campana',
+      JSON.stringify([deB, banB]));
+    ok(o.libreResultado({ quien: Q, id: c1.id, gane: true }).error === 'todavia', 'antes de la hora no se dice quién ganó');
+    o.sql.exec('UPDATE libres SET t = ? WHERE id = ?', ya - 60000, c1.id);
+    const r1 = o.libreResultado({ quien: Q, id: c1.id, gane: true });
+    ok(r1.ok && r1.estado === 'pend' && o.libreCancelar({ quien: S, id: c1.id }).error === 'cerrada',
+      'con uno que ya dijo quién ganó, sigue esperando al otro y ya no se cancela', JSON.stringify(r1));
+    const r2 = o.libreResultado({ quien: S, id: c1.id, gane: false });
+    const fin = o.libresDe(Q).libres.find((x) => x.id === c1.id);
+    ok(r2.ok && r2.estado === 'hecha' && fin.ganador === 'ana', 'si los dos dicen lo mismo, queda: ganó ana', JSON.stringify([r2, fin]));
+    const c5 = o.libreCrear({ quien: S, rival: 'ana', t: new Date(ya + 3600000).toISOString() });
+    o.sql.exec('UPDATE libres SET t = ? WHERE id = ?', ya - 60000, c5.id);
+    o.libreResultado({ quien: S, id: c5.id, gane: true });
+    const r3 = o.libreResultado({ quien: Q, id: c5.id, gane: true });
+    ok(r3.estado === 'sin_acuerdo' && o.libreResultado({ quien: '300000000000000099', id: c5.id, gane: true }).error === 'no_existe',
+      'si cada uno dice que ganó, queda sin acuerdo; y alguien de afuera no puede decir nada', JSON.stringify(r3));
+  }
+}
+
 // 🐉 EL PASE DA DROPS (12/11/2026): el del 35, las tres de la caja del 40 (Vinilo o más) con sus Puntos, y uno cada
 // `drop_cola` XP pasado el 50. Sobre el objeto de verdad, con el Pase de 50 armado acá
 {

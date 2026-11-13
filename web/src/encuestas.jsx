@@ -19,13 +19,17 @@ function comoVa(E, cu, mio, nombre) {
   if (mio) return '✓ Votaste a ' + nombre(mio) + (top && tot ? ' · va ganando ' + nombre(top) : '');
   return tot && top ? 'Va ganando ' + nombre(top) + ' · ' + votos(tot) : 'Todavía nadie votó: ¿eres el primero?';
 }
+// 🔒 el ×2 y El Elegido se votan una vez (Dlx, 12/11/2026: «se vota 1 vez por semana, deberíamos quitar eso de que se
+// pueda cambiar de voto»): con tu voto ya puesto, la línea sola, sin «Cambiar mi voto»
+export const votoFijo = (E) => !!E && (E.tipo === 'x2' || E.tipo === 'elegido');
 function Plegada({ linea, mio, children }) {
   const [abierta, setAbierta] = useState(false);
+  if (mio) return <div className="en-corta"><p className="en-va">{linea}</p></div>;
   return (
     <>
       <div className="en-corta"><p className="en-va">{linea}</p>
         <button type="button" className={'btn chico ' + (abierta ? 'borde2' : 'verde')} aria-expanded={abierta}
-          onClick={() => setAbierta(!abierta)}>{abierta ? 'Cerrar' : mio ? 'Cambiar mi voto' : 'Votar'}</button></div>
+          onClick={() => setAbierta(!abierta)}>{abierta ? 'Cerrar' : 'Votar'}</button></div>
       {abierta ? children : null}
     </>
   );
@@ -51,7 +55,8 @@ export function X2({ liga, enc, E, corta }) {
         {E.op.map((sv) => {
           const n = Number(cu[sv] || 0);
           return (
-            <button type="button" key={sv} className={'en-op' + (mio === sv ? ' mia' : '') + (est.va === sv ? ' va' : '')} onClick={() => accion.votar(E.id, sv)}>
+            <button type="button" key={sv} className={'en-op' + (mio === sv ? ' mia' : '') + (est.va === sv ? ' va' : '')}
+              disabled={!!mio && votoFijo(E) && mio !== sv} onClick={() => { if (!(mio && votoFijo(E))) accion.votar(E.id, sv); }}>
               <i className="en-bar" style={{ width: pct(n, tot) }} />
               <img alt="" src={liga.logo(sv)} /><b>{siglaDe(sv)}</b><span className="en-n">{mio === sv ? '✓ ' : ''}{n}</span>
             </button>
@@ -92,8 +97,9 @@ export function Elegido({ liga, enc, E, corta }) {
           const n = Number(cu[op] || 0);
           const esYo = !!(yoK && f && f.k === yoK);
           return (
-            <button type="button" key={op} className={'en-op' + (mio === op ? ' mia' : '') + (est.va === op ? ' va' : '')} disabled={esYo}
-              title={esYo ? 'Eres tú' : undefined} onClick={() => accion.votar(E.id, op)}>
+            <button type="button" key={op} className={'en-op' + (mio === op ? ' mia' : '') + (est.va === op ? ' va' : '')}
+              disabled={esYo || (!!mio && votoFijo(E) && mio !== op)}
+              title={esYo ? 'Eres tú' : undefined} onClick={() => { if (!(mio && votoFijo(E))) accion.votar(E.id, op); }}>
               <i className="en-bar" style={{ width: pct(n, tot) }} />
               <Cara liga={liga} k={f ? f.k : ''} nombre={op} cls="en-cara" /><b>{nombre(op)}</b>
               <span className="en-n">{esYo ? 'eres tú' : (mio === op ? '✓ ' : '') + n}</span>
