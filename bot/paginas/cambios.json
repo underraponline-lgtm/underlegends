@@ -11,6 +11,17 @@
  ],
  "cambios": [
     {
+        "version": "4.87",
+        "dia": "2026-11-12",
+        "cuando": "2026-11-12T23:30:00-05:00",
+        "titulo": "La pantalla de carga nueva",
+        "items": [
+            "Al entrar, la pantalla de carga muestra **un fondo distinto cada vez**: afiches de la Liga, momentos reales de batalla, las tarjetas del top en 3D o los mejores del Competitivo.",
+            "La primera vez dura unos **4 segundos**, mientras se carga toda la página; si vuelves en los siguientes 30 minutos, entra enseguida.",
+            "Los fondos se rehacen todos los días con el ranking."
+        ]
+    },
+    {
         "version": "4.86",
         "dia": "2026-11-12",
         "cuando": "2026-11-12T23:20:00-05:00",
