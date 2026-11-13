@@ -174,7 +174,7 @@ def conf_carga():
     # que son de pocos y pesan la mitad de todo)
     fuera = {'inicio.js', 'inicio-dashboard.js', 'inicio-socio2.js', 'inicio-panelsocio.js', 'inicio-verificar.js'}
     trozos = sorted(f for f in os.listdir(os.path.join(PAG, 'inicio')) if f.endswith('.js') and f not in fuera)
-    return json.dumps({'r2': r2.group(1), 't': conf['temporada'], 'f': conf['fondos'], 'b': [b['id'] for b in conf['batallas']],
+    return json.dumps({'r2': r2.group(1), 't': conf['temporada'], 'v': conf.get('v', 1), 'f': conf['fondos'], 'b': [b['id'] for b in conf['batallas']],
                        'p': trozos}, ensure_ascii=False, separators=(',', ':')), conf['temporada'].upper()
 
 
@@ -199,7 +199,7 @@ def cabeza_carga():
     var nom = n === 2 ? '2-' + C.b[Math.floor(Math.random() * C.b.length)] : String(n);
     var fmt = innerWidth / Math.max(1, innerHeight) < 0.8 ? 'cel' : 'pc';
     var d = new Date(), dia = d.getUTCFullYear() * 1e4 + (d.getUTCMonth() + 1) * 100 + d.getUTCDate();
-    var src = window.__lgFondo = C.r2 + '/carga/' + C.t + '/' + nom + '-' + fmt + '.webp?d=' + dia;
+    var src = window.__lgFondo = C.r2 + '/carga/' + C.t + '/' + nom + '-' + fmt + '.webp?d=' + dia + '-' + (C.v || 1);
     var l = document.createElement('link');
     l.rel = 'preload'; l.as = 'image'; l.href = src;
     l.setAttribute('fetchpriority', 'high');

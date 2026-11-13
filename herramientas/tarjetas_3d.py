@@ -42,10 +42,11 @@ for nombre, valor in (('taa_render_samples', 96), ('use_raytracing', True), ('vo
         setattr(ee, nombre, valor)
     except Exception:
         pass
+# (en HD desde el 13/11/2026, como los otros fondos: ver FORMATOS de fondos_carga.py)
 if FMT == 'pc':
-    esc.render.resolution_x, esc.render.resolution_y = 1920, 1080
+    esc.render.resolution_x, esc.render.resolution_y = 2880, 1620
 else:
-    esc.render.resolution_x, esc.render.resolution_y = 1080, 2340
+    esc.render.resolution_x, esc.render.resolution_y = 1296, 2808
 esc.render.resolution_percentage = 100
 esc.render.film_transparent = False
 try:

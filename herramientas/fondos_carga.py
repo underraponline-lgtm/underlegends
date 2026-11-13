@@ -51,8 +51,16 @@ TEMP = CONF['temporada']
 CACHE = os.path.join(BASE, '.cache', 'carga')
 OUT, TMP, CARTAS, BAT = (os.path.join(CACHE, d) for d in ('out', 'tmp', 'cartas', 'bat'))
 FOTOS = os.path.join(BASE, 'comun', 'fotos', ACTUAL)
-#: css de ancho y alto, y la densidad: 1920×1080 en la compu, 1080×2340 en el teléfono
-FORMATOS = {'pc': (1600, 900, 1.2), 'cel': (432, 936, 2.5)}
+#: css de ancho y alto, y la densidad: 2880×1620 en la compu, 1296×2808 en el teléfono
+#: 🔍 EN HD (Dlx, 13/11/2026: «esos 5 fondos no los veo en buena calidad, ¿están en HD?»). Eran 1920×1080 y 1080×2340
+#: a calidad 80 —«La batalla» pesaba 46 KB—, y su pantalla tiene ~1850 px de ancho con densidad alta: se estiraban.
+#: La regla de la Liga es guardar al doble de lo que se dibuja; 2880 es 1,5× y es lo que entra en los 4–5 s de la
+#: primera carga (~450 KB cada uno)
+FORMATOS = {'pc': (1600, 900, 1.8), 'cel': (432, 936, 3.0)}
+CALIDAD = 88
+#: las caras del Competitivo en HD (ver `caras_hd()`), en R2 junto a los fondos
+R2 = __import__('re').search(r"^R2 = '([^']+)'", io.open(os.path.join(BASE, 'bot', 'subir_web.py'), encoding='utf-8').read(), __import__('re').M).group(1)
+ESRGAN = os.environ.get('ESRGAN_DIR') or os.path.join(os.environ.get('LOCALAPPDATA', ''), 'realesrgan-ncnn-vulkan-20220424')
 FUENTES = ("<link href='https://fonts.googleapis.com/css2?family=Anton&family=Archivo:wdth,wght@100..125,800;100..125,900"
            "&family=Barlow+Condensed:wght@600;700&family=Bungee&family=Permanent+Marker&family=Shrikhand&family=Righteous"
            "&family=Rubik+Mono+One&family=Bowlby+One+SC&family=Rock+Salt&family=Sedgwick+Ave+Display"
@@ -248,9 +256,61 @@ AJUSTAR = '''() => { for (const el of document.querySelectorAll('.af .tit, .af .
 
 
 # ───────────────────────── 4 · competitivo ─────────────────────────
+def caras_hd(ks):
+    """🔍 LA CARA DE CADA UNO EN HD, de R2 (`carga/<temporada>/caras/<clave>.webp`). Las fotos de perfil de Discord
+    miden 256 px de verdad —34 de los 40 primeros del Competitivo, medido el 13/11/2026 pidiéndolas a 1024— y cada franja
+    la dibuja a toda la altura: se pixelaban (Dlx: «no los veo en buena calidad»). Las de R2 son esas mismas fotos
+    agrandadas ×4 con Real-ESRGAN, o un cuadro 1080p de un video suyo (Oasis: Dlx confirmó cuál es, 13/11/2026). Las arma
+    `--caras`, en una máquina con tarjeta de video; el ciclo diario sólo las baja. Quien no tiene, sale con la de 256"""
+    import requests
+    d = os.path.join(CACHE, 'caras')
+    os.makedirs(d, exist_ok=True)
+    sal = {}
+    for k in ks:
+        p = os.path.join(d, k + '.webp')
+        try:
+            r = requests.get(f'{R2}/carga/{TEMP}/caras/{k}.webp', timeout=30)
+            if r.status_code == 200 and len(r.content) > 5000:
+                open(p, 'wb').write(r.content)
+                sal[k] = p
+        except requests.RequestException:
+            if os.path.exists(p):
+                sal[k] = p
+    return sal
+
+
+def armar_caras(forzar=False):
+    """`--caras`: agranda ×4 con Real-ESRGAN la foto del espejo de cada uno del Competitivo de `web/carga.json` y la sube
+    a R2. Una cara que ya está arriba no se toca (sin `--forzar`): la de Oasis sale de su video y se subió a mano"""
+    import subprocess, requests
+    import bienvenida_video as bv
+    exe = os.path.join(ESRGAN, 'realesrgan-ncnn-vulkan.exe')
+    if not os.path.exists(exe):
+        raise SystemExit('🔴 falta Real-ESRGAN en %s (o ESRGAN_DIR)' % ESRGAN)
+    s = requests.Session()
+    s.headers['Authorization'] = 'Bearer ' + bv.token()
+    fotos = fotos_buenas()
+    for k in [k for k in CONF['competitivo'] if not k.startswith('_')]:
+        if not forzar and requests.head(f'{R2}/carga/{TEMP}/caras/{k}.webp', timeout=20).status_code == 200:
+            print('  ya está:', k)
+            continue
+        if k not in fotos:
+            print('  🔴 sin foto en el espejo:', k)
+            continue
+        png_in, png_out = os.path.join(TMP, k + '_in.png'), os.path.join(TMP, k + '_x4.png')
+        Image.open(fotos[k]).convert('RGB').save(png_in)
+        subprocess.run([exe, '-i', png_in, '-o', png_out, '-n', 'realesrgan-x4plus', '-s', '4'], cwd=ESRGAN, check=True, capture_output=True)
+        buf = io.BytesIO()
+        Image.open(png_out).convert('RGB').save(buf, 'WEBP', quality=90, method=6)
+        r = s.put(f'{bv.API_R2}/objects/carga/{TEMP}/caras/{k}.webp', data=buf.getvalue(), headers={'Content-Type': 'image/webp'}, timeout=120)
+        print('  %s %s (%d KB)' % ('✅' if r.status_code < 300 else '🔴 %d' % r.status_code, k, len(buf.getvalue()) // 1024))
+
+
+# (el texto de las franjas, más grande desde el 13/11/2026: Dlx, «quizás hacer ese texto más grande, nada más»)
 def competitivo(fmt):
     caras = {k: v for k, v in CONF['competitivo'].items() if not k.startswith('_')}
     fotos = fotos_buenas()
+    fotos.update(caras_hd(list(caras)))
     top = [f for f in vitrina('competitivo') if clave(f['Rapero']) in caras and clave(f['Rapero']) in fotos][:5]
     if len(top) < 3:
         raise SystemExit('🔴 competitivo: menos de 3 con foto real en el Competitivo (web/carga.json → competitivo)')
@@ -262,7 +322,8 @@ def competitivo(fmt):
         col = rangos.ACENTO.get(f['Rango'], '#ffffff')
         dato = (f"<div class=dato><span class=pos>#{f['#']}</span><b class=nom>{f['Rapero'].upper()}</b>"
                 f"<span class=rg style='background:{col}'>{f['Rango']}</span><span class=sc>{f['Score']:.1f}</span></div>")
-        fx, fy, z = caras[k]
+        fx, fy, z = caras[k][:3]
+        luz = caras[k][3] if len(caras[k]) > 3 else 1   # (una foto de noche, más clara)
         if fmt == 'pc':
             s = 8
             x0, x1 = i * 100 / n, (i + 1) * 100 / n
@@ -282,22 +343,22 @@ def competitivo(fmt):
             lado = z * W
             arr = min(y0 / 100 * H - 20, max(y1 / 100 * H + 20 - lado, (y0 + y1) / 200 * H - fy * lado))
             izq = min(0, max(W - lado, .36 * W - fx * lado))   # a la izquierda: el nombre va a la derecha
-        pos = f"width:{lado:.0f}px;height:{lado:.0f}px;left:{izq:.0f}px;top:{arr:.0f}px"
+        pos = f"width:{lado:.0f}px;height:{lado:.0f}px;left:{izq:.0f}px;top:{arr:.0f}px" + (f";filter:grayscale(1) contrast(1.18) brightness({.82 * luz:.2f})" if luz != 1 else '')
         paneles.append(f"<div class=pan style='{estilo}'><img src='{url(fotos[k])}' style='{pos}'><i class=trama></i>"
                        f"<i class=tinte></i>{dato}</div>")
     if fmt == 'pc':
         lineas = ''.join(f"<line x1='{x + 4}' y1='0' x2='{x - 4}' y2='100'/>" for x in [i * 100 / n for i in range(1, n)])
-        css = """.cp .dato{position:absolute;left:var(--x);bottom:15%;translate:-50% 0;display:grid;justify-items:center;gap:6px;text-align:center}
-.cp .nom{font:400 34px/1 Anton;color:#fff;letter-spacing:.02em;text-shadow:3px 3px 0 #111;white-space:nowrap}
-.cp .pos{font:900 20px/1 Archivo;font-stretch:120%;color:var(--c);text-shadow:2px 2px 0 #111}
-.cp .rg{font:900 18px/1 Archivo;font-stretch:120%;color:#111;padding:4px 10px;transform:skewX(-10deg);border:2px solid #111}
-.cp .sc{font:700 16px/1 'Barlow Condensed';letter-spacing:.2em;color:#fff;text-shadow:1px 1px 0 #111}"""
+        css = """.cp .dato{position:absolute;left:var(--x);bottom:13%;translate:-50% 0;display:grid;justify-items:center;gap:8px;text-align:center}
+.cp .nom{font:400 50px/1 Anton;color:#fff;letter-spacing:.02em;text-shadow:3px 3px 0 #111;white-space:nowrap}
+.cp .pos{font:900 28px/1 Archivo;font-stretch:120%;color:var(--c);text-shadow:2px 2px 0 #111}
+.cp .rg{font:900 24px/1 Archivo;font-stretch:120%;color:#111;padding:5px 13px;transform:skewX(-10deg);border:2px solid #111}
+.cp .sc{font:700 22px/1 'Barlow Condensed';letter-spacing:.2em;color:#fff;text-shadow:1px 1px 0 #111}"""
     else:
         lineas = ''.join(f"<line x1='0' y1='{y + 2.5}' x2='100' y2='{y - 2.5}'/>" for y in [22 + i * 70 / n for i in range(0, n + 1)])
         css = """.cp .dato{position:absolute;right:6%;top:calc(var(--y) + 1%);display:flex;align-items:center;gap:8px}
-.cp .nom{font:400 24px/1 Anton;color:#fff;text-shadow:2px 2px 0 #111;white-space:nowrap}
-.cp .pos{font:900 15px/1 Archivo;font-stretch:120%;color:var(--c);text-shadow:2px 2px 0 #111}
-.cp .rg{font:900 13px/1 Archivo;font-stretch:120%;color:#111;padding:3px 7px;transform:skewX(-10deg);border:2px solid #111}
+.cp .nom{font:400 30px/1 Anton;color:#fff;text-shadow:2px 2px 0 #111;white-space:nowrap}
+.cp .pos{font:900 18px/1 Archivo;font-stretch:120%;color:var(--c);text-shadow:2px 2px 0 #111}
+.cp .rg{font:900 15px/1 Archivo;font-stretch:120%;color:#111;padding:4px 8px;transform:skewX(-10deg);border:2px solid #111}
 .cp .sc{display:none}"""
     return f"""<div class=cp>{''.join(paneles)}
 <svg viewBox='0 0 100 100' preserveAspectRatio='none'><g class=neg>{lineas}</g><g class=bla>{lineas}</g></svg></div>
@@ -341,13 +402,12 @@ def batalla(b, fmt):
     for x0, y0, x1, y1 in MARCAS.get(b.get('marca'), []):
         r = (int(x0 * w), int(y0 * h), int(x1 * w), int(y1 * h))
         im.paste(im.crop(r).filter(ImageFilter.GaussianBlur(18)), r[:2])
-    if fmt == 'pc':
-        tam = (1920, 1080)
-    else:
-        cw = round(h * 1080 / 2340)
+    fw, fh, dpr = FORMATOS[fmt]
+    tam = (round(fw * dpr), round(fh * dpr))
+    if fmt != 'pc':
+        cw = round(h * tam[0] / tam[1])
         x0 = int(min(max(b['cx'] * w - cw / 2, 0), w - cw))
         im = im.crop((x0, 0, x0 + cw, h))
-        tam = (1080, 2340)
     im = im.resize(tam, Image.LANCZOS)
     im = ImageEnhance.Brightness(ImageEnhance.Contrast(ImageOps.autocontrast(im, cutoff=1)).enhance(1.2)).enhance(b.get('luz', .8))
     a = np.asarray(im, dtype=np.float32)
@@ -356,7 +416,7 @@ def batalla(b, fmt):
     v = 1 - .5 * (((xx - W / 2) / (W / 2)) ** 2 + ((yy - H * b['foco']) / (H / 2)) ** 2) ** 1.2
     a = np.clip(a * np.clip(v, .18, 1), 0, 255)
     dest = os.path.join(OUT, f"2-{b['id']}-{fmt}.webp")
-    Image.fromarray(a.astype(np.uint8)).convert('RGB').save(dest, 'WEBP', quality=80, method=6)
+    Image.fromarray(a.astype(np.uint8)).convert('RGB').save(dest, 'WEBP', quality=CALIDAD, method=6)
     return dest
 
 
@@ -404,7 +464,7 @@ def tarjetas_3d():
         subprocess.run([blender(), '-b', '--factory-startup', '-P', os.path.join(BASE, 'herramientas', 'tarjetas_3d.py'),
                         '--', png, fmt, CARTAS, ','.join(tem), ','.join(com), motor], check=True,
                        stdout=subprocess.DEVNULL)
-        Image.open(png).convert('RGB').save(os.path.join(OUT, f'3-{fmt}.webp'), 'WEBP', quality=80, method=6)
+        Image.open(png).convert('RGB').save(os.path.join(OUT, f'3-{fmt}.webp'), 'WEBP', quality=CALIDAD, method=6)
         print(f'3 · {fmt}: listo ({motor})')
 
 
@@ -431,7 +491,7 @@ def render(cuales):
                 im = Image.open(io.BytesIO(pg.screenshot())).convert('RGB')
                 pg.close()
                 dest = os.path.join(OUT, f'{n}-{fmt}.webp')
-                im.save(dest, 'WEBP', quality=80, method=6)
+                im.save(dest, 'WEBP', quality=CALIDAD, method=6)
                 print(f'{n} · {fmt}: {os.path.getsize(dest) // 1024} KB')
         nav.close()
 
@@ -458,6 +518,8 @@ if __name__ == '__main__':
         for b in CONF['batallas']:
             for fmt in FORMATOS:
                 print(batalla(b, fmt))
+    elif '--caras' in sys.argv:
+        armar_caras(forzar='--forzar' in sys.argv)
     elif '--subir' in sys.argv:
         subir()
     else:

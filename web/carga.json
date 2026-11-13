@@ -1,6 +1,8 @@
 {
   "_leeme": "La pantalla de carga (Dlx, 12/11/2026): cinco fondos por temporada, cada uno con la misma chance (20 %), y en «La batalla» cada video con su parte. Lo leen web/montar.py (qué fondos sortea la página) y herramientas/fondos_carga.py (cómo se arman). El 5 entra cuando esté su imagen: se agrega a `fondos`.",
   "temporada": "t1",
+  "_v": "La versión de los fondos: va en la dirección (?d=<día>-<v>). Se sube al rehacerlos a mano, así nadie ve los de antes aunque ya los haya visto hoy. 2 = en HD (13/11/2026).",
+  "v": 2,
   "fondos": [1, 2, 3, 4],
   "batallas": [
     {"id": "kainheat", "video": "B2OyIluaMF8", "seg": 104.3, "cx": 0.40, "foco": 0.50, "marca": "bvs"},
@@ -13,11 +15,11 @@
     {"id": "eucalipto", "video": "4lhocjDBorw", "seg": 73, "cx": 0.55, "foco": 0.45, "luz": 1.25}
   ],
   "competitivo": {
-    "_leeme": "Quiénes del Competitivo tienen de avatar una foto suya (Dlx: «avatares reales como Liberia»), y dónde está su cara: [x, y, zoom]. Mirado a ojo sobre cada avatar con una grilla; quien no está acá no sale en el fondo 4.",
-    "oasis": [0.86, 0.28, 1.5],
+    "_leeme": "Quiénes del Competitivo tienen de avatar una foto suya (Dlx: «avatares reales como Liberia»), y dónde está su cara: [x, y, zoom]. Mirado a ojo sobre cada avatar con una grilla; quien no está acá no sale en el fondo 4. Mito salió el 13/11/2026: su foto de perfil es un dibujo y quedaba como una mancha (Dlx: «si algo no se ve bien, busca otro rapero»); entró Majiztral (Walker se probó y no: su foto está acostada y en una franja alta quedaba la oreja). Un cuarto número, si está, es cuánta más luz lleva la foto. La de Liberia, que es de noche, va con las sombras levantadas en el archivo (Dlx: «hazlo más claro»). Las caras en HD están en R2 (carga/<temporada>/caras/, ver `caras_hd()` de herramientas/fondos_carga.py): las de Oasis y Makmah son cuadros de sus videos (Oasis: oHRGI7jc_Gc 6:08, el de la campera, de frente; Makmah: NWO5AIKRzHw 0:09.8, remera negra, gorra y cadena, de frente: el más nítido medido cuadro por cuadro, pasado por Real-ESRGAN; Dlx: «usa el video de makma»), así que sus coordenadas son sobre esos cuadros. Liberia y Six, la foto del espejo agrandada ×4.",
+    "oasis": [0.5, 0.42, 1.45],
     "liberia": [0.45, 0.22, 1.5],
-    "six": [0.52, 0.25, 1.5],
-    "makmah": [0.46, 0.28, 1.6],
-    "mito": [0.55, 0.36, 1.2]
+    "six": [0.45, 0.28, 1.3],
+    "makmah": [0.5, 0.31, 1.2],
+    "majiztral": [0.47, 0.5, 1.02]
   }
 }

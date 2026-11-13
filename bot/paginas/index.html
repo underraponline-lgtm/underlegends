@@ -41,13 +41,13 @@
 <script>
 (function () {
   // 🎲 EL FONDO, ELEGIDO YA: cada uno con la misma chance; en «La batalla», cada video con la suya (Dlx, 12/11/2026)
-  var C = window.__lgC = {"r2":"https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev","t":"t1","f":[1,2,3,4],"b":["kainheat","sombra","sol","liberia","kourier","zaylax","makma","eucalipto"],"p":["inicio-bienvenida.js","inicio-cambios2.js","inicio-competencias.js","inicio-crewpanel.js","inicio-crews.js","inicio-crewspagina.js","inicio-cuenta.js","inicio-divisiones.js","inicio-entidad2.js","inicio-eventos.js","inicio-fondovideo.js","inicio-frase.js","inicio-guia2.js","inicio-historia.js","inicio-indice.js","inicio-ligas.js","inicio-llave.js","inicio-mesawards.js","inicio-orgs.js","inicio-pase.js","inicio-perfil.js","inicio-publicaciones.js","inicio-publicaciones2.js","inicio-ranking.js","inicio-salon2.js","inicio-servidor.js","inicio-socios2.js","inicio-tags_catalogo.js","inicio-tags_inv.js","inicio-tarjetas.js","inicio-tienda2.js","inicio-tutorial.js","inicio-visor.js"]};
+  var C = window.__lgC = {"r2":"https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev","t":"t1","v":2,"f":[1,2,3,4],"b":["kainheat","sombra","sol","liberia","kourier","zaylax","makma","eucalipto"],"p":["inicio-bienvenida.js","inicio-cambios2.js","inicio-competencias.js","inicio-crewpanel.js","inicio-crews.js","inicio-crewspagina.js","inicio-cuenta.js","inicio-divisiones.js","inicio-entidad2.js","inicio-eventos.js","inicio-fondovideo.js","inicio-frase.js","inicio-guia2.js","inicio-historia.js","inicio-indice.js","inicio-ligas.js","inicio-llave.js","inicio-mesawards.js","inicio-orgs.js","inicio-pase.js","inicio-perfil.js","inicio-publicaciones.js","inicio-publicaciones2.js","inicio-ranking.js","inicio-salon2.js","inicio-servidor.js","inicio-socios2.js","inicio-tags_catalogo.js","inicio-tags_inv.js","inicio-tarjetas.js","inicio-tienda2.js","inicio-tutorial.js","inicio-visor.js"]};
   try {
     var n = C.f[Math.floor(Math.random() * C.f.length)];
     var nom = n === 2 ? '2-' + C.b[Math.floor(Math.random() * C.b.length)] : String(n);
     var fmt = innerWidth / Math.max(1, innerHeight) < 0.8 ? 'cel' : 'pc';
     var d = new Date(), dia = d.getUTCFullYear() * 1e4 + (d.getUTCMonth() + 1) * 100 + d.getUTCDate();
-    var src = window.__lgFondo = C.r2 + '/carga/' + C.t + '/' + nom + '-' + fmt + '.webp?d=' + dia;
+    var src = window.__lgFondo = C.r2 + '/carga/' + C.t + '/' + nom + '-' + fmt + '.webp?d=' + dia + '-' + (C.v || 1);
     var l = document.createElement('link');
     l.rel = 'preload'; l.as = 'image'; l.href = src;
     l.setAttribute('fetchpriority', 'high');
