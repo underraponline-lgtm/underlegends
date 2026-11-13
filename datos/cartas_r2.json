@@ -1340,10 +1340,6 @@
   "sv-frz": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/flama/sv-frz.webp",
   "sv-sr": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/flama/sv-sr.webp"
  },
- "fleivawack": {
-  "competitivo": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/fleivawack/competitivo.webp",
-  "temporada": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/fleivawack/temporada.webp"
- },
  "flennzs": {
   "servidor": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/flennzs/servidor.webp",
   "sv-ddf": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/flennzs/sv-ddf.webp",
@@ -2232,8 +2228,7 @@
   "sv-ffs": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/kuni/sv-ffs.webp",
   "sv-frz": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/kuni/sv-frz.webp",
   "sv-sr": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/kuni/sv-sr.webp",
-  "sv-urbf": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/kuni/sv-urbf.webp",
-  "temporada": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/kuni/temporada.webp"
+  "sv-urbf": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/kuni/sv-urbf.webp"
  },
  "kyss": {
   "bloq-competitivo": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/kyss/bloq-competitivo.webp",

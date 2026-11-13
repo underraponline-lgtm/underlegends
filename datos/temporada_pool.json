@@ -4399,7 +4399,7 @@
   "crew": "",
   "discord_id": "1367919102382964878",
   "verificado": false,
-  "pts": 61025,
+  "pts": 61925,
   "ev": 9,
   "wr": "",
   "pod": 1,
@@ -4425,7 +4425,8 @@
   "tg_t": {
    "dobles": 1,
    "sube": true,
-   "svc": 1
+   "svc": 1,
+   "svtag": "campeon"
   }
  },
  {
@@ -7425,7 +7426,7 @@
   "crew": "",
   "discord_id": "1164262480067952772",
   "verificado": false,
-  "pts": 12114,
+  "pts": 12414,
   "ev": 8,
   "wr": "",
   "pod": 1,
