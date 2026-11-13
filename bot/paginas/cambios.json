@@ -11,6 +11,15 @@
  ],
  "cambios": [
     {
+        "version": "4.85",
+        "dia": "2026-11-12",
+        "cuando": "2026-11-12T22:55:00-05:00",
+        "titulo": "El último anuncio oficial",
+        "items": [
+            "Sin batallas, tu Inicio muestra **el último anuncio oficial** de la Liga."
+        ]
+    },
+    {
         "version": "4.84",
         "dia": "2026-11-12",
         "cuando": "2026-11-12T22:40:00-05:00",
