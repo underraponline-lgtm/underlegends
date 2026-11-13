@@ -1420,6 +1420,39 @@
    "b": "LVS 🇪🇸",
    "ganador": "ERIAN 🇩🇴",
    "votos": "1–0"
+  },
+  "1570590620668661931": {
+   "id": "1570590620668661931",
+   "sv": "🔥LKR (Champios Legue)🐉",
+   "g": "1558611504046153750",
+   "canal": "1560448027490001067",
+   "pub": 1794528384130,
+   "a": "MARTYNEZ 🇺🇾",
+   "b": "LIZZENNIN 🇦🇷",
+   "ganador": "MARTYNEZ 🇺🇾",
+   "votos": "1–0"
+  },
+  "1570591785624018955": {
+   "id": "1570591785624018955",
+   "sv": "🔥LKR (Champios Legue)🐉",
+   "g": "1558611504046153750",
+   "canal": "1560448027490001067",
+   "pub": 1794528661877,
+   "a": "ERIAN 🇩🇴",
+   "b": "MARTYNEZ 🇺🇾",
+   "ganador": "ERIAN 🇩🇴",
+   "votos": "1–0"
+  },
+  "1570592459463852196": {
+   "id": "1570592459463852196",
+   "sv": "#FDS ╏FREESTYLE DISCORD SERIES",
+   "g": "1489848581203689535",
+   "canal": "1536574435761332334",
+   "pub": 1794528822533,
+   "a": "VILCA",
+   "b": "DIOS",
+   "ganador": "DIOS",
+   "votos": "1–0"
   }
  },
  "llaves": {
@@ -6208,7 +6241,7 @@
    "g": "1489848581203689535",
    "canal": "1500675902042931280",
    "pub": 1794524133838,
-   "ed": 1794528259035,
+   "ed": 1794529407594,
    "texto": "`[ CUARTOS ]`\n⌞crk⌝ 🆚 ⌞raizer⌝\n⌞Nito nanel⌝ 🆚 ⌞mcarepa⌝\n⌞OKAM⌝ 🆚 ⌞DIOS⌝\n⌞tokio⌝ 🆚 ⌞showsero⌝\n`[ SEMIFINALES ]`\n⌞crk⌝ 🆚 ⌞mcarepa⌝\n⌞dios⌝ 🆚 ⌞showsero⌝\n`[ FINAL ]`",
    "batallas": [
     [

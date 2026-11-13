@@ -9690,6 +9690,13 @@
   }
  },
  "noone": {
+  "pais": {
+   "EMBAJADOR": [
+    "EMBAJADOR",
+    "t1",
+    1794529870694
+   ]
+  },
   "servidor": {
    "📆 HABITUÉ": [
     "📆 HABITUÉ",
@@ -9698,6 +9705,11 @@
    ]
   },
   "temporada": {
+   "🌍 TROTAMUNDOS": [
+    "🌍 TROTAMUNDOS",
+    "t1",
+    1794529870694
+   ],
    "📈 EN ASCENSO": [
     "📈 EN ASCENSO",
     "t1",
