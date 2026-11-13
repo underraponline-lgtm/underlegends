@@ -1,12 +1,12 @@
 {
  "_leeme": "El reto del debut (bot/debutantes.py): quién debutó desde el 12/10/2026 a las 6 PM ET, cuándo vence, si lo cumplió y qué ya se avisó. Dlx, 12/10/2026.",
  "chats": {
-  "ACAD": "2026-11-12",
+  "ACAD": "2026-11-13",
   "CH": "2026-11-06",
   "DDF": "2026-11-11",
   "DDS": "2026-11-09",
   "FDS": "2026-11-12",
-  "FFA": "2026-11-12",
+  "FFA": "2026-11-13",
   "FRZ": "2026-11-12",
   "FVS": "2026-10-15",
   "SR": "2026-11-05",
@@ -420,6 +420,7 @@
   },
   "Carlos": {
    "avisado": "2026-11-12",
+   "chat": "2026-11-13",
    "con": null,
    "cumplido": "",
    "debut": "2026-11-09T03:16:00+00:00",
@@ -629,6 +630,7 @@
    "vencido": false
   },
   "Diz": {
+   "chat": "2026-11-13",
    "con": null,
    "cumplido": "",
    "debut": "2026-11-13T01:52:37+00:00",
@@ -704,6 +706,7 @@
   },
   "El padre de tu padre": {
    "avisado": "2026-11-12",
+   "chat": "2026-11-13",
    "con": null,
    "cumplido": "",
    "debut": "2026-11-12T04:08:19+00:00",
@@ -1437,6 +1440,7 @@
   },
   "LICENCIADO": {
    "avisado": "2026-11-12",
+   "chat": "2026-11-13",
    "con": null,
    "cumplido": "",
    "debut": "2026-11-12T22:38:21+00:00",
@@ -1559,13 +1563,11 @@
    "vence": "2026-11-10T02:50:33+00:00",
    "vencido": false
   },
-  "Luck": {
-   "avisado": "2026-10-23",
-   "chat": "2026-10-23",
+  "Lucky": {
    "con": null,
    "cumplido": "",
    "debut": "2026-10-14T23:10:06+00:00",
-   "did": "1485072095900860466",
+   "did": "1367919102382964878",
    "evento": "GG SANGRERAP 1",
    "n": 521,
    "sv": "FDS",
@@ -1834,6 +1836,7 @@
   },
   "NITO NANEL": {
    "avisado": "2026-11-12",
+   "chat": "2026-11-13",
    "con": null,
    "cumplido": "",
    "debut": "2026-11-12T22:38:21+00:00",
@@ -1995,6 +1998,7 @@
   },
   "PHOBOS": {
    "avisado": "2026-11-12",
+   "chat": "2026-11-13",
    "con": null,
    "cumplido": "",
    "debut": "2026-11-12T04:08:19+00:00",
@@ -2638,6 +2642,7 @@
   },
   "Ydimekemeamasaunqueseamentira": {
    "avisado": "2026-11-12",
+   "chat": "2026-11-13",
    "con": null,
    "cumplido": "",
    "debut": "2026-11-12T04:08:19+00:00",
@@ -2840,6 +2845,7 @@
   },
   "k": {
    "avisado": "2026-11-12",
+   "chat": "2026-11-13",
    "con": null,
    "cumplido": "",
    "debut": "2026-11-12T04:08:19+00:00",
@@ -3018,6 +3024,7 @@
    "vencido": false
   },
   "y Jahno": {
+   "chat": "2026-11-13",
    "con": null,
    "cumplido": "",
    "debut": "2026-11-13T01:52:37+00:00",

@@ -24,6 +24,9 @@
    "sv-sr": "2026-11-07",
    "temporada": "2026-11-07"
   },
+  "kourier": {
+   "temporada": "2026-11-12"
+  },
   "stormed": {
    "bloq-competitivo": "2026-11-12",
    "bloq-pais": "2026-11-12",
@@ -76,7 +79,7 @@
   }
  },
  "pasaban": 432,
- "cuando": "2026-11-13T04:00:43Z",
+ "cuando": "2026-11-13T04:31:35Z",
  "borradas": [
   [
    "19",

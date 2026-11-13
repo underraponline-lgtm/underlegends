@@ -795,13 +795,6 @@
 "temporada"
 ]
 },
-"luck": {
-"rg": "",
-"c": [
-"servidor",
-"temporada"
-]
-},
 "emizor": {
 "rg": "D",
 "c": []
@@ -869,6 +862,10 @@
 "servidor",
 "temporada"
 ]
+},
+"lucky": {
+"rg": "",
+"c": []
 },
 "gus": {
 "rg": "E",
@@ -1322,6 +1319,17 @@
 "c": []
 },
 "rbk": {
+"rg": "",
+"c": [
+"servidor",
+"temporada"
+]
+},
+"martoar": {
+"rg": "",
+"c": []
+},
+"luck": {
 "rg": "",
 "c": [
 "servidor",

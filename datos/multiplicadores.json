@@ -1283,14 +1283,14 @@
    ],
    "semillero": {
     "nuevos": {
-     "FFA": 12,
+     "FFA": 14,
      "ACAD": 4,
      "DDF": 2,
      "LKR": 2,
      "FDS": 1
     },
     "gente": {
-     "FFA": 68,
+     "FFA": 74,
      "LKR": 23,
      "DDS": 10,
      "ACAD": 19,
@@ -1306,7 +1306,7 @@
     "DDS": 10,
     "DRA": 0,
     "FDS": 18,
-    "FFA": 68,
+    "FFA": 74,
     "FFS": 0,
     "FRZ": 8,
     "FVS": 0,

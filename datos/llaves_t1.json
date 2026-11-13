@@ -31,7 +31,7 @@
      [
       [
        ".SosaATR, papa, BNA",
-       "Marto, Erian, melomaniaco"
+       "Marto AR, Erian, melomaniaco"
       ],
       ".SosaATR, papa, BNA",
       ""
@@ -176,7 +176,7 @@
     833
    ],
    [
-    "Marto",
+    "Marto AR",
     "Cuartos",
     833
    ],
@@ -1404,7 +1404,7 @@
        "Six",
        "Hassan",
        "Camila",
-       "Marto"
+       "Marto AR"
       ],
       "Six, Hassan",
       "triple (4 bandas, pasan 2); también pasa: Prr🇦🇴"
@@ -1530,7 +1530,7 @@
     2500
    ],
    [
-    "Marto",
+    "Marto AR",
     "Cuartos",
     2500
    ],
@@ -2151,7 +2151,7 @@
      [
       [
        "Masino",
-       "Marto",
+       "Marto AR",
        "Xclusivo",
        "Erian"
       ],
@@ -2312,7 +2312,7 @@
     1250
    ],
    [
-    "Marto",
+    "Marto AR",
     "Octavos",
     1250
    ],
@@ -5661,7 +5661,7 @@
      [
       [
        "Eze, Zignos",
-       "Marto, Gus"
+       "Marto AR, Gus"
       ],
       "Eze, Zignos",
       ""
@@ -5925,7 +5925,7 @@
     625
    ],
    [
-    "Marto",
+    "Marto AR",
     "Octavos",
     625
    ],
@@ -5978,10 +5978,10 @@
      ],
      [
       [
-       "Marto, Abyssus",
+       "Marto AR, Abyssus",
        "Focox"
       ],
-      "Marto, Abyssus",
+      "Marto AR, Abyssus",
       ""
      ],
      [
@@ -6009,10 +6009,10 @@
      ],
      [
       [
-       "Marto, Abyssus",
+       "Marto AR, Abyssus",
        "Paria"
       ],
-      "Marto, Abyssus",
+      "Marto AR, Abyssus",
       ""
      ]
     ],
@@ -6023,7 +6023,7 @@
      [
       [
        "PRAISERIZA, Oasis",
-       "Abyssus, Marto"
+       "Abyssus, Marto AR"
       ],
       "PRAISERIZA, Oasis",
       ""
@@ -6055,7 +6055,7 @@
     2500
    ],
    [
-    "Marto",
+    "Marto AR",
     "Subcampeón",
     2500
    ],
@@ -20330,7 +20330,7 @@
      [
       [
        "Guess",
-       "Erian, Marto"
+       "Erian, Marto AR"
       ],
       "Guess",
       "Revivido: erian🇵🇦"
@@ -20538,7 +20538,7 @@
     1250
    ],
    [
-    "Marto",
+    "Marto AR",
     "Octavos",
     625
    ]
@@ -22901,7 +22901,7 @@
      ],
      [
       [
-       "Marto",
+       "Marto AR",
        "Chop"
       ],
       "",
@@ -22909,7 +22909,7 @@
      ],
      [
       [
-       "Marto",
+       "Marto AR",
        "Sin Limites"
       ],
       "",
@@ -23100,7 +23100,7 @@
     1250
    ],
    [
-    "Marto",
+    "Marto AR",
     "Octavos",
     1250
    ],
@@ -30815,7 +30815,7 @@
      [
       [
        "DANCOLL, Sin Limites",
-       "BELIKKO, Luck"
+       "BELIKKO, Lucky"
       ],
       "DANCOLL, Sin Limites",
       ""
@@ -31058,7 +31058,7 @@
     625
    ],
    [
-    "Luck",
+    "Lucky",
     "Octavos",
     625
    ],
@@ -32029,10 +32029,10 @@
      ],
      [
       [
-       "Marto, Guess",
+       "Marto AR, Guess",
        "Lizeninn, Molusco"
       ],
-      "Marto, Guess",
+      "Marto AR, Guess",
       ""
      ],
      [
@@ -32075,7 +32075,7 @@
      [
       [
        "EL TERROR DE TU WA 🇦🇷",
-       "Marto, Guess"
+       "Marto AR, Guess"
       ],
       "EL TERROR DE TU WA 🇦🇷",
       "Sin integrantes: EL TERROR DE TU WA 🇦🇷"
@@ -32191,7 +32191,7 @@
     1250
    ],
    [
-    "Marto",
+    "Marto AR",
     "Cuartos",
     1250
    ],
@@ -33857,10 +33857,10 @@
     "b": [
      [
       [
-       "Luck",
+       "Lucky",
        "Artezzy"
       ],
-      "Luck",
+      "Lucky",
       ""
      ],
      [
@@ -33927,7 +33927,7 @@
      [
       [
        "Sin Limites",
-       "Luck"
+       "Lucky"
       ],
       "Sin Limites",
       ""
@@ -34022,7 +34022,7 @@
     2500
    ],
    [
-    "Luck",
+    "Lucky",
     "Cuartos",
     2500
    ],
@@ -35171,7 +35171,7 @@
      [
       [
        "OKAM",
-       "Luck",
+       "Lucky",
        "Raizer"
       ],
       "OKAM",
@@ -35242,6 +35242,11 @@
     2500
    ],
    [
+    "Lucky",
+    "Cuartos",
+    2000
+   ],
+   [
     "Raizer",
     "Cuartos",
     2000
@@ -35263,11 +35268,6 @@
    ],
    [
     "Leyenda",
-    "Cuartos",
-    1000
-   ],
-   [
-    "Luck",
     "Cuartos",
     1000
    ],
@@ -35331,7 +35331,7 @@
      [
       [
        "MCNadie",
-       "Luck",
+       "Lucky",
        "Makmah",
        "Tam",
        "Erian"
@@ -35429,7 +35429,7 @@
     2000
    ],
    [
-    "Luck",
+    "Lucky",
     "Cuartos",
     2000
    ],
@@ -35526,7 +35526,7 @@
      [
       [
        "Oasis",
-       "Luck",
+       "Lucky",
        "Dyzz",
        "MCNadie"
       ],
@@ -35706,7 +35706,7 @@
     1250
    ],
    [
-    "Luck",
+    "Lucky",
     "Octavos",
     1250
    ],
@@ -36003,10 +36003,10 @@
      ],
      [
       [
-       "Luck",
+       "Lucky",
        "Molt"
       ],
-      "Luck",
+      "Lucky",
       ""
      ],
      [
@@ -36076,10 +36076,10 @@
      ],
      [
       [
-       "Luck",
+       "Lucky",
        "Cinexfilo"
       ],
-      "Luck",
+      "Lucky",
       ""
      ]
     ],
@@ -36098,7 +36098,7 @@
      [
       [
        "Ragna",
-       "Luck"
+       "Lucky"
       ],
       "Ragna",
       ""
@@ -36130,7 +36130,7 @@
      [
       [
        "Dynoco",
-       "Luck"
+       "Lucky"
       ],
       "Dynoco",
       ""
@@ -36176,7 +36176,7 @@
     7500
    ],
    [
-    "Luck",
+    "Lucky",
     "Semifinal",
     7000
    ],
@@ -37508,7 +37508,7 @@
        "melomaniaco, LRS, Geoka",
        "Six, Presagio",
        "Andres",
-       "Luck, BELIKKO"
+       "Lucky, BELIKKO"
       ],
       "melomaniaco, LRS, Geoka, Six, Presagio",
       "triple (4 bandas, pasan 2); también pasa: Six+presagio🇦🇷"
@@ -37706,7 +37706,7 @@
     625
    ],
    [
-    "Luck",
+    "Lucky",
     "Octavos",
     625
    ],
@@ -38891,10 +38891,10 @@
      ],
      [
       [
-       "Luck",
+       "Lucky",
        "DarnBless"
       ],
-      "Luck",
+      "Lucky",
       ""
      ],
      [
@@ -38944,10 +38944,10 @@
      ],
      [
       [
-       "Luck",
+       "Lucky",
        "Eseeka"
       ],
-      "Luck",
+      "Lucky",
       ""
      ]
     ],
@@ -38965,10 +38965,10 @@
      ],
      [
       [
-       "Luck",
+       "Lucky",
        "AL3"
       ],
-      "Luck",
+      "Lucky",
       ""
      ]
     ],
@@ -38991,10 +38991,10 @@
     "b": [
      [
       [
-       "Luck",
+       "Lucky",
        "Mc arepa"
       ],
-      "Luck",
+      "Lucky",
       ""
      ]
     ],
@@ -39004,7 +39004,7 @@
   "sv": "FDS",
   "tabla": [
    [
-    "Luck",
+    "Lucky",
     "Campeón",
     10000
    ],
@@ -42004,7 +42004,7 @@
        "Andres"
       ],
       "yinn, Agus, Six",
-      "triple (4 bandas, pasan 3); también pasa: agus / six; Drafteado: yinn"
+      "triple (4 bandas, pasan 3); también pasa: agus🇦🇷 / six; Drafteado: yinn"
      ],
      [
       [
@@ -47268,7 +47268,7 @@
      [
       [
        "Dios",
-       "Luck"
+       "Lucky"
       ],
       "Dios",
       ""
@@ -47396,7 +47396,7 @@
     625
    ],
    [
-    "Luck",
+    "Lucky",
     "Octavos",
     625
    ]

@@ -2,61 +2,6 @@
  "_leeme": "Los eventos de vidas de #veredictos ya armados —quién peleó con quién y quién ganó—, para cargarlos aunque ya no estén entre los últimos mensajes del canal; y cada batalla con su ganador (`batallas`), para la llave que no lo dice; y cada llave como se jugó (`llaves`), que manda sobre la del organizador. Sin los mensajes: el repo es público. Lo escribe bot/escuchar.py (vidas()).",
  "eventos": {},
  "batallas": {
-  "1568112397049397281": {
-   "id": "1568112397049397281",
-   "sv": "[FFA] Freestyle For All 👾",
-   "g": "1468472442925092958",
-   "canal": "1487206164864438513",
-   "pub": 1793937529576,
-   "a": "PARK JI SUNG",
-   "b": "ERIAN",
-   "ganador": "PARK JI SUNG",
-   "votos": "1–0"
-  },
-  "1568112720467988652": {
-   "id": "1568112720467988652",
-   "sv": "🔥LKR (Champios Legue)🐉",
-   "g": "1558611504046153750",
-   "canal": "1560448027490001067",
-   "pub": 1793937606685,
-   "a": "CHUTY 🇪🇸",
-   "b": "VALLES-T 🇨🇴",
-   "ganador": "CHUTY 🇪🇸",
-   "votos": "1–0"
-  },
-  "1568113482438803588": {
-   "id": "1568113482438803588",
-   "sv": "🔥LKR (Champios Legue)🐉",
-   "g": "1558611504046153750",
-   "canal": "1560448027490001067",
-   "pub": 1793937788353,
-   "a": "JONY BEL🇲🇽",
-   "b": "LOBO EST 🇲🇽",
-   "ganador": "JONY BEL🇲🇽",
-   "votos": "1–0"
-  },
-  "1568113521747820566": {
-   "id": "1568113521747820566",
-   "sv": "[FFA] Freestyle For All 👾",
-   "g": "1468472442925092958",
-   "canal": "1487206164864438513",
-   "pub": 1793937797725,
-   "a": "PARK JI SUNG",
-   "b": "PARIA",
-   "ganador": "PARK JI SUNG",
-   "votos": "1–0"
-  },
-  "1568114130596921397": {
-   "id": "1568114130596921397",
-   "sv": "[FFA] Freestyle For All 👾",
-   "g": "1468472442925092958",
-   "canal": "1487206164864438513",
-   "pub": 1793937942886,
-   "a": "PARK JI SUNG",
-   "b": "SNOW",
-   "ganador": "PARK JI SUNG",
-   "votos": "1–0"
-  },
   "1568125242226901047": {
    "id": "1568125242226901047",
    "sv": "🔥LKR (Champios Legue)🐉",
@@ -6356,14 +6301,54 @@
    "g": "1558611504046153750",
    "canal": "1560448027490001067",
    "pub": 1794541812268,
-   "ed": 1794541948040,
-   "texto": "`[ FINAL ]`\n⌞MATTHIAS 🇻🇪⌝ 🆚 ⌞LAST🇺🇾⌝",
+   "ed": 1794543080272,
+   "texto": "`[ FINAL ]`\n⌞MATTHIAS 🇻🇪⌝ 🆚 ⌞LAST🇺🇾⌝\n⌞LVEL 🇻🇪⌝ 🆚 ⌞TOKIO🇦🇷⌝\n⌞CÁLIZ 🇲🇽⌝ 🆚 ⌞MINIBOY🇨🇱⌝\n⌞TOKIO 🇦🇷⌝ 🆚 ⌞LAST🇺🇾⌝\n⌞CÁLIZ 🇲🇽⌝ 🆚 ⌞TOKIO🇦🇷⌝",
    "batallas": [
     [
      "FINAL",
      [
       "MATTHIAS 🇻🇪",
       "LAST🇺🇾"
+     ],
+     null,
+     "última ronda y no dice campeón",
+     []
+    ],
+    [
+     "FINAL",
+     [
+      "LVEL 🇻🇪",
+      "TOKIO🇦🇷"
+     ],
+     null,
+     "última ronda y no dice campeón",
+     []
+    ],
+    [
+     "FINAL",
+     [
+      "CÁLIZ 🇲🇽",
+      "MINIBOY🇨🇱"
+     ],
+     null,
+     "última ronda y no dice campeón",
+     []
+    ],
+    [
+     "FINAL",
+     [
+      "TOKIO 🇦🇷",
+      "LAST🇺🇾"
+     ],
+     null,
+     "última ronda y no dice campeón",
+     []
+    ],
+    [
+     "FINAL",
+     [
+      "CÁLIZ 🇲🇽",
+      "TOKIO🇦🇷"
      ],
      null,
      "última ronda y no dice campeón",
