@@ -1377,6 +1377,20 @@
  },
  "quien": {
   "_leeme": "Quién era de verdad un nombre de UNA llave: «evento · servidor · fecha · nombre» -> {\"es\": persona}. Lo decide Dlx desde un reporte en el Dashboard (13/10/2026) y lo lee llaves_a_entrada.otro_en_evento(); bot/reportes.py corrige además las filas ya escritas.",
+  "PRITTY FREE · FFA · 05/10 · baggio🇮🇹": {
+   "es": "Oasis",
+   "antes": "baggio🇮🇹",
+   "cuando": "13/11 2:13 AM ET",
+   "por": "Dlx (chat)",
+   "nota": "Dlx, 13/11/2026 («Sí, a Oasis»): «Baggio 🇮🇹» lo anotó la cuenta de Oasis (fullylo4ded) a la 1:18 AM y el host lo marcó «baggio🇮🇹(fullylo4ded)»; Oasis se anota como futbolistas (Park-Ji Sung). Hassan jugó la final contra él."
+  },
+  "PRITTY FREE · FFA · 05/10 · Baggio 🇮🇹": {
+   "es": "Oasis",
+   "antes": "baggio🇮🇹",
+   "cuando": "13/11 2:13 AM ET",
+   "por": "Dlx (chat)",
+   "nota": "Dlx, 13/11/2026 («Sí, a Oasis»): «Baggio 🇮🇹» lo anotó la cuenta de Oasis (fullylo4ded) a la 1:18 AM y el host lo marcó «baggio🇮🇹(fullylo4ded)»; Oasis se anota como futbolistas (Park-Ji Sung). Hassan jugó la final contra él."
+  },
   "DESGRACIAS EN BELLAS ARTES VOL1 · FFA · 07/10 · Agus": {
    "es": "EIDP",
    "antes": "Agus",
