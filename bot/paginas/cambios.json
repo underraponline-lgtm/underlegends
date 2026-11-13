@@ -11,6 +11,16 @@
  ],
  "cambios": [
     {
+        "version": "4.97",
+        "dia": "2026-11-13",
+        "cuando": "2026-11-13T04:40:00-05:00",
+        "titulo": "Cada ranking, con sus números",
+        "items": [
+            "Al abrir a alguien en el **Competitivo** ves su Score, su rango y sus cinco fortalezas, no los números de la Temporada.",
+            "Lo mismo en Duelos, Podios, Rachas, Eventos y Most Wanted: cada uno con lo suyo, también en «Tú contra»."
+        ]
+    },
+    {
         "version": "4.96",
         "dia": "2026-11-13",
         "cuando": "2026-11-13T03:40:00-05:00",
