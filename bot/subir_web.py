@@ -377,6 +377,14 @@ def armar():
         # Ver `_avatares()`: la foto de R2 NO, que su dirección es secreta.
         'av': ('%s/%s' % (_did(p), _avs[_did(p)]) if _avs.get(_did(p)) else ''),
     } for p in todos]
+    # 🎯 LOS EVENTOS QUE CUENTAN PARA EL COMPETITIVO (13/11/2026): sólo los de servidores Tier 1 —el Score saca los que
+    # suman sólo a la Temporada (`tiers.sin('competitivo')`)—, y de ahí los 10 que pide la letra. Para 94 personas no es
+    # `ev`, que suma también los de Tier 3: «te faltan 9 eventos» podía mentir. Va sólo cuando difiere; la página usa
+    # `evc ?? ev`
+    for f, p in zip(tabla, todos):
+        _evc = (_comp.get(p.get('raw')) or {}).get('ev')
+        if isinstance(_evc, int) and _evc != (f.get('ev') or 0):
+            f['evc'] = _evc
     # 👤 las filas de más allá de la tabla, para su perfil (`_perfiles_extra()`); la tabla, los primeros `TOPE`
     filas_todas, tabla = tabla, tabla[:TOPE]
     # ▲▼ cuánto subió cada uno esta semana y quién debutó: contra la foto del lunes (ver `foto_semana()`)
@@ -2012,7 +2020,10 @@ def _perfiles(gente, comp, regs):
         fila.update({k: v for k, v in p.items() if v not in (None, '')})
         req = {}
         for carta in ('temporada', 'competitivo', 'pais'):
-            req[carta] = [[RQ.cuanto(fila, campo), meta, RQ.como_se_dice(carta, meta, None, i)]
+            # 🎯 los eventos de la Competitiva son los del Competitivo (`cp`, sólo Tier 1), no los de la Temporada que
+            # `fila` trae encima: Vilca, con 23 en total y 3 en Tier 1, leía «23/10» sin tener letra (13/11/2026)
+            de = dict(fila, ev=cp['ev']) if carta == 'competitivo' and isinstance(cp.get('ev'), int) else fila
+            req[carta] = [[RQ.cuanto(de, campo), meta, RQ.como_se_dice(carta, meta, None, i)]
                           for i, (meta, campo, _q) in enumerate(RQ.condiciones(carta))]
         rk = {}
         if pos_du.get(q):
@@ -4270,6 +4281,10 @@ def _self_check():
     _mal_tier = [s for s in _svs if s in _ps and (_nv.get('niveles') or {}).get(s) in (1, 2, 3)
                  and (_ps[s].get('tier') != _nv['niveles'][s] or _ps[s].get('cu', {}).get('c') != int(s not in _sc))]
     ok(not _mal_tier, 'cada socio con su tier y si cuenta para el Competitivo, como niveles.json  %s' % (_mal_tier or '—'))
+    # 🎯 los eventos del Competitivo (`evc`) son un pedazo de los de la Temporada: nunca más, y sólo cuando difieren
+    _evc_mal = [f['n'] for f in p['tabla'] if 'evc' in f and not (0 <= f['evc'] < (f['ev'] or 0))]
+    ok(not _evc_mal, 'los eventos del Competitivo, menos que los de la Temporada cuando van  (%d con `evc`)  %s'
+       % (sum(1 for f in p['tabla'] if 'evc' in f), _evc_mal or '—'))
     ok(len(p['tabla']) <= TOPE, 'y no pasa de %d filas' % TOPE)
 
     # 🔴 LA LETRA SIGUE LA MISMA PUERTA QUE LA CARTA. Si la web mostrara
@@ -4328,6 +4343,11 @@ def _self_check():
                'y no son todos el mismo numero (%d valores distintos)'
                % distintos)
 
+    # 🎯 lo que lleva para la Competitiva son los eventos del Competitivo (Tier 1), no los de la Temporada (13/11/2026)
+    _cev = {f['k']: f.get('evc', f.get('ev') or 0) for f in p['tabla']}
+    _req_mal = [k for k, x in (perf.get('p') or {}).items() if k in _cev and (x.get('req') or {}).get('competitivo')
+                and x['req']['competitivo'][0][0] != _cev[k]]
+    ok(not _req_mal, 'la Competitiva cuenta los eventos de Tier 1 en el perfil, como el Competitivo  %s' % (_req_mal[:5] or '—'))
     # 🔑 LOS PERFILES: uno por fila de la tabla, con sus requisitos, y desde el 13/10/2026 de TODOS los que jugaron (los de
     # más allá de la tabla, con su fila adentro: `_perfiles_extra()`)
     ok(set(perf.get('p') or {}) >= {f['k'] for f in p['tabla']} and len(perf.get('p') or {}) >= p['gente']

@@ -10,6 +10,10 @@
 
 const PASE_COMO = 'con dos Tareas diarias o una semanal';
 const LIGA = 'de cualquier servidor asociado a la Liga Global';
+// 🎯 LOS EVENTOS DE LA COMPETITIVA SON SÓLO LOS DE TIER 1 (13/11/2026). Desde el 26/10 los socios Tier 3 suman a la
+// Temporada y no al Competitivo (`bot/tiers.py`): el Score —y con él los 10 que pide la letra— no los cuenta. Decía
+// «de cualquier servidor» y para 94 personas el número no coincidía
+const TIER1 = 'en servidores Tier 1 de la Liga (los ves en Socios)';
 const plural = (n, uno, varios) => (n === 1 ? uno : varios);
 
 // qué condición es, por su etiqueta de `comun/requisitos.py` («EVENTOS», «BANDERA ASIGNADA», «DUELOS NACIONALES»…)
@@ -39,7 +43,7 @@ export function falta(et, lleva, pide, tu) {
   switch (tipo(et)) {
     case 'ev':
     case 'part':
-      return L + ' participar en ' + resto + ' ' + plural(resto, 'evento', 'eventos') + ' más ' + LIGA + '.';
+      return L + ' participar en ' + resto + ' ' + plural(resto, 'evento', 'eventos') + ' más ' + (tipo(et) === 'ev' ? TIER1 : LIGA) + '.';
     case 'pais':
       return (tu ? 'Te falta elegir tu país' : 'Le falta elegir su país') + ': se elige en «Verificarme», en Mi cuenta, y el bot '
         + 'pone el rol de ese país en Discord Rap Español.';
@@ -58,7 +62,7 @@ export function queEs(et, pide) {
   switch (tipo(et)) {
     case 'ev':
     case 'part':
-      return 'Participar en ' + n + ' ' + plural(n, 'evento', 'eventos') + ' ' + LIGA + ', en la temporada.';
+      return 'Participar en ' + n + ' ' + plural(n, 'evento', 'eventos') + ' ' + (tipo(et) === 'ev' ? TIER1 : LIGA) + ', en la temporada.';
     case 'pais':
       return 'Tener tu país: lo eliges en «Verificarme», en Mi cuenta.';
     case 'dnac':

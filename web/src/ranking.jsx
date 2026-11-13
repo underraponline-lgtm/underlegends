@@ -38,6 +38,7 @@ usarCss('ranking', CSS_PAGINA);
 
 const pct = (x) => parseFloat(String(x == null ? '' : x).replace(',', '.')) || 0;
 const coma = (x, d = 1) => Number(x || 0).toFixed(d).replace('.', ',');
+const evcDe = (f) => (f && typeof f.evc === 'number' ? f.evc : (f && f.ev) || 0);
 // 🔑 EL ORDEN DE UN MEDALLERO (el de app.js): oros, después platas, después bronces. Sumarlas diría que tres bronces
 // valen más que un oro
 const medallero = (a, b) => (b.oro || 0) - (a.oro || 0) || (b.seg || 0) - (a.seg || 0) || (b.ter || 0) - (a.ter || 0) || (b.pts || 0) - (a.pts || 0);
@@ -226,6 +227,8 @@ const COL = {
   ten: { t: 'Esta semana', tc: 'Sem.', tit: 'Lo que sumó esta semana; las barritas, cada semana de la temporada',
     s: (f) => (((SEM && SEM.g[f.k]) || []).slice(-1)[0] || 0), v: (f, x) => <Tendencia g={x.sem && x.sem.g[f.k]} lunes={x.sem && x.sem.lunes} /> },
   ev: { t: 'Eventos', tc: 'Ev', tit: 'Eventos jugados en la temporada', s: (f) => f.ev || 0, v: (f) => f.ev || 0 },
+  // 🎯 los del Competitivo: sólo los de servidores Tier 1 (`evc`, 13/11/2026; sin él son los mismos que `ev`)
+  evc: { t: 'Eventos', tc: 'Ev', tit: 'Eventos en servidores Tier 1: los que cuentan para el Competitivo', s: (f) => evcDe(f), v: (f) => evcDe(f) },
   wr: { t: 'Win%', tit: 'Duelos ganados sobre duelos jugados', s: (f) => (f.wr ? pct(f.wr) : ''), v: (f) => (f.wr ? Math.round(pct(f.wr)) + '%' : NADA) },
   racha: { t: 'Racha', tit: 'La que lleva ahora / la más larga de la temporada',
     s: (f) => { const r = f.rch || [0, 0]; return r[0] * 1000 + r[1]; },
@@ -324,13 +327,13 @@ const NUMEROS = {
     sinSemanas: 1,
     det: (t, c) => [['Score', t.sc ? coma(t.sc) : '—'],
       ['Rango', t.rg ? <span className="rg rk-rg" style={{ background: c.liga.colorRg(t.rg) }}>{t.rg}</span> : '—'],
-      ['Eventos', t.ev || 0], t.wr ? ['Win%', wrDe(t) + '%'] : null, duDe(t)[1] ? ['Duelos', duDe(t)[0] + ' de ' + duDe(t)[1]] : null],
+      ['Eventos', evcDe(t)], t.wr ? ['Win%', wrDe(t) + '%'] : null, duDe(t)[1] ? ['Duelos', duDe(t)[0] + ' de ' + duDe(t)[1]] : null],
     vs: (a, b, c) => {
       const sc = ['Score', a.sc || 0, b.sc || 0, (v) => (v ? coma(v) : '—')];
       const da = c.dims(a);
       const db = c.dims(b);
       if (da && db) return [sc, ...c.D.map((d, i) => [d[1], da[i] || 0, db[i] || 0, String])];
-      return [sc, ['Eventos', a.ev || 0, b.ev || 0, String], ['Win%', wrDe(a), wrDe(b), (v) => v + '%'], ['Duelos', duDe(a)[0], duDe(b)[0], String]];
+      return [sc, ['Eventos', evcDe(a), evcDe(b), String], ['Win%', wrDe(a), wrDe(b), (v) => v + '%'], ['Duelos', duDe(a)[0], duDe(b)[0], String]];
     },
   },
   duelos: {
@@ -382,14 +385,14 @@ const SUBS = {
   },
   competitivo: {
     et: 'Competitivo', filas: (L) => (L.d.tabla || []).filter((f) => f.rg), orden: 'sc',
-    cols: ['i', 'n', 'rg', 'sc', 'ev', 'wr'], movil: ['i', 'n', 'rg', 'sc'],
+    cols: ['i', 'n', 'rg', 'sc', 'evc', 'wr'], movil: ['i', 'n', 'rg', 'sc'],
     baj: <>Ordenado por <b>Score</b>, que mide la calidad y no la cantidad. De ahí sale el rango, el mismo en todas las cartas.</>,
     // sin `dato` tampoco: la carta Competitiva tiene el Score en grande
     valor: [(f) => f.sc || 0, 'de Score', 1], podio: 'competitivo', final: 16,
     vacio: (L) => {
       const pide = req(L, 'competitivo') || 10;
       const c = (L.d.tabla || []).slice().sort((a, b) => (b.ev || 0) - (a.ev || 0))[0];
-      return <>El Competitivo pide participar en <b>{pide} eventos</b> de cualquier servidor asociado a la Liga Global, en la temporada, y todavía no llegó nadie.{c ? <> El más cerca: <b>{limpio(c.n)}</b>, con {c.ev}.</> : null}</>;
+      return <>El Competitivo pide participar en <b>{pide} eventos</b> de servidores Tier 1 de la Liga, en la temporada, y todavía no llegó nadie.{c ? <> El más cerca: <b>{limpio(c.n)}</b>, con {c.ev}.</> : null}</>;
     },
   },
   duelos: {
@@ -625,7 +628,7 @@ function TuTira({ x, cfg, sub, base, iYo, lugar, yo, dc, encontrarme, tira, mira
     return (
       <div className="rk-tu invita" ref={tira}>
         <span className="rk-tu-l"><Ico n="yo" t={22} /><b>Todavía no estás en este ranking: juega un evento y apareces.</b></span>
-        <Porque sub={sub} c={ctx(null, 0, null)} n={0} />
+        <Porque sub={sub} c={ctx(null, 0, null)} n={0} titulo={cfg.et} linea="Tu lugar · todavía no estás en este ranking" />
       </div>
     );
   }
@@ -663,7 +666,7 @@ function TuTira({ x, cfg, sub, base, iYo, lugar, yo, dc, encontrarme, tira, mira
       ) : null}
       {lugar.verificar ? <a className="btn verde chico rk-tu-btn" href="#/cuenta/verificar">Verificarme</a>
         : lugar.ir ? <button type="button" className="btn verde chico rk-tu-btn" onClick={encontrarme}>Ver mi fila ↓</button> : null}
-      <Porque sub={sub} c={ctx(f, n, arriba)} n={n} />
+      <Porque sub={sub} c={ctx(f, n, arriba)} n={n} titulo={cfg.et} linea={'Tu lugar · ' + (n ? '#' + n + ' · ' : '') + frase} />
     </div>
   );
 }
@@ -1085,8 +1088,9 @@ export function Ranking({ liga, sub: subRuta, ver: abre = '', dc, raiz }) {
       // 🙋 y en los demás: estás en este ranking, pero más abajo de las 200 filas que viajan
       lugar = { cara, quien, n: 0, txt: 'Estás más abajo de los que muestra la tabla' };
     } else if (sub === 'competitivo' && !yo.rg) {
-      const falta = Math.max(0, (req(liga, 'competitivo') || 10) - (yo.ev || 0));
-      lugar = { cara, quien, n: 0, txt: falta ? 'Te falta participar en ' + falta + (falta === 1 ? ' evento' : ' eventos') + ' más, de cualquier servidor de la Liga, para tu letra' : 'Tu letra llega con la próxima corrida' };
+      // 🎯 los eventos del Competitivo son los de Tier 1 (`evc`, 13/11/2026): con `ev` contaba también los de Tier 3
+      const falta = Math.max(0, (req(liga, 'competitivo') || 10) - (typeof yo.evc === 'number' ? yo.evc : yo.ev || 0));
+      lugar = { cara, quien, n: 0, txt: falta ? 'Te ' + (falta === 1 ? 'falta 1 evento' : 'faltan ' + falta + ' eventos') + ' en servidores Tier 1 para tu letra' : 'Tu letra llega con la próxima corrida' };
     } else if (!cfg.grupo) {
       const no = { duelos: 'Todavía no jugaste un duelo uno contra uno', podios: 'Todavía no subiste a un podio', rachas: 'Todavía sin racha', mw: 'Todavía no cazaste a ningún buscado' }[sub];
       if (no) lugar = { cara, quien, n: 0, txt: no };
