@@ -8,7 +8,7 @@ import { pedirLigas } from './ligas_datos.js';
 import { BatallasAhora } from './ligas_ahora.jsx';
 import { pedirCalendario, juntarCalendario } from './calendario_datos.js';
 import { AvisoPromo, nombrePais } from './piezas.jsx';
-import { Cabecera, Hero, Historias, Instalar, IrA, MENU, Tira, gruposHistorias, ordenHistorias } from './arriba.jsx';
+import { Cabecera, EscenarioPrueba, Hero, Historias, Instalar, IrA, MENU, Tira, gruposHistorias, ordenHistorias } from './arriba.jsx';
 import { LosQueMandan, Noticias } from './medio.jsx';
 import { Menu, Merch, Pie, Subir, Tabbar, Visor } from './abajo.jsx';
 import { Lobby } from './lobby.jsx';
@@ -778,6 +778,7 @@ export default function App() {
         {yo.dc && String(yo.dc.id) === DUENO ? <Aislada n="PanelDueno"><Suspense fallback={null}><PanelDueno liga={liga} /></Suspense></Aislada> : null}
         <Aislada n="Historias"><Historias liga={liga} grupos={grupos} vistos={vistos || {}} onAbrir={setHistoria} /></Aislada>
         <Aislada n="Hero"><Hero liga={liga} vivoL={vivoL}><Aislada n="Tira"><Tira liga={liga} /></Aislada></Hero></Aislada>
+        {(() => { try { return localStorage.getItem('lg:prev-escenario'); } catch (e) { return null; } })() ? <Aislada n="EscenarioPrueba"><EscenarioPrueba liga={liga} /></Aislada> : null}
         {/* 🔴 las batallas de liga que se están jugando (04/11/2026). Se apaga sola: casi siempre no se ve */}
         <Aislada n="LigasAhora"><BatallasAhora liga={liga} cls="sec" /></Aislada>
         {/* 🏆 la semana: en qué vas en cada competencia (26/10/2026, Dlx: «me gustan… las posiciones de los mini eventos»,

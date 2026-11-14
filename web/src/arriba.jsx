@@ -1817,6 +1817,41 @@ function CoronaCampeon() {
     </svg>
   );
 }
+// 👏 lo social de un momento: las reacciones (las del Pase incluidas) y el último comentario de su publicación
+function Social({ liga, it, ctx, hilo }) {
+  if (!it || !it.id || !ctx || !ctx.A) return null;
+  const h = hilo || delHilo(it, liga.ahora);
+  return <div className="es-soc"><LuSocial liga={liga} it={it} A={ctx.A} hilo={h} P={ctx.P} /><LuNube liga={liga} it={it} hilo={h} /></div>;
+}
+// ⚔️ EN VIVO, CARA A CARA (Dlx, 14/11/2026, a las mejoras: «todas»): la batalla de ahora con las dos cartas (o las caras), el
+// favorito por el OVR de la Temporada —una cuenta simple, y lo dice— y la que sigue debajo
+const probGana = (fa, fb) => (fa && fb && fa.ovr && fb.ovr ? Math.round(100 / (1 + Math.pow(10, (fb.ovr - fa.ovr) / 15))) : null);
+function VsVivo({ liga, m }) {
+  const [a, b] = m.ahora.lados;
+  const na = primero(a), nb = primero(b);
+  const fa = liga.fila(na), fb = liga.fila(nb);
+  const lado = (n, todo, f) => (
+    <span className="es-vs-l">
+      {f && (f.c || []).includes('temporada') ? <Carta liga={liga} k={f.k} cual="temporada" cls="es-carta" /> : <Cara liga={liga} k={f && f.k} nombre={n} cls="cara es-cara-g" grande />}
+      <b>{limpio(todo)}</b>
+    </span>
+  );
+  const p = probGana(fa, fb);
+  return (
+    <div className="es-vs">
+      <span className="es-vs-r"><i className="es-pt" aria-hidden="true" />{m.ahora.r} · se juega ahora</span>
+      <span className="es-vs-c">{lado(na, a, fa)}<span className="es-vs-x">VS</span>{lado(nb, b, fb)}</span>
+      {p != null ? (
+        <span className="es-vs-p" title="Por el OVR de la Temporada de cada uno">
+          <span style={{ width: Math.max(18, Math.min(82, p)) + '%' }}>{na} {p}%</span><span>{100 - p}%</span>
+        </span>
+      ) : null}
+      {m.sigue ? <span className="es-paso"><span className="es-r">Sigue</span><span className="es-q"><span>{m.sigue.lados.join(' vs ')}</span></span><span className="es-ok">{m.sigue.r}</span></span> : null}
+      <small className="es-vs-n">{m.jugados} de {m.total} batallas</small>
+    </div>
+  );
+}
+
 // 📰 EL TITULAR DEL CAMPEÓN: cada historia con su fuerza; gana la más fuerte. `{tit, sub, sello, hora}` (vacío = el de siempre)
 //  · ganó dos o más esa noche · tres o más en la semana · su primer título · le ganó la final a uno de arriba (batacazo) ·
 //  ganó una llave grande (30 o más)
@@ -1824,18 +1859,18 @@ function titularCampeon(liga, ll, misma, f, g0) {
   const op = [];
   const nombre = g0;
   const n = misma.length;
-  if (n > 1) op.push([100, { tit: nombre + ' ganó las ' + (n === 2 ? 'dos' : n), sello: 'Campeón ×' + n, hora: 'Campeón ×' + n }]);
+  if (n > 1) op.push([100, { peso: 82, tit: nombre + ' ganó las ' + (n === 2 ? 'dos' : n), sello: 'Campeón ×' + n, hora: 'Campeón ×' + n }]);
   if (f) {
     const yo0 = limpio(nombre).toLowerCase();
     const desde = utc(liga.fechaLlave(ll)) - 7 * 86400000;
     const semana = liga.llaves().filter((x) => utc(liga.fechaLlave(x)) >= desde && utc(liga.fechaLlave(x)) <= utc(liga.fechaLlave(ll))
       && liga.campeon(x).length === 1 && limpio(liga.campeon(x)[0]).toLowerCase() === yo0).length;
     if (semana >= 3) {
-      op.push([90, { tit: nombre + ': ' + semana + ' títulos en una semana', sub: 'Ganó ' + limpio(ll.nombre) + ' y suma ' + semana + ' campeonatos en siete días. Nadie juega así esta semana.',
+      op.push([90, { peso: 80, tit: nombre + ': ' + semana + ' títulos en una semana', sub: 'Ganó ' + limpio(ll.nombre) + ' y suma ' + semana + ' campeonatos en siete días. Nadie juega así esta semana.',
         sello: semana + ' en 7 días', hora: semana + ' títulos' }]);
     }
     if (Number(f.oro) === 1 && n === 1) {
-      op.push([80, { tit: 'Primera corona para ' + nombre, sub: 'Ganó ' + limpio(ll.nombre) + ' (' + ll.participantes + ' raperos): es su primer campeonato en la Liga.',
+      op.push([80, { peso: 76, tit: 'Primera corona para ' + nombre, sub: 'Ganó ' + limpio(ll.nombre) + ' (' + ll.participantes + ' raperos): es su primer campeonato en la Liga.',
         sello: 'Primer título', hora: 'Primer título' }]);
     }
     // la final: ¿a quién le ganó?
@@ -1844,12 +1879,12 @@ function titularCampeon(liga, ll, misma, f, g0) {
     const riv = bf ? (bf[0] || []).map(primero).find((x) => x.toLowerCase() !== yo0) : '';
     const fr = riv ? liga.fila(riv) : null;
     if (fr && fr.pos && fr.pos <= 15 && (!f.pos || f.pos - fr.pos >= 20)) {
-      op.push([85, { tit: nombre + ' derribó al #' + fr.pos, sub: 'Le ganó la final de ' + limpio(ll.nombre) + ' a ' + limpio(fr.n) + ', #' + fr.pos + ' de la Temporada' + (f.pos ? ', siendo #' + f.pos + '.' : '.'),
+      op.push([85, { peso: 84, tit: nombre + ' derribó al #' + fr.pos, sub: 'Le ganó la final de ' + limpio(ll.nombre) + ' a ' + limpio(fr.n) + ', #' + fr.pos + ' de la Temporada' + (f.pos ? ', siendo #' + f.pos + '.' : '.'),
         sello: 'Batacazo', hora: 'Batacazo' }]);
     }
   }
   if (ll.participantes >= 30 && n === 1) {
-    op.push([60, { tit: nombre + ' se impuso entre ' + ll.participantes, sub: 'La llave más grande de la noche: ' + limpio(ll.nombre) + ', ' + siglaDe(ll.sv) + '.', hora: ll.participantes + ' raperos' }]);
+    op.push([60, { peso: 72, tit: nombre + ' se impuso entre ' + ll.participantes, sub: 'La llave más grande de la noche: ' + limpio(ll.nombre) + ', ' + siglaDe(ll.sv) + '.', hora: ll.participantes + ' raperos' }]);
   }
   op.sort((a, b) => b[0] - a[0]);
   return op.length ? op[0][1] : { tit: limpio(ll.nombre) };
@@ -1869,12 +1904,12 @@ function PtsCampeon({ liga, k, sumo, x }) {
   );
 }
 // la carta del campeón: con su marco (lo pone `Carta`) y, desde el nivel 8 del Pase, el brillo dorado que ya tiene en las llaves
-function CampeonVis({ liga, k, nombre, n, sumo, x, sello }) {
+function CampeonVis({ liga, k, nombre, n, sumo, x, sello, corona = true }) {
   const f = k ? liga.T[k] : null;
   const conCarta = !!(f && (f.c || []).includes('temporada'));
   return (
-    <div className="es-cw">
-      <CoronaCampeon />
+    <div className={'es-cw' + (corona ? '' : ' sin-corona')}>
+      {corona ? <CoronaCampeon /> : null}
       <span className={'es-cimg' + (liga.brilla(k) ? ' brilla' : '')}>
         {conCarta ? <Carta liga={liga} k={k} cual="temporada" cls="es-carta" /> : <Cara liga={liga} k={k} nombre={nombre} cls="cara es-cara-g" grande />}
         <span className="es-sello">{sello || (n > 1 ? 'Campeón ×' + n : 'Campeón')}</span>
@@ -1925,7 +1960,7 @@ function momentosTuyos(liga) {
   const mw = liga.d.mw || {};
   if (b) {
     out.push({
-      tipo: 'tebuscan', et: 'Te buscan', sv: yo.sv, lay: 'B', gig: 'SE BUSCA', hora: 'Hoy',
+      tipo: 'tebuscan', et: 'Te buscan', sv: yo.sv, lay: 'B', gig: 'SE BUSCA', hora: 'Hoy', peso: 88,
       txt: <><div className="hero-t"><span className="tag">HOY TE BUSCAN</span></div>
         <Tit c="hero-ev largo">{num(b.v)} PTS POR TU CABEZA</Tit>
         <p className="hero-p">{b.cn}{b.m ? ' · ' + b.m : ''}. Quien te gane, cobra. Vence {liga.dia(mw.fin)}.</p>
@@ -1938,14 +1973,19 @@ function momentosTuyos(liga) {
   if (ult && (liga.ahora - utc(liga.fechaLlave(ult[0]))) / 3600000 < 48) {
     const [ll, res, pts] = ult;
     const carta = liga.cartaUrl(yo.k, 'temporada');
+    // 🧾 con tu carta y el cuadrito, como el del campeón (Dlx, 14/11/2026, a las mejoras: «todas»): lo que sumaste con el
+    // multiplicador de esa semana y dónde quedaste. La corona, sólo si ganaste
+    const mx = (liga.multEn(ll.sv, liga.fechaLlave(ll)) || {}).x || 1;
+    const gano = res === 'Campeón';
     out.push({
-      tipo: 'tuevento', et: 'Tu evento', sv: ll.sv, hora: liga.cuando(liga.fechaLlave(ll)),
+      tipo: 'tuevento', et: 'Tu evento', sv: ll.sv, hora: liga.cuando(liga.fechaLlave(ll)), peso: 75,
       txt: <><div className="hero-t"><span className="tag tg-seguis">TU ÚLTIMO EVENTO · {liga.cuando(liga.fechaLlave(ll)).toUpperCase()}</span></div>
         <Tit c="hero-ev">{resultado(res)}</Tit>
-        <p className="hero-p">{limpio(ll.nombre)} · {siglaDe(ll.sv)} · {ll.participantes} raperos · +{num(pts)} pts para tu Temporada.</p>
+        <p className="hero-p">{limpio(ll.nombre)} · {siglaDe(ll.sv)} · {ll.participantes} raperos.</p>
+        <Camino liga={liga} ll={ll} nombre={yo.n} />
         <div className="hero-acc"><button type="button" className="btn verde" onClick={() => accion.llave(ll.n)}>Ver la llave</button>
           {carta ? <Compartir cls="btn borde" url={carta} texto="Mi carta de la Liga Global" etiqueta="Compartir mi carta" /> : null}</div></>,
-      vis: <div className="mo-carta-w"><Carta liga={liga} k={yo.k} cual="temporada" cls="mo-carta" /></div>,
+      vis: <div className="es-camp es-solo"><CampeonVis liga={liga} k={yo.k} nombre={yo.n} n={1} sumo={(Number(pts) || 0) * mx} x={mx} corona={gano} sello={gano ? 'Campeón' : resultado(res)} /></div>,
     });
   }
   // ── «Tu próximo» (Dlx, 01/10/2026, la B) vivía acá hasta el 13/10/2026: desde el lobby lo dice su botón grande, con
@@ -1961,16 +2001,19 @@ function momentos(liga, vivoL, ctx = {}) {
   const enVivo = [];
   vivos.forEach((e, iv) => {
     const m = liga.multSv(e.sv);
-    const L = llaveEnVivo(e, vivoL);
+    const L = e._L || llaveEnVivo(e, vivoL);
     // con Octavos o más, la llave corta (ver `momentosLlave()`)
     const corta = cortaDe(L);
+    // ⚔️ la batalla de ahora, si es un mano a mano y se sabe cuál va (`momentosLlave()`): cara a cara
+    const ml = L ? momentosLlave(L) : null;
+    const mano = !!(ml && ml.ahora && ml.ahora.lados.length === 2);
     const n = limpio(e.nombre);
     const dd = aDiscord(liga, e, true);
     // 🔑 LO BÁSICO DEL ANUNCIO, TAMBIÉN EN VIVO (Dlx, 03/10/2026, con LA REDENCION: «es MULTIVERSE… debería decirlo
     // ahí… no todo pero lo básico»): la modalidad, los cupos y el premio, como en el Próximo
     const det = [e.modalidad, e.cupos ? 'cupos ' + String(e.cupos).toLowerCase() : ''].filter(Boolean).join(' · ');
     enVivo.push({
-      tipo: 'vivo', clave: iv ? 'vivo-' + e.sv + '-' + iv : 'vivo', et: 'En vivo', sv: e.sv, hora: 'Ahora',
+      tipo: 'vivo', clave: iv ? 'vivo-' + e.sv + '-' + iv : 'vivo', et: 'En vivo', sv: e.sv, hora: 'Ahora', peso: 100,
       _n: n, _ir: L ? () => accion.llave('v:' + L.id) : null, _href: !L && dd ? dd.url : '',
       txt: <><div className="hero-t"><img className="hv-logo" alt="" src={liga.logo(e.sv)} /><span className="tag vivo-late">EN VIVO AHORA</span>
         <span className="hero-meta">{siglaDe(e.sv)} · EMPEZÓ {liga.dia(e.cuando).replace(/^hoy /, '')}{m ? ' · ' + mult(m) + ' ESTA SEMANA' : ''}</span></div>
@@ -1983,7 +2026,7 @@ function momentos(liga, vivoL, ctx = {}) {
           {dd ? <a className={'btn ' + (L ? 'borde' : 'verde')} href={dd.url} target="_blank" rel="noopener noreferrer">{dd.txt} ↗</a> : null}
           <a className="btn borde" href="#/avisos"><Ico n="campana" t={18} />Quiero aviso</a>
         </div></>,
-      vis: L ? (corta ? <LlaveCorta liga={liga} m={corta} /> : <div className="cm-wrap"><CuadroMini liga={liga} ll={L} /></div>)
+      vis: L ? (mano ? <VsVivo liga={liga} m={ml} /> : corta ? <LlaveCorta liga={liga} m={corta} /> : <div className="cm-wrap"><CuadroMini liga={liga} ll={L} /></div>)
         : <div className="mo-logo vivo"><img alt="" src={liga.logo(e.sv, true)} /></div>,
     });
   });
@@ -2008,11 +2051,13 @@ function momentos(liga, vivoL, ctx = {}) {
         <Tit c={'hero-ev' + (n.length > 16 ? ' largo' : '')}>{n}</Tit>
         <p className="hero-p">{det}{e.premios ? '. Premio: ' + recorte(e.premios, 70) : ''}</p>
         <Anotados liga={liga} e={e} />
-        <div className="mo-cuenta"><small>EMPIEZA EN</small><b>{liga.falta(e.cuando)}</b></div>
         <div className="hero-acc">{ins ? <a className="btn verde" href={ins.url} target="_blank" rel="noopener noreferrer">{ins.txt} ↗</a> : null}
           <a className={'btn ' + (ins ? 'borde' : 'verde')} href="#/avisos"><Ico n="campana" t={18} />Quiero aviso</a>
           {ins ? null : <a className="btn borde" href={gcal(e)} target="_blank" rel="noopener noreferrer">+ Calendario</a>}</div></>,
-      vis: <div className="mo-logo"><img alt="" src={liga.logo(e.sv, true)} />{dor ? <span className="mo-sello">DORADO ×3</span> : null}</div>,
+      // ⏳ la cuenta atrás grande, al lado del logo (Dlx, 14/11/2026, a las mejoras: «todas»)
+      vis: <div className="es-prox"><span className="mo-logo"><img alt="" src={liga.logo(e.sv, true)} />{dor ? <span className="mo-sello">DORADO ×3</span> : null}</span>
+        <span className="es-cuenta"><small>Empieza en</small><b>{liga.falta(e.cuando)}</b><small>{liga.dia(e.cuando)}</small></span></div>,
+      peso: utc(e.cuando) - liga.ahora < 3 * 3600000 ? 92 : 60,
     });
   });
   // 🏟️ LA FECHA DE HOY DE CADA LIGA, COMO UN EVENTO MÁS (Dlx, 14/10/2026: «Ligas en el Inicio»). Hoy es lo que la liga
@@ -2027,7 +2072,7 @@ function momentos(liga, vivoL, ctx = {}) {
     const ya = x.juega ? (x.n === 1 ? 'Una batalla ya tiene veredicto' : x.n + ' batallas ya tienen veredicto')
       + (x.j ? ' en la jornada ' + x.j + '. ' : '. ') : 'La liga anunció su fecha para hoy. ';
     out.push({
-      tipo: 'ligahoy', clave: 'ligahoy-' + L.id, et: 'Liga · ' + siglaDe(L.sv), sv: L.sv, hora: futuro ? liga.dia(x.t) : 'Hoy',
+      tipo: 'ligahoy', clave: 'ligahoy-' + L.id, et: 'Liga · ' + siglaDe(L.sv), sv: L.sv, hora: futuro ? liga.dia(x.t) : 'Hoy', peso: 55,
       txt: <><div className="hero-t"><img className="hv-logo" alt="" src={liga.logo(L.sv)} /><span className="tag tg-prox">{futuro ? 'HOY · ' + liga.dia(x.t).replace(/^hoy /, '').toUpperCase() : 'HOY SE JUEGA'}</span>
         <span className="hero-meta">LIGA · {siglaDe(L.sv)}{x.j ? ' · JORNADA ' + x.j : ''}</span></div>
         <Tit c={'hero-ev' + (n.length > 16 ? ' largo' : '')}>{n}</Tit>
@@ -2070,7 +2115,7 @@ function momentos(liga, vivoL, ctx = {}) {
     const T = titularCampeon(liga, ll, misma, f, g0);
     const tit = T.tit;
     out.push({
-      tipo: 'llave', et: cu.charAt(0).toUpperCase() + cu.slice(1), sv: ll.sv, lay: 'A',
+      tipo: 'llave', et: cu.charAt(0).toUpperCase() + cu.slice(1), sv: ll.sv, lay: 'A', peso: T.peso || 70,
       hora: T.hora || (varias ? 'Campeón ×' + misma.length : g0 ? 'Campeón: ' + g0 : ''),
       txt: <><div className="hero-t"><span className="tag tg-llave">{cu.toUpperCase()} · {siglaDe(ll.sv)}</span></div><Tit c={largo(tit)}>{juntos(tit)}</Tit>
         <p className="hero-p">{T.sub || (varias ? misma.map((x) => limpio(x.nombre) + ' (' + x.participantes + ' raperos)').join(' y ') + '. Nadie le ganó en toda la noche.'
@@ -2079,7 +2124,7 @@ function momentos(liga, vivoL, ctx = {}) {
         <div className="hero-acc">{k ? <button type="button" className="btn verde" onClick={() => accion.carta(k, 'temporada')}>Ver su carta</button> : null}
           <button type="button" className={'btn ' + (k ? 'borde' : 'verde')} onClick={() => accion.llave(ll.n)}>{varias ? 'Ver la llave' : 'Ver la llave entera'}</button>
           {k ? null : <Compartir cls="btn borde" url={enlace('#/llave/' + ll.n)} texto={'La llave de ' + limpio(ll.nombre) + ' en la Liga Global'} />}</div>
-        {it && ctx.A ? <div className="es-soc"><LuSocial liga={liga} it={it} A={ctx.A} hilo={hilo} P={ctx.P} /><LuNube liga={liga} it={it} hilo={hilo} /></div> : null}</>,
+        <Social liga={liga} it={it} ctx={ctx} hilo={hilo} /></>,
       vis: <div className="es-camp">
         {f ? <CampeonVis liga={liga} k={k} nombre={g0} n={misma.length} sumo={sumo} x={xs.size === 1 ? [...xs][0] : 1} sello={T.sello} />
           : <div className="es-cw"><CoronaCampeon /><span className="es-equipo">{gana.slice(0, 3).map((x) => <Cara key={x} liga={liga} k={(liga.fila(x) || {}).k} nombre={x} cls="cara es-cara-g" />)}</span><span className="es-sello">{gana.length > 1 ? 'Campeones' : 'Campeón'}</span></div>}
@@ -2108,18 +2153,19 @@ function momentos(liga, vivoL, ctx = {}) {
       const kc = ksDe(caza)[0] || '';
       const qc = limpio((caza.quien || [])[0]);
       out.push({
-        tipo: 'caza', et: 'Cazado', sv: caza.sv, lay: 'B', gig: 'CAZADO', hora: liga.cuando(caza.t),
+        tipo: 'caza', et: 'Cazado', sv: caza.sv, lay: 'B', gig: 'CAZADO', hora: liga.cuando(caza.t), peso: 90,
         txt: <><div className="hero-t"><span className="tag">SE BUSCA · CAZADO</span><span className="hero-meta">{String(caza.cat || '').toUpperCase()}</span></div>
           <Tit c="hero-ev largo">{'¡' + qc + ' cazó a ' + limpio(caza.a) + '!'}</Tit>
           <p className="hero-p">{'Le ganó en ' + limpio(caza.ev || 'un evento') + ' y cobró ' + num(caza.pts) + ' pts por su cabeza. ' + (libres.length ? 'Quedan ' + libres.length + (libres.length === 1 ? ' libre' : ' libres') + ' esta semana.' : 'Ya no queda nadie libre esta semana.')}</p>
           <div className="hero-acc"><button type="button" className="btn verde" onClick={() => accion.ir('sebusca')}>Ver los buscados</button>
-            {kc ? <a className="btn borde" href={'#/r/' + encodeURIComponent(kc)}>Su perfil</a> : null}</div></>,
+            {kc ? <a className="btn borde" href={'#/r/' + encodeURIComponent(kc)}>Su perfil</a> : null}</div>
+          <Social liga={liga} it={caza} ctx={ctx} /></>,
         vis: <div className="es-b-carta">{kc && liga.T[kc] && (liga.T[kc].c || []).includes('temporada') ? <Carta liga={liga} k={kc} cual="temporada" cls="es-carta" />
           : <Cara liga={liga} k={kc} nombre={qc} cls="cara es-cara-g" grande />}<span className="es-sello oro">Cazador</span></div>,
       });
     }
     out.push({
-      tipo: 'sebusca', et: 'Se busca', sv: b.sv, lay: 'B', gig: 'SE BUSCA', hora: caz ? 'Cazado' : fin ? 'Vence ' + liga.dia(fin) : '',
+      tipo: 'sebusca', et: 'Se busca', sv: b.sv, lay: 'B', gig: 'SE BUSCA', peso: nuevos || ultimo ? 80 : 50, hora: caz ? 'Cazado' : fin ? 'Vence ' + liga.dia(fin) : '',
       txt: <><div className="hero-t"><span className={'tag' + (nuevos || ultimo ? ' es-nuevos' : '')}>{nuevos ? '¡NUEVOS BUSCADOS!' : ultimo ? '¡ÚLTIMO DÍA!' : 'SE BUSCA · ' + String(b.cn || '').toUpperCase()}</span>
           {nuevos || ultimo ? <span className="hero-meta">{String(b.cn || '').toUpperCase()}</span> : null}</div>
         <Tit c="hero-ev largo">{num(b.v) + ' PTS POR ' + limpio(b.n).toUpperCase()}</Tit>
@@ -2149,12 +2195,13 @@ function momentos(liga, vivoL, ctx = {}) {
     const fr = kr ? liga.T[kr] : null;
     const pocos = (liga.d.tabla || []).filter((t) => t.rg === rgAlto.rg).length;
     out.push({
-      tipo: 'rangoalto', et: 'Rango ' + rgAlto.rg, sv: fr ? fr.sv : '', hora: liga.cuando(rgAlto.t),
+      tipo: 'rangoalto', et: 'Rango ' + rgAlto.rg, sv: fr ? fr.sv : '', hora: liga.cuando(rgAlto.t), peso: rgAlto.rg === 'SSS' ? 86 : 66,
       txt: <><div className="hero-t"><span className="tag">RANGO NUEVO · {liga.cuando(rgAlto.t).toUpperCase()}</span></div>
         <Tit c="hero-ev largo">{qr + (rgAlto.primero ? ' estrena su letra: ' : ' llega a rango ') + rgAlto.rg}</Tit>
         <p className="hero-p">{pocos > 1 ? 'Son ' + pocos + ' en toda la Liga con ' + rgAlto.rg + '.' : 'Es el único de la Liga con ' + rgAlto.rg + '.'} La letra sale del Competitivo.</p>
         <div className="hero-acc">{kr ? <button type="button" className="btn verde" onClick={() => accion.carta(kr, 'competitivo')}>Ver su carta</button> : null}
-          <a className={'btn ' + (kr ? 'borde' : 'verde')} href="#/ranking/competitivo">El Competitivo</a></div></>,
+          <a className={'btn ' + (kr ? 'borde' : 'verde')} href="#/ranking/competitivo">El Competitivo</a></div>
+        <Social liga={liga} it={rgAlto} ctx={ctx} /></>,
       vis: <div className="es-camp es-rg-vis">{kr && fr && (fr.c || []).includes('competitivo') ? <span className="es-cimg"><Carta liga={liga} k={kr} cual="competitivo" cls="es-carta" /></span> : null}
         <span className="es-letra" style={{ background: liga.colorRg(rgAlto.rg) }}>{rgAlto.rg}</span></div>,
     });
@@ -2163,7 +2210,7 @@ function momentos(liga, vivoL, ctx = {}) {
   if (video) {
     const d = utc(video.t);
     out.push({
-      tipo: 'video', et: 'Video', color: '#E41373', hora: liga.cuando(video.t), esc: 'DRA',
+      tipo: 'video', et: 'Video', color: '#E41373', hora: liga.cuando(video.t), esc: 'DRA', peso: 30,
       txt: <><div className="hero-t"><span className="tag tg-video">ÚLTIMO VIDEO · {limpio(video.canal || '').toUpperCase()}</span></div><Tit c={largo(limpio(video.tit))}>{limpio(video.tit)}</Tit>
         {/* en la zona de quien mira (Ajustes), no la del aparato (revisión del 04/10/2026) */}
         <p className="hero-p">Subido el {Number(diaISO(d).split('-')[2])} de {MESES[Number(diaISO(d).split('-')[1]) - 1]}.</p>
@@ -2179,7 +2226,7 @@ function momentos(liga, vivoL, ctx = {}) {
   const nov = (liga.d.novedades || [])[0];
   if (nov) {
     out.push({
-      tipo: 'liga', et: 'La Liga', color: '#29B298', hora: liga.cuando(nov.t), esc: 'DRA',
+      tipo: 'liga', et: 'La Liga', color: '#29B298', hora: liga.cuando(nov.t), esc: 'DRA', peso: 20,
       txt: <><div className="hero-t"><span className="tag tg-liga">LA LIGA · {liga.cuando(nov.t).toUpperCase()}</span></div><Tit c={largo(limpio(nov.tit))}>{limpio(nov.tit)}</Tit>
         <p className="hero-p">{recorte(nov.tx || '', 180)}</p>
         {nov.link ? <div className="hero-acc"><a className="btn verde" href={nov.link} target="_blank" rel="noopener noreferrer">Leer en Discord ↗</a></div> : null}</>,
@@ -2195,7 +2242,7 @@ function momentos(liga, vivoL, ctx = {}) {
       if (!x) continue;
       const k = ks.sort()[0];
       out.push({
-        tipo: 'seguis', et: 'Sigues', sv: liga.T[k].sv, hora: x[3],
+        tipo: 'seguis', et: 'Sigues', sv: liga.T[k].sv, hora: x[3], peso: 45,
         txt: <><div className="hero-t"><span className="tag tg-seguis">DE LOS QUE SIGUES · {x[3].toUpperCase()}</span></div><Tit c={largo(x[1])}>{x[1]}</Tit>
           <p className="hero-p">{x[0].charAt(0) + x[0].slice(1).toLowerCase()}.</p>
           <div className="hero-acc"><a className="btn verde" href={'#/r/' + encodeURIComponent(k)}>Ver su perfil</a></div></>,
@@ -2204,7 +2251,10 @@ function momentos(liga, vivoL, ctx = {}) {
       break;
     }
   }
-  return out;
+  // 📊 LO MÁS FUERTE, PRIMERO (Dlx, 14/11/2026, a las mejoras: «todas»): lo que se está jugando, una caza de recién, un
+  // evento que empieza en menos de 3 h, el campeón según su titular… y lo de la Liga al final. A igual peso, el orden de
+  // arriba. Lo de 80 o más se queda 12 s en pantalla; lo demás, 8
+  return out.map((m, i) => [m, i]).sort((a, b) => ((b[0].peso || 50) - (a[0].peso || 50)) || (a[1] - b[1])).map(([m]) => m);
 }
 
 // ── el fondo de cada momento. Dlx, 30/09/2026: «que haya diferentes fondos para ese apartado» y «usa los colores de
@@ -2231,12 +2281,12 @@ function fondoDe(liga, m) {
 // ⏸️ YA NO PASA SOLO (13/10/2026). Pasaba cada 15 segundos (Dlx, 30/09: «después de 15 segundos»); con el Inicio
 // hecho lobby (Dlx: «hacé lo que consideres mejor»), lo de arriba se queda quieto en lo más importante y se pasa con
 // las flechas o las pestañas: algo que se mueve solo mientras leés es de lo que más confunde a quien llega.
-export function Hero({ liga, vivoL, children }) {
+export function Hero({ liga, vivoL, children, solo }) {
   // las reacciones y el comentario del campeón (los mismos de Lo último)
   const A = useAplausos();
   useComentarios();
   const P = usePase(typeof window !== 'undefined' && !!window.DC);
-  const mo = momentos(liga, vivoL, { A, P });
+  const mo = momentos(liga, vivoL, { A, P }).filter((m) => !solo || solo.includes(m.tipo));
   // ⚠️ el momento que se mira se sigue por su TIPO, no por su lugar: si empieza un evento en vivo, el suyo entra
   // adelante y corría a todos un lugar, y lo que estabas leyendo cambiaba solo (revisión del 01/10/2026)
   const [tipo, setTipo] = useState(null);
@@ -2326,7 +2376,7 @@ export function Hero({ liga, vivoL, children }) {
                 style={e0 ? { backgroundImage: 'url("' + e0 + '")' } : undefined} aria-current={k === j ? 'true' : undefined}>
                 <img alt="" src={m.sv ? liga.logo(m.sv) : '/ul.png'} />
                 <span><b>{m.et}</b>{m.hora ? <small>{m.hora}</small> : null}</span>
-                {k === j && n > 1 ? <i key={idDe(m)} className="es-reloj" onAnimationEnd={() => ver(j + 1)} /> : null}
+                {k === j && n > 1 ? <i key={idDe(m)} className="es-reloj" style={{ animationDuration: (m.peso || 50) >= 80 ? '12s' : '8s' }} onAnimationEnd={() => ver(j + 1)} /> : null}
               </button>
             );
           })}
@@ -2335,6 +2385,75 @@ export function Hero({ liga, vivoL, children }) {
       {children}
     </div>
   );
+}
+
+// 🧪 LA VISTA DE PRUEBA DEL ESCENARIO (`?prev=escenario`; Dlx, 14/11/2026, a las mejoras: «todas»): cada titular y cada forma
+// que hoy no se dio, armados con gente de verdad de la tabla y llaves inventadas, para verlos antes de que pasen. Sólo en el
+// navegador que abrió el link; `?noprev=escenario` la apaga
+export function EscenarioPrueba({ liga }) {
+  const vs = useMemo(() => variantesPrueba(liga), [liga]);
+  return (
+    <section className="es-prueba" aria-label="Prueba del escenario">
+      <p className="es-prueba-h">🧪 Prueba del escenario · cada caso con gente de verdad y llaves inventadas · <a href="?noprev=escenario">quitar</a></p>
+      {vs.map(([t, L, solo]) => <div key={t}><p className="es-prueba-t">{t}</p><Hero liga={L} vivoL={null} solo={solo} /></div>)}
+    </section>
+  );
+}
+function variantesPrueba(liga) {
+  const T = (liga.d.tabla || []).filter((t) => t.k && (t.c || []).includes('temporada'));
+  if (T.length < 12) return [];
+  const H = 3600000;
+  const hace = (h) => new Date(liga.ahora.getTime() - h * H).toISOString();
+  const por = (pos) => T.find((t) => t.pos >= pos) || T[T.length - 1];
+  const top = por(3), bajo = por(45), medio = por(12), otro = por(20), debut = T.find((t) => Number(t.oro) === 1) || por(30);
+  const fechas = new Map();
+  const llave = (n, nombre, sv, camp, rival, h, part = 16) => {
+    const ll = { n, nombre, sv, participantes: part, dia: hace(h).slice(0, 10), rondas: [
+      { r: 'Cuartos', b: [[[camp.n, por(60).n], camp.n, '', []]] },
+      { r: 'Semifinales', b: [[[camp.n, por(25).n], camp.n, '', []]] },
+      { r: 'Final', b: [[[camp.n, rival.n], camp.n, '', []]] }],
+      tabla: [[camp.n, 'Campeón', 10000], [rival.n, 'Subcampeón', 7500]] };
+    fechas.set(ll, hace(h));
+    return ll;
+  };
+  const v = (over) => {
+    const x = Object.create(liga);
+    const lls = over.lls || [];
+    Object.assign(x, { yo: null, sigue: [], vivo: () => [], luego: () => [], fechasHoy: () => [], muroLimpio: () => [],
+      llaves: () => lls, llavesPorFecha: () => lls, fechaLlave: (ll) => fechas.get(ll) || liga.fechaLlave(ll), buscado: () => null }, over);
+    x.d = Object.assign({}, liga.d, { mw: {}, feed: [], novedades: [] }, over.d || {});
+    return x;
+  };
+  const sv = (f) => f.sv || 'FFA';
+  const out = [];
+  out.push(['Batacazo: el #' + bajo.pos + ' le gana la final al #' + top.pos, v({ lls: [llave(99001, 'Prueba · batacazo', sv(bajo), bajo, top, 10)] }), ['llave']]);
+  out.push(['Tres títulos en una semana', v({ lls: [llave(99002, 'Prueba · tercera', sv(medio), medio, otro, 10), llave(99003, 'Prueba · segunda', sv(medio), medio, otro, 60), llave(99004, 'Prueba · primera', sv(medio), medio, otro, 110)] }), ['llave']]);
+  out.push(['Primer título', v({ lls: [llave(99005, 'Prueba · debut', sv(debut), debut, por(debut.pos + 2), 10)] }), ['llave']]);
+  out.push(['Llave grande (34)', v({ lls: [llave(99006, 'Prueba · la grande', sv(otro), otro, por(otro.pos + 1), 10, 34)] }), ['llave']]);
+  out.push(['Letra alta (SS)', v({ muroLimpio: () => [{ tipo: 'rango', rg: 'SS', primero: false, quien: [top.n], ks: [top.k], t: hace(2), id: '' }] }), ['rangoalto']]);
+  out.push(['Caza de recién', v({ muroLimpio: () => [{ tipo: 'caza', quien: [medio.n], ks: [medio.k], a: top.n, cat: 'El Imparable', ev: 'Prueba', sv: 'SR', pts: 9500, t: hace(3), id: '' }],
+    d: { mw: Object.assign({}, liga.d.mw || {}) } }), ['caza']]);
+  const mw = liga.d.mw || {};
+  if ((mw.b || []).length) {
+    out.push(['¡Nuevos buscados! (primeros días)', v({ d: { mw: Object.assign({}, mw, { ini: hace(10) }) } }), ['sebusca']]);
+    out.push(['¡Último día!', v({ d: { mw: Object.assign({}, mw, { fin: new Date(liga.ahora.getTime() + 6 * H).toISOString() }) } }), ['sebusca']]);
+  }
+  // en vivo: una llave a medio jugar, con la batalla de ahora y la que sigue
+  const enJuego = (id, nombre, sv0, a, b, c, d) => ({ id, nombre, rondas: [
+    { r: 'Cuartos', b: [[[a.n, por(70).n], a.n, '', []], [[b.n, por(71).n], b.n, '', []], [[c.n, por(72).n], '', '', []], [[d.n, por(73).n], '', '', []]] }] });
+  const ev = (nombre, sv0, L) => ({ nombre, sv: sv0, cuando: hace(0.5), modalidad: '1v1', _L: L });
+  const e1 = ev('Prueba · en vivo', sv(top), enJuego('p1', 'Prueba · en vivo', sv(top), top, medio, otro, bajo));
+  const e2 = ev('Prueba · otro en vivo', 'SR', enJuego('p2', 'Prueba · otro en vivo', 'SR', medio, otro, top, debut));
+  out.push(['En vivo, cara a cara', v({ vivo: () => [e1] }), ['vivo']]);
+  out.push(['Dos en vivo a la vez (forma C)', v({ vivo: () => [e1, e2] }), ['vivo']]);
+  const yo = medio;
+  const tuya = llave(99007, 'Prueba · tu evento', sv(yo), otro, yo, 20);
+  out.push(['Tu evento (si jugaste)', v({ yo, lls: [tuya], semanaDe: () => [[tuya, 'Subcampeón', 7500]] }), ['tuevento']]);
+  const prox = (h, nombre) => ({ nombre, sv: 'SR', cuando: new Date(liga.ahora.getTime() + h * H).toISOString(), modalidad: '1v1', cupos: '16' });
+  // ⚠️ la misma lista siempre: el escenario saca el del botón grande comparando el objeto (`eventoDelBoton()`)
+  const proxs = [prox(1, 'Prueba · el del botón'), prox(2.5, 'Prueba · el dorado')];
+  out.push(['El próximo, dorado', v({ luego: () => proxs, esDorado: () => true }), ['prox']]);
+  return out;
 }
 
 // ── instalar la página como app (Dlx, 01/10/2026: «ok…», la C). En Android, cuando Chrome dice que se puede

@@ -447,7 +447,7 @@ span.tab-av img{width:100%;height:100%;object-fit:cover;display:block}
 .app .escena.es2 .es-soc .lu-nube{margin-top:0;max-width:440px;padding:8px 11px}
 /* 👑 el campeón: corona, carta (con su marco y su brillo) y el cuadrito de lo que sumó */
 .app .escena.es2 .es-camp{display:grid;grid-template-columns:172px minmax(0,1fr);gap:22px;align-items:center;min-width:0}
-.app .escena.es2 .es-cw{position:relative;display:grid;gap:10px;justify-items:center;padding-top:34px;min-width:0}
+.app .escena.es2 .es-cw{position:relative;display:grid;gap:8px;justify-items:center;padding-top:30px;min-width:0}
 .app .escena.es2 .es-corona{position:absolute;left:50%;top:-8px;width:84px;transform:translateX(-50%) rotate(-8deg);z-index:3}
 .app .escena.es2 .es-cimg{position:relative;display:block;width:100%}
 .app .escena.es2 .es-carta{display:block;width:100%;height:auto}
@@ -521,6 +521,51 @@ span.tab-av img{width:100%;height:100%;object-fit:cover;display:block}
 .app .escena.es2 .es-otro b{display:block;font:400 20px/1.05 Anton,Archivo,sans-serif;text-transform:uppercase;overflow-wrap:anywhere}
 .app .escena.es2 .es-otro small{display:block;margin-top:4px;color:#A5A5A0;font:700 12px/1 "Barlow Condensed",sans-serif;letter-spacing:.06em;text-transform:uppercase}
 @media (hover: hover) and (pointer: fine){.app .escena.es2 .es-otro:hover{border-color:#55555C}}
+/* ⚔️ en vivo, cara a cara: las dos cartas, el favorito y la que sigue */
+.app .escena.es2 .es-vs{display:grid;gap:10px;width:100%;max-width:470px;justify-self:center;min-width:0}
+.app .escena.es2 .es-vs-r{display:flex;align-items:center;gap:8px;font:700 13px/1 "Barlow Condensed",sans-serif;letter-spacing:.07em;text-transform:uppercase;color:#FF6FA8}
+.app .escena.es2 .es-pt{width:8px;height:8px;border-radius:50%;background:#E41373;box-shadow:0 0 0 3px rgba(228,19,115,.3);animation:es-late 1.2s infinite}
+@keyframes es-late{50%{opacity:.3}}
+.app.calma .escena.es2 .es-pt{animation:none}
+.app .escena.es2 .es-vs-c{display:grid;grid-template-columns:minmax(0,1fr) auto minmax(0,1fr);gap:12px;align-items:center}
+.app .escena.es2 .es-vs-l{display:grid;gap:6px;justify-items:center;min-width:0;text-align:center}
+.app .escena.es2 .es-vs-l .es-carta{width:120px}
+.app .escena.es2 .es-vs-l .es-cara-g{width:96px;height:96px}
+.app .escena.es2 .es-vs-l b{max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font:700 14px/1.2 Archivo,sans-serif}
+.app .escena.es2 .es-vs-x{font:400 34px/1 Anton,Archivo,sans-serif;color:#F6F6F6;-webkit-text-stroke:1px #030304;text-shadow:3px 3px 0 #E41373}
+.app .escena.es2 .es-vs-p{display:flex;height:30px;border:2px solid #030304;overflow:hidden;font:800 12.5px/26px Archivo,sans-serif}
+.app .escena.es2 .es-vs-p span:first-child{background:#29B298;color:#030304;padding-left:8px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.app .escena.es2 .es-vs-p span:last-child{flex:1;background:#2A2A2E;color:#F6F6F6;text-align:right;padding-right:8px}
+.app .escena.es2 .es-vs-n{color:#A5A5A0;font:700 12px/1 "Barlow Condensed",sans-serif;letter-spacing:.06em;text-transform:uppercase}
+/* en el bento, el cara a cara más chico: comparte el ancho con los otros en vivo */
+.app .escena.es2 .mo.lay-C .hero-acc{gap:8px}
+.app .escena.es2 .mo.lay-C .hero-acc .btn{padding:10px 12px;font-size:13px}
+/* la campana sobra acá: los botones se apilaban en tres renglones y el momento se pasaba de alto */
+.app .escena.es2 .mo.lay-C .hero-acc a[href="#/avisos"]{display:none}
+.app .escena.es2 .es-grande .es-vs-l .es-carta{width:92px}
+.app .escena.es2 .es-grande .es-vs{gap:8px}
+/* ⏳ el próximo: el logo y la cuenta atrás grande */
+.app .escena.es2 .es-prox{display:grid;grid-template-columns:auto auto;gap:24px;align-items:center;justify-content:center}
+.app .escena.es2 .es-prox .mo-logo img{width:180px;height:180px}
+.app .escena.es2 .es-cuenta{display:grid;gap:6px;justify-items:start;padding:14px 16px;border:3px solid #030304;background:#FFD024;color:#030304;transform:rotate(-2deg);box-shadow:6px 6px 0 #E41373}
+.app .escena.es2 .es-cuenta small{font:700 13px/1 "Barlow Condensed",sans-serif;letter-spacing:.07em;text-transform:uppercase}
+.app .escena.es2 .es-cuenta b{font:400 44px/1 Anton,Archivo,sans-serif;letter-spacing:.01em;white-space:nowrap}
+/* 🧾 tu evento: la carta sola con su cuadrito */
+.app .escena.es2 .es-camp.es-solo{grid-template-columns:200px;justify-content:center}
+.app .escena.es2 .es-cw.sin-corona{padding-top:0}
+.app .escena.es2 .mo-txt .es-camino{margin-top:12px;max-width:460px}
+/* 🧪 la vista de prueba (`?prev=escenario`) */
+.es-prueba{display:grid;gap:4px;padding:16px 0 30px;background:#030304}
+.es-prueba-h{margin:0;padding:10px 16px;background:#FFD024;color:#030304;font:800 14px/1.3 Archivo,sans-serif}
+.es-prueba-h a{color:#030304}
+.es-prueba-t{margin:18px 0 0;padding:8px 16px;color:#FFD024;font:400 22px/1 Anton,Archivo,sans-serif;text-transform:uppercase}
+@media (max-width: 899.98px){
+  .app .escena.es2 .es-vs-l .es-carta{width:92px}
+  .app .escena.es2 .es-vs-l .es-cara-g{width:72px;height:72px}
+  .app .escena.es2 .es-prox .mo-logo img{width:110px;height:110px}
+  .app .escena.es2 .es-cuenta b{font-size:30px}
+  .app .escena.es2 .es-camp.es-solo{grid-template-columns:150px}
+}
 /* 🖥️ la compu: alto fijo, el mismo para todos (400 el momento + la tira; el campeón, el más alto, mide 388) */
 @media (min-width: 900px){
   .app .escena.es2 .hero.carrusel{padding-top:24px;padding-bottom:0}

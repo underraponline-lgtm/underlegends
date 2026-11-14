@@ -11,6 +11,19 @@
  ],
  "cambios": [
     {
+        "version": "5.32",
+        "dia": "2026-11-14",
+        "cuando": "2026-11-14T02:19:00-05:00",
+        "titulo": "El escenario, más vivo",
+        "items": [
+            "**En vivo, cara a cara**: las dos cartas del cruce que se está jugando, quién es el favorito y cuál es el que sigue.",
+            "El escenario **ordena por importancia**: lo más fuerte sale primero y se queda **12 segundos** en vez de 8.",
+            "**Tu evento** muestra tu carta con el cuadrito de los puntos que sumaste y tu camino en la llave.",
+            "El **próximo evento**, más vistoso: el logo grande y la **cuenta atrás** en un sticker dorado.",
+            "La **caza** y la **letra alta** también se pueden reaccionar y comentar."
+        ]
+    },
+    {
         "version": "5.31",
         "dia": "2026-11-14",
         "cuando": "2026-11-14T01:59:00-05:00",
