@@ -1,6 +1,6 @@
 {
  "_leeme": "El ranking de ascenso de cada servidor, al día (bot/ascenso.py): su tabla oficial más lo que vino después, con sus reglas (datos/ascenso_reglas.json). `filas`: [nombre, cc, pts, lo sumado, raw]. `pendiente`: lo que no se sabe y no suma (las preguntas de Dlx a cada servidor).",
- "t": "2026-11-14T04:30:22Z",
+ "t": "2026-11-14T05:25:57Z",
  "sv": {
   "SR": {
    "filas": [
@@ -794,8 +794,8 @@
     [
      "Park Ji Sung",
      "cl",
-     14620,
-     0,
+     15120,
+     500,
      "Oasis"
     ],
     [
@@ -1121,6 +1121,13 @@
      "Drexx"
     ],
     [
+     "Gocho",
+     "ve",
+     975,
+     375,
+     "Gocho"
+    ],
+    [
      "AGUSTIN LA RELIQUIA",
      "uy",
      950,
@@ -1247,6 +1254,13 @@
      "Chop"
     ],
     [
+     "Ezze",
+     "ar",
+     675,
+     300,
+     "Ezze"
+    ],
+    [
      "Pcyka",
      "ar",
      650,
@@ -1273,13 +1287,6 @@
      615,
      0,
      "Warap"
-    ],
-    [
-     "Gocho",
-     "ve",
-     600,
-     0,
-     "Gocho"
     ],
     [
      "onzas.s",
@@ -1520,13 +1527,6 @@
      "Tuca"
     ],
     [
-     "Ezze",
-     "ar",
-     375,
-     0,
-     "Ezze"
-    ],
-    [
      "seko boy",
      "co",
      375,
@@ -1623,6 +1623,13 @@
      300,
      0,
      "kychi"
+    ],
+    [
+     "crakero",
+     "ar",
+     300,
+     300,
+     "crakero"
     ],
     [
      "Bootrax Humilde",
@@ -1968,7 +1975,37 @@
      "DarnBless"
     ]
    ],
-   "sumado": [],
+   "sumado": [
+    {
+     "n": null,
+     "evento": "qcyo rapeen 15",
+     "dia": "2026-11-14",
+     "rango": "plata iii",
+     "puntos": [
+      [
+       "Oasis",
+       "Campeón",
+       500
+      ],
+      [
+       "Gocho",
+       "Subcampeón",
+       375
+      ],
+      [
+       "crakero",
+       "Tercero",
+       300
+      ],
+      [
+       "Ezze",
+       "Tercero",
+       300
+      ]
+     ],
+     "fuera": []
+    }
+   ],
    "pendiente": [],
    "oficial": {
     "dia": "2026-11-13",

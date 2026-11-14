@@ -521,6 +521,17 @@
    "vence": "2026-10-26T22:24:26+00:00",
    "vencido": true
   },
+  "Chxrzy": {
+   "con": null,
+   "cumplido": "",
+   "debut": "2026-11-14T03:28:31+00:00",
+   "did": "",
+   "evento": "qcyo rapeen 15",
+   "n": 634,
+   "sv": "FFA",
+   "vence": "2026-11-21T03:28:31+00:00",
+   "vencido": false
+  },
   "Cody": {
    "avisado": "2026-10-25",
    "chat": "2026-10-25",
@@ -1264,6 +1275,17 @@
    "n": 563,
    "sv": "FFA",
    "vence": "2026-11-10T02:50:33+00:00",
+   "vencido": false
+  },
+  "Julda": {
+   "con": null,
+   "cumplido": "",
+   "debut": "2026-11-14T03:28:31+00:00",
+   "did": "",
+   "evento": "qcyo rapeen 15",
+   "n": 634,
+   "sv": "FFA",
+   "vence": "2026-11-21T03:28:31+00:00",
    "vencido": false
   },
   "KARDIOLOGO": {
@@ -3098,6 +3120,17 @@
    "n": 593,
    "sv": "FFA",
    "vence": "2026-11-16T03:16:00+00:00",
+   "vencido": false
+  },
+  "shenlong": {
+   "con": null,
+   "cumplido": "",
+   "debut": "2026-11-14T03:28:31+00:00",
+   "did": "",
+   "evento": "qcyo rapeen 15",
+   "n": 634,
+   "sv": "FFA",
+   "vence": "2026-11-21T03:28:31+00:00",
    "vencido": false
   },
   "xJuniorTime": {

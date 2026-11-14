@@ -19,19 +19,19 @@
 "temporada"
 ]
 },
-"erian": {
-"rg": "B",
-"c": [
-"competitivo",
-"servidor",
-"temporada"
-]
-},
 "pichulamc": {
 "rg": "A",
 "c": [
 "competitivo",
 "pais",
+"servidor",
+"temporada"
+]
+},
+"erian": {
+"rg": "B",
+"c": [
+"competitivo",
 "servidor",
 "temporada"
 ]
@@ -158,8 +158,8 @@
 "rg": "A",
 "c": []
 },
-"og": {
-"rg": "B",
+"miniboy": {
+"rg": "C",
 "c": [
 "competitivo",
 "pais",
@@ -167,8 +167,8 @@
 "temporada"
 ]
 },
-"miniboy": {
-"rg": "C",
+"og": {
+"rg": "B",
 "c": [
 "competitivo",
 "pais",
@@ -341,14 +341,6 @@
 "rg": "C",
 "c": []
 },
-"mathhias": {
-"rg": "C",
-"c": [
-"competitivo",
-"servidor",
-"temporada"
-]
-},
 "delux": {
 "rg": "C",
 "c": [
@@ -398,6 +390,14 @@
 "c": [
 "competitivo",
 "pais",
+"servidor",
+"temporada"
+]
+},
+"mathhias": {
+"rg": "C",
+"c": [
+"competitivo",
 "servidor",
 "temporada"
 ]
@@ -575,10 +575,6 @@
 "temporada"
 ]
 },
-"badterne": {
-"rg": "",
-"c": []
-},
 "vilca": {
 "rg": "",
 "c": [
@@ -608,15 +604,6 @@
 "temporada"
 ]
 },
-"kravitz": {
-"rg": "E",
-"c": [
-"competitivo",
-"pais",
-"servidor",
-"temporada"
-]
-},
 "sosaatr": {
 "rg": "E",
 "c": [
@@ -626,10 +613,23 @@
 "temporada"
 ]
 },
+"badterne": {
+"rg": "",
+"c": []
+},
 "crk": {
 "rg": "E",
 "c": [
 "competitivo",
+"servidor",
+"temporada"
+]
+},
+"kravitz": {
+"rg": "E",
+"c": [
+"competitivo",
+"pais",
 "servidor",
 "temporada"
 ]
@@ -690,14 +690,6 @@
 "temporada"
 ]
 },
-"kyss": {
-"rg": "E",
-"c": [
-"competitivo",
-"servidor",
-"temporada"
-]
-},
 "jobaking": {
 "rg": "E",
 "c": [
@@ -711,6 +703,14 @@
 "rg": "",
 "c": [
 "competitivo",
+"servidor",
+"temporada"
+]
+},
+"mcnadie": {
+"rg": "",
+"c": [
+"pais",
 "servidor",
 "temporada"
 ]
@@ -739,6 +739,23 @@
 "temporada"
 ]
 },
+"kyss": {
+"rg": "E",
+"c": [
+"competitivo",
+"servidor",
+"temporada"
+]
+},
+"gocho": {
+"rg": "E",
+"c": [
+"competitivo",
+"pais",
+"servidor",
+"temporada"
+]
+},
 "19fleivawack": {
 "rg": "",
 "c": [
@@ -751,14 +768,6 @@
 "rg": "",
 "c": [
 "competitivo",
-"servidor",
-"temporada"
-]
-},
-"mcnadie": {
-"rg": "",
-"c": [
-"pais",
 "servidor",
 "temporada"
 ]
@@ -852,23 +861,6 @@
 "temporada"
 ]
 },
-"gocho": {
-"rg": "E",
-"c": [
-"competitivo",
-"pais",
-"servidor",
-"temporada"
-]
-},
-"dxg": {
-"rg": "E",
-"c": [
-"competitivo",
-"servidor",
-"temporada"
-]
-},
 "juanpa": {
 "rg": "",
 "c": [
@@ -946,6 +938,14 @@
 "rg": "",
 "c": [
 "pais",
+"servidor",
+"temporada"
+]
+},
+"dxg": {
+"rg": "E",
+"c": [
+"competitivo",
 "servidor",
 "temporada"
 ]
@@ -1231,6 +1231,14 @@
 "temporada"
 ]
 },
+"romeo": {
+"rg": "",
+"c": [
+"pais",
+"servidor",
+"temporada"
+]
+},
 "0223": {
 "rg": "",
 "c": []
@@ -1323,10 +1331,6 @@
 "rg": "",
 "c": []
 },
-"rayo": {
-"rg": "",
-"c": []
-},
 "warap": {
 "rg": "",
 "c": []
@@ -1339,13 +1343,16 @@
 "rg": "",
 "c": []
 },
-"romeo": {
+"prodigy": {
 "rg": "",
 "c": [
-"pais",
 "servidor",
 "temporada"
 ]
+},
+"rayo": {
+"rg": "",
+"c": []
 },
 "eldinoco": {
 "rg": "",
@@ -1417,13 +1424,6 @@
 "sintext": {
 "rg": "",
 "c": []
-},
-"prodigy": {
-"rg": "",
-"c": [
-"servidor",
-"temporada"
-]
 },
 "tusicario": {
 "rg": "",
@@ -7392,8 +7392,8 @@
 "tipo": "resnoche",
 "t": "2026-11-14T08:00:00Z",
 "dia": "2026-11-13",
-"eventos": 5,
-"part": 100,
+"eventos": 6,
+"part": 123,
 "campeones": [
 {
 "ev": "PANDILLAS DE RAP VOL.1",
@@ -7457,14 +7457,25 @@
 "dios"
 ]
 ]
+},
+{
+"ev": "qcyo rapeen 15",
+"sv": "FFA",
+"ll": 634,
+"quien": [
+[
+"Oasis",
+"oasis"
+]
+]
 }
 ],
 "suman": [
 {
 "n": "Oasis",
 "k": "oasis",
-"pts": 12500,
-"ev": 2
+"pts": 22500,
+"ev": 3
 },
 {
 "n": "Molusco",
@@ -7496,7 +7507,7 @@
 "n": "Chuwin",
 "k": "",
 "de": 505,
-"a": 335
+"a": 334
 }
 ],
 "sorpresas": [

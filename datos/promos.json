@@ -71,18 +71,6 @@
 "tit": "Hawler x @kiorOnTheBeat - K vamo a hacer",
 "de": "Hawler16",
 "img": "https://i.ytimg.com/vi/-z5y4msW9xI/hqdefault.jpg"
-},
-{
-"id": "1560157739794178188-0",
-"t": "2026-10-15T05:09:51Z",
-"sv": "SR",
-"quien": "GP",
-"url": "https://youtu.be/BgPckuiHByg",
-"plat": "yt",
-"vid": "BgPckuiHByg",
-"tit": "Estaba Dicho.  (EP)",
-"de": "Geekto",
-"img": "https://i.ytimg.com/vi/BgPckuiHByg/hqdefault.jpg"
 }
 ],
 "liga": [
@@ -267,11 +255,6 @@
 "mano": [],
 "quitar": [],
 "oembed": {
-"https://youtu.be/BgPckuiHByg": {
-"tit": "Estaba Dicho.  (EP)",
-"de": "Geekto",
-"img": "https://i.ytimg.com/vi/BgPckuiHByg/hqdefault.jpg"
-},
 "https://www.youtube.com/watch?v=-z5y4msW9xI": {
 "tit": "Hawler x @kiorOnTheBeat - K vamo a hacer",
 "de": "Hawler16",

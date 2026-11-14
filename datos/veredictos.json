@@ -2082,6 +2082,50 @@
    "b": "ZA",
    "ganador": "PARK JI SUNG",
    "votos": "1–0"
+  },
+  "1571020527319908455": {
+   "id": "1571020527319908455",
+   "sv": "[FFA] Freestyle For All 👾",
+   "g": "1468472442925092958",
+   "canal": "1487206164864438513",
+   "pub": 1794630881863,
+   "a": "EZZE",
+   "b": "TOMY HILFIGHER",
+   "ganador": "EZZE",
+   "votos": "1–0"
+  },
+  "1571021675212841032": {
+   "id": "1571021675212841032",
+   "sv": "[FFA] Freestyle For All 👾",
+   "g": "1468472442925092958",
+   "canal": "1487206164864438513",
+   "pub": 1794631155542,
+   "a": "GOCHO",
+   "b": "PARK JI SUNG",
+   "ganador": "PARK JI SUNG",
+   "votos": "1–0"
+  },
+  "1571028835242348586": {
+   "id": "1571028835242348586",
+   "sv": "CYPHERHOOD™ | Hip-Hop, Freestyle & Producción Musical",
+   "g": "1074328197400887388",
+   "canal": "1222380923048296459",
+   "pub": 1794632862626,
+   "a": "EZE",
+   "b": "GOCHO",
+   "ganador": "GOCHO",
+   "votos": "1–0"
+  },
+  "1571031062220509265": {
+   "id": "1571031062220509265",
+   "sv": "CYPHERHOOD™ | Hip-Hop, Freestyle & Producción Musical",
+   "g": "1074328197400887388",
+   "canal": "1222380923048296459",
+   "pub": 1794633393579,
+   "a": "RIZAS",
+   "b": "MCNADIE",
+   "ganador": "RIZAS",
+   "votos": "1–0"
   }
  },
  "llaves": {
@@ -6972,8 +7016,8 @@
    "g": "1468472442925092958",
    "canal": "1487206164864438513",
    "pub": 1794627196226,
-   "ed": 1794630133974,
-   "texto": "`[ OCTAVOS ]`\n⌞GOCHO⌝ 🆚 ⌞DXG⌝ 🆚 ⌞ABRAHAM⌝ 🆚 ⌞ROMEO⌝\n⌞ARAYA⌝ 🆚 ⌞TOMY HILFIGHER⌝ 🆚 ⌞AKUSERU⌝ 🆚 ⌞MC NADIE⌝ 🆚 ⌞CHXZRY⌝ 🆚 ⌞JULDA⌝\n⌞MOSQUITRAP +BOTRAX +CALIZ⌝ 🆚 ⌞PARK JI SUNG⌝ 🆚 ⌞MINIBOY⌝\n⌞EZZE⌝ 🆚 ⌞0223+ERIAN⌝ 🆚 ⌞JUPITER⌝ 🆚 ⌞TENOR+ZA⌝ 🆚 ⌞ARIAXER⌝ 🆚 ⌞SHENLONG⌝\n`[ CUARTOS ]`\n⌞MCNADIE⌝ 🆚 ⌞GOCHO⌝\n⌞PARK JI SUNG⌝ 🆚 ⌞ZA⌝",
+   "ed": 1794631250052,
+   "texto": "`[ OCTAVOS ]`\n⌞GOCHO⌝ 🆚 ⌞DXG⌝ 🆚 ⌞ABRAHAM⌝ 🆚 ⌞ROMEO⌝\n⌞ARAYA⌝ 🆚 ⌞TOMY HILFIGHER⌝ 🆚 ⌞AKUSERU⌝ 🆚 ⌞MC NADIE⌝ 🆚 ⌞CHXZRY⌝ 🆚 ⌞JULDA⌝\n⌞MOSQUITRAP +BOTRAX +CALIZ⌝ 🆚 ⌞PARK JI SUNG⌝ 🆚 ⌞MINIBOY⌝\n⌞EZZE⌝ 🆚 ⌞0223+ERIAN⌝ 🆚 ⌞JUPITER⌝ 🆚 ⌞TENOR+ZA⌝ 🆚 ⌞ARIAXER⌝ 🆚 ⌞SHENLONG⌝\n`[ CUARTOS ]`\n⌞MCNADIE⌝ 🆚 ⌞GOCHO⌝\n⌞PARK JI SUNG⌝ 🆚 ⌞ZA⌝\n`[ SEMIFINALES ]`\n⌞EZZE⌝ 🆚 ⌞TOMY HILFIGHER⌝\n⌞GOCHO⌝ 🆚 ⌞PARK JI SUNG⌝",
    "batallas": [
     [
      "OCTAVOS",
@@ -6997,9 +7041,12 @@
       "CHXZRY",
       "JULDA"
      ],
-     "MC NADIE",
-     "ronda siguiente",
-     []
+     null,
+     "pasan 2, no hay un ganador",
+     [
+      "TOMY HILFIGHER",
+      "MC NADIE"
+     ]
     ],
     [
      "OCTAVOS",
@@ -7041,6 +7088,26 @@
      [
       "PARK JI SUNG",
       "ZA"
+     ],
+     "PARK JI SUNG",
+     "veredicto",
+     []
+    ],
+    [
+     "SEMIFINALES",
+     [
+      "EZZE",
+      "TOMY HILFIGHER"
+     ],
+     "EZZE",
+     "veredicto",
+     []
+    ],
+    [
+     "SEMIFINALES",
+     [
+      "GOCHO",
+      "PARK JI SUNG"
      ],
      "PARK JI SUNG",
      "veredicto",

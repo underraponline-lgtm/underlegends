@@ -38924,7 +38924,7 @@
    "yinn": 33
   },
   "fecha": "07/11",
-  "firma": "79410dfe7d309bb0",
+  "firma": "ffcc813e8c778710",
   "msg": "1568849280746393691",
   "nombre": "KISS OF SHINIGAMI",
   "num": 587,
@@ -39948,7 +39948,7 @@
    "yinn": 33
   },
   "fecha": "08/11",
-  "firma": "356568c362dfee5a",
+  "firma": "241d1e8e615c36d0",
   "msg": "1569128640363364464",
   "nombre": "K.O.M VOL.10",
   "num": 592,
@@ -40208,7 +40208,7 @@
    "crakero": 4
   },
   "fecha": "08/11",
-  "firma": "bd98580910c9d210",
+  "firma": "c91126567192bf9e",
   "msg": "1569234841730547736",
   "nombre": "__ QCYO RAPEEN 12 __",
   "num": 593,
@@ -47541,7 +47541,7 @@
    "francis": 4
   },
   "fecha": "13/11",
-  "firma": "45f1a2f9634696d0",
+  "firma": "1b77e03f2fd78001",
   "msg": "1571002908307099750",
   "nombre": "KISS OF SHINIGAMI",
   "num": 633,
@@ -47611,6 +47611,317 @@
     "BTRX",
     "Cuartos",
     2500
+   ]
+  ],
+  "v": 2
+ },
+ "634": {
+  "al_dia": true,
+  "antes": {
+   "AbrahamSRRL": [
+    480,
+    426,
+    true
+   ],
+   "Akuseru": [
+    109,
+    144,
+    false
+   ],
+   "Ariaxer": [
+    70,
+    87,
+    false
+   ],
+   "BTRX": [
+    38,
+    46,
+    false
+   ],
+   "Calíz": [
+    45,
+    53,
+    false
+   ],
+   "Erian": [
+    3,
+    3,
+    false
+   ],
+   "Gocho": [
+    89,
+    112,
+    false
+   ],
+   "Jupiter": [
+    58,
+    69,
+    false
+   ],
+   "MCNadie": [
+    80,
+    97,
+    false
+   ],
+   "Miniboy": [
+    19,
+    21,
+    false
+   ],
+   "Mosquitrap 🦟": [
+    287,
+    141,
+    true
+   ],
+   "Oasis": [
+    2,
+    2,
+    false
+   ],
+   "Provenza": [
+    16,
+    17,
+    false
+   ],
+   "Tenor": [
+    33,
+    40,
+    false
+   ],
+   "araya": [
+    132,
+    207,
+    false
+   ],
+   "dxg": [
+    90,
+    113,
+    false
+   ],
+   "romeo": [
+    129,
+    200,
+    false
+   ]
+  },
+  "canal": "1468472443843776659",
+  "duelos": [
+   [
+    "dxg",
+    "AbrahamSRRL",
+    "dxg"
+   ],
+   [
+    "dxg",
+    "romeo",
+    "dxg"
+   ],
+   [
+    "crakero",
+    "araya",
+    "crakero"
+   ],
+   [
+    "crakero",
+    "Akuseru",
+    "crakero"
+   ],
+   [
+    "crakero",
+    "Chxrzy 🇨🇴",
+    "crakero"
+   ],
+   [
+    "crakero",
+    "Julda🇨🇴",
+    "crakero"
+   ],
+   [
+    "Oasis",
+    "BTRX, Mosquitrap 🦟, Calíz",
+    "Oasis"
+   ],
+   [
+    "Ezze",
+    "0223 🇧🇧, Erian",
+    "Ezze"
+   ],
+   [
+    "Ezze",
+    "Jupiter",
+    "Ezze"
+   ],
+   [
+    "Ezze",
+    "Ariaxer",
+    "Ezze"
+   ],
+   [
+    "Ezze",
+    "shenlong🇰🇷",
+    "Ezze"
+   ],
+   [
+    "Gocho",
+    "MCNadie",
+    "Gocho"
+   ],
+   [
+    "Oasis",
+    "Provenza, Tenor",
+    "Oasis"
+   ],
+   [
+    "Ezze",
+    "Miniboy",
+    "Ezze"
+   ],
+   [
+    "crakero",
+    "dxg",
+    "crakero"
+   ],
+   [
+    "Oasis",
+    "Gocho",
+    "Oasis"
+   ]
+  ],
+  "ev_antes": {
+   "AbrahamSRRL": 2,
+   "Akuseru": 6,
+   "Ariaxer": 17,
+   "BTRX": 21,
+   "Calíz": 33,
+   "Erian": 80,
+   "Gocho": 11,
+   "Jupiter": 15,
+   "MCNadie": 8,
+   "Miniboy": 60,
+   "Mosquitrap 🦟": 6,
+   "Oasis": 44,
+   "Provenza": 42,
+   "Tenor": 19,
+   "araya": 4,
+   "dxg": 11,
+   "romeo": 4
+  },
+  "fecha": "13/11",
+  "firma": "997e7f9e3d3afcba",
+  "msg": "1571023860630028319",
+  "nombre": "__ qcyo rapeen 15 __",
+  "num": 634,
+  "participantes": 23,
+  "sello": {
+   "Oasis": "65c7a37ba781:08ecf54fc940"
+  },
+  "sv": "FFA",
+  "t": "2026-11-14T05:19:35Z",
+  "tabla": [
+   [
+    "Oasis",
+    "Campeón",
+    10000
+   ],
+   [
+    "Gocho",
+    "Subcampeón",
+    7500
+   ],
+   [
+    "MCNadie",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Miniboy",
+    "Cuartos",
+    2500
+   ],
+   [
+    "dxg",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Provenza",
+    "Cuartos",
+    1250
+   ],
+   [
+    "Tenor",
+    "Cuartos",
+    1250
+   ],
+   [
+    "AbrahamSRRL",
+    "Octavos",
+    1250
+   ],
+   [
+    "romeo",
+    "Octavos",
+    1250
+   ],
+   [
+    "araya",
+    "Octavos",
+    1250
+   ],
+   [
+    "Akuseru",
+    "Octavos",
+    1250
+   ],
+   [
+    "Chxrzy 🇨🇴",
+    "Octavos",
+    1250
+   ],
+   [
+    "Julda🇨🇴",
+    "Octavos",
+    1250
+   ],
+   [
+    "Jupiter",
+    "Octavos",
+    1250
+   ],
+   [
+    "Ariaxer",
+    "Octavos",
+    1250
+   ],
+   [
+    "shenlong🇰🇷",
+    "Octavos",
+    1250
+   ],
+   [
+    "0223 🇧🇧",
+    "Octavos",
+    625
+   ],
+   [
+    "Erian",
+    "Octavos",
+    625
+   ],
+   [
+    "BTRX",
+    "Octavos",
+    416
+   ],
+   [
+    "Mosquitrap 🦟",
+    "Octavos",
+    416
+   ],
+   [
+    "Calíz",
+    "Octavos",
+    416
    ]
   ],
   "v": 2

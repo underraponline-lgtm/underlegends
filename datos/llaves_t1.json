@@ -54896,5 +54896,241 @@
    "min": 115,
    "v": 1
   }
+ },
+ "634": {
+  "dia": "2026-11-13",
+  "escala": "16+",
+  "fecha": "13/11",
+  "links": [
+   "https://discord.com/channels/1468472442925092958/1487207377601040516/1571003875727646766"
+  ],
+  "n": 634,
+  "nombre": "qcyo rapeen 15",
+  "participantes": 23,
+  "rondas": [
+   {
+    "b": [
+     [
+      [
+       "dxg",
+       "Gocho",
+       "AbrahamSRRL",
+       "romeo"
+      ],
+      "dxg, Gocho",
+      "triple (4 bandas, pasan 2); también pasa: gocho🇹🇼"
+     ],
+     [
+      [
+       "crakero",
+       "MCNadie",
+       "araya",
+       "Akuseru",
+       "Chxrzy 🇨🇴",
+       "Julda🇨🇴"
+      ],
+      "crakero, MCNadie",
+      "triple (6 bandas, pasan 2); también pasa: MCNADIE🇦🇷"
+     ],
+     [
+      [
+       "Oasis",
+       "Miniboy",
+       "BTRX, Mosquitrap 🦟, Calíz"
+      ],
+      "Oasis, Miniboy",
+      "triple (3 bandas, pasan 2); también pasa: Miniboy🇨🇱"
+     ],
+     [
+      [
+       "Ezze",
+       "Provenza, Tenor",
+       "0223 🇧🇧, Erian",
+       "Jupiter",
+       "Ariaxer",
+       "shenlong🇰🇷"
+      ],
+      "Ezze, Provenza, Tenor",
+      "triple (6 bandas, pasan 2); también pasa: za🇺🇸+tenor🇻🇪"
+     ]
+    ],
+    "r": "Octavos"
+   },
+   {
+    "b": [
+     [
+      [
+       "Gocho",
+       "MCNadie"
+      ],
+      "Gocho",
+      ""
+     ],
+     [
+      [
+       "Oasis",
+       "Provenza, Tenor"
+      ],
+      "Oasis",
+      ""
+     ],
+     [
+      [
+       "Ezze",
+       "Miniboy"
+      ],
+      "Ezze",
+      ""
+     ],
+     [
+      [
+       "crakero",
+       "dxg"
+      ],
+      "crakero",
+      ""
+     ]
+    ],
+    "r": "Cuartos"
+   },
+   {
+    "b": [
+     [
+      [
+       "tomyhilfiger1312🇾🇹",
+       "Ezze 🇦🇷"
+      ],
+      "",
+      "sin ganador: espera en ✅ Decidir"
+     ]
+    ],
+    "r": "Semifinales"
+   },
+   {
+    "b": [
+     [
+      [
+       "Oasis",
+       "Gocho"
+      ],
+      "Oasis",
+      ""
+     ]
+    ],
+    "r": "Final"
+   }
+  ],
+  "sv": "FFA",
+  "tabla": [
+   [
+    "Oasis",
+    "Campeón",
+    10000
+   ],
+   [
+    "Gocho",
+    "Subcampeón",
+    7500
+   ],
+   [
+    "MCNadie",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Miniboy",
+    "Cuartos",
+    2500
+   ],
+   [
+    "dxg",
+    "Cuartos",
+    2500
+   ],
+   [
+    "AbrahamSRRL",
+    "Octavos",
+    1250
+   ],
+   [
+    "Akuseru",
+    "Octavos",
+    1250
+   ],
+   [
+    "Ariaxer",
+    "Octavos",
+    1250
+   ],
+   [
+    "Chxrzy 🇨🇴",
+    "Octavos",
+    1250
+   ],
+   [
+    "Julda🇨🇴",
+    "Octavos",
+    1250
+   ],
+   [
+    "Jupiter",
+    "Octavos",
+    1250
+   ],
+   [
+    "Provenza",
+    "Cuartos",
+    1250
+   ],
+   [
+    "Tenor",
+    "Cuartos",
+    1250
+   ],
+   [
+    "araya",
+    "Octavos",
+    1250
+   ],
+   [
+    "romeo",
+    "Octavos",
+    1250
+   ],
+   [
+    "shenlong🇰🇷",
+    "Octavos",
+    1250
+   ],
+   [
+    "0223 🇧🇧",
+    "Octavos",
+    625
+   ],
+   [
+    "Erian",
+    "Octavos",
+    625
+   ],
+   [
+    "BTRX",
+    "Octavos",
+    416
+   ],
+   [
+    "Calíz",
+    "Octavos",
+    416
+   ],
+   [
+    "Mosquitrap 🦟",
+    "Octavos",
+    416
+   ]
+  ],
+  "ver": {
+   "min": 77,
+   "v": 1
+  }
  }
 }

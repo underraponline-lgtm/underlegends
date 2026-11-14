@@ -1,6 +1,6 @@
 {
  "_leeme": "Las ligas de los servidores: cada batalla y su resultado, y la tabla que sale de eso. Lo arma bot/ligas.py en cada corrida; las reglas viven ahí. Sin los mensajes: el repo es público. `batallas`: [id del mensaje, instante, jornada, a, b, ganador (vacío: pendiente), directa|replica, extras]. Las batallas con resultado cuentan como duelos (Ranking Duelos y Win%; el Score no). `flyer`: el último afiche de su canal de anuncios, re-alojado en R2 (`url`); `prox`: la próxima fecha que anunció (`d` el día, `t` el instante si lo dijo). Desde el 17/10/2026: `ptb` {id de la batalla: [PTB de a, de b]}, `flyers` (la galería, en R2), `staff` [[discord_id, nombre, mensajes en anuncios, en veredictos, último]] y `nov` (lo nuevo de las últimas horas, para «Seguir la liga»). Desde el 11/11/2026: `temps` [{t, c, n, msg, p, ult, desde}] (cada campeón que anunció su servidor: cierra esa temporada), `tn` (el número de la temporada que juega, si lo dice), `cerrada` {t} (sus canales ya no están) y, arriba, `nuevas` (las ligas que el bot encontró solo: `fam` vacío hasta que un lector entienda sus veredictos).",
- "t": "2026-11-14T04:29:44Z",
+ "t": "2026-11-14T05:25:10Z",
  "ligas": {
   "fmh-albiceleste": {
    "n": "FMH Albiceleste",
@@ -7856,15 +7856,23 @@
     ]
    ],
    "flyer": {
-    "id": "1571013380112650291",
-    "t": "2026-11-14T04:06:17Z",
-    "tit": "UNA REVANCHA CON MUCHO DE POR MEDIO",
-    "url": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/ligas/fzl/1571013380112650291.webp",
+    "id": "1571025126248685648",
+    "t": "2026-11-14T04:52:58Z",
+    "tit": "📜 TABLA HISTORICA DE LA FZ LEAGUE",
+    "url": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/ligas/fzl/1571025126248685648.webp",
     "w": 1080,
     "h": 1341
    },
    "ptb": {},
    "flyers": [
+    {
+     "id": "1571025126248685648",
+     "t": "2026-11-14T04:52:58Z",
+     "tit": "📜 TABLA HISTORICA DE LA FZ LEAGUE",
+     "url": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/ligas/fzl/1571025126248685648.webp",
+     "w": 1080,
+     "h": 1341
+    },
     {
      "id": "1571013380112650291",
      "t": "2026-11-14T04:06:17Z",
@@ -7957,14 +7965,6 @@
      "url": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/ligas/fzl/1569786080918507561.webp",
      "w": 720,
      "h": 894
-    },
-    {
-     "id": "1569772778331050084",
-     "t": "2026-11-10T17:56:35Z",
-     "tit": "Freestyle Zone League",
-     "url": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/ligas/fzl/1569772778331050084.webp",
-     "w": 720,
-     "h": 894
     }
    ],
    "staff": [
@@ -7973,7 +7973,7 @@
      "ajoel",
      100,
      200,
-     "2026-11-14T04:06:17Z"
+     "2026-11-14T04:52:58Z"
     ]
    ],
    "tn": 16,
@@ -10593,7 +10593,7 @@
     "K": 3,
     "FF": 0
    },
-   "probado": "2026-11-13T23:00:47Z",
+   "probado": "2026-11-14T05:25:10Z",
    "quieta": true
   },
   "ffs-future-free-series": {
@@ -10616,7 +10616,7 @@
     "K": 0,
     "FF": 0
    },
-   "probado": "2026-11-13T23:00:47Z",
+   "probado": "2026-11-14T05:25:10Z",
    "quieta": false
   },
   "ffs-ffs-league-tricolor": {
@@ -10639,7 +10639,7 @@
     "K": 0,
     "FF": 48
    },
-   "probado": "2026-11-13T23:00:47Z",
+   "probado": "2026-11-14T05:25:10Z",
    "quieta": true
   },
   "ffs-ffs-league-argentina": {
@@ -10662,7 +10662,7 @@
     "K": 0,
     "FF": 78
    },
-   "probado": "2026-11-13T23:00:47Z",
+   "probado": "2026-11-14T05:25:10Z",
    "quieta": true
   },
   "ffs-ffs-league-chile": {
@@ -10685,7 +10685,7 @@
     "K": 0,
     "FF": 64
    },
-   "probado": "2026-11-13T23:00:47Z",
+   "probado": "2026-11-14T05:25:10Z",
    "quieta": true
   },
   "ffs-ffs-league-caribe": {
@@ -10708,7 +10708,7 @@
     "K": 0,
     "FF": 87
    },
-   "probado": "2026-11-13T23:00:47Z",
+   "probado": "2026-11-14T05:25:10Z",
    "quieta": true
   },
   "ffs-ffs-league-sur-america": {
@@ -10731,7 +10731,7 @@
     "K": 0,
     "FF": 42
    },
-   "probado": "2026-11-13T23:00:47Z",
+   "probado": "2026-11-14T05:25:10Z",
    "quieta": true
   },
   "fvs-fvs-world-series": {
@@ -10754,7 +10754,7 @@
     "K": 0,
     "FF": 0
    },
-   "probado": "2026-11-13T23:00:47Z",
+   "probado": "2026-11-14T05:25:10Z",
    "quieta": false
   },
   "fvs-fvs-primera-division": {
@@ -10777,7 +10777,7 @@
     "K": 0,
     "FF": 0
    },
-   "probado": "2026-11-13T23:00:47Z",
+   "probado": "2026-11-14T05:25:10Z",
    "quieta": false
   }
  },

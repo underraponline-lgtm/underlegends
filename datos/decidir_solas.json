@@ -2,54 +2,6 @@
  "_leeme": "Lo que ✅ Decidir cerró o contestó solo, con la regla y la prueba (sheet/decidir.py, resolver_solo()), para «Lo que se resolvió solo» del Dashboard y su «Deshacer». «deshechas»: lo que Dlx deshizo; ninguna regla lo vuelve a tocar. Dlx, 13/10/2026.",
  "solas": [
   {
-   "id": "96eb0a52e8",
-   "tipo": "Nombre desconocido",
-   "sec": "qcyo rapeen · FFA · 30/10 · #550",
-   "que": "¿Quién es «oriuz 🇦🇷»?",
-   "r": "Es alguien nuevo: alta con su cuenta 764617398602039371",
-   "regla": "Discord · su cuenta de Discord: la inscripción, el podio, la llave o la llamada",
-   "rk": "Discord",
-   "por": "el ciclo (su cuenta de Discord)",
-   "porque": "nuevo: entró a la Lista con la cuenta con que se anotó (764617398602039371)",
-   "t": 1793423060849,
-   "filas": [
-    982
-   ],
-   "variantes": [
-    "oriuz 🇦🇷"
-   ],
-   "escribio": {
-    "alta": [
-     "oriuz",
-     "764617398602039371"
-    ]
-   }
-  },
-  {
-   "id": "fb50113cb3",
-   "tipo": "Nombre desconocido",
-   "sec": "qcyo rapeen · FFA · 30/10 · #550",
-   "que": "¿Quién es «xJuniorTime»?",
-   "r": "Es alguien nuevo: alta con su cuenta 1041113804513222758",
-   "regla": "Discord · su cuenta de Discord: la inscripción, el podio, la llave o la llamada",
-   "rk": "Discord",
-   "por": "el ciclo (su cuenta de Discord)",
-   "porque": "nuevo: entró a la Lista con la cuenta que estaba en la llamada con ese nombre (1041113804513222758)",
-   "t": 1793423060849,
-   "filas": [
-    983
-   ],
-   "variantes": [
-    "xJuniorTime"
-   ],
-   "escribio": {
-    "alta": [
-     "xJuniorTime",
-     "1041113804513222758"
-    ]
-   }
-  },
-  {
    "id": "b9fb0c6dec",
    "tipo": "Nombre desconocido",
    "sec": "Rap para Raperos 2 · FFA · 31/10 · #551",
@@ -4330,6 +4282,81 @@
     ],
     "filas": [
      365
+    ]
+   }
+  },
+  {
+   "id": "d2d36cd08f",
+   "tipo": "Nombre desconocido",
+   "sec": "qcyo rapeen 15 · FFA · 13/11 · #634",
+   "que": "¿Quién es «shenlong🇰🇷»?",
+   "r": "Es Joven shenlong",
+   "regla": "Discord · su cuenta de Discord: la inscripción, el podio, la llave o la llamada",
+   "rk": "Discord",
+   "por": "el ciclo (su cuenta de Discord)",
+   "porque": "alias de Joven shenlong: estaba en la llamada del evento con un nombre parecido",
+   "t": 1794634031126,
+   "filas": [
+    1370
+   ],
+   "variantes": [
+    "shenlong🇰🇷"
+   ],
+   "escribio": {
+    "alias": [
+     "shenlong",
+     "Joven shenlong"
+    ],
+    "filas": [
+     366
+    ]
+   }
+  },
+  {
+   "id": "c0a4f50cbc",
+   "tipo": "Nombre desconocido",
+   "sec": "qcyo rapeen 15 · FFA · 13/11 · #634",
+   "que": "¿Quién es «Chxrzy 🇨🇴»?",
+   "r": "Es alguien nuevo: alta con su cuenta 1413702402242248797",
+   "regla": "Discord · su cuenta de Discord: la inscripción, el podio, la llave o la llamada",
+   "rk": "Discord",
+   "por": "el ciclo (su cuenta de Discord)",
+   "porque": "nuevo: entró a la Lista con la cuenta con que se anotó (1413702402242248797)",
+   "t": 1794634031126,
+   "filas": [
+    1368
+   ],
+   "variantes": [
+    "Chxrzy 🇨🇴"
+   ],
+   "escribio": {
+    "alta": [
+     "Chxrzy",
+     "1413702402242248797"
+    ]
+   }
+  },
+  {
+   "id": "fd9d3272ab",
+   "tipo": "Nombre desconocido",
+   "sec": "qcyo rapeen 15 · FFA · 13/11 · #634",
+   "que": "¿Quién es «Julda🇨🇴»?",
+   "r": "Es alguien nuevo: alta con su cuenta 1194813613786026136",
+   "regla": "Discord · su cuenta de Discord: la inscripción, el podio, la llave o la llamada",
+   "rk": "Discord",
+   "por": "el ciclo (su cuenta de Discord)",
+   "porque": "nuevo: entró a la Lista con la cuenta con que se anotó (1194813613786026136)",
+   "t": 1794634031126,
+   "filas": [
+    1369
+   ],
+   "variantes": [
+    "Julda🇨🇴"
+   ],
+   "escribio": {
+    "alta": [
+     "Julda",
+     "1194813613786026136"
     ]
    }
   }

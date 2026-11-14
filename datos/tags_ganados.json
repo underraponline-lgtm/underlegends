@@ -2220,6 +2220,11 @@
     "t1",
     1794532281126
    ],
+   "🔋 INAGOTABLE": [
+    "🔋 INAGOTABLE",
+    "t1",
+    1794634040612
+   ],
    "🔟 DOBLE DÍGITO": [
     "🔟 DOBLE DÍGITO",
     "t1",
@@ -5344,7 +5349,19 @@
   }
  },
  "gocho": {
+  "pais": {
+   "DA LA CARA": [
+    "DA LA CARA",
+    "t1",
+    1794634040612
+   ]
+  },
   "servidor": {
+   "🏅 PODIOS": [
+    "🏅 PODIOS",
+    "t1",
+    1794634040612
+   ],
    "📆 HABITUÉ": [
     "📆 HABITUÉ",
     "t1",
@@ -8736,6 +8753,13 @@
   }
  },
  "mcnadie": {
+  "servidor": {
+   "📆 HABITUÉ": [
+    "📆 HABITUÉ",
+    "t1",
+    1794634040612
+   ]
+  },
   "temporada": {
    "🐺 LOBO SOLITARIO": [
     "🐺 LOBO SOLITARIO",
@@ -9083,6 +9107,11 @@
     "🏅 PODIOS",
     "t1",
     1792953978519
+   ],
+   "🏆 CAMPEÓN": [
+    "🏆 CAMPEÓN",
+    "t1",
+    1794634040612
    ],
    "🏛️ PILAR": [
     "🏛️ PILAR",
@@ -10851,7 +10880,7 @@
     1793029252929
    ],
    "👑 CAMPEÓN x%d": [
-    "👑 CAMPEÓN x26",
+    "👑 CAMPEÓN x27",
     "t1",
     1793029252929
    ],
@@ -14901,6 +14930,11 @@
     "⚡ RELÁMPAGO",
     "t1",
     1793925416194
+   ],
+   "🎖️ CURTIDO": [
+    "🎖️ CURTIDO",
+    "t1",
+    1794634040612
    ],
    "🎯 CAZADOR CAZADO": [
     "🎯 CAZADOR CAZADO",
