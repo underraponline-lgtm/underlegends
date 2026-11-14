@@ -416,7 +416,7 @@
    "n": 623,
    "sv": "ACAD",
    "vence": "2026-11-14T21:37:35+00:00",
-   "vencido": false
+   "vencido": true
   },
   "Bull12r": {
    "avisado": "2026-10-25",
@@ -739,7 +739,7 @@
    "n": 623,
    "sv": "ACAD",
    "vence": "2026-11-14T21:37:35+00:00",
-   "vencido": false
+   "vencido": true
   },
   "El novio de tu novia": {
    "avisado": "2026-11-02",
@@ -1091,7 +1091,7 @@
    "n": 623,
    "sv": "ACAD",
    "vence": "2026-11-14T21:37:35+00:00",
-   "vencido": false
+   "vencido": true
   },
   "Imagy": {
    "avisado": "2026-10-18",

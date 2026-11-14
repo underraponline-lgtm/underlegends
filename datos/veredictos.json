@@ -2291,6 +2291,28 @@
    "b": "Jnibbana",
    "ganador": "Jnibbana",
    "votos": "1–0"
+  },
+  "1571279175174725653": {
+   "id": "1571279175174725653",
+   "sv": "CYPHERHOOD™ | Hip-Hop, Freestyle & Producción Musical",
+   "g": "1074328197400887388",
+   "canal": "1222380923048296459",
+   "pub": 1794692548317,
+   "a": "GOCHO",
+   "b": "Apoca",
+   "ganador": "GOCHO",
+   "votos": "1–0"
+  },
+  "1571281516896452679": {
+   "id": "1571281516896452679",
+   "sv": "CYPHERHOOD™ | Hip-Hop, Freestyle & Producción Musical",
+   "g": "1074328197400887388",
+   "canal": "1222380923048296459",
+   "pub": 1794693106627,
+   "a": "CNC",
+   "b": "Jnibbana",
+   "ganador": "CNC",
+   "votos": "1–0"
   }
  },
  "llaves": {
@@ -7459,8 +7481,8 @@
    "g": "1469009547971526659",
    "canal": "1498009509036163173",
    "pub": 1794690082348,
-   "ed": 1794691254438,
-   "texto": "`[ OCTAVOS ]`\n⌞WALKER🇨🇴⌝ 🆚 ⌞WACKLUSCO☪⌝\n⌞WALKER 🇨🇴⌝ 🆚 ⌞MOLUSCO🇦🇷⌝\n⌞BLACK DEMON 🇪🇨⌝ 🆚 ⌞DREXX🇵🇪⌝\n⌞ECLIPSE 🇨🇱⌝ 🆚 ⌞MARTÍNEZ🇺🇾⌝",
+   "ed": 1794692753835,
+   "texto": "`[ OCTAVOS ]`\n⌞WALKER🇨🇴⌝ 🆚 ⌞WACKLUSCO☪⌝\n⌞WALKER 🇨🇴⌝ 🆚 ⌞MOLUSCO🇦🇷⌝\n⌞BLACK DEMON 🇪🇨⌝ 🆚 ⌞DREXX🇵🇪⌝\n⌞ECLIPSE 🇨🇱⌝ 🆚 ⌞MARTÍNEZ🇺🇾⌝\n⌞NEXUS 🇵🇪⌝ 🆚 ⌞DAN🇨🇴⌝\n⌞LSD 🇵🇪⌝ 🆚 ⌞INKU🇦🇷⌝\n⌞SILENCE 🇵🇪⌝ 🆚 ⌞KRISH🇪🇸⌝",
    "batallas": [
     [
      "OCTAVOS",
@@ -7500,6 +7522,36 @@
      ],
      "ECLIPSE 🇨🇱",
      "veredicto",
+     []
+    ],
+    [
+     "OCTAVOS",
+     [
+      "NEXUS 🇵🇪",
+      "DAN🇨🇴"
+     ],
+     null,
+     "última ronda y no dice campeón",
+     []
+    ],
+    [
+     "OCTAVOS",
+     [
+      "LSD 🇵🇪",
+      "INKU🇦🇷"
+     ],
+     null,
+     "última ronda y no dice campeón",
+     []
+    ],
+    [
+     "OCTAVOS",
+     [
+      "SILENCE 🇵🇪",
+      "KRISH🇪🇸"
+     ],
+     null,
+     "última ronda y no dice campeón",
      []
     ]
    ]
