@@ -11,6 +11,15 @@
  ],
  "cambios": [
     {
+        "version": "5.33",
+        "dia": "2026-11-14",
+        "cuando": "2026-11-14T02:33:00-05:00",
+        "titulo": "El VS del Inicio deja ver el fondo",
+        "items": [
+            "**Tu próxima batalla**: los costados muestran la foto y la bandera de cada uno, y el centro queda más oscuro para que se lea el VS. Sobre todo en el celular, donde la caja del medio tapaba casi todo."
+        ]
+    },
+    {
         "version": "5.32",
         "dia": "2026-11-14",
         "cuando": "2026-11-14T02:19:00-05:00",

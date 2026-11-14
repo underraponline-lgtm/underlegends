@@ -6058,3 +6058,25 @@ dialog.pn-pop.un-pop{--pc:#29B298;width:min(540px,calc(100vw - 32px));max-height
   .app .mqa-p-img,.app .mqa-p.ancho .mqa-p-img{width:170px;margin:14px auto 0}
   .app .mqa-p.ancho{grid-column:auto;flex-direction:column;align-items:stretch}
 }
+
+/* ═══ 🪟 EL VS, CON EL FONDO A LA VISTA (14/11/2026). Dlx: «ese cuadro negro… un poquito transparente para que se note el
+   fondo un poquito, y sobre todo en celular, que no se aprecia nada». La caja del medio iba al 82 % de negro y en el
+   celular ocupa las dos columnas del centro; las mitades, además, se cerraban a negro hacia el centro. Sin blur (regla del
+   remake): menos negro y una sombra en las letras, que es lo que las sigue haciendo legibles sobre una foto clara. Y al
+   verlo: «pon el centro más negrito para que haya una diferencia… para que no sea simplemente un fondo vs un fondo»: los
+   costados claros y el centro oscuro, con la foto asomando apenas detrás de la caja ═══ */
+.pn-vs.con-lg > .pn-mid{background:rgba(11,12,14,.68);outline-color:rgba(246,246,246,.14)}
+.pn-vs.con-lg > .pn-mid :is(em,small,b,strong,span,.pn-vs-x){text-shadow:0 1px 3px rgba(0,0,0,.9),0 0 10px rgba(0,0,0,.55)}
+.pn-vs-f.izq{background-image:linear-gradient(90deg,rgba(41,178,152,.30),rgba(11,12,14,.5) 55%,rgba(11,12,14,.84)),var(--bf,none)}
+.pn-vs-f.der{background-image:linear-gradient(270deg,rgba(228,19,115,.30),rgba(11,12,14,.5) 55%,rgba(11,12,14,.84)),var(--bf,none)}
+.pn-vs-f::after{background:rgba(6,7,9,.28)}
+@media (max-width: 760px){
+  .pn-vs.con-lg > .pn-mid{background:rgba(11,12,14,.6)}
+  .pn-vs-f.izq{background-image:linear-gradient(90deg,rgba(41,178,152,.22),rgba(11,12,14,.3) 45%,rgba(11,12,14,.72)),var(--bf,none)}
+  .pn-vs-f.der{background-image:linear-gradient(270deg,rgba(228,19,115,.22),rgba(11,12,14,.3) 45%,rgba(11,12,14,.72)),var(--bf,none)}
+  .pn-vs-f::after{background:rgba(6,7,9,.16)}
+  .pn-vs.con-lg .pn-rv b{text-shadow:0 1px 3px rgba(0,0,0,.9)}
+}
+/* los nombres y los números de cada lado, también con sombra: con el fondo más a la vista, sobre una bandera clara (la blanca de Chile) el gris se perdía */
+.pn-vs.con-lg .pn-rv :is(b,small,span){text-shadow:0 1px 3px rgba(0,0,0,.9)}
+.pn-vs.con-lg .pn-rv small{color:#D6D8DC}
