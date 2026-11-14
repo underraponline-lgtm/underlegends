@@ -1,9 +1,9 @@
 {
  "v": 1,
- "cuando": "2026-11-14T03:09:28Z",
+ "cuando": "2026-11-14T04:08:17Z",
  "trabajo": "dibujar",
  "codigo": 0,
- "dur_s": 210.8,
+ "dur_s": 1817.9,
  "pasos": [
   {
    "n": "2f",
@@ -21,61 +21,61 @@
    "n": "3",
    "que": "qué cambió",
    "ok": true,
-   "s": 12.4
+   "s": 9.3
   },
   {
    "n": "4",
    "que": "las caras, desde R2",
    "ok": true,
-   "s": 22.6
+   "s": 34.1
   },
   {
    "n": "5",
-   "que": "tanda 1 de 1 · 16 persona(s)",
+   "que": "tanda 1 de 6 · 40 persona(s)",
    "ok": true,
-   "s": 111.3
+   "s": 1704.5
   },
   {
    "n": "5b",
    "que": "las Bloqueadas",
    "ok": true,
-   "s": 6.3
+   "s": 8.4
   },
   {
    "n": "6",
    "que": "refrescar KV",
    "ok": true,
-   "s": 56.4
+   "s": 59.1
   }
  ],
  "fallas": [],
  "ultimo_evento": {
-  "n": "632",
-  "nombre": "RANKED 2",
-  "sv": "FDS",
+  "n": "633",
+  "nombre": "KISS OF SHINIGAMI",
+  "sv": "FFA",
   "dia": "2026-11-13"
  },
  "cuotas": {
   "kv": {
-   "write": 224,
-   "read": 7844
+   "write": 269,
+   "read": 9318
   },
   "objeto": {
-   "leidas": 765191,
-   "escritas": 19161,
-   "pedidos": 3777
+   "leidas": 938363,
+   "escritas": 23184,
+   "pedidos": 4574
   },
   "worker": {
-   "pedidos": 18453,
+   "pedidos": 18119,
    "errores": 0,
-   "sub": 19839,
+   "sub": 19497,
    "cortados": 0,
-   "p50_ms": 1.1,
-   "p99_ms": 13.88,
+   "p50_ms": 1.09,
+   "p99_ms": 13.37,
    "cpu": {
-    "total": 38351,
-    "objeto_10": 2264,
-    "worker_10": 472
+    "total": 37672,
+    "objeto_10": 2248,
+    "worker_10": 446
    }
   },
   "r2": {
