@@ -1249,7 +1249,9 @@
    },
    "copa": {
     "org": "NC",
-    "clave": "nc"
+    "clave": "nc",
+    "n": 634,
+    "nombre": "qcyo rapeen 15"
    },
    "organizadores": [
     [
@@ -1259,6 +1261,11 @@
     ],
     [
      "Guess",
+     21,
+     1
+    ],
+    [
+     "NC",
      21,
      1
     ],
@@ -1296,14 +1303,14 @@
    "semillero": {
     "nuevos": {
      "FDS": 2,
-     "FFA": 17,
+     "FFA": 19,
      "ACAD": 6,
      "SR": 3,
      "DDF": 2,
      "LKR": 2
     },
     "gente": {
-     "FFA": 85,
+     "FFA": 93,
      "LKR": 23,
      "DDS": 10,
      "ACAD": 48,
@@ -1320,7 +1327,7 @@
     "DDS": 10,
     "DRA": 0,
     "FDS": 21,
-    "FFA": 85,
+    "FFA": 93,
     "FFS": 0,
     "FRZ": 8,
     "FVS": 0,

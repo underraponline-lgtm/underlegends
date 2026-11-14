@@ -522,10 +522,11 @@
    "vencido": true
   },
   "Chxrzy": {
+   "avisado": "2026-11-14",
    "con": null,
    "cumplido": "",
    "debut": "2026-11-14T03:28:31+00:00",
-   "did": "",
+   "did": "1413702402242248797",
    "evento": "qcyo rapeen 15",
    "n": 634,
    "sv": "FFA",
@@ -1278,10 +1279,11 @@
    "vencido": false
   },
   "Julda": {
+   "avisado": "2026-11-14",
    "con": null,
    "cumplido": "",
    "debut": "2026-11-14T03:28:31+00:00",
-   "did": "",
+   "did": "1194813613786026136",
    "evento": "qcyo rapeen 15",
    "n": 634,
    "sv": "FFA",
@@ -3120,17 +3122,6 @@
    "n": 593,
    "sv": "FFA",
    "vence": "2026-11-16T03:16:00+00:00",
-   "vencido": false
-  },
-  "shenlong": {
-   "con": null,
-   "cumplido": "",
-   "debut": "2026-11-14T03:28:31+00:00",
-   "did": "",
-   "evento": "qcyo rapeen 15",
-   "n": 634,
-   "sv": "FFA",
-   "vence": "2026-11-21T03:28:31+00:00",
    "vencido": false
   },
   "xJuniorTime": {
