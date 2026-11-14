@@ -38,7 +38,12 @@
 },
 "praiseriza": {
 "rg": "SS",
-"c": []
+"c": [
+"competitivo",
+"pais",
+"servidor",
+"temporada"
+]
 },
 "snow": {
 "rg": "B",
@@ -328,15 +333,6 @@
 "temporada"
 ]
 },
-"btrx": {
-"rg": "C",
-"c": [
-"competitivo",
-"pais",
-"servidor",
-"temporada"
-]
-},
 "lrs": {
 "rg": "E",
 "c": [
@@ -351,6 +347,15 @@
 "c": []
 },
 "delux": {
+"rg": "C",
+"c": [
+"competitivo",
+"pais",
+"servidor",
+"temporada"
+]
+},
+"btrx": {
 "rg": "C",
 "c": [
 "competitivo",
@@ -528,15 +533,6 @@
 "temporada"
 ]
 },
-"jupiter": {
-"rg": "D",
-"c": [
-"competitivo",
-"pais",
-"servidor",
-"temporada"
-]
-},
 "lvel": {
 "rg": "E",
 "c": [
@@ -546,6 +542,15 @@
 ]
 },
 "dynoco": {
+"rg": "D",
+"c": [
+"competitivo",
+"pais",
+"servidor",
+"temporada"
+]
+},
+"jupiter": {
 "rg": "D",
 "c": [
 "competitivo",
@@ -663,7 +668,7 @@
 "temporada"
 ]
 },
-"ariaxer": {
+"jult": {
 "rg": "E",
 "c": [
 "competitivo",
@@ -672,7 +677,7 @@
 "temporada"
 ]
 },
-"jult": {
+"ariaxer": {
 "rg": "E",
 "c": [
 "competitivo",
@@ -1219,7 +1224,11 @@
 "rg": "",
 "c": []
 },
-"romeo": {
+"millonario": {
+"rg": "",
+"c": []
+},
+"melomaniaco": {
 "rg": "",
 "c": [
 "pais",
@@ -1227,11 +1236,7 @@
 "temporada"
 ]
 },
-"millonario": {
-"rg": "",
-"c": []
-},
-"melomaniaco": {
+"romeo": {
 "rg": "",
 "c": [
 "pais",
@@ -2843,39 +2848,6 @@
 }
 },
 "cambios": [
-{
-"tipo": "tarjeta",
-"t": "2026-10-09T05:51:08Z",
-"quien": [
-"Tenor"
-],
-"carta": "temporada"
-},
-{
-"tipo": "tarjeta",
-"t": "2026-10-09T05:51:08Z",
-"quien": [
-"Aldre"
-],
-"carta": "temporada"
-},
-{
-"tipo": "tarjeta",
-"t": "2026-10-09T05:51:08Z",
-"quien": [
-"rodrilp"
-],
-"carta": "servidor"
-},
-{
-"tipo": "rango",
-"t": "2026-10-09T21:57:34Z",
-"quien": [
-"Xclusivo"
-],
-"rg": "C",
-"primero": true
-},
 {
 "tipo": "tarjeta",
 "t": "2026-10-09T22:29:55Z",
@@ -6209,6 +6181,38 @@
 "Raizer"
 ],
 "carta": "temporada"
+},
+{
+"tipo": "tarjeta",
+"t": "2026-11-14T06:18:19Z",
+"quien": [
+"PRAISERIZA"
+],
+"carta": "competitivo"
+},
+{
+"tipo": "tarjeta",
+"t": "2026-11-14T06:18:19Z",
+"quien": [
+"PRAISERIZA"
+],
+"carta": "pais"
+},
+{
+"tipo": "tarjeta",
+"t": "2026-11-14T06:18:19Z",
+"quien": [
+"PRAISERIZA"
+],
+"carta": "servidor"
+},
+{
+"tipo": "tarjeta",
+"t": "2026-11-14T06:18:19Z",
+"quien": [
+"PRAISERIZA"
+],
+"carta": "temporada"
 }
 ],
 "noche_antes": {
@@ -7495,19 +7499,19 @@
 "n": "Zanti",
 "k": "",
 "de": 744,
-"a": 338
+"a": 337
 },
 {
 "n": "Trueno",
 "k": "",
 "de": 625,
-"a": 418
+"a": 416
 },
 {
 "n": "Chuwin",
 "k": "",
 "de": 505,
-"a": 335
+"a": 334
 }
 ],
 "sorpresas": [
