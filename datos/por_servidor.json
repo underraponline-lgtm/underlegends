@@ -184,6 +184,20 @@
     }
    }
   },
+  "4'C 🇲🇽": {
+   "FDS": {
+    "duelos": "",
+    "ev": 1,
+    "oro": 0,
+    "ovr": 43,
+    "pod": 0,
+    "pts": 4000,
+    "racha": "0/0",
+    "tg": {
+     "nuevo": true
+    }
+   }
+  },
   "7": {
    "FFA": {
     "duelos": "",
@@ -1039,12 +1053,12 @@
    },
    "FDS": {
     "duelos": "",
-    "ev": 12,
+    "ev": 13,
     "oro": 1,
-    "ovr": 51,
+    "ovr": 52,
     "pod": 2,
-    "pts": 51412,
-    "racha": "1/1",
+    "pts": 57412,
+    "racha": "0/1",
     "tg": {
      "fin": 1,
      "fund": true,
@@ -2601,11 +2615,11 @@
    },
    "FDS": {
     "duelos": "",
-    "ev": 7,
+    "ev": 8,
     "oro": 0,
     "ovr": 49,
     "pod": 1,
-    "pts": 29725,
+    "pts": 33725,
     "racha": "0/2",
     "tg": {
      "fin": 1
@@ -3221,14 +3235,14 @@
    },
    "FDS": {
     "duelos": "",
-    "ev": 3,
-    "oro": 2,
-    "ovr": 50,
-    "pod": 3,
-    "pts": 41250,
-    "racha": "3/3",
+    "ev": 4,
+    "oro": 3,
+    "ovr": 51,
+    "pod": 4,
+    "pts": 56250,
+    "racha": "4/4",
     "tg": {
-     "fin": 3,
+     "fin": 4,
      "nuevo": true
     }
    },
@@ -5775,17 +5789,6 @@
     "pod": 0,
     "pts": 5250,
     "racha": "1/1"
-   }
-  },
-  "Jahno Afrodisiaco 🇦🇷": {
-   "FFA": {
-    "duelos": "0/1",
-    "ev": 1,
-    "oro": 0,
-    "ovr": 43,
-    "pod": 0,
-    "pts": 7500,
-    "racha": "0/0"
    }
   },
   "Jayden": {
@@ -8679,11 +8682,11 @@
   "Mc arepa": {
    "FDS": {
     "duelos": "",
-    "ev": 6,
+    "ev": 7,
     "oro": 0,
-    "ovr": 50,
-    "pod": 3,
-    "pts": 44437,
+    "ovr": 51,
+    "pod": 4,
+    "pts": 48437,
     "racha": "0/3",
     "tg": {
      "fin": 2
@@ -10946,6 +10949,20 @@
     "racha": "0/0"
    }
   },
+  "REPLICA : RAIZER": {
+   "FDS": {
+    "duelos": "",
+    "ev": 1,
+    "oro": 0,
+    "ovr": 43,
+    "pod": 0,
+    "pts": 4000,
+    "racha": "0/0",
+    "tg": {
+     "nuevo": true
+    }
+   }
+  },
   "REPTILE JR": {
    "DDF": {
     "duelos": "0/1",
@@ -11036,11 +11053,11 @@
   "Raizer": {
    "FDS": {
     "duelos": "",
-    "ev": 7,
+    "ev": 8,
     "oro": 0,
     "ovr": 47,
     "pod": 0,
-    "pts": 23200,
+    "pts": 27200,
     "racha": "0/0",
     "tg": {
      "fund": true
@@ -11726,6 +11743,20 @@
     "pod": 0,
     "pts": 1500,
     "racha": "0/0"
+   }
+  },
+  "SORAYA": {
+   "FDS": {
+    "duelos": "",
+    "ev": 1,
+    "oro": 0,
+    "ovr": 43,
+    "pod": 0,
+    "pts": 4000,
+    "racha": "0/0",
+    "tg": {
+     "nuevo": true
+    }
    }
   },
   "SUDAKA🇦🇷": {
@@ -14508,6 +14539,19 @@
      "nuevo": true
     }
    },
+   "FDS": {
+    "duelos": "",
+    "ev": 1,
+    "oro": 0,
+    "ovr": 45,
+    "pod": 1,
+    "pts": 10000,
+    "racha": "1/1",
+    "tg": {
+     "fin": 1,
+     "nuevo": true
+    }
+   },
    "FFA": {
     "duelos": "2/5",
     "ev": 6,
@@ -15011,12 +15055,12 @@
   },
   "melomaniaco": {
    "FFA": {
-    "duelos": "",
-    "ev": 6,
+    "duelos": "0/1",
+    "ev": 7,
     "oro": 0,
-    "ovr": 46,
+    "ovr": 47,
     "pod": 0,
-    "pts": 17207,
+    "pts": 24707,
     "racha": "0/0",
     "tg": {
      "fund": true

@@ -5624,13 +5624,6 @@
      0,
      0
     ],
-    "Jahno Afrodisiaco 🇦🇷": [
-     0,
-     1,
-     0,
-     0,
-     0
-    ],
     "Joaquín La Profecia 👨🏻‍🍳": [
      0,
      1,
@@ -6606,7 +6599,7 @@
     ],
     "melomaniaco": [
      1,
-     1,
+     2,
      0,
      0,
      0
@@ -6756,7 +6749,7 @@
     "Walker": 1600,
     "francis": 300,
     "mats": 2900,
-    "melomaniaco": 300,
+    "melomaniaco": 900,
     "oriuz": 600,
     "publicenemy🇦🇷": 300,
     "yinn": 2900
@@ -8101,6 +8094,13 @@
      0,
      0
     ],
+    "4'C 🇲🇽": [
+     0,
+     0,
+     0,
+     0,
+     0
+    ],
     "ADEUXE🇨🇦": [
      0,
      0,
@@ -8279,7 +8279,7 @@
     "Dios": [
      0,
      0,
-     3,
+     4,
      0,
      0
     ],
@@ -8579,7 +8579,7 @@
     ],
     "MAGMA": [
      0,
-     0,
+     1,
      0,
      0,
      0
@@ -8650,7 +8650,7 @@
     "Mc arepa": [
      0,
      0,
-     1,
+     2,
      0,
      0
     ],
@@ -8815,6 +8815,13 @@
      0,
      0
     ],
+    "REPLICA : RAIZER": [
+     0,
+     0,
+     0,
+     0,
+     0
+    ],
     "Raizer": [
      0,
      0,
@@ -8863,6 +8870,13 @@
      0,
      0,
      1
+    ],
+    "SORAYA": [
+     0,
+     0,
+     0,
+     0,
+     0
     ],
     "SULTAN": [
      0,
@@ -9063,7 +9077,7 @@
     "crakero": [
      0,
      0,
-     0,
+     1,
      0,
      0
     ],
@@ -9152,6 +9166,7 @@
     "Lord Viruzz": 600,
     "MTZ": 600,
     "Makmah": 600,
+    "Mc arepa": 1000,
     "Miniboy": 1000,
     "Noone": 600,
     "PUNISHER": 600,
@@ -9362,7 +9377,7 @@
   "Mathhias": 3400,
   "Matias": 300,
   "Mato 🇧🇴": 300,
-  "Mc arepa": 1000,
+  "Mc arepa": 2000,
   "Millonari-O": 300,
   "Miniboy": 7200,
   "Mito": 2800,
@@ -9493,7 +9508,7 @@
   "letrao": 1300,
   "luisito 🏆": 300,
   "mats": 4200,
-  "melomaniaco": 600,
+  "melomaniaco": 1200,
   "nebu": 300,
   "nemmii_as": 1200,
   "oriuz": 600,

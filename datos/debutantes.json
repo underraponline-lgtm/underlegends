@@ -5,7 +5,7 @@
   "CH": "2026-11-06",
   "DDF": "2026-11-11",
   "DDS": "2026-11-09",
-  "FDS": "2026-11-12",
+  "FDS": "2026-11-13",
   "FFA": "2026-11-13",
   "FRZ": "2026-11-12",
   "FVS": "2026-10-15",
@@ -37,6 +37,18 @@
    "sv": "CH",
    "vence": "2026-10-27T22:07:15+00:00",
    "vencido": true
+  },
+  "4'C": {
+   "chat": "2026-11-13",
+   "con": null,
+   "cumplido": "",
+   "debut": "2026-11-14T00:34:41+00:00",
+   "did": "",
+   "evento": "RANKED 2",
+   "n": 632,
+   "sv": "FDS",
+   "vence": "2026-11-21T00:34:41+00:00",
+   "vencido": false
   },
   "71": {
    "avisado": "2026-10-30",
@@ -1171,19 +1183,6 @@
    "vence": "2026-11-08T20:39:59+00:00",
    "vencido": true
   },
-  "Jahno Afrodisiaco": {
-   "avisado": "2026-10-28",
-   "chat": "2026-10-28",
-   "con": null,
-   "cumplido": "",
-   "debut": "2026-10-28T02:00:00+00:00",
-   "did": "",
-   "evento": "QCYO RAPEEN 5",
-   "n": 539,
-   "sv": "FFA",
-   "vence": "2026-11-04T02:00:00+00:00",
-   "vencido": true
-  },
   "Jeisy": {
    "avisado": "2026-10-25",
    "chat": "2026-10-25",
@@ -2123,6 +2122,18 @@
    "vence": "2026-10-26T01:35:44+00:00",
    "vencido": true
   },
+  "REPLICA : RAIZER": {
+   "chat": "2026-11-13",
+   "con": null,
+   "cumplido": "",
+   "debut": "2026-11-14T00:34:41+00:00",
+   "did": "",
+   "evento": "RANKED 2",
+   "n": 632,
+   "sv": "FDS",
+   "vence": "2026-11-21T00:34:41+00:00",
+   "vencido": false
+  },
   "Ragna": {
    "avisado": "2026-10-27",
    "chat": "2026-10-27",
@@ -2228,6 +2239,18 @@
    "n": 590,
    "sv": "URBF",
    "vence": "2026-11-15T19:50:21+00:00",
+   "vencido": false
+  },
+  "SORAYA": {
+   "chat": "2026-11-13",
+   "con": null,
+   "cumplido": "",
+   "debut": "2026-11-14T00:34:41+00:00",
+   "did": "",
+   "evento": "RANKED 2",
+   "n": 632,
+   "sv": "FDS",
+   "vence": "2026-11-21T00:34:41+00:00",
    "vencido": false
   },
   "SULTAN": {

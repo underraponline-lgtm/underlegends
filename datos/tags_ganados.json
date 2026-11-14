@@ -3071,6 +3071,11 @@
  },
  "crakero": {
   "pais": {
+   "EMBAJADOR": [
+    "EMBAJADOR",
+    "t1",
+    1794621826916
+   ],
    "SIN FRONTERAS": [
     "SIN FRONTERAS",
     "t1",
@@ -3085,10 +3090,25 @@
    ]
   },
   "temporada": {
+   "🌍 TROTAMUNDOS": [
+    "🌍 TROTAMUNDOS",
+    "t1",
+    1794621826916
+   ],
    "📈 EN ASCENSO": [
     "📈 EN ASCENSO",
     "t1",
     1794260565889
+   ],
+   "🔟 DOBLE DÍGITO": [
+    "🔟 DOBLE DÍGITO",
+    "t1",
+    1794621826916
+   ],
+   "🥉 AL PODIO": [
+    "🥉 AL PODIO",
+    "t1",
+    1794621826916
    ],
    "🧳 VIAJERO": [
     "🧳 VIAJERO",
@@ -3647,6 +3667,11 @@
     "t1",
     1794532281126
    ],
+   "🏰 FORTALEZA": [
+    "🏰 FORTALEZA",
+    "t1",
+    1794621826916
+   ],
    "🪓 VERDUGO DEL DUEÑO": [
     "🪓 VERDUGO DEL DUEÑO",
     "t1",
@@ -3665,9 +3690,14 @@
     1794260565889
    ],
    "👑 CAMPEÓN x%d": [
-    "👑 CAMPEÓN x3",
+    "👑 CAMPEÓN x4",
     "t1",
     1794260565889
+   ],
+   "🔟 DOBLE DÍGITO": [
+    "🔟 DOBLE DÍGITO",
+    "t1",
+    1794621826916
    ],
    "🗺️ CONQUISTADOR": [
     "🗺️ CONQUISTADOR",
@@ -8931,6 +8961,13 @@
   }
  },
  "melomaniaco": {
+  "pais": {
+   "PIONERO": [
+    "PIONERO",
+    "t1",
+    1794621826916
+   ]
+  },
   "servidor": {
    "📆 HABITUÉ": [
     "📆 HABITUÉ",

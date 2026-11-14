@@ -9436,7 +9436,7 @@
    "Zignos": 19
   },
   "fecha": "12/10",
-  "firma": "0b051a9f3cde7a4b",
+  "firma": "4d83e406c587e673",
   "msg": "1559587802864295988",
   "nombre": "GODZ",
   "num": 460,
@@ -33720,7 +33720,7 @@
    "OEP": 2
   },
   "fecha": "03/11",
-  "firma": "510d214acc03fe6e",
+  "firma": "c3e48f5c9be30b9c",
   "msg": "1567309579967144037",
   "nombre": "Rayos y Centellas",
   "num": 564,
@@ -39948,7 +39948,7 @@
    "yinn": 33
   },
   "fecha": "08/11",
-  "firma": "9572d9e1b5bf910d",
+  "firma": "356568c362dfee5a",
   "msg": "1569128640363364464",
   "nombre": "K.O.M VOL.10",
   "num": 592,
@@ -47261,6 +47261,155 @@
     "Prosu",
     "Octavos",
     1250
+   ]
+  ],
+  "v": 2
+ },
+ "632": {
+  "antes": {
+   "Artezzy": [
+    84,
+    106,
+    false
+   ],
+   "CrisZJ": [
+    257,
+    34,
+    true
+   ],
+   "Dios": [
+    77,
+    94,
+    false
+   ],
+   "Mc arepa": [
+    79,
+    96,
+    false
+   ],
+   "Raizer": [
+    117,
+    160,
+    false
+   ],
+   "crakero": [
+    107,
+    142,
+    false
+   ]
+  },
+  "canal": "1489848582189224104",
+  "duelos": [
+   [
+    "Dios",
+    "Raizer",
+    "Dios"
+   ],
+   [
+    "Dios",
+    "4'C 🇲🇽",
+    "Dios"
+   ],
+   [
+    "Dios",
+    "REPLICA : RAIZER",
+    "Dios"
+   ],
+   [
+    "crakero",
+    "CrisZJ",
+    "crakero"
+   ],
+   [
+    "Artezzy",
+    "SORAYA",
+    "Artezzy"
+   ],
+   [
+    "crakero",
+    "Mc arepa",
+    "crakero"
+   ],
+   [
+    "Dios",
+    "Artezzy",
+    "Dios"
+   ],
+   [
+    "Mc arepa",
+    "Artezzy",
+    "Mc arepa"
+   ],
+   [
+    "Dios",
+    "crakero",
+    "Dios"
+   ]
+  ],
+  "ev_antes": {
+   "Artezzy": 15,
+   "CrisZJ": 32,
+   "Dios": 9,
+   "Mc arepa": 8,
+   "Raizer": 8,
+   "crakero": 9
+  },
+  "fecha": "13/11",
+  "firma": "5fc41e6811b60b97",
+  "msg": "1570980323372703807",
+  "nombre": "RANKED 2",
+  "num": 632,
+  "participantes": 11,
+  "sello": {
+   "Dios": "566f95c1486d:7a510334494e"
+  },
+  "sv": "FDS",
+  "t": "2026-11-14T01:54:54Z",
+  "tabla": [
+   [
+    "Dios",
+    "Campeón",
+    7500
+   ],
+   [
+    "crakero",
+    "Subcampeón",
+    5000
+   ],
+   [
+    "Artezzy",
+    "Cuarto",
+    3000
+   ],
+   [
+    "Mc arepa",
+    "Tercero",
+    2000
+   ],
+   [
+    "Raizer",
+    "Cuartos",
+    2000
+   ],
+   [
+    "4'C 🇲🇽",
+    "Cuartos",
+    2000
+   ],
+   [
+    "REPLICA : RAIZER",
+    "Cuartos",
+    2000
+   ],
+   [
+    "CrisZJ",
+    "Cuartos",
+    2000
+   ],
+   [
+    "SORAYA",
+    "Cuartos",
+    2000
    ]
   ],
   "v": 2

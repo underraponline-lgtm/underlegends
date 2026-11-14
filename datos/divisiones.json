@@ -1426,7 +1426,7 @@
       ],
       [
        16,
-       "Jahno Afrodisiaco 🇦🇷"
+       "jahnoafrodisiaco"
       ]
      ]
     ],
@@ -1809,27 +1809,6 @@
      ]
     ],
     [
-     "CrisZJ",
-     1001,
-     51,
-     3,
-     0,
-     [
-      [
-       -13,
-       "NXUZ"
-      ],
-      [
-       16,
-       "MAT MC"
-      ],
-      [
-       -20,
-       "Monet"
-      ]
-     ]
-    ],
-    [
      "MaYeuTyK",
      998,
      26,
@@ -1914,23 +1893,44 @@
      ]
     ],
     [
+     "CrisZJ",
+     984,
+     52,
+     4,
+     2,
+     [
+      [
+       -18,
+       "crakero"
+      ],
+      [
+       -13,
+       "NXUZ"
+      ],
+      [
+       16,
+       "MAT MC"
+      ]
+     ]
+    ],
+    [
      "crakero",
-     967,
-     7,
+     975,
+     9,
      4,
      1,
      [
       [
+       -10,
+       "Dios"
+      ],
+      [
+       18,
+       "CrisZJ"
+      ],
+      [
        -14,
        "MTZ"
-      ],
-      [
-       -19,
-       "Drexx"
-      ],
-      [
-       -5,
-       "Oasis"
       ]
      ]
     ]
@@ -2179,19 +2179,6 @@
      ]
     ],
     [
-     "Guaicurús🇰🇷",
-     1016,
-     1,
-     4,
-     2,
-     [
-      [
-       16,
-       "Karumailafmasha🇹🇼"
-      ]
-     ]
-    ],
-    [
      "letrao",
      1016,
      1,
@@ -2277,6 +2264,27 @@
       [
        17,
        "Makmah"
+      ]
+     ]
+    ],
+    [
+     "Mc arepa",
+     1004,
+     11,
+     3,
+     0,
+     [
+      [
+       18,
+       "Artezzy"
+      ],
+      [
+       -17,
+       "OKAM"
+      ],
+      [
+       14,
+       "Calíz"
       ]
      ]
     ],
@@ -2400,23 +2408,6 @@
       [
        16,
        "Heat"
-      ]
-     ]
-    ],
-    [
-     "erpi",
-     1001,
-     2,
-     4,
-     2,
-     [
-      [
-       -14,
-       "Tam"
-      ],
-      [
-       15,
-       "Dyzz"
       ]
      ]
     ],
@@ -2720,27 +2711,6 @@
      ]
     ],
     [
-     "Mc arepa",
-     986,
-     10,
-     4,
-     2,
-     [
-      [
-       -17,
-       "OKAM"
-      ],
-      [
-       14,
-       "Calíz"
-      ],
-      [
-       -20,
-       "Crk"
-      ]
-     ]
-    ],
-    [
      "ONZASS",
      986,
      5,
@@ -2826,6 +2796,19 @@
       [
        -16,
        "Andres"
+      ]
+     ]
+    ],
+    [
+     "El novio de tu novia 🇧🇧",
+     982,
+     1,
+     4,
+     1,
+     [
+      [
+       -18,
+       "Gus"
       ]
      ]
     ],
@@ -3617,22 +3600,22 @@
    [
     [
      "Dios",
-     1097,
-     14,
-     2,
-     2,
+     1131,
+     17,
+     1,
+     1,
      [
       [
-       -21,
+       10,
+       "crakero"
+      ],
+      [
+       13,
        "Artezzy"
       ],
       [
-       15,
-       "NXUZ"
-      ],
-      [
-       10,
-       "Raizer"
+       12,
+       "REPLICA : RAIZER"
       ]
      ]
     ],
@@ -3873,27 +3856,6 @@
      ]
     ],
     [
-     "Artezzy",
-     1018,
-     17,
-     3,
-     1,
-     [
-      [
-       21,
-       "Dios"
-      ],
-      [
-       17,
-       "OKAM"
-      ],
-      [
-       19,
-       "Soulb"
-      ]
-     ]
-    ],
-    [
      "AL3",
      1018,
      3,
@@ -4097,6 +4059,19 @@
       [
        16,
        "DIDYER"
+      ]
+     ]
+    ],
+    [
+     "Guaicurús🇰🇷",
+     1016,
+     1,
+     5,
+     2,
+     [
+      [
+       16,
+       "Karumailafmasha🇹🇼"
       ]
      ]
     ],
@@ -4359,6 +4334,27 @@
      ]
     ],
     [
+     "Artezzy",
+     1003,
+     20,
+     3,
+     0,
+     [
+      [
+       -18,
+       "Mc arepa"
+      ],
+      [
+       -13,
+       "Dios"
+      ],
+      [
+       15,
+       "SORAYA"
+      ]
+     ]
+    ],
+    [
      "Black Demon🇪🇨",
      1003,
      2,
@@ -4559,6 +4555,23 @@
       [
        15,
        "Andres"
+      ]
+     ]
+    ],
+    [
+     "erpi",
+     1001,
+     2,
+     5,
+     2,
+     [
+      [
+       -14,
+       "Tam"
+      ],
+      [
+       15,
+       "Dyzz"
       ]
      ]
     ],
@@ -5299,6 +5312,19 @@
      ]
     ],
     [
+     "REPLICA : RAIZER",
+     988,
+     1,
+     5,
+     2,
+     [
+      [
+       -12,
+       "Dios"
+      ]
+     ]
+    ],
+    [
      "Warap",
      988,
      1,
@@ -5700,6 +5726,19 @@
      ]
     ],
     [
+     "SORAYA",
+     985,
+     1,
+     5,
+     2,
+     [
+      [
+       -15,
+       "Artezzy"
+      ]
+     ]
+    ],
+    [
      "Volk",
      985,
      1,
@@ -6068,19 +6107,6 @@
       [
        -16,
        "Saiko"
-      ]
-     ]
-    ],
-    [
-     "Jahno Afrodisiaco 🇦🇷",
-     984,
-     1,
-     5,
-     2,
-     [
-      [
-       -16,
-       "Badterne"
       ]
      ]
     ],
@@ -6781,19 +6807,6 @@
       [
        -17,
        "Miniboy"
-      ]
-     ]
-    ],
-    [
-     "El novio de tu novia 🇧🇧",
-     982,
-     1,
-     5,
-     2,
-     [
-      [
-       -18,
-       "Gus"
       ]
      ]
     ],
@@ -8481,7 +8494,7 @@
   "BELIKKO": 0,
   "BENJI 🇵🇪": 6,
   "BLANKO 🇺🇸": 0,
-  "BLITZ": 2,
+  "BLITZ": 3,
   "BLUE BURKA🇦🇪": 0,
   "BM": 0,
   "BNA": 9,
@@ -8583,7 +8596,7 @@
   "Efimero": 0,
   "El Hombre Eyau": 0,
   "El Wachin": 0,
-  "El novio de tu novia 🇧🇧": 0,
+  "El novio de tu novia 🇧🇧": 3,
   "Elbesaabuelas": 0,
   "Eldinoco🇦🇷": 3,
   "Elinge_TIMP": 0,
@@ -8646,7 +8659,7 @@
   "Gonorrea": 0,
   "Goohan MVP": 0,
   "Gosu Z": 0,
-  "Guaicurús🇰🇷": 3,
+  "Guaicurús🇰🇷": 0,
   "Guess": 9,
   "Gus": 3,
   "Gustavo Urrutia Perez 🇲🇽": 0,
@@ -8691,7 +8704,6 @@
   "JOSHU": 0,
   "JUANAN🇦🇷": 0,
   "JULIX": 3,
-  "Jahno Afrodisiaco 🇦🇷": 0,
   "Jayden": 0,
   "Jeisy": 0,
   "Jere": 0,
@@ -9068,7 +9080,7 @@
   "effar": 0,
   "el familiar": 0,
   "el hnito de leitan 🇦🇷": 0,
-  "erpi": 3,
+  "erpi": 0,
   "fenix": 0,
   "fleivaman": 3,
   "francis": 0,
@@ -9271,7 +9283,7 @@
   "Efimero": 5,
   "El Hombre Eyau": 5,
   "El Wachin": 5,
-  "El novio de tu novia 🇧🇧": 5,
+  "El novio de tu novia 🇧🇧": 4,
   "Elbesaabuelas": 5,
   "Eldinoco🇦🇷": 4,
   "Elinge_TIMP": 5,
@@ -9334,7 +9346,7 @@
   "Gonorrea": 5,
   "Goohan MVP": 5,
   "Gosu Z": 5,
-  "Guaicurús🇰🇷": 4,
+  "Guaicurús🇰🇷": 5,
   "Guess": 3,
   "Gus": 4,
   "Gustavo Urrutia Perez 🇲🇽": 5,
@@ -9379,7 +9391,6 @@
   "JOSHU": 5,
   "JUANAN🇦🇷": 5,
   "JULIX": 4,
-  "Jahno Afrodisiaco 🇦🇷": 5,
   "Jayden": 5,
   "Jeisy": 5,
   "Jere": 5,
@@ -9756,7 +9767,7 @@
   "effar": 5,
   "el familiar": 5,
   "el hnito de leitan 🇦🇷": 5,
-  "erpi": 4,
+  "erpi": 5,
   "fenix": 5,
   "fleivaman": 4,
   "francis": 5,
@@ -11014,6 +11025,11 @@
   ],
   [
    "2026-10-26",
+   "Keider",
+   4
+  ],
+  [
+   "2026-10-26",
    "Ezze",
    4
   ],
@@ -11030,16 +11046,6 @@
   [
    "2026-10-26",
    "Eldinoco🇦🇷",
-   4
-  ],
-  [
-   "2026-10-26",
-   "Guaicurús🇰🇷",
-   4
-  ],
-  [
-   "2026-10-26",
-   "Keider",
    4
   ],
   [
@@ -11064,6 +11070,11 @@
   ],
   [
    "2026-10-26",
+   "BLITZ",
+   4
+  ],
+  [
+   "2026-10-26",
    "Majiztral",
    4
   ],
@@ -11084,7 +11095,7 @@
   ],
   [
    "2026-10-26",
-   "erpi",
+   "El novio de tu novia 🇧🇧",
    4
   ],
   [
@@ -11136,6 +11147,7 @@
    ".SosaATR",
    "Andres",
    "Artezzy",
+   "BLITZ",
    "Calíz",
    "Crk",
    "Dominick",

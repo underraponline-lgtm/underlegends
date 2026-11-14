@@ -40473,7 +40473,7 @@
        "NC"
       ],
       "Makmah",
-      "Walk-in 1: makmah 🇻🇪"
+      "Walk-in 1: Makmah 🇻🇪"
      ],
      [
       [
@@ -41678,7 +41678,7 @@
        "Ezze"
       ],
       "Calíz, Makmah, PRAISERIZA",
-      "triple (5 bandas, pasan 3); también pasa: makmah 🇻🇪 / praiserizas🇻🇪"
+      "triple (5 bandas, pasan 3); también pasa: Makmah 🇻🇪 / praiserizas🇻🇪"
      ]
     ],
     "r": "Octavos"
@@ -42004,7 +42004,7 @@
        "Andres"
       ],
       "yinn, Agus, Six",
-      "triple (4 bandas, pasan 3); también pasa: agus🇦🇷 / six; Drafteado: yinn"
+      "triple (4 bandas, pasan 3); también pasa: agus🇦🇷 / six 🇦🇨; Drafteado: yinn"
      ],
      [
       [
@@ -42077,7 +42077,7 @@
        "PichulaMc"
       ],
       "Agus, Six",
-      "triple (3 bandas, pasan 2); también pasa: six"
+      "triple (3 bandas, pasan 2); también pasa: six 🇦🇨"
      ]
     ],
     "r": "Cuartos"
@@ -47620,7 +47620,7 @@
        "Surya, Provenza"
       ],
       "Oasis, Six",
-      "triple (3 bandas, pasan 2); también pasa: six"
+      "triple (3 bandas, pasan 2); también pasa: six 🇦🇨"
      ],
      [
       [
@@ -54537,6 +54537,165 @@
   ],
   "ver": {
    "min": 118,
+   "v": 1
+  }
+ },
+ "632": {
+  "dia": "2026-11-13",
+  "escala": "8-15",
+  "fecha": "13/11",
+  "links": [
+   "https://discord.com/channels/1489848581203689535/1536574435761332334/1570960126192652380"
+  ],
+  "n": 632,
+  "nombre": "RANKED 2",
+  "participantes": 11,
+  "rondas": [
+   {
+    "b": [
+     [
+      [
+       "Dios",
+       "Raizer",
+       "4'C 🇲🇽"
+      ],
+      "Dios",
+      "triple (3 bandas)"
+     ],
+     [
+      [
+       "Dios",
+       "REPLICA : RAIZER"
+      ],
+      "Dios",
+      ""
+     ],
+     [
+      [
+       "crakero",
+       "CrisZJ"
+      ],
+      "crakero",
+      ""
+     ],
+     [
+      [
+       "Artezzy",
+       "SORAYA"
+      ],
+      "Artezzy",
+      ""
+     ]
+    ],
+    "r": "Cuartos"
+   },
+   {
+    "b": [
+     [
+      [
+       "crakero",
+       "Mc arepa"
+      ],
+      "crakero",
+      "Walk-in 1: MC AREPA"
+     ],
+     [
+      [
+       "Dios",
+       "Artezzy"
+      ],
+      "Dios",
+      ""
+     ]
+    ],
+    "r": "Semifinales"
+   },
+   {
+    "b": [
+     [
+      [
+       "Mc arepa",
+       "Artezzy"
+      ],
+      "Mc arepa",
+      ""
+     ]
+    ],
+    "r": "Tercer puesto"
+   },
+   {
+    "b": [
+     [
+      [
+       "Dios",
+       "crakero"
+      ],
+      "Dios",
+      ""
+     ],
+     [
+      [
+       "MCAREPA",
+       "Chente 🇻🇪"
+      ],
+      "",
+      "sin ganador: espera en ✅ Decidir"
+     ]
+    ],
+    "r": "Final"
+   }
+  ],
+  "sv": "FDS",
+  "tabla": [
+   [
+    "Dios",
+    "Campeón",
+    7500
+   ],
+   [
+    "crakero",
+    "Subcampeón",
+    5000
+   ],
+   [
+    "Artezzy",
+    "Cuarto",
+    3000
+   ],
+   [
+    "4'C 🇲🇽",
+    "Cuartos",
+    2000
+   ],
+   [
+    "CrisZJ",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Mc arepa",
+    "Tercero",
+    2000
+   ],
+   [
+    "REPLICA : RAIZER",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Raizer",
+    "Cuartos",
+    2000
+   ],
+   [
+    "SORAYA",
+    "Cuartos",
+    2000
+   ]
+  ],
+  "ver": {
+   "min": 78,
+   "org": "juega",
    "v": 1
   }
  }

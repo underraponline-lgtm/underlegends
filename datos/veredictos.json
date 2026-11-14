@@ -7,7 +7,7 @@
    "sv": "🔥LKR (Champios Legue)🐉",
    "g": "1558611504046153750",
    "pub": 1794613991174,
-   "ed": 1794619419103,
+   "ed": 1794621256301,
    "n": 7,
    "vidas": 5,
    "ronda": "5 vidas",
@@ -173,6 +173,51 @@
      "TOKIO",
      "votos 3–0",
      "1570971263130669110"
+    ],
+    [
+     [
+      "SNX",
+      "TOKIO"
+     ],
+     "SNX",
+     "siguió peleando",
+     "1570972751064342600"
+    ],
+    [
+     [
+      "SNX",
+      "LAST"
+     ],
+     "LAST",
+     "votos 2–0",
+     "1570975241591586868"
+    ],
+    [
+     [
+      "CALIZ",
+      "LAST"
+     ],
+     "LAST",
+     "votos 1–0",
+     "1570977882044375134"
+    ],
+    [
+     [
+      "LAST",
+      "PLAYER"
+     ],
+     "PLAYER",
+     "votos 1–0",
+     "1570979177547431947"
+    ],
+    [
+     [
+      "TOKIO",
+      "PLAYER"
+     ],
+     "",
+     "",
+     "1570980154786979872"
     ]
    ],
    "terminada": false
@@ -1993,6 +2038,50 @@
    "b": "CALIZ",
    "ganador": "TOKIO",
    "votos": "3–0"
+  },
+  "1570973952472518748": {
+   "id": "1570973952472518748",
+   "sv": "#FDS ╏FREESTYLE DISCORD SERIES",
+   "g": "1489848581203689535",
+   "canal": "1536574435761332334",
+   "pub": 1794619777554,
+   "a": "DIOS",
+   "b": "CRAKERO",
+   "ganador": "DIOS",
+   "votos": "1–0"
+  },
+  "1570975241591586868": {
+   "id": "1570975241591586868",
+   "sv": "🔥LKR (Champios Legue)🐉",
+   "g": "1558611504046153750",
+   "canal": "1564463626855645234",
+   "pub": 1794620084904,
+   "a": "SNX",
+   "b": "LAST",
+   "ganador": "LAST",
+   "votos": "2–0"
+  },
+  "1570977882044375134": {
+   "id": "1570977882044375134",
+   "sv": "🔥LKR (Champios Legue)🐉",
+   "g": "1558611504046153750",
+   "canal": "1564463626855645234",
+   "pub": 1794620714437,
+   "a": "CALIZ",
+   "b": "LAST",
+   "ganador": "LAST",
+   "votos": "1–0"
+  },
+  "1570979177547431947": {
+   "id": "1570979177547431947",
+   "sv": "🔥LKR (Champios Legue)🐉",
+   "g": "1558611504046153750",
+   "canal": "1564463626855645234",
+   "pub": 1794621023309,
+   "a": "LAST",
+   "b": "PLAYER",
+   "ganador": "PLAYER",
+   "votos": "1–0"
   }
  },
  "llaves": {
@@ -6650,7 +6739,7 @@
    "g": "1489848581203689535",
    "canal": "1500675902042931280",
    "pub": 1794615181081,
-   "ed": 1794619379647,
+   "ed": 1794619833733,
    "texto": "`[ CUARTOS ]`\n⌞Izaya 🇨🇱⌝ 🆚 ⌞MCAREPA 🇻🇪⌝\n⌞tomyhilfiger1312🇾🇹⌝ 🆚 ⌞CrisZJ🇵🇪⌝\n⌞Artezzy 🇵🇪⌝ 🆚 ⌞Araya 🇦🇸⌝",
    "batallas": [
     [
@@ -6691,8 +6780,8 @@
    "g": "1489848581203689535",
    "canal": "1536574435761332334",
    "pub": 1794616481112,
-   "ed": 1794619350818,
-   "texto": "`[ CUARTOS ]`\n⌞RAIZER⌝ 🆚 ⌞DIOS⌝ 🆚 ⌞4´C⌝\n⌞REPLICA : RAIZER⌝ 🆚 ⌞DIOS⌝\n⌞CRAKERO⌝ 🆚 ⌞CRISZJ⌝\n⌞SORAYA⌝ 🆚 ⌞ARTEZZY⌝\n`[ SEMIFINALES ]`\n⌞MC AREPA⌝ 🆚 ⌞CRAKERO⌝\n⌞ARTEZZY⌝ 🆚 ⌞DIOS⌝\n⌞MCAREPA⌝ 🆚 ⌞ARTEZZY⌝",
+   "ed": 1794621137108,
+   "texto": "`[ CUARTOS ]`\n⌞RAIZER⌝ 🆚 ⌞DIOS⌝ 🆚 ⌞4´C⌝\n⌞REPLICA : RAIZER⌝ 🆚 ⌞DIOS⌝\n⌞CRAKERO⌝ 🆚 ⌞CRISZJ⌝\n⌞SORAYA⌝ 🆚 ⌞ARTEZZY⌝\n`[ SEMIFINALES ]`\n⌞MC AREPA⌝ 🆚 ⌞CRAKERO⌝\n⌞ARTEZZY⌝ 🆚 ⌞DIOS⌝\n⌞MCAREPA⌝ 🆚 ⌞ARTEZZY⌝\n`[ FINAL ]`\n⌞DIOS⌝ 🆚 ⌞CRAKERO⌝\n⌞MCAREPA⌝ 🆚 ⌞CHENTE⌝",
    "batallas": [
     [
      "CUARTOS",
@@ -6763,6 +6852,77 @@
      ],
      "MCAREPA",
      "veredicto",
+     []
+    ],
+    [
+     "FINAL",
+     [
+      "DIOS",
+      "CRAKERO"
+     ],
+     "DIOS",
+     "veredicto",
+     []
+    ],
+    [
+     "FINAL",
+     [
+      "MCAREPA",
+      "CHENTE"
+     ],
+     null,
+     "última ronda y no dice campeón",
+     []
+    ]
+   ]
+  },
+  "1570976544615174247": {
+   "id": "1570976544615174247",
+   "sv": "#FDS ╏FREESTYLE DISCORD SERIES",
+   "g": "1489848581203689535",
+   "canal": "1500675902042931280",
+   "pub": 1794620395569,
+   "ed": 1794620395569,
+   "texto": "`[ CUARTOS ]`\n⌞dios⌝ 🆚 ⌞leyenda⌝\n⌞tomyhilfiger1312🇾🇹⌝ 🆚 ⌞nxux⌝\n⌞araya⌝ 🆚 ⌞elkesobraba⌝\n⌞MCAREPA⌝ 🆚 ⌞chente⌝\n`[ SEMIFINALES ]`\n`[ FINAL ]`",
+   "batallas": [
+    [
+     "CUARTOS",
+     [
+      "dios",
+      "leyenda"
+     ],
+     null,
+     "última ronda y no dice campeón",
+     []
+    ],
+    [
+     "CUARTOS",
+     [
+      "tomyhilfiger1312🇾🇹",
+      "nxux"
+     ],
+     null,
+     "última ronda y no dice campeón",
+     []
+    ],
+    [
+     "CUARTOS",
+     [
+      "araya",
+      "elkesobraba"
+     ],
+     null,
+     "última ronda y no dice campeón",
+     []
+    ],
+    [
+     "CUARTOS",
+     [
+      "MCAREPA",
+      "chente"
+     ],
+     null,
+     "última ronda y no dice campeón",
      []
     ]
    ]
