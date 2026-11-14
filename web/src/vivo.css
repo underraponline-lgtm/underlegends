@@ -448,8 +448,7 @@ span.tab-av img{width:100%;height:100%;object-fit:cover;display:block}
 /* 👑 el campeón: corona, carta (con su marco y su brillo) y el cuadrito de lo que sumó */
 .app .escena.es2 .es-camp{display:grid;grid-template-columns:172px minmax(0,1fr);gap:22px;align-items:center;min-width:0}
 .app .escena.es2 .es-cw{position:relative;display:grid;gap:10px;justify-items:center;padding-top:34px;min-width:0}
-.app .escena.es2 .es-corona{position:absolute;left:50%;top:-6px;width:88px;transform:translateX(-50%) rotate(-7deg);z-index:3;
-  filter:drop-shadow(0 4px 0 rgba(0,0,0,.55))}
+.app .escena.es2 .es-corona{position:absolute;left:50%;top:-8px;width:84px;transform:translateX(-50%) rotate(-8deg);z-index:3}
 .app .escena.es2 .es-cimg{position:relative;display:block;width:100%}
 .app .escena.es2 .es-carta{display:block;width:100%;height:auto}
 .app .escena.es2 .es-cimg.brilla .es-carta,.app .escena.es2 .es-cimg.brilla img{filter:drop-shadow(0 0 2px #E5B800) drop-shadow(0 0 10px rgba(229,184,0,.75));
@@ -486,6 +485,22 @@ span.tab-av img{width:100%;height:100%;object-fit:cover;display:block}
 .app .escena.es2 .es-ok{font:700 12px/1 "Barlow Condensed",sans-serif;letter-spacing:.06em;color:var(--verde)}
 .app .escena.es2 .es-paso.fin{border-color:#F2B705}
 .app .escena.es2 .es-paso.fin .es-ok{color:#F2B705}
+/* 🆕 «¡NUEVOS BUSCADOS!»: la etiqueta en oro, y las caras de los que siguen libres con lo que vale cada uno */
+.app .escena.es2 .tag.es-nuevos{background:#FFD024;color:#030304}
+.app .escena.es2 .tag.es-nuevos:before{background:#E41373}
+.app .escena.es2 .es-buscados{display:grid;gap:7px;margin-top:12px}
+.app .escena.es2 .es-bus-h{font:700 13px/1 "Barlow Condensed",sans-serif;letter-spacing:.07em;text-transform:uppercase;color:#A5A5A0}
+.app .escena.es2 .es-bus-l{display:flex;flex-wrap:wrap;gap:8px}
+.app .escena.es2 .es-bus{display:grid;justify-items:center;gap:4px;text-decoration:none;color:#F6F6F6}
+.app .escena.es2 .es-bus-c{width:42px;height:42px;border-radius:50%;overflow:hidden;border:2px solid #FFD024;font-size:14px}
+.app .escena.es2 .es-bus-c img{width:100%;height:100%;object-fit:cover;display:block}
+.app .escena.es2 .es-bus small{padding:2px 5px;background:#FFD024;color:#030304;font:700 11.5px/1 "Barlow Condensed",sans-serif;letter-spacing:.03em}
+@media (hover: hover) and (pointer: fine){.app .escena.es2 .es-bus:hover .es-bus-c{border-color:#F6F6F6}}
+/* 🅰️ la letra nueva: la carta Competitiva y la letra enorme en su color */
+.app .escena.es2 .es-rg-vis{grid-template-columns:180px auto;justify-content:center}
+.app .escena.es2 .es-letra{display:grid;place-items:center;min-width:150px;height:150px;padding:0 18px;border:4px solid #030304;color:#030304;
+  font:400 110px/1 Anton,Archivo,sans-serif;transform:rotate(-4deg);box-shadow:8px 8px 0 #E41373}
+@media (max-width: 899.98px){.app .escena.es2 .es-rg-vis{grid-template-columns:120px auto}.app .escena.es2 .es-letra{min-width:100px;height:100px;font-size:72px}}
 /* B · el póster: la palabra gigante calada detrás, la carta al centro */
 .app .escena.es2 .mo.lay-B{position:relative}
 .app .escena.es2 .es-gig{position:absolute;left:0;right:0;top:50%;transform:translateY(-50%);z-index:0;text-align:center;white-space:nowrap;

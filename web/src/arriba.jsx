@@ -1800,19 +1800,61 @@ export function llaveEnVivo(e, vivoL) {
 const ESCENAS = new Set(['acad', 'ch', 'ddf', 'dds', 'dra', 'fds', 'ffa', 'ffs', 'frz', 'fvs', 'lkr', 'sr', 'urbf']);
 export const escenaDe = (sv) => { const k = String(sv || '').toLowerCase(); return ESCENAS.has(k) ? '/escenas/' + k + '.webp' : ''; };
 
-// 👑 LA CORONA DEL CAMPEÓN (Dlx: «encima de la tarjeta pon una corona, diferente al del intro»): llena, de cinco puntas,
-// con banda y tres piedras. La de la bienvenida (`Corona` de bienvenida.jsx) es sólo el contorno
+// 👑 LA CORONA DEL CAMPEÓN, CON EL ESTILO DE LA PÁGINA (Dlx, 14/11/2026: «diferente al del intro»; y después, «pon una corona
+// que quede más con el estilo»). Como los stickers y los sellos de acá: color plano, contorno negro grueso y la sombra dura
+// corrida en magenta (la de las flechas viejas y los botones), sin brillos ni piedras. La de la bienvenida es sólo el contorno
+const CORONA_D = 'M12 70 L8 22 L36 44 L60 10 L84 44 L112 22 L108 70 Z';
 function CoronaCampeon() {
   return (
-    <svg className="es-corona" viewBox="0 0 120 86" aria-hidden="true">
-      <path d="M10 66 L6 18 L32 40 L46 8 L60 34 L74 8 L88 40 L114 18 L110 66 Z" fill="#F2B705" stroke="#2A1E00" strokeWidth="5" strokeLinejoin="round" />
-      <path d="M14 58 L11 28 L33 47 L46 18 L60 42 L74 18 L87 47 L109 28 L106 58" fill="none" stroke="#FFE27A" strokeWidth="2.5" strokeLinejoin="round" opacity=".8" />
-      <rect x="8" y="62" width="104" height="16" rx="2" fill="#C98F00" stroke="#2A1E00" strokeWidth="5" />
-      <circle cx="34" cy="70" r="4.5" fill="#E41373" /><circle cx="60" cy="70" r="5.5" fill="#29B298" /><circle cx="86" cy="70" r="4.5" fill="#E41373" />
-      {[[6, 14], [46, 6], [74, 6], [114, 14]].map(([x, y]) => <circle key={x} cx={x} cy={y} r="5" fill="#F2B705" stroke="#2A1E00" strokeWidth="3" />)}
+    <svg className="es-corona" viewBox="0 0 128 96" aria-hidden="true">
+      <g transform="translate(6 8)">
+        <path d={CORONA_D} fill="#E41373" stroke="#E41373" strokeWidth="7" strokeLinejoin="round" />
+        <rect x="8" y="68" width="104" height="16" fill="#E41373" stroke="#E41373" strokeWidth="7" strokeLinejoin="round" />
+      </g>
+      <path d={CORONA_D} fill="#FFD024" stroke="#030304" strokeWidth="7" strokeLinejoin="round" />
+      <rect x="8" y="68" width="104" height="16" fill="#FFD024" stroke="#030304" strokeWidth="7" strokeLinejoin="round" />
+      {[[8, 18], [60, 6], [112, 18]].map(([x, y]) => <circle key={x} cx={x} cy={y} r="7" fill="#FFD024" stroke="#030304" strokeWidth="5" />)}
     </svg>
   );
 }
+// 📰 EL TITULAR DEL CAMPEÓN: cada historia con su fuerza; gana la más fuerte. `{tit, sub, sello, hora}` (vacío = el de siempre)
+//  · ganó dos o más esa noche · tres o más en la semana · su primer título · le ganó la final a uno de arriba (batacazo) ·
+//  ganó una llave grande (30 o más)
+function titularCampeon(liga, ll, misma, f, g0) {
+  const op = [];
+  const nombre = g0;
+  const n = misma.length;
+  if (n > 1) op.push([100, { tit: nombre + ' ganó las ' + (n === 2 ? 'dos' : n), sello: 'Campeón ×' + n, hora: 'Campeón ×' + n }]);
+  if (f) {
+    const yo0 = limpio(nombre).toLowerCase();
+    const desde = utc(liga.fechaLlave(ll)) - 7 * 86400000;
+    const semana = liga.llaves().filter((x) => utc(liga.fechaLlave(x)) >= desde && utc(liga.fechaLlave(x)) <= utc(liga.fechaLlave(ll))
+      && liga.campeon(x).length === 1 && limpio(liga.campeon(x)[0]).toLowerCase() === yo0).length;
+    if (semana >= 3) {
+      op.push([90, { tit: nombre + ': ' + semana + ' títulos en una semana', sub: 'Ganó ' + limpio(ll.nombre) + ' y suma ' + semana + ' campeonatos en siete días. Nadie juega así esta semana.',
+        sello: semana + ' en 7 días', hora: semana + ' títulos' }]);
+    }
+    if (Number(f.oro) === 1 && n === 1) {
+      op.push([80, { tit: 'Primera corona para ' + nombre, sub: 'Ganó ' + limpio(ll.nombre) + ' (' + ll.participantes + ' raperos): es su primer campeonato en la Liga.',
+        sello: 'Primer título', hora: 'Primer título' }]);
+    }
+    // la final: ¿a quién le ganó?
+    const fin = (ll.rondas || []).slice(-1)[0];
+    const bf = fin && /final/i.test(fin.r || '') ? (fin.b || []).find((b) => (b[0] || []).some((x) => primero(x).toLowerCase() === yo0)) : null;
+    const riv = bf ? (bf[0] || []).map(primero).find((x) => x.toLowerCase() !== yo0) : '';
+    const fr = riv ? liga.fila(riv) : null;
+    if (fr && fr.pos && fr.pos <= 15 && (!f.pos || f.pos - fr.pos >= 20)) {
+      op.push([85, { tit: nombre + ' derribó al #' + fr.pos, sub: 'Le ganó la final de ' + limpio(ll.nombre) + ' a ' + limpio(fr.n) + ', #' + fr.pos + ' de la Temporada' + (f.pos ? ', siendo #' + f.pos + '.' : '.'),
+        sello: 'Batacazo', hora: 'Batacazo' }]);
+    }
+  }
+  if (ll.participantes >= 30 && n === 1) {
+    op.push([60, { tit: nombre + ' se impuso entre ' + ll.participantes, sub: 'La llave más grande de la noche: ' + limpio(ll.nombre) + ', ' + siglaDe(ll.sv) + '.', hora: ll.participantes + ' raperos' }]);
+  }
+  op.sort((a, b) => b[0] - a[0]);
+  return op.length ? op[0][1] : { tit: limpio(ll.nombre) };
+}
+
 // 🔢 EL CUADRITO DE ABAJO (Dlx: «abajo digamos cuántos puntos suma, o sea qué diferencia va a hacer»): lo que sumó y dónde
 // quedó: a cuánto del de arriba, o cuánto le saca al #2 si es el #1
 function PtsCampeon({ liga, k, sumo, x }) {
@@ -1827,7 +1869,7 @@ function PtsCampeon({ liga, k, sumo, x }) {
   );
 }
 // la carta del campeón: con su marco (lo pone `Carta`) y, desde el nivel 8 del Pase, el brillo dorado que ya tiene en las llaves
-function CampeonVis({ liga, k, nombre, n, sumo, x }) {
+function CampeonVis({ liga, k, nombre, n, sumo, x, sello }) {
   const f = k ? liga.T[k] : null;
   const conCarta = !!(f && (f.c || []).includes('temporada'));
   return (
@@ -1835,7 +1877,7 @@ function CampeonVis({ liga, k, nombre, n, sumo, x }) {
       <CoronaCampeon />
       <span className={'es-cimg' + (liga.brilla(k) ? ' brilla' : '')}>
         {conCarta ? <Carta liga={liga} k={k} cual="temporada" cls="es-carta" /> : <Cara liga={liga} k={k} nombre={nombre} cls="cara es-cara-g" grande />}
-        <span className="es-sello">{n > 1 ? 'Campeón ×' + n : 'Campeón'}</span>
+        <span className="es-sello">{sello || (n > 1 ? 'Campeón ×' + n : 'Campeón')}</span>
       </span>
       <PtsCampeon liga={liga} k={k} sumo={sumo} x={x} />
     </div>
@@ -2022,20 +2064,24 @@ function momentos(liga, vivoL, ctx = {}) {
     });
     const it = liga.muroLimpio().find((i) => i.tipo === 'campeon' && String(i.ll) === String(ll.n));
     const hilo = it && it.id ? delHilo(it, liga.ahora) : [];
-    const tit = varias ? g0 + ' ganó las ' + (misma.length === 2 ? 'dos' : misma.length) : limpio(ll.nombre);
+    // 📰 EL TITULAR, SEGÚN LO QUE PASÓ (Dlx, 14/11/2026: «que haya anuncios más variados, como este que dice Oasis doble
+    // campeón y eso de se busca a OG, más variaciones e inteligencia para detectarlo y aplicarlo»). Se mira la noche y la
+    // semana del campeón, y gana la historia más fuerte; si no hay ninguna, el nombre del evento, como antes
+    const T = titularCampeon(liga, ll, misma, f, g0);
+    const tit = T.tit;
     out.push({
       tipo: 'llave', et: cu.charAt(0).toUpperCase() + cu.slice(1), sv: ll.sv, lay: 'A',
-      hora: varias ? 'Campeón ×' + misma.length : g0 ? 'Campeón: ' + g0 : '',
+      hora: T.hora || (varias ? 'Campeón ×' + misma.length : g0 ? 'Campeón: ' + g0 : ''),
       txt: <><div className="hero-t"><span className="tag tg-llave">{cu.toUpperCase()} · {siglaDe(ll.sv)}</span></div><Tit c={largo(tit)}>{juntos(tit)}</Tit>
-        <p className="hero-p">{varias ? misma.map((x) => limpio(x.nombre) + ' (' + x.participantes + ' raperos)').join(' y ') + '. Nadie le ganó en toda la noche.'
-          : siglaDe(ll.sv) + ' · ' + ll.participantes + ' raperos. ' + (gana.length > 1 ? 'Campeones: ' : 'Campeón: ') + gana.join(' y ') + '.'}</p>
+        <p className="hero-p">{T.sub || (varias ? misma.map((x) => limpio(x.nombre) + ' (' + x.participantes + ' raperos)').join(' y ') + '. Nadie le ganó en toda la noche.'
+          : siglaDe(ll.sv) + ' · ' + ll.participantes + ' raperos. ' + (gana.length > 1 ? 'Campeones: ' : 'Campeón: ') + gana.join(' y ') + '.')}</p>
         {f ? <div className="es-datos">{f.pos ? <span>#{f.pos} <b>Temporada</b></span> : null}{f.rg ? <span>Rango <b style={{ color: f.rgc || undefined }}>{f.rg}</b></span> : null}{f.ovr ? <span>OVR <b>{f.ovr}</b></span> : null}</div> : null}
         <div className="hero-acc">{k ? <button type="button" className="btn verde" onClick={() => accion.carta(k, 'temporada')}>Ver su carta</button> : null}
           <button type="button" className={'btn ' + (k ? 'borde' : 'verde')} onClick={() => accion.llave(ll.n)}>{varias ? 'Ver la llave' : 'Ver la llave entera'}</button>
           {k ? null : <Compartir cls="btn borde" url={enlace('#/llave/' + ll.n)} texto={'La llave de ' + limpio(ll.nombre) + ' en la Liga Global'} />}</div>
         {it && ctx.A ? <div className="es-soc"><LuSocial liga={liga} it={it} A={ctx.A} hilo={hilo} P={ctx.P} /><LuNube liga={liga} it={it} hilo={hilo} /></div> : null}</>,
       vis: <div className="es-camp">
-        {f ? <CampeonVis liga={liga} k={k} nombre={g0} n={misma.length} sumo={sumo} x={xs.size === 1 ? [...xs][0] : 1} />
+        {f ? <CampeonVis liga={liga} k={k} nombre={g0} n={misma.length} sumo={sumo} x={xs.size === 1 ? [...xs][0] : 1} sello={T.sello} />
           : <div className="es-cw"><CoronaCampeon /><span className="es-equipo">{gana.slice(0, 3).map((x) => <Cara key={x} liga={liga} k={(liga.fila(x) || {}).k} nombre={x} cls="cara es-cara-g" />)}</span><span className="es-sello">{gana.length > 1 ? 'Campeones' : 'Campeón'}</span></div>}
         <div className="es-caminos">{misma.slice(0, 2).map((x) => <Camino key={x.n} liga={liga} ll={x} nombre={g0} />)}</div>
       </div>,
@@ -2049,16 +2095,68 @@ function momentos(liga, vivoL, ctx = {}) {
     const caz = b.e === 'cazado';
     const por = ((b.c || {}).por || []).map((p) => limpio(p.n)).join(' y ');
     const fin = (liga.d.mw || {}).fin;
+    // 🆕 «¡NUEVOS BUSCADOS!» (Dlx, 14/11/2026: «en OG buscado, ¿por qué no pones nuevos buscados?»): los primeros tres días de
+    // la semana el cartel lo grita; después dice cuántos siguen libres. Y abajo, las caras de los otros que siguen libres
+    const ini = (liga.d.mw || {}).ini;
+    const nuevos = !!(ini && liga.ahora - utc(ini) < 3 * 86400000);
+    const libres = mwb.filter((x) => x.e !== 'cazado').sort(porV);
+    const otros = libres.filter((x) => x !== b).slice(0, 6);
+    // 🎯 y si alguien acaba de cobrar una cabeza (las últimas 24 h), ESA es la noticia: el cazador en el cartel
+    const caza = liga.muroLimpio().find((it) => it.tipo === 'caza' && liga.ahora - utc(it.t) < 86400000);
+    const ultimo = !!(fin && utc(fin) - liga.ahora < 86400000 && utc(fin) > liga.ahora);
+    if (caza) {
+      const kc = ksDe(caza)[0] || '';
+      const qc = limpio((caza.quien || [])[0]);
+      out.push({
+        tipo: 'caza', et: 'Cazado', sv: caza.sv, lay: 'B', gig: 'CAZADO', hora: liga.cuando(caza.t),
+        txt: <><div className="hero-t"><span className="tag">SE BUSCA · CAZADO</span><span className="hero-meta">{String(caza.cat || '').toUpperCase()}</span></div>
+          <Tit c="hero-ev largo">{'¡' + qc + ' cazó a ' + limpio(caza.a) + '!'}</Tit>
+          <p className="hero-p">{'Le ganó en ' + limpio(caza.ev || 'un evento') + ' y cobró ' + num(caza.pts) + ' pts por su cabeza. ' + (libres.length ? 'Quedan ' + libres.length + (libres.length === 1 ? ' libre' : ' libres') + ' esta semana.' : 'Ya no queda nadie libre esta semana.')}</p>
+          <div className="hero-acc"><button type="button" className="btn verde" onClick={() => accion.ir('sebusca')}>Ver los buscados</button>
+            {kc ? <a className="btn borde" href={'#/r/' + encodeURIComponent(kc)}>Su perfil</a> : null}</div></>,
+        vis: <div className="es-b-carta">{kc && liga.T[kc] && (liga.T[kc].c || []).includes('temporada') ? <Carta liga={liga} k={kc} cual="temporada" cls="es-carta" />
+          : <Cara liga={liga} k={kc} nombre={qc} cls="cara es-cara-g" grande />}<span className="es-sello oro">Cazador</span></div>,
+      });
+    }
     out.push({
       tipo: 'sebusca', et: 'Se busca', sv: b.sv, lay: 'B', gig: 'SE BUSCA', hora: caz ? 'Cazado' : fin ? 'Vence ' + liga.dia(fin) : '',
-      txt: <><div className="hero-t"><span className="tag">SE BUSCA · {String(b.cn || '').toUpperCase()}</span></div>
+      txt: <><div className="hero-t"><span className={'tag' + (nuevos || ultimo ? ' es-nuevos' : '')}>{nuevos ? '¡NUEVOS BUSCADOS!' : ultimo ? '¡ÚLTIMO DÍA!' : 'SE BUSCA · ' + String(b.cn || '').toUpperCase()}</span>
+          {nuevos || ultimo ? <span className="hero-meta">{String(b.cn || '').toUpperCase()}</span> : null}</div>
         <Tit c="hero-ev largo">{num(b.v) + ' PTS POR ' + limpio(b.n).toUpperCase()}</Tit>
         <p className="hero-p">{caz ? 'Lo cazó ' + (por || 'alguien') + ((b.c || {}).ev ? ' en ' + limpio(b.c.ev) : '') + ' y cobró ' + num(b.v) + '.'
           : (b.m ? capital(b.m) + '. ' : '') + 'Quien le gane, cobra.' + (fin ? ' Vence ' + liga.dia(fin) + '.' : '')}</p>
-        <div className="hero-acc"><button type="button" className="btn verde" onClick={() => accion.ir('sebusca')}>Ver Se busca</button>
+        {otros.length ? (
+          <div className="es-buscados">
+            <span className="es-bus-h">{libres.length} {libres.length === 1 ? 'sigue libre' : 'siguen libres'} esta semana</span>
+            <span className="es-bus-l">{otros.map((x) => (
+              <a key={x.k || x.n} className="es-bus" href={x.k ? '#/r/' + encodeURIComponent(x.k) : '#/'} title={limpio(x.n) + ' · ' + num(x.v) + ' pts'}
+                onClick={(e) => { if (!x.k) { e.preventDefault(); accion.ir('sebusca'); } }}>
+                <Cara liga={liga} k={x.k} nombre={x.n} cls="cara es-bus-c" /><small>{num(x.v)}</small></a>
+            ))}</span>
+          </div>
+        ) : null}
+        <div className="hero-acc"><button type="button" className="btn verde" onClick={() => accion.ir('sebusca')}>{nuevos ? 'Ver los buscados' : 'Ver Se busca'}</button>
           {b.k ? <a className="btn borde" href={'#/r/' + encodeURIComponent(b.k)}>Su perfil</a> : null}</div></>,
       vis: <div className="es-b-carta">{b.k ? <Carta liga={liga} k={b.k} cual="temporada" cls="es-carta" /> : <Cara liga={liga} nombre={b.n} cls="cara es-cara-g" grande />}
-        <span className={'es-sello' + (caz ? '' : ' oro')}>{caz ? 'Cazado' : 'Se busca'}</span></div>,
+        <span className={'es-sello' + (caz ? '' : ' oro')}>{caz ? 'Cazado' : nuevos ? '¡Nuevo!' : 'Se busca'}</span></div>,
+    });
+  }
+  // 🅰️ UNA LETRA ALTA NUEVA (las últimas 36 h): S, SS o SSS. Las de abajo están en Lo último; ésta es para el escenario
+  const rgAlto = liga.muroLimpio().find((it) => it.tipo === 'rango' && ['S', 'SS', 'SSS'].includes(it.rg) && liga.ahora - utc(it.t) < 36 * 3600000);
+  if (rgAlto) {
+    const kr = ksDe(rgAlto)[0] || '';
+    const qr = limpio((rgAlto.quien || [])[0]);
+    const fr = kr ? liga.T[kr] : null;
+    const pocos = (liga.d.tabla || []).filter((t) => t.rg === rgAlto.rg).length;
+    out.push({
+      tipo: 'rangoalto', et: 'Rango ' + rgAlto.rg, sv: fr ? fr.sv : '', hora: liga.cuando(rgAlto.t),
+      txt: <><div className="hero-t"><span className="tag">RANGO NUEVO · {liga.cuando(rgAlto.t).toUpperCase()}</span></div>
+        <Tit c="hero-ev largo">{qr + (rgAlto.primero ? ' estrena su letra: ' : ' llega a rango ') + rgAlto.rg}</Tit>
+        <p className="hero-p">{pocos > 1 ? 'Son ' + pocos + ' en toda la Liga con ' + rgAlto.rg + '.' : 'Es el único de la Liga con ' + rgAlto.rg + '.'} La letra sale del Competitivo.</p>
+        <div className="hero-acc">{kr ? <button type="button" className="btn verde" onClick={() => accion.carta(kr, 'competitivo')}>Ver su carta</button> : null}
+          <a className={'btn ' + (kr ? 'borde' : 'verde')} href="#/ranking/competitivo">El Competitivo</a></div></>,
+      vis: <div className="es-camp es-rg-vis">{kr && fr && (fr.c || []).includes('competitivo') ? <span className="es-cimg"><Carta liga={liga} k={kr} cual="competitivo" cls="es-carta" /></span> : null}
+        <span className="es-letra" style={{ background: liga.colorRg(rgAlto.rg) }}>{rgAlto.rg}</span></div>,
     });
   }
   const video = (liga.d.feed || []).find((x) => x.tipo === 'youtube');

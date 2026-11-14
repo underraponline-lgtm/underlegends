@@ -11,6 +11,18 @@
  ],
  "cambios": [
     {
+        "version": "5.31",
+        "dia": "2026-11-14",
+        "cuando": "2026-11-14T01:59:00-05:00",
+        "titulo": "El escenario cuenta más cosas",
+        "items": [
+            "La **corona** del campeón, nueva: dorada, con contorno negro y sombra magenta, como los stickers de la página.",
+            "El escenario **detecta solo qué contar**: si alguien ganó dos esa noche, si ganó tres en la semana, si fue su primer título, si le ganó la final a uno de los de arriba o si se impuso en una llave grande.",
+            "**Se busca** grita «¡Nuevos buscados!» los primeros días y «¡Último día!» al final, con las caras de los que siguen libres. Y si alguien acaba de **cobrar una cabeza**, sale el cartel del cazador.",
+            "Una **letra alta nueva** (S, SS o SSS) también sale en el escenario."
+        ]
+    },
+    {
         "version": "5.30",
         "dia": "2026-11-14",
         "cuando": "2026-11-14T01:49:00-05:00",
