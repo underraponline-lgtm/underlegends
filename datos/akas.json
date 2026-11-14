@@ -354,6 +354,7 @@
   "khatalien": "KATALIEN",
   "limtsz": "Noone",
   "3chop": "Chop",
+  "jahnoafrodisiaco": "melomaniaco",
   "zetryco": "Zetryko",
   "martynez": "MaYeuTyK",
   "basty": "BastyRetro",
@@ -1840,6 +1841,10 @@
   [
    "3\\. CHOP",
    "Chop"
+  ],
+  [
+   "Jahno Afrodisiaco",
+   "melomaniaco"
   ],
   [
    "Zetryco",

@@ -63,7 +63,7 @@
    "n": 576,
    "sv": "ACAD",
    "vence": "2026-11-14T01:17:28+00:00",
-   "vencido": false
+   "vencido": true
   },
   "ADEUXE": {
    "avisado": "2026-11-09",
@@ -274,7 +274,7 @@
    "n": 576,
    "sv": "ACAD",
    "vence": "2026-11-14T01:17:28+00:00",
-   "vencido": false
+   "vencido": true
   },
   "BELIKKO": {
    "avisado": "2026-10-23",

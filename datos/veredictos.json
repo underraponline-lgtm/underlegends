@@ -7,8 +7,8 @@
    "sv": "🔥LKR (Champios Legue)🐉",
    "g": "1558611504046153750",
    "pub": 1794613991174,
-   "ed": 1794617484902,
-   "n": 6,
+   "ed": 1794619419103,
+   "n": 7,
    "vidas": 5,
    "ronda": "5 vidas",
    "batallas": [
@@ -128,23 +128,57 @@
      "CALIZ",
      "votos 1–0",
      "1570963865884295219"
+    ],
+    [
+     [
+      "SNX",
+      "CALIZ"
+     ],
+     "SNX",
+     "votos 1–0",
+     "1570965691647922229"
+    ],
+    [
+     [
+      "PLAYER",
+      "SNX"
+     ],
+     "SNX",
+     "votos 1–0",
+     "1570966619910316216"
+    ],
+    [
+     [
+      "SNX",
+      "TOKIO"
+     ],
+     "TOKIO",
+     "votos 1–0",
+     "1570966970860310619"
+    ],
+    [
+     [
+      "Lastima🏳️‍🌈",
+      "TOKIO"
+     ],
+     "TOKIO",
+     "votos 1–0",
+     "1570968696942231656"
+    ],
+    [
+     [
+      "TOKIO",
+      "CALIZ"
+     ],
+     "TOKIO",
+     "votos 3–0",
+     "1570971263130669110"
     ]
    ],
    "terminada": false
   }
  },
  "batallas": {
-  "1568430934397689857": {
-   "id": "1568430934397689857",
-   "sv": "🔥 𝐃𝐈𝐒𝐂𝐎𝐑𝐃 𝐒𝐓𝐘𝐋𝐄 🎤",
-   "g": "1443770831598649528",
-   "canal": "1477446447422246943",
-   "pub": 1794013474798,
-   "a": "NRE Y ABRAHAM",
-   "b": "NXUS Y TAYO",
-   "ganador": "NRE Y ABRAHAM",
-   "votos": "1–0"
-  },
   "1568445333292187780": {
    "id": "1568445333292187780",
    "sv": "🔥 𝐃𝐈𝐒𝐂𝐎𝐑𝐃 𝐒𝐓𝐘𝐋𝐄 🎤",
@@ -1860,6 +1894,105 @@
    "b": "CRISZJ",
    "ganador": "CRAKERO",
    "votos": "1–0"
+  },
+  "1570965691647922229": {
+   "id": "1570965691647922229",
+   "sv": "🔥LKR (Champios Legue)🐉",
+   "g": "1558611504046153750",
+   "canal": "1564463626855645234",
+   "pub": 1794617808020,
+   "a": "SNX",
+   "b": "CALIZ",
+   "ganador": "SNX",
+   "votos": "1–0"
+  },
+  "1570966007487406235": {
+   "id": "1570966007487406235",
+   "sv": "#FDS ╏FREESTYLE DISCORD SERIES",
+   "g": "1489848581203689535",
+   "canal": "1536574435761332334",
+   "pub": 1794617883322,
+   "a": "SORAYA",
+   "b": "ARTEZZY",
+   "ganador": "ARTEZZY",
+   "votos": "1–0"
+  },
+  "1570966247930077284": {
+   "id": "1570966247930077284",
+   "sv": "#FDS ╏FREESTYLE DISCORD SERIES",
+   "g": "1489848581203689535",
+   "canal": "1536574435761332334",
+   "pub": 1794617940648,
+   "a": "MC AREPA",
+   "b": "CRAKERO",
+   "ganador": "CRAKERO",
+   "votos": "1–0"
+  },
+  "1570966619910316216": {
+   "id": "1570966619910316216",
+   "sv": "🔥LKR (Champios Legue)🐉",
+   "g": "1558611504046153750",
+   "canal": "1564463626855645234",
+   "pub": 1794618029335,
+   "a": "PLAYER",
+   "b": "SNX",
+   "ganador": "SNX",
+   "votos": "1–0"
+  },
+  "1570966970860310619": {
+   "id": "1570966970860310619",
+   "sv": "🔥LKR (Champios Legue)🐉",
+   "g": "1558611504046153750",
+   "canal": "1564463626855645234",
+   "pub": 1794618113008,
+   "a": "SNX",
+   "b": "TOKIO",
+   "ganador": "TOKIO",
+   "votos": "1–0"
+  },
+  "1570968696942231656": {
+   "id": "1570968696942231656",
+   "sv": "🔥LKR (Champios Legue)🐉",
+   "g": "1558611504046153750",
+   "canal": "1564463626855645234",
+   "pub": 1794618524538,
+   "a": "Lastima🏳️‍🌈",
+   "b": "TOKIO",
+   "ganador": "TOKIO",
+   "votos": "1–0"
+  },
+  "1570968791637303429": {
+   "id": "1570968791637303429",
+   "sv": "#FDS ╏FREESTYLE DISCORD SERIES",
+   "g": "1489848581203689535",
+   "canal": "1536574435761332334",
+   "pub": 1794618547115,
+   "a": "ARTEZZY",
+   "b": "DIOS",
+   "ganador": "DIOS",
+   "votos": "1–0"
+  },
+  "1570971124517445744": {
+   "id": "1570971124517445744",
+   "sv": "#FDS ╏FREESTYLE DISCORD SERIES",
+   "g": "1489848581203689535",
+   "canal": "1536574435761332334",
+   "pub": 1794619103317,
+   "a": "MC AREPA",
+   "b": "ARTEZZY",
+   "ganador": "MC AREPA",
+   "votos": "1–0"
+  },
+  "1570971263130669110": {
+   "id": "1570971263130669110",
+   "sv": "🔥LKR (Champios Legue)🐉",
+   "g": "1558611504046153750",
+   "canal": "1564463626855645234",
+   "pub": 1794619136365,
+   "a": "TOKIO",
+   "b": "CALIZ",
+   "ganador": "TOKIO",
+   "votos": "3–0"
   }
  },
  "llaves": {
@@ -6517,8 +6650,8 @@
    "g": "1489848581203689535",
    "canal": "1500675902042931280",
    "pub": 1794615181081,
-   "ed": 1794617560642,
-   "texto": "`[ CUARTOS ]`\n⌞Izaya 🇨🇱⌝ 🆚 ⌞MCAREPA 🇻🇪⌝\n⌞tomyhilfiger1312🇾🇹⌝ 🆚 ⌞CrisZJ🇵🇪⌝\n⌞Artezzy 🇵🇪⌝ 🆚 ⌞abel le gano sin replica a ca⌝",
+   "ed": 1794619379647,
+   "texto": "`[ CUARTOS ]`\n⌞Izaya 🇨🇱⌝ 🆚 ⌞MCAREPA 🇻🇪⌝\n⌞tomyhilfiger1312🇾🇹⌝ 🆚 ⌞CrisZJ🇵🇪⌝\n⌞Artezzy 🇵🇪⌝ 🆚 ⌞Araya 🇦🇸⌝",
    "batallas": [
     [
      "CUARTOS",
@@ -6544,7 +6677,7 @@
      "CUARTOS",
      [
       "Artezzy 🇵🇪",
-      "abel le gano sin replica a ca"
+      "Araya 🇦🇸"
      ],
      null,
      "última ronda y no dice campeón",
@@ -6558,8 +6691,8 @@
    "g": "1489848581203689535",
    "canal": "1536574435761332334",
    "pub": 1794616481112,
-   "ed": 1794617546440,
-   "texto": "`[ CUARTOS ]`\n⌞RAIZER⌝ 🆚 ⌞DIOS⌝ 🆚 ⌞4´C⌝\n⌞REPLICA : RAIZER⌝ 🆚 ⌞DIOS⌝\n⌞CRAKERO⌝ 🆚 ⌞CRISZJ⌝",
+   "ed": 1794619350818,
+   "texto": "`[ CUARTOS ]`\n⌞RAIZER⌝ 🆚 ⌞DIOS⌝ 🆚 ⌞4´C⌝\n⌞REPLICA : RAIZER⌝ 🆚 ⌞DIOS⌝\n⌞CRAKERO⌝ 🆚 ⌞CRISZJ⌝\n⌞SORAYA⌝ 🆚 ⌞ARTEZZY⌝\n`[ SEMIFINALES ]`\n⌞MC AREPA⌝ 🆚 ⌞CRAKERO⌝\n⌞ARTEZZY⌝ 🆚 ⌞DIOS⌝\n⌞MCAREPA⌝ 🆚 ⌞ARTEZZY⌝",
    "batallas": [
     [
      "CUARTOS",
@@ -6568,8 +6701,8 @@
       "DIOS",
       "4´C"
      ],
-     null,
-     "última ronda y no dice campeón",
+     "DIOS",
+     "ronda siguiente",
      []
     ],
     [
@@ -6589,6 +6722,46 @@
       "CRISZJ"
      ],
      "CRAKERO",
+     "veredicto",
+     []
+    ],
+    [
+     "CUARTOS",
+     [
+      "SORAYA",
+      "ARTEZZY"
+     ],
+     "ARTEZZY",
+     "veredicto",
+     []
+    ],
+    [
+     "SEMIFINALES",
+     [
+      "MC AREPA",
+      "CRAKERO"
+     ],
+     "CRAKERO",
+     "veredicto",
+     []
+    ],
+    [
+     "SEMIFINALES",
+     [
+      "ARTEZZY",
+      "DIOS"
+     ],
+     "DIOS",
+     "veredicto",
+     []
+    ],
+    [
+     "TERCER LUGAR",
+     [
+      "MCAREPA",
+      "ARTEZZY"
+     ],
+     "MCAREPA",
      "veredicto",
      []
     ]

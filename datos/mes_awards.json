@@ -9582,6 +9582,40 @@
      ],
      "organizador": "@Cu?",
      "cuentas": {}
+    },
+    "1570971928968298557": {
+     "sv": "FFA",
+     "nombre": "brasino",
+     "mo": "2026-11-14T01:21:35Z",
+     "staff": {},
+     "orgs": [
+      {
+       "n": "nachonc_",
+       "id": ""
+      }
+     ],
+     "organizador": "@nachonc_",
+     "cuentas": {}
+    },
+    "1570971103306850435": {
+     "sv": "FDS",
+     "nombre": "RAP SIN GROSERIAS",
+     "mo": "2026-11-14T01:18:18Z",
+     "staff": {
+      "jurado": [
+       "Abraham"
+      ]
+     },
+     "orgs": [
+      {
+       "n": "Abraham",
+       "id": "1489469731168845894"
+      }
+     ],
+     "organizador": "@Abraham",
+     "cuentas": {
+      "Abraham": "1489469731168845894"
+     }
     }
    },
    "ver": {
@@ -10269,6 +10303,11 @@
       "",
       "Artezzy",
       "h6itam29"
+     ],
+     "1489469731168845894": [
+      "Mcarepa",
+      "Abraham",
+      "abraham_e29_03496"
      ]
     },
     "LKR|2026-11-13": {
@@ -10276,6 +10315,18 @@
       "Ismel",
       "Ismel",
       "ismel_0555"
+     ],
+     "1364747464170668042": [
+      "",
+      "chop",
+      "30fps30hz"
+     ]
+    },
+    "FFA|2026-11-13": {
+     "1523082259870257315": [
+      "nc",
+      "Nc",
+      "nachonc_"
      ]
     }
    }

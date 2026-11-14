@@ -976,7 +976,7 @@
   "n": 135481330,
   "nombre": "5 VIDAS 18:53",
   "ns": 1,
-  "participantes": 6,
+  "participantes": 7,
   "rondas": [
    {
     "b": [
@@ -1083,6 +1083,46 @@
       ],
       "Calíz",
       "batalla 13 · votos 1–0"
+     ],
+     [
+      [
+       "Rbk",
+       "Calíz"
+      ],
+      "Rbk",
+      "batalla 14 · votos 1–0"
+     ],
+     [
+      [
+       "Rbk",
+       "Player"
+      ],
+      "Rbk",
+      "batalla 15 · votos 1–0"
+     ],
+     [
+      [
+       "TøKīØ🦠🧠",
+       "Rbk"
+      ],
+      "TøKīØ🦠🧠",
+      "batalla 16 · votos 1–0"
+     ],
+     [
+      [
+       "TøKīØ🦠🧠",
+       "Lastima🏳️‍🌈"
+      ],
+      "TøKīØ🦠🧠",
+      "batalla 17 · votos 1–0"
+     ],
+     [
+      [
+       "TøKīØ🦠🧠",
+       "Calíz"
+      ],
+      "TøKīØ🦠🧠",
+      "batalla 18 · votos 3–0"
      ]
     ],
     "r": "5 vidas"
@@ -1091,7 +1131,7 @@
   "sv": "LKR",
   "tabla": [
    [
-    "Player",
+    "Lastima🏳️‍🌈",
     "Campeón",
     0
    ],
@@ -1101,13 +1141,18 @@
     0
    ],
    [
-    "Calíz",
+    "Player",
     "Tercero",
     0
    ],
    [
     "TøKīØ🦠🧠",
     "Tercero",
+    0
+   ],
+   [
+    "Calíz",
+    "Cuartos",
     0
    ],
    [

@@ -14544,11 +14544,11 @@
   "duel_v": 2,
   "duel_t": 5,
   "duel_real": true,
-  "dna_v": 0,
-  "dna_t": 0,
+  "dna_v": 1,
+  "dna_t": 1,
   "din_v": 1,
   "din_t": 4,
-  "crn_t": 4,
+  "crn_t": 5,
   "cri_t": 17,
   "pos": 252,
   "total": 81,
@@ -14572,9 +14572,9 @@
    "paisesg": 2
   },
   "nac": {
-   "evn": 5,
+   "evn": 6,
    "evi": 10,
-   "com": 1,
+   "com": 2,
    "top": [
     6,
     "ar"
@@ -32275,7 +32275,7 @@
  {
   "full": "PUNISHER",
   "raw": "PUNISHER",
-  "cc": "",
+  "cc": "pe",
   "sv": "SR",
   "crew": "",
   "discord_id": "520115924901167107",
@@ -32295,10 +32295,10 @@
   "duel_t": 1,
   "duel_real": true,
   "dna_v": 0,
-  "dna_t": 0,
+  "dna_t": 1,
   "din_v": 0,
   "din_t": 0,
-  "crn_t": 0,
+  "crn_t": 1,
   "cri_t": 0,
   "pos": 614,
   "total": 81,
@@ -32318,7 +32318,7 @@
    "paises": 1
   },
   "nac": {
-   "evn": 0,
+   "evn": 1,
    "evi": 0,
    "com": 0
   }
@@ -32399,9 +32399,9 @@
   "dna_v": 0,
   "dna_t": 0,
   "din_v": 0,
-  "din_t": 0,
+  "din_t": 1,
   "crn_t": 0,
-  "cri_t": 0,
+  "cri_t": 1,
   "pos": 616,
   "total": 81,
   "rango": "",
