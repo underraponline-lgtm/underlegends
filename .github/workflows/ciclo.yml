@@ -163,6 +163,55 @@ jobs:
         run: python3 bot/madrugada.py --evento "${{ github.event_name }}" >> "$GITHUB_OUTPUT"
 
   # ══════════════════════════════════════════════════════════════════
+  # 🖼️ LOS FONDOS DE LA PANTALLA DE CARGA, UNA VEZ POR DÍA (13/11/2026)
+  #
+  # `carga.yml` tiene su `schedule:` de las 4 PM ET, y GitHub no lo
+  # disparó: el 13/11 no corrió, y el 3D se quedó sin el HD de la 5.04.
+  # Los horarios de GitHub son de mejor esfuerzo: ese mismo día el
+  # `schedule:` de este ciclo corrió 4 veces de 48. El ciclo sí es
+  # confiable porque lo dispara el vigía del Worker cada media hora.
+  #
+  # Por eso, desde las 5 PM ET (una hora de margen para el horario
+  # propio, si llega), si hoy no hay una corrida de `carga.yml` buena o
+  # andando, la dispara. Si hoy ya fallaron dos, espera a mañana: no se
+  # reintenta cada media hora algo que está roto.
+  # ⚠️ No baja el repo: es una pregunta a la API, segundos.
+  # ══════════════════════════════════════════════════════════════════
+  fondos:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 3
+    permissions:
+      actions: write
+    steps:
+      - name: los fondos de hoy, si faltan
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+        shell: python3 {0}
+        run: |
+          import datetime, json, subprocess, zoneinfo
+          ET = zoneinfo.ZoneInfo('America/New_York')
+          ahora = datetime.datetime.now(ET)
+          if ahora.hour < 17:
+              print('antes de las 5 PM ET: le toca a su propio horario')
+              raise SystemExit
+          crudo = subprocess.run(['gh', 'run', 'list', '--workflow', 'carga.yml', '--limit', '20',
+                                  '--json', 'createdAt,status,conclusion'], capture_output=True, text=True)
+          if crudo.returncode:
+              print('no pude mirar las corridas de carga.yml:', crudo.stderr[:200])
+              raise SystemExit
+          de_hoy = [r for r in json.loads(crudo.stdout or '[]')
+                    if datetime.datetime.fromisoformat(r['createdAt'].replace('Z', '+00:00')).astimezone(ET).date() == ahora.date()]
+          buenas = [r for r in de_hoy if r['status'] != 'completed' or r['conclusion'] == 'success']
+          if buenas:
+              print('hoy ya hay %d (buena o andando)' % len(buenas))
+          elif len(de_hoy) >= 2:
+              print('hoy ya fallaron %d: hasta mañana' % len(de_hoy))
+          else:
+              subprocess.run(['gh', 'workflow', 'run', 'carga.yml', '--ref', 'main'], check=True)
+              print('🖼️ disparé los fondos de hoy')
+
+  # ══════════════════════════════════════════════════════════════════
   # ESCUCHAR — cada media hora, y nunca dibuja.
   #
   # 🔴 ESTE TRABAJO EXISTE POR FRESCURA, NO SOLO POR PLATA. Antes era un

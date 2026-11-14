@@ -11,6 +11,16 @@
  ],
  "cambios": [
     {
+        "version": "5.23",
+        "dia": "2026-11-13",
+        "cuando": "2026-11-13T20:00:00-05:00",
+        "titulo": "Los fondos de carga, todos en HD",
+        "items": [
+            "Las **fotos de batalla** y las **tarjetas en 3D** de la pantalla de carga vuelven a verse en HD.",
+            "Los fondos se rehacen **todos los días** con el ranking: si el horario automático falla, el bot los rehace igual."
+        ]
+    },
+    {
         "version": "5.22",
         "dia": "2026-11-13",
         "cuando": "2026-11-13T05:01:00-05:00",

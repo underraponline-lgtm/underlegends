@@ -1,8 +1,8 @@
 {
   "_leeme": "La pantalla de carga (Dlx, 12/11/2026): cinco fondos por temporada, cada uno con la misma chance (20 %), y en «La batalla» cada video con su parte. Lo leen web/montar.py (qué fondos sortea la página) y herramientas/fondos_carga.py (cómo se arman). El 5 entra cuando esté su imagen: se agrega a `fondos`.",
   "temporada": "t1",
-  "_v": "La versión de los fondos: va en la dirección (?d=<día>-<v>). Se sube al rehacerlos a mano, así nadie ve los de antes aunque ya los haya visto hoy. 2 = en HD (13/11/2026).",
-  "v": 2,
+  "_v": "La versión de los fondos: va en la dirección (?d=<día>-<v>). Se sube al rehacerlos a mano, así nadie ve los de antes aunque ya los haya visto hoy. 2 = en HD (13/11/2026). 3 = las batallas otra vez en HD (la 5.08 las había subido en 1920) y el 3D en HD.",
+  "v": 3,
   "fondos": [1, 2, 3, 4],
   "batallas": [
     {"id": "kainheat", "video": "B2OyIluaMF8", "seg": 104.3, "cx": 0.40, "foco": 0.50, "marca": "bvs"},
