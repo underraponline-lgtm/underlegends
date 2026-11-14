@@ -9946,25 +9946,13 @@
    }
   },
   "Number": {
-   "CH": {
-    "duelos": "3/4",
-    "ev": 2,
-    "oro": 1,
-    "ovr": 46,
-    "pod": 1,
-    "pts": 13750,
-    "racha": "1/1",
-    "tg": {
-     "fin": 1
-    }
-   },
    "FFA": {
     "duelos": "4/8",
     "ev": 5,
     "oro": 0,
     "ovr": 46,
     "pod": 0,
-    "pts": 27125,
+    "pts": 28438,
     "racha": "0/1"
    }
   },
@@ -10001,15 +9989,17 @@
     "racha": "0/1"
    },
    "CH": {
-    "duelos": "",
-    "ev": 2,
-    "oro": 0,
-    "ovr": 43,
-    "pod": 0,
-    "pts": 2500,
-    "racha": "0/0",
+    "duelos": "3/4",
+    "ev": 4,
+    "oro": 1,
+    "ovr": 47,
+    "pod": 1,
+    "pts": 15000,
+    "racha": "0/1",
     "tg": {
-     "fund": true
+     "fin": 1,
+     "fund": true,
+     "llave": true
     }
    },
    "DDF": {
@@ -12467,7 +12457,7 @@
     }
    },
    "FFA": {
-    "duelos": "16/27",
+    "duelos": "15/26",
     "ev": 41,
     "oro": 7,
     "ovr": 73,
@@ -12483,12 +12473,12 @@
   },
   "Snow-7-ZIgnos": {
    "FFA": {
-    "duelos": "0/1",
+    "duelos": "1/2",
     "ev": 1,
     "oro": 0,
-    "ovr": 45,
+    "ovr": 44,
     "pod": 1,
-    "pts": 7500,
+    "pts": 3750,
     "racha": "1/1",
     "tg": {
      "fin": 1,

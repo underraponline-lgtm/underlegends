@@ -47535,6 +47535,11 @@
     "Oasis"
    ],
    [
+    "Snow-7-ZIgnos",
+    "Molusco",
+    "Snow-7-ZIgnos"
+   ],
+   [
     "Oasis",
     "Zignos",
     "Oasis"
@@ -47560,11 +47565,6 @@
     "Number"
    ],
    [
-    "Snow",
-    "Molusco",
-    "Snow"
-   ],
-   [
     "Oasis",
     "Snow-7-ZIgnos",
     "Oasis"
@@ -47581,7 +47581,7 @@
    "francis": 4
   },
   "fecha": "13/11",
-  "firma": "77a20f99a2f4acd0",
+  "firma": "0e963489f0f61053",
   "msg": "1571002908307099750",
   "nombre": "KISS OF SHINIGAMI",
   "num": 633,
@@ -47598,14 +47598,14 @@
     10000
    ],
    [
-    "Snow-7-ZIgnos",
-    "Subcampeón",
-    7500
-   ],
-   [
     "Molusco",
     "Semifinal",
     5250
+   ],
+   [
+    "Snow-7-ZIgnos",
+    "Subcampeón",
+    3750
    ],
    [
     "Zignos",

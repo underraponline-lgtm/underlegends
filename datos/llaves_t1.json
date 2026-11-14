@@ -42737,12 +42737,12 @@
      ],
      [
       [
-       "Number",
+       "Number VE",
        "BLITZ",
        "Polosport",
        "Iguana"
       ],
-      "Number",
+      "Number VE",
       "triple (4 bandas)"
      ],
      [
@@ -42847,7 +42847,7 @@
      [
       [
        "Makmah",
-       "Number"
+       "Number VE"
       ],
       "Makmah",
       "Walk-in 1: Makma 🇻🇪"
@@ -42926,7 +42926,7 @@
     2500
    ],
    [
-    "Number",
+    "Number VE",
     "Cuartos",
     2500
    ],
@@ -43138,11 +43138,11 @@
      ],
      [
       [
-       "Number",
+       "Number VE",
        "Colesito",
        "Makmah"
       ],
-      "Number",
+      "Number VE",
       "triple (3 bandas)"
      ]
     ],
@@ -43176,10 +43176,10 @@
      ],
      [
       [
-       "Number",
+       "Number VE",
        "Tony 🇦🇷"
       ],
-      "Number",
+      "Number VE",
       ""
      ]
     ],
@@ -43197,10 +43197,10 @@
      ],
      [
       [
-       "Number",
+       "Number VE",
        "Trelok"
       ],
-      "Number",
+      "Number VE",
       ""
      ]
     ],
@@ -43210,10 +43210,10 @@
     "b": [
      [
       [
-       "Number",
+       "Number VE",
        "THO"
       ],
-      "Number",
+      "Number VE",
       ""
      ]
     ],
@@ -43223,7 +43223,7 @@
   "sv": "CH",
   "tabla": [
    [
-    "Number",
+    "Number VE",
     "Campeón",
     10000
    ],
@@ -44157,7 +44157,7 @@
        "Lvel 🇻🇪"
       ],
       "Molusco, Snow, Provenza",
-      "triple (5 bandas, pasan 3); también pasa: Snow🇨🇴 / za🇺🇸"
+      "triple (5 bandas, pasan 3); también pasa: snow / za🇺🇸"
      ],
      [
       [
@@ -44169,7 +44169,7 @@
        "arce"
       ],
       "Tam, Snow",
-      "triple (6 bandas, pasan 2); también pasa: Snow🇨🇴"
+      "triple (6 bandas, pasan 2); también pasa: snow"
      ],
      [
       [
@@ -44900,7 +44900,7 @@
      ],
      [
       [
-       "Vilka🇵🇪",
+       "Vilka",
        "CRIZJ"
       ],
       "",
@@ -54907,19 +54907,19 @@
     "b": [
      [
       [
+       "Snow-7-ZIgnos",
+       "Molusco"
+      ],
+      "Snow-7-ZIgnos",
+      "Walk-in 1: Snow-7-ZIgnos"
+     ],
+     [
+      [
        "Oasis",
        "Zignos"
       ],
       "Oasis",
       "Walk-in 1: Zignos 🇩🇴"
-     ],
-     [
-      [
-       "Snow",
-       "Molusco"
-      ],
-      "Snow",
-      "ganador: ✅ Decidir; Walk-in 1: Snow🇨🇴"
      ]
     ],
     "r": "Semifinales"
@@ -54946,14 +54946,14 @@
     10000
    ],
    [
-    "Snow-7-ZIgnos",
-    "Subcampeón",
-    7500
-   ],
-   [
     "Molusco",
     "Semifinal",
     5250
+   ],
+   [
+    "Snow-7-ZIgnos",
+    "Subcampeón",
+    3750
    ],
    [
     "Zignos",

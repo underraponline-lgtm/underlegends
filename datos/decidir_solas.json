@@ -4295,6 +4295,33 @@
     "lil monja 🇦🇷"
    ],
    "escribio": {}
+  },
+  {
+   "id": "075952d069",
+   "tipo": "Nombre desconocido",
+   "sec": "KISS OF SHINIGAMI · FFA · 13/11 · #633",
+   "que": "¿Quién es «Snow-7-ZIgnos»?",
+   "r": "Es Snow",
+   "regla": "Discord · su cuenta de Discord: la inscripción, el podio, la llave o la llamada",
+   "rk": "Discord",
+   "por": "el ciclo (su cuenta de Discord)",
+   "porque": "alias de Snow: la llave lo escribe así de una ronda a otra",
+   "t": 1794689952022,
+   "filas": [
+    1365
+   ],
+   "variantes": [
+    "Snow-7-ZIgnos"
+   ],
+   "escribio": {
+    "alias": [
+     "Snow-7-ZIgnos",
+     "Snow"
+    ],
+    "filas": [
+     367
+    ]
+   }
   }
  ],
  "deshechas": []
