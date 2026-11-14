@@ -54664,6 +54664,14 @@
       ],
       "",
       "sin ganador: espera en ✅ Decidir"
+     ],
+     [
+      [
+       "MCAREPA",
+       "SENTIDICE"
+      ],
+      "",
+      "sin ganador: espera en ✅ Decidir"
      ]
     ],
     "r": "Final"
@@ -54713,7 +54721,7 @@
    ]
   ],
   "ver": {
-   "min": 99,
+   "min": 109,
    "org": "juega",
    "v": 1
   }

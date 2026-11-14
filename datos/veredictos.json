@@ -224,17 +224,6 @@
   }
  },
  "batallas": {
-  "1568449265334882345": {
-   "id": "1568449265334882345",
-   "sv": "🔥 𝐃𝐈𝐒𝐂𝐎𝐑𝐃 𝐒𝐓𝐘𝐋𝐄 🎤",
-   "g": "1443770831598649528",
-   "canal": "1477446447422246943",
-   "pub": 1794017845234,
-   "a": "CRISZJ X CAQUIÑA",
-   "b": "MCO X CHASE",
-   "ganador": "MCO X CHASE",
-   "votos": "1–0"
-  },
   "1568452709923688449": {
    "id": "1568452709923688449",
    "sv": "🔥 𝐃𝐈𝐒𝐂𝐎𝐑𝐃 𝐒𝐓𝐘𝐋𝐄 🎤",
@@ -6769,8 +6758,8 @@
    "g": "1489848581203689535",
    "canal": "1536574435761332334",
    "pub": 1794616481112,
-   "ed": 1794622430547,
-   "texto": "`[ CUARTOS ]`\n⌞RAIZER⌝ 🆚 ⌞DIOS⌝ 🆚 ⌞4´C⌝\n⌞REPLICA : RAIZER⌝ 🆚 ⌞DIOS⌝\n⌞CRAKERO⌝ 🆚 ⌞CRISZJ⌝\n⌞SORAYA⌝ 🆚 ⌞ARTEZZY⌝\n`[ SEMIFINALES ]`\n⌞MC AREPA⌝ 🆚 ⌞CRAKERO⌝\n⌞ARTEZZY⌝ 🆚 ⌞DIOS⌝\n⌞MCAREPA⌝ 🆚 ⌞ARTEZZY⌝\n`[ FINAL ]`\n⌞DIOS⌝ 🆚 ⌞CRAKERO⌝\n⌞MCAREPA⌝ 🆚 ⌞CHENTE⌝\n⌞Leyenda.X5⌝ 🆚 ⌞Dios⌝\n⌞CRAKERO⌝ 🆚 ⌞NXUX⌝\n⌞ARAYA⌝ 🆚 ⌞SENTIDICE⌝",
+   "ed": 1794623011449,
+   "texto": "`[ CUARTOS ]`\n⌞RAIZER⌝ 🆚 ⌞DIOS⌝ 🆚 ⌞4´C⌝\n⌞REPLICA : RAIZER⌝ 🆚 ⌞DIOS⌝\n⌞CRAKERO⌝ 🆚 ⌞CRISZJ⌝\n⌞SORAYA⌝ 🆚 ⌞ARTEZZY⌝\n`[ SEMIFINALES ]`\n⌞MC AREPA⌝ 🆚 ⌞CRAKERO⌝\n⌞ARTEZZY⌝ 🆚 ⌞DIOS⌝\n⌞MCAREPA⌝ 🆚 ⌞ARTEZZY⌝\n`[ FINAL ]`\n⌞DIOS⌝ 🆚 ⌞CRAKERO⌝\n⌞MCAREPA⌝ 🆚 ⌞CHENTE⌝\n⌞Leyenda.X5⌝ 🆚 ⌞Dios⌝\n⌞CRAKERO⌝ 🆚 ⌞NXUX⌝\n⌞ARAYA⌝ 🆚 ⌞SENTIDICE⌝\n⌞MCAREPA⌝ 🆚 ⌞SENTIDICE⌝",
    "batallas": [
     [
      "CUARTOS",
@@ -6887,6 +6876,16 @@
      "FINAL",
      [
       "ARAYA",
+      "SENTIDICE"
+     ],
+     null,
+     "última ronda y no dice campeón",
+     []
+    ],
+    [
+     "FINAL",
+     [
+      "MCAREPA",
       "SENTIDICE"
      ],
      null,
