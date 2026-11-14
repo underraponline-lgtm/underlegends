@@ -224,17 +224,6 @@
   }
  },
  "batallas": {
-  "1568447268514828391": {
-   "id": "1568447268514828391",
-   "sv": "🔥 𝐃𝐈𝐒𝐂𝐎𝐑𝐃 𝐒𝐓𝐘𝐋𝐄 🎤",
-   "g": "1443770831598649528",
-   "canal": "1477446447422246943",
-   "pub": 1794017369155,
-   "a": "LIZENNIN X BOTRAXX",
-   "b": "SOL X SADIK",
-   "ganador": "SOL X SADIK",
-   "votos": "1–0"
-  },
   "1568449265334882345": {
    "id": "1568449265334882345",
    "sv": "🔥 𝐃𝐈𝐒𝐂𝐎𝐑𝐃 𝐒𝐓𝐘𝐋𝐄 🎤",
@@ -6780,8 +6769,8 @@
    "g": "1489848581203689535",
    "canal": "1536574435761332334",
    "pub": 1794616481112,
-   "ed": 1794621807059,
-   "texto": "`[ CUARTOS ]`\n⌞RAIZER⌝ 🆚 ⌞DIOS⌝ 🆚 ⌞4´C⌝\n⌞REPLICA : RAIZER⌝ 🆚 ⌞DIOS⌝\n⌞CRAKERO⌝ 🆚 ⌞CRISZJ⌝\n⌞SORAYA⌝ 🆚 ⌞ARTEZZY⌝\n`[ SEMIFINALES ]`\n⌞MC AREPA⌝ 🆚 ⌞CRAKERO⌝\n⌞ARTEZZY⌝ 🆚 ⌞DIOS⌝\n⌞MCAREPA⌝ 🆚 ⌞ARTEZZY⌝\n`[ FINAL ]`\n⌞DIOS⌝ 🆚 ⌞CRAKERO⌝\n⌞MCAREPA⌝ 🆚 ⌞CHENTE⌝\n⌞Leyenda.X5⌝ 🆚 ⌞Dios⌝",
+   "ed": 1794622430547,
+   "texto": "`[ CUARTOS ]`\n⌞RAIZER⌝ 🆚 ⌞DIOS⌝ 🆚 ⌞4´C⌝\n⌞REPLICA : RAIZER⌝ 🆚 ⌞DIOS⌝\n⌞CRAKERO⌝ 🆚 ⌞CRISZJ⌝\n⌞SORAYA⌝ 🆚 ⌞ARTEZZY⌝\n`[ SEMIFINALES ]`\n⌞MC AREPA⌝ 🆚 ⌞CRAKERO⌝\n⌞ARTEZZY⌝ 🆚 ⌞DIOS⌝\n⌞MCAREPA⌝ 🆚 ⌞ARTEZZY⌝\n`[ FINAL ]`\n⌞DIOS⌝ 🆚 ⌞CRAKERO⌝\n⌞MCAREPA⌝ 🆚 ⌞CHENTE⌝\n⌞Leyenda.X5⌝ 🆚 ⌞Dios⌝\n⌞CRAKERO⌝ 🆚 ⌞NXUX⌝\n⌞ARAYA⌝ 🆚 ⌞SENTIDICE⌝",
    "batallas": [
     [
      "CUARTOS",
@@ -6883,6 +6872,26 @@
      "Dios",
      "veredicto",
      []
+    ],
+    [
+     "FINAL",
+     [
+      "CRAKERO",
+      "NXUX"
+     ],
+     null,
+     "última ronda y no dice campeón",
+     []
+    ],
+    [
+     "FINAL",
+     [
+      "ARAYA",
+      "SENTIDICE"
+     ],
+     null,
+     "última ronda y no dice campeón",
+     []
     ]
    ]
   },
@@ -6892,8 +6901,8 @@
    "g": "1489848581203689535",
    "canal": "1500675902042931280",
    "pub": 1794620395569,
-   "ed": 1794620395569,
-   "texto": "`[ CUARTOS ]`\n⌞dios⌝ 🆚 ⌞leyenda⌝\n⌞tomyhilfiger1312🇾🇹⌝ 🆚 ⌞nxux⌝\n⌞araya⌝ 🆚 ⌞elkesobraba⌝\n⌞MCAREPA⌝ 🆚 ⌞chente⌝\n`[ SEMIFINALES ]`\n`[ FINAL ]`",
+   "ed": 1794622475282,
+   "texto": "`[ CUARTOS ]`\n⌞dios⌝ 🆚 ⌞leyenda⌝\n⌞tomyhilfiger1312🇾🇹⌝ 🆚 ⌞nxux⌝\n⌞araya⌝ 🆚 ⌞elkesobraba⌝\n⌞MCAREPA⌝ 🆚 ⌞chente⌝\n`[ SEMIFINALES ]`\n⌞mcarepa⌝ 🆚 ⌞sentidice⌝\n⌞nxux⌝ 🆚 ⌞dios⌝\n`[ FINAL ]`",
    "batallas": [
     [
      "CUARTOS",
@@ -6901,8 +6910,8 @@
       "dios",
       "leyenda"
      ],
-     null,
-     "última ronda y no dice campeón",
+     "dios",
+     "ronda siguiente",
      []
     ],
     [
@@ -6911,8 +6920,8 @@
       "tomyhilfiger1312🇾🇹",
       "nxux"
      ],
-     null,
-     "última ronda y no dice campeón",
+     "nxux",
+     "ronda siguiente",
      []
     ],
     [
@@ -6922,7 +6931,7 @@
       "elkesobraba"
      ],
      null,
-     "última ronda y no dice campeón",
+     "no aparece nadie después",
      []
     ],
     [
@@ -6930,6 +6939,26 @@
      [
       "MCAREPA",
       "chente"
+     ],
+     "MCAREPA",
+     "ronda siguiente",
+     []
+    ],
+    [
+     "SEMIFINALES",
+     [
+      "mcarepa",
+      "sentidice"
+     ],
+     null,
+     "última ronda y no dice campeón",
+     []
+    ],
+    [
+     "SEMIFINALES",
+     [
+      "nxux",
+      "dios"
      ],
      null,
      "última ronda y no dice campeón",

@@ -54549,7 +54549,7 @@
   ],
   "n": 632,
   "nombre": "RANKED 2",
-  "participantes": 12,
+  "participantes": 15,
   "rondas": [
    {
     "b": [
@@ -54643,6 +54643,22 @@
      ],
      [
       [
+       "Araya 🇦🇸",
+       "SENTIDICE"
+      ],
+      "",
+      "sin ganador: espera en ✅ Decidir"
+     ],
+     [
+      [
+       "CRAKERO",
+       "NXUX"
+      ],
+      "",
+      "sin ganador: espera en ✅ Decidir"
+     ],
+     [
+      [
        "MCAREPA",
        "Chente 🇻🇪"
       ],
@@ -54697,7 +54713,7 @@
    ]
   ],
   "ver": {
-   "min": 89,
+   "min": 99,
    "org": "juega",
    "v": 1
   }

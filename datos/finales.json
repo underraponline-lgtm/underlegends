@@ -1636,5 +1636,54 @@
   "sv": "ACAD",
   "t_pregunta": ""
  },
+ "1570927914487386304": {
+  "autor": "1324178951119175711",
+  "canal": "1487207377601040516",
+  "canal_pregunta": "1487207377601040516",
+  "cuando": "2026-11-13T22:26:41.243000+00:00",
+  "donde": "llave",
+  "evento": "KISS OF SHINIGAMI",
+  "fecha": "13/11",
+  "llave": "1570927914487386304",
+  "pregunta": "1570985643033493676",
+  "preguntada": "2026-11-13 9:16 PM ET",
+  "preguntas": [
+   {
+    "lados": [
+     "Oasis-Nacho-Rizas",
+     "Snow-7-ZIgnos"
+    ],
+    "ronda": "FINAL"
+   },
+   {
+    "lados": [
+     "Snow🇨🇴",
+     "Molusco 🇦🇷"
+    ],
+    "ronda": "SEMIFINALES"
+   },
+   {
+    "lados": [
+     "nc🇰🇷",
+     "Makmah 🇻🇪",
+     "Xxxx"
+    ],
+    "ronda": "CUARTOS"
+   },
+   {
+    "lados": [
+     "McK 🇨🇴",
+     "bOOTRAX🇵🇪",
+     "Number 🇺🇾"
+    ],
+    "ronda": "CUARTOS"
+   }
+  ],
+  "respondidas": {},
+  "sin_permiso": false,
+  "staff_probado": false,
+  "sv": "FFA",
+  "t_pregunta": "2026-11-14T02:16:05+00:00"
+ },
  "_leeme": "Las llaves que el ciclo no entendió y se las preguntó a quien las publicó, con botones o un menú (bot/finales.py). Una vez por llave, por su ID: así nunca se pregunta dos veces. Dlx, 12/10/2026."
 }

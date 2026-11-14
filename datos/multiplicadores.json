@@ -1268,12 +1268,12 @@
      1
     ],
     [
-     "Cu",
-     9,
+     "Abraham",
+     8,
      1
     ],
     [
-     "Abraham",
+     "Cu",
      8,
      1
     ],
@@ -1290,12 +1290,12 @@
    ],
    "semillero": {
     "nuevos": {
+     "FDS": 2,
      "FFA": 14,
      "ACAD": 6,
      "SR": 3,
      "DDF": 2,
-     "LKR": 2,
-     "FDS": 2
+     "LKR": 2
     },
     "gente": {
      "FFA": 76,

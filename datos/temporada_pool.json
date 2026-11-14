@@ -3748,7 +3748,7 @@
   "crew": "",
   "discord_id": "1435531540472795240",
   "verificado": true,
-  "pts": 66200,
+  "pts": 68700,
   "ev": 16,
   "wr": "",
   "pod": 2,
@@ -3771,6 +3771,7 @@
   "total": 252,
   "rango": "D",
   "tg_t": {
+   "cobro": 1,
    "cohete": true,
    "dobles": 1,
    "rev": 1,
