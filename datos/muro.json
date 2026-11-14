@@ -333,6 +333,15 @@
 "temporada"
 ]
 },
+"btrx": {
+"rg": "C",
+"c": [
+"competitivo",
+"pais",
+"servidor",
+"temporada"
+]
+},
 "lrs": {
 "rg": "E",
 "c": [
@@ -347,15 +356,6 @@
 "c": []
 },
 "delux": {
-"rg": "C",
-"c": [
-"competitivo",
-"pais",
-"servidor",
-"temporada"
-]
-},
-"btrx": {
 "rg": "C",
 "c": [
 "competitivo",
@@ -533,6 +533,15 @@
 "temporada"
 ]
 },
+"jupiter": {
+"rg": "D",
+"c": [
+"competitivo",
+"pais",
+"servidor",
+"temporada"
+]
+},
 "lvel": {
 "rg": "E",
 "c": [
@@ -542,15 +551,6 @@
 ]
 },
 "dynoco": {
-"rg": "D",
-"c": [
-"competitivo",
-"pais",
-"servidor",
-"temporada"
-]
-},
-"jupiter": {
 "rg": "D",
 "c": [
 "competitivo",
@@ -668,7 +668,7 @@
 "temporada"
 ]
 },
-"jult": {
+"ariaxer": {
 "rg": "E",
 "c": [
 "competitivo",
@@ -677,7 +677,7 @@
 "temporada"
 ]
 },
-"ariaxer": {
+"jult": {
 "rg": "E",
 "c": [
 "competitivo",
@@ -1224,11 +1224,7 @@
 "rg": "",
 "c": []
 },
-"millonario": {
-"rg": "",
-"c": []
-},
-"melomaniaco": {
+"romeo": {
 "rg": "",
 "c": [
 "pais",
@@ -1236,7 +1232,11 @@
 "temporada"
 ]
 },
-"romeo": {
+"millonario": {
+"rg": "",
+"c": []
+},
+"melomaniaco": {
 "rg": "",
 "c": [
 "pais",
@@ -7499,19 +7499,19 @@
 "n": "Zanti",
 "k": "",
 "de": 744,
-"a": 337
+"a": 338
 },
 {
 "n": "Trueno",
 "k": "",
 "de": 625,
-"a": 416
+"a": 418
 },
 {
 "n": "Chuwin",
 "k": "",
 "de": 505,
-"a": 334
+"a": 335
 }
 ],
 "sorpresas": [
