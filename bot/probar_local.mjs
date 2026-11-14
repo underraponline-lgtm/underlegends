@@ -2103,7 +2103,11 @@ console.log('\nVERIFICARSE DESDE LA PÁGINA, ENTRANDO A DRA\n');
     const CICLOS = [];
     const avisos0 = env.AVISOS;
     env.AVISOS = { idFromName: () => 'liga', get: () => ({ fetch: async (u) => { if (String(u).endsWith('/ciclo-verificar')) CICLOS.push(String(u)); return new Response('{"ok":true}'); } }) };
-    RELOJ = Math.max(RELOJ, Date.parse('2026-11-13T18:00:00Z'));   // 1 PM ET
+    // ⏰ la PRÓXIMA 1 PM ET y la próxima 4 AM ET desde el reloj, no una fecha fija (14/11/2026): con `Math.max(RELOJ,
+    // '2026-11-13T18:00Z')` la prueba pasaba hasta ese día, y después corría con la hora real —a la 1 AM ET no es de
+    // día— y CI se ponía rojo con cualquier commit. El reloj sigue sin ir nunca para atrás
+    const proxima = (hUtc) => { const d = new Date(RELOJ); d.setUTCHours(hUtc, 0, 0, 0); if (d.getTime() < RELOJ) d.setUTCDate(d.getUTCDate() + 1); return d.getTime(); };
+    RELOJ = proxima(18);   // 1 PM ET
     r = await ver({ token: 'permisoNuevo1234567890', pais: 'ar' });
     await esperarSeguimientos();
     ok('▶️ completo de día: larga el ciclo en ese momento y la página lo sabe',
@@ -2120,7 +2124,7 @@ console.log('\nVERIFICARSE DESDE LA PÁGINA, ENTRANDO A DRA\n');
     ok('completo: queda anotado como «yo», así la vuelta del ciclo lo encuentra',
        reg.id === '700601' && reg.por === 'yo' && reg.sv === 'DRA', JSON.stringify(reg));
     ok('y dice cuándo es esa vuelta', /^\d{4}-\d\d-\d\dT\d\d:(22|52):00/.test(r.json.vuelta || ''), r.json.vuelta);
-    RELOJ = Math.max(RELOJ, Date.parse('2026-11-14T09:00:00Z'));   // 4 AM ET: madrugada
+    RELOJ = proxima(9);   // 4 AM ET: madrugada
     r = await ver({ token: 'permisoNuevo1234567890', pais: 'cl' });
     await esperarSeguimientos();
     ok('🌙 completo de madrugada: no larga el ciclo (ahí no hay), queda la vuelta de las 11:22',
