@@ -11,6 +11,18 @@
  ],
  "cambios": [
     {
+        "version": "5.24",
+        "dia": "2026-11-13",
+        "cuando": "2026-11-13T20:10:00-05:00",
+        "titulo": "El tutorial nuevo y tu primera semana",
+        "items": [
+            "**El tutorial, rehecho**: eliges el **rápido** (cinco pasos en el Inicio) o el **completo** (nueve capítulos de un minuto, en la Guía, en «Aprende la Liga»). Cada paso señala la página de verdad.",
+            "**¿Cómo funciona?** en cada página: en una línea qué es, y su capítulo del tutorial.",
+            "**Misiones para nuevos**: si llegaste hace poco, una semana de misiones arriba de los paneles del Inicio, un nivel por día, con premios: Dragón Drops, Puntos de Tienda, títulos y la **Caja del Nuevo** al terminar los siete.",
+            "**Star Dragons**: en el Premio gratis, sigue las redes de la Liga y te llevas uno por cada red. Salen de Vinilo para arriba."
+        ]
+    },
+    {
         "version": "5.23",
         "dia": "2026-11-13",
         "cuando": "2026-11-13T20:00:00-05:00",
