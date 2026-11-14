@@ -1,9 +1,9 @@
 {
  "v": 1,
- "cuando": "2026-11-14T01:36:08Z",
+ "cuando": "2026-11-14T02:14:37Z",
  "trabajo": "dibujar",
  "codigo": 0,
- "dur_s": 162.7,
+ "dur_s": 597.0,
  "pasos": [
   {
    "n": "2f",
@@ -21,61 +21,61 @@
    "n": "3",
    "que": "qué cambió",
    "ok": true,
-   "s": 13.6
+   "s": 14.9
   },
   {
    "n": "4",
    "que": "las caras, desde R2",
    "ok": true,
-   "s": 21.7
+   "s": 21.6
   },
   {
    "n": "5",
-   "que": "tanda 1 de 1 · 11 persona(s)",
+   "que": "tanda 1 de 3 · 40 persona(s)",
    "ok": true,
-   "s": 63.2
+   "s": 494.1
   },
   {
    "n": "5b",
    "que": "las Bloqueadas",
    "ok": true,
-   "s": 6.9
+   "s": 10.5
   },
   {
    "n": "6",
    "que": "refrescar KV",
    "ok": true,
-   "s": 55.4
+   "s": 54.1
   }
  ],
  "fallas": [],
  "ultimo_evento": {
-  "n": "631",
-  "nombre": "SNAKE INSIGNIA 8 8",
-  "sv": "SR",
+  "n": "632",
+  "nombre": "RANKED 2",
+  "sv": "FDS",
   "dia": "2026-11-13"
  },
  "cuotas": {
   "kv": {
-   "write": 100,
-   "read": 3293
+   "write": 144,
+   "read": 4723
   },
   "objeto": {
-   "leidas": 406041,
-   "escritas": 10207,
-   "pedidos": 2051
+   "leidas": 594767,
+   "escritas": 15386,
+   "pedidos": 2798
   },
   "worker": {
-   "pedidos": 18294,
+   "pedidos": 18438,
    "errores": 0,
-   "sub": 19689,
+   "sub": 19837,
    "cortados": 0,
-   "p50_ms": 1.11,
-   "p99_ms": 14.38,
+   "p50_ms": 1.1,
+   "p99_ms": 14.25,
    "cpu": {
-    "total": 38023,
-    "objeto_10": 2298,
-    "worker_10": 516
+    "total": 38323,
+    "objeto_10": 2284,
+    "worker_10": 504
    }
   },
   "r2": {
