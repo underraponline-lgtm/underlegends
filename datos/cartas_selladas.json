@@ -215,7 +215,8 @@
    "servidor": "e84274367348:67e514e7f0d5:f3ab27"
   },
   "Bocamio": {
-   "servidor": "9b68c9ca721c:67e514e7f0d5:74d3ce"
+   "servidor": "9b68c9ca721c:67e514e7f0d5:74d3ce",
+   "temporada": "c01d947c8d92:08ecf54fc940"
   },
   "Bocto": {
    "competitivo": "6ee1722f57ad:e1a1212cc40e",
@@ -2118,5 +2119,5 @@
    "servidor": "7f8885a35a6d:67e514e7f0d5:93a344"
   }
  },
- "cuando": "2026-11-14T20:10:45+00:00"
+ "cuando": "2026-11-14T20:47:54+00:00"
 }
