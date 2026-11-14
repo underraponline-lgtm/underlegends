@@ -11,6 +11,19 @@
  ],
  "cambios": [
     {
+        "version": "5.25",
+        "dia": "2026-11-13",
+        "cuando": "2026-11-13T20:10:00-05:00",
+        "titulo": "Arreglos: el Competitivo, el sorteo y tu sesión",
+        "items": [
+            "Si sólo jugaste en servidores que no son Tier 1, el **Competitivo** ya no cuenta esos eventos: dice cuántos te faltan de verdad.",
+            "Si tu sesión venció, el **Ranking** te lo dice y te deja entrar de nuevo, en vez de decir que no encontró tu perfil.",
+            "El **sorteo** dice «Se sortea ahora» mientras llega el ganador.",
+            "«Unirme a los Tier 1» sigue con los demás aunque en uno no se pueda.",
+            "En **Actividad**, «Por qué estás #N» explica lo que cuenta en cada vista."
+        ]
+    },
+    {
         "version": "5.24",
         "dia": "2026-11-13",
         "cuando": "2026-11-13T20:10:00-05:00",
