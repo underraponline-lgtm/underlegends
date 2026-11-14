@@ -5098,7 +5098,9 @@ export async function discordDe(t) {
     const a = await r.json();
     if (!a || !a.application || String(a.application.id || '') !== APP_ID) return falso(t);
     const u = a.user;
-    return u && /^[0-9]{5,25}$/.test(String(u.id || '')) ? { id: String(u.id), u } : { error: 'token' };
+    // `scopes`: qué permisos trae (13/11/2026: «Unirme a los Tier 1» mira que esté `guilds.join` antes de probar)
+    return u && /^[0-9]{5,25}$/.test(String(u.id || ''))
+      ? { id: String(u.id), u, scopes: Array.isArray(a.scopes) ? a.scopes.map(String) : null } : { error: 'token' };
   } catch (e) {
     return { error: 'ocupado' };
   }

@@ -384,8 +384,11 @@ def armar():
     # suman sólo a la Temporada (`tiers.sin('competitivo')`)—, y de ahí los 10 que pide la letra. Para 94 personas no es
     # `ev`, que suma también los de Tier 3: «te faltan 9 eventos» podía mentir. Va sólo cuando difiere; la página usa
     # `evc ?? ev`
+    # ⚠️ SIN FILA EN EL COMPETITIVO ES 0, NO `ev` (13/11/2026): su pool arranca en 1 evento de Tier 1, así que quien no
+    # está no jugó ninguno. Antes no se mandaba nada y la página caía en `ev`: 75 personas de DDS, FDS y LKR (Tier 3)
+    # leían «te faltan 7 eventos de Tier 1» con 0 jugados
     for f, p in zip(tabla, todos):
-        _evc = (_comp.get(p.get('raw')) or {}).get('ev')
+        _evc = (_comp.get(p.get('raw')) or {}).get('ev', 0)
         if isinstance(_evc, int) and _evc != (f.get('ev') or 0):
             f['evc'] = _evc
     # 👤 las filas de más allá de la tabla, para su perfil (`_perfiles_extra()`); la tabla, los primeros `TOPE`
@@ -2054,7 +2057,8 @@ def _perfiles(gente, comp, regs):
         for carta in ('temporada', 'competitivo', 'pais'):
             # 🎯 los eventos de la Competitiva son los del Competitivo (`cp`, sólo Tier 1), no los de la Temporada que
             # `fila` trae encima: Vilca, con 23 en total y 3 en Tier 1, leía «23/10» sin tener letra (13/11/2026)
-            de = dict(fila, ev=cp['ev']) if carta == 'competitivo' and isinstance(cp.get('ev'), int) else fila
+            # y sin fila en el Competitivo, 0 (no jugó ninguno de Tier 1), no los de la Temporada
+            de = dict(fila, ev=cp['ev'] if isinstance(cp.get('ev'), int) else 0) if carta == 'competitivo' else fila
             req[carta] = [[RQ.cuanto(de, campo), meta, RQ.como_se_dice(carta, meta, None, i)]
                           for i, (meta, campo, _q) in enumerate(RQ.condiciones(carta))]
         rk = {}
@@ -4344,6 +4348,13 @@ def _self_check():
     _evc_mal = [f['n'] for f in p['tabla'] if 'evc' in f and not (0 <= f['evc'] < (f['ev'] or 0))]
     ok(not _evc_mal, 'los eventos del Competitivo, menos que los de la Temporada cuando van  (%d con `evc`)  %s'
        % (sum(1 for f in p['tabla'] if 'evc' in f), _evc_mal or '—'))
+    # y quien no está en el pool del Competitivo no jugó ninguno de Tier 1: 0, no sus eventos de Tier 3 (13/11/2026,
+    # 75 personas de DDS, FDS y LKR). Contra el pool, no contra lo que hace `armar()`: así no se tapa con el mismo error
+    _en_comp = {x.get('raw') for x in (_json('datos', 'competitivo_pool.json') or [])}
+    _sin_t1 = [f for f in p['tabla'] if (f.get('ev') or 0) > 0 and f.get('n') not in _en_comp]
+    _sin_t1_mal = [f['n'] for f in _sin_t1 if f.get('evc', f['ev']) != 0]
+    ok(not _sin_t1_mal, 'sin fila en el Competitivo, 0 eventos de Tier 1 (%d en la tabla)  %s'
+       % (len(_sin_t1), _sin_t1_mal[:5] or '—'))
     ok(len(p['tabla']) <= TOPE, 'y no pasa de %d filas' % TOPE)
 
     # 🔴 LA LETRA SIGUE LA MISMA PUERTA QUE LA CARTA. Si la web mostrara

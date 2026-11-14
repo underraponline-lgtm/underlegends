@@ -252,7 +252,9 @@ export function FilaRacha({ dc, R, liga, enc }) {
   const soAbierto = !!(s && ahora < s.cierra);
   // hasta un día después de sortearse, para que se vea quién ganó
   const resT = S && S.resultado ? Number(S.resultado.t) || Date.parse(S.resultado.t) || 0 : 0;
-  const soVer = !!(s && (soAbierto || ahora < s.cuando + 86400000 || (resT && ahora < resT + 86400000)));
+  // ⚠️ pasada la hora sin ganador y sin nadie adentro no hay nada que mostrar: no va a haber resultado (13/11/2026)
+  const soVacio = !!(s && !resT && ahora >= s.cuando && !(s.personas > 0));
+  const soVer = !!(s && !soVacio && (soAbierto || ahora < s.cuando + 86400000 || (resT && ahora < resT + 86400000)));
   const gratis = dc ? encuestasDeLaSemana(liga, enc).faltan.length > 0 || faltanRedes(liga, dc) > 0 : false;
   const an = anuncioDeServidor(liga);
   const extras = [];
@@ -353,7 +355,9 @@ function SorteoCorto({ liga, dc, S, entro }) {
   };
   const puedeEntrar = abierto && !S.mio;
   const tit = res ? 'Ganó ' + nombre(res.k) : S.mio ? 'Estás adentro con ' + S.mio + (S.mio === 1 ? ' boleto' : ' boletos')
-    : abierto ? 'Entra gratis al sorteo' : 'Se sortea en ' + faltaTxt(iso(s.cuando));
+    : abierto ? 'Entra gratis al sorteo'
+      // pasada la hora, mientras llega el ganador: «ahora», no «Se sortea en cerrado» (13/11/2026)
+      : ahora >= s.cuando ? 'Se sortea ahora' : 'Se sortea en ' + faltaTxt(iso(s.cuando));
   const sub = msg || (res ? 'El sorteo del Pase premium · míralo en el Pase'
     : puedeEntrar ? 'Pase premium · cierra en ' + faltaTxt(iso(s.cierra))
       : abierto ? 'Se sortea en ' + faltaTxt(iso(s.cuando)) + ', en vivo en el Pase'

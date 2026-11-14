@@ -402,8 +402,9 @@ const SUBS = {
     valor: [(f) => f.sc || 0, 'de Score', 1], podio: 'competitivo', final: 16,
     vacio: (L) => {
       const pide = req(L, 'competitivo') || 10;
-      const c = (L.d.tabla || []).slice().sort((a, b) => (b.ev || 0) - (a.ev || 0))[0];
-      return <>El Competitivo pide participar en <b>{pide} eventos</b> de servidores Tier 1 de la Liga, en la temporada, y todavía no llegó nadie.{c ? <> El más cerca: <b>{limpio(c.n)}</b>, con {c.ev}.</> : null}</>;
+      // el más cerca, por sus eventos de Tier 1 (`evc`), no por todos: es lo que pide el Competitivo (13/11/2026)
+      const c = (L.d.tabla || []).slice().sort((a, b) => evcDe(b) - evcDe(a))[0];
+      return <>El Competitivo pide participar en <b>{pide} eventos</b> de servidores Tier 1 de la Liga, en la temporada, y todavía no llegó nadie.{c && evcDe(c) ? <> El más cerca: <b>{limpio(c.n)}</b>, con {evcDe(c)}.</> : null}</>;
     },
   },
   duelos: {
@@ -618,12 +619,23 @@ function TuTira({ x, cfg, sub, base, iYo, lugar, yo, dc, encontrarme, tira, mira
   const nombreDe = (g) => (cfg.grupo === 'pais' ? nombrePais(g.cc) : cfg.grupo === 'crew' ? limpio(g.crew) : limpio(g.n));
   // 🧭 lo que va en «Por qué estás ahí y cómo subir» (porque.jsx): tu fila de ESTE ranking y quién tienes arriba
   const ctx = (f, n, arriba) => ({ liga, yo, f, n, arriba, base, iYo, grupo: cfg.grupo, nombreDe, numero: (g) => numero(cfg, g),
-    sinPuesto: !!(f && cfg.sinPuesto && cfg.sinPuesto(f)), lugarTxt: lugar && !f ? lugar.txt : '' });
+    sinPuesto: !!(f && cfg.sinPuesto && cfg.sinPuesto(f)), lugarTxt: lugar && !f ? lugar.txt : '',
+    // Actividad «En general» (eventos + liga + duelos) o «En eventos»: cada una se explica con lo que la ordena
+    general: !!(cfg.cols && cfg.cols.includes('act')) });
   if (!yo && !dc) {
     return (
       <div className="rk-tu invita" ref={tira}>
         <span className="rk-tu-l"><Ico n="yo" t={22} /><b>Entra con Discord y te marcamos en cada ranking.</b></span>
         <button type="button" className="btn verde chico rk-tu-btn" onClick={accion.cuenta}>Entrar</button>
+      </div>
+    );
+  }
+  if (!yo && miraEst === 'entrar') {
+    // 🔑 la sesión venció (30 días) y el navegador todavía te recuerda: no es que no tengas perfil (13/11/2026)
+    return (
+      <div className="rk-tu invita" ref={tira}>
+        <span className="rk-tu-l"><Ico n="yo" t={22} /><b>Tu sesión venció: entra de nuevo con Discord y te marcamos en cada ranking.</b></span>
+        <button type="button" className="btn verde chico rk-tu-btn" onClick={accion.entrar}>Entrar</button>
       </div>
     );
   }

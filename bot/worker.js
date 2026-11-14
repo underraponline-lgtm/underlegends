@@ -1587,7 +1587,10 @@ async function miraDe(env, id) {
 async function cuentaMira(req, env) {
   const h = { 'content-type': 'application/json; charset=utf-8', 'cache-control': 'no-store' };
   const id = await sesionDe(env, req);
-  return new Response(JSON.stringify({ mira: id ? await miraDe(env, id) : '' }), { headers: h });
+  // 🔑 sin sesión (venció a los 30 días) es 401, no «sin perfil»: la página lo guardaba un día y le decía «no encontramos
+  // tu perfil» a alguien que sí tiene `dn:` (13/11/2026)
+  if (!id) return new Response(JSON.stringify({ error: 'sesion' }), { status: 401, headers: h });
+  return new Response(JSON.stringify({ mira: await miraDe(env, id) }), { headers: h });
 }
 
 // ── 🤝 UNIRTE A LOS SERVIDORES TIER 1 CON UN TOQUE (Dlx, 13/11/2026: «Yes, the safe way»). Lo mismo que hace «Verificarme»
@@ -1618,11 +1621,22 @@ export async function cuentaUnirse(req, env) {
   if (!u || !u.id) return json({ error: 'discord' }, 401);
   const esperar = frenado(u.id, 'unirse');
   if (esperar) return json({ error: 'espera', s: esperar }, 429);
+  // 🔑 el permiso tiene que traer `guilds.join`: sin él fallarían todos, así que se dice antes de probar ninguno (13/11/2026)
+  if (Array.isArray(q.scopes) && !q.scopes.includes('guilds.join')) {
+    return json({ ok: true, res: Object.fromEntries(pide.map((sv) => [sv, 'permiso'])) });
+  }
+  // 🏅 SÓLO LOS TIER 1 (13/11/2026): los mismos que la página ofrece, `svs[].cu.c` del lobby que deja el ciclo (Socios
+  // 4.98). El permiso se pidió para ésos: un pedido armado a mano con un Tier 3 no lo usa para otro. Una lectura y un
+  // parseo por pedido (233 KB: ~2 ms medido, 3 el peor) —se piden 3 cada 10 min, y sólo después de la pantalla de
+  // Discord—, y sin lobby no se suma a nadie
+  const lobby = await env.KV.get('web:lobby', 'json').catch(() => null);
+  const t1 = new Set(((lobby && Array.isArray(lobby.svs)) ? lobby.svs : []).filter((s) => s && s.cu && s.cu.c).map((s) => String(s.sv)));
   const bot = { 'Authorization': 'Bot ' + env.DISCORD_TOKEN, 'X-Audit-Log-Reason': RAZON_UNIRSE, 'content-type': 'application/json' };
   const res = {};
   for (const sv of pide) {
     const S = SERVIDORES.find((x) => x.sv === sv && x.guild && !x.fuera);
-    if (!S || UNIRSE_NO.has(sv)) { res[sv] = 'no'; continue; }
+    if (!t1.size) { res[sv] = 'error'; continue; }
+    if (!S || UNIRSE_NO.has(sv) || !t1.has(sv)) { res[sv] = 'no'; continue; }
     let r = null;
     try {
       r = await fetch(`${DC_API}/guilds/${S.guild}/members/${u.id}`, { method: 'PUT', headers: bot, body: JSON.stringify({ access_token: t }) });
@@ -1633,9 +1647,10 @@ export async function cuentaUnirse(req, env) {
     let c = 0;
     try { c = Number((await r.json()).code) || 0; } catch (e) { c = 0; }
     // 30001: tu cuenta está en el máximo de servidores · 40007: ese servidor no te deja entrar (te echaron) · 50013: al bot le
-    // falta «Crear invitación» ahí · 401/403: el permiso no trae `guilds.join` o se venció · 429: Discord pide esperar
+    // falta «Crear invitación» ahí · 401: el permiso se venció · 403 (p. ej. 50001, el bot no está ahí): ESE servidor, y
+    // se sigue con los demás —el permiso ya se miró arriba, así que un 403 no es del permiso (13/11/2026) · 429: esperar
     res[sv] = c === 30001 ? 'lleno' : c === 40007 ? 'no_deja' : c === 50013 ? 'sin_permiso' : r.status === 429 ? 'espera'
-      : (r.status === 401 || r.status === 403) ? 'permiso' : 'error';
+      : r.status === 401 ? 'permiso' : r.status === 403 ? 'sin_permiso' : 'error';
     // con la cuenta llena o sin el permiso, los que siguen fallarían igual
     if (res[sv] === 'lleno' || res[sv] === 'permiso') {
       for (const x of pide) if (!res[x]) res[x] = res[sv];

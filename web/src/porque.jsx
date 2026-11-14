@@ -66,8 +66,10 @@ export function useMira(liga, dc) {
     if (ya) { setM(ya); return undefined; }
     let vivo = true;
     fetch('/api/cuenta/mira', { method: 'POST', headers: { 'content-type': 'application/json' }, body: '{}' })
-      .then((r) => (r.ok ? r.json() : null))
+      // 🔑 401 = la sesión venció (13/11/2026): no es «sin perfil», así que no se guarda y se pide entrar de nuevo
+      .then((r) => (r.status === 401 ? { sesion: false } : r.ok ? r.json() : null))
       .then((c) => {
+        if (c && c.sesion === false) { if (vivo) setM({ id, k: '', t: Date.now(), sesion: false }); return; }
         const v = { id, k: String((c && c.mira) || ''), t: Date.now() };
         if (c) try { localStorage.setItem('lg:mira', JSON.stringify(v)); } catch (e) { /* igual */ }
         if (vivo) setM(v);
@@ -90,6 +92,7 @@ export function useMira(liga, dc) {
   }, [k]); // eslint-disable-line react-hooks/exhaustive-deps
   if (liga.yo) return [null, 'listo'];
   if (!id) return [null, 'sin'];
+  if (m && m.sesion === false) return [null, 'entrar'];
   if (!k) return [null, m ? 'sin' : 'buscando'];
   const f = liga.T[k] || liga.X[k] || (fila && fila.k === k ? fila : null);
   return [f, f ? 'listo' : mirado === k ? 'sin' : 'buscando'];
@@ -232,6 +235,17 @@ export function explicar(sub, c) {
       if (a0 >= r0) out.pasos.push(<>Encadena <b>{pl(a0 - r0 + 1, 'evento', 'eventos')}</b> más y pasas a {A}.</>);
     }
     out.pasos.push(<>Si en tu próximo evento no llegas arriba, la racha vuelve a 0.</>);
+  } else if (sub === 'eventos' && c.general) {
+    // 🏃 Actividad «En general» (5.16): cada evento, batalla de liga y duelo suma uno; a igual, el de más eventos
+    const act = (x) => (x.ev || 0) + (x.lg || 0) + ((Array.isArray(x.du) ? x.du[1] : 0) || 0);
+    if (f) out.datos = [['Actividad', num(act(f))], ['Eventos', num(f.ev || 0)], ['Liga', num(f.lg || 0)], ['Duelos', num((Array.isArray(f.du) ? f.du[1] : 0) || 0)]];
+    out.notas.push(<>Cada <b>evento</b>, cada <b>batalla de liga</b> y cada <b>duelo</b> de la temporada suman uno. A igual cantidad, va primero el que jugó más eventos.</>);
+    if (f && arriba) {
+      contra([['Actividad', act(f), act(arriba), num], ['Eventos', f.ev || 0, arriba.ev || 0, num]]);
+      const falta = act(arriba) - act(f) + ((f.ev || 0) > (arriba.ev || 0) ? 0 : 1);
+      out.pasos.push(<>Suma <b>{pl(Math.max(1, falta), 'jugada', 'jugadas')}</b> más —un evento, una batalla de liga o un duelo— y pasas a {A}.</>);
+    }
+    out.pasos.push(<>En <a className="te-link" href="#/eventos">Eventos</a> ves lo que se juega hoy.</>);
   } else if (sub === 'eventos') {
     if (f) out.datos = [['Eventos', num(f.ev || 0)], ['Puntos', num(f.pts || 0)], ['Por evento', num(f.ev ? Math.round((f.pts || 0) / f.ev) : 0)], ['Podios', num(f.pod || 0)]];
     out.notas.push(<>Cuentan los eventos de <b>todos los servidores</b>. A igual cantidad, va primero el de más puntos.</>);
