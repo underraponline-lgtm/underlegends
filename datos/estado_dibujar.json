@@ -1,9 +1,9 @@
 {
  "v": 1,
- "cuando": "2026-11-14T21:32:46Z",
+ "cuando": "2026-11-14T22:53:29Z",
  "trabajo": "dibujar",
  "codigo": 0,
- "dur_s": 96.6,
+ "dur_s": 950.6,
  "pasos": [
   {
    "n": "2f",
@@ -15,13 +15,13 @@
    "n": "2f2",
    "que": "los TAGs elegidos",
    "ok": true,
-   "s": 0.9
+   "s": 0.7
   },
   {
    "n": "3",
    "que": "qué cambió",
    "ok": true,
-   "s": 8.9
+   "s": 8.5
   },
   {
    "n": "4",
@@ -31,51 +31,51 @@
   },
   {
    "n": "5",
-   "que": "tanda 1 de 1 · 2 persona(s)",
+   "que": "tanda 1 de 6 · 40 persona(s)",
    "ok": true,
-   "s": 11.4
+   "s": 862.0
   },
   {
    "n": "5b",
    "que": "las Bloqueadas",
    "ok": true,
-   "s": 4.5
+   "s": 5.8
   },
   {
    "n": "6",
    "que": "refrescar KV",
    "ok": true,
-   "s": 52.5
+   "s": 54.9
   }
  ],
  "fallas": [],
  "ultimo_evento": {
-  "n": "635",
-  "nombre": "COMPE DEMASIADO MAÑANERA",
-  "sv": "URBF",
+  "n": "636",
+  "nombre": "CHOP COMPE CEO V.2",
+  "sv": "CH",
   "dia": "2026-11-14"
  },
  "cuotas": {
   "kv": {
-   "write": 730,
-   "read": 31090
+   "write": 792,
+   "read": 33495
   },
   "objeto": {
-   "leidas": 2659971,
-   "escritas": 54722,
-   "pedidos": 16230
+   "leidas": 2851989,
+   "escritas": 59426,
+   "pedidos": 17004
   },
   "worker": {
-   "pedidos": 15180,
+   "pedidos": 14781,
    "errores": 0,
-   "sub": 18367,
+   "sub": 17941,
    "cortados": 0,
    "p50_ms": 1.17,
-   "p99_ms": 12.58,
+   "p99_ms": 12.43,
    "cpu": {
-    "total": 33481,
-    "objeto_10": 2322,
-    "worker_10": 349
+    "total": 32649,
+    "objeto_10": 2315,
+    "worker_10": 333
    }
   },
   "r2": {
