@@ -8089,7 +8089,7 @@
      "dorado",
      1,
      600,
-     null,
+     631,
      "SR"
     ]
    ],
@@ -8197,7 +8197,7 @@
      0,
      0,
      0,
-     0
+     1
     ],
     "Calíz": [
      0,
@@ -8239,7 +8239,7 @@
      2,
      1,
      0,
-     0
+     1
     ],
     "CrisZJ": [
      0,
@@ -8316,7 +8316,7 @@
      0,
      0,
      0,
-     0
+     1
     ],
     "Dyzz": [
      0,
@@ -8351,7 +8351,7 @@
      0,
      1,
      0,
-     0
+     1
     ],
     "Erik": [
      0,
@@ -8365,7 +8365,7 @@
      3,
      1,
      0,
-     0
+     1
     ],
     "Fin": [
      0,
@@ -8381,12 +8381,12 @@
      0,
      0
     ],
-    "Fritz 🇨🇴": [
+    "Fritz": [
      0,
      0,
      0,
      0,
-     0
+     1
     ],
     "Garxzii": [
      0,
@@ -8435,7 +8435,7 @@
      0,
      0,
      0,
-     0
+     1
     ],
     "Izaya": [
      0,
@@ -8449,7 +8449,7 @@
      2,
      1,
      0,
-     0
+     1
     ],
     "Jult": [
      0,
@@ -8568,7 +8568,7 @@
      0,
      0,
      0,
-     0
+     1
     ],
     "Lvel": [
      0,
@@ -8624,7 +8624,7 @@
      0,
      0,
      0,
-     0
+     1
     ],
     "Marcos": [
      0,
@@ -8736,7 +8736,7 @@
      0,
      0,
      0,
-     0
+     1
     ],
     "Number VE": [
      0,
@@ -8771,7 +8771,7 @@
      0,
      0,
      0,
-     0
+     1
     ],
     "Paria": [
      0,
@@ -8806,7 +8806,7 @@
      0,
      0,
      0,
-     0
+     1
     ],
     "Provenza": [
      0,
@@ -8862,7 +8862,7 @@
      0,
      0,
      0,
-     0
+     1
     ],
     "SULTAN": [
      0,
@@ -9051,7 +9051,7 @@
      1,
      0,
      0,
-     0
+     1
     ],
     "black live": [
      0,
@@ -9079,7 +9079,7 @@
      1,
      0,
      0,
-     0
+     1
     ],
     "kychi": [
      0,
@@ -9139,11 +9139,26 @@
     ]
    },
    "pts": {
+    "Bloody": 600,
     "Carlosss": 600,
+    "Colesito": 600,
     "Dios": 1000,
-    "Fazer": 600,
+    "Dynoco": 600,
+    "Erian": 600,
+    "Fazer": 1200,
+    "Fritz": 600,
+    "Humildad": 600,
+    "Juanpa": 600,
+    "Lord Viruzz": 600,
     "MTZ": 600,
-    "Miniboy": 1000
+    "Makmah": 600,
+    "Miniboy": 1000,
+    "Noone": 600,
+    "PUNISHER": 600,
+    "Prosu": 600,
+    "SC": 600,
+    "Zignos": 600,
+    "jazi": 600
    }
   }
  },
@@ -9190,7 +9205,7 @@
   "Benjixo": 2200,
   "Berrun": 600,
   "Black Demon🇪🇨": 600,
-  "Bloody": 2200,
+  "Bloody": 2800,
   "Blue": 300,
   "Bocto": 300,
   "CJ": 2100,
@@ -9204,7 +9219,7 @@
   "Chop": 2800,
   "Cinexfilo": 1200,
   "Ciro": 300,
-  "Colesito": 4800,
+  "Colesito": 5400,
   "Corvo": 1000,
   "CrisZJ": 5100,
   "Crk": 2500,
@@ -9226,7 +9241,7 @@
   "Drelain": 300,
   "Drexx": 4000,
   "Drezz🇵🇪": 300,
-  "Dynoco": 1600,
+  "Dynoco": 2200,
   "Dyzz": 2100,
   "EGI": 300,
   "EIDP": 3500,
@@ -9240,7 +9255,7 @@
   "Emilio Alva": 600,
   "Emily Family": 300,
   "Enkil": 300,
-  "Erian": 10000,
+  "Erian": 10600,
   "Erik": 1900,
   "Erizo": 300,
   "Evangeline": 2100,
@@ -9251,9 +9266,10 @@
   "FAT PENIS": 300,
   "FanDAbel": 1000,
   "FanDeAbel": 800,
-  "Fazer": 600,
+  "Fazer": 1200,
   "Fin": 300,
   "Forza": 600,
+  "Fritz": 600,
   "Geoka": 4400,
   "Gero": 300,
   "Global Hustler": 1000,
@@ -9269,6 +9285,7 @@
   "Henry": 300,
   "Holden": 300,
   "Hotaru Adeyemi 🏳️‍⚧️": 900,
+  "Humildad": 600,
   "ISAIAS": 300,
   "Iguana": 300,
   "Imagy": 300,
@@ -9282,6 +9299,7 @@
   "Jobaking": 1200,
   "Joshema": 300,
   "Joven shenlong": 300,
+  "Juanpa": 600,
   "Juasmio": 1900,
   "Julix": 600,
   "Julix🇧🇴": 1000,
@@ -9318,7 +9336,7 @@
   "Liberia": 8000,
   "Lilñaño": 900,
   "LitKunai": 300,
-  "Lord Viruzz": 4100,
+  "Lord Viruzz": 4700,
   "Lucky": 900,
   "Luzzano": 900,
   "Lvel": 2400,
@@ -9333,7 +9351,7 @@
   "MaYeuTyK": 2500,
   "Magic": 600,
   "Majiztral": 4700,
-  "Makmah": 10500,
+  "Makmah": 11100,
   "Malva": 300,
   "Manolito🇨🇴": 300,
   "Manteca mantecosa 🇨🇾": 300,
@@ -9364,7 +9382,7 @@
   "NewCharacter🇦🇷": 300,
   "Nmb": 1000,
   "Noa": 1000,
-  "Noone": 300,
+  "Noone": 900,
   "Nova": 300,
   "Number": 2900,
   "Number VE": 1200,
@@ -9377,6 +9395,7 @@
   "PIERR🇵🇪": 300,
   "PRAISERIZA": 5100,
   "PROMETHEUS BIB 🇨🇴": 300,
+  "PUNISHER": 600,
   "Panchok": 8400,
   "Paria": 1500,
   "Personality": 300,
@@ -9387,7 +9406,7 @@
   "Pomberito": 2900,
   "Presagio": 5100,
   "Prodigy": 300,
-  "Prosu": 3200,
+  "Prosu": 3800,
   "Provenza": 6000,
   "RT": 1300,
   "Ragna": 1000,
@@ -9405,6 +9424,7 @@
   "Ruvick": 300,
   "SAEVA": 300,
   "SAIDEM": 2900,
+  "SC": 600,
   "SINTEXT": 600,
   "SOL": 1000,
   "SULTAN": 1300,
@@ -9458,7 +9478,7 @@
   "Zaza": 300,
   "Zekha": 1000,
   "Zetryko": 1600,
-  "Zignos": 5800,
+  "Zignos": 6400,
   "araya": 300,
   "chekialo 🇧🇯": 1300,
   "crakero": 600,
@@ -9468,6 +9488,7 @@
   "francis": 1200,
   "giansito": 1000,
   "ikonoxx": 900,
+  "jazi": 600,
   "kerkoide": 300,
   "letrao": 1300,
   "luisito 🏆": 300,

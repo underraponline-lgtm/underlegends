@@ -1180,7 +1180,9 @@
    },
    "dorado": {
     "sv": "SR",
-    "desde": "2026-11-10T05:00:00Z"
+    "desde": "2026-11-10T05:00:00Z",
+    "n": 631,
+    "nombre": "SNAKE INSIGNIA 8 8"
    },
    "guerra": {
     "pares": [
@@ -1287,7 +1289,8 @@
      "ACAD": 6,
      "DDF": 2,
      "LKR": 2,
-     "FDS": 1
+     "FDS": 1,
+     "SR": 3
     },
     "gente": {
      "FFA": 76,
@@ -1295,9 +1298,10 @@
      "DDS": 10,
      "ACAD": 48,
      "FRZ": 8,
-     "FDS": 18
+     "FDS": 18,
+     "SR": 16
     },
-    "gana": "FFA"
+    "gana": "SR"
    },
    "meta_va": {
     "ACAD": 48,
@@ -1311,7 +1315,7 @@
     "FRZ": 8,
     "FVS": 0,
     "LKR": 23,
-    "SR": 0,
+    "SR": 16,
     "URBF": 0
    }
   }

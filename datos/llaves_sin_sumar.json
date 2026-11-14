@@ -1035,6 +1035,54 @@
       ],
       "Calíz",
       "batalla 7 · votos 1–0"
+     ],
+     [
+      [
+       "Calíz",
+       "LAST"
+      ],
+      "Calíz",
+      "batalla 8 · siguió peleando"
+     ],
+     [
+      [
+       "TøKīØ🦠🧠",
+       "Calíz"
+      ],
+      "TøKīØ🦠🧠",
+      "batalla 9 · votos 1–0"
+     ],
+     [
+      [
+       "TøKīØ🦠🧠",
+       "Rbk"
+      ],
+      "TøKīØ🦠🧠",
+      "batalla 10 · votos 1–0"
+     ],
+     [
+      [
+       "TøKīØ🦠🧠",
+       "Rbk"
+      ],
+      "TøKīØ🦠🧠",
+      "batalla 11 · votos 1–0"
+     ],
+     [
+      [
+       "LAST",
+       "TøKīØ🦠🧠"
+      ],
+      "LAST",
+      "batalla 12 · siguió peleando"
+     ],
+     [
+      [
+       "Calíz",
+       "LAST"
+      ],
+      "Calíz",
+      "batalla 13 · votos 1–0"
      ]
     ],
     "r": "5 vidas"
@@ -1042,16 +1090,6 @@
   ],
   "sv": "LKR",
   "tabla": [
-   [
-    "Calíz",
-    "Campeón",
-    0
-   ],
-   [
-    "LAST",
-    "Campeón",
-    0
-   ],
    [
     "Player",
     "Campeón",
@@ -1063,8 +1101,18 @@
     0
    ],
    [
+    "Calíz",
+    "Tercero",
+    0
+   ],
+   [
     "TøKīØ🦠🧠",
-    "Campeón",
+    "Tercero",
+    0
+   ],
+   [
+    "LAST",
+    "Cuartos",
     0
    ],
    [
@@ -2246,6 +2294,73 @@
    ],
    [
     "NXUZ",
+    "Cuartos",
+    0
+   ]
+  ]
+ },
+ "167162678": {
+  "dia": "2026-11-13",
+  "escala": "4-7",
+  "fecha": "13/11",
+  "links": [
+   "https://discord.com/channels/1489848581203689535/1500675902042931280/1570954673467162678"
+  ],
+  "n": 167162678,
+  "nombre": "RANKED 2",
+  "ns": 1,
+  "participantes": 7,
+  "rondas": [
+   {
+    "b": [
+     [
+      [
+       "Mc arepa",
+       "Izaya"
+      ],
+      "Mc arepa",
+      ""
+     ],
+     [
+      [
+       "crakero",
+       "CrisZJ"
+      ],
+      "crakero",
+      ""
+     ],
+     [
+      [
+       "Dios",
+       "4'C 🇲🇽",
+       "Raizer"
+      ],
+      "Dios",
+      "triple (3 bandas)"
+     ]
+    ],
+    "r": "Cuartos"
+   }
+  ],
+  "sv": "FDS",
+  "tabla": [
+   [
+    "4'C 🇲🇽",
+    "Cuartos",
+    0
+   ],
+   [
+    "CrisZJ",
+    "Cuartos",
+    0
+   ],
+   [
+    "Izaya",
+    "Cuartos",
+    0
+   ],
+   [
+    "Raizer",
     "Cuartos",
     0
    ]

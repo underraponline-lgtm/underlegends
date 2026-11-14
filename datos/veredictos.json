@@ -7,7 +7,7 @@
    "sv": "🔥LKR (Champios Legue)🐉",
    "g": "1558611504046153750",
    "pub": 1794613991174,
-   "ed": 1794615796579,
+   "ed": 1794617484902,
    "n": 6,
    "vidas": 5,
    "ronda": "5 vidas",
@@ -74,6 +74,60 @@
      "CALIZ",
      "votos 1–0",
      "1570956343135838299"
+    ],
+    [
+     [
+      "CALIZ",
+      "LAST"
+     ],
+     "CALIZ",
+     "siguió peleando",
+     "1570957639095951421"
+    ],
+    [
+     [
+      "CALIZ",
+      "TOKIO"
+     ],
+     "TOKIO",
+     "votos 1–0",
+     "1570959098546094182"
+    ],
+    [
+     [
+      "TOKIO",
+      "SNX"
+     ],
+     "TOKIO",
+     "votos 1–0",
+     "1570959972731330563"
+    ],
+    [
+     [
+      "TOKIO",
+      "SNX"
+     ],
+     "TOKIO",
+     "votos 1–0",
+     "1570961304921837580"
+    ],
+    [
+     [
+      "TOKIO",
+      "LAST"
+     ],
+     "LAST",
+     "siguió peleando",
+     "1570961820725026978"
+    ],
+    [
+     [
+      "LAST",
+      "CALIZ"
+     ],
+     "CALIZ",
+     "votos 1–0",
+     "1570963865884295219"
     ]
    ],
    "terminada": false
@@ -1739,6 +1793,72 @@
    "a": "PLAYER",
    "b": "CALIZ",
    "ganador": "CALIZ",
+   "votos": "1–0"
+  },
+  "1570959098546094182": {
+   "id": "1570959098546094182",
+   "sv": "🔥LKR (Champios Legue)🐉",
+   "g": "1558611504046153750",
+   "canal": "1564463626855645234",
+   "pub": 1794616236102,
+   "a": "CALIZ",
+   "b": "TOKIO",
+   "ganador": "TOKIO",
+   "votos": "1–0"
+  },
+  "1570959972731330563": {
+   "id": "1570959972731330563",
+   "sv": "🔥LKR (Champios Legue)🐉",
+   "g": "1558611504046153750",
+   "canal": "1564463626855645234",
+   "pub": 1794616444524,
+   "a": "TOKIO",
+   "b": "SNX",
+   "ganador": "TOKIO",
+   "votos": "1–0"
+  },
+  "1570960295252467745": {
+   "id": "1570960295252467745",
+   "sv": "#FDS ╏FREESTYLE DISCORD SERIES",
+   "g": "1489848581203689535",
+   "canal": "1536574435761332334",
+   "pub": 1794616521419,
+   "a": "REPLICA : RAIZER",
+   "b": "DIOS",
+   "ganador": "DIOS",
+   "votos": "1–0"
+  },
+  "1570961304921837580": {
+   "id": "1570961304921837580",
+   "sv": "🔥LKR (Champios Legue)🐉",
+   "g": "1558611504046153750",
+   "canal": "1564463626855645234",
+   "pub": 1794616762143,
+   "a": "TOKIO",
+   "b": "SNX",
+   "ganador": "TOKIO",
+   "votos": "1–0"
+  },
+  "1570963865884295219": {
+   "id": "1570963865884295219",
+   "sv": "🔥LKR (Champios Legue)🐉",
+   "g": "1558611504046153750",
+   "canal": "1564463626855645234",
+   "pub": 1794617372724,
+   "a": "LAST",
+   "b": "CALIZ",
+   "ganador": "CALIZ",
+   "votos": "1–0"
+  },
+  "1570964084994609363": {
+   "id": "1570964084994609363",
+   "sv": "#FDS ╏FREESTYLE DISCORD SERIES",
+   "g": "1489848581203689535",
+   "canal": "1536574435761332334",
+   "pub": 1794617424964,
+   "a": "CRAKERO",
+   "b": "CRISZJ",
+   "ganador": "CRAKERO",
    "votos": "1–0"
   }
  },
@@ -6397,8 +6517,8 @@
    "g": "1489848581203689535",
    "canal": "1500675902042931280",
    "pub": 1794615181081,
-   "ed": 1794615780347,
-   "texto": "`[ CUARTOS ]`\n⌞Izaya 🇨🇱⌝ 🆚 ⌞MCAREPA 🇻🇪⌝\n⌞Leyenda.X5 🇦🇷⌝ 🆚 ⌞CrisZJ🇵🇪⌝",
+   "ed": 1794617560642,
+   "texto": "`[ CUARTOS ]`\n⌞Izaya 🇨🇱⌝ 🆚 ⌞MCAREPA 🇻🇪⌝\n⌞tomyhilfiger1312🇾🇹⌝ 🆚 ⌞CrisZJ🇵🇪⌝\n⌞Artezzy 🇵🇪⌝ 🆚 ⌞abel le gano sin replica a ca⌝",
    "batallas": [
     [
      "CUARTOS",
@@ -6413,11 +6533,63 @@
     [
      "CUARTOS",
      [
-      "Leyenda.X5 🇦🇷",
+      "tomyhilfiger1312🇾🇹",
       "CrisZJ🇵🇪"
      ],
      null,
      "última ronda y no dice campeón",
+     []
+    ],
+    [
+     "CUARTOS",
+     [
+      "Artezzy 🇵🇪",
+      "abel le gano sin replica a ca"
+     ],
+     null,
+     "última ronda y no dice campeón",
+     []
+    ]
+   ]
+  },
+  "1570960126192652380": {
+   "id": "1570960126192652380",
+   "sv": "#FDS ╏FREESTYLE DISCORD SERIES",
+   "g": "1489848581203689535",
+   "canal": "1536574435761332334",
+   "pub": 1794616481112,
+   "ed": 1794617546440,
+   "texto": "`[ CUARTOS ]`\n⌞RAIZER⌝ 🆚 ⌞DIOS⌝ 🆚 ⌞4´C⌝\n⌞REPLICA : RAIZER⌝ 🆚 ⌞DIOS⌝\n⌞CRAKERO⌝ 🆚 ⌞CRISZJ⌝",
+   "batallas": [
+    [
+     "CUARTOS",
+     [
+      "RAIZER",
+      "DIOS",
+      "4´C"
+     ],
+     null,
+     "última ronda y no dice campeón",
+     []
+    ],
+    [
+     "CUARTOS",
+     [
+      "REPLICA : RAIZER",
+      "DIOS"
+     ],
+     "DIOS",
+     "veredicto",
+     []
+    ],
+    [
+     "CUARTOS",
+     [
+      "CRAKERO",
+      "CRISZJ"
+     ],
+     "CRAKERO",
+     "veredicto",
      []
     ]
    ]

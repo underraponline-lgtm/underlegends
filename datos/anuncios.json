@@ -1,5 +1,5 @@
 {
- "cuando": "2026-11-14T00:25:59+00:00",
+ "cuando": "2026-11-14T00:55:09+00:00",
  "anuncios": [
   {
    "nombre": "¡SE LLEGÓ LA GRAN NOCHE!",
@@ -7073,6 +7073,42 @@
   }
  ],
  "inscripciones": [
+  {
+   "servidor": "FDS",
+   "canal": "✅╏inscripciones-express",
+   "texto": "Araya 🇦🇸",
+   "quien": "aguss.araya",
+   "discord_id": "938630042764845107",
+   "msg_id": "1570963323120390155",
+   "cuando": "2026-11-14T00:47:23"
+  },
+  {
+   "servidor": "FDS",
+   "canal": "✅╏inscripciones-express",
+   "texto": "tomyhilfiger1312🇾🇹",
+   "quien": "crakero_crew_1312",
+   "discord_id": "1374555884868337738",
+   "msg_id": "1570962390952968355",
+   "cuando": "2026-11-14T00:43:41"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "Thaniel🇻🇪",
+   "quien": "than1el__",
+   "discord_id": "1400122840606441603",
+   "msg_id": "1570959676135182347",
+   "cuando": "2026-11-14T00:32:53"
+  },
+  {
+   "servidor": "FDS",
+   "canal": "✅╏inscripciones-express",
+   "texto": "Tokio 🇭🇷",
+   "quien": "paratimiringuicaro",
+   "discord_id": "1249980492951060561",
+   "msg_id": "1570958190772879423",
+   "cuando": "2026-11-14T00:26:59"
+  },
   {
    "servidor": "FDS",
    "canal": "✅╏inscripciones-express",
@@ -43036,42 +43072,6 @@
    "discord_id": "849765868819972166",
    "msg_id": "1558961487828226110",
    "cuando": "2026-10-11T21:56:22"
-  },
-  {
-   "servidor": "URBF",
-   "canal": "‣《🗞️》Inscripciones",
-   "texto": "Izaya 🇨🇱",
-   "quien": "dragun0994",
-   "discord_id": "1150044918216130636",
-   "msg_id": "1558916233531891814",
-   "cuando": "2026-10-11T18:56:33"
-  },
-  {
-   "servidor": "URBF",
-   "canal": "‣《🗞️》Inscripciones",
-   "texto": "Abyssus 🇨🇦",
-   "quien": "vipertapestry",
-   "discord_id": "768561204707983361",
-   "msg_id": "1558913932800827585",
-   "cuando": "2026-10-11T18:47:24"
-  },
-  {
-   "servidor": "DDF",
-   "canal": "『📑』Inscripciones",
-   "texto": "nbbnbnbn🇺🇾",
-   "quien": "martinez4080",
-   "discord_id": "756958777126682674",
-   "msg_id": "1558889473935155382",
-   "cuando": "2026-10-11T17:10:13"
-  },
-  {
-   "servidor": "DDF",
-   "canal": "『📑』Inscripciones",
-   "texto": "Adriagner🇳🇮",
-   "quien": "adriagner",
-   "discord_id": "1316490165836972104",
-   "msg_id": "1558889316036386837",
-   "cuando": "2026-10-11T17:09:35"
   }
  ]
 }

@@ -1609,5 +1609,32 @@
   "sv": "LKR",
   "t_pregunta": ""
  },
+ "1570917198128615515": {
+  "autor": "1440039366654165212",
+  "canal": "1309234583023124531",
+  "canal_pregunta": "",
+  "cuando": "2026-11-13T21:44:06.264000+00:00",
+  "donde": "",
+  "evento": "ELITE FESTIVAL VOL. 1",
+  "fecha": "13/11",
+  "llave": "1570917198128615515",
+  "pregunta": "",
+  "preguntada": "2026-11-13 7:54 PM ET",
+  "preguntas": [
+   {
+    "lados": [
+     "Calíz 🇲🇽",
+     "erian",
+     "KRAVITZ 🇦🇷"
+    ],
+    "ronda": "OCTAVOS"
+   }
+  ],
+  "respondidas": {},
+  "sin_permiso": true,
+  "staff_probado": true,
+  "sv": "ACAD",
+  "t_pregunta": ""
+ },
  "_leeme": "Las llaves que el ciclo no entendió y se las preguntó a quien las publicó, con botones o un menú (bot/finales.py). Una vez por llave, por su ID: así nunca se pregunta dos veces. Dlx, 12/10/2026."
 }

@@ -858,11 +858,12 @@
    "vencido": true
   },
   "Fritz": {
+   "avisado": "2026-11-13",
    "chat": "2026-11-13",
    "con": null,
    "cumplido": "",
    "debut": "2026-11-13T22:23:00+00:00",
-   "did": "",
+   "did": "1420965051539390506",
    "evento": "SNAKE INSIGNIA 8 8",
    "n": 631,
    "sv": "SR",
@@ -2036,11 +2037,12 @@
    "vencido": false
   },
   "PUNISHER": {
+   "avisado": "2026-11-13",
    "chat": "2026-11-13",
    "con": null,
    "cumplido": "",
    "debut": "2026-11-13T22:23:00+00:00",
-   "did": "",
+   "did": "520115924901167107",
    "evento": "SNAKE INSIGNIA 8 8",
    "n": 631,
    "sv": "SR",
@@ -2203,6 +2205,7 @@
    "vencido": false
   },
   "SC": {
+   "avisado": "2026-11-13",
    "chat": "2026-11-13",
    "con": null,
    "cumplido": "",

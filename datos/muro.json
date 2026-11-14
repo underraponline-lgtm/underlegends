@@ -821,6 +821,10 @@
 "temporada"
 ]
 },
+"fazer": {
+"rg": "",
+"c": []
+},
 "valen": {
 "rg": "",
 "c": []
@@ -923,10 +927,6 @@
 "servidor",
 "temporada"
 ]
-},
-"fazer": {
-"rg": "",
-"c": []
 },
 "leyenda": {
 "rg": "",
