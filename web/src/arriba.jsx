@@ -2065,7 +2065,7 @@ function momentos(liga, vivoL, ctx = {}) {
   if (video) {
     const d = utc(video.t);
     out.push({
-      tipo: 'video', et: 'Video', color: '#E41373', hora: liga.cuando(video.t),
+      tipo: 'video', et: 'Video', color: '#E41373', hora: liga.cuando(video.t), esc: 'DRA',
       txt: <><div className="hero-t"><span className="tag tg-video">ÚLTIMO VIDEO · {limpio(video.canal || '').toUpperCase()}</span></div><Tit c={largo(limpio(video.tit))}>{limpio(video.tit)}</Tit>
         {/* en la zona de quien mira (Ajustes), no la del aparato (revisión del 04/10/2026) */}
         <p className="hero-p">Subido el {Number(diaISO(d).split('-')[2])} de {MESES[Number(diaISO(d).split('-')[1]) - 1]}.</p>
@@ -2081,7 +2081,7 @@ function momentos(liga, vivoL, ctx = {}) {
   const nov = (liga.d.novedades || [])[0];
   if (nov) {
     out.push({
-      tipo: 'liga', et: 'La Liga', color: '#29B298', hora: liga.cuando(nov.t),
+      tipo: 'liga', et: 'La Liga', color: '#29B298', hora: liga.cuando(nov.t), esc: 'DRA',
       txt: <><div className="hero-t"><span className="tag tg-liga">LA LIGA · {liga.cuando(nov.t).toUpperCase()}</span></div><Tit c={largo(limpio(nov.tit))}>{limpio(nov.tit)}</Tit>
         <p className="hero-p">{recorte(nov.tx || '', 180)}</p>
         {nov.link ? <div className="hero-acc"><a className="btn verde" href={nov.link} target="_blank" rel="noopener noreferrer">Leer en Discord ↗</a></div> : null}</>,
@@ -2122,7 +2122,8 @@ function fondoDe(liga, m) {
   const x = /^#?([0-9a-f]{6})$/i.exec(col);
   const n = x ? parseInt(x[1], 16) : 0;
   const luz = (0.2126 * (n >> 16) + 0.7152 * ((n >> 8) & 255) + 0.0722 * (n & 255)) / 255;
-  const esc = escenaDe(m && m.sv);
+  // lo de la Liga (La Liga, el video) va con la escena de DRA, su casa: `esc`
+  const esc = escenaDe(m && (m.esc || m.sv));
   return { '--mo-c': col, '--mo-o': luz < 0.2 ? 1 : 0.82, '--mo-logo': 'url("' + logo + '")', ...silueta(m && m.sv, col),
     ...(esc ? { '--es-img': 'url("' + esc + '")' } : {}) };
 }
@@ -2184,7 +2185,7 @@ export function Hero({ liga, vivoL, children }) {
     return <><div className="mo-txt">{m.txt}</div><div className="mo-vis">{m.vis}</div></>;
   };
   return (
-    <div className={'escena hero-ini es2' + (escenaDe(m0.sv) ? ' con-esc' : '')} data-tuto="hoy" style={fondoDe(liga, m0)}>
+    <div className={'escena hero-ini es2' + (escenaDe(m0.esc || m0.sv) ? ' es-sv-fondo' : '')} data-tuto="hoy" style={fondoDe(liga, m0)}>
       <section ref={sec} className={'hero carrusel' + (pausa || enVideo ? ' quieto' : '')} id="envivo" aria-roledescription="carrusel" aria-label="Lo de ahora"
         onPointerEnter={(e) => { if (e.pointerType === 'mouse') setPausa(true); }}
         onFocus={() => setPausa(true)}
@@ -2221,7 +2222,7 @@ export function Hero({ liga, vivoL, children }) {
         {/* 🎞️ la tira de momentos (de «Hero Carousel»): la escena chiquita, el logo, qué es y cuándo; el que miras, más ancho */}
         <nav className="mo-tabs es-tira" aria-label="Momentos">
           {mo.map((m, k) => {
-            const e0 = escenaDe(m.sv);
+            const e0 = escenaDe(m.esc || m.sv);
             return (
               <button type="button" key={idDe(m)} className={(k === j ? 'on' : '') + (m.tipo === 'vivo' ? ' vivo' : '')} onClick={() => ver(k)}
                 style={e0 ? { backgroundImage: 'url("' + e0 + '")' } : undefined} aria-current={k === j ? 'true' : undefined}>

@@ -401,8 +401,8 @@ span.tab-av img{width:100%;height:100%;object-fit:cover;display:block}
    mostrar… variedad»). Tres formas —A cartelera, B póster, C bento— con la misma tira, las mismas flechas (blancas y
    finas) y el mismo reloj de 8 s. Todo bajo `.escena.es2` para no tocar el resto de las escenas. Ver `Hero` en arriba.jsx ═══ */
 /* 🌆 la escena del servidor detrás de un velo plano; sin la suya, el fondo de antes (el círculo y el logo) */
-.app .escena.es2.con-esc{background-image:linear-gradient(rgba(3,3,4,.72),rgba(3,3,4,.72)),var(--es-img);background-size:cover;background-position:center}
-.app .escena.es2.con-esc:before,.app .escena.es2.con-esc:after{display:none}
+.app .escena.es2.es-sv-fondo{background-image:linear-gradient(rgba(3,3,4,.72),rgba(3,3,4,.72)),var(--es-img);background-size:cover;background-position:center}
+.app .escena.es2.es-sv-fondo:before,.app .escena.es2.es-sv-fondo:after{display:none}
 /* todos los momentos en la misma celda: el escenario mide lo del más alto y no salta. Al cambiar se cruzan */
 /* ⚠️ `.app .hero-in` es una grilla de `1fr 360px` en la compu (la del Inicio viejo): acá, una sola columna */
 .app .escena.es2 .hero-in{display:grid;grid-template-columns:minmax(0,1fr);gap:0}
@@ -506,11 +506,11 @@ span.tab-av img{width:100%;height:100%;object-fit:cover;display:block}
 .app .escena.es2 .es-otro b{display:block;font:400 20px/1.05 Anton,Archivo,sans-serif;text-transform:uppercase;overflow-wrap:anywhere}
 .app .escena.es2 .es-otro small{display:block;margin-top:4px;color:#A5A5A0;font:700 12px/1 "Barlow Condensed",sans-serif;letter-spacing:.06em;text-transform:uppercase}
 @media (hover: hover) and (pointer: fine){.app .escena.es2 .es-otro:hover{border-color:#55555C}}
-/* 🖥️ la compu: alto fijo (440 el momento + la tira) */
+/* 🖥️ la compu: alto fijo, el mismo para todos (400 el momento + la tira; el campeón, el más alto, mide 388) */
 @media (min-width: 900px){
-  .app .escena.es2 .hero.carrusel{padding-top:30px;padding-bottom:0}
-  .app .escena.es2 .hero-in{height:440px}
-  .app .escena.es2 .mo{height:440px;min-height:0;align-items:center;grid-template-columns:minmax(0,1.05fr) minmax(0,1fr);gap:40px}
+  .app .escena.es2 .hero.carrusel{padding-top:24px;padding-bottom:0}
+  .app .escena.es2 .hero-in{height:400px}
+  .app .escena.es2 .mo{height:400px;min-height:0;align-items:center;grid-template-columns:minmax(0,1.05fr) minmax(0,1fr);gap:40px}
   .app .escena.es2 .hero-ev{margin:14px 0 10px;font-size:56px}
   .app .escena.es2 .hero-ev.largo{font-size:46px}
   .app .escena.es2 .hero-ev.muy-largo{font-size:36px}

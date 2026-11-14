@@ -11,6 +11,16 @@
  ],
  "cambios": [
     {
+        "version": "5.30",
+        "dia": "2026-11-14",
+        "cuando": "2026-11-14T01:49:00-05:00",
+        "titulo": "El escenario, sin huecos",
+        "items": [
+            "El **escenario** del Inicio ya no tiene ese espacio vacío alrededor: usa todo el ancho y es más bajo (todos los momentos miden lo mismo).",
+            "**La Liga** y el **video** también tienen escena de fondo."
+        ]
+    },
+    {
         "version": "5.29",
         "dia": "2026-11-14",
         "cuando": "2026-11-14T01:41:00-05:00",
