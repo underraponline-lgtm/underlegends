@@ -47312,7 +47312,7 @@
    ],
    [
     "Dios",
-    "REPLICA : RAIZER",
+    "Raizer",
     "Dios"
    ],
    [
@@ -47322,7 +47322,7 @@
    ],
    [
     "Artezzy",
-    "SORAYA",
+    "araya",
     "Artezzy"
    ],
    [
@@ -47344,6 +47344,11 @@
     "Dios",
     "crakero",
     "Dios"
+   ],
+   [
+    "Dios",
+    "Leyenda",
+    "Dios"
    ]
   ],
   "ev_antes": {
@@ -47355,11 +47360,11 @@
    "crakero": 9
   },
   "fecha": "13/11",
-  "firma": "5fc41e6811b60b97",
+  "firma": "0bb671bc9f10fe59",
   "msg": "1570980323372703807",
   "nombre": "RANKED 2",
   "num": 632,
-  "participantes": 11,
+  "participantes": 12,
   "sello": {
    "Dios": "566f95c1486d:7a510334494e"
   },
@@ -47397,17 +47402,12 @@
     2000
    ],
    [
-    "REPLICA : RAIZER",
-    "Cuartos",
-    2000
-   ],
-   [
     "CrisZJ",
     "Cuartos",
     2000
    ],
    [
-    "SORAYA",
+    "araya",
     "Cuartos",
     2000
    ]

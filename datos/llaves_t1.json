@@ -35166,7 +35166,7 @@
        "Artezzy"
       ],
       "NXUZ",
-      "Walk-in 1: Nxuz 🇵🇪; Walk-in 1: Artezzy 🇵🇪"
+      "Walk-in 1: Nxuz; Walk-in 1: Artezzy 🇵🇪"
      ],
      [
       [
@@ -52687,7 +52687,7 @@
        "Xplicit"
       ],
       "",
-      "cobra: Nxuz 🇵🇪; cobra: Xplicit🇨🇱; sin final: ✅ Decidir (la llave llega sólo a las semis)"
+      "cobra: Nxuz; cobra: Xplicit🇨🇱; sin final: ✅ Decidir (la llave llega sólo a las semis)"
      ]
     ],
     "r": "Semifinales"
@@ -54549,7 +54549,7 @@
   ],
   "n": 632,
   "nombre": "RANKED 2",
-  "participantes": 11,
+  "participantes": 12,
   "rondas": [
    {
     "b": [
@@ -54565,7 +54565,7 @@
      [
       [
        "Dios",
-       "REPLICA : RAIZER"
+       "Raizer"
       ],
       "Dios",
       ""
@@ -54581,7 +54581,7 @@
      [
       [
        "Artezzy",
-       "SORAYA"
+       "araya"
       ],
       "Artezzy",
       ""
@@ -54635,6 +54635,14 @@
      ],
      [
       [
+       "Dios",
+       "Leyenda"
+      ],
+      "Dios",
+      "Walk-in 2: Leyenda.X5 🇦🇷"
+     ],
+     [
+      [
        "MCAREPA",
        "Chente 🇻🇪"
       ],
@@ -54678,23 +54686,18 @@
     2000
    ],
    [
-    "REPLICA : RAIZER",
-    "Cuartos",
-    2000
-   ],
-   [
     "Raizer",
     "Cuartos",
     2000
    ],
    [
-    "SORAYA",
+    "araya",
     "Cuartos",
     2000
    ]
   ],
   "ver": {
-   "min": 78,
+   "min": 89,
    "org": "juega",
    "v": 1
   }

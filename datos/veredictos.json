@@ -7,7 +7,7 @@
    "sv": "🔥LKR (Champios Legue)🐉",
    "g": "1558611504046153750",
    "pub": 1794613991174,
-   "ed": 1794621256301,
+   "ed": 1794621500390,
    "n": 7,
    "vidas": 5,
    "ronda": "5 vidas",
@@ -224,17 +224,6 @@
   }
  },
  "batallas": {
-  "1568445333292187780": {
-   "id": "1568445333292187780",
-   "sv": "🔥 𝐃𝐈𝐒𝐂𝐎𝐑𝐃 𝐒𝐓𝐘𝐋𝐄 🎤",
-   "g": "1443770831598649528",
-   "canal": "1477446447422246943",
-   "pub": 1794016907762,
-   "a": "NRE X ABRAHAM",
-   "b": "S1LENCE X KOCHI",
-   "ganador": "NRE X ABRAHAM",
-   "votos": "1–0"
-  },
   "1568447268514828391": {
    "id": "1568447268514828391",
    "sv": "🔥 𝐃𝐈𝐒𝐂𝐎𝐑𝐃 𝐒𝐓𝐘𝐋𝐄 🎤",
@@ -2081,6 +2070,17 @@
    "a": "LAST",
    "b": "PLAYER",
    "ganador": "PLAYER",
+   "votos": "1–0"
+  },
+  "1570982376949944531": {
+   "id": "1570982376949944531",
+   "sv": "#FDS ╏FREESTYLE DISCORD SERIES",
+   "g": "1489848581203689535",
+   "canal": "1536574435761332334",
+   "pub": 1794621786106,
+   "a": "Leyenda.X5",
+   "b": "DIOS",
+   "ganador": "DIOS",
    "votos": "1–0"
   }
  },
@@ -6780,8 +6780,8 @@
    "g": "1489848581203689535",
    "canal": "1536574435761332334",
    "pub": 1794616481112,
-   "ed": 1794621137108,
-   "texto": "`[ CUARTOS ]`\n⌞RAIZER⌝ 🆚 ⌞DIOS⌝ 🆚 ⌞4´C⌝\n⌞REPLICA : RAIZER⌝ 🆚 ⌞DIOS⌝\n⌞CRAKERO⌝ 🆚 ⌞CRISZJ⌝\n⌞SORAYA⌝ 🆚 ⌞ARTEZZY⌝\n`[ SEMIFINALES ]`\n⌞MC AREPA⌝ 🆚 ⌞CRAKERO⌝\n⌞ARTEZZY⌝ 🆚 ⌞DIOS⌝\n⌞MCAREPA⌝ 🆚 ⌞ARTEZZY⌝\n`[ FINAL ]`\n⌞DIOS⌝ 🆚 ⌞CRAKERO⌝\n⌞MCAREPA⌝ 🆚 ⌞CHENTE⌝",
+   "ed": 1794621807059,
+   "texto": "`[ CUARTOS ]`\n⌞RAIZER⌝ 🆚 ⌞DIOS⌝ 🆚 ⌞4´C⌝\n⌞REPLICA : RAIZER⌝ 🆚 ⌞DIOS⌝\n⌞CRAKERO⌝ 🆚 ⌞CRISZJ⌝\n⌞SORAYA⌝ 🆚 ⌞ARTEZZY⌝\n`[ SEMIFINALES ]`\n⌞MC AREPA⌝ 🆚 ⌞CRAKERO⌝\n⌞ARTEZZY⌝ 🆚 ⌞DIOS⌝\n⌞MCAREPA⌝ 🆚 ⌞ARTEZZY⌝\n`[ FINAL ]`\n⌞DIOS⌝ 🆚 ⌞CRAKERO⌝\n⌞MCAREPA⌝ 🆚 ⌞CHENTE⌝\n⌞Leyenda.X5⌝ 🆚 ⌞Dios⌝",
    "batallas": [
     [
      "CUARTOS",
@@ -6872,6 +6872,16 @@
      ],
      null,
      "última ronda y no dice campeón",
+     []
+    ],
+    [
+     "FINAL",
+     [
+      "Leyenda.X5",
+      "Dios"
+     ],
+     "Dios",
+     "veredicto",
      []
     ]
    ]
