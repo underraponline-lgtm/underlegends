@@ -47,44 +47,44 @@
   },
   "fds-peru": {
    "cinexfilo": [
-    "a6b836e0b6",
+    "cb14750c30",
     72,
     2
    ],
    "dlx": [
-    "2705d48c41",
+    "370314eb2b",
     0,
     0
    ],
    "giansito": [
-    "3523e4329e",
+    "c52abc96af",
     67,
-    3
+    4
    ],
    "lrs": [
-    "d83a810adc",
+    "986f0cce35",
     76,
     1
    ],
    "mcarepa": [
-    "f4fa323923",
+    "0d07af8c02",
     60,
-    5
-   ],
-   "sinlimites": [
-    "efda63f569",
-    65,
-    4
-   ],
-   "sol": [
-    "c04b41c948",
-    61,
     6
    ],
-   "telmex": [
-    "fd017fca4c",
-    57,
+   "sinlimites": [
+    "75214729b6",
+    65,
+    5
+   ],
+   "sol": [
+    "e62fc7901f",
+    61,
     7
+   ],
+   "telmex": [
+    "6fc9b89d2e",
+    57,
+    9
    ]
   },
   "fmh-albiceleste": {

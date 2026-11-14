@@ -1789,5 +1789,52 @@
   "sv": "FFA",
   "t_pregunta": "2026-11-14T06:24:23+00:00"
  },
+ "1571020068995866745": {
+  "autor": "1364747464170668042",
+  "canal": "1222379620494741604",
+  "canal_pregunta": "",
+  "cuando": "2026-11-14T04:32:52.590000+00:00",
+  "donde": "",
+  "evento": "COMPE CHOP NUEVO CEO",
+  "fecha": "13/11",
+  "llave": "1571020068995866745",
+  "pregunta": "",
+  "preguntada": "2026-11-14 12:24 PM ET",
+  "preguntas": [
+   {
+    "lados": [
+     "OG",
+     "Makmah"
+    ],
+    "ronda": "FINAL"
+   },
+   {
+    "lados": [
+     "OG",
+     "Makmah"
+    ],
+    "ronda": "FINAL"
+   },
+   {
+    "lados": [
+     "Rizas",
+     "OG"
+    ],
+    "ronda": "SEMIFINALES"
+   },
+   {
+    "lados": [
+     "makma",
+     "nc🇲🇿"
+    ],
+    "ronda": "SEMIFINALES"
+   }
+  ],
+  "respondidas": {},
+  "sin_permiso": true,
+  "staff_probado": true,
+  "sv": "CH",
+  "t_pregunta": ""
+ },
  "_leeme": "Las llaves que el ciclo no entendió y se las preguntó a quien las publicó, con botones o un menú (bot/finales.py). Una vez por llave, por su ID: así nunca se pregunta dos veces. Dlx, 12/10/2026."
 }

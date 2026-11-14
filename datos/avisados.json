@@ -6508,7 +6508,7 @@
    "Trot": 13
   },
   "fecha": "11/10",
-  "firma": "39138c34d3b5ba9a",
+  "firma": "06a37ba08d565a02",
   "msg": "1558907910707224587",
   "nombre": "RED BULL NACIONAL ESPAÑA T.5",
   "num": 448,
@@ -9436,7 +9436,7 @@
    "Zignos": 19
   },
   "fecha": "12/10",
-  "firma": "1e85c5518d36ce2e",
+  "firma": "7b2ed1abf6f91b3c",
   "msg": "1559587802864295988",
   "nombre": "GODZ",
   "num": 460,
@@ -12534,7 +12534,7 @@
    "Vargas": 1
   },
   "fecha": "14/10",
-  "firma": "0b5a1dbb89ff421d",
+  "firma": "9a87e2e3a195f34f",
   "msg": "1560070688113688601",
   "nombre": "FF Freestyle Clasico",
   "num": 473,
@@ -22464,7 +22464,7 @@
    "Zekha": 4
   },
   "fecha": "25/10",
-  "firma": "48cab4ec6f8ace96",
+  "firma": "31e9aa1a68e5e851",
   "msg": "1564056930748469309",
   "nombre": "REDBULL CREW ARGENTINA 2026",
   "num": 515,
@@ -24198,7 +24198,7 @@
    "Vilca": 1
   },
   "fecha": "21/10",
-  "firma": "e17c734e6b372ffa",
+  "firma": "2b2558aa90961686",
   "msg": "1564147707952758815",
   "nombre": "- RED BULL TORNEO DE PLAZAS 2026 -",
   "num": 523,
@@ -24466,7 +24466,7 @@
    "Vilca": 1
   },
   "fecha": "22/10",
-  "firma": "f093b0117dd0f7e2",
+  "firma": "8680ff18015edbad",
   "msg": "1564147714000953499",
   "nombre": "GG SANGRERAP 4",
   "num": 525,
@@ -31514,7 +31514,7 @@
    "Velatz": 41
   },
   "fecha": "31/10",
-  "firma": "34c3de87ea901c7d",
+  "firma": "fb23b2ac32c1b470",
   "msg": "1566227272355020941",
   "nombre": "SNAKE INSIGNIA 7 8",
   "num": 553,
@@ -32659,7 +32659,7 @@
    "Zignos": 27
   },
   "fecha": "01/11",
-  "firma": "ce8516c31dc65b42",
+  "firma": "7c8583b812054e5c",
   "msg": "1566645439611011152",
   "nombre": "__ COCINE FIDEOS __",
   "num": 558,
@@ -33720,7 +33720,7 @@
    "OEP": 2
   },
   "fecha": "03/11",
-  "firma": "161cd85a76d10678",
+  "firma": "5e7fd0bb5f7a71c4",
   "msg": "1567309579967144037",
   "nombre": "Rayos y Centellas",
   "num": 564,
@@ -36429,7 +36429,7 @@
    "ikonoxx": 8
   },
   "fecha": "06/11",
-  "firma": "f17b625ef73c29df",
+  "firma": "443555547f9af137",
   "msg": "1568364084817297492",
   "nombre": "GALACTICOS DEL FREESTYLE VOL.17",
   "num": 575,
@@ -36655,7 +36655,7 @@
    "Yor": 4
   },
   "fecha": "06/11",
-  "firma": "a7e431b5730c12b9",
+  "firma": "630ff3a2ee851262",
   "msg": "1568457450267484231",
   "nombre": "FAT BATTLES PALOOZA FECHA 10 FINALS",
   "num": 576,
@@ -36840,7 +36840,7 @@
    "Xclusivo": 23
   },
   "fecha": "07/11",
-  "firma": "7fb035f77018b865",
+  "firma": "c4075265ed46e640",
   "msg": "1568746606562509004",
   "nombre": "ZONA MORTAL",
   "num": 577,
@@ -37567,6 +37567,11 @@
     "NXUZ",
     "Vilca",
     "NXUZ"
+   ],
+   [
+    "Carlosss",
+    "MARTINES",
+    ""
    ]
   ],
   "ev_antes": {
@@ -37587,7 +37592,7 @@
    "oriuz": 7
   },
   "fecha": "23/10",
-  "firma": "fa2d555cdf389269",
+  "firma": "52fbcf877d5201f1",
   "msg": "1569508003776823307",
   "nombre": "LLAVES PARA LA DISCORD STYLE 17",
   "num": 580,
@@ -37615,6 +37620,11 @@
    ],
    [
     "Carlosss",
+    "Semifinal",
+    5250
+   ],
+   [
+    "MARTINES",
     "Semifinal",
     5250
    ],
@@ -38541,6 +38551,11 @@
     "NXUZ",
     "MCO",
     "NXUZ"
+   ],
+   [
+    "Adriagner",
+    "Sakro",
+    ""
    ]
   ],
   "ev_antes": {
@@ -38552,7 +38567,7 @@
    "oriuz": 7
   },
   "fecha": "03/11",
-  "firma": "593b53f324fe1c28",
+  "firma": "77ff8506be4ef3e2",
   "msg": "1569508038820237324",
   "nombre": "SIX SEVEN STYLE",
   "num": 585,
@@ -38595,6 +38610,16 @@
    ],
    [
     "Miniboy",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Adriagner",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Sakro",
     "Cuartos",
     2000
    ]
@@ -39809,7 +39834,7 @@
    "Vilca": 15
   },
   "fecha": "08/11",
-  "firma": "ab68be3b5492a1c8",
+  "firma": "e5f21774fba72795",
   "msg": "1569508065508593856",
   "nombre": "RAP SIN GROSERIAS 4",
   "num": 591,
@@ -39948,7 +39973,7 @@
    "yinn": 33
   },
   "fecha": "08/11",
-  "firma": "b6bdb5b6ffe7d8fe",
+  "firma": "bc2f723157e52aa2",
   "msg": "1569128640363364464",
   "nombre": "K.O.M VOL.10",
   "num": 592,
@@ -40477,7 +40502,7 @@
    "black live": 1
   },
   "fecha": "09/11",
-  "firma": "faddfac7280a902d",
+  "firma": "2f0f0a16350aca01",
   "msg": "1569508072605618221",
   "nombre": "COMPE MAÑANERA",
   "num": 594,
@@ -42064,7 +42089,7 @@
    "Vilca": 16
   },
   "fecha": "10/11",
-  "firma": "aa2d84c1af15c3c8",
+  "firma": "3e29f6578281c204",
   "msg": "1569848635271680124",
   "nombre": "MF DOOM Y MADLIB EDICION 1",
   "num": 604,
@@ -42328,6 +42353,11 @@
     "Vilca",
     "oriuz",
     "Vilca"
+   ],
+   [
+    "CrisZJ",
+    "TøKīØ🦠🧠",
+    ""
    ]
   ],
   "ev_antes": {
@@ -42338,7 +42368,7 @@
    "oriuz": 7
   },
   "fecha": "20/10",
-  "firma": "b91e05b4bca71716",
+  "firma": "2e748167d68b16d5",
   "msg": "1570247714254360748",
   "nombre": "MINI COMPE LLAVES",
   "num": 606,
@@ -42376,6 +42406,16 @@
    ],
    [
     "Adriagner",
+    "Cuartos",
+    2000
+   ],
+   [
+    "CrisZJ",
+    "Cuartos",
+    2000
+   ],
+   [
+    "TøKīØ🦠🧠",
     "Cuartos",
     2000
    ],
@@ -45621,7 +45661,7 @@
    "crakero": 7
   },
   "fecha": "12/11",
-  "firma": "d9ef55a3c1e6dc2d",
+  "firma": "9c1fc6cbff8350b0",
   "msg": "1570578147399827479",
   "nombre": "CUPO A LA MULTIVERS",
   "num": 624,
@@ -45902,7 +45942,7 @@
    "TøKīØ🦠🧠": 13
   },
   "fecha": "12/11",
-  "firma": "9b08bf395f91894f",
+  "firma": "a87eeb65b7b63af2",
   "msg": "1570602754639007937",
   "nombre": "RAP SIN GROSERIAS 5",
   "num": 626,
@@ -46131,7 +46171,7 @@
    "Vilca": 22
   },
   "fecha": "12/11",
-  "firma": "69f8a6fe5ad0095e",
+  "firma": "b6237b9201848e3c",
   "msg": "1570602758506151978",
   "nombre": "RANKED 1",
   "num": 627,
@@ -47374,7 +47414,7 @@
    "crakero": 9
   },
   "fecha": "13/11",
-  "firma": "c2ca5367691ff83f",
+  "firma": "3d01b72f94727cd9",
   "msg": "1570980323372703807",
   "nombre": "RANKED 2",
   "num": 632,
@@ -47927,6 +47967,7 @@
   "v": 2
  },
  "635": {
+  "al_dia": true,
   "antes": {
    "Bloody": [
     35,
@@ -48023,7 +48064,7 @@
    "Teito": 39
   },
   "fecha": "14/11",
-  "firma": "23fa27138cf87e98",
+  "firma": "46ef54a4a3218c32",
   "msg": "1571194503703035995",
   "nombre": "COMPE DEMASIADO MAÑANERA",
   "num": 635,
