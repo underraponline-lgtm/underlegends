@@ -8725,7 +8725,7 @@
    "dg": 5,
    "fp": 1,
    "mata": 1,
-   "riv": 11,
+   "riv": 12,
    "venc": 5
   },
   "tg_p": {
@@ -14122,19 +14122,19 @@
   "tg_c": {
    "bestia": 1,
    "clasico": 1,
-   "dg": 5,
+   "dg": 6,
    "fp": 1,
-   "riv": 7,
-   "venc": 5
+   "riv": 8,
+   "venc": 6
   },
   "tg_p": {
    "paises": 5,
    "paisesg": 3
   },
   "nac": {
-   "evn": 5,
+   "evn": 6,
    "evi": 7,
-   "com": 3,
+   "com": 4,
    "top": [
     8,
     "cl"
