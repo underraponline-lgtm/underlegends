@@ -1,5 +1,5 @@
 {
- "cuando": "2026-11-14T02:25:44+00:00",
+ "cuando": "2026-11-14T02:55:22+00:00",
  "anuncios": [
   {
    "nombre": "¡SE LLEGÓ LA GRAN NOCHE!",
@@ -378,11 +378,11 @@
    "categoria_id": "1497457390637809837"
   },
   {
-   "nombre": "brasino",
+   "nombre": "qcyo rapeen 15",
    "servidor": "FFA",
    "canal": "✦🏆—eventos",
-   "msg_id": "1570971928968298557",
-   "cuando": "2026-11-14T01:21:35",
+   "msg_id": "1570995321029398675",
+   "cuando": "2026-11-14T02:54:32",
    "canal_id": "1487206325602484295",
    "guild_id": "1468472442925092958",
    "organizador": "@nachonc_",
@@ -393,12 +393,12 @@
     }
    ],
    "autor_h": "d83234c3da26ac85",
-   "cupos_texto": "8 SOLO 8",
-   "inscriptos": 8,
-   "cupo_total": 8,
+   "cupos_texto": "",
+   "inscriptos": null,
+   "cupo_total": null,
    "rango": "bronce",
-   "modalidad": "1v1 beat brasino",
-   "horario": "ya",
+   "modalidad": "MULTIVERSE",
+   "horario": "en 30",
    "fecha": "",
    "premios": "aura",
    "staff": {},

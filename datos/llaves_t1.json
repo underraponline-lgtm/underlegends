@@ -54542,14 +54542,14 @@
  },
  "632": {
   "dia": "2026-11-13",
-  "escala": "8-15",
+  "escala": "16+",
   "fecha": "13/11",
   "links": [
    "https://discord.com/channels/1489848581203689535/1536574435761332334/1570960126192652380"
   ],
   "n": 632,
   "nombre": "RANKED 2",
-  "participantes": 15,
+  "participantes": 17,
   "rondas": [
    {
     "b": [
@@ -54643,6 +54643,22 @@
      ],
      [
       [
+       "Dios",
+       "NEXUX"
+      ],
+      "Dios",
+      "Walk-in 2: NEXUX"
+     ],
+     [
+      [
+       "Dios",
+       "Senticide"
+      ],
+      "Dios",
+      "Walk-in 2: SENTICIDE"
+     ],
+     [
+      [
        "Araya 🇦🇸",
        "SENTIDICE"
       ],
@@ -54682,46 +54698,46 @@
    [
     "Dios",
     "Campeón",
-    7500
+    10000
    ],
    [
     "crakero",
     "Subcampeón",
-    5000
+    7500
    ],
    [
     "Artezzy",
     "Cuarto",
+    4500
+   ],
+   [
+    "Mc arepa",
+    "Tercero",
     3000
    ],
    [
     "4'C 🇲🇽",
     "Cuartos",
-    2000
+    2500
    ],
    [
     "CrisZJ",
     "Cuartos",
-    2000
-   ],
-   [
-    "Mc arepa",
-    "Tercero",
-    2000
+    2500
    ],
    [
     "Raizer",
     "Cuartos",
-    2000
+    2500
    ],
    [
     "araya",
     "Cuartos",
-    2000
+    2500
    ]
   ],
   "ver": {
-   "min": 109,
+   "min": 129,
    "org": "juega",
    "v": 1
   }

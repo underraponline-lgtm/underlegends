@@ -4286,6 +4286,25 @@
      364
     ]
    }
+  },
+  {
+   "id": "152d81051d",
+   "tipo": "Nombre desconocido",
+   "sec": "RANKED 2 · FDS · 13/11 · #632",
+   "que": "¿Quién es «NEXUX»?",
+   "r": "Ya no hace falta",
+   "regla": "cierre · ya no hacía falta preguntarlo",
+   "rk": "cierre",
+   "por": "el ciclo",
+   "porque": "ya no está en ningún resultado: el lector lo lee distinto, o ya es alias de alguien",
+   "t": 1794625502414,
+   "filas": [
+    1362
+   ],
+   "variantes": [
+    "NEXUX"
+   ],
+   "escribio": {}
   }
  ],
  "deshechas": []

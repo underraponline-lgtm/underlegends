@@ -645,6 +645,15 @@
 "temporada"
 ]
 },
+"crakero": {
+"rg": "",
+"c": [
+"competitivo",
+"pais",
+"servidor",
+"temporada"
+]
+},
 "player": {
 "rg": "E",
 "c": [
@@ -706,15 +715,6 @@
 "temporada"
 ]
 },
-"crakero": {
-"rg": "",
-"c": [
-"competitivo",
-"pais",
-"servidor",
-"temporada"
-]
-},
 "mcarepa": {
 "rg": "",
 "c": [
@@ -747,18 +747,18 @@
 "temporada"
 ]
 },
-"mcnadie": {
-"rg": "",
-"c": [
-"pais",
-"servidor",
-"temporada"
-]
-},
 "artezzy": {
 "rg": "",
 "c": [
 "competitivo",
+"servidor",
+"temporada"
+]
+},
+"mcnadie": {
+"rg": "",
+"c": [
+"pais",
 "servidor",
 "temporada"
 ]
@@ -1122,14 +1122,14 @@
 "temporada"
 ]
 },
-"deuxs": {
+"raizer": {
 "rg": "",
 "c": [
 "servidor",
 "temporada"
 ]
 },
-"raizer": {
+"deuxs": {
 "rg": "",
 "c": [
 "servidor",
@@ -7393,7 +7393,7 @@
 "t": "2026-11-14T08:00:00Z",
 "dia": "2026-11-13",
 "eventos": 4,
-"part": 81,
+"part": 83,
 "campeones": [
 {
 "ev": "PANDILLAS DE RAP VOL.1",
@@ -7456,15 +7456,15 @@
 "ev": 1
 },
 {
-"n": "Juanpa",
-"k": "juanpa",
+"n": "Dios",
+"k": "dios",
 "pts": 10000,
 "ev": 1
 },
 {
-"n": "Chop",
-"k": "chop",
-"pts": 7500,
+"n": "Juanpa",
+"k": "juanpa",
+"pts": 10000,
 "ev": 1
 }
 ],

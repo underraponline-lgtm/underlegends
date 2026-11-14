@@ -224,17 +224,6 @@
   }
  },
  "batallas": {
-  "1568452709923688449": {
-   "id": "1568452709923688449",
-   "sv": "🔥 𝐃𝐈𝐒𝐂𝐎𝐑𝐃 𝐒𝐓𝐘𝐋𝐄 🎤",
-   "g": "1443770831598649528",
-   "canal": "1477446447422246943",
-   "pub": 1794018666488,
-   "a": "ABRAHAM X NRE",
-   "b": "JEIXDER X PICHULA",
-   "ganador": "JEIXDER X PICHULA",
-   "votos": "1–0"
-  },
   "1568462159716024393": {
    "id": "1568462159716024393",
    "sv": "🔥 𝐃𝐈𝐒𝐂𝐎𝐑𝐃 𝐒𝐓𝐘𝐋𝐄 🎤",
@@ -2060,50 +2049,31 @@
    "b": "DIOS",
    "ganador": "DIOS",
    "votos": "1–0"
+  },
+  "1570989353042186321": {
+   "id": "1570989353042186321",
+   "sv": "#FDS ╏FREESTYLE DISCORD SERIES",
+   "g": "1489848581203689535",
+   "canal": "1536574435761332334",
+   "pub": 1794623449336,
+   "a": "NEXUX",
+   "b": "DIOS",
+   "ganador": "DIOS",
+   "votos": "1–0"
+  },
+  "1570992510656970905": {
+   "id": "1570992510656970905",
+   "sv": "#FDS ╏FREESTYLE DISCORD SERIES",
+   "g": "1489848581203689535",
+   "canal": "1536574435761332334",
+   "pub": 1794624202170,
+   "a": "DIOS",
+   "b": "SENTICIDE",
+   "ganador": "DIOS",
+   "votos": "2–0"
   }
  },
  "llaves": {
-  "1563384237233676330": {
-   "id": "1563384237233676330",
-   "sv": "#FDS ╏FREESTYLE DISCORD SERIES",
-   "g": "1489848581203689535",
-   "canal": "1500675902042931280",
-   "pub": 1792810248431,
-   "ed": 1792816152185,
-   "texto": "`[ CUARTOS ]`\n⌞Sin límites 🇵🇪 + Vilca🇵🇪⌝ 🆚 ⌞okam🇨🇷 -sosa🇺🇾⌝\n⌞Millonari-O 🇵🇾 + Last 🇺🇾⌝ 🆚 ⌞Lrs🇦🇷 + Artezzy 🇵🇪⌝\n⌞Revo🇻🇪 + xubaru🇻🇪⌝ 🆚 ⌞Scot 🇵🇪 - Sosa 🇺🇾 + mientras⌝",
-   "batallas": [
-    [
-     "CUARTOS",
-     [
-      "Sin límites 🇵🇪 + Vilca🇵🇪",
-      "okam🇨🇷 -sosa🇺🇾"
-     ],
-     null,
-     "última ronda y no dice campeón",
-     []
-    ],
-    [
-     "CUARTOS",
-     [
-      "Millonari-O 🇵🇾 + Last 🇺🇾",
-      "Lrs🇦🇷 + Artezzy 🇵🇪"
-     ],
-     null,
-     "última ronda y no dice campeón",
-     []
-    ],
-    [
-     "CUARTOS",
-     [
-      "Revo🇻🇪 + xubaru🇻🇪",
-      "Scot 🇵🇪 - Sosa 🇺🇾 + mientras"
-     ],
-     null,
-     "última ronda y no dice campeón",
-     []
-    ]
-   ]
-  },
   "1564021566189346929": {
    "id": "1564021566189346929",
    "sv": "#LaCrew ||🎤ACADEMIA DE RAP 🎤",
@@ -6758,8 +6728,8 @@
    "g": "1489848581203689535",
    "canal": "1536574435761332334",
    "pub": 1794616481112,
-   "ed": 1794623011449,
-   "texto": "`[ CUARTOS ]`\n⌞RAIZER⌝ 🆚 ⌞DIOS⌝ 🆚 ⌞4´C⌝\n⌞REPLICA : RAIZER⌝ 🆚 ⌞DIOS⌝\n⌞CRAKERO⌝ 🆚 ⌞CRISZJ⌝\n⌞SORAYA⌝ 🆚 ⌞ARTEZZY⌝\n`[ SEMIFINALES ]`\n⌞MC AREPA⌝ 🆚 ⌞CRAKERO⌝\n⌞ARTEZZY⌝ 🆚 ⌞DIOS⌝\n⌞MCAREPA⌝ 🆚 ⌞ARTEZZY⌝\n`[ FINAL ]`\n⌞DIOS⌝ 🆚 ⌞CRAKERO⌝\n⌞MCAREPA⌝ 🆚 ⌞CHENTE⌝\n⌞Leyenda.X5⌝ 🆚 ⌞Dios⌝\n⌞CRAKERO⌝ 🆚 ⌞NXUX⌝\n⌞ARAYA⌝ 🆚 ⌞SENTIDICE⌝\n⌞MCAREPA⌝ 🆚 ⌞SENTIDICE⌝",
+   "ed": 1794624235136,
+   "texto": "`[ CUARTOS ]`\n⌞RAIZER⌝ 🆚 ⌞DIOS⌝ 🆚 ⌞4´C⌝\n⌞REPLICA : RAIZER⌝ 🆚 ⌞DIOS⌝\n⌞CRAKERO⌝ 🆚 ⌞CRISZJ⌝\n⌞SORAYA⌝ 🆚 ⌞ARTEZZY⌝\n`[ SEMIFINALES ]`\n⌞MC AREPA⌝ 🆚 ⌞CRAKERO⌝\n⌞ARTEZZY⌝ 🆚 ⌞DIOS⌝\n⌞MCAREPA⌝ 🆚 ⌞ARTEZZY⌝\n`[ FINAL ]`\n⌞DIOS⌝ 🆚 ⌞CRAKERO⌝\n⌞MCAREPA⌝ 🆚 ⌞CHENTE⌝\n⌞Leyenda.X5⌝ 🆚 ⌞Dios⌝\n⌞CRAKERO⌝ 🆚 ⌞NXUX⌝\n⌞ARAYA⌝ 🆚 ⌞SENTIDICE⌝\n⌞MCAREPA⌝ 🆚 ⌞SENTIDICE⌝\n⌞NEXUX⌝ 🆚 ⌞DIOS⌝\n`[ FINAL ]`\n⌞DIOS⌝ 🆚 ⌞SENTICIDE⌝",
    "batallas": [
     [
      "CUARTOS",
@@ -6891,6 +6861,26 @@
      null,
      "última ronda y no dice campeón",
      []
+    ],
+    [
+     "FINAL",
+     [
+      "NEXUX",
+      "DIOS"
+     ],
+     "DIOS",
+     "veredicto",
+     []
+    ],
+    [
+     "FINAL",
+     [
+      "DIOS",
+      "SENTICIDE"
+     ],
+     "DIOS",
+     "veredicto",
+     []
     ]
    ]
   },
@@ -6900,7 +6890,7 @@
    "g": "1489848581203689535",
    "canal": "1500675902042931280",
    "pub": 1794620395569,
-   "ed": 1794622475282,
+   "ed": 1794624294021,
    "texto": "`[ CUARTOS ]`\n⌞dios⌝ 🆚 ⌞leyenda⌝\n⌞tomyhilfiger1312🇾🇹⌝ 🆚 ⌞nxux⌝\n⌞araya⌝ 🆚 ⌞elkesobraba⌝\n⌞MCAREPA⌝ 🆚 ⌞chente⌝\n`[ SEMIFINALES ]`\n⌞mcarepa⌝ 🆚 ⌞sentidice⌝\n⌞nxux⌝ 🆚 ⌞dios⌝\n`[ FINAL ]`",
    "batallas": [
     [
@@ -6959,8 +6949,8 @@
       "nxux",
       "dios"
      ],
-     null,
-     "última ronda y no dice campeón",
+     "dios",
+     "veredicto",
      []
     ]
    ]

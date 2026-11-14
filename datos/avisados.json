@@ -46131,7 +46131,7 @@
    "Vilca": 22
   },
   "fecha": "12/11",
-  "firma": "562d7633a6b5a3fe",
+  "firma": "f1f528e880daed11",
   "msg": "1570602758506151978",
   "nombre": "RANKED 1",
   "num": 627,
@@ -47349,6 +47349,16 @@
     "Dios",
     "Leyenda",
     "Dios"
+   ],
+   [
+    "Dios",
+    "NEXUX",
+    "Dios"
+   ],
+   [
+    "Dios",
+    "Senticide",
+    "Dios"
    ]
   ],
   "ev_antes": {
@@ -47360,11 +47370,11 @@
    "crakero": 9
   },
   "fecha": "13/11",
-  "firma": "59ded65f7cf3a822",
+  "firma": "15f41e1411bc6cc3",
   "msg": "1570980323372703807",
   "nombre": "RANKED 2",
   "num": 632,
-  "participantes": 15,
+  "participantes": 17,
   "sello": {
    "Dios": "566f95c1486d:7a510334494e"
   },
@@ -47374,42 +47384,42 @@
    [
     "Dios",
     "Campeón",
-    7500
+    10000
    ],
    [
     "crakero",
     "Subcampeón",
-    5000
+    7500
    ],
    [
     "Artezzy",
     "Cuarto",
-    3000
+    4500
    ],
    [
     "Mc arepa",
     "Tercero",
-    2000
+    3000
    ],
    [
     "Raizer",
     "Cuartos",
-    2000
+    2500
    ],
    [
     "4'C 🇲🇽",
     "Cuartos",
-    2000
+    2500
    ],
    [
     "CrisZJ",
     "Cuartos",
-    2000
+    2500
    ],
    [
     "araya",
     "Cuartos",
-    2000
+    2500
    ]
   ],
   "v": 2
