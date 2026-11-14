@@ -1,6 +1,6 @@
 {
  "_leeme": "Las ligas de los servidores: cada batalla y su resultado, y la tabla que sale de eso. Lo arma bot/ligas.py en cada corrida; las reglas viven ahí. Sin los mensajes: el repo es público. `batallas`: [id del mensaje, instante, jornada, a, b, ganador (vacío: pendiente), directa|replica, extras]. Las batallas con resultado cuentan como duelos (Ranking Duelos y Win%; el Score no). `flyer`: el último afiche de su canal de anuncios, re-alojado en R2 (`url`); `prox`: la próxima fecha que anunció (`d` el día, `t` el instante si lo dijo). Desde el 17/10/2026: `ptb` {id de la batalla: [PTB de a, de b]}, `flyers` (la galería, en R2), `staff` [[discord_id, nombre, mensajes en anuncios, en veredictos, último]] y `nov` (lo nuevo de las últimas horas, para «Seguir la liga»). Desde el 11/11/2026: `temps` [{t, c, n, msg, p, ult, desde}] (cada campeón que anunció su servidor: cierra esa temporada), `tn` (el número de la temporada que juega, si lo dice), `cerrada` {t} (sus canales ya no están) y, arriba, `nuevas` (las ligas que el bot encontró solo: `fam` vacío hasta que un lector entienda sus veredictos).",
- "t": "2026-11-14T18:59:58Z",
+ "t": "2026-11-14T19:29:47Z",
  "ligas": {
   "fmh-albiceleste": {
    "n": "FMH Albiceleste",
@@ -8223,14 +8223,50 @@
      "SOL",
      "directa",
      ""
+    ],
+    [
+     "1571240980886192219",
+     "2026-11-14T19:10:42Z",
+     6,
+     "NXUZ",
+     "GIANSITO",
+     "",
+     "",
+     ""
+    ],
+    [
+     "1571241701480333504",
+     "2026-11-14T19:13:33Z",
+     6,
+     "PEPE MUJICA",
+     "ARTEZZY",
+     "PEPE MUJICA",
+     "directa",
+     ""
+    ],
+    [
+     "1571242367279698043",
+     "2026-11-14T19:16:12Z",
+     6,
+     "MATO",
+     "CINEXFILO",
+     "",
+     "",
+     ""
     ]
    ],
    "tabla": [
     [
      "Artezzy",
-     4,
+     5,
      3,
      10
+    ],
+    [
+     "Pepe Mujica",
+     5,
+     3,
+     9
     ],
     [
      "SOL",
@@ -8243,12 +8279,6 @@
      4,
      2,
      7
-    ],
-    [
-     "Pepe Mujica",
-     4,
-     2,
-     6
     ],
     [
      "CINEXFILO",
@@ -8335,8 +8365,8 @@
      "1435531540472795240",
      "Artezzy",
      13,
-     30,
-     "2026-11-14T18:16:48Z"
+     34,
+     "2026-11-14T19:16:23Z"
     ],
     [
      "702969188121313352",
@@ -8383,6 +8413,14 @@
       "1571225399038582915",
       "1571226121360507094",
       "1571227416997920789"
+     ]
+    },
+    {
+     "id": "r:fds-peru:1571241701480333504",
+     "t": "2026-11-14T19:30:21Z",
+     "que": "res",
+     "ids": [
+      "1571241701480333504"
      ]
     }
    ]

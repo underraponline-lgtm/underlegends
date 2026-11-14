@@ -1,5 +1,5 @@
 {
- "cuando": "2026-11-14T18:55:38+00:00",
+ "cuando": "2026-11-14T19:25:15+00:00",
  "anuncios": [
   {
    "nombre": "¡SE LLEGÓ LA GRAN NOCHE!",
@@ -6481,30 +6481,6 @@
    "categoria_id": "1080379388320817233"
   },
   {
-   "nombre": "HORARIOS DE INSCRIPCION",
-   "servidor": "CH",
-   "canal": "📢—anuncios",
-   "msg_id": "1533256577304363228",
-   "cuando": "2026-08-01T23:34:14",
-   "canal_id": "1081721420373041264",
-   "guild_id": "1074328197400887388",
-   "organizador": "@⚡ 𝑴𝒂𝒖𝒓𝒐𝒍𝒐𝒄𝒓𝒂𝒛𝒚 ⚡",
-   "orgs": [],
-   "autor_h": "187b29f00f240696",
-   "cupos_texto": "(24)",
-   "inscriptos": null,
-   "cupo_total": null,
-   "rango": "",
-   "modalidad": "1 vs 1",
-   "horario": "",
-   "fecha": "01/08/26",
-   "premios": "+ SUMA TUS PRIMEROS PUNTOS DEL NUEVO RANKING 2026 - 2027",
-   "staff": {},
-   "autor": "⚡ Maurolocrazy ⚡",
-   "staff_cuentas": {},
-   "categoria_id": "1080379388320817233"
-  },
-  {
    "nombre": "Horarios de la competencia",
    "servidor": "DDS",
    "canal": "📢]ANUNCIOS-LEVEL-UP",
@@ -6891,6 +6867,15 @@
  ],
  "oficiales": [
   {
+   "servidor": "CH",
+   "canal": "📢—anuncios",
+   "tit": "CHOP COMPE DESPUES DE FMS ESPAÑA",
+   "tx": "1V1 16 CUPOS",
+   "cuando": "2026-11-14T19:10:42",
+   "msg_id": "1571240984623321251",
+   "link": "https://discord.com/channels/1074328197400887388/1081721420373041264/1571240984623321251"
+  },
+  {
    "servidor": "URBF",
    "canal": "⋆📢│🐔⋅Anuncios⋅📢",
    "tit": "CLASIFICADOS RED BULL CABRANA INTERNACIONAL TEMPORADA 5",
@@ -7017,15 +7002,6 @@
    "link": "https://discord.com/channels/1443770831598649528/1476035007133778001/1568109654809251961"
   },
   {
-   "servidor": "CH",
-   "canal": "📢—anuncios",
-   "tit": "🎤 CYPHERHOOD × UNDER LEGENDS",
-   "tx": "El freestyle en español tiene su propia liga, y ahora puedes seguirla desde un solo lugar. Under Legends es la casa de la Liga Global de Freestyle: más de 500 raperos de más de 20 países ya compitieron en más de 200 even",
-   "cuando": "2026-11-05T23:33:10",
-   "msg_id": "1568045544964751430",
-   "link": "https://discord.com/channels/1074328197400887388/1081721420373041264/1568045544964751430"
-  },
-  {
    "servidor": "DDF",
    "canal": "『📢』Anuncios",
    "tit": "LA FMS VENEZUELA SE HARA EN EL SERVER DE MMF Y HABRA COMPES PA Q RAPEEN",
@@ -7117,6 +7093,87 @@
   }
  ],
  "inscripciones": [
+  {
+   "servidor": "URBF",
+   "canal": "‣《🗞️》Inscripciones",
+   "texto": "Calíz 🇲🇽",
+   "quien": "caliz123_",
+   "discord_id": "1546111597343146044",
+   "msg_id": "1571242487731720337",
+   "cuando": "2026-11-14T19:16:41"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "tam🇻🇪 xdd🇻🇪",
+   "quien": "tuabuelamuerta12",
+   "discord_id": "505444041719021569",
+   "msg_id": "1571239665644732689",
+   "cuando": "2026-11-14T19:05:28"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "Mau KC 🇨🇴 + Denik 🇵🇪",
+   "quien": "1kcexo",
+   "discord_id": "810282040490590298",
+   "msg_id": "1571239658401046711",
+   "cuando": "2026-11-14T19:05:26"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "Neo 🇦🇷",
+   "quien": "hatshepsut_neo",
+   "discord_id": "1562255292358725828",
+   "msg_id": "1571239123807895655",
+   "cuando": "2026-11-14T19:03:19"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "Julda 🇨🇴 + Teo 🇨🇴",
+   "quien": "juldaaaa",
+   "discord_id": "1194813613786026136",
+   "msg_id": "1571239125409996922",
+   "cuando": "2026-11-14T19:03:19"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "Julda🇨🇴+Teo🇨🇴",
+   "quien": "juldaaaa",
+   "discord_id": "1194813613786026136",
+   "msg_id": "1571238848317489293",
+   "cuando": "2026-11-14T19:02:13"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "Makmah 🇻🇪 + xclusivo 🇻🇪",
+   "quien": "makmah_g",
+   "discord_id": "897942226955563068",
+   "msg_id": "1571238610215239837",
+   "cuando": "2026-11-14T19:01:16"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "EddyLaSombra🇱🇷",
+   "quien": "malasiafighter",
+   "discord_id": "1357796427191029932",
+   "msg_id": "1571237585844572221",
+   "cuando": "2026-11-14T18:57:12"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "Teo 🇨🇴 + julda 🇨🇴",
+   "quien": "teitomc.",
+   "discord_id": "1503540314948898937",
+   "msg_id": "1571236923002069123",
+   "cuando": "2026-11-14T18:54:34"
+  },
   {
    "servidor": "FFA",
    "canal": "✦📝—inscripciones",
@@ -43035,87 +43092,6 @@
    "discord_id": "913850096062439456",
    "msg_id": "1559278499632521297",
    "cuando": "2026-10-12T18:56:04"
-  },
-  {
-   "servidor": "FFA",
-   "canal": "✦📝—inscripciones",
-   "texto": "Lvel 🇻🇪",
-   "quien": "soycoma__42587",
-   "discord_id": "1241407042195816459",
-   "msg_id": "1559276796657147946",
-   "cuando": "2026-10-12T18:49:18"
-  },
-  {
-   "servidor": "FFA",
-   "canal": "✦📝—inscripciones",
-   "texto": "Nsr🇱🇸",
-   "quien": "csgo47.",
-   "discord_id": "1493317254581063680",
-   "msg_id": "1559276782891433997",
-   "cuando": "2026-10-12T18:49:15"
-  },
-  {
-   "servidor": "FFA",
-   "canal": "✦📝—inscripciones",
-   "texto": "Makmah 🇻🇪",
-   "quien": "makmah_g",
-   "discord_id": "897942226955563068",
-   "msg_id": "1559276750968459275",
-   "cuando": "2026-10-12T18:49:07"
-  },
-  {
-   "servidor": "FFA",
-   "canal": "✦📝—inscripciones",
-   "texto": "Ariaxer🇦🇷",
-   "quien": "ariaxer",
-   "discord_id": "659687894587277322",
-   "msg_id": "1559276564770725929",
-   "cuando": "2026-10-12T18:48:22"
-  },
-  {
-   "servidor": "FFA",
-   "canal": "✦📝—inscripciones",
-   "texto": "Trot 🇪🇸",
-   "quien": "eresmatrot",
-   "discord_id": "1347663033949880360",
-   "msg_id": "1559276303935610991",
-   "cuando": "2026-10-12T18:47:20"
-  },
-  {
-   "servidor": "FFA",
-   "canal": "✦📝—inscripciones",
-   "texto": "Player🇻🇪",
-   "quien": "jesuslgamer31",
-   "discord_id": "817387658656874536",
-   "msg_id": "1559275824371212570",
-   "cuando": "2026-10-12T18:45:26"
-  },
-  {
-   "servidor": "FFA",
-   "canal": "✦📝—inscripciones",
-   "texto": "O.E.P 🇨🇴",
-   "quien": "puto_si_me_mencionas.",
-   "discord_id": "817432890807156756",
-   "msg_id": "1559275150191501334",
-   "cuando": "2026-10-12T18:42:45"
-  },
-  {
-   "servidor": "FFA",
-   "canal": "✦📝—inscripciones",
-   "texto": "Snow🇨🇴",
-   "quien": "snowzzzzzzzz",
-   "discord_id": "1097714486795849748",
-   "msg_id": "1559274699228450917",
-   "cuando": "2026-10-12T18:40:58"
-  },
-  {
-   "servidor": "FFA",
-   "canal": "✦📝—inscripciones",
-   "texto": "Cajita 🇻🇪",
-   "quien": "cajita____",
-   "discord_id": "794084098422341632",
-   "msg_id": "1559274511633748060",
-   "cuando": "2026-10-12T18:40:13"
   }
  ]
 }

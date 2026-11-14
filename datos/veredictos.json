@@ -7345,8 +7345,8 @@
    "g": "1469009547971526659",
    "canal": "1498009509036163173",
    "pub": 1794681120418,
-   "ed": 1794681927493,
-   "texto": "`[ CUARTOS ]`\n⌞KICHY 🇨🇱⌝ 🆚 ⌞MARTINEZ🇺🇾⌝\n⌞19 🇻🇪⌝ 🆚 ⌞CARLOS 🇪🇨⌝\n⌞MINIBOY 🇨🇱⌝ 🆚 ⌞NUMBER🇻🇪⌝",
+   "ed": 1794684216528,
+   "texto": "`[ CUARTOS ]`\n⌞KICHY 🇨🇱⌝ 🆚 ⌞MARTINEZ🇺🇾⌝\n⌞19 🇻🇪⌝ 🆚 ⌞CARLOS 🇪🇨⌝\n⌞MINIBOY 🇨🇱⌝ 🆚 ⌞NUMBER🇻🇪⌝\n⌞DYNOCO 🇦🇷⌝ 🆚 ⌞KEIDER🇻🇪⌝\n`[ SEMIFINALES ]`\n⌞KICHY 🇨🇱⌝ 🆚 ⌞CARLOS 🇪🇨⌝\n⌞MINIBOY 🇨🇱⌝ 🆚 ⌞DYNOCO🇦🇷⌝",
    "batallas": [
     [
      "CUARTOS",
@@ -7354,8 +7354,8 @@
       "KICHY 🇨🇱",
       "MARTINEZ🇺🇾"
      ],
-     null,
-     "última ronda y no dice campeón",
+     "KICHY 🇨🇱",
+     "ronda siguiente",
      []
     ],
     [
@@ -7364,8 +7364,8 @@
       "19 🇻🇪",
       "CARLOS 🇪🇨"
      ],
-     null,
-     "última ronda y no dice campeón",
+     "CARLOS 🇪🇨",
+     "ronda siguiente",
      []
     ],
     [
@@ -7373,6 +7373,36 @@
      [
       "MINIBOY 🇨🇱",
       "NUMBER🇻🇪"
+     ],
+     "MINIBOY 🇨🇱",
+     "ronda siguiente",
+     []
+    ],
+    [
+     "CUARTOS",
+     [
+      "DYNOCO 🇦🇷",
+      "KEIDER🇻🇪"
+     ],
+     "DYNOCO 🇦🇷",
+     "ronda siguiente",
+     []
+    ],
+    [
+     "SEMIFINALES",
+     [
+      "KICHY 🇨🇱",
+      "CARLOS 🇪🇨"
+     ],
+     null,
+     "última ronda y no dice campeón",
+     []
+    ],
+    [
+     "SEMIFINALES",
+     [
+      "MINIBOY 🇨🇱",
+      "DYNOCO🇦🇷"
      ],
      null,
      "última ronda y no dice campeón",

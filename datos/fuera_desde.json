@@ -33,6 +33,15 @@
    "sv-dra": "2026-11-13",
    "sv-sr": "2026-11-13"
   },
+  "julda": {
+   "bloq-competitivo": "2026-11-14",
+   "bloq-pais": "2026-11-14",
+   "competitivo": "2026-11-14",
+   "pais": "2026-11-14",
+   "servidor": "2026-11-14",
+   "sv-dra": "2026-11-14",
+   "sv-ffa": "2026-11-14"
+  },
   "stormed": {
    "bloq-competitivo": "2026-11-12",
    "bloq-pais": "2026-11-12",
@@ -84,8 +93,8 @@
    "temporada": "2026-11-10"
   }
  },
- "pasaban": 434,
- "cuando": "2026-11-14T19:02:05Z",
+ "pasaban": 433,
+ "cuando": "2026-11-14T19:32:03Z",
  "borradas": [
   [
    "aby",
