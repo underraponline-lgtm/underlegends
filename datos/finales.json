@@ -1775,7 +1775,15 @@
     "ronda": "SEMIFINALES"
    }
   ],
-  "respondidas": {},
+  "resp": {
+   "0": {
+    "por": "org",
+    "t": 1794637471386
+   }
+  },
+  "respondidas": {
+   "0": "Ezze 🇦🇷"
+  },
   "sin_permiso": false,
   "staff_probado": false,
   "sv": "FFA",

@@ -622,6 +622,15 @@
 "rg": "",
 "c": []
 },
+"crakero": {
+"rg": "E",
+"c": [
+"competitivo",
+"pais",
+"servidor",
+"temporada"
+]
+},
 "crk": {
 "rg": "E",
 "c": [
@@ -646,15 +655,6 @@
 "presagio": {
 "rg": "",
 "c": [
-"servidor",
-"temporada"
-]
-},
-"crakero": {
-"rg": "",
-"c": [
-"competitivo",
-"pais",
 "servidor",
 "temporada"
 ]
@@ -2848,14 +2848,6 @@
 }
 },
 "cambios": [
-{
-"tipo": "tarjeta",
-"t": "2026-10-09T22:29:55Z",
-"quien": [
-"HH"
-],
-"carta": "temporada"
-},
 {
 "tipo": "rango",
 "t": "2026-10-09T23:58:59Z",
@@ -6213,6 +6205,15 @@
 "PRAISERIZA"
 ],
 "carta": "temporada"
+},
+{
+"tipo": "rango",
+"t": "2026-11-14T07:06:20Z",
+"quien": [
+"crakero"
+],
+"rg": "E",
+"primero": true
 }
 ],
 "noche_antes": {
@@ -7482,16 +7483,16 @@
 "ev": 3
 },
 {
+"n": "crakero",
+"k": "crakero",
+"pts": 12750,
+"ev": 2
+},
+{
 "n": "Molusco",
 "k": "molusco",
 "pts": 11500,
 "ev": 3
-},
-{
-"n": "Carlosss",
-"k": "carlosss",
-"pts": 10000,
-"ev": 1
 }
 ],
 "suben": [
