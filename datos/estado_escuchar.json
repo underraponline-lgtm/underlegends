@@ -1,9 +1,9 @@
 {
  "v": 1,
- "cuando": "2026-11-14T00:07:00Z",
+ "cuando": "2026-11-14T00:38:18Z",
  "trabajo": "escuchar",
  "codigo": 0,
- "dur_s": 810.1,
+ "dur_s": 873.9,
  "pasos": [
   {
    "n": "0a",
@@ -15,31 +15,31 @@
    "n": "0a2",
    "que": "las crews, del objeto",
    "ok": true,
-   "s": 1.5
+   "s": 1.1
   },
   {
    "n": "0b",
    "que": "los multiplicadores de la semana",
    "ok": true,
-   "s": 0.9
+   "s": 0.8
   },
   {
    "n": "0c",
    "que": "lo corregido desde los reportes",
    "ok": true,
-   "s": 1.5
+   "s": 1.2
   },
   {
    "n": "1",
    "que": "las llaves cargadas, al buzón (datos/entrada_buzon.json)",
    "ok": true,
-   "s": 66.7
+   "s": 68.8
   },
   {
    "n": "1c",
    "que": "las vitrinas del Oficial",
    "ok": true,
-   "s": 60.1
+   "s": 60.7
   },
   {
    "n": "1a",
@@ -62,50 +62,50 @@
   {
    "n": "1b",
    "que": "quién está verificado y en qué servidores, desde Discord",
-   "ok": true,
-   "s": 60.7
+   "ok": false,
+   "s": 63.3
   },
   {
    "n": "1b2",
    "que": "quién está en la llamada (sólo con un evento en vivo)",
    "ok": true,
-   "s": 3.0
+   "s": 2.9
   },
   {
    "n": "2",
    "que": "el padrón y los pools, desde el Sheet",
    "ok": true,
-   "s": 1.4
+   "s": 1.0
   },
   {
    "n": "2b0",
    "que": "el Writing Challenge de FFA",
    "ok": true,
-   "s": 0.8
+   "s": 0.5
   },
   {
    "n": "2b",
    "que": "Most Wanted",
    "ok": true,
-   "s": 0.2
+   "s": 0.1
   },
   {
    "n": "2b2",
    "que": "las insignias",
    "ok": true,
-   "s": 0.6
+   "s": 0.4
   },
   {
    "n": "2b3",
    "que": "el Lunes de la Liga",
    "ok": true,
-   "s": 0.7
+   "s": 0.1
   },
   {
    "n": "2b3d",
    "que": "los paneles de DRA",
    "ok": true,
-   "s": 0.3
+   "s": 46.6
   },
   {
    "n": "2b3b",
@@ -117,13 +117,13 @@
    "n": "2b3c",
    "que": "el reto del debut",
    "ok": true,
-   "s": 2.3
+   "s": 1.7
   },
   {
    "n": "2b4",
    "que": "el precio por cabeza",
    "ok": true,
-   "s": 1.6
+   "s": 1.5
   },
   {
    "n": "2b4b",
@@ -135,55 +135,55 @@
    "n": "2b5",
    "que": "las invitaciones de la Liga",
    "ok": true,
-   "s": 5.0
+   "s": 4.3
   },
   {
    "n": "2b5b",
    "que": "los pedidos de la gente",
    "ok": true,
-   "s": 0.3
+   "s": 0.4
   },
   {
    "n": "2b6",
    "que": "el #N del apodo",
    "ok": true,
-   "s": 346.0
+   "s": 368.1
   },
   {
    "n": "2b7",
    "que": "el rol de rango en DRA",
    "ok": true,
-   "s": 3.9
+   "s": 5.8
   },
   {
    "n": "2b8",
    "que": "las batallas en video",
    "ok": true,
-   "s": 2.6
+   "s": 3.0
   },
   {
    "n": "2b8c",
    "que": "las promociones",
    "ok": true,
-   "s": 4.1
+   "s": 3.3
   },
   {
    "n": "2b8d",
    "que": "los MES AWARDS",
    "ok": true,
-   "s": 90.9
+   "s": 91.2
   },
   {
    "n": "2b8e",
    "que": "las semanas",
    "ok": true,
-   "s": 0.1
+   "s": 0.0
   },
   {
    "n": "2b8f",
    "que": "los tiers",
    "ok": true,
-   "s": 10.0
+   "s": 9.3
   },
   {
    "n": "2b8g",
@@ -201,61 +201,61 @@
    "n": "2b8i",
    "que": "las competencias de la semana",
    "ok": true,
-   "s": 1.5
+   "s": 1.1
   },
   {
    "n": "2b8b",
    "que": "la agenda",
    "ok": true,
-   "s": 0.4
+   "s": 0.3
   },
   {
    "n": "2b9",
    "que": "las ligas",
    "ok": true,
-   "s": 41.3
+   "s": 40.8
   },
   {
    "n": "2b9b",
    "que": "el ascenso de cada servidor",
    "ok": true,
-   "s": 2.0
+   "s": 3.0
   },
   {
    "n": "2b9c",
    "que": "las cartas de liga",
    "ok": true,
-   "s": 0.6
+   "s": 8.4
   },
   {
    "n": "2b10",
    "que": "los roles de la página",
    "ok": true,
-   "s": 0.6
+   "s": 0.4
   },
   {
    "n": "2c",
    "que": "la web",
    "ok": true,
-   "s": 60.8
+   "s": 54.4
   },
   {
    "n": "2c2",
    "que": "el aviso de cada evento, al día",
    "ok": true,
-   "s": 0.5
+   "s": 0.4
   },
   {
    "n": "2c3",
    "que": "el anuncio que sale solo a su hora",
    "ok": true,
-   "s": 0.1
+   "s": 0.9
   },
   {
    "n": "2d",
    "que": "lo contestado en ✅ Decidir, y los alias de la hoja AKAs",
    "ok": true,
-   "s": 9.4
+   "s": 8.7
   },
   {
    "n": "2e",
@@ -273,36 +273,41 @@
    "n": "2f",
    "que": "las fotos que faltan, de Discord a R2",
    "ok": true,
-   "s": 8.5
+   "s": 4.1
   },
   {
    "n": "2f2",
    "que": "los TAGs elegidos",
    "ok": true,
-   "s": 1.0
+   "s": 0.7
   },
   {
    "n": "3",
    "que": "qué cambió",
    "ok": true,
-   "s": 13.1
+   "s": 9.9
   }
  ],
- "fallas": [],
- "decidir": 228,
+ "fallas": [
+  {
+   "paso": "1b",
+   "que": "bot/apodos_sheet.py --guardar"
+  }
+ ],
+ "decidir": 232,
  "ultimo_evento": {
-  "n": "630",
-  "nombre": "ELITE FESTIVAL VOL. 1",
-  "sv": "ACAD",
+  "n": "631",
+  "nombre": "SNAKE INSIGNIA 8 8",
+  "sv": "SR",
   "dia": "2026-11-13"
  },
  "retencion": {
   "v": 1,
-  "cuando": "2026-11-13T23:54:45Z",
+  "cuando": "2026-11-14T00:24:59Z",
   "definicion": "jugó otro evento, otro día, dentro de los 14 días de su primero",
-  "jugadores": 752,
-  "un_evento": 380,
-  "diez_o_mas": 108,
+  "jugadores": 755,
+  "un_evento": 383,
+  "diez_o_mas": 109,
   "cohortes": [
    {
     "semana": "2026-09-21",
@@ -348,7 +353,7 @@
    },
    {
     "semana": "2026-11-09",
-    "nuevos": 24,
+    "nuevos": 27,
     "volvieron": 2,
     "completa": false
    }
@@ -356,25 +361,25 @@
  },
  "cuotas": {
   "kv": {
-   "write": 2,
-   "read": 63
+   "write": 29,
+   "read": 1129
   },
   "objeto": {
-   "leidas": 37609,
-   "escritas": 1867,
-   "pedidos": 60
+   "leidas": 158753,
+   "escritas": 4904,
+   "pedidos": 680
   },
   "worker": {
-   "pedidos": 18188,
+   "pedidos": 17880,
    "errores": 0,
-   "sub": 19641,
+   "sub": 19393,
    "cortados": 0,
-   "p50_ms": 1.1,
+   "p50_ms": 1.11,
    "p99_ms": 14.47,
    "cpu": {
-    "total": 37850,
-    "objeto_10": 2337,
-    "worker_10": 526
+    "total": 37276,
+    "objeto_10": 2332,
+    "worker_10": 518
    }
   },
   "r2": {

@@ -4274,6 +4274,78 @@
      "1565484501520490647"
     ]
    }
+  },
+  {
+   "id": "fd4ad29e22",
+   "tipo": "Nombre desconocido",
+   "sec": "SNAKE INSIGNIA 8 8 · SR · 13/11 · #631",
+   "que": "¿Quién es «Fritz 🇨🇴»?",
+   "r": "Es alguien nuevo: alta con su cuenta 1420965051539390506",
+   "regla": "Discord · su cuenta de Discord: la inscripción, el podio, la llave o la llamada",
+   "rk": "Discord",
+   "por": "el ciclo (su cuenta de Discord)",
+   "porque": "nuevo: entró a la Lista con la cuenta con que se anotó (1420965051539390506)",
+   "t": 1794616682086,
+   "filas": [
+    1351
+   ],
+   "variantes": [
+    "Fritz 🇨🇴"
+   ],
+   "escribio": {
+    "alta": [
+     "Fritz",
+     "1420965051539390506"
+    ]
+   }
+  },
+  {
+   "id": "8908694593",
+   "tipo": "Nombre desconocido",
+   "sec": "SNAKE INSIGNIA 8 8 · SR · 13/11 · #631",
+   "que": "¿Quién es «MAGMA»?",
+   "r": "Es alguien nuevo: alta con su cuenta 766529274931970071",
+   "regla": "Discord · su cuenta de Discord: la inscripción, el podio, la llave o la llamada",
+   "rk": "Discord",
+   "por": "el ciclo (su cuenta de Discord)",
+   "porque": "nuevo: entró a la Lista con su Discord (766529274931970071)",
+   "t": 1794616682086,
+   "filas": [
+    1352
+   ],
+   "variantes": [
+    "MAGMA"
+   ],
+   "escribio": {
+    "alta": [
+     "MAGMA",
+     "766529274931970071"
+    ]
+   }
+  },
+  {
+   "id": "6c74fb2978",
+   "tipo": "Nombre desconocido",
+   "sec": "SNAKE INSIGNIA 8 8 · SR · 13/11 · #631",
+   "que": "¿Quién es «PUNISHER»?",
+   "r": "Es alguien nuevo: alta con su cuenta 520115924901167107",
+   "regla": "Discord · su cuenta de Discord: la inscripción, el podio, la llave o la llamada",
+   "rk": "Discord",
+   "por": "el ciclo (su cuenta de Discord)",
+   "porque": "nuevo: entró a la Lista con su Discord (520115924901167107)",
+   "t": 1794616682086,
+   "filas": [
+    1353
+   ],
+   "variantes": [
+    "PUNISHER"
+   ],
+   "escribio": {
+    "alta": [
+     "PUNISHER",
+     "520115924901167107"
+    ]
+   }
   }
  ],
  "deshechas": []

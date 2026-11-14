@@ -119,15 +119,6 @@
 "temporada"
 ]
 },
-"provenza": {
-"rg": "C",
-"c": [
-"competitivo",
-"pais",
-"servidor",
-"temporada"
-]
-},
 "colesito": {
 "rg": "B",
 "c": [
@@ -139,6 +130,15 @@
 },
 "mco": {
 "rg": "B",
+"c": [
+"competitivo",
+"pais",
+"servidor",
+"temporada"
+]
+},
+"provenza": {
+"rg": "C",
 "c": [
 "competitivo",
 "pais",
@@ -184,7 +184,16 @@
 "temporada"
 ]
 },
-"okam": {
+"nc": {
+"rg": "D",
+"c": [
+"competitivo",
+"pais",
+"servidor",
+"temporada"
+]
+},
+"nxuz": {
 "rg": "C",
 "c": [
 "competitivo",
@@ -193,8 +202,8 @@
 "temporada"
 ]
 },
-"nc": {
-"rg": "D",
+"okam": {
+"rg": "C",
 "c": [
 "competitivo",
 "pais",
@@ -205,15 +214,6 @@
 "velatz": {
 "rg": "C",
 "c": []
-},
-"nxuz": {
-"rg": "C",
-"c": [
-"competitivo",
-"pais",
-"servidor",
-"temporada"
-]
 },
 "zignos": {
 "rg": "B",
@@ -411,10 +411,6 @@
 "temporada"
 ]
 },
-"dominick": {
-"rg": "D",
-"c": []
-},
 "tøkiø": {
 "rg": "B",
 "c": [
@@ -432,6 +428,10 @@
 "temporada"
 ]
 },
+"dominick": {
+"rg": "D",
+"c": []
+},
 "mayeutyk": {
 "rg": "C",
 "c": [
@@ -442,15 +442,6 @@
 },
 "dyzz": {
 "rg": "E",
-"c": [
-"competitivo",
-"pais",
-"servidor",
-"temporada"
-]
-},
-"soulb": {
-"rg": "D",
 "c": [
 "competitivo",
 "pais",
@@ -471,8 +462,8 @@
 "temporada"
 ]
 },
-"andres": {
-"rg": "C",
+"soulb": {
+"rg": "D",
 "c": [
 "competitivo",
 "pais",
@@ -510,6 +501,15 @@
 "temporada"
 ]
 },
+"andres": {
+"rg": "C",
+"c": [
+"competitivo",
+"pais",
+"servidor",
+"temporada"
+]
+},
 "leonart": {
 "rg": "D",
 "c": [
@@ -537,7 +537,7 @@
 ]
 },
 "dynoco": {
-"rg": "C",
+"rg": "D",
 "c": [
 "competitivo",
 "pais",
@@ -833,6 +833,15 @@
 "temporada"
 ]
 },
+"noone": {
+"rg": "",
+"c": [
+"competitivo",
+"pais",
+"servidor",
+"temporada"
+]
+},
 "gocho": {
 "rg": "E",
 "c": [
@@ -848,6 +857,13 @@
 "competitivo",
 "servidor",
 "temporada"
+]
+},
+"juanpa": {
+"rg": "",
+"c": [
+"pais",
+"servidor"
 ]
 },
 "benjixo": {
@@ -907,6 +923,10 @@
 "servidor",
 "temporada"
 ]
+},
+"fazer": {
+"rg": "",
+"c": []
 },
 "leyenda": {
 "rg": "",
@@ -987,6 +1007,14 @@
 "rg": "E",
 "c": []
 },
+"prosu": {
+"rg": "",
+"c": [
+"pais",
+"servidor",
+"temporada"
+]
+},
 "juasmio": {
 "rg": "",
 "c": [
@@ -995,18 +1023,7 @@
 "temporada"
 ]
 },
-"prosu": {
-"rg": "",
-"c": [
-"servidor",
-"temporada"
-]
-},
 "mosquitrap": {
-"rg": "",
-"c": []
-},
-"benji": {
 "rg": "",
 "c": []
 },
@@ -1064,6 +1081,10 @@
 "rg": "",
 "c": []
 },
+"benji": {
+"rg": "",
+"c": []
+},
 "andy": {
 "rg": "",
 "c": [
@@ -1092,10 +1113,6 @@
 "temporada"
 ]
 },
-"fazer": {
-"rg": "",
-"c": []
-},
 "ezias": {
 "rg": "",
 "c": [
@@ -1108,13 +1125,6 @@
 "c": [
 "servidor",
 "temporada"
-]
-},
-"juanpa": {
-"rg": "",
-"c": [
-"pais",
-"servidor"
 ]
 },
 "ikonoxx": {
@@ -1232,14 +1242,6 @@
 "dantemx": {
 "rg": "",
 "c": [
-"servidor",
-"temporada"
-]
-},
-"noone": {
-"rg": "",
-"c": [
-"pais",
 "servidor",
 "temporada"
 ]
@@ -2837,23 +2839,6 @@
 }
 },
 "cambios": [
-{
-"tipo": "tarjeta",
-"t": "2026-10-09T02:07:29Z",
-"quien": [
-"Nemi"
-],
-"carta": "temporada"
-},
-{
-"tipo": "rango",
-"t": "2026-10-09T03:57:36Z",
-"quien": [
-"NXUZ"
-],
-"rg": "D",
-"primero": true
-},
 {
 "tipo": "tarjeta",
 "t": "2026-10-09T03:57:36Z",
@@ -6205,6 +6190,22 @@
 "dxg"
 ],
 "carta": "temporada"
+},
+{
+"tipo": "tarjeta",
+"t": "2026-11-14T00:37:45Z",
+"quien": [
+"Noone"
+],
+"carta": "competitivo"
+},
+{
+"tipo": "tarjeta",
+"t": "2026-11-14T00:37:45Z",
+"quien": [
+"Prosu"
+],
+"carta": "pais"
 }
 ],
 "noche_antes": {
@@ -7388,8 +7389,8 @@
 "tipo": "resnoche",
 "t": "2026-11-14T08:00:00Z",
 "dia": "2026-11-13",
-"eventos": 2,
-"part": 49,
+"eventos": 3,
+"part": 66,
 "campeones": [
 {
 "ev": "PANDILLAS DE RAP VOL.1",
@@ -7420,6 +7421,17 @@
 "carlosss"
 ]
 ]
+},
+{
+"ev": "SNAKE INSIGNIA 8 8",
+"sv": "SR",
+"ll": 631,
+"quien": [
+[
+"Juanpa",
+"juanpa"
+]
+]
 }
 ],
 "suman": [
@@ -7430,16 +7442,16 @@
 "ev": 1
 },
 {
+"n": "Juanpa",
+"k": "juanpa",
+"pts": 10000,
+"ev": 1
+},
+{
 "n": "Chop",
 "k": "chop",
 "pts": 7500,
 "ev": 1
-},
-{
-"n": "Molusco",
-"k": "molusco",
-"pts": 6250,
-"ev": 2
 }
 ],
 "suben": [
@@ -7476,6 +7488,13 @@
 "que": "primer",
 "ev": "PANDILLAS DE RAP VOL.1",
 "desde": 49
+},
+{
+"n": "Juanpa",
+"k": "juanpa",
+"que": "primer",
+"ev": "SNAKE INSIGNIA 8 8",
+"desde": 115
 }
 ]
 }

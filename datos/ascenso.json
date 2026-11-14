@@ -1,6 +1,6 @@
 {
  "_leeme": "El ranking de ascenso de cada servidor, al día (bot/ascenso.py): su tabla oficial más lo que vino después, con sus reglas (datos/ascenso_reglas.json). `filas`: [nombre, cc, pts, lo sumado, raw]. `pendiente`: lo que no se sabe y no suma (las preguntas de Dlx a cada servidor).",
- "t": "2026-11-14T00:05:24Z",
+ "t": "2026-11-14T00:36:47Z",
  "sv": {
   "SR": {
    "filas": [
@@ -10,6 +10,13 @@
      12000,
      9000,
      "Mr Still Ballin"
+    ],
+    [
+     "JUANPA",
+     "co",
+     10500,
+     6000,
+     "Juanpa"
     ],
     [
      "AGUS",
@@ -24,6 +31,13 @@
      9350,
      2250,
      "Abyssus"
+    ],
+    [
+     "COLESITO",
+     "co",
+     9000,
+     3000,
+     "Colesito"
     ],
     [
      "JUASMIO",
@@ -45,13 +59,6 @@
      6600,
      0,
      "Snow"
-    ],
-    [
-     "COLESITO",
-     "co",
-     6000,
-     0,
-     "Colesito"
     ],
     [
      "MITO",
@@ -80,13 +87,6 @@
      4500,
      0,
      "Polosport"
-    ],
-    [
-     "JUANPA",
-     "co",
-     4500,
-     0,
-     "Juanpa"
     ],
     [
      "GLOBAL HUSTLER",
@@ -535,6 +535,27 @@
       ]
      ],
      "fuera": []
+    },
+    {
+     "n": 631,
+     "evento": "SNAKE INSIGNIA 8 8",
+     "dia": "2026-11-13",
+     "rango": "2",
+     "puntos": [
+      [
+       "Juanpa",
+       "Campeón",
+       6000
+      ],
+      [
+       "Colesito",
+       "Tercero",
+       3000
+      ]
+     ],
+     "fuera": [
+      "Fazer"
+     ]
     }
    ],
    "pendiente": [
@@ -1967,7 +1988,8 @@
   "460": "3",
   "478": "2",
   "496": "2",
-  "553": "2"
+  "553": "2",
+  "631": "2"
  },
  "nombres": {
   "1476311763912757420": "SCazulo",

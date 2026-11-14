@@ -299,7 +299,19 @@
    "monto": 1000,
    "t": "2026-11-13T16:39:48Z",
    "fin": "2026-11-16T16:00:00Z",
-   "e": "activo"
+   "e": "cazado",
+   "por": [
+    [
+     "Fazer",
+     1000
+    ]
+   ],
+   "ev": {
+    "n": 631,
+    "nombre": "SNAKE INSIGNIA 8 8",
+    "sv": "SR",
+    "t": "2026-11-13T22:23:00Z"
+   }
   }
  ],
  "suma": {
@@ -310,6 +322,7 @@
   "PichulaMc": 1375,
   "Polosport": 375,
   "Carlosss": 3500,
-  "PRAISERIZA": 500
+  "PRAISERIZA": 500,
+  "Fazer": 1000
  }
 }

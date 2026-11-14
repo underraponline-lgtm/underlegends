@@ -9,7 +9,7 @@
   "FFA": "2026-11-13",
   "FRZ": "2026-11-12",
   "FVS": "2026-10-15",
-  "SR": "2026-11-05",
+  "SR": "2026-11-13",
   "URBF": "2026-11-09"
  },
  "retos": {
@@ -856,6 +856,18 @@
    "sv": "DDS",
    "vence": "2026-11-04T01:58:48+00:00",
    "vencido": true
+  },
+  "Fritz": {
+   "chat": "2026-11-13",
+   "con": null,
+   "cumplido": "",
+   "debut": "2026-11-13T22:23:00+00:00",
+   "did": "",
+   "evento": "SNAKE INSIGNIA 8 8",
+   "n": 631,
+   "sv": "SR",
+   "vence": "2026-11-20T22:23:00+00:00",
+   "vencido": false
   },
   "GGWAN": {
    "avisado": "2026-10-25",
@@ -2023,6 +2035,18 @@
    "vence": "2026-11-15T03:22:22+00:00",
    "vencido": false
   },
+  "PUNISHER": {
+   "chat": "2026-11-13",
+   "con": null,
+   "cumplido": "",
+   "debut": "2026-11-13T22:23:00+00:00",
+   "did": "",
+   "evento": "SNAKE INSIGNIA 8 8",
+   "n": 631,
+   "sv": "SR",
+   "vence": "2026-11-20T22:23:00+00:00",
+   "vencido": false
+  },
   "Paja lenta": {
    "avisado": "2026-10-26",
    "chat": "2026-10-26",
@@ -2176,6 +2200,18 @@
    "n": 575,
    "sv": "DDF",
    "vence": "2026-11-13T19:37:36+00:00",
+   "vencido": false
+  },
+  "SC": {
+   "chat": "2026-11-13",
+   "con": null,
+   "cumplido": "",
+   "debut": "2026-11-13T22:23:00+00:00",
+   "did": "",
+   "evento": "SNAKE INSIGNIA 8 8",
+   "n": 631,
+   "sv": "SR",
+   "vence": "2026-11-20T22:23:00+00:00",
    "vencido": false
   },
   "SNE": {

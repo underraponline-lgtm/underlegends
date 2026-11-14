@@ -54286,5 +54286,258 @@
    "min": 99,
    "v": 1
   }
+ },
+ "631": {
+  "dia": "2026-11-13",
+  "escala": "16+",
+  "fecha": "13/11",
+  "links": [
+   "https://discord.com/channels/492346406976356374/863208023857823785/1570926989676773558"
+  ],
+  "n": 631,
+  "nombre": "SNAKE INSIGNIA 8 8",
+  "participantes": 17,
+  "rondas": [
+   {
+    "b": [
+     [
+      [
+       "Colesito",
+       "Humildad"
+      ],
+      "Colesito",
+      ""
+     ],
+     [
+      [
+       "Zignos",
+       "Dynoco"
+      ],
+      "Zignos",
+      ""
+     ],
+     [
+      [
+       "Juanpa",
+       "Lord Viruzz"
+      ],
+      "Juanpa",
+      ""
+     ],
+     [
+      [
+       "Noone",
+       "PUNISHER"
+      ],
+      "Noone",
+      ""
+     ],
+     [
+      [
+       "jazi",
+       "SC"
+      ],
+      "jazi",
+      ""
+     ],
+     [
+      [
+       "MAGMA",
+       "Fritz 🇨🇴"
+      ],
+      "MAGMA",
+      ""
+     ],
+     [
+      [
+       "Fazer",
+       "Erian"
+      ],
+      "Fazer",
+      ""
+     ],
+     [
+      [
+       "Bloody",
+       "Prosu"
+      ],
+      "Bloody",
+      ""
+     ]
+    ],
+    "r": "Octavos"
+   },
+   {
+    "b": [
+     [
+      [
+       "Colesito",
+       "Zignos"
+      ],
+      "Colesito",
+      ""
+     ],
+     [
+      [
+       "Juanpa",
+       "Noone"
+      ],
+      "Juanpa",
+      ""
+     ],
+     [
+      [
+       "jazi",
+       "Makmah"
+      ],
+      "jazi",
+      ""
+     ],
+     [
+      [
+       "Fazer",
+       "Bloody"
+      ],
+      "Fazer",
+      ""
+     ]
+    ],
+    "r": "Cuartos"
+   },
+   {
+    "b": [
+     [
+      [
+       "Juanpa",
+       "Colesito"
+      ],
+      "Juanpa",
+      ""
+     ],
+     [
+      [
+       "Fazer",
+       "jazi"
+      ],
+      "Fazer",
+      ""
+     ]
+    ],
+    "r": "Semifinales"
+   },
+   {
+    "b": [
+     [
+      [
+       "Colesito",
+       "jazi"
+      ],
+      "Colesito",
+      ""
+     ]
+    ],
+    "r": "Tercer puesto"
+   },
+   {
+    "b": [
+     [
+      [
+       "Juanpa",
+       "Fazer"
+      ],
+      "Juanpa",
+      ""
+     ]
+    ],
+    "r": "Final"
+   }
+  ],
+  "sv": "SR",
+  "tabla": [
+   [
+    "Juanpa",
+    "Campeón",
+    10000
+   ],
+   [
+    "Fazer",
+    "Subcampeón",
+    7500
+   ],
+   [
+    "Colesito",
+    "Tercero",
+    6000
+   ],
+   [
+    "jazi",
+    "Cuarto",
+    4500
+   ],
+   [
+    "Bloody",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Makmah",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Noone",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Zignos",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Dynoco",
+    "Octavos",
+    1250
+   ],
+   [
+    "Erian",
+    "Octavos",
+    1250
+   ],
+   [
+    "Fritz 🇨🇴",
+    "Octavos",
+    1250
+   ],
+   [
+    "Humildad",
+    "Octavos",
+    1250
+   ],
+   [
+    "Lord Viruzz",
+    "Octavos",
+    1250
+   ],
+   [
+    "PUNISHER",
+    "Octavos",
+    1250
+   ],
+   [
+    "Prosu",
+    "Octavos",
+    1250
+   ],
+   [
+    "SC",
+    "Octavos",
+    1250
+   ]
+  ],
+  "ver": {
+   "min": 118,
+   "v": 1
+  }
  }
 }

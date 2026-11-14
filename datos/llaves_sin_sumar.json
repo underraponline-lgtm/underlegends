@@ -966,6 +966,114 @@
    ]
   ]
  },
+ "135481330": {
+  "dia": "2026-11-13",
+  "escala": "4-7",
+  "fecha": "13/11",
+  "links": [
+   "https://discord.com/channels/1558611504046153750/1564463626855645234/1570949682635481330"
+  ],
+  "n": 135481330,
+  "nombre": "5 VIDAS 18:53",
+  "ns": 1,
+  "participantes": 6,
+  "rondas": [
+   {
+    "b": [
+     [
+      [
+       "Player",
+       "Shadow"
+      ],
+      "Player",
+      "batalla 1 · votos 1–0"
+     ],
+     [
+      [
+       "Player",
+       "Rbk"
+      ],
+      "Player",
+      "batalla 2 · votos 1–0"
+     ],
+     [
+      [
+       "Player",
+       "Calíz"
+      ],
+      "Player",
+      "batalla 3 · siguió peleando"
+     ],
+     [
+      [
+       "Player",
+       "LAST"
+      ],
+      "Player",
+      "batalla 4 · votos 1–0"
+     ],
+     [
+      [
+       "Player",
+       "TøKīØ🦠🧠"
+      ],
+      "Player",
+      "batalla 5 · siguió peleando"
+     ],
+     [
+      [
+       "Player",
+       "Rbk"
+      ],
+      "Player",
+      "batalla 6 · votos 1–0"
+     ],
+     [
+      [
+       "Calíz",
+       "Player"
+      ],
+      "Calíz",
+      "batalla 7 · votos 1–0"
+     ]
+    ],
+    "r": "5 vidas"
+   }
+  ],
+  "sv": "LKR",
+  "tabla": [
+   [
+    "Calíz",
+    "Campeón",
+    0
+   ],
+   [
+    "LAST",
+    "Campeón",
+    0
+   ],
+   [
+    "Player",
+    "Campeón",
+    0
+   ],
+   [
+    "Shadow",
+    "Campeón",
+    0
+   ],
+   [
+    "TøKīØ🦠🧠",
+    "Campeón",
+    0
+   ],
+   [
+    "Rbk",
+    "Cuartos",
+    0
+   ]
+  ]
+ },
  "139475261": {
   "dia": "2026-10-20",
   "escala": "8-15",

@@ -1,6 +1,84 @@
 {
  "_leeme": "Los eventos de vidas de #veredictos ya armados —quién peleó con quién y quién ganó—, para cargarlos aunque ya no estén entre los últimos mensajes del canal; y cada batalla con su ganador (`batallas`), para la llave que no lo dice; y cada llave como se jugó (`llaves`), que manda sobre la del organizador. Sin los mensajes: el repo es público. Lo escribe bot/escuchar.py (vidas()).",
- "eventos": {},
+ "eventos": {
+  "1570949682635481330": {
+   "id": "1570949682635481330",
+   "canal": "1564463626855645234",
+   "sv": "🔥LKR (Champios Legue)🐉",
+   "g": "1558611504046153750",
+   "pub": 1794613991174,
+   "ed": 1794615796579,
+   "n": 6,
+   "vidas": 5,
+   "ronda": "5 vidas",
+   "batallas": [
+    [
+     [
+      "SHADOW",
+      "PLAYER"
+     ],
+     "PLAYER",
+     "votos 1–0",
+     "1570949682635481330"
+    ],
+    [
+     [
+      "PLAYER",
+      "SNX"
+     ],
+     "PLAYER",
+     "votos 1–0",
+     "1570950857447571580"
+    ],
+    [
+     [
+      "PLAYER",
+      "CALIZ"
+     ],
+     "PLAYER",
+     "siguió peleando",
+     "1570951766579879937"
+    ],
+    [
+     [
+      "PLAYER",
+      "LAST"
+     ],
+     "PLAYER",
+     "votos 1–0",
+     "1570952639796084807"
+    ],
+    [
+     [
+      "TOKIO",
+      "PLAYER"
+     ],
+     "PLAYER",
+     "siguió peleando",
+     "1570953996628263097"
+    ],
+    [
+     [
+      "PLAYER",
+      "SNX"
+     ],
+     "PLAYER",
+     "votos 1–0",
+     "1570955239509725215"
+    ],
+    [
+     [
+      "PLAYER",
+      "CALIZ"
+     ],
+     "CALIZ",
+     "votos 1–0",
+     "1570956343135838299"
+    ]
+   ],
+   "terminada": false
+  }
+ },
  "batallas": {
   "1568430934397689857": {
    "id": "1568430934397689857",
@@ -1607,6 +1685,61 @@
    "b": "COLESITO",
    "ganador": "JUANPA",
    "votos": "2–0"
+  },
+  "1570949682635481330": {
+   "id": "1570949682635481330",
+   "sv": "🔥LKR (Champios Legue)🐉",
+   "g": "1558611504046153750",
+   "canal": "1564463626855645234",
+   "pub": 1794613991174,
+   "a": "SHADOW",
+   "b": "PLAYER",
+   "ganador": "PLAYER",
+   "votos": "1–0"
+  },
+  "1570950857447571580": {
+   "id": "1570950857447571580",
+   "sv": "🔥LKR (Champios Legue)🐉",
+   "g": "1558611504046153750",
+   "canal": "1564463626855645234",
+   "pub": 1794614271271,
+   "a": "PLAYER",
+   "b": "SNX",
+   "ganador": "PLAYER",
+   "votos": "1–0"
+  },
+  "1570952639796084807": {
+   "id": "1570952639796084807",
+   "sv": "🔥LKR (Champios Legue)🐉",
+   "g": "1558611504046153750",
+   "canal": "1564463626855645234",
+   "pub": 1794614696216,
+   "a": "PLAYER",
+   "b": "LAST",
+   "ganador": "PLAYER",
+   "votos": "1–0"
+  },
+  "1570955239509725215": {
+   "id": "1570955239509725215",
+   "sv": "🔥LKR (Champios Legue)🐉",
+   "g": "1558611504046153750",
+   "canal": "1564463626855645234",
+   "pub": 1794615316036,
+   "a": "PLAYER",
+   "b": "SNX",
+   "ganador": "PLAYER",
+   "votos": "1–0"
+  },
+  "1570956343135838299": {
+   "id": "1570956343135838299",
+   "sv": "🔥LKR (Champios Legue)🐉",
+   "g": "1558611504046153750",
+   "canal": "1564463626855645234",
+   "pub": 1794615579161,
+   "a": "PLAYER",
+   "b": "CALIZ",
+   "ganador": "CALIZ",
+   "votos": "1–0"
   }
  },
  "llaves": {
@@ -6251,6 +6384,37 @@
      [
       "CÁLIZ 🇲🇽",
       "TOKIO🇦🇷"
+     ],
+     null,
+     "última ronda y no dice campeón",
+     []
+    ]
+   ]
+  },
+  "1570954673467162678": {
+   "id": "1570954673467162678",
+   "sv": "#FDS ╏FREESTYLE DISCORD SERIES",
+   "g": "1489848581203689535",
+   "canal": "1500675902042931280",
+   "pub": 1794615181081,
+   "ed": 1794615780347,
+   "texto": "`[ CUARTOS ]`\n⌞Izaya 🇨🇱⌝ 🆚 ⌞MCAREPA 🇻🇪⌝\n⌞Leyenda.X5 🇦🇷⌝ 🆚 ⌞CrisZJ🇵🇪⌝",
+   "batallas": [
+    [
+     "CUARTOS",
+     [
+      "Izaya 🇨🇱",
+      "MCAREPA 🇻🇪"
+     ],
+     null,
+     "última ronda y no dice campeón",
+     []
+    ],
+    [
+     "CUARTOS",
+     [
+      "Leyenda.X5 🇦🇷",
+      "CrisZJ🇵🇪"
      ],
      null,
      "última ronda y no dice campeón",

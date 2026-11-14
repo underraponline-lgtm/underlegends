@@ -4001,6 +4001,11 @@
  },
  "dynoco": {
   "competitivo": {
+   "🗡️ MATAGIGANTES": [
+    "🗡️ MATAGIGANTES",
+    "t1",
+    1794616688470
+   ],
    "🤝 SIN MIEDO": [
     "🤝 SIN MIEDO",
     "t1",
@@ -4957,9 +4962,19 @@
     "🏅 PODIOS",
     "t1",
     1792953978519
+   ],
+   "📆 HABITUÉ": [
+    "📆 HABITUÉ",
+    "t1",
+    1794616688470
    ]
   },
   "temporada": {
+   "🐺 LOBO SOLITARIO": [
+    "🐺 LOBO SOLITARIO",
+    "t1",
+    1794616688470
+   ],
    "📈 EN ASCENSO": [
     "📈 EN ASCENSO",
     "t1",
@@ -5776,6 +5791,15 @@
    ]
   }
  },
+ "jazi": {
+  "temporada": {
+   "🧳 VIAJERO": [
+    "🧳 VIAJERO",
+    "t1",
+    1794616688470
+   ]
+  }
+ },
  "jd": {
   "servidor": {
    "🏆 CAMPEÓN": [
@@ -5981,6 +6005,21 @@
  },
  "juanpa": {
   "servidor": {
+   "⚔️ DUELISTA": [
+    "⚔️ DUELISTA",
+    "t1",
+    1794616688470
+   ],
+   "🏅 PODIOS": [
+    "🏅 PODIOS",
+    "t1",
+    1794616688470
+   ],
+   "🏆 CAMPEÓN": [
+    "🏆 CAMPEÓN",
+    "t1",
+    1794616688470
+   ],
    "🧱 FUNDADOR": [
     "🧱 FUNDADOR",
     "t1",
@@ -5993,6 +6032,11 @@
    ]
   },
   "temporada": {
+   "👑 CAMPEÓN x%d": [
+    "👑 CAMPEÓN x1",
+    "t1",
+    1794616688470
+   ],
    "📈 EN ASCENSO": [
     "📈 EN ASCENSO",
     "t1",
@@ -7349,6 +7393,11 @@
    ]
   },
   "temporada": {
+   "⚡ MARATONISTA": [
+    "⚡ MARATONISTA",
+    "t1",
+    1794616688470
+   ],
    "🌍 TROTAMUNDOS": [
     "🌍 TROTAMUNDOS",
     "t1",
@@ -10130,6 +10179,11 @@
     "t1",
     1794260565889
    ],
+   "🔟 DOBLE DÍGITO": [
+    "🔟 DOBLE DÍGITO",
+    "t1",
+    1794616688470
+   ],
    "🧳 VIAJERO": [
     "🧳 VIAJERO",
     "t1",
@@ -12458,11 +12512,33 @@
   }
  },
  "prosu": {
+  "pais": {
+   "INTERNACIONAL": [
+    "INTERNACIONAL",
+    "t1",
+    1794616688470
+   ],
+   "PRIMER CAMPEÓN": [
+    "PRIMER CAMPEÓN",
+    "t1",
+    1794616688470
+   ],
+   "SIN FRONTERAS": [
+    "SIN FRONTERAS",
+    "t1",
+    1794616688470
+   ]
+  },
   "servidor": {
    "🏆 CAMPEÓN": [
     "🏆 CAMPEÓN",
     "t1",
     1793029252929
+   ],
+   "📆 HABITUÉ": [
+    "📆 HABITUÉ",
+    "t1",
+    1794616688470
    ]
   },
   "temporada": {

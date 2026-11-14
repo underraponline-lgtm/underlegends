@@ -84,7 +84,7 @@
      "por": [
       {
        "n": "Provenza",
-       "cobra": 9000
+       "cobra": 9250
       },
       {
        "n": "Tenor",
@@ -206,10 +206,22 @@
     "nivel": "C",
     "base": 5000,
     "o": 310,
-    "estado": "suelto",
-    "ev": 0,
-    "fase": "",
-    "valor": 5000
+    "estado": "cazado",
+    "ev": 1,
+    "fase": "Cuarto",
+    "valor": 5000,
+    "caza": {
+     "n": 631,
+     "evento": "SNAKE INSIGNIA 8 8",
+     "sv": "SR",
+     "t": "2026-11-13T22:23:00Z",
+     "por": [
+      {
+       "n": "Fazer",
+       "cobra": 5000
+      }
+     ]
+    }
    },
    {
     "n": "Sin Limites",
