@@ -1988,10 +1988,10 @@
    "servidor": "03cada35e488:67e514e7f0d5:43d041"
   },
   "crakero": {
-   "competitivo": "56c6d0de7608:e1a1212cc40e",
-   "pais": "fb45c516dd53:89db0e1cb730",
+   "competitivo": "e271ca80631f:e1a1212cc40e",
+   "pais": "6ca9905904a5:89db0e1cb730",
    "servidor": "86687f25d73a:67e514e7f0d5:3c7154",
-   "temporada": "99b0a125f74d:08ecf54fc940"
+   "temporada": "226390575fc4:08ecf54fc940"
   },
   "doble h": {
    "competitivo": "79ee65ea9951:e1a1212cc40e",
@@ -2119,5 +2119,5 @@
    "servidor": "7f8885a35a6d:67e514e7f0d5:93a344"
   }
  },
- "cuando": "2026-11-14T07:25:15+00:00"
+ "cuando": "2026-11-14T07:31:39+00:00"
 }
