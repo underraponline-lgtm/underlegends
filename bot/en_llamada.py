@@ -301,8 +301,27 @@ GUARDAR_CADA_S = 10 * 60
 QUIETO_S = 15 * 60
 #: el tope: un trabajo de Actions dura hasta 6 h
 TOPE_S = 5 * 3600 + 50 * 60
-#: cuántas veces se reconecta antes de rendirse (cada una es un IDENTIFY)
+#: cuántas veces SEGUIDAS se reconecta antes de rendirse (cada una es un IDENTIFY)
 RECONEXIONES = 5
+#: 🔁 una conexión que duró esto ya no cuenta como corte seguido (13/11/2026). Discord pide reconectar (op 7) de rutina
+#: —4 veces en 4,5 h ese día—, y contadas desde el arranque, un trabajo de 5 h 50 min se rendía solo sin que nada fallara
+SANA_S = 15 * 60
+
+
+def cortes_seguidos(previos, duro_s):
+    """Cuántos cortes seguidos van después de uno nuevo: si la conexión había durado `SANA_S`, se cuenta de nuevo. Pura."""
+    return 1 if duro_s >= SANA_S else previos + 1
+
+
+def espera_tras_corte(e):
+    """Cuántos segundos esperar antes de reconectar: el `retry-after` que mande Discord (13/11/2026: un 503 al volver a
+    conectar, con `retry-after: 5`), entre 5 y 60; sin él, 5. Pura."""
+    h = getattr(e, 'resp_headers', None) or {}
+    try:
+        ra = float({str(k).lower(): v for k, v in dict(h).items()}.get('retry-after', 5))
+    except (TypeError, ValueError):
+        ra = 5
+    return max(5.0, min(60.0, ra))
 RAW = 'https://raw.githubusercontent.com/underraponline-lgtm/underlegends/main/datos/anuncios.json'
 
 
@@ -465,8 +484,11 @@ def seguir(token, aplicar=True, tope_s=TOPE_S):
         sucios.clear()
 
     while True:
-        ws = websocket.create_connection(GATEWAY, timeout=15)
+        # 🔁 conectarse va ADENTRO del try (13/11/2026): afuera, un 503 de Discord al volver a conectar tumbaba el trabajo
+        # entero en vez de esperar y reintentar como cualquier otro corte
+        ws, conectado_t = None, time.time()
         try:
+            ws = websocket.create_connection(GATEWAY, timeout=15)
             hola = json.loads(ws.recv())
             if hola.get('op') != 10:
                 raise RuntimeError('el Gateway no saludó (op %s)' % hola.get('op'))
@@ -532,16 +554,17 @@ def seguir(token, aplicar=True, tope_s=TOPE_S):
                     if v:
                         pend.append(v)
         except Exception as e:                               # noqa: BLE001
-            reconectado += 1
+            reconectado = cortes_seguidos(reconectado, time.time() - conectado_t)
             print('   ⚠️ se cortó la conexión (%s); reconexión %d de %d' % (str(e)[:70], reconectado, RECONEXIONES))
             if reconectado > RECONEXIONES:
                 _veredictos()
                 _guardar('fin, sin conexión')
                 return 1
-            time.sleep(5)
+            time.sleep(espera_tras_corte(e))
         finally:
             try:
-                ws.close()
+                if ws is not None:
+                    ws.close()
             except Exception:                                # noqa: BLE001
                 pass
 
@@ -720,6 +743,25 @@ def _self_check():
     ok(kv['gente']['104']['t'] == [30000, 60000, 120000] and kv['gente']['100']['c'] == ['🎤 Escenario'],
        'lo de la sesión se suma a lo de KV, en orden y sin perder la foto del ciclo')
     ok(fusionar_sesion(kv, ses['FFA'], 130000) == kv, 'y sumarlo dos veces no cambia nada (se repara lo que se pisó)')
+
+    # 🔁 los cortes (13/11/2026): los op 7 de rutina no suman hacia rendirse; los seguidos, sí
+    n = 0
+    for _ in range(8):
+        n = cortes_seguidos(n, 50 * 60)
+    ok(n == 1, 'ocho cortes con 50 min de conexión entre cada uno: nunca pasa de 1 (no se rinde solo en 5 h 50)')
+    n = 0
+    for _ in range(RECONEXIONES + 1):
+        n = cortes_seguidos(n, 3)
+    ok(n > RECONEXIONES, 'seis cortes seguidos de 3 s: se rinde (nunca una conexión por minuto)')
+
+    class _Corte503(Exception):
+        resp_headers = {'Retry-After': '5', 'date': 'x'}
+    ok(espera_tras_corte(_Corte503()) == 5 and espera_tras_corte(RuntimeError('op 7')) == 5,
+       'el 503 del 13/11 (retry-after 5) y un op 7: 5 s')
+    _Corte503.resp_headers = {'retry-after': '600'}
+    ok(espera_tras_corte(_Corte503()) == 60, 'un retry-after enorme, como mucho 60 s')
+    _Corte503.resp_headers = {'retry-after': 'mañana'}
+    ok(espera_tras_corte(_Corte503()) == 5, 'uno que no es número: 5 s')
 
     print('\n   %s' % ('todo bien' if not mal else '🔴 %d mal' % mal))
     return 1 if mal else 0
