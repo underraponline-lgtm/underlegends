@@ -39809,7 +39809,7 @@
    "Vilca": 15
   },
   "fecha": "08/11",
-  "firma": "bf8718a53789ac81",
+  "firma": "8622c38f2af7041e",
   "msg": "1569508065508593856",
   "nombre": "RAP SIN GROSERIAS 4",
   "num": 591,
@@ -42064,7 +42064,7 @@
    "Vilca": 16
   },
   "fecha": "10/11",
-  "firma": "c812d2c38d171177",
+  "firma": "4a323db707d45a35",
   "msg": "1569848635271680124",
   "nombre": "MF DOOM Y MADLIB EDICION 1",
   "num": 604,
@@ -45902,7 +45902,7 @@
    "TøKīØ🦠🧠": 13
   },
   "fecha": "12/11",
-  "firma": "1c7b42bc8c99e13e",
+  "firma": "ced35fd9361b0ff7",
   "msg": "1570602754639007937",
   "nombre": "RAP SIN GROSERIAS 5",
   "num": 626,
@@ -46131,7 +46131,7 @@
    "Vilca": 22
   },
   "fecha": "12/11",
-  "firma": "f1f528e880daed11",
+  "firma": "dbcc79f2acc5194f",
   "msg": "1570602758506151978",
   "nombre": "RANKED 1",
   "num": 627,
@@ -47370,7 +47370,7 @@
    "crakero": 9
   },
   "fecha": "13/11",
-  "firma": "15f41e1411bc6cc3",
+  "firma": "29dd13b5ffbe6864",
   "msg": "1570980323372703807",
   "nombre": "RANKED 2",
   "num": 632,
@@ -47418,6 +47418,192 @@
    ],
    [
     "araya",
+    "Cuartos",
+    2500
+   ]
+  ],
+  "v": 2
+ },
+ "633": {
+  "antes": {
+   "BTRX": [
+    41,
+    49,
+    false
+   ],
+   "Erian": [
+    4,
+    4,
+    false
+   ],
+   "Hades": [
+    207,
+    467,
+    false
+   ],
+   "Makmah": [
+    1,
+    1,
+    false
+   ],
+   "Molusco": [
+    26,
+    29,
+    false
+   ],
+   "Ruvick": [
+    397,
+    315,
+    true
+   ],
+   "Zignos": [
+    24,
+    27,
+    false
+   ],
+   "francis": [
+    324,
+    202,
+    true
+   ]
+  },
+  "canal": "1468472443843776659",
+  "duelos": [
+   [
+    "Molusco",
+    "Ruvick",
+    "Molusco"
+   ],
+   [
+    "Molusco",
+    "Erian",
+    "Molusco"
+   ],
+   [
+    "Oasis",
+    "Antis antis",
+    "Oasis"
+   ],
+   [
+    "Oasis",
+    "francis",
+    "Oasis"
+   ],
+   [
+    "Oasis-Nacho-Rizas",
+    "Zignos",
+    "Oasis-Nacho-Rizas"
+   ],
+   [
+    "NC",
+    "Makmah",
+    "NC"
+   ],
+   [
+    "NC",
+    "Xxxx",
+    "NC"
+   ],
+   [
+    "Number",
+    "Hades",
+    "Number"
+   ],
+   [
+    "Number",
+    "BTRX",
+    "Number"
+   ],
+   [
+    "Snow",
+    "Molusco",
+    "Snow"
+   ],
+   [
+    "Oasis-Nacho-Rizas",
+    "Snow-7-ZIgnos",
+    "Oasis-Nacho-Rizas"
+   ]
+  ],
+  "ev_antes": {
+   "BTRX": 20,
+   "Erian": 79,
+   "Hades": 1,
+   "Makmah": 115,
+   "Molusco": 29,
+   "Ruvick": 3,
+   "Zignos": 30,
+   "francis": 4
+  },
+  "fecha": "13/11",
+  "firma": "b1741ede6c3931b5",
+  "msg": "1571002908307099750",
+  "nombre": "KISS OF SHINIGAMI",
+  "num": 633,
+  "participantes": 17,
+  "sello": {
+   "Oasis-Nacho-Rizas": ""
+  },
+  "sv": "FFA",
+  "t": "2026-11-14T03:24:39Z",
+  "tabla": [
+   [
+    "Oasis-Nacho-Rizas",
+    "Campeón",
+    10000
+   ],
+   [
+    "Snow-7-ZIgnos",
+    "Subcampeón",
+    7500
+   ],
+   [
+    "Molusco",
+    "Semifinal",
+    5250
+   ],
+   [
+    "Zignos",
+    "Semifinal",
+    2625
+   ],
+   [
+    "Ruvick",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Erian",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Antis antis",
+    "Cuartos",
+    2500
+   ],
+   [
+    "francis",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Makmah",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Xxxx",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Hades",
+    "Cuartos",
+    2500
+   ],
+   [
+    "BTRX",
     "Cuartos",
     2500
    ]

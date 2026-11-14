@@ -4305,6 +4305,33 @@
     "NEXUX"
    ],
    "escribio": {}
+  },
+  {
+   "id": "109106baf7",
+   "tipo": "Nombre desconocido",
+   "sec": "KISS OF SHINIGAMI · FFA · 13/11 · #633",
+   "que": "¿Quién es «Oasis-Nacho-Rizas»?",
+   "r": "Es Oasis",
+   "regla": "Discord · su cuenta de Discord: la inscripción, el podio, la llave o la llamada",
+   "rk": "Discord",
+   "por": "el ciclo (su cuenta de Discord)",
+   "porque": "alias de Oasis: la llave lo escribe así de una ronda a otra",
+   "t": 1794627401976,
+   "filas": [
+    1364
+   ],
+   "variantes": [
+    "Oasis-Nacho-Rizas"
+   ],
+   "escribio": {
+    "alias": [
+     "Oasis-Nacho-Rizas",
+     "Oasis"
+    ],
+    "filas": [
+     365
+    ]
+   }
   }
  ],
  "deshechas": []

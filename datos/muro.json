@@ -19,19 +19,19 @@
 "temporada"
 ]
 },
+"erian": {
+"rg": "B",
+"c": [
+"competitivo",
+"servidor",
+"temporada"
+]
+},
 "pichulamc": {
 "rg": "A",
 "c": [
 "competitivo",
 "pais",
-"servidor",
-"temporada"
-]
-},
-"erian": {
-"rg": "B",
-"c": [
-"competitivo",
 "servidor",
 "temporada"
 ]
@@ -58,8 +58,8 @@
 "temporada"
 ]
 },
-"verc": {
-"rg": "A",
+"panchok": {
+"rg": "S",
 "c": [
 "competitivo",
 "pais",
@@ -67,8 +67,8 @@
 "temporada"
 ]
 },
-"panchok": {
-"rg": "S",
+"verc": {
+"rg": "A",
 "c": [
 "competitivo",
 "pais",
@@ -154,15 +154,6 @@
 "temporada"
 ]
 },
-"miniboy": {
-"rg": "C",
-"c": [
-"competitivo",
-"pais",
-"servidor",
-"temporada"
-]
-},
 "tam": {
 "rg": "A",
 "c": []
@@ -180,6 +171,15 @@
 "rg": "S",
 "c": [
 "competitivo",
+"servidor",
+"temporada"
+]
+},
+"miniboy": {
+"rg": "C",
+"c": [
+"competitivo",
+"pais",
 "servidor",
 "temporada"
 ]
@@ -328,6 +328,15 @@
 "temporada"
 ]
 },
+"btrx": {
+"rg": "C",
+"c": [
+"competitivo",
+"pais",
+"servidor",
+"temporada"
+]
+},
 "xubaru": {
 "rg": "C",
 "c": [
@@ -380,15 +389,6 @@
 "rg": "C",
 "c": [
 "competitivo",
-"servidor",
-"temporada"
-]
-},
-"btrx": {
-"rg": "C",
-"c": [
-"competitivo",
-"pais",
 "servidor",
 "temporada"
 ]
@@ -787,14 +787,6 @@
 "rg": "E",
 "c": []
 },
-"ardean": {
-"rg": "",
-"c": [
-"competitivo",
-"servidor",
-"temporada"
-]
-},
 "marcos": {
 "rg": "D",
 "c": [
@@ -819,10 +811,6 @@
 "temporada"
 ]
 },
-"emizor": {
-"rg": "D",
-"c": []
-},
 "rodas": {
 "rg": "E",
 "c": [
@@ -838,6 +826,14 @@
 "valen": {
 "rg": "",
 "c": []
+},
+"ardean": {
+"rg": "",
+"c": [
+"competitivo",
+"servidor",
+"temporada"
+]
 },
 "soneto": {
 "rg": "E",
@@ -899,6 +895,10 @@
 "servidor",
 "temporada"
 ]
+},
+"emizor": {
+"rg": "D",
+"c": []
 },
 "lucky": {
 "rg": "",
@@ -7392,8 +7392,8 @@
 "tipo": "resnoche",
 "t": "2026-11-14T08:00:00Z",
 "dia": "2026-11-13",
-"eventos": 4,
-"part": 83,
+"eventos": 5,
+"part": 100,
 "campeones": [
 {
 "ev": "PANDILLAS DE RAP VOL.1",
@@ -7437,6 +7437,17 @@
 ]
 },
 {
+"ev": "KISS OF SHINIGAMI",
+"sv": "FFA",
+"ll": 633,
+"quien": [
+[
+"Oasis-Nacho-Rizas",
+""
+]
+]
+},
+{
 "ev": "RANKED 2",
 "sv": "FDS",
 "ll": 632,
@@ -7450,6 +7461,12 @@
 ],
 "suman": [
 {
+"n": "Molusco",
+"k": "molusco",
+"pts": 11500,
+"ev": 3
+},
+{
 "n": "Carlosss",
 "k": "carlosss",
 "pts": 10000,
@@ -7458,12 +7475,6 @@
 {
 "n": "Dios",
 "k": "dios",
-"pts": 10000,
-"ev": 1
-},
-{
-"n": "Juanpa",
-"k": "juanpa",
 "pts": 10000,
 "ev": 1
 }
@@ -7479,7 +7490,7 @@
 "n": "Trueno",
 "k": "",
 "de": 625,
-"a": 415
+"a": 417
 },
 {
 "n": "Chuwin",

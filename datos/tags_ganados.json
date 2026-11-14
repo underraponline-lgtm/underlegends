@@ -2070,6 +2070,11 @@
    ]
   },
   "temporada": {
+   "⚡ MARATONISTA": [
+    "⚡ MARATONISTA",
+    "t1",
+    1794627409308
+   ],
    "🌍 TROTAMUNDOS": [
     "🌍 TROTAMUNDOS",
     "t1",
@@ -5111,6 +5116,15 @@
     "🧱 FUNDADOR",
     "t1",
     1792953978519
+   ]
+  }
+ },
+ "francis": {
+  "servidor": {
+   "📆 HABITUÉ": [
+    "📆 HABITUÉ",
+    "t1",
+    1794627409308
    ]
   }
  },
@@ -9458,6 +9472,11 @@
     "t1",
     1793029252929
    ],
+   "🔺 REY DE LOS TRÍOS": [
+    "🔺 REY DE LOS TRÍOS",
+    "t1",
+    1794627409308
+   ],
    "🗺️ CONQUISTADOR": [
     "🗺️ CONQUISTADOR",
     "t1",
@@ -10900,6 +10919,32 @@
     "🥉 AL PODIO",
     "t1",
     1793029252929
+   ]
+  }
+ },
+ "oasisnachorizas": {
+  "servidor": {
+   "🏆 CAMPEÓN": [
+    "🏆 CAMPEÓN",
+    "t1",
+    1794627409308
+   ]
+  },
+  "temporada": {
+   "🌱 PROMESA": [
+    "🌱 PROMESA",
+    "t1",
+    1794627409308
+   ],
+   "🚪 DEBUT CON CORONA": [
+    "🚪 DEBUT CON CORONA",
+    "t1",
+    1794627409308
+   ],
+   "🥉 AL PODIO": [
+    "🥉 AL PODIO",
+    "t1",
+    1794627409308
    ]
   }
  },
@@ -14055,6 +14100,20 @@
     "🥉 AL PODIO",
     "t1",
     1793029252929
+   ]
+  }
+ },
+ "snow7zignos": {
+  "temporada": {
+   "🌱 PROMESA": [
+    "🌱 PROMESA",
+    "t1",
+    1794627409308
+   ],
+   "🥉 AL PODIO": [
+    "🥉 AL PODIO",
+    "t1",
+    1794627409308
    ]
   }
  },

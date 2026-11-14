@@ -1679,7 +1679,30 @@
     "ronda": "CUARTOS"
    }
   ],
-  "respondidas": {},
+  "resp": {
+   "0": {
+    "por": "org",
+    "t": 1794626064336
+   },
+   "1": {
+    "por": "org",
+    "t": 1794626072230
+   },
+   "2": {
+    "por": "org",
+    "t": 1794626078699
+   },
+   "3": {
+    "por": "org",
+    "t": 1794626082996
+   }
+  },
+  "respondidas": {
+   "0": "Oasis-Nacho-Rizas",
+   "1": "Snow🇨🇴",
+   "2": "nc🇰🇷",
+   "3": "Number 🇺🇾"
+  },
   "sin_permiso": false,
   "staff_probado": false,
   "sv": "FFA",

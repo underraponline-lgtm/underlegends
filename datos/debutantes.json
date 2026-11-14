@@ -39,6 +39,7 @@
    "vencido": true
   },
   "4'C": {
+   "avisado": "2026-11-13",
    "chat": "2026-11-13",
    "con": null,
    "cumplido": "",
@@ -260,6 +261,18 @@
    "sv": "FRZ",
    "vence": "2026-11-03T18:35:17+00:00",
    "vencido": true
+  },
+  "Antis antis": {
+   "avisado": "2026-11-13",
+   "con": null,
+   "cumplido": "",
+   "debut": "2026-11-13T22:26:41+00:00",
+   "did": "",
+   "evento": "KISS OF SHINIGAMI",
+   "n": 633,
+   "sv": "FFA",
+   "vence": "2026-11-20T22:26:41+00:00",
+   "vencido": false
   },
   "Apolo": {
    "avisado": "2026-10-18",
@@ -981,9 +994,10 @@
   },
   "Hades": {
    "avisado": "2026-11-09",
+   "avisado_cumplido": "2026-11-13",
    "chat": "2026-11-09",
-   "con": null,
-   "cumplido": "",
+   "con": 633,
+   "cumplido": "2026-11-13T22:26:41+00:00",
    "debut": "2026-11-08T19:50:21+00:00",
    "did": "740307349809397841",
    "evento": "RED BULL CARACAS REGIONAL T.5",
@@ -1972,6 +1986,18 @@
    "vence": "2026-10-20T01:56:58+00:00",
    "vencido": true
   },
+  "Oasis-Nacho-Rizas": {
+   "avisado": "2026-11-13",
+   "con": null,
+   "cumplido": "",
+   "debut": "2026-11-13T22:26:41+00:00",
+   "did": "",
+   "evento": "KISS OF SHINIGAMI",
+   "n": 633,
+   "sv": "FFA",
+   "vence": "2026-11-20T22:26:41+00:00",
+   "vencido": false
+  },
   "Olga de Kiev": {
    "avisado": "2026-10-26",
    "chat": "2026-10-27",
@@ -2376,6 +2402,18 @@
    "vence": "2026-10-20T23:50:48+00:00",
    "vencido": false
   },
+  "Snow-7-ZIgnos": {
+   "avisado": "2026-11-13",
+   "con": null,
+   "cumplido": "",
+   "debut": "2026-11-13T22:26:41+00:00",
+   "did": "",
+   "evento": "KISS OF SHINIGAMI",
+   "n": 633,
+   "sv": "FFA",
+   "vence": "2026-11-20T22:26:41+00:00",
+   "vencido": false
+  },
   "Soul": {
    "avisado": "2026-11-11",
    "chat": "2026-11-12",
@@ -2663,6 +2701,18 @@
    "n": 468,
    "sv": "FFA",
    "vence": "2026-10-20T23:50:48+00:00",
+   "vencido": false
+  },
+  "Xxxx": {
+   "avisado": "2026-11-13",
+   "con": null,
+   "cumplido": "",
+   "debut": "2026-11-13T22:26:41+00:00",
+   "did": "",
+   "evento": "KISS OF SHINIGAMI",
+   "n": 633,
+   "sv": "FFA",
+   "vence": "2026-11-20T22:26:41+00:00",
    "vencido": false
   },
   "YIN-SON": {

@@ -39376,7 +39376,7 @@
        "Kravitz"
       ],
       "Paria, Provenza, Six, MCO",
-      "triple (7 bandas, pasan 4); también pasa: za🇺🇸 / six / MCO 🇦🇷; Drafteado: Paria🇦🇷"
+      "triple (7 bandas, pasan 4); también pasa: za🇺🇸 / six 🇦🇨 / MCO 🇦🇷; Drafteado: Paria🇦🇷"
      ]
     ],
     "r": "Octavos"
@@ -54739,6 +54739,161 @@
   "ver": {
    "min": 129,
    "org": "juega",
+   "v": 1
+  }
+ },
+ "633": {
+  "dia": "2026-11-13",
+  "escala": "16+",
+  "fecha": "13/11",
+  "links": [
+   "https://discord.com/channels/1468472442925092958/1487207377601040516/1570927914487386304"
+  ],
+  "n": 633,
+  "nombre": "KISS OF SHINIGAMI",
+  "participantes": 17,
+  "rondas": [
+   {
+    "b": [
+     [
+      [
+       "Molusco",
+       "Ruvick",
+       "Erian"
+      ],
+      "Molusco",
+      "triple (3 bandas)"
+     ],
+     [
+      [
+       "Oasis",
+       "Antis antis",
+       "francis"
+      ],
+      "Oasis",
+      "triple (3 bandas)"
+     ],
+     [
+      [
+       "NC",
+       "Makmah",
+       "Xxxx"
+      ],
+      "NC",
+      "triple (3 bandas); ganador: ✅ Decidir"
+     ],
+     [
+      [
+       "Number",
+       "Hades",
+       "BTRX"
+      ],
+      "Number",
+      "triple (3 bandas); ganador: ✅ Decidir"
+     ]
+    ],
+    "r": "Cuartos"
+   },
+   {
+    "b": [
+     [
+      [
+       "Oasis-Nacho-Rizas",
+       "Zignos"
+      ],
+      "Oasis-Nacho-Rizas",
+      "Walk-in 1: Zignos 🇩🇴"
+     ],
+     [
+      [
+       "Snow",
+       "Molusco"
+      ],
+      "Snow",
+      "ganador: ✅ Decidir; Walk-in 1: Snow🇨🇴"
+     ]
+    ],
+    "r": "Semifinales"
+   },
+   {
+    "b": [
+     [
+      [
+       "Oasis-Nacho-Rizas",
+       "Snow-7-ZIgnos"
+      ],
+      "Oasis-Nacho-Rizas",
+      "ganador: ✅ Decidir"
+     ]
+    ],
+    "r": "Final"
+   }
+  ],
+  "sv": "FFA",
+  "tabla": [
+   [
+    "Oasis-Nacho-Rizas",
+    "Campeón",
+    10000
+   ],
+   [
+    "Snow-7-ZIgnos",
+    "Subcampeón",
+    7500
+   ],
+   [
+    "Molusco",
+    "Semifinal",
+    5250
+   ],
+   [
+    "Zignos",
+    "Semifinal",
+    2625
+   ],
+   [
+    "Antis antis",
+    "Cuartos",
+    2500
+   ],
+   [
+    "BTRX",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Erian",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Hades",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Makmah",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Ruvick",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Xxxx",
+    "Cuartos",
+    2500
+   ],
+   [
+    "francis",
+    "Cuartos",
+    2500
+   ]
+  ],
+  "ver": {
+   "min": 115,
    "v": 1
   }
  }
