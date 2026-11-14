@@ -635,6 +635,11 @@
     "t1",
     1794335521998
    ],
+   "🎖️ CURTIDO": [
+    "🎖️ CURTIDO",
+    "t1",
+    1794673899934
+   ],
    "🎯 CAZADOR CAZADO": [
     "🎯 CAZADOR CAZADO",
     "t1",
@@ -1760,6 +1765,11 @@
    ]
   },
   "pais": {
+   "CONQUISTA AFUERA": [
+    "CONQUISTA AFUERA",
+    "t1",
+    1794673899934
+   ],
    "DA LA CARA": [
     "DA LA CARA",
     "t1",
@@ -1818,6 +1828,11 @@
     "🏁 SEMIFINALISTA SERIAL",
     "t1",
     1793029252929
+   ],
+   "👑 CAMPEÓN x%d": [
+    "👑 CAMPEÓN x1",
+    "t1",
+    1794673899934
    ],
    "💯 CENTENARIO": [
     "💯 CENTENARIO",
@@ -2138,6 +2153,11 @@
     "⚔️ DUELISTA",
     "t1",
     1794369661268
+   ],
+   "🐉 MATADRAGONES": [
+    "🐉 MATADRAGONES",
+    "t1",
+    1794673899934
    ],
    "🗡️ MATAGIGANTES": [
     "🗡️ MATAGIGANTES",
@@ -3669,6 +3689,13 @@
     "📆 HABITUÉ",
     "t1",
     1792953978519
+   ]
+  },
+  "temporada": {
+   "🔟 DOBLE DÍGITO": [
+    "🔟 DOBLE DÍGITO",
+    "t1",
+    1794673899934
    ]
   }
  },
@@ -5820,6 +5847,15 @@
    ]
   }
  },
+ "iguana": {
+  "temporada": {
+   "🧳 VIAJERO": [
+    "🧳 VIAJERO",
+    "t1",
+    1794673899934
+   ]
+  }
+ },
  "ikonoxx": {
   "servidor": {
    "📆 HABITUÉ": [
@@ -6251,6 +6287,11 @@
  },
  "jupiter": {
   "competitivo": {
+   "🗡️ MATAGIGANTES": [
+    "🗡️ MATAGIGANTES",
+    "t1",
+    1794673899934
+   ],
    "😈 BESTIA NEGRA": [
     "😈 BESTIA NEGRA",
     "t1",
@@ -7842,6 +7883,11 @@
     "🗡️ MATAGIGANTES",
     "t1",
     1794261790120
+   ],
+   "😈 BESTIA NEGRA": [
+    "😈 BESTIA NEGRA",
+    "t1",
+    1794673899934
    ],
    "🤝 SIN MIEDO": [
     "🤝 SIN MIEDO",
@@ -14823,6 +14869,11 @@
     "EMBAJADOR",
     "t1",
     1792953978519
+   ],
+   "KILÓMETROS": [
+    "KILÓMETROS",
+    "t1",
+    1794673899934
    ],
    "SIN FRONTERAS": [
     "SIN FRONTERAS",
