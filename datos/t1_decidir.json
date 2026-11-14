@@ -3,7 +3,7 @@
  "grilla": [
   ["✅  DECIDIR", "", "", "", "", "", "", ""],
   ["Lo que el sistema no pudo resolver solo. Elige una respuesta en la columna amarilla ✍️ —si es alguien que ya está en la Lista de Raperos, escribe su nombre como figura ahí— y el ciclo la aplica en menos de media hora. La fila se pone verde cuando está contestada. Para aclarar algo, 📝 NOTA: se guarda.", "", "", "", "", "", "", ""],
-  ["90 para decidir   —   🏆 12 eventos   ·   ⚔️ 1 batalla   ·   📣 1 📣 Reporte   ·   👤 43 nombres   ·   🪪 33 de identidad   ·   actualizado 14/11 03:00 PM ET", "", "", "", "", "", "", ""],
+  ["90 para decidir   —   🏆 12 eventos   ·   ⚔️ 1 batalla   ·   📣 1 📣 Reporte   ·   👤 43 nombres   ·   🪪 33 de identidad   ·   actualizado 14/11 03:31 PM ET", "", "", "", "", "", "", ""],
   ["", "", "", "", "", "", "", ""],
   ["#", "Tipo", "Qué hay que decidir", "Pistas", "✍️ RESPUESTA", "📝 NOTA", "Estado", "id"],
   ["▸  FVS UNDER · FVS · 26/09 · #461   ·   ver la llave ↗", "", "", "", "", "", "", ""],
@@ -60,7 +60,7 @@
   ["▸  Rap para Raperos 2 · FFA · 31/10 · #551   ·   ver la llave ↗", "", "", "", "", "", "", ""],
   ["", "⚡ Todo el evento", "¿Los 2 nombres de este evento que no están en la Lista son todos gente nueva?", "Si alguno ya está en la Lista, contestalo en su fila: esa respuesta manda. · Isabella, kaiser", "", "", "", "todos:12d829e176"],
   ["28", "👤 Nombre", "¿Quién es «Isabella 🇦🇷»?", "En Discord hay una cuenta con ese nombre, que no está en la Lista\nTerminó Octavos (1.250 pts)\nOctavos: perdió con Erian", "", "", "", "82892cc435"],
-  ["29", "👤 Nombre", "¿Quién es «kaiser🇵🇷»?", "¿Será Kartier?\nEn Discord hay 2 cuentas con ese nombre, ninguna en la Lista\n🎙️ En la llamada de FFA, mientras se jugaba, había alguien parecido: «Mate0-Kaiser»\nTerminó Cuartos (1.250 pts)\nCuartos: perdió con Erian", "", "🎙️ En la llamada de FFA, mientras se jugaba, había alguien parecido: «Mate0-Kaiser»", "", "f1a3081c22"],
+  ["29", "👤 Nombre", "¿Quién es «kaiser🇵🇷»?", "¿Será Kartier?\nEn Discord hay 2 cuentas con ese nombre, ninguna en la Lista\nTerminó Cuartos (1.250 pts)\nCuartos: perdió con Erian", "", "🎙️ En la llamada de FFA, mientras se jugaba, había alguien parecido: «Mate0-Kaiser»", "", "f1a3081c22"],
   ["▸  RED BULL SUDAMÉRICA · LKR · 01/11 · #557   ·   ver la llave ↗", "", "", "", "", "", "", ""],
   ["30", "👤 Nombre", "¿Quién es «LUIS»?", "¿Será Lu Sm o Luiz o luisito 🏆?\nEn Discord hay 12 cuentas con ese nombre, ninguna en la Lista\nTerminó Semifinal (5.250 pts)\nOctavos: le ganó a Richard\nCuartos: le ganó a Calíz", "", "🎙️ En la llamada de LKR, mientras se jugaba, había alguien parecido: «luisscmb._» (en la Lista: luisito 🏆)", "", "70ecdd8fd1"],
   ["▸  EL ONMITRIX VOL 1 · CH · 23/09 · #568   ·   ver la llave ↗", "", "", "", "", "", "", ""],
