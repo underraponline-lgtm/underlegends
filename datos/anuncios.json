@@ -1,5 +1,5 @@
 {
- "cuando": "2026-11-14T20:48:52+00:00",
+ "cuando": "2026-11-14T21:05:16+00:00",
  "anuncios": [
   {
    "nombre": "¡SE LLEGÓ LA GRAN NOCHE!",
@@ -7123,6 +7123,24 @@
   }
  ],
  "inscripciones": [
+  {
+   "servidor": "DDF",
+   "canal": "『📑』Inscripciones",
+   "texto": "Miniboy 🇬🇲",
+   "quien": "min_g16m",
+   "discord_id": "950011515434573824",
+   "msg_id": "1571268196307042398",
+   "cuando": "2026-11-14T20:58:50"
+  },
+  {
+   "servidor": "DDF",
+   "canal": "『📑』Inscripciones",
+   "texto": "Nxuz 🇵🇪",
+   "quien": "n_x_u_z_",
+   "discord_id": "1089661639508377630",
+   "msg_id": "1571267903670587515",
+   "cuando": "2026-11-14T20:57:40"
+  },
   {
    "servidor": "CH",
    "canal": "📜—inscripciones",
@@ -43104,24 +43122,6 @@
    "discord_id": "882120927096209449",
    "msg_id": "1559297721490214973",
    "cuando": "2026-10-12T20:12:27"
-  },
-  {
-   "servidor": "FFA",
-   "canal": "✦📝—inscripciones",
-   "texto": "colesito🇨🇦",
-   "quien": "colesito",
-   "discord_id": "790016013680771102",
-   "msg_id": "1559297473376157798",
-   "cuando": "2026-10-12T20:11:27"
-  },
-  {
-   "servidor": "FFA",
-   "canal": "✦📝—inscripciones",
-   "texto": "OG🇻🇪",
-   "quien": "the0g.",
-   "discord_id": "425356695309516810",
-   "msg_id": "1559297114801053848",
-   "cuando": "2026-10-12T20:10:02"
   }
  ]
 }

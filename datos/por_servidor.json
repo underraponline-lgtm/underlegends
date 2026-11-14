@@ -10261,7 +10261,7 @@
     "oro": 27,
     "ovr": 84,
     "pod": 35,
-    "pts": 556741,
+    "pts": 557741,
     "racha": "2/13",
     "tg": {
      "fin": 34
@@ -12457,32 +12457,17 @@
     }
    },
    "FFA": {
-    "duelos": "15/26",
-    "ev": 41,
+    "duelos": "16/28",
+    "ev": 42,
     "oro": 7,
     "ovr": 73,
-    "pod": 18,
-    "pts": 318463,
-    "racha": "1/6",
+    "pod": 19,
+    "pts": 322213,
+    "racha": "2/6",
     "tg": {
      "bcasa": true,
-     "fin": 17,
+     "fin": 18,
      "fund": true
-    }
-   }
-  },
-  "Snow-7-ZIgnos": {
-   "FFA": {
-    "duelos": "1/2",
-    "ev": 1,
-    "oro": 0,
-    "ovr": 44,
-    "pod": 1,
-    "pts": 3750,
-    "racha": "1/1",
-    "tg": {
-     "fin": 1,
-     "nuevo": true
     }
    }
   },

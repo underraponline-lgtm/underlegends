@@ -2258,6 +2258,17 @@
    "b": "19🇻🇪",
    "ganador": "19🇻🇪",
    "votos": "1–0"
+  },
+  "1571268158352920577": {
+   "id": "1571268158352920577",
+   "sv": "CYPHERHOOD™ | Hip-Hop, Freestyle & Producción Musical",
+   "g": "1074328197400887388",
+   "canal": "1222380923048296459",
+   "pub": 1794689921702,
+   "a": "TAM",
+   "b": "GOCHO",
+   "ganador": "GOCHO",
+   "votos": "1–0"
   }
  },
  "llaves": {
@@ -7413,6 +7424,27 @@
      [
       "DYNOCO 🇦🇷",
       "KICHY🇨🇱"
+     ],
+     null,
+     "última ronda y no dice campeón",
+     []
+    ]
+   ]
+  },
+  "1571268832151076938": {
+   "id": "1571268832151076938",
+   "sv": "🌌┃𝐃𝐈𝐌𝐄𝐍𝐒𝐈Ó𝐍 𝐃𝐄𝐋 𝐅𝐑𝐄𝐄𝐒𝐓𝐘𝐋𝐄┃🌌",
+   "g": "1469009547971526659",
+   "canal": "1498009509036163173",
+   "pub": 1794690082348,
+   "ed": 1794690104884,
+   "texto": "`[ OCTAVOS ]`\n⌞WALKER🇨🇴⌝ 🆚 ⌞WACKLUSCO☪⌝",
+   "batallas": [
+    [
+     "OCTAVOS",
+     [
+      "WALKER🇨🇴",
+      "WACKLUSCO☪"
      ],
      null,
      "última ronda y no dice campeón",
