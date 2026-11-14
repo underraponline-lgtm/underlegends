@@ -1132,7 +1132,8 @@
 "raizer": {
 "rg": "",
 "c": [
-"servidor"
+"servidor",
+"temporada"
 ]
 },
 "ikonoxx": {
@@ -2842,14 +2843,6 @@
 }
 },
 "cambios": [
-{
-"tipo": "tarjeta",
-"t": "2026-10-09T05:27:11Z",
-"quien": [
-"Teo"
-],
-"carta": "temporada"
-},
 {
 "tipo": "tarjeta",
 "t": "2026-10-09T05:51:08Z",
@@ -6208,6 +6201,14 @@
 "melomaniaco"
 ],
 "carta": "pais"
+},
+{
+"tipo": "tarjeta",
+"t": "2026-11-14T02:18:04Z",
+"quien": [
+"Raizer"
+],
+"carta": "temporada"
 }
 ],
 "noche_antes": {
