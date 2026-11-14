@@ -7338,6 +7338,47 @@
      []
     ]
    ]
+  },
+  "1571231243092234402": {
+   "id": "1571231243092234402",
+   "sv": "🌌┃𝐃𝐈𝐌𝐄𝐍𝐒𝐈Ó𝐍 𝐃𝐄𝐋 𝐅𝐑𝐄𝐄𝐒𝐓𝐘𝐋𝐄┃🌌",
+   "g": "1469009547971526659",
+   "canal": "1498009509036163173",
+   "pub": 1794681120418,
+   "ed": 1794681927493,
+   "texto": "`[ CUARTOS ]`\n⌞KICHY 🇨🇱⌝ 🆚 ⌞MARTINEZ🇺🇾⌝\n⌞19 🇻🇪⌝ 🆚 ⌞CARLOS 🇪🇨⌝\n⌞MINIBOY 🇨🇱⌝ 🆚 ⌞NUMBER🇻🇪⌝",
+   "batallas": [
+    [
+     "CUARTOS",
+     [
+      "KICHY 🇨🇱",
+      "MARTINEZ🇺🇾"
+     ],
+     null,
+     "última ronda y no dice campeón",
+     []
+    ],
+    [
+     "CUARTOS",
+     [
+      "19 🇻🇪",
+      "CARLOS 🇪🇨"
+     ],
+     null,
+     "última ronda y no dice campeón",
+     []
+    ],
+    [
+     "CUARTOS",
+     [
+      "MINIBOY 🇨🇱",
+      "NUMBER🇻🇪"
+     ],
+     null,
+     "última ronda y no dice campeón",
+     []
+    ]
+   ]
   }
  }
 }

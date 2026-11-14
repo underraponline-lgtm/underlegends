@@ -1,5 +1,5 @@
 {
- "cuando": "2026-11-14T18:25:36+00:00",
+ "cuando": "2026-11-14T18:55:38+00:00",
  "anuncios": [
   {
    "nombre": "¡SE LLEGÓ LA GRAN NOCHE!",
@@ -376,6 +376,35 @@
    "autor": "Geronimo",
    "staff_cuentas": {},
    "categoria_id": "1497457390637809837"
+  },
+  {
+   "nombre": "qcyo rapeen 16",
+   "servidor": "FFA",
+   "canal": "✦🏆—eventos",
+   "msg_id": "1571236413024772179",
+   "cuando": "2026-11-14T18:52:33",
+   "canal_id": "1487206325602484295",
+   "guild_id": "1468472442925092958",
+   "organizador": "@nachonc_",
+   "orgs": [
+    {
+     "n": "nachonc_",
+     "id": ""
+    }
+   ],
+   "autor_h": "d83234c3da26ac85",
+   "cupos_texto": "",
+   "inscriptos": null,
+   "cupo_total": null,
+   "rango": "bronce",
+   "modalidad": "MULTIVERSE",
+   "horario": "en 30",
+   "fecha": "",
+   "premios": "aura",
+   "staff": {},
+   "autor": "Nc",
+   "staff_cuentas": {},
+   "categoria_id": "1468478330826260500"
   },
   {
    "nombre": "qcyo rapeen 15",
@@ -1087,40 +1116,6 @@
    "staff_cuentas": {
     "Kravitz": "1345962362615894027"
    },
-   "categoria_id": "1468478330826260500"
-  },
-  {
-   "nombre": "DESGRACIAS EN TOKYO VOL 31 1 VS 1",
-   "servidor": "FFA",
-   "canal": "✦🏆—eventos",
-   "msg_id": "1565757203149758554",
-   "cuando": "2026-10-30T16:00:07",
-   "canal_id": "1487206325602484295",
-   "guild_id": "1468472442925092958",
-   "organizador": "LEWITO",
-   "orgs": [],
-   "autor_h": "211322958af20ae2",
-   "cupos_texto": "16 / 24",
-   "inscriptos": 16,
-   "cupo_total": 24,
-   "rango": "PLATA 3",
-   "modalidad": "",
-   "horario": "EN 1 HORA",
-   "fecha": "",
-   "premios": "RESPETO",
-   "staff": {
-    "jurado": [
-     "LEWITO"
-    ],
-    "host": [
-     "LEWITO"
-    ],
-    "dj": [
-     "LEWITO"
-    ]
-   },
-   "autor": "Lewito",
-   "staff_cuentas": {},
    "categoria_id": "1468478330826260500"
   },
   {
@@ -7122,6 +7117,87 @@
   }
  ],
  "inscripciones": [
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "vandu 🇨🇦",
+   "quien": "dfelipetor",
+   "discord_id": "613552853302378527",
+   "msg_id": "1571236871269261504",
+   "cuando": "2026-11-14T18:54:22"
+  },
+  {
+   "servidor": "URBF",
+   "canal": "‣《🗞️》Inscripciones",
+   "texto": "Majiztral 🇨🇴",
+   "quien": "majiztral",
+   "discord_id": "1492228152691396720",
+   "msg_id": "1571236831926689975",
+   "cuando": "2026-11-14T18:54:12"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "Calíz 🇲🇽",
+   "quien": "caliz123_",
+   "discord_id": "1546111597343146044",
+   "msg_id": "1571236560777515170",
+   "cuando": "2026-11-14T18:53:08"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "Julda🇨🇴",
+   "quien": "juldaaaa",
+   "discord_id": "1194813613786026136",
+   "msg_id": "1571236542335422516",
+   "cuando": "2026-11-14T18:53:03"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "Miniboy🇼🇸",
+   "quien": "min_g16m",
+   "discord_id": "950011515434573824",
+   "msg_id": "1571236523884548258",
+   "cuando": "2026-11-14T18:52:59"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "Julda🇨🇴",
+   "quien": "juldaaaa",
+   "discord_id": "1194813613786026136",
+   "msg_id": "1571236124750254111",
+   "cuando": "2026-11-14T18:51:24"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "Akuseru 🇦🇷",
+   "quien": "akuseru_dionisio",
+   "discord_id": "1564834243039731832",
+   "msg_id": "1571236094891135117",
+   "cuando": "2026-11-14T18:51:17"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "Adriagner🇨🇨 + Miniboy🇨🇨",
+   "quien": "adriagner",
+   "discord_id": "1316490165836972104",
+   "msg_id": "1571235893308817612",
+   "cuando": "2026-11-14T18:50:29"
+  },
+  {
+   "servidor": "URBF",
+   "canal": "‣《🗞️》Inscripciones",
+   "texto": "mc pistola🇲🇿",
+   "quien": "nachonc_",
+   "discord_id": "1523082259870257315",
+   "msg_id": "1571235517524213841",
+   "cuando": "2026-11-14T18:48:59"
+  },
   {
    "servidor": "DDF",
    "canal": "『📑』Inscripciones",
@@ -43040,87 +43116,6 @@
    "discord_id": "794084098422341632",
    "msg_id": "1559274511633748060",
    "cuando": "2026-10-12T18:40:13"
-  },
-  {
-   "servidor": "FFA",
-   "canal": "✦📝—inscripciones",
-   "texto": "Fin 🇦🇷",
-   "quien": "finallnme",
-   "discord_id": "1247102577573625856",
-   "msg_id": "1559274513353416847",
-   "cuando": "2026-10-12T18:40:13"
-  },
-  {
-   "servidor": "FFA",
-   "canal": "✦📝—inscripciones",
-   "texto": "doble h 🇨🇱",
-   "quien": "doble_h.free",
-   "discord_id": "1521997918389665986",
-   "msg_id": "1559274507892691066",
-   "cuando": "2026-10-12T18:40:12"
-  },
-  {
-   "servidor": "FFA",
-   "canal": "✦📝—inscripciones",
-   "texto": "erian",
-   "quien": "deslanofthemind",
-   "discord_id": "1055474244089286706",
-   "msg_id": "1559274401990709340",
-   "cuando": "2026-10-12T18:39:47"
-  },
-  {
-   "servidor": "FFA",
-   "canal": "✦📝—inscripciones",
-   "texto": "1200 🇰🇷",
-   "quien": "dreamero",
-   "discord_id": "1395903355909570633",
-   "msg_id": "1559274381824360639",
-   "cuando": "2026-10-12T18:39:42"
-  },
-  {
-   "servidor": "FFA",
-   "canal": "✦📝—inscripciones",
-   "texto": "verc",
-   "quien": "jovenvesta",
-   "discord_id": "913652602208649226",
-   "msg_id": "1559274382231339009",
-   "cuando": "2026-10-12T18:39:42"
-  },
-  {
-   "servidor": "FFA",
-   "canal": "✦📝—inscripciones",
-   "texto": "PRODIGY 🇦🇷",
-   "quien": "prodigy0608",
-   "discord_id": "748841088676003932",
-   "msg_id": "1559274359414333462",
-   "cuando": "2026-10-12T18:39:37"
-  },
-  {
-   "servidor": "FFA",
-   "canal": "✦📝—inscripciones",
-   "texto": "Molusco 🇦🇷",
-   "quien": "moluscoanvriento_79058",
-   "discord_id": "1363285354442133778",
-   "msg_id": "1559274355114905735",
-   "cuando": "2026-10-12T18:39:36"
-  },
-  {
-   "servidor": "FFA",
-   "canal": "✦📝—inscripciones",
-   "texto": "Guess 🇦🇷",
-   "quien": "sinergiabreak",
-   "discord_id": "1515482513106272366",
-   "msg_id": "1559274341370306722",
-   "cuando": "2026-10-12T18:39:32"
-  },
-  {
-   "servidor": "FFA",
-   "canal": "✦📝—inscripciones",
-   "texto": "warap🇦🇷",
-   "quien": "waraplug",
-   "discord_id": "587789294731526144",
-   "msg_id": "1559274333837205557",
-   "cuando": "2026-10-12T18:39:31"
   }
  ]
 }
