@@ -79,7 +79,7 @@
    "temporada": "09629db6a85b:7a510334494e"
   },
   "Aktybo": {
-   "competitivo": "53999cb07e69:624f5e322311",
+   "competitivo": "f1a3c51ba23e:624f5e322311",
    "pais": "e117d1fa0f8a:733ce66bf5fa",
    "servidor": "a1344261ef36:2415c901692f:aa8232"
   },
@@ -241,7 +241,7 @@
   },
   "CJ": {},
   "CULT": {
-   "competitivo": "147c76b0c2de:624f5e322311",
+   "competitivo": "e8c379a33202:624f5e322311",
    "pais": "65761f05cbd2:733ce66bf5fa",
    "servidor": "471ec3225589:2415c901692f:e4fbfa"
   },
@@ -1574,7 +1574,7 @@
   "SGB": {},
   "SHULIOT": {},
   "SK8": {
-   "competitivo": "e57c9293f439:624f5e322311",
+   "competitivo": "798f2a676024:624f5e322311",
    "pais": "e1808261a060:733ce66bf5fa",
    "servidor": "fe5cf764f19e:2415c901692f:afbca9"
   },
@@ -2047,7 +2047,7 @@
    "servidor": "2a02fd5cc911:2415c901692f:86e978"
   },
   "nueve7": {
-   "competitivo": "5dbbb21d6871:624f5e322311",
+   "competitivo": "85c3b84994a4:624f5e322311",
    "pais": "c8ed4233c98e:733ce66bf5fa",
    "servidor": "b7113999366b:2415c901692f:943e25"
   },
@@ -2109,5 +2109,5 @@
    "servidor": "7f8885a35a6d:2415c901692f:93a344"
   }
  },
- "cuando": "2026-11-14T02:24:59+00:00"
+ "cuando": "2026-11-14T02:32:55+00:00"
 }
