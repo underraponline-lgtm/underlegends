@@ -102,14 +102,6 @@
 "temporada"
 ]
 },
-"mrstillballin": {
-"rg": "S",
-"c": [
-"competitivo",
-"servidor",
-"temporada"
-]
-},
 "agus": {
 "rg": "S",
 "c": [
@@ -124,6 +116,14 @@
 "c": [
 "competitivo",
 "pais",
+"servidor",
+"temporada"
+]
+},
+"mrstillballin": {
+"rg": "S",
+"c": [
+"competitivo",
 "servidor",
 "temporada"
 ]
@@ -167,19 +167,19 @@
 "temporada"
 ]
 },
-"abyssus": {
-"rg": "S",
-"c": [
-"competitivo",
-"servidor",
-"temporada"
-]
-},
 "miniboy": {
 "rg": "C",
 "c": [
 "competitivo",
 "pais",
+"servidor",
+"temporada"
+]
+},
+"abyssus": {
+"rg": "S",
+"c": [
+"competitivo",
 "servidor",
 "temporada"
 ]
@@ -223,14 +223,6 @@
 "temporada"
 ]
 },
-"walker": {
-"rg": "A",
-"c": [
-"competitivo",
-"servidor",
-"temporada"
-]
-},
 "molusco": {
 "rg": "C",
 "c": [
@@ -254,6 +246,14 @@
 "c": [
 "competitivo",
 "pais",
+"servidor",
+"temporada"
+]
+},
+"walker": {
+"rg": "A",
+"c": [
+"competitivo",
 "servidor",
 "temporada"
 ]
@@ -328,24 +328,6 @@
 "temporada"
 ]
 },
-"btrx": {
-"rg": "C",
-"c": [
-"competitivo",
-"pais",
-"servidor",
-"temporada"
-]
-},
-"xubaru": {
-"rg": "C",
-"c": [
-"competitivo",
-"pais",
-"servidor",
-"temporada"
-]
-},
 "lrs": {
 "rg": "E",
 "c": [
@@ -367,8 +349,8 @@
 "temporada"
 ]
 },
-"geoka": {
-"rg": "D",
+"delux": {
+"rg": "C",
 "c": [
 "competitivo",
 "pais",
@@ -376,7 +358,7 @@
 "temporada"
 ]
 },
-"delux": {
+"btrx": {
 "rg": "C",
 "c": [
 "competitivo",
@@ -402,8 +384,26 @@
 "temporada"
 ]
 },
+"xubaru": {
+"rg": "C",
+"c": [
+"competitivo",
+"pais",
+"servidor",
+"temporada"
+]
+},
 "lordviruzz": {
 "rg": "C",
+"c": [
+"competitivo",
+"pais",
+"servidor",
+"temporada"
+]
+},
+"geoka": {
+"rg": "D",
 "c": [
 "competitivo",
 "pais",
@@ -779,10 +779,6 @@
 "rg": "E",
 "c": []
 },
-"vr": {
-"rg": "D",
-"c": []
-},
 "sultan": {
 "rg": "E",
 "c": []
@@ -821,6 +817,10 @@
 },
 "fazer": {
 "rg": "",
+"c": []
+},
+"vr": {
+"rg": "D",
 "c": []
 },
 "valen": {
@@ -938,10 +938,6 @@
 "temporada"
 ]
 },
-"leyenda": {
-"rg": "",
-"c": []
-},
 "alexi": {
 "rg": "",
 "c": []
@@ -994,6 +990,10 @@
 "servidor",
 "temporada"
 ]
+},
+"leyenda": {
+"rg": "",
+"c": []
 },
 "assuan": {
 "rg": "",
@@ -1087,13 +1087,6 @@
 "rg": "",
 "c": []
 },
-"andy": {
-"rg": "",
-"c": [
-"servidor",
-"temporada"
-]
-},
 "sol": {
 "rg": "",
 "c": [
@@ -1104,13 +1097,6 @@
 "rg": "",
 "c": [
 "competitivo",
-"servidor",
-"temporada"
-]
-},
-"zeta": {
-"rg": "",
-"c": [
 "servidor",
 "temporada"
 ]
@@ -1168,6 +1154,13 @@
 "rg": "",
 "c": []
 },
+"andy": {
+"rg": "",
+"c": [
+"servidor",
+"temporada"
+]
+},
 "emilioalva": {
 "rg": "",
 "c": []
@@ -1187,6 +1180,13 @@
 ]
 },
 "lewito": {
+"rg": "",
+"c": [
+"servidor",
+"temporada"
+]
+},
+"zeta": {
 "rg": "",
 "c": [
 "servidor",
@@ -7442,8 +7442,8 @@
 "ll": 633,
 "quien": [
 [
-"Oasis-Nacho-Rizas",
-""
+"Oasis",
+"oasis"
 ]
 ]
 },
@@ -7461,6 +7461,12 @@
 ],
 "suman": [
 {
+"n": "Oasis",
+"k": "oasis",
+"pts": 12500,
+"ev": 2
+},
+{
 "n": "Molusco",
 "k": "molusco",
 "pts": 11500,
@@ -7469,12 +7475,6 @@
 {
 "n": "Carlosss",
 "k": "carlosss",
-"pts": 10000,
-"ev": 1
-},
-{
-"n": "Dios",
-"k": "dios",
 "pts": 10000,
 "ev": 1
 }
@@ -7490,7 +7490,7 @@
 "n": "Trueno",
 "k": "",
 "de": 625,
-"a": 417
+"a": 416
 },
 {
 "n": "Chuwin",

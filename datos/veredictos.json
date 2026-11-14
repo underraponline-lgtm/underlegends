@@ -6943,6 +6943,54 @@
      []
     ]
    ]
+  },
+  "1571005068638036129": {
+   "id": "1571005068638036129",
+   "sv": "[FFA] Freestyle For All 👾",
+   "g": "1468472442925092958",
+   "canal": "1487206164864438513",
+   "pub": 1794627196226,
+   "ed": 1794628342530,
+   "texto": "`[ OCTAVOS ]`\n⌞GOCHO⌝ 🆚 ⌞DXG⌝ 🆚 ⌞ABRAHAM⌝ 🆚 ⌞ROMEO⌝\n⌞ARAYA⌝ 🆚 ⌞TOMY HILFIGHER⌝ 🆚 ⌞AKUSERU⌝ 🆚 ⌞MC NADIE⌝ 🆚 ⌞CHXZRY⌝ 🆚 ⌞JULDA⌝\n⌞MOSQUITRAP +BOTRAX +CALIZ⌝ 🆚 ⌞PARK JI SUNG⌝ 🆚 ⌞MINIBOY⌝",
+   "batallas": [
+    [
+     "OCTAVOS",
+     [
+      "GOCHO",
+      "DXG",
+      "ABRAHAM",
+      "ROMEO"
+     ],
+     null,
+     "última ronda y no dice campeón",
+     []
+    ],
+    [
+     "OCTAVOS",
+     [
+      "ARAYA",
+      "TOMY HILFIGHER",
+      "AKUSERU",
+      "MC NADIE",
+      "CHXZRY",
+      "JULDA"
+     ],
+     null,
+     "última ronda y no dice campeón",
+     []
+    ],
+    [
+     "OCTAVOS",
+     [
+      "MOSQUITRAP +BOTRAX +CALIZ",
+      "PARK JI SUNG",
+      "MINIBOY"
+     ],
+     null,
+     "última ronda y no dice campeón",
+     []
+    ]
+   ]
   }
  }
 }
