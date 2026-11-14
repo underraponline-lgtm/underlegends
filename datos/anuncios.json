@@ -1,5 +1,5 @@
 {
- "cuando": "2026-11-14T21:05:16+00:00",
+ "cuando": "2026-11-14T21:25:07+00:00",
  "anuncios": [
   {
    "nombre": "¡SE LLEGÓ LA GRAN NOCHE!",
@@ -7123,6 +7123,42 @@
   }
  ],
  "inscripciones": [
+  {
+   "servidor": "DDF",
+   "canal": "『📑』Inscripciones",
+   "texto": "Number 🇻🇪",
+   "quien": "numbyng",
+   "discord_id": "1310075576991875144",
+   "msg_id": "1571273966381957170",
+   "cuando": "2026-11-14T21:21:46"
+  },
+  {
+   "servidor": "CH",
+   "canal": "📜—inscripciones",
+   "texto": "Ariaxer🇦🇷",
+   "quien": "ariaxer",
+   "discord_id": "659687894587277322",
+   "msg_id": "1571272182506590293",
+   "cuando": "2026-11-14T21:14:41"
+  },
+  {
+   "servidor": "DDF",
+   "canal": "『📑』Inscripciones",
+   "texto": "Jupiter",
+   "quien": "jupiter2417tj",
+   "discord_id": "1413305434881658960",
+   "msg_id": "1571270143802085387",
+   "cuando": "2026-11-14T21:06:35"
+  },
+  {
+   "servidor": "DDF",
+   "canal": "『📑』Inscripciones",
+   "texto": "Inku 🇦🇷",
+   "quien": "fr4nki33",
+   "discord_id": "966814191556116560",
+   "msg_id": "1571269738703626423",
+   "cuando": "2026-11-14T21:04:58"
+  },
   {
    "servidor": "DDF",
    "canal": "『📑』Inscripciones",
@@ -43086,42 +43122,6 @@
    "discord_id": "1523082259870257315",
    "msg_id": "1559300379420655657",
    "cuando": "2026-10-12T20:23:00"
-  },
-  {
-   "servidor": "FFA",
-   "canal": "✦📝—inscripciones",
-   "texto": "Trrr🇦🇷",
-   "quien": "benjaclink31",
-   "discord_id": "849765868819972166",
-   "msg_id": "1559298241739358209",
-   "cuando": "2026-10-12T20:14:31"
-  },
-  {
-   "servidor": "FFA",
-   "canal": "✦📝—inscripciones",
-   "texto": "SinText🇦🇷",
-   "quien": "20_sintext_10",
-   "discord_id": "882120927096209449",
-   "msg_id": "1559298192737050715",
-   "cuando": "2026-10-12T20:14:19"
-  },
-  {
-   "servidor": "FFA",
-   "canal": "✦📝—inscripciones",
-   "texto": "Bna",
-   "quien": "benjaclink31",
-   "discord_id": "849765868819972166",
-   "msg_id": "1559297973454635042",
-   "cuando": "2026-10-12T20:13:27"
-  },
-  {
-   "servidor": "FFA",
-   "canal": "✦📝—inscripciones",
-   "texto": "SinText🇦🇷",
-   "quien": "20_sintext_10",
-   "discord_id": "882120927096209449",
-   "msg_id": "1559297721490214973",
-   "cuando": "2026-10-12T20:12:27"
   }
  ]
 }

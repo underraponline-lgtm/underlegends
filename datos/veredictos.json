@@ -2269,6 +2269,28 @@
    "b": "GOCHO",
    "ganador": "GOCHO",
    "votos": "1–0"
+  },
+  "1571272269219496057": {
+   "id": "1571272269219496057",
+   "sv": "🌌┃𝐃𝐈𝐌𝐄𝐍𝐒𝐈Ó𝐍 𝐃𝐄𝐋 𝐅𝐑𝐄𝐄𝐒𝐓𝐘𝐋𝐄┃🌌",
+   "g": "1469009547971526659",
+   "canal": "1498009509036163173",
+   "pub": 1794690901809,
+   "a": "ECLIPSE 🇨🇱",
+   "b": "MARTÍNEZ🇺🇾",
+   "ganador": "ECLIPSE 🇨🇱",
+   "votos": "1–0"
+  },
+  "1571272913246617702": {
+   "id": "1571272913246617702",
+   "sv": "CYPHERHOOD™ | Hip-Hop, Freestyle & Producción Musical",
+   "g": "1074328197400887388",
+   "canal": "1222380923048296459",
+   "pub": 1794691055357,
+   "a": "Blackstar",
+   "b": "Jnibbana",
+   "ganador": "Jnibbana",
+   "votos": "1–0"
   }
  },
  "llaves": {
@@ -7437,8 +7459,8 @@
    "g": "1469009547971526659",
    "canal": "1498009509036163173",
    "pub": 1794690082348,
-   "ed": 1794690104884,
-   "texto": "`[ OCTAVOS ]`\n⌞WALKER🇨🇴⌝ 🆚 ⌞WACKLUSCO☪⌝",
+   "ed": 1794691254438,
+   "texto": "`[ OCTAVOS ]`\n⌞WALKER🇨🇴⌝ 🆚 ⌞WACKLUSCO☪⌝\n⌞WALKER 🇨🇴⌝ 🆚 ⌞MOLUSCO🇦🇷⌝\n⌞BLACK DEMON 🇪🇨⌝ 🆚 ⌞DREXX🇵🇪⌝\n⌞ECLIPSE 🇨🇱⌝ 🆚 ⌞MARTÍNEZ🇺🇾⌝",
    "batallas": [
     [
      "OCTAVOS",
@@ -7448,6 +7470,36 @@
      ],
      null,
      "última ronda y no dice campeón",
+     []
+    ],
+    [
+     "OCTAVOS",
+     [
+      "WALKER 🇨🇴",
+      "MOLUSCO🇦🇷"
+     ],
+     null,
+     "última ronda y no dice campeón",
+     []
+    ],
+    [
+     "OCTAVOS",
+     [
+      "BLACK DEMON 🇪🇨",
+      "DREXX🇵🇪"
+     ],
+     null,
+     "última ronda y no dice campeón",
+     []
+    ],
+    [
+     "OCTAVOS",
+     [
+      "ECLIPSE 🇨🇱",
+      "MARTÍNEZ🇺🇾"
+     ],
+     "ECLIPSE 🇨🇱",
+     "veredicto",
      []
     ]
    ]

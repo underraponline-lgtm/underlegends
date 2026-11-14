@@ -39,13 +39,13 @@
   "arc_sv": 100,
   "pos_crew": "",
   "tg_c": {
-   "bestia": 4,
-   "clasico": 4,
+   "bestia": 5,
+   "clasico": 5,
    "dg": 46,
    "fg": 13,
    "fp": 3,
-   "riv": 35,
-   "venc": 34,
+   "riv": 34,
+   "venc": 33,
    "vengo": 3
   },
   "tg_p": {
@@ -971,12 +971,12 @@
   "arc_sv": 94,
   "tg_c": {
    "bestia": 2,
-   "clasico": 4,
-   "dg": 19,
+   "clasico": 5,
+   "dg": 20,
    "fg": 1,
    "fp": 5,
-   "riv": 24,
-   "venc": 16,
+   "riv": 25,
+   "venc": 17,
    "vengo": 1
   },
   "tg_p": {
@@ -986,7 +986,7 @@
   },
   "nac": {
    "evn": 8,
-   "evi": 29,
+   "evi": 30,
    "com": 5,
    "top": [
     1,
