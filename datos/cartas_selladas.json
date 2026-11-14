@@ -640,10 +640,10 @@
    "temporada": "76fb88464702:08ecf54fc940"
   },
   "Gocho": {
-   "competitivo": "0306bada1ae8:e1a1212cc40e",
-   "pais": "d3012c03c59d:89db0e1cb730",
+   "competitivo": "e4135b242757:e1a1212cc40e",
+   "pais": "889f5c3adeef:89db0e1cb730",
    "servidor": "633e58ee39d8:67e514e7f0d5:acc4a5",
-   "temporada": "8ca68c1880ca:08ecf54fc940"
+   "temporada": "d30e06115818:08ecf54fc940"
   },
   "Goru": {
    "servidor": "20408aacfb30:67e514e7f0d5:aa8232"
@@ -761,8 +761,8 @@
    "servidor": "5dea5329d6fc:67e514e7f0d5:055f77"
   },
   "JEIXDER": {
-   "competitivo": "cc70bd2ed3c7:e1a1212cc40e",
-   "pais": "bb6d96d8b029:89db0e1cb730",
+   "competitivo": "ec695126c034:e1a1212cc40e",
+   "pais": "f82d97c30204:89db0e1cb730",
    "servidor": "e779e4e28618:67e514e7f0d5:35ef22",
    "temporada": "ba577ab31c15:08ecf54fc940"
   },
@@ -1201,8 +1201,8 @@
    "servidor": "b1072a8b7c4c:67e514e7f0d5:7d9cf1"
   },
   "Miniboy": {
-   "competitivo": "5a2ebd58af79:e1a1212cc40e",
-   "pais": "e58c4774dfeb:89db0e1cb730",
+   "competitivo": "5f84e97ec6f5:e1a1212cc40e",
+   "pais": "cf3ea1cef8b0:89db0e1cb730",
    "servidor": "e4bdb7de5646:67e514e7f0d5:0bce64",
    "temporada": "f0c4aeae5ad0:08ecf54fc940"
   },
@@ -1353,7 +1353,7 @@
    "temporada": "e2b83c599784:08ecf54fc940"
   },
   "Number VE": {
-   "competitivo": "fa42e1114126:e1a1212cc40e",
+   "competitivo": "181ccce499a8:e1a1212cc40e",
    "pais": "237e4c12fe0e:89db0e1cb730",
    "servidor": "da049639867d:67e514e7f0d5:62e67f",
    "temporada": "d9bd5b8bdc01:08ecf54fc940"
@@ -2119,5 +2119,5 @@
    "servidor": "7f8885a35a6d:67e514e7f0d5:93a344"
   }
  },
- "cuando": "2026-11-14T22:52:29+00:00"
+ "cuando": "2026-11-14T23:04:00+00:00"
 }
