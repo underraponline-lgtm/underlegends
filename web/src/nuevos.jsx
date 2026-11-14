@@ -242,7 +242,7 @@ export function RedesLista({ liga, dc, titulo }) {
               <span className="rds-ic" aria-hidden="true"><svg viewBox="0 0 24 24" width="20" height="20">{RED_SVG[r]}</svg></span>
               <span className="rds-nm"><b>{RED_NOMBRE[r] || r}</b><small>{url.replace(/^https:\/\/(www\.)?/, '').replace(/\/$/, '')}</small></span>
               {ya ? <button type="button" className={'rds-b ya' + (dc && cobradas.has(r) ? '' : ' espera')} onClick={() => abrir(r, url)}>
-                {dc && cobradas.has(r) ? 'Listo · +1' : dc ? 'Un momento…' : 'Te espera'}</button>
+                {dc && cobradas.has(r) ? 'Listo · +1' : dc ? 'Abierta' : 'Te espera'}</button>
                 : <button type="button" className="rds-b" onClick={() => abrir(r, url)}>Seguir</button>}
             </li>
           );
