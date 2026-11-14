@@ -141,7 +141,7 @@ const LU_FILAS = 5;
 const luHace = (liga, t) => { const c = liga.cuando(t); return c ? c.charAt(0).toUpperCase() + c.slice(1) : ''; };
 // 👏 lo que el Worker deja reaccionar: `APLAUDIBLES` de bot/avisos.js. ⚠️ Una carta nueva no: «le toca a todo el que
 // juega una vez». Si se cambia allá, se cambia acá
-const LU_REAC = new Set(['campeon', 'rango', 'caza', 'sobrevivio', 'pase', 'sorteo', 'ligahito', 'mesaward']);
+export const LU_REAC = new Set(['campeon', 'rango', 'caza', 'sobrevivio', 'pase', 'sorteo', 'ligahito', 'mesaward']);
 // los filtros: como los de la campana, cuatro
 const LU_FILTROS = [['todo', 'Todo'], ['cartas', 'Cartas'], ['logros', 'Logros'], ['liga', 'Liga']];
 const luCat = (it) => (it.tipo === 'tarjeta' ? 'cartas' : LU_REAC.has(it.tipo) ? 'logros' : 'liga');
@@ -150,7 +150,7 @@ const LU_BADGE = { tarjeta: '🃏', campeon: '🏆', caza: '🎯', ligahito: '�
 
 // 🙂 LA CARITA DE REACCIONAR (Dlx, 13/11/2026, con la captura de la de Discord: «el emoji al que me refería era éste, pero
 // feliz»): un círculo con ojos y sonrisa, dibujado acá —no un emoji—, para que se lea como botón
-function Carita({ t = 18 }) {
+export function Carita({ t = 18 }) {
   return (
     <svg width={t} height={t} viewBox="0 0 24 24" aria-hidden="true">
       <circle cx="12" cy="12" r="10.5" fill="currentColor" />

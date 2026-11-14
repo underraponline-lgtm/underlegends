@@ -11,6 +11,19 @@
  ],
  "cambios": [
     {
+        "version": "5.34",
+        "dia": "2026-11-14",
+        "cuando": "2026-11-14T04:03:00-05:00",
+        "titulo": "Las historias, rehechas",
+        "items": [
+            "Cada historia trae de **fondo la escena de su servidor**, que se acerca despacio; el clásico, las dos escenas partidas al medio.",
+            "Armadas **como póster**: la etiqueta como sticker, el título grande y **cartas en vez de circulitos**: el cartel de buscados con el precio de cada uno, el podio de los que subieron, el cara a cara del clásico y tu carta en «Tu semana».",
+            "Los **titulares del escenario** también en las historias: el doble campeón con su corona y la caza con el cartel, el sello y lo que cobró. Las fuertes se quedan **12 segundos**.",
+            "**Responde y reacciona** desde la historia, como en Instagram: la barra de abajo deja tu comentario en la publicación y la carita abre tus reacciones. En vivo, si es la final, **«¿Quién gana?»**.",
+            "En la compu, **los círculos de al lado** se ven a los costados; tocar uno salta a ese."
+        ]
+    },
+    {
         "version": "5.33",
         "dia": "2026-11-14",
         "cuando": "2026-11-14T02:33:00-05:00",

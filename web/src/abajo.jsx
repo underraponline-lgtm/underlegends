@@ -3,13 +3,16 @@
 // y los servidores (Dlx: «la TIENDA no debería estar ahí, debería estar merchandising» y «los servidores de la liga
 // estando abajo es algo tonto porque ya están arriba»), y El Elegido se mudó a Encuestas.
 import { useEffect, useId, useLayoutEffect, useMemo, useRef, useState } from 'react';
-import { limpio, nuevaQue, num } from './liga.js';
+import { ksDe, limpio, nuevaQue, num, quienMira } from './liga.js';
 import { Cara, Chevron, Compartir, Ico, Poster, Sec, accion, enlace, https, promoAbierta, subirSiEsta } from './piezas.jsx';
 import { RED_NOMBRE, RED_SVG } from './redes_ico.jsx';
-import { Buscar, CaraDc, CaraH, CrewCirculo, MENU, MENU_TODO, Orbe, QUE_ES, pubNuevas } from './arriba.jsx';
+import { Buscar, CaraDc, CaraH, CrewCirculo, MENU, MENU_TODO, Orbe, QUE_ES, escenaDe, pubNuevas } from './arriba.jsx';
 import { abrirVideo } from './video.jsx';
 import { YoMenu } from './yomenu.jsx';
-import { useAplausos } from './aplausos.js';
+import { miReaccion, reaccionesDe, useAplausos } from './aplausos.js';
+import { comentar, delHilo, useComentarios } from './comentarios.jsx';
+import { Carita, LU_REAC } from './medio.jsx';
+import { usePase } from './pase.js';
 
 
 // ── Se busca ──────────────────────────────────────────────────────────────────────────────────────
@@ -499,6 +502,85 @@ export function Menu({ liga, abierto, onCerrar, tema, onTema, temaSv }) {
   );
 }
 
+// 💬 RESPONDER Y REACCIONAR DESDE LA HISTORIA (Dlx, 14/11/2026, a la maqueta de las historias: «Todas tal cual»). Como
+// Instagram: la barra de «Responde a…» abajo —el comentario va a la publicación, el mismo de Publicaciones— y la carita,
+// que abre tus reacciones (las del Pase; las que te faltan, apagadas). Arriba, lo que ya tiene. Mientras escribes o eliges,
+// el reloj de la historia espera (`onFoco`). Sólo en las historias que son una publicación del muro (`s.pub`)
+function HvSocial({ liga, it, A, P, onFoco, onIr }) {
+  const [abierto, setAbierto] = useState(false);
+  const [tx, setTx] = useState('');
+  const [msg, setMsg] = useState('');
+  const [va, setVa] = useState(false);
+  const escribe = useRef(false);
+  useEffect(() => { onFoco(abierto || escribe.current); }, [abierto, onFoco]);
+  const id = it.id;
+  const reac = reaccionesDe(A, id);
+  const mia = miReaccion(A, id);
+  const yo = liga.yo;
+  const propio = !!(yo && ksDe(it).includes(yo.k));
+  const puede = LU_REAC.has(it.tipo) && !propio;
+  const mias = (P && Array.isArray(P.reacciones) && P.reacciones.length) ? P.reacciones : ['👏'];
+  const todas = [['👏', 0]];
+  ((P && P.fila_premium) || []).forEach((x) => { if (x[2] === 'reaccion' && !todas.some((y) => y[0] === x[3])) todas.push([x[3], x[0]]); });
+  const { dc } = quienMira();
+  const verificado = !!(dc && dc.clave);
+  const nc = delHilo(it, Date.now()).length;
+  const quien = limpio((it.quien || [])[0] || '');
+  const err = A.err[id];
+  const errTx = err ? (err.error === 'reaccion' ? 'Esa reacción es del Pase premium' : window.errorAplauso ? window.errorAplauso(err) : '') : '';
+  const reaccionar = (e) => { if (window.felicitar) window.felicitar(id, e); setAbierto(false); };
+  const enviar = async (e) => {
+    e.preventDefault();
+    if (!tx.trim() || va) return;
+    setVa(true);
+    setMsg('');
+    try {
+      const r = await comentar(it, tx);
+      if (r.ok) { setTx(''); setMsg('Comentario enviado'); } else if (r.msg) setMsg(r.msg);
+    } finally { setVa(false); }
+  };
+  const foco = (x) => { escribe.current = x; onFoco(x || abierto); };
+  const parar = (e) => e.stopPropagation();
+  return (
+    <div className="hv-soc" onPointerDown={parar} onPointerUp={parar} onClick={parar}>
+      {reac.length || nc ? (
+        <div className="hv-soc-r">
+          {reac.slice(0, 4).map(([e, n]) => <span key={e} className={mia === e ? 'on' : ''}>{e} {num(n)}</span>)}
+          {nc ? <button type="button" className="hv-soc-cm" onClick={() => onIr({ ruta: '#/publicaciones/' + encodeURIComponent(id) })}>💬 {num(nc)}{nc === 1 ? ' comentario' : ' comentarios'}</button> : null}
+        </div>
+      ) : null}
+      {abierto ? (
+        <div className="hv-picker" role="dialog" aria-label="Reaccionar">
+          {todas.map(([e, nv]) => {
+            const tiene = mias.includes(e);
+            return (
+              <button key={e} type="button" className={(mia === e ? 'on' : '') + (tiene ? '' : ' bloq')} disabled={!tiene || mia === e || !!A.va[id]}
+                onClick={() => reaccionar(e)} aria-label={tiene ? 'Reaccionar con ' + e : e + ': Pase premium, nivel ' + nv}
+                title={tiene ? '' : 'Pase premium, nivel ' + nv}><span aria-hidden="true">{e}</span></button>
+            );
+          })}
+        </div>
+      ) : null}
+      <form className="hv-resp" onSubmit={enviar}>
+        {verificado ? (
+          <input type="text" maxLength={200} value={tx} onChange={(e) => setTx(e.target.value)} onFocus={() => foco(true)} onBlur={() => foco(false)}
+            placeholder={quien ? 'Responde a ' + quien + '…' : 'Responde…'} aria-label="Responder con un comentario" />
+        ) : <button type="button" className="hv-resp-in" onClick={() => onIr({ ruta: '#/cuenta' })}>Verifícate para responder</button>}
+        {puede ? (
+          <button type="button" className={'hv-car' + (abierto ? ' on' : '')} aria-expanded={abierto} aria-label={mia ? 'Cambiar tu reacción' : 'Reaccionar'}
+            onClick={() => setAbierto((v) => !v)}><Carita t={26} /></button>
+        ) : null}
+        {verificado ? (
+          <button type="submit" className="hv-env" disabled={!tx.trim() || va} aria-label="Mandar el comentario">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true"><path d="M22 2L11 13M22 2l-7 20-4-9-9-4z" /></svg>
+          </button>
+        ) : null}
+      </form>
+      {msg || errTx ? <small className="hv-soc-msg" role="status">{msg || errTx}</small> : null}
+    </div>
+  );
+}
+
 // ── el visor de historias, como las de Instagram ──────────────────────────────────────────────────
 export function Visor({ liga, grupos, abierto, onCerrar, onVisto, vistos = {}, raiz, desde = '' }) {
   // 🔴 el grupo abierto se sigue por su ID, no por su lugar en la fila: los datos se rehacen cada minuto y, si
@@ -527,6 +609,9 @@ export function Visor({ liga, grupos, abierto, onCerrar, onVisto, vistos = {}, r
   const [abre, setAbre] = useState(() => ({ gid: (grupos[abierto] || {}).id, ids: lista(grupos[abierto]) }));
   const [si, setSi] = useState(() => inicio(grupos[abierto]));
   const pausa = useRef(false);
+  // escribiendo una respuesta o eligiendo una reacción: el reloj espera (como mantener apretado)
+  const foco = useRef(false);
+  const onFoco = useMemo(() => (x) => { foco.current = !!x; }, []);
   const cerrarB = useRef(null);
   // ⚡ la barra de la historia que corre se mueve DIRECTO, sin pasar por React: antes el reloj hacía `setAvance` en
   // cada cuadro y el visor entero se redibujaba 60 veces por segundo (revisión del 18/10/2026)
@@ -569,6 +654,9 @@ export function Visor({ liga, grupos, abierto, onCerrar, onVisto, vistos = {}, r
   };
   // 👏 los aplausos (Felicitar, como en Publicaciones) y la imagen para historias
   const A = useAplausos();
+  // tus reacciones (las del Pase) y los comentarios, para la barra de abajo
+  const P = usePase(typeof window !== 'undefined' && !!window.DC);
+  useComentarios();
   const [img, setImg] = useState('');
   const gid = abre.gid;
   const gi = grupos.findIndex((x) => x.id === gid);
@@ -637,10 +725,14 @@ export function Visor({ liga, grupos, abierto, onCerrar, onVisto, vistos = {}, r
       const filas = cuerpoR.current.querySelectorAll('li').length;
       dur = Math.max(4500, Math.min(12000, 3500 + letras * 30 + filas * 400));
     }
+    // 🔥 las fuertes (el doble campeón, la caza, la letra alta) se quedan 12 s, como en el escenario
+    const sAct = g.slides.find((x) => x.id === ids[Math.min(si, ids.length - 1)]);
+    if (sAct && sAct.lento) dur = Math.max(dur, 12000);
+    foco.current = false;
     const tick = (t) => {
       // ⏱️ con tope: al volver de otra pestaña o de la pantalla bloqueada, `t - antes` eran minutos y la historia se
       // salteaba de golpe. Y con la pestaña oculta, quieta
-      if (!pausa.current && !cargando.current && !document.hidden) acum += Math.min(100, t - antes);
+      if (!pausa.current && !foco.current && !cargando.current && !document.hidden) acum += Math.min(100, t - antes);
       antes = t;
       if (barra.current) barra.current.style.width = Math.min(100, (acum / dur) * 100) + '%';
       if (acum >= dur) { sig.current(); return; }
@@ -651,7 +743,12 @@ export function Visor({ liga, grupos, abierto, onCerrar, onVisto, vistos = {}, r
   }, [gid, si, hay]);
   useEffect(() => {
     if (!hay) return undefined;
-    const k = (e) => { if (e.key === 'Escape') onCerrar(); if (e.key === 'ArrowRight') sig.current(); if (e.key === 'ArrowLeft') ant.current(); };
+    // (escribiendo una respuesta, las flechas mueven el cursor y Escape sale de la caja: no pasan de historia)
+    const k = (e) => {
+      const t = e.composedPath ? e.composedPath()[0] : e.target;
+      if (t && (t.tagName === 'INPUT' || t.tagName === 'TEXTAREA')) { if (e.key === 'Escape') t.blur(); return; }
+      if (e.key === 'Escape') onCerrar(); if (e.key === 'ArrowRight') sig.current(); if (e.key === 'ArrowLeft') ant.current();
+    };
     window.addEventListener('keydown', k);
     return () => window.removeEventListener('keydown', k);
   }, [hay, onCerrar]);
@@ -706,39 +803,45 @@ export function Visor({ liga, grupos, abierto, onCerrar, onVisto, vistos = {}, r
         'En la Liga Global: ' + compartir, setImg, 'historia');
     } catch (e) { setImg('error'); } finally { pausa.current = false; }
   };
-  // 👏 Felicitar desde la historia: le llega a la persona, como desde Publicaciones (`window.felicitar`, app.js)
-  const fel = s.fel || null;
-  let felB = null;
-  if (fel) {
-    const n = Number(A.cu[fel.id] || 0);
-    const mio = !!A.mios[fel.id];
-    const err = A.err[fel.id] && window.errorAplauso ? window.errorAplauso(A.err[fel.id]) : '';
-    felB = liga.yo && (fel.ks || []).includes(liga.yo.k)
-      ? (n ? <span className="hv-fel tuyo" title="Te felicitaron">👏 {num(n)}</span> : null)
-      : (<>
-        <button type="button" className={'hv-fel' + (mio ? ' on' : '')} aria-pressed={mio} disabled={mio || !!A.va[fel.id]}
-          onClick={() => { if (window.felicitar) window.felicitar(fel.id); }}>
-          <span aria-hidden="true">👏</span>{mio ? 'Felicitaste' : 'Felicitar'}{n ? <em>{num(n)}</em> : null}
-        </button>
-        {err ? <small className="hv-fel-err" role="status">{err}</small> : null}
-      </>);
-  }
+  // 👏 reaccionar (le llega a la persona, como Felicitar en Publicaciones: `window.felicitar`) y responder, en la barra de abajo
+  const soc = s.pub && s.pub.id ? <HvSocial key={s.id} liga={liga} it={s.pub} A={A} P={P} onFoco={onFoco} onIr={ir} /> : null;
+  // 🌆 la escena de fondo: la de su servidor (`esc`, dos en el clásico); sin una, la del círculo
+  const escs = [...new Set((Array.isArray(s.esc) ? s.esc : [s.esc || g.sv || 'dra']).map(escenaDe).filter(Boolean))];
   const ctaB = s.cta && s.ir && Object.values(s.ir).some(Boolean) ? <button type="button" className="btn verde hv-cta" onClick={() => ir(s.ir)}>{s.cta}</button> : null;
   const perfil = g.tipo === 'gente' ? '#/r/' + encodeURIComponent(g.k)
     : g.tipo === 'pais' ? '#/pais/' + g.cc
       : g.tipo === 'crew' ? '#/crew/' + encodeURIComponent(g.crew.clave || g.crew.crew)
         : g.tipo === 'sv' ? '#/sv/' + encodeURIComponent(g.nom) : g.tipo === 'liga' ? '#/ranking'
           : g.tipo === 'yo' ? '#/r/' + encodeURIComponent(g.k) : '#/eventos';
-  const circulo = g.tipo === 'gente' || g.tipo === 'yo' ? <CaraH liga={liga} k={g.k} nombre={g.nom} cc={g.cc} />
-    : g.tipo === 'liga' ? <span className="h-c"><img alt="" src="/ul.png" /></span>
-    : g.tipo === 'promos' ? <span className="h-c"><Orbe /></span>
-    : g.tipo === 'pais' ? <span className="h-c bandera"><img alt="" src={'/banderas/g/' + g.cc + '.webp'} /></span>
-      : g.tipo === 'crew' ? <CrewCirculo c={g.crew} />
-        : <span className="h-c"><img alt="" src={g.logo} /></span>;
+  const circuloDe = (x) => (x.tipo === 'gente' || x.tipo === 'yo' ? <CaraH liga={liga} k={x.k} nombre={x.nom} cc={x.cc} />
+    : x.tipo === 'liga' ? <span className="h-c"><img alt="" src="/ul.png" /></span>
+    : x.tipo === 'promos' ? <span className="h-c"><Orbe /></span>
+    : x.tipo === 'pais' ? <span className="h-c bandera"><img alt="" src={'/banderas/g/' + x.cc + '.webp'} /></span>
+      : x.tipo === 'crew' ? <CrewCirculo c={x.crew} />
+        : <span className="h-c"><img alt="" src={x.logo} /></span>);
+  const circulo = circuloDe(g);
+  // 🖥️ EN LA COMPU, LOS CÍRCULOS DE AL LADO A LOS COSTADOS (como Instagram en escritorio): chicos y apagados, con su
+  // escena; tocar uno salta a ese círculo. En el celular no se dibujan (vivo.css)
+  const vecinos = (d) => { const xs = []; for (let j = gi + d; j >= 0 && j < grupos.length && xs.length < 2; j += d) if (grupos[j].slides.length) xs.push(j); return xs; };
+  const mini = (j, lejos) => {
+    const x = grupos[j];
+    const s0 = x.slides.find((y) => !vistos[y.id]) || x.slides[0];
+    const u = escenaDe(Array.isArray(s0.esc) ? s0.esc[0] : s0.esc || x.sv || 'dra');
+    return (
+      <button key={x.id} type="button" className={'hv-mini' + (lejos ? ' lejos' : '')} onClick={() => a(j)} aria-label={'Ver las historias de ' + x.nombre}>
+        {u ? <i className="hv-mini-f" style={{ backgroundImage: 'url(' + u + ')' }} aria-hidden="true" /> : null}
+        <span className="hv-mini-c">{circuloDe(x)}<b>{x.nombre}</b><small>{s0.cuando || ''}</small></span>
+      </button>
+    );
+  };
+  const izq = vecinos(-1).reverse();
+  const der = vecinos(1);
   return (
     <div className="hv-ov" onClick={(e) => { if (e.target === e.currentTarget) onCerrar(); }}>
       <div className="hv-box" role="dialog" aria-modal="true" aria-label="Historias"
         onPointerDown={empieza} onPointerUp={suelta} onPointerCancel={corta} onPointerLeave={corta}>
+        {escs.length ? <div className={'hv-fondo' + (escs.length > 1 ? ' dos' : '')} key={'f' + s.id} aria-hidden="true">{escs.map((u) => <i key={u} style={{ backgroundImage: 'url(' + u + ')' }} />)}</div> : null}
+        <div className="hv-velo" aria-hidden="true" />
         <div className="hv-bars" ref={barras}>{ids.map((id, i) => <i key={id} className={i < si ? 'hecho' : ''}><b ref={i === si ? barra : null} style={{ width: 0 }} /></i>)}</div>
         <div className="hv-cab">
           {/* 🔴 soltar el paso del historial ANTES de cerrar (pasada del 19/10/2026): si no, el `history.back()` del cierre
@@ -748,15 +851,17 @@ export function Visor({ liga, grupos, abierto, onCerrar, onVisto, vistos = {}, r
           <button type="button" className={'hv-comp hv-img' + (img ? ' ' + img : '')} aria-label="Guardar como imagen para tus historias"
             title="Como imagen, para tus historias" disabled={img === 'armando'} onClick={imagen}><Ico n="imagen" t={22} /></button>
           <button type="button" className="hv-x" aria-label="Cerrar las historias" onClick={onCerrar} ref={cerrarB}><Ico n="cerrar" t={22} /></button></div>
-        <div className="hv-cuerpo" ref={cuerpoR}><div className="st" key={s.id}><span className="st-tag">{s.tag}</span>{s.cuerpo}</div></div>
+        <div className="hv-cuerpo" ref={cuerpoR}><div className="st" key={s.id}><span className={'st-tag' + (s.tono ? ' ' + s.tono : '')}>{s.tag}</span>{s.cuerpo}</div></div>
         {proxima ? <div className="hv-sig" aria-hidden="true" ref={(el) => { if (el) el.setAttribute('inert', ''); }}>
-          <div className="st"><span className="st-tag">{proxima.tag}</span>{proxima.cuerpo}</div></div> : null}
+          <div className="st"><span className={'st-tag' + (proxima.tono ? ' ' + proxima.tono : '')}>{proxima.tag}</span>{proxima.cuerpo}</div></div> : null}
         {img === 'armando' || img === 'bajada' || img === 'error' ? <p className="hv-est" role="status">{img === 'armando' ? 'Armando la imagen…'
           : img === 'bajada' ? 'Imagen guardada' : 'No pude armar la imagen'}</p> : null}
-        {felB || ctaB ? <div className={'hv-pie' + (felB && ctaB ? ' dos' : '')}>{felB}{ctaB}</div> : null}
+        {ctaB || soc ? <div className="hv-pie">{ctaB}{soc}</div> : null}
         <button type="button" className="hv-zona izq" aria-label="Anterior" onClick={zona(anterior)} />
         <button type="button" className="hv-zona der" aria-label="Siguiente" onClick={zona(siguiente)} />
       </div>
+      {izq.length ? <div className="hv-lado izq">{izq.map((j, i) => mini(j, izq.length > 1 && i === 0))}</div> : null}
+      {der.length ? <div className="hv-lado der">{der.map((j, i) => mini(j, i === 1))}</div> : null}
       <button type="button" className="hv-fl izq" aria-label="Historia anterior" onClick={anterior}><Chevron /></button>
       <button type="button" className="hv-fl der" aria-label="Historia siguiente" onClick={siguiente}><Chevron /></button>
     </div>

@@ -29,7 +29,8 @@ function Lado({ liga, n, p, on, gano, abierta, onVotar }) {
   );
 }
 
-export function QuienGana({ liga }) {
+// los votos abiertos y cerrados hace poco, lo que votaste y cómo votar: lo usan Publicaciones y la historia en vivo
+function useQG() {
   const [D, setD] = useState(null);
   const [mios, setMios] = useState(() => leer('lg:qg') || {});
   const [msg, setMsg] = useState('');
@@ -41,9 +42,6 @@ export function QuienGana({ liga }) {
     const id = setInterval(traer, 60000);
     return () => { vivo = false; clearInterval(id); };
   }, []);
-  const ahora = Date.now();
-  const fs = ((D && D.f) || []).filter((q) => q.abierta || ahora - q.abre < CERRADA_VE).slice(0, 3);
-  if (!fs.length) return null;
   const votar = async (q, lado) => {
     if (!q.abierta || !W.conCuenta || mios[q.id] === lado) return;
     setMsg('');
@@ -55,6 +53,38 @@ export function QuienGana({ liga }) {
       setD((d) => d && Object.assign({}, d, { f: d.f.map((x) => (x.id === q.id ? Object.assign({}, x, { na: j.na, nb: j.nb }) : x)) }));
     } else setMsg(j.error === 'cerrada' ? 'Ya se definió: el voto cerró.' : 'No se pudo votar. Prueba de nuevo.');
   };
+  return { fs: (D && D.f) || [], mios, msg, votar };
+}
+
+// ⚔️ «¿QUIÉN GANA?» EN LA HISTORIA EN VIVO (Dlx, 14/11/2026, a la maqueta de las historias: «Todas tal cual»). El mismo voto
+// de arriba, cuando la batalla que se juega es la final de un voto abierto de ese servidor; si no hay voto, `otro` (el
+// favorito por el OVR). Los porcentajes se ven recién después de votar, como en la maqueta
+const mismo = (x, y) => limpio(x).toLowerCase() === limpio(y).toLowerCase();
+export function VotoVivo({ liga, sv, a, b, otro = null }) {
+  const { fs, mios, msg, votar } = useQG();
+  const q = fs.find((x) => x.abierta && x.sv === sv && ((mismo(x.a, a) && mismo(x.b, b)) || (mismo(x.a, b) && mismo(x.b, a))));
+  if (!q) return otro;
+  const n = (q.na || 0) + (q.nb || 0);
+  const pa = n ? Math.round((100 * q.na) / n) : 50;
+  const mio = mios[q.id] || '';
+  const nom = (x) => limpio(((liga.fila(x) || {}).n) || x);
+  return (
+    <div className={'hx-qg' + (mio ? ' votada' : '')} role="group" aria-label="¿Quién gana?">
+      <span className="hx-qg-q">¿Quién gana?</span>
+      {[['A', q.a, pa], ['B', q.b, 100 - pa]].map(([l, x, p]) => (
+        <button key={l} type="button" className={mio === l ? 'on' : ''} style={{ '--p': p + '%' }} aria-pressed={mio === l}
+          onClick={(e) => { e.stopPropagation(); votar(q, l); }}><i aria-hidden="true" /><span>{nom(x)}{mio ? <em>{p}%</em> : null}</span></button>
+      ))}
+      <small>{n ? num(n) + (n === 1 ? ' voto' : ' votos') : 'Sé el primero en votar'}{msg ? ' · ' + msg : ''}</small>
+    </div>
+  );
+}
+
+export function QuienGana({ liga }) {
+  const { fs: todas, mios, msg, votar } = useQG();
+  const ahora = Date.now();
+  const fs = todas.filter((q) => q.abierta || ahora - q.abre < CERRADA_VE).slice(0, 3);
+  if (!fs.length) return null;
   return (
     <section className="qg" aria-label="¿Quién gana la final?">
       {fs.map((q) => {

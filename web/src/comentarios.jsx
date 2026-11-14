@@ -46,6 +46,19 @@ export function delHilo(it, ahora) {
   return sim.concat(ver).sort((a, b) => a.t - b.t);
 }
 
+/** 💬 Comentar desde afuera del hilo (la barra de responder de las historias): `{ok}` o `{ok: false, msg}`. */
+export async function comentar(it, tx) {
+  if (!it || !it.id || !String(tx || '').trim() || !W.conCuenta) return { ok: false, msg: '' };
+  const j = await W.conCuenta('/api/avisos/comentar', { id: it.id, tx, resp: '' }, 'p');
+  if (!j) return { ok: false, msg: '' };
+  if (j.ok) {
+    E.mios[it.id] = (E.mios[it.id] || []).concat([[j.c, j.k, j.n, j.tx, j.resp, j.t]]);
+    avisar();
+    return { ok: true };
+  }
+  return { ok: false, msg: ERR[j.error] || (j.status === 401 ? 'Entra con Discord de nuevo.' : 'No se pudo: prueba de nuevo.') };
+}
+
 export const PJ = { eh: ['EH', '#E41373'], ul: ['UL', '#29B298'], ej: ['EJ', '#FFD24A'] };
 const ERR = { vacio: 'Escribe algo.', largo: 'Es muy largo: hasta 200 letras.', link: 'Sin links en los comentarios.',
   mencion: 'Sin @everyone ni @here.', sin_verificar: 'Para comentar necesitas tu cuenta verificada.',
