@@ -135,7 +135,7 @@ export function PistaGrande({ libres, prem, nivel, tiene, tienda, min, compu, pc
   const mover = (k) => { const el = caja.current; if (el) el.scrollBy({ left: k * Math.max(160, el.clientWidth * 0.8), behavior: 'smooth' }); };
   const ult = libres.length;
   return (
-    <div className="pk-w">
+    <div className="pk-w" data-tuto="ps-pista">
       {opcion === 'b' ? <Escenario libres={libres} prem={prem} nivel={nivel} tiene={tiene} umbrales={umbrales} xp={xp} liga={liga} yo={yo} onIr={(n) => ir(n, true)} /> : null}
       <div className="pk-cab">
         <span>{nivel ? <>NIVEL <b>{nivel}</b> DE {ult}</> : 'LOS ' + ult + ' NIVELES Y SUS PREMIOS'}</span>

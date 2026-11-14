@@ -1026,7 +1026,7 @@ export function Eventos({ liga, vivoL, dia: diaRuta, avisos }) {
 
   return (
     <>
-      <div className="escena evp-esc" style={{ '--mo-c': '#E41373', '--mo-o': 0.85 }}>
+      <div data-tuto="ev-cab" className="escena evp-esc" style={{ '--mo-c': '#E41373', '--mo-o': 0.85 }}>
         <section className="evp-cab">
           <div className="evp-cabtx">
             <span className="tag">EVENTOS · {liga.temp}</span>
@@ -1046,7 +1046,7 @@ export function Eventos({ liga, vivoL, dia: diaRuta, avisos }) {
           {momento}
         </section>
       </div>
-      <nav className="evp-dias" aria-label="Días">
+      <nav data-tuto="ev-dias" className="evp-dias" aria-label="Días">
         <div className="evp-dias-in" ref={tira}>
           {tiraDias.map((k) => {
             const xs = porDia[k] || [];
@@ -1153,7 +1153,7 @@ export function Eventos({ liga, vivoL, dia: diaRuta, avisos }) {
             <Mes liga={liga} porDia={porDia} dia={dia} onDia={(k) => elegir(k, false)} ym={ym} setYm={setYm} color={color} />
             <div className="evp-ley">{svsCal.map((s) => <span key={s}><i style={{ background: color(s) }} />{siglaDe(s)}</span>)}</div>
           </section>
-          <section className="evp-bloque" id="ev-campana"><h2 className="evp-h2"><Ico n="campana" t={20} />La campana</h2><Campana liga={liga} /></section>
+          <section data-tuto="ev-campana" className="evp-bloque" id="ev-campana"><h2 className="evp-h2"><Ico n="campana" t={20} />La campana</h2><Campana liga={liga} /></section>
           <section className="evp-bloque"><h2 className="evp-h2">En tu calendario</h2><Calendario /></section>
           {/* en la compu, al costado: llena lo que queda abajo de la campana mientras el día sigue (en el teléfono va en
               «Cómo se juega») */}

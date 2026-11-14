@@ -17,6 +17,7 @@ import { MarcoSolo } from './marco_solo.jsx';
 // 🧭 el tutorial (Dlx, 12/10/2026, «A … B … C … D … E. Dale»): quién es nuevo se decide al cargar (primera.js, chico);
 // lo que se dibuja se baja sólo si hace falta
 import { irSinHistoria, pasosEnInicio, quiereBienvenida, quiereTutorial } from './primera.js';
+import { ComoFunciona } from './comofunciona.jsx';
 import { AvisoVersion } from './novedad.jsx';
 // 📊 las secciones que se cuentan: la misma lista que `SECC_EV` de bot/avisos.js
 const SECC = new Set(['inicio', 'eventos', 'ranking', 'competencias', 'inventario', 'publicaciones', 'tarjetas', 'ligas', 'salon', 'pase', 'tienda', 'socios', 'guia',
@@ -358,10 +359,11 @@ export default function App() {
   yoRef.current = yo && yo.dc && yo.dc.id ? String(yo.dc.id) : null;
   const [hash, setHash] = useState(rutaHash);
   const [sigoV, setSigoV] = useState(0);
-  // 🧭 «Ver el recorrido otra vez» (la Guía) avisa `lg:tour`: cada pedido es un número nuevo
-  const [repite, setRepite] = useState(0);
+  // 🧭 pedir el tutorial (la Guía, el «¿Cómo funciona?», la pista de nuevos) avisa `lg:tour` con qué: cada pedido es un
+  // número nuevo (ver `pedirRecorrido()` de primera.js)
+  const [repite, setRepite] = useState({ n: 0, que: '' });
   useEffect(() => {
-    const f = () => setRepite((n) => n + 1);
+    const f = (e) => setRepite((r) => ({ n: r.n + 1, que: (e && e.detail) || 'elegir' }));
     window.addEventListener('lg:tour', f);
     return () => window.removeEventListener('lg:tour', f);
   }, []);
@@ -742,7 +744,9 @@ export default function App() {
       {/* 🆕 «hay una actualización» (13/10/2026): ver web/src/novedad.jsx */}
       <Aislada n="AvisoVersion"><AvisoVersion pagina={pagina} /></Aislada>
       {pagina === 'bienvenida' ? <Aislada n="Bienvenida"><Suspense fallback={null}><Bienvenida liga={liga} dc={yo.dc} /></Suspense></Aislada> : null}
-      {quiereTutorial() || repite ? <Aislada n="Tutorial"><Suspense fallback={null}><Tutorial liga={liga} dc={yo.dc} pagina={paginaMenu} sv={sv} repite={repite} /></Suspense></Aislada> : null}
+      {quiereTutorial() || repite.n ? <Aislada n="Tutorial"><Suspense fallback={null}><Tutorial liga={liga} dc={yo.dc} pagina={paginaMenu} sv={sv} pedido={repite} /></Suspense></Aislada> : null}
+      {/* ❓ el «¿Cómo funciona?» de cada página con capítulo, y el aviso de que el tutorial es nuevo (comofunciona.jsx) */}
+      <Aislada n="ComoFunciona"><ComoFunciona pagina={paginaMenu} /></Aislada>
       <span id="contenido" tabIndex={-1} />
       {sv ? <Aislada key="PerfilSv" n="PerfilSv" pagina><Suspense fallback={<Cargando />}><PerfilSv liga={liga} sv={sv} enc={enc} /></Suspense></Aislada>
         : pagina === 'cambios' ? <Aislada key="Cambios" n="Cambios" pagina><Suspense fallback={<Cargando />}><Cambios liga={liga} ver={partes[1] || null} antes={cambiosAntes} /></Suspense></Aislada>

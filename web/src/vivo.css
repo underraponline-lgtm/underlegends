@@ -5537,3 +5537,149 @@ dialog.pn-pop.un-pop{--pc:#29B298;width:min(540px,calc(100vw - 32px));max-height
 .un-l.eleg input{width:18px;height:18px;accent-color:#29B298;margin:0}
 .un-ir{justify-self:stretch;min-height:44px}
 .un-ir:disabled{opacity:.5;cursor:not-allowed}
+/* ⭐ el Star Dragon (13/11/2026): el mismo huevo, azul y con su estrella */
+.dd-huevo.star{background:radial-gradient(55% 45% at 35% 28%,rgba(255,255,255,.5),transparent 60%),linear-gradient(160deg,#BFE9FF,#5CC8FF 45%,#1d5b86);
+  box-shadow:0 0 50px rgba(92,200,255,.6),inset 0 -14px 30px rgba(0,0,0,.35)}
+.dd-huevo.star span{font-size:0}
+.dd-huevo.star span::before{content:"★";font-size:44px;color:rgba(5,30,48,.55)}
+.dd-star-et{color:#5CC8FF}
+/* ── 🧭 EL TUTORIAL NUEVO (13/11/2026): la barra de pasos, elegir rápido o completo, los finales con premio ── */
+.rc-raiz{display:contents}
+.rc-seg{display:flex;gap:4px}
+.rc-seg i{flex:1;height:4px;border-radius:2px;background:var(--suave)}
+.rc-seg i.si{background:var(--magenta)}
+.rc-caja.rc-centro{left:50%;top:50%;transform:translate(-50%,-50%);width:min(560px,calc(100vw - 32px))}
+.rc-centro .rc-x{width:40px;height:40px}
+.rc-ops{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.rc-op{display:grid;gap:5px;text-align:left;padding:14px;background:var(--caja);color:var(--tinta);border:2px solid var(--linea);border-radius:4px;cursor:pointer}
+.rc-op b{font:900 20px/1 Archivo,sans-serif;font-stretch:115%;text-transform:uppercase}
+.rc-op span{font-size:14px;line-height:1.4}
+.rc-op small{font:700 14px/1 "Barlow Condensed",sans-serif;letter-spacing:.06em;text-transform:uppercase;color:var(--magenta-tx)}
+.rc-op:hover,.rc-op:focus-visible{border-color:var(--verde);outline:none;box-shadow:4px 4px 0 var(--verde)}
+@media (max-width: 520px){.rc-ops{grid-template-columns:1fr}}
+.rc-huevos{display:flex;gap:14px;justify-content:center;margin:4px 0}
+.rc-huevos i{position:relative;width:64px;height:78px;border-radius:50% 50% 46% 46%/58% 58% 42% 42%;background:#2a0f1c;border:2.5px solid #E41373}
+.rc-huevos i.cofre{width:84px;height:66px;border-radius:4px;background:#1a1405;border-color:#F5C542}
+.rc-huevos i.lock{opacity:.75}
+.rc-huevos i .ico{position:absolute;right:-9px;top:-9px;width:26px;height:26px;padding:5px;border-radius:50%;background:var(--fondo);border:2px solid #F5C542;color:#F5C542}
+.btn.rc-dc,.btn.nvp-dc{background:#5865F2;color:#fff;border-color:#5865F2}
+.rc-mas{font-size:13px;color:var(--gris);border-top:1px solid var(--suave);padding-top:10px}
+.rc-mas a{color:var(--tinta);font-weight:700}
+.rc-barra{display:block;height:6px;background:var(--suave);border-radius:3px;overflow:hidden}
+.rc-barra i{display:block;height:100%;background:var(--magenta)}
+/* 📖 «Aprende la Liga», en la Guía */
+.ap{display:grid;gap:14px;scroll-margin-top:90px}
+.ap-cab{display:flex;flex-wrap:wrap;align-items:center;gap:10px 18px}
+.ap-cab p{margin:0;flex:1 1 320px;line-height:1.45}
+.ap-av{display:grid;gap:5px;min-width:160px}
+.ap-av b{font:700 14px/1 "Barlow Condensed",sans-serif;letter-spacing:.08em;color:var(--gris)}
+.ap-corto{background:none;border:0;padding:6px 0;color:var(--tinta);cursor:pointer;font:700 15px/1 "Barlow Condensed",sans-serif;letter-spacing:.06em;text-transform:uppercase;text-decoration:underline}
+.ap-l{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:10px}
+.ap-cap{width:100%;height:100%;display:grid;grid-template-columns:44px minmax(0,1fr);gap:12px;align-items:start;text-align:left;padding:14px;
+  background:var(--caja);color:var(--tinta);border:1px solid var(--suave);border-radius:4px;cursor:pointer}
+.ap-n{font:400 36px/.9 Anton,Archivo,sans-serif;color:var(--gris)}
+.ap-tx{display:grid;gap:4px}
+.ap-tx b{font:800 15px/1.15 Archivo,sans-serif;text-transform:uppercase}
+.ap-tx small{color:var(--gris);font-size:13px;line-height:1.4}
+.ap-tx em{display:flex;align-items:center;gap:4px;font:700 12px/1 "Barlow Condensed",sans-serif;font-style:normal;letter-spacing:.08em;text-transform:uppercase;color:var(--gris);margin-top:4px}
+.ap-cap.hecho .ap-n,.ap-cap.hecho em{color:var(--verde)}
+.ap-cap.sigue{border-color:var(--magenta)}
+.ap-cap.sigue .ap-n,.ap-cap.sigue em{color:var(--magenta-tx)}
+.ap-cap:hover,.ap-cap:focus-visible{border-color:var(--linea);outline:none}
+/* ❓ el «¿Cómo funciona?» de cada página: arriba a la derecha, sin correr nada */
+.cf{position:relative;z-index:6;height:0;display:flex;justify-content:flex-end;padding:0 var(--gut)}
+.cf-q{position:relative;margin-top:12px;display:inline-flex;align-items:center;gap:8px;height:34px;padding:0 12px 0 5px;background:#0B0B0D;color:#F6F6F6;
+  border:1px solid #3a3a3f;border-radius:17px;cursor:pointer;font:700 13.5px/1 "Barlow Condensed",sans-serif;letter-spacing:.06em;text-transform:uppercase}
+.cf-q i{width:24px;height:24px;border-radius:50%;display:grid;place-items:center;background:#F6F6F6;color:#030304;font:900 14px/1 Archivo,sans-serif;font-style:normal}
+.cf-q.on,.cf-q:hover,.cf-q:focus-visible{border-color:var(--magenta);outline:none}
+.cf-pt{position:absolute;left:-3px;top:-3px;width:10px;height:10px;border-radius:50%;background:var(--magenta);box-shadow:0 0 0 3px #030304}
+.cf-pop{position:absolute;right:var(--gut);top:54px;width:min(360px,calc(100vw - 32px));display:grid;gap:10px;padding:16px;background:#0B0B0D;color:#F6F6F6;
+  border:1px solid #2a2a2e;border-radius:4px;box-shadow:0 18px 40px rgba(0,0,0,.6)}
+.cf-k{font:700 12.5px/1 "Barlow Condensed",sans-serif;letter-spacing:.1em;color:#FF5BA3}
+.cf-pop p{margin:0;font-size:14.5px;line-height:1.5}
+.cf-ver{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:12px 14px;background:var(--verde);color:#030304;border:0;border-radius:4px;cursor:pointer;
+  font:800 13.5px/1 Archivo,sans-serif;text-transform:uppercase}
+.cf-ver small{font:700 12.5px/1 "Barlow Condensed",sans-serif;letter-spacing:.06em}
+.cf-pie button{background:none;border:0;padding:4px 0;color:#A5A5A0;cursor:pointer;font:700 13px/1 "Barlow Condensed",sans-serif;letter-spacing:.06em;text-transform:uppercase}
+.cf-pie button:hover{color:#F6F6F6}
+@media (max-width: 899px){.cf{padding:0 16px}.cf-pop{right:16px}}
+.cf-aviso .cf-guia{background:transparent;color:inherit;border-color:currentColor}
+/* 🐣 MISIONES PARA NUEVOS: el rectángulo de arriba de los cuatro paneles (siempre oscuro, como los paneles) */
+.nvp{--nvp-c:#E41373;display:grid;gap:14px;padding:18px 20px;margin-bottom:14px;background:#0B0B0D;color:#F6F6F6;border:1px solid var(--nvp-c);border-radius:4px}
+.nvp-cab{display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:8px 20px}
+.nvp-k{font:700 13px/1 "Barlow Condensed",sans-serif;letter-spacing:.12em;color:#FF5BA3}
+.nvp h2,.rds-t{margin:6px 0 0;font:400 28px/1 Anton,Archivo,sans-serif;text-transform:uppercase}
+.nvp-cuenta{font:700 13px/1 "Barlow Condensed",sans-serif;letter-spacing:.1em;text-transform:uppercase;color:#A5A5A0}
+.nvp-pista{display:grid;grid-template-columns:minmax(0,1fr) 140px;gap:10px;align-items:start}
+.nvp-pista ol{position:relative;list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(7,minmax(0,1fr))}
+.nvp-pista ol::before,.nvp-pista ol::after{content:"";position:absolute;left:calc(100% / 14);top:20px;height:3px;background:#232326;right:calc(100% / 14)}
+.nvp-pista ol::after{background:var(--verde);right:auto;width:calc((100% - 100% / 7) * var(--nvp-lleno) / 100)}
+.nvp-pista li{position:relative;z-index:1;display:flex;justify-content:center}
+.nvp-nv{display:flex;flex-direction:column;align-items:center;gap:6px;background:none;border:0;padding:0;color:#F6F6F6;cursor:pointer;min-width:0}
+.nvp-c{width:42px;height:42px;border-radius:50%;display:grid;place-items:center;background:#141417;border:2px solid #2a2a2e;box-sizing:border-box;
+  font:400 19px/1 Anton,sans-serif;color:#8A8A85}
+.nvp-nv b{font:800 12.5px/1.1 Archivo,sans-serif;text-transform:uppercase;text-align:center}
+.nvp-nv small{font:700 11.5px/1 "Barlow Condensed",sans-serif;letter-spacing:.06em;color:#8A8A85;text-transform:uppercase;white-space:nowrap}
+.nvp-nv.hecho .nvp-c{background:var(--verde);border-color:var(--verde);color:#030304}
+.nvp-nv.hoy .nvp-c{border-color:var(--magenta);color:#F6F6F6;box-shadow:0 0 0 4px rgba(228,19,115,.22)}
+.nvp-nv.hoy small{color:#FF5BA3}
+.nvp-nv.cerrado b{color:#6c6c68}
+.nvp-nv.sel b{text-decoration:underline;text-decoration-color:var(--magenta);text-decoration-thickness:2px;text-underline-offset:4px}
+.nvp-nv:focus-visible{outline:2px solid var(--verde);outline-offset:3px}
+.nvp-caja{display:flex;flex-direction:column;align-items:center;gap:6px;text-align:center}
+.nvp-cj{width:52px;height:44px;display:grid;place-items:center;background:#1a1405;border:2px solid #F5C542;border-radius:4px;color:#F5C542}
+.nvp-caja b{font:800 12.5px/1.1 Archivo,sans-serif;text-transform:uppercase;color:#F5C542}
+.nvp-caja small{font:700 11.5px/1 "Barlow Condensed",sans-serif;letter-spacing:.06em;color:#8A8A85;text-transform:uppercase}
+.nvp-caja.hecho .nvp-cj{background:#F5C542;color:#030304}
+.nvp-vinc,.rds-sin{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:8px 12px;margin:0;padding:8px 12px;background:#121327;
+  border:1px solid #2f3480;border-radius:4px;font-size:13.5px;color:#C9C9F5}
+.nvp-dia{display:grid;gap:10px}
+.nvp-dt{display:flex;flex-wrap:wrap;align-items:center;gap:6px 12px}
+.nvp-dt > b{font:800 15px/1.1 Archivo,sans-serif;text-transform:uppercase}
+.nvp-dt em{font:700 12px/1 "Barlow Condensed",sans-serif;font-style:normal;letter-spacing:.06em;text-transform:uppercase;color:#8A8A85}
+.nvp-ms{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+.nvp-ms li{display:grid;grid-template-columns:24px minmax(0,1fr) auto;gap:10px;align-items:center;padding:11px 12px;background:#111114;border:1px solid #1d1d21;border-radius:4px}
+.nvp-ck{width:22px;height:22px;border-radius:50%;border:2px solid #3a3a3f;display:grid;place-items:center;box-sizing:border-box;color:#030304}
+.nvp-ms li.ok .nvp-ck{background:var(--verde);border-color:var(--verde)}
+.nvp-ms li.ok .nvp-mt b{color:#8A8A85;text-decoration:line-through}
+.nvp-mt{display:grid;gap:5px;justify-items:start;min-width:0}
+.nvp-mt b{font:700 14px/1.25 Archivo,sans-serif}
+.nvp-pr{display:inline-flex;align-items:center;gap:5px;padding:4px 7px;border-radius:4px;background:#1c1c20;color:#F6F6F6;
+  font:700 12px/1 "Barlow Condensed",sans-serif;letter-spacing:.05em;text-transform:uppercase}
+.nvp-pr.drop{background:#2a0f1c;color:#FF5BA3}
+.nvp-pr.star{background:#0d1d2b;color:#5CC8FF}
+.nvp-pr.pdt,.nvp-pr.cofre{background:#1a1405;color:#F5C542}
+.nvp-pr.tit{background:#0b211d;color:var(--verde)}
+.nvp-pr.lock{opacity:.7}
+.nvp-ir{padding:8px 12px;background:var(--verde);border:0;border-radius:4px;color:#030304;font:800 12px/1 Archivo,sans-serif;text-transform:uppercase;cursor:pointer}
+.nvp-ir:focus-visible{outline:2px solid #F6F6F6;outline-offset:2px}
+.nvp-ya{font:700 12px/1 "Barlow Condensed",sans-serif;letter-spacing:.06em;text-transform:uppercase;color:#6c6c68}
+@media (max-width: 899px){
+  .nvp{padding:14px}
+  .nvp h2{font-size:22px}
+  .nvp-pista{grid-template-columns:1fr}
+  .nvp-nv b,.nvp-caja small{display:none}
+  .nvp-c{width:34px;height:34px;font-size:16px}
+  .nvp-pista ol::before,.nvp-pista ol::after{top:16px}
+  .nvp-caja{flex-direction:row;justify-content:flex-start;padding:8px 10px;background:#1a1405;border:1px solid #4a3a08;border-radius:4px}
+  .nvp-cj{width:34px;height:30px}
+  .nvp-ms{grid-template-columns:1fr}
+}
+.nvp-velo{position:fixed;inset:0;z-index:95;display:grid;place-items:center;padding:16px;background:rgba(3,3,4,.78)}
+.nvp-ven{position:relative;width:min(600px,100%);max-height:calc(100vh - 32px);overflow:auto;padding:18px 20px;background:#0B0B0D;color:#F6F6F6;border:1px solid #232326;border-radius:4px}
+.nvp-x{position:absolute;right:10px;top:10px;width:40px;height:40px;color:#F6F6F6;background:none}
+/* ⭐ las redes, con su Star Dragon */
+.rds{display:grid;gap:12px}
+.rds-que{display:flex;align-items:center;gap:12px;margin:0;padding:10px 12px;background:#0a1520;border:1px solid #16334a;border-radius:4px;font-size:13.5px;line-height:1.45;color:#C9DDF0}
+.rds-st{flex:none;width:34px;height:40px;display:grid;place-items:center;border-radius:50% 50% 46% 46%/58% 58% 42% 42%;background:#0d1d2b;border:2px solid #5CC8FF;color:#5CC8FF;font-size:18px}
+.rds-n{color:#5CC8FF}
+.rds-l{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:1fr 1fr;column-gap:22px}
+.rds-l li{display:grid;grid-template-columns:34px minmax(0,1fr) auto;gap:12px;align-items:center;padding:9px 0;border-bottom:1px solid #18181b}
+.rds-ic{width:34px;height:34px;border-radius:4px;display:grid;place-items:center;background:#18181b;color:#F6F6F6}
+.rds-nm{min-width:0}
+.rds-nm b{display:block;font:700 14px/1.2 Archivo,sans-serif;color:#F6F6F6}
+.rds-nm small{display:block;margin-top:2px;color:#8A8A85;font-size:12px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.rds-b{padding:8px 11px;background:var(--verde);border:0;border-radius:4px;color:#030304;font:800 12px/1 Archivo,sans-serif;text-transform:uppercase;cursor:pointer;white-space:nowrap}
+.rds-b.ya{background:#0d1d2b;color:#5CC8FF}
+.rds-b.ya.espera{background:#141417;color:#A5A5A0}
+@media (max-width: 560px){.rds-l{grid-template-columns:1fr}}

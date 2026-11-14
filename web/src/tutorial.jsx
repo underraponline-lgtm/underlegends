@@ -1,155 +1,280 @@
-// 🧭 EL TUTORIAL (Dlx, 12/10/2026: «A pero que no sea necesariamente con jugar tu primer evento, o sea con participar
-// en la temporada, ya sea haciendo misiones etc… B me gusta, C me gusta pero que sea lo que B no mostró, D me gusta así
-// atrapamos la atracción, E. Dale»). Quién es nuevo y lo que se cuenta, en primera.js; acá lo que se dibuja:
+// 🧭 EL TUTORIAL. Nació el 12/10/2026 (Dlx: «A pero que no sea necesariamente con jugar tu primer evento… B me gusta, C me
+// gusta pero que sea lo que B no mostró, D me gusta así atrapamos la atracción, E. Dale») y se rehízo el 13/11/2026, con el
+// Inicio nuevo (Dlx: «remakear también el tutorial para nuevos usuarios… no solo en el inicio sino en general… un tutorial
+// corto y la opción de tener un tutorial más completo»; a la maqueta: el corto da 3 Dragón Drops, el completo 1 cofre, los
+// dos si estás vinculado —si no, «te esperan»—, y «el completo en la guía tmb»). Quién es nuevo y lo que se cuenta, en
+// primera.js; qué señala cada paso, en capitulos.js; acá lo que se dibuja:
 //
-//   A · `PrimerosPasos`: una lista que se tilda sola. Ninguno pide jugar: el Pase sube con Tareas, y su nivel 1 da la
-//       Temporada. En el Inicio para quien llegó hace poco; en la Guía, para todos
-//   B · `Recorrido`: cuatro pasos sobre el menú (Eventos, Ranking, Tarjetas, Pase), la primera vez que se entra por el
-//       Inicio. Se saltea, y se vuelve a ver desde la Guía
-//   C · `NOTAS`: una línea la primera vez que se abre una página que el recorrido no mostró
+//   A · `PrimerosPasos`: una lista que se tilda sola, en la Guía (y en el Inicio pasada la primera semana)
+//   B · `Recorrido`: elegir rápido o completo; el corto (cinco pasos en el Inicio) y cada capítulo del completo en su página
+//   C · `NOTAS`: una línea la primera vez en una página que no tiene capítulo (las que lo tienen llevan su «¿Cómo funciona?»)
 //   D · la franja: quien entra por un link (un perfil, una llave) ve primero eso, y arriba «¿primera vez?»
 //   E · lo cuenta `contar()`, y lo muestra el Dashboard
 import { useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { num } from './liga.js';
 import { Ico, accion } from './piezas.jsx';
 import { usePase } from './pase.js';
-import { LLEGADA, PRIMERA_VISITA, contar, pedirRecorrido, reciente, tuto, tutoPoner } from './primera.js';
+import { CAPITULOS, CORTO, capituloDe } from './capitulos.js';
+import { pedirNuevo, txtPremio } from './nuevos.jsx';
+import { LLEGADA, PRIMERA_VISITA, contar, enSemanaNueva, pedirRecorrido, reciente, tuto, tutoPoner } from './primera.js';
 
 const W = typeof window !== 'undefined' ? window : {};
 const leerLS = (k) => { try { return JSON.parse(localStorage.getItem(k)); } catch (e) { return null; } };
 
 // ── B · el recorrido ─────────────────────────────────────────────────────────────────────────────────────────────
-// ⚠️ SEÑALA EL MENÚ, NO LA PÁGINA: el menú está en todas (arriba en la compu, la tira de abajo en el celular), así que
-// el recorrido corre igual desde el Inicio o desde la Guía, sin mover a nadie de donde está
-const PASOS = [
-  { a: '#/eventos', tag: 'EVENTOS', h: 'Cuándo se juega',
-    p: 'Cada servidor de la Liga organiza sus eventos, y acá está el calendario de todos. La campana te avisa al minuto cuando anuncian uno.' },
-  { a: '#/ranking', tag: 'RANKING', h: 'Un solo ranking',
-    p: 'Juega un evento en cualquier servidor de la Liga y ya entras. Cada puesto suma puntos a tu temporada.' },
-  { a: '#/tarjetas', tag: 'TARJETAS', h: 'Tu tarjeta',
-    p: 'Cada rapero tiene sus tarjetas estilo FIFA, con sus números de verdad. Las tuyas salen cuando te verificas en Discord Rap Español.' },
-  { a: '#/pase', tag: 'PASE DE RAPERO', h: 'Sin jugar también se sube',
-    p: 'Las Tareas del Pase te suben de nivel con lo que haces en la página y en el bot. El nivel 1 te da tu tarjeta de Temporada.' },
-];
-
-/** El link del menú que se ve: el de arriba en la compu, el de la tira en el celular (que se corre hasta mostrarlo) */
-function blanco(raiz, href) {
-  if (!raiz) return null;
-  const xs = Array.from(raiz.querySelectorAll('.cab .menu a, .tabbar a')).filter((a) => a.getAttribute('href') === href);
+/** Lo señalado: el `data-tuto` que se ve (el del menú de arriba en la compu, el de la tira en el celular) */
+function blanco(raiz, sel) {
+  if (!raiz || !sel) return null;
+  const xs = Array.from(raiz.querySelectorAll('[data-tuto="' + sel + '"]'));
   return xs.find((a) => { const r = a.getBoundingClientRect(); return r.width > 0 && r.height > 0; }) || null;
 }
+/** La página que se ve, como la llama App.jsx ('' es el Inicio) */
+const paginaVista = () => {
+  const r = W.rutaLG ? W.rutaLG() : String(location.hash || '').replace(/^#\/?/, '');
+  return String(r || '').split('?')[0].split('/')[0];
+};
+/** Ir a una página y esperar a que aparezca `sel` (hasta 3 s: si no aparece, la caja va al centro) */
+function irYEsperar(ruta, sel, raiz, listo) {
+  const pag = ruta.replace(/^#\/?/, '').split('/')[0];
+  if (paginaVista() !== pag) location.hash = ruta;
+  const t0 = Date.now();
+  const mirar = () => {
+    if ((paginaVista() === pag && blanco(raiz(), sel)) || Date.now() - t0 > 3000) { listo(); return; }
+    setTimeout(mirar, 120);
+  };
+  setTimeout(mirar, 60);
+}
 
-function Recorrido({ liga, dc, onCerrar }) {
-  const [i, setI] = useState(0);
+function Foco({ paso, n, de, onSig, onAtras, onSaltar, ultimo, txtUltimo }) {
   const [caja, setCaja] = useState(null);
   const yo = useRef(null);
   const sig = useRef(null);
-  const paso = i > 0 ? PASOS[i - 1] : null;
-  const c = liga.d.comunidad || {};
-
-  // dónde está lo señalado; se vuelve a medir si cambia el tamaño o se mueve la página
   const medir = useCallback(() => {
-    if (!paso) { setCaja(null); return; }
-    const el = blanco(yo.current && yo.current.getRootNode(), paso.a);
+    const el = blanco(yo.current && yo.current.getRootNode(), paso.sel);
     if (!el) { setCaja(null); return; }
     const r = el.getBoundingClientRect();
     setCaja({ x: r.left, y: r.top, w: r.width, h: r.height });
   }, [paso]);
   useLayoutEffect(() => {
-    if (paso) {
-      const el = blanco(yo.current && yo.current.getRootNode(), paso.a);
-      // en el celular la tira se desliza: se corre ella, nunca la página
-      const tira = el && el.closest('.tb-tira');
+    const el = blanco(yo.current && yo.current.getRootNode(), paso.sel);
+    if (el) {
+      // en el celular la tira de abajo se desliza: se corre ella, nunca la página
+      const tira = el.closest('.tb-tira');
       if (tira) tira.scrollLeft = Math.max(0, el.offsetLeft - (tira.clientWidth - el.offsetWidth) / 2);
+      else {
+        const r = el.getBoundingClientRect(), vh = W.innerHeight || 640;
+        if (r.top < 70 || r.bottom > vh - 20) el.scrollIntoView({ block: r.height > vh * 0.6 ? 'start' : 'center' });
+      }
     }
     medir();
+    const t = setTimeout(medir, 350);
+    return () => clearTimeout(t);
   }, [medir, paso]);
   useEffect(() => {
     W.addEventListener('resize', medir);
     W.addEventListener('scroll', medir, { passive: true });
     return () => { W.removeEventListener('resize', medir); W.removeEventListener('scroll', medir); };
   }, [medir]);
-  useEffect(() => { if (sig.current) sig.current.focus(); }, [i]);
-  // al cerrar, la tira del celular vuelve al principio (con el Inicio a la vista), como estaba
-  // ⚠️ la raíz se toma al abrir: al cerrar, React ya soltó la referencia
+  useEffect(() => { if (sig.current) sig.current.focus({ preventScroll: true }); }, [paso]);
   useEffect(() => {
-    const r = yo.current && yo.current.getRootNode();
-    return () => {
-      const t = r && r.querySelector ? r.querySelector('.tb-tira') : null;
-      if (t) t.scrollLeft = 0;
-    };
-  }, []);
-  useEffect(() => {
-    const k = (e) => { if (e.key === 'Escape') onCerrar('salto', i); };
+    const k = (e) => { if (e.key === 'Escape') onSaltar(); };
     W.addEventListener('keydown', k);
     return () => W.removeEventListener('keydown', k);
-  }, [i, onCerrar]);
-
-  const ultimo = i === PASOS.length;
-  // la caja va arriba de lo señalado si está en la mitad de abajo (la tira del celular) y abajo si no (el menú de arriba)
+  }, [onSaltar]);
   const vw = W.innerWidth || 360, vh = W.innerHeight || 640;
-  const ancho = Math.min(360, vw - 32);
-  let pos = { left: Math.round((vw - ancho) / 2), top: Math.round(vh * 0.18) };
+  const ancho = Math.min(380, vw - 32);
+  let pos = { left: Math.round((vw - ancho) / 2), top: Math.round(vh * 0.2) };
   if (caja) {
     const left = Math.round(Math.min(Math.max(16, caja.x + caja.w / 2 - ancho / 2), vw - ancho - 16));
-    pos = caja.y > vh / 2 ? { left, bottom: Math.round(vh - caja.y + 16) } : { left, top: Math.round(caja.y + caja.h + 16) };
-  }
-  let fin = null;
-  if (ultimo) {
-    fin = !dc ? <button type="button" className="btn verde chico" ref={sig} onClick={() => { onCerrar('fin'); accion.entrar(); }}>Entrar con Discord</button>
-      : !dc.rapero ? <a className="btn verde chico" ref={sig} href="#/cuenta/verificar" onClick={() => onCerrar('fin')}>Verificarme</a>
-        : <a className="btn verde chico" ref={sig} href="#/pase" onClick={() => onCerrar('fin')}>Ver mis Tareas</a>;
+    if (vh - (caja.y + caja.h) > 230) pos = { left, top: Math.round(caja.y + caja.h + 14) };
+    else if (caja.y > 230) pos = { left, bottom: Math.round(vh - caja.y + 14) };
+    else pos = { left, bottom: 16 };
   }
   return (
     <div className="rc" ref={yo}>
-      {/* lo de atrás no se toca mientras dura; el hueco lo hace la sombra del recuadro */}
       <div className="rc-tapa" />
       {caja ? <div className="rc-luz" style={{ left: caja.x - 6, top: caja.y - 6, width: caja.w + 12, height: caja.h + 12 }} />
         : <div className="rc-luz rc-todo" />}
       <div className="rc-caja" role="dialog" aria-modal="true" aria-labelledby="rc-h" style={Object.assign({ width: ancho }, pos)}>
-        {paso ? (
-          <>
-            <div className="rc-cab"><span className="tag">{paso.tag}</span><small>{i} de {PASOS.length}</small></div>
-            <h2 id="rc-h">{paso.h}</h2>
-            <p>{paso.p}</p>
-            {!caja ? <p className="rc-nota">Está en el menú{W.innerWidth < 900 ? ' de abajo' : ' de arriba'}.</p> : null}
-            <div className="rc-acc">
-              {ultimo ? fin : <button type="button" className="btn verde chico" ref={sig} onClick={() => setI((x) => Math.min(x + 1, PASOS.length))}>Siguiente</button>}
-              {ultimo ? <button type="button" className="btn borde2 chico" onClick={() => onCerrar('fin')}>Listo</button>
-                : <button type="button" className="btn borde2 chico" onClick={() => setI((x) => Math.max(x - 1, 0))}>Atrás</button>}
-              {!ultimo ? <button type="button" className="rc-saltar" onClick={() => onCerrar('salto', i)}>Saltar</button> : null}
-            </div>
-          </>
-        ) : (
-          <>
-            <div className="rc-cab"><span className="tag">BIENVENIDO</span></div>
-            <h2 id="rc-h">Esto es la Liga Global de Freestyle</h2>
-            <p>{c.personas && c.servidores ? <>{num(c.personas)} raperos de {num(c.servidores)} servidores de Discord compiten en un mismo ranking. </>
-              : <>Raperos de muchos servidores de Discord compiten en un mismo ranking. </>}Te muestro cómo funciona en cuatro pasos.
-              {/* 👉 en el celular, que sepa dónde está todo (17/10/2026: «enseñar que hay una barra abajo que se puede deslizar») */}
-              {(W.innerWidth || 0) < 900 ? <> Todo está en la <b>barra de abajo</b>, que se desliza de costado.</> : null}</p>
-            <div className="rc-acc">
-              <button type="button" className="btn verde chico" ref={sig} onClick={() => setI(1)}>Mostrame</button>
-              <button type="button" className="btn borde2 chico" onClick={() => onCerrar('salto', 0)}>Ahora no</button>
-            </div>
-          </>
-        )}
+        <div className="rc-cab"><span className="tag">{paso.k}</span><small>{n} de {de}</small></div>
+        <span className="rc-seg" aria-hidden="true">{Array.from({ length: de }, (_, j) => <i key={j} className={j < n ? 'si' : ''} />)}</span>
+        <h2 id="rc-h">{paso.h}</h2>
+        <p>{paso.p}</p>
+        <div className="rc-acc">
+          <button type="button" className="btn verde chico" ref={sig} onClick={onSig}>{ultimo ? txtUltimo : 'Siguiente'}</button>
+          {n > 1 ? <button type="button" className="btn borde2 chico" onClick={onAtras}>Atrás</button> : null}
+          <button type="button" className="rc-saltar" onClick={onSaltar}>Saltar</button>
+        </div>
       </div>
     </div>
   );
 }
 
-// ── C · la primera vez en cada página que el recorrido no mostró ──────────────────────────────────────────────
-// ⚠️ UN CONSEJO DE QUÉ HACER, NO QUÉ ES: lo que es ya lo dice el título de cada página (la Tienda, Socios), y repetirlo
-// arriba eran dos bloques diciendo lo mismo. La nota dice lo que no se ve a simple vista
+/** Una ventana al centro (elegir, y los finales) */
+function Centro({ children, onCerrar, et }) {
+  const yo = useRef(null);
+  useEffect(() => {
+    const k = (e) => { if (e.key === 'Escape') onCerrar(); };
+    W.addEventListener('keydown', k);
+    // el foco, en lo principal (no en la ✕ de arriba)
+    const b = yo.current && (yo.current.querySelector('.rc-acc .btn, .rc-op') || yo.current.querySelector('button, a'));
+    if (b) b.focus({ preventScroll: true });
+    return () => W.removeEventListener('keydown', k);
+  }, [onCerrar]);
+  return (
+    <div className="rc">
+      <div className="rc-luz rc-todo" />
+      <div className="rc-caja rc-centro" role="dialog" aria-modal="true" aria-labelledby="rc-h" ref={yo}>
+        <div className="rc-cab"><span className="tag">{et}</span>
+          <button type="button" className="btn-ico rc-x" aria-label="Cerrar" onClick={onCerrar}><Ico n="cerrar" t={18} /></button></div>
+        {children}
+      </div>
+    </div>
+  );
+}
+
+/** Los drops que esperan, con candado si no está vinculado */
+function Huevos({ n, cofre, lock }) {
+  return (
+    <span className="rc-huevos" aria-hidden="true">
+      {Array.from({ length: n }, (_, j) => <i key={j} className={(cofre ? 'cofre' : '') + (lock ? ' lock' : '')}>{lock ? <Ico n="candado" t={13} /> : null}</i>)}
+    </span>
+  );
+}
+
+/**
+ * El recorrido entero. `inicio`: 'elegir', 'corto' o 'cap:<id>'. Al terminar el corto o el último capítulo se avisa al
+ * objeto (`pedirNuevo`), que paga si esa persona tiene la pista de nuevos; la ventana del final dice lo que pasó de verdad
+ */
+function Recorrido({ liga, dc, inicio, onCerrar }) {
+  const [modo, setModo] = useState(null);   // 'elegir' | 'corto' | 'cap' | 'fin' | 'espera'
+  const [cap, setCap] = useState(null);
+  const [i, setI] = useState(0);
+  const [fin, setFin] = useState(null);     // { que: 'corto' | 'cap' | 'completo', premio: bool | null }
+  const raiz = useRef(null);
+  const c = liga.d.comunidad || {};
+  const deRaiz = () => (raiz.current ? raiz.current.getRootNode() : null);
+
+  const empezarCorto = useCallback(() => {
+    setModo('espera');
+    irYEsperar('#/', CORTO[0].sel, deRaiz, () => { setI(0); setModo('corto'); contar('tour'); });
+  }, []);
+  const empezarCap = useCallback((id) => {
+    const C = CAPITULOS.find((x) => x.id === id);
+    if (!C) { onCerrar('salto', 0); return; }
+    setModo('espera');
+    irYEsperar(C.ruta, C.pasos[0].sel, deRaiz, () => { setCap(C); setI(0); setModo('cap'); contar('cap_' + C.id); });
+  }, [onCerrar]);
+  useEffect(() => {
+    if (inicio === 'corto') empezarCorto();
+    else if (String(inicio).startsWith('cap:')) empezarCap(String(inicio).slice(4));
+    else setModo('elegir');
+  }, [inicio, empezarCorto, empezarCap]);
+
+  // ¿cobró? Se le pregunta al objeto (sólo con cuenta); sin cuenta, lo que dice este navegador
+  const cobrar = (que, id) => {
+    const ok = (D) => {
+      const P = D && D.pista;
+      if (!P) return false;
+      const m = P.dias.flatMap((x) => x.mis).find((x) => x.id === id);
+      return !!(m && m.ok);
+    };
+    setFin({ que, premio: dc ? null : (enSemanaNueva() ? 'espera' : false) });
+    setModo('fin');
+    if (dc) pedirNuevo(dc, true).then((D) => setFin({ que, premio: ok(D) }));
+  };
+  const terminarCorto = () => {
+    tutoPoner({ corto: 'fin', tour: 'fin' });
+    contar('tour_fin');
+    cobrar('corto', 'corto');
+  };
+  const terminarCap = () => {
+    const T = tuto() || {};
+    const caps = Object.assign({}, T.caps || {}, { [cap.id]: 1 });
+    const todos = CAPITULOS.every((x) => caps[x.id]);
+    tutoPoner(Object.assign({ caps }, todos ? { completo: 1 } : {}));
+    if (todos && !T.completo) { contar('completo'); cobrar('completo', 'completo'); return; }
+    setFin({ que: 'cap' }); setModo('fin');
+  };
+  const cerrar = (como) => onCerrar(como || 'salto', i + 1);
+
+  let dentro = null;
+  if (modo === 'elegir') {
+    dentro = (
+      <Centro et="BIENVENIDO" onCerrar={() => cerrar('salto')}>
+        <h2 id="rc-h">¿Cómo quieres conocer la Liga?</h2>
+        <p>{c.personas && c.servidores ? <>{num(c.personas)} raperos de {num(c.servidores)} servidores de Discord compiten en un mismo ranking. </> : null}
+          Te lo mostramos sobre la página de verdad.</p>
+        <div className="rc-ops">
+          <button type="button" className="rc-op" onClick={empezarCorto}>
+            <b>Rápido</b><span>Un minuto: cinco pasos acá en el Inicio.</span>
+            <small>{enSemanaNueva() ? 'Te llevas 3 Dragón Drops' : '5 pasos · 1 min'}</small></button>
+          <button type="button" className="rc-op" onClick={() => { cerrar('completo'); location.hash = '#/guia'; setTimeout(() => W.dispatchEvent(new Event('lg:aprende')), 300); }}>
+            <b>Completo</b><span>Nueve capítulos de un minuto, cada uno en su página.</span>
+            <small>{enSemanaNueva() ? 'Te llevas 1 cofre' : '9 capítulos'}</small></button>
+        </div>
+        {(W.innerWidth || 0) < 900 ? <p className="rc-nota">Todo está en la barra de abajo, que se desliza de costado.</p> : null}
+        <div className="rc-acc"><button type="button" className="rc-saltar" onClick={() => cerrar('salto')}>Ahora no</button></div>
+      </Centro>
+    );
+  } else if (modo === 'corto') {
+    const paso = CORTO[i];
+    dentro = <Foco paso={!dc && paso.pSin ? Object.assign({}, paso, { p: paso.pSin }) : paso} n={i + 1} de={CORTO.length} ultimo={i === CORTO.length - 1} txtUltimo="Terminar"
+      onSig={() => (i === CORTO.length - 1 ? terminarCorto() : setI(i + 1))} onAtras={() => setI(Math.max(0, i - 1))} onSaltar={() => cerrar('salto')} />;
+  } else if (modo === 'cap' && cap) {
+    dentro = <Foco paso={cap.pasos[i]} n={i + 1} de={cap.pasos.length} ultimo={i === cap.pasos.length - 1} txtUltimo="Terminar el capítulo"
+      onSig={() => (i === cap.pasos.length - 1 ? terminarCap() : setI(i + 1))} onAtras={() => setI(Math.max(0, i - 1))} onSaltar={() => cerrar('salto')} />;
+  } else if (modo === 'fin' && fin) {
+    const sinCuenta = fin.premio === 'espera';
+    const gano = fin.premio === true;
+    if (fin.que === 'cap') {
+      const T = tuto() || {};
+      const hechos = CAPITULOS.filter((x) => (T.caps || {})[x.id]).length;
+      const sigue = CAPITULOS.find((x) => !(T.caps || {})[x.id]);
+      dentro = (
+        <Centro et={'CAPÍTULO ' + (CAPITULOS.indexOf(cap) + 1) + ' DE ' + CAPITULOS.length} onCerrar={() => cerrar('fin')}>
+          <h2 id="rc-h">{cap.t}: listo</h2>
+          <p>Llevas {hechos} de {CAPITULOS.length}.{enSemanaNueva() ? ' Al terminar los nueve te llevas un cofre.' : ''}</p>
+          <span className="rc-barra" aria-hidden="true"><i style={{ width: (100 * hechos) / CAPITULOS.length + '%' }} /></span>
+          <div className="rc-acc">
+            {sigue ? <button type="button" className="btn verde chico" onClick={() => { setFin(null); empezarCap(sigue.id); }}>Siguiente: {sigue.t}</button> : null}
+            <a className="btn borde2 chico" href="#/guia" onClick={() => { cerrar('fin'); setTimeout(() => W.dispatchEvent(new Event('lg:aprende')), 300); }}>Los capítulos</a>
+          </div>
+        </Centro>
+      );
+    } else {
+      const corto = fin.que === 'corto';
+      dentro = (
+        <Centro et={corto ? 'TUTORIAL CORTO · ' + CORTO.length + ' DE ' + CORTO.length : 'TUTORIAL COMPLETO'} onCerrar={() => cerrar('fin')}>
+          <h2 id="rc-h">{corto ? 'Ya conoces la Liga' : 'Terminaste el tutorial completo'}</h2>
+          {fin.premio === null ? <p>Un momento…</p>
+            : gano ? <><p>Te ganaste {corto ? <b>3 Dragón Drops</b> : <b>un cofre</b>}: ábrelos cuando quieras.</p><Huevos n={corto ? 3 : 1} cofre={!corto} /></>
+              : sinCuenta ? <><p>Te ganaste {corto ? <b>3 Dragón Drops</b> : <b>un cofre</b>}. Te esperan en cuanto vincules tu cuenta de Discord: es gratis y tarda diez segundos.</p>
+                <Huevos n={corto ? 3 : 1} cofre={!corto} lock /></>
+                : <p>{corto ? 'Ya sabes dónde está cada cosa.' : 'Ya pasaste por todas las páginas de la Liga.'} Lo que sigue: entra a un evento o sube el Pase con Tareas.</p>}
+          <div className="rc-acc">
+            {gano ? <button type="button" className="btn verde chico" onClick={() => { cerrar('fin'); W.dispatchEvent(new Event('lg:abrir-drops')); }}>{corto ? 'Abrirlos' : 'Abrir el cofre'}</button>
+              : sinCuenta ? <button type="button" className="btn chico rc-dc" onClick={() => { cerrar('fin'); accion.entrar(); }}>Vincular con Discord y recibirlos</button>
+                : <button type="button" className="btn verde chico" onClick={() => cerrar('fin')}>Listo</button>}
+          </div>
+          {corto ? (
+            <p className="rc-mas">¿Quieres más? El <b>tutorial completo</b> son nueve capítulos de un minuto{enSemanaNueva() ? <> y da <b>1 cofre</b> al terminarlo</> : null}.{' '}
+              <a href="#/guia" onClick={() => { cerrar('fin'); setTimeout(() => W.dispatchEvent(new Event('lg:aprende')), 300); }}>Ver los capítulos</a></p>
+          ) : null}
+        </Centro>
+      );
+    }
+  }
+  return <span ref={raiz} className="rc-raiz">{dentro}</span>;
+}
+
+// ── C · la primera vez en cada página que no tiene capítulo ───────────────────────────────────────────────────
+// ⚠️ UN CONSEJO DE QUÉ HACER, NO QUÉ ES. Las páginas con capítulo (capitulos.js) llevan su «¿Cómo funciona?» en vez de esto
 const NOTAS = {
-  publicaciones: 'Toca 👏 en un logro para felicitar: a quien felicitas le llega el aviso, y se ve cuántos, nunca quiénes.',
-  tienda: 'Ponle precio a la cabeza de alguien con tus Puntos de Tienda: el primero que le gane en un evento se los lleva. Si nadie lo caza en la semana, vuelven a ti.',
   socios: '¿Tu servidor no está? Escríbele a @itsdlx en Discord.',
   r: 'Con «Seguir» te avisa cuando gana algo, y con el botón de compartir mandas su perfil.',
   llave: 'Si se está jugando, se actualiza sola: déjala abierta y mira quién pasa.',
   sv: 'En Eventos, en «Cuándo suele jugar», puedes seguir a sus organizadores: te avisa cuando anuncian.',
-  crew: 'Una crew suma los puntos de su gente; para tener puesto necesita tres raperos en la temporada.',
   pais: 'Los raperos de un país en la temporada, y cómo le va al país en el ranking mundial.',
 };
 
@@ -163,12 +288,13 @@ const FRANJA = {
 const SIN_FRANJA = { cuenta: 1, ajustes: 1, dashboard: 1, cambios: 1, guia: 1 };
 
 /**
- * Lo del tutorial que vive en toda la página: el recorrido (solo la primera vez por el Inicio, o pedido desde la Guía),
- * la franja de quien llegó por un link y la nota de cada página. Va arriba del contenido, debajo de la cabecera.
+ * Lo del tutorial que vive en toda la página: el recorrido (solo la primera vez por el Inicio, o pedido), la franja de
+ * quien llegó por un link y la nota de cada página. Va arriba del contenido, debajo de la cabecera. `pedido`:
+ * `{n, que}` de App.jsx (cada pedido, un número nuevo)
  */
-export function Tutorial({ liga, dc, pagina, sv, repite }) {
+export function Tutorial({ liga, dc, pagina, sv, pedido }) {
   const T = tuto();
-  const [abierto, setAbierto] = useState(false);
+  const [abierto, setAbierto] = useState(null);
   const [franja, setFranja] = useState(() => !!(PRIMERA_VISITA && T && !T.tour && T.franja !== 'no' && LLEGADA
     && !SIN_FRANJA[LLEGADA]));
   const clave = sv ? 'sv' : pagina;
@@ -179,8 +305,7 @@ export function Tutorial({ liga, dc, pagina, sv, repite }) {
   // B · solo, una vez: la primera visita, entrando por el Inicio, después de que se vea la página
   useEffect(() => {
     if (!T || !T.nuevo || T.tour || !PRIMERA_VISITA || LLEGADA !== '') return undefined;
-    // ⏳ y no ENCIMA de una historia o una tarjeta abierta (18/10/2026, medido en un iPhone simulado: quien tocaba una
-    // historia apenas entraba la veía tapada por la bienvenida): espera a que la cierre
+    // ⏳ y no ENCIMA de una historia o una tarjeta abierta (18/10/2026): espera a que la cierre
     const hayVentana = () => {
       try { return !!document.getElementById('inicio-nuevo').shadowRoot.querySelector('.hv-ov, .vc, [aria-modal="true"]'); } catch (e) { return false; }
     };
@@ -188,34 +313,34 @@ export function Tutorial({ liga, dc, pagina, sv, repite }) {
     const probar = () => {
       if (!enInicio.current || tuto().tour) return;
       if (hayVentana()) { t = setTimeout(probar, 1500); return; }
-      setAbierto(true); contar('tour');
+      setAbierto({ que: 'elegir', n: 0 });
     };
     t = setTimeout(probar, 1200);
     return () => clearTimeout(t);
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-  // y desde la Guía, las veces que se quiera
+  // y pedido (la Guía, el «¿Cómo funciona?» de cada página, la pista de nuevos), las veces que se quiera
   useEffect(() => {
-    if (!repite) return;
-    setFranja(false); setAbierto(true); contar('repite');
-  }, [repite]);
+    if (!pedido || !pedido.n) return;
+    setFranja(false); setAbierto({ que: pedido.que || 'elegir', n: pedido.n }); contar('repite');
+  }, [pedido]);
   useEffect(() => { if (franja) contar('franja'); }, [franja]);
   // C · la nota, una vez por página: no mientras esté la franja (una sola invitación arriba) ni con el recorrido abierto
   useEffect(() => {
     const t = tuto();
-    if (!t || !reciente() || !NOTAS[clave] || (t.notas || {})[clave] || franja) { setNota(null); return; }
+    if (!t || !reciente() || !NOTAS[clave] || capituloDe(clave) || (t.notas || {})[clave] || franja) { setNota(null); return; }
     setNota(clave);
     tutoPoner({ notas: Object.assign({}, t.notas || {}, { [clave]: 1 }) });
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [clave]);
 
   const cerrar = useCallback((como, n) => {
-    setAbierto(false);
+    setAbierto(null);
     const t = tuto();
-    if (t && t.tour !== 'fin') tutoPoner({ tour: como });
-    contar(como === 'fin' ? 'tour_fin' : 'salta' + (n || 0));
+    if (t && !t.tour) tutoPoner({ tour: como === 'fin' ? 'fin' : 'salto' });
+    if (como === 'salto') contar('salta' + Math.min(4, n || 0));
   }, []);
-  const verFranja = () => { setFranja(false); tutoPoner({ franja: 'no' }); contar('franja_si'); setAbierto(true); };
+  const verFranja = () => { setFranja(false); tutoPoner({ franja: 'no' }); contar('franja_si'); setAbierto({ que: 'elegir', n: -1 }); };
   const cerrarFranja = () => { setFranja(false); tutoPoner({ franja: 'no' }); };
 
   return (
@@ -234,8 +359,50 @@ export function Tutorial({ liga, dc, pagina, sv, repite }) {
           <button type="button" className="btn-ico rc-x" aria-label="Entendido" onClick={() => setNota(null)}><Ico n="cerrar" t={18} /></button>
         </div>
       ) : null}
-      {abierto ? <Recorrido liga={liga} dc={dc} onCerrar={cerrar} /> : null}
+      {abierto ? <Recorrido key={abierto.n} liga={liga} dc={dc} inicio={abierto.que} onCerrar={cerrar} /> : null}
     </>
+  );
+}
+
+// ── el completo, en la Guía ───────────────────────────────────────────────────────────────────────────────────
+/** «Aprende la Liga»: los nueve capítulos, con dónde quedaste */
+export function Capitulos() {
+  const [, setN] = useState(0);
+  const yo = useRef(null);
+  useEffect(() => {
+    const ir = () => { if (yo.current) yo.current.scrollIntoView({ block: 'start', behavior: 'smooth' }); };
+    W.addEventListener('lg:aprende', ir);
+    const vuelve = () => setN((n) => n + 1);
+    W.addEventListener('focus', vuelve);
+    return () => { W.removeEventListener('lg:aprende', ir); W.removeEventListener('focus', vuelve); };
+  }, []);
+  const T = tuto() || {};
+  const caps = T.caps || {};
+  const hechos = CAPITULOS.filter((c) => caps[c.id]).length;
+  const sigue = CAPITULOS.find((c) => !caps[c.id]);
+  return (
+    <div className="ap" ref={yo} id="aprende">
+      <div className="ap-cab">
+        <p>Nueve capítulos de un minuto. Cada uno te lleva a su página y te muestra lo que hay. Se guarda dónde quedaste.
+          {enSemanaNueva() && !T.completo ? <> Al terminar los nueve te llevas <b>{txtPremio(['cofre'])}</b>.</> : null}</p>
+        <span className="ap-av"><b>{hechos} de {CAPITULOS.length}</b><span className="rc-barra" aria-hidden="true"><i style={{ width: (100 * hechos) / CAPITULOS.length + '%' }} /></span></span>
+        <button type="button" className="ap-corto" onClick={() => pedirRecorrido('corto')}>¿Apurado? El corto · 1 min</button>
+      </div>
+      <ol className="ap-l">
+        {CAPITULOS.map((c, j) => {
+          const ok = !!caps[c.id], ahora = sigue && sigue.id === c.id;
+          return (
+            <li key={c.id}>
+              <button type="button" className={'ap-cap' + (ok ? ' hecho' : '') + (ahora ? ' sigue' : '')} onClick={() => pedirRecorrido('cap:' + c.id)}>
+                <span className="ap-n">{j + 1}</span>
+                <span className="ap-tx"><b>{c.t}</b><small>{c.d}</small>
+                  <em>{ok ? <><Ico n="ok" t={13} /> Hecho</> : ahora ? 'Sigue acá' : 'Sin ver'} · {c.pasos.length} pasos · 1 min</em></span>
+              </button>
+            </li>
+          );
+        })}
+      </ol>
+    </div>
   );
 }
 
@@ -298,7 +465,7 @@ export function PrimerosPasos({ liga, dc, enGuia }) {
         ))}
       </ol>
       <p className="pp-pie">¿Y jugar? Cuando quieras: con una participación ya estás en el ranking. <a href="#/eventos">Ver los eventos</a>
-        {enGuia ? <> · <button type="button" className="pp-rec" onClick={pedirRecorrido}>Ver el recorrido otra vez</button></> : null}</p>
+        {enGuia ? <> · <button type="button" className="pp-rec" onClick={() => pedirRecorrido('corto')}>Ver el tutorial corto</button></> : null}</p>
     </Raiz>
   );
 }

@@ -3796,6 +3796,74 @@ const ok = (cond, que, det) => {
   }
 }
 
+// 🐣 LAS MISIONES PARA NUEVOS Y LAS REDES (13/11/2026): sobre el objeto de verdad
+{
+  console.log('\n🐣 misiones para nuevos');
+  let DatabaseSync = null;
+  try { ({ DatabaseSync } = await import('node:sqlite')); } catch (e) { DatabaseSync = null; }
+  if (!DatabaseSync) {
+    console.log('  ⓘ sin node:sqlite: la pista no se prueba sobre el objeto');
+  } else {
+    const db = new DatabaseSync(':memory:');
+    const sql = {
+      exec(q, ...ps) {
+        const t = String(q).trim();
+        if (!ps.length && /;\s*\S/.test(t)) { db.exec(t); return { toArray: () => [] }; }
+        const st = db.prepare(t);
+        if (/^\s*(SELECT|WITH|PRAGMA)/i.test(t)) { const rows = st.all(...ps); return { toArray: () => rows }; }
+        const r = st.run(...ps);
+        return { toArray: () => [], rowsWritten: r.changes };
+      },
+    };
+    const o = new A.Avisos({ storage: { sql, setAlarm() {}, getAlarm() { return null; }, transactionSync: (f) => f() },
+      blockConcurrencyWhile: async (f) => f() }, { DISCORD_TOKEN: 'x', KV: { get: async () => null } });
+    await new Promise((r) => setTimeout(r, 5));
+    o.paseDatos = () => ({ cfg: null, miembros: new Set(), sem: [] });
+    const N = '300000000000000031', V = '300000000000000032';
+    const ahora = Date.now();
+    // quien ya venía no recibe la pista aunque su navegador diga que es nuevo
+    o.sql.exec("INSERT INTO xp_log (quien, que, ref, t) VALUES (?, 'fel', 'x', ?)", V, ahora - 10 * 86400000);
+    const viejo = o.nuevoDe({ quien: V, nuevo: true, desde: ahora });
+    ok(viejo.ok && viejo.pista === null, 'quien ya venía no recibe la pista', JSON.stringify(viejo));
+    const sinPedir = o.nuevoDe({ quien: N, nuevo: false });
+    ok(sinPedir.pista === null && !o.sql.exec('SELECT 1 AS x FROM nuevo WHERE quien = ?', N).toArray()[0],
+      'sin que el navegador diga que es nuevo, no arranca');
+    // día 1: el tutorial corto, entrar (siempre) y la campana
+    let r = o.nuevoDe({ quien: N, nuevo: true, desde: ahora, hechos: ['corto', 'red:instagram', 'red:nada', 'trampa'] });
+    const d1 = r.pista && r.pista.dias[0];
+    ok(r.pista && r.pista.dia === 1 && d1.abierto && !r.pista.dias[1].abierto && d1.mis.find((m) => m.id === 'corto').ok
+      && d1.mis.find((m) => m.id === 'entrar').ok && !d1.mis.find((m) => m.id === 'campana').ok,
+      'el día 1 abre, el 2 no; el corto y entrar cuentan, la campana todavía no', JSON.stringify(r.pista && r.pista.dias[0]));
+    ok(r.redes.length === 1 && r.redes[0] === 'instagram', 'las redes: una válida da su Star Dragon y lo inventado no', JSON.stringify(r.redes));
+    const drops = () => o.dropsDe(N).cerrados;
+    ok(drops().filter((c) => /^nuevo:m:corto:/.test(c.origen)).length === 3, 'el tutorial corto da 3 Dragón Drops');
+    const star = drops().find((c) => c.origen === 'star:red:instagram');
+    ok(star && star.min === A.STAR_MIN, 'el Star Dragon sale de Vinilo para arriba', JSON.stringify(star));
+    const pdt = (k) => (o.sql.exec('SELECT monto FROM tienda WHERE id = ?', 'nuevo:' + N + ':' + k).toArray()[0] || {}).monto || 0;
+    ok(pdt('m:entrar') === 500 && pdt('m:campana') === 0, 'entrar paga sus Puntos y la campana todavía no');
+    r = o.nuevoDe({ quien: N, hechos: ['corto', 'red:instagram'] });
+    ok(drops().filter((c) => /^nuevo:m:corto:/.test(c.origen)).length === 3 && o.dropsDe(N).cerrados.filter((c) => /^star:/.test(c.origen)).length === 1,
+      'pedirla otra vez no paga dos veces');
+    // la campana completa el día 1: su título
+    o.sql.exec("INSERT INTO subs (endpoint, p256dh, auth, alta, visto, quien) VALUES ('https://x', 'p', 'a', 1, 1, ?)", N);
+    r = o.nuevoDe({ quien: N });
+    ok(r.pista.dias[0].hecho && o.titulosNuevo(N).includes('Recién llegado') && pdt('m:campana') === 200,
+      'con la campana el día 1 queda hecho y da su título', JSON.stringify(o.titulosNuevo(N)));
+    // un día después se abre el 2: verificado y una red ya seguida cuentan solos
+    o.sql.exec('UPDATE nuevo SET desde = ? WHERE quien = ?', ahora - 86400000 - 1000, N);
+    r = o.nuevoDe({ quien: N, v: true });
+    const d2 = r.pista.dias[1];
+    ok(r.pista.dia === 2 && d2.abierto && d2.mis.find((m) => m.id === 'verif').ok && d2.mis.find((m) => m.id === 'redes').ok
+      && !d2.mis.find((m) => m.id === 'perfil').ok && !r.pista.dias[2].abierto, 'el día 2: la verificación y la red cuentan solas', JSON.stringify(d2));
+    // pasada la semana, no paga nada más
+    o.sql.exec('UPDATE nuevo SET desde = ? WHERE quien = ?', ahora - 9 * 86400000, N);
+    const antes = o.sql.exec('SELECT COUNT(*) AS n FROM tienda').toArray()[0].n;
+    r = o.nuevoDe({ quien: N, v: true });
+    ok(r.pista.fin && o.sql.exec('SELECT COUNT(*) AS n FROM tienda').toArray()[0].n === antes, 'pasados los siete días, ya no paga');
+    ok(A.NUEVO_PISTA.length === 7 && A.NUEVO_PISTA[6][1][0] === 'caja', 'son siete días y el último da la Caja del Nuevo');
+  }
+}
+
 if (fallas) {
   console.log(`\n❌ ${fallas} prueba(s) fallaron`);
   process.exit(1);

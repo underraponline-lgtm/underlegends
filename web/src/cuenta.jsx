@@ -1322,7 +1322,7 @@ export function Cuenta({ liga, dc, parte, tema, onTema, temaSv, onTemaSv }) {
   }, []);
   const abierta = actual || (ancha ? todas[0] : null);
   const lista = (
-    <nav className="cu-nav" aria-label="Tu cuenta">
+    <nav data-tuto="cu-nav" className="cu-nav" aria-label="Tu cuenta">
       {gs.map(([t, xs]) => (
         <div className="cu-g" key={t}><span className="cu-gt">{t}</span>
           <ul>{xs.map(([id, ico, n, v]) => (
@@ -1350,7 +1350,7 @@ export function Cuenta({ liga, dc, parte, tema, onTema, temaSv, onTemaSv }) {
           {lista}
         </aside>
         {abierta ? (
-          <section className="cu-parte" aria-label={abierta[2]}>
+          <section data-tuto="cu-parte" className="cu-parte" aria-label={abierta[2]}>
             <a className="cu-volver" href="#/cuenta"><Chevron />Tu cuenta</a>
             <h2 className="cu-pt"><Ico n={abierta[1]} t={24} />{abierta[2]}</h2>
             <Parte id={abierta[0]} liga={liga} dc={dc} tema={tema} onTema={onTema} temaSv={temaSv} onTemaSv={onTemaSv} />

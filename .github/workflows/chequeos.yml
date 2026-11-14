@@ -146,7 +146,7 @@ jobs:
                    herramientas/quien_puede_card.py herramientas/roles_de_rango.py herramientas/dra_hub.py herramientas/sombras.py \
                    herramientas/simular_score.py herramientas/unir_sellos.py herramientas/sin_dm.py \
                    herramientas/sincronizar_puesto.py herramientas/uso.py herramientas/espacio.py herramientas/emojis_vs.py herramientas/que_pide_cada_carta.py \
-                   herramientas/banners_eventos.py herramientas/dra_remake.py; do
+                   herramientas/banners_eventos.py herramientas/dra_remake.py herramientas/tuto_marcas.py; do
             echo "::group::$f"
             if ! python "$f" --auto; then
               echo "::error::$f falló su self-check"

@@ -71,7 +71,7 @@ function Grupo({ n, items, on, pagina }) {
   useEffect(() => () => clearTimeout(t.current), []);
   const id = 'grp-' + norm(n).replace(/[^a-z]/g, '');
   return (
-    <div className={'grp' + (abierto ? ' abierto' : '')} ref={caja} onPointerEnter={entra} onPointerLeave={sale}>
+    <div className={'grp' + (abierto ? ' abierto' : '')} data-tuto={'menu-' + norm(n).replace(/[^a-z]/g, '')} ref={caja} onPointerEnter={entra} onPointerLeave={sale}>
       <button type="button" className={'grp-b' + (on ? ' on' : '')} aria-expanded={abierto} aria-controls={id} onClick={() => setAbierto((v) => !v)}>
         {n}<Chevron /></button>
       {abierto ? (
@@ -453,7 +453,7 @@ export function Cabecera({ liga, dc, onMenu, pagina = '' }) {
             los ajustes están en Tu cuenta, que abre tu cara arriba y «Tu cuenta» abajo en el celular, y en el ☰ */}
         {cara ? (
           <span className="yo-envol">
-            <button type="button" className="yo-chip" aria-haspopup="menu" aria-expanded={yoM} onClick={() => setYoM((v) => !v)}
+            <button type="button" className="yo-chip" data-tuto="cuenta" aria-haspopup="menu" aria-expanded={yoM} onClick={() => setYoM((v) => !v)}
               aria-label={'Lo tuyo: inventario, perfil y cuenta' + (fuego ? ' · ' + fuego + (fuego === 1 ? ' día seguido' : ' días seguidos') : '')}>
               {cara}<span>{nombre}</span>
               {nv ? <span className="yo-nv" title={'Nivel ' + nv.n + ' · ' + num(nv.sig - nv.xp) + ' XP para el ' + (nv.n + 1)} aria-hidden="true">
@@ -464,7 +464,7 @@ export function Cabecera({ liga, dc, onMenu, pagina = '' }) {
             {yoM ? <YoMenu k={yo ? yo.k : (dc && dc.clave) || ''} dc={dc} nombre={nombre} cara={cara} onCerrar={() => setYoM(false)} /> : null}
           </span>
         ) : (
-          <button type="button" className="btn verde chico entrar" onClick={accion.entrar}>Entrar</button>
+          <button type="button" className="btn verde chico entrar" data-tuto="cuenta" onClick={accion.entrar}>Entrar</button>
         )}
         <button className="btn-ico hamb" type="button" aria-label="Menú" onClick={onMenu}><Ico n="menu" t={22} /></button>
       </div>
@@ -530,7 +530,7 @@ function Campanita({ liga }) {
   };
   return (
     <div className="nt" ref={caja}>
-      <button type="button" className={'btn-ico nt-b' + (abierta ? ' on' : '')} aria-expanded={abierta}
+      <button type="button" className={'btn-ico nt-b' + (abierta ? ' on' : '')} data-tuto="campana" aria-expanded={abierta}
         aria-label={'Notificaciones' + (B.nuevas ? ', ' + B.nuevas + (B.nuevas === 1 ? ' nueva' : ' nuevas') : '')} onClick={abrir}>
         <Ico n="campana" t={20} />{B.nuevas ? <span className="nt-n">{B.nuevas > 9 ? '9+' : B.nuevas}</span> : null}
       </button>
@@ -1276,7 +1276,7 @@ export function Historias({ liga, grupos, vistos, onAbrir }) {
   if (!partes.length) return null;
   return (
     <div className={'h-tira' + (tira.lados[0] ? ' hay-izq' : '') + (tira.lados[1] ? ' hay-der' : '')}>
-      <nav className="historias" ref={tira.ref} aria-label="Historias: en vivo, servidores, tu país, tu crew y a quién sigues" {...tira.handlers}>{partes}</nav>
+      <nav className="historias" data-tuto="historias" ref={tira.ref} aria-label="Historias: en vivo, servidores, tu país, tu crew y a quién sigues" {...tira.handlers}>{partes}</nav>
       {tira.lados[0] ? <button type="button" className="h-fl izq" aria-label="Ver los anteriores" onClick={() => tira.mover(-1)}><Chevron /></button> : null}
       {tira.lados[1] ? <button type="button" className="h-fl der" aria-label="Ver más" onClick={() => tira.mover(1)}><Chevron /></button> : null}
     </div>
@@ -1959,9 +1959,9 @@ export function Hero({ liga, vivoL, children }) {
     window.addEventListener('lg:video-abierto', f);
     return () => window.removeEventListener('lg:video-abierto', f);
   }, []);
-  if (!n) return children ? <div className="escena hero-ini" style={fondoDe(liga, null)}>{children}</div> : null;
+  if (!n) return children ? <div className="escena hero-ini" data-tuto="hoy" style={fondoDe(liga, null)}>{children}</div> : null;
   return (
-    <div className="escena hero-ini" style={fondoDe(liga, mo[j])}>
+    <div className="escena hero-ini" data-tuto="hoy" style={fondoDe(liga, mo[j])}>
       <section className="hero carrusel" id="envivo" aria-roledescription="carrusel" aria-label="Lo de ahora"
         onPointerDown={(e) => { x0.current = e.clientX; quieto.current = true; }}
         onPointerLeave={() => { x0.current = null; quieto.current = false; }}

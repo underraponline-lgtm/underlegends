@@ -203,7 +203,7 @@ function Cabezas({ liga, dc }) {
   const cazas = (T.cazas || []).slice().reverse();
   const nombre = (x) => limpio((liga.fila(x) || {}).n || x);
   return (
-    <section className="sec tn-sec" id="tn-cabeza" aria-labelledby="tn-cab-t">
+    <section data-tuto="tn-precio" className="sec tn-sec" id="tn-cabeza" aria-labelledby="tn-cab-t">
       <div className="sec-t"><h2 id="tn-cab-t">Precio por cabeza</h2>
         <span className="tn-cierra">{falta(liga, T.fin) ? 'CIERRA EN ' + falta(liga, T.fin) : 'CERRADA'}<small>{liga.dia(T.fin)}</small></span></div>
       <ol className="tn-pasos">
@@ -321,7 +321,7 @@ function SeGanan({ liga }) {
     ['nuevo', 'Tus primeros 7 días', ['', '7 pasos'], <>Si llegaste hace poco, cada paso de tu primera semana (seguir a alguien, activar la campana, verificarte…) tiene premio.</>, '#/'],
   ].filter(Boolean);
   return (
-    <section className="sec tn-sec" aria-labelledby="tn-gan">
+    <section data-tuto="tn-gana" className="sec tn-sec" aria-labelledby="tn-gan">
       <div className="sec-t"><h2 id="tn-gan">Cómo se ganan</h2></div>
       <p className="tn-nota">Todos arrancan la temporada con <b>{num(T.inicial)}</b>. Van aparte del ranking: no suman a tu OVR ni a tu Score.</p>
       <ul className="tn-gana">
@@ -388,7 +388,7 @@ export function Tienda({ liga, dc }) {
   }
   return (
     <>
-      <div className="escena tn-esc" style={{ '--mo-c': '#E41373', '--mo-o': 0.9, '--mo-c2': '#29B298' }}>
+      <div data-tuto="tn-cab" className="escena tn-esc" style={{ '--mo-c': '#E41373', '--mo-o': 0.9, '--mo-c2': '#29B298' }}>
         <section className="tn-cab">
           <div className="tn-cab-tx">
             <span className="tag">LA TIENDA · {liga.temp}</span>

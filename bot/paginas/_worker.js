@@ -108,6 +108,8 @@ const AVISOS = {
   // 🐉 los Dragón Drops (12/11/2026): los tuyos y la barra del día, y abrir uno. Ver `dropsDe()` y `dropAbrir()` en bot/avisos.js
   '/api/avisos/drops': 'POST',
   '/api/avisos/drop-abrir': 'POST',
+  // 🐣 las misiones para nuevos y las redes que seguiste (13/11/2026). Ver `nuevoDe()` en bot/avisos.js
+  '/api/avisos/nuevo': 'POST',
   // 📖 las historias que viste, en tu cuenta (18/10/2026)
   '/api/avisos/historias': 'POST',
   '/api/avisos/panel-socio': 'POST',

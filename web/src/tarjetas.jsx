@@ -565,7 +565,7 @@ function Comparar({ liga, porTipo, perf, cmp, setCmp, yoK }) {
   const tipos = ORDEN.filter((c) => (porTipo[c] || []).length >= 2);
   const quien = (f) => (f.k === yoK ? 'Tú' : limpio(f.n));
   return (
-    <section className="ta-cmp" id="tj-cmp">
+    <section data-tuto="tj-cmp" className="ta-cmp" id="tj-cmp">
       <div className="ta-est-t">
         <h2>Comparar <small>{NOMBRE[t]}</small></h2>
         <button type="button" className="rk-lnk" onClick={() => setElige(!elige)} aria-expanded={elige}>{elige ? 'Listo' : 'Elegir otros'}</button>
@@ -660,11 +660,11 @@ export function Tarjetas({ liga, dc, tipo, q = '' }) {
   }
   return (
     <div className="ta-g">
-      <aside className="ta-izq">
+      <aside className="ta-izq" data-tuto="tj-album">
         <Album liga={liga} dc={dc} perf={perf} onAbrir={abrirMia} />
         <div className="sec ta-cmp-w"><Comparar liga={liga} porTipo={porTipo} perf={perf} cmp={cmp} setCmp={setCmp} yoK={yoK} /></div>
       </aside>
-      <div className="sec ta-der">
+      <div className="sec ta-der" data-tuto="tj-gal">
         {ORDEN.map((c) => <Estante key={c} liga={liga} t={c} lista={porTipo[c]} nuevas={nuevas[c]} onAbrir={abrir} />)}
       </div>
       {hoja}

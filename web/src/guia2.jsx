@@ -26,6 +26,8 @@ import { usarCss } from './css.js';
 usarCss('guia2', CSS_PAGINA);
 
 const PrimerosPasos = lazy(() => import('./tutorial.jsx').then((m) => ({ default: m.PrimerosPasos })));
+// 📖 el tutorial completo (13/11/2026, Dlx: «el completo en la guía tmb»): los nueve capítulos
+const Capitulos = lazy(() => import('./tutorial.jsx').then((m) => ({ default: m.Capitulos })));
 
 // la cifra de cada cosa de la semana y cuándo pasa (lo mismo que dice su texto). Sin cifra donde no hay un número que
 // diga algo: «Para siempre» en las Insignias y «📣» en Con tiempo repetían el título (crítica del 02/11/2026)
@@ -215,7 +217,7 @@ function Regla({ rangos }) {
 }
 
 const SECCIONES = (reqs, P, rangos) => [
-  ['empezar', 'Cómo empezar'], reqs.length ? ['tarjetas', 'Tus tarjetas'] : null, ['tags', 'Los TAG'],
+  ['aprende', 'Aprende la Liga'], ['empezar', 'Cómo empezar'], reqs.length ? ['tarjetas', 'Tus tarjetas'] : null, ['tags', 'Los TAG'],
   P.tablas ? ['puntos', 'Puntos por puesto'] : null, rangos.length ? ['rangos', 'Rangos, OVR y Score'] : null,
   ['mw', 'Most Wanted y Tienda'], ['semana', 'Lo de cada semana'], ['palabras', 'Las palabras'], ['preguntas', 'Preguntas'],
 ].filter(Boolean);
@@ -331,6 +333,10 @@ export function Guia({ liga, dc }) {
               ) : <p className="gx-nota">Prueba con otra palabra, o mira las <button type="button" className="gx-link" onClick={() => { setQ(''); ir('gx-preguntas'); }}>preguntas frecuentes</button>.</p>}
             </section>
           ) : null}
+
+          <Seccion id="aprende" titulo="Aprende la Liga">
+            <Suspense fallback={null}><Capitulos /></Suspense>
+          </Seccion>
 
           <Seccion id="empezar" titulo="Cómo empezar" bajada="Cinco pasos, y ninguno pide jugar: se tildan solos a medida que los haces.">
             <Suspense fallback={null}><PrimerosPasos liga={liga} dc={dc} enGuia /></Suspense>

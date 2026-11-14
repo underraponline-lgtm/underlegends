@@ -83,7 +83,7 @@ export function CrewsPagina({ liga, dc, qs }) {
   const fundar = () => { setAbierto(true); setTimeout(() => irA('crw-tu'), 30); };
   return (
     <>
-      <div className="escena pub-esc crw-esc" style={{ '--mo-c': '#E41373', '--mo-o': 0.85 }}>
+      <div data-tuto="crw-cab" className="escena pub-esc crw-esc" style={{ '--mo-c': '#E41373', '--mo-o': 0.85 }}>
         <section className="pub-cab crw-cab">
           <span className="tag">CREWS · {liga.temp}</span>
           <h1 className="hero-ev largo">Crews</h1>
@@ -133,7 +133,7 @@ export function CrewsPagina({ liga, dc, qs }) {
             </section>
           ) : null}
           <SemanaCrews xs={xs} T={T} />
-          <h2 className="crw-h2 crw-todas-h" id="crw-todas">Todas las crews</h2>
+          <h2 data-tuto="crw-todas" className="crw-h2 crw-todas-h" id="crw-todas">Todas las crews</h2>
           <div className="crw-busca">
             <input type="search" className="cw-busca" value={q} onChange={(e) => setQ(e.target.value)} placeholder="Busca una crew por nombre o sigla"
               aria-label="Buscar una crew" enterKeyHint="search" />
@@ -363,7 +363,7 @@ function Tiers({ T, xs }) {
   if (!T) return null;
   const cuenta = T.nombres.map((_, i) => xs.filter((x) => x.tier === i).length);
   return (
-    <section className="pub-bloque crw-bloque" aria-labelledby="crw-tiers">
+    <section data-tuto="crw-tiers" className="pub-bloque crw-bloque" aria-labelledby="crw-tiers">
       <h2 className="evp-h2" id="crw-tiers">Los tiers</h2>
       <ol className="crw-escalera">{T.nombres.map((n, i) => i).reverse().map((i) => (
         <li key={i}>

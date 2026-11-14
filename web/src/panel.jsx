@@ -28,6 +28,7 @@ import { ERR_LIBRE, LB, libreAccion, useLibres } from './libres.js';
 import { svElegido, useElegidos } from './elegidos.js';
 import { pedirLigas } from './ligas_datos.js';
 import { BarraDia } from './drops.jsx';
+import { RedesLista, faltanRedes } from './nuevos.jsx';
 import { Elegido, Opinion, X2 } from './encuestas.jsx';
 import { PopCab } from './pop.jsx';
 import { delHilo, useComentarios } from './comentarios.jsx';
@@ -184,25 +185,30 @@ function PremioGratis({ liga, enc, dc }) {
     );
   }
   const S = encuestasDeLaSemana(liga, enc);
-  if (!S.faltan.length) return null;
+  // ⭐ y las redes de la Liga, un Star Dragon cada una (13/11/2026, Dlx: «otras opciones para aquellos q no nos han
+  // seguido en nuestras redes sociales»): mientras falte alguna, el Premio gratis sigue
+  const fr = faltanRedes(liga, dc);
+  if (!S.faltan.length && !fr) return null;
   const { x2, el, pg, cofre, faltan } = S;
   const x = x2 ? String(x2.x || 2).replace('.', ',') : '';
   const sinCofre = cofre.filter((E) => faltan.includes(E));
-  const tit = faltan[0] === x2 ? 'Vota quién se lleva el ×' + x : faltan[0] === el ? 'Vota a El Elegido' : '¿Qué te parece la página?';
-  const sub = sinCofre.length ? (cofre.length > 1 ? 'Vota las ' + cofre.length + ' de la semana y te llevas un cofre' : 'Vótala y te llevas un cofre')
-    : 'Tu opinión, en un toque';
+  const tit = !faltan.length ? 'Síguenos y gana Star Dragons' : faltan[0] === x2 ? 'Vota quién se lleva el ×' + x : faltan[0] === el ? 'Vota a El Elegido' : '¿Qué te parece la página?';
+  const sub = !faltan.length ? (fr === 1 ? 'Te queda una red: un Star Dragon' : 'Un Star Dragon por cada red que sigas')
+    : sinCofre.length ? (cofre.length > 1 ? 'Vota las ' + cofre.length + ' de la semana y te llevas un cofre' : 'Vótala y te llevas un cofre')
+      : 'Tu opinión, en un toque';
   const hasta = (faltan[0] || {}).hasta;
   const cerrar = () => dlg.current && dlg.current.close();
   return (
     <>
       <button type="button" id="encuestas" className="pn-gratis hacer" onClick={() => dlg.current && dlg.current.showModal()}
         aria-label={'Premio gratis: ' + tit + '. ' + sub}>
-        <span className="pn-gr-ic" aria-hidden="true"><Ico n="premio" t={22} /><em>{faltan.length}</em></span>
+        <span className="pn-gr-ic" aria-hidden="true"><Ico n="premio" t={22} /><em>{faltan.length + (fr ? 1 : 0)}</em></span>
         <span className="pn-tx"><i className="pn-gr-et">Premio gratis</i><b>{tit}</b><small>{sub}</small></span>
       </button>
       <dialog className="pn-pop pop-gratis" ref={dlg} aria-label="Premio gratis" onClick={(e) => { if (e.target === dlg.current) cerrar(); }}>
-        <PopCab ico="premio" t="Premio gratis" sub={'Las encuestas de la semana' + (hasta ? ' · cierran ' + liga.dia(hasta) : '')} cerrar={cerrar} />
+        <PopCab ico="premio" t="Premio gratis" sub={faltan.length ? 'Las encuestas de la semana' + (hasta ? ' · cierran ' + liga.dia(hasta) : '') : 'Las redes de la Liga'} cerrar={cerrar} />
         <div className="pn-est-in">
+          {fr ? <><h5>Síguenos en las redes <span className="pop-gr-cofre">un Star Dragon por red</span></h5><RedesLista liga={liga} dc={dc} /></> : null}
           {cofre.length ? <>
             <h5>Las encuestas de la semana {sinCofre.length ? <span className="pop-gr-cofre">{cofre.length > 1 ? 'vótalas todas' : 'vótala'}: un cofre</span>
               : <span className="pop-gr-ok">✓ {cofre.length > 1 ? 'votaste las ' + cofre.length : 'ya votaste'}</span>}</h5>
@@ -247,7 +253,7 @@ export function FilaRacha({ dc, R, liga, enc }) {
   // hasta un día después de sortearse, para que se vea quién ganó
   const resT = S && S.resultado ? Number(S.resultado.t) || Date.parse(S.resultado.t) || 0 : 0;
   const soVer = !!(s && (soAbierto || ahora < s.cuando + 86400000 || (resT && ahora < resT + 86400000)));
-  const gratis = dc ? encuestasDeLaSemana(liga, enc).faltan.length > 0 : false;
+  const gratis = dc ? encuestasDeLaSemana(liga, enc).faltan.length > 0 || faltanRedes(liga, dc) > 0 : false;
   const an = anuncioDeServidor(liga);
   const extras = [];
   if (soAbierto && (!S.mio || recien)) extras.push('sorteo');

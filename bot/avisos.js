@@ -2047,7 +2047,10 @@ export const TUTO_EV = new Set(['tour', 'tour_fin', 'salta0', 'salta1', 'salta2'
   'franja_si', 'pasos', 'pasos_fin',
   // 🎮 la pantalla de bienvenida (19/10/2026, web/src/bienvenida.jsx): la vieron, tocaron «Unirme», volvieron al paso 2,
   // la terminaron o la dejaron para otro momento
-  'bienv', 'bienv_unirse', 'bienv_paso2', 'bienv_listo', 'bienv_luego']);
+  'bienv', 'bienv_unirse', 'bienv_paso2', 'bienv_listo', 'bienv_luego',
+  // 🧭 el tutorial nuevo (13/11/2026, web/src/capitulos.js): cada capítulo del completo que se empezó, y terminarlo entero
+  'cap_ranking', 'cap_eventos', 'cap_tarjetas', 'cap_pase', 'cap_tienda', 'cap_crews', 'cap_competencias', 'cap_publicaciones',
+  'cap_cuenta', 'completo']);
 
 /**
  * 📊 QUÉ SECCIONES SE ABREN (Dlx, 12/10/2026, el research «página sencilla»: «hacé todo menos los dos puntos que
@@ -3494,6 +3497,8 @@ const RUTAS = {
   '/avisos/cm-mio': 'POST', '/avisos/dueno/cm-permiso': 'POST', '/avisos/dueno/cm-permisos': 'POST',
   // 🐉 los Dragón Drops: los tuyos y la barra del día, y abrir uno (con tu sesión). Ver `dropsDe()` y `dropAbrir()`
   '/avisos/drops': 'POST', '/avisos/drop-abrir': 'POST',
+  // 🐣 las misiones para nuevos y las redes que seguiste (13/11/2026). Ver `nuevoDe()`
+  '/avisos/nuevo': 'POST',
   // ⚔️ las batallas libres, de verdad (12/11/2026): las tuyas, retar, decir quién ganó y cancelar. Ver `libreCrear()`
   '/avisos/libres': 'POST', '/avisos/libre-crear': 'POST', '/avisos/libre-resultado': 'POST', '/avisos/libre-cancelar': 'POST',
   // 📣 abrir una promo paga Tienda y XP: ver `validarPromo()` y `promoVio()`
@@ -3923,6 +3928,44 @@ export const DROP_TITULOS = { 2: ['Lengua de Fuego', 'Garra Dorada'], 3: ['Alien
 //: qué suma un paso de la barra del día (cada cosa, una vez por día)
 export const PASOS_QUE = { jugo: 'Jugar un evento', cm: 'Comentar', fel: 'Felicitar', voto: 'Votar o apostar',
   tarea: 'Una Tarea del Pase', promo: 'Abrir una promo o seguir a alguien' };
+//: ⭐ el Star Dragon (13/11/2026, Dlx: «1 star dragon por cada red social q nos siga», y a la propuesta, «Sí, así»): un
+//: Dragón Drop que sale de Vinilo para arriba. Es un drop como los demás con origen `star:`: la página lo pinta azul
+export const STAR_MIN = 2;
+
+// ── 🐣 MISIONES PARA NUEVOS (13/11/2026) ──────────────────────────────
+// 🔑 Dlx: «que estas sean MISIONES PARA NUEVOS… un track especial… como niveles que cada nivel se avance haciendo esas
+// misiones... que dure una semana para cada nuevo. Que cada día se desbloquee el siguiente nivel con sus misiones», y a
+// la propuesta, «Sí, así»: lo de días pasados se puede hacer hasta el día 7, y la ven quienes entran por primera vez
+// desde que salió. Las misiones se MIRAN en las tablas de cada cosa (`nuevoOk()`), no se anotan aparte: así cuenta lo
+// que la persona hizo por cualquier camino (la página, el bot). Sólo tres las cuenta la página, porque no dejan rastro
+// acá: los dos tutoriales y mirar una historia antes de entrar con Discord.
+//: las redes de la Liga (las de `datos/` → `lobby.redes`): una vez cada una
+export const REDES_LIGA = ['instagram', 'tiktok', 'youtube', 'x', 'twitch', 'kick'];
+//: lo que la página puede decir que hizo
+export const NUEVO_CLIENTE = new Set(['corto', 'completo', 'historia']);
+//: los siete días: [nombre, premio del día, [[id, texto, premio], …]]. Un premio: ['pdt', n] · ['drop', n] · ['star', n] ·
+//: ['cofre'] · ['titulo', t] · ['redes'] (cada red da lo suyo) · ['caja'] (`NUEVO_CAJA`, al completar los siete)
+//: ⚠️ El marco «Nuevo», la reacción y el fondo de la maqueta no existen como premio suelto (el marco es un dibujo de la
+//: carta, y la reacción y el fondo del Pase son etiquetas): van dos títulos y un drop en su lugar
+export const NUEVO_PISTA = [
+  ['Llegaste', ['titulo', 'Recién llegado'], [['corto', 'Haz el tutorial corto', ['drop', 3]],
+    ['entrar', 'Entra con Discord', ['pdt', 500]], ['campana', 'Prende la campana', ['pdt', 200]]]],
+  ['Quién eres', ['drop', 1], [['verif', 'Verifícate en DRA', ['pdt', 1000]],
+    ['perfil', 'Pon tu foto, tu fondo o tu frase', ['pdt', 200]], ['redes', 'Síguenos en una red', ['redes']]]],
+  ['Tu gente', ['titulo', 'Buena Gente'], [['sigue3', 'Sigue a 3 raperos', ['pdt', 200]],
+    ['fel', 'Felicita un logro', ['pdt', 100]], ['historia', 'Mira una historia', ['pdt', 100]]]],
+  ['Tu Pase', ['drop', 2], [['nivel1', 'Llega al nivel 1 del Pase', ['pdt', 300]], ['tareas2', 'Haz 2 Tareas del Pase', ['pdt', 300]]]],
+  ['A la cancha', ['drop', 1], [['cancha', 'Juega un evento o apuesta en un VS', ['pdt', 1000]]]],
+  ['Tu crew', ['star', 1], [['crew', 'Súmate a una crew o ármala', ['pdt', 500]], ['cm', 'Comenta en Publicaciones', ['pdt', 200]]]],
+  ['Maestro', ['caja'], [['completo', 'Termina el tutorial completo', ['cofre']], ['encuesta', 'Vota una encuesta', ['pdt', 200]]]],
+];
+//: la Caja del Nuevo: al completar los siete días
+export const NUEVO_CAJA = { puntos: 5000, star: 2, titulo: 'Novato de Oro' };
+
+/** Días de calendario entre dos `YYYY-MM-DD`. Pura. */
+export function diasEntre(a, b) {
+  return Math.round((Date.parse(b + 'T00:00:00Z') - Date.parse(a + 'T00:00:00Z')) / 86400000);
+}
 
 /** La rareza de un drop: `r` en [0, 1) del azar, `min` la rareza mínima, `sin` cuántos van sin legendario. Pura. */
 export function rarezaDrop(r, min = 0, sin = 0) {
@@ -6214,6 +6257,27 @@ export async function rutaAvisos(req, env, ruta) {
       method: 'POST', body: JSON.stringify({ quien: q.id, id: Number(d.id) || 0 }), headers: { 'content-type': 'application/json' },
     });
   }
+  // 🐣 LAS MISIONES PARA NUEVOS Y LAS REDES (13/11/2026): quién, Discord (o la sesión); si está verificado, KV (`d:`); lo
+  // que hizo, el objeto lo mira en sus tablas. Lo único que manda la página: si este navegador es nuevo, desde cuándo, y
+  // lo que no deja rastro acá (los tutoriales, una historia vista sin cuenta, las redes que abrió)
+  if (ruta === '/avisos/nuevo') {
+    const crudo = await req.text();
+    if (crudo.length > 1024) return json({ error: 'demasiado grande' }, 413);
+    let d = null;
+    try { d = JSON.parse(crudo || '{}'); } catch (e) { d = null; }
+    if (!d || typeof d !== 'object' || (d.token && !/^[A-Za-z0-9._-]{10,300}$/.test(String(d.token)))) return json({ error: 'faltan datos' }, 400);
+    const q = await quienPide(req, env, d);
+    // 👤 sin cuenta, la pista vacía (la de la página es de quien no entró: todo con candado) — salvo que la página diga
+    // que tiene cuenta (`cuenta`): ahí el 401 es el que hace que `conCuenta()` vuelva a pasar por Discord
+    if (!q.id) return d.cuenta ? json({ error: q.error }, q.estado) : json({ ok: true, sin: true, plantilla: NUEVO_PISTA, caja: NUEVO_CAJA });
+    let v = false;
+    try { v = !!(await env.KV.get('d:' + q.id)); } catch (e) { v = false; }
+    const hechos = (Array.isArray(d.hechos) ? d.hechos : []).filter((h) => typeof h === 'string' && /^[a-z:]{2,24}$/.test(h)).slice(0, 12);
+    return elObjeto(env).fetch('https://avisos/nuevo', {
+      method: 'POST', headers: { 'content-type': 'application/json' },
+      body: JSON.stringify({ quien: q.id, v, nuevo: d.nuevo === true, desde: Number(d.desde) || 0, hechos }),
+    });
+  }
   // ⚔️ LAS BATALLAS LIBRES (12/11/2026): quién lo dice la sesión; con quién y cuándo, la página; el resto, el objeto
   if (ruta === '/avisos/libres' || ruta === '/avisos/libre-crear' || ruta === '/avisos/libre-resultado' || ruta === '/avisos/libre-cancelar') {
     const crudo = await req.text();
@@ -7583,6 +7647,11 @@ export class Avisos {
       this.sql.exec('CREATE INDEX IF NOT EXISTS libres_b ON libres (b, t)');
       this.sql.exec('CREATE TABLE IF NOT EXISTS dia_pasos (quien TEXT NOT NULL, dia TEXT NOT NULL, que TEXT NOT NULL, ' +
         't INTEGER NOT NULL, PRIMARY KEY (quien, dia, que))');
+      // 🐣 MISIONES PARA NUEVOS (13/11/2026): desde cuándo corre la semana de cada uno, lo que contó la página (los
+      // tutoriales) y los títulos que ganó. Ver `nuevoDe()`
+      this.sql.exec('CREATE TABLE IF NOT EXISTS nuevo (quien TEXT PRIMARY KEY, desde INTEGER NOT NULL)');
+      this.sql.exec('CREATE TABLE IF NOT EXISTS nuevo_hecho (quien TEXT NOT NULL, mis TEXT NOT NULL, t INTEGER NOT NULL, PRIMARY KEY (quien, mis))');
+      this.sql.exec('CREATE TABLE IF NOT EXISTS nuevo_titulo (quien TEXT NOT NULL, titulo TEXT NOT NULL, t INTEGER NOT NULL, PRIMARY KEY (quien, titulo))');
       // 🔔 LA BANDEJA (02/10/2026): lo que se le avisó a cada uno, para el panel de la campana (Dlx: «que sea como un
       // panel de notificaciones recientes, quizás algo como Instagram»). Se anota aunque esa persona no tenga la
       // campana en ningún dispositivo: el panel se ve igual. El mismo aviso (`clave`) se pisa y vuelve a «nueva»:
@@ -8419,6 +8488,7 @@ export class Avisos {
       if (ruta === '/cm-mio') return await this.cmMio(d);
       if (ruta === '/cm-permiso') return await this.cmPermiso(d);
       if (ruta === '/drops') return json(this.dropsDe(String(d.quien || '')));
+      if (ruta === '/nuevo') { const v = this.nuevoDe(d); return json(v, v.error ? 400 : 200); }
       if (ruta === '/libres') return json(this.libresDe(String(d.quien || '')));
       if (ruta === '/libre-crear' || ruta === '/libre-resultado' || ruta === '/libre-cancelar') {
         const v = ruta === '/libre-crear' ? this.libreCrear(d) : ruta === '/libre-resultado' ? this.libreResultado(d) : this.libreCancelar(d);
@@ -14192,6 +14262,124 @@ export class Avisos {
     return { ok: true, id, rareza, nombre: DROP_RAREZAS[rareza][0], puntos: pr.puntos, titulo: pr.titulo };
   }
 
+  // ── 🐣 MISIONES PARA NUEVOS ───────────────────────────────────────────
+  /**
+   * ¿Puede empezar su semana? Quien no hizo nada en la Liga antes de anteayer: sin XP, sin Tareas y sin días que
+   * contaron. Así quien ya venía no la recibe aunque estrene navegador (Dlx: «a todos los nuevos»)
+   */
+  nuevoPuede(quien, ahora) {
+    const corte = ahora - 2 * DIA_MS, dia = diaET(corte);
+    const hay = (sql, ...a) => { try { return !!this.sql.exec(sql, ...a).toArray()[0]; } catch (e) { return true; } };
+    return !hay('SELECT 1 AS x FROM xp_log WHERE quien = ? AND t < ? LIMIT 1', quien, corte)
+      && !hay('SELECT 1 AS x FROM pase_hecho WHERE quien = ? AND t < ? LIMIT 1', quien, corte)
+      && !hay('SELECT 1 AS x FROM activo WHERE quien = ? AND dia < ? LIMIT 1', quien, dia);
+  }
+
+  /** ¿Cumplió la misión `id`? Se mira en la tabla de cada cosa. `v`: si está verificado (lo dice el Worker, de KV) */
+  nuevoOk(quien, id, v, cliente) {
+    const hay = (sql, ...a) => { try { return !!this.sql.exec(sql, ...a).toArray()[0]; } catch (e) { return false; } };
+    const n = (sql, ...a) => { try { return Number((this.sql.exec(sql, ...a).toArray()[0] || {}).n) || 0; } catch (e) { return 0; } };
+    switch (id) {
+      case 'corto': case 'completo': return cliente.has(id);
+      case 'entrar': return true;
+      case 'campana': return hay('SELECT 1 AS x FROM subs WHERE quien = ? LIMIT 1', quien);
+      case 'verif': return !!v;
+      case 'perfil': return hay("SELECT 1 AS x FROM fotos_carta WHERE quien = ? AND estado = 'ok' LIMIT 1", quien)
+        || hay("SELECT 1 AS x FROM fondos WHERE quien = ? AND estado = 'ok' AND url != '' LIMIT 1", quien)
+        || hay("SELECT 1 AS x FROM perfil_mio WHERE quien = ? AND frase != '' LIMIT 1", quien);
+      case 'redes': return hay("SELECT 1 AS x FROM drops WHERE quien = ? AND origen LIKE 'star:red:%' LIMIT 1", quien);
+      case 'sigue3': return n('SELECT COUNT(*) AS n FROM sigue WHERE quien = ?', quien) >= 3;
+      case 'fel': return hay("SELECT 1 AS x FROM xp_log WHERE quien = ? AND que = 'fel' LIMIT 1", quien);
+      case 'historia': return cliente.has('historia') || hay('SELECT 1 AS x FROM hvistas WHERE quien = ? LIMIT 1', quien);
+      case 'nivel1': {
+        try { const P = this.paseDatos(); return !!(P.cfg && P.miembros.has(quien) && this.paseNivel(quien, P.cfg) >= 1); } catch (e) { return false; }
+      }
+      case 'tareas2': return n('SELECT COUNT(*) AS n FROM pase_hecho WHERE quien = ?', quien) >= 2;
+      case 'cancha': return hay('SELECT 1 AS x FROM jugo_temp WHERE quien = ? AND eventos > 0 LIMIT 1', quien)
+        || hay("SELECT 1 AS x FROM xp_log WHERE quien = ? AND que IN ('apuesta', 'qg') LIMIT 1", quien);
+      case 'crew': return hay('SELECT 1 AS x FROM crew_miembros WHERE quien = ? AND pend = 0 LIMIT 1', quien);
+      case 'cm': return hay('SELECT 1 AS x FROM comentario WHERE quien = ? AND borrado = 0 LIMIT 1', quien);
+      case 'encuesta': return hay("SELECT 1 AS x FROM xp_log WHERE quien = ? AND que = 'voto' LIMIT 1", quien)
+        || hay('SELECT 1 AS x FROM votos WHERE quien = ? LIMIT 1', quien);
+      default: return false;
+    }
+  }
+
+  /** Paga un premio de la pista, una sola vez por `clave` (cada camino es idempotente: `dropDar()`, la tienda, el título) */
+  nuevoPagar(quien, clave, pr, t) {
+    const pdt = (monto, k) => this.sql.exec('INSERT OR IGNORE INTO tienda (id, ref, quien, monto, t) VALUES (?, 0, ?, ?, ?)',
+      'nuevo:' + quien + ':' + k, quien, monto, t);
+    const titulo = (x) => this.sql.exec('INSERT OR IGNORE INTO nuevo_titulo (quien, titulo, t) VALUES (?, ?, ?)', quien, x, t);
+    const tipo = pr[0];
+    if (tipo === 'pdt') pdt(pr[1], clave);
+    else if (tipo === 'drop') for (let i = 1; i <= pr[1]; i++) this.dropDar(quien, 'nuevo:' + clave + ':' + i, 0, t);
+    else if (tipo === 'star') for (let i = 1; i <= pr[1]; i++) this.dropDar(quien, 'star:nuevo:' + clave + ':' + i, STAR_MIN, t);
+    else if (tipo === 'cofre') for (let i = 1; i <= COFRE_ENC; i++) this.dropDar(quien, 'cofre:nuevo:' + i, i === 1 ? COFRE_ENC_MIN : 0, t);
+    else if (tipo === 'titulo') titulo(pr[1]);
+    else if (tipo === 'caja') {
+      pdt(NUEVO_CAJA.puntos, 'caja');
+      for (let i = 1; i <= NUEVO_CAJA.star; i++) this.dropDar(quien, 'star:nuevo:caja:' + i, STAR_MIN, t);
+      titulo(NUEVO_CAJA.titulo);
+    }
+  }
+
+  /** 🏷️ Los títulos de la pista de nuevos (salen con los del Pase y los de los drops) */
+  titulosNuevo(quien) {
+    try { return this.sql.exec('SELECT titulo FROM nuevo_titulo WHERE quien = ?', String(quien)).toArray().map((r) => r.titulo); } catch (e) { return []; }
+  }
+
+  /**
+   * 🐣 Lo tuyo (`/avisos/nuevo`): las redes que ya seguiste y tu semana de nuevo. `d`: `{quien, v, nuevo, desde, hechos}`
+   * — `nuevo` y `desde` son lo que sabe el navegador (primera visita), `hechos` lo que contó la página. Cada vez que se
+   * pide, paga lo que se cumplió y todavía no se cobró: no hace falta avisar cada cosa al hacerla.
+   */
+  nuevoDe(d) {
+    const quien = String(d.quien || '');
+    if (!/^[0-9]{5,25}$/.test(quien)) return { error: 'faltan datos' };
+    const ahora = Date.now();
+    const hechos = (Array.isArray(d.hechos) ? d.hechos : []).slice(0, 12).map(String);
+    // ⭐ las redes, para todos y aparte de la pista: un Star Dragon por cada una (Dlx: «a aquellos q no nos han seguido»)
+    for (const h of hechos) {
+      const m = /^red:([a-z]+)$/.exec(h);
+      if (m && REDES_LIGA.includes(m[1])) this.dropDar(quien, 'star:red:' + m[1], STAR_MIN, ahora);
+    }
+    const redes = this.sql.exec("SELECT origen FROM drops WHERE quien = ? AND origen LIKE 'star:red:%'", quien).toArray()
+      .map((r) => r.origen.slice('star:red:'.length));
+    let fila = this.sql.exec('SELECT desde FROM nuevo WHERE quien = ?', quien).toArray()[0];
+    if (!fila && d.nuevo && this.nuevoPuede(quien, ahora)) {
+      const desde = Math.min(ahora, Math.max(ahora - 6 * DIA_MS, Number(d.desde) || ahora));
+      this.sql.exec('INSERT OR IGNORE INTO nuevo (quien, desde) VALUES (?, ?)', quien, desde);
+      fila = { desde };
+    }
+    if (!fila) return { ok: true, redes, pista: null };
+    for (const h of hechos) {
+      if (NUEVO_CLIENTE.has(h)) this.sql.exec('INSERT OR IGNORE INTO nuevo_hecho (quien, mis, t) VALUES (?, ?, ?)', quien, h, ahora);
+    }
+    const cliente = new Set(this.sql.exec('SELECT mis FROM nuevo_hecho WHERE quien = ?', quien).toArray().map((r) => r.mis));
+    const dia = diasEntre(diaET(fila.desde), diaET(ahora)) + 1;
+    const fin = dia > NUEVO_PISTA.length;
+    let hechas = 0, total = 0, completos = 0;
+    const dias = NUEVO_PISTA.map(([t, premio, mis], i) => {
+      const n = i + 1, abierto = n <= dia;
+      const ms = mis.map(([id, tx, pr]) => {
+        const ok = abierto && this.nuevoOk(quien, id, d.v, cliente);
+        total++;
+        if (ok) hechas++;
+        if (ok && !fin) this.nuevoPagar(quien, 'm:' + id, pr, ahora);
+        return { id, t: tx, premio: pr, ok };
+      });
+      const hecho = abierto && ms.every((m) => m.ok);
+      if (hecho) completos++;
+      // 🎁 el premio del día; el del 7 es la Caja, que pide los siete
+      if (hecho && !fin && premio[0] !== 'caja') this.nuevoPagar(quien, 'd:' + n, premio, ahora);
+      return { n, t, premio, abierto, hecho, mis: ms };
+    });
+    const caja = completos === NUEVO_PISTA.length;
+    if (caja && !fin) this.nuevoPagar(quien, 'caja', ['caja'], ahora);
+    return { ok: true, redes, pista: { dia: Math.min(dia, NUEVO_PISTA.length + 1), de: NUEVO_PISTA.length, desde: fila.desde, fin,
+      hechas, total, caja, dias, cajaPremio: NUEVO_CAJA } };
+  }
+
   /** Lo público, para `/avisos/aplausos`: cuántos lleva cada publicación. ⚠️ Nunca quién. */
   aplausosCuenta() {
     const n = {};
@@ -16784,7 +16972,7 @@ export class Avisos {
     const nivel = quien === DUENO ? P.cfg.niveles || 30 : P.miembros.has(quien) ? this.paseNivel(quien, P.cfg) : 0;
     const filas = [...(P.cfg.premios || [])];
     if (this.pasePremium(quien, P.cfg.temp)) filas.push(...(P.cfg.premium || []));
-    return [...new Set(filas.filter((p) => p[2] === 'titulo' && p[0] <= nivel).map((p) => String(p[3])).concat(this.titulosDrop(quien)))];
+    return [...new Set(filas.filter((p) => p[2] === 'titulo' && p[0] <= nivel).map((p) => String(p[3])).concat(this.titulosDrop(quien), this.titulosNuevo(quien)))];
   }
 
   /** 🏷️ Tus TAGs (`/avisos/tags-mios`, con tu sesión): lo que ganó tu carta, tus títulos del Pase y lo que elegiste */

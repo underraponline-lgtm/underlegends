@@ -93,6 +93,8 @@ export const quiereTutorial = () => !!(T && (reciente() || PRIMERA_VISITA));
  */
 export function pasosEnInicio(dc) {
   if (!T || T.pasos === 'fin' || T.pasos === 'cerrado') return false;
+  // 🐣 la primera semana ya está la pista de nuevos, que pide lo mismo y más: dos listas iguales serían ruido
+  if (enSemanaNueva()) return false;
   return reciente() || !!(dc && !dc.rapero);
 }
 
@@ -115,7 +117,32 @@ export function irSinHistoria(r) {
   try { window.dispatchEvent(new Event('lg:ruta')); } catch (e) { /* nada */ }
 }
 
-/** Pedir el recorrido (la Guía, «Ver el recorrido»): lo escucha App.jsx */
-export function pedirRecorrido() {
-  try { window.dispatchEvent(new CustomEvent('lg:tour')); } catch (e) { /* nada */ }
+/**
+ * Pedir el tutorial: lo escucha App.jsx. `que`: 'corto' (el de cinco pasos), 'cap:<id>' (un capítulo del completo, ver
+ * capitulos.js) o nada (la pantalla de elegir, como la primera vez)
+ */
+export function pedirRecorrido(que) {
+  try { window.dispatchEvent(new CustomEvent('lg:tour', { detail: que || 'elegir' })); } catch (e) { /* nada */ }
+}
+
+// 🐣 MISIONES PARA NUEVOS (13/11/2026): lo que sabe este navegador, para `/api/avisos/nuevo` (ver nuevos.jsx). Los
+// tutoriales y las redes que abrió se acuerdan acá aunque no haya entrado con Discord: al entrar, se cobran
+//: cuántos días dura la pista
+export const DIAS_PISTA = 7;
+/** ¿Este navegador es de alguien que llegó hace menos de una semana? */
+export const enSemanaNueva = () => !!(T && T.nuevo && Date.now() - T.t < DIAS_PISTA * DIA);
+/** Lo que manda la página: si es nuevo, desde cuándo y lo que hizo que el servidor no ve */
+export function nuevoLocal() {
+  const hechos = [];
+  if (T && T.corto === 'fin') hechos.push('corto');
+  if (T && T.completo) hechos.push('completo');
+  for (const r of (T && T.redes) || []) hechos.push('red:' + r);
+  return { nuevo: enSemanaNueva(), desde: T ? T.t : 0, hechos };
+}
+/** Anota una red que abrió (una vez cada una) */
+export function redAbierta(red) {
+  if (!T) return;
+  const xs = new Set(T.redes || []);
+  xs.add(red);
+  tutoPoner({ redes: [...xs] });
 }

@@ -426,15 +426,15 @@ export function Tabbar({ liga, dc, pagina = '' }) {
           const k = r.replace(/^#\/?/, '') || 'inicio';
           // la de la página que se ve: el Inicio sin ruta, y las que dibuja el Inicio nuevo por su nombre (el Ranking)
           const nv = k === 'publicaciones' ? pubNuevas(liga, pagina) : 0;
-          return <a key={k} href={r} onClick={subirSiEsta(r)} className={(k === 'inicio' ? !pagina : pagina === k) ? 'on' : ''}><Ico n={k} t={22} /><span>{n}</span>{nv ? <i className="tb-nuevas" aria-label={nv + ' nuevas'}>{nv}</i> : null}</a>;
+          return <a key={k} href={r} data-tuto={'menu-' + k} onClick={subirSiEsta(r)} className={(k === 'inicio' ? !pagina : pagina === k) ? 'on' : ''}><Ico n={k} t={22} /><span>{n}</span>{nv ? <i className="tb-nuevas" aria-label={nv + ' nuevas'}>{nv}</i> : null}</a>;
         })}
       </div>
       {/* 👤 con tu cuenta, abre el menú de lo tuyo (yomenu.jsx: el Inventario primero); sin cuenta, Tu cuenta como siempre */}
       {cara ? (
-        <button type="button" className={'tb-yo' + (pagina === 'cuenta' || pagina === 'inventario' ? ' on' : '')} aria-haspopup="menu" aria-expanded={yoM}
+        <button type="button" className={'tb-yo' + (pagina === 'cuenta' || pagina === 'inventario' ? ' on' : '')} data-tuto="cuenta" aria-haspopup="menu" aria-expanded={yoM}
           aria-label="Lo tuyo: inventario, perfil y cuenta" onClick={() => setYoM((v) => !v)}>{cara}<span>Tu cuenta</span></button>
       ) : (
-        <a href="#/cuenta" className={'tb-yo' + (pagina === 'cuenta' ? ' on' : '')} aria-label="Tu cuenta"><Ico n="yo" t={22} /><span>Tu cuenta</span></a>
+        <a href="#/cuenta" className={'tb-yo' + (pagina === 'cuenta' ? ' on' : '')} data-tuto="cuenta" aria-label="Tu cuenta"><Ico n="yo" t={22} /><span>Tu cuenta</span></a>
       )}
       {yoM ? <YoMenu k={yo ? yo.k : (dc && dc.clave) || ''} dc={dc} nombre={limpio(yo ? yo.n : (dc ? dc.n : ''))} cara={cara} abajo onCerrar={() => setYoM(false)} /> : null}
     </nav>

@@ -602,7 +602,7 @@ export function Pase({ liga, dc }) {
   const irTab = (t) => { setTab(t); try { window.scrollTo({ top: 0, behavior: 'smooth' }); } catch (e) { /* nada */ } };
   const dra = (liga.svs && liga.svs.DRA) || {};
   const tabs = (
-    <nav className="ps-tabs" aria-label="El Pase">
+    <nav data-tuto="ps-tabs" className="ps-tabs" aria-label="El Pase">
       {TABS.map(([k, t]) => (
         <button key={k} type="button" className={(tab === k ? 'on' : '') + (k === 'premium' ? ' pr' : '')} aria-current={tab === k ? 'page' : undefined}
           onClick={() => setTab(k)}>{t}{k === 'tareas' && pend ? <i>{pend}</i> : null}{k === 'premium' && !tiene ? ' 🔒' : k === 'premium' ? ' ✓' : ''}</button>
@@ -684,7 +684,7 @@ export function Pase({ liga, dc }) {
   }
   return (
     <>
-      <section className={'ps-esc' + (skin && compu ? ' con-skin' : '')} aria-label="Pase de rapero">
+      <section data-tuto="ps-cab" className={'ps-esc' + (skin && compu ? ' con-skin' : '')} aria-label="Pase de rapero">
         {compu ? skin : null}
         <div className="ps-der">
           <div className="ps-cab">

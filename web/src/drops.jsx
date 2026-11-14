@@ -136,8 +136,10 @@ export function AbrirDrops({ D, cerrar }) {
           ) : actual ? (
             <>
               {/* 🎁 los del cofre de las encuestas se ven como cofre (origen `cofre:`, ver `cofreEncuestas()` en bot/avisos.js) */}
-              {/^cofre:/.test(String(actual.origen || '')) ? <span className="dd-cofre-et">Cofre de las encuestas</span> : null}
-              <button type="button" key={tiembla} className={'dd-huevo' + (/^cofre:/.test(String(actual.origen || '')) ? ' cofre' : '') + (tiembla ? ' tiembla' : '') + (toques >= 2 ? ' grietas' : '')}
+              {/^cofre:/.test(String(actual.origen || '')) ? <span className="dd-cofre-et">{/^cofre:nuevo:/.test(String(actual.origen)) ? 'Cofre del tutorial completo' : 'Cofre de las encuestas'}</span> : null}
+              {/* ⭐ el Star Dragon (13/11/2026): un drop de Vinilo para arriba, azul (origen `star:`, ver `STAR_MIN` en bot/avisos.js) */}
+              {/^star:/.test(String(actual.origen || '')) ? <span className="dd-cofre-et dd-star-et">Star Dragon · de Vinilo para arriba</span> : null}
+              <button type="button" key={tiembla} className={'dd-huevo' + (/^cofre:/.test(String(actual.origen || '')) ? ' cofre' : '') + (/^star:/.test(String(actual.origen || '')) ? ' star' : '') + (tiembla ? ' tiembla' : '') + (toques >= 2 ? ' grietas' : '')}
                 onClick={tocar} aria-label="Tocar el drop"><span>UL</span></button>
               <span className="dd-toques">{toques ? 'Toca ' + (3 - toques) + (3 - toques === 1 ? ' vez más' : ' veces más') : 'Tócalo 3 veces'}</span>
             </>

@@ -414,7 +414,7 @@ function Encuestas({ liga, enc }) {
   if ((!x2 && !el) || !enc) return null;
   const ver = x2 && el ? cual : (x2 ? 'x2' : 'el');
   return (
-    <section className="pb-encs" aria-label="Encuestas">
+    <section data-tuto="pb-encs" className="pb-encs" aria-label="Encuestas">
       <h2 className="pb-st">Encuestas<small>vota antes de que cierren</small></h2>
       {x2 && el ? (
         <div className="pb-enc-tabs" role="tablist">
@@ -561,7 +561,7 @@ export function Publicaciones({ liga, enc, foco = '' }) {
   const elegir = (f) => { setFil(f); setVer(40); };
   return (
     <>
-      <div className="escena pb-esc" style={{ '--mo-c': '#E41373', '--mo-o': 0.85 }}>
+      <div data-tuto="pb-cab" className="escena pb-esc" style={{ '--mo-c': '#E41373', '--mo-o': 0.85 }}>
         <section className="pb-cab">
           <div className="pb-cab-tx">
             <span className="tag">PUBLICACIONES · {liga.temp}</span>
@@ -576,7 +576,7 @@ export function Publicaciones({ liga, enc, foco = '' }) {
           ) : null}
         </section>
       </div>
-      <nav className="pb-fil" aria-label="Qué ver">
+      <nav data-tuto="pb-fil" className="pb-fil" aria-label="Qué ver">
         <div className="pb-fil-in">
           {FILTROS.filter(([f]) => !f || cuenta[f] || fil === f).map(([f, t]) => (
             <button type="button" key={f || 'todo'} className={fil === f ? 'on' : ''} aria-pressed={fil === f} onClick={() => elegir(f)}>{t}<em>{num(cuenta[f] || 0)}</em></button>

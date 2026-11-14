@@ -19,6 +19,7 @@ import { avance, usePase } from './pase.js';
 import { PopPase } from './pase_pop.jsx';
 import { Batallas, FilaRacha, PnCrew, PnEventos, PnMiLiga, PnMisiones, PnPase, PnSemana, PnServidor, PnTienda, Vestuario, campanaPide } from './panel.jsx';
 import { cobrarRacha, useRacha } from './racha.js';
+import { PistaNuevos } from './nuevos.jsx';
 import { esDoble, eventoDelBoton, ganador, lados, llaveEnVivo, momentosLlave } from './arriba.jsx';
 
 const W = typeof window !== 'undefined' ? window : {};
@@ -548,6 +549,8 @@ export function Lobby({ liga, dc, enc }) {
   return (
     <section className="lobby pn" aria-label="Tu lobby">
       {dc && P && P.listo ? <PopPase P={P} /> : null}
+      {/* 🐣 las misiones para nuevos, encima de los cuatro paneles (Dlx, 13/11/2026): sólo la primera semana */}
+      <PistaNuevos liga={liga} dc={dc} />
       <FilaRacha dc={dc} R={R} liga={liga} enc={enc} />
       <ElBoton liga={liga} />
       <Batallas liga={liga} dc={dc} />

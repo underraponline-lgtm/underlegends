@@ -1274,7 +1274,7 @@ export function Ranking({ liga, sub: subRuta, ver: abre = '', dc, raiz }) {
 
   return (
     <>
-      <nav className="rk-subs" aria-label="Rankings" ref={nav}>
+      <nav data-tuto="rk-tablas" className="rk-subs" aria-label="Rankings" ref={nav}>
         <div className="rk-subs-in" ref={tabs}>
           {/* 🧹 SÓLO LAS QUE TIENEN DATOS (Dlx, 12/10/2026, el research «página sencilla»: «hacé todo menos los dos
               puntos que chocan»): las «PRONTO» sumaban opciones sin nada detrás, contra la regla de no dibujar nada
@@ -1291,7 +1291,7 @@ export function Ranking({ liga, sub: subRuta, ver: abre = '', dc, raiz }) {
           })}
         </div>
       </nav>
-      <div className="escena rk-esc" style={{ '--mo-c': '#E41373', '--mo-o': 0.9 }}>
+      <div data-tuto="rk-cab" className="escena rk-esc" style={{ '--mo-c': '#E41373', '--mo-o': 0.9 }}>
         {/* las flechas, como las del escenario del Inicio (Dlx, 02/10/2026: «arrows… in the black space like we have in
             INICIO»): al ranking de al lado, salteando los que todavía no existen. Sólo en la compu */}
         {antes && despues && antes !== sub ? <>
@@ -1312,7 +1312,7 @@ export function Ranking({ liga, sub: subRuta, ver: abre = '', dc, raiz }) {
       </div>
       {/* 🎯 los buscados de esta semana, arriba de quién cazó a quién (vivían en el Inicio hasta el 13/10/2026) */}
       {sub === 'mw' ? <SeBusca liga={liga} aca /> : null}
-      <section className="sec rk-sec" id="rk-tabla">
+      <section data-tuto="rk-tabla" className="sec rk-sec" id="rk-tabla">
         {pronto ? (
           <div className="rk-pronto"><span className="tag-pronto">{cfg.cuando ? 'TEMPORADA 2' : 'PRÓXIMAMENTE'}</span><p>{pronto}</p>
             {cfg.ejemplos ? <ul className="rk-ej" aria-label="Por ejemplo">{cfg.ejemplos.map(([ic, t]) => <li key={t}><Ico n={ic} t={22} /><b>{t}</b><small>suma a tu Temporada</small></li>)}</ul> : null}

@@ -229,7 +229,7 @@ function Escena({ liga, C, yo, donde, onComo }) {
   const b = pr ? pr[1].rival : ej && ej[1];
   const p = pr ? pr[1].p : ej ? ej[4] : 0.5;
   return (
-    <section className="cm9-esc" aria-label="Competencias">
+    <section data-tuto="cm-cab" className="cm9-esc" aria-label="Competencias">
       <div className="cm9-esc-t">
         <span className="cm9-chip">COMPETENCIAS · T1</span>
         <h1>LA SEMANA</h1>
@@ -262,7 +262,7 @@ function Escena({ liga, C, yo, donde, onComo }) {
 function Dias({ C }) {
   const ini = new Date(C.ini);
   return (
-    <nav className="cm9-dias" aria-label="Los días de la semana">
+    <nav data-tuto="cm-dias" className="cm9-dias" aria-label="Los días de la semana">
       {[0, 1, 2, 3, 4, 5, 6].map((d) => {
         const hoy = d + 1 === C.dia;
         // el día de hoy con su fecha de verdad: el día 7 va del domingo 11 AM al lunes 11 AM
@@ -291,7 +291,7 @@ function Ligas({ liga, C, yo, donde, conCuenta }) {
   const cuenta = (nv) => (L.g || []).filter((x) => x.nv === nv).length;
   const tuNivel = (nv) => (donde && donde.liga && donde.liga.g.nv === nv);
   return (
-    <section className="cm9-sec" aria-label="Las ligas" id="cm9-ligas">
+    <section data-tuto="cm-ligas" className="cm9-sec" aria-label="Las ligas" id="cm9-ligas">
       <div className="cm9-cab">
         <div><h2>LAS LIGAS</h2><p>Ligas de 10. Tres jornadas por semana (cierran lunes, miércoles y viernes), nueve por temporada. <b>Los 2 primeros suben</b> de liga y <b>los 2 últimos bajan</b>.</p></div>
         <span className="cm9-et">Temporada {L.temp} · jornada {L.jornada} de 9 · termina el {new Date(L.hasta).toLocaleDateString('es', { timeZone: 'America/New_York', day: 'numeric', month: 'numeric' })}</span>
