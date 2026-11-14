@@ -1284,7 +1284,7 @@
    "semillero": {
     "nuevos": {
      "FFA": 14,
-     "ACAD": 5,
+     "ACAD": 6,
      "DDF": 2,
      "LKR": 2,
      "FDS": 1
@@ -1293,14 +1293,14 @@
      "FFA": 76,
      "LKR": 23,
      "DDS": 10,
-     "ACAD": 35,
+     "ACAD": 48,
      "FRZ": 8,
      "FDS": 18
     },
     "gana": "FFA"
    },
    "meta_va": {
-    "ACAD": 35,
+    "ACAD": 48,
     "CH": 0,
     "DDF": 0,
     "DDS": 10,

@@ -630,6 +630,7 @@
    "vencido": false
   },
   "Diz": {
+   "avisado": "2026-11-13",
    "chat": "2026-11-13",
    "con": null,
    "cumplido": "",
@@ -1239,10 +1240,11 @@
    "vencido": false
   },
   "KARDIOLOGO": {
+   "avisado": "2026-11-13",
    "con": null,
    "cumplido": "",
    "debut": "2026-11-13T21:44:06+00:00",
-   "did": "",
+   "did": "1565484501520490647",
    "evento": "ELITE FESTIVAL VOL. 1",
    "n": 630,
    "sv": "ACAD",
@@ -2046,6 +2048,7 @@
    "vencido": true
   },
   "Park ji sunk": {
+   "avisado": "2026-11-13",
    "con": null,
    "cumplido": "",
    "debut": "2026-11-13T17:33:49+00:00",
@@ -3043,6 +3046,7 @@
    "vencido": false
   },
   "y Jahno": {
+   "avisado": "2026-11-13",
    "chat": "2026-11-13",
    "con": null,
    "cumplido": "",

@@ -442,7 +442,7 @@
   "crew": "",
   "discord_id": "958103803616444528",
   "verificado": true,
-  "pts": 344589,
+  "pts": 345189,
   "ev": 33,
   "wr": "73.7%",
   "pod": 14,
@@ -1598,7 +1598,8 @@
   "tg_t": {
    "dobles": 9,
    "sube": true,
-   "svc": 1
+   "svc": 1,
+   "trios": 1
   }
  },
  {
@@ -18408,12 +18409,12 @@
   }
  },
  {
-  "full": "KARDIOLOGO 🇬🇹",
+  "full": "KARDIOLOGO",
   "raw": "KARDIOLOGO",
   "cc": "gt",
   "sv": "ACAD",
   "crew": "",
-  "discord_id": "",
+  "discord_id": "1565484501520490647",
   "verificado": false,
   "pts": 3094,
   "ev": 1,

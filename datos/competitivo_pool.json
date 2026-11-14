@@ -288,11 +288,11 @@
   "tg_c": {
    "bestia": 3,
    "clasico": 8,
-   "dg": 48,
+   "dg": 51,
    "fg": 11,
    "fp": 2,
-   "riv": 49,
-   "venc": 39,
+   "riv": 50,
+   "venc": 40,
    "vengo": 1
   },
   "tg_p": {
@@ -1412,12 +1412,12 @@
    "fg": 5,
    "fp": 13,
    "mata": 6,
-   "riv": 84,
+   "riv": 85,
    "venc": 54,
    "vengo": 7
   },
   "tg_p": {
-   "paises": 14,
+   "paises": 15,
    "paisesg": 12,
    "pionero": true
   },
@@ -2831,7 +2831,7 @@
    "fg": 2,
    "fp": 2,
    "mata": 1,
-   "riv": 23,
+   "riv": 24,
    "venc": 13,
    "vengo": 1
   },
@@ -3757,22 +3757,22 @@
   "tg_c": {
    "bestia": 1,
    "clasico": 2,
-   "dg": 11,
+   "dg": 12,
    "fp": 2,
-   "riv": 22,
-   "venc": 11
+   "riv": 24,
+   "venc": 12
   },
   "tg_p": {
-   "paises": 9,
-   "paisesg": 6
+   "paises": 10,
+   "paisesg": 7
   },
   "nac": {
    "evn": 1,
-   "evi": 16,
+   "evi": 17,
    "com": 0,
    "top": [
-    6,
-    "ve"
+    8,
+    "cl"
    ]
   }
  },
@@ -4730,7 +4730,7 @@
    "dg": 22,
    "fp": 3,
    "mata": 1,
-   "riv": 41,
+   "riv": 42,
    "venc": 18,
    "vengo": 5
   },
@@ -4740,7 +4740,7 @@
   },
   "nac": {
    "evn": 9,
-   "evi": 48,
+   "evi": 49,
    "com": 0,
    "top": [
     1,
@@ -4835,7 +4835,7 @@
   "din_v": 7,
   "din_t": 14,
   "crn_t": 0,
-  "cri_t": 36,
+  "cri_t": 38,
   "pos": 92,
   "total": 81,
   "rango": "D",
@@ -4849,12 +4849,12 @@
   "tg_c": {
    "bestia": 2,
    "clasico": 2,
-   "dg": 15,
+   "dg": 17,
    "fg": 1,
    "fp": 4,
-   "mata": 1,
-   "riv": 26,
-   "venc": 14
+   "mata": 2,
+   "riv": 28,
+   "venc": 16
   },
   "tg_p": {
    "paises": 11,
@@ -4865,11 +4865,11 @@
   },
   "nac": {
    "evn": 0,
-   "evi": 24,
+   "evi": 25,
    "com": 0,
    "top": [
-    7,
-    "co"
+    2,
+    "ve"
    ]
   }
  },
@@ -7419,7 +7419,7 @@
   "din_v": 3,
   "din_t": 18,
   "crn_t": 13,
-  "cri_t": 42,
+  "cri_t": 44,
   "pos": 58,
   "total": 81,
   "rango": "D",
@@ -8600,14 +8600,14 @@
   "tg_c": {
    "bestia": 1,
    "clasico": 1,
-   "dg": 4,
+   "dg": 5,
    "fp": 1,
-   "riv": 6,
-   "venc": 4
+   "riv": 8,
+   "venc": 5
   },
   "tg_p": {
-   "paises": 4,
-   "paisesg": 3
+   "paises": 6,
+   "paisesg": 4
   },
   "nac": {
    "evn": 2,
@@ -12119,16 +12119,24 @@
   "pos_sv": "",
   "arc_sv": 0,
   "tg_c": {
+   "bestia": 1,
    "clasico": 1,
-   "riv": 2
+   "dg": 1,
+   "riv": 4,
+   "venc": 1
   },
   "tg_p": {
-   "paises": 2
+   "paises": 4,
+   "paisesg": 1
   },
   "nac": {
    "evn": 1,
    "evi": 3,
-   "com": 0
+   "com": 0,
+   "top": [
+    4,
+    "ar"
+   ]
   }
  },
  {
@@ -32214,12 +32222,12 @@
   }
  },
  {
-  "full": "KARDIOLOGO 🇬🇹",
+  "full": "KARDIOLOGO",
   "raw": "KARDIOLOGO",
   "cc": "gt",
   "sv": "ACAD",
   "crew": "",
-  "discord_id": "",
+  "discord_id": "1565484501520490647",
   "verificado": false,
   "ev": 1,
   "score": 1.6,
@@ -32240,7 +32248,7 @@
   "din_v": 0,
   "din_t": 0,
   "crn_t": 0,
-  "cri_t": 0,
+  "cri_t": 2,
   "pos": 613,
   "total": 81,
   "rango": "",
