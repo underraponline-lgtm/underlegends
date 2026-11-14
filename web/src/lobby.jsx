@@ -557,14 +557,19 @@ export function Lobby({ liga, dc, enc }) {
       {/* 🧩 EL PANEL, OPCIÓN B (12/11/2026, Dlx): la Tienda arriba a la izquierda, tu liga y Misiones partidos (Misiones, la
           mitad alta), el Pase y La semana partidos a la derecha, y abajo Eventos con Tu servidor al costado */}
       <div className="pn-grid aparece">
-        <PnTienda saldo={saldo} dc={dc} liga={liga} cuadro />
         <Vestuario liga={liga} dc={dc} />
-        <PnCrew liga={liga} />
-        {/* ⚖️ (Dlx: «intercambia La semana con Misiones…», «simetría», y después «¿intercambiar La semana con Ligas? La semana
-            tiene más para visualizar»): a la izquierda tu liga (la fila del medio, la justa) y La semana (la de abajo, la
-            alta); a la derecha el Pase y Misiones */}
-        <div className="pn-mitades mi"><PnMiLiga liga={liga} /><PnSemana liga={liga} chica /></div>
-        <div className="pn-mitades pa"><PnPase dc={dc} chico /><PnMisiones liga={liga} chica /></div>
+        {/* 📱 los seis cuadros juntos (Dlx, 14/11/2026, al remake del celular: «Haz todo»): en la compu `.pn-dz` no existe
+            (display:contents, cada cuadro va a su lugar de la grilla); en el celular es UNA fila que se desliza, en vez de
+            tres filas de dos con la letra apretada (medido a 393 px: 700 px de alto para los seis) */}
+        <div className="pn-dz">
+          <PnTienda saldo={saldo} dc={dc} liga={liga} cuadro />
+          <PnCrew liga={liga} />
+          {/* ⚖️ (Dlx: «intercambia La semana con Misiones…», «simetría», y después «¿intercambiar La semana con Ligas? La semana
+              tiene más para visualizar»): a la izquierda tu liga (la fila del medio, la justa) y La semana (la de abajo, la
+              alta); a la derecha el Pase y Misiones */}
+          <div className="pn-mitades mi"><PnMiLiga liga={liga} /><PnSemana liga={liga} chica /></div>
+          <div className="pn-mitades pa"><PnPase dc={dc} chico /><PnMisiones liga={liga} chica /></div>
+        </div>
       </div>
       <div className="pn-baja pn-baja3">
         <PnEventos liga={liga} ancho />

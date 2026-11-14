@@ -5722,3 +5722,133 @@ dialog.pn-pop.un-pop{--pc:#29B298;width:min(540px,calc(100vw - 32px));max-height
 .rds-b.ya{background:#0d1d2b;color:#5CC8FF}
 .rds-b.ya.espera{background:#141417;color:#A5A5A0}
 @media (max-width: 560px){.rds-l{grid-template-columns:1fr}}
+
+/* ═══ ↩️ DEVUELTO EL 14/11/2026: la 5.26 (Lo último nuevo) borró de paso este bloque entero junto con el mosaico viejo, y
+   sin él el logo del último anuncio se dibujaba a 512×512 y estiraba la fila de arriba a 578 px hasta los 1180 px de ancho;
+   el sorteo y Tu servidor también se quedaron sin su forma. Es el mismo texto de la 5.11 (d0732fc7d), sin cambios ═══ */
+/* ═══ 🔢 LA FILA DE ARRIBA, SIEMPRE CUATRO (13/11/2026, Dlx: «recuerda siempre son 4 mini paneles… no 3»): el sorteo para
+   participar y el último anuncio de un servidor, cuando no hay Premio gratis ═══ */
+.pn-srt{border-color:#6a1238;border-left-color:#E41373;background:linear-gradient(100deg,rgba(228,19,115,.22),rgba(228,19,115,.04) 60%),#0B0C0E;text-decoration:none}
+.pn-srt:hover,.pn-srt:focus-visible{border-color:#E41373}
+.pn-srt .pn-gr-ic{background:#E41373;color:#FFF}
+.pn-srt .pn-gr-et{color:#FF5FA2}
+.pn-srt.listo{border-left-color:#E41373;background:linear-gradient(100deg,rgba(228,19,115,.12),transparent 60%),#0B0C0E}
+.pn-srt.listo .pn-gr-ic{background:#3a1424;color:#FF5FA2}
+.pn-anc{display:flex;align-items:center;gap:12px;padding:10px 14px;min-width:0;color:#F6F6F6;text-decoration:none;border:1.5px solid #24384f;border-left:4px solid var(--azul);
+  background:linear-gradient(100deg,rgba(88,166,255,.16),rgba(88,166,255,.03) 60%),#0B0C0E}
+.pn-anc:hover,.pn-anc:focus-visible{border-color:var(--azul);outline:none}
+.pn-anc-logo{width:40px;height:40px;border-radius:50%;object-fit:cover;flex:none;display:grid;place-items:center;background:#14171b;color:var(--azul);box-shadow:0 0 0 2px #24384f}
+.pn-anc .pn-tx{display:grid;gap:2px;min-width:0}
+.pn-anc-et{font:800 10px/1 "Barlow Condensed",sans-serif;font-style:normal;letter-spacing:.1em;text-transform:uppercase;color:var(--azul)}
+.pn-anc b{font:800 14px/1.15 Archivo,sans-serif;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.pn-anc small{font:500 12px/1.2 Archivo,sans-serif;color:#c9cbd1}
+@media (max-width: 760px){.pn-anc{padding:8px 10px;gap:8px}.pn-anc-logo{width:32px;height:32px}}
+
+/* 📐 TU SERVIDOR Y EVENTOS, BIEN UBICADOS (13/11/2026, Dlx: «posiciona bien las estadísticas de eventos y las cosas dentro de tu
+   servidor»): las tres cajas de tu servidor juntas, del mismo ancho y alto, a la derecha; y en Eventos la gráfica a la altura
+   de los números, con los días debajo */
+.pn-sv{justify-content:flex-start}
+.pn-sv .pn-baja-tx{flex:1 1 auto}
+.pn-sv-st{display:grid;grid-auto-flow:column;grid-auto-columns:minmax(0,1fr);gap:8px;flex:0 1 56%;align-self:stretch;margin-left:auto;min-width:0}
+.pn .pn-sv-st > .pn-mini,.pn .pn-sv-st > .pn-sv-gu{display:grid;align-content:center;justify-items:center;gap:5px;padding:8px 10px;background:#000;border:1.5px solid var(--borde2);text-align:center;min-width:0}
+.pn .pn-sv-st .pn-mini > span,.pn .pn-sv-st .pn-sv-gu > i{font:700 10px/1 "Barlow Condensed",sans-serif;font-style:normal;letter-spacing:.07em;text-transform:uppercase;color:var(--azul);white-space:nowrap}
+.pn .pn-sv-st .pn-mini strong{font:900 18px/1 Archivo,sans-serif}
+.pn .pn-sv-st .pn-sv-meta i{width:100%;max-width:96px}
+@media (max-width: 760px){.pn-sv-st{flex-basis:auto}}
+.pn-baja3 .pn-ev.ancho{grid-template-columns:minmax(140px,auto) minmax(0,1fr);grid-template-areas:"h b" "n b" "t b" "u l";column-gap:22px;align-items:center}
+.pn-baja3 .pn-ev.ancho .pn-barras{align-self:stretch;min-height:56px}
+.pn-baja3 .pn-ev.ancho .pn-letras{align-self:start}
+/* abajo, Tu servidor en dos pisos: arriba el escudo, el nombre y sus tres de arriba; abajo las tres cajas a lo ancho. En un piso
+   no entraba todo y las cajas se encimaban (medido a 1621 px, con el top 3) */
+.pn-baja3 .pn-sv{display:grid;grid-template-columns:auto minmax(0,1fr) auto;grid-template-areas:"logo tx top" "st st st";align-items:center;gap:10px 12px}
+.pn-baja3 .pn-sv > .pn-sv-logo{grid-area:logo}
+.pn-baja3 .pn-sv > .pn-baja-tx{grid-area:tx;min-width:0}
+.pn-baja3 .pn-sv > .pn-sv-top{grid-area:top;margin-left:0;width:170px}
+.pn-baja3 .pn-sv > .pn-sv-st{grid-area:st;margin-left:0;flex:none}
+.pn .pn-baja3 .pn-sv-st > .pn-mini,.pn .pn-baja3 .pn-sv-st > .pn-sv-gu{padding:6px 10px}
+.pn-baja3 .pn-sv-gu img,.pn-baja3 .pn-sv-gu b{width:24px;height:24px}
+.pn-baja3 .pn-sv-gu > span{gap:5px}
+.pn-baja3 .pn-sv-gu small{max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+@media (max-width: 760px){.pn-baja3 .pn-sv{grid-template-columns:auto minmax(0,1fr);grid-template-areas:"logo tx" "st st"}}
+
+
+/* ═══ 📱 EL CELULAR, REHECHO (14/11/2026). Dlx, con una captura de su iPhone: «¿podemos remakear cómo se ve en celular?
+   siento que se ve igual», y a la lista de seis cambios: «Haz todo»; y además, de la fila de arriba: «algo más grande en
+   altura… los Dragon Drops y ese de último evento… en vez de que sea uno largo, así ocupa menos espacio, pero lo ocupamos
+   inteligentemente». Medido antes a 393 px con su perfil: 8.081 px de alto, 9,5 pantallas. Nada sale del Inicio: cambia
+   cómo se acomoda en el teléfono. La barra de abajo NO se toca: la quinta a la mitad es a propósito (18/10, ver Tabbar) ═══ */
+
+/* los seis cuadros del panel: en la compu cada uno va a su lugar de la grilla, como siempre */
+.pn-dz{display:contents}
+
+/* 1 · UN AVISO A LA VEZ: el del Dashboard primero; el del tutorial espera a que lo cierres (estaban los dos, 278 px). El de
+   instalar tampoco sale mientras haya otro. El de la versión nueva, en dos renglones y sin el texto largo: tapaba casi un
+   cuarto de la pantalla, abajo */
+@media (max-width: 760px){
+  .app .aviso-web ~ .rc-franja{display:none}
+  .app:has(.aviso-web, .rc-franja) .instalar{display:none}
+  .aviso-version{padding:9px 12px;box-shadow:3px 3px 0 var(--magenta)}
+  .aviso-version .av-d{display:none}
+  .aviso-version .av-t{margin-top:2px;font-size:14px;line-height:1.25}
+  .aviso-version .av-btns{margin-top:7px}
+}
+
+/* 2 · EL ESCENARIO, A 16 PX Y NO A 48: los 48 eran para las flechas, que en el teléfono tapaban «CUARTOS» de la llave. Se
+   cambia de momento con el dedo (los eventos de toque, en `Escenario` de arriba.jsx) o con las pestañas de abajo */
+@media (max-width: 899.98px){
+  .app .hero.carrusel{padding-left:16px;padding-right:16px}
+  .app .hero.carrusel .mo-tabs{margin-left:-16px;margin-right:-16px}
+  .app .hero.carrusel .cm-wrap{margin:0 -16px;padding:0 16px}
+  .app .hero.carrusel .mo-fl{display:none}
+}
+
+/* 3 · LA FILA DE ARRIBA, DE A DOS Y MÁS ALTA (lo que pidió Dlx): racha, último evento, campana y Dragon Drops eran tiras a
+   lo ancho; ahora son cuadros de dos en dos, con el dibujo arriba y el texto abajo. Con tres, los Drops a lo ancho arriba
+   (o, sin Drops —sin cuenta—, el tercero a lo ancho abajo) */
+@media (max-width: 760px){
+  .app .pn-fila.cuatro,.app .pn-fila.tres,.app .pn-fila.dos{grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+  .app .pn-fila.cuatro > *,.app .pn-fila.tres > *,.app .pn-fila.dos > *{grid-column:auto}
+  .app .pn-fila.tres:not(:has(> .pn-dia)) > :nth-child(3):last-child{grid-column:1/-1}
+  .app .pn-fila > :not(dialog){flex-direction:column;align-items:flex-start;justify-content:space-between;gap:8px;min-height:128px;padding:12px}
+  .app .pn-fila.tres:not(:has(> .pn-dia)) > :nth-child(3):last-child{flex-direction:row;align-items:center;min-height:0}
+  /* con tres y uno es Dragon Drops (Dlx, 14/11/2026: «al costado debería ir el de último evento… y arriba de esos 2 el
+     Dragon Drop largo si es que no hay un 4.º bloque»): los Drops a lo ancho arriba, y los otros dos lado a lado */
+  .app .pn-fila.tres:not(.cuatro) > .pn-dia{order:-1;grid-column:1/-1;flex-direction:row;align-items:center;min-height:0}
+  .app .pn-fila > :not(dialog) > .pn-tx{width:100%}
+  .app .pn-fila > :not(dialog) > .btn{align-self:stretch;text-align:center;justify-content:center}
+}
+
+/* 4 · LOS SEIS CUADROS DEL PANEL, EN UNA FILA QUE SE DESLIZA: tu carta a lo ancho y debajo Tienda, Crew, tu liga, el Pase,
+   La semana y Misiones, de a uno y algo (se ve el borde del que sigue). Antes eran tres filas de dos, de 175 px cada uno */
+@media (max-width: 760px){
+  .app .pn-grid{grid-template-columns:minmax(0,1fr);grid-template-areas:"yo" "dz";grid-template-rows:auto auto}
+  .app .pn-dz{grid-area:dz;display:grid;grid-auto-flow:column;grid-auto-columns:74%;grid-template-rows:minmax(0,1fr);gap:10px;
+    overflow-x:auto;overscroll-behavior-x:contain;scroll-snap-type:x mandatory;scroll-padding:0 16px;margin:0 -16px;padding:2px 16px 6px;scrollbar-width:none}
+  .app .pn-dz::-webkit-scrollbar{display:none}
+  .app .pn-dz .pn-cu{grid-area:auto;scroll-snap-align:start;min-width:0}
+  .app .pn-dz .pn-ti2{order:1}
+  .app .pn-dz .pn-cr{order:2}
+  .app .pn-dz .pn-ml{order:3}
+  .app .pn-dz .pn-pa{order:4}
+  .app .pn-dz .pn-se2{order:5}
+  .app .pn-dz .pn-mi{order:6}
+}
+
+/* 5 · LAS LISTAS LARGAS, CORTAS: tres y «Ver todo», que ya estaba en las tres (Lo último: «Ver todo»; Los que mandan: «Todos
+   los raperos»). Merchandising, en una fila que se desliza como los cuadros del panel */
+@media (max-width: 760px){
+  .app .lu-lista > li:nth-child(n+4){display:none}
+  .app .mn-lista > li:nth-child(n+3){display:none}
+  .app .mqa-g{display:grid;grid-auto-flow:column;grid-auto-columns:80%;grid-template-columns:none;gap:10px;overflow-x:auto;
+    overscroll-behavior-x:contain;scroll-snap-type:x mandatory;scroll-padding:0 16px;margin:0 -16px;padding:0 16px 6px;scrollbar-width:none}
+  .app .mqa-g::-webkit-scrollbar{display:none}
+  .app .mqa-otros{display:contents}
+  .app .mqa-uno,.app .mqa-p{scroll-snap-align:start;min-width:0}
+  .app .mqa-g{align-items:start}
+  .app .mqa-img{max-width:150px;margin:0 auto}
+  .app .mqa-sw{display:flex;gap:6px;overflow-x:auto;scrollbar-width:none;margin:0 -16px;padding:4px 16px}
+  .app .mqa-sw::-webkit-scrollbar{display:none}
+  .app .mqa-sw .mqa-c{flex:none}
+  .app .mqa-p-img,.app .mqa-p.ancho .mqa-p-img{width:170px;margin:14px auto 0}
+  .app .mqa-p.ancho{grid-column:auto;flex-direction:column;align-items:stretch}
+}

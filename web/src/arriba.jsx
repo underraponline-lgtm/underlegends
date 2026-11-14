@@ -1371,7 +1371,9 @@ function CuadroRondas({ ll, previa }) {
 // tachado se leía como un error). En el celular y en pantallas medianas, semis y final: con los cuartos, el campeón
 // quedaba afuera de la pantalla. La llave entera está a un botón.
 const MEDIDAS = {
-  movil: { rondas: 2, W: 104, G: 12, CAMP: 88 },
+  // 📱 114 y no 104 (14/11/2026): sin las flechas del escenario el celular gana 64 px, y con 114 las dos rondas y el
+  // campeón siguen entrando a 360 (2·114 + 12 + 88 = 328, lo que queda con 16 px a cada lado)
+  movil: { rondas: 2, W: 114, G: 12, CAMP: 88 },
   medio: { rondas: 2, W: 116, G: 16, CAMP: 96 },
   pc: { rondas: 3, W: 106, G: 14, CAMP: 96 },
   // en una pantalla ancha, cuatro rondas: con Octavos entra la llave entera de 16 (Dlx, 01/10: «mostrar todas las
@@ -2010,12 +2012,28 @@ export function Hero({ liga, vivoL, children }) {
   return (
     <div className="escena hero-ini" data-tuto="hoy" style={fondoDe(liga, mo[j])}>
       <section className="hero carrusel" id="envivo" aria-roledescription="carrusel" aria-label="Lo de ahora"
-        onPointerDown={(e) => { x0.current = e.clientX; quieto.current = true; }}
-        onPointerLeave={() => { x0.current = null; quieto.current = false; }}
+        onPointerDown={(e) => { if (e.pointerType === 'touch') return; x0.current = e.clientX; quieto.current = true; }}
+        onPointerLeave={(e) => { if (e.pointerType === 'touch') return; x0.current = null; quieto.current = false; }}
         onPointerUp={(e) => {
+          if (e.pointerType === 'touch') return;
           if (x0.current !== null && Math.abs(e.clientX - x0.current) > 40 && !e.target.closest('.cm-wrap')) ver(j + (e.clientX < x0.current ? 1 : -1));
           x0.current = null; quieto.current = false;
-        }}>
+        }}
+        // 📱 EN EL CELULAR, CON EL DEDO (Dlx, 14/11/2026, al remake del celular: «Haz todo»). Las flechas se fueron del
+        // teléfono —se comían 48 px de cada costado y tapaban «CUARTOS» de la llave— y el deslizar con el puntero no
+        // llegaba nunca: al mover el dedo el navegador se queda con el gesto y manda `pointercancel`, no `pointerup`. Los
+        // eventos de toque sí terminan. Cuenta sólo un gesto de costado (más ancho que alto), así bajar por la página no
+        // cambia el momento
+        onTouchStart={(e) => { const t = e.touches[0]; x0.current = t ? [t.clientX, t.clientY] : null; quieto.current = true; }}
+        onTouchEnd={(e) => {
+          const t = e.changedTouches[0]; const a = x0.current;
+          if (t && Array.isArray(a) && !e.target.closest('.cm-wrap')) {
+            const dx = t.clientX - a[0]; const dy = t.clientY - a[1];
+            if (Math.abs(dx) > 50 && Math.abs(dx) > Math.abs(dy) * 1.5) ver(j + (dx < 0 ? 1 : -1));
+          }
+          x0.current = null; quieto.current = false;
+        }}
+        onTouchCancel={() => { x0.current = null; quieto.current = false; }}>
         <div className="hero-in">
           {mo.map((m, k) => (
             <article key={idDe(m)} className={'mo mo-' + m.tipo + (k === j ? ' on' : '')} aria-hidden={k !== j}>

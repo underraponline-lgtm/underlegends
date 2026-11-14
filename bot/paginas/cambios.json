@@ -11,6 +11,20 @@
  ],
  "cambios": [
     {
+        "version": "5.28",
+        "dia": "2026-11-14",
+        "cuando": "2026-11-14T00:57:00-05:00",
+        "titulo": "El Inicio en el celular, rehecho",
+        "items": [
+            "**Un aviso a la vez** arriba: el que sigue sale cuando cierras el anterior. El de versión nueva, más chico.",
+            "**El escenario de arriba usa todo el ancho** y se cambia con el dedo: sin las flechas que tapaban la llave.",
+            "**Los cuadros de arriba, de a dos y más altos**: el último evento al lado del premio, y Dragon Drops a lo ancho cuando no hay cuarto cuadro.",
+            "**Tienda, Crew, tu liga, el Pase, La semana y Misiones, en una fila que se desliza** debajo de tu carta.",
+            "**Lo último y Los que mandan muestran los primeros**, con «Ver todo»; Merchandising también se desliza.",
+            "Arreglado: el cuadro del último anuncio se veía gigante, en el celular y en la compu."
+        ]
+    },
+    {
         "version": "5.27",
         "dia": "2026-11-14",
         "cuando": "2026-11-14T00:09:00-05:00",
