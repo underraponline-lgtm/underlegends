@@ -8,6 +8,8 @@ import { usePases } from './pase.js';
 import { ConMarco } from './marcos.jsx';
 
 const TRAZOS = {
+  // 💬 el globo de los comentarios (13/11/2026, «Lo último»)
+  globo: <path d="M4 5h16v11h-8l-5 4v-4H4z" />,
   inicio: <path d="M4 11l8-7 8 7v9h-5v-6H9v6H4z" />,
   eventos: <><rect x="3.5" y="5" width="17" height="15" rx="1" /><path d="M3.5 10h17M8 3v4M16 3v4" /></>,
   ranking: <path d="M5 20V10M12 20V4M19 20v-7" />,

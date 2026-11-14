@@ -194,6 +194,14 @@ button.destacada{width:100%;font:inherit;color:inherit;text-align:left;cursor:po
 @media (min-width: 1240px){.app .ts-dor{flex-wrap:wrap;white-space:normal}}
 /* entre 900 y 1240 no entra en la misma fila: va abajo, a lo ancho y en una línea */
 @media (min-width: 900px) and (max-width: 1239.98px){.app .tira-s{grid-template-columns:auto minmax(0,1fr) auto;grid-template-areas:"t l a" "d d d";row-gap:12px}.app .ts-dor{flex-wrap:nowrap;white-space:nowrap}}
+/* 🔴 EL DORADO ENCIMADO (Dlx, 13/11/2026, con una captura: «aquí hay un bug»): desde que la tira corre (12/11), su columna
+   era `auto` y la del dorado `minmax(0,1fr)`. La tira mide `max-content` —la lista dos veces— así que se quedaba con todo
+   el ancho y al dorado le tocaba 0: salía como una columna magenta de una palabra por renglón, encima de «Lunes de la
+   Liga». Ahora la que se estira es la tira, y el dorado ocupa lo que mide su texto, en una línea */
+@media (min-width: 1240px){
+  .app .tira-s{grid-template-columns:auto minmax(0,1fr) auto auto}
+  .app .ts-dor{flex-wrap:nowrap;white-space:nowrap;max-width:none}
+}
 
 /* Tus eventos, sin entrar */
 .te-acc{padding:0 14px 14px}
@@ -5145,6 +5153,67 @@ dialog.pn-pop.pop-gratis{--pc:#F5C542;width:min(640px,calc(100vw - 32px))}
 .bs-nada{margin:0;padding:14px;color:#A5A5A0;font-size:14px}
 @media (max-width: 899.98px){ .bs-pie span{display:none} }
 
+/* ═══ 🔔 EL BUSCADOR Y LOS MENÚS DE ARRIBA, CON EL ESTILO DE LA CAMPANA (13/11/2026, Dlx: «realmente me gusta bastante el
+   estilo de notificaciones, ¿podrías hacer que eso tenga la barra de búsqueda algo así?, al abrir cada categoría como
+   rankings»). Las piezas son las `.nt-*` de la campana; acá sólo lo que cambia por vivir en otro lado ═══ */
+/* el panel del buscador: la campana sin su caja de 390 px (lo mide la barra) y sin pantalla completa en el celular */
+.app .cab .bs-panel.nt-p,.bs-panel.nt-p{position:absolute;inset:auto;top:calc(100% + 8px);left:0;right:0;width:auto;z-index:71;display:block;
+  max-height:min(72vh,600px);overflow-y:auto;background:rgba(11,11,13,.97);border:1px solid #232326;border-radius:4px;
+  box-shadow:0 18px 40px rgba(0,0,0,.55);padding:0}
+@media (max-width: 899.98px){
+  .app .cab .bs-panel.nt-p,.bs-panel.nt-p{position:absolute;inset:auto;top:calc(100% + 8px);left:0;right:0;max-height:min(70vh,560px)}
+}
+.bs-panel section + section{border-top:1px solid #1A1A1E}
+.bs-panel .nt-s{position:static;background:none}
+.bs-panel .nt-chips{position:sticky;top:0;z-index:2;background:#0B0B0D}
+.bs-panel a.nt-vivo{text-decoration:none}
+.bs-panel .nt-vivo:last-child{margin-bottom:10px}
+/* una fila de resultado */
+.bs-f.nt-f{grid-template-columns:40px minmax(0,1fr) auto;align-items:center;padding:9px 16px;text-decoration:none;color:#F6F6F6}
+@media (hover: hover) and (pointer: fine){.bs-f.nt-f:hover{background:#141417}}
+.bs-f:focus-visible{outline:2px solid #E41373;outline-offset:-2px}
+.bs-c.nt-cara{width:40px;height:40px}
+.bs-c .cara,.bs-c > span:first-child{width:40px;height:40px;border-radius:50%;overflow:hidden;display:grid;place-items:center;background:#1A1A1E;
+  font:800 14px/1 Archivo,sans-serif;color:#F6F6F6}
+.bs-c .cara img,.bs-c > span:first-child img{width:100%;height:100%;object-fit:cover;display:block}
+.bs-c .br-ico{color:#29B298}
+.bs-c .nt-badge{color:#F6F6F6;border-color:#0B0B0D}
+.bs-c .nt-badge svg{display:block}
+.bs-f .nt-t b{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.bs-f .nt-t small{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.bs-f .nt-hora{padding:0}
+/* los raperos de arriba, en fila */
+.bs-panel .bs-caras{padding:2px 10px 12px}
+.bs-panel .bs-caras a{position:relative}
+.bs-panel .bs-caras small{color:#A5A5A0;font:700 11.5px/1 "Barlow Condensed",sans-serif;letter-spacing:.04em}
+.bs-panel .bs-atajos{border:0;padding:2px 16px 14px;flex-wrap:wrap}
+.bs-panel .bs-atajos a.nt-chip{color:#F6F6F6;text-decoration:none}
+@media (hover: hover) and (pointer: fine){.bs-panel .bs-atajos a.nt-chip:hover{border-color:#F6F6F6}}
+.bs-pie.nt-pie{margin:0;justify-content:space-between;font-size:12px}
+.bs-esc{flex:none;color:#6E6E6A;font:700 12px/1 "Barlow Condensed",sans-serif;letter-spacing:.05em;text-transform:uppercase}
+.bs-panel .bs-borrar{color:#A5A5A0;font:inherit;letter-spacing:inherit;text-transform:inherit}
+@media (max-width: 899.98px){ .bs-pie > span:first-child{display:none} }
+
+/* los menús de Ranking, Eventos y Comunidad: el panel de la campana con su título en Anton */
+.app .cab .menu .grp-lista{min-width:330px;padding:0;gap:0;display:block;background:#0B0B0D;border:1px solid #232326;border-radius:4px;
+  box-shadow:0 18px 40px rgba(0,0,0,.55)}
+.app .cab .menu .grp-lista.dos{min-width:600px}
+.app .cab .menu .grp-h{display:flex;align-items:baseline;justify-content:space-between;gap:12px;margin:0;padding:14px 16px 12px;
+  border-bottom:1px solid #232326}
+.app .cab .menu .grp-lista .grp-h b{font:400 22px/1 Anton,Archivo,sans-serif;letter-spacing:.02em;text-transform:uppercase;color:#F6F6F6}
+.app .cab .menu .grp-lista .grp-h small{margin:0;color:#A5A5A0;font:700 13px/1 "Barlow Condensed",sans-serif;letter-spacing:.07em;text-transform:uppercase}
+.app .cab .menu .grp-items{display:grid;gap:2px;padding:6px}
+.app .cab .menu .grp-lista.dos .grp-items{grid-template-columns:repeat(2,minmax(0,1fr))}
+.app .cab .menu .grp-lista a{grid-template-columns:38px minmax(0,1fr);gap:11px;align-items:center;padding:9px 10px;border-radius:4px}
+.app .cab .menu .grp-lista a:hover,.app .cab .menu .grp-lista a:focus-visible{background:#141417}
+.app .cab .menu .grp-lista a.on{background:#121015;box-shadow:inset 3px 0 0 #E41373}
+.app .cab .menu .grp-ico{width:38px;height:38px;border-radius:50%;display:grid;place-items:center;background:#141417;border:1px solid #232326;color:#29B298}
+.app .cab .menu .grp-lista a.on .grp-ico{color:#E41373;border-color:#3a1022}
+.app .cab .menu .grp-lista a svg{margin:0}
+.app .cab .menu .grp-lista b{font:700 14px/1.25 Archivo,sans-serif;text-transform:none;letter-spacing:0}
+.app .cab .menu .grp-lista small{font:400 12.5px/1.35 Archivo,sans-serif;color:#A5A5A0;margin-top:2px}
+
+
 
 /* ═══ 🅰 LA CABECERA, TERCERA MANO (13/11/2026, Dlx: «Nivel 6 y el ícono de XP», «un poquito más de separación entre
    LIGA GLOBAL T1, las categorías del medio y la parte de la derecha») ═══ */
@@ -5190,189 +5259,159 @@ dialog.pn-pop.pop-gratis{--pc:#F5C542;width:min(640px,calc(100vw - 32px))}
 }
 
 
-/* ═══ 🧩 LO ÚLTIMO, EN MOSAICO (13/11/2026, la B de la maqueta; Dlx: «Mosaico pero saca de ahí las encuestas y asegúrate
-   que sea interactuable y sociable y que no todo sea tan grande tampoco»). En la compu, 4 columnas por 3 filas de 132 px:
-   la carta nueva 2×2, el afiche 1×2, los campeones y la noche 2×1, el rango y lo demás 1×1. En el celular, una fila que se
-   desliza. Cada pieza abre lo suyo; 👏 y 💬 no la abren ═══ */
-.lu-mos{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));grid-auto-rows:132px;grid-auto-flow:dense;gap:10px}
-.lu-t{position:relative;overflow:visible;min-width:0;display:flex;flex-direction:column;gap:6px;padding:12px;border:2px solid var(--linea);
-  background:var(--caja);color:var(--tinta);cursor:pointer;text-align:left}
-@media (hover: hover) and (pointer: fine){.lu-t:hover{border-color:var(--magenta)}}
-.lu-t:focus-visible{outline:2px solid var(--magenta);outline-offset:2px}
-.lu-cat{font:700 13px/1 "Barlow Condensed",sans-serif;letter-spacing:.07em;text-transform:uppercase;color:var(--magenta)}
-.lu-t b{font:800 14px/1.25 Archivo,sans-serif;overflow-wrap:anywhere}
-.lu-hora{font:700 13px/1 "Barlow Condensed",sans-serif;letter-spacing:.04em;text-transform:uppercase;color:var(--gris)}
-.lu-pie{display:flex;align-items:center;gap:10px;margin-top:auto;flex-wrap:wrap}
-/* 👏 y 💬 */
-.lu-soc{display:inline-flex;align-items:center;gap:6px}
-.lu-fel,.lu-cm{display:inline-flex;align-items:center;gap:5px;padding:5px 8px;border:1.5px solid var(--linea);border-radius:2px;background:none;
-  color:var(--tinta);cursor:pointer;font:800 12.5px/1 Archivo,sans-serif;text-decoration:none}
-.lu-fel em,.lu-cm em{font-style:normal}
-.lu-fel.on{background:var(--magenta);border-color:var(--magenta);color:#fff;cursor:default}
-.lu-fel.tuyo{cursor:default;color:var(--gris)}
-.lu-fel:disabled{opacity:1}
-@media (hover: hover) and (pointer: fine){.lu-fel:not(:disabled):hover,.lu-cm:hover{border-color:var(--magenta)}}
-.lu-btn{display:inline-flex;align-items:center;padding:7px 11px;border:2px solid var(--tinta);background:none;color:var(--tinta);cursor:pointer;
-  font:800 12px/1 Archivo,sans-serif;text-transform:uppercase;text-decoration:none}
-.lu-btn.v{background:var(--verde);border-color:var(--verde);color:#030304}
-.lu-acc{display:flex;flex-wrap:wrap;align-items:center;gap:6px;margin-top:4px}
-/* la carta nueva */
-.lu-feat{grid-column:span 2;grid-row:span 2;display:grid;grid-template-columns:auto minmax(0,1fr);gap:18px;align-items:center;padding:14px 18px}
-.lu-feat-v{position:relative;display:block;width:150px}
+/* ═══ 🔔 LO ÚLTIMO, CON EL ESTILO DE LA CAMPANA (13/11/2026, Dlx: «realmente me gusta bastante el estilo de notificaciones…
+   que la sección de lo último sea algo así también», «eso de TøKiØ rango B no se ve tan importante y el de Akus su
+   tarjeta de País tampoco»). Reemplaza al mosaico de la 5.10. A la izquierda lo más grande (la carta nueva); a la
+   derecha el panel de la campana sin flotar —sus `.nt-*`—: filtros, «Anoche en la Liga» como tira y una fila por
+   novedad con su cara, su carta o su afiche. Los colores son los de la campana: el panel es oscuro en los dos temas ═══ */
+.lu-dos{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.08fr);gap:14px;align-items:start}
+.lu-dos.solo{grid-template-columns:minmax(0,1fr)}
+/* el panel de la campana, quieto adentro de la página (en el celular la campana es pantalla completa: acá no) */
+.lu-dos .nt-p.lu-panel{position:relative;inset:auto;top:auto;right:auto;z-index:auto;width:auto;max-height:none;overflow:visible;
+  box-shadow:none;border:1px solid #232326;border-radius:4px}
+.lu-cat{display:block;margin-bottom:5px;font:700 12.5px/1 "Barlow Condensed",sans-serif;letter-spacing:.07em;text-transform:uppercase;color:#FF4F9A}
+/* la grande */
+.lu-feat{display:grid;grid-template-columns:auto minmax(0,1fr);gap:22px;align-items:start;padding:20px 22px;background:#0B0B0D;color:#F6F6F6;
+  border:1px solid #232326;border-radius:4px;cursor:pointer;text-align:left;font:400 14px/1.45 Archivo,sans-serif}
+@media (hover: hover) and (pointer: fine){.lu-feat:hover{border-color:#3A3A40}}
+.lu-feat:focus-visible{outline:2px solid #E41373;outline-offset:2px}
+.lu-feat-v{position:relative;display:block;width:172px}
 .lu-feat-i{width:100%;display:block}
 .lu-feat-i img{width:100%;display:block}
 .lu-feat-v .sticker{right:-10px;bottom:12px}
-.lu-feat-t{display:grid;gap:8px;min-width:0}
-.lu-tit{font:900 22px/1.05 Archivo,sans-serif !important;font-stretch:112%;text-transform:uppercase}
-.lu-datos{display:flex;flex-wrap:wrap;gap:5px}
-.lu-datos span{padding:4px 7px;border:1.5px solid var(--linea);font:700 13px/1 "Barlow Condensed",sans-serif;letter-spacing:.05em;text-transform:uppercase}
-/* el afiche entero */
-.lu-fly{grid-row:span 2;padding:0}
-.lu-fly-w{position:absolute;inset:0;overflow:hidden}
-.lu-fly-i{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
-.lu-fly-p{position:absolute;left:0;right:0;bottom:0;display:grid;gap:5px;padding:10px 12px;background:rgba(3,3,4,.86);color:#F6F6F6}
-.lu-fly-p .lu-hora{color:#C9C9C4}
-.lu-fly-p .lu-cat{color:#FF4F9A}
-/* el rango: la letra grande en su color */
-.lu-rg{padding-right:64px}
-.lu-rg-l{position:absolute;right:10px;bottom:2px;font:900 64px/1 Archivo,sans-serif;font-stretch:112%}
-.lu-rg .lu-soc{margin-top:auto}
-/* los campeones */
-/* «Lo último» va en una sección clara: el dorado es el borde y el color de la etiqueta, no el fondo */
-.lu-camp{grid-column:span 2;display:grid;grid-template-columns:auto minmax(0,1fr);gap:14px;align-items:center;border-color:#D9A400;box-shadow:inset 4px 0 0 #D9A400}
-.lu-camp .lu-cat{color:#A87800}
-.negra .lu-camp .lu-cat,.noche .lu-camp .lu-cat{color:#F2B705}
-.lu-camp-t{display:grid;gap:6px;min-width:0;height:100%;align-content:center}
-.lu-par{display:flex}
-.lu-par-c{width:64px;height:64px;border-radius:50%;overflow:hidden;border:2px solid #F2B705}
-.lu-par-c + .lu-par-c{margin-left:-14px}
-.lu-par-c img{width:100%;height:100%;object-fit:cover}
-/* la noche */
-.lu-noche{grid-column:span 2;display:grid;grid-template-columns:minmax(0,1fr) auto;gap:12px;align-items:center}
-.lu-noche-t{display:grid;gap:6px;min-width:0}
-.lu-num{font:900 34px/1 Archivo,sans-serif;font-stretch:112%}
-.lu-num small{margin:0 10px 0 5px;font:700 14px/1 "Barlow Condensed",sans-serif;letter-spacing:.05em;text-transform:uppercase;color:var(--gris)}
-.lu-noche .lu-hora{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.lu-caras{display:flex}
-.lu-caras-c{width:42px;height:42px;border-radius:50%;overflow:hidden;border:2px solid var(--caja)}
-.lu-caras-c + .lu-caras-c{margin-left:-10px}
-.lu-caras-c img{width:100%;height:100%;object-fit:cover}
-/* las chicas */
-.lu-ch{display:grid;grid-template-columns:44px minmax(0,1fr);gap:10px;align-items:start}
-.lu-ch-v{width:44px;height:44px;display:block;overflow:hidden}
-.lu-ch-i{width:44px;height:44px;object-fit:cover;object-position:top;display:grid;place-items:center}
-.lu-ch-i img{width:100%;height:100%;object-fit:cover;object-position:top}
-.lu-ch-t{display:flex;flex-direction:column;gap:5px;min-width:0;height:100%}
-.lu-ch-t b{display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
-@media (min-width: 900px) and (max-width: 1199.98px){ .lu-feat-v{width:120px} .lu-tit{font-size:19px !important} }
-/* 📱 en el celular, una fila que se desliza */
-@media (max-width: 899.98px){
-  .lu-mos{grid-template-columns:none;grid-auto-flow:column;grid-auto-columns:minmax(230px,78%);grid-auto-rows:auto;grid-template-rows:212px;
-    overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none;padding-bottom:4px}
-  .lu-mos > .lu-t{grid-column:auto;grid-row:auto;scroll-snap-align:start}
-  .lu-feat{grid-template-columns:82px minmax(0,1fr);gap:10px;padding:12px}
-  .lu-feat-v{width:82px}
-  /* sin cortar palabras («COMPETI-TIVA»), y sólo «Ver la carta» y 👏: el perfil se abre tocando la pieza */
-  .lu-tit{font-size:15px !important;overflow-wrap:normal !important}
-  .lu-feat .lu-acc .lu-btn:not(.v){display:none}
-  .lu-datos{display:none}
-  .lu-camp,.lu-noche{grid-template-columns:1fr}
+.lu-feat-t{display:grid;gap:12px;min-width:0;align-content:start}
+.lu-feat-t .lu-cat{margin:0}
+.lu-tit{display:block;font:400 30px/1.04 Anton,Archivo,sans-serif;letter-spacing:.01em;text-transform:uppercase;overflow-wrap:anywhere}
+.lu-datos{display:flex;flex-wrap:wrap;gap:6px}
+.lu-datos span{padding:6px 9px;border:1px solid #2E2E33;border-radius:4px;background:#141417;color:#D8D8D4;
+  font:700 13px/1 "Barlow Condensed",sans-serif;letter-spacing:.05em;text-transform:uppercase}
+.lu-acc{display:flex;flex-wrap:wrap;gap:8px}
+.lu-btn{display:inline-flex;align-items:center;padding:10px 14px;border:1px solid #3A3A40;border-radius:4px;background:#141417;color:#F6F6F6;
+  cursor:pointer;font:800 12.5px/1 Archivo,sans-serif;text-transform:uppercase;text-decoration:none}
+.lu-btn.v{background:#29B298;border-color:#29B298;color:#030304}
+@media (hover: hover) and (pointer: fine){.lu-btn:not(.v):hover{border-color:#F6F6F6}}
+.lu-feat .lu-soc{margin-top:0}
+/* la columna de la izquierda: la grande, anoche en la Liga y el afiche */
+.lu-izq{display:grid;gap:14px;min-width:0}
+.lu-noche{display:grid;gap:10px;padding:16px 20px;border:1px solid #232326;border-radius:4px;background:#0B0B0D;color:#F6F6F6;text-decoration:none}
+@media (hover: hover) and (pointer: fine){.lu-noche:hover{border-color:#3A3A40}}
+.lu-noche .lu-cat{margin:0}
+.lu-num{display:flex;flex-wrap:wrap;align-items:baseline;gap:4px 8px;font:400 34px/1 Anton,Archivo,sans-serif}
+.lu-num small{margin-right:12px;color:#A5A5A0;font:700 13px/1 "Barlow Condensed",sans-serif;letter-spacing:.06em;text-transform:uppercase}
+.lu-noche-c{display:flex;align-items:center;padding-left:8px}
+.lu-noche-c .nt-c{width:32px;height:32px;margin-left:-8px;border:2px solid #0B0B0D;font-size:12px}
+.lu-noche-c small{margin-left:10px;min-width:0;color:#C9C9C4;font-size:12.5px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.lu-fly{position:relative;display:block;aspect-ratio:16 / 9;overflow:hidden;border:1px solid #232326;border-radius:4px;background:#0B0B0D;cursor:pointer}
+.lu-fly img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block}
+/* sin degradé (regla del remake): una banda sólida */
+.lu-fly-p{position:absolute;left:0;right:0;bottom:0;display:grid;gap:4px;padding:11px 16px 13px;color:#F6F6F6;background:rgba(3,3,4,.9)}
+.lu-fly-p b{font:700 15px/1.25 Archivo,sans-serif}
+.lu-fly-p .lu-cat{margin:0}
+.lu-fly:focus-visible{outline:2px solid #E41373;outline-offset:2px}
+/* la lista */
+.lu-lista{list-style:none;margin:0;padding:2px 0}
+.lu-r.nt-f{grid-template-columns:48px minmax(0,1fr) auto;align-items:start;gap:13px;padding:13px 16px;cursor:pointer}
+@media (hover: hover) and (pointer: fine){.lu-r.nt-f:hover{background:#141417}}
+.lu-r:focus-visible{outline:2px solid #E41373;outline-offset:-2px}
+.lu-r .nt-t b{font:700 14.5px/1.3 Archivo,sans-serif}
+.lu-r .nt-t small{font-size:12.5px}
+.lu-r-v{display:block;position:relative}
+.lu-r-v.v-cara .nt-cara,.lu-r-v .nt-cara > .nt-c{width:48px;height:48px}
+.lu-r-v .nt-ico img{width:30px;height:30px;object-fit:contain}
+.lu-r-dos{position:absolute;left:-6px;top:-6px;width:24px !important;height:24px !important;border:2px solid #0B0B0D;font-size:10px}
+.lu-r-v.v-carta{width:48px}
+.lu-r-carta{width:48px;display:block}
+.lu-r-carta img{width:100%;display:block}
+.lu-r-v.v-img{width:48px;height:60px;border-radius:4px;overflow:hidden;background:#141417}
+.lu-r-v.v-img img{width:100%;height:100%;object-fit:cover;display:block}
+.lu-r-rg{color:#030304;font:400 11px/1 Anton,Archivo,sans-serif;width:22px;height:22px}
+.lu-r-der{display:grid;justify-items:end;gap:9px;align-content:start}
+/* la letra del rango, grande y en su color */
+.lu-r-letra{display:grid;place-items:center;min-width:44px;height:44px;padding:0 7px;border-radius:4px;color:#030304;
+  font:400 28px/1 Anton,Archivo,sans-serif;letter-spacing:.02em}
+.lu-panel .lu-pie{color:#A5A5A0;text-decoration:none}
+.lu-panel .lu-pie b{margin-left:auto;color:#F6F6F6;font:700 12.5px/1 "Barlow Condensed",sans-serif;letter-spacing:.05em;text-transform:uppercase}
+@media (hover: hover) and (pointer: fine){.lu-panel .lu-pie:hover b{color:#29B298}}
+/* 🔥 las reacciones: lo que ya tiene, la carita y los comentarios */
+.lu-soc{position:relative;display:flex;flex-wrap:wrap;align-items:center;gap:6px;margin-top:10px}
+.lu-rc,.lu-car,.lu-cm{display:inline-flex;align-items:center;gap:5px;height:30px;padding:0 10px;border:1px solid #2E2E33;border-radius:15px;
+  background:#141417;color:#F6F6F6;cursor:pointer;font:700 13px/1 Archivo,sans-serif;text-decoration:none}
+.lu-rc span{font-size:15px;line-height:1}
+.lu-rc em,.lu-cm em{font-style:normal}
+.lu-rc.on{border-color:#E41373;background:#2A0B19}
+.lu-rc:disabled{cursor:default;opacity:1}
+.lu-car{background:none;color:#A5A5A0;padding:0 9px}
+.lu-car-t{font:700 12.5px/1 Archivo,sans-serif}
+.lu-cm{background:none;color:#A5A5A0}
+@media (hover: hover) and (pointer: fine){
+  .lu-rc:not(:disabled):hover{border-color:#E41373}
+  .lu-car:hover,.lu-cm:hover{color:#F6F6F6;border-color:#55555C}
 }
-
-/* ═══ 🔢 LA FILA DE ARRIBA, SIEMPRE CUATRO (13/11/2026, Dlx: «recuerda siempre son 4 mini paneles… no 3»): el sorteo para
-   participar y el último anuncio de un servidor, cuando no hay Premio gratis ═══ */
-.pn-srt{border-color:#6a1238;border-left-color:#E41373;background:linear-gradient(100deg,rgba(228,19,115,.22),rgba(228,19,115,.04) 60%),#0B0C0E;text-decoration:none}
-.pn-srt:hover,.pn-srt:focus-visible{border-color:#E41373}
-.pn-srt .pn-gr-ic{background:#E41373;color:#FFF}
-.pn-srt .pn-gr-et{color:#FF5FA2}
-.pn-srt.listo{border-left-color:#E41373;background:linear-gradient(100deg,rgba(228,19,115,.12),transparent 60%),#0B0C0E}
-.pn-srt.listo .pn-gr-ic{background:#3a1424;color:#FF5FA2}
-.pn-anc{display:flex;align-items:center;gap:12px;padding:10px 14px;min-width:0;color:#F6F6F6;text-decoration:none;border:1.5px solid #24384f;border-left:4px solid var(--azul);
-  background:linear-gradient(100deg,rgba(88,166,255,.16),rgba(88,166,255,.03) 60%),#0B0C0E}
-.pn-anc:hover,.pn-anc:focus-visible{border-color:var(--azul);outline:none}
-.pn-anc-logo{width:40px;height:40px;border-radius:50%;object-fit:cover;flex:none;display:grid;place-items:center;background:#14171b;color:var(--azul);box-shadow:0 0 0 2px #24384f}
-.pn-anc .pn-tx{display:grid;gap:2px;min-width:0}
-.pn-anc-et{font:800 10px/1 "Barlow Condensed",sans-serif;font-style:normal;letter-spacing:.1em;text-transform:uppercase;color:var(--azul)}
-.pn-anc b{font:800 14px/1.15 Archivo,sans-serif;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.pn-anc small{font:500 12px/1.2 Archivo,sans-serif;color:#c9cbd1}
-@media (max-width: 760px){.pn-anc{padding:8px 10px;gap:8px}.pn-anc-logo{width:32px;height:32px}}
-
-/* 📐 TU SERVIDOR Y EVENTOS, BIEN UBICADOS (13/11/2026, Dlx: «posiciona bien las estadísticas de eventos y las cosas dentro de tu
-   servidor»): las tres cajas de tu servidor juntas, del mismo ancho y alto, a la derecha; y en Eventos la gráfica a la altura
-   de los números, con los días debajo */
-.pn-sv{justify-content:flex-start}
-.pn-sv .pn-baja-tx{flex:1 1 auto}
-.pn-sv-st{display:grid;grid-auto-flow:column;grid-auto-columns:minmax(0,1fr);gap:8px;flex:0 1 56%;align-self:stretch;margin-left:auto;min-width:0}
-.pn .pn-sv-st > .pn-mini,.pn .pn-sv-st > .pn-sv-gu{display:grid;align-content:center;justify-items:center;gap:5px;padding:8px 10px;background:#000;border:1.5px solid var(--borde2);text-align:center;min-width:0}
-.pn .pn-sv-st .pn-mini > span,.pn .pn-sv-st .pn-sv-gu > i{font:700 10px/1 "Barlow Condensed",sans-serif;font-style:normal;letter-spacing:.07em;text-transform:uppercase;color:var(--azul);white-space:nowrap}
-.pn .pn-sv-st .pn-mini strong{font:900 18px/1 Archivo,sans-serif}
-.pn .pn-sv-st .pn-sv-meta i{width:100%;max-width:96px}
-@media (max-width: 760px){.pn-sv-st{flex-basis:auto}}
-.pn-baja3 .pn-ev.ancho{grid-template-columns:minmax(140px,auto) minmax(0,1fr);grid-template-areas:"h b" "n b" "t b" "u l";column-gap:22px;align-items:center}
-.pn-baja3 .pn-ev.ancho .pn-barras{align-self:stretch;min-height:56px}
-.pn-baja3 .pn-ev.ancho .pn-letras{align-self:start}
-/* abajo, Tu servidor en dos pisos: arriba el escudo, el nombre y sus tres de arriba; abajo las tres cajas a lo ancho. En un piso
-   no entraba todo y las cajas se encimaban (medido a 1621 px, con el top 3) */
-.pn-baja3 .pn-sv{display:grid;grid-template-columns:auto minmax(0,1fr) auto;grid-template-areas:"logo tx top" "st st st";align-items:center;gap:10px 12px}
-.pn-baja3 .pn-sv > .pn-sv-logo{grid-area:logo}
-.pn-baja3 .pn-sv > .pn-baja-tx{grid-area:tx;min-width:0}
-.pn-baja3 .pn-sv > .pn-sv-top{grid-area:top;margin-left:0;width:170px}
-.pn-baja3 .pn-sv > .pn-sv-st{grid-area:st;margin-left:0;flex:none}
-.pn .pn-baja3 .pn-sv-st > .pn-mini,.pn .pn-baja3 .pn-sv-st > .pn-sv-gu{padding:6px 10px}
-.pn-baja3 .pn-sv-gu img,.pn-baja3 .pn-sv-gu b{width:24px;height:24px}
-.pn-baja3 .pn-sv-gu > span{gap:5px}
-.pn-baja3 .pn-sv-gu small{max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-@media (max-width: 760px){.pn-baja3 .pn-sv{grid-template-columns:auto minmax(0,1fr);grid-template-areas:"logo tx" "st st"}}
-
-/* 🙂 LA CARITA Y SUS REACCIONES, Y ☁️ LA NUBE CON EL ÚLTIMO COMENTARIO (13/11/2026, Dlx: «una nube transparente… una preview
-   de un comentario», «el botón de emoji ese regular con carita… y se muestran las reacciones», «que todo esté bien posicionado
-   y de buen tamaño»). Los botones miden lo mismo: 28 px de alto */
-.lu-fel,.lu-cm,.lu-car{min-height:28px}
-.lu-car{display:inline-flex;align-items:center;gap:5px;padding:4px 8px 4px 6px;border:1.5px solid var(--linea);border-radius:14px;background:var(--fondo);
-  color:var(--tinta);cursor:pointer;font:800 12.5px/1 Archivo,sans-serif}
-.lu-car em{font-style:normal}
-.lu-car-i{font-size:15px;line-height:1}
-.lu-car.on,.lu-car:focus-visible{border-color:var(--magenta);outline:none}
-@media (hover: hover) and (pointer: fine){.lu-car:hover{border-color:var(--magenta)}}
-.lu-soc{position:relative}
-.lu-reac{position:absolute;left:0;bottom:calc(100% + 8px);z-index:30;display:grid;gap:6px;min-width:232px;padding:10px;border:1.5px solid var(--linea);
-  border-radius:4px;background:var(--fondo);color:var(--tinta);box-shadow:0 10px 24px rgba(0,0,0,.28);cursor:default}
-.lu-reac-f{display:grid;grid-template-columns:22px auto 1fr auto;align-items:center;gap:6px}
-.lu-reac-e{font-size:16px;line-height:1}
-.lu-reac-f b{font:900 15px/1 Archivo,sans-serif}
-.lu-reac-f small{color:var(--gris);font:700 13px/1 "Barlow Condensed",sans-serif;letter-spacing:.04em;text-transform:uppercase}
-.lu-reac .lu-btn{padding:6px 9px;font-size:11.5px}
-.lu-reac-tuyo{justify-self:end}
-/* la nube: blanca y medio transparente, con su colita; en la destacada va debajo de los botones */
-.lu-nube{position:relative;display:grid;gap:3px;max-width:100%;padding:8px 11px;border-radius:12px;background:rgba(255,255,255,.78);
-  border:1px solid rgba(3,3,4,.14);color:#030304;box-shadow:0 6px 16px rgba(0,0,0,.14);margin-top:4px}
-.lu-nube::before{content:"";position:absolute;left:16px;top:-6px;width:12px;height:12px;background:inherit;border-left:1px solid rgba(3,3,4,.14);
-  border-top:1px solid rgba(3,3,4,.14);transform:rotate(45deg)}
-.lu-nube-q{display:flex;align-items:center;gap:6px;font:800 12px/1 Archivo,sans-serif}
-.lu-nube-q i{font-style:normal;padding:2px 5px;border-radius:3px;background:rgba(3,3,4,.1);color:#55554f;font:700 10.5px/1 "Barlow Condensed",sans-serif;letter-spacing:.04em;text-transform:uppercase}
-.lu-nube-q small{margin-left:auto;color:#6E6E6A;font:700 12px/1 "Barlow Condensed",sans-serif}
-.lu-nube-t{font:500 13px/1.3 Archivo,sans-serif;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
-/* en las demás piezas, flota arriba al pasar o al enfocar, sin tapar lo de la pieza */
-.lu-nube.flota{position:absolute;left:10px;right:auto;width:max-content;max-width:min(360px,calc(100% - 20px));bottom:calc(100% - 4px);z-index:20;margin:0;opacity:0;transform:translateY(4px);
-  pointer-events:none;transition:opacity .15s ease,transform .15s ease}
-.lu-nube.flota::before{top:auto;bottom:-6px;transform:rotate(225deg)}
-@media (hover: hover) and (pointer: fine){.lu-t:hover > .lu-nube.flota{opacity:1;transform:none}}
-.lu-t:focus-visible > .lu-nube.flota,.lu-t:focus-within > .lu-nube.flota{opacity:1;transform:none}
-@media (prefers-reduced-motion: reduce){.lu-nube.flota{transition:none}}
-.app.calma .lu-nube.flota{transition:none}
-/* la nube de la destacada no se pasa del alto de la pieza */
-.lu-feat .lu-nube{max-width:380px}
+.lu-car.on{color:#F2B705;border-color:#F2B705}
+.lu-car:focus-visible,.lu-rc:focus-visible,.lu-cm:focus-visible,.lu-reac-e:focus-visible{outline:2px solid #E41373;outline-offset:2px}
+.lu-err{color:#FF8FB8;font-size:12px}
+/* el globito para elegir: las tuyas prendidas, las del Pase que te faltan apagadas con su nivel */
+.lu-reac{position:absolute;left:0;bottom:calc(100% + 8px);z-index:30;display:grid;gap:9px;padding:12px;min-width:236px;cursor:default;
+  background:#141417;border:1px solid #2E2E33;border-radius:6px;box-shadow:0 14px 30px rgba(0,0,0,.6)}
+.lu-reac-h{color:#A5A5A0;font:700 12.5px/1 "Barlow Condensed",sans-serif;letter-spacing:.07em;text-transform:uppercase}
+.lu-reac-g{display:flex;gap:8px}
+.lu-reac-e{display:grid;justify-items:center;align-content:center;gap:4px;width:56px;height:56px;border:1px solid #2E2E33;border-radius:6px;
+  background:#0B0B0D;cursor:pointer;font-size:26px;line-height:1;transition:transform .12s ease-out,border-color .12s}
+.lu-reac-e:not(:disabled):hover{transform:translateY(-2px) scale(1.06);border-color:#F2B705}
+.lu-reac-e.on{border-color:#E41373;background:#2A0B19;cursor:default}
+.lu-reac-e.bloq{cursor:default}
+.lu-reac-e.bloq span{filter:grayscale(1);opacity:.4}
+.lu-reac-e small{color:#A5A5A0;font:700 10.5px/1 "Barlow Condensed",sans-serif;letter-spacing:.04em}
+.lu-reac-pie{color:#A5A5A0;font-size:12px}
+.lu-reac-pie:hover{color:#F6F6F6}
+.app.calma .lu-reac-e{transition:none}
+@media (prefers-reduced-motion: reduce){.lu-reac-e{transition:none}.lu-reac-e:not(:disabled):hover{transform:none}}
+/* 💬 el último comentario, a la vista, con la cara de quien lo escribió */
+.lu-nube{display:grid;gap:9px;max-width:460px;margin-top:10px;padding:9px 12px;border:1px solid #26262B;border-radius:12px 12px 12px 3px;
+  background:#121215;color:#F6F6F6;text-decoration:none}
+.lu-nube.grande{max-width:none}
+@media (hover: hover) and (pointer: fine){.lu-nube:hover{border-color:#3A3A40}}
+.lu-nube-c{display:grid;grid-template-columns:28px minmax(0,1fr);gap:10px;align-items:start}
+.lu-nube-cara{width:28px;height:28px;border-radius:50%;overflow:hidden;display:grid;place-items:center;background:#2A2A2E;color:#F6F6F6;
+  font:800 11px/1 Archivo,sans-serif}
+.lu-nube-cara img{width:100%;height:100%;object-fit:cover;display:block}
+.lu-nube-cara.pj{color:#030304}
+.lu-nube-x{min-width:0}
+.lu-nube-x b{display:flex;flex-wrap:wrap;align-items:center;gap:6px;font:700 13.5px/1.2 Archivo,sans-serif}
+.lu-nube-x b i{padding:2px 5px;border-radius:3px;background:#2A2A2E;color:#C9C9C4;font:700 10.5px/1 "Barlow Condensed",sans-serif;
+  letter-spacing:.05em;text-transform:uppercase;font-style:normal}
+.lu-nube-x > span{display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;margin-top:3px;color:#E4E4E0;
+  font-size:14px;line-height:1.42}
+.lu-nube.grande .lu-nube-x > span{-webkit-line-clamp:3;font-size:14.5px}
+/* en las filas, el comentario en una línea con el nombre al lado: la fila no crece de más */
+.lu-r .lu-nube{margin-top:8px;padding:7px 11px}
+.lu-r .lu-nube-c{grid-template-columns:22px minmax(0,1fr);gap:8px;align-items:center}
+.lu-r .lu-nube-cara{width:22px;height:22px;font-size:10px}
+.lu-r .lu-nube-x{display:flex;align-items:baseline;gap:7px;min-width:0}
+.lu-r .lu-nube-x b{flex:none;font-size:13px}
+.lu-r .lu-nube-x > span{-webkit-line-clamp:1;margin:0;font-size:13.5px}
+.lu-nube-mas{color:#A5A5A0;font:700 12px/1 "Barlow Condensed",sans-serif;letter-spacing:.05em;text-transform:uppercase}
+/* el celular: una columna, la grande arriba */
 @media (max-width: 899.98px){
-  /* en el celular la fila desliza: lo que flota se cortaría, así que la nube va sólo en la destacada y en una línea */
-  .lu-nube.flota{display:none}
-  .lu-feat .lu-nube{display:none}
-  .lu-mos{padding-top:2px}
-  /* la fila que desliza corta lo que se sale: el globito va adentro de la pieza, de lado a lado, encima de los botones */
-  .lu-t .lu-soc{position:static}
-  .lu-reac{left:8px;right:8px;bottom:44px;min-width:0}
-  /* angosto: el emoji, el número y su botón, sin la palabra («felicitaciones» no entraba al lado de «Felicitar») */
-  .lu-reac-f{grid-template-columns:22px minmax(0,1fr) auto}
-  .lu-reac-f small{display:none}
+  .lu-dos{grid-template-columns:minmax(0,1fr)}
+  .lu-feat{grid-template-columns:112px minmax(0,1fr);gap:14px;padding:14px}
+  .lu-feat-v{width:112px}
+  .lu-tit{font-size:22px}
+  .lu-btn{padding:9px 11px}
+  .lu-r.nt-f{grid-template-columns:44px minmax(0,1fr) auto;gap:11px;padding:12px}
+  .lu-r-v.v-cara .nt-cara,.lu-r-v .nt-cara > .nt-c{width:44px;height:44px}
+  .lu-r-v.v-carta,.lu-r-carta,.lu-r-v.v-img{width:44px}
+  .lu-r-letra{min-width:38px;height:38px;font-size:24px}
+  }
+@media (max-width: 899.98px){
+  /* en el celular, la lista va enseguida de la grande; anoche y el afiche, después */
+  .lu-izq{display:contents}
+  .lu-feat{order:1}
+  .lu-dos .nt-p.lu-panel{order:2}
+  .lu-noche{order:3}
+  .lu-fly{order:4}
+  .lu-num{font-size:28px}
+  .lu-num small{margin-right:8px}
 }
 
 /* 📏 EVENTOS Y TU SERVIDOR, DEL TAMAÑO CORRECTO EN TODOS LOS ANCHOS (13/11/2026, Dlx: «asegúrate que eso de eventos y tu

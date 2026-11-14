@@ -388,7 +388,7 @@ function volverDeDiscord() {
       pa = JSON.parse(sessionStorage.getItem('lg:aplauso') || 'null');
       sessionStorage.removeItem('lg:aplauso');
     } catch (e) { pa = null; }
-    if (pa && pa.id) felicitar(String(pa.id));
+    if (pa && pa.id) felicitar(String(pa.id), pa.e ? String(pa.e) : '');
   }
   fetch('/api/cuenta', { method: 'POST', headers: { 'content-type': 'application/json' },
     body: JSON.stringify({ token: q.access_token }) })

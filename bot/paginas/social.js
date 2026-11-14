@@ -74,7 +74,9 @@ function votar(id, op) {
    ⚠️ AFUERA SE VE CUÁNTOS, NUNCA QUIÉN. Lo que felicitaste lo recuerda tu
    navegador (`lg:aplausos`). La página nueva lee `APLAUSOS` y se entera por
    `lg:aplausos` (web/src/publicaciones.jsx). */
-var APLAUSOS = { cu: {}, mios: leerLS('lg:aplausos', null) || {}, va: {}, err: {}, post: {} };
+/* 🔥 (13/11/2026) `e`: de cada publicación, cuántas de cada reacción que no es 👏; `miE`: con cuál reaccionaste tú
+   (sólo si no fue 👏). Las reacciones las da el Pase premium: ver `reaccionesDe()` en bot/avisos.js */
+var APLAUSOS = { cu: {}, e: {}, mios: leerLS('lg:aplausos', null) || {}, miE: leerLS('lg:aplausos-e', null) || {}, va: {}, err: {}, post: {} };
 var APL_T = 0;
 function avisarAplausos() {
   try { window.dispatchEvent(new Event('lg:aplausos')); } catch (e) { /* navegador viejo */ }
@@ -93,17 +95,26 @@ function pedirAplausos() {
         if (Date.now() - p.t < 120000) cu[id] = Math.max(+cu[id] || 0, p.n);
       });
       APLAUSOS.cu = cu;
+      var ce = Object.assign({}, d.e || {});
+      Object.keys(APLAUSOS.post).forEach(function (id) {
+        var p = APLAUSOS.post[id];
+        if (Date.now() - p.t < 120000 && p.por) ce[id] = p.por;
+      });
+      APLAUSOS.e = ce;
       avisarAplausos();
     })
     .catch(function () { /* sin los números se ve igual */ });
 }
-function felicitar(id) {
+function felicitar(id, e) {
   id = String(id || '');
-  if (!/^[0-9a-f]{12}$/.test(id) || APLAUSOS.va[id] || APLAUSOS.mios[id]) return;
+  e = typeof e === 'string' && e ? e : '👏';
+  // con otra reacción se puede cambiar la tuya; con la misma, no hace nada
+  var ya = APLAUSOS.mios[id] ? (APLAUSOS.miE[id] || '👏') : '';
+  if (!/^[0-9a-f]{12}$/.test(id) || APLAUSOS.va[id] || ya === e) return;
   APLAUSOS.va[id] = 1;
   delete APLAUSOS.err[id];
   avisarAplausos();
-  conCuenta('/api/avisos/felicitar', { id: id }, 'p', 'lg:aplauso', { id: id })
+  conCuenta('/api/avisos/felicitar', { id: id, e: e }, 'p', 'lg:aplauso', { id: id, e: e })
     .then(function (j) {
       if (!j) return;                 // se fue a Discord: a la vuelta sale solo (`volverDeDiscord()`)
       delete APLAUSOS.va[id];
@@ -115,9 +126,17 @@ function felicitar(id) {
           .slice(0, 300).forEach(function (x) { m[x] = APLAUSOS.mios[x]; });
         APLAUSOS.mios = m;
         guardarLS('lg:aplausos', m);
+        if (j.e && j.e !== '👏') APLAUSOS.miE[id] = j.e; else delete APLAUSOS.miE[id];
+        var me = {};
+        Object.keys(APLAUSOS.miE).filter(function (x) { return m[x]; }).forEach(function (x) { me[x] = APLAUSOS.miE[x]; });
+        APLAUSOS.miE = me;
+        guardarLS('lg:aplausos-e', me);
         if (typeof j.n === 'number') {
           APLAUSOS.cu[id] = j.n;
-          APLAUSOS.post[id] = { n: j.n, t: Date.now() };
+          var por = {};
+          Object.keys(j.por || {}).forEach(function (x) { if (x !== '👏') por[x] = j.por[x]; });
+          APLAUSOS.e[id] = por;
+          APLAUSOS.post[id] = { n: j.n, por: por, t: Date.now() };
         }
       } else {
         APLAUSOS.err[id] = j;

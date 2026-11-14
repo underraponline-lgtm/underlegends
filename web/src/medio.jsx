@@ -1,8 +1,8 @@
 // El medio del Inicio: Fechas, Lo último, Los que mandan y el panel de abajo. Traducido de docs/remake/reales.py
 // (fechas, noticias, raperos, panel, tus_eventos, tu_temporada, numeros).
 import { DIAS, hora, ksDe, limpio, minutosDelDia, num, resultado, siglaDe, srcLogo, utc } from './liga.js';
-import { useAplausos } from './aplausos.js';
-import { delHilo, useComentarios } from './comentarios.jsx';
+import { miReaccion, reaccionesDe, useAplausos } from './aplausos.js';
+import { PJ, delHilo, useComentarios } from './comentarios.jsx';
 import { Escudo, escudoDe } from './escudo.jsx';
 import { Bandera, Cara, Carta, Compartir, Ico, Pest, Rango, Sec, aDiscord, accion, enlace, nombrePais } from './piezas.jsx';
 import { avance, premioTexto, proximoEspecial, usePase, usePases } from './pase.js';
@@ -130,21 +130,43 @@ function irA(d, raiz) {
   else if (d.link) window.open(d.link, '_blank', 'noopener');
   else if (d.ancla) accion.ir(d.ancla);
 }
-// 🧩 LO ÚLTIMO, EN MOSAICO (Dlx, 13/11/2026, a la maqueta https://claude.ai/artifact/B1Dm8t3hxPJdLvektfRob5: «Mosaico
-// pero saca de ahí las encuestas y asegúrate que sea interactuable y sociable y que no todo sea tan grande tampoco»). Cada
-// tipo con su pieza: la carta nueva (la más grande), el afiche de la liga entero, la letra del rango, los campeones juntos
-// y la noche en números; lo demás, en piezas chicas. Las encuestas ya tienen su sección. Cada logro se felicita ahí mismo
-// (el mismo 👏 de Publicaciones: `window.felicitar`, `useAplausos`) y dice cuántos comentarios tiene. En el celular se desliza
-// 4 columnas por 3 filas en la compu: la carta ocupa 4 celdas, el afiche, los campeones y la noche 2, el rango y las chicas 1
-const LU_CELDAS = 12;
+// 🔔 LO ÚLTIMO, CON EL ESTILO DE LA CAMPANA (Dlx, 13/11/2026, mirando el panel de notificaciones: «realmente me gusta
+// bastante el estilo de notificaciones… que la sección de lo último sea algo así también», y «eso de TøKiØ rango B no se
+// ve tan importante y el de Akus su tarjeta de País tampoco»). Era un mosaico (5.10) y las piezas chicas quedaban como
+// cajas vacías con una línea de texto. Ahora: a la izquierda lo más grande —la última carta nueva o el último logro—, y
+// a la derecha la lista de la campana: filtros arriba y cada novedad en una fila con su cara (o su carta) y la esquinita
+// de qué es. Debajo de la grande, «Anoche en la Liga» y el afiche de la liga, para que las dos columnas queden parejas. La letra del rango va grande y en su color, al costado.
+// Cada fila abre lo suyo; las reacciones y los comentarios no la abren
+const LU_FILAS = 5;
 const luHace = (liga, t) => { const c = liga.cuando(t); return c ? c.charAt(0).toUpperCase() + c.slice(1) : ''; };
-// lo de una persona (o dos) se felicita; la noche, los flyers y lo de la Liga no
-const LU_LOGRO = new Set(['tarjeta', 'rango', 'campeon', 'ligahito', 'caza', 'pase']);
-// 👏 💬 LO SOCIAL DE CADA PIEZA (13/11/2026, Dlx: «para los usuarios que tengan más de una reacción que les aparezca el
-// botón de emoji, ese regular con carita, y se presiona ahí y se muestran las reacciones que tiene»). Con una sola, su
-// botón directo (👏 Felicitar, o 💬 N); con más de una, la carita 🙂 con el total, que abre un globito con cada una. Nada de
-// esto abre la pieza
-function LuSocial({ liga, it, A, hilo, chico = true }) {
+// 👏 lo que el Worker deja reaccionar: `APLAUDIBLES` de bot/avisos.js. ⚠️ Una carta nueva no: «le toca a todo el que
+// juega una vez». Si se cambia allá, se cambia acá
+const LU_REAC = new Set(['campeon', 'rango', 'caza', 'sobrevivio', 'pase', 'sorteo', 'ligahito', 'mesaward']);
+// los filtros: como los de la campana, cuatro
+const LU_FILTROS = [['todo', 'Todo'], ['cartas', 'Cartas'], ['logros', 'Logros'], ['liga', 'Liga']];
+const luCat = (it) => (it.tipo === 'tarjeta' ? 'cartas' : LU_REAC.has(it.tipo) ? 'logros' : 'liga');
+// la esquinita de cada fila, por lo que cuenta
+const LU_BADGE = { tarjeta: '🃏', campeon: '🏆', caza: '🎯', ligahito: '🏟️', flyer: '🏟️', liga: '📣', rango: '' };
+
+// 🙂 LA CARITA DE REACCIONAR (Dlx, 13/11/2026, con la captura de la de Discord: «el emoji al que me refería era éste, pero
+// feliz»): un círculo con ojos y sonrisa, dibujado acá —no un emoji—, para que se lea como botón
+function Carita({ t = 18 }) {
+  return (
+    <svg width={t} height={t} viewBox="0 0 24 24" aria-hidden="true">
+      <circle cx="12" cy="12" r="10.5" fill="currentColor" />
+      <circle cx="8.4" cy="9.8" r="1.55" fill="#0B0B0D" />
+      <circle cx="15.6" cy="9.8" r="1.55" fill="#0B0B0D" />
+      <path d="M7.3 13.4c1.1 2.4 2.8 3.6 4.7 3.6s3.6-1.2 4.7-3.6" fill="none" stroke="#0B0B0D" strokeWidth="2" strokeLinecap="round" />
+    </svg>
+  );
+}
+
+// 🔥 LAS REACCIONES DE CADA NOVEDAD (Dlx, 13/11/2026: «donde si haces click ahí te aparecen las reacciones que tengas, se
+// supone que tengo una de fueguito también pero no está»). La 🔥 y la 🎤 son de la fila premium del Pase (niveles 3 y 12)
+// y nunca se habían conectado: ahora cada uno reacciona con una, la que quiera de las suyas, y cambiarla pisa la de antes
+// (`reaccionesDe()` en bot/avisos.js). Al lado, lo que ya tiene esa novedad, como en Discord: tocar una que tienes es
+// reaccionar con ésa. Las que te faltan salen apagadas, con el nivel que las da
+function LuSocial({ liga, it, A, hilo, P }) {
   const [abierto, setAbierto] = useState(false);
   const caja = useRef(null);
   useEffect(() => {
@@ -156,172 +178,232 @@ function LuSocial({ liga, it, A, hilo, chico = true }) {
     return () => { document.removeEventListener('pointerdown', fuera, true); document.removeEventListener('keydown', esc); };
   }, [abierto]);
   const id = it.id;
-  const nc = hilo.length;
-  const n = id ? Number(A.cu[id] || 0) : 0;
-  const mio = id ? !!A.mios[id] : false;
+  if (!id) return null;
+  const reac = reaccionesDe(A, id);
+  const mia = miReaccion(A, id);
   const yo = liga.yo;
   const propio = !!(yo && ksDe(it).includes(yo.k));
-  const puede = !!(id && LU_LOGRO.has(it.tipo) && !propio);
-  if (!puede && !n && !nc) return null;
+  const puede = LU_REAC.has(it.tipo) && !propio;
+  const nc = hilo.length;
+  // las tuyas (sin entrar, la de todos: tocarla te lleva a entrar con Discord) y todas las que existen, con su nivel
+  const mias = (P && Array.isArray(P.reacciones) && P.reacciones.length) ? P.reacciones : ['👏'];
+  const todas = [['👏', 0]];
+  ((P && P.fila_premium) || []).forEach((p) => { if (p[2] === 'reaccion' && !todas.some((x) => x[0] === p[3])) todas.push([p[3], p[0]]); });
+  const va = !!A.va[id];
+  const reaccionar = (e) => { if (window.felicitar) window.felicitar(id, e); setAbierto(false); };
   const parar = (e) => e.stopPropagation();
-  const felicitar = () => { if (window.felicitar && id) window.felicitar(id); };
-  // `cuenta`: el número al lado; adentro del globito no, que ya lo dice la fila
-  const botonFel = (conTexto, cuenta = true) => (
-    <button type="button" className={'lu-fel' + (mio ? ' on' : '')} aria-pressed={mio} disabled={mio || !!A.va[id]} onClick={felicitar}
-      aria-label={(mio ? 'Felicitaste' : 'Felicitar') + (n && cuenta ? ' · ' + n : '')}>
-      <span aria-hidden="true">👏</span>{conTexto ? (mio ? 'Felicitaste' : 'Felicitar') : null}{n && cuenta ? <em>{num(n)}</em> : null}
-    </button>
-  );
-  const verCm = '#/publicaciones/' + encodeURIComponent(id || '');
-  // una sola reacción (o ninguna todavía): el botón de siempre
-  if (n + nc <= 1) {
-    return (
-      <span className="lu-soc" onClick={parar} onKeyDown={parar}>
-        {puede ? botonFel(!chico) : n ? <span className="lu-fel tuyo" title={propio ? 'Te felicitaron' : 'Felicitaciones'}>👏 <em>{num(n)}</em></span> : null}
-        {nc ? <a className="lu-cm" href={verCm} aria-label="1 comentario">💬 <em>1</em></a> : null}
-      </span>
-    );
-  }
+  const err = A.err[id];
   return (
     <span className="lu-soc" ref={caja} onClick={parar} onKeyDown={parar}>
-      <button type="button" className={'lu-car' + (abierto ? ' on' : '')} aria-expanded={abierto} aria-haspopup="dialog"
-        aria-label={'Reacciones: ' + (n ? n + ' felicitaciones' : '') + (n && nc ? ' y ' : '') + (nc ? nc + ' comentarios' : '')}
-        onClick={() => setAbierto((v) => !v)}>
-        <span className="lu-car-i" aria-hidden="true">🙂</span><em>{num(n + nc)}</em>
-      </button>
+      {reac.map(([e, n]) => (
+        <button key={e} type="button" className={'lu-rc' + (mia === e ? ' on' : '')} disabled={!puede || !mias.includes(e) || mia === e || va}
+          onClick={() => reaccionar(e)} aria-pressed={mia === e}
+          aria-label={num(n) + ' ' + e + (mia === e ? ', la tuya' : puede && mias.includes(e) ? ': reaccionar con ésta' : '')}>
+          <span aria-hidden="true">{e}</span><em>{num(n)}</em></button>
+      ))}
+      {puede ? (
+        <button type="button" className={'lu-car' + (abierto ? ' on' : '')} aria-expanded={abierto} aria-haspopup="dialog"
+          aria-label={mia ? 'Cambiar tu reacción' : 'Reaccionar'} title={mia ? 'Cambiar tu reacción' : 'Reaccionar'} onClick={() => setAbierto((v) => !v)}>
+          <Carita />{reac.length ? null : <span className="lu-car-t">Reaccionar</span>}
+        </button>
+      ) : null}
+      <a className="lu-cm" href={'#/publicaciones/' + encodeURIComponent(id)} aria-label={nc ? nc + (nc === 1 ? ' comentario' : ' comentarios') : 'Comentar'}>
+        <Ico n="globo" t={15} />{nc ? <em>{num(nc)}</em> : null}</a>
+      {err && err.error === 'reaccion' ? <small className="lu-err">Esa reacción es del Pase premium</small> : null}
       {abierto ? (
-        <span className="lu-reac" role="dialog" aria-label="Reacciones">
-          <span className="lu-reac-f"><span className="lu-reac-e" aria-hidden="true">👏</span><b>{num(n)}</b><small>{n === 1 ? 'felicitación' : 'felicitaciones'}</small>
-            {puede ? botonFel(true, false) : propio ? <small className="lu-reac-tuyo">a ti</small> : null}</span>
-          <span className="lu-reac-f"><span className="lu-reac-e" aria-hidden="true">💬</span><b>{num(nc)}</b><small>{nc === 1 ? 'comentario' : 'comentarios'}</small>
-            <a className="lu-btn" href={verCm}>{nc ? 'Verlos' : 'Comentar'}</a></span>
+        <span className="lu-reac" role="dialog" aria-label="Reaccionar">
+          <span className="lu-reac-h">{mia ? 'Cambia tu reacción' : 'Reacciona'}</span>
+          <span className="lu-reac-g">
+            {todas.map(([e, nv]) => {
+              const tiene = mias.includes(e);
+              return (
+                <button key={e} type="button" className={'lu-reac-e' + (mia === e ? ' on' : '') + (tiene ? '' : ' bloq')} disabled={!tiene || mia === e || va}
+                  onClick={() => reaccionar(e)} aria-label={tiene ? 'Reaccionar con ' + e : e + ': Pase premium, nivel ' + nv}>
+                  <span aria-hidden="true">{e}</span>{tiene ? null : <small>NV {nv}</small>}
+                </button>
+              );
+            })}
+          </span>
+          {todas.some(([e]) => !mias.includes(e)) ? <a className="lu-reac-pie" href="#/pase">Las apagadas se ganan con el Pase premium</a> : null}
         </span>
       ) : null}
     </span>
   );
 }
-// ☁️ LA NUBE CON EL ÚLTIMO COMENTARIO (13/11/2026, Dlx: «quizás en una nube transparente aparezca una preview de un
-// comentario»). En la carta destacada, siempre; en las demás, flota arriba de la pieza al pasar o enfocarla. ⚠️ El
-// simulado lleva su etiqueta: eso lo decide el permiso en el ciclo, nunca acá (comentarios.jsx)
-function LuNube({ hilo, flota = false }) {
-  const c = hilo.length ? hilo[hilo.length - 1] : null;
-  if (!c) return null;
+
+// 💬 EL ÚLTIMO COMENTARIO, A LA VISTA (Dlx, 13/11/2026: «que ese pop up de los comentarios sean mejores y quizás más
+// grandes»). Antes flotaba al pasar el mouse y no se leía; ahora va debajo de la novedad, con la cara de quien escribió.
+// En la grande, los dos últimos. ⚠️ El simulado lleva su etiqueta: eso lo decide el permiso en el ciclo, nunca acá
+function LuNube({ liga, it, hilo, n = 1 }) {
+  if (!hilo.length) return null;
+  const cs = hilo.slice(-n);
   return (
-    <span className={'lu-nube' + (flota ? ' flota' : '')} aria-hidden={flota ? 'true' : undefined}>
-      <span className="lu-nube-q"><b>{limpio(c.n)}</b>{c.et === 's' ? <i>simulado</i> : null}{hilo.length > 1 ? <small>+{hilo.length - 1}</small> : null}</span>
-      <span className="lu-nube-t">«{c.tx}»</span>
-    </span>
+    <a className={'lu-nube' + (n > 1 ? ' grande' : '')} href={'#/publicaciones/' + encodeURIComponent(it.id || '')} onClick={(e) => e.stopPropagation()}>
+      {cs.map((c) => {
+        const pj = c.et === 'l' ? PJ[c.k] || ['LG', '#E41373'] : null;
+        return (
+          <span className="lu-nube-c" key={c.id}>
+            {pj ? <span className="lu-nube-cara pj" style={{ background: pj[1] }}>{pj[0]}</span> : <Cara liga={liga} k={c.k} nombre={c.n} cls="lu-nube-cara" lazy />}
+            <span className="lu-nube-x"><b>{limpio(c.n)}{c.et === 's' ? <i>simulado</i> : null}</b><span>{c.tx}</span></span>
+          </span>
+        );
+      })}
+      {n > 1 ? <small className="lu-nube-mas">{hilo.length > n ? 'Ver los ' + hilo.length + ' comentarios' : 'Responder'}</small> : null}
+    </a>
   );
 }
+
 export function Noticias({ liga, raiz }) {
   const A = useAplausos();
   // los comentarios de verdad (los simulados ya vienen en el muro): para contarlos y para la nube
   useComentarios();
+  // tus reacciones (las del Pase): sólo si entraste con Discord
+  const P = usePase(typeof window !== 'undefined' && !!window.DC);
+  const [fil, setFil] = useState('todo');
   const hiloDe = (it) => (it && it.id ? delHilo(it, liga.ahora) : []);
   const muro = liga.muroLimpio().filter((it) => it.tipo !== 'anuncio' && it.tipo !== 'promo');
   if (!muro.length) return null;
   // la grande: la última carta nueva; si no hay, el último logro
-  const feat = muro.find((it) => it.tipo === 'tarjeta') || muro.find((it) => LU_LOGRO.has(it.tipo)) || null;
-  const usados = new Set(feat ? [feat] : []);
-  const de = (tipo) => { const x = muro.find((it) => it.tipo === tipo && !usados.has(it)); if (x) usados.add(x); return x || null; };
-  const flyer = de('flyer');
-  const rango = de('rango');
-  const camp = de('campeon');
-  const noche = de('resnoche');
-  const otros = [];
-  const celdas = (feat ? 4 : 0) + (flyer ? 2 : 0) + (rango ? 1 : 0) + (camp ? 2 : 0) + (noche ? 2 : 0);
+  const feat = muro.find((it) => it.tipo === 'tarjeta') || muro.find((it) => LU_REAC.has(it.tipo) && liga.itemMuro(it)) || null;
+  const noche = muro.find((it) => it.tipo === 'resnoche') || null;
+  // el afiche de la liga va grande a la izquierda, debajo de la carta: es lo más visual que hay
+  const flyer = muro.find((it) => it.tipo === 'flyer' && it.img) || null;
+  // la lista: todo lo demás que se sabe dibujar, sin dos cartas seguidas de la misma persona (llegan juntas)
+  const lista = [];
   for (const it of muro) {
-    if (celdas + otros.length >= LU_CELDAS) break;
-    if (usados.has(it) || it.tipo === 'resnoche' || !liga.itemMuro(it)) continue;
-    // no dos cartas de la misma persona seguidas: llegan juntas (temporada, servidor y competitiva)
+    if (it === feat || it === flyer || it.tipo === 'resnoche' || !liga.itemMuro(it)) continue;
     if (it.tipo === 'tarjeta' && feat && JSON.stringify(ksDe(it)) === JSON.stringify(ksDe(feat))) continue;
-    if (otros.some((o) => o.tipo === it.tipo && JSON.stringify(ksDe(o)) === JSON.stringify(ksDe(it)))) continue;
-    otros.push(it);
+    if (lista.some((o) => o.tipo === it.tipo && JSON.stringify(ksDe(o)) === JSON.stringify(ksDe(it)))) continue;
+    lista.push(it);
+    if (lista.length >= 40) break;
   }
+  const cuenta = { todo: lista.length };
+  lista.forEach((it) => { cuenta[luCat(it)] = (cuenta[luCat(it)] || 0) + 1; });
+  const filtros = LU_FILTROS.filter(([k]) => k === 'todo' || cuenta[k]);
+  const filas = lista.filter((it) => fil === 'todo' || luCat(it) === fil).slice(0, LU_FILAS);
   const ir = (it) => { const x = liga.itemMuro(it); if (x) irA(x[4], raiz); };
   const tecla = (fn) => (e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); fn(); } };
-  const pieza = (it, cls, cuerpo) => (
-    <div key={it.id || it.t + it.tipo} role="link" tabIndex={0} className={'lu-t ' + cls} onClick={() => ir(it)} onKeyDown={tecla(() => ir(it))}>{cuerpo}</div>
-  );
-  const piezas = [];
+
+  // lo de la izquierda de cada fila: la carta, el afiche o la cara con su esquinita
+  const visual = (it, x) => {
+    const ks = ksDe(it);
+    if (it.tipo === 'tarjeta') return <span className="lu-r-v v-carta"><Carta liga={liga} k={ks[0]} cual={it.carta} cls="lu-r-carta" abre={false} /></span>;
+    if (it.tipo === 'flyer') return <span className="lu-r-v v-img"><img alt="" src={it.img} loading="lazy" /></span>;
+    if (it.tipo === 'liga') return <span className="lu-r-v v-cara"><span className="nt-cara nt-ico"><img alt="" src="/ul.png" /></span></span>;
+    const k = ks[0] || '';
+    const f = k ? liga.T[k] : null;
+    const badge = it.tipo === 'rango' ? <i className="nt-badge lu-r-rg" style={{ background: liga.colorRg(it.rg) }}>{it.rg}</i>
+      : LU_BADGE[it.tipo] ? <i className="nt-badge">{LU_BADGE[it.tipo]}</i> : null;
+    return (
+      <span className="lu-r-v v-cara">
+        <span className="nt-cara">
+          {f ? <Cara liga={liga} k={k} nombre={f.n} cls="nt-c" /> : <span className="nt-c nt-ico">{(x[1] || '?').slice(0, 1)}</span>}
+          {badge}
+        </span>
+        {/* los campeones de a dos: la cara del segundo, encimada */}
+        {it.tipo === 'campeon' && ks[1] && liga.T[ks[1]] ? <Cara liga={liga} k={ks[1]} nombre={liga.T[ks[1]].n} cls="nt-c lu-r-dos" /> : null}
+      </span>
+    );
+  };
+  const fila = (it) => {
+    const x = liga.itemMuro(it);
+    const hilo = hiloDe(it);
+    const sv = it.sv ? siglaDe(it.sv) : '';
+    const sub = it.tipo === 'campeon' ? [sv, it.part ? it.part + ' raperos' : ''].filter(Boolean).join(' · ')
+      : it.tipo === 'tarjeta' ? (() => { const f = liga.T[ksDe(it)[0]]; return f ? [f.rg ? 'Rango ' + f.rg : '', f.pos ? '#' + f.pos + ' Temporada' : ''].filter(Boolean).join(' · ') : ''; })()
+        : sv;
+    return (
+      <li key={it.id || it.t + it.tipo}>
+        <div className={'nt-f lu-r t-' + it.tipo} role="link" tabIndex={0} onClick={() => ir(it)} onKeyDown={tecla(() => ir(it))}>
+          {visual(it, x)}
+          <span className="nt-t">
+            <span className="lu-cat">{x[0]}</span>
+            <b>{x[1]}</b>
+            {sub ? <small>{sub}</small> : null}
+            <LuSocial liga={liga} it={it} A={A} hilo={hilo} P={P} />
+            <LuNube liga={liga} it={it} hilo={hilo} />
+          </span>
+          <span className="lu-r-der">
+            <span className="nt-hora">{luHace(liga, it.t)}</span>
+            {/* 🅱️ la letra, grande y en su color (Dlx: «TøKiØ rango B no se ve tan importante») */}
+            {it.tipo === 'rango' ? <span className="lu-r-letra" style={{ background: liga.colorRg(it.rg) }} aria-label={'Rango ' + it.rg}>{it.rg}</span> : null}
+          </span>
+        </div>
+      </li>
+    );
+  };
+
+  // la grande
+  let grande = null;
   if (feat) {
     const x = liga.itemMuro(feat);
     const k = ksDe(feat)[0];
     const f = k ? liga.T[k] : null;
     const esCarta = feat.tipo === 'tarjeta';
-    piezas.push(pieza(feat, 'lu-feat', <>
-      <span className="lu-feat-v"><Vis liga={liga} v={x[2]} cls="lu-feat-i" />{esCarta ? <span className="sticker">NUEVA</span> : null}</span>
-      <span className="lu-feat-t">
-        <span className="lu-cat">{x[0]} · {luHace(liga, feat.t)}</span>
-        <b className="lu-tit">{x[1]}</b>
-        {f ? <span className="lu-datos">
-          {f.rg ? <span>Rango <b style={{ color: f.rgc || undefined }}>{f.rg}</b></span> : null}
-          {f.pos ? <span>#{f.pos} Temporada</span> : null}
-          {f.ev ? <span>{f.ev} eventos</span> : null}
-        </span> : null}
-        <span className="lu-acc">
-          {esCarta ? <button type="button" className="lu-btn v" onClick={(e) => { e.stopPropagation(); accion.carta(k, feat.carta); }}>Ver la carta</button> : null}
-          {k ? <a className="lu-btn" href={'#/r/' + encodeURIComponent(k)} onClick={(e) => e.stopPropagation()}>Su perfil</a> : null}
-          <LuSocial liga={liga} it={feat} A={A} hilo={hiloDe(feat)} chico={false} />
+    const hilo = hiloDe(feat);
+    grande = (
+      <div className="lu-feat" role="link" tabIndex={0} onClick={() => ir(feat)} onKeyDown={tecla(() => ir(feat))}>
+        <span className="lu-feat-v"><Vis liga={liga} v={x[2]} cls="lu-feat-i" />{esCarta ? <span className="sticker">NUEVA</span> : null}</span>
+        <span className="lu-feat-t">
+          <span className="lu-cat">{x[0]} · {luHace(liga, feat.t)}</span>
+          <b className="lu-tit">{x[1]}</b>
+          {f ? <span className="lu-datos">
+            {f.rg ? <span>Rango <b style={{ color: f.rgc || undefined }}>{f.rg}</b></span> : null}
+            {f.pos ? <span>#{f.pos} Temporada</span> : null}
+            {f.ev ? <span>{f.ev} eventos</span> : null}
+          </span> : null}
+          <span className="lu-acc">
+            {esCarta ? <button type="button" className="lu-btn v" onClick={(e) => { e.stopPropagation(); accion.carta(k, feat.carta); }}>Ver la carta</button> : null}
+            {k ? <a className="lu-btn" href={'#/r/' + encodeURIComponent(k)} onClick={(e) => e.stopPropagation()}>Su perfil</a> : null}
+          </span>
+          <LuSocial liga={liga} it={feat} A={A} hilo={hilo} P={P} />
+          <LuNube liga={liga} it={feat} hilo={hilo} n={2} />
         </span>
-        <LuNube hilo={hiloDe(feat)} />
-      </span>
-    </>));
+      </div>
+    );
   }
-  if (flyer) {
-    const x = liga.itemMuro(flyer);
-    piezas.push(pieza(flyer, 'lu-fly', <>
-      <span className="lu-fly-w"><img className="lu-fly-i" alt="" src={flyer.img} loading="lazy" /></span>
-      <span className="lu-fly-p"><span className="lu-cat">{x[0]}</span><b>{x[1]}</b><span className="lu-hora">{luHace(liga, flyer.t)}</span></span>
-    </>));
-  }
-  if (rango) {
-    piezas.push(pieza(rango, 'lu-rg', <>
-      <span className="lu-cat">Rango · {luHace(liga, rango.t)}</span>
-      <b>{(rango.quien || []).map(limpio)[0]}{rango.primero ? ' consigue su primera letra' : ' sube de rango'}</b>
-      <span className="lu-rg-l" style={{ color: liga.colorRg(rango.rg) }} aria-label={'Rango ' + rango.rg}>{rango.rg}</span>
-      <LuSocial liga={liga} it={rango} A={A} hilo={hiloDe(rango)} />
-      <LuNube hilo={hiloDe(rango)} flota />
-    </>));
-  }
-  if (camp) {
-    const q = (camp.quien || []).map(limpio);
-    const ks = ksDe(camp);
-    piezas.push(pieza(camp, 'lu-camp', <>
-      <span className="lu-par">{ks.slice(0, 2).map((k, i) => <Cara key={k || i} liga={liga} k={k} nombre={q[i]} cls="cara lu-par-c" />)}</span>
-      <span className="lu-camp-t">
-        <span className="lu-cat">{q.length > 1 ? 'Campeones' : 'Campeón'} · {siglaDe(camp.sv)} · {luHace(liga, camp.t)}</span>
-        <b>{q.join(' y ')} {q.length > 1 ? 'se quedan' : 'se queda'} con {limpio(camp.ev)}</b>
-        <span className="lu-pie">{camp.part ? <span className="lu-hora">{camp.part} raperos</span> : null}<LuSocial liga={liga} it={camp} A={A} hilo={hiloDe(camp)} /></span>
-      </span>
-      <LuNube hilo={hiloDe(camp)} flota />
-    </>));
-  }
+
+  // 🌙 anoche en la Liga y 🖼️ el afiche: debajo de la grande, así las dos columnas quedan parejas
+  let nocheT = null;
   if (noche) {
     const cs = (noche.campeones || []);
     const caras = [];
     cs.forEach((c) => (c.quien || []).forEach(([n, k]) => { if (caras.length < 5 && !caras.some((y) => y[1] === k)) caras.push([n, k]); }));
-    piezas.push(pieza(noche, 'lu-noche', <>
-      <span className="lu-noche-t">
+    nocheT = (
+      <a className="lu-noche" href="#/publicaciones">
         <span className="lu-cat">Anoche en la Liga</span>
-        <span className="lu-num">{noche.eventos}<small>{noche.eventos === 1 ? 'evento' : 'eventos'}</small> {noche.part}<small>raperos</small></span>
-        <span className="lu-hora">{cs.length} {cs.length === 1 ? 'campeón' : 'campeones'}: {cs.slice(0, 2).map((c) => (c.quien || []).map((y) => limpio(y[0])).join(' y ')).join(', ')}{cs.length > 2 ? ' y ' + (cs.length - 2) + ' más' : ''}</span>
-      </span>
-      <span className="lu-caras">{caras.map(([n, k]) => <Cara key={k} liga={liga} k={k} nombre={n} cls="cara lu-caras-c" />)}</span>
-    </>));
+        <span className="lu-num">{noche.eventos}<small>{noche.eventos === 1 ? 'evento' : 'eventos'}</small>{noche.part}<small>raperos</small>{cs.length}<small>{cs.length === 1 ? 'campeón' : 'campeones'}</small></span>
+        <span className="lu-noche-c">{caras.map(([n, k]) => <Cara key={k} liga={liga} k={k} nombre={n} cls="nt-c" />)}
+          <small>{cs.slice(0, 2).map((c) => (c.quien || []).map((y) => limpio(y[0])).join(' y ')).join(', ')}{cs.length > 2 ? ' y ' + (cs.length - 2) + ' más' : ''}</small></span>
+      </a>
+    );
   }
-  otros.forEach((it) => {
-    const x = liga.itemMuro(it);
-    piezas.push(pieza(it, 'lu-ch', <>
-      <span className="lu-ch-v"><Vis liga={liga} v={x[2]} cls="lu-ch-i" /></span>
-      <span className="lu-ch-t"><span className="lu-cat">{x[0]}</span><b>{x[1]}</b>
-        <span className="lu-pie"><span className="lu-hora">{luHace(liga, it.t)}</span><LuSocial liga={liga} it={it} A={A} hilo={hiloDe(it)} /></span></span>
-      <LuNube hilo={hiloDe(it)} flota />
-    </>));
-  });
+  let flyerT = null;
+  if (flyer) {
+    const x = liga.itemMuro(flyer);
+    flyerT = (
+      <div className="lu-fly" role="link" tabIndex={0} onClick={() => ir(flyer)} onKeyDown={tecla(() => ir(flyer))}>
+        <img alt="" src={flyer.img} loading="lazy" />
+        <span className="lu-fly-p"><span className="lu-cat">{x[0]} · {luHace(liga, flyer.t)}</span><b>{x[1]}</b></span>
+      </div>
+    );
+  }
+
   return (
     <Sec id="noticias" titulo="Lo último" enlace="Publicaciones" href="#/publicaciones">
-      <div className="lu-mos">{piezas}</div>
+      <div className={'lu-dos' + (grande || nocheT || flyerT ? '' : ' solo')}>
+        {grande || nocheT || flyerT ? <div className="lu-izq">{grande}{nocheT}{flyerT}</div> : null}
+        <div className="nt-p lu-panel">
+          {filtros.length > 2 ? (
+            <div className="nt-chips" role="group" aria-label="Filtrar lo último">{filtros.map(([k, t]) => (
+              <button key={k} type="button" className={'nt-chip' + (fil === k ? ' on' : '')} aria-pressed={fil === k} onClick={() => setFil(k)}>
+                {t}<em>{cuenta[k] || 0}</em></button>
+            ))}</div>
+          ) : null}
+          <ul className="lu-lista">{filas.map(fila)}</ul>
+          <a className="nt-pie lu-pie" href="#/publicaciones"><span>Todo lo que pasó, en Publicaciones</span><b>Ver todo</b></a>
+        </div>
+      </div>
     </Sec>
   );
 }

@@ -75,12 +75,17 @@ function Grupo({ n, items, on, pagina }) {
       <button type="button" className={'grp-b' + (on ? ' on' : '')} aria-expanded={abierto} aria-controls={id} onClick={() => setAbierto((v) => !v)}>
         {n}<Chevron /></button>
       {abierto ? (
+        // 🔔 CON EL ESTILO DE LA CAMPANA (Dlx, 13/11/2026: «me gusta bastante el estilo de notificaciones… al abrir cada
+        // categoría como rankings»): el título en Anton arriba y cada sección en una fila con su ícono en un círculo
         <div className={'grp-lista' + (items.length > 6 ? ' dos' : '')} id={id}>
-          {items.map(([nn, h, d, k]) => (
-            <a key={h} href={h} onClick={(e) => { subirSiEsta(h)(e); setAbierto(false); }}
-              className={pagina && h === '#/' + pagina ? 'on' : ''}>
-              <Ico n={k} t={20} /><span><b>{nn}</b><small>{d}</small></span></a>
-          ))}
+          <p className="grp-h"><b>{n}</b><small>{items.length} {n === 'Ranking' ? 'tablas' : 'secciones'}</small></p>
+          <div className="grp-items">
+            {items.map(([nn, h, d, k]) => (
+              <a key={h} href={h} onClick={(e) => { subirSiEsta(h)(e); setAbierto(false); }}
+                className={pagina && h === '#/' + pagina ? 'on' : ''}>
+                <span className="grp-ico"><Ico n={k} t={18} /></span><span><b>{nn}</b><small>{d}</small></span></a>
+            ))}
+          </div>
         </div>
       ) : null}
     </div>
@@ -269,9 +274,15 @@ export function Buscar({ liga, onIr, sugerencias = false }) {
         evVistos.add(id);
         todo.push({ tipo: 'evento', id: 'e' + id, n, sub: siglaDe(e.sv), href: '#/eventos', logo: e.sv ? liga.logo(e.sv) : '', x: nota(n) + 0.5 });
       });
-    return todo.filter((r) => r.x < 9).sort((a, b) => (a.x - b.x) || (TIPOS[a.tipo] - TIPOS[b.tipo]) || a.n.localeCompare(b.n)).slice(0, 8);
-  }, [q, liga, todos]);
+    return todo.filter((r) => r.x < 9).sort((a, b) => (a.x - b.x) || (TIPOS[a.tipo] - TIPOS[b.tipo]) || a.n.localeCompare(b.n)).slice(0, sugerencias ? 40 : 8);
+  }, [q, liga, todos, sugerencias]);
   const ir = (r) => { if (r && r.href) guardarRec(r); setQ(''); if (onIr) onIr(); };
+  // 🔔 en la barra de arriba, los resultados con el estilo de la campana: filtros por tipo y una fila por resultado
+  const [cat, setCat] = useState('todo');
+  const catR = (r) => (r.tipo === 'rapero' || r.tipo === 'servidor' || r.tipo === 'crew' ? r.tipo : 'mas');
+  const cuentaR = { todo: res.length };
+  res.forEach((r) => { cuentaR[catR(r)] = (cuentaR[catR(r)] || 0) + 1; });
+  const resVer = sugerencias ? res.filter((r) => cat === 'todo' || catR(r) === cat).slice(0, 10) : res;
   // ⚠️ se cierra al tocar afuera y al cambiar de página: quedaba abierto encima de la siguiente (revisión del 03/10/2026)
   const caja = useRef(null);
   useEffect(() => {
@@ -295,14 +306,24 @@ export function Buscar({ liga, onIr, sugerencias = false }) {
       <label className="buscar">
         <Ico n="buscar" t={18} />
         <input type="search" placeholder={ejemplo} aria-label="Buscar raperos, servidores, países, crews, páginas y eventos" value={q} onChange={(e) => setQ(e.target.value)}
-          onKeyDown={(e) => { if (e.key === 'Enter' && res[0]) { location.hash = res[0].href; ir(res[0]); } if (e.key === 'Escape') setQ(''); }} />
+          onKeyDown={(e) => { if (e.key === 'Enter' && resVer[0]) { location.hash = resVer[0].href; ir(resVer[0]); } if (e.key === 'Escape') setQ(''); }} />
       </label>
-      {res.length ? (
+      {res.length && sugerencias ? (
+        <div className="nt-p bs-panel">
+          {Object.keys(cuentaR).length > 2 ? (
+            <div className="nt-chips" role="group" aria-label="Filtrar resultados">{FILTROS_BUSCA.filter(([k]) => k === 'todo' || cuentaR[k]).map(([k, t]) => (
+              <button key={k} type="button" className={'nt-chip' + (cat === k ? ' on' : '')} aria-pressed={cat === k} onClick={() => setCat(k)}>{t}<em>{cuentaR[k] || 0}</em></button>
+            ))}</div>
+          ) : null}
+          <ul>{(resVer.length ? resVer : res.slice(0, 10)).map((r) => <li key={r.id}><FilaBusca liga={liga} r={r} icono={icono} ir={ir} /></li>)}</ul>
+          <p className="nt-pie bs-pie"><span>Enter abre el primero</span><span className="bs-esc">Esc cierra</span></p>
+        </div>
+      ) : res.length ? (
         <ul className="busca-res">
           {res.map((r) => <li key={r.id}><a href={r.href} onClick={() => ir(r)}>{icono(r)}<span>{r.n}{r.aka ? <small className="br-aka">aka «{r.aka}»</small> : null}</span><small className="br-t">{ETIQUETA_TIPO[r.tipo]}{r.sub && r.sub !== r.n ? ' · ' + r.sub : ''}</small></a></li>)}
         </ul>
       ) : sugerencias && !q.trim() ? <Sugerencias liga={liga} rec={rec} icono={icono} ir={ir} borrar={() => { try { localStorage.removeItem(REC_K); } catch (e) { /* nada */ } setRec([]); }} />
-        : sugerencias && q.trim() ? <div className="bs-panel"><p className="bs-nada">Nada con «{q.trim()}». Prueba con otro nombre o un aka.</p></div> : null}
+        : sugerencias && q.trim() ? <div className="nt-p bs-panel"><p className="bs-nada">Nada con «{q.trim()}». Prueba con otro nombre o un aka.</p></div> : null}
     </div>
   );
 }
@@ -310,6 +331,32 @@ export function Buscar({ liga, onIr, sugerencias = false }) {
 // 💡 LO QUE MUESTRA EL BUSCADOR ANTES DE ESCRIBIR (13/11/2026, Dlx: «que por default te muestre recomendaciones sobre lo de
 // abajo, o sea un panel semi transparente»): lo último que abriste, lo de hoy en la Liga, raperos (los que sigues o los de
 // arriba de la Temporada) y atajos. Cada parte se apaga sola si no tiene con qué
+// 🔔 CON EL ESTILO DE LA CAMPANA (13/11/2026, Dlx: «me gusta bastante el estilo de notificaciones, ¿podrías hacer que eso
+// tenga la barra de búsqueda algo así?»): las mismas piezas `.nt-*` —la tira de lo de hoy, los títulos de sección y una
+// fila por resultado con su cara, la esquinita de qué es y lo que dice al costado—
+const FILTROS_BUSCA = [['todo', 'Todo'], ['rapero', 'Raperos'], ['servidor', 'Servidores'], ['crew', 'Crews'], ['mas', 'Más']];
+const ICO_TIPO = { servidor: 'servidor', pais: 'mundo', crew: 'crews', pagina: 'flecha', evento: 'eventos' };
+function subBusca(liga, r) {
+  if (r.tipo === 'rapero') {
+    const f = liga.T[r.k];
+    const xs = [r.aka ? 'aka «' + r.aka + '»' : '', f && f.pos ? '#' + f.pos + ' Temporada' : '', f && f.rg ? 'Rango ' + f.rg : ''].filter(Boolean);
+    return xs.length ? xs.join(' · ') : 'Rapero';
+  }
+  if (r.tipo === 'servidor') return r.sub && r.sub !== r.n ? r.sub + ' · servidor' : 'Servidor';
+  if (r.tipo === 'crew') return 'Crew' + (r.crew && r.crew.n ? ' · ' + r.crew.n + (r.crew.n === 1 ? ' rapero' : ' raperos') : '');
+  if (r.tipo === 'evento') return 'Evento' + (r.sub ? ' · ' + r.sub : '');
+  if (r.tipo === 'pais') return 'País';
+  return r.sub ? r.sub : 'Página';
+}
+function FilaBusca({ liga, r, icono, ir }) {
+  return (
+    <a className="nt-f bs-f" href={r.href} onClick={() => ir(r)}>
+      <span className="nt-cara bs-c">{icono(r)}{ICO_TIPO[r.tipo] ? <i className="nt-badge"><Ico n={ICO_TIPO[r.tipo]} t={10} /></i> : null}</span>
+      <span className="nt-t"><b>{r.n}</b><small>{subBusca(liga, r)}</small></span>
+      <span className="nt-hora">{ETIQUETA_TIPO[r.tipo]}</span>
+    </a>
+  );
+}
 function Sugerencias({ liga, rec, icono, ir, borrar }) {
   const hoy = liga.diaClave(liga.ahora);
   const vivos = liga.vivo();
@@ -317,42 +364,42 @@ function Sugerencias({ liga, rec, icono, ir, borrar }) {
   const sigo = (liga.sigue || []).slice(0, 5);
   const raperos = (sigo.length ? sigo.map((k) => liga.T[k]) : liga.oficiales().slice(0, 5)).filter(Boolean);
   return (
-    <div className="bs-panel">
-      {rec.length ? (
-        <section>
-          <p className="bs-s">Lo último que abriste <button type="button" className="bs-borrar" onClick={borrar}>Borrar</button></p>
-          <ul className="bs-lista">{rec.map((r) => (
-            <li key={r.id}><a href={r.href} onClick={() => ir(r)}>{icono(r)}<span>{r.n}</span><small className="br-t">{ETIQUETA_TIPO[r.tipo]}</small></a></li>
-          ))}</ul>
-        </section>
-      ) : null}
+    <div className="nt-p bs-panel">
       {hoyEv.length ? (
         <section>
-          <p className="bs-s">Hoy en la Liga</p>
-          <ul className="bs-lista">{hoyEv.map((x, i) => {
+          <p className="nt-s">Hoy en la Liga</p>
+          {hoyEv.map((x, i) => {
             const v = vivos.includes(x);
             return (
-              <li key={'ev' + i}><a href="#/eventos" onClick={() => ir()}>
-                <span className="cara"><img alt="" src={liga.logo(x.sv)} /></span><span>{limpio(x.nombre)}</span>
-                <small className={'br-t' + (v ? ' bs-vivo' : '')}>{v ? 'EN VIVO' : liga.dia(x.cuando).replace(/^hoy /, '')}</small></a></li>
+              <a key={'ev' + i} className={'nt-vivo' + (v ? '' : ' luego')} href="#/eventos" onClick={() => ir()}>
+                <span className="nt-pt" aria-hidden="true" />
+                <b>{limpio(x.nombre)}<small>{siglaDe(x.sv)}{v ? ' · se está jugando' : ''}</small></b>
+                <em>{v ? 'EN VIVO' : liga.dia(x.cuando).replace(/^hoy /, '').toUpperCase()}</em>
+              </a>
             );
-          })}</ul>
+          })}
+        </section>
+      ) : null}
+      {rec.length ? (
+        <section>
+          <p className="nt-s">Lo último que abriste <button type="button" className="bs-borrar" onClick={borrar}>Borrar</button></p>
+          <ul>{rec.map((r) => <li key={r.id}><FilaBusca liga={liga} r={r} icono={icono} ir={ir} /></li>)}</ul>
         </section>
       ) : null}
       {raperos.length ? (
         <section>
-          <p className="bs-s">{sigo.length ? 'Los que sigues' : 'Arriba en la Temporada'}</p>
+          <p className="nt-s">{sigo.length ? 'Los que sigues' : 'Arriba en la Temporada'}</p>
           <ul className="bs-caras">{raperos.map((f) => (
             <li key={f.k}><a href={'#/r/' + encodeURIComponent(f.k)} onClick={() => ir({ tipo: 'rapero', id: 'r' + f.k, n: limpio(f.n), href: '#/r/' + encodeURIComponent(f.k), k: f.k })}>
-              <Cara liga={liga} k={f.k} nombre={f.n} cls="cara" /><span>{limpio(f.n)}</span></a></li>
+              <Cara liga={liga} k={f.k} nombre={f.n} cls="cara" /><span>{limpio(f.n)}</span>{f.pos ? <small>#{f.pos}</small> : null}</a></li>
           ))}</ul>
         </section>
       ) : null}
       <section>
-        <p className="bs-s">Ir a</p>
-        <div className="bs-atajos">{ATAJOS_BUSCA.map(([n, h]) => <a key={h} href={h} onClick={() => ir()}>{n}</a>)}</div>
+        <p className="nt-s">Ir a</p>
+        <div className="nt-chips bs-atajos">{ATAJOS_BUSCA.map(([n, h]) => <a key={h} className="nt-chip" href={h} onClick={() => ir()}>{n}</a>)}</div>
       </section>
-      <p className="bs-pie">Busca raperos (también por su aka), servidores, países, crews, páginas y eventos<span> · Ctrl K abre · Esc cierra</span></p>
+      <p className="nt-pie bs-pie"><span>Raperos (también por su aka), servidores, países, crews, páginas y eventos</span><span className="bs-esc">Ctrl K · Esc</span></p>
     </div>
   );
 }

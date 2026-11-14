@@ -6,7 +6,8 @@ import { useEffect, useState } from 'react';
 
 function leerAplausos() {
   const A = window.APLAUSOS || {};
-  return { cu: A.cu || {}, mios: A.mios || {}, va: A.va || {}, err: A.err || {} };
+  // 🔥 `e`: cuántas de cada reacción que no es 👏, por publicación; `miE`: con cuál reaccionaste (sin fila = 👏)
+  return { cu: A.cu || {}, e: A.e || {}, mios: A.mios || {}, miE: A.miE || {}, va: A.va || {}, err: A.err || {} };
 }
 
 export function useAplausos() {
@@ -23,3 +24,17 @@ export function useAplausos() {
   }, []);
   return a;
 }
+
+/**
+ * 🔥 Las reacciones de una publicación, de la más usada a la menos: `[[emoji, n], …]`. Las que no son 👏 vienen contadas
+ * (`A.e`); el resto del total (`A.cu`) son 👏
+ */
+export function reaccionesDe(A, id) {
+  if (!id) return [];
+  const n = Number(A.cu[id] || 0);
+  const otras = Object.entries(A.e[id] || {}).filter(([, x]) => x > 0);
+  const base = Math.max(0, n - otras.reduce((s, [, x]) => s + x, 0));
+  return (base ? [['👏', base]] : []).concat(otras).sort((a, b) => b[1] - a[1]);
+}
+/** 🔥 con cuál reaccionaste tú a esa publicación, o '' */
+export function miReaccion(A, id) { return id && A.mios[id] ? A.miE[id] || '👏' : ''; }

@@ -277,6 +277,26 @@ try {
     && o.tagElige({ quien: BEA, carta: 'temporada', tag: 'auto' }).ok && !o.tagsMios(BEA).elegidos.temporada,
   'los TAGs: se elige uno que tienes, no uno que no; los títulos del Pase sólo si llegaste (el dueño, todos); «auto» lo saca',
   JSON.stringify({ t1, t2, t3, t4, t5, vuelta }));
+
+  // ── 🔥 las reacciones del Pase premium (13/11/2026, Dlx: «se supone que tengo una de fueguito también pero no está»):
+  // 👏 todos; 🔥 y 🎤 con el premium y su nivel; el dueño, todas. Una por persona y publicación: cambiarla la pisa ──
+  const PREM_R = PREMIUM.map((p) => (p[0] === 3 ? [3, 150, 'reaccion', '🔥'] : p[0] === 12 ? [12, 150, 'reaccion', '🎤'] : p));
+  ciclo({ cfg: Object.assign({}, CFG, { premium: PREM_R }), premium: [ANA] });
+  const nA = o.paseNivel(ANA, o.paseDatos().cfg);
+  const rD = o.reaccionesDe(A.DUENO), rN = o.reaccionesDe(DANI), rA = o.reaccionesDe(ANA);
+  const pub = { id: 'abcdefabcdef', tipo: 'rango', quien: ['Ana'], ks: ['ana'], motivo: 'subir a rango B', t: '2026-10-28T10:00:00Z' };
+  const r1 = await (o.aplaudir({ quien: DANI, pub, e: '🔥' })).json();
+  const r2 = await (o.aplaudir({ quien: DANI, pub, e: '👏' })).json();
+  const r3 = await (o.aplaudir({ quien: A.DUENO, pub, e: '🔥' })).json();
+  const r4 = await (o.aplaudir({ quien: A.DUENO, pub, e: '🎤' })).json();
+  const cu = o.aplausosCuenta();
+  const ex = o.paseExtras(A.DUENO, o.paseDatos().cfg, o.paseDatos(), true, 30, () => new Set());
+  ok(rD.join() === '👏,🔥,🎤' && rN.join() === '👏' && rA.join() === (nA >= 12 ? '👏,🔥,🎤' : nA >= 3 ? '👏,🔥' : '👏')
+    && r1.error === 'reaccion' && r2.ok && r2.n === 1 && r3.ok && r3.n === 2 && r3.por['🔥'] === 1
+    && r4.ok && r4.ya && r4.n === 2 && r4.por['🎤'] === 1 && !r4.por['🔥']
+    && cu.n[pub.id] === 2 && cu.e[pub.id]['🎤'] === 1 && !cu.e[pub.id]['👏'] && ex.reacciones.join() === '👏,🔥,🎤',
+  'las reacciones: 👏 todos, 🔥 y 🎤 con el premium y su nivel; cambiarla pisa la de antes y la cuenta las separa',
+  JSON.stringify({ nA, rD, rN, rA, r1, r2, r3, r4, cu, ex: ex.reacciones }));
 } finally {
   Date.now = relojReal;
 }

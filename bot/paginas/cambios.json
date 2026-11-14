@@ -11,6 +11,19 @@
  ],
  "cambios": [
     {
+        "version": "5.26",
+        "dia": "2026-11-13",
+        "cuando": "2026-11-13T20:16:00-05:00",
+        "titulo": "Lo último, el buscador y los menús, como las notificaciones",
+        "items": [
+            "**Lo último**, rehecho con el estilo de las notificaciones: a la izquierda la carta nueva, «Anoche en la Liga» y el afiche de la liga; a la derecha la lista, con filtros (Cartas, Logros, Liga) y cada novedad con su cara o su carta. La letra del rango se ve grande y en su color.",
+            "**Reacciones**: con la carita eliges con qué reaccionar. 👏 la tienen todos; 🔥 y 🎤 son del **Pase premium** (niveles 3 y 12) y ahora sí se pueden usar. Al lado se ve cuántas tiene cada novedad.",
+            "El **último comentario** se ve debajo de cada novedad, con la cara de quien lo escribió (en la grande, los dos últimos).",
+            "El **buscador** y los menús de **Ranking, Eventos y Comunidad** tienen el estilo de las notificaciones: filtros por tipo y una fila por resultado con lo que es cada uno.",
+            "Arreglado: en pantallas anchas, el **evento dorado** de «Esta semana» salía encimado sobre «Lunes de la Liga»."
+        ]
+    },
+    {
         "version": "5.25",
         "dia": "2026-11-13",
         "cuando": "2026-11-13T20:10:00-05:00",

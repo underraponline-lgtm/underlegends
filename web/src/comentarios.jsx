@@ -46,7 +46,7 @@ export function delHilo(it, ahora) {
   return sim.concat(ver).sort((a, b) => a.t - b.t);
 }
 
-const PJ = { eh: ['EH', '#E41373'], ul: ['UL', '#29B298'], ej: ['EJ', '#FFD24A'] };
+export const PJ = { eh: ['EH', '#E41373'], ul: ['UL', '#29B298'], ej: ['EJ', '#FFD24A'] };
 const ERR = { vacio: 'Escribe algo.', largo: 'Es muy largo: hasta 200 letras.', link: 'Sin links en los comentarios.',
   mencion: 'Sin @everyone ni @here.', sin_verificar: 'Para comentar necesitas tu cuenta verificada.',
   nueva: 'Tu cuenta de Discord es muy nueva para comentar.', espera: 'Ya comentaste mucho hoy: sigue mañana.',

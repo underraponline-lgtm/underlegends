@@ -3788,6 +3788,8 @@ export function paraSeguidores(items, ahora) {
 // ante la duda no se avisa, porque «te felicitaron» a otro es peor que nada.
 
 //: lo que se puede felicitar. Una carta nueva le toca a todo el que juega una vez: no es un logro
+/** 👏 la reacción de todos; las otras salen del Pase premium (`reaccionesDe()`) */
+export const REACCION_BASE = '👏';
 export const APLAUDIBLES = { campeon: 1, rango: 1, caza: 1, sobrevivio: 1, pase: 1, sorteo: 1, ligahito: 1, mesaward: 1 };
 //: 🏆 las categorías de los MES AWARDS, como las dice un aviso (`bot/mes_awards.py`)
 export const MES_CAT = { rapero: 'el Rapero del mes', revelacion: 'la Revelación del mes', batalla: 'la Batalla del mes',
@@ -6156,8 +6158,10 @@ export async function rutaAvisos(req, env, ruta) {
     }
     const v = validarAplauso(items, d, q.id, mios, Date.now());
     if (v.error) return json(v, v.estado);
+    // 🔥 la reacción elegida (13/11/2026): el objeto mira si es tuya (`reaccionesDe()`); acá sólo se acota
     return elObjeto(env).fetch('https://avisos/aplaudir', {
-      method: 'POST', body: JSON.stringify({ quien: q.id, pub: v }), headers: { 'content-type': 'application/json' },
+      method: 'POST', body: JSON.stringify({ quien: q.id, pub: v, e: typeof d.e === 'string' ? d.e.slice(0, 8) : '' }),
+      headers: { 'content-type': 'application/json' },
     });
   }
   // 💬 COMENTAR: quién lo dice Discord (o la sesión), con su perfil VERIFICADO (`d:`); qué publicación, el muro
@@ -7623,6 +7627,10 @@ export class Avisos {
       this.sql.exec('CREATE TABLE IF NOT EXISTS aplausos (id TEXT NOT NULL, quien TEXT NOT NULL, ' +
         't INTEGER NOT NULL, PRIMARY KEY (id, quien))');
       this.sql.exec('CREATE INDEX IF NOT EXISTS aplausos_quien ON aplausos (quien)');
+      // 🔥 CON QUÉ REACCIONASTE (13/11/2026, Dlx: «se supone que tengo una de fueguito también pero no está»): el Pase premium
+      // da 🔥 en el nivel 3 y 🎤 en el 12 («Reacción … en Publicaciones») y nunca se habían conectado. Una por persona y
+      // publicación, como el aplauso: cambiarla la pisa. Las de antes son 👏
+      try { this.sql.exec("ALTER TABLE aplausos ADD COLUMN e TEXT NOT NULL DEFAULT '👏'"); } catch (e) { /* ya estaba */ }
       // 💬 LOS COMENTARIOS DE VERDAD (12/11/2026): uno por fila, con el perfil y el nombre que se ven; el Discord ID
       // (`quien`) nunca sale de acá. `resp`, a qué comentario contesta (`c<n>` o `s<n>`). Y de quién se puede usar la
       // cara en los simulados (`cm_permiso`: sin fila es «sin preguntar»). Ver `comentar()` y `cmPermiso()`
@@ -13945,7 +13953,12 @@ export class Avisos {
       'ON CONFLICT(id) DO UPDATE SET quien = excluded.quien, ks = excluded.ks, motivo = excluded.motivo',
     p.id, p.tipo, JSON.stringify(p.quien || []), JSON.stringify(p.ks || []), String(p.motivo || '').slice(0, 120),
     String(p.t || '').slice(0, 30), ahora);
-    const r = this.sql.exec('INSERT OR IGNORE INTO aplausos (id, quien, t) VALUES (?, ?, ?)', p.id, quien, ahora);
+    // 🔥 la reacción: 👏 la tiene todo el mundo; las demás, quien las ganó en el Pase (`reaccionesDe()`)
+    const e = String(d.e || '') || REACCION_BASE;
+    if (e !== REACCION_BASE && !this.reaccionesDe(quien).includes(e)) return json({ error: 'reaccion' }, 403);
+    const r = this.sql.exec('INSERT OR IGNORE INTO aplausos (id, quien, t, e) VALUES (?, ?, ?, ?)', p.id, quien, ahora, e);
+    // ya habías reaccionado: se cambia por la nueva (no cuenta otra vez para el Pase ni para el aviso)
+    if (!r.rowsWritten) this.sql.exec('UPDATE aplausos SET e = ? WHERE id = ? AND quien = ? AND e != ?', e, p.id, quien, e);
     // 🎟️ y las Tareas del Pase de felicitar: queda anotado en `pase_log`, que dura toda la temporada
     if (r.rowsWritten) {
       this.pasoDia(quien, 'fel', ahora);
@@ -13954,7 +13967,9 @@ export class Avisos {
       this.xpVio(quien, 'fel', p.id, ahora);
     }
     const n = this.sql.exec('SELECT COUNT(*) AS n FROM aplausos WHERE id = ?', p.id).toArray()[0].n;
-    return json({ ok: true, id: p.id, n, ya: !r.rowsWritten, t: ahora });
+    const por = {};
+    for (const x of this.sql.exec('SELECT e, COUNT(*) AS n FROM aplausos WHERE id = ? GROUP BY e', p.id).toArray()) por[x.e] = x.n;
+    return json({ ok: true, id: p.id, n, e, por, ya: !r.rowsWritten, t: ahora });
   }
 
   /**
@@ -14386,7 +14401,12 @@ export class Avisos {
   aplausosCuenta() {
     const n = {};
     for (const r of this.sql.exec('SELECT id, COUNT(*) AS n FROM aplausos GROUP BY id').toArray()) n[r.id] = r.n;
-    return { t: Date.now(), n };
+    // 🔥 y de cada publicación, cuántas de cada reacción que no es 👏 (el resto, hasta `n`, son 👏)
+    const e = {};
+    for (const r of this.sql.exec('SELECT id, e, COUNT(*) AS n FROM aplausos WHERE e != ? GROUP BY id, e', REACCION_BASE).toArray()) {
+      (e[r.id] = e[r.id] || {})[r.e] = r.n;
+    }
+    return { t: Date.now(), n, e };
   }
 
   /**
@@ -16625,6 +16645,8 @@ export class Avisos {
       out.aviso = !!(this.sql.exec('SELECT si FROM pase_aviso WHERE quien = ?', quien).toArray()[0] || {}).si;
       out.color_premium = (this.sql.exec('SELECT color FROM pase_color WHERE quien = ?', quien).toArray()[0] || {}).color || '';
     } catch (e) { /* lo nuevo no tapa el Pase */ }
+    // 🔥 con qué puedes reaccionar en Publicaciones y en «Lo último»
+    try { out.reacciones = this.reaccionesDe(quien); } catch (e) { out.reacciones = [REACCION_BASE]; }
     return out;
   }
 
@@ -16964,6 +16986,19 @@ export class Avisos {
       if (k) (elegidos[k] = elegidos[k] || {})[r.carta] = r.tag;
     }
     return { ok: true, elegidos };
+  }
+
+  /**
+   * 🔥 LAS REACCIONES DE ALGUIEN (13/11/2026): 👏 siempre, y las de la fila premium del Pase (`bot/pase.py` PREMIUM, tipo
+   * `reaccion`) hasta su nivel, mientras tenga el premium. El dueño, todas. Como `titulosDe()`
+   */
+  reaccionesDe(quien) {
+    const P = this.paseDatos();
+    const fila = (P.cfg && P.cfg.premium) || [];
+    if (quien === DUENO) return [REACCION_BASE, ...new Set(fila.filter((p) => p[2] === 'reaccion').map((p) => String(p[3])))];
+    if (!P.cfg || !this.pasePremium(quien, P.cfg.temp)) return [REACCION_BASE];
+    const nivel = P.miembros.has(quien) ? this.paseNivel(quien, P.cfg) : 0;
+    return [REACCION_BASE, ...new Set(fila.filter((p) => p[2] === 'reaccion' && p[0] <= nivel).map((p) => String(p[3])))];
   }
 
   /** 🏷️ Los títulos del Pase que tiene alguien (✨ edición limitada): los de la fila gratis hasta su nivel y, con el
