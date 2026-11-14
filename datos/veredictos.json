@@ -7514,8 +7514,8 @@
    "g": "1469009547971526659",
    "canal": "1498009509036163173",
    "pub": 1794690082348,
-   "ed": 1794696534496,
-   "texto": "`[ OCTAVOS ]`\n⌞WALKER🇨🇴⌝ 🆚 ⌞WACKLUSCO☪⌝\n⌞WALKER 🇨🇴⌝ 🆚 ⌞MOLUSCO🇦🇷⌝\n⌞BLACK DEMON 🇪🇨⌝ 🆚 ⌞DREXX🇵🇪⌝\n⌞ECLIPSE 🇨🇱⌝ 🆚 ⌞MARTÍNEZ🇺🇾⌝\n⌞NEXUS 🇵🇪⌝ 🆚 ⌞DAN🇨🇴⌝\n⌞LSD 🇵🇪⌝ 🆚 ⌞INKU🇦🇷⌝\n⌞SILENCE 🇵🇪⌝ 🆚 ⌞KRISH🇪🇸⌝\n⌞WALKER 🇨🇴⌝ 🆚 ⌞B. DEMON🇪🇨⌝\n`[ CUARTOS ]`\n⌞WALKER 🇨🇴⌝ 🆚 ⌞B.DEMON🇪🇨⌝\n⌞NEXUS 🇵🇪⌝ 🆚 ⌞ECLIPSE 🇨🇱⌝\n⌞BTRECE 🇺🇾⌝ 🆚 ⌞LSD🇵🇪⌝\n⌞MAKMAH 🇻🇪⌝ 🆚 ⌞SILENCE 🇵🇪⌝\n⌞WaLkEr 🇨🇴⌝ 🆚 ⌞NeXuS🇵🇪⌝",
+   "ed": 1794697428678,
+   "texto": "`[ OCTAVOS ]`\n⌞WALKER🇨🇴⌝ 🆚 ⌞WACKLUSCO☪⌝\n⌞WALKER 🇨🇴⌝ 🆚 ⌞MOLUSCO🇦🇷⌝\n⌞BLACK DEMON 🇪🇨⌝ 🆚 ⌞DREXX🇵🇪⌝\n⌞ECLIPSE 🇨🇱⌝ 🆚 ⌞MARTÍNEZ🇺🇾⌝\n⌞NEXUS 🇵🇪⌝ 🆚 ⌞DAN🇨🇴⌝\n⌞LSD 🇵🇪⌝ 🆚 ⌞INKU🇦🇷⌝\n⌞SILENCE 🇵🇪⌝ 🆚 ⌞KRISH🇪🇸⌝\n⌞WALKER 🇨🇴⌝ 🆚 ⌞B. DEMON🇪🇨⌝\n`[ CUARTOS ]`\n⌞WALKER 🇨🇴⌝ 🆚 ⌞B.DEMON🇪🇨⌝\n⌞NEXUS 🇵🇪⌝ 🆚 ⌞ECLIPSE 🇨🇱⌝\n⌞BTRECE 🇺🇾⌝ 🆚 ⌞LSD🇵🇪⌝\n⌞MAKMAH 🇻🇪⌝ 🆚 ⌞SILENCE 🇵🇪⌝\n⌞WaLkEr 🇨🇴⌝ 🆚 ⌞NeXuS🇵🇪⌝\n⌞LsD 🇵🇪⌝ 🆚 ⌞MaKmA🇻🇪⌝\n⌞LsD 🇵🇪⌝ 🆚 ⌞MaKmA🇻🇪⌝\n`[ FINAL ]`\n⌞MAKMA 🇻🇪⌝ 🆚 ⌞WALKER🇨🇴⌝",
    "batallas": [
     [
      "OCTAVOS",
@@ -7606,8 +7606,8 @@
       "WALKER 🇨🇴",
       "B.DEMON🇪🇨"
      ],
-     null,
-     "última ronda y no dice campeón",
+     "WALKER 🇨🇴",
+     "ronda siguiente",
      []
     ],
     [
@@ -7617,7 +7617,7 @@
       "ECLIPSE 🇨🇱"
      ],
      null,
-     "última ronda y no dice campeón",
+     "no aparece nadie después",
      []
     ],
     [
@@ -7627,7 +7627,7 @@
       "LSD🇵🇪"
      ],
      null,
-     "última ronda y no dice campeón",
+     "no aparece nadie después",
      []
     ],
     [
@@ -7637,7 +7637,7 @@
       "SILENCE 🇵🇪"
      ],
      null,
-     "última ronda y no dice campeón",
+     "no aparece nadie después",
      []
     ],
     [
@@ -7645,6 +7645,36 @@
      [
       "WaLkEr 🇨🇴",
       "NeXuS🇵🇪"
+     ],
+     "WaLkEr 🇨🇴",
+     "ronda siguiente",
+     []
+    ],
+    [
+     "CUARTOS",
+     [
+      "LsD 🇵🇪",
+      "MaKmA🇻🇪"
+     ],
+     "MaKmA🇻🇪",
+     "ronda siguiente",
+     []
+    ],
+    [
+     "CUARTOS",
+     [
+      "LsD 🇵🇪",
+      "MaKmA🇻🇪"
+     ],
+     "MaKmA🇻🇪",
+     "ronda siguiente",
+     []
+    ],
+    [
+     "FINAL",
+     [
+      "MAKMA 🇻🇪",
+      "WALKER🇨🇴"
      ],
      null,
      "última ronda y no dice campeón",
