@@ -25,26 +25,55 @@ async function ultima() {
 //: la versión con la que se abrió la página: si después aparece otra, hay que recargar para verla
 let alAbrir = '';
 
+// 🔄 SE RECARGA SOLA AL VOLVER (Dlx, 14/11/2026, con la captura de su iPhone a las 8:40 PM del 13/11, que todavía
+// tenía la tira de círculos verdes de antes de las 2:54 AM: «osea el mío sigue como outdated no?», y al arreglo:
+// «Sí, hazlo»). Instalada en la pantalla de inicio, el iPhone deja la página abierta de fondo días enteros y nunca
+// vuelve a bajar su código; el cuadro de abajo ofrecía «Recargar», y cerrarlo con la ✕ la dejaba en la vieja.
+// Ahora, si estuviste afuera `AFUERA` o más y al volver hay una versión más nueva que la que se abrió, se recarga
+// sola: no estabas mirando, así que no se corta nada. Mirando, nunca (queda el cuadro). Y nunca si hay algo escrito
+// en un campo, que se perdería: ahí también queda el cuadro. Después de recargar sale «Nueva actualización · Ver qué
+// cambió», porque la versión vista (`lg:cambios`) no se toca.
+const AFUERA = 10 * 60 * 1000;
+let oculta = 0;
+function hayAlgoEscrito() {
+  const raiz = (document.getElementById('inicio-nuevo') || {}).shadowRoot || document;
+  return [...raiz.querySelectorAll('textarea, input:not([type]), input[type=text], input[type=search], input[type=url], [contenteditable=true]')]
+    .some((e) => String(e.value || e.textContent || '').trim());
+}
+
 export function AvisoVersion({ pagina }) {
   const [c, setC] = useState(null);
   const [cerrado, setCerrado] = useState('');
   useEffect(() => {
     let vivo = true;
-    const mirar = async () => {
+    const mirar = async (volviste) => {
       if (document.hidden) return;
       let u = null;
       try { u = await ultima(); } catch (e) { return; }
       if (!vivo || !u || !u.version) return;
       if (!alAbrir) alAbrir = u.version;
+      if (volviste && nuevaQue(u.version, alAbrir) && !hayAlgoEscrito()) { location.reload(); return; }
       // primera vez en este navegador: nada es «nuevo»
       if (PRIMERA_VISITA && !leerVista()) { guardarVista(u.version); return; }
       setC(u);
     };
     mirar();
-    const t = setInterval(mirar, CADA);
-    const vis = () => { if (!document.hidden) mirar(); };
+    const t = setInterval(() => mirar(false), CADA);
+    const vis = () => {
+      if (document.hidden) { oculta = Date.now(); return; }
+      const largo = oculta && Date.now() - oculta >= AFUERA;
+      oculta = 0;
+      mirar(largo);
+    };
+    // el iPhone, al traer una app de fondo, a veces devuelve la página entera de su memoria (`persisted`) sin avisar
+    // con visibilitychange: eso también es «volviste»
+    const vuelta = (e) => { if (e.persisted) mirar(true); };
     document.addEventListener('visibilitychange', vis);
-    return () => { vivo = false; clearInterval(t); document.removeEventListener('visibilitychange', vis); };
+    window.addEventListener('pageshow', vuelta);
+    return () => {
+      vivo = false; clearInterval(t);
+      document.removeEventListener('visibilitychange', vis); window.removeEventListener('pageshow', vuelta);
+    };
   }, []);
   if (!c || pagina === 'cambios' || quiereTutorial()) return null;
   const visto = leerVista();

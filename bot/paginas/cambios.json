@@ -11,6 +11,16 @@
  ],
  "cambios": [
     {
+        "version": "5.27",
+        "dia": "2026-11-14",
+        "cuando": "2026-11-14T00:09:00-05:00",
+        "titulo": "La página se pone al día sola",
+        "items": [
+            "**Si la dejas abierta y vuelves después de un rato**, y salió una versión nueva mientras no estabas, la página se recarga sola y te avisa qué cambió. Pasaba sobre todo con la página instalada en el celular, que se queda abierta de fondo días enteros.",
+            "Mientras la estás mirando no se recarga nunca, y tampoco si tienes algo escrito a medias: ahí sigue el aviso con «Recargar para verla»."
+        ]
+    },
+    {
         "version": "5.26",
         "dia": "2026-11-13",
         "cuando": "2026-11-13T20:16:00-05:00",
