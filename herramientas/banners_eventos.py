@@ -131,6 +131,23 @@ def html(sv, d):
         'nombre': (d.get('nombre') or sv).upper(), 'tag': '<div class="tag">%s</div>' % (d.get('tag') or '').upper() if d.get('tag') else ''}
 
 
+#: 🌆 la escena sola, sin textos, para el escenario del Inicio (14/11/2026, Dlx a la maqueta: «principalmente A»): de fondo
+#: de cada momento, detrás de un velo. WebP del mismo tamaño que la imagen propia (HD, ver `imagenes-en-hd`)
+ESCENAS = os.path.join(BASE, 'bot', 'paginas', 'escenas')
+
+
+def escena(sv):
+    """Escribe `bot/paginas/escenas/<sv>.webp` desde la imagen propia del servidor. `''` si no la tiene."""
+    src = fondo_de(sv)
+    if not src:
+        return ''
+    from PIL import Image
+    os.makedirs(ESCENAS, exist_ok=True)
+    dst = os.path.join(ESCENAS, sv.lower() + '.webp')
+    Image.open(src).convert('RGB').save(dst, 'WEBP', quality=80, method=6)
+    return dst
+
+
 def dibujar(svs, hoja=False):
     from playwright.sync_api import sync_playwright
     os.makedirs(SALIDA, exist_ok=True)
@@ -150,6 +167,7 @@ def dibujar(svs, hoja=False):
             ruta = os.path.join(SALIDA, sv.lower() + '.jpg')
             pg.screenshot(path=ruta, type='jpeg', quality=CALIDAD, clip={'x': 0, 'y': 0, 'width': ANCHO, 'height': ALTO})
             hechos.append((sv, ruta))
+            escena(sv)
             print('   🖼  %-5s %s  %d KB' % (sv, os.path.relpath(ruta, BASE), os.path.getsize(ruta) // 1024))
         if hoja and hechos:
             celdas = ''.join('<figure style="margin:0"><img src="%s" style="width:400px;border-radius:6px;display:block">'

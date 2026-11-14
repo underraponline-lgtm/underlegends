@@ -397,6 +397,152 @@ span.tab-av img{width:100%;height:100%;object-fit:cover;display:block}
 .escena .tira-s{background:transparent;border-top:0}
 @media (prefers-reduced-motion: reduce){.escena:before{transition:none}}
 
+/* ═══ 🎬 EL ESCENARIO, REHECHO (14/11/2026, Dlx a la maqueta: «principalmente A pero dependiendo de lo que se quiera
+   mostrar… variedad»). Tres formas —A cartelera, B póster, C bento— con la misma tira, las mismas flechas (blancas y
+   finas) y el mismo reloj de 8 s. Todo bajo `.escena.es2` para no tocar el resto de las escenas. Ver `Hero` en arriba.jsx ═══ */
+/* 🌆 la escena del servidor detrás de un velo plano; sin la suya, el fondo de antes (el círculo y el logo) */
+.app .escena.es2.con-esc{background-image:linear-gradient(rgba(3,3,4,.72),rgba(3,3,4,.72)),var(--es-img);background-size:cover;background-position:center}
+.app .escena.es2.con-esc:before,.app .escena.es2.con-esc:after{display:none}
+/* todos los momentos en la misma celda: el escenario mide lo del más alto y no salta. Al cambiar se cruzan */
+/* ⚠️ `.app .hero-in` es una grilla de `1fr 360px` en la compu (la del Inicio viejo): acá, una sola columna */
+.app .escena.es2 .hero-in{display:grid;grid-template-columns:minmax(0,1fr);gap:0}
+.app .escena.es2 .mo{grid-area:1 / 1;display:grid;visibility:hidden;opacity:0;transition:opacity .35s ease,visibility 0s linear .35s}
+.app .escena.es2 .mo.on{visibility:visible;opacity:1;transition:opacity .35s ease}
+.app.calma .escena.es2 .mo{transition:none}
+@media (prefers-reduced-motion: reduce){.app .escena.es2 .mo{transition:none}}
+.app .escena.es2 .mo > *{position:relative;z-index:1}
+.app .escena.es2 .hero-p{color:#E4E4E0}
+/* ‹ › blancas y finas (Dlx: «las flechas pero de color blanco delgado») */
+.app .escena.es2 .mo-fl{width:44px;height:44px;padding:0;background:none;border:0;box-shadow:none;color:#fff;opacity:.85;top:calc(50% - 60px)}
+.app .escena.es2 .mo-fl svg{width:30px;height:30px;stroke:currentColor;stroke-width:1.6;fill:none;transform:none;filter:drop-shadow(0 2px 3px rgba(0,0,0,.7))}
+.app .escena.es2 .mo-fl:hover,.app .escena.es2 .mo-fl:active{background:none;color:#fff;opacity:1;transform:none;box-shadow:none}
+/* 🎞️ la tira de momentos: la escena chiquita, el logo, qué es y cuándo; el que miras, más ancho y con el reloj */
+.app .escena.es2 .es-tira{display:flex;gap:8px;overflow-x:auto;scrollbar-width:none;width:100%;align-self:stretch;box-sizing:border-box}
+.app .escena.es2 .es-tira button{position:relative;flex:1 1 0;min-width:150px;display:grid;grid-template-columns:32px minmax(0,1fr);gap:9px;
+  align-items:center;padding:9px 10px 12px;border:1px solid #2E2E33;border-radius:4px;background:#0B0B0D center/cover no-repeat;color:#F6F6F6;
+  text-align:left;text-transform:none;letter-spacing:0;overflow:hidden;cursor:pointer}
+.app .escena.es2 .es-tira button:before{content:"";position:absolute;inset:0;background:rgba(11,11,13,.8)}
+.app .escena.es2 .es-tira button > *{position:relative}
+.app .escena.es2 .es-tira img{width:32px;height:32px;border-radius:50%;object-fit:cover;background:#1A1A1E}
+.app .escena.es2 .es-tira b{display:block;font:700 13.5px/1.15 Archivo,sans-serif;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.app .escena.es2 .es-tira small{display:block;margin-top:3px;font:700 12px/1 "Barlow Condensed",sans-serif;letter-spacing:.06em;text-transform:uppercase;
+  color:#A5A5A0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.app .escena.es2 .es-tira button.on{flex-grow:1.7;border-color:#F6F6F6;background-color:#0B0B0D;color:#F6F6F6}
+.app .escena.es2 .es-tira button.vivo{border-color:#E41373}
+.app .escena.es2 .es-tira button.vivo small{color:#FF6FA8}
+.app .escena.es2 .es-tira button:focus-visible{outline:2px solid var(--magenta);outline-offset:2px}
+.app .escena.es2 .es-tira .es-reloj{position:absolute;left:0;bottom:0;height:3px;width:0;background:var(--verde);animation:es-reloj 8s linear forwards}
+@keyframes es-reloj{to{width:100%}}
+.app .escena.es2 .quieto .es-reloj,.app .escena.es2 .fuera .es-reloj,.app.tapado .escena.es2 .es-reloj{animation-play-state:paused}
+/* con «Menos animaciones» o el movimiento reducido, quieto: la barra llena y no pasa solo */
+.app.calma .escena.es2 .es-reloj{animation:none;width:100%;opacity:.5}
+@media (prefers-reduced-motion: reduce){.app .escena.es2 .es-reloj{animation:none;width:100%;opacity:.5}}
+/* los datos del campeón y lo social */
+.app .escena.es2 .es-datos{display:flex;flex-wrap:wrap;gap:6px;margin-top:12px}
+.app .escena.es2 .es-datos span{padding:6px 9px;border:1px solid #2E2E33;border-radius:4px;background:rgba(20,20,23,.9);color:#D8D8D4;
+  font:700 13px/1 "Barlow Condensed",sans-serif;letter-spacing:.05em;text-transform:uppercase}
+.app .escena.es2 .es-datos b{color:#F6F6F6}
+.app .escena.es2 .es-soc{display:grid;gap:8px;margin-top:12px}
+.app .escena.es2 .es-soc .lu-soc{margin-top:0}
+.app .escena.es2 .es-soc .lu-nube{margin-top:0;max-width:440px;padding:8px 11px}
+/* 👑 el campeón: corona, carta (con su marco y su brillo) y el cuadrito de lo que sumó */
+.app .escena.es2 .es-camp{display:grid;grid-template-columns:172px minmax(0,1fr);gap:22px;align-items:center;min-width:0}
+.app .escena.es2 .es-cw{position:relative;display:grid;gap:10px;justify-items:center;padding-top:34px;min-width:0}
+.app .escena.es2 .es-corona{position:absolute;left:50%;top:-6px;width:88px;transform:translateX(-50%) rotate(-7deg);z-index:3;
+  filter:drop-shadow(0 4px 0 rgba(0,0,0,.55))}
+.app .escena.es2 .es-cimg{position:relative;display:block;width:100%}
+.app .escena.es2 .es-carta{display:block;width:100%;height:auto}
+.app .escena.es2 .es-cimg.brilla .es-carta,.app .escena.es2 .es-cimg.brilla img{filter:drop-shadow(0 0 2px #E5B800) drop-shadow(0 0 10px rgba(229,184,0,.75));
+  animation:es-brilla 2.6s ease-in-out infinite}
+@keyframes es-brilla{50%{filter:drop-shadow(0 0 3px #F5D04A) drop-shadow(0 0 18px rgba(245,208,74,.95))}}
+.app.calma .escena.es2 .es-cimg.brilla .es-carta,.app.calma .escena.es2 .es-cimg.brilla img{animation:none}
+@media (prefers-reduced-motion: reduce){.app .escena.es2 .es-cimg.brilla .es-carta,.app .escena.es2 .es-cimg.brilla img{animation:none}}
+.app .escena.es2 .es-sello{position:absolute;left:-12px;bottom:26px;z-index:2;padding:6px 10px;background:var(--magenta);color:#fff;
+  font:400 18px/1 Anton,Archivo,sans-serif;letter-spacing:.04em;text-transform:uppercase;transform:rotate(-6deg);white-space:nowrap}
+.app .escena.es2 .es-sello.oro{background:#F2B705;color:#030304}
+.app .escena.es2 .es-pts{display:grid;gap:4px;justify-items:center;text-align:center;width:100%;padding:8px 8px 9px;border:1px solid #F2B705;
+  border-radius:4px;background:rgba(11,11,13,.92)}
+.app .escena.es2 .es-pts b{font:400 26px/1 Anton,Archivo,sans-serif;color:#F2B705;letter-spacing:.01em}
+.app .escena.es2 .es-pts span{font:700 12px/1.1 "Barlow Condensed",sans-serif;letter-spacing:.06em;text-transform:uppercase;color:#F6F6F6}
+.app .escena.es2 .es-pts small{font:700 11.5px/1.15 "Barlow Condensed",sans-serif;letter-spacing:.04em;text-transform:uppercase;color:#A5A5A0}
+.app .escena.es2 .es-equipo{display:flex;justify-content:center}
+.app .escena.es2 .es-cara-g{width:120px;height:120px;border-radius:50%;overflow:hidden;border:3px solid #F6F6F6;font-size:40px}
+.app .escena.es2 .es-equipo .es-cara-g + .es-cara-g{margin-left:-24px}
+.app .escena.es2 .es-cw > .es-sello{position:relative;left:auto;bottom:auto}
+/* 🛤️ su camino */
+.app .escena.es2 .es-caminos{display:grid;gap:14px;min-width:0}
+.app .escena.es2 .es-camino{display:grid;gap:6px;min-width:0}
+.app .escena.es2 .es-camino-h{display:flex;justify-content:space-between;align-items:baseline;gap:8px;min-width:0}
+.app .escena.es2 .es-camino-h b{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font:700 14px/1.1 Archivo,sans-serif}
+.app .escena.es2 .es-camino-h small{flex:none;color:#A5A5A0;font:700 12.5px/1 "Barlow Condensed",sans-serif;letter-spacing:.06em;text-transform:uppercase}
+.app .escena.es2 .es-paso{display:grid;grid-template-columns:76px minmax(0,1fr) auto;gap:10px;align-items:center;padding:7px 10px;
+  border:1px solid #26262B;border-radius:4px;background:rgba(11,11,13,.88)}
+.app .escena.es2 .es-r{font:700 12.5px/1 "Barlow Condensed",sans-serif;letter-spacing:.07em;text-transform:uppercase;color:#A5A5A0}
+.app .escena.es2 .es-q{display:flex;align-items:center;gap:8px;min-width:0}
+.app .escena.es2 .es-q > span{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font:700 13.5px/1.2 Archivo,sans-serif}
+.app .escena.es2 .es-c{width:26px;height:26px;flex:none;margin-left:-8px;border:2px solid #030304;border-radius:50%;overflow:hidden;font-size:11px}
+.app .escena.es2 .es-q .es-c:first-child{margin-left:0}
+.app .escena.es2 .es-c img{width:100%;height:100%;object-fit:cover;display:block}
+.app .escena.es2 .es-ok{font:700 12px/1 "Barlow Condensed",sans-serif;letter-spacing:.06em;color:var(--verde)}
+.app .escena.es2 .es-paso.fin{border-color:#F2B705}
+.app .escena.es2 .es-paso.fin .es-ok{color:#F2B705}
+/* B · el póster: la palabra gigante calada detrás, la carta al centro */
+.app .escena.es2 .mo.lay-B{position:relative}
+.app .escena.es2 .es-gig{position:absolute;left:0;right:0;top:50%;transform:translateY(-50%);z-index:0;text-align:center;white-space:nowrap;
+  font:400 clamp(90px,15vw,230px)/.85 Anton,Archivo,sans-serif;text-transform:uppercase;color:transparent;-webkit-text-stroke:2px rgba(246,246,246,.2);
+  pointer-events:none}
+.app .escena.es2 .es-b-carta{position:relative;display:block;width:200px;transform:rotate(-3deg)}
+.app .escena.es2 .es-b-carta .es-sello{left:auto;right:-22px;bottom:auto;top:20px}
+/* C · el bento: el principal grande y los demás en vivo al costado */
+.app .escena.es2 .es-grande{display:grid;gap:18px;min-width:0}
+.app .escena.es2 .es-otros{display:grid;gap:10px;min-width:0}
+.app .escena.es2 .es-otro{position:relative;display:grid;grid-template-columns:48px minmax(0,1fr);gap:12px;align-items:center;padding:12px 14px;
+  border:1px solid #2A2A2F;border-radius:4px;background:#0B0B0D center/cover no-repeat;color:#F6F6F6;text-align:left;font:inherit;cursor:pointer;
+  overflow:hidden;text-decoration:none}
+.app .escena.es2 .es-otro:before{content:"";position:absolute;inset:0;background:rgba(11,11,13,.86)}
+.app .escena.es2 .es-otro > *{position:relative;min-width:0}
+.app .escena.es2 .es-otro img{width:48px;height:48px;border-radius:50%;object-fit:cover;background:#1A1A1E}
+.app .escena.es2 .es-otro .tag{margin-bottom:6px}
+.app .escena.es2 .es-otro b{display:block;font:400 20px/1.05 Anton,Archivo,sans-serif;text-transform:uppercase;overflow-wrap:anywhere}
+.app .escena.es2 .es-otro small{display:block;margin-top:4px;color:#A5A5A0;font:700 12px/1 "Barlow Condensed",sans-serif;letter-spacing:.06em;text-transform:uppercase}
+@media (hover: hover) and (pointer: fine){.app .escena.es2 .es-otro:hover{border-color:#55555C}}
+/* 🖥️ la compu: alto fijo (440 el momento + la tira) */
+@media (min-width: 900px){
+  .app .escena.es2 .hero.carrusel{padding-top:30px;padding-bottom:0}
+  .app .escena.es2 .hero-in{height:440px}
+  .app .escena.es2 .mo{height:440px;min-height:0;align-items:center;grid-template-columns:minmax(0,1.05fr) minmax(0,1fr);gap:40px}
+  .app .escena.es2 .hero-ev{margin:14px 0 10px;font-size:56px}
+  .app .escena.es2 .hero-ev.largo{font-size:46px}
+  .app .escena.es2 .hero-ev.muy-largo{font-size:36px}
+  .app .escena.es2 .hero-acc{margin-top:14px}
+  .app .escena.es2 .mo.lay-B{grid-template-columns:minmax(0,1fr) auto minmax(0,.6fr)}
+  .app .escena.es2 .mo.lay-B .mo-txt{grid-column:1;grid-row:1;align-self:end;padding-bottom:18px}
+  .app .escena.es2 .mo.lay-B .mo-vis{grid-column:2;grid-row:1}
+  .app .escena.es2 .mo.lay-C{grid-template-columns:minmax(0,2fr) minmax(0,1fr);gap:14px;align-items:stretch}
+  .app .escena.es2 .es-grande{grid-template-columns:minmax(0,1.1fr) minmax(0,1fr);gap:26px;align-items:center}
+  .app .escena.es2 .es-otros{grid-auto-rows:minmax(0,1fr)}
+  .app .escena.es2 .es-tira{margin:16px 0 0;padding:0 0 18px}
+  .app .escena.es2 .mo-fl{width:52px;height:52px;top:calc(50% - 74px)}
+  .app .escena.es2 .mo-fl svg{width:36px;height:36px}
+}
+/* 📱 el celular: una columna; la tira se desliza */
+@media (max-width: 899.98px){
+  .app .escena.es2 .mo{gap:16px;align-content:start}
+  .app .escena.es2 .es-camp{grid-template-columns:118px minmax(0,1fr);gap:14px;align-items:start}
+  .app .escena.es2 .es-caminos .es-camino + .es-camino{display:none}
+  .app .escena.es2 .es-cw{padding-top:26px}
+  .app .escena.es2 .es-corona{width:64px}
+  .app .escena.es2 .es-sello{font-size:14px;left:-6px}
+  .app .escena.es2 .es-pts b{font-size:20px}
+  .app .escena.es2 .es-paso{grid-template-columns:58px minmax(0,1fr) auto;gap:8px;padding:6px 8px}
+  .app .escena.es2 .mo.lay-B .mo-vis{order:-1;justify-self:center;margin-top:8px}
+  .app .escena.es2 .es-gig{top:110px;font-size:92px}
+  .app .escena.es2 .es-b-carta{width:150px}
+  .app .escena.es2 .es-tira{margin:16px -16px 0;padding:0 16px 16px}
+  .app .escena.es2 .es-tira button{flex:0 0 150px}
+  .app .escena.es2 .es-tira button.on{flex-basis:186px}
+}
+
 /* La Liga en números: las dos columnas del mismo alto (Dlx: «mira, está disparejo»). El gráfico crece */
 @media (min-width: 900px){
   .app .num-g{align-items:stretch}

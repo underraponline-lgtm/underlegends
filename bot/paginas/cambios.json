@@ -11,6 +11,18 @@
  ],
  "cambios": [
     {
+        "version": "5.29",
+        "dia": "2026-11-14",
+        "cuando": "2026-11-14T01:41:00-05:00",
+        "titulo": "El escenario del Inicio, nuevo",
+        "items": [
+            "El **escenario** de arriba del Inicio, rehecho: cada momento con la escena de su servidor de fondo y el mismo alto en la compu, así la página ya no salta al cambiar.",
+            "**Anoche** muestra al campeón con su **corona**, su carta (con su marco o su brillo del Pase), **cuántos puntos sumó y dónde quedó**, y su camino ronda por ronda. Si ganó dos esa noche, «ganó las dos».",
+            "**Se busca** sale como un cartel, con la carta de quien vale más. Con dos o más eventos **en vivo** a la vez, se ven todos juntos.",
+            "Abajo, una **tira con todos los momentos**; las **flechas** son blancas y finas, y el escenario **pasa solo cada 8 segundos** (se frena con el mouse encima)."
+        ]
+    },
+    {
         "version": "5.28",
         "dia": "2026-11-14",
         "cuando": "2026-11-14T00:57:00-05:00",

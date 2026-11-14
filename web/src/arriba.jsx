@@ -8,6 +8,10 @@ import { Miniatura, abrirVideo } from './video.jsx';
 import { useRacha } from './racha.js';
 import { YoMenu } from './yomenu.jsx';
 import { ERR_LIBRE, libreAccion, pedirLibres, useLibres } from './libres.js';
+import { useAplausos } from './aplausos.js';
+import { delHilo, useComentarios } from './comentarios.jsx';
+import { usePase } from './pase.js';
+import { LuNube, LuSocial } from './medio.jsx';
 
 // 🧭 EL ORDEN, EL DEL MENÚ DE ARRIBA AGRUPADO (12/11/2026, ver `GRUPOS`): lo que va suelto arriba, primero, y después lo
 // de cada grupo. Es el de la tira de abajo del celular, así que las cuatro y media que se ven sin deslizar son Inicio,
@@ -1786,6 +1790,89 @@ export function llaveEnVivo(e, vivoL) {
   try { return window.llaveDeEvento(e, Object.values(vivoL)); } catch (err) { return null; }
 }
 
+// ═══ 🎬 EL ESCENARIO, REHECHO (Dlx, 14/11/2026, a la maqueta https://claude.ai/artifact/DwKrMgHnYwurWExsTwjwrU: «este es lo
+// más importante»; eligió «principalmente A pero dependiendo de lo que se quiera mostrar… variedad»). Tres formas con la
+// misma tira, las mismas flechas y el mismo reloj: A (cartelera) casi siempre, B (póster) para lo que es un cartel, C
+// (bento) con dos o más en vivo. Alto fijo en la compu: medido antes, «Anoche» con la llave entera medía 1.081 px y «La
+// Liga» 503, y la página saltaba al cambiar ═══
+// 🌆 las escenas de cada servidor (las de los banners, sin textos: `herramientas/banners_eventos.py` las deja en
+// `bot/paginas/escenas/`). Sin la suya, el fondo de antes
+const ESCENAS = new Set(['acad', 'ch', 'ddf', 'dds', 'dra', 'fds', 'ffa', 'ffs', 'frz', 'fvs', 'lkr', 'sr', 'urbf']);
+export const escenaDe = (sv) => { const k = String(sv || '').toLowerCase(); return ESCENAS.has(k) ? '/escenas/' + k + '.webp' : ''; };
+
+// 👑 LA CORONA DEL CAMPEÓN (Dlx: «encima de la tarjeta pon una corona, diferente al del intro»): llena, de cinco puntas,
+// con banda y tres piedras. La de la bienvenida (`Corona` de bienvenida.jsx) es sólo el contorno
+function CoronaCampeon() {
+  return (
+    <svg className="es-corona" viewBox="0 0 120 86" aria-hidden="true">
+      <path d="M10 66 L6 18 L32 40 L46 8 L60 34 L74 8 L88 40 L114 18 L110 66 Z" fill="#F2B705" stroke="#2A1E00" strokeWidth="5" strokeLinejoin="round" />
+      <path d="M14 58 L11 28 L33 47 L46 18 L60 42 L74 18 L87 47 L109 28 L106 58" fill="none" stroke="#FFE27A" strokeWidth="2.5" strokeLinejoin="round" opacity=".8" />
+      <rect x="8" y="62" width="104" height="16" rx="2" fill="#C98F00" stroke="#2A1E00" strokeWidth="5" />
+      <circle cx="34" cy="70" r="4.5" fill="#E41373" /><circle cx="60" cy="70" r="5.5" fill="#29B298" /><circle cx="86" cy="70" r="4.5" fill="#E41373" />
+      {[[6, 14], [46, 6], [74, 6], [114, 14]].map(([x, y]) => <circle key={x} cx={x} cy={y} r="5" fill="#F2B705" stroke="#2A1E00" strokeWidth="3" />)}
+    </svg>
+  );
+}
+// 🔢 EL CUADRITO DE ABAJO (Dlx: «abajo digamos cuántos puntos suma, o sea qué diferencia va a hacer»): lo que sumó y dónde
+// quedó: a cuánto del de arriba, o cuánto le saca al #2 si es el #1
+function PtsCampeon({ liga, k, sumo, x }) {
+  const f = k ? liga.T[k] : null;
+  const T = liga.d.tabla || [];
+  const arriba = f && f.pos > 1 ? T.find((t) => t.pos === f.pos - 1) : null;
+  const abajo = f && f.pos === 1 ? T.find((t) => t.pos === 2) : null;
+  const dif = arriba ? 'a ' + num(arriba.pts - f.pts) + ' del #' + arriba.pos + ' (' + limpio(arriba.n) + ')' : abajo ? 'le saca ' + num(f.pts - abajo.pts) + ' al #2' : '';
+  return (
+    <span className="es-pts"><b>+{num(sumo)} pts</b><span>a su Temporada{x && x !== 1 ? ' · ' + mult(x) + ' esa semana' : ''}</span>
+      {f && f.pos ? <small>Va #{f.pos}{dif ? ' · ' + dif : ''}</small> : null}</span>
+  );
+}
+// la carta del campeón: con su marco (lo pone `Carta`) y, desde el nivel 8 del Pase, el brillo dorado que ya tiene en las llaves
+function CampeonVis({ liga, k, nombre, n, sumo, x }) {
+  const f = k ? liga.T[k] : null;
+  const conCarta = !!(f && (f.c || []).includes('temporada'));
+  return (
+    <div className="es-cw">
+      <CoronaCampeon />
+      <span className={'es-cimg' + (liga.brilla(k) ? ' brilla' : '')}>
+        {conCarta ? <Carta liga={liga} k={k} cual="temporada" cls="es-carta" /> : <Cara liga={liga} k={k} nombre={nombre} cls="cara es-cara-g" grande />}
+        <span className="es-sello">{n > 1 ? 'Campeón ×' + n : 'Campeón'}</span>
+      </span>
+      <PtsCampeon liga={liga} k={k} sumo={sumo} x={x} />
+    </div>
+  );
+}
+// 🛤️ EL CAMINO DEL CAMPEÓN: una fila por ronda con la cara de cada rival (de «Knockout Bracket», una ronda por vez). Reemplaza a
+// la llave entera, que en FFA no entraba (grupos de hasta 6 por lado)
+const primero = (x) => limpio(String(x || '').split(',')[0]);
+function Camino({ liga, ll, nombre }) {
+  const yo = limpio(nombre).toLowerCase();
+  const pasos = [];
+  (ll.rondas || []).forEach((r) => (r.b || []).forEach((b) => {
+    const lados = b[0] || [];
+    if (!lados.some((x) => primero(x).toLowerCase() === yo)) return;
+    pasos.push({ r: r.r, rivales: lados.filter((x) => primero(x).toLowerCase() !== yo).map(primero).filter(Boolean), n: lados.length,
+      gano: primero(b[1]).toLowerCase() === yo });
+  }));
+  const ps = pasos.slice(-4);
+  if (!ps.length) return null;
+  return (
+    <div className="es-camino">
+      <div className="es-camino-h"><b>{limpio(ll.nombre)}</b><small>{ll.participantes} raperos</small></div>
+      {ps.map((p, i) => {
+        const fin = i === ps.length - 1 && p.gano;
+        return (
+          <div key={i} className={'es-paso' + (fin ? ' fin' : '')}>
+            <span className="es-r">{p.r}</span>
+            <span className="es-q">{p.rivales.slice(0, 3).map((x, j) => <Cara key={j} liga={liga} k={(liga.fila(x) || {}).k} nombre={x} cls="cara es-c" />)}
+              <span>{p.rivales.length ? 'a ' + p.rivales.join(' y ') : 'sin rival'}{p.n > 2 ? ' · grupo de ' + p.n : ''}</span></span>
+            <span className="es-ok">{fin ? 'CAMPEÓN' : p.gano ? 'GANÓ' : 'PASÓ'}</span>
+          </div>
+        );
+      })}
+    </div>
+  );
+}
+
 // ── lo tuyo, primero (Dlx, 30/09/2026: «me gustan todas», la B): si hoy te buscan y tu último evento, si fue en los
 // últimos dos días. «Jugás esta noche» espera a que el payload traiga las inscripciones
 function momentosTuyos(liga) {
@@ -1796,7 +1883,7 @@ function momentosTuyos(liga) {
   const mw = liga.d.mw || {};
   if (b) {
     out.push({
-      tipo: 'tebuscan', et: 'Te buscan', sv: yo.sv,
+      tipo: 'tebuscan', et: 'Te buscan', sv: yo.sv, lay: 'B', gig: 'SE BUSCA', hora: 'Hoy',
       txt: <><div className="hero-t"><span className="tag">HOY TE BUSCAN</span></div>
         <Tit c="hero-ev largo">{num(b.v)} PTS POR TU CABEZA</Tit>
         <p className="hero-p">{b.cn}{b.m ? ' · ' + b.m : ''}. Quien te gane, cobra. Vence {liga.dia(mw.fin)}.</p>
@@ -1810,7 +1897,7 @@ function momentosTuyos(liga) {
     const [ll, res, pts] = ult;
     const carta = liga.cartaUrl(yo.k, 'temporada');
     out.push({
-      tipo: 'tuevento', et: 'Tu evento', sv: ll.sv,
+      tipo: 'tuevento', et: 'Tu evento', sv: ll.sv, hora: liga.cuando(liga.fechaLlave(ll)),
       txt: <><div className="hero-t"><span className="tag tg-seguis">TU ÚLTIMO EVENTO · {liga.cuando(liga.fechaLlave(ll)).toUpperCase()}</span></div>
         <Tit c="hero-ev">{resultado(res)}</Tit>
         <p className="hero-p">{limpio(ll.nombre)} · {siglaDe(ll.sv)} · {ll.participantes} raperos · +{num(pts)} pts para tu Temporada.</p>
@@ -1824,11 +1911,12 @@ function momentosTuyos(liga) {
   return out;
 }
 
-function momentos(liga, vivoL) {
+function momentos(liga, vivoL, ctx = {}) {
   const out = momentosTuyos(liga);
   // 🔴 TODOS LOS QUE SE ESTÁN JUGANDO, NO SÓLO EL PRIMERO (hasta tres). El 01/10/2026 a las 8 PM se jugaban a la vez
   // POESÍA CRUDA (URBF) y la VOL 21 2v2 (FFA), y el escenario mostraba uno: Dlx creyó que el de URBF había desaparecido
   const vivos = liga.vivo().slice(0, 3);
+  const enVivo = [];
   vivos.forEach((e, iv) => {
     const m = liga.multSv(e.sv);
     const L = llaveEnVivo(e, vivoL);
@@ -1839,8 +1927,9 @@ function momentos(liga, vivoL) {
     // 🔑 LO BÁSICO DEL ANUNCIO, TAMBIÉN EN VIVO (Dlx, 03/10/2026, con LA REDENCION: «es MULTIVERSE… debería decirlo
     // ahí… no todo pero lo básico»): la modalidad, los cupos y el premio, como en el Próximo
     const det = [e.modalidad, e.cupos ? 'cupos ' + String(e.cupos).toLowerCase() : ''].filter(Boolean).join(' · ');
-    out.push({
-      tipo: 'vivo', clave: iv ? 'vivo-' + e.sv + '-' + iv : 'vivo', et: vivos.length > 1 ? 'En vivo · ' + siglaDe(e.sv) : 'En vivo', sv: e.sv,
+    enVivo.push({
+      tipo: 'vivo', clave: iv ? 'vivo-' + e.sv + '-' + iv : 'vivo', et: 'En vivo', sv: e.sv, hora: 'Ahora',
+      _n: n, _ir: L ? () => accion.llave('v:' + L.id) : null, _href: !L && dd ? dd.url : '',
       txt: <><div className="hero-t"><img className="hv-logo" alt="" src={liga.logo(e.sv)} /><span className="tag vivo-late">EN VIVO AHORA</span>
         <span className="hero-meta">{siglaDe(e.sv)} · EMPEZÓ {liga.dia(e.cuando).replace(/^hoy /, '')}{m ? ' · ' + mult(m) + ' ESTA SEMANA' : ''}</span></div>
         <Tit c={'hero-ev' + (n.length > 16 ? ' largo' : '')}>{n}</Tit>
@@ -1856,6 +1945,12 @@ function momentos(liga, vivoL) {
         : <div className="mo-logo vivo"><img alt="" src={liga.logo(e.sv, true)} /></div>,
     });
   });
+  // 🍱 DOS O MÁS EN VIVO A LA VEZ: un solo momento con la forma C (Dlx, 14/11/2026, a la mezcla: «principalmente A pero
+  // dependiendo de lo que se quiera mostrar… variedad»): el primero grande y los demás al costado, siempre a la vista
+  if (enVivo.length > 1) {
+    const [p, ...resto] = enVivo;
+    out.push(Object.assign(p, { lay: 'C', et: 'En vivo ×' + enVivo.length, otros: resto }));
+  } else out.push(...enVivo);
   // el próximo de la Liga, si no es el mismo que ya muestra el botón grande del lobby (`eventoDelBoton()`)
   const delBoton = eventoDelBoton(liga).e;
   liga.luego().filter((x) => (utc(x.cuando) - liga.ahora) / 1000 < 36 * 3600 && x !== delBoton).slice(0, 1).forEach((e) => {
@@ -1866,7 +1961,7 @@ function momentos(liga, vivoL) {
     const dd = aDiscord(liga, e, false);
     const ins = dd && e.ins ? dd : null;
     out.push({
-      tipo: 'prox', et: 'Próximo', sv: e.sv,
+      tipo: 'prox', et: 'Próximo', sv: e.sv, hora: liga.dia(e.cuando),
       txt: <><div className="hero-t"><img className="hv-logo" alt="" src={liga.logo(e.sv)} /><span className="tag tg-prox">PRÓXIMO · {liga.dia(e.cuando).toUpperCase()}</span></div>
         <Tit c={'hero-ev' + (n.length > 16 ? ' largo' : '')}>{n}</Tit>
         <p className="hero-p">{det}{e.premios ? '. Premio: ' + recorte(e.premios, 70) : ''}</p>
@@ -1890,7 +1985,7 @@ function momentos(liga, vivoL) {
     const ya = x.juega ? (x.n === 1 ? 'Una batalla ya tiene veredicto' : x.n + ' batallas ya tienen veredicto')
       + (x.j ? ' en la jornada ' + x.j + '. ' : '. ') : 'La liga anunció su fecha para hoy. ';
     out.push({
-      tipo: 'ligahoy', clave: 'ligahoy-' + L.id, et: 'Liga · ' + siglaDe(L.sv), sv: L.sv,
+      tipo: 'ligahoy', clave: 'ligahoy-' + L.id, et: 'Liga · ' + siglaDe(L.sv), sv: L.sv, hora: futuro ? liga.dia(x.t) : 'Hoy',
       txt: <><div className="hero-t"><img className="hv-logo" alt="" src={liga.logo(L.sv)} /><span className="tag tg-prox">{futuro ? 'HOY · ' + liga.dia(x.t).replace(/^hoy /, '').toUpperCase() : 'HOY SE JUEGA'}</span>
         <span className="hero-meta">LIGA · {siglaDe(L.sv)}{x.j ? ' · JORNADA ' + x.j : ''}</span></div>
         <Tit c={'hero-ev' + (n.length > 16 ? ' largo' : '')}>{n}</Tit>
@@ -1906,20 +2001,71 @@ function momentos(liga, vivoL) {
   if (ll) {
     const gana = liga.campeon(ll);
     const cu = liga.cuando(liga.fechaLlave(ll));
+    const dia = liga.diaClave(liga.fechaLlave(ll));
+    const g0 = gana[0] || '';
+    const yo0 = limpio(g0).toLowerCase();
+    const f = gana.length === 1 ? liga.fila(g0) : null;
+    const k = f ? f.k : '';
+    // 🏆 LAS QUE GANÓ ESA NOCHE: si el mismo se quedó con dos (Oasis el 13/11), es «ganó las dos»
+    const misma = gana.length === 1 ? liga.llavesPorFecha().filter((x) => liga.diaClave(liga.fechaLlave(x)) === dia
+      && liga.campeon(x).length === 1 && limpio(liga.campeon(x)[0]).toLowerCase() === yo0) : [ll];
+    const varias = misma.length > 1;
+    // lo que sumó: su fila de cada llave por el multiplicador de su semana
+    let sumo = 0;
+    const xs = new Set();
+    misma.forEach((x) => {
+      const r = (x.tabla || []).find((t) => limpio(t[0]).toLowerCase() === yo0);
+      const m = liga.multEn(x.sv, liga.fechaLlave(x));
+      const mx = m ? m.x : 1;
+      xs.add(mx);
+      sumo += (r ? Number(r[2]) || 0 : 0) * mx;
+    });
+    const it = liga.muroLimpio().find((i) => i.tipo === 'campeon' && String(i.ll) === String(ll.n));
+    const hilo = it && it.id ? delHilo(it, liga.ahora) : [];
+    const tit = varias ? g0 + ' ganó las ' + (misma.length === 2 ? 'dos' : misma.length) : limpio(ll.nombre);
     out.push({
-      tipo: 'llave', et: cu.charAt(0).toUpperCase() + cu.slice(1), sv: ll.sv,
-      txt: <><div className="hero-t"><span className="tag tg-llave">{cu.toUpperCase()} · LA LLAVE</span></div><Tit c={largo(limpio(ll.nombre))}>{juntos(limpio(ll.nombre))}</Tit>
-        <p className="hero-p">{siglaDe(ll.sv)} · {ll.participantes} raperos. {gana.length > 1 ? 'Campeones:' : 'Campeón:'} {gana.join(' y ')}.</p>
-        <div className="hero-acc"><button type="button" className="btn verde" onClick={() => accion.llave(ll.n)}>Ver la llave entera</button>
-          <Compartir cls="btn borde" url={enlace('#/llave/' + ll.n)} texto={'La llave de ' + limpio(ll.nombre) + ' en la Liga Global'} /></div></>,
-      vis: <div className="cm-wrap"><CuadroMini liga={liga} ll={ll} /></div>,
+      tipo: 'llave', et: cu.charAt(0).toUpperCase() + cu.slice(1), sv: ll.sv, lay: 'A',
+      hora: varias ? 'Campeón ×' + misma.length : g0 ? 'Campeón: ' + g0 : '',
+      txt: <><div className="hero-t"><span className="tag tg-llave">{cu.toUpperCase()} · {siglaDe(ll.sv)}</span></div><Tit c={largo(tit)}>{juntos(tit)}</Tit>
+        <p className="hero-p">{varias ? misma.map((x) => limpio(x.nombre) + ' (' + x.participantes + ' raperos)').join(' y ') + '. Nadie le ganó en toda la noche.'
+          : siglaDe(ll.sv) + ' · ' + ll.participantes + ' raperos. ' + (gana.length > 1 ? 'Campeones: ' : 'Campeón: ') + gana.join(' y ') + '.'}</p>
+        {f ? <div className="es-datos">{f.pos ? <span>#{f.pos} <b>Temporada</b></span> : null}{f.rg ? <span>Rango <b style={{ color: f.rgc || undefined }}>{f.rg}</b></span> : null}{f.ovr ? <span>OVR <b>{f.ovr}</b></span> : null}</div> : null}
+        <div className="hero-acc">{k ? <button type="button" className="btn verde" onClick={() => accion.carta(k, 'temporada')}>Ver su carta</button> : null}
+          <button type="button" className={'btn ' + (k ? 'borde' : 'verde')} onClick={() => accion.llave(ll.n)}>{varias ? 'Ver la llave' : 'Ver la llave entera'}</button>
+          {k ? null : <Compartir cls="btn borde" url={enlace('#/llave/' + ll.n)} texto={'La llave de ' + limpio(ll.nombre) + ' en la Liga Global'} />}</div>
+        {it && ctx.A ? <div className="es-soc"><LuSocial liga={liga} it={it} A={ctx.A} hilo={hilo} P={ctx.P} /><LuNube liga={liga} it={it} hilo={hilo} /></div> : null}</>,
+      vis: <div className="es-camp">
+        {f ? <CampeonVis liga={liga} k={k} nombre={g0} n={misma.length} sumo={sumo} x={xs.size === 1 ? [...xs][0] : 1} />
+          : <div className="es-cw"><CoronaCampeon /><span className="es-equipo">{gana.slice(0, 3).map((x) => <Cara key={x} liga={liga} k={(liga.fila(x) || {}).k} nombre={x} cls="cara es-cara-g" />)}</span><span className="es-sello">{gana.length > 1 ? 'Campeones' : 'Campeón'}</span></div>}
+        <div className="es-caminos">{misma.slice(0, 2).map((x) => <Camino key={x.n} liga={liga} ll={x} nombre={g0} />)}</div>
+      </div>,
+    });
+  }
+  // 🎯 SE BUSCA, PARA TODOS (la forma B: es un cartel). El que más vale todavía vivo; si ya cazaron a todos, el que más valía
+  const mwb = (liga.d.mw || {}).b || [];
+  if (mwb.length && !out.some((m) => m.tipo === 'tebuscan')) {
+    const porV = (a, c) => (Number(c.v) || 0) - (Number(a.v) || 0);
+    const b = mwb.filter((x) => x.e !== 'cazado').sort(porV)[0] || mwb.slice().sort(porV)[0];
+    const caz = b.e === 'cazado';
+    const por = ((b.c || {}).por || []).map((p) => limpio(p.n)).join(' y ');
+    const fin = (liga.d.mw || {}).fin;
+    out.push({
+      tipo: 'sebusca', et: 'Se busca', sv: b.sv, lay: 'B', gig: 'SE BUSCA', hora: caz ? 'Cazado' : fin ? 'Vence ' + liga.dia(fin) : '',
+      txt: <><div className="hero-t"><span className="tag">SE BUSCA · {String(b.cn || '').toUpperCase()}</span></div>
+        <Tit c="hero-ev largo">{num(b.v) + ' PTS POR ' + limpio(b.n).toUpperCase()}</Tit>
+        <p className="hero-p">{caz ? 'Lo cazó ' + (por || 'alguien') + ((b.c || {}).ev ? ' en ' + limpio(b.c.ev) : '') + ' y cobró ' + num(b.v) + '.'
+          : (b.m ? capital(b.m) + '. ' : '') + 'Quien le gane, cobra.' + (fin ? ' Vence ' + liga.dia(fin) + '.' : '')}</p>
+        <div className="hero-acc"><button type="button" className="btn verde" onClick={() => accion.ir('sebusca')}>Ver Se busca</button>
+          {b.k ? <a className="btn borde" href={'#/r/' + encodeURIComponent(b.k)}>Su perfil</a> : null}</div></>,
+      vis: <div className="es-b-carta">{b.k ? <Carta liga={liga} k={b.k} cual="temporada" cls="es-carta" /> : <Cara liga={liga} nombre={b.n} cls="cara es-cara-g" grande />}
+        <span className={'es-sello' + (caz ? '' : ' oro')}>{caz ? 'Cazado' : 'Se busca'}</span></div>,
     });
   }
   const video = (liga.d.feed || []).find((x) => x.tipo === 'youtube');
   if (video) {
     const d = utc(video.t);
     out.push({
-      tipo: 'video', et: 'Video', color: '#E41373',
+      tipo: 'video', et: 'Video', color: '#E41373', hora: liga.cuando(video.t),
       txt: <><div className="hero-t"><span className="tag tg-video">ÚLTIMO VIDEO · {limpio(video.canal || '').toUpperCase()}</span></div><Tit c={largo(limpio(video.tit))}>{limpio(video.tit)}</Tit>
         {/* en la zona de quien mira (Ajustes), no la del aparato (revisión del 04/10/2026) */}
         <p className="hero-p">Subido el {Number(diaISO(d).split('-')[2])} de {MESES[Number(diaISO(d).split('-')[1]) - 1]}.</p>
@@ -1935,7 +2081,7 @@ function momentos(liga, vivoL) {
   const nov = (liga.d.novedades || [])[0];
   if (nov) {
     out.push({
-      tipo: 'liga', et: 'La Liga', color: '#29B298',
+      tipo: 'liga', et: 'La Liga', color: '#29B298', hora: liga.cuando(nov.t),
       txt: <><div className="hero-t"><span className="tag tg-liga">LA LIGA · {liga.cuando(nov.t).toUpperCase()}</span></div><Tit c={largo(limpio(nov.tit))}>{limpio(nov.tit)}</Tit>
         <p className="hero-p">{recorte(nov.tx || '', 180)}</p>
         {nov.link ? <div className="hero-acc"><a className="btn verde" href={nov.link} target="_blank" rel="noopener noreferrer">Leer en Discord ↗</a></div> : null}</>,
@@ -1951,7 +2097,7 @@ function momentos(liga, vivoL) {
       if (!x) continue;
       const k = ks.sort()[0];
       out.push({
-        tipo: 'seguis', et: 'Sigues', sv: liga.T[k].sv,
+        tipo: 'seguis', et: 'Sigues', sv: liga.T[k].sv, hora: x[3],
         txt: <><div className="hero-t"><span className="tag tg-seguis">DE LOS QUE SIGUES · {x[3].toUpperCase()}</span></div><Tit c={largo(x[1])}>{x[1]}</Tit>
           <p className="hero-p">{x[0].charAt(0) + x[0].slice(1).toLowerCase()}.</p>
           <div className="hero-acc"><a className="btn verde" href={'#/r/' + encodeURIComponent(k)}>Ver su perfil</a></div></>,
@@ -1976,7 +2122,9 @@ function fondoDe(liga, m) {
   const x = /^#?([0-9a-f]{6})$/i.exec(col);
   const n = x ? parseInt(x[1], 16) : 0;
   const luz = (0.2126 * (n >> 16) + 0.7152 * ((n >> 8) & 255) + 0.0722 * (n & 255)) / 255;
-  return { '--mo-c': col, '--mo-o': luz < 0.2 ? 1 : 0.82, '--mo-logo': 'url("' + logo + '")', ...silueta(m && m.sv, col) };
+  const esc = escenaDe(m && m.sv);
+  return { '--mo-c': col, '--mo-o': luz < 0.2 ? 1 : 0.82, '--mo-logo': 'url("' + logo + '")', ...silueta(m && m.sv, col),
+    ...(esc ? { '--es-img': 'url("' + esc + '")' } : {}) };
 }
 
 // El escenario y «Esta semana» son un solo panel (Dlx, 30/09: «hazla como si estuviese dentro de ese panel»): la
@@ -1985,45 +2133,71 @@ function fondoDe(liga, m) {
 // hecho lobby (Dlx: «hacé lo que consideres mejor»), lo de arriba se queda quieto en lo más importante y se pasa con
 // las flechas o las pestañas: algo que se mueve solo mientras leés es de lo que más confunde a quien llega.
 export function Hero({ liga, vivoL, children }) {
-  const mo = momentos(liga, vivoL);
+  // las reacciones y el comentario del campeón (los mismos de Lo último)
+  const A = useAplausos();
+  useComentarios();
+  const P = usePase(typeof window !== 'undefined' && !!window.DC);
+  const mo = momentos(liga, vivoL, { A, P });
   // ⚠️ el momento que se mira se sigue por su TIPO, no por su lugar: si empieza un evento en vivo, el suyo entra
   // adelante y corría a todos un lugar, y lo que estabas leyendo cambiaba solo (revisión del 01/10/2026)
   const [tipo, setTipo] = useState(null);
   const quieto = useRef(false);
   const x0 = useRef(null);
-  const ultimo = useRef(Date.now());
-  const lista = useRef(mo);
-  lista.current = mo;
-  const actual = useRef(tipo);
-  actual.current = tipo;
   const n = mo.length;
   // cada momento se sigue por su clave: dos en vivo a la vez son dos momentos (`clave`), con el mismo `tipo`
   const idDe = (m) => m.clave || m.tipo;
   const j = Math.max(0, mo.findIndex((m) => idDe(m) === tipo));
-  const ver = (k) => { ultimo.current = Date.now(); setTipo(idDe(mo[((k % n) + n) % n])); };
-  // mientras se mira un video (`video.jsx`), el escenario no pasa solo
-  const video = useRef(false);
+  const ver = (k) => setTipo(idDe(mo[((k % n) + n) % n]));
+  // ⏩ PASA SOLO OTRA VEZ (Dlx, 14/11/2026: «que se cambie automáticamente, que eso siga»; desde el 13/10 estaba quieto).
+  // Cada 8 s: la barrita de la pestaña es el reloj, y al terminar pasa al siguiente. Se frena con el mouse o el foco
+  // adentro, con un video abierto y fuera de la vista; con «Menos animaciones» o el movimiento reducido no corre
+  const [pausa, setPausa] = useState(false);
+  const [enVideo, setEnVideo] = useState(false);
+  const sec = useRef(null);
   useEffect(() => {
-    const f = (e) => { video.current = !!e.detail; ultimo.current = Date.now(); };
+    const f = (e) => setEnVideo(!!e.detail);
     window.addEventListener('lg:video-abierto', f);
     return () => window.removeEventListener('lg:video-abierto', f);
   }, []);
+  useEffect(() => {
+    const el = sec.current;
+    if (!el || typeof IntersectionObserver === 'undefined') return undefined;
+    const io = new IntersectionObserver(([e]) => el.classList.toggle('fuera', !e.isIntersecting), { threshold: 0.25 });
+    io.observe(el);
+    return () => io.disconnect();
+  }, [n > 0]);
   if (!n) return children ? <div className="escena hero-ini" data-tuto="hoy" style={fondoDe(liga, null)}>{children}</div> : null;
+  const m0 = mo[j];
+  const cuerpo = (m) => {
+    if (m.lay === 'B') return <><div className="es-gig" aria-hidden="true">{m.gig}</div><div className="mo-txt">{m.txt}</div><div className="mo-vis">{m.vis}</div></>;
+    if (m.lay === 'C') {
+      return (
+        <><div className="es-grande"><div className="mo-txt">{m.txt}</div><div className="mo-vis">{m.vis}</div></div>
+          <div className="es-otros">{(m.otros || []).map((o, i) => {
+            const adentro = <><img alt="" src={liga.logo(o.sv)} /><span><span className="tag vivo-late">EN VIVO · {siglaDe(o.sv)}</span><b>{o._n}</b><small>{o._ir ? 'Ver la llave' : 'En Discord'}</small></span></>;
+            const st = escenaDe(o.sv) ? { backgroundImage: 'url("' + escenaDe(o.sv) + '")' } : undefined;
+            return o._ir ? <button key={i} type="button" className="es-otro" style={st} onClick={o._ir}>{adentro}</button>
+              : <a key={i} className="es-otro" style={st} href={o._href || '#/eventos'} target={o._href ? '_blank' : undefined} rel="noopener noreferrer">{adentro}</a>;
+          })}</div></>
+      );
+    }
+    return <><div className="mo-txt">{m.txt}</div><div className="mo-vis">{m.vis}</div></>;
+  };
   return (
-    <div className="escena hero-ini" data-tuto="hoy" style={fondoDe(liga, mo[j])}>
-      <section className="hero carrusel" id="envivo" aria-roledescription="carrusel" aria-label="Lo de ahora"
+    <div className={'escena hero-ini es2' + (escenaDe(m0.sv) ? ' con-esc' : '')} data-tuto="hoy" style={fondoDe(liga, m0)}>
+      <section ref={sec} className={'hero carrusel' + (pausa || enVideo ? ' quieto' : '')} id="envivo" aria-roledescription="carrusel" aria-label="Lo de ahora"
+        onPointerEnter={(e) => { if (e.pointerType === 'mouse') setPausa(true); }}
+        onFocus={() => setPausa(true)}
+        onBlur={(e) => { if (!e.currentTarget.contains(e.relatedTarget)) setPausa(false); }}
         onPointerDown={(e) => { if (e.pointerType === 'touch') return; x0.current = e.clientX; quieto.current = true; }}
-        onPointerLeave={(e) => { if (e.pointerType === 'touch') return; x0.current = null; quieto.current = false; }}
+        onPointerLeave={(e) => { if (e.pointerType === 'mouse') setPausa(false); if (e.pointerType === 'touch') return; x0.current = null; quieto.current = false; }}
         onPointerUp={(e) => {
           if (e.pointerType === 'touch') return;
           if (x0.current !== null && Math.abs(e.clientX - x0.current) > 40 && !e.target.closest('.cm-wrap')) ver(j + (e.clientX < x0.current ? 1 : -1));
           x0.current = null; quieto.current = false;
         }}
-        // 📱 EN EL CELULAR, CON EL DEDO (Dlx, 14/11/2026, al remake del celular: «Haz todo»). Las flechas se fueron del
-        // teléfono —se comían 48 px de cada costado y tapaban «CUARTOS» de la llave— y el deslizar con el puntero no
-        // llegaba nunca: al mover el dedo el navegador se queda con el gesto y manda `pointercancel`, no `pointerup`. Los
-        // eventos de toque sí terminan. Cuenta sólo un gesto de costado (más ancho que alto), así bajar por la página no
-        // cambia el momento
+        // 📱 EN EL CELULAR, CON EL DEDO (Dlx, 14/11/2026, al remake del celular: «Haz todo»): cuenta sólo un gesto de
+        // costado (más ancho que alto), así bajar por la página no cambia el momento
         onTouchStart={(e) => { const t = e.touches[0]; x0.current = t ? [t.clientX, t.clientY] : null; quieto.current = true; }}
         onTouchEnd={(e) => {
           const t = e.changedTouches[0]; const a = x0.current;
@@ -2034,19 +2208,29 @@ export function Hero({ liga, vivoL, children }) {
           x0.current = null; quieto.current = false;
         }}
         onTouchCancel={() => { x0.current = null; quieto.current = false; }}>
+        {/* todos en la misma celda, uno encima del otro: el escenario mide lo del más alto y no salta al cambiar */}
         <div className="hero-in">
           {mo.map((m, k) => (
-            <article key={idDe(m)} className={'mo mo-' + m.tipo + (k === j ? ' on' : '')} aria-hidden={k !== j}>
-              <div className="mo-txt">{m.txt}</div><div className="mo-vis">{m.vis}</div>
-            </article>
+            <article key={idDe(m)} className={'mo mo-' + m.tipo + ' lay-' + (m.lay || 'A') + (k === j ? ' on' : '')} aria-hidden={k !== j}>{cuerpo(m)}</article>
           ))}
         </div>
         {n > 1 ? <>
-          <button type="button" className="mo-fl izq" aria-label="Momento anterior" onClick={() => ver(j - 1)}><Chevron /></button>
-          <button type="button" className="mo-fl der" aria-label="Momento siguiente" onClick={() => ver(j + 1)}><Chevron /></button>
+          <button type="button" className="mo-fl izq" aria-label="Momento anterior" onClick={() => ver(j - 1)}><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 4 L7 12 L15 20" /></svg></button>
+          <button type="button" className="mo-fl der" aria-label="Momento siguiente" onClick={() => ver(j + 1)}><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 4 L17 12 L9 20" /></svg></button>
         </> : null}
-        <nav className="mo-tabs" aria-label="Momentos">
-          {mo.map((m, k) => <button type="button" key={idDe(m)} className={(k === j ? 'on' : '') + (m.tipo === 'vivo' ? ' vivo' : '')} onClick={() => ver(k)}>{m.et}</button>)}
+        {/* 🎞️ la tira de momentos (de «Hero Carousel»): la escena chiquita, el logo, qué es y cuándo; el que miras, más ancho */}
+        <nav className="mo-tabs es-tira" aria-label="Momentos">
+          {mo.map((m, k) => {
+            const e0 = escenaDe(m.sv);
+            return (
+              <button type="button" key={idDe(m)} className={(k === j ? 'on' : '') + (m.tipo === 'vivo' ? ' vivo' : '')} onClick={() => ver(k)}
+                style={e0 ? { backgroundImage: 'url("' + e0 + '")' } : undefined} aria-current={k === j ? 'true' : undefined}>
+                <img alt="" src={m.sv ? liga.logo(m.sv) : '/ul.png'} />
+                <span><b>{m.et}</b>{m.hora ? <small>{m.hora}</small> : null}</span>
+                {k === j && n > 1 ? <i key={idDe(m)} className="es-reloj" onAnimationEnd={() => ver(j + 1)} /> : null}
+              </button>
+            );
+          })}
         </nav>
       </section>
       {children}

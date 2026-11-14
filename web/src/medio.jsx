@@ -166,7 +166,7 @@ function Carita({ t = 18 }) {
 // y nunca se habían conectado: ahora cada uno reacciona con una, la que quiera de las suyas, y cambiarla pisa la de antes
 // (`reaccionesDe()` en bot/avisos.js). Al lado, lo que ya tiene esa novedad, como en Discord: tocar una que tienes es
 // reaccionar con ésa. Las que te faltan salen apagadas, con el nivel que las da
-function LuSocial({ liga, it, A, hilo, P }) {
+export function LuSocial({ liga, it, A, hilo, P }) {
   const [abierto, setAbierto] = useState(false);
   const caja = useRef(null);
   useEffect(() => {
@@ -234,7 +234,7 @@ function LuSocial({ liga, it, A, hilo, P }) {
 // 💬 EL ÚLTIMO COMENTARIO, A LA VISTA (Dlx, 13/11/2026: «que ese pop up de los comentarios sean mejores y quizás más
 // grandes»). Antes flotaba al pasar el mouse y no se leía; ahora va debajo de la novedad, con la cara de quien escribió.
 // En la grande, los dos últimos. ⚠️ El simulado lleva su etiqueta: eso lo decide el permiso en el ciclo, nunca acá
-function LuNube({ liga, it, hilo, n = 1 }) {
+export function LuNube({ liga, it, hilo, n = 1 }) {
   if (!hilo.length) return null;
   const cs = hilo.slice(-n);
   return (
