@@ -1621,6 +1621,17 @@
    "ganador": "MAYEUTYK 🇺🇾",
    "votos": "1–0"
   },
+  "1570923549672345682": {
+   "id": "1570923549672345682",
+   "sv": "🔥LKR (Champios Legue)🐉",
+   "g": "1558611504046153750",
+   "canal": "1570890760323211325",
+   "pub": 1794607760590,
+   "a": "MARTINEZ",
+   "b": "MOSQUITO RAP",
+   "ganador": "MARTINEZ",
+   "votos": "1–0"
+  },
   "1570924657366925584": {
    "id": "1570924657366925584",
    "sv": "#LaCrew ||🎤ACADEMIA DE RAP 🎤",
@@ -2158,6 +2169,83 @@
    "a": "ASTRID",
    "b": "JOCKINGSTON",
    "ganador": "ASTRID",
+   "votos": "1–0"
+  },
+  "1571146079695671308": {
+   "id": "1571146079695671308",
+   "sv": "✮ 𝑼𝒓𝒃𝒂𝒏 𝑭𝒓𝒆𝒆𝒔𝒕𝒚𝒍𝒆 ✮ | A New Era",
+   "g": "1467763447117778989",
+   "canal": "1540223675146707045",
+   "pub": 1794660815882,
+   "a": "Majiztral 🇨🇴",
+   "b": "Teito 🇨🇴",
+   "ganador": "Majiztral 🇨🇴",
+   "votos": "1–0"
+  },
+  "1571147166603550741": {
+   "id": "1571147166603550741",
+   "sv": "✮ 𝑼𝒓𝒃𝒂𝒏 𝑭𝒓𝒆𝒆𝒔𝒕𝒚𝒍𝒆 ✮ | A New Era",
+   "g": "1467763447117778989",
+   "canal": "1540223675146707045",
+   "pub": 1794661075021,
+   "a": "TMAX 🇪🇸",
+   "b": "Mitosis🇦🇷",
+   "ganador": "Mitosis🇦🇷",
+   "votos": "1–0"
+  },
+  "1571149090757283851": {
+   "id": "1571149090757283851",
+   "sv": "✮ 𝑼𝒓𝒃𝒂𝒏 𝑭𝒓𝒆𝒆𝒔𝒕𝒚𝒍𝒆 ✮ | A New Era",
+   "g": "1467763447117778989",
+   "canal": "1540223675146707045",
+   "pub": 1794661533775,
+   "a": "Erian🇵🇦",
+   "b": "RFran 🇪🇸",
+   "ganador": "Erian🇵🇦",
+   "votos": "1–0"
+  },
+  "1571151063745171527": {
+   "id": "1571151063745171527",
+   "sv": "✮ 𝑼𝒓𝒃𝒂𝒏 𝑭𝒓𝒆𝒆𝒔𝒕𝒚𝒍𝒆 ✮ | A New Era",
+   "g": "1467763447117778989",
+   "canal": "1540223675146707045",
+   "pub": 1794662004172,
+   "a": "Bloody🇨🇴",
+   "b": "MiniBoy🇨🇱",
+   "ganador": "Bloody🇨🇴",
+   "votos": "1–0"
+  },
+  "1571152938259456092": {
+   "id": "1571152938259456092",
+   "sv": "✮ 𝑼𝒓𝒃𝒂𝒏 𝑭𝒓𝒆𝒆𝒔𝒕𝒚𝒍𝒆 ✮ | A New Era",
+   "g": "1467763447117778989",
+   "canal": "1540223675146707045",
+   "pub": 1794662451091,
+   "a": "Majiztral 🇨🇴",
+   "b": "Mitosis🇦🇷",
+   "ganador": "Mitosis🇦🇷",
+   "votos": "1–0"
+  },
+  "1571155110220791931": {
+   "id": "1571155110220791931",
+   "sv": "✮ 𝑼𝒓𝒃𝒂𝒏 𝑭𝒓𝒆𝒆𝒔𝒕𝒚𝒍𝒆 ✮ | A New Era",
+   "g": "1467763447117778989",
+   "canal": "1540223675146707045",
+   "pub": 1794662968927,
+   "a": "Erian🇵🇦",
+   "b": "Bloody🇨🇴",
+   "ganador": "Bloody🇨🇴",
+   "votos": "1–0"
+  },
+  "1571157112254496969": {
+   "id": "1571157112254496969",
+   "sv": "✮ 𝑼𝒓𝒃𝒂𝒏 𝑭𝒓𝒆𝒆𝒔𝒕𝒚𝒍𝒆 ✮ | A New Era",
+   "g": "1467763447117778989",
+   "canal": "1540223675146707045",
+   "pub": 1794663446249,
+   "a": "Mitosis🇦🇷",
+   "b": "Bloody🇨🇴",
+   "ganador": "Bloody🇨🇴",
    "votos": "1–0"
   }
  },
@@ -7143,6 +7231,98 @@
       "PARK JI SUNG"
      ],
      "PARK JI SUNG",
+     "veredicto",
+     []
+    ]
+   ]
+  },
+  "1571146041670115331": {
+   "id": "1571146041670115331",
+   "sv": "✮ 𝑼𝒓𝒃𝒂𝒏 𝑭𝒓𝒆𝒆𝒔𝒕𝒚𝒍𝒆 ✮ | A New Era",
+   "g": "1467763447117778989",
+   "canal": "1540223675146707045",
+   "pub": 1794660806816,
+   "ed": 1794663457085,
+   "texto": "`[ CUARTOS ]`\n⌞Majiztral 🇨🇴⌝ 🆚 ⌞Teito 🇨🇴⌝\n⌞TMAX 🇪🇸⌝ 🆚 ⌞Mitosis🇦🇷⌝\n⌞Deux🇨🇱⌝ 🆚 ⌞Erian🇵🇦⌝ 🆚 ⌞RFran 🇪🇸⌝\n⌞Erian🇵🇦⌝ 🆚 ⌞RFran 🇪🇸⌝\n⌞Bloody🇨🇴⌝ 🆚 ⌞MiniBoy🇨🇱⌝\n⌞Majiztral 🇨🇴⌝ 🆚 ⌞Mitosis🇦🇷⌝\n⌞Erian🇵🇦⌝ 🆚 ⌞Bloody🇨🇴⌝\n⌞Mitosis🇦🇷⌝ 🆚 ⌞Bloody🇨🇴⌝",
+   "batallas": [
+    [
+     "CUARTOS",
+     [
+      "Majiztral 🇨🇴",
+      "Teito 🇨🇴"
+     ],
+     "Majiztral 🇨🇴",
+     "veredicto",
+     []
+    ],
+    [
+     "CUARTOS",
+     [
+      "TMAX 🇪🇸",
+      "Mitosis🇦🇷"
+     ],
+     "Mitosis🇦🇷",
+     "veredicto",
+     []
+    ],
+    [
+     "CUARTOS",
+     [
+      "Deux🇨🇱",
+      "Erian🇵🇦",
+      "RFran 🇪🇸"
+     ],
+     null,
+     "última ronda y no dice campeón",
+     []
+    ],
+    [
+     "CUARTOS",
+     [
+      "Erian🇵🇦",
+      "RFran 🇪🇸"
+     ],
+     "Erian🇵🇦",
+     "veredicto",
+     []
+    ],
+    [
+     "CUARTOS",
+     [
+      "Bloody🇨🇴",
+      "MiniBoy🇨🇱"
+     ],
+     "Bloody🇨🇴",
+     "veredicto",
+     []
+    ],
+    [
+     "CUARTOS",
+     [
+      "Majiztral 🇨🇴",
+      "Mitosis🇦🇷"
+     ],
+     "Mitosis🇦🇷",
+     "veredicto",
+     []
+    ],
+    [
+     "CUARTOS",
+     [
+      "Erian🇵🇦",
+      "Bloody🇨🇴"
+     ],
+     "Bloody🇨🇴",
+     "veredicto",
+     []
+    ],
+    [
+     "CUARTOS",
+     [
+      "Mitosis🇦🇷",
+      "Bloody🇨🇴"
+     ],
+     "Bloody🇨🇴",
      "veredicto",
      []
     ]

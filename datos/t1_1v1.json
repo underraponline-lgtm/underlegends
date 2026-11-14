@@ -1471,6 +1471,12 @@
   [634, "13/11", "FFA", "cuartos", "Ezze", "Miniboy", "Ezze", "Miniboy"],
   [634, "13/11", "FFA", "cuartos", "crakero", "dxg", "crakero", "dxg"],
   [634, "13/11", "FFA", "final", "Oasis", "Gocho", "Oasis", "Gocho"],
-  [634, "13/11", "FFA", "semifinales", "Ezze", "crakero", "Ezze", "crakero", "ganador: ✅ Decidir"]
+  [634, "13/11", "FFA", "semifinales", "Ezze", "crakero", "Ezze", "crakero", "ganador: ✅ Decidir"],
+  [635, "14/11", "URBF", "cuartos", "Majiztral", "Teito", "Majiztral", "Teito"],
+  [635, "14/11", "URBF", "cuartos", "Mito", "TMAX 🇪🇸", "Mito", "TMAX 🇪🇸"],
+  [635, "14/11", "URBF", "cuartos", "Bloody", "Miniboy", "Bloody", "Miniboy"],
+  [635, "14/11", "URBF", "semifinales", "Mito", "Majiztral", "Mito", "Majiztral"],
+  [635, "14/11", "URBF", "semifinales", "Bloody", "Erian", "Bloody", "Erian"],
+  [635, "14/11", "URBF", "final", "Bloody", "Mito", "Bloody", "Mito", "ganador según #veredictos"]
  ]
 }

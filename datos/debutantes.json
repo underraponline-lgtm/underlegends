@@ -10,7 +10,7 @@
   "FRZ": "2026-11-12",
   "FVS": "2026-10-15",
   "SR": "2026-11-13",
-  "URBF": "2026-11-09"
+  "URBF": "2026-11-14"
  },
  "retos": {
   "0223": {
@@ -692,6 +692,17 @@
    "sv": "FFA",
    "vence": "2026-11-16T19:09:03+00:00",
    "vencido": false
+  },
+  "Drexc": {
+   "con": null,
+   "cumplido": "",
+   "debut": "2026-10-28T01:58:48+00:00",
+   "did": "",
+   "evento": "SIX SEVEN STYLE",
+   "n": 582,
+   "sv": "DDS",
+   "vence": "2026-11-04T01:58:48+00:00",
+   "vencido": true
   },
   "Drope": {
    "con": null,
@@ -1680,6 +1691,17 @@
    "vence": "2026-10-26T04:19:55+00:00",
    "vencido": true
   },
+  "MARTINES": {
+   "con": null,
+   "cumplido": "",
+   "debut": "2026-10-24T00:02:15+00:00",
+   "did": "",
+   "evento": "LLAVES PARA LA DISCORD STYLE 17",
+   "n": 580,
+   "sv": "DDS",
+   "vence": "2026-10-31T00:02:15+00:00",
+   "vencido": true
+  },
   "MAT MC": {
    "con": null,
    "cumplido": "",
@@ -2150,6 +2172,17 @@
    "vence": "2026-10-21T23:10:06+00:00",
    "vencido": true
   },
+  "Quasimoto": {
+   "con": null,
+   "cumplido": "",
+   "debut": "2026-10-26T16:48:55+00:00",
+   "did": "",
+   "evento": "MINUTOS A SANGRE - D3ATHROW EN VIVO VOL 3",
+   "n": 572,
+   "sv": "CH",
+   "vence": "2026-11-02T16:48:55+00:00",
+   "vencido": true
+  },
   "RC": {
    "avisado": "2026-10-18",
    "chat": "2026-10-18",
@@ -2306,6 +2339,17 @@
    "n": 579,
    "sv": "DDS",
    "vence": "2026-10-24T04:08:41+00:00",
+   "vencido": true
+  },
+  "Sakro": {
+   "con": null,
+   "cumplido": "",
+   "debut": "2026-11-04T01:53:16+00:00",
+   "did": "1450898507690148002",
+   "evento": "SIX SEVEN STYLE",
+   "n": 585,
+   "sv": "DDS",
+   "vence": "2026-11-11T01:53:16+00:00",
    "vencido": true
   },
   "Scritura": {
@@ -2493,6 +2537,18 @@
    "sv": "FFA",
    "vence": "2026-11-02T22:39:00+00:00",
    "vencido": true
+  },
+  "TMAX": {
+   "chat": "2026-11-14",
+   "con": null,
+   "cumplido": "",
+   "debut": "2026-11-14T12:49:27+00:00",
+   "did": "",
+   "evento": "COMPE DEMASIADO MAÑANERA",
+   "n": 635,
+   "sv": "URBF",
+   "vence": "2026-11-21T12:49:27+00:00",
+   "vencido": false
   },
   "Tayo": {
    "con": null,

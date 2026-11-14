@@ -1,6 +1,6 @@
 {
  "_leeme": "El ranking de ascenso de cada servidor, al día (bot/ascenso.py): su tabla oficial más lo que vino después, con sus reglas (datos/ascenso_reglas.json). `filas`: [nombre, cc, pts, lo sumado, raw]. `pendiente`: lo que no se sabe y no suma (las preguntas de Dlx a cada servidor).",
- "t": "2026-11-14T07:59:55Z",
+ "t": "2026-11-14T16:20:46Z",
  "sv": {
   "SR": {
    "filas": [
@@ -8,36 +8,43 @@
      "OVER",
      "uy",
      12000,
-     9000,
+     0,
      "Mr Still Ballin"
     ],
     [
      "JUANPA",
      "co",
      10500,
-     6000,
+     0,
      "Juanpa"
-    ],
-    [
-     "AGUS",
-     "ar",
-     10500,
-     9000,
-     "Agus"
     ],
     [
      "ABYSSUS",
      "pa",
      9350,
-     2250,
+     0,
      "Abyssus"
+    ],
+    [
+     "AGUS",
+     "ar",
+     9000,
+     0,
+     "Agus"
     ],
     [
      "COLESITO",
      "co",
      9000,
-     3000,
+     0,
      "Colesito"
+    ],
+    [
+     "ZIGNOS",
+     "do",
+     8600,
+     0,
+     "Zignos"
     ],
     [
      "JUASMIO",
@@ -47,13 +54,6 @@
      "Juasmio"
     ],
     [
-     "ZIGNOS",
-     "do",
-     7100,
-     0,
-     "Zignos"
-    ],
-    [
      "SNOW",
      "co",
      6600,
@@ -61,17 +61,17 @@
      "Snow"
     ],
     [
-     "MITO",
+     "LITZENINN",
      "ar",
      6000,
-     6000,
-     "Mito"
+     0,
+     ""
     ],
     [
      "MASINO",
      "cl",
      5250,
-     4500,
+     0,
      "Masino"
     ],
     [
@@ -82,6 +82,13 @@
      "Hassan"
     ],
     [
+     "BAU",
+     "ar",
+     4500,
+     0,
+     "Bau"
+    ],
+    [
      "POLLO SPORT",
      "ar",
      4500,
@@ -89,25 +96,18 @@
      "Polosport"
     ],
     [
-     "GLOBAL HUSTLER",
+     "Kaled",
      "ar",
      4500,
-     4500,
-     "Global Hustler"
+     0,
+     "Kaled"
     ],
     [
      "CATARSIS",
      "ar",
      4500,
-     4500,
+     0,
      "Catarsis"
-    ],
-    [
-     "BAU",
-     "ar",
-     4500,
-     4500,
-     "Bau"
     ],
     [
      "KISHNAMURTI",
@@ -120,8 +120,15 @@
      "PROSU",
      "co",
      3000,
-     3000,
+     0,
      "Prosu"
+    ],
+    [
+     "HERMETICO",
+     "co",
+     3000,
+     0,
+     ""
     ],
     [
      "ERIAN",
@@ -432,158 +439,12 @@
      ""
     ]
    ],
-   "sumado": [
-    {
-     "n": 430,
-     "evento": "SNAKE INSIGNIA 4 8",
-     "dia": "2026-10-08",
-     "rango": "2",
-     "puntos": [
-      [
-       "Global Hustler",
-       "Subcampeón",
-       4500
-      ]
-     ],
-     "fuera": [
-      "MCO",
-      "Fazer"
-     ]
-    },
-    {
-     "n": 460,
-     "evento": "GODZ",
-     "dia": "2026-10-12",
-     "rango": "3",
-     "puntos": [
-      [
-       "Prosu",
-       "Campeón",
-       3000
-      ],
-      [
-       "Abyssus",
-       "Subcampeón",
-       2250
-      ]
-     ],
-     "fuera": []
-    },
-    {
-     "n": 478,
-     "evento": "SNAKE INSIGNIA 5 8",
-     "dia": "2026-10-16",
-     "rango": "2",
-     "puntos": [
-      [
-       "Mr Still Ballin",
-       "Campeón",
-       6000
-      ],
-      [
-       "Catarsis",
-       "Subcampeón",
-       4500
-      ],
-      [
-       "Agus",
-       "Tercero",
-       3000
-      ]
-     ],
-     "fuera": []
-    },
-    {
-     "n": 496,
-     "evento": "SNAKE INSIGNIA 6 8",
-     "dia": "2026-10-21",
-     "rango": "2",
-     "puntos": [
-      [
-       "Agus",
-       "Campeón",
-       6000
-      ],
-      [
-       "Masino",
-       "Subcampeón",
-       4500
-      ],
-      [
-       "Mr Still Ballin",
-       "Tercero",
-       3000
-      ]
-     ],
-     "fuera": []
-    },
-    {
-     "n": 553,
-     "evento": "SNAKE INSIGNIA 7 8",
-     "dia": "2026-10-31",
-     "rango": "2",
-     "puntos": [
-      [
-       "Mito",
-       "Campeón",
-       6000
-      ],
-      [
-       "Bau",
-       "Subcampeón",
-       4500
-      ]
-     ],
-     "fuera": []
-    },
-    {
-     "n": 631,
-     "evento": "SNAKE INSIGNIA 8 8",
-     "dia": "2026-11-13",
-     "rango": "2",
-     "puntos": [
-      [
-       "Juanpa",
-       "Campeón",
-       6000
-      ],
-      [
-       "Colesito",
-       "Tercero",
-       3000
-      ]
-     ],
-     "fuera": [
-      "Fazer"
-     ]
-    }
-   ],
-   "pendiente": [
-    {
-     "que": "duda",
-     "evento": "GODZ",
-     "dia": "2026-10-12",
-     "gente": [
-      "Velatz",
-      "Zignos"
-     ],
-     "detalle": "no hubo partido por el 3º: ¿los dos semifinalistas suman como 3º, o ninguno?"
-    },
-    {
-     "que": "duda",
-     "evento": "SNAKE INSIGNIA 7 8",
-     "dia": "2026-10-31",
-     "gente": [
-      "Makmah",
-      "Trelok"
-     ],
-     "detalle": "no hubo partido por el 3º: ¿los dos semifinalistas suman como 3º, o ninguno?"
-    }
-   ],
+   "sumado": [],
+   "pendiente": [],
    "oficial": {
-    "dia": "2026-10-01",
-    "nota": "ASCENSO ACTUALIZADO 29/09/2026 TRAS RAP EXHIBITION 2/8",
-    "filas": 56
+    "dia": "2026-11-14",
+    "nota": "ASCENSO ACTUALIZADO 14/11/2026 TRAS SNAKE INSIGNIA 8/8",
+    "filas": 62
    },
    "n": "Snake League",
    "destino": "snake-generations",
@@ -777,6 +638,18 @@
      "compe": "red bull caracas regional",
      "evento": "RED BULL CARACAS REGIONAL T.5",
      "dia": "2026-11-09"
+    },
+    {
+     "que": "rango",
+     "compe": "compe mananera",
+     "evento": "Compe mañanera",
+     "dia": "2026-11-14"
+    },
+    {
+     "que": "rango",
+     "compe": "compe demasiado mananera",
+     "evento": "Compe demasiado mañanera",
+     "dia": "2026-11-14"
     }
    ],
    "oficial": {

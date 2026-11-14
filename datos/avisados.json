@@ -47925,5 +47925,161 @@
    ]
   ],
   "v": 2
+ },
+ "635": {
+  "antes": {
+   "Bloody": [
+    35,
+    41,
+    false
+   ],
+   "Deuxs": [
+    116,
+    155,
+    false
+   ],
+   "Erian": [
+    4,
+    4,
+    false
+   ],
+   "Majiztral": [
+    31,
+    36,
+    false
+   ],
+   "Miniboy": [
+    19,
+    20,
+    false
+   ],
+   "Mito": [
+    27,
+    29,
+    false
+   ],
+   "Refran": [
+    188,
+    366,
+    false
+   ],
+   "Teito": [
+    53,
+    63,
+    false
+   ]
+  },
+  "canal": "1511962554547703960",
+  "duelos": [
+   [
+    "Majiztral",
+    "Teito",
+    "Majiztral"
+   ],
+   [
+    "Mito",
+    "TMAX 🇪🇸",
+    "Mito"
+   ],
+   [
+    "Erian",
+    "Deuxs",
+    "Erian"
+   ],
+   [
+    "Erian",
+    "Refran",
+    "Erian"
+   ],
+   [
+    "Bloody",
+    "Miniboy",
+    "Bloody"
+   ],
+   [
+    "Mito",
+    "Majiztral",
+    "Mito"
+   ],
+   [
+    "Bloody",
+    "Erian",
+    "Bloody"
+   ],
+   [
+    "Bloody",
+    "Mito",
+    "Bloody"
+   ]
+  ],
+  "ev_antes": {
+   "Bloody": 27,
+   "Deuxs": 9,
+   "Erian": 81,
+   "Majiztral": 28,
+   "Miniboy": 61,
+   "Mito": 37,
+   "Refran": 1,
+   "Teito": 39
+  },
+  "fecha": "14/11",
+  "firma": "23fa27138cf87e98",
+  "msg": "1571194503703035995",
+  "nombre": "COMPE DEMASIADO MAÑANERA",
+  "num": 635,
+  "participantes": 9,
+  "sello": {
+   "Bloody": "29ae34f376a9:08ecf54fc940"
+  },
+  "sv": "URBF",
+  "t": "2026-11-14T16:05:59Z",
+  "tabla": [
+   [
+    "Bloody",
+    "Campeón",
+    7500
+   ],
+   [
+    "Mito",
+    "Subcampeón",
+    5000
+   ],
+   [
+    "Majiztral",
+    "Semifinal",
+    3500
+   ],
+   [
+    "Erian",
+    "Semifinal",
+    3500
+   ],
+   [
+    "Teito",
+    "Cuartos",
+    2000
+   ],
+   [
+    "TMAX 🇪🇸",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Deuxs",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Refran",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Miniboy",
+    "Cuartos",
+    2000
+   ]
+  ],
+  "v": 2
  }
 }

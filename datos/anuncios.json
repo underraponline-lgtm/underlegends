@@ -1,5 +1,5 @@
 {
- "cuando": "2026-11-14T07:55:30+00:00",
+ "cuando": "2026-11-14T16:06:41+00:00",
  "anuncios": [
   {
    "nombre": "¡SE LLEGÓ LA GRAN NOCHE!",
@@ -2859,6 +2859,47 @@
    "categoria_id": "867553625508282369"
   },
   {
+   "nombre": "COMPE DEMASIADO MAÑANERA",
+   "servidor": "URBF",
+   "canal": "⋆🏆│Eventos",
+   "msg_id": "1571144236680872068",
+   "cuando": "2026-11-14T12:46:16",
+   "canal_id": "1511963470956990494",
+   "guild_id": "1467763447117778989",
+   "organizador": "❤️‍🔥예수-Jesus-예수❤️‍🔥",
+   "orgs": [
+    {
+     "n": "❤️‍🔥예수-Jesus-예수❤️‍🔥",
+     "id": "817387658656874536"
+    }
+   ],
+   "autor_h": "0ed040919881f966",
+   "cupos_texto": "4/8",
+   "inscriptos": 4,
+   "cupo_total": 8,
+   "rango": "(2k puntos de ascenso al primero y un campeonato)",
+   "modalidad": "1vs1",
+   "horario": "cuando se llenen inscripciones",
+   "fecha": "",
+   "premios": "",
+   "staff": {
+    "jurado": [
+     "❤️‍🔥예수-Jesus-예수❤️‍🔥"
+    ],
+    "host": [
+     "❤️‍🔥예수-Jesus-예수❤️‍🔥"
+    ],
+    "dj": [
+     "❤️‍🔥예수-Jesus-예수❤️‍🔥"
+    ]
+   },
+   "autor": "❤️‍🔥예수-Jesus-예수❤️‍🔥",
+   "staff_cuentas": {
+    "❤️‍🔥예수-Jesus-예수❤️‍🔥": "817387658656874536"
+   },
+   "categoria_id": "1511963280128868504"
+  },
+  {
    "nombre": "COMPE CHILL V.3",
    "servidor": "URBF",
    "canal": "⋆🏆│Eventos",
@@ -3762,47 +3803,6 @@
    "canal": "⋆🏆│Eventos",
    "msg_id": "1546638379414978591",
    "cuando": "2026-09-07T21:48:44",
-   "canal_id": "1511963470956990494",
-   "guild_id": "1467763447117778989",
-   "organizador": "@Carlos",
-   "orgs": [
-    {
-     "n": "Carlos",
-     "id": "734172184737480745"
-    }
-   ],
-   "autor_h": "608cfa4b650ba173",
-   "cupos_texto": "4/8(si me dan ganas y se llena maybe de 16)",
-   "inscriptos": null,
-   "cupo_total": null,
-   "rango": "(2k puntos de ascenso al primero y un campeonato)",
-   "modalidad": "1vs1",
-   "horario": "Cuando se llene",
-   "fecha": "",
-   "premios": "",
-   "staff": {
-    "jurado": [
-     "Carlos"
-    ],
-    "host": [
-     "Carlos"
-    ],
-    "dj": [
-     "Carlos"
-    ]
-   },
-   "autor": "Carlos",
-   "staff_cuentas": {
-    "Carlos": "734172184737480745"
-   },
-   "categoria_id": "1511963280128868504"
-  },
-  {
-   "nombre": "PNC V.11",
-   "servidor": "URBF",
-   "canal": "⋆🏆│Eventos",
-   "msg_id": "1545189983164301332",
-   "cuando": "2026-09-03T21:53:20",
    "canal_id": "1511963470956990494",
    "guild_id": "1467763447117778989",
    "organizador": "@Carlos",
@@ -6071,9 +6071,7 @@
    "staff": {},
    "autor": "Designo",
    "staff_cuentas": {},
-   "categoria_id": "1080379388320817233",
-   "inscripciones": "cerradas",
-   "inscripciones_cuando": "2026-11-14T04:56:12"
+   "categoria_id": "1080379388320817233"
   },
   {
    "nombre": "MINUTOS A SANGRE - D3ATHROWCHAMPS VOL 3",
@@ -6097,9 +6095,7 @@
    "staff": {},
    "autor": ".",
    "staff_cuentas": {},
-   "categoria_id": "1080379388320817233",
-   "inscripciones": "cerradas",
-   "inscripciones_cuando": "2026-11-14T04:56:12"
+   "categoria_id": "1080379388320817233"
   },
   {
    "nombre": "EL ONMITRIX VOL 1.",
@@ -6123,9 +6119,7 @@
    "staff": {},
    "autor": "†JEIXDER",
    "staff_cuentas": {},
-   "categoria_id": "1080379388320817233",
-   "inscripciones": "cerradas",
-   "inscripciones_cuando": "2026-11-14T04:56:12"
+   "categoria_id": "1080379388320817233"
   },
   {
    "nombre": "FARK PREMIUM VOL 3",
@@ -6154,9 +6148,7 @@
    "staff": {},
    "autor": "Bohemio.rap",
    "staff_cuentas": {},
-   "categoria_id": "1080379388320817233",
-   "inscripciones": "cerradas",
-   "inscripciones_cuando": "2026-11-14T04:56:12"
+   "categoria_id": "1080379388320817233"
   },
   {
    "nombre": "EL PODERIO DE LOS DIOSES VOL 3",
@@ -6180,9 +6172,7 @@
    "staff": {},
    "autor": "†JEIXDER",
    "staff_cuentas": {},
-   "categoria_id": "1080379388320817233",
-   "inscripciones": "cerradas",
-   "inscripciones_cuando": "2026-11-14T04:56:12"
+   "categoria_id": "1080379388320817233"
   },
   {
    "nombre": "EL PODERIO DE LOS DIOSES VOL 2",
@@ -6206,9 +6196,7 @@
    "staff": {},
    "autor": "†JEIXDER",
    "staff_cuentas": {},
-   "categoria_id": "1080379388320817233",
-   "inscripciones": "cerradas",
-   "inscripciones_cuando": "2026-11-14T04:56:12"
+   "categoria_id": "1080379388320817233"
   },
   {
    "nombre": "RECONOCIENDO LA OBRA",
@@ -6237,9 +6225,7 @@
    "staff": {},
    "autor": "erik_",
    "staff_cuentas": {},
-   "categoria_id": "1080379388320817233",
-   "inscripciones": "cerradas",
-   "inscripciones_cuando": "2026-11-14T04:56:12"
+   "categoria_id": "1080379388320817233"
   },
   {
    "nombre": "EL PODERIO DE LOS DIOSES",
@@ -6263,9 +6249,7 @@
    "staff": {},
    "autor": "†JEIXDER",
    "staff_cuentas": {},
-   "categoria_id": "1080379388320817233",
-   "inscripciones": "cerradas",
-   "inscripciones_cuando": "2026-11-14T04:56:12"
+   "categoria_id": "1080379388320817233"
   },
   {
    "nombre": "PALABRA SAGRADA EDICION 1",
@@ -6289,9 +6273,7 @@
    "staff": {},
    "autor": "dante",
    "staff_cuentas": {},
-   "categoria_id": "1080379388320817233",
-   "inscripciones": "cerradas",
-   "inscripciones_cuando": "2026-11-14T04:56:12"
+   "categoria_id": "1080379388320817233"
   },
   {
    "nombre": "JEIX CUP CLASIFICATORIO",
@@ -6315,9 +6297,7 @@
    "staff": {},
    "autor": "†JEIXDER",
    "staff_cuentas": {},
-   "categoria_id": "1080379388320817233",
-   "inscripciones": "cerradas",
-   "inscripciones_cuando": "2026-11-14T04:56:12"
+   "categoria_id": "1080379388320817233"
   },
   {
    "nombre": "PUNTO MUERTO FECHA 8 (ULTIMO CUPO)",
@@ -6341,9 +6321,7 @@
    "staff": {},
    "autor": "dante",
    "staff_cuentas": {},
-   "categoria_id": "1080379388320817233",
-   "inscripciones": "cerradas",
-   "inscripciones_cuando": "2026-11-14T04:56:12"
+   "categoria_id": "1080379388320817233"
   },
   {
    "nombre": "CELEBRITY DEATH MATCH Vol. 2 (RANKED)",
@@ -6367,9 +6345,7 @@
    "staff": {},
    "autor": "CNC ®",
    "staff_cuentas": {},
-   "categoria_id": "1080379388320817233",
-   "inscripciones": "cerradas",
-   "inscripciones_cuando": "2026-11-14T04:56:12"
+   "categoria_id": "1080379388320817233"
   },
   {
    "nombre": "PUNTO MUERTO FECHA 7",
@@ -6393,9 +6369,7 @@
    "staff": {},
    "autor": "dante",
    "staff_cuentas": {},
-   "categoria_id": "1080379388320817233",
-   "inscripciones": "cerradas",
-   "inscripciones_cuando": "2026-11-14T04:56:12"
+   "categoria_id": "1080379388320817233"
   },
   {
    "nombre": "PUNTO MUERTO FECHA 6",
@@ -6419,9 +6393,7 @@
    "staff": {},
    "autor": "dante",
    "staff_cuentas": {},
-   "categoria_id": "1080379388320817233",
-   "inscripciones": "cerradas",
-   "inscripciones_cuando": "2026-11-14T04:56:12"
+   "categoria_id": "1080379388320817233"
   },
   {
    "nombre": "PUNTO MUERTO FECHA 5",
@@ -6445,9 +6417,7 @@
    "staff": {},
    "autor": "dante",
    "staff_cuentas": {},
-   "categoria_id": "1080379388320817233",
-   "inscripciones": "cerradas",
-   "inscripciones_cuando": "2026-11-14T04:56:12"
+   "categoria_id": "1080379388320817233"
   },
   {
    "nombre": "HORARIOS DE INSCRIPCION",
@@ -6471,9 +6441,7 @@
    "staff": {},
    "autor": "⚡ Maurolocrazy ⚡",
    "staff_cuentas": {},
-   "categoria_id": "1080379388320817233",
-   "inscripciones": "cerradas",
-   "inscripciones_cuando": "2026-11-14T04:56:12"
+   "categoria_id": "1080379388320817233"
   },
   {
    "nombre": "Horarios de la competencia",
@@ -6862,6 +6830,15 @@
  ],
  "oficiales": [
   {
+   "servidor": "URBF",
+   "canal": "⋆📢│🐔⋅Anuncios⋅📢",
+   "tit": "CLASIFICADOS RED BULL CABRANA INTERNACIONAL TEMPORADA 5",
+   "tx": "Como saben, me han dejado volver al server, y obviamente lo primero que hare como organizador, sera revivirlo (xd) pero sobre todo, empezar con red bull y reanudarla, este anuncio es para dar una despausa oficial a red b",
+   "cuando": "2026-11-14T13:55:24",
+   "msg_id": "1571161633953157321",
+   "link": "https://discord.com/channels/1467763447117778989/1553080521096044584/1571161633953157321"
+  },
+  {
    "servidor": "CH",
    "canal": "📢—anuncios",
    "tit": "UNANSE A LA LLAMADA!!",
@@ -7067,15 +7044,6 @@
    "cuando": "2026-10-11T18:33:33",
    "msg_id": "1558910444603711633",
    "link": "https://discord.com/channels/1467763447117778989/1553080521096044584/1558910444603711633"
-  },
-  {
-   "servidor": "URBF",
-   "canal": "⋆📢│🐔⋅Anuncios⋅📢",
-   "tit": "EMPEZAMOS EMPAREJAMIENTOS",
-   "tx": "",
-   "cuando": "2026-10-11T16:29:17",
-   "msg_id": "1558879174142464051",
-   "link": "https://discord.com/channels/1467763447117778989/1553080521096044584/1558879174142464051"
   },
   {
    "servidor": "FDS",
