@@ -2,7 +2,7 @@
  "_leeme": "El reto del debut (bot/debutantes.py): quién debutó desde el 12/10/2026 a las 6 PM ET, cuándo vence, si lo cumplió y qué ya se avisó. Dlx, 12/10/2026.",
  "chats": {
   "ACAD": "2026-11-14",
-  "CH": "2026-11-06",
+  "CH": "2026-11-14",
   "DDF": "2026-11-11",
   "DDS": "2026-11-09",
   "FDS": "2026-11-13",
@@ -77,6 +77,30 @@
    "sv": "ACAD",
    "vence": "2026-11-14T01:17:28+00:00",
    "vencido": true
+  },
+  "<:logocypherhood:1258928534743683176>": {
+   "chat": "2026-11-14",
+   "con": null,
+   "cumplido": "",
+   "debut": "2026-11-14T20:22:29+00:00",
+   "did": "",
+   "evento": "CHOP COMPE CEO V.2",
+   "n": 636,
+   "sv": "CH",
+   "vence": "2026-11-21T20:22:29+00:00",
+   "vencido": false
+  },
+  "@j.nibbana": {
+   "chat": "2026-11-14",
+   "con": null,
+   "cumplido": "",
+   "debut": "2026-11-14T20:22:29+00:00",
+   "did": "",
+   "evento": "CHOP COMPE CEO V.2",
+   "n": 636,
+   "sv": "CH",
+   "vence": "2026-11-21T20:22:29+00:00",
+   "vencido": false
   },
   "ADEUXE": {
    "avisado": "2026-11-09",
@@ -693,6 +717,18 @@
    "vence": "2026-11-16T19:09:03+00:00",
    "vencido": false
   },
+  "Doble J": {
+   "chat": "2026-11-14",
+   "con": null,
+   "cumplido": "",
+   "debut": "2026-11-14T20:22:29+00:00",
+   "did": "",
+   "evento": "CHOP COMPE CEO V.2",
+   "n": 636,
+   "sv": "CH",
+   "vence": "2026-11-21T20:22:29+00:00",
+   "vencido": false
+  },
   "Drexc": {
    "con": null,
    "cumplido": "",
@@ -714,6 +750,18 @@
    "sv": "CH",
    "vence": "2026-10-27T22:07:15+00:00",
    "vencido": true
+  },
+  "Dyz": {
+   "chat": "2026-11-14",
+   "con": null,
+   "cumplido": "",
+   "debut": "2026-11-14T20:22:29+00:00",
+   "did": "",
+   "evento": "CHOP COMPE CEO V.2",
+   "n": 636,
+   "sv": "CH",
+   "vence": "2026-11-21T20:22:29+00:00",
+   "vencido": false
   },
   "EL PIBE": {
    "avisado": "2026-11-05",
@@ -2927,6 +2975,18 @@
    "vence": "2026-11-16T14:38:17+00:00",
    "vencido": false
   },
+  "blackstar27": {
+   "chat": "2026-11-14",
+   "con": null,
+   "cumplido": "",
+   "debut": "2026-11-14T20:22:29+00:00",
+   "did": "",
+   "evento": "CHOP COMPE CEO V.2",
+   "n": 636,
+   "sv": "CH",
+   "vence": "2026-11-21T20:22:29+00:00",
+   "vencido": false
+  },
   "botrax": {
    "con": null,
    "cumplido": "",
@@ -2937,6 +2997,18 @@
    "sv": "DDS",
    "vence": "2026-11-04T01:58:48+00:00",
    "vencido": true
+  },
+  "compare": {
+   "chat": "2026-11-14",
+   "con": null,
+   "cumplido": "",
+   "debut": "2026-11-14T20:22:29+00:00",
+   "did": "",
+   "evento": "CHOP COMPE CEO V.2",
+   "n": 636,
+   "sv": "CH",
+   "vence": "2026-11-21T20:22:29+00:00",
+   "vencido": false
   },
   "criz": {
    "con": null,

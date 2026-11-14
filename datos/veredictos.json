@@ -2313,6 +2313,39 @@
    "b": "Jnibbana",
    "ganador": "CNC",
    "votos": "1–0"
+  },
+  "1571283076942790768": {
+   "id": "1571283076942790768",
+   "sv": "CYPHERHOOD™ | Hip-Hop, Freestyle & Producción Musical",
+   "g": "1074328197400887388",
+   "canal": "1222380923048296459",
+   "pub": 1794693478571,
+   "a": "Dyz",
+   "b": "GOCHO",
+   "ganador": "GOCHO",
+   "votos": "1–0"
+  },
+  "1571283627759767674": {
+   "id": "1571283627759767674",
+   "sv": "CYPHERHOOD™ | Hip-Hop, Freestyle & Producción Musical",
+   "g": "1074328197400887388",
+   "canal": "1222380923048296459",
+   "pub": 1794693609896,
+   "a": "CNC",
+   "b": "DOBLE J",
+   "ganador": "CNC",
+   "votos": "1–0"
+  },
+  "1571285030989332632": {
+   "id": "1571285030989332632",
+   "sv": "CYPHERHOOD™ | Hip-Hop, Freestyle & Producción Musical",
+   "g": "1074328197400887388",
+   "canal": "1222380923048296459",
+   "pub": 1794693944452,
+   "a": "Dyz",
+   "b": "DOBLE J",
+   "ganador": "Dyz",
+   "votos": "1–0"
   }
  },
  "llaves": {
@@ -7481,8 +7514,8 @@
    "g": "1469009547971526659",
    "canal": "1498009509036163173",
    "pub": 1794690082348,
-   "ed": 1794692753835,
-   "texto": "`[ OCTAVOS ]`\n⌞WALKER🇨🇴⌝ 🆚 ⌞WACKLUSCO☪⌝\n⌞WALKER 🇨🇴⌝ 🆚 ⌞MOLUSCO🇦🇷⌝\n⌞BLACK DEMON 🇪🇨⌝ 🆚 ⌞DREXX🇵🇪⌝\n⌞ECLIPSE 🇨🇱⌝ 🆚 ⌞MARTÍNEZ🇺🇾⌝\n⌞NEXUS 🇵🇪⌝ 🆚 ⌞DAN🇨🇴⌝\n⌞LSD 🇵🇪⌝ 🆚 ⌞INKU🇦🇷⌝\n⌞SILENCE 🇵🇪⌝ 🆚 ⌞KRISH🇪🇸⌝",
+   "ed": 1794694916190,
+   "texto": "`[ OCTAVOS ]`\n⌞WALKER🇨🇴⌝ 🆚 ⌞WACKLUSCO☪⌝\n⌞WALKER 🇨🇴⌝ 🆚 ⌞MOLUSCO🇦🇷⌝\n⌞BLACK DEMON 🇪🇨⌝ 🆚 ⌞DREXX🇵🇪⌝\n⌞ECLIPSE 🇨🇱⌝ 🆚 ⌞MARTÍNEZ🇺🇾⌝\n⌞NEXUS 🇵🇪⌝ 🆚 ⌞DAN🇨🇴⌝\n⌞LSD 🇵🇪⌝ 🆚 ⌞INKU🇦🇷⌝\n⌞SILENCE 🇵🇪⌝ 🆚 ⌞KRISH🇪🇸⌝\n⌞WALKER 🇨🇴⌝ 🆚 ⌞B. DEMON🇪🇨⌝\n`[ CUARTOS ]`\n⌞WALKER 🇨🇴⌝ 🆚 ⌞B.DEMON🇪🇨⌝\n⌞NEXUS 🇵🇪⌝ 🆚 ⌞ECLIPSE 🇨🇱⌝\n⌞BTRECE 🇺🇾⌝ 🆚 ⌞LSD🇵🇪⌝\n⌞MAKMAH 🇻🇪⌝ 🆚 ⌞SILENCE 🇵🇪⌝",
    "batallas": [
     [
      "OCTAVOS",
@@ -7490,8 +7523,8 @@
       "WALKER🇨🇴",
       "WACKLUSCO☪"
      ],
-     null,
-     "última ronda y no dice campeón",
+     "WALKER🇨🇴",
+     "ronda siguiente",
      []
     ],
     [
@@ -7500,8 +7533,8 @@
       "WALKER 🇨🇴",
       "MOLUSCO🇦🇷"
      ],
-     null,
-     "última ronda y no dice campeón",
+     "WALKER 🇨🇴",
+     "ronda siguiente",
      []
     ],
     [
@@ -7511,7 +7544,7 @@
       "DREXX🇵🇪"
      ],
      null,
-     "última ronda y no dice campeón",
+     "no aparece nadie después",
      []
     ],
     [
@@ -7530,8 +7563,8 @@
       "NEXUS 🇵🇪",
       "DAN🇨🇴"
      ],
-     null,
-     "última ronda y no dice campeón",
+     "NEXUS 🇵🇪",
+     "ronda siguiente",
      []
     ],
     [
@@ -7540,8 +7573,8 @@
       "LSD 🇵🇪",
       "INKU🇦🇷"
      ],
-     null,
-     "última ronda y no dice campeón",
+     "LSD 🇵🇪",
+     "ronda siguiente",
      []
     ],
     [
@@ -7549,6 +7582,59 @@
      [
       "SILENCE 🇵🇪",
       "KRISH🇪🇸"
+     ],
+     "SILENCE 🇵🇪",
+     "ronda siguiente",
+     []
+    ],
+    [
+     "OCTAVOS",
+     [
+      "WALKER 🇨🇴",
+      "B. DEMON🇪🇨"
+     ],
+     null,
+     "pasan 2, no hay un ganador",
+     [
+      "WALKER 🇨🇴",
+      "B. DEMON🇪🇨"
+     ]
+    ],
+    [
+     "CUARTOS",
+     [
+      "WALKER 🇨🇴",
+      "B.DEMON🇪🇨"
+     ],
+     null,
+     "última ronda y no dice campeón",
+     []
+    ],
+    [
+     "CUARTOS",
+     [
+      "NEXUS 🇵🇪",
+      "ECLIPSE 🇨🇱"
+     ],
+     null,
+     "última ronda y no dice campeón",
+     []
+    ],
+    [
+     "CUARTOS",
+     [
+      "BTRECE 🇺🇾",
+      "LSD🇵🇪"
+     ],
+     null,
+     "última ronda y no dice campeón",
+     []
+    ],
+    [
+     "CUARTOS",
+     [
+      "MAKMAH 🇻🇪",
+      "SILENCE 🇵🇪"
      ],
      null,
      "última ronda y no dice campeón",

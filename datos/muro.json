@@ -159,10 +159,6 @@
 "temporada"
 ]
 },
-"tam": {
-"rg": "A",
-"c": []
-},
 "miniboy": {
 "rg": "C",
 "c": [
@@ -171,6 +167,10 @@
 "servidor",
 "temporada"
 ]
+},
+"tam": {
+"rg": "B",
+"c": []
 },
 "og": {
 "rg": "B",
@@ -593,6 +593,15 @@
 "rg": "C",
 "c": []
 },
+"gocho": {
+"rg": "D",
+"c": [
+"competitivo",
+"pais",
+"servidor",
+"temporada"
+]
+},
 "sosaatr": {
 "rg": "E",
 "c": [
@@ -752,15 +761,6 @@
 "temporada"
 ]
 },
-"gocho": {
-"rg": "E",
-"c": [
-"competitivo",
-"pais",
-"servidor",
-"temporada"
-]
-},
 "19fleivawack": {
 "rg": "",
 "c": [
@@ -785,11 +785,11 @@
 "temporada"
 ]
 },
-"1200": {
+"darnbless": {
 "rg": "E",
 "c": []
 },
-"darnbless": {
+"1200": {
 "rg": "E",
 "c": []
 },
@@ -2849,14 +2849,6 @@
 }
 },
 "cambios": [
-{
-"tipo": "tarjeta",
-"t": "2026-10-09T23:58:59Z",
-"quien": [
-"Delux"
-],
-"carta": "pais"
-},
 {
 "tipo": "rango",
 "t": "2026-10-10T04:27:46Z",
@@ -6217,6 +6209,15 @@
 "Deuxs"
 ],
 "carta": "competitivo"
+},
+{
+"tipo": "rango",
+"t": "2026-11-14T22:36:30Z",
+"quien": [
+"Gocho"
+],
+"rg": "D",
+"primero": false
 }
 ],
 "noche_antes": {
@@ -7554,6 +7555,75 @@
 "que": "primer",
 "ev": "SNAKE INSIGNIA 8 8",
 "desde": 115
+}
+]
+},
+"2026-11-14": {
+"tipo": "resnoche",
+"t": "2026-11-15T08:00:00Z",
+"dia": "2026-11-14",
+"eventos": 1,
+"part": 19,
+"campeones": [
+{
+"ev": "CHOP COMPE CEO V.2",
+"sv": "CH",
+"ll": 636,
+"quien": [
+[
+"CNC",
+""
+]
+]
+}
+],
+"suman": [
+{
+"n": "Gocho",
+"k": "gocho",
+"pts": 7500,
+"ev": 1
+},
+{
+"n": "Dyz 🇨🇱",
+"k": "",
+"pts": 6000,
+"ev": 1
+},
+{
+"n": "CNC",
+"k": "",
+"pts": 5000,
+"ev": 1
+}
+],
+"suben": [
+{
+"n": "CNC",
+"k": "",
+"de": 644,
+"a": 372
+},
+{
+"n": "Gocho",
+"k": "gocho",
+"de": 80,
+"a": 62
+},
+{
+"n": "Number VE",
+"k": "numberve",
+"de": 60,
+"a": 50
+}
+],
+"sorpresas": [
+{
+"n": "CNC",
+"k": "",
+"que": "primer",
+"ev": "CHOP COMPE CEO V.2",
+"desde": 644
 }
 ]
 }

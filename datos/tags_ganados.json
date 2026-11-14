@@ -1903,6 +1903,11 @@
     "t1",
     1793029252929
    ],
+   "EMBAJADOR": [
+    "EMBAJADOR",
+    "t1",
+    1794695812317
+   ],
    "PIONERO": [
     "PIONERO",
     "t1",
@@ -1937,6 +1942,11 @@
    ]
   },
   "temporada": {
+   "🌍 TROTAMUNDOS": [
+    "🌍 TROTAMUNDOS",
+    "t1",
+    1794695812317
+   ],
    "🎯 CAZARRECOMPENSAS": [
     "🎯 CAZARRECOMPENSAS",
     "t1",
@@ -2851,6 +2861,22 @@
     "🧱 FUNDADOR",
     "t1",
     1792953978519
+   ]
+  }
+ },
+ "cnc": {
+  "servidor": {
+   "🏆 CAMPEÓN": [
+    "🏆 CAMPEÓN",
+    "t1",
+    1794695812317
+   ]
+  },
+  "temporada": {
+   "🥉 AL PODIO": [
+    "🥉 AL PODIO",
+    "t1",
+    1794695812317
    ]
   }
  },
@@ -4173,6 +4199,20 @@
    ]
   }
  },
+ "dyz": {
+  "temporada": {
+   "🌱 PROMESA": [
+    "🌱 PROMESA",
+    "t1",
+    1794695812317
+   ],
+   "🥉 AL PODIO": [
+    "🥉 AL PODIO",
+    "t1",
+    1794695812317
+   ]
+  }
+ },
  "dyzz": {
   "competitivo": {
    "🐉 MATADRAGONES": [
@@ -5412,6 +5452,11 @@
     "🔟 DOBLE DÍGITO",
     "t1",
     1793029252929
+   ],
+   "🥈 SIEMPRE EN LA FINAL": [
+    "🥈 SIEMPRE EN LA FINAL",
+    "t1",
+    1794695812317
    ],
    "🥉 AL PODIO": [
     "🥉 AL PODIO",
@@ -14858,6 +14903,11 @@
     "🥉 AL PODIO",
     "t1",
     1793029252929
+   ],
+   "🧳 VIAJERO": [
+    "🧳 VIAJERO",
+    "t1",
+    1794695812317
    ]
   }
  },

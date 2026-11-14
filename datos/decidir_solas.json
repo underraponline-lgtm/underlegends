@@ -2,49 +2,6 @@
  "_leeme": "Lo que ✅ Decidir cerró o contestó solo, con la regla y la prueba (sheet/decidir.py, resolver_solo()), para «Lo que se resolvió solo» del Dashboard y su «Deshacer». «deshechas»: lo que Dlx deshizo; ninguna regla lo vuelve a tocar. Dlx, 13/10/2026.",
  "solas": [
   {
-   "id": "f434f06f48",
-   "tipo": "Nombre desconocido",
-   "sec": "19 CUP HALLOWEEN 2026 LLAVES DE COMPETENCIA · DDF · 31/10 · #552",
-   "que": "¿Quién es «Tizi 🇦🇷»?",
-   "r": "Es alguien nuevo: alta con su cuenta 709496535280255037",
-   "regla": "Discord · su cuenta de Discord: la inscripción, el podio, la llave o la llamada",
-   "rk": "Discord",
-   "por": "el ciclo (su cuenta de Discord)",
-   "porque": "nuevo: entró a la Lista con la cuenta con que se anotó (709496535280255037)",
-   "t": 1793482674981,
-   "filas": [
-    997
-   ],
-   "variantes": [
-    "Tizi 🇦🇷"
-   ],
-   "escribio": {
-    "alta": [
-     "Tizi",
-     "709496535280255037"
-    ]
-   }
-  },
-  {
-   "id": "d242d83b7d",
-   "tipo": "Nombre desconocido",
-   "sec": "19 CUP HALLOWEEN 2026 LLAVES DE COMPETENCIA · DDF · 31/10 · #552",
-   "que": "¿Quién es «silence kla ignorancia peru»?",
-   "r": "Ya no hace falta",
-   "regla": "cierre · ya no hacía falta preguntarlo",
-   "rk": "cierre",
-   "por": "el ciclo",
-   "porque": "ya no está en ningún resultado: el lector lo lee distinto, o ya es alias de alguien",
-   "t": 1793482674981,
-   "filas": [
-    998
-   ],
-   "variantes": [
-    "silence kla ignorancia peru"
-   ],
-   "escribio": {}
-  },
-  {
    "id": "fe7fa9f2a8",
    "tipo": "Nombre desconocido",
    "sec": "SNAKE INSIGNIA 7 8 · SR · 31/10 · #553",
@@ -4320,6 +4277,99 @@
     ],
     "filas": [
      367
+    ]
+   }
+  },
+  {
+   "id": "5cef1f37f2",
+   "tipo": "Batalla sin ganador",
+   "sec": "CHOP COMPE CEO V.2 · CH · 14/11 · #636",
+   "que": "¿Quién ganó en final?\nGOCHO 🆚 CNC",
+   "r": "No se jugó",
+   "regla": "R4 · una batalla que es copia de otra ya cargada",
+   "rk": "R4",
+   "por": "el ciclo",
+   "porque": "es la misma batalla que «CNC vs Gocho» (ganó CNC), ya cargada en el #636: contestar «Ganó» la contaría dos veces",
+   "t": 1794695805461,
+   "filas": [
+    1384
+   ],
+   "variantes": [
+    "CHOP COMPE CEO V.2 · CH · 14/11 · final · GOCHO 🆚 CNC"
+   ],
+   "escribio": {
+    "batalla": "CHOP COMPE CEO V.2 · CH · 14/11 · final · GOCHO 🆚 CNC"
+   }
+  },
+  {
+   "id": "6d9d04baa2",
+   "tipo": "Nombre desconocido",
+   "sec": "CHOP COMPE CEO V.2 · CH · 14/11 · #636",
+   "que": "¿Quién es «@j.nibbana 🇪🇸»?",
+   "r": "Es alguien nuevo: alta con su cuenta 599711882823204883",
+   "regla": "Discord · su cuenta de Discord: la inscripción, el podio, la llave o la llamada",
+   "rk": "Discord",
+   "por": "el ciclo (su cuenta de Discord)",
+   "porque": "nuevo: entró a la Lista con la cuenta con que se anotó (599711882823204883)",
+   "t": 1794695805461,
+   "filas": [
+    1386
+   ],
+   "variantes": [
+    "@j.nibbana 🇪🇸"
+   ],
+   "escribio": {
+    "alta": [
+     "@j.nibbana",
+     "599711882823204883"
+    ]
+   }
+  },
+  {
+   "id": "6c1ccab580",
+   "tipo": "Nombre desconocido",
+   "sec": "CHOP COMPE CEO V.2 · CH · 14/11 · #636",
+   "que": "¿Quién es «blackstar27»?",
+   "r": "Es alguien nuevo: alta con su cuenta 697165256811610132",
+   "regla": "Discord · su cuenta de Discord: la inscripción, el podio, la llave o la llamada",
+   "rk": "Discord",
+   "por": "el ciclo (su cuenta de Discord)",
+   "porque": "nuevo: entró a la Lista con la cuenta que estaba en la llamada con ese nombre (697165256811610132)",
+   "t": 1794695805461,
+   "filas": [
+    1390
+   ],
+   "variantes": [
+    "blackstar27"
+   ],
+   "escribio": {
+    "alta": [
+     "blackstar27",
+     "697165256811610132"
+    ]
+   }
+  },
+  {
+   "id": "a8fff40016",
+   "tipo": "Nombre desconocido",
+   "sec": "CHOP COMPE CEO V.2 · CH · 14/11 · #636",
+   "que": "¿Quién es «compare🇵🇪»?",
+   "r": "Es alguien nuevo: alta con su cuenta 816486976949714955",
+   "regla": "Discord · su cuenta de Discord: la inscripción, el podio, la llave o la llamada",
+   "rk": "Discord",
+   "por": "el ciclo (su cuenta de Discord)",
+   "porque": "nuevo: entró a la Lista con la cuenta con que se anotó (816486976949714955)",
+   "t": 1794695805461,
+   "filas": [
+    1391
+   ],
+   "variantes": [
+    "compare🇵🇪"
+   ],
+   "escribio": {
+    "alta": [
+     "compare",
+     "816486976949714955"
     ]
    }
   }

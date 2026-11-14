@@ -1,5 +1,5 @@
 {
- "cuando": "2026-11-14T21:55:18+00:00",
+ "cuando": "2026-11-14T22:25:19+00:00",
  "anuncios": [
   {
    "nombre": "¡SE LLEGÓ LA GRAN NOCHE!",
@@ -7095,6 +7095,24 @@
   }
  ],
  "inscripciones": [
+  {
+   "servidor": "URBF",
+   "canal": "‣《🗞️》Inscripciones",
+   "texto": "Tokio🇬🇩",
+   "quien": "paratimiringuicaro",
+   "discord_id": "1249980492951060561",
+   "msg_id": "1571286919357145090",
+   "cuando": "2026-11-14T22:13:14"
+  },
+  {
+   "servidor": "LKR",
+   "canal": "inscripciones",
+   "texto": "Adrianex 🇪🇸",
+   "quien": "adrianleanca_64287",
+   "discord_id": "1276857675316989962",
+   "msg_id": "1571285002870595747",
+   "cuando": "2026-11-14T22:05:37"
+  },
   {
    "servidor": "CH",
    "canal": "📜—inscripciones",
@@ -43076,24 +43094,6 @@
    "discord_id": "1174409397397631030",
    "msg_id": "1559314151287816253",
    "cuando": "2026-10-12T21:17:44"
-  },
-  {
-   "servidor": "FFA",
-   "canal": "✦📝—inscripciones",
-   "texto": "Riolu🇪🇸",
-   "quien": "alvaroriolu03",
-   "discord_id": "522777983921029162",
-   "msg_id": "1559309759277039710",
-   "cuando": "2026-10-12T21:00:17"
-  },
-  {
-   "servidor": "FFA",
-   "canal": "✦📝—inscripciones",
-   "texto": "Jhey🇦🇷",
-   "quien": "jheyson0221_08800",
-   "discord_id": "1344749993332048037",
-   "msg_id": "1559308280537419898",
-   "cuando": "2026-10-12T20:54:24"
   }
  ]
 }

@@ -55383,5 +55383,252 @@
    "min": 40,
    "v": 1
   }
+ },
+ "636": {
+  "dia": "2026-11-14",
+  "escala": "16+",
+  "fecha": "14/11",
+  "links": [
+   "https://discord.com/channels/1074328197400887388/1222379620494741604/1571259049109098619",
+   "https://discord.com/channels/1074328197400887388/1222379620494741604/1571285846395588653"
+  ],
+  "n": 636,
+  "nombre": "CHOP COMPE CEO V.2",
+  "participantes": 19,
+  "rondas": [
+   {
+    "b": [
+     [
+      [
+       "Gocho",
+       "Tam"
+      ],
+      "Gocho",
+      ""
+     ],
+     [
+      [
+       "DOBLE J",
+       "compare🇵🇪"
+      ],
+      "DOBLE J",
+      ""
+     ],
+     [
+      [
+       "@j.nibbana 🇪🇸, <:logocypherhood:1258928534743683176>",
+       "blackstar27"
+      ],
+      "@j.nibbana 🇪🇸, <:logocypherhood:1258928534743683176>",
+      ""
+     ],
+     [
+      [
+       "JEIXDER",
+       "DarnBless"
+      ],
+      "JEIXDER",
+      ""
+     ],
+     [
+      [
+       "Miniboy",
+       "BNA"
+      ],
+      "Miniboy",
+      ""
+     ],
+     [
+      [
+       "ADRIANGNER",
+       "betrece"
+      ],
+      "",
+      "sin ganador: espera en ✅ Decidir"
+     ],
+     [
+      [
+       "Dyzz",
+       "Makmah"
+      ],
+      "",
+      "sin ganador: espera en ✅ Decidir"
+     ],
+     [
+      [
+       "Number VE",
+       "xl"
+      ],
+      "",
+      "sin ganador: espera en ✅ Decidir"
+     ]
+    ],
+    "r": "Octavos"
+   },
+   {
+    "b": [
+     [
+      [
+       "Gocho",
+       "Miniboy"
+      ],
+      "Gocho",
+      ""
+     ],
+     [
+      [
+       "Doble J",
+       "Number VE"
+      ],
+      "Doble J",
+      ""
+     ],
+     [
+      [
+       "CNC",
+       "@j.nibbana 🇪🇸, <:logocypherhood:1258928534743683176>"
+      ],
+      "CNC",
+      "Walk-in 1: CNC"
+     ],
+     [
+      [
+       "XMILE🇺🇸",
+       "Jeixder 🇦🇷"
+      ],
+      "",
+      "sin ganador: espera en ✅ Decidir"
+     ]
+    ],
+    "r": "Cuartos"
+   },
+   {
+    "b": [
+     [
+      [
+       "Gocho",
+       "Dyz 🇨🇱"
+      ],
+      "Gocho",
+      ""
+     ],
+     [
+      [
+       "CNC",
+       "Doble J"
+      ],
+      "CNC",
+      ""
+     ]
+    ],
+    "r": "Semifinales"
+   },
+   {
+    "b": [
+     [
+      [
+       "Dyz 🇨🇱",
+       "Doble J"
+      ],
+      "Dyz 🇨🇱",
+      "podio: tercer puesto sin batalla en la llave"
+     ]
+    ],
+    "r": "Tercer puesto"
+   },
+   {
+    "b": [
+     [
+      [
+       "CNC",
+       "Gocho"
+      ],
+      "CNC",
+      ""
+     ],
+     [
+      [
+       "GOCHO",
+       "CNC"
+      ],
+      "",
+      "sin ganador: espera en ✅ Decidir"
+     ]
+    ],
+    "r": "Final"
+   }
+  ],
+  "sv": "CH",
+  "tabla": [
+   [
+    "Gocho",
+    "Subcampeón",
+    7500
+   ],
+   [
+    "Dyz 🇨🇱",
+    "Tercero",
+    6000
+   ],
+   [
+    "CNC",
+    "Campeón",
+    5000
+   ],
+   [
+    "Doble J",
+    "Cuarto",
+    4500
+   ],
+   [
+    "Miniboy",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Number VE",
+    "Cuartos",
+    2500
+   ],
+   [
+    "<:logocypherhood:1258928534743683176>",
+    "Cuartos",
+    1250
+   ],
+   [
+    "@j.nibbana 🇪🇸",
+    "Cuartos",
+    1250
+   ],
+   [
+    "BNA",
+    "Octavos",
+    1250
+   ],
+   [
+    "DarnBless",
+    "Octavos",
+    1250
+   ],
+   [
+    "Tam",
+    "Octavos",
+    1250
+   ],
+   [
+    "blackstar27",
+    "Octavos",
+    1250
+   ],
+   [
+    "compare🇵🇪",
+    "Octavos",
+    1250
+   ]
+  ],
+  "ver": {
+   "min": 117,
+   "v": 1
+  }
  }
 }
