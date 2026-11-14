@@ -1,5 +1,5 @@
 {
- "cuando": "2026-11-14T22:25:19+00:00",
+ "cuando": "2026-11-14T22:55:37+00:00",
  "anuncios": [
   {
    "nombre": "¡SE LLEGÓ LA GRAN NOCHE!",
@@ -4983,32 +4983,6 @@
    "inscripciones_cuando": "2026-11-14T20:44:54"
   },
   {
-   "nombre": "GRISELDA RECORDS VOL. 6",
-   "servidor": "DDF",
-   "canal": "『📢』Eventos",
-   "msg_id": "1564398230580756483",
-   "cuando": "2026-10-26T22:00:03",
-   "canal_id": "1470097121284980736",
-   "guild_id": "1469009547971526659",
-   "organizador": "Simon Henriksson",
-   "orgs": [],
-   "autor_h": "62528949becb0707",
-   "cupos_texto": "8",
-   "inscriptos": null,
-   "cupo_total": null,
-   "rango": "",
-   "modalidad": "1VS1",
-   "horario": "cuando acaben inscripciones  (en 10 minutos después de terminarla)",
-   "fecha": "",
-   "premios": "",
-   "staff": {},
-   "autor": "Simon Henriksson",
-   "staff_cuentas": {},
-   "categoria_id": "1469944166137073857",
-   "inscripciones": "cerradas",
-   "inscripciones_cuando": "2026-11-14T20:44:54"
-  },
-  {
    "nombre": "GALACTICOS DEL FREESTYLE VOL.16",
    "servidor": "DDF",
    "canal": "╰┈➤-PLANTILLAS-PARA-COMPETENCIA",
@@ -7095,6 +7069,15 @@
   }
  ],
  "inscripciones": [
+  {
+   "servidor": "CH",
+   "canal": "📜—inscripciones",
+   "texto": "Kaizzz🇦🇷",
+   "quien": "renzoschmunk76",
+   "discord_id": "432983360932020224",
+   "msg_id": "1571296562565619764",
+   "cuando": "2026-11-14T22:51:33"
+  },
   {
    "servidor": "URBF",
    "canal": "‣《🗞️》Inscripciones",
@@ -43085,15 +43068,6 @@
    "discord_id": "1385452830684614697",
    "msg_id": "1559316545425899555",
    "cuando": "2026-10-12T21:27:15"
-  },
-  {
-   "servidor": "DDS",
-   "canal": "📜〕INSCRIPCIONES",
-   "texto": "Infected🇨🇴🇩🇴",
-   "quien": "mxrio_xtz",
-   "discord_id": "1174409397397631030",
-   "msg_id": "1559314151287816253",
-   "cuando": "2026-10-12T21:17:44"
   }
  ]
 }

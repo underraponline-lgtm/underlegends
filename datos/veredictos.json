@@ -7514,8 +7514,8 @@
    "g": "1469009547971526659",
    "canal": "1498009509036163173",
    "pub": 1794690082348,
-   "ed": 1794694916190,
-   "texto": "`[ OCTAVOS ]`\n⌞WALKER🇨🇴⌝ 🆚 ⌞WACKLUSCO☪⌝\n⌞WALKER 🇨🇴⌝ 🆚 ⌞MOLUSCO🇦🇷⌝\n⌞BLACK DEMON 🇪🇨⌝ 🆚 ⌞DREXX🇵🇪⌝\n⌞ECLIPSE 🇨🇱⌝ 🆚 ⌞MARTÍNEZ🇺🇾⌝\n⌞NEXUS 🇵🇪⌝ 🆚 ⌞DAN🇨🇴⌝\n⌞LSD 🇵🇪⌝ 🆚 ⌞INKU🇦🇷⌝\n⌞SILENCE 🇵🇪⌝ 🆚 ⌞KRISH🇪🇸⌝\n⌞WALKER 🇨🇴⌝ 🆚 ⌞B. DEMON🇪🇨⌝\n`[ CUARTOS ]`\n⌞WALKER 🇨🇴⌝ 🆚 ⌞B.DEMON🇪🇨⌝\n⌞NEXUS 🇵🇪⌝ 🆚 ⌞ECLIPSE 🇨🇱⌝\n⌞BTRECE 🇺🇾⌝ 🆚 ⌞LSD🇵🇪⌝\n⌞MAKMAH 🇻🇪⌝ 🆚 ⌞SILENCE 🇵🇪⌝",
+   "ed": 1794696534496,
+   "texto": "`[ OCTAVOS ]`\n⌞WALKER🇨🇴⌝ 🆚 ⌞WACKLUSCO☪⌝\n⌞WALKER 🇨🇴⌝ 🆚 ⌞MOLUSCO🇦🇷⌝\n⌞BLACK DEMON 🇪🇨⌝ 🆚 ⌞DREXX🇵🇪⌝\n⌞ECLIPSE 🇨🇱⌝ 🆚 ⌞MARTÍNEZ🇺🇾⌝\n⌞NEXUS 🇵🇪⌝ 🆚 ⌞DAN🇨🇴⌝\n⌞LSD 🇵🇪⌝ 🆚 ⌞INKU🇦🇷⌝\n⌞SILENCE 🇵🇪⌝ 🆚 ⌞KRISH🇪🇸⌝\n⌞WALKER 🇨🇴⌝ 🆚 ⌞B. DEMON🇪🇨⌝\n`[ CUARTOS ]`\n⌞WALKER 🇨🇴⌝ 🆚 ⌞B.DEMON🇪🇨⌝\n⌞NEXUS 🇵🇪⌝ 🆚 ⌞ECLIPSE 🇨🇱⌝\n⌞BTRECE 🇺🇾⌝ 🆚 ⌞LSD🇵🇪⌝\n⌞MAKMAH 🇻🇪⌝ 🆚 ⌞SILENCE 🇵🇪⌝\n⌞WaLkEr 🇨🇴⌝ 🆚 ⌞NeXuS🇵🇪⌝",
    "batallas": [
     [
      "OCTAVOS",
@@ -7635,6 +7635,16 @@
      [
       "MAKMAH 🇻🇪",
       "SILENCE 🇵🇪"
+     ],
+     null,
+     "última ronda y no dice campeón",
+     []
+    ],
+    [
+     "CUARTOS",
+     [
+      "WaLkEr 🇨🇴",
+      "NeXuS🇵🇪"
      ],
      null,
      "última ronda y no dice campeón",

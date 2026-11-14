@@ -79,6 +79,7 @@
    "vencido": true
   },
   "<:logocypherhood:1258928534743683176>": {
+   "avisado": "2026-11-14",
    "chat": "2026-11-14",
    "con": null,
    "cumplido": "",
@@ -91,11 +92,12 @@
    "vencido": false
   },
   "@j.nibbana": {
+   "avisado": "2026-11-14",
    "chat": "2026-11-14",
    "con": null,
    "cumplido": "",
    "debut": "2026-11-14T20:22:29+00:00",
-   "did": "",
+   "did": "599711882823204883",
    "evento": "CHOP COMPE CEO V.2",
    "n": 636,
    "sv": "CH",
@@ -718,6 +720,7 @@
    "vencido": false
   },
   "Doble J": {
+   "avisado": "2026-11-14",
    "chat": "2026-11-14",
    "con": null,
    "cumplido": "",
@@ -752,6 +755,7 @@
    "vencido": true
   },
   "Dyz": {
+   "avisado": "2026-11-14",
    "chat": "2026-11-14",
    "con": null,
    "cumplido": "",
@@ -2574,6 +2578,7 @@
    "vencido": true
   },
   "TMAX": {
+   "avisado": "2026-11-14",
    "chat": "2026-11-14",
    "con": null,
    "cumplido": "",
@@ -2976,11 +2981,12 @@
    "vencido": false
   },
   "blackstar27": {
+   "avisado": "2026-11-14",
    "chat": "2026-11-14",
    "con": null,
    "cumplido": "",
    "debut": "2026-11-14T20:22:29+00:00",
-   "did": "",
+   "did": "697165256811610132",
    "evento": "CHOP COMPE CEO V.2",
    "n": 636,
    "sv": "CH",
@@ -2999,11 +3005,12 @@
    "vencido": true
   },
   "compare": {
+   "avisado": "2026-11-14",
    "chat": "2026-11-14",
    "con": null,
    "cumplido": "",
    "debut": "2026-11-14T20:22:29+00:00",
-   "did": "",
+   "did": "816486976949714955",
    "evento": "CHOP COMPE CEO V.2",
    "n": 636,
    "sv": "CH",

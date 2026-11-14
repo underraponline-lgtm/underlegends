@@ -1,6 +1,6 @@
 {
  "_leeme": "Las ligas de los servidores: cada batalla y su resultado, y la tabla que sale de eso. Lo arma bot/ligas.py en cada corrida; las reglas viven ahí. Sin los mensajes: el repo es público. `batallas`: [id del mensaje, instante, jornada, a, b, ganador (vacío: pendiente), directa|replica, extras]. Las batallas con resultado cuentan como duelos (Ranking Duelos y Win%; el Score no). `flyer`: el último afiche de su canal de anuncios, re-alojado en R2 (`url`); `prox`: la próxima fecha que anunció (`d` el día, `t` el instante si lo dijo). Desde el 17/10/2026: `ptb` {id de la batalla: [PTB de a, de b]}, `flyers` (la galería, en R2), `staff` [[discord_id, nombre, mensajes en anuncios, en veredictos, último]] y `nov` (lo nuevo de las últimas horas, para «Seguir la liga»). Desde el 11/11/2026: `temps` [{t, c, n, msg, p, ult, desde}] (cada campeón que anunció su servidor: cierra esa temporada), `tn` (el número de la temporada que juega, si lo dice), `cerrada` {t} (sus canales ya no están) y, arriba, `nuevas` (las ligas que el bot encontró solo: `fam` vacío hasta que un lector entienda sus veredictos).",
- "t": "2026-11-14T22:34:52Z",
+ "t": "2026-11-14T22:59:34Z",
  "ligas": {
   "fmh-albiceleste": {
    "n": "FMH Albiceleste",
@@ -7981,7 +7981,7 @@
   "fds-peru": {
    "n": "FDS Perú",
    "sv": "FDS",
-   "jornada": 6,
+   "jornada": 7,
    "batallas": [
     [
      "1540512466184831117",
@@ -8252,9 +8252,65 @@
      "",
      "",
      ""
+    ],
+    [
+     "1571296524355375246",
+     "2026-11-14T22:51:24Z",
+     7,
+     "MC AREPA",
+     "SOL",
+     "SOL",
+     "directa",
+     ""
+    ],
+    [
+     "1571296752865386568",
+     "2026-11-14T22:52:19Z",
+     7,
+     "GIANSITO",
+     "SIN LIMITES",
+     "",
+     "",
+     ""
+    ],
+    [
+     "1571297041634562061",
+     "2026-11-14T22:53:28Z",
+     7,
+     "TELMEX",
+     "ARTEZZY",
+     "",
+     "",
+     ""
+    ],
+    [
+     "1571297204365303905",
+     "2026-11-14T22:54:06Z",
+     7,
+     "NXUZ",
+     "CINEXFILO",
+     "",
+     "",
+     ""
+    ],
+    [
+     "1571297288792444979",
+     "2026-11-14T22:54:26Z",
+     7,
+     "PEPE MUJICA",
+     "MATO",
+     "",
+     "",
+     ""
     ]
    ],
    "tabla": [
+    [
+     "SOL",
+     4,
+     3,
+     10
+    ],
     [
      "Artezzy",
      5,
@@ -8268,14 +8324,8 @@
      9
     ],
     [
-     "SOL",
-     3,
-     2,
-     7
-    ],
-    [
      "MC AREPA",
-     4,
+     5,
      2,
      7
     ],
@@ -8364,8 +8414,8 @@
      "1435531540472795240",
      "Artezzy",
      13,
-     34,
-     "2026-11-14T19:16:23Z"
+     40,
+     "2026-11-14T22:54:33Z"
     ],
     [
      "702969188121313352",
@@ -8420,6 +8470,14 @@
      "que": "res",
      "ids": [
       "1571241701480333504"
+     ]
+    },
+    {
+     "id": "r:fds-peru:1571296524355375246",
+     "t": "2026-11-14T23:00:10Z",
+     "que": "res",
+     "ids": [
+      "1571296524355375246"
      ]
     }
    ]
@@ -9892,6 +9950,13 @@
      "2026-11-12T22:32:02Z"
     ],
     [
+     "483070865081237505",
+     "LAST",
+     0,
+     2,
+     "2026-11-04T02:15:34Z"
+    ],
+    [
      "1385452830684614697",
      "Lrs la sustancia 💫",
      0,
@@ -9906,29 +9971,12 @@
      "2026-10-24T03:09:09Z"
     ],
     [
-     "483070865081237505",
-     "Trueno",
-     0,
-     2,
-     "2026-11-04T02:15:34Z"
-    ],
-    [
      "645308964141137952",
      "Soul B",
      0,
      1,
      "2026-11-02T04:33:51Z"
     ]
-   ],
-   "nov": [
-    {
-     "id": "r:lkr-fms-plaza:1570566780861157549",
-     "t": "2026-11-12T22:59:57Z",
-     "que": "res",
-     "ids": [
-      "1570566780861157549"
-     ]
-    }
    ]
   },
   "lkr-fms-tricolor": {
