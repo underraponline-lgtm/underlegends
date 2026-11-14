@@ -144,7 +144,7 @@
    "competitivo": "1b92caf42005:624f5e322311",
    "pais": "7443705f6da2:733ce66bf5fa",
    "servidor": "f1d713d3ae5a:2415c901692f:655d26",
-   "temporada": "6d255688b502:7a510334494e"
+   "temporada": "dbeb7be3cbd9:7a510334494e"
   },
   "Ashen": {
    "servidor": "4af907e5d349:2415c901692f:055f77"
@@ -422,7 +422,7 @@
    "servidor": "a9e63879d519:2415c901692f:055f77"
   },
   "Dios": {
-   "competitivo": "2a65dc9a56ff:624f5e322311",
+   "competitivo": "f50985c86465:624f5e322311",
    "pais": "82c8764cb507:733ce66bf5fa",
    "servidor": "1fff481ff12e:2415c901692f:514274",
    "temporada": "b6b565172983:7a510334494e"
@@ -1505,7 +1505,7 @@
    "servidor": "7c09c3205f29:2415c901692f:67201a"
   },
   "Raizer": {
-   "competitivo": "5a7d476a3165:624f5e322311",
+   "competitivo": "2db3c7265c39:624f5e322311",
    "pais": "1adc6236c20e:733ce66bf5fa",
    "servidor": "31104863ca22:2415c901692f:e7ef3d",
    "temporada": "b88b4b2b397a:7a510334494e"
@@ -1960,8 +1960,8 @@
    "servidor": "d83342c293c7:2415c901692f:055f77"
   },
   "araya": {
-   "competitivo": "0d94c2dab4f4:624f5e322311",
-   "pais": "3944646ef0e2:733ce66bf5fa",
+   "competitivo": "aa11d8975954:624f5e322311",
+   "pais": "ecd27697397a:733ce66bf5fa",
    "servidor": "ad93786c59ff:2415c901692f:980594",
    "temporada": "2527cf445404:7a510334494e"
   },
@@ -2109,5 +2109,5 @@
    "servidor": "7f8885a35a6d:2415c901692f:93a344"
   }
  },
- "cuando": "2026-11-14T02:17:06+00:00"
+ "cuando": "2026-11-14T02:24:59+00:00"
 }
