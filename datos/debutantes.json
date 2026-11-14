@@ -1,12 +1,12 @@
 {
  "_leeme": "El reto del debut (bot/debutantes.py): quién debutó desde el 12/10/2026 a las 6 PM ET, cuándo vence, si lo cumplió y qué ya se avisó. Dlx, 12/10/2026.",
  "chats": {
-  "ACAD": "2026-11-13",
+  "ACAD": "2026-11-14",
   "CH": "2026-11-06",
   "DDF": "2026-11-11",
   "DDS": "2026-11-09",
   "FDS": "2026-11-13",
-  "FFA": "2026-11-13",
+  "FFA": "2026-11-14",
   "FRZ": "2026-11-12",
   "FVS": "2026-10-15",
   "SR": "2026-11-13",
@@ -264,6 +264,7 @@
   },
   "Antis antis": {
    "avisado": "2026-11-13",
+   "chat": "2026-11-14",
    "con": null,
    "cumplido": "",
    "debut": "2026-11-13T22:26:41+00:00",
@@ -1267,6 +1268,7 @@
   },
   "KARDIOLOGO": {
    "avisado": "2026-11-13",
+   "chat": "2026-11-14",
    "con": null,
    "cumplido": "",
    "debut": "2026-11-13T21:44:06+00:00",
@@ -2088,6 +2090,7 @@
   },
   "Park ji sunk": {
    "avisado": "2026-11-13",
+   "chat": "2026-11-14",
    "con": null,
    "cumplido": "",
    "debut": "2026-11-13T17:33:49+00:00",
@@ -2392,6 +2395,7 @@
   },
   "Snow-7-ZIgnos": {
    "avisado": "2026-11-13",
+   "chat": "2026-11-14",
    "con": null,
    "cumplido": "",
    "debut": "2026-11-13T22:26:41+00:00",
@@ -2693,6 +2697,7 @@
   },
   "Xxxx": {
    "avisado": "2026-11-13",
+   "chat": "2026-11-14",
    "con": null,
    "cumplido": "",
    "debut": "2026-11-13T22:26:41+00:00",

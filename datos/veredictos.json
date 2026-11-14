@@ -2060,6 +2060,28 @@
    "b": "SENTICIDE",
    "ganador": "DIOS",
    "votos": "2–0"
+  },
+  "1571015831608103005": {
+   "id": "1571015831608103005",
+   "sv": "[FFA] Freestyle For All 👾",
+   "g": "1468472442925092958",
+   "canal": "1487206164864438513",
+   "pub": 1794629762318,
+   "a": "MCNADIE",
+   "b": "GOCHO",
+   "ganador": "GOCHO",
+   "votos": "1–0"
+  },
+  "1571016598675001465": {
+   "id": "1571016598675001465",
+   "sv": "[FFA] Freestyle For All 👾",
+   "g": "1468472442925092958",
+   "canal": "1487206164864438513",
+   "pub": 1794629945201,
+   "a": "PARK JI SUNG",
+   "b": "ZA",
+   "ganador": "PARK JI SUNG",
+   "votos": "1–0"
   }
  },
  "llaves": {
@@ -6950,8 +6972,8 @@
    "g": "1468472442925092958",
    "canal": "1487206164864438513",
    "pub": 1794627196226,
-   "ed": 1794628342530,
-   "texto": "`[ OCTAVOS ]`\n⌞GOCHO⌝ 🆚 ⌞DXG⌝ 🆚 ⌞ABRAHAM⌝ 🆚 ⌞ROMEO⌝\n⌞ARAYA⌝ 🆚 ⌞TOMY HILFIGHER⌝ 🆚 ⌞AKUSERU⌝ 🆚 ⌞MC NADIE⌝ 🆚 ⌞CHXZRY⌝ 🆚 ⌞JULDA⌝\n⌞MOSQUITRAP +BOTRAX +CALIZ⌝ 🆚 ⌞PARK JI SUNG⌝ 🆚 ⌞MINIBOY⌝",
+   "ed": 1794630133974,
+   "texto": "`[ OCTAVOS ]`\n⌞GOCHO⌝ 🆚 ⌞DXG⌝ 🆚 ⌞ABRAHAM⌝ 🆚 ⌞ROMEO⌝\n⌞ARAYA⌝ 🆚 ⌞TOMY HILFIGHER⌝ 🆚 ⌞AKUSERU⌝ 🆚 ⌞MC NADIE⌝ 🆚 ⌞CHXZRY⌝ 🆚 ⌞JULDA⌝\n⌞MOSQUITRAP +BOTRAX +CALIZ⌝ 🆚 ⌞PARK JI SUNG⌝ 🆚 ⌞MINIBOY⌝\n⌞EZZE⌝ 🆚 ⌞0223+ERIAN⌝ 🆚 ⌞JUPITER⌝ 🆚 ⌞TENOR+ZA⌝ 🆚 ⌞ARIAXER⌝ 🆚 ⌞SHENLONG⌝\n`[ CUARTOS ]`\n⌞MCNADIE⌝ 🆚 ⌞GOCHO⌝\n⌞PARK JI SUNG⌝ 🆚 ⌞ZA⌝",
    "batallas": [
     [
      "OCTAVOS",
@@ -6961,8 +6983,8 @@
       "ABRAHAM",
       "ROMEO"
      ],
-     null,
-     "última ronda y no dice campeón",
+     "GOCHO",
+     "ronda siguiente",
      []
     ],
     [
@@ -6975,8 +6997,8 @@
       "CHXZRY",
       "JULDA"
      ],
-     null,
-     "última ronda y no dice campeón",
+     "MC NADIE",
+     "ronda siguiente",
      []
     ],
     [
@@ -6986,8 +7008,42 @@
       "PARK JI SUNG",
       "MINIBOY"
      ],
-     null,
-     "última ronda y no dice campeón",
+     "PARK JI SUNG",
+     "ronda siguiente",
+     []
+    ],
+    [
+     "OCTAVOS",
+     [
+      "EZZE",
+      "0223+ERIAN",
+      "JUPITER",
+      "TENOR+ZA",
+      "ARIAXER",
+      "SHENLONG"
+     ],
+     "EZZE",
+     "veredicto",
+     []
+    ],
+    [
+     "CUARTOS",
+     [
+      "MCNADIE",
+      "GOCHO"
+     ],
+     "GOCHO",
+     "veredicto",
+     []
+    ],
+    [
+     "CUARTOS",
+     [
+      "PARK JI SUNG",
+      "ZA"
+     ],
+     "PARK JI SUNG",
+     "veredicto",
      []
     ]
    ]
