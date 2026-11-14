@@ -1381,7 +1381,7 @@
   },
   "ONZASS": {},
   "Oasis": {
-   "competitivo": "1fa30053b1ff:e1a1212cc40e",
+   "competitivo": "39309d8134b2:e1a1212cc40e",
    "pais": "629d65a85e86:89db0e1cb730",
    "servidor": "8cb94520fa71:67e514e7f0d5:40a77e",
    "temporada": "86d4eaf779a7:08ecf54fc940"
@@ -1672,8 +1672,8 @@
   },
   "Slasher": {},
   "Snow": {
-   "competitivo": "8e7fd888c31b:e1a1212cc40e",
-   "pais": "d14fc35fff28:89db0e1cb730",
+   "competitivo": "d26a602f6d5c:e1a1212cc40e",
+   "pais": "3536cdd4b198:89db0e1cb730",
    "servidor": "396cd392ea25:67e514e7f0d5:9b3a50",
    "temporada": "7a1928402526:08ecf54fc940"
   },
@@ -2119,5 +2119,5 @@
    "servidor": "7f8885a35a6d:67e514e7f0d5:93a344"
   }
  },
- "cuando": "2026-11-14T21:21:14+00:00"
+ "cuando": "2026-11-14T21:31:49+00:00"
 }
