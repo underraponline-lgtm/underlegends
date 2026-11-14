@@ -106,7 +106,7 @@
   "Alexi": {},
   "Alonso": {},
   "Am": {
-   "competitivo": "381d01d84185:e1a1212cc40e",
+   "competitivo": "90b7ca3b5268:e1a1212cc40e",
    "pais": "5f863980e578:89db0e1cb730",
    "servidor": "a92f08e52001:67e514e7f0d5:8551cb"
   },
@@ -1188,7 +1188,7 @@
    "servidor": "02128fc165e7:67e514e7f0d5:67201a"
   },
   "Medster": {
-   "competitivo": "cdbd061444f2:e1a1212cc40e",
+   "competitivo": "ab501eaf66f6:e1a1212cc40e",
    "pais": "447bdf4d437e:89db0e1cb730",
    "servidor": "28583b16978d:67e514e7f0d5:0e0e03"
   },
@@ -1838,6 +1838,9 @@
    "servidor": "706f58e46e78:67e514e7f0d5:51cb66",
    "temporada": "c1724b892502:08ecf54fc940"
   },
+  "Versekiz": {
+   "servidor": "679c18f5e7e5:67e514e7f0d5:980594"
+  },
   "Vilca": {
    "competitivo": "e21bcfb603b3:e1a1212cc40e",
    "pais": "df573b4f1abe:89db0e1cb730",
@@ -2119,5 +2122,5 @@
    "servidor": "7f8885a35a6d:67e514e7f0d5:93a344"
   }
  },
- "cuando": "2026-11-14T17:01:26+00:00"
+ "cuando": "2026-11-14T18:04:20+00:00"
 }
