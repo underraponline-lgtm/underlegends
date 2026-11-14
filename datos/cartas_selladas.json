@@ -79,7 +79,7 @@
    "temporada": "6a7f0b9be444:08ecf54fc940"
   },
   "Aktybo": {
-   "competitivo": "3e3b3effa5d6:624f5e322311",
+   "competitivo": "9def9feef186:e1a1212cc40e",
    "pais": "e117d1fa0f8a:733ce66bf5fa",
    "servidor": "a1344261ef36:2415c901692f:aa8232"
   },
@@ -241,7 +241,7 @@
   },
   "CJ": {},
   "CULT": {
-   "competitivo": "e8c379a33202:624f5e322311",
+   "competitivo": "8991748f1d55:e1a1212cc40e",
    "pais": "65761f05cbd2:733ce66bf5fa",
    "servidor": "471ec3225589:2415c901692f:e4fbfa"
   },
@@ -1379,10 +1379,10 @@
   },
   "ONZASS": {},
   "Oasis": {
-   "competitivo": "7479cc868f28:e1a1212cc40e",
-   "pais": "e8db381df9f5:89db0e1cb730",
+   "competitivo": "02e746f0cfc5:e1a1212cc40e",
+   "pais": "7226a34d8fe4:89db0e1cb730",
    "servidor": "d48bd8780863:67e514e7f0d5:40a77e",
-   "temporada": "6542f7cda168:08ecf54fc940"
+   "temporada": "65c7a37ba781:08ecf54fc940"
   },
   "Olaf": {
    "servidor": "db75c1a01e35:2415c901692f:d3b124"
@@ -1574,7 +1574,7 @@
   "SGB": {},
   "SHULIOT": {},
   "SK8": {
-   "competitivo": "798f2a676024:624f5e322311",
+   "competitivo": "998bb9489d1b:e1a1212cc40e",
    "pais": "e1808261a060:733ce66bf5fa",
    "servidor": "fe5cf764f19e:2415c901692f:afbca9"
   },
@@ -1945,7 +1945,7 @@
   },
   "Zignos": {
    "competitivo": "55ab15271cf9:e1a1212cc40e",
-   "pais": "6bc66aa3a520:89db0e1cb730",
+   "pais": "9db207c45bd2:89db0e1cb730",
    "servidor": "0760a26c5ab9:2415c901692f:51cb66",
    "temporada": "e3733d11e2bc:7a510334494e"
   },
@@ -2047,7 +2047,7 @@
    "servidor": "88d5f50de984:2415c901692f:86e978"
   },
   "nueve7": {
-   "competitivo": "7ccd438b1354:e1a1212cc40e",
+   "competitivo": "5cf4668f217d:e1a1212cc40e",
    "pais": "c8ed4233c98e:733ce66bf5fa",
    "servidor": "b7113999366b:2415c901692f:943e25"
   },
@@ -2109,5 +2109,5 @@
    "servidor": "7f8885a35a6d:2415c901692f:93a344"
   }
  },
- "cuando": "2026-11-14T04:21:28+00:00"
+ "cuando": "2026-11-14T04:33:19+00:00"
 }
