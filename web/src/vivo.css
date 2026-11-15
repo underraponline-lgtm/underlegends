@@ -6515,7 +6515,7 @@ dialog.pn-pop.un-pop{--pc:#29B298;width:min(540px,calc(100vw - 32px));max-height
 .lgh-sc-premio svg{flex:none;color:#FFD24A}
 .lgh-sc-premio b{color:#FFD24A;font-weight:800}
 
-/* 💎 el sello Premium (5.xx): al lado del nombre, para que se vea quién tiene el Pase de rapero premium (sello.jsx). El
+/* 💎 el sello Premium (5.42): al lado del nombre, para que se vea quién tiene el Pase de rapero premium (sello.jsx). El
    rombo es un SVG con sus colores adentro; acá sólo cómo se para, el aro de la cara y el globo del perfil. Sin degradés ni
    blur; los colores son los del metal premium y oro de marcos.jsx. ⚠️ `sp-sello` y `sp-oro` ya existen en css/socio2.css:
    por eso todo esto va con `sp-prem` */

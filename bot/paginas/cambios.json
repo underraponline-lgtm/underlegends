@@ -11,6 +11,19 @@
  ],
  "cambios": [
     {
+        "version": "5.42",
+        "dia": "2026-11-15",
+        "cuando": "2026-11-15T02:43:00-05:00",
+        "titulo": "El Pase de rapero, rehecho, y el sello Premium",
+        "items": [
+            "El **Pase de rapero** se arma como el Inicio: arriba cuánta XP te falta y tu próximo premio, una barra **«Ir a»** para saltar entre Premios, Tareas, Premium y El Salón, y un **buscador de premios**.",
+            "Los niveles, en un **escenario**: el que sigue va al medio, grande, sobre una tarima. Puedes ver la fila gratis, la premium o las dos.",
+            "Los premios ahora son **pegatinas**, y algunas se mueven (el que sigue, los drops, las cajas y el brillo). Si activaste «Menos animaciones», se quedan quietas.",
+            "Las **Tareas** en tres columnas (Hoy, La semana y Temporada), con un botón **«Ir»** que te lleva a donde se hace cada una.",
+            "**El sello Premium**: quien tiene el Pase premium lleva un rombo junto a su nombre en su perfil, el Ranking, la búsqueda, los comentarios y Publicaciones. Tócalo para ver qué es."
+        ]
+    },
+    {
         "version": "5.41",
         "dia": "2026-11-15",
         "cuando": "2026-11-15T02:38:00-05:00",
