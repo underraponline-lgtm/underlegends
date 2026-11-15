@@ -122,6 +122,27 @@ version 1 (`VERSION_VIEJA`): `bot/que_cambio.py` (`migrar()`) traduce cada
 sello cuyo codigo era la huella VIEJA del codigo de HOY —o sea, nada cambio
 segun las reglas de antes— a la nueva. Si ademas cambio algo de verdad, la
 vieja no coincide y se redibuja como siempre.
+
+LA VERSION 3: DE LOS ICONOS, SOLO LOS QUE UNA CARTA DIBUJA (15/11/2026)
+-------------------------------------------------------------------------
+🔴 **Sumar FMS Ceuta redibujo 1.107 cartas de 433 personas.** El ciclo de la
+1:52 AM escribio su icono en `datos/iconos_sv.json`, el archivo entra entero
+a `DIBUJOS`, asi que cambiaron las cuatro huellas y la madrugada redibujo el
+pool entero — y ningun pixel cambio: las cartas leen ese archivo solo por
+`comun/escudos.py`, y solo los servidores de `CON_ICONO`. Ceuta no esta. Dlx:
+*«Yes, fix it»*.
+
+Ahora del archivo se hashean solo esos (`_iconos_que_dibujan()`). Un servidor
+nuevo, o el icono nuevo de uno que va con su silueta (FFA, ACAD, CH…), no
+redibuja nada; el de DRA o SR, sí, como siempre.
+
+⚠️ **`CON_ICONO` SE LEE DE `escudos.py`, NO SE COPIA ACA** —una lista copiada
+es el bug de las crews—. Y si no se puede leer, se hashea el archivo entero:
+se redibuja de mas antes que de menos.
+
+⚠️ **Y `escudos.py` NO SE TOCO PARA ESTO**: vive en la huella de las cuatro, y
+cambiarlo la habria movido por otro lado. La version 2 queda como
+`VERSION_VIEJA`, asi `migrar()` pasa los sellos sin redibujar.
 """
 import ast
 import hashlib
@@ -197,10 +218,44 @@ def dibujos():
     return sorted(out)
 
 
-def _bytes_dibujo(rel):
-    """El contenido de un dibujo, sin lo que no cambia lo que se ve."""
+ICONOS = 'datos/iconos_sv.json'
+_con_icono_memo = []
+
+
+def _con_icono():
+    """Los servidores cuyo ícono de hoy lee alguna carta (`comun/escudos.CON_ICONO`), o None si no se pudo saber."""
+    if not _con_icono_memo:
+        con = None
+        try:
+            if BASE not in sys.path:
+                sys.path.insert(0, BASE)
+            from comun import escudos as _E
+            con = set(_E.CON_ICONO)
+        except Exception:                                # noqa: BLE001
+            pass
+        _con_icono_memo.append(con)
+    return _con_icono_memo[0]
+
+
+def _iconos_que_dibujan(iconos, con):
+    """Lo que la huella mira de `iconos_sv.json` (versión 3): sólo los íconos de `con`, ordenados. Ver arriba."""
+    return json.dumps({sv: v for sv, v in (iconos or {}).items() if sv in con},
+                      sort_keys=True, ensure_ascii=False).encode('utf-8')
+
+
+def _bytes_dibujo(rel, version=None):
+    """El contenido de un dibujo, sin lo que no cambia lo que se ve. `version`: la de la huella (None = `VERSION`)."""
     with open(os.path.join(BASE, rel), 'rb') as f:
         d = f.read()
+    if rel == ICONOS and (VERSION if version is None else version) >= 3:
+        con = _con_icono()
+        try:
+            ic = json.loads(d.decode('utf-8')).get('iconos')
+        except (ValueError, AttributeError):
+            ic = None
+        # sin saber cuáles dibuja una carta, el archivo entero: de más antes que de menos
+        if con is not None and isinstance(ic, dict):
+            return _iconos_que_dibujan(ic, con)
     if rel.endswith('.css'):
         return normalizar(rel, d.decode('utf-8', 'replace')).encode('utf-8')
     if rel.endswith('.json'):
@@ -270,9 +325,9 @@ def _sin_docstrings(arbol):
     return arbol
 
 
-#: la normalizacion de hoy, y la de antes (para migrar los sellos sin redibujar: ver arriba)
-VERSION = 2
-VERSION_VIEJA = 1
+#: la normalizacion de hoy, y la de antes (para migrar los sellos sin redibujar: ver arriba). 3 = sólo los íconos que una carta lee
+VERSION = 3
+VERSION_VIEJA = 2
 
 
 def _es_consola(st):
@@ -385,7 +440,7 @@ def de(carta, version=VERSION):
     # y los dibujos: ver `DIBUJOS`
     for rel in dibujos():
         try:
-            d = _bytes_dibujo(rel)
+            d = _bytes_dibujo(rel, version)
         except OSError:
             continue
         h.update(rel.encode('utf-8'))
@@ -457,6 +512,21 @@ def _self_check():
         mal += not ok
         print('   %s %-24s %s' % ('✅' if ok else '🔴', que,
                                   'no cambia' if igual else 'CAMBIA'))
+
+    # 🖼 LA VERSIÓN 3: un ícono que ninguna carta lee no mueve la huella (15/11/2026, FMS Ceuta: ver arriba)
+    print('\n  los íconos de %s' % ICONOS)
+    con = _con_icono()
+    if not con:
+        print('   🔴 no pude leer CON_ICONO de comun/escudos.py: la huella mira el archivo entero')
+        mal += 1
+    else:
+        uno = sorted(con)[0]
+        base = {uno: '1/a'}
+        for que, otro, igual in (('un servidor que ninguna carta lee', dict(base, ZZZ='9/z'), True),
+                                 ('el ícono de %s' % uno, {uno: '1/b'}, False)):
+            ok = (_iconos_que_dibujan(base, con) == _iconos_que_dibujan(otro, con)) == igual
+            mal += not ok
+            print('   %s %-34s %s' % ('✅' if ok else '🔴', que, 'no cambia' if igual else 'CAMBIA'))
 
     # ⚠️ QUE NO DE LO MISMO PARA LAS CUATRO. Es el modo de fallar de
     # `huellas()` que ya costo caro: un hash uniforme no se distingue de
