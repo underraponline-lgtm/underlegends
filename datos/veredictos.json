@@ -224,61 +224,6 @@
   }
  },
  "batallas": {
-  "1569092676802846943": {
-   "id": "1569092676802846943",
-   "sv": "✮ 𝑼𝒓𝒃𝒂𝒏 𝑭𝒓𝒆𝒆𝒔𝒕𝒚𝒍𝒆 ✮ | A New Era",
-   "g": "1467763447117778989",
-   "canal": "1540224373309444257",
-   "pub": 1794171246482,
-   "a": "MAJIZTRAL 🇨🇴",
-   "b": "AREZ 🇪🇨",
-   "ganador": "MAJIZTRAL 🇨🇴",
-   "votos": "1–0"
-  },
-  "1569094116665466911": {
-   "id": "1569094116665466911",
-   "sv": "#FDS ╏FREESTYLE DISCORD SERIES",
-   "g": "1489848581203689535",
-   "canal": "1536574435761332334",
-   "pub": 1794171589772,
-   "a": "LUCK",
-   "b": "DIOS",
-   "ganador": "DIOS",
-   "votos": "1–0"
-  },
-  "1569095557442568235": {
-   "id": "1569095557442568235",
-   "sv": "✮ 𝑼𝒓𝒃𝒂𝒏 𝑭𝒓𝒆𝒆𝒔𝒕𝒚𝒍𝒆 ✮ | A New Era",
-   "g": "1467763447117778989",
-   "canal": "1540224373309444257",
-   "pub": 1794171933280,
-   "a": "FORZA🇻🇪",
-   "b": "SNE🇪🇨",
-   "ganador": "FORZA🇻🇪",
-   "votos": "1–0"
-  },
-  "1569096769231523881": {
-   "id": "1569096769231523881",
-   "sv": "#FDS ╏FREESTYLE DISCORD SERIES",
-   "g": "1489848581203689535",
-   "canal": "1536574435761332334",
-   "pub": 1794172222193,
-   "a": "MITO",
-   "b": "SIN LÍMITES",
-   "ganador": "MITO",
-   "votos": "1–0"
-  },
-  "1569099477728497697": {
-   "id": "1569099477728497697",
-   "sv": "✮ 𝑼𝒓𝒃𝒂𝒏 𝑭𝒓𝒆𝒆𝒔𝒕𝒚𝒍𝒆 ✮ | A New Era",
-   "g": "1467763447117778989",
-   "canal": "1540224373309444257",
-   "pub": 1794172867949,
-   "a": "MAKMA 🇻🇪",
-   "b": "LIZZENIN 🇨🇴",
-   "ganador": "MAKMA 🇻🇪",
-   "votos": "1–0"
-  },
   "1569100521879633972": {
    "id": "1569100521879633972",
    "sv": "#FDS ╏FREESTYLE DISCORD SERIES",
@@ -2643,160 +2588,20 @@
    "b": "MAKMAH🇻🇪",
    "ganador": "CAMPOY🇪🇸",
    "votos": "2–0"
+  },
+  "1571633472554926080": {
+   "id": "1571633472554926080",
+   "sv": "✮ 𝑼𝒓𝒃𝒂𝒏 𝑭𝒓𝒆𝒆𝒔𝒕𝒚𝒍𝒆 ✮ | A New Era",
+   "g": "1467763447117778989",
+   "canal": "1540224373309444257",
+   "pub": 1794777019395,
+   "a": "CAMPOY🇪🇸",
+   "b": "TROT🇪🇸",
+   "ganador": "CAMPOY🇪🇸",
+   "votos": "1–0"
   }
  },
  "llaves": {
-  "1564021566189346929": {
-   "id": "1564021566189346929",
-   "sv": "#LaCrew ||🎤ACADEMIA DE RAP 🎤",
-   "g": "765045834647339038",
-   "canal": "1309238412976590908",
-   "pub": 1792962199495,
-   "ed": 1792969299520,
-   "texto": "`[ OCTAVOS ]`\n⌞SEKKA 🇦🇷⌝ 🆚 ⌞KUDE 🇦🇷⌝\n⌞FLAMA 🇦🇷⌝ 🆚 ⌞HOTARU 🇦🇷🏳️‍⚧⌝\n⌞BNA 🇦🇷⌝ 🆚 ⌞GUESS 🇦🇷⌝\n⌞GEOKA 🇦🇷⌝ 🆚 ⌞ARIAXER 🇦🇷⌝\n⌞WACHIN 🇦🇷⌝ 🆚 ⌞MCO 🇦🇷⌝\n⌞EZEE 🇦🇷⌝ 🆚 ⌞DELUXE 🇦🇷⌝\n⌞DEV 🇦🇷⌝ 🆚 ⌞KUNI 🇦🇷⌝\n`[ CUARTOS ]`\n⌞SEKKA 🇦🇷⌝ 🆚 ⌞HOTARU 🇦🇷🏳️‍⚧⌝\n⌞DELUXE 🇦🇷⌝ 🆚 ⌞GEOKA 🇦🇷⌝\n⌞KUNI 🇦🇷⌝ 🆚 ⌞GUESS 🇦🇷⌝\n⌞BYSHOP 🇦🇷⌝ 🆚 ⌞MCO 🇦🇷⌝\n`[ SEMIFINALES ]`\n⌞DELUXE 🇦🇷⌝ 🆚 ⌞MCO 🇦🇷⌝\n⌞SEKKA 🇦🇷⌝ 🆚 ⌞GUESS 🇦🇷⌝\n`[ FINAL ]`\n⌞SEKKA 🇦🇷⌝ 🆚 ⌞DELUXE 🇦🇷⌝",
-   "batallas": [
-    [
-     "OCTAVOS",
-     [
-      "SEKKA 🇦🇷",
-      "KUDE 🇦🇷"
-     ],
-     "SEKKA 🇦🇷",
-     "veredicto",
-     []
-    ],
-    [
-     "OCTAVOS",
-     [
-      "FLAMA 🇦🇷",
-      "HOTARU 🇦🇷🏳️‍⚧"
-     ],
-     "HOTARU 🇦🇷🏳️‍⚧",
-     "veredicto",
-     []
-    ],
-    [
-     "OCTAVOS",
-     [
-      "BNA 🇦🇷",
-      "GUESS 🇦🇷"
-     ],
-     "BNA 🇦🇷",
-     "veredicto",
-     []
-    ],
-    [
-     "OCTAVOS",
-     [
-      "GEOKA 🇦🇷",
-      "ARIAXER 🇦🇷"
-     ],
-     "GEOKA 🇦🇷",
-     "veredicto",
-     []
-    ],
-    [
-     "OCTAVOS",
-     [
-      "WACHIN 🇦🇷",
-      "MCO 🇦🇷"
-     ],
-     "MCO 🇦🇷",
-     "veredicto",
-     []
-    ],
-    [
-     "OCTAVOS",
-     [
-      "EZEE 🇦🇷",
-      "DELUXE 🇦🇷"
-     ],
-     "DELUXE 🇦🇷",
-     "veredicto",
-     []
-    ],
-    [
-     "OCTAVOS",
-     [
-      "DEV 🇦🇷",
-      "KUNI 🇦🇷"
-     ],
-     "KUNI 🇦🇷",
-     "veredicto",
-     []
-    ],
-    [
-     "CUARTOS",
-     [
-      "SEKKA 🇦🇷",
-      "HOTARU 🇦🇷🏳️‍⚧"
-     ],
-     "SEKKA 🇦🇷",
-     "veredicto",
-     []
-    ],
-    [
-     "CUARTOS",
-     [
-      "DELUXE 🇦🇷",
-      "GEOKA 🇦🇷"
-     ],
-     "DELUXE 🇦🇷",
-     "veredicto",
-     []
-    ],
-    [
-     "CUARTOS",
-     [
-      "KUNI 🇦🇷",
-      "GUESS 🇦🇷"
-     ],
-     "GUESS 🇦🇷",
-     "veredicto",
-     []
-    ],
-    [
-     "CUARTOS",
-     [
-      "BYSHOP 🇦🇷",
-      "MCO 🇦🇷"
-     ],
-     "MCO 🇦🇷",
-     "veredicto",
-     []
-    ],
-    [
-     "SEMIFINALES",
-     [
-      "DELUXE 🇦🇷",
-      "MCO 🇦🇷"
-     ],
-     "DELUXE 🇦🇷",
-     "veredicto",
-     []
-    ],
-    [
-     "SEMIFINALES",
-     [
-      "SEKKA 🇦🇷",
-      "GUESS 🇦🇷"
-     ],
-     "SEKKA 🇦🇷",
-     "ronda siguiente",
-     []
-    ],
-    [
-     "FINAL",
-     [
-      "SEKKA 🇦🇷",
-      "DELUXE 🇦🇷"
-     ],
-     "DELUXE 🇦🇷",
-     "veredicto",
-     []
-    ]
-   ]
-  },
   "1564124759363682448": {
    "id": "1564124759363682448",
    "sv": "[FFA] Freestyle For All 👾",

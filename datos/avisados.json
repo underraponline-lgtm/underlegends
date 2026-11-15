@@ -22389,24 +22389,9 @@
     "Hotaru Adeyemi 🏳️‍⚧️"
    ],
    [
-    "BNA",
     "Guess",
-    "BNA"
-   ],
-   [
-    "Geoka",
-    "Ariaxer",
-    "Geoka"
-   ],
-   [
-    "MCO",
-    "El Wachin",
-    "MCO"
-   ],
-   [
-    "Deluxe",
-    "Eze",
-    "Deluxe"
+    "BNA",
+    "Guess"
    ],
    [
     "Kuni",
@@ -22414,14 +22399,29 @@
     "Kuni"
    ],
    [
+    "Geoka",
+    "Ariaxer",
+    "Geoka"
+   ],
+   [
+    "Delux",
+    "Eze",
+    "Delux"
+   ],
+   [
+    "MCO",
+    "El Wachin",
+    "MCO"
+   ],
+   [
+    "Bishop",
+    "Benjixo",
+    "Bishop"
+   ],
+   [
     "Zekha",
     "Hotaru Adeyemi 🏳️‍⚧️",
     "Zekha"
-   ],
-   [
-    "Deluxe",
-    "Geoka",
-    "Deluxe"
    ],
    [
     "Guess",
@@ -22429,14 +22429,14 @@
     "Guess"
    ],
    [
+    "Delux",
+    "Geoka",
+    "Delux"
+   ],
+   [
     "MCO",
     "Bishop",
     "MCO"
-   ],
-   [
-    "Deluxe",
-    "MCO",
-    "Deluxe"
    ],
    [
     "Zekha",
@@ -22444,9 +22444,14 @@
     "Zekha"
    ],
    [
-    "Deluxe",
+    "Delux",
+    "MCO",
+    "Delux"
+   ],
+   [
+    "Delux",
     "Zekha",
-    "Deluxe"
+    "Delux"
    ]
   ],
   "ev_antes": {
@@ -22464,11 +22469,11 @@
    "Zekha": 4
   },
   "fecha": "25/10",
-  "firma": "372603e06c399e78",
+  "firma": "0f90423d5ec55091",
   "msg": "1564056930748469309",
   "nombre": "REDBULL CREW ARGENTINA 2026",
   "num": 515,
-  "participantes": 15,
+  "participantes": 16,
   "sello": {
    "Deluxe": ""
   },
@@ -22476,74 +22481,84 @@
   "t": "2026-10-25T23:23:49Z",
   "tabla": [
    [
-    "Deluxe",
+    "Delux",
     "Campeón",
-    7500
+    10000
    ],
    [
     "Zekha",
     "Subcampeón",
-    5000
-   ],
-   [
-    "MCO",
-    "Semifinal",
-    3500
+    7500
    ],
    [
     "Guess",
     "Semifinal",
-    2375
+    5250
+   ],
+   [
+    "MCO",
+    "Semifinal",
+    5250
    ],
    [
     "Hotaru Adeyemi 🏳️‍⚧️",
     "Cuartos",
-    2000
-   ],
-   [
-    "Geoka",
-    "Cuartos",
-    2000
+    2500
    ],
    [
     "Kuni",
     "Cuartos",
-    2000
+    2500
+   ],
+   [
+    "Geoka",
+    "Cuartos",
+    2500
    ],
    [
     "Bishop",
     "Cuartos",
-    1000
+    2500
    ],
    [
     "Mr.Kude",
     "Octavos",
-    625
+    1250
    ],
    [
     "Flama",
     "Octavos",
-    625
+    1250
    ],
    [
-    "Ariaxer",
+    "BNA",
     "Octavos",
-    625
-   ],
-   [
-    "El Wachin",
-    "Octavos",
-    625
-   ],
-   [
-    "Eze",
-    "Octavos",
-    625
+    1250
    ],
    [
     "Dev",
     "Octavos",
-    625
+    1250
+   ],
+   [
+    "Ariaxer",
+    "Octavos",
+    1250
+   ],
+   [
+    "Eze",
+    "Octavos",
+    1250
+   ],
+   [
+    "El Wachin",
+    "Octavos",
+    1250
+   ],
+   [
+    "Benjixo",
+    "Octavos",
+    1250
    ]
   ],
   "v": 2
@@ -49450,6 +49465,431 @@
    ],
    [
     "EmiZor",
+    "Cuartos",
+    2000
+   ]
+  ],
+  "v": 2
+ },
+ "645": {
+  "antes": {
+   "AGUSTÍN51K": [
+    117,
+    160,
+    false
+   ],
+   "Benjixo": [
+    278,
+    116,
+    true
+   ],
+   "Campoy": [
+    444,
+    380,
+    true
+   ],
+   "Chuwin": [
+    335,
+    223,
+    true
+   ],
+   "Crk": [
+    68,
+    83,
+    false
+   ],
+   "Faso": [
+    513,
+    466,
+    true
+   ],
+   "Krish": [
+    103,
+    133,
+    false
+   ],
+   "Majiztral": [
+    32,
+    37,
+    false
+   ],
+   "Makmah": [
+    1,
+    1,
+    false
+   ],
+   "Mathhias": [
+    45,
+    53,
+    false
+   ],
+   "Player": [
+    70,
+    86,
+    false
+   ],
+   "Refran": [
+    160,
+    282,
+    false
+   ],
+   "Saiko": [
+    143,
+    228,
+    false
+   ],
+   "Trot": [
+    49,
+    57,
+    false
+   ],
+   "TøKīØ🦠🧠": [
+    46,
+    54,
+    false
+   ],
+   "Vandu": [
+    10,
+    10,
+    false
+   ]
+  },
+  "canal": "1511962554547703960",
+  "duelos": [
+   [
+    "Campoy",
+    "TøKīØ🦠🧠",
+    "Campoy"
+   ],
+   [
+    "Krish",
+    "Chuwin",
+    "Krish"
+   ],
+   [
+    "Vandu",
+    "Crk",
+    "Vandu"
+   ],
+   [
+    "Makmah",
+    "Mathhias",
+    "Makmah"
+   ],
+   [
+    "AGUSTÍN51K",
+    "Player",
+    "AGUSTÍN51K"
+   ],
+   [
+    "Majiztral",
+    "Saiko",
+    "Majiztral"
+   ],
+   [
+    "Faso",
+    "Refran",
+    "Faso"
+   ],
+   [
+    "Trot",
+    "Benjixo",
+    "Trot"
+   ],
+   [
+    "Campoy",
+    "Krish",
+    "Campoy"
+   ],
+   [
+    "Makmah",
+    "Vandu",
+    "Makmah"
+   ],
+   [
+    "AGUSTÍN51K",
+    "Majiztral",
+    "AGUSTÍN51K"
+   ],
+   [
+    "Trot",
+    "Faso",
+    "Trot"
+   ],
+   [
+    "Campoy",
+    "Makmah",
+    "Campoy"
+   ],
+   [
+    "Trot",
+    "AGUSTÍN51K",
+    "Trot"
+   ],
+   [
+    "Campoy",
+    "Trot",
+    "Campoy"
+   ]
+  ],
+  "ev_antes": {
+   "AGUSTÍN51K": 5,
+   "Benjixo": 8,
+   "Campoy": 1,
+   "Chuwin": 2,
+   "Crk": 19,
+   "Faso": 1,
+   "Krish": 17,
+   "Majiztral": 29,
+   "Makmah": 117,
+   "Mathhias": 18,
+   "Player": 13,
+   "Refran": 2,
+   "Saiko": 4,
+   "Trot": 30,
+   "TøKīØ🦠🧠": 16,
+   "Vandu": 52
+  },
+  "fecha": "15/11",
+  "firma": "de35e6b7658fd85f",
+  "msg": "1571637257578873034",
+  "nombre": "RED BULL NACIONAL PLAZAS T.5",
+  "num": 645,
+  "participantes": 16,
+  "sello": {
+   "Campoy": ""
+  },
+  "sv": "URBF",
+  "t": "2026-11-15T21:25:19Z",
+  "tabla": [
+   [
+    "Campoy",
+    "Campeón",
+    10000
+   ],
+   [
+    "Trot",
+    "Subcampeón",
+    7500
+   ],
+   [
+    "Makmah",
+    "Semifinal",
+    5250
+   ],
+   [
+    "AGUSTÍN51K",
+    "Semifinal",
+    5250
+   ],
+   [
+    "Krish",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Vandu",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Majiztral",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Faso",
+    "Cuartos",
+    2500
+   ],
+   [
+    "TøKīØ🦠🧠",
+    "Octavos",
+    1250
+   ],
+   [
+    "Chuwin",
+    "Octavos",
+    1250
+   ],
+   [
+    "Crk",
+    "Octavos",
+    1250
+   ],
+   [
+    "Mathhias",
+    "Octavos",
+    1250
+   ],
+   [
+    "Player",
+    "Octavos",
+    1250
+   ],
+   [
+    "Saiko",
+    "Octavos",
+    1250
+   ],
+   [
+    "Refran",
+    "Octavos",
+    1250
+   ],
+   [
+    "Benjixo",
+    "Octavos",
+    1250
+   ]
+  ],
+  "v": 2
+ },
+ "646": {
+  "antes": {
+   "Kourier": [
+    151,
+    254,
+    false
+   ],
+   "LAST": [
+    58,
+    68,
+    false
+   ],
+   "Majiztral": [
+    32,
+    37,
+    false
+   ],
+   "Marcos": [
+    62,
+    72,
+    false
+   ],
+   "Motera": [
+    74,
+    90,
+    false
+   ],
+   "Sweet pain": [
+    414,
+    337,
+    true
+   ],
+   "Tmax Turbo [PN]": [
+    142,
+    221,
+    false
+   ],
+   "compare": [
+    635,
+    613,
+    true
+   ]
+  },
+  "canal": "1514718324800622773",
+  "duelos": [
+   [
+    "Marcos",
+    "Sweet pain",
+    "Marcos"
+   ],
+   [
+    "compare",
+    "Tmax Turbo [PN]",
+    "compare"
+   ],
+   [
+    "Motera",
+    "Kourier",
+    "Motera"
+   ],
+   [
+    "Majiztral",
+    "LAST",
+    "Majiztral"
+   ],
+   [
+    "Marcos",
+    "compare",
+    "Marcos"
+   ],
+   [
+    "Motera",
+    "Majiztral",
+    "Motera"
+   ],
+   [
+    "Motera",
+    "Marcos",
+    "Motera"
+   ],
+   [
+    "compare",
+    "Majiztral",
+    "compare"
+   ]
+  ],
+  "ev_antes": {
+   "Kourier": 6,
+   "LAST": 22,
+   "Majiztral": 29,
+   "Marcos": 19,
+   "Motera": 7,
+   "Sweet pain": 3,
+   "Tmax Turbo [PN]": 6,
+   "compare": 1
+  },
+  "fecha": "15/11",
+  "firma": "d1cc3b6980df3c86",
+  "msg": "1571635394460516385",
+  "nombre": "FU BATTLE NIGHT",
+  "num": 646,
+  "participantes": 8,
+  "sello": {
+   "Motera": "84ed0dc749dd:e17dcfa271c4"
+  },
+  "sv": "CEU",
+  "t": "2026-11-15T21:25:22Z",
+  "tabla": [
+   [
+    "Motera",
+    "Campeón",
+    7500
+   ],
+   [
+    "Marcos",
+    "Subcampeón",
+    5000
+   ],
+   [
+    "compare",
+    "Tercero",
+    4000
+   ],
+   [
+    "Majiztral",
+    "Cuarto",
+    3000
+   ],
+   [
+    "Sweet pain",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Tmax Turbo [PN]",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Kourier",
+    "Cuartos",
+    2000
+   ],
+   [
+    "LAST",
     "Cuartos",
     2000
    ]

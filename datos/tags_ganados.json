@@ -1641,10 +1641,20 @@
    ]
   },
   "temporada": {
+   "🔟 DOBLE DÍGITO": [
+    "🔟 DOBLE DÍGITO",
+    "t1",
+    1794778788639
+   ],
    "🥉 AL PODIO": [
     "🥉 AL PODIO",
     "t1",
     1792953978519
+   ],
+   "🧳 VIAJERO": [
+    "🧳 VIAJERO",
+    "t1",
+    1794778788639
    ]
   }
  },
@@ -2309,6 +2319,22 @@
     "🧳 VIAJERO",
     "t1",
     1792953978519
+   ]
+  }
+ },
+ "campoy": {
+  "servidor": {
+   "🏆 CAMPEÓN": [
+    "🏆 CAMPEÓN",
+    "t1",
+    1794778788639
+   ]
+  },
+  "temporada": {
+   "🥉 AL PODIO": [
+    "🥉 AL PODIO",
+    "t1",
+    1794778788639
    ]
   }
  },
@@ -3128,6 +3154,20 @@
    ]
   }
  },
+ "compare": {
+  "temporada": {
+   "🌱 PROMESA": [
+    "🌱 PROMESA",
+    "t1",
+    1794778788639
+   ],
+   "🥉 AL PODIO": [
+    "🥉 AL PODIO",
+    "t1",
+    1794778788639
+   ]
+  }
+ },
  "corvo": {
   "servidor": {
    "🏆 CAMPEÓN": [
@@ -3370,6 +3410,11 @@
     "t1",
     1794260565889
    ],
+   "🎖️ CURTIDO": [
+    "🎖️ CURTIDO",
+    "t1",
+    1794778788639
+   ],
    "📅 INFALTABLE": [
     "📅 INFALTABLE",
     "t1",
@@ -3593,6 +3638,11 @@
  },
  "delux": {
   "competitivo": {
+   "🎯 FRANCOTIRADOR": [
+    "🎯 FRANCOTIRADOR",
+    "t1",
+    1794778788639
+   ],
    "🗡️ MATAGIGANTES": [
     "🗡️ MATAGIGANTES",
     "t1",
@@ -3604,6 +3654,16 @@
     "DA LA CARA",
     "t1",
     1793029252929
+   ],
+   "EMBAJADOR": [
+    "EMBAJADOR",
+    "t1",
+    1794778788639
+   ],
+   "REY DEL DERBI": [
+    "REY DEL DERBI",
+    "t1",
+    1794778788639
    ]
   },
   "servidor": {
@@ -3629,6 +3689,11 @@
    ]
   },
   "temporada": {
+   "🌍 TROTAMUNDOS": [
+    "🌍 TROTAMUNDOS",
+    "t1",
+    1794778788639
+   ],
    "🎯 CAZARRECOMPENSAS": [
     "🎯 CAZARRECOMPENSAS",
     "t1",
@@ -3643,6 +3708,11 @@
     "🐺 LOBO SOLITARIO",
     "t1",
     1793029252929
+   ],
+   "👑 CAMPEÓN x%d": [
+    "👑 CAMPEÓN x1",
+    "t1",
+    1794778788639
    ],
    "💯 CENTENARIO": [
     "💯 CENTENARIO",
@@ -3698,7 +3768,7 @@
   },
   "temporada": {
    "👑 CAMPEÓN x%d": [
-    "👑 CAMPEÓN x2",
+    "👑 CAMPEÓN x1",
     "t1",
     1792953978519
    ],
@@ -6750,6 +6820,11 @@
  },
  "kourier": {
   "temporada": {
+   "🌍 TROTAMUNDOS": [
+    "🌍 TROTAMUNDOS",
+    "t1",
+    1794778788639
+   ],
    "🧳 VIAJERO": [
     "🧳 VIAJERO",
     "t1",
@@ -6806,6 +6881,18 @@
   }
  },
  "krish": {
+  "pais": {
+   "DA LA CARA": [
+    "DA LA CARA",
+    "t1",
+    1794778788639
+   ],
+   "EMBAJADOR": [
+    "EMBAJADOR",
+    "t1",
+    1794778788639
+   ]
+  },
   "servidor": {
    "📆 HABITUÉ": [
     "📆 HABITUÉ",
@@ -8151,6 +8238,11 @@
     "t1",
     1794260565889
    ],
+   "🛫 NÓMADA": [
+    "🛫 NÓMADA",
+    "t1",
+    1794778788639
+   ],
    "🥉 AL PODIO": [
     "🥉 AL PODIO",
     "t1",
@@ -8569,6 +8661,11 @@
     "t1",
     1794764146474
    ],
+   "🎖️ CURTIDO": [
+    "🎖️ CURTIDO",
+    "t1",
+    1794778788639
+   ],
    "👑 CAMPEÓN x%d": [
     "👑 CAMPEÓN x1",
     "t1",
@@ -8583,6 +8680,11 @@
     "🔟 DOBLE DÍGITO",
     "t1",
     1794260565889
+   ],
+   "🥈 SIEMPRE EN LA FINAL": [
+    "🥈 SIEMPRE EN LA FINAL",
+    "t1",
+    1794778788639
    ],
    "🥉 AL PODIO": [
     "🥉 AL PODIO",
@@ -9598,6 +9700,11 @@
     "t1",
     1793491575234
    ],
+   "💯 BICENTENARIO": [
+    "💯 BICENTENARIO",
+    "t1",
+    1794778788639
+   ],
    "💯 CENTENARIO": [
     "💯 CENTENARIO",
     "t1",
@@ -9933,7 +10040,7 @@
     1794764146474
    ],
    "👑 CAMPEÓN x%d": [
-    "👑 CAMPEÓN x5",
+    "👑 CAMPEÓN x6",
     "t1",
     1793029252929
    ],
@@ -12550,6 +12657,11 @@
     "DA LA CARA",
     "t1",
     1793511279019
+   ],
+   "EMBAJADOR": [
+    "EMBAJADOR",
+    "t1",
+    1794778788639
    ]
   },
   "servidor": {
@@ -12560,6 +12672,11 @@
    ]
   },
   "temporada": {
+   "🌍 TROTAMUNDOS": [
+    "🌍 TROTAMUNDOS",
+    "t1",
+    1794778788639
+   ],
    "👑 CAMPEÓN x%d": [
     "👑 CAMPEÓN x1",
     "t1",
@@ -13682,6 +13799,11 @@
     "🥉 AL PODIO",
     "t1",
     1792953978519
+   ],
+   "🧳 VIAJERO": [
+    "🧳 VIAJERO",
+    "t1",
+    1794778788639
    ]
   }
  },
@@ -15569,6 +15691,11 @@
     "🤝 SIN MIEDO",
     "t1",
     1792989121293
+   ],
+   "🥈 A UN PASO": [
+    "🥈 A UN PASO",
+    "t1",
+    1794778788639
    ]
   },
   "pais": {

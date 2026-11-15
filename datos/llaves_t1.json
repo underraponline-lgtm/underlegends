@@ -32583,14 +32583,14 @@
  },
  "515": {
   "dia": "2026-10-25",
-  "escala": "8-15",
+  "escala": "16+",
   "fecha": "25/10",
   "links": [
-   "https://discord.com/channels/765045834647339038/1309238412976590908/1564021566189346929"
+   "https://discord.com/channels/765045834647339038/1309234583023124531/1564008822740361237"
   ],
   "n": 515,
   "nombre": "REDBULL CREW ARGENTINA 2026",
-  "participantes": 15,
+  "participantes": 16,
   "rondas": [
    {
     "b": [
@@ -32612,11 +32612,19 @@
      ],
      [
       [
-       "BNA",
-       "Guess"
+       "Guess",
+       "BNA"
       ],
-      "BNA",
-      "Revivido: GUESS 🇦🇷"
+      "Guess",
+      ""
+     ],
+     [
+      [
+       "Kuni",
+       "Dev"
+      ],
+      "Kuni",
+      ""
      ],
      [
       [
@@ -32624,6 +32632,14 @@
        "Ariaxer"
       ],
       "Geoka",
+      ""
+     ],
+     [
+      [
+       "Delux",
+       "Eze"
+      ],
+      "Delux",
       ""
      ],
      [
@@ -32636,18 +32652,10 @@
      ],
      [
       [
-       "Deluxe",
-       "Eze"
+       "Bishop",
+       "Benjixo"
       ],
-      "Deluxe",
-      ""
-     ],
-     [
-      [
-       "Kuni",
-       "Dev"
-      ],
-      "Kuni",
+      "Bishop",
       ""
      ]
     ],
@@ -32665,14 +32673,6 @@
      ],
      [
       [
-       "Deluxe",
-       "Geoka"
-      ],
-      "Deluxe",
-      ""
-     ],
-     [
-      [
        "Guess",
        "Kuni"
       ],
@@ -32681,11 +32681,19 @@
      ],
      [
       [
+       "Delux",
+       "Geoka"
+      ],
+      "Delux",
+      ""
+     ],
+     [
+      [
        "MCO",
        "Bishop"
       ],
       "MCO",
-      "Walk-in 1: BYSHOP 🇦🇷"
+      ""
      ]
     ],
     "r": "Cuartos"
@@ -32694,18 +32702,18 @@
     "b": [
      [
       [
-       "Deluxe",
-       "MCO"
-      ],
-      "Deluxe",
-      ""
-     ],
-     [
-      [
        "Zekha",
        "Guess"
       ],
       "Zekha",
+      ""
+     ],
+     [
+      [
+       "Delux",
+       "MCO"
+      ],
+      "Delux",
       ""
      ]
     ],
@@ -32715,10 +32723,10 @@
     "b": [
      [
       [
-       "Deluxe",
+       "Delux",
        "Zekha"
       ],
-      "Deluxe",
+      "Delux",
       ""
      ]
     ],
@@ -32728,78 +32736,88 @@
   "sv": "ACAD",
   "tabla": [
    [
-    "Deluxe",
+    "Delux",
     "Campeón",
-    7500
+    10000
    ],
    [
     "Zekha",
     "Subcampeón",
-    5000
-   ],
-   [
-    "MCO",
-    "Semifinal",
-    3500
+    7500
    ],
    [
     "Guess",
     "Semifinal",
-    2375
+    5250
    ],
    [
-    "Geoka",
-    "Cuartos",
-    2000
-   ],
-   [
-    "Hotaru Adeyemi 🏳️‍⚧️",
-    "Cuartos",
-    2000
-   ],
-   [
-    "Kuni",
-    "Cuartos",
-    2000
+    "MCO",
+    "Semifinal",
+    5250
    ],
    [
     "Bishop",
     "Cuartos",
-    1000
+    2500
+   ],
+   [
+    "Geoka",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Hotaru Adeyemi 🏳️‍⚧️",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Kuni",
+    "Cuartos",
+    2500
    ],
    [
     "Ariaxer",
     "Octavos",
-    625
+    1250
+   ],
+   [
+    "BNA",
+    "Octavos",
+    1250
+   ],
+   [
+    "Benjixo",
+    "Octavos",
+    1250
    ],
    [
     "Dev",
     "Octavos",
-    625
+    1250
    ],
    [
     "El Wachin",
     "Octavos",
-    625
+    1250
    ],
    [
     "Eze",
     "Octavos",
-    625
+    1250
    ],
    [
     "Flama",
     "Octavos",
-    625
+    1250
    ],
    [
     "Mr.Kude",
     "Octavos",
-    625
+    1250
    ]
   ],
   "ver": {
-   "min": 118,
+   "min": 200,
    "v": 1
   }
  },
@@ -56711,6 +56729,390 @@
   "ver": {
    "min": 37,
    "org": "juega",
+   "v": 1
+  }
+ },
+ "645": {
+  "dia": "2026-11-15",
+  "escala": "16+",
+  "fecha": "15/11",
+  "links": [
+   "https://discord.com/channels/1467763447117778989/1511968721491722413/1571584452231036942"
+  ],
+  "n": 645,
+  "nombre": "RED BULL NACIONAL PLAZAS T.5",
+  "participantes": 16,
+  "rondas": [
+   {
+    "b": [
+     [
+      [
+       "Campoy",
+       "TøKīØ🦠🧠"
+      ],
+      "Campoy",
+      ""
+     ],
+     [
+      [
+       "Krish",
+       "Chuwin"
+      ],
+      "Krish",
+      ""
+     ],
+     [
+      [
+       "Vandu",
+       "Crk"
+      ],
+      "Vandu",
+      ""
+     ],
+     [
+      [
+       "Makmah",
+       "Mathhias"
+      ],
+      "Makmah",
+      ""
+     ],
+     [
+      [
+       "AGUSTÍN51K",
+       "Player"
+      ],
+      "AGUSTÍN51K",
+      ""
+     ],
+     [
+      [
+       "Majiztral",
+       "Saiko"
+      ],
+      "Majiztral",
+      ""
+     ],
+     [
+      [
+       "Faso",
+       "Refran"
+      ],
+      "Faso",
+      ""
+     ],
+     [
+      [
+       "Trot",
+       "Benjixo"
+      ],
+      "Trot",
+      ""
+     ]
+    ],
+    "r": "Octavos"
+   },
+   {
+    "b": [
+     [
+      [
+       "Campoy",
+       "Krish"
+      ],
+      "Campoy",
+      ""
+     ],
+     [
+      [
+       "Makmah",
+       "Vandu"
+      ],
+      "Makmah",
+      ""
+     ],
+     [
+      [
+       "AGUSTÍN51K",
+       "Majiztral"
+      ],
+      "AGUSTÍN51K",
+      ""
+     ],
+     [
+      [
+       "Trot",
+       "Faso"
+      ],
+      "Trot",
+      ""
+     ]
+    ],
+    "r": "Cuartos"
+   },
+   {
+    "b": [
+     [
+      [
+       "Campoy",
+       "Makmah"
+      ],
+      "Campoy",
+      ""
+     ],
+     [
+      [
+       "Trot",
+       "AGUSTÍN51K"
+      ],
+      "Trot",
+      ""
+     ]
+    ],
+    "r": "Semifinales"
+   },
+   {
+    "b": [
+     [
+      [
+       "Campoy",
+       "Trot"
+      ],
+      "Campoy",
+      "ganador según #veredictos"
+     ]
+    ],
+    "r": "Final"
+   }
+  ],
+  "sv": "URBF",
+  "tabla": [
+   [
+    "Campoy",
+    "Campeón",
+    10000
+   ],
+   [
+    "Trot",
+    "Subcampeón",
+    7500
+   ],
+   [
+    "AGUSTÍN51K",
+    "Semifinal",
+    5250
+   ],
+   [
+    "Makmah",
+    "Semifinal",
+    5250
+   ],
+   [
+    "Faso",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Krish",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Majiztral",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Vandu",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Benjixo",
+    "Octavos",
+    1250
+   ],
+   [
+    "Chuwin",
+    "Octavos",
+    1250
+   ],
+   [
+    "Crk",
+    "Octavos",
+    1250
+   ],
+   [
+    "Mathhias",
+    "Octavos",
+    1250
+   ],
+   [
+    "Player",
+    "Octavos",
+    1250
+   ],
+   [
+    "Refran",
+    "Octavos",
+    1250
+   ],
+   [
+    "Saiko",
+    "Octavos",
+    1250
+   ],
+   [
+    "TøKīØ🦠🧠",
+    "Octavos",
+    1250
+   ]
+  ],
+  "ver": {
+   "min": 184,
+   "v": 1
+  }
+ },
+ "646": {
+  "dia": "2026-11-15",
+  "escala": "8-15",
+  "fecha": "15/11",
+  "links": [
+   "https://discord.com/channels/1513624656538636459/1518202754294612028/1571626458189660283"
+  ],
+  "n": 646,
+  "nombre": "FU BATTLE NIGHT",
+  "participantes": 8,
+  "rondas": [
+   {
+    "b": [
+     [
+      [
+       "Marcos",
+       "Sweet pain"
+      ],
+      "Marcos",
+      ""
+     ],
+     [
+      [
+       "compare",
+       "Tmax Turbo [PN]"
+      ],
+      "compare",
+      ""
+     ],
+     [
+      [
+       "Motera",
+       "Kourier"
+      ],
+      "Motera",
+      ""
+     ],
+     [
+      [
+       "Majiztral",
+       "LAST"
+      ],
+      "Majiztral",
+      ""
+     ]
+    ],
+    "r": "Cuartos"
+   },
+   {
+    "b": [
+     [
+      [
+       "Marcos",
+       "compare"
+      ],
+      "Marcos",
+      ""
+     ],
+     [
+      [
+       "Motera",
+       "Majiztral"
+      ],
+      "Motera",
+      ""
+     ]
+    ],
+    "r": "Semifinales"
+   },
+   {
+    "b": [
+     [
+      [
+       "compare",
+       "Majiztral"
+      ],
+      "compare",
+      "podio: tercer puesto sin batalla en la llave"
+     ]
+    ],
+    "r": "Tercer puesto"
+   },
+   {
+    "b": [
+     [
+      [
+       "Motera",
+       "Marcos"
+      ],
+      "Motera",
+      ""
+     ]
+    ],
+    "r": "Final"
+   }
+  ],
+  "sv": "CEU",
+  "tabla": [
+   [
+    "Motera",
+    "Campeón",
+    7500
+   ],
+   [
+    "Marcos",
+    "Subcampeón",
+    5000
+   ],
+   [
+    "compare",
+    "Tercero",
+    4000
+   ],
+   [
+    "Majiztral",
+    "Cuarto",
+    3000
+   ],
+   [
+    "Kourier",
+    "Cuartos",
+    2000
+   ],
+   [
+    "LAST",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Sweet pain",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Tmax Turbo [PN]",
+    "Cuartos",
+    2000
+   ]
+  ],
+  "ver": {
+   "min": 31,
    "v": 1
   }
  }

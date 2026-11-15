@@ -19,19 +19,19 @@
 "temporada"
 ]
 },
-"erian": {
-"rg": "B",
-"c": [
-"competitivo",
-"servidor",
-"temporada"
-]
-},
 "pichulamc": {
 "rg": "A",
 "c": [
 "competitivo",
 "pais",
+"servidor",
+"temporada"
+]
+},
+"erian": {
+"rg": "B",
+"c": [
+"competitivo",
 "servidor",
 "temporada"
 ]
@@ -63,15 +63,6 @@
 "temporada"
 ]
 },
-"panchok": {
-"rg": "S",
-"c": [
-"competitivo",
-"pais",
-"servidor",
-"temporada"
-]
-},
 "verc": {
 "rg": "A",
 "c": [
@@ -83,6 +74,15 @@
 },
 "vandu": {
 "rg": "C",
+"c": [
+"competitivo",
+"pais",
+"servidor",
+"temporada"
+]
+},
+"panchok": {
+"rg": "S",
 "c": [
 "competitivo",
 "pais",
@@ -263,12 +263,30 @@
 "temporada"
 ]
 },
+"delux": {
+"rg": "C",
+"c": [
+"competitivo",
+"pais",
+"servidor",
+"temporada"
+]
+},
 "hassan": {
 "rg": "A",
 "c": []
 },
 "sinlimites": {
 "rg": "D",
+"c": [
+"competitivo",
+"pais",
+"servidor",
+"temporada"
+]
+},
+"majiztral": {
+"rg": "C",
 "c": [
 "competitivo",
 "pais",
@@ -292,15 +310,6 @@
 "tuca": {
 "rg": "B",
 "c": []
-},
-"majiztral": {
-"rg": "C",
-"c": [
-"competitivo",
-"pais",
-"servidor",
-"temporada"
-]
 },
 "drexx": {
 "rg": "C",
@@ -355,19 +364,19 @@
 "rg": "C",
 "c": []
 },
-"adriagner": {
-"rg": "C",
+"trot": {
+"rg": "D",
 "c": [
 "competitivo",
+"pais",
 "servidor",
 "temporada"
 ]
 },
-"delux": {
+"adriagner": {
 "rg": "C",
 "c": [
 "competitivo",
-"pais",
 "servidor",
 "temporada"
 ]
@@ -454,19 +463,6 @@
 "temporada"
 ]
 },
-"trot": {
-"rg": "D",
-"c": [
-"competitivo",
-"pais",
-"servidor",
-"temporada"
-]
-},
-"bna": {
-"rg": "C",
-"c": []
-},
 "mats": {
 "rg": "C",
 "c": [
@@ -494,9 +490,22 @@
 "temporada"
 ]
 },
+"bna": {
+"rg": "C",
+"c": []
+},
 "paria": {
 "rg": "D",
 "c": []
+},
+"last": {
+"rg": "E",
+"c": [
+"competitivo",
+"pais",
+"servidor",
+"temporada"
+]
 },
 "masino": {
 "rg": "B",
@@ -542,24 +551,6 @@
 "temporada"
 ]
 },
-"last": {
-"rg": "E",
-"c": [
-"competitivo",
-"pais",
-"servidor",
-"temporada"
-]
-},
-"jupiter": {
-"rg": "D",
-"c": [
-"competitivo",
-"pais",
-"servidor",
-"temporada"
-]
-},
 "lvel": {
 "rg": "E",
 "c": [
@@ -578,6 +569,15 @@
 ]
 },
 "marcos": {
+"rg": "D",
+"c": [
+"competitivo",
+"pais",
+"servidor",
+"temporada"
+]
+},
+"jupiter": {
 "rg": "D",
 "c": [
 "competitivo",
@@ -641,16 +641,16 @@
 "temporada"
 ]
 },
-"cinexfilo": {
-"rg": "D",
+"crk": {
+"rg": "E",
 "c": [
 "competitivo",
 "servidor",
 "temporada"
 ]
 },
-"crk": {
-"rg": "E",
+"cinexfilo": {
+"rg": "D",
 "c": [
 "competitivo",
 "servidor",
@@ -666,12 +666,20 @@
 "temporada"
 ]
 },
+"motera": {
+"rg": "",
+"c": [
+"pais",
+"servidor",
+"temporada"
+]
+},
 "jj": {
 "rg": "",
 "c": []
 },
 "player": {
-"rg": "E",
+"rg": "D",
 "c": [
 "competitivo",
 "pais",
@@ -701,14 +709,6 @@
 "rg": "D",
 "c": [
 "competitivo",
-"pais",
-"servidor",
-"temporada"
-]
-},
-"motera": {
-"rg": "",
-"c": [
 "pais",
 "servidor",
 "temporada"
@@ -790,6 +790,10 @@
 "temporada"
 ]
 },
+"benjixo": {
+"rg": "C",
+"c": []
+},
 "artezzy": {
 "rg": "",
 "c": [
@@ -825,6 +829,15 @@
 "emizor": {
 "rg": "D",
 "c": []
+},
+"krish": {
+"rg": "E",
+"c": [
+"competitivo",
+"pais",
+"servidor",
+"temporada"
+]
 },
 "rodas": {
 "rg": "E",
@@ -886,19 +899,7 @@
 "servidor"
 ]
 },
-"benjixo": {
-"rg": "",
-"c": []
-},
 "aldre": {
-"rg": "",
-"c": [
-"pais",
-"servidor",
-"temporada"
-]
-},
-"deluxe": {
 "rg": "",
 "c": [
 "pais",
@@ -993,17 +994,16 @@
 "temporada"
 ]
 },
-"krish": {
-"rg": "E",
-"c": [
-"competitivo",
-"servidor",
-"temporada"
-]
-},
 "lilnano": {
 "rg": "",
 "c": [
+"servidor"
+]
+},
+"zekha": {
+"rg": "",
+"c": [
+"pais",
 "servidor"
 ]
 },
@@ -1021,13 +1021,6 @@
 "assuan": {
 "rg": "",
 "c": []
-},
-"zekha": {
-"rg": "",
-"c": [
-"pais",
-"servidor"
-]
 },
 "prosu": {
 "rg": "",
@@ -1069,6 +1062,14 @@
 "c": [
 "pais",
 "servidor"
+]
+},
+"agustin51k": {
+"rg": "",
+"c": [
+"pais",
+"servidor",
+"temporada"
 ]
 },
 "kochi": {
@@ -1130,6 +1131,14 @@
 "rg": "",
 "c": []
 },
+"deluxe": {
+"rg": "",
+"c": [
+"pais",
+"servidor",
+"temporada"
+]
+},
 "ikonoxx": {
 "rg": "",
 "c": []
@@ -1142,14 +1151,6 @@
 "rg": "E",
 "c": [
 "competitivo",
-"servidor",
-"temporada"
-]
-},
-"agustin51k": {
-"rg": "",
-"c": [
-"pais",
 "servidor",
 "temporada"
 ]
@@ -1273,6 +1274,10 @@
 "temporada"
 ]
 },
+"campoy": {
+"rg": "",
+"c": []
+},
 "doc": {
 "rg": "",
 "c": []
@@ -1316,6 +1321,10 @@
 "rg": "",
 "c": []
 },
+"chuwin": {
+"rg": "",
+"c": []
+},
 "fleivaman": {
 "rg": "",
 "c": []
@@ -1341,6 +1350,13 @@
 "warap": {
 "rg": "",
 "c": []
+},
+"saiko": {
+"rg": "",
+"c": [
+"servidor",
+"temporada"
+]
 },
 "martoar": {
 "rg": "",
@@ -1370,13 +1386,6 @@
 "c": [
 "pais",
 "servidor"
-]
-},
-"saiko": {
-"rg": "",
-"c": [
-"servidor",
-"temporada"
 ]
 },
 "k": {
@@ -1888,10 +1897,6 @@
 "c": []
 },
 "mrlaburo": {
-"rg": "",
-"c": []
-},
-"campoy": {
 "rg": "",
 "c": []
 },
@@ -2850,32 +2855,6 @@
 }
 },
 "cambios": [
-{
-"tipo": "tarjeta",
-"t": "2026-10-10T04:27:46Z",
-"quien": [
-"Agus"
-],
-"carta": "competitivo"
-},
-{
-"tipo": "rango",
-"t": "2026-10-10T04:27:46Z",
-"quien": [
-"NXUZ"
-],
-"rg": "C",
-"primero": false
-},
-{
-"tipo": "rango",
-"t": "2026-10-10T04:27:46Z",
-"quien": [
-"Dynoco"
-],
-"rg": "C",
-"primero": true
-},
 {
 "tipo": "tarjeta",
 "t": "2026-10-10T04:27:46Z",
@@ -6218,6 +6197,32 @@
 "Marcos"
 ],
 "carta": "pais"
+},
+{
+"tipo": "rango",
+"t": "2026-11-15T21:39:25Z",
+"quien": [
+"Player"
+],
+"rg": "D",
+"primero": false
+},
+{
+"tipo": "rango",
+"t": "2026-11-15T21:39:25Z",
+"quien": [
+"Benjixo"
+],
+"rg": "C",
+"primero": true
+},
+{
+"tipo": "tarjeta",
+"t": "2026-11-15T21:39:25Z",
+"quien": [
+"Krish"
+],
+"carta": "pais"
 }
 ],
 "noche_antes": {
@@ -7628,6 +7633,86 @@
 "que": "primer",
 "ev": "CHOP COMPE CEO V.2",
 "desde": 644
+}
+]
+},
+"2026-11-15": {
+"tipo": "resnoche",
+"t": "2026-11-16T08:00:00Z",
+"dia": "2026-11-15",
+"eventos": 2,
+"part": 24,
+"campeones": [
+{
+"ev": "RED BULL NACIONAL PLAZAS T.5",
+"sv": "URBF",
+"ll": 645,
+"quien": [
+[
+"Campoy",
+"campoy"
+]
+]
+},
+{
+"ev": "FU BATTLE NIGHT",
+"sv": "CEU",
+"ll": 646,
+"quien": [
+[
+"Motera",
+"motera"
+]
+]
+}
+],
+"suman": [
+{
+"n": "Campoy",
+"k": "campoy",
+"pts": 10000,
+"ev": 1
+},
+{
+"n": "Motera",
+"k": "motera",
+"pts": 7500,
+"ev": 1
+},
+{
+"n": "Trot",
+"k": "trot",
+"pts": 7500,
+"ev": 1
+}
+],
+"suben": [
+{
+"n": "compare",
+"k": "",
+"de": 626,
+"a": 379
+},
+{
+"n": "Sweet pain",
+"k": "",
+"de": 571,
+"a": 368
+},
+{
+"n": "Campoy",
+"k": "campoy",
+"de": 439,
+"a": 312
+}
+],
+"sorpresas": [
+{
+"n": "Campoy",
+"k": "campoy",
+"que": "primer",
+"ev": "RED BULL NACIONAL PLAZAS T.5",
+"desde": 439
 }
 ]
 }
