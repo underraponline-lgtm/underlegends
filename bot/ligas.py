@@ -1419,7 +1419,21 @@ def _desde_el_hueco(bats, dias=CIERRA_DIAS):
     return bs[corte:]
 
 
-def descubrir(s, mapa, viejas, ahora=None):
+def esperan():
+    """⏸️ `{sv: {categoría}}` de las ligas que NO entran solas aunque un lector las lea (`ligas_esperan` de cada servidor
+    en `datos/servidores.json`). 15/11/2026, FMS Ceuta: el lector de LKR leía 16 de sus 53 batallas, se salteaba su
+    cierre de siempre («# LAST🇺🇾 🐐») y tomaba «REPETIMIENTO DE JORNADA 2 LAST» por un nombre; su tabla habría puesto
+    a LAST arriba con Trot campeón invicto. Esperan su lector propio, o que Dlx las saque de acá."""
+    try:
+        with io.open(os.path.join(BASE, 'datos', 'servidores.json'), encoding='utf-8') as f:
+            svs = json.load(f).get('servidores') or {}
+    except (OSError, ValueError):
+        return {}
+    return {sv: {str(i) for i in ((x.get('ligas_esperan') or {}).get('ids') or [])}
+            for sv, x in svs.items() if isinstance(x, dict) and x.get('ligas_esperan')}
+
+
+def descubrir(s, mapa, viejas, ahora=None, quietas=None):
     """🆕 Las ligas nuevas: `{id: liga}` con las de antes. Una recién vista se guarda con `fam: ''` hasta que un lector la
     entienda (`elegir_lector()`) Y se esté jugando —algún resultado en las últimas `CIERRA_DIAS`—; ahí entra a `LIGAS` y
     se lee como las demás. La que no, se vuelve a probar cada `NUEVA_PROBAR_H`. `s`: la sesión de Discord (para leer sus
@@ -1430,7 +1444,9 @@ def descubrir(s, mapa, viejas, ahora=None):
     Sin la regla de «se está jugando», la de DDS entraba con la temporada cancelada."""
     ahora = ahora or dt.datetime.now(dt.timezone.utc)
     ahora_s = ahora.strftime('%Y-%m-%dT%H:%M:%SZ')
-    out = {k: dict(v) for k, v in (viejas or {}).items()}
+    # ⏸️ las que esperan su lector (`esperan()`): ni se guardan ni se prueban
+    quietas = esperan() if quietas is None else quietas
+    out = {k: dict(v) for k, v in (viejas or {}).items() if str(v.get('cat')) not in quietas.get(v.get('sv'), ())}
     # 🧹 la que nunca se pudo leer y cuya categoría ya no está, se va: no era una liga, o se borró antes de jugarse
     for lid in list(out):
         m = (mapa or {}).get(out[lid].get('sv'))
@@ -1438,6 +1454,8 @@ def descubrir(s, mapa, viejas, ahora=None):
             del out[lid]
     for sv, m in sorted((mapa or {}).items()):
         for c in candidatas(sv, m.get('lst'), dict(LIGAS, **out)):
+            if c['cat'] in quietas.get(sv, ()):
+                continue
             lid = _id_nueva(sv, c['n'], set(LIGAS) | set(out))
             out[lid] = dict(c, sv=sv, fam='', vre=_vre_de(c['n']), auto=True, visto=ahora.strftime('%Y-%m-%dT%H:%M:%SZ'))
             print('   🆕 liga nueva en %s: %s (categoría %s)' % (sv, c['n'], c['cat']))
@@ -3073,6 +3091,11 @@ def _self_check_temporadas(ok):
     ok(len(nueva) == 1 and nueva[0]['fam'] == '' and nueva[0]['auto'] and nueva[0]['n'] == 'Dimension Word Series 26'
        and 'vieja' not in nv and 'leida' in nv,
        'lo que se encuentra se guarda sin lector hasta probarlo; la que nunca se leyó y ya no está, se va', sorted(nv))
+    # ⏸️ la que espera su lector propio (`ligas_esperan`, 15/11/2026: FMS Ceuta) no entra, ni nueva ni guardada de antes
+    nq = descubrir(None, {'DDF': {'g': '1', 'lst': lst}}, {'antes': {'sv': 'DDF', 'cat': '100', 'ver': '5', 'fam': 'K'}},
+                   a4, quietas={'DDF': {'100'}})
+    ok(not [v for v in nq.values() if v.get('cat') == '100'],
+       'una liga en `ligas_esperan` no entra aunque un lector la lea, ni la que ya estaba guardada', sorted(nq))
     lg = {'x': {'n': 'X', 'sv': 'DDF', 'fam': 'K', 'ver': '1'}}
     _sumar_nuevas(lg, {'nuevas': {'x': {'fam': 'K', 'ver': '9'}, 'n1': {'n': 'N', 'sv': 'DDF', 'fam': 'K', 'ver': '2'},
                                   'n2': {'n': 'M', 'sv': 'DDF', 'fam': '', 'ver': '3'}}})

@@ -102,7 +102,16 @@
     "canal": "•「👋」bienvenido-lee-esto",
     "canal_id": "1498326090169712812",
     "creada": "2026-09-29"
-   }
+   },
+   "invitaciones_inscripcion": [
+    {
+     "codigo": "t4DVXFqGCq",
+     "canal": "〢⭐〉competenciasᴹᴵˣ",
+     "canal_id": "1501086026729521202",
+     "categoria_id": "1511754900026032139",
+     "creada": "2026-11-15"
+    }
+   ]
   },
   "FFA": {
    "nombre": "Freestyle For All",
@@ -305,6 +314,13 @@
      "canal_id": "1547064939221360701",
      "categoria_id": "867553625508282369",
      "creada": "2026-10-20"
+    },
+    {
+     "codigo": "eU4BdFuAZV",
+     "canal": "➣「📝」inscripciones",
+     "canal_id": "1570649420586811496",
+     "categoria_id": "867553625508282369",
+     "creada": "2026-11-15"
     }
    ]
   },
@@ -343,6 +359,13 @@
      "canal_id": "1511968640218562580",
      "categoria_id": "1511967903329812651",
      "creada": "2026-10-03"
+    },
+    {
+     "codigo": "xw68N8rk6b",
+     "canal": "‣《🗞️》𝙄𝙣𝙨𝙘𝙧𝙞𝙥𝙘𝙞𝙤𝙣𝙚𝙨",
+     "canal_id": "1571178521693393057",
+     "categoria_id": "1511967903329812651",
+     "creada": "2026-11-15"
     }
    ],
    "sigla": "URB",
@@ -425,7 +448,9 @@
      "categoria_id": "1373340537486053527",
      "creada": "2026-10-20"
     }
-   ]
+   ],
+   "tier": 3,
+   "_tier_por_que": "Tier 3 desde el 20/10/2026, elegido por Dlx en el Dashboard (el ciclo lo copió a datos/niveles.json a las 8:59 PM ET). Escrito acá el 15/11 para que, si el ajuste del Dashboard se vacía, no vuelva a Tier 1 solo."
   },
   "DDF": {
    "nombre": "Dimensión del Freestyle",
@@ -629,6 +654,20 @@
      "canal_id": "1558893974780117012",
      "categoria_id": "1558611505040064605",
      "creada": "2026-11-05"
+    },
+    {
+     "codigo": "APyA4H5rMQ",
+     "canal": "inscripciones",
+     "canal_id": "1570654550539636846",
+     "categoria_id": "1570654332230180914",
+     "creada": "2026-11-15"
+    },
+    {
+     "codigo": "kvNp35tUyv",
+     "canal": "📋・𝐈𝐍𝐒𝐂𝐑𝐈𝐏𝐂𝐈𝐎𝐍𝐄𝐒",
+     "canal_id": "1569925056014983218",
+     "categoria_id": "1569924936703811655",
+     "creada": "2026-11-15"
     }
    ]
   },
@@ -722,6 +761,43 @@
     "canal_id": "1443793172013776997",
     "creada": "2026-11-08",
     "_por_que": "en 👋〕BIENVENIDAS el bot no puede crear invitaciones (403)"
+   }
+  },
+  "CEU": {
+   "nombre": "FMS Ceuta",
+   "guild_id": "1513624656538636459",
+   "en_el_sheet": false,
+   "confirmado": true,
+   "sigla": "CEU",
+   "nota": "15/11/2026: Dlx, «asegurate de incluir este servidor como tier 3». En Discord «Fms ceuta» (146 miembros); el bot entró el 14/11 y no es admin (ve los canales, lee el historial y crea invitaciones). Sus torneos van en «COMPETENCIAS» (llaves🔑, veredictos⚖️, inscripciones🖊️, competencia🏆) y una «RED BULL BATALLA» con llaves; su liga, «Fms ceuta» (tabla📋, enfrentamientos🥊, veredicto🧑‍⚖️), va por la 2.ª temporada (campeón de la 1.ª: Trot). Su logo es blanco y negro: el color es el de su rol STAFF. Tier 3: sus eventos de 8 o más suman a la Temporada, no al Competitivo ni a los duelos, y sin carta de Servidor.",
+   "tier": 3,
+   "alta": "a mano",
+   "invitacion": "https://discord.gg/mmXHVpUajm",
+   "invitacion_liga": {
+    "codigo": "mmXHVpUajm",
+    "canal": "bienvenida👋",
+    "canal_id": "1513624656983363806",
+    "creada": "2026-11-15"
+   },
+   "invitaciones_inscripcion": [
+    {
+     "codigo": "KKNAqWcr9S",
+     "canal": "inscripciones🖊️",
+     "canal_id": "1564750191146311711",
+     "categoria_id": "1518542367907647498",
+     "creada": "2026-11-15"
+    }
+   ],
+   "categorias_fuera": {
+    "ids": [
+     "1554209799221157888"
+    ]
+   },
+   "ligas_esperan": {
+    "ids": [
+     "1554209799221157888"
+    ],
+    "por_que": "15/11/2026: su liga «Fms ceuta» (tabla, enfrentamientos, veredicto) es de puntos (PTB), con DF que dan puntos y extraplayers, y sus tablas son imágenes. Ningún lector la lee bien: el de LKR cerraba 16 de 53 batallas, se salteaba su cierre («# LAST🇺🇾 🐐») y armaba nombres como «REPETIMIENTO DE JORNADA 2 LAST»; su tabla habría puesto a LAST arriba con Trot campeón invicto. Espera su lector propio (bot/ligas.py esperan()). La categoría va también en categorias_fuera, como la de cualquier liga: sus anuncios de la liga no son eventos."
    }
   }
  },

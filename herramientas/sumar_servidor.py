@@ -20,6 +20,14 @@ escudo (`procesar_logos.py`, `escudos_cuadrados.py`, `comun/escudos.py`), quién
 (`akas_a_mano.json`), si se cuentan sus ligas (`categorias_fuera`), confirmarlo, la invitación (`bot/invitaciones.py
 --crear --aplicar`, después de esto) y la bienvenida. Al terminar las lista.
 ⚠️ Y LA SIGLA NO PUEDE EXISTIR: si ya está en `servidores.json`, no toca nada.
+
+🏷️ `--tier N` (15/11/2026, al sumar FMS Ceuta como Tier 3): escribe el `tier` con el que arranca —sin él, un servidor que
+Dlx no tocó en el Dashboard arranca en Tier 1 y sus llaves suman al Competitivo— y, con **3**, lo deja SIN carta de
+Servidor (Dlx, 04/11: «FDS y LKR son tier 3, no tienen eso. Tier 2 si lo tienen»): `sinCarta` en el Worker y FUERA de
+las listas de camisetas (`bot/que_cambio.py`, `bot/rehacer.py`). 🔴 Por no saber esto, DDS entró a esa lista con su alta
+(08/11) y cada vuelta de `dibujar` perdió la Servidor de la tanda entera hasta que se sacó a mano.
+
+    python herramientas/sumar_servidor.py CEU 1513624656538636459 "FMS Ceuta" --tier 3 --aplicar
 """
 import io
 import json
@@ -30,6 +38,8 @@ import sys
 
 BASE = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
+#: las listas de camisetas de la carta de Servidor: un servidor SIN carta (Tier 3) no va (ver `--tier` arriba)
+CAMISETAS = ('bot/que_cambio.py', 'bot/rehacer.py')
 #: (archivo, cómo encontrar la lista, cómo agregar). `{sv}`, `{g}` y `{n}` son la sigla, el guild y el nombre.
 LISTAS = (
     ('bot/multiplicadores.py', r"^SERVIDORES = \((.*)\)$", 'final'),
@@ -61,15 +71,18 @@ def _tupla(s, patron, como, sv):
     return s[:m.start(1)] + adentro + s[m.end(1):]
 
 
-def plan(sv, g, nombre):
-    """`[(archivo, contenido nuevo)]` y `[(qué, detalle)]` para mostrar."""
+def plan(sv, g, nombre, tier=None):
+    """`[(archivo, contenido nuevo)]` y `[(qué, detalle)]` para mostrar. Con `tier` 3, sin carta de Servidor."""
     cambios, avisos = [], []
+    sin_carta = tier == 3
     d = json.loads(_leer('datos/servidores.json'))
     if sv in (d.get('servidores') or {}):
         raise SystemExit('   🔴 %s ya está en datos/servidores.json: no toco nada' % sv)
     d['servidores'][sv] = {'nombre': nombre, 'guild_id': g, 'en_el_sheet': False, 'confirmado': False, 'sigla': sv,
                            'nota': 'sumado con herramientas/sumar_servidor.py: falta confirmar (Dlx), el tag, la carta, '
                                    'el logo y la invitación'}
+    if tier in (1, 2, 3):
+        d['servidores'][sv]['tier'] = tier
     cambios.append(('datos/servidores.json', json.dumps(d, ensure_ascii=False, indent=1) + '\n'))
     b = json.loads(_leer('datos/bot_en.json'))
     if sv not in b:
@@ -84,6 +97,8 @@ def plan(sv, g, nombre):
         c.setdefault('de_donde_sale', {})[sv] = 'a mano: falta (un gris de espera, de herramientas/sumar_servidor.py)'
         cambios.append(('datos/colores_sv_marca.json', json.dumps(c, ensure_ascii=False, indent=1) + '\n'))
     for rel, patron, como in LISTAS:
+        if sin_carta and rel in CAMISETAS:
+            continue
         s = _leer(rel)
         n = _tupla(s, patron, como, sv)
         if n is None:
@@ -111,8 +126,8 @@ def plan(sv, g, nombre):
     if "sv: '%s'" % sv not in s:
         m = re.search(r"(\n  \{ sv: '[A-Z]+',[^\n]*\},\n)(\];)", s)
         if m:
-            s = (s[:m.end(1)] + "  { sv: '%s', nombre: '%s', guild: '%s', invita: '', sigla: '%s' },\n" % (sv, nombre, g, sv)
-                 + s[m.end(1):])
+            s = (s[:m.end(1)] + "  { sv: '%s', nombre: '%s', guild: '%s', invita: '', sigla: '%s'%s },\n"
+                 % (sv, nombre, g, sv, ', sinCarta: true' if sin_carta else '') + s[m.end(1):])
             cambios.append(('bot/worker.js', s))
         else:
             avisos.append(('bot/worker.js', 'no encontré SERVIDORES: agregalo a mano'))
@@ -143,12 +158,20 @@ def main():
         sys.stdout.reconfigure(encoding='utf-8', errors='replace')
     except AttributeError:
         pass
-    a = [x for x in sys.argv[1:] if not x.startswith('--')]
+    # el valor de `--tier` no es uno de los tres de la sigla, el guild y el nombre
+    a = [x for i, x in enumerate(sys.argv[1:], 1) if not x.startswith('--') and sys.argv[i - 1] != '--tier']
     if len(a) != 3 or not re.match(r'^[A-Z]{2,5}$', a[0]) or not a[1].isdigit():
         print(__doc__)
         return 2
     sv, g, nombre = a
-    cambios, avisos = plan(sv, g, nombre)
+    tier = None
+    if '--tier' in sys.argv:
+        i = sys.argv.index('--tier')
+        tier = int(sys.argv[i + 1]) if i + 1 < len(sys.argv) and sys.argv[i + 1] in ('1', '2', '3') else None
+        if tier is None:
+            print('   🔴 --tier pide 1, 2 o 3')
+            return 2
+    cambios, avisos = plan(sv, g, nombre, tier)
     print('\n══ SUMAR %s (%s) ══\n' % (sv, nombre))
     for rel, _s in cambios:
         print('   %s %s' % ('✅' if '--aplicar' in sys.argv else '·', rel))
