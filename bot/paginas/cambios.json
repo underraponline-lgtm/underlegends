@@ -11,6 +11,16 @@
  ],
  "cambios": [
     {
+        "version": "5.39",
+        "dia": "2026-11-15",
+        "cuando": "2026-11-15T02:30:00-05:00",
+        "titulo": "Los campeones de liga ganan Pase premium",
+        "items": [
+            "Cada **campeón de liga** gana **una temporada de Pase premium**. Está en tu **Inventario**: úsalo esta temporada o guárdalo para la que quieras.",
+            "Si ya tienes el premium esta temporada, queda guardado para otra."
+        ]
+    },
+    {
         "version": "5.38",
         "dia": "2026-11-15",
         "cuando": "2026-11-15T02:17:00-05:00",
