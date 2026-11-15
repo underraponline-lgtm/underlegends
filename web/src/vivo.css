@@ -6038,6 +6038,35 @@ dialog.pn-pop.pop-gratis{--pc:#F5C542;width:min(640px,calc(100vw - 32px))}
 .mn .mc-yo-t{font:500 13px/1.35 Archivo,sans-serif;color:var(--gris)}
 .mc-yo-barra{display:block;height:6px;margin:1px 0 7px;background:#2a0f1c;border-radius:3px;overflow:hidden}
 .mc-yo-barra i{display:block;height:100%;background:var(--magenta);border-radius:3px}
+/* 🥇 LOS QUE MANDAN, MÁS CLAROS (Dlx, 15/11/2026: «mejora también la sección de Los que mandan»): los números del #1 en
+   cuadros con su ventaja sobre el #2, la medalla de plata y la de bronce, y el cuadro de países y crews del alto de la lista */
+.mn > .mc-yo{grid-column:1/-1;margin-top:0}
+.mn.con-tile{align-items:stretch}
+.mn.con-tile .mn-uno{display:flex}
+.mn-tile-col{display:flex;flex-direction:column;gap:10px;width:300px}
+.mn-gente{flex:1 1 auto;display:grid;align-content:start;gap:4px;padding:12px;border:1px solid #232326;border-radius:4px;background:#0B0B0D}
+.mn-gente small{margin-bottom:4px;font:700 12px/1 "Barlow Condensed",sans-serif;letter-spacing:.08em;text-transform:uppercase;color:var(--gris)}
+.mn-g{display:grid;grid-template-columns:34px minmax(0,1fr) auto;gap:10px;align-items:center;padding:5px 4px;border-radius:4px;color:inherit;text-decoration:none}
+@media (hover: hover) and (pointer: fine){.mn-g:hover{background:#141417}}
+.mn-g-c{width:34px;height:34px;border-radius:50%;overflow:hidden;display:grid;place-items:center;background:#2A2A2E;color:#F6F6F6;font:800 13px/1 Archivo,sans-serif}
+.mn-g-c img{width:100%;height:100%;object-fit:cover;display:block}
+.mn-g b{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font:800 14px/1.1 Archivo,sans-serif;text-transform:uppercase}
+.mn-g span{font:400 18px/1 Anton,Archivo,sans-serif;color:var(--gris)}
+.mn-top{min-width:0}
+.mn-top-nom{min-width:0;overflow-wrap:anywhere}
+.mn-st{display:flex;flex-wrap:wrap;gap:8px;align-items:stretch;padding:0 12px 16px}
+.mn-st span{display:grid;gap:5px;min-width:84px;padding:10px 12px;border:1px solid #2E2E33;border-radius:4px;background:#141417}
+.mn-st b{font:400 28px/1 Anton,Archivo,sans-serif;color:#F6F6F6;white-space:nowrap}
+.mn-st small{font:700 11.5px/1 "Barlow Condensed",sans-serif;letter-spacing:.08em;color:var(--gris)}
+.mn-ventaja{align-self:center;padding:7px 10px;border:2px solid #030304;background:#FFD024;color:#030304;font:800 13px/1.15 Archivo,sans-serif;
+  font-style:normal;rotate:-1.5deg;box-shadow:3px 3px 0 var(--magenta)}
+.mn-vacio{margin:0 12px 6px;padding:14px;border:1px dashed #2E2E33;border-radius:4px;color:var(--gris);font:500 13.5px/1.4 Archivo,sans-serif}
+.mn-lista li.p2 .mn-n,.mn-lista li.p3 .mn-n{display:grid;place-items:center;width:36px;height:36px;border-radius:50%;color:#030304;font-size:22px}
+.mn-lista li.p2 .mn-n{background:#C9CED6}
+.mn-lista li.p3 .mn-n{background:#C98A4B}
+.mn-barra{height:8px;border-radius:4px}
+.mn-lista li.p2 .mn-barra i{background:#C9CED6}
+.mn-lista li.p3 .mn-barra i{background:#C98A4B}
 @media (max-width: 899.98px){
   .app .mn{grid-template-columns:150px minmax(0,1fr);gap:14px}
   .app .mn-lado{display:contents}
@@ -6056,6 +6085,16 @@ dialog.pn-pop.pop-gratis{--pc:#F5C542;width:min(640px,calc(100vw - 32px))}
   .app .mn-t b{font-size:15px}
   .app .mn-barra{grid-area:b;height:4px}
   .app .mn-v{grid-area:v;font-size:24px}
+  /* el #1 en el celular: el nombre y sus números se salían por la derecha */
+  .app .mn-top-t b{flex-wrap:wrap;font-size:20px}
+  .app .mn-st{grid-column:1/-1;padding:0 0 4px;gap:6px}
+  .app .mn-st span{min-width:0;flex:1 1 64px;padding:8px}
+  .app .mn-st b{font-size:22px}
+  .app .mn-ventaja{flex-basis:100%;text-align:center;rotate:0deg}
+  .app .mn-vacio{grid-column:1/-1;margin:0}
+  .app .mn-tile-col{width:150px}
+  .app .mn-gente{display:none}
+  .app .mn-lista li.p2 .mn-n,.app .mn-lista li.p3 .mn-n{width:24px;height:24px;font-size:15px}
 }
 
 /* ═══ 👕 EL MERCHANDISING, OPCIÓN A (13/11/2026, Dlx: «A y A»): el drop. Una remera grande sobre el tono de su servidor

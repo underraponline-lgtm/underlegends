@@ -11,6 +11,18 @@
  ],
  "cambios": [
     {
+        "version": "5.38",
+        "dia": "2026-11-15",
+        "cuando": "2026-11-15T02:17:00-05:00",
+        "titulo": "Los que mandan, más claros",
+        "items": [
+            "En **Los que mandan**, el **#1 trae sus números en cuadros** (OVR, puntos, eventos, campeonatos… según el ranking) y **cuánto le saca al #2**.",
+            "El #2 y el #3 llevan su **medalla de plata y de bronce**, en el número y en la barra.",
+            "En **Países y Crews**, la bandera o el escudo va entero y debajo, **sus tres mejores**.",
+            "Tu fila va a lo ancho debajo de todo, y **en el celular el #1 ya no se sale de la pantalla**."
+        ]
+    },
+    {
         "version": "5.37",
         "dia": "2026-11-15",
         "cuando": "2026-11-15T02:10:00-05:00",
