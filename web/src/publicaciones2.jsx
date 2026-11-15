@@ -21,6 +21,8 @@ import { Miniatura, abrirVideo } from './video.jsx';
 import { Elegido, X2 } from './encuestas.jsx';
 import { useAplausos } from './aplausos.js';
 import { Hilo } from './comentarios.jsx';
+import { usePases } from './pase.js';
+import { SelloPremium, esPremium } from './sello.jsx';
 import { QuienGana } from './quiengana.jsx';
 import { PLATAFORMA } from './publicaciones.jsx';
 import CSS_PAGINA from './css/publicaciones2.css?inline';
@@ -44,9 +46,11 @@ const fuerte = (it) => it.tipo === 'campeon' || it.tipo === 'mesaward' || it.tip
 
 // 🌙 un nombre del resumen de la noche, con link a su perfil si está en la temporada (las claves van en cada renglón,
 // no en `ks`: ver `muro.noches()`)
-function Nombre({ liga, x }) {
+// 💎 `pub` (lo público del Pase): con el premium, el sello al lado del nombre
+function Nombre({ liga, x, pub }) {
   const n = limpio(x && x.n);
-  return x && x.k && liga.T[x.k] ? <a href={'#/r/' + encodeURIComponent(x.k)}>{n}</a> : <b>{n}</b>;
+  if (!(x && x.k && liga.T[x.k])) return <b>{n}</b>;
+  return <><a href={'#/r/' + encodeURIComponent(x.k)}>{n}</a>{esPremium(pub, x.k) ? <SelloPremium t={13} cls="sp-prem-in" /> : null}</>;
 }
 const y = (xs) => xs.reduce((acc, x, i) => (i ? acc.concat([i === xs.length - 1 ? ' y ' : ', ', x]) : [x]), []);
 //: cuántos campeones se nombran en el resumen antes de «y N más»
@@ -73,22 +77,24 @@ function Felicitar({ liga, it, A, chico }) {
   );
 }
 
-// los nombres de una publicación, con link a su perfil si está en la temporada
-function nombresDe(liga, it) {
+// los nombres de una publicación, con link a su perfil si está en la temporada (y el sello Premium de quien lo tenga)
+function nombresDe(liga, it, pub) {
   const q = (it.quien || []).map(limpio);
   const ks = Array.isArray(it.ks) ? it.ks : [];
-  return q.map((n, i) => (ks[i] && liga.T[ks[i]] ? <a key={i} href={'#/r/' + encodeURIComponent(ks[i])}>{n}</a> : <b key={i}>{n}</b>))
+  return q.map((n, i) => (ks[i] && liga.T[ks[i]]
+    ? <Fragment key={i}><a href={'#/r/' + encodeURIComponent(ks[i])}>{n}</a>{esPremium(pub, ks[i]) ? <SelloPremium t={13} cls="sp-prem-in" /> : null}</Fragment>
+    : <b key={i}>{n}</b>))
     .reduce((acc, x, i) => (i ? acc.concat([i === q.length - 1 ? ' y ' : ', ', x]) : [x]), []);
 }
 
 // ── qué dice cada publicación: la categoría, lo que se ve, el texto, el detalle y adónde lleva (lo de publicaciones.jsx,
 // con el dibujo nuevo). `media`: la imagen va arriba y grande (video, flyer) ──
-function contenido(liga, it) {
+function contenido(liga, it, pub) {
   const q = (it.quien || []).map(limpio);
   const ks = Array.isArray(it.ks) ? it.ks : [];
-  const nombres = nombresDe(liga, it);
+  const nombres = nombresDe(liga, it, pub);
   const f0 = ks[0] ? liga.T[ks[0]] : null;
-  const cara = <Cara liga={liga} k={ks[0] || ''} nombre={q[0] || '?'} cls="cara pb-cara" />;
+  const cara = <Cara liga={liga} k={ks[0] || ''} nombre={q[0] || '?'} cls={'cara pb-cara' + (esPremium(pub, ks[0]) ? ' sp-prem-aro' : '')} />;
   const c = { cat: '', vis: null, txt: null, det: '', acc: null, media: false };
   if (it.tipo === 'campeon') {
     c.cat = 'Campeón · ' + siglaDe(it.sv);
@@ -224,14 +230,14 @@ function contenido(liga, it) {
     c.cat = 'Resumen de la noche' + (d ? ' · ' + d + '/' + m : '');
     c.vis = <img className="pb-logo" alt="" src="/ul.png" />;
     const cs = (it.campeones || []).slice(0, NOCHE_CAMPEONES).map((e, i) => (
-      <Fragment key={i}>{y((e.quien || []).map(([n, k], j) => <Nombre key={j} liga={liga} x={{ n, k }} />))} ganó <b>{limpio(e.ev)}</b></Fragment>));
+      <Fragment key={i}>{y((e.quien || []).map(([n, k], j) => <Nombre key={j} liga={liga} x={{ n, k }} pub={pub} />))} ganó <b>{limpio(e.ev)}</b></Fragment>));
     const mas = (it.campeones || []).length - cs.length;
     c.txt = <>{it.eventos} {it.eventos === 1 ? 'evento' : 'eventos'} y {num(it.part)} {it.part === 1 ? 'participación' : 'participaciones'}.{' '}
       {cs.reduce((acc, x, i) => (i ? acc.concat(['; ', x]) : [x]), [])}{mas > 0 ? <>, y {mas} más</> : null}{cs.length ? '.' : ''}</>;
     const partes = [];
-    if ((it.suman || []).length) partes.push(<Fragment key="s">Más puntos: {y(it.suman.map((x, i) => <Fragment key={i}><Nombre liga={liga} x={x} /> +{num(x.pts)}</Fragment>))}</Fragment>);
-    if ((it.suben || []).length) partes.push(<Fragment key="u">Subieron: {y(it.suben.map((x, i) => <Fragment key={i}><Nombre liga={liga} x={x} /> #{x.de} → #{x.a}</Fragment>))}</Fragment>);
-    if ((it.sorpresas || []).length) partes.push(<Fragment key="p">Sorpresa: {y(it.sorpresas.map((x, i) => <Fragment key={i}><Nombre liga={liga} x={x} />{x.que === 'debut' ? ' ganó en su primer evento' : ' ganó su primer título' + (x.desde ? ' (venía #' + x.desde + ')' : '')}</Fragment>))}</Fragment>);
+    if ((it.suman || []).length) partes.push(<Fragment key="s">Más puntos: {y(it.suman.map((x, i) => <Fragment key={i}><Nombre liga={liga} x={x} pub={pub} /> +{num(x.pts)}</Fragment>))}</Fragment>);
+    if ((it.suben || []).length) partes.push(<Fragment key="u">Subieron: {y(it.suben.map((x, i) => <Fragment key={i}><Nombre liga={liga} x={x} pub={pub} /> #{x.de} → #{x.a}</Fragment>))}</Fragment>);
+    if ((it.sorpresas || []).length) partes.push(<Fragment key="p">Sorpresa: {y(it.sorpresas.map((x, i) => <Fragment key={i}><Nombre liga={liga} x={x} pub={pub} />{x.que === 'debut' ? ' ganó en su primer evento' : ' ganó su primer título' + (x.desde ? ' (venía #' + x.desde + ')' : '')}</Fragment>))}</Fragment>);
     c.det = partes.length ? partes.reduce((acc, x, i) => (i ? acc.concat([' · ', x]) : [x]), []) : '';
     c.acc = <a className="pb-a" href="#/eventos">Ver los eventos</a>;
   } else if (it.tipo === 'anuncio') {
@@ -246,7 +252,8 @@ function contenido(liga, it) {
 
 // ── una publicación suelta ──
 function Post({ liga, it, A, nuevo }) {
-  const c = contenido(liga, it);
+  const pub = usePases();
+  const c = contenido(liga, it, pub);
   if (!c) return null;
   const logro = !!LOGROS[it.tipo];
   return (
@@ -330,6 +337,7 @@ function Cartas({ liga, xs, nuevo }) {
 
 // ── las subidas de rango del día, juntas: cada una con su letra y su 👏 ──
 function Rangos({ liga, xs, A, visto }) {
+  const pub = usePases();
   if (xs.length === 1) return <Post liga={liga} it={xs[0]} A={A} nuevo={visto && utc(xs[0].t) > visto} />;
   return (
     <article className="pb-post grupo rangos">
@@ -341,8 +349,11 @@ function Rangos({ liga, xs, A, visto }) {
             const n0 = limpio((it.quien || [])[0] || '');
             return (
               <li key={it.id || it.t + n0} data-pub={it.id || undefined}>
-                <Cara liga={liga} k={ks[0] || ''} nombre={n0} cls="cara pb-fcara" />
-                <span className="pb-fn">{ks[0] && liga.T[ks[0]] ? <a href={'#/r/' + encodeURIComponent(ks[0])}>{n0}</a> : <b>{n0}</b>}
+                <Cara liga={liga} k={ks[0] || ''} nombre={n0} cls={'cara pb-fcara' + (esPremium(pub, ks[0]) ? ' sp-prem-aro' : '')} />
+                {/* 💎 con el premium, el nombre y el sello en un renglón: `.pb-fn` es una grilla y el sello bajaba solo */}
+                <span className="pb-fn">{ks[0] && liga.T[ks[0]] ? (esPremium(pub, ks[0])
+                  ? <span className="sp-prem-fila"><a href={'#/r/' + encodeURIComponent(ks[0])}>{n0}</a><SelloPremium t={13} /></span>
+                  : <a href={'#/r/' + encodeURIComponent(ks[0])}>{n0}</a>) : <b>{n0}</b>}
                   <small>{it.primero ? 'su primera letra' : 'pasa a rango'}</small></span>
                 <span className="pb-rg chico" style={{ background: liga.colorRg(it.rg) }}>{it.rg}</span>
                 <Felicitar liga={liga} it={it} A={A} chico />

@@ -6,6 +6,7 @@ import { PJ, delHilo, useComentarios } from './comentarios.jsx';
 import { Escudo, escudoDe } from './escudo.jsx';
 import { Bandera, Cara, Carta, Compartir, Ico, Pest, Rango, Sec, aDiscord, accion, enlace, nombrePais } from './piezas.jsx';
 import { avance, premioTexto, proximoEspecial, usePase, usePases } from './pase.js';
+import { SelloPremium, esPremium } from './sello.jsx';
 import { useEffect, useRef, useState } from 'react';
 import { pedirLigas } from './ligas_datos.js';
 
@@ -279,6 +280,8 @@ export function LuSocial({ liga, it, A, hilo, P }) {
 // grandes»). Antes flotaba al pasar el mouse y no se leía; ahora va debajo de la novedad, con la cara de quien escribió.
 // En la grande, los dos últimos. ⚠️ El simulado lleva su etiqueta: eso lo decide el permiso en el ciclo, nunca acá
 export function LuNube({ liga, it, hilo, n = 1 }) {
+  // 💎 el aro dorado en la cara de quien tiene el Pase de rapero premium
+  const pub = usePases();
   if (!hilo.length) return null;
   const cs = hilo.slice(-n);
   return (
@@ -287,7 +290,7 @@ export function LuNube({ liga, it, hilo, n = 1 }) {
         const pj = c.et === 'l' ? PJ[c.k] || ['LG', '#E41373'] : null;
         return (
           <span className="lu-nube-c" key={c.id}>
-            {pj ? <span className="lu-nube-cara pj" style={{ background: pj[1] }}>{pj[0]}</span> : <Cara liga={liga} k={c.k} nombre={c.n} cls="lu-nube-cara" lazy />}
+            {pj ? <span className="lu-nube-cara pj" style={{ background: pj[1] }}>{pj[0]}</span> : <Cara liga={liga} k={c.k} nombre={c.n} cls={'lu-nube-cara' + (esPremium(pub, c.k) ? ' sp-prem-aro' : '')} lazy />}
             <span className="lu-nube-x"><b>{limpio(c.n)}{c.et === 's' ? <i>simulado</i> : null}</b><span>{c.tx}</span></span>
           </span>
         );
@@ -548,7 +551,8 @@ function ventaja(c, a, b) {
   const t = c === 'competitivo' ? d.toFixed(1).replace('.', ',') : c === 'paises' || c === 'crews' ? corto(d) : num(d);
   return '+' + t + ' ' + ((d === 1 && uno[c]) || VENTAJA[c] || '') + ' sobre ' + b.nom;
 }
-function Mandan({ liga, c, xs, yoFila }) {
+// 💎 `pub`: lo público del Pase, para el sello Premium de cada persona (`pk`: los países y las crews no lo tienen)
+function Mandan({ liga, c, xs, yoFila, pub }) {
   const uno = xs[0];
   const tope = Math.max(1, Number(uno.v) || 0);
   return (
@@ -559,7 +563,7 @@ function Mandan({ liga, c, xs, yoFila }) {
           <span className="mn-n1">#1</span>
           <span className="mn-top-t">
             <small>{QUIEN_MANDA[c] || ''}</small>
-            <b>{uno.cc ? <Bandera cc={uno.cc} cls="mn-flag" /> : null}<span className="mn-top-nom">{uno.nom}</span></b>
+            <b>{uno.cc ? <Bandera cc={uno.cc} cls="mn-flag" /> : null}<span className="mn-top-nom">{uno.nom}</span>{esPremium(pub, uno.pk) ? <SelloPremium t={18} /> : null}</b>
             {uno.st && uno.st.length ? null : <span>{uno.sub1 || uno.sub}</span>}
           </span>
         </a>
@@ -577,7 +581,7 @@ function Mandan({ liga, c, xs, yoFila }) {
                 <span className="mn-n">{i + 2}</span>
                 <span className="mn-mini">{x.mini}</span>
                 <span className="mn-t">
-                  <b>{x.cc ? <Bandera cc={x.cc} cls="mn-flag" /> : null}<span className="mn-nom">{x.nom}</span>{x.rg ? <Rango liga={liga} rg={x.rg} /> : null}</b>
+                  <b>{x.cc ? <Bandera cc={x.cc} cls="mn-flag" /> : null}<span className="mn-nom">{x.nom}</span>{esPremium(pub, x.pk) ? <SelloPremium t={13} /> : null}{x.rg ? <Rango liga={liga} rg={x.rg} /> : null}</b>
                   <small>{x.sub}</small>
                 </span>
                 <span className="mn-barra" aria-hidden="true"><i style={{ width: Math.max(3, Math.min(100, Math.round((100 * (Number(x.v) || 0)) / tope))) + '%' }} /></span>
@@ -603,14 +607,15 @@ export function LosQueMandan({ liga, dc }) {
   const ligasL = ligasR && ligasR.lobby;
   const T = liga.oficiales();
   const yo = liga.yo;
-  const cara = yo ? <Cara liga={liga} k={yo.k} nombre={yo.n} cls="mc-yo-c" /> : null;
+  const pub = usePases();
+  const cara = yo ? <Cara liga={liga} k={yo.k} nombre={yo.n} cls={'mc-yo-c' + (esPremium(pub, yo.k) ? ' sp-prem-aro' : '')} /> : null;
   const quien = yo ? 'TÚ · ' + limpio(yo.n).toUpperCase() : '';
   const fila = (x, href) => (x ? <Puesto cara={cara} quien={quien} pos={'#' + x.pos} txt={x.txt} pct={x.pct} href={href} /> : null);
   // una persona de la tabla: su carta grande (abre su visor) y la chica en la fila, que lleva a su perfil
   // `sub1`: lo que dice el #1, que tiene más lugar (si no, lo mismo que las filas)
   // `st`: los números del #1, en cuadros (`[valor, qué es]`)
   const per = (f, cual, v, vt, vl, sub, sub1, st) => ({
-    key: f.k, href: '#/r/' + encodeURIComponent(f.k), nom: limpio(f.n), cc: f.cc, rg: f.rg, sub, sub1: sub1 || sub, v, vt, vl, st,
+    key: f.k, pk: f.k, href: '#/r/' + encodeURIComponent(f.k), nom: limpio(f.n), cc: f.cc, rg: f.rg, sub, sub1: sub1 || sub, v, vt, vl, st,
     grande: <Carta liga={liga} k={f.k} cual={cual} cls="ci mn-carta" />,
     mini: <Carta liga={liga} k={f.k} cual={cual} cls="ci mn-ci" abre={false} />,
   });
@@ -667,7 +672,7 @@ export function LosQueMandan({ liga, dc }) {
     cats.push(['ligas', 'Ligas', mejores.map((x) => {
       const f = liga.T[x.k];
       return {
-        key: x.k, href: '#/ligas/' + encodeURIComponent(x.lid), nom: limpio(f.n), cc: f.cc, sub: nomLiga[x.lid] ? limpio(nomLiga[x.lid]) : 'Su liga', v: x.ovr, vt: x.ovr, vl: 'OVR',
+        key: x.k, pk: x.k, href: '#/ligas/' + encodeURIComponent(x.lid), nom: limpio(f.n), cc: f.cc, sub: nomLiga[x.lid] ? limpio(nomLiga[x.lid]) : 'Su liga', v: x.ovr, vt: x.ovr, vl: 'OVR',
         st: [[x.ovr, 'OVR DE LIGA'], [(ligasC[x.k] || []).length, (ligasC[x.k] || []).length === 1 ? 'LIGA' : 'LIGAS']],
         grande: <img className="ci mn-carta" alt={'Carta de liga de ' + limpio(f.n)} loading="lazy" src={src(x, true)} />,
         mini: <img className="ci mn-ci" alt="" loading="lazy" src={src(x, true)} />,
@@ -722,7 +727,7 @@ export function LosQueMandan({ liga, dc }) {
     <div className="mc-yo invita"><span className="mc-yo-t">¿Y tú? Entra con Discord y ves tu puesto en cada categoría.</span>
       <button type="button" className="btn verde chico" onClick={accion.entrar}>Entrar</button></div>
   ) : null;
-  const items = cats.filter((x) => x[2].length).map(([c, et, xs, yoFila]) => ({ c, et, t: 'Los que mandan', cuerpo: <Mandan liga={liga} c={c} xs={xs} yoFila={yoFila || invita} /> }));
+  const items = cats.filter((x) => x[2].length).map(([c, et, xs, yoFila]) => ({ c, et, t: 'Los que mandan', cuerpo: <Mandan liga={liga} c={c} xs={xs} yoFila={yoFila || invita} pub={pub} /> }));
   return <Pest id="raperos" titulo="Los que mandan" bajada="Los cinco primeros de cada ranking de la temporada." enlace="Todos los raperos" href="#/ranking" items={items} extra="negra raya" />;
 }
 

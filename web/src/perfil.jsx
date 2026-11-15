@@ -17,6 +17,7 @@ import { REDES } from './servidor.jsx';
 import { RED_SVG } from './redes_ico.jsx';
 import { useNiveles } from './racha.js';
 import { usePaseDe, usePases } from './pase.js';
+import { SelloPremiumBoton, boostPremium, marcoPremium } from './sello.jsx';
 import { textoRol, useRoles } from './roles.js';
 import { urlFondo, useFondos } from './fondos.js';
 import { svElegido, useElegidos } from './elegidos.js';
@@ -462,11 +463,17 @@ function Cabeza({ liga, f, k, p, dc, esYo, onEmblemas, ems, numeros, ex }) {
       <section className="pf8-cab">
         {/* 👤 SU FOTO, EN UN CÍRCULO, en vez de la carta (Dlx, 21/10/2026: «en vez de la tarjeta que sea la foto elegida en
             mi perfil… en un círculo»): la de /foto, o la inicial si no tiene. Las cartas siguen en la puerta de Tarjetas */}
-        <div className="pf8-carta"><Cara liga={liga} k={k} nombre={f.n} cls="cara pf8-cara" grande /></div>
+        <div className="pf8-carta"><Cara liga={liga} k={k} nombre={f.n} cls={'cara pf8-cara' + (pa && pa.premium ? ' sp-prem-aro-g' : '')} grande /></div>
         <div className="pf8-tx">
           <span className="tag">{f.solo ? 'EN LA LIGA' : f.pos ? '#' + f.pos + ' DE LA TEMPORADA' : 'FUERA DE CONCURSO'} · {liga.temp}</span>
           <div className="pf8-nom">
-            <h1 className="hero-ev largo" style={pa && pa.color ? { color: pa.color } : undefined}>{limpio(f.n)}</h1>
+            {/* 💎 el sello Premium al lado del nombre: se toca y explica qué es (sello.jsx) */}
+            {pa && pa.premium ? (
+              <span className="sp-prem-w">
+                <h1 className="hero-ev largo" style={pa.color ? { color: pa.color } : undefined}>{limpio(f.n)}</h1>
+                <SelloPremiumBoton t={22} boost={boostPremium(pub)} />
+              </span>
+            ) : <h1 className="hero-ev largo" style={pa && pa.color ? { color: pa.color } : undefined}>{limpio(f.n)}</h1>}
             {cn || ems.length ? (
               <div className="pf8-pills">
                 {cn ? (chref ? <a className="pf8-crew" href={chref} title={limpio(cn)}><b>{csig || '?'}</b><span>{limpio(cn)}</span>{cv && cv.rol !== 'miembro' ? <RolCrew rol={cv.rol} /> : null}</a>
@@ -481,7 +488,8 @@ function Cabeza({ liga, f, k, p, dc, esYo, onEmblemas, ems, numeros, ex }) {
             {f.cc ? <a href={'#/pais/' + f.cc}><Bandera cc={f.cc} cls="pf-flag" />{nombrePais(f.cc)}</a> : null}
             {svE ? <a href={'#/sv/' + siglaDe(svE)} title="Eligió este servidor"><img alt="" src={liga.logo(svE)} />{siglaDe(svE)}</a> : null}
             {nv ? <span title="Sube jugando, entrando cada día y con lo que hace en la Liga">Nivel {nv[0]}</span> : null}
-            {pa ? <a href="#/pase" title={'Su nivel en el Pase de rapero de la temporada' + (pa.premium ? ', con el premium' : '')}>Pase{pa.nivel ? ' ' + pa.nivel : ''}{pa.premium ? ' ◆' : ''}</a> : null}
+            {pa ? <a href="#/pase" title={'Su nivel en el Pase de rapero de la temporada' + (pa.premium ? ', con el premium' : '')}>Pase{pa.nivel ? ' ' + pa.nivel : ''}</a> : null}
+            {pa && pa.premium ? <span className="sp-prem-chip-w"><a className="sp-prem-chip" href="#/pase" title="Tiene el Pase de rapero premium de la T1">PREMIUM · T1{marcoPremium(pub, k) ? ' · marco ' + marcoPremium(pub, k) : ''}</a></span> : null}
             {frase}
           </p>
           {f.nv ? <p className="pf-nv"><b>Sin verificar.</b> {RQ.sinVerificar(f.nv, esYo)}{esYo ? <> <a href="#/cuenta/verificar">Verificarme</a></> : null}</p> : null}

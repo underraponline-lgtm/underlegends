@@ -9,6 +9,8 @@
 import { useEffect, useRef, useState } from 'react';
 import { DUENO, limpio, quienMira, utc } from './liga.js';
 import { Cara, accion } from './piezas.jsx';
+import { usePases } from './pase.js';
+import { SelloPremium, esPremium } from './sello.jsx';
 
 const W = typeof window !== 'undefined' ? window : {};
 const E = { por: null, pidiendo: false, t: 0, oyentes: new Set(), mios: {} };
@@ -75,17 +77,20 @@ function hace(t, ahora) {
   return 'hace ' + d + (d === 1 ? ' día' : ' días');
 }
 
-function Comentario({ liga, c, ahora, yo, dueno, onResponder, onBorrar, onReportar, todos }) {
+function Comentario({ liga, c, ahora, yo, dueno, onResponder, onBorrar, onReportar, todos, pub }) {
   const pj = c.et === 'l' ? PJ[c.k] || ['LG', '#E41373'] : null;
   const f = !pj ? liga.T[c.k] : null;
+  // 💎 el sello Premium: sólo de una persona (los de la Liga son un personaje, no un perfil)
+  const prem = !pj && esPremium(pub, c.k);
   const a = c.resp ? todos.find((x) => x.id === c.resp) : null;
   return (
     <li className="cmh-c">
       {pj ? <span className="cmh-pj" style={{ background: pj[1] }}>{pj[0]}</span>
-        : <Cara liga={liga} k={c.k} nombre={c.n} cls="cara cmh-cara" lazy />}
+        : <Cara liga={liga} k={c.k} nombre={c.n} cls={'cara cmh-cara' + (prem ? ' sp-prem-aro' : '')} lazy />}
       <div className="cmh-cu">
         <div className="cmh-q">
           {f ? <a href={'#/r/' + encodeURIComponent(c.k)}>{limpio(c.n)}</a> : <b>{limpio(c.n)}</b>}
+          {prem ? <SelloPremium t={13} /> : null}
           {f && f.rg ? <i className="cmh-rg" style={{ background: f.rgc || liga.colorRg(f.rg) }}>{f.rg}</i> : null}
           {c.et === 's' ? <i className="cmh-et sim">simulado</i> : c.et === 'l' ? <i className="cmh-et liga">Liga</i> : null}
           <time>{hace(c.t, ahora)}</time>
@@ -108,6 +113,7 @@ function Comentario({ liga, c, ahora, yo, dueno, onResponder, onBorrar, onReport
  */
 export function Hilo({ liga, it, chico }) {
   useComentarios();
+  const pub = usePases();
   const [abierto, setAbierto] = useState(() => !!it.id && W.__pubFoco === it.id);
   // 🎯 y si el foco cambia estando ya en Publicaciones (otro aviso de la campana), también se abre
   const foco = W.__pubFoco;
@@ -169,7 +175,7 @@ export function Hilo({ liga, it, chico }) {
         <>
           {!abierto && n > 1 ? <button type="button" className="cmh-mas" onClick={() => setAbierto(true)}>Ver los {n} comentarios</button> : null}
           <ul className="cmh-l">
-            {ver.map((c) => <Comentario key={c.id} liga={liga} c={c} ahora={ahora} yo={yo} dueno={dueno} todos={todos}
+            {ver.map((c) => <Comentario key={c.id} liga={liga} c={c} ahora={ahora} yo={yo} dueno={dueno} todos={todos} pub={pub}
               onResponder={responder} onBorrar={borrar} onReportar={reportar} />)}
           </ul>
         </>

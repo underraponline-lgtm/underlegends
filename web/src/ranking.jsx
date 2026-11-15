@@ -28,6 +28,7 @@ import { Misiones } from './misiones.jsx';
 import { svElegido, useElegidos } from './elegidos.js';
 import { Ascenso, ascensoSinLiga, useDetalle } from './ligas.jsx';
 import { usePases } from './pase.js';
+import { SelloPremium, esPremium } from './sello.jsx';
 import { TierChip } from './crewpanel.jsx';
 import { Porque, useMira } from './porque.jsx';
 import { conCrewsVivas, useCrews } from './crews.js';
@@ -164,6 +165,7 @@ function Quien({ x, f }) {
       <span className="rk-qn">
         <span className="rk-qa">
           {f.k ? <a href={'#/r/' + encodeURIComponent(f.k)}>{nombre}</a> : <b>{nombre}</b>}
+          {esPremium(x.pub, f.k) ? <SelloPremium t={14} /> : null}
           <Bandera cc={f.cc} cls="rk-flag" />
         </span>
         {/* las etiquetas van ANTES del servidor y la crew: al final se las comía el «…» de una crew larga en el celular */}
@@ -1061,6 +1063,8 @@ export function Ranking({ liga, sub: subRuta, ver: abre = '', dc, raiz }) {
 
   // 🏠 de dónde es cada uno, sólo si lo eligió (Dlx, 12/10/2026). Ver elegidos.js
   const eleg = useElegidos();
+  // 💎 lo público del Pase, UNA vez para toda la tabla: el sello Premium de cada fila sale de acá (`x.pub`)
+  const pub = usePases();
   // ⚡ un ranking con dos vistas (Actividad): la elegida pisa filas, orden, columnas y la explicación
   const [modo, setModo] = useState(0);
   const cfg0 = subDe(liga, sub) || SUBS.temporada;
@@ -1078,7 +1082,7 @@ export function Ranking({ liga, sub: subRuta, ver: abre = '', dc, raiz }) {
   const x = {
     liga, mw: mwOn, yoK: yo ? yo.k : '', sigo: new Set(liga.sigue || []), eleg, sem,
     miCc: yo ? yo.cc : '', miCrew: miCrewF ? limpio(miCrewF.crew).toLowerCase() : '',
-    barra: sub === 'temporada', maxPts,
+    barra: sub === 'temporada', maxPts, pub,
   };
 
   // 🆕 las crews recién fundadas, sin esperar al ciclo (`conCrewsVivas()`): la lista pública, sólo en esta pestaña

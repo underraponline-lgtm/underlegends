@@ -14,6 +14,7 @@ import { useEffect, useState } from 'react';
 import { DIAS, MESES, limpio, num, siglaDe } from './liga.js';
 import { Cara, Ico, Sec, accion, usePerfiles } from './piezas.jsx';
 import { usePases } from './pase.js';
+import { SelloPremium, esPremium } from './sello.jsx';
 import { Nominado, reparto, useSalon } from './mesawards.jsx';
 import { useIndice } from './indice.js';
 import CSS_PAGINA from './css/salon2.css?inline';
@@ -364,9 +365,10 @@ function SalonPase({ liga }) {
       {temps.map((t) => (
         <ol key={t} className="sl-lista">{por[t].filter(([k]) => liga.T[k]).map(([k, cuando], i) => (
           <li key={k}>
-            <Persona liga={liga} k={k} />
+            {/* 💎 con el premium, el aro dorado en la cara y el sello al lado del nombre */}
+            <Persona liga={liga} k={k} cls={'sl-cara' + (esPremium(pub, k) ? ' sp-prem-aro' : '')} />
             <span><small>{nombreTemp(t)} · {i + 1}.º EN COMPLETARLO</small>
-              <b><a href={'#/r/' + encodeURIComponent(k)}>{nomDe(liga, k)}</a></b>
+              <b><a href={'#/r/' + encodeURIComponent(k)}>{nomDe(liga, k)}</a>{esPremium(pub, k) ? <SelloPremium t={14} cls="sp-prem-in" /> : null}</b>
               <em>{liga.cuando(new Date(cuando).toISOString())}</em></span>
           </li>
         ))}</ol>

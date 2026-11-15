@@ -6514,3 +6514,35 @@ dialog.pn-pop.un-pop{--pc:#29B298;width:min(540px,calc(100vw - 32px));max-height
 .lgh-sc-premio{display:flex;align-items:center;gap:10px;margin:0 0 12px;padding:10px 12px;border:1.5px solid #6b5414;border-radius:4px;background:#16120a;font:500 14px/1.4 Archivo,sans-serif;color:#d9dbe0}
 .lgh-sc-premio svg{flex:none;color:#FFD24A}
 .lgh-sc-premio b{color:#FFD24A;font-weight:800}
+
+/* 💎 el sello Premium (5.xx): al lado del nombre, para que se vea quién tiene el Pase de rapero premium (sello.jsx). El
+   rombo es un SVG con sus colores adentro; acá sólo cómo se para, el aro de la cara y el globo del perfil. Sin degradés ni
+   blur; los colores son los del metal premium y oro de marcos.jsx. ⚠️ `sp-sello` y `sp-oro` ya existen en css/socio2.css:
+   por eso todo esto va con `sp-prem` */
+.sp-prem{display:inline-block;flex:none;vertical-align:-.14em;overflow:visible}
+/* en un texto corrido (las publicaciones), un respiro antes; en una grilla, el nombre y el sello en un renglón */
+.sp-prem-in{margin-left:.3em}
+.sp-prem-fila{display:inline-flex;align-items:center;gap:6px;min-width:0}
+/* el aro dorado de la cara: un hilo oscuro para separarlo de la foto y el oro afuera. Doble clase para ganarle a los
+   `box-shadow` propios de cada cara (.pf8-cara, .mc-yo-c…) */
+.app .sp-prem-aro.sp-prem-aro{box-shadow:0 0 0 2px #030304,0 0 0 4px #F5C542}
+.app .sp-prem-aro-g.sp-prem-aro-g{box-shadow:0 0 0 3px #030304,0 0 0 7px #F5C542}
+@media (min-width: 900px){.app .sp-prem-aro-g.sp-prem-aro-g{box-shadow:0 0 0 4px #030304,0 0 0 9px #F5C542}}
+/* el nombre y el sello juntos, y el ancla del globo */
+.sp-prem-w{position:relative;display:inline-flex;align-items:center;gap:10px;min-width:0;max-width:100%}
+.sp-prem-w > h1{min-width:0}
+.sp-prem-caja{display:inline-flex;flex:none}
+.sp-prem-btn{display:inline-grid;place-items:center;padding:4px;margin:-4px;border:0;background:none;cursor:pointer;border-radius:2px;line-height:0}
+.sp-prem-btn:focus-visible{outline:2px solid #F5C542;outline-offset:1px}
+@media (hover: hover) and (pointer: fine){.sp-prem-btn:hover .sp-prem{transform:scale(1.08)}}
+.sp-prem-btn .sp-prem{transition:transform .15s ease-out}
+@media (prefers-reduced-motion: reduce){.sp-prem-btn .sp-prem{transition:none}}
+.sp-prem-pop{position:absolute;z-index:30;top:calc(100% + 10px);left:0;width:min(300px,calc(100vw - 32px));display:grid;gap:8px;
+  padding:12px 14px;background:var(--escenario);color:var(--esc-tinta);border:1px solid #F5C542;border-radius:4px;
+  box-shadow:0 8px 24px rgba(0,0,0,.45);font:500 14px/1.4 Archivo,sans-serif;letter-spacing:0;text-transform:none;text-align:left}
+.sp-prem-pop b{color:#F5C542;font-weight:800}
+.sp-prem-pop a{justify-self:start;color:#F5C542;font:700 13px/1.2 "Barlow Condensed",sans-serif;letter-spacing:.08em;text-transform:uppercase;text-underline-offset:3px}
+/* la pastilla del perfil («PREMIUM · T1 · marco Oro»): va envuelta porque `.pf8-segs > :not(:first-child)::before` pone el «·»
+   en el hijo directo, y adentro de la pastilla quedaba dentro del borde */
+.sp-prem-chip-w{display:inline-flex;align-items:center}
+.app .sp-prem-chip{display:inline-flex;align-items:center;gap:5px;padding:1px 6px;border:1px solid #F5C542;border-radius:3px;color:#F5C542;text-decoration:none;white-space:nowrap}

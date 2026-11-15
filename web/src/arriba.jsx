@@ -10,7 +10,8 @@ import { YoMenu } from './yomenu.jsx';
 import { ERR_LIBRE, libreAccion, pedirLibres, useLibres } from './libres.js';
 import { useAplausos } from './aplausos.js';
 import { delHilo, useComentarios } from './comentarios.jsx';
-import { usePase } from './pase.js';
+import { usePase, usePases } from './pase.js';
+import { SelloPremium, esPremium } from './sello.jsx';
 import { Numero } from './anima.js';
 import { VotoVivo } from './quiengana.jsx';
 import { LuNube, LuSocial } from './medio.jsx';
@@ -197,6 +198,8 @@ const ATAJOS_BUSCA = [['Ranking', '#/ranking'], ['Eventos', '#/eventos'], ['Pase
 
 export function Buscar({ liga, onIr, sugerencias = false }) {
   const [q, setQ] = useState('');
+  // 💎 lo público del Pase, UNA vez para todo el buscador: el sello Premium de cada rapero (sólo raperos)
+  const pub = usePases();
   const [rec, setRec] = useState(leerRec);
   const ejemplo = useEjemplo(!q);
   // 🔴 TODOS LOS QUE TIENEN PERFIL, NO SÓLO LOS 200 DE LA TABLA (13/10/2026, Dlx: «a pesar de que existe Lil Drako no
@@ -300,7 +303,7 @@ export function Buscar({ liga, onIr, sugerencias = false }) {
     return () => { document.removeEventListener('pointerdown', fuera, true); window.removeEventListener('lg:dir', cambio); };
   }, [q]);
   const icono = (r) => {
-    if (r.tipo === 'rapero') return <Cara liga={liga} k={r.k} nombre={r.n} cls="cara" />;
+    if (r.tipo === 'rapero') return <Cara liga={liga} k={r.k} nombre={r.n} cls={'cara' + (esPremium(pub, r.k) ? ' sp-prem-aro' : '')} />;
     if (r.tipo === 'servidor') return <span className="cara"><img alt="" src={r.logo} /></span>;
     if (r.tipo === 'pais') return <span className="cara"><img alt="" src={'/banderas/g/' + r.cc + '.webp'} /></span>;
     if (r.tipo === 'pagina') return <span className="cara br-ico"><Ico n={r.ico || 'flecha'} t={16} /></span>;
@@ -321,14 +324,14 @@ export function Buscar({ liga, onIr, sugerencias = false }) {
               <button key={k} type="button" className={'nt-chip' + (cat === k ? ' on' : '')} aria-pressed={cat === k} onClick={() => setCat(k)}>{t}<em>{cuentaR[k] || 0}</em></button>
             ))}</div>
           ) : null}
-          <ul>{(resVer.length ? resVer : res.slice(0, 10)).map((r) => <li key={r.id}><FilaBusca liga={liga} r={r} icono={icono} ir={ir} /></li>)}</ul>
+          <ul>{(resVer.length ? resVer : res.slice(0, 10)).map((r) => <li key={r.id}><FilaBusca liga={liga} r={r} icono={icono} ir={ir} pub={pub} /></li>)}</ul>
           <p className="nt-pie bs-pie"><span>Enter abre el primero</span><span className="bs-esc">Esc cierra</span></p>
         </div>
       ) : res.length ? (
         <ul className="busca-res">
-          {res.map((r) => <li key={r.id}><a href={r.href} onClick={() => ir(r)}>{icono(r)}<span>{r.n}{r.aka ? <small className="br-aka">aka «{r.aka}»</small> : null}</span><small className="br-t">{ETIQUETA_TIPO[r.tipo]}{r.sub && r.sub !== r.n ? ' · ' + r.sub : ''}</small></a></li>)}
+          {res.map((r) => <li key={r.id}><a href={r.href} onClick={() => ir(r)}>{icono(r)}<span>{r.n}{r.tipo === 'rapero' && esPremium(pub, r.k) ? <SelloPremium t={13} cls="sp-prem-in" /> : null}{r.aka ? <small className="br-aka">aka «{r.aka}»</small> : null}</span><small className="br-t">{ETIQUETA_TIPO[r.tipo]}{r.sub && r.sub !== r.n ? ' · ' + r.sub : ''}</small></a></li>)}
         </ul>
-      ) : sugerencias && !q.trim() ? <Sugerencias liga={liga} rec={rec} icono={icono} ir={ir} borrar={() => { try { localStorage.removeItem(REC_K); } catch (e) { /* nada */ } setRec([]); }} />
+      ) : sugerencias && !q.trim() ? <Sugerencias liga={liga} rec={rec} icono={icono} ir={ir} pub={pub} borrar={() => { try { localStorage.removeItem(REC_K); } catch (e) { /* nada */ } setRec([]); }} />
         : sugerencias && q.trim() ? <div className="nt-p bs-panel"><p className="bs-nada">Nada con «{q.trim()}». Prueba con otro nombre o un aka.</p></div> : null}
     </div>
   );
@@ -354,16 +357,16 @@ function subBusca(liga, r) {
   if (r.tipo === 'pais') return 'País';
   return r.sub ? r.sub : 'Página';
 }
-function FilaBusca({ liga, r, icono, ir }) {
+function FilaBusca({ liga, r, icono, ir, pub }) {
   return (
     <a className="nt-f bs-f" href={r.href} onClick={() => ir(r)}>
       <span className="nt-cara bs-c">{icono(r)}{ICO_TIPO[r.tipo] ? <i className="nt-badge"><Ico n={ICO_TIPO[r.tipo]} t={10} /></i> : null}</span>
-      <span className="nt-t"><b>{r.n}</b><small>{subBusca(liga, r)}</small></span>
+      <span className="nt-t"><b>{r.n}{r.tipo === 'rapero' && esPremium(pub, r.k) ? <SelloPremium t={13} cls="sp-prem-in" /> : null}</b><small>{subBusca(liga, r)}</small></span>
       <span className="nt-hora">{ETIQUETA_TIPO[r.tipo]}</span>
     </a>
   );
 }
-function Sugerencias({ liga, rec, icono, ir, borrar }) {
+function Sugerencias({ liga, rec, icono, ir, borrar, pub }) {
   const hoy = liga.diaClave(liga.ahora);
   const vivos = liga.vivo();
   const hoyEv = vivos.concat(liga.luego().filter((x) => liga.diaClave(x.cuando) === hoy && !vivos.includes(x))).slice(0, 3);
@@ -389,7 +392,7 @@ function Sugerencias({ liga, rec, icono, ir, borrar }) {
       {rec.length ? (
         <section>
           <p className="nt-s">Lo último que abriste <button type="button" className="bs-borrar" onClick={borrar}>Borrar</button></p>
-          <ul>{rec.map((r) => <li key={r.id}><FilaBusca liga={liga} r={r} icono={icono} ir={ir} /></li>)}</ul>
+          <ul>{rec.map((r) => <li key={r.id}><FilaBusca liga={liga} r={r} icono={icono} ir={ir} pub={pub} /></li>)}</ul>
         </section>
       ) : null}
       {raperos.length ? (
@@ -397,7 +400,7 @@ function Sugerencias({ liga, rec, icono, ir, borrar }) {
           <p className="nt-s">{sigo.length ? 'Los que sigues' : 'Arriba en la Temporada'}</p>
           <ul className="bs-caras">{raperos.map((f) => (
             <li key={f.k}><a href={'#/r/' + encodeURIComponent(f.k)} onClick={() => ir({ tipo: 'rapero', id: 'r' + f.k, n: limpio(f.n), href: '#/r/' + encodeURIComponent(f.k), k: f.k })}>
-              <Cara liga={liga} k={f.k} nombre={f.n} cls="cara" /><span>{limpio(f.n)}</span>{f.pos ? <small>#{f.pos}</small> : null}</a></li>
+              <Cara liga={liga} k={f.k} nombre={f.n} cls={'cara' + (esPremium(pub, f.k) ? ' sp-prem-aro' : '')} /><span>{limpio(f.n)}{esPremium(pub, f.k) ? <SelloPremium t={12} cls="sp-prem-in" /> : null}</span>{f.pos ? <small>#{f.pos}</small> : null}</a></li>
           ))}</ul>
         </section>
       ) : null}
@@ -1904,12 +1907,18 @@ function VsVivo({ liga, m }) {
   const [a, b] = m.ahora.lados;
   const na = primero(a), nb = primero(b);
   const fa = liga.fila(na), fb = liga.fila(nb);
-  const lado = (n, todo, f) => (
-    <span className="es-vs-l">
-      {f && (f.c || []).includes('temporada') ? <Carta liga={liga} k={f.k} cual="temporada" cls="es-carta" /> : <Cara liga={liga} k={f && f.k} nombre={n} cls="cara es-cara-g" grande />}
-      <b>{limpio(todo)}</b>
-    </span>
-  );
+  // 💎 el sello Premium al lado del nombre y, cuando va la cara (sin carta), el aro dorado
+  const pub = usePases();
+  const lado = (n, todo, f) => {
+    const prem = !!f && esPremium(pub, f.k);
+    return (
+      <span className="es-vs-l">
+        {f && (f.c || []).includes('temporada') ? <Carta liga={liga} k={f.k} cual="temporada" cls="es-carta" />
+          : <Cara liga={liga} k={f && f.k} nombre={n} cls={'cara es-cara-g' + (prem ? ' sp-prem-aro-g' : '')} grande />}
+        <b>{limpio(todo)}{prem ? <SelloPremium t={14} cls="sp-prem-in" /> : null}</b>
+      </span>
+    );
+  };
   const p = probGana(fa, fb);
   return (
     <div className="es-vs">
