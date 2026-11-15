@@ -2302,6 +2302,28 @@
    "b": "LRS",
    "ganador": "LRS",
    "votos": "1–0"
+  },
+  "1571332439345864886": {
+   "id": "1571332439345864886",
+   "sv": "#FDS ╏FREESTYLE DISCORD SERIES",
+   "g": "1489848581203689535",
+   "canal": "1536574435761332334",
+   "pub": 1794705247485,
+   "a": "JORNADA 7 --> MATO",
+   "b": "LRS",
+   "ganador": "LRS",
+   "votos": "1–0"
+  },
+  "1571336726365077606": {
+   "id": "1571336726365077606",
+   "sv": "#FDS ╏FREESTYLE DISCORD SERIES",
+   "g": "1489848581203689535",
+   "canal": "1536574435761332334",
+   "pub": 1794706269590,
+   "a": "REPLICA: MATO",
+   "b": "LRS",
+   "ganador": "LRS",
+   "votos": "1–0"
   }
  },
  "llaves": {
@@ -7644,8 +7666,8 @@
    "g": "1469009547971526659",
    "canal": "1498009509036163173",
    "pub": 1794705655242,
-   "ed": 1794705707621,
-   "texto": "`[ CUARTOS ]`\n⌞MCNADIE 🇦🇷⌝ 🆚 ⌞CRK 🇲🇽⌝ 🆚 ⌞ADRIAGNER 🇳🇮⌝",
+   "ed": 1794707145046,
+   "texto": "`[ CUARTOS ]`\n⌞MCNADIE 🇦🇷⌝ 🆚 ⌞CRK 🇲🇽⌝ 🆚 ⌞ADRIAGNER 🇳🇮⌝\n`[ CUARTOS ]`\n⌞S1LENCE 🇵🇪⌝ 🆚 ⌞ECLIPSE🇨🇱⌝\n⌞B.DEMON 🇪🇨⌝ 🆚 ⌞MITO🇦🇷⌝",
    "batallas": [
     [
      "CUARTOS",
@@ -7653,6 +7675,26 @@
       "MCNADIE 🇦🇷",
       "CRK 🇲🇽",
       "ADRIAGNER 🇳🇮"
+     ],
+     null,
+     "última ronda y no dice campeón",
+     []
+    ],
+    [
+     "CUARTOS",
+     [
+      "S1LENCE 🇵🇪",
+      "ECLIPSE🇨🇱"
+     ],
+     null,
+     "última ronda y no dice campeón",
+     []
+    ],
+    [
+     "CUARTOS",
+     [
+      "B.DEMON 🇪🇨",
+      "MITO🇦🇷"
      ],
      null,
      "última ronda y no dice campeón",
