@@ -27,6 +27,7 @@ import CSS_PAGINA from './css/inventario.css?inline';
 import { usarCss } from './css.js';
 import { leerVisto, marcarVisto } from './inv_nuevos.js';
 import { nombreMarco } from './marcos.jsx';
+import { ValesPremium } from './vales.jsx';
 
 // 🎨 su CSS, con su pedazo (web/src/css/inventario.css)
 usarCss('inventario', CSS_PAGINA);
@@ -497,6 +498,8 @@ export function Inventario({ liga, dc, carta0 = '', ranura0 = '' }) {
           <button key={t} type="button" role="tab" aria-selected={tab === t} className={tab === t ? 'on' : ''} onClick={() => cambiarTab(t)}>{n}</button>
         ))}
       </div>
+      {/* 🏆 el Pase premium de campeón de liga, si tienes alguno (15/11/2026) */}
+      <ValesPremium />
       {msg ? <p className="iv-msg" role="status">{msg}</p> : null}
 
       <div className="iv10-cuerpo">

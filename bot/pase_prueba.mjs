@@ -297,6 +297,38 @@ try {
     && cu.n[pub.id] === 2 && cu.e[pub.id]['🎤'] === 1 && !cu.e[pub.id]['👏'] && ex.reacciones.join() === '👏,🔥,🎤',
   'las reacciones: 👏 todos, 🔥 y 🎤 con el premium y su nivel; cambiarla pisa la de antes y la cuenta las separa',
   JSON.stringify({ nA, rD, rN, rA, r1, r2, r3, r4, cu, ex: ex.reacciones }));
+
+  // ── 🏆 el Pase premium de los campeones de liga (Dlx, 15/11/2026): uno por título, en el Inventario, y se usa cuando quiere
+  sql.exec("INSERT OR REPLACE INTO idk (id, k, t) VALUES (?, 'cami', 1)", CAMI);
+  sql.exec("INSERT OR REPLACE INTO idk (id, k, t) VALUES (?, 'dani', 1)", DANI);
+  const VC = { o: 'liga:fmh-x:2026-10-20', k: 'cami', m: 'Campeón de FMH X' };
+  const VC2 = { o: 'liga:fmh-x:2026-11-10', k: 'cami', m: 'Campeón de FMH X (temporada 2)' };
+  const VD = { o: 'liga:fms-y:2026-10-21', k: 'dani', m: 'Campeón de FMS Y' };
+  const bandejaVale = (q) => sql.exec("SELECT clave FROM bandeja WHERE quien = ? AND clave LIKE 'vale:%'", q).toArray().length;
+  let rv = ciclo({ premium: [], vales: [VC, VD, { o: 'otra:cosa', k: 'cami' }, { o: 'liga:z:2026-01-01', k: 'NO VALE' }] });
+  ok(rv.ok && rv.vales === 2 && o.valesDe(CAMI).vales.length === 1 && o.valesDe(CAMI).vales[0].m === 'Campeón de FMH X'
+    && bandejaVale(CAMI) === 1 && bandejaVale(DANI) === 1,
+  'cada campeón recibe su Pase en el Inventario y se entera por la campana; lo que no es de una liga, no', JSON.stringify(rv));
+  rv = ciclo({ premium: [], vales: [VC, VD] });
+  ok(o.valesDe(CAMI).vales.length === 1 && bandejaVale(CAMI) === 1, 'el mismo título no da dos Pases ni avisa dos veces');
+  const sinP = o.valesDe(CAMI);
+  ok(sinP.miembro && !sinP.premium && sinP.temp === 'prueba' && !sinP.vales[0].usado, 'Cami: miembro, sin premium, su Pase sin usar',
+    JSON.stringify(sinP));
+  ok(o.valeUsar({ quien: BEA, vale: VC.o }).error === 'no_es_tuyo', 'el Pase de otro no se puede usar');
+  ok(o.valeUsar({ quien: DANI, vale: VD.o }).error === 'no_miembro', 'sin ser miembro de DRA (sin Pase) no se usa: se guarda');
+  const pagosAntes = tienda(CAMI).length;
+  const u = o.valeUsar({ quien: CAMI, vale: VC.o });
+  ok(u.ok && u.premium && u.vales[0].usado === 'prueba' && o.paseDe(CAMI).premium && o.paseDe(CAMI).premium.hasta === null
+    && tienda(CAMI).length >= pagosAntes,
+  'usarlo le prende el premium de esta temporada y cobra la fila premium de los niveles que ya pasó', JSON.stringify(u));
+  ciclo({ premium: [ANA], vales: [VC, VD] });
+  ok(o.paseDe(CAMI).premium && o.paseDe(CAMI).premium.hasta === null,
+    'la cuenta del rol no le cierra el premium que sacó de su Inventario', JSON.stringify(o.paseDe(CAMI).premium));
+  ok(o.valeUsar({ quien: CAMI, vale: VC.o }).error === 'usado', 'un Pase usado no se usa dos veces');
+  ciclo({ premium: [ANA], vales: [VC, VC2, VD] });
+  ok(o.valesDe(CAMI).vales.length === 2 && o.valeUsar({ quien: CAMI, vale: VC2.o }).error === 'ya_premium'
+    && !o.valesDe(CAMI).vales.find((x) => x.id === VC2.o).usado,
+  'con el premium ya prendido, el segundo título se guarda para otra temporada');
 } finally {
   Date.now = relojReal;
 }

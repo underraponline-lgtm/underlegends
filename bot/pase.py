@@ -54,6 +54,7 @@ import hashlib
 import io
 import json
 import os
+import re
 import sys
 import clave_ciclo as CC  # noqa: E402  la clave del ciclo, en un solo lugar
 
@@ -496,9 +497,44 @@ def armar(ahora=None):
     # datos/pase_premium.json). Son Discord IDs: van aparte, nunca en `cfg` (que es público)
     out = {'cfg': cfg, 'premium': premium_ids(),
            'sem': sems,
-           'miembros': miembros, 'hechas': h}
+           'miembros': miembros, 'hechas': h,
+           # 🏆 una temporada de Pase premium para cada campeón de liga (15/11/2026): ver `vales_campeones()`
+           'vales': vales_campeones()}
     out['v'] = hashlib.sha256(json.dumps(out, sort_keys=True, ensure_ascii=False).encode('utf-8')).hexdigest()[:16]
     return out
+
+
+def vales_de_salon(sl):
+    """🏆 `[{o, k, m}]`: un Pase premium por cada título del Salón de campeones (`ligas.salon()`), al perfil del campeón.
+    `o`, el origen —`liga:<liga>:<último día de esa temporada>`—, es lo que el objeto no repite: el mismo título no da
+    dos. Sin perfil (todavía no se sabe quién es en la Liga), no sale: entra en la corrida en que aparezca. Pura."""
+    out = []
+    for x in sl or []:
+        k = (x.get('ks') or {}).get(x.get('c'))
+        lid, ult = str(x.get('id') or ''), str(x.get('ult') or '')[:10]
+        if not k or not lid or not re.match(r'^\d{4}-\d{2}-\d{2}$', ult):
+            continue
+        m = 'Campeón de %s' % (x.get('n') or lid) + (' (temporada %s)' % x['lt'] if x.get('lt') else '')
+        out.append({'o': 'liga:%s:%s' % (lid, ult), 'k': k, 'm': m[:120]})
+    return sorted(out, key=lambda v: v['o'])
+
+
+def vales_campeones():
+    """🏆 LOS CAMPEONES DE LIGA GANAN UNA TEMPORADA DE PASE PREMIUM (Dlx, 15/11/2026: «los campeones de liga reciben una
+    temporada de 1 pase premium, que lo pueden usar en su inventario, ya sea para esta o para cualquier temporada que
+    deseen»). Del mismo Salón que ve la página, con los nombres llevados al perfil igual que en Ligas (`subir_web._clave`):
+    así el Pase llega al mismo perfil que dice «campeón». El objeto lo guarda en el Inventario (`premium_vale`) y cada uno
+    lo usa cuando quiere (`valeUsar()` en bot/avisos.js). Nunca frena el Pase: si algo falla, esta vuelta no da ninguno."""
+    try:
+        import ligas as _LG
+        import subir_web as _SW
+        with io.open(os.path.join(BASE, 'datos', 'temporada_pool.json'), encoding='utf-8') as f:
+            pool = json.load(f) or []
+        claves = {p['raw']: _SW._clave(p) for p in pool if p.get('raw')}
+        return vales_de_salon(_LG.salon(claves=claves))
+    except Exception as e:                               # noqa: BLE001
+        print('   ⚠️ los Pases premium de los campeones no salen en esta vuelta: %s' % str(e)[:120])
+        return []
 
 
 def premium_ids():
@@ -781,6 +817,17 @@ def _self_check():
     cz = _cazas(mw)
     ok(len(cz) == 1 and cz[0][1] == ['Ana', 'Cami'] and cz[0][0].tzinfo is not None,
        'las cazas del Most Wanted, con su instante y sus cazadores')
+    # 🏆 el Pase premium de los campeones de liga (15/11/2026): uno por título, al perfil del campeón
+    vs = vales_de_salon([
+        {'id': 'fmh-espana', 'n': 'FMH España', 'ult': '2026-11-11', 'lt': 5, 'c': 'Ortiz', 'ks': {'Ortiz': 'ortiz'}},
+        {'id': 'fms-peru', 'n': 'FMS Perú', 'ult': '2026-10-15', 'c': 'LSD', 'ks': {}},
+        {'id': 'fms-titans', 'n': 'FMS Titans', 'ult': '', 'c': 'Krtman', 'ks': {'Krtman': 'krtman'}},
+        {'id': 'lkr-champions', 'n': 'Champions League LKR', 'ult': '2026-10-21T03:00:00Z', 'c': 'Mathhias',
+         'ks': {'Mathhias': 'mathhias', 'Otro': 'otro'}}])
+    ok([v['o'] for v in vs] == ['liga:fmh-espana:2026-11-11', 'liga:lkr-champions:2026-10-21']
+       and vs[0] == {'o': 'liga:fmh-espana:2026-11-11', 'k': 'ortiz', 'm': 'Campeón de FMH España (temporada 5)'}
+       and vs[1]['k'] == 'mathhias',
+       'los Pases de los campeones: uno por título al perfil del campeón; sin perfil o sin fecha, todavía no  %s' % vs)
     print('\n  %s\n' % ('todo ok' if not mal else '🔴 %d problema(s)' % mal))
     return 1 if mal else 0
 

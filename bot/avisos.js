@@ -3526,6 +3526,8 @@ const RUTAS = {
   '/avisos/marcos': 'POST', '/avisos/marco-elige': 'POST', '/avisos/carta-principal': 'POST',
   // 🏷️ tus TAGs y elegir cuál lleva cada carta (con tu sesión), y el inventario del ciclo (con su clave)
   '/avisos/tags-mios': 'POST', '/avisos/tag-elige': 'POST', '/avisos/tags-ciclo': 'POST',
+  // 🏆 tus Pases premium de campeón de liga y usar uno (15/11/2026): ver `valesDe()` y `valeUsar()`
+  '/avisos/vales': 'POST', '/avisos/vale-usar': 'POST',
   // 🎟️ quién tiene nivel en el Pase, para el ciclo (la Temporada es el premio del nivel 1): con `claveCiclo()`
   '/avisos/pase-niveles': 'GET',
   // 📊 el uso de la página y del bot, con su clave: los mismos números del Dashboard → Números, sin ningún ID
@@ -6425,7 +6427,8 @@ export async function rutaAvisos(req, env, ruta) {
   // reenvío de abajo: ese pasa el cuerpo tal cual, y acá el `quien` lo pone la sesión
   if (ruta === '/avisos/pase' || ruta === '/avisos/pase-vivo' || ruta === '/avisos/pase-avisos' || ruta === '/avisos/pase-color' ||
     ruta === '/avisos/sorteo' || ruta === '/avisos/sorteo-entrar' || ruta === '/avisos/marcos' || ruta === '/avisos/marco-elige'
-    || ruta === '/avisos/carta-principal' || ruta === '/avisos/tags-mios' || ruta === '/avisos/tag-elige') {
+    || ruta === '/avisos/carta-principal' || ruta === '/avisos/tags-mios' || ruta === '/avisos/tag-elige'
+    || ruta === '/avisos/vales' || ruta === '/avisos/vale-usar') {
     const crudo = await req.text();
     if (crudo.length > 1024) return json({ error: 'demasiado grande' }, 413);
     let d = null;
@@ -6440,7 +6443,7 @@ export async function rutaAvisos(req, env, ruta) {
     if (!q.id && ruta !== '/avisos/sorteo') return json({ error: q.error }, q.estado);
     return elObjeto(env).fetch('https://avisos' + ruta.slice('/avisos'.length), {
       method: 'POST', body: JSON.stringify({ quien: q.id || '', llave, si: d.si, color: d.color, marco: d.marco, estilo: d.estilo,
-        carta: d.carta, tag: d.tag }),
+        carta: d.carta, tag: d.tag, vale: String(d.vale || '').slice(0, 150) }),
       headers: { 'content-type': 'application/json' },
     });
   }
@@ -7704,6 +7707,14 @@ export class Avisos {
       // (`pase.ROL_PREMIUM`). El +20 % de XP vale para las Tareas cumplidas en ese rato: sacarle el rol no le baja el nivel
       this.sql.exec('CREATE TABLE IF NOT EXISTS pase_premium (quien TEXT NOT NULL, temp TEXT NOT NULL, desde INTEGER NOT NULL, ' +
         'hasta INTEGER, PRIMARY KEY (quien, temp))');
+      // 🏆 EL PASE PREMIUM DE LOS CAMPEONES DE LIGA (Dlx, 15/11/2026: «los campeones de liga reciben una temporada de 1 pase
+      // premium, que lo pueden usar en su inventario, ya sea para esta o para cualquier temporada que deseen»). Uno por título
+      // (`origen` = `liga:<liga>:<último día de esa temporada>`, del Salón), DEL PERFIL (`k`) y no de la cuenta: espera en
+      // el Inventario hasta que lo use en la temporada que elija. `usado_por` es el Discord ID que lo usó: la cuenta del
+      // rol no le cierra ese premium (`paseCiclo()`). Ver `valesDe()` y `valeUsar()`
+      this.sql.exec("CREATE TABLE IF NOT EXISTS premium_vale (origen TEXT PRIMARY KEY, k TEXT NOT NULL, motivo TEXT NOT NULL DEFAULT '', " +
+        "dado INTEGER NOT NULL, usado_temp TEXT NOT NULL DEFAULT '', usado_por TEXT NOT NULL DEFAULT '', usado_t INTEGER)");
+      this.sql.exec('CREATE INDEX IF NOT EXISTS premium_vale_k ON premium_vale (k)');
       // 🔔 los avisos del Pase (apagados de entrada: sólo quien los prende) y el color de nombre que eligió quien tiene el
       // premium (el nivel 7 de su fila)
       this.sql.exec('CREATE TABLE IF NOT EXISTS pase_aviso (quien TEXT PRIMARY KEY, si INTEGER NOT NULL, t INTEGER NOT NULL)');
@@ -8595,6 +8606,9 @@ export class Avisos {
       if (ruta === '/perfil-extra') { const v = this.perfilExtra(String((d && d.k) || '')); return json(v, v.error ? 400 : 200, 60); }
       if (ruta === '/dueno-frase') { const v = this.duenoFrase(d); return json(v, v.error ? 400 : 200); }
       if (ruta === '/tags-mios') return json(this.tagsMios(String(d.quien || '')));
+      // 🏆 tus Pases premium de campeón de liga, y usar uno (15/11/2026)
+      if (ruta === '/vales') return json(this.valesDe(String(d.quien || '')));
+      if (ruta === '/vale-usar') { const v = this.valeUsar(d); return json(v, v.error ? 400 : 200); }
       if (ruta === '/tag-elige') { const v = this.tagElige(d); await this.redibujoYa(v); return json(v, v.error ? 400 : 200); }
       if (ruta === '/tags-ciclo') { const v = this.tagsCiclo(d); return json(v, v.error ? 400 : 200); }
       // 🧠 lo que manda el ciclo: las personas de esta corrida (`bot/subir_datos.py`)
@@ -12206,6 +12220,8 @@ export class Avisos {
     for (const t of ['pase_premium', 'pase_aviso', 'pase_color', 'marcos', 'marco_elige', 'sorteo_part', 'tag_elige']) {
       this.sql.exec('DELETE FROM ' + t + ' WHERE quien = ?', String(d.quien));
     }
+    // 🏆 el Pase de campeón es del perfil y se queda; lo que se va es qué cuenta lo usó
+    this.sql.exec("UPDATE premium_vale SET usado_por = '' WHERE usado_por = ?", String(d.quien));
     this.sql.exec('DELETE FROM sorteo_hist WHERE ganador = ?', String(d.quien));
     // ⭐ y lo que le sumaba nivel
     this.sql.exec('DELETE FROM xp_log WHERE quien = ?', String(d.quien));
@@ -13874,6 +13890,9 @@ export class Avisos {
       } catch (e) { fallas.push(t); }
     }
     try { this.sql.exec('UPDATE OR IGNORE idk SET id = ? WHERE id = ?', nuevo, viejo); } catch (e) { fallas.push('idk'); }
+    // 🏆 el Pase de campeón ya usado sigue a la cuenta: su premium se mudó con `pase_premium`, y la cuenta del rol lo
+    // reconoce por `usado_por` (`paseCiclo()`)
+    try { this.sql.exec('UPDATE premium_vale SET usado_por = ? WHERE usado_por = ?', nuevo, viejo); } catch (e) { fallas.push('premium_vale'); }
     // 👥 las crews son de un PERFIL, no de una cuenta: sólo se anota el ID nuevo (no van en `tablas`, que borra lo viejo)
     try { CW.crewMudar(this, viejo, nuevo); } catch (e) { fallas.push('crews'); }
     try { this.sql.exec('UPDATE inscritos SET autor_id = ? WHERE autor_id = ?', nuevo, viejo); } catch (e) { fallas.push('inscritos'); }
@@ -16205,6 +16224,9 @@ export class Avisos {
     if (Array.isArray(d.premium)) {
       const ahoraP = Date.now();
       const hay = new Set(d.premium.map(String).filter(id));
+      // 🏆 quien lo usó de su Inventario esta temporada no tiene el rol, y no por eso se le cierra (15/11/2026)
+      const conVale = new Set(this.sql.exec("SELECT usado_por FROM premium_vale WHERE usado_temp = ? AND usado_por != ''", cfg.temp)
+        .toArray().map((r) => String(r.usado_por)));
       for (const q of hay) {
         const r0 = this.sql.exec('SELECT hasta FROM pase_premium WHERE quien = ? AND temp = ?', q, cfg.temp).toArray()[0];
         if (!r0) llegan.push(q);
@@ -16212,8 +16234,19 @@ export class Avisos {
           'DO UPDATE SET hasta = NULL WHERE hasta IS NOT NULL', q, cfg.temp, ahoraP);
       }
       for (const r of this.sql.exec('SELECT quien FROM pase_premium WHERE temp = ? AND hasta IS NULL', cfg.temp).toArray()) {
-        if (!hay.has(String(r.quien))) this.sql.exec('UPDATE pase_premium SET hasta = ? WHERE quien = ? AND temp = ?', ahoraP, r.quien, cfg.temp);
+        if (!hay.has(String(r.quien)) && !conVale.has(String(r.quien))) {
+          this.sql.exec('UPDATE pase_premium SET hasta = ? WHERE quien = ? AND temp = ?', ahoraP, r.quien, cfg.temp);
+        }
       }
+    }
+    // 🏆 los Pases premium de los campeones de liga que manda el ciclo (`pase.vales_campeones()`): uno por título, y el que
+    // ya estaba no se toca (ni usado ni sin usar). Al dueño del perfil, si se sabe su cuenta, le llega a la campana
+    const valesNuevos = [];
+    for (const x of (Array.isArray(d.vales) ? d.vales : []).slice(0, 500)) {
+      const o = String((x && x.o) || ''), k = String((x && x.k) || ''), m = String((x && x.m) || '').slice(0, 120);
+      if (!/^liga:[A-Za-z0-9~:._-]{1,140}$/.test(o) || !claveValida(k)) continue;
+      const r = this.sql.exec('INSERT OR IGNORE INTO premium_vale (origen, k, motivo, dado) VALUES (?, ?, ?, ?)', o, k, m, Date.now());
+      if (r.rowsWritten) valesNuevos.push([o, k, m]);
     }
     this.guardar('pase', { cfg, sem, miembros: d.miembros.map(String).filter(id), hechas });
     this.guardar('pase_v', d.v);
@@ -16229,7 +16262,66 @@ export class Avisos {
         (nivel ? 'Ya cobraste lo de tus ' + nivel + ' niveles de la fila premium. ' : '') + 'Desde ahora tus Tareas dan +' +
         (cfg.boost || 0) + ' % de XP.', HUB + '/freestyle-rap/pase', '', Date.now());
     }
-    return { ok: true, cambio: true, niveles: nuevas };
+    for (const [o, k, m] of valesNuevos) {
+      const q = this.cuentaDe(k);
+      if (!q) continue;
+      this.aBandeja(q, 'vale:' + o, 'pase', '🏆 Ganaste una temporada de Pase premium',
+        (m ? m + '. ' : '') + 'Está en tu Inventario: úsalo esta temporada o guárdalo para la que quieras.',
+        HUB + '/freestyle-rap/inventario', '', Date.now());
+    }
+    return { ok: true, cambio: true, niveles: nuevas, vales: valesNuevos.length };
+  }
+
+  /** 🔑 La cuenta de Discord de un perfil: la que jugó con esa clave más hace poco, o la que la verificó. `''` si no se sabe */
+  cuentaDe(k) {
+    const j = this.sql.exec('SELECT quien FROM jugo_temp WHERE k = ? ORDER BY temp DESC LIMIT 1', k).toArray()[0];
+    return String((j && j.quien) || ((this.sql.exec('SELECT id FROM idk WHERE k = ?', k).toArray()[0] || {}).id) || '');
+  }
+
+  /**
+   * 🏆 Tus Pases premium de campeón (`/avisos/vales`, con tu sesión), para el Inventario: `{k, temp, premium, miembro,
+   * vales: [{id, m, dado, usado, t}]}`. `premium`: si esta temporada ya lo tienes (entonces conviene guardarlo); `miembro`:
+   * si el Pase es tuyo (sólo los miembros de DRA lo tienen)
+   */
+  valesDe(quien) {
+    if (!/^[0-9]{5,25}$/.test(quien)) return { error: 'faltan datos' };
+    const k = this.claveDe(quien) || (quien === DUENO ? DUENO_K : '');
+    const P = this.paseDatos();
+    const temp = (P.cfg && P.cfg.temp) || '';
+    const pr = temp ? this.pasePremium(quien, temp) : null;
+    const vales = k ? this.sql.exec('SELECT origen, motivo, dado, usado_temp, usado_t FROM premium_vale WHERE k = ? ORDER BY dado, origen',
+      k).toArray() : [];
+    return { k, temp, premium: !!(pr && (pr[1] == null || pr[1] > Date.now())), miembro: P.miembros.has(quien),
+      vales: vales.map((r) => ({ id: r.origen, m: r.motivo, dado: r.dado, usado: r.usado_temp || '', t: r.usado_t || 0 })) };
+  }
+
+  /**
+   * 🏆 Usar uno de tus Pases premium en la temporada que corre (`/avisos/vale-usar`, con tu sesión). Sólo el tuyo, una
+   * vez, con el Pase abierto, siendo miembro de DRA y sin tener ya el premium (si lo tienes, lo guardas para otra). Como
+   * el rol que llega a mitad de temporada: cobras ya la fila premium de los niveles que pasaste
+   */
+  valeUsar(d) {
+    const quien = String((d && d.quien) || ''), id = String((d && d.vale) || '');
+    if (!/^[0-9]{5,25}$/.test(quien) || !id) return { error: 'faltan datos' };
+    const k = this.claveDe(quien);
+    const r = this.sql.exec('SELECT k, usado_temp FROM premium_vale WHERE origen = ?', id).toArray()[0];
+    if (!r || !k || r.k !== k) return { error: 'no_es_tuyo' };
+    if (r.usado_temp) return { error: 'usado' };
+    const P = this.paseDatos();
+    const temp = P.cfg && P.cfg.temp;
+    if (!temp) return { error: 'sin_temporada' };
+    if (!P.miembros.has(quien)) return { error: 'no_miembro' };
+    const pr = this.pasePremium(quien, temp);
+    if (pr && (pr[1] == null || pr[1] > Date.now())) return { error: 'ya_premium' };
+    const ahora = Date.now();
+    this.sql.exec('INSERT INTO pase_premium (quien, temp, desde, hasta) VALUES (?, ?, ?, NULL) ON CONFLICT(quien, temp) ' +
+      'DO UPDATE SET hasta = NULL', quien, temp, ahora);
+    this.sql.exec('UPDATE premium_vale SET usado_temp = ?, usado_por = ?, usado_t = ? WHERE origen = ?', temp, quien, ahora, id);
+    const { nivel } = this.premiarPase(quien);
+    this.aBandeja(quien, 'pase-premium:' + temp, 'pase', '💎 Desbloqueaste el Pase premium',
+      (nivel ? 'Ya cobraste lo de tus ' + nivel + ' niveles de la fila premium. ' : '') + 'Desde ahora tus Tareas dan +' +
+      (P.cfg.boost || 0) + ' % de XP.', HUB + '/freestyle-rap/pase', '', ahora);
+    return Object.assign({ ok: true, nivel }, this.valesDe(quien));
   }
 
   /** ¿Es de esta temporada el día `AAAA-MM-DD`? (su mediodía cae entre el arranque y el final de las semanas) */

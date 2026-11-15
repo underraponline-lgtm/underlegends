@@ -1452,6 +1452,8 @@ function Salon({ liga }) {
   };
   return (
     <Sec id="lgh-salon" titulo="Salón de campeones" extra="negra">
+      {/* 🏆 el premio de cada título (Dlx, 15/11/2026): una temporada de Pase premium, en el Inventario del campeón */}
+      <p className="lgh-sc-premio"><Ico n="pase" t={18} /><span>Cada campeón de liga gana <b>una temporada de Pase premium</b>: la usa desde su Inventario, en esta temporada o en la que elija.</span></p>
       {xs.length ? (
         <ul className="lgh-salon">{xs.map((x) => (
           <li key={x.id + x.ult}>

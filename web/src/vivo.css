@@ -6456,3 +6456,7 @@ dialog.pn-pop.un-pop{--pc:#29B298;width:min(540px,calc(100vw - 32px));max-height
 /* los nombres y los números de cada lado, también con sombra: con el fondo más a la vista, sobre una bandera clara (la blanca de Chile) el gris se perdía */
 .pn-vs.con-lg .pn-rv :is(b,small,span){text-shadow:0 1px 3px rgba(0,0,0,.9)}
 .pn-vs.con-lg .pn-rv small{color:#D6D8DC}
+/* 🏆 el premio de cada título en el Salón de campeones (15/11/2026): una temporada de Pase premium */
+.lgh-sc-premio{display:flex;align-items:center;gap:10px;margin:0 0 12px;padding:10px 12px;border:1.5px solid #6b5414;border-radius:4px;background:#16120a;font:500 14px/1.4 Archivo,sans-serif;color:#d9dbe0}
+.lgh-sc-premio svg{flex:none;color:#FFD24A}
+.lgh-sc-premio b{color:#FFD24A;font-weight:800}

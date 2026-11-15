@@ -153,6 +153,9 @@ const AVISOS = {
   // 🏷️ tus TAGs y elegir cuál lleva cada carta (25/10/2026)
   '/api/avisos/tags-mios': 'POST',
   '/api/avisos/tag-elige': 'POST',
+  // 🏆 tus Pases premium de campeón de liga y usar uno (15/11/2026)
+  '/api/avisos/vales': 'POST',
+  '/api/avisos/vale-usar': 'POST',
   '/api/avisos/pases': 'GET',
   // 📊 una visita sin cuenta, una vez por día y por navegador (04/10/2026): ver `visita()` en bot/avisos.js
   '/api/avisos/visita': 'POST',
