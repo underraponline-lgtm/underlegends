@@ -1,5 +1,5 @@
 {
- "cuando": "2026-11-15T18:25:37+00:00",
+ "cuando": "2026-11-15T18:56:05+00:00",
  "anuncios": [
   {
    "nombre": "¡SE LLEGÓ LA GRAN NOCHE!",
@@ -7651,6 +7651,60 @@
   }
  ],
  "inscripciones": [
+  {
+   "servidor": "CH",
+   "canal": "📜—inscripciones",
+   "texto": "Adriagner🇳🇮(nomerobencon btrece)",
+   "quien": "adriagner",
+   "discord_id": "1316490165836972104",
+   "msg_id": "1571598939721957544",
+   "cuando": "2026-11-15T18:53:06"
+  },
+  {
+   "servidor": "CH",
+   "canal": "📜—inscripciones",
+   "texto": "Yio🇲🇽",
+   "quien": "yiomc",
+   "discord_id": "1033600988373848166",
+   "msg_id": "1571598803004432455",
+   "cuando": "2026-11-15T18:52:33"
+  },
+  {
+   "servidor": "CH",
+   "canal": "📜—inscripciones",
+   "texto": "player🇻🇪",
+   "quien": "jesuslgamer31",
+   "discord_id": "817387658656874536",
+   "msg_id": "1571598616907354123",
+   "cuando": "2026-11-15T18:51:49"
+  },
+  {
+   "servidor": "CH",
+   "canal": "📜—inscripciones",
+   "texto": "CNC 🇲🇽",
+   "quien": "cnc06",
+   "discord_id": "536857764782407681",
+   "msg_id": "1571595440733032520",
+   "cuando": "2026-11-15T18:39:11"
+  },
+  {
+   "servidor": "CH",
+   "canal": "📜—inscripciones",
+   "texto": "AkaRayo 🇪🇦",
+   "quien": "elrayo8888_yt",
+   "discord_id": "743903839673122906",
+   "msg_id": "1571592672668295289",
+   "cuando": "2026-11-15T18:28:11"
+  },
+  {
+   "servidor": "CH",
+   "canal": "📜—inscripciones",
+   "texto": "Erian",
+   "quien": "deslanofthemind",
+   "discord_id": "1055474244089286706",
+   "msg_id": "1571592487695548589",
+   "cuando": "2026-11-15T18:27:27"
+  },
   {
    "servidor": "CH",
    "canal": "📜—inscripciones",
@@ -43596,60 +43650,6 @@
    "discord_id": "913652602208649226",
    "msg_id": "1559394824791138425",
    "cuando": "2026-10-13T02:38:18"
-  },
-  {
-   "servidor": "URBF",
-   "canal": "《📑》Inscripciones",
-   "texto": "Lrs🇦🇷",
-   "quien": "lrs0378",
-   "discord_id": "1385452830684614697",
-   "msg_id": "1559390981462433805",
-   "cuando": "2026-10-13T02:23:02"
-  },
-  {
-   "servidor": "URBF",
-   "canal": "《📑》Inscripciones",
-   "texto": "Makmah 🇻🇪",
-   "quien": "makmah_g",
-   "discord_id": "897942226955563068",
-   "msg_id": "1559384403270959167",
-   "cuando": "2026-10-13T01:56:53"
-  },
-  {
-   "servidor": "URBF",
-   "canal": "《📑》Inscripciones",
-   "texto": "Cinexfilo 🇻🇪 (reemplazo)",
-   "quien": "cinexfilosanity",
-   "discord_id": "781971857519804417",
-   "msg_id": "1559383511843078145",
-   "cuando": "2026-10-13T01:53:21"
-  },
-  {
-   "servidor": "URBF",
-   "canal": "《📑》Inscripciones",
-   "texto": "presagio 🇦🇷",
-   "quien": "eltractorjonshon",
-   "discord_id": "852667585593868288",
-   "msg_id": "1559383389637845145",
-   "cuando": "2026-10-13T01:52:52"
-  },
-  {
-   "servidor": "URBF",
-   "canal": "《📑》Inscripciones",
-   "texto": "Yo 🇨🇱",
-   "quien": "cronoxzito",
-   "discord_id": "1487658663148785734",
-   "msg_id": "1559382936942411808",
-   "cuando": "2026-10-13T01:51:04"
-  },
-  {
-   "servidor": "URBF",
-   "canal": "《📑》Inscripciones",
-   "texto": "Nemi 🇦🇷",
-   "quien": "nemmii_as_26264",
-   "discord_id": "1458311513667276830",
-   "msg_id": "1559382609241317458",
-   "cuando": "2026-10-13T01:49:45"
   }
  ]
 }
