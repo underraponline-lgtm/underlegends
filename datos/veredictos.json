@@ -2324,6 +2324,28 @@
    "b": "LRS",
    "ganador": "LRS",
    "votos": "1–0"
+  },
+  "1571349432249745469": {
+   "id": "1571349432249745469",
+   "sv": "🌌┃𝐃𝐈𝐌𝐄𝐍𝐒𝐈Ó𝐍 𝐃𝐄𝐋 𝐅𝐑𝐄𝐄𝐒𝐓𝐘𝐋𝐄┃🌌",
+   "g": "1469009547971526659",
+   "canal": "1498009509036163173",
+   "pub": 1794709298909,
+   "a": "LIL ÑAÑO 🇪🇨",
+   "b": "MCNADIE 🇦🇷",
+   "ganador": "MCNADIE 🇦🇷",
+   "votos": "1–0"
+  },
+  "1571352145138155572": {
+   "id": "1571352145138155572",
+   "sv": "🌌┃𝐃𝐈𝐌𝐄𝐍𝐒𝐈Ó𝐍 𝐃𝐄𝐋 𝐅𝐑𝐄𝐄𝐒𝐓𝐘𝐋𝐄┃🌌",
+   "g": "1469009547971526659",
+   "canal": "1498009509036163173",
+   "pub": 1794709945712,
+   "a": "ECLIPSE🇨🇱",
+   "b": "MCNADIE 🇦🇷",
+   "ganador": "ECLIPSE🇨🇱",
+   "votos": "1–0"
   }
  },
  "llaves": {
@@ -7666,8 +7688,8 @@
    "g": "1469009547971526659",
    "canal": "1498009509036163173",
    "pub": 1794705655242,
-   "ed": 1794709298909,
-   "texto": "`[ CUARTOS ]`\n⌞MCNADIE 🇦🇷⌝ 🆚 ⌞CRK 🇲🇽⌝ 🆚 ⌞ADRIAGNER 🇳🇮⌝\n`[ CUARTOS ]`\n⌞S1LENCE 🇵🇪⌝ 🆚 ⌞ECLIPSE🇨🇱⌝\n⌞B.DEMON 🇪🇨⌝ 🆚 ⌞MITO🇦🇷⌝\n⌞MCNADIE 🇦🇷⌝ 🆚 ⌞MARTINEZ🇺🇾⌝\n⌞MAUZZ 🇻🇪⌝ 🆚 ⌞MITO🇦🇷⌝\n`[ SEMIFINALES ]`\n⌞ECLIPSE 🇨🇱⌝ 🆚 ⌞MITO🇦🇷⌝\n⌞LIL ÑAÑO 🇪🇨⌝ 🆚 ⌞MCNADIE🇦🇷⌝",
+   "ed": 1794710751419,
+   "texto": "`[ CUARTOS ]`\n⌞MCNADIE 🇦🇷⌝ 🆚 ⌞CRK 🇲🇽⌝ 🆚 ⌞ADRIAGNER 🇳🇮⌝\n`[ CUARTOS ]`\n⌞S1LENCE 🇵🇪⌝ 🆚 ⌞ECLIPSE🇨🇱⌝\n⌞B.DEMON 🇪🇨⌝ 🆚 ⌞MITO🇦🇷⌝\n⌞MCNADIE 🇦🇷⌝ 🆚 ⌞MARTINEZ🇺🇾⌝\n⌞MAUZZ 🇻🇪⌝ 🆚 ⌞MITO🇦🇷⌝\n`[ SEMIFINALES ]`\n⌞ECLIPSE 🇨🇱⌝ 🆚 ⌞MITO🇦🇷⌝\n⌞LIL ÑAÑO 🇪🇨⌝ 🆚 ⌞MCNADIE🇦🇷⌝\n`[ FINAL ]`\n⌞ECLIPSE 🇨🇱⌝ 🆚 ⌞MCNADIE🇦🇷⌝",
    "batallas": [
     [
      "CUARTOS",
@@ -7726,8 +7748,8 @@
       "ECLIPSE 🇨🇱",
       "MITO🇦🇷"
      ],
-     null,
-     "última ronda y no dice campeón",
+     "ECLIPSE 🇨🇱",
+     "ronda siguiente",
      []
     ],
     [
@@ -7736,8 +7758,18 @@
       "LIL ÑAÑO 🇪🇨",
       "MCNADIE🇦🇷"
      ],
-     null,
-     "última ronda y no dice campeón",
+     "MCNADIE🇦🇷",
+     "veredicto",
+     []
+    ],
+    [
+     "FINAL",
+     [
+      "ECLIPSE 🇨🇱",
+      "MCNADIE🇦🇷"
+     ],
+     "ECLIPSE 🇨🇱",
+     "veredicto",
      []
     ]
    ]

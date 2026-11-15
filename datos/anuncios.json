@@ -1,5 +1,5 @@
 {
- "cuando": "2026-11-15T02:25:45+00:00",
+ "cuando": "2026-11-15T02:55:48+00:00",
  "anuncios": [
   {
    "nombre": "¡SE LLEGÓ LA GRAN NOCHE!",
@@ -6977,6 +6977,15 @@
   }
  ],
  "inscripciones": [
+  {
+   "servidor": "ACAD",
+   "canal": "📝┇inscripciones-1",
+   "texto": "sosa",
+   "quien": "sosaatrz",
+   "discord_id": "1471153954254622774",
+   "msg_id": "1571356341891498087",
+   "cuando": "2026-11-15T02:49:06"
+  },
   {
    "servidor": "DDF",
    "canal": "『📑』Inscripciones",
@@ -42967,15 +42976,6 @@
    "discord_id": "1523082259870257315",
    "msg_id": "1559321051572338691",
    "cuando": "2026-10-12T21:45:09"
-  },
-  {
-   "servidor": "DDS",
-   "canal": "📜〕INSCRIPCIONES",
-   "texto": "Abraham",
-   "quien": "abrahammh",
-   "discord_id": "1027996523117690901",
-   "msg_id": "1559321047772430398",
-   "cuando": "2026-10-12T21:45:08"
   }
  ]
 }
