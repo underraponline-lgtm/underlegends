@@ -3638,6 +3638,11 @@
  },
  "delux": {
   "competitivo": {
+   "⚔️ DUELISTA": [
+    "⚔️ DUELISTA",
+    "t1",
+    1794779478247
+   ],
    "🎯 FRANCOTIRADOR": [
     "🎯 FRANCOTIRADOR",
     "t1",
@@ -3647,6 +3652,11 @@
     "🗡️ MATAGIGANTES",
     "t1",
     1792953978519
+   ],
+   "🤝 SIN MIEDO": [
+    "🤝 SIN MIEDO",
+    "t1",
+    1794779478247
    ]
   },
   "pais": {
@@ -6906,6 +6916,11 @@
     "t1",
     1794764146474
    ],
+   "👥 FUNDADOR DE CREW": [
+    "👥 FUNDADOR DE CREW",
+    "t1",
+    1794779478247
+   ],
    "📅 INFALTABLE": [
     "📅 INFALTABLE",
     "t1",
@@ -8141,6 +8156,11 @@
     "🤝 SIN MIEDO",
     "t1",
     1793029252929
+   ],
+   "🦁 TEMERARIO": [
+    "🦁 TEMERARIO",
+    "t1",
+    1794779478247
    ]
   },
   "pais": {
@@ -8611,6 +8631,11 @@
     "EMBAJADOR",
     "t1",
     1794764146474
+   ],
+   "INTERNACIONAL": [
+    "INTERNACIONAL",
+    "t1",
+    1794779478247
    ],
    "SIN FRONTERAS": [
     "SIN FRONTERAS",
@@ -9999,6 +10024,11 @@
     "INTERNACIONAL",
     "t1",
     1794765783614
+   ],
+   "SIN FRONTERAS": [
+    "SIN FRONTERAS",
+    "t1",
+    1794779478247
    ]
   },
   "servidor": {
