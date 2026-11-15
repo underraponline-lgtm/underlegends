@@ -11,6 +11,16 @@
  ],
  "cambios": [
     {
+        "version": "5.40",
+        "dia": "2026-11-15",
+        "cuando": "2026-11-15T02:35:00-05:00",
+        "titulo": "FFS sin carta de Servidor",
+        "items": [
+            "**FFS** es socio Tier 3, así que ya no tiene carta de Servidor, como los demás de su tier.",
+            "Los eventos de **FMS Ceuta** desde el arranque de la Temporada 1 entran al ranking en las próximas horas."
+        ]
+    },
+    {
         "version": "5.39",
         "dia": "2026-11-15",
         "cuando": "2026-11-15T02:30:00-05:00",
