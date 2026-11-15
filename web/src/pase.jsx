@@ -15,14 +15,14 @@ import { avance, multAhora, pasePost, pedirPase, refrescarPases, usePase, usePas
 import { nombreMarco } from './marcos.jsx';
 import { PREMIUM_VIVO, PaseIcono, TareaIcono, premioCorto, premioLargo } from './pase_iconos.jsx';
 import { PopPase } from './pase_pop.jsx';
-import { PistaGrande } from './pase_pista.jsx';
+import { Escenario } from './pase_escenario.jsx';
+import { Objeto } from './pase_objetos.jsx';
 import CSS_PAGINA from './css/pase.css?inline';
 import { usarCss } from './css.js';
 
 usarCss('pase', CSS_PAGINA);
 
 const DIA = 86400000;
-const prevDe = (x) => { try { return localStorage.getItem('lg:prev-' + x) === '1'; } catch (e) { return false; } };
 // la curva nueva (`CURVA_DESDE` de bot/pase.py: el lunes 26/10 a las 11 AM ET) y una semana para contarlo
 const CURVA = [Date.UTC(2026, 9, 26, 15, 0), Date.UTC(2026, 10, 2, 16, 0)];
 
@@ -79,45 +79,7 @@ function Ficha({ p, prem, est, tiene, tienda }) {
   );
 }
 
-// ── LAS TAREAS: tarjetas en lo blanco, con un ícono por lo que miden ──
-function Tarea({ x, mide, cuando, cls = '' }) {
-  const ok = !!x.hecha;
-  const pct = x.meta ? Math.round((100 * Math.min(x.lleva || 0, x.meta)) / x.meta) : 0;
-  return (
-    <li className={'ps-qu' + (ok ? ' ok' : '') + (cls ? ' ' + cls : '')}>
-      <div className="ps-qu-top"><span className="ps-qu-i"><TareaIcono mide={mide} /></span><em>{cuando}</em></div>
-      <b>{x.t}</b>
-      <small>{x.d}</small>
-      <div className="ps-qu-pie">
-        <span className="ps-qu-bar"><u style={{ width: (ok ? 100 : pct) + '%' }} /></span>
-        <span className="ps-qu-n">{ok ? x.meta : Math.min(x.lleva || 0, x.meta)}/{x.meta}</span>
-        <span className="ps-qu-xp">{ok ? '✓ HECHA' : '+' + num(x.xp) + ' XP'}</span>
-      </div>
-    </li>
-  );
-}
-// 🔒 lo que viene, con su cuenta atrás (Dlx: «en vez de los espacios en blanco… que diga se desbloqueará en COUNTDOWN»)
-function Bloq({ que, hasta, ahora, xp }) {
-  return (
-    <li className="ps-qu lock">
-      <div className="ps-qu-top"><span className="ps-qu-i" aria-hidden="true">🔒</span><em>{que}</em></div>
-      <b>Tarea nueva</b>
-      <small>Se desbloquea en</small>
-      <span className="ps-cd">{reloj(hasta - ahora)}</span>
-      {xp ? <span className="ps-qu-xp lk">{xp}</span> : null}
-    </li>
-  );
-}
-const relleno = (n, cols, hacer) => Array.from({ length: (cols - (n % cols)) % cols }, (_, i) => hacer(i));
 
-function Grupo({ titulo, nota, extra, children }) {
-  return (
-    <>
-      <div className="ps-blk"><h3>{titulo}{nota ? <small>{nota}</small> : null}</h3>{extra || null}</div>
-      <ol className="ps-qg">{children}</ol>
-    </>
-  );
-}
 
 function Avisos({ P }) {
   const [si, setSi] = useState(!!P.aviso);
@@ -153,89 +115,7 @@ function Crew({ c, ahora }) {
   );
 }
 
-function Tareas({ P, cfg, miembro, compu, ahora }) {
-  const cols = compu ? 4 : 2;
-  const [todas, setTodas] = useState(false);
-  // de cada Tarea, qué mide (para su ícono)
-  const mide = useMemo(() => {
-    const m = {};
-    for (const t of [].concat(cfg.diarias || [], cfg.semanales || [], cfg.temporada || [], cfg.bienvenida || [], cfg.especiales || [])) m[t[0]] = t[3];
-    return m;
-  }, [cfg]);
-  // sin tu Pase, las de la lista pública, sin progreso
-  const sin = (xs) => (xs || []).map(([id, t, d, , meta, xp]) => ({ id, t, d, meta, xp, lleva: 0, hecha: false }));
-  const hoy = miembro ? (P.hoy && P.hoy.tareas) || [] : sin(cfg.diarias).slice(0, cfg.por_dia || 2);
-  const semana = miembro ? (P.semana && P.semana.tareas) || [] : sin(cfg.semanales);
-  const temporada = miembro ? P.temporada || [] : sin(cfg.temporada);
-  const bien = miembro ? P.bienvenida || [] : [];
-  const esp = miembro ? P.especiales || [] : (cfg.especiales || []).map(([id, t, d, , meta, xp, ini, fin]) => ({ id, t, d, meta, xp, lleva: 0, hecha: false, ini, fin }));
-  const gracia = miembro && P.gracia ? P.gracia : null;
-  const hechas = (xs) => xs.filter((x) => x.hecha).length;
-  const tem = compu || todas ? temporada : temporada.slice(0, 4);
-  const finHoy = P && P.hoy ? P.hoy.fin : 0, finSem = P && P.semana ? P.semana.fin : 0;
-  const bienOk = bien.length && bien.every((x) => x.hecha);
-  // las especiales: las que corren, y las que vienen bloqueadas con su cuenta atrás
-  const espYa = esp.filter((x) => !x.ini || x.ini <= ahora);
-  const espVan = esp.filter((x) => x.ini && x.ini > ahora);
-  return (
-    <div className="ps-tareas">
-      {miembro ? <Avisos P={P} /> : null}
-      {miembro ? <Crew c={P.crew} ahora={ahora} /> : null}
-      {bien.length ? (
-        <details className="ps-bien" open={!bienOk}>
-          <summary><b>{bienOk ? '✓ ' : ''}Para empezar</b><span>{hechas(bien)} de {bien.length} · +{num(bien.reduce((s, x) => s + x.xp, 0))} XP · una sola vez</span></summary>
-          <ol className="ps-qg">{bien.map((x) => <Tarea key={x.id} x={x} mide={mide[x.id]} cuando="PARA EMPEZAR" />)}</ol>
-        </details>
-      ) : null}
-      {esp.length ? (
-        <Grupo titulo="⭐ Especiales" nota="duran poco">
-          {espYa.map((x) => <Tarea key={x.id} x={x} mide={mide[x.id]} cls="esp"
-            cuando={x.fin > ahora ? '⏱ ' + corto(x.fin - ahora) : 'TERMINÓ'} />)}
-          {espVan.map((x) => <Bloq key={x.id} que={'⭐ ' + fechaET(x.ini, { day: 'numeric', month: 'numeric' })} hasta={x.ini} ahora={ahora} xp={'+' + num(x.xp) + ' XP'} />)}
-        </Grupo>
-      ) : null}
-      {hoy.length ? (
-        <Grupo titulo="Hoy" nota={miembro ? hechas(hoy) + ' de ' + hoy.length : 'cada día, ' + (cfg.por_dia || 2)}>
-          {hoy.map((x) => <Tarea key={x.id} x={x} mide={mide[x.id]} cuando={finHoy ? '⏱ ' + corto(finHoy - ahora) : 'HOY'} />)}
-          {finHoy ? relleno(hoy.length, cols, (i) => <Bloq key={'h' + i} que="MAÑANA" hasta={finHoy} ahora={ahora} />) : null}
-        </Grupo>
-      ) : null}
-      {semana.length ? (
-        <Grupo titulo="Esta semana" nota={miembro ? hechas(semana) + ' de ' + semana.length : semana.length + ' por semana'}
-          extra={gracia ? <span className="ps-gr-t">+ {gracia.tareas.length} de la semana pasada</span> : null}>
-          {gracia ? gracia.tareas.map((x) => (
-            <Tarea key={'g' + x.id} x={Object.assign({}, x, { d: 'De la semana pasada: se te pasó, y tienes una semana más para cumplirla.' })}
-              mide={mide[x.id]} cls="gr" cuando={'⏱ HASTA EL ' + fechaET(gracia.fin, { weekday: 'long' }).toUpperCase()} />
-          )) : null}
-          {semana.map((x) => <Tarea key={x.id} x={x} mide={mide[x.id]} cuando={finSem ? '⏱ ' + corto(finSem - ahora) : 'SEMANA'} />)}
-          {finSem ? relleno(semana.length + (gracia ? gracia.tareas.length : 0), cols, (i) => <Bloq key={'s' + i} que="LA SEMANA QUE VIENE" hasta={finSem} ahora={ahora} />) : null}
-        </Grupo>
-      ) : null}
-      {temporada.length ? (
-        <Grupo titulo="De la temporada" nota={miembro ? hechas(temporada) + ' de ' + temporada.length : 'en cualquier orden'}>
-          {tem.map((x) => <Tarea key={x.id} x={x} mide={mide[x.id]} cuando="TEMPORADA" />)}
-        </Grupo>
-      ) : null}
-      {!compu && !todas && temporada.length > 4 ? (
-        <button type="button" className="btn borde ps-ancho ps-mas" onClick={() => setTodas(true)}>Ver las {temporada.length} de la temporada</button>
-      ) : null}
-      <p className="ps-nota">Se cumplen solas: el Pase se entera de lo que haces en la página, en el bot y en los eventos. Las Tareas no son las
-        Misiones: ésas son para todos y suman a la Temporada.</p>
-    </div>
-  );
-}
 
-// ── PREMIOS, abajo: el premium, lo exclusivo de la T1, la gente en el Pase y el Salón ──
-function CtaPremium({ onIr }) {
-  return (
-    <section className="ps-cta">
-      <span className="ps-tag2">PREMIUM</span>
-      <b>Desbloquea la fila de arriba</b>
-      <p>En la T1 se desbloquea con el rol «Pase Premium» de DRA: se sortea acá en la página, y se gana en eventos.</p>
-      <button type="button" className="btn borde chico" onClick={onIr}>Cómo se desbloquea →</button>
-    </section>
-  );
-}
 
 function Exclusivos({ libres, prem, oscuro, max = 8 }) {
   const xs = libres.filter((p) => p[2] === 'insignia' || p[2] === 'titulo').map((p) => ({ p, prem: false }))
@@ -255,60 +135,7 @@ function Exclusivos({ libres, prem, oscuro, max = 8 }) {
   );
 }
 
-function EnElPase({ liga, pub, nivel, max }) {
-  const [quien, setQuien] = useState('sigo');
-  const n = (pub && pub.n) || {};
-  const todos = Object.entries(n).filter(([k]) => liga.T && liga.T[k]).sort((a, b) => b[1][0] - a[1][0]);
-  if (!todos.length) return null;
-  const sigo = new Set(aQuienSigo());
-  const seguidos = todos.filter(([k]) => sigo.has(k));
-  const lista = (quien === 'sigo' && seguidos.length ? seguidos : todos).slice(0, max);
-  const yoK = liga.yo && liga.yo.k;
-  const adelante = nivel ? seguidos.filter(([k, v]) => k !== yoK && v[0] > nivel)[0] : null;
-  return (
-    <section className="ps-lt">
-      <div className="ps-blk"><h3>En el Pase<small>{num(todos.length)} con nivel</small></h3>
-        {seguidos.length ? (
-          <span className="ps-lt-tabs">
-            <button type="button" className={quien === 'sigo' ? 'on' : ''} onClick={() => setQuien('sigo')}>A quién sigues</button>
-            <button type="button" className={quien === 'todos' ? 'on' : ''} onClick={() => setQuien('todos')}>Todos</button>
-          </span>
-        ) : null}
-      </div>
-      <ol>{lista.map(([k, v]) => (
-        <li key={k}><a href={'#/r/' + encodeURIComponent(k)} title={limpio(liga.T[k].n)}>
-          <Cara liga={liga} k={k} nombre={liga.T[k].n} cls="cara ps-c40" /><b>{v[0]}</b>{v[3] ? <i className="ps-dia" aria-label="premium">◆</i> : null}</a></li>
-      ))}</ol>
-      {nivel ? (
-        <p className="ps-tuL">Tú vas en el <b>nivel {nivel}</b>.{adelante ? <> {limpio(liga.T[adelante[0]].n)}, a quien sigues, va en el {adelante[1][0]}: <b>{adelante[1][0] - nivel} {adelante[1][0] - nivel === 1 ? 'nivel' : 'niveles'} adelante</b>.</> : null}</p>
-      ) : null}
-    </section>
-  );
-}
 
-// 🏛️ EL SALÓN DEL PASE (Dlx, 06/10/2026: «4. B»): los que lo completaron, en el orden en que llegaron
-function Salon({ liga, lista, temp }) {
-  if (!lista || !lista.length) return null;
-  return (
-    <section className="ps-salon">
-      <div className="ps-blk"><h3>Salón del Pase<small>{temp ? temp.toUpperCase() + ' · ' : ''}{lista.length} {lista.length === 1 ? 'lo completó' : 'lo completaron'}</small></h3></div>
-      <ol>
-        {lista.map(([k, t], i) => {
-          const f = liga.T && liga.T[k];
-          if (!f) return null;
-          return (
-            <li key={k}>
-              <span className="ps-sp">{i + 1}.º</span>
-              <Cara liga={liga} k={k} nombre={f.n} cls="cara ps-c28" />
-              <a href={'#/r/' + encodeURIComponent(k)}>{limpio(f.n)}</a>
-              <small>{liga.cuando(new Date(t).toISOString())}</small>
-            </li>
-          );
-        })}
-      </ol>
-    </section>
-  );
-}
 
 // 🌱 quien no es de DRA: lo que ganaría (Dlx, 25/10/2026: «dale»)
 function LoQueGanarias({ libres, cuantos }) {
@@ -526,36 +353,6 @@ function Premium({ liga, dc, P, prem, nivel, miembro }) {
   );
 }
 
-// ── la barra de XP, «te faltan» y los avisos de arriba ──
-function Barra({ P, ahora }) {
-  const a = avance(P);
-  if (!a) {
-    return P.nivel >= P.niveles ? <p className="ps-com">Completaste el Pase{P.salon ? <>: entraste <b>{P.salon}.º</b> al Salón del Pase</> : null}.
-      {P.cada ? <> Sigue la cola: cada {num(P.cada[0])} XP, {num(P.cada[1])} Puntos de Tienda (+{P.cola}).</> : null}</p> : null;
-  }
-  // 🎯 el camino más corto: las Tareas pendientes que más dan, hasta cubrir lo que falta (con la XP doble y el premium)
-  const { x } = multAhora(P, ahora);
-  const pend = [].concat((P.hoy && P.hoy.tareas) || [], (P.semana && P.semana.tareas) || [], (P.gracia && P.gracia.tareas) || [],
-    (P.especiales || []).filter((e) => e.ini <= ahora && ahora < e.fin), P.bienvenida || []).filter((t) => !t.hecha)
-    .sort((p, q) => q.xp - p.xp);
-  const camino = [];
-  let suma = 0;
-  for (const t of pend) { if (suma >= a.falta) break; camino.push(t); suma += Math.round(t.xp * x); }
-  const ok = suma >= a.falta && camino.length <= 3;
-  return (
-    <>
-      <div className="ps-xpr">
-        <b className="ps-xp-l">NIVEL {P.nivel}</b>
-        <span className="ps-xp-bar" role="img" aria-label={num(a.lleva) + ' de ' + num(a.de) + ' XP'}><u style={{ width: Math.round((100 * a.lleva) / a.de) + '%' }} /></span>
-        <span className="ps-xp-num">{num(a.lleva)} / {num(a.de)} XP</span>
-        <b className="ps-xp-s">{P.nivel + 1}</b>
-      </div>
-      <p className="ps-com">Te faltan <b>{num(a.falta)} XP</b> para el {P.nivel + 1}{ok ? <>: con {camino.map((t, i) => (
-        <span key={t.id}>{i ? (i === camino.length - 1 ? ' y ' : ', ') : ''}<b>{t.t}</b> (+{num(Math.round(t.xp * x))})</span>
-      ))} ya subes.</> : '.'}</p>
-    </>
-  );
-}
 
 function Avisitos({ P, ahora }) {
   const out = [];
@@ -574,14 +371,167 @@ function Avisitos({ P, ahora }) {
   return out.length ? <div className="ps-avisos">{out}</div> : null;
 }
 
-const TABS = [['premios', 'Premios'], ['tareas', 'Tareas'], ['premium', 'Premium']];
+// ── 🆕 EL PASE COMO EL INICIO (15/11/2026). Dlx: «basarte en cada rincón de inicio… para que remakees el apartado de PASE
+// RAPERO»; a la maqueta, «una combinación entre A y B… la pista no debería ocupar el espacio de arriba», y a la C con el
+// escenario v2 y el sello Premium, «Sí, todo». Cada pieza viene de una del Inicio:
+//   · la PORTADA es el escenario del Inicio: tu nivel, tu XP, tus chips y lo próximo como objeto
+//   · el «IR A» pegado arriba (con la búsqueda de un premio) reemplaza las tres pestañas: todo está en una página
+//   · la FILA DE CUATRO mini paneles: Hoy, La semana, tu crew y el sorteo
+//   · la pista es el ESCENARIO de premios (pase_escenario.jsx), las Tareas tres PANELES de colores, y el Premium y el Salón
+//     de a dos, el Salón como «Los que mandan»
+const RUTA_MIDE = { fel: '#/publicaciones', cm: '#/publicaciones', promo: '#/publicaciones', voto: '#/publicaciones', vivo: '#/eventos',
+  apuesta: '#/eventos', precio: '#/tienda', caza: '#/tienda', sigue: '#/ranking', crew: '#/crews' };
+const IR_A = [['ps-premios', 'Premios'], ['ps-tareas', 'Tareas'], ['ps-premium', 'Premium'], ['ps-salon', 'El Salón']];
+const ESCENA_PASE = '/escenas/dra.webp';
+
+function irA(id) {
+  try {
+    const r = document.getElementById('inicio-nuevo').shadowRoot.getElementById(id);
+    if (r) r.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  } catch (e) { /* nada */ }
+}
+
+/** Una Tarea en una fila: su ícono, la barra, la XP y, si se hace en otra página, «Ir» */
+function Fila({ x, mide, tag }) {
+  const ok = !!x.hecha;
+  const lleva = Math.min(x.lleva || 0, x.meta || 1);
+  const ruta = !ok && RUTA_MIDE[mide];
+  return (
+    <li className={'pc-t' + (ok ? ' ok' : '')}>
+      <span className="pc-ti"><TareaIcono mide={mide} t={20} /></span>
+      <span className="pc-tx"><b>{x.t}</b>{tag ? <em>{tag}</em> : null}
+        <span className="pc-bar"><u style={{ width: (ok ? 100 : Math.round((100 * lleva) / (x.meta || 1))) + '%' }} /></span></span>
+      <span className="pc-xp">{ok ? '✓' : '+' + num(x.xp)}</span>
+      {ruta ? <a className="pc-ir" href={ruta}>Ir</a> : <span className="pc-ir no" aria-hidden="true">{ok ? 'Hecha' : lleva + '/' + x.meta}</span>}
+    </li>
+  );
+}
+
+function TareasC({ P, cfg, miembro, ahora }) {
+  const mide = useMemo(() => {
+    const m = {};
+    for (const t of [].concat(cfg.diarias || [], cfg.semanales || [], cfg.temporada || [], cfg.bienvenida || [], cfg.especiales || [])) m[t[0]] = t[3];
+    return m;
+  }, [cfg]);
+  const [todas, setTodas] = useState(false);
+  const sin = (xs) => (xs || []).map(([id, t, d, , meta, xp]) => ({ id, t, d, meta, xp, lleva: 0, hecha: false }));
+  const hoy = miembro ? (P.hoy && P.hoy.tareas) || [] : sin(cfg.diarias).slice(0, cfg.por_dia || 2);
+  const semana = miembro ? (P.semana && P.semana.tareas) || [] : sin(cfg.semanales);
+  const temporada = miembro ? P.temporada || [] : sin(cfg.temporada);
+  const gracia = miembro && P.gracia ? P.gracia.tareas : [];
+  const bien = miembro ? P.bienvenida || [] : [];
+  const esp = (miembro ? P.especiales || [] : []).filter((x) => !x.ini || x.ini <= ahora);
+  const finHoy = P && P.hoy ? P.hoy.fin : 0, finSem = P && P.semana ? P.semana.fin : 0;
+  const hechas = (xs) => xs.filter((x) => x.hecha).length;
+  const tem = todas ? temporada : temporada.slice(0, 6);
+  const extra = [].concat(esp.map((x) => [x, 'Especial · ' + (x.fin > ahora ? corto(x.fin - ahora) : 'terminó')]),
+    bien.filter((x) => !x.hecha).map((x) => [x, 'Para empezar']));
+  return (
+    <section className="pc-tareas" id="ps-tareas" aria-label="Tus Tareas">
+      <div className="pc-h"><h2>Tus Tareas</h2><small>Se cumplen solas: el Pase se entera de lo que haces en la página, en el bot y en los eventos.</small></div>
+      {extra.length ? (
+        <ol className="pc-extra">{extra.map(([x, tag]) => <Fila key={'e' + x.id} x={x} mide={mide[x.id]} tag={tag} />)}</ol>
+      ) : null}
+      <div className="pc-cols">
+        <section className="pc-col" style={{ '--c': '#29B298' }}>
+          <h3>Hoy<small>{miembro ? hechas(hoy) + ' de ' + hoy.length : 'cada día, ' + (cfg.por_dia || 2)}{finHoy ? ' · cierra en ' + corto(finHoy - ahora) : ''}</small></h3>
+          <ol>{hoy.map((x) => <Fila key={x.id} x={x} mide={mide[x.id]} />)}</ol>
+        </section>
+        <section className="pc-col" style={{ '--c': '#E41373' }}>
+          <h3>La semana<small>{miembro ? hechas(semana) + ' de ' + semana.length : semana.length + ' por semana'}{finSem ? ' · cierra en ' + corto(finSem - ahora) : ''}</small></h3>
+          <ol>
+            {gracia.map((x) => <Fila key={'g' + x.id} x={x} mide={mide[x.id]} tag="De la semana pasada" />)}
+            {semana.map((x) => <Fila key={x.id} x={x} mide={mide[x.id]} />)}
+          </ol>
+        </section>
+        <section className="pc-col" style={{ '--c': '#F5C542' }}>
+          <h3>Temporada<small>{miembro ? hechas(temporada) + ' de ' + temporada.length : 'en cualquier orden'}</small></h3>
+          <ol>{tem.map((x) => <Fila key={x.id} x={x} mide={mide[x.id]} />)}</ol>
+          {!todas && temporada.length > 6 ? <button type="button" className="pc-mas" onClick={() => setTodas(true)}>Ver las {temporada.length}</button> : null}
+        </section>
+      </div>
+      {miembro ? <Crew c={P.crew} ahora={ahora} /> : null}
+    </section>
+  );
+}
+
+/** La fila de cuatro, como en el Inicio: Hoy, La semana, tu crew y el sorteo */
+function Cuatro({ P, ahora, tiene }) {
+  const sig = (xs) => (xs || []).filter((x) => !x.hecha).sort((a, b) => (b.lleva || 0) / (b.meta || 1) - (a.lleva || 0) / (a.meta || 1))[0];
+  const h = sig(P.hoy && P.hoy.tareas), s = sig(P.semana && P.semana.tareas);
+  const cr = P.crew;
+  const xs = [
+    ['#29B298', 'titulo', h ? 'Hoy · cierra en ' + corto(P.hoy.fin - ahora) : 'Hoy', h ? h.t : 'Hiciste las de hoy', h ? 'La que te falta · +' + num(h.xp) + ' XP' : 'Mañana llegan otras', 'ps-tareas'],
+    ['#E41373', 'reaccion', 'La semana · ' + ((P.semana && P.semana.tareas) || []).filter((x) => x.hecha).length + ' de ' + ((P.semana && P.semana.tareas) || []).length,
+      s ? s.t : 'Hiciste las cinco', s ? 'La que más te acerca · +' + num(s.xp) + ' XP' : 'El lunes llegan otras', 'ps-tareas'],
+    cr ? ['#5CC8FF', 'insignia', 'Meta de tu crew', num(Math.min(cr.hechas, cr.meta)) + ' de ' + num(cr.meta) + ' Tareas', cr.cobrada ? 'Llegaron: +' + num(cr.xp) + ' XP' : 'Si llegan, +' + num(cr.xp) + ' XP cada uno', 'ps-tareas']
+      : ['#5CC8FF', 'insignia', 'Tu crew', 'Súmate a una', 'Entre todos, una meta por semana', null, '#/crews'],
+    tiene ? ['#F5C542', 'marco', 'Premium', 'Lo tienes', '+' + (P.boost || 20) + ' % de XP en cada Tarea', 'ps-premium']
+      : ['#F5C542', 'caja', 'Sorteo · gratis', 'El Pase premium', 'Entra en un toque, abajo', 'ps-premium'],
+  ];
+  return (
+    <div className="pc-4">
+      {xs.map(([c, ob, et, b, sm, id, href]) => (
+        <a key={et} className="pc-pn" style={{ '--c': c }} href={href || '#/pase'} onClick={(e) => { if (id) { e.preventDefault(); irA(id); } }}>
+          <Objeto tipo={ob} t={40} /><span><i>{et}</i><b>{b}</b><small>{sm}</small></span>
+        </a>
+      ))}
+    </div>
+  );
+}
+
+/** 🏛️ El Salón, como «Los que mandan»: los niveles más altos, y tú. Con el anillo dorado quien tiene el premium */
+function SalonC({ liga, pub, nivel, temp }) {
+  const n = (pub && pub.n) || {};
+  const todos = Object.entries(n).filter(([k]) => liga.T && liga.T[k]).sort((a, b) => b[1][0] - a[1][0]);
+  if (!todos.length) return null;
+  const top = todos[0][1][0] || 1;
+  const yoK = liga.yo && liga.yo.k;
+  const mio = yoK ? todos.findIndex(([k]) => k === yoK) : -1;
+  const xs = todos.slice(0, 5).map((x, i) => [x, i]);
+  if (mio >= 5) xs.push([todos[mio], mio]);
+  const completo = (pub && pub.salon && pub.salon[temp]) || [];
+  return (
+    <section className="pc-salon" id="ps-salon" aria-label="El Salón del Pase">
+      <div className="pc-h"><h2>El Salón del Pase</h2><small>{completo.length ? completo.length + (completo.length === 1 ? ' lo completó' : ' lo completaron') : 'El 30 te mete para siempre'}</small></div>
+      <ol>{xs.map(([[k, v], i]) => (
+        <li key={k} className={k === yoK ? 'yo' : ''}>
+          <b className="pc-sp">{i + 1}</b>
+          <a href={'#/r/' + encodeURIComponent(k)} className="pc-sn"><Cara liga={liga} k={k} nombre={liga.T[k].n} cls={'cara ps-c40' + (v[3] ? ' pc-oro' : '')} />
+            <span>{k === yoK ? 'Tú' : limpio(liga.T[k].n)}</span></a>
+          <span className="pc-sb"><u style={{ width: Math.round((100 * v[0]) / top) + '%' }} /></span>
+          <b className="pc-sl">{v[0]}</b>
+        </li>
+      ))}</ol>
+      {nivel && mio < 0 ? <p className="ps-sub">Tú vas en el nivel {nivel}.</p> : null}
+    </section>
+  );
+}
+
+/** 💎 El Premium, de a dos con el Salón: lo que da, en objetos; con él, tus marcos */
+function PremiumC({ P, prem, tiene, onTodo }) {
+  const boost = (P && P.boost) || 20;
+  const muestra = ['marco', 'color', 'reaccion', 'fondo'].map((t) => prem.find((p) => p[2] === t)).filter(Boolean);
+  return (
+    <section className={'pc-prem' + (tiene ? ' tiene' : '')} id="ps-premium" aria-label="El Premium">
+      <i className="pe-esq a" /><i className="pe-esq b" />
+      <span className="pc-tag">{tiene ? 'Tienes el Premium' : 'Premium'}</span>
+      <h2>{tiene ? 'Tu fila de arriba' : 'La fila de arriba'}</h2>
+      <div className="pc-pobj">{muestra.map((p) => <Objeto key={p[0]} p={p} t={56} gris={!tiene} />)}</div>
+      <p>{tiene ? <>Tus Tareas dan <b>+{boost} % de XP</b> y cobras la fila de arriba nivel por nivel. Tus marcos se ponen en <a href="#/inventario">tu Inventario</a>.</>
+        : <>Marcos de carta, color de nombre, reacciones, fondo y <b>+{boost} % de XP</b>. Al desbloquearlo cobras lo de los niveles que ya pasaste. En la T1 no se compra: se gana.</>}</p>
+      <button type="button" className="btn verde" onClick={onTodo}>{tiene ? 'Ver todo el Premium' : 'Cómo se consigue y el sorteo'}</button>
+    </section>
+  );
+}
 
 export function Pase({ liga, dc }) {
   const P0 = usePase(!!dc, true);
   const pub = usePases();
   const compu = useCompu();
   const ahora = useAhora(30000);
-  const [tab, setTab] = useState(() => (/premium/.test(String(location.hash)) ? 'premium' : /tareas/.test(String(location.hash)) ? 'tareas' : 'premios'));
+  const [q, setQ] = useState('');
+  const [todoPrem, setTodoPrem] = useState(() => /premium/.test(String(location.hash)));
   const P = dc && P0 && P0.listo ? P0 : null;
   const miembro = !!(P && P.miembro);
   const cfg = (pub && pub.cfg) || (P ? { premios: P.premios, niveles: P.niveles, temp: P.temp, premium: P.fila_premium } : {});
@@ -590,114 +540,101 @@ export function Pase({ liga, dc }) {
   const prem = (P && P.fila_premium && P.fila_premium.length ? P.fila_premium : cfg.premium) || [];
   const nivel = miembro ? P.nivel : 0;
   const tiene = !!(P && P.premium && P.premium.hasta == null);
-  const tienda = (libres[0] || [])[1] || 150;
-  const min = (liga.d.tienda && liga.d.tienda.min) || 500;
   const yo = liga.yo;
   const carta = yo ? liga.cartaUrl(yo.k, 'temporada') : '';
   const fin = (liga.d.fase || {}).termina;
   const dias = fin ? Math.max(0, Math.round((Date.parse(fin) - ahora) / DIA)) : null;
   const cuantos = pub && pub.n ? Object.keys(pub.n).length : 0;
-  // el globito de Tareas: las de hoy y de la semana que todavía no hiciste
-  const pend = miembro ? [].concat((P.hoy && P.hoy.tareas) || [], (P.semana && P.semana.tareas) || []).filter((t) => !t.hecha).length : 0;
-  const irTab = (t) => { setTab(t); try { window.scrollTo({ top: 0, behavior: 'smooth' }); } catch (e) { /* nada */ } };
   const dra = (liga.svs && liga.svs.DRA) || {};
-  const tabs = (
-    <nav data-tuto="ps-tabs" className="ps-tabs" aria-label="El Pase">
-      {TABS.map(([k, t]) => (
-        <button key={k} type="button" className={(tab === k ? 'on' : '') + (k === 'premium' ? ' pr' : '')} aria-current={tab === k ? 'page' : undefined}
-          onClick={() => setTab(k)}>{t}{k === 'tareas' && pend ? <i>{pend}</i> : null}{k === 'premium' && !tiene ? ' 🔒' : k === 'premium' ? ' ✓' : ''}</button>
-      ))}
-    </nav>
-  );
-  // arriba, lo tuyo: tu nivel y tu barra; sin cuenta o sin DRA, qué hacer para tenerlo
+  const a = miembro ? avance(P) : null;
+  const { doble } = miembro ? multAhora(P, ahora) : {};
+  const prox = miembro ? doble || (P.doble || []).find((w) => w[0] > ahora && w[0] - ahora < 21 * DIA) : null;
+  // los enlaces viejos (#/pase/tareas, #/pase/premium) bajan a su parte
+  useEffect(() => {
+    const h = String(location.hash);
+    const id = /tareas/.test(h) ? 'ps-tareas' : /premium/.test(h) ? 'ps-premium' : '';
+    if (id) { const t = setTimeout(() => irA(id), 400); return () => clearTimeout(t); }
+    return undefined;
+  }, []);
+  // lo de arriba a la izquierda: tu nivel o qué hacer para tenerlo
   let tuyo;
   if (!dc) {
-    tuyo = (
-      <div className="ps-sd-cta">
-        <b>Entra con tu cuenta de Discord</b><span>y mira tu nivel, tu XP y tus Tareas.</span>
-        <button type="button" className="btn verde chico" onClick={accion.entrar}>Entrar con Discord</button>
-      </div>
-    );
-  } else if (P0 === undefined) tuyo = <p className="ps-com">Buscando tu Pase…</p>;
+    tuyo = (<><p className="pc-p">Sube de nivel con Tareas cortas, sin necesidad de jugar. El nivel 1 abre tu carta de Temporada.</p>
+      <span className="pc-acc"><button type="button" className="btn verde" onClick={accion.entrar}>Entrar con Discord</button></span></>);
+  } else if (P0 === undefined) tuyo = <p className="pc-p">Buscando tu Pase…</p>;
   else if (P0 && P0.sinSesion) {
-    tuyo = (
-      <div className="ps-sd-cta"><b>Tu sesión venció</b><span>Entra de nuevo con Discord y aparece tu nivel.</span>
-        <button type="button" className="btn verde chico" onClick={accion.entrar}>Entrar con Discord</button></div>
-    );
-  } else if (!P0) tuyo = <p className="ps-com ps-mal">No pude leer tu Pase. Prueba de nuevo en un rato.</p>;
-  else if (!P0.listo) tuyo = <p className="ps-com">El Pase arranca en un rato: en la próxima vuelta del ciclo.</p>;
+    tuyo = (<><p className="pc-p">Tu sesión venció: entra de nuevo con Discord y aparece tu nivel.</p>
+      <span className="pc-acc"><button type="button" className="btn verde" onClick={accion.entrar}>Entrar con Discord</button></span></>);
+  } else if (!P0) tuyo = <p className="pc-p ps-mal">No pude leer tu Pase. Prueba de nuevo en un rato.</p>;
+  else if (!P0.listo) tuyo = <p className="pc-p">El Pase arranca en un rato: en la próxima vuelta del ciclo.</p>;
   else if (!miembro) {
-    tuyo = (
-      <>
-        <p className="ps-sd-p">{libres.length || 30} niveles con premios para tu perfil y tu carta, más <b>{num(libres.reduce((s, p) => s + (p[1] || 0), 0))} Puntos de Tienda</b>. Se sube con Tareas cortas: entrar, seguir a alguien, felicitar.</p>
-        <div className="ps-sd-cta">
-          <b>Es de los miembros de Discord Rap Español.</b>
-          <span>Entra al servidor, verifícate, y tu Pase arranca en el nivel 1, con tu tarjeta de Temporada.</span>
-          <span className="ps-acc">{dra.invita ? <a className="btn verde chico" href={dra.invita} target="_blank" rel="noopener noreferrer">Unirme a DRA ↗</a> : null}
-            <a className="btn borde chico" href="#/cuenta/verificar">Cómo verificarme</a></span>
-        </div>
-      </>
-    );
-  } else tuyo = <><Barra P={P} ahora={ahora} /><Avisitos P={P} ahora={ahora} /></>;
-  const yoMini = miembro && yo ? (
-    <div className="ps-yo">
-      {carta ? <img src={carta} alt="Tu carta de Temporada" /> : null}
-      <div><b>{limpio(yo.n)}</b><span>Nivel {nivel} · cobraste {num(P.cobrado)} Puntos de Tienda</span>
-        {dias != null ? <span>{liga.temp} · termina en {dias} {dias === 1 ? 'día' : 'días'}</span> : null}</div>
-    </div>
-  ) : null;
-  const skin = miembro && yo ? (
-    <div className="ps-skin">
-      <span className="ps-sk-t">TU CARTA · {liga.temp}</span>
-      {carta ? <Carta liga={liga} k={yo.k} cual="temporada" cls="ps-sk-img" abre={false} /> : null}
-      <div className="ps-sk-p"><b>{limpio(yo.n)}</b><span>Nivel {nivel} · {num(P.cobrado)} Puntos de Tienda cobrados</span>
-        {dias != null ? <span className="ps-sk-d">⏱ La {liga.temp} termina en {dias} {dias === 1 ? 'día' : 'días'}</span> : null}</div>
-    </div>
-  ) : null;
-  // en lo negro: la pista (Premios), lo exclusivo de la T1 (Tareas, al lado de tu carta) o lo que cobras (Premium)
-  // 🎟️ LA PISTA GRANDE, CON «EL PRÓXIMO GRAN PREMIO» ARRIBA (Dlx, 25/10/2026, a las dos opciones: «me gusta B»).
-  // `?prev=pistaa` deja ver la A (sin el premio de arriba)
-  const pk = prevDe('pistaa') ? 'a' : 'b';
-  const pct = P && P.hasta > P.desde ? (100 * (P.xp - P.desde)) / (P.hasta - P.desde) : 0;
-  const arriba = tab === 'premios' ? <PistaGrande libres={libres} prem={prem} nivel={nivel} tiene={tiene} tienda={tienda} min={min} compu={compu}
-    pct={pct} liga={liga} yo={miembro ? yo : null} opcion={pk} umbrales={cfg.umbrales} xp={P ? P.xp : null} />
-    : tab === 'tareas' && compu ? <Exclusivos libres={libres} prem={prem} oscuro /> : null;
-  let abajo;
-  if (tab === 'premios') {
-    abajo = (
-      <div className="ps-ab">
-        <div className="ps-ab2">
-          {!miembro && P ? <LoQueGanarias libres={libres} cuantos={cuantos} /> : null}
-          {!tiene ? <CtaPremium onIr={() => irTab('premium')} /> : null}
-          <Exclusivos libres={libres} prem={prem} max={compu ? 6 : 8} />
-        </div>
-        <div className="ps-ab2">
-          <EnElPase liga={liga} pub={pub} nivel={nivel} max={compu ? 9 : 6} />
-          <Salon liga={liga} lista={pub && pub.salon && pub.salon[temp]} temp={temp} />
-        </div>
-      </div>
-    );
-  } else if (tab === 'tareas') {
-    abajo = <div className="ps-ab uno"><Tareas P={P} cfg={cfg} miembro={miembro} compu={compu} ahora={ahora} /></div>;
-  } else {
-    abajo = <div className="ps-ab uno"><Premium liga={liga} dc={dc} P={P} prem={prem} nivel={nivel} miembro={miembro} /></div>;
+    tuyo = (<><p className="pc-p">Es de los miembros de Discord Rap Español: verifícate y tu Pase arranca en el nivel 1, con tu carta de Temporada.</p>
+      <span className="pc-acc">{dra.invita ? <a className="btn verde" href={dra.invita} target="_blank" rel="noopener noreferrer">Unirme a DRA ↗</a> : null}
+        <a className="btn borde" href="#/cuenta/verificar">Cómo verificarme</a></span></>);
   }
+  const hoyH = miembro ? ((P.hoy && P.hoy.tareas) || []) : [];
+  const semH = miembro ? ((P.semana && P.semana.tareas) || []) : [];
+  const temH = miembro ? (P.temporada || []) : [];
+  const cuenta = (xs) => xs.filter((x) => x.hecha).length + ' de ' + xs.length;
+  const sigN = Math.min(libres.length || 50, nivel + 1);
+  const sigP = libres[sigN - 1];
   return (
     <>
-      <section data-tuto="ps-cab" className={'ps-esc' + (skin && compu ? ' con-skin' : '')} aria-label="Pase de rapero">
-        {compu ? skin : null}
-        <div className="ps-der">
-          <div className="ps-cab">
-            <div className="ps-t"><span className="tag">PASE DE RAPERO · {liga.temp}</span><h1>Pase de rapero</h1></div>
-            {tabs}
+      <section data-tuto="ps-cab" className="pc-por" aria-label="Tu Pase" style={{ '--esc': 'url("' + ESCENA_PASE + '")' }}>
+        <div className="pc-por-in">
+          <div className="pc-izq">
+            <span className="tag">PASE DE RAPERO · {liga.temp}{miembro ? ' · NIVEL ' + nivel + ' DE ' + (libres.length || 50) : ''}</span>
+            {a ? (
+              <h1>Te faltan {num(a.falta)} XP<br /><span>para el nivel {nivel + 1}</span></h1>
+            ) : <h1>{miembro && nivel >= (libres.length || 50) ? <>Completaste<br /><span>el Pase</span></> : 'Pase de rapero'}</h1>}
+            {a ? (
+              <div className="pc-xp"><span className="pc-xpb" role="img" aria-label={num(a.lleva) + ' de ' + num(a.de) + ' XP'}><u style={{ width: Math.round((100 * a.lleva) / a.de) + '%' }} /></span>
+                <b>{num(a.lleva)} / {num(a.de)} XP</b></div>
+            ) : null}
+            {miembro ? <span className="pc-acc"><a className="btn verde" href="#/pase" onClick={(e) => { e.preventDefault(); irA('ps-tareas'); }}>Ver mis Tareas</a>
+              {!tiene ? <a className="btn borde" href="#/pase" onClick={(e) => { e.preventDefault(); irA('ps-premium'); }}>El Premium</a> : null}</span> : tuyo}
+            {miembro ? (
+              <div className="pc-chips">
+                <span><b>{cuenta(hoyH)}</b><small>Hoy</small></span>
+                <span><b>{cuenta(semH)}</b><small>La semana</small></span>
+                <span><b>{cuenta(temH)}</b><small>De temporada</small></span>
+                {prox ? <span className="x2"><b>XP ×{prox[2]}</b><small>{doble ? 'Hasta el ' + fechaET(prox[1], { day: 'numeric', month: 'numeric' }) : 'Desde el ' + fechaET(prox[0], { day: 'numeric', month: 'numeric' })}</small></span>
+                  : dias != null ? <span><b>{dias} {dias === 1 ? 'día' : 'días'}</b><small>Para que termine la {liga.temp}</small></span> : null}
+              </div>
+            ) : cuantos ? <p className="pc-p">{num(cuantos)} ya tienen nivel en el Pase.</p> : null}
           </div>
-          {compu ? null : yoMini}
-          {tuyo}
-          {arriba}
+          <div className="pc-prox">
+            <span className="k">{miembro ? (nivel >= (libres.length || 50) ? 'Lo completaste' : 'Lo próximo · nivel ' + sigN) : 'Lo primero · nivel 1'}</span>
+            {sigP ? <Objeto p={miembro ? sigP : libres[0]} t={compu ? 120 : 92} an /> : null}
+            <b>{sigP ? premioLargo(miembro ? sigP : libres[0]) : ''}</b>
+            {miembro && carta && compu ? <small>Tu carta de Temporada: la abriste en el nivel 1</small> : <small>Y {num((sigP && sigP[1]) || 150)} Puntos de Tienda</small>}
+          </div>
         </div>
       </section>
-      {abajo}
-      <PopPase P={P} onVer={() => irTab('premios')} />
+      <nav className="pc-ira" data-tuto="ps-tabs" aria-label="Ir a">
+        <span className="k">Ir a</span>
+        {IR_A.map(([id, t]) => <button key={id} type="button" onClick={() => irA(id)}>{t}</button>)}
+        <label className="pc-busca">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" aria-hidden="true"><circle cx="11" cy="11" r="6.5" /><path d="M16 16l5 5" /></svg>
+          <input type="search" value={q} onChange={(e) => setQ(e.target.value)} onKeyDown={(e) => { if (e.key === 'Enter') irA('ps-premios'); }}
+            placeholder="Busca un premio: drop, título, nivel 25…" aria-label="Buscar un premio o un nivel del Pase" enterKeyHint="search" />
+        </label>
+      </nav>
+      <div className="pc-cuerpo">
+        {miembro ? <Cuatro P={P} ahora={ahora} tiene={tiene} /> : null}
+        {miembro ? <Avisitos P={P} ahora={ahora} /> : null}
+        <Escenario libres={libres} prem={prem} nivel={nivel} tiene={tiene} falta={a ? a.falta : 0} compu={compu} q={q} />
+        <TareasC P={P} cfg={cfg} miembro={miembro} ahora={ahora} />
+        <div className="pc-dos">
+          <PremiumC P={P} prem={prem} tiene={tiene} onTodo={() => setTodoPrem(true)} />
+          <SalonC liga={liga} pub={pub} nivel={nivel} temp={temp} />
+        </div>
+        {todoPrem ? <div className="pc-todo"><Premium liga={liga} dc={dc} P={P} prem={prem} nivel={nivel} miembro={miembro} /></div> : null}
+        {!miembro && P ? <LoQueGanarias libres={libres} cuantos={cuantos} /> : null}
+        <Exclusivos libres={libres} prem={prem} max={compu ? 8 : 6} />
+        {miembro ? <Avisos P={P} /> : null}
+      </div>
+      <PopPase P={P} onVer={() => irA('ps-premios')} />
     </>
   );
 }
