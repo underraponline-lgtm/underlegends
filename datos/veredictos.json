@@ -2291,6 +2291,17 @@
    "b": "DOBLE J",
    "ganador": "Dyz",
    "votos": "1–0"
+  },
+  "1571324192392220755": {
+   "id": "1571324192392220755",
+   "sv": "#FDS ╏FREESTYLE DISCORD SERIES",
+   "g": "1489848581203689535",
+   "canal": "1536574435761332334",
+   "pub": 1794703281258,
+   "a": "JORNADA 8 --> NXUZ",
+   "b": "LRS",
+   "ganador": "LRS",
+   "votos": "1–0"
   }
  },
  "llaves": {
@@ -7620,6 +7631,28 @@
      [
       "MAKMA 🇻🇪",
       "WALKER🇨🇴"
+     ],
+     null,
+     "última ronda y no dice campeón",
+     []
+    ]
+   ]
+  },
+  "1571334149602541679": {
+   "id": "1571334149602541679",
+   "sv": "🌌┃𝐃𝐈𝐌𝐄𝐍𝐒𝐈Ó𝐍 𝐃𝐄𝐋 𝐅𝐑𝐄𝐄𝐒𝐓𝐘𝐋𝐄┃🌌",
+   "g": "1469009547971526659",
+   "canal": "1498009509036163173",
+   "pub": 1794705655242,
+   "ed": 1794705707621,
+   "texto": "`[ CUARTOS ]`\n⌞MCNADIE 🇦🇷⌝ 🆚 ⌞CRK 🇲🇽⌝ 🆚 ⌞ADRIAGNER 🇳🇮⌝",
+   "batallas": [
+    [
+     "CUARTOS",
+     [
+      "MCNADIE 🇦🇷",
+      "CRK 🇲🇽",
+      "ADRIAGNER 🇳🇮"
      ],
      null,
      "última ronda y no dice campeón",
