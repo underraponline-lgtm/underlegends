@@ -1,5 +1,5 @@
 {
- "cuando": "2026-11-15T02:55:48+00:00",
+ "cuando": "2026-11-15T03:26:15+00:00",
  "anuncios": [
   {
    "nombre": "¡SE LLEGÓ LA GRAN NOCHE!",
@@ -6751,6 +6751,15 @@
  ],
  "oficiales": [
   {
+   "servidor": "DDF",
+   "canal": "『📢』Anuncios",
+   "tit": "encima me pones una bandera de honduras",
+   "tx": "",
+   "cuando": "2026-11-15T03:13:07",
+   "msg_id": "1571362385321795649",
+   "link": "https://discord.com/channels/1469009547971526659/1469943663332425738/1571362385321795649"
+  },
+  {
    "servidor": "CH",
    "canal": "📢—anuncios",
    "tit": "CHOP COMPE V.2 EN 10 MINUTOS ⌛",
@@ -6947,15 +6956,6 @@
    "cuando": "2026-10-19T04:54:48",
    "msg_id": "1561603504311640137",
    "link": "https://discord.com/channels/1489848581203689535/1489852871188152461/1561603504311640137"
-  },
-  {
-   "servidor": "DDF",
-   "canal": "『📢』Anuncios",
-   "tit": "MAÑNA RED BULL PERU ESCRIBANME LOS PERUANOS AL PRIV PA INSCRIBIRLOS",
-   "tx": "",
-   "cuando": "2026-10-18T02:05:10",
-   "msg_id": "1561198427512111138",
-   "link": "https://discord.com/channels/1469009547971526659/1469943663332425738/1561198427512111138"
   },
   {
    "servidor": "URBF",

@@ -2147,7 +2147,7 @@
    "n": 587,
    "sv": "FFA",
    "vence": "2026-11-15T03:22:22+00:00",
-   "vencido": false
+   "vencido": true
   },
   "PUNISHER": {
    "avisado": "2026-11-13",
@@ -3039,7 +3039,7 @@
    "n": 587,
    "sv": "FFA",
    "vence": "2026-11-15T03:22:22+00:00",
-   "vencido": false
+   "vencido": true
   },
   "erpi": {
    "avisado": "2026-10-31",
