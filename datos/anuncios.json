@@ -1,5 +1,5 @@
 {
- "cuando": "2026-11-15T20:30:13+00:00",
+ "cuando": "2026-11-15T20:55:52+00:00",
  "anuncios": [
   {
    "nombre": "¡SE LLEGÓ LA GRAN NOCHE!",
@@ -6742,6 +6742,44 @@
    "categoria_id": "1563697445366669393"
   },
   {
+   "nombre": "FU BATTLE NIGHT I",
+   "servidor": "CEU",
+   "canal": "competencia🏆",
+   "msg_id": "1571623452643696771",
+   "cuando": "2026-11-15T20:30:30",
+   "canal_id": "1514721002070741052",
+   "guild_id": "1513624656538636459",
+   "organizador": "KRISH",
+   "orgs": [
+    {
+     "n": "KRISH",
+     "id": ""
+    }
+   ],
+   "autor_h": "6203481d8d5b4e07",
+   "cupos_texto": "4/6",
+   "inscriptos": 4,
+   "cupo_total": 6,
+   "rango": "",
+   "modalidad": "",
+   "horario": "En 15 mins",
+   "fecha": "",
+   "premios": "PT",
+   "staff": {
+    "jurado": [
+     "Krish el adivino (la revolucion)"
+    ],
+    "dj": [
+     "Krish el adivino (la revolucion)"
+    ]
+   },
+   "autor": "Krish el adivino (la revolucion)",
+   "staff_cuentas": {
+    "Krish el adivino (la revolucion)": "1513620494199558295"
+   },
+   "categoria_id": "1518542367907647498"
+  },
+  {
    "nombre": "COPA RAPERA VOL.1",
    "servidor": "CEU",
    "canal": "competencia🏆",
@@ -7378,47 +7416,6 @@
    "autor": "テオ🐈",
    "staff_cuentas": {},
    "categoria_id": "1518542367907647498"
-  },
-  {
-   "nombre": "EVENTO ANTES DEL PARON",
-   "servidor": "CEU",
-   "canal": "competencia🏆",
-   "msg_id": "1531397912083566742",
-   "cuando": "2026-07-27T20:28:34",
-   "canal_id": "1514721002070741052",
-   "guild_id": "1513624656538636459",
-   "organizador": "KRISH",
-   "orgs": [
-    {
-     "n": "KRISH",
-     "id": ""
-    }
-   ],
-   "autor_h": "6203481d8d5b4e07",
-   "cupos_texto": "6/8",
-   "inscriptos": 6,
-   "cupo_total": 8,
-   "rango": "",
-   "modalidad": "A",
-   "horario": "MIERCOLES 29 DE JULIO",
-   "fecha": "",
-   "premios": "4 pt para el ranking",
-   "staff": {
-    "jurado": [
-     "Krish el adivino (la revolucion)"
-    ],
-    "host": [
-     "YP"
-    ],
-    "dj": [
-     "Krish el adivino (la revolucion)"
-    ]
-   },
-   "autor": "Krish el adivino (la revolucion)",
-   "staff_cuentas": {
-    "Krish el adivino (la revolucion)": "1513620494199558295"
-   },
-   "categoria_id": "1518542367907647498"
   }
  ],
  "oficiales": [
@@ -7676,6 +7673,87 @@
   }
  ],
  "inscripciones": [
+  {
+   "servidor": "CEU",
+   "canal": "inscripciones🖊️",
+   "texto": "Kourier 🇲🇽",
+   "quien": "simplee3",
+   "discord_id": "330866571297685505",
+   "msg_id": "1571626914655768598",
+   "cuando": "2026-11-15T20:44:15"
+  },
+  {
+   "servidor": "CEU",
+   "canal": "inscripciones🖊️",
+   "texto": "TMAX 🇪🇸",
+   "quien": "arowey0719_09614",
+   "discord_id": "1345623878474403901",
+   "msg_id": "1571626104333275197",
+   "cuando": "2026-11-15T20:41:02"
+  },
+  {
+   "servidor": "CEU",
+   "canal": "inscripciones🖊️",
+   "texto": "Sweet pain 🇻🇪",
+   "quien": "a.ssamu",
+   "discord_id": "1550194237549838531",
+   "msg_id": "1571625227945775278",
+   "cuando": "2026-11-15T20:37:33"
+  },
+  {
+   "servidor": "CEU",
+   "canal": "inscripciones🖊️",
+   "texto": "motera",
+   "quien": "hbrsg_",
+   "discord_id": "885365894606381068",
+   "msg_id": "1571624344814223543",
+   "cuando": "2026-11-15T20:34:03"
+  },
+  {
+   "servidor": "CEU",
+   "canal": "inscripciones🖊️",
+   "texto": "Last🇺🇾",
+   "quien": "last5724",
+   "discord_id": "483070865081237505",
+   "msg_id": "1571623840633848069",
+   "cuando": "2026-11-15T20:32:02"
+  },
+  {
+   "servidor": "CEU",
+   "canal": "inscripciones🖊️",
+   "texto": "entre en la garganta del diablo y le corte la lengua🇲🇿",
+   "quien": "nachonc_",
+   "discord_id": "1523082259870257315",
+   "msg_id": "1571623820811567187",
+   "cuando": "2026-11-15T20:31:58"
+  },
+  {
+   "servidor": "CEU",
+   "canal": "inscripciones🖊️",
+   "texto": "mats🇺🇾",
+   "quien": "matttt.15",
+   "discord_id": "597240876573392946",
+   "msg_id": "1571623814872440854",
+   "cuando": "2026-11-15T20:31:56"
+  },
+  {
+   "servidor": "CEU",
+   "canal": "inscripciones🖊️",
+   "texto": "lord 🇨🇴",
+   "quien": "kidbuu02124",
+   "discord_id": "1323444294534828104",
+   "msg_id": "1571623784253755514",
+   "cuando": "2026-11-15T20:31:49"
+  },
+  {
+   "servidor": "CEU",
+   "canal": "inscripciones🖊️",
+   "texto": "compare",
+   "quien": "rene0129",
+   "discord_id": "1157322349775949855",
+   "msg_id": "1571623754700689449",
+   "cuando": "2026-11-15T20:31:42"
+  },
   {
    "servidor": "CH",
    "canal": "📜—inscripciones",
@@ -8228,19 +8306,19 @@
   {
    "servidor": "CEU",
    "canal": "inscripciones🖊️",
-   "texto": "Sweet pain 🇻🇪",
-   "quien": "a.ssamu",
-   "discord_id": "1550194237549838531",
-   "msg_id": "1571556927748710613",
+   "texto": "babi the whitebull🇪🇸",
+   "quien": "marcosq_14",
+   "discord_id": "1294600140815990858",
+   "msg_id": "1571556926754656266",
    "cuando": "2026-11-15T16:06:09"
   },
   {
    "servidor": "CEU",
    "canal": "inscripciones🖊️",
-   "texto": "babi the whitebull🇪🇸",
-   "quien": "marcosq_14",
-   "discord_id": "1294600140815990858",
-   "msg_id": "1571556926754656266",
+   "texto": "Sweet pain 🇻🇪",
+   "quien": "a.ssamu",
+   "discord_id": "1550194237549838531",
+   "msg_id": "1571556927748710613",
    "cuando": "2026-11-15T16:06:09"
   },
   {
@@ -43594,87 +43672,6 @@
    "discord_id": "793946509099270156",
    "msg_id": "1559657230163247176",
    "cuando": "2026-10-13T20:01:00"
-  },
-  {
-   "servidor": "FFA",
-   "canal": "✦📝—inscripciones",
-   "texto": "Teo 🇨🇴",
-   "quien": "teitomc.",
-   "discord_id": "1503540314948898937",
-   "msg_id": "1559657207354753135",
-   "cuando": "2026-10-13T20:00:55"
-  },
-  {
-   "servidor": "FVS",
-   "canal": "「📜」Inscripciones",
-   "texto": "Martín 🇺🇾",
-   "quien": "locura0538",
-   "discord_id": "1455551452113145936",
-   "msg_id": "1559609305970507908",
-   "cuando": "2026-10-13T16:50:34"
-  },
-  {
-   "servidor": "FVS",
-   "canal": "「📜」Inscripciones",
-   "texto": "mathias 🇻🇪",
-   "quien": "elthiasmathias",
-   "discord_id": "1177916322122833933",
-   "msg_id": "1559595487550775359",
-   "cuando": "2026-10-13T15:55:40"
-  },
-  {
-   "servidor": "FVS",
-   "canal": "「📜」Inscripciones",
-   "texto": "me bajo pq los venekos son gays y pq estoy en clase MC 🇦🇬",
-   "quien": "agustin51k",
-   "discord_id": "1114241587262783631",
-   "msg_id": "1559593587799228548",
-   "cuando": "2026-10-13T15:48:07"
-  },
-  {
-   "servidor": "FVS",
-   "canal": "「📜」Inscripciones",
-   "texto": "Richard 🇪🇨",
-   "quien": "ricardflex",
-   "discord_id": "750718442050551858",
-   "msg_id": "1559592961182797935",
-   "cuando": "2026-10-13T15:45:37"
-  },
-  {
-   "servidor": "FVS",
-   "canal": "「📜」Inscripciones",
-   "texto": "Raizer🇵🇪",
-   "quien": "dxni909",
-   "discord_id": "1455038503304827103",
-   "msg_id": "1559592489785233499",
-   "cuando": "2026-10-13T15:43:45"
-  },
-  {
-   "servidor": "FVS",
-   "canal": "「📜」Inscripciones",
-   "texto": "Kusoh 🇲🇽",
-   "quien": "kuzoh_",
-   "discord_id": "1447024559197782138",
-   "msg_id": "1559592362127138928",
-   "cuando": "2026-10-13T15:43:14"
-  },
-  {
-   "servidor": "FVS",
-   "canal": "「📜」Inscripciones",
-   "texto": "Trot🇪🇸",
-   "quien": "eresmatrot",
-   "discord_id": "1347663033949880360",
-   "msg_id": "1559592313750163628",
-   "cuando": "2026-10-13T15:43:03"
-  },
-  {
-   "servidor": "FVS",
-   "canal": "「📜」Inscripciones",
-   "texto": "muy temprano pa rapear veneko MC 🇦🇬",
-   "quien": "agustin51k",
-   "discord_id": "1114241587262783631",
-   "msg_id": "1559592251020021912",
-   "cuando": "2026-10-13T15:42:48"
   }
  ]
 }
