@@ -7666,8 +7666,8 @@
    "g": "1469009547971526659",
    "canal": "1498009509036163173",
    "pub": 1794705655242,
-   "ed": 1794707145046,
-   "texto": "`[ CUARTOS ]`\n⌞MCNADIE 🇦🇷⌝ 🆚 ⌞CRK 🇲🇽⌝ 🆚 ⌞ADRIAGNER 🇳🇮⌝\n`[ CUARTOS ]`\n⌞S1LENCE 🇵🇪⌝ 🆚 ⌞ECLIPSE🇨🇱⌝\n⌞B.DEMON 🇪🇨⌝ 🆚 ⌞MITO🇦🇷⌝",
+   "ed": 1794709298909,
+   "texto": "`[ CUARTOS ]`\n⌞MCNADIE 🇦🇷⌝ 🆚 ⌞CRK 🇲🇽⌝ 🆚 ⌞ADRIAGNER 🇳🇮⌝\n`[ CUARTOS ]`\n⌞S1LENCE 🇵🇪⌝ 🆚 ⌞ECLIPSE🇨🇱⌝\n⌞B.DEMON 🇪🇨⌝ 🆚 ⌞MITO🇦🇷⌝\n⌞MCNADIE 🇦🇷⌝ 🆚 ⌞MARTINEZ🇺🇾⌝\n⌞MAUZZ 🇻🇪⌝ 🆚 ⌞MITO🇦🇷⌝\n`[ SEMIFINALES ]`\n⌞ECLIPSE 🇨🇱⌝ 🆚 ⌞MITO🇦🇷⌝\n⌞LIL ÑAÑO 🇪🇨⌝ 🆚 ⌞MCNADIE🇦🇷⌝",
    "batallas": [
     [
      "CUARTOS",
@@ -7676,8 +7676,8 @@
       "CRK 🇲🇽",
       "ADRIAGNER 🇳🇮"
      ],
-     null,
-     "última ronda y no dice campeón",
+     "MCNADIE 🇦🇷",
+     "ronda siguiente",
      []
     ],
     [
@@ -7686,8 +7686,8 @@
       "S1LENCE 🇵🇪",
       "ECLIPSE🇨🇱"
      ],
-     null,
-     "última ronda y no dice campeón",
+     "ECLIPSE🇨🇱",
+     "ronda siguiente",
      []
     ],
     [
@@ -7695,6 +7695,46 @@
      [
       "B.DEMON 🇪🇨",
       "MITO🇦🇷"
+     ],
+     "MITO🇦🇷",
+     "ronda siguiente",
+     []
+    ],
+    [
+     "CUARTOS",
+     [
+      "MCNADIE 🇦🇷",
+      "MARTINEZ🇺🇾"
+     ],
+     "MCNADIE 🇦🇷",
+     "ronda siguiente",
+     []
+    ],
+    [
+     "CUARTOS",
+     [
+      "MAUZZ 🇻🇪",
+      "MITO🇦🇷"
+     ],
+     "MITO🇦🇷",
+     "ronda siguiente",
+     []
+    ],
+    [
+     "SEMIFINALES",
+     [
+      "ECLIPSE 🇨🇱",
+      "MITO🇦🇷"
+     ],
+     null,
+     "última ronda y no dice campeón",
+     []
+    ],
+    [
+     "SEMIFINALES",
+     [
+      "LIL ÑAÑO 🇪🇨",
+      "MCNADIE🇦🇷"
      ],
      null,
      "última ronda y no dice campeón",
