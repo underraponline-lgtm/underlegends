@@ -79,7 +79,7 @@
    "temporada": "a1446cc5ca26:08ecf54fc940"
   },
   "Aktybo": {
-   "competitivo": "4e581e45204c:e1a1212cc40e",
+   "competitivo": "40e4db70fb1c:e1a1212cc40e",
    "pais": "e117d1fa0f8a:89db0e1cb730",
    "servidor": "a1344261ef36:67e514e7f0d5:aa8232"
   },
@@ -180,7 +180,7 @@
    "temporada": "a9d9117a5f98:08ecf54fc940"
   },
   "Bau": {
-   "competitivo": "a6fee948b3d7:e1a1212cc40e",
+   "competitivo": "5bf9acb13b00:e1a1212cc40e",
    "pais": "606f4949a87b:89db0e1cb730",
    "servidor": "b7a265ec3651:67e514e7f0d5:6a5f1a"
   },
@@ -242,7 +242,7 @@
   },
   "CJ": {},
   "CULT": {
-   "competitivo": "cec2a43b3325:e1a1212cc40e",
+   "competitivo": "8b5ef2d60855:e1a1212cc40e",
    "pais": "65761f05cbd2:89db0e1cb730",
    "servidor": "471ec3225589:67e514e7f0d5:e4fbfa"
   },
@@ -634,10 +634,10 @@
    "servidor": "b5c0c86d6f27:67e514e7f0d5:055f77"
   },
   "Global Hustler": {
-   "competitivo": "a4f1d5bf9692:e1a1212cc40e",
+   "competitivo": "6672b74fb0c5:e1a1212cc40e",
    "pais": "ee882fa77bea:89db0e1cb730",
    "servidor": "42d7f61f9e59:67e514e7f0d5:aa8232",
-   "temporada": "76fb88464702:08ecf54fc940"
+   "temporada": "70bdba21f11d:08ecf54fc940"
   },
   "Gocho": {
    "competitivo": "e4135b242757:e1a1212cc40e",
@@ -1581,13 +1581,13 @@
   "SGB": {},
   "SHULIOT": {},
   "SK8": {
-   "competitivo": "cfbbe1a7448d:e1a1212cc40e",
+   "competitivo": "d6d0c3f35482:e1a1212cc40e",
    "pais": "e1808261a060:89db0e1cb730",
    "servidor": "fe5cf764f19e:67e514e7f0d5:afbca9"
   },
   "SMAFF": {},
   "SNE": {
-   "competitivo": "78fef816636b:e1a1212cc40e",
+   "competitivo": "2677d43556a1:e1a1212cc40e",
    "pais": "e8fa6f07fd6f:89db0e1cb730",
    "servidor": "3943bc327de6:67e514e7f0d5:90b2a5"
   },
@@ -1720,7 +1720,7 @@
   },
   "TG": {},
   "THO": {
-   "competitivo": "a0cb3cd1b39f:e1a1212cc40e",
+   "competitivo": "52c52d1662bd:e1a1212cc40e",
    "pais": "1228a90d9ef1:89db0e1cb730",
    "servidor": "e163399f8487:67e514e7f0d5:9e75da"
   },
@@ -2119,5 +2119,5 @@
    "servidor": "7f8885a35a6d:67e514e7f0d5:93a344"
   }
  },
- "cuando": "2026-11-15T05:33:14+00:00"
+ "cuando": "2026-11-15T06:03:21+00:00"
 }
