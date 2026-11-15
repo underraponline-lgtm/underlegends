@@ -8914,6 +8914,14 @@
      ],
      "Oasis, campeón de KISS OF SHINIGAMI",
      "2026-11-13T22:26:41Z"
+    ],
+    "d657fe4ed5ae": [
+     1,
+     [
+      "Mito"
+     ],
+     "Mito subió a B",
+     "2026-11-14T16:21:44Z"
     ]
    },
    "an": {
@@ -9885,6 +9893,29 @@
       }
      ],
      "organizador": "Krish el adivino (la revolucion)",
+     "cuentas": {
+      "Krish el adivino (la revolucion)": "1513620494199558295"
+     }
+    },
+    "1571490603261362348": {
+     "sv": "CEU",
+     "nombre": "COPA RAPERA VOL.1",
+     "mo": "2026-11-15T11:42:36Z",
+     "staff": {
+      "jurado": [
+       "Krish el adivino (la revolucion)"
+      ],
+      "dj": [
+       "Krish el adivino (la revolucion)"
+      ]
+     },
+     "orgs": [
+      {
+       "n": "KRISH",
+       "id": ""
+      }
+     ],
+     "organizador": "KRISH",
      "cuentas": {
       "Krish el adivino (la revolucion)": "1513620494199558295"
      }

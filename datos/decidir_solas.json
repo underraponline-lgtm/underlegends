@@ -4270,6 +4270,60 @@
      "1550194237549838531"
     ]
    }
+  },
+  {
+   "id": "6aaf4fbe7b",
+   "tipo": "Nombre desconocido",
+   "sec": "COMPE DEMASIADO MAÑANERA · URBF · 14/11 · #635",
+   "que": "¿Quién es «TMAX 🇪🇸»?",
+   "r": "Es Tmax Turbo [PN]",
+   "regla": "R2 · una cuenta de la Lista que se anota con otro nombre donde su dueño no jugó",
+   "rk": "R2",
+   "por": "el ciclo",
+   "porque": "«TMAX» se anotó 2 vez/veces sola desde la cuenta de Tmax Turbo [PN] («TMAX», «Tmax», en ACAD, CEU) y Tmax Turbo [PN] no jugó esos eventos con su nombre; nadie más usa ese nombre y Tmax Turbo [PN] no es organizador, staff, host ni socio ahí",
+   "t": 1794760529896,
+   "filas": [
+    1376
+   ],
+   "variantes": [
+    "TMAX 🇪🇸"
+   ],
+   "escribio": {
+    "alias": [
+     "TMAX",
+     "Tmax Turbo [PN]"
+    ],
+    "filas": [
+     368
+    ]
+   }
+  },
+  {
+   "id": "26a7c88a33",
+   "tipo": "Alias posible",
+   "sec": "🪪 Identidad",
+   "que": "¿«TMAX» es Tmax Turbo [PN]? La cuenta de Tmax Turbo [PN] en la Lista se anotó como «TMAX», y en el ranking suman aparte. Si es la misma persona, los puntos de «TMAX» pasan a Tmax Turbo [PN].\nLa cuenta: https://discord.com/users/1345623878474403901",
+   "r": "Es la misma persona",
+   "regla": "R2 · una cuenta de la Lista que se anota con otro nombre donde su dueño no jugó",
+   "rk": "R2",
+   "por": "el ciclo",
+   "porque": "«TMAX» se anotó 2 vez/veces sola desde la cuenta de Tmax Turbo [PN] («TMAX», «Tmax», en ACAD, CEU) y Tmax Turbo [PN] no jugó esos eventos con su nombre; nadie más usa ese nombre y Tmax Turbo [PN] no es organizador, staff, host ni socio ahí",
+   "t": 1794760529896,
+   "filas": [
+    1377
+   ],
+   "variantes": [
+    "DOS NOMBRES: «TMAX» → «Tmax Turbo [PN]» · cuenta 1345623878474403901"
+   ],
+   "escribio": {
+    "alias": [
+     "TMAX",
+     "Tmax Turbo [PN]"
+    ],
+    "filas": [
+     368
+    ]
+   }
   }
  ],
  "deshechas": []

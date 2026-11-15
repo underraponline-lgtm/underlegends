@@ -15960,7 +15960,7 @@
   "raw": "Krish",
   "cc": "es",
   "sv": "FFA",
-  "crew": "",
+  "crew": "METRICOS",
   "discord_id": "1513620494199558295",
   "verificado": true,
   "ev": 15,
@@ -15993,6 +15993,7 @@
   "arc_pais": 46,
   "pos_sv": "103/173",
   "arc_sv": 41,
+  "pos_crew": "",
   "tg_c": {
    "clasico": 1,
    "riv": 5

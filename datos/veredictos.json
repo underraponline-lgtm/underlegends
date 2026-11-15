@@ -2325,6 +2325,17 @@
    "ganador": "LRS",
    "votos": "1–0"
   },
+  "1571342223134564363": {
+   "id": "1571342223134564363",
+   "sv": "#FDS ╏FREESTYLE DISCORD SERIES",
+   "g": "1489848581203689535",
+   "canal": "1536574435761332334",
+   "pub": 1794707580122,
+   "a": "JORNADA 7 --> CINEXFILO",
+   "b": "NXUZ",
+   "ganador": "NXUZ",
+   "votos": "1–0"
+  },
   "1571349432249745469": {
    "id": "1571349432249745469",
    "sv": "🌌┃𝐃𝐈𝐌𝐄𝐍𝐒𝐈Ó𝐍 𝐃𝐄𝐋 𝐅𝐑𝐄𝐄𝐒𝐓𝐘𝐋𝐄┃🌌",
@@ -2345,6 +2356,17 @@
    "a": "ECLIPSE🇨🇱",
    "b": "MCNADIE 🇦🇷",
    "ganador": "ECLIPSE🇨🇱",
+   "votos": "1–0"
+  },
+  "1571361916528496681": {
+   "id": "1571361916528496681",
+   "sv": "#FDS ╏FREESTYLE DISCORD SERIES",
+   "g": "1489848581203689535",
+   "canal": "1536574435761332334",
+   "pub": 1794712275393,
+   "a": "JORNADA 5 --> SIN LIMITES",
+   "b": "NXUZ",
+   "ganador": "NXUZ",
    "votos": "1–0"
   },
   "1571372810033438851": {
@@ -7346,6 +7368,37 @@
     ]
    ]
   },
+  "1571020477953216543": {
+   "id": "1571020477953216543",
+   "sv": "[FFA] Freestyle For All 👾",
+   "g": "1468472442925092958",
+   "canal": "1487206164864438513",
+   "pub": 1794630870093,
+   "ed": 1794631250052,
+   "texto": "`[ SEMIFINALES ]`\n⌞EZZE⌝ 🆚 ⌞TOMY HILFIGHER⌝\n⌞GOCHO⌝ 🆚 ⌞PARK JI SUNG⌝",
+   "batallas": [
+    [
+     "SEMIFINALES",
+     [
+      "EZZE",
+      "TOMY HILFIGHER"
+     ],
+     "EZZE",
+     "veredicto",
+     []
+    ],
+    [
+     "SEMIFINALES",
+     [
+      "GOCHO",
+      "PARK JI SUNG"
+     ],
+     "PARK JI SUNG",
+     "veredicto",
+     []
+    ]
+   ]
+  },
   "1571146041670115331": {
    "id": "1571146041670115331",
    "sv": "✮ 𝑼𝒓𝒃𝒂𝒏 𝑭𝒓𝒆𝒆𝒔𝒕𝒚𝒍𝒆 ✮ | A New Era",
@@ -7526,18 +7579,8 @@
    "canal": "1498009509036163173",
    "pub": 1794690082348,
    "ed": 1794697428678,
-   "texto": "`[ OCTAVOS ]`\n⌞WALKER🇨🇴⌝ 🆚 ⌞WACKLUSCO☪⌝\n⌞WALKER 🇨🇴⌝ 🆚 ⌞MOLUSCO🇦🇷⌝\n⌞BLACK DEMON 🇪🇨⌝ 🆚 ⌞DREXX🇵🇪⌝\n⌞ECLIPSE 🇨🇱⌝ 🆚 ⌞MARTÍNEZ🇺🇾⌝\n⌞NEXUS 🇵🇪⌝ 🆚 ⌞DAN🇨🇴⌝\n⌞LSD 🇵🇪⌝ 🆚 ⌞INKU🇦🇷⌝\n⌞SILENCE 🇵🇪⌝ 🆚 ⌞KRISH🇪🇸⌝\n⌞WALKER 🇨🇴⌝ 🆚 ⌞B. DEMON🇪🇨⌝\n`[ CUARTOS ]`\n⌞WALKER 🇨🇴⌝ 🆚 ⌞B.DEMON🇪🇨⌝\n⌞NEXUS 🇵🇪⌝ 🆚 ⌞ECLIPSE 🇨🇱⌝\n⌞BTRECE 🇺🇾⌝ 🆚 ⌞LSD🇵🇪⌝\n⌞MAKMAH 🇻🇪⌝ 🆚 ⌞SILENCE 🇵🇪⌝\n⌞WaLkEr 🇨🇴⌝ 🆚 ⌞NeXuS🇵🇪⌝\n⌞LsD 🇵🇪⌝ 🆚 ⌞MaKmA🇻🇪⌝\n⌞LsD 🇵🇪⌝ 🆚 ⌞MaKmA🇻🇪⌝\n`[ FINAL ]`\n⌞MAKMA 🇻🇪⌝ 🆚 ⌞WALKER🇨🇴⌝",
+   "texto": "`[ OCTAVOS ]`\n⌞WALKER 🇨🇴⌝ 🆚 ⌞MOLUSCO🇦🇷⌝\n⌞BLACK DEMON 🇪🇨⌝ 🆚 ⌞DREXX🇵🇪⌝\n⌞ECLIPSE 🇨🇱⌝ 🆚 ⌞MARTÍNEZ🇺🇾⌝\n⌞NEXUS 🇵🇪⌝ 🆚 ⌞DAN🇨🇴⌝\n⌞LSD 🇵🇪⌝ 🆚 ⌞INKU🇦🇷⌝\n⌞SILENCE 🇵🇪⌝ 🆚 ⌞KRISH🇪🇸⌝\n`[ CUARTOS ]`\n⌞WALKER 🇨🇴⌝ 🆚 ⌞B.DEMON🇪🇨⌝\n⌞NEXUS 🇵🇪⌝ 🆚 ⌞ECLIPSE 🇨🇱⌝\n⌞BTRECE 🇺🇾⌝ 🆚 ⌞LSD🇵🇪⌝\n⌞MAKMAH 🇻🇪⌝ 🆚 ⌞SILENCE 🇵🇪⌝\n⌞WaLkEr 🇨🇴⌝ 🆚 ⌞NeXuS🇵🇪⌝\n⌞LsD 🇵🇪⌝ 🆚 ⌞MaKmA🇻🇪⌝\n`[ FINAL ]`\n⌞MAKMA 🇻🇪⌝ 🆚 ⌞WALKER🇨🇴⌝",
    "batallas": [
-    [
-     "OCTAVOS",
-     [
-      "WALKER🇨🇴",
-      "WACKLUSCO☪"
-     ],
-     "WALKER🇨🇴",
-     "ronda siguiente",
-     []
-    ],
     [
      "OCTAVOS",
      [
@@ -7597,19 +7640,6 @@
      "SILENCE 🇵🇪",
      "ronda siguiente",
      []
-    ],
-    [
-     "OCTAVOS",
-     [
-      "WALKER 🇨🇴",
-      "B. DEMON🇪🇨"
-     ],
-     null,
-     "pasan 2, no hay un ganador",
-     [
-      "WALKER 🇨🇴",
-      "B. DEMON🇪🇨"
-     ]
     ],
     [
      "CUARTOS",
@@ -7672,16 +7702,6 @@
      []
     ],
     [
-     "CUARTOS",
-     [
-      "LsD 🇵🇪",
-      "MaKmA🇻🇪"
-     ],
-     "MaKmA🇻🇪",
-     "ronda siguiente",
-     []
-    ],
-    [
      "FINAL",
      [
       "MAKMA 🇻🇪",
@@ -7713,6 +7733,87 @@
      "ronda siguiente",
      []
     ],
+    [
+     "CUARTOS",
+     [
+      "S1LENCE 🇵🇪",
+      "ECLIPSE🇨🇱"
+     ],
+     "ECLIPSE🇨🇱",
+     "ronda siguiente",
+     []
+    ],
+    [
+     "CUARTOS",
+     [
+      "B.DEMON 🇪🇨",
+      "MITO🇦🇷"
+     ],
+     "MITO🇦🇷",
+     "ronda siguiente",
+     []
+    ],
+    [
+     "CUARTOS",
+     [
+      "MCNADIE 🇦🇷",
+      "MARTINEZ🇺🇾"
+     ],
+     "MCNADIE 🇦🇷",
+     "ronda siguiente",
+     []
+    ],
+    [
+     "CUARTOS",
+     [
+      "MAUZZ 🇻🇪",
+      "MITO🇦🇷"
+     ],
+     "MITO🇦🇷",
+     "ronda siguiente",
+     []
+    ],
+    [
+     "SEMIFINALES",
+     [
+      "ECLIPSE 🇨🇱",
+      "MITO🇦🇷"
+     ],
+     "ECLIPSE 🇨🇱",
+     "ronda siguiente",
+     []
+    ],
+    [
+     "SEMIFINALES",
+     [
+      "LIL ÑAÑO 🇪🇨",
+      "MCNADIE🇦🇷"
+     ],
+     "MCNADIE🇦🇷",
+     "veredicto",
+     []
+    ],
+    [
+     "FINAL",
+     [
+      "ECLIPSE 🇨🇱",
+      "MCNADIE🇦🇷"
+     ],
+     "ECLIPSE 🇨🇱",
+     "veredicto",
+     []
+    ]
+   ]
+  },
+  "1571336491244716185": {
+   "id": "1571336491244716185",
+   "sv": "🌌┃𝐃𝐈𝐌𝐄𝐍𝐒𝐈Ó𝐍 𝐃𝐄𝐋 𝐅𝐑𝐄𝐄𝐒𝐓𝐘𝐋𝐄┃🌌",
+   "g": "1469009547971526659",
+   "canal": "1498009509036163173",
+   "pub": 1794706213533,
+   "ed": 1794710751419,
+   "texto": "`[ CUARTOS ]`\n⌞S1LENCE 🇵🇪⌝ 🆚 ⌞ECLIPSE🇨🇱⌝\n⌞B.DEMON 🇪🇨⌝ 🆚 ⌞MITO🇦🇷⌝\n⌞MCNADIE 🇦🇷⌝ 🆚 ⌞MARTINEZ🇺🇾⌝\n⌞MAUZZ 🇻🇪⌝ 🆚 ⌞MITO🇦🇷⌝\n`[ SEMIFINALES ]`\n⌞ECLIPSE 🇨🇱⌝ 🆚 ⌞MITO🇦🇷⌝\n⌞LIL ÑAÑO 🇪🇨⌝ 🆚 ⌞MCNADIE🇦🇷⌝\n`[ FINAL ]`\n⌞ECLIPSE 🇨🇱⌝ 🆚 ⌞MCNADIE🇦🇷⌝",
+   "batallas": [
     [
      "CUARTOS",
      [

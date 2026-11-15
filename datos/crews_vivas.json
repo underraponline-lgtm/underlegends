@@ -142,6 +142,30 @@
     "ev": 0
    },
    "fund": "oasis"
+  },
+  {
+   "id": "METRICOS",
+   "nombre": "METRICOS",
+   "sigla": "MTR",
+   "entrada": "abierta",
+   "oficial": false,
+   "creada": 1794754378808,
+   "reps": [],
+   "gente": [
+    [
+     "krish",
+     "lider",
+     1794754378808
+    ]
+   ],
+   "vence": 1795359178808,
+   "logo": "esc:rombo.micro.29b298.9b5cff",
+   "desc": "METRICAS LA BASE DEL RAP",
+   "req": {
+    "rg": "",
+    "ev": 0
+   },
+   "fund": "krish"
   }
  ]
 }
