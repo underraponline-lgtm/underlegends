@@ -147,6 +147,50 @@ const LU_FILTROS = [['todo', 'Todo'], ['cartas', 'Cartas'], ['logros', 'Logros']
 const luCat = (it) => (it.tipo === 'tarjeta' ? 'cartas' : LU_REAC.has(it.tipo) ? 'logros' : 'liga');
 // la esquinita de cada fila, por lo que cuenta
 const LU_BADGE = { tarjeta: '🃏', campeon: '🏆', caza: '🎯', ligahito: '🏟️', flyer: '🏟️', liga: '📣', rango: '' };
+// 🎨 EL COLOR DE CADA NOVEDAD (Dlx, 15/11/2026: «que mejores visualmente más el apartado de Lo último, y asegurarte que se
+// vea bien en cada una»). Una franja a la izquierda, la etiqueta y el aro de la cara del mismo color, para que cada fila
+// diga qué es antes de leerla: la letra en el color de su rango (el del payload, `colorRg`), el campeón en oro, la caza en
+// magenta, la carta nueva en verde y las ligas en azul
+const luTono = (liga, it) => (it.tipo === 'rango' ? liga.colorRg(it.rg) : { campeon: '#FFD024', caza: '#E41373', tarjeta: '#29B298',
+  ligahito: '#7FA8FF', flyer: '#7FA8FF', liga: '#F6F6F6' }[it.tipo] || '#FF4F9A');
+// 🔀 sin cuatro iguales seguidas: con varios «pasa a rango» juntos la lista se leía como una sola cosa repetida. Se toma la
+// más nueva que no sea del mismo tipo que la anterior, mirando las tres que siguen; si no hay, la que toca
+function mezclar(xs) {
+  const resto = xs.slice();
+  const out = [];
+  while (resto.length) {
+    const ant = out.length ? out[out.length - 1].tipo : '';
+    let j = resto.slice(0, 4).findIndex((it) => it.tipo !== ant);
+    if (j < 0) j = 0;
+    out.push(resto.splice(j, 1)[0]);
+  }
+  return out;
+}
+// 🧪 LA VISTA DE PRUEBA (`?prev=loultimo`): una novedad de cada tipo, para ver que cada una se vea bien. Las que hoy no
+// hay se arman con gente de la tabla y SIN `id` —no se pueden reaccionar ni comentar, para no mandar nada falso al objeto—
+function muestraLU(liga, muro, cual) {
+  const T = liga.d.tabla || [];
+  const uno = (t, f = () => true) => muro.find((it) => it.tipo === t && f(it));
+  const out = [];
+  const poner = (it) => { if (it && !out.includes(it)) out.push(it); };
+  if (cual !== 'logro') poner(uno('tarjeta'));
+  const camp = uno('campeon', (it) => ksDe(it).length === 1);
+  poner(camp);
+  let dos = uno('campeon', (it) => ksDe(it).length > 1);
+  if (!dos && camp && T.length > 2) {
+    const o = T.find((f) => !ksDe(camp).includes(f.k));
+    dos = Object.assign({}, camp, { id: '', quien: (camp.quien || []).concat([o.n]), ks: ksDe(camp).concat([o.k]), t: camp.t });
+  }
+  poner(dos);
+  const letras = new Set();
+  muro.filter((it) => it.tipo === 'rango').forEach((it) => { if (letras.size < 2 && !letras.has(it.rg)) { letras.add(it.rg); poner(it); } });
+  poner(uno('caza'));
+  const L = liga.ligas()[0];
+  poner(uno('ligahito') || (L && T[3] ? { tipo: 'ligahito', que: 'invicto', pg: 5, ln: L.n, liga: L.id, sv: L.sv, quien: [T[3].n], ks: [T[3].k], t: new Date(liga.ahora).toISOString() } : null));
+  poner(uno('liga') || { tipo: 'liga', tit: 'Prueba · un anuncio de la Liga, con un título largo para ver cómo corta', link: '', t: new Date(liga.ahora).toISOString() });
+  if (cual !== 'logro') { poner(uno('flyer', (it) => it.img)); poner(uno('resnoche')); }
+  return out.filter(Boolean);
+}
 
 // 🙂 LA CARITA DE REACCIONAR (Dlx, 13/11/2026, con la captura de la de Discord: «el emoji al que me refería era éste, pero
 // feliz»): un círculo con ojos y sonrisa, dibujado acá —no un emoji—, para que se lea como botón
@@ -253,7 +297,7 @@ export function LuNube({ liga, it, hilo, n = 1 }) {
   );
 }
 
-export function Noticias({ liga, raiz }) {
+export function Noticias({ liga, raiz, prueba = '' }) {
   const A = useAplausos();
   // los comentarios de verdad (los simulados ya vienen en el muro): para contarlos y para la nube
   useComentarios();
@@ -261,7 +305,8 @@ export function Noticias({ liga, raiz }) {
   const P = usePase(typeof window !== 'undefined' && !!window.DC);
   const [fil, setFil] = useState('todo');
   const hiloDe = (it) => (it && it.id ? delHilo(it, liga.ahora) : []);
-  const muro = liga.muroLimpio().filter((it) => it.tipo !== 'anuncio' && it.tipo !== 'promo');
+  const muro0 = liga.muroLimpio().filter((it) => it.tipo !== 'anuncio' && it.tipo !== 'promo');
+  const muro = prueba ? muestraLU(liga, muro0, prueba) : muro0;
   if (!muro.length) return null;
   // la grande: la última carta nueva; si no hay, el último logro
   const feat = muro.find((it) => it.tipo === 'tarjeta') || muro.find((it) => LU_REAC.has(it.tipo) && liga.itemMuro(it)) || null;
@@ -269,7 +314,8 @@ export function Noticias({ liga, raiz }) {
   // el afiche de la liga va grande a la izquierda, debajo de la carta: es lo más visual que hay
   const flyer = muro.find((it) => it.tipo === 'flyer' && it.img) || null;
   // la lista: todo lo demás que se sabe dibujar, sin dos cartas seguidas de la misma persona (llegan juntas)
-  const lista = [];
+  const lista0 = [];
+  const lista = lista0;
   for (const it of muro) {
     if (it === feat || it === flyer || it.tipo === 'resnoche' || !liga.itemMuro(it)) continue;
     if (it.tipo === 'tarjeta' && feat && JSON.stringify(ksDe(it)) === JSON.stringify(ksDe(feat))) continue;
@@ -277,10 +323,12 @@ export function Noticias({ liga, raiz }) {
     lista.push(it);
     if (lista.length >= 40) break;
   }
+  const mezcla = mezclar(lista0);
+  lista.splice(0, lista.length, ...mezcla);
   const cuenta = { todo: lista.length };
   lista.forEach((it) => { cuenta[luCat(it)] = (cuenta[luCat(it)] || 0) + 1; });
   const filtros = LU_FILTROS.filter(([k]) => k === 'todo' || cuenta[k]);
-  const filas = lista.filter((it) => fil === 'todo' || luCat(it) === fil).slice(0, LU_FILAS);
+  const filas = lista.filter((it) => fil === 'todo' || luCat(it) === fil).slice(0, prueba ? 20 : LU_FILAS);
   const ir = (it) => { const x = liga.itemMuro(it); if (x) irA(x[4], raiz); };
   const tecla = (fn) => (e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); fn(); } };
 
@@ -292,8 +340,8 @@ export function Noticias({ liga, raiz }) {
     if (it.tipo === 'liga') return <span className="lu-r-v v-cara"><span className="nt-cara nt-ico"><img alt="" src="/ul.png" /></span></span>;
     const k = ks[0] || '';
     const f = k ? liga.T[k] : null;
-    const badge = it.tipo === 'rango' ? <i className="nt-badge lu-r-rg" style={{ background: liga.colorRg(it.rg) }}>{it.rg}</i>
-      : LU_BADGE[it.tipo] ? <i className="nt-badge">{LU_BADGE[it.tipo]}</i> : null;
+    // (la letra del rango no va en la esquinita: va grande a la derecha, y repetida chica no decía nada más)
+    const badge = it.tipo !== 'rango' && LU_BADGE[it.tipo] ? <i className="nt-badge">{LU_BADGE[it.tipo]}</i> : null;
     return (
       <span className="lu-r-v v-cara">
         <span className="nt-cara">
@@ -309,12 +357,19 @@ export function Noticias({ liga, raiz }) {
     const x = liga.itemMuro(it);
     const hilo = hiloDe(it);
     const sv = it.sv ? siglaDe(it.sv) : '';
+    const f0 = liga.T[ksDe(it)[0]];
     const sub = it.tipo === 'campeon' ? [sv, it.part ? it.part + ' raperos' : ''].filter(Boolean).join(' · ')
-      : it.tipo === 'tarjeta' ? (() => { const f = liga.T[ksDe(it)[0]]; return f ? [f.rg ? 'Rango ' + f.rg : '', f.pos ? '#' + f.pos + ' Temporada' : ''].filter(Boolean).join(' · ') : ''; })()
-        : sv;
+      : it.tipo === 'tarjeta' ? (f0 ? [f0.rg ? 'Rango ' + f0.rg : '', f0.pos ? '#' + f0.pos + ' Temporada' : ''].filter(Boolean).join(' · ') : '')
+        : it.tipo === 'rango' ? (f0 ? [f0.pos ? '#' + f0.pos + ' Temporada' : '', f0.ovr ? 'OVR ' + f0.ovr : ''].filter(Boolean).join(' · ') : '')
+          : it.tipo === 'caza' ? [it.cat, sv].filter(Boolean).join(' · ')
+            : sv;
+    // a la derecha, lo propio de cada una: la letra del rango, el escudo del servidor del campeón, lo que cobró el cazador
+    const der = it.tipo === 'rango' ? <span className="lu-r-letra" style={{ background: liga.colorRg(it.rg) }} aria-label={'Rango ' + it.rg}>{it.rg}</span>
+      : (it.tipo === 'campeon' || it.tipo === 'ligahito') && it.sv ? <img className="lu-r-sv" alt={siglaDe(it.sv)} src={liga.logo(it.sv)} loading="lazy" />
+        : it.tipo === 'caza' && it.pts ? <span className="lu-r-pts">+{num(it.pts)}</span> : null;
     return (
       <li key={it.id || it.t + it.tipo}>
-        <div className={'nt-f lu-r t-' + it.tipo} role="link" tabIndex={0} onClick={() => ir(it)} onKeyDown={tecla(() => ir(it))}>
+        <div className={'nt-f lu-r t-' + it.tipo} style={{ '--lu-c': luTono(liga, it) }} role="link" tabIndex={0} onClick={() => ir(it)} onKeyDown={tecla(() => ir(it))}>
           {visual(it, x)}
           <span className="nt-t">
             <span className="lu-cat">{x[0]}</span>
@@ -326,7 +381,7 @@ export function Noticias({ liga, raiz }) {
           <span className="lu-r-der">
             <span className="nt-hora">{luHace(liga, it.t)}</span>
             {/* 🅱️ la letra, grande y en su color (Dlx: «TøKiØ rango B no se ve tan importante») */}
-            {it.tipo === 'rango' ? <span className="lu-r-letra" style={{ background: liga.colorRg(it.rg) }} aria-label={'Rango ' + it.rg}>{it.rg}</span> : null}
+            {der}
           </span>
         </div>
       </li>
@@ -341,9 +396,13 @@ export function Noticias({ liga, raiz }) {
     const f = k ? liga.T[k] : null;
     const esCarta = feat.tipo === 'tarjeta';
     const hilo = hiloDe(feat);
+    // 🃏 un logro también va con su carta (la de Temporada; el rango, la Competitiva): la cara sola, en el cuadro de la
+    // carta, salía como una franja recortada. Sin carta, la cara redonda. Y un sticker que dice qué es
+    const visF = x[2][0] === 'cara' && f && (f.c || []).includes('temporada') ? ['carta', k, 'temporada'] : x[2];
+    const stk = esCarta ? 'NUEVA' : { campeon: 'CAMPEÓN', caza: 'CAZÓ', rango: 'RANGO ' + (feat.rg || ''), ligahito: 'LIGA' }[feat.tipo] || '';
     grande = (
-      <div className="lu-feat" role="link" tabIndex={0} onClick={() => ir(feat)} onKeyDown={tecla(() => ir(feat))}>
-        <span className="lu-feat-v"><Vis liga={liga} v={x[2]} cls="lu-feat-i" />{esCarta ? <span className="sticker">NUEVA</span> : null}</span>
+      <div className="lu-feat" style={{ '--lu-c': luTono(liga, feat) }} role="link" tabIndex={0} onClick={() => ir(feat)} onKeyDown={tecla(() => ir(feat))}>
+        <span className={'lu-feat-v' + (visF[0] === 'cara' ? ' redonda' : '')}><Vis liga={liga} v={visF} cls="lu-feat-i" />{stk ? <span className="sticker">{stk}</span> : null}</span>
         <span className="lu-feat-t">
           <span className="lu-cat">{x[0]} · {luHace(liga, feat.t)}</span>
           <b className="lu-tit">{x[1]}</b>
@@ -390,8 +449,8 @@ export function Noticias({ liga, raiz }) {
   }
 
   return (
-    <Sec id="noticias" titulo="Lo último" enlace="Publicaciones" href="#/publicaciones">
-      <div className={'lu-dos' + (grande || nocheT || flyerT ? '' : ' solo')}>
+    <Sec id={prueba ? 'noticias-' + prueba : 'noticias'} titulo={prueba ? 'Prueba · Lo último' + (prueba === 'logro' ? ' sin carta nueva' : '') : 'Lo último'} enlace="Publicaciones" href="#/publicaciones">
+      <div className={'lu-dos' + (grande || nocheT || flyerT ? '' : ' solo') + (prueba ? ' lu-prueba' : '')}>
         {grande || nocheT || flyerT ? <div className="lu-izq">{grande}{nocheT}{flyerT}</div> : null}
         <div className="nt-p lu-panel">
           {filtros.length > 2 ? (

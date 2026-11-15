@@ -799,6 +799,10 @@ export default function App() {
             «hay uno de panel pero abajo hay misiones y el pase de rapero… quita esa parte de abajo»): el Pase ya es una
             puerta y está en tu barra, y las Misiones viven en el Ranking. `Panel` de medio.jsx queda, sin usar */}
         <Aislada n="Noticias"><Noticias liga={liga} raiz={raiz} /></Aislada>
+        {/* 🧪 `?prev=loultimo`: una novedad de cada tipo, con carta nueva y sin ella (`muestraLU()` de medio.jsx) */}
+        {(() => { try { return localStorage.getItem('lg:prev-loultimo'); } catch (e) { return null; } })() ? <>
+          <Aislada n="NoticiasPrueba"><Noticias liga={liga} raiz={raiz} prueba="todo" /></Aislada>
+          <Aislada n="NoticiasPrueba2"><Noticias liga={liga} raiz={raiz} prueba="logro" /></Aislada></> : null}
         {/* 🗳️ Encuestas, Tus eventos y Divisiones ya no van acá (Dlx, 12/11/2026: «así borramos la parte de abajo que dice
             encuestas, tus eventos y divisiones»): las encuestas se votan en el Premio gratis de la fila de arriba (y en
             Publicaciones), tus eventos están en tu perfil y las divisiones en el Ranking. `Encuestas` queda, sin usar acá */}

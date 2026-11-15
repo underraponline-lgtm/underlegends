@@ -5893,11 +5893,51 @@ dialog.pn-pop.pop-gratis{--pc:#F5C542;width:min(640px,calc(100vw - 32px))}
 .lu-r .lu-nube-x b{flex:none;font-size:13px}
 .lu-r .lu-nube-x > span{-webkit-line-clamp:1;margin:0;font-size:13.5px}
 .lu-nube-mas{color:#A5A5A0;font:700 12px/1 "Barlow Condensed",sans-serif;letter-spacing:.05em;text-transform:uppercase}
+/* 🎨 LO ÚLTIMO, MÁS CLARO DE UN VISTAZO (Dlx, 15/11/2026: «que mejores visualmente más el apartado de Lo último, y
+   asegurarte que se vea bien en cada una»). Cada novedad trae su color (`--lu-c`, `luTono()` de medio.jsx): la franja de
+   la izquierda, la etiqueta y el aro de la cara. Las columnas terminan juntas: el afiche se estira hasta el final */
+.lu-r.nt-f{box-shadow:inset 3px 0 0 var(--lu-c,#FF4F9A)}
+.lu-r .lu-cat,.lu-feat .lu-cat{color:var(--lu-c,#FF4F9A)}
+.lu-r-v .nt-cara > .nt-c{box-shadow:0 0 0 2px #0B0B0D,0 0 0 4px var(--lu-c,#2A2A2E)}
+.lu-r .nt-c.ini,.lu-noche-c .nt-c.ini{background:#2A2A2E;color:#F6F6F6}
+.lu-r .nt-cara > .nt-c.ini{background:var(--lu-c,#2A2A2E);color:#030304;font:400 20px/1 Anton,Archivo,sans-serif}
+.lu-r-v.v-carta{filter:drop-shadow(0 0 0 transparent)}
+.lu-r-sv{width:32px;height:32px;border-radius:50%;object-fit:cover;border:1px solid #2E2E33;background:#141417}
+.lu-r-pts{font:400 20px/1 Anton,Archivo,sans-serif;letter-spacing:.01em;color:#FFD024;white-space:nowrap}
+.lu-r .lu-soc{margin-top:8px}
+.lu-r .lu-nube{margin-top:6px}
+.lu-feat{box-shadow:inset 0 3px 0 var(--lu-c,#E41373)}
+.lu-feat-v .sticker{background:var(--lu-c,#29B298);color:#030304}
+.lu-feat-v.redonda{width:150px;padding-top:8px}
+.lu-feat-v.redonda .lu-feat-i{width:150px;height:150px;border-radius:50%;overflow:hidden;display:grid;place-items:center;background:#2A2A2E;color:#030304;
+  box-shadow:0 0 0 3px #0B0B0D,0 0 0 6px var(--lu-c,#2A2A2E);font:400 56px/1 Anton,Archivo,sans-serif}
+.lu-feat-v.redonda .lu-feat-i.ini{background:var(--lu-c,#2A2A2E)}
+.lu-feat-v.redonda .lu-feat-i img{width:100%;height:100%;object-fit:cover}
+.lu-feat-v.redonda .sticker{right:-14px;bottom:4px}
+/* las dos columnas parejas: la izquierda en columna y el afiche llenando lo que falta, con el texto DEBAJO de la imagen
+   (encima tapaba la tabla del afiche) */
+.lu-dos{align-items:stretch}
+.lu-izq{display:flex;flex-direction:column;gap:14px}
+/* sin afiche, la última caja de la izquierda se estira: mejor una caja más alta que un hueco al lado de la lista */
+.lu-izq > :last-child{flex:1 1 auto}
+.lu-dos .nt-p.lu-panel{display:flex;flex-direction:column}
+.lu-panel .lu-lista{flex:1}
+.lu-fly{display:flex;flex-direction:column;aspect-ratio:auto;flex:1 1 auto;min-height:0}
+.lu-fly img{position:relative;inset:auto;flex:1 1 0;min-height:190px;height:auto;object-position:50% 20%}
+.lu-fly-p{position:static;border-top:1px solid #232326;background:#0B0B0D;box-shadow:inset 3px 0 0 #7FA8FF}
+.lu-fly-p .lu-cat{color:#7FA8FF}
+/* «Anoche en la Liga»: en el celular los números y los nombres se salían por la derecha */
+.lu-noche{grid-template-columns:minmax(0,1fr);box-shadow:inset 0 3px 0 #FFD024}
+.lu-noche .lu-cat{color:#FFD024}
+.lu-noche-c{min-width:0}
+.lu-noche-c small{flex:1}
 /* el celular: una columna, la grande arriba */
 @media (max-width: 899.98px){
   .lu-dos{grid-template-columns:minmax(0,1fr)}
   .lu-feat{grid-template-columns:112px minmax(0,1fr);gap:14px;padding:14px}
   .lu-feat-v{width:112px}
+  .lu-feat-v.redonda,.lu-feat-v.redonda .lu-feat-i{width:104px}
+  .lu-feat-v.redonda .lu-feat-i{height:104px;font-size:40px}
   .lu-tit{font-size:22px}
   .lu-btn{padding:9px 11px}
   .lu-r.nt-f{grid-template-columns:44px minmax(0,1fr) auto;gap:11px;padding:12px}
@@ -5912,6 +5952,7 @@ dialog.pn-pop.pop-gratis{--pc:#F5C542;width:min(640px,calc(100vw - 32px))}
   .lu-dos .nt-p.lu-panel{order:2}
   .lu-noche{order:3}
   .lu-fly{order:4}
+  .lu-fly img{flex:none;aspect-ratio:4 / 3;min-height:0}
   .lu-num{font-size:28px}
   .lu-num small{margin-right:8px}
 }
@@ -6339,7 +6380,7 @@ dialog.pn-pop.un-pop{--pc:#29B298;width:min(540px,calc(100vw - 32px));max-height
 /* 5 · LAS LISTAS LARGAS, CORTAS: tres y «Ver todo», que ya estaba en las tres (Lo último: «Ver todo»; Los que mandan: «Todos
    los raperos»). Merchandising, en una fila que se desliza como los cuadros del panel */
 @media (max-width: 760px){
-  .app .lu-lista > li:nth-child(n+4){display:none}
+  .app .lu-dos:not(.lu-prueba) .lu-lista > li:nth-child(n+4){display:none}
   .app .mn-lista > li:nth-child(n+3){display:none}
   .app .mqa-g{display:grid;grid-auto-flow:column;grid-auto-columns:80%;grid-template-columns:none;gap:10px;overflow-x:auto;
     overscroll-behavior-x:contain;scroll-snap-type:x mandatory;scroll-padding:0 16px;margin:0 -16px;padding:0 16px 6px;scrollbar-width:none}

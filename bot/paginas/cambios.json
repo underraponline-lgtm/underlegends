@@ -11,6 +11,18 @@
  ],
  "cambios": [
     {
+        "version": "5.36",
+        "dia": "2026-11-15",
+        "cuando": "2026-11-15T01:58:00-05:00",
+        "titulo": "Lo último, más claro",
+        "items": [
+            "En **Lo último** cada novedad tiene **su color**: la letra de rango en el color del rango, el campeón en oro, la caza en magenta, la carta nueva en verde y las ligas en azul.",
+            "La lista **se mezcla**: ya no salen cuatro «pasa a rango» seguidos.",
+            "A la derecha de cada fila, **lo suyo**: la letra del rango, el escudo del servidor del campeón o lo que cobró el cazador.",
+            "Si lo grande es un logro, va **con su carta** y un sticker de qué es; el afiche de la liga se ve entero, con su texto debajo; y las dos columnas **terminan juntas**."
+        ]
+    },
+    {
         "version": "5.35",
         "dia": "2026-11-15",
         "cuando": "2026-11-15T01:50:00-05:00",
