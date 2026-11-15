@@ -454,6 +454,15 @@
 "temporada"
 ]
 },
+"trot": {
+"rg": "D",
+"c": [
+"competitivo",
+"pais",
+"servidor",
+"temporada"
+]
+},
 "bna": {
 "rg": "C",
 "c": []
@@ -485,15 +494,6 @@
 "temporada"
 ]
 },
-"trot": {
-"rg": "D",
-"c": [
-"competitivo",
-"pais",
-"servidor",
-"temporada"
-]
-},
 "paria": {
 "rg": "D",
 "c": []
@@ -506,8 +506,8 @@
 "temporada"
 ]
 },
-"keider": {
-"rg": "D",
+"teito": {
+"rg": "E",
 "c": [
 "competitivo",
 "pais",
@@ -515,8 +515,8 @@
 "temporada"
 ]
 },
-"teito": {
-"rg": "E",
+"keider": {
+"rg": "D",
 "c": [
 "competitivo",
 "pais",
@@ -577,6 +577,15 @@
 "temporada"
 ]
 },
+"marcos": {
+"rg": "D",
+"c": [
+"competitivo",
+"pais",
+"servidor",
+"temporada"
+]
+},
 "eidp": {
 "rg": "D",
 "c": []
@@ -588,15 +597,6 @@
 "onzass": {
 "rg": "E",
 "c": []
-},
-"marcos": {
-"rg": "D",
-"c": [
-"competitivo",
-"pais",
-"servidor",
-"temporada"
-]
 },
 "eclipsito": {
 "rg": "C",
@@ -822,6 +822,10 @@
 "temporada"
 ]
 },
+"emizor": {
+"rg": "D",
+"c": []
+},
 "rodas": {
 "rg": "E",
 "c": [
@@ -901,10 +905,6 @@
 "servidor",
 "temporada"
 ]
-},
-"emizor": {
-"rg": "D",
-"c": []
 },
 "lucky": {
 "rg": "",
@@ -993,6 +993,14 @@
 "temporada"
 ]
 },
+"krish": {
+"rg": "E",
+"c": [
+"competitivo",
+"servidor",
+"temporada"
+]
+},
 "lilnano": {
 "rg": "",
 "c": [
@@ -1055,14 +1063,6 @@
 "scot": {
 "rg": "",
 "c": []
-},
-"krish": {
-"rg": "E",
-"c": [
-"competitivo",
-"servidor",
-"temporada"
-]
 },
 "akuseru": {
 "rg": "",

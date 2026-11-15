@@ -1065,6 +1065,20 @@
     "racha": "0/0"
    }
   },
+  "Andy mc 🇻🇪": {
+   "CEU": {
+    "duelos": "",
+    "ev": 1,
+    "oro": 0,
+    "ovr": 42,
+    "pod": 0,
+    "pts": 3500,
+    "racha": "0/0",
+    "tg": {
+     "fund": true
+    }
+   }
+  },
   "Antis antis": {
    "FFA": {
     "duelos": "",
@@ -3469,11 +3483,11 @@
    },
    "CEU": {
     "duelos": "",
-    "ev": 2,
+    "ev": 3,
     "oro": 0,
-    "ovr": 43,
+    "ovr": 44,
     "pod": 0,
-    "pts": 5500,
+    "pts": 7500,
     "racha": "0/0",
     "tg": {
      "fund": true
@@ -4123,6 +4137,18 @@
    }
   },
   "EmiZor": {
+   "CEU": {
+    "duelos": "",
+    "ev": 1,
+    "oro": 0,
+    "ovr": 42,
+    "pod": 0,
+    "pts": 3000,
+    "racha": "0/0",
+    "tg": {
+     "fund": true
+    }
+   },
    "DDF": {
     "duelos": "1/4",
     "ev": 4,
@@ -4138,7 +4164,7 @@
     "oro": 0,
     "ovr": 47,
     "pod": 0,
-    "pts": 30250,
+    "pts": 29937,
     "racha": "0/1"
    },
    "FRZ": {
@@ -5772,6 +5798,18 @@
    }
   },
   "Ivan": {
+   "CEU": {
+    "duelos": "",
+    "ev": 1,
+    "oro": 0,
+    "ovr": 42,
+    "pod": 0,
+    "pts": 3500,
+    "racha": "0/0",
+    "tg": {
+     "fund": true
+    }
+   },
    "SR": {
     "duelos": "",
     "ev": 1,
@@ -6893,11 +6931,11 @@
    },
    "CEU": {
     "duelos": "",
-    "ev": 1,
+    "ev": 2,
     "oro": 0,
-    "ovr": 42,
+    "ovr": 43,
     "pod": 0,
-    "pts": 3000,
+    "pts": 5000,
     "racha": "0/0",
     "tg": {
      "fund": true
@@ -7086,7 +7124,6 @@
     "racha": "1/1",
     "tg": {
      "fin": 2,
-     "fund": true,
      "llave": true
     }
    },
@@ -8692,14 +8729,14 @@
    },
    "CEU": {
     "duelos": "",
-    "ev": 7,
+    "ev": 8,
     "oro": 1,
-    "ovr": 50,
-    "pod": 3,
-    "pts": 29000,
-    "racha": "1/1",
+    "ovr": 51,
+    "pod": 4,
+    "pts": 35250,
+    "racha": "1/2",
     "tg": {
-     "fin": 2,
+     "fin": 3,
      "fund": true,
      "llave": true
     }
@@ -8719,7 +8756,7 @@
     "oro": 0,
     "ovr": 46,
     "pod": 1,
-    "pts": 8000,
+    "pts": 9500,
     "racha": "0/1"
    }
   },
@@ -9566,7 +9603,7 @@
     "oro": 3,
     "ovr": 48,
     "pod": 3,
-    "pts": 22500,
+    "pts": 24000,
     "racha": "3/3",
     "tg": {
      "fin": 3
@@ -10681,10 +10718,7 @@
     "ovr": 42,
     "pod": 0,
     "pts": 2000,
-    "racha": "0/0",
-    "tg": {
-     "fund": true
-    }
+    "racha": "0/0"
    }
   },
   "PIYI 🇲🇽": {
@@ -12330,8 +12364,7 @@
     "pts": 8500,
     "racha": "1/1",
     "tg": {
-     "fin": 1,
-     "fund": true
+     "fin": 1
     }
    },
    "DDS": {
@@ -13234,12 +13267,15 @@
    },
    "CEU": {
     "duelos": "",
-    "ev": 1,
+    "ev": 2,
     "oro": 0,
-    "ovr": 42,
+    "ovr": 43,
     "pod": 0,
-    "pts": 3000,
-    "racha": "0/0"
+    "pts": 5000,
+    "racha": "0/0",
+    "tg": {
+     "fund": true
+    }
    },
    "DDF": {
     "duelos": "2/9",
@@ -13511,15 +13547,16 @@
    },
    "CEU": {
     "duelos": "",
-    "ev": 3,
+    "ev": 4,
     "oro": 0,
-    "ovr": 46,
-    "pod": 1,
-    "pts": 12000,
+    "ovr": 48,
+    "pod": 2,
+    "pts": 18250,
     "racha": "0/1",
     "tg": {
-     "fin": 1,
-     "fund": true
+     "fin": 2,
+     "fund": true,
+     "llave": true
     }
    },
    "FFA": {
@@ -14733,10 +14770,7 @@
     "ovr": 42,
     "pod": 0,
     "pts": 2000,
-    "racha": "0/0",
-    "tg": {
-     "fund": true
-    }
+    "racha": "0/0"
    },
    "FFA": {
     "duelos": "0/4",

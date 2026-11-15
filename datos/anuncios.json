@@ -1,5 +1,5 @@
 {
- "cuando": "2026-11-15T17:29:08+00:00",
+ "cuando": "2026-11-15T17:56:20+00:00",
  "anuncios": [
   {
    "nombre": "¡SE LLEGÓ LA GRAN NOCHE!",
@@ -5908,6 +5908,31 @@
    "categoria_id": "1558611505040064605"
   },
   {
+   "nombre": "2D0 AÑO SECCIÓN \"B\" - GUIA: FRANCESKA CURBATA",
+   "servidor": "LKR",
+   "canal": "fms-anuncios",
+   "msg_id": "1571580672836116675",
+   "cuando": "2026-11-15T17:40:30",
+   "canal_id": "1570881485055983686",
+   "guild_id": "1558611504046153750",
+   "organizador": "",
+   "orgs": [],
+   "autor_h": "f3c0b2b241824d37",
+   "cupos_texto": "",
+   "inscriptos": null,
+   "cupo_total": null,
+   "rango": "",
+   "modalidad": "",
+   "horario": "2    7:00 - 8:20",
+   "fecha": "Nº    HORA    LUNES    MARTES    MIÉRCOLES    JUEVES    VIERNES",
+   "premios": "",
+   "staff": {},
+   "autor": "Ismel",
+   "staff_cuentas": {},
+   "de_imagen": true,
+   "categoria_id": ""
+  },
+  {
    "nombre": "ENTRENN!!",
    "servidor": "CH",
    "canal": "📢—anuncios",
@@ -7373,6 +7398,42 @@
  ],
  "oficiales": [
   {
+   "servidor": "LKR",
+   "canal": "fms-anuncios",
+   "tit": "para meter solo a los más activos",
+   "tx": "",
+   "cuando": "2026-11-15T17:44:01",
+   "msg_id": "1571581555426459762",
+   "link": "https://discord.com/channels/1558611504046153750/1570881485055983686/1571581555426459762"
+  },
+  {
+   "servidor": "LKR",
+   "canal": "fms-anuncios",
+   "tit": "para eso haz una liga de países en general",
+   "tx": "",
+   "cuando": "2026-11-15T17:43:51",
+   "msg_id": "1571581512510472364",
+   "link": "https://discord.com/channels/1558611504046153750/1570881485055983686/1571581512510472364"
+  },
+  {
+   "servidor": "LKR",
+   "canal": "fms-anuncios",
+   "tit": "y bueno pero no hagas otra fms si no puedes ni con una",
+   "tx": "",
+   "cuando": "2026-11-15T17:43:36",
+   "msg_id": "1571581450241712249",
+   "link": "https://discord.com/channels/1558611504046153750/1570881485055983686/1571581450241712249"
+  },
+  {
+   "servidor": "URBF",
+   "canal": "⋆📢│🐔⋅Anuncios⋅📢",
+   "tit": "<t:1794769200:t> EMPEZAMOS CON EMPAREJAMIENTOS DE RED BULL PLAZAS",
+   "tx": "",
+   "cuando": "2026-11-15T17:39:25",
+   "msg_id": "1571580396573954264",
+   "link": "https://discord.com/channels/1467763447117778989/1553080521096044584/1571580396573954264"
+  },
+  {
    "servidor": "DDF",
    "canal": "『📢』Anuncios",
    "tit": "CLASIFICADOS RED BULL INTERNACIONAL 2026",
@@ -7425,33 +7486,6 @@
    "cuando": "2026-11-14T04:34:00",
    "msg_id": "1571020354057666571",
    "link": "https://discord.com/channels/1074328197400887388/1081721420373041264/1571020354057666571"
-  },
-  {
-   "servidor": "LKR",
-   "canal": "🐉ANUNCIOS",
-   "tit": "CRITERIOS",
-   "tx": "50 flow 40 barras 10 métricas",
-   "cuando": "2026-11-13T23:51:24",
-   "msg_id": "1570949234989994085",
-   "link": "https://discord.com/channels/1558611504046153750/1564463277348487219/1570949234989994085"
-  },
-  {
-   "servidor": "LKR",
-   "canal": "anuncios",
-   "tit": "INICIA EL CALÍZ CONTRA TODOS",
-   "tx": "",
-   "cuando": "2026-11-13T22:46:06",
-   "msg_id": "1570932803862790164",
-   "link": "https://discord.com/channels/1558611504046153750/1558611505040064604/1570932803862790164"
-  },
-  {
-   "servidor": "LKR",
-   "canal": "fms-anuncios",
-   "tit": "MCO 🇦🇷 ÚLTIMO EN FMS ARGENTINA CIERRA SU LINEA UP",
-   "tx": "",
-   "cuando": "2026-11-13T19:50:26",
-   "msg_id": "1570888595882119371",
-   "link": "https://discord.com/channels/1558611504046153750/1570881485055983686/1570888595882119371"
   },
   {
    "servidor": "ACAD",
@@ -7607,15 +7641,6 @@
    "link": "https://discord.com/channels/1489848581203689535/1489852871188152461/1561603504311640137"
   },
   {
-   "servidor": "URBF",
-   "canal": "⋆📢│🐔⋅Anuncios⋅📢",
-   "tit": "COMUNICADO 🗞️",
-   "tx": "Buenas tardes y noches a todos familia de Urban Freestyle vengo a lanzar este comunicado para poder aclarar las cosas, esta tarde se realizo la Nacional de Red Bull Cabrana España T.5 y han pasado unos eventos completame",
-   "cuando": "2026-10-11T18:33:33",
-   "msg_id": "1558910444603711633",
-   "link": "https://discord.com/channels/1467763447117778989/1553080521096044584/1558910444603711633"
-  },
-  {
    "servidor": "FDS",
    "canal": "╭🔵📢╏anuncios-redbull",
    "tit": "🇵🇪 ¡TODO LISTO PARA LAS INSCRIPCIONES DE RED BULL!〡REDBULL #2026 🇵🇪",
@@ -7626,6 +7651,33 @@
   }
  ],
  "inscripciones": [
+  {
+   "servidor": "URBF",
+   "canal": "‣《🗞️》Inscripciones",
+   "texto": "Goyo🇳🇮",
+   "quien": "goyoshecksheck",
+   "discord_id": "1521283513469370419",
+   "msg_id": "1571582225172930583",
+   "cuando": "2026-11-15T17:46:41"
+  },
+  {
+   "servidor": "CH",
+   "canal": "📜—inscripciones",
+   "texto": "xclusivo",
+   "quien": "tequieromami",
+   "discord_id": "1493013247488430202",
+   "msg_id": "1571582040133083218",
+   "cuando": "2026-11-15T17:45:56"
+  },
+  {
+   "servidor": "URBF",
+   "canal": "‣《🗞️》Inscripciones",
+   "texto": "Dominic🇨🇴",
+   "quien": "dominic006363",
+   "discord_id": "1571555875334922423",
+   "msg_id": "1571578802231058546",
+   "cuando": "2026-11-15T17:33:04"
+  },
   {
    "servidor": "CH",
    "canal": "📜—inscripciones",
@@ -43598,33 +43650,6 @@
    "discord_id": "1458311513667276830",
    "msg_id": "1559358093790543974",
    "cuando": "2026-10-13T00:12:21"
-  },
-  {
-   "servidor": "FFA",
-   "canal": "✦📝—inscripciones",
-   "texto": "Geoka 🇦🇷",
-   "quien": "goksito_8",
-   "discord_id": "1325042155819106324",
-   "msg_id": "1559357717641166859",
-   "cuando": "2026-10-13T00:10:51"
-  },
-  {
-   "servidor": "FFA",
-   "canal": "✦📝—inscripciones",
-   "texto": "nemi+nc🇰🇷🇦🇷",
-   "quien": "nachonc_",
-   "discord_id": "1523082259870257315",
-   "msg_id": "1559357699769106524",
-   "cuando": "2026-10-13T00:10:47"
-  },
-  {
-   "servidor": "FFA",
-   "canal": "✦📝—inscripciones",
-   "texto": "Zaik 🇪🇸",
-   "quien": "zaik0009",
-   "discord_id": "1555067257376346122",
-   "msg_id": "1559357401906544641",
-   "cuando": "2026-10-13T00:09:36"
   }
  ]
 }

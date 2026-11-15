@@ -44157,7 +44157,7 @@
        "Lvel 🇻🇪"
       ],
       "Molusco, Snow, Provenza",
-      "triple (5 bandas, pasan 3); también pasa: snow / za🇺🇸"
+      "triple (5 bandas, pasan 3); también pasa: snow🇨🇴 / za🇺🇸"
      ],
      [
       [
@@ -44169,7 +44169,7 @@
        "arce"
       ],
       "Tam, Snow",
-      "triple (6 bandas, pasan 2); también pasa: snow"
+      "triple (6 bandas, pasan 2); también pasa: snow🇨🇴"
      ],
      [
       [
@@ -56579,6 +56579,138 @@
   ],
   "ver": {
    "min": 58,
+   "v": 1
+  }
+ },
+ "644": {
+  "dia": "2026-10-01",
+  "escala": "8-15",
+  "fecha": "01/10",
+  "links": [
+   "https://discord.com/channels/1513624656538636459/1518202754294612028/1555271829638225961"
+  ],
+  "n": 644,
+  "nombre": "CEUTA",
+  "participantes": 8,
+  "rondas": [
+   {
+    "b": [
+     [
+      [
+       "Ivan",
+       "Krish"
+      ],
+      "Ivan",
+      ""
+     ],
+     [
+      [
+       "Marcos",
+       "Teito"
+      ],
+      "Marcos",
+      ""
+     ],
+     [
+      [
+       "ANDY MC🇻🇪",
+       "Dominick"
+      ],
+      "ANDY MC🇻🇪",
+      ""
+     ],
+     [
+      [
+       "Trot",
+       "EmiZor"
+      ],
+      "Trot",
+      ""
+     ]
+    ],
+    "r": "Cuartos"
+   },
+   {
+    "b": [
+     [
+      [
+       "Marcos",
+       "Ivan"
+      ],
+      "Marcos",
+      ""
+     ],
+     [
+      [
+       "Trot",
+       "Andy mc 🇻🇪"
+      ],
+      "Trot",
+      ""
+     ]
+    ],
+    "r": "Semifinales"
+   },
+   {
+    "b": [
+     [
+      [
+       "Trot",
+       "Marcos"
+      ],
+      "",
+      "sin campeón: ✅ Decidir (los dos finalistas cobran el promedio de 1.º y 2.º)"
+     ]
+    ],
+    "r": "Final"
+   }
+  ],
+  "sv": "CEU",
+  "tabla": [
+   [
+    "Marcos",
+    "Subcampeón",
+    6250
+   ],
+   [
+    "Trot",
+    "Subcampeón",
+    6250
+   ],
+   [
+    "Andy mc 🇻🇪",
+    "Semifinal",
+    3500
+   ],
+   [
+    "Ivan",
+    "Semifinal",
+    3500
+   ],
+   [
+    "Dominick",
+    "Cuartos",
+    2000
+   ],
+   [
+    "EmiZor",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Krish",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Teito",
+    "Cuartos",
+    2000
+   ]
+  ],
+  "ver": {
+   "min": 37,
+   "org": "juega",
    "v": 1
   }
  }

@@ -5266,6 +5266,11 @@
  },
  "geoka": {
   "competitivo": {
+   "⚔️ DUELISTA": [
+    "⚔️ DUELISTA",
+    "t1",
+    1794765783614
+   ],
    "🐉 MATADRAGONES": [
     "🐉 MATADRAGONES",
     "t1",
@@ -5292,6 +5297,11 @@
     "EMBAJADOR",
     "t1",
     1793927666370
+   ],
+   "INTERNACIONAL": [
+    "INTERNACIONAL",
+    "t1",
+    1794765783614
    ],
    "SIN FRONTERAS": [
     "SIN FRONTERAS",
@@ -6913,6 +6923,11 @@
  },
  "last": {
   "competitivo": {
+   "⚔️ DUELISTA": [
+    "⚔️ DUELISTA",
+    "t1",
+    1794765783614
+   ],
    "🐉 MATADRAGONES": [
     "🐉 MATADRAGONES",
     "t1",
@@ -7937,6 +7952,11 @@
     "🗡️ MATAGIGANTES",
     "t1",
     1794596923427
+   ],
+   "🤝 SIN MIEDO": [
+    "🤝 SIN MIEDO",
+    "t1",
+    1794765783614
    ]
   },
   "servidor": {
@@ -8477,6 +8497,13 @@
   }
  },
  "marcos": {
+  "competitivo": {
+   "🤝 SIN MIEDO": [
+    "🤝 SIN MIEDO",
+    "t1",
+    1794765783614
+   ]
+  },
   "pais": {
    "DA LA CARA": [
     "DA LA CARA",
@@ -8504,6 +8531,11 @@
     "🏆 CAMPEÓN",
     "t1",
     1794764146474
+   ],
+   "🏟️ FINALISTA DE CASA": [
+    "🏟️ FINALISTA DE CASA",
+    "t1",
+    1794765783614
    ],
    "📆 HABITUÉ": [
     "📆 HABITUÉ",
@@ -9850,6 +9882,13 @@
   }
  },
  "motera": {
+  "pais": {
+   "INTERNACIONAL": [
+    "INTERNACIONAL",
+    "t1",
+    1794765783614
+   ]
+  },
   "servidor": {
    "⚔️ DUELISTA": [
     "⚔️ DUELISTA",
@@ -13688,6 +13727,11 @@
     "t1",
     1794470716773
    ],
+   "📈 EN ASCENSO": [
+    "📈 EN ASCENSO",
+    "t1",
+    1794765783614
+   ],
    "🔟 DOBLE DÍGITO": [
     "🔟 DOBLE DÍGITO",
     "t1",
@@ -15187,6 +15231,11 @@
     "t1",
     1793029252929
    ],
+   "🔋 INAGOTABLE": [
+    "🔋 INAGOTABLE",
+    "t1",
+    1794765783614
+   ],
    "🔟 DOBLE DÍGITO": [
     "🔟 DOBLE DÍGITO",
     "t1",
@@ -15501,6 +15550,11 @@
     "t1",
     1792953978519
    ],
+   "🤜 CLÁSICO": [
+    "🤜 CLÁSICO",
+    "t1",
+    1794765783614
+   ],
    "🤝 SIN MIEDO": [
     "🤝 SIN MIEDO",
     "t1",
@@ -15518,10 +15572,20 @@
     "t1",
     1793029252929
    ],
+   "INTERNACIONAL": [
+    "INTERNACIONAL",
+    "t1",
+    1794765783614
+   ],
    "PIONERO": [
     "PIONERO",
     "t1",
     1793029252929
+   ],
+   "SIN FRONTERAS": [
+    "SIN FRONTERAS",
+    "t1",
+    1794765783614
    ]
   },
   "servidor": {

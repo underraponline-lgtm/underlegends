@@ -4364,6 +4364,35 @@
     "PENESCROTO"
    ],
    "escribio": {}
+  },
+  {
+   "id": "b8bcc93917",
+   "tipo": "Nombre desconocido",
+   "sec": "CEUTA · CEU · 01/10 · #644",
+   "que": "¿Quién es «ANDY MC🇻🇪»? (también escrito «Andy mc 🇻🇪»)",
+   "r": "Es Sweet pain",
+   "regla": "Discord · su cuenta de Discord: la inscripción, el podio, la llave o la llamada",
+   "rk": "Discord",
+   "por": "el ciclo (su cuenta de Discord)",
+   "porque": "alias de Sweet pain: la única cuenta con ese nombre en el servidor del evento",
+   "t": 1794765775957,
+   "filas": [
+    1410,
+    1411
+   ],
+   "variantes": [
+    "ANDY MC🇻🇪",
+    "Andy mc 🇻🇪"
+   ],
+   "escribio": {
+    "alias": [
+     "ANDY MC",
+     "Sweet pain"
+    ],
+    "filas": [
+     369
+    ]
+   }
   }
  ],
  "deshechas": []

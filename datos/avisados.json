@@ -49319,5 +49319,141 @@
    ]
   ],
   "v": 2
+ },
+ "644": {
+  "antes": {
+   "Dominick": [
+    262,
+    52,
+    true
+   ],
+   "EmiZor": [
+    278,
+    118,
+    true
+   ],
+   "Ivan": [
+    539,
+    498,
+    true
+   ],
+   "Krish": [
+    109,
+    144,
+    false
+   ],
+   "Marcos": [
+    62,
+    75,
+    false
+   ],
+   "Teito": [
+    55,
+    65,
+    false
+   ],
+   "Trot": [
+    52,
+    61,
+    false
+   ]
+  },
+  "canal": "",
+  "duelos": [
+   [
+    "Ivan",
+    "Krish",
+    "Ivan"
+   ],
+   [
+    "Marcos",
+    "Teito",
+    "Marcos"
+   ],
+   [
+    "ANDY MC🇻🇪",
+    "Dominick",
+    "ANDY MC🇻🇪"
+   ],
+   [
+    "Trot",
+    "EmiZor",
+    "Trot"
+   ],
+   [
+    "Marcos",
+    "Ivan",
+    "Marcos"
+   ],
+   [
+    "Trot",
+    "Andy mc 🇻🇪",
+    "Trot"
+   ],
+   [
+    "Trot",
+    "Marcos",
+    ""
+   ]
+  ],
+  "ev_antes": {
+   "Dominick": 44,
+   "EmiZor": 13,
+   "Ivan": 1,
+   "Krish": 16,
+   "Marcos": 18,
+   "Teito": 41,
+   "Trot": 29
+  },
+  "fecha": "01/10",
+  "nombre": "CEUTA",
+  "num": 644,
+  "participantes": 8,
+  "sello": {},
+  "sv": "CEU",
+  "t": "2026-11-15T17:54:58Z",
+  "tabla": [
+   [
+    "Trot",
+    "Subcampeón",
+    6250
+   ],
+   [
+    "Marcos",
+    "Subcampeón",
+    6250
+   ],
+   [
+    "Ivan",
+    "Semifinal",
+    3500
+   ],
+   [
+    "Andy mc 🇻🇪",
+    "Semifinal",
+    3500
+   ],
+   [
+    "Krish",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Teito",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Dominick",
+    "Cuartos",
+    2000
+   ],
+   [
+    "EmiZor",
+    "Cuartos",
+    2000
+   ]
+  ],
+  "v": 2
  }
 }
