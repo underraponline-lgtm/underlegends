@@ -292,7 +292,7 @@
   "Cinexfilo": {
    "competitivo": "e4d3a0505868:e1a1212cc40e",
    "pais": "2926df7182f4:89db0e1cb730",
-   "servidor": "c49666172434:67e514e7f0d5:6a5f1a",
+   "servidor": "9bc28a585cc3:67e514e7f0d5:6a5f1a",
    "temporada": "a46f046b2bdd:08ecf54fc940"
   },
   "Clitax": {},
@@ -864,7 +864,7 @@
   "Keider": {
    "competitivo": "e1f034067261:e1a1212cc40e",
    "pais": "07f014645367:89db0e1cb730",
-   "servidor": "8495eeb44fec:67e514e7f0d5:3c7154",
+   "servidor": "c5d0e9cbf9b9:67e514e7f0d5:3c7154",
    "temporada": "b28a99439417:08ecf54fc940"
   },
   "Keku": {
@@ -1028,7 +1028,7 @@
   "Lilñaño": {
    "competitivo": "92e0f18901bf:e1a1212cc40e",
    "pais": "4bf2f15472a8:89db0e1cb730",
-   "servidor": "6f273056c25c:67e514e7f0d5:46a103"
+   "servidor": "2df2b8a30fd9:67e514e7f0d5:46a103"
   },
   "LitKunai": {
    "competitivo": "bc6e81ce02a4:e1a1212cc40e",
@@ -1367,7 +1367,7 @@
   "OG": {
    "competitivo": "c68579a09897:e1a1212cc40e",
    "pais": "38c9d1badce3:89db0e1cb730",
-   "servidor": "2ef7dfc2e4cf:67e514e7f0d5:943e25",
+   "servidor": "ab9e825b8c30:67e514e7f0d5:943e25",
    "temporada": "737bf8202b1f:08ecf54fc940"
   },
   "OKAM": {
@@ -1553,7 +1553,7 @@
   "Richard": {
    "competitivo": "5a0485973e94:e1a1212cc40e",
    "pais": "dfa031624816:89db0e1cb730",
-   "servidor": "0f8764977de0:67e514e7f0d5:943e25",
+   "servidor": "d4f7ec2c8c97:67e514e7f0d5:943e25",
    "temporada": "6af167b3d0cf:08ecf54fc940"
   },
   "Riolu": {
@@ -1686,7 +1686,7 @@
   "Soneto": {
    "competitivo": "a5c2606802f4:e1a1212cc40e",
    "pais": "173a2b2ad2a8:89db0e1cb730",
-   "servidor": "ccf270f88db7:67e514e7f0d5:9b3a50",
+   "servidor": "61f199e1d79c:67e514e7f0d5:9b3a50",
    "temporada": "06cdcdf69dc4:08ecf54fc940"
   },
   "Sosa": {
@@ -2078,7 +2078,7 @@
   "romeo": {
    "competitivo": "91195be0844d:e1a1212cc40e",
    "pais": "4dff5de6be0e:89db0e1cb730",
-   "servidor": "c04984a2ff23:67e514e7f0d5:99e3cc",
+   "servidor": "fc6c6c513342:67e514e7f0d5:99e3cc",
    "temporada": "08c478714f35:08ecf54fc940"
   },
   "santiago_yv": {
@@ -2119,5 +2119,5 @@
    "servidor": "7f8885a35a6d:67e514e7f0d5:93a344"
   }
  },
- "cuando": "2026-11-15T05:04:08+00:00"
+ "cuando": "2026-11-15T05:33:14+00:00"
 }
