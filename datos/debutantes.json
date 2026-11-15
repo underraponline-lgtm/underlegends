@@ -2577,19 +2577,6 @@
    "vence": "2026-11-02T22:39:00+00:00",
    "vencido": true
   },
-  "TMAX": {
-   "avisado": "2026-11-14",
-   "chat": "2026-11-14",
-   "con": null,
-   "cumplido": "",
-   "debut": "2026-11-14T12:49:27+00:00",
-   "did": "",
-   "evento": "COMPE DEMASIADO MAÑANERA",
-   "n": 635,
-   "sv": "URBF",
-   "vence": "2026-11-21T12:49:27+00:00",
-   "vencido": false
-  },
   "Tayo": {
    "con": null,
    "cumplido": "",

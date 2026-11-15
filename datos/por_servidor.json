@@ -10012,12 +10012,12 @@
   },
   "Number": {
    "FFA": {
-    "duelos": "4/8",
-    "ev": 5,
+    "duelos": "4/7",
+    "ev": 4,
     "oro": 0,
-    "ovr": 46,
+    "ovr": 45,
     "pod": 0,
-    "pts": 28438,
+    "pts": 18438,
     "racha": "0/1"
    }
   },
@@ -10089,12 +10089,12 @@
     "racha": "0/0"
    },
    "FFA": {
-    "duelos": "0/1",
-    "ev": 3,
+    "duelos": "0/2",
+    "ev": 4,
     "oro": 0,
-    "ovr": 44,
+    "ovr": 46,
     "pod": 0,
-    "pts": 11250,
+    "pts": 21250,
     "racha": "0/0"
    },
    "SR": {
@@ -12832,20 +12832,6 @@
     }
    }
   },
-  "TMAX 🇪🇸": {
-   "URBF": {
-    "duelos": "0/1",
-    "ev": 1,
-    "oro": 0,
-    "ovr": 42,
-    "pod": 0,
-    "pts": 3000,
-    "racha": "0/0",
-    "tg": {
-     "nuevo": true
-    }
-   }
-  },
   "TOBALSILLO": {
    "DDS": {
     "duelos": "",
@@ -13110,12 +13096,12 @@
     "racha": "0/0"
    },
    "URBF": {
-    "duelos": "0/1",
-    "ev": 1,
+    "duelos": "0/2",
+    "ev": 2,
     "oro": 0,
-    "ovr": 43,
+    "ovr": 44,
     "pod": 0,
-    "pts": 6600,
+    "pts": 9600,
     "racha": "0/0",
     "tg": {
      "nuevo": true
