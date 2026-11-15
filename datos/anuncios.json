@@ -1,5 +1,5 @@
 {
- "cuando": "2026-11-15T06:25:42+00:00",
+ "cuando": "2026-11-15T06:55:17+00:00",
  "anuncios": [
   {
    "nombre": "¡SE LLEGÓ LA GRAN NOCHE!",
@@ -6725,6 +6725,703 @@
    "autor": "Infected",
    "staff_cuentas": {},
    "categoria_id": "1563697445366669393"
+  },
+  {
+   "nombre": "NUEVA TEMPORADA",
+   "servidor": "CEU",
+   "canal": "competencia🏆",
+   "msg_id": "1570114062530908265",
+   "cuando": "2026-11-11T16:32:43",
+   "canal_id": "1514721002070741052",
+   "guild_id": "1513624656538636459",
+   "organizador": "KRISH",
+   "orgs": [
+    {
+     "n": "KRISH",
+     "id": ""
+    }
+   ],
+   "autor_h": "6203481d8d5b4e07",
+   "cupos_texto": "4/6",
+   "inscriptos": 4,
+   "cupo_total": 6,
+   "rango": "",
+   "modalidad": "",
+   "horario": "AHORA",
+   "fecha": "",
+   "premios": "SMEN DE BURRO Y PT PARA EL RANKING",
+   "staff": {
+    "jurado": [
+     "Krish el adivino (la revolucion)"
+    ],
+    "dj": [
+     "Krish el adivino (la revolucion)"
+    ]
+   },
+   "autor": "Krish el adivino (la revolucion)",
+   "staff_cuentas": {
+    "Krish el adivino (la revolucion)": "1513620494199558295"
+   },
+   "categoria_id": "1518542367907647498"
+  },
+  {
+   "nombre": "NUEVA TEMPORADA",
+   "servidor": "CEU",
+   "canal": "competencia🏆",
+   "msg_id": "1566555286284800123",
+   "cuando": "2026-11-01T20:51:25",
+   "canal_id": "1514721002070741052",
+   "guild_id": "1513624656538636459",
+   "organizador": "Krish el adivino (la revolucion)",
+   "orgs": [
+    {
+     "n": "Krish el adivino (la revolucion)",
+     "id": "1513620494199558295"
+    }
+   ],
+   "autor_h": "6203481d8d5b4e07",
+   "cupos_texto": "4/6/8",
+   "inscriptos": null,
+   "cupo_total": null,
+   "rango": "",
+   "modalidad": "1V1",
+   "horario": "AHORA",
+   "fecha": "",
+   "premios": "+ 5PT DEL RANKING",
+   "staff": {
+    "dj": [
+     "Krish el adivino (la revolucion)"
+    ]
+   },
+   "autor": "Krish el adivino (la revolucion)",
+   "staff_cuentas": {
+    "Krish el adivino (la revolucion)": "1513620494199558295"
+   },
+   "categoria_id": "1518542367907647498"
+  },
+  {
+   "nombre": "ESPECIAL HALLOWEEN",
+   "servidor": "CEU",
+   "canal": "competencia🏆",
+   "msg_id": "1565801863813537935",
+   "cuando": "2026-10-30T18:57:35",
+   "canal_id": "1514721002070741052",
+   "guild_id": "1513624656538636459",
+   "organizador": "TEITO Y YO",
+   "orgs": [
+    {
+     "n": "TEITO Y YO",
+     "id": ""
+    }
+   ],
+   "autor_h": "a19d37da69d72135",
+   "cupos_texto": "4/6/8",
+   "inscriptos": null,
+   "cupo_total": null,
+   "rango": "",
+   "modalidad": "2V2",
+   "horario": "AHORA",
+   "fecha": "",
+   "premios": "+ 5PT DEL RANKING",
+   "staff": {
+    "dj": [
+     "テオ🐈"
+    ]
+   },
+   "autor": "テオ🐈",
+   "staff_cuentas": {
+    "テオ🐈": "1503540314948898937"
+   },
+   "categoria_id": "1518542367907647498"
+  },
+  {
+   "nombre": "HALOWEEN",
+   "servidor": "CEU",
+   "canal": "competencia🏆",
+   "msg_id": "1565768303836930109",
+   "cuando": "2026-10-30T16:44:14",
+   "canal_id": "1514721002070741052",
+   "guild_id": "1513624656538636459",
+   "organizador": "Krish el adivino (la revolucion)",
+   "orgs": [
+    {
+     "n": "Krish el adivino (la revolucion)",
+     "id": "1513620494199558295"
+    }
+   ],
+   "autor_h": "6203481d8d5b4e07",
+   "cupos_texto": "4/8",
+   "inscriptos": 4,
+   "cupo_total": 8,
+   "rango": "",
+   "modalidad": "1V1",
+   "horario": "AHORA",
+   "fecha": "",
+   "premios": "+ 5PT DEL RANKING",
+   "staff": {
+    "jurado": [
+     "Krish el adivino (la revolucion)"
+    ],
+    "dj": [
+     "Krish el adivino (la revolucion)"
+    ]
+   },
+   "autor": "Krish el adivino (la revolucion)",
+   "staff_cuentas": {
+    "Krish el adivino (la revolucion)": "1513620494199558295"
+   },
+   "categoria_id": "1518542367907647498"
+  },
+  {
+   "nombre": "ESPECIAL HALLOWEEN",
+   "servidor": "CEU",
+   "canal": "competencia🏆",
+   "msg_id": "1565095170389577749",
+   "cuando": "2026-10-28T20:09:26",
+   "canal_id": "1514721002070741052",
+   "guild_id": "1513624656538636459",
+   "organizador": "TEITO Y YO",
+   "orgs": [
+    {
+     "n": "TEITO Y YO",
+     "id": ""
+    }
+   ],
+   "autor_h": "a19d37da69d72135",
+   "cupos_texto": "4/6/8",
+   "inscriptos": null,
+   "cupo_total": null,
+   "rango": "",
+   "modalidad": "1V1",
+   "horario": "AHORA",
+   "fecha": "",
+   "premios": "+ 5PT DEL RANKING",
+   "staff": {
+    "dj": [
+     "テオ🐈"
+    ]
+   },
+   "autor": "テオ🐈",
+   "staff_cuentas": {
+    "テオ🐈": "1503540314948898937"
+   },
+   "categoria_id": "1518542367907647498"
+  },
+  {
+   "nombre": "ESPECIAL HALLOWEEN",
+   "servidor": "CEU",
+   "canal": "competencia🏆",
+   "msg_id": "1564685078989246546",
+   "cuando": "2026-10-27T16:59:53",
+   "canal_id": "1514721002070741052",
+   "guild_id": "1513624656538636459",
+   "organizador": "TEITO Y YO",
+   "orgs": [
+    {
+     "n": "TEITO Y YO",
+     "id": ""
+    }
+   ],
+   "autor_h": "a19d37da69d72135",
+   "cupos_texto": "4/6/8",
+   "inscriptos": null,
+   "cupo_total": null,
+   "rango": "",
+   "modalidad": "1V1",
+   "horario": "AHORA",
+   "fecha": "",
+   "premios": "+ 5PT DEL RANKING",
+   "staff": {
+    "dj": [
+     "テオ🐈"
+    ]
+   },
+   "autor": "テオ🐈",
+   "staff_cuentas": {
+    "テオ🐈": "1503540314948898937"
+   },
+   "categoria_id": "1518542367907647498"
+  },
+  {
+   "nombre": "ESPECIAL HALLOWEEN",
+   "servidor": "CEU",
+   "canal": "competencia🏆",
+   "msg_id": "1564373391170085047",
+   "cuando": "2026-10-26T20:21:21",
+   "canal_id": "1514721002070741052",
+   "guild_id": "1513624656538636459",
+   "organizador": "TEITO Y YO",
+   "orgs": [
+    {
+     "n": "TEITO Y YO",
+     "id": ""
+    }
+   ],
+   "autor_h": "a19d37da69d72135",
+   "cupos_texto": "4/6/8",
+   "inscriptos": null,
+   "cupo_total": null,
+   "rango": "",
+   "modalidad": "1V1",
+   "horario": "AHORA",
+   "fecha": "",
+   "premios": "+ 5PT DEL RANKING",
+   "staff": {
+    "dj": [
+     "テオ🐈"
+    ]
+   },
+   "autor": "テオ🐈",
+   "staff_cuentas": {
+    "テオ🐈": "1503540314948898937"
+   },
+   "categoria_id": "1518542367907647498"
+  },
+  {
+   "nombre": "ESTACION FANTASMAL",
+   "servidor": "CEU",
+   "canal": "competencia🏆",
+   "msg_id": "1562495442690908325",
+   "cuando": "2026-10-21T15:59:03",
+   "canal_id": "1514721002070741052",
+   "guild_id": "1513624656538636459",
+   "organizador": "KRISH",
+   "orgs": [
+    {
+     "n": "KRISH",
+     "id": ""
+    }
+   ],
+   "autor_h": "6203481d8d5b4e07",
+   "cupos_texto": "4/6/8",
+   "inscriptos": null,
+   "cupo_total": null,
+   "rango": "",
+   "modalidad": "1V1V1",
+   "horario": "AHORA",
+   "fecha": "",
+   "premios": "+ 5PT DEL RANKING",
+   "staff": {
+    "dj": [
+     "Krish el adivino (la revolucion)"
+    ]
+   },
+   "autor": "Krish el adivino (la revolucion)",
+   "staff_cuentas": {
+    "Krish el adivino (la revolucion)": "1513620494199558295"
+   },
+   "categoria_id": "1518542367907647498"
+  },
+  {
+   "nombre": "DUPLAS DE MIEDO",
+   "servidor": "CEU",
+   "canal": "competencia🏆",
+   "msg_id": "1559624580773969964",
+   "cuando": "2026-10-13T17:51:16",
+   "canal_id": "1514721002070741052",
+   "guild_id": "1513624656538636459",
+   "organizador": "KRISH",
+   "orgs": [
+    {
+     "n": "KRISH",
+     "id": ""
+    }
+   ],
+   "autor_h": "6203481d8d5b4e07",
+   "cupos_texto": "4 DUPLAS",
+   "inscriptos": null,
+   "cupo_total": null,
+   "rango": "",
+   "modalidad": "2V2",
+   "horario": "AHORA",
+   "fecha": "",
+   "premios": "+ 5PT DEL RANKING",
+   "staff": {
+    "dj": [
+     "Krish el adivino (la revolucion)"
+    ]
+   },
+   "autor": "Krish el adivino (la revolucion)",
+   "staff_cuentas": {
+    "Krish el adivino (la revolucion)": "1513620494199558295"
+   },
+   "categoria_id": "1518542367907647498"
+  },
+  {
+   "nombre": "RAPEROS UNDERDOGS",
+   "servidor": "CEU",
+   "canal": "competencia🏆",
+   "msg_id": "1554960742887858249",
+   "cuando": "2026-09-30T20:58:50",
+   "canal_id": "1514721002070741052",
+   "guild_id": "1513624656538636459",
+   "organizador": "",
+   "orgs": [],
+   "autor_h": "a19d37da69d72135",
+   "cupos_texto": "",
+   "inscriptos": null,
+   "cupo_total": null,
+   "rango": "",
+   "modalidad": "(1vs1)",
+   "horario": "CUANDO SE LLENEN LOS CUPOS",
+   "fecha": "HOY",
+   "premios": "",
+   "staff": {},
+   "autor": "テオ🐈",
+   "staff_cuentas": {},
+   "categoria_id": "1518542367907647498"
+  },
+  {
+   "nombre": "RAPEROS UNDERDOGS",
+   "servidor": "CEU",
+   "canal": "competencia🏆",
+   "msg_id": "1542535446507298949",
+   "cuando": "2026-08-27T14:05:09",
+   "canal_id": "1514721002070741052",
+   "guild_id": "1513624656538636459",
+   "organizador": "",
+   "orgs": [],
+   "autor_h": "6203481d8d5b4e07",
+   "cupos_texto": "",
+   "inscriptos": null,
+   "cupo_total": null,
+   "rango": "",
+   "modalidad": "(2vs2)",
+   "horario": "21:00🇪🇸",
+   "fecha": "30/8/2026",
+   "premios": "",
+   "staff": {},
+   "autor": "Krish el adivino (la revolucion)",
+   "staff_cuentas": {},
+   "categoria_id": "1518542367907647498"
+  },
+  {
+   "nombre": "RAPEROS UNDERDOGS",
+   "servidor": "CEU",
+   "canal": "competencia🏆",
+   "msg_id": "1541149224790663290",
+   "cuando": "2026-08-23T18:16:48",
+   "canal_id": "1514721002070741052",
+   "guild_id": "1513624656538636459",
+   "organizador": "",
+   "orgs": [],
+   "autor_h": "4f7ee0154e897daf",
+   "cupos_texto": "",
+   "inscriptos": null,
+   "cupo_total": null,
+   "rango": "",
+   "modalidad": "(1vs1)",
+   "horario": "(\"cuando se llenen los cupos\")",
+   "fecha": "YAAA",
+   "premios": "",
+   "staff": {},
+   "autor": "TROT",
+   "staff_cuentas": {},
+   "categoria_id": "1518542367907647498"
+  },
+  {
+   "nombre": "NUEVA COMPETENCIA | \"COMPE CHILL",
+   "servidor": "CEU",
+   "canal": "competencia🏆",
+   "msg_id": "1539324341895036948",
+   "cuando": "2026-08-18T17:25:22",
+   "canal_id": "1514721002070741052",
+   "guild_id": "1513624656538636459",
+   "organizador": "",
+   "orgs": [],
+   "autor_h": "a19d37da69d72135",
+   "cupos_texto": "",
+   "inscriptos": null,
+   "cupo_total": null,
+   "rango": "",
+   "modalidad": "(1vs1)",
+   "horario": "(\"cuando se llenen los cupos\")",
+   "fecha": "(18/8/2026)",
+   "premios": "🥇 3 pt",
+   "staff": {},
+   "autor": "テオ🐈",
+   "staff_cuentas": {},
+   "categoria_id": "1518542367907647498"
+  },
+  {
+   "nombre": "NUEVA COMPETENCIA | \"COMPE CHILL",
+   "servidor": "CEU",
+   "canal": "competencia🏆",
+   "msg_id": "1538620864826712164",
+   "cuando": "2026-08-16T18:50:00",
+   "canal_id": "1514721002070741052",
+   "guild_id": "1513624656538636459",
+   "organizador": "",
+   "orgs": [],
+   "autor_h": "a19d37da69d72135",
+   "cupos_texto": "",
+   "inscriptos": null,
+   "cupo_total": null,
+   "rango": "",
+   "modalidad": "(1vs1)",
+   "horario": "(\"cuando se llenen los cupos\")",
+   "fecha": "(16/8/2026)",
+   "premios": "🥇 3 pt",
+   "staff": {},
+   "autor": "テオ🐈",
+   "staff_cuentas": {},
+   "categoria_id": "1518542367907647498"
+  },
+  {
+   "nombre": "NUEVA COMPETENCIA | \"COMPE CHILL",
+   "servidor": "CEU",
+   "canal": "competencia🏆",
+   "msg_id": "1538273077887242300",
+   "cuando": "2026-08-15T19:48:01",
+   "canal_id": "1514721002070741052",
+   "guild_id": "1513624656538636459",
+   "organizador": "",
+   "orgs": [],
+   "autor_h": "a19d37da69d72135",
+   "cupos_texto": "",
+   "inscriptos": null,
+   "cupo_total": null,
+   "rango": "",
+   "modalidad": "(1vs1)",
+   "horario": "(\"cuando se llenen los cupos\")",
+   "fecha": "(15/8/2026)",
+   "premios": "🥇 3 pt",
+   "staff": {},
+   "autor": "テオ🐈",
+   "staff_cuentas": {},
+   "categoria_id": "1518542367907647498"
+  },
+  {
+   "nombre": "NUEVA COMPETENCIA | (NOMBRE DE COMPETICIÓN)",
+   "servidor": "CEU",
+   "canal": "competencia🏆",
+   "msg_id": "1537843719368081428",
+   "cuando": "2026-08-14T15:21:54",
+   "canal_id": "1514721002070741052",
+   "guild_id": "1513624656538636459",
+   "organizador": "",
+   "orgs": [],
+   "autor_h": "6203481d8d5b4e07",
+   "cupos_texto": "",
+   "inscriptos": null,
+   "cupo_total": null,
+   "rango": "",
+   "modalidad": "(2vs2)",
+   "horario": "(16:30🇪🇸 )",
+   "fecha": "(15/8/2026)",
+   "premios": "🥇 3 pt",
+   "staff": {},
+   "autor": "Krish el adivino (la revolucion)",
+   "staff_cuentas": {},
+   "categoria_id": "1518542367907647498"
+  },
+  {
+   "nombre": "APAGON MASIVO!",
+   "servidor": "CEU",
+   "canal": "competencia🏆",
+   "msg_id": "1536732062004945016",
+   "cuando": "2026-08-11T13:44:34",
+   "canal_id": "1514721002070741052",
+   "guild_id": "1513624656538636459",
+   "organizador": "@🇪🇸 🅐🅓🅡🅘🅐🅝 亗",
+   "orgs": [
+    {
+     "n": "🇪🇸 🅐🅓🅡🅘🅐🅝 亗",
+     "id": "1276857675316989962"
+    }
+   ],
+   "autor_h": "682e1c548d0917e6",
+   "cupos_texto": "4-8",
+   "inscriptos": 4,
+   "cupo_total": 8,
+   "rango": "",
+   "modalidad": "1vs1,solo redbull beats",
+   "horario": "cuando llenen",
+   "fecha": "",
+   "premios": "1 pt para el ranking",
+   "staff": {},
+   "autor": "🇪🇸 🅐🅓🅡🅘🅐🅝 亗",
+   "staff_cuentas": {},
+   "categoria_id": "1518542367907647498"
+  },
+  {
+   "nombre": "apagon",
+   "servidor": "CEU",
+   "canal": "competencia🏆",
+   "msg_id": "1536121828484059246",
+   "cuando": "2026-08-09T21:19:43",
+   "canal_id": "1514721002070741052",
+   "guild_id": "1513624656538636459",
+   "organizador": "krish(yo)",
+   "orgs": [
+    {
+     "n": "krish(yo)",
+     "id": ""
+    }
+   ],
+   "autor_h": "6203481d8d5b4e07",
+   "cupos_texto": "4",
+   "inscriptos": null,
+   "cupo_total": null,
+   "rango": "",
+   "modalidad": "1vs1",
+   "horario": "🇪🇸 España 16:00",
+   "fecha": "",
+   "premios": "2 pt para el ranking",
+   "staff": {},
+   "autor": "Krish el adivino (la revolucion)",
+   "staff_cuentas": {},
+   "categoria_id": "1518542367907647498"
+  },
+  {
+   "nombre": "NOMBRE DE LA COMPE",
+   "servidor": "CEU",
+   "canal": "competencia🏆",
+   "msg_id": "1535752609464324237",
+   "cuando": "2026-08-08T20:52:35",
+   "canal_id": "1514721002070741052",
+   "guild_id": "1513624656538636459",
+   "organizador": "@teitomc.",
+   "orgs": [
+    {
+     "n": "teitomc",
+     "id": ""
+    }
+   ],
+   "autor_h": "a19d37da69d72135",
+   "cupos_texto": "4-8",
+   "inscriptos": 4,
+   "cupo_total": 8,
+   "rango": "",
+   "modalidad": "1vs1",
+   "horario": "mañana es la compe-cuando se llenen los cupos",
+   "fecha": "",
+   "premios": "4 pt para el ranking",
+   "staff": {},
+   "autor": "テオ🐈",
+   "staff_cuentas": {},
+   "categoria_id": "1518542367907647498"
+  },
+  {
+   "nombre": "EVENTO ANTES DEL PARON",
+   "servidor": "CEU",
+   "canal": "competencia🏆",
+   "msg_id": "1531397912083566742",
+   "cuando": "2026-07-27T20:28:34",
+   "canal_id": "1514721002070741052",
+   "guild_id": "1513624656538636459",
+   "organizador": "KRISH",
+   "orgs": [
+    {
+     "n": "KRISH",
+     "id": ""
+    }
+   ],
+   "autor_h": "6203481d8d5b4e07",
+   "cupos_texto": "6/8",
+   "inscriptos": 6,
+   "cupo_total": 8,
+   "rango": "",
+   "modalidad": "A",
+   "horario": "MIERCOLES 29 DE JULIO",
+   "fecha": "",
+   "premios": "4 pt para el ranking",
+   "staff": {
+    "jurado": [
+     "Krish el adivino (la revolucion)"
+    ],
+    "host": [
+     "YP"
+    ],
+    "dj": [
+     "Krish el adivino (la revolucion)"
+    ]
+   },
+   "autor": "Krish el adivino (la revolucion)",
+   "staff_cuentas": {
+    "Krish el adivino (la revolucion)": "1513620494199558295"
+   },
+   "categoria_id": "1518542367907647498"
+  },
+  {
+   "nombre": "PRE 5 VIDAS - 2 VIDAS",
+   "servidor": "CEU",
+   "canal": "competencia🏆",
+   "msg_id": "1528868068007346236",
+   "cuando": "2026-07-20T20:55:52",
+   "canal_id": "1514721002070741052",
+   "guild_id": "1513624656538636459",
+   "organizador": "KRISH",
+   "orgs": [
+    {
+     "n": "KRISH",
+     "id": ""
+    }
+   ],
+   "autor_h": "6203481d8d5b4e07",
+   "cupos_texto": "LOS QUE SEAN",
+   "inscriptos": null,
+   "cupo_total": null,
+   "rango": "",
+   "modalidad": "D",
+   "horario": "en 10 min",
+   "fecha": "",
+   "premios": "1 pt para el ranking",
+   "staff": {
+    "jurado": [
+     "SE BUSCA"
+    ],
+    "host": [
+     "Krish el adivino (la revolucion)"
+    ],
+    "dj": [
+     "Krish el adivino (la revolucion)"
+    ]
+   },
+   "autor": "Krish el adivino (la revolucion)",
+   "staff_cuentas": {
+    "Krish el adivino (la revolucion)": "1513620494199558295"
+   },
+   "categoria_id": "1518542367907647498"
+  },
+  {
+   "nombre": "CONFAIR",
+   "servidor": "CEU",
+   "canal": "competencia🏆",
+   "msg_id": "1526992853559939323",
+   "cuando": "2026-07-15T16:44:26",
+   "canal_id": "1514721002070741052",
+   "guild_id": "1513624656538636459",
+   "organizador": "Andy",
+   "orgs": [
+    {
+     "n": "Andy",
+     "id": ""
+    }
+   ],
+   "autor_h": "a248658918bbb2cb",
+   "cupos_texto": "2",
+   "inscriptos": null,
+   "cupo_total": null,
+   "rango": "",
+   "modalidad": "C",
+   "horario": "2:00pm",
+   "fecha": "",
+   "premios": "2pt para el ranking",
+   "staff": {
+    "jurado": [
+     "ANDY"
+    ],
+    "host": [
+     "ANDY"
+    ],
+    "dj": [
+     "ANDY"
+    ]
+   },
+   "autor": "Andy JR",
+   "staff_cuentas": {},
+   "categoria_id": "1518542367907647498"
   }
  ],
  "oficiales": [
@@ -6808,6 +7505,15 @@
    "cuando": "2026-11-13T19:22:50",
    "msg_id": "1570881649737212041",
    "link": "https://discord.com/channels/765045834647339038/922299202904653844/1570881649737212041"
+  },
+  {
+   "servidor": "CEU",
+   "canal": "anuncios",
+   "tit": "clasificados a red bull españa",
+   "tx": "ESPAÑA 🇪🇸 1. TROT 🇪🇸 2. R-FLOW 🇪🇸 3. MARCOS 🇪🇸 4. TMAX 🇪🇸 5. Mote ra 🇪🇸 6. LIAM 🇪🇸 7. ADRIANEX 🇪🇸 8. ZIARKI 🇪🇸",
+   "cuando": "2026-11-13T16:53:02",
+   "msg_id": "1570843950380482591",
+   "link": "https://discord.com/channels/1513624656538636459/1517230575369584821/1570843950380482591"
   },
   {
    "servidor": "ACAD",
@@ -6909,6 +7615,15 @@
    "link": "https://discord.com/channels/765045834647339038/922299202904653844/1564076807676895304"
   },
   {
+   "servidor": "CEU",
+   "canal": "anuncios",
+   "tit": "ya les puse los numeros del ranking detras del nombre",
+   "tx": "",
+   "cuando": "2026-10-23T08:24:49",
+   "msg_id": "1563105908890800199",
+   "link": "https://discord.com/channels/1513624656538636459/1517230575369584821/1563105908890800199"
+  },
+  {
    "servidor": "FFA",
    "canal": "✦⚡—novedades",
    "tit": "felicidades a por alcanzar el rango S del competitivo! Y tambien un recordatorio que ya se",
@@ -6925,6 +7640,15 @@
    "cuando": "2026-10-19T20:02:55",
    "msg_id": "1561832038221353032",
    "link": "https://discord.com/channels/1468472442925092958/1531832189187264543/1561832038221353032"
+  },
+  {
+   "servidor": "CEU",
+   "canal": "anuncios",
+   "tit": "YA TENEMOS CANAL DE YOUTUBE SOLO ES UNA BATALLA DEL OTRO SV PERO SE PUBLICARAN TAMBIEN DE ",
+   "tx": "",
+   "cuando": "2026-10-19T18:15:49",
+   "msg_id": "1561805084717883553",
+   "link": "https://discord.com/channels/1513624656538636459/1517230575369584821/1561805084717883553"
   },
   {
    "servidor": "FDS",
@@ -12248,6 +12972,132 @@
    "cuando": "2026-11-11T19:08:47"
   },
   {
+   "servidor": "CEU",
+   "canal": "inscripciones🖊️",
+   "texto": "Lrs🇦🇷",
+   "quien": "lrs0378",
+   "discord_id": "1385452830684614697",
+   "msg_id": "1570142713045713049",
+   "cuando": "2026-11-11T18:26:34"
+  },
+  {
+   "servidor": "CEU",
+   "canal": "inscripciones🖊️",
+   "texto": "Medster",
+   "quien": "medsterr",
+   "discord_id": "569551932247506953",
+   "msg_id": "1570141791326576801",
+   "cuando": "2026-11-11T18:22:54"
+  },
+  {
+   "servidor": "CEU",
+   "canal": "inscripciones🖊️",
+   "texto": "Last",
+   "quien": "last5724",
+   "discord_id": "483070865081237505",
+   "msg_id": "1570140837583781979",
+   "cuando": "2026-11-11T18:19:07"
+  },
+  {
+   "servidor": "CEU",
+   "canal": "inscripciones🖊️",
+   "texto": "K-OZ🇨🇱",
+   "quien": "k_ozwqedqd",
+   "discord_id": "1542693407275614271",
+   "msg_id": "1570140817648001117",
+   "cuando": "2026-11-11T18:19:02"
+  },
+  {
+   "servidor": "CEU",
+   "canal": "inscripciones🖊️",
+   "texto": "teito rap🇲🇿",
+   "quien": "nachonc_",
+   "discord_id": "1523082259870257315",
+   "msg_id": "1570140313039675403",
+   "cuando": "2026-11-11T18:17:02"
+  },
+  {
+   "servidor": "CEU",
+   "canal": "inscripciones🖊️",
+   "texto": "marcos🇪🇸",
+   "quien": "marcosq_14",
+   "discord_id": "1294600140815990858",
+   "msg_id": "1570140218739261531",
+   "cuando": "2026-11-11T18:16:39"
+  },
+  {
+   "servidor": "CEU",
+   "canal": "inscripciones🖊️",
+   "texto": "Krish 🇪🇸",
+   "quien": "krishsss11111",
+   "discord_id": "1513620494199558295",
+   "msg_id": "1570140085033242634",
+   "cuando": "2026-11-11T18:16:08"
+  },
+  {
+   "servidor": "CEU",
+   "canal": "inscripciones🖊️",
+   "texto": "Teo 🇨🇴",
+   "quien": "teitomc.",
+   "discord_id": "1503540314948898937",
+   "msg_id": "1570140046583927027",
+   "cuando": "2026-11-11T18:15:58"
+  },
+  {
+   "servidor": "CEU",
+   "canal": "inscripciones🖊️",
+   "texto": "Zurdo 🇧🇸",
+   "quien": "alvium.",
+   "discord_id": "508442795946672151",
+   "msg_id": "1570117485967970355",
+   "cuando": "2026-11-11T16:46:20"
+  },
+  {
+   "servidor": "CEU",
+   "canal": "inscripciones🖊️",
+   "texto": "🇦🇷abel",
+   "quien": "yatusube",
+   "discord_id": "276571635400835072",
+   "msg_id": "1570117464337940563",
+   "cuando": "2026-11-11T16:46:14"
+  },
+  {
+   "servidor": "CEU",
+   "canal": "inscripciones🖊️",
+   "texto": "tg🇮🇱",
+   "quien": "m_zeta",
+   "discord_id": "459142393938182144",
+   "msg_id": "1570115948126408715",
+   "cuando": "2026-11-11T16:40:13"
+  },
+  {
+   "servidor": "CEU",
+   "canal": "inscripciones🖊️",
+   "texto": "motera🇮🇱",
+   "quien": "hbrsg_",
+   "discord_id": "885365894606381068",
+   "msg_id": "1570115707197460492",
+   "cuando": "2026-11-11T16:39:15"
+  },
+  {
+   "servidor": "CEU",
+   "canal": "inscripciones🖊️",
+   "texto": "Kuzoh 🇲🇽",
+   "quien": "kuzoh_",
+   "discord_id": "1447024559197782138",
+   "msg_id": "1570115682472034465",
+   "cuando": "2026-11-11T16:39:10"
+  },
+  {
+   "servidor": "CEU",
+   "canal": "inscripciones🖊️",
+   "texto": "Medster",
+   "quien": "medsterr",
+   "discord_id": "569551932247506953",
+   "msg_id": "1570115673819054293",
+   "cuando": "2026-11-11T16:39:07"
+  },
+  {
    "servidor": "LKR",
    "canal": "📋・INSCRIPCIONES",
    "texto": "Kuzoh 🇲🇽",
@@ -12255,6 +13105,87 @@
    "discord_id": "1447024559197782138",
    "msg_id": "1570115332343996508",
    "cuando": "2026-11-11T16:37:46"
+  },
+  {
+   "servidor": "CEU",
+   "canal": "inscripciones🖊️",
+   "texto": "marcos🇪🇸",
+   "quien": "marcosq_14",
+   "discord_id": "1294600140815990858",
+   "msg_id": "1570115259002396715",
+   "cuando": "2026-11-11T16:37:29"
+  },
+  {
+   "servidor": "CEU",
+   "canal": "inscripciones🖊️",
+   "texto": "0223 🇧🇧 ( poneme en primera )",
+   "quien": "goksito_8",
+   "discord_id": "1325042155819106324",
+   "msg_id": "1570114973659701330",
+   "cuando": "2026-11-11T16:36:21"
+  },
+  {
+   "servidor": "CEU",
+   "canal": "inscripciones🖊️",
+   "texto": "1200 🥺🫰🏻🇯🇵",
+   "quien": "dreamero",
+   "discord_id": "1395903355909570633",
+   "msg_id": "1570114748823904261",
+   "cuando": "2026-11-11T16:35:27"
+  },
+  {
+   "servidor": "CEU",
+   "canal": "inscripciones🖊️",
+   "texto": "Under🇨🇴",
+   "quien": "ander074883",
+   "discord_id": "1026746712779395113",
+   "msg_id": "1570114564278976625",
+   "cuando": "2026-11-11T16:34:43"
+  },
+  {
+   "servidor": "CEU",
+   "canal": "inscripciones🖊️",
+   "texto": "ZiarKI 🇪🇸",
+   "quien": "iv_an1.",
+   "discord_id": "1251535986454953986",
+   "msg_id": "1570114501494312981",
+   "cuando": "2026-11-11T16:34:28"
+  },
+  {
+   "servidor": "CEU",
+   "canal": "inscripciones🖊️",
+   "texto": "Sa🇪🇸 ncez",
+   "quien": "arowey0719_09614",
+   "discord_id": "1345623878474403901",
+   "msg_id": "1570114436746715298",
+   "cuando": "2026-11-11T16:34:13"
+  },
+  {
+   "servidor": "CEU",
+   "canal": "inscripciones🖊️",
+   "texto": "Monet 🇨🇳",
+   "quien": "monet_x.",
+   "discord_id": "1501320596485701642",
+   "msg_id": "1570114394845741107",
+   "cuando": "2026-11-11T16:34:03"
+  },
+  {
+   "servidor": "CEU",
+   "canal": "inscripciones🖊️",
+   "texto": "Last🇺🇾🇪🇸",
+   "quien": "last5724",
+   "discord_id": "483070865081237505",
+   "msg_id": "1570114357378162800",
+   "cuando": "2026-11-11T16:33:54"
+  },
+  {
+   "servidor": "CEU",
+   "canal": "inscripciones🖊️",
+   "texto": "deka kush🇲🇿",
+   "quien": "nachonc_",
+   "discord_id": "1523082259870257315",
+   "msg_id": "1570114339166232691",
+   "cuando": "2026-11-11T16:33:49"
   },
   {
    "servidor": "LKR",
@@ -42747,213 +43678,6 @@
    "discord_id": "768561204707983361",
    "msg_id": "1559331741532028981",
    "cuando": "2026-10-12T22:27:38"
-  },
-  {
-   "servidor": "SR",
-   "canal": "[📝]inscripciones",
-   "texto": "colesito",
-   "quien": "colesito",
-   "discord_id": "790016013680771102",
-   "msg_id": "1559330720114286663",
-   "cuando": "2026-10-12T22:23:34"
-  },
-  {
-   "servidor": "SR",
-   "canal": "[📝]inscripciones",
-   "texto": "Bloody",
-   "quien": "bloodypintor",
-   "discord_id": "692881329573986317",
-   "msg_id": "1559330667970695239",
-   "cuando": "2026-10-12T22:23:22"
-  },
-  {
-   "servidor": "SR",
-   "canal": "[📝]inscripciones",
-   "texto": "Magic🇲🇽",
-   "quien": "soul011294",
-   "discord_id": "915051512575717457",
-   "msg_id": "1559330362814107659",
-   "cuando": "2026-10-12T22:22:09"
-  },
-  {
-   "servidor": "SR",
-   "canal": "[📝]inscripciones",
-   "texto": "Geronimo 🇻🇪",
-   "quien": "makmah_g",
-   "discord_id": "897942226955563068",
-   "msg_id": "1559330162338963518",
-   "cuando": "2026-10-12T22:21:21"
-  },
-  {
-   "servidor": "SR",
-   "canal": "[📝]inscripciones",
-   "texto": "Zignos 🇩🇴",
-   "quien": "emekultra",
-   "discord_id": "1071185986366742630",
-   "msg_id": "1559325573355143259",
-   "cuando": "2026-10-12T22:03:07"
-  },
-  {
-   "servidor": "SR",
-   "canal": "[📝]inscripciones",
-   "texto": "Lrs🇦🇷",
-   "quien": "lrs0378",
-   "discord_id": "1385452830684614697",
-   "msg_id": "1559323485283680277",
-   "cuando": "2026-10-12T21:54:49"
-  },
-  {
-   "servidor": "SR",
-   "canal": "[📝]inscripciones",
-   "texto": "Deluxe🇦🇷",
-   "quien": ".jeluxe",
-   "discord_id": "776271601221763103",
-   "msg_id": "1559323195301957753",
-   "cuando": "2026-10-12T21:53:40"
-  },
-  {
-   "servidor": "SR",
-   "canal": "[📝]inscripciones",
-   "texto": "Valdoza 🇨🇱",
-   "quien": "voltaxxdddd67",
-   "discord_id": "1263213463644143672",
-   "msg_id": "1559321792961581059",
-   "cuando": "2026-10-12T21:48:06"
-  },
-  {
-   "servidor": "DDS",
-   "canal": "📜〕INSCRIPCIONES",
-   "texto": "giansito",
-   "quien": "gian_075",
-   "discord_id": "664288438563897354",
-   "msg_id": "1559321742407897222",
-   "cuando": "2026-10-12T21:47:54"
-  },
-  {
-   "servidor": "SR",
-   "canal": "[📝]inscripciones",
-   "texto": "Zeta 🇨🇴",
-   "quien": "zetaenmsi",
-   "discord_id": "535579351710957568",
-   "msg_id": "1559321651357945897",
-   "cuando": "2026-10-12T21:47:32"
-  },
-  {
-   "servidor": "SR",
-   "canal": "[📝]inscripciones",
-   "texto": "Velatz 🇨🇱",
-   "quien": "funhorlavild",
-   "discord_id": "1426686911908675628",
-   "msg_id": "1559321457065197710",
-   "cuando": "2026-10-12T21:46:46"
-  },
-  {
-   "servidor": "FFA",
-   "canal": "✦📝—inscripciones",
-   "texto": "Cronox 🇨🇱",
-   "quien": "cronoxzito",
-   "discord_id": "1487658663148785734",
-   "msg_id": "1559321441537884251",
-   "cuando": "2026-10-12T21:46:42"
-  },
-  {
-   "servidor": "SR",
-   "canal": "[📝]inscripciones",
-   "texto": "tam",
-   "quien": "tuabuelamuerta12",
-   "discord_id": "505444041719021569",
-   "msg_id": "1559321364983185481",
-   "cuando": "2026-10-12T21:46:24"
-  },
-  {
-   "servidor": "SR",
-   "canal": "[📝]inscripciones",
-   "texto": "Scritura 🇻🇪",
-   "quien": "scritura",
-   "discord_id": "1559007314126704653",
-   "msg_id": "1559321282594476043",
-   "cuando": "2026-10-12T21:46:04"
-  },
-  {
-   "servidor": "SR",
-   "canal": "[📝]inscripciones",
-   "texto": "Jupiter",
-   "quien": "jupiter2417tj",
-   "discord_id": "1413305434881658960",
-   "msg_id": "1559321258762698764",
-   "cuando": "2026-10-12T21:45:58"
-  },
-  {
-   "servidor": "FFA",
-   "canal": "✦📝—inscripciones",
-   "texto": "Soneto 🇪🇨",
-   "quien": "pllsuax",
-   "discord_id": "745324578347286528",
-   "msg_id": "1559321240077078601",
-   "cuando": "2026-10-12T21:45:54"
-  },
-  {
-   "servidor": "SR",
-   "canal": "[📝]inscripciones",
-   "texto": "Joaquín La Profecia 👨🏻‍🍳🇦🇷",
-   "quien": "urban0223",
-   "discord_id": "665972494846394389",
-   "msg_id": "1559321231671566337",
-   "cuando": "2026-10-12T21:45:52"
-  },
-  {
-   "servidor": "SR",
-   "canal": "[📝]inscripciones",
-   "texto": "Prosu 🇨🇴",
-   "quien": "prosufk",
-   "discord_id": "1177668622227886112",
-   "msg_id": "1559321209953325188",
-   "cuando": "2026-10-12T21:45:47"
-  },
-  {
-   "servidor": "SR",
-   "canal": "[📝]inscripciones",
-   "texto": "Lvel 🇻🇪",
-   "quien": "soycoma__42587",
-   "discord_id": "1241407042195816459",
-   "msg_id": "1559321156115501057",
-   "cuando": "2026-10-12T21:45:34"
-  },
-  {
-   "servidor": "DDS",
-   "canal": "📜〕INSCRIPCIONES",
-   "texto": "Sosa🇺🇾",
-   "quien": "sosaatrz",
-   "discord_id": "1471153954254622774",
-   "msg_id": "1559321117762519150",
-   "cuando": "2026-10-12T21:45:25"
-  },
-  {
-   "servidor": "SR",
-   "canal": "[📝]inscripciones",
-   "texto": "verc",
-   "quien": "jovenvesta",
-   "discord_id": "913652602208649226",
-   "msg_id": "1559321117456343121",
-   "cuando": "2026-10-12T21:45:25"
-  },
-  {
-   "servidor": "SR",
-   "canal": "[📝]inscripciones",
-   "texto": "SYEPORUTE🇿🇲",
-   "quien": "csgo47.",
-   "discord_id": "1493317254581063680",
-   "msg_id": "1559321114247962806",
-   "cuando": "2026-10-12T21:45:24"
-  },
-  {
-   "servidor": "SR",
-   "canal": "[📝]inscripciones",
-   "texto": "Guess 🇦🇷",
-   "quien": "sinergiabreak",
-   "discord_id": "1515482513106272366",
-   "msg_id": "1559321116667936821",
-   "cuando": "2026-10-12T21:45:24"
   }
  ]
 }

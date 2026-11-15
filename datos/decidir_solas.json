@@ -2,132 +2,6 @@
  "_leeme": "Lo que ✅ Decidir cerró o contestó solo, con la regla y la prueba (sheet/decidir.py, resolver_solo()), para «Lo que se resolvió solo» del Dashboard y su «Deshacer». «deshechas»: lo que Dlx deshizo; ninguna regla lo vuelve a tocar. Dlx, 13/10/2026.",
  "solas": [
   {
-   "id": "fe7fa9f2a8",
-   "tipo": "Nombre desconocido",
-   "sec": "SNAKE INSIGNIA 7 8 · SR · 31/10 · #553",
-   "que": "¿Quién es «Aarón El arte🇦🇷»?",
-   "r": "Es Mito (en este evento)",
-   "regla": "R21 · la cuenta que se anotó así para ese evento es de alguien de la Lista que esa noche no jugó con su nombre",
-   "rk": "R21",
-   "por": "el ciclo",
-   "porque": "la cuenta @lizeninn. · en la Lista: Mito se anotó como «Aarón El arte» para ese evento, no es staff de SR y esa noche no jugó con su nombre",
-   "t": 1793489837591,
-   "filas": [
-    999
-   ],
-   "variantes": [
-    "Aarón El arte🇦🇷"
-   ],
-   "escribio": {
-    "quien": "SNAKE INSIGNIA 7 8 · SR · 31/10 · Aarón El arte🇦🇷"
-   }
-  },
-  {
-   "id": "e1619844ed",
-   "tipo": "Nombre desconocido",
-   "sec": "SNAKE INSIGNIA 7 8 · SR · 31/10 · #553",
-   "que": "¿Quién es «JOAQUIN»?",
-   "r": "Es Joaquín La Profecia 👨🏻‍🍳",
-   "regla": "Discord · su cuenta de Discord: la inscripción, el podio, la llave o la llamada",
-   "rk": "Discord",
-   "por": "el ciclo (su cuenta de Discord)",
-   "porque": "alias de Joaquín La Profecia 👨🏻‍🍳: estaba en la llamada del evento con un nombre parecido",
-   "t": 1793489837591,
-   "filas": [
-    1000
-   ],
-   "variantes": [
-    "JOAQUIN"
-   ],
-   "escribio": {
-    "alias": [
-     "JOAQUIN",
-     "Joaquín La Profecia 👨🏻‍🍳"
-    ],
-    "filas": [
-     331
-    ]
-   }
-  },
-  {
-   "id": "422efe4499",
-   "tipo": "Nombre desconocido",
-   "sec": "SNAKE INSIGNIA 7 8 · SR · 31/10 · #553",
-   "que": "¿Quién es «bay🇺🇾»?",
-   "r": "Es Ivan",
-   "regla": "Discord · su cuenta de Discord: la inscripción, el podio, la llave o la llamada",
-   "rk": "Discord",
-   "por": "el ciclo (su cuenta de Discord)",
-   "porque": "alias de Ivan: se anotó así en inscripciones",
-   "t": 1793489837591,
-   "filas": [
-    1002
-   ],
-   "variantes": [
-    "bay🇺🇾"
-   ],
-   "escribio": {
-    "alias": [
-     "bay",
-     "Ivan"
-    ],
-    "filas": [
-     332
-    ]
-   }
-  },
-  {
-   "id": "06e7b6b101",
-   "tipo": "Nombre desconocido",
-   "sec": "SNAKE INSIGNIA 7 8 · SR · 31/10 · #553",
-   "que": "¿Quién es «Kastigoz 🇨🇴»?",
-   "r": "Es alguien nuevo: alta con su cuenta 721093043197050951",
-   "regla": "Discord · su cuenta de Discord: la inscripción, el podio, la llave o la llamada",
-   "rk": "Discord",
-   "por": "el ciclo (su cuenta de Discord)",
-   "porque": "nuevo: entró a la Lista con la cuenta con que se anotó (721093043197050951)",
-   "t": 1793489837591,
-   "filas": [
-    1001
-   ],
-   "variantes": [
-    "Kastigoz 🇨🇴"
-   ],
-   "escribio": {
-    "alta": [
-     "Kastigoz",
-     "721093043197050951"
-    ]
-   }
-  },
-  {
-   "id": "32bd37d3d0",
-   "tipo": "Nombre desconocido",
-   "sec": "PRADERAP VOL.2 · ACAD · 27/10 · #535",
-   "que": "¿Quién es «Turbo 🇪🇦»?",
-   "r": "Es Tmax Turbo [PN]",
-   "regla": "Discord · su cuenta de Discord: la inscripción, el podio, la llave o la llamada",
-   "rk": "Discord",
-   "por": "el ciclo (su cuenta de Discord)",
-   "porque": "alias de Tmax Turbo [PN]: estaba en la llamada del evento con un nombre parecido",
-   "t": 1793491559040,
-   "filas": [
-    917
-   ],
-   "variantes": [
-    "Turbo 🇪🇦"
-   ],
-   "escribio": {
-    "alias": [
-     "Turbo",
-     "Tmax Turbo [PN]"
-    ],
-    "filas": [
-     333
-    ]
-   }
-  },
-  {
    "id": "219759c9f1",
    "tipo": "Nombre desconocido",
    "sec": "COCINE FIDEOS · FFA · 01/11 · #558",
@@ -4370,6 +4244,30 @@
     "alta": [
      "compare",
      "816486976949714955"
+    ]
+   }
+  },
+  {
+   "id": "a37e5c812f",
+   "tipo": "Nombre desconocido",
+   "sec": "TORNEOS · LKR · 05/11 · #620",
+   "que": "¿Quién es «Sweet pain🇻🇪»?",
+   "r": "Es alguien nuevo: alta con su cuenta 1550194237549838531",
+   "regla": "Discord · su cuenta de Discord: la inscripción, el podio, la llave o la llamada",
+   "rk": "Discord",
+   "por": "el ciclo (su cuenta de Discord)",
+   "porque": "nuevo: entró a la Lista con la cuenta con que se anotó (1550194237549838531)",
+   "t": 1794726369968,
+   "filas": [
+    1304
+   ],
+   "variantes": [
+    "Sweet pain🇻🇪"
+   ],
+   "escribio": {
+    "alta": [
+     "Sweet pain",
+     "1550194237549838531"
     ]
    }
   }

@@ -7241,6 +7241,149 @@
      ],
      "organizador": "@Infected",
      "cuentas": {}
+    },
+    "1565801863813537935": {
+     "sv": "CEU",
+     "nombre": "ESPECIAL HALLOWEEN",
+     "mo": "2026-10-30T18:57:35Z",
+     "staff": {
+      "dj": [
+       "テオ🐈"
+      ]
+     },
+     "orgs": [
+      {
+       "n": "TEITO Y YO",
+       "id": ""
+      }
+     ],
+     "organizador": "TEITO Y YO",
+     "cuentas": {
+      "テオ🐈": "1503540314948898937"
+     }
+    },
+    "1565768303836930109": {
+     "sv": "CEU",
+     "nombre": "HALOWEEN",
+     "mo": "2026-10-30T16:44:14Z",
+     "staff": {
+      "jurado": [
+       "Krish el adivino (la revolucion)"
+      ],
+      "dj": [
+       "Krish el adivino (la revolucion)"
+      ]
+     },
+     "orgs": [
+      {
+       "n": "Krish el adivino (la revolucion)",
+       "id": "1513620494199558295"
+      }
+     ],
+     "organizador": "Krish el adivino (la revolucion)",
+     "cuentas": {
+      "Krish el adivino (la revolucion)": "1513620494199558295"
+     }
+    },
+    "1565095170389577749": {
+     "sv": "CEU",
+     "nombre": "ESPECIAL HALLOWEEN",
+     "mo": "2026-10-28T20:09:26Z",
+     "staff": {
+      "dj": [
+       "テオ🐈"
+      ]
+     },
+     "orgs": [
+      {
+       "n": "TEITO Y YO",
+       "id": ""
+      }
+     ],
+     "organizador": "TEITO Y YO",
+     "cuentas": {
+      "テオ🐈": "1503540314948898937"
+     }
+    },
+    "1564685078989246546": {
+     "sv": "CEU",
+     "nombre": "ESPECIAL HALLOWEEN",
+     "mo": "2026-10-27T16:59:53Z",
+     "staff": {
+      "dj": [
+       "テオ🐈"
+      ]
+     },
+     "orgs": [
+      {
+       "n": "TEITO Y YO",
+       "id": ""
+      }
+     ],
+     "organizador": "TEITO Y YO",
+     "cuentas": {
+      "テオ🐈": "1503540314948898937"
+     }
+    },
+    "1564373391170085047": {
+     "sv": "CEU",
+     "nombre": "ESPECIAL HALLOWEEN",
+     "mo": "2026-10-26T20:21:21Z",
+     "staff": {
+      "dj": [
+       "テオ🐈"
+      ]
+     },
+     "orgs": [
+      {
+       "n": "TEITO Y YO",
+       "id": ""
+      }
+     ],
+     "organizador": "TEITO Y YO",
+     "cuentas": {
+      "テオ🐈": "1503540314948898937"
+     }
+    },
+    "1562495442690908325": {
+     "sv": "CEU",
+     "nombre": "ESTACION FANTASMAL",
+     "mo": "2026-10-21T15:59:03Z",
+     "staff": {
+      "dj": [
+       "Krish el adivino (la revolucion)"
+      ]
+     },
+     "orgs": [
+      {
+       "n": "KRISH",
+       "id": ""
+      }
+     ],
+     "organizador": "KRISH",
+     "cuentas": {
+      "Krish el adivino (la revolucion)": "1513620494199558295"
+     }
+    },
+    "1559624580773969964": {
+     "sv": "CEU",
+     "nombre": "DUPLAS DE MIEDO",
+     "mo": "2026-10-13T17:51:16Z",
+     "staff": {
+      "dj": [
+       "Krish el adivino (la revolucion)"
+      ]
+     },
+     "orgs": [
+      {
+       "n": "KRISH",
+       "id": ""
+      }
+     ],
+     "organizador": "KRISH",
+     "cuentas": {
+      "Krish el adivino (la revolucion)": "1513620494199558295"
+     }
     }
    },
    "ver": {
@@ -9702,6 +9845,49 @@
      ],
      "organizador": "@nachonc_",
      "cuentas": {}
+    },
+    "1570114062530908265": {
+     "sv": "CEU",
+     "nombre": "NUEVA TEMPORADA",
+     "mo": "2026-11-11T16:32:43Z",
+     "staff": {
+      "jurado": [
+       "Krish el adivino (la revolucion)"
+      ],
+      "dj": [
+       "Krish el adivino (la revolucion)"
+      ]
+     },
+     "orgs": [
+      {
+       "n": "KRISH",
+       "id": ""
+      }
+     ],
+     "organizador": "KRISH",
+     "cuentas": {
+      "Krish el adivino (la revolucion)": "1513620494199558295"
+     }
+    },
+    "1566555286284800123": {
+     "sv": "CEU",
+     "nombre": "NUEVA TEMPORADA",
+     "mo": "2026-11-01T20:51:25Z",
+     "staff": {
+      "dj": [
+       "Krish el adivino (la revolucion)"
+      ]
+     },
+     "orgs": [
+      {
+       "n": "Krish el adivino (la revolucion)",
+       "id": "1513620494199558295"
+      }
+     ],
+     "organizador": "Krish el adivino (la revolucion)",
+     "cuentas": {
+      "Krish el adivino (la revolucion)": "1513620494199558295"
+     }
     }
    },
    "ver": {

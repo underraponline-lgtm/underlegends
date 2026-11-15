@@ -56,6 +56,11 @@
   "DDS": {
    "codigo": "HTERZJAcYR",
    "usos": 1
+  },
+  "CEU": {
+   "codigo": "mmXHVpUajm",
+   "usos": null,
+   "por_que": "el bot no puede ver sus invitaciones"
   }
  }
 }
