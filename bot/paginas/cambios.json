@@ -11,6 +11,18 @@
  ],
  "cambios": [
     {
+        "version": "5.41",
+        "dia": "2026-11-15",
+        "cuando": "2026-11-15T02:38:00-05:00",
+        "titulo": "Ir a, tu último evento y tu carta en el escenario",
+        "items": [
+            "La barra **«Ir a»** que aparece al bajar, con el estilo de la campana: en la compu las secciones con su ícono y una **línea que dice cuánto bajaste**; en el celular, **«Estás en…»** abre un panel con cada sección y qué tiene.",
+            "**Tu último evento**, como un afiche chico: el día en un taco de calendario, la ronda en un sello (dorado si saliste campeón), los puntos, tus ganadas y perdidas y el escudo del servidor.",
+            "Los **cuadros de al lado** (racha, campana, Dragón Drops, anuncio, premio y sorteo), parejos: cada uno con su color, su etiqueta y su ícono como sticker.",
+            "**Detrás de tu carta, el escenario** de tu servidor."
+        ]
+    },
+    {
         "version": "5.40",
         "dia": "2026-11-15",
         "cuando": "2026-11-15T02:35:00-05:00",

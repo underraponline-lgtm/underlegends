@@ -5423,6 +5423,60 @@ dialog.pn-pop.pop-gratis{--pc:#F5C542;width:min(640px,calc(100vw - 32px))}
 .pn-fila.cuatro .pn-racha b{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 @media (min-width: 761px){.pn-fila.cuatro .pn-ultc .pn-cal{flex:none}}
 .pn-vs.con-lg .pn-prob b{white-space:nowrap}
+/* 🗓️ TU ÚLTIMO EVENTO, COMO UN AFICHE CHICO (15/11/2026): el taco del calendario, los sellos de cómo te fue y el escudo */
+.pn-ultc{position:relative;gap:11px;padding:10px 42px 10px 10px;border:1.5px solid #1d5a4e;border-left:4px solid var(--verde);
+  background:linear-gradient(100deg,rgba(41,178,152,.16),rgba(41,178,152,.03) 60%),#0B0C0E}
+.pn-ultc.oro{border-color:#6b5414;border-left-color:#F5C542;background:linear-gradient(100deg,rgba(245,197,66,.18),rgba(245,197,66,.03) 60%),#0B0C0E}
+.pn-ultc.oro:hover,.pn-ultc.oro:focus-visible{border-color:#F5C542}
+.pn-ultc-cal{flex:none;display:grid;justify-items:center;width:46px;overflow:hidden;border:2px solid #030304;background:#F6F6F6;color:#030304;
+  box-shadow:3px 3px 0 var(--verde);rotate:-3deg}
+.pn-ultc.oro .pn-ultc-cal{box-shadow:3px 3px 0 #F5C542}
+.pn-ultc-cal i{display:block;width:100%;padding:3px 0 2px;background:var(--verde);text-align:center;font:800 10px/1 "Barlow Condensed",sans-serif;font-style:normal;
+  letter-spacing:.08em;text-transform:uppercase;color:#030304}
+.pn-ultc.oro .pn-ultc-cal i{background:#F5C542}
+.pn-ultc-cal b{font:400 24px/1 Anton,Archivo,sans-serif;padding-top:3px}
+.pn-ultc-cal small{font:700 9.5px/1 "Barlow Condensed",sans-serif;letter-spacing:.08em;text-transform:uppercase;padding:1px 0 4px;color:#55555C}
+.pn-ultc .pn-tx{display:grid;gap:4px;min-width:0;flex:1}
+.pn-ultc-et{font:800 10px/1 "Barlow Condensed",sans-serif;font-style:normal;letter-spacing:.1em;text-transform:uppercase;color:var(--verde)}
+.pn-ultc.oro .pn-ultc-et{color:#F5C542}
+.pn-ultc .pn-tx > b{font:800 14.5px/1.15 Archivo,sans-serif;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.pn-ultc-s{display:flex;flex-wrap:wrap;gap:4px;min-width:0}
+.pn-ultc-s em{display:inline-flex;align-items:center;gap:3px;padding:3px 5px;border-radius:3px;font:700 11.5px/1 "Barlow Condensed",sans-serif;font-style:normal;
+  letter-spacing:.05em;text-transform:uppercase;white-space:nowrap;background:#1a1b1f;color:#D8D8D4;border:1px solid #2a2c31}
+.pn-ultc-s em.r{background:#F6F6F6;color:#030304;border-color:#F6F6F6}
+.pn-ultc.oro .pn-ultc-s em.r{background:#F5C542;border-color:#F5C542}
+.pn-ultc-s em.pts{color:var(--verde);border-color:#1d5a4e}
+.pn-ultc-s em.gp b{font:900 13px/1 Archivo,sans-serif}
+.pn-ultc-s em.gp b.g{color:var(--verde)}
+.pn-ultc-s em.gp b.p{color:#FF6B8B;margin-left:5px}
+.pn-ultc .pn-ultc-r{margin-top:1px}
+.pn-ultc-sv{position:absolute;right:9px;top:9px;width:28px;height:28px;border-radius:50%;object-fit:cover;border:1.5px solid #2a2c31;background:#141417}
+/* 🎤 el escenario detrás de tu carta: la escena del servidor, apagada para que los números se lean */
+.pn-yo.con-esc-yo{isolation:isolate;background:#07080A}
+/* 🎛️ LA FILA DE ARRIBA, PAREJA (Dlx, 15/11/2026, al ver el cuadro del último evento: «mejora también los que tienes al
+   costado»): los seis cuadros con el mismo idioma —la franja de su color a la izquierda, la etiqueta arriba y el ícono como
+   sticker con su sombra corrida— (racha naranja, campana verde, Dragón Drops violeta, anuncio azul, premio y sorteo dorados) */
+.pn-racha,.pn-camp,.pn-dia,.pn-anc,.pn-gratis{padding:10px 12px;min-height:72px}
+.pn-racha{border:1.5px solid #5a3410;border-left:4px solid #F28C28}
+.pn-camp{border:1.5px solid #1d5a4e;border-left:4px solid var(--verde)}
+.pn-dia{border:1.5px solid #3b2470;border-left:4px solid #9B5CFF}
+.pn-racha .pn-tx,.pn-camp .pn-tx,.pn-dia .pn-tx{display:grid;gap:3px;min-width:0;flex:1}
+.pn-racha-et,.pn-camp-et,.pn-dia-et{font:800 10px/1 "Barlow Condensed",sans-serif;font-style:normal;letter-spacing:.1em;text-transform:uppercase}
+.pn-racha-et{color:#F28C28}
+.pn-camp-et{color:var(--verde)}
+.pn-dia-et{color:#B48CFF}
+.pn-fuego{min-width:46px;height:46px;justify-content:center;padding:0 6px;border:2px solid #030304;background:#F28C28;color:#030304;font:400 24px/1 Anton,Archivo,sans-serif;
+  box-shadow:3px 3px 0 #5a3410;rotate:-3deg}
+.pn-fuego svg{width:18px;height:18px}
+.pn-camp-ic{width:42px;height:42px;border:2px solid #030304;box-shadow:3px 3px 0 #1d5a4e;rotate:-3deg}
+.dd-huevo-m{filter:drop-shadow(3px 3px 0 #3b2470);box-shadow:none}
+.pn-anc-logo{width:44px;height:44px;border-radius:8px;box-shadow:0 0 0 2px #030304,3px 3px 0 2px var(--azul);rotate:-3deg}
+.pn-gr-ic{width:44px;height:44px}
+@media (max-width: 760px){.pn-racha,.pn-camp,.pn-dia,.pn-anc,.pn-gratis{min-height:62px}.pn-fuego{min-width:40px;height:40px;font-size:20px}
+  .pn-anc-logo{width:36px;height:36px}}
+.app.calma .pn-fuego,.app.calma .pn-camp-ic,.app.calma .pn-anc-logo{rotate:0deg}
+.pn-esc{position:absolute;inset:0;z-index:-1;background-size:cover;background-position:50% 35%;opacity:.55;pointer-events:none}
+.pn-esc::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(7,8,10,.35) 0%,rgba(7,8,10,.15) 35%,rgba(7,8,10,.72) 72%,rgba(7,8,10,.92) 100%)}
 
 
 /* ═══ 👤 EL PANEL DE ALGUIEN NUEVO (12/11/2026, Dlx: «así lo ve una persona nueva… hay botones que desaparecen»): el centro

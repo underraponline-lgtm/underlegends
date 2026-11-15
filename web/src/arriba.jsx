@@ -2709,10 +2709,25 @@ const SECCIONES = [['envivo', 'Ahora'], ['semana', 'Esta semana'], ['fechas', 'F
   ['noticias', 'Lo último'], ['encuestas', 'Encuestas'], ['raperos', 'Los que mandan'], ['panel', 'Misiones'], ['merch', 'Merchandising'],
   ['numeros', 'La Liga']];
 
+// 🔔 IR A, CON EL ESTILO DE LA CAMPANA (Dlx, 15/11/2026: «cuando uno arrastra hacia abajo aparece como un menú de opciones
+// arriba y la flechita para irte arriba, ¿puedes mejorar eso también al estilo de notificaciones?»). En la compu, las
+// secciones como los filtros de la campana (con su ícono) y una línea magenta abajo que dice cuánto bajaste. En el
+// celular, en vez del selector del sistema, «Estás en …» abre un panel como el de las notificaciones: cada sección con
+// su ícono y qué tiene, la de ahora marcada, y «Volver arriba» al pie
+const IR_INFO = {
+  envivo: ['🔴', 'El escenario: lo que pasa ahora'], semana: ['📈', 'Cuánto vale cada servidor esta semana'],
+  fechas: ['🗓️', 'Lo que viene y lo que terminó'], sebusca: ['🎯', 'Los buscados y lo que vale cada uno'],
+  noticias: ['📰', 'Cartas, logros y lo que pasa en la Liga'], encuestas: ['🗳️', 'Lo que se vota y tus eventos'],
+  raperos: ['👑', 'Los cinco primeros de cada ranking'], panel: ['🎟️', 'Tus misiones y tu Pase'],
+  merch: ['👕', 'La ropa de Under Legends'], numeros: ['📊', 'La Liga en números'],
+};
 export function IrA({ raiz }) {
   const barra = useRef(null);
+  const caja = useRef(null);
+  const prog = useRef(null);
   const [ver, setVer] = useState(false);
   const [act, setAct] = useState('envivo');
+  const [abierto, setAbierto] = useState(false);
   const fijo = useRef(0);
   // qué secciones hay se mira en la página, después de dibujarla: una que se apaga por no tener datos no va. La de
   // las encuestas se llama como su título («Encuestas» o «Tus eventos», si no hay ninguna abierta)
@@ -2727,7 +2742,13 @@ export function IrA({ raiz }) {
     if (JSON.stringify(nuevo) !== JSON.stringify(hay)) setHay(nuevo);
   });
   useEffect(() => {
-    const mostrar = () => { if (barra.current) setVer(barra.current.getBoundingClientRect().top <= 1); };
+    // la línea de abajo se mueve directo, sin pasar por React (una vez por cuadro de scroll)
+    const mostrar = () => {
+      if (barra.current) setVer(barra.current.getBoundingClientRect().top <= 1);
+      const d = document.documentElement;
+      const h = d.scrollHeight - window.innerHeight;
+      if (prog.current) prog.current.style.width = (h > 0 ? Math.min(100, Math.max(0, (100 * (window.scrollY || d.scrollTop)) / h)) : 0) + '%';
+    };
     window.addEventListener('scroll', mostrar, { passive: true });
     mostrar();
     let io = null;
@@ -2736,27 +2757,61 @@ export function IrA({ raiz }) {
         if (Date.now() < fijo.current) return;
         es.forEach((e) => { if (e.isIntersecting) setAct(e.target.id); });
       }, { rootMargin: '-60px 0px -70% 0px' });
-      SECCIONES.forEach(([id]) => { const s = raiz.current.querySelector('#' + id); if (s) io.observe(s); });
+      SECCIONES.forEach(([id]) => { const s0 = raiz.current.querySelector('#' + id); if (s0) io.observe(s0); });
     }
     return () => { window.removeEventListener('scroll', mostrar); if (io) io.disconnect(); };
     // 🔴 con [raiz] solo, una sección que aparece después de montar —Lo último llega con el muro— no se miraba
     // nunca, y IR A no la marcaba al pasar (revisión del 30/09/2026)
   }, [raiz, hay.map((h) => h[0]).join()]);
+  // el panel se cierra al tocar afuera, con Escape y cuando la barra se esconde (volviste arriba del todo)
+  useEffect(() => {
+    if (!abierto) return undefined;
+    const fuera = (e) => { const p0 = e.composedPath ? e.composedPath() : []; if (caja.current && !p0.includes(caja.current)) setAbierto(false); };
+    const esc = (e) => { if (e.key === 'Escape') setAbierto(false); };
+    document.addEventListener('pointerdown', fuera, true);
+    document.addEventListener('keydown', esc);
+    return () => { document.removeEventListener('pointerdown', fuera, true); document.removeEventListener('keydown', esc); };
+  }, [abierto]);
+  useEffect(() => { if (!ver) setAbierto(false); }, [ver]);
   const ir = (id) => {
-    const s = raiz.current && raiz.current.querySelector('#' + id);
-    if (s) { fijo.current = Date.now() + 900; s.scrollIntoView({ behavior: 'smooth', block: 'start' }); setAct(id); }
+    setAbierto(false);
+    const s0 = raiz.current && raiz.current.querySelector('#' + id);
+    if (s0) { fijo.current = Date.now() + 900; s0.scrollIntoView({ behavior: 'smooth', block: 'start' }); setAct(id); }
     // sin momentos no hay escenario al que volver: «volver arriba» igual vuelve
     else if (id === 'envivo') window.scrollTo({ top: 0, behavior: 'smooth' });
   };
+  const nomAct = (hay.find(([id]) => id === act) || hay[0] || ['', ''])[1];
+  const ico = (id) => (IR_INFO[id] || ['•'])[0];
   return (
-    <nav className={'ir-a' + (ver ? ' ver' : '')} aria-label="Ir a" ref={barra}>
-      <div className="ir-in">
+    <nav className={'ir-a' + (ver ? ' ver' : '') + (abierto ? ' abierto' : '')} aria-label="Ir a" ref={barra}>
+      <div className="ir-in" ref={caja}>
         <span className="ir-t">IR A</span>
-        <span className="ir-l">{hay.map(([id, n]) => <a key={id} href={'#' + id} className={act === id ? 'activo' : ''} onClick={(e) => { e.preventDefault(); ir(id); }}>{n}</a>)}</span>
-        <select className="ir-s" aria-label="Ir a" value={act} onChange={(e) => ir(e.target.value)}>
-          {hay.map(([id, n]) => <option key={id} value={id}>{n}</option>)}
-        </select>
-        <a className="ir-arr" href="#envivo" aria-label="Volver arriba" onClick={(e) => { e.preventDefault(); ir('envivo'); }}><Ico n="flecha" t={16} /></a>
+        <span className="ir-l">{hay.map(([id, n]) => (
+          <a key={id} href={'#' + id} className={'ir-ch' + (act === id ? ' on' : '')} aria-current={act === id ? 'location' : undefined}
+            onClick={(e) => { e.preventDefault(); ir(id); }}><span aria-hidden="true">{ico(id)}</span>{n}</a>
+        ))}</span>
+        <button type="button" className="ir-b" aria-expanded={abierto} aria-haspopup="true" onClick={() => setAbierto((v) => !v)}>
+          <span className="ir-b-i" aria-hidden="true">{ico(act)}</span>
+          <span className="ir-b-t"><small>Estás en</small><b>{nomAct}</b></span>
+          <span className="ir-b-c" aria-hidden="true"><Chevron /></span>
+        </button>
+        <a className="ir-arr" href="#envivo" aria-label="Volver arriba" title="Volver arriba" onClick={(e) => { e.preventDefault(); ir('envivo'); }}><Ico n="flecha" t={16} /></a>
+        <span className="ir-prog" aria-hidden="true"><i ref={prog} /></span>
+        {abierto ? (
+          <div className="ir-p" role="menu" aria-label="Secciones del Inicio">
+            <div className="ir-p-h"><b>Ir a</b><small>{hay.length} secciones del Inicio</small></div>
+            <ul>{hay.map(([id, n]) => (
+              <li key={id}>
+                <button type="button" role="menuitem" className={'ir-f' + (act === id ? ' on' : '')} onClick={() => ir(id)}>
+                  <span className="ir-f-i" aria-hidden="true">{ico(id)}</span>
+                  <span className="ir-f-t"><b>{n}</b><small>{(IR_INFO[id] || ['', ''])[1]}</small></span>
+                  {act === id ? <em>AQUÍ</em> : null}
+                </button>
+              </li>
+            ))}</ul>
+            <button type="button" className="ir-p-pie" onClick={() => ir('envivo')}><span>Volver arriba</span><b>↑</b></button>
+          </div>
+        ) : null}
       </div>
     </nav>
   );

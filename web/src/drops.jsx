@@ -67,7 +67,7 @@ export function BarraDia({ dc }) {
       <button type="button" className="pn-dia" onClick={() => { pedirDrops(); if (dlg.current) dlg.current.showModal(); }}
         aria-label={'Hoy: ' + pasos + ' de ' + de + '. ' + texto}>
         <span className="dd-huevo-m" aria-hidden="true">{cerrados ? <em>{cerrados}</em> : null}</span>
-        <span className="pn-tx"><b>Hoy: {pasos} de {de}</b>
+        <span className="pn-tx"><i className="pn-dia-et">Dragón Drops</i><b>Hoy: {pasos} de {de}</b>
           <span className="dd-pasos" aria-hidden="true">{Array.from({ length: de }, (_, i) => (
             <i key={i} className={(i < pasos ? 'si' : '') + (marcas.includes(i + 1) ? ' drop' : '')} />))}</span>
           <small>{texto}</small></span>

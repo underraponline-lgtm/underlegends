@@ -23,7 +23,7 @@ import { avance, pasePost, usePase } from './pase.js';
 import { cuantosNuevos } from './inv_nuevos.js';
 import { cobrarRacha } from './racha.js';
 import { dondeEstoy, faltaTxt, nombreDe, useCompetencias } from './competencias_datos.js';
-import { eventoDelBoton } from './arriba.jsx';
+import { escenaDe, eventoDelBoton } from './arriba.jsx';
 import { ERR_LIBRE, LB, libreAccion, useLibres } from './libres.js';
 import { svElegido, useElegidos } from './elegidos.js';
 import { pedirLigas } from './ligas_datos.js';
@@ -70,7 +70,7 @@ function CampanaCorta({ dc }) {
   return (
     <section className="pn-camp">
       <span className="pn-camp-ic"><Ico n="campana" t={20} /></span>
-      <span className="pn-tx"><b>{paso2 ? 'Falta un paso' : 'Activa la campana'}</b>
+      <span className="pn-tx"><i className="pn-camp-et">La campana</i><b>{paso2 ? 'Falta un paso' : 'Activa la campana'}</b>
         <small>{paso2 ? 'Vincula este teléfono con tu Discord: te llegan los tuyos' : 'Te avisa al minuto de cada evento. Nunca por DM'}</small></span>
       <button type="button" className="btn verde chico" onClick={() => (paso2 ? W.Campana.vincular() : W.Campana.activar())}>{paso2 ? 'Vincular' : 'Activar'}</button>
     </section>
@@ -96,7 +96,7 @@ function RachaCorta({ R, sola }) {
   return (
     <section className="pn-racha" aria-label="Tu racha">
       <span className="pn-fuego"><Ico n="fuego" t={22} />{actual}</span>
-      <span className="pn-tx"><b>{actual === 1 ? '1 día seguido' : actual + ' días seguidos'}</b>
+      <span className="pn-tx"><i className="pn-racha-et">Tu racha</i><b>{actual === 1 ? '1 día seguido' : actual + ' días seguidos'}</b>
         {ps.length ? <span className="pn-dias" aria-hidden="true">{ps.map(([d, , cobrado], i) => <i key={d} title={LETRAS[i]} className={(cobrado ? 'si' : '') + (d === R.hoy ? ' hoy' : '')} />)}</span> : null}
         {/* 🔥 más cosas en la racha (Dlx, 12/11/2026): el próximo premio, siempre, y si te queda el día de perdón */}
         {R.hito || r.gracia ? <small className="pn-rsub">{R.hito ? 'Día ' + R.hito[0] + ': +' + num(R.hito[1]) : ''}
@@ -409,16 +409,32 @@ function ultimoDe(liga, yo) {
   }
   return null;
 }
+// 🗓️ TU ÚLTIMO EVENTO, COMO UN AFICHE CHICO (Dlx, 15/11/2026: «mejora ese cuadrado del último evento, sé que es pequeño
+// pero asegúrate de hacerlo bonito»). Antes eran cuatro líneas de letra chica peleándose el lugar. Ahora: el día grande en
+// un taco de calendario, el nombre del evento, y abajo lo que pasó en sellos —la ronda (dorada si saliste
+// campeón), los puntos que sumaste y tus ganadas y perdidas—; el escudo del servidor en la esquina, y el rival más fuerte
+// que enfrentaste, en una línea. El borde toma el color de cómo te fue: dorado si ganaste, verde si no
 function UltCorto({ liga, u }) {
   const f = new Date(u.t);
   // ⚔️ cómo te fue en esa llave (Dlx, 12/11/2026: «poner más cosas… la llave»): ganadas, perdidas y los puntos
   const c = u.ll.rondas ? liga.crucesDe(liga.yo.k, { ll: u.ll }) : null;
+  const campeon = /campe[oó]n/i.test(String(u.ronda || '')) && !/sub/i.test(String(u.ronda || ''));
+  const sv = u.ll.sv || '';
   return (
-    <button type="button" className="pn-ultc" onClick={() => (u.ll.n ? accion.llave(u.ll.n) : (location.hash = '#/r/' + encodeURIComponent(liga.yo.k)))}>
-      <span className="pn-cal"><i>{f.toLocaleDateString('es', { weekday: 'short' }).replace('.', '')}</i><b>{f.getDate()}</b></span>
-      <span className="pn-tx"><b>{limpio(u.ll.nombre)}</b><small>Tu último evento{u.ronda ? ' · ' + u.ronda : ''}{u.pts ? ' · +' + num(u.pts) + ' pts' : ''}</small>
-        {c && c.fuerte ? <small className="pn-ultc-r"><span>Más fuerte: {c.fuerte.n}</span><i>#{c.fuerte.pos}</i></small> : null}</span>
-      {c && c.g + c.p ? <span className="pn-gp" aria-label={c.g + ' ganadas, ' + c.p + ' perdidas'}><b className="g">{c.g}</b><i>G</i><b className="p">{c.p}</b><i>P</i></span> : null}
+    <button type="button" className={'pn-ultc' + (campeon ? ' oro' : '')} onClick={() => (u.ll.n ? accion.llave(u.ll.n) : (location.hash = '#/r/' + encodeURIComponent(liga.yo.k)))}>
+      <span className="pn-ultc-cal" aria-hidden="true"><i>{f.toLocaleDateString('es', { weekday: 'short' }).replace('.', '')}</i><b>{f.getDate()}</b>
+        <small>{f.toLocaleDateString('es', { month: 'short' }).replace('.', '')}</small></span>
+      <span className="pn-tx">
+        <i className="pn-ultc-et">Tu último evento{sv ? ' · ' + siglaDe(sv) : ''}</i>
+        <b>{limpio(u.ll.nombre)}</b>
+        <span className="pn-ultc-s">
+          {u.ronda ? <em className="r">{u.ronda}</em> : null}
+          {u.pts ? <em className="pts">+{num(u.pts)}</em> : null}
+          {c && c.g + c.p ? <em className="gp" aria-label={c.g + ' ganadas, ' + c.p + ' perdidas'}><b className="g">{c.g}</b>G<b className="p">{c.p}</b>P</em> : null}
+        </span>
+        {c && c.fuerte ? <small className="pn-ultc-r"><span>El más fuerte: {c.fuerte.n}</span><i>#{c.fuerte.pos}</i></small> : null}
+      </span>
+      {sv && liga.logo(sv) ? <img className="pn-ultc-sv" alt="" src={liga.logo(sv)} /> : null}
     </button>
   );
 }
@@ -856,7 +872,8 @@ export function Vestuario({ liga, dc }) {
   if (!yo) {
     const top = (liga.d.tabla || []).filter((f) => f.pos && liga.cartaUrl(f.k, 'temporada')).slice(0, 3);
     return (
-      <div className="pn-cu pn-yo sin">
+      <div className="pn-cu pn-yo sin con-esc-yo">
+      <span className="pn-esc" aria-hidden="true" style={{ backgroundImage: 'url(' + escenaDe('dra') + ')' }} />
       <div className="pn-sin-in">
         <div className="pn-abre">{top.map((f, j) => <img key={f.k} alt="" data-o={j === 0 ? 0 : j === 1 ? 2 : 1} src={liga.cartaUrl(f.k, 'temporada')} />)}</div>
         <div className="pn-sin-tx"><b>Tus tarjetas</b>
@@ -904,8 +921,13 @@ export function Vestuario({ liga, dc }) {
     }
     return mejor;
   })();
+  // 🎤 DETRÁS DE TU CARTA, EL ESCENARIO (Dlx, 15/11/2026: «agregar un fondo para el inicio detrás de la tarjeta, como si
+  // estuviese en el escenario»): la escena de tu servidor —la que eligiste, o donde más jugaste—, las mismas que pinta el
+  // escenario y las historias (`escenaDe()`, hechas con IA para los banners). Sin la de tu servidor, la de DRA
+  const escU = escenaDe(svElegido(liga, el, yo.k) || yo.sv) || escenaDe('dra');
   return (
-    <div className="pn-cu pn-yo">
+    <div className="pn-cu pn-yo con-esc-yo">
+      {escU ? <span className="pn-esc" aria-hidden="true" style={{ backgroundImage: 'url(' + escU + ')' }} /> : null}
       <div className="pn-yo-in">
         <div className="pn-izq">{conCarta.slice(0, 3).map((x) => <Chip key={x[0]} liga={liga} x={x} elegida={i} onElegir={setElegida} />)}</div>
         <div className="pn-car">
