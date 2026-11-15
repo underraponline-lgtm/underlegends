@@ -1,9 +1,9 @@
 {
  "v": 1,
- "cuando": "2026-11-15T17:59:06Z",
+ "cuando": "2026-11-15T18:08:19Z",
  "trabajo": "dibujar",
  "codigo": 0,
- "dur_s": 1335.3,
+ "dur_s": 252.0,
  "pasos": [
   {
    "n": "2f",
@@ -15,67 +15,67 @@
    "n": "2f2",
    "que": "los TAGs elegidos",
    "ok": true,
-   "s": 1.1
+   "s": 0.7
   },
   {
    "n": "3",
    "que": "qué cambió",
    "ok": true,
-   "s": 14.7
+   "s": 10.0
   },
   {
    "n": "4",
    "que": "las caras, desde R2",
    "ok": true,
-   "s": 24.3
+   "s": 31.1
   },
   {
    "n": "5",
-   "que": "tanda 1 de 7 · 40 persona(s)",
+   "que": "tanda 1 de 1 · 30 persona(s)",
    "ok": true,
-   "s": 1219.8
+   "s": 147.4
   },
   {
    "n": "5b",
    "que": "las Bloqueadas",
    "ok": true,
-   "s": 14.0
+   "s": 7.9
   },
   {
    "n": "6",
    "que": "refrescar KV",
    "ok": true,
-   "s": 59.6
+   "s": 53.6
   }
  ],
  "fallas": [],
  "ultimo_evento": {
-  "n": "643",
-  "nombre": "NUEVA TEMPORADA",
+  "n": "644",
+  "nombre": "CEUTA",
   "sv": "CEU",
-  "dia": "2026-11-11"
+  "dia": "2026-10-01"
  },
  "cuotas": {
   "kv": {
-   "write": 288,
-   "read": 18604
+   "write": 310,
+   "read": 19469
   },
   "objeto": {
-   "leidas": 1325845,
-   "escritas": 23057,
-   "pedidos": 9245
+   "leidas": 1370644,
+   "escritas": 25394,
+   "pedidos": 9320
   },
   "worker": {
-   "pedidos": 11077,
+   "pedidos": 11038,
    "errores": 0,
-   "sub": 13786,
+   "sub": 13735,
    "cortados": 0,
    "p50_ms": 1.2,
-   "p99_ms": 12.88,
+   "p99_ms": 12.89,
    "cpu": {
-    "total": 24625,
-    "objeto_10": 2255,
-    "worker_10": 291
+    "total": 24536,
+    "objeto_10": 2251,
+    "worker_10": 293
    }
   },
   "r2": {
