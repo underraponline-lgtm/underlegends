@@ -11,6 +11,15 @@
  ],
  "cambios": [
     {
+        "version": "5.37",
+        "dia": "2026-11-15",
+        "cuando": "2026-11-15T02:10:00-05:00",
+        "titulo": "FMS Ceuta, nuevo socio",
+        "items": [
+            "**FMS Ceuta** se suma a la Liga como socio **Tier 3**: su página en Socios, sus eventos en el calendario y en la campana, y sus eventos de 8 o más suman a la Temporada."
+        ]
+    },
+    {
         "version": "5.36",
         "dia": "2026-11-15",
         "cuando": "2026-11-15T01:58:00-05:00",
