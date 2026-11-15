@@ -1,5 +1,5 @@
 {
- "cuando": "2026-11-14T23:25:30+00:00",
+ "cuando": "2026-11-14T23:55:39+00:00",
  "anuncios": [
   {
    "nombre": "¡SE LLEGÓ LA GRAN NOCHE!",
@@ -4074,7 +4074,7 @@
    "organizador": "- 4 Clasificatorias 12-16 Cupos",
    "orgs": [
     {
-     "n": "im_a_tsundere",
+     "n": "token de mierda te voy a encontr",
      "id": "554330098812059679"
     }
    ],
@@ -4088,7 +4088,7 @@
    "fecha": "",
    "premios": "",
    "staff": {},
-   "autor": "im_a_tsundere",
+   "autor": "token de mierda te voy a encontr",
    "staff_cuentas": {},
    "categoria_id": "1511964043647123527",
    "inscripciones": "abiertas",
@@ -4812,7 +4812,7 @@
    "fecha": "",
    "premios": "Honor, gloria y respeto en el freestyle (Sin premio / Rango)",
    "staff": {},
-   "autor": "4 | ELEESEDE🇵🇪",
+   "autor": "3 | ELEESEDE🇵🇪",
    "staff_cuentas": {},
    "categoria_id": "1469944166137073857",
    "inscripciones": "cerradas",
@@ -7069,6 +7069,60 @@
   }
  ],
  "inscripciones": [
+  {
+   "servidor": "URBF",
+   "canal": "‣《🗞️》Inscripciones",
+   "texto": "saiko",
+   "quien": "ladiesandgentlemeen",
+   "discord_id": "942540846685909002",
+   "msg_id": "1571310332138360893",
+   "cuando": "2026-11-14T23:46:16"
+  },
+  {
+   "servidor": "URBF",
+   "canal": "‣《🗞️》Inscripciones",
+   "texto": "Crk",
+   "quien": "user_mic",
+   "discord_id": "559068959845122048",
+   "msg_id": "1571309611850539172",
+   "cuando": "2026-11-14T23:43:24"
+  },
+  {
+   "servidor": "URBF",
+   "canal": "‣《🗞️》Inscripciones",
+   "texto": "Cerrandociclos 🇺🇸",
+   "quien": "christopher_hongo",
+   "discord_id": "1403518820022222929",
+   "msg_id": "1571308859547590657",
+   "cuando": "2026-11-14T23:40:25"
+  },
+  {
+   "servidor": "URBF",
+   "canal": "‣《🗞️》Inscripciones",
+   "texto": "Lvel 🇻🇪",
+   "quien": "soycoma__42587",
+   "discord_id": "1241407042195816459",
+   "msg_id": "1571308593763061791",
+   "cuando": "2026-11-14T23:39:22"
+  },
+  {
+   "servidor": "URBF",
+   "canal": "‣《🗞️》Inscripciones",
+   "texto": "Sin límites 🇵🇪",
+   "quien": "sinlimites2026",
+   "discord_id": "1508623564285149357",
+   "msg_id": "1571308584552374283",
+   "cuando": "2026-11-14T23:39:20"
+  },
+  {
+   "servidor": "URBF",
+   "canal": "‣《🗞️》Inscripciones",
+   "texto": "Teo 🇨🇴",
+   "quien": "teitomc.",
+   "discord_id": "1503540314948898937",
+   "msg_id": "1571308549324415017",
+   "cuando": "2026-11-14T23:39:11"
+  },
   {
    "servidor": "CH",
    "canal": "📜—inscripciones",
@@ -43014,60 +43068,6 @@
    "discord_id": "1470870791351570630",
    "msg_id": "1559318648370372710",
    "cuando": "2026-10-12T21:35:36"
-  },
-  {
-   "servidor": "FFA",
-   "canal": "✦📝—inscripciones",
-   "texto": "Soneto 🇪🇨",
-   "quien": "pllsuax",
-   "discord_id": "745324578347286528",
-   "msg_id": "1559318642405933107",
-   "cuando": "2026-10-12T21:35:35"
-  },
-  {
-   "servidor": "FFA",
-   "canal": "✦📝—inscripciones",
-   "texto": "player🇻🇪",
-   "quien": "jesuslgamer31",
-   "discord_id": "817387658656874536",
-   "msg_id": "1559318618385158166",
-   "cuando": "2026-10-12T21:35:29"
-  },
-  {
-   "servidor": "FFA",
-   "canal": "✦📝—inscripciones",
-   "texto": "Agente sombra 🇵🇪",
-   "quien": "facinedoso",
-   "discord_id": "1557215371050876960",
-   "msg_id": "1559318545261793323",
-   "cuando": "2026-10-12T21:35:11"
-  },
-  {
-   "servidor": "ACAD",
-   "canal": "📝┇inscripciones-1",
-   "texto": "Shisui 🇦🇷",
-   "quien": "funhorlavild",
-   "discord_id": "1426686911908675628",
-   "msg_id": "1559317570522185791",
-   "cuando": "2026-10-12T21:31:19"
-  },
-  {
-   "servidor": "ACAD",
-   "canal": "📝┇inscripciones-1",
-   "texto": "Ariaxer🇦🇷",
-   "quien": "ariaxer",
-   "discord_id": "659687894587277322",
-   "msg_id": "1559316569706729523",
-   "cuando": "2026-10-12T21:27:20"
-  },
-  {
-   "servidor": "ACAD",
-   "canal": "📝┇inscripciones-1",
-   "texto": "Lrs🇦🇷",
-   "quien": "lrs0378",
-   "discord_id": "1385452830684614697",
-   "msg_id": "1559316545425899555",
-   "cuando": "2026-10-12T21:27:15"
   }
  ]
 }

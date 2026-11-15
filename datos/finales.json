@@ -1836,5 +1836,52 @@
   "sv": "CH",
   "t_pregunta": ""
  },
+ "1571259049109098619": {
+  "autor": "1364747464170668042",
+  "canal": "1222379620494741604",
+  "canal_pregunta": "",
+  "cuando": "2026-11-14T20:22:29.889000+00:00",
+  "donde": "",
+  "evento": "CHOP COMPE CEO V.2",
+  "fecha": "14/11",
+  "llave": "1571259049109098619",
+  "pregunta": "",
+  "preguntada": "2026-11-14 6:54 PM ET",
+  "preguntas": [
+   {
+    "lados": [
+     "XMILE🇺🇸",
+     "Jeixder 🇦🇷"
+    ],
+    "ronda": "CUARTOS"
+   },
+   {
+    "lados": [
+     "XMILE🇺🇸",
+     "Jeixder 🇦🇷"
+    ],
+    "ronda": "CUARTOS"
+   },
+   {
+    "lados": [
+     "ADRIANGNER",
+     "betrece"
+    ],
+    "ronda": "OCTAVOS"
+   },
+   {
+    "lados": [
+     "Number VE",
+     "xl"
+    ],
+    "ronda": "OCTAVOS"
+   }
+  ],
+  "respondidas": {},
+  "sin_permiso": true,
+  "staff_probado": true,
+  "sv": "CH",
+  "t_pregunta": ""
+ },
  "_leeme": "Las llaves que el ciclo no entendió y se las preguntó a quien las publicó, con botones o un menú (bot/finales.py). Una vez por llave, por su ID: así nunca se pregunta dos veces. Dlx, 12/10/2026."
 }
