@@ -11,6 +11,18 @@
  ],
  "cambios": [
     {
+        "version": "5.35",
+        "dia": "2026-11-15",
+        "cuando": "2026-11-15T01:50:00-05:00",
+        "titulo": "El escenario, lleno en cada pantalla, y comentarios con más vida",
+        "items": [
+            "El **escenario del Inicio** ya no deja huecos: «De los que sigues» trae **su carta y sus números** (puesto, letra, OVR y títulos) y, si ganó, **Ver la llave**; «La Liga» suma **los tres anuncios anteriores**, y la letra alta, el Score, el OVR y el puesto de quien la ganó.",
+            "El **próximo evento** y el **en vivo sin llave** muestran **los que más suman** en ese servidor; la **fecha de hoy de una liga**, los tres de arriba de su tabla; y la caza, las caras de los que siguen libres.",
+            "Probado en **celular, tableta y compu**: de 900 a 1199 px los títulos y los botones van un poco más chicos para que nada se corte, y en la tableta parada el video y las cartas ya no se estiran. En vivo, en el celular, sale la llave sin la línea que repetía el botón.",
+            "Los **comentarios** de Publicaciones tienen **muchas más frases**, cada persona **escribe a su manera**, las publicaciones grandes (una final con mucha gente, una noche con muchos eventos) traen **más gente comentando** y a veces **se contestan entre ellos**. Los que ya salieron no cambian."
+        ]
+    },
+    {
         "version": "5.34",
         "dia": "2026-11-14",
         "cuando": "2026-11-14T04:03:00-05:00",

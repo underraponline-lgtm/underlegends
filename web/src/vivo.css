@@ -795,6 +795,109 @@ span.tab-av img{width:100%;height:100%;object-fit:cover;display:block}
   .app .escena.es2 .es-tira button{flex:0 0 150px}
   .app .escena.es2 .es-tira button.on{flex-basis:186px}
 }
+/* 🃏📰 «DE LOS QUE SIGUES» Y «LA LIGA», LLENOS (15/11/2026, Dlx con dos capturas del celular: «position everything better, add
+   more stuff to make the empty space less empty»). Medido a 393 px: la cara sola dejaba 160 px vacíos abajo y el logo de la
+   Liga, 103. Ahora la carta con sus números al lado, y los tres anuncios de antes. Sin agrandar el escenario: mide lo del
+   momento más alto, y si éstos crecieran, el hueco se mudaría a los demás */
+.app .escena.es2 .es-sig{display:grid;grid-template-columns:200px auto;gap:22px;align-items:center;justify-content:center;min-width:0}
+.app .escena.es2 .es-sig-c{display:block;width:100%;transform:rotate(-3deg)}
+.app .escena.es2 .es-sig-c .es-cara-g{width:170px;height:170px;font-size:56px}
+.app .escena.es2 .es-sig-n{display:grid;gap:10px;min-width:0}
+.app .escena.es2 .es-sig-n span{display:grid;gap:4px;padding:8px 12px;border-left:3px solid var(--verde);background:rgba(11,11,13,.82)}
+.app .escena.es2 .es-sig-n b{font:400 30px/1 Anton,Archivo,sans-serif;color:#F6F6F6;letter-spacing:.01em}
+.app .escena.es2 .es-sig-n small{font:700 12px/1 "Barlow Condensed",sans-serif;letter-spacing:.08em;text-transform:uppercase;color:#A5A5A0}
+.app .escena.es2 .es-liga{display:grid;gap:16px;justify-items:center;width:100%;max-width:440px;justify-self:center;min-width:0}
+.app .escena.es2 .es-liga .mo-logo img{width:150px;height:150px}
+.app .escena.es2 .es-mas{display:grid;gap:6px;width:100%;min-width:0}
+.app .escena.es2 .es-mas-h{display:flex;align-items:center;gap:7px;font:700 12.5px/1 "Barlow Condensed",sans-serif;letter-spacing:.08em;
+  text-transform:uppercase;color:#A5A5A0}
+.app .escena.es2 .es-mas-h img{display:none;width:20px;height:20px;border-radius:50%}
+.app .escena.es2 .es-mas-i{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:10px;align-items:baseline;padding:9px 11px;
+  border:1px solid #2E2E33;border-radius:4px;background:rgba(20,20,23,.9);color:#F6F6F6;text-decoration:none}
+.app .escena.es2 .es-mas-i b{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font:700 14px/1.2 Archivo,sans-serif}
+.app .escena.es2 .es-mas-i small{color:#A5A5A0;font:700 12px/1 "Barlow Condensed",sans-serif;letter-spacing:.06em;text-transform:uppercase;white-space:nowrap}
+.app .escena.es2 .es-mas-i:focus-visible{outline:2px solid var(--magenta);outline-offset:2px}
+@media (hover: hover) and (pointer: fine){.app .escena.es2 .es-mas-i:hover{border-color:#55555C}}
+@media (max-width: 899.98px){
+  /* 📐 lo de abajo de cada momento, al medio del espacio que le queda: todos miden lo del más alto, y arriba de todo
+     quedaba pegado al texto con el hueco entero abajo */
+  .app .escena.es2 .mo.lay-A{grid-template-rows:auto minmax(0,1fr)}
+  .app .escena.es2 .mo.lay-A > .mo-vis{align-self:center}
+  .app .escena.es2 .es-sig{grid-template-columns:128px minmax(0,1fr);gap:16px;justify-content:stretch;padding-left:5px}
+  .app .escena.es2 .es-sig-c .es-cara-g{width:118px;height:118px;font-size:40px}
+  .app .escena.es2 .es-sig-n{grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+  .app .escena.es2 .es-sig-n b{font-size:24px}
+  .app .escena.es2 .es-liga{max-width:none}
+  .app .escena.es2 .es-liga > .mo-logo{display:none}
+  .app .escena.es2 .es-mas-h img{display:block}
+}
+/* 📐 CADA CASO, LLENO (15/11/2026, Dlx: «asegúrate en que cada caso esté así… no sólo en celular sino en pc»). El próximo suma
+   los que más suman en su servidor (la misma fila que «Más de la Liga»); la letra alta y la caza usan las piezas de arriba */
+.app .escena.es2 .es-prox-w{display:grid;gap:16px;justify-items:center;width:100%;max-width:440px;justify-self:center;min-width:0}
+.app .escena.es2 .es-top{align-items:center}
+.app .escena.es2 .es-top-q{display:flex;align-items:center;gap:9px;min-width:0}
+.app .escena.es2 .es-top-q b{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.app .escena.es2 .es-top-c{width:28px;height:28px;flex:none;border-radius:50%;font-size:12px}
+@media (max-width: 899.98px){
+  /* lo que sólo va en la compu (en vivo: la línea que repite el botón y «Quiero aviso») */
+  .app .escena.es2 .es-pc{display:none}
+  /* los carteles (Se busca, la caza), al medio del alto: el hueco, repartido arriba y abajo */
+  .app .escena.es2 .mo.lay-B{align-content:center}
+  .app .escena.es2 .es-prox-w{max-width:none}
+  /* 🍱 dos o más en vivo: los otros en una fila que se desliza, con el nombre en un renglón. Apilados, cada uno sumaba ~100 px
+     y con cuatro en vivo (las noches de semana) el escenario entero crecía, y con él el hueco de todos los demás */
+  .app .escena.es2 .es-otros{grid-auto-flow:column;grid-auto-columns:minmax(230px,1fr);overflow-x:auto;scrollbar-width:none;gap:8px}
+  .app .escena.es2 .es-otros::-webkit-scrollbar{display:none}
+  .app .escena.es2 .es-otro{grid-template-columns:36px minmax(0,1fr);gap:10px;padding:8px 10px}
+  .app .escena.es2 .es-otro img{width:36px;height:36px}
+  .app .escena.es2 .es-otro .tag{margin-bottom:3px}
+  .app .escena.es2 .es-otro b{font-size:17px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+}
+/* 📊 la fecha de hoy de una liga: el flyer al lado de su tabla (apilados, el flyer solo ya medía 330 de los 400) */
+/* el logo solo (en vivo sin llave, la liga sin flyer) más chico, para que entren los tres de abajo: medía 220 de 400 */
+.app .escena.es2 .es-prox-w > .mo-logo img{width:128px;height:128px}
+@media (max-width: 899.98px){.app .escena.es2 .es-prox-w > .mo-logo img{width:96px;height:96px}}
+.app .escena.es2 .es-top-p{flex:none;width:12px;color:#A5A5A0;font:700 13px/1 "Barlow Condensed",sans-serif;text-align:right}
+.app .escena.es2 .es-con-flyer{grid-template-columns:190px minmax(0,1fr);align-items:center;max-width:520px;justify-items:stretch}
+.app .escena.es2 .es-con-flyer .mo-flyer img{width:100%;max-height:300px}
+@media (max-width: 899.98px){
+  .app .escena.es2 .es-con-flyer{grid-template-columns:112px minmax(0,1fr);gap:12px;max-width:none}
+  .app .escena.es2 .es-con-flyer .mo-flyer img{max-height:170px;border-width:2px}
+}
+/* 💻 LA COMPU ANGOSTA, de 900 a 1199 (la tableta acostada y las laptops chicas). Medido a 1024: con el título a 56 px, siete
+   momentos pasaban los 400 del escenario —el título iba a tres o cuatro renglones— y se cortaban los botones */
+@media (min-width: 900px) and (max-width: 1199.98px){
+  /* y lo que de verdad sobraba eran los botones: tres no entran en una columna de ~370 px y bajaban a dos o tres
+     renglones (106 a 164 px). Más ancho para el texto, botones más chicos, y en vivo sin lo que sólo va en la compu grande */
+  .app .escena.es2 .mo{gap:24px;grid-template-columns:minmax(0,1.2fr) minmax(0,1fr)}
+  .app .escena.es2 .hero-ev{font-size:40px;margin:10px 0 8px}
+  .app .escena.es2 .hero-ev.largo{font-size:34px}
+  .app .escena.es2 .hero-ev.muy-largo{font-size:28px}
+  .app .escena.es2 .hero-p{font-size:15px;line-height:1.4}
+  .app .escena.es2 .hero-acc{gap:8px;margin-top:10px}
+  .app .escena.es2 .hero-acc .btn{padding:9px 13px;font-size:13.5px}
+  .app .escena.es2 .es-pc{display:none}
+  .app .escena.es2 .es-sig{grid-template-columns:160px auto;gap:18px}
+  .app .escena.es2 .es-sig-c .es-cara-g{width:140px;height:140px}
+  .app .escena.es2 .es-sig-n b{font-size:26px}
+  .app .escena.es2 .es-con-flyer{grid-template-columns:150px minmax(0,1fr)}
+}
+/* 📲 LA TABLETA PARADA, de 600 a 899: el diseño del celular con más ancho. Medido a 768: el video a todo el ancho medía
+   602 de alto (y con él, el escenario entero), la carta de De los que sigues quedaba chica al lado de cuatro casilleros
+   estirados y los logos flotaban solos en el medio */
+@media (min-width: 600px) and (max-width: 899.98px){
+  .app .escena.es2 .mo-yt{width:100%;max-width:520px;justify-self:center}
+  .app .escena.es2 .es-sig{grid-template-columns:170px minmax(0,1fr);gap:22px;width:100%;max-width:560px;justify-self:center}
+  .app .escena.es2 .es-sig-c .es-cara-g{width:150px;height:150px;font-size:48px}
+  .app .escena.es2 .es-sig-n b{font-size:28px}
+  .app .escena.es2 .es-liga,.app .escena.es2 .es-prox-w{max-width:560px;justify-self:center}
+  .app .escena.es2 .es-con-flyer{grid-template-columns:150px minmax(0,1fr);max-width:560px}
+  .app .escena.es2 .es-con-flyer .mo-flyer img{max-height:220px}
+  .app .escena.es2 .es-liga > .mo-logo{display:block}
+  .app .escena.es2 .es-liga{grid-template-columns:120px minmax(0,1fr);align-items:center}
+  .app .escena.es2 .es-liga .mo-logo img{width:120px;height:120px}
+  .app .escena.es2 .es-liga .es-mas-h img{display:none}
+}
 
 /* La Liga en números: las dos columnas del mismo alto (Dlx: «mira, está disparejo»). El gráfico crece */
 @media (min-width: 900px){

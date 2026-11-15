@@ -37,8 +37,9 @@ export function useComentarios() {
 
 /** Los de una publicación, juntos y en orden: los simulados que ya llegaron a su hora y los de verdad. */
 export function delHilo(it, ahora) {
+  // 💬 el séptimo valor, si está, es a cuál de antes le contesta (la versión 2 de bot/comentarios_sim.py, 15/11/2026)
   const sim = (it.cm || []).filter((c) => utc(c[4]) <= ahora).map((c) => ({ id: 's' + c[0], k: c[1], n: c[2], tx: c[3],
-    t: utc(c[4]), et: c[5], resp: '' }));
+    t: utc(c[4]), et: c[5], resp: c.length > 6 && c[6] !== null && c[6] !== '' ? 's' + c[6] : '' }));
   const borrados = E.mios.borrados || {};
   const ver = ((E.por && E.por[it.id]) || []).concat((E.mios[it.id] || []))
     .filter((c, i, a) => !borrados[c[0]] && a.findIndex((x) => x[0] === c[0]) === i)
