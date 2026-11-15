@@ -1,7 +1,10 @@
 {
  "_leeme": "Lo que ve «Ver llave» de cada llave procesada (bot/verificar_llaves.py): min = de la primera publicación al último cambio; org = el organizador «juega» o «gana»; copia = la llave de la que es copia; obs = la publicó un organizador observado. Lo cuelga sheet/llaves_web.py como «ver».",
  "avisadas": {
-  "- LIGA INMORTAL -|FRZ|12/11": "2026-11-13T02:24:35Z"
+  "- LIGA INMORTAL -|FRZ|12/11": "2026-11-13T02:24:35Z",
+  "ME QUISIERA MORIR PERO NO MULTIVERSE VOL.1|CEU|26/10": "2026-11-15T17:28:00Z",
+  "ME QUISIERA MORIR PERO NO MULTIVERSE VOL.1|CEU|27/10": "2026-11-15T17:28:00Z",
+  "YYY891|CEU|24/09": "2026-11-15T17:28:00Z"
  },
  "eventos": {
   "(sin titulo)|DDS|10/10": {
@@ -89,6 +92,11 @@
   },
   "CCFF V.3|URBF|28/09": {
    "min": 25,
+   "v": 1
+  },
+  "CEUTA|CEU|01/10": {
+   "min": 37,
+   "org": "juega",
    "v": 1
   },
   "CHILL|URBF|25/10": {
@@ -233,6 +241,10 @@
    "min": 102,
    "v": 1
   },
+  "HALOWEEN|CEU|30/10": {
+   "min": 31,
+   "v": 1
+  },
   "IDS V.2|URBF|12/10": {
    "min": 96,
    "v": 1
@@ -277,6 +289,16 @@
    "min": 50,
    "v": 1
   },
+  "ME QUISIERA MORIR PERO NO MULTIVERSE VOL.1|CEU|26/10": {
+   "min": 73,
+   "org": "gana",
+   "v": 1
+  },
+  "ME QUISIERA MORIR PERO NO MULTIVERSE VOL.1|CEU|27/10": {
+   "min": 48,
+   "org": "gana",
+   "v": 1
+  },
   "MF DOOM Y MADLIB EDICION 1|DDS|07/11": {
    "v": 1
   },
@@ -304,6 +326,15 @@
    "min": 53,
    "v": 1
   },
+  "NOS FOLLAMOS TODOS A KRISHI|CEU|14/10": {
+   "min": 10008,
+   "org": "juega",
+   "v": 1
+  },
+  "NUEVA TEMPORADA|CEU|11/11": {
+   "min": 58,
+   "v": 1
+  },
   "ORDEN DEL CHYPHER|FFA|05/11": {
    "min": 42,
    "v": 1
@@ -322,6 +353,23 @@
   },
   "POESÍA CRUDA|URBF|01/10": {
    "min": 76,
+   "v": 1
+  },
+  "PORNO FEMBOY|CEU|28/10": {
+   "min": 26,
+   "org": "juega",
+   "v": 1
+  },
+  "PORNO GAY|CEU|28/10": {
+   "min": 30,
+   "v": 1
+  },
+  "PORNO LESBICO|CEU|30/10": {
+   "min": 24,
+   "v": 1
+  },
+  "PORNO MASCOTAS.|CEU|29/10": {
+   "min": 40,
    "v": 1
   },
   "PRADERAP VOL.1|ACAD|16/10": {
@@ -492,6 +540,11 @@
   },
   "WORLD OF FREE|LKR|23/10": {
    "min": 136,
+   "v": 1
+  },
+  "YYY891|CEU|24/09": {
+   "min": 63,
+   "org": "gana",
    "v": 1
   },
   "ZONA MORTAL|DDF|07/11": {

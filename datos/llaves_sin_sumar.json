@@ -144,6 +144,41 @@
    ]
   ]
  },
+ "112497667": {
+  "dia": "2026-09-26",
+  "escala": "4-7",
+  "fecha": "26/09",
+  "links": [
+   "https://discord.com/channels/1513624656538636459/1518202754294612028/1553344945312497667"
+  ],
+  "n": 112497667,
+  "nombre": "A NOBITA LE ESTAN PEGANDO",
+  "ns": 1,
+  "participantes": 5,
+  "rondas": [
+   {
+    "b": [
+     [
+      [
+       "Marcos",
+       "Adrianex"
+      ],
+      "Marcos",
+      ""
+     ]
+    ],
+    "r": "Semifinales"
+   }
+  ],
+  "sv": "CEU",
+  "tabla": [
+   [
+    "Adrianex",
+    "Semifinal",
+    0
+   ]
+  ]
+ },
  "114777928": {
   "dia": "2026-11-03",
   "escala": "8-15",
@@ -374,6 +409,334 @@
    ]
   ]
  },
+ "117953302": {
+  "dia": "2026-09-27",
+  "escala": "8-15",
+  "fecha": "27/09",
+  "links": [
+   "https://discord.com/channels/1513624656538636459/1518202754294612028/1553738852617953302",
+   "https://discord.com/channels/1513624656538636459/1518202754294612028/1553725860370972743"
+  ],
+  "n": 117953302,
+  "nombre": "TIRAR MORBO",
+  "ns": 1,
+  "participantes": 9,
+  "rondas": [
+   {
+    "b": [
+     [
+      [
+       "Majiztral",
+       "Ivan"
+      ],
+      "Majiztral",
+      ""
+     ],
+     [
+      [
+       "Trot",
+       "Teito"
+      ],
+      "Trot",
+      ""
+     ],
+     [
+      [
+       "Marcos",
+       "Krish",
+       "Kaotiko🇪🇸"
+      ],
+      "Marcos",
+      "triple (3 bandas)"
+     ],
+     [
+      [
+       "Teito",
+       "Krish"
+      ],
+      "Teito",
+      ""
+     ],
+     [
+      [
+       "Majiztral",
+       "Ivan"
+      ],
+      "Majiztral",
+      ""
+     ],
+     [
+      [
+       "Trot",
+       "Teito"
+      ],
+      "Trot",
+      ""
+     ],
+     [
+      [
+       "Marcos",
+       "Krish",
+       "Kaotiko🇪🇸"
+      ],
+      "Marcos",
+      "triple (3 bandas)"
+     ],
+     [
+      [
+       "Teito",
+       "Krish"
+      ],
+      "Teito",
+      ""
+     ]
+    ],
+    "r": "Cuartos"
+   },
+   {
+    "b": [
+     [
+      [
+       "Majiztral",
+       "Trot"
+      ],
+      "Majiztral",
+      ""
+     ],
+     [
+      [
+       "Teito",
+       "Marcos"
+      ],
+      "Teito",
+      ""
+     ]
+    ],
+    "r": "Semifinales"
+   },
+   {
+    "b": [
+     [
+      [
+       "Majiztral",
+       "Teito"
+      ],
+      "Majiztral",
+      ""
+     ]
+    ],
+    "r": "Final"
+   }
+  ],
+  "sv": "CEU",
+  "tabla": [
+   [
+    "Majiztral",
+    "Campeón",
+    0
+   ],
+   [
+    "Teito",
+    "Subcampeón",
+    0
+   ],
+   [
+    "Marcos",
+    "Semifinal",
+    0
+   ],
+   [
+    "Trot",
+    "Semifinal",
+    0
+   ],
+   [
+    "Ivan",
+    "Cuartos",
+    0
+   ],
+   [
+    "Kaotiko🇪🇸",
+    "Cuartos",
+    0
+   ],
+   [
+    "Krish",
+    "Cuartos",
+    0
+   ]
+  ]
+ },
+ "119233924": {
+  "dia": "2026-11-01",
+  "escala": "4-7",
+  "fecha": "01/11",
+  "links": [
+   "https://discord.com/channels/1513624656538636459/1518202754294612028/1566557928419233924"
+  ],
+  "n": 119233924,
+  "nombre": "INICIO",
+  "ns": 1,
+  "participantes": 7,
+  "rondas": [
+   {
+    "b": [
+     [
+      [
+       "Marcos",
+       "Geoka",
+       "Adrianex"
+      ],
+      "Marcos, Geoka",
+      "triple (3 bandas, pasan 2); también pasa: GEOKA"
+     ],
+     [
+      [
+       "Krish",
+       "Lvel 🇻🇪",
+       "Shadow"
+      ],
+      "Krish",
+      "triple (3 bandas)"
+     ]
+    ],
+    "r": "Cuartos"
+   }
+  ],
+  "sv": "CEU",
+  "tabla": [
+   [
+    "Adrianex",
+    "Cuartos",
+    0
+   ],
+   [
+    "Lvel 🇻🇪",
+    "Cuartos",
+    0
+   ],
+   [
+    "Shadow",
+    "Cuartos",
+    0
+   ]
+  ]
+ },
+ "121401499": {
+  "dia": "2026-09-26",
+  "escala": "8-15",
+  "fecha": "26/09",
+  "links": [
+   "https://discord.com/channels/1513624656538636459/1518202754294612028/1553418382521401499"
+  ],
+  "n": 121401499,
+  "nombre": "RED BULL REGIONAL CHILE ED.1",
+  "ns": 1,
+  "participantes": 8,
+  "rondas": [
+   {
+    "b": [
+     [
+      [
+       "Bloody",
+       "NXUZ"
+      ],
+      "Bloody",
+      ""
+     ],
+     [
+      [
+       "Miniboy",
+       "Marcos"
+      ],
+      "Miniboy",
+      ""
+     ],
+     [
+      [
+       "19",
+       "Trot"
+      ],
+      "19",
+      ""
+     ]
+    ],
+    "r": "Cuartos"
+   },
+   {
+    "b": [
+     [
+      [
+       "Miniboy",
+       "pipaso"
+      ],
+      "Miniboy",
+      ""
+     ],
+     [
+      [
+       "19",
+       "Bloody"
+      ],
+      "19",
+      ""
+     ]
+    ],
+    "r": "Semifinales"
+   },
+   {
+    "b": [
+     [
+      [
+       "Miniboy",
+       "19"
+      ],
+      "Miniboy",
+      ""
+     ]
+    ],
+    "r": "Final"
+   }
+  ],
+  "sv": "CEU",
+  "tabla": [
+   [
+    "Miniboy",
+    "Campeón",
+    0
+   ],
+   [
+    "19",
+    "Subcampeón",
+    0
+   ],
+   [
+    "Bloody",
+    "Semifinal",
+    0
+   ],
+   [
+    "pipaso",
+    "Semifinal",
+    0
+   ],
+   [
+    "Marcos",
+    "Cuartos",
+    0
+   ],
+   [
+    "NXUZ",
+    "Cuartos",
+    0
+   ],
+   [
+    "Trot",
+    "Cuartos",
+    0
+   ]
+  ]
+ },
  "121713059": {
   "dia": "2026-11-02",
   "escala": "16+",
@@ -526,6 +889,77 @@
    [
     "Tayo",
     "Octavos",
+    0
+   ]
+  ]
+ },
+ "122478717": {
+  "dia": "2026-09-23",
+  "escala": "4-7",
+  "fecha": "23/09",
+  "links": [
+   "https://discord.com/channels/1513624656538636459/1518202754294612028/1552335440122478717"
+  ],
+  "n": 122478717,
+  "nombre": "EL BOLSILLO MAGICO DE DORAEMON",
+  "ns": 1,
+  "participantes": 4,
+  "rondas": [
+   {
+    "b": [
+     [
+      [
+       "Trot",
+       "Krish"
+      ],
+      "Trot",
+      ""
+     ],
+     [
+      [
+       "Marcos",
+       "andy mc 🇻🇪"
+      ],
+      "Marcos",
+      ""
+     ]
+    ],
+    "r": "Semifinales"
+   },
+   {
+    "b": [
+     [
+      [
+       "Marcos",
+       "Trot"
+      ],
+      "Marcos",
+      ""
+     ]
+    ],
+    "r": "Final"
+   }
+  ],
+  "sv": "CEU",
+  "tabla": [
+   [
+    "Marcos",
+    "Campeón",
+    0
+   ],
+   [
+    "Trot",
+    "Subcampeón",
+    0
+   ],
+   [
+    "Krish",
+    "Semifinal",
+    0
+   ],
+   [
+    "andy mc 🇻🇪",
+    "Semifinal",
     0
    ]
   ]
@@ -1572,6 +2006,83 @@
    ]
   ]
  },
+ "143743304": {
+  "dia": "2026-10-28",
+  "escala": "4-7",
+  "fecha": "28/10",
+  "links": [
+   "https://discord.com/channels/1513624656538636459/1518202754294612028/1565090752843743304"
+  ],
+  "n": 143743304,
+  "nombre": "PORNO TRANS",
+  "ns": 1,
+  "participantes": 5,
+  "rondas": [
+   {
+    "b": [
+     [
+      [
+       "Motera",
+       "Dominick"
+      ],
+      "Motera",
+      ""
+     ],
+     [
+      [
+       "NXUZ",
+       "Miniboy",
+       "Jobaking"
+      ],
+      "NXUZ",
+      "triple (3 bandas)"
+     ]
+    ],
+    "r": "Semifinales"
+   },
+   {
+    "b": [
+     [
+      [
+       "Motera",
+       "NXUZ"
+      ],
+      "Motera",
+      ""
+     ]
+    ],
+    "r": "Final"
+   }
+  ],
+  "sv": "CEU",
+  "tabla": [
+   [
+    "Motera",
+    "Campeón",
+    0
+   ],
+   [
+    "NXUZ",
+    "Subcampeón",
+    0
+   ],
+   [
+    "Dominick",
+    "Semifinal",
+    0
+   ],
+   [
+    "Jobaking",
+    "Semifinal",
+    0
+   ],
+   [
+    "Miniboy",
+    "Semifinal",
+    0
+   ]
+  ]
+ },
  "144181154": {
   "dia": "2026-10-27",
   "escala": "8-15",
@@ -2150,6 +2661,131 @@
    ]
   ]
  },
+ "154760759": {
+  "dia": "2026-09-25",
+  "escala": "8-15",
+  "fecha": "25/09",
+  "links": [
+   "https://discord.com/channels/1513624656538636459/1518202754294612028/1553149282754760759"
+  ],
+  "n": 154760759,
+  "nombre": "DISOBEY",
+  "ns": 1,
+  "participantes": 10,
+  "rondas": [
+   {
+    "b": [
+     [
+      [
+       "TOXIKO",
+       "Krish"
+      ],
+      "TOXIKO",
+      ""
+     ],
+     [
+      [
+       "Marcos",
+       "LAST"
+      ],
+      "Marcos",
+      ""
+     ],
+     [
+      [
+       "LAST",
+       "Telmex",
+       "Dominick",
+       "Krish"
+      ],
+      "LAST",
+      "triple (4 bandas)"
+     ],
+     [
+      [
+       "Trot",
+       "Telmex"
+      ],
+      "Trot",
+      ""
+     ]
+    ],
+    "r": "Cuartos"
+   },
+   {
+    "b": [
+     [
+      [
+       "Trot",
+       "TOXIKO🇦🇷"
+      ],
+      "Trot",
+      ""
+     ],
+     [
+      [
+       "LAST",
+       "Marcos"
+      ],
+      "LAST",
+      ""
+     ]
+    ],
+    "r": "Semifinales"
+   },
+   {
+    "b": [
+     [
+      [
+       "Trot",
+       "LAST"
+      ],
+      "Trot",
+      ""
+     ]
+    ],
+    "r": "Final"
+   }
+  ],
+  "sv": "CEU",
+  "tabla": [
+   [
+    "Trot",
+    "Campeón",
+    0
+   ],
+   [
+    "LAST",
+    "Subcampeón",
+    0
+   ],
+   [
+    "Marcos",
+    "Semifinal",
+    0
+   ],
+   [
+    "TOXIKO🇦🇷",
+    "Semifinal",
+    0
+   ],
+   [
+    "Dominick",
+    "Cuartos",
+    0
+   ],
+   [
+    "Krish",
+    "Cuartos",
+    0
+   ],
+   [
+    "Telmex",
+    "Cuartos",
+    0
+   ]
+  ]
+ },
  "158585405": {
   "dia": "2026-10-22",
   "escala": "8-15",
@@ -2274,6 +2910,361 @@
    [
     "TøKīØ🦠🧠",
     "Cuartos",
+    0
+   ]
+  ]
+ },
+ "159278377": {
+  "dia": "2026-10-07",
+  "escala": "4-7",
+  "fecha": "07/10",
+  "links": [
+   "https://discord.com/channels/1513624656538636459/1518202754294612028/1557457794859278377"
+  ],
+  "n": 159278377,
+  "nombre": "COMPE NOS FOLLAMOS A NOBITA",
+  "ns": 1,
+  "participantes": 6,
+  "rondas": [
+   {
+    "b": [
+     [
+      [
+       "Trot",
+       "Marcos",
+       "Krish"
+      ],
+      "Trot, Marcos",
+      "triple (3 bandas, pasan 2); también pasa: marcos🇪🇸"
+     ],
+     [
+      [
+       "Majiztral",
+       "Inko",
+       "Santz"
+      ],
+      "Majiztral, Inko",
+      "triple (3 bandas, pasan 2); también pasa: Inko"
+     ]
+    ],
+    "r": "Semifinales"
+   },
+   {
+    "b": [
+     [
+      [
+       "Marcos, Majiztral",
+       "Inko, Trot"
+      ],
+      "Marcos, Majiztral",
+      ""
+     ]
+    ],
+    "r": "Final"
+   }
+  ],
+  "sv": "CEU",
+  "tabla": [
+   [
+    "Inko",
+    "Subcampeón",
+    0
+   ],
+   [
+    "Krish",
+    "Semifinal",
+    0
+   ],
+   [
+    "Majiztral",
+    "Campeón",
+    0
+   ],
+   [
+    "Marcos",
+    "Campeón",
+    0
+   ],
+   [
+    "Santz",
+    "Semifinal",
+    0
+   ],
+   [
+    "Trot",
+    "Subcampeón",
+    0
+   ]
+  ]
+ },
+ "160445491": {
+  "dia": "2026-10-04",
+  "escala": "4-7",
+  "fecha": "04/10",
+  "links": [
+   "https://discord.com/channels/1513624656538636459/1518202754294612028/1556321674960445491"
+  ],
+  "n": 160445491,
+  "nombre": "COMPE NOS FOLLAMOS A NOBITA",
+  "ns": 1,
+  "participantes": 6,
+  "rondas": [
+   {
+    "b": [
+     [
+      [
+       "19",
+       "Trot",
+       "Krish"
+      ],
+      "19, Trot",
+      "triple (3 bandas, pasan 2); también pasa: Trot"
+     ],
+     [
+      [
+       "Lvel 🇻🇪",
+       "Marcos",
+       "Adrianex"
+      ],
+      "Lvel 🇻🇪, Marcos",
+      "triple (3 bandas, pasan 2); también pasa: marcos🇪🇸"
+     ]
+    ],
+    "r": "Cuartos"
+   },
+   {
+    "b": [
+     [
+      [
+       "Marcos",
+       "19"
+      ],
+      "Marcos",
+      ""
+     ],
+     [
+      [
+       "Trot",
+       "Lvel 🇻🇪"
+      ],
+      "Trot",
+      ""
+     ]
+    ],
+    "r": "Semifinales"
+   },
+   {
+    "b": [
+     [
+      [
+       "Lvel 🇻🇪",
+       "19"
+      ],
+      "Lvel 🇻🇪",
+      "podio: tercer puesto sin batalla en la llave"
+     ]
+    ],
+    "r": "Tercer puesto"
+   },
+   {
+    "b": [
+     [
+      [
+       "Trot",
+       "Marcos"
+      ],
+      "Trot",
+      ""
+     ]
+    ],
+    "r": "Final"
+   }
+  ],
+  "sv": "CEU",
+  "tabla": [
+   [
+    "Trot",
+    "Campeón",
+    0
+   ],
+   [
+    "Marcos",
+    "Subcampeón",
+    0
+   ],
+   [
+    "Lvel 🇻🇪",
+    "Tercero",
+    0
+   ],
+   [
+    "19",
+    "Cuarto",
+    0
+   ],
+   [
+    "Adrianex",
+    "Cuartos",
+    0
+   ],
+   [
+    "Krish",
+    "Cuartos",
+    0
+   ]
+  ]
+ },
+ "161435001": {
+  "dia": "2026-11-15",
+  "escala": "4-7",
+  "fecha": "15/11",
+  "links": [
+   "https://discord.com/channels/1513624656538636459/1518202754294612028/1571492686861435001"
+  ],
+  "n": 161435001,
+  "nombre": "RAPER CUP VOL.1",
+  "ns": 1,
+  "participantes": 5,
+  "rondas": [
+   {
+    "b": [
+     [
+      [
+       "R-flow",
+       "ZiarKI",
+       "1200"
+      ],
+      "R-flow",
+      "triple (3 bandas)"
+     ],
+     [
+      [
+       "Marcos",
+       "Teito"
+      ],
+      "Marcos",
+      ""
+     ]
+    ],
+    "r": "Semifinales"
+   },
+   {
+    "b": [
+     [
+      [
+       "Marcos",
+       "R-flow 🇪🇸"
+      ],
+      "Marcos",
+      ""
+     ]
+    ],
+    "r": "Final"
+   }
+  ],
+  "sv": "CEU",
+  "tabla": [
+   [
+    "Marcos",
+    "Campeón",
+    0
+   ],
+   [
+    "R-flow 🇪🇸",
+    "Subcampeón",
+    0
+   ],
+   [
+    "1200",
+    "Semifinal",
+    0
+   ],
+   [
+    "Teito",
+    "Semifinal",
+    0
+   ],
+   [
+    "ZiarKI",
+    "Semifinal",
+    0
+   ]
+  ]
+ },
+ "164185272": {
+  "dia": "2026-09-22",
+  "escala": "8-15",
+  "fecha": "22/09",
+  "links": [
+   "https://discord.com/channels/1513624656538636459/1518202754294612028/1552004460564185272"
+  ],
+  "n": 164185272,
+  "nombre": "GORROCOPTERO DEL FREE",
+  "ns": 1,
+  "participantes": 10,
+  "rondas": [
+   {
+    "b": [
+     [
+      [
+       "Marcos",
+       "Teito",
+       "Dominick"
+      ],
+      "Marcos, Teito",
+      "triple (3 bandas, pasan 2); también pasa: Teito🇨🇴"
+     ],
+     [
+      [
+       "Teito",
+       "Trot, Marcos",
+       "Krish"
+      ],
+      "Teito",
+      "triple (3 bandas)"
+     ]
+    ],
+    "r": "Semifinales"
+   },
+   {
+    "b": [
+     [
+      [
+       "Marcos",
+       "Teito"
+      ],
+      "Marcos",
+      ""
+     ]
+    ],
+    "r": "Final"
+   }
+  ],
+  "sv": "CEU",
+  "tabla": [
+   [
+    "Marcos",
+    "Semifinal",
+    0
+   ],
+   [
+    "Teito",
+    "Subcampeón",
+    0
+   ],
+   [
+    "Dominick",
+    "Semifinal",
+    0
+   ],
+   [
+    "Krish",
+    "Semifinal",
+    0
+   ],
+   [
+    "Trot",
+    "Semifinal",
     0
    ]
   ]
@@ -2531,6 +3522,77 @@
    [
     "Hedorah 🇨🇱",
     "Cuartos",
+    0
+   ]
+  ]
+ },
+ "173655418": {
+  "dia": "2026-09-25",
+  "escala": "4-7",
+  "fecha": "25/09",
+  "links": [
+   "https://discord.com/channels/1513624656538636459/1518202754294612028/1553097054073655418"
+  ],
+  "n": 173655418,
+  "nombre": "Unidos por doraemon",
+  "ns": 1,
+  "participantes": 5,
+  "rondas": [
+   {
+    "b": [
+     [
+      [
+       "Toxico",
+       "Andy"
+      ],
+      "Toxico",
+      ""
+     ],
+     [
+      [
+       "Kyron",
+       "Trot"
+      ],
+      "Kyron",
+      ""
+     ]
+    ],
+    "r": "Semifinales"
+   },
+   {
+    "b": [
+     [
+      [
+       "Kyron",
+       "Toxico"
+      ],
+      "Kyron",
+      ""
+     ]
+    ],
+    "r": "Final"
+   }
+  ],
+  "sv": "CEU",
+  "tabla": [
+   [
+    "Kyron",
+    "Campeón",
+    0
+   ],
+   [
+    "Toxico",
+    "Subcampeón",
+    0
+   ],
+   [
+    "Andy",
+    "Semifinal",
+    0
+   ],
+   [
+    "Trot",
+    "Semifinal",
     0
    ]
   ]
@@ -4085,6 +5147,59 @@
    ],
    [
     "TøKīØ🦠🧠",
+    "Cuartos",
+    0
+   ]
+  ]
+ },
+ "193760035": {
+  "dia": "2026-11-15",
+  "escala": "4-7",
+  "fecha": "15/11",
+  "links": [
+   "https://discord.com/channels/1513624656538636459/1518202754294612028/1571558610293760035"
+  ],
+  "n": 193760035,
+  "nombre": "RED BULL BATALLA",
+  "ns": 1,
+  "participantes": 5,
+  "rondas": [
+   {
+    "b": [
+     [
+      [
+       "Marcos",
+       "┃    MATS ┣━━━━━━━━━━━━━━━━━━━━━━━━━━┫ ┃ MOTE RA ┃          🔥"
+      ],
+      "Marcos",
+      ""
+     ]
+    ],
+    "r": "Cuartos"
+   },
+   {
+    "b": [
+     [
+      [
+       "Marcos",
+       "┃   MAJIZTRAL ┣━━━━━━━━━━━━━━━━━━━━━━━━━━┫ ┃ MATS ┃          ⚡"
+      ],
+      "Marcos",
+      ""
+     ]
+    ],
+    "r": "Semifinales"
+   }
+  ],
+  "sv": "CEU",
+  "tabla": [
+   [
+    "┃   MAJIZTRAL ┣━━━━━━━━━━━━━━━━━━━━━━━━━━┫ ┃ MATS ┃          ⚡",
+    "Semifinal",
+    0
+   ],
+   [
+    "┃    MATS ┣━━━━━━━━━━━━━━━━━━━━━━━━━━┫ ┃ MOTE RA ┃          🔥",
     "Cuartos",
     0
    ]

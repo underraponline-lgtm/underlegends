@@ -324,6 +324,15 @@
 "rg": "D",
 "c": []
 },
+"geoka": {
+"rg": "D",
+"c": [
+"competitivo",
+"pais",
+"servidor",
+"temporada"
+]
+},
 "tenor": {
 "rg": "C",
 "c": [
@@ -399,31 +408,6 @@
 "temporada"
 ]
 },
-"mathhias": {
-"rg": "C",
-"c": [
-"competitivo",
-"servidor",
-"temporada"
-]
-},
-"geoka": {
-"rg": "D",
-"c": [
-"competitivo",
-"pais",
-"servidor",
-"temporada"
-]
-},
-"tøkiø": {
-"rg": "B",
-"c": [
-"competitivo",
-"servidor",
-"temporada"
-]
-},
 "caliz": {
 "rg": "D",
 "c": [
@@ -436,6 +420,22 @@
 "dominick": {
 "rg": "D",
 "c": []
+},
+"mathhias": {
+"rg": "C",
+"c": [
+"competitivo",
+"servidor",
+"temporada"
+]
+},
+"tøkiø": {
+"rg": "B",
+"c": [
+"competitivo",
+"servidor",
+"temporada"
+]
 },
 "mayeutyk": {
 "rg": "C",
@@ -477,6 +477,15 @@
 ]
 },
 "soulb": {
+"rg": "D",
+"c": [
+"competitivo",
+"pais",
+"servidor",
+"temporada"
+]
+},
+"trot": {
 "rg": "D",
 "c": [
 "competitivo",
@@ -533,8 +542,8 @@
 "temporada"
 ]
 },
-"trot": {
-"rg": "D",
+"last": {
+"rg": "E",
 "c": [
 "competitivo",
 "pais",
@@ -580,8 +589,8 @@
 "rg": "E",
 "c": []
 },
-"last": {
-"rg": "E",
+"marcos": {
+"rg": "D",
 "c": [
 "competitivo",
 "pais",
@@ -697,6 +706,14 @@
 "temporada"
 ]
 },
+"motera": {
+"rg": "",
+"c": [
+"pais",
+"servidor",
+"temporada"
+]
+},
 "jobaking": {
 "rg": "E",
 "c": [
@@ -744,6 +761,10 @@
 "temporada"
 ]
 },
+"1200": {
+"rg": "E",
+"c": []
+},
 "nemmiias": {
 "rg": "E",
 "c": [
@@ -789,29 +810,9 @@
 "rg": "E",
 "c": []
 },
-"1200": {
-"rg": "E",
-"c": []
-},
 "sultan": {
 "rg": "E",
 "c": []
-},
-"marcos": {
-"rg": "D",
-"c": [
-"competitivo",
-"servidor",
-"temporada"
-]
-},
-"motera": {
-"rg": "",
-"c": [
-"pais",
-"servidor",
-"temporada"
-]
 },
 "trelok": {
 "rg": "",
@@ -960,6 +961,14 @@
 "rg": "",
 "c": []
 },
+"carlosmo": {
+"rg": "",
+"c": [
+"pais",
+"servidor",
+"temporada"
+]
+},
 "hotaruadeyemi": {
 "rg": "",
 "c": []
@@ -1043,13 +1052,9 @@
 "rg": "",
 "c": []
 },
-"carlosmo": {
+"scot": {
 "rg": "",
-"c": [
-"pais",
-"servidor",
-"temporada"
-]
+"c": []
 },
 "krish": {
 "rg": "E",
@@ -1093,18 +1098,18 @@
 "rg": "",
 "c": []
 },
-"sol": {
-"rg": "",
-"c": [
-"servidor"
-]
-},
 "shadow": {
 "rg": "",
 "c": [
 "competitivo",
 "servidor",
 "temporada"
+]
+},
+"sol": {
+"rg": "",
+"c": [
+"servidor"
 ]
 },
 "ezias": {
@@ -1121,15 +1126,15 @@
 "temporada"
 ]
 },
+"monet": {
+"rg": "",
+"c": []
+},
 "ikonoxx": {
 "rg": "",
 "c": []
 },
 "efimero": {
-"rg": "",
-"c": []
-},
-"monet": {
 "rg": "",
 "c": []
 },
@@ -1249,6 +1254,10 @@
 "temporada"
 ]
 },
+"under": {
+"rg": "",
+"c": []
+},
 "valdoza": {
 "rg": "",
 "c": []
@@ -1264,10 +1273,6 @@
 "temporada"
 ]
 },
-"under": {
-"rg": "",
-"c": []
-},
 "doc": {
 "rg": "",
 "c": []
@@ -1280,10 +1285,6 @@
 ]
 },
 "matuk": {
-"rg": "",
-"c": []
-},
-"scot": {
 "rg": "",
 "c": []
 },
@@ -2849,15 +2850,6 @@
 }
 },
 "cambios": [
-{
-"tipo": "rango",
-"t": "2026-10-10T04:27:46Z",
-"quien": [
-"Agus"
-],
-"rg": "B",
-"primero": true
-},
 {
 "tipo": "tarjeta",
 "t": "2026-10-10T04:27:46Z",
@@ -6218,6 +6210,14 @@
 ],
 "rg": "D",
 "primero": false
+},
+{
+"tipo": "tarjeta",
+"t": "2026-11-15T17:35:19Z",
+"quien": [
+"Marcos"
+],
+"carta": "pais"
 }
 ],
 "noche_antes": {

@@ -117,6 +117,28 @@
    "vence": "2026-11-16T19:09:03+00:00",
    "vencido": false
   },
+  "AFIN": {
+   "con": null,
+   "cumplido": "",
+   "debut": "2026-10-29T15:39:00+00:00",
+   "did": "",
+   "evento": "PORNO MASCOTAS.",
+   "n": 640,
+   "sv": "CEU",
+   "vence": "2026-11-05T15:39:00+00:00",
+   "vencido": true
+  },
+  "AFINN": {
+   "con": null,
+   "cumplido": "",
+   "debut": "2026-10-30T16:48:55+00:00",
+   "did": "",
+   "evento": "HALOWEEN",
+   "n": 642,
+   "sv": "CEU",
+   "vence": "2026-11-06T16:48:55+00:00",
+   "vencido": true
+  },
   "AKARK": {
    "avisado": "2026-10-12",
    "chat": "2026-10-12",
@@ -154,6 +176,17 @@
    "n": 548,
    "sv": "FDS",
    "vence": "2026-11-03T02:05:05+00:00",
+   "vencido": true
+  },
+  "ANDER": {
+   "con": null,
+   "cumplido": "",
+   "debut": "2026-10-30T16:48:55+00:00",
+   "did": "",
+   "evento": "HALOWEEN",
+   "n": 642,
+   "sv": "CEU",
+   "vence": "2026-11-06T16:48:55+00:00",
    "vencido": true
   },
   "ANG": {
@@ -327,6 +360,18 @@
    "sv": "ACAD",
    "vence": "2026-11-14T01:17:28+00:00",
    "vencido": true
+  },
+  "BABI": {
+   "avisado": "2026-11-15",
+   "con": null,
+   "cumplido": "",
+   "debut": "2026-11-11T16:38:44+00:00",
+   "did": "",
+   "evento": "NUEVA TEMPORADA",
+   "n": 643,
+   "sv": "CEU",
+   "vence": "2026-11-18T16:38:44+00:00",
+   "vencido": false
   },
   "BELIKKO": {
    "avisado": "2026-10-23",
@@ -2138,6 +2183,17 @@
    "vence": "2026-11-19T04:08:19+00:00",
    "vencido": false
   },
+  "PITER": {
+   "con": null,
+   "cumplido": "",
+   "debut": "2026-10-14T17:15:15+00:00",
+   "did": "",
+   "evento": "NOS FOLLAMOS TODOS A KRISHI",
+   "n": 637,
+   "sv": "CEU",
+   "vence": "2026-10-21T17:15:15+00:00",
+   "vencido": true
+  },
   "PRV": {
    "avisado": "2026-11-09",
    "chat": "2026-11-09",
@@ -2248,6 +2304,17 @@
    "n": 486,
    "sv": "DDF",
    "vence": "2026-10-26T01:35:44+00:00",
+   "vencido": true
+  },
+  "REPECHAJE": {
+   "con": null,
+   "cumplido": "",
+   "debut": "2026-10-29T15:39:00+00:00",
+   "did": "",
+   "evento": "PORNO MASCOTAS.",
+   "n": 640,
+   "sv": "CEU",
+   "vence": "2026-11-05T15:39:00+00:00",
    "vencido": true
   },
   "Ragna": {
@@ -2554,15 +2621,16 @@
   },
   "Sweet pain": {
    "avisado": "2026-11-12",
-   "con": null,
-   "cumplido": "",
+   "avisado_cumplido": "2026-11-15",
+   "con": 643,
+   "cumplido": "2026-11-11T16:38:44+00:00",
    "debut": "2026-11-06T03:25:32+00:00",
    "did": "1550194237549838531",
    "evento": "TORNEOS",
    "n": 620,
    "sv": "LKR",
    "vence": "2026-11-13T03:25:32+00:00",
-   "vencido": true
+   "vencido": false
   },
   "Swid": {
    "avisado": "2026-10-26",
@@ -2577,6 +2645,17 @@
    "vence": "2026-11-02T22:39:00+00:00",
    "vencido": true
   },
+  "TMAX TURBAO": {
+   "con": null,
+   "cumplido": "",
+   "debut": "2026-10-28T15:02:45+00:00",
+   "did": "",
+   "evento": "PORNO GAY",
+   "n": 638,
+   "sv": "CEU",
+   "vence": "2026-11-04T15:02:45+00:00",
+   "vencido": true
+  },
   "Tayo": {
    "con": null,
    "cumplido": "",
@@ -2586,6 +2665,17 @@
    "n": 527,
    "sv": "FDS",
    "vence": "2026-10-31T02:50:48+00:00",
+   "vencido": true
+  },
+  "Telmex": {
+   "con": null,
+   "cumplido": "",
+   "debut": "2026-10-28T20:15:48+00:00",
+   "did": "1479882427915698238",
+   "evento": "PORNO FEMBOY",
+   "n": 639,
+   "sv": "CEU",
+   "vence": "2026-11-04T20:15:48+00:00",
    "vencido": true
   },
   "Teorema": {
@@ -2653,8 +2743,8 @@
    "avisado": "2026-10-31",
    "avisado_cumplido": "2026-11-12",
    "chat": "2026-10-31",
-   "con": 617,
-   "cumplido": "2026-10-31T22:31:17+00:00",
+   "con": 642,
+   "cumplido": "2026-10-30T16:48:55+00:00",
    "debut": "2026-10-27T20:02:54+00:00",
    "did": "1345623878474403901",
    "evento": "PRADERAP VOL.2",

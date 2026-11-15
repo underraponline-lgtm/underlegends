@@ -4324,6 +4324,46 @@
      368
     ]
    }
+  },
+  {
+   "id": "98377ae7a2",
+   "tipo": "Bracket incompleto",
+   "sec": "CEUTA · CEU · 01/10",
+   "que": "Esta llave no dice quién ganó y lleva más de 12 h sin cambios, así que no sumó nada. Si sabes quién salió campeón, elegilo: cobra campeón y el otro, subcampeón. Si no, ¿cuenta? A los 28 días sin campeón, el ciclo la carga solo: los dos finalistas cobran el promedio de 1.º y 2.º.",
+   "r": "Sin campeón: los dos finalistas cobran el promedio",
+   "regla": "R24 · una final sin campeón, a los 28 días: los dos finalistas cobran el promedio de 1.º y 2.º",
+   "rk": "R24",
+   "por": "el ciclo",
+   "porque": "la llave no dice el campeón y pasaron 45 días: los dos finalistas (Trot y marcos🇪🇸) cobran el promedio de 1.º y 2.º",
+   "t": 1794764136212,
+   "filas": [
+    1401
+   ],
+   "variantes": [
+    "CEUTA · CEU · 01/10"
+   ],
+   "escribio": {
+    "campeon": "CEUTA · CEU · 01/10"
+   }
+  },
+  {
+   "id": "737a22574d",
+   "tipo": "Nombre desconocido",
+   "sec": "PORNO MASCOTAS. · CEU · 29/10 · #640",
+   "que": "¿Quién es «PENESCROTO»?",
+   "r": "Ya no hace falta",
+   "regla": "cierre · ya no hacía falta preguntarlo",
+   "rk": "cierre",
+   "por": "el ciclo",
+   "porque": "ya no está en ningún resultado: el lector lo lee distinto, o ya es alias de alguien",
+   "t": 1794764136212,
+   "filas": [
+    1405
+   ],
+   "variantes": [
+    "PENESCROTO"
+   ],
+   "escribio": {}
   }
  ],
  "deshechas": []

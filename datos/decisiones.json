@@ -378,6 +378,23 @@
    "cuando": "2026-11-12 3:39 PM ET",
    "por": "Claude, con la prueba (Makmah se lo pidió a Dlx, 12/11/2026)",
    "nota": "la retuvo la verificación de llaves: «la publicó zinox33, que nunca había publicado una llave, y ningún anuncio de ACAD la respalda». Las dos cosas tienen respuesta en el #torneos de la ACADEMIA: «HOY ES LA NACIONAL DE VENEC» (07/11, Leonar-T, con los horarios por país), «UN PLACER MOSTRAR AL EQUIPO DE TRABAJO DE ESTA NACIONAL» (07/11) con ZINOX 🇨🇱 de host, y el resultado del 08/11: CARLOS 🇪🇨 (<@958103803616444528>) primero y OG 🇻🇪 (<@425356695309516810>) segundo, lo mismo que dice la llave. El anuncio no se encontró porque el lector toma mal el título de los anuncios de la ACADEMIA (pendiente aparte)"
+  },
+  "CEUTA · CEU · 01/10": {
+   "campeon": {
+    "ganador": "(sin campeón)",
+    "promedio": true,
+    "ronda": "final",
+    "batallas": [
+     [
+      "Trot",
+      "marcos🇪🇸"
+     ]
+    ],
+    "pasaron": []
+   },
+   "cuando": "2026-11-15 12:35 PM ET",
+   "por": "el ciclo (R24)",
+   "nota": "Dlx en ✅ Decidir, a «Bracket incompleto»: sin campeón. La llave no lo decía: los dos finalistas cobran el promedio de 1.º y 2.º (`llaves_a_entrada.con_campeon()`)"
   }
  },
  "no_rankear": {

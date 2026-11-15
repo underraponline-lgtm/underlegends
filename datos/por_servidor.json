@@ -102,6 +102,15 @@
     "pts": 938,
     "racha": "0/0"
    },
+   "CEU": {
+    "duelos": "",
+    "ev": 1,
+    "oro": 0,
+    "ovr": 44,
+    "pod": 1,
+    "pts": 4000,
+    "racha": "0/0"
+   },
    "FFA": {
     "duelos": "1/4",
     "ev": 12,
@@ -281,6 +290,31 @@
     }
    }
   },
+  "AFIN": {
+   "CEU": {
+    "duelos": "",
+    "ev": 1,
+    "oro": 0,
+    "ovr": 44,
+    "pod": 1,
+    "pts": 5000,
+    "racha": "1/1",
+    "tg": {
+     "fin": 1
+    }
+   }
+  },
+  "AFINN": {
+   "CEU": {
+    "duelos": "",
+    "ev": 1,
+    "oro": 0,
+    "ovr": 42,
+    "pod": 0,
+    "pts": 2000,
+    "racha": "0/0"
+   }
+  },
   "AFR": {
    "FFA": {
     "duelos": "",
@@ -402,6 +436,17 @@
     "ovr": 40,
     "pod": 0,
     "pts": 0,
+    "racha": "0/0"
+   }
+  },
+  "ANDER": {
+   "CEU": {
+    "duelos": "",
+    "ev": 1,
+    "oro": 0,
+    "ovr": 42,
+    "pod": 0,
+    "pts": 2000,
     "racha": "0/0"
    }
   },
@@ -1181,6 +1226,20 @@
     "pod": 0,
     "pts": 2749,
     "racha": "0/0"
+   }
+  },
+  "BABI": {
+   "CEU": {
+    "duelos": "",
+    "ev": 1,
+    "oro": 0,
+    "ovr": 42,
+    "pod": 0,
+    "pts": 2000,
+    "racha": "1/1",
+    "tg": {
+     "nuevo": true
+    }
    }
   },
   "BELIKKO": {
@@ -1968,6 +2027,18 @@
     "pts": 30503,
     "racha": "0/0"
    },
+   "CEU": {
+    "duelos": "",
+    "ev": 2,
+    "oro": 0,
+    "ovr": 45,
+    "pod": 1,
+    "pts": 4500,
+    "racha": "0/1",
+    "tg": {
+     "fin": 1
+    }
+   },
    "DDF": {
     "duelos": "3/8",
     "ev": 4,
@@ -2111,6 +2182,18 @@
    }
   },
   "Carlosmo": {
+   "CEU": {
+    "duelos": "",
+    "ev": 1,
+    "oro": 0,
+    "ovr": 44,
+    "pod": 1,
+    "pts": 5000,
+    "racha": "1/1",
+    "tg": {
+     "fin": 1
+    }
+   },
    "DDF": {
     "duelos": "2/3",
     "ev": 1,
@@ -3383,6 +3466,18 @@
     "pod": 0,
     "pts": 16125,
     "racha": "0/0"
+   },
+   "CEU": {
+    "duelos": "",
+    "ev": 2,
+    "oro": 0,
+    "ovr": 43,
+    "pod": 0,
+    "pts": 5500,
+    "racha": "0/0",
+    "tg": {
+     "fund": true
+    }
    },
    "DDF": {
     "duelos": "5/19",
@@ -4928,6 +5023,18 @@
     "pts": 9975,
     "racha": "0/0"
    },
+   "CEU": {
+    "duelos": "",
+    "ev": 3,
+    "oro": 2,
+    "ovr": 47,
+    "pod": 2,
+    "pts": 17000,
+    "racha": "3/3",
+    "tg": {
+     "fin": 2
+    }
+   },
    "CH": {
     "duelos": "",
     "ev": 2,
@@ -5997,6 +6104,15 @@
     "pts": 6000,
     "racha": "0/0"
    },
+   "CEU": {
+    "duelos": "",
+    "ev": 1,
+    "oro": 0,
+    "ovr": 42,
+    "pod": 0,
+    "pts": 2000,
+    "racha": "0/0"
+   },
    "DDF": {
     "duelos": "0/2",
     "ev": 5,
@@ -6775,6 +6891,18 @@
     "pts": 3719,
     "racha": "0/0"
    },
+   "CEU": {
+    "duelos": "",
+    "ev": 1,
+    "oro": 0,
+    "ovr": 42,
+    "pod": 0,
+    "pts": 3000,
+    "racha": "0/0",
+    "tg": {
+     "fund": true
+    }
+   },
    "FFA": {
     "duelos": "0/4",
     "ev": 12,
@@ -6947,6 +7075,20 @@
     "pod": 0,
     "pts": 9287,
     "racha": "1/1"
+   },
+   "CEU": {
+    "duelos": "",
+    "ev": 4,
+    "oro": 1,
+    "ovr": 48,
+    "pod": 2,
+    "pts": 17500,
+    "racha": "1/1",
+    "tg": {
+     "fin": 2,
+     "fund": true,
+     "llave": true
+    }
    },
    "DDF": {
     "duelos": "0/2",
@@ -7790,6 +7932,18 @@
     "pts": 21719,
     "racha": "0/0"
    },
+   "CEU": {
+    "duelos": "",
+    "ev": 4,
+    "oro": 0,
+    "ovr": 44,
+    "pod": 0,
+    "pts": 8000,
+    "racha": "0/0",
+    "tg": {
+     "llave": true
+    }
+   },
    "CH": {
     "duelos": "",
     "ev": 3,
@@ -8536,6 +8690,20 @@
      "nuevo": true
     }
    },
+   "CEU": {
+    "duelos": "",
+    "ev": 7,
+    "oro": 1,
+    "ovr": 50,
+    "pod": 3,
+    "pts": 29000,
+    "racha": "1/1",
+    "tg": {
+     "fin": 2,
+     "fund": true,
+     "llave": true
+    }
+   },
    "DDF": {
     "duelos": "1/6",
     "ev": 6,
@@ -8858,6 +9026,18 @@
    }
   },
   "Medster": {
+   "CEU": {
+    "duelos": "",
+    "ev": 1,
+    "oro": 0,
+    "ovr": 42,
+    "pod": 0,
+    "pts": 2000,
+    "racha": "1/1",
+    "tg": {
+     "nuevo": true
+    }
+   },
    "URBF": {
     "duelos": "1/2",
     "ev": 1,
@@ -9275,6 +9455,18 @@
     "pts": 7723,
     "racha": "0/0"
    },
+   "CEU": {
+    "duelos": "",
+    "ev": 1,
+    "oro": 0,
+    "ovr": 42,
+    "pod": 0,
+    "pts": 3500,
+    "racha": "1/1",
+    "tg": {
+     "nuevo": true
+    }
+   },
    "DDF": {
     "duelos": "0/1",
     "ev": 1,
@@ -9368,6 +9560,18 @@
    }
   },
   "Motera": {
+   "CEU": {
+    "duelos": "",
+    "ev": 3,
+    "oro": 3,
+    "ovr": 48,
+    "pod": 3,
+    "pts": 22500,
+    "racha": "3/3",
+    "tg": {
+     "fin": 3
+    }
+   },
    "URBF": {
     "duelos": "9/11",
     "ev": 4,
@@ -9512,6 +9716,15 @@
    }
   },
   "NC": {
+   "CEU": {
+    "duelos": "",
+    "ev": 2,
+    "oro": 0,
+    "ovr": 43,
+    "pod": 0,
+    "pts": 4125,
+    "racha": "0/0"
+   },
    "CH": {
     "duelos": "0/1",
     "ev": 3,
@@ -9785,6 +9998,15 @@
    }
   },
   "Nerick": {
+   "CEU": {
+    "duelos": "",
+    "ev": 2,
+    "oro": 0,
+    "ovr": 43,
+    "pod": 0,
+    "pts": 4000,
+    "racha": "0/0"
+   },
    "FDS": {
     "duelos": "",
     "ev": 1,
@@ -10451,6 +10673,20 @@
     "racha": "0/0"
    }
   },
+  "PITER": {
+   "CEU": {
+    "duelos": "",
+    "ev": 1,
+    "oro": 0,
+    "ovr": 42,
+    "pod": 0,
+    "pts": 2000,
+    "racha": "0/0",
+    "tg": {
+     "fund": true
+    }
+   }
+  },
   "PIYI 🇲🇽": {
    "FFA": {
     "duelos": "",
@@ -11103,6 +11339,17 @@
     "ovr": 42,
     "pod": 0,
     "pts": 1875,
+    "racha": "0/0"
+   }
+  },
+  "REPECHAJE": {
+   "CEU": {
+    "duelos": "",
+    "ev": 1,
+    "oro": 0,
+    "ovr": 42,
+    "pod": 0,
+    "pts": 2000,
     "racha": "0/0"
    }
   },
@@ -12074,6 +12321,19 @@
    }
   },
   "Scot": {
+   "CEU": {
+    "duelos": "",
+    "ev": 2,
+    "oro": 0,
+    "ovr": 45,
+    "pod": 1,
+    "pts": 8500,
+    "racha": "1/1",
+    "tg": {
+     "fin": 1,
+     "fund": true
+    }
+   },
    "DDS": {
     "duelos": "",
     "ev": 1,
@@ -12207,6 +12467,15 @@
     "ovr": 42,
     "pod": 0,
     "pts": 1875,
+    "racha": "0/0"
+   },
+   "CEU": {
+    "duelos": "",
+    "ev": 1,
+    "oro": 0,
+    "ovr": 42,
+    "pod": 0,
+    "pts": 3500,
     "racha": "0/0"
    },
    "DDF": {
@@ -12783,6 +13052,18 @@
    }
   },
   "Sweet pain": {
+   "CEU": {
+    "duelos": "",
+    "ev": 1,
+    "oro": 0,
+    "ovr": 42,
+    "pod": 0,
+    "pts": 3000,
+    "racha": "1/1",
+    "tg": {
+     "nuevo": true
+    }
+   },
    "LKR": {
     "duelos": "",
     "ev": 1,
@@ -12805,6 +13086,18 @@
    }
   },
   "TG": {
+   "CEU": {
+    "duelos": "",
+    "ev": 1,
+    "oro": 0,
+    "ovr": 42,
+    "pod": 0,
+    "pts": 2000,
+    "racha": "1/1",
+    "tg": {
+     "nuevo": true
+    }
+   },
    "URBF": {
     "duelos": "0/1",
     "ev": 1,
@@ -12830,6 +13123,17 @@
     "tg": {
      "fin": 1
     }
+   }
+  },
+  "TMAX TURBAO": {
+   "CEU": {
+    "duelos": "",
+    "ev": 1,
+    "oro": 0,
+    "ovr": 42,
+    "pod": 0,
+    "pts": 2000,
+    "racha": "0/0"
    }
   },
   "TOBALSILLO": {
@@ -12928,6 +13232,15 @@
     "pts": 14000,
     "racha": "0/0"
    },
+   "CEU": {
+    "duelos": "",
+    "ev": 1,
+    "oro": 0,
+    "ovr": 42,
+    "pod": 0,
+    "pts": 3000,
+    "racha": "0/0"
+   },
    "DDF": {
     "duelos": "2/9",
     "ev": 8,
@@ -12978,6 +13291,17 @@
     "tg": {
      "fund": true
     }
+   }
+  },
+  "Telmex": {
+   "CEU": {
+    "duelos": "",
+    "ev": 1,
+    "oro": 0,
+    "ovr": 42,
+    "pod": 0,
+    "pts": 2000,
+    "racha": "0/0"
    }
   },
   "Tenor": {
@@ -13092,8 +13416,17 @@
     "oro": 0,
     "ovr": 43,
     "pod": 0,
-    "pts": 2344,
+    "pts": 1876,
     "racha": "0/0"
+   },
+   "CEU": {
+    "duelos": "",
+    "ev": 2,
+    "oro": 0,
+    "ovr": 43,
+    "pod": 0,
+    "pts": 5000,
+    "racha": "1/1"
    },
    "URBF": {
     "duelos": "0/2",
@@ -13173,6 +13506,19 @@
     "pts": 9343,
     "racha": "0/1",
     "tg": {
+     "fund": true
+    }
+   },
+   "CEU": {
+    "duelos": "",
+    "ev": 3,
+    "oro": 0,
+    "ovr": 46,
+    "pod": 1,
+    "pts": 12000,
+    "racha": "0/1",
+    "tg": {
+     "fin": 1,
      "fund": true
     }
    },
@@ -13411,6 +13757,18 @@
    }
   },
   "Under": {
+   "CEU": {
+    "duelos": "",
+    "ev": 1,
+    "oro": 0,
+    "ovr": 42,
+    "pod": 0,
+    "pts": 3500,
+    "racha": "1/1",
+    "tg": {
+     "nuevo": true
+    }
+   },
    "FFA": {
     "duelos": "0/2",
     "ev": 6,
@@ -14368,6 +14726,18 @@
     "pts": 938,
     "racha": "0/0"
    },
+   "CEU": {
+    "duelos": "",
+    "ev": 1,
+    "oro": 0,
+    "ovr": 42,
+    "pod": 0,
+    "pts": 2000,
+    "racha": "0/0",
+    "tg": {
+     "fund": true
+    }
+   },
    "FFA": {
     "duelos": "0/4",
     "ev": 11,
@@ -14502,6 +14872,15 @@
    }
   },
   "ZiarKI": {
+   "CEU": {
+    "duelos": "",
+    "ev": 2,
+    "oro": 0,
+    "ovr": 43,
+    "pod": 0,
+    "pts": 4000,
+    "racha": "1/1"
+   },
    "FFA": {
     "duelos": "",
     "ev": 1,

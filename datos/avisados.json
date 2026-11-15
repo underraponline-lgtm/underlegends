@@ -39965,7 +39965,7 @@
    ],
    [
     "yinn",
-    "Number",
+    "Number VE",
     "yinn"
    ],
    [
@@ -39993,7 +39993,7 @@
    "yinn": 33
   },
   "fecha": "08/11",
-  "firma": "bc2f723157e52aa2",
+  "firma": "614a4c459048d367",
   "msg": "1569128640363364464",
   "nombre": "K.O.M VOL.10",
   "num": 592,
@@ -40030,7 +40030,7 @@
     2000
    ],
    [
-    "Number",
+    "Number VE",
     "Cuartos",
     2000
    ],
@@ -41411,7 +41411,7 @@
    "yinn": 33
   },
   "fecha": "09/11",
-  "firma": "824637c23d422098",
+  "firma": "8acbcaf12703405c",
   "msg": "1569560949965197485",
   "nombre": "TORNEO CLANDESTINO V.1",
   "num": 600,
@@ -46191,7 +46191,7 @@
    "Vilca": 22
   },
   "fecha": "12/11",
-  "firma": "ade7ec24155f9fbf",
+  "firma": "429b387c04c2a305",
   "msg": "1570602758506151978",
   "nombre": "RANKED 1",
   "num": 627,
@@ -47575,14 +47575,14 @@
     "NC"
    ],
    [
-    "Number",
+    "Number VE",
     "Hades",
-    "Number"
+    "Number VE"
    ],
    [
-    "Number",
+    "Number VE",
     "BTRX",
-    "Number"
+    "Number VE"
    ],
    [
     "Oasis",
@@ -47601,7 +47601,7 @@
    "francis": 4
   },
   "fecha": "13/11",
-  "firma": "f2868eb044287103",
+  "firma": "4f10c7998123d331",
   "msg": "1571002908307099750",
   "nombre": "KISS OF SHINIGAMI",
   "num": 633,
@@ -48339,6 +48339,983 @@
     "BNA",
     "Octavos",
     1250
+   ]
+  ],
+  "v": 2
+ },
+ "637": {
+  "antes": {
+   "Dominick": [
+    261,
+    54,
+    true
+   ],
+   "Krish": [
+    109,
+    143,
+    false
+   ],
+   "LAST": [
+    61,
+    74,
+    false
+   ],
+   "Marcos": [
+    84,
+    103,
+    false
+   ],
+   "Scot": [
+    312,
+    186,
+    true
+   ],
+   "Trot": [
+    57,
+    67,
+    false
+   ]
+  },
+  "canal": "",
+  "duelos": [
+   [
+    "Marcos",
+    "PITER",
+    "Marcos"
+   ],
+   [
+    "Dominick",
+    "Krish",
+    "Dominick"
+   ],
+   [
+    "LAST",
+    "Zaik 🇪🇸",
+    "LAST"
+   ],
+   [
+    "LAST",
+    "Krish",
+    "LAST"
+   ],
+   [
+    "Marcos",
+    "Dominick",
+    "Marcos"
+   ],
+   [
+    "Marcos",
+    "Scot",
+    "Marcos"
+   ],
+   [
+    "LAST",
+    "Trot",
+    "LAST"
+   ],
+   [
+    "LAST",
+    "Marcos",
+    "LAST"
+   ]
+  ],
+  "ev_antes": {
+   "Dominick": 42,
+   "Krish": 15,
+   "LAST": 18,
+   "Marcos": 11,
+   "Scot": 11,
+   "Trot": 26
+  },
+  "fecha": "14/10",
+  "nombre": "NOS FOLLAMOS TODOS A KRISHI",
+  "num": 637,
+  "participantes": 9,
+  "sello": {
+   "LAST": "7de7edd6ad95:e17dcfa271c4"
+  },
+  "sv": "CEU",
+  "t": "2026-11-15T17:28:04Z",
+  "tabla": [
+   [
+    "LAST",
+    "Campeón",
+    7500
+   ],
+   [
+    "Marcos",
+    "Subcampeón",
+    5000
+   ],
+   [
+    "Dominick",
+    "Semifinal",
+    3500
+   ],
+   [
+    "Scot",
+    "Semifinal",
+    3500
+   ],
+   [
+    "Trot",
+    "Semifinal",
+    3500
+   ],
+   [
+    "Krish",
+    "Cuartos",
+    3000
+   ],
+   [
+    "PITER",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Zaik 🇪🇸",
+    "Cuartos",
+    2000
+   ]
+  ],
+  "v": 2
+ },
+ "638": {
+  "antes": {
+   "Geoka": [
+    44,
+    51,
+    false
+   ],
+   "Marcos": [
+    84,
+    103,
+    false
+   ],
+   "NC": [
+    22,
+    23,
+    false
+   ],
+   "Scot": [
+    312,
+    186,
+    true
+   ]
+  },
+  "canal": "",
+  "duelos": [
+   [
+    "NC",
+    "TMAX TURBAO",
+    "NC"
+   ],
+   [
+    "Geoka",
+    "Lvel 🇻🇪",
+    "Geoka"
+   ],
+   [
+    "Scot",
+    "NC",
+    "Scot"
+   ],
+   [
+    "Geoka",
+    "Marcos",
+    "Geoka"
+   ],
+   [
+    "Geoka",
+    "Scot",
+    "Geoka"
+   ]
+  ],
+  "ev_antes": {
+   "Geoka": 28,
+   "Marcos": 11,
+   "NC": 56,
+   "Scot": 11
+  },
+  "fecha": "28/10",
+  "nombre": "PORNO GAY",
+  "num": 638,
+  "participantes": 8,
+  "sello": {
+   "Geoka": "b4d7564c7108:e17dcfa271c4"
+  },
+  "sv": "CEU",
+  "t": "2026-11-15T17:28:08Z",
+  "tabla": [
+   [
+    "Geoka",
+    "Campeón",
+    7500
+   ],
+   [
+    "Scot",
+    "Subcampeón",
+    5000
+   ],
+   [
+    "NC",
+    "Semifinal",
+    3500
+   ],
+   [
+    "Marcos",
+    "Semifinal",
+    3500
+   ],
+   [
+    "TMAX TURBAO",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Lvel 🇻🇪",
+    "Cuartos",
+    2000
+   ]
+  ],
+  "v": 2
+ },
+ "639": {
+  "antes": {
+   "Dominick": [
+    261,
+    54,
+    true
+   ],
+   "Jobaking": [
+    73,
+    89,
+    false
+   ],
+   "Marcos": [
+    84,
+    103,
+    false
+   ],
+   "Motera": [
+    85,
+    104,
+    false
+   ],
+   "Teito": [
+    54,
+    64,
+    false
+   ],
+   "Trot": [
+    57,
+    67,
+    false
+   ]
+  },
+  "canal": "",
+  "duelos": [
+   [
+    "Teito",
+    "Dominick",
+    "Teito"
+   ],
+   [
+    "Motera",
+    "Jobaking",
+    "Motera"
+   ],
+   [
+    "Trot",
+    "Telmex",
+    "Trot"
+   ],
+   [
+    "Marcos",
+    "Lvel 🇻🇪",
+    "Marcos"
+   ],
+   [
+    "Trot",
+    "Teito",
+    "Trot"
+   ],
+   [
+    "Motera",
+    "Marcos",
+    "Motera"
+   ],
+   [
+    "Motera",
+    "Trot",
+    "Motera"
+   ],
+   [
+    "Marcos",
+    "Teito",
+    "Marcos"
+   ]
+  ],
+  "ev_antes": {
+   "Dominick": 42,
+   "Jobaking": 17,
+   "Marcos": 11,
+   "Motera": 4,
+   "Teito": 40,
+   "Trot": 26
+  },
+  "fecha": "28/10",
+  "nombre": "PORNO FEMBOY",
+  "num": 639,
+  "participantes": 8,
+  "sello": {
+   "Motera": "514322a86423:e17dcfa271c4"
+  },
+  "sv": "CEU",
+  "t": "2026-11-15T17:28:08Z",
+  "tabla": [
+   [
+    "Motera",
+    "Campeón",
+    7500
+   ],
+   [
+    "Trot",
+    "Subcampeón",
+    5000
+   ],
+   [
+    "Marcos",
+    "Tercero",
+    4000
+   ],
+   [
+    "Teito",
+    "Cuarto",
+    3000
+   ],
+   [
+    "Dominick",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Jobaking",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Telmex",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Lvel 🇻🇪",
+    "Cuartos",
+    2000
+   ]
+  ],
+  "v": 2
+ },
+ "640": {
+  "antes": {
+   "1200": [
+    271,
+    101,
+    true
+   ],
+   "Geoka": [
+    44,
+    51,
+    false
+   ],
+   "LAST": [
+    61,
+    74,
+    false
+   ],
+   "Marcos": [
+    84,
+    103,
+    false
+   ],
+   "Nerick": [
+    616,
+    593,
+    true
+   ]
+  },
+  "canal": "",
+  "duelos": [
+   [
+    "LAST",
+    "Lvel 🇻🇪",
+    "LAST"
+   ],
+   [
+    "AFIN",
+    "Marcos",
+    "AFIN"
+   ],
+   [
+    "PENESCROTO",
+    "Nerick",
+    "PENESCROTO"
+   ],
+   [
+    "Geoka",
+    "REPECHAJE",
+    "Geoka"
+   ],
+   [
+    "AFIN",
+    "LAST",
+    "AFIN"
+   ],
+   [
+    "Geoka",
+    "1200",
+    "Geoka"
+   ],
+   [
+    "Geoka",
+    "AFIN",
+    "Geoka"
+   ],
+   [
+    "1200",
+    "LAST",
+    "1200"
+   ]
+  ],
+  "ev_antes": {
+   "1200": 13,
+   "Geoka": 28,
+   "LAST": 18,
+   "Marcos": 11,
+   "Nerick": 1
+  },
+  "fecha": "29/10",
+  "nombre": "PORNO MASCOTAS.",
+  "num": 640,
+  "participantes": 9,
+  "sello": {
+   "Geoka": "b4d7564c7108:e17dcfa271c4"
+  },
+  "sv": "CEU",
+  "t": "2026-11-15T17:28:08Z",
+  "tabla": [
+   [
+    "Geoka",
+    "Campeón",
+    7500
+   ],
+   [
+    "AFIN",
+    "Subcampeón",
+    5000
+   ],
+   [
+    "1200",
+    "Tercero",
+    4000
+   ],
+   [
+    "LAST",
+    "Cuarto",
+    3000
+   ],
+   [
+    "Lvel 🇻🇪",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Marcos",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Nerick",
+    "Cuartos",
+    2000
+   ],
+   [
+    "REPECHAJE",
+    "Cuartos",
+    2000
+   ]
+  ],
+  "v": 2
+ },
+ "641": {
+  "antes": {
+   "Calíz": [
+    46,
+    53,
+    false
+   ],
+   "Marcos": [
+    84,
+    103,
+    false
+   ],
+   "Motera": [
+    85,
+    104,
+    false
+   ],
+   "Nerick": [
+    616,
+    593,
+    true
+   ],
+   "Shadow": [
+    113,
+    152,
+    false
+   ],
+   "ZiarKI": [
+    764,
+    764,
+    true
+   ]
+  },
+  "canal": "",
+  "duelos": [
+   [
+    "Motera",
+    "ZiarKI",
+    "Motera"
+   ],
+   [
+    "Marcos",
+    "Nerick",
+    "Marcos"
+   ],
+   [
+    "Shadow",
+    "Lvel 🇻🇪",
+    "Shadow"
+   ],
+   [
+    "Motera",
+    "Marcos",
+    "Motera"
+   ],
+   [
+    "Calíz",
+    "Shadow",
+    "Calíz"
+   ],
+   [
+    "Motera",
+    "Calíz",
+    "Motera"
+   ]
+  ],
+  "ev_antes": {
+   "Calíz": 34,
+   "Marcos": 11,
+   "Motera": 4,
+   "Nerick": 1,
+   "Shadow": 10,
+   "ZiarKI": 1
+  },
+  "fecha": "30/10",
+  "nombre": "PORNO LESBICO",
+  "num": 641,
+  "participantes": 9,
+  "sello": {
+   "Motera": "514322a86423:e17dcfa271c4"
+  },
+  "sv": "CEU",
+  "t": "2026-11-15T17:28:08Z",
+  "tabla": [
+   [
+    "Motera",
+    "Campeón",
+    7500
+   ],
+   [
+    "Marcos",
+    "Semifinal",
+    3500
+   ],
+   [
+    "Shadow",
+    "Semifinal",
+    3500
+   ],
+   [
+    "Calíz",
+    "Subcampeón",
+    2500
+   ],
+   [
+    "ZiarKI",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Nerick",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Lvel 🇻🇪",
+    "Cuartos",
+    2000
+   ]
+  ],
+  "v": 2
+ },
+ "642": {
+  "antes": {
+   "Calíz": [
+    46,
+    53,
+    false
+   ],
+   "Carlosmo": [
+    108,
+    142,
+    false
+   ],
+   "LAST": [
+    61,
+    74,
+    false
+   ],
+   "Marcos": [
+    84,
+    103,
+    false
+   ],
+   "Motera": [
+    85,
+    104,
+    false
+   ],
+   "Tmax Turbo [PN]": [
+    153,
+    260,
+    false
+   ],
+   "Trot": [
+    57,
+    67,
+    false
+   ]
+  },
+  "canal": "",
+  "duelos": [
+   [
+    "Motera",
+    "LAST",
+    "Motera"
+   ],
+   [
+    "Trot",
+    "AFINN",
+    "Trot"
+   ],
+   [
+    "Marcos",
+    "ANDER",
+    "Marcos"
+   ],
+   [
+    "Carlosmo",
+    "Tmax Turbo [PN]",
+    "Carlosmo"
+   ],
+   [
+    "Carlosmo",
+    "Calíz",
+    "Carlosmo"
+   ],
+   [
+    "Motera",
+    "Trot",
+    "Motera"
+   ],
+   [
+    "Carlosmo",
+    "Marcos",
+    "Carlosmo"
+   ],
+   [
+    "Motera",
+    "Carlosmo",
+    "Motera"
+   ]
+  ],
+  "ev_antes": {
+   "Calíz": 34,
+   "Carlosmo": 2,
+   "LAST": 18,
+   "Marcos": 11,
+   "Motera": 4,
+   "Tmax Turbo [PN]": 4,
+   "Trot": 26
+  },
+  "fecha": "30/10",
+  "nombre": "HALOWEEN",
+  "num": 642,
+  "participantes": 9,
+  "sello": {
+   "Motera": "514322a86423:e17dcfa271c4"
+  },
+  "sv": "CEU",
+  "t": "2026-11-15T17:28:08Z",
+  "tabla": [
+   [
+    "Motera",
+    "Campeón",
+    7500
+   ],
+   [
+    "Carlosmo",
+    "Subcampeón",
+    5000
+   ],
+   [
+    "Trot",
+    "Semifinal",
+    3500
+   ],
+   [
+    "Marcos",
+    "Semifinal",
+    3500
+   ],
+   [
+    "LAST",
+    "Cuartos",
+    2000
+   ],
+   [
+    "AFINN",
+    "Cuartos",
+    2000
+   ],
+   [
+    "ANDER",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Tmax Turbo [PN]",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Calíz",
+    "Cuartos",
+    2000
+   ]
+  ],
+  "v": 2
+ },
+ "643": {
+  "antes": {
+   "Geoka": [
+    44,
+    51,
+    false
+   ],
+   "LAST": [
+    61,
+    74,
+    false
+   ],
+   "Marcos": [
+    84,
+    103,
+    false
+   ],
+   "Medster": [
+    163,
+    296,
+    false
+   ],
+   "Monet": [
+    295,
+    157,
+    true
+   ],
+   "NC": [
+    22,
+    23,
+    false
+   ],
+   "Sweet pain": [
+    571,
+    544,
+    true
+   ],
+   "TG": [
+    572,
+    545,
+    true
+   ],
+   "Tmax Turbo [PN]": [
+    153,
+    260,
+    false
+   ],
+   "Under": [
+    309,
+    182,
+    true
+   ],
+   "ZiarKI": [
+    764,
+    764,
+    true
+   ]
+  },
+  "canal": "",
+  "duelos": [
+   [
+    "Monet",
+    "NC",
+    "Monet"
+   ],
+   [
+    "LAST",
+    "TG",
+    "LAST"
+   ],
+   [
+    "LAST",
+    "Medster",
+    "LAST"
+   ],
+   [
+    "Monet",
+    "BABI",
+    "Monet"
+   ],
+   [
+    "Monet",
+    "Geoka",
+    "Monet"
+   ],
+   [
+    "Marcos",
+    "ZiarKI",
+    "Marcos"
+   ],
+   [
+    "Marcos",
+    "Tmax Turbo [PN]",
+    "Marcos"
+   ],
+   [
+    "Under",
+    "Sweet pain",
+    "Under"
+   ],
+   [
+    "LAST",
+    "Monet",
+    "LAST"
+   ],
+   [
+    "Marcos",
+    "Under",
+    "Marcos"
+   ],
+   [
+    "Marcos",
+    "LAST",
+    "Marcos"
+   ]
+  ],
+  "ev_antes": {
+   "Geoka": 28,
+   "LAST": 18,
+   "Marcos": 11,
+   "Medster": 1,
+   "Monet": 9,
+   "NC": 56,
+   "Sweet pain": 1,
+   "TG": 1,
+   "Tmax Turbo [PN]": 4,
+   "Under": 7,
+   "ZiarKI": 1
+  },
+  "fecha": "11/11",
+  "nombre": "NUEVA TEMPORADA",
+  "num": 643,
+  "participantes": 12,
+  "sello": {
+   "Marcos": "01ecec249754:e17dcfa271c4"
+  },
+  "sv": "CEU",
+  "t": "2026-11-15T17:28:12Z",
+  "tabla": [
+   [
+    "Marcos",
+    "Campeón",
+    7500
+   ],
+   [
+    "LAST",
+    "Subcampeón",
+    5000
+   ],
+   [
+    "Monet",
+    "Semifinal",
+    3500
+   ],
+   [
+    "Under",
+    "Semifinal",
+    3500
+   ],
+   [
+    "TG",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Medster",
+    "Cuartos",
+    2000
+   ],
+   [
+    "BABI",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Geoka",
+    "Cuartos",
+    2000
+   ],
+   [
+    "ZiarKI",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Tmax Turbo [PN]",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Sweet pain",
+    "Cuartos",
+    2000
+   ],
+   [
+    "NC",
+    "R32",
+    625
    ]
   ],
   "v": 2
