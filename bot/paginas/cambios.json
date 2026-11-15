@@ -11,6 +11,23 @@
  ],
  "cambios": [
     {
+        "version": "5.43",
+        "dia": "2026-11-15",
+        "cuando": "2026-11-15T14:09:00-05:00",
+        "titulo": "Publicaciones, rehecha como el Inicio",
+        "items": [
+            "**Publicaciones** se arma como el Inicio: arriba un **escenario** con lo más fuerte de los últimos días, que pasa solo; abajo, **círculos de servidores** para ver sólo lo de uno (o lo de quien sigues).",
+            "Un **buscador** y los filtros (Campeones, Rangos, Cartas, Pase, Most Wanted, Anuncios…) quedan fijos mientras bajas.",
+            "Lo fuerte va grande, con su carta y **Felicitar**; lo demás en renglón. Las cartas nuevas del día salen **en abanico**, las subidas de rango en fila y los anuncios en una lista.",
+            "Los comentarios se abren en una **hoja** con 💬 en vez de ir todos desplegados: la página mide menos de la mitad.",
+            "Los días de antes salen en **resumen**, con sus campeones en miniatura; «Ver el día» los abre.",
+            "En **Tarjetas**, «Salieron esta semana»: las cartas nuevas en abanico, arriba de los estantes.",
+            "En **Eventos**, cada uno de «Los últimos campeones» tiene **👏 Felicitar** y 💬.",
+            "En el **Ranking Competitivo**, «Subieron de rango»: quién subió esta semana, con su letra. Tócalo para felicitarlo.",
+            "Arreglado: tocar 💬 en una publicación ya no recarga la página."
+        ]
+    },
+    {
         "version": "5.42",
         "dia": "2026-11-15",
         "cuando": "2026-11-15T02:43:00-05:00",
