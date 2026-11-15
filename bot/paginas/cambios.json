@@ -11,6 +11,17 @@
  ],
  "cambios": [
     {
+        "version": "5.44",
+        "dia": "2026-11-15",
+        "cuando": "2026-11-15T14:35:00-05:00",
+        "titulo": "El Pase con dos filas y el drop del día",
+        "items": [
+            "La pista del **Pase de rapero** vuelve a tener **dos filas**: Gratis arriba, Premium abajo y tu barra de XP en el medio. Se desliza con los 50 niveles y empieza en el que sigue.",
+            "**El drop del día**: entra al Pase y abre un **Dragón Drop** cada día. Si abres uno de lunes a sábado, **el domingo te toca un Star Dragon** (de Vinilo para arriba). Es para los miembros de DRA.",
+            "**Más vida**: luces de escenario, tu XP que sube contando, las Tareas que se llenan y se sellan al terminarlas. Con «Menos animaciones», todo quieto."
+        ]
+    },
+    {
         "version": "5.43",
         "dia": "2026-11-15",
         "cuando": "2026-11-15T14:09:00-05:00",
