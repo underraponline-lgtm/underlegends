@@ -1,5 +1,5 @@
 {
- "cuando": "2026-11-15T07:09:24+00:00",
+ "cuando": "2026-11-15T07:25:03+00:00",
  "anuncios": [
   {
    "nombre": "¡SE LLEGÓ LA GRAN NOCHE!",
@@ -13132,6 +13132,15 @@
    "discord_id": "1395903355909570633",
    "msg_id": "1570114748823904261",
    "cuando": "2026-11-11T16:35:27"
+  },
+  {
+   "servidor": "CEU",
+   "canal": "inscripciones🖊️",
+   "texto": "SWEET PAIN",
+   "quien": "a.ssamu",
+   "discord_id": "1550194237549838531",
+   "msg_id": "1570114688296165457",
+   "cuando": "2026-11-11T16:35:13"
   },
   {
    "servidor": "CEU",
@@ -43669,15 +43678,6 @@
    "discord_id": "729439360545587291",
    "msg_id": "1559333843561881682",
    "cuando": "2026-10-12T22:35:59"
-  },
-  {
-   "servidor": "SR",
-   "canal": "[📝]inscripciones",
-   "texto": "Abyssus",
-   "quien": "vipertapestry",
-   "discord_id": "768561204707983361",
-   "msg_id": "1559331741532028981",
-   "cuando": "2026-10-12T22:27:38"
   }
  ]
 }
