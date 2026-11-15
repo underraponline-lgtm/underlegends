@@ -14,6 +14,7 @@ import { CuadroMini, LlaveCorta, cortaDe, eventoDelBoton, gcal, llaveEnVivo } fr
 import { H, W, aPng, armarYCompartir, cargarImg, carta, lienzo, pie } from './historia.js';
 import CSS_PAGINA from './css/eventos.css?inline';
 import { usarCss } from './css.js';
+import { useAplausos } from './aplausos.js';
 
 // 🎨 su CSS, con su pedazo (web/src/css/eventos.css)
 usarCss('eventos', CSS_PAGINA);
@@ -492,8 +493,34 @@ function Mes({ liga, porDia, dia, onDia, ym, setYm, color }) {
 }
 
 // ── los últimos campeones: la carta de verdad del campeón (o su cara) y su llave ──────────────────────────────────
+// 👏 Felicitar al campeón desde acá (Dlx, 15/11/2026, de la maqueta B de Publicaciones: «Campeones → Eventos»). Cada
+// llave se cruza con su publicación del muro por el número (`ll` en bot/muro.py), que es lo que se felicita: sin
+// publicación (una llave más vieja que el muro), no hay botón
+function Aplauso({ liga, it, A }) {
+  const id = it.id;
+  const n = Number(A.cu[id] || 0);
+  const mio = !!A.mios[id];
+  const tuyo = liga.yo && (it.ks || []).includes(liga.yo.k);
+  return (
+    <div className="evp-cp-soc">
+      {tuyo ? (n ? <span className="evp-fel tuyo" title="Te felicitaron">👏 {num(n)}</span> : null) : (
+        <button type="button" className={'evp-fel' + (mio ? ' on' : '')} aria-pressed={mio} disabled={mio || !!A.va[id]}
+          onClick={() => { if (window.felicitar) window.felicitar(id); }} aria-label={(mio ? 'Felicitaste' : 'Felicitar') + (n ? ' · ' + n : '')}>
+          <span aria-hidden="true">👏</span>{n ? num(n) : (mio ? '' : 'Felicitar')}
+        </button>
+      )}
+      <a className="evp-cm" href={'#/publicaciones/' + encodeURIComponent(id)} aria-label="Comentar">💬</a>
+    </div>
+  );
+}
 function Campeones({ liga }) {
+  const A = useAplausos();
   const ls = liga.llavesPorFecha().slice(0, 8);
+  const pubs = useMemo(() => {
+    const m = {};
+    (liga.muro || []).forEach((it) => { if (it.tipo === 'campeon' && it.id && it.ll != null && !m[String(it.ll)]) m[String(it.ll)] = it; });
+    return m;
+  }, [liga]);
   if (!ls.length) return null;
   return (
     <div className="rail evp-camps">
@@ -501,14 +528,18 @@ function Campeones({ liga }) {
         const g = liga.campeon(ll);
         const r = (ll.tabla || []).find((x) => x[1] === 'Campeón') || (ll.tabla || [])[0] || [];
         const f = r[3] ? liga.T[r[3]] : liga.fila(r[0] || g[0]);
+        const pub = pubs[String(ll.n)];
         return (
-          <button type="button" key={ll.n} className="evp-cp" onClick={() => accion.llave(ll.n)}>
-            {f && liga.cartaDe(f.k, { sv: ll.sv }) ? <Carta liga={liga} k={f.k} cual={liga.cartaDe(f.k, { sv: ll.sv })} cls="evp-cp-ci" abre={false} />
-              : <span className="evp-cp-sin"><Cara liga={liga} k={f ? f.k : ''} nombre={g[0] || '?'} cls="cara evp-cp-cara" /></span>}
-            <small><img alt="" src={liga.logo(ll.sv)} />{siglaDe(ll.sv)} · {liga.cuando(liga.fechaLlave(ll))}</small>
-            <b>{g.join(' y ')}</b>
-            <span>{limpio(ll.nombre)}</span>
-          </button>
+          <div key={ll.n} className="evp-cp-w">
+            <button type="button" className="evp-cp" onClick={() => accion.llave(ll.n)}>
+              {f && liga.cartaDe(f.k, { sv: ll.sv }) ? <Carta liga={liga} k={f.k} cual={liga.cartaDe(f.k, { sv: ll.sv })} cls="evp-cp-ci" abre={false} />
+                : <span className="evp-cp-sin"><Cara liga={liga} k={f ? f.k : ''} nombre={g[0] || '?'} cls="cara evp-cp-cara" /></span>}
+              <small><img alt="" src={liga.logo(ll.sv)} />{siglaDe(ll.sv)} · {liga.cuando(liga.fechaLlave(ll))}</small>
+              <b>{g.join(' y ')}</b>
+              <span>{limpio(ll.nombre)}</span>
+            </button>
+            {pub ? <Aplauso liga={liga} it={pub} A={A} /> : null}
+          </div>
         );
       })}
     </div>
@@ -1162,7 +1193,7 @@ export function Eventos({ liga, vivoL, dia: diaRuta, avisos }) {
       </div>
       {liga.llaves().length ? (
         <section className="sec negra evp-campeones" id="ev-campeones">
-          <div className="sec-t"><h2>Los últimos campeones</h2><Compartir cls="evp-comp" url={enlace('#/eventos')} texto="Los eventos de la Liga Global" etiqueta="Compartir" /></div>
+          <div className="sec-t"><h2>Los últimos campeones{(() => { const d = liga.desdeLunes(); const n = liga.llaves().filter((ll) => utc(liga.fechaLlave(ll)) >= d).length; return n ? <small className="evp-sem">{n} esta semana</small> : null; })()}</h2><Compartir cls="evp-comp" url={enlace('#/eventos')} texto="Los eventos de la Liga Global" etiqueta="Compartir" /></div>
           <Campeones liga={liga} />
         </section>
       ) : null}

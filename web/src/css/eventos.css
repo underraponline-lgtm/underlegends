@@ -253,3 +253,15 @@
   .app .evp-bol .evp-mo-n b{font-size:24px}
   .app .evp-bol .evp-mo-n img{width:40px;height:40px}
 }
+
+/* 👏 felicitar al campeón y comentar, debajo de cada uno de «Los últimos campeones» (de la maqueta B de Publicaciones) */
+.evp-cp-w{display:grid;grid-template-rows:1fr auto;gap:10px;min-width:0}
+.evp-cp-soc{display:flex;align-items:center;gap:6px}
+.evp-fel{display:inline-flex;align-items:center;gap:6px;min-height:36px;padding:0 10px;border:1.5px solid #4A4A47;background:transparent;color:#F4F4F0;
+  font:700 14px/1 "Barlow Condensed",sans-serif;letter-spacing:.06em;text-transform:uppercase;cursor:pointer;transition:background-color .15s ease}
+.evp-fel.on{background:var(--verde);border-color:var(--verde);color:#030304;cursor:default}
+.evp-fel.tuyo{cursor:default;border-style:dashed}
+.evp-fel:disabled:not(.on){opacity:.6;cursor:default}
+@media (hover: hover) and (pointer: fine){.evp-fel:hover:not(:disabled){background:#1C1C1A}}
+.evp-cm{display:inline-grid;place-items:center;min-width:36px;min-height:36px;border:1.5px solid #4A4A47;text-decoration:none;font-size:15px}
+.evp-sem{font:700 16px/1 "Barlow Condensed",sans-serif;letter-spacing:.06em;color:#A5A5A0;text-transform:uppercase}

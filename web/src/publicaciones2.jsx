@@ -1,4 +1,6 @@
-// 📰 PUBLICACIONES, EL REMAKE (02/11/2026). Dlx: «terminar de remakear las restantes… tómate tu tiempo… haz research».
+// 📰 PUBLICACIONES. La página de hoy es la del 15/11/2026 (más abajo, «EL MURO, CON LAS PIEZAS DEL INICIO»); lo que sigue es
+// del primer remake (02/11/2026) y vale para lo que se quedó: qué dice cada publicación y qué se felicita.
+// PUBLICACIONES, EL REMAKE (02/11/2026). Dlx: «terminar de remakear las restantes… tómate tu tiempo… haz research».
 // Para todos desde el mismo día (Dlx: «Publica y haz todo»), en lugar de la de publicaciones.jsx. Es el mismo muro (bot/muro.py:
 // lo que pasa en la Liga, contado solo, y los anuncios de todos los servidores) con lo que dejó el research de 21st
 // (scratchpad/remake2/research_publicaciones_cambios.md):
@@ -12,17 +14,19 @@
 // - El costado con lo más felicitado en barras, como el Ranking.
 // ⚠️ Lo que Dlx decidió de esta página sigue igual: las encuestas no son lo primero (después del primer día, y al final
 // si ya votaste en todas); Felicitar sólo en los logros; las cartas del día juntas; Promos y «A quien sigo».
-import { Fragment, useEffect, useMemo, useState } from 'react';
+import { Fragment, useEffect, useMemo, useRef, useState } from 'react';
 import { MESES, hora, ksDe, limpio, num, siglaDe, utc } from './liga.js';
-import { CrewCirculo } from './arriba.jsx';
+import { CrewCirculo, escenaDe } from './arriba.jsx';
 import { TierChip } from './crewpanel.jsx';
 import { Cara, Carta, Ico, Vacio, accion, promoAbierta, useCampana } from './piezas.jsx';
 import { Miniatura, abrirVideo } from './video.jsx';
 import { Elegido, X2 } from './encuestas.jsx';
 import { useAplausos } from './aplausos.js';
-import { Hilo } from './comentarios.jsx';
-import { usePases } from './pase.js';
+import { Hilo, delHilo, useComentarios } from './comentarios.jsx';
+import { LuNube, LuSocial } from './medio.jsx';
+import { usePase, usePases } from './pase.js';
 import { SelloPremium, esPremium } from './sello.jsx';
+import { PopCab } from './pop.jsx';
 import { QuienGana } from './quiengana.jsx';
 import { PLATAFORMA } from './publicaciones.jsx';
 import CSS_PAGINA from './css/publicaciones2.css?inline';
@@ -33,12 +37,9 @@ usarCss('publicaciones2', CSS_PAGINA);
 const ANUNCIOS = { anuncio: 1, liga: 1, flyer: 1 };
 const LOGROS = { campeon: 1, rango: 1, caza: 1, sobrevivio: 1, pase: 1, sorteo: 1, ligahito: 1, mesaward: 1 };
 const MES_CAT = { rapero: 'el Rapero del mes', revelacion: 'la Revelación del mes', batalla: 'la Batalla del mes', servidor: 'el Servidor del mes' };
-const CARTA = { pais: 'de País', temporada: 'de Temporada', servidor: 'de Servidor', competitivo: 'Competitiva' };
 // 🎨 de qué color es el punto del riel: lo que se ganó (verde), el Most Wanted y la plata (magenta), los avisos (negro)
 const COLOR = { campeon: 'v', ligahito: 'v', mesaward: 'v', pase: 'v', sorteo: 'v', crewtier: 'v', tarjeta: 'v', rango: 'v',
   caza: 'm', sobrevivio: 'm', precio: 'm', elegido: 'm', premios: 'm' };
-// los que van juntos si hay más de uno en el día
-const JUNTOS = { tarjeta: 1, rango: 1, anuncio: 1, crewtier: 1 };
 // 📦 lo que va en caja con su sombra: lo que es noticia (un campeón, el Most Wanted, un MES AWARD). Lo demás, en renglón
 // (la revisión del remake: «si todo es una caja, nada se ve primero»)
 const fuerte = (it) => it.tipo === 'campeon' || it.tipo === 'mesaward' || it.tipo === 'caza' || it.tipo === 'sobrevivio'
@@ -250,34 +251,15 @@ function contenido(liga, it, pub) {
   return c;
 }
 
-// ── una publicación suelta ──
-function Post({ liga, it, A, nuevo }) {
-  const pub = usePases();
-  const c = contenido(liga, it, pub);
-  if (!c) return null;
-  const logro = !!LOGROS[it.tipo];
-  return (
-    <article className={'pb-post ' + it.tipo + (c.media ? ' media' : fuerte(it) ? ' caja' : ' renglon')} data-pub={it.id || undefined}>
-      {c.vis ? <div className="pb-v">{c.vis}</div> : null}
-      <div className="pb-c">
-        <span className="pb-cat">{c.cat}{nuevo ? <i className="pb-nuevo">NUEVO</i> : null}</span>
-        <p className="pb-t">{c.txt}</p>
-        {c.det ? <small className="pb-d">{c.det}</small> : null}
-        {logro || c.acc ? <div className="pb-acc">{logro ? <Felicitar liga={liga} it={it} A={A} /> : null}{c.acc}</div> : null}
-        {it.id && it.tipo !== 'promo' && it.tipo !== 'flyer' ? <Hilo liga={liga} it={it} /> : null}
-      </div>
-    </article>
-  );
-}
-
 // ── las crews que suben de tier el mismo lunes: una lista, con el tier como pastilla (su color de fondo y la letra que se lee) ──
-function Tiers({ liga, xs, visto }) {
+function Tiers({ liga, xs, visto, A, P }) {
   const T = liga.d.crews_tiers && liga.d.crews_tiers.nombres ? liga.d.crews_tiers : null;
-  if (xs.length === 1 || !T) return <>{xs.map((it) => <Post key={it.t + it.crew} liga={liga} it={it} A={null} nuevo={visto && utc(it.t) > visto} />)}</>;
+  if (xs.length === 1 || !T) return <>{xs.map((it) => <Fila key={it.t + it.crew} liga={liga} it={it} A={A} P={P} nuevo={!!visto && utc(it.t) > visto} />)}</>;
   return (
-    <article className="pb-post grupo tiers">
-      <div className="pb-c">
-        <span className="pb-cat">Crews que suben de tier · {xs.length}{visto && xs.some((it) => utc(it.t) > visto) ? <i className="pb-nuevo">NUEVO</i> : null}</span>
+    <article className="pw-f c-v">
+      <span className="pw-v"><img className="pw-logo" alt="" src="/ul.png" /></span>
+      <div className="pw-tx">
+        <span className="pw-cat">Crews que suben de tier · {xs.length}{visto && xs.some((it) => utc(it.t) > visto) ? <i className="pb-nuevo">NUEVO</i> : null}</span>
         <ul className="pb-filas">
           {xs.map((it) => {
             const viva = (liga.d.crews || []).find((x) => (x.clave || x.crew) === it.crew);
@@ -306,91 +288,6 @@ function MuroCargando() {
   return <p className="pronto-p" role="status">{tarde ? 'No pude traer las publicaciones. Prueba de nuevo en un rato.' : 'Buscando las publicaciones…'}</p>;
 }
 
-// ── las cartas nuevas del día: una tira de cartas que se abren en abanico (sólo CSS) ──
-function Cartas({ liga, xs, nuevo }) {
-  const vistos = new Set();
-  const us = xs.filter((it) => { const k = (it.ks || [])[0]; if (!k || vistos.has(k)) return false; vistos.add(k); return true; });
-  const n = us.length;
-  if (!n) return null;
-  const nombres = us.slice(0, 3).map((it) => limpio((it.quien || [])[0] || ''));
-  const k0 = us[0].ks[0];
-  return (
-    <article className={'pb-post grupo cartas' + (n === 1 ? ' una' : '')}>
-      <div className="pb-c">
-        <span className="pb-cat">{n === 1 ? 'Carta nueva' : 'Cartas nuevas · ' + n}{nuevo ? <i className="pb-nuevo">NUEVO</i> : null}</span>
-        <p className="pb-t">{n === 1 ? <><b>{nombres[0]}</b> ya tiene su carta {CARTA[us[0].carta] || ''}</>
-          : <><b>{nombres.join(', ')}</b>{n > 3 ? ' y ' + (n - 3) + ' más' : ''} ya tienen su carta</>}</p>
-        <div className="pb-mano" style={{ '--n': Math.min(n, 10) }}>
-          {us.slice(0, 10).map((it, i) => {
-            const k = (it.ks || [])[0];
-            return <button type="button" key={k + it.carta} className="pb-mini" style={{ '--i': i }} onClick={() => accion.carta(k, it.carta)} aria-label={'La carta de ' + limpio((it.quien || [])[0] || '')}>
-              <Carta liga={liga} k={k} cual={it.carta} cls="pb-mini-c" abre={false} /></button>;
-          })}
-          {n > 10 ? <span className="pb-mas">+{n - 10}</span> : null}
-        </div>
-        {n === 1 ? <div className="pb-acc"><button type="button" className="pb-a" onClick={() => accion.carta(k0, us[0].carta)}>Ver la carta</button>
-          {liga.T[k0] ? <a className="pb-a" href={'#/r/' + encodeURIComponent(k0)}>Ver su perfil</a> : null}</div> : null}
-      </div>
-    </article>
-  );
-}
-
-// ── las subidas de rango del día, juntas: cada una con su letra y su 👏 ──
-function Rangos({ liga, xs, A, visto }) {
-  const pub = usePases();
-  if (xs.length === 1) return <Post liga={liga} it={xs[0]} A={A} nuevo={visto && utc(xs[0].t) > visto} />;
-  return (
-    <article className="pb-post grupo rangos">
-      <div className="pb-c">
-        <span className="pb-cat">Suben de rango · {xs.length}{visto && xs.some((it) => utc(it.t) > visto) ? <i className="pb-nuevo">NUEVO</i> : null}</span>
-        <ul className="pb-filas">
-          {xs.map((it) => {
-            const ks = ksDe(it);
-            const n0 = limpio((it.quien || [])[0] || '');
-            return (
-              <li key={it.id || it.t + n0} data-pub={it.id || undefined}>
-                <Cara liga={liga} k={ks[0] || ''} nombre={n0} cls={'cara pb-fcara' + (esPremium(pub, ks[0]) ? ' sp-prem-aro' : '')} />
-                {/* 💎 con el premium, el nombre y el sello en un renglón: `.pb-fn` es una grilla y el sello bajaba solo */}
-                <span className="pb-fn">{ks[0] && liga.T[ks[0]] ? (esPremium(pub, ks[0])
-                  ? <span className="sp-prem-fila"><a href={'#/r/' + encodeURIComponent(ks[0])}>{n0}</a><SelloPremium t={13} /></span>
-                  : <a href={'#/r/' + encodeURIComponent(ks[0])}>{n0}</a>) : <b>{n0}</b>}
-                  <small>{it.primero ? 'su primera letra' : 'pasa a rango'}</small></span>
-                <span className="pb-rg chico" style={{ background: liga.colorRg(it.rg) }}>{it.rg}</span>
-                <Felicitar liga={liga} it={it} A={A} chico />
-                <Hilo liga={liga} it={it} chico />
-              </li>
-            );
-          })}
-        </ul>
-      </div>
-    </article>
-  );
-}
-
-// ── los anuncios de eventos del día, en una agenda: logo, nombre, cómo es y su link ──
-function Anuncios({ liga, xs, visto }) {
-  if (xs.length === 1) return <Post liga={liga} it={xs[0]} A={null} nuevo={visto && utc(xs[0].t) > visto} />;
-  return (
-    <article className="pb-post grupo anuncios">
-      <div className="pb-c">
-        <span className="pb-cat">Eventos anunciados · {xs.length}{visto && xs.some((it) => utc(it.t) > visto) ? <i className="pb-nuevo">NUEVO</i> : null}</span>
-        <ul className="pb-filas ag">
-          {xs.map((it) => (
-            <li key={it.id || it.t + it.ev} data-pub={it.id || undefined}>
-              <img className="pb-flogo" alt="" src={liga.logo(it.sv)} />
-              <span className="pb-fn"><b>{limpio(it.ev)}</b>
-                <small>{[hora(it.t), siglaDe(it.sv), it.mod, it.pre ? 'premio: ' + it.pre : ''].filter(Boolean).join(' · ')}</small></span>
-              {it.link ? <a className="pb-a" href={it.link} target="_blank" rel="noopener noreferrer" aria-label={'Ver ' + limpio(it.ev) + ' en Discord'}>Discord ↗</a> : null}
-              <Hilo liga={liga} it={it} chico />
-            </li>
-          ))}
-        </ul>
-        <div className="pb-acc"><a className="pb-a" href="#/eventos">El calendario</a></div>
-      </div>
-    </article>
-  );
-}
-
 // ── lo más felicitado de la semana: barras contra el primero, como el Ranking ──
 function MasFelicitado({ liga, pubs, A }) {
   const cu = (it) => Number((it.id && A.cu[it.id]) || 0);
@@ -414,29 +311,6 @@ function MasFelicitado({ liga, pubs, A }) {
         );
       })}
     </ol>
-    </section>
-  );
-}
-
-function Encuestas({ liga, enc }) {
-  const x2 = liga.encuesta('x2');
-  const el = liga.encuesta('elegido');
-  const [cual, setCual] = useState('x2');
-  if ((!x2 && !el) || !enc) return null;
-  const ver = x2 && el ? cual : (x2 ? 'x2' : 'el');
-  return (
-    <section data-tuto="pb-encs" className="pb-encs" aria-label="Encuestas">
-      <h2 className="pb-st">Encuestas<small>vota antes de que cierren</small></h2>
-      {x2 && el ? (
-        <div className="pb-enc-tabs" role="tablist">
-          <button type="button" role="tab" aria-selected={ver === 'x2'} className={ver === 'x2' ? 'on' : ''} onClick={() => setCual('x2')}>El ×{String(x2.x || 2).replace('.', ',')}</button>
-          <button type="button" role="tab" aria-selected={ver === 'el'} className={ver === 'el' ? 'on' : ''} onClick={() => setCual('el')}>El Elegido</button>
-        </div>
-      ) : null}
-      <div className={'pb-enc' + (x2 && el ? ' dos' : '')}>
-        {x2 ? <div className={'pb-enc-i x2' + (ver === 'x2' ? ' on' : '')}><X2 liga={liga} enc={enc} E={x2} /></div> : null}
-        {el ? <div className={'pb-enc-i' + (ver === 'el' ? ' on' : '')}><Elegido liga={liga} enc={enc} E={el} /></div> : null}
-      </div>
     </section>
   );
 }
@@ -487,180 +361,500 @@ function useVisto(muro) {
   return antes;
 }
 
-const FILTROS = [['', 'Todo'], ['liga', 'En la Liga'], ['anuncios', 'Anuncios'], ['promos', 'Promos'], ['sigo', '★ A quien sigo']];
+// ══ EL MURO, CON LAS PIEZAS DEL INICIO (15/11/2026, la A de la maqueta https://claude.ai/artifact/XV2NH3RQUnvKMNZH3V6CLK; Dlx:
+// «Obviamente la A») ════════════════════════════════════════════════════════════════════════════════════════════════════
+// Medido antes en vivo: 9.162 px de alto en la compu y 11.775 en el celular, casi todo por los comentarios abiertos debajo de
+// cada publicación. Ahora cada pieza es una que el Inicio ya tiene:
+// - ARRIBA, EL ESCENARIO: lo más fuerte de estos días (campeón, caza, la noche, MES AWARDS) con la escena de su servidor
+//   (`escenaDe()`, las mismas de arriba.jsx), su carta, Felicitar y la tira para pasar a los otros (8 s, quieto con el mouse).
+// - LOS CÍRCULOS DE LAS HISTORIAS son los servidores: tocar uno filtra; el aro verde, si trae algo desde tu última visita.
+// - EL BUSCADOR Y LOS CHIPS DE LA CAMPANA, pegados arriba, con cuántas hay de cada cosa.
+// - LAS FILAS DE LO ÚLTIMO: lo fuerte grande y con Felicitar; lo demás en renglón; los del mismo día, juntos (cartas en
+//   abanico, rangos en fila, anuncios en lista). Las reacciones y la nube son las de Lo último (`LuSocial`, `LuNube`).
+// - LOS COMENTARIOS YA NO VAN ABIERTOS: la nube con el último y «💬 N», que abre la hoja (`#/publicaciones/<id>`, el mismo
+//   link de la campana y de Lo último).
+// - EL DÍA MÁS NUEVO, ENTERO; los anteriores en una caja (sus campeones en miniatura y cuántas hubo de cada cosa) que se
+//   abre. Con un filtro, la búsqueda o un servidor elegido, todo entero: ahí la lista ya es corta.
+// - AL COSTADO, los minis del panel (tocar uno filtra), lo más felicitado, las encuestas en corto y la campana. En el
+//   celular los minis se deslizan arriba y lo demás va después del primer día.
+const GRUPOS = { tarjeta: 1, rango: 1, anuncio: 1, crewtier: 1 };
+const TIPOS = {
+  campeones: ['campeon', 'resnoche', 'ligahito'], rangos: ['rango'], cartas: ['tarjeta'], pase: ['pase', 'sorteo'],
+  mw: ['caza', 'precio', 'sobrevivio', 'elegido', 'premios'], mes: ['mesaward'], crews: ['crewtier'], anuncios: ['anuncio', 'flyer', 'liga'], promos: ['promo'],
+};
+const FILTROS2 = [['', 'Todo'], ['campeones', 'Campeones'], ['rangos', 'Rangos'], ['cartas', 'Cartas'], ['pase', 'Pase'], ['mw', 'Most Wanted'],
+  ['mes', 'MES AWARDS'], ['crews', 'Crews'], ['anuncios', 'Anuncios'], ['promos', 'Promos']];
+const hace = (liga, t) => { const c = liga.cuando(t); return c ? c.charAt(0).toUpperCase() + c.slice(1) : ''; };
+// el título en texto llano, para el escenario y los resúmenes
+function plano(liga, it) {
+  const q = (it.quien || []).map(limpio);
+  const quien = q.length > 2 ? q.slice(0, -1).join(', ') + ' y ' + q[q.length - 1] : q.join(' y ');
+  const varios = q.length > 1;
+  if (it.tipo === 'campeon') return quien + (varios ? ' se quedan con ' : ' se queda con ') + limpio(it.ev);
+  if (it.tipo === 'caza') return quien + (varios ? ' cazaron a ' : ' cazó a ') + limpio(it.a) + ' y ' + (varios ? 'cobran ' : 'cobra ') + num(it.pts);
+  if (it.tipo === 'precio') return quien + (varios ? ' le ganaron a ' : ' le ganó a ') + limpio(it.a) + ' y ' + (varios ? 'cobran ' : 'cobra ') + num(it.pts);
+  if (it.tipo === 'sobrevivio') return quien + ' sobrevivió al Most Wanted';
+  if (it.tipo === 'elegido') return quien + ' es El Elegido';
+  if (it.tipo === 'resnoche') return it.eventos + (it.eventos === 1 ? ' evento y ' : ' eventos y ') + num(it.part) + ' participaciones';
+  if (it.tipo === 'ligahito') return it.que === 'campeon' ? quien + ' es el campeón de ' + limpio(it.ln) : quien + ' en ' + limpio(it.ln);
+  if (it.tipo === 'mesaward') return it.n ? limpio(it.n) + ' · MES AWARDS' : (quien || 'Los ganadores') + ' · MES AWARDS';
+  const x = liga.itemMuro(it);
+  return x ? x[1] : quien;
+}
+// la carta de alguien, si tiene: la Competitiva primero (es la del rango), si no la de Temporada
+function cartaDe(liga, k) {
+  const f = k ? liga.T[k] : null;
+  const c = (f && f.c) || [];
+  return c.includes('competitivo') ? 'competitivo' : c.includes('temporada') ? 'temporada' : '';
+}
+
+// ── arriba: el escenario, con lo más fuerte de estos días ──
+function Escenario({ liga, xs, A }) {
+  const pub = usePases();
+  const [i, setI] = useState(0);
+  const [quieto, setQuieto] = useState(false);
+  useEffect(() => {
+    if (quieto || xs.length < 2) return undefined;
+    let calma = false;
+    try { calma = window.matchMedia('(prefers-reduced-motion: reduce)').matches; } catch (e) { calma = false; }
+    if (calma) return undefined;
+    const t = setInterval(() => setI((v) => (v + 1) % xs.length), 8000);
+    return () => clearInterval(t);
+  }, [quieto, xs.length]);
+  if (!xs.length) return null;
+  const it = xs[Math.min(i, xs.length - 1)];
+  const c = contenido(liga, it, pub);
+  if (!c) return null;
+  const k = ksDe(it)[0];
+  const cual = cartaDe(liga, k);
+  const sv = liga.svDe(it);
+  const fondo = escenaDe(sv);
+  const vis = cual ? <Carta liga={liga} k={k} cual={cual} cls="pw-esc-carta" abre={false} />
+    : <img className="pw-esc-logo" alt="" src={sv ? liga.logo(sv, true) : '/ul.png'} />;
+  const tono = COLOR[it.tipo] === 'm' ? 'm' : 'v';
+  return (
+    <section data-tuto="pb-cab" className={'pw-esc' + (fondo ? ' con-fondo' : '')} style={fondo ? { backgroundImage: 'url("' + fondo + '")' } : undefined}
+      onMouseEnter={() => setQuieto(true)} onMouseLeave={() => setQuieto(false)} onFocus={() => setQuieto(true)} aria-label="Lo más fuerte de estos días">
+      <div className="pw-esc-in">
+        <div className="pw-esc-tx">
+          <div className="pw-esc-k">
+            <span className={'pw-chip ' + tono}>{sv ? <img alt="" src={liga.logo(sv)} /> : null}{c.cat}</span>
+            <span className="pw-chip n">{hace(liga, it.t)}</span>
+          </div>
+          <h1 className="pw-grito">{plano(liga, it)}</h1>
+          {c.det ? <p className="pw-esc-sub">{c.det}</p> : null}
+          <div className="pw-esc-acc">{LOGROS[it.tipo] ? <Felicitar liga={liga} it={it} A={A} /> : null}{c.acc}
+            {it.id ? <a className="pb-a" href={'#/publicaciones/' + it.id}>💬 Comentar</a> : null}</div>
+        </div>
+        <div className="pw-esc-vis">{vis}</div>
+      </div>
+      {xs.length > 1 ? (
+        <div className="pw-tira" role="tablist" aria-label="Lo más fuerte">
+          {xs.map((x, j) => {
+            const kx = ksDe(x)[0];
+            const svx = liga.svDe(x);
+            const cx = contenido(liga, x, pub);
+            return (
+              <button type="button" role="tab" aria-selected={j === i} key={x.id || x.t + j} className={j === i ? 'on' : ''} onClick={() => { setI(j); setQuieto(true); }}>
+                {kx && liga.T[kx] ? <Cara liga={liga} k={kx} nombre={liga.T[kx].n} cls="cara pw-tira-c" /> : <img className="pw-tira-c" alt="" src={svx ? liga.logo(svx) : '/ul.png'} />}
+                <span><b>{plano(liga, x)}</b><small>{cx ? cx.cat : ''}</small></span>
+              </button>
+            );
+          })}
+        </div>
+      ) : null}
+    </section>
+  );
+}
+
+// ── los círculos de las historias: cada servidor es un filtro ──
+function Circulos({ liga, todos, sv, setSv, sigo, visto }) {
+  const cnt = {};
+  const nuevo = {};
+  todos.forEach((it) => {
+    const s = liga.svDe(it);
+    if (!s) return;
+    cnt[s] = (cnt[s] || 0) + 1;
+    if (visto && utc(it.t) > visto) nuevo[s] = 1;
+  });
+  const svs = Object.keys(cnt).sort((a, b) => cnt[b] - cnt[a]);
+  const sigoN = todos.filter((it) => ksDe(it).some((k) => sigo.includes(k))).length;
+  return (
+    <nav className="pw-circ" aria-label="Por servidor">
+      <button type="button" className={sv ? '' : 'on'} aria-pressed={!sv} onClick={() => setSv('')}>
+        <span className="pw-aro"><img alt="" src="/ul.png" /></span><small>Todo</small></button>
+      {sigoN ? <button type="button" className={sv === 'sigo' ? 'on' : ''} aria-pressed={sv === 'sigo'} onClick={() => setSv(sv === 'sigo' ? '' : 'sigo')}>
+        <span className="pw-aro ico" aria-hidden="true">★</span><small>A quien sigo</small></button> : null}
+      {svs.map((s) => (
+        <button type="button" key={s} className={sv === s ? 'on' : ''} aria-pressed={sv === s} onClick={() => setSv(sv === s ? '' : s)}
+          aria-label={siglaDe(s) + ': ' + cnt[s] + ' publicaciones'}>
+          <span className={'pw-aro' + (nuevo[s] ? ' nuevo' : '')}><img alt="" src={liga.logo(s)} /><em>{cnt[s]}</em></span><small>{siglaDe(s)}</small>
+        </button>
+      ))}
+    </nav>
+  );
+}
+
+// ── los del mismo día, juntos ──
+function CartasG({ liga, xs, nuevo }) {
+  const vistos = new Set();
+  const us = xs.filter((it) => { const k = (it.ks || [])[0]; if (!k || vistos.has(k + it.carta)) return false; vistos.add(k + it.carta); return true; });
+  if (!us.length) return null;
+  const nombres = [...new Set(us.map((it) => limpio((it.quien || [])[0] || '')))];
+  return (
+    <article className={'pw-f c-v' + (nuevo ? ' nueva' : '')}>
+      <span className="pw-v"><img className="pw-logo" alt="" src="/ul.png" /></span>
+      <div className="pw-tx">
+        <span className="pw-cat">{us.length === 1 ? 'Carta nueva' : 'Cartas nuevas · ' + us.length}</span>
+        <p className="pw-t"><b>{nombres.slice(0, 3).join(', ')}</b>{nombres.length > 3 ? ' y ' + (nombres.length - 3) + ' más' : ''}{nombres.length > 1 ? ' ya tienen su carta' : ' ya tiene su carta'}</p>
+        <div className="pw-abanico">
+          {us.slice(0, 12).map((it) => {
+            const k = (it.ks || [])[0];
+            return <button type="button" key={k + it.carta} onClick={() => accion.carta(k, it.carta)} aria-label={'La carta de ' + limpio((it.quien || [])[0] || '')}>
+              <Carta liga={liga} k={k} cual={it.carta} cls="pw-mcarta" abre={false} /></button>;
+          })}
+          {us.length > 12 ? <span className="pw-mas">+{us.length - 12}</span> : null}
+        </div>
+      </div>
+      <span className="pw-der"><time>{hace(liga, xs[0].t)}</time></span>
+    </article>
+  );
+}
+function RangosG({ liga, xs, nuevo }) {
+  const pub = usePases();
+  return (
+    <article className={'pw-f c-v' + (nuevo ? ' nueva' : '')}>
+      <span className="pw-v"><img className="pw-logo" alt="" src="/ul.png" /></span>
+      <div className="pw-tx">
+        <span className="pw-cat">Suben de rango · {xs.length}</span>
+        <div className="pw-rngs">
+          {xs.map((it) => {
+            const k = ksDe(it)[0] || '';
+            const n0 = limpio((it.quien || [])[0] || '');
+            return (
+              <a key={it.id || it.t + n0} href={'#/publicaciones/' + (it.id || '')} data-pub={it.id || undefined} aria-label={n0 + ': rango ' + it.rg + '. Felicitar o comentar'}>
+                <Cara liga={liga} k={k} nombre={n0} cls={'cara pw-rng-c' + (esPremium(pub, k) ? ' sp-prem-aro' : '')} />
+                <i className="pw-letra" style={{ background: liga.colorRg(it.rg) }}>{it.rg}</i>
+                <small>{n0}</small>
+              </a>
+            );
+          })}
+        </div>
+        <small className="pw-det">Toca a uno para felicitarlo o dejarle un comentario.</small>
+      </div>
+      <span className="pw-der"><time>{hace(liga, xs[0].t)}</time></span>
+    </article>
+  );
+}
+function AnunciosG({ liga, xs, nuevo }) {
+  return (
+    <article className={'pw-f c-a' + (nuevo ? ' nueva' : '')}>
+      <span className="pw-v"><img className="pw-logo" alt="" src="/ul.png" /></span>
+      <div className="pw-tx">
+        <span className="pw-cat">Eventos anunciados · {xs.length}</span>
+        <ul className="pw-anl">
+          {xs.map((it) => {
+            const n = delHilo(it, Date.now()).length;
+            return (
+              <li key={it.id || it.t + it.ev} data-pub={it.id || undefined}>
+                <img alt="" src={liga.logo(it.sv)} />
+                <span><b>{limpio(it.ev)}</b><small>{[siglaDe(it.sv), hora(it.t), it.mod, it.pre ? 'premio: ' + it.pre : ''].filter(Boolean).join(' · ')}</small></span>
+                {it.id ? <a className="pw-anl-cm" href={'#/publicaciones/' + it.id} aria-label={n ? n + ' comentarios' : 'Comentar'}>💬{n ? ' ' + n : ''}</a> : null}
+                {it.link ? <a className="pb-a" href={it.link} target="_blank" rel="noopener noreferrer" aria-label={'Ver ' + limpio(it.ev) + ' en Discord'}>Discord ↗</a> : null}
+              </li>
+            );
+          })}
+        </ul>
+        <div className="pw-acc"><a className="pb-a" href="#/eventos">El calendario</a></div>
+      </div>
+      <span className="pw-der"><time>{hace(liga, xs[0].t)}</time></span>
+    </article>
+  );
+}
+
+// ── una publicación: la fuerte grande (como la destacada de Lo último), lo demás en renglón ──
+function Fila({ liga, it, A, P, nuevo }) {
+  const pub = usePases();
+  const c = contenido(liga, it, pub);
+  if (!c) return null;
+  const hilo = it.id ? delHilo(it, Date.now()) : [];
+  const logro = !!LOGROS[it.tipo];
+  const tono = 'c-' + (COLOR[it.tipo] || (ANUNCIOS[it.tipo] ? 'a' : 'n'));
+  const social = it.id && it.tipo !== 'flyer' ? <><LuSocial liga={liga} it={it} A={A} hilo={hilo} P={P} /><LuNube liga={liga} it={it} hilo={hilo} /></> : null;
+  if (fuerte(it)) {
+    const k = ksDe(it)[0];
+    const cual = cartaDe(liga, k);
+    const sv = liga.svDe(it);
+    return (
+      <article className={'pw-f fuerte ' + tono + (nuevo ? ' nueva' : '')} data-pub={it.id || undefined}>
+        <span className="pw-fu-v">
+          {cual ? <Carta liga={liga} k={k} cual={cual} cls="pw-fu-carta" abre={false} /> : c.vis}
+          {sv && !cual ? null : sv ? <img className="pw-fu-logo" alt="" src={liga.logo(sv)} /> : null}
+        </span>
+        <div className="pw-tx">
+          <div className="pw-top"><span className="pw-cat">{c.cat}</span><time>{hace(liga, it.t)}</time></div>
+          {/* 🌙 la noche: el título corto en grande y la lista de campeones debajo (en Anton, la lista entera era un bloque) */}
+          <p className="pw-fu-t">{it.tipo === 'resnoche' ? plano(liga, it) : c.txt}</p>
+          {it.tipo === 'resnoche' ? <p className="pw-t chico">{c.txt}</p> : null}
+          {c.det ? <small className="pw-det">{c.det}</small> : null}
+          {logro || c.acc ? <div className="pw-acc">{logro ? <Felicitar liga={liga} it={it} A={A} /> : null}{c.acc}</div> : null}
+          {social}
+        </div>
+      </article>
+    );
+  }
+  return (
+    <article className={'pw-f ' + tono + (c.media ? ' media' : '') + (nuevo ? ' nueva' : '')} data-pub={it.id || undefined}>
+      <span className="pw-v">{c.media ? <img className="pw-logo" alt="" src={it.sv ? liga.logo(it.sv) : '/ul.png'} /> : c.vis}</span>
+      <div className="pw-tx">
+        <span className="pw-cat">{c.cat}</span>
+        <p className="pw-t">{c.txt}</p>
+        {c.det ? <small className="pw-det">{c.det}</small> : null}
+        {c.media ? <div className="pw-media">{c.vis}</div> : null}
+        {c.acc || (logro && it.tipo !== 'rango') ? <div className="pw-acc">{logro ? <Felicitar liga={liga} it={it} A={A} /> : null}{c.acc}</div> : null}
+        {social}
+      </div>
+      <span className="pw-der"><time>{hace(liga, it.t)}</time>
+        {it.tipo === 'rango' ? <i className="pw-letra grande" style={{ background: liga.colorRg(it.rg) }} aria-label={'Rango ' + it.rg}>{it.rg}</i> : null}
+        {it.tipo === 'pase' && it.nivel ? <i className="pw-nivel" aria-label={'Nivel ' + it.nivel}>{it.nivel}</i> : null}</span>
+    </article>
+  );
+}
+
+// ── un día de antes, cerrado: sus campeones y cazas en miniatura y cuántas hubo de cada cosa ──
+const NOMBRE_T = { campeon: ['campeón', 'campeones'], rango: ['rango', 'rangos'], tarjeta: ['carta', 'cartas'], pase: ['del Pase', 'del Pase'],
+  anuncio: ['anuncio', 'anuncios'], caza: ['caza', 'cazas'], precio: ['precio', 'precios'], promo: ['promo', 'promos'], flyer: ['de ligas', 'de ligas'],
+  ligahito: ['de ligas', 'de ligas'], mesaward: ['MES AWARDS', 'MES AWARDS'], crewtier: ['crew', 'crews'], resnoche: ['resumen', 'resúmenes'] };
+function ResumenDia({ liga, xs, abrir }) {
+  const top = xs.filter((it) => it.tipo === 'campeon' || it.tipo === 'caza' || it.tipo === 'precio' || (it.tipo === 'ligahito' && it.que === 'campeon')).slice(0, 10);
+  const c = {};
+  xs.forEach((it) => { c[it.tipo] = (c[it.tipo] || 0) + 1; });
+  return (
+    <div className="pw-res">
+      {top.length ? (
+        <div className="pw-res-c">
+          {top.map((it) => {
+            const k = ksDe(it)[0];
+            const cual = cartaDe(liga, k);
+            const n0 = limpio((it.quien || [])[0] || '');
+            return (
+              <a key={it.id || it.t} href={'#/publicaciones/' + (it.id || '')}>
+                {cual ? <Carta liga={liga} k={k} cual={cual} cls="pw-res-carta" abre={false} /> : <Cara liga={liga} k={k || ''} nombre={n0} cls="cara pw-res-cara" />}
+                <small>{n0}</small><small className="g">{it.tipo === 'campeon' ? siglaDe(it.sv) : it.tipo === 'ligahito' ? 'liga' : 'Most Wanted'}</small>
+              </a>
+            );
+          })}
+        </div>
+      ) : null}
+      <div className="pw-res-n">{Object.entries(c).map(([t, n]) => <span key={t}><b>{n}</b>{(NOMBRE_T[t] || [t, t])[n === 1 ? 0 : 1]}</span>)}</div>
+      <button type="button" className="btn borde2 chico" onClick={abrir}>Ver el día</button>
+    </div>
+  );
+}
+
+// ── los minis del panel: lo de esta semana; tocar uno filtra ──
+function Minis({ liga, todos, setFil, desliza }) {
+  const sem = todos.filter((it) => utc(it.t) >= liga.desdeLunes());
+  const n = (ts) => sem.filter((it) => ts.includes(it.tipo)).length;
+  const xs = [['campeones', 'Campeones', n(['campeon']), 'v'], ['rangos', 'Suben de rango', n(['rango']), 'o'], ['cartas', 'Cartas nuevas', n(['tarjeta']), 'p'],
+    ['anuncios', 'Eventos anunciados', n(['anuncio']), 'a']];
+  return (
+    <div className={'pw-minis' + (desliza ? ' desl' : '')}>
+      {xs.map(([f, t, v, c]) => (
+        <button type="button" key={f} className={'pw-mini ' + c} onClick={() => setFil(f)}><span>{t}</span><b>{num(v)}</b><small>esta semana</small></button>
+      ))}
+    </div>
+  );
+}
+
+// ── las encuestas, cortas, al costado (abiertas, la grilla del ×2 ocupaba media pantalla) ──
+function EncCortas({ liga, enc }) {
+  const x2 = liga.encuesta('x2');
+  const el = liga.encuesta('elegido');
+  if ((!x2 && !el) || !enc) return null;
+  return (
+    <section data-tuto="pb-encs" className="pb-bloque pw-encs" aria-label="Encuestas">
+      <h2 className="pb-st">Encuestas<small>vota antes de que cierren</small></h2>
+      {x2 ? <X2 liga={liga} enc={enc} E={x2} corta /> : null}
+      {el ? <Elegido liga={liga} enc={enc} E={el} corta /> : null}
+    </section>
+  );
+}
+
+// ── la hoja de una publicación: lo suyo arriba y el hilo entero (`Hilo` se abre solo con `__pubFoco`) ──
+function Hoja({ liga, it, A, P }) {
+  const pub = usePases();
+  const ref = useRef(null);
+  useEffect(() => {
+    const d = ref.current;
+    if (d && !d.open) { try { d.showModal(); } catch (e) { d.setAttribute('open', ''); } }
+  }, [it && it.id]);
+  if (!it) return null;
+  const c = contenido(liga, it, pub);
+  if (!c) return null;
+  const cerrar = () => { if (ref.current && ref.current.open) ref.current.close(); };
+  const hilo = delHilo(it, Date.now());
+  return (
+    <dialog ref={ref} className="pn-pop pw-hoja" aria-label={c.cat} onClose={() => { location.hash = '#/publicaciones'; }}
+      onClick={(e) => { if (e.target === ref.current) cerrar(); }}>
+      <PopCab ico="globo" t={c.cat} sub={hace(liga, it.t)} cerrar={cerrar} />
+      <div className="pw-hoja-in">
+        <div className="pw-hoja-p">
+          {c.media ? null : <span className="pw-v">{c.vis}</span>}
+          <div className="pw-tx"><p className="pw-t">{c.txt}</p>{c.det ? <small className="pw-det">{c.det}</small> : null}
+            {c.media ? <div className="pw-media">{c.vis}</div> : null}
+            <div className="pw-acc">{LOGROS[it.tipo] ? <Felicitar liga={liga} it={it} A={A} /> : null}{c.acc}</div>
+            {it.id ? <LuSocial liga={liga} it={it} A={A} hilo={hilo} P={P} /> : null}</div>
+        </div>
+        <Hilo liga={liga} it={it} />
+      </div>
+    </dialog>
+  );
+}
 
 export function Publicaciones({ liga, enc, foco = '' }) {
   const A = useAplausos();
-  // 🎯 LA PUBLICACIÓN EXACTA (`#/publicaciones/<id>`, 12/11/2026): la de «Responder» en el Inicio y la de la campana. Su
-  // hilo se abre solo (`Hilo` lee `W.__pubFoco`) y la página baja hasta ella
-  if (typeof window !== 'undefined') window.__pubFoco = /^[0-9a-f]{12}$/.test(foco) ? foco : '';
-  const [fil, setFil] = useState('');
-  const [ver, setVer] = useState(40);
-  const [votaste] = useState(() => {
-    const ab = [liga.encuesta('x2'), liga.encuesta('elegido')].filter(Boolean);
-    return ab.length > 0 && ab.every((E) => !!(enc && enc.mio && enc.mio[E.id]));
-  });
+  useComentarios();
+  const P = usePase(typeof window !== 'undefined' && !!window.DC);
+  // 🎯 LA PUBLICACIÓN EXACTA (`#/publicaciones/<id>`): la de la campana, la de «💬» y la de Lo último. Abre la hoja, y su hilo
+  // se abre solo (`Hilo` lee `W.__pubFoco`)
+  const idFoco = /^[0-9a-f]{12}$/.test(foco) ? foco : '';
+  if (typeof window !== 'undefined') window.__pubFoco = idFoco;
+  const [fil, setFil0] = useState('');
+  const [sv, setSv0] = useState('');
+  const [q, setQ] = useState('');
+  const [dias, setDias] = useState(4);
+  const [abiertos, setAbiertos] = useState({});
   const sigo = liga.sigue || [];
-  const todos = liga.muro || [];
+  const todos = liga.muroLimpio();
   const visto = useVisto(todos);
-  const pasa = (it, f) => {
-    if (f === 'sigo') return ksDe(it).some((k) => sigo.includes(k));
-    if (f === 'liga') return !ANUNCIOS[it.tipo] && it.tipo !== 'promo';
-    if (f === 'anuncios') return !!ANUNCIOS[it.tipo];
-    if (f === 'promos') return it.tipo === 'promo';
-    return true;
+  const barra = useRef(null);
+  const subir = () => { const b = barra.current; if (b && b.getBoundingClientRect().top < 0) b.scrollIntoView({ block: 'start' }); };
+  const setFil = (f) => { setFil0(f); setDias(4); subir(); };
+  const setSv = (s) => { setSv0(s); setDias(4); };
+  const qn = limpio(q).toLowerCase();
+  const pasaSv = (it) => (!sv ? true : sv === 'sigo' ? ksDe(it).some((k) => sigo.includes(k)) : liga.svDe(it) === sv);
+  const pasaQ = (it) => {
+    if (!qn) return true;
+    const txt = [...(it.quien || []), it.ev, it.tit, it.ln, it.a, it.n, siglaDe(liga.svDe(it))].filter(Boolean).map((x) => limpio(x).toLowerCase()).join(' ');
+    return txt.includes(qn);
   };
-  const cuenta = useMemo(() => Object.fromEntries(FILTROS.map(([f]) => [f, todos.filter((it) => pasa(it, f)).length])), [todos, sigo]);
-  const pubs = useMemo(() => todos.filter((it) => pasa(it, fil)), [todos, fil, sigo]);
-  // 🎯 que la del foco entre en lo que se dibuja, y bajar hasta ella cuando está
-  useEffect(() => {
-    if (!/^[0-9a-f]{12}$/.test(foco)) return undefined;
-    const i = pubs.findIndex((it) => it.id === foco);
-    if (i >= ver) setVer(i + 10);
-    const id = setTimeout(() => {
-      const raiz = document.querySelector('#inicio-nuevo');
-      const el = raiz && raiz.shadowRoot && raiz.shadowRoot.querySelector('[data-pub="' + foco + '"]');
-      if (el) el.scrollIntoView({ block: 'center', behavior: 'smooth' });
-    }, 400);
-    return () => clearTimeout(id);
-  }, [foco, pubs.length]); // eslint-disable-line react-hooks/exhaustive-deps
-  const nuevas = visto ? todos.filter((it) => utc(it.t) > visto).length : 0;
-  // por día; en cada día lo que va junto (cartas, rangos, anuncios) en el lugar del primero
-  // ✂️ el corte llega hasta el final del último día: cortado a la mitad, el día decía «4 publicaciones» de 24 y sus
-  // cartas quedaban partidas (la revisión del remake)
-  const fin = useMemo(() => {
-    let f = Math.min(ver, pubs.length);
-    if (f > 0 && f < pubs.length) { const kU = liga.diaClave(pubs[f - 1].t); while (f < pubs.length && liga.diaClave(pubs[f].t) === kU) f += 1; }
-    return f;
-  }, [pubs, ver, liga]);
-  const dias = useMemo(() => {
+  const base = useMemo(() => todos.filter((it) => pasaSv(it) && pasaQ(it)), [todos, sv, qn, sigo]); // eslint-disable-line react-hooks/exhaustive-deps
+  const cuenta = useMemo(() => Object.fromEntries(FILTROS2.map(([f]) => [f, f ? base.filter((it) => TIPOS[f].includes(it.tipo)).length : base.length])), [base]);
+  const pubs = useMemo(() => (fil ? base.filter((it) => TIPOS[fil].includes(it.tipo)) : base), [base, fil]);
+  const enteros = !!(fil || sv || qn);
+  // por día; en cada día los que van juntos en el lugar del primero
+  const porDia = useMemo(() => {
     const out = [];
-    pubs.slice(0, fin).forEach((it) => {
+    pubs.forEach((it) => {
       const k = liga.diaClave(it.t);
       let d = out[out.length - 1];
-      if (!d || d.k !== k) { d = { k, xs: [], g: {}, n: 0 }; out.push(d); }
-      d.n += 1;
-      if (JUNTOS[it.tipo]) {
+      if (!d || d.k !== k) { d = { k, todos: [], xs: [], g: {} }; out.push(d); }
+      d.todos.push(it);
+      if (GRUPOS[it.tipo] && pubs.filter((o) => o.tipo === it.tipo && liga.diaClave(o.t) === k).length > 1) {
         if (!d.g[it.tipo]) { d.g[it.tipo] = { tipo: 'g-' + it.tipo, t: it.t, xs: [] }; d.xs.push(d.g[it.tipo]); }
         d.g[it.tipo].xs.push(it);
       } else d.xs.push(it);
     });
     return out;
-  }, [pubs, fin, liga]);
+  }, [pubs, liga]);
+  // lo de arriba: lo más fuerte de los últimos tres días, hasta cuatro
+  const destacadas = useMemo(() => {
+    const desde = liga.ahora - 3 * 86400000;
+    return todos.filter((it) => fuerte(it) && utc(it.t) >= desde).slice(0, 4);
+  }, [todos, liga]);
+  const foco0 = idFoco ? todos.find((it) => it.id === idFoco) : null;
   const hoyK = liga.diaClave(liga.ahora);
-  const tituloDia = (k) => {
-    if (k === hoyK) return ['Hoy', liga.fechaLarga(k + 'T16:00:00Z') === 'hoy' ? '' : ''];
+  const titulo = (k) => {
+    if (k === hoyK) return 'Hoy';
     const f = liga.fechaLarga(k + 'T16:00:00Z');
-    return [f.charAt(0).toUpperCase() + f.slice(1), ''];
+    return f.charAt(0).toUpperCase() + f.slice(1);
   };
-  const fechaDe = (k) => {
-    const [a, m, d] = k.split('-').map(Number);
-    return d + ' de ' + (MESES[m - 1] || '') + (a !== new Date(liga.ahora).getFullYear() ? ' de ' + a : '');
-  };
-  // 📊 hoy en la Liga (o, si hoy todavía no pasó nada, los últimos siete días): lo que dice la portada
-  const deHoy = todos.filter((it) => liga.diaClave(it.t) === hoyK);
-  // ⚠️ desde el lunes de la Liga, no siete días para atrás: el martes decía 14 campeones «esta semana» y eran 5
-  const estaSemana = todos.filter((it) => utc(it.t) >= liga.desdeLunes());
-  const base = deHoy.length ? deHoy : estaSemana;
-  const cu = (f) => base.filter(f).length;
-  const resumen = [[cu((it) => it.tipo === 'campeon' || (it.tipo === 'ligahito' && it.que === 'campeon')), 'campeón', 'campeones'],
-    [cu((it) => it.tipo === 'rango'), 'sube de rango', 'suben de rango'], [cu((it) => it.tipo === 'tarjeta'), 'carta nueva', 'cartas nuevas'],
-    [cu((it) => it.tipo === 'anuncio'), 'evento anunciado', 'eventos anunciados']].filter(([n]) => n > 0).map(([n, uno, varios]) => [n, n === 1 ? uno : varios]);
-  const semana = estaSemana;
-  const encs = fil !== 'anuncios' ? <Encuestas liga={liga} enc={enc} /> : null;
-  const masFel = <MasFelicitado liga={liga} pubs={semana} A={A} />;
-  const elegir = (f) => { setFil(f); setVer(40); };
+  const fecha = (k) => { const [, m, d] = k.split('-').map(Number); return d + ' de ' + (MESES[m - 1] || ''); };
+  const nuevas = visto ? todos.filter((it) => utc(it.t) > visto).length : 0;
+  const masFel = <MasFelicitado liga={liga} pubs={todos.filter((it) => utc(it.t) >= liga.desdeLunes())} A={A} />;
+  const fila = (it, nuevo) => (it.tipo === 'g-tarjeta' ? <CartasG liga={liga} xs={it.xs} nuevo={nuevo} />
+    : it.tipo === 'g-rango' ? <RangosG liga={liga} xs={it.xs} nuevo={nuevo} />
+      : it.tipo === 'g-anuncio' ? <AnunciosG liga={liga} xs={it.xs} nuevo={nuevo} />
+        : it.tipo === 'g-crewtier' ? <Tiers liga={liga} xs={it.xs} visto={visto} A={A} P={P} />
+          : <Fila liga={liga} it={it} A={A} P={P} nuevo={nuevo} />);
+  let raya = false;
   return (
-    <>
-      <div data-tuto="pb-cab" className="escena pb-esc" style={{ '--mo-c': '#E41373', '--mo-o': 0.85 }}>
-        <section className="pb-cab">
-          <div className="pb-cab-tx">
-            <span className="tag">PUBLICACIONES · {liga.temp}</span>
-            <h1 className="hero-ev largo">Publicaciones</h1>
-            <p className="hero-p">Lo que pasa en la Liga, contado solo, y los anuncios de todos los servidores. Felicita a quien gana: le llega al teléfono.</p>
-          </div>
-          {resumen.length ? (
-            <div className="pb-hoy">
-              <small>{deHoy.length ? 'HOY EN LA LIGA' : 'ESTA SEMANA'}</small>
-              <dl>{resumen.map(([n, t]) => <div key={t}><dt>{t}</dt><dd>{num(n)}</dd></div>)}</dl>
-            </div>
-          ) : null}
-        </section>
-      </div>
-      <nav data-tuto="pb-fil" className="pb-fil" aria-label="Qué ver">
-        <div className="pb-fil-in">
-          {FILTROS.filter(([f]) => !f || cuenta[f] || fil === f).map(([f, t]) => (
-            <button type="button" key={f || 'todo'} className={fil === f ? 'on' : ''} aria-pressed={fil === f} onClick={() => elegir(f)}>{t}<em>{num(cuenta[f] || 0)}</em></button>
+    <div className="pw">
+      <Escenario liga={liga} xs={destacadas} A={A} />
+      <Circulos liga={liga} todos={todos} sv={sv} setSv={setSv} sigo={sigo} visto={visto} />
+      <div data-tuto="pb-fil" className="pw-barra" ref={barra}>
+        <label className="pw-busca"><Ico n="buscar" t={16} />
+          <input id="pw-busca" type="search" value={q} onChange={(e) => { setQ(e.target.value); setDias(4); }} placeholder="Busca un rapero, un servidor o un evento"
+            aria-label="Buscar en las publicaciones" />
+          {q ? <button type="button" className="pw-busca-x" aria-label="Borrar la búsqueda" onClick={() => setQ('')}>×</button> : null}</label>
+        <div className="pw-chips" role="group" aria-label="Qué ver">
+          {FILTROS2.filter(([f]) => !f || cuenta[f] || fil === f).map(([f, t]) => (
+            <button type="button" key={f || 'todo'} className={fil === f ? 'on' : ''} aria-pressed={fil === f} onClick={() => setFil(f)}>{t}<em>{num(cuenta[f] || 0)}</em></button>
           ))}
         </div>
-      </nav>
-      <div className="pb-t2">
-        <main className="pb-feed">
-          {/* 🗳️ la final de cada evento en vivo, para votar quién gana (12/11/2026): arriba de todo mientras se juega */}
+      </div>
+      <div className="pw-cuerpo">
+        <div className="pw-solo-cel"><Minis liga={liga} todos={todos} setFil={setFil} desliza /></div>
+        <main className="pw-muro">
+          {/* 🗳️ la final de cada evento en vivo, para votar quién gana: arriba de todo mientras se juega */}
           {fil !== 'anuncios' && fil !== 'promos' ? <QuienGana liga={liga} /> : null}
-          {dias.length ? dias.map((d, n) => {
-            const [t] = tituloDia(d.k);
+          {porDia.length ? porDia.slice(0, dias).map((d, n) => {
+            const t = titulo(d.k);
+            // 📖 abiertos hasta juntar 8: de madrugada «Hoy» tiene una sola (el resumen de la noche) y con sólo el primer día
+            // abierto la página quedaba vacía
+            const previas = porDia.slice(0, n).reduce((s, o) => s + o.todos.length, 0);
+            const abierto = n === 0 || previas < 8 || enteros || abiertos[d.k];
             return (
               <Fragment key={d.k}>
-                <section className="pb-dia" aria-label={t}>
-                  <h2 className="pb-dh"><b>{t}</b><small>{/^(Hoy|Ayer)$/.test(t) ? fechaDe(d.k) + ' · ' : ''}{d.n === 1 ? '1 publicación' : d.n + ' publicaciones'}</small>
-                    {n === 0 && nuevas ? <span className="pb-nuevas"><i aria-hidden="true" />{nuevas === 1 ? '1 nueva' : nuevas + ' nuevas'}</span> : null}</h2>
-                  <ol className="pb-riel">
-                    {d.xs.map((it, i) => {
-                      const tipo = it.tipo.replace(/^g-/, '');
-                      const nuevo = !!visto && (it.xs || [it]).some((x) => utc(x.t) > visto);
-                      const cuerpo = it.tipo === 'g-tarjeta' ? <Cartas liga={liga} xs={it.xs} nuevo={nuevo} />
-                        : it.tipo === 'g-rango' ? <Rangos liga={liga} xs={it.xs} A={A} visto={visto} />
-                          : it.tipo === 'g-anuncio' ? <Anuncios liga={liga} xs={it.xs} visto={visto} />
-                            : it.tipo === 'g-crewtier' ? <Tiers liga={liga} xs={it.xs} visto={visto} />
-                              : <Post liga={liga} it={it} A={A} nuevo={nuevo} />;
-                      // los que van juntos, con la hora del más nuevo y la del más viejo
-                      const xs = it.xs || [it];
-                      const h1 = hora(xs[0].t);
-                      const h2 = xs.length > 1 ? hora(xs[xs.length - 1].t) : '';
-                      return (
-                        <li key={(it.id || it.tipo + it.t) + i} className={'pb-i c-' + (COLOR[tipo] || 'n') + (nuevo ? ' nuevo' : '') + (fuerte(it) ? ' f' : '')}>
-                          <span className="pb-hora">{h1}{h2 && h2 !== h1 ? <small>{h2}</small> : null}</span>
-                          {cuerpo}
-                        </li>
-                      );
-                    })}
-                  </ol>
+                <section className="pw-dia" aria-label={t}>
+                  <h2 className="pw-dia-t"><b>{t}</b><small>{t === 'Hoy' || t === 'Ayer' ? fecha(d.k) + ' · ' : ''}{d.todos.length === 1 ? '1 publicación' : d.todos.length + ' publicaciones'}</small>
+                    {n === 0 && nuevas ? <span className="pw-nuevas-n">{nuevas === 1 ? '1 nueva' : nuevas + ' nuevas'}</span> : null}</h2>
+                  {abierto ? d.xs.map((it, i) => {
+                    const xs = it.xs || [it];
+                    const nuevo = !!visto && xs.some((x) => utc(x.t) > visto);
+                    const antes = !raya && visto && nuevas && !nuevo && (n > 0 || i > 0);
+                    if (antes) raya = true;
+                    return (
+                      <Fragment key={(it.id || it.tipo + it.t) + i}>
+                        {antes ? <p className="pw-raya">Lo de arriba salió desde tu última visita</p> : null}
+                        {fila(it, nuevo)}
+                      </Fragment>
+                    );
+                  }) : <ResumenDia liga={liga} xs={d.todos} abrir={() => setAbiertos((a) => ({ ...a, [d.k]: 1 }))} />}
                 </section>
-                {n === 0 ? <div className="pb-solo-cel">{masFel}</div> : null}
-                {n === 0 && !votaste ? encs : null}
+                {n === 0 ? <div className="pw-solo-cel">{masFel}</div> : null}
               </Fragment>
             );
           }) : (
-            <>
-              {fil === 'sigo'
-                ? <Vacio titulo="Nada todavía de la gente que sigues" texto="Cuando ganen, suban de rango o saquen carta, aparece acá."
-                  acciones={[['Ver el ranking y seguir a alguien', '#/ranking'], ['Ver todo', () => elegir(''), 'borde2']]} />
-                : !liga.muroListo ? <MuroCargando />
-                  : <Vacio titulo="Todavía no pasó nada" texto="Cuando se juegue el primer evento, aparece acá solo."
-                    acciones={[['Ver los eventos', '#/eventos']]} />}
-              {!votaste ? encs : null}
-            </>
+            sv === 'sigo'
+              ? <Vacio titulo="Nada todavía de la gente que sigues" texto="Cuando ganen, suban de rango o saquen carta, aparece acá."
+                acciones={[['Ver el ranking y seguir a alguien', '#/ranking'], ['Ver todo', () => setSv(''), 'borde2']]} />
+              : !liga.muroListo ? <MuroCargando />
+                : qn || fil || sv ? <Vacio titulo="Nada con eso" texto="Prueba con otro nombre, otro servidor u otro filtro."
+                  acciones={[['Ver todo', () => { setQ(''); setFil0(''); setSv0(''); }]]} />
+                  : <Vacio titulo="Todavía no pasó nada" texto="Cuando se juegue el primer evento, aparece acá solo." acciones={[['Ver los eventos', '#/eventos']]} />
           )}
-          {pubs.length > fin ? <button type="button" className="btn borde2 chico pb-mas-b" onClick={() => setVer(fin + 40)}>Ver más · quedan {num(pubs.length - fin)}</button> : null}
-          {votaste ? encs : null}
+          {porDia.length > dias ? <button type="button" className="btn borde2 chico pw-mas" onClick={() => setDias(dias + 4)}>Ver los días de antes</button> : null}
+          <div className="pw-solo-cel pw-pila"><EncCortas liga={liga} enc={enc} /><Sigo liga={liga} sigo={sigo} onVer={() => setSv('sigo')} /><Avisame /></div>
         </main>
-        <aside className="pb-der">
-          <div className="pb-der-in">
-            <div className="pb-solo-compu">{masFel}</div>
-            {fil === 'promos' ? (
-              <section className="pb-bloque pb-promo-paga">
-                <h2 className="pb-st">Las promos</h2>
-                <p className="pb-tx">Lo que comparten los raperos en el canal de promoción de su servidor, y los videos de nuestros participantes que
-                  promociona la Liga. Cada promo está una semana (la tuya la puedes alargar en la <a href="#/tienda">Tienda</a>). Ábrelas con tu
-                  cuenta de Discord: cada una te da <b>50 Puntos de Tienda</b> (hasta 3 por día) y suma a tu Pase.</p>
-              </section>
-            ) : null}
-            <Sigo liga={liga} sigo={sigo} onVer={() => elegir('sigo')} />
-            <Avisame />
-          </div>
+        <aside className="pw-rail">
+          <Minis liga={liga} todos={todos} setFil={setFil} />
+          {masFel}
+          {fil === 'promos' ? (
+            <section className="pb-bloque">
+              <h2 className="pb-st">Las promos</h2>
+              <p className="pb-tx">Lo que comparten los raperos en el canal de promoción de su servidor, y los videos de nuestros participantes que
+                promociona la Liga. Cada promo está una semana (la tuya la puedes alargar en la <a href="#/tienda">Tienda</a>). Ábrelas con tu
+                cuenta de Discord: cada una te da <b>50 Puntos de Tienda</b> (hasta 3 por día) y suma a tu Pase.</p>
+            </section>
+          ) : null}
+          <EncCortas liga={liga} enc={enc} />
+          <Sigo liga={liga} sigo={sigo} onVer={() => setSv('sigo')} />
+          <Avisame />
         </aside>
       </div>
-    </>
+      {foco0 ? <Hoja liga={liga} it={foco0} A={A} P={P} /> : null}
+    </div>
   );
 }

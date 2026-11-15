@@ -366,6 +366,44 @@ function Estante({ liga, t, lista, nuevas, onAbrir }) {
   );
 }
 
+// ── 🃏 LAS QUE SALIERON ESTA SEMANA, EN ABANICO (Dlx, 15/11/2026, de la maqueta B de Publicaciones: «Cartas en abanico →
+// Tarjetas»). Del muro, como las «NUEVA» de los estantes: la más nueva primero, una por persona y tipo. Sin ninguna esta
+// semana no se dibuja ──
+function Abanico({ liga, onAbrir }) {
+  const us = useMemo(() => {
+    const d = liga.desdeLunes();
+    const vistos = new Set();
+    return liga.muro.filter((it) => it.tipo === 'tarjeta' && ORDEN.includes(it.carta) && utc(it.t) >= d)
+      .sort((a, b) => utc(b.t) - utc(a.t))
+      .filter((it) => { const k = (it.ks || [])[0]; if (!k || !liga.T[k] || vistos.has(k + it.carta)) return false; vistos.add(k + it.carta); return true; });
+  }, [liga]);
+  if (!us.length) return null;
+  const nombres = [...new Set(us.map((it) => limpio(liga.T[it.ks[0]].n)))];
+  const vis = us.slice(0, 14);
+  return (
+    <section className="ta-aba" aria-label="Las que salieron esta semana">
+      <div className="ta-est-t">
+        <h2>Salieron esta semana <small>{num(us.length)}</small></h2>
+        <a href="#/publicaciones">En Publicaciones <Ico n="flecha" t={14} /></a>
+      </div>
+      <p className="ta-est-p"><b>{nombres.slice(0, 3).join(', ')}</b>{nombres.length > 3 ? ' y ' + (nombres.length - 3) + ' más' : ''}{nombres.length > 1 ? ' ya tienen su carta nueva.' : ' ya tiene su carta nueva.'}</p>
+      <div className="ta-aba-f">
+        {vis.map((it, i) => {
+          const k = it.ks[0];
+          const igual = i > 0 && vis[i - 1].ks[0] === k;              // varias de la misma persona: el nombre, una vez
+          return (
+            <button type="button" key={k + it.carta} onClick={() => onAbrir(it.carta, [liga.T[k]], 0, false)} aria-label={'La ' + NOMBRE[it.carta] + ' de ' + limpio(liga.T[k].n)}>
+              <Carta liga={liga} k={k} cual={it.carta} cls="ta-aba-c" abre={false} />
+              <small aria-hidden={igual || undefined}>{igual ? ' ' : limpio(liga.T[k].n)}</small>
+            </button>
+          );
+        })}
+        {us.length > vis.length ? <span className="ta-aba-mas">+{num(us.length - vis.length)}</span> : null}
+      </div>
+    </section>
+  );
+}
+
 // ── LA HOJA: la carta grande, y deslizar para pasar a la siguiente del mismo estante ──
 function Hoja({ liga, yoK, h, setH, onComparar }) {
   const { t, lista, i, grupo } = h;
@@ -665,6 +703,7 @@ export function Tarjetas({ liga, dc, tipo, q = '' }) {
         <div className="sec ta-cmp-w"><Comparar liga={liga} porTipo={porTipo} perf={perf} cmp={cmp} setCmp={setCmp} yoK={yoK} /></div>
       </aside>
       <div className="sec ta-der" data-tuto="tj-gal">
+        <Abanico liga={liga} onAbrir={abrir} />
         {ORDEN.map((c) => <Estante key={c} liga={liga} t={c} lista={porTipo[c]} nuevas={nuevas[c]} onAbrir={abrir} />)}
       </div>
       {hoja}

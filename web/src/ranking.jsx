@@ -311,6 +311,44 @@ function Ascensos({ liga }) {
   );
 }
 
+// 🆙 SUBIERON DE RANGO ESTA SEMANA, arriba del Competitivo (Dlx, 15/11/2026, de la maqueta B de Publicaciones: «Subieron de
+// rango → Ranking»). Sale del muro (`rango` en bot/muro.py), como en Publicaciones: uno por persona, su letra más nueva, y
+// tocarlo abre esa publicación para felicitarlo. `primero` es quien sacó su primera letra (llegó a los eventos que pide).
+// Sin ninguna esta semana no se dibuja
+function Subieron({ liga }) {
+  const xs = useMemo(() => {
+    const d = liga.desdeLunes();
+    const vistos = new Set();
+    return liga.muroLimpio().filter((it) => it.tipo === 'rango' && it.rg && utc(it.t) >= d)
+      .sort((a, b) => utc(b.t) - utc(a.t))
+      .filter((it) => { const n = norm(limpio((it.quien || [])[0] || '')); if (!n || vistos.has(n)) return false; vistos.add(n); return true; });
+  }, [liga]);
+  if (!xs.length) return null;
+  const vis = xs.slice(0, 14);
+  return (
+    <section className="sec rk-sub" id="rk-subieron" aria-label="Subieron de rango esta semana">
+      <div className="sec-t"><h2>Subieron de rango <small>{xs.length} esta semana</small></h2></div>
+      <p className="sec-baj">El rango sale del Score. Toca a uno para felicitarlo.</p>
+      <ul className="rk-sub-l">
+        {vis.map((it) => {
+          const n0 = limpio((it.quien || [])[0] || '');
+          const k = (Array.isArray(it.ks) && it.ks[0]) || (liga.fila(n0) || {}).k || '';
+          return (
+            <li key={it.id || it.t + n0}>
+              <a href={it.id ? '#/publicaciones/' + encodeURIComponent(it.id) : '#/r/' + encodeURIComponent(k)} aria-label={n0 + ': ' + (it.primero ? 'su primer rango, ' : 'subió a ') + it.rg}>
+                <span className="rk-sub-c"><Cara liga={liga} k={k} nombre={n0} cls="cara rk-sub-cara" />
+                  <i className="rk-sub-rg" style={{ background: liga.colorRg(it.rg) }}>{it.rg}</i></span>
+                <b>{n0}</b><small>{it.primero ? 'primer rango' : liga.cuando(it.t)}</small>
+              </a>
+            </li>
+          );
+        })}
+        {xs.length > vis.length ? <li className="rk-sub-mas"><a href="#/publicaciones">+{num(xs.length - vis.length)}</a></li> : null}
+      </ul>
+    </section>
+  );
+}
+
 // 📊 LOS NÚMEROS DE CADA RANKING, AL ABRIR UNA FILA (Dlx, 13/11/2026: «en el competitivo, cuando uno presiona un rapero
 // aparece las estadísticas, pero el ranking de temporada, no del respectivo ranking»). `det` son los números de arriba,
 // `vs` las categorías de «TÚ CONTRA» —cada una [título, el tuyo, el de él, cómo se escribe]— y `sinSemanas` saca las
@@ -1328,6 +1366,7 @@ export function Ranking({ liga, sub: subRuta, ver: abre = '', dc, raiz }) {
       </div>
       {/* 🎯 los buscados de esta semana, arriba de quién cazó a quién (vivían en el Inicio hasta el 13/10/2026) */}
       {sub === 'mw' ? <SeBusca liga={liga} aca /> : null}
+      {sub === 'competitivo' ? <Subieron liga={liga} /> : null}
       <section data-tuto="rk-tabla" className="sec rk-sec" id="rk-tabla">
         {pronto ? (
           <div className="rk-pronto"><span className="tag-pronto">{cfg.cuando ? 'TEMPORADA 2' : 'PRÓXIMAMENTE'}</span><p>{pronto}</p>

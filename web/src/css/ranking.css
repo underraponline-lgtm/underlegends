@@ -342,3 +342,19 @@ dialog.pn-pop.rk-dims-pop{--pc:#E41373;width:min(760px,calc(100vw - 32px))}
 @media (max-width:600px){dialog.pn-pop.rk-dims-pop{width:100%}.fz-l,.fz-notas{grid-template-columns:minmax(0,1fr)}.fz-c:last-child:nth-child(odd){grid-column:auto}}
 /* 🤝 unirte a los Tier 1 desde el pop-up del Competitivo (13/11/2026) */
 .rk-pq-acc{display:flex;flex-wrap:wrap;gap:8px;margin-top:2px}
+
+/* 🆙 «Subieron de rango» arriba del Competitivo (de la maqueta B de Publicaciones): la cara, la letra con su color (del
+   payload, en línea) y el nombre. Se desliza de costado */
+.rk-sub .sec-t h2 small{display:inline-block;white-space:nowrap;margin-left:6px;font:700 15px/1 "Barlow Condensed",sans-serif;letter-spacing:.06em;color:var(--gris);text-transform:uppercase}
+.rk-sub-l{list-style:none;margin:0;padding:4px 0 2px;display:flex;gap:14px;overflow-x:auto;scrollbar-width:none}
+.rk-sub-l::-webkit-scrollbar{display:none}
+.rk-sub-l li{flex:none}
+.rk-sub-l a{display:grid;justify-items:center;gap:6px;width:76px;color:var(--tinta);text-decoration:none}
+.rk-sub-c{position:relative;display:block}
+.rk-sub-cara{width:60px;height:60px;font-size:22px}
+.rk-sub-rg{position:absolute;right:-8px;bottom:-4px;min-width:26px;height:28px;padding:0 5px;display:grid;place-items:center;font:900 15px/1 Archivo,sans-serif;font-style:normal;
+  color:#0B0C0E;border:2px solid var(--fondo,#fff)}
+.rk-sub-l b{max-width:76px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font:800 13px/1.1 Archivo,sans-serif}
+.rk-sub-l small{font:700 12px/1 "Barlow Condensed",sans-serif;letter-spacing:.05em;color:var(--gris);text-transform:uppercase;white-space:nowrap}
+.rk-sub-mas a{width:60px;height:60px;display:grid;place-items:center;border:1.5px solid var(--suave);font:900 18px/1 Archivo,sans-serif}
+@media (hover: hover) and (pointer: fine){.rk-sub-l a:hover b{text-decoration:underline}}

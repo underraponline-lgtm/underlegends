@@ -154,3 +154,20 @@
   .app .ta-hoja{border-radius:4px;max-width:440px;padding-bottom:22px}
   .app .ta-asa{display:none}
 }
+
+/* 🃏 «Salieron esta semana»: las cartas nuevas en abanico, arriba de los estantes (de la maqueta B de Publicaciones) */
+.ta-aba{display:grid;gap:10px;min-width:0}
+.ta-aba .ta-est-p b{font-weight:800;color:var(--tinta)}
+.ta-aba-f{display:flex;align-items:flex-end;overflow-x:auto;scrollbar-width:none;padding:12px 4px 6px 8px}
+.ta-aba-f::-webkit-scrollbar{display:none}
+.ta-aba-f button{flex:none;position:relative;display:grid;justify-items:center;gap:6px;margin-left:-22px;padding:0;border:0;background:none;cursor:pointer;
+  transition:transform .18s cubic-bezier(.23,1,.32,1)}
+.ta-aba-f button:first-child{margin-left:0}
+.ta-aba-f button:nth-child(odd){transform:rotate(-4deg)}
+.ta-aba-f button:nth-child(even){transform:rotate(3deg) translateY(6px)}
+.ta-aba-c{width:104px;height:auto;display:block;filter:drop-shadow(0 8px 12px rgba(0,0,0,.35))}
+.ta-aba-f small{max-width:96px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font:700 13px/1 "Barlow Condensed",sans-serif;letter-spacing:.04em;text-transform:uppercase;color:var(--gris)}
+@media (hover: hover) and (pointer: fine){.ta-aba-f button:hover{transform:translateY(-10px) rotate(0);z-index:2}}
+.ta-aba-mas{flex:none;align-self:center;margin-left:14px;font:900 22px/1 Archivo,sans-serif;color:var(--gris)}
+@media (max-width:599.98px){.ta-aba-c{width:84px}.ta-aba-f button{margin-left:-18px}}
+@media (prefers-reduced-motion: reduce){.ta-aba-f button{transition:none}}

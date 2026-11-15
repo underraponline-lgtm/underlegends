@@ -211,6 +211,15 @@ export function Carita({ t = 18 }) {
 // y nunca se habían conectado: ahora cada uno reacciona con una, la que quiera de las suyas, y cambiarla pisa la de antes
 // (`reaccionesDe()` en bot/avisos.js). Al lado, lo que ya tiene esa novedad, como en Discord: tocar una que tienes es
 // reaccionar con ésa. Las que te faltan salen apagadas, con el nivel que las da
+// 💬 IR A UNA PUBLICACIÓN SIN RECARGAR (15/11/2026). La fila de Lo último corta la propagación del clic para que reaccionar no
+// la abra, y con eso el link `#/…` no llegaba al script del principio (el que lo ataja): el navegador iba a `/#/publicaciones/<id>`
+// y recargaba la página entera, con su pantalla de carga. Ahora se navega acá, igual que el buscador (`location.hash`)
+export const irPub = (e, id) => {
+  e.preventDefault();
+  e.stopPropagation();
+  if (id) location.hash = '#/publicaciones/' + encodeURIComponent(id);
+};
+
 export function LuSocial({ liga, it, A, hilo, P }) {
   const [abierto, setAbierto] = useState(false);
   const caja = useRef(null);
@@ -252,7 +261,7 @@ export function LuSocial({ liga, it, A, hilo, P }) {
           <Carita />{reac.length ? null : <span className="lu-car-t">Reaccionar</span>}
         </button>
       ) : null}
-      <a className="lu-cm" href={'#/publicaciones/' + encodeURIComponent(id)} aria-label={nc ? nc + (nc === 1 ? ' comentario' : ' comentarios') : 'Comentar'}>
+      <a className="lu-cm" href={'#/publicaciones/' + encodeURIComponent(id)} onClick={(e) => irPub(e, id)} aria-label={nc ? nc + (nc === 1 ? ' comentario' : ' comentarios') : 'Comentar'}>
         <Ico n="globo" t={15} />{nc ? <em>{num(nc)}</em> : null}</a>
       {err && err.error === 'reaccion' ? <small className="lu-err">Esa reacción es del Pase premium</small> : null}
       {abierto ? (
@@ -285,7 +294,7 @@ export function LuNube({ liga, it, hilo, n = 1 }) {
   if (!hilo.length) return null;
   const cs = hilo.slice(-n);
   return (
-    <a className={'lu-nube' + (n > 1 ? ' grande' : '')} href={'#/publicaciones/' + encodeURIComponent(it.id || '')} onClick={(e) => e.stopPropagation()}>
+    <a className={'lu-nube' + (n > 1 ? ' grande' : '')} href={'#/publicaciones/' + encodeURIComponent(it.id || '')} onClick={(e) => irPub(e, it.id)}>
       {cs.map((c) => {
         const pj = c.et === 'l' ? PJ[c.k] || ['LG', '#E41373'] : null;
         return (
