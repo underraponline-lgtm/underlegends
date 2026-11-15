@@ -67,6 +67,7 @@ from comun.rangos import UMBRAL  # noqa: E402
 sys.path.insert(0, SCR)
 import verificados as VERIF  # noqa: E402
 import clave_ciclo as CC  # noqa: E402  la clave del ciclo, en un solo lugar
+from que_cambio import SERVIDORES as _CAMISETAS  # noqa: E402  los servidores con carta de Servidor
 
 # ⚠️ LOS SEIS TRAMOS VIEJOS DEL SHEET. No son una alternativa ni una opción:
 # son lo que la columna `Rango` del Sheet y los roles de Discord dicen HOY,
@@ -676,8 +677,10 @@ def armar():
             #
             # ⚠️ SI NO SE SABE DÓNDE ESTÁ (`svs` vacío) SE OFRECE LO QUE HAY, como
             # antes: esconder una carta que existe es peor que mostrarla.
+            # 🃏 y sólo de servidores que TIENEN carta (`que_cambio.SERVIDORES`, 15/11/2026): las de FFS siguen en R2
+            # desde antes de que pasara a Tier 3, y sin esto `/card` las seguía abriendo dentro de su servidor
             'svc': sorted(c[3:].upper() for c in inventario.get(k, {})
-                          if c.startswith('sv-')
+                          if c.startswith('sv-') and c[3:].upper() in _CAMISETAS
                           and (not svs or c[3:].upper() in svs)),
         }
         # 🔗 LA LETRA DEL RANGO, para los roles vinculados de Discord (19/10/2026, `cuentaRol()` en worker.js): de

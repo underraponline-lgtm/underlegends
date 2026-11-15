@@ -94,7 +94,10 @@ TODAS = sorted(COMO_R2.values())
 #: 🔴 Y PASÓ OTRA VEZ CON DDS (Tier 3, sin carta): entró acá el 08/11/2026 con su alta (4.39) y desde esa tarde cada
 #: `dibujar` tuvo 1 a 6 fallas, siempre la Servidor de la tanda entera; los de esa tanda no se sellaban y volvían a la cola
 #: cada media hora (el 09/11, ~384 minutos de runner). Ahora el self-check compara esta lista con `todos_sv.DEFS`
-SERVIDORES = ('ACAD', 'CH', 'DDF', 'DRA', 'EFA', 'FFA', 'FFS', 'FRZ', 'FTN', 'FVS', 'SR', 'TFC', 'TWR', 'URBF')
+#: 🃏 Y SIN FFS DESDE EL 15/11/2026: es Tier 3 (Dashboard, 20/10) y Dlx, a si su carta de Servidor se quedaba, «Sacarla».
+#: Su fondo sigue en `todos_sv.DEFS`, sin usar. Esta lista es además la que deja pasar las camisetas que la gente ya tiene
+#: en R2 (`svc` en `subir_datos.py` y `subir_web.py`): una de un servidor que salió de acá no se ofrece ni se muestra
+SERVIDORES = ('ACAD', 'CH', 'DDF', 'DRA', 'EFA', 'FFA', 'FRZ', 'FTN', 'FVS', 'SR', 'TFC', 'TWR', 'URBF')
 
 
 def camisetas(quienes):

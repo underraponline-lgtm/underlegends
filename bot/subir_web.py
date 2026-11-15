@@ -2040,6 +2040,8 @@ def _perfiles(gente, comp, regs):
     comp_eq = _companeros(regs, de, por)
     reps = _replicas(de)
     inv = _json('datos', 'cartas_r2.json') or {}
+    import que_cambio as _QC
+    _camisetas = set(_QC.SERVIDORES)
     _vj = _json('datos', 'videos.json') or {}
     _vids, _vpor = _vj.get('videos') or {}, _vj.get('por') or {}
     # 🎬 y las que sumó cada uno (`bot/videos_propios.py`, 12/10/2026): aparte, «de plazas y otras ligas»
@@ -2108,7 +2110,8 @@ def _perfiles(gente, comp, regs):
         if reps.get(q) and reps[q][1]:
             x['rp'] = list(reps[q])
         # 🃏 de qué otros servidores tiene la carta de Servidor (`<clave>/sv-<sv>.webp`, del inventario de R2)
-        svc = sorted(k[3:] for k in (inv.get(q) or {}) if str(k).startswith('sv-'))
+        # (sólo de servidores que tienen carta, `que_cambio.SERVIDORES`: las de FFS quedaron en R2 de antes de su Tier 3)
+        svc = sorted(k[3:] for k in (inv.get(q) or {}) if str(k).startswith('sv-') and k[3:].upper() in _camisetas)
         if svc:
             x['svc'] = svc
         # 🔑 su cacería: a quién cazó, quién lo cazó y cuántas sobrevivió
@@ -4418,6 +4421,13 @@ def _self_check():
     _req_mal = [k for k, x in (perf.get('p') or {}).items() if k in _cev and (x.get('req') or {}).get('competitivo')
                 and x['req']['competitivo'][0][0] != _cev[k]]
     ok(not _req_mal, 'la Competitiva cuenta los eventos de Tier 1 en el perfil, como el Competitivo  %s' % (_req_mal[:5] or '—'))
+    # 🃏 ninguna camiseta de un servidor sin carta (15/11/2026: las de FFS, de antes de su Tier 3, seguían en R2 y se
+    # mostraban en 132 perfiles). Contra `que_cambio.SERVIDORES`, la lista de los que tienen carta de Servidor
+    import que_cambio as _QC2
+    _svc_de = [s for x in (perf.get('p') or {}).values() if isinstance(x, dict)
+               for s in (x.get('svc') or []) + ((x.get('f') or {}).get('svc') or [] if isinstance(x.get('f'), dict) else [])]
+    _svc_mal = sorted({s for s in _svc_de if str(s).upper() not in _QC2.SERVIDORES})
+    ok(not _svc_mal, 'las camisetas de cada perfil, sólo de servidores con carta (%d)  %s' % (len(_svc_de), _svc_mal or '—'))
     # 🔑 LOS PERFILES: uno por fila de la tabla, con sus requisitos, y desde el 13/10/2026 de TODOS los que jugaron (los de
     # más allá de la tabla, con su fila adentro: `_perfiles_extra()`)
     ok(set(perf.get('p') or {}) >= {f['k'] for f in p['tabla']} and len(perf.get('p') or {}) >= p['gente']

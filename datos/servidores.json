@@ -450,7 +450,8 @@
     }
    ],
    "tier": 3,
-   "_tier_por_que": "Tier 3 desde el 20/10/2026, elegido por Dlx en el Dashboard (el ciclo lo copió a datos/niveles.json a las 8:59 PM ET). Escrito acá el 15/11 para que, si el ajuste del Dashboard se vacía, no vuelva a Tier 1 solo."
+   "_tier_por_que": "Tier 3 desde el 20/10/2026, elegido por Dlx en el Dashboard (el ciclo lo copió a datos/niveles.json a las 8:59 PM ET). Escrito acá el 15/11 para que, si el ajuste del Dashboard se vacía, no vuelva a Tier 1 solo.",
+   "_sin_carta": "Sin carta de Servidor desde el 15/11/2026: Dlx, a «¿la carta de Servidor de FFS se queda, aunque sea Tier 3?», «Sacarla». sinCarta en el Worker y fuera de que_cambio.SERVIDORES; las 132 camisetas sv-ffs quedan en R2 sin usarse (no se ofrecen ni se muestran)."
   },
   "DDF": {
    "nombre": "Dimensión del Freestyle",
@@ -798,7 +799,8 @@
      "1554209799221157888"
     ],
     "por_que": "15/11/2026: su liga «Fms ceuta» (tabla, enfrentamientos, veredicto) es de puntos (PTB), con DF que dan puntos y extraplayers, y sus tablas son imágenes. Ningún lector la lee bien: el de LKR cerraba 16 de 53 batallas, se salteaba su cierre («# LAST🇺🇾 🐐») y armaba nombres como «REPETIMIENTO DE JORNADA 2 LAST»; su tabla habría puesto a LAST arriba con Trot campeón invicto. Espera su lector propio (bot/ligas.py esperan()). La categoría va también en categorias_fuera, como la de cualquier liga: sus anuncios de la liga no son eventos."
-   }
+   },
+   "leer_hondo_hasta": "2026-11-18"
   }
  },
  "_fuera_de_la_tabla": [
@@ -896,5 +898,6 @@
   "TWR, FTN y FRZ también desde el 05/10/2026 (Dlx, a «¿los saco del menú, como TFC y EFA?»: «a»): el bot no está",
   "en esos servidores, así que en el menú salían siempre «🔒 BLOQUEADA». Siguen registrados y su historia queda."
  ],
- "_tier_leeme": "`tier`: el nivel con el que ARRANCA un servidor (1 suma al ranking, 2 el calendario sin sumar, 3 la página y sus ligas sin sumar) mientras Dlx no elija otro en el Dashboard (ajuste `tiers`, que manda). Sin `tier`, Tier 1 (los nueve socios de siempre). Existe por FDS (20/10/2026): sin un default escrito, un servidor nuevo que Dlx no tocó en el Dashboard arrancaba en Tier 1 y sus llaves sumaban al ranking. Lo lee bot/tiers.py `niveles()`."
+ "_tier_leeme": "`tier`: el nivel con el que ARRANCA un servidor (1 suma al ranking, 2 el calendario sin sumar, 3 la página y sus ligas sin sumar) mientras Dlx no elija otro en el Dashboard (ajuste `tiers`, que manda). Sin `tier`, Tier 1 (los nueve socios de siempre). Existe por FDS (20/10/2026): sin un default escrito, un servidor nuevo que Dlx no tocó en el Dashboard arrancaba en Tier 1 y sus llaves sumaban al ranking. Lo lee bot/tiers.py `niveles()`.",
+ "_leer_hondo_hasta_leeme": "`leer_hondo_hasta` (AAAA-MM-DD): hasta esa fecha, el barrido completo lee 100 mensajes por canal de ese servidor y no 25 (`bot/escuchar.py` hondos()), así sus llaves entran desde el arranque de la temporada. Dlx, 15/11/2026, al sumar FMS Ceuta: «los eventos de ceuta cargados para q cuente desde el arranque de la temporada 1». Lo escribe herramientas/sumar_servidor.py (una semana) al sumar uno."
 }

@@ -83,6 +83,10 @@ def plan(sv, g, nombre, tier=None):
                                    'el logo y la invitación'}
     if tier in (1, 2, 3):
         d['servidores'][sv]['tier'] = tier
+    # 📜 una semana de lectura honda (`escuchar.hondos()`): sus llaves desde el arranque de la temporada, no sólo las
+    # últimas 25 de cada canal (Dlx, 15/11/2026: «los eventos de ceuta cargados para q cuente desde el arranque»)
+    import datetime as _dt
+    d['servidores'][sv]['leer_hondo_hasta'] = (_dt.date.today() + _dt.timedelta(days=7)).isoformat()
     cambios.append(('datos/servidores.json', json.dumps(d, ensure_ascii=False, indent=1) + '\n'))
     b = json.loads(_leer('datos/bot_en.json'))
     if sv not in b:

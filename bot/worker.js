@@ -194,7 +194,9 @@ export const SERVIDORES = [
   // 🟣 FFS (28/09/2026): de la Liga (Dlx: «A · sí, como los otros cuatro»). Sin invitación
   // todavía —no tiene URL propia y el bot no puede listar las suyas—: con `invita`
   // vacío el bot no manda nada, que es lo que dice `datos/servidores.json`.
-  { sv: 'FFS', nombre: 'FFS League', guild: '1367688812892913774', invita: 'https://discord.gg/whrjpJUfuz' },
+  // 🃏 SIN CARTA DESDE EL 15/11/2026: es Tier 3 desde el 20/10 (Dashboard) y Dlx, a «¿la carta de Servidor de FFS se
+  // queda?»: «Sacarla». Como FDS, LKR, DDS y CEU (`sinCarta`); su camiseta sale también de `que_cambio.SERVIDORES`
+  { sv: 'FFS', nombre: 'FFS League', guild: '1367688812892913774', invita: 'https://discord.gg/whrjpJUfuz', sinCarta: true },
   // 🌌 DDF (03/10/2026): de la Liga (Dlx: «Haz todo lo necesario para que esta sea una buena inclusión»), con la
   // invitación permanente que creó el bot (`bot/invitaciones.py`)
   { sv: 'DDF', nombre: 'Dimensión del Freestyle', guild: '1469009547971526659', invita: 'https://discord.gg/9jxbKT9Hfv' },

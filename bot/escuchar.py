@@ -2795,6 +2795,30 @@ def _canales(s, solo=None, guilds=None):
                 yield c['id'], c['name'], g['name'], g['id']
 
 
+#: 📜 cuántos mensajes por canal lee el barrido completo en un servidor recién sumado (`hondos()`): el tope de Discord por
+#: pedido, así que cuesta los mismos pedidos que los 25 de siempre
+HONDO = 100
+
+
+def hondos(svs=None, hoy=None):
+    """📜 Los guild de los servidores cuyas llaves se leen HONDO (`HONDO` mensajes por canal en el barrido completo)
+    mientras no pase su `leer_hondo_hasta` de `datos/servidores.json`.
+
+    🔑 Dlx, 15/11/2026, al sumar FMS Ceuta: *«también los eventos de ceuta cargados para q cuente desde el arranque de la
+    temporada 1»*. El barrido lee los últimos 25 mensajes de cada canal, y de las 27 llaves de FMS Ceuta desde el 22/09
+    llegaban 18: las 9 de las primeras semanas no se leían nunca. Con 100 entran las 27. Releerlas en cada barrido no
+    duplica nada —el ciclo relee las llaves cada hora a propósito— y la fecha corta la lectura honda sola."""
+    if svs is None:
+        try:
+            with io.open(os.path.join(BASE, 'datos', 'servidores.json'), encoding='utf-8') as f:
+                svs = (json.load(f) or {}).get('servidores') or {}
+        except (OSError, ValueError):
+            return set()
+    hoy = hoy or datetime.datetime.now(datetime.timezone.utc).strftime('%Y-%m-%d')
+    return {str(d.get('guild_id')) for d in svs.values() if isinstance(d, dict) and d.get('confirmado')
+            and d.get('guild_id') and str(d.get('leer_hondo_hasta') or '') >= hoy}
+
+
 def categorias_fuera(gid):
     """Las categorías que ese servidor declara afuera en `datos/servidores.json`.
 
@@ -3154,7 +3178,7 @@ def a_releer(cid, ms, pendientes):
                   and int((v or {}).get('vistas') or 0) < RELEER_VECES and (viejo is None or int(k) < viejo))
 
 
-def barrer(s, por_canal=25, solo=None, guilds=None):
+def barrer(s, por_canal=25, solo=None, guilds=None, hondo=()):
     """Mira los ultimos mensajes de cada canal y devuelve las llaves.
 
     ⚠️ NO SE FILTRA POR NOMBRE DE CANAL. Ver el encabezado: `eventos-hoy`
@@ -3185,8 +3209,9 @@ def barrer(s, por_canal=25, solo=None, guilds=None):
     antes = json.dumps(guardadas, sort_keys=True)
     for cid, canal, servidor, guild in _canales(s, solo, guilds):
         n_ch += 1
+        # 📜 un servidor recién sumado, hondo (`hondos()`): sus llaves desde el arranque de la temporada
         rr = s.get('https://discord.com/api/v10/channels/%s/messages' % cid,
-                   params={'limit': por_canal}, timeout=30)
+                   params={'limit': HONDO if str(guild) in hondo else por_canal}, timeout=30)
         if rr.status_code != 200:
             continue              # sin permiso de leer: se salta, no falla
         ms = rr.json()
@@ -3443,9 +3468,13 @@ def escuchar(s, forzar=None, por_canal=25):
         nuevos = [g['name'] for g in guilds if g['id'] not in mem['guilds']]
         if nuevos and forzar is None:
             completo = True
+    # 📜 hondo sólo en el barrido completo: es el que descubre los canales de un servidor recién sumado
+    hon = hondos() if completo else set()
+    if hon:
+        print('   📜 leo hondo (%d mensajes por canal) %d servidor(es) recién sumado(s)' % (HONDO, len(hon)))
     out, n_ch, n_msg = barrer(s, por_canal=por_canal,
                               solo=None if completo else mem['canales'],
-                              guilds=guilds)
+                              guilds=guilds, hondo=hon)
     # ⚠️ SE ANOTA LA LISTA DE HOY, también si se fue alguno: si el bot
     # sale de un servidor y vuelve, vuelve a ser nuevo.
     if guilds is not None:
@@ -5345,6 +5374,13 @@ def _check_cadencia():
         # un servidor nuevo sin descubrir mas de 24 h.
         ('el plazo está en una banda razonable (%s h)' % HORAS_BARRIDO,
          1 <= HORAS_BARRIDO <= 24),
+        # 📜 hondo mientras no pase la fecha, y sólo un socio confirmado (15/11/2026, FMS Ceuta)
+        ('un servidor recién sumado se lee hondo hasta su fecha, y después no',
+         hondos({'X': {'confirmado': True, 'guild_id': '9', 'leer_hondo_hasta': '2026-11-18'},
+                 'Y': {'confirmado': False, 'guild_id': '8', 'leer_hondo_hasta': '2026-11-18'},
+                 'Z': {'confirmado': True, 'guild_id': '7'}}, hoy='2026-11-15') == {'9'}
+         and hondos({'X': {'confirmado': True, 'guild_id': '9', 'leer_hondo_hasta': '2026-11-18'}}, hoy='2026-11-19') == set()
+         and HONDO == 100),
     ]:
         mal += not ok
         print('   %s %s' % ('✅' if ok else '🔴', que))
