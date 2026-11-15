@@ -14,6 +14,14 @@ anuncios de todos los servidores también»*. El muro automático es la idea del
 nadie y cuenta los hechos en tercera persona («X ganó…»), nunca «en nombre
 de» alguien.
 
+🔄 ESO CAMBIÓ EL 15/11/2026 (Dlx: «me gustaría que también los sv publiquen
+cosas de forma automática… y los usuarios también sus cosas», y a la voz,
+«1. B»): cada publicación la firma quien la protagoniza —su cara, o el logo
+de su servidor— y la página la escribe en primera persona («Gané…»). Los
+datos de acá no cambian: la voz la pone la página. Lo nuevo de los
+servidores y de la gente vive en `bot/muro_solos.py`, y quien no quiere que
+salgan las suyas las apaga en Tu cuenta (`muro_solos.apagados()`).
+
 LO QUE ENTRA
 - 🏆 los campeones de cada evento procesado (las llaves);
 - ⬆️ quien sube de rango, y 🎖️ quien consigue su primer rango;
@@ -64,6 +72,9 @@ SALIDA = os.path.join(BASE, 'datos', 'muro.json')
 CLAVE = 'web:muro'
 #: cuántas publicaciones viajan, y cuántos cambios (rango, tarjeta) se guardan
 VIAJAN, GUARDA = 80, 400
+#: 🏟️ lo de cada servidor (bot/muro_solos.py) de los últimos tantos días viaja aunque pase de `VIAJAN`: medido el 15/11/2026,
+#: lo de la gente de cuatro días llenaba las 80 —y con 120 también— y el lunes y el cierre de cada servidor no llegaban nunca
+SV_DIAS = 8
 #: los anuncios y lo demás, de hasta cuántos días atrás
 DIAS = 21
 #: los nombres de las tarjetas, como los dice la página
@@ -553,6 +564,20 @@ def id_de(x):
     elif tipo == 'pase':
         # 🎟️ de quién (su perfil), de qué temporada y qué nivel: llega una sola vez
         partes = [tipo, x.get('temp') or '', str(x.get('nivel') or ''), (x.get('ks') or [''])[0] or '|'.join(x.get('quien') or [])]
+    elif tipo in ('svlunes', 'svsemana', 'svmeta'):
+        # 🏟️ (bot/muro_solos.py) de qué servidor y qué semana: todos los servidores salen en el mismo instante, así que sin
+        # el servidor serían una sola publicación
+        partes = [tipo, x.get('sv') or '', x.get('sem') or '']
+    elif tipo == 'svrecord':
+        partes = [tipo, x.get('sv') or '', str(x.get('ll') or '')]
+    elif tipo in ('svtop', 'svnuevo', 'svtier'):
+        partes = [tipo, x.get('sv') or '', x.get('t') or '', '|'.join(x.get('quien') or [])]
+    elif tipo == 'podio':
+        partes = [tipo, str(x.get('ll') or ''), '|'.join(x.get('quien') or [])]
+    elif tipo in ('crewunion', 'crewnueva'):
+        partes = [tipo, x.get('crew') or '', (x.get('ks') or [''])[0], x.get('t') or '']
+    elif tipo in ('top10', 'racha', 'subio'):
+        partes = [tipo, (x.get('ks') or [''])[0], x.get('rk') or '', str(x.get('racha') or ''), x.get('t') or '']
     else:
         partes = [tipo, x.get('t') or '', '|'.join(x.get('quien') or []), x.get('rg') or '', x.get('carta') or '',
                   x.get('ev') or '', x.get('tit') or '']
@@ -574,7 +599,9 @@ def con_ids(items):
 # ── de quién es cada publicación: para los seguidores ────────────────────
 #: las publicaciones que son de alguien. Los anuncios y las novedades no son de nadie
 DE_ALGUIEN = ('campeon', 'rango', 'tarjeta', 'caza', 'sobrevivio', 'elegido', 'precio', 'premios', 'pase', 'sorteo', 'ligahito',
-              'promo', 'mesaward')
+              'promo', 'mesaward',
+              # 🔄 las de bot/muro_solos.py (15/11/2026); `svtop` es del servidor pero nombra a su #1
+              'podio', 'top10', 'subio', 'racha', 'crewunion', 'crewnueva', 'svtop')
 #: los premios de la semana que son de una persona (el de servidor no)
 PREMIOS = ('figura', 'revelacion', 'cazador')
 
@@ -691,7 +718,7 @@ def de_cada_uno(p, guardado=None, ahora=None, fuentes=None, tope=POR_PERSONA):
     guardado = guardado if guardado is not None else (_j('datos', 'muro.json') or {})
     fuentes = fuentes if fuentes is not None else _fuentes()
     # 📣 en el perfil, más promos de cada uno que en el muro (`PROMOS_PERFIL`)
-    todo, _estado, _anotados = _todo(p, guardado, ahora, fuentes, promos_por=PROMOS_PERFIL)
+    todo, _estado, _anotados, _extra = _todo(p, guardado, ahora, fuentes, promos_por=PROMOS_PERFIL)
     desde = _arranque(ahora)
     visto, lista = set(), []
     for x in todo:
@@ -707,7 +734,9 @@ def de_cada_uno(p, guardado=None, ahora=None, fuentes=None, tope=POR_PERSONA):
         lista.append(x)
     lista.sort(key=lambda x: x['t'], reverse=True)
     out = {}
-    for x in con_claves(con_ids(lista), p.get('tabla')):
+    import muro_solos as MS
+    # 🙈 quien apagó sus publicaciones (Tu cuenta): tampoco en su perfil. La copia la dejó `publicar()` en esta corrida
+    for x in MS.sin_apagados(con_claves(con_ids(lista), p.get('tabla')), MS.apagados(None)):
         ks = x.get('ks')
         ks = list(ks.values()) if isinstance(ks, dict) else (ks or [])
         for k in dict.fromkeys(k for k in ks if k):
@@ -721,11 +750,23 @@ PROMOS_PERFIL = 8
 
 
 def _todo(p, guardado, ahora, fuentes, promos_por=None):
-    """`(todas las publicaciones sin filtrar, estado nuevo, cambios anotados)`."""
+    """`(todas las publicaciones sin filtrar, estado nuevo, cambios anotados, lo anotado de bot/muro_solos.py)`."""
+    import muro_solos as MS
     pubs, estado = cambios(guardado.get('estado'), p.get('tabla'), ahora)
-    anotados = (guardado.get('cambios') or []) + pubs
+    # 🔄 lo que publican solos los servidores y la gente y es un cambio entre corridas (el #1, el top 10, las rachas…)
+    solos, extra = MS.anotar(guardado.get('extra'), p, fuentes.get('mult'), ahora)
+    anotados = (guardado.get('cambios') or []) + pubs + solos
     anotados = sin_subidas_caidas(anotados, estado, p.get('tabla'), ahora)[-GUARDA:]
-    todo = (anotados + campeones(fuentes.get('llaves'), fuentes.get('instantes'))
+    # 🔄 y lo que se vuelve a armar: el primer podio, el primer título, los récords, la semana de cada servidor y las crews
+    de_ll, primeros = MS.de_llaves(fuentes.get('llaves'), fuentes.get('instantes'), _arranque(ahora))
+    camps = campeones(fuentes.get('llaves'), fuentes.get('instantes'))
+    for x in camps:
+        if primeros.get(x.get('ll')):
+            x['primero'] = primeros[x['ll']]
+    svs = [s['sv'] for s in p.get('svs') or [] if isinstance(s, dict) and s.get('sv')]
+    solos_fijos = (de_ll + MS.de_semanas(fuentes.get('mult'), fuentes.get('llaves'), fuentes.get('instantes'), svs, ahora)
+                   + MS.de_crews(fuentes.get('crews_vivas'), p.get('tabla')))
+    todo = (anotados + camps + solos_fijos
             + most_wanted(fuentes.get('mw')) + precios_cobrados(fuentes.get('precios'))
             + premios(fuentes.get('mult')) + anuncios(fuentes.get('anuncios'))
             + pase(fuentes.get('pase'), p.get('tabla')) + sorteos(fuentes.get('pase'), p.get('tabla'))
@@ -733,7 +774,7 @@ def _todo(p, guardado, ahora, fuentes, promos_por=None):
             + flyers(fuentes.get('ligas'), fuentes.get('svs')) + ligas_hitos(fuentes.get('ligas'))
             + promos_muro(fuentes.get('promos'), ahora, promos_por) + mes_muro()
             + crews_suben(fuentes.get('crews_tiers'), fuentes.get('crews_vivas')))
-    return todo, estado, anotados
+    return todo, estado, anotados, extra
 
 
 def mes_muro():
@@ -777,7 +818,7 @@ def _tabla_entera(p, perfiles):
     return (p.get('tabla') or []) + [f for f in extra if f and not f.get('solo')]
 
 
-def armar(p, guardado=None, ahora=None, fuentes=None, perfiles=None, permisos=None):
+def armar(p, guardado=None, ahora=None, fuentes=None, perfiles=None, permisos=None, apagados=None):
     """`(muro para la página, lo que se guarda)` con el payload del lobby `p`.
 
     `fuentes` es para el self-check: `{llaves, instantes, mw, precios, mult, anuncios}`. `permisos`, de quién se puede
@@ -787,7 +828,7 @@ def armar(p, guardado=None, ahora=None, fuentes=None, perfiles=None, permisos=No
     guardado = guardado if guardado is not None else (_j('datos', 'muro.json') or {})
     if fuentes is None:
         fuentes = _fuentes()
-    todo, estado, anotados = _todo(p, guardado, ahora, fuentes)
+    todo, estado, anotados, extra = _todo(p, guardado, ahora, fuentes)
     # 🌙 y el resumen de cada noche, con su «antes» guardado: ver `noches()`
     ns, n_antes, n_guarda = noches(guardado, ahora, fuentes, p.get('tabla'))
     todo = todo + ns
@@ -800,6 +841,9 @@ def armar(p, guardado=None, ahora=None, fuentes=None, perfiles=None, permisos=No
     # 📣 una promo está hasta su `hasta` (la semana, lo alargado en la Tienda o el respaldo del círculo: `bot/promos.py`),
     # aunque sea de antes de `desde`
     sigue = lambda x: x.get('tipo') == 'promo' and (_de_iso(x.get('hasta')) or ahora) > ahora  # noqa: E731
+    # 🏟️ y lo de cada servidor de esta semana viaja aunque pase de `VIAJAN` (ver `SV_DIAS`)
+    del_sv = lambda x: (str(x.get('tipo') or '').startswith('sv')  # noqa: E731
+                        and (_de_iso(x.get('t')) or desde) > ahora - dt.timedelta(days=SV_DIAS))
     for x in todo:
         t = _de_iso(x.get('t'))
         if not t or (t < desde and not sigue(x)) or t > ahora + dt.timedelta(hours=1):
@@ -812,7 +856,10 @@ def armar(p, guardado=None, ahora=None, fuentes=None, perfiles=None, permisos=No
     lista.sort(key=lambda x: x['t'], reverse=True)
     muro = {'_leeme': 'El muro de Publicaciones: lo arma bot/muro.py desde bot/subir_web.py (paso 2c).',
             # 📣 y las promos que siguen viajan aunque pasen de `VIAJAN`: una alargada en la Tienda es vieja y pagó
-            'items': con_claves([x for i, x in enumerate(con_ids(lista)) if i < VIAJAN or sigue(x)], p.get('tabla'), _tabla_entera(p, perfiles))}
+            'items': con_claves([x for i, x in enumerate(con_ids(lista)) if i < VIAJAN or sigue(x) or del_sv(x)], p.get('tabla'), _tabla_entera(p, perfiles))}
+    # 🙈 quien apagó sus publicaciones en Tu cuenta (bot/muro_solos.py): sin `apagados`, la copia de la última lectura
+    import muro_solos as MS
+    muro['items'] = MS.sin_apagados(muro['items'], MS.apagados(None) if apagados is None else apagados)
     # 💬 Y LOS COMENTARIOS SIMULADOS de cada publicación (Dlx, 12/11/2026: «Sí, constrúyelo»): ver bot/comentarios_sim.py.
     # ⚠️ Después de los ids y las claves: el `id` no los mira, así felicitar y comentar siguen apuntando a lo mismo
     try:
@@ -828,26 +875,29 @@ def armar(p, guardado=None, ahora=None, fuentes=None, perfiles=None, permisos=No
         print('   ⚠️ los comentarios simulados: %s' % str(e)[:80])
     guardar = {'_leeme': 'El muro de Publicaciones: cómo estaba cada uno (rango y tarjetas) y los cambios '
                          'que se anotaron. Lo escribe bot/muro.py; lo demás del muro se arma en cada corrida.',
-               'estado': estado, 'cambios': anotados, 'noche_antes': n_antes, 'noches': n_guarda}
+               'estado': estado, 'cambios': anotados, 'noche_antes': n_antes, 'noches': n_guarda, 'extra': extra}
     return muro, guardar
 
 
 def publicar(p, subir=None, perfiles=None):
     """Arma el muro, lo guarda y lo sube a KV. `subir` es `subir_web.subir`."""
     # 💬 los permisos de los comentarios, de KV (`cm:permisos`); sin token o sin red, la copia (`comentarios_sim.permisos()`)
-    perm = None
+    perm, no = None, None
     try:
         import comentarios_sim as CS
         import fotos as _FT
+        import muro_solos as MS
         tk = _FT.env('CLOUDFLARE_API_TOKEN', obligatorio=False)
         if tk:
             import requests as _rq
             s = _rq.Session()
             s.headers['Authorization'] = 'Bearer ' + tk
             perm = CS.permisos(s)
+            # 🙈 y quién apagó sus publicaciones (Tu cuenta); deja la copia que leen el perfil y la corrida sin red
+            no = MS.apagados(s)
     except Exception:                                    # noqa: BLE001
         perm = None
-    muro, guardar = armar(p, perfiles=perfiles, permisos=perm)
+    muro, guardar = armar(p, perfiles=perfiles, permisos=perm, apagados=no)
     with io.open(SALIDA, 'w', encoding='utf-8') as f:
         json.dump(guardar, f, ensure_ascii=False, indent=0)
     ok = subir(muro, solo_si_cambio=True, clave=CLAVE) if subir else None
@@ -926,7 +976,7 @@ def _self_check():
                           guardado={'estado': antes, 'cambios': []}, ahora=ahora, fuentes=fuentes)
     ts = [x['tipo'] for x in muro['items']]
     ok(set(ts) == {'rango', 'tarjeta', 'campeon', 'caza', 'elegido', 'precio', 'premios', 'anuncio', 'liga', 'pase',
-                   'flyer', 'crewtier', 'sorteo'},
+                   'flyer', 'crewtier', 'sorteo', 'podio'},
        'entra todo: rango, tarjeta, campeón, caza, El Elegido, precio, premios, anuncio, novedades, el Pase y los flyers  %s'
        % sorted(set(ts)))
     fy = [x for x in muro['items'] if x['tipo'] == 'flyer']
@@ -1015,6 +1065,14 @@ def _self_check():
        and '2026-11-08' in ng2 and 'resnoche' not in DE_ALGUIEN and 'ks' not in its[0],
        'a las 12 PM se guarda cómo empieza la noche nueva y la de ayer queda; no lleva `ks`: no avisa a los seguidores')
     ok(id_de(dict(r, part=99)) == id_de(r), 'el resumen que se rehace sigue siendo la misma publicación')
+
+    # 🔄 lo de bot/muro_solos.py, ya dentro del muro (15/11/2026)
+    lun = [{'tipo': 'svlunes', 't': '2026-11-09T16:20:00Z', 'sv': s, 'sem': '2026-11-09', 'x': 2} for s in ('FFA', 'SR', 'DDF')]
+    ok(len(con_ids(lun)) == 3, 'el lunes de tres servidores, en el mismo instante: tres publicaciones y no una')
+    ok(id_de(dict(lun[0], x=3)) == id_de(lun[0]), 'un ×N corregido sigue siendo la misma publicación del lunes')
+    ok(all(x in DE_ALGUIEN for x in ('podio', 'top10', 'subio', 'racha', 'crewunion', 'crewnueva', 'svtop'))
+       and not any(x in DE_ALGUIEN for x in ('svlunes', 'svsemana', 'svmeta', 'svrecord', 'svnuevo', 'svtier')),
+       'lo de la gente lleva `ks` (seguidores, Felicitar, apagar); lo del servidor solo, no')
     print('\n   %s\n' % ('todo bien' if not mal else '🔴 %d mal' % mal))
     return mal
 

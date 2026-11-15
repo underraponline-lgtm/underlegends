@@ -103,6 +103,7 @@ const AVISOS = {
   '/api/avisos/qg-finales': 'GET',
   '/api/avisos/qg-votar-web': 'POST',
   '/api/avisos/cm-mio': 'POST',
+  '/api/avisos/muro-mio': 'POST',
   '/api/avisos/dueno/cm-permiso': 'POST',
   '/api/avisos/dueno/cm-permisos': 'POST',
   // 🐉 los Dragón Drops (12/11/2026): los tuyos y la barra del día, y abrir uno. Ver `dropsDe()` y `dropAbrir()` en bot/avisos.js

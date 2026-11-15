@@ -3495,6 +3495,8 @@ const RUTAS = {
   '/avisos/comentar': 'POST', '/avisos/comentarios': 'GET', '/avisos/comentario-borrar': 'POST', '/avisos/comentario-reportar': 'POST',
   '/avisos/qg-finales': 'GET', '/avisos/qg-votar-web': 'POST',
   '/avisos/cm-mio': 'POST', '/avisos/dueno/cm-permiso': 'POST', '/avisos/dueno/cm-permisos': 'POST',
+  // 🙈 «publicar lo mío solo» (Tu cuenta, 15/11/2026): apagar las publicaciones automáticas propias. Ver `muroMio()`
+  '/avisos/muro-mio': 'POST',
   // 🐉 los Dragón Drops: los tuyos y la barra del día, y abrir uno (con tu sesión). Ver `dropsDe()` y `dropAbrir()`
   '/avisos/drops': 'POST', '/avisos/drop-abrir': 'POST',
   // 🐉 el drop del día del Pase (15/11/2026): abrirlo, con tu sesión. Ver `paseDiaAbrir()`
@@ -3744,6 +3746,14 @@ export function tituloSeguido(x, n, rol) {
                 : x.tipo === 'ligahito' ? (x.que === 'campeon' ? `🏅 ${n} es campeón de ${String(x.ln || '').slice(0, 50)}`
                   : x.que === 'invicto' ? `💎 ${n} lleva ${x.pg || 5} ganadas sin perder en ${String(x.ln || '').slice(0, 50)}`
                     : x.que === 'punta' ? `🔝 ${n} tomó la punta de ${String(x.ln || '').slice(0, 50)}` : '')
+                // 🔄 lo que publica sola la gente (bot/muro_solos.py, 15/11/2026)
+                : x.tipo === 'podio' ? `🥈 ${n} subió a su primer podio${ev ? ' en ' + ev : ''}`
+                : x.tipo === 'top10' ? `🔝 ${n} entró al top 10 del Ranking ${x.rk === 'competitivo' ? 'Competitivo' : 'Temporada'}`
+                : x.tipo === 'subio' ? `📈 ${n} subió ${(x.de || 0) - (x.a || 0)} puestos esta semana`
+                : x.tipo === 'racha' ? `🔥 ${n} lleva ${x.racha} eventos seguidos`
+                : x.tipo === 'crewunion' ? `👥 ${n} entró a la crew ${String(x.nombre || '').slice(0, 40)}`
+                : x.tipo === 'crewnueva' ? `👥 ${n} creó la crew ${String(x.nombre || '').slice(0, 40)}`
+                : x.tipo === 'svtop' ? `👑 ${n} es el nuevo #1 de ${String(x.sv || '').slice(0, 8)}`
                 : x.tipo === 'premios' ? ({ figura: `🥇 ${n} es la figura de la semana`,
                   revelacion: `🌟 ${n} es la revelación de la semana`,
                   cazador: `🎯 ${n} es el cazador de la semana` })[rol] || '' : '';
@@ -3794,7 +3804,9 @@ export function paraSeguidores(items, ahora) {
 //: lo que se puede felicitar. Una carta nueva le toca a todo el que juega una vez: no es un logro
 /** 👏 la reacción de todos; las otras salen del Pase premium (`reaccionesDe()`) */
 export const REACCION_BASE = '👏';
-export const APLAUDIBLES = { campeon: 1, rango: 1, caza: 1, sobrevivio: 1, pase: 1, sorteo: 1, ligahito: 1, mesaward: 1 };
+export const APLAUDIBLES = { campeon: 1, rango: 1, caza: 1, sobrevivio: 1, pase: 1, sorteo: 1, ligahito: 1, mesaward: 1,
+  // 🔄 lo que publica sola la gente (bot/muro_solos.py, 15/11/2026). Entrar a una crew no es un logro
+  podio: 1, top10: 1, subio: 1, racha: 1, svtop: 1 };
 //: 🏆 las categorías de los MES AWARDS, como las dice un aviso (`bot/mes_awards.py`)
 export const MES_CAT = { rapero: 'el Rapero del mes', revelacion: 'la Revelación del mes', batalla: 'la Batalla del mes',
   servidor: 'el Servidor del mes',
@@ -3838,7 +3850,12 @@ export function motivoAplauso(x) {
               : `ganar ${MES_CAT[x.cat] || 'los MES AWARDS'}`)
             : x.tipo === 'ligahito' ? (x.que === 'campeon' ? `ganar ${String(x.ln || 'una liga').slice(0, 50)}`
               : x.que === 'invicto' ? `llegar invicto a ${x.pg || 5} en ${String(x.ln || 'su liga').slice(0, 50)}`
-                : x.que === 'punta' ? `tomar la punta de ${String(x.ln || 'su liga').slice(0, 50)}` : '') : '';
+                : x.que === 'punta' ? `tomar la punta de ${String(x.ln || 'su liga').slice(0, 50)}` : '')
+            : x.tipo === 'podio' ? `tu primer podio${ev ? ' en ' + ev : ''}`
+            : x.tipo === 'top10' ? `entrar al top 10 del Ranking ${x.rk === 'competitivo' ? 'Competitivo' : 'Temporada'}`
+            : x.tipo === 'subio' ? `subir ${(x.de || 0) - (x.a || 0)} puestos en la semana`
+            : x.tipo === 'racha' ? `llegar a ${x.racha} eventos seguidos`
+            : x.tipo === 'svtop' ? `ser el nuevo #1 de ${String(x.sv || '').slice(0, 8)}` : '';
   return t.slice(0, 100);
 }
 
@@ -6265,6 +6282,24 @@ export async function rutaAvisos(req, env, ruta) {
       headers: { 'content-type': 'application/json' },
     });
   }
+  // 🙈 «PUBLICAR LO MÍO SOLO», en Tu cuenta: con `publicar` (sí/no) lo cambia; sin él, dice cómo está. Como `cm-mio`
+  if (ruta === '/avisos/muro-mio') {
+    const crudo = await req.text();
+    if (crudo.length > 1024) return json({ error: 'demasiado grande' }, 413);
+    let d = null;
+    try { d = JSON.parse(crudo || '{}'); } catch (e) { d = null; }
+    if (!d || typeof d !== 'object' || (d.token && !/^[A-Za-z0-9._-]{10,300}$/.test(String(d.token))) ||
+        (d.publicar !== undefined && typeof d.publicar !== 'boolean')) return json({ error: 'faltan datos' }, 400);
+    const q = await quienPide(req, env, d);
+    if (!q.id) return json({ error: q.error }, q.estado);
+    let k = '';
+    try { k = (await env.KV.get('d:' + q.id)) || (await env.KV.get('dn:' + q.id)) || ''; } catch (e) { k = ''; }
+    if (!claveValida(k)) return json({ ok: true, sin_perfil: true });
+    return elObjeto(env).fetch('https://avisos/muro-mio', {
+      method: 'POST', body: JSON.stringify(Object.assign({ quien: q.id, k }, typeof d.publicar === 'boolean' ? { publicar: d.publicar } : {})),
+      headers: { 'content-type': 'application/json' },
+    });
+  }
   // 🐉 TUS DRAGÓN DROPS Y ABRIR UNO: quién lo dice Discord (o la sesión); qué sale, el objeto
   if (ruta === '/avisos/drops' || ruta === '/avisos/drop-abrir') {
     const crudo = await req.text();
@@ -7659,6 +7694,8 @@ export class Avisos {
       this.sql.exec('CREATE TABLE IF NOT EXISTS cm_reporte (c INTEGER NOT NULL, quien TEXT NOT NULL, t INTEGER NOT NULL, PRIMARY KEY (c, quien))');
       this.sql.exec('CREATE TABLE IF NOT EXISTS cm_permiso (k TEXT PRIMARY KEY, estado TEXT NOT NULL, ' +
         "por TEXT NOT NULL DEFAULT '', t INTEGER NOT NULL)");
+      // 🙈 quién apagó sus publicaciones automáticas (Tu cuenta, 15/11/2026): sin fila, salen. Ver `muroMio()`
+      this.sql.exec('CREATE TABLE IF NOT EXISTS muro_no (k TEXT PRIMARY KEY, t INTEGER NOT NULL)');
       // 🐉 LOS DRAGÓN DROPS (12/11/2026): uno por fila, ganado por algo (`origen`, único por persona: ganarlo dos veces no
       // da dos) y, al abrirlo, su rareza y su premio. Y los pasos de la barra del día (`dia_pasos`). Ver `dropDar()`
       this.sql.exec('CREATE TABLE IF NOT EXISTS drops (id INTEGER PRIMARY KEY AUTOINCREMENT, quien TEXT NOT NULL, ' +
@@ -8521,6 +8558,7 @@ export class Avisos {
       if (ruta === '/comentario-borrar') return json(this.comentarioBorrar(d));
       if (ruta === '/comentario-reportar') return json(this.comentarioReportar(d));
       if (ruta === '/cm-mio') return await this.cmMio(d);
+      if (ruta === '/muro-mio') return await this.muroMio(d);
       if (ruta === '/cm-permiso') return await this.cmPermiso(d);
       if (ruta === '/drops') return json(this.dropsDe(String(d.quien || '')));
       if (ruta === '/nuevo') { const v = this.nuevoDe(d); return json(v, v.error ? 400 : 200); }
@@ -9072,6 +9110,10 @@ export class Avisos {
     // 💬 y la de los permisos de los comentarios (ver `espejarPermisos()`)
     if (this.leer('cmperm_pend')) {
       try { await this.espejarPermisos(); } catch (e) { /* la próxima vuelta */ }
+    }
+    // 🙈 y la de quién apagó sus publicaciones (ver `espejarMuroNo()`)
+    if (this.leer('murono_pend')) {
+      try { await this.espejarMuroNo(); } catch (e) { /* la próxima vuelta */ }
     }
     // ⭐ y quién empezó a seguirte. Nunca frena al vigía: ver `avisarSeguidores()`
     try { await this.avisarSeguidores(ahora); } catch (e) {
@@ -14146,6 +14188,41 @@ export class Avisos {
       this.guardar('cmperm_t', ahora);
       this.guardar('cmperm_pend', 0);
     } catch (e) { this.guardar('cmperm_pend', 1); }
+  }
+
+  /**
+   * 🙈 «PUBLICAR LO MÍO SOLO» (Dlx, 15/11/2026, a «¿cada uno puede apagar sus publicaciones automáticas desde Tu
+   * cuenta?»: «dALE»). `publicar` falso las apaga; verdadero las vuelve a prender. Sin `publicar`, dice cómo está.
+   * 🔑 EL CICLO SE ENTERA POR KV (`muro:no`, las claves de perfil), como `cm:permisos`: lo lee `bot/muro_solos.py`
+   * (`apagados()`) y saca del muro y del perfil toda publicación cuya gente sea toda de quienes las apagaron. ⚠️ No va
+   * al repo ni al payload: quién las apagó es un dato de esa persona.
+   */
+  async muroMio(d) {
+    const quien = String(d.quien || ''), k = String(d.k || '');
+    if (!/^[0-9]{5,25}$/.test(quien) || !claveValida(k)) return json({ error: 'faltan datos' }, 400);
+    if (typeof d.publicar === 'boolean') {
+      const antes = !this.sql.exec('SELECT 1 AS x FROM muro_no WHERE k = ?', k).toArray()[0];
+      if (d.publicar !== antes) {
+        if (!this.cuentaCambio(quien, 'muro', 10)) return json({ error: 'espera' }, 429);
+        if (d.publicar) this.sql.exec('DELETE FROM muro_no WHERE k = ?', k);
+        else this.sql.exec('INSERT OR REPLACE INTO muro_no (k, t) VALUES (?, ?)', k, Date.now());
+        await this.espejarMuroNo(false);
+      }
+    }
+    return json({ ok: true, publica: !this.sql.exec('SELECT 1 AS x FROM muro_no WHERE k = ?', k).toArray()[0] });
+  }
+
+  /** 🙈 La lista para el ciclo, en KV (`muro:no`), como `espejarPermisos()`: como mucho cada 15 minutos. */
+  async espejarMuroNo(ya = true) {
+    const ahora = Date.now();
+    if (!ya && ahora - (this.leer('murono_t') || 0) < 15 * MIN) { this.guardar('murono_pend', 1); return; }
+    if (this.leer('murono_pend') && ahora - (this.leer('murono_t') || 0) < 15 * MIN) return;
+    const no = this.sql.exec('SELECT k FROM muro_no ORDER BY k').toArray().map((r) => r.k);
+    try {
+      await this.env.KV.put('muro:no', JSON.stringify({ v: 1, no }));
+      this.guardar('murono_t', ahora);
+      this.guardar('murono_pend', 0);
+    } catch (e) { this.guardar('murono_pend', 1); }
   }
 
   // ── 🐉 DRAGÓN DROPS ───────────────────────────────────────────────────

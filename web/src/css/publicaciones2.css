@@ -512,3 +512,20 @@ dialog.pn-pop.pw-hoja{--pc:#29B298;width:min(620px,calc(100vw - 32px));max-heigh
 @media (max-width: 600px){dialog.pn-pop.pw-hoja{width:100%}}
 @media (prefers-reduced-motion: reduce){.pw-abanico button{transition:none}}
 .pw-t.chico{font-size:13.5px;font-weight:500;color:#D6D8DC}
+
+/* 🗣️ quién firma cada publicación (15/11/2026): su cara o el logo de su servidor, su nombre y la marca «automática» */
+.pw-autor{display:inline-flex;align-items:center;gap:6px;min-width:0;color:var(--tinta);text-decoration:none}
+.pw-autor b{font:800 13.5px/1.2 Archivo,sans-serif;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.pw-autor small{flex:none;padding:2px 5px;border:1px solid var(--pw-borde);color:var(--gris);font:700 10.5px/1 "Barlow Condensed",sans-serif;
+  letter-spacing:.08em;text-transform:uppercase}
+.pw-au-c{flex:none;width:24px;height:24px;border-radius:50%;object-fit:cover;font-size:11px}
+a.pw-autor:hover b{text-decoration:underline}
+.pw-top .pw-autor{flex:1}
+.pw-firma{display:flex;flex-wrap:wrap;align-items:center;gap:4px 10px;min-width:0}
+.pw-firma .pw-cat{margin:0}
+.pw-hoja .pw-tx > .pw-autor{margin-bottom:4px}
+.pw-svl li{grid-template-columns:26px minmax(0,1fr) auto auto}
+.pw-svl b{white-space:normal}
+.pw-svl small{white-space:normal}
+.pw-lg{background:var(--verde);color:#0B0C0E;font-size:13px;min-width:30px}
+.pw-rngs small.g{color:var(--gris);font-weight:600;letter-spacing:.02em}

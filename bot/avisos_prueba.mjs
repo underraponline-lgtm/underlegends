@@ -823,6 +823,12 @@ const ok = (cond, que, det) => {
     A.motivoAplauso({ tipo: 'rango', rg: 'A' }) === 'subir a rango A' &&
     A.motivoAplauso({ tipo: 'caza', a: 'Bea', ev: 'COPA' }) === 'cazar a Bea en COPA' &&
     A.motivoAplauso({ tipo: 'tarjeta' }) === '', 'el motivo de cada logro; lo que no es un logro, nada');
+  // 🔄 lo que publica sola la gente (bot/muro_solos.py, 15/11/2026)
+  ok(A.tituloSeguido({ tipo: 'top10', rk: 'competitivo' }, 'Ana') === '🔝 Ana entró al top 10 del Ranking Competitivo' &&
+    A.tituloSeguido({ tipo: 'subio', de: 30, a: 12 }, 'Ana') === '📈 Ana subió 18 puestos esta semana' &&
+    A.tituloSeguido({ tipo: 'svlunes', sv: 'FFA' }, 'Ana') === '' &&
+    A.motivoAplauso({ tipo: 'racha', racha: 5 }) === 'llegar a 5 eventos seguidos' && !A.APLAUDIBLES.crewunion && !A.APLAUDIBLES.svlunes,
+  'lo nuevo de la gente avisa a sus seguidores y se felicita; lo de un servidor solo y entrar a una crew, no');
 }
 
 // ── los canales de veredictos: también «votaciones» y «resultados» (Dlx, 02/10/2026) ──

@@ -788,6 +788,20 @@ export class Liga {
       return ['LIGA · ' + siglaDe(it.sv), limpio(it.ln) + (it.tit ? ': ' + limpio(it.tit) : ''), ['img', it.img], c,
         { ruta: '#/ligas/' + encodeURIComponent(it.liga || '') }];
     }
+    // 🔄 lo que publican solos la gente y los servidores (bot/muro_solos.py, 15/11/2026). Acá en tercera persona: Lo último
+    // no lleva la firma arriba, como Publicaciones. El lunes y el cierre de cada servidor no: son trece a la vez
+    const perfil = { perfil: ks[0] };
+    if (it.tipo === 'podio') return ['PRIMER PODIO · ' + siglaDe(it.sv), q[0] + ' salió ' + String(it.puesto || '').toLowerCase() + ' en ' + limpio(it.ev), ['cara', ks[0] || '', q[0]], c, it.ll ? { llave: it.ll } : perfil];
+    if (it.tipo === 'top10') return ['TOP 10', q[0] + ' entró al top 10 del Ranking ' + (it.rk === 'competitivo' ? 'Competitivo' : 'Temporada') + ' (#' + it.pos + ')', ['cara', ks[0] || '', q[0]], c, perfil];
+    if (it.tipo === 'subio') return ['SUBE EN EL RANKING', q[0] + ' subió ' + ((it.de || 0) - (it.a || 0)) + ' puestos esta semana', ['cara', ks[0] || '', q[0]], c, perfil];
+    if (it.tipo === 'racha') return ['RACHA', q[0] + ' lleva ' + it.racha + ' eventos seguidos', ['cara', ks[0] || '', q[0]], c, perfil];
+    if (it.tipo === 'crewunion' || it.tipo === 'crewnueva') {
+      return ['CREWS', q[0] + (it.tipo === 'crewnueva' ? ' creó la crew ' : ' se unió a la crew ') + limpio(it.nombre), ['cara', ks[0] || '', q[0]], c,
+        { ruta: '#/crew/' + encodeURIComponent(it.crew || '') }];
+    }
+    if (it.tipo === 'svtop') return ['NUEVO #1 · ' + siglaDe(it.sv), q[0] + ' es el nuevo #1 de ' + siglaDe(it.sv), ['cara', ks[0] || '', q[0]], c, perfil];
+    if (it.tipo === 'svrecord') return ['RÉCORD · ' + siglaDe(it.sv), siglaDe(it.sv) + ': ' + it.part + ' raperos en ' + limpio(it.ev) + ', su récord', ['sv', it.sv], c, it.ll ? { llave: it.ll } : { ruta: '#/eventos' }];
+    if (it.tipo === 'svmeta') return ['META CUMPLIDA · ' + siglaDe(it.sv), siglaDe(it.sv) + ' cumplió su meta de la semana', ['sv', it.sv], c, { ruta: '#/sv/' + encodeURIComponent(siglaDe(it.sv)) }];
     return null;
   }
   // 🏟️ LAS LIGAS DE LOS SERVIDORES (`ligas` del payload, bot/ligas.py `para_web()`)

@@ -845,6 +845,46 @@ function CaraComentarios({ dc }) {
   );
 }
 
+// 🙈 «PUBLICAR LO MÍO SOLO» (Dlx, 15/11/2026, a «¿cada uno puede apagar sus publicaciones automáticas desde Tu cuenta?»:
+// «dALE»). Lo que la Liga publica sola de ti —tu carta nueva, subir de rango, ganar, tu racha…— sale firmado por ti y en
+// primera persona. Apagado, no sale en Publicaciones ni en tu perfil. Lo guarda el objeto (`muroMio()`) y lo aplica el
+// ciclo en su próxima vuelta (bot/muro_solos.py `apagados()`)
+function PublicarSolo({ dc }) {
+  const [st, setSt] = useState(null);
+  const [va, setVa] = useState(false);
+  const [msg, setMsg] = useState('');
+  useEffect(() => {
+    let vivo = true;
+    if (dc && W.conCuenta) W.conCuenta('/api/avisos/muro-mio', {}).then((j) => { if (vivo && j) setSt(j); }).catch(() => {});
+    return () => { vivo = false; };
+  }, [dc && dc.id]); // eslint-disable-line react-hooks/exhaustive-deps
+  const d = 'Cuando sacas una carta, subes de rango, ganas un evento o llevas una racha, la Liga lo publica sola en Publicaciones, firmado por ti y en primera persona («Subí a rango B»). Si lo apagas, no sale ni ahí ni en tu perfil.';
+  if (!dc) return <Caja t="Tus publicaciones" d={d + ' Entra con Discord para elegir.'}><BotonEntrar /></Caja>;
+  if (st && st.sin_perfil) return null;
+  const roto = !!st && !st.ok;                                         // sin respuesta buena, no se dice «prendido»
+  const on = !!st && !roto && st.publica !== false;
+  const cambiar = async (publicar) => {
+    if (!W.conCuenta) return;
+    setVa(true);
+    setMsg('');
+    try {
+      const j = await W.conCuenta('/api/avisos/muro-mio', { publicar }, 'p');
+      if (j && j.ok) setSt(j);
+      else if (j) setMsg(j.error === 'espera' ? 'Ya lo cambiaste muchas veces hoy: prueba mañana.' : 'No se pudo: prueba de nuevo.');
+    } finally { setVa(false); }
+  };
+  const nota = !st ? 'Cargando…' : msg || (va ? 'Guardando…'
+    : roto ? ((W.errorCuenta && W.errorCuenta(st.error)) || 'No pude leerlo. Prueba en un rato.')
+      : on ? 'Prendido: lo tuyo sale en Publicaciones.' : 'Apagado: se aplica en la próxima vuelta del ciclo (unos 30 minutos).');
+  return (
+    <Caja t="Tus publicaciones" d={d}>
+      <label className="cu-sw"><span><b>Publicar lo mío solo</b><small role="status">{nota}</small></span>
+        <input type="checkbox" checked={on} disabled={!st || va || roto} onChange={(ev) => cambiar(ev.target.checked)} />
+        <i aria-hidden="true" /></label>
+    </Caja>
+  );
+}
+
 // quién te sigue: cuántos, y de ésos los que son raperos (los demás no tienen perfil)
 function TeSiguen({ liga }) {
   const est = useCuentaEst();
@@ -1040,6 +1080,7 @@ function Parte({ id, liga, dc, tema, onTema, temaSv, onTemaSv }) {
       <>
         <OcultarFoto dc={dc} />
         <CaraComentarios dc={dc} />
+        <PublicarSolo dc={dc} />
         <Caja t="Tus datos" d="En Discord, /borrar-mis-datos borra todo lo tuyo de la Liga: tus tarjetas, tu foto y lo que el bot sabe de ti." />
         <Caja t="Este dispositivo" d="Olvida quién eres, tus ajustes y los avisos de este dispositivo. Tus tarjetas y tu cuenta no se tocan.">
           <DosToques className="btn borde2 chico" confirmar="¿Seguro? Toca de nuevo" onClick={() => { if (W.cuentaOlvidarTodo) W.cuentaOlvidarTodo(); }}>Olvidar este dispositivo</DosToques>

@@ -35,11 +35,14 @@ import { usarCss } from './css.js';
 usarCss('publicaciones2', CSS_PAGINA);
 
 const ANUNCIOS = { anuncio: 1, liga: 1, flyer: 1 };
-const LOGROS = { campeon: 1, rango: 1, caza: 1, sobrevivio: 1, pase: 1, sorteo: 1, ligahito: 1, mesaward: 1 };
+const LOGROS = { campeon: 1, rango: 1, caza: 1, sobrevivio: 1, pase: 1, sorteo: 1, ligahito: 1, mesaward: 1,
+  // 🔄 lo que publica sola la gente (bot/muro_solos.py, 15/11/2026): lo mismo que `APLAUDIBLES` de bot/avisos.js
+  podio: 1, top10: 1, subio: 1, racha: 1, svtop: 1 };
 const MES_CAT = { rapero: 'el Rapero del mes', revelacion: 'la Revelación del mes', batalla: 'la Batalla del mes', servidor: 'el Servidor del mes' };
 // 🎨 de qué color es el punto del riel: lo que se ganó (verde), el Most Wanted y la plata (magenta), los avisos (negro)
 const COLOR = { campeon: 'v', ligahito: 'v', mesaward: 'v', pase: 'v', sorteo: 'v', crewtier: 'v', tarjeta: 'v', rango: 'v',
-  caza: 'm', sobrevivio: 'm', precio: 'm', elegido: 'm', premios: 'm' };
+  caza: 'm', sobrevivio: 'm', precio: 'm', elegido: 'm', premios: 'm',
+  podio: 'v', top10: 'v', subio: 'v', racha: 'v', crewunion: 'v', crewnueva: 'v', svtop: 'v', svmeta: 'v', svrecord: 'v' };
 // 📦 lo que va en caja con su sombra: lo que es noticia (un campeón, el Most Wanted, un MES AWARD). Lo demás, en renglón
 // (la revisión del remake: «si todo es una caja, nada se ve primero»)
 const fuerte = (it) => it.tipo === 'campeon' || it.tipo === 'mesaward' || it.tipo === 'caza' || it.tipo === 'sobrevivio'
@@ -88,6 +91,49 @@ function nombresDe(liga, it, pub) {
     .reduce((acc, x, i) => (i ? acc.concat([i === q.length - 1 ? ' y ' : ', ', x]) : [x]), []);
 }
 
+// ── 🗣️ QUIÉN FIRMA CADA PUBLICACIÓN (Dlx, 15/11/2026: «me gustaría que también los sv publiquen cosas de forma automática… y
+// los usuarios también sus cosas», y a la voz, «1. B»): lo de la gente lo firma quien lo protagoniza y va en primera
+// persona; lo de un servidor, el servidor («Arrancamos la semana…»); lo de todos, la Liga. Los datos no cambian: el
+// muro sigue contando hechos (bot/muro.py) y la voz la pone esta página. ⚠️ Lleva la marca «automática» con lo que es:
+// nadie la escribió, y cada uno puede apagar las suyas en Tu cuenta (bot/muro_solos.py `apagados()`) ──
+const DEL_SV = { svlunes: 1, svsemana: 1, svmeta: 1, svtop: 1, svrecord: 1, svnuevo: 1, svtier: 1, anuncio: 1, flyer: 1 };
+const DE_LA_LIGA = { premios: 1, resnoche: 1, liga: 1, crewtier: 1 };
+function autorDe(it) {
+  const cat = String(it.cat || '');
+  if (DEL_SV[it.tipo] || (it.tipo === 'mesaward' && (cat.startsWith('sv:') || cat === 'servidor'))) return it.sv ? { sv: it.sv } : null;
+  if (DE_LA_LIGA[it.tipo] || (it.tipo === 'promo' && (it.o === 'liga' || it.o === 'mano')) || (it.tipo === 'mesaward' && (cat === 'otras' || cat === 'batalla'))) return null;
+  const q = (it.quien || []).map(limpio);
+  return q[0] ? { k: ksDe(it)[0] || '', n: q[0] } : null;
+}
+const AUTO = 'La Liga la publica sola con lo que pasó. Si es tuya, puedes apagar las tuyas en Tu cuenta.';
+function Autor({ liga, it, pub, cara = true }) {
+  const a = autorDe(it);
+  if (!a) return <span className="pw-autor">{cara ? <img className="pw-au-c" alt="" src="/ul.png" /> : null}<b>Liga Global</b></span>;
+  if (a.sv) {
+    return (
+      <a className="pw-autor" href={'#/sv/' + encodeURIComponent(siglaDe(a.sv))}>
+        {cara ? <img className="pw-au-c" alt="" src={liga.logo(a.sv)} /> : null}<b>{siglaDe(a.sv)}</b><small title={AUTO}>automática</small>
+      </a>
+    );
+  }
+  const prem = esPremium(pub, a.k);
+  const cuerpo = <>{cara ? <Cara liga={liga} k={a.k} nombre={a.n} cls={'cara pw-au-c' + (prem ? ' sp-prem-aro' : '')} /> : null}<b>{a.n}</b>
+    {prem ? <SelloPremium t={12} cls="sp-prem-in" /> : null}<small title={AUTO}>automática</small></>;
+  return a.k && liga.T[a.k] ? <a className="pw-autor" href={'#/r/' + encodeURIComponent(a.k)}>{cuerpo}</a> : <span className="pw-autor">{cuerpo}</span>;
+}
+// los demás de una publicación de varios (la firma el primero): « con Bea», « con Bea y Cris»
+function conOtros(liga, it, pub) {
+  const q = (it.quien || []).map(limpio);
+  if (q.length < 2) return null;
+  const ks = Array.isArray(it.ks) ? it.ks : [];
+  const xs = q.slice(1).map((n, i) => (ks[i + 1] && liga.T[ks[i + 1]]
+    ? <Fragment key={i}><a href={'#/r/' + encodeURIComponent(ks[i + 1])}>{n}</a>{esPremium(pub, ks[i + 1]) ? <SelloPremium t={13} cls="sp-prem-in" /> : null}</Fragment>
+    : <b key={i}>{n}</b>));
+  return <> con {y(xs)}</>;
+}
+const xN = (x) => '×' + String(x).replace('.', ',');
+const NOMBRE_CARTA = { temporada: 'de Temporada', competitivo: 'Competitiva', servidor: 'de Servidor', pais: 'de País' };
+
 // ── qué dice cada publicación: la categoría, lo que se ve, el texto, el detalle y adónde lleva (lo de publicaciones.jsx,
 // con el dibujo nuevo). `media`: la imagen va arriba y grande (video, flyer) ──
 function contenido(liga, it, pub) {
@@ -96,27 +142,38 @@ function contenido(liga, it, pub) {
   const nombres = nombresDe(liga, it, pub);
   const f0 = ks[0] ? liga.T[ks[0]] : null;
   const cara = <Cara liga={liga} k={ks[0] || ''} nombre={q[0] || '?'} cls={'cara pb-cara' + (esPremium(pub, ks[0]) ? ' sp-prem-aro' : '')} />;
+  const logoSv = <img className="pb-logo" alt="" src={liga.logo(it.sv)} />;
+  const otros = conOtros(liga, it, pub);
   const c = { cat: '', vis: null, txt: null, det: '', acc: null, media: false };
   if (it.tipo === 'campeon') {
     c.cat = 'Campeón · ' + siglaDe(it.sv);
     c.vis = f0 && (f0.c || []).includes('temporada') ? <Carta liga={liga} k={f0.k} cual="temporada" cls="pb-carta" abre={false} /> : cara;
-    c.txt = <>{nombres}{q.length > 1 ? ' se quedan con ' : ' se queda con '}<b>{limpio(it.ev)}</b></>;
+    // 🥇 el primer título de la temporada de quien firma (`primero`, bot/muro_solos.py)
+    const primero = (it.primero || []).map(limpio).includes(q[0]);
+    c.txt = <>{primero ? '¡Mi primer título! ' : ''}Gané <b>{limpio(it.ev)}</b>{otros}</>;
     c.det = it.part ? it.part + ' raperos' : '';
     c.acc = it.ll ? <button type="button" className="pb-a" onClick={() => accion.llave(it.ll)}>Ver la llave</button> : null;
+  } else if (it.tipo === 'tarjeta') {
+    // 🃏 una sola en su día (con dos o más van juntas en el abanico, `CartasG`): hasta el 15/11/2026 no tenía texto acá y
+    // no se dibujaba
+    c.cat = 'Carta nueva';
+    c.vis = ks[0] ? <Carta liga={liga} k={ks[0]} cual={it.carta} cls="pw-mcarta" abre={false} /> : cara;
+    c.txt = <>Saqué mi carta <b>{NOMBRE_CARTA[it.carta] || ''}</b></>;
+    c.acc = ks[0] ? <button type="button" className="pb-a" onClick={() => accion.carta(ks[0], it.carta)}>Ver la carta</button> : null;
   } else if (it.tipo === 'rango') {
     c.cat = it.primero ? 'Primera letra' : 'Sube de rango';
     c.vis = <span className="pb-rg" style={{ background: liga.colorRg(it.rg) }}>{it.rg}</span>;
-    c.txt = <>{nombres}{it.primero ? ' consigue su primera letra: ' : ' pasa a rango '}<b>{it.rg}</b></>;
+    c.txt = <>{it.primero ? 'Conseguí mi primera letra: ' : 'Subí a rango '}<b>{it.rg}</b></>;
     c.acc = ks[0] ? <a className="pb-a" href={'#/r/' + encodeURIComponent(ks[0])}>Ver su perfil</a> : null;
   } else if (it.tipo === 'caza') {
     c.cat = 'Most Wanted · Caza';
     c.vis = cara;
-    c.txt = <>{nombres}{q.length > 1 ? ' cazaron a ' : ' cazó a '}<b>{limpio(it.a)}</b> ({it.cat}) y {q.length > 1 ? 'cobran' : 'cobra'} <b>{num(it.pts)}</b></>;
+    c.txt = <>Cacé a <b>{limpio(it.a)}</b> ({it.cat}){otros} y {q.length > 1 ? 'cobramos' : 'cobro'} <b>{num(it.pts)}</b></>;
     c.det = it.ev ? limpio(it.ev) : '';
   } else if (it.tipo === 'sobrevivio') {
     c.cat = 'Most Wanted · Sobrevivió';
     c.vis = cara;
-    c.txt = <>{nombres} sobrevivió al Most Wanted ({it.cat}) y se lleva <b>{num(it.pts)}</b></>;
+    c.txt = <>Sobreviví al Most Wanted ({it.cat}) y me llevo <b>{num(it.pts)}</b></>;
   } else if (it.tipo === 'crewtier') {
     const col = (liga.d.crews_tiers && (liga.d.crews_tiers.colores || [])[it.tier]) || '#E41373';
     c.cat = 'Crews · Sube de tier';
@@ -130,19 +187,19 @@ function contenido(liga, it, pub) {
   } else if (it.tipo === 'pase') {
     c.cat = it.completo ? 'Pase de rapero · Completo' : 'Pase de rapero';
     c.vis = cara;
-    c.txt = it.completo ? <>{nombres} completó el <b>Pase de rapero</b> y entra al Salón del Pase</>
-      : <>{nombres} llegó al nivel <b>{it.nivel}</b> del Pase de rapero{it.premio ? <>: <b>«{it.premio}»</b></> : null}</>;
+    c.txt = it.completo ? <>Completé el <b>Pase de rapero</b> y entro al Salón del Pase</>
+      : <>Llegué al nivel <b>{it.nivel}</b> del Pase de rapero{it.premio ? <>: <b>«{it.premio}»</b></> : null}</>;
     c.acc = <a className="pb-a" href="#/pase">Ver el Pase</a>;
   } else if (it.tipo === 'sorteo') {
     c.cat = 'Sorteo del Pase premium';
     c.vis = cara;
-    c.txt = <>{nombres} ganó el sorteo y se lleva el rol <b>«Pase Premium»</b> de DRA</>;
+    c.txt = <>Gané el sorteo y me llevo el rol <b>«Pase Premium»</b> de DRA</>;
     c.det = num(it.personas) + ' entraron gratis · ' + num(it.boletos) + ' boletos · semilla ' + String(it.semilla || '').slice(0, 12) + '…';
     c.acc = <a className="pb-a" href="#/pase">Ver el Pase</a>;
   } else if (it.tipo === 'precio') {
     c.cat = 'Precio por su cabeza';
     c.vis = cara;
-    c.txt = <>{nombres}{q.length > 1 ? ' le ganaron a ' : ' le ganó a '}<b>{limpio(it.a)}</b> y {q.length > 1 ? 'cobran' : 'cobra'} el precio por su cabeza: <b>{num(it.pts)}</b></>;
+    c.txt = <>Le gané a <b>{limpio(it.a)}</b>{otros} y {q.length > 1 ? 'cobramos' : 'cobro'} el precio por su cabeza: <b>{num(it.pts)}</b></>;
     c.det = it.ev ? limpio(it.ev) : '';
   } else if (it.tipo === 'premios') {
     c.cat = 'Premios de la semana';
@@ -153,7 +210,7 @@ function contenido(liga, it, pub) {
   } else if (it.tipo === 'elegido') {
     c.cat = 'El Elegido';
     c.vis = cara;
-    c.txt = <>La gente eligió a {nombres} como El Elegido del Most Wanted</>;
+    c.txt = <>La gente me eligió como El Elegido del Most Wanted</>;
     c.det = it.de ? it.votos + ' de ' + it.de + ' votos' : '';
   } else if (it.tipo === 'mesaward') {
     const mes = MESES[Number(String(it.mes || '').slice(5, 7)) - 1] || '';
@@ -170,11 +227,11 @@ function contenido(liga, it, pub) {
         : it.cat === 'otras' ? <span className="pb-logo pb-copa" aria-hidden="true"><Ico n="copa" t={28} /></span> : cara;
     }
     const lista = (it.lista || []).map((y, i) => <span key={y[0]}>{i ? ' · ' : ''}{y[1]}: <b>{limpio(y[2])}</b>{y[3] ? ' (' + y[3] + '%)' : ''}</span>);
-    c.txt = deSv ? <>Los ganadores de <b>{mes}</b> en {siglaDe(it.sv)}: {lista}</>
+    c.txt = deSv ? <>Nuestros ganadores de <b>{mes}</b>: {lista}</>
       : it.cat === 'otras' ? <>Los demás ganadores de <b>{mes}</b>: {lista}</>
       : it.cat === 'batalla' ? <><b>{limpio(it.n)}</b> es la Batalla del mes de {mes}</>
-      : it.cat === 'servidor' ? <><b>{limpio(it.n)}</b> es el Servidor del mes de {mes}</>
-        : <>{nombres} es {MES_CAT[it.cat] || 'ganador'} de <b>{mes}</b></>;
+      : it.cat === 'servidor' ? <>Somos el Servidor del mes de <b>{mes}</b></>
+        : <>Soy {MES_CAT[it.cat] || 'ganador'} de <b>{mes}</b></>;
     c.det = it.cat === 'otras' || deSv ? '' : it.por === 'votos'
       ? (it.pct ? it.pct + '% de los votos · ' : '') + num(it.votos) + (it.votos === 1 ? ' voto' : ' votos') + (it.total ? ' de ' + num(it.total) : '')
       : 'por los números del mes';
@@ -195,16 +252,16 @@ function contenido(liga, it, pub) {
     const sitio = String(it.url || '').replace(/^https:\/\/(www\.)?/, '').split('/')[0];
     c.txt = deLiga && !(it.quien || []).filter(Boolean).length ? <b>{limpio(it.tit || sitio)}</b>
       : deLiga ? <>{nombres} en <b>{limpio(it.tit || plat)}</b></>
-      : it.tit ? <>{nombres} comparte <b>{limpio(it.tit)}</b></> : <>{nombres} comparte algo en <b>{plat}</b></>;
+      : it.tit ? <>Comparto <b>{limpio(it.tit)}</b></> : <>Comparto algo en <b>{plat}</b></>;
     c.det = it.de && it.de !== it.tit ? it.de : '';
     c.acc = <a className="pb-a" href={it.url} target="_blank" rel="noopener noreferrer" onClick={() => promoAbierta(it.id)}>{it.plat === 'sp' || it.plat === 'sc' ? 'Escuchar' : 'Ver'} en {plat} ↗</a>;
   } else if (it.tipo === 'ligahito') {
     const ir = '#/ligas/' + encodeURIComponent(it.liga || '');
     c.cat = (it.que === 'campeon' ? 'Campeón de liga' : it.que === 'invicto' ? 'Liga · Invicto' : 'Liga · La punta') + ' · ' + siglaDe(it.sv);
     c.vis = cara;
-    c.txt = it.que === 'campeon' ? <>{nombres} es el campeón de <b>{limpio(it.ln)}</b></>
-      : it.que === 'invicto' ? <>{nombres} lleva <b>{it.pg || 5} ganadas sin perder</b> en {limpio(it.ln)}</>
-        : <>{nombres} tomó la punta de <b>{limpio(it.ln)}</b>{it.pts ? <> con {it.pts} puntos</> : null}</>;
+    c.txt = it.que === 'campeon' ? <>Soy el campeón de <b>{limpio(it.ln)}</b></>
+      : it.que === 'invicto' ? <>Llevo <b>{it.pg || 5} ganadas sin perder</b> en {limpio(it.ln)}</>
+        : <>Tomé la punta de <b>{limpio(it.ln)}</b>{it.pts ? <> con {it.pts} puntos</> : null}</>;
     c.det = it.que === 'campeon' && (it.podio || []).length > 1 ? 'Podio: ' + it.podio.map(limpio).join(' · ') : '';
     c.acc = <a className="pb-a" href={ir}>Ver la liga</a>;
   } else if (it.tipo === 'flyer') {
@@ -213,7 +270,7 @@ function contenido(liga, it, pub) {
     c.vis = <a className="pb-flyer" href={ir} aria-label={'Ver ' + limpio(it.ln)}>
       <img alt={'El flyer de ' + limpio(it.ln) + (it.tit ? ': ' + limpio(it.tit) : '')} src={it.img} loading="lazy"
         width={it.w || undefined} height={it.h || undefined} /></a>;
-    c.txt = <><b>{limpio(it.ln)}</b>{it.tit ? <> publicó su flyer: {limpio(it.tit)}</> : ' publicó su flyer'}</>;
+    c.txt = <>Publicamos el flyer de <b>{limpio(it.ln)}</b>{it.tit ? <>: {limpio(it.tit)}</> : null}</>;
     c.acc = <><a className="pb-a" href={ir}>Ver la liga</a>
       {it.link ? <a className="pb-a" href={it.link} target="_blank" rel="noopener noreferrer">Ver en Discord ↗</a> : null}</>;
   } else if (it.tipo === 'liga') {
@@ -243,12 +300,85 @@ function contenido(liga, it, pub) {
     c.acc = <a className="pb-a" href="#/eventos">Ver los eventos</a>;
   } else if (it.tipo === 'anuncio') {
     c.cat = 'Evento · ' + siglaDe(it.sv);
-    c.vis = <img className="pb-logo" alt="" src={liga.logo(it.sv)} />;
-    c.txt = <b>{limpio(it.ev)}</b>;
+    c.vis = logoSv;
+    c.txt = <>Anunciamos <b>{limpio(it.ev)}</b></>;
     c.det = [it.mod, it.org ? 'organiza ' + it.org : '', it.pre ? 'premio: ' + it.pre : ''].filter(Boolean).join(' · ');
     c.acc = it.link ? <a className="pb-a" href={it.link} target="_blank" rel="noopener noreferrer">Ver en Discord ↗</a> : null;
+  // ── 🔄 lo que publican solos la gente y los servidores (bot/muro_solos.py, 15/11/2026) ──
+  } else if (it.tipo === 'podio') {
+    c.cat = 'Primer podio · ' + siglaDe(it.sv);
+    c.vis = cara;
+    c.txt = <>Mi primer podio: salí <b>{String(it.puesto || '').toLowerCase()}</b> en <b>{limpio(it.ev)}</b></>;
+    c.acc = it.ll ? <button type="button" className="pb-a" onClick={() => accion.llave(it.ll)}>Ver la llave</button> : null;
+  } else if (it.tipo === 'top10') {
+    const rk = it.rk === 'competitivo' ? 'Competitivo' : 'Temporada';
+    c.cat = 'Top 10 · Ranking ' + rk;
+    c.vis = cara;
+    c.txt = <>Entré al top 10 del Ranking {rk}: estoy <b>#{it.pos}</b></>;
+    c.acc = <a className="pb-a" href={'#/ranking/' + (it.rk === 'competitivo' ? 'competitivo' : 'temporada')}>Ver el ranking</a>;
+  } else if (it.tipo === 'subio') {
+    c.cat = 'Sube en el Ranking';
+    c.vis = cara;
+    c.txt = <>Subí <b>{(it.de || 0) - (it.a || 0)} puestos</b> esta semana: del #{it.de} al <b>#{it.a}</b></>;
+    c.acc = <a className="pb-a" href="#/ranking/temporada">Ver el ranking</a>;
+  } else if (it.tipo === 'racha') {
+    c.cat = 'Racha';
+    c.vis = cara;
+    c.txt = <>Llevo <b>{it.racha} eventos seguidos</b> 🔥</>;
+  } else if (it.tipo === 'crewunion' || it.tipo === 'crewnueva') {
+    c.cat = 'Crews' + (it.sigla ? ' · ' + it.sigla : '');
+    c.vis = cara;
+    c.txt = it.tipo === 'crewnueva' ? <>Creé la crew <b>{limpio(it.nombre)}</b></> : <>Me uní a la crew <b>{limpio(it.nombre)}</b></>;
+    c.acc = it.crew ? <a className="pb-a" href={'#/crew/' + encodeURIComponent(it.crew)}>Ver la crew</a> : null;
+  } else if (it.tipo === 'svtop') {
+    c.cat = 'Nuevo #1 · ' + siglaDe(it.sv);
+    c.vis = cara;
+    c.txt = <>Tenemos nuevo #1: {nombres}</>;
+    c.det = it.pts ? num(it.pts) + ' puntos en la temporada' : '';
+    c.acc = <a className="pb-a" href={'#/sv/' + encodeURIComponent(siglaDe(it.sv))}>Ver {siglaDe(it.sv)}</a>;
+  } else if (it.tipo === 'svmeta') {
+    c.cat = 'Meta de la semana · ' + siglaDe(it.sv);
+    c.vis = logoSv;
+    c.txt = <>¡Cumplimos la meta de la semana! <b>{(it.meta || [])[0]} de {(it.meta || [])[1]}</b> raperos</>;
+  } else if (it.tipo === 'svrecord') {
+    c.cat = 'Récord · ' + siglaDe(it.sv);
+    c.vis = logoSv;
+    c.txt = <>Récord de la temporada: <b>{it.part} raperos</b> en <b>{limpio(it.ev)}</b></>;
+    c.det = it.antes ? 'El anterior era de ' + it.antes : '';
+    c.acc = it.ll ? <button type="button" className="pb-a" onClick={() => accion.llave(it.ll)}>Ver la llave</button> : null;
+  } else if (it.tipo === 'svnuevo') {
+    c.cat = 'Socio nuevo';
+    c.vis = logoSv;
+    c.txt = <>Entramos a la <b>Liga Global</b></>;
+    c.det = it.tier ? 'Tier ' + it.tier : '';
+    c.acc = <a className="pb-a" href={'#/sv/' + encodeURIComponent(siglaDe(it.sv))}>Ver {siglaDe(it.sv)}</a>;
+  } else if (it.tipo === 'svtier') {
+    c.cat = 'Socios · Tier';
+    c.vis = logoSv;
+    c.txt = <>Pasamos a <b>Tier {it.a}</b></>;
+    c.det = it.de ? 'Antes, Tier ' + it.de : '';
+  } else if (it.tipo === 'svlunes') {
+    c.cat = 'La semana · ' + siglaDe(it.sv);
+    c.vis = logoSv;
+    c.txt = it.x > 1 ? <>Arrancamos la semana con <b>{xN(it.x)}</b></> : <>Arrancamos la semana</>;
+    c.det = lunesDet(it);
+  } else if (it.tipo === 'svsemana') {
+    c.cat = 'Cierre de la semana · ' + siglaDe(it.sv);
+    c.vis = logoSv;
+    c.txt = <>Cerramos la semana: <b>{it.eventos}</b> {it.eventos === 1 ? 'evento' : 'eventos'} y <b>{num(it.part)}</b> participaciones</>;
+    c.det = semanaDet(it);
   } else return null;
   return c;
+}
+// lo que dice el lunes de un servidor, y su cierre, en una línea (también en el grupo del día)
+function lunesDet(it) {
+  return [it.meta ? 'Meta: ' + it.meta + ' raperos' : '', it.contra ? 'Guerra contra ' + siglaDe(it.contra) : '',
+    it.dorado ? 'Evento dorado: ' + limpio(it.dorado) : ''].filter(Boolean).join(' · ');
+}
+function semanaDet(it) {
+  const cs = (it.camps || []).map(([ev, q]) => (q || []).map(limpio).join(' y ') + ' en ' + limpio(ev));
+  return [cs.length ? 'Campeones: ' + cs.join('; ') : '', it.meta && it.meta[0] >= it.meta[1] ? '✓ Cumplimos la meta (' + it.meta[0] + ' de ' + it.meta[1] + ')' : '',
+    it.guerra ? 'Ganamos la guerra contra ' + siglaDe(it.contra) : ''].filter(Boolean).join(' · ');
 }
 
 // ── las crews que suben de tier el mismo lunes: una lista, con el tier como pastilla (su color de fondo y la letra que se lee) ──
@@ -377,26 +507,32 @@ function useVisto(muro) {
 //   abre. Con un filtro, la búsqueda o un servidor elegido, todo entero: ahí la lista ya es corta.
 // - AL COSTADO, los minis del panel (tocar uno filtra), lo más felicitado, las encuestas en corto y la campana. En el
 //   celular los minis se deslizan arriba y lo demás va después del primer día.
-const GRUPOS = { tarjeta: 1, rango: 1, anuncio: 1, crewtier: 1 };
+const GRUPOS = { tarjeta: 1, rango: 1, anuncio: 1, crewtier: 1, svlunes: 1, svsemana: 1, podio: 1, top10: 1, subio: 1, racha: 1 };
 const TIPOS = {
-  campeones: ['campeon', 'resnoche', 'ligahito'], rangos: ['rango'], cartas: ['tarjeta'], pase: ['pase', 'sorteo'],
-  mw: ['caza', 'precio', 'sobrevivio', 'elegido', 'premios'], mes: ['mesaward'], crews: ['crewtier'], anuncios: ['anuncio', 'flyer', 'liga'], promos: ['promo'],
+  campeones: ['campeon', 'resnoche', 'ligahito', 'podio'], rangos: ['rango'], cartas: ['tarjeta'], pase: ['pase', 'sorteo'],
+  mw: ['caza', 'precio', 'sobrevivio', 'elegido', 'premios'], mes: ['mesaward'], crews: ['crewtier', 'crewunion', 'crewnueva'], anuncios: ['anuncio', 'flyer', 'liga'], promos: ['promo'],
+  // 🔄 bot/muro_solos.py (15/11/2026)
+  logros: ['podio', 'top10', 'subio', 'racha'], servidores: ['svlunes', 'svsemana', 'svmeta', 'svtop', 'svrecord', 'svnuevo', 'svtier'],
 };
-const FILTROS2 = [['', 'Todo'], ['campeones', 'Campeones'], ['rangos', 'Rangos'], ['cartas', 'Cartas'], ['pase', 'Pase'], ['mw', 'Most Wanted'],
-  ['mes', 'MES AWARDS'], ['crews', 'Crews'], ['anuncios', 'Anuncios'], ['promos', 'Promos']];
+const FILTROS2 = [['', 'Todo'], ['campeones', 'Campeones'], ['rangos', 'Rangos'], ['logros', 'Logros'], ['cartas', 'Cartas'], ['pase', 'Pase'],
+  ['mw', 'Most Wanted'], ['servidores', 'Servidores'], ['mes', 'MES AWARDS'], ['crews', 'Crews'], ['anuncios', 'Anuncios'], ['promos', 'Promos']];
 const hace = (liga, t) => { const c = liga.cuando(t); return c ? c.charAt(0).toUpperCase() + c.slice(1) : ''; };
 // el título en texto llano, para el escenario y los resúmenes
 function plano(liga, it) {
   const q = (it.quien || []).map(limpio);
   const quien = q.length > 2 ? q.slice(0, -1).join(', ') + ' y ' + q[q.length - 1] : q.join(' y ');
   const varios = q.length > 1;
-  if (it.tipo === 'campeon') return quien + (varios ? ' se quedan con ' : ' se queda con ') + limpio(it.ev);
-  if (it.tipo === 'caza') return quien + (varios ? ' cazaron a ' : ' cazó a ') + limpio(it.a) + ' y ' + (varios ? 'cobran ' : 'cobra ') + num(it.pts);
-  if (it.tipo === 'precio') return quien + (varios ? ' le ganaron a ' : ' le ganó a ') + limpio(it.a) + ' y ' + (varios ? 'cobran ' : 'cobra ') + num(it.pts);
-  if (it.tipo === 'sobrevivio') return quien + ' sobrevivió al Most Wanted';
-  if (it.tipo === 'elegido') return quien + ' es El Elegido';
+  if (it.tipo === 'campeon') return 'Gané ' + limpio(it.ev) + (varios ? ' con ' + q.slice(1).join(' y ') : '');
+  if (it.tipo === 'caza') return 'Cacé a ' + limpio(it.a) + ' y ' + (varios ? 'cobramos ' : 'cobro ') + num(it.pts);
+  if (it.tipo === 'precio') return 'Le gané a ' + limpio(it.a) + ' y ' + (varios ? 'cobramos ' : 'cobro ') + num(it.pts);
+  if (it.tipo === 'sobrevivio') return 'Sobreviví al Most Wanted';
+  if (it.tipo === 'elegido') return 'Soy El Elegido';
+  if (it.tipo === 'podio') return 'Mi primer podio: ' + limpio(it.ev);
+  if (it.tipo === 'svtop') return 'Tenemos nuevo #1: ' + quien;
+  if (it.tipo === 'svrecord') return 'Récord: ' + it.part + ' raperos en ' + limpio(it.ev);
+  if (it.tipo === 'svmeta') return '¡Cumplimos la meta de la semana!';
   if (it.tipo === 'resnoche') return it.eventos + (it.eventos === 1 ? ' evento y ' : ' eventos y ') + num(it.part) + ' participaciones';
-  if (it.tipo === 'ligahito') return it.que === 'campeon' ? quien + ' es el campeón de ' + limpio(it.ln) : quien + ' en ' + limpio(it.ln);
+  if (it.tipo === 'ligahito') return it.que === 'campeon' ? 'Soy el campeón de ' + limpio(it.ln) : limpio(it.ln);
   if (it.tipo === 'mesaward') return it.n ? limpio(it.n) + ' · MES AWARDS' : (quien || 'Los ganadores') + ' · MES AWARDS';
   const x = liga.itemMuro(it);
   return x ? x[1] : quien;
@@ -572,6 +708,75 @@ function AnunciosG({ liga, xs, nuevo }) {
   );
 }
 
+// ── 🔄 los logros del mismo día y del mismo tipo (primer podio, top 10, subidas, rachas), juntos como las subidas de rango:
+// una noche deja varios y cada uno en su fila grande llenaba el muro. Tocar a uno abre su publicación para felicitarlo ──
+const LOGRO_G = {
+  podio: ['Primeros podios', (it) => (it.puesto === 'Subcampeón' ? '2.º' : '3.º'), (it) => limpio(it.ev)],
+  top10: ['Entran al top 10', (it) => '#' + it.pos, (it) => (it.rk === 'competitivo' ? 'Competitivo' : 'Temporada')],
+  subio: ['Suben en el Ranking', (it) => '+' + ((it.de || 0) - (it.a || 0)), (it) => '#' + it.de + ' → #' + it.a],
+  racha: ['Rachas', (it) => String(it.racha), () => 'seguidos'],
+};
+function LogrosG({ liga, xs, nuevo }) {
+  const pub = usePases();
+  const [tit, chip, sub] = LOGRO_G[xs[0].tipo];
+  return (
+    <article className={'pw-f c-v' + (nuevo ? ' nueva' : '')}>
+      <span className="pw-v"><img className="pw-logo" alt="" src="/ul.png" /></span>
+      <div className="pw-tx">
+        <div className="pw-firma"><span className="pw-autor"><b>{xs.length} raperos</b><small title={AUTO}>automática</small></span>
+          <span className="pw-cat">{tit}</span></div>
+        <div className="pw-rngs">
+          {xs.map((it) => {
+            const k = ksDe(it)[0] || '';
+            const n0 = limpio((it.quien || [])[0] || '');
+            return (
+              <a key={it.id || it.t + n0} href={'#/publicaciones/' + (it.id || '')} data-pub={it.id || undefined} aria-label={n0 + ': ' + tit.toLowerCase() + '. Felicitar o comentar'}>
+                <Cara liga={liga} k={k} nombre={n0} cls={'cara pw-rng-c' + (esPremium(pub, k) ? ' sp-prem-aro' : '')} />
+                <i className="pw-letra pw-lg">{xs[0].tipo === 'racha' ? '🔥' + chip(it) : chip(it)}</i>
+                <small>{n0}</small><small className="g">{sub(it)}</small>
+              </a>
+            );
+          })}
+        </div>
+        <small className="pw-det">Toca a uno para felicitarlo o dejarle un comentario.</small>
+      </div>
+      <span className="pw-der"><time>{hace(liga, xs[0].t)}</time></span>
+    </article>
+  );
+}
+
+// ── 🏟️ los servidores que arrancan (o cierran) la semana el mismo día: una lista, cada uno con su línea y su 💬 ──
+function ServidoresG({ liga, xs, nuevo }) {
+  const lunes = xs[0].tipo === 'svlunes';
+  const orden = [...xs].sort((a, b) => (lunes ? (b.x || 0) - (a.x || 0) : (b.eventos || 0) - (a.eventos || 0)));
+  return (
+    <article className={'pw-f c-a' + (nuevo ? ' nueva' : '')}>
+      <span className="pw-v"><img className="pw-logo" alt="" src="/ul.png" /></span>
+      <div className="pw-tx">
+        <div className="pw-firma"><span className="pw-autor"><b>{xs.length} servidores</b><small title={AUTO}>automática</small></span>
+          <span className="pw-cat">{lunes ? 'Arrancan la semana' : 'Cierran la semana'}</span></div>
+        <ul className="pw-anl pw-svl">
+          {orden.map((it) => {
+            const n = delHilo(it, Date.now()).length;
+            const det = lunes ? lunesDet(it) : semanaDet(it);
+            return (
+              <li key={it.id || it.sv} data-pub={it.id || undefined}>
+                <img alt="" src={liga.logo(it.sv)} />
+                <span><b>{siglaDe(it.sv)} · {lunes ? (it.x > 1 ? 'Arrancamos con ' + xN(it.x) : 'Arrancamos la semana')
+                  : it.eventos + (it.eventos === 1 ? ' evento y ' : ' eventos y ') + num(it.part) + ' participaciones'}</b>
+                  {det ? <small>{det}</small> : null}</span>
+                {it.id ? <a className="pw-anl-cm" href={'#/publicaciones/' + it.id} aria-label={n ? n + ' comentarios' : 'Comentar'}>💬{n ? ' ' + n : ''}</a> : <i />}
+                <a className="pb-a" href={'#/sv/' + encodeURIComponent(siglaDe(it.sv))} aria-label={'Ver ' + siglaDe(it.sv)}>Ver ↗</a>
+              </li>
+            );
+          })}
+        </ul>
+      </div>
+      <span className="pw-der"><time>{hace(liga, xs[0].t)}</time></span>
+    </article>
+  );
+}
+
 // ── una publicación: la fuerte grande (como la destacada de Lo último), lo demás en renglón ──
 function Fila({ liga, it, A, P, nuevo }) {
   const pub = usePases();
@@ -592,7 +797,8 @@ function Fila({ liga, it, A, P, nuevo }) {
           {sv && !cual ? null : sv ? <img className="pw-fu-logo" alt="" src={liga.logo(sv)} /> : null}
         </span>
         <div className="pw-tx">
-          <div className="pw-top"><span className="pw-cat">{c.cat}</span><time>{hace(liga, it.t)}</time></div>
+          <div className="pw-top"><Autor liga={liga} it={it} pub={pub} /><time>{hace(liga, it.t)}</time></div>
+          <span className="pw-cat">{c.cat}</span>
           {/* 🌙 la noche: el título corto en grande y la lista de campeones debajo (en Anton, la lista entera era un bloque) */}
           <p className="pw-fu-t">{it.tipo === 'resnoche' ? plano(liga, it) : c.txt}</p>
           {it.tipo === 'resnoche' ? <p className="pw-t chico">{c.txt}</p> : null}
@@ -607,7 +813,8 @@ function Fila({ liga, it, A, P, nuevo }) {
     <article className={'pw-f ' + tono + (c.media ? ' media' : '') + (nuevo ? ' nueva' : '')} data-pub={it.id || undefined}>
       <span className="pw-v">{c.media ? <img className="pw-logo" alt="" src={it.sv ? liga.logo(it.sv) : '/ul.png'} /> : c.vis}</span>
       <div className="pw-tx">
-        <span className="pw-cat">{c.cat}</span>
+        {/* 🗣️ quién la firma (sin su cara: el dibujo de la izquierda ya es suyo) y de qué es */}
+        <div className="pw-firma"><Autor liga={liga} it={it} pub={pub} cara={false} /><span className="pw-cat">{c.cat}</span></div>
         <p className="pw-t">{c.txt}</p>
         {c.det ? <small className="pw-det">{c.det}</small> : null}
         {c.media ? <div className="pw-media">{c.vis}</div> : null}
@@ -624,7 +831,11 @@ function Fila({ liga, it, A, P, nuevo }) {
 // ── un día de antes, cerrado: sus campeones y cazas en miniatura y cuántas hubo de cada cosa ──
 const NOMBRE_T = { campeon: ['campeón', 'campeones'], rango: ['rango', 'rangos'], tarjeta: ['carta', 'cartas'], pase: ['del Pase', 'del Pase'],
   anuncio: ['anuncio', 'anuncios'], caza: ['caza', 'cazas'], precio: ['precio', 'precios'], promo: ['promo', 'promos'], flyer: ['de ligas', 'de ligas'],
-  ligahito: ['de ligas', 'de ligas'], mesaward: ['MES AWARDS', 'MES AWARDS'], crewtier: ['crew', 'crews'], resnoche: ['resumen', 'resúmenes'] };
+  ligahito: ['de ligas', 'de ligas'], mesaward: ['MES AWARDS', 'MES AWARDS'], crewtier: ['crew', 'crews'], resnoche: ['resumen', 'resúmenes'],
+  podio: ['primer podio', 'primeros podios'], top10: ['top 10', 'top 10'], subio: ['subida', 'subidas'], racha: ['racha', 'rachas'],
+  crewunion: ['de crews', 'de crews'], crewnueva: ['crew nueva', 'crews nuevas'], svlunes: ['de servidores', 'de servidores'],
+  svsemana: ['cierre', 'cierres'], svmeta: ['meta', 'metas'], svtop: ['#1 nuevo', '#1 nuevos'], svrecord: ['récord', 'récords'],
+  svnuevo: ['socio nuevo', 'socios nuevos'], svtier: ['tier', 'tiers'] };
 function ResumenDia({ liga, xs, abrir }) {
   const top = xs.filter((it) => it.tipo === 'campeon' || it.tipo === 'caza' || it.tipo === 'precio' || (it.tipo === 'ligahito' && it.que === 'campeon')).slice(0, 10);
   const c = {};
@@ -701,7 +912,7 @@ function Hoja({ liga, it, A, P }) {
       <div className="pw-hoja-in">
         <div className="pw-hoja-p">
           {c.media ? null : <span className="pw-v">{c.vis}</span>}
-          <div className="pw-tx"><p className="pw-t">{c.txt}</p>{c.det ? <small className="pw-det">{c.det}</small> : null}
+          <div className="pw-tx"><Autor liga={liga} it={it} pub={pub} cara={false} /><p className="pw-t">{c.txt}</p>{c.det ? <small className="pw-det">{c.det}</small> : null}
             {c.media ? <div className="pw-media">{c.vis}</div> : null}
             <div className="pw-acc">{LOGROS[it.tipo] ? <Felicitar liga={liga} it={it} A={A} /> : null}{c.acc}</div>
             {it.id ? <LuSocial liga={liga} it={it} A={A} hilo={hilo} P={P} /> : null}</div>
@@ -777,6 +988,8 @@ export function Publicaciones({ liga, enc, foco = '' }) {
     : it.tipo === 'g-rango' ? <RangosG liga={liga} xs={it.xs} nuevo={nuevo} />
       : it.tipo === 'g-anuncio' ? <AnunciosG liga={liga} xs={it.xs} nuevo={nuevo} />
         : it.tipo === 'g-crewtier' ? <Tiers liga={liga} xs={it.xs} visto={visto} A={A} P={P} />
+          : it.tipo === 'g-svlunes' || it.tipo === 'g-svsemana' ? <ServidoresG liga={liga} xs={it.xs} nuevo={nuevo} />
+            : LOGRO_G[String(it.tipo).slice(2)] && it.tipo.startsWith('g-') ? <LogrosG liga={liga} xs={it.xs} nuevo={nuevo} />
           : <Fila liga={liga} it={it} A={A} P={P} nuevo={nuevo} />);
   let raya = false;
   return (
