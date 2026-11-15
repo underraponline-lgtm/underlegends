@@ -986,6 +986,15 @@
   [561, "02/11", "DDF", "semifinales", "Makmah", "Evangeline", "Makmah", "Evangeline"],
   [561, "02/11", "DDF", "semifinales", "Xclusivo", "Am", "Xclusivo", "Am"],
   [561, "02/11", "DDF", "final", "Xclusivo", "Makmah", "Xclusivo", "Makmah"],
+  [636, "14/11", "CH", "octavos", "Gocho", "Tam", "Gocho", "Tam"],
+  [636, "14/11", "CH", "octavos", "DOBLE J", "compare", "DOBLE J", "compare"],
+  [636, "14/11", "CH", "octavos", "JEIXDER", "DarnBless", "JEIXDER", "DarnBless"],
+  [636, "14/11", "CH", "octavos", "Miniboy", "BNA", "Miniboy", "BNA"],
+  [636, "14/11", "CH", "cuartos", "Gocho", "Miniboy", "Gocho", "Miniboy"],
+  [636, "14/11", "CH", "cuartos", "Doble J", "Number VE", "Doble J", "Number VE"],
+  [636, "14/11", "CH", "semifinales", "Gocho", "Dyz 🇨🇱", "Gocho", "Dyz 🇨🇱"],
+  [636, "14/11", "CH", "semifinales", "CNC", "Doble J", "CNC", "Doble J"],
+  [636, "14/11", "CH", "final", "CNC", "Gocho", "CNC", "Gocho"],
   [363, "22/09", "SR", "cuartos", "Six", "MCO", "Six", "MCO"],
   [363, "22/09", "SR", "cuartos", "Polosport", "Juanpa", "Polosport", "Juanpa"],
   [363, "22/09", "SR", "cuartos", "Luzzano", "MAXIMILIANO CALVO", "Luzzano", "MAXIMILIANO CALVO"],
@@ -1477,15 +1486,6 @@
   [635, "14/11", "URBF", "cuartos", "Bloody", "Miniboy", "Bloody", "Miniboy"],
   [635, "14/11", "URBF", "semifinales", "Mito", "Majiztral", "Mito", "Majiztral"],
   [635, "14/11", "URBF", "semifinales", "Bloody", "Erian", "Bloody", "Erian"],
-  [635, "14/11", "URBF", "final", "Bloody", "Mito", "Bloody", "Mito", "ganador según #veredictos"],
-  [636, "14/11", "CH", "octavos", "Gocho", "Tam", "Gocho", "Tam"],
-  [636, "14/11", "CH", "octavos", "DOBLE J", "compare", "DOBLE J", "compare"],
-  [636, "14/11", "CH", "octavos", "JEIXDER", "DarnBless", "JEIXDER", "DarnBless"],
-  [636, "14/11", "CH", "octavos", "Miniboy", "BNA", "Miniboy", "BNA"],
-  [636, "14/11", "CH", "cuartos", "Gocho", "Miniboy", "Gocho", "Miniboy"],
-  [636, "14/11", "CH", "cuartos", "Doble J", "Number VE", "Doble J", "Number VE"],
-  [636, "14/11", "CH", "semifinales", "Gocho", "Dyz 🇨🇱", "Gocho", "Dyz 🇨🇱"],
-  [636, "14/11", "CH", "semifinales", "CNC", "Doble J", "CNC", "Doble J"],
-  [636, "14/11", "CH", "final", "CNC", "Gocho", "CNC", "Gocho"]
+  [635, "14/11", "URBF", "final", "Bloody", "Mito", "Bloody", "Mito", "ganador según #veredictos"]
  ]
 }
