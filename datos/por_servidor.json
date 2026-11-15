@@ -120,10 +120,7 @@
     "ovr": 44,
     "pod": 0,
     "pts": 17325,
-    "racha": "1/1",
-    "tg": {
-     "nuevo": true
-    }
+    "racha": "1/1"
    },
    "DDS": {
     "duelos": "",
@@ -1676,10 +1673,7 @@
     "ovr": 43,
     "pod": 0,
     "pts": 8250,
-    "racha": "0/0",
-    "tg": {
-     "nuevo": true
-    }
+    "racha": "0/0"
    }
   },
   "Blaxx": {
@@ -2321,10 +2315,7 @@
     "ovr": 42,
     "pod": 0,
     "pts": 2000,
-    "racha": "0/0",
-    "tg": {
-     "nuevo": true
-    }
+    "racha": "0/0"
    }
   },
   "Choka": {
@@ -2464,10 +2455,7 @@
     "ovr": 43,
     "pod": 0,
     "pts": 8250,
-    "racha": "0/0",
-    "tg": {
-     "nuevo": true
-    }
+    "racha": "0/0"
    },
    "FDS": {
     "duelos": "",
@@ -3883,10 +3871,7 @@
     "ovr": 43,
     "pod": 0,
     "pts": 4125,
-    "racha": "0/0",
-    "tg": {
-     "nuevo": true
-    }
+    "racha": "0/0"
    }
   },
   "El Hombre Eyau": {
@@ -5501,10 +5486,7 @@
     "ovr": 43,
     "pod": 0,
     "pts": 4125,
-    "racha": "0/0",
-    "tg": {
-     "nuevo": true
-    }
+    "racha": "0/0"
    }
   },
   "IBAN🇦🇷": {
@@ -6504,10 +6486,7 @@
     "ovr": 44,
     "pod": 0,
     "pts": 10622,
-    "racha": "0/0",
-    "tg": {
-     "nuevo": true
-    }
+    "racha": "0/0"
    },
    "DDF": {
     "duelos": "4/13",
@@ -7459,10 +7438,7 @@
     "ovr": 42,
     "pod": 0,
     "pts": 2000,
-    "racha": "0/0",
-    "tg": {
-     "nuevo": true
-    }
+    "racha": "0/0"
    },
    "FDS": {
     "duelos": "",
@@ -7603,10 +7579,7 @@
     "ovr": 42,
     "pod": 0,
     "pts": 3500,
-    "racha": "0/0",
-    "tg": {
-     "nuevo": true
-    }
+    "racha": "0/0"
    },
    "FFA": {
     "duelos": "1/4",
@@ -10173,8 +10146,7 @@
     "pts": 24750,
     "racha": "1/1",
     "tg": {
-     "fin": 1,
-     "nuevo": true
+     "fin": 1
     }
    },
    "CH": {
@@ -10552,10 +10524,7 @@
     "ovr": 44,
     "pod": 0,
     "pts": 12500,
-    "racha": "0/0",
-    "tg": {
-     "nuevo": true
-    }
+    "racha": "0/0"
    }
   },
   "PUBLIC ENEMY": {
@@ -11446,10 +11415,7 @@
     "ovr": 43,
     "pod": 0,
     "pts": 4125,
-    "racha": "0/0",
-    "tg": {
-     "nuevo": true
-    }
+    "racha": "0/0"
    },
    "DDF": {
     "duelos": "",
@@ -12623,10 +12589,7 @@
     "ovr": 43,
     "pod": 0,
     "pts": 4125,
-    "racha": "0/0",
-    "tg": {
-     "nuevo": true
-    }
+    "racha": "0/0"
    },
    "FFA": {
     "duelos": "4/11",
@@ -14908,10 +14871,7 @@
     "ovr": 44,
     "pod": 0,
     "pts": 12500,
-    "racha": "0/0",
-    "tg": {
-     "nuevo": true
-    }
+    "racha": "0/0"
    }
   },
   "effar": {
@@ -15546,10 +15506,7 @@
     "ovr": 45,
     "pod": 0,
     "pts": 19375,
-    "racha": "0/0",
-    "tg": {
-     "nuevo": true
-    }
+    "racha": "0/0"
    }
   },
   "setesfifi": {
