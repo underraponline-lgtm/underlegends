@@ -19,17 +19,24 @@
 "como":"fila nueva",
 "por":"se anotó así 1 vez/veces + su apodo o nombre visible + la misma bandera",
 "pais":"cl"
+},
+"917618451420446750":{
+"n":"Goohan MVP",
+"cuando":"15/11/2026 02:26 PM ET",
+"como":"fila nueva",
+"por":"se anotó así 1 vez/veces + su apodo o nombre visible",
+"pais":""
 }
 },
-"ultima":"2026-11-15T11:25-05:00",
+"ultima":"2026-11-15T14:26-05:00",
 "ultimo_conteo":{
-"nada":102,
+"nada":108,
 "no":27,
 "empate":16,
 "probable":21,
-"disfraz":47,
-"seguro":2,
-"sin_id":215,
-"auto":0
+"disfraz":46,
+"seguro":3,
+"sin_id":221,
+"auto":1
 }
 }
