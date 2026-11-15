@@ -3497,6 +3497,8 @@ const RUTAS = {
   '/avisos/cm-mio': 'POST', '/avisos/dueno/cm-permiso': 'POST', '/avisos/dueno/cm-permisos': 'POST',
   // 🐉 los Dragón Drops: los tuyos y la barra del día, y abrir uno (con tu sesión). Ver `dropsDe()` y `dropAbrir()`
   '/avisos/drops': 'POST', '/avisos/drop-abrir': 'POST',
+  // 🐉 el drop del día del Pase (15/11/2026): abrirlo, con tu sesión. Ver `paseDiaAbrir()`
+  '/avisos/pase-dia': 'POST',
   // 🐣 las misiones para nuevos y las redes que seguiste (13/11/2026). Ver `nuevoDe()`
   '/avisos/nuevo': 'POST',
   // ⚔️ las batallas libres, de verdad (12/11/2026): las tuyas, retar, decir quién ganó y cancelar. Ver `libreCrear()`
@@ -3935,6 +3937,18 @@ export const PASOS_QUE = { jugo: 'Jugar un evento', cm: 'Comentar', fel: 'Felici
 //: ⭐ el Star Dragon (13/11/2026, Dlx: «1 star dragon por cada red social q nos siga», y a la propuesta, «Sí, así»): un
 //: Dragón Drop que sale de Vinilo para arriba. Es un drop como los demás con origen `star:`: la página lo pinta azul
 export const STAR_MIN = 2;
+//: 🐉 EL DROP DEL DÍA DEL PASE (15/11/2026). Dlx: «¿y si ponemos un Star Dragon aquí cada día? para que la gente chequee
+//: esto», y a las dos preguntas, «Drop diario, Star el 7.º» y «Los de DRA, como el Pase». Un Dragón Drop común por día
+//: (hora del este) que se abre en la página del Pase, y el domingo, si abriste el de lunes a sábado, un Star Dragon. Un
+//: Star por día eran ~2.800 Puntos de Tienda de media cada día: inflaba la Tienda. Se guarda en `drops` con origen
+//: `pdia:<día>` (o `star:pdia:<día>`), así no hace falta otra tabla y el drop sale también en tus Dragón Drops
+export const PASE_DIA_STAR = 6;
+/** Los siete días (lunes a domingo, `AAAA-MM-DD`) de la semana de `dia`. Pura. */
+export function semanaDeDia(dia) {
+  const t = Date.UTC(+dia.slice(0, 4), +dia.slice(5, 7) - 1, +dia.slice(8, 10), 12);
+  const lunes = t - ((new Date(t).getUTCDay() + 6) % 7) * DIA_MS;
+  return Array.from({ length: 7 }, (_, i) => new Date(lunes + i * DIA_MS).toISOString().slice(0, 10));
+}
 
 // ── 🐣 MISIONES PARA NUEVOS (13/11/2026) ──────────────────────────────
 // 🔑 Dlx: «que estas sean MISIONES PARA NUEVOS… un track especial… como niveles que cada nivel se avance haciendo esas
@@ -6428,7 +6442,7 @@ export async function rutaAvisos(req, env, ruta) {
   if (ruta === '/avisos/pase' || ruta === '/avisos/pase-vivo' || ruta === '/avisos/pase-avisos' || ruta === '/avisos/pase-color' ||
     ruta === '/avisos/sorteo' || ruta === '/avisos/sorteo-entrar' || ruta === '/avisos/marcos' || ruta === '/avisos/marco-elige'
     || ruta === '/avisos/carta-principal' || ruta === '/avisos/tags-mios' || ruta === '/avisos/tag-elige'
-    || ruta === '/avisos/vales' || ruta === '/avisos/vale-usar') {
+    || ruta === '/avisos/vales' || ruta === '/avisos/vale-usar' || ruta === '/avisos/pase-dia') {
     const crudo = await req.text();
     if (crudo.length > 1024) return json({ error: 'demasiado grande' }, 413);
     let d = null;
@@ -8594,6 +8608,7 @@ export class Avisos {
         return json(this.paseDe(String(d.quien)));
       }
       if (ruta === '/pase-vivo') return json(this.paseVivo(d));
+      if (ruta === '/pase-dia') { const v = this.paseDiaAbrir(String(d.quien || '')); return json(v, v.error ? 400 : 200); }
       if (ruta === '/pase-avisos') { const v = this.paseAvisoPoner(d); return json(v, v.error ? 400 : 200); }
       if (ruta === '/pase-color') { const v = this.paseColorPoner(d); return json(v, v.error ? 400 : 200); }
       if (ruta === '/sorteo') return json(this.sorteoDe(/^[0-9]{5,25}$/.test(String(d.quien || '')) ? String(d.quien) : ''));
@@ -14298,6 +14313,49 @@ export class Avisos {
     return { ok: true, id, rareza, nombre: DROP_RAREZAS[rareza][0], puntos: pr.puntos, titulo: pr.titulo };
   }
 
+  /** 🐉 El drop del día del Pase: cómo va tu semana (lunes a domingo, hora del este) y si ya abriste el de hoy */
+  paseDiaEstado(quien, t = Date.now()) {
+    const dia = diaET(t);
+    const sem = semanaDeDia(dia);
+    const i = sem.indexOf(dia);
+    const ors = sem.flatMap((d) => ['pdia:' + d, 'star:pdia:' + d]);
+    const filas = this.sql.exec('SELECT id, origen, abierto, rareza, premio FROM drops WHERE quien = ? AND origen IN (' +
+      ors.map(() => '?').join(', ') + ')', String(quien), ...ors).toArray();
+    const de = (d) => filas.find((r) => r.origen === 'pdia:' + d || r.origen === 'star:pdia:' + d);
+    const semana = sem.map((d) => !!de(d));
+    const star = i === PASE_DIA_STAR && semana.slice(0, PASE_DIA_STAR).every(Boolean);
+    const h = de(dia);
+    let abierto = null;
+    if (h && h.abierto) {
+      let pr = {};
+      try { pr = JSON.parse(h.premio) || {}; } catch (e) { pr = {}; }
+      abierto = { id: h.id, rareza: h.rareza, nombre: (DROP_RAREZAS[h.rareza] || [''])[0], puntos: pr.puntos || 0,
+        titulo: pr.titulo || '', star: h.origen.startsWith('star:') };
+    }
+    // el domingo es Star sólo si abriste de lunes a sábado: lo que todavía se puede ganar esta semana
+    const puede = semana.slice(0, PASE_DIA_STAR).every((x, j) => x || j >= i);
+    return { dia, i, semana, star: h ? h.origen.startsWith('star:') : star, ya: !!h, abierto, fin: rangoDiaET(dia)[1],
+      star_semana: puede };
+  }
+
+  /** 🐉 Abrir el drop del día (`/avisos/pase-dia`, con tu sesión). Sólo miembros de DRA, como el Pase; una vez por día */
+  paseDiaAbrir(quien) {
+    if (!/^[0-9]{5,25}$/.test(String(quien || ''))) return { error: 'faltan datos' };
+    const P = this.paseDatos();
+    if (!P.cfg) return { error: 'sin_pase' };
+    if (!P.miembros.has(quien) && quien !== DUENO) return { error: 'no_miembro' };
+    const e = this.paseDiaEstado(quien);
+    if (e.abierto) return Object.assign({ ok: true, ya: true }, e.abierto, { dia: e });
+    const origen = (e.star ? 'star:' : '') + 'pdia:' + e.dia;
+    if (!e.ya) this.dropDar(quien, origen, e.star ? STAR_MIN : 0);
+    const f = this.sql.exec('SELECT id FROM drops WHERE quien = ? AND origen IN (?, ?)', quien, 'pdia:' + e.dia, 'star:pdia:' + e.dia)
+      .toArray()[0];
+    if (!f) return { error: 'no_existe' };
+    const r = this.dropAbrir(quien, f.id);
+    if (r.error) return r;
+    return Object.assign({ ok: true, star: e.star }, r, { dia: this.paseDiaEstado(quien) });
+  }
+
   // ── 🐣 MISIONES PARA NUEVOS ───────────────────────────────────────────
   /**
    * ¿Puede empezar su semana? Quien no hizo nada en la Liga antes de anteayer: sin XP, sin Tareas y sin días que
@@ -16737,6 +16795,8 @@ export class Avisos {
       out.aviso = !!(this.sql.exec('SELECT si FROM pase_aviso WHERE quien = ?', quien).toArray()[0] || {}).si;
       out.color_premium = (this.sql.exec('SELECT color FROM pase_color WHERE quien = ?', quien).toArray()[0] || {}).color || '';
     } catch (e) { /* lo nuevo no tapa el Pase */ }
+    // 🐉 el drop del día (15/11/2026): sólo para los miembros, que son los que lo pueden abrir
+    try { out.dia = miembro ? this.paseDiaEstado(quien) : null; } catch (e) { out.dia = null; }
     // 🔥 con qué puedes reaccionar en Publicaciones y en «Lo último»
     try { out.reacciones = this.reaccionesDe(quien); } catch (e) { out.reacciones = [REACCION_BASE]; }
     return out;

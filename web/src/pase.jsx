@@ -15,7 +15,8 @@ import { avance, multAhora, pasePost, pedirPase, refrescarPases, usePase, usePas
 import { nombreMarco } from './marcos.jsx';
 import { PREMIUM_VIVO, PaseIcono, TareaIcono, premioCorto, premioLargo } from './pase_iconos.jsx';
 import { PopPase } from './pase_pop.jsx';
-import { Escenario } from './pase_escenario.jsx';
+import { PistaDoble } from './pase_doble.jsx';
+import { DropDia } from './pase_dia.jsx';
 import { Objeto } from './pase_objetos.jsx';
 import CSS_PAGINA from './css/pase.css?inline';
 import { usarCss } from './css.js';
@@ -377,12 +378,52 @@ function Avisitos({ P, ahora }) {
 //   · la PORTADA es el escenario del Inicio: tu nivel, tu XP, tus chips y lo próximo como objeto
 //   · el «IR A» pegado arriba (con la búsqueda de un premio) reemplaza las tres pestañas: todo está en una página
 //   · la FILA DE CUATRO mini paneles: Hoy, La semana, tu crew y el sorteo
-//   · la pista es el ESCENARIO de premios (pase_escenario.jsx), las Tareas tres PANELES de colores, y el Premium y el Salón
+//   · la pista es la PISTA DOBLE (pase_doble.jsx; el escenario de la 5.42 se fue el 15/11), las Tareas tres PANELES de colores, y el Premium y el Salón
 //     de a dos, el Salón como «Los que mandan»
 const RUTA_MIDE = { fel: '#/publicaciones', cm: '#/publicaciones', promo: '#/publicaciones', voto: '#/publicaciones', vivo: '#/eventos',
   apuesta: '#/eventos', precio: '#/tienda', caza: '#/tienda', sigue: '#/ranking', crew: '#/crews' };
 const IR_A = [['ps-premios', 'Premios'], ['ps-tareas', 'Tareas'], ['ps-premium', 'Premium'], ['ps-salon', 'El Salón']];
 const ESCENA_PASE = '/escenas/dra.webp';
+
+/** 🔢 Un número que sube de a poco hasta `n` (la XP de la portada). Con «menos movimiento», de una */
+function useSube(n) {
+  const [v, setV] = useState(n);
+  const antes = useRef(0);
+  useEffect(() => {
+    let quieto = true;
+    try {
+      const r = document.getElementById('inicio-nuevo');
+      quieto = matchMedia('(prefers-reduced-motion: reduce)').matches || !!(r && r.shadowRoot && r.shadowRoot.querySelector('.app.calma'));
+    } catch (e) { quieto = true; }
+    const de = antes.current;
+    antes.current = n;
+    if (quieto || !(n > de)) { setV(n); return undefined; }
+    let raf = 0;
+    const t0 = performance.now();
+    const paso = (t) => {
+      const k = Math.min(1, (t - t0) / 900);
+      setV(Math.round(de + (n - de) * (1 - Math.pow(1 - k, 3))));
+      if (k < 1) raf = requestAnimationFrame(paso);
+    };
+    raf = requestAnimationFrame(paso);
+    return () => cancelAnimationFrame(raf);
+  }, [n]);
+  return v;
+}
+
+/** ✨ Cada sección del cuerpo sube y aparece al llegar a ella (una vez). Sin IntersectionObserver, se ven de una */
+function useEntran(ref) {
+  useEffect(() => {
+    const c = ref.current;
+    if (!c || typeof IntersectionObserver === 'undefined') return undefined;
+    c.classList.add('pc-anim');
+    const io = new IntersectionObserver((es) => {
+      for (const e of es) if (e.isIntersecting) { e.target.classList.add('pc-vis'); io.unobserve(e.target); }
+    }, { rootMargin: '0px 0px -8% 0px' });
+    for (const x of c.children) if (!x.classList.contains('pc-vis')) io.observe(x);
+    return () => io.disconnect();
+  });
+}
 
 function irA(id) {
   try {
@@ -401,7 +442,7 @@ function Fila({ x, mide, tag }) {
       <span className="pc-ti"><TareaIcono mide={mide} t={20} /></span>
       <span className="pc-tx"><b>{x.t}</b>{tag ? <em>{tag}</em> : null}
         <span className="pc-bar"><u style={{ width: (ok ? 100 : Math.round((100 * lleva) / (x.meta || 1))) + '%' }} /></span></span>
-      <span className="pc-xp">{ok ? '✓' : '+' + num(x.xp)}</span>
+      <span className="pc-txp">{ok ? '✓' : '+' + num(x.xp)}</span>
       {ruta ? <a className="pc-ir" href={ruta}>Ir</a> : <span className="pc-ir no" aria-hidden="true">{ok ? 'Hecha' : lleva + '/' + x.meta}</span>}
     </li>
   );
@@ -532,6 +573,8 @@ export function Pase({ liga, dc }) {
   const ahora = useAhora(30000);
   const [q, setQ] = useState('');
   const [todoPrem, setTodoPrem] = useState(() => /premium/.test(String(location.hash)));
+  const cuerpo = useRef(null);
+  useEntran(cuerpo);
   const P = dc && P0 && P0.listo ? P0 : null;
   const miembro = !!(P && P.miembro);
   const cfg = (pub && pub.cfg) || (P ? { premios: P.premios, niveles: P.niveles, temp: P.temp, premium: P.fila_premium } : {});
@@ -578,9 +621,15 @@ export function Pase({ liga, dc }) {
   const cuenta = (xs) => xs.filter((x) => x.hecha).length + ' de ' + xs.length;
   const sigN = Math.min(libres.length || 50, nivel + 1);
   const sigP = libres[sigN - 1];
+  const xpVe = useSube(a ? a.lleva : 0);
+  // 🐉 a la derecha, el drop del día: sin cuenta o sin ser de DRA, con candado; si tu Pase llegó sin `dia` (el Worker de
+  // antes), lo próximo como hasta ahora
+  const conDia = !dc || !!(P && (!miembro || P.dia));
+  const sigPr = prem.find((x) => x[0] === sigN);
   return (
     <>
       <section data-tuto="ps-cab" className="pc-por" aria-label="Tu Pase" style={{ '--esc': 'url("' + ESCENA_PASE + '")' }}>
+        <span className="pc-haz a" aria-hidden="true" /><span className="pc-haz b" aria-hidden="true" /><span className="pc-haz c" aria-hidden="true" />
         <div className="pc-por-in">
           <div className="pc-izq">
             <span className="tag">PASE DE RAPERO · {liga.temp}{miembro ? ' · NIVEL ' + nivel + ' DE ' + (libres.length || 50) : ''}</span>
@@ -588,8 +637,11 @@ export function Pase({ liga, dc }) {
               <h1>Te faltan {num(a.falta)} XP<br /><span>para el nivel {nivel + 1}</span></h1>
             ) : <h1>{miembro && nivel >= (libres.length || 50) ? <>Completaste<br /><span>el Pase</span></> : 'Pase de rapero'}</h1>}
             {a ? (
-              <div className="pc-xp"><span className="pc-xpb" role="img" aria-label={num(a.lleva) + ' de ' + num(a.de) + ' XP'}><u style={{ width: Math.round((100 * a.lleva) / a.de) + '%' }} /></span>
-                <b>{num(a.lleva)} / {num(a.de)} XP</b></div>
+              <div className="pc-xpw">
+                <div className="pc-xp"><span className="pc-xpb" role="img" aria-label={num(a.lleva) + ' de ' + num(a.de) + ' XP'}><u style={{ width: Math.round((100 * a.lleva) / a.de) + '%' }}><i className="pc-raya" /></u></span>
+                  <b>{num(xpVe)} / {num(a.de)} XP</b></div>
+                {sigP && conDia ? <small className="pc-sig">Nivel {sigN}: <b>{premioLargo(sigP)}</b>{sigPr && sigPr[2] ? <> · Premium: {premioLargo(sigPr, true)}</> : null}</small> : null}
+              </div>
             ) : null}
             {miembro ? <span className="pc-acc"><a className="btn verde" href="#/pase" onClick={(e) => { e.preventDefault(); irA('ps-tareas'); }}>Ver mis Tareas</a>
               {!tiene ? <a className="btn borde" href="#/pase" onClick={(e) => { e.preventDefault(); irA('ps-premium'); }}>El Premium</a> : null}</span> : tuyo}
@@ -603,12 +655,12 @@ export function Pase({ liga, dc }) {
               </div>
             ) : cuantos ? <p className="pc-p">{num(cuantos)} ya tienen nivel en el Pase.</p> : null}
           </div>
-          <div className="pc-prox">
+          {conDia ? <DropDia P={P} miembro={miembro} dc={dc} invita={dra.invita} /> : <div className="pc-prox">
             <span className="k">{miembro ? (nivel >= (libres.length || 50) ? 'Lo completaste' : 'Lo próximo · nivel ' + sigN) : 'Lo primero · nivel 1'}</span>
             {sigP ? <Objeto p={miembro ? sigP : libres[0]} t={compu ? 120 : 92} an /> : null}
             <b>{sigP ? premioLargo(miembro ? sigP : libres[0]) : ''}</b>
             {miembro && carta && compu ? <small>Tu carta de Temporada: la abriste en el nivel 1</small> : <small>Y {num((sigP && sigP[1]) || 150)} Puntos de Tienda</small>}
-          </div>
+          </div>}
         </div>
       </section>
       <nav className="pc-ira" data-tuto="ps-tabs" aria-label="Ir a">
@@ -620,10 +672,10 @@ export function Pase({ liga, dc }) {
             placeholder="Busca un premio: drop, título, nivel 25…" aria-label="Buscar un premio o un nivel del Pase" enterKeyHint="search" />
         </label>
       </nav>
-      <div className="pc-cuerpo">
+      <div className="pc-cuerpo" ref={cuerpo}>
         {miembro ? <Cuatro P={P} ahora={ahora} tiene={tiene} /> : null}
         {miembro ? <Avisitos P={P} ahora={ahora} /> : null}
-        <Escenario libres={libres} prem={prem} nivel={nivel} tiene={tiene} falta={a ? a.falta : 0} compu={compu} q={q} />
+        <PistaDoble libres={libres} prem={prem} nivel={nivel} tiene={tiene} falta={a ? a.falta : 0} frac={a ? a.lleva / a.de : 0} q={q} />
         <TareasC P={P} cfg={cfg} miembro={miembro} ahora={ahora} />
         <div className="pc-dos">
           <PremiumC P={P} prem={prem} tiene={tiene} onTodo={() => setTodoPrem(true)} />

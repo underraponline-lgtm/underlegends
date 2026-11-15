@@ -329,6 +329,30 @@ try {
   ok(o.valesDe(CAMI).vales.length === 2 && o.valeUsar({ quien: CAMI, vale: VC2.o }).error === 'ya_premium'
     && !o.valesDe(CAMI).vales.find((x) => x.id === VC2.o).usado,
   'con el premium ya prendido, el segundo título se guarda para otra temporada');
+
+  // ── 🐉 el drop del día del Pase (15/11/2026): uno por día, y el domingo Star si abriste de lunes a sábado ──
+  ok(A.semanaDeDia('2026-11-15').join() === '2026-11-09,2026-11-10,2026-11-11,2026-11-12,2026-11-13,2026-11-14,2026-11-15'
+    && A.semanaDeDia('2026-11-09')[0] === '2026-11-09', 'la semana de un día va de lunes a domingo', A.semanaDeDia('2026-11-15').join());
+  ciclo();
+  const lunD = Date.UTC(2026, 10, 9, 18, 0);
+  AHORA = lunD;
+  let dx1 = o.paseDiaAbrir(ANA);
+  ok(dx1.ok && !dx1.star && dx1.rareza >= 0 && dx1.dia.semana[0] && dx1.dia.ya && o.paseDe(ANA).dia.ya, 'el lunes se abre un drop común',
+    JSON.stringify(dx1));
+  const dx1b = o.paseDiaAbrir(ANA);
+  ok(dx1b.ya && dx1b.id === dx1.id && sql.exec("SELECT COUNT(*) AS n FROM drops WHERE quien = ? AND origen LIKE '%pdia:%'", ANA).toArray()[0].n === 1,
+    'abrirlo otra vez el mismo día no da otro', JSON.stringify(dx1b));
+  ok(o.paseDiaAbrir(DANI).error === 'no_miembro' && o.paseDe(DANI).dia === null, 'quien no es de DRA no lo abre');
+  for (let k = 1; k <= 5; k++) { AHORA = lunD + k * DIA; o.paseDiaAbrir(ANA); if (k !== 3) { o.paseDiaAbrir(BEA); } }
+  AHORA = lunD + 6 * DIA;
+  const dA = o.paseDe(ANA).dia, dB = o.paseDe(BEA).dia;
+  ok(dA.i === 6 && dA.star && !dA.ya && !dB.star && !dB.star_semana, 'el domingo: Star para quien abrió los seis, común para quien faltó',
+    JSON.stringify([dA, dB]));
+  const sx7 = o.paseDiaAbrir(ANA), cx7 = o.paseDiaAbrir(BEA);
+  ok(sx7.star && sx7.rareza >= A.STAR_MIN && !cx7.star && sql.exec("SELECT COUNT(*) AS n FROM drops WHERE quien = ? AND origen LIKE 'star:pdia:%'",
+    ANA).toArray()[0].n === 1, 'el Star del domingo sale de Vinilo para arriba', JSON.stringify([sx7, cx7]));
+  AHORA = lunD + 7 * DIA;
+  ok(o.paseDe(ANA).dia.semana.filter(Boolean).length === 0 && o.paseDe(ANA).dia.star_semana, 'el lunes siguiente la semana arranca vacía');
 } finally {
   Date.now = relojReal;
 }
