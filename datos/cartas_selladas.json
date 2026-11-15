@@ -917,8 +917,8 @@
    "temporada": "c57289feb096:e17dcfa271c4"
   },
   "Krish": {
-   "competitivo": "afbbe5831a0a:f584310245dc",
-   "pais": "b8043f1f40c8:91bcc3fe2f45",
+   "competitivo": "b4adc3718d59:f584310245dc",
+   "pais": "b3fc4e2b240b:91bcc3fe2f45",
    "servidor": "f624cf3e56be:6bc70cbbd691:2ea58b",
    "temporada": "a7489d8391fb:e17dcfa271c4"
   },
@@ -1144,8 +1144,8 @@
   },
   "Malva": {},
   "Marcos": {
-   "competitivo": "653a1080cc27:f584310245dc",
-   "pais": "9946e7bb4eb7:91bcc3fe2f45",
+   "competitivo": "4fc50e2ba481:f584310245dc",
+   "pais": "925d938f7c68:91bcc3fe2f45",
    "servidor": "f24cfc252726:6bc70cbbd691:bcd566",
    "temporada": "21d100d9a44d:e17dcfa271c4"
   },
@@ -1730,8 +1730,8 @@
   "TYPHLOSION": {},
   "Tam": {},
   "Teito": {
-   "competitivo": "49c54fed1361:f584310245dc",
-   "pais": "e0c546bf6351:91bcc3fe2f45",
+   "competitivo": "67416bcbf460:f584310245dc",
+   "pais": "39080cfcb162:91bcc3fe2f45",
    "servidor": "25c3a3313e32:6bc70cbbd691:d6a988",
    "temporada": "b8d5eb9510bd:e17dcfa271c4"
   },
@@ -1783,8 +1783,8 @@
    "temporada": "5d406d484ae7:e17dcfa271c4"
   },
   "Trot": {
-   "competitivo": "8ae2676a531a:f584310245dc",
-   "pais": "1b03c2439db9:91bcc3fe2f45",
+   "competitivo": "d1222fc32f05:f584310245dc",
+   "pais": "7bd2fe6a5faf:91bcc3fe2f45",
    "servidor": "8e72f328c65c:6bc70cbbd691:c0bf45",
    "temporada": "594c04a1fae1:e17dcfa271c4"
   },
@@ -2119,5 +2119,5 @@
    "servidor": "7f8885a35a6d:6bc70cbbd691:71cf5a"
   }
  },
- "cuando": "2026-11-15T18:07:17+00:00"
+ "cuando": "2026-11-15T18:34:08+00:00"
 }
