@@ -235,7 +235,9 @@ export function Socios({ liga }) {
               return (
                 <li key={s.sv} id={idDe(s.sv)} style={{ '--c': s.color || '#29B298' }}>
                   <img className="sk-logo chico" alt="" src={liga.logo(s.sv, true)} />
-                  <span className="sk-esp-t"><b>{s.nombre || s.sv}</b><small>{siglaDe(s.sv)}{s.tag ? ' · ' + String(s.tag).toUpperCase() : ''}<TierChip s={s} /></small><Cuenta s={s} chico /></span>
+                  <span className="sk-esp-t"><b>{s.nombre || s.sv}</b><small>{siglaDe(s.sv)}{s.tag ? ' · ' + String(s.tag).toUpperCase() : ''}<TierChip s={s} /></small></span>
+                  {/* qué cuenta, en su fila: adentro del nombre quedaba entre los dos números, en 48 a 166 px (16/11) */}
+                  <Cuenta s={s} chico />
                   <span className="sk-esp-d"><b>{s.miembros ? num(s.miembros) : '—'}</b><small>en su Discord</small></span>
                   <span className="sk-esp-d"><b className={x > 1 ? 'sube' : ''}>{x ? mult(x) : '×1'}</b><small>esta semana</small></span>
                   <span className="sk-esp-acc">

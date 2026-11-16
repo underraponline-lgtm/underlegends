@@ -56,10 +56,15 @@
 /* ── los que todavía no jugaron: un renglón cada uno ── */
 .sk-espera{display:grid;gap:10px;margin-top:28px}
 .sk-espera-p{margin:0;font:500 14px/1.45 Archivo,sans-serif;color:var(--gris)}
-.sk-espera ul{display:grid;gap:8px;margin:0;padding:0;list-style:none}
-.sk-espera li{display:grid;grid-template-columns:44px minmax(0,1fr) auto auto;grid-template-areas:"logo t d1 d2" "acc acc acc acc";align-items:center;gap:10px 14px;
+/* `>` y no espacio: «.sk-espera ul» y «.sk-espera li» agarraban también la lista de «qué cuenta» de cada tarjeta, que
+   salía en dos columnas iguales y con cada renglón dibujado como otra tarjeta (borde de color y fondo; 16/11) */
+.sk-espera>ul{display:grid;gap:8px;margin:0;padding:0;list-style:none}
+/* «qué cuenta» (`cu`) va en su fila, del nombre al borde: metido en el nombre, «Suma a la Temporada (eventos de 8 o
+   más)» quedaba en 48 px a 760 y en 5 renglones (Dlx, 16/11: los cortes de línea) */
+.sk-espera>ul>li{display:grid;grid-template-columns:44px minmax(0,1fr) auto auto;grid-template-areas:"logo t d1 d2" ". cu cu cu" "acc acc acc acc";align-items:center;gap:10px 14px;
   min-width:0;padding:10px 12px;border:1.5px solid var(--suave);border-left:5px solid var(--c);background:var(--caja)}
-.sk-espera li>.sk-logo{grid-area:logo}
+.sk-espera>ul>li>.sk-logo{grid-area:logo}
+.sk-espera>ul>li>.sk-cu{grid-area:cu;margin-top:-4px}
 .sk-esp-t{grid-area:t;display:grid;gap:2px;min-width:0}
 .sk-esp-t b{font:900 16px/1.1 Archivo,sans-serif;font-stretch:110%;text-transform:uppercase;overflow-wrap:anywhere}
 .sk-esp-t small{font:700 13.5px/1.2 "Barlow Condensed",sans-serif;letter-spacing:.03em;color:var(--gris)}
@@ -124,12 +129,18 @@
 }
 @media (max-width: 599px){
   /* los que esperan: el renglón en dos, los números al lado del nombre */
-  .sk-espera li{grid-template-columns:44px minmax(0,1fr) auto;grid-template-areas:"logo t t" "logo d1 d2" "acc acc acc"}
+  .sk-espera>ul>li{grid-template-columns:44px minmax(0,1fr) auto;grid-template-areas:"logo t t" "logo d1 d2" "cu cu cu" "acc acc acc"}
   .sk-esp-d{justify-items:start}
   .sk-n{font-size:30px}
 }
+/* de a dos tarjetas por fila y hasta 1100 px, los números van abajo del nombre como en el celular: al lado, el nombre
+   quedaba en 120 px y «DISCORD / RAP / ESPAÑOL» salía en tres renglones (16/11) */
+@media (min-width: 600px) and (max-width: 1099.98px){
+  .sk-espera>ul>li{grid-template-columns:44px minmax(0,1fr) auto;grid-template-areas:"logo t t" "logo d1 d2" "cu cu cu" "acc acc acc"}
+  .sk-esp-d{justify-items:start}
+}
 @media (min-width: 640px){
-  .sk-lista,.sk-espera ul{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .sk-lista,.sk-espera>ul{grid-template-columns:repeat(2,minmax(0,1fr))}
   .sk-redes{grid-template-columns:repeat(3,minmax(0,1fr))}
   .sk-redes li{grid-template-columns:minmax(0,1fr);align-content:start;align-items:start;padding:12px}
 }

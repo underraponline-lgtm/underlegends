@@ -2,6 +2,14 @@
    línea (30/09), SE EDITA ACÁ: el prototipo quedó congelado y volver a generarlo pisaría estos cambios.
    Lo que es sólo de la página de verdad va en src/vivo.css. */
 :host{display:block}
+/* ── LOS CORTES DE LÍNEA (Dlx, 16/11/2026: «a veces hay / así, cuando podría ir junto claramente») ──
+   Medido en 25 páginas × 6 anchos: de 445 textos cortos partidos, 636 veces quedaba UNA palabra sola abajo —
+   «PRECIO POR SU / CABEZA», «TEMPORADA / 1», «ESCRIBIRLE A @itsdlx / ↗». `pretty` se hereda desde el host (llega
+   también a los pop-ups, que no viven en .app) y mueve una palabra más a la última línea: «PRECIO POR / SU CABEZA».
+   Los títulos y los botones van parejos (`balance`). No cambia el ancho de ninguna caja: sólo dónde se corta.
+   Lo que entraba en una línea y se partía por su caja se arregló en su regla (eventos.css, socios2.css, ligas.css…) */
+:host{text-wrap:pretty}
+:is(h1,h2,h3,h4,summary,.btn){text-wrap:balance}
 .app{--gut:40px}
 /* el margen de los costados, en % y no en vw: con la página agrandada (zoom, ver vivo.css) un 100vw se agranda
    también y el contenido se salía de la pantalla. Todo lo que lo usa ocupa el ancho entero de .app */

@@ -114,7 +114,7 @@ export function Elegido({ liga, enc, E, corta }) {
   const yoK = enc.yoDiscord;
   return (
     <article className="en">
-      <div className="en-cab"><span>EL ELEGIDO · MOST WANTED</span><em>CIERRA {liga.dia(E.hasta).toUpperCase()}</em></div>
+      <div className="en-cab"><span>{'EL ELEGIDO\u00a0· MOST\u00a0WANTED'}</span><em>CIERRA {liga.dia(E.hasta).toUpperCase()}</em></div>
       <h3 className="en-p">¿A quién salimos a buscar?</h3>
       {corta ? null : <p className="en-b">El más votado entra al Most Wanted como <b>El Elegido</b>. {tot ? votos(tot) : 'Todavía sin votos'}{tot < min ? ' · hacen falta ' + min : ''}.</p>}
       {(corta ? (ops) => <Plegada linea={comoVa(E, cu, mio, nombre)} mio={mio}>{ops}</Plegada> : (ops) => ops)(<>

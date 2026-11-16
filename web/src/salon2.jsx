@@ -25,7 +25,8 @@ usarCss('salon2', CSS_PAGINA);
 
 const DIFICIL = 25;
 const VER_CARAS = 6;
-const nombreTemp = (t) => (!t || t === 'prueba' ? 'Temporada 1' : 'Temporada ' + String(t).replace(/^t/i, ''));
+// «Temporada 1» no se parte: «TEMPORADA / 1» dejaba el número solo (16/11)
+const nombreTemp = (t) => (!t || t === 'prueba' ? 'Temporada\u00a01' : 'Temporada\u00a0' + String(t).replace(/^t/i, ''));
 function diaSin(d) {
   const [y, m, dd] = String(d || '').slice(0, 10).split('-').map(Number);
   return y && m && dd ? dd + ' de ' + MESES[m - 1] : '';
@@ -215,7 +216,7 @@ function Temporadas({ liga }) {
         {/* ⚠️ `sl-luego` y no `prox`: `.prox` es una grilla global de estilo.css (ya chocó una vez) */}
         <article className="sl-temp sl-luego" aria-label={'Temporada ' + (num0 + 1) + ', todavía no empezó'}>
           <span className="sl-candado" aria-hidden="true"><Ico n="candado" t={34} /></span>
-          <h3>Temporada {num0 + 1}</h3>
+          <h3>{'Temporada\u00a0' + (num0 + 1)}</h3>
           <p>Arranca cuando termine la {nombreTemp(liga.temp)}. Sus campeones van acá, al lado.</p>
         </article>
       </div>

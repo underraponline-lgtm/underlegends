@@ -6,7 +6,7 @@
 // Lo arma el ciclo (`bot/mes_awards.py`) y se pide al abrir el Salón (`/api/salon`): no viaja en el lobby. Se vota con
 // las mismas reglas que El Elegido y el ×2 (`accion.votar`, `enc` de App.jsx): un voto por cuenta y por categoría, se
 // cambia hasta que cierra, y afuera se ve cuántos, nunca quién
-import { useEffect, useState } from 'react';
+import { Fragment, useEffect, useState } from 'react';
 import { limpio, num, siglaDe } from './liga.js';
 import { Cara, accion } from './piezas.jsx';
 import { Miniatura } from './video.jsx';
@@ -94,7 +94,8 @@ export function reparto(x) {
   const orden = Object.keys(cu).sort((a, b) => cu[b] - cu[a]).slice(0, 4);
   return (
     <small className="ma-pct">{orden.map((op, i) => (
-      <span key={op}>{i ? ' · ' : ''}{op === x.gana ? <b>{nom(op)} {Math.round((100 * cu[op]) / tot)}%</b> : nom(op) + ' ' + Math.round((100 * cu[op]) / tot) + '%'}</span>
-    ))}{' · ' + tot + (tot === 1 ? ' voto' : ' votos')}</small>
+      // cada opción entera en su renglón y el «·» al final del de arriba, nunca al principio (16/11: los cortes de línea)
+      <Fragment key={op}>{i ? '\u00a0· ' : ''}<span className="ma-op">{op === x.gana ? <b>{nom(op)} {Math.round((100 * cu[op]) / tot)}%</b> : nom(op) + ' ' + Math.round((100 * cu[op]) / tot) + '%'}</span></Fragment>
+    ))}{'\u00a0· ' + tot + (tot === 1 ? '\u00a0voto' : '\u00a0votos')}</small>
   );
 }

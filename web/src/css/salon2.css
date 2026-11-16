@@ -109,7 +109,10 @@ button.sl-op:focus-visible{outline:2px solid var(--oro);outline-offset:2px}
 .sl-temp.vivo{box-shadow:5px 5px 0 #E5B800}
 .sl-temp header{display:grid;gap:8px;justify-items:start}
 .sl-temp .tag{background:#E5B800;color:#030304}
-.sl-temp h3{margin:0;font:900 26px/1 Archivo,sans-serif;font-stretch:125%;text-transform:uppercase}
+/* «Temporada 1» no se parte (el número va pegado en el JSX) y la letra baja con la tarjeta: a 1000 px la columna
+   mide 222 y «TEMPORADA / 1» dejaba el número solo (16/11) */
+.sl-temp header,.sl-temp.sl-luego{container-type:inline-size}
+.sl-temp h3{margin:0;font:900 min(26px,9.5cqi)/1 Archivo,sans-serif;font-stretch:125%;text-transform:uppercase}
 .sl-temp p{margin:0;font:500 14px/1.45 Archivo,sans-serif;color:#D6D6D2;max-width:60ch}
 .sl-temp-l{display:grid;gap:10px;margin:0;padding:0;list-style:none}
 .sl-temp-l li{display:grid;gap:6px;min-width:0}

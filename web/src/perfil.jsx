@@ -379,7 +379,7 @@ function Puertas({ liga, f, k, cs, svc }) {
       </button>
       <button type="button" className="pf8-pu" aria-expanded={pronto} onClick={() => setPronto(!pronto)}>
         <span className="pf8-pu-vt" aria-hidden="true"><CopasVitrina /></span>
-        <span className="pf8-pu-tx"><b>Vitrina</b><small>{pronto ? 'los trofeos de sus eventos · llega pronto' : (f.oro || 0) + ((f.oro || 0) === 1 ? ' trofeo' : ' trofeos') + ' · pronto'}</small></span>
+        <span className="pf8-pu-tx"><b>Vitrina</b><small>{pronto ? 'los trofeos de sus eventos\u00a0· llega pronto' : (f.oro || 0) + ((f.oro || 0) === 1 ? '\u00a0trofeo' : '\u00a0trofeos') + '\u00a0· pronto'}</small></span>
         <em aria-hidden="true">›</em>
       </button>
     </div>
