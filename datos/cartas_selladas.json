@@ -1129,8 +1129,8 @@
   },
   "Mail O": {},
   "Majiztral": {
-   "competitivo": "d78c7973e00f:3cb4ba14e995",
-   "pais": "cac18564fdd5:50160dcafbc4",
+   "competitivo": "129ea14c9fb4:3cb4ba14e995",
+   "pais": "d245dba64910:50160dcafbc4",
    "servidor": "55c6afc474c9:e0061cb5005e:132451",
    "temporada": "17a4a2960e8e:fec25411e829"
   },
@@ -1555,7 +1555,7 @@
    "servidor": "cb246aa36eb0:e0061cb5005e:cabaff"
   },
   "Richard": {
-   "competitivo": "8c40d225371a:3cb4ba14e995",
+   "competitivo": "7d733574c7a7:3cb4ba14e995",
    "pais": "4894444f2856:50160dcafbc4",
    "servidor": "55adb0612456:e0061cb5005e:62e67f",
    "temporada": "2d032926a6fd:fec25411e829"
@@ -2126,5 +2126,5 @@
    "servidor": "7f8885a35a6d:e0061cb5005e:71cf5a"
   }
  },
- "cuando": "2026-11-16T21:36:04+00:00"
+ "cuando": "2026-11-16T22:06:10+00:00"
 }
