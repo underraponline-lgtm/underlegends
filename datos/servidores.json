@@ -794,12 +794,6 @@
      "1554209799221157888"
     ]
    },
-   "ligas_esperan": {
-    "ids": [
-     "1554209799221157888"
-    ],
-    "por_que": "15/11/2026: su liga «Fms ceuta» (tabla, enfrentamientos, veredicto) es de puntos (PTB), con DF que dan puntos y extraplayers, y sus tablas son imágenes. Ningún lector la lee bien: el de LKR cerraba 16 de 53 batallas, se salteaba su cierre («# LAST🇺🇾 🐐») y armaba nombres como «REPETIMIENTO DE JORNADA 2 LAST»; su tabla habría puesto a LAST arriba con Trot campeón invicto. Espera su lector propio (bot/ligas.py esperan()). La categoría va también en categorias_fuera, como la de cualquier liga: sus anuncios de la liga no son eventos."
-   },
    "leer_hondo_hasta": "2026-11-18"
   }
  },

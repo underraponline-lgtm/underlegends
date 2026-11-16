@@ -142,6 +142,10 @@ LIGAS = {
                       'ver': '1566520848591093781', 'tabla': '1566520642529001683', 'an': '1566520559087521832', 'cc': 'MX'},
     'lkr-fms-espana': {'n': 'FMS España', 'sv': 'LKR', 'fam': 'K', 'vre': r'FMS\s+ESPANA',
                        'ver': '1566535333254795466', 'tabla': '1566535121224343632', 'an': '1566534624165892157', 'cc': 'ES'},
+    # 🇪🇸 FMS Ceuta (CEU, Tier 3), 16/11/2026: escribe como LKR —el host es el mismo Krish— más «# +3 PUNTOS TROT», los DF
+    # en un renglón y la réplica con su propio título (ver `PUNTOS_ANTES`). Esperó en `ligas_esperan` hasta tener esto
+    'ceu-fms-ceuta': {'n': 'FMS Ceuta', 'sv': 'CEU', 'fam': 'K', 'vre': r'FMS\s*CEUTA', 'cat': '1554209799221157888',
+                      'ver': '1554210754150932520', 'tabla': '1554210034697769021', 'an': '1552349616861618287', 'cc': 'ES'},
 }
 #: 🏟️ la clave de KV con los canales de cada liga, para el vigía de las batallas (`ligasRonda()` en bot/avisos.js)
 CLAVE_VIGIA = 'ligas:vigia'
@@ -742,7 +746,7 @@ X_MINIMA = re.compile(r'^#*\s*(.+?)\s+X\s+LA\s+MINIMA\b', re.I)
 #: «Hirex 1 + 1,5 + 0,5 = 3» cuenta por su total. Gana el de más puntos —directa, o en réplica si los números vinieron
 #: después de la marca—, salvo que un cierre diga otra cosa. Números antes de una réplica sin resolver: pendiente.
 NUM_K = r'\d+(?:[.,]\d+)?'
-POR_K = re.compile(r'(%s)\s*X\s*\d+\s*=\s*%s' % (NUM_K, NUM_K), re.I)
+POR_K = re.compile(r'(%s)\s*[X×]\s*\d+\s*=\s*%s' % (NUM_K, NUM_K), re.I)
 SUMA_K = re.compile(r'(?:%s\s*\+\s*)+%s\s*=\s*(%s)' % (NUM_K, NUM_K, NUM_K))
 MENCION = re.compile(r'<[@#][!&]?\d+>')
 #: «15 = LAST 10= SHADOW … # LAST»: el cierre en el mismo renglón que los puntajes
@@ -754,7 +758,24 @@ CORRIGE = re.compile(r'EQUIVOC|EQUIVOQU', re.I)
 MAS_PAR = re.compile(r'([^+]*?[A-Za-z][^+]*?)\s*\+\s*([0-3])(?![\d.,])')
 #: 🚫 «(BATALLA POR DEFAULT)» y «(PUNTOS CEDIDOS)» en el título (FMS Plaza: nueve así): como el DF de las otras ligas, no
 #: es una batalla que cuente, aunque traiga números
-DF_K = re.compile(r'\bDEFAULT\b|PUNTOS\s+CEDIDOS|\(\s*DF\s*\)', re.I)
+DF_K = re.compile(r'\bDEFAULT\b|PUNTOS\s+CEDIDOS|\(\s*DF\s*\)|NINGUNO\s+VINO', re.I)
+# 🇪🇸 FMS CEUTA (CEU, 16/11/2026; Dlx: «Yes, here», a escribirle su lector). Escribe con el mismo lector que LKR, más esto:
+#: «# +3 PUNTOS TROT», «+2 PTS LAST», «+3 pto 30 ptb IVAN», «+1 PUNTO A EMI»: el número ANTES del nombre. 🔴 Leído como
+#: puntaje, «TROT: 62 / KRISH: 56.4 / # +3 PUNTOS TROT» le daba la batalla a Krish (TROT 3), y Trot fue campeón invicto.
+#: El +1 es del que perdió o del empate: no cierra nada
+PUNTOS_ANTES = re.compile(r'^#*\s*\+?\s*([0-3])\s*(?:PUNTOS?|PTOS?|PTS?|PT)\b\.?\s*(?:A\s+)?(?:\d+(?:[.,]\d+)?\s*PTB\s+)?'
+                          r'(.*?)\s*(?:\+\s*\d.*)?$', re.I)
+#: «MARCOS DF», «TEITO 2 DF´S», «NINGUNO VINO»: esa batalla no se jugó (con el nombre de uno de los dos, o «ninguno»)
+DF_LINEA = re.compile(r'\bDF(?:\W?S)?\b|NINGUNO\s+VINO', re.I)
+#: «# REPLICA LAST VS SANTZ», «# LAST VS MARCOS REPLICA 1»: la réplica de la batalla de arriba, no otra. «REPETIMIENTO DE
+#: JORNADA 2» es una revancha: la batalla es la misma gente
+TIT_REP = re.compile(r'^(?:R[EÉ]PLICA|REPETIMIENTO\s+DE\s+JORNADA\s*\d*)\s+|\s+R[EÉ]PLICA(?:\s*\d+)?$', re.I)
+
+
+def _horas(t1, t2):
+    """Horas entre dos instantes ISO; sin fecha que se entienda, infinitas."""
+    a, b = _instante(t1), _instante(t2)
+    return abs((b - a).total_seconds()) / 3600 if a and b else float('inf')
 
 
 def _lado_k(texto, a, b):
@@ -854,6 +875,12 @@ def _lk(msgs):
                     continue
                 ls = lados(l)
                 if ls:
+                    ls = (TIT_REP.sub('', ls[0]).strip() or ls[0], TIT_REP.sub('', ls[1]).strip() or ls[1]) + tuple(ls[2:])
+                    u = bats[-1] if bats else None
+                    if u and {clave(u['a']), clave(u['b'])} == {clave(ls[0]), clave(ls[1])} and \
+                            REPLICA.search(_plano(l)) and _horas(u['t'], m['t']) <= 12:
+                        u['rep'] = True
+                        continue
                     bats.append({'id': m['id'], 't': m['t'], 'a': ls[0], 'b': ls[1], 'ea': ls[2], 'eb': ls[3], 'j': None,
                                  'gana': '', 'como': '', 'rep': False, 'pt': [None, None], 'pt_rep': False,
                                  'df': bool(DF_K.search(_plano(l)))})
@@ -863,8 +890,22 @@ def _lk(msgs):
                     continue
                 b = bats[-1]
                 pl = EMOJI.sub(' ', _plano(l)).replace('*', '').strip()
-                if marca_replica(l):
+                # «# REPLICA X2», «# REPLICA 2» (FMS Ceuta): otra vuelta de réplica
+                if marca_replica(l) or re.fullmatch(r'replicax?\d+', clave(pl)):
                     b['rep'] = True
+                    continue
+                # «MARCOS DF», «NINGUNO VINO»: no se jugó. Con el nombre de uno de los dos: un «# DFS :» de título no es
+                df = DF_LINEA.search(pl)
+                if df and len(pl.split()) <= 5 and (re.search(r'NINGUNO', pl, re.I) or
+                                                    _lado_k(DF_LINEA.sub(' ', pl), b['a'], b['b'])):
+                    b['df'] = True
+                    continue
+                pa_ = PUNTOS_ANTES.match(pl)
+                if pa_:
+                    lado = _lado_k(pa_.group(2), b['a'], b['b']) if pa_.group(1) in '23' and pa_.group(2) else None
+                    # sin ningún puntaje antes, «3 pt ANDY» es lo que cobró por un DF: no es una batalla que se jugó
+                    if lado and (b['rep'] or any(x is not None for x in b['pt'])):
+                        b['gana'], b['como'] = b[lado], 'directa' if pa_.group(1) == '3' else 'replica'
                     continue
                 g = GANADOR.match(pl)
                 if g:
@@ -903,6 +944,8 @@ def _lk(msgs):
                     # 🔴 «# MAKMA :28» es su puntaje, no que ganó: «# A :25 / # B :28» le daba la batalla al de arriba.
                     # Y «# KUSOH 13 RICARD 12,5», tampoco: con un número adentro, el renglón son puntajes
                     if not re.search(r'\d', pt):
+                        # «# TEITO ( el rey del morbo)🐐»: lo de entre paréntesis es un comentario
+                        pt = re.sub(r'\s+', ' ', re.sub(r'\([^)]*\)?', ' ', pt)).strip()
                         lado = _lado_k(pt, b['a'], b['b'])
                         k, kl = clave(pt), clave(b[lado]) if lado else ''
                         # «# RICARDFLEX» bajo «RICARD vs HIREX», y «# RICARD» bajo «RICARD FLEX vs TEITO»: su nombre
@@ -1552,7 +1595,10 @@ def esperan():
     """⏸️ `{sv: {categoría}}` de las ligas que NO entran solas aunque un lector las lea (`ligas_esperan` de cada servidor
     en `datos/servidores.json`). 15/11/2026, FMS Ceuta: el lector de LKR leía 16 de sus 53 batallas, se salteaba su
     cierre de siempre («# LAST🇺🇾 🐐») y tomaba «REPETIMIENTO DE JORNADA 2 LAST» por un nombre; su tabla habría puesto
-    a LAST arriba con Trot campeón invicto. Esperan su lector propio, o que Dlx las saque de acá."""
+    a LAST arriba con Trot campeón invicto. Esperan su lector propio, o que Dlx las saque de acá.
+
+    ✅ FMS Ceuta salió el 16/11/2026: el lector K aprendió su forma (`PUNTOS_ANTES`, `DF_LINEA`, `TIT_REP`) y está en
+    `LIGAS` como `ceu-fms-ceuta`. Medido: Trot 6 de 6, invicto, como lo anunció su servidor."""
     try:
         with io.open(os.path.join(BASE, 'datos', 'servidores.json'), encoding='utf-8') as f:
             svs = json.load(f).get('servidores') or {}

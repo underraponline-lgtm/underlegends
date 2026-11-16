@@ -173,14 +173,19 @@ export function resolverU(b, ahora) {
 
 // 🧮 el puntaje de cada uno, aunque no haya cierre: `puntajes_k()` de ligas.py, con sus mismos ejemplos (FMS LATAM, 15/11)
 const NUM_K = '\\d+(?:[.,]\\d+)?';
-const POR_K = new RegExp('(' + NUM_K + ')\\s*X\\s*\\d+\\s*=\\s*' + NUM_K, 'gi');
+const POR_K = new RegExp('(' + NUM_K + ')\\s*[X×]\\s*\\d+\\s*=\\s*' + NUM_K, 'gi');
 const SUMA_K = new RegExp('(?:' + NUM_K + '\\s*\\+\\s*)+' + NUM_K + '\\s*=\\s*(' + NUM_K + ')', 'g');
 const MENCION = /<[@#][!&]?\d+>/g;
 const CORTE_K = /\s+(?=#)/;
 const CORRIGE = /EQUIVOC|EQUIVOQU/i;
 // «# MASINO +2 LAST +1»: gana el único que suma 2 o 3 (`MAS_PAR`), y «(BATALLA POR DEFAULT)» no es una batalla (`DF_K`)
 const MAS_PAR = /([^+]*?[A-Za-z][^+]*?)\s*\+\s*([0-3])(?![\d.,])/g;
-const DF_K = /\bDEFAULT\b|PUNTOS\s+CEDIDOS|\(\s*DF\s*\)/i;
+const DF_K = /\bDEFAULT\b|PUNTOS\s+CEDIDOS|\(\s*DF\s*\)|NINGUNO\s+VINO/i;
+// 🇪🇸 FMS Ceuta: el número antes del nombre, los DF en un renglón y la réplica con título (los mismos de ligas.py)
+const PUNTOS_ANTES = /^#*\s*\+?\s*([0-3])\s*(?:PUNTOS?|PTOS?|PTS?|PT)(?![\p{L}\p{N}_])\.?\s*(?:A\s+)?(?:\d+(?:[.,]\d+)?\s*PTB\s+)?(.*?)\s*(?:\+\s*\d.*)?$/iu;
+const DF_LINEA = /\bDF(?:\W?S)?\b|NINGUNO\s+VINO/i;
+const TIT_REP = /^(?:R[EÉ]PLICA|REPETIMIENTO\s+DE\s+JORNADA\s*\d*)\s+|\s+R[EÉ]PLICA(?:\s*\d+)?$/i;
+const REPLICA_K = /\bR[EÉ]PLICA\b/i;
 
 /** `quien()` y, si no alcanza, por el principio de una palabra o dos: `_lado_k()` de ligas.py. */
 export function ladoK(texto, a, b) {
@@ -230,7 +235,18 @@ function anotaK(b, pares, corrige, vistos, tm) {
 /** Una línea de una liga de LKR. Los mismos pasos que `_lk()`. */
 function lineaK(l, b, corrige = false, vistos = new Set(), tm = 0) {
   const pl = plano(l).replace(EMOJI, ' ').replace(/\*/g, '').trim();
-  if (marcaReplica(l)) { b.rep = true; return; }
+  if (marcaReplica(l) || /^replicax?\d+$/.test(clave(pl))) { b.rep = true; return; }
+  if (DF_LINEA.test(pl) && pl.split(/\s+/).length <= 5 && (/NINGUNO/i.test(pl) || ladoK(pl.replace(new RegExp(DF_LINEA.source, 'gi'), ' '), b.a, b.b))) {
+    b.df = true;
+    return;
+  }
+  const pa = PUNTOS_ANTES.exec(pl);
+  if (pa) {
+    const lado = (pa[1] === '2' || pa[1] === '3') && pa[2] ? ladoK(pa[2], b.a, b.b) : null;
+    // sin ningún puntaje antes, «3 pt ANDY» es lo que cobró por un DF
+    if (lado && (b.rep || (b.pt && (b.pt[0] !== null || b.pt[1] !== null)))) { b.gana = b[lado]; b.como = pa[1] === '3' ? 'directa' : 'replica'; }
+    return;
+  }
   const g = GANADOR.exec(pl);
   if (g) {
     const nom = (g[2] || '').trim();
@@ -265,8 +281,10 @@ function lineaK(l, b, corrige = false, vistos = new Set(), tm = 0) {
     }
     // «# MAKMA :28» y «# KUSOH 13 RICARD 12,5» son puntajes, no que ganó
     if (!/\d/.test(pt)) {
-      const lado = ladoK(pt, b.a, b.b);
-      const k = clave(pt), kl = lado ? clave(b[lado]) : '';
+      // «# TEITO ( el rey del morbo)🐐»: lo de entre paréntesis es un comentario
+      const pt2 = pt.replace(/\([^)]*\)?/g, ' ').replace(/\s+/g, ' ').trim();
+      const lado = ladoK(pt2, b.a, b.b);
+      const k = clave(pt2), kl = lado ? clave(b[lado]) : '';
       // su nombre largo o el corto: «# RICARDFLEX» bajo RICARD, «# RICARD» bajo RICARD FLEX
       if (lado && ((k.length <= kl.length + 2 && k.includes(kl)) || kl.startsWith(k) || k.startsWith(kl))) {
         b.gana = b[lado]; b.como = b.rep ? 'replica' : 'directa';
@@ -301,6 +319,16 @@ export function leerMensajes(fam, msgs, bats, dosHoras = 2 * 3600 * 1000) {
       const ls = lados(l);
       if (fam === 'U' && lj && !ls) { j = Number(lj[1] || lj[2]); continue; }
       if (ls) {
+        if (fam === 'K') {
+          // «# REPLICA LAST VS SANTZ», «# LAST VS MARCOS REPLICA 1»: la réplica de la de arriba (`TIT_REP` en ligas.py)
+          ls[0] = ls[0].replace(TIT_REP, '').trim() || ls[0];
+          ls[1] = ls[1].replace(TIT_REP, '').trim() || ls[1];
+          const u = bats[bats.length - 1];
+          if (u && par(u.a, u.b) === par(ls[0], ls[1]) && REPLICA_K.test(pp) && Math.abs(tm - (Date.parse(u.t) || 0)) <= 12 * 3600 * 1000) {
+            u.rep = true;
+            continue;
+          }
+        }
         const pr = par(ls[0], ls[1]);
         const hay = bats.find((b) => par(b.a, b.b) === pr && Math.abs(tm - (Date.parse(b.t) || 0)) <= dosHoras);
         if (!hay) { const b = nueva(m, ls, j); if (fam === 'K') b.df = DF_K.test(pp); bats.push(b); nuevas.push(b); }

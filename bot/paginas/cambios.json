@@ -11,6 +11,16 @@
  ],
  "cambios": [
     {
+        "version": "5.50",
+        "dia": "2026-11-16",
+        "cuando": "2026-11-16T04:05:15-05:00",
+        "titulo": "FMS Ceuta, en Ligas",
+        "items": [
+            "La liga **FMS Ceuta** entra a **Ligas**, con su primera temporada entera (Trot campeón, invicto) y la segunda, que arrancó este fin de semana.",
+            "Las ligas que escriben «**+3 PUNTOS**» antes del nombre, o el DF en un renglón, ahora se leen bien."
+        ]
+    },
+    {
         "version": "5.49",
         "dia": "2026-11-16",
         "cuando": "2026-11-16T04:03:00-05:00",

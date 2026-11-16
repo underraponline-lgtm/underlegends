@@ -91,52 +91,95 @@
     "# PTB TOTAL X3",
     "# EXHIBICION ANA VS BETO"],
    "res": []},
-  {"n": "LKR: los puntajes sin cierre, «KUSOH 14 VS LVEL 8» (FMS LATAM)", "fam": "K", "msgs": [
-    "# LVEL VS KUSOH",
-    "KUSOH 14 VS LVEL 8 \nPARA LA TABLA SE HARAN X 5"],
-   "res": [["LVEL", "KUSOH", "KUSOH", "directa"]]},
+  {"n": "LKR: los puntajes sin cierre, «ANA 14 VS BETO 8» (FMS LATAM)", "fam": "K", "msgs": [
+    "# BETO VS ANA",
+    "ANA 14 VS BETO 8 \nPARA LA TABLA SE HARAN X 5"],
+   "res": [["BETO", "ANA", "ANA", "directa"]]},
   {"n": "LKR: «A 11 - 8,5 B»", "fam": "K", "msgs": [
-    "# AFINPAPA VS ISMEL",
-    "Afinpapa 11 - 8,5  ismel"],
-   "res": [["AFINPAPA", "ISMEL", "AFINPAPA", "directa"]]},
-  {"n": "LKR: «LAST 10 X 5 = 50  TMAX 6 X 5 = 30» cuenta el de antes del X 5", "fam": "K", "msgs": [
-    "# LAST 🇺🇾 🆚 TMAX🇪🇸",
-    "LAST 10 X 5 = 50         TMAX 6 X 5 = 30"],
-   "res": [["LAST", "TMAX", "LAST", "directa"]]},
-  {"n": "LKR: «15 = LAST  10= SHADOW … # LAST», el cierre en el mismo renglón", "fam": "K", "msgs": [
-    "# SHADOW🇨🇴 🆚 LAST🇺🇾",
-    "15  =  LAST 🇺🇾                        10=  SHADOW🇨🇴              # LAST 🇺🇾"],
-   "res": [["SHADOW", "LAST", "LAST", "directa"]]},
-  {"n": "LKR: los números de antes de la réplica esperan su cierre, y «# RICARD» cierra a RICARD FLEX", "fam": "K", "msgs": [
-    "# RICARD FLEX VS TEITO",
-    "Ricardflex 13,5 \nTeito 13 \n# REPLICA",
-    "# RICARD"],
-   "res": [["RICARD FLEX", "TEITO", "RICARD FLEX", "replica"]]},
+    "# ANA VS BETO",
+    "Ana 11 - 8,5  beto"],
+   "res": [["ANA", "BETO", "ANA", "directa"]]},
+  {"n": "LKR: «ANA 10 X 5 = 50  BETO 6 X 5 = 30» cuenta el de antes del X 5", "fam": "K", "msgs": [
+    "# ANA 🇺🇾 🆚 BETO🇪🇸",
+    "ANA 10 X 5 = 50         BETO 6 X 5 = 30"],
+   "res": [["ANA", "BETO", "ANA", "directa"]]},
+  {"n": "LKR: «15 = ANA  10= BETO … # ANA», el cierre en el mismo renglón", "fam": "K", "msgs": [
+    "# BETO🇨🇴 🆚 ANA🇺🇾",
+    "15  =  ANA 🇺🇾                        10=  BETO🇨🇴              # ANA 🇺🇾"],
+   "res": [["BETO", "ANA", "ANA", "directa"]]},
+  {"n": "LKR: los números de antes de la réplica esperan su cierre, y «# CARLA» cierra a CARLA FLEX", "fam": "K", "msgs": [
+    "# CARLA FLEX VS BETO",
+    "Carlaflex 13,5 \nBeto 13 \n# REPLICA",
+    "# CARLA"],
+   "res": [["CARLA FLEX", "BETO", "CARLA FLEX", "replica"]]},
   {"n": "LKR: números y después una réplica sin cierre: pendiente", "fam": "K", "msgs": [
     "# ANA vs BETO",
     "ANA 13,5\nBETO 13\n# REPLICA"],
    "res": [["ANA", "BETO", "", ""]]},
-  {"n": "LKR: «# RICARDFLEX» cierra a RICARD, y la suma vale por su total", "fam": "K", "msgs": [
-    "# RICARD 🇪🇨 VS HIREX 🇨🇴",
-    "Resultados \nHirex 1 + 1,5 + 0,5 =3 \nRicarflex 2,5 + 3 =5,5 \n\n# RICARDFLEX"],
-   "res": [["RICARD", "HIREX", "RICARD", "directa"]]},
-  {"n": "LKR: «MAIN EVENT» no es del nombre, y «# KUSOH 13 RICARD 12,5» son puntajes", "fam": "K", "msgs": [
-    "# KUSOH VS  RICARDFLEX 💥 MAIN EVENT",
-    "# KUSOH 13 RICARD 12,5  ⚔️",
-    "# KUSOH X LA MINIMA"],
-   "res": [["KUSOH", "RICARDFLEX", "KUSOH", "directa"]]},
-  {"n": "LKR: «me equivoqué es Kusoh 11 Ismel 9» cambia al rival del título", "fam": "K", "msgs": [
-    "# Kusoh vs snx",
-    "<@1458603256292053037> <@1447024559197782138> ne equivoque es \nKusoh 11 \nIsmel 9"],
-   "res": [["Kusoh", "Ismel", "Kusoh", "directa"]]},
-  {"n": "LKR: «# MASINO +2 LAST +1» es réplica para el que suma 2 (FMS Plaza)", "fam": "K", "msgs": [
-    "# LAST 🇺🇾 🆚 MASINO 🇨🇱",
-    "# MASINO 🇨🇱 11.00\n\n# LAST 🇺🇾 10.00",
-    "# 🇨🇱MASINO +2 🇺🇾LAST +1"],
-   "res": [["LAST", "MASINO", "MASINO", "replica"]]},
+  {"n": "LKR: «# CARLAFLEX» cierra a CARLA, y la suma vale por su total", "fam": "K", "msgs": [
+    "# CARLA 🇪🇨 VS BETO 🇨🇴",
+    "Resultados \nBeto 1 + 1,5 + 0,5 =3 \nCarlflex 2,5 + 3 =5,5 \n\n# CARLAFLEX"],
+   "res": [["CARLA", "BETO", "CARLA", "directa"]]},
+  {"n": "LKR: «MAIN EVENT» no es del nombre, y «# ANA 13 CARLA 12,5» son puntajes", "fam": "K", "msgs": [
+    "# ANA VS  CARLAFLEX 💥 MAIN EVENT",
+    "# ANA 13 CARLA 12,5  ⚔️",
+    "# ANA X LA MINIMA"],
+   "res": [["ANA", "CARLAFLEX", "ANA", "directa"]]},
+  {"n": "LKR: «me equivoqué es Ana 11 Beto 9» cambia al rival del título", "fam": "K", "msgs": [
+    "# Ana vs zzx",
+    "<@1> <@2> ne equivoque es \nAna 11 \nBeto 9"],
+   "res": [["Ana", "Beto", "Ana", "directa"]]},
+  {"n": "LKR: «# ANA +2 BETO +1» es réplica para el que suma 2 (FMS Plaza)", "fam": "K", "msgs": [
+    "# BETO 🇺🇾 🆚 ANA 🇨🇱",
+    "# ANA 🇨🇱 11.00\n\n# BETO 🇺🇾 10.00",
+    "# 🇨🇱ANA +2 🇺🇾BETO +1"],
+   "res": [["BETO", "ANA", "ANA", "replica"]]},
   {"n": "LKR: «(BATALLA POR DEFAULT)» no cuenta, aunque traiga números", "fam": "K", "msgs": [
-    "# MASINO 🇨🇱 🆚 LVEL 🇻🇪 (BATALLA POR DEFAULT)",
-    "# MASINO 20\n# LVEL 20"],
-   "res": []}
+    "# ANA 🇨🇱 🆚 BETO 🇻🇪 (BATALLA POR DEFAULT)",
+    "# ANA 20\n# BETO 20"],
+   "res": []},
+  {"n": "CEU: «# +3 PUNTOS ANA» después del puntaje: el número antes del nombre no es su puntaje", "fam": "K", "msgs": [
+    "# BETO VS ANA",
+    "ANA: 62\nBETO: 56.4\n# +3 PUNTOS ANA"],
+   "res": [["BETO", "ANA", "ANA", "directa"]]},
+  {"n": "CEU: «BETO DF» y «NINGUNO VINO» en un renglón: no se jugó", "fam": "K", "msgs": [
+    "# ANA VS BETO",
+    "BETO DF",
+    "# CARLA VS DANI",
+    "NINGUNO VINO",
+    "+ 1PTO CADA UNO Y 40 PTB"],
+   "res": []},
+  {"n": "CEU: «3 pt BETO» sin ningún puntaje antes es lo que cobró por un DF: pendiente", "fam": "K", "msgs": [
+    "# ANA VS BETO MC",
+    "3 pt BETO"],
+   "res": [["ANA", "BETO MC", "", ""]]},
+  {"n": "CEU: la réplica con su propio título no es otra batalla, y la gana el de más puntos", "fam": "K", "msgs": [
+    "# ANA VS BETO",
+    "ANA 39\n\nBETO 40.5\n\n# REPLICA",
+    "# ANA VS BETO REPLICA 1",
+    "BETO +5 PT",
+    "ANA +2.5"],
+   "res": [["ANA", "BETO", "BETO", "replica"]]},
+  {"n": "CEU: «# REPLICA X2», y lo de entre paréntesis del cierre es un comentario", "fam": "K", "msgs": [
+    "# ANA VS BETO",
+    "ANA 7,5\n\nBETO 8,5\n\n# REPLICA",
+    "# REPLICA X2",
+    "ANA : 27\n\nBETO 30\n\n# BETO ( el rey del barrio)🐐"],
+   "res": [["ANA", "BETO", "BETO", "replica"]]},
+  {"n": "CEU: «# GANADOR: REPLICA» y después «# GANADOR: BETO / +2 PTS BETO +1PT ANA»", "fam": "K", "msgs": [
+    "# ANA VS BETO",
+    "ANA: 15\n\nBETO: 15.5\n\n# GANADOR: REPLICA",
+    "ANA: 60\n\nBETO: 61.5\n\n# GANADOR: BETO\n+2 PTS BETO    +1PT ANA"],
+   "res": [["ANA", "BETO", "BETO", "replica"]]},
+  {"n": "CEU: el × de multiplicar, como el X", "fam": "K", "msgs": [
+    "# CARLA VS BETO",
+    "Carla: 11,5 × 3 = 34,5\n\nBeto 🇪🇸: 14,5 × 3 = 43"],
+   "res": [["CARLA", "BETO", "BETO", "directa"]]},
+  {"n": "CEU: «REPETIMIENTO DE JORNADA 2» no es del nombre, y «# REPLICA ANA VS BETO» es su réplica", "fam": "K", "msgs": [
+    "#  REPETIMIENTO DE JORNADA 2 ANA VS BETO",
+    "ANA:12\n\nBETO:12.5\n\n# REPLICA",
+    "# REPLICA ANA VS BETO",
+    "# ANA🇺🇾"],
+   "res": [["ANA", "BETO", "ANA", "replica"]]}
  ]
 }
