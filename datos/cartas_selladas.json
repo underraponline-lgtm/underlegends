@@ -634,8 +634,8 @@
    "temporada": "687c0ce01932:fec25411e829"
   },
   "Gocho": {
-   "competitivo": "a8a73bb9cc46:3cb4ba14e995",
-   "pais": "898775b59b32:50160dcafbc4",
+   "competitivo": "543162921935:3cb4ba14e995",
+   "pais": "2de32541995c:50160dcafbc4",
    "servidor": "e2db1e128f97:e0061cb5005e:acc4a5",
    "temporada": "fda311f08a13:fec25411e829"
   },
@@ -1398,7 +1398,7 @@
    "servidor": "4994c2174e30:e0061cb5005e:fbc56e"
   },
   "PRAISERIZA": {
-   "competitivo": "66e2792df891:3cb4ba14e995",
+   "competitivo": "7c78780ba1d0:3cb4ba14e995",
    "pais": "83be265b49a7:50160dcafbc4",
    "servidor": "b21bd3f4749a:e0061cb5005e:acc4a5",
    "temporada": "e7e84dca1adb:fec25411e829"
@@ -1700,9 +1700,10 @@
    "servidor": "ff8fc5c42ffc:e0061cb5005e:afeeb3"
   },
   "Surya": {
-   "competitivo": "ed4c9909e1ab:3cb4ba14e995",
-   "pais": "f46c0048bf9d:50160dcafbc4",
-   "servidor": "84ca5f0711f0:e0061cb5005e:a672ab"
+   "competitivo": "73b5ebbd770a:3cb4ba14e995",
+   "pais": "776d7a0b6768:50160dcafbc4",
+   "servidor": "84ca5f0711f0:e0061cb5005e:a672ab",
+   "temporada": "f9b6662718f8:fec25411e829"
   },
   "Swid": {
    "competitivo": "f304ac586738:3cb4ba14e995",
@@ -2113,5 +2114,5 @@
    "servidor": "7f8885a35a6d:e0061cb5005e:71cf5a"
   }
  },
- "cuando": "2026-11-16T02:32:29+00:00"
+ "cuando": "2026-11-16T02:35:10+00:00"
 }
