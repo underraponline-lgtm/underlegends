@@ -1,6 +1,6 @@
 {
  "_leeme": "El ranking de ascenso de cada servidor, al día (bot/ascenso.py): su tabla oficial más lo que vino después, con sus reglas (datos/ascenso_reglas.json). `filas`: [nombre, cc, pts, lo sumado, raw]. `pendiente`: lo que no se sabe y no suma (las preguntas de Dlx a cada servidor).",
- "t": "2026-11-16T02:35:08Z",
+ "t": "2026-11-16T03:00:38Z",
  "sv": {
   "SR": {
    "filas": [
@@ -693,6 +693,13 @@
      "Makmah"
     ],
     [
+     "PRAISERIZA",
+     "ve",
+     6865,
+     500,
+     "PRAISERIZA"
+    ],
+    [
      "SIX",
      "ar",
      6630,
@@ -705,13 +712,6 @@
      6475,
      0,
      "Verc"
-    ],
-    [
-     "PRAISERIZA",
-     "ve",
-     6365,
-     0,
-     "PRAISERIZA"
     ],
     [
      "Liberia",
@@ -938,6 +938,13 @@
      "MCO"
     ],
     [
+     "Eze",
+     "ar",
+     1275,
+     375,
+     "Eze"
+    ],
+    [
      "Park Sung-jong",
      "kp",
      1225,
@@ -1020,13 +1027,6 @@
      935,
      0,
      ""
-    ],
-    [
-     "Eze",
-     "ar",
-     900,
-     0,
-     "Eze"
     ],
     [
      "Mati Cerna",
@@ -1885,12 +1885,22 @@
      "rango": "plata iii",
      "puntos": [
       [
-       "Gocho",
+       "PRAISERIZA",
+       "Campeón",
+       500
+      ],
+      [
+       "Eze",
        "Subcampeón",
        375
       ],
       [
        "Agus",
+       "Subcampeón",
+       375
+      ],
+      [
+       "Gocho",
        "Subcampeón",
        375
       ]
