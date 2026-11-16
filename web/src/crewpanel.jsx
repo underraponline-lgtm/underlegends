@@ -6,7 +6,7 @@ import { useEffect, useRef, useState } from 'react';
 import { limpio, norm, num } from './liga.js';
 import { Cara, DosToques } from './piezas.jsx';
 import { aBase64, achicar } from './imagen.js';
-import { ENTRADA_NOMBRE, ROL_NOMBRE, accionCrew, armarCrews, codigoLink, crewDe, cuandoVence, diaCrew, errorCrew, linkCrew, ptsSemana, quedan, useCrews } from './crews.js';
+import { ENTRADA_NOMBRE, ROL_NOMBRE, accionCrew, armarCrews, codigoLink, crewDe, diaCrew, errorCrew, linkCrew, ptsSemana, useCrews } from './crews.js';
 import { COLORES, Escudo, FORMAS, NOMBRE_FORMA, NOMBRE_SIMBOLO, SIMBOLOS, codigoEscudo, delNombre, leerEscudo, sugerirSigla } from './escudo.jsx';
 
 // el orden de las letras para elegir el mínimo (de la mejor a la peor): sólo el orden, los umbrales viven en comun/rangos.py
@@ -98,40 +98,10 @@ export function SinVerificar({ hasta }) {
   ) : null;
 }
 
-// ── ⏳ la primera semana de una crew nueva ──────────────────────────────────────────────────────────────────────────
-// Dlx, 19/10/2026: «una semana para invitar a 2 personas como mínimo, o la crew se eliminará; que esto sea notable por el
-// líder». Al Líder y a los Colíderes, arriba de todo y grande, con lo que falta, hasta cuándo y el botón a invitar; a la
-// gente de la crew, lo mismo sin el botón; a quien la mira de afuera, una línea —que también le sirve: busca gente—
+// ── 🗑️ LA PRIMERA SEMANA SE FUE (Dlx, 15/11/2026: «quita eso de que la crew se elimina si no encuentra a nadie o a su
+// segundo y tercero»). Una crew nueva ya no vence: en su lugar, quien manda ve los consejos de `ConsejosCrew` y los
+// sugeridos para invitar ──────────────────────────────────────────────────────────────────────────────────────────────
 const DIA = 86400000;
-export function SemanaCrew({ c, rol, publico, onInvitar }) {
-  const { todas } = useCrews();
-  if (!c || !c.vence) return null;
-  const total = 1 + ((todas && todas.prueba && todas.prueba.sumar) || 2);
-  const n = (c.gente || []).length;
-  const falta = Math.max(0, total - n);
-  const resta = c.vence - Date.now();
-  if (falta <= 0 || resta <= 0) return null;
-  const quienes = falta === 1 ? '1 persona más' : falta + ' personas más';
-  if (publico) return <p className="cw-nota cw-semana-p">⏳ Crew nueva: busca <b>{quienes}</b> hasta el {cuandoVence(c.vence)}.</p>;
-  const manda = rol === 'lider' || rol === 'colider';
-  return (
-    <div className={'cw-semana' + (resta <= 2 * DIA ? ' urge' : '')}>
-      <div className="cw-semana-t">
-        <span className="cw-semana-tag">Primera semana</span>
-        <b className="cw-semana-q">{quedan(resta)}</b>
-      </div>
-      <p className="cw-semana-d">{manda ? 'Suma' : 'La crew necesita'} <b>{quienes}</b> antes del {cuandoVence(c.vence)}, o la crew <b>se borra</b>.</p>
-      <div className="cw-semana-pie">
-        <span className="cw-semana-pips" role="img" aria-label={n + ' de ' + total + ' en la crew'}>
-          {Array.from({ length: total }, (_, i) => <i key={i} className={i < n ? 'on' : ''} />)}
-          <small>{n} de {total}</small>
-        </span>
-        {manda && onInvitar ? <button type="button" className="btn verde chico" onClick={onInvitar}>Invitar</button>
-          : manda ? <a className="btn verde chico" href={enlaceCrew(c.id)}>Ir a invitar</a> : null}
-      </div>
-    </div>
-  );
-}
 
 // ── 🏆 el tier (Dlx, 19/10/2026: «como los equipos de fútbol: pueden bajar de división, subir y mantenerse») ─────
 // Las reglas y los colores viajan en el payload (`liga.d.crews_tiers`, de bot/crews_tiers.py): acá no se escribe ninguno
@@ -253,7 +223,7 @@ export function EntrarCrew({ c }) {
         {c.entrada === 'abierta' ? 'Unirme a la crew' : 'Pedir entrar'}</button>
     );
   }
-  return <div className="cw-entrar"><SemanaCrew c={c} publico />{cuerpo}{msg ? <small role="status" className="cw-msg">{msg}</small> : null}</div>;
+  return <div className="cw-entrar">{cuerpo}{msg ? <small role="status" className="cw-msg">{msg}</small> : null}</div>;
 }
 
 // ── 🔗 los links de invitación (Dlx, 19/10/2026: «links de invitación para unirse a crew únicos, o sea con ese link
@@ -319,6 +289,115 @@ export function CrewsParaVos({ liga, max = 3, seccion = '' }) {
   return seccion ? <section className={seccion}>{bloque}</section> : bloque;
 }
 
+// ── 💡 LOS CONSEJOS PARA QUIEN MANDA (Dlx, 15/11/2026: «si la crew tiene problemas ya sea que no haya miembros, que falta
+// actividad, etc., que aparezcan tips para ayudar al líder»). Salen de lo que ya se sabe de la crew —su gente, quién jugó
+// y hace cuánto, lo que espera respuesta, cómo se entra, el tier— y cada uno trae lo que hay que hacer, con su botón. Se
+// ven los tres más urgentes; los demás con «Ver más». Ninguno inventa un número: sin dato, no hay consejo ─────────────
+export function consejosCrew(liga, c, mia, T, todas) {
+  const out = [];
+  const gente = c.gente || [];
+  const n = gente.length;
+  const max = (todas && todas.max) || 20;
+  const rol = mia.rol;
+  const manda = rol === 'lider' || rol === 'colider';
+  const filas = gente.map((g) => liga.T[g[0]]).filter(Boolean);
+  const ult = filas.map((f) => (f.ult && f.ult[0]) || '').filter(Boolean).sort().pop() || '';
+  const dias = ult ? Math.max(0, Math.floor((liga.ahora - new Date(ult + 'T16:00:00Z')) / DIA)) : null;
+  const [tier, , jug, antes] = (T && T.crews && T.crews[c.id]) || [0, 0, 0, null];
+  const pend = gente.filter((g) => g[3]);
+  const ped = (mia.pedidos || []).length;
+  const viejas = (mia.invitados || []).filter((x) => liga.ahora - x.t > 2 * DIA);
+  const req = c.req || {};
+  const mitad = Math.ceil(n / 2);
+  if (manda && ped) out.push({ p: 100, ico: '📨', t: ped === 1 ? 'Alguien quiere entrar' : ped + ' quieren entrar', d: 'Respóndeles: el pedido vence a la semana y se van a otra crew.', b: ['Ver los pedidos', 'pedidos'] });
+  if (n === 1) out.push({ p: 95, ico: '🫂', t: 'Estás solo en la crew', d: 'Las crews que crecen arrancan invitando a gente de su servidor. Abajo tienes sugeridos y tu link para compartir.', b: ['Invitar', 'invitar'] });
+  else if (n < 5 && n < max) out.push({ p: 70, ico: '➕', t: 'Son ' + n + ': inviten a más', d: 'Con 5 o más que jueguen, la crew sube de tier más rápido y no depende de uno solo.', b: ['Invitar', 'invitar'] });
+  if (manda && c.entrada === 'invitacion' && n < 8) out.push({ p: 80, ico: '🔓', t: 'Sólo entran invitados', d: 'Abierta, cualquiera entra en un toque desde la página de Crews. La puedes volver a cerrar cuando quieras.', b: ['Abrirla', 'abrir'] });
+  else if (manda && c.entrada === 'pedido' && !ped && n < 5) out.push({ p: 40, ico: '🔓', t: 'Con pedido, cada uno espera tu sí', d: 'Si la abres, entran sin esperar: quien busca crew se suele unir a una abierta.', b: ['Abrirla', 'abrir'] });
+  if (rol === 'lider' && (req.rg || req.ev) && n < 8) {
+    out.push({ p: 60, ico: '🎯', t: 'Tus requisitos dejan afuera a mucha gente', d: 'Pides ' + [req.rg ? 'letra ' + req.rg + ' o más' : '', req.ev ? req.ev + ' eventos' : ''].filter(Boolean).join(' y ')
+      + '. Bajarlos es gratis, y a quien invitas entra igual.', b: ['Cambiarlos', 'req'] });
+  }
+  if (n > 1 && dias === null) out.push({ p: 85, ico: '🎤', t: 'Nadie de la crew jugó todavía', d: 'Elijan un evento y entren juntos: lo que suma la crew es lo que juega su gente.', b: ['Ver los eventos', 'eventos'] });
+  else if (dias !== null && dias > 7) out.push({ p: 90, ico: '💤', t: 'Nadie jugó en ' + dias + ' días', d: 'Una crew quieta baja de tier. Armen una fecha juntos y avísenles por Discord.', b: ['Ver los eventos', 'eventos'] });
+  else if (n >= 3 && T && jug < mitad) out.push({ p: 50, ico: '📣', t: 'Esta semana ' + (jug === 1 ? 'jugó 1' : 'jugaron ' + jug) + ' de ' + n, d: 'Faltan ' + (mitad - jug) + ' para que juegue la mitad. La semana cierra el lunes a las 11 AM (hora del este).', b: ['Ver los eventos', 'eventos'] });
+  if (T && T.nombres && antes !== null && antes !== undefined && antes > tier && T.sube[tier]) out.push({ p: 75, ico: '📉', t: 'Bajaron a ' + T.nombres[tier], d: 'Con ' + num(T.sube[tier]) + ' puntos en una semana vuelven a subir.', b: null });
+  if (pend.length) out.push({ p: 65, ico: '🪪', t: pend.length === 1 ? 'Uno sin verificar' : pend.length + ' sin verificar', d: 'Si no se verifican en Discord Rap Español antes de su fecha, salen de la crew, y mientras tanto no suman. Pásales cómo verificarse.', b: ['Copiar cómo se verifican', 'verificar'] });
+  if (viejas.length) out.push({ p: 45, ico: '⏳', t: viejas.length === 1 ? 'Una invitación espera hace días' : viejas.length + ' invitaciones esperan hace días', d: 'Escríbeles por Discord, o mándales el link: con el link entran en un toque.', b: ['Copiar el link', 'link'] });
+  const modo = todas && todas.ranking && todas.ranking.modo;
+  if (manda && modo === 'reps' && !(c.reps || []).length && n > 1) out.push({ p: 72, ico: '🏅', t: 'Elijan a sus representantes', d: 'El ranking de crews de esta temporada cuenta sólo los puntos de los representantes.', b: ['Elegirlos', 'reps'] });
+  return out.sort((a, b) => b.p - a.p);
+}
+
+function ConsejosCrew({ xs, ir }) {
+  const [todos, setTodos] = useState(false);
+  if (!xs.length) return <p className="cw-tips-ok">✓ La crew está al día: nadie espera respuesta y la gente juega.</p>;
+  const ver = todos ? xs : xs.slice(0, 3);
+  return (
+    <div className="cw-tips" role="region" aria-label="Consejos para tu crew">
+      <h3 className="cw-h">Consejos para tu crew</h3>
+      <ul>{ver.map((x) => (
+        <li key={x.t}>
+          <span className="cw-tip-i" aria-hidden="true">{x.ico}</span>
+          <span className="cw-tip-t"><b>{x.t}</b><small>{x.d}</small></span>
+          {x.b ? <button type="button" className="btn borde2 chico" onClick={(e) => ir(x.b[1], e)}>{x.b[0]}</button> : null}
+        </li>
+      ))}</ul>
+      {xs.length > 3 ? <button type="button" className="te-link" onClick={() => setTodos(!todos)}>{todos ? 'Ver menos' : 'Ver ' + (xs.length - 3) + ' más'}</button> : null}
+    </div>
+  );
+}
+
+// 🎯 A QUIÉN INVITAR (15/11/2026, Dlx: «mejores cómo la opción de invitar»): antes había que saber el nombre y escribirlo.
+// Sugiere a quien puede entrar —verificado (tiene la carta de Servidor, que llega al verificarse) y sin crew— y le
+// importa a la crew: de su servidor, de su país, que el que invita sigue, que jugó hace poco. El objeto vuelve a mirar
+// todo al invitar: esto sólo ordena
+export function sugeridosCrew(liga, c, mia, n = 6) {
+  const yo = liga.T[mia.de] || liga.yo || {};
+  const en = new Set((c.gente || []).map((g) => g[0]));
+  const inv = new Set((mia.invitados || []).map((x) => x.k));
+  const sigo = new Set(liga.sigue || []);
+  return Object.values(liga.T).filter((f) => f && f.k && f.k !== mia.de && !en.has(f.k) && !inv.has(f.k) && (f.c || []).includes('servidor') && !crewDe(f.k))
+    .map((f) => {
+      const dias = f.ult && f.ult[0] ? Math.max(0, Math.floor((liga.ahora - new Date(f.ult[0] + 'T16:00:00Z')) / DIA)) : 99;
+      const porque = [];
+      let p = 0;
+      if (yo.sv && f.sv === yo.sv) { p += 30; porque.push('de tu servidor'); }
+      if (yo.cc && f.cc === yo.cc) { p += 20; porque.push('de tu país'); }
+      if (sigo.has(f.k)) { p += 25; porque.push('lo sigues'); }
+      if (dias <= 7) { p += 20; porque.push(dias === 0 ? 'jugó hoy' : dias === 1 ? 'jugó ayer' : 'jugó hace ' + dias + ' días'); } else if (dias <= 21) p += 8;
+      p += Math.min(f.ev || 0, 20) / 2;
+      return { f, p, porque };
+    }).filter((x) => x.p >= 20).sort((a, b) => b.p - a.p).slice(0, n);
+}
+
+// 🔗 EL LINK, EN UN TOQUE (15/11/2026): copiar el de la crew (el que sirve «hasta que se llene»; si no hay, se arma) o
+// compartirlo con lo que tenga el teléfono. Los de 1, 5 o 10 personas siguen en «Más links»
+function LinkRapido({ c, mia, va, hacer }) {
+  const [txt, setTxt] = useState('');
+  const abierto = (mia.links || []).find((l) => !l.max);
+  const usar = async (compartir) => {
+    let cod = abierto && abierto.cod;
+    if (!cod) { const j = await hacer({ accion: 'link_crear', max: 0 }); if (!j) return; cod = j.cod; }
+    const u = linkCrew(c.id, cod);
+    if (compartir && navigator.share) {
+      try { await navigator.share({ title: 'Únete a ' + limpio(c.nombre), text: 'Entra a ' + limpio(c.nombre) + ' en la Liga Global con este link:', url: u }); } catch (e) { /* lo cerró */ }
+      return;
+    }
+    try { await navigator.clipboard.writeText(u); setTxt('Copiado: pásalo por Discord o WhatsApp. Quien entra con él queda adentro.'); } catch (e) { setTxt(u); }
+  };
+  return (
+    <div className="cw-link-r">
+      <span className="cw-link-rt"><b>Tu link de invitación</b><small>{abierto ? 'Sirve hasta que se llene la crew · vence el ' + diaCrew(abierto.vence) : 'Quien entra con él queda adentro, sin pedir permiso. Dura 7 días.'}</small></span>
+      <span className="cw-acc">
+        <button type="button" className="btn verde chico" disabled={va} onClick={() => usar(false)}>Copiar el link</button>
+        {typeof navigator !== 'undefined' && navigator.share ? <button type="button" className="btn borde2 chico" disabled={va} onClick={() => usar(true)}>Compartir</button> : null}
+      </span>
+      {txt ? <small className="cw-link-ok" role="status">{txt}</small> : null}
+    </div>
+  );
+}
+
 // ── el panel de los de adentro ───────────────────────────────────────────────────────────────────────────────────────
 export function PanelCrew({ liga, c }) {
   const { mia, todas } = useCrews();
@@ -343,9 +422,28 @@ export function PanelCrew({ liga, c }) {
   const candidatos = nq.length >= 2 ? [...pool.values()].filter((f) => f.k !== mia.de && !deMiCrew.has(f.k)
     && (norm(f.n).includes(nq) || (nqc.length >= 2 && junto(f.n).includes(nqc)))).slice(0, 8) : [];
   const yaInvitados = new Set((mia.invitados || []).map((x) => x.k));
+  const llena = gente.length >= ((todas && todas.max) || 20);
+  const sug = invita && !llena ? sugeridosCrew(liga, c, mia) : [];
+  // 💡 adónde lleva cada consejo: a su bloque (en el shadow root, por eso se busca desde el botón) o la acción directa
+  const ir = (a, e) => {
+    const raiz = e && e.currentTarget ? e.currentTarget.getRootNode() : document;
+    const a_ = (id) => { const el = raiz.getElementById ? raiz.getElementById(id) : null; if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' }); return el; };
+    if (a === 'invitar') { a_('cw-invitar'); setTimeout(() => { if (busca.current) busca.current.focus({ preventScroll: true }); }, 400); }
+    else if (a === 'pedidos') a_('cw-pedidos');
+    else if (a === 'reps') a_('cw-reps');
+    else if (a === 'req') a_('cw-req');
+    else if (a === 'link') a_('cw-invitar');
+    else if (a === 'abrir') hacer({ accion: 'entrada', entrada: 'abierta' }, 'Listo: la crew está abierta. Entra quien quiera, en un toque.');
+    else if (a === 'eventos') location.hash = '#/eventos';
+    else if (a === 'verificar') {
+      const u = 'https://underlegends.pages.dev' + (window.urlLG ? window.urlLG('#/cuenta/verificar') : '/cuenta/verificar');
+      navigator.clipboard.writeText('Para quedarte en ' + limpio(c.nombre) + ' tienes que verificarte en Discord Rap Español: ' + u)
+        .then(() => setMsg('Copiado: pégaselo por Discord a los que no se verificaron.'), () => setMsg('Pásales esto: ' + u));
+    }
+  };
   return (
     <section className="cw-panel" aria-label="Tu crew">
-      <SemanaCrew c={c} rol={rol} onInvitar={invita ? () => { const el = busca.current; if (el) { el.scrollIntoView({ block: 'center' }); el.focus({ preventScroll: true }); } } : null} />
+      {manda ? <ConsejosCrew xs={consejosCrew(liga, c, mia, liga.d.crews_tiers && liga.d.crews_tiers.nombres ? liga.d.crews_tiers : null, todas)} ir={ir} /> : null}
       <div className="cw-yo">
         <span>Eres <RolCrew rol={rol} /> de <b>{limpio(c.nombre)}</b></span>
         {rol === 'lider' && gente.length > 1 ? <small>Para irte, primero pásale el liderazgo a alguien.</small> : (
@@ -357,7 +455,7 @@ export function PanelCrew({ liga, c }) {
       {msg ? <p role="status" className="cw-msg">{msg}</p> : null}
 
       {manda && (mia.pedidos || []).length ? (
-        <div className="cw-bloque">
+        <div className="cw-bloque" id="cw-pedidos">
           <h3 className="cw-h">Quieren entrar · {mia.pedidos.length}</h3>
           <ul className="cw-lista">{mia.pedidos.map((p) => (
             <li key={p.k}>
@@ -373,11 +471,24 @@ export function PanelCrew({ liga, c }) {
       ) : null}
 
       {invita ? (
-        <div className="cw-bloque">
+        <div className="cw-bloque" id="cw-invitar">
           <h3 className="cw-h">Invitar</h3>
-          {gente.length >= ((todas && todas.max) || 20) ? <p className="cw-nota">La crew está llena.</p> : (
+          {llena ? <p className="cw-nota">La crew está llena.</p> : (
             <>
-              <input ref={busca} type="search" className="cw-busca" value={q} onChange={(e) => setQ(e.target.value)} placeholder="Busca a quién invitar"
+              <LinkRapido c={c} mia={mia} va={va} hacer={hacer} />
+              {sug.length ? (
+                <div className="cw-sug">
+                  <span className="cw-sug-t">Te sugerimos · pueden entrar y no tienen crew</span>
+                  <ul>{sug.map(({ f, porque }) => (
+                    <li key={f.k}>
+                      <a href={'#/r/' + encodeURIComponent(f.k)} className="cw-sug-q"><Cara liga={liga} k={f.k} nombre={f.n} cls="cara cw-sug-c" lazy /><b>{limpio(f.n)}</b></a>
+                      <small>{porque.slice(0, 2).join(' · ') || 'activo'}</small>
+                      <button type="button" className="btn verde chico" disabled={va} onClick={() => hacer({ accion: 'invitar', a: f.k }, 'Invitación enviada a ' + limpio(f.n) + ': le llega a la campana.')}>Invitar</button>
+                    </li>
+                  ))}</ul>
+                </div>
+              ) : null}
+              <input ref={busca} type="search" className="cw-busca" value={q} onChange={(e) => setQ(e.target.value)} placeholder="O busca a alguien por su nombre"
                 aria-label="Buscar a quién invitar a la crew" enterKeyHint="search" />
               {candidatos.length ? (
                 <ul className="cw-lista">{candidatos.map((f) => (
@@ -389,14 +500,29 @@ export function PanelCrew({ liga, c }) {
                   </li>
                 ))}</ul>
               ) : nq.length >= 2 ? <p className="cw-nota">{todos ? 'Nadie con ese nombre.' : 'Buscando…'}</p> : null}
-              <small className="cw-nota">A quien ya está en otra crew también lo puedes invitar: si acepta, se cambia a la tuya.</small>
-              {(mia.invitados || []).length ? <p className="cw-nota">Esperan respuesta: {mia.invitados.map((x) => nombreDe(liga, x.k)).join(', ')}.</p> : null}
+              <small className="cw-nota">A quien ya está en otra crew también lo puedes invitar: si acepta, se cambia a la tuya. Sólo pueden entrar los verificados en Discord Rap Español.</small>
             </>
           )}
+          {/* 📨 las que esperan respuesta, con cancelar (`desinvitar` existía en el objeto y la página no tenía el botón) */}
+          {(mia.invitados || []).length ? (
+            <>
+              <span className="cw-sug-t">Esperan respuesta · {mia.invitados.length}</span>
+              <ul className="cw-lista">{mia.invitados.map((x) => {
+                const d = Math.floor((liga.ahora - x.t) / DIA);
+                return (
+                  <li key={x.k}>
+                    <Cara liga={liga} k={x.k} nombre={nombreDe(liga, x.k)} cls="cara cw-cara" />
+                    <span>{nombreDe(liga, x.k)}<small className="cw-en"> · {d <= 0 ? 'hoy' : d === 1 ? 'hace 1 día' : 'hace ' + d + ' días'}{x.de && x.de !== mia.de ? ' · invitó ' + nombreDe(liga, x.de) : ''} · vence en {Math.max(0, 7 - d)} días</small></span>
+                    <span className="cw-acc"><DosToques className="btn borde2 chico" confirmar="¿Cancelarla?" disabled={va} onClick={() => hacer({ accion: 'desinvitar', a: x.k }, 'Invitación cancelada.')}>Cancelar</DosToques></span>
+                  </li>
+                );
+              })}</ul>
+            </>
+          ) : null}
         </div>
       ) : null}
 
-      {invita ? <LinksCrew c={c} mia={mia} va={va} hacer={hacer} /> : null}
+      {invita ? <details className="cw-mas-links"><summary>Más links: para 1, 5 o 10 personas</summary><LinksCrew c={c} mia={mia} va={va} hacer={hacer} /></details> : null}
 
       {manda ? (
         <div className="cw-bloque">
@@ -429,7 +555,7 @@ export function PanelCrew({ liga, c }) {
       ) : null}
 
       {manda ? (
-        <div className="cw-bloque">
+        <div className="cw-bloque" id="cw-reps">
           <h3 className="cw-h">Quiénes los representan · hasta {maxReps}</h3>
           <p className="cw-nota">Cuando el ranking de crews se arma con los representantes, cuentan sólo los puntos de estos.</p>
           <div className="cw-reps">{gente.map(([k]) => {
@@ -480,7 +606,7 @@ function AjustesLider({ c, va, hacer, setMsg, pend, mia }) {
       ))}</div>
       {/* 🎯 lo que pide para entrar, como los trofeos mínimos de un clan (19/10/2026): se mira al pedir o al unirse a una
           abierta, no al aceptar una invitación (bot/crews.js `faltaReq()`) */}
-      <h3 className="cw-h">Qué pide para entrar</h3>
+      <h3 className="cw-h" id="cw-req">Qué pide para entrar</h3>
       <form className="cw-fila" onSubmit={(e) => { e.preventDefault(); hacer({ accion: 'req', req: { rg, ev: Number(ev) || 0 } }, 'Listo: así se ve en la página de crews.'); }}>
         <label className="cw-req-l">Letra mínima
           <select className="cw-sel" value={rg} onChange={(e) => setRg(e.target.value)}>
@@ -559,7 +685,7 @@ export function InvitarACrew({ k, nombre }) {
 
 // ── Mi cuenta → Mi crew ──────────────────────────────────────────────────────────────────────────────────────────────
 /**
- * 🧱 ARMAR UNA CREW: el formulario, con su precio y el aviso de la primera semana. Vive en la página de Crews (Dlx,
+ * 🧱 ARMAR UNA CREW: el formulario, con su precio y qué sigue después (invitar; la primera semana se fue el 15/11/2026). Vive en la página de Crews (Dlx,
  * 19/10/2026: «la gente no sabe dónde crear crews… quizás necesite estar en crews») y Mi crew manda ahí: hasta ese día
  * estaba sólo en Mi cuenta → Mi crew, detrás de las pestañas, y el botón de Crews te mandaba a otra página. `mia` viene
  * verificado y sin crew (quien llama ya lo miró).
@@ -631,7 +757,6 @@ export function CrearCrew({ mia }) {
   const [entrada, setEntrada] = useState('abierta');
   const [armando, setArmando] = useState(false);
   const precio = mia.precio ?? 2500;
-  const sumar = (mia.prueba && mia.prueba.sumar) || 2;
   const espera = mia.espera_ms > 0;
   // el escudo sigue al nombre hasta que se toca: es el mismo que la crew tendría sin logo (`delNombre()`)
   const e = esc || delNombre(nombre.trim() || 'crew');
@@ -657,7 +782,7 @@ export function CrearCrew({ mia }) {
         setArmando(true);
         const base = { accion: 'crear', nombre: nombre.trim(), sigla: sg.trim(), desc: lema.trim(), entrada };
         await hacer(usaImagen ? { ...base, img: await aBase64(logo[0]) } : { ...base, escudo: codigoEscudo(e) },
-          (j) => '¡Nació tu crew! Ahora suma a ' + sumar + ' personas en una semana.' + msgLogo(j));
+          (j) => '¡Nació tu crew! Ahora invita a tu gente: en su página tienes sugeridos y un link para compartir.' + msgLogo(j));
         setArmando(false);
       }}>
         <fieldset className="cw-campos" disabled={armando}>
@@ -697,7 +822,7 @@ export function CrearCrew({ mia }) {
             <small className="cw-nota">{ENTRADA_NOMBRE[entrada]}. Lo cambias cuando quieras.</small>
           </fieldset>
         </fieldset>
-        <p className="cw-nota cw-aviso-semana">⏳ Después tienes <b>una semana para sumar {sumar} personas</b>. Si no llegan, la crew se borra y los Puntos no vuelven.</p>
+        <p className="cw-nota cw-aviso-semana">Después invitas a tu gente: en la página de la crew tienes sugeridos de tu servidor y un link para compartir. La crew no vence.</p>
         {armando ? <Cargando titulo="Armando tu crew" etapas={usaImagen ? ETAPAS_CREAR : ETAPAS_ESCUDO} /> : (
           <button type="submit" className="btn verde ae-fundar" disabled={va || espera || (typeof mia.saldo === 'number' && mia.saldo < precio)}>
             Fundar · {num(precio)} Puntos de Tienda</button>
@@ -786,7 +911,6 @@ export function MiCrew({ liga, dc }) {
     return (
       <div className="cw-mia">
         {msg ? <p role="status" className="cw-msg cw-listo">{msg}</p> : null}
-        <SemanaCrew c={mia.crew} rol={mia.rol} />
         <p className="cu-d">Eres <RolCrew rol={mia.rol} /> de <a href={enlaceCrew(mia.crew.id)}><b>{limpio(mia.crew.nombre)}</b></a> · {mia.crew.gente.length} de {mia.max}.</p>
         {mia.logo_pend ? <p className="cu-d">🖼️ El logo de tu crew espera que lo revise la Liga: te avisamos en la campana cuando se vea.</p> : null}
         {(mia.inv || []).length ? (

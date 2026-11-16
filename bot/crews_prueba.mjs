@@ -130,9 +130,6 @@ if (!DatabaseSync) {
     'con pedido: queda pedido, y al Líder le llega con el nombre (no la clave)');
   ok(yo(6, 'fabi', { accion: 'decidir', a: 'gus', si: true }).error === 'rol', 'un Veterano no acepta pedidos');
   ok(yo(1, 'dora', { accion: 'decidir', a: 'gus', si: true }).ok, 'el Líder acepta el pedido');
-  ok(CW.crewsPublico(o).crews.find((c) => c.id === 'Los del Barrio').vence === 0
-    && bandeja.some((b) => b.quien === id(1) && b.titulo === '🎉 Los del Barrio queda'),
-  'la primera semana: con dos personas más, la crew queda, y al Líder le llega');
   ok(yo(1, 'dora', { accion: 'rol', a: 'gus', rol: 'colider' }).ok, 'el Líder hace Colíder');
   ok(yo(7, 'gus', { accion: 'rol', a: 'fabi', rol: 'colider' }).error === 'rol' && yo(7, 'gus', { accion: 'rol', a: 'fabi', rol: 'miembro' }).ok,
     'el Colíder baja a Miembro, pero no hace Colíder');
@@ -281,35 +278,31 @@ if (!DatabaseSync) {
   ok(yo(501, 'ruy', { accion: 'req', req: { rg: 'E' } }).error === 'rol', 'los requisitos los pone el Líder');
   CW.crewDueno(o, { que: 'borrar', crew: 'Exigentes' });
 
-  // ⏳ la primera semana, en el tiempo
+  // 🗑️ sin primera semana (15/11/2026, Dlx: «quita eso de que la crew se elimina si no encuentra a nadie»): la que nace
+  // sola queda, pase el tiempo que pase, y nadie recibe el «se borra»
   const DIA = 86400000;
   CW.crewDueno(o, { que: 'borrar', crew: 'Ricos 2' });
   const t0 = Date.now();
   const sol = yo(200, 'sol', { accion: 'crear', nombre: 'Solos', sigla: 'SL', entrada: 'abierta' });
   const pubSol = () => CW.crewsPublico(o).crews.find((c) => c.id === 'Solos');
-  ok(sol.ok && Math.abs(sol.vence - (t0 + CW.PRUEBA_MS)) < 5000 && pubSol().vence === sol.vence
-    && bandeja.some((b) => b.quien === id(200) && b.titulo === '⏳ Solos: tienes una semana'),
-  'una crew nueva nace con una semana, y al Líder le llega al crearla');
-  ok(CW.crewsPublico(o).crews.filter((c) => c.oficial).every((c) => c.vence === 0), 'las de la Liga no tienen semana');
-  const cuenta = (t) => bandeja.filter((b) => b.quien === id(200) && b.titulo === t).length;
-  CW.crewVencer(o, t0 + 3 * DIA);
-  ok(!cuenta('⏳ Quedan 2 días para Solos'), 'a mitad de semana, nada');
-  CW.crewVencer(o, t0 + 5.5 * DIA);
-  CW.crewVencer(o, t0 + 5.6 * DIA);
-  ok(cuenta('⏳ Quedan 2 días para Solos') === 1 && bandeja.find((b) => b.titulo === '⏳ Quedan 2 días para Solos').cuerpo.startsWith('Le faltan 2 personas'),
-    'a dos días le llega el recordatorio, una sola vez');
-  ok(yo(201, 'tom', { accion: 'pedir', crew: 'Solos' }).ok && pubSol().vence > 0, 'con una persona más todavía no queda');
-  CW.crewVencer(o, t0 + 6.5 * DIA);
-  ok(cuenta('⏳ Último día para Solos') === 1 && bandeja.find((b) => b.titulo === '⏳ Último día para Solos').cuerpo.startsWith('Le falta 1 persona'),
-    'el último día, otro, con lo que falta');
+  ok(sol.ok && sol.vence === 0 && pubSol().vence === 0 && bandeja.some((b) => b.quien === id(200) && b.titulo === '🎉 Nació Solos')
+    && !bandeja.some((b) => /tienes una semana/.test(b.titulo)), 'una crew nueva nace sin plazo, y al Líder le llega cómo invitar');
+  ok(!('prueba' in CW.crewsPublico(o)) && !('prueba' in CW.crewMia(o, { quien: id(200), de: 'sol' })), 'ni la lista ni Mi crew hablan de una semana');
+  ok(CW.crewVencer(o, t0 + 30 * DIA) === 0 && pubSol() && !bandeja.some((b) => /Solos/.test(b.titulo) && /(se borró|Último día|Quedan 2 días)/.test(b.titulo)),
+    'a los 30 días, sola, sigue: nada se borra ni se avisa');
+  // 🔁 las que ya tenían plazo (las de antes del cambio): la próxima lectura se lo saca
+  o.sql.exec("UPDATE crews SET vence = ? WHERE id = 'Solos'", t0 + DIA);
+  ok(CW.crewsPublico(o).crews.find((c) => c.id === 'Solos').vence === 0 && CW.crewVencer(o, t0 + 2 * DIA) === 0 && pubSol(),
+    'una que todavía tenía plazo lo pierde y queda');
   const trio = yo(210, 'tri', { accion: 'crear', nombre: 'Trio', sigla: 'TR', entrada: 'abierta' });
   yo(211, 'u1', { accion: 'pedir', crew: 'Trio' });
   yo(212, 'u2', { accion: 'pedir', crew: 'Trio' });
-  ok(trio.ok && CW.crewVencer(o, t0 + 8 * DIA) === 1 && !pubSol() && CW.crewsPublico(o).crews.some((c) => c.id === 'Trio'),
-    'pasada la semana, la que no llegó se borra y la que llegó queda');
-  ok(bandeja.some((b) => b.quien === id(200) && b.titulo === 'Solos se borró')
-    && bandeja.some((b) => b.quien === id(201) && b.titulo === 'Solos se borró')
-    && yo(201, 'tom', { accion: 'crear', nombre: 'Tomas', sigla: 'TM' }).ok, 'les llega a todos, y quedan libres sin esperar');
+  ok(trio.ok && yo(201, 'tom', { accion: 'crear', nombre: 'Tomas', sigla: 'TM' }).ok, 'cada uno arma la suya');
+  // 📨 el Veterano ve a quién invitó y lo puede cancelar (15/11/2026)
+  ok(yo(210, 'tri', { accion: 'rol', a: 'u1', rol: 'veterano' }).ok && yo(211, 'u1', { accion: 'invitar', a: 'hugo' }).ok
+    && CW.crewMia(o, { quien: id(211), de: 'u1' }).invitados.some((x) => x.k === 'hugo')
+    && yo(211, 'u1', { accion: 'desinvitar', a: 'hugo' }).ok && !CW.crewMia(o, { quien: id(211), de: 'u1' }).invitados.some((x) => x.k === 'hugo'),
+  'el Veterano ve sus invitaciones y las puede cancelar');
   ok(CW.crewDueno(o, { que: 'borrar', crew: 'Trio' }).ok && bandeja.some((b) => b.quien === id(211) && b.titulo === 'Trio se cerró'),
     'al cerrar una crew, a su gente le llega (las cuentas se buscan antes de borrar)');
 

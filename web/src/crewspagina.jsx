@@ -21,7 +21,7 @@ import { Bandera, Cara, ConMas, Vacio, accion } from './piezas.jsx';
 import { CrewCirculo } from './arriba.jsx';
 import { escudoDe, tinta } from './escudo.jsx';
 import { accionCrew, armarCrews as armar, errorCrew, useCrews } from './crews.js';
-import { Anillo, CrearCrew, EntrarDeNuevo, SemanaCrew, TierChip } from './crewpanel.jsx';
+import { Anillo, CrearCrew, EntrarDeNuevo, TierChip, consejosCrew } from './crewpanel.jsx';
 import CSS_PAGINA from './css/crews.css?inline';
 import { usarCss } from './css.js';
 
@@ -59,7 +59,7 @@ export function CrewsPagina({ liga, dc, qs }) {
     .filter((x) => !nq || norm(x.c.nombre).includes(nq) || norm(x.c.sigla || '').includes(nq))
     .filter((x) => (fil === 'lugar' ? x.puede : fil === 'abiertas' ? x.c.entrada === 'abierta' && !x.llena : fil === 'activas' ? x.act >= 2
       : fil === 'conozco' ? x.conozco.length > 0 : fil === 'servidor' ? x.deMiSv > 0 : fil === 'pais' ? x.deMiPais > 0
-        : fil === 'nuevas' ? !!x.c.vence : true))
+        : fil === 'nuevas' ? x.nueva : true))
     .sort((a, b) => (orden === 'activas' ? (b.jugaron - a.jugaron) || (b.semPts - a.semPts)
       : orden === 'tier' ? (b.tier - a.tier) || (b.semPts - a.semPts)
         : orden === 'gente' ? b.ks.length - a.ks.length
@@ -251,7 +251,11 @@ function TuCrew({ liga, dc, mia, miaNo, x, T, armar, setArmar }) {
               : 'Para subir a ' + T.nombres[x.tier + 1] + ' le faltan ' + num(T.sube[x.tier] - x.semPts) + ' puntos'}
             {T.juegan[x.tier + 1] > 1 ? ' (y que jueguen ' + T.juegan[x.tier + 1] + ')' : ''}.</> : null}</span>
         </div>
-        <SemanaCrew c={x.c} rol={mia.rol} />
+        {/* 💡 el consejo más urgente, si eres de los que mandan (los demás, en la página de la crew) */}
+        {mia.rol === 'lider' || mia.rol === 'colider' ? (() => {
+          const tp = consejosCrew(liga, x.c, mia, T, null)[0];
+          return tp ? <p className="crw-tu-s">{tp.ico} {tp.t}: <a className="te-link" href={'#/crew/' + encodeURIComponent(x.c.id)}>ver los consejos</a></p> : null;
+        })() : null}
         {inv.length ? <p className="crw-tu-s">📨 Te invitaron a {inv.map((i) => limpio(i.nombre)).join(', ')}: <a className="te-link" href="#/cuenta/crew">verlo en Mi crew</a></p> : null}
       </section>
     );
@@ -278,7 +282,6 @@ function Ficha({ liga, x, T, dc, mia }) {
   const [e, d] = ENTRA[c.entrada] || ENTRA.pedido;
   const L = liga.d.rangos || [];
   const color = (r) => (L.find((y) => y.r === r) || {}).color || 'var(--gris)';
-  const faltan = c.vence ? Math.max(0, 3 - x.ks.length) : 0;
   const caras = x.filas.slice().sort((a, b) => (a.pos || 1e9) - (b.pos || 1e9)).slice(0, 5);
   const conocidos = x.conozco.map((k) => limpio((liga.T[k] || {}).n || k));
   return (
@@ -313,8 +316,7 @@ function Ficha({ liga, x, T, dc, mia }) {
         <p className={'crw-req' + (x.falta.length ? ' no' : ' si')}>Pide {[x.req.rg ? 'letra ' + x.req.rg + ' o más' : '', x.req.ev ? x.req.ev + ' eventos' : ''].filter(Boolean).join(' y ')}
           {dc && liga.yo ? (x.falta.length ? ' · te falta ' + x.falta.join(' y ') : ' · ✓ cumples') : ''}</p>
       ) : null}
-      {faltan ? <p className="crw-nueva">NUEVA · busca {faltan === 1 ? '1 persona más' : faltan + ' personas más'}
-        {c.vence > liga.ahora ? ' · ' + (Math.ceil((c.vence - liga.ahora) / DIA) <= 1 ? 'último día' : 'quedan ' + Math.ceil((c.vence - liga.ahora) / DIA) + ' días') : ''}</p> : null}
+      {x.nueva && x.ks.length < 5 ? <p className="crw-nueva">NUEVA · busca gente</p> : null}
       <div className="crw-pie">
         <Unirme x={x} dc={dc} mia={mia} />
         <a className="btn borde2 chico" href={enlaceCrew(c.id)}>Ver la crew</a>
@@ -384,7 +386,6 @@ function ComoFunciona({ todas, T }) {
       <h2 className="evp-h2" id="crw-como">Cómo funcionan</h2>
       <ul className="crw-como">
         <li><b>Fundar una</b>: estar verificado y {num(precio)} Puntos de Tienda. El nombre, la sigla, el escudo (lo armas ahí mismo, o subes una imagen) y el lema. Hasta {(todas && todas.max) || 20} raperos.</li>
-        <li><b>La primera semana</b>: una crew nueva tiene 7 días para sumar 2 personas, o se borra.</li>
         <li><b>Cómo se entra</b>: abierta (entra quien quiera), con pedido (acepta el Líder o un Colíder) o sólo por invitación. Algunas piden una letra o eventos mínimos.</li>
         <li><b>Los rangos</b>: Líder, Colíder, Veterano y Miembro. El Colíder casi todo, el Veterano invita.</li>
         <li><b>Cambiarse</b>: si te invitan estando en otra, puedes cambiarte; después esperas 7 días para moverte de nuevo.</li>

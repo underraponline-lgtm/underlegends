@@ -3965,23 +3965,34 @@ li.nt-f{cursor:default}
 .cw-mia{display:grid;gap:14px}
 .cw-inv-b{display:inline-grid;gap:4px}
 .gp-lider{display:inline-block;margin-left:10px;font:600 15px/1.4 Archivo,sans-serif}
-/* ⏳ la primera semana de una crew nueva (Dlx: «que esto sea notable por el líder»): arriba de todo, con el borde
-   magenta de lo que vence; los dos últimos días, entera en magenta */
-.cw-semana{display:grid;gap:10px;padding:14px 16px;border:2px solid var(--magenta);background:var(--caja)}
-.cw-semana-t{display:flex;flex-wrap:wrap;align-items:baseline;justify-content:space-between;gap:6px 12px}
-.cw-semana-tag{font:700 14px/1 "Barlow Condensed",sans-serif;letter-spacing:.08em;text-transform:uppercase;color:var(--magenta)}
-.cw-semana-q{font:900 22px/1 Archivo,sans-serif;font-stretch:125%;text-transform:uppercase}
-.cw-semana-d{margin:0;font:500 15px/1.45 Archivo,sans-serif}
-.cw-semana-pie{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:10px}
-.cw-semana-pips{display:inline-flex;align-items:center;gap:6px}
-.cw-semana-pips i{width:22px;height:22px;border:2px solid var(--linea)}
-.cw-semana-pips i.on{background:var(--verde);border-color:var(--verde)}
-.cw-semana-pips small{margin-left:4px;font:700 14px/1 "Barlow Condensed",sans-serif;letter-spacing:.06em;text-transform:uppercase;color:var(--gris)}
-.cw-semana.urge{background:var(--magenta);color:#fff}
-.cw-semana.urge :is(.cw-semana-tag,.cw-semana-pips small){color:#fff}
-.cw-semana.urge .cw-semana-pips i{border-color:#fff}
-.cw-semana-p{color:var(--tinta)}
-.cw-aviso-semana{padding-left:10px;border-left:3px solid var(--magenta)}
+.cw-aviso-semana{padding-left:10px;border-left:3px solid var(--verde)}
+/* 💡 los consejos para quien manda (15/11/2026): arriba del panel, uno por renglón con su botón */
+.cw-tips{display:grid;gap:10px;padding:14px 16px;border:2px solid var(--linea);border-left:6px solid var(--verde);background:var(--caja)}
+.cw-tips ul{list-style:none;margin:0;padding:0;display:grid;gap:10px}
+.cw-tips li{display:grid;grid-template-columns:28px minmax(0,1fr) auto;gap:10px;align-items:center}
+.cw-tip-i{font-size:22px;line-height:1;text-align:center}
+.cw-tip-t{display:grid;gap:2px;min-width:0}
+.cw-tip-t b{font:800 15px/1.2 Archivo,sans-serif}
+.cw-tip-t small{color:var(--gris);font:500 13.5px/1.4 Archivo,sans-serif}
+.cw-tips .te-link{justify-self:start}
+.cw-tips-ok{margin:0;padding:10px 14px;border-left:4px solid var(--verde);background:var(--caja);font:600 14px/1.4 Archivo,sans-serif}
+@media (max-width: 600px){.cw-tips li{grid-template-columns:24px minmax(0,1fr)}.cw-tips li .btn{grid-column:2;justify-self:start}}
+/* 🔗 el link en un toque y 🎯 los sugeridos para invitar */
+.cw-link-r{display:flex;flex-wrap:wrap;align-items:center;gap:10px 14px;padding:12px 14px;border:2px solid var(--verde);background:var(--caja)}
+.cw-link-rt{display:grid;gap:2px;min-width:0;flex:1 1 220px}
+.cw-link-rt b{font:800 15px/1.2 Archivo,sans-serif}
+.cw-link-rt small{color:var(--gris);font:500 13px/1.4 Archivo,sans-serif}
+.cw-link-ok{flex-basis:100%;font:600 13px/1.4 Archivo,sans-serif;overflow-wrap:anywhere;user-select:all}
+.cw-sug{display:grid;gap:8px}
+.cw-sug-t{font:700 13px/1 "Barlow Condensed",sans-serif;letter-spacing:.08em;text-transform:uppercase;color:var(--gris)}
+.cw-sug ul{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:8px}
+.cw-sug li{display:grid;justify-items:center;gap:6px;padding:12px 8px;border:1.5px solid var(--suave);text-align:center;min-width:0}
+.cw-sug-q{display:grid;justify-items:center;gap:6px;min-width:0;max-width:100%;color:inherit}
+.cw-sug-q b{font:800 14px/1.15 Archivo,sans-serif;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:100%}
+.cw-sug-c{width:48px;height:48px}
+.cw-sug li small{color:var(--gris);font:600 12px/1.3 Archivo,sans-serif}
+.cw-mas-links summary{cursor:pointer;font:700 14px/1 "Barlow Condensed",sans-serif;letter-spacing:.06em;text-transform:uppercase;color:var(--gris);padding:6px 0}
+.cw-mas-links[open] summary{margin-bottom:8px}
 /* 🖼️ el logo (se ve en un círculo, como en las historias y el Ranking) y la descripción */
 .cw-logo-campo{display:grid;gap:8px}
 .cw-logo-t{font:700 14px/1 "Barlow Condensed",sans-serif;letter-spacing:.04em;text-transform:uppercase}

@@ -126,15 +126,6 @@ export function accionCrew(cuerpo) {
 
 const dias = (ms) => Math.max(1, Math.ceil((Number(ms) || 0) / 86400000));
 
-/** ⏳ Hasta cuándo tiene una crew nueva para sumar a su gente, en palabras: «lunes 26 de octubre a las 14:30». */
-export function cuandoVence(ms) {
-  const d = new Date(ms);
-  const dia = W.fmtFecha ? W.fmtFecha(d.toISOString(), { weekday: 'long', day: 'numeric', month: 'long' })
-    : d.toLocaleDateString('es', { weekday: 'long', day: 'numeric', month: 'long' });
-  const h = W.fmtHora ? W.fmtHora(d) : d.toLocaleTimeString('es', { hour: 'numeric', minute: '2-digit' });
-  return dia + ' a las ' + h;
-}
-
 /** «lun 26/10», en la zona de quien mira: para el plazo de quien está sin verificarse. */
 export function diaCrew(ms) {
   const d = new Date(ms);
@@ -235,13 +226,15 @@ export function armarCrews(liga, todas, mia) {
     const llena = ks.length >= max;
     const puede = !llena && (c.entrada !== 'invitacion' || invitado.has(c.id)) && (!falta.length || invitado.has(c.id));
     // 🔢 «Recomendadas»: las que te aceptan, vivas, con gente que conocés; un empujón a las nuevas que buscan gente
+    // 🆕 nueva: fundada hace 14 días o menos (hasta el 15/11/2026 era «tiene plazo de primera semana», que ya no existe)
+    const nueva = !c.oficial && !!c.creada && liga.ahora - c.creada <= 14 * DIA_C;
     const reco = (puede ? 30 : 0) + act * 10 + Math.min(conozco.length, 3) * 12 + Math.min(deMiSv, 3) * 6 + Math.min(deMiPais, 3) * 4
-      + (c.vence ? 8 : 0) + Math.min(jugaron, 5) * 2 + tier * 3 + (invitado.has(c.id) ? 100 : 0) - (act === 0 ? 40 : 0) - (llena ? 20 : 0);
+      + (nueva ? 8 : 0) + Math.min(jugaron, 5) * 2 + tier * 3 + (invitado.has(c.id) ? 100 : 0) - (act === 0 ? 40 : 0) - (llena ? 20 : 0);
     const p = pay.get(c.id) || {};
     // el logo: el que subió el Líder (R2) o, en las de la Liga, el del repo (`logos/crews/`, del payload)
     const logo = c.logo || p.logo || '';
     return { c, logo, ks, filas, tier, semPts, jugaron, dias, act, letra, mejor, ccs, conozco, deMiSv, deMiPais, req, falta, llena, puede,
-      reco, mia: c.id === miId, invitado: invitado.has(c.id), pts: p.pts || 0, max };
+      reco, nueva, mia: c.id === miId, invitado: invitado.has(c.id), pts: p.pts || 0, max };
   });
 }
 

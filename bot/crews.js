@@ -23,6 +23,10 @@
 //     queda libre sin esperar y los Puntos de crearla no vuelven. Al líder (y a los colíderes) le llega a la campana al
 //     crearla, a los 2 días del final, el último día, cuando queda y cuando se borra; y la página se lo muestra
 //     arriba de todo. Las 34 de la Liga no la tienen: no las creó nadie
+//     🗑️ SE FUE EL 15/11/2026 (Dlx: «quita eso de que la crew se elimina si no encuentra a nadie o a su segundo y
+//     tercero»): una crew nueva ya no vence. Lo que se busca ahora es lo contrario, AYUDAR al Líder a sumar gente —los
+//     consejos y los sugeridos para invitar de la página (crewpanel.jsx)—. `vence` y `vence_aviso` quedan en la tabla
+//     por compatibilidad, siempre en 0: `crewVencer()` pone en 0 las que todavía tenían plazo (dos ese día)
 // Y un rato más tarde: «que cuando se cree la crew se necesite un logo *que pase por el auto filtro que tenemos* y una
 // descripción»:
 //   · EL LOGO pasa por el filtro de los fondos (`filtrarImagen()` de avisos.js, en `crewConImagen()`): limpio se ve ya;
@@ -65,9 +69,6 @@ export const VENCE_MS = 7 * DIA;
 export const INV_DIA = 15;
 // cambiar el nombre: una vez cada 30 días, para que una crew no esconda su historia
 export const NOMBRE_MS = 30 * DIA;
-// la primera semana de una crew nueva: sumar 2 personas además del líder, o se borra (Dlx, 19/10/2026)
-export const PRUEBA_MS = 7 * DIA;
-export const PRUEBA_SUMAR = 2;
 // el logo: la página lo manda de 512×512 en webp; esto es lo más que se acepta
 export const LOGO_TOPE = 300 * 1024;
 // dónde viven los logos en R2. Con prefijo propio: la carpeta de una carta es el nombre de la persona
@@ -425,24 +426,18 @@ function entrar(o, c, k, quien, por, ahora, cambio = false) {
     anotar(o, c.id, 'entro', k, por);
   });
   for (const m of mandan(o, c.id)) if (m !== k) avisar(o, m, 'crew-entro:' + c.id + ':' + k, nombreDe(o, k) + ' entró a ' + c.nombre, 'Ya es parte de la crew.', '#/crew/' + encodeURIComponent(c.id));
-  // ¿era su primera semana y ya llegó? queda para siempre
-  if (c.vence && cuantos(o, c.id) >= 1 + PRUEBA_SUMAR) {
-    o.sql.exec('UPDATE crews SET vence = 0, vence_aviso = 0 WHERE id = ?', c.id);
-    anotar(o, c.id, 'quedo', k, por);
-    for (const m of mandan(o, c.id)) {
-      avisar(o, m, 'crew-prueba:' + c.id, '🎉 ' + c.nombre + ' queda', 'Ya son ' + (1 + PRUEBA_SUMAR) + ': la crew no se borra.', '#/crew/' + encodeURIComponent(c.id));
-    }
-  }
   return { ok: true, crew: c.id };
 }
 
 /**
- * ⏳ LA PRIMERA SEMANA, EN EL TIEMPO: la que venció sin su gente se borra, y al líder (y a los colíderes) le llega el
- * recordatorio a dos días y el último día —una vez cada uno: `vence_aviso`—. La llama el vigía cada hora y, por las
- * dudas, todo lo que lee o toca una crew: el vigía duerme de 3 a 11 de la mañana, y una crew vencida no se muestra.
+ * ⏳ LO QUE VENCE CON EL TIEMPO: quien no se verificó en sus 7 días sale de la crew, y a quien manda le llega el aviso
+ * dos días antes. La llama el vigía cada hora y, por las dudas, todo lo que lee o toca una crew.
+ * (Hasta el 15/11/2026 también borraba la crew nueva que no sumaba 2 personas en su primera semana: ver la cabecera.)
  */
 export function crewVencer(o, ahora = Date.now()) {
   let borradas = 0;
+  // 🗑️ la primera semana ya no existe: las que todavía tenían plazo quedan para siempre (una sola vez hace algo)
+  o.sql.exec('UPDATE crews SET vence = 0, vence_aviso = 0 WHERE vence > 0');
   // 🪪 quien no se verificó en sus 7 días sale (`crewVerificar()`); si era el último, la crew se borra, y si era el
   // Líder —sólo pasa si nadie de su crew estaba verificado—, manda el que sigue
   for (const m of filas(o, 'SELECT k, crew, rol FROM crew_miembros WHERE pend > 0 AND pend <= ?', ahora)) {
@@ -482,27 +477,6 @@ export function crewVencer(o, ahora = Date.now()) {
         '#/crew/' + encodeURIComponent(c.id));
     }
   }
-  for (const c of filas(o, 'SELECT * FROM crews WHERE vence > 0')) {
-    const n = cuantos(o, c.id);
-    if (n >= 1 + PRUEBA_SUMAR) { o.sql.exec('UPDATE crews SET vence = 0, vence_aviso = 0 WHERE id = ?', c.id); continue; }
-    if (c.vence <= ahora) {
-      borrar(o, c, 'semana', ahora, [c.nombre + ' se borró',
-        'No sumó ' + PRUEBA_SUMAR + ' personas en su primera semana. Puedes armar otra o entrar a una.']);
-      borradas += 1;
-      continue;
-    }
-    const resta = c.vence - ahora;
-    const nivel = resta <= DIA ? 3 : resta <= 2 * DIA ? 2 : 0;
-    if (nivel > (c.vence_aviso || 0)) {
-      const falta = 1 + PRUEBA_SUMAR - n;
-      o.sql.exec('UPDATE crews SET vence_aviso = ? WHERE id = ?', nivel, c.id);
-      for (const m of mandan(o, c.id)) {
-        avisar(o, m, 'crew-prueba:' + c.id, (nivel === 3 ? '⏳ Último día para ' : '⏳ Quedan 2 días para ') + c.nombre,
-          'Le falta' + (falta === 1 ? ' 1 persona' : 'n ' + falta + ' personas') + ' o la crew se borra. Invita desde la página de la crew.',
-          '#/crew/' + encodeURIComponent(c.id));
-      }
-    }
-  }
   return borradas;
 }
 
@@ -511,8 +485,7 @@ export function crewMia(o, d) {
   const ahora = Date.now();
   const k = String(d.de || '');
   const cfg = crewConfig(o);
-  const out = { ok: true, de: k, precio: cfg.precio, precio_nombre: cfg.precio_nombre, precio_logo: cfg.precio_logo, max: CREW_MAX, espera_ms: k ? espera(o, k, ahora) : 0, crew: null, inv: [], ped: [],
-    prueba: { dias: PRUEBA_MS / DIA, sumar: PRUEBA_SUMAR } };
+  const out = { ok: true, de: k, precio: cfg.precio, precio_nombre: cfg.precio_nombre, precio_logo: cfg.precio_logo, max: CREW_MAX, espera_ms: k ? espera(o, k, ahora) : 0, crew: null, inv: [], ped: [] };
   if (!k) return out;
   crewVencer(o, ahora);
   const m = miembroDe(o, k);
@@ -524,6 +497,10 @@ export function crewMia(o, d) {
     if (m.rol === 'lider') out.logo_pend = !!(cm && cm.logo_pend);
     if (m.rol === 'lider' || m.rol === 'colider') {
       out.pedidos = filas(o, 'SELECT k, t FROM crew_ped WHERE crew = ? AND t > ? ORDER BY t', m.crew, ahora - VENCE_MS);
+    }
+    // 📨 las invitaciones que esperan, para todos los que invitan (15/11/2026: el Veterano invitaba y no veía a quién, ni
+    // podía cancelar: `desinvitar` existía y la página no tenía el botón)
+    if (puede(m.rol, 'invitar')) {
       out.invitados = filas(o, 'SELECT k, de, t FROM crew_inv WHERE crew = ? AND t > ? ORDER BY t', m.crew, ahora - VENCE_MS);
     }
     // 🔗 los links abiertos de la crew, para los que pueden invitar (Veterano para arriba)
@@ -564,8 +541,7 @@ export function crewsPublico(o) {
   const cfg = crewConfig(o);
   crewVencer(o);
   const crews = filas(o, 'SELECT * FROM crews ORDER BY creada').map((c) => crewPublica(o, c));
-  return { t: Date.now(), max: CREW_MAX, precio: cfg.precio, ranking: cfg.ranking,
-    prueba: { dias: PRUEBA_MS / DIA, sumar: PRUEBA_SUMAR }, crews };
+  return { t: Date.now(), max: CREW_MAX, precio: cfg.precio, ranking: cfg.ranking, crews };
 }
 
 /**
@@ -591,7 +567,7 @@ export function crewAccion(o, d) {
     const logo = d.logo_url || (escudoOk(d.escudo) ? d.escudo : '');
     if (!logo) return mal('logo');
     if (!o.cuentaCambio(quien, 'crew-crear', 3)) return mal('espera_dia', 429);
-    const vence = ahora + PRUEBA_MS;
+    const vence = 0;
     const ok = d.logo_url ? d.logo_v === 'ok' : true;
     o.state.storage.transactionSync(() => {
       o.sql.exec('INSERT INTO crews (id, nombre, norm, sigla, entrada, reps, oficial, creada, por, nombre_t, t, vence, vence_aviso, ' +
@@ -607,8 +583,8 @@ export function crewAccion(o, d) {
       }
       anotar(o, nombre, 'creada', k, k);
     });
-    o.aBandeja(quien, 'crew-prueba:' + nombre, 'crew', '⏳ ' + nombre + ': tienes una semana',
-      'Suma ' + PRUEBA_SUMAR + ' personas a la crew en 7 días o se borra.', '#/crew/' + encodeURIComponent(nombre), '', ahora);
+    o.aBandeja(quien, 'crew-nueva:' + nombre, 'crew', '🎉 Nació ' + nombre,
+      'Invita a tu gente desde la página de la crew: ahí tienes sugeridos y un link para compartir.', '#/crew/' + encodeURIComponent(nombre), '', ahora);
     return { ok: true, crew: nombre, saldo: s - precio, precio, vence, logo: ok ? 'ok' : 'revisar' };
   }
 
@@ -1241,7 +1217,6 @@ export function crewNumeros(o, ahora = Date.now()) {
       crews: ya('SELECT COUNT(*) AS n FROM crews'), de_la_gente: ya('SELECT COUNT(*) AS n FROM crews WHERE oficial = 0'),
       gente: ya('SELECT COUNT(*) AS n FROM crew_miembros'), sin_verificar: ya('SELECT COUNT(*) AS n FROM crew_miembros WHERE pend > 0'),
       links: fila(o, 'SELECT COUNT(*) AS n FROM crew_links WHERE vence > ? AND (max = 0 OR usos < max)', ahora).n,
-      primera_semana: ya('SELECT COUNT(*) AS n FROM crews WHERE vence > 0'),
     },
   };
 }

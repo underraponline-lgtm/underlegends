@@ -890,8 +890,13 @@ en la misma crew.
 paso 0a2 corre en `escuchar` y `dibujar` dibuja con lo que `escuchar`
 commiteó. Hasta el 19/10 no estaban, y una crew nueva no habría llegado nunca
 a una carta. **Crear pide sigla, logo y descripción** (el logo, por el filtro
-de los fondos: `crewConImagen()` de avisos.js); **una crew nueva tiene 7 días
-para sumar 2 personas** o se borra sola (`crewVencer()`). **Los tiers**,
+de los fondos: `crewConImagen()` de avisos.js). **Una crew nueva ya no vence**:
+hasta el 15/11/2026 tenía 7 días para sumar 2 personas o se borraba sola, y Dlx
+lo sacó (*«quita eso de que la crew se elimina si no encuentra a nadie o a su
+segundo y tercero»*); en su lugar, quien manda ve **consejos** (`consejosCrew()`)
+y **sugeridos para invitar** (`sugeridosCrew()`) en la página de la crew. Los
+botones de las crews se prueban con `herramientas/probar_botones_crew.py`
+(23 clics con el objeto simulado). **Los tiers**,
 Bronce a Leyenda, suben o bajan cada lunes como las divisiones
 (`bot/crews_tiers.py`, un ESTADO en `datos/crews_tiers.json`); en Diamante se
 desbloquea la tarjeta de crew, que todavía no existe (nadie llega antes del

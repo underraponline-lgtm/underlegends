@@ -1085,8 +1085,7 @@ function CrewsNumeros({ c }) {
   const tope = Math.max(1, ...filas.map(([k]) => s[k] || 0));
   return (
     <div className="db-aj">
-      <p className="db-tx"><b>Hoy:</b> {num(h.crews || 0)} crews ({num(h.de_la_gente || 0)} armadas por la gente, {num(h.primera_semana || 0)} en su
-        primera semana) · {num(h.gente || 0)} personas en una crew{h.sin_verificar ? ' (' + num(h.sin_verificar) + ' sin verificar)' : ''} · {num(h.links || 0)} links
+      <p className="db-tx"><b>Hoy:</b> {num(h.crews || 0)} crews ({num(h.de_la_gente || 0)} armadas por la gente) · {num(h.gente || 0)} personas en una crew{h.sin_verificar ? ' (' + num(h.sin_verificar) + ' sin verificar)' : ''} · {num(h.links || 0)} links
         abiertos · {num(c.paneles || 0)} {c.paneles === 1 ? 'dueño abrió' : 'dueños abrieron'} su panel de socio esta semana.</p>
       {filas.length ? (
         <div className="db-q">{filas.map(([k, t]) => (
