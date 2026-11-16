@@ -478,7 +478,7 @@ function TareasC({ P, cfg, miembro, ahora }) {
           <h3>Hoy<small>{miembro ? hechas(hoy) + ' de ' + hoy.length : 'cada día, ' + (cfg.por_dia || 2)}{finHoy ? ' · cierra en ' + corto(finHoy - ahora) : ''}</small></h3>
           <ol>{hoy.map((x) => <Fila key={x.id} x={x} mide={mide[x.id]} />)}</ol>
         </section>
-        <section className="pc-col" style={{ '--c': '#E41373' }}>
+        <section className="pc-col" style={{ '--c': '#F0428F' }}>
           <h3>La semana<small>{miembro ? hechas(semana) + ' de ' + semana.length : semana.length + ' por semana'}{finSem ? ' · cierra en ' + corto(finSem - ahora) : ''}</small></h3>
           <ol>
             {gracia.map((x) => <Fila key={'g' + x.id} x={x} mide={mide[x.id]} tag="De la semana pasada" />)}
@@ -503,7 +503,7 @@ function Cuatro({ P, ahora, tiene }) {
   const cr = P.crew;
   const xs = [
     ['#29B298', 'titulo', h ? 'Hoy · cierra en ' + corto(P.hoy.fin - ahora) : 'Hoy', h ? h.t : 'Hiciste las de hoy', h ? 'La que te falta · +' + num(h.xp) + ' XP' : 'Mañana llegan otras', 'ps-tareas'],
-    ['#E41373', 'reaccion', 'La semana · ' + ((P.semana && P.semana.tareas) || []).filter((x) => x.hecha).length + ' de ' + ((P.semana && P.semana.tareas) || []).length,
+    ['#F0428F', 'reaccion', 'La semana · ' + ((P.semana && P.semana.tareas) || []).filter((x) => x.hecha).length + ' de ' + ((P.semana && P.semana.tareas) || []).length,
       s ? s.t : 'Hiciste las cinco', s ? 'La que más te acerca · +' + num(s.xp) + ' XP' : 'El lunes llegan otras', 'ps-tareas'],
     cr ? ['#5CC8FF', 'insignia', 'Meta de tu crew', num(Math.min(cr.hechas, cr.meta)) + ' de ' + num(cr.meta) + ' Tareas', cr.cobrada ? 'Llegaron: +' + num(cr.xp) + ' XP' : 'Si llegan, +' + num(cr.xp) + ' XP cada uno', 'ps-tareas']
       : ['#5CC8FF', 'insignia', 'Tu crew', 'Súmate a una', 'Entre todos, una meta por semana', null, '#/crews'],
