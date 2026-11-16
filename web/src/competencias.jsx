@@ -695,9 +695,10 @@ function Ventana({ dref, ico, t, sub, cls = '', children }) {
 }
 
 /** Un cuadro de la fila de arriba: ícono (o el anillo de la semana), etiqueta, lo importante y una línea */
-function Cuadro({ c, ico, anillo, et, t, s, onClick, tuto }) {
+/** `resto` lleva la marca del tutorial: se escribe `data-tuto="x"` donde se usa, que es lo que lee tuto_marcas.py */
+function Cuadro({ c, ico, anillo, et, t, s, onClick, ...resto }) {
   return (
-    <button type="button" className="cmx-c" style={{ '--tc': c }} onClick={onClick} data-tuto={tuto}>
+    <button type="button" className="cmx-c" style={{ '--tc': c }} onClick={onClick} {...resto}>
       {anillo ? <span className="cmx-anillo" style={{ '--p': anillo[0] }}><b>{anillo[1]}</b></span> : <span className="cmx-ci"><Ico n={ico} t={20} /></span>}
       <span className="cmx-ct"><i>{et}</i><b>{t}</b>{s ? <small>{s}</small> : null}</span>
     </button>
@@ -1054,7 +1055,7 @@ export function Competencias({ liga, dc, sub = '' }) {
         {cuadroLlave('copa', '#E41373', 'copa', 'Copa', vCopa)}
         {cuadroLlave('rapid', '#29B298', 'xp', 'Rapid', vRapid)}
         <Cuadro c="#3b82f6" anillo={[Math.round((C.dia || 0) / 7 * 100), (C.dia || 0) + '/7']} et={'La semana · día ' + C.dia + ' de 7'}
-          t={pc ? 'Cierra en ' + faltaTxt(pc) : 'Cerrando'} s={'Jornada ' + L.jornada + ' de 9 · ' + C.activos + ' juegan'} onClick={() => abrir(vComo)} tuto="cm-dias" />
+          t={pc ? 'Cierra en ' + faltaTxt(pc) : 'Cerrando'} s={'Jornada ' + L.jornada + ' de 9 · ' + C.activos + ' juegan'} onClick={() => abrir(vComo)} data-tuto="cm-dias" />
       </div>
 
       {admin ? (
