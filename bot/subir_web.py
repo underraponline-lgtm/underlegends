@@ -2164,6 +2164,24 @@ _GENERICAS = {'final', 'finales', 'cup', 'copa', 'vol', 'fecha', 'red', 'bull', 
 #: un evento anunciado otra vez arranca a esta distancia del primero, como mucho (la víspera y el día ya arrancan a la
 #: misma hora: el día sale del nombre, `cuando.dia_del_nombre()`)
 REANUNCIO_H = 2
+#: …y con el MISMO nombre, hasta estas: el tercer aviso de un evento sale a la hora de arrancar (ver `reanuncio()`)
+REANUNCIO_MISMO_H = 6
+
+#: 🧲 LA LLAVE SUELTA (16/11/2026, Dlx: *«fíjate por qué hay algunos eventos sin llaves»*). Medido ese día: de los 44
+#: eventos pasados del calendario sin llave, 12 SÍ tenían la suya —el cruce de `llaves_web.cruzar()` pide un 80 % de
+#: parecido y «LLAVES PARA LA DISCORD STYLE 19», «19 CUP LLAVES» o «RAP SIN GROSERIAS 2» contra «… (Venezuela version)»
+#: quedan abajo—, así que el MISMO evento salía dos veces: el anuncio sin llave y la llave sola con su nombre. Lo que no
+#: tomó ningún anuncio se le da al que quedó sin llave (`_sueltas()`), con dos reglas:
+#: - el mismo nombre (sin «llaves para la»), publicada hasta `SUELTA_MISMO_DIAS` después —«PRADERAP VOL.2» se corrió
+#:   tres días— o hasta `ANTES_MAX_H` antes;
+#: - una palabra propia o un número de dos cifras en común, publicada entre `SUELTA_ANTES_MIN` antes y `SUELTA_H` después.
+#: Y nunca después del siguiente anuncio de esa serie en ese servidor, nunca con números que choquen ni con otra forma
+#: (1vs1 contra equipos), y con dos candidatas empatadas, ninguna: un cuadro equivocado es peor que ninguno.
+SUELTA_H = 6
+SUELTA_ANTES_MIN = 30
+SUELTA_MISMO_DIAS = 4
+#: lo que los organizadores le agregan al nombre de la llave y no la distingue
+_RELLENO_SUELTA = {'llaves', 'llave', 'para', 'la', 'las', 'los', 'el', 'de', 'del', 'bracket', 'brackets', 'cuadro'}
 
 
 def _palabras_ev(nombre):
@@ -2185,7 +2203,12 @@ def reanuncio(a, b, LW):
     if (a.get('sv') or '') != (b.get('sv') or '') or LW._chocan(a.get('nombre'), b.get('nombre')):
         return False
     ta, tb = LW._instante_iso(a.get('cuando')), LW._instante_iso(b.get('cuando'))
-    if not ta or not tb or abs((ta - tb).total_seconds()) > REANUNCIO_H * 3600:
+    if not ta or not tb:
+        return False
+    # 🔁 CON EL MISMO NOMBRE, HASTA `REANUNCIO_MISMO_H` (16/11/2026): FRZ anunció «IRLANDA FREESTYLE» tres veces el 27/10 y
+    # el tercero, cinco horas después del primero, quedaba en el calendario sin llave al lado de los otros dos con ella
+    mismo = _nombre_base(a.get('nombre')) and _nombre_base(a.get('nombre')) == _nombre_base(b.get('nombre'))
+    if abs((ta - tb).total_seconds()) > (REANUNCIO_MISMO_H if mismo else REANUNCIO_H) * 3600:
         return False
     # ⚠️ LA MODALIDAD SEPARA: la TOKYO VOL 16 se jugó en 1vs1 y en 2vs2 la misma noche (28/09/2026)
     forma = lambda x: set(re.findall(r'(\d)\s*(?:vs|v|x)\s*(\d)', ' '.join(_palabras_ev(
@@ -2195,6 +2218,83 @@ def reanuncio(a, b, LW):
     pa, pb = _palabras_ev(a.get('nombre')), _palabras_ev(b.get('nombre'))
     propias = {w for w in pa if len(w) >= 4 and w not in _GENERICAS} & {w for w in pb if len(w) >= 4 and w not in _GENERICAS}
     return bool(propias)
+
+
+def _nombre_base(nombre):
+    """El nombre para comparar sin lo que no distingue: «LLAVES PARA LA DISCORD STYLE 19» es «discordstyle19»."""
+    return ''.join(w for w in _palabras_ev(nombre) if w not in _RELLENO_SUELTA)
+
+
+def _propias(nombre):
+    """Las palabras que distinguen un evento (4 letras o más, ni genéricas ni relleno) y sus números de dos cifras."""
+    ws = _palabras_ev(nombre)
+    return ({w for w in ws if len(w) >= 4 and not w.isdigit() and w not in _GENERICAS and w not in _RELLENO_SUELTA},
+            {w for w in ws if w.isdigit() and len(w) >= 2})
+
+
+def _sueltas(items, regs, LW, ahora):
+    """🧲 A cada anuncio pasado sin llave, la llave que no tomó nadie y es la suya (ver `SUELTA_H`). Le pone `llave` y
+    devuelve `[(nombre del anuncio, n)]` con lo que juntó."""
+    usadas = {str(i['llave']) for i in items if i.get('llave')}
+    sueltas = {}
+    for n, r in (regs or {}).items():
+        if str(n) in usadas or not isinstance(r, dict):
+            continue
+        ms = LW._primero(r.get('links'))
+        if ms is not None:
+            sueltas[str(n)] = (r, ms)
+    if not sueltas:
+        return []
+
+    def ms_de(i):
+        t = LW._instante_iso(i.get('cuando'))
+        return t.replace(tzinfo=t.tzinfo or __import__('datetime').timezone.utc).timestamp() * 1000 if t else None
+
+    def serie(a, b):
+        if _nombre_base(a.get('nombre')) and _nombre_base(a.get('nombre')) == _nombre_base(b.get('nombre')):
+            return True
+        return bool(_propias(a.get('nombre'))[0] & _propias(b.get('nombre'))[0])
+
+    hechas = []
+    for i in sorted(items, key=lambda x: str(x.get('cuando'))):
+        if i.get('llave') or str(i.get('cuando')) > ahora:
+            continue
+        t0 = ms_de(i)
+        if t0 is None:
+            continue
+        sv = i.get('sv') or ''
+        # la llave no puede ser posterior al siguiente anuncio de su serie: ésa ya es la del otro
+        sig = [ms_de(j) for j in items if j is not i and (j.get('sv') or '') == sv
+               and str(j.get('cuando')) > str(i.get('cuando')) and serie(i, j)]
+        sig = min([x for x in sig if x is not None], default=None)
+        base = _nombre_base(i.get('nombre'))
+        pi, ni = _propias(i.get('nombre'))
+        p = dict(i, modalidad=i.get('mod') or '')
+        cands = []
+        for n, (r, ms) in sueltas.items():
+            if (r.get('sv') or '') != sv or LW._chocan(i.get('nombre'), r.get('nombre')) or LW._formas_chocan(p, r):
+                continue
+            if sig is not None and ms >= sig:
+                continue
+            d = ms - t0
+            if base and base == _nombre_base(r.get('nombre')) and -LW.ANTES_MAX_H * 3600000 <= d <= SUELTA_MISMO_DIAS * 86400000:
+                fuerza = 2
+            else:
+                pr, nr = _propias(r.get('nombre'))
+                if not (pi & pr or ni & nr) or not -SUELTA_ANTES_MIN * 60000 <= d <= SUELTA_H * 3600000:
+                    continue
+                fuerza = 1
+            cands.append((fuerza, -abs(d), n))
+        if not cands:
+            continue
+        cands.sort(reverse=True)
+        if len(cands) > 1 and cands[0][:2] == cands[1][:2]:
+            continue
+        n = cands[0][2]
+        i['llave'] = int(n)
+        sueltas.pop(n)
+        hechas.append((i.get('nombre'), n))
+    return hechas
 
 
 def _calendario(ann, regs, llaves, LW, CU, ahora, info=None):
@@ -2236,6 +2336,8 @@ def _calendario(ann, regs, llaves, LW, CU, ahora, info=None):
                       'pre': (x.get('premios') or '')[:60],
                       'ct': 1 if ini and _con_tiempo(ini, pub) else 0, **_staff(x)})
     LW.cruzar(items, regs)
+    # 🧲 la llave que no tomó nadie, al anuncio que quedó sin la suya (`_sueltas()`): si no, el evento salía dos veces
+    _sueltas(items, regs, LW, ahora)
     # 🔁 el mismo evento anunciado otra vez no sale dos veces, y el «SIN LLAVE» del repetido desaparece (`reanuncio()`)
     con = [i for i in items if i.get('llave')]
     items = [i for i in items if i.get('llave') or str(i['cuando']) > ahora
@@ -2275,8 +2377,15 @@ def _calendario(ann, regs, llaves, LW, CU, ahora, info=None):
                       .strftime('%Y-%m-%dT%H:%M:%S'),
                       'sh': 0, 'link': (r.get('links') or [''])[0], 'llave': int(n)})
     out = []
+    # 🔁 una llave, un evento: dos anuncios del mismo evento se llevan la misma (`llaves_web._mismo_evento()`, para «Lo que
+    # pasó») y el calendario lo mostraba dos veces (IRLANDA FREESTYLE #533, RAP SIN GROSERIAS 5 #626, 16/11/2026)
+    vistas = set()
     for i in sorted(items, key=lambda i: i['cuando']):
         ll = str(i.get('llave') or '')
+        if ll:
+            if ll in vistas:
+                continue
+            vistas.add(ll)
         out.append({'t': i['cuando'] + 'Z', 'n': _nom(i['nombre']), 'sv': i['sv'],
                     'link': i['link'],
                     # la llave de todo evento procesado: si no viaja en el
@@ -4211,6 +4320,44 @@ def _self_check():
        and p.get('calendario') == [c for c in _calf if c['t'] >= p['cal_desde']],
        'el calendario del lobby es el de la temporada desde %s  (%d de %d); el resto va a `web:calendario`'
        % (p.get('cal_desde', '')[:10], len(p.get('calendario') or []), len(_calf or [])))
+    # 🧲 LA LLAVE SUELTA Y UNA LLAVE POR EVENTO (16/11/2026, Dlx: «fíjate por qué hay algunos eventos sin llaves»): ver
+    # `_sueltas()`. Con el calendario de verdad y con casos armados, los de ese día
+    _vll = [c['ll'] for c in (_calf or []) if c.get('ll')]
+    ok(len(_vll) == len(set(_vll)), 'ninguna llave sale dos veces en el calendario  (%d eventos con llave)' % len(_vll))
+    import llaves_web as _LWs
+
+    def _ll(nombre, sv, iso):
+        ms = int(__import__('datetime').datetime.fromisoformat(iso + '+00:00').timestamp() * 1000)
+        return {'nombre': nombre, 'sv': sv, 'dia': iso[:10], 'rondas': [],
+                'links': ['https://discord.com/channels/1/2/%d' % ((ms - 1420070400000) << 22)]}
+    _a = lambda nombre, sv, iso, mod='': {'nombre': nombre, 'sv': sv, 'cuando': iso, 'mod': mod}
+    _casos = [
+        ('«LLAVES PARA LA DISCORD STYLE 19», 24 minutos después', [_a('DISCORD STYLE 19', 'DDS', '2026-11-01T23:20:00')],
+         {'584': _ll('LLAVES PARA LA DISCORD STYLE 19', 'DDS', '2026-11-01T23:44:00')}, ['584']),
+        ('la de otro servidor, no', [_a('DISCORD STYLE 19', 'FFA', '2026-11-01T23:20:00')],
+         {'584': _ll('LLAVES PARA LA DISCORD STYLE 19', 'DDS', '2026-11-01T23:44:00')}, [None]),
+        ('con números que chocan, no (18 contra 19)', [_a('DISCORD STYLE 18', 'DDS', '2026-11-01T23:20:00')],
+         {'584': _ll('LLAVES PARA LA DISCORD STYLE 19', 'DDS', '2026-11-01T23:44:00')}, [None]),
+        ('una palabra propia en común, 8 minutos después', [_a('RAP SIN GROSERIAS (Venezuela version)', 'FDS', '2026-10-21T01:56:00')],
+         {'522': _ll('RAP SIN GROSERIAS 2', 'FDS', '2026-10-21T02:04:00')}, ['522']),
+        ('…pero 9 horas después, no', [_a('RAP SIN GROSERIAS (Venezuela version)', 'FDS', '2026-10-21T01:56:00')],
+         {'522': _ll('RAP SIN GROSERIAS 2', 'FDS', '2026-10-21T10:56:00')}, [None]),
+        ('el mismo nombre, tres días después (se corrió)', [_a('PRADERAP VOL.2', 'ACAD', '2026-10-24T20:52:00')],
+         {'535': _ll('PRADERAP VOL.2', 'ACAD', '2026-10-27T20:02:00')}, ['535']),
+        ('…pero no si en el medio se anunció otro de la serie',
+         [_a('PRADERAP VOL.2', 'ACAD', '2026-10-24T20:52:00'), _a('PRADERAP VOL.3', 'ACAD', '2026-10-26T20:00:00')],
+         {'535': _ll('PRADERAP VOL.2', 'ACAD', '2026-10-27T20:02:00')}, [None, None]),
+        ('dos igual de cerca: ninguna', [_a('COMPE CHILL', 'URBF', '2026-10-26T00:15:00')],
+         {'1': _ll('CHILL NOCHE', 'URBF', '2026-10-26T00:25:00'), '2': _ll('CHILL TARDE', 'URBF', '2026-10-26T00:05:00')}, [None]),
+    ]
+    for _que, _anns, _regs, _esp in _casos:
+        _its = [dict(x) for x in _anns]
+        _sueltas(_its, _regs, _LWs, '2026-12-01T00:00:00')
+        _got = [str(i['llave']) if i.get('llave') else None for i in _its]
+        ok(_got == _esp, 'la llave suelta: %s  (%s)' % (_que, _got))
+    _r1 = reanuncio(_a('IRLANDA FREESTYLE', 'FRZ', '2026-10-27T23:33:00'), _a('- IRLANDA FREESTYLE -', 'FRZ', '2026-10-27T18:35:00'), _LWs)
+    _r2 = reanuncio(_a('IRLANDA FREESTYLE', 'FRZ', '2026-10-28T03:33:00'), _a('- IRLANDA FREESTYLE -', 'FRZ', '2026-10-27T18:35:00'), _LWs)
+    ok(_r1 and not _r2, 'el mismo nombre es el mismo evento hasta %d h después, no más  (a 5 h: %s, a 9 h: %s)' % (REANUNCIO_MISMO_H, _r1, _r2))
     # ⚔️ los duelos tampoco (29/10/2026): la lista va a `CLAVE_DUELOS` y la tabla lleva `du` para el Inicio
     _dk = {d['k']: d for d in (_due or [])}
     ok('duelos' not in p and isinstance(_due, list)
