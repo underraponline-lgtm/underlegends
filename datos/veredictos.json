@@ -2533,6 +2533,28 @@
    "b": "RIZAS",
    "ganador": "RIZAS",
    "votos": "1–0"
+  },
+  "1571710019441787013": {
+   "id": "1571710019441787013",
+   "sv": "CYPHERHOOD™ | Hip-Hop, Freestyle & Producción Musical",
+   "g": "1074328197400887388",
+   "canal": "1222380923048296459",
+   "pub": 1794795269595,
+   "a": "SOUL B",
+   "b": "LIZZENIN",
+   "ganador": "SOUL B",
+   "votos": "1–0"
+  },
+  "1571711570088825008": {
+   "id": "1571711570088825008",
+   "sv": "CYPHERHOOD™ | Hip-Hop, Freestyle & Producción Musical",
+   "g": "1074328197400887388",
+   "canal": "1222380923048296459",
+   "pub": 1794795639298,
+   "a": "LAMBO",
+   "b": "LVEL",
+   "ganador": "LAMBO",
+   "votos": "1–0"
   }
  },
  "llaves": {
@@ -8068,6 +8090,57 @@
      ],
      "RIZAS",
      "veredicto",
+     []
+    ]
+   ]
+  },
+  "1571710052878909531": {
+   "id": "1571710052878909531",
+   "sv": "#FDS ╏FREESTYLE DISCORD SERIES",
+   "g": "1489848581203689535",
+   "canal": "1500675902042931280",
+   "pub": 1794795277567,
+   "ed": 1794795543905,
+   "texto": "`[ CUARTOS ]`\n⌞Artezzy 🇵🇪⌝ 🆚 ⌞Raizer🇵🇪⌝\n⌞Miniboy🇨🇱⌝ 🆚 ⌞Dios 🇲🇽⌝\n⌞Chente 🇻🇪⌝ 🆚 ⌞jazi 🇪🇨⌝\n⌞Soul b 🇨🇱⌝ 🆚 ⌞Nxuz 🇵🇪⌝\n`[ SEMIFINALES ]`\n`[ FINAL ]`",
+   "batallas": [
+    [
+     "CUARTOS",
+     [
+      "Artezzy 🇵🇪",
+      "Raizer🇵🇪"
+     ],
+     null,
+     "última ronda y no dice campeón",
+     []
+    ],
+    [
+     "CUARTOS",
+     [
+      "Miniboy🇨🇱",
+      "Dios 🇲🇽"
+     ],
+     null,
+     "última ronda y no dice campeón",
+     []
+    ],
+    [
+     "CUARTOS",
+     [
+      "Chente 🇻🇪",
+      "jazi 🇪🇨"
+     ],
+     null,
+     "última ronda y no dice campeón",
+     []
+    ],
+    [
+     "CUARTOS",
+     [
+      "Soul b 🇨🇱",
+      "Nxuz 🇵🇪"
+     ],
+     null,
+     "última ronda y no dice campeón",
      []
     ]
    ]

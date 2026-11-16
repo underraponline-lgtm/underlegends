@@ -1647,6 +1647,13 @@
   "autor": "1324178951119175711",
   "canal": "1487207377601040516",
   "canal_pregunta": "1487207377601040516",
+  "cerrada": {
+   "como": "nadie siguió",
+   "n": 0,
+   "sin": 0,
+   "t": "2026-11-15 9:23 PM ET",
+   "tot": 7
+  },
   "cuando": "2026-11-13T22:26:41.243000+00:00",
   "donde": "llave",
   "evento": "KISS OF SHINIGAMI",

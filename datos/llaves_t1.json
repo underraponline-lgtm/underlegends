@@ -42109,7 +42109,7 @@
        "Makmah"
       ],
       "Tam, Molusco",
-      "triple (3 bandas, pasan 2); también pasa: Molusco 🇦🇷; Walk-in 1: tam 🇻🇪"
+      "triple (3 bandas, pasan 2); también pasa: Molusco 🇦🇷; Walk-in 1: TAM"
      ],
      [
       [
@@ -47680,7 +47680,7 @@
        "Under"
       ],
       "sh🇧🇿, Carlos, Lvel 🇻🇪, Tam, MCO",
-      "triple (5 bandas, pasan 4); también pasa: Lvel 🇻🇪 / tam 🇻🇪 / MCO 🇦🇷"
+      "triple (5 bandas, pasan 4); también pasa: Lvel 🇻🇪 / TAM / MCO 🇦🇷"
      ],
      [
       [
@@ -55074,7 +55074,7 @@
        "Provenza, Tenor",
        "0223 🇧🇧, Erian",
        "Jupiter",
-       "Ariaxer",
+       "Ariaxer, }",
        "Joven shenlong"
       ],
       "Ezze, Provenza, Tenor",
@@ -55190,11 +55190,6 @@
     1250
    ],
    [
-    "Ariaxer",
-    "Octavos",
-    1250
-   ],
-   [
     "Chxrzy",
     "Octavos",
     1250
@@ -55240,7 +55235,17 @@
     625
    ],
    [
+    "Ariaxer",
+    "Octavos",
+    625
+   ],
+   [
     "Erian",
+    "Octavos",
+    625
+   ],
+   [
+    "}",
     "Octavos",
     625
    ],
