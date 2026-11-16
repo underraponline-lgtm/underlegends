@@ -1,5 +1,5 @@
 {
- "cuando": "2026-11-16T04:56:07+00:00",
+ "cuando": "2026-11-16T05:25:46+00:00",
  "anuncios": [
   {
    "nombre": "¡SE LLEGÓ LA GRAN NOCHE!",
@@ -7704,6 +7704,15 @@
  ],
  "inscripciones": [
   {
+   "servidor": "CH",
+   "canal": "📜—inscripciones",
+   "texto": "Lrs🇦🇷",
+   "quien": "lrs0378",
+   "discord_id": "1385452830684614697",
+   "msg_id": "1571753798970515507",
+   "cuando": "2026-11-16T05:08:27"
+  },
+  {
    "servidor": "DDS",
    "canal": "📝〕INSCRIPCION-2",
    "texto": "Mosquitrap 🦟🇦🇷 + monet 🇨🇳",
@@ -7909,6 +7918,15 @@
    "discord_id": "353682361784860682",
    "msg_id": "1571707089473241171",
    "cuando": "2026-11-16T02:02:51"
+  },
+  {
+   "servidor": "CH",
+   "canal": "📜—inscripciones",
+   "texto": "Yukan",
+   "quien": "camo001156",
+   "discord_id": "859900348751151154",
+   "msg_id": "1571707032854335619",
+   "cuando": "2026-11-16T02:02:37"
   },
   {
    "servidor": "CH",
@@ -43684,24 +43702,6 @@
    "discord_id": "742442337028014090",
    "msg_id": "1559717939538694175",
    "cuando": "2026-10-14T00:02:14"
-  },
-  {
-   "servidor": "FFA",
-   "canal": "✦📝—inscripciones",
-   "texto": "Geoka 🇦🇷",
-   "quien": "goksito_8",
-   "discord_id": "1325042155819106324",
-   "msg_id": "1559717238859370637",
-   "cuando": "2026-10-13T23:59:27"
-  },
-  {
-   "servidor": "FFA",
-   "canal": "✦📝—inscripciones",
-   "texto": "delux🇦🇷",
-   "quien": "delux.13",
-   "discord_id": "729809358627536938",
-   "msg_id": "1559716897044303906",
-   "cuando": "2026-10-13T23:58:06"
   }
  ]
 }

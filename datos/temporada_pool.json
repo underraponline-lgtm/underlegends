@@ -34,7 +34,6 @@
    "dobles": 32,
    "infalt": true,
    "perf": 3,
-   "podsem": true,
    "relampago": true,
    "rev": 1,
    "solo": 3,
@@ -296,9 +295,7 @@
    "busc": 2,
    "dobles": 9,
    "fenix": 1,
-   "infalt": true,
    "perf": 2,
-   "podsem": true,
    "relampago": true,
    "rev": 1,
    "solo": 1,
@@ -423,9 +420,7 @@
    "busc": 2,
    "dcor": true,
    "dobles": 4,
-   "infalt": true,
    "perf": 2,
-   "podsem": true,
    "relampago": true,
    "rey": true,
    "solo": 1,
@@ -683,7 +678,6 @@
    "busc": 2,
    "cab": 1,
    "dobles": 14,
-   "infalt": true,
    "perf": 2,
    "svc": 5,
    "trios": 7
@@ -884,7 +878,6 @@
    "busc": 2,
    "cab": 2,
    "dobles": 3,
-   "infalt": true,
    "perf": 2,
    "relampago": true,
    "sube": true,
@@ -1084,7 +1077,6 @@
   "tg_t": {
    "busc": 3,
    "dobles": 13,
-   "infalt": true,
    "perf": 1,
    "svc": 1,
    "trios": 7
@@ -1400,7 +1392,6 @@
   "tg_t": {
    "busc": 2,
    "dobles": 15,
-   "infalt": true,
    "rev": 2,
    "suelto": true,
    "svc": 1
@@ -2364,7 +2355,6 @@
   "total": 255,
   "rango": "C",
   "tg_t": {
-   "cohete": true,
    "dobles": 9,
    "svc": 1,
    "trios": 5
@@ -2595,7 +2585,6 @@
   "total": 255,
   "rango": "C",
   "tg_t": {
-   "cohete": true,
    "dobles": 10,
    "infalt": true
   }
@@ -2668,7 +2657,6 @@
   "rango": "C",
   "tg_t": {
    "dobles": 2,
-   "infalt": true,
    "svc": 2,
    "trios": 2
   }
@@ -2817,7 +2805,6 @@
   "total": 255,
   "rango": "C",
   "tg_t": {
-   "cohete": true,
    "dobles": 5,
    "svc": 1,
    "trios": 4
@@ -3077,7 +3064,6 @@
   "total": 255,
   "rango": "C",
   "tg_t": {
-   "cohete": true,
    "dobles": 10,
    "svc": 1,
    "trios": 3
@@ -3153,7 +3139,6 @@
   "total": 255,
   "rango": "C",
   "tg_t": {
-   "cohete": true,
    "dobles": 4,
    "infalt": true,
    "rev": 1,
@@ -3193,7 +3178,6 @@
   "total": 255,
   "rango": "C",
   "tg_t": {
-   "cohete": true,
    "dobles": 3,
    "sube": true
   }
@@ -3589,7 +3573,6 @@
   "total": 255,
   "rango": "D",
   "tg_t": {
-   "cohete": true,
    "dobles": 2,
    "relampago": true,
    "svc": 2,
@@ -3779,7 +3762,6 @@
   "total": 255,
   "rango": "D",
   "tg_t": {
-   "cohete": true,
    "dobles": 4,
    "infalt": true,
    "sube": true,
@@ -3967,7 +3949,6 @@
   "rango": "D",
   "tg_t": {
    "cobro": 1,
-   "cohete": true,
    "dobles": 1,
    "rev": 1
   }
@@ -4438,7 +4419,6 @@
   "total": 255,
   "rango": "D",
   "tg_t": {
-   "cohete": true,
    "sube": true
   }
  },
@@ -5775,8 +5755,7 @@
   "total": 255,
   "rango": "E",
   "tg_t": {
-   "dobles": 1,
-   "infalt": true
+   "dobles": 1
   }
  },
  {
@@ -6556,7 +6535,6 @@
   "total": 255,
   "rango": "E",
   "tg_t": {
-   "cohete": true,
    "reciente": true
   }
  },
@@ -7188,7 +7166,6 @@
   "total": 255,
   "rango": "E",
   "tg_t": {
-   "cohete": true,
    "reciente": true
   }
  },
@@ -7739,7 +7716,6 @@
   "rango": "E",
   "tg_t": {
    "cab": 1,
-   "cohete": true,
    "dobles": 1
   }
  },
@@ -7908,10 +7884,7 @@
   "o": 213,
   "pos": 137,
   "total": 255,
-  "rango": "E",
-  "tg_t": {
-   "cohete": true
-  }
+  "rango": "E"
  },
  {
   "full": "Pipe",
@@ -8113,10 +8086,7 @@
   "o": 219,
   "pos": 141,
   "total": 255,
-  "rango": "E",
-  "tg_t": {
-   "cohete": true
-  }
+  "rango": "E"
  },
  {
   "full": "Emilio Alva aka mr cachondo folla mama de lord 🔥🇧🇱",
@@ -11865,10 +11835,7 @@
   "o": 330,
   "pos": 175,
   "total": 255,
-  "rango": "E",
-  "tg_t": {
-   "cohete": true
-  }
+  "rango": "E"
  },
  {
   "full": "Musicdum",
@@ -14331,10 +14298,7 @@
   "pos": 468,
   "fc": true,
   "total": 255,
-  "rango": "E",
-  "tg_t": {
-   "reciente": true
-  }
+  "rango": "E"
  },
  {
   "full": "erpi",
@@ -16984,10 +16948,7 @@
   "o": 486,
   "pos": 210,
   "total": 255,
-  "rango": "E",
-  "tg_t": {
-   "cohete": true
-  }
+  "rango": "E"
  },
  {
   "full": "Manteca mantecosa 🇨🇾",
@@ -21503,10 +21464,7 @@
   "o": 624,
   "pos": 235,
   "total": 255,
-  "rango": "E",
-  "tg_t": {
-   "reciente": true
-  }
+  "rango": "E"
  },
  {
   "full": "JL",
@@ -21538,10 +21496,7 @@
   "pos": 645,
   "fc": true,
   "total": 255,
-  "rango": "E",
-  "tg_t": {
-   "reciente": true
-  }
+  "rango": "E"
  },
  {
   "full": "Konan",
@@ -22800,10 +22755,7 @@
   "pos": 677,
   "fc": true,
   "total": 255,
-  "rango": "E",
-  "tg_t": {
-   "reciente": true
-  }
+  "rango": "E"
  },
  {
   "full": "FIERRO🇦🇷",
