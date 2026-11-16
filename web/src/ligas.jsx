@@ -21,6 +21,7 @@ import { Numero, useDesliza } from './anima.js';
 import { Miniatura, abrirVideo } from './video.jsx';
 import { pedirLigas } from './ligas_datos.js';
 import { BatallasAhora } from './ligas_ahora.jsx';
+import { escenaDe } from './arriba.jsx';
 import CSS_PAGINA from './css/ligas.css?inline';
 import { usarCss } from './css.js';
 
@@ -353,8 +354,9 @@ function conDetalle(L0, det) {
 const aLiga = (L) => '#/ligas/' + encodeURIComponent(L.id);
 
 // ── 🏆 EL TORNEO: la encuesta, la tabla y las fechas; al costado, el flyer y la próxima ────────────────────────────────
-function Torneo({ liga, L, h }) {
+function Torneo({ liga, L, h, sinLado = false, corta = 0 }) {
   const V = useVotos();
+  const [todos, setTodos] = useState(false);
   const [mios, setMios] = useState(leerMios);
   const [va, setVa] = useState('');
   const [err, setErr] = useState('');
@@ -398,7 +400,7 @@ function Torneo({ liga, L, h }) {
     }).catch(() => { setVa(''); setErr('No pude guardar tu voto. Prueba de nuevo en un rato.'); });
   }
   const top = (L.tabla || []).map((f) => [f[0], Number(cuenta[f[0]]) || 0]).filter((x) => x[1] > 0).sort((a, b) => b[1] - a[1])[0];
-  const lado = L.flyer || L.prox;
+  const lado = !sinLado && (L.flyer || L.prox);
   return (
     <div className={'lgt sin-cab' + (lado ? ' con-lado' : '')}>
       {lado ? (
@@ -425,7 +427,7 @@ function Torneo({ liga, L, h }) {
         {/* 🗣️ qué es cada número (lo que no se entiende no se usa): «5/6» solo no dice que son ganadas de jugadas */}
         <p className="lgt-ley"><span><b>G/J</b> ganadas de jugadas</span><span><b>PTS</b> puntos</span>{L.vota ? <span><b>%</b> quién gana, según los votos</span> : null}</p>
         <ol className={'dv-tabla lg-tabla lgt-tabla' + (L.vota ? ' con-voto' : '')}>
-          {(L.tabla || []).map(([raw, pj, pg, pts], i) => {
+          {(corta && !todos ? (L.tabla || []).slice(0, corta) : (L.tabla || [])).map(([raw, pj, pg, pts], i) => {
             const n = Number(cuenta[raw]) || 0;
             const p = pct(n, tot);
             const esMio = mio === raw;
@@ -446,6 +448,8 @@ function Torneo({ liga, L, h }) {
             );
           })}
         </ol>
+        {/* 📏 las primeras y «Ver los N» (15/11/2026): con las 23 de Plaza abiertas, el costado quedaba vacío a media página */}
+        {corta && (L.tabla || []).length > corta ? <button type="button" className="btn borde2 chico lp3-mas" onClick={() => setTodos(!todos)}>{todos ? 'Ver menos' : 'Ver los ' + L.tabla.length}</button> : null}
         <p className="lg-nota">La tabla sale de los veredictos que se pudieron leer: directa 3 puntos, réplica 2 y 1, sin los invitados.
           {L.link ? <> La oficial, con sanciones y defaults, está en <a className="te-link" href={L.link} target="_blank" rel="noopener noreferrer">su Discord</a>.</> : null}</p>
         <AvisarLiga key={L.id} L={L} />
@@ -718,6 +722,465 @@ function hay(L, k) {
 }
 
 // ── 🏟️ EL PERFIL DE CADA LIGA (`#/ligas/<id>`): su servidor, cómo va, el podio, el torneo y las otras ──────────────────
+// ══ 🏟️ EL REMAKE DE LIGAS (15/11/2026). Dlx, a las tres maquetas (https://claude.ai/artifact/UxDtamjFHPgd4ZoXtT3mvm):
+// «una fusión entre los 3… para el inicio, el de cartelera está genial… la B tiene data buenísima»; a la fusión D, «quitaría
+// la última línea» y «Cómo funcionan, como un botón como está ahora»; y a la página de cada liga, «Si a todo». La portada:
+// la tira de lo último, tus ligas, LA CARTELERA (la que más se decide en grande, la próxima como boleto, el último
+// campeón con su podio), los números de todas, la tabla de todas que se abre ahí mismo y el estante de campeones ══════
+
+// 🚦 cómo está cada una, con un estado más que `estadoLiga()`: la que se juega y el 1.º le saca 2 o menos, SE DECIDE
+function estado3(liga, L) {
+  const e = estadoLiga(liga, L);
+  const t = L.tabla || [];
+  const gap = t.length > 1 ? t[0][3] - t[1][3] : null;
+  return Object.assign({}, e, { k: e.c === 'juego' && gap !== null && gap <= 2 ? 'decide' : e.c, gap });
+}
+const EST3 = { decide: 'Se decide', juego: 'En juego', prox: 'Próxima fecha', fin: 'Terminó', quieta: 'En pausa' };
+const ORDEN3 = ['decide', 'juego', 'prox', 'quieta', 'fin'];
+const Tag3 = ({ k }) => <span className={'lq3-tag ' + k}>{EST3[k]}</span>;
+const fondo3 = (L) => L.fl || escenaDe(L.sv) || '';
+const desde3 = (liga, t) => (t ? liga.cuando(t) : '');
+// la carta de liga de alguien (o su cara), para el cara a cara y el campeón
+function Carta3({ liga, L, raw, h, cls = '' }) {
+  const k = h.kDe(raw);
+  const u = k ? cartaLiga(liga, L.id, k) : '';
+  return u ? <img className={'lq3-carta ' + cls} src={u} alt={'Carta de liga de ' + limpio(raw)} loading="lazy" decoding="async" />
+    : <span className={'lq3-sinc ' + cls}>{h.cara(raw, 'cara lq3-sinc-c')}</span>;
+}
+// 📈 la carrera del 1.º y el 2.º fecha a fecha (de las fechas del detalle): los puntos acumulados, directa 3, réplica 2 y 1
+function carrera3(L) {
+  const t = L.tabla || [];
+  if (t.length < 2) return [];
+  const [a, b] = [t[0][0], t[1][0]];
+  const fs = (L.fechas || []).slice().sort((x, y) => String(x.d || x.s || '').localeCompare(String(y.d || y.s || '')));
+  const acc = { [a]: 0, [b]: 0 };
+  const out = [];
+  for (const f of fs) {
+    for (const x of f.b) {
+      const [p, q, g, como] = x;
+      if (!g) continue;
+      for (const n of [a, b]) {
+        if (g === n) acc[n] += como === 'replica' ? 2 : 3;
+        else if ((p === n || q === n) && como === 'replica') acc[n] += 1;
+      }
+    }
+    out.push([acc[a], acc[b]]);
+  }
+  return out.slice(-12);
+}
+function Carrera3({ L }) {
+  const c = carrera3(L);
+  if (c.length < 2) return null;
+  const mx = Math.max(1, ...c.map((x) => Math.max(x[0], x[1])));
+  const pts = (i) => c.map((x, j) => ((j / (c.length - 1)) * 300).toFixed(1) + ',' + (54 - (x[i] / mx) * 50).toFixed(1)).join(' ');
+  const t = L.tabla;
+  return (
+    <div className="lq3-carrera" aria-label={'Cómo vienen ' + limpio(t[0][0]) + ' y ' + limpio(t[1][0]) + ', fecha a fecha'}>
+      <svg viewBox="0 0 300 56" preserveAspectRatio="none" aria-hidden="true">
+        <polyline points={pts(1)} fill="none" stroke="#F6F6F6" strokeWidth="2" vectorEffect="non-scaling-stroke" opacity=".7" />
+        <polyline points={pts(0)} fill="none" stroke="#E41373" strokeWidth="3" vectorEffect="non-scaling-stroke" />
+      </svg>
+      <small><span>Fecha a fecha</span><span className="a">{limpio(t[0][0])}</span><span>{limpio(t[1][0])}</span></small>
+    </div>
+  );
+}
+// el cara a cara del 1.º y el 2.º, con sus cartas
+function CaraACara3({ liga, L, h, e }) {
+  const [a, b] = L.tabla;
+  return (
+    <div className="lq3-vs">
+      <span className="lq3-vs-c"><Carta3 liga={liga} L={L} raw={a[0]} h={h} /><b>{limpio(a[0])}</b><small>{a[2]} de {a[1]} ganadas</small></span>
+      <span className="lq3-vs-x">{a[3]}–{b[3]}<small>{e.gap === 0 ? 'EMPATADOS' : 'A ' + e.gap}</small></span>
+      <span className="lq3-vs-c"><Carta3 liga={liga} L={L} raw={b[0]} h={h} /><b>{limpio(b[0])}</b><small>{b[2]} de {b[1]} ganadas</small></span>
+    </div>
+  );
+}
+// 📖 «Cómo funcionan», como un botón (Dlx, 15/11/2026: «como un botón como está ahora»): se abre ahí mismo y se cierra
+// tocando afuera o con Escape
+function BotonComo({ titulo, children }) {
+  const [ab, setAb] = useState(false);
+  const ref = useRef(null);
+  useEffect(() => {
+    if (!ab) return undefined;
+    const afuera = (e) => { if (ref.current && !e.composedPath().includes(ref.current)) setAb(false); };
+    const tecla = (e) => { if (e.key === 'Escape') setAb(false); };
+    document.addEventListener('pointerdown', afuera);
+    window.addEventListener('keydown', tecla);
+    return () => { document.removeEventListener('pointerdown', afuera); window.removeEventListener('keydown', tecla); };
+  }, [ab]);
+  return (
+    <span className="lq3-como" ref={ref}>
+      <button type="button" aria-expanded={ab} onClick={() => setAb(!ab)}><i aria-hidden="true">?</i>{titulo}</button>
+      {ab ? (
+        <div className="lq3-pop" role="dialog" aria-label={titulo}>
+          <p className="lq3-pop-t"><b>{titulo}</b><button type="button" onClick={() => setAb(false)}>Cerrar ✕</button></p>
+          {children}
+        </div>
+      ) : null}
+    </span>
+  );
+}
+const COMO_LIGAS = (
+  <ul className="lq3-pop-l">
+    <li><b>Cada servidor arma la suya</b><span>Con sus jornadas, su tabla y sus reglas. Arranca y termina cuando la organiza su servidor.</span></li>
+    <li><b>Los puntos</b><span>Ganar directo da 3; en réplica, 2 al que gana y 1 al que pierde. La tabla sale de los veredictos que leyó el bot: la oficial, con sanciones, está en el Discord de cada liga.</span></li>
+    <li><b>Qué te suman</b><span>Cada batalla cuenta para tus duelos: el Ranking Duelos y tu Win%. Al Score competitivo, no.</span></li>
+    <li><b>¿Quién gana?</b><span>En cada liga se vota quién la gana: un voto por cuenta de Discord, y se cierra cuando lleva tres semanas sin batallas.</span></li>
+  </ul>
+);
+// ⏱️ cuántos días faltan para la próxima fecha (con la hora si el anuncio la dijo)
+function faltan3(liga, P) {
+  const hoy = liga.diaClave(liga.ahora);
+  const dia = P.t ? liga.diaClave(P.t) : P.d;
+  return Math.max(0, Math.round((Date.parse(dia) - Date.parse(hoy)) / 86400000));
+}
+
+// ── 🧱 LA CARTELERA: el bento ─────────────────────────────────────────────────────────────────────────────────────────
+// La que más se decide en grande (2×2), las otras que se juegan (1×1), la próxima fecha como boleto (2×1) y el último
+// campeón con su podio (2×1). En la compu son cuatro columnas y la pared se llena entera: si sobra un lugar, la última chica
+// va a lo ancho (`w4`); si sobran tres, una chica pasa a la tabla de abajo. En la tableta y el celular, dos columnas (`w2`)
+function Chica3({ liga, L, h, e, w4, w2 }) {
+  const t = L.tabla || [];
+  const mx = Math.max(1, t[0] ? t[0][3] : 1);
+  return (
+    <a className={'lq3-t' + (w4 ? ' w4' : '') + (w2 ? ' w2' : '')} href={aLiga(L)} style={{ backgroundImage: fondo3(L) ? 'url(' + fondo3(L) + ')' : undefined }}>
+      <Tag3 k={e.k} />
+      <h3>{L.n}</h3>
+      <p>{L.j ? 'Jornada ' + L.j + ' · ' : ''}{num(L.bat)} {L.bat === 1 ? 'batalla' : 'batallas'} · {desde3(liga, L.ult_t)}</p>
+      <span className="lq3-duelo">{t.slice(0, 2).map((f) => (
+        <span key={f[0]}>{h.cara(f[0], 'cara lq3-d-c')}<b>{limpio(f[0])}</b><em>{f[3]}</em><i><u style={{ width: (100 * f[3]) / mx + '%' }} /></i></span>
+      ))}</span>
+    </a>
+  );
+}
+function Bento3({ liga, top, chicas, prox, camp, hs, est }) {
+  // cuántas celdas: la grande 4, el boleto y el campeón 2 cada uno (4 si van «altos»), cada chica 1 (2 si va ancha)
+  let n4 = 4 + (prox ? 2 : 0) + (camp ? 2 : 0);
+  let xs = chicas.slice();
+  let anchas = 0, alto = false;
+  const prueba = () => {
+    for (let fuera = 0; fuera <= Math.min(3, xs.length); fuera++) {
+      for (let a = 0; a <= xs.length - fuera; a++) if ((n4 + xs.length - fuera + a) % 4 === 0) return [fuera, a];
+    }
+    return null;
+  };
+  let r = prueba();
+  // sin chicas para emparejar (una grande y un boleto: 6), el boleto o el campeón va alto, de dos filas
+  if (!r && (prox || camp)) { alto = true; n4 += 2; r = prueba(); }
+  if (r) { xs = xs.slice(0, xs.length - r[0]); anchas = r[1]; }
+  const impar = xs.length % 2 === 1;
+  const chica = (L, i) => <Chica3 key={L.id} liga={liga} L={L} h={hs[L.id]} e={est[L.id]} w4={i >= xs.length - anchas} w2={impar && i === xs.length - 1} />;
+  const h = top ? hs[top.id] : null;
+  const e = top ? est[top.id] : null;
+  const grande = top ? (
+    <div className="lq3-t g" style={{ backgroundImage: escenaDe(top.sv) || top.fl ? 'url(' + (escenaDe(top.sv) || top.fl) + ')' : undefined }}>
+      <Tag3 k={e.k} />
+      <span className="lq3-t-sv"><img alt="" src={liga.logo(top.sv)} />{top.n}</span>
+      {(top.tabla || []).length > 1 ? <CaraACara3 liga={liga} L={top} h={h} e={e} /> : null}
+      <h3>{e.gap === 0 ? 'Empatados arriba' : e.gap !== null ? 'A ' + e.gap + (e.gap === 1 ? ' punto' : ' puntos') + ' de la punta' : top.n}</h3>
+      <p>{top.j ? 'Jornada ' + top.j + ' · ' : ''}{num(top.bat)} batallas · la próxima decide quién manda.</p>
+      <Carrera3 L={top} />
+      <span className="lq3-acc"><a className="btn verde" href={aLiga(top)}>Ver la liga</a>{top.vota ? <a className="btn borde" href={aLiga(top)}>¿Quién gana? · Vota</a> : null}</span>
+    </div>
+  ) : null;
+  const boleto = prox ? (
+    <a className={'lq3-t w lq3-tk-t' + (alto ? ' alto' : '')} href={aLiga(prox)}>
+      <span className="lq3-tk">
+        <span className="lq3-tk-f" style={{ backgroundImage: fondo3(prox) ? 'url(' + fondo3(prox) + ')' : undefined }} />
+        <span className="lq3-tk-i"><Tag3 k="prox" /><h3>{prox.n}</h3><p>{prox.prox.t ? 'Con hora: ' + liga.dia(prox.prox.t) : 'La hora la dice el servidor.'} Te avisa la campana si sigues la liga.</p></span>
+        <span className="lq3-tk-n"><small>La próxima fecha</small><b>{faltan3(liga, prox.prox) || 'HOY'}</b><small>{faltan3(liga, prox.prox) ? (faltan3(liga, prox.prox) === 1 ? 'día' : 'días') : ''}</small></span>
+      </span>
+    </a>
+  ) : null;
+  const campeon = camp ? (
+    <a className={'lq3-t w' + (alto && !prox ? ' alto' : '')} href={aLiga(camp)} style={{ backgroundImage: fondo3(camp) ? 'url(' + fondo3(camp) + ')' : undefined }}>
+      <Tag3 k="fin" />
+      <span className="lq3-t-sv"><img alt="" src={liga.logo(camp.sv)} />{camp.n} · {desde3(liga, camp.ult_t)}</span>
+      <span className="lq3-camp">
+        <Carta3 liga={liga} L={camp} raw={camp.fin.c} h={hs[camp.id]} />
+        <span><h3>{limpio(camp.fin.c)} se queda con la liga</h3>
+          <ol>{(camp.fin.p || [camp.fin.c]).slice(0, 3).map((n, i) => <li key={n}><i>{i + 1}</i><span>{limpio(n)}</span></li>)}</ol></span>
+      </span>
+    </a>
+  ) : null;
+  return (
+    <div className="lq3-bento">
+      {grande}{xs[0] ? chica(xs[0], 0) : null}{xs[1] ? chica(xs[1], 1) : null}{boleto}
+      {xs.slice(2, 4).map((L, i) => chica(L, i + 2))}{campeon}{xs.slice(4).map((L, i) => chica(L, i + 4))}
+    </div>
+  );
+}
+
+// ── 📊 LOS NÚMEROS de todas las ligas juntas (lo de la B, sin repetir lo que la pared ya muestra) ─────────────────────
+function Numeros3({ liga, ls, hs, det, est, top }) {
+  const V = useVotos();
+  const { ps, cs } = useMemo(() => cuentas(liga, ls, hs, det), [liga, ls, hs, det]);
+  const invictos = [];
+  ls.forEach((L) => (L.tabla || []).forEach(([raw, pj, pg]) => { if (pg >= INVICTO && pg === pj) invictos.push({ raw, pg, L }); }));
+  invictos.sort((a, b) => b.pg - a.pg);
+  const vivas = ls.filter((L) => est[L.id].k === 'decide' || est[L.id].k === 'juego').filter((L) => (L.tabla || []).length);
+  if (!cs.length && !vivas.length) return null;
+  const rey = cs[0];
+  const mxc = cs.length ? cs[0].g : 1, mxp = ps.length ? ps[0][1].g : 1;
+  const lider = (L) => {
+    const f = L.tabla[0];
+    return <a key={L.id} className="lq3-ld" href={aLiga(L)}>{hs[L.id].cara(f[0], 'cara lq3-ld-c')}<span><b>{limpio(f[0])}</b><small><img alt="" src={liga.logo(L.sv)} />{corto(L.n)} · {f[3]} pts</small></span></a>;
+  };
+  const cuenta = top ? cuentaDe(top.id) : {};
+  const cand = top ? (top.tabla || []).slice(0, 4) : [];
+  const tot = top ? (top.tabla || []).reduce((s, f) => s + (Number(cuenta[f[0]]) || 0), 0) : 0;
+  return (
+    <div className="lq3-num">
+      <div className="lq3-caja mg">
+        <h3>La carrera<small>batallas ganadas</small></h3>
+        <ol className="lq3-lista">{cs.slice(0, 7).map((q, i) => (
+          <li key={q.raw + i}><i>{i + 1}</i>{hs[q.L.id].cara(q.raw, 'cara lq3-l-c')}<span><b>{hs[q.L.id].nombre(q.raw)}</b><small>{corto(q.L.n)} · de {q.j}</small><u><s style={{ width: (100 * q.g) / mxc + '%' }} /></u></span><em>{q.g}</em></li>
+        ))}</ol>
+        {invictos.length ? (
+          <p className="lq3-inv"><b>Sin perder</b>{invictos.slice(0, 5).map((x) => <span key={x.L.id + x.raw}>{hs[x.L.id].cara(x.raw, 'cara lq3-inv-c')}{limpio(x.raw)} <em>{x.pg}–0</em></span>)}</p>
+        ) : null}
+      </div>
+      {rey ? (
+        <div className="lq3-rey">
+          <p className="lq3-rey-t"><b>El que más gana en las ligas</b><small>y los que mandan en cada una</small></p>
+          <span className="lq3-lados">{vivas.slice(0, 3).map(lider)}</span>
+          <span className="lq3-rey-c"><Carta3 liga={liga} L={rey.L} raw={rey.raw} h={hs[rey.L.id]} /><b>{limpio(rey.raw)}</b><small>{rey.g} ganadas de {rey.j}</small></span>
+          <span className="lq3-lados">{vivas.slice(3, 6).map(lider)}</span>
+        </div>
+      ) : null}
+      <div className="lq3-col">
+        {top && top.vota ? (
+          <div className="lq3-caja vd">
+            <h3>¿Quién gana {corto(top.n)}?<small>{tot ? num(tot) + (tot === 1 ? ' voto' : ' votos') : 'nadie votó todavía'}</small></h3>
+            <ul className="lq3-poll">{cand.map((f) => {
+              const p = tot ? Math.round((100 * (Number(cuenta[f[0]]) || 0)) / tot) : 0;
+              return <li key={f[0]}><a href={aLiga(top)}><i style={{ width: p + '%' }} />{hs[top.id].cara(f[0], 'cara lq3-l-c')}<b>{limpio(f[0])}</b><em>{p}%</em></a></li>;
+            })}</ul>
+            <small className="lq3-nota">{V.t ? 'Toca a quien crees que gana: se vota en la página de la liga, un voto por cuenta.' : 'Se vota en la página de la liga, un voto por cuenta.'}</small>
+          </div>
+        ) : null}
+        {ps.length ? (
+          <div className="lq3-caja">
+            <h3>Los países<small>batallas ganadas</small></h3>
+            <ol className="lq3-lista">{ps.slice(0, 5).map(([cc, P], i) => (
+              <li key={cc}><i>{i + 1}</i><Bandera cc={cc} cls="lq3-band" /><span><b>{nombrePais(cc)}</b><u><s style={{ width: (100 * P.g) / mxp + '%' }} /></u></span><em>{P.g}</em></li>
+            ))}</ol>
+          </div>
+        ) : null}
+      </div>
+    </div>
+  );
+}
+
+// ── 📋 TODAS LAS LIGAS, en una tabla que se abre ahí mismo (lo de la B) ───────────────────────────────────────────────
+function Todas3({ liga, ls, hs, est }) {
+  const [fil, setFil] = useState('');
+  const [ab, setAb] = useState('');
+  const svs = [...new Set(ls.map((L) => L.sv))];
+  const cuenta = (k) => ls.filter((L) => est[L.id].k === k || (k === 'juego' && est[L.id].k === 'decide')).length;
+  const xs = ls.filter((L) => !fil || (fil.startsWith('sv:') ? L.sv === fil.slice(3) : fil === 'juego' ? ['decide', 'juego'].includes(est[L.id].k) : est[L.id].k === fil))
+    .sort((a, b) => ORDEN3.indexOf(est[a.id].k) - ORDEN3.indexOf(est[b.id].k) || String(b.ult_t || '').localeCompare(String(a.ult_t || '')));
+  const chips = [['', 'Todas', ls.length], ['decide', 'Se deciden', cuenta('decide')], ['juego', 'En juego', cuenta('juego')], ['prox', 'Con fecha', cuenta('prox')],
+    ['quieta', 'En pausa', cuenta('quieta')], ['fin', 'Terminadas', cuenta('fin')]].filter((c) => !c[0] || c[2]);
+  return (
+    <Sec id="lq3-todas" titulo={'Todas las ligas · ' + ls.length}>
+      <div className="lq3-chips" role="group" aria-label="Filtrar las ligas">
+        {chips.map(([k, t, n]) => <button key={k || 'todas'} type="button" className={fil === k ? 'on' : ''} aria-pressed={fil === k} onClick={() => setFil(k)}>{t} <b>{n}</b></button>)}
+        {svs.length > 1 ? svs.map((s) => <button key={s} type="button" className={fil === 'sv:' + s ? 'on' : ''} aria-pressed={fil === 'sv:' + s} onClick={() => setFil(fil === 'sv:' + s ? '' : 'sv:' + s)}><img alt="" src={liga.logo(s)} />{siglaDe(s)}</button>) : null}
+      </div>
+      <div className="lq3-tabla">
+        <div className="lq3-tr cab" aria-hidden="true"><span /><span>Liga</span><span className="s">Estado</span><span className="jj">Fecha</span><span>Líder</span><span className="q2">El 2.º</span><span className="u">Última</span></div>
+        {xs.map((L) => {
+          const e = est[L.id];
+          const h = hs[L.id];
+          const [x, y] = L.tabla || [];
+          const mx = Math.max(1, x ? x[3] : 1);
+          const abierta = ab === L.id;
+          return (
+            <div key={L.id} className={'lq3-fila' + (abierta ? ' ab' : '')}>
+              <button type="button" className="lq3-tr" aria-expanded={abierta} onClick={() => setAb(abierta ? '' : L.id)}>
+                <span className={'lq3-est ' + e.k} aria-hidden="true" />
+                <span className="n"><img alt="" src={liga.logo(L.sv)} /><b>{L.n}</b></span>
+                <span className="s"><Tag3 k={e.k} /></span>
+                <span className="jj">{L.j ? 'J' + L.j : '—'}</span>
+                <span className="q">{x ? <>{h.cara(x[0], 'cara lq3-l-c')}<b>{limpio(x[0])}</b><em>{x[3]}</em></> : '—'}</span>
+                <span className="q2">{y ? <><small>{L.fin && L.fin.c ? 'Campeón: ' + limpio(L.fin.c) : e.gap === 0 ? 'Empatado con ' + limpio(y[0]) : 'Le saca ' + e.gap + ' a ' + limpio(y[0])}</small><u><s style={{ width: (100 * y[3]) / mx + '%' }} /></u></> : null}</span>
+                <span className="u">{abierta ? '▴ cerrar' : desde3(liga, L.ult_t)}</span>
+              </button>
+              {abierta ? (
+                <div className="lq3-det">
+                  {L.fl ? <img className="lq3-det-fl" src={L.fl} alt="" loading="lazy" /> : <img className="lq3-det-fl logo" src={liga.logo(L.sv, true)} alt="" />}
+                  <div><h4>La tabla · {(L.tabla || []).length} raperos</h4>
+                    <ol className="lq3-mini">{(L.tabla || []).slice(0, 5).map((f, i) => (
+                      <li key={f[0]} className={h.esYo(f[0]) ? 'yo' : ''}><i>{i + 1}</i>{h.cara(f[0], 'cara lq3-l-c')}{h.nombre(f[0])}<small>{f[2]}/{f[1]}</small><em>{f[3]}</em></li>
+                    ))}</ol></div>
+                  {(L.ult || []).length ? (
+                    <div><h4>Lo último</h4>
+                      <ul className="lq3-ult">{L.ult.slice(0, 3).map(([a, b, g, como, j], i) => (
+                        <li key={i}><b>{h.nombre(g)}</b> le ganó a {h.nombre(g === a ? b : a)}<small>{como === 'replica' ? 'en réplica' : 'directo'}{j ? ' · jornada ' + j : ''}</small></li>
+                      ))}</ul></div>
+                  ) : null}
+                  <div className="lq3-det-acc"><a className="btn verde chico" href={aLiga(L)}>Ver la liga</a>{e.k !== 'fin' && !L.cerrada ? <SeguirLiga L={L} /> : null}</div>
+                </div>
+              ) : null}
+            </div>
+          );
+        })}
+      </div>
+    </Sec>
+  );
+}
+
+// ── 🏆 EL ESTANTE DE CAMPEONES (el Salón, con sus cartas de liga) ────────────────────────────────────────────────────
+function Estante3({ liga }) {
+  const xs = ((liga.d.ligas || {}).salon) || [];
+  return (
+    <section className="lq3-osc lq3-est-s" aria-labelledby="lq3-estante">
+      <div className="lq3-in">
+        <div className="lq3-sub"><h2 id="lq3-estante">El estante de campeones</h2>{xs.length ? <small>Ligas completadas · {xs.length}</small> : null}</div>
+        {/* 🏆 el premio de cada título (Dlx, 15/11/2026): una temporada de Pase premium, en el Inventario del campeón */}
+        <p className="lgh-sc-premio"><Ico n="pase" t={18} /><span>Cada campeón de liga gana <b>una temporada de Pase premium</b>: la usa desde su Inventario, en esta temporada o en la que elija.</span></p>
+        {xs.length ? <div className="lq3-estante">{xs.map((x) => {
+          const k = (x.ks || {})[x.c] || (liga.fila(x.c) || {}).k || '';
+          const u = k ? cartaLiga(liga, x.id, k) : '';
+          return (
+            <a key={x.id + x.ult} href={'#/ligas/' + encodeURIComponent(x.id)}>
+              {u ? <img className="lq3-carta" src={u} alt={'Carta de liga de ' + limpio(x.c)} loading="lazy" decoding="async" />
+                : <span className="lq3-sinc">{k ? <Cara liga={liga} k={k} nombre={x.c} cls="cara lq3-sinc-c" /> : <span className="cara lq3-sinc-c ini">{(limpio(x.c).slice(0, 1) || '?').toUpperCase()}</span>}</span>}
+              <span className="lq3-placa">{limpio(x.c)}<small>{x.n}{x.lt ? ' T' + x.lt : ''} · {desde3(liga, x.ult)}</small></span>
+            </a>
+          );
+        })}</div> : <p className="lq3-vacia">Cuando una liga termina, su campeón entra acá con su carta de liga, y se lleva la insignia de <b>Campeón de liga</b>. Todavía no terminó ninguna en esta temporada.</p>}
+      </div>
+    </section>
+  );
+}
+
+function LigasPortada({ liga, falta = '' }) {
+  const ls = liga.ligas();
+  const det = useDetalle(liga.d.ligas ? liga.d.ligas.t : null);
+  // las de la portada, con sus fechas del detalle (para la carrera fecha a fecha del cuadro grande)
+  const ld = useMemo(() => ls.map((L) => conDetalle(L, det)), [ls, det]);
+  const hs = useMemo(() => { const o = {}; ld.forEach((L) => { o[L.id] = herramientas(liga, L); }); return o; }, [liga, ld]);
+  const est = {};
+  ld.forEach((L) => { est[L.id] = estado3(liga, L); });
+  const nuevo = (a, b) => String(b.ult_t || '').localeCompare(String(a.ult_t || ''));
+  const vivas = ld.filter((L) => (est[L.id].k === 'decide' || est[L.id].k === 'juego') && (L.tabla || []).length).sort(nuevo);
+  // la que más se decide: la más pareja arriba y, entre las parejas, la que más se jugó
+  const top = vivas.slice().sort((a, b) => ((est[a.id].gap ?? 99) - (est[b.id].gap ?? 99)) || (b.bat || 0) - (a.bat || 0))[0] || null;
+  const prox = ld.filter((L) => est[L.id].k === 'prox').sort((a, b) => String(a.prox.t || a.prox.d).localeCompare(String(b.prox.t || b.prox.d)))[0] || null;
+  const camp = ld.filter((L) => est[L.id].k === 'fin' && L.fin && L.fin.c && L.ult_t && liga.ahora - utc(L.ult_t) < 21 * 86400000).sort(nuevo)[0] || null;
+  const chicas = vivas.filter((L) => L !== top);
+  const ultimas = ld.filter((L) => (L.ult || []).length && L.ult_t).sort(nuevo).slice(0, 10);
+  const mias = [];
+  ld.forEach((L) => {
+    const i = (L.tabla || []).findIndex(([raw]) => hs[L.id].esYo(raw));
+    if (i >= 0 && est[L.id].k !== 'fin') mias.push([L, i, L.tabla[i]]);
+  });
+  const gente = new Set();
+  ld.forEach((L) => (L.tabla || []).forEach(([raw]) => gente.add(hs[L.id].kDe(raw) || limpio(raw).toLowerCase())));
+  const tira = ultimas.map((L) => {
+    const [a, b, g, como] = L.ult[0];
+    return <span key={L.id}><img alt="" src={liga.logo(L.sv)} />{corto(L.n)} · <b>{limpio(g)}</b> le ganó a {limpio(g === a ? b : a)} · {como === 'replica' ? 'réplica' : 'directo'} · {desde3(liga, L.ult_t)}</span>;
+  });
+  return (
+    <>
+      <BatallasAhora liga={liga} cls="sec" />
+      {falta ? <p className="sec lgh-falta" role="status">Esa liga no está: puede que todavía no tenga batallas, o que haya cambiado de nombre. Acá están todas.</p> : null}
+      <section className="lq3-osc" aria-labelledby="lq3-cart">
+        <div className="lq3-in lq3-cab">
+          <div className="lq3-tit">
+            <h1 id="lq3-cart">La cartelera</h1>
+            <span className="lq3-tit-d"><small>{vivas.length} en juego · {vivas.filter((L) => est[L.id].k === 'decide').length} se deciden · {num(ld.reduce((n, L) => n + (L.bat || 0), 0))} batallas · {num(gente.size)} raperos</small>
+              <BotonComo titulo="¿Primera vez? Cómo funcionan">{COMO_LIGAS}</BotonComo></span>
+          </div>
+        </div>
+        {/* 📰 la tira y tus ligas, debajo del título: arriba a la derecha de cada página va su «¿Cómo funciona?» (comofunciona.jsx), y
+            encima de la tira la tapaba */}
+        {tira.length ? (
+          <div className="lq3-ticker" aria-label="Lo último que pasó en las ligas">
+            <div className="lq3-ticker-in"><span className="lq3-ticker-cab">Lo último</span>{tira}<span className="lq3-ticker-cab" aria-hidden="true">Lo último</span>{tira.map((x) => <span key={'2' + x.key} aria-hidden="true">{x.props.children}</span>)}</div>
+          </div>
+        ) : null}
+        {mias.length ? (
+          <div className="lq3-tuyas"><small>Tus ligas</small>{mias.map(([L, i, f]) => (
+            <a key={L.id} href={aLiga(L)}>{L.fl ? <img alt="" src={L.fl} /> : <img alt="" src={liga.logo(L.sv)} />}<span className="p">{i + 1}º</span>
+              <span><b>{corto(L.n)}</b><small>de {L.tabla.length} · {f[3]} pts · {i ? 'a ' + (L.tabla[0][3] - f[3]) + ' del 1.º' : 'vas primero'}</small></span></a>
+          ))}</div>
+        ) : null}
+        <div className="lq3-in">
+          {top || prox || camp ? <Bento3 liga={liga} top={top} chicas={chicas} prox={prox} camp={camp} hs={hs} est={est} />
+            : <p className="lq3-vacia">Ahora no se está jugando ninguna liga: abajo están todas, con su última tabla.</p>}
+          {ld.length ? <><div className="lq3-sub"><h2>Los números</h2><small>todas las ligas juntas</small></div>
+            <Numeros3 liga={liga} ls={ld} hs={hs} det={det} est={est} top={top} /></> : null}
+        </div>
+      </section>
+      {/* 🏆 las dos de la Liga Global, arriba de las de los servidores */}
+      <section className="sec lgf-dsec" aria-label="Las de la Liga Global"><Destacadas liga={liga} /></section>
+      {ld.length ? <Todas3 liga={liga} ls={ld} hs={hs} est={est} /> : <Sec id="lgh-todas" titulo="Todas las ligas"><p className="pronto-p">Todavía ninguna liga tiene batallas: aparecen solas con la primera.</p></Sec>}
+      <Estante3 liga={liga} />
+    </>
+  );
+}
+
+// ══ 🏟️ LA PÁGINA DE CADA LIGA, CON EL MISMO LENGUAJE (15/11/2026, Dlx: «Si a todo») ══════════════════════════════════
+// Arriba lo que pasa ahora: el cara a cara si se juega, el campeón con su podio si terminó, el boleto si tiene fecha. Cuatro
+// cuadros (la próxima fecha, la última batalla, el que más gana acá, tu lugar) y las pestañas: La tabla —con ¿Quién gana?—,
+// Jornadas, Álbum y Números; Ascenso, Staff, Flyers y Videos sólo si la liga los tiene. «Cómo funciona», un botón
+function Jornadas3({ L, h }) {
+  const fs = L.fechas || [];
+  const [j, setJ] = useState(0);
+  useEffect(() => { setJ(0); }, [L.id]);
+  if (!fs.length) return null;
+  const F = fs[Math.min(j, fs.length - 1)];
+  const corta = (f) => (f.j ? 'J' + f.j : dmy(f.s || f.d));
+  return (
+    <div className="lp3-jor">
+      <div className="lp3-jor-ch" role="tablist" aria-label="Las fechas">{fs.map((f, i) => (
+        <button key={(f.j || '') + (f.s || f.d) + i} type="button" role="tab" aria-selected={i === j} className={i === j ? 'on' : ''} onClick={() => setJ(i)}>{corta(f)}<small>{f.b.length}</small></button>
+      ))}</div>
+      <p className="lp3-jor-t"><b>{tituloFecha(F)}</b><small>{F.j && F.d ? cap(diaDe(F.d)) + ' · ' : ''}{F.b.length === 1 ? '1 batalla' : F.b.length + ' batallas'}</small></p>
+      <ul className="lp3-bts">{F.b.map(([a, b, g, como, pa, pb, mid, vid], k) => (
+        <li key={k} className={(g ? '' : 'pend ') + (h.esYo(a) || h.esYo(b) ? 'yo' : '')}>
+          <span className={'lp3-ld' + (g === a ? ' g' : '')}>{h.cara(a, 'cara lp3-ld-c')}{h.nombre(a)}<em>{ptbTx(pa)}</em></span>
+          <span className="lp3-vs">VS</span>
+          <span className={'lp3-ld d' + (g === b ? ' g' : '')}>{h.cara(b, 'cara lp3-ld-c')}{h.nombre(b)}<em>{ptbTx(pb)}</em></span>
+          <small>{g ? (como === 'replica' ? 'Réplica' : 'Directo') + ' · ganó ' + limpio(g) : 'Sin veredicto todavía'}
+            {vid ? <button type="button" className="lpg-vid" onClick={() => abrirVideo({ vid, tit: limpio(a) + ' vs ' + limpio(b), link: 'https://www.youtube.com/watch?v=' + vid })} aria-label={'Ver el video de ' + limpio(a) + ' contra ' + limpio(b)}>▶</button> : null}
+            {L.vlink && mid ? <a className="lpg-ver" href={L.vlink + mid} target="_blank" rel="noopener noreferrer" aria-label="El veredicto en Discord">↗</a> : null}</small>
+        </li>
+      ))}</ul>
+      <p className="lg-nota">«Semana del…»: su servidor no escribe la jornada en el veredicto, así que van por la semana en que se cerraron. Los números son el PTB que dijo cada veredicto.</p>
+    </div>
+  );
+}
+// 🔢 los cuatro cuadros de arriba
+function Minis3({ liga, L, h }) {
+  const u = (L.ult || [])[0];
+  const gana = {};
+  (L.fechas || []).forEach((f) => f.b.forEach((b) => { if (b[2]) gana[b[2]] = (gana[b[2]] || 0) + 1; }));
+  const mg = Object.entries(gana).sort((a, b) => b[1] - a[1])[0];
+  const N = numerosDe(L);
+  const i = (L.tabla || []).findIndex(([raw]) => h.esYo(raw));
+  const f = i >= 0 ? L.tabla[i] : null;
+  const d = L.prox ? faltan3(liga, L.prox) : null;
+  const fin = !!((L.fin && L.fin.c) || L.cerrada);
+  return (
+    <div className="lp3-minis">
+      <div className="lp3-mini" style={{ '--c': 'var(--oro3)' }}><span className="ic">{d === null ? '—' : d || 'HOY'}</span><span><small>La próxima fecha</small>
+        <b>{d === null ? (fin ? 'Terminó' : 'Sin anunciar') : d === 0 ? 'Se juega hoy' : 'En ' + d + (d === 1 ? ' día' : ' días')}</b>
+        <span>{d !== null ? cap(L.prox.t ? liga.dia(L.prox.t) : diaDe(L.prox.d)) : fin ? 'La próxima temporada, cuando la anuncien' : 'La anuncia ' + siglaDe(L.sv) + ' en su Discord'}</span></span></div>
+      <div className="lp3-mini" style={{ '--c': 'var(--verde)' }}><span className="ic">{u ? h.cara(u[2], 'cara lp3-mini-c') : '—'}</span><span><small>La última batalla{L.ult_t ? ' · ' + desde3(liga, L.ult_t) : ''}</small>
+        <b>{u ? limpio(u[2]) + ' le ganó a ' + limpio(u[2] === u[0] ? u[1] : u[0]) : 'Todavía ninguna'}</b>
+        <span>{u ? (u[3] === 'replica' ? 'En réplica' : 'Directo') + (u[4] ? ' · jornada ' + u[4] : '') : ''}</span></span></div>
+      <div className="lp3-mini" style={{ '--c': 'var(--magenta)' }}><span className="ic">{mg ? mg[1] : '—'}</span><span><small>El que más gana acá</small>
+        <b>{mg ? limpio(mg[0]) : 'Todavía nadie'}</b><span>{mg ? mg[1] + (mg[1] === 1 ? ' ganada' : ' ganadas') + (N.racha && N.racha[0] === mg[0] && N.racha[1] >= 2 ? ' · racha de ' + N.racha[1] : '') : ''}</span></span></div>
+      <div className="lp3-mini" style={{ '--c': '#F6F6F6' }}><span className="ic">{f ? i + 1 + 'º' : '?'}</span><span><small>Tu lugar</small>
+        <b>{f ? i + 1 + 'º de ' + L.tabla.length : 'No juegas esta liga'}</b><span>{f ? (i ? 'A ' + (L.tabla[0][3] - f[3]) + ' del 1.º' : 'Vas primero') : 'Se entra por el Discord de ' + siglaDe(L.sv)}</span></span></div>
+    </div>
+  );
+}
+
 function LigaPerfil({ liga, id }) {
   const D = liga.d.ligas;
   const det = useDetalle(D ? D.t : null);
@@ -732,7 +1195,7 @@ function LigaPerfil({ liga, id }) {
   const C = ls.find((x) => x.id === id) ? null : (DET.comp || {})[id];
   const vieja = !!C;
   const L = C ? Object.assign({}, C, { info: (det[C.liga] || {}).info }) : conDetalle(ls.find((x) => x.id === id), det);
-  if (!L) return id.indexOf('~') > 0 && !DET.d ? null : <LigasInicio liga={liga} falta={id} />;
+  if (!L) return id.indexOf('~') > 0 && !DET.d ? null : <LigasPortada liga={liga} falta={id} />;
   const et = etiquetaTemp(L);
   const h = herramientas(liga, L);
   // 🃏 el álbum: la carta de liga de cada uno de la tabla que la tiene, en el orden de la tabla
@@ -741,77 +1204,111 @@ function LigaPerfil({ liga, id }) {
   const s = liga.svs[L.sv] || {};
   const sig = siglaDe(L.sv);
   const color = s.color || '#E41373';
-  const est = estadoLiga(liga, L);
-  const ultima = L.ult_t ? diaDe(liga.diaClave(L.ult_t)).replace(/^\S+ (\d+) de (\S+)$/, (m, d, mes) => d + '/' + String(MESES.indexOf(mes) + 1).padStart(2, '0')) : '';
+  const e = estado3(liga, L);
+  const fin = !!((L.fin && L.fin.c) || L.cerrada);
   // las de su servidor primero
   const otras = ls.filter((x) => x.id !== L.id).sort((a, b) => (b.sv === L.sv) - (a.sv === L.sv));
-  const pest = PEST.filter(([k]) => hay(L, k));
+  // «Cómo funciona» se mudó a un botón (Dlx, 15/11/2026): no es una pestaña más
+  const pest = PEST.filter(([k]) => k !== 'como' && hay(L, k));
   const tv = pest.some(([k]) => k === tab) ? tab : 'tabla';
+  const t = L.tabla || [];
+  // lo que pasa ahora, a la derecha de arriba
+  let vis = null;
+  if (fin && L.fin && L.fin.c) {
+    const p = (L.fin.p && L.fin.p.length ? L.fin.p : t.map((f) => f[0])).slice(0, 3);
+    vis = (
+      <div className="lp3-camp">
+        <Carta3 liga={liga} L={L} raw={L.fin.c} h={h} />
+        <span><Tag3 k="fin" /><h3>{limpio(L.fin.c)} se queda con la liga</h3>
+          <ol className="lp3-podio">{[1, 0, 2].map((i) => (p[i] ? <li key={p[i]} className={'p' + (i + 1)}>{h.cara(p[i], 'cara lp3-p-c')}<b>{h.nombre(p[i])}</b><span>{i + 1}</span></li> : <li key={'v' + i} className="vacio" />))}</ol></span>
+      </div>
+    );
+  } else if (e.k === 'prox' && L.prox) {
+    vis = (
+      <div className="lp3-tk">
+        <span className="lp3-tk-f" style={{ backgroundImage: L.fl ? 'url(' + L.fl + ')' : escenaDe(L.sv) ? 'url(' + escenaDe(L.sv) + ')' : undefined }} />
+        <span className="lp3-tk-n"><Proxima liga={liga} P={L.prox} /></span>
+      </div>
+    );
+  } else if (t.length > 1 && (e.k === 'decide' || e.k === 'juego')) {
+    vis = <div className="lp3-vs"><CaraACara3 liga={liga} L={L} h={h} e={e} /><Carrera3 L={L} /></div>;
+  } else if (t.length > 1) vis = <Podio3 L={L} h={h} />;
+  const fondo = escenaDe(L.sv) || L.fl;
   return (
     <>
-      <div className={'escena lgp-esc lgx-' + est.c} style={{ '--mo-c': color, '--mo-o': 0.9, ...silueta(L.sv, color) }}>
-        <nav className="lgp-miga" aria-label="Volver">
-          <a href="#/ligas"><Ico n="flecha" t={16} />Todas las ligas</a>
-          {vieja && ls.some((x) => x.id === L.liga) ? <a href={'#/ligas/' + encodeURIComponent(L.liga)}>La temporada de ahora</a> : null}
-        </nav>
-        {vieja ? null : <BatallasAhora liga={liga} id={L.id} />}
-        <section className="svp lgp-cab">
-          <img className="svp-logo" alt="" src={liga.logo(L.sv, true)} />
-          <div className="svp-tx">
-            <span className="tag">LIGA · {sig}{et ? ' · ' + et.toUpperCase() : ''}</span>
-            <h1 className="hero-ev largo">{L.n}</h1>
-            <p className="hero-p lgp-p0"><span className={'lgp-est lgx-' + est.c}>{est.largo}</span> · de <a href={'#/sv/' + sig}>{s.nombre || sig}</a></p>
-            <div className="hero-acc">
-              {/* una temporada que terminó, o una liga cuyos canales ya no están, no tiene nada que seguir */}
-              {vieja || L.cerrada ? null : <SeguirLiga key={L.id} L={L} />}
-              <Compartir cls="btn borde" url={enlace(aLiga(L))} texto={'La tabla de ' + L.n + (et ? ' ' + et : '') + ' en la Liga Global'} />
+      <section className={'lp3-h lgx-' + e.c} style={{ '--c': color }}>
+        {fondo ? <span className="lp3-fondo" style={{ backgroundImage: 'url(' + fondo + ')' }} /> : null}
+        <div className="lp3-in">
+          <nav className="lp3-miga" aria-label="Volver">
+            <span><a href="#/ligas"><Ico n="flecha" t={16} />Todas las ligas</a>
+              {vieja && ls.some((x) => x.id === L.liga) ? <a href={'#/ligas/' + encodeURIComponent(L.liga)}>La temporada de ahora</a> : null}</span>
+            {hay(L, 'como') ? <BotonComo titulo="¿Cómo funciona?"><Como L={L} h={h} /></BotonComo> : <BotonComo titulo="¿Cómo funciona?">{COMO_LIGAS}</BotonComo>}
+          </nav>
+          {vieja ? null : <BatallasAhora liga={liga} id={L.id} />}
+          <div className="lp3-top">
+            <div className="lp3-id">
+              <img className="lp3-logo" alt="" src={liga.logo(L.sv, true)} />
+              <div>
+                <span className="lp3-meta"><Tag3 k={e.k} /><span>Liga · {sig}{et ? ' · ' + et : L.j ? ' · jornada ' + L.j : ''}</span></span>
+                <h1 className={L.n.length > 24 ? 'muy-largo' : L.n.length > 14 ? 'largo' : ''}>{L.n}</h1>
+                <p>{e.largo} · de <a href={'#/sv/' + sig}>{s.nombre || sig}</a> · {num(L.bat)} {L.bat === 1 ? 'batalla' : 'batallas'} · {t.length} raperos</p>
+                <div className="lp3-acc">
+                  {/* una temporada que terminó, o una liga cuyos canales ya no están, no tiene nada que seguir */}
+                  {vieja || fin ? null : <SeguirLiga key={L.id} L={L} />}
+                  <Compartir cls="btn borde" url={enlace(aLiga(L))} texto={'La tabla de ' + L.n + (et ? ' ' + et : '') + ' en la Liga Global'} />
+                  {L.link && !vieja && !L.cerrada ? <a className="lp3-dc" href={L.link} target="_blank" rel="noopener noreferrer">Su tabla en Discord ↗</a> : null}
+                </div>
+              </div>
             </div>
-            {/* la suya, como link: tres botones se apilaban en dos renglones (Dlx, 18/10/2026: «está muy pegado») */}
-            {L.link && !vieja && !L.cerrada ? <a className="te-link lgp-dc" href={L.link} target="_blank" rel="noopener noreferrer">Su tabla en Discord ↗</a> : null}
+            {vis ? <div className="lp3-vis">{vis}</div> : null}
           </div>
-          <dl className="svp-num lgp-num">
-            {L.j ? <div><dt>JORNADA</dt><dd>{L.j}</dd></div> : <div><dt>ÚLTIMA</dt><dd>{ultima || '—'}</dd></div>}
-            <div><dt>BATALLAS</dt><dd>{num(L.bat)}</dd></div>
-            <div><dt>RAPEROS</dt><dd>{num((L.tabla || []).length)}</dd></div>
-          </dl>
-        </section>
-        {L.fin && L.fin.c ? <p className="lgp-campeon"><Ico n="copa" t={18} /> Campeón: {h.nombre(L.fin.c, 'lgp-campeon-n')}</p> : null}
-        <Podio3 L={L} h={h} />
-      </div>
+          <Minis3 liga={liga} L={L} h={h} />
+        </div>
+      </section>
       {pest.length > 1 ? (
-        <nav className="lpg-tabs" role="tablist" aria-label={'Lo de ' + L.n}>
-          {pest.map(([k, t]) => (
-            <button key={k} type="button" role="tab" aria-selected={tv === k} className={tv === k ? 'on' : ''} onClick={() => setTab(k)}>{t}</button>
+        <nav className="lp3-tabs" role="tablist" aria-label={'Lo de ' + L.n}>
+          {pest.map(([k, tt]) => (
+            <button key={k} type="button" role="tab" aria-selected={tv === k} className={tv === k ? 'on' : ''} onClick={() => setTab(k)}>
+              {k === 'fechas' ? 'Jornadas' : tt}{k === 'fechas' ? <small>{(L.fechas || []).length}</small> : k === 'album' ? <small>{L.album.length}</small> : null}</button>
           ))}
         </nav>
       ) : null}
       <div className="lpg-pest" ref={desliza}>
-      {tv === 'tabla' ? (
-        <>
-          <Sec id="lgp-tabla" titulo="La tabla" extra="lgp-sec"><Torneo liga={liga} L={L} h={h} /></Sec>
-        </>
-      ) : null}
-      {tv === 'album' ? (
-        <Sec id="lgp-album" titulo="El álbum" extra="lgp-sec">
-          <ul className="lq-alb">{L.album.map(([f, i, k, u]) => (
-            <li key={k}>
-              <a href={'#/r/' + encodeURIComponent(k)} aria-label={'El perfil de ' + limpio(f[0])}><img src={u} alt={'Carta de liga de ' + limpio(f[0])} loading="lazy" decoding="async" /></a>
-              <small>{i + 1}º · {limpio(f[0])}</small>
-            </li>
-          ))}</ul>
-          <p className="pronto-p">{vieja ? 'Las cartas de esa temporada, como quedaron al terminar: ya no cambian.'
-            : 'Cada uno que juega la liga tiene su carta, y se pone al día con cada jornada.'}</p>
-        </Sec>
-      ) : null}
-      {tv === 'ascenso' ? (
-        <Sec id="lgp-asc" titulo={'Ascenso a la ' + L.asc.n} extra="lgp-sec"><Ascenso A={L.asc} h={h} desde={L.id} /></Sec>
-      ) : null}
-      {tv === 'fechas' ? <Sec id="lgp-fechas" titulo="Las fechas" extra="lgp-sec"><Fechas liga={liga} L={L} h={h} /></Sec> : null}
-      {tv === 'numeros' ? <Sec id="lgp-numeros" titulo="Los números" extra="lgp-sec"><Numeros L={L} h={h} /></Sec> : null}
-      {tv === 'staff' ? <Sec id="lgp-staff" titulo="El staff" extra="lgp-sec"><Staff liga={liga} L={L} /></Sec> : null}
-      {tv === 'flyers' ? <Sec id="lgp-flyers" titulo="Los flyers" extra="lgp-sec"><Flyers liga={liga} L={L} /></Sec> : null}
-      {tv === 'videos' ? <Sec id="lgp-videos" titulo="Los videos" extra="lgp-sec"><Videos L={L} /></Sec> : null}
-      {tv === 'como' ? <Sec id="lgp-como" titulo="Cómo funciona" extra="lgp-sec"><Como L={L} h={h} /></Sec> : null}
+        {tv === 'tabla' ? (
+          <section className="sec lp3-2" id="lgp-tabla">
+            <div><div className="sec-t"><h2>La tabla</h2></div><Torneo liga={liga} L={L} h={h} sinLado corta={12} /></div>
+            <aside className="lp3-lado">
+              {(L.ult || []).length ? (
+                <div className="lp3-caja"><h3>Lo último<small>{desde3(liga, L.ult_t)}</small></h3>
+                  <ul className="lq3-ult">{L.ult.slice(0, 3).map(([a, b, g, como, j], i) => (
+                    <li key={i}>{h.cara(g, 'cara lq3-l-c')}<span><b>{h.nombre(g)}</b> le ganó a {h.nombre(g === a ? b : a)}<small>{como === 'replica' ? 'en réplica' : 'directo'}{j ? ' · jornada ' + j : ''}</small></span></li>
+                  ))}</ul></div>
+              ) : null}
+              {L.flyer ? <div className="lp3-caja"><h3>El último flyer<small>{sig}</small></h3><Flyer liga={liga} L={L} /></div> : null}
+              {L.prox && e.k !== 'prox' ? <div className="lp3-caja"><Proxima liga={liga} P={L.prox} /></div> : null}
+            </aside>
+          </section>
+        ) : null}
+        {tv === 'album' ? (
+          <Sec id="lgp-album" titulo="El álbum" extra="lgp-sec">
+            <ul className="lq-alb">{L.album.map(([f, i, k, u]) => (
+              <li key={k}>
+                <a href={'#/r/' + encodeURIComponent(k)} aria-label={'El perfil de ' + limpio(f[0])}><img src={u} alt={'Carta de liga de ' + limpio(f[0])} loading="lazy" decoding="async" /></a>
+                <small>{i + 1}º · {limpio(f[0])}</small>
+              </li>
+            ))}</ul>
+            <p className="pronto-p">{vieja ? 'Las cartas de esa temporada, como quedaron al terminar: ya no cambian.'
+              : 'Cada uno que juega la liga tiene su carta, y se pone al día con cada jornada.'}</p>
+          </Sec>
+        ) : null}
+        {tv === 'ascenso' ? (
+          <Sec id="lgp-asc" titulo={'Ascenso a la ' + L.asc.n} extra="lgp-sec"><Ascenso A={L.asc} h={h} desde={L.id} /></Sec>
+        ) : null}
+        {tv === 'fechas' ? <Sec id="lgp-fechas" titulo="Jornadas" extra="lgp-sec"><Jornadas3 L={L} h={h} /></Sec> : null}
+        {tv === 'numeros' ? <Sec id="lgp-numeros" titulo="Los números" extra="lgp-sec"><Numeros L={L} h={h} /></Sec> : null}
+        {tv === 'staff' ? <Sec id="lgp-staff" titulo="El staff" extra="lgp-sec"><Staff liga={liga} L={L} /></Sec> : null}
+        {tv === 'flyers' ? <Sec id="lgp-flyers" titulo="Los flyers" extra="lgp-sec"><Flyers liga={liga} L={L} /></Sec> : null}
+        {tv === 'videos' ? <Sec id="lgp-videos" titulo="Los videos" extra="lgp-sec"><Videos L={L} /></Sec> : null}
       </div>
       {otras.length ? (
         <Sec id="lgp-otras" titulo="Las otras ligas" enlace="Todas" href="#/ligas">
@@ -865,44 +1362,12 @@ export function Ascenso({ A, h, desde = '' }) {
   );
 }
 
-// 🃏 cada liga en la portada: su flyer (o el escudo de su servidor si no publicó ninguno), cómo va y quién lidera. La
-// tarjeta entera es el link: adentro no va otro (por eso el nombre del primero es texto)
-function TarjetaLiga({ liga, L, est }) {
-  const s = liga.svs[L.sv] || {};
-  const h = herramientas(liga, L);
-  const lider = (L.tabla || [])[0];
-  return (
-    <a className={'lgh-c lgx-' + est.c} href={aLiga(L)} style={{ '--c': s.color || '#E41373' }}>
-      <span className="lgh-img">
-        {L.fl ? <img alt="" src={L.fl} loading="lazy" decoding="async" />
-          : <span className="lgh-sin"><img alt="" src={liga.logo(L.sv, true)} loading="lazy" decoding="async" /></span>}
-      </span>
-      <span className="lgh-tx">
-        <span className={'lgh-est lgx-' + est.c}>{est.t}</span>
-        <b className="lgh-n">{L.n}</b>
-        <span className="lgh-sv"><img alt="" src={liga.logo(L.sv)} />{siglaDe(L.sv)} · {num(L.bat)} {L.bat === 1 ? 'batalla' : 'batallas'} · {(L.tabla || []).length} raperos</span>
-        {lider ? (
-          <span className="lgh-lider">{h.cara(lider[0], 'lgh-cara')}<small>1º</small><b>{limpio(lider[0])}</b><i>{lider[3]} PTS</i></span>
-        ) : null}
-      </span>
-    </a>
-  );
-}
-
-// ── 🏟️ EL REMAKE (v7, 27/10/2026). Dlx, a la maqueta (https://claude.ai/artifact/HyEpS9oPxD37BUSb8sZV6t): «el REMAKE
-// SUBELO». Lo negro de arriba con FLECHAS entre «Los que mandan» (la carta de liga de cada líder), «Los países» y «La
-// carrera de todos» (Dlx a la v5: «podemos poner flechas en la sección negra… países y carrera entre todos»), y las ligas
-// POR ESTADO, en cartelera (Dlx a la v4: «me gusta por estado, pero… estilo cartelera»; a la v5: «no pongas quietas o
-// paradas»: las que no se juegan salen en «Ver todas»). Lo que ya estaba abajo —tus ligas, lo mejor, el salón, lo que
-// viene y lo que pasó— se queda: se movió, no se sacó (Dlx, 13/10/2026: «remover al final y con los números»)
 const corto = (n) => String(n || '').replace('FMH ', '').replace('FMS ', '').replace('Snake League ', '').replace('Champions League ', 'Champions ').replace('Snake ', '');
 // la carta de liga de esa clave en esa liga (la chica: se dibuja en chico), o '' si no tiene
 function cartaLiga(liga, lid, k, grande = false) {
   const x = ((DET.c || {})[k] || []).find((y) => y[0] === lid);
   return x ? liga.d.r2 + '/' + encodeURIComponent(k) + '/liga-' + lid + (grande ? '' : '.chica') + '.webp?v=' + x[1] : '';
 }
-const SLIDES = [['Los que mandan', 'el líder de cada liga'], ['Los países', 'quién gana más batallas en las ligas'],
-  ['La carrera de todos', 'los que más ganaron, sumando todas las ligas']];
 // 🌎 los países y 🏃 la carrera de todos: las batallas con ganador de todas las ligas (las fechas del detalle)
 function cuentas(liga, ls, hs, det) {
   const pais = {}, gente = {};
@@ -931,266 +1396,6 @@ function cuentas(liga, ls, hs, det) {
   const cs = Object.values(gente).filter((q) => q.g).sort((a, b) => b.g - a.g || a.j - b.j).slice(0, 8);
   return { ps, cs };
 }
-function HeroLigas({ liga, ls, hs, est, det, onComo }) {
-  const [i, setI] = useState(0);
-  const { ps, cs } = useMemo(() => cuentas(liga, ls, hs, det), [liga, ls, hs, det]);
-  const vivas = ls.filter((L) => est[L.id].c !== 'quieta' && est[L.id].c !== 'fin').length;
-  const ult = ls.reduce((m, L) => (L.ult_t && L.ult_t > m ? L.ult_t : m), '');
-  const gente = new Set();
-  ls.forEach((L) => (L.tabla || []).forEach(([raw]) => gente.add(hs[L.id].kDe(raw) || limpio(raw).toLowerCase())));
-  const n = SLIDES.length;
-  const mx0 = ps.length ? ps[0][1].g : 1;
-  const mx1 = cs.length ? cs[0].g : 1;
-  let cuerpo;
-  if (i === 0) {
-    cuerpo = (
-      <ul className="lq-lds" aria-label="El líder de cada liga">{ls.filter((L) => (L.tabla || []).length).map((L) => {
-        const a = L.tabla[0];
-        const k = hs[L.id].kDe(a[0]);
-        const u = k ? cartaLiga(liga, L.id, k) : '';
-        const v = L.tabla.length > 1 ? a[3] - L.tabla[1][3] : 0;
-        return (
-          <li key={L.id}><a className="lq-ld" href={aLiga(L)}>
-            <span className="lq-ld-l"><img alt="" src={liga.logo(L.sv)} /><b>{corto(L.n)}</b></span>
-            {u ? <img className="lq-ld-c" src={u} alt={'Carta de liga de ' + limpio(a[0])} loading="lazy" decoding="async" />
-              : <span className="lq-ld-h">{hs[L.id].cara(a[0], 'cara lq-cara')}</span>}
-            <b className="lq-ld-n">{limpio(a[0])}</b>
-            <small>{a[3]} pts · {v ? '+' + v : 'empatado'}</small>
-          </a></li>
-        );
-      })}</ul>
-    );
-  } else if (i === 1) {
-    cuerpo = ps.length ? (
-      <ol className="lq-bs">{ps.map(([cc, P], j) => (
-        <li key={cc}><i>{j + 1}</i><Bandera cc={cc} /><span className="lq-n"><b>{nombrePais(cc)}</b>
-          <small>{P.ks.size} {P.ks.size === 1 ? 'rapero' : 'raperos'} · {Math.round((100 * P.g) / P.j)}% ganadas</small></span>
-          <span className="lq-b"><u style={{ width: (100 * P.g) / mx0 + '%' }} /></span><em>{P.g}</em></li>
-      ))}</ol>
-    ) : <p className="pronto-p">Aparece con las primeras batallas.</p>;
-  } else {
-    cuerpo = cs.length ? (
-      <ol className="lq-bs">{cs.map((q, j) => (
-        <li key={q.raw + j}><i>{j + 1}</i>{hs[q.L.id].cara(q.raw, 'cara lq-cara')}<span className="lq-n"><b>{limpio(q.raw)}</b><small>{corto(q.L.n)}</small></span>
-          <span className="lq-b"><u style={{ width: (100 * q.g) / mx1 + '%' }} /></span><em>{q.g}<small>de {q.j}</small></em></li>
-      ))}</ol>
-    ) : <p className="pronto-p">Aparece con las primeras batallas.</p>;
-  }
-  return (
-    <section className="lq-h">
-      <div className="lq-h-i">
-        <span className="tag">LIGAS · {liga.temp}</span>
-        <h1 className="lq-h-t">Las ligas</h1>
-        <p>Las de cada servidor, con su tabla, sus jornadas y sus flyers. <b>Cada batalla suma a tus duelos.</b></p>
-        <dl className="lq-nums">
-          <div><dt>EN JUEGO</dt><dd>{vivas}</dd></div>
-          <div><dt>ÚLTIMA BATALLA</dt><dd className="v">{ult ? liga.cuando(ult) : '—'}</dd></div>
-          <div><dt>RAPEROS</dt><dd>{num(gente.size)}</dd></div>
-        </dl>
-        <button type="button" className="lq-como" onClick={onComo}>¿Primera vez? Cómo funcionan ↓</button>
-      </div>
-      <div className="lq-h-l">
-        <div className="lq-sl-t">
-          <button type="button" aria-label="Anterior" onClick={() => setI((i + n - 1) % n)}>‹</button>
-          <span aria-live="polite"><b>{SLIDES[i][0]}</b><small>{SLIDES[i][1]}</small></span>
-          <span className="lq-pts" aria-hidden="true">{SLIDES.map((x, j) => <i key={x[0]} className={j === i ? 'on' : ''} />)}</span>
-          <button type="button" aria-label="Siguiente" onClick={() => setI((i + 1) % n)}>›</button>
-        </div>
-        {cuerpo}
-      </div>
-    </section>
-  );
-}
-// 🎟️ cada liga en cartelera: el flyer arriba, cómo va y la carrera de los dos primeros abajo
-function Cuadro({ liga, L, est }) {
-  const t = L.tabla || [];
-  const mx = (t[0] && t[0][3]) || 1;
-  const c = (liga.svs[L.sv] || {}).color || '#E41373';
-  return (
-    <a className="lq-cq" href={aLiga(L)} style={{ '--c': c }}>
-      {L.fl ? <img className="lq-cq-f" src={L.fl} alt="" loading="lazy" decoding="async" />
-        : <span className="lq-cq-f sin"><img alt="" src={liga.logo(L.sv, true)} /></span>}
-      <span className={'lq-est lgx-' + est.c}>{est.t}</span>
-      <span className="lq-cq-i">
-        <span className="lq-cq-n"><img alt="" src={liga.logo(L.sv)} /><b>{L.n}</b></span>
-        {t.length > 1 ? (
-          <span className="lq-r2">
-            <span><i className="c1" style={{ width: '100%' }} /><b>{limpio(t[0][0])}</b><em>{t[0][3]}</em></span>
-            <span><i className="c2" style={{ width: (100 * t[1][3]) / mx + '%' }} /><b>{limpio(t[1][0])}</b><em>{t[1][3]}</em></span>
-          </span>
-        ) : null}
-        <small>{L.j ? 'J' + L.j + ' · ' : ''}{num(L.bat)} {L.bat === 1 ? 'batalla' : 'batallas'} · {t.length} raperos</small>
-      </span>
-    </a>
-  );
-}
-
-// ── 🏆 LIGAS COMPLETADAS (Dlx, 11/11/2026: «cuando una liga acabe que siga en un álbum especial como LIGAS
-// COMPLETADAS»): cada temporada que terminó, con su campeón, su tabla final y sus cartas, que ya no cambian. Las de ahora
-// que terminaron (`fin` o `cerrada`) y las de antes, enteras en el detalle (`comp`). Sin ninguna, no se dibuja ─────────
-function Completadas({ liga, ls, est }) {
-  const xs = [...ls.filter((L) => est[L.id].c === 'fin').map((L) => [L, L.ult_t]),
-    ...Object.values(DET.comp || {}).map((C) => [C, C.hasta])]
-    .sort((a, b) => String(b[1] || '').localeCompare(String(a[1] || '')));
-  if (!xs.length) return null;
-  return (
-    <Sec id="lgh-comp" titulo={'Ligas completadas · ' + xs.length}>
-      <ul className="lq-cqs">{xs.map(([L]) => <li key={L.id}><Completada liga={liga} L={L} /></li>)}</ul>
-      <p className="pronto-p">Cada temporada que termina queda acá: con su campeón, su tabla final y las cartas de quienes la jugaron.</p>
-    </Sec>
-  );
-}
-function Completada({ liga, L }) {
-  const h = herramientas(liga, L);
-  const et = etiquetaTemp(L);
-  const camp = L.fin && L.fin.c;
-  return (
-    <a className="lq-cq" href={aLiga(L)} style={{ '--c': (liga.svs[L.sv] || {}).color || '#E41373' }}>
-      {L.fl ? <img className="lq-cq-f" src={L.fl} alt="" loading="lazy" decoding="async" />
-        : <span className="lq-cq-f sin"><img alt="" src={liga.logo(L.sv, true)} /></span>}
-      <span className="lq-est lgx-fin">TERMINÓ{et ? ' · ' + et.toUpperCase() : ''}</span>
-      <span className="lq-cq-i">
-        <span className="lq-cq-n"><img alt="" src={liga.logo(L.sv)} /><b>{L.n}</b></span>
-        <span className="lq-camp">
-          {camp ? h.cara(camp, 'cara lq-cara') : null}
-          <span><small>CAMPEÓN</small><b>{camp ? limpio(camp) : 'por confirmar'}</b></span>
-        </span>
-        <small>{num(L.bat)} {L.bat === 1 ? 'batalla' : 'batallas'} · {(L.tabla || []).length} raperos</small>
-      </span>
-    </a>
-  );
-}
-
-// ── 🏟️ LA PORTADA (`#/ligas`): todas, cómo va cada una, las tuyas, las próximas fechas y lo último que pasó ─────────────
-function LigasInicio({ liga, falta = '' }) {
-  const ls = liga.ligas();
-  const [sv, setSv] = useState('');
-  const [todas, setTodas] = useState(false);
-  const det = useDetalle(liga.d.ligas ? liga.d.ligas.t : null);
-  const svs = useMemo(() => {
-    const c = {};
-    ls.forEach((L) => { c[L.sv] = (c[L.sv] || 0) + 1; });
-    return Object.keys(c).sort((a, b) => c[b] - c[a] || siglaDe(a).localeCompare(siglaDe(b)));
-  }, [ls]);
-  const est = {};
-  ls.forEach((L) => { est[L.id] = estadoLiga(liga, L); });
-  const hs = {};
-  ls.forEach((L) => { hs[L.id] = herramientas(liga, L); });
-  const enJuego = ls.filter((L) => est[L.id].c !== 'quieta').length;
-  const bat = ls.reduce((n, L) => n + (L.bat || 0), 0);
-  const gente = new Set();
-  ls.forEach((L) => (L.tabla || []).forEach(([raw]) => gente.add(hs[L.id].kDe(raw) || limpio(raw).toLowerCase())));
-  // 🙋 las tuyas, con tu puesto: lo primero que se busca al entrar
-  const mias = [];
-  ls.forEach((L) => {
-    const i = (L.tabla || []).findIndex(([raw]) => hs[L.id].esYo(raw));
-    if (i >= 0) mias.push([L, i, L.tabla[i]]);
-  });
-  const prox = ls.filter((L) => est[L.id].c === 'prox').sort((a, b) => String(a.prox.t || a.prox.d).localeCompare(String(b.prox.t || b.prox.d)));
-  // lo último que pasó: el último veredicto de cada liga (ya vienen de la más nueva a la más vieja: `para_web()`)
-  const ultimos = ls.filter((L) => (L.ult || []).length && est[L.id].c !== 'quieta').slice(0, 6);
-  const ver = sv ? ls.filter((L) => L.sv === sv) : ls;
-  const fls = ls.filter((L) => L.fl).slice(0, 3);
-  return (
-    <>
-      <BatallasAhora liga={liga} cls="sec" />
-      <HeroLigas liga={liga} ls={ls} hs={hs} est={est} det={det} onComo={(e) => {
-        const el = e.currentTarget.getRootNode().getElementById('lgh-como');
-        if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
-      }} />
-      {/* 🏆 las dos de la Liga Global, arriba de las de los servidores */}
-      <section className="sec lgf-dsec" aria-label="Las de la Liga Global"><Destacadas liga={liga} /></section>
-      {falta ? <p className="sec lgh-falta" role="status">Esa liga no está: puede que todavía no tenga batallas, o que haya cambiado de nombre. Acá están todas.</p> : null}
-      {!ls.length ? (
-        <Sec id="lgh-todas" titulo="Todas las ligas"><p className="pronto-p">Todavía ninguna liga tiene batallas: aparecen solas con la primera.</p></Sec>
-      ) : null}
-      {mias.length ? (
-        <Sec id="lgh-mias" titulo="Tus ligas">
-          <ul className="lgh-mias">{mias.map(([L, i, [, pj, pg, pts]]) => (
-            <li key={L.id}><a href={aLiga(L)} style={{ '--c': (liga.svs[L.sv] || {}).color || '#E41373' }}>
-              <span className="lgh-pos">{i + 1}º<small>de {L.tabla.length}</small></span>
-              <span className="lgh-mt"><b>{L.n}</b><small>{pg} de {pj} {pj === 1 ? 'ganada' : 'ganadas'} · {pts} PTS · {est[L.id].t}</small></span>
-              <Ico n="flecha" t={18} />
-            </a></li>
-          ))}</ul>
-        </Sec>
-      ) : null}
-      {ls.length ? (
-        <Sec id="lgh-todas" titulo={'Las ligas · ' + ls.length} enlace={todas ? 'Por estado' : 'Ver todas'} onEnlace={() => setTodas(!todas)}>
-          {svs.length > 1 ? (
-            <div className="rk-chips lgh-fil" role="group" aria-label="Filtrar por servidor">
-              <button type="button" className={!sv ? 'on' : ''} aria-pressed={!sv} onClick={() => setSv('')}>Todas · {ls.length}</button>
-              {svs.map((x) => (
-                <button type="button" key={x} className={sv === x ? 'on' : ''} aria-pressed={sv === x} onClick={() => setSv(sv === x ? '' : x)}>
-                  <img alt="" src={liga.logo(x)} />{siglaDe(x)}
-                </button>
-              ))}
-            </div>
-          ) : null}
-          {todas ? <ul className="lgh-grid aparece">{ver.map((L) => <li key={L.id}><TarjetaLiga liga={liga} L={L} est={est[L.id]} /></li>)}</ul> : (() => {
-            // 🔥 las que se deciden ahora (el 1.º le saca 2 o menos) y 🎤 las demás que se juegan; las que no, en «Ver todas»
-            const vivas = ver.filter((L) => est[L.id].c !== 'quieta' && est[L.id].c !== 'fin');
-            const parejas = vivas.filter((L) => (L.tabla || []).length > 1 && L.tabla[0][3] - L.tabla[1][3] <= 2);
-            const juego = vivas.filter((L) => parejas.indexOf(L) < 0);
-            const filas = [['🔥 Se deciden ahora', 'el 1.º le saca 2 o menos', parejas], ['🎤 En juego', 'las demás que se están jugando', juego]];
-            if (!vivas.length) return <p className="pronto-p">Ahora no se está jugando ninguna{sv ? ' de ' + siglaDe(sv) : ''}: están en «Ver todas».</p>;
-            return filas.filter((f) => f[2].length).map(([t, b, xs]) => (
-              <div key={t} className="lq-fila">
-                <div className="lq-fila-t"><b>{t}</b><small>{b} · {xs.length}</small></div>
-                <ul className="lq-cqs">{xs.map((L) => <li key={L.id}><Cuadro liga={liga} L={L} est={est[L.id]} /></li>)}</ul>
-              </div>
-            ));
-          })()}
-        </Sec>
-      ) : null}
-      <Completadas liga={liga} ls={ls} est={est} />
-      {ls.length ? <LoMejor liga={liga} ls={ls} hs={hs} /> : null}
-      <Salon liga={liga} />
-      {/* 🗓️ lo que viene y lo que pasó, en una fila en la compu: una sola fecha por delante dejaba media pantalla vacía */}
-      {prox.length || ultimos.length ? (
-        <div className={'lgh-fila' + (prox.length && ultimos.length ? ' dos' : '')}>
-          {prox.length ? (
-            <Sec id="lgh-prox" titulo="Las próximas fechas">
-              <div className="lgh-proxs">{prox.map((L) => (
-                <div key={L.id} className="lgh-px">
-                  {L.fl ? <a className="lgh-px-fl" href={aLiga(L)} tabIndex={-1} aria-hidden="true"><img alt="" src={L.fl} loading="lazy" decoding="async" /></a> : null}
-                  <div className="lgh-px-d">
-                    <a className="lgh-px-n" href={aLiga(L)}><img alt="" src={liga.logo(L.sv)} /><b>{L.n}</b></a>
-                    <Proxima liga={liga} P={L.prox} />
-                  </div>
-                </div>
-              ))}</div>
-            </Sec>
-          ) : null}
-          {ultimos.length ? (
-            <Sec id="lgh-ult" titulo="Lo último que pasó">
-              <ul className="lgh-res">{ultimos.slice(0, prox.length ? 4 : 6).map((L) => {
-                const [a, b, g, como, j] = L.ult[0];
-                const h = hs[L.id];
-                return (
-                  <li key={L.id}>
-                    <a className="lgh-res-l" href={aLiga(L)}><img alt="" src={liga.logo(L.sv)} /><b>{L.n}</b></a>
-                    <span className="lgh-res-t">{h.nombre(g, 'lg-g')} le ganó a {h.nombre(g === a ? b : a, 'lg-p')}</span>
-                    <small>{como === 'replica' ? 'en réplica' : 'directo'}{j ? ' · jornada ' + j : ''} · {liga.cuando(L.ult_t)}</small>
-                  </li>
-                );
-              })}</ul>
-            </Sec>
-          ) : null}
-        </div>
-      ) : null}
-      <Sec id="lgh-como" titulo="Cómo funcionan">
-        <ul className="lgh-como">
-          <li><b>Cada servidor arma la suya</b><span>Con sus jornadas, su tabla y sus reglas. Arranca y termina cuando la organiza su servidor.</span></li>
-          <li><b>Los puntos</b><span>Ganar directo da 3 puntos; en réplica, 2 al que gana y 1 al que pierde. La tabla sale de los veredictos que leyó el bot: la oficial, con sanciones, está en el Discord de cada liga.</span></li>
-          <li><b>Qué te suman</b><span>Cada batalla cuenta para tus <b>duelos</b>: el Ranking Duelos y tu Win%. Al Score competitivo, no.</span></li>
-          <li><b>¿Quién gana?</b><span>En cada liga se vota quién la gana: un voto por cuenta de Discord, y se cierra cuando lleva tres semanas sin batallas.</span></li>
-        </ul>
-      </Sec>
-    </>
-  );
-}
-
 // ── 🏆 LA SUPERLIGA Y LA CLAUSURA: el cierre de la temporada, de la Liga Global ─────────────────────────────────────────
 // Dlx, 16/10/2026: *«crear una superliga, agregar ahí un espacio de la Liga Global donde participará el top 16 del
 // competitivo. El top 4 clasifica directo… los 12 se hacen un duelo a muerte aleatoriamente… pasarían 6, una liga de
@@ -1393,90 +1598,12 @@ function Destacadas({ liga }) {
   );
 }
 
-// ── 🏅 LO MEJOR DE LAS LIGAS (Dlx, 16/10/2026: «reconocimiento a estos participantes de las ligas»): cruza todas, por
-// persona. Victorias, jugadas y el porcentaje; e invictos: 5 o más ganadas sin perder ninguna en una liga ────────────
+// los invictos: 5 o más ganadas sin perder ninguna en una liga (lo de «Lo mejor de las ligas», 16/10/2026)
 const INVICTO = 5;
-function LoMejor({ liga, ls, hs }) {
-  const por = {};
-  const invictos = [];
-  ls.forEach((L) => (L.tabla || []).forEach(([raw, pj, pg]) => {
-    const k = hs[L.id].kDe(raw);
-    const id = k || 'n:' + limpio(raw).toLowerCase();
-    const p = por[id] || (por[id] = { k, raw, pj: 0, pg: 0, ls: [] });
-    p.pj += pj || 0;
-    p.pg += pg || 0;
-    p.ls.push(L.n);
-    if (pg >= INVICTO && pg === pj) invictos.push({ k, raw, pg, L });
-  }));
-  const xs = Object.values(por).filter((p) => p.pg > 0)
-    .sort((a, b) => b.pg - a.pg || b.pg / b.pj - a.pg / a.pj || a.pj - b.pj).slice(0, 10);
-  if (!xs.length) return null;
-  invictos.sort((a, b) => b.pg - a.pg);
-  const nombre = (p) => (p.k ? <a href={'#/r/' + encodeURIComponent(p.k)}>{limpio(p.raw)}</a> : <span>{limpio(p.raw)}</span>);
-  const cara = (p) => (p.k ? <Cara liga={liga} k={p.k} nombre={p.raw} cls="lgh-cara" /> : <span className="lgh-cara ini">{(limpio(p.raw).slice(0, 1) || '?').toUpperCase()}</span>);
-  return (
-    <Sec id="lgh-mejor" titulo="Lo mejor de las ligas" bajada="Todas las ligas juntas: quién ganó más batallas, sumando cada una en la que juega.">
-      {invictos.length ? (
-        <div className="lgh-inv">
-          <h3 className="lgf-st">Invictos <small>{INVICTO} o más ganadas sin perder ninguna</small></h3>
-          <ul>{invictos.map((p) => (
-            <li key={p.L.id + p.raw}>{cara(p)}<span><b>{nombre(p)}</b><small>{p.pg} de {p.pg} en <a href={aLiga(p.L)}>{p.L.n}</a></small></span></li>
-          ))}</ul>
-        </div>
-      ) : null}
-      <ol className="lgh-top aparece">{xs.map((p, i) => (
-        <li key={p.k || p.raw} className={liga.yo && p.k === liga.yo.k ? 'yo' : ''}>
-          <span className="lgh-top-i">{i + 1}</span>{cara(p)}
-          <span className="lgh-top-n"><b>{nombre(p)}</b><small>{p.ls.length === 1 ? p.ls[0] : p.ls.length + ' ligas'}</small></span>
-          <span className="lgh-top-v"><b>{p.pg}</b><small>de {p.pj}</small></span>
-          <span className="lgh-top-p">{Math.round((100 * p.pg) / p.pj)}%</span>
-        </li>
-      ))}</ol>
-    </Sec>
-  );
-}
-
-// ── 🏆 EL SALÓN DE CAMPEONES (Dlx, 16/10/2026): cada liga que terminó, con su campeón y su podio, por temporada.
-// El campeón lo anuncia su servidor (`ligas.campeon_en()`, desde el 11/11/2026) o lo confirma Dlx en ✅ Decidir
-// (`decidir.ligas_terminadas()`), cuando para sin decir nada.
-// Viaja en el lobby (`ligas.salon`). Sin ninguna todavía, la sección dice cómo se entra: es lo que se quiere ver ───
-function Salon({ liga }) {
-  const xs = ((liga.d.ligas || {}).salon) || [];
-  const nombre = (x, n) => {
-    const k = (x.ks || {})[n] || (liga.fila(n) || {}).k;
-    return k ? <a href={'#/r/' + encodeURIComponent(k)}>{limpio(n)}</a> : <span>{limpio(n)}</span>;
-  };
-  const cara = (x, n) => {
-    const k = (x.ks || {})[n] || (liga.fila(n) || {}).k;
-    return k ? <Cara liga={liga} k={k} nombre={n} cls="lgh-sc-cara" /> : <span className="lgh-sc-cara ini">{(limpio(n).slice(0, 1) || '?').toUpperCase()}</span>;
-  };
-  return (
-    <Sec id="lgh-salon" titulo="Salón de campeones" extra="negra">
-      {/* 🏆 el premio de cada título (Dlx, 15/11/2026): una temporada de Pase premium, en el Inventario del campeón */}
-      <p className="lgh-sc-premio"><Ico n="pase" t={18} /><span>Cada campeón de liga gana <b>una temporada de Pase premium</b>: la usa desde su Inventario, en esta temporada o en la que elija.</span></p>
-      {xs.length ? (
-        <ul className="lgh-salon">{xs.map((x) => (
-          <li key={x.id + x.ult}>
-            {cara(x, x.c)}
-            <span className="lgh-sc-t">
-              <small><img alt="" src={liga.logo(x.sv)} />{x.n}{x.lt ? ' T' + x.lt : ''} · {siglaDe(x.sv)}{!x.lt && x.temp ? ' · ' + (x.temp === 'prueba' ? 'T1' : String(x.temp).toUpperCase()) : ''}</small>
-              <b>{nombre(x, x.c)}</b>
-              {(x.p || []).length > 1 ? <span>2º {nombre(x, x.p[1])}{x.p[2] ? <> · 3º {nombre(x, x.p[2])}</> : null}</span> : null}
-            </span>
-            <a className="lgh-sc-ir" href={'#/ligas/' + encodeURIComponent(x.id)} aria-label={'Ver ' + x.n}><Ico n="flecha" t={18} /></a>
-          </li>
-        ))}</ul>
-      ) : (
-        <p className="lgh-sc-vacio">Cuando una liga termina, su campeón entra acá con su podio, y se lleva la insignia de <b>Campeón de liga</b>.
-          {' '}Todavía no terminó ninguna en esta temporada.</p>
-      )}
-    </Sec>
-  );
-}
 
 // `#/ligas` es la portada y `#/ligas/<id>` el perfil de esa liga; la Superliga y la Clausura, las dos de la Liga Global
 export function LigasPagina({ liga, id = '' }) {
   if (id === 'superliga') return <Superliga liga={liga} />;
   if (id === 'clausura') return <Clausura liga={liga} />;
-  return id ? <LigaPerfil liga={liga} id={id} /> : <LigasInicio liga={liga} />;
+  return id ? <LigaPerfil liga={liga} id={id} /> : <LigasPortada liga={liga} />;
 }

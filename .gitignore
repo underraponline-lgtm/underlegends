@@ -234,3 +234,4 @@ datos/entrada_*.json
 # 🗄️ una grilla escrita en el Sheet y sin copiar todavía (sheet/espejo_t1.py, `marcar_sucias()`): es de la corrida
 datos/*.sucia
 herramientas/salida_botones_crew/
+herramientas/salida_medir_ligas/
