@@ -11,6 +11,17 @@
  ],
  "cambios": [
     {
+        "version": "5.58",
+        "dia": "2026-11-16",
+        "cuando": "2026-11-16T05:08:00-05:00",
+        "titulo": "Nombres largos, más prolijos",
+        "items": [
+            "Los nombres de **crews, eventos, productos y servidores** se parten parejo, y los títulos largos —como el de un servidor— quedan en **dos renglones** y no en tres.",
+            "Un nombre que viene con **dibujos de caja** (┃ ━ ╎) se muestra limpio.",
+            "Las llaves de **FMS Ceuta** dibujadas con cajas ahora se leen bien: cada batalla, su ganador y el campeón."
+        ]
+    },
+    {
         "version": "5.57",
         "dia": "2026-11-16",
         "cuando": "2026-11-16T04:52:00-05:00",
