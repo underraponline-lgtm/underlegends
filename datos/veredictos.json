@@ -7829,8 +7829,8 @@
    "g": "1468472442925092958",
    "canal": "1487206164864438513",
    "pub": 1794785977551,
-   "ed": 1794786594037,
-   "texto": "`[ OCTAVOS ]`\n⌞BLITZ⌝ 🆚 ⌞DXG⌝ 🆚 ⌞SURYA⌝ 🆚 ⌞TROT⌝ 🆚 ⌞MINIBOY⌝\n⌞THANIEL⌝ 🆚 ⌞RIZAS⌝ 🆚 ⌞GOCHO⌝",
+   "ed": 1794788148986,
+   "texto": "`[ OCTAVOS ]`\n⌞BLITZ⌝ 🆚 ⌞DXG⌝ 🆚 ⌞SURYA⌝ 🆚 ⌞TROT⌝ 🆚 ⌞MINIBOY⌝\n⌞THANIEL⌝ 🆚 ⌞RIZAS⌝ 🆚 ⌞GOCHO⌝\n⌞YINN⌝ 🆚 ⌞SIX⌝ 🆚 ⌞EZEE⌝ 🆚 ⌞LVEL⌝ 🆚 ⌞LIMITZ⌝\n⌞MAJIZTRAL⌝ 🆚 ⌞TENOR⌝ 🆚 ⌞MITO MANIAK⌝ 🆚 ⌞LORDVIRUZ⌝ 🆚 ⌞COLESITO BENJIXO⌝\n⌞MOLUSCO⌝ 🆚 ⌞AGUS⌝ 🆚 ⌞YINN⌝ 🆚 ⌞COLESITO⌝",
    "batallas": [
     [
      "OCTAVOS",
@@ -7854,6 +7854,44 @@
      ],
      null,
      "última ronda y no dice campeón",
+     []
+    ],
+    [
+     "OCTAVOS",
+     [
+      "YINN",
+      "SIX",
+      "EZEE",
+      "LVEL",
+      "LIMITZ"
+     ],
+     null,
+     "última ronda y no dice campeón",
+     []
+    ],
+    [
+     "OCTAVOS",
+     [
+      "MAJIZTRAL",
+      "TENOR",
+      "MITO MANIAK",
+      "LORDVIRUZ",
+      "COLESITO BENJIXO"
+     ],
+     null,
+     "última ronda y no dice campeón",
+     []
+    ],
+    [
+     "OCTAVOS",
+     [
+      "MOLUSCO",
+      "AGUS",
+      "YINN",
+      "COLESITO"
+     ],
+     "AGUS",
+     "veredicto",
      []
     ]
    ]
