@@ -2632,50 +2632,31 @@
    "b": "YOR",
    "ganador": "LETRAS",
    "votos": "1–0"
+  },
+  "1571731355451134093": {
+   "id": "1571731355451134093",
+   "sv": "CYPHERHOOD™ | Hip-Hop, Freestyle & Producción Musical",
+   "g": "1074328197400887388",
+   "canal": "1222380923048296459",
+   "pub": 1794800356496,
+   "a": "LETRAS",
+   "b": "COLESITO",
+   "ganador": "COLESITO",
+   "votos": "1–0"
+  },
+  "1571733062201516184": {
+   "id": "1571733062201516184",
+   "sv": "CYPHERHOOD™ | Hip-Hop, Freestyle & Producción Musical",
+   "g": "1074328197400887388",
+   "canal": "1222380923048296459",
+   "pub": 1794800763417,
+   "a": "LAMBO",
+   "b": "yukan",
+   "ganador": "LAMBO",
+   "votos": "1–0"
   }
  },
  "llaves": {
-  "1564124759363682448": {
-   "id": "1564124759363682448",
-   "sv": "[FFA] Freestyle For All 👾",
-   "g": "1468472442925092958",
-   "canal": "1487206164864438513",
-   "pub": 1792986802665,
-   "ed": 1792987610194,
-   "texto": "`[ FINAL ]`\n⌞ZA⌝ 🆚 ⌞GIAN⌝\n⌞GIAN⌝ 🆚 ⌞LEWITO⌝\n⌞GIAN⌝ 🆚 ⌞TUCA⌝",
-   "batallas": [
-    [
-     "FINAL",
-     [
-      "ZA",
-      "GIAN"
-     ],
-     "GIAN",
-     "veredicto",
-     []
-    ],
-    [
-     "FINAL",
-     [
-      "GIAN",
-      "LEWITO"
-     ],
-     "GIAN",
-     "veredicto",
-     []
-    ],
-    [
-     "FINAL",
-     [
-      "GIAN",
-      "TUCA"
-     ],
-     "GIAN",
-     "veredicto",
-     []
-    ]
-   ]
-  },
   "1564386148485431439": {
    "id": "1564386148485431439",
    "sv": "#FDS ╏FREESTYLE DISCORD SERIES",

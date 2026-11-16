@@ -16646,11 +16646,10 @@
   "tg_c": {
    "bestia": 2,
    "clasico": 2,
-   "dg": 19,
+   "dg": 20,
    "fg": 8,
    "riv": 18,
-   "venc": 16,
-   "vengo": 1
+   "venc": 16
   },
   "tg_p": {
    "paises": 6,
@@ -34414,15 +34413,15 @@
   "tg_c": {
    "bestia": 1,
    "clasico": 4,
-   "dg": 9,
+   "dg": 8,
    "fp": 1,
    "riv": 15,
-   "venc": 9,
+   "venc": 8,
    "vengo": 1
   },
   "tg_p": {
    "paises": 7,
-   "paisesg": 5
+   "paisesg": 4
   },
   "nac": {
    "evn": 6,
