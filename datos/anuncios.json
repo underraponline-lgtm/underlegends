@@ -1,5 +1,5 @@
 {
- "cuando": "2026-11-16T21:56:27+00:00",
+ "cuando": "2026-11-16T22:26:39+00:00",
  "anuncios": [
   {
    "nombre": "¡SE LLEGÓ LA GRAN NOCHE!",
@@ -7401,6 +7401,15 @@
  "oficiales": [
   {
    "servidor": "LKR",
+   "canal": "『🔔』Anuncios",
+   "tit": "FORMATO DE LA MULTIVERS 💜🖤",
+   "tx": "RONDA 1️⃣ : 8X8 ( Temática o personajes Contra Puestos ) RONDA 2️⃣ : MINUTO DE IDA RONDA 3️⃣ : MINUTO DE VUELTA RONDA 4️⃣ : DELUXE ( 3 en Akapela y 5 con Beat ) EN LA REPLICA ❌ : 4X4 5 ENTRADAS",
+   "cuando": "2026-11-16T22:05:04",
+   "msg_id": "1572009637203410985",
+   "link": "https://discord.com/channels/1558611504046153750/1567688556460244992/1572009637203410985"
+  },
+  {
+   "servidor": "LKR",
    "canal": "anuncios",
    "tit": "y no se lo crean, estan jugando el GTA 6",
    "tx": "",
@@ -7416,15 +7425,6 @@
    "cuando": "2026-11-16T16:43:16",
    "msg_id": "1571928657599922237",
    "link": "https://discord.com/channels/1558611504046153750/1558611505040064604/1571928657599922237"
-  },
-  {
-   "servidor": "LKR",
-   "canal": "anuncios",
-   "tit": "YO TAMBIÉN ME DESCONECTARE POR 4 DIAS PORQUE NECESITO UN DESCANSO TAMBIÉN PORQUE TODOS LOS",
-   "tx": "",
-   "cuando": "2026-11-16T15:37:29",
-   "msg_id": "1571912102149623959",
-   "link": "https://discord.com/channels/1558611504046153750/1558611505040064604/1571912102149623959"
   },
   {
    "servidor": "URBF",

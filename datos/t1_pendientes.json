@@ -1442,6 +1442,7 @@
   ["", "Nombre desconocido", "evento #652", "El felpudo 974 🇨🇫", "", "Pendiente", "", "", "", ""],
   ["", "Nombre desconocido", "evento #652", "bootraxx", "BTRX", "Pendiente", "", "", "", ""],
   ["", "Alias posible", "el ciclo · una cuenta, dos nombres", "DOS NOMBRES: «bootraxx» → «BTRX» · cuenta 1122273746099638354", "1 prueba(s) · se anotó como «Bootraxx»", "Pendiente", "", "", "", ""],
-  ["", "Batalla sin ganador", "llaves de Discord", "RED BULL COLOMBIA · LKR · 09/11 · cuartos · Majiztral 🇨🇴 🆚 RICARD", "no aparece nadie después · https://discord.com/channels/1558611504046153750/1560645507095728278/1569438907714769002", "Pendiente", "", "", "", ""]
+  ["", "Batalla sin ganador", "llaves de Discord", "RED BULL COLOMBIA · LKR · 09/11 · cuartos · Majiztral 🇨🇴 🆚 RICARD", "no aparece nadie después · https://discord.com/channels/1558611504046153750/1560645507095728278/1569438907714769002", "Resuelto", "la llave ya dice quién ganó", "el ciclo", "", ""],
+  ["", "Bracket incompleto", "llaves de Discord", "RED BULL COLOMBIA · LKR · 09/11", "sin campeón y sin tocar hace 12 h o más: la guía (Parte 1) lo descarta y NO se sumó nada. Si cuenta, completa la final en la llave | final: RICARD vs VANDU | cuartos: Majiztral 🇨🇴 vs RICARD · https://discord.com/channels/1558611504046153750/1560645507095728278/1569438907714769002", "Resuelto", "el evento ya tiene campeón", "el ciclo", "", ""]
  ]
 }
