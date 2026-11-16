@@ -231,8 +231,10 @@ export function explicar(sub, c) {
     out.notas.push(<>Cuenta eventos <b>seguidos</b> llegando arriba de la llave: la final si es de menos de 16, semis de 16 a 31 y cuartos de 32 a 63.</>);
     if (f && arriba) {
       const [a0, a1] = rch(arriba);
-      contra([['Ahora', r0, a0, String], ['La más larga', r1, a1, String]]);
-      if (a0 >= r0) out.pasos.push(<>Encadena <b>{pl(a0 - r0 + 1, 'evento', 'eventos')}</b> más y pasas a {A}.</>);
+      contra(c.larga ? [['La más larga', r1, a1, String], ['Ahora', r0, a0, String]] : [['Ahora', r0, a0, String], ['La más larga', r1, a1, String]]);
+      // «La más larga» (16/11/2026): para pasarlo, tu racha de ahora tiene que superar su más larga
+      if (c.larga && a1 >= r1) out.pasos.push(<>Llega a <b>{pl(a1 + 1, 'evento seguido', 'eventos seguidos')}</b> (te faltan {a1 + 1 - r0}) y pasas a {A}.</>);
+      else if (!c.larga && a0 >= r0) out.pasos.push(<>Encadena <b>{pl(a0 - r0 + 1, 'evento', 'eventos')}</b> más y pasas a {A}.</>);
     }
     out.pasos.push(<>Si en tu próximo evento no llegas arriba, la racha vuelve a 0.</>);
   } else if (sub === 'eventos' && c.general) {

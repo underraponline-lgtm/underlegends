@@ -463,11 +463,27 @@ const SUBS = {
     baj: <>Como un medallero: primero los oros, después las platas y después los bronces. Quien no subió al podio no aparece.</>,
     dato: (f) => (f.oro || 0) + ' · ' + (f.seg || 0) + ' · ' + (f.ter || 0),
   },
+  // 🔥 DOS VISTAS DESDE EL 16/11/2026 (Dlx: «el ranking de rachas debería ser máxima, no? y quizás actual también»).
+  // Hasta ahí se ordenaba por la que lleva AHORA (`racha`: actual × 1000 + máxima), así que Oasis, con la más larga de
+  // la temporada (13), salía 6.º detrás de rachas vivas de 4 y 7. Manda «La más larga»; «Ahora», la de antes
   rachas: {
-    et: 'Rachas', filas: (L) => (L.d.tabla || []).filter((f) => ((f.rch || [])[1] || 0) > 0), orden: 'racha',
-    cols: ['i', 'n', 'ract', 'rmax', 'ult', 'ev'], movil: ['i', 'n', 'ract', 'rmax'],
-    baj: <>Eventos seguidos llegando arriba de la llave: la <b>final</b> si es de menos de 16, la <b>semifinal</b> de 16 a 31 y <b>cuartos</b> de 32 a 63.</>,
-    valor: [(f) => (f.rch || [0])[0], 'de racha'], dato: (f) => (f.rch || [0])[0] + ' SEGUIDOS',
+    et: 'Rachas',
+    modos: [
+      ['La más larga', {
+        filas: (L) => (L.d.tabla || []).filter((f) => ((f.rch || [])[1] || 0) > 0),
+        orden: (a, b) => (((b.rch || [])[1] || 0) - ((a.rch || [])[1] || 0)) || (((b.rch || [])[0] || 0) - ((a.rch || [])[0] || 0)) ||
+          ((b.ev || 0) - (a.ev || 0)),
+        cols: ['i', 'n', 'rmax', 'ract', 'ult', 'ev'], movil: ['i', 'n', 'rmax', 'ract'],
+        baj: <>La <b>más larga</b> de la temporada: eventos seguidos llegando arriba de la llave —la <b>final</b> si es de menos de 16, la <b>semifinal</b> de 16 a 31 y <b>cuartos</b> de 32 a 63—. A igual racha, el que la lleva viva.</>,
+        valor: [(f) => (f.rch || [0, 0])[1], 'de racha'], dato: (f) => (f.rch || [0, 0])[1] + ' SEGUIDOS',
+      }],
+      ['Ahora', {
+        filas: (L) => (L.d.tabla || []).filter((f) => ((f.rch || [])[0] || 0) > 0), orden: 'racha',
+        cols: ['i', 'n', 'ract', 'rmax', 'ult', 'ev'], movil: ['i', 'n', 'ract', 'rmax'],
+        baj: <>La que llevan <b>ahora</b>: si en su próximo evento no llegan arriba de la llave, vuelve a 0. A igual racha, la más larga de la temporada.</>,
+        valor: [(f) => (f.rch || [0])[0], 'de racha'], dato: (f) => (f.rch || [0])[0] + ' SEGUIDOS',
+      }],
+    ],
   },
   // 🎤 QUIÉN PARTICIPÓ MÁS (Dlx, 07/10/2026: «en Ranking agrega la sección de eventos… las personas que participaron
   // más»). Los eventos jugados en la temporada, en todos los servidores; a igual cantidad, el de más puntos
@@ -661,7 +677,9 @@ function TuTira({ x, cfg, sub, base, iYo, lugar, yo, dc, encontrarme, tira, mira
   const ctx = (f, n, arriba) => ({ liga, yo, f, n, arriba, base, iYo, grupo: cfg.grupo, nombreDe, numero: (g) => numero(cfg, g),
     sinPuesto: !!(f && cfg.sinPuesto && cfg.sinPuesto(f)), lugarTxt: lugar && !f ? lugar.txt : '',
     // Actividad «En general» (eventos + liga + duelos) o «En eventos»: cada una se explica con lo que la ordena
-    general: !!(cfg.cols && cfg.cols.includes('act')) });
+    general: !!(cfg.cols && cfg.cols.includes('act')),
+    // Rachas «La más larga» o «Ahora»: la que ordena es la primera columna después del nombre
+    larga: !!(cfg.cols && cfg.cols[2] === 'rmax') });
   if (!yo && !dc) {
     return (
       <div className="rk-tu invita" ref={tira}>

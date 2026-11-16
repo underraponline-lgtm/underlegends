@@ -696,11 +696,13 @@ export function LosQueMandan({ liga, dc }) {
     [[f.oro || 0, '1.º'], [f.seg || 0, '2.º'], [f.ter || 0, '3.º'], [f.ev || 0, 'EVENTOS']])),
     iMed >= 5 ? <Puesto cara={cara} quien={quien} pos={'#' + (iMed + 1)} txt={'1.º ×' + (yo.oro || 0) + ' · 2.º ×' + (yo.seg || 0) + ' · 3.º ×' + (yo.ter || 0)} href="#/ranking/podios" /> : null]);
   const con = T.filter((f) => (f.rch || []).length > 1 && f.rch[1]);
-  const vivas = con.filter((f) => f.rch[0]);
-  const raT = (vivas.length ? vivas : con).slice().sort((a, b) => (vivas.length ? b.rch[0] - a.rch[0] : b.rch[1] - a.rch[1]) || a.pos - b.pos);
-  const racha = (f) => (vivas.length ? f.rch[0] : f.rch[1]);
-  cats.push(['rachas', 'Rachas', raT.slice(0, 5).map((f) => per(f, 'temporada', racha(f), racha(f), 'SEGUIDOS', vivas.length ? 'Eventos seguidos, y sigue' : 'Su mejor racha de la temporada', '',
-    [[racha(f), vivas.length ? 'SEGUIDOS, Y SIGUE' : 'SEGUIDOS'], [f.rch[1] || 0, 'SU MEJOR'], [f.ev || 0, 'EVENTOS']])),
+  // 🔥 la más larga, como el ranking de Rachas desde el 16/11/2026 (Dlx: «debería ser máxima»): hasta ahí mandaba la viva
+  // y el #1 de acá no era el del ranking. A igual racha, la que sigue viva
+  const raT = con.slice().sort((a, b) => (b.rch[1] - a.rch[1]) || (b.rch[0] - a.rch[0]) || a.pos - b.pos);
+  const racha = (f) => f.rch[1];
+  const sigue = (f) => f.rch[0] && f.rch[0] === f.rch[1];
+  cats.push(['rachas', 'Rachas', raT.slice(0, 5).map((f) => per(f, 'temporada', racha(f), racha(f), 'SEGUIDOS', sigue(f) ? 'Su mejor racha, y sigue' : 'Su mejor racha de la temporada', '',
+    [[racha(f), sigue(f) ? 'SEGUIDOS, Y SIGUE' : 'SEGUIDOS'], [f.rch[0] || 0, 'AHORA'], [f.ev || 0, 'EVENTOS']])),
     yo ? fila(puestoDe(liga, raT, (f) => f.k === yo.k, racha, 'eventos seguidos'), '#/ranking/rachas') : null]);
   // 🧑‍🤝‍🧑 países y crews no tienen carta: debajo de su bandera o su escudo, sus tres mejores (estirar la bandera la recortaba)
   const mejores = (fs, titulo) => (fs.length ? (

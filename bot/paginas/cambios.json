@@ -11,6 +11,16 @@
  ],
  "cambios": [
     {
+        "version": "5.53",
+        "dia": "2026-11-16",
+        "cuando": "2026-11-16T04:22:52-05:00",
+        "titulo": "Las rachas, por la más larga",
+        "items": [
+            "El ranking de **Rachas** ahora se ordena por **la más larga** de la temporada. La que llevas **ahora** sigue ahí, en su propia pestaña.",
+            "En el Inicio, «Los que mandan» muestra también la racha más larga, igual que el ranking."
+        ]
+    },
+    {
         "version": "5.52",
         "dia": "2026-11-16",
         "cuando": "2026-11-16T04:10:00-05:00",
