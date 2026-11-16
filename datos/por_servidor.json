@@ -2454,6 +2454,20 @@
     "racha": "0/0"
    }
   },
+  "Chocoperro": {
+   "DDS": {
+    "duelos": "",
+    "ev": 1,
+    "oro": 0,
+    "ovr": 43,
+    "pod": 0,
+    "pts": 4500,
+    "racha": "0/0",
+    "tg": {
+     "nuevo": true
+    }
+   }
+  },
   "Choka": {
    "SR": {
     "duelos": "",
@@ -2814,11 +2828,11 @@
    },
    "DDS": {
     "duelos": "",
-    "ev": 11,
+    "ev": 12,
     "oro": 2,
     "ovr": 51,
     "pod": 2,
-    "pts": 46950,
+    "pts": 54825,
     "racha": "0/2",
     "tg": {
      "fin": 2,
@@ -3518,6 +3532,20 @@
     }
    }
   },
+  "Dominic 🇲🇽": {
+   "DDS": {
+    "duelos": "",
+    "ev": 1,
+    "oro": 0,
+    "ovr": 43,
+    "pod": 0,
+    "pts": 7875,
+    "racha": "0/0",
+    "tg": {
+     "nuevo": true
+    }
+   }
+  },
   "Dominick": {
    "ACAD": {
     "duelos": "0/2",
@@ -4068,6 +4096,20 @@
     "tg": {
      "fin": 1,
      "fund": true
+    }
+   }
+  },
+  "El felpudo 974 🇨🇫": {
+   "DDS": {
+    "duelos": "",
+    "ev": 1,
+    "oro": 0,
+    "ovr": 43,
+    "pod": 0,
+    "pts": 4500,
+    "racha": "0/0",
+    "tg": {
+     "nuevo": true
     }
    }
   },
@@ -4800,11 +4842,11 @@
    },
    "DDS": {
     "duelos": "",
-    "ev": 1,
+    "ev": 2,
     "oro": 0,
-    "ovr": 42,
+    "ovr": 43,
     "pod": 0,
-    "pts": 2500,
+    "pts": 7000,
     "racha": "0/0"
    },
    "FFA": {
@@ -7745,6 +7787,18 @@
    }
   },
   "Liam": {
+   "DDS": {
+    "duelos": "",
+    "ev": 1,
+    "oro": 0,
+    "ovr": 43,
+    "pod": 0,
+    "pts": 4500,
+    "racha": "0/0",
+    "tg": {
+     "nuevo": true
+    }
+   },
    "FFA": {
     "duelos": "",
     "ev": 2,
@@ -9325,10 +9379,7 @@
     "ovr": 46,
     "pod": 0,
     "pts": 18950,
-    "racha": "0/1",
-    "tg": {
-     "llave": true
-    }
+    "racha": "0/1"
    },
    "FDS": {
     "duelos": "",
@@ -9438,12 +9489,15 @@
    },
    "DDS": {
     "duelos": "",
-    "ev": 1,
+    "ev": 2,
     "oro": 0,
-    "ovr": 42,
-    "pod": 0,
-    "pts": 2500,
-    "racha": "0/0"
+    "ovr": 46,
+    "pod": 1,
+    "pts": 13750,
+    "racha": "1/1",
+    "tg": {
+     "fin": 1
+    }
    },
    "FDS": {
     "duelos": "",
@@ -15319,6 +15373,21 @@
     }
    }
   },
+  "bootraxx": {
+   "DDS": {
+    "duelos": "",
+    "ev": 1,
+    "oro": 1,
+    "ovr": 46,
+    "pod": 1,
+    "pts": 16875,
+    "racha": "1/1",
+    "tg": {
+     "fin": 1,
+     "nuevo": true
+    }
+   }
+  },
   "botrax": {
    "DDS": {
     "duelos": "",
@@ -16055,8 +16124,7 @@
     "racha": "0/1",
     "tg": {
      "fin": 1,
-     "fund": true,
-     "llave": true
+     "fund": true
     }
    },
    "FFA": {

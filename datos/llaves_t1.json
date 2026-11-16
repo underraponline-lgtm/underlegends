@@ -58156,5 +58156,144 @@
    "org": "juega",
    "v": 1
   }
+ },
+ "652": {
+  "dia": "2026-11-16",
+  "escala": "8-15",
+  "fecha": "16/11",
+  "links": [
+   "https://discord.com/channels/1443770831598649528/1563698791595507743/1571960186447470803"
+  ],
+  "n": 652,
+  "nombre": "SIX SEVEN STYLE 3",
+  "participantes": 8,
+  "rondas": [
+   {
+    "b": [
+     [
+      [
+       "Bootraxx",
+       "Liam"
+      ],
+      "Bootraxx",
+      ""
+     ],
+     [
+      [
+       "CrisZJ",
+       "Fisics"
+      ],
+      "CrisZJ",
+      ""
+     ],
+     [
+      [
+       "Mito",
+       "Chocoperro"
+      ],
+      "Mito",
+      ""
+     ],
+     [
+      [
+       "Dominic 🇲🇽",
+       "El felpudo 974 🇨🇫"
+      ],
+      "Dominic 🇲🇽",
+      ""
+     ]
+    ],
+    "r": "Cuartos"
+   },
+   {
+    "b": [
+     [
+      [
+       "Bootraxx",
+       "CrisZJ"
+      ],
+      "Bootraxx",
+      ""
+     ],
+     [
+      [
+       "Mito",
+       "Dominic 🇲🇽"
+      ],
+      "Mito",
+      ""
+     ],
+     [
+      [
+       "Dominic 🇲🇽",
+       "crizj"
+      ],
+      "",
+      "sin ganador: espera en ✅ Decidir"
+     ]
+    ],
+    "r": "Semifinales"
+   },
+   {
+    "b": [
+     [
+      [
+       "bootraxx",
+       "Mito"
+      ],
+      "bootraxx",
+      ""
+     ]
+    ],
+    "r": "Final"
+   }
+  ],
+  "sv": "DDS",
+  "tabla": [
+   [
+    "bootraxx",
+    "Campeón",
+    7500
+   ],
+   [
+    "Mito",
+    "Subcampeón",
+    5000
+   ],
+   [
+    "CrisZJ",
+    "Semifinal",
+    3500
+   ],
+   [
+    "Dominic 🇲🇽",
+    "Semifinal",
+    3500
+   ],
+   [
+    "Chocoperro",
+    "Cuartos",
+    2000
+   ],
+   [
+    "El felpudo 974 🇨🇫",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Fisics",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Liam",
+    "Cuartos",
+    2000
+   ]
+  ],
+  "ver": {
+   "min": 38,
+   "v": 1
+  }
  }
 }

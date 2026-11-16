@@ -138,10 +138,22 @@
     "nivel": "C",
     "base": 6000,
     "o": 27,
-    "estado": "suelto",
-    "ev": 0,
-    "fase": "",
-    "valor": 6000
+    "estado": "cazado",
+    "ev": 1,
+    "fase": "Subcampeón",
+    "valor": 6000,
+    "caza": {
+     "n": 652,
+     "evento": "SIX SEVEN STYLE 3",
+     "sv": "DDS",
+     "t": "2026-11-16T18:48:34Z",
+     "por": [
+      {
+       "n": "bootraxx",
+       "cobra": 12000
+      }
+     ]
+    }
    },
    {
     "n": "Refran",

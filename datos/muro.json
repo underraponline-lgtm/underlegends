@@ -198,7 +198,7 @@
 "temporada"
 ]
 },
-"nxuz": {
+"mito": {
 "rg": "C",
 "c": [
 "competitivo",
@@ -207,7 +207,7 @@
 "temporada"
 ]
 },
-"mito": {
+"nxuz": {
 "rg": "C",
 "c": [
 "competitivo",
@@ -7772,6 +7772,68 @@
 "desde": 439
 }
 ]
+},
+"2026-11-16": {
+"tipo": "resnoche",
+"t": "2026-11-17T08:00:00Z",
+"dia": "2026-11-16",
+"eventos": 1,
+"part": 8,
+"campeones": [
+{
+"ev": "SIX SEVEN STYLE 3",
+"sv": "DDS",
+"ll": 652,
+"quien": [
+[
+"bootraxx",
+""
+]
+]
+}
+],
+"suman": [
+{
+"n": "bootraxx",
+"k": "",
+"pts": 7500,
+"ev": 1
+},
+{
+"n": "Mito",
+"k": "mito",
+"pts": 5000,
+"ev": 1
+},
+{
+"n": "CrisZJ",
+"k": "criszj",
+"pts": 3500,
+"ev": 1
+}
+],
+"suben": [
+{
+"n": "Fisics",
+"k": "",
+"de": 365,
+"a": 340
+},
+{
+"n": "Liam",
+"k": "",
+"de": 148,
+"a": 135
+}
+],
+"sorpresas": [
+{
+"n": "bootraxx",
+"k": "",
+"que": "debut",
+"ev": "SIX SEVEN STYLE 3"
+}
+]
 }
 },
 "extra": {
@@ -7861,7 +7923,7 @@
 "nxuz": 0,
 "okam": 2,
 "velatz": 0,
-"mito": 1,
+"mito": 2,
 "zignos": 0,
 "molusco": 0,
 "guess": 1,

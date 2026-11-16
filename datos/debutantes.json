@@ -4,7 +4,7 @@
   "ACAD": "2026-11-14",
   "CH": "2026-11-16",
   "DDF": "2026-11-16",
-  "DDS": "2026-11-09",
+  "DDS": "2026-11-16",
   "FDS": "2026-11-13",
   "FFA": "2026-11-16",
   "FRZ": "2026-11-12",
@@ -604,6 +604,18 @@
    "vence": "2026-11-15T01:00:55+00:00",
    "vencido": true
   },
+  "Chocoperro": {
+   "chat": "2026-11-16",
+   "con": null,
+   "cumplido": "",
+   "debut": "2026-11-16T18:48:34+00:00",
+   "did": "",
+   "evento": "SIX SEVEN STYLE 3",
+   "n": 652,
+   "sv": "DDS",
+   "vence": "2026-11-23T18:48:34+00:00",
+   "vencido": false
+  },
   "Choka": {
    "avisado": "2026-10-16",
    "chat": "2026-10-16",
@@ -816,6 +828,18 @@
    "vence": "2026-11-21T20:22:29+00:00",
    "vencido": false
   },
+  "Dominic": {
+   "chat": "2026-11-16",
+   "con": null,
+   "cumplido": "",
+   "debut": "2026-11-16T18:48:34+00:00",
+   "did": "",
+   "evento": "SIX SEVEN STYLE 3",
+   "n": 652,
+   "sv": "DDS",
+   "vence": "2026-11-23T18:48:34+00:00",
+   "vencido": false
+  },
   "Drexc": {
    "con": null,
    "cumplido": "",
@@ -876,6 +900,18 @@
    "sv": "ACAD",
    "vence": "2026-11-14T21:37:35+00:00",
    "vencido": true
+  },
+  "El felpudo 974": {
+   "chat": "2026-11-16",
+   "con": null,
+   "cumplido": "",
+   "debut": "2026-11-16T18:48:34+00:00",
+   "did": "",
+   "evento": "SIX SEVEN STYLE 3",
+   "n": 652,
+   "sv": "DDS",
+   "vence": "2026-11-23T18:48:34+00:00",
+   "vencido": false
   },
   "El novio de tu novia": {
    "avisado": "2026-11-02",
@@ -1461,7 +1497,7 @@
    "n": 597,
    "sv": "LKR",
    "vence": "2026-11-16T19:49:54+00:00",
-   "vencido": false
+   "vencido": true
   },
   "Kain": {
    "avisado": "2026-10-16",
@@ -2070,7 +2106,7 @@
    "n": 597,
    "sv": "LKR",
    "vence": "2026-11-16T19:49:54+00:00",
-   "vencido": false
+   "vencido": true
   },
   "NILS": {
    "avisado": "2026-10-25",
@@ -3172,6 +3208,18 @@
    "n": 636,
    "sv": "CH",
    "vence": "2026-11-21T20:22:29+00:00",
+   "vencido": false
+  },
+  "bootraxx": {
+   "chat": "2026-11-16",
+   "con": null,
+   "cumplido": "",
+   "debut": "2026-11-16T18:48:34+00:00",
+   "did": "",
+   "evento": "SIX SEVEN STYLE 3",
+   "n": 652,
+   "sv": "DDS",
+   "vence": "2026-11-23T18:48:34+00:00",
    "vencido": false
   },
   "botrax": {

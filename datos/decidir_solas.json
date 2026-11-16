@@ -4426,6 +4426,54 @@
      371
     ]
    }
+  },
+  {
+   "id": "a2de12cd92",
+   "tipo": "Batalla sin ganador",
+   "sec": "SIX SEVEN STYLE 3 · DDS · 16/11 · #652",
+   "que": "¿Quién ganó en semifinales?\nDominic 🇲🇽 🆚 crizj",
+   "r": "No se jugó",
+   "regla": "R23 · el tercer puesto que la llave escribe como otra semifinal, sin ganador: los dos quedan semifinalistas",
+   "rk": "R23",
+   "por": "el ciclo",
+   "porque": "es el tercer puesto (Dominic 🇲🇽 y crizj perdieron las semis) y la llave no dice quién lo ganó: los dos quedan como semifinalistas, el promedio de 3.º y 4.º",
+   "t": 1794859482146,
+   "filas": [
+    1436
+   ],
+   "variantes": [
+    "SIX SEVEN STYLE 3 · DDS · 16/11 · semifinales · Dominic 🇲🇽 🆚 crizj"
+   ],
+   "escribio": {
+    "batalla": "SIX SEVEN STYLE 3 · DDS · 16/11 · semifinales · Dominic 🇲🇽 🆚 crizj"
+   }
+  },
+  {
+   "id": "15e4934ba4",
+   "tipo": "Nombre desconocido",
+   "sec": "SIX SEVEN STYLE 3 · DDS · 16/11 · #652",
+   "que": "¿Quién es «Chocoperro»?",
+   "r": "Es Choco",
+   "regla": "Discord · su cuenta de Discord: la inscripción, el podio, la llave o la llamada",
+   "rk": "Discord",
+   "por": "el ciclo (su cuenta de Discord)",
+   "porque": "alias de Choco: estaba en la llamada del evento con ese nombre",
+   "t": 1794859482146,
+   "filas": [
+    1438
+   ],
+   "variantes": [
+    "Chocoperro"
+   ],
+   "escribio": {
+    "alias": [
+     "Chocoperro",
+     "Choco"
+    ],
+    "filas": [
+     372
+    ]
+   }
   }
  ],
  "deshechas": []

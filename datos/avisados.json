@@ -50885,5 +50885,127 @@
    ]
   ],
   "v": 2
+ },
+ "652": {
+  "antes": {
+   "CrisZJ": [
+    260,
+    36,
+    true
+   ],
+   "Fisics": [
+    365,
+    261,
+    true
+   ],
+   "Liam": [
+    148,
+    242,
+    false
+   ],
+   "Mito": [
+    24,
+    25,
+    false
+   ]
+  },
+  "canal": "1443793172013776997",
+  "duelos": [
+   [
+    "Bootraxx",
+    "Liam",
+    "Bootraxx"
+   ],
+   [
+    "CrisZJ",
+    "Fisics",
+    "CrisZJ"
+   ],
+   [
+    "Mito",
+    "Chocoperro",
+    "Mito"
+   ],
+   [
+    "Dominic 🇲🇽",
+    "El felpudo 974 🇨🇫",
+    "Dominic 🇲🇽"
+   ],
+   [
+    "Bootraxx",
+    "CrisZJ",
+    "Bootraxx"
+   ],
+   [
+    "Mito",
+    "Dominic 🇲🇽",
+    "Mito"
+   ],
+   [
+    "bootraxx",
+    "Mito",
+    "bootraxx"
+   ]
+  ],
+  "ev_antes": {
+   "CrisZJ": 35,
+   "Fisics": 5,
+   "Liam": 3,
+   "Mito": 41
+  },
+  "fecha": "16/11",
+  "firma": "3095ad2c702f985a",
+  "msg": "1571969969833517087",
+  "nombre": "SIX SEVEN STYLE 3",
+  "num": 652,
+  "participantes": 8,
+  "sello": {
+   "bootraxx": ""
+  },
+  "sv": "DDS",
+  "t": "2026-11-16T19:54:43Z",
+  "tabla": [
+   [
+    "bootraxx",
+    "Campeón",
+    7500
+   ],
+   [
+    "Mito",
+    "Subcampeón",
+    5000
+   ],
+   [
+    "CrisZJ",
+    "Semifinal",
+    3500
+   ],
+   [
+    "Dominic 🇲🇽",
+    "Semifinal",
+    3500
+   ],
+   [
+    "Liam",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Fisics",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Chocoperro",
+    "Cuartos",
+    2000
+   ],
+   [
+    "El felpudo 974 🇨🇫",
+    "Cuartos",
+    2000
+   ]
+  ],
+  "v": 2
  }
 }
