@@ -11,6 +11,16 @@
  ],
  "cambios": [
     {
+        "version": "5.64",
+        "dia": "2026-11-16",
+        "cuando": "2026-11-16T15:34:00-05:00",
+        "titulo": "Competencias: tu rival sin carta, y cuándo entras a una liga",
+        "items": [
+            "En **tu cruce**, si tu rival todavía no tiene carta, se ve con **su nombre y su cara**, y un nombre largo ya no se sale de la pantalla en el celular.",
+            "Si no estás en ninguna liga, el cuadro de arriba te dice **qué día entras** y desde cuándo tienes que jugar para eso."
+        ]
+    },
+    {
         "version": "5.63",
         "dia": "2026-11-16",
         "cuando": "2026-11-16T15:27:00-05:00",
