@@ -550,6 +550,46 @@ MATCH_N = re.compile(r'(?im)^([ \t>*_▪️•·-]*)(?:MATCH|PARTIDA|PARTIDO|COM
                      r'[ \t]*#?[ \t]*\d{1,3}[ \t]*[:.)\-–—][ \t]*')
 
 
+# 📦 EL DIALECTO DE CAJA (FMS Ceuta, RED BULL BATALLA, 10 a 15/11/2026): cada batalla en TRES renglones dentro de un
+# marco dibujado con los caracteres de caja (U+2500 a U+257F):
+#
+#     ╭━━━━━━━━━━╮
+#     ┃ ALFINPAPA
+#     ┃     ⚔️ 𝐕𝐒 ⚔️
+#     ┃   TMAX
+#     ┣━━━━━━━━━━┫
+#
+# y el podio en una tabla: `║ 🥇 CAMPEÓN: ║ MATS`. El lector tomaba cada renglón ENTERO como un rapero —«┃ MAJIZTRAL
+# ┣━━━━┫ ┃ MATS ┃ ⚡» contra «Marcos»—: la del 15/11 entró con 5 participantes de 8 y un campeón que no existe. Se traduce a
+# lo que el lector ya sabe leer: sin el dibujo, el renglón que sólo dice «VS» pasa a ser `🆚` (y `unir_continuadas()` lo
+# junta con el de arriba y el de abajo, como ya hacía con «A» / «vs B»), y los bordes, renglones vacíos que separan cruces.
+# ⚠️ SÓLO SI LA LLAVE ESTÁ DIBUJADA: tres renglones o más que empiezan con `┃`, `║` o `│`. Un `━━━` suelto de adorno
+# (`🐂━━━━🐂`, el `╎` de un título) no la vuelve de este dialecto, y las llaves de los demás no cambian
+CAJA = re.compile('[\u2500-\u257f]')
+CAJA_RENGLON = re.compile(r'(?m)^[ \t]*[┃║│]')
+#: el lugar todavía sin nombre de la plantilla dibujada: «PARTICIPANTE 1», «GANADOR CUARTO 1», «FINALISTA 2» (Krish, 10/11,
+#: la publicó vacía antes de jugarse). Es el `⌞⌝ 🆚 ⌞⌝` de las otras llaves: un cupo, no un rapero que cobra
+#: un cruce `⌞A⌝ ❄️ ⌞B` con el segundo marco sin cerrar hasta el final del renglón (ver `traducir()`)
+MARCO_SIN_CERRAR = re.compile(r'^[ \t]*⌞[^⌞⌝\n]*[^\W_][^⌞⌝\n]*⌝[ \t]*[^\w\s⌞⌝]{1,4}[ \t]*⌞[^⌞⌝\n]*[^\W_][^⌞⌝\n]*$')
+CAJA_CUPO = re.compile(r'^(?:participante|jugador|competidor|rapero|finalista|ganador|perdedor)\b[\w \t]{0,20}?#?[ \t]*\d{1,2}$', re.I)
+
+
+def _caja(texto):
+    if len(CAJA_RENGLON.findall(texto)) < 3:
+        return texto
+    out = []
+    for l in texto.split('\n'):
+        if not CAJA.search(l):
+            out.append(l)
+            continue
+        # el número en círculo de adelante es la etiqueta del cruce («┃ ① TEITO»: la semi 1), no parte del nombre
+        s = re.sub(r'^[\u2460-\u24ff\u2776-\u2793]\s*', '', re.sub(r'[ \t]{2,}', ' ', CAJA.sub(' ', l)).strip())
+        letras = re.sub(r'[\W_]', '', s)
+        # «VS» solo, o `🆚` solo (`║ 🆚` en la caja de la final): el separador
+        out.append('🆚' if letras.upper() == 'VS' or (not letras and '🆚' in s) else s if letras and not CAJA_CUPO.match(s) else '')
+    return '\n'.join(out)
+
+
 def traducir(texto):
     """La llave escrita en el dialecto de otro servidor, en el que este lector lee.
 
@@ -591,6 +631,7 @@ def traducir(texto):
     """
     if not texto:
         return texto or ''
+    texto = _caja(texto)
     # 🔑 el emoji entre dos `<>` de más: `『A』<<:versus_:…>> 『B』` (DIMENSIÓN DEL FREESTYLE)
     t = re.sub(r'<(<a?:\w+:\d+>)>', r'\1', texto)
     # 🔑 «MATCH 1: P vs L» (la plantilla de doble eliminación, y lo que la IA escribe de una llave en imagen): el
@@ -670,7 +711,14 @@ def traducir(texto):
     # `3er Y 4º PUESTO` como encabezado: sólo si abajo hay una batalla,
     # así la línea del podio (`3ER PUESTO: X`) no cambia.
     # ⚠️ `split` y no `splitlines`: el salto del final se queda donde estaba
-    ls = _podio_con_medallas(t.split('\n'))
+    # 🔧 EL `⌝` QUE FALTA AL FINAL DEL CRUCE (ME QUISIERA MORIR… MULTIVERSE VOL.1, FMS Ceuta, 27/10/2026): `⌞Teo ⌝ ❄️ ⌞ ZiarKI 🇪🇸`
+    # sin cerrar, y `unir_continuadas()` le pegaba los tres cruces de abajo: UN cruce de ocho. Si el renglón ya trae un marco
+    # cerrado, un separador y el segundo abierto hasta el final, y el que sigue arranca otro marco, el `⌝` era un tipeo
+    ls = t.split('\n')
+    for i, l in enumerate(ls):
+        if MARCO_SIN_CERRAR.match(l) and next((x for x in ls[i + 1:] if x.strip()), '').lstrip().startswith('⌞'):
+            ls[i] = l.rstrip() + '⌝'
+    ls = _podio_con_medallas(ls)
     for i, l in enumerate(ls):
         # 🔑 Y LA MEDALLA SOLA DE ENCABEZADO: `# ••• 🥉 •••` arriba de la batalla
         # por el tercero (ONE PIECE, FFA 30/09/2026). Sin letras ni números:

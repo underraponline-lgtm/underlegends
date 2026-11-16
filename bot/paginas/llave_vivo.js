@@ -271,8 +271,25 @@
   }
 
   /* `escuchar.traducir()`: los dialectos de los otros servidores */
+  /* 📦 el dialecto de caja de FMS Ceuta: `escuchar._caja()` (cada batalla en tres renglones dentro de un marco de
+     `┃ ┣━━┫`), sólo si tres renglones o más empiezan con `┃`, `║` o `│` */
+  var CAJA = /[\u2500-\u257F]/;
+  var MARCO_SIN_CERRAR = /^[ \t]*⌞[^⌞⌝\n]*[\p{L}\p{N}][^⌞⌝\n]*⌝[ \t]*[^\p{L}\p{N}_\s⌞⌝]{1,4}[ \t]*⌞[^⌞⌝\n]*[\p{L}\p{N}][^⌞⌝\n]*$/u;
+  var CAJA_CUPO = /^(?:participante|jugador|competidor|rapero|finalista|ganador|perdedor)\b[\w \t]{0,20}?#?[ \t]*\d{1,2}$/i;
+  function caja(texto) {
+    if ((texto.match(/^[ \t]*[┃║│]/gm) || []).length < 3) return texto;
+    return texto.split('\n').map(function (l) {
+      if (!CAJA.test(l)) return l;
+      var s = l.replace(/[\u2500-\u257F]/g, ' ').replace(/[ \t]{2,}/g, ' ').trim()
+        .replace(/^[\u2460-\u24FF\u2776-\u2793]\s*/, '');
+      var letras = s.replace(/[^\p{L}\p{N}]/gu, '');
+      return letras.toUpperCase() === 'VS' || (!letras && s.indexOf('🆚') >= 0) ? '🆚' : letras && !CAJA_CUPO.test(s) ? s : '';
+    }).join('\n');
+  }
+
   function traducir(texto) {
     if (!texto) return texto || '';
+    texto = caja(texto);
     // el emoji entre dos `<>` de más (DIMENSIÓN DEL FREESTYLE)
     var t = texto.replace(/<(<a?:\w+:\d+>)>/g, '$1');
     // «MATCH 1: P vs L»: `escuchar.MATCH_N`
@@ -316,7 +333,14 @@
       'gu'), '$1 - ');
     t = t.replace(/⌞([^⌞⌝\n]{1,80})⌝/gu, function (_m, x) { return '⌞' + equipoDeBanderas(equipoConX(x)) + '⌝'; });
     t = t.replace(/\[([^\[\]\n]{1,80})\]/gu, function (_m, x) { return '[' + equipoDeBanderas(equipoConX(x)) + ']'; });
-    var ls = podioConMedallas(t.split('\n'));
+    // 🔧 el `⌝` que falta al final del cruce (FMS Ceuta, 27/10): `escuchar.MARCO_SIN_CERRAR`
+    var ls0 = t.split('\n');
+    for (var i0 = 0; i0 < ls0.length; i0++) {
+      if (!MARCO_SIN_CERRAR.test(ls0[i0])) continue;
+      var sig0 = ls0.slice(i0 + 1).find(function (x) { return x.trim(); }) || '';
+      if (sig0.replace(/^\s+/, '').charAt(0) === '⌞') ls0[i0] = ls0[i0].replace(/\s+$/, '') + '⌝';
+    }
+    var ls = podioConMedallas(ls0);
     for (var i = 0; i < ls.length; i++) {
       var l = ls[i];
       // la medalla sola de encabezado (`# ••• 🥉 •••`): abajo va la batalla por el tercero
