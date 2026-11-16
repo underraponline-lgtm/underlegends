@@ -81,19 +81,19 @@
 "temporada"
 ]
 },
+"carlosss": {
+"rg": "S",
+"c": [
+"competitivo",
+"servidor",
+"temporada"
+]
+},
 "panchok": {
 "rg": "S",
 "c": [
 "competitivo",
 "pais",
-"servidor",
-"temporada"
-]
-},
-"carlosss": {
-"rg": "S",
-"c": [
-"competitivo",
 "servidor",
 "temporada"
 ]
@@ -207,6 +207,15 @@
 "temporada"
 ]
 },
+"mito": {
+"rg": "C",
+"c": [
+"competitivo",
+"pais",
+"servidor",
+"temporada"
+]
+},
 "okam": {
 "rg": "C",
 "c": [
@@ -216,18 +225,17 @@
 "temporada"
 ]
 },
-"velatz": {
-"rg": "C",
-"c": []
-},
-"mito": {
-"rg": "C",
+"walker": {
+"rg": "A",
 "c": [
 "competitivo",
-"pais",
 "servidor",
 "temporada"
 ]
+},
+"velatz": {
+"rg": "C",
+"c": []
 },
 "zignos": {
 "rg": "B",
@@ -260,14 +268,6 @@
 "c": [
 "competitivo",
 "pais",
-"servidor",
-"temporada"
-]
-},
-"walker": {
-"rg": "A",
-"c": [
-"competitivo",
 "servidor",
 "temporada"
 ]
@@ -417,6 +417,10 @@
 "temporada"
 ]
 },
+"dominick": {
+"rg": "D",
+"c": []
+},
 "caliz": {
 "rg": "D",
 "c": [
@@ -425,10 +429,6 @@
 "servidor",
 "temporada"
 ]
-},
-"dominick": {
-"rg": "D",
-"c": []
 },
 "mathhias": {
 "rg": "C",
@@ -481,6 +481,10 @@
 "temporada"
 ]
 },
+"19fleivawack": {
+"rg": "B",
+"c": []
+},
 "numberve": {
 "rg": "D",
 "c": [
@@ -498,15 +502,6 @@
 "rg": "D",
 "c": []
 },
-"last": {
-"rg": "E",
-"c": [
-"competitivo",
-"pais",
-"servidor",
-"temporada"
-]
-},
 "masino": {
 "rg": "B",
 "c": [
@@ -515,8 +510,8 @@
 "temporada"
 ]
 },
-"teito": {
-"rg": "E",
+"keider": {
+"rg": "D",
 "c": [
 "competitivo",
 "pais",
@@ -524,8 +519,8 @@
 "temporada"
 ]
 },
-"keider": {
-"rg": "D",
+"teito": {
+"rg": "E",
 "c": [
 "competitivo",
 "pais",
@@ -544,6 +539,15 @@
 },
 "leonart": {
 "rg": "D",
+"c": [
+"competitivo",
+"pais",
+"servidor",
+"temporada"
+]
+},
+"last": {
+"rg": "E",
 "c": [
 "competitivo",
 "pais",
@@ -674,10 +678,6 @@
 "temporada"
 ]
 },
-"jj": {
-"rg": "",
-"c": []
-},
 "player": {
 "rg": "D",
 "c": [
@@ -722,6 +722,10 @@
 "servidor",
 "temporada"
 ]
+},
+"jj": {
+"rg": "",
+"c": []
 },
 "dios": {
 "rg": "",
@@ -785,10 +789,6 @@
 "servidor",
 "temporada"
 ]
-},
-"19fleivawack": {
-"rg": "",
-"c": []
 },
 "artezzy": {
 "rg": "",
@@ -1151,10 +1151,6 @@
 "temporada"
 ]
 },
-"pomberito": {
-"rg": "",
-"c": []
-},
 "andy": {
 "rg": "",
 "c": [
@@ -1241,6 +1237,10 @@
 "c": []
 },
 "under": {
+"rg": "",
+"c": []
+},
+"pomberito": {
 "rg": "",
 "c": []
 },
@@ -2863,23 +2863,6 @@
 }
 },
 "cambios": [
-{
-"tipo": "tarjeta",
-"t": "2026-10-10T04:27:46Z",
-"quien": [
-"Dynoco"
-],
-"carta": "competitivo"
-},
-{
-"tipo": "rango",
-"t": "2026-10-10T06:26:43Z",
-"quien": [
-"Colesito"
-],
-"rg": "B",
-"primero": false
-},
 {
 "tipo": "tarjeta",
 "t": "2026-10-10T07:09:01Z",
@@ -6231,6 +6214,27 @@
 ],
 "rg": "C",
 "primero": false
+},
+{
+"tipo": "rango",
+"t": "2026-11-16T18:40:04Z",
+"quien": [
+"19 FLEIVA WACK"
+],
+"rg": "B",
+"primero": true
+},
+{
+"tipo": "top10",
+"t": "2026-11-16T18:40:04Z",
+"quien": [
+"Carlosss"
+],
+"ks": [
+"carlosss"
+],
+"rk": "temporada",
+"pos": 10
 }
 ],
 "noche_antes": {
@@ -7807,7 +7811,7 @@
 "six",
 "verc",
 "vandu",
-"panchok"
+"carlosss"
 ],
 "competitivo": [
 "oasis",
@@ -7822,9 +7826,11 @@
 "verc"
 ]
 },
-"top10_t": {},
+"top10_t": {
+"temporada:carlosss": "2026-11-16T18:40:04Z"
+},
 "racha": {
-"makmah": 1,
+"makmah": 0,
 "oasis": 3,
 "pichulamc": 1,
 "erian": 1,
@@ -7834,7 +7840,7 @@
 "verc": 0,
 "vandu": 0,
 "panchok": 3,
-"carlosss": 1,
+"carlosss": 2,
 "liberia": 1,
 "colesito": 1,
 "agus": 0,
@@ -7854,7 +7860,7 @@
 "zignos": 0,
 "molusco": 0,
 "guess": 1,
-"walker": 0,
+"walker": 1,
 "delux": 0,
 "hassan": 0,
 "sinlimites": 0,
@@ -7924,7 +7930,7 @@
 "1200": 0,
 "nemmiias": 0,
 "kyss": 0,
-"19fleivawack": 1,
+"19fleivawack": 0,
 "artezzy": 0,
 "vallest": 0,
 "darnbless": 0,

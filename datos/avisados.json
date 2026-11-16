@@ -50617,5 +50617,273 @@
    ]
   ],
   "v": 2
+ },
+ "651": {
+  "antes": {
+   "19 FLEIVA WACK": [
+    275,
+    101,
+    true
+   ],
+   "Adriagner": [
+    40,
+    47,
+    false
+   ],
+   "Carlosss": [
+    11,
+    11,
+    false
+   ],
+   "Desio": [
+    416,
+    337,
+    true
+   ],
+   "Dominick": [
+    264,
+    53,
+    true
+   ],
+   "Eclipsito": [
+    270,
+    77,
+    true
+   ],
+   "Keider": [
+    56,
+    66,
+    false
+   ],
+   "MaYeuTyK": [
+    49,
+    57,
+    false
+   ],
+   "Makmah": [
+    1,
+    1,
+    false
+   ],
+   "Masino": [
+    54,
+    64,
+    false
+   ],
+   "Miniboy": [
+    19,
+    19,
+    false
+   ],
+   "Mito": [
+    25,
+    27,
+    false
+   ],
+   "NXUZ": [
+    23,
+    24,
+    false
+   ],
+   "Walker": [
+    30,
+    32,
+    false
+   ],
+   "kychi": [
+    494,
+    437,
+    true
+   ]
+  },
+  "canal": "1566326935058124832",
+  "duelos": [
+   [
+    "Walker",
+    "B.DEMON🇪🇨",
+    "Walker"
+   ],
+   [
+    "Masino",
+    "Makmah",
+    "Masino"
+   ],
+   [
+    "Dominick",
+    "Eclipsito",
+    "Dominick"
+   ],
+   [
+    "Miniboy",
+    "MaYeuTyK",
+    "Miniboy"
+   ],
+   [
+    "Desio",
+    "kychi",
+    "Desio"
+   ],
+   [
+    "Mito",
+    "Adriagner",
+    "Mito"
+   ],
+   [
+    "NXUZ",
+    "Keider",
+    "NXUZ"
+   ],
+   [
+    "Carlosss",
+    "19 FLEIVA WACK",
+    "Carlosss"
+   ],
+   [
+    "Walker",
+    "Masino",
+    "Walker"
+   ],
+   [
+    "Miniboy",
+    "Dominick",
+    "Miniboy"
+   ],
+   [
+    "Desio",
+    "Mito",
+    "Desio"
+   ],
+   [
+    "Carlosss",
+    "NXUZ",
+    "Carlosss"
+   ],
+   [
+    "Walker",
+    "Miniboy",
+    "Walker"
+   ],
+   [
+    "Carlosss",
+    "Desio",
+    "Carlosss"
+   ],
+   [
+    "Walker",
+    "Carlosss",
+    "Walker"
+   ]
+  ],
+  "ev_antes": {
+   "19 FLEIVA WACK": 9,
+   "Adriagner": 22,
+   "Carlosss": 33,
+   "Desio": 4,
+   "Dominick": 45,
+   "Eclipsito": 13,
+   "Keider": 20,
+   "MaYeuTyK": 20,
+   "Makmah": 118,
+   "Masino": 12,
+   "Miniboy": 65,
+   "Mito": 40,
+   "NXUZ": 47,
+   "Walker": 11,
+   "kychi": 1
+  },
+  "fecha": "15/11",
+  "firma": "2bfa21d16180e282",
+  "msg": "1571954381262295063",
+  "nombre": "(sin titulo)",
+  "num": 651,
+  "participantes": 16,
+  "sello": {
+   "Walker": "bc61bf0e9f37:fec25411e829"
+  },
+  "sv": "DDF",
+  "t": "2026-11-16T18:25:29Z",
+  "tabla": [
+   [
+    "Walker",
+    "Campeón",
+    10000
+   ],
+   [
+    "Carlosss",
+    "Subcampeón",
+    7500
+   ],
+   [
+    "Miniboy",
+    "Semifinal",
+    5250
+   ],
+   [
+    "Desio",
+    "Semifinal",
+    5250
+   ],
+   [
+    "Masino",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Dominick",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Mito",
+    "Cuartos",
+    2500
+   ],
+   [
+    "NXUZ",
+    "Cuartos",
+    2500
+   ],
+   [
+    "B.DEMON🇪🇨",
+    "Octavos",
+    1250
+   ],
+   [
+    "Makmah",
+    "Octavos",
+    1250
+   ],
+   [
+    "Eclipsito",
+    "Octavos",
+    1250
+   ],
+   [
+    "MaYeuTyK",
+    "Octavos",
+    1250
+   ],
+   [
+    "kychi",
+    "Octavos",
+    1250
+   ],
+   [
+    "Adriagner",
+    "Octavos",
+    1250
+   ],
+   [
+    "Keider",
+    "Octavos",
+    1250
+   ],
+   [
+    "19 FLEIVA WACK",
+    "Octavos",
+    1250
+   ]
+  ],
+  "v": 2
  }
 }

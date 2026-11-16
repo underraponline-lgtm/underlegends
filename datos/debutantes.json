@@ -3,7 +3,7 @@
  "chats": {
   "ACAD": "2026-11-14",
   "CH": "2026-11-16",
-  "DDF": "2026-11-11",
+  "DDF": "2026-11-16",
   "DDS": "2026-11-09",
   "FDS": "2026-11-13",
   "FFA": "2026-11-16",
@@ -179,6 +179,7 @@
    "vencido": true
   },
   "ALFINPAPA": {
+   "avisado": "2026-11-16",
    "con": null,
    "cumplido": "",
    "debut": "2026-11-15T16:12:50+00:00",
@@ -371,6 +372,19 @@
    "sv": "ACAD",
    "vence": "2026-11-14T01:17:28+00:00",
    "vencido": true
+  },
+  "B.DEMON": {
+   "avisado": "2026-11-16",
+   "chat": "2026-11-16",
+   "con": null,
+   "cumplido": "",
+   "debut": "2026-11-15T21:48:50+00:00",
+   "did": "",
+   "evento": "(sin titulo)",
+   "n": 651,
+   "sv": "DDF",
+   "vence": "2026-11-22T21:48:50+00:00",
+   "vencido": false
   },
   "BABI": {
    "avisado": "2026-11-15",
@@ -3288,9 +3302,10 @@
   },
   "kychi": {
    "avisado": "2026-11-11",
+   "avisado_cumplido": "2026-11-16",
    "chat": "2026-11-12",
-   "con": null,
-   "cumplido": "",
+   "con": 651,
+   "cumplido": "2026-11-15T21:48:50+00:00",
    "debut": "2026-11-12T01:06:26+00:00",
    "did": "694702989436387389",
    "evento": "ALL VALLEY",

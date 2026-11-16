@@ -1928,7 +1928,15 @@
     "ronda": "FINAL"
    }
   ],
-  "respondidas": {},
+  "resp": {
+   "0": {
+    "por": "otro",
+    "t": 1794850823955
+   }
+  },
+  "respondidas": {
+   "0": "Walker🇨🇴"
+  },
   "sin_permiso": false,
   "staff_probado": false,
   "sv": "DDF",

@@ -151,6 +151,33 @@
   }
  },
  "19fleivawack": {
+  "competitivo": {
+   "⚔️ DUELISTA": [
+    "⚔️ DUELISTA",
+    "t1",
+    1794854430858
+   ],
+   "🎯 FRANCOTIRADOR": [
+    "🎯 FRANCOTIRADOR",
+    "t1",
+    1794854430858
+   ],
+   "🗡️ MATAGIGANTES": [
+    "🗡️ MATAGIGANTES",
+    "t1",
+    1794854430858
+   ],
+   "🤝 SIN MIEDO": [
+    "🤝 SIN MIEDO",
+    "t1",
+    1794854430858
+   ],
+   "🧊 SANGRE FRÍA": [
+    "🧊 SANGRE FRÍA",
+    "t1",
+    1794854430858
+   ]
+  },
   "pais": {
    "INTERNACIONAL": [
     "INTERNACIONAL",
@@ -220,6 +247,11 @@
     "📋 SEMANA PERFECTA",
     "t1",
     1794532281126
+   ],
+   "🔟 DOBLE DÍGITO": [
+    "🔟 DOBLE DÍGITO",
+    "t1",
+    1794854430858
    ],
    "🥉 AL PODIO": [
     "🥉 AL PODIO",
@@ -625,6 +657,11 @@
    ]
   },
   "temporada": {
+   "⚡ MARATONISTA": [
+    "⚡ MARATONISTA",
+    "t1",
+    1794854430858
+   ],
    "⚡ RELÁMPAGO": [
     "⚡ RELÁMPAGO",
     "t1",
@@ -2621,6 +2658,11 @@
     "t1",
     1793029252929
    ],
+   "📋 SEMANA PERFECTA": [
+    "📋 SEMANA PERFECTA",
+    "t1",
+    1794854430858
+   ],
    "🔟 DOBLE DÍGITO": [
     "🔟 DOBLE DÍGITO",
     "t1",
@@ -3846,6 +3888,11 @@
  },
  "desio": {
   "temporada": {
+   "📈 EN ASCENSO": [
+    "📈 EN ASCENSO",
+    "t1",
+    1794854430858
+   ],
    "🧳 VIAJERO": [
     "🧳 VIAJERO",
     "t1",
@@ -9735,6 +9782,11 @@
     "t1",
     1793143003505
    ],
+   "📋 SEMANA PERFECTA x%d": [
+    "📋 SEMANA PERFECTA x2",
+    "t1",
+    1794854430858
+   ],
    "🔋 INAGOTABLE": [
     "🔋 INAGOTABLE",
     "t1",
@@ -9879,6 +9931,11 @@
     "📈 EN ASCENSO",
     "t1",
     1793637214887
+   ],
+   "📋 SEMANA PERFECTA": [
+    "📋 SEMANA PERFECTA",
+    "t1",
+    1794854430858
    ],
    "🔋 INAGOTABLE": [
     "🔋 INAGOTABLE",
@@ -17100,6 +17157,11 @@
     "t1",
     1793477231914
    ],
+   "🎯 INFALIBLE": [
+    "🎯 INFALIBLE",
+    "t1",
+    1794854430858
+   ],
    "😈 BESTIA NEGRA": [
     "😈 BESTIA NEGRA",
     "t1",
@@ -17170,7 +17232,7 @@
     1793029252929
    ],
    "👑 CAMPEÓN x%d": [
-    "👑 CAMPEÓN x5",
+    "👑 CAMPEÓN x6",
     "t1",
     1793029252929
    ],

@@ -57915,5 +57915,246 @@
    "min": 77,
    "v": 1
   }
+ },
+ "651": {
+  "dia": "2026-11-15",
+  "escala": "16+",
+  "fecha": "15/11",
+  "links": [
+   "https://discord.com/channels/1469009547971526659/1571614058874933278/1571643167667916952"
+  ],
+  "n": 651,
+  "nombre": "(sin titulo)",
+  "participantes": 16,
+  "rondas": [
+   {
+    "b": [
+     [
+      [
+       "Walker",
+       "B.DEMON🇪🇨"
+      ],
+      "Walker",
+      ""
+     ],
+     [
+      [
+       "Masino",
+       "Makmah"
+      ],
+      "Masino",
+      ""
+     ],
+     [
+      [
+       "Dominick",
+       "Eclipsito"
+      ],
+      "Dominick",
+      ""
+     ],
+     [
+      [
+       "Miniboy",
+       "MaYeuTyK"
+      ],
+      "Miniboy",
+      ""
+     ],
+     [
+      [
+       "Desio",
+       "kychi"
+      ],
+      "Desio",
+      ""
+     ],
+     [
+      [
+       "Mito",
+       "Adriagner"
+      ],
+      "Mito",
+      ""
+     ],
+     [
+      [
+       "NXUZ",
+       "Keider"
+      ],
+      "NXUZ",
+      ""
+     ],
+     [
+      [
+       "Carlosss",
+       "19 FLEIVA WACK"
+      ],
+      "Carlosss",
+      ""
+     ]
+    ],
+    "r": "Octavos"
+   },
+   {
+    "b": [
+     [
+      [
+       "Walker",
+       "Masino"
+      ],
+      "Walker",
+      ""
+     ],
+     [
+      [
+       "Miniboy",
+       "Dominick"
+      ],
+      "Miniboy",
+      ""
+     ],
+     [
+      [
+       "Desio",
+       "Mito"
+      ],
+      "Desio",
+      ""
+     ],
+     [
+      [
+       "Carlosss",
+       "NXUZ"
+      ],
+      "Carlosss",
+      ""
+     ]
+    ],
+    "r": "Cuartos"
+   },
+   {
+    "b": [
+     [
+      [
+       "Walker",
+       "Miniboy"
+      ],
+      "Walker",
+      ""
+     ],
+     [
+      [
+       "Carlosss",
+       "Desio"
+      ],
+      "Carlosss",
+      ""
+     ]
+    ],
+    "r": "Semifinales"
+   },
+   {
+    "b": [
+     [
+      [
+       "Walker",
+       "Carlosss"
+      ],
+      "Walker",
+      "ganador: ✅ Decidir"
+     ]
+    ],
+    "r": "Final"
+   }
+  ],
+  "sv": "DDF",
+  "tabla": [
+   [
+    "Walker",
+    "Campeón",
+    10000
+   ],
+   [
+    "Carlosss",
+    "Subcampeón",
+    7500
+   ],
+   [
+    "Desio",
+    "Semifinal",
+    5250
+   ],
+   [
+    "Miniboy",
+    "Semifinal",
+    5250
+   ],
+   [
+    "Dominick",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Masino",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Mito",
+    "Cuartos",
+    2500
+   ],
+   [
+    "NXUZ",
+    "Cuartos",
+    2500
+   ],
+   [
+    "19 FLEIVA WACK",
+    "Octavos",
+    1250
+   ],
+   [
+    "Adriagner",
+    "Octavos",
+    1250
+   ],
+   [
+    "B.DEMON🇪🇨",
+    "Octavos",
+    1250
+   ],
+   [
+    "Eclipsito",
+    "Octavos",
+    1250
+   ],
+   [
+    "Keider",
+    "Octavos",
+    1250
+   ],
+   [
+    "MaYeuTyK",
+    "Octavos",
+    1250
+   ],
+   [
+    "Makmah",
+    "Octavos",
+    1250
+   ],
+   [
+    "kychi",
+    "Octavos",
+    1250
+   ]
+  ],
+  "ver": {
+   "min": 121,
+   "org": "juega",
+   "v": 1
+  }
  }
 }

@@ -1324,6 +1324,13 @@
    "cuando": "2026-11-16 12:02 PM ET",
    "por": "el ciclo (R4)",
    "nota": "es la misma batalla que «Erian vs Simon Henriksson 🇺🇸» (ganó Erian), ya cargada en el #650: contestar «Ganó» la contaría dos veces"
+  },
+  "sintitulo|DDF|15/11|final|carlos|walker": {
+   "ganador": "Walker🇨🇴",
+   "batalla": "(sin titulo) · DDF · 15/11 · final · Walker🇨🇴 🆚 Carlos",
+   "cuando": "2026-11-16 1:24 PM ET",
+   "por": "el organizador, con el botón (<@1316490165836972104>)",
+   "nota": "bot/finales.py: el lector no entendió esa batalla y se la preguntó a quien publicó la llave"
   }
  },
  "anuncios_fuera": {
