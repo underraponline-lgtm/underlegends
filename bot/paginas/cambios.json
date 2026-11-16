@@ -11,6 +11,17 @@
  ],
  "cambios": [
     {
+        "version": "5.52",
+        "dia": "2026-11-16",
+        "cuando": "2026-11-16T04:10:00-05:00",
+        "titulo": "Textos que no se parten de más",
+        "items": [
+            "En toda la página, los títulos y los botones **ya no dejan una palabra sola** en el último renglón.",
+            "Lo que entra en una línea va en una: **«Inscríbete ya»** en Eventos, **«Cuándo suele jugar»**, los formatos, **«Las ligas»** y **«Temporada 1»** en el Salón.",
+            "En **Socios**, los servidores que esperan su primer evento muestran **qué cuenta** en un renglón, sin columnas apretadas."
+        ]
+    },
+    {
         "version": "5.51",
         "dia": "2026-11-16",
         "cuando": "2026-11-16T04:05:00-05:00",
