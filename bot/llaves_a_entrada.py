@@ -155,10 +155,26 @@ def para_ver(sin_sumar, aplicar=False):
         viejo = {}
     regs = {k: v for k, v in viejo.items() if not k.startswith('_')}
     nuevas = 0
-    for g in agrupar(sin_sumar):
+    grupos = agrupar(sin_sumar)
+    # 🔑 SIN TÍTULO, EL NOMBRE DE SU ANUNCIO, como en el camino de las que suman (`nombre_por_anuncio()`). Primero los
+    # anuncios que ya tienen su llave por el nombre: dos llaves no se llevan el mismo
+    guardados, anuncios = _nombres_guardados(), _anuncios()
+    tomados = {str(x.get('anuncio') or '') for x in guardados.values()}
+    for g in grupos:
+        if g['llaves'] and nombre_de(g) != '(sin titulo)':
+            try:
+                _d = datetime.date.fromisoformat(LW.fecha_iso(fecha_de(g)))
+            except ValueError:
+                continue
+            _a = LW.anuncio_de(nombre_de(g), codigo_servidor(g['llaves'][0].get('guild'))[0], _d, anuncios)
+            if _a:
+                tomados.add(str(_a.get('msg_id') or ''))
+    for g in grupos:
         h0 = g['llaves'][0]
         try:
             nom, fec = nombre_de(g), fecha_de(g)
+            if nom == '(sin titulo)' and not h0.get('_chico'):
+                nom = nombre_por_anuncio(g, guardados, anuncios, tomados) or nom
             sv = codigo_servidor(h0.get('guild'))[0] or ''
             filas = []
             for h in g['llaves']:
@@ -191,6 +207,26 @@ def para_ver(sin_sumar, aplicar=False):
             json.dump(d, f, ensure_ascii=False, indent=1, sort_keys=True)
             f.write('\n')
     return regs
+
+
+def nombre_por_anuncio(g, guardados=None, anuncios=None, tomados=None):
+    """El nombre de una llave SIN título de un servidor que no suma: el que ya se le dio (`NOMBRES`) o el de su anuncio
+    (`anuncio_de_llave()`: por la hora y, si hay dos, por la misma cuenta), o `None`. El anuncio queda en `tomados`.
+
+    🔴 ESTACION FANTASMAL (FMS Ceuta, 21/10/2026): anuncio a las 15:59, llave sin título a las 16:02, siete personas.
+    Con menos de 8 un Tier 3 no suma, y `para_ver()` saltaba toda llave «(sin titulo)»: el calendario mostraba el
+    anuncio sin llave. En el camino de las que suman ya se nombraba así desde el 03/10; en éste faltaba."""
+    guardados = _nombres_guardados() if guardados is None else guardados
+    ya = next((guardados[str(h.get('msg_id'))] for h in g.get('llaves') or []
+               if str(h.get('msg_id') or '') in guardados), None)
+    if ya and (ya.get('nombre') or '').strip():
+        return ya['nombre'].strip()
+    a, _ = anuncio_de_llave(g, anuncios, () if tomados is None else tomados)
+    if not a or not (a.get('nombre') or '').strip():
+        return None
+    if tomados is not None:
+        tomados.add(str(a.get('msg_id') or ''))
+    return a['nombre'].strip()
 
 
 def _ddmm(iso):
@@ -3679,8 +3715,50 @@ def sin_sorteos_viejos(llaves):
     return [h for h in llaves if id(h) in quedan]
 
 
+#: 🔴 dos llaves con la final jugada, publicadas a más de esto una de otra, son DOS eventos aunque tengan la misma
+#: gente (ver `otro_evento()`)
+HORAS_OTRO_EVENTO = 12
+
+
+def _final_jugada(h):
+    """`True` si la llave trae la final con su ganador. Se guarda en el hallazgo: `agrupar()` corre varias veces."""
+    if '_final_jugada' not in h:
+        try:
+            rs = E.resolver(h.get('texto') or '')
+        except Exception:                                # noqa: BLE001
+            rs = []
+        h['_final_jugada'] = any(isinstance(r, (list, tuple)) and len(r) >= 3 and bool(r[2])
+                                 and E.ALIAS.get(str(r[0]).upper(), str(r[0]).upper()) == 'FINAL' for r in rs or [])
+    return h['_final_jugada']
+
+
+def otro_evento(g, h):
+    """`True` si la llave `h` no puede ser del evento del grupo `g` aunque comparta su gente: las dos traen la final
+    jugada y se publicaron a más de `HORAS_OTRO_EVENTO` una de otra.
+
+    🔴 FMS CEUTA, 16/11/2026: ahí juegan casi siempre las mismas diez personas, así que dos eventos distintos comparten
+    el plantel. PUERTA MAGICA (23/09, de krishsss) y YYY891 (24/09, de eresmatrot) tienen 5 de sus 6 personas en común,
+    cada una con su final y su podio, a 23,5 h. `agrupar()` las juntaba, el plantel sumado llegaba a 8 —el mínimo de un
+    Tier 3— y `sin_sorteos_viejos()` tiraba PUERTA MAGICA como si fuera un sorteo rehecho: un evento perdido y otro
+    que sumaba con gente que no jugó.
+
+    ⚠️ LAS DOS CON LA FINAL JUGADA, NO UNA. Una llave partida en mensajes —las rondas en uno, la final en otro, a veces
+    al día siguiente— trae la final en una sola parte, y se sigue juntando. Un sorteo rehecho nunca tiene final. Y una
+    reposteada se publica en horas: medido sobre lo cargado al 16/11, de los 7 eventos con más de una llave el que más
+    separa las suyas lo hace a 2 h."""
+    th = _ms_de(h.get('cuando'))
+    if th is None or not _final_jugada(h):
+        return False
+    for x in g['llaves']:
+        tx = _ms_de(x.get('cuando'))
+        if tx is not None and abs(th - tx) > HORAS_OTRO_EVENTO * 3600000 and _final_jugada(x):
+            return True
+    return False
+
+
 def agrupar(hallazgos):
-    """Junta las llaves que son el MISMO evento, por plantel."""
+    """Junta las llaves que son el MISMO evento, por plantel (y no dos eventos jugados en días distintos con la misma
+    gente: `otro_evento()`)."""
     grupos = []
     for h in hallazgos:
         p = plantel(h['texto'], ids_de(h))
@@ -3691,7 +3769,7 @@ def agrupar(hallazgos):
         for g in grupos:
             if g['llaves'][0].get('_chico'):
                 continue
-            if parecido(g['plantel'], p) >= IGUAL:
+            if parecido(g['plantel'], p) >= IGUAL and not otro_evento(g, h):
                 g['llaves'].append(h)
                 g['plantel'] |= p
                 break
@@ -4553,6 +4631,43 @@ def _self_check():
          len(sin_sorteos_viejos([hn, {'texto': llena, 'cuando': '2026-09-28T19:00:00+00:00'}])) == 2),
         ('y la mitad de una llave partida, que empieza en otra ronda, no se toca',
          len(sin_sorteos_viejos([hn, {'texto': semis, 'cuando': '2026-09-28T20:00:00+00:00'}])) == 2),
+    ]
+    for que, ok in casos:
+        mal += not ok
+        print('   %s %s' % ('✅' if ok else '🔴', que))
+
+    # 🔴 DOS EVENTOS CON LA MISMA GENTE (FMS Ceuta, 16/11/2026): PUERTA MAGICA del 23/09 y YYY891 del 24/09, recortadas
+    print('\n  dos eventos jugados con la misma gente, en días distintos')
+    _ceu = '1513624656538636459'
+    puerta = _t('# PUERTA MAGICA\n\nCuartos de final\n\n[Trot🇪🇸 ] VS [Teito🇨🇴 ]\n[Andy🇻🇪 ] VS [Marcos🇪🇸 ]\n'
+                '[Lvel🇻🇪 ] VS [Krish🇪🇸 ]\n\n Semis \n\n[Trot🇪🇸 ] VS [Krish🇪🇸 ]\n[Marcos🇪🇸 ] Vs [Andy🇻🇪 ]\n\n'
+                'FINAL\n\n[Trot🇪🇸 ]VS [Marcos🇪🇸 ]\n\nCAMPEON🏆 Trot🇪🇸\nSUB CAMPEON🥈 Marcos🇪🇸')
+    yyy = _t('# YYY891\n\n`CUARTOS`.\n\n[KRISH🇪🇸 ] VS [MARCOS🇪🇸 ]\n[KYRON🇨🇴 ] VS [ANDY🌹 ]\n[TROT🇪🇸 ] VS [LVEL🇻🇪 ]\n\n'
+             '`SEMI FINAL`\n\n[MARCOS🇪🇸 ] VS [KYRON🇨🇴 ]\n[TROT🇪🇸 ] VS [ANDY🌹 ]\n\n`FINAL`\n\n[MARCOS🇪🇸 ] VS [TROT🇪🇸 ]\n\n'
+             '`CAMPEON🏆`\n- TROT🇪🇸\n\n`SUB CAMPEON🥈`\n- MARCOS🇪🇸')
+    sin_final = _t('# YYY891\n\n`CUARTOS`.\n\n[KRISH🇪🇸 ] VS [MARCOS🇪🇸 ]\n[KYRON🇨🇴 ] VS [ANDY🌹 ]\n[TROT🇪🇸 ] VS [LVEL🇻🇪 ]')
+    _p = lambda tx, c: {'texto': tx, 'guild': _ceu, 'cuando': c}                  # noqa: E731
+    _dia1, _dia2, _horas = '2026-09-23T17:03:00+00:00', '2026-09-24T16:31:00+00:00', '2026-09-23T19:03:00+00:00'
+    casos = [
+        ('las dos tienen la misma gente (si no, el caso no prueba nada)',
+         parecido(plantel(puerta), plantel(yyy)) >= IGUAL),
+        ('cada una con su final jugada, a 23 h: son dos eventos', len(agrupar([_p(puerta, _dia1), _p(yyy, _dia2)])) == 2),
+        ('la misma llave reposteada a las 2 h se sigue juntando',
+         len(agrupar([_p(yyy, _dia1), _p(yyy, _horas)])) == 1),
+        ('y una partida en dos días —la final en un solo mensaje— también',
+         len(agrupar([_p(sin_final, _dia1), _p(yyy, _dia2)])) == 1),
+    ]
+    # 🔑 la llave sin título de un servidor que no suma toma el nombre de su anuncio (ESTACION FANTASMAL, 21/10)
+    _an = [{'servidor': 'CEU', 'nombre': 'ESTACION FANTASMAL', 'cuando': '2026-10-21T15:59:00+00:00', 'msg_id': 'A1',
+            'autor_h': 'k'}]
+    _gs = {'llaves': [{'texto': '[Filtros]\n[Marcos] vs [Krish]', 'guild': _ceu, 'cuando': '2026-10-21T16:02:00+00:00',
+                       'msg_id': 'L1'}]}
+    _tom = set()
+    casos += [
+        ('una llave sin título toma el nombre de su anuncio', nombre_por_anuncio(_gs, {}, _an, _tom) == 'ESTACION FANTASMAL'
+         and _tom == {'A1'}),
+        ('pero no el de un anuncio que ya tiene su llave', nombre_por_anuncio(_gs, {}, _an, {'A1'}) is None),
+        ('y el nombre que ya se le dio manda', nombre_por_anuncio(_gs, {'L1': {'nombre': 'OTRO'}}, _an, set()) == 'OTRO'),
     ]
     for que, ok in casos:
         mal += not ok
