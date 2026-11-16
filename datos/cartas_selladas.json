@@ -1214,10 +1214,10 @@
    "servidor": "c3e39b4d3573:e0061cb5005e:77728e"
   },
   "Mito": {
-   "competitivo": "fb0ff1052540:3cb4ba14e995",
-   "pais": "6c021aa026c7:50160dcafbc4",
-   "servidor": "72809f0973dd:e0061cb5005e:c82496",
-   "temporada": "31389d21c4c3:fec25411e829"
+   "competitivo": "9421db96aef9:3cb4ba14e995",
+   "pais": "5424c3532c64:50160dcafbc4",
+   "servidor": "fb44212d7b82:e0061cb5005e:c82496",
+   "temporada": "29e67203a096:fec25411e829"
   },
   "Mknoli": {
    "servidor": "0995b01c57e5:e0061cb5005e:1b952d"
@@ -1655,7 +1655,7 @@
   },
   "Sin Limites": {
    "competitivo": "8944ae6c09a9:3cb4ba14e995",
-   "pais": "74eba75feb44:50160dcafbc4",
+   "pais": "58b1c7027386:50160dcafbc4",
    "servidor": "0bc5fff2e682:e0061cb5005e:c82496",
    "temporada": "a00815590c33:fec25411e829"
   },
@@ -2126,5 +2126,5 @@
    "servidor": "7f8885a35a6d:e0061cb5005e:71cf5a"
   }
  },
- "cuando": "2026-11-16T17:25:53+00:00"
+ "cuando": "2026-11-16T17:35:07+00:00"
 }
