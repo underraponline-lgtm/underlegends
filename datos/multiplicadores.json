@@ -1255,13 +1255,13 @@
    },
    "organizadores": [
     [
-     "Kravitz",
-     30,
-     1
+     "NC",
+     45,
+     2
     ],
     [
-     "NC",
-     22,
+     "Kravitz",
+     30,
      1
     ],
     [
@@ -1308,7 +1308,7 @@
    "semillero": {
     "nuevos": {
      "FDS": 2,
-     "FFA": 19,
+     "FFA": 21,
      "CEU": 1,
      "CH": 5,
      "ACAD": 6,
@@ -1318,7 +1318,7 @@
      "URBF": 1
     },
     "gente": {
-     "FFA": 93,
+     "FFA": 105,
      "LKR": 23,
      "DDS": 10,
      "ACAD": 48,
@@ -1338,7 +1338,7 @@
     "DDS": 10,
     "DRA": 0,
     "FDS": 21,
-    "FFA": 93,
+    "FFA": 105,
     "FFS": 0,
     "FRZ": 8,
     "FVS": 0,

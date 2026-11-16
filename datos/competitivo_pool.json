@@ -103,11 +103,11 @@
   "tg_c": {
    "bestia": 3,
    "clasico": 4,
-   "dg": 24,
+   "dg": 25,
    "fg": 5,
    "fp": 4,
-   "riv": 19,
-   "venc": 17,
+   "riv": 20,
+   "venc": 18,
    "vengo": 1
   },
   "tg_p": {
@@ -4313,14 +4313,14 @@
   "tg_c": {
    "bestia": 1,
    "clasico": 1,
-   "dg": 4,
+   "dg": 5,
    "fp": 2,
-   "riv": 10,
-   "venc": 4
+   "riv": 11,
+   "venc": 5
   },
   "tg_p": {
    "paises": 5,
-   "paisesg": 3
+   "paisesg": 4
   },
   "nac": {
    "evn": 3,
@@ -11884,7 +11884,7 @@
   "arc_sv": 0,
   "tg_c": {
    "clasico": 1,
-   "riv": 5
+   "riv": 6
   },
   "tg_p": {
    "paises": 3
@@ -25145,6 +25145,13 @@
   "arc_pais": 27,
   "pos_sv": "139/173",
   "arc_sv": 20,
+  "tg_c": {
+   "clasico": 1,
+   "riv": 1
+  },
+  "tg_p": {
+   "paises": 1
+  },
   "nac": {
    "evn": 1,
    "evi": 1,
@@ -33101,7 +33108,7 @@
   "cc": "ve",
   "sv": "FFA",
   "crew": "",
-  "discord_id": "",
+  "discord_id": "1400122840606441603",
   "verificado": false,
   "ev": 1,
   "score": 1.6,
