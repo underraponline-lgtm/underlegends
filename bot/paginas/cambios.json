@@ -11,6 +11,15 @@
  ],
  "cambios": [
     {
+        "version": "5.62",
+        "dia": "2026-11-16",
+        "cuando": "2026-11-16T15:21:00-05:00",
+        "titulo": "Eventos: el cuadro de hoy, más claro",
+        "items": [
+            "En **Eventos**, el cuadro «Hoy» ya no dice «Ya se jugó todo» a media tarde: los eventos se anuncian unos 15 minutos antes, así que dice que terminó lo anunciado."
+        ]
+    },
+    {
         "version": "5.61",
         "dia": "2026-11-16",
         "cuando": "2026-11-16T06:16:00-05:00",
