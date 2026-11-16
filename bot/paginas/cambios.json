@@ -11,6 +11,40 @@
  ],
  "cambios": [
     {
+        "version": "5.56",
+        "dia": "2026-11-16",
+        "cuando": "2026-11-16T04:24:00-05:00",
+        "titulo": "El Inicio en el celular, sin huecos",
+        "items": [
+            "En el **celular**, el escenario del Inicio ya no deja un **hueco grande** cuando hay una llave larga en vivo: la llave va con un tope y «Ver el resto de la llave».",
+            "**Merchandising**, **Los que mandan** y **Lo último** se acomodan sin espacios vacíos al lado de las cartas.",
+            "Arreglado: una franja blanca entre el final de algunas páginas y el pie."
+        ]
+    },
+    {
+        "version": "5.55",
+        "dia": "2026-11-16",
+        "cuando": "2026-11-16T04:24:00-05:00",
+        "titulo": "Ligas, rehecha",
+        "items": [
+            "**Ligas** tiene portada nueva: **la cartelera**. La que más se decide va en grande, con el cara a cara de sus cartas de liga y cómo vienen fecha a fecha; la próxima fecha como boleto y el último campeón con su podio.",
+            "**Los números de todas las ligas**: quién gana más batallas, el que más gana con los líderes de cada una, **¿quién gana?** con los votos de verdad y los países.",
+            "**Todas las ligas en una tabla** que se abre ahí mismo, con filtros por estado y por servidor, y el **estante de campeones**.",
+            "**La página de cada liga**: arriba lo que pasa ahora, cuatro cuadros (la próxima fecha, la última batalla, el que más gana y tu lugar), la tabla y las **Jornadas** fecha por fecha. «¿Cómo funciona?» es un botón."
+        ]
+    },
+    {
+        "version": "5.54",
+        "dia": "2026-11-16",
+        "cuando": "2026-11-16T04:24:00-05:00",
+        "titulo": "Las crews nuevas ya no se borran",
+        "items": [
+            "Una **crew nueva ya no se borra** si no suma gente en su primera semana.",
+            "Quien manda ve **consejos** cuando algo no anda en su crew —pedidos sin contestar, la crew sola, sin actividad, invitaciones viejas…—, cada uno con el botón que lo arregla.",
+            "**Invitar es más fácil**: gente sugerida (de tu servidor, tu país, a quien sigues o que jugó esta semana) y el link de la crew en un toque, para copiar o compartir."
+        ]
+    },
+    {
         "version": "5.53",
         "dia": "2026-11-16",
         "cuando": "2026-11-16T04:22:52-05:00",
