@@ -409,6 +409,54 @@
    ]
   ]
  },
+ "117911299": {
+  "dia": "2026-11-16",
+  "escala": "4-7",
+  "fecha": "16/11",
+  "links": [
+   "https://discord.com/channels/1513624656538636459/1518202754294612028/1571995008217911299"
+  ],
+  "n": 117911299,
+  "nombre": "SUPREMACIA 1",
+  "ns": 1,
+  "participantes": 6,
+  "rondas": [
+   {
+    "b": [
+     [
+      [
+       "5️⃣ Geoka🇦🇷",
+       "Monet"
+      ],
+      "5️⃣ Geoka🇦🇷",
+      ""
+     ],
+     [
+      [
+       "6️⃣ Fin🏳️‍⚧",
+       "Sosa"
+      ],
+      "6️⃣ Fin🏳️‍⚧",
+      ""
+     ]
+    ],
+    "r": "Semifinales"
+   }
+  ],
+  "sv": "CEU",
+  "tabla": [
+   [
+    "Monet",
+    "Semifinal",
+    0
+   ],
+   [
+    "Sosa",
+    "Semifinal",
+    0
+   ]
+  ]
+ },
  "117953302": {
   "dia": "2026-09-27",
   "escala": "8-15",

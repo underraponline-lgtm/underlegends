@@ -3273,7 +3273,7 @@
    "fg": 2,
    "fp": 1,
    "mata": 1,
-   "riv": 33,
+   "riv": 32,
    "venc": 20,
    "vengo": 2
   },
@@ -3283,7 +3283,7 @@
   },
   "nac": {
    "evn": 8,
-   "evi": 30,
+   "evi": 29,
    "com": 2,
    "top": [
     3,
@@ -11716,12 +11716,12 @@
   "tg_c": {
    "bestia": 1,
    "clasico": 1,
-   "dg": 7,
+   "dg": 6,
    "fg": 1,
    "fp": 1,
-   "mata": 3,
-   "riv": 17,
-   "venc": 7
+   "mata": 2,
+   "riv": 16,
+   "venc": 6
   },
   "tg_p": {
    "paises": 8,
