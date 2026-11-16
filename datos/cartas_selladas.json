@@ -136,10 +136,10 @@
    "temporada": "54a324c192a7:fec25411e829"
   },
   "Artezzy": {
-   "competitivo": "369524452956:3cb4ba14e995",
-   "pais": "7443705f6da2:50160dcafbc4",
-   "servidor": "33f990529cb7:e0061cb5005e:655d26",
-   "temporada": "de2fa1119e11:fec25411e829"
+   "competitivo": "f731dd68461e:3cb4ba14e995",
+   "pais": "c6a201f9c664:50160dcafbc4",
+   "servidor": "dbfee3b600d7:e0061cb5005e:655d26",
+   "temporada": "1e60da996006:fec25411e829"
   },
   "Ashen": {
    "servidor": "4af907e5d349:e0061cb5005e:055f77"
@@ -414,10 +414,10 @@
    "servidor": "a9e63879d519:e0061cb5005e:055f77"
   },
   "Dios": {
-   "competitivo": "987fb843418a:3cb4ba14e995",
-   "pais": "aaa2d12d686a:50160dcafbc4",
-   "servidor": "d25e8767f2f9:e0061cb5005e:6203c7",
-   "temporada": "70e43432f1cb:fec25411e829"
+   "competitivo": "56a8c9d1db64:3cb4ba14e995",
+   "pais": "196f5e18ac95:50160dcafbc4",
+   "servidor": "1857d62db7b9:e0061cb5005e:6203c7",
+   "temporada": "497e801ba31c:fec25411e829"
   },
   "Dobell": {},
   "Dominick": {},
@@ -550,9 +550,6 @@
    "servidor": "712d39ca9406:e0061cb5005e:7d9cf1"
   },
   "Fleivacheck": {},
-  "Flex": {
-   "servidor": "13e1f5dd3e2e:e0061cb5005e:43d041"
-  },
   "Flores": {
    "servidor": "c659f446173a:e0061cb5005e:67201a"
   },
@@ -2114,5 +2111,5 @@
    "servidor": "7f8885a35a6d:e0061cb5005e:71cf5a"
   }
  },
- "cuando": "2026-11-16T02:40:00+00:00"
+ "cuando": "2026-11-16T03:38:25+00:00"
 }
