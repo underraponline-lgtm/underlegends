@@ -31529,7 +31529,7 @@
    "Velatz": 41
   },
   "fecha": "31/10",
-  "firma": "931f32a5f25758d9",
+  "firma": "f1851c2c2c6668fd",
   "msg": "1566227272355020941",
   "nombre": "SNAKE INSIGNIA 7 8",
   "num": 553,
@@ -33536,7 +33536,7 @@
    "mats": 8
   },
   "fecha": "02/11",
-  "firma": "d62404ea591e72e1",
+  "firma": "ad759eb34e3680ab",
   "msg": "1567040820337443021",
   "nombre": "__ qcyo rapeen __",
   "num": 563,
@@ -36444,7 +36444,7 @@
    "ikonoxx": 8
   },
   "fecha": "06/11",
-  "firma": "b062e220bb6d44ab",
+  "firma": "3d552b4357225b70",
   "msg": "1568364084817297492",
   "nombre": "GALACTICOS DEL FREESTYLE VOL.17",
   "num": 575,
@@ -40008,7 +40008,7 @@
    "yinn": 33
   },
   "fecha": "08/11",
-  "firma": "4c531bb9c1bba31b",
+  "firma": "5ea214f80f82a793",
   "msg": "1569128640363364464",
   "nombre": "K.O.M VOL.10",
   "num": 592,
@@ -40268,7 +40268,7 @@
    "crakero": 4
   },
   "fecha": "08/11",
-  "firma": "2e96bef4c1519da4",
+  "firma": "16d2ced914df9a0a",
   "msg": "1569234841730547736",
   "nombre": "__ QCYO RAPEEN 12 __",
   "num": 593,
@@ -41004,7 +41004,7 @@
    "Verc": 27
   },
   "fecha": "05/11",
-  "firma": "b28e6a37b8f47a7b",
+  "firma": "3453ab960af3dfab",
   "msg": "1569508042813210686",
   "nombre": "ORDEN DEL CHYPHER",
   "num": 596,
@@ -47828,7 +47828,7 @@
    ],
    [
     "Ezze",
-    "Ariaxer",
+    "Ariaxer, }",
     "Ezze"
    ],
    [
@@ -47887,7 +47887,7 @@
    "romeo": 4
   },
   "fecha": "13/11",
-  "firma": "cc552217ff3aee6b",
+  "firma": "a42697dba3152662",
   "msg": "1571023860630028319",
   "nombre": "__ qcyo rapeen 15 __",
   "num": 634,
@@ -47974,11 +47974,6 @@
     1250
    ],
    [
-    "Ariaxer",
-    "Octavos",
-    1250
-   ],
-   [
     "Joven shenlong",
     "Octavos",
     1250
@@ -47990,6 +47985,16 @@
    ],
    [
     "Erian",
+    "Octavos",
+    625
+   ],
+   [
+    "Ariaxer",
+    "Octavos",
+    625
+   ],
+   [
+    "}",
     "Octavos",
     625
    ],
