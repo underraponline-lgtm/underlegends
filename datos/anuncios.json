@@ -1,5 +1,5 @@
 {
- "cuando": "2026-11-16T02:56:07+00:00",
+ "cuando": "2026-11-16T03:26:12+00:00",
  "anuncios": [
   {
    "nombre": "¡SE LLEGÓ LA GRAN NOCHE!",
@@ -7441,6 +7441,42 @@
  ],
  "oficiales": [
   {
+   "servidor": "LKR",
+   "canal": "anuncios",
+   "tit": "¿ABURRIDO Y QUERÉS APOSTAR POR EL PRÓXIMO SERVIDOR REEMPLAZO DE FFA QUE ACEPTARÁN:",
+   "tx": "FLEIVAS CUATROBARRAS Y CAZAFLAS? ENTRA A : COLISEO DEL FREESTYLE teníamos un canal de WhatsApp pero fuimos más en grande... EL PRÓXIMO MAYOR PROYECTO",
+   "cuando": "2026-11-16T03:19:39",
+   "msg_id": "1571726419581730838",
+   "link": "https://discord.com/channels/1558611504046153750/1558611505040064604/1571726419581730838"
+  },
+  {
+   "servidor": "LKR",
+   "canal": "🐉ANUNCIOS",
+   "tit": "SEGUNDO CLASIFICADO PAL 5 VIDAS DE CAMPEONES",
+   "tx": "",
+   "cuando": "2026-11-16T03:05:36",
+   "msg_id": "1571722884542505022",
+   "link": "https://discord.com/channels/1558611504046153750/1564463277348487219/1571722884542505022"
+  },
+  {
+   "servidor": "LKR",
+   "canal": "anuncios",
+   "tit": "CAMPEÓN DE LA SEGUNDA EDICIÓN DEL 5 VIDAS",
+   "tx": "",
+   "cuando": "2026-11-16T03:05:02",
+   "msg_id": "1571722740983930900",
+   "link": "https://discord.com/channels/1558611504046153750/1558611505040064604/1571722740983930900"
+  },
+  {
+   "servidor": "URBF",
+   "canal": "⋆📢│🐔⋅Anuncios⋅📢",
+   "tit": "🇪🇸 CAMPOY CAMPEON RED BULL NACIONAL DE PLAZAS TEMPORADA 5 🇪🇸",
+   "tx": "EL DIA DE HOY, VIVIMOS LA NACIONAL DE RED BULL DE PLAZAS, LA CUAL TUVO INSCRIPCION TOTALMENTE LIBRE ROMPIENDO EL RECORD DE INSCRITOS EN UNA RED BULL, CON UN TOTAL DE 34 INSCRITOS A PESAR QUE UNICAMENTE SE TOMARON EN CUEN",
+   "cuando": "2026-11-16T03:04:33",
+   "msg_id": "1571722616862023943",
+   "link": "https://discord.com/channels/1467763447117778989/1553080521096044584/1571722616862023943"
+  },
+  {
    "servidor": "CH",
    "canal": "📢—anuncios",
    "tit": "EL QUE GANE LA COMPE SE LLEVA UNA DISCORD NITRO",
@@ -7448,15 +7484,6 @@
    "cuando": "2026-11-16T02:29:06",
    "msg_id": "1571713695950577788",
    "link": "https://discord.com/channels/1074328197400887388/1081721420373041264/1571713695950577788"
-  },
-  {
-   "servidor": "LKR",
-   "canal": "anuncios",
-   "tit": "PRIMERA TEMPORADA TERMINA EL 19 DICIEMBRE",
-   "tx": "",
-   "cuando": "2026-11-15T23:04:00",
-   "msg_id": "1571662082087190650",
-   "link": "https://discord.com/channels/1558611504046153750/1558611505040064604/1571662082087190650"
   },
   {
    "servidor": "FRZ",
@@ -7475,24 +7502,6 @@
    "cuando": "2026-11-15T19:02:34",
    "msg_id": "1571601322258596001",
    "link": "https://discord.com/channels/1467763447117778989/1553080521096044584/1571601322258596001"
-  },
-  {
-   "servidor": "LKR",
-   "canal": "fms-anuncios",
-   "tit": "para meter solo a los más activos",
-   "tx": "",
-   "cuando": "2026-11-15T17:44:01",
-   "msg_id": "1571581555426459762",
-   "link": "https://discord.com/channels/1558611504046153750/1570881485055983686/1571581555426459762"
-  },
-  {
-   "servidor": "LKR",
-   "canal": "fms-anuncios",
-   "tit": "para eso haz una liga de países en general",
-   "tx": "",
-   "cuando": "2026-11-15T17:43:51",
-   "msg_id": "1571581512510472364",
-   "link": "https://discord.com/channels/1558611504046153750/1570881485055983686/1571581512510472364"
   },
   {
    "servidor": "URBF",
@@ -7529,15 +7538,6 @@
    "cuando": "2026-11-14T19:10:42",
    "msg_id": "1571240984623321251",
    "link": "https://discord.com/channels/1074328197400887388/1081721420373041264/1571240984623321251"
-  },
-  {
-   "servidor": "URBF",
-   "canal": "⋆📢│🐔⋅Anuncios⋅📢",
-   "tit": "CLASIFICADOS RED BULL CABRANA INTERNACIONAL TEMPORADA 5",
-   "tx": "Como saben, me han dejado volver al server, y obviamente lo primero que hare como organizador, sera revivirlo (xd) pero sobre todo, empezar con red bull y reanudarla, este anuncio es para dar una despausa oficial a red b",
-   "cuando": "2026-11-14T13:55:24",
-   "msg_id": "1571161633953157321",
-   "link": "https://discord.com/channels/1467763447117778989/1553080521096044584/1571161633953157321"
   },
   {
    "servidor": "CH",
@@ -7703,6 +7703,15 @@
   }
  ],
  "inscripciones": [
+  {
+   "servidor": "DDS",
+   "canal": "📝〕INSCRIPCION-2",
+   "texto": "Mosquitrap 🦟🇦🇷 + monet 🇨🇳",
+   "quien": "3decopas.",
+   "discord_id": "1494178897908990136",
+   "msg_id": "1571726170041491457",
+   "cuando": "2026-11-16T03:18:40"
+  },
   {
    "servidor": "CH",
    "canal": "📜—inscripciones",
@@ -43693,15 +43702,6 @@
    "discord_id": "729809358627536938",
    "msg_id": "1559716897044303906",
    "cuando": "2026-10-13T23:58:06"
-  },
-  {
-   "servidor": "FFA",
-   "canal": "✦📝—inscripciones",
-   "texto": "BastyRetro🇨🇱",
-   "quien": "bastyretro",
-   "discord_id": "596924970429448202",
-   "msg_id": "1559715776351576146",
-   "cuando": "2026-10-13T23:53:39"
   }
  ]
 }

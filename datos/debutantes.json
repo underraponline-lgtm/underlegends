@@ -526,7 +526,7 @@
    "n": 593,
    "sv": "FFA",
    "vence": "2026-11-16T03:16:00+00:00",
-   "vencido": false
+   "vencido": true
   },
   "Carpediem": {
    "avisado": "2026-11-12",
@@ -1698,7 +1698,7 @@
    "n": 593,
    "sv": "FFA",
    "vence": "2026-11-16T03:16:00+00:00",
-   "vencido": false
+   "vencido": true
   },
   "Leopold sedar": {
    "avisado_cumplido": "2026-11-04",
@@ -3003,7 +3003,7 @@
    "n": 593,
    "sv": "FFA",
    "vence": "2026-11-16T03:16:00+00:00",
-   "vencido": false
+   "vencido": true
   },
   "arce": {
    "avisado": "2026-11-06",
@@ -3321,7 +3321,7 @@
    "n": 593,
    "sv": "FFA",
    "vence": "2026-11-16T03:16:00+00:00",
-   "vencido": false
+   "vencido": true
   },
   "xJuniorTime": {
    "avisado": "2026-10-31",

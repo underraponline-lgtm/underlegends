@@ -46183,9 +46183,9 @@
     "Artezzy"
    ],
    [
-    "Artezzy",
     "Dios",
-    "Artezzy"
+    "Artezzy",
+    "Dios"
    ]
   ],
   "ev_antes": {
@@ -46206,7 +46206,7 @@
    "Vilca": 22
   },
   "fecha": "12/11",
-  "firma": "7538a3364f7f22a2",
+  "firma": "332512f99f98b6d6",
   "msg": "1570602758506151978",
   "nombre": "RANKED 1",
   "num": 627,
@@ -46218,12 +46218,12 @@
   "t": "2026-11-13T00:54:37Z",
   "tabla": [
    [
-    "Artezzy",
+    "Dios",
     "Campeón",
     10000
    ],
    [
-    "Dios",
+    "Artezzy",
     "Subcampeón",
     7500
    ],
@@ -47449,7 +47449,7 @@
    "crakero": 9
   },
   "fecha": "13/11",
-  "firma": "ce911438d2efba8e",
+  "firma": "90db9b35641451d8",
   "msg": "1570980323372703807",
   "nombre": "RANKED 2",
   "num": 632,

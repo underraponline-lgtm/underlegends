@@ -108,7 +108,7 @@
    "v": 1
   },
   "CHOP COMPE CEO V.3|CH|15/11": {
-   "min": 47,
+   "min": 77,
    "v": 1
   },
   "COMPE ATERRADORA|CH|02/11": {
@@ -399,6 +399,7 @@
    "v": 1
   },
   "RANKED 1|FDS|12/11": {
+   "min": 4476,
    "v": 1
   },
   "RANKED 2|FDS|13/11": {

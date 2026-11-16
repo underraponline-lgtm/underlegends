@@ -42054,7 +42054,7 @@
        "Andres"
       ],
       "yinn, Agus, Six",
-      "triple (4 bandas, pasan 3); también pasa: agus🇦🇷 / six 🇦🇨; Drafteado: Yinn"
+      "triple (4 bandas, pasan 3); también pasa: agus / six 🇦🇨; Drafteado: Yinn"
      ],
      [
       [
@@ -53671,10 +53671,10 @@
     "b": [
      [
       [
-       "Artezzy",
-       "Dios"
+       "Dios",
+       "Artezzy"
       ],
-      "Artezzy",
+      "Dios",
       ""
      ]
     ],
@@ -53684,12 +53684,12 @@
   "sv": "FDS",
   "tabla": [
    [
-    "Artezzy",
+    "Dios",
     "Campeón",
     10000
    ],
    [
-    "Dios",
+    "Artezzy",
     "Subcampeón",
     7500
    ],
@@ -53760,6 +53760,7 @@
    ]
   ],
   "ver": {
+   "min": 4476,
    "v": 1
   }
  },
@@ -57184,7 +57185,7 @@
        "Molusco"
       ],
       "yinn, Colesito, Agus",
-      "triple (4 bandas, pasan 3); también pasa: colesito🇨🇴 / agus🇦🇷"
+      "triple (4 bandas, pasan 3); también pasa: colesito🇻🇪 / agus"
      ]
     ],
     "r": "Octavos"
