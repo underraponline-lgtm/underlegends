@@ -11,6 +11,18 @@
  ],
  "cambios": [
     {
+        "version": "5.60",
+        "dia": "2026-11-16",
+        "cuando": "2026-11-16T06:05:00-05:00",
+        "titulo": "Eventos rehecha: el día por hora",
+        "items": [
+            "El día de **Eventos** se ve **por hora** —una fila por servidor, cada evento en su hora y con su color, y la línea de «ahora»— o **en lista**, con una fila corta por evento.",
+            "Toca un evento y se abre abajo con el **campeón**, su carta y **la llave de a una ronda**, con **Felicitar** y «Para historias».",
+            "Arriba, **cuatro cuadros**: hoy, los últimos 7 días, los campeones de hoy y la campana.",
+            "**Los últimos campeones** en grilla, sin pisarse, y abajo **cuándo se juega**: los días y las horas con más eventos. «Cómo se juega» y «Quién organiza» se abren en una ventana."
+        ]
+    },
+    {
         "version": "5.59",
         "dia": "2026-11-16",
         "cuando": "2026-11-16T05:32:00-05:00",
