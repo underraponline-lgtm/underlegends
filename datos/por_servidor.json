@@ -2446,26 +2446,12 @@
   "Choco": {
    "DDS": {
     "duelos": "",
-    "ev": 1,
-    "oro": 0,
-    "ovr": 42,
-    "pod": 0,
-    "pts": 2000,
-    "racha": "0/0"
-   }
-  },
-  "Chocoperro": {
-   "DDS": {
-    "duelos": "",
-    "ev": 1,
+    "ev": 2,
     "oro": 0,
     "ovr": 43,
     "pod": 0,
-    "pts": 4500,
-    "racha": "0/0",
-    "tg": {
-     "nuevo": true
-    }
+    "pts": 6500,
+    "racha": "0/0"
    }
   },
   "Choka": {

@@ -1494,10 +1494,20 @@
     "org": "NC",
     "clave": "nc"
    },
-   "organizadores": [],
+   "organizadores": [
+    [
+     "Tayo",
+     8,
+     1
+    ]
+   ],
    "semillero": {
-    "nuevos": {},
-    "gente": {},
+    "nuevos": {
+     "DDS": 2
+    },
+    "gente": {
+     "DDS": 8
+    },
     "gana": null
    },
    "meta_va": {
@@ -1505,7 +1515,7 @@
     "CEU": 0,
     "CH": 0,
     "DDF": 0,
-    "DDS": 0,
+    "DDS": 8,
     "DRA": 0,
     "FDS": 0,
     "FFA": 0,

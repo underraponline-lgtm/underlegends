@@ -1151,6 +1151,10 @@
 "temporada"
 ]
 },
+"bootraxx": {
+"rg": "",
+"c": []
+},
 "andy": {
 "rg": "",
 "c": [
@@ -7787,7 +7791,7 @@
 "quien": [
 [
 "bootraxx",
-""
+"bootraxx"
 ]
 ]
 }
@@ -7795,7 +7799,7 @@
 "suman": [
 {
 "n": "bootraxx",
-"k": "",
+"k": "bootraxx",
 "pts": 7500,
 "ev": 1
 },
@@ -7814,10 +7818,16 @@
 ],
 "suben": [
 {
+"n": "Choco",
+"k": "",
+"de": 633,
+"a": 480
+},
+{
 "n": "Fisics",
 "k": "",
 "de": 365,
-"a": 340
+"a": 341
 },
 {
 "n": "Liam",
@@ -7829,7 +7839,7 @@
 "sorpresas": [
 {
 "n": "bootraxx",
-"k": "",
+"k": "bootraxx",
 "que": "debut",
 "ev": "SIX SEVEN STYLE 3"
 }
@@ -8098,7 +8108,8 @@
 "rbk": 0,
 "ragna": 2,
 "tmaxturbopn": 0,
-"simonhenriksson": 1
+"simonhenriksson": 1,
+"bootraxx": 1
 },
 "sem": {
 "id": "2026-11-16",
