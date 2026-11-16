@@ -1402,7 +1402,7 @@ export function Eventos({ liga, vivoL, dia: diaRuta, avisos }) {
           <button type="button" style={{ '--c': '#29B298' }} onClick={() => { cambiarVista('dia'); elegirDia(hoyK, true); }}>
             <i>Hoy · {hoyNom}</i>
             <b>{calHoy.length ? cuantos(calHoy.length) + ' · ' + svT(nSv(calHoy)) : 'Nada anunciado todavía'}</b>
-            <small>{[nVivoHoy ? nVivoHoy + ' en vivo' : '', nTardeHoy ? nTardeHoy + ' más tarde' : ''].filter(Boolean).join(', ') || (calHoy.length ? 'Ya se jugó todo' : 'Se anuncian unos 15 minutos antes')}</small>
+            <small>{[nVivoHoy ? nVivoHoy + ' en vivo' : '', nTardeHoy ? nTardeHoy + ' más tarde' : ''].filter(Boolean).join(', ') || (calHoy.length ? 'Ya terminó lo anunciado: avisan 15 min antes' : 'Se anuncian unos 15 minutos antes')}</small>
           </button>
           <button type="button" style={{ '--c': '#F0559A' }} onClick={() => { elegirDia(hoyK); cambiarVista('semana'); }}>
             <i>Los últimos 7 días</i>
