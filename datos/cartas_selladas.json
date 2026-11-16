@@ -1011,7 +1011,7 @@
   "Leyenda": {},
   "Lhyon": {},
   "Liam": {
-   "competitivo": "3005e58e0a14:3cb4ba14e995",
+   "competitivo": "f4a06ac5111d:3cb4ba14e995",
    "pais": "7a2c19b7218e:50160dcafbc4",
    "servidor": "ed5eee5ed96a:e0061cb5005e:980594",
    "temporada": "3aac9ec8d2fd:fec25411e829"
@@ -1214,10 +1214,10 @@
    "servidor": "c3e39b4d3573:e0061cb5005e:77728e"
   },
   "Mito": {
-   "competitivo": "4ffb6c481d50:3cb4ba14e995",
-   "pais": "d1decad263f0:50160dcafbc4",
+   "competitivo": "e144e45b641a:3cb4ba14e995",
+   "pais": "248f2e3d3afa:50160dcafbc4",
    "servidor": "8dd99723fd68:e0061cb5005e:c82496",
-   "temporada": "7158a3c78cbf:fec25411e829"
+   "temporada": "e31011c95518:fec25411e829"
   },
   "Mknoli": {
    "servidor": "0995b01c57e5:e0061cb5005e:1b952d"
@@ -2126,5 +2126,5 @@
    "servidor": "7f8885a35a6d:e0061cb5005e:71cf5a"
   }
  },
- "cuando": "2026-11-16T20:08:23+00:00"
+ "cuando": "2026-11-16T20:34:46+00:00"
 }
