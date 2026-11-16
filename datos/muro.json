@@ -72,15 +72,6 @@
 "temporada"
 ]
 },
-"vandu": {
-"rg": "C",
-"c": [
-"competitivo",
-"pais",
-"servidor",
-"temporada"
-]
-},
 "carlosss": {
 "rg": "S",
 "c": [
@@ -91,6 +82,15 @@
 },
 "panchok": {
 "rg": "S",
+"c": [
+"competitivo",
+"pais",
+"servidor",
+"temporada"
+]
+},
+"vandu": {
+"rg": "C",
 "c": [
 "competitivo",
 "pais",
@@ -2863,14 +2863,6 @@
 }
 },
 "cambios": [
-{
-"tipo": "tarjeta",
-"t": "2026-10-10T07:09:01Z",
-"quien": [
-"araya"
-],
-"carta": "temporada"
-},
 {
 "tipo": "rango",
 "t": "2026-10-10T18:26:29Z",
@@ -6235,6 +6227,18 @@
 ],
 "rk": "temporada",
 "pos": 10
+},
+{
+"tipo": "top10",
+"t": "2026-11-16T19:02:43Z",
+"quien": [
+"Panchok"
+],
+"ks": [
+"panchok"
+],
+"rk": "temporada",
+"pos": 10
 }
 ],
 "noche_antes": {
@@ -7810,8 +7814,8 @@
 "snow",
 "six",
 "verc",
-"vandu",
-"carlosss"
+"carlosss",
+"panchok"
 ],
 "competitivo": [
 "oasis",
@@ -7827,7 +7831,8 @@
 ]
 },
 "top10_t": {
-"temporada:carlosss": "2026-11-16T18:40:04Z"
+"temporada:carlosss": "2026-11-16T18:40:04Z",
+"temporada:panchok": "2026-11-16T19:02:43Z"
 },
 "racha": {
 "makmah": 0,
