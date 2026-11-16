@@ -7,6 +7,11 @@ import json, os, sys, time, mimetypes
 from urllib.parse import urlparse, quote
 from playwright.sync_api import sync_playwright
 
+try:
+    sys.stdout.reconfigure(encoding='utf-8')  # la consola de Windows no es UTF-8 y los nombres traen tildes y emojis
+except Exception:
+    pass
+
 PAG = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), 'bot', 'paginas')
 PROD = 'https://underlegends.pages.dev'
 S = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'salida_botones_crew')

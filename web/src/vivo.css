@@ -3,6 +3,10 @@
 /* con una página corta, la app mide la pantalla y su blanco seguía abajo del pie. El negro del pie se estira hasta el
    final con una sombra que arranca en su borde de arriba: no mueve nada ni tapa lo de arriba (Dlx, 02/10/2026) */
 .app .pie.negra{box-shadow:0 100vh 0 100vh #030304}
+/* ⬛ entre una página que termina en negro y el pie negro no va el blanco del margen (Dlx, 16/11/2026, con la captura del
+   Merchandising: «espacios raros»). `.sec.negra+.pie.negra` ya lo hacía, pero las páginas van adentro de `.pg-entra` y el pie
+   no es su hermano: quedaba una franja blanca de 26 px */
+.app .pg-entra:has(> :last-child:is(.sec.negra,.lq3-osc))+.pie.negra{margin-top:0;border-top-color:#2A2A2E}
 /* 🙋 «Algo está mal», en Mi cuenta (17/10/2026) */
 .pd-tipos{display:grid;gap:8px;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));margin-top:4px}
 .pd-tipo{display:grid;gap:4px;text-align:left;padding:12px;border:2px solid var(--suave);background:none;color:inherit;cursor:pointer;font:inherit}
@@ -5864,6 +5868,15 @@ dialog.pn-pop.pop-gratis{--pc:#F5C542;width:min(640px,calc(100vw - 32px))}
   .lu-feat-v.redonda .lu-feat-i{height:104px;font-size:40px}
   .lu-tit{font-size:22px}
   .lu-btn{padding:9px 11px}
+  /* 📏 la carta a la izquierda y, a su lado, sólo qué es: los botones y los comentarios van a lo ancho, abajo (Dlx, 16/11/2026,
+     con la captura: «espacios raros»). En la columna de 207 px los dos botones no entraban juntos y la columna crecía a
+     ~220 px de alto contra los ~160 de la carta: quedaba un hueco debajo de la carta */
+  .lu-feat{row-gap:10px}
+  .lu-feat-t{display:contents}
+  .lu-feat-v{grid-column:1;grid-row:1 / span 3}
+  .lu-feat-t > :nth-child(-n+3){grid-column:2}
+  .lu-feat-t > :nth-child(n+4){grid-column:1 / -1}
+  .lu-feat .lu-acc .lu-btn{flex:1 1 0;justify-content:center}
   .lu-r.nt-f{grid-template-columns:44px minmax(0,1fr) auto;gap:11px;padding:12px}
   .lu-r-v.v-cara .nt-cara,.lu-r-v .nt-cara > .nt-c{width:44px;height:44px}
   .lu-r-v.v-carta,.lu-r-carta,.lu-r-v.v-img{width:44px}
@@ -6017,8 +6030,23 @@ dialog.pn-pop.pop-gratis{--pc:#F5C542;width:min(640px,calc(100vw - 32px))}
   .app .mn-ventaja{flex-basis:100%;text-align:center;rotate:0deg}
   .app .mn-vacio{grid-column:1/-1;margin:0}
   .app .mn-tile-col{width:150px}
+  /* 📏 sin hueco al lado de la carta (Dlx, 16/11/2026, con la captura: «espacios raros»): el #1 arriba a la derecha y sus
+     cuatro números en dos por dos debajo, al lado de la carta; la ventaja, a lo ancho. Antes el #1 iba abajo y los números
+     en una fila aparte, y arriba a la derecha de la carta quedaban ~100 px vacíos */
+  .app .mn{grid-template-columns:150px minmax(0,1fr) minmax(0,1fr);column-gap:10px;row-gap:8px}
+  .app .mn-uno{grid-column:1;grid-row:1 / span 3;align-self:start}
+  .app .mn-top{grid-column:2 / -1;grid-row:1;align-self:start}
+  .app .mn-st{display:contents}
+  .app .mn-st span{flex:none;padding:8px 8px 7px}
+  .app .mn-st small{letter-spacing:.05em}
+  .app .mn-ventaja{grid-column:1 / -1;margin:4px 3px 4px 0}
   .app .mn-gente{display:none}
   .app .mn-lista li.p2 .mn-n,.app .mn-lista li.p3 .mn-n{width:24px;height:24px;font-size:15px}
+}
+@media (max-width: 380px){
+  .app .mn{grid-template-columns:128px minmax(0,1fr) minmax(0,1fr)}
+  .app .mn-uno .sin-boton,.app .mn-uno .mn-carta,.app .mn-tile,.app .mn-tile-col{width:128px}
+  .app .mn-st b{font-size:20px}
 }
 
 /* ═══ 👕 EL MERCHANDISING, OPCIÓN A (13/11/2026, Dlx: «A y A»): el drop. Una remera grande sobre el tono de su servidor
@@ -6349,14 +6377,31 @@ dialog.pn-pop.un-pop{--pc:#29B298;width:min(540px,calc(100vw - 32px));max-height
   .app .mqa-g::-webkit-scrollbar{display:none}
   .app .mqa-otros{display:contents}
   .app .mqa-uno,.app .mqa-p{scroll-snap-align:start;min-width:0}
-  .app .mqa-g{align-items:start}
-  .app .mqa-img{max-width:150px;margin:0 auto}
-  .app .mqa-sw{display:flex;gap:6px;overflow-x:auto;scrollbar-width:none;margin:0 -16px;padding:4px 16px}
+  /* 📏 los cuatro del mismo alto (16/11/2026): la remera iba con su dibujo arriba y medía 467 contra 248 de las otras, así
+     que al deslizar quedaban 220 px de hueco debajo. En el celular el dibujo va al costado, y las otras se estiran */
+  .app .mqa-g{align-items:stretch}
+  .app .mqa-uno{grid-template-columns:96px minmax(0,1fr);align-items:start;gap:12px;padding:14px}
+  .app .mqa-img{max-width:96px;margin:0}
+  .app .mqa-t{gap:6px}
+  .app .mqa-t b{font-size:18px}
+  .app .mqa-d{font-size:12.5px;line-height:1.35}
+  .app .mqa-k.gris{margin-top:2px}
+  .app .mqa-p > div:last-child{margin-top:auto}
+  .app .mqa-sw{display:flex;flex-wrap:nowrap;gap:6px;overflow-x:auto;scrollbar-width:none;margin:0 -14px 0 0;padding:4px 14px 4px 2px}
   .app .mqa-sw::-webkit-scrollbar{display:none}
   .app .mqa-sw .mqa-c{flex:none}
   .app .mqa-p-img,.app .mqa-p.ancho .mqa-p-img{width:170px;margin:14px auto 0}
   .app .mqa-p.ancho{grid-column:auto;flex-direction:column;align-items:stretch}
 }
+
+/* 📏 la llave grande sin llave corta, con tope: el escenario mide lo del momento más alto y el resto quedaba con su hueco */
+.app .cm-tope{position:relative}
+.app .cm-tope .cm-wrap{max-height:300px;overflow-y:hidden}
+.app .cm-tope::after{content:"";position:absolute;inset:auto -16px 0;height:110px;pointer-events:none;
+  background:linear-gradient(180deg,rgba(3,3,4,0),rgba(3,3,4,.92) 70%)}
+.app .cm-tope-b{position:absolute;left:50%;bottom:10px;z-index:1;transform:translateX(-50%);min-height:44px;padding:0 16px;white-space:nowrap;
+  border:2px solid #F6F6F6;background:#030304;color:#F6F6F6;cursor:pointer;font:800 13px/1 Archivo,sans-serif;font-stretch:115%;text-transform:uppercase}
+@media (min-width: 900px){.app .cm-tope .cm-wrap{max-height:330px}.app .cm-tope::after{inset:auto 0 0}}
 
 /* ═══ 🪟 EL VS, CON EL FONDO A LA VISTA (14/11/2026). Dlx: «ese cuadro negro… un poquito transparente para que se note el
    fondo un poquito, y sobre todo en celular, que no se aprecia nada». La caja del medio iba al 82 % de negro y en el

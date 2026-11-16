@@ -2123,6 +2123,10 @@ function momentos(liga, vivoL, ctx = {}) {
     const L = e._L || llaveEnVivo(e, vivoL);
     // con Octavos o más, la llave corta (ver `momentosLlave()`)
     const corta = cortaDe(L);
+    // 📏 una llave grande que no se juega en orden no tiene llave corta (no se sabe cuál va) y salía ENTERA: con «QUE RAPEEN 17»
+    // (octavos de cinco) el momento medía más de 1.700 px en el celular, y como el escenario mide lo del más alto, todos los
+    // demás quedaban con un hueco enorme (Dlx, 16/11/2026, con las capturas: «espacios raros»). Va con tope y «Ver la llave completa»
+    const tope = !!(L && !corta && llaveGrande(L));
     // ⚔️ la batalla de ahora, si es un mano a mano y se sabe cuál va (`momentosLlave()`): cara a cara
     const ml = L ? momentosLlave(L) : null;
     const mano = !!(ml && ml.ahora && ml.ahora.lados.length === 2);
@@ -2143,11 +2147,14 @@ function momentos(liga, vivoL, ctx = {}) {
         <p className={'hero-p' + (L ? ' es-pc' : '')}>{L ? 'La llave, cruce por cruce, mientras se juega.' : 'La llave aparece acá apenas la carguen, cruce por cruce. Mientras, se mira en Discord.'}</p>
         {L ? null : <Anotados liga={liga} e={e} />}
         <div className="hero-acc">
-          {L ? <button type="button" className="btn verde" onClick={() => accion.llave('v:' + L.id)}>{corta ? 'Ver la llave completa' : 'Ver la llave'}</button> : null}
+          {L ? <button type="button" className="btn verde" onClick={() => accion.llave('v:' + L.id)}>{corta || tope ? 'Ver la llave completa' : 'Ver la llave'}</button> : null}
           {dd ? <a className={'btn ' + (L ? 'borde' : 'verde')} href={dd.url} target="_blank" rel="noopener noreferrer">{dd.txt} ↗</a> : null}
           <a className={'btn borde' + (L ? ' es-pc' : '')} href="#/avisos"><Ico n="campana" t={18} />Quiero aviso</a>
         </div></>,
-      vis: L ? (mano ? <VsVivo liga={liga} m={ml} /> : corta ? <LlaveCorta liga={liga} m={corta} /> : <div className="cm-wrap"><CuadroMini liga={liga} ll={L} /></div>)
+      vis: L ? (mano ? <VsVivo liga={liga} m={ml} /> : corta ? <LlaveCorta liga={liga} m={corta} />
+        : tope ? <div className="cm-tope"><div className="cm-wrap"><CuadroMini liga={liga} ll={L} /></div>
+          <button type="button" className="cm-tope-b" onClick={() => accion.llave('v:' + L.id)}>Ver el resto de la llave</button></div>
+          : <div className="cm-wrap"><CuadroMini liga={liga} ll={L} /></div>)
         : <div className="es-prox-w"><div className="mo-logo vivo"><img alt="" src={liga.logo(e.sv, true)} /></div><MasSuman liga={liga} sv={e.sv} /></div>,
     });
   });
@@ -2641,6 +2648,13 @@ function variantesPrueba(liga) {
   out.push(['En vivo, sin llave todavía', v({ vivo: () => [ev('Prueba · sin llave', 'SR', null)] }), ['vivo']]);
   const tri = { id: 'p3', nombre: 'Prueba · de a tres', rondas: [{ r: 'Cuartos', b: [[[top.n, medio.n, otro.n], '', '', []], [[bajo.n, debut.n, por(30).n], '', '', []]] }] };
   out.push(['En vivo, una batalla de a tres', v({ vivo: () => [ev('Prueba · de a tres', sv(top), tri)] }), ['vivo']]);
+  // 📏 una llave grande que no se juega en orden (como «QUE RAPEEN 17», 15/11/2026: octavos de cinco): no tiene llave corta y
+  // va con tope. Sin tope, el momento medía más de 1.700 px en el celular y dejaba un hueco en todos los demás
+  const N = (i) => (T[i % T.length] || T[0]).n;
+  const grupos = [0, 1, 2, 3, 4, 5, 6, 7].map((g) => [[N(g * 5), N(g * 5 + 1), N(g * 5 + 2), N(g * 5 + 3), N(g * 5 + 4)], [0, 1, 3].includes(g) ? N(g * 5) : '', '', []]);
+  const enDesorden = { id: 'p4', nombre: 'Prueba · la grande fuera de orden', rondas: [{ r: 'Octavos', b: grupos },
+    { r: 'Cuartos', b: [[[N(0), N(5)], '', '', []], [[N(15)], '', '', []]] }] };
+  out.push(['En vivo, una llave grande fuera de orden', v({ vivo: () => [ev('Prueba · la grande fuera de orden', sv(top), enDesorden)] }), ['vivo']]);
   return out;
 }
 
