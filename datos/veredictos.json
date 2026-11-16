@@ -2478,6 +2478,17 @@
    "b": "GOCHO",
    "ganador": "GOCHO",
    "votos": "1–0"
+  },
+  "1571687621678080165": {
+   "id": "1571687621678080165",
+   "sv": "[FFA] Freestyle For All 👾",
+   "g": "1468472442925092958",
+   "canal": "1487206164864438513",
+   "pub": 1794789929552,
+   "a": "RIZAS",
+   "b": "SURYA",
+   "ganador": "RIZAS",
+   "votos": "1–0"
   }
  },
  "llaves": {
@@ -7840,8 +7851,8 @@
    "g": "1468472442925092958",
    "canal": "1487206164864438513",
    "pub": 1794785977551,
-   "ed": 1794788453071,
-   "texto": "`[ OCTAVOS ]`\n⌞BLITZ⌝ 🆚 ⌞DXG⌝ 🆚 ⌞SURYA⌝ 🆚 ⌞TROT⌝ 🆚 ⌞MINIBOY⌝\n⌞THANIEL⌝ 🆚 ⌞RIZAS⌝ 🆚 ⌞GOCHO⌝\n⌞YINN⌝ 🆚 ⌞SIX⌝ 🆚 ⌞EZEE⌝ 🆚 ⌞LVEL⌝ 🆚 ⌞LIMITZ⌝\n⌞MAJIZTRAL⌝ 🆚 ⌞TENOR⌝ 🆚 ⌞MITO MANIAK⌝ 🆚 ⌞LORDVIRUZ⌝ 🆚 ⌞COLESITO BENJIXO⌝\n⌞MOLUSCO⌝ 🆚 ⌞AGUS⌝ 🆚 ⌞YINN⌝ 🆚 ⌞COLESITO⌝\n`[ CUARTOS ]`\n⌞BLITZ⌝ 🆚 ⌞GOCHO⌝",
+   "ed": 1794790261952,
+   "texto": "`[ OCTAVOS ]`\n⌞BLITZ⌝ 🆚 ⌞DXG⌝ 🆚 ⌞SURYA⌝ 🆚 ⌞TROT⌝ 🆚 ⌞MINIBOY⌝\n⌞THANIEL⌝ 🆚 ⌞RIZAS⌝ 🆚 ⌞GOCHO⌝\n⌞YINN⌝ 🆚 ⌞SIX⌝ 🆚 ⌞EZEE⌝ 🆚 ⌞LVEL⌝ 🆚 ⌞LIMITZ⌝\n⌞MAJIZTRAL⌝ 🆚 ⌞TENOR⌝ 🆚 ⌞MITO MANIAK⌝ 🆚 ⌞LORDVIRUZ⌝ 🆚 ⌞COLESITO BENJIXO⌝\n⌞MOLUSCO⌝ 🆚 ⌞AGUS⌝ 🆚 ⌞YINN⌝ 🆚 ⌞COLESITO⌝\n`[ CUARTOS ]`\n⌞BLITZ⌝ 🆚 ⌞GOCHO⌝\n⌞SIX⌝ 🆚 ⌞COLESITO LORD⌝ 🆚 ⌞YINN AGUS⌝\n⌞BENJIXO TENOR⌝ 🆚 ⌞PICHULA EZEE⌝\n⌞RIZAS⌝ 🆚 ⌞SURYA⌝\n`[ SEMIFINALES ]`",
    "batallas": [
     [
      "OCTAVOS",
@@ -7852,9 +7863,12 @@
       "TROT",
       "MINIBOY"
      ],
-     "BLITZ",
-     "ronda siguiente",
-     []
+     null,
+     "pasan 2, no hay un ganador",
+     [
+      "BLITZ",
+      "SURYA"
+     ]
     ],
     [
      "OCTAVOS",
@@ -7863,9 +7877,12 @@
       "RIZAS",
       "GOCHO"
      ],
-     "GOCHO",
-     "ronda siguiente",
-     []
+     null,
+     "pasan 2, no hay un ganador",
+     [
+      "RIZAS",
+      "GOCHO"
+     ]
     ],
     [
      "OCTAVOS",
@@ -7876,8 +7893,8 @@
       "LVEL",
       "LIMITZ"
      ],
-     null,
-     "no aparece nadie después",
+     "SIX",
+     "ronda siguiente",
      []
     ],
     [
@@ -7912,6 +7929,37 @@
       "GOCHO"
      ],
      "GOCHO",
+     "veredicto",
+     []
+    ],
+    [
+     "CUARTOS",
+     [
+      "SIX",
+      "COLESITO LORD",
+      "YINN AGUS"
+     ],
+     "SIX",
+     "veredicto",
+     []
+    ],
+    [
+     "CUARTOS",
+     [
+      "BENJIXO TENOR",
+      "PICHULA EZEE"
+     ],
+     null,
+     "última ronda y no dice campeón",
+     []
+    ],
+    [
+     "CUARTOS",
+     [
+      "RIZAS",
+      "SURYA"
+     ],
+     "RIZAS",
      "veredicto",
      []
     ]
