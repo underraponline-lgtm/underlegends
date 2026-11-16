@@ -804,6 +804,10 @@ function TuLigaCaja({ C, yo, dl, conCuenta }) {
       <article className="cmx-t cmx-violeta">
         <header><h4>Tu liga</h4></header>
         <p className="cmx-nota">{conCuenta ? <>Todavía no estás en ninguna. Juega <b>1 evento</b> en las 2 semanas antes del {fechaCorta(L.hasta)} y entras en <b>Ascenso</b> con la temporada que viene.</> : <>¿Juegas? <b>Entra con Discord</b> y te marcamos tu liga, tu llave y tus cruces.</>}</p>
+        <span className="cmx-et">Los niveles, de arriba abajo</span>
+        <ol className="cmx-niv">
+          {NIVELES.map(([nv, nn, c]) => { const k = (L.g || []).filter((x) => x.nv === nv).length; return k ? <li key={nv} style={{ '--c': c }}><b>{nn}</b><small>{k} {k === 1 ? 'liga' : 'ligas'}</small></li> : null; })}
+        </ol>
         {conCuenta ? null : <button type="button" className="btn verde" onClick={accion.entrar}>Entrar con Discord</button>}
       </article>
     );
@@ -924,6 +928,16 @@ function CobraronCaja({ liga, C, yo, onTodos }) {
           </span>
         ))}
       </div>
+      {u.length > 3 ? (
+        <ol className="cmx-cob" start={4}>
+          {u.slice(3, 5).map(([k, m, por]) => (
+            <li key={k + por} className={k === yo ? 'yo' : undefined}>
+              <Cara liga={liga} k={k} nombre={nombreDe(liga, C, k)} cls="cara cmx-cara" lazy />
+              <Nombre liga={liga} C={C} k={k} yo={yo} /><small>{por}</small><b>+{pdt(m)}</b>
+            </li>
+          ))}
+        </ol>
+      ) : null}
       <small className="cmx-nota">{u.length} cobraron en el último cierre, en Puntos de Tienda · <button type="button" className="cmx-link" onClick={onTodos}>ver todos</button></small>
     </article>
   );
