@@ -49895,5 +49895,347 @@
    ]
   ],
   "v": 2
+ },
+ "647": {
+  "antes": {
+   "Agus": [
+    13,
+    13,
+    false
+   ],
+   "BLITZ": [
+    287,
+    140,
+    true
+   ],
+   "Benjixo": [
+    272,
+    101,
+    true
+   ],
+   "Colesito": [
+    14,
+    14,
+    false
+   ],
+   "Eze": [
+    134,
+    210,
+    false
+   ],
+   "Gocho": [
+    63,
+    77,
+    false
+   ],
+   "Lord Viruzz": [
+    44,
+    51,
+    false
+   ],
+   "Majiztral": [
+    32,
+    35,
+    false
+   ],
+   "Miniboy": [
+    19,
+    19,
+    false
+   ],
+   "Mito": [
+    25,
+    27,
+    false
+   ],
+   "Molusco": [
+    27,
+    29,
+    false
+   ],
+   "Noone": [
+    91,
+    116,
+    false
+   ],
+   "PRAISERIZA": [
+    5,
+    5,
+    false
+   ],
+   "PichulaMc": [
+    3,
+    3,
+    false
+   ],
+   "Surya": [
+    224,
+    542,
+    false
+   ],
+   "Tenor": [
+    37,
+    43,
+    false
+   ],
+   "Trot": [
+    39,
+    46,
+    false
+   ],
+   "dxg": [
+    98,
+    126,
+    false
+   ],
+   "yinn": [
+    18,
+    18,
+    false
+   ]
+  },
+  "canal": "1468472443843776659",
+  "duelos": [
+   [
+    "BLITZ",
+    "dxg",
+    "BLITZ"
+   ],
+   [
+    "BLITZ",
+    "Trot",
+    "BLITZ"
+   ],
+   [
+    "BLITZ",
+    "Miniboy",
+    "BLITZ"
+   ],
+   [
+    "Gocho",
+    "Thaniel",
+    "Gocho"
+   ],
+   [
+    "Eze",
+    "Noone",
+    "Eze"
+   ],
+   [
+    "Eze",
+    "Lvel 🇻🇪",
+    "Eze"
+   ],
+   [
+    "Tenor",
+    "Majiztral",
+    "Tenor"
+   ],
+   [
+    "Tenor",
+    "Mito, Maniak🇫🇴",
+    "Tenor"
+   ],
+   [
+    "Tenor",
+    "Colesito, Benjixo",
+    "Tenor"
+   ],
+   [
+    "yinn",
+    "Molusco",
+    "yinn"
+   ],
+   [
+    "Gocho",
+    "BLITZ",
+    "Gocho"
+   ],
+   [
+    "xr 🇧🇼",
+    "Lord Viruzz, Colesito",
+    "xr 🇧🇼"
+   ],
+   [
+    "xr 🇧🇼",
+    "Agus, yinn",
+    "xr 🇧🇼"
+   ],
+   [
+    "Eze, PichulaMc",
+    "Tenor, Benjixo",
+    "Eze, PichulaMc"
+   ],
+   [
+    "PRAISERIZA",
+    "Surya",
+    "PRAISERIZA"
+   ],
+   [
+    "PRAISERIZA",
+    "Eze, PichulaMc",
+    "PRAISERIZA"
+   ],
+   [
+    "Gocho, Eze, Agus",
+    "xr 🇧🇼, PichulaMc",
+    "Gocho, Eze, Agus"
+   ],
+   [
+    "PRAISERIZA",
+    "Gocho, Eze, Agus",
+    "PRAISERIZA"
+   ]
+  ],
+  "ev_antes": {
+   "Agus": 24,
+   "BLITZ": 10,
+   "Benjixo": 10,
+   "Colesito": 41,
+   "Eze": 6,
+   "Gocho": 13,
+   "Lord Viruzz": 27,
+   "Majiztral": 31,
+   "Miniboy": 63,
+   "Mito": 38,
+   "Molusco": 30,
+   "Noone": 10,
+   "PRAISERIZA": 21,
+   "PichulaMc": 61,
+   "Surya": 1,
+   "Tenor": 20,
+   "Trot": 31,
+   "dxg": 12,
+   "yinn": 36
+  },
+  "fecha": "15/11",
+  "firma": "365e68257bfab175",
+  "msg": "1571699312382054502",
+  "nombre": "__ qcyo rapeen 17 __",
+  "num": 647,
+  "participantes": 26,
+  "sello": {
+   "PRAISERIZA": "893829d31f83:fec25411e829"
+  },
+  "sv": "FFA",
+  "t": "2026-11-16T01:55:20Z",
+  "tabla": [
+   [
+    "PRAISERIZA",
+    "Campeón",
+    10000
+   ],
+   [
+    "Eze",
+    "Semifinal",
+    5125
+   ],
+   [
+    "PichulaMc",
+    "Semifinal",
+    3937
+   ],
+   [
+    "xr 🇧🇼",
+    "Semifinal",
+    2625
+   ],
+   [
+    "Gocho",
+    "Subcampeón",
+    2500
+   ],
+   [
+    "Agus",
+    "Subcampeón",
+    2500
+   ],
+   [
+    "BLITZ",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Surya",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Benjixo",
+    "Cuartos",
+    1875
+   ],
+   [
+    "Lord Viruzz",
+    "Cuartos",
+    1250
+   ],
+   [
+    "Colesito",
+    "Cuartos",
+    1250
+   ],
+   [
+    "yinn",
+    "Cuartos",
+    1250
+   ],
+   [
+    "Tenor",
+    "Cuartos",
+    1250
+   ],
+   [
+    "dxg",
+    "Octavos",
+    1250
+   ],
+   [
+    "Trot",
+    "Octavos",
+    1250
+   ],
+   [
+    "Miniboy",
+    "Octavos",
+    1250
+   ],
+   [
+    "Thaniel",
+    "Octavos",
+    1250
+   ],
+   [
+    "Noone",
+    "Octavos",
+    1250
+   ],
+   [
+    "Lvel 🇻🇪",
+    "Octavos",
+    1250
+   ],
+   [
+    "Majiztral",
+    "Octavos",
+    1250
+   ],
+   [
+    "Molusco",
+    "Octavos",
+    1250
+   ],
+   [
+    "Mito",
+    "Octavos",
+    625
+   ],
+   [
+    "Maniak🇫🇴",
+    "Octavos",
+    625
+   ]
+  ],
+  "v": 2
  }
 }

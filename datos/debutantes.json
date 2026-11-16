@@ -1840,6 +1840,18 @@
    "vence": "2026-10-19T22:01:43+00:00",
    "vencido": false
   },
+  "Maniak": {
+   "avisado": "2026-11-15",
+   "con": null,
+   "cumplido": "",
+   "debut": "2026-11-15T23:33:06+00:00",
+   "did": "",
+   "evento": "qcyo rapeen 17",
+   "n": 647,
+   "sv": "FFA",
+   "vence": "2026-11-22T23:33:06+00:00",
+   "vencido": false
+  },
   "Manteca mantecosa": {
    "avisado": "2026-10-29",
    "chat": "2026-10-29",
@@ -2595,9 +2607,10 @@
   },
   "Surya": {
    "avisado": "2026-11-09",
+   "avisado_cumplido": "2026-11-15",
    "chat": "2026-11-09",
-   "con": null,
-   "cumplido": "",
+   "con": 647,
+   "cumplido": "2026-11-15T23:33:06+00:00",
    "debut": "2026-11-09T03:16:00+00:00",
    "did": "1272710574970769509",
    "evento": "QCYO RAPEEN 12",
@@ -2675,6 +2688,18 @@
    "sv": "LKR",
    "vence": "2026-11-13T02:03:35+00:00",
    "vencido": true
+  },
+  "Thaniel": {
+   "avisado": "2026-11-15",
+   "con": null,
+   "cumplido": "",
+   "debut": "2026-11-15T23:33:06+00:00",
+   "did": "",
+   "evento": "qcyo rapeen 17",
+   "n": 647,
+   "sv": "FFA",
+   "vence": "2026-11-22T23:33:06+00:00",
+   "vencido": false
   },
   "TheOg": {
    "con": null,
@@ -3310,6 +3335,18 @@
    "sv": "FFA",
    "vence": "2026-11-07T02:59:35+00:00",
    "vencido": true
+  },
+  "xr": {
+   "avisado": "2026-11-15",
+   "con": null,
+   "cumplido": "",
+   "debut": "2026-11-15T23:33:06+00:00",
+   "did": "",
+   "evento": "qcyo rapeen 17",
+   "n": 647,
+   "sv": "FFA",
+   "vence": "2026-11-22T23:33:06+00:00",
+   "vencido": false
   },
   "xx": {
    "avisado": "2026-11-11",

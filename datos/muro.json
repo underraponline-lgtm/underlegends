@@ -221,7 +221,7 @@
 "c": []
 },
 "mito": {
-"rg": "B",
+"rg": "C",
 "c": [
 "competitivo",
 "pais",
@@ -409,7 +409,7 @@
 ]
 },
 "lordviruzz": {
-"rg": "C",
+"rg": "D",
 "c": [
 "competitivo",
 "pais",
@@ -590,6 +590,15 @@
 "rg": "D",
 "c": []
 },
+"gocho": {
+"rg": "C",
+"c": [
+"competitivo",
+"pais",
+"servidor",
+"temporada"
+]
+},
 "neo": {
 "rg": "C",
 "c": []
@@ -601,15 +610,6 @@
 "eclipsito": {
 "rg": "C",
 "c": []
-},
-"gocho": {
-"rg": "D",
-"c": [
-"competitivo",
-"pais",
-"servidor",
-"temporada"
-]
 },
 "sosaatr": {
 "rg": "E",
@@ -738,6 +738,10 @@
 "temporada"
 ]
 },
+"benjixo": {
+"rg": "D",
+"c": []
+},
 "mcnadie": {
 "rg": "",
 "c": [
@@ -784,10 +788,6 @@
 },
 "19fleivawack": {
 "rg": "",
-"c": []
-},
-"benjixo": {
-"rg": "C",
 "c": []
 },
 "artezzy": {
@@ -871,6 +871,15 @@
 "temporada"
 ]
 },
+"noone": {
+"rg": "",
+"c": [
+"competitivo",
+"pais",
+"servidor",
+"temporada"
+]
+},
 "soneto": {
 "rg": "E",
 "c": [
@@ -879,11 +888,10 @@
 "temporada"
 ]
 },
-"noone": {
-"rg": "",
+"dxg": {
+"rg": "E",
 "c": [
 "competitivo",
-"pais",
 "servidor",
 "temporada"
 ]
@@ -942,14 +950,6 @@
 "rg": "",
 "c": [
 "pais",
-"servidor",
-"temporada"
-]
-},
-"dxg": {
-"rg": "E",
-"c": [
-"competitivo",
 "servidor",
 "temporada"
 ]
@@ -1014,6 +1014,10 @@
 "rg": "",
 "c": []
 },
+"blitz": {
+"rg": "E",
+"c": []
+},
 "assuan": {
 "rg": "",
 "c": []
@@ -1032,10 +1036,6 @@
 "servidor",
 "temporada"
 ]
-},
-"blitz": {
-"rg": "E",
-"c": []
 },
 "juasmio": {
 "rg": "",
@@ -1262,6 +1262,14 @@
 "dantemx": {
 "rg": "",
 "c": [
+"servidor",
+"temporada"
+]
+},
+"eze": {
+"rg": "",
+"c": [
+"pais",
 "servidor",
 "temporada"
 ]
@@ -1508,14 +1516,6 @@
 "joshu": {
 "rg": "",
 "c": []
-},
-"eze": {
-"rg": "",
-"c": [
-"pais",
-"servidor",
-"temporada"
-]
 },
 "maticerna": {
 "rg": "",
@@ -6204,21 +6204,21 @@
 "primero": false
 },
 {
-"tipo": "rango",
-"t": "2026-11-15T21:39:25Z",
-"quien": [
-"Benjixo"
-],
-"rg": "C",
-"primero": true
-},
-{
 "tipo": "tarjeta",
 "t": "2026-11-15T21:39:25Z",
 "quien": [
 "Krish"
 ],
 "carta": "pais"
+},
+{
+"tipo": "rango",
+"t": "2026-11-16T02:08:48Z",
+"quien": [
+"Gocho"
+],
+"rg": "C",
+"primero": false
 }
 ],
 "noche_antes": {
@@ -7636,8 +7636,8 @@
 "tipo": "resnoche",
 "t": "2026-11-16T08:00:00Z",
 "dia": "2026-11-15",
-"eventos": 2,
-"part": 24,
+"eventos": 3,
+"part": 50,
 "campeones": [
 {
 "ev": "RED BULL NACIONAL PLAZAS T.5",
@@ -7660,6 +7660,17 @@
 "motera"
 ]
 ]
+},
+{
+"ev": "qcyo rapeen 17",
+"sv": "FFA",
+"ll": 647,
+"quien": [
+[
+"PRAISERIZA",
+"praiseriza"
+]
+]
 }
 ],
 "suman": [
@@ -7670,16 +7681,16 @@
 "ev": 1
 },
 {
-"n": "Motera",
-"k": "motera",
-"pts": 7500,
+"n": "PRAISERIZA",
+"k": "praiseriza",
+"pts": 10000,
 "ev": 1
 },
 {
 "n": "Trot",
 "k": "trot",
-"pts": 7500,
-"ev": 1
+"pts": 8750,
+"ev": 2
 }
 ],
 "suben": [

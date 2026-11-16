@@ -57115,5 +57115,269 @@
    "min": 31,
    "v": 1
   }
+ },
+ "647": {
+  "dia": "2026-11-15",
+  "escala": "16+",
+  "fecha": "15/11",
+  "links": [
+   "https://discord.com/channels/1468472442925092958/1487207377601040516/1571669403987214508"
+  ],
+  "n": 647,
+  "nombre": "qcyo rapeen 17",
+  "participantes": 26,
+  "rondas": [
+   {
+    "b": [
+     [
+      [
+       "BLITZ",
+       "Surya",
+       "dxg",
+       "Trot",
+       "Miniboy"
+      ],
+      "BLITZ, Surya",
+      "triple (5 bandas, pasan 2); también pasa: surya🇨🇱"
+     ],
+     [
+      [
+       "Gocho",
+       "PRAISERIZA",
+       "Thaniel"
+      ],
+      "Gocho, PRAISERIZA",
+      "triple (3 bandas, pasan 2); también pasa: Rizas🇻🇪"
+     ],
+     [
+      [
+       "Eze",
+       "yinn",
+       "xr 🇧🇼",
+       "Noone",
+       "Lvel 🇻🇪"
+      ],
+      "Eze, yinn, xr 🇧🇼",
+      "triple (5 bandas, pasan 3); también pasa: Yinn / xr 🇧🇼"
+     ],
+     [
+      [
+       "Tenor",
+       "Lord Viruzz",
+       "Majiztral",
+       "Mito, Maniak🇫🇴",
+       "Colesito, Benjixo"
+      ],
+      "Tenor, Lord Viruzz",
+      "triple (5 bandas, pasan 2); también pasa: lordviruzz🇨🇴"
+     ],
+     [
+      [
+       "yinn",
+       "Colesito",
+       "Agus",
+       "Molusco"
+      ],
+      "yinn, Colesito, Agus",
+      "triple (4 bandas, pasan 3); también pasa: colesito🇨🇴 / agus🇦🇷"
+     ]
+    ],
+    "r": "Octavos"
+   },
+   {
+    "b": [
+     [
+      [
+       "Gocho",
+       "BLITZ"
+      ],
+      "Gocho",
+      ""
+     ],
+     [
+      [
+       "xr 🇧🇼",
+       "Lord Viruzz, Colesito",
+       "Agus, yinn"
+      ],
+      "xr 🇧🇼",
+      "triple (3 bandas)"
+     ],
+     [
+      [
+       "Eze, PichulaMc",
+       "Tenor, Benjixo"
+      ],
+      "Eze, PichulaMc",
+      "Revivido: pichula🇦🇷"
+     ],
+     [
+      [
+       "PRAISERIZA",
+       "Surya"
+      ],
+      "PRAISERIZA",
+      ""
+     ]
+    ],
+    "r": "Cuartos"
+   },
+   {
+    "b": [
+     [
+      [
+       "PRAISERIZA",
+       "Eze, PichulaMc"
+      ],
+      "PRAISERIZA",
+      ""
+     ],
+     [
+      [
+       "Gocho, Eze, Agus",
+       "xr 🇧🇼, PichulaMc"
+      ],
+      "Gocho, Eze, Agus",
+      ""
+     ]
+    ],
+    "r": "Semifinales"
+   },
+   {
+    "b": [
+     [
+      [
+       "PRAISERIZA",
+       "Gocho, Eze, Agus"
+      ],
+      "PRAISERIZA",
+      ""
+     ]
+    ],
+    "r": "Final"
+   }
+  ],
+  "sv": "FFA",
+  "tabla": [
+   [
+    "PRAISERIZA",
+    "Campeón",
+    10000
+   ],
+   [
+    "Eze",
+    "Semifinal",
+    5125
+   ],
+   [
+    "PichulaMc",
+    "Semifinal",
+    3937
+   ],
+   [
+    "xr 🇧🇼",
+    "Semifinal",
+    2625
+   ],
+   [
+    "Agus",
+    "Subcampeón",
+    2500
+   ],
+   [
+    "BLITZ",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Gocho",
+    "Subcampeón",
+    2500
+   ],
+   [
+    "Surya",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Benjixo",
+    "Cuartos",
+    1875
+   ],
+   [
+    "Colesito",
+    "Cuartos",
+    1250
+   ],
+   [
+    "Lord Viruzz",
+    "Cuartos",
+    1250
+   ],
+   [
+    "Lvel 🇻🇪",
+    "Octavos",
+    1250
+   ],
+   [
+    "Majiztral",
+    "Octavos",
+    1250
+   ],
+   [
+    "Miniboy",
+    "Octavos",
+    1250
+   ],
+   [
+    "Molusco",
+    "Octavos",
+    1250
+   ],
+   [
+    "Noone",
+    "Octavos",
+    1250
+   ],
+   [
+    "Tenor",
+    "Cuartos",
+    1250
+   ],
+   [
+    "Thaniel",
+    "Octavos",
+    1250
+   ],
+   [
+    "Trot",
+    "Octavos",
+    1250
+   ],
+   [
+    "dxg",
+    "Octavos",
+    1250
+   ],
+   [
+    "yinn",
+    "Cuartos",
+    1250
+   ],
+   [
+    "Maniak🇫🇴",
+    "Octavos",
+    625
+   ],
+   [
+    "Mito",
+    "Octavos",
+    625
+   ]
+  ],
+  "ver": {
+   "min": 118,
+   "v": 1
+  }
  }
 }

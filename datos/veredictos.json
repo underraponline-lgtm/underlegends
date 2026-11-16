@@ -2522,6 +2522,28 @@
    "b": "PICHULA",
    "ganador": "RIZAS",
    "votos": "1–0"
+  },
+  "1571697840294727814": {
+   "id": "1571697840294727814",
+   "sv": "[FFA] Freestyle For All 👾",
+   "g": "1468472442925092958",
+   "canal": "1487206164864438513",
+   "pub": 1794792365860,
+   "a": "RIZAS",
+   "b": "EZEE",
+   "ganador": "RIZAS",
+   "votos": "1–0"
+  },
+  "1571698668640272488": {
+   "id": "1571698668640272488",
+   "sv": "[FFA] Freestyle For All 👾",
+   "g": "1468472442925092958",
+   "canal": "1487206164864438513",
+   "pub": 1794792563353,
+   "a": "AGUS+GOCHO",
+   "b": "RIZAS",
+   "ganador": "RIZAS",
+   "votos": "1–0"
   }
  },
  "llaves": {
@@ -7884,8 +7906,8 @@
    "g": "1468472442925092958",
    "canal": "1487206164864438513",
    "pub": 1794785977551,
-   "ed": 1794792189342,
-   "texto": "`[ OCTAVOS ]`\n⌞BLITZ⌝ 🆚 ⌞DXG⌝ 🆚 ⌞SURYA⌝ 🆚 ⌞TROT⌝ 🆚 ⌞MINIBOY⌝\n⌞THANIEL⌝ 🆚 ⌞RIZAS⌝ 🆚 ⌞GOCHO⌝\n⌞YINN⌝ 🆚 ⌞SIX⌝ 🆚 ⌞EZEE⌝ 🆚 ⌞LVEL⌝ 🆚 ⌞LIMITZ⌝\n⌞MAJIZTRAL⌝ 🆚 ⌞TENOR⌝ 🆚 ⌞MITO MANIAK⌝ 🆚 ⌞LORDVIRUZ⌝ 🆚 ⌞COLESITO BENJIXO⌝\n⌞MOLUSCO⌝ 🆚 ⌞AGUS⌝ 🆚 ⌞YINN⌝ 🆚 ⌞COLESITO⌝\n`[ CUARTOS ]`\n⌞BLITZ⌝ 🆚 ⌞GOCHO⌝\n⌞SIX⌝ 🆚 ⌞COLESITO LORD⌝ 🆚 ⌞YINN AGUS⌝\n⌞BENJIXO TENOR⌝ 🆚 ⌞PICHULA EZEE⌝\n⌞RIZAS⌝ 🆚 ⌞SURYA⌝\n`[ SEMIFINALES ]`\n⌞PICHULA+EZEE⌝ 🆚 ⌞RIZAS⌝\n⌞SIX PICHULA⌝ 🆚 ⌞EZEE GOCHO AGUS⌝\n⌞EZZE⌝ 🆚 ⌞PICHULA⌝\n`[ FINAL ]`\n⌞RIZAS⌝ 🆚 ⌞PICHULA⌝",
+   "ed": 1794792645120,
+   "texto": "`[ OCTAVOS ]`\n⌞BLITZ⌝ 🆚 ⌞DXG⌝ 🆚 ⌞SURYA⌝ 🆚 ⌞TROT⌝ 🆚 ⌞MINIBOY⌝\n⌞THANIEL⌝ 🆚 ⌞RIZAS⌝ 🆚 ⌞GOCHO⌝\n⌞YINN⌝ 🆚 ⌞SIX⌝ 🆚 ⌞EZEE⌝ 🆚 ⌞LVEL⌝ 🆚 ⌞LIMITZ⌝\n⌞MAJIZTRAL⌝ 🆚 ⌞TENOR⌝ 🆚 ⌞MITO MANIAK⌝ 🆚 ⌞LORDVIRUZ⌝ 🆚 ⌞COLESITO BENJIXO⌝\n⌞MOLUSCO⌝ 🆚 ⌞AGUS⌝ 🆚 ⌞YINN⌝ 🆚 ⌞COLESITO⌝\n`[ CUARTOS ]`\n⌞BLITZ⌝ 🆚 ⌞GOCHO⌝\n⌞SIX⌝ 🆚 ⌞COLESITO LORD⌝ 🆚 ⌞YINN AGUS⌝\n⌞BENJIXO TENOR⌝ 🆚 ⌞PICHULA EZEE⌝\n⌞RIZAS⌝ 🆚 ⌞SURYA⌝\n`[ SEMIFINALES ]`\n⌞PICHULA+EZEE⌝ 🆚 ⌞RIZAS⌝\n⌞SIX PICHULA⌝ 🆚 ⌞EZEE GOCHO AGUS⌝\n⌞EZZE⌝ 🆚 ⌞PICHULA⌝\n`[ FINAL ]`\n⌞RIZAS⌝ 🆚 ⌞PICHULA⌝\n⌞RIZAS⌝ 🆚 ⌞EZEE⌝\n⌞AGUS+GOCHO⌝ 🆚 ⌞RIZAS⌝",
    "batallas": [
     [
      "OCTAVOS",
@@ -7926,9 +7948,12 @@
       "LVEL",
       "LIMITZ"
      ],
-     "SIX",
-     "ronda siguiente",
-     []
+     null,
+     "pasan 2, no hay un ganador",
+     [
+      "SIX",
+      "EZEE"
+     ]
     ],
     [
      "OCTAVOS",
@@ -8031,6 +8056,26 @@
      [
       "RIZAS",
       "PICHULA"
+     ],
+     "RIZAS",
+     "veredicto",
+     []
+    ],
+    [
+     "FINAL",
+     [
+      "RIZAS",
+      "EZEE"
+     ],
+     "RIZAS",
+     "veredicto",
+     []
+    ],
+    [
+     "FINAL",
+     [
+      "AGUS+GOCHO",
+      "RIZAS"
      ],
      "RIZAS",
      "veredicto",
