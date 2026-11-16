@@ -11,6 +11,17 @@
  ],
  "cambios": [
     {
+        "version": "5.57",
+        "dia": "2026-11-16",
+        "cuando": "2026-11-16T04:52:00-05:00",
+        "titulo": "Las ligas, con su miniatura grande",
+        "items": [
+            "En **Ligas**, «Todas las ligas» vuelve a mostrar cada una con su **miniatura grande**: su último flyer (o el escudo de su servidor) y al lado cómo va, el líder y cuándo fue la última.",
+            "«Las otras ligas», en la página de cada una, también con su miniatura.",
+            "Arreglado: en el celular, el «¿Cómo funciona?» de arriba ya no tapa el título de la cartelera ni el botón de cada liga, que ahora va junto a «Seguir la liga»."
+        ]
+    },
+    {
         "version": "5.56",
         "dia": "2026-11-16",
         "cuando": "2026-11-16T04:24:00-05:00",
