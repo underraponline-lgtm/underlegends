@@ -90,6 +90,53 @@
   {"n": "Un título que no es de una batalla", "fam": "U", "msgs": [
     "# PTB TOTAL X3",
     "# EXHIBICION ANA VS BETO"],
+   "res": []},
+  {"n": "LKR: los puntajes sin cierre, «KUSOH 14 VS LVEL 8» (FMS LATAM)", "fam": "K", "msgs": [
+    "# LVEL VS KUSOH",
+    "KUSOH 14 VS LVEL 8 \nPARA LA TABLA SE HARAN X 5"],
+   "res": [["LVEL", "KUSOH", "KUSOH", "directa"]]},
+  {"n": "LKR: «A 11 - 8,5 B»", "fam": "K", "msgs": [
+    "# AFINPAPA VS ISMEL",
+    "Afinpapa 11 - 8,5  ismel"],
+   "res": [["AFINPAPA", "ISMEL", "AFINPAPA", "directa"]]},
+  {"n": "LKR: «LAST 10 X 5 = 50  TMAX 6 X 5 = 30» cuenta el de antes del X 5", "fam": "K", "msgs": [
+    "# LAST 🇺🇾 🆚 TMAX🇪🇸",
+    "LAST 10 X 5 = 50         TMAX 6 X 5 = 30"],
+   "res": [["LAST", "TMAX", "LAST", "directa"]]},
+  {"n": "LKR: «15 = LAST  10= SHADOW … # LAST», el cierre en el mismo renglón", "fam": "K", "msgs": [
+    "# SHADOW🇨🇴 🆚 LAST🇺🇾",
+    "15  =  LAST 🇺🇾                        10=  SHADOW🇨🇴              # LAST 🇺🇾"],
+   "res": [["SHADOW", "LAST", "LAST", "directa"]]},
+  {"n": "LKR: los números de antes de la réplica esperan su cierre, y «# RICARD» cierra a RICARD FLEX", "fam": "K", "msgs": [
+    "# RICARD FLEX VS TEITO",
+    "Ricardflex 13,5 \nTeito 13 \n# REPLICA",
+    "# RICARD"],
+   "res": [["RICARD FLEX", "TEITO", "RICARD FLEX", "replica"]]},
+  {"n": "LKR: números y después una réplica sin cierre: pendiente", "fam": "K", "msgs": [
+    "# ANA vs BETO",
+    "ANA 13,5\nBETO 13\n# REPLICA"],
+   "res": [["ANA", "BETO", "", ""]]},
+  {"n": "LKR: «# RICARDFLEX» cierra a RICARD, y la suma vale por su total", "fam": "K", "msgs": [
+    "# RICARD 🇪🇨 VS HIREX 🇨🇴",
+    "Resultados \nHirex 1 + 1,5 + 0,5 =3 \nRicarflex 2,5 + 3 =5,5 \n\n# RICARDFLEX"],
+   "res": [["RICARD", "HIREX", "RICARD", "directa"]]},
+  {"n": "LKR: «MAIN EVENT» no es del nombre, y «# KUSOH 13 RICARD 12,5» son puntajes", "fam": "K", "msgs": [
+    "# KUSOH VS  RICARDFLEX 💥 MAIN EVENT",
+    "# KUSOH 13 RICARD 12,5  ⚔️",
+    "# KUSOH X LA MINIMA"],
+   "res": [["KUSOH", "RICARDFLEX", "KUSOH", "directa"]]},
+  {"n": "LKR: «me equivoqué es Kusoh 11 Ismel 9» cambia al rival del título", "fam": "K", "msgs": [
+    "# Kusoh vs snx",
+    "<@1458603256292053037> <@1447024559197782138> ne equivoque es \nKusoh 11 \nIsmel 9"],
+   "res": [["Kusoh", "Ismel", "Kusoh", "directa"]]},
+  {"n": "LKR: «# MASINO +2 LAST +1» es réplica para el que suma 2 (FMS Plaza)", "fam": "K", "msgs": [
+    "# LAST 🇺🇾 🆚 MASINO 🇨🇱",
+    "# MASINO 🇨🇱 11.00\n\n# LAST 🇺🇾 10.00",
+    "# 🇨🇱MASINO +2 🇺🇾LAST +1"],
+   "res": [["LAST", "MASINO", "MASINO", "replica"]]},
+  {"n": "LKR: «(BATALLA POR DEFAULT)» no cuenta, aunque traiga números", "fam": "K", "msgs": [
+    "# MASINO 🇨🇱 🆚 LVEL 🇻🇪 (BATALLA POR DEFAULT)",
+    "# MASINO 20\n# LVEL 20"],
    "res": []}
  ]
 }

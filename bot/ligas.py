@@ -227,6 +227,9 @@ def lados(linea):
     # «… - JORNADA 4» al final del título de FMH Under, y «…| Jornada 2» en el de FDS
     # 🔁 y «- RECUPERATIVA» (FMH España, 05/11/2026): «EFE - RECUPERATIVA» salía como si fuera su nombre, también en el chat
     b = re.sub(r'\s*[-|]\s*(?:JORNADA\s*\d+|RECUPERATIVA\b).*$', '', b, flags=re.I)
+    # 💥 «KUSOH VS RICARDFLEX 💥 MAIN EVENT» (FMS LATAM, 12/11/2026): «MAIN EVENT» no es parte del nombre
+    b = re.sub(r'\s*[-|]?\s*\b(?:CO-?)?MAIN\s+EVENT\b.*$', '', b, flags=re.I)
+    a = re.sub(r'^.*?\b(?:CO-?)?MAIN\s+EVENT\b\s*[:|-]?\s*', '', a, flags=re.I)
     ea, eb = '🎮' in a, '🎮' in b
     a, b = limpio(a), limpio(b)
     # en DDF Titans el título lleva «(REMPLAZO)»: `limpio()` ya lo saca
@@ -732,61 +735,187 @@ def _fd(msgs):
 MAS_PUNTOS = re.compile(r'^#*\s*(.+?)\s*\+\s*([23])\s*(?:PTOS?|PTS?|PUNTOS?)?\s*$', re.I)
 #: «# TEITO X LA MINIMA»
 X_MINIMA = re.compile(r'^#*\s*(.+?)\s+X\s+LA\s+MINIMA\b', re.I)
-CON_NUMERO = re.compile(r':\s*\d')
+#: 🧮 EL PUNTAJE DE CADA UNO, AUNQUE NO HAYA CIERRE (FMS LATAM, 15/11/2026; Krish, que la organiza: «la liga de LKR que
+#: yo organizo está mal»). De ocho batallas de su jornada 1, seis se cerraban sólo con los números:
+#:     KUSOH 14 VS LVEL 8 · Afinpapa 11 - 8,5 ismel · 15 = LAST  10= SHADOW · LAST 10 X 5 = 50  TMAX 6 X 5 = 30
+#: y uno por renglón: «Ricardflex 13,5» / «Teito 13». El «X 5 = 50» es lo que vale en SU tabla: cuenta el de antes; la suma
+#: «Hirex 1 + 1,5 + 0,5 = 3» cuenta por su total. Gana el de más puntos —directa, o en réplica si los números vinieron
+#: después de la marca—, salvo que un cierre diga otra cosa. Números antes de una réplica sin resolver: pendiente.
+NUM_K = r'\d+(?:[.,]\d+)?'
+POR_K = re.compile(r'(%s)\s*X\s*\d+\s*=\s*%s' % (NUM_K, NUM_K), re.I)
+SUMA_K = re.compile(r'(?:%s\s*\+\s*)+%s\s*=\s*(%s)' % (NUM_K, NUM_K, NUM_K))
+MENCION = re.compile(r'<[@#][!&]?\d+>')
+#: «15 = LAST 10= SHADOW … # LAST»: el cierre en el mismo renglón que los puntajes
+CORTE_K = re.compile(r'\s+(?=#)')
+#: «me equivoqué es Kusoh 11 Ismel 9» bajo «# Kusoh vs snx»: el rival era otro
+CORRIGE = re.compile(r'EQUIVOC|EQUIVOQU', re.I)
+#: «# MASINO +2 LAST +1», «# SOUL B +2🇨🇱 SIN L. +1🇵🇪» (FMS Plaza y FMS España): los puntos de la tabla de los dos; gana el
+#: único que suma 2 o 3
+MAS_PAR = re.compile(r'([^+]*?[A-Za-z][^+]*?)\s*\+\s*([0-3])(?![\d.,])')
+#: 🚫 «(BATALLA POR DEFAULT)» y «(PUNTOS CEDIDOS)» en el título (FMS Plaza: nueve así): como el DF de las otras ligas, no
+#: es una batalla que cuente, aunque traiga números
+DF_K = re.compile(r'\bDEFAULT\b|PUNTOS\s+CEDIDOS|\(\s*DF\s*\)', re.I)
+
+
+def _lado_k(texto, a, b):
+    """`_quien()` y, si no alcanza, por el principio de una palabra o dos: «RICARD» es RICARD FLEX y «RICARDFLEX» es
+    RICARD. Con 4 letras o más y uno solo de los dos. El mismo que `ladoK()` de bot/ligas_vivo.js."""
+    q = _quien(texto, a, b)
+    if q:
+        return q
+    ws = [w for w in re.findall(r'[a-z0-9]+', EMOJI.sub(' ', _plano(texto)).lower())]
+    cands = {c for c in ws + [ws[i] + ws[i + 1] for i in range(len(ws) - 1)] if len(c) >= 4}
+    ok = [x for x, n in (('a', a), ('b', b)) if len(clave(n)) >= 4 and any(clave(n).startswith(c) or c.startswith(clave(n))
+                                                                         for c in cands)]
+    return ok[0] if len(ok) == 1 else None
+
+
+def puntajes_k(linea):
+    """`[(nombre, puntaje)]` de un renglón: cada nombre con el número de después, o el de antes si va «15 = LAST»."""
+    t = MENCION.sub(' ', linea)
+    t = BANDERA.sub(' ', EMOJI.sub(' ', _plano(t))).replace('*', ' ')
+    t = SUMA_K.sub(r' \1 ', POR_K.sub(r' \1 ', t))
+    el = []
+    for x in re.findall(r'\d+(?:[.,]\d+)?|=|[A-Za-z][A-Za-z0-9_.]*', t):
+        if x == '=':
+            if el and el[-1][0] == 'n':
+                el[-1][2] = True
+        elif x[0].isdigit():
+            el.append(['n', _num(x), False])
+        elif el and el[-1][0] == 'w':
+            el[-1][1] += ' ' + x
+        else:
+            el.append(['w', x])
+    usado, out = set(), []
+    for i, e in enumerate(el):
+        if e[0] != 'w':
+            continue
+        ant = el[i - 1] if i > 0 and el[i - 1][0] == 'n' and i - 1 not in usado else None
+        sig = el[i + 1] if i + 1 < len(el) and el[i + 1][0] == 'n' and not el[i + 1][2] else None
+        j = i - 1 if ant and ant[2] else i + 1 if sig else i - 1 if ant else None
+        if j is not None:
+            usado.add(j)
+            out.append((e[1], el[j][1]))
+    return out
+
+
+def _anota_k(b, pares, corrige, vistos):
+    """Los puntajes de un renglón sobre la batalla. `vistos`: los lados que ya puntuó este mensaje."""
+    for nom, n in pares:
+        lado = _lado_k(nom, b['a'], b['b'])
+        falta = [x for x in 'ab' if x not in vistos]
+        if not lado and corrige and len(falta) == 1 and len(nom.split()) <= 3:
+            lado = falta[0]
+            b[lado] = limpio(nom)
+        if lado:
+            vistos.add(lado)
+            b['pt'][0 if lado == 'a' else 1] = n
+            b['pt_rep'] = b['rep']
+
+
+def _unificar_k(bats):
+    """Una persona, un nombre en toda la liga: «RICARD», «RICARD FLEX» y «RICARDFLEX», o «AFINPAPA» y «AFINLPAPA» (FMS
+    LATAM) eran filas distintas en la tabla. Se juntan si una clave empieza con la otra (5 letras o más) o si se parecen
+    y empiezan igual; manda la que más aparece y, si empatan, la primera."""
+    cuenta, grafia, orden = {}, {}, []
+    for b in bats:
+        for x in (b['a'], b['b']):
+            k = clave(x)
+            if k not in cuenta:
+                orden.append(k)
+                grafia[k] = x
+            cuenta[k] = cuenta.get(k, 0) + 1
+    def junta(k1, k2):
+        c, l = sorted((k1, k2), key=len)
+        return len(c) >= 5 and (l.startswith(c) or (c[:3] == l[:3] and difflib.SequenceMatcher(None, c, l).ratio() >= .85))
+    va = {}
+    for k in sorted(orden, key=lambda k: (-cuenta[k], orden.index(k))):
+        if k not in va:
+            va[k] = k
+            for k2 in orden:
+                if k2 not in va and junta(k, k2):
+                    va[k2] = k
+    for b in bats:
+        for c in ('a', 'b', 'gana'):
+            # sólo si es otra clave: «Shadow» y «SHADOW» ya son la misma fila, y así se quedan como los escribieron
+            if b.get(c) and va.get(clave(b[c]), clave(b[c])) != clave(b[c]):
+                b[c] = grafia[va[clave(b[c])]]
 
 
 def _lk(msgs):
     """Las batallas de una liga de LKR: `[{id, t, a, b, ea, eb, j, gana, como}]`."""
     bats = []
     for m in msgs:
-        for l in (m.get('content') or '').splitlines():
-            if not l.strip():
-                continue
-            ls = lados(l)
-            if ls:
-                bats.append({'id': m['id'], 't': m['t'], 'a': ls[0], 'b': ls[1], 'ea': ls[2], 'eb': ls[3], 'j': None,
-                             'gana': '', 'como': '', 'rep': False})
-                continue
-            if not bats or bats[-1]['gana']:
-                continue
-            b = bats[-1]
-            pl = EMOJI.sub(' ', _plano(l)).replace('*', '').strip()
-            if marca_replica(l):
-                b['rep'] = True
-                continue
-            g = GANADOR.match(pl)
-            if g:
-                quien = (g.group(2) or '').strip()
-                if g.group(1) or re.fullmatch(r'r[eé]plica', quien, re.I):
-                    b['rep'] = True
-                    if not quien or re.fullmatch(r'r[eé]plica', quien, re.I):
-                        continue
-                lado = _cual(quien, b['a'], b['b'])
-                if lado:
-                    b['gana'], b['como'] = b[lado], 'replica' if b['rep'] else 'directa'
-                continue
-            # el cierre con el nombre solo, como en su canal de eventos: `# SOUL B 🇨🇱`
-            if l.strip().startswith('#'):
-                # ⚠️ el mismo orden en `lineaK()` de bot/ligas_vivo.js: los casos de bot/ligas_vivo_casos.json los atan
-                pt = re.sub(r'\s+', ' ', BANDERA.sub(' ', re.sub(r'^#+\s*', '', pl))).strip()
-                mas = MAS_PUNTOS.match(pt)
-                if mas:
-                    lado = _quien(mas.group(1), b['a'], b['b'])
-                    if lado:
-                        b['gana'], b['como'] = b[lado], 'directa' if mas.group(2) == '3' else 'replica'
+        corrige = bool(CORRIGE.search(_plano(m.get('content') or '')))
+        vistos = set()
+        for l0 in (m.get('content') or '').splitlines():
+            for l in CORTE_K.split(l0):
+                if not l.strip():
                     continue
-                xm = X_MINIMA.match(pt)
-                if xm:
-                    lado = _quien(xm.group(1), b['a'], b['b'])
+                ls = lados(l)
+                if ls:
+                    bats.append({'id': m['id'], 't': m['t'], 'a': ls[0], 'b': ls[1], 'ea': ls[2], 'eb': ls[3], 'j': None,
+                                 'gana': '', 'como': '', 'rep': False, 'pt': [None, None], 'pt_rep': False,
+                                 'df': bool(DF_K.search(_plano(l)))})
+                    vistos = set()
+                    continue
+                if not bats or bats[-1]['gana']:
+                    continue
+                b = bats[-1]
+                pl = EMOJI.sub(' ', _plano(l)).replace('*', '').strip()
+                if marca_replica(l):
+                    b['rep'] = True
+                    continue
+                g = GANADOR.match(pl)
+                if g:
+                    quien = (g.group(2) or '').strip()
+                    if g.group(1) or re.fullmatch(r'r[eé]plica', quien, re.I):
+                        b['rep'] = True
+                        if not quien or re.fullmatch(r'r[eé]plica', quien, re.I):
+                            continue
+                    lado = _cual(quien, b['a'], b['b'])
                     if lado:
                         b['gana'], b['como'] = b[lado], 'replica' if b['rep'] else 'directa'
                     continue
-                # 🔴 «# MAKMA :28» es su puntaje, no que ganó: «# A :25 / # B :28» le daba la batalla al de arriba
-                if CON_NUMERO.search(pt):
-                    continue
-                lado = _quien(pl, b['a'], b['b'])
-                if lado and len(clave(pl)) <= len(clave(b[lado])) + 2:
-                    b['gana'], b['como'] = b[lado], 'replica' if b['rep'] else 'directa'
+                # el cierre con el nombre solo, como en su canal de eventos: `# SOUL B 🇨🇱`
+                if l.strip().startswith('#'):
+                    # ⚠️ el mismo orden en `lineaK()` de bot/ligas_vivo.js: los casos de bot/ligas_vivo_casos.json los atan
+                    pt = re.sub(r'\s+', ' ', BANDERA.sub(' ', re.sub(r'^#+\s*', '', pl))).strip()
+                    pares = MAS_PAR.findall(pt)
+                    if len(pares) >= 2:
+                        gan = [(n, int(x)) for n, x in pares if x in '23']
+                        lado = _lado_k(gan[0][0], b['a'], b['b']) if len(gan) == 1 else None
+                        if lado:
+                            b['gana'], b['como'] = b[lado], 'directa' if gan[0][1] == 3 else 'replica'
+                            continue
+                    mas = MAS_PUNTOS.match(pt)
+                    if mas:
+                        lado = _quien(mas.group(1), b['a'], b['b'])
+                        if lado:
+                            b['gana'], b['como'] = b[lado], 'directa' if mas.group(2) == '3' else 'replica'
+                        continue
+                    xm = X_MINIMA.match(pt)
+                    if xm:
+                        lado = _lado_k(xm.group(1), b['a'], b['b'])
+                        if lado:
+                            b['gana'], b['como'] = b[lado], 'replica' if b['rep'] else 'directa'
+                        continue
+                    # 🔴 «# MAKMA :28» es su puntaje, no que ganó: «# A :25 / # B :28» le daba la batalla al de arriba.
+                    # Y «# KUSOH 13 RICARD 12,5», tampoco: con un número adentro, el renglón son puntajes
+                    if not re.search(r'\d', pt):
+                        lado = _lado_k(pt, b['a'], b['b'])
+                        k, kl = clave(pt), clave(b[lado]) if lado else ''
+                        # «# RICARDFLEX» bajo «RICARD vs HIREX», y «# RICARD» bajo «RICARD FLEX vs TEITO»: su nombre
+                        # largo o el corto. Un «# GRANDE KUSOH» no: no empieza con el nombre
+                        if lado and (len(k) <= len(kl) + 2 and kl in k or kl.startswith(k) or k.startswith(kl)):
+                            b['gana'], b['como'] = b[lado], 'replica' if b['rep'] else 'directa'
+                            continue
+                _anota_k(b, puntajes_k(l), corrige, vistos)
+    for b in bats:
+        pa, pb = b['pt']
+        if not b['gana'] and pa is not None and pb is not None and pa != pb and (b['pt_rep'] or not b['rep']):
+            b['gana'], b['como'] = (b['a'] if pa > pb else b['b']), 'replica' if b['pt_rep'] else 'directa'
+    _unificar_k(bats)
     return bats
 
 
@@ -2822,9 +2951,9 @@ def _self_check():
         '# Last🇺🇾 VS KUDE🇦🇷', 'Last🇺🇾 = 3\nKude🇦🇷 = 4'))
     ok([x[3:7] for x in lk] == [['Shadow', 'Mc_Glock', 'Mc_Glock', 'replica'], ['Monet', 'Matthias', 'Matthias', 'directa'],
                                 ['Soul B', 'Dios', 'Soul B', 'replica'], ['SHADOW', 'KUSOH', 'KUSOH', 'directa'],
-                                ['Last', 'KUDE', '', '']],
+                                ['Last', 'KUDE', 'KUDE', 'directa']],
        'LKR: «GANADOR X» en otro mensaje, «Replica» y «GANADOR Replica» abren la réplica, el apodo del cierre (GLOCK, '
-       'SOUL) y sin cierre queda pendiente', str([x[3:7] for x in lk]))
+       'SOUL) y sin cierre gana el de más puntos (15/11/2026: FMS LATAM se cierra así)', str([x[3:7] for x in lk]))
 
     # 🖼️ el flyer: un afiche, no un separador
     ok(es_flyer({'ct': 'image/jpeg', 'w': 1080, 'h': 1350}) and not es_flyer({'ct': 'image/jpeg', 'w': 1400, 'h': 200})

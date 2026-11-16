@@ -11,6 +11,17 @@
  ],
  "cambios": [
     {
+        "version": "5.45",
+        "dia": "2026-11-16",
+        "cuando": "2026-11-16T03:26:10-05:00",
+        "titulo": "Las ligas de LKR, bien leídas",
+        "items": [
+            "Las tablas de las ligas de **LKR** (FMS LATAM, FMS Plaza Underground, Champions y FMS España) ahora cuentan las batallas que se cierran **sólo con los puntos** de cada uno, y en la Plaza Underground cuatro batallas que tenían el ganador al revés ya salen bien.",
+            "Un mismo rapero escrito de dos formas en la misma liga (con su nombre corto o el largo, o con una letra de más) es **una sola fila** de la tabla.",
+            "Las batallas **«por default»** o con **«puntos cedidos»** no cuentan, como el DF en las demás ligas."
+        ]
+    },
+    {
         "version": "5.44",
         "dia": "2026-11-15",
         "cuando": "2026-11-15T14:35:00-05:00",

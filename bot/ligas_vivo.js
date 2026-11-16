@@ -43,7 +43,6 @@ const GANADOR = /^#*\s*GANADOR\s*(REPLICA\s*)?:?\s*(.*)$/i;
 //: «# MAKMA +3PTO», «# TOKIO+3»: el que suma 3 ganó directo y el que suma 2, en réplica. ⚠️ `bot/ligas.py` tiene el mismo
 const MAS_PUNTOS = /^#*\s*(.+?)\s*\+\s*([23])\s*(?:PTOS?|PTS?|PUNTOS?)?\s*$/i;
 const X_MINIMA = /^#*\s*(.+?)\s+X\s+LA\s+MINIMA(?![\p{L}\p{N}_])/iu;
-const CON_NUMERO = /:\s*\d/;
 
 /** `escuchar.plano()`, el mismo del lector de llaves, con sus tildes. */
 export function letras(t) {
@@ -67,11 +66,13 @@ export function lados(linea) {
   const partes = l.split(SEP);
   if (partes.length !== 2) return null;
   const [a0, b00] = partes;
-  const b0 = b00.replace(/\s*[-|]\s*(?:JORNADA\s*\d+|RECUPERATIVA\b).*$/i, '');
-  const a = limpio(a0), b = limpio(b0);
+  // 💥 «KUSOH VS RICARDFLEX 💥 MAIN EVENT»: no es parte del nombre (el mismo que `lados()` de ligas.py)
+  const b0 = b00.replace(/\s*[-|]\s*(?:JORNADA\s*\d+|RECUPERATIVA\b).*$/i, '').replace(/\s*[-|]?\s*\b(?:CO-?)?MAIN\s+EVENT\b.*$/i, '');
+  const a1 = a0.replace(/^.*?\b(?:CO-?)?MAIN\s+EVENT\b\s*[:|-]?\s*/i, '');
+  const a = limpio(a1), b = limpio(b0);
   if (!/[A-Za-z]/.test(a) || !/[A-Za-z]/.test(b) || a.length > 40 || b.length > 40) return null;
   // lo último, como lo escribieron y sin sus emojis: la bandera separa a dos que se llaman igual (`genteChat()`)
-  return [a, b, a0.includes('🎮'), b0.includes('🎮'), a0.replace(EMOJI, ' ').trim(), b0.replace(EMOJI, ' ').trim()];
+  return [a, b, a0.includes('🎮'), b0.includes('🎮'), a1.replace(EMOJI, ' ').trim(), b0.replace(EMOJI, ' ').trim()];
 }
 /** ¿El texto nombra a `a` o a `b`? `'a'`, `'b'` o `null` (los dos o ninguno). */
 export function quien(texto, a, b) {
@@ -164,10 +165,70 @@ export function resolverU(b, ahora) {
     if (Math.abs(pa - pb) >= (x3 ? 6 : 2)) { b.gana = pa > pb ? b.a : b.b; b.como = 'directa'; }
   }
   if (!b.gana && b.por && !b.rep && b.por[1] >= 2) { b.gana = b.por[0]; b.como = 'directa'; }
+  // LKR: el de más puntos, si los números no quedaron antes de una réplica sin resolver (el final de `_lk()`)
+  if (!b.gana && b.pt && b.pt[0] !== null && b.pt[1] !== null && b.pt[0] !== b.pt[1] && (b.ptRep || !b.rep)) {
+    b.gana = b.pt[0] > b.pt[1] ? b.a : b.b; b.como = b.ptRep ? 'replica' : 'directa';
+  }
+}
+
+// 🧮 el puntaje de cada uno, aunque no haya cierre: `puntajes_k()` de ligas.py, con sus mismos ejemplos (FMS LATAM, 15/11)
+const NUM_K = '\\d+(?:[.,]\\d+)?';
+const POR_K = new RegExp('(' + NUM_K + ')\\s*X\\s*\\d+\\s*=\\s*' + NUM_K, 'gi');
+const SUMA_K = new RegExp('(?:' + NUM_K + '\\s*\\+\\s*)+' + NUM_K + '\\s*=\\s*(' + NUM_K + ')', 'g');
+const MENCION = /<[@#][!&]?\d+>/g;
+const CORTE_K = /\s+(?=#)/;
+const CORRIGE = /EQUIVOC|EQUIVOQU/i;
+// «# MASINO +2 LAST +1»: gana el único que suma 2 o 3 (`MAS_PAR`), y «(BATALLA POR DEFAULT)» no es una batalla (`DF_K`)
+const MAS_PAR = /([^+]*?[A-Za-z][^+]*?)\s*\+\s*([0-3])(?![\d.,])/g;
+const DF_K = /\bDEFAULT\b|PUNTOS\s+CEDIDOS|\(\s*DF\s*\)/i;
+
+/** `quien()` y, si no alcanza, por el principio de una palabra o dos: `_lado_k()` de ligas.py. */
+export function ladoK(texto, a, b) {
+  const q = quien(texto, a, b);
+  if (q) return q;
+  const ws = plano(texto).replace(EMOJI, ' ').toLowerCase().match(/[a-z0-9]+/g) || [];
+  const cands = [...ws, ...ws.slice(0, -1).map((w, i) => w + ws[i + 1])].filter((c) => c.length >= 4);
+  const ok = [['a', a], ['b', b]].filter(([, n]) => { const k = clave(n); return k.length >= 4 && cands.some((c) => k.startsWith(c) || c.startsWith(k)); });
+  return ok.length === 1 ? ok[0][0] : null;
+}
+/** `[[nombre, puntaje]]` de un renglón: `puntajes_k()` de ligas.py. */
+export function puntajesK(linea) {
+  let t = plano(String(linea).replace(MENCION, ' ')).replace(EMOJI, ' ').replace(BANDERA, ' ').replace(/\*/g, ' ');
+  t = t.replace(POR_K, ' $1 ').replace(SUMA_K, ' $1 ');
+  const el = [];
+  for (const x of t.match(/\d+(?:[.,]\d+)?|=|[A-Za-z][A-Za-z0-9_.]*/g) || []) {
+    if (x === '=') { if (el.length && el[el.length - 1][0] === 'n') el[el.length - 1][2] = true; }
+    else if (/^\d/.test(x)) el.push(['n', num(x), false]);
+    else if (el.length && el[el.length - 1][0] === 'w') el[el.length - 1][1] += ' ' + x;
+    else el.push(['w', x]);
+  }
+  const usado = new Set(), out = [];
+  el.forEach((e, i) => {
+    if (e[0] !== 'w') return;
+    const ant = i > 0 && el[i - 1][0] === 'n' && !usado.has(i - 1) ? el[i - 1] : null;
+    const sig = i + 1 < el.length && el[i + 1][0] === 'n' && !el[i + 1][2] ? el[i + 1] : null;
+    const j = ant && ant[2] ? i - 1 : sig ? i + 1 : ant ? i - 1 : null;
+    if (j !== null) { usado.add(j); out.push([e[1], el[j][1]]); }
+  });
+  return out;
+}
+function anotaK(b, pares, corrige, vistos, tm) {
+  for (const [nom, n] of pares) {
+    let lado = ladoK(nom, b.a, b.b);
+    const falta = ['a', 'b'].filter((x) => !vistos.has(x));
+    if (!lado && corrige && falta.length === 1 && nom.split(/\s+/).length <= 3) { lado = falta[0]; b[lado] = limpio(nom); }
+    if (lado) {
+      vistos.add(lado);
+      if (!b.pt) b.pt = [null, null];
+      b.pt[lado === 'a' ? 0 : 1] = n;
+      b.ptRep = b.rep;
+      b.tp = tm;
+    }
+  }
 }
 
 /** Una línea de una liga de LKR. Los mismos pasos que `_lk()`. */
-function lineaK(l, b) {
+function lineaK(l, b, corrige = false, vistos = new Set(), tm = 0) {
   const pl = plano(l).replace(EMOJI, ' ').replace(/\*/g, '').trim();
   if (marcaReplica(l)) { b.rep = true; return; }
   const g = GANADOR.exec(pl);
@@ -182,24 +243,38 @@ function lineaK(l, b) {
     if (lado) { b.gana = b[lado]; b.como = b.rep ? 'replica' : 'directa'; }
     return;
   }
-  if (!l.trim().startsWith('#')) return;
-  const pt = pl.replace(/^#+\s*/, '').replace(BANDERA, ' ').replace(/\s+/g, ' ').trim();
-  const mas = MAS_PUNTOS.exec(pt);
-  if (mas) {
-    const lado = quien(mas[1], b.a, b.b);
-    if (lado) { b.gana = b[lado]; b.como = mas[2] === '3' ? 'directa' : 'replica'; }
-    return;
+  if (l.trim().startsWith('#')) {
+    const pt = pl.replace(/^#+\s*/, '').replace(BANDERA, ' ').replace(/\s+/g, ' ').trim();
+    const pares = [...pt.matchAll(MAS_PAR)];
+    if (pares.length >= 2) {
+      const gan = pares.filter((p) => p[2] === '2' || p[2] === '3');
+      const lado = gan.length === 1 ? ladoK(gan[0][1], b.a, b.b) : null;
+      if (lado) { b.gana = b[lado]; b.como = gan[0][2] === '3' ? 'directa' : 'replica'; return; }
+    }
+    const mas = MAS_PUNTOS.exec(pt);
+    if (mas) {
+      const lado = quien(mas[1], b.a, b.b);
+      if (lado) { b.gana = b[lado]; b.como = mas[2] === '3' ? 'directa' : 'replica'; }
+      return;
+    }
+    const xm = X_MINIMA.exec(pt);
+    if (xm) {
+      const lado = ladoK(xm[1], b.a, b.b);
+      if (lado) { b.gana = b[lado]; b.como = b.rep ? 'replica' : 'directa'; }
+      return;
+    }
+    // «# MAKMA :28» y «# KUSOH 13 RICARD 12,5» son puntajes, no que ganó
+    if (!/\d/.test(pt)) {
+      const lado = ladoK(pt, b.a, b.b);
+      const k = clave(pt), kl = lado ? clave(b[lado]) : '';
+      // su nombre largo o el corto: «# RICARDFLEX» bajo RICARD, «# RICARD» bajo RICARD FLEX
+      if (lado && ((k.length <= kl.length + 2 && k.includes(kl)) || kl.startsWith(k) || k.startsWith(kl))) {
+        b.gana = b[lado]; b.como = b.rep ? 'replica' : 'directa';
+        return;
+      }
+    }
   }
-  const xm = X_MINIMA.exec(pt);
-  if (xm) {
-    const lado = quien(xm[1], b.a, b.b);
-    if (lado) { b.gana = b[lado]; b.como = b.rep ? 'replica' : 'directa'; }
-    return;
-  }
-  // «# MAKMA :28» es su puntaje, no que ganó
-  if (CON_NUMERO.test(pt)) return;
-  const lado = quien(pl, b.a, b.b);
-  if (lado && clave(pl).length <= clave(b[lado]).length + 2) { b.gana = b[lado]; b.como = b.rep ? 'replica' : 'directa'; }
+  anotaK(b, puntajesK(l), corrige, vistos, tm);
 }
 
 const par = (a, b) => [clave(a), clave(b)].sort().join('|');
@@ -215,7 +290,11 @@ export function leerMensajes(fam, msgs, bats, dosHoras = 2 * 3600 * 1000) {
   for (const m of msgs) {
     const texto = String(m.content || '');
     const tm = Date.parse(m.t) || 0;
-    for (const l of texto.split(/\r?\n/)) {
+    const corrige = fam === 'K' && CORRIGE.test(plano(texto));
+    let vistos = new Set();
+    // LKR: «15 = LAST 10= SHADOW … # LAST» trae el cierre en el mismo renglón (`CORTE_K` en ligas.py)
+    const renglones = texto.split(/\r?\n/).flatMap((l) => (fam === 'K' ? l.split(CORTE_K) : [l]));
+    for (const l of renglones) {
       if (!l.trim()) continue;
       const pp = plano(l);
       const lj = JORNADA.exec(pp);
@@ -224,18 +303,17 @@ export function leerMensajes(fam, msgs, bats, dosHoras = 2 * 3600 * 1000) {
       if (ls) {
         const pr = par(ls[0], ls[1]);
         const hay = bats.find((b) => par(b.a, b.b) === pr && Math.abs(tm - (Date.parse(b.t) || 0)) <= dosHoras);
-        if (!hay) { const b = nueva(m, ls, j); bats.push(b); nuevas.push(b); }
+        if (!hay) { const b = nueva(m, ls, j); if (fam === 'K') b.df = DF_K.test(pp); bats.push(b); nuevas.push(b); }
+        vistos = new Set();
         continue;
       }
       if (fam === 'K' && bats.length) {
         const ult = bats[bats.length - 1];
-        if (!ult.gana) lineaK(l, ult);
+        if (!ult.gana) lineaK(l, ult, corrige, vistos, tm);
       }
     }
-    if (fam === 'U' && bats.length) {
-      cierreU(texto, bats, tm);
-      for (const b of bats) resolverU(b, tm);
-    }
+    if (fam === 'U' && bats.length) cierreU(texto, bats, tm);
+    if ((fam === 'U' || fam === 'K') && bats.length) for (const b of bats) resolverU(b, tm);
   }
   return nuevas;
 }
