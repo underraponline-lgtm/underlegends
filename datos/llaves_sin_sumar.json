@@ -1400,6 +1400,129 @@
    ]
   ]
  },
+ "135360696": {
+  "dia": "2026-10-21",
+  "escala": "4-7",
+  "fecha": "21/10",
+  "links": [
+   "https://discord.com/channels/1513624656538636459/1518202754294612028/1562496374535360696"
+  ],
+  "n": 135360696,
+  "nombre": "ESTACION FANTASMAL",
+  "ns": 1,
+  "participantes": 7,
+  "rondas": [
+   {
+    "b": [
+     [
+      [
+       "Marcos",
+       "Krish",
+       "Shadow"
+      ],
+      "Marcos, Krish",
+      "triple (3 bandas, pasan 2); también pasa: Krish 🇪🇸"
+     ],
+     [
+      [
+       "Trot",
+       "1200",
+       "Lvel 🇻🇪",
+       "Piter"
+      ],
+      "Trot, 1200",
+      "triple (4 bandas, pasan 2); también pasa: 1200 🥺🫰🏻🇯🇵"
+     ]
+    ],
+    "r": "Filtros"
+   },
+   {
+    "b": [
+     [
+      [
+       "1200",
+       "Krish"
+      ],
+      "1200",
+      ""
+     ],
+     [
+      [
+       "Trot",
+       "Marcos"
+      ],
+      "Trot",
+      ""
+     ]
+    ],
+    "r": "Semifinales"
+   },
+   {
+    "b": [
+     [
+      [
+       "Marcos",
+       "Krish"
+      ],
+      "Marcos",
+      "podio: tercer puesto sin batalla en la llave"
+     ]
+    ],
+    "r": "Tercer puesto"
+   },
+   {
+    "b": [
+     [
+      [
+       "Trot",
+       "1200"
+      ],
+      "Trot",
+      ""
+     ]
+    ],
+    "r": "Final"
+   }
+  ],
+  "sv": "CEU",
+  "tabla": [
+   [
+    "Trot",
+    "Campeón",
+    0
+   ],
+   [
+    "1200",
+    "Subcampeón",
+    0
+   ],
+   [
+    "Marcos",
+    "Tercero",
+    0
+   ],
+   [
+    "Krish",
+    "Cuarto",
+    0
+   ],
+   [
+    "Lvel 🇻🇪",
+    "R32",
+    0
+   ],
+   [
+    "Piter",
+    "R32",
+    0
+   ],
+   [
+    "Shadow",
+    "R32",
+    0
+   ]
+  ]
+ },
  "135481330": {
   "dia": "2026-11-13",
   "escala": "4-7",
