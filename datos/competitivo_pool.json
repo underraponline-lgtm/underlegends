@@ -2007,7 +2007,7 @@
   "T": 23,
   "V": 59,
   "wr": "54.3%",
-  "rch_act": 0,
+  "rch_act": 1,
   "rch_max": 1,
   "duel_v": 18,
   "duel_t": 31,
@@ -2017,7 +2017,7 @@
   "din_v": 13,
   "din_t": 21,
   "crn_t": 20,
-  "cri_t": 49,
+  "cri_t": 51,
   "pos": 23,
   "total": 84,
   "rango": "C",
@@ -2033,7 +2033,7 @@
    "clasico": 4,
    "dg": 20,
    "fg": 2,
-   "fp": 2,
+   "fp": 3,
    "mata": 1,
    "riv": 34,
    "venc": 19
@@ -2044,7 +2044,7 @@
   },
   "nac": {
    "evn": 12,
-   "evi": 25,
+   "evi": 26,
    "com": 6,
    "top": [
     3,
@@ -3317,7 +3317,7 @@
   "din_v": 13,
   "din_t": 24,
   "crn_t": 8,
-  "cri_t": 51,
+  "cri_t": 52,
   "pos": 39,
   "total": 84,
   "rango": "C",
@@ -4420,7 +4420,7 @@
   "din_v": 12,
   "din_t": 31,
   "crn_t": 9,
-  "cri_t": 85,
+  "cri_t": 86,
   "pos": 44,
   "total": 84,
   "rango": "C",
@@ -5513,7 +5513,7 @@
    "vengo": 2
   },
   "tg_p": {
-   "paises": 13,
+   "paises": 12,
    "paisesg": 11,
    "pionero": true
   },

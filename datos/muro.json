@@ -1316,10 +1316,6 @@
 "rg": "",
 "c": []
 },
-"simonhenriksson": {
-"rg": "",
-"c": []
-},
 "nmb": {
 "rg": "",
 "c": []
@@ -1365,6 +1361,10 @@
 "servidor",
 "temporada"
 ]
+},
+"simonhenriksson": {
+"rg": "",
+"c": []
 },
 "ragna": {
 "rg": "",
@@ -7850,7 +7850,7 @@
 "nxuz": 0,
 "okam": 2,
 "velatz": 0,
-"mito": 0,
+"mito": 1,
 "zignos": 0,
 "molusco": 0,
 "guess": 1,

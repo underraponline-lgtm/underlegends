@@ -9460,13 +9460,14 @@
    },
    "LKR": {
     "duelos": "",
-    "ev": 1,
+    "ev": 2,
     "oro": 0,
-    "ovr": 43,
-    "pod": 0,
-    "pts": 4950,
-    "racha": "0/0",
+    "ovr": 46,
+    "pod": 1,
+    "pts": 17325,
+    "racha": "1/1",
     "tg": {
+     "fin": 1,
      "nuevo": true
     }
    },
@@ -12761,21 +12762,6 @@
     "pts": 2062,
     "racha": "0/0",
     "tg": {
-     "nuevo": true
-    }
-   }
-  },
-  "Simon Henriksson 🇺🇸": {
-   "LKR": {
-    "duelos": "",
-    "ev": 1,
-    "oro": 0,
-    "ovr": 45,
-    "pod": 1,
-    "pts": 12375,
-    "racha": "1/1",
-    "tg": {
-     "fin": 1,
      "nuevo": true
     }
    }
