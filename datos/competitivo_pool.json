@@ -2031,15 +2031,15 @@
   "tg_c": {
    "bestia": 2,
    "clasico": 4,
-   "dg": 20,
+   "dg": 21,
    "fg": 2,
    "fp": 3,
    "mata": 1,
-   "riv": 34,
-   "venc": 19
+   "riv": 36,
+   "venc": 20
   },
   "tg_p": {
-   "paises": 9,
+   "paises": 10,
    "paisesg": 7
   },
   "nac": {

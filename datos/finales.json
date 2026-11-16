@@ -1908,6 +1908,32 @@
   "sv": "CH",
   "t_pregunta": ""
  },
+ "1571643167667916952": {
+  "autor": "950011515434573824",
+  "canal": "1571614058874933278",
+  "canal_pregunta": "1571614058874933278",
+  "cuando": "2026-11-15T21:48:50.890000+00:00",
+  "donde": "llave",
+  "evento": "(sin titulo)",
+  "fecha": "15/11",
+  "llave": "1571643167667916952",
+  "pregunta": "1571941593257082985",
+  "preguntada": "2026-11-16 12:34 PM ET",
+  "preguntas": [
+   {
+    "lados": [
+     "Walker🇨🇴",
+     "Carlos"
+    ],
+    "ronda": "FINAL"
+   }
+  ],
+  "respondidas": {},
+  "sin_permiso": false,
+  "staff_probado": false,
+  "sv": "DDF",
+  "t_pregunta": "2026-11-16T17:34:41+00:00"
+ },
  "1571707612137783390": {
   "autor": "1364747464170668042",
   "canal": "1222379620494741604",
