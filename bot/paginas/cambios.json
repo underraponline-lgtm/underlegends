@@ -11,6 +11,16 @@
  ],
  "cambios": [
     {
+        "version": "5.61",
+        "dia": "2026-11-16",
+        "cuando": "2026-11-16T06:16:00-05:00",
+        "titulo": "Más llaves leídas",
+        "items": [
+            "En **Eventos**, más eventos con su llave: cuando el organizador le pone a la llave un nombre que no tiene nada que ver con el anuncio (como «GODZ» para «El bosque de Artemisa»), ahora se juntan si la llave sale a los pocos minutos del anuncio y no hay otra posible.",
+            "Las llaves de **DDF** que separan con su propio emoji de «VERSUS» se leen enteras."
+        ]
+    },
+    {
         "version": "5.60",
         "dia": "2026-11-16",
         "cuando": "2026-11-16T06:05:00-05:00",
