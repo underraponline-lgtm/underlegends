@@ -115,7 +115,7 @@
    "n": 595,
    "sv": "FFA",
    "vence": "2026-11-16T19:09:03+00:00",
-   "vencido": false
+   "vencido": true
   },
   "AFIN": {
    "con": null,
@@ -801,7 +801,7 @@
    "n": 595,
    "sv": "FFA",
    "vence": "2026-11-16T19:09:03+00:00",
-   "vencido": false
+   "vencido": true
   },
   "Doble J": {
    "avisado": "2026-11-14",
