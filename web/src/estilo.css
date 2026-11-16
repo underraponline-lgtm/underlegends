@@ -10,6 +10,9 @@
    Lo que entraba en una línea y se partía por su caja se arregló en su regla (eventos.css, socios2.css, ligas.css…) */
 :host{text-wrap:pretty}
 :is(h1,h2,h3,h4,summary,.btn){text-wrap:balance}
+/* los nombres en tarjetas angostas (crews, eventos, productos, servidores, carteles), parejos: «DESIERTO DE / ATACAMA» y
+   no «DESIERTO DE ATACAMA» con una palabra abajo. Los que ya se cortan con «…» no van acá (16/11) */
+:is(.crw-n b,.crw-nom a,.crw-sola-a b,.evp-nm b,.evp-cmp b,.tn-prenda b,.sk-esp-t b,.rk-ped b,.poster b){text-wrap:balance}
 .app{--gut:40px}
 /* el margen de los costados, en % y no en vw: con la página agrandada (zoom, ver vivo.css) un 100vw se agranda
    también y el contenido se salía de la pantalla. Todo lo que lo usa ocupa el ancho entero de .app */

@@ -48,7 +48,7 @@ export function Portada({ emblema, forma, color, tag, nombre, sub, acciones, num
         <div className={'ent-emb ' + forma} style={{ '--c': color || '#E41373' }}>{emblema}</div>
         <div className="ent-tx">
           {tag ? <span className="tag">{tag}</span> : null}
-          <h1 className="hero-ev largo">{nombre}</h1>
+          <h1 className={'hero-ev largo' + (typeof nombre === 'string' && nombre.length > 12 ? ' muy-largo' : '')}>{nombre}</h1>
           {sub ? <div className="ent-sub">{sub}</div> : null}
           {acciones ? <div className="ent-acc">{acciones}</div> : null}
         </div>

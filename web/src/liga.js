@@ -18,11 +18,13 @@ export const PAIS = {
 };
 
 // sin emojis, banderas ni rellenos invisibles: «RIZAS 🇻🇪» -> «RIZAS» (con `u`, punto de código por punto de código: el
-// selector de variante y el unidor sueltos se van a propósito)
+// selector de variante y el unidor sueltos se van a propósito). Y los DIBUJOS DE CAJA (U+2500 a U+259F: ┃ ┣ ━ ╎ ▀): ningún
+// nombre los lleva, y una llave dibujada con ellos dejaba «┃ MAJIZTRAL ┣━━━━━━━━━━┫ ┃ MATS ┃» como campeón, sin dónde
+// partirse y encimado con «Ver la llave» (FMS Ceuta, 16/11/2026)
 // eslint-disable-next-line no-misleading-character-class
-const FUERA =/[\u{1F000}-\u{1FAFF}\u{2600}-\u{27BF}\u{FE0F}\u{20E3}\u{200D}\u{3164}\u{2800}\u{2070}-\u{209F}\u{B9}\u{B2}\u{B3}\u{E0020}-\u{E007F}]/gu;
+const FUERA =/[\u{1F000}-\u{1FAFF}\u{2600}-\u{27BF}\u{FE0F}\u{20E3}\u{200D}\u{3164}\u{2800}\u{2070}-\u{209F}\u{B9}\u{B2}\u{B3}\u{E0020}-\u{E007F}\u{2500}-\u{259F}]/gu;
 export function limpio(s) {
-  return String(s || '').replace(FUERA, '').replace(/\s+/g, ' ').replace(/^[ ·-]+|[ ·-]+$/g, '');
+  return String(s || '').replace(FUERA, '').replace(/\s+/g, ' ').replace(/^[ ·•-]+|[ ·•-]+$/g, '');
 }
 // 🔤 EL NOMBRE CON LA INICIAL EN MAYÚSCULA (Dlx, 03/10/2026, con la llave de LA REDENCION: «que todo esté en
 // minúsculas exceptuando por la inicial»). La llave trae cada nombre como lo escribió el organizador —«MAYEUTYK»,

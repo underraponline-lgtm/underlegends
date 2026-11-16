@@ -156,6 +156,10 @@
 @media (min-width: 900px){
   .app .ent-cab{grid-template-columns:auto minmax(0,1fr) minmax(300px,420px);gap:28px;padding:38px var(--gut) 30px}
   .app .ent-cab>.ent-tx{grid-column:auto}
+  /* un nombre de más de 12 letras baja la letra con su columna: a 1100 px «DISCORD RAP ESPAÑOL» salía en tres renglones de
+     58 px (DISCORD / RAP / ESPAÑOL) en 412 px; con 10.8cqi entra en dos. Los cortos siguen a 58 (16/11) */
+  .app .ent-tx{container-type:inline-size}
+  .app .ent-tx .hero-ev.muy-largo{font-size:min(58px,10.8cqi)}
   .app .ent-num{grid-column:auto;align-self:end}
   .app .ent-emb.cuadrado,.app .ent-emb.redondo{width:132px;height:132px}
   .app .ent-emb.bandera{width:168px}
