@@ -2,132 +2,6 @@
  "_leeme": "Lo que ✅ Decidir cerró o contestó solo, con la regla y la prueba (sheet/decidir.py, resolver_solo()), para «Lo que se resolvió solo» del Dashboard y su «Deshacer». «deshechas»: lo que Dlx deshizo; ninguna regla lo vuelve a tocar. Dlx, 13/10/2026.",
  "solas": [
   {
-   "id": "4a45c8cb26",
-   "tipo": "Nombre desconocido",
-   "sec": "LA PALERA DEL KACHUM · FFA · 02/11 · #559",
-   "que": "¿Quién es «Dyzzchol🇨🇱»?",
-   "r": "Es Dyzz (en este evento)",
-   "regla": "R21 · la cuenta que se anotó así para ese evento es de alguien de la Lista que esa noche no jugó con su nombre",
-   "rk": "R21",
-   "por": "el ciclo",
-   "porque": "la cuenta @dyzzmc (en Discord: «#59 | 📿», «Dyzzmzt») · en la Lista: Dyzz se anotó como «Dyzzchol» para ese evento, no es staff de FFA y esa noche no jugó con su nombre",
-   "t": 1793599435043,
-   "filas": [
-    1017
-   ],
-   "variantes": [
-    "Dyzzchol🇨🇱"
-   ],
-   "escribio": {
-    "quien": "LA PALERA DEL KACHUM · FFA · 02/11 · Dyzzchol🇨🇱"
-   }
-  },
-  {
-   "id": "2b0f205ae6",
-   "tipo": "Nombre desconocido",
-   "sec": "LA PALERA DEL KACHUM · FFA · 02/11 · #559",
-   "que": "¿Quién es «gianla🇨🇦»?",
-   "r": "Es Badterne",
-   "regla": "Discord · su cuenta de Discord: la inscripción, el podio, la llave o la llamada",
-   "rk": "Discord",
-   "por": "el ciclo (su cuenta de Discord)",
-   "porque": "alias de Badterne: estaba en la llamada del evento con un nombre parecido",
-   "t": 1793599435043,
-   "filas": [
-    1018
-   ],
-   "variantes": [
-    "gianla🇨🇦"
-   ],
-   "escribio": {
-    "alias": [
-     "gianla",
-     "Badterne"
-    ],
-    "filas": [
-     334
-    ]
-   }
-  },
-  {
-   "id": "e03bafe20c",
-   "tipo": "Alias posible",
-   "sec": "🪪 Identidad",
-   "que": "¿«gianla» es Badterne? La cuenta de Badterne en la Lista se anotó como «gianla», y en el ranking suman aparte. Si es la misma persona, los puntos de «gianla» pasan a Badterne.\nLa cuenta: https://discord.com/users/1514844014325796977",
-   "r": "Es la misma persona",
-   "regla": "cierre · ya no hacía falta preguntarlo",
-   "rk": "cierre",
-   "por": "el ciclo",
-   "porque": "la misma persona: «gianla» ya es alias de Badterne",
-   "t": 1793601229300,
-   "filas": [
-    1019
-   ],
-   "variantes": [
-    "DOS NOMBRES: «gianla» → «Badterne» · cuenta 1514844014325796977"
-   ],
-   "escribio": {}
-  },
-  {
-   "id": "18dbea99ff",
-   "tipo": "Alias posible",
-   "sec": "🪪 Identidad",
-   "que": "¿«Dyzzchol» es Dyzz? La cuenta de Dyzz en la Lista se anotó como «Dyzzchol», y en el ranking suman aparte. Si es la misma persona, los puntos de «Dyzzchol» pasan a Dyzz.\nLa cuenta: https://discord.com/users/1525996330042921081",
-   "r": "Ya no hace falta",
-   "regla": "cierre · ya no hacía falta preguntarlo",
-   "rk": "cierre",
-   "por": "el ciclo",
-   "porque": "ya no hace falta: «Dyzzchol» ya no suma aparte en el ranking",
-   "t": 1793601229300,
-   "filas": [
-    1020
-   ],
-   "variantes": [
-    "DOS NOMBRES: «Dyzzchol» → «Dyzz» · cuenta 1525996330042921081"
-   ],
-   "escribio": {}
-  },
-  {
-   "id": "30cf144feb",
-   "tipo": "Nombre desconocido",
-   "sec": "RAP PARA RAPEROS · FFA · 02/11 · #560",
-   "que": "¿Quién es «ChozaDeChops🇭🇳»?",
-   "r": "Es Chop (en este evento)",
-   "regla": "R21 · la cuenta que se anotó así para ese evento es de alguien de la Lista que esa noche no jugó con su nombre",
-   "rk": "R21",
-   "por": "el ciclo",
-   "porque": "la cuenta @30fps30hz · en la Lista: Chop se anotó como «ChozaDeChops» para ese evento, no es staff de FFA y esa noche no jugó con su nombre",
-   "t": 1793604814492,
-   "filas": [
-    1021
-   ],
-   "variantes": [
-    "ChozaDeChops🇭🇳"
-   ],
-   "escribio": {
-    "quien": "RAP PARA RAPEROS · FFA · 02/11 · ChozaDeChops🇭🇳"
-   }
-  },
-  {
-   "id": "6665281d89",
-   "tipo": "Alias posible",
-   "sec": "🪪 Identidad",
-   "que": "¿«ChozaDeChops» es Chop? La cuenta de Chop en la Lista se anotó como «ChozaDeChops», y en el ranking suman aparte. Si es la misma persona, los puntos de «ChozaDeChops» pasan a Chop.\nLa cuenta: https://discord.com/users/1364747464170668042",
-   "r": "Ya no hace falta",
-   "regla": "cierre · ya no hacía falta preguntarlo",
-   "rk": "cierre",
-   "por": "el ciclo",
-   "porque": "ya no hace falta: «ChozaDeChops» ya no suma aparte en el ranking",
-   "t": 1793606455637,
-   "filas": [
-    1022
-   ],
-   "variantes": [
-    "DOS NOMBRES: «ChozaDeChops» → «Chop» · cuenta 1364747464170668042"
-   ],
-   "escribio": {}
-  },
-  {
    "id": "9ad75ff64a",
    "tipo": "Nombre desconocido",
    "sec": "GALACTICOS DEL FREESTYLE VOL.15 · DDF · 02/11 · #561",
@@ -4485,6 +4359,73 @@
     "JUKAN"
    ],
    "escribio": {}
+  },
+  {
+   "id": "aad624c178",
+   "tipo": "alta",
+   "sec": "🪪 Identidad",
+   "que": "A «AFinllPapá» lo buscó otra persona con /card (no lo usó él) y no está en la Lista de Raperos. Si ya está con otro nombre, elígelo o escribilo: le pongo su Discord.\nSu cuenta: https://discord.com/users/1533933094673973260",
+   "r": "Ya está resuelto",
+   "regla": "R3 · un alta que no hace falta: el bot, o una cuenta que buscó otro y no jugó",
+   "rk": "R3",
+   "por": "el ciclo",
+   "porque": "no usó /card: lo buscó otra persona, y no jugó en la T1 (ni su nombre ni con lo que se anotó está en ningún resultado). Si se anota sola, entra como cualquiera",
+   "t": 1794848569161,
+   "filas": [
+    1434
+   ],
+   "variantes": [
+    "AFinllPapá = 1533933094673973260"
+   ],
+   "escribio": {}
+  },
+  {
+   "id": "a0c227064a",
+   "tipo": "Batalla sin ganador",
+   "sec": "ALL VALLEY · LKR · 15/11 · #650",
+   "que": "¿Quién ganó en final?\nErian 🇨🇳 🆚 Simon Henriksson 🇺🇸",
+   "r": "No se jugó",
+   "regla": "R4 · una batalla que es copia de otra ya cargada",
+   "rk": "R4",
+   "por": "el ciclo",
+   "porque": "es la misma batalla que «Erian vs Simon Henriksson 🇺🇸» (ganó Erian), ya cargada en el #650: contestar «Ganó» la contaría dos veces",
+   "t": 1794848569161,
+   "filas": [
+    1428
+   ],
+   "variantes": [
+    "__ ALL VALLEY __ · LKR · 15/11 · final · Erian 🇨🇳 🆚 Simon Henriksson 🇺🇸"
+   ],
+   "escribio": {
+    "batalla": "__ ALL VALLEY __ · LKR · 15/11 · final · Erian 🇨🇳 🆚 Simon Henriksson 🇺🇸"
+   }
+  },
+  {
+   "id": "bb67eb98c5",
+   "tipo": "Nombre desconocido",
+   "sec": "ALL VALLEY · LKR · 15/11 · #650",
+   "que": "¿Quién es «Simon Henriksson 🇺🇸»?",
+   "r": "Es Mito",
+   "regla": "Discord · su cuenta de Discord: la inscripción, el podio, la llave o la llamada",
+   "rk": "Discord",
+   "por": "el ciclo (su cuenta de Discord)",
+   "porque": "alias de Mito: la misma cuenta de Discord",
+   "t": 1794848569161,
+   "filas": [
+    1433
+   ],
+   "variantes": [
+    "Simon Henriksson 🇺🇸"
+   ],
+   "escribio": {
+    "alias": [
+     "Simon Henriksson",
+     "Mito"
+    ],
+    "filas": [
+     371
+    ]
+   }
   }
  ],
  "deshechas": []

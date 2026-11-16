@@ -1,6 +1,6 @@
 {
  "_leeme": "Las ligas de los servidores: cada batalla y su resultado, y la tabla que sale de eso. Lo arma bot/ligas.py en cada corrida; las reglas viven ahí. Sin los mensajes: el repo es público. `batallas`: [id del mensaje, instante, jornada, a, b, ganador (vacío: pendiente), directa|replica, extras]. Las batallas con resultado cuentan como duelos (Ranking Duelos y Win%; el Score no). `flyer`: el último afiche de su canal de anuncios, re-alojado en R2 (`url`); `prox`: la próxima fecha que anunció (`d` el día, `t` el instante si lo dijo). Desde el 17/10/2026: `ptb` {id de la batalla: [PTB de a, de b]}, `flyers` (la galería, en R2), `staff` [[discord_id, nombre, mensajes en anuncios, en veredictos, último]] y `nov` (lo nuevo de las últimas horas, para «Seguir la liga»). Desde el 11/11/2026: `temps` [{t, c, n, msg, p, ult, desde}] (cada campeón que anunció su servidor: cierra esa temporada), `tn` (el número de la temporada que juega, si lo dice), `cerrada` {t} (sus canales ya no están) y, arriba, `nuevas` (las ligas que el bot encontró solo: `fam` vacío hasta que un lector entienda sus veredictos).",
- "t": "2026-11-16T09:13:33Z",
+ "t": "2026-11-16T17:00:29Z",
  "ligas": {
   "fmh-albiceleste": {
    "n": "FMH Albiceleste",
@@ -11540,6 +11540,42 @@
      "url": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/ligas/ceu-fms-ceuta/1569451831111983124.webp",
      "w": 962,
      "h": 1287
+    },
+    {
+     "id": "1569451158416654486",
+     "msg": "1569451158416654486",
+     "t": "2026-11-09T20:38:35Z",
+     "tit": "GRACIAS POR TODO KAOTIKO",
+     "url": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/ligas/ceu-fms-ceuta/1569451158416654486.webp",
+     "w": 954,
+     "h": 1283
+    },
+    {
+     "id": "1558404169373716550",
+     "msg": "1558404169373716550",
+     "t": "2026-10-10T09:01:47Z",
+     "tit": "",
+     "url": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/ligas/ceu-fms-ceuta/1558404169373716550.webp",
+     "w": 803,
+     "h": 1124
+    },
+    {
+     "id": "1555903643536982058",
+     "msg": "1555903643536982058",
+     "t": "2026-10-03T11:25:35Z",
+     "tit": "",
+     "url": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/ligas/ceu-fms-ceuta/1555903643536982058.webp",
+     "w": 1115,
+     "h": 1410
+    },
+    {
+     "id": "1554006819754610718",
+     "msg": "1554006819754610718",
+     "t": "2026-09-28T05:48:17Z",
+     "tit": "",
+     "url": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/ligas/ceu-fms-ceuta/1554006819754610718.webp",
+     "w": 1102,
+     "h": 1394
     }
    ],
    "staff": [
@@ -11750,10 +11786,10 @@
     "D1": 1,
     "D2": 1,
     "FD": 1,
-    "K": 3,
+    "K": 5,
     "FF": 0
    },
-   "probado": "2026-11-16T05:00:14Z",
+   "probado": "2026-11-16T17:00:29Z",
    "quieta": true
   },
   "ffs-future-free-series": {
@@ -11776,7 +11812,7 @@
     "K": 0,
     "FF": 0
    },
-   "probado": "2026-11-16T05:00:14Z",
+   "probado": "2026-11-16T17:00:29Z",
    "quieta": false
   },
   "ffs-ffs-league-tricolor": {
@@ -11796,10 +11832,10 @@
     "D1": 0,
     "D2": 0,
     "FD": 0,
-    "K": 0,
+    "K": 41,
     "FF": 48
    },
-   "probado": "2026-11-16T05:00:14Z",
+   "probado": "2026-11-16T17:00:29Z",
    "quieta": true
   },
   "ffs-ffs-league-argentina": {
@@ -11819,10 +11855,10 @@
     "D1": 0,
     "D2": 0,
     "FD": 0,
-    "K": 0,
+    "K": 81,
     "FF": 78
    },
-   "probado": "2026-11-16T05:00:14Z",
+   "probado": "2026-11-16T17:00:29Z",
    "quieta": true
   },
   "ffs-ffs-league-chile": {
@@ -11842,10 +11878,10 @@
     "D1": 0,
     "D2": 0,
     "FD": 0,
-    "K": 0,
+    "K": 78,
     "FF": 64
    },
-   "probado": "2026-11-16T05:00:14Z",
+   "probado": "2026-11-16T17:00:29Z",
    "quieta": true
   },
   "ffs-ffs-league-caribe": {
@@ -11865,10 +11901,10 @@
     "D1": 0,
     "D2": 0,
     "FD": 0,
-    "K": 0,
+    "K": 89,
     "FF": 87
    },
-   "probado": "2026-11-16T05:00:14Z",
+   "probado": "2026-11-16T17:00:29Z",
    "quieta": true
   },
   "ffs-ffs-league-sur-america": {
@@ -11888,10 +11924,10 @@
     "D1": 0,
     "D2": 0,
     "FD": 0,
-    "K": 0,
+    "K": 44,
     "FF": 42
    },
-   "probado": "2026-11-16T05:00:14Z",
+   "probado": "2026-11-16T17:00:29Z",
    "quieta": true
   },
   "fvs-fvs-world-series": {
@@ -11914,7 +11950,7 @@
     "K": 0,
     "FF": 0
    },
-   "probado": "2026-11-16T05:00:14Z",
+   "probado": "2026-11-16T17:00:29Z",
    "quieta": false
   },
   "fvs-fvs-primera-division": {
@@ -11937,7 +11973,7 @@
     "K": 0,
     "FF": 0
    },
-   "probado": "2026-11-16T05:00:14Z",
+   "probado": "2026-11-16T17:00:29Z",
    "quieta": false
   },
   "lkr-fms-clasificacion-a-inter": {
@@ -11960,7 +11996,7 @@
     "K": 1,
     "FF": 0
    },
-   "probado": "2026-11-16T05:00:14Z",
+   "probado": "2026-11-16T17:00:29Z",
    "quieta": false
   },
   "lkr-fms-coliseo": {
@@ -11983,7 +12019,7 @@
     "K": 0,
     "FF": 0
    },
-   "probado": "2026-11-16T06:28:54Z",
+   "probado": "2026-11-16T17:00:29Z",
    "quieta": false
   }
  },

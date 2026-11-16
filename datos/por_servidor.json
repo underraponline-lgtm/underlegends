@@ -2233,6 +2233,7 @@
     "pts": 5000,
     "racha": "1/1",
     "tg": {
+     "dv": true,
      "fin": 1
     }
    },
@@ -2254,7 +2255,6 @@
     "pts": 37500,
     "racha": "1/1",
     "tg": {
-     "dv": true,
      "fin": 1
     }
    }
@@ -6368,7 +6368,6 @@
     "pts": 22000,
     "racha": "1/1",
     "tg": {
-     "dv": true,
      "fin": 1,
      "fund": true
     }
@@ -8853,9 +8852,11 @@
     "oro": 1,
     "ovr": 52,
     "pod": 6,
-    "pts": 44250,
+    "pts": 44650,
     "racha": "1/2",
     "tg": {
+     "bcasa": true,
+     "dv": true,
      "fin": 4,
      "fund": true,
      "llave": true
@@ -9734,6 +9735,7 @@
     "racha": "3/3",
     "tg": {
      "bcasa": true,
+     "dv": true,
      "fin": 3,
      "fund": true
     }
@@ -10888,6 +10890,7 @@
     "pts": 316435,
     "racha": "2/9",
     "tg": {
+     "bcasa": true,
      "dv": true,
      "fin": 18
     }

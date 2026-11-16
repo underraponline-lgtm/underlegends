@@ -1,5 +1,5 @@
 {
- "cuando": "2026-11-16T16:29:19+00:00",
+ "cuando": "2026-11-16T16:55:42+00:00",
  "anuncios": [
   {
    "nombre": "¡SE LLEGÓ LA GRAN NOCHE!",
@@ -7377,29 +7377,29 @@
   {
    "servidor": "LKR",
    "canal": "anuncios",
+   "tit": "y no se lo crean, estan jugando el GTA 6",
+   "tx": "",
+   "cuando": "2026-11-16T16:43:36",
+   "msg_id": "1571928740244750429",
+   "link": "https://discord.com/channels/1558611504046153750/1558611505040064604/1571928740244750429"
+  },
+  {
+   "servidor": "LKR",
+   "canal": "anuncios",
+   "tit": "YO NO TOMARE UN DESCANSO, AUNQUE ME SIENTO DE LA MRD",
+   "tx": "",
+   "cuando": "2026-11-16T16:43:16",
+   "msg_id": "1571928657599922237",
+   "link": "https://discord.com/channels/1558611504046153750/1558611505040064604/1571928657599922237"
+  },
+  {
+   "servidor": "LKR",
+   "canal": "anuncios",
    "tit": "YO TAMBIÉN ME DESCONECTARE POR 4 DIAS PORQUE NECESITO UN DESCANSO TAMBIÉN PORQUE TODOS LOS",
    "tx": "",
    "cuando": "2026-11-16T15:37:29",
    "msg_id": "1571912102149623959",
    "link": "https://discord.com/channels/1558611504046153750/1558611505040064604/1571912102149623959"
-  },
-  {
-   "servidor": "LKR",
-   "canal": "anuncios",
-   "tit": "ESTOY TOMANDOME UN DESCANSO POR TRES DÍAS POR SI ALGO ME ESCRIBEN Y YO LOS ATIENDO CUANDO ",
-   "tx": "",
-   "cuando": "2026-11-16T14:24:57",
-   "msg_id": "1571893848286953475",
-   "link": "https://discord.com/channels/1558611504046153750/1558611505040064604/1571893848286953475"
-  },
-  {
-   "servidor": "LKR",
-   "canal": "『🔔』Anuncios",
-   "tit": "HOY EMPIEZA UNA NUEVA ETAPA CÓMO ORGANIZADOR DE LIGAS ASI Q SUERTE A LOS COMPETIDORES Y Q ",
-   "tx": "",
-   "cuando": "2026-11-16T13:38:02",
-   "msg_id": "1571882038326202439",
-   "link": "https://discord.com/channels/1558611504046153750/1567688556460244992/1571882038326202439"
   },
   {
    "servidor": "URBF",
