@@ -130,10 +130,10 @@
    "temporada": "0e90e179d71c:fec25411e829"
   },
   "Ariaxer": {
-   "competitivo": "52c553b2bcf2:3cb4ba14e995",
-   "pais": "c50e0fe9780b:50160dcafbc4",
-   "servidor": "b6206f3071f9:e0061cb5005e:fce3e6",
-   "temporada": "f2bde58f47fb:fec25411e829"
+   "competitivo": "e197c1f35b4d:3cb4ba14e995",
+   "pais": "c273d47b1773:50160dcafbc4",
+   "servidor": "a25a64176811:e0061cb5005e:fce3e6",
+   "temporada": "54a324c192a7:fec25411e829"
   },
   "Artezzy": {
    "competitivo": "369524452956:3cb4ba14e995",
@@ -654,10 +654,10 @@
    "temporada": "ee256c5dcd68:fec25411e829"
   },
   "Gus": {
-   "competitivo": "e30d03e08059:3cb4ba14e995",
-   "pais": "0dc014aa9fbe:50160dcafbc4",
-   "servidor": "768926b0dc62:e0061cb5005e:ed8290",
-   "temporada": "bf3520d71e1f:fec25411e829"
+   "competitivo": "230d799d3d9b:3cb4ba14e995",
+   "pais": "5856383a910b:50160dcafbc4",
+   "servidor": "59e1830f56e5:e0061cb5005e:ed8290",
+   "temporada": "926daa123dd3:fec25411e829"
   },
   "Guty": {
    "competitivo": "9034a09f3724:3cb4ba14e995",
@@ -1428,9 +1428,9 @@
    "temporada": "3aa4043110cd:fec25411e829"
   },
   "Pipe": {
-   "competitivo": "af69e71b68ee:3cb4ba14e995",
-   "pais": "cfdb59261266:50160dcafbc4",
-   "servidor": "5ecd67907f22:e0061cb5005e:206053",
+   "competitivo": "731356e4fec6:3cb4ba14e995",
+   "pais": "80c5e58ea92d:50160dcafbc4",
+   "servidor": "082fab96df37:e0061cb5005e:206053",
    "temporada": "8c36c4e985c6:fec25411e829"
   },
   "Pipo": {
@@ -1545,10 +1545,10 @@
    "servidor": "0575eb8ff09e:e0061cb5005e:cabaff"
   },
   "Richard": {
-   "competitivo": "ff1eabccd672:3cb4ba14e995",
-   "pais": "f2b8f3556d7f:50160dcafbc4",
-   "servidor": "5c670d621be0:e0061cb5005e:62e67f",
-   "temporada": "46a12cd77ef8:fec25411e829"
+   "competitivo": "e4504e572a0f:3cb4ba14e995",
+   "pais": "583ad2819060:50160dcafbc4",
+   "servidor": "81c0086ca4a6:e0061cb5005e:62e67f",
+   "temporada": "ae5bb3f952c7:fec25411e829"
   },
   "Riolu": {
    "competitivo": "745ce22092bc:3cb4ba14e995",
@@ -1618,9 +1618,9 @@
   "Saz": {},
   "Scot": {},
   "Scritura": {
-   "competitivo": "597fce17cca4:3cb4ba14e995",
-   "pais": "9314197c6a9f:50160dcafbc4",
-   "servidor": "f847893318ed:e0061cb5005e:c82496",
+   "competitivo": "ef767c2cd81e:3cb4ba14e995",
+   "pais": "9508033c1c4a:50160dcafbc4",
+   "servidor": "e64042328c1a:e0061cb5005e:c82496",
    "temporada": "00ebbe7736e4:fec25411e829"
   },
   "Selek": {
@@ -2114,5 +2114,5 @@
    "servidor": "7f8885a35a6d:e0061cb5005e:71cf5a"
   }
  },
- "cuando": "2026-11-16T02:35:10+00:00"
+ "cuando": "2026-11-16T02:40:00+00:00"
 }
