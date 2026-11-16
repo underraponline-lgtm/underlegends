@@ -11,6 +11,17 @@
  ],
  "cambios": [
     {
+        "version": "5.47",
+        "dia": "2026-11-16",
+        "cuando": "2026-11-16T03:43:00-05:00",
+        "titulo": "Publicaciones, sin los eventos anunciados",
+        "items": [
+            "Los **eventos que anuncian los servidores** ya no salen en Publicaciones: están en **Eventos**, con su calendario y su campana.",
+            "Queda todo lo demás: lo que ganas y logras, lo que publican los servidores, las novedades de la Liga y los flyers de las ligas.",
+            "Arriba, el cuarto cuadrito pasa de «Eventos anunciados» a **Logros**."
+        ]
+    },
+    {
         "version": "5.46",
         "dia": "2026-11-16",
         "cuando": "2026-11-16T03:33:00-05:00",

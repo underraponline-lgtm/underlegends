@@ -507,10 +507,10 @@ function useVisto(muro) {
 //   abre. Con un filtro, la búsqueda o un servidor elegido, todo entero: ahí la lista ya es corta.
 // - AL COSTADO, los minis del panel (tocar uno filtra), lo más felicitado, las encuestas en corto y la campana. En el
 //   celular los minis se deslizan arriba y lo demás va después del primer día.
-const GRUPOS = { tarjeta: 1, rango: 1, anuncio: 1, crewtier: 1, svlunes: 1, svsemana: 1, podio: 1, top10: 1, subio: 1, racha: 1 };
+const GRUPOS = { tarjeta: 1, rango: 1, crewtier: 1, svlunes: 1, svsemana: 1, podio: 1, top10: 1, subio: 1, racha: 1 };
 const TIPOS = {
   campeones: ['campeon', 'resnoche', 'ligahito', 'podio'], rangos: ['rango'], cartas: ['tarjeta'], pase: ['pase', 'sorteo'],
-  mw: ['caza', 'precio', 'sobrevivio', 'elegido', 'premios'], mes: ['mesaward'], crews: ['crewtier', 'crewunion', 'crewnueva'], anuncios: ['anuncio', 'flyer', 'liga'], promos: ['promo'],
+  mw: ['caza', 'precio', 'sobrevivio', 'elegido', 'premios'], mes: ['mesaward'], crews: ['crewtier', 'crewunion', 'crewnueva'], anuncios: ['flyer', 'liga'], promos: ['promo'],
   // 🔄 bot/muro_solos.py (15/11/2026)
   logros: ['podio', 'top10', 'subio', 'racha'], servidores: ['svlunes', 'svsemana', 'svmeta', 'svtop', 'svrecord', 'svnuevo', 'svtier'],
 };
@@ -682,32 +682,6 @@ function RangosG({ liga, xs, nuevo }) {
     </article>
   );
 }
-function AnunciosG({ liga, xs, nuevo }) {
-  return (
-    <article className={'pw-f c-a' + (nuevo ? ' nueva' : '')}>
-      <span className="pw-v"><img className="pw-logo" alt="" src="/ul.png" /></span>
-      <div className="pw-tx">
-        <span className="pw-cat">Eventos anunciados · {xs.length}</span>
-        <ul className="pw-anl">
-          {xs.map((it) => {
-            const n = delHilo(it, Date.now()).length;
-            return (
-              <li key={it.id || it.t + it.ev} data-pub={it.id || undefined}>
-                <img alt="" src={liga.logo(it.sv)} />
-                <span><b>{limpio(it.ev)}</b><small>{[siglaDe(it.sv), hora(it.t), it.mod, it.pre ? 'premio: ' + it.pre : ''].filter(Boolean).join(' · ')}</small></span>
-                {it.id ? <a className="pw-anl-cm" href={'#/publicaciones/' + it.id} aria-label={n ? n + ' comentarios' : 'Comentar'}>💬{n ? ' ' + n : ''}</a> : null}
-                {it.link ? <a className="pb-a" href={it.link} target="_blank" rel="noopener noreferrer" aria-label={'Ver ' + limpio(it.ev) + ' en Discord'}>Discord ↗</a> : null}
-              </li>
-            );
-          })}
-        </ul>
-        <div className="pw-acc"><a className="pb-a" href="#/eventos">El calendario</a></div>
-      </div>
-      <span className="pw-der"><time>{hace(liga, xs[0].t)}</time></span>
-    </article>
-  );
-}
-
 // ── 🔄 los logros del mismo día y del mismo tipo (primer podio, top 10, subidas, rachas), juntos como las subidas de rango:
 // una noche deja varios y cada uno en su fila grande llenaba el muro. Tocar a uno abre su publicación para felicitarlo ──
 const LOGRO_G = {
@@ -868,7 +842,7 @@ function Minis({ liga, todos, setFil, desliza }) {
   const sem = todos.filter((it) => utc(it.t) >= liga.desdeLunes());
   const n = (ts) => sem.filter((it) => ts.includes(it.tipo)).length;
   const xs = [['campeones', 'Campeones', n(['campeon']), 'v'], ['rangos', 'Suben de rango', n(['rango']), 'o'], ['cartas', 'Cartas nuevas', n(['tarjeta']), 'p'],
-    ['anuncios', 'Eventos anunciados', n(['anuncio']), 'a']];
+    ['logros', 'Logros', n(TIPOS.logros), 'a']];
   return (
     <div className={'pw-minis' + (desliza ? ' desl' : '')}>
       {xs.map(([f, t, v, c]) => (
@@ -937,7 +911,10 @@ export function Publicaciones({ liga, enc, foco = '' }) {
   const [dias, setDias] = useState(4);
   const [abiertos, setAbiertos] = useState({});
   const sigo = liga.sigue || [];
-  const todos = liga.muroLimpio();
+  // 📅 SIN LOS EVENTOS ANUNCIADOS (Dlx, 16/11/2026: «que en publicaciones haya todo lo demás menos anuncios de eventos…
+  // por eso está la página de eventos»). El muro los sigue trayendo: los usa el Inicio (`arriba.jsx`). Quedan las
+  // novedades de la Liga y los flyers de las ligas, en el chip «Anuncios»
+  const todos = useMemo(() => liga.muroLimpio().filter((it) => it.tipo !== 'anuncio'), [liga]);
   const visto = useVisto(todos);
   const barra = useRef(null);
   const subir = () => { const b = barra.current; if (b && b.getBoundingClientRect().top < 0) b.scrollIntoView({ block: 'start' }); };
@@ -986,7 +963,6 @@ export function Publicaciones({ liga, enc, foco = '' }) {
   const masFel = <MasFelicitado liga={liga} pubs={todos.filter((it) => utc(it.t) >= liga.desdeLunes())} A={A} />;
   const fila = (it, nuevo) => (it.tipo === 'g-tarjeta' ? <CartasG liga={liga} xs={it.xs} nuevo={nuevo} />
     : it.tipo === 'g-rango' ? <RangosG liga={liga} xs={it.xs} nuevo={nuevo} />
-      : it.tipo === 'g-anuncio' ? <AnunciosG liga={liga} xs={it.xs} nuevo={nuevo} />
         : it.tipo === 'g-crewtier' ? <Tiers liga={liga} xs={it.xs} visto={visto} A={A} P={P} />
           : it.tipo === 'g-svlunes' || it.tipo === 'g-svsemana' ? <ServidoresG liga={liga} xs={it.xs} nuevo={nuevo} />
             : LOGRO_G[String(it.tipo).slice(2)] && it.tipo.startsWith('g-') ? <LogrosG liga={liga} xs={it.xs} nuevo={nuevo} />
