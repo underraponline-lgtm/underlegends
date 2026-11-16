@@ -32,6 +32,10 @@ def marcas():
     for p in SRC.rglob('*.jsx'):
         t = p.read_text(encoding='utf-8')
         fijas |= set(re.findall(r'data-tuto="([a-z0-9-]+)"', t))
+        # 16/11/2026: un componente que pasa la marca por una propiedad (`<Cuadro tuto="cm-dias" />` y adentro
+        # `data-tuto={tuto}`, el remake de Competencias 5.51) también la pone: sin esto el chequeo daba rojo con la marca en la página
+        if 'data-tuto={tuto}' in t:
+            fijas |= set(re.findall(r'\btuto="([a-z0-9-]+)"', t))
         if "data-tuto={'menu-' +" in t:
             menu = True
     return fijas, menu
