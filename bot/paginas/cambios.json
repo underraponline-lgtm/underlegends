@@ -11,6 +11,16 @@
  ],
  "cambios": [
     {
+        "version": "5.63",
+        "dia": "2026-11-16",
+        "cuando": "2026-11-16T15:27:00-05:00",
+        "titulo": "Los servidores, más cortos en Publicaciones",
+        "items": [
+            "Cuando los servidores **arrancan o cierran la semana**, Publicaciones muestra los primeros cuatro y un botón **«Ver los N servidores»** para el resto.",
+            "En el celular, el detalle de cada uno va en dos renglones; el completo está al tocar 💬."
+        ]
+    },
+    {
         "version": "5.62",
         "dia": "2026-11-16",
         "cuando": "2026-11-16T15:21:00-05:00",

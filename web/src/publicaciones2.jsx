@@ -720,9 +720,14 @@ function LogrosG({ liga, xs, nuevo }) {
 }
 
 // ── 🏟️ los servidores que arrancan (o cierran) la semana el mismo día: una lista, cada uno con su línea y su 💬 ──
+// ⚠️ Los primeros `SV_TOPE` y «Ver los N»: el 16/11/2026, con los 14 del lunes y los 11 del cierre el mismo día, los dos
+// grupos medían 1.373 y 1.810 px en el celular (más de tres pantallas)
+const SV_TOPE = 4;
 function ServidoresG({ liga, xs, nuevo }) {
+  const [todos, setTodos] = useState(false);
   const lunes = xs[0].tipo === 'svlunes';
-  const orden = [...xs].sort((a, b) => (lunes ? (b.x || 0) - (a.x || 0) : (b.eventos || 0) - (a.eventos || 0)));
+  const orden0 = [...xs].sort((a, b) => (lunes ? (b.x || 0) - (a.x || 0) : (b.eventos || 0) - (a.eventos || 0)));
+  const orden = todos ? orden0 : orden0.slice(0, SV_TOPE);
   return (
     <article className={'pw-f c-a' + (nuevo ? ' nueva' : '')}>
       <span className="pw-v"><img className="pw-logo" alt="" src="/ul.png" /></span>
@@ -745,6 +750,10 @@ function ServidoresG({ liga, xs, nuevo }) {
             );
           })}
         </ul>
+        {orden0.length > SV_TOPE ? (
+          <button type="button" className="pw-svl-mas" aria-expanded={todos} onClick={() => setTodos(!todos)}>
+            {todos ? 'Ver menos' : 'Ver los ' + orden0.length + ' servidores'}</button>
+        ) : null}
       </div>
       <span className="pw-der"><time>{hace(liga, xs[0].t)}</time></span>
     </article>
