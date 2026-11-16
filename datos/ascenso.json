@@ -1,6 +1,6 @@
 {
  "_leeme": "El ranking de ascenso de cada servidor, al día (bot/ascenso.py): su tabla oficial más lo que vino después, con sus reglas (datos/ascenso_reglas.json). `filas`: [nombre, cc, pts, lo sumado, raw]. `pendiente`: lo que no se sabe y no suma (las preguntas de Dlx a cada servidor).",
- "t": "2026-11-16T01:00:55Z",
+ "t": "2026-11-16T01:31:54Z",
  "sv": {
   "SR": {
    "filas": [
@@ -777,18 +777,18 @@
      "Hassan"
     ],
     [
+     "agus",
+     "ar",
+     3860,
+     375,
+     "Agus"
+    ],
+    [
      "Guess",
      "ar",
      3565,
      0,
      "Guess"
-    ],
-    [
-     "agus",
-     "ar",
-     3485,
-     0,
-     "Agus"
     ],
     [
      "nc",
@@ -917,6 +917,13 @@
      "Benjixo"
     ],
     [
+     "Gocho",
+     "ve",
+     1350,
+     750,
+     "Gocho"
+    ],
+    [
      "okam",
      "cr",
      1340,
@@ -992,13 +999,6 @@
      975,
      0,
      "Drexx"
-    ],
-    [
-     "Gocho",
-     "ve",
-     975,
-     375,
-     "Gocho"
     ],
     [
      "AGUSTIN LA RELIQUIA",
@@ -1874,6 +1874,25 @@
        "Ezze",
        "Tercero",
        300
+      ]
+     ],
+     "fuera": []
+    },
+    {
+     "n": null,
+     "evento": "qcyo rapeen 17",
+     "dia": "2026-11-15",
+     "rango": "plata iii",
+     "puntos": [
+      [
+       "Gocho",
+       "Subcampeón",
+       375
+      ],
+      [
+       "Agus",
+       "Subcampeón",
+       375
       ]
      ],
      "fuera": []

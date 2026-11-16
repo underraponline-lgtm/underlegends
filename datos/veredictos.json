@@ -2489,6 +2489,39 @@
    "b": "SURYA",
    "ganador": "RIZAS",
    "votos": "1–0"
+  },
+  "1571690096434876487": {
+   "id": "1571690096434876487",
+   "sv": "[FFA] Freestyle For All 👾",
+   "g": "1468472442925092958",
+   "canal": "1487206164864438513",
+   "pub": 1794790519580,
+   "a": "PICHULA EZEE",
+   "b": "RIZAS",
+   "ganador": "RIZAS",
+   "votos": "1–0"
+  },
+  "1571695832451911793": {
+   "id": "1571695832451911793",
+   "sv": "[FFA] Freestyle For All 👾",
+   "g": "1468472442925092958",
+   "canal": "1487206164864438513",
+   "pub": 1794791887153,
+   "a": "EZZE",
+   "b": "PICHULA",
+   "ganador": "EZZE",
+   "votos": "1–0"
+  },
+  "1571696947444580463": {
+   "id": "1571696947444580463",
+   "sv": "[FFA] Freestyle For All 👾",
+   "g": "1468472442925092958",
+   "canal": "1487206164864438513",
+   "pub": 1794792152988,
+   "a": "RIZAS",
+   "b": "PICHULA",
+   "ganador": "RIZAS",
+   "votos": "1–0"
   }
  },
  "llaves": {
@@ -7851,8 +7884,8 @@
    "g": "1468472442925092958",
    "canal": "1487206164864438513",
    "pub": 1794785977551,
-   "ed": 1794790261952,
-   "texto": "`[ OCTAVOS ]`\n⌞BLITZ⌝ 🆚 ⌞DXG⌝ 🆚 ⌞SURYA⌝ 🆚 ⌞TROT⌝ 🆚 ⌞MINIBOY⌝\n⌞THANIEL⌝ 🆚 ⌞RIZAS⌝ 🆚 ⌞GOCHO⌝\n⌞YINN⌝ 🆚 ⌞SIX⌝ 🆚 ⌞EZEE⌝ 🆚 ⌞LVEL⌝ 🆚 ⌞LIMITZ⌝\n⌞MAJIZTRAL⌝ 🆚 ⌞TENOR⌝ 🆚 ⌞MITO MANIAK⌝ 🆚 ⌞LORDVIRUZ⌝ 🆚 ⌞COLESITO BENJIXO⌝\n⌞MOLUSCO⌝ 🆚 ⌞AGUS⌝ 🆚 ⌞YINN⌝ 🆚 ⌞COLESITO⌝\n`[ CUARTOS ]`\n⌞BLITZ⌝ 🆚 ⌞GOCHO⌝\n⌞SIX⌝ 🆚 ⌞COLESITO LORD⌝ 🆚 ⌞YINN AGUS⌝\n⌞BENJIXO TENOR⌝ 🆚 ⌞PICHULA EZEE⌝\n⌞RIZAS⌝ 🆚 ⌞SURYA⌝\n`[ SEMIFINALES ]`",
+   "ed": 1794792189342,
+   "texto": "`[ OCTAVOS ]`\n⌞BLITZ⌝ 🆚 ⌞DXG⌝ 🆚 ⌞SURYA⌝ 🆚 ⌞TROT⌝ 🆚 ⌞MINIBOY⌝\n⌞THANIEL⌝ 🆚 ⌞RIZAS⌝ 🆚 ⌞GOCHO⌝\n⌞YINN⌝ 🆚 ⌞SIX⌝ 🆚 ⌞EZEE⌝ 🆚 ⌞LVEL⌝ 🆚 ⌞LIMITZ⌝\n⌞MAJIZTRAL⌝ 🆚 ⌞TENOR⌝ 🆚 ⌞MITO MANIAK⌝ 🆚 ⌞LORDVIRUZ⌝ 🆚 ⌞COLESITO BENJIXO⌝\n⌞MOLUSCO⌝ 🆚 ⌞AGUS⌝ 🆚 ⌞YINN⌝ 🆚 ⌞COLESITO⌝\n`[ CUARTOS ]`\n⌞BLITZ⌝ 🆚 ⌞GOCHO⌝\n⌞SIX⌝ 🆚 ⌞COLESITO LORD⌝ 🆚 ⌞YINN AGUS⌝\n⌞BENJIXO TENOR⌝ 🆚 ⌞PICHULA EZEE⌝\n⌞RIZAS⌝ 🆚 ⌞SURYA⌝\n`[ SEMIFINALES ]`\n⌞PICHULA+EZEE⌝ 🆚 ⌞RIZAS⌝\n⌞SIX PICHULA⌝ 🆚 ⌞EZEE GOCHO AGUS⌝\n⌞EZZE⌝ 🆚 ⌞PICHULA⌝\n`[ FINAL ]`\n⌞RIZAS⌝ 🆚 ⌞PICHULA⌝",
    "batallas": [
     [
      "OCTAVOS",
@@ -7949,8 +7982,8 @@
       "BENJIXO TENOR",
       "PICHULA EZEE"
      ],
-     null,
-     "última ronda y no dice campeón",
+     "PICHULA EZEE",
+     "ronda siguiente",
      []
     ],
     [
@@ -7958,6 +7991,46 @@
      [
       "RIZAS",
       "SURYA"
+     ],
+     "RIZAS",
+     "veredicto",
+     []
+    ],
+    [
+     "SEMIFINALES",
+     [
+      "PICHULA+EZEE",
+      "RIZAS"
+     ],
+     "RIZAS",
+     "veredicto",
+     []
+    ],
+    [
+     "SEMIFINALES",
+     [
+      "SIX PICHULA",
+      "EZEE GOCHO AGUS"
+     ],
+     null,
+     "no aparece nadie después",
+     []
+    ],
+    [
+     "SEMIFINALES",
+     [
+      "EZZE",
+      "PICHULA"
+     ],
+     "PICHULA",
+     "ronda siguiente",
+     []
+    ],
+    [
+     "FINAL",
+     [
+      "RIZAS",
+      "PICHULA"
      ],
      "RIZAS",
      "veredicto",

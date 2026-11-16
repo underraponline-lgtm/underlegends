@@ -1,5 +1,5 @@
 {
- "cuando": "2026-11-16T00:56:02+00:00",
+ "cuando": "2026-11-16T01:26:09+00:00",
  "anuncios": [
   {
    "nombre": "¡SE LLEGÓ LA GRAN NOCHE!",
@@ -7777,6 +7777,24 @@
   }
  ],
  "inscripciones": [
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "O.e.p 🇨🇴",
+   "quien": "puto_si_me_mencionas.",
+   "discord_id": "817432890807156756",
+   "msg_id": "1571697431702151331",
+   "cuando": "2026-11-16T01:24:28"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "David 🇨🇱",
+   "quien": "davidignacio0299",
+   "discord_id": "1382553397827473428",
+   "msg_id": "1571693403069091914",
+   "cuando": "2026-11-16T01:08:27"
+  },
   {
    "servidor": "DDS",
    "canal": "📝〕INSCRIPCION-2",
@@ -43758,24 +43776,6 @@
    "discord_id": "716016310202400848",
    "msg_id": "1559691723901374485",
    "cuando": "2026-10-13T22:18:04"
-  },
-  {
-   "servidor": "FFA",
-   "canal": "✦📝—inscripciones",
-   "texto": "Cronox 🇨🇱",
-   "quien": "cronoxzito",
-   "discord_id": "1487658663148785734",
-   "msg_id": "1559690948299202701",
-   "cuando": "2026-10-13T22:14:59"
-  },
-  {
-   "servidor": "FFA",
-   "canal": "✦📝—inscripciones",
-   "texto": "Seko Boy🇨🇴",
-   "quien": "snowzzzzzzzz",
-   "discord_id": "1097714486795849748",
-   "msg_id": "1559683383125086312",
-   "cuando": "2026-10-13T21:44:56"
   }
  ]
 }
