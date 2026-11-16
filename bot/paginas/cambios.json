@@ -11,6 +11,15 @@
  ],
  "cambios": [
     {
+        "version": "5.49",
+        "dia": "2026-11-16",
+        "cuando": "2026-11-16T04:03:00-05:00",
+        "titulo": "El Pase, en todos los temas",
+        "items": [
+            "El **Pase de rapero** se lee bien en **todos los temas**: en Clara, varios títulos salían en blanco sobre blanco. Revisado en Clara, Noche y con los colores de cada servidor, en compu y celular."
+        ]
+    },
+    {
         "version": "5.48",
         "dia": "2026-11-16",
         "cuando": "2026-11-16T03:59:00-05:00",
