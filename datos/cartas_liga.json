@@ -1,6 +1,95 @@
 {
  "_leeme": "Las cartas de liga subidas a R2: {liga: {clave: [sello, ovr, puesto desde 1]}}. Lo escribe 05_Liga/ciclo.py (paso 2b9c) y lo lee subir_web.py. La imagen: <r2>/<clave>/liga-<liga>.webp?v=<sello>.",
  "cartas": {
+  "ceu-fms-ceuta": {
+   "dlx": [
+    "55f19c4258",
+    0,
+    0
+   ],
+   "krish": [
+    "fefee82b31",
+    48,
+    2
+   ]
+  },
+  "ceu-fms-ceuta~2026-09-28": {
+   "andy": [
+    "06ff189a8a",
+    46,
+    14
+   ],
+   "dlx": [
+    "e12935cf09",
+    0,
+    0
+   ],
+   "emizor": [
+    "97973ed5b9",
+    53,
+    7
+   ],
+   "ivan": [
+    "3fcd69c10b",
+    48,
+    12
+   ],
+   "krish": [
+    "79edfeb2d2",
+    57,
+    5
+   ],
+   "last": [
+    "801e5e815e",
+    89,
+    2
+   ],
+   "marcos": [
+    "8df962f957",
+    91,
+    1
+   ],
+   "mcglock": [
+    "1b6f2603d0",
+    50,
+    10
+   ],
+   "richard": [
+    "dbc288869a",
+    48,
+    13
+   ],
+   "santz": [
+    "18e7a5f775",
+    50,
+    11
+   ],
+   "sweetpain": [
+    "c47fea6c1a",
+    53,
+    8
+   ],
+   "teito": [
+    "68f7a29e09",
+    50,
+    9
+   ],
+   "trot": [
+    "428b52f0d0",
+    89,
+    3
+   ],
+   "under": [
+    "97a085bb4e",
+    46,
+    15
+   ],
+   "ziarki": [
+    "a786222229",
+    55,
+    6
+   ]
+  },
   "ddf-dimension-word-series-26": {
    "carlosss": [
     "60faf3c646",
@@ -677,9 +766,9 @@
     0
    ],
    "emizor": [
-    "572b16f1ec",
-    59,
-    7
+    "5b795cbc75",
+    65,
+    6
    ],
    "kusoh": [
     "33237466b3",
@@ -692,9 +781,9 @@
     12
    ],
    "leonart": [
-    "fad4547d70",
+    "4f9a70d4db",
     60,
-    6
+    8
    ],
    "leyenda": [
     "7b7114f59a",
@@ -774,8 +863,8 @@
     0
    ],
    "last": [
-    "e6bacc7d0e",
-    48,
+    "099436ea2d",
+    64,
     4
    ],
    "liam": [
@@ -797,6 +886,11 @@
     "9e7d66d8de",
     66,
     3
+   ],
+   "vallest": [
+    "42c8275be5",
+    48,
+    7
    ]
   },
   "lkr-fms-latam": {
@@ -805,32 +899,72 @@
     0,
     0
    ],
+   "hirex": [
+    "8f8e658866",
+    48,
+    7
+   ],
    "kusoh": [
-    "edc8b3d300",
-    78,
+    "fe84d8623c",
+    85,
     1
    ],
+   "last": [
+    "0ba580880b",
+    67,
+    3
+   ],
+   "lvel": [
+    "5e7fa64f25",
+    47,
+    11
+   ],
    "monet": [
-    "d215e61300",
+    "6cd2aa301b",
     48,
+    8
+   ],
+   "rbk": [
+    "420a6c82d9",
+    47,
+    12
+   ],
+   "richard": [
+    "168c403999",
+    62,
     4
    ],
    "teito": [
-    "dd3109217a",
-    58,
-    2
+    "0ce6db95fa",
+    57,
+    5
+   ],
+   "tmaxturbopn": [
+    "bae329f875",
+    48,
+    9
+   ],
+   "vallest": [
+    "48b8f9bbf1",
+    48,
+    10
    ]
   },
   "lkr-fms-plaza": {
+   "btrx": [
+    "0633d6c5b0",
+    48,
+    18
+   ],
    "caliz": [
-    "f4ac1393b2",
-    65,
-    4
+    "e265153e34",
+    82,
+    3
    ],
    "chop": [
-    "c81c08b735",
-    83,
-    2
+    "7d42d98f13",
+    94,
+    1
    ],
    "dlx": [
     "a60821802e",
@@ -838,99 +972,114 @@
     0
    ],
    "dominick": [
-    "071540b9dd",
-    48,
-    16
-   ],
-   "dyzz": [
-    "848488b1cf",
-    48,
-    17
-   ],
-   "elwachin": [
-    "5dad0632a2",
-    58,
-    8
-   ],
-   "kusoh": [
-    "c5bb3cde87",
-    48,
-    18
-   ],
-   "last": [
-    "dcc282e0b8",
-    58,
-    7
-   ],
-   "leonart": [
-    "a7c64e749f",
+    "a327004ba9",
     48,
     19
    ],
-   "lrs": [
-    "79672f6675",
-    63,
-    6
+   "dyzz": [
+    "079bc49910",
+    47,
+    26
    ],
-   "lvel": [
-    "30de2268cd",
+   "elwachin": [
+    "a5bab77a05",
+    56,
+    9
+   ],
+   "inko": [
+    "7f4b84dc4d",
     48,
     20
    ],
-   "makmah": [
-    "e017e4269f",
-    64,
-    5
+   "kusoh": [
+    "6e575e5b18",
+    53,
+    13
    ],
-   "masino": [
-    "bee70e72af",
-    58,
-    9
+   "last": [
+    "feeafe1483",
+    81,
+    4
    ],
-   "mayeutyk": [
-    "f406a70435",
-    50,
-    15
-   ],
-   "mcdl": [
-    "2394c06b20",
-    58,
-    10
-   ],
-   "miniboy": [
-    "50d38d38de",
+   "leonart": [
+    "d1b61495b7",
     48,
     21
    ],
-   "mosquitrap": [
-    "2b3737d318",
-    84,
-    3
+   "lrs": [
+    "51da3a083d",
+    56,
+    8
    ],
-   "mrkude": [
-    "cc8962ce80",
-    55,
+   "lvel": [
+    "df50f0d6da",
+    53,
     14
    ],
-   "terry": [
-    "44dc88eb28",
-    84,
-    1
+   "makmah": [
+    "215551a570",
+    58,
+    6
    ],
-   "tøkiø": [
-    "5c95090008",
+   "masino": [
+    "2b0870e640",
+    59,
+    7
+   ],
+   "mathhias": [
+    "ff182992a7",
     48,
     22
    ],
-   "vallest": [
-    "e3bb145209",
+   "mayeutyk": [
+    "ea5ad50854",
+    50,
+    17
+   ],
+   "mcdl": [
+    "8a14ad21ed",
+    48,
+    23
+   ],
+   "miniboy": [
+    "e754ea0806",
+    48,
+    24
+   ],
+   "mito": [
+    "b93e22433c",
     56,
-    13
+    10
+   ],
+   "mosquitrap": [
+    "30dec54407",
+    94,
+    2
+   ],
+   "mrkude": [
+    "3b0cb32986",
+    53,
+    16
+   ],
+   "terry": [
+    "67d38817a6",
+    74,
+    5
+   ],
+   "tøkiø": [
+    "f9440c313f",
+    48,
+    25
+   ],
+   "vallest": [
+    "0bad71f792",
+    51,
+    15
    ],
    "zaik": [
-    "13f174f29b",
+    "120c406ee7",
     45,
-    23
+    27
    ]
   },
   "lkr-fms-tricolor": {

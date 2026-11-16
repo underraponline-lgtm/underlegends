@@ -1,6 +1,6 @@
 {
  "_leeme": "Las ligas de los servidores: cada batalla y su resultado, y la tabla que sale de eso. Lo arma bot/ligas.py en cada corrida; las reglas viven ahí. Sin los mensajes: el repo es público. `batallas`: [id del mensaje, instante, jornada, a, b, ganador (vacío: pendiente), directa|replica, extras]. Las batallas con resultado cuentan como duelos (Ranking Duelos y Win%; el Score no). `flyer`: el último afiche de su canal de anuncios, re-alojado en R2 (`url`); `prox`: la próxima fecha que anunció (`d` el día, `t` el instante si lo dijo). Desde el 17/10/2026: `ptb` {id de la batalla: [PTB de a, de b]}, `flyers` (la galería, en R2), `staff` [[discord_id, nombre, mensajes en anuncios, en veredictos, último]] y `nov` (lo nuevo de las últimas horas, para «Seguir la liga»). Desde el 11/11/2026: `temps` [{t, c, n, msg, p, ult, desde}] (cada campeón que anunció su servidor: cierra esa temporada), `tn` (el número de la temporada que juega, si lo dice), `cerrada` {t} (sus canales ya no están) y, arriba, `nuevas` (las ligas que el bot encontró solo: `fam` vacío hasta que un lector entienda sus veredictos).",
- "t": "2026-11-16T07:59:07Z",
+ "t": "2026-11-16T09:13:33Z",
  "ligas": {
   "fmh-albiceleste": {
    "n": "FMH Albiceleste",
@@ -8788,8 +8788,8 @@
      null,
      "Emi",
      "L",
-     "",
-     "",
+     "Emi",
+     "replica",
      ""
     ],
     [
@@ -8996,7 +8996,7 @@
      "1562297268382605415",
      "2026-10-21T02:51:34Z",
      null,
-     "MOSQUITRAP",
+     "Mosqui",
      "MONET",
      "",
      "",
@@ -9029,6 +9029,18 @@
      6
     ],
     [
+     "Emi",
+     2,
+     2,
+     5
+    ],
+    [
+     "L",
+     2,
+     1,
+     4
+    ],
+    [
      "Mr.Kude",
      2,
      1,
@@ -9041,19 +9053,7 @@
      4
     ],
     [
-     "Emi",
-     1,
-     1,
-     3
-    ],
-    [
      "KUDE",
-     1,
-     1,
-     3
-    ],
-    [
-     "L",
      1,
      1,
      3
@@ -9283,6 +9283,16 @@
      2,
      "2026-10-18T01:11:07Z"
     ]
+   ],
+   "nov": [
+    {
+     "id": "r:lkr-champions:1560758098270883882",
+     "t": "2026-11-16T09:14:04Z",
+     "que": "res",
+     "ids": [
+      "1560758098270883882"
+     ]
+    }
    ]
   },
   "lkr-fms-plaza": {
@@ -9296,8 +9306,8 @@
      null,
      "LAST",
      "MASINO",
-     "",
-     "",
+     "MASINO",
+     "replica",
      ""
     ],
     [
@@ -9316,8 +9326,8 @@
      null,
      "SHADOW",
      "ZAIK",
-     "",
-     "",
+     "SHADOW",
+     "directa",
      ""
     ],
     [
@@ -9326,8 +9336,8 @@
      null,
      "CALIZ",
      "DYZZ",
-     "",
-     "",
+     "CALIZ",
+     "directa",
      ""
     ],
     [
@@ -9336,8 +9346,8 @@
      null,
      "MOSQUITRAP",
      "SHADOW",
-     "",
-     "",
+     "MOSQUITRAP",
+     "directa",
      ""
     ],
     [
@@ -9346,8 +9356,8 @@
      null,
      "MATHIAS",
      "CALÍZ",
-     "",
-     "",
+     "CALÍZ",
+     "directa",
      ""
     ],
     [
@@ -9366,8 +9376,8 @@
      null,
      "KUSOH",
      "LVEL",
-     "",
-     "",
+     "KUSOH",
+     "directa",
      ""
     ],
     [
@@ -9386,8 +9396,8 @@
      null,
      "Chop",
      "Kusoh",
-     "",
-     "",
+     "Chop",
+     "directa",
      ""
     ],
     [
@@ -9406,8 +9416,8 @@
      null,
      "TERRY",
      "CÁLIZ",
-     "",
-     "",
+     "CÁLIZ",
+     "replica",
      ""
     ],
     [
@@ -9435,8 +9445,8 @@
      "2026-10-28T00:48:47Z",
      null,
      "KUSOH",
-     "MOSQUI",
-     "MOSQUI",
+     "MOSQUITRAP",
+     "MOSQUITRAP",
      "directa",
      ""
     ],
@@ -9456,8 +9466,8 @@
      null,
      "LAST",
      "SHADOW",
-     "",
-     "",
+     "LAST",
+     "directa",
      ""
     ],
     [
@@ -9514,7 +9524,7 @@
      "1565818737158783100",
      "2026-10-30T20:04:38Z",
      null,
-     "MARTYNEZ",
+     "Martinez",
      "MR.KUDE",
      "MR.KUDE",
      "replica",
@@ -9585,8 +9595,8 @@
      "2026-11-03T01:27:31Z",
      null,
      "CALÍZ",
-     "MOSQUI",
-     "CALÍZ",
+     "MOSQUITRAP",
+     "MOSQUITRAP",
      "directa",
      ""
     ],
@@ -9596,7 +9606,7 @@
      null,
      "TERRY",
      "MOSQUITRAP",
-     "TERRY",
+     "MOSQUITRAP",
      "directa",
      ""
     ],
@@ -9626,7 +9636,7 @@
      null,
      "LAST",
      "MC DL",
-     "MC DL",
+     "LAST",
      "directa",
      ""
     ],
@@ -9636,8 +9646,8 @@
      null,
      "MAKMA",
      "LAST",
-     "",
-     "",
+     "LAST",
+     "directa",
      ""
     ],
     [
@@ -9676,8 +9686,8 @@
      null,
      "LAST",
      "CHOP",
-     "",
-     "",
+     "CHOP",
+     "directa",
      ""
     ],
     [
@@ -9686,8 +9696,8 @@
      null,
      "CALÍZ",
      "SHADOW",
-     "",
-     "",
+     "CALÍZ",
+     "directa",
      ""
     ],
     [
@@ -9696,8 +9706,8 @@
      null,
      "CALÍZ",
      "LRS",
-     "",
-     "",
+     "CALÍZ",
+     "directa",
      ""
     ],
     [
@@ -9726,8 +9736,8 @@
      null,
      "SHADOW",
      "TERRY",
-     "",
-     "",
+     "TERRY",
+     "directa",
      ""
     ],
     [
@@ -9736,8 +9746,8 @@
      null,
      "LVEL",
      "LRS",
-     "",
-     "",
+     "LVEL",
+     "directa",
      ""
     ],
     [
@@ -9756,8 +9766,8 @@
      null,
      "INKO",
      "MITO",
-     "",
-     "",
+     "MITO",
+     "directa",
      ""
     ],
     [
@@ -9774,9 +9784,9 @@
      "1570278472415322165",
      "2026-11-12T03:26:02Z",
      null,
-     "MOSQUI",
+     "MOSQUITRAP",
      "ZAIK",
-     "MOSQUI",
+     "MOSQUITRAP",
      "directa",
      ""
     ],
@@ -9786,8 +9796,8 @@
      null,
      "LAST",
      "BOOTRAX",
-     "",
-     "",
+     "LAST",
+     "directa",
      ""
     ],
     [
@@ -9796,7 +9806,7 @@
      null,
      "SHADOW",
      "CHOP",
-     "SHADOW",
+     "CHOP",
      "directa",
      ""
     ],
@@ -9843,46 +9853,46 @@
    ],
    "tabla": [
     [
-     "TERRY",
-     4,
-     4,
-     12
-    ],
-    [
      "CHOP",
-     5,
-     4,
-     12
-    ],
-    [
-     "CALÍZ",
-     3,
-     2,
-     6
-    ],
-    [
-     "MOSQUI",
-     3,
-     2,
-     6
+     7,
+     7,
+     21
     ],
     [
      "MOSQUITRAP",
-     3,
-     2,
-     6
+     7,
+     7,
+     21
     ],
     [
-     "LRS",
+     "CALIZ",
+     8,
+     6,
+     17
+    ],
+    [
+     "LAST",
+     10,
+     5,
+     17
+    ],
+    [
+     "TERRY",
+     6,
+     4,
+     13
+    ],
+    [
+     "MASINO",
      2,
      2,
      5
     ],
     [
-     "LAST",
-     5,
-     1,
-     4
+     "LRS",
+     4,
+     2,
+     5
     ],
     [
      "GERÓNIMO",
@@ -9891,13 +9901,7 @@
      3
     ],
     [
-     "MASINO",
-     1,
-     1,
-     3
-    ],
-    [
-     "MC DL",
+     "MITO",
      1,
      1,
      3
@@ -9921,14 +9925,26 @@
      3
     ],
     [
-     "SHADOW",
-     2,
+     "KUSOH",
+     3,
+     1,
+     3
+    ],
+    [
+     "LVEL",
+     3,
      1,
      3
     ],
     [
      "MAKMA",
-     3,
+     4,
+     1,
+     3
+    ],
+    [
+     "SHADOW",
+     7,
      1,
      3
     ],
@@ -9939,10 +9955,16 @@
      2
     ],
     [
-     "MARTYNEZ",
-     1,
+     "Martinez",
+     2,
      0,
      1
+    ],
+    [
+     "BOOTRAX",
+     1,
+     0,
+     0
     ],
     [
      "DOMINICK",
@@ -9951,13 +9973,7 @@
      0
     ],
     [
-     "DYZZ",
-     1,
-     0,
-     0
-    ],
-    [
-     "KUSOH",
+     "INKO",
      1,
      0,
      0
@@ -9969,13 +9985,13 @@
      0
     ],
     [
-     "LVEL",
+     "MATHIAS",
      1,
      0,
      0
     ],
     [
-     "Martinez",
+     "MC DL",
      1,
      0,
      0
@@ -9993,8 +10009,14 @@
      0
     ],
     [
+     "DYZZ",
+     2,
+     0,
+     0
+    ],
+    [
      "ZAIK",
-     6,
+     7,
      0,
      0
     ]
@@ -10199,6 +10221,21 @@
      1,
      "2026-11-02T04:33:51Z"
     ]
+   ],
+   "nov": [
+    {
+     "id": "r:lkr-fms-plaza:1570280076170231902",
+     "t": "2026-11-16T09:14:07Z",
+     "que": "res",
+     "ids": [
+      "1567375807310200865",
+      "1567381166456180830",
+      "1567726767429652572",
+      "1567987187549601993",
+      "1570188056718217298",
+      "1570280076170231902"
+     ]
+    }
    ]
   },
   "lkr-fms-tricolor": {
@@ -10645,18 +10682,18 @@
      null,
      "LAST",
      "TMAX",
-     "",
-     "",
+     "LAST",
+     "directa",
      ""
     ],
     [
      "1566911667718193245",
      "2026-11-02T20:27:33Z",
      null,
-     "RICARD",
+     "RICARD FLEX",
      "HIREX",
-     "",
-     "",
+     "RICARD FLEX",
+     "directa",
      ""
     ],
     [
@@ -10665,8 +10702,8 @@
      null,
      "SHADOW",
      "LAST",
-     "",
-     "",
+     "LAST",
+     "directa",
      ""
     ],
     [
@@ -10675,8 +10712,8 @@
      null,
      "RICARD FLEX",
      "TEITO",
-     "",
-     "",
+     "RICARD FLEX",
+     "replica",
      ""
     ],
     [
@@ -10685,8 +10722,8 @@
      null,
      "LVEL",
      "KUSOH",
-     "",
-     "",
+     "KUSOH",
+     "directa",
      ""
     ],
     [
@@ -10705,18 +10742,18 @@
      null,
      "AFINPAPA",
      "ISMEL",
-     "",
-     "",
+     "AFINPAPA",
+     "directa",
      ""
     ],
     [
      "1569432098304032891",
      "2026-11-09T19:22:50Z",
      null,
-     "AFINLPAPA",
+     "AFINPAPA",
      "LVEL",
-     "",
-     "",
+     "AFINPAPA",
+     "directa",
      ""
     ],
     [
@@ -10724,7 +10761,7 @@
      "2026-11-12T19:47:34Z",
      null,
      "KUSOH",
-     "RICARDFLEX MAIN EVENT",
+     "RICARDFLEX",
      "KUSOH",
      "directa",
      ""
@@ -10744,24 +10781,42 @@
      "2026-11-13T22:02:24Z",
      null,
      "Kusoh",
-     "snx",
-     "",
-     "",
+     "Ismel",
+     "Kusoh",
+     "directa",
      ""
     ]
    ],
    "tabla": [
     [
      "KUSOH",
+     4,
+     4,
+     12
+    ],
+    [
+     "AFINPAPA",
      2,
      2,
      6
     ],
     [
+     "LAST",
+     2,
+     2,
+     6
+    ],
+    [
+     "RICARD FLEX",
+     3,
+     2,
+     5
+    ],
+    [
      "TEITO",
+     2,
      1,
-     1,
-     2
+     3
     ],
     [
      "GAYBEAT",
@@ -10770,14 +10825,38 @@
      1
     ],
     [
+     "HIREX",
+     1,
+     0,
+     0
+    ],
+    [
      "MONET",
      1,
      0,
      0
     ],
     [
-     "RICARDFLEX MAIN EVENT",
+     "SHADOW",
      1,
+     0,
+     0
+    ],
+    [
+     "TMAX",
+     1,
+     0,
+     0
+    ],
+    [
+     "ISMEL",
+     2,
+     0,
+     0
+    ],
+    [
+     "LVEL",
+     2,
      0,
      0
     ]
@@ -10825,6 +10904,21 @@
      1,
      "2026-11-13T22:02:24Z"
     ]
+   ],
+   "nov": [
+    {
+     "id": "r:lkr-fms-latam:1570921802903978107",
+     "t": "2026-11-16T09:14:08Z",
+     "que": "res",
+     "ids": [
+      "1566917062423613471",
+      "1566935972908638209",
+      "1567606484735369477",
+      "1567649009600958715",
+      "1569432098304032891",
+      "1570921802903978107"
+     ]
+    }
    ]
   },
   "lkr-fms-espana": {
@@ -10838,8 +10932,8 @@
      null,
      "SHADOW",
      "LAST",
-     "",
-     "",
+     "LAST",
+     "directa",
      ""
     ],
     [
@@ -10904,9 +10998,9 @@
     ],
     [
      "LAST",
+     2,
      1,
-     0,
-     0
+     3
     ],
     [
      "LIAM",
@@ -10916,6 +11010,12 @@
     ],
     [
      "MINIBOY",
+     1,
+     0,
+     0
+    ],
+    [
+     "SHADOW",
      1,
      0,
      0
@@ -10951,6 +11051,550 @@
      1,
      "2026-11-05T20:45:24Z"
     ]
+   ],
+   "nov": [
+    {
+     "id": "r:lkr-fms-espana:1567011505105535026",
+     "t": "2026-11-16T09:14:09Z",
+     "que": "res",
+     "ids": [
+      "1567011505105535026"
+     ]
+    }
+   ]
+  },
+  "ceu-fms-ceuta": {
+   "n": "FMS Ceuta",
+   "sv": "CEU",
+   "jornada": null,
+   "batallas": [
+    [
+     "1554218852026556469",
+     "2026-09-28T19:50:50Z",
+     null,
+     "LAST",
+     "ANDY",
+     "LAST",
+     "directa",
+     ""
+    ],
+    [
+     "1554553620924731524",
+     "2026-09-29T18:01:05Z",
+     null,
+     "MARCOS",
+     "KRISH",
+     "MARCOS",
+     "directa",
+     ""
+    ],
+    [
+     "1554559704238268540",
+     "2026-09-29T18:25:15Z",
+     null,
+     "MARCOS",
+     "IVAN",
+     "MARCOS",
+     "directa",
+     ""
+    ],
+    [
+     "1554579038767419434",
+     "2026-09-29T19:42:05Z",
+     null,
+     "KRISH",
+     "TROT",
+     "TROT",
+     "directa",
+     ""
+    ],
+    [
+     "1555260436134367355",
+     "2026-10-01T16:49:43Z",
+     null,
+     "IVAN",
+     "EMI",
+     "",
+     "",
+     ""
+    ],
+    [
+     "1555698595766870067",
+     "2026-10-02T21:50:48Z",
+     null,
+     "TEITO",
+     "TROT",
+     "TROT",
+     "directa",
+     ""
+    ],
+    [
+     "1555699009656455331",
+     "2026-10-02T21:52:27Z",
+     null,
+     "LAST",
+     "TEITO",
+     "LAST",
+     "directa",
+     ""
+    ],
+    [
+     "1555989707849072751",
+     "2026-10-03T17:07:35Z",
+     null,
+     "TROT",
+     "KAOTIKO",
+     "TROT",
+     "directa",
+     ""
+    ],
+    [
+     "1556034933800177878",
+     "2026-10-03T20:07:17Z",
+     null,
+     "ZIARKI",
+     "ANDY",
+     "ZIARKI",
+     "directa",
+     ""
+    ],
+    [
+     "1556037547639967785",
+     "2026-10-03T20:17:41Z",
+     null,
+     "LAST",
+     "MCGLOCK",
+     "LAST",
+     "replica",
+     ""
+    ],
+    [
+     "1556375244195758321",
+     "2026-10-04T18:39:34Z",
+     null,
+     "UNDER",
+     "KRISH",
+     "KRISH",
+     "directa",
+     ""
+    ],
+    [
+     "1556381256994791435",
+     "2026-10-04T19:03:27Z",
+     null,
+     "MARCOS",
+     "UNDER",
+     "MARCOS",
+     "directa",
+     ""
+    ],
+    [
+     "1556710643250368674",
+     "2026-10-05T16:52:19Z",
+     null,
+     "KAOTIKO",
+     "EMI",
+     "EMI",
+     "replica",
+     ""
+    ],
+    [
+     "1557855217003925596",
+     "2026-10-08T20:40:27Z",
+     null,
+     "MARCOS",
+     "TEITO",
+     "MARCOS",
+     "directa",
+     ""
+    ],
+    [
+     "1558107817385136201",
+     "2026-10-09T13:24:11Z",
+     null,
+     "KRISH",
+     "TEITO",
+     "TEITO",
+     "replica",
+     ""
+    ],
+    [
+     "1558401771829854250",
+     "2026-10-10T08:52:16Z",
+     null,
+     "ZIARKI",
+     "MCGLOCK",
+     "",
+     "",
+     ""
+    ],
+    [
+     "1559230659921448981",
+     "2026-10-12T15:45:58Z",
+     null,
+     "RICARDFLEX",
+     "MARCOS",
+     "MARCOS",
+     "directa",
+     ""
+    ],
+    [
+     "1559959996756660327",
+     "2026-10-14T16:04:05Z",
+     null,
+     "TROT",
+     "ZIARKI",
+     "TROT",
+     "directa",
+     ""
+    ],
+    [
+     "1559971076937744469",
+     "2026-10-14T16:48:07Z",
+     null,
+     "LAST",
+     "KAOTIKO",
+     "LAST",
+     "replica",
+     ""
+    ],
+    [
+     "1560355776197951640",
+     "2026-10-15T18:16:47Z",
+     null,
+     "ZIARKI",
+     "TEITO",
+     "",
+     "",
+     ""
+    ],
+    [
+     "1560394137159598151",
+     "2026-10-15T20:49:13Z",
+     null,
+     "LAST",
+     "UNDER",
+     "LAST",
+     "directa",
+     ""
+    ],
+    [
+     "1560648826803453983",
+     "2026-10-16T13:41:15Z",
+     null,
+     "KAOTIKO",
+     "KRISH",
+     "KAOTIKO",
+     "directa",
+     ""
+    ],
+    [
+     "1560739651591868550",
+     "2026-10-16T19:42:10Z",
+     null,
+     "TROT",
+     "ANDY",
+     "TROT",
+     "directa",
+     ""
+    ],
+    [
+     "1560745071395995669",
+     "2026-10-16T20:03:42Z",
+     null,
+     "LAST",
+     "SANTZ",
+     "LAST",
+     "replica",
+     ""
+    ],
+    [
+     "1561443941851725945",
+     "2026-10-18T18:20:45Z",
+     null,
+     "UNDER",
+     "ANDY MC",
+     "",
+     "",
+     ""
+    ],
+    [
+     "1562197590659825727",
+     "2026-10-20T20:15:29Z",
+     null,
+     "ANDY MC",
+     "KRISH",
+     "ANDY MC",
+     "replica",
+     ""
+    ],
+    [
+     "1562202690560196750",
+     "2026-10-20T20:35:45Z",
+     null,
+     "KRISH",
+     "LAST",
+     "LAST",
+     "directa",
+     ""
+    ],
+    [
+     "1562560267026698243",
+     "2026-10-21T20:16:38Z",
+     null,
+     "MARCOS",
+     "LAST",
+     "MARCOS",
+     "replica",
+     ""
+    ],
+    [
+     "1564372072069595187",
+     "2026-10-26T20:16:06Z",
+     null,
+     "MARCOS",
+     "KAOTIKO",
+     "MARCOS",
+     "directa",
+     ""
+    ],
+    [
+     "1564714319495823564",
+     "2026-10-27T18:56:04Z",
+     null,
+     "TROT",
+     "MARCOS",
+     "TROT",
+     "directa",
+     ""
+    ],
+    [
+     "1565402894189207644",
+     "2026-10-29T16:32:13Z",
+     null,
+     "LAST",
+     "MARCOS",
+     "",
+     "",
+     ""
+    ],
+    [
+     "1571550023215218761",
+     "2026-11-15T15:38:43Z",
+     null,
+     "ALFINPAPA",
+     "KRISH",
+     "ALFINPAPA",
+     "directa",
+     ""
+    ]
+   ],
+   "tabla": [
+    [
+     "MARCOS",
+     8,
+     7,
+     20
+    ],
+    [
+     "LAST",
+     8,
+     7,
+     19
+    ],
+    [
+     "TROT",
+     6,
+     6,
+     18
+    ],
+    [
+     "KAOTIKO",
+     5,
+     1,
+     5
+    ],
+    [
+     "KRISH",
+     8,
+     1,
+     5
+    ],
+    [
+     "ALFINPAPA",
+     1,
+     1,
+     3
+    ],
+    [
+     "ZIARKI",
+     2,
+     1,
+     3
+    ],
+    [
+     "ANDY MC",
+     1,
+     1,
+     2
+    ],
+    [
+     "EMI",
+     1,
+     1,
+     2
+    ],
+    [
+     "TEITO",
+     4,
+     1,
+     2
+    ],
+    [
+     "MCGLOCK",
+     1,
+     0,
+     1
+    ],
+    [
+     "SANTZ",
+     1,
+     0,
+     1
+    ],
+    [
+     "IVAN",
+     1,
+     0,
+     0
+    ],
+    [
+     "RICARDFLEX",
+     1,
+     0,
+     0
+    ],
+    [
+     "ANDY",
+     3,
+     0,
+     0
+    ],
+    [
+     "UNDER",
+     3,
+     0,
+     0
+    ]
+   ],
+   "flyer": {
+    "id": "1570079229809270914",
+    "t": "2026-11-11T14:14:19Z",
+    "tit": "ALFINLPAPA",
+    "url": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/ligas/ceu-fms-ceuta/1570079229809270914.webp",
+    "w": 1200,
+    "h": 1193
+   },
+   "ptb": {},
+   "flyers": [
+    {
+     "id": "1570079229809270914",
+     "t": "2026-11-11T14:14:19Z",
+     "tit": "ALFINLPAPA",
+     "url": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/ligas/ceu-fms-ceuta/1570079229809270914.webp",
+     "w": 1200,
+     "h": 1193
+    },
+    {
+     "id": "1570077318238572584",
+     "msg": "1570077318238572584",
+     "t": "2026-11-11T14:06:43Z",
+     "tit": "NO ES UN FICHAJE PEROOO",
+     "url": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/ligas/ceu-fms-ceuta/1570077318238572584.webp",
+     "w": 772,
+     "h": 1283
+    },
+    {
+     "id": "1570075475416457297",
+     "msg": "1570075475416457297",
+     "t": "2026-11-11T13:59:23Z",
+     "tit": "CAMPEON TROT RENOVADO",
+     "url": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/ligas/ceu-fms-ceuta/1570075475416457297.webp",
+     "w": 1200,
+     "h": 853
+    },
+    {
+     "id": "1569453069266321480",
+     "msg": "1569453069266321480",
+     "t": "2026-11-09T20:46:10Z",
+     "tit": "KRISH",
+     "url": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/ligas/ceu-fms-ceuta/1569453069266321480.webp",
+     "w": 1200,
+     "h": 789
+    },
+    {
+     "id": "1569451831111983124",
+     "msg": "1569451831111983124",
+     "t": "2026-11-09T20:41:15Z",
+     "tit": "GRACIAS POR TODO IVAN",
+     "url": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/ligas/ceu-fms-ceuta/1569451831111983124.webp",
+     "w": 962,
+     "h": 1287
+    }
+   ],
+   "staff": [
+    [
+     "1513620494199558295",
+     "Krish el adivino (la revolucion)",
+     37,
+     72,
+     "2026-11-15T15:57:06Z"
+    ],
+    [
+     "1294600140815990858",
+     "Marcosq14",
+     12,
+     57,
+     "2026-10-29T16:32:25Z"
+    ],
+    [
+     "1347663033949880360",
+     "TROT",
+     6,
+     33,
+     "2026-10-27T19:22:13Z"
+    ],
+    [
+     "1241407042195816459",
+     "Lvel",
+     0,
+     3,
+     "2026-10-20T20:21:05Z"
+    ],
+    [
+     "1550194237549838531",
+     "Sweet pain(venezolano)🇻🇪",
+     0,
+     1,
+     "2026-10-01T17:09:07Z"
+    ]
+   ],
+   "temps": [
+    {
+     "t": "2026-11-11T13:59:23Z",
+     "msg": "1570075475416457297",
+     "canal": "1552349616861618287",
+     "c": "TROT",
+     "n": null,
+     "fuente": "anuncio",
+     "p": [
+      "TROT",
+      "MARCOS",
+      "LAST"
+     ],
+     "ult": "2026-11-15",
+     "desde": "2026-09-28T19:50:50Z"
+    }
    ]
   },
   "ddf-dimension-word-series-26": {
@@ -11453,6 +12097,17 @@
    "vis": "",
    "beat": "",
    "voz": "1566536177664786482"
+  },
+  {
+   "id": "ceu-fms-ceuta",
+   "n": "FMS Ceuta",
+   "sv": "CEU",
+   "g": "1513624656538636459",
+   "fam": "K",
+   "ver": "1554210754150932520",
+   "vis": "1555259912915910756",
+   "beat": "",
+   "voz": ""
   },
   {
    "id": "ddf-dimension-word-series-26",
