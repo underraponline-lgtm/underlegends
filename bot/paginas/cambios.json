@@ -11,6 +11,20 @@
  ],
  "cambios": [
     {
+        "version": "5.51",
+        "dia": "2026-11-16",
+        "cuando": "2026-11-16T04:05:00-05:00",
+        "titulo": "Competencias, con la cara del Inicio",
+        "items": [
+            "Arriba, **cuatro cuadros**: tu liga, tu Copa, tu Rapid y cuánto falta para el cierre. Toca la Copa o la Rapid y se abre **tu llave**.",
+            "Al medio, **tu cruce**, carta contra carta, con tus chances y cuatro botones. A los costados, el **equipo de la semana**, **el mejor jurado**, tu puesto con lo que se cobra, y **cómo se simula** tu cruce con cómo llega cada uno.",
+            "Abajo, **la tabla de tu liga** con los niveles en pestañas, los cruces de la jornada al costado y quién cobró en el último cierre.",
+            "Los **mini eventos** van a todo el ancho: los de un número en una franja blanca y los de lista lado a lado.",
+            "**Cómo se juega**, las preguntas, cada cruce con su jurado y la lista entera de quién cobró se abren en una ventana: en el celular eran media página.",
+            "En el celular, primero tu cruce y tu tabla, y después lo demás."
+        ]
+    },
+    {
         "version": "5.50",
         "dia": "2026-11-16",
         "cuando": "2026-11-16T04:05:15-05:00",
