@@ -319,10 +319,14 @@ export function Cara({ liga, k, nombre, cls = 'cara', lazy = false, grande = fal
 }
 
 export function SinCarta({ liga, k, nombre, cc, cls = 'ci' }) {
+  const n = limpio(nombre);
+  // 🔤 LA PALABRA MÁS LARGA, PORQUE UNA SOLA NO SE PARTE (16/11/2026): «LEANDROKATANA» medía 164 px en una carta de 132 y
+  // la sacaba de la pantalla en Competencias. Va en `--n` y `sc-largo`; cada página decide si la usa (hoy, competencias.css)
+  const w = Math.max(0, ...n.split(/\s+/).map((x) => x.length));
   return (
     <div className={cls + ' sincarta'}>
       <Cara liga={liga} k={k} nombre={nombre} cls="sc-cara" />
-      <b>{limpio(nombre)}</b>
+      <b className={w >= 9 ? 'sc-largo' : undefined} style={w >= 9 ? { '--n': w } : undefined}>{n}</b>
       <Bandera cc={cc} cls="sc-flag" />
       <small>SIN CARTA</small>
     </div>
@@ -330,7 +334,8 @@ export function SinCarta({ liga, k, nombre, cc, cls = 'ci' }) {
 }
 
 // una carta de verdad (de R2) o, si esa persona no la tiene, su cara con «SIN CARTA». Nunca una carta inventada.
-export function Carta({ liga, k, cual = 'temporada', cls = 'ci', abre = true, marco }) {
+// `nombre`: el que va en «SIN CARTA» cuando la persona no está en la tabla (si no, sale la clave: «leandrokatana»)
+export function Carta({ liga, k, cual = 'temporada', cls = 'ci', abre = true, marco, nombre }) {
   const [fallo, setFallo] = useState({ src: null, n: 0 });
   const pub = usePases();
   // el ancho en que se dibuja, en píxeles de pantalla: 0 todavía no se midió, -1 no se pudo (va la grande)
@@ -353,7 +358,7 @@ export function Carta({ liga, k, cual = 'temporada', cls = 'ci', abre = true, ma
     const w = ref.current.getBoundingClientRect().width;
     setAncho(w > 0 ? w * Math.max(1, window.devicePixelRatio || 1) : -1);
   }, [ancho, src0]);
-  if (!src0 || fallas > 1) return <SinCarta liga={liga} k={k} nombre={f ? f.n : k} cc={f ? f.cc : ''} cls={cls} />;
+  if (!src0 || fallas > 1) return <SinCarta liga={liga} k={k} nombre={f ? f.n : (nombre || k)} cc={f ? f.cc : ''} cls={cls} />;
   // 🔴 una carta que no carga (R2 corta a veces) mostraba el ícono de imagen rota: se reintenta una vez y, si
   // vuelve a fallar, la cara con «SIN CARTA» (revisión del 30/09/2026). Si falla la chica, entra la grande
   const grande = fallas ? src0 + (src0.indexOf('?') < 0 ? '?' : '&') + 'r=1' : src0;

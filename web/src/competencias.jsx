@@ -678,6 +678,15 @@ const PREGUNTAS = [
 /** Los mini eventos que son un número y su regla (van en la franja blanca); los demás son una lista (van abajo) */
 const CORTOS = new Set(['meta', 'revancha', 'rey', 'supercopa', 'derbi', 'paises', 'novatos']);
 const fechaCorta = (iso) => new Date(iso).toLocaleDateString('es', { timeZone: 'America/New_York', day: 'numeric', month: 'numeric' });
+/** Cuándo entra a una liga quien no está, en una línea para su cuadro. La temporada que viene arranca en `L.hasta` con los
+ *  que jugaron en las 2 semanas de antes (`ACTIVO_DIAS` de bot/competencias.py). Sin la fecha, al lado de la Copa que dice
+ *  «el lunes entras» se leía como si entrara ya (Walker, 16/11/2026) */
+const entrarLiga = (L) => {
+  if (!L.hasta) return 'Juega 1 evento y entras en Ascenso';
+  const desde = new Date(new Date(L.hasta).getTime() - 14 * 864e5);
+  return Date.now() < desde.getTime() ? 'Entras el ' + fechaCorta(L.hasta) + ' si juegas desde el ' + fechaCorta(desde)
+    : 'Juega 1 evento antes del ' + fechaCorta(L.hasta) + ' y entras';
+};
 const abrir = (r) => { if (r.current && r.current.showModal) r.current.showModal(); };
 /** El próximo cierre de lo que sea: una jornada de las ligas o la semana (la Copa y la Rapid) */
 const proxCierre = (C) => [C.fin].concat((C.ligas || {}).cierres || []).filter((x) => new Date(x).getTime() > Date.now())
@@ -733,9 +742,9 @@ function TuCruce({ liga, C, cru, botones }) {
         <>
           <span className="cmx-blanco">{cru.t}</span>
           <div className="cmx-cartas">
-            <Carta liga={liga} k={cru.a} cual={liga.cartaDe(cru.a, { comp: true }) || 'temporada'} cls="cmx-carta" />
+            <Carta liga={liga} k={cru.a} cual={liga.cartaDe(cru.a, { comp: true }) || 'temporada'} cls="cmx-carta" nombre={nombreDe(liga, C, cru.a)} />
             <b className="cmx-vs">VS</b>
-            <Carta liga={liga} k={cru.b} cual={liga.cartaDe(cru.b, { comp: true }) || 'temporada'} cls="cmx-carta" />
+            <Carta liga={liga} k={cru.b} cual={liga.cartaDe(cru.b, { comp: true }) || 'temporada'} cls="cmx-carta" nombre={nombreDe(liga, C, cru.b)} />
           </div>
           <div className="cm9-barra cmx-barra" aria-hidden="true"><i style={{ width: ancho(cru.p) }} /></div>
           <div className="cmx-vs-n"><span>{nombreDe(liga, C, cru.a)} {pct(cru.p)}</span><span>{pct(1 - cru.p)} {nombreDe(liga, C, cru.b)}</span></div>
@@ -1051,7 +1060,7 @@ export function Competencias({ liga, dc, sub = '' }) {
       <div className="cmx-fila4" data-tuto="cm-cab">
         {dl ? <Cuadro c="#8b5cf6" ico="ligas" et={'Tu liga · ' + nombreLiga(C, dl.g)} t={'#' + dl.pos + ' · ' + ((dl.g.t[dl.pos - 1] || [])[3] || 0) + ' pts'}
           s={(zonaDe(dl.g, dl.pos) || 'Jornada ' + L.jornada + ' de 9') + (donde.liga && donde.elite ? ' · y #' + donde.elite.pos + ' en la Élite' : '')} onClick={irTabla} />
-          : <Cuadro c="#8b5cf6" ico="ligas" et="Las ligas" t={conCuenta ? 'Todavía no estás' : 'Entra con Discord'} s={conCuenta ? 'Juega 1 evento y entras en Ascenso' : 'y te marcamos tu liga'} onClick={irTabla} />}
+          : <Cuadro c="#8b5cf6" ico="ligas" et="Las ligas" t={conCuenta ? 'Todavía no estás' : 'Entra con Discord'} s={conCuenta ? entrarLiga(L) : 'y te marcamos tu liga'} onClick={irTabla} />}
         {cuadroLlave('copa', '#E41373', 'copa', 'Copa', vCopa)}
         {cuadroLlave('rapid', '#29B298', 'xp', 'Rapid', vRapid)}
         <Cuadro c="#3b82f6" anillo={[Math.round((C.dia || 0) / 7 * 100), (C.dia || 0) + '/7']} et={'La semana · día ' + C.dia + ' de 7'}
