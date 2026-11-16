@@ -2467,6 +2467,17 @@
    "b": "TROT🇪🇸",
    "ganador": "CAMPOY🇪🇸",
    "votos": "1–0"
+  },
+  "1571681385943535667": {
+   "id": "1571681385943535667",
+   "sv": "[FFA] Freestyle For All 👾",
+   "g": "1468472442925092958",
+   "canal": "1487206164864438513",
+   "pub": 1794788442837,
+   "a": "BLITZ",
+   "b": "GOCHO",
+   "ganador": "GOCHO",
+   "votos": "1–0"
   }
  },
  "llaves": {
@@ -7829,8 +7840,8 @@
    "g": "1468472442925092958",
    "canal": "1487206164864438513",
    "pub": 1794785977551,
-   "ed": 1794788148986,
-   "texto": "`[ OCTAVOS ]`\n⌞BLITZ⌝ 🆚 ⌞DXG⌝ 🆚 ⌞SURYA⌝ 🆚 ⌞TROT⌝ 🆚 ⌞MINIBOY⌝\n⌞THANIEL⌝ 🆚 ⌞RIZAS⌝ 🆚 ⌞GOCHO⌝\n⌞YINN⌝ 🆚 ⌞SIX⌝ 🆚 ⌞EZEE⌝ 🆚 ⌞LVEL⌝ 🆚 ⌞LIMITZ⌝\n⌞MAJIZTRAL⌝ 🆚 ⌞TENOR⌝ 🆚 ⌞MITO MANIAK⌝ 🆚 ⌞LORDVIRUZ⌝ 🆚 ⌞COLESITO BENJIXO⌝\n⌞MOLUSCO⌝ 🆚 ⌞AGUS⌝ 🆚 ⌞YINN⌝ 🆚 ⌞COLESITO⌝",
+   "ed": 1794788453071,
+   "texto": "`[ OCTAVOS ]`\n⌞BLITZ⌝ 🆚 ⌞DXG⌝ 🆚 ⌞SURYA⌝ 🆚 ⌞TROT⌝ 🆚 ⌞MINIBOY⌝\n⌞THANIEL⌝ 🆚 ⌞RIZAS⌝ 🆚 ⌞GOCHO⌝\n⌞YINN⌝ 🆚 ⌞SIX⌝ 🆚 ⌞EZEE⌝ 🆚 ⌞LVEL⌝ 🆚 ⌞LIMITZ⌝\n⌞MAJIZTRAL⌝ 🆚 ⌞TENOR⌝ 🆚 ⌞MITO MANIAK⌝ 🆚 ⌞LORDVIRUZ⌝ 🆚 ⌞COLESITO BENJIXO⌝\n⌞MOLUSCO⌝ 🆚 ⌞AGUS⌝ 🆚 ⌞YINN⌝ 🆚 ⌞COLESITO⌝\n`[ CUARTOS ]`\n⌞BLITZ⌝ 🆚 ⌞GOCHO⌝",
    "batallas": [
     [
      "OCTAVOS",
@@ -7841,8 +7852,8 @@
       "TROT",
       "MINIBOY"
      ],
-     null,
-     "última ronda y no dice campeón",
+     "BLITZ",
+     "ronda siguiente",
      []
     ],
     [
@@ -7852,8 +7863,8 @@
       "RIZAS",
       "GOCHO"
      ],
-     null,
-     "última ronda y no dice campeón",
+     "GOCHO",
+     "ronda siguiente",
      []
     ],
     [
@@ -7866,7 +7877,7 @@
       "LIMITZ"
      ],
      null,
-     "última ronda y no dice campeón",
+     "no aparece nadie después",
      []
     ],
     [
@@ -7879,7 +7890,7 @@
       "COLESITO BENJIXO"
      ],
      null,
-     "última ronda y no dice campeón",
+     "no aparece nadie después",
      []
     ],
     [
@@ -7891,6 +7902,16 @@
       "COLESITO"
      ],
      "AGUS",
+     "veredicto",
+     []
+    ],
+    [
+     "CUARTOS",
+     [
+      "BLITZ",
+      "GOCHO"
+     ],
+     "GOCHO",
      "veredicto",
      []
     ]
