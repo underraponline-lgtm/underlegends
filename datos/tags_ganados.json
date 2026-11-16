@@ -949,6 +949,11 @@
     "t1",
     1792953978519
    ],
+   "🛫 NÓMADA": [
+    "🛫 NÓMADA",
+    "t1",
+    1794803808212
+   ],
    "🥉 AL PODIO": [
     "🥉 AL PODIO",
     "t1",
@@ -2951,6 +2956,11 @@
     "t1",
     1793029252929
    ],
+   "🎯 FRANCOTIRADOR": [
+    "🎯 FRANCOTIRADOR",
+    "t1",
+    1794803808212
+   ],
    "🗡️ MATAGIGANTES": [
     "🗡️ MATAGIGANTES",
     "t1",
@@ -2982,6 +2992,11 @@
     "EMBAJADOR",
     "t1",
     1793029252929
+   ],
+   "GANA AFUERA": [
+    "GANA AFUERA",
+    "t1",
+    1794803808212
    ],
    "INTERNACIONAL": [
     "INTERNACIONAL",
@@ -3062,6 +3077,11 @@
     "t1",
     1793029252929
    ],
+   "🌐 IMPERIO": [
+    "🌐 IMPERIO",
+    "t1",
+    1794803808212
+   ],
    "🎖️ CURTIDO": [
     "🎖️ CURTIDO",
     "t1",
@@ -3088,7 +3108,7 @@
     1793029252929
    ],
    "👑 CAMPEÓN x%d": [
-    "👑 CAMPEÓN x4",
+    "👑 CAMPEÓN x5",
     "t1",
     1793029252929
    ],
@@ -7016,6 +7036,20 @@
     "🥉 AL PODIO",
     "t1",
     1793029252929
+   ]
+  }
+ },
+ "lambo": {
+  "temporada": {
+   "🌱 PROMESA": [
+    "🌱 PROMESA",
+    "t1",
+    1794803808212
+   ],
+   "🥉 AL PODIO": [
+    "🥉 AL PODIO",
+    "t1",
+    1794803808212
    ]
   }
  },
@@ -17487,6 +17521,15 @@
    ]
   }
  },
+ "yor": {
+  "temporada": {
+   "🧳 VIAJERO": [
+    "🧳 VIAJERO",
+    "t1",
+    1794803808212
+   ]
+  }
+ },
  "youngvlad": {
   "servidor": {
    "🏅 PODIOS": [
@@ -17505,6 +17548,20 @@
     "🥉 AL PODIO",
     "t1",
     1792953978519
+   ]
+  }
+ },
+ "yukan": {
+  "temporada": {
+   "🌱 PROMESA": [
+    "🌱 PROMESA",
+    "t1",
+    1794803808212
+   ],
+   "🥉 AL PODIO": [
+    "🥉 AL PODIO",
+    "t1",
+    1794803808212
    ]
   }
  },

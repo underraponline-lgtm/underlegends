@@ -107,8 +107,8 @@
 "temporada"
 ]
 },
-"agus": {
-"rg": "S",
+"colesito": {
+"rg": "B",
 "c": [
 "competitivo",
 "pais",
@@ -116,8 +116,8 @@
 "temporada"
 ]
 },
-"colesito": {
-"rg": "B",
+"agus": {
+"rg": "S",
 "c": [
 "competitivo",
 "pais",
@@ -1170,17 +1170,17 @@
 "rg": "",
 "c": []
 },
-"chase": {
-"rg": "",
-"c": [
-"servidor"
-]
-},
 "lewito": {
 "rg": "",
 "c": [
 "servidor",
 "temporada"
+]
+},
+"chase": {
+"rg": "",
+"c": [
+"servidor"
 ]
 },
 "zeta": {
@@ -1260,6 +1260,13 @@
 "c": []
 },
 "dantemx": {
+"rg": "",
+"c": [
+"servidor",
+"temporada"
+]
+},
+"yor": {
 "rg": "",
 "c": [
 "servidor",
@@ -1467,13 +1474,6 @@
 "francis": {
 "rg": "",
 "c": []
-},
-"yor": {
-"rg": "",
-"c": [
-"servidor",
-"temporada"
-]
 },
 "goblin": {
 "rg": "",
@@ -7636,8 +7636,8 @@
 "tipo": "resnoche",
 "t": "2026-11-16T08:00:00Z",
 "dia": "2026-11-15",
-"eventos": 3,
-"part": 50,
+"eventos": 4,
+"part": 70,
 "campeones": [
 {
 "ev": "RED BULL NACIONAL PLAZAS T.5",
@@ -7671,9 +7671,26 @@
 "praiseriza"
 ]
 ]
+},
+{
+"ev": "CHOP COMPE CEO V.3",
+"sv": "CH",
+"ll": 648,
+"quien": [
+[
+"Colesito",
+"colesito"
+]
+]
 }
 ],
 "suman": [
+{
+"n": "Colesito",
+"k": "colesito",
+"pts": 11250,
+"ev": 2
+},
 {
 "n": "Campoy",
 "k": "campoy",
@@ -7685,12 +7702,6 @@
 "k": "praiseriza",
 "pts": 10000,
 "ev": 1
-},
-{
-"n": "Trot",
-"k": "trot",
-"pts": 8750,
-"ev": 2
 }
 ],
 "suben": [
@@ -7698,19 +7709,19 @@
 "n": "compare",
 "k": "",
 "de": 626,
-"a": 379
+"a": 382
 },
 {
 "n": "Sweet pain",
 "k": "",
 "de": 571,
-"a": 368
+"a": 371
 },
 {
 "n": "Campoy",
 "k": "campoy",
 "de": 439,
-"a": 311
+"a": 312
 }
 ],
 "sorpresas": [

@@ -57385,5 +57385,253 @@
    "min": 118,
    "v": 1
   }
+ },
+ "648": {
+  "dia": "2026-11-15",
+  "escala": "16+",
+  "fecha": "15/11",
+  "links": [
+   "https://discord.com/channels/1074328197400887388/1222379620494741604/1571707612137783390"
+  ],
+  "n": 648,
+  "nombre": "CHOP COMPE CEO V.3",
+  "participantes": 20,
+  "rondas": [
+   {
+    "b": [
+     [
+      [
+       "LAMBO",
+       "Simon"
+      ],
+      "LAMBO",
+      ""
+     ],
+     [
+      [
+       "Yor",
+       "Agus"
+      ],
+      "Yor",
+      ""
+     ],
+     [
+      [
+       "JUKAN",
+       "Gal_Mc 🇦🇷"
+      ],
+      "JUKAN",
+      ""
+     ],
+     [
+      [
+       "Colesito",
+       "NC"
+      ],
+      "Colesito",
+      ""
+     ],
+     [
+      [
+       "INGE",
+       "CHAMAKO"
+      ],
+      "INGE",
+      ""
+     ],
+     [
+      [
+       "LETRAS",
+       "LEWITO"
+      ],
+      "LETRAS",
+      ""
+     ],
+     [
+      [
+       "Tam",
+       "Luciano"
+      ],
+      "Tam",
+      ""
+     ],
+     [
+      [
+       "OJITOS",
+       "Lvel 🇻🇪"
+      ],
+      "",
+      "sin ganador: espera en ✅ Decidir"
+     ]
+    ],
+    "r": "Octavos"
+   },
+   {
+    "b": [
+     [
+      [
+       "Colesito",
+       "Soulb"
+      ],
+      "Colesito",
+      "Walk-in 1: SOUL B"
+     ],
+     [
+      [
+       "Lambo",
+       "Elinge_TIMP"
+      ],
+      "Lambo",
+      ""
+     ],
+     [
+      [
+       "LETRAS",
+       "Yor"
+      ],
+      "LETRAS",
+      ""
+     ],
+     [
+      [
+       "Yukan🇨🇴",
+       "Tam"
+      ],
+      "Yukan🇨🇴",
+      ""
+     ]
+    ],
+    "r": "Cuartos"
+   },
+   {
+    "b": [
+     [
+      [
+       "Colesito",
+       "LETRAS"
+      ],
+      "Colesito",
+      ""
+     ],
+     [
+      [
+       "Lambo",
+       "Yukan🇨🇴"
+      ],
+      "Lambo",
+      ""
+     ]
+    ],
+    "r": "Semifinales"
+   },
+   {
+    "b": [
+     [
+      [
+       "Yukan🇨🇴",
+       "LETRAS"
+      ],
+      "Yukan🇨🇴",
+      "podio: tercer puesto sin batalla en la llave"
+     ]
+    ],
+    "r": "Tercer puesto"
+   },
+   {
+    "b": [
+     [
+      [
+       "Colesito",
+       "LAMBO"
+      ],
+      "Colesito",
+      ""
+     ]
+    ],
+    "r": "Final"
+   }
+  ],
+  "sv": "CH",
+  "tabla": [
+   [
+    "Colesito",
+    "Campeón",
+    10000
+   ],
+   [
+    "LAMBO",
+    "Subcampeón",
+    7500
+   ],
+   [
+    "Yukan🇨🇴",
+    "Tercero",
+    6000
+   ],
+   [
+    "LETRAS",
+    "Cuarto",
+    4500
+   ],
+   [
+    "Elinge_TIMP",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Tam",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Yor",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Agus",
+    "Octavos",
+    1250
+   ],
+   [
+    "CHAMAKO",
+    "Octavos",
+    1250
+   ],
+   [
+    "Gal_Mc 🇦🇷",
+    "Octavos",
+    1250
+   ],
+   [
+    "LEWITO",
+    "Octavos",
+    1250
+   ],
+   [
+    "Luciano",
+    "Octavos",
+    1250
+   ],
+   [
+    "NC",
+    "Octavos",
+    1250
+   ],
+   [
+    "Simon",
+    "Octavos",
+    1250
+   ],
+   [
+    "Soulb",
+    "Cuartos",
+    1250
+   ]
+  ],
+  "ver": {
+   "min": 111,
+   "v": 1
+  }
  }
 }

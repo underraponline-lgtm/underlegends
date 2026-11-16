@@ -2,46 +2,6 @@
  "_leeme": "Lo que ✅ Decidir cerró o contestó solo, con la regla y la prueba (sheet/decidir.py, resolver_solo()), para «Lo que se resolvió solo» del Dashboard y su «Deshacer». «deshechas»: lo que Dlx deshizo; ninguna regla lo vuelve a tocar. Dlx, 13/10/2026.",
  "solas": [
   {
-   "id": "219759c9f1",
-   "tipo": "Nombre desconocido",
-   "sec": "COCINE FIDEOS · FFA · 01/11 · #558",
-   "que": "¿Quién es «Estroncio PY🇵🇾»?",
-   "r": "Es Millonari-O (en este evento)",
-   "regla": "R21 · la cuenta que se anotó así para ese evento es de alguien de la Lista que esa noche no jugó con su nombre",
-   "rk": "R21",
-   "por": "el ciclo",
-   "porque": "la cuenta @pelotadel_10_68491 (en Discord: «Estroncio PY🇵🇾») · en la Lista: Millonari-O se anotó como «Estroncio PY» para ese evento, no es staff de FFA y esa noche no jugó con su nombre",
-   "t": 1793588654536,
-   "filas": [
-    1016
-   ],
-   "variantes": [
-    "Estroncio PY🇵🇾"
-   ],
-   "escribio": {
-    "quien": "COCINE FIDEOS · FFA · 01/11 · Estroncio PY🇵🇾"
-   }
-  },
-  {
-   "id": "e8a8269195",
-   "tipo": "Nombre desconocido",
-   "sec": "QCYO RAPEEN 3 · FFA · 25/10 · #517",
-   "que": "¿Quién es «dyss»?",
-   "r": "Ya no hace falta",
-   "regla": "cierre · ya no hacía falta preguntarlo",
-   "rk": "cierre",
-   "por": "el ciclo",
-   "porque": "ya no está en ningún resultado: el lector lo lee distinto, o ya es alias de alguien",
-   "t": 1793588654536,
-   "filas": [
-    852
-   ],
-   "variantes": [
-    "dyss"
-   ],
-   "escribio": {}
-  },
-  {
    "id": "4a45c8cb26",
    "tipo": "Nombre desconocido",
    "sec": "LA PALERA DEL KACHUM · FFA · 02/11 · #559",
@@ -4410,6 +4370,119 @@
    ],
    "variantes": [
     "}"
+   ],
+   "escribio": {}
+  },
+  {
+   "id": "e1412fdf0f",
+   "tipo": "Nombre desconocido",
+   "sec": "CHOP COMPE CEO V.3 · CH · 15/11 · #648",
+   "que": "¿Quién es «LETRAS»?",
+   "r": "Es leteletras",
+   "regla": "Discord · su cuenta de Discord: la inscripción, el podio, la llave o la llamada",
+   "rk": "Discord",
+   "por": "el ciclo (su cuenta de Discord)",
+   "porque": "alias de leteletras: estaba en la llamada del evento con un nombre parecido",
+   "t": 1794803802753,
+   "filas": [
+    1423
+   ],
+   "variantes": [
+    "LETRAS"
+   ],
+   "escribio": {
+    "alias": [
+     "LETRAS",
+     "leteletras"
+    ],
+    "filas": [
+     370
+    ]
+   }
+  },
+  {
+   "id": "b645d1bad2",
+   "tipo": "Nombre desconocido",
+   "sec": "CHOP COMPE CEO V.3 · CH · 15/11 · #648",
+   "que": "¿Quién es «Gal_Mc 🇦🇷»?",
+   "r": "Es alguien nuevo: alta con su cuenta 1418621904713027636",
+   "regla": "Discord · su cuenta de Discord: la inscripción, el podio, la llave o la llamada",
+   "rk": "Discord",
+   "por": "el ciclo (su cuenta de Discord)",
+   "porque": "nuevo: entró a la Lista con la cuenta con que se anotó (1418621904713027636)",
+   "t": 1794803802753,
+   "filas": [
+    1419
+   ],
+   "variantes": [
+    "Gal_Mc 🇦🇷"
+   ],
+   "escribio": {
+    "alta": [
+     "Gal_Mc",
+     "1418621904713027636"
+    ]
+   }
+  },
+  {
+   "id": "3afbb3050c",
+   "tipo": "Nombre desconocido",
+   "sec": "CHOP COMPE CEO V.3 · CH · 15/11 · #648",
+   "que": "¿Quién es «Yukan🇨🇴»?",
+   "r": "Es alguien nuevo: alta con su cuenta 859900348751151154",
+   "regla": "Discord · su cuenta de Discord: la inscripción, el podio, la llave o la llamada",
+   "rk": "Discord",
+   "por": "el ciclo (su cuenta de Discord)",
+   "porque": "nuevo: entró a la Lista con la cuenta con que se anotó (859900348751151154)",
+   "t": 1794803802753,
+   "filas": [
+    1426
+   ],
+   "variantes": [
+    "Yukan🇨🇴"
+   ],
+   "escribio": {
+    "alta": [
+     "Yukan",
+     "859900348751151154"
+    ]
+   }
+  },
+  {
+   "id": "1eed3bdb4e",
+   "tipo": "Nombre desconocido",
+   "sec": "CHOP COMPE CEO V.3 · CH · 15/11 · #648",
+   "que": "¿Quién es «INGE»?",
+   "r": "Ya no hace falta",
+   "regla": "cierre · ya no hacía falta preguntarlo",
+   "rk": "cierre",
+   "por": "el ciclo",
+   "porque": "ya no está en ningún resultado: el lector lo lee distinto, o ya es alias de alguien",
+   "t": 1794803802753,
+   "filas": [
+    1420
+   ],
+   "variantes": [
+    "INGE"
+   ],
+   "escribio": {}
+  },
+  {
+   "id": "34d7e3c000",
+   "tipo": "Nombre desconocido",
+   "sec": "CHOP COMPE CEO V.3 · CH · 15/11 · #648",
+   "que": "¿Quién es «JUKAN»?",
+   "r": "Ya no hace falta",
+   "regla": "cierre · ya no hacía falta preguntarlo",
+   "rk": "cierre",
+   "por": "el ciclo",
+   "porque": "ya no está en ningún resultado: el lector lo lee distinto, o ya es alias de alguien",
+   "t": 1794803802753,
+   "filas": [
+    1421
+   ],
+   "variantes": [
+    "JUKAN"
    ],
    "escribio": {}
   }

@@ -244,7 +244,7 @@
     "oro": 0,
     "ovr": 42,
     "pod": 0,
-    "pts": 1875,
+    "pts": 2062,
     "racha": "0/0",
     "tg": {
      "nuevo": true
@@ -258,7 +258,7 @@
     "oro": 0,
     "ovr": 42,
     "pod": 0,
-    "pts": 1875,
+    "pts": 2062,
     "racha": "0/0",
     "tg": {
      "nuevo": true
@@ -801,6 +801,18 @@
     "pod": 0,
     "pts": 3750,
     "racha": "0/0"
+   },
+   "CH": {
+    "duelos": "0/1",
+    "ev": 1,
+    "oro": 0,
+    "ovr": 42,
+    "pod": 0,
+    "pts": 2062,
+    "racha": "0/0",
+    "tg": {
+     "nuevo": true
+    }
    },
    "DDF": {
     "duelos": "5/6",
@@ -1372,7 +1384,7 @@
     "oro": 0,
     "ovr": 42,
     "pod": 0,
-    "pts": 1875,
+    "pts": 2062,
     "racha": "0/0",
     "tg": {
      "nuevo": true
@@ -1914,6 +1926,20 @@
     "racha": "0/0"
    }
   },
+  "CHAMAKO": {
+   "CH": {
+    "duelos": "0/1",
+    "ev": 1,
+    "oro": 0,
+    "ovr": 42,
+    "pod": 0,
+    "pts": 2062,
+    "racha": "0/0",
+    "tg": {
+     "nuevo": true
+    }
+   }
+  },
   "CHOCLITO": {
    "ACAD": {
     "duelos": "",
@@ -1969,7 +1995,7 @@
     "oro": 1,
     "ovr": 45,
     "pod": 1,
-    "pts": 8750,
+    "pts": 9500,
     "racha": "1/1",
     "tg": {
      "fin": 1
@@ -2675,13 +2701,16 @@
     }
    },
    "CH": {
-    "duelos": "",
-    "ev": 1,
-    "oro": 0,
-    "ovr": 42,
-    "pod": 0,
-    "pts": 1250,
-    "racha": "0/0"
+    "duelos": "4/4",
+    "ev": 2,
+    "oro": 1,
+    "ovr": 46,
+    "pod": 1,
+    "pts": 17750,
+    "racha": "1/1",
+    "tg": {
+     "fin": 1
+    }
    },
    "DDF": {
     "duelos": "4/6",
@@ -3126,7 +3155,7 @@
     "oro": 0,
     "ovr": 43,
     "pod": 0,
-    "pts": 4375,
+    "pts": 4562,
     "racha": "0/0"
    },
    "FDS": {
@@ -3474,7 +3503,7 @@
     "oro": 0,
     "ovr": 43,
     "pod": 0,
-    "pts": 6750,
+    "pts": 7425,
     "racha": "1/1",
     "tg": {
      "nuevo": true
@@ -3746,7 +3775,7 @@
     "oro": 0,
     "ovr": 45,
     "pod": 1,
-    "pts": 9000,
+    "pts": 9900,
     "racha": "1/1",
     "tg": {
      "nuevo": true
@@ -4103,12 +4132,12 @@
   },
   "Elinge_TIMP": {
    "CH": {
-    "duelos": "0/1",
-    "ev": 1,
+    "duelos": "0/2",
+    "ev": 2,
     "oro": 0,
-    "ovr": 42,
+    "ovr": 43,
     "pod": 0,
-    "pts": 1250,
+    "pts": 5375,
     "racha": "0/0"
    },
    "FFA": {
@@ -5027,6 +5056,20 @@
     "racha": "0/0"
    }
   },
+  "Gal_Mc 🇦🇷": {
+   "CH": {
+    "duelos": "0/1",
+    "ev": 1,
+    "oro": 0,
+    "ovr": 42,
+    "pod": 0,
+    "pts": 2062,
+    "racha": "0/0",
+    "tg": {
+     "nuevo": true
+    }
+   }
+  },
   "Galileo": {
    "ACAD": {
     "duelos": "",
@@ -5173,7 +5216,7 @@
     "oro": 0,
     "ovr": 45,
     "pod": 1,
-    "pts": 11250,
+    "pts": 12375,
     "racha": "1/1",
     "tg": {
      "fin": 1,
@@ -5657,6 +5700,17 @@
     "racha": "0/0"
    }
   },
+  "INGE": {
+   "CH": {
+    "duelos": "1/1",
+    "ev": 0,
+    "oro": 0,
+    "ovr": 40,
+    "pod": 0,
+    "pts": 0,
+    "racha": "0/0"
+   }
+  },
   "ISAIAS": {
    "FFA": {
     "duelos": "0/1",
@@ -6059,6 +6113,17 @@
     "tg": {
      "fund": true
     }
+   }
+  },
+  "JUKAN": {
+   "CH": {
+    "duelos": "1/1",
+    "ev": 0,
+    "oro": 0,
+    "ovr": 40,
+    "pod": 0,
+    "pts": 0,
+    "racha": "0/0"
    }
   },
   "JULIX": {
@@ -7115,6 +7180,21 @@
     "racha": "0/0"
    }
   },
+  "LAMBO": {
+   "CH": {
+    "duelos": "3/4",
+    "ev": 1,
+    "oro": 0,
+    "ovr": 45,
+    "pod": 1,
+    "pts": 12375,
+    "racha": "1/1",
+    "tg": {
+     "fin": 1,
+     "nuevo": true
+    }
+   }
+  },
   "LARRIX🇦🇷": {
    "LKR": {
     "duelos": "",
@@ -7211,15 +7291,29 @@
     }
    }
   },
+  "LETRAS": {
+   "CH": {
+    "duelos": "2/3",
+    "ev": 1,
+    "oro": 0,
+    "ovr": 43,
+    "pod": 0,
+    "pts": 7425,
+    "racha": "1/1",
+    "tg": {
+     "nuevo": true
+    }
+   }
+  },
   "LEWITO": {
    "CH": {
-    "duelos": "",
-    "ev": 2,
+    "duelos": "0/1",
+    "ev": 3,
     "oro": 0,
-    "ovr": 44,
+    "ovr": 45,
     "pod": 1,
-    "pts": 3125,
-    "racha": "1/1",
+    "pts": 5187,
+    "racha": "0/1",
     "tg": {
      "fin": 1,
      "fund": true
@@ -7873,6 +7967,20 @@
     "pod": 0,
     "pts": 6250,
     "racha": "0/0"
+   }
+  },
+  "Luciano": {
+   "CH": {
+    "duelos": "0/1",
+    "ev": 1,
+    "oro": 0,
+    "ovr": 42,
+    "pod": 0,
+    "pts": 2062,
+    "racha": "0/0",
+    "tg": {
+     "nuevo": true
+    }
    }
   },
   "Lucky": {
@@ -9212,7 +9320,7 @@
     "oro": 0,
     "ovr": 43,
     "pod": 0,
-    "pts": 3750,
+    "pts": 4125,
     "racha": "0/0",
     "tg": {
      "nuevo": true
@@ -9808,13 +9916,16 @@
     "racha": "0/0"
    },
    "CH": {
-    "duelos": "0/1",
-    "ev": 3,
+    "duelos": "0/2",
+    "ev": 4,
     "oro": 0,
-    "ovr": 43,
+    "ovr": 44,
     "pod": 0,
-    "pts": 3750,
-    "racha": "0/0"
+    "pts": 5812,
+    "racha": "0/0",
+    "tg": {
+     "llave": true
+    }
    },
    "DDS": {
     "duelos": "",
@@ -10363,7 +10474,7 @@
     "oro": 1,
     "ovr": 47,
     "pod": 1,
-    "pts": 18750,
+    "pts": 19125,
     "racha": "0/1",
     "tg": {
      "fin": 1,
@@ -12681,6 +12792,20 @@
     "racha": "0/0"
    }
   },
+  "Simon": {
+   "CH": {
+    "duelos": "0/1",
+    "ev": 1,
+    "oro": 0,
+    "ovr": 42,
+    "pod": 0,
+    "pts": 2062,
+    "racha": "0/0",
+    "tg": {
+     "nuevo": true
+    }
+   }
+  },
   "Sin Limites": {
    "ACAD": {
     "duelos": "",
@@ -13012,16 +13137,17 @@
   },
   "Soulb": {
    "CH": {
-    "duelos": "2/5",
-    "ev": 3,
+    "duelos": "2/6",
+    "ev": 4,
     "oro": 0,
     "ovr": 46,
     "pod": 1,
-    "pts": 11250,
+    "pts": 13312,
     "racha": "0/1",
     "tg": {
      "fin": 1,
-     "fund": true
+     "fund": true,
+     "llave": true
     }
    },
    "DDF": {
@@ -13276,12 +13402,12 @@
   },
   "Tam": {
    "CH": {
-    "duelos": "0/1",
-    "ev": 1,
+    "duelos": "1/3",
+    "ev": 2,
     "oro": 0,
-    "ovr": 42,
+    "ovr": 43,
     "pod": 0,
-    "pts": 1875,
+    "pts": 6187,
     "racha": "0/0",
     "tg": {
      "nuevo": true
@@ -14782,6 +14908,18 @@
     "pts": 16250,
     "racha": "0/0"
    },
+   "CH": {
+    "duelos": "1/2",
+    "ev": 1,
+    "oro": 0,
+    "ovr": 43,
+    "pod": 0,
+    "pts": 4125,
+    "racha": "0/0",
+    "tg": {
+     "nuevo": true
+    }
+   },
    "FFA": {
     "duelos": "",
     "ev": 3,
@@ -14790,6 +14928,20 @@
     "pod": 0,
     "pts": 6250,
     "racha": "0/0"
+   }
+  },
+  "Yukan🇨🇴": {
+   "CH": {
+    "duelos": "1/2",
+    "ev": 1,
+    "oro": 0,
+    "ovr": 45,
+    "pod": 1,
+    "pts": 9900,
+    "racha": "1/1",
+    "tg": {
+     "nuevo": true
+    }
    }
   },
   "ZAFK": {
@@ -15194,7 +15346,7 @@
     "oro": 0,
     "ovr": 42,
     "pod": 0,
-    "pts": 1875,
+    "pts": 2062,
     "racha": "0/0",
     "tg": {
      "nuevo": true
@@ -15259,7 +15411,7 @@
     "oro": 0,
     "ovr": 42,
     "pod": 0,
-    "pts": 1875,
+    "pts": 2062,
     "racha": "0/0",
     "tg": {
      "nuevo": true

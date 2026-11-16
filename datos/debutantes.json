@@ -2,11 +2,11 @@
  "_leeme": "El reto del debut (bot/debutantes.py): quién debutó desde el 12/10/2026 a las 6 PM ET, cuándo vence, si lo cumplió y qué ya se avisó. Dlx, 12/10/2026.",
  "chats": {
   "ACAD": "2026-11-14",
-  "CH": "2026-11-14",
+  "CH": "2026-11-16",
   "DDF": "2026-11-11",
   "DDS": "2026-11-09",
   "FDS": "2026-11-13",
-  "FFA": "2026-11-15",
+  "FFA": "2026-11-16",
   "FRZ": "2026-11-12",
   "FVS": "2026-10-15",
   "SR": "2026-11-13",
@@ -501,6 +501,19 @@
    "sv": "FFA",
    "vence": "2026-11-01T00:48:12+00:00",
    "vencido": true
+  },
+  "CHAMAKO": {
+   "avisado": "2026-11-16",
+   "chat": "2026-11-16",
+   "con": null,
+   "cumplido": "",
+   "debut": "2026-11-16T02:04:55+00:00",
+   "did": "",
+   "evento": "CHOP COMPE CEO V.3",
+   "n": 648,
+   "sv": "CH",
+   "vence": "2026-11-23T02:04:55+00:00",
+   "vencido": false
   },
   "Cannox": {
    "avisado": "2026-10-30",
@@ -1041,6 +1054,19 @@
    "vence": "2026-10-28T21:09:28+00:00",
    "vencido": true
   },
+  "Gal_Mc": {
+   "avisado": "2026-11-16",
+   "chat": "2026-11-16",
+   "con": null,
+   "cumplido": "",
+   "debut": "2026-11-16T02:04:55+00:00",
+   "did": "",
+   "evento": "CHOP COMPE CEO V.3",
+   "n": 648,
+   "sv": "CH",
+   "vence": "2026-11-23T02:04:55+00:00",
+   "vencido": false
+  },
   "Ghost": {
    "con": null,
    "cumplido": "",
@@ -1551,6 +1577,19 @@
    "vence": "2026-10-26T16:52:32+00:00",
    "vencido": true
   },
+  "LAMBO": {
+   "avisado": "2026-11-16",
+   "chat": "2026-11-16",
+   "con": null,
+   "cumplido": "",
+   "debut": "2026-11-16T02:04:55+00:00",
+   "did": "",
+   "evento": "CHOP COMPE CEO V.3",
+   "n": 648,
+   "sv": "CH",
+   "vence": "2026-11-23T02:04:55+00:00",
+   "vencido": false
+  },
   "LARRIX": {
    "avisado": "2026-11-12",
    "avisado_cumplido": "2026-11-12",
@@ -1574,6 +1613,19 @@
    "sv": "CH",
    "vence": "2026-10-27T22:07:15+00:00",
    "vencido": true
+  },
+  "LETRAS": {
+   "avisado": "2026-11-16",
+   "chat": "2026-11-16",
+   "con": null,
+   "cumplido": "",
+   "debut": "2026-11-16T02:04:55+00:00",
+   "did": "",
+   "evento": "CHOP COMPE CEO V.3",
+   "n": 648,
+   "sv": "CH",
+   "vence": "2026-11-23T02:04:55+00:00",
+   "vencido": false
   },
   "LGBD": {
    "avisado": "2026-10-29",
@@ -1713,6 +1765,19 @@
    "vence": "2026-11-10T02:50:33+00:00",
    "vencido": false
   },
+  "Luciano": {
+   "avisado": "2026-11-16",
+   "chat": "2026-11-16",
+   "con": null,
+   "cumplido": "",
+   "debut": "2026-11-16T02:04:55+00:00",
+   "did": "",
+   "evento": "CHOP COMPE CEO V.3",
+   "n": 648,
+   "sv": "CH",
+   "vence": "2026-11-23T02:04:55+00:00",
+   "vencido": false
+  },
   "Lucky": {
    "con": null,
    "cumplido": "",
@@ -1842,6 +1907,7 @@
   },
   "Maniak": {
    "avisado": "2026-11-15",
+   "chat": "2026-11-16",
    "con": null,
    "cumplido": "",
    "debut": "2026-11-15T23:33:06+00:00",
@@ -2551,6 +2617,19 @@
    "vence": "2026-11-02T16:48:55+00:00",
    "vencido": false
   },
+  "Simon": {
+   "avisado": "2026-11-16",
+   "chat": "2026-11-16",
+   "con": null,
+   "cumplido": "",
+   "debut": "2026-11-16T02:04:55+00:00",
+   "did": "1196284004194852897",
+   "evento": "CHOP COMPE CEO V.3",
+   "n": 648,
+   "sv": "CH",
+   "vence": "2026-11-23T02:04:55+00:00",
+   "vencido": false
+  },
   "Skiller": {
    "avisado": "2026-10-30",
    "avisado_cumplido": "2026-11-05",
@@ -2691,6 +2770,7 @@
   },
   "Thaniel": {
    "avisado": "2026-11-15",
+   "chat": "2026-11-16",
    "con": null,
    "cumplido": "",
    "debut": "2026-11-15T23:33:06+00:00",
@@ -2941,6 +3021,19 @@
    "n": 610,
    "sv": "FFA",
    "vence": "2026-11-19T04:08:19+00:00",
+   "vencido": false
+  },
+  "Yukan": {
+   "avisado": "2026-11-16",
+   "chat": "2026-11-16",
+   "con": null,
+   "cumplido": "",
+   "debut": "2026-11-16T02:04:55+00:00",
+   "did": "",
+   "evento": "CHOP COMPE CEO V.3",
+   "n": 648,
+   "sv": "CH",
+   "vence": "2026-11-23T02:04:55+00:00",
    "vencido": false
   },
   "ZAFK": {
@@ -3338,6 +3431,7 @@
   },
   "xr": {
    "avisado": "2026-11-15",
+   "chat": "2026-11-16",
    "con": null,
    "cumplido": "",
    "debut": "2026-11-15T23:33:06+00:00",

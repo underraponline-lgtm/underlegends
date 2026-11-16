@@ -33091,7 +33091,7 @@
    "mats": 7
   },
   "fecha": "02/11",
-  "firma": "c63b54fc0243d487",
+  "firma": "aee8855b0c668d1d",
   "msg": "1566714400314884126",
   "nombre": "RAP PARA RAPEROS",
   "num": 560,
@@ -47449,7 +47449,7 @@
    "crakero": 9
   },
   "fecha": "13/11",
-  "firma": "90db9b35641451d8",
+  "firma": "48852156c48502cc",
   "msg": "1570980323372703807",
   "nombre": "RANKED 2",
   "num": 632,
@@ -50234,6 +50234,227 @@
     "Maniak🇫🇴",
     "Octavos",
     625
+   ]
+  ],
+  "v": 2
+ },
+ "648": {
+  "antes": {
+   "Agus": [
+    13,
+    13,
+    false
+   ],
+   "Colesito": [
+    14,
+    14,
+    false
+   ],
+   "Elinge_TIMP": [
+    557,
+    525,
+    true
+   ],
+   "LEWITO": [
+    119,
+    166,
+    false
+   ],
+   "NC": [
+    22,
+    23,
+    false
+   ],
+   "Soulb": [
+    52,
+    60,
+    false
+   ],
+   "Tam": [
+    254,
+    20,
+    true
+   ],
+   "Yor": [
+    134,
+    209,
+    false
+   ]
+  },
+  "canal": "1215539465427222528",
+  "duelos": [
+   [
+    "LAMBO",
+    "Simon",
+    "LAMBO"
+   ],
+   [
+    "Yor",
+    "Agus",
+    "Yor"
+   ],
+   [
+    "JUKAN",
+    "Gal_Mc 🇦🇷",
+    "JUKAN"
+   ],
+   [
+    "Colesito",
+    "NC",
+    "Colesito"
+   ],
+   [
+    "INGE",
+    "CHAMAKO",
+    "INGE"
+   ],
+   [
+    "LETRAS",
+    "LEWITO",
+    "LETRAS"
+   ],
+   [
+    "Tam",
+    "Luciano",
+    "Tam"
+   ],
+   [
+    "Colesito",
+    "Soulb",
+    "Colesito"
+   ],
+   [
+    "Lambo",
+    "Elinge_TIMP",
+    "Lambo"
+   ],
+   [
+    "LETRAS",
+    "Yor",
+    "LETRAS"
+   ],
+   [
+    "Yukan🇨🇴",
+    "Tam",
+    "Yukan🇨🇴"
+   ],
+   [
+    "Colesito",
+    "LETRAS",
+    "Colesito"
+   ],
+   [
+    "Lambo",
+    "Yukan🇨🇴",
+    "Lambo"
+   ],
+   [
+    "Colesito",
+    "LAMBO",
+    "Colesito"
+   ],
+   [
+    "Yukan🇨🇴",
+    "LETRAS",
+    "Yukan🇨🇴"
+   ]
+  ],
+  "ev_antes": {
+   "Agus": 25,
+   "Colesito": 42,
+   "Elinge_TIMP": 2,
+   "LEWITO": 7,
+   "NC": 58,
+   "Soulb": 29,
+   "Tam": 29,
+   "Yor": 5
+  },
+  "fecha": "15/11",
+  "firma": "5b456a965ebeec4a",
+  "msg": "1571735800801136702",
+  "nombre": "CHOP COMPE CEO V.3",
+  "num": 648,
+  "participantes": 20,
+  "sello": {
+   "Colesito": "397c90e08022:fec25411e829"
+  },
+  "sv": "CH",
+  "t": "2026-11-16T04:25:15Z",
+  "tabla": [
+   [
+    "Colesito",
+    "Campeón",
+    10000
+   ],
+   [
+    "LAMBO",
+    "Subcampeón",
+    7500
+   ],
+   [
+    "Yukan🇨🇴",
+    "Tercero",
+    6000
+   ],
+   [
+    "LETRAS",
+    "Cuarto",
+    4500
+   ],
+   [
+    "Elinge_TIMP",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Yor",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Tam",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Soulb",
+    "Cuartos",
+    1250
+   ],
+   [
+    "Simon",
+    "Octavos",
+    1250
+   ],
+   [
+    "Agus",
+    "Octavos",
+    1250
+   ],
+   [
+    "Gal_Mc 🇦🇷",
+    "Octavos",
+    1250
+   ],
+   [
+    "NC",
+    "Octavos",
+    1250
+   ],
+   [
+    "CHAMAKO",
+    "Octavos",
+    1250
+   ],
+   [
+    "LEWITO",
+    "Octavos",
+    1250
+   ],
+   [
+    "Luciano",
+    "Octavos",
+    1250
    ]
   ],
   "v": 2
