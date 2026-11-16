@@ -56637,10 +56637,10 @@
      ],
      [
       [
-       "ANDY MC🇻🇪",
+       "Sweet pain",
        "Dominick"
       ],
-      "ANDY MC🇻🇪",
+      "Sweet pain",
       ""
      ],
      [
@@ -56667,7 +56667,7 @@
      [
       [
        "Trot",
-       "Andy mc 🇻🇪"
+       "Sweet pain"
       ],
       "Trot",
       ""
@@ -56702,12 +56702,12 @@
     6250
    ],
    [
-    "Andy mc 🇻🇪",
+    "Ivan",
     "Semifinal",
     3500
    ],
    [
-    "Ivan",
+    "Sweet pain",
     "Semifinal",
     3500
    ],
@@ -57631,6 +57631,296 @@
   ],
   "ver": {
    "min": 111,
+   "v": 1
+  }
+ },
+ "649": {
+  "dia": "2026-11-15",
+  "escala": "8-15",
+  "fecha": "15/11",
+  "links": [
+   "https://discord.com/channels/1513624656538636459/1518202754294612028/1571558610293760035"
+  ],
+  "n": 649,
+  "nombre": "RED BULL BATALLA",
+  "participantes": 8,
+  "rondas": [
+   {
+    "b": [
+     [
+      [
+       "ALFINPAPA",
+       "Tmax Turbo [PN]"
+      ],
+      "ALFINPAPA",
+      ""
+     ],
+     [
+      [
+       "Majiztral",
+       "Under"
+      ],
+      "Majiztral",
+      ""
+     ],
+     [
+      [
+       "mats",
+       "ZiarKI"
+      ],
+      "mats",
+      ""
+     ],
+     [
+      [
+       "Marcos",
+       "Motera"
+      ],
+      "Marcos",
+      ""
+     ]
+    ],
+    "r": "Cuartos"
+   },
+   {
+    "b": [
+     [
+      [
+       "Majiztral",
+       "ALFINPAPA"
+      ],
+      "Majiztral",
+      ""
+     ],
+     [
+      [
+       "mats",
+       "Marcos"
+      ],
+      "mats",
+      ""
+     ]
+    ],
+    "r": "Semifinales"
+   },
+   {
+    "b": [
+     [
+      [
+       "Marcos",
+       "ALFINPAPA"
+      ],
+      "Marcos",
+      "podio: tercer puesto sin batalla en la llave"
+     ]
+    ],
+    "r": "Tercer puesto"
+   },
+   {
+    "b": [
+     [
+      [
+       "mats",
+       "Majiztral"
+      ],
+      "mats",
+      ""
+     ]
+    ],
+    "r": "Final"
+   }
+  ],
+  "sv": "CEU",
+  "tabla": [
+   [
+    "mats",
+    "Campeón",
+    7500
+   ],
+   [
+    "Majiztral",
+    "Subcampeón",
+    5000
+   ],
+   [
+    "Marcos",
+    "Tercero",
+    4000
+   ],
+   [
+    "ALFINPAPA",
+    "Cuarto",
+    3000
+   ],
+   [
+    "Motera",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Tmax Turbo [PN]",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Under",
+    "Cuartos",
+    2000
+   ],
+   [
+    "ZiarKI",
+    "Cuartos",
+    2000
+   ]
+  ],
+  "ver": {
+   "min": 53,
+   "v": 1
+  }
+ },
+ "650": {
+  "dia": "2026-11-15",
+  "escala": "8-15",
+  "fecha": "15/11",
+  "links": [
+   "https://discord.com/channels/1558611504046153750/1571693386207858779/1571705146319052842",
+   "https://discord.com/channels/1558611504046153750/1571693867672146001/1571707198768156793"
+  ],
+  "n": 650,
+  "nombre": "ALL VALLEY",
+  "participantes": 9,
+  "rondas": [
+   {
+    "b": [
+     [
+      [
+       "Erian",
+       "MaYeuTyK"
+      ],
+      "Erian",
+      ""
+     ],
+     [
+      [
+       "Sin Limites",
+       "Richard"
+      ],
+      "Sin Limites",
+      ""
+     ],
+     [
+      [
+       "Soulb",
+       "Adriagner"
+      ],
+      "Soulb",
+      ""
+     ],
+     [
+      [
+       "Simon Henriksson 🇺🇸",
+       "Miniboy",
+       "Majiztral"
+      ],
+      "Simon Henriksson 🇺🇸",
+      "triple (3 bandas)"
+     ]
+    ],
+    "r": "Cuartos"
+   },
+   {
+    "b": [
+     [
+      [
+       "Erian",
+       "Soulb"
+      ],
+      "Erian",
+      ""
+     ],
+     [
+      [
+       "Simon Henriksson 🇺🇸",
+       "Sin Limites"
+      ],
+      "Simon Henriksson 🇺🇸",
+      ""
+     ]
+    ],
+    "r": "Semifinales"
+   },
+   {
+    "b": [
+     [
+      [
+       "Erian",
+       "Simon Henriksson 🇺🇸"
+      ],
+      "Erian",
+      ""
+     ],
+     [
+      [
+       "Erian 🇨🇳",
+       "Simon Henriksson 🇺🇸"
+      ],
+      "",
+      "sin ganador: espera en ✅ Decidir"
+     ]
+    ],
+    "r": "Final"
+   }
+  ],
+  "sv": "LKR",
+  "tabla": [
+   [
+    "Erian",
+    "Campeón",
+    7500
+   ],
+   [
+    "Simon Henriksson 🇺🇸",
+    "Subcampeón",
+    5000
+   ],
+   [
+    "Sin Limites",
+    "Semifinal",
+    3500
+   ],
+   [
+    "Soulb",
+    "Semifinal",
+    3500
+   ],
+   [
+    "Adriagner",
+    "Cuartos",
+    2000
+   ],
+   [
+    "MaYeuTyK",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Majiztral",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Miniboy",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Richard",
+    "Cuartos",
+    2000
+   ]
+  ],
+  "ver": {
+   "min": 77,
    "v": 1
   }
  }

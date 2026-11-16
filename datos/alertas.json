@@ -27,11 +27,16 @@
   "RANKED 2 · FDS · 13/11 · final · CRAKERO 🆚 NXUX": "2026-11-14T02:23:26.831367+00:00",
   "RANKED 2 · FDS · 13/11 · final · MCAREPA 🆚 Chente 🇻🇪": "2026-11-14T02:04:00.540795+00:00",
   "RANKED 2 · FDS · 13/11 · final · MCAREPA 🆚 SENTIDICE": "2026-11-14T02:31:12.446762+00:00",
-  "RAP SIN GROSERIAS 1 · FDS · 26/10 · octavos · Artezzy 🇵🇪 🆚 Vilca🇵🇪": "2026-11-01T18:05:06.282627+00:00"
+  "RAP SIN GROSERIAS 1 · FDS · 26/10 · octavos · Artezzy 🇵🇪 🆚 Vilca🇵🇪": "2026-11-01T18:05:06.282627+00:00",
+  "__ ALL VALLEY __ · LKR · 15/11 · final · Erian 🇨🇳 🆚 Simon Henriksson 🇺🇸": "2026-11-16T16:43:01.490798+00:00"
  },
  "ciclo:cola": {
   "t": "2026-11-15T08:08:35.905860+00:00",
   "texto": "2 corridas del ciclo se cancelaron esperando su turno de dibujar (15/11 3:08 AM ET): la anterior tardó de más. Lo que no dibujaron lo dibuja la próxima.\nhttps://github.com/underraponline-lgtm/underlegends/actions/runs/43687433864"
+ },
+ "ciclo:escuchar": {
+  "t": "2026-11-16T16:43:00.086424+00:00",
+  "texto": "El ciclo, en «escuchar», se cortó antes de terminar (16/11 11:42 AM ET): llegó a su tiempo máximo o alguien la canceló. Lo que alcanzó a sellar queda; el resto sigue en la próxima corrida.\nhttps://github.com/underraponline-lgtm/underlegends/actions/runs/43906744080"
  },
  "recordado:a7": {
   "t": "2026-09-26T03:54:52.348453+00:00",

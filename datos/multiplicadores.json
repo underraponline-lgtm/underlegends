@@ -1210,6 +1210,28 @@
       "FFA",
       "FVS"
      ]
+    ],
+    "ppp": {
+     "SR": 3000.0,
+     "ACAD": 3549.5,
+     "FDS": 5232.1,
+     "FFS": 0,
+     "URBF": 3369.6,
+     "CH": 3046.3,
+     "DDF": 0,
+     "LKR": 2907.6,
+     "DRA": 0,
+     "DDS": 3500.0,
+     "FFA": 3514.5,
+     "FVS": 0
+    },
+    "gana": [
+     "ACAD",
+     "FDS",
+     "URBF",
+     "LKR",
+     "DDS",
+     "FFA"
     ]
    },
    "metas": {
@@ -1329,7 +1351,8 @@
      "CH": 27,
      "CEU": 16
     },
-    "gana": "CH"
+    "gana": "CH",
+    "final": true
    },
    "meta_va": {
     "ACAD": 48,
@@ -1345,6 +1368,153 @@
     "LKR": 23,
     "SR": 16,
     "URBF": 23
+   },
+   "organizadores_final": true,
+   "premios_semana": {
+    "figura": [
+     "Dios",
+     67750
+    ],
+    "revelacion": [
+     "Emilio Alva aka mr cachondo folla mama de lord 🔥🇧🇱",
+     18562
+    ],
+    "servidor": [
+     "FFA",
+     105
+    ]
+   }
+  },
+  {
+   "id": "2026-11-16",
+   "inicio": "2026-11-16T16:00:00Z",
+   "fin": "2026-11-23T16:00:00Z",
+   "temporada": "prueba",
+   "sorteado": "2026-11-16T16:23:04Z",
+   "sv": {
+    "FFA": 3.0,
+    "LKR": 0.75,
+    "SR": 1,
+    "DRA": 1,
+    "CEU": 2,
+    "FFS": 1.5,
+    "URBF": 1.5,
+    "FVS": 1,
+    "FDS": 2.25,
+    "DDF": 1,
+    "FRZ": 2,
+    "ACAD": 1.5,
+    "CH": 3.0,
+    "DDS": 2.25
+   },
+   "dorado": {
+    "sv": "FDS",
+    "desde": "2026-11-21T05:00:00Z"
+   },
+   "guerra": {
+    "pares": [
+     [
+      "FRZ",
+      "CH"
+     ],
+     [
+      "FFS",
+      "DDS"
+     ],
+     [
+      "CEU",
+      "SR"
+     ],
+     [
+      "LKR",
+      "ACAD"
+     ],
+     [
+      "FDS",
+      "FVS"
+     ],
+     [
+      "DDF",
+      "FFA"
+     ],
+     [
+      "DRA",
+      "URBF"
+     ]
+    ]
+   },
+   "metas": {
+    "ACAD": 48,
+    "CEU": 22,
+    "CH": 26,
+    "DDF": 50,
+    "DDS": 24,
+    "DRA": 8,
+    "FDS": 23,
+    "FFA": 125,
+    "FFS": 8,
+    "FRZ": 13,
+    "FVS": 8,
+    "LKR": 26,
+    "SR": 21,
+    "URBF": 21
+   },
+   "votado": {
+    "sv": "CEU",
+    "votos": 1,
+    "de": 4
+   },
+   "premios": {
+    "CEU": [
+     "votado"
+    ],
+    "ACAD": [
+     "guerra"
+    ],
+    "FDS": [
+     "guerra"
+    ],
+    "URBF": [
+     "guerra"
+    ],
+    "LKR": [
+     "guerra"
+    ],
+    "DDS": [
+     "guerra"
+    ],
+    "FFA": [
+     "guerra"
+    ],
+    "CH": [
+     "semillero"
+    ]
+   },
+   "copa": {
+    "org": "NC",
+    "clave": "nc"
+   },
+   "organizadores": [],
+   "semillero": {
+    "nuevos": {},
+    "gente": {},
+    "gana": null
+   },
+   "meta_va": {
+    "ACAD": 0,
+    "CEU": 0,
+    "CH": 0,
+    "DDF": 0,
+    "DDS": 0,
+    "DRA": 0,
+    "FDS": 0,
+    "FFA": 0,
+    "FFS": 0,
+    "FRZ": 0,
+    "FVS": 0,
+    "LKR": 0,
+    "SR": 0,
+    "URBF": 0
    }
   }
  ]

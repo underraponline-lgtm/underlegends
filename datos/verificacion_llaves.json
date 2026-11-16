@@ -7,6 +7,11 @@
   "YYY891|CEU|24/09": "2026-11-15T17:28:00Z"
  },
  "eventos": {
+  "(sin titulo)|DDF|15/11": {
+   "min": 121,
+   "org": "juega",
+   "v": 1
+  },
   "(sin titulo)|DDS|10/10": {
    "min": 13,
    "v": 1
@@ -438,6 +443,15 @@
    "min": 129,
    "v": 1
   },
+  "RED BULL BATALLA|CEU|11/11": {
+   "min": 43,
+   "org": "juega",
+   "v": 1
+  },
+  "RED BULL BATALLA|CEU|15/11": {
+   "min": 53,
+   "v": 1
+  },
   "RED BULL CARACAS REGIONAL T.5|URBF|08/11": {
    "min": 949,
    "v": 1
@@ -570,6 +584,10 @@
   },
   "__ ALL VALLEY __|FFA|11/11": {
    "min": 176,
+   "v": 1
+  },
+  "__ ALL VALLEY __|LKR|15/11": {
+   "min": 77,
    "v": 1
   },
   "__ COCINE FIDEOS __|FFA|01/11": {

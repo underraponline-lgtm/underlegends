@@ -26,17 +26,24 @@
 "como":"fila nueva",
 "por":"se anotó así 1 vez/veces + su apodo o nombre visible",
 "pais":""
+},
+"1382553397827473428":{
+"n":"David",
+"cuando":"16/11/2026 11:29 AM ET",
+"como":"fila nueva",
+"por":"se anotó así 2 vez/veces + su apodo o nombre visible",
+"pais":""
 }
 },
-"ultima":"2026-11-16T02:26-05:00",
+"ultima":"2026-11-16T11:29-05:00",
 "ultimo_conteo":{
 "nada":111,
 "no":27,
-"empate":17,
+"empate":16,
 "probable":22,
 "disfraz":47,
-"seguro":2,
+"seguro":3,
 "sin_id":226,
-"auto":0
+"auto":1
 }
 }

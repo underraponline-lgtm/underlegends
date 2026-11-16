@@ -50458,5 +50458,159 @@
    ]
   ],
   "v": 2
+ },
+ "650": {
+  "antes": {
+   "Adriagner": [
+    40,
+    47,
+    false
+   ],
+   "Erian": [
+    4,
+    4,
+    false
+   ],
+   "MaYeuTyK": [
+    48,
+    56,
+    false
+   ],
+   "Majiztral": [
+    32,
+    35,
+    false
+   ],
+   "Miniboy": [
+    19,
+    19,
+    false
+   ],
+   "Richard": [
+    80,
+    97,
+    false
+   ],
+   "Sin Limites": [
+    31,
+    34,
+    false
+   ],
+   "Soulb": [
+    52,
+    60,
+    false
+   ]
+  },
+  "canal": "",
+  "duelos": [
+   [
+    "Erian",
+    "MaYeuTyK",
+    "Erian"
+   ],
+   [
+    "Sin Limites",
+    "Richard",
+    "Sin Limites"
+   ],
+   [
+    "Soulb",
+    "Adriagner",
+    "Soulb"
+   ],
+   [
+    "Simon Henriksson 🇺🇸",
+    "Miniboy",
+    "Simon Henriksson 🇺🇸"
+   ],
+   [
+    "Simon Henriksson 🇺🇸",
+    "Majiztral",
+    "Simon Henriksson 🇺🇸"
+   ],
+   [
+    "Erian",
+    "Soulb",
+    "Erian"
+   ],
+   [
+    "Simon Henriksson 🇺🇸",
+    "Sin Limites",
+    "Simon Henriksson 🇺🇸"
+   ],
+   [
+    "Erian",
+    "Simon Henriksson 🇺🇸",
+    "Erian"
+   ]
+  ],
+  "ev_antes": {
+   "Adriagner": 21,
+   "Erian": 82,
+   "MaYeuTyK": 19,
+   "Majiztral": 32,
+   "Miniboy": 64,
+   "Richard": 21,
+   "Sin Limites": 48,
+   "Soulb": 30
+  },
+  "fecha": "15/11",
+  "nombre": "__ ALL VALLEY __",
+  "num": 650,
+  "participantes": 9,
+  "sello": {
+   "Erian": "73d5023d27f9:fec25411e829"
+  },
+  "sv": "LKR",
+  "t": "2026-11-16T16:28:21Z",
+  "tabla": [
+   [
+    "Erian",
+    "Campeón",
+    7500
+   ],
+   [
+    "Simon Henriksson 🇺🇸",
+    "Subcampeón",
+    5000
+   ],
+   [
+    "Soulb",
+    "Semifinal",
+    3500
+   ],
+   [
+    "Sin Limites",
+    "Semifinal",
+    3500
+   ],
+   [
+    "MaYeuTyK",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Richard",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Adriagner",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Miniboy",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Majiztral",
+    "Cuartos",
+    2000
+   ]
+  ],
+  "v": 2
  }
 }

@@ -1,7 +1,14 @@
 {
  "_leeme": "Los tiers de las crews: el de cada una, la semana en curso (la última foto de los puntos de cada persona) y los últimos cambios. Lo escribe bot/crews_tiers.py en el paso 1c; las reglas viven en ese archivo.",
- "avisado": "2026-11-02",
+ "avisado": "2026-11-09",
  "hist": [
+  [
+   "2026-11-09",
+   "KS",
+   1,
+   0,
+   3162
+  ],
   [
    "2026-11-02",
    "Follombia",
@@ -141,7 +148,7 @@
   "abyssus": 1120,
   "acry": 980,
   "adeuxe": 984,
-  "adriagner": 1036,
+  "adriagner": 1019,
   "afin": 1015,
   "afinn": 982,
   "agre": 989,
@@ -152,6 +159,7 @@
   "aldre": 1007,
   "alejozz": 984,
   "alexi": 988,
+  "alfinpapa": 998,
   "am": 1001,
   "ander": 982,
   "andres": 920,
@@ -257,7 +265,7 @@
   "emilioalvaakamrcachondofollamamadelord": 1037,
   "emilyfamily": 984,
   "emizor": 913,
-  "erian": 1037,
+  "erian": 1079,
   "erik": 986,
   "erizo": 999,
   "erpi": 1001,
@@ -398,11 +406,11 @@
   "lv": 1000,
   "lvel": 888,
   "mailo": 985,
-  "majiztral": 1040,
+  "majiztral": 1051,
   "makmah": 1133,
   "malboro": 1013,
   "malva": 972,
-  "marcos": 1006,
+  "marcos": 1015,
   "mark98": 1004,
   "marley": 1001,
   "masino": 1028,
@@ -410,12 +418,12 @@
   "maticerna": 992,
   "matmc": 978,
   "mato": 938,
-  "mats": 1046,
+  "mats": 1089,
   "matuk": 993,
   "maukc": 1000,
   "maws": 1001,
   "maximilianocalvo": 984,
-  "mayeutyk": 998,
+  "mayeutyk": 984,
   "mcarepa": 1002,
   "mcdl": 960,
   "mcglock": 984,
@@ -438,7 +446,7 @@
   "monamay": 983,
   "monet": 940,
   "mosquitrap": 1074,
-  "motera": 1208,
+  "motera": 1184,
   "mrkude": 975,
   "mrstillballin": 1198,
   "mtz": 1069,
@@ -510,7 +518,7 @@
   "replisan": 970,
   "reptilejr": 986,
   "respawm": 984,
-  "richard": 1000,
+  "richard": 981,
   "riolu": 976,
   "road": 995,
   "rodas": 959,
@@ -539,7 +547,8 @@
   "shuliot": 1000,
   "silencepapadenexus": 982,
   "simon": 984,
-  "sinlimites": 918,
+  "simonhenriksson": 1000,
+  "sinlimites": 925,
   "six": 1088,
   "skiller": 966,
   "skratch": 984,
@@ -552,13 +561,13 @@
   "sonicdoradito": 968,
   "sosa": 984,
   "sosaatr": 920,
-  "soulb": 1013,
+  "soulb": 1015,
   "spartan": 986,
   "steven": 1000,
   "stormed": 984,
   "sultan": 964,
   "surya": 992,
-  "sweetpain": 964,
+  "sweetpain": 963,
   "tam": 1065,
   "teito": 880,
   "telmex": 981,
@@ -571,7 +580,7 @@
   "tier": 999,
   "tizi": 983,
   "tmaxturbao": 981,
-  "tmaxturbopn": 926,
+  "tmaxturbopn": 913,
   "tony": 994,
   "tormen": 969,
   "trelok": 999,
@@ -581,7 +590,7 @@
   "tusicario": 956,
   "typhlosion": 1000,
   "tøkiø": 996,
-  "under": 967,
+  "under": 954,
   "urko": 1050,
   "vacile": 1021,
   "valdoza": 958,
@@ -619,51 +628,44 @@
   "zekha": 1091,
   "zeta": 974,
   "zetryko": 1126,
-  "ziarki": 990,
+  "ziarki": 976,
   "zignos": 1035
  },
- "sem": "2026-11-09",
+ "sem": "2026-11-16",
  "tier": {
-  "CHAKALAJE": 0,
+  "Desierto de Atacama": 0,
   "Follombia": 1,
-  "KS": 1,
-  "Los ULEYES": 1,
-  "lppcrew1312": 0
+  "KS": 0,
+  "METRICOS": 0
  },
  "ult": {
   "crews": {
-   "CHAKALAJE": {
+   "Desierto de Atacama": {
     "a": 0,
     "de": 0,
     "jugaron": 1,
-    "pts": 1004
+    "pts": 1317
    },
    "Follombia": {
     "a": 1,
-    "de": 2,
+    "de": 1,
     "jugaron": 8,
-    "pts": 8381
+    "pts": 8490
    },
    "KS": {
-    "a": 1,
-    "de": 2,
+    "a": 0,
+    "de": 1,
     "jugaron": 3,
-    "pts": 3122
+    "pts": 3162
    },
-   "Los ULEYES": {
-    "a": 1,
-    "de": 2,
-    "jugaron": 1,
-    "pts": 969
-   },
-   "lppcrew1312": {
+   "METRICOS": {
     "a": 0,
     "de": 0,
-    "jugaron": 1,
-    "pts": 1001
+    "jugaron": 2,
+    "pts": 1831
    }
   },
   "cuenta": true,
-  "sem": "2026-11-02"
+  "sem": "2026-11-09"
  }
 }

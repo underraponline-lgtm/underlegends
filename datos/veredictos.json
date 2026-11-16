@@ -224,72 +224,6 @@
   }
  },
  "batallas": {
-  "1569361374767882301": {
-   "id": "1569361374767882301",
-   "sv": "✮ 𝑼𝒓𝒃𝒂𝒏 𝑭𝒓𝒆𝒆𝒔𝒕𝒚𝒍𝒆 ✮ | A New Era",
-   "g": "1467763447117778989",
-   "canal": "1540223675146707045",
-   "pub": 1794235309069,
-   "a": "Sancez🇪🇸",
-   "b": "Majiztral 🇨🇴",
-   "ganador": "Majiztral 🇨🇴",
-   "votos": "1–0"
-  },
-  "1569364454897098873": {
-   "id": "1569364454897098873",
-   "sv": "✮ 𝑼𝒓𝒃𝒂𝒏 𝑭𝒓𝒆𝒆𝒔𝒕𝒚𝒍𝒆 ✮ | A New Era",
-   "g": "1467763447117778989",
-   "canal": "1540223675146707045",
-   "pub": 1794236043429,
-   "a": "black live🇨🇴",
-   "b": "Calíz🇲🇽",
-   "ganador": "Calíz🇲🇽",
-   "votos": "1–0"
-  },
-  "1569366021456920667": {
-   "id": "1569366021456920667",
-   "sv": "✮ 𝑼𝒓𝒃𝒂𝒏 𝑭𝒓𝒆𝒆𝒔𝒕𝒚𝒍𝒆 ✮ | A New Era",
-   "g": "1467763447117778989",
-   "canal": "1540223675146707045",
-   "pub": 1794236416926,
-   "a": "Verc🇨🇱",
-   "b": "Fin 🏳️‍🌈",
-   "ganador": "Verc🇨🇱",
-   "votos": "1–0"
-  },
-  "1569367605276573798": {
-   "id": "1569367605276573798",
-   "sv": "✮ 𝑼𝒓𝒃𝒂𝒏 𝑭𝒓𝒆𝒆𝒔𝒕𝒚𝒍𝒆 ✮ | A New Era",
-   "g": "1467763447117778989",
-   "canal": "1540223675146707045",
-   "pub": 1794236794538,
-   "a": "Majiztral🇨🇴",
-   "b": "Mathias🇻🇪",
-   "ganador": "Majiztral🇨🇴",
-   "votos": "1–0"
-  },
-  "1569367790173814825": {
-   "id": "1569367790173814825",
-   "sv": "✮ 𝑼𝒓𝒃𝒂𝒏 𝑭𝒓𝒆𝒆𝒔𝒕𝒚𝒍𝒆 ✮ | A New Era",
-   "g": "1467763447117778989",
-   "canal": "1540223675146707045",
-   "pub": 1794236838621,
-   "a": "Calíz🇲🇽",
-   "b": "Verc🇨🇱",
-   "ganador": "Verc🇨🇱",
-   "votos": "1–0"
-  },
-  "1569372408392187957": {
-   "id": "1569372408392187957",
-   "sv": "✮ 𝑼𝒓𝒃𝒂𝒏 𝑭𝒓𝒆𝒆𝒔𝒕𝒚𝒍𝒆 ✮ | A New Era",
-   "g": "1467763447117778989",
-   "canal": "1540223675146707045",
-   "pub": 1794237939690,
-   "a": "Majiztral🇨🇴",
-   "b": "Verc🇨🇱",
-   "ganador": "Majiztral🇨🇴",
-   "votos": "1–0"
-  },
   "1569437814167445685": {
    "id": "1569437814167445685",
    "sv": "🌌┃𝐃𝐈𝐌𝐄𝐍𝐒𝐈Ó𝐍 𝐃𝐄𝐋 𝐅𝐑𝐄𝐄𝐒𝐓𝐘𝐋𝐄┃🌌",
@@ -2323,6 +2257,17 @@
    "a": "CAMPOY🇪🇸",
    "b": "TROT🇪🇸",
    "ganador": "CAMPOY🇪🇸",
+   "votos": "1–0"
+  },
+  "1571641953915773051": {
+   "id": "1571641953915773051",
+   "sv": "🌌┃𝐃𝐈𝐌𝐄𝐍𝐒𝐈Ó𝐍 𝐃𝐄𝐋 𝐅𝐑𝐄𝐄𝐒𝐓𝐘𝐋𝐄┃🌌",
+   "g": "1469009547971526659",
+   "canal": "1571634843001946204",
+   "pub": 1794779041509,
+   "a": "MINIBOY 🇨🇱",
+   "b": "MARTINEZ 🇺🇾",
+   "ganador": "MINIBOY 🇨🇱",
    "votos": "1–0"
   },
   "1571681385943535667": {
@@ -7987,6 +7932,97 @@
      ],
      "ECLIPSE 🇨🇱",
      "veredicto",
+     []
+    ]
+   ]
+  },
+  "1571651457495732305": {
+   "id": "1571651457495732305",
+   "sv": "🌌┃𝐃𝐈𝐌𝐄𝐍𝐒𝐈Ó𝐍 𝐃𝐄𝐋 𝐅𝐑𝐄𝐄𝐒𝐓𝐘𝐋𝐄┃🌌",
+   "g": "1469009547971526659",
+   "canal": "1571634843001946204",
+   "pub": 1794781307339,
+   "ed": 1794784304757,
+   "texto": "`[ CUARTOS ]`\n⌞WALKER 🇨🇴⌝ 🆚 ⌞MASINO🇨🇱⌝\n⌞DOMINICK 🇵🇪⌝ 🆚 ⌞MINIBOY 🇨🇱⌝\n⌞DESIO 🇨🇴⌝ 🆚 ⌞MITO🇦🇷⌝\n⌞CARLOS 🇪🇨⌝ 🆚 ⌞NEXUS🇵🇪⌝\n`[ SEMIFINALES ]`\n⌞WALKER 🇨🇴⌝ 🆚 ⌞MINIBOY🇨🇱⌝\n⌞CARLOS 🇪🇨⌝ 🆚 ⌞DESIO🇨🇴⌝\n⌞MINIBOY 🇨🇱⌝ 🆚 ⌞DESIO 🇨🇴⌝\n`[ FINAL ]`\n⌞CARLOS 🇪🇨⌝ 🆚 ⌞WALKER🇨🇴⌝",
+   "batallas": [
+    [
+     "CUARTOS",
+     [
+      "WALKER 🇨🇴",
+      "MASINO🇨🇱"
+     ],
+     "WALKER 🇨🇴",
+     "ronda siguiente",
+     []
+    ],
+    [
+     "CUARTOS",
+     [
+      "DOMINICK 🇵🇪",
+      "MINIBOY 🇨🇱"
+     ],
+     "MINIBOY 🇨🇱",
+     "ronda siguiente",
+     []
+    ],
+    [
+     "CUARTOS",
+     [
+      "DESIO 🇨🇴",
+      "MITO🇦🇷"
+     ],
+     "DESIO 🇨🇴",
+     "ronda siguiente",
+     []
+    ],
+    [
+     "CUARTOS",
+     [
+      "CARLOS 🇪🇨",
+      "NEXUS🇵🇪"
+     ],
+     "CARLOS 🇪🇨",
+     "ronda siguiente",
+     []
+    ],
+    [
+     "SEMIFINALES",
+     [
+      "WALKER 🇨🇴",
+      "MINIBOY🇨🇱"
+     ],
+     "WALKER 🇨🇴",
+     "ronda siguiente",
+     []
+    ],
+    [
+     "SEMIFINALES",
+     [
+      "CARLOS 🇪🇨",
+      "DESIO🇨🇴"
+     ],
+     "CARLOS 🇪🇨",
+     "ronda siguiente",
+     []
+    ],
+    [
+     "TERCER LUGAR",
+     [
+      "MINIBOY 🇨🇱",
+      "DESIO 🇨🇴"
+     ],
+     null,
+     "no aparece nadie después",
+     []
+    ],
+    [
+     "FINAL",
+     [
+      "CARLOS 🇪🇨",
+      "WALKER🇨🇴"
+     ],
+     null,
+     "última ronda y no dice campeón",
      []
     ]
    ]

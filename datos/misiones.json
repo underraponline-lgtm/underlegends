@@ -1,7 +1,7 @@
 {
  "_leeme": "Las misiones de la semana: las arma bot/misiones.py en el paso 1c, enteras en cada corrida. Las reglas y los números viven en ese archivo. `suma` es lo que cada uno lleva sumado a la Temporada; `semanas`, qué tocó cada semana y quién cumplió.",
  "bono": 1000,
- "sem": "2026-11-09",
+ "sem": "2026-11-16",
  "semanas": {
   "2026-10-05": {
    "fin": "2026-10-12T15:00:00Z",
@@ -3531,7 +3531,7 @@
      0,
      0
     ],
-    "David 🇨🇴": [
+    "David": [
      0,
      0,
      16,
@@ -8261,6 +8261,13 @@
      0,
      0
     ],
+    "ALFINPAPA": [
+     0,
+     0,
+     0,
+     0,
+     0
+    ],
     "AbrahamSRRL": [
      0,
      0,
@@ -8607,7 +8614,7 @@
     "Erian": [
      0,
      0,
-     1,
+     2,
      0,
      1
     ],
@@ -8971,7 +8978,7 @@
     "Majiztral": [
      0,
      1,
-     0,
+     1,
      0,
      0
     ],
@@ -8992,7 +8999,7 @@
     "Marcos": [
      0,
      0,
-     2,
+     3,
      0,
      0
     ],
@@ -9305,6 +9312,20 @@
      0
     ],
     "Simon": [
+     0,
+     0,
+     0,
+     0,
+     0
+    ],
+    "Simon Henriksson 🇺🇸": [
+     0,
+     0,
+     1,
+     0,
+     0
+    ],
+    "Sin Limites": [
      0,
      0,
      0,
@@ -9636,7 +9657,7 @@
     "mats": [
      0,
      0,
-     0,
+     1,
      0,
      0
     ],
@@ -9697,7 +9718,7 @@
     "Dios": 1000,
     "Dynoco": 600,
     "Dyz 🇨🇱": 800,
-    "Erian": 600,
+    "Erian": 1600,
     "Ezze": 800,
     "Fazer": 1200,
     "Fritz": 600,
@@ -9720,6 +9741,51 @@
     "Zignos": 600,
     "jazi": 600
    }
+  },
+  "2026-11-16": {
+   "fin": "2026-11-23T16:00:00Z",
+   "lista": [
+    [
+     "formato",
+     "Juega un evento que no sea 1 vs 1: 2 vs 2, pandillas, multiverse, 5 vidas…",
+     "facil",
+     1,
+     300
+    ],
+    [
+     "arriba1",
+     "Ganale un duelo a alguien de rango más alto que el tuyo",
+     "media",
+     1,
+     600
+    ],
+    [
+     "campeon",
+     "Gana un evento",
+     "dificil",
+     1,
+     1000
+    ],
+    [
+     "caza",
+     "Ganale un duelo a Majiztral",
+     "caza",
+     1,
+     800,
+     "Majiztral"
+    ],
+    [
+     "dorado",
+     "Juega el evento dorado de Freestyle Discord Series",
+     "dorado",
+     1,
+     600,
+     null,
+     "FDS"
+    ]
+   ],
+   "prog": {},
+   "pts": {}
   }
  },
  "suma": {
@@ -9815,7 +9881,7 @@
   "Emilio Alva": 600,
   "Emily Family": 300,
   "Enkil": 300,
-  "Erian": 10600,
+  "Erian": 11600,
   "Erik": 1900,
   "Erizo": 300,
   "Evangeline": 2100,
