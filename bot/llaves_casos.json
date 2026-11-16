@@ -3118,6 +3118,101 @@
      ]
     ]
    ]
+  },
+  {
+   "que": "DDF · 1571643167667916952 (el VS es <:VERSUSbatalla:…>)",
+   "texto": "# <:RedbullBatalla:1490221569639714917>LLAVES <:RedbullBatalla:1490221569639714917> \n\n# <:DDF:1543419890944188436>OCTAVOS DE FINAL<:DDF:1543419890944188436> \n\n『WALKER<a:Colombia:1548548274682732554> 』   <:VERSUSbatalla:1490504606004809738>  『B.DEMON<a:ECUADOR:1340258109284814868> 』\n\n『MASINO<a:CL:1494466174216572938> 』   <:VERSUSbatalla:1490504606004809738> 『MAKMA<a:VENEZUELA:1340259082711339039> 』\n\n『DOMINICK<a:PERU:1340257588796850207> 』  <:VERSUSbatalla:1490504606004809738> 『ECLIPSE<a:CL:1494466174216572938> 』\n\n『MINIBOY<a:CL:1494466174216572938> 』   <:VERSUSbatalla:1490504606004809738> 『MARTINEZ<a:URUGUAY:1340257614579367986> 』\n\n『DESIO<a:COLOMBIA:1340257284617535562> 』   <:VERSUSbatalla:1490504606004809738> 『KYCHI<a:CL:1494466174216572938> 』\n\n『ADRIAGNER<a:HONDURAS:1340260916704313386> 』   <:VERSUSbatalla:1490504606004809738> 『MITO<a:ARGENTINA:1340255630623248425> 』\n\n『KEIDER<a:Venezuela:1548548248241836052> 』   <:VERSUSbatalla:1490504606004809738> 『NEXUS<a:PERU:1340257588796850207> 』\n\n『CARLOS<a:ECUADOR:1340258109284814868> 』   <:VERSUSbatalla:1490504606004809738> 『19<a:VENEZUELA:1340259082711339039> 』\n# --------------------------\n\n# <:DDF:1543419890944188436>CUARTOS DE FINAL <:DDF:1543419890944188436> \n\n『 WALKER<a:Colombia:1548548274682732554> 』  <:versus_:1532963447556407317> 『 MASINO<a:CL:1494466174216572938> 』\n\n『DOMINICK<a:PERU:1340257588796850207> 』 <:versus_:1532963447556407317> 『 MINIBOY<a:CL:1494466174216572938> 』\n\n『 DESIO<a:Colombia:1548548274682732554> 』 <:versus_:1532963447556407317> 『 MITO<a:argentina:1548407543838150686> 』\n\n『 NEXUS<a:Per:1548407820771139624> 』 <:versus_:1532963447556407317> 『 CARLOS<a:ecuador:1548548295096410234> 』\n# --------------------------\n# <:DDF:1543419890944188436>SEMIFINAL<:DDF:1543419890944188436> \n\n『 WALKER<a:Colombia:1548548274682732554> 』   <a:VSGIF:1340181234026024982> 『 MINIBOY<a:CL:1494466174216572938> 』\n\n『 DESIO<a:Colombia:1548548274682732554> 』  <a:VSGIF:1340181234026024982>  『 CARLOS<a:ecuador:1548548295096410234> 』\n# --------------------------\n# <:3ER_LUGARremovebgpreview:1544195879563567104> TERCER LUGAR<:3ER_LUGARremovebgpreview:1544195879563567104> \n\n『 MINIBOY<a:CL:1494466174216572938> 』  <:VS:1540778810234900510>  『 DESIO<a:Colombia:1548548274682732554> 』\n# --------------------------\n# <:corona:1490504643850014832>GRAN FINAL <:corona:1490504643850014832> \n\n『 WALKER<a:Colombia:1548548274682732554> 』  <:VSF:1514914403101708288>   『 CARLOS<a:ecuador:1548548295096410234> 』\n# <:MEDALLAPRIMERLUGAR:1490504691623264266> WALKER<a:Colombia:1548548274682732554> Y CARLOS<a:ecuador:1548548295096410234> \n# <:MEDALLASEGUNDOLUGAR:1490504750721011914> DESIO<a:Colombia:1548548274682732554>  \n# <:emoji_27:1490504801920876718> MINIBOY<a:CL:1494466174216572938> \n@everyone",
+   "rondas": [
+    [
+     "OCTAVOS",
+     [
+      [
+       "WALKER🇨🇴",
+       "B.DEMON🇪🇨"
+      ],
+      [
+       "MASINO🇨🇱",
+       "MAKMA🇻🇪"
+      ],
+      [
+       "DOMINICK🇵🇪",
+       "ECLIPSE🇨🇱"
+      ],
+      [
+       "MINIBOY🇨🇱",
+       "MARTINEZ🇺🇾"
+      ],
+      [
+       "DESIO🇨🇴",
+       "KYCHI🇨🇱"
+      ],
+      [
+       "ADRIAGNER🇭🇳",
+       "MITO🇦🇷"
+      ],
+      [
+       "KEIDER🇻🇪",
+       "NEXUS🇵🇪"
+      ],
+      [
+       "CARLOS🇪🇨",
+       "19🇻🇪"
+      ]
+     ]
+    ],
+    [
+     "CUARTOS",
+     [
+      [
+       "WALKER🇨🇴",
+       "MASINO🇨🇱"
+      ],
+      [
+       "DOMINICK🇵🇪",
+       "MINIBOY🇨🇱"
+      ],
+      [
+       "DESIO🇨🇴",
+       "MITO🇦🇷"
+      ],
+      [
+       "NEXUS🇵🇪",
+       "CARLOS🇪🇨"
+      ]
+     ]
+    ],
+    [
+     "SEMIFINALES",
+     [
+      [
+       "WALKER🇨🇴",
+       "MINIBOY🇨🇱"
+      ],
+      [
+       "DESIO🇨🇴",
+       "CARLOS🇪🇨"
+      ]
+     ]
+    ],
+    [
+     "TERCER LUGAR",
+     [
+      [
+       "MINIBOY🇨🇱",
+       "DESIO🇨🇴"
+      ]
+     ]
+    ],
+    [
+     "FINAL",
+     [
+      [
+       "WALKER🇨🇴",
+       "CARLOS🇪🇨"
+      ]
+     ]
+    ]
+   ]
   }
  ],
  "veredictos": [

@@ -2180,6 +2180,9 @@ REANUNCIO_MISMO_H = 6
 SUELTA_H = 6
 SUELTA_ANTES_MIN = 30
 SUELTA_MISMO_DIAS = 4
+#: ⏱️ y por la hora sola, sin nada del nombre en común: la llave entre estos minutos antes y después del anuncio
+SUELTA_HORA_ANTES_MIN = 15
+SUELTA_HORA_MIN = 75
 #: lo que los organizadores le agregan al nombre de la llave y no la distingue
 _RELLENO_SUELTA = {'llaves', 'llave', 'para', 'la', 'las', 'los', 'el', 'de', 'del', 'bracket', 'brackets', 'cuadro'}
 
@@ -2294,7 +2297,56 @@ def _sueltas(items, regs, LW, ahora):
         i['llave'] = int(n)
         sueltas.pop(n)
         hechas.append((i.get('nombre'), n))
+    # ⏱️ POR LA HORA, LO QUE QUEDA (16/11/2026, Dlx eligió «juntar por la hora»): el anuncio y su llave con nombres que no
+    # se parecen en nada —SR anunció «El bosque de Artemisa» y la llave dice «GODZ» un minuto después; URBF anuncia
+    # «COMPE CHILL» y su llave dice «IDS V.3»—. Sólo si en esa ventana hay UNA llave suelta de ese servidor y ningún otro
+    # anuncio sin llave que pueda ser de ella; con números que chocan u otra forma, no
+    # el anuncio repetido de un evento que YA tiene su llave con ese nombre no se lleva otra por la hora: ACAD volvió a
+    # anunciar «GALACTICOS DEL FREESTYLE VOL.1» 21 h después de su llave (#608), y cinco minutos después salió la de
+    # otro evento, «CUPO A LA MULTIVERS»
+    con_nombre = {}
+    for n, r in (regs or {}).items():
+        if isinstance(r, dict) and _nombre_base(r.get('nombre')):
+            ms = LW._primero(r.get('links'))
+            if ms is not None:
+                con_nombre.setdefault(((r.get('sv') or ''), _nombre_base(r.get('nombre'))), []).append(ms)
+    for i in sorted(items, key=lambda x: str(x.get('cuando'))):
+        if i.get('llave') or str(i.get('cuando')) > ahora or _no_evento(i.get('nombre')):
+            continue
+        t0 = ms_de(i)
+        if t0 is None:
+            continue
+        sv = i.get('sv') or ''
+        if any(abs(m - t0) <= 3 * 86400000 for m in con_nombre.get((sv, _nombre_base(i.get('nombre'))), [])):
+            continue
+        en = [(n, r, ms) for n, (r, ms) in sueltas.items()
+              if (r.get('sv') or '') == sv and -SUELTA_HORA_ANTES_MIN * 60000 <= ms - t0 <= SUELTA_HORA_MIN * 60000]
+        if len(en) != 1:
+            continue
+        n, r, ms = en[0]
+        # los números sólo chocan si los nombres son de la misma serie: «COMPE CHILL V.2» y la llave «IDS V.3» no se
+        # comparan (son dos numeraciones), «VERSO ELITE VOL.1» y «VOL.2» sí
+        if _propias(i.get('nombre'))[0] & _propias(r.get('nombre'))[0] and LW._chocan(i.get('nombre'), r.get('nombre')):
+            continue
+        if LW._formas_chocan(dict(i, modalidad=i.get('mod') or ''), r):
+            continue
+        otros = [j for j in items if j is not i and not j.get('llave') and (j.get('sv') or '') == sv
+                 and str(j.get('cuando')) <= ahora and ms_de(j) is not None
+                 and -SUELTA_HORA_ANTES_MIN * 60000 <= ms - ms_de(j) <= SUELTA_HORA_MIN * 60000]
+        if otros:
+            continue
+        i['llave'] = int(n)
+        sueltas.pop(n)
+        hechas.append((i.get('nombre'), n, 'hora'))
     return hechas
+
+
+#: lo que un servidor publica en su canal de eventos y NO es un evento: no se lleva una llave por la hora
+_NO_EVENTO = re.compile(r'(?i)horarios? de inscrip|equipo de trabajo|nuevo destino|nueva temporada|est[aá] aqu[ií]|se prende')
+
+
+def _no_evento(nombre):
+    return bool(_NO_EVENTO.search(str(nombre or '')))
 
 
 def _calendario(ann, regs, llaves, LW, CU, ahora, info=None):
@@ -4349,6 +4401,24 @@ def _self_check():
          {'535': _ll('PRADERAP VOL.2', 'ACAD', '2026-10-27T20:02:00')}, [None, None]),
         ('dos igual de cerca: ninguna', [_a('COMPE CHILL', 'URBF', '2026-10-26T00:15:00')],
          {'1': _ll('CHILL NOCHE', 'URBF', '2026-10-26T00:25:00'), '2': _ll('CHILL TARDE', 'URBF', '2026-10-26T00:05:00')}, [None]),
+        # ⏱️ por la hora: nombres que no se parecen en nada
+        ('por la hora: «El bosque de Artemisa» y la llave «GODZ», un minuto después', [_a('El bosque de Artemisa', 'SR', '2026-10-12T22:00:00')],
+         {'460': _ll('GODZ', 'SR', '2026-10-12T22:01:00')}, ['460']),
+        ('por la hora: «COMPE CHILL V.2» e «IDS V.3» (dos numeraciones: no chocan)', [_a('COMPE CHILL V.2', 'URBF', '2026-10-30T23:13:00')],
+         {'549': _ll('IDS V.3', 'URBF', '2026-10-30T23:28:00')}, ['549']),
+        ('por la hora: con dos llaves sueltas en la ventana, ninguna', [_a('COMPE CHILL V.2', 'URBF', '2026-10-30T23:13:00')],
+         {'549': _ll('IDS V.3', 'URBF', '2026-10-30T23:28:00'), '550': _ll('OTRA', 'URBF', '2026-10-30T23:40:00')}, [None]),
+        ('por la hora: con otro anuncio sin llave que también podría ser, ninguno',
+         [_a('El bosque de Artemisa', 'SR', '2026-10-12T22:00:00'), _a('Otra compe', 'SR', '2026-10-12T22:10:00')],
+         {'460': _ll('GODZ', 'SR', '2026-10-12T22:01:00')}, [None, None]),
+        ('por la hora: más de 75 minutos, no', [_a('El bosque de Artemisa', 'SR', '2026-10-12T22:00:00')],
+         {'460': _ll('GODZ', 'SR', '2026-10-12T23:30:00')}, [None]),
+        ('por la hora: lo que no es un evento («HORARIOS DE INSCRIPCION»), no', [_a('HORARIOS DE INSCRIPCION: ya', 'DDS', '2026-11-10T21:01:00')],
+         {'604': _ll('MF DOOM Y MADLIB EDICION 1', 'DDS', '2026-11-10T21:30:00')}, [None]),
+        ('por la hora: el repetido de un evento que ya tiene su llave con ese nombre, no',
+         [_a('GALACTICOS DEL FREESTYLE VOL.1', 'ACAD', '2026-11-12T22:33:00')],
+         {'608': _ll('GALACTICOS DEL FREESTYLE VOL.1', 'ACAD', '2026-11-12T01:52:00'), '624': _ll('CUPO A LA MULTIVERS', 'ACAD', '2026-11-12T22:38:00')},
+         [None]),
     ]
     for _que, _anns, _regs, _esp in _casos:
         _its = [dict(x) for x in _anns]

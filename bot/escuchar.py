@@ -329,10 +329,13 @@ from nombres import PARECIDAS, _ADORNOS, _NEGATIVAS, _PARECIDAS, _letra, _negati
 #: ⚠️ DESPUÉS DEL «VS», A LO SUMO UNA LETRA, CIFRAS O `_` (`VS1`, `VSr`, `versus_`): FVS (12/10/2026) titula con
 #: `<:VSCUP:…>` —una copa— y `<:VSGlobalSeries:…>` —su serie—, y como separador el título «# FVS UNDER <:VSCUP:…>»
 #: se pegaba a la primera batalla. Medido sobre las llaves del contrato: VSF, VS1, VS2, VS6 y versus_, todas entran
-VS_PROPIO = re.compile(r'<a?:(?!VSF?:)\w*?(?:vs|versus)[a-z]?[\d_]*:\d+>', re.I)
+#: 🔴 …PERO «VERSUS» ES UNA PALABRA Y NO UNA SIGLA: después de ella va cualquier cosa (16/11/2026). DDF estrenó su canal
+#: «⚔️『𝐋𝐋𝐀𝐕𝐄𝐒』» con la llave de Red Bull Batalla separada con `<:VERSUSbatalla:…>`, y como «batalla» son siete letras
+#: no entraba: la llave no tenía ninguna batalla y no se leyó. «VS» sigue con su tope: `<:VSCUP:…>` es la copa de FVS
+VS_PROPIO = re.compile(r'<a?:(?!VSF?:)(?:\w*?versus\w*|\w*?vs[a-z]?[\d_]*):\d+>', re.I)
 #: 🏛️ EL MISMO EMOJI, ESCRITO COMO TEXTO: `:VSr:`. Es como le llega al bot un emoji de un servidor donde no
 #: está —la RED BULL CREW de la ACADEMIA, 04/10/2026—. `:vs:` y `:vsf:` no: ya los lee `SEP`
-VS_TEXTO = re.compile(r'(?<![<\w]):(?!vsf?:)\w*?(?:vs|versus)[a-z]?[\d_]*:(?!\d)', re.I)
+VS_TEXTO = re.compile(r'(?<![<\w]):(?!vsf?:)(?:\w*?versus\w*|\w*?vs[a-z]?[\d_]*):(?!\d)', re.I)
 #: y el podio igual: `:1erPuesto: <@…>`
 PODIO_TEXTO = re.compile(r'(?<![<\w]):([123])[a-z\u00ba\u00b0]*_?puesto\w*:(?!\d)', re.I)
 #: cualquier emoji propio del servidor

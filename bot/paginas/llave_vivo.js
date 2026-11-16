@@ -103,10 +103,11 @@
     '\\u{1F91B}\\u{1F52A}]\\u{FE0F}?)+|(?<![\\p{L}\\p{N}_])(?:versus|vrs|v\\/s|v\\.s\\.?|contra|x)(?![\\p{L}\\p{N}_]))';
   // y `versus` entero: el `<:versus_:…>` de DIMENSIÓN DEL FREESTYLE. Ver `escuchar.VS_PROPIO`
   // ⚠️ después del «VS», a lo sumo una letra, cifras o `_`: `<:VSCUP:…>` de FVS es una copa (`escuchar.VS_PROPIO`)
-  var VS_PROPIO = /<a?:(?!VSF?:)\w*?(?:vs|versus)[a-z]?[\d_]*:\d+>/gi;
+  // 🔴 …pero «versus» es una palabra: después va cualquier cosa (`<:VERSUSbatalla:…>` de DDF, 16/11/2026)
+  var VS_PROPIO = /<a?:(?!VSF?:)(?:\w*?versus\w*|\w*?vs[a-z]?[\d_]*):\d+>/gi;
   var PODIO_PROPIO = /<a?:([123])[a-zº°]*_?puesto\w*:\d+>/gi;
   /* 🏛️ el VS y el podio escritos como texto (`:VSr:`, `:1erPuesto:`): `escuchar.VS_TEXTO` y `PODIO_TEXTO` */
-  var VS_TEXTO = /(?<![<\w]):(?!vsf?:)\w*?(?:vs|versus)[a-z]?[\d_]*:(?!\d)/gi;
+  var VS_TEXTO = /(?<![<\w]):(?!vsf?:)(?:\w*?versus\w*|\w*?vs[a-z]?[\d_]*):(?!\d)/gi;
   var PODIO_TEXTO = /(?<![<\w]):([123])[a-zº°]*_?puesto\w*:(?!\d)/gi;
   var TERCER_ENC = /\b(?:3\s*(?:er|ro|º|°)?|tercer[oa]?)\s*(?:y\s*(?:4\s*(?:to|º|°|o)?|cuarto)\s*)?(?:puesto|lugar)\b/i;
   var PAIS_DE_EMOJI = { ar: ['ARG', 'ARGENTINA'], bo: ['BOL', 'BOLIVIA'], br: ['BRA', 'BRASIL', 'BRAZIL'],
