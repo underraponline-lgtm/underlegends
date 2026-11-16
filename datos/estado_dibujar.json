@@ -1,9 +1,9 @@
 {
  "v": 1,
- "cuando": "2026-11-16T09:19:54Z",
+ "cuando": "2026-11-16T17:27:07Z",
  "trabajo": "dibujar",
  "codigo": 0,
- "dur_s": 104.7,
+ "dur_s": 1397.7,
  "pasos": [
   {
    "n": "2f",
@@ -15,73 +15,73 @@
    "n": "2f2",
    "que": "los TAGs elegidos",
    "ok": true,
-   "s": 0.7
+   "s": 1.2
   },
   {
    "n": "3",
    "que": "qué cambió",
    "ok": true,
-   "s": 11.6
+   "s": 12.3
   },
   {
    "n": "4",
    "que": "las caras, desde R2",
    "ok": true,
-   "s": 20.7
+   "s": 30.5
   },
   {
    "n": "5",
-   "que": "tanda 1 de 1 · 1 persona(s)",
+   "que": "tanda 1 de 7 · 40 persona(s)",
    "ok": true,
-   "s": 11.1
+   "s": 1278.9
   },
   {
    "n": "5b",
    "que": "las Bloqueadas",
    "ok": true,
-   "s": 6.3
+   "s": 14.0
   },
   {
    "n": "6",
    "que": "refrescar KV",
    "ok": true,
-   "s": 53.0
+   "s": 59.4
   }
  ],
  "fallas": [],
  "ultimo_evento": {
-  "n": "648",
-  "nombre": "CHOP COMPE CEO V.3",
-  "sv": "CH",
+  "n": "650",
+  "nombre": "ALL VALLEY",
+  "sv": "LKR",
   "dia": "2026-11-15"
  },
  "cuotas": {
   "kv": {
-   "write": 330,
-   "read": 18728
+   "write": 359,
+   "read": 20678
   },
   "objeto": {
-   "leidas": 1445301,
-   "escritas": 22330,
-   "pedidos": 8378
+   "leidas": 1952202,
+   "escritas": 32102,
+   "pedidos": 12548
   },
   "worker": {
-   "pedidos": 15147,
+   "pedidos": 16913,
    "errores": 0,
-   "sub": 17727,
+   "sub": 19446,
    "cortados": 0,
-   "p50_ms": 1.17,
-   "p99_ms": 12.79,
+   "p50_ms": 1.15,
+   "p99_ms": 13.0,
    "cpu": {
-    "total": 32711,
-    "objeto_10": 2108,
-    "worker_10": 395
+    "total": 36169,
+    "objeto_10": 2149,
+    "worker_10": 438
    }
   },
   "r2": {
-   "objetos": 6957,
-   "gb": 0.68,
-   "ts": 1794780131
+   "objetos": 7087,
+   "gb": 0.698,
+   "ts": 1794850039
   }
  }
 }
