@@ -385,10 +385,10 @@
    "servidor": "babe43bdae68:e0061cb5005e:d6a988"
   },
   "Delux": {
-   "competitivo": "84311e83b1b0:3cb4ba14e995",
+   "competitivo": "2ced62397913:3cb4ba14e995",
    "pais": "c69356dce3ba:50160dcafbc4",
    "servidor": "a4042f4fc00a:e0061cb5005e:9397f6",
-   "temporada": "93f2220b9c4b:fec25411e829"
+   "temporada": "b5d5fc9d803c:fec25411e829"
   },
   "Deluxe": {
    "competitivo": "c4582f4329c4:3cb4ba14e995",
@@ -658,10 +658,10 @@
    "servidor": "76f13a08c53a:e0061cb5005e:ed8290"
   },
   "Guess": {
-   "competitivo": "25c772893130:3cb4ba14e995",
+   "competitivo": "d5cf2d187923:3cb4ba14e995",
    "pais": "04ea2c4d8e64:50160dcafbc4",
    "servidor": "46826603ea81:e0061cb5005e:c0bf45",
-   "temporada": "6351505adc98:fec25411e829"
+   "temporada": "5a5b3389a92f:fec25411e829"
   },
   "Gus": {
    "competitivo": "5a04f3173e4e:3cb4ba14e995",
@@ -1129,10 +1129,10 @@
   },
   "Mail O": {},
   "Majiztral": {
-   "competitivo": "daf32ec325a2:3cb4ba14e995",
-   "pais": "b9547880f0c7:50160dcafbc4",
-   "servidor": "188e90d374dc:e0061cb5005e:132451",
-   "temporada": "da2dd54dad1f:fec25411e829"
+   "competitivo": "d78c7973e00f:3cb4ba14e995",
+   "pais": "cac18564fdd5:50160dcafbc4",
+   "servidor": "55c6afc474c9:e0061cb5005e:132451",
+   "temporada": "17a4a2960e8e:fec25411e829"
   },
   "Maki": {
    "servidor": "70fbb8574a0b:e0061cb5005e:74d3ce"
@@ -1654,10 +1654,10 @@
    "servidor": "07c2d3b03461:e0061cb5005e:874d2d"
   },
   "Sin Limites": {
-   "competitivo": "3afbfbe0387b:3cb4ba14e995",
+   "competitivo": "426cfb7c3f09:3cb4ba14e995",
    "pais": "6cde5ba8685e:50160dcafbc4",
    "servidor": "88189697443f:e0061cb5005e:c82496",
-   "temporada": "a00815590c33:fec25411e829"
+   "temporada": "c609ddbcf9d6:fec25411e829"
   },
   "Six": {
    "competitivo": "eca070107ec6:3cb4ba14e995",
@@ -2126,5 +2126,5 @@
    "servidor": "7f8885a35a6d:e0061cb5005e:71cf5a"
   }
  },
- "cuando": "2026-11-16T20:34:46+00:00"
+ "cuando": "2026-11-16T21:36:04+00:00"
 }
