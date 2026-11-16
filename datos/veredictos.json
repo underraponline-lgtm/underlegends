@@ -7534,6 +7534,47 @@
     ]
    ]
   },
+  "1571242345163128965": {
+   "id": "1571242345163128965",
+   "sv": "🌌┃𝐃𝐈𝐌𝐄𝐍𝐒𝐈Ó𝐍 𝐃𝐄𝐋 𝐅𝐑𝐄𝐄𝐒𝐓𝐘𝐋𝐄┃🌌",
+   "g": "1469009547971526659",
+   "canal": "1498009509036163173",
+   "pub": 1794683767358,
+   "ed": 1794685432612,
+   "texto": "`[ SEMIFINALES ]`\n⌞KICHY 🇨🇱⌝ 🆚 ⌞CARLOS 🇪🇨⌝\n⌞MINIBOY 🇨🇱⌝ 🆚 ⌞DYNOCO🇦🇷⌝\n`[ FINAL ]`\n⌞DYNOCO 🇦🇷⌝ 🆚 ⌞KICHY🇨🇱⌝",
+   "batallas": [
+    [
+     "SEMIFINALES",
+     [
+      "KICHY 🇨🇱",
+      "CARLOS 🇪🇨"
+     ],
+     "KICHY 🇨🇱",
+     "ronda siguiente",
+     []
+    ],
+    [
+     "SEMIFINALES",
+     [
+      "MINIBOY 🇨🇱",
+      "DYNOCO🇦🇷"
+     ],
+     "DYNOCO🇦🇷",
+     "ronda siguiente",
+     []
+    ],
+    [
+     "FINAL",
+     [
+      "DYNOCO 🇦🇷",
+      "KICHY🇨🇱"
+     ],
+     null,
+     "última ronda y no dice campeón",
+     []
+    ]
+   ]
+  },
   "1571268832151076938": {
    "id": "1571268832151076938",
    "sv": "🌌┃𝐃𝐈𝐌𝐄𝐍𝐒𝐈Ó𝐍 𝐃𝐄𝐋 𝐅𝐑𝐄𝐄𝐒𝐓𝐘𝐋𝐄┃🌌",
