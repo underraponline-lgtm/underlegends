@@ -5056,7 +5056,7 @@
     "racha": "0/0"
    }
   },
-  "Gal_Mc 🇦🇷": {
+  "Gal_Mc": {
    "CH": {
     "duelos": "0/1",
     "ev": 1,
@@ -7288,20 +7288,6 @@
     "racha": "1/1",
     "tg": {
      "fin": 1
-    }
-   }
-  },
-  "LETRAS": {
-   "CH": {
-    "duelos": "2/3",
-    "ev": 1,
-    "oro": 0,
-    "ovr": 43,
-    "pod": 0,
-    "pts": 7425,
-    "racha": "1/1",
-    "tg": {
-     "nuevo": true
     }
    }
   },
@@ -14930,7 +14916,7 @@
     "racha": "0/0"
    }
   },
-  "Yukan🇨🇴": {
+  "Yukan": {
    "CH": {
     "duelos": "1/2",
     "ev": 1,
@@ -15795,6 +15781,18 @@
    }
   },
   "leteletras": {
+   "CH": {
+    "duelos": "2/3",
+    "ev": 1,
+    "oro": 0,
+    "ovr": 43,
+    "pod": 0,
+    "pts": 7425,
+    "racha": "1/1",
+    "tg": {
+     "nuevo": true
+    }
+   },
    "SR": {
     "duelos": "",
     "ev": 1,
