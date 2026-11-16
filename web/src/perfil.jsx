@@ -22,7 +22,7 @@ import { textoRol, useRoles } from './roles.js';
 import { urlFondo, useFondos } from './fondos.js';
 import { svElegido, useElegidos } from './elegidos.js';
 import * as RQ from './requisitos.js';
-import { Cartas, Pub, useAplausos } from './publicaciones.jsx';
+import { Cartas, PUB_TIPOS, Pub, useAplausos } from './publicaciones.jsx';
 import { Miniatura, abrirVideo } from './video.jsx';
 import { crewDe, useCrews } from './crews.js';
 import { errorPerfilTx, guardarPerfilMio, usePerfilExtra } from './perfil_extra.js';
@@ -1331,7 +1331,9 @@ function SusPublicaciones({ liga, p, esYo }) {
   const [todas, setTodas] = useState(false);
   const A = useAplausos();
   // 📣 las promos van en su propia sección (`SusPromos`)
-  const xs = ((p && p.mu) || []).filter((it) => it.tipo !== 'promo');
+  // ⚠️ sólo lo que `Pub` sabe dibujar (`PUB_TIPOS`): un tipo nuevo del muro sin texto acá se contaba en el número y no
+  // se veía, y con los tres más nuevos de ésos el bloque salía vacío (15/11/2026)
+  const xs = ((p && p.mu) || []).filter((it) => it.tipo !== 'promo' && PUB_TIPOS[it.tipo]);
   if (!xs.length) return null;
   const ver = todas ? xs : xs.slice(0, 3);
   return (

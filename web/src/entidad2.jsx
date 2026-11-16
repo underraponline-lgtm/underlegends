@@ -16,7 +16,7 @@
 // llaves, los próximos, el muro, Se busca. Ningún color de servidor ni de tier se escribe acá.
 import { useRef, useState } from 'react';
 import { limpio, mult, num, siglaDe, utc } from './liga.js';
-import { Bandera, Cara, Compartir, Ico, Poster, Sec, aDiscord, accion, enlace, nombrePais, silueta } from './piezas.jsx';
+import { Bandera, Cara, Compartir, Ico, Poster, Sec, aDiscord, accion, enlace, nombrePais, silueta, usePerfiles } from './piezas.jsx';
 import { McPersona } from './medio.jsx';
 import { CrewCirculo } from './arriba.jsx';
 import { crewViva, useCrews } from './crews.js';
@@ -288,6 +288,9 @@ function Escalera({ T, id }) {
 
 export function PaginaCrew({ liga, id }) {
   useCrews();
+  // 🙋 la fila de quien quedó más allá de los 200 del lobby viene en su perfil (`/api/perfiles`, `p[k].f`): con ella sale en
+  // la lista con su puesto, su OVR y sus puntos, como los demás
+  const perf = usePerfiles();
   const cs = liga.d.crews || [];
   const viva = crewViva(id);
   const c0 = cs.find((x) => clave(x) === id) || cs.find((x) => limpio(x.crew).toLowerCase() === limpio(id).toLowerCase())
@@ -304,9 +307,12 @@ export function PaginaCrew({ liga, id }) {
   // 🃏 la tabla trae a los primeros de la Liga. `c.gente` son todos los de la crew que jugaron, entren o no: quien jugó y
   // quedó más abajo no es «todavía no jugó» (revisión del 04/11/2026: salían ahí con 4 eventos, y hasta el mejor de la crew)
   const jugo = Object.fromEntries((c.gente || []).map((n) => [claveNombre(n), limpio(n)]));
-  const gente = (viva ? viva.gente.map(([k]) => liga.T[k] || { k, n: jugo[k] || k }) : (c.gente || []).map((n) => liga.fila(n) || { k: claveNombre(n), n: limpio(n) })).sort(porLugar);
-  const jugaron = gente.filter((f) => f.pos || f.o);
-  const masAbajo = gente.filter((f) => !(f.pos || f.o) && jugo[f.k]);
+  const filaDe = (k) => liga.T[k] || (perf && perf.p && perf.p[k] && perf.p[k].f) || null;
+  const gente = (viva ? viva.gente.map(([k]) => filaDe(k) || { k, n: jugo[k] || k })
+    : (c.gente || []).map((n) => liga.fila(n) || filaDe(claveNombre(n)) || { k: claveNombre(n), n: limpio(n) })).sort(porLugar);
+  // 🗒️ quien jugó va en la lista aunque esté más allá de los 200 (Dlx, 16/11/2026: «elimina esto de jugaron fuera de los
+  // 200 primeros… listalos nomás como Krish»). Hasta acá iban aparte, en un recuadro con su cara y su nombre
+  const jugaron = gente.filter((f) => f.pos || f.o || jugo[f.k]);
   const sinJugar = gente.filter((f) => !(f.pos || f.o) && !jugo[f.k]);
   const ccs = [...new Set(gente.map((f) => f.cc).filter(Boolean))];
   const mejor = c.mejor ? liga.fila(c.mejor) : null;
@@ -344,7 +350,7 @@ export function PaginaCrew({ liga, id }) {
           <div className="ent-col">
             <h3 className="ent-h">Su gente<small>{gente.length}</small></h3>
             {jugaron.length ? <Gente liga={liga} gente={jugaron} roles={roles} pend={pend} conFlag /> : null}
-            {[['Jugaron, fuera de los ' + num((liga.d.tabla || []).length) + ' primeros', masAbajo], ['Todavía no jugaron la temporada', sinJugar]].map(([t, xs]) => (xs.length ? (
+            {[['Todavía no jugaron la temporada', sinJugar]].map(([t, xs]) => (xs.length ? (
               <div className="ent-sin" key={t}>
                 <span className="ent-sin-t">{t} · {xs.length}</span>
                 <ul>{xs.map((f) => (

@@ -11,6 +11,16 @@
  ],
  "cambios": [
     {
+        "version": "5.48",
+        "dia": "2026-11-16",
+        "cuando": "2026-11-16T03:59:00-05:00",
+        "titulo": "Tu crew, toda en una lista, y tus publicaciones completas",
+        "items": [
+            "En la página de cada **crew**, todos los que jugaron van en la misma lista, con su puesto, su OVR y sus puntos, aunque estén más allá de los 200 primeros. Ya no van aparte.",
+            "En tu **perfil**, «Tus publicaciones» muestra también lo nuevo que se publica solo: tu primer podio, entrar al top 10, tus subidas de la semana, tus rachas, tu crew y ser el #1 de tu servidor. Antes se contaban y no se veían."
+        ]
+    },
+    {
         "version": "5.47",
         "dia": "2026-11-16",
         "cuando": "2026-11-16T03:43:00-05:00",

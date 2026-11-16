@@ -15,7 +15,9 @@ import { Miniatura, abrirVideo } from './video.jsx';
 // `dc` y `web` sólo los agrega Dlx a mano (bot/promos.py `a_mano()`, 20/10/2026)
 export const PLATAFORMA = { yt: 'YouTube', sp: 'Spotify', sc: 'SoundCloud', ig: 'Instagram', tt: 'TikTok', dc: 'Discord', web: 'la página' };
 // los logros: lo que se puede felicitar (una carta nueva le toca a todo el que juega una vez: no es un logro)
-const LOGROS = { campeon: 1, rango: 1, caza: 1, sobrevivio: 1, pase: 1, sorteo: 1, ligahito: 1, mesaward: 1 };
+const LOGROS = { campeon: 1, rango: 1, caza: 1, sobrevivio: 1, pase: 1, sorteo: 1, ligahito: 1, mesaward: 1,
+  // 🔄 lo que publica sola la gente (bot/muro_solos.py, 15/11/2026): lo mismo que `APLAUDIBLES` de bot/avisos.js
+  podio: 1, top10: 1, subio: 1, racha: 1, svtop: 1 };
 // 🏆 las categorías de los MES AWARDS (bot/mes_awards.py)
 const MES_CAT = { rapero: 'el Rapero del mes', revelacion: 'la Revelación del mes', batalla: 'la Batalla del mes', servidor: 'el Servidor del mes' };
 // 🏆 las de «Ver las demás nominaciones», en una sola publicación por mes (`cat: 'otras'`, `lista: [[cat, nombre, ganador]]`)
@@ -49,6 +51,11 @@ function Felicitar({ liga, it, A }) {
 }
 
 // ── una publicación: lo que se ve, qué dice y qué se puede hacer ──────────────────────────────────────────────────
+/** 🗂️ lo que `Pub` sabe dibujar (más `tarjeta`, que va con `Cartas`): quien liste publicaciones filtra con esto */
+export const PUB_TIPOS = Object.fromEntries(['campeon', 'rango', 'caza', 'sobrevivio', 'crewtier', 'pase', 'sorteo', 'precio', 'premios',
+  'elegido', 'mesaward', 'promo', 'ligahito', 'podio', 'top10', 'subio', 'racha', 'crewunion', 'crewnueva', 'svtop', 'anuncio', 'flyer', 'liga',
+  'tarjeta'].map((x) => [x, 1]));
+
 export function Pub({ liga, it, A }) {
   const q = (it.quien || []).map(limpio);
   const ks = Array.isArray(it.ks) ? it.ks : [];
@@ -65,7 +72,8 @@ export function Pub({ liga, it, A }) {
     vis = f0 && (f0.c || []).includes('temporada') ? <Carta liga={liga} k={f0.k} cual="temporada" cls="pub-carta" abre={false} />
       : <Cara liga={liga} k={ks[0] || ''} nombre={q[0] || '?'} cls="cara pub-cara" />;
     txt = <>{nombres}{q.length > 1 ? ' se quedan con ' : ' se queda con '}<b>{limpio(it.ev)}</b></>;
-    det = it.part ? it.part + ' raperos' : '';
+    // 🥇 el primer título de la temporada (`primero`, bot/muro_solos.py)
+    det = [(it.primero || []).length ? 'su primer título' : '', it.part ? it.part + ' raperos' : ''].filter(Boolean).join(' · ');
     acc = it.ll ? <button type="button" className="pub-a" onClick={() => accion.llave(it.ll)}>Ver la llave</button> : null;
   } else if (it.tipo === 'rango') {
     cat = it.primero ? 'PRIMERA LETRA' : 'SUBE DE RANGO';
@@ -176,6 +184,37 @@ export function Pub({ liga, it, A }) {
         : <>{nombres} tomó la punta de <b>{limpio(it.ln)}</b>{it.pts ? <> con {it.pts} puntos</> : null}</>;
     det = it.que === 'campeon' && (it.podio || []).length > 1 ? 'Podio: ' + it.podio.map(limpio).join(' · ') : '';
     acc = <a className="pub-a" href={ir}>Ver la liga</a>;
+  // ── 🔄 lo que publica sola la gente (bot/muro_solos.py, 15/11/2026). Acá en tercera persona, como el resto de este bloque:
+  // en el perfil no va la firma de Publicaciones. Hasta la 5.47 no tenían texto y el perfil los contaba sin dibujarlos ──
+  } else if (it.tipo === 'podio') {
+    cat = 'PRIMER PODIO · ' + siglaDe(it.sv);
+    vis = <Cara liga={liga} k={ks[0] || ''} nombre={q[0] || '?'} cls="cara pub-cara" />;
+    txt = <>{nombres} salió <b>{String(it.puesto || '').toLowerCase()}</b> en <b>{limpio(it.ev)}</b>: su primer podio</>;
+    acc = it.ll ? <button type="button" className="pub-a" onClick={() => accion.llave(it.ll)}>Ver la llave</button> : null;
+  } else if (it.tipo === 'top10') {
+    const rk = it.rk === 'competitivo' ? 'Competitivo' : 'Temporada';
+    cat = 'TOP 10 · ' + rk.toUpperCase();
+    vis = <Cara liga={liga} k={ks[0] || ''} nombre={q[0] || '?'} cls="cara pub-cara" />;
+    txt = <>{nombres} entró al top 10 del Ranking {rk}: <b>#{it.pos}</b></>;
+    acc = <a className="pub-a" href={'#/ranking/' + (it.rk === 'competitivo' ? 'competitivo' : 'temporada')}>Ver el ranking</a>;
+  } else if (it.tipo === 'subio') {
+    cat = 'SUBE EN EL RANKING';
+    vis = <Cara liga={liga} k={ks[0] || ''} nombre={q[0] || '?'} cls="cara pub-cara" />;
+    txt = <>{nombres} subió <b>{(it.de || 0) - (it.a || 0)} puestos</b> en la semana: del #{it.de} al <b>#{it.a}</b></>;
+  } else if (it.tipo === 'racha') {
+    cat = 'RACHA';
+    vis = <Cara liga={liga} k={ks[0] || ''} nombre={q[0] || '?'} cls="cara pub-cara" />;
+    txt = <>{nombres} llegó a <b>{it.racha} eventos seguidos</b> 🔥</>;
+  } else if (it.tipo === 'crewunion' || it.tipo === 'crewnueva') {
+    cat = 'CREWS' + (it.sigla ? ' · ' + it.sigla : '');
+    vis = <Cara liga={liga} k={ks[0] || ''} nombre={q[0] || '?'} cls="cara pub-cara" />;
+    txt = <>{nombres} {it.tipo === 'crewnueva' ? 'creó' : 'se unió a'} la crew <b>{limpio(it.nombre)}</b></>;
+    acc = it.crew ? <a className="pub-a" href={'#/crew/' + encodeURIComponent(it.crew)}>Ver la crew</a> : null;
+  } else if (it.tipo === 'svtop') {
+    cat = 'NUEVO #1 · ' + siglaDe(it.sv);
+    vis = <img className="pub-logo" alt="" src={liga.logo(it.sv)} />;
+    txt = <>{nombres} es el nuevo <b>#1 de {siglaDe(it.sv)}</b></>;
+    det = it.pts ? num(it.pts) + ' puntos en la temporada' : '';
   } else if (it.tipo === 'anuncio') {
     cat = 'EVENTO · ' + siglaDe(it.sv);
     vis = <img className="pub-logo" alt="" src={liga.logo(it.sv)} />;
