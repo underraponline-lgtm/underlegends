@@ -10016,6 +10016,29 @@
      ],
      "organizador": "@Cu?",
      "cuentas": {}
+    },
+    "1571992384168927264": {
+     "sv": "CEU",
+     "nombre": "SUPREMACIA CUP 1",
+     "mo": "2026-11-16T21:11:30Z",
+     "staff": {
+      "jurado": [
+       "Krish el adivino (la revolucion)"
+      ],
+      "dj": [
+       "Krish el adivino (la revolucion)"
+      ]
+     },
+     "orgs": [
+      {
+       "n": "KRISH",
+       "id": ""
+      }
+     ],
+     "organizador": "KRISH",
+     "cuentas": {
+      "Krish el adivino (la revolucion)": "1513620494199558295"
+     }
     }
    },
    "ver": {

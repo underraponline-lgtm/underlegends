@@ -254,15 +254,6 @@
 "temporada"
 ]
 },
-"majiztral": {
-"rg": "C",
-"c": [
-"competitivo",
-"pais",
-"servidor",
-"temporada"
-]
-},
 "guess": {
 "rg": "C",
 "c": [
@@ -287,6 +278,15 @@
 },
 "sinlimites": {
 "rg": "D",
+"c": [
+"competitivo",
+"pais",
+"servidor",
+"temporada"
+]
+},
+"majiztral": {
+"rg": "C",
 "c": [
 "competitivo",
 "pais",
