@@ -1901,5 +1901,31 @@
   "sv": "CH",
   "t_pregunta": ""
  },
+ "1571707612137783390": {
+  "autor": "1364747464170668042",
+  "canal": "1222379620494741604",
+  "canal_pregunta": "",
+  "cuando": "2026-11-16T02:04:55.649000+00:00",
+  "donde": "",
+  "evento": "CHOP COMPE CEO V.3",
+  "fecha": "15/11",
+  "llave": "1571707612137783390",
+  "pregunta": "",
+  "preguntada": "2026-11-16 12:54 AM ET",
+  "preguntas": [
+   {
+    "lados": [
+     "OJITOS",
+     "Lvel 🇻🇪"
+    ],
+    "ronda": "OCTAVOS"
+   }
+  ],
+  "respondidas": {},
+  "sin_permiso": true,
+  "staff_probado": true,
+  "sv": "CH",
+  "t_pregunta": ""
+ },
  "_leeme": "Las llaves que el ciclo no entendió y se las preguntó a quien las publicó, con botones o un menú (bot/finales.py). Una vez por llave, por su ID: así nunca se pregunta dos veces. Dlx, 12/10/2026."
 }
