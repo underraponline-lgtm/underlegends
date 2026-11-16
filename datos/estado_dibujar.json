@@ -1,9 +1,9 @@
 {
  "v": 1,
- "cuando": "2026-11-16T17:45:31Z",
+ "cuando": "2026-11-16T19:05:58Z",
  "trabajo": "dibujar",
  "codigo": 0,
- "dur_s": 125.1,
+ "dur_s": 1436.9,
  "pasos": [
   {
    "n": "2f",
@@ -15,67 +15,67 @@
    "n": "2f2",
    "que": "los TAGs elegidos",
    "ok": true,
-   "s": 2.5
+   "s": 0.9
   },
   {
    "n": "3",
    "que": "qué cambió",
    "ok": true,
-   "s": 10.7
+   "s": 11.1
   },
   {
    "n": "4",
    "que": "las caras, desde R2",
    "ok": true,
-   "s": 33.7
+   "s": 18.8
   },
   {
    "n": "5",
-   "que": "tanda 1 de 1 · 1 persona(s)",
+   "que": "tanda 1 de 6 · 40 persona(s)",
    "ok": true,
-   "s": 13.7
+   "s": 1336.6
   },
   {
    "n": "5b",
    "que": "las Bloqueadas",
    "ok": true,
-   "s": 7.3
+   "s": 6.9
   },
   {
    "n": "6",
    "que": "refrescar KV",
    "ok": true,
-   "s": 56.0
+   "s": 61.5
   }
  ],
  "fallas": [],
  "ultimo_evento": {
-  "n": "650",
-  "nombre": "ALL VALLEY",
-  "sv": "LKR",
+  "n": "651",
+  "nombre": "(sin titulo)",
+  "sv": "DDF",
   "dia": "2026-11-15"
  },
  "cuotas": {
   "kv": {
-   "write": 388,
-   "read": 22171
+   "write": 417,
+   "read": 24184
   },
   "objeto": {
-   "leidas": 2020784,
-   "escritas": 34124,
-   "pedidos": 12826
+   "leidas": 2154777,
+   "escritas": 37719,
+   "pedidos": 13701
   },
   "worker": {
-   "pedidos": 17006,
+   "pedidos": 16894,
    "errores": 0,
-   "sub": 19526,
+   "sub": 19416,
    "cortados": 0,
-   "p50_ms": 1.14,
-   "p99_ms": 13.1,
+   "p50_ms": 1.13,
+   "p99_ms": 13.16,
    "cpu": {
-    "total": 36380,
-    "objeto_10": 2156,
-    "worker_10": 439
+    "total": 36196,
+    "objeto_10": 2155,
+    "worker_10": 428
    }
   },
   "r2": {
