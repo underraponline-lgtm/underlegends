@@ -7822,6 +7822,41 @@
      []
     ]
    ]
+  },
+  "1571671045784469505": {
+   "id": "1571671045784469505",
+   "sv": "[FFA] Freestyle For All 👾",
+   "g": "1468472442925092958",
+   "canal": "1487206164864438513",
+   "pub": 1794785977551,
+   "ed": 1794786594037,
+   "texto": "`[ OCTAVOS ]`\n⌞BLITZ⌝ 🆚 ⌞DXG⌝ 🆚 ⌞SURYA⌝ 🆚 ⌞TROT⌝ 🆚 ⌞MINIBOY⌝\n⌞THANIEL⌝ 🆚 ⌞RIZAS⌝ 🆚 ⌞GOCHO⌝",
+   "batallas": [
+    [
+     "OCTAVOS",
+     [
+      "BLITZ",
+      "DXG",
+      "SURYA",
+      "TROT",
+      "MINIBOY"
+     ],
+     null,
+     "última ronda y no dice campeón",
+     []
+    ],
+    [
+     "OCTAVOS",
+     [
+      "THANIEL",
+      "RIZAS",
+      "GOCHO"
+     ],
+     null,
+     "última ronda y no dice campeón",
+     []
+    ]
+   ]
   }
  }
 }

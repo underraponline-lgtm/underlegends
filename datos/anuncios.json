@@ -1,5 +1,5 @@
 {
- "cuando": "2026-11-15T23:26:20+00:00",
+ "cuando": "2026-11-15T23:56:08+00:00",
  "anuncios": [
   {
    "nombre": "¡SE LLEGÓ LA GRAN NOCHE!",
@@ -4862,7 +4862,7 @@
    "fecha": "",
    "premios": "Honor, gloria y respeto en el freestyle (Sin premio / Rango)",
    "staff": {},
-   "autor": "3 | ELEESEDE🇵🇪",
+   "autor": "deleted_user1932553526641",
    "staff_cuentas": {},
    "categoria_id": "1469944166137073857"
   },
@@ -7718,6 +7718,42 @@
   }
  ],
  "inscripciones": [
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "colesito🇨🇴",
+   "quien": "colesito",
+   "discord_id": "790016013680771102",
+   "msg_id": "1571674846822146161",
+   "cuando": "2026-11-15T23:54:43"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "gianzlk 🇦🇷",
+   "quien": "gianzlk",
+   "discord_id": "999724029210542101",
+   "msg_id": "1571672707618050171",
+   "cuando": "2026-11-15T23:46:13"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "tenor🇻🇪",
+   "quien": "tenor_25499",
+   "discord_id": "1370860602972569632",
+   "msg_id": "1571671561297985617",
+   "cuando": "2026-11-15T23:41:40"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "xr 🇧🇼",
+   "quien": "ivanjajaa",
+   "discord_id": "639232575461654538",
+   "msg_id": "1571670966290092073",
+   "cuando": "2026-11-15T23:39:18"
+  },
   {
    "servidor": "FFA",
    "canal": "✦📝—inscripciones",
@@ -43681,42 +43717,6 @@
    "discord_id": "659687894587277322",
    "msg_id": "1559671531397718059",
    "cuando": "2026-10-13T20:57:50"
-  },
-  {
-   "servidor": "FFA",
-   "canal": "✦📝—inscripciones",
-   "texto": "Park-Ji Sung🇰🇷",
-   "quien": "fullylo4ded",
-   "discord_id": "979878316846768139",
-   "msg_id": "1559670627298840669",
-   "cuando": "2026-10-13T20:54:14"
-  },
-  {
-   "servidor": "FFA",
-   "canal": "✦📝—inscripciones",
-   "texto": "masino🇨🇱",
-   "quien": "martinv444",
-   "discord_id": "1237192883535216715",
-   "msg_id": "1559670533954470022",
-   "cuando": "2026-10-13T20:53:52"
-  },
-  {
-   "servidor": "FFA",
-   "canal": "✦📝—inscripciones",
-   "texto": "SinText🇦🇷",
-   "quien": "20_sintext_10",
-   "discord_id": "882120927096209449",
-   "msg_id": "1559662768548880395",
-   "cuando": "2026-10-13T20:23:01"
-  },
-  {
-   "servidor": "FFA",
-   "canal": "✦📝—inscripciones",
-   "texto": "Uzi🇨🇱",
-   "quien": "min_g16m",
-   "discord_id": "950011515434573824",
-   "msg_id": "1559662400100106392",
-   "cuando": "2026-10-13T20:21:33"
   }
  ]
 }
