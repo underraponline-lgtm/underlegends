@@ -136,8 +136,8 @@
    "temporada": "54a324c192a7:fec25411e829"
   },
   "Artezzy": {
-   "competitivo": "f731dd68461e:3cb4ba14e995",
-   "pais": "c6a201f9c664:50160dcafbc4",
+   "competitivo": "25dce6d66cbc:3cb4ba14e995",
+   "pais": "60c96229c39f:50160dcafbc4",
    "servidor": "dbfee3b600d7:e0061cb5005e:655d26",
    "temporada": "1e60da996006:fec25411e829"
   },
@@ -414,7 +414,7 @@
    "servidor": "a9e63879d519:e0061cb5005e:055f77"
   },
   "Dios": {
-   "competitivo": "56a8c9d1db64:3cb4ba14e995",
+   "competitivo": "fb6fa0e5b841:3cb4ba14e995",
    "pais": "196f5e18ac95:50160dcafbc4",
    "servidor": "1857d62db7b9:e0061cb5005e:6203c7",
    "temporada": "497e801ba31c:fec25411e829"
@@ -2025,10 +2025,10 @@
   "luisito 🏆": {},
   "maldita enfermedad": {},
   "mats": {
-   "competitivo": "16bb40e73800:3cb4ba14e995",
-   "pais": "8f4c35fab1f5:50160dcafbc4",
+   "competitivo": "1170c0658daa:3cb4ba14e995",
+   "pais": "1225cda2af03:50160dcafbc4",
    "servidor": "3668412788f0:e0061cb5005e:9b3a50",
-   "temporada": "812407b39cd5:fec25411e829"
+   "temporada": "5dce1bb6e879:fec25411e829"
   },
   "melomaniaco": {
    "competitivo": "465dcdef0445:3cb4ba14e995",
@@ -2111,5 +2111,5 @@
    "servidor": "7f8885a35a6d:e0061cb5005e:71cf5a"
   }
  },
- "cuando": "2026-11-16T03:38:25+00:00"
+ "cuando": "2026-11-16T04:03:45+00:00"
 }
