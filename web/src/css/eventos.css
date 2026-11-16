@@ -40,7 +40,8 @@
   letter-spacing:0.04em;text-transform:uppercase}
 .evp-cp{display:grid;gap:6px;justify-items:start;align-content:start;padding:0;border:0;background:none;color:inherit;text-align:left;cursor:pointer}
 .evp-cp-ci{display:block;width:100%;height:auto}
-.evp-cp-sin{display:grid;place-items:center;width:100%;aspect-ratio:900/1314;border:2px dashed #6E6E6A}
+/* sin carta, su cara en una caja oscura: el recuadro punteado vacío parecía una carta que no cargó (la D, 16/11/2026) */
+.evp-cp-sin{display:grid;place-items:center;width:100%;aspect-ratio:900/1314;background:#141417;border:1px solid #2A2A2E}
 .evp-cp-cara{width:64px;height:64px;font:900 24px/1 Archivo,sans-serif}
 .evp-cp small{display:flex;align-items:center;gap:5px;font:700 15px/1 "Barlow Condensed",sans-serif;letter-spacing:0.02em;color:#A5A5A0}
 .evp-cp small img{width:16px;height:16px;border-radius:50%}
@@ -272,3 +273,187 @@
 @media (hover: hover) and (pointer: fine){.evp-fel:hover:not(:disabled){background:#1C1C1A}}
 .evp-cm{display:inline-grid;place-items:center;min-width:36px;min-height:36px;border:1.5px solid #4A4A47;text-decoration:none;font-size:15px}
 .evp-sem{font:700 16px/1 "Barlow Condensed",sans-serif;letter-spacing:.06em;color:#A5A5A0;text-transform:uppercase}
+
+/* ══ 🕒 LA D (Dlx, 16/11/2026, a la maqueta: «una mezcla entre A y B»): la fila de cuatro, el día por hora o en lista,
+   el elegido con su llave de a una ronda, los campeones en grilla y «Cuándo se juega». La llave ya no va adentro de la
+   lista: con ella entera, un solo evento medía 800 px ══ */
+.evp-cuerpo{display:grid;gap:14px;padding:14px 16px 0;min-width:0}
+.app .evp-cuerpo .evp-barra,.app .evp-cuerpo .evp-sem,.app .evp-cuerpo .evp-mes-v,.app .evp-cuerpo .evp-nada{padding:0}
+
+/* 4️⃣ la fila de cuatro y los dos cuadros de abajo: oscuros en todos los temas, como la tira de los días */
+.evp-f4{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+.evp-f4 button,.evp-tiles button{display:grid;gap:4px;align-content:center;min-width:0;min-height:78px;padding:10px 12px;border:1px solid #232326;
+  border-left:3px solid var(--c);background:#0B0B0D;color:#F6F6F6;text-align:left;cursor:pointer;font:inherit}
+.evp-f4 i,.evp-tiles i{font:700 13px/1.1 "Barlow Condensed",sans-serif;font-style:normal;letter-spacing:.08em;text-transform:uppercase;color:var(--c)}
+.evp-f4 b,.evp-tiles b{font:800 14.5px/1.2 Archivo,sans-serif;overflow-wrap:anywhere}
+.evp-f4 small,.evp-tiles small{font:400 13px/1.3 Archivo,sans-serif;color:#A5A5A0}
+.evp-f4 button:focus-visible,.evp-tiles button:focus-visible{outline:2px solid var(--tinta);outline-offset:2px}
+@media (hover: hover) and (pointer: fine){.evp-f4 button:hover,.evp-tiles button:hover{background:#17171A}}
+
+/* el título del día y «Por hora · En lista» */
+.evp-hoy{display:grid;gap:12px;min-width:0;scroll-margin-top:112px}
+.evp-dia-t{display:flex;flex-wrap:wrap;align-items:center;gap:10px 14px}
+.app .evp-hoy .evp-dia-t .evp-dia{margin:0;padding:0;flex-wrap:wrap;row-gap:4px}
+.evp-forma{display:inline-flex;margin-left:auto;border:2px solid var(--linea)}
+.evp-forma button{min-height:38px;padding:0 12px;border:0;background:var(--fondo);color:var(--tinta);cursor:pointer;
+  font:800 13px/1 Archivo,sans-serif;font-stretch:115%;letter-spacing:.02em;text-transform:uppercase}
+.evp-forma button + button{border-left:2px solid var(--linea)}
+.evp-forma button.on{background:var(--inv);color:var(--inv-tinta)}
+.evp-forma button:focus-visible{outline:2px solid var(--tinta);outline-offset:2px}
+
+/* 🕒 por hora: una fila por servidor, una columna por hora */
+.evg-w{overflow-x:auto;border:1.5px solid var(--suave);background:var(--caja);scrollbar-width:thin;overscroll-behavior-x:contain}
+.evg{position:relative;padding-bottom:4px}
+.evg-hs{display:grid;grid-template-columns:96px repeat(var(--nh),minmax(0,1fr));height:32px;align-items:end}
+.evg-hs span{padding:0 0 7px 4px;border-left:1px solid var(--suave);font:700 13px/1 "Barlow Condensed",sans-serif;letter-spacing:.03em;color:var(--gris);white-space:nowrap}
+.evg-hs span.evg-sv{border-left:0;padding:0}
+.evg-f{display:grid;grid-template-columns:96px minmax(0,1fr);border-top:1px solid var(--suave)}
+.evg-sv{position:sticky;left:0;z-index:4;display:flex;align-items:center;gap:6px;padding:0 8px;background:var(--caja);box-shadow:1px 0 0 var(--suave)}
+.evg-sv small{font:700 14px/1 "Barlow Condensed",sans-serif;color:var(--gris)}
+.evg-sv .evl-sig{margin:0}
+.evg-p{position:relative;display:grid;grid-template-columns:repeat(var(--nh),minmax(0,1fr));height:calc(var(--car) * 50px + 6px)}
+.evg-p > i{border-left:1px solid var(--suave)}
+.evg-b{position:absolute;z-index:1;display:grid;align-content:center;gap:3px;height:44px;min-width:0;padding:0 8px;border:0;border-radius:2px;background:var(--c);
+  color:var(--t);text-align:left;cursor:pointer;font:inherit;overflow:hidden}
+.evg-b.con-cp{padding-right:25px}
+.evg-b b{font:900 12.5px/1.1 Archivo,sans-serif;text-transform:uppercase;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.evg-b small{font:700 13px/1 "Barlow Condensed",sans-serif;letter-spacing:.02em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+/* lo que ya pasó, apagado: el color del servidor detrás de un velo del fondo, y la letra del tema */
+/* 65 % de velo: con 58 el amarillo de CYH en Noche dejaba la letra clara en 4,4:1 (la cuenta, 16/11) */
+.evg-b.pasado{box-shadow:inset 0 0 0 99px color-mix(in srgb,var(--fondo) 65%,transparent);color:var(--tinta)}
+.evg-b.es-vivo{outline:2px solid #E5322D;outline-offset:2px;z-index:2}
+.evg-b.sel{outline:3px solid var(--tinta);outline-offset:2px;z-index:3}
+.evg-b:focus-visible{outline:3px solid var(--tinta);outline-offset:2px;z-index:3}
+.evg-cp{position:absolute;right:5px;top:50%;margin-top:-9px;display:grid;place-items:center;width:18px;height:18px;border-radius:50%;
+  background:#F5C542;color:#030304;font:900 10px/1 Archivo,sans-serif;font-style:normal;box-shadow:0 0 0 1.5px #030304}
+.evg-ahora{position:absolute;top:0;bottom:0;z-index:5;width:2px;margin-left:-1px;background:#29B298;pointer-events:none}
+.evg-ahora b{position:absolute;top:3px;left:50%;transform:translateX(-50%);padding:3px 6px;background:#29B298;color:#030304;font:800 11px/1 Archivo,sans-serif;white-space:nowrap}
+
+/* 📋 en lista: una fila corta por evento */
+.evp-grupos{display:grid;gap:14px}
+.app .evp-grupos .grupo{padding:0}
+.evp-grupos .g-t{margin:0 0 8px}
+.evl{list-style:none;margin:0;padding:0;border:1.5px solid var(--suave);background:var(--fondo)}
+.evl > li + li{border-top:1px solid var(--suave)}
+.evl-f{display:grid;grid-template-columns:44px 4px minmax(0,1fr);gap:6px 10px;align-items:center;width:100%;min-height:60px;padding:9px 10px;border:0;
+  background:none;color:var(--tinta);text-align:left;cursor:pointer;font:inherit}
+.evl-f .evp-tlh{padding-top:0;align-self:center}
+.evl-c{grid-row:span 2;align-self:stretch;background:var(--c);border-radius:2px}
+.evl-tx{display:grid;gap:4px;min-width:0}
+.evl-tx b{display:flex;flex-wrap:wrap;align-items:center;gap:6px;font:900 14px/1.15 Archivo,sans-serif;font-stretch:110%;text-transform:uppercase;overflow-wrap:anywhere}
+.evl-tx small{font:700 14px/1.3 "Barlow Condensed",sans-serif;letter-spacing:.02em;color:var(--gris)}
+.evl-sig{display:inline-block;margin-right:6px;padding:2px 5px;font:800 12px/1.1 "Barlow Condensed",sans-serif;font-style:normal;letter-spacing:.05em;vertical-align:1px;white-space:nowrap}
+/* el campeón en un chip dorado; abajo del nombre en el teléfono y a la derecha en la compu */
+.evl-camp{grid-column:3;justify-self:start;display:flex;align-items:center;gap:8px;min-width:0;max-width:100%;padding:4px 9px 4px 4px;border:1.5px solid #B8900F;
+  background:color-mix(in srgb,#F5C542 16%,var(--fondo))}
+.evl-camp b{min-width:0;font:800 13px/1.15 Archivo,sans-serif;color:var(--tinta);overflow-wrap:anywhere}
+.evl-camp .evp-pila{padding-right:6px}
+.evl-camp .evp-pila-c{width:26px;height:26px;box-shadow:0 0 0 2px var(--fondo)}
+.evl-est{grid-column:3;justify-self:start;padding:5px 8px;border:1.5px solid var(--suave);font:700 13px/1 "Barlow Condensed",sans-serif;letter-spacing:.05em;
+  color:var(--gris);text-transform:uppercase;white-space:nowrap}
+.evl-est.vivo{border-color:var(--magenta);color:var(--magenta-tx)}
+.evl-f.sel{background:var(--caja);box-shadow:inset 3px 0 0 var(--tinta)}
+.evl-f.dorado .evl-c{box-shadow:0 0 0 2px #E7B622}
+.evl-f:focus-visible{outline:2px solid var(--tinta);outline-offset:-3px}
+@media (hover: hover) and (pointer: fine){.evl-f:hover{background:var(--caja)}}
+@media (min-width: 600px){
+  .evl-f{grid-template-columns:52px 4px minmax(0,1fr) auto}
+  .evl-c{grid-row:auto}
+  .evl-camp,.evl-est{grid-column:auto;justify-self:end;max-width:260px}
+}
+
+/* 👆 el elegido */
+/* el margen de la tira de los días, que queda fija arriba (106 px en el teléfono): sin él, al bajar hasta el elegido quedaba
+   tapado (medido el 16/11) */
+.evs-w{padding:14px 16px 0;scroll-margin-top:112px}
+.evs{display:grid;gap:12px;min-width:0;padding:14px;border:1.5px solid var(--suave);border-top:4px solid var(--c);background:var(--fondo);scroll-margin-top:92px}
+.evs.es-vivo{border-color:var(--magenta);border-top-color:var(--c)}
+.evs.dorado{border-color:#E7B622;border-top-color:var(--c)}
+.evs-cab{display:grid;grid-template-columns:40px minmax(0,1fr);gap:8px 12px;align-items:center}
+.evs-cab img{width:40px;height:40px;border-radius:50%;object-fit:cover;background:var(--caja)}
+.evs-nm{display:grid;gap:5px;min-width:0}
+.evs-nm b{font:900 20px/1.1 Archivo,sans-serif;font-stretch:115%;text-transform:uppercase;overflow-wrap:break-word;text-wrap:balance}
+.evs-nm small{font:700 14.5px/1.3 "Barlow Condensed",sans-serif;letter-spacing:.02em;color:var(--gris)}
+.evs-cab .t-est{grid-column:2;justify-self:start}
+.evs .evp-xtra,.evs .evp-aviso,.evs .evp-camp{padding:0}
+.evs .evp-vos{margin:0}
+.evs .evp-sig{margin:0}
+.evs-cuerpo{display:grid;gap:14px;min-width:0}
+.evs-camp{display:grid;grid-template-columns:96px minmax(0,1fr);gap:6px 12px;align-items:center;min-width:0}
+.evs-camp > .evs-ci,.evs-camp > .evs-sin{grid-row:span 2;width:96px}
+.evs-ci{display:block;width:100%;height:auto}
+.evs-sin{display:grid;place-items:center;aspect-ratio:300/438;background:#141417;border:1px solid #2A2A2E}
+.evs-sin .evs-cara{width:58px;height:58px;font:900 22px/1 Archivo,sans-serif}
+/* la inicial de quien no tiene foto, en dorado: gris sobre blanco era 2,29:1 */
+.evs-cara.ini,.evp-cp-cara.ini{display:grid;place-items:center;border-radius:50%;background:#F5C542;color:#030304}
+.evp-cp-sin .evp-cp-cara.ini{width:72px;height:72px;font:900 30px/1 Archivo,sans-serif}
+.evs-sin .evs-cara.ini{font:900 24px/1 Archivo,sans-serif}
+.evs-tag{justify-self:start;align-self:end;padding:5px 8px;background:#E41373;color:#FFFFFF;font:700 13px/1 "Barlow Condensed",sans-serif;letter-spacing:.1em;text-transform:uppercase}
+.evs-camp > b{align-self:start;font:900 16px/1.15 Archivo,sans-serif;text-transform:uppercase;overflow-wrap:anywhere}
+.evs-der{display:grid;gap:12px;min-width:0}
+.evs .evs-podio{padding:0}
+.evs-ll{display:grid;gap:8px;min-width:0}
+.evs-ll-t{display:flex;flex-wrap:wrap;align-items:center;gap:8px}
+.evs-ll-t > span:first-child{font:700 14px/1 "Barlow Condensed",sans-serif;letter-spacing:.08em;text-transform:uppercase;color:var(--gris)}
+.evs-r1{margin-left:auto;font:700 14px/1 "Barlow Condensed",sans-serif;letter-spacing:.06em;text-transform:uppercase}
+.evs-rs{display:inline-flex;flex-wrap:wrap;margin-left:auto;border:1.5px solid var(--linea)}
+.evs-rs button{min-height:36px;padding:0 10px;border:0;background:var(--fondo);color:var(--tinta);cursor:pointer;
+  font:700 14px/1 "Barlow Condensed",sans-serif;letter-spacing:.04em;text-transform:uppercase}
+.evs-rs button + button{border-left:1.5px solid var(--linea)}
+.evs-rs button.on{background:var(--inv);color:var(--inv-tinta)}
+.evs-rs button:focus-visible{outline:2px solid var(--tinta);outline-offset:-3px}
+.evs-cr{display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));gap:8px}
+.evs-c{display:grid;align-content:start;border:1.5px solid var(--suave);min-width:0}
+.evs-c span{display:flex;justify-content:space-between;align-items:center;gap:8px;padding:8px 9px;color:var(--gris)}
+.evs-c span + span{border-top:1px solid var(--suave)}
+.evs-c span b{min-width:0;font:700 13.5px/1.2 Archivo,sans-serif;overflow-wrap:anywhere}
+.evs-c span.g{background:#29B298;color:#030304}
+.evs-c i{flex:none;font:700 12px/1 "Barlow Condensed",sans-serif;font-style:normal;letter-spacing:.08em;text-transform:uppercase}
+.evs-acc{display:flex;flex-wrap:wrap;align-items:center;gap:10px 12px;padding-top:12px;border-top:1px solid var(--suave)}
+.evs .t-acc{padding:0}
+/* el cuadro de una llave en vivo sin rondas, sobre el fondo del tema: los nombres de las rondas eran #A5A5A0 sobre blanco (2,2:1) */
+.evs .cm-r{color:var(--gris)}
+/* felicitar, en el color del tema (en «Los últimos campeones» va sobre negro) */
+.evs .evp-fel,.evs .evp-cm{color:var(--tinta);border-color:var(--linea)}
+@media (hover: hover) and (pointer: fine){.evs .evp-fel:hover:not(:disabled){background:var(--caja)}}
+@media (min-width: 700px){
+  .evs-cuerpo{grid-template-columns:128px minmax(0,1fr);align-items:start}
+  .evs-camp{grid-template-columns:minmax(0,1fr);justify-items:start}
+  .evs-camp > .evs-ci,.evs-camp > .evs-sin{grid-row:auto;width:128px}
+}
+
+/* 🧱 los últimos campeones, en grilla fija */
+.evp-camps2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px 14px}
+.evp-camps-mas{margin-top:16px}
+@media (min-width: 600px){.evp-camps2{grid-template-columns:repeat(3,minmax(0,1fr))}}
+
+/* 🔥 cuándo se juega: el día de la semana contra la hora */
+.evp-cuando2{display:grid;gap:18px}
+.evp-calor{display:grid;gap:10px;min-width:0}
+.evp-calg{display:grid;grid-template-columns:24px repeat(var(--n),minmax(0,1fr));gap:2px;align-items:center}
+.evp-calg small{font:700 12px/1 "Barlow Condensed",sans-serif;color:var(--gris);white-space:nowrap;overflow:visible}
+.evp-calg i{display:block;height:20px;background:#1E8C77}
+.evp-calg i.no{background:none;box-shadow:inset 0 0 0 1px var(--suave)}
+.evp-tiles{display:grid;gap:8px;align-content:start}
+
+/* 🪟 las ventanas: oscuras en todos los temas, así que adentro los colores del tema oscuro */
+dialog.evp-pop{--pc:#29B298;--tinta:#F6F6F6;--gris:#A5A5A0;--suave:#2A2A2E;--linea:#3A3A3E;--caja:#16161A;--fondo:#0B0C0E;width:min(640px,calc(100vw - 32px));color:#F6F6F6}
+.evp-pop-in{padding:14px 16px 18px;overflow:auto}
+.app .evp-pop .evp-como{grid-template-columns:minmax(0,1fr)}
+
+@media (prefers-reduced-motion: reduce){
+  .evp-f4 button,.evp-tiles button{transition:none}
+}
+@media (min-width: 900px){
+  .app .evp-cuerpo{gap:16px;padding:22px var(--gut) 0}
+  .app .evp-f4{grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}
+  .app .evp-cuerpo .evp-barra{grid-template-columns:auto minmax(0,1fr);align-items:center;gap:16px}
+  .app .evs-w{padding:20px 0 0}
+  .app .evs{padding:18px}
+  .app .evs-nm b{font-size:26px}
+  .app .evs-cab{grid-template-columns:44px minmax(0,1fr) auto}
+  .app .evs-cab img{width:44px;height:44px}
+  .app .evs-cab .t-est{grid-column:3;justify-self:end}
+  .app .evp-camps2{grid-template-columns:repeat(6,minmax(0,1fr))}
+  .app .evp-cuando2{grid-template-columns:minmax(0,1fr) 340px;gap:28px;align-items:start}
+}
