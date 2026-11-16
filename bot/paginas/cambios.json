@@ -11,6 +11,21 @@
  ],
  "cambios": [
     {
+        "version": "5.46",
+        "dia": "2026-11-16",
+        "cuando": "2026-11-16T03:33:00-05:00",
+        "titulo": "Los servidores y tú también publican",
+        "items": [
+            "En **Publicaciones**, cada publicación la firma quien la protagoniza: tu cara si es tuya, el logo del servidor si es de un servidor. Lo tuyo va en primera persona: «Subí a rango B», «Gané COPA X».",
+            "**Los servidores publican solos**: el lunes, con qué multiplicador arrancan la semana, su meta y contra quién es su guerra; al cerrar la semana, sus eventos, su gente y sus campeones; y cuando cumplen la meta, tienen nuevo #1, baten su récord de participación o cambian de tier.",
+            "**Lo tuyo también sale solo**: tu primer podio, tu primer título, entrar al top 10, los que más subieron en la semana, tus rachas desde 5 eventos seguidos y entrar a una crew o crear una.",
+            "Lo del mismo día va junto: los servidores del lunes en una lista, y los logros en una fila de caras. Hay filtros nuevos: **Logros** y **Servidores**.",
+            "Si no quieres que lo tuyo se publique, apágalo en **Tu cuenta → Privacidad → «Publicar lo mío solo»**.",
+            "A quien te sigue le llega lo nuevo tuyo, y se puede felicitar.",
+            "Arreglado: una carta nueva que salía sola en su día no se veía en Publicaciones."
+        ]
+    },
+    {
         "version": "5.45",
         "dia": "2026-11-16",
         "cuando": "2026-11-16T03:26:10-05:00",
