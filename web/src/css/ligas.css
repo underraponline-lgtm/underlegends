@@ -23,10 +23,10 @@
 .lq3-tag{display:inline-flex;align-items:center;gap:7px;padding:6px 8px;background:#E41373;color:#FFFFFF;white-space:nowrap;
   font:700 14px/1 "Barlow Condensed",sans-serif;letter-spacing:.06em;text-transform:uppercase}
 .lq3-tag::before{content:"";width:7px;height:7px;background:currentColor;flex:none}
-.lq3-tag.juego{background:#29B298;color:#030304}
-.lq3-tag.prox{background:var(--oro3);color:#030304}
-.lq3-tag.fin{background:#F6F6F6;color:#030304}
-.lq3-tag.quieta{background:#3A3A40;color:#D6D6D2}
+.lq3-tag.k3-juego{background:#29B298;color:#030304}
+.lq3-tag.k3-prox{background:var(--oro3);color:#030304}
+.lq3-tag.k3-fin{background:#F6F6F6;color:#030304}
+.lq3-tag.k3-quieta{background:#3A3A40;color:#D6D6D2}
 
 /* la carta de liga (o la cara, si todavía no tiene) */
 .lq3-carta{display:block;width:100%;height:auto;filter:drop-shadow(0 10px 22px rgba(0,0,0,.5))}
@@ -76,6 +76,9 @@
 .lq3-sub h2{margin:0;font:900 26px/1 Archivo,sans-serif;font-stretch:125%;text-transform:uppercase}
 .lq3-sub small{font:700 13px/1.2 "Barlow Condensed",sans-serif;letter-spacing:.06em;text-transform:uppercase;color:#A5A5A0}
 @media (max-width: 599px){.lq3-tit h1{font-size:34px}.lq3-sub h2{font-size:22px}}
+/* en el celular el título va debajo del «¿Cómo funciona?» de la página (comofunciona.jsx: arriba a la derecha, 12 + 34 px), que
+   lo tapaba: a esa anchura «LA CARTELERA» ocupa la línea entera */
+@media (max-width: 599px){.lq3-osc>.lq3-cab{padding-top:58px}}
 
 /* 📖 «Cómo funcionan», un botón que abre su cajita ahí mismo. En el celular, la cajita va abajo de la pantalla, a lo ancho */
 .lq3-como{position:relative;display:inline-block}
@@ -87,6 +90,10 @@
 .lq3-pop{position:absolute;right:0;top:calc(100% + 10px);z-index:40;width:min(560px,calc(100vw - 32px));max-height:min(70vh,640px);overflow:auto;
   display:grid;gap:12px;padding:16px;background:var(--fondo);color:var(--tinta);border:2px solid var(--linea);box-shadow:0 18px 50px rgba(0,0,0,.55);
   text-align:left;white-space:normal}
+/* en la fila de Seguir de cada liga, el botón queda a la izquierda: la cajita se abre hacia la derecha, y en una columna
+   angosta el nombre del botón baja de línea en vez de salirse */
+.lp3-acc .lq3-pop{right:auto;left:0}
+.lp3-acc .lq3-como>button{white-space:normal;text-align:left;line-height:1.15;padding-block:6px}
 .lq3-pop-t{display:flex;align-items:center;justify-content:space-between;gap:12px;margin:0}
 .lq3-pop-t b{font:900 17px/1.1 Archivo,sans-serif;font-stretch:125%;text-transform:uppercase}
 .lq3-pop-t button{flex:none;min-height:44px;padding:0 10px;border:0;background:none;color:var(--gris);cursor:pointer;
@@ -104,7 +111,9 @@
 .lq3-bento{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));grid-auto-rows:minmax(200px,auto);grid-auto-flow:row dense;gap:10px;padding-bottom:28px}
 .lq3-t{position:relative;overflow:hidden;display:flex;flex-direction:column;justify-content:flex-end;gap:4px;min-width:0;padding:14px;
   background:#101012 center/cover no-repeat;border:1px solid #2A2A2C;color:#F6F6F6}
-.lq3-t::before{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(3,3,4,.3),rgba(3,3,4,.94) 70%)}
+/* el flyer se ve arriba (Dlx, 16/11/2026: «me gustaba siempre ver las ligas con un thumbnail»): el velo arranca casi
+   transparente y cierra recién donde va el texto */
+.lq3-t::before{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(3,3,4,.08),rgba(3,3,4,.38) 38%,rgba(3,3,4,.95) 74%)}
 .lq3-t>*{position:relative}
 a.lq3-t:hover{border-color:#F6F6F6}
 .lq3-t>.lq3-tag{position:absolute;top:12px;left:12px}
@@ -278,67 +287,42 @@ a.lq3-t:hover{border-color:#F6F6F6}
 .lq3-chips button.on{background:var(--tinta);color:var(--fondo)}
 .lq3-chips button b{font-weight:700;opacity:.65}
 .lq3-chips button img{width:18px;height:18px;border-radius:50%}
-.lq3-tabla{border-top:3px solid var(--linea)}
-.lq3-tr{width:100%;display:grid;grid-template-columns:10px minmax(0,1fr) 64px;gap:10px;align-items:center;padding:11px 4px;border:0;border-bottom:1px solid var(--suave);
-  background:none;color:inherit;font:inherit;text-align:left;cursor:pointer}
-button.lq3-tr:hover{background:var(--caja)}
-.lq3-tr.cab{display:none;cursor:default;padding-block:10px;font:700 12px/1 "Barlow Condensed",sans-serif;letter-spacing:.08em;text-transform:uppercase;color:var(--gris)}
-.lq3-tr .s,.lq3-tr .jj,.lq3-tr .q2,.lq3-tr .u{display:none}
-.lq3-est{justify-self:center;width:10px;height:30px;background:#E41373}
-.lq3-est.juego{background:#29B298}
-.lq3-est.prox{background:#E5B800}
-.lq3-est.fin{background:var(--tinta)}
-.lq3-est.quieta{background:transparent;box-shadow:inset 0 0 0 2px var(--gris)}
-.lq3-tr .n{display:flex;align-items:center;gap:10px;min-width:0}
-.lq3-tr .n img{width:28px;height:28px;border-radius:50%;flex:none}
-.lq3-tr .n b{min-width:0;font:900 15px/1.1 Archivo,sans-serif;font-stretch:115%;text-transform:uppercase;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.lq3-tr .jj{font:400 20px/1 Anton,Archivo,sans-serif;color:var(--gris)}
-.lq3-tr .q{display:flex;align-items:center;justify-content:flex-end;gap:8px;min-width:0}
-.lq3-tr .q .lq3-l-c{width:28px;height:28px}
-.lq3-tr .q b{display:none;min-width:0;font:800 13.5px/1.1 Archivo,sans-serif;text-transform:uppercase;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.lq3-tr .q em{font:400 18px/1 Anton,Archivo,sans-serif;font-style:normal}
-.lq3-tr .q2{gap:5px;min-width:0}
-.lq3-tr .q2 small{font:700 12px/1.1 "Barlow Condensed",sans-serif;letter-spacing:.06em;text-transform:uppercase;color:var(--gris);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.lq3-tr .q2 u{display:block;height:6px;background:var(--suave)}
-.lq3-tr .q2 s{display:block;height:100%;background:#E41373}
-.lq3-tr .u{font:700 12px/1.1 "Barlow Condensed",sans-serif;letter-spacing:.06em;text-transform:uppercase;color:var(--gris);text-align:right}
-.lq3-tabla .lq3-tag.fin{box-shadow:inset 0 0 0 2px var(--linea)}
-.lq3-fila.ab>.lq3-tr{background:var(--caja);border-bottom:0}
-.lq3-det{display:grid;grid-template-columns:72px minmax(0,1fr);gap:12px;align-items:start;padding:12px;background:var(--caja);border-bottom:1px solid var(--suave)}
-.lq3-det-fl{display:block;width:100%;aspect-ratio:3/4;object-fit:cover;background:#030304}
-.lq3-det-fl.logo{object-fit:contain;padding:10px}
-.lq3-det h4{margin:0 0 8px;font:700 12px/1 "Barlow Condensed",sans-serif;letter-spacing:.08em;text-transform:uppercase;color:var(--gris)}
-.lq3-det>div:nth-child(3),.lq3-det-acc{grid-column:1 / -1}
-.lq3-mini{list-style:none;margin:0;padding:0;display:grid;gap:6px}
-.lq3-mini li{display:grid;grid-template-columns:20px 28px minmax(0,1fr) auto 32px;gap:8px;align-items:center;min-height:32px;font:800 14px/1.1 Archivo,sans-serif;text-transform:uppercase}
-.lq3-mini li>a,.lq3-mini li>span:not(.cara){min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.lq3-mini li.yo{background:rgba(228,19,115,.08);box-shadow:inset 3px 0 0 #E41373}
-.lq3-mini i{font:400 18px/1 Anton,Archivo,sans-serif;font-style:normal;color:var(--gris);text-align:center}
-.lq3-mini .lq3-l-c{width:28px;height:28px}
-.lq3-mini small{font:700 12px/1 "Barlow Condensed",sans-serif;letter-spacing:.06em;color:var(--gris)}
-.lq3-mini em{font:400 18px/1 Anton,Archivo,sans-serif;font-style:normal;text-align:right}
+/* 🖼️ cada liga con su miniatura GRANDE, como la tarjeta de antes (Dlx, 16/11/2026: «like a big thumbnail like we had
+   before»): el flyer a sangre a la izquierda o el escudo de su servidor sobre su color, y al lado cómo va. Con los colores
+   del tema, y el color de su servidor en la sombra al pasar */
+.lq3-cs{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:minmax(0,1fr);gap:14px}
+.lq3-cs > li{display:grid;min-width:0}
+.lq3-c{display:grid;grid-template-columns:118px minmax(0,1fr);border:2px solid var(--tinta);background:var(--fondo);color:var(--tinta);min-width:0}
+.lq3-c:focus-visible{outline:3px solid #29B298;outline-offset:2px}
+@media (hover: hover) and (pointer: fine){.lq3-c:hover{box-shadow:6px 6px 0 var(--c)}}
+@media (hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference){.lq3-c{transition:transform .15s ease,box-shadow .15s ease}.lq3-c:hover{transform:translate(-2px,-2px)}}
+.lq3-c-img{position:relative;display:block;min-height:156px;overflow:hidden;background:var(--c);border-right:2px solid var(--tinta)}
+.lq3-c-img > img{position:absolute;inset:0;display:block;width:100%;height:100%;object-fit:cover;object-position:50% 20%}
+.lq3-c-sin{position:absolute;inset:0;display:grid;place-items:center}
+.lq3-c-sin img{width:62%;aspect-ratio:1;border-radius:50%;border:3px solid #F6F6F6;object-fit:cover;background:#030304}
+.lq3-c.k3-quieta .lq3-c-img > img{filter:grayscale(.85)}
+.lq3-c-tx{display:grid;align-content:start;gap:7px;min-width:0;padding:12px 14px 12px 12px}
+.lq3-c-k{display:flex;flex-wrap:wrap;align-items:center;gap:6px 10px}
+.lq3-c-k small{font:700 13px/1 "Barlow Condensed",sans-serif;letter-spacing:.06em;text-transform:uppercase;color:var(--gris)}
+.lq3-c .lq3-tag.k3-fin{box-shadow:inset 0 0 0 2px var(--linea)}
+.lq3-c-n{font:900 18px/1.05 Archivo,sans-serif;font-stretch:115%;text-transform:uppercase;text-wrap:balance;overflow-wrap:break-word}
+.lq3-c-sv{display:flex;align-items:center;gap:6px;min-width:0;font:700 13.5px/1.2 "Barlow Condensed",sans-serif;letter-spacing:.03em;color:var(--gris)}
+.lq3-c-sv img{width:18px;height:18px;border-radius:50%;flex:none;object-fit:cover}
+.lq3-c-l{display:flex;align-items:center;gap:7px;min-width:0;margin-top:2px;padding-top:8px;border-top:1.5px solid var(--suave)}
+.lq3-c-cara{width:28px;height:28px;font:900 12px/1 Archivo,sans-serif}
+.lq3-c-l small{font:800 14px/1 "Barlow Condensed",sans-serif;color:var(--gris);white-space:nowrap}
+.lq3-c-l b{flex:1;min-width:0;font:800 14px/1.15 Archivo,sans-serif;text-transform:uppercase;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.lq3-c-l i{font:400 18px/1 Anton,Archivo,sans-serif;font-style:normal;white-space:nowrap}
+.lq3-c-u{font:700 12px/1.25 "Barlow Condensed",sans-serif;letter-spacing:.05em;text-transform:uppercase;color:var(--gris)}
+@media (min-width: 600px){.app .lq3-cs{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (min-width: 1300px){
+  .app .lq3-cs{grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}
+  .app .lq3-c{grid-template-columns:140px minmax(0,1fr)}
+  .app .lq3-c-img{min-height:176px}
+}
 .lq3-ult{list-style:none;margin:0;padding:0;display:grid;gap:9px}
 .lq3-ult li{font:500 13.5px/1.35 Archivo,sans-serif;min-width:0}
 .lq3-ult li small{display:block;font:700 11.5px/1.2 "Barlow Condensed",sans-serif;letter-spacing:.06em;text-transform:uppercase;color:var(--gris)}
-.lq3-det-acc{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:8px;align-items:start}
-@media (min-width: 600px){
-  .app .lq3-tr{grid-template-columns:10px minmax(0,1.4fr) 120px minmax(0,1fr) 92px;gap:14px}
-  .app .lq3-tr.cab{display:grid}
-  .app .lq3-tr .s,.app .lq3-tr .u{display:block}
-  .app .lq3-tr .q{justify-content:flex-start}
-  .app .lq3-tr .q b{display:block}
-  .app .lq3-tr .q em{margin-left:auto}
-  .app .lq3-det{grid-template-columns:110px minmax(0,1.3fr) minmax(0,1fr);gap:20px;padding:14px 16px 18px}
-  .app .lq3-det>div:nth-child(3){grid-column:auto}
-  .app .lq3-det-acc{grid-column:2 / -1}
-}
-@media (min-width: 1300px){
-  .app .lq3-tr{grid-template-columns:10px minmax(160px,1.3fr) 120px 60px minmax(150px,1.1fr) minmax(140px,1fr) 96px}
-  .app .lq3-tr .jj{display:block}
-  .app .lq3-tr .q2{display:grid}
-  .app .lq3-det{grid-template-columns:110px minmax(0,1.3fr) minmax(0,1fr) 180px}
-  .app .lq3-det-acc{grid-column:auto;grid-template-columns:minmax(0,1fr)}
-}
 
 /* ── 🏆 EL ESTANTE DE CAMPEONES ── */
 .lq3-est-s .lq3-in{padding-block:6px 34px}
@@ -498,3 +482,6 @@ button.lq3-tr:hover{background:var(--caja)}
   .app .lp3-minis{grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}
   .app .lp3-2{grid-template-columns:minmax(0,1.65fr) minmax(0,1fr);gap:28px}
 }
+/* 🖼️ las otras ligas, también con su miniatura */
+.lgp-otras a:has(> img.th){grid-template-columns:36px minmax(0,1fr)}
+.lgp-otras img.th{width:36px;height:48px;border-radius:2px;object-fit:cover;background:#030304}

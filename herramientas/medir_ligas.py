@@ -35,7 +35,7 @@ MEDIR = r"""
   const R = document.querySelector('#inicio-nuevo').shadowRoot;
   const W = document.documentElement.clientWidth;
   const out = { docW: document.documentElement.scrollWidth, W, fuera: [], corte: [], pisa: [], huecos: [], vacios: [] };
-  const zonas = [...R.querySelectorAll('.lq3-osc,.lq3-tuyas,#lq3-todas,.lp3-h,.lp3-tabs,.lpg-pest,#lgp-otras,.lgf-dsec')];
+  const zonas = [...R.querySelectorAll('.lq3-osc,.lq3-tuyas,#lq3-todas,.lp3-h,.lp3-tabs,.lpg-pest,#lgp-otras,.lgf-dsec,.cf')];
   if (!zonas.length) { out.sin = true; return out; }
   const nom = (el) => (el.className && typeof el.className === 'string' ? '.' + el.className.trim().split(/\s+/).slice(0, 2).join('.') : el.tagName.toLowerCase());
   const camino = (el) => { const xs = []; for (let p = el; p && xs.length < 3 && p !== R; p = p.parentElement) xs.unshift(nom(p)); return xs.join(' > '); };

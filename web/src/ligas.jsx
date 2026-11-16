@@ -737,7 +737,9 @@ function estado3(liga, L) {
 }
 const EST3 = { decide: 'Se decide', juego: 'En juego', prox: 'Próxima fecha', fin: 'Terminó', quieta: 'En pausa' };
 const ORDEN3 = ['decide', 'juego', 'prox', 'quieta', 'fin'];
-const Tag3 = ({ k }) => <span className={'lq3-tag ' + k}>{EST3[k]}</span>;
+// ⚠️ el estado va como `k3-<estado>` y no suelto: `.prox` es una clase del prototipo (estilo.css: grilla, borde y 12 px de
+// relleno) y convertía la marca de «Con fecha» en una caja
+const Tag3 = ({ k }) => <span className={'lq3-tag k3-' + k}>{EST3[k]}</span>;
 const fondo3 = (L) => L.fl || escenaDe(L.sv) || '';
 const desde3 = (liga, t) => (t ? liga.cuando(t) : '');
 // la carta de liga de alguien (o su cara), para el cara a cara y el campeón
@@ -972,10 +974,13 @@ function Numeros3({ liga, ls, hs, det, est, top }) {
   );
 }
 
-// ── 📋 TODAS LAS LIGAS, en una tabla que se abre ahí mismo (lo de la B) ───────────────────────────────────────────────
+// ── 📋 TODAS LAS LIGAS, cada una con su miniatura GRANDE (Dlx, 16/11/2026: «A mí me gustaba siempre ver las ligas con un
+// thumbnail» y «like a big thumbnail like we had before»): la tarjeta de antes (TarjetaLiga, hasta la 5.55), con el flyer a
+// sangre a la izquierda —o el escudo de su servidor sobre su color— y al lado cómo va, con los datos de la tabla de la D (el
+// líder, cuánto le saca al 2.º y cuándo fue la última). Los filtros por estado y por servidor siguen; la tabla entera de cada
+// una está en su página
 function Todas3({ liga, ls, hs, est }) {
   const [fil, setFil] = useState('');
-  const [ab, setAb] = useState('');
   const svs = [...new Set(ls.map((L) => L.sv))];
   const cuenta = (k) => ls.filter((L) => est[L.id].k === k || (k === 'juego' && est[L.id].k === 'decide')).length;
   const xs = ls.filter((L) => !fil || (fil.startsWith('sv:') ? L.sv === fil.slice(3) : fil === 'juego' ? ['decide', 'juego'].includes(est[L.id].k) : est[L.id].k === fil))
@@ -988,45 +993,32 @@ function Todas3({ liga, ls, hs, est }) {
         {chips.map(([k, t, n]) => <button key={k || 'todas'} type="button" className={fil === k ? 'on' : ''} aria-pressed={fil === k} onClick={() => setFil(k)}>{t} <b>{n}</b></button>)}
         {svs.length > 1 ? svs.map((s) => <button key={s} type="button" className={fil === 'sv:' + s ? 'on' : ''} aria-pressed={fil === 'sv:' + s} onClick={() => setFil(fil === 'sv:' + s ? '' : 'sv:' + s)}><img alt="" src={liga.logo(s)} />{siglaDe(s)}</button>) : null}
       </div>
-      <div className="lq3-tabla">
-        <div className="lq3-tr cab" aria-hidden="true"><span /><span>Liga</span><span className="s">Estado</span><span className="jj">Fecha</span><span>Líder</span><span className="q2">El 2.º</span><span className="u">Última</span></div>
-        {xs.map((L) => {
-          const e = est[L.id];
-          const h = hs[L.id];
-          const [x, y] = L.tabla || [];
-          const mx = Math.max(1, x ? x[3] : 1);
-          const abierta = ab === L.id;
-          return (
-            <div key={L.id} className={'lq3-fila' + (abierta ? ' ab' : '')}>
-              <button type="button" className="lq3-tr" aria-expanded={abierta} onClick={() => setAb(abierta ? '' : L.id)}>
-                <span className={'lq3-est ' + e.k} aria-hidden="true" />
-                <span className="n"><img alt="" src={liga.logo(L.sv)} /><b>{L.n}</b></span>
-                <span className="s"><Tag3 k={e.k} /></span>
-                <span className="jj">{L.j ? 'J' + L.j : '—'}</span>
-                <span className="q">{x ? <>{h.cara(x[0], 'cara lq3-l-c')}<b>{limpio(x[0])}</b><em>{x[3]}</em></> : '—'}</span>
-                <span className="q2">{y ? <><small>{L.fin && L.fin.c ? 'Campeón: ' + limpio(L.fin.c) : e.gap === 0 ? 'Empatado con ' + limpio(y[0]) : 'Le saca ' + e.gap + ' a ' + limpio(y[0])}</small><u><s style={{ width: (100 * y[3]) / mx + '%' }} /></u></> : null}</span>
-                <span className="u">{abierta ? '▴ cerrar' : desde3(liga, L.ult_t)}</span>
-              </button>
-              {abierta ? (
-                <div className="lq3-det">
-                  {L.fl ? <img className="lq3-det-fl" src={L.fl} alt="" loading="lazy" /> : <img className="lq3-det-fl logo" src={liga.logo(L.sv, true)} alt="" />}
-                  <div><h4>La tabla · {(L.tabla || []).length} raperos</h4>
-                    <ol className="lq3-mini">{(L.tabla || []).slice(0, 5).map((f, i) => (
-                      <li key={f[0]} className={h.esYo(f[0]) ? 'yo' : ''}><i>{i + 1}</i>{h.cara(f[0], 'cara lq3-l-c')}{h.nombre(f[0])}<small>{f[2]}/{f[1]}</small><em>{f[3]}</em></li>
-                    ))}</ol></div>
-                  {(L.ult || []).length ? (
-                    <div><h4>Lo último</h4>
-                      <ul className="lq3-ult">{L.ult.slice(0, 3).map(([a, b, g, como, j], i) => (
-                        <li key={i}><b>{h.nombre(g)}</b> le ganó a {h.nombre(g === a ? b : a)}<small>{como === 'replica' ? 'en réplica' : 'directo'}{j ? ' · jornada ' + j : ''}</small></li>
-                      ))}</ul></div>
-                  ) : null}
-                  <div className="lq3-det-acc"><a className="btn verde chico" href={aLiga(L)}>Ver la liga</a>{e.k !== 'fin' && !L.cerrada ? <SeguirLiga L={L} /> : null}</div>
-                </div>
-              ) : null}
-            </div>
-          );
-        })}
-      </div>
+      <ul className="lq3-cs">{xs.map((L) => {
+        const e = est[L.id];
+        const h = hs[L.id];
+        const [x, y] = L.tabla || [];
+        const s = liga.svs[L.sv] || {};
+        const fin = !!(L.fin && L.fin.c);
+        return (
+          <li key={L.id}>
+            <a className={'lq3-c k3-' + e.k} href={aLiga(L)} style={{ '--c': s.color || '#E41373' }}>
+              <span className="lq3-c-img">
+                {L.fl ? <img alt="" src={L.fl} loading="lazy" decoding="async" />
+                  : <span className="lq3-c-sin"><img alt="" src={liga.logo(L.sv, true)} loading="lazy" decoding="async" /></span>}
+              </span>
+              <span className="lq3-c-tx">
+                <span className="lq3-c-k"><Tag3 k={e.k} />{L.j && !fin ? <small>Jornada {L.j}</small> : null}</span>
+                <b className="lq3-c-n">{L.n}</b>
+                <span className="lq3-c-sv"><img alt="" src={liga.logo(L.sv)} />{siglaDe(L.sv)} · {num(L.bat)} {L.bat === 1 ? 'batalla' : 'batallas'} · {(L.tabla || []).length} raperos</span>
+                {x ? (
+                  <span className="lq3-c-l">{h.cara(fin ? L.fin.c : x[0], 'cara lq3-c-cara')}<small>{fin ? 'Campeón' : '1º'}</small><b>{limpio(fin ? L.fin.c : x[0])}</b>{fin ? null : <i>{x[3]} PTS</i>}</span>
+                ) : null}
+                <small className="lq3-c-u">{y && !fin ? (e.gap === 0 ? 'Empatado con ' + limpio(y[0]) : 'Le saca ' + e.gap + ' a ' + limpio(y[0])) + ' · ' : ''}{L.ult_t ? 'la última, ' + desde3(liga, L.ult_t) : 'todavía sin batallas'}</small>
+              </span>
+            </a>
+          </li>
+        );
+      })}</ul>
     </Sec>
   );
 }
@@ -1242,7 +1234,6 @@ function LigaPerfil({ liga, id }) {
           <nav className="lp3-miga" aria-label="Volver">
             <span><a href="#/ligas"><Ico n="flecha" t={16} />Todas las ligas</a>
               {vieja && ls.some((x) => x.id === L.liga) ? <a href={'#/ligas/' + encodeURIComponent(L.liga)}>La temporada de ahora</a> : null}</span>
-            {hay(L, 'como') ? <BotonComo titulo="¿Cómo funciona?"><Como L={L} h={h} /></BotonComo> : <BotonComo titulo="¿Cómo funciona?">{COMO_LIGAS}</BotonComo>}
           </nav>
           {vieja ? null : <BatallasAhora liga={liga} id={L.id} />}
           <div className="lp3-top">
@@ -1256,6 +1247,8 @@ function LigaPerfil({ liga, id }) {
                   {/* una temporada que terminó, o una liga cuyos canales ya no están, no tiene nada que seguir */}
                   {vieja || fin ? null : <SeguirLiga key={L.id} L={L} />}
                   <Compartir cls="btn borde" url={enlace(aLiga(L))} texto={'La tabla de ' + L.n + (et ? ' ' + et : '') + ' en la Liga Global'} />
+                  {/* 📖 junto a Seguir y no arriba a la derecha: ahí va el «¿Cómo funciona?» de la página (comofunciona.jsx), y se pisaban */}
+                  <BotonComo titulo="Cómo funciona esta liga">{hay(L, 'como') ? <Como L={L} h={h} /> : COMO_LIGAS}</BotonComo>
                   {L.link && !vieja && !L.cerrada ? <a className="lp3-dc" href={L.link} target="_blank" rel="noopener noreferrer">Su tabla en Discord ↗</a> : null}
                 </div>
               </div>
@@ -1316,7 +1309,7 @@ function LigaPerfil({ liga, id }) {
           <nav className="lgp-otras" aria-label="Las otras ligas" style={{ '--cols': Math.ceil(otras.length / Math.ceil(otras.length / 6)) }}>
             {otras.map((x) => (
               <a key={x.id} href={aLiga(x)} style={{ '--c': (liga.svs[x.sv] || {}).color || '#E41373' }}>
-                <img alt="" src={liga.logo(x.sv)} /><b>{x.n}</b><small>{siglaDe(x.sv)}</small>
+                {x.fl ? <img className="th" alt="" src={x.fl} loading="lazy" decoding="async" /> : <img alt="" src={liga.logo(x.sv)} />}<b>{x.n}</b><small>{siglaDe(x.sv)}</small>
               </a>
             ))}
           </nav>
