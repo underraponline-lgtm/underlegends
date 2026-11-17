@@ -2796,7 +2796,6 @@
   "total": 256,
   "rango": "C",
   "tg_t": {
-   "cab": 1,
    "dobles": 11
   }
  },
@@ -3865,7 +3864,7 @@
   "crew": "",
   "discord_id": "1395903355909570633",
   "verificado": false,
-  "pts": 57575,
+  "pts": 57075,
   "ev": 14,
   "wr": "20.0%",
   "pod": 2,
@@ -3889,7 +3888,6 @@
   "total": 256,
   "rango": "D",
   "tg_t": {
-   "cobro": 1,
    "dobles": 2,
    "rev": 1,
    "trios": 1
