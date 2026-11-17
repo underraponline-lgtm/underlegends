@@ -714,6 +714,14 @@
 "temporada"
 ]
 },
+"kyss": {
+"rg": "E",
+"c": [
+"competitivo",
+"servidor",
+"temporada"
+]
+},
 "jobaking": {
 "rg": "E",
 "c": [
@@ -778,14 +786,6 @@
 "c": [
 "competitivo",
 "pais",
-"servidor",
-"temporada"
-]
-},
-"kyss": {
-"rg": "E",
-"c": [
-"competitivo",
 "servidor",
 "temporada"
 ]

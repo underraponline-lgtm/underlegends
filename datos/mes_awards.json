@@ -10047,6 +10047,36 @@
      "cuentas": {
       "Krish el adivino (la revolucion)": "1513620494199558295"
      }
+    },
+    "1572042364237910167": {
+     "sv": "DDF",
+     "nombre": "NOMBRE",
+     "mo": "2026-11-17T00:15:06Z",
+     "staff": {
+      "jurado": [
+       "Simon Henriksson"
+      ],
+      "host": [
+       "Simon Henriksson",
+       "Y",
+       "Drexx"
+      ],
+      "dj": [
+       "Lízeninn"
+      ]
+     },
+     "orgs": [
+      {
+       "n": "Simon Henriksson",
+       "id": "1493416945037611140"
+      }
+     ],
+     "organizador": "",
+     "cuentas": {
+      "Simon Henriksson": "1493416945037611140",
+      "Drexx": "1150099153238630410",
+      "Lízeninn": "1474585358292222015"
+     }
     }
    },
    "ver": {
