@@ -403,8 +403,10 @@ function LinkRapido({ c, mia, va, hacer }) {
 // 🧩 `solo`: una sección suelta, para la página de Ajustes (el remake del 16/11/2026: «consejos», «yo», «pedidos»,
 // «invitar», «gente», «reps», «crew» o «entrada»). Sin `solo`, todo apilado como antes. `onIr(seccion)`: adónde lleva un
 // consejo cuando cada sección es su propia pantalla
-export function PanelCrew({ liga, c, solo, onIr }) {
-  const { mia, todas } = useCrews();
+export function PanelCrew({ liga, c, solo, onIr, mod = false }) {
+  const { mia: mia0, miaMod, todas } = useCrews();
+  // 🛠️ como mod (mods.js): lo que ve el Líder de esa crew
+  const mia = mod ? miaMod : mia0;
   const { va, msg, hacer, setMsg } = useAccion();
   const [q, setQ] = useState('');
   const busca = useRef(null);

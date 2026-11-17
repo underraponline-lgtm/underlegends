@@ -137,3 +137,8 @@
 .k2-aj-id .crw-logo.con-esc{background:transparent;border-radius:0;overflow:visible;padding:0}
 /* en el celular, «¿Cómo funciona?» (arriba a la derecha) tapaba la etiqueta de la cabecera */
 @media (max-width: 899px){.k2-aj-cab,.ent-cab:has(.k2-emb){padding-top:58px}}
+
+/* 🛠️ MODS: el botón de la crew y la etiqueta de los Ajustes como mod */
+.app .k2-mod{border:1.6px solid #E41373;background:transparent;color:var(--tinta)}
+.app .k2-mod:hover{background:#E41373;color:#fff}
+.k2-tag-mod{background:#030304!important;box-shadow:inset 0 0 0 1.6px #E41373}

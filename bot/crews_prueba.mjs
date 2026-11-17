@@ -410,6 +410,28 @@ if (!DatabaseSync) {
     && bandeja.some((b) => b.quien === id(950) && b.cuerpo === 'Con Escudo se cerró: funda la tuya')
     && CW.crewsCerrar(o, { ids: [], aviso: ['a', 'b'] }).error === 'datos' && CW.crewsCerrar(o, { ids: ['x'] }).error === 'datos',
   'el relanzamiento cierra las de la lista y le avisa a su gente');
+  // 🛠️ MODS (16/11/2026): Owner y Admin, como Líder de una crew ajena. Quién es mod lo dice el Worker (`mod_ok`)
+  const FO = () => CW.crewsPublico(o).crews.find((c) => c.id === 'Follombia');
+  const rolDe = (k) => (FO().gente.find((g) => g[0] === k) || [])[1];
+  const comoMod = (x) => CW.crewAccion(o, Object.assign({ quien: id(990), de: 'moda', mod_ok: 'Follombia' }, x));
+  const liderAntes = FO().gente.find((g) => g[1] === 'lider')[0];
+  const otro = FO().gente.find((g) => g[1] !== 'lider')[0];
+  ok(CW.validarCrew({ accion: 'entrada', entrada: 'abierta', mod_ok: 'Follombia' }).mod_ok === undefined,
+    'la página no puede mandar `mod_ok`: lo pone el Worker');
+  ok(comoMod({ accion: 'entrada', entrada: 'abierta' }).ok && FO().entrada === 'abierta' && !rolDe('moda'),
+    'un mod cambia la entrada de una crew ajena sin entrar a ella');
+  ok(comoMod({ accion: 'salir' }).error === 'accion' && comoMod({ accion: 'pedir', crew: 'KS' }).error === 'accion'
+    && CW.crewAccion(o, { quien: id(990), de: 'moda', mod_ok: 'NoExiste', accion: 'desc', desc: 'Una descripción cualquiera' }).error === 'no_existe',
+  'como mod no se sale ni se pide nada, y una crew que no existe no');
+  ok(comoMod({ accion: 'desc', desc: 'Arreglada por la moderación de la Liga' }).ok && comoMod({ accion: 'nombre', nombre: 'Follombia', sigla: 'fmb', inicial: 0 }).precio === 0
+    && FO().sigla === 'FMB', 'como mod el nombre y la descripción no cuestan nada');
+  ok(comoMod({ accion: 'lider', a: otro }).ok && rolDe(otro) === 'lider' && rolDe(liderAntes) === 'colider'
+    && FO().gente.filter((g) => g[1] === 'lider').length === 1, 'un mod pasa el liderazgo: el Líder de antes queda Colíder');
+  const mm = CW.crewMia(o, { quien: id(990), de: 'moda', mod_ok: 'Follombia' });
+  ok(mm.mod === true && mm.precio_nombre === 0 && mm.precio_logo === 0 && mm.rol === 'lider' && mm.crew.id === 'Follombia' && Array.isArray(mm.pedidos) && Array.isArray(mm.invitados)
+    && CW.crewMia(o, { quien: id(990), de: 'moda' }).crew === null, 'crew-mia como mod: esa crew, con lo que ve su Líder');
+  ok(db.prepare("SELECT COUNT(*) AS n FROM crew_log WHERE crew = 'Follombia' AND por = 'mod:moda'").get().n >= 3,
+    'lo que hace un mod queda anotado con su nombre');
   // 📊 los números del Dashboard: cuántos, de esta semana, sin nombres
   const nu = CW.crewNumeros(o);
   ok(nu.semana.creada >= 5 && nu.semana.link >= 2 && nu.semana.entro >= nu.semana.link && nu.hoy.crews >= 3 && nu.hoy.gente > 0

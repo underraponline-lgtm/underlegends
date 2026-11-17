@@ -6081,6 +6081,14 @@ export async function rutaAvisos(req, env, ruta) {
     try { cfg = JSON.parse((await env.KV.get('precios', { cacheTtl: 60 })) || 'null'); } catch (e) { cfg = null; }
     const base = { quien: q.id, de: claveValida(de) ? de : '' };
     if (cfg && Number.isInteger(cfg.inicial)) { base.inicial = cfg.inicial; base.desde = Date.parse(cfg.desde || '') || 0; }
+    // 🛠️ MODS (16/11/2026): `mod` es la crew que Owner o Admin quiere manejar como su Líder. Quién es mod lo dicen los
+    // roles del objeto, nunca la página; el objeto recibe `mod_ok` sólo si pasó esta puerta
+    if (d.mod !== undefined) {
+      if (typeof d.mod !== 'string' || !d.mod || d.mod.length > 40) return json({ error: 'faltan datos' }, 400);
+      const rs = await rolesPanel(q.id);
+      if (!rs.includes('owner') && !rs.includes('admin')) return json({ error: 'no' }, 403);
+      base.mod_ok = d.mod;
+    }
     return elObjeto(env).fetch('https://avisos' + ruta.slice('/avisos'.length), {
       method: 'POST', body: JSON.stringify(Object.assign(v, base)), headers: { 'content-type': 'application/json' },
     });

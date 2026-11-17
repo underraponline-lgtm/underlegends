@@ -56,7 +56,7 @@ export function useCrews(que = 'todo') {
     W.addEventListener('lg:cuenta', dc);
     return () => { E.oyentes.delete(f); W.removeEventListener('lg:cuenta', dc); };
   }, []);
-  return { todas: E.todas, mia: E.mia, miaNo: E.miaNo };
+  return { todas: E.todas, mia: E.mia, miaNo: E.miaNo, miaMod: E.miaMod, miaModNo: E.miaModNo };
 }
 
 /**
@@ -118,10 +118,33 @@ export function linkCrew(id, cod) {
 
 export function accionCrew(cuerpo) {
   if (!W.conCuenta) return Promise.resolve({ error: 'red' });
-  return W.conCuenta('/api/avisos/crew', cuerpo, 's').then((j) => {
-    if (j && j.ok) { pedirCrews(true); pedirMia(true); }
+  // 🛠️ como mod (mods.js), cada acción lleva la crew: el Worker mira si quien pide es Owner o Admin
+  const mod = E.modCrew;
+  return W.conCuenta('/api/avisos/crew', mod ? Object.assign({}, cuerpo, { mod }) : cuerpo, 's').then((j) => {
+    if (j && j.ok) { pedirCrews(true); if (mod) pedirMiaMod(mod); else pedirMia(true); }
     return j;
   });
+}
+
+/**
+ * 🛠️ MODS (16/11/2026): los Ajustes de una crew ajena, como su Líder. `ponerModCrew(id)` la marca mientras están abiertos
+ * (y `''` al irse: si no, la próxima acción de TU crew saldría como mod); `pedirMiaMod(id)` trae lo que ve su Líder.
+ */
+export function ponerModCrew(id) {
+  if (E.modCrew === (id || '')) return;
+  E.modCrew = id || '';
+  E.miaMod = null; E.miaModNo = '';
+  if (id) pedirMiaMod(id);
+  avisar();
+}
+
+export function pedirMiaMod(id) {
+  if (!W.conCuenta || !id) return;
+  W.conCuenta('/api/avisos/crew-mia', { mod: id }).then((j) => {
+    if (E.modCrew !== id) return;
+    if (j && j.ok && j.mod) { E.miaMod = j; E.miaModNo = ''; } else E.miaModNo = (j && j.error) || 'red';
+    avisar();
+  }).catch(() => { E.miaModNo = 'red'; avisar(); });
 }
 
 const dias = (ms) => Math.max(1, Math.ceil((Number(ms) || 0) / 86400000));

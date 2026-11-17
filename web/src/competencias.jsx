@@ -16,7 +16,7 @@
 // qué le falta para entrar. Dlx lo ve todo, con un selector de llaves. No es un candado de verdad: `/api/competencias` es
 // público; es lo que cada uno tiene que mirar.
 import { Fragment, useEffect, useMemo, useRef, useState } from 'react';
-import { DUENO, num } from './liga.js';
+import { num } from './liga.js';
 import { Cara, Carta, Ico, accion, nombrePais } from './piezas.jsx';
 import { PopCab } from './pop.jsx';
 import {
@@ -24,6 +24,7 @@ import {
 } from './competencias_datos.js';
 import CSS_PAGINA from './css/competencias.css?inline';
 import { usarCss } from './css.js';
+import { useModsEstado, useQuienMod } from './mods.js';
 
 usarCss('competencias', CSS_PAGINA);
 
@@ -998,15 +999,17 @@ export function Competencias({ liga, dc, sub = '' }) {
   const C = useCompetencias();
   const yo = (liga && liga.yo && liga.yo.k) || (dc && dc.clave) || '';
   const donde = useMemo(() => dondeEstoy(C, yo), [C, yo]);
-  // 🔒 Dlx lo ve todo, y puede mirar la página como quien no juega: si no, nunca vería lo que ve la mayoría
-  const admin = !!dc && String(dc.id) === DUENO;
-  const [comoFuera, setComoFuera] = useState(false);
+  // 🛠️ VER TODO Y «COMO QUIEN NO JUEGA» VIVEN EN EL MENÚ MODS DESDE EL 16/11/2026 (Dlx: «que en competencias no me aparezca
+  // a mí precisamente siempre eso de ver como admin o miembro»). Owner y Admin; arranca apagado, así se ve como todos
+  const admin = useQuienMod(dc, yo).admin;
+  const M = useModsEstado();
+  const comoFuera = admin && !!M.fuera;
   // la liga elegida en la tabla (null: la tuya); la comparten la tabla, la jornada y su ventana
   const [sel, setSel] = useState(null);
   const vComo = useRef(null), vCopa = useRef(null), vRapid = useRef(null), vCruces = useRef(null), vCobro = useRef(null), tabla = useRef(null);
   if (!C) return <div className="cargando">Cargando las competencias…</div>;
   if (!C.ligas) return <div className="cargando">Las competencias se están armando: vuelve en un rato.</div>;
-  const verTodo = admin && !comoFuera;
+  const verTodo = admin && !!M.todo && !comoFuera;
   const conCuenta = !!(yo || dc);
   const yoL = comoFuera ? '' : yo;
   const dondeL = comoFuera ? null : donde;
@@ -1066,14 +1069,6 @@ export function Competencias({ liga, dc, sub = '' }) {
         <Cuadro c="#3b82f6" anillo={[Math.round((C.dia || 0) / 7 * 100), (C.dia || 0) + '/7']} et={'La semana · día ' + C.dia + ' de 7'}
           t={pc ? 'Cierra en ' + faltaTxt(pc) : 'Cerrando'} s={'Jornada ' + L.jornada + ' de 9 · ' + C.activos + ' juegan'} onClick={() => abrir(vComo)} data-tuto="cm-dias" />
       </div>
-
-      {admin ? (
-        <div className="cm9-adm cmx-adm" role="group" aria-label="Cómo mirar la Copa, la Rapid y los mini eventos">
-          <span className="cm9-et">Admin</span>
-          <button type="button" aria-pressed={!comoFuera} onClick={() => setComoFuera(false)}>Ver todo</button>
-          <button type="button" aria-pressed={comoFuera} onClick={() => setComoFuera(true)}>Como quien no juega</button>
-        </div>
-      ) : null}
 
       <div className={'cmx-heroe' + (hayIzq ? '' : ' sin-izq')}>
         {hayIzq ? <div className="cmx-col cmx-izq"><EquipoCaja liga={liga} C={C} yo={yo} /><JuradoCaja liga={liga} C={C} /></div> : null}

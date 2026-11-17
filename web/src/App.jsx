@@ -19,6 +19,7 @@ import { MarcoSolo } from './marco_solo.jsx';
 import { irSinHistoria, pasosEnInicio, quiereBienvenida, quiereTutorial } from './primera.js';
 import { ComoFunciona } from './comofunciona.jsx';
 import { AvisoVersion } from './novedad.jsx';
+import { FranjaMods } from './mods.jsx';
 // 📊 las secciones que se cuentan: la misma lista que `SECC_EV` de bot/avisos.js
 const SECC = new Set(['inicio', 'eventos', 'ranking', 'competencias', 'inventario', 'publicaciones', 'tarjetas', 'ligas', 'salon', 'pase', 'tienda', 'socios', 'guia',
   'perfil', 'servidor', 'crew', 'crews', 'pais', 'cuenta', 'cambios',
@@ -770,7 +771,8 @@ export default function App() {
         e.preventDefault(); el.focus(); el.scrollIntoView({ block: 'start' });
       }}>Saltar al contenido</a>
       <div className="barra-ul" />
-      <Aislada n="Cabecera"><Cabecera liga={liga} dc={yo.dc} pagina={paginaMenu} onMenu={() => setMenu(true)} /></Aislada>
+      <Aislada n="Cabecera"><Cabecera liga={liga} dc={yo.dc} pagina={paginaMenu} sv={sv || ''} onMenu={() => setMenu(true)} /></Aislada>
+      <Aislada n="FranjaMods"><FranjaMods /></Aislada>
       <Aislada n="AvisoWeb"><AvisoWeb aviso={aviso} /></Aislada>
       {/* 🆕 «hay una actualización» (13/10/2026): ver web/src/novedad.jsx */}
       <Aislada n="AvisoVersion"><AvisoVersion pagina={pagina} /></Aislada>

@@ -7,6 +7,7 @@ import { Anotados, Cara, Carta, Chevron, Compartir, Ico, Poster, aDiscord, accio
 import { Miniatura, abrirVideo } from './video.jsx';
 import { useRacha } from './racha.js';
 import { YoMenu } from './yomenu.jsx';
+import { BotonMods } from './mods.jsx';
 import { ERR_LIBRE, libreAccion, pedirLibres, useLibres } from './libres.js';
 import { useAplausos } from './aplausos.js';
 import { delHilo, useComentarios } from './comentarios.jsx';
@@ -469,7 +470,7 @@ function BarraBuscar({ liga, onCerrar }) {
   );
 }
 
-export function Cabecera({ liga, dc, onMenu, pagina = '' }) {
+export function Cabecera({ liga, dc, onMenu, pagina = '', sv = '' }) {
   const yo = liga.yo;
   const [busca, setBusca] = useState(false);
   // 👤 tu cara abre el menú de lo tuyo, con el Inventario primero (yomenu.jsx)
@@ -504,6 +505,8 @@ export function Cabecera({ liga, dc, onMenu, pagina = '' }) {
         <Buscar liga={liga} />
         <button className={'btn-ico lupa-b' + (busca ? ' on' : '')} type="button" aria-label={busca ? 'Cerrar el buscador' : 'Buscar (Ctrl K)'} aria-expanded={busca}
           title="Buscar · Ctrl K" onClick={() => setBusca((v) => !v)}><Ico n="buscar" t={20} /></button>
+        {/* 🛠️ MODS: sólo para quien puede, y sólo donde le sirve (mods.js) */}
+        <BotonMods liga={liga} dc={dc} pagina={pagina} sv={sv} />
         <Campanita liga={liga} />
         {/* ⚙️ SIN EL ENGRANAJE (Dlx, 12/11/2026: «quitar eso del ícono de ajustes porque se puede entrar desde tu cuenta»):
             los ajustes están en Tu cuenta, que abre tu cara arriba y «Tu cuenta» abajo en el celular, y en el ☰ */}

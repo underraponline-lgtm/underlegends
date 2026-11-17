@@ -14,7 +14,9 @@
 import { limpio, num } from './liga.js';
 import { Cara, Compartir, enlace, usePerfiles } from './piezas.jsx';
 import { CrewCirculo } from './arriba.jsx';
-import { ROL_NOMBRE, cierreCrews, crewViva, faltaCierre, useCrews } from './crews.js';
+import { useEffect } from 'react';
+import { ROL_NOMBRE, cierreCrews, crewViva, faltaCierre, ponerModCrew, useCrews } from './crews.js';
+import { useModsEstado, useQuienMod } from './mods.js';
 import { Anillo, EntrarCrew, PanelCrew, TierChip, consejosCrew } from './crewpanel.jsx';
 import { Gente, Otros, Portada } from './entidad2.jsx';
 import CSS_ENT from './css/entidad2.css?inline';
@@ -50,8 +52,17 @@ function NoEsta() {
 }
 
 // ═══ LA PÁGINA ═══════════════════════════════════════════════════════════════════════════════════════════════════════
+/** 🛠️ ¿Quien mira maneja crews ajenas ahora? Owner o Admin, con el interruptor de MODS prendido (mods.js). */
+function useComoMod(liga) {
+  const dc = window.DC || null;
+  const Q = useQuienMod(dc, (liga && liga.yo && liga.yo.k) || (dc && dc.clave) || '');
+  const M = useModsEstado();
+  return !!(Q.admin && M.crews);
+}
+
 export function PaginaCrew({ liga, id }) {
   const { mia } = useCrews();
+  const comoMod = useComoMod(liga);
   // 🙋 la fila de quien quedó más allá de los 200 del lobby viene en su perfil (`/api/perfiles`, `p[k].f`)
   const perf = usePerfiles();
   const { cs, viva, c0 } = laCrew(liga, id);
@@ -98,6 +109,7 @@ export function PaginaCrew({ liga, id }) {
           {viva && viva.desc ? <p className="k2-lema">«{viva.desc}»</p> : null}</>}
         acciones={<>{viva && !miCrew ? <EntrarCrew c={viva} /> : null}
           {miCrew ? <a className="btn verde" href={enlaceCrew(viva.id) + '/ajustes'}>Ajustes de la crew</a> : null}
+          {!miCrew && viva && comoMod ? <a className="btn k2-mod" href={enlaceCrew(viva.id) + '/ajustes'}>Ajustes · como mod</a> : null}
           <Compartir cls="btn borde" url={enlace(enlaceCrew(clave(c)))} texto={nombre + ' en la Liga Global'} /></>}
         numeros={[['PUNTOS', num(c.pts || 0), 'dest'], ['POR RAPERO', nGente ? num(Math.round((c.pts || 0) / nGente)) : '—'],
           ['EL MEJOR', mejor ? <a className="te-link ent-toque" href={'#/r/' + encodeURIComponent(mejor.k)}>{limpio(mejor.n)}</a> : limpio(c.mejor || '—')],
@@ -271,12 +283,28 @@ const PERMISOS = [['Invitar', 1, 1, 1, 0], ['Aceptar pedidos', 1, 1, 0, 0], ['El
   ['Pasar el liderazgo y cerrar', 1, 0, 0, 0]];
 
 export function AjustesCrew({ liga, id, sec }) {
-  const { mia, todas, miaNo } = useCrews();
+  const { mia: mia0, todas, miaNo, miaMod, miaModNo } = useCrews();
   const { viva, c0 } = laCrew(liga, id);
+  const comoMod = useComoMod(liga);
+  const suya = !!(viva && mia0 && mia0.crew && mia0.crew.id === viva.id);
+  // 🛠️ como mod (Owner o Admin con MODS prendido) y no es la tuya: se pide lo que ve su Líder, y se suelta al irse
+  const mod = !!(viva && comoMod && !suya && mia0);
+  useEffect(() => {
+    ponerModCrew(mod ? viva.id : '');
+    return () => ponerModCrew('');
+  }, [mod, viva && viva.id]);
   if (!viva) return <NoEsta />;
   const logo = viva.logo || (c0 && c0.logo) || '';
+  const mia = mod ? miaMod : mia0;
   const miCrew = !!(mia && mia.crew && mia.crew.id === viva.id);
   if (!miCrew) {
+    if (mod) {
+      return (
+        <section className="sec k2-s"><div className="sec-t"><h2>Los Ajustes de {limpio(viva.nombre)}</h2></div>
+          <p className="pronto-p">{miaModNo === 'no' ? 'Tu cuenta no tiene el rol para manejar crews ajenas.' : miaModNo ? 'No pude traer los Ajustes. Prueba de nuevo en un rato.'
+            : 'Cargando los Ajustes como mod…'} <a className="te-link" href={enlaceCrew(viva.id)}>Ver la crew</a></p></section>
+      );
+    }
     return (
       <section className="sec k2-s"><div className="sec-t"><h2>Los Ajustes de {limpio(viva.nombre)}</h2></div>
         <p className="pronto-p">{!mia && miaNo ? 'Tu sesión de Discord venció: entra de nuevo para ver los Ajustes de tu crew.'
@@ -299,7 +327,7 @@ export function AjustesCrew({ liga, id, sec }) {
     ['gente', manda ? 'La gente y los rangos' : 'Los rangos', manda ? viva.gente.length + (viva.gente.length === 1 ? ' persona' : ' personas') : 'quién puede qué'],
     manda ? ['reps', 'Representantes', 'hasta ' + maxReps] : null,
     ['pasado', 'Lo que pasó', 'tiers y entradas'],
-    ['yo', rol === 'lider' ? 'Salir o cerrar' : 'Salir de la crew', ''],
+    mod ? null : ['yo', rol === 'lider' ? 'Salir o cerrar' : 'Salir de la crew', ''],
   ].filter(Boolean);
   const actual = S.find((s) => s[0] === sec) ? sec : S[0][0];
   const base = enlaceCrew(viva.id) + '/ajustes';
@@ -310,7 +338,7 @@ export function AjustesCrew({ liga, id, sec }) {
       <div className="escena pub-esc k2-aj-esc" style={{ '--mo-c': '#E41373', '--mo-o': 0.85 }}>
         <section className="pub-cab k2-aj-cab">
           <div className="k2-aj-id"><CrewCirculo c={{ logo, crew: viva.nombre }} cls="crw-logo" />
-            <span><span className="tag">AJUSTES · ERES {(ROL_NOMBRE[rol] || rol).toUpperCase()}</span><h1 className="hero-ev largo">{limpio(viva.nombre)}</h1></span></div>
+            <span><span className={'tag' + (mod ? ' k2-tag-mod' : '')}>{mod ? 'AJUSTES · COMO MOD · TODO QUEDA ANOTADO' : 'AJUSTES · ERES ' + (ROL_NOMBRE[rol] || rol).toUpperCase()}</span><h1 className="hero-ev largo">{limpio(viva.nombre)}</h1></span></div>
           <a className="btn borde" href={enlaceCrew(viva.id)}>Ver la crew ›</a>
         </section>
       </div>
@@ -340,8 +368,8 @@ export function AjustesCrew({ liga, id, sec }) {
               </div>
             ) : null}
             {actual === 'pasado' ? <LoQuePaso liga={liga} T={T} viva={viva} solo />
-              : actual === 'consejos' ? <PanelCrew liga={liga} c={viva} solo="consejos" onIr={irSec} />
-                : <PanelCrew liga={liga} c={viva} solo={actual} onIr={irSec} />}
+              : actual === 'consejos' ? <PanelCrew liga={liga} c={viva} solo="consejos" onIr={irSec} mod={mod} />
+                : <PanelCrew liga={liga} c={viva} solo={actual} onIr={irSec} mod={mod} />}
           </div>
         </div>
       </div>

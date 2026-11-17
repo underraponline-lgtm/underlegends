@@ -181,6 +181,14 @@ export function puede(rol, que, sobre = '') {
 const LINK_LETRAS = 'abcdefghjkmnpqrstuvwxyz23456789';
 export const codLinkOk = (s) => typeof s === 'string' && /^[a-hjkmnp-z2-9]{10}$/.test(s);
 const claveOk = (k) => typeof k === 'string' && k.length >= 1 && k.length <= 60 && /^[\p{L}\p{N}][\p{L}\p{N}-]*$/u.test(k);
+/**
+ * 🛠️ MODS (16/11/2026, Dlx: «nosotros como admins y yo como owner, que tengamos acceso a todo, incluso como owner de crew de
+ * cualquiera»): lo que Owner y Admin pueden hacer en una crew AJENA, como si fueran su Líder. Quién es mod lo decide el
+ * Worker (`mod_ok`, con los roles del objeto); acá sólo qué. Sin `salir` (no son miembros), y gratis: el nombre y el logo
+ * los cobra la crew, no la moderación. Todo queda en `crew_log` con `mod:<clave>`
+ */
+export const MOD_ACCIONES = ['invitar', 'desinvitar', 'decidir', 'sacar', 'rol', 'lider', 'reps', 'entrada', 'nombre', 'logo', 'desc',
+  'req', 'link_crear', 'link_borrar', 'borrar'];
 export const ACCIONES = ['crear', 'responder', 'pedir', 'cancelar_pedido', 'invitar', 'desinvitar', 'decidir', 'salir', 'sacar',
   'rol', 'lider', 'reps', 'entrada', 'nombre', 'borrar', 'logo', 'desc', 'pref_inv', 'req', 'link_crear', 'link_borrar', 'link_unirse'];
 
@@ -509,10 +517,14 @@ export function crewMia(o, d) {
   const k = String(d.de || '');
   const cfg = crewConfig(o);
   const out = { ok: true, de: k, precio: cfg.precio, precio_nombre: cfg.precio_nombre, precio_logo: cfg.precio_logo, max: CREW_MAX, espera_ms: k ? espera(o, k, ahora) : 0, crew: null, inv: [], ped: [] };
-  if (!k) return out;
+  const modo = typeof d.mod_ok === 'string' ? d.mod_ok : '';
+  if (!k && !modo) return out;
   crewVencer(o, ahora);
-  const m = miembroDe(o, k);
-  if (m && d.quien && m.quien !== d.quien) o.sql.exec('UPDATE crew_miembros SET quien = ? WHERE k = ?', String(d.quien), k);
+  // 🛠️ como mod (lo decide el Worker): esa crew con lo que ve su Líder, y `mod` para que la página lo diga
+  const m = modo ? (crewDe(o, modo) ? { k, crew: modo, rol: 'lider', mod: true } : null) : miembroDe(o, k);
+  // como mod no se paga nada: lo de la crew no sale de la billetera de la moderación
+  if (modo) Object.assign(out, { mod: true, precio_nombre: 0, precio_logo: 0 });
+  if (m && !m.mod && d.quien && m.quien !== d.quien) o.sql.exec('UPDATE crew_miembros SET quien = ? WHERE k = ?', String(d.quien), k);
   if (m) {
     const cm = crewDe(o, m.crew);
     out.crew = crewPublica(o, cm);
@@ -579,11 +591,17 @@ export function crewAccion(o, d) {
   const quien = String(d.quien || ''), k = String(d.de || '');
   const ahora = Date.now();
   if (!/^[0-9]{5,25}$/.test(quien)) return mal('faltan datos');
-  if (!k) return mal('verificate', 403);
+  const modo = typeof d.mod_ok === 'string' ? d.mod_ok : '';
+  if (!k && !modo) return mal('verificate', 403);
   crewVencer(o, ahora);
-  const yo = miembroDe(o, k);
-  const c = yo ? crewDe(o, yo.crew) : null;
   const a = String(d.accion || '');
+  // 🛠️ como mod: la crew la elige el pedido y el rol es Líder; sólo lo de adentro (`MOD_ACCIONES`)
+  if (modo && !MOD_ACCIONES.includes(a)) return mal('accion');
+  const yo = modo ? { k, crew: modo, rol: 'lider', quien, mod: true } : miembroDe(o, k);
+  const c = yo ? crewDe(o, yo.crew) : null;
+  if (modo && !c) return mal('no_existe', 404);
+  // quién queda anotado en `crew_log`
+  const por = modo ? 'mod:' + (k || quien) : k;
 
   if (a === 'crear') {
     const ch = chequeoCrear(o, d);
@@ -678,7 +696,7 @@ export function crewAccion(o, d) {
   // ── lo que se hace desde adentro ──
   if (!yo || !c) return mal('sin_crew', 409);
   const rol = yo.rol;
-  if (yo.quien !== quien) o.sql.exec('UPDATE crew_miembros SET quien = ? WHERE k = ?', quien, k);
+  if (!yo.mod && yo.quien !== quien) o.sql.exec('UPDATE crew_miembros SET quien = ? WHERE k = ?', quien, k);
 
   if (a === 'invitar') {
     if (!puede(rol, 'invitar')) return mal('rol', 403);
@@ -702,7 +720,7 @@ export function crewAccion(o, d) {
       return entrar(o, c, a2, '', k, ahora);
     }
     o.sql.exec('INSERT OR REPLACE INTO crew_inv (crew, k, de, t) VALUES (?, ?, ?, ?)', c.id, a2, k, ahora);
-    anotar(o, c.id, 'invito', a2, k);
+    anotar(o, c.id, 'invito', a2, por);
     avisar(o, a2, 'crew-inv:' + c.id, 'Te invitaron a ' + c.nombre, suyo ? 'Si aceptas, dejas tu crew de ahora. Tienes una semana para decidir.'
       : 'Acepta o no desde tu cuenta: tienes una semana.', '#/cuenta/crew');
     return { ok: true, invitado: a2 };
@@ -718,7 +736,7 @@ export function crewAccion(o, d) {
     for (const b of crypto.getRandomValues(new Uint8Array(10))) cod += LINK_LETRAS[b % LINK_LETRAS.length];
     const max = LINK_USOS.includes(d.max) ? d.max : 0;
     o.sql.exec('INSERT INTO crew_links (cod, crew, por, t, vence, usos, max) VALUES (?, ?, ?, ?, ?, 0, ?)', cod, c.id, k, ahora, ahora + LINK_MS, max);
-    anotar(o, c.id, 'link_nuevo', '', k);
+    anotar(o, c.id, 'link_nuevo', '', por);
     return { ok: true, cod, vence: ahora + LINK_MS, max };
   }
   if (a === 'link_borrar') {
@@ -757,7 +775,7 @@ export function crewAccion(o, d) {
       o.sql.exec('INSERT OR REPLACE INTO crew_salidas (k, t) VALUES (?, ?)', k, ahora);
       o.sql.exec('UPDATE crews SET t = ? WHERE id = ?', ahora, c.id);
       sacarDeReps(o, c, k);
-      anotar(o, c.id, 'salio', k, k);
+      anotar(o, c.id, 'salio', k, por);
     });
     return { ok: true, espera_ms: ESPERA_MS };
   }
@@ -772,7 +790,7 @@ export function crewAccion(o, d) {
       o.sql.exec('INSERT OR REPLACE INTO crew_salidas (k, t) VALUES (?, ?)', a2, ahora);
       o.sql.exec('UPDATE crews SET t = ? WHERE id = ?', ahora, c.id);
       sacarDeReps(o, c, a2);
-      anotar(o, c.id, 'sacado', a2, k);
+      anotar(o, c.id, 'sacado', a2, por);
     });
     avisar(o, a2, 'crew-fuera:' + c.id, 'Ya no estás en ' + c.nombre, 'Te sacaron de la crew. Puedes entrar a otra en 7 días.', '#/cuenta/crew');
     return { ok: true };
@@ -784,7 +802,7 @@ export function crewAccion(o, d) {
     if (!['colider', 'veterano', 'miembro'].includes(nuevo)) return mal('rol');
     if (!puede(rol, 'rol', el.rol) || (rol === 'colider' && nuevo === 'colider')) return mal('rol', 403);
     o.sql.exec('UPDATE crew_miembros SET rol = ? WHERE k = ?', nuevo, a2);
-    anotar(o, c.id, 'rol:' + nuevo, a2, k);
+    anotar(o, c.id, 'rol:' + nuevo, a2, por);
     avisar(o, a2, 'crew-rol:' + c.id, 'Ahora eres ' + ROL_NOMBRE[nuevo] + ' de ' + c.nombre, '', '#/crew/' + encodeURIComponent(c.id));
     return { ok: true };
   }
@@ -794,9 +812,10 @@ export function crewAccion(o, d) {
     const el = miembroDe(o, a2);
     if (!el || el.crew !== c.id || a2 === k) return mal('no_esta', 404);
     o.state.storage.transactionSync(() => {
+      if (yo.mod) o.sql.exec("UPDATE crew_miembros SET rol = 'colider' WHERE crew = ? AND rol = 'lider'", c.id);
       o.sql.exec("UPDATE crew_miembros SET rol = 'lider' WHERE k = ?", a2);
-      o.sql.exec("UPDATE crew_miembros SET rol = 'colider' WHERE k = ?", k);
-      anotar(o, c.id, 'lider', a2, k);
+      if (!yo.mod) o.sql.exec("UPDATE crew_miembros SET rol = 'colider' WHERE k = ?", k);
+      anotar(o, c.id, 'lider', a2, por);
     });
     avisar(o, a2, 'crew-lider:' + c.id, 'Ahora eres el Líder de ' + c.nombre, '', '#/crew/' + encodeURIComponent(c.id));
     return { ok: true };
@@ -809,7 +828,7 @@ export function crewAccion(o, d) {
     const gente = new Set(filas(o, 'SELECT k FROM crew_miembros WHERE crew = ?', c.id).map((r) => r.k));
     if (!lista.every((x) => gente.has(x))) return mal('reps');
     o.sql.exec('UPDATE crews SET reps = ?, t = ? WHERE id = ?', JSON.stringify(lista), ahora, c.id);
-    anotar(o, c.id, 'reps', lista.join(','), k);
+    anotar(o, c.id, 'reps', lista.join(','), por);
     return { ok: true, reps: lista };
   }
   if (a === 'entrada') {
@@ -829,7 +848,7 @@ export function crewAccion(o, d) {
     }
     if (nombre === c.nombre && sigla === c.sigla) return { ok: true, precio: 0 };
     // 💸 el nombre o la sigla cuestan (`PRECIO_NOMBRE`): se mira el saldo antes de tocar nada
-    const { precio_nombre: precio } = crewConfig(o);
+    const precio = yo.mod ? 0 : crewConfig(o).precio_nombre;
     const al = precio ? alcanza(o, d, precio) : { s: 0 };
     if (al.error) return al;
     o.state.storage.transactionSync(() => {
@@ -838,7 +857,7 @@ export function crewAccion(o, d) {
       // 🛡️ si el escudo lleva la sigla, cambia con ella
       if (c.logo && conSigla(c.logo, sigla) !== c.logo) o.sql.exec('UPDATE crews SET logo = ? WHERE id = ?', conSigla(c.logo, sigla), c.id);
       cobrar(o, quien, precio, 'crew-nombre', ahora);
-      anotar(o, c.id, 'nombre', nombre, k);
+      anotar(o, c.id, 'nombre', nombre, por);
     });
     return precio ? { ok: true, precio, saldo: al.s - precio } : { ok: true, precio: 0 };
   }
@@ -850,7 +869,7 @@ export function crewAccion(o, d) {
     const visto = d.logo_url ? d.logo_v === 'ok' : true;
     // 💸 cuesta (`PRECIO_LOGO`); `chequeoLogo()` ya lo miró antes de pasarlo por la IA, y acá otra vez: entre las dos
     // pudo gastar en otra cosa
-    const { precio_logo: precio } = crewConfig(o);
+    const precio = yo.mod ? 0 : crewConfig(o).precio_logo;
     const al = precio ? alcanza(o, d, precio) : { s: 0 };
     if (al.error) return al;
     // lo que se reemplaza se borra de R2 (lo hace `crewConImagen()`, que es la que puede esperar)
@@ -870,7 +889,7 @@ export function crewAccion(o, d) {
           logo, ahora, precio, precio ? quien : '', ahora, c.id);
       }
       cobrar(o, quien, precio, 'crew-logo', ahora);
-      anotar(o, c.id, 'logo', visto ? (d.logo_url ? 'ok' : 'escudo') : 'revisar', k);
+      anotar(o, c.id, 'logo', visto ? (d.logo_url ? 'ok' : 'escudo') : 'revisar', por);
     });
     return Object.assign({ ok: true, viejos, logo: visto ? 'ok' : 'revisar', precio }, precio ? { saldo: al.s - precio } : {});
   }
@@ -879,7 +898,7 @@ export function crewAccion(o, d) {
     const r = reqValido(d.req);
     if (!r) return mal('req');
     o.sql.exec('UPDATE crews SET req = ?, t = ? WHERE id = ?', JSON.stringify(r), ahora, c.id);
-    anotar(o, c.id, 'req', JSON.stringify(r), k);
+    anotar(o, c.id, 'req', JSON.stringify(r), por);
     return { ok: true, req: r };
   }
   if (a === 'desc') {
@@ -887,12 +906,12 @@ export function crewAccion(o, d) {
     const descr = descCrew(d.desc);
     if (!descr) return mal('desc');
     o.sql.exec('UPDATE crews SET descr = ?, t = ? WHERE id = ?', descr, ahora, c.id);
-    anotar(o, c.id, 'desc', '', k);
+    anotar(o, c.id, 'desc', '', por);
     return { ok: true };
   }
   if (a === 'borrar') {
     if (!puede(rol, 'borrar')) return mal('rol', 403);
-    return borrar(o, c, k, ahora);
+    return borrar(o, c, por, ahora);
   }
   return mal('accion');
 }
@@ -926,6 +945,7 @@ export function chequeoCrear(o, d) {
 
 /** Lo mismo para cambiar el logo: estar en una crew y ser su Líder. */
 export function chequeoLogo(o, d) {
+  if (typeof d.mod_ok === 'string') return crewDe(o, d.mod_ok) ? { ok: true } : mal('no_existe', 404);
   const m = d.de ? miembroDe(o, String(d.de)) : null;
   if (!m) return mal('sin_crew', 409);
   if (!puede(m.rol, 'nombre')) return mal('rol', 403);
