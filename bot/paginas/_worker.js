@@ -119,6 +119,10 @@ const AVISOS = {
   '/api/avisos/socio-ajustes': 'POST',
   '/api/avisos/socio-final': 'POST',
   '/api/avisos/socio-equipo': 'POST',
+  // 🛡️ el staff de cada servidor (16/11/2026): sus roles, sus llaves y sus ligas
+  '/api/avisos/socio-roles': 'POST',
+  '/api/avisos/socio-llave': 'POST',
+  '/api/avisos/socio-liga': 'POST',
   '/api/avisos/socio-pagina': 'POST',
   '/api/avisos/dueno-socios': 'POST',
   '/api/avisos/promo-vio': 'POST',

@@ -318,3 +318,33 @@
 .sp-pag>.btn{justify-self:start}
 /* en el tema claro, el verde de la marca da 2.35:1 sobre el papel: uno más hondo (5.7:1). En el de noche, el de siempre */
 .clara .sp-eq .sp-preg-msg,.clara .sp-pag .sp-preg-msg{color:#0B6B58}
+/* 🛡️ EL STAFF DE CADA SERVIDOR (16/11/2026): el rol de cada uno del equipo, sus llaves y sus ligas. Los colores, los del
+   tema (`--suave`, `--linea`, `--tinta`, `--gris`): en Clara y en Noche */
+.sp-eq-acc{display:flex;flex-wrap:wrap;align-items:center;justify-content:flex-end;gap:8px}
+.sp-eq-acc select,.sp-lg-form select,.sp-lg-form input{min-height:44px;padding:0 10px;border:2px solid var(--linea);border-radius:0;
+  background:var(--fondo);color:var(--tinta);font:600 15px/1 Archivo,sans-serif}
+.sp-eq-acc select:focus-visible,.sp-lg-form select:focus-visible,.sp-lg-form input:focus-visible{outline:2px solid var(--verde);outline-offset:2px}
+.sp-roles{display:grid;gap:4px;margin:0;padding:0;list-style:none;font:500 14px/1.45 Archivo,sans-serif;color:var(--gris)}
+.sp-roles b{color:var(--tinta);font-weight:800}
+.sp-ll,.sp-lg{display:grid;gap:12px}
+.sp-ll-ayuda{margin:0;font:500 14px/1.5 Archivo,sans-serif;color:var(--gris)}
+.sp-ll-l,.sp-lg-l{display:grid;gap:6px;margin:0;padding:0;list-style:none}
+.sp-ll-l li{display:grid;gap:4px;padding:12px;border:2px solid var(--suave);border-left:5px solid var(--verde);background:rgba(255,255,255,.02)}
+.sp-ll-cual{margin:0;font:700 14px/1.4 Archivo,sans-serif;color:var(--gris)}
+.sp-ll-cual a{color:var(--verde)}
+.sp-ll-t{margin:0;font:500 14px/1.45 Archivo,sans-serif;color:var(--tinta);overflow-wrap:anywhere}
+.sp-ll-est{margin:0;font:700 13px/1.2 "Barlow Condensed",sans-serif;letter-spacing:.04em;text-transform:uppercase;color:var(--gris)}
+.sp-ll-acc{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.sp-ll-acc .btn{min-height:40px}
+.sp-lg-sel{display:flex;flex-wrap:wrap;gap:8px}
+.sp-lg-form{display:grid;gap:10px;padding:14px;border:2px solid var(--suave)}
+.sp-lg-form label{display:grid;gap:6px;font:700 13px/1.2 "Barlow Condensed",sans-serif;letter-spacing:.04em;text-transform:uppercase;color:var(--gris)}
+.sp-lg-form label input,.sp-lg-form label select{text-transform:none;letter-spacing:0;font-size:16px}
+.sp-lg-form>.btn{justify-self:start}
+@media (min-width:720px){.sp-lg-form{grid-template-columns:repeat(2,minmax(0,1fr))}.sp-lg-form>.btn,.sp-lg-form>.sp-ll-t{grid-column:1/-1}}
+.sp-lg-l li{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:8px 12px;padding:10px 12px;border:2px solid var(--suave)}
+.sp-lg-l li>span:first-child{display:grid;gap:2px;min-width:0}
+.sp-lg-l b{font:800 15px/1.25 Archivo,sans-serif;overflow-wrap:anywhere}
+.sp-lg-l small{font:600 13px/1.2 "Barlow Condensed",sans-serif;color:var(--gris)}
+.sp-lg-fuera{opacity:.6}
+.clara .sp-ll .sp-preg-msg,.clara .sp-lg .sp-preg-msg,.clara .sp-ll-cual a{color:#0B6B58}

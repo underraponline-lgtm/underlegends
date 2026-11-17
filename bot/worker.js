@@ -2183,6 +2183,13 @@ function panelAjustes(sv, cfg) {
         style: ESTILO.SECUNDARIO,
         label: '📈 Ascenso',
         custom_id: 'cfg:asc',
+      },
+      // 📣 lo que hasta el 16/11/2026 estaba sólo en la página (el aviso de cada evento, las ligas, el resumen): su panel
+      {
+        type: COMP.BOTON,
+        style: ESTILO.SECUNDARIO,
+        label: '📣 Más canales',
+        custom_id: 'cfg:mas',
       }] },
       { type: COMP.FILA, components: [{
         type: 8,                       // CHANNEL_SELECT
@@ -2259,6 +2266,51 @@ async function panelAscenso(env, gid, cfg) {
       }] },
       { type: COMP.FILA, components: [{
         type: COMP.BOTON, style: ESTILO.SECUNDARIO, label: '‹ Volver a los ajustes', custom_id: 'cfg:volver',
+      }] },
+    ],
+  };
+}
+
+// ── 📣 MÁS CANALES (Dlx, 16/11/2026: «todo», a que /settings tenga lo mismo que el panel del socio en la página) ─────
+// El aviso de cada evento, el canal de las batallas de liga (o apagarlas) y el del resumen de los lunes: el mismo
+// `cfg:<guild>` que escribe la página (`socioAjustes()` en avisos.js), así lo último que se toque es lo que vale. El canal
+// de UNA liga en particular sigue en la página: un menú por liga no entra en un mensaje de Discord
+function panelMas(cfg) {
+  const ae = cfg.aviso_evento === 'chat' || cfg.aviso_evento === 'no' ? cfg.aviso_evento : '';
+  const ligas = cfg.ligas === 'no' ? '**apagadas**' : cfg.ligas ? `<#${cfg.ligas}>` : '**donde habla el bot en vivo**';
+  const texto = [
+    '## 📣 Más canales',
+    '',
+    `**El aviso de cada evento** · ${ae === 'no' ? '**apagado**' : ae === 'chat' ? '**en el chat general**' : '**donde habla el bot en vivo**'}`,
+    '> Un mensaje cuando arranca cada evento de este servidor, con su nivel, que se edita solo. Nunca menciona a nadie.',
+    '',
+    `**Las batallas de sus ligas** · ${ligas}`,
+    '> Cada batalla de liga con su VS, mientras se juega. Una liga en particular a otro canal se elige en la página, en el panel del servidor.',
+    '',
+    `**El resumen de los lunes** · ${cfg.resumen ? `<#${cfg.resumen}>` : '**ninguno**'}`,
+    '> Los lunes a las 12 del mediodía (hora del este): cómo le fue a este servidor en la semana.',
+  ].join('\n');
+  return {
+    content: texto,
+    components: [
+      { type: COMP.FILA, components: [{
+        type: COMP.SELECT, custom_id: 'cfg:aviso_evento', placeholder: 'Dónde va el aviso de cada evento', min_values: 1, max_values: 1,
+        options: [['vivo', 'Donde habla el bot en vivo'], ['chat', 'En el chat general'], ['no', 'Apagado']]
+          .map(([v, label]) => ({ label, value: v, default: (ae || 'vivo') === v })),
+      }] },
+      { type: COMP.FILA, components: [{
+        type: 8, custom_id: 'cfg:ligas', placeholder: 'Canal de las batallas de liga (vacío = donde habla en vivo)',
+        min_values: 0, max_values: 1, channel_types: [0],
+      }] },
+      { type: COMP.FILA, components: [{
+        type: 8, custom_id: 'cfg:resumen', placeholder: 'Canal del resumen de los lunes (vacío = ninguno)',
+        min_values: 0, max_values: 1, channel_types: [0],
+      }] },
+      { type: COMP.FILA, components: [{
+        type: COMP.BOTON, style: ESTILO.SECUNDARIO, label: '‹ Volver a los ajustes', custom_id: 'cfg:volver',
+      }, {
+        type: COMP.BOTON, style: cfg.ligas === 'no' ? ESTILO.PRIMARIO : ESTILO.SECUNDARIO,
+        label: cfg.ligas === 'no' ? 'Prender las batallas de liga' : 'Apagar las batallas de liga', custom_id: 'cfg:ligas_no',
       }] },
     ],
   };
@@ -5000,6 +5052,7 @@ export default {
         const vals = (i.data && i.data.values) || [];
         // 📈 abrir el panel del ascenso, o volver: no cambian nada
         if (quien === 'asc') return responderPanel(RESPONDE.ACTUALIZAR, await panelAscenso(env, i.guild_id, cfg));
+        if (quien === 'mas') return responderPanel(RESPONDE.ACTUALIZAR, panelMas(cfg));
         if (quien === 'volver') {
           return responderPanel(RESPONDE.ACTUALIZAR, panelAjustes(aquiEs(i.guild_id) || 'este servidor', cfg));
         }
@@ -5010,6 +5063,11 @@ export default {
         else if (quien === 'vivo') cfg.vivo = vals[0] || '';
         else if (quien === 'nivel' && NIVELES_CHAT[vals[0]]) cfg.vivo_nivel = vals[0];
         else if (quien === 'asc_canal') cfg.ascenso = vals[0] || '';
+        // 📣 los de «Más canales» (16/11/2026): los mismos valores que guarda la página (`socioAjusteValido()` en avisos.js)
+        else if (quien === 'aviso_evento') cfg.aviso_evento = vals[0] === 'chat' || vals[0] === 'no' ? vals[0] : '';
+        else if (quien === 'ligas') cfg.ligas = vals[0] || '';
+        else if (quien === 'ligas_no') cfg.ligas = cfg.ligas === 'no' ? '' : 'no';
+        else if (quien === 'resumen') cfg.resumen = vals[0] || '';
         else return aviso('No sé qué ajuste es ése.');
         // ⚠️ Mismo motivo que en `/numeral`: sin `try`, un día sin cupo
         // de KV es «la aplicación no respondió» y el admin no sabe si quedó.
@@ -5025,6 +5083,7 @@ export default {
         // paneles contradictorios, y el último no es necesariamente el que
         // está abajo.
         if (quien === 'asc_canal') return responderPanel(RESPONDE.ACTUALIZAR, await panelAscenso(env, i.guild_id, cfg));
+        if (['aviso_evento', 'ligas', 'ligas_no', 'resumen'].includes(quien)) return responderPanel(RESPONDE.ACTUALIZAR, panelMas(cfg));
         return responderPanel(RESPONDE.ACTUALIZAR,
           panelAjustes(aquiEs(i.guild_id) || 'este servidor', cfg));
       }

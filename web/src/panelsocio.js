@@ -35,6 +35,32 @@ export function pedirPagina(sv, cambio) {
   return W.conCuenta('/api/avisos/socio-pagina', Object.assign({ sv }, cambio || {})).then((j) => j || { error: 'red' }).catch(() => ({ error: 'red' }));
 }
 
+/** 🛡️ (16/11/2026) Los servidores donde quien mira es del staff y su rol en cada uno: `{roles: {SV: rol}}`. En silencio:
+ *  sin cuenta no pregunta nada (la llave lo usa para mostrar «Corregir» sólo a quien puede). Una vez por sesión */
+let rolesP = null;
+export function pedirRoles() {
+  if (!W.conCuenta) return Promise.resolve({ roles: {} });
+  try { if (!localStorage.getItem('lg:dc')) return Promise.resolve({ roles: {} }); } catch (e) { return Promise.resolve({ roles: {} }); }
+  if (!rolesP) rolesP = W.conCuenta('/api/avisos/socio-roles', {}).then((j) => (j && j.ok ? j : { roles: {} })).catch(() => ({ roles: {} }));
+  return rolesP;
+}
+
+/** 🛠️ Las llaves del servidor, desde su staff: `ver`, `corregir` o `sugerir` (`{fix, id?}`) y `cerrar` (`{id}`). */
+export function pedirLlave(sv, accion, extra) {
+  if (!W.conCuenta) return Promise.resolve({ error: 'red' });
+  return W.conCuenta('/api/avisos/socio-llave', Object.assign({ sv, accion }, extra || {})).then((j) => j || { error: 'red' }).catch(() => ({ error: 'red' }));
+}
+
+/** 🏟️ La liga del servidor, desde su staff: `ver`, `cambiar` (`{cambio}`) o `deshacer` (`{id}`). */
+export function pedirLiga(sv, liga, accion, extra) {
+  if (!W.conCuenta) return Promise.resolve({ error: 'red' });
+  return W.conCuenta('/api/avisos/socio-liga', Object.assign({ sv, liga, accion }, extra || {})).then((j) => j || { error: 'red' }).catch(() => ({ error: 'red' }));
+}
+
+/** 🛡️ ¿Ese rol puede `que`? Con `permisos`, la tabla que manda el Worker (`SOCIO_PERMISOS` de bot/avisos.js, vía
+ *  `pedirRoles()`): la página no tiene su copia. El dueño y Dlx, todo */
+export const puede = (rol, que, permisos) => rol === 'dlx' || rol === 'dueno' || ((permisos || {})[rol] || []).includes(que);
+
 /** ¿Es dueño de algún socio? Una vez por sesión, en silencio: para el botón de Mi cuenta. */
 export function useSocio(conCuenta) {
   const [si, setSi] = useState(() => { try { return sessionStorage.getItem('lg:socio') === '1'; } catch (e) { return false; } });

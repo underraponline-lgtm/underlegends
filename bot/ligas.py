@@ -1208,6 +1208,73 @@ def leer_liga(lid, msgs, ptb=None, dfs=None):
     return out
 
 
+def cambios_staff():
+    """🏟️ Lo que cambió el staff de cada servidor en su liga (Dlx, 16/11/2026: «todo»; `socioLiga()` en bot/avisos.js):
+    `{liga: [{id, tipo, dato, t}]}`, o `None` si el Worker no contestó (entonces vale lo guardado en `datos/ligas.json`)."""
+    try:
+        import requests
+        import avisar
+        import clave_ciclo as CC
+        t = avisar._token()
+        if not t:
+            return None
+        r = requests.get(avisar.WORKER + '/avisos/liga-cambios', headers={'x-lg-ciclo': CC.clave(t)}, timeout=20)
+        j = r.json() if r.ok else None
+    except Exception:                                    # noqa: BLE001
+        return None
+    if not isinstance(j, dict) or not isinstance(j.get('cambios'), list):
+        return None
+    out = {}
+    for c in j['cambios']:
+        if isinstance(c, dict) and c.get('liga') in LIGAS and isinstance(c.get('dato'), dict) and isinstance(c.get('id'), int):
+            out.setdefault(c['liga'], []).append({k: c.get(k) for k in ('id', 'tipo', 'dato', 't')})
+    return out
+
+
+#: el prefijo de lo que agregó el staff (una batalla cargada, un DF): nunca choca con un id de mensaje de Discord
+STAFF = 's'
+
+
+def aplicar_cambios(lid, bats, dfs, cs):
+    """🏟️ Los cambios del staff de la liga sobre lo que se leyó de sus canales: `(batallas, dfs)` nuevas, sin tocar las de
+    entrada. En el orden en que se hicieron; uno que ya no tiene sobre qué (la batalla no está, el ganador no es de esa
+    batalla) no hace nada.
+    · `nombre`: en esta liga «nombre» es «es», como `alias` en `LIGAS`. · `ganador`: quién ganó esa batalla y cómo.
+    · `no_cuenta`: esa batalla no va. · `cargar`: una batalla que el bot no leyó. · `df`: puntos de un DF, sólo si la
+    liga los cuenta (`df_cuenta`). · `campeon` se aplica aparte, como un anuncio (`correr()`)."""
+    L = LIGAS.get(lid) or {}
+    cs = sorted([c for c in cs or [] if isinstance(c, dict)], key=lambda c: c.get('id') or 0)
+    ren = {clave(c['dato'].get('nombre')): c['dato'].get('es') for c in cs if c.get('tipo') == 'nombre' and c['dato'].get('es')}
+    r = lambda n: ren.get(clave(n), n) if n else n        # noqa: E731
+    out = [[b[0], b[1], b[2], r(b[3]), r(b[4]), r(b[5])] + list(b[6:]) for b in bats or []]
+    dout = [[e[0], e[1], e[2], r(e[3]), e[4]] for e in dfs or [] if not str(e[0]).startswith(STAFF)]
+    def cual(dt_):
+        # la batalla de ese id —la página manda el id sin su «-N»— y, si vinieron, con esos dos lados
+        bat = str(dt_.get('bat') or '')
+        par = {clave(r(dt_.get('a'))), clave(r(dt_.get('b')))} if dt_.get('a') and dt_.get('b') else None
+        return [x for x in out if (str(x[0]) == bat or str(x[0]).split('-')[0] == bat)
+                and (par is None or {clave(x[3]), clave(x[4])} == par)]
+    for c in cs:
+        t, dt_ = c.get('tipo'), c.get('dato') or {}
+        if t == 'ganador':
+            g = clave(r(dt_.get('gana')))
+            b = next((x for x in cual(dt_) if g in (clave(x[3]), clave(x[4]))), None)
+            if b and dt_.get('como') in PUNTOS:
+                b[5], b[6] = (b[3] if g == clave(b[3]) else b[4]), dt_['como']
+        elif t == 'no_cuenta':
+            fuera = cual(dt_)
+            if len(fuera) == 1:
+                out = [x for x in out if x is not fuera[0]]
+        elif t == 'cargar' and dt_.get('a') and dt_.get('b') and dt_.get('dia') and dt_.get('como') in PUNTOS:
+            out.append(['%s%d' % (STAFF, c['id']), dt_['dia'] + 'T20:00:00Z', None, r(dt_['a']), r(dt_['b']), r(dt_.get('gana')),
+                        dt_['como'], ''])
+        elif t == 'df' and L.get('df_cuenta') and dt_.get('nombre') and dt_.get('pts') in (1, 3) and dt_.get('dia'):
+            dout.append(['%s%d' % (STAFF, c['id']), dt_['dia'] + 'T20:00:00Z', None, r(dt_['nombre']), dt_['pts']])
+    out.sort(key=lambda b: (str(b[1] or ''), str(b[0])))
+    dout.sort(key=lambda e: (str(e[1] or ''), str(e[0])))
+    return out, dout
+
+
 def puntos_df(b):
     """🏳️ Los puntos que deja un DF, para la tabla de una liga que los suma (`df_cuenta`): `[[id, iso, jornada, nombre,
     puntos]]`. Dlx, 16/11/2026: «que los DF cuenten en la tabla de Ceuta, así funciona esa liga».
@@ -2189,6 +2256,8 @@ def correr(aplicar=False):
     viejo0 = leer()
     viejo = viejo0.get('ligas') or {}
     por_canal, por_an, por_tabla = {}, {}, {}
+    # 🏟️ lo que cambió el staff de cada servidor en su liga (16/11/2026): `None` si el Worker no contestó (vale lo guardado)
+    staff = cambios_staff()
     ahora = dt.datetime.now(dt.timezone.utc)
     ahora_s = ahora.strftime('%Y-%m-%dT%H:%M:%SZ')
     # 🎛️ las de un servidor con el beneficio `ligas` apagado en el Dashboard no se leen ni se muestran (`bot/tiers.py`)
@@ -2229,7 +2298,9 @@ def correr(aplicar=False):
             cer = v.get('cerrada') or {'t': ahora_s, 'fuente': 'canales'}
         else:
             cer = None
-        guardadas = {b[0]: b for b in v.get('batallas') or []}
+        # 🏟️ lo LEÍDO (`leidas`, si el staff cambió algo) y no lo corregido: las correcciones se aplican de nuevo en cada
+        # corrida (`aplicar_cambios()`), así deshacer una devuelve lo que decía el canal
+        guardadas = {b[0]: b for b in v.get('leidas') or v.get('batallas') or [] if not str(b[0]).startswith(STAFF)}
         if L['ver'] in muerto:
             por_canal.setdefault(L['ver'], [])
         if L['ver'] not in por_canal:
@@ -2245,7 +2316,8 @@ def correr(aplicar=False):
         nuevas = leer_liga(lid, por_canal[L['ver']], ptb, dfn)
         # 🏳️ los puntos por DF (`df_cuenta`): lo releído reemplaza a lo guardado de esos mensajes, como las batallas
         leidos = {str(m.get('id')) for m in por_canal[L['ver']]}
-        dfs = sorted([e for e in v.get('df') or [] if str(e[0]) not in leidos] + dfn,
+        dfs = sorted([e for e in v.get('df_leidos') or v.get('df') or [] if str(e[0]) not in leidos
+                      and not str(e[0]).startswith(STAFF)] + dfn,
                      key=lambda e: (e[1], str(e[0]))) if L.get('df_cuenta') else []
         # 🆕 el canal de resultados que no nombra al rival, con la cartelera (`resultados_sueltos()`)
         if L.get('res'):
@@ -2274,6 +2346,12 @@ def correr(aplicar=False):
                 por_tabla[L['tabla']] = _mensajes(s, L['tabla'], 1, limite=30)
                 time.sleep(0.3)
             u_resumen(por_tabla[L['tabla']], bats)
+        # 🏟️ LO QUE CAMBIÓ EL STAFF DE SU SERVIDOR (Dlx, 16/11/2026: «todo»; `aplicar_cambios()`): sobre lo leído, que queda
+        # aparte en `leidas` (y `df_leidos`), así deshacer un cambio devuelve lo que dice el canal
+        cs = (staff.get(lid) or []) if staff is not None else list(v.get('cambios') or [])
+        leidas, df_leidos = bats, dfs
+        if cs:
+            bats, dfs = aplicar_cambios(lid, leidas, dfs, cs)
         js = [b[2] for b in bats if b[2]]
         # 📢 el canal de anuncios: el flyer y la próxima fecha (un pedido por canal; Snake Rap comparte el suyo)
         an = L.get('an')
@@ -2288,6 +2366,11 @@ def correr(aplicar=False):
                     'batallas': bats, 'tabla': tabla(bats, None, dfs)}
         if L.get('df_cuenta'):
             out[lid]['df'] = dfs                    # vacía también: sin la clave se vuelve a leer la temporada entera
+        if cs:
+            out[lid]['cambios'] = cs
+            out[lid]['leidas'] = leidas
+            if L.get('df_cuenta'):
+                out[lid]['df_leidos'] = df_leidos
         if flyer:
             out[lid]['flyer'] = flyer
         if prox:
@@ -2317,6 +2400,24 @@ def correr(aplicar=False):
         # (`campeon_en()`), en los veredictos o en los anuncios. Lo anunciado se guarda: el mensaje sale de la ventana
         # que se lee, y la temporada tiene que seguir cerrada
         temps = [dict(c) for c in v.get('temps') or []]
+        # 🏆 EL CAMPEÓN QUE PUSO EL STAFF (`campeon`, 16/11/2026): como si lo anunciara su servidor —cierra la temporada que se
+        # juega, sale en el Salón y en Logs—, con `msg` «staff:<id>»; si lo deshacen, se va
+        vivos = {'staff:%d' % c['id'] for c in cs if c.get('tipo') == 'campeon'}
+        temps = [c for c in temps if not str(c.get('msg') or '').startswith('staff:') or c['msg'] in vivos]
+        for c in sorted((c for c in cs if c.get('tipo') == 'campeon'), key=lambda c: c['id']):
+            if 'staff:%d' % c['id'] in {str(x.get('msg') or '') for x in temps}:
+                continue
+            ts0 = temporadas(bats, cierres_de(lid, {'temps': temps, 'cerrada': cer}, decis), dfs)
+            ab = ts0[-1] if ts0 and not ts0[-1]['hasta'] else None
+            if not ab or not any(b[5] for b in ab['bats']):
+                continue
+            tb0 = tabla(ab['bats'], None, ab['df'])
+            cc = {'t': dt.datetime.fromtimestamp(int(c.get('t') or 0) / 1000, dt.timezone.utc).strftime('%Y-%m-%dT%H:%M:%SZ'),
+                  'c': c['dato'].get('c'), 'n': None, 'msg': 'staff:%d' % c['id'], 'fuente': 'anuncio',
+                  'p': podio([f[0] for f in tb0], c['dato'].get('c')), 'ult': ultima(ab['bats']), 'desde': ab['desde']}
+            temps.append(cc)
+            anuncios_campeon.append((lid, L, cc))
+            print('   🏆 %s: %s campeón, lo puso el staff de su servidor' % (L['n'], cc['c']))
         msgs = [dict(m, canal=L['ver']) for m in por_canal.get(L['ver']) or []] + [dict(m, canal=an) for m in ms_an]
         ts = temporadas(bats, cierres_de(lid, {'temps': temps, 'cerrada': cer}, decis), dfs)
         abierta = ts[-1] if ts and not ts[-1]['hasta'] else None
@@ -2402,9 +2503,12 @@ def _avisar_novedades(nuevas, viejas, campeones_, mapa=None):
                       'jugar; las otras, cuando sepa leer sus veredictos' % (len(no_entran), ', '.join(no_entran)))
     for lid, L, c in campeones_ or []:
         g = ((mapa or {}).get(L['sv']) or {}).get('g') or ''
-        link = ' · https://discord.com/channels/%s/%s/%s' % (g, c.get('canal') or L.get('ver'), c['msg']) if g and c.get('msg') else ''
-        lineas.append('🏆 **%s** · %s campeón%s, lo anunció su servidor: cierra la temporada%s' % (
-            L['n'], c['c'], (' de la T%s' % c['n']) if c.get('n') else '', link))
+        staff_ = str(c.get('msg') or '').startswith('staff:')
+        link = (' · https://discord.com/channels/%s/%s/%s' % (g, c.get('canal') or L.get('ver'), c['msg'])
+                if g and c.get('msg') and not staff_ else '')
+        lineas.append('🏆 **%s** · %s campeón%s, %s: cierra la temporada%s' % (
+            L['n'], c['c'], (' de la T%s' % c['n']) if c.get('n') else '',
+            'lo puso el staff de su servidor en su panel' if staff_ else 'lo anunció su servidor', link))
     if not lineas:
         return False
     try:
@@ -3220,6 +3324,24 @@ def _self_check():
                                        {'id': '2', 't': '2026-10-03T20:20:00Z', 'content': 'ANA 10\nBETO 5\n# GANADOR: ANA'}]),
        'Ceuta: los apodos de la liga (Ziarki es Ivan, Andy es Andy MC; «Andy MC» no se vuelve «Andy MC MC» y «ZIARKIS» '
        'es otra palabra), sin `alias` no se toca nada, y la batalla que la liga anuló (`anular`) no cuenta', _al)
+    # 🏟️ lo que cambió el staff de su servidor (16/11/2026): sobre lo leído, en orden, y sin tocar lo de entrada
+    _lb = [['10', '2026-11-01T20:00:00Z', None, 'ANA', 'ZIARKI', '', '', ''],
+           ['11', '2026-11-02T20:00:00Z', None, 'BETO', 'CARLA', 'BETO', 'directa', ''],
+           ['12', '2026-11-03T20:00:00Z', None, 'ANA', 'BETO', 'ANA', 'directa', '']]
+    _cs = [{'id': 1, 'tipo': 'nombre', 'dato': {'nombre': 'ZIARKI', 'es': 'IVAN'}},
+           {'id': 2, 'tipo': 'ganador', 'dato': {'bat': '10', 'gana': 'IVAN', 'como': 'replica'}},
+           {'id': 3, 'tipo': 'no_cuenta', 'dato': {'bat': '12'}},
+           {'id': 4, 'tipo': 'cargar', 'dato': {'a': 'CARLA', 'b': 'DANI', 'gana': 'DANI', 'como': 'directa', 'dia': '2026-11-04'}},
+           {'id': 5, 'tipo': 'ganador', 'dato': {'bat': '11', 'gana': 'DANI', 'como': 'directa'}},
+           {'id': 6, 'tipo': 'df', 'dato': {'nombre': 'ANA', 'pts': 3, 'dia': '2026-11-05'}}]
+    _ab, _ad = aplicar_cambios('ceu-fms-ceuta', _lb, [['s9', '2026-11-01T00:00:00Z', None, 'VIEJO', 3]], _cs)
+    _al_ = aplicar_cambios('lkr-champions', _lb, [], _cs[5:])[1]
+    ok([x[3:7] for x in _ab] == [['ANA', 'IVAN', 'IVAN', 'replica'], ['BETO', 'CARLA', 'BETO', 'directa'], ['CARLA', 'DANI', 'DANI', 'directa']]
+       and _ab[2][0] == 's4' and [(e[3], e[4]) for e in _ad] == [('ANA', 3)] and not _al_ and _lb[0][4] == 'ZIARKI'
+       and [f[:4] for f in tabla(_ab, None, _ad)] == [['ANA', 1, 0, 4], ['BETO', 1, 1, 3], ['DANI', 1, 1, 3], ['IVAN', 1, 1, 2],
+                                                  ['CARLA', 2, 0, 0]],
+       'el staff de la liga: un nombre suyo (Ziarki es Ivan), quién ganó, una que no cuenta, una cargada; un ganador que no es '
+       'de esa batalla no hace nada; un DF sólo donde los DF cuentan; y lo leído no se toca', str(_ab) + str(_ad))
     _enf = [{'id': '1', 't': '2026-11-14T21:06:00Z', 'content': '@everyone\nANA 🇪🇸 vs BETO 🇦🇷\n🔥 CARLA 🇪🇸 vs 1200 🇰🇷 🔥\n'
              'DANI 🇪🇸 vs CARLA MC 🇻🇪'}]
     _res = [{'id': '2', 't': '2026-11-15T17:56:00Z', 'content': '<@&9>\n# PRIMERA BATALLA DE LIGA'},

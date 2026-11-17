@@ -3432,6 +3432,9 @@ const RUTAS = {
   '/avisos/socio-ajustes': 'POST',
   // 🏁 quién ganó una batalla que el bot no entendió, desde el panel del socio (11/11/2026). Ver `socioFinal()` del objeto
   '/avisos/socio-final': 'POST',
+  // 🛡️ el staff de cada servidor (16/11/2026): sus roles, sus llaves y sus ligas. Ver `socioRoles()`, `socioLlave()` y
+  // `socioLiga()` del objeto; y los cambios de liga, para el ciclo (`bot/ligas.py`, con su clave)
+  '/avisos/socio-roles': 'POST', '/avisos/socio-llave': 'POST', '/avisos/socio-liga': 'POST', '/avisos/liga-cambios': 'GET',
   // 👥 el equipo de cada socio: los admins que suma su dueño (11/11/2026). Ver `socioEquipo()` del objeto
   '/avisos/socio-equipo': 'POST',
   // 🏠 la página de un socio, a su gusto: el texto, las redes y el banner (11/11/2026). Ver `socioPagina()` del objeto;
@@ -4288,6 +4291,76 @@ export function validarDecisionReporte(d) {
   if (c && !CAUSAS_REPORTE.includes(c)) return { error: 'causa' };
   const causa = v.accion === 'prueba' ? 'prueba' : c || (v.accion === 'nombre' ? 'nombre_bot' : v.accion === 'ganador' ? 'llave_bot' : v.accion === 'no_cuenta' ? 'organizador' : '');
   return Object.assign({}, v, { causa });
+}
+//: 🛡️ LOS ROLES DEL EQUIPO DE UN SOCIO (Dlx, 16/11/2026: «todo», a la propuesta de darle a cada servidor su dueño,
+// moderadores y asistentes). El dueño (y Dlx) pueden todo; el admin, todo menos el equipo (como desde el 11/11); el
+// moderador corrige directo las llaves y las ligas DE SU SERVIDOR y contesta «quién ganó»; el asistente sólo sugiere, y
+// lo aprueba un moderador, un admin o el dueño. Un miembro sin rol guardado es admin: así entraron todos hasta hoy
+export const SOCIO_ROLES = ['admin', 'moderador', 'asistente'];
+export const SOCIO_PERMISOS = {
+  admin: ['ver', 'ajustes', 'pagina', 'final', 'llaves', 'ligas', 'sugerir'],
+  moderador: ['ver', 'final', 'llaves', 'ligas', 'sugerir'],
+  asistente: ['ver', 'sugerir'],
+};
+/** ¿Ese rol del panel puede `que`? `dlx` y `dueno` todo; `equipo`, sólo ellos. Pura (`bot/avisos_prueba.mjs`). */
+export function socioPuede(rol, que) {
+  if (rol === 'dlx' || rol === 'dueno') return true;
+  return (SOCIO_PERMISOS[rol] || []).includes(que);
+}
+//: 🏟️ LO QUE EL STAFF DE UN SERVIDOR PUEDE CAMBIAR DE SU LIGA (Dlx, 16/11/2026, Krish: «quiero poner las cosas por mi propia
+// cuenta»). La tabla no se escribe a mano: sale de las batallas, así nunca hay dos números distintos. Lo aplica el ciclo
+// (`bot/ligas.py`, `aplicar_cambios()`) cada media hora, sobre lo que leyó de los canales
+export const CAMBIOS_LIGA = ['ganador', 'no_cuenta', 'cargar', 'df', 'nombre', 'campeon'];
+/**
+ * ¿Vale un cambio de liga? `{tipo, dato}` o `{error}`. Pura (`bot/avisos_prueba.mjs`).
+ * · `ganador`: la batalla `bat` (su id) la ganó `gana` (uno de sus lados, lo valida el ciclo), `directa` o `replica`.
+ * · `no_cuenta`: la batalla `bat` no cuenta (repetida, anulada).
+ * · `cargar`: una batalla que el bot no leyó: `a`, `b`, quién ganó (`gana`, uno de los dos), `como` y el día (`dia`).
+ * · `df`: `nombre` ganó por DF (3) o sacó 1 cuando no vino nadie (`pts`), el día `dia`. Sólo suma en una liga que cuenta los DF.
+ * · `nombre`: en esta liga, `nombre` es `es` (el apodo de alguien, como `alias` en `LIGAS`).
+ * · `campeon`: la temporada terminó con `c` de campeón (como si lo anunciara su servidor).
+ */
+export function validarCambioLiga(d) {
+  const tipo = String((d && d.tipo) || '');
+  if (!CAMBIOS_LIGA.includes(tipo)) return { error: 'tipo' };
+  const txt = (x, max) => {
+    const t = String(x == null ? '' : x).replace(/\s+/g, ' ').trim();
+    return t && t.length <= max && !/[<>@]/.test(t) ? t : '';
+  };
+  const bat = String((d && d.bat) || '');
+  const como = String((d && d.como) || 'directa');
+  const dia = String((d && d.dia) || '');
+  const diaOk = /^\d{4}-\d{2}-\d{2}$/.test(dia) && !Number.isNaN(Date.parse(dia + 'T12:00:00Z'));
+  if (tipo === 'ganador' || tipo === 'no_cuenta') {
+    if (!/^[A-Za-z0-9:_-]{1,40}$/.test(bat)) return { error: 'falta la batalla' };
+    // los dos lados (opcionales): un mensaje puede traer varias batallas con el mismo id, y así se sabe cuál
+    const a = txt(d.a, 60), b = txt(d.b, 60);
+    const par = a && b ? { a, b } : {};
+    if (tipo === 'no_cuenta') return { tipo, dato: { bat, ...par } };
+    const gana = txt(d.gana, 60);
+    if (!gana || !['directa', 'replica'].includes(como)) return { error: 'falta quién ganó' };
+    return { tipo, dato: { bat, gana, como, ...par } };
+  }
+  if (tipo === 'cargar') {
+    const a = txt(d.a, 60), b = txt(d.b, 60), gana = txt(d.gana, 60);
+    if (!a || !b || a.toLowerCase() === b.toLowerCase()) return { error: 'faltan los dos' };
+    if (gana !== a && gana !== b) return { error: 'falta quién ganó' };
+    if (!['directa', 'replica'].includes(como) || !diaOk) return { error: 'falta el día' };
+    return { tipo, dato: { a, b, gana, como, dia } };
+  }
+  if (tipo === 'df') {
+    const nombre = txt(d.nombre, 60), pts = Number(d.pts);
+    if (!nombre || ![1, 3].includes(pts) || !diaOk) return { error: 'falta el nombre' };
+    return { tipo, dato: { nombre, pts, dia } };
+  }
+  if (tipo === 'nombre') {
+    const nombre = txt(d.nombre, 60), es = txt(d.es, 60);
+    if (!nombre || !es || nombre.toLowerCase() === es.toLowerCase()) return { error: 'falta el nombre' };
+    return { tipo, dato: { nombre, es } };
+  }
+  const c = txt(d.c, 60);
+  if (!c) return { error: 'falta el campeón' };
+  return { tipo, dato: { c } };
 }
 //: por qué se cerró un reporte: el bot leyó mal un nombre, el bot leyó mal la llave, se equivocó el organizador, estaba bien
 // o era una prueba. El Dashboard los cuenta (`causasDueno()`): cuál sube primero es lo que hay que arreglar primero
@@ -7009,7 +7082,7 @@ export async function rutaAvisos(req, env, ruta) {
     if (crudo.length > 2048) return json({ error: 'demasiado grande' }, 413);
     let d = null;
     try { d = JSON.parse(crudo || '{}'); } catch (e) { d = null; }
-    if (!d || typeof d !== 'object' || !/^[A-Z]{2,6}$/.test(String(d.sv || '')) || !['ver', 'sumar', 'sacar', 'buscar'].includes(d.accion)
+    if (!d || typeof d !== 'object' || !/^[A-Z]{2,6}$/.test(String(d.sv || '')) || !['ver', 'sumar', 'sacar', 'buscar', 'rol'].includes(d.accion)
         || (d.id !== undefined && !/^\d{5,25}$/.test(String(d.id))) || (d.q !== undefined && String(d.q).length > 32)
         || (d.token && !/^[A-Za-z0-9._-]{10,300}$/.test(String(d.token)))) {
       return json({ error: 'faltan datos' }, 400);
@@ -7018,7 +7091,8 @@ export async function rutaAvisos(req, env, ruta) {
     if (!q.id) return json({ error: q.error }, q.estado);
     return elObjeto(env).fetch('https://avisos/socio-equipo', {
       method: 'POST', headers: { 'content-type': 'application/json' },
-      body: JSON.stringify({ quien: q.id, sv: String(d.sv), accion: d.accion, id: d.id ? String(d.id) : '', q: d.q ? String(d.q) : '' }),
+      body: JSON.stringify({ quien: q.id, sv: String(d.sv), accion: d.accion, id: d.id ? String(d.id) : '', q: d.q ? String(d.q) : '',
+        rol: SOCIO_ROLES.includes(d.rol) ? d.rol : '' }),
     });
   }
   // 🏠 LA PÁGINA DE UN SOCIO, A SU GUSTO (Dlx, 11/11/2026): quién pide lo dice Discord; si es del equipo y qué vale, el
@@ -7075,6 +7149,36 @@ export async function rutaAvisos(req, env, ruta) {
       method: 'POST', body: JSON.stringify({ quien: q.id, sv: d.sv, k: d.k, v: d.v }),
       headers: { 'content-type': 'application/json' },
     });
+  }
+  // 🛡️ EL STAFF DE CADA SERVIDOR (Dlx, 16/11/2026: «todo»): sus roles (`socio-roles`), sus llaves (`socio-llave`) y sus
+  // ligas (`socio-liga`). Quién pide lo dice Discord; qué puede, el objeto (`socioRoles()`, `socioLlave()`, `socioLiga()`)
+  if (ruta === '/avisos/socio-roles' || ruta === '/avisos/socio-llave' || ruta === '/avisos/socio-liga') {
+    const crudo = await req.text();
+    if (crudo.length > 4096) return json({ error: 'demasiado grande' }, 413);
+    let d = null;
+    try { d = JSON.parse(crudo || '{}'); } catch (e) { d = null; }
+    const roles = ruta === '/avisos/socio-roles';
+    if (!d || typeof d !== 'object' || (d.token && !/^[A-Za-z0-9._-]{10,300}$/.test(String(d.token)))
+        || (!roles && !/^[A-Z]{2,6}$/.test(String(d.sv || '')))
+        || (!roles && !/^[a-z]{2,10}$/.test(String(d.accion || '')))
+        || (d.id !== undefined && !/^\d{1,9}$/.test(String(d.id)))
+        || (ruta === '/avisos/socio-liga' && !/^[a-z0-9-]{2,40}$/.test(String(d.liga || '')))) {
+      return json({ error: 'faltan datos' }, 400);
+    }
+    const q = await quienPide(req, env, d);
+    if (!q.id) return json({ error: q.error }, q.estado);
+    const cuerpo = roles ? { quien: q.id } : ruta === '/avisos/socio-llave'
+      ? { quien: q.id, sv: d.sv, accion: d.accion, id: d.id, fix: d.fix && typeof d.fix === 'object' ? d.fix : null }
+      : { quien: q.id, sv: d.sv, accion: d.accion, id: d.id, liga: d.liga, cambio: d.cambio && typeof d.cambio === 'object' ? d.cambio : null };
+    return elObjeto(env).fetch('https://avisos' + ruta.replace('/avisos', ''), {
+      method: 'POST', body: JSON.stringify(cuerpo), headers: { 'content-type': 'application/json' },
+    });
+  }
+  // 🏟️ LOS CAMBIOS DE LIGA DEL STAFF DE CADA SERVIDOR, PARA EL CICLO (`bot/ligas.py`): con su clave
+  if (ruta === '/avisos/liga-cambios') {
+    const k = req.headers.get('x-lg-ciclo') || '';
+    if (!env.DISCORD_TOKEN || k !== await claveCiclo(env.DISCORD_TOKEN)) return json({ error: 'no existe' }, 404);
+    return elObjeto(env).fetch('https://avisos/liga-cambios');
   }
   // 🏁 LAS FINALES QUE CONTESTÓ CADA ORGANIZADOR, PARA EL CICLO (`bot/finales.py`): con su clave
   if (ruta === '/avisos/finales') {
@@ -7633,9 +7737,16 @@ export class Avisos {
         "texto TEXT NOT NULL, hasta INTEGER NOT NULL DEFAULT 0, por TEXT NOT NULL, por_id TEXT NOT NULL DEFAULT '', t INTEGER NOT NULL)");
       for (const c of ["estado TEXT NOT NULL DEFAULT ''", "fix TEXT NOT NULL DEFAULT ''",
         "resultado TEXT NOT NULL DEFAULT ''", 't_estado INTEGER NOT NULL DEFAULT 0', "evid TEXT NOT NULL DEFAULT ''",
-        "por TEXT NOT NULL DEFAULT ''"]) {
+        "por TEXT NOT NULL DEFAULT ''",
+        // 🛡️ (16/11/2026) lo que propone un asistente de un servidor (`sug`, como un `fix`) y de qué servidor es la llave
+        "sug TEXT NOT NULL DEFAULT ''", "sv TEXT NOT NULL DEFAULT ''"]) {
         try { this.sql.exec('ALTER TABLE reportes ADD COLUMN ' + c); } catch (e) { /* ya estaba */ }
       }
+      // 🏟️ LO QUE CAMBIÓ EL STAFF DE UN SERVIDOR EN SU LIGA (16/11/2026, `socioLiga()`): lo aplica el ciclo cada media hora
+      // (`bot/ligas.py`), sobre lo que leyó. `estado` 'activo' o 'deshecho': nada se borra, para el registro
+      this.sql.exec("CREATE TABLE IF NOT EXISTS liga_cambios (id INTEGER PRIMARY KEY AUTOINCREMENT, liga TEXT NOT NULL, sv TEXT NOT NULL, " +
+        "tipo TEXT NOT NULL, dato TEXT NOT NULL, quien TEXT NOT NULL, rol TEXT NOT NULL DEFAULT '', t INTEGER NOT NULL, " +
+        "estado TEXT NOT NULL DEFAULT 'activo')");
       // 🔑 LOS EVENTOS CANCELADOS (01/10/2026): ver `cancelado()` y `cancelaciones()`
       // 📅 LOS EVENTOS DE DISCORD (19/10/2026, `eventosDiscord()`): cada anuncio de un servidor que lo tiene prendido,
       // con el evento que se le creó allá y en qué quedó (0 por crear · 1 creado · 2 en vivo · 3 terminado ·
@@ -8469,6 +8580,7 @@ export class Avisos {
       if (ruta === '/inscritos') return json(this.inscritosLista(), 200, 0);
       // 🏁 quién ganó cada final que el ciclo preguntó (`bot/finales.py`), con la clave del ciclo
       if (ruta === '/finales') return json(this.leer('finales') || {}, 200, 0);
+      if (ruta === '/liga-cambios') return json({ ok: true, cambios: this.ligaCambiosCiclo() }, 200, 0);
       if (ruta === '/vs-cola') return json(this.vsCola(new URL(req.url).searchParams.get('sv') || ''), 200, 0);
       // 🎬 los pedidos de videos, para el ciclo (`bot/videos_propios.py`), con su clave
       if (ruta === '/videos-ciclo') return json(this.videosCiclo(), 200, 0);
@@ -8701,6 +8813,9 @@ export class Avisos {
       if (ruta === '/panel-socio') return this.panelSocio(d);
       if (ruta === '/finales-pend') return json(await this.finalesPend(d));
       if (ruta === '/socio-final') return json(this.socioFinal(d));
+      if (ruta === '/socio-roles') return json(this.socioRoles(String((d && d.quien) || '')));
+      if (ruta === '/socio-llave') return json(await this.socioLlave(d));
+      if (ruta === '/socio-liga') return json(await this.socioLiga(d));
       if (ruta === '/socio-ajustes') return this.socioAjustes(d);
       if (ruta === '/socio-equipo') return this.socioEquipo(d);
       if (ruta === '/dueno-socios') { if (d && d.accion) await this.socioPaginaDlx(d); return json(this.socioRegistro()); }
@@ -14780,8 +14895,13 @@ export class Avisos {
     // 👥 y su equipo (11/11/2026): los admins que sumó el dueño entran con su propia cuenta y pueden todo menos el equipo
     const eq = this.leer('socio_equipo') || {};
     const enEquipo = (x) => (eq[x.sv] || []).some((a) => a.id === quien);
+    // 🛡️ el rol de cada uno en el equipo (16/11/2026): admin, moderador o asistente; sin rol guardado, admin (`SOCIO_ROLES`)
+    const rolEq = (x) => {
+      const a = (eq[x.sv] || []).find((y) => y.id === quien);
+      return a && SOCIO_ROLES.includes(a.rol) ? a.rol : 'admin';
+    };
     const lista = (T.servidores || []).filter((x) => [1, 2, 3].includes(tierDe(x)) && (esDlx || (conPanel(x) && (de(x).includes(quien) || enEquipo(x)))))
-      .map((x) => ({ ...x, tier: tierDe(x), rol: esDlx ? 'dlx' : de(x).includes(quien) ? 'dueno' : 'admin', duenos: de(x) }));
+      .map((x) => ({ ...x, tier: tierDe(x), rol: esDlx ? 'dlx' : de(x).includes(quien) ? 'dueno' : rolEq(x), duenos: de(x) }));
     return { esDlx, T, lista };
   }
 
@@ -14882,7 +15002,9 @@ export class Avisos {
     const accion = String((d && d.accion) || ''), id = String((d && d.id) || '');
     const x = this.sociosDe(quien).lista.find((s) => s.sv === sv);
     if (!x) return json({ error: 'no' }, 403);
-    if (x.rol === 'admin') return json({ error: 'solo_dueno' }, 403);
+    // 🛡️ el equipo es sólo del dueño (y de Dlx): ni un admin, ni un moderador, ni un asistente (16/11/2026: antes se
+    // preguntaba `rol === 'admin'`, y con los roles nuevos un moderador se podía dar a sí mismo el de admin)
+    if (!socioPuede(x.rol, 'equipo')) return json({ error: 'solo_dueno' }, 403);
     const g = this.guildDe(sv);
     if (!g) return json({ error: 'sin_guild' }, 404);
     const eq = this.leer('socio_equipo') || {};
@@ -14900,6 +15022,19 @@ export class Avisos {
           .map((m) => ({ id: String(m.user.id), n: String(m.nick || m.user.global_name || m.user.username || '').slice(0, 40),
             u: String(m.user.username || '').slice(0, 32) })) });
       } catch (e) { return json({ error: 'discord' }, 503); }
+    }
+    // 🛡️ EL ROL DE CADA UNO (16/11/2026): admin, moderador o asistente (`SOCIO_ROLES`, `SOCIO_PERMISOS`). Sólo el dueño
+    if (accion === 'rol') {
+      const rol = String((d && d.rol) || '');
+      const a = mios.find((y) => y.id === id);
+      if (!a || !SOCIO_ROLES.includes(rol)) return json({ error: 'datos' }, 400);
+      const antes = a.rol || 'admin';
+      if (antes !== rol) {
+        mios = mios.map((y) => (y.id === id ? { ...y, rol } : y));
+        eq[sv] = mios;
+        this.guardar('socio_equipo', eq);
+        this.socioAnotar(sv, quien, x.rol, 'equipo: rol de ' + (a.n || id) + ' (' + id + ')', antes, rol);
+      }
     }
     if (accion === 'sumar' || accion === 'sacar') {
       if (!/^\d{5,25}$/.test(id) || fuera.has(id)) return json({ error: 'datos' }, 400);
@@ -14923,7 +15058,7 @@ export class Avisos {
     const adm = await this.adminsDe(g);
     const tengo = new Set(mios.map((a) => a.id));
     return json({
-      ok: true, equipo: mios.map((a) => ({ id: a.id, n: a.n, t: a.t })),
+      ok: true, equipo: mios.map((a) => ({ id: a.id, n: a.n, t: a.t, rol: SOCIO_ROLES.includes(a.rol) ? a.rol : 'admin' })),
       sugeridos: adm === null ? null : adm.filter((a) => !tengo.has(a.id) && !fuera.has(a.id)),
     });
   }
@@ -14992,6 +15127,8 @@ export class Avisos {
     };
     let filtro = '';
     const cambia = d && (d.desc !== undefined || d.redes !== undefined || d.img || d.quitar_banner);
+    // 🛡️ la página la cambian el dueño y los admins; un moderador o un asistente la ven (16/11/2026, `socioPuede()`)
+    if (cambia && !socioPuede(x.rol, 'pagina')) return { error: 'no_rol' };
     if (cambia && !this.cuentaCambio(quien, 'socio_pagina', 30)) return { error: 'tope' };
     if (d && d.desc !== undefined) {
       const v = socioPaginaValida('desc', d.desc);
@@ -15224,6 +15361,8 @@ export class Avisos {
     const v = String((d && d.v) || '');
     const { esDlx, lista } = this.sociosDe(quien);
     if (!esDlx && !lista.some((x) => x.sv === sv)) return { error: 'no' };
+    // 🛡️ «quién ganó» lo contestan el dueño, los admins y los moderadores (16/11/2026); el asistente no
+    if (!esDlx && !socioPuede((lista.find((y) => y.sv === sv) || {}).rol, 'final')) return { error: 'no_rol' };
     const x = this.preguntasDe(sv).find((y) => y.k === k);
     if (!x) return { error: 'ya no está' };
     const i = 'abcdefghijklmnopqrstuvwxy'.indexOf(v);
@@ -15234,6 +15373,175 @@ export class Avisos {
     const yo = this.sociosDe(quien).lista.find((s) => s.sv === sv);
     this.socioAnotar(sv, quien, yo ? yo.rol : '', 'quién ganó: ' + (x.evento || '') + ' · ' + (x.ronda || ''), '', r.ya || nombre, this.nombreEquipo(sv, quien));
     return { ok: true, ya: r.ya || '', preguntas: this.preguntasDe(sv) };
+  }
+
+  /** 🛡️ El rol de quien pide en ese servidor: 'dlx', 'dueno', 'admin', 'moderador', 'asistente', o '' si no es suyo */
+  rolSocio(quien, sv) {
+    const { esDlx, lista } = this.sociosDe(quien);
+    if (esDlx) return 'dlx';
+    return (lista.find((x) => x.sv === sv) || {}).rol || '';
+  }
+
+  /** 🛡️ Los servidores donde quien pide es del staff y su rol en cada uno (`{SV: rol}`): la llave y las ligas lo usan */
+  socioRoles(quien) {
+    const { esDlx, lista } = this.sociosDe(quien);
+    const roles = {};
+    for (const x of lista) roles[x.sv] = esDlx ? 'dlx' : x.rol;
+    // y qué abre cada rol (`SOCIO_PERMISOS`): la página lo lee de acá, no tiene su copia
+    return { ok: true, roles, dlx: esDlx, permisos: SOCIO_PERMISOS };
+  }
+
+  /** 🗺️ De qué servidor es cada llave, `{n: SV}`: lo deja el ciclo en KV (`llaves_sv`, `bot/subir_web.py`). 10 min en memoria */
+  async llavesSv(ahora = Date.now()) {
+    if (this._llSv && ahora - this._llSv.t < 10 * MIN) return this._llSv.m;
+    let m = this._llSv ? this._llSv.m : {};
+    try { m = JSON.parse((await this.env.KV.get('llaves_sv', { cacheTtl: 300 })) || '{}') || {}; } catch (e) { /* queda el de antes */ }
+    this._llSv = { m, t: ahora };
+    return m;
+  }
+
+  /** 🛡️ Los reportes y las sugerencias de las llaves de UN servidor, para su panel: como `reportesDueno()`, con `sug` */
+  reportesSv(sv, mapa, ahora) {
+    return this.sql.exec('SELECT r.id, r.t, r.llave, r.que, r.texto, r.batalla, r.estado, r.fix, r.resultado, r.por, r.sug, i.k ' +
+      "FROM reportes r LEFT JOIN idk i ON i.id = r.quien WHERE (r.estado IN ('', 'corregir') OR r.t_estado > ?) " +
+      'ORDER BY r.t DESC LIMIT 300', ahora - 3 * DIA_MS).toArray()
+      .filter((f) => /^\d{1,6}$/.test(String(f.llave)) && String(mapa[String(f.llave)] || '') === sv).slice(0, 40).map((f) => {
+        const js = (x) => { try { return x ? JSON.parse(x) : null; } catch (e) { return null; } };
+        return { id: f.id, t: f.t, llave: f.llave, que: f.que, texto: String(f.texto || '').slice(0, 300), batalla: f.batalla,
+          de: f.k || '', estado: f.estado || '', fix: js(f.fix), sug: js(f.sug), resultado: f.resultado || '', por: f.por || '' };
+      });
+  }
+
+  /**
+   * 🛠️ LAS LLAVES DE UN SERVIDOR, DESDE SU STAFF (Dlx, 16/11/2026: «todo», a que el moderador corrija directo las llaves de
+   * su servidor y el asistente sugiera). Las mismas correcciones que el Dashboard (`validarDecisionReporte()`: un nombre, un
+   * ganador, «la llave no cuenta»), sólo en las llaves DE ESE SERVIDOR (`llavesSv()`), y por el mismo camino: un reporte
+   * decidido que aplica el ciclo (`bot/reportes.py --corregir`) en la próxima media hora.
+   * · `ver`: los reportes y sugerencias de sus llaves. · `sugerir` (asistente): queda para que lo apruebe el staff.
+   * · `corregir` (moderador, admin, dueño): sobre un reporte (`id`) o uno nuevo. · `cerrar`: un reporte que no corresponde.
+   * Todo va al registro de Dlx y cada corrección le llega a su campana: lo que cambia puntos lo puede rehacer él.
+   */
+  async socioLlave(d) {
+    const quien = String((d && d.quien) || ''), sv = String((d && d.sv) || '').toUpperCase();
+    const accion = String((d && d.accion) || '');
+    const rol = this.rolSocio(quien, sv);
+    if (!rol) return { error: 'no' };
+    const ahora = Date.now();
+    const mapa = await this.llavesSv(ahora);
+    const deSv = (n) => String(mapa[String(n)] || '') === sv;
+    const nombre = this.nombreEquipo(sv, quien) || (rol === 'dlx' ? 'Dlx' : rol === 'dueno' ? 'El dueño' : '');
+    const lista = () => this.reportesSv(sv, mapa, ahora);
+    if (accion === 'ver') return { ok: true, rol, reportes: lista() };
+    const resumen = (fx) => (fx.tipo === 'ganador' ? 'ganó ' + fx.ganador + ' (' + fx.ronda + ')' : fx.tipo === 'no_cuenta'
+      ? 'la llave no cuenta' : '«' + fx.nombre + '» es ' + (fx.es || fx.nuevo || 'quien lo reportó'));
+    const nuevoReporte = (n, que, texto, sug) => {
+      this.sql.exec('INSERT INTO reportes (quien, llave, que, texto, batalla, t, sug, sv) VALUES (?, ?, ?, ?, ?, ?, ?, ?)',
+        quien, n, que, texto.slice(0, 300), '', ahora, sug || '', sv);
+      return this.sql.exec('SELECT MAX(id) AS id FROM reportes').toArray()[0].id;
+    };
+    if (accion === 'cerrar') {
+      if (!socioPuede(rol, 'llaves')) return { error: 'no_rol' };
+      const id = Number(d.id);
+      const r = this.sql.exec('SELECT llave FROM reportes WHERE id = ?', id).toArray()[0];
+      if (!r || !deSv(r.llave)) return { error: 'ya no está' };
+      const x = await this.duenoReporte({ id, accion: 'listo', fix: null, causa: 'no_corresponde', por: quien });
+      if (x.error) return x;
+      this.socioAnotar(sv, quien, rol, 'llave #' + r.llave + ': cierra el reporte ' + id, '', 'listo', nombre);
+      return { ok: true, rol, reportes: lista() };
+    }
+    if (accion !== 'corregir' && accion !== 'sugerir') return { error: 'datos' };
+    if (!socioPuede(rol, accion === 'corregir' ? 'llaves' : 'sugerir')) return { error: 'no_rol' };
+    let id = Number((d && d.id) || 0) || 0;
+    const v = validarDecisionReporte({ ...((d && d.fix) || {}), id: id || 1 });
+    if (v.error) return v;
+    if (!v.fix || v.fix.liga) return { error: 'datos' };
+    const n = String(v.fix.n || '');
+    if (!deSv(n)) return { error: 'no_es_tuya' };
+    // «es quien lo reportó» sólo vale sobre el reporte de otro: en uno nuevo, quien reporta es el staff
+    if (v.fix.reporta && !id) return { error: 'elige de quién es' };
+    if (id) {
+      const r = this.sql.exec('SELECT llave, estado FROM reportes WHERE id = ?', id).toArray()[0];
+      if (!r || String(r.llave) !== n) return { error: 'ya no está' };
+      if (r.estado === 'aplicado') return { error: 'ya está aplicado' };
+    }
+    if (accion === 'sugerir') {
+      if (!this.cuentaCambio(quien, 'socio_llave', 30)) return { error: 'tope' };
+      if (id) this.sql.exec('UPDATE reportes SET sug = ?, sv = ? WHERE id = ?', JSON.stringify(v.fix), sv, id);
+      else id = nuevoReporte(n, 'sugerencia', resumen(v.fix), JSON.stringify(v.fix));
+      this.socioAnotar(sv, quien, rol, 'llave #' + n + ': sugiere', '', resumen(v.fix), nombre);
+      await this.avisarEquipo(sv, 'sug:' + id, '💡 Una sugerencia en la llave #' + n,
+        (nombre || 'Alguien de tu equipo') + ' sugiere: ' + resumen(v.fix) + '. Apruébala en tu panel.', ahora);
+      await this.colaReportes(ahora);
+      return { ok: true, rol, reportes: lista() };
+    }
+    if (!this.cuentaCambio(quien, 'socio_llave', 60)) return { error: 'tope' };
+    if (!id) id = nuevoReporte(n, 'staff', resumen(v.fix), '');
+    const r = await this.duenoReporte({ id, accion: v.accion, fix: v.fix, causa: v.causa, por: quien });
+    if (r.error) return r;
+    this.sql.exec('UPDATE reportes SET sv = ? WHERE id = ?', sv, id);
+    this.socioAnotar(sv, quien, rol, 'llave #' + n + ': corrige', '', resumen(v.fix), nombre);
+    // 🔔 a Dlx, por la campana (nunca DM): lo que cambia puntos lo hizo alguien del servidor y él lo puede rehacer
+    if (rol !== 'dlx') {
+      this.aBandeja(DUENO, 'socio-llave:' + id, 'socio', ('🛠️ ' + (nombre || 'El staff') + ' (' + sv + ') corrigió la llave #' + n).slice(0, 120),
+        (resumen(v.fix) + '. La aplica el ciclo en la próxima media hora; si no va, se rehace en el Dashboard → Reportes.').slice(0, 240),
+        HUB + '/freestyle-rap/dashboard', '', ahora);
+    }
+    return { ok: true, rol, reportes: lista() };
+  }
+
+  /**
+   * 🏟️ LA LIGA DE UN SERVIDOR, DESDE SU STAFF (Dlx, 16/11/2026: «todo»; Krish: «quiero poner las cosas por mi propia
+   * cuenta»). `ver` la lista de cambios; `cambiar` uno (`validarCambioLiga()`); `deshacer` uno. Sólo en las ligas DE ESE
+   * servidor (`ligasCfg()`), y lo aplica el ciclo (`bot/ligas.py`) sobre lo que leyó de los canales. La tabla nunca se
+   * escribe a mano: sale de las batallas. Todo al registro de Dlx, y cada cambio a su campana.
+   */
+  async socioLiga(d) {
+    const quien = String((d && d.quien) || ''), sv = String((d && d.sv) || '').toUpperCase();
+    const liga = String((d && d.liga) || ''), accion = String((d && d.accion) || '');
+    const rol = this.rolSocio(quien, sv);
+    if (!rol) return { error: 'no' };
+    const ahora = Date.now();
+    if (!(await this.ligasCfg(ahora)).some((L) => L && L.sv === sv && String(L.id) === liga)) return { error: 'no_es_tuya' };
+    const nombre = this.nombreEquipo(sv, quien) || (rol === 'dlx' ? 'Dlx' : rol === 'dueno' ? 'El dueño' : '');
+    const lista = () => this.sql.exec('SELECT id, tipo, dato, quien, rol, t, estado FROM liga_cambios WHERE liga = ? ORDER BY id DESC LIMIT 80', liga)
+      .toArray().map((f) => {
+        let dato = {};
+        try { dato = JSON.parse(f.dato) || {}; } catch (e) { dato = {}; }
+        return { id: f.id, tipo: f.tipo, dato, rol: f.rol, t: f.t, estado: f.estado,
+          de: this.nombreEquipo(sv, f.quien) || (f.quien === DUENO ? 'Dlx' : f.rol === 'dueno' ? 'El dueño' : '') };
+      });
+    if (accion === 'ver') return { ok: true, rol, cambios: lista() };
+    if (!socioPuede(rol, 'ligas')) return { error: 'no_rol' };
+    if (accion === 'deshacer') {
+      const id = Number(d.id);
+      const r = this.sql.exec('SELECT tipo, dato, estado FROM liga_cambios WHERE id = ? AND liga = ?', id, liga).toArray()[0];
+      if (!r || r.estado !== 'activo') return { error: 'ya no está' };
+      this.sql.exec("UPDATE liga_cambios SET estado = 'deshecho' WHERE id = ?", id);
+      this.socioAnotar(sv, quien, rol, 'liga ' + liga + ': deshace ' + r.tipo, r.dato, '', nombre);
+      return { ok: true, rol, cambios: lista() };
+    }
+    if (accion !== 'cambiar') return { error: 'datos' };
+    const v = validarCambioLiga((d && d.cambio) || {});
+    if (v.error) return v;
+    if (!this.cuentaCambio(quien, 'socio_liga', 60)) return { error: 'tope' };
+    this.sql.exec('INSERT INTO liga_cambios (liga, sv, tipo, dato, quien, rol, t) VALUES (?, ?, ?, ?, ?, ?, ?)',
+      liga, sv, v.tipo, JSON.stringify(v.dato), quien, rol, ahora);
+    this.socioAnotar(sv, quien, rol, 'liga ' + liga + ': ' + v.tipo, '', v.dato, nombre);
+    if (rol !== 'dlx') {
+      this.aBandeja(DUENO, 'socio-liga:' + liga + ':' + ahora, 'socio', ('🏟️ ' + (nombre || 'El staff') + ' (' + sv + ') cambió su liga').slice(0, 120),
+        (v.tipo + ': ' + JSON.stringify(v.dato)).slice(0, 240), HUB + '/freestyle-rap/ligas/' + liga, '', ahora);
+    }
+    return { ok: true, rol, cambios: lista() };
+  }
+
+  /** 🏟️ Los cambios de liga activos, para el ciclo (`bot/ligas.py`): `[{id, liga, sv, tipo, dato, t}]` */
+  ligaCambiosCiclo() {
+    return this.sql.exec("SELECT id, liga, sv, tipo, dato, t FROM liga_cambios WHERE estado = 'activo' ORDER BY id").toArray()
+      .map((f) => {
+        let dato = {};
+        try { dato = JSON.parse(f.dato) || {}; } catch (e) { dato = {}; }
+        return { id: f.id, liga: f.liga, sv: f.sv, tipo: f.tipo, dato, t: f.t };
+      });
   }
 
   /** 🗺️ El guild de un servidor: el mapa que deja el vigía (`guilds`), o el del chat general si todavía no lo dejó */
@@ -15296,6 +15604,8 @@ export class Avisos {
     // 🏟️ las ligas de ese servidor, para elegir un canal por liga
     const ligas = (await this.ligasCfg(Date.now())).filter((L) => L && L.sv === sv).map((L) => ({ id: String(L.id), n: String(L.n || L.id) }));
     if (d && d.cambio && typeof d.cambio === 'object') {
+      // 🛡️ los ajustes del bot los cambian el dueño y los admins (16/11/2026, `socioPuede()`)
+      if (!socioPuede(x.rol, 'ajustes')) return json({ error: 'no_rol' }, 403);
       const cual = String(d.cambio.cual || '');
       const v = socioAjusteValido(cual, d.cambio.valor, canales, ligas.map((L) => L.id));
       if (v === undefined) return json({ error: 'valor' }, 400);

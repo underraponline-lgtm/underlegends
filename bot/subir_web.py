@@ -3314,6 +3314,20 @@ CLAVE_TAGS = 'web:tags'
 CLAVE_SEMANAS = 'web:semanas'
 #: 🏆 las competencias de la semana (`bot/competencias.py`), aparte del lobby: las pide la página (Competencias y el Inicio)
 CLAVE_COMPETENCIAS = 'web:competencias'
+#: 🛡️ de qué servidor es cada llave, `{n: SV}`: lo mira el Worker para el staff de cada servidor (`llavesSv()`)
+CLAVE_LLAVES_SV = 'llaves_sv'
+
+
+def llaves_sv():
+    """🛡️ `{número de evento: SV}` de las llaves de la temporada (`datos/llaves_t1.json`), para que el staff de un servidor
+    corrija sólo las suyas (Dlx, 16/11/2026). `{}` si no hay llaves."""
+    try:
+        with io.open(os.path.join(BASE, 'datos', 'llaves_t1.json'), encoding='utf-8') as f:
+            ll = json.load(f) or {}
+    except (OSError, ValueError):
+        return {}
+    return {str(n): str(x.get('sv') or '') for n, x in sorted(ll.items(), key=lambda y: int(y[0]) if str(y[0]).isdigit() else 0)
+            if str(n).isdigit() and isinstance(x, dict) and x.get('sv')}
 
 
 def _competencias_web(pool=None):
@@ -4877,6 +4891,16 @@ def main():
                              if ok9 else '🔴 no pude subir el detalle de las ligas'))
     except Exception as e:                               # noqa: BLE001
         print('   🔴 las ligas: %s' % str(e)[:80])
+    # 🛡️ DE QUÉ SERVIDOR ES CADA LLAVE (16/11/2026), `{n: SV}`: el Worker lo mira para que el staff de un servidor corrija
+    # sólo SUS llaves (`socioLlave()` en bot/avisos.js). Sólo si cambió: cambia cuando entra una llave
+    try:
+        llsv = llaves_sv()
+        if llsv:
+            okl = subir(llsv, solo_si_cambio='--siempre' not in sys.argv, clave=CLAVE_LLAVES_SV)
+            print('   %s' % ('✓ de qué servidor es cada llave: igual' if okl is None else '✅ de qué servidor es cada llave, subido'
+                             if okl else '🔴 no pude subir de qué servidor es cada llave'))
+    except Exception as e:                               # noqa: BLE001
+        print('   🔴 de qué servidor es cada llave: %s' % str(e)[:80])
     # 🏷️ LOS TAGS DE CADA UNO, aparte del lobby (`_tags_de()`): sólo si cambió, que es cuando alguien cambia de TAG
     if tags_det:
         okt = subir({'de': tags_det}, solo_si_cambio='--siempre' not in sys.argv, clave=CLAVE_TAGS)

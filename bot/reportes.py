@@ -43,7 +43,9 @@ COLA = 'reportes'
 QUE = {'ganador': 'El ganador está mal', 'gente': 'Falta o sobra alguien',
        'nombre': 'Un nombre está mal', 'otro': 'Otra cosa',
        # 🚩 reportar usuario (21/10/2026): `perfil:<clave>`, ver `validarReporte()` de avisos.js
-       'perfil': 'Algo de su perfil'}
+       'perfil': 'Algo de su perfil',
+       # 🛡️ (16/11/2026) lo que corrigió el staff de un servidor en su llave, y lo que sugirió un asistente (`socioLlave()`)
+       'staff': 'Lo corrigió el staff del servidor', 'sugerencia': 'Una sugerencia del staff del servidor'}
 
 
 def leer():

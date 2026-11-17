@@ -17,6 +17,7 @@ import { vioVivo, vivoPendiente } from './pase.js';
 import { TEMAS_SV, leerTemas } from './temas.js';
 import CSS_PAGINA from './css/llave.css?inline';
 import { usarCss } from './css.js';
+import { pedirLlave, pedirRoles, puede } from './panelsocio.js';
 
 // 🎨 su CSS, con su pedazo (web/src/css/llave.css)
 usarCss('llave', CSS_PAGINA);
@@ -764,6 +765,86 @@ function Reporte({ n, nombres }) {
   );
 }
 
+// 🛡️ EL STAFF DEL SERVIDOR DE ESTA LLAVE (Dlx, 16/11/2026: «todo»; Trelok: «que podamos tocar las llaves directamente, o
+// sugerir»). Sólo lo ve quien es del staff de ESE servidor (`pedirRoles()`): el moderador, el admin y el dueño corrigen
+// directo —lo mismo que el Dashboard: el ganador de una batalla, un nombre, «no cuenta»—, y el asistente lo sugiere. Lo
+// valida el Worker (`socioLlave()`) y lo aplica el ciclo en la próxima media hora; la Liga se entera y lo puede rehacer
+function StaffLlave({ n, L }) {
+  const [rol, setRol] = useState('');
+  const [perm, setPerm] = useState({});
+  const [abierto, setAbierto] = useState(false);
+  const [modo, setModo] = useState('ganador');
+  const [bi, setBi] = useState(-1);
+  const [gana, setGana] = useState('');
+  const [nom, setNom] = useState('');
+  const [es, setEs] = useState('');
+  const [va, setVa] = useState(false);
+  const [est, setEst] = useState('');
+  const [ok, setOk] = useState('');
+  useEffect(() => {
+    let vivo = true;
+    if (!L || !L.sv || !/^\d+$/.test(String(n))) return undefined;
+    pedirRoles().then((r) => { if (vivo) { setRol(((r && r.roles) || {})[L.sv] || ''); setPerm((r && r.permisos) || {}); } });
+    return () => { vivo = false; };
+  }, [n, L && L.sv]); // eslint-disable-line react-hooks/exhaustive-deps
+  if (!rol || !puede(rol, 'sugerir', perm)) return null;
+  const directo = puede(rol, 'llaves', perm);
+  if (ok) return <p className="lk-rep-ok">✓ {ok}</p>;
+  if (!abierto) return <button type="button" className="btn verde chico" onClick={() => setAbierto(true)}>{directo ? 'Corregir' : 'Sugerir'} (staff de {L.sv})</button>;
+  const bats = [];
+  (L.rondas || []).forEach((R) => (R.b || []).forEach((b) => { if ((b[0] || []).length >= 2) bats.push({ ronda: R.r, lados: b[0], ganador: b[1] }); }));
+  const b = bats[bi];
+  const nombres = nombresDe(L);
+  const listo = modo === 'ganador' ? !!b && !!gana && gana !== b.ganador : modo === 'nombre' ? !!nom && es.trim().length >= 2 : true;
+  const mandar = () => {
+    if (!listo || va) return;
+    const fix = modo === 'ganador' ? { accion: 'ganador', n: String(n), ronda: b.ronda, lados: b.lados, ganador: gana }
+      : modo === 'nombre' ? { accion: 'nombre', n: String(n), nombre: nom, es: es.trim() } : { accion: 'no_cuenta', n: String(n) };
+    setVa(true); setEst('');
+    pedirLlave(L.sv, directo ? 'corregir' : 'sugerir', { fix }).then((j) => {
+      setVa(false);
+      if (j && j.ok) { setOk(directo ? 'Corregido: entra al ranking en la próxima media hora.' : 'Sugerido: lo aprueba un moderador, un admin o el dueño de tu servidor.'); return; }
+      const e = (j && j.error) || '';
+      setEst(e === 'no_es_tuya' ? 'Esta llave no es de tu servidor.' : e === 'no_rol' ? 'Tu rol no puede hacer eso.' : e === 'tope' ? 'Llegaste al tope de hoy.'
+        : e === 'falta la batalla' ? 'Elige la batalla y quién ganó.' : 'No se pudo: prueba de nuevo en un rato.');
+    }).catch(() => { setVa(false); setEst('No se pudo: prueba de nuevo en un rato.'); });
+  };
+  return (
+    <div className="lk-rep">
+      <p className="lk-rep-t">{directo ? 'Eres del staff de ' + L.sv + ': lo que corrijas acá entra al ranking en la próxima media hora, y la Liga se entera.'
+        : 'Eres asistente de ' + L.sv + ': lo que sugieras lo aprueba un moderador, un admin o el dueño.'}</p>
+      <div className="lk-rep-q" role="group" aria-label="Qué corregir">
+        {[['ganador', 'El ganador'], ['nombre', 'Un nombre'], ['no_cuenta', 'La llave no cuenta']].map(([k, t]) => (
+          <button key={k} type="button" aria-pressed={modo === k} className={modo === k ? 'on' : ''} onClick={() => { setModo(k); setEst(''); }}>{t}</button>))}
+      </div>
+      {modo === 'ganador' ? <>
+        <p className="lk-rep-t">¿Qué batalla?</p>
+        <div className="lk-rep-q" role="group" aria-label="La batalla">
+          {bats.map((x, i) => <button key={i} type="button" aria-pressed={bi === i} className={bi === i ? 'on' : ''}
+            onClick={() => { setBi(i); setGana(''); }}>{capital(String(x.ronda || '').toLowerCase())}: {x.lados.map(limpio).join(' vs ')}</button>)}
+        </div>
+        {b ? <>
+          <p className="lk-rep-t">¿Quién ganó?</p>
+          <div className="lk-rep-q" role="group" aria-label="Quién ganó">
+            {b.lados.map((x) => <button key={x} type="button" aria-pressed={gana === x} className={gana === x ? 'on' : ''} onClick={() => setGana(x)}>{limpio(x)}{x === b.ganador ? ' (lo que dice ahora)' : ''}</button>)}
+          </div>
+        </> : null}
+      </> : modo === 'nombre' ? <>
+        <p className="lk-rep-t">¿Qué nombre está mal?</p>
+        <div className="lk-rep-q" role="group" aria-label="El nombre">
+          {nombres.map((x) => <button key={x} type="button" aria-pressed={nom === x} className={nom === x ? 'on' : ''} onClick={() => setNom(x)}>{limpio(x)}</button>)}
+        </div>
+        <textarea aria-label="Quién es" maxLength={60} rows={1} value={es} onChange={(e) => setEs(e.target.value)}
+          placeholder={nom ? '¿Quién es «' + limpio(nom) + '»? Su nombre en la Liga' : 'Elige el nombre de arriba'} />
+      </> : <p className="lk-rep-t">La llave entera deja de sumar para el ranking: para una llave de prueba, repetida o que no se jugó.</p>}
+      <div className="lk-rep-pie">
+        <button type="button" className="btn verde chico" disabled={!listo || va} onClick={mandar}>{va ? 'Guardando…' : directo ? 'Corregir' : 'Sugerir'}</button>
+        <span aria-live="polite">{est}</span>
+      </div>
+    </div>
+  );
+}
+
 // ── la página ──
 export function Llave({ liga, vivoL, n: n0, raiz, dc }) {
   let n = n0;
@@ -1112,6 +1193,7 @@ export function Llave({ liga, vivoL, n: n0, raiz, dc }) {
             {(L.links || []).map((u, i, t) => <a key={u} className="btn borde2 chico" href={u} target="_blank" rel="noopener noreferrer">{t.length > 1 ? 'Llave ' + (i + 1) : 'La llave en Discord'} ↗</a>)}
             {L.vivo ? null : <Compartir cls="btn borde2 chico" url={enlace('#/llave/' + encodeURIComponent(n))} texto={'La llave de ' + limpio(L.nombre)} etiqueta="Compartir" />}
             <Reporte n={n} nombres={nombresDe(L)} />
+            {enVivo ? null : <StaffLlave n={n} L={L} />}
           </div>
         </section>
         {/* ⚔️ lo que se juega ahora, en grande; y al final, el campeón */}

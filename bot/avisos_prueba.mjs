@@ -3069,6 +3069,39 @@ const ok = (cond, que, det) => {
       ok(reg.ok && reg.xs.some((x) => /suma a Beto/.test(x.que) && x.rol === 'dueno') && reg.xs.some((x) => x.que === 'liga:fmh-x' && x.rol === 'admin' && x.n === 'Beto')
         && reg.xs.some((x) => /saca a Admin Uno/.test(x.que)) && reg.canales['555'] === 'batallas',
       'el registro de los socios anota quién (dueño o admin, con su nombre), qué y lo de antes y después', JSON.stringify(reg.xs.map((x) => x.que)));
+      // 🛡️ EL STAFF DE CADA SERVIDOR (16/11/2026): el dueño le da un rol a Beto; moderador corrige sus llaves y su liga,
+      // asistente sólo sugiere; nada de otro servidor; y Dlx se entera por la campana
+      const rolEq = await eq('400000000000000001', 'rol', { id: '400000000000000006', rol: 'moderador' });
+      const rolMal = await eq('400000000000000006', 'rol', { id: '400000000000000006', rol: 'admin' });
+      o._cfgT = new Map();
+      const ajMod = await aj('400000000000000006', 'ligas', '555');
+      kvMem.set('llaves_sv', JSON.stringify({ 600: 'FFA', 601: 'SR' }));
+      o._llSv = null;
+      const sl = (quien, accion, extra) => o.socioLlave(Object.assign({ quien, sv: 'FFA', accion }, extra || {}));
+      const l1 = await sl('400000000000000006', 'corregir', { fix: { accion: 'no_cuenta', n: '600' } });
+      const l2 = await sl('400000000000000006', 'corregir', { fix: { accion: 'no_cuenta', n: '601' } });
+      await eq('400000000000000001', 'rol', { id: '400000000000000006', rol: 'asistente' });
+      const l3 = await sl('400000000000000006', 'corregir', { fix: { accion: 'no_cuenta', n: '600' } });
+      const l4 = await sl('400000000000000006', 'sugerir', { fix: { accion: 'ganador', n: '600', ronda: 'FINAL', lados: ['ANA', 'BETO'], ganador: 'ANA' } });
+      const l5 = await sl('400000000000000009', 'ver');
+      ok(rolEq.ok && rolEq.equipo.find((x) => x.id === '400000000000000006').rol === 'moderador' && rolMal.error === 'solo_dueno'
+        && ajMod.error === 'no_rol' && l1.ok && l1.reportes.some((r) => r.llave === '600' && r.estado === 'corregir' && r.fix.tipo === 'no_cuenta')
+        && l2.error === 'no_es_tuya' && l3.error === 'no_rol' && l4.ok && l4.reportes.some((r) => r.sug && r.sug.ganador === 'ANA')
+        && l5.error === 'no' && enBandeja(A.DUENO).some((k) => /^socio-llave:/.test(k)),
+      'el staff de un servidor: el dueño da los roles; el moderador corrige las llaves de su servidor (y no los ajustes ni otra llave); el asistente sólo sugiere; y Dlx se entera',
+        JSON.stringify([rolEq.error, rolMal.error, ajMod.error, l1.error, l2.error, l3.error, l4.error, l5.error]));
+      const sg = (quien, accion, extra) => o.socioLiga(Object.assign({ quien, sv: 'FFA', liga: 'fmh-x', accion }, extra || {}));
+      const lg1 = await sg('400000000000000006', 'cambiar', { cambio: { tipo: 'campeon', c: 'ANA' } });
+      await eq('400000000000000001', 'rol', { id: '400000000000000006', rol: 'moderador' });
+      const lg2 = await sg('400000000000000006', 'cambiar', { cambio: { tipo: 'cargar', a: 'ANA', b: 'BETO', gana: 'ANA', dia: '2026-11-16' } });
+      const lg3 = await o.socioLiga({ quien: '400000000000000006', sv: 'FFA', liga: 'otra', accion: 'cambiar', cambio: { tipo: 'campeon', c: 'ANA' } });
+      const enCiclo = o.ligaCambiosCiclo().length;
+      const lg4 = await sg('400000000000000006', 'deshacer', { id: lg2.cambios[0].id });
+      ok(lg1.error === 'no_rol' && lg2.ok && lg2.cambios[0].dato.gana === 'ANA' && lg2.cambios[0].de === 'Beto' && lg3.error === 'no_es_tuya'
+        && enCiclo === 1 && lg4.ok && lg4.cambios[0].estado === 'deshecho' && o.ligaCambiosCiclo().length === 0,
+      'la liga de un servidor: el moderador carga una batalla (el asistente no), nada en una liga de otro, el ciclo la ve, y deshacerla la saca',
+        JSON.stringify([lg1.error, lg2.error, lg3.error, enCiclo, lg4.error]));
+      await eq('400000000000000001', 'rol', { id: '400000000000000006', rol: 'admin' });
       // 📲 Discord no deja escribir: al equipo, una vez por día y canal
       await o.chatSinPermiso('FFA', '555', 403);
       await o.chatSinPermiso('FFA', '555', 403);
@@ -3310,6 +3343,25 @@ const ok = (cond, que, det) => {
     && A.socioAjusteValido('aviso_evento', 'si', cs) === undefined
     && A.socioAjusteValido('multiplicador', 2, cs) === undefined && JSON.stringify(A.CFG_BASE) === '{"nick":true,"canales":[],"avisos":"","vivo":"","vivo_nivel":"normal","ascenso":"","aviso_evento":"","ligas":"","ligas_por":{},"resumen":""}',
   'el panel del socio: el #N, los canales (sin repetir, sólo los del servidor), el nivel, los eventos de Discord, el aviso de cada evento, el canal de las ligas y el del resumen (11/11/2026); nada más');
+  // 🛡️ el staff de cada servidor (16/11/2026): qué puede cada rol, y qué cambio de liga vale
+  ok(A.socioPuede('dueno', 'equipo') && A.socioPuede('dlx', 'ajustes') && !A.socioPuede('admin', 'equipo') && A.socioPuede('admin', 'ajustes')
+    && A.socioPuede('moderador', 'llaves') && A.socioPuede('moderador', 'ligas') && A.socioPuede('moderador', 'final')
+    && !A.socioPuede('moderador', 'ajustes') && !A.socioPuede('moderador', 'pagina')
+    && A.socioPuede('asistente', 'sugerir') && !A.socioPuede('asistente', 'llaves') && !A.socioPuede('asistente', 'final')
+    && !A.socioPuede('', 'ver') && !A.socioPuede('otro', 'ver') && A.SOCIO_ROLES.join() === 'admin,moderador,asistente',
+  'los roles del equipo de un socio: el dueño todo, el admin todo menos el equipo, el moderador llaves, ligas y quién ganó, el asistente sólo sugiere');
+  const cl = A.validarCambioLiga;
+  ok(cl({ tipo: 'ganador', bat: '155', gana: 'ANA', como: 'replica' }).dato.como === 'replica'
+    && cl({ tipo: 'ganador', bat: '155', gana: 'ANA', como: 'df' }).error && cl({ tipo: 'no_cuenta', bat: '15 5' }).error
+    && cl({ tipo: 'cargar', a: 'ANA', b: 'BETO', gana: 'BETO', dia: '2026-11-16' }).dato.como === 'directa'
+    && cl({ tipo: 'cargar', a: 'ANA', b: 'BETO', gana: 'CARLA', dia: '2026-11-16' }).error
+    && cl({ tipo: 'cargar', a: 'ANA', b: 'ana', gana: 'ANA', dia: '2026-11-16' }).error
+    && cl({ tipo: 'cargar', a: 'ANA', b: 'BETO', gana: 'ANA', dia: '16/11' }).error
+    && cl({ tipo: 'df', nombre: 'ANA', pts: 3, dia: '2026-11-16' }).dato.pts === 3 && cl({ tipo: 'df', nombre: 'ANA', pts: 2, dia: '2026-11-16' }).error
+    && cl({ tipo: 'nombre', nombre: 'ZIARKI', es: 'IVAN' }).dato.es === 'IVAN' && cl({ tipo: 'nombre', nombre: 'IVAN', es: 'ivan' }).error
+    && cl({ tipo: 'campeon', c: 'TROT' }).dato.c === 'TROT' && cl({ tipo: 'campeon', c: '<@1>' }).error && cl({ tipo: 'tabla' }).error
+    && cl({ tipo: 'nombre', nombre: '@everyone', es: 'ANA' }).error,
+  'un cambio de liga del staff: ganador (directa o réplica), no cuenta, cargar (con los dos, quién de ellos ganó y el día), DF (3 o 1), un nombre y el campeón; la tabla no, y nada de menciones');
 }
 
 {

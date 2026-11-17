@@ -2612,7 +2612,9 @@ const ESTADO_REP = {
   corregir: ['⏳ en la próxima corrida', ''], aplicado: ['✅ corregido', 'ok'], no_pude: ['⚠️ no se pudo', 'ojo'],
   listo: ['listo', ''], prueba: ['era una prueba', ''],
 };
-const QUE_REP = { ganador: 'el ganador', gente: 'falta o sobra alguien', nombre: 'un nombre', otro: 'otra cosa', perfil: 'su perfil' };
+// 🛡️ (16/11/2026) `staff`: lo corrigió el staff del servidor en su panel; `sugerencia`: lo propuso un asistente (`socioLlave()`)
+const QUE_REP = { ganador: 'el ganador', gente: 'falta o sobra alguien', nombre: 'un nombre', otro: 'otra cosa', perfil: 'su perfil',
+  staff: 'lo corrigió su servidor', sugerencia: 'una sugerencia de su servidor' };
 // las partes de un lado: «Presagio, NC, Agus» son tres
 const partes = (x) => String(x || '').split(/\s*[,+&]\s*/).map((s) => s.trim()).filter(Boolean);
 

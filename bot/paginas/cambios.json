@@ -11,6 +11,18 @@
   ],
   "cambios": [
     {
+        "version": "5.80",
+        "dia": "2026-11-16",
+        "cuando": "2026-11-16T22:59:51-05:00",
+        "titulo": "El staff de cada servidor",
+        "items": [
+            "El dueño de cada servidor socio le da un **rol** a cada uno de su equipo: **admin**, **moderador** o **asistente**.",
+            "Los moderadores **corrigen las llaves de su servidor** desde la llave misma (quién ganó, un nombre, si cuenta), y los asistentes lo **sugieren**. Lo ves todo en **Tus llaves**, en el panel de tu servidor.",
+            "En **Tus ligas**, el staff de cada servidor corrige lo que el bot leyó de su liga, carga una batalla que no leyó y cierra la temporada con su campeón.",
+            "En `/settings` hay un botón nuevo, **Más canales**: el aviso de cada evento, las batallas de liga y el resumen de los lunes, como en la página."
+        ]
+    },
+    {
         "version": "5.79",
         "dia": "2026-11-16",
         "cuando": "2026-11-16T22:51:00-05:00",

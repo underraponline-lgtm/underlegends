@@ -1557,6 +1557,27 @@ console.log('\nLOS CANALES DONDE SE PUEDE PEDIR LA CARTA\n');
      && JSON.parse((await env.KV.get('cfg:' + G.FFA)) || '{}').ascenso === '');
   delete META.asc;
 }
+{
+  // 📣 «Más canales» (16/11/2026): lo que estaba sólo en la página —el aviso de cada evento, las ligas, el resumen—, en el
+  // mismo `cfg:<guild>` que escribe la página
+  const r0 = await pedir(clickCfg(G.FFA, ADMIN, 'cfg:mas'));
+  ok('el botón «Más canales» abre su panel, con el aviso de cada evento, las ligas y el resumen', /Más canales/.test(texto(r0))
+     && /donde habla el bot en vivo/.test(texto(r0)) && JSON.stringify(r0.json).includes('cfg:aviso_evento') && r0.json?.type === 7);
+  const r1 = await pedir(clickCfg(G.FFA, ADMIN, 'cfg:aviso_evento', ['chat']));
+  const r2 = await pedir(clickCfg(G.FFA, ADMIN, 'cfg:ligas', ['555111']));
+  const r3 = await pedir(clickCfg(G.FFA, ADMIN, 'cfg:resumen', ['555222']));
+  const c3 = JSON.parse((await env.KV.get('cfg:' + G.FFA)) || '{}');
+  ok('se guardan con los valores de la página (chat, un canal, otro canal) y el panel lo dice',
+     /en el chat general/.test(texto(r1)) && /<#555111>/.test(texto(r2)) && /<#555222>/.test(texto(r3))
+     && c3.aviso_evento === 'chat' && c3.ligas === '555111' && c3.resumen === '555222', JSON.stringify(c3));
+  const r4 = await pedir(clickCfg(G.FFA, ADMIN, 'cfg:ligas_no'));
+  const r5 = await pedir(clickCfg(G.FFA, ADMIN, 'cfg:aviso_evento', ['vivo']));
+  const c5 = JSON.parse((await env.KV.get('cfg:' + G.FFA)) || '{}');
+  ok('apagar las ligas guarda «no», y «donde habla en vivo» es vacío, como en la página',
+     /\*\*apagadas\*\*/.test(texto(r4)) && c5.ligas === 'no' && c5.aviso_evento === '' && /Prender las batallas/.test(JSON.stringify(r5.json)));
+  await pedir(clickCfg(G.FFA, ADMIN, 'cfg:ligas_no'));
+  await pedir(clickCfg(G.FFA, ADMIN, 'cfg:resumen', []));
+}
 
 console.log('\nEL DISPARADOR DEL CICLO: LAS MARCAS VAN AL OBJETO, NO A KV\n');
 

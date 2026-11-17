@@ -19,7 +19,7 @@
 // aprieta «Entrar con Discord».
 // ⚠️ SIN EMOJIS (13/10/2026: cada celular los dibuja distinto): los títulos de cada rapero llevan el ícono de la copa.
 import { useEffect, useState } from 'react';
-import { contestarFinal, pedirAjustes, pedirEquipo, pedirPagina, pedirPanel } from './panelsocio.js';
+import { contestarFinal, pedirAjustes, pedirEquipo, pedirLiga, pedirLlave, pedirPagina, pedirPanel, pedirRoles, puede } from './panelsocio.js';
 import { aBase64, achicar } from './imagen.js';
 import { limpio, num, siglaDe } from './liga.js';
 import { DosToques, Ico, Sec, silueta } from './piezas.jsx';
@@ -504,7 +504,7 @@ function Ajustes({ sv }) {
 }
 
 // ── un servidor, entero ──
-function Servidor({ liga, x, svs, onSel, t }) {
+function Servidor({ liga, x, svs, onSel, t, permisos }) {
   const p = x.panel || {};
   const m = x.m || {};
   const color = ((liga.svs || {})[x.sv] || {}).color || '#29B298';
@@ -515,9 +515,14 @@ function Servidor({ liga, x, svs, onSel, t }) {
   const irs = p.sug_ir || [];
   const vu = p.vuelven && p.vuelven.n != null ? p.vuelven : null;
   const preg = x.preguntas || [];
-  const items = [...(preg.length ? [['sp-preg', 'Para contestar', preg.length]] : []), ['sp-puntaje', 'Puntaje', null], ['sp-sug', 'Lo que conviene', sugs.length], ['sp-vuelven', '¿Vuelven?', vu ? null : 0], ['sp-cuando', 'Cuándo', null],
-    ['sp-semanas', 'Semanas', null], ['sp-gente', 'Su gente', null], ['sp-visitas', 'Visitas', null], ['sp-ajustes', 'Ajustes', null],
-    ['sp-pagina', 'Tu página', null], ...(x.rol !== 'admin' ? [['sp-equipo', 'Equipo', null]] : [])];
+  // 🛡️ qué ve cada rol (16/11/2026): los ajustes y la página, de admin para arriba; el equipo, sólo el dueño
+  const p_ = (que) => puede(x.rol, que, permisos);
+  const dueno = x.rol === 'dueno' || x.rol === 'dlx';
+  const items = [...(preg.length && p_('final') ? [['sp-preg', 'Para contestar', preg.length]] : []), ['sp-llaves', 'Tus llaves', null], ['sp-ligas', 'Tus ligas', null],
+    ['sp-puntaje', 'Puntaje', null], ['sp-sug', 'Lo que conviene', sugs.length], ['sp-vuelven', '¿Vuelven?', vu ? null : 0], ['sp-cuando', 'Cuándo', null],
+    ['sp-semanas', 'Semanas', null], ['sp-gente', 'Su gente', null], ['sp-visitas', 'Visitas', null], ...(p_('ajustes') ? [['sp-ajustes', 'Ajustes', null]] : []),
+    ...(p_('pagina') ? [['sp-pagina', 'Tu página', null]] : []), ...(dueno ? [['sp-equipo', 'Equipo', null]] : [])];
+  const ROL_TXT = { admin: 'admin', moderador: 'moderador', asistente: 'asistente' };
   return (
     <>
       {svs.length > 1 ? <Elegir liga={liga} svs={svs} sel={x.sv} onSel={onSel} /> : null}
@@ -526,23 +531,31 @@ function Servidor({ liga, x, svs, onSel, t }) {
         emblema={logo ? <img alt="" src={logo} /> : <b className="sp-sigla">{siglaDe(x.sv)}</b>}
         tag={TIER[x.tier] || 'TIER ' + x.tier}
         sub={<>{siglaDe(x.sv)}{x.ultimo ? ' · último evento el ' + fechaCorta(x.ultimo) : ''}{m.miembros ? ' · ' + num(m.miembros) + ' miembros en su Discord' : ''}
-          {x.rol === 'admin' ? <small className="sp-medido">Entraste como admin: te sumó el dueño del servidor.</small> : null}
+          {ROL_TXT[x.rol] ? <small className="sp-medido">Entraste como {ROL_TXT[x.rol]}: te sumó el dueño del servidor.</small> : null}
           {t ? <small className="sp-medido">Medido el {W.fmtFecha ? W.fmtFecha(t, { day: 'numeric', month: 'numeric' }) : fechaCorta(String(t).slice(0, 10))}
             {W.fmtHora ? ' a las ' + W.fmtHora(new Date(t)) : ''}. Se actualiza cada media hora.</small> : null}</>}
         acciones={<>
           <a className="btn verde" href={'#/sv/' + encodeURIComponent(siglaDe(x.sv))}>Su página</a>
-          <button type="button" className="btn borde" onClick={(e) => irA(e, 'sp-ajustes')}>Ajustes del bot</button>
+          {p_('ajustes') ? <button type="button" className="btn borde" onClick={(e) => irA(e, 'sp-ajustes')}>Ajustes del bot</button>
+            : <button type="button" className="btn borde" onClick={(e) => irA(e, 'sp-llaves')}>Tus llaves</button>}
         </>}
         numeros={[['PUNTAJE', <><Contador v={pts} /><small className="sp-de"> de 100</small></>, 'dest' + (sube ? ' sube' : '')],
           ['EVENTOS · 4 SEMANAS', num(m.eventos || 0)], ['RAPEROS POR EVENTO', m.eventos ? coma(m.por_evento || 0) : '—'],
           // ⚠️ el «vuelve» de abajo, con sus 14 días cumplidos: el de los nuevos de 4 semanas daba otro número al lado del de la sección
           ['NUEVOS · 4 SEMANAS', <>{num(m.nuevos || 0)}{vu && vu.n >= MIN_VUELVEN ? <small className="sp-de"> vuelve el {pc(vu.v, vu.n)} %</small> : null}</>]]} />
       <Indice items={items} />
-      {preg.length ? (
+      {preg.length && p_('final') ? (
         <Sec id="sp-preg" titulo="Para contestar" bajada="Batallas de tus llaves donde el bot no encontró quién ganó. Las puede marcar el dueño acá o el staff con los botones de Discord: vale la primera." extra="negra">
           <Preguntas sv={x.sv} xs={preg} />
         </Sec>
       ) : null}
+      {/* 🛡️ TUS LLAVES Y TUS LIGAS (16/11/2026): lo que corrige el staff de tu servidor, sin pasar por la Liga */}
+      <Sec id="sp-llaves" titulo="Tus llaves" bajada="Lo que reportó la gente de tus llaves y lo que sugirió tu equipo. Los moderadores, los admins y tú lo corrigen; los asistentes lo sugieren.">
+        <LlavesStaff sv={x.sv} rol={x.rol} permisos={permisos} />
+      </Sec>
+      <Sec id="sp-ligas" titulo="Tus ligas" bajada="Corrige lo que el bot leyó de tus ligas, carga lo que no leyó y cierra la temporada con su campeón.">
+        <LigasStaff sv={x.sv} rol={x.rol} permisos={permisos} />
+      </Sec>
       <Sec id="sp-puntaje" titulo="Su puntaje" bajada="De 0 a 100, con las últimas 4 semanas: es lo que mira la Liga para el nivel de cada socio. Cada parte tiene su tope.">
         <Puntaje x={x} />
         <ComoSubir s={p.subir} />
@@ -582,15 +595,15 @@ function Servidor({ liga, x, svs, onSel, t }) {
       </Sec>
       {/* ⚠️ «el aviso de cada evento» y «Eventos de Discord» NO están en /settings (bot/worker.js): son sólo de acá y del
           Dashboard. Decir «es lo mismo que /settings» era falso para esos dos */}
-      <Sec id="sp-ajustes" titulo="Los ajustes del bot" bajada="Los de /settings en tu Discord —lo último que cambies, acá o allá, es lo que vale— y los que sólo están acá: el aviso de cada evento, las batallas de tus ligas y los eventos de Discord.">
+      {p_('ajustes') ? <Sec id="sp-ajustes" titulo="Los ajustes del bot" bajada="Los de /settings en tu Discord —lo último que cambies, acá o allá, es lo que vale— y los que sólo están acá: el aviso de cada evento, las batallas de tus ligas y los eventos de Discord.">
         <Ajustes sv={x.sv} />
-      </Sec>
-      <Sec id="sp-pagina" titulo="Tu página" bajada="Lo que se ve arriba en la página de tu servidor: un texto, tus redes y un banner. Sale en la próxima media hora.">
+      </Sec> : null}
+      {p_('pagina') ? <Sec id="sp-pagina" titulo="Tu página" bajada="Lo que se ve arriba en la página de tu servidor: un texto, tus redes y un banner. Sale en la próxima media hora.">
         <TuPagina sv={x.sv} />
-      </Sec>
-      {/* 👥 TU EQUIPO (Dlx, 11/11/2026): sólo el dueño lo ve y lo maneja; sus admins entran con su propia cuenta */}
-      {x.rol !== 'admin' ? (
-        <Sec id="sp-equipo" titulo="Tu equipo" bajada="Los admins de tu servidor que pueden usar este panel. Entran con su propia cuenta de Discord y pueden cambiar todo menos el equipo.">
+      </Sec> : null}
+      {/* 👥 TU EQUIPO (Dlx, 11/11/2026): sólo el dueño lo ve y lo maneja; cada uno entra con su propia cuenta y con su rol */}
+      {dueno ? (
+        <Sec id="sp-equipo" titulo="Tu equipo" bajada="Los de tu servidor que pueden usar este panel, cada uno con su rol. Entran con su propia cuenta de Discord.">
           <Equipo sv={x.sv} />
         </Sec>
       ) : null}
@@ -688,11 +701,12 @@ function Equipo({ sv }) {
   }, [q, sv]);
   const hacer = (accion, p) => {
     setOcup(p.id); setMsg('');
-    pedirEquipo(sv, accion, { id: p.id }).then((r) => {
+    pedirEquipo(sv, accion, accion === 'rol' ? { id: p.id, rol: p.rol } : { id: p.id }).then((r) => {
       setOcup('');
       if (r && r.ok) {
         setJ(r);
-        setMsg(accion === 'sumar' ? p.n + ' ya puede entrar a este panel con su cuenta de Discord.' : p.n + ' ya no entra a este panel.');
+        setMsg(accion === 'rol' ? limpio(p.n) + ' ahora es ' + ((ROLES_EQ.find((x) => x[0] === p.rol) || [])[1] || p.rol).toLowerCase() + '.'
+          : accion === 'sumar' ? p.n + ' ya puede entrar a este panel con su cuenta de Discord.' : p.n + ' ya no entra a este panel.');
         if (accion === 'sumar') { setQ(''); setHall(null); }
       } else setMsg(AJ_ERR[r && r.error] || 'No se pudo: prueba de nuevo en un rato.');
     });
@@ -707,9 +721,17 @@ function Equipo({ sv }) {
     <div className="sp-eq">
       <h3 className="sp-h">En tu equipo <small>{eq.length} de 10</small></h3>
       {eq.length ? <ul className="sp-eq-l">{eq.map((p) => fila(p,
-        <DosToques className="btn borde2 chico" disabled={!!ocup} confirmar={'Toca de nuevo: ' + (limpio(p.n) || 'esta persona') + ' ya no entra'}
-          onClick={() => hacer('sacar', p)}>Sacar</DosToques>))}</ul>
+        <span className="sp-eq-acc">
+          {/* 🛡️ su rol (16/11/2026): qué abre cada uno lo decide el Worker (`SOCIO_PERMISOS`) */}
+          <select value={p.rol || 'admin'} disabled={!!ocup} aria-label={'Rol de ' + (limpio(p.n) || 'esta persona')}
+            onChange={(e) => hacer('rol', Object.assign({}, p, { rol: e.target.value }))}>
+            {ROLES_EQ.map(([k, t]) => <option key={k} value={k}>{t}</option>)}
+          </select>
+          <DosToques className="btn borde2 chico" disabled={!!ocup} confirmar={'Toca de nuevo: ' + (limpio(p.n) || 'esta persona') + ' ya no entra'}
+            onClick={() => hacer('sacar', p)}>Sacar</DosToques>
+        </span>))}</ul>
         : <p className="sp-vacio">Todavía no sumaste a nadie: el panel lo ves sólo tú.</p>}
+      <ul className="sp-roles">{ROLES_EQ.map(([k, t, d]) => <li key={k}><b>{t}</b> {d}.</li>)}</ul>
       <h3 className="sp-h">Con permiso de admin en tu Discord <small>tienen Administrador o Gestionar servidor</small></h3>
       {sug === null ? <p className="sp-vacio">Discord no me dijo quiénes son ahora: búscalos abajo por su nombre.</p>
         : sug && sug.length ? <ul className="sp-eq-l">{sug.map((p) => fila(p,
@@ -766,6 +788,201 @@ function Preguntas({ sv, xs }) {
   );
 }
 
+// 🛡️ EL STAFF DE CADA SERVIDOR (Dlx, 16/11/2026: «todo»): los roles del equipo, las llaves y las ligas. Qué puede cada rol
+// lo decide el Worker (`SOCIO_PERMISOS`, `socioPuede()` de bot/avisos.js) y llega con `pedirRoles()`: acá no hay copia
+const ROLES_EQ = [['admin', 'Admin', 'todo menos el equipo'], ['moderador', 'Moderador', 'corrige tus llaves y tus ligas, y contesta quién ganó'],
+  ['asistente', 'Asistente', 'sugiere correcciones, que aprueba un moderador, un admin o tú']];
+const ERR_STAFF = { no: 'Este servidor no es tuyo.', no_rol: 'Tu rol no puede hacer eso.', no_es_tuya: 'Eso no es de tu servidor.',
+  tope: 'Llegaste al tope de cambios de hoy.', 'ya no está': 'Eso ya no está.', 'ya está aplicado': 'Eso ya se aplicó.',
+  'falta quién ganó': 'Elige quién ganó.', 'faltan los dos': 'Escribe los dos nombres, distintos.', 'falta el día': 'Elige el día.',
+  'falta el nombre': 'Escribe el nombre.', 'falta el campeón': 'Elige al campeón.', red: 'No hay conexión: prueba de nuevo en un rato.' };
+const errStaff = (x) => ERR_STAFF[x && x.error] || 'No se pudo: ' + ((x && x.error) || 'la red') + '.';
+
+// 🛠️ TUS LLAVES: lo que reportó la gente de tus llaves y lo que sugirió tu equipo. Corregir se hace en la llave misma
+const QUE_LL = { ganador: 'El ganador está mal', gente: 'Falta o sobra alguien', nombre: 'Un nombre está mal', otro: 'Otra cosa',
+  staff: 'Corrección de tu equipo', sugerencia: 'Sugerencia de tu equipo' };
+const ESTADO_LL = { '': 'Sin revisar', corregir: 'Corregido: entra al ranking en la próxima media hora', aplicado: 'Aplicado',
+  listo: 'Cerrado', prueba: 'Cerrado', no_pude: 'No se pudo aplicar: lo mira la Liga' };
+const fixTxt = (f) => (!f ? '' : f.tipo === 'ganador' ? 'ganó ' + limpio(f.ganador) + ' (' + RONDA(f.ronda) + ')'
+  : f.tipo === 'no_cuenta' ? 'la llave no cuenta' : '«' + limpio(f.nombre) + '» es ' + limpio(f.es || f.nuevo || 'quien lo reportó'));
+function LlavesStaff({ sv, rol, permisos }) {
+  const [j, setJ] = useState(null);
+  const [ocup, setOcup] = useState(0);
+  const [msg, setMsg] = useState('');
+  useEffect(() => {
+    let vivo = true;
+    setJ(null); setMsg('');
+    pedirLlave(sv, 'ver').then((r) => { if (vivo) setJ(r || { error: 'red' }); });
+    return () => { vivo = false; };
+  }, [sv]);
+  const corrige = puede(rol, 'llaves', permisos);
+  const hacer = (r, accion, extra, listo) => {
+    setOcup(r.id); setMsg('');
+    pedirLlave(sv, accion, Object.assign({ id: r.id }, extra || {})).then((x) => {
+      setOcup(0);
+      if (x && x.ok) { setJ(x); setMsg(listo); } else setMsg(errStaff(x));
+    });
+  };
+  if (!j) return <p className="pronto-p">Buscando los reportes de tus llaves…</p>;
+  if (!j.ok) return <p className="pronto-p">{errStaff(j)}</p>;
+  const xs = j.reportes || [];
+  return (
+    <div className="sp-ll">
+      <p className="sp-ll-ayuda">{corrige
+        ? 'Para corregir una llave, ábrela: como eres del staff de tu servidor, abajo tienes «Corregir». Lo que corriges entra al ranking en la próxima media hora, y la Liga se entera.'
+        : 'Para sugerir una corrección, abre la llave: abajo tienes «Sugerir». La aprueba un moderador, un admin o el dueño.'}</p>
+      {xs.length ? <ol className="sp-ll-l">{xs.map((r) => (
+        <li key={r.id}>
+          <p className="sp-ll-cual"><a href={'#/llave/' + r.llave}>Llave #{r.llave}</a> · {QUE_LL[r.que] || QUE_LL.otro}
+            {r.de ? <> · de <a href={'#/r/' + encodeURIComponent(r.de)}>{r.de}</a></> : null}</p>
+          {r.texto && r.que !== 'staff' && r.que !== 'sugerencia' ? <p className="sp-ll-t">{r.texto}</p> : null}
+          {r.sug ? <p className="sp-ll-t">Sugiere: <b>{fixTxt(r.sug)}</b></p> : null}
+          {r.fix ? <p className="sp-ll-t">Corregido: <b>{fixTxt(r.fix)}</b>{r.por ? ' · ' + r.por : ''}</p> : null}
+          <p className="sp-ll-est">{ESTADO_LL[r.estado] || r.estado}</p>
+          {corrige && !r.estado ? (
+            <div className="sp-ll-acc">
+              {r.sug ? <button type="button" className="btn verde chico" disabled={!!ocup}
+                onClick={() => hacer(r, 'corregir', { fix: Object.assign({}, r.sug, { accion: r.sug.tipo }) }, 'Listo: entra al ranking en la próxima media hora.')}>Aplicar lo sugerido</button> : null}
+              <DosToques className="btn borde2 chico" disabled={!!ocup} confirmar="Toca de nuevo: se cierra sin cambiar nada"
+                onClick={() => hacer(r, 'cerrar', {}, 'Cerrado sin cambios.')}>Cerrar sin cambios</DosToques>
+            </div>
+          ) : null}
+        </li>
+      ))}</ol> : <p className="sp-vacio">Nadie reportó nada de tus llaves en los últimos días.</p>}
+      {msg ? <p className="sp-preg-msg" role="status">{msg}</p> : null}
+    </div>
+  );
+}
+
+// 🏟️ TUS LIGAS: corregir lo que el bot leyó (quién ganó, una que no cuenta), cargar una batalla que no leyó, un DF donde
+// los DF suman, un nombre de tu liga y el campeón. La tabla no se edita: sale de las batallas. Lo aplica el ciclo
+const CAMBIO_TXT = (c) => {
+  const d = c.dato || {};
+  return c.tipo === 'ganador' ? limpio(d.gana) + ' ganó ' + (d.a && d.b ? limpio(d.a) + ' vs ' + limpio(d.b) : 'esa batalla') + (d.como === 'replica' ? ', en réplica' : ', directo')
+    : c.tipo === 'no_cuenta' ? (d.a && d.b ? limpio(d.a) + ' vs ' + limpio(d.b) : 'Esa batalla') + ' no cuenta'
+      : c.tipo === 'cargar' ? limpio(d.a) + ' vs ' + limpio(d.b) + ': ganó ' + limpio(d.gana) + (d.como === 'replica' ? ' en réplica' : ' directo') + ' · ' + d.dia
+        : c.tipo === 'df' ? limpio(d.nombre) + ': ' + (d.pts === 3 ? 'ganó por DF (3)' : 'no vino nadie (1)') + ' · ' + d.dia
+          : c.tipo === 'nombre' ? '«' + limpio(d.nombre) + '» es ' + limpio(d.es) : 'Campeón: ' + limpio(d.c);
+};
+const hoyIso = () => new Date(Date.now() - 5 * 3600 * 1000).toISOString().slice(0, 10);
+function LigasStaff({ sv, rol, permisos }) {
+  const [det, setDet] = useState(null);
+  const [sel, setSel] = useState('');
+  const [j, setJ] = useState(null);
+  const [ocup, setOcup] = useState(false);
+  const [msg, setMsg] = useState('');
+  const [form, setForm] = useState(null);
+  const [fila, setFila] = useState(null);
+  useEffect(() => {
+    let vivo = true;
+    fetch('/api/ligas').then((r) => (r.ok ? r.json() : null)).then((x) => { if (vivo) setDet(x || {}); }).catch(() => { if (vivo) setDet({}); });
+    return () => { vivo = false; };
+  }, []);
+  const ligas = ((det && det.lobby && det.lobby.ligas) || []).filter((L) => L.sv === sv);
+  const L = ligas.find((x) => x.id === sel) || ligas[0];
+  const lid = L ? L.id : '';
+  useEffect(() => {
+    if (!lid) return undefined;
+    let vivo = true;
+    setJ(null); setMsg(''); setForm(null); setFila(null);
+    pedirLiga(sv, lid, 'ver').then((r) => { if (vivo) setJ(r || { error: 'red' }); });
+    return () => { vivo = false; };
+  }, [sv, lid]);
+  if (!det) return <p className="pronto-p">Buscando tus ligas…</p>;
+  if (!L) return <p className="sp-vacio">La Liga todavía no lee ninguna liga de tu servidor.</p>;
+  const cambia = puede(rol, 'ligas', permisos);
+  const bats = (((det.ligas || {})[lid] || {}).fechas || []).flatMap((f) => f.b.map((b) => ({ a: b[0], b: b[1], g: b[2], como: b[3], id: b[6], dia: f.d })))
+    .filter((b) => b.id).slice(0, 40);
+  const mandar = (cambio, listo) => {
+    setOcup(true); setMsg('');
+    pedirLiga(sv, lid, 'cambiar', { cambio }).then((x) => {
+      setOcup(false);
+      if (x && x.ok) { setJ(x); setForm(null); setFila(null); setMsg(listo); } else setMsg(errStaff(x));
+    });
+  };
+  const deshacer = (c) => {
+    setOcup(true); setMsg('');
+    pedirLiga(sv, lid, 'deshacer', { id: c.id }).then((x) => {
+      setOcup(false);
+      if (x && x.ok) { setJ(x); setMsg('Deshecho: en la próxima media hora vuelve a lo que dice el canal.'); } else setMsg(errStaff(x));
+    });
+  };
+  const LISTO = 'Guardado: se ve en la página en la próxima media hora.';
+  const campo = (k, ph, max = 60) => <input type="text" value={(form && form[k]) || ''} maxLength={max} placeholder={ph}
+    onChange={(e) => setForm(Object.assign({}, form, { [k]: e.target.value }))} />;
+  const formas = [['cargar', 'Cargar una batalla'], ...(L.dfc ? [['df', 'Un DF']] : []), ['nombre', 'Un nombre'], ['campeon', 'Cerrar la temporada']];
+  return (
+    <div className="sp-lg">
+      {ligas.length > 1 ? <div className="sp-lg-sel">{ligas.map((x) => (
+        <button key={x.id} type="button" className={'btn chico ' + (x.id === lid ? 'verde' : 'borde2')} onClick={() => setSel(x.id)}>{limpio(x.n)}</button>
+      ))}</div> : null}
+      <p className="sp-ll-ayuda">{cambia
+        ? 'Lo que cambias acá se aplica sobre lo que el bot leyó de tus canales, en la próxima media hora. La tabla sale de las batallas: no se escribe a mano. Todo se puede deshacer.'
+        : 'Las ligas las cambian el dueño, los admins y los moderadores. Acá ves lo que cambiaron.'}</p>
+      {cambia ? <div className="sp-lg-sel">{formas.map(([k, t]) => (
+        <button key={k} type="button" className={'btn chico ' + (form && form.tipo === k ? 'verde' : 'borde2')}
+          onClick={() => setForm(form && form.tipo === k ? null : { tipo: k, dia: hoyIso(), como: 'directa', pts: 3 })}>{t}</button>
+      ))}</div> : null}
+      {cambia && form ? (
+        <div className="sp-lg-form">
+          {form.tipo === 'cargar' ? <>
+            <label><span>Uno</span>{campo('a', 'Como se llama en tu liga')}</label>
+            <label><span>El otro</span>{campo('b', 'Como se llama en tu liga')}</label>
+            <label><span>Ganó</span><select value={form.gana || ''} onChange={(e) => setForm(Object.assign({}, form, { gana: e.target.value }))}>
+              <option value="">Elige</option>{[form.a, form.b].filter(Boolean).map((n) => <option key={n} value={n}>{n}</option>)}</select></label>
+            <label><span>Cómo</span><select value={form.como} onChange={(e) => setForm(Object.assign({}, form, { como: e.target.value }))}>
+              <option value="directa">Directo</option><option value="replica">En réplica</option></select></label>
+            <label><span>Día</span><input type="date" value={form.dia} onChange={(e) => setForm(Object.assign({}, form, { dia: e.target.value }))} /></label>
+          </> : form.tipo === 'df' ? <>
+            <label><span>Quién</span>{campo('nombre', 'Como se llama en tu liga')}</label>
+            <label><span>Qué pasó</span><select value={form.pts} onChange={(e) => setForm(Object.assign({}, form, { pts: Number(e.target.value) }))}>
+              <option value={3}>Ganó por DF: 3 puntos</option><option value={1}>No vino nadie: 1 punto</option></select></label>
+            <label><span>Día</span><input type="date" value={form.dia} onChange={(e) => setForm(Object.assign({}, form, { dia: e.target.value }))} /></label>
+          </> : form.tipo === 'nombre' ? <>
+            <label><span>Lo escriben así</span>{campo('nombre', 'Por ejemplo: ZIARKI')}</label>
+            <label><span>Y es</span>{campo('es', 'Por ejemplo: IVAN')}</label>
+          </> : <>
+            <label><span>Campeón</span><select value={form.c || ''} onChange={(e) => setForm(Object.assign({}, form, { c: e.target.value }))}>
+              <option value="">Elige</option>{(L.tabla || []).slice(0, 8).map((f) => <option key={f[0]} value={f[0]}>{limpio(f[0])}</option>)}</select></label>
+            <p className="sp-ll-t">Cierra la temporada que se juega, como si lo anunciara tu servidor: sale en el Salón y la próxima batalla abre la siguiente.</p>
+          </>}
+          <button type="button" className="btn verde" disabled={ocup} onClick={() => mandar(form, LISTO)}>Guardar</button>
+        </div>
+      ) : null}
+      {bats.length ? <>
+        <h3 className="sp-h">Las batallas <small>las últimas {bats.length} de la temporada que se ve</small></h3>
+        <ol className="sp-lg-l">{bats.map((b, i) => (
+          <li key={b.id + ':' + i}>
+            <span><b>{limpio(b.a)} vs {limpio(b.b)}</b><small>{b.g ? 'Ganó ' + limpio(b.g) + (b.como === 'replica' ? ' en réplica' : ' directo') : 'Sin resultado'} · {b.dia}</small></span>
+            {cambia ? (fila === i ? (
+              <span className="sp-ll-acc">
+                {[b.a, b.b].map((n) => ['directa', 'replica'].map((como) => (
+                  <button key={n + como} type="button" className="btn borde2 chico" disabled={ocup}
+                    onClick={() => mandar({ tipo: 'ganador', bat: b.id, a: b.a, b: b.b, gana: n, como }, LISTO)}>{limpio(n)} · {como === 'replica' ? 'réplica' : 'directo'}</button>
+                )))}
+                <DosToques className="btn borde2 chico" disabled={ocup} confirmar="Toca de nuevo: no cuenta"
+                  onClick={() => mandar({ tipo: 'no_cuenta', bat: b.id, a: b.a, b: b.b }, LISTO)}>No cuenta</DosToques>
+              </span>
+            ) : <button type="button" className="btn borde2 chico" onClick={() => setFila(i)}>Corregir</button>) : null}
+          </li>
+        ))}</ol>
+      </> : null}
+      {j && j.ok && (j.cambios || []).length ? <>
+        <h3 className="sp-h">Lo que cambió tu equipo</h3>
+        <ol className="sp-lg-l">{j.cambios.map((c) => (
+          <li key={c.id} className={c.estado === 'activo' ? '' : 'sp-lg-fuera'}>
+            <span><b>{CAMBIO_TXT(c)}</b><small>{(c.de || 'Tu equipo') + (c.estado === 'activo' ? '' : ' · deshecho')}</small></span>
+            {cambia && c.estado === 'activo' ? <DosToques className="btn borde2 chico" disabled={ocup} confirmar="Toca de nuevo: se deshace"
+              onClick={() => deshacer(c)}>Deshacer</DosToques> : null}
+          </li>
+        ))}</ol>
+      </> : null}
+      {j && !j.ok ? <p className="pronto-p">{errStaff(j)}</p> : null}
+      {msg ? <p className="sp-preg-msg" role="status">{msg}</p> : null}
+    </div>
+  );
+}
+
 // ── quien no entró, o no es dueño de ningún socio: qué trae el panel ──
 function Puerta({ texto, entrar }) {
   return (
@@ -789,9 +1006,15 @@ export function PanelSocio({ liga, q }) {
   const [j, setJ] = useState(null);
   const [sel, setSel] = useState(() => (/(?:^|&)sv=([A-Z]{2,6})/.exec(q || '') || [])[1] || '');
   useEffect(() => { W.scrollTo(0, 0); }, []);
+  // 🛡️ qué abre cada rol (16/11/2026): lo manda el Worker con los roles (`SOCIO_PERMISOS`); sin eso, sólo el dueño ve todo
+  const [perm, setPerm] = useState(null);
   useEffect(() => {
     let vivo = true;
-    pedirPanel(false).then((r) => { if (vivo) setJ(r); });
+    pedirPanel(false).then((r) => {
+      if (!vivo) return;
+      setJ(r);
+      if (r && r.ok) pedirRoles().then((x) => { if (vivo) setPerm((x && x.permisos) || {}); });
+    });
     return () => { vivo = false; };
   }, []);
   if (!j) return <p className="pronto-p sp-carga" role="status">Buscando tu servidor…</p>;
@@ -805,5 +1028,5 @@ export function PanelSocio({ liga, q }) {
       : 'No pude traer el panel ahora. Prueba de nuevo en un rato.'} />;
   }
   const x = svs.find((s) => s.sv === sel) || svs[0];
-  return <Servidor liga={liga} x={x} svs={svs} onSel={setSel} t={j.t} />;
+  return <Servidor liga={liga} x={x} svs={svs} onSel={setSel} t={j.t} permisos={perm} />;
 }
