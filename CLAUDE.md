@@ -272,7 +272,40 @@ de las 138, así que le toca carta negra, y su letra dice **A** porque su Score 
 56.5. **No es un bug**, es la consecuencia asumida de que el color diga *qué
 hiciste esta temporada* y la letra *quién sos*.
 
-### Los rombos se ordenan por importancia del evento, no por resultado
+### 🎭 La columna izquierda de la Competitiva son los ESTILOS DE JUEGO (16/11/2026)
+
+Dlx: *«es complicado detectar cuáles son los mejores eventos de cada servidor»*
+y *«la idea de los playstyles es reemplazar los eventos del competitivo»*. Los
+rombos de eventos con medalla **se fueron de esta carta**; en su lugar van
+**hasta tres estilos**. Todo vive en **`02_Competitivo/v2/estilos_juego.py`**,
+con su self-check.
+
+| | |
+|---|---|
+| **18 estilos, 3 familias** | ATAQUE = **rombo** · FOCO (el medio campo) = **círculo** · CABEZA = **escudo**. Técnicas y Estructuras van separadas; Cazaflá se queda |
+| **3 lugares** | 1 lo eliges en la página (una vez por temporada) · 2 eventos de estilo de DRA · 3 se desbloquea en Competencias |
+| **niveles 0 a 3** | 0 punteado · 1 oscuro · 2 media luz + un aro · 3 lleno + aro blanco y aro del rango. Vuelven a 0 cada temporada |
+| **el color** | siempre `--acc`, el del rango: la familia es la **forma**, nunca el color (el rojo ya es el rango A) |
+| **de dónde sale** | `datos/estilos.json`, `{clave: [[estilo, nivel], …]}` en orden de lugar. Entra al sello de la Competitiva sólo para quien tiene |
+
+⚠️ **POSICIÓN MEDIDA, NO A OJO** (Dlx: *«bien posicionado, acuérdate»*): banda
+libre entre la pastilla del rango (y=143,2) y la fila de stats (y=299,2), 6 px
+de aire → 144 px; tres lugares fijos con el tamaño sacado del **peor caso**
+(tres en nivel 3: 3 px entre uno y otro); cada forma centrada **por su tinta**
+sobre la línea del marco (x=10,5); los aros son **corrimiento parejo** del
+contorno, no la forma escalada.
+
+⚠️ **NO VA EN `comun/` A PROPÓSITO**, ni sus dos íconos nuevos (Showman y Frío,
+SVG en el módulo) en `v2/estilos/`: las dos carpetas entran en la huella de
+las **cuatro** cartas y las habrían redibujado sin cambiarles un píxel.
+
+⚠️ **NUNCA TOCA EL SCORE**: es la regla de abajo, *el número de cada carta mide
+lo que esa carta mide*.
+
+#### Historia: los rombos de eventos (hasta el 16/11/2026)
+
+Se ordenaban por importancia del evento, no por resultado. Queda escrito por si
+vuelven a otra carta.
 
 ⚠️ **Y durante un tiempo esta regla NO SE PODÍA VER, porque sólo entraba un
 evento.** `gencomp.py` resolvía el ícono de cada evento contra
@@ -309,6 +342,11 @@ resaltara el máximo de cada carta lo tendrían las 138, y en 77 caería en
 diversidad.
 
 ### El brillo del acento se sacó a propósito; el de las medallas se queda
+
+⚠️ **Desde el 16/11/2026 la Competitiva ya no dibuja rombos ni puntos de
+medalla** (la columna son los estilos de juego, ver arriba). Esta sección queda
+como historia; lo que sigue valiendo es la regla: **nada del color del acento
+brilla fuera de la carta**, y los estilos llevan sólo sombra negra.
 
 En la Competitiva, los chips salen en `right:-11px` y los rombos en
 `left:-10px`. Encima, los dos tenían un `box-shadow` de 14–15px con el color
@@ -1618,8 +1656,10 @@ Dos son dibujados y no extraídos: **ingenio** es un cerebro y **filosófico** u
 columna griega. Filosófico reemplazó a *actitud*.
 
 ⚠️ El cargador de `gencomp.py` acepta PNG y SVG. Si vuelve a leer solo `.svg`,
-los estilos desaparecen **en silencio**, porque hoy `ESTILO_DE` está vacío y
-nadie se daría cuenta.
+los estilos desaparecen **en silencio**. Desde el 16/11/2026 el self-check de
+`02_Competitivo/v2/estilos_juego.py` revisa que cada estilo del catálogo tenga
+su ícono; **Showman** (una galera) y **Frío** (un copo) están dibujados como
+SVG adentro de ese módulo, no en esta carpeta.
 
 ### El emblema de la Servidor va en `comun/emblema.py`
 
@@ -1685,8 +1725,9 @@ son solo de la Competitiva y se quedan en `02_Competitivo/v2/estilos/`.
   `datos/eventos.json` con su prioridad y entran solas.
 - **Los duelos.** Hoy son reales en 4 raperos; el resto muestra `0/0`. El dato
   vive en el acumulador, que no estaba montado en el entorno donde se armó esto.
-- **`ESTILO_DE` está vacío**: nadie tiene estilo asignado. Los 16 íconos están
-  listos y toman el color de la carta.
+- **Nadie tiene estilo de juego todavía** (16/11/2026): la columna de la
+  Competitiva está lista y `datos/estilos.json` no existe. Faltan elegirlo en
+  la página, los eventos de estilo de DRA y el desbloqueo en Competencias.
 - **32 nombres de las llaves no están en el Ranking Competitivo**, incluidos
   campeones: Rodri LP ganó el Interserver, Ceko el de FRZ, Olaf salió segundo,
   Logan segundo en Urban y Edu segundo en DRA. No llegan a los 8 eventos.

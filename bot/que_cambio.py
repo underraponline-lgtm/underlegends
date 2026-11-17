@@ -485,6 +485,16 @@ def huellas():
 
     from comun.claves import clave as _CL
     from comun import tag_elegido as _TE
+    # 🎭 los estilos de juego viven en la carpeta de la Competitiva (ver el docstring de ese módulo: en `comun/` entraban
+    # en la huella de las cuatro cartas). Si no se puede leer, el sello sigue sin ellos y se avisa
+    try:
+        import importlib.util as _ilu
+        _sp = _ilu.spec_from_file_location('estilos_juego', os.path.join(BASE, '02_Competitivo', 'v2', 'estilos_juego.py'))
+        _EJ = _ilu.module_from_spec(_sp)
+        _sp.loader.exec_module(_EJ)
+    except Exception as e:                               # noqa: BLE001
+        print('   ⚠️ no pude leer los estilos de juego (%s): el sello va sin ellos' % str(e)[:60])
+        _EJ = None
     # 🙈 Y QUIEN OCULTÓ SU FOTO VA CON LA INICIAL (Dlx, 02/10/2026: «1. A»). Su cara en el sello es «oculta», así la
     # carta se vuelve a dibujar al ocultarla y al volver a mostrarla. La lista sale de KV (`fotos.ocultas()`), que
     # además deja la copia que leen los generadores (`comun/respaldo.oculta()`): por eso se pide acá, antes de dibujar
@@ -596,6 +606,12 @@ def huellas():
             _te = _TE.para(carta, _CL(quien))
             if _te:
                 crudo.append('tag=%r' % (_te,))
+            # 🎭 y sus ESTILOS DE JUEGO, en la Competitiva (16/11/2026, `02_Competitivo/v2/estilos_juego.py`): elegir uno
+            # o subirlo de nivel la redibuja. Como el TAG, sólo a quien tiene: los demás conservan su huella
+            if carta == 'competitivo' and _EJ is not None:
+                _ej = _EJ.sello(_CL(quien))
+                if _ej:
+                    crudo.append('est=%r' % (_ej,))
             # y lo de cada servidor, en la de Servidor: ver arriba
             if carta == 'servidor' and psv.get(quien):
                 crudo.append('psv=%r' % (sorted((k, tuple(sorted(v.items()))) for k, v in psv[quien].items()),))

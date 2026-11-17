@@ -41,9 +41,9 @@ DIMS = ['EFI','CON','DOM','RCH','DIV','WR']    # RCH = Racha (rework A5: era TCH
 # 🔁 WR abajo y EV arriba (Dlx, 14/10/2026: «en la tarjeta competitivo intercambiar lugares el # eventos y el # de
 # winrate… simplemente cambiar los lugares esos labels»). Ver `_wr()` y `BLOQUE_TR()`
 
-# ══ LA COLUMNA IZQUIERDA ══════════════════════════════════════════════
-# Solo eventos. El estilo y la crew se mudaron a la fila de abajo.
-# El borde toma --acc (color del rango); el NIVEL va en el punto del vertice.
+# ══ LOS ÍCONOS ════════════════════════════════════════════════════════
+# La columna izquierda son los ESTILOS DE JUEGO desde el 16/11/2026 (antes, los eventos con medalla): ver
+# `columna_izquierda()`. Acá se cargan los íconos de las crews y de los estilos.
 import os, base64
 
 def _b64(ruta, mime):
@@ -69,61 +69,9 @@ if os.path.isdir(_e):
         elif _f.endswith('.svg'):
             ESTILOS[_f[:-4]] = _b64(os.path.join(_e, _f), 'image/svg+xml')
 
-# ══ EVENTOS INSIGNIA ══════════════════════════════════════════════════
-# eventos.json tiene un bloque por evento con su icono y la lista de
-# participantes con su resultado (oro / plata / bronce / negro).
-# De ahi sale la columna izquierda: hasta TRES rombos, ordenados por
-# resultado, el mejor arriba.
-# ⚠️ DE LOS CINCO EVENTOS SOLO ENTRABA UNO, Y NO AVISABA. El JSON guarda el
-# icono como ruta relativa —'ev_bl.png' y 'logos_sv/sv_tfc.png'— y esto la
-# resolvia contra 02_Competitivo/. Ahi existe ev_bl.png y NO existe logos_sv/:
-# las siluetas viven en comun/logos_sv/ desde que se unificaron. Resultado:
-# EVENTOS cargaba ['interserver'] y los otros cuatro caian por el `continue`.
-#
-# O sea que el oro de Konan en la TFC Champions, el de Bloody en el DRA, el de
-# MCO en Urban Nations y el de Ceko en la FRZ NO SE DIBUJABAN. La regla de
-# CLAUDE.md sobre como se ordenan los rombos describia algo que en esta carta
-# no pasaba nunca, porque nunca habia mas de uno.
-#
-# Es el mismo error que CLAUDE.md ya documenta de procesar_logos.py —"apuntaba
-# a herramientas/logos_sv/, que no existe, asi que regenerar las siluetas no
-# llegaba a ninguna de las tres cartas"—. La misma ruta muerta, en otro
-# archivo, callada por un `continue`.
-#
-# ⚠️ Y EL JSON SALE DE datos/, no de la copia local. 02_Competitivo/eventos.json
-# era un duplicado byte a byte: hoy coincide y manana no tiene por que.
-EVENTOS = []
-_FALTAN_EV = []
-
-
-def _icono(rel):
-    """La ruta del icono de un evento. Primero la carta, despues comun/."""
-    for base in (RAIZ, _r('..', 'comun')):
-        p = _osruta.path.join(base, rel)
-        if _osruta.path.exists(p):
-            return p
-    return None
-
-
-_e = _r('..', 'datos', 'eventos.json')
-if os.path.exists(_e):
-    _d = json.load(open(_e, encoding='utf-8'))
-    for _k, _v in _d.items():
-        if _k.startswith('_') or not isinstance(_v, dict) or 'participantes' not in _v:
-            continue
-        _ruta = _icono(_v['icono'])
-        if not _ruta:
-            _FALTAN_EV.append((_k, _v['icono']))
-            continue
-        EVENTOS.append({
-            'clave': _k,
-            'nombre': _v['nombre'],
-            'prioridad': _v.get('prioridad', 99),
-            'icono': _b64(_ruta, 'image/png'),
-            'gente': {k.lower(): v for k, v in _v['participantes'].items()},
-        })
-
-ORDEN_NIVEL = {'oro': 0, 'plata': 1, 'bronce': 2, 'negro': 3}
+# ══ LOS EVENTOS YA NO VAN EN ESTA CARTA (16/11/2026) ════════════════════
+# Acá se cargaba `datos/eventos.json` para la columna de rombos con medalla. Dlx los reemplazó por los estilos
+# de juego (ver `columna_izquierda()` y `estilos_juego.py`); el JSON queda en `datos/` con su historia.
 
 # a que crew pertenece cada uno. Los que no estan, no llevan rombo de crew.
 # ⚠️ SALE DE datos/crews.json, NO DE UN DICT ACA. Habia uno escrito a mano con
@@ -147,9 +95,10 @@ _PUESTO_CREW = {}
 
 # estilo asignado por rapero. VACIO a proposito: el evento de estilos
 # todavia no se hizo, asi que hoy nadie lleva el rombo del medio.
-ESTILO_DE = {}   # vacio: hoy nadie tiene estilo asignado. Se llena cuando
-                 # se haga el evento de estilos. Los 16 iconos ya estan en
-                 # v2/estilos, extraidos del rombo y normalizados.
+# 🎭 LOS ESTILOS DE JUEGO VAN EN LA COLUMNA IZQUIERDA, EN LUGAR DE LOS EVENTOS (Dlx, 16/11/2026: «la idea de los
+# playstyles es reemplazar los eventos del competitivo»). Catálogo, de quién es cada uno y el dibujo: `estilos_juego.py`.
+# Antes acá había un `ESTILO_DE = {}` que nunca se llenó y un círculo en la fila de abajo que nunca se dibujó.
+import estilos_juego as _EJ
 
 
 # UMBRALES con SSS y SS. Antes el rango S abarcaba 35 puntos (65-100) y el
@@ -210,9 +159,7 @@ def fila_abajo(c):
                  '<img class="fl" src="%s">%s</span>'
                  % (c.get('arc_pais', 0), _bandera(c['cc']),
                     _num(c.get('pos_pais'))))
-    est = ESTILO_DE.get(k)
-    if est and est in ESTILOS:
-        p.append('<i class="ci" style="--m:url(%s)"></i>' % ESTILOS[est])
+    # (el estilo vivía acá, en un círculo que nunca se dibujó: ahora va en la columna izquierda, `columna_izquierda()`)
     # 🏠 EL SERVIDOR QUE ELEGISTE, NO DONDE MÁS JUGASTE (Dlx, 13/10/2026: «recuerda que quité eso de los servidores
     # para todos a menos que se lo pongan manualmente en la tarjeta»). Sin elegir, el círculo no va —como la bandera de
     # quien no tiene país—. ⚠️ El aro y el número son tu puesto entre los que juegan en `c['sv']`: van sólo si elegiste
@@ -242,51 +189,14 @@ def fila_abajo(c):
     return ''.join(p)
 
 
-def rombos(c):
-    """La columna izquierda: SOLO EVENTOS.
-       El estilo y la crew vivian aca y se mudaron a la fila de abajo,
-       cada uno en su circulo. Dejarlos tambien aca los mostraba dos veces
-       en la misma carta."""
-    k = c['raw'].lower()
-    out = []
-    for ev in EVENTOS:
-        if k in ev['gente']:
-            out.append((ev['prioridad'], ev['gente'][k], ev['icono']))
-    # ORDEN: manda la importancia del EVENTO, no el resultado del rapero.
-    # El Interserver va primero siempre, por ser de toda la Hermandad; el
-    # resto sigue el tamano del servidor (ver _orden en eventos.json).
-    # Consecuencia asumida: alguien puede tener el rombo de plata arriba y
-    # el de oro abajo, si el de plata es de un evento mas importante.
-    out.sort(key=lambda x: x[0])
-    # ⚠️ EL ORDEN LO MANDA EL EVENTO; EL CORTE LO MANDA LA MEDALLA. Son dos
-    # preguntas distintas y hasta ahora habia una sola respuesta para las dos.
-    #
-    # Mientras entraba un solo evento —el icono de los otros cuatro apuntaba a
-    # una carpeta que no existe— el tope de 3 NO SE ALCANZABA NUNCA, asi que
-    # nadie habia mirado que se lleva el corte. Con los cinco cargados salta
-    # solo: MCO tiene 4 eventos y su unico ORO es de Urban Nations, prioridad
-    # 9, o sea el menos importante. Cortando por prioridad su carta mostraba
-    # TRES PARTICIPACIONES y escondia la medalla.
-    #
-    # Dlx: que las medallas no se corten. Entre los tres que sobreviven sigue
-    # mandando la importancia del evento —la regla de CLAUDE.md no se toca, y
-    # Konan sigue con la plata arriba y el oro abajo—; lo unico que cambia es
-    # CUALES tres sobreviven cuando hay mas de tres.
-    #
-    # ⚠️ Y ESTO IMPORTA MAS CADA VEZ: hoy es una persona de 24, y cada evento
-    # nuevo mete gente por encima del tope.
-    if len(out) > 3:
-        medalla = [x for x in out if x[1] != 'negro']
-        resto = [x for x in out if x[1] == 'negro']
-        out = sorted(medalla[:3] + resto[:max(0, 3 - len(medalla))],
-                     key=lambda x: x[0])
-    out = [(n, u) for _, n, u in out][:3]
-    if not out:
-        return ''
-    # la clase k1/k2 dice cuantos hay: el CSS agranda el rombo si son pocos
-    return '<div class="skills k%d">%s</div>' % (
-        len(out), ''.join('<i class="ic lv-%s" style="--m:url(%s)"></i>' % (n, u)
-                          for n, u in out))
+def columna_izquierda(c, i):
+    """🎭 LA COLUMNA IZQUIERDA: hasta tres ESTILOS DE JUEGO (Dlx, 16/11/2026), en lugar de los eventos con medalla.
+
+    Hasta el 16/11 acá iban los eventos (`datos/eventos.json`), ordenados por importancia y cortados por medalla. Dlx:
+    «es complicado detectar cuáles son los mejores eventos de cada servidor» → la columna pasa a decir CÓMO rapeas, no
+    DÓNDE ganaste. Los eventos siguen en el perfil de la página. Todo lo de los estilos —catálogo, lugares, niveles y
+    la posición medida— vive en `estilos_juego.py`. Sin estilos no se dibuja nada: sin dato no hay pieza."""
+    return _EJ.columna(_EJ.de(_K(c.get('raw') or '')), str(i), ESTILOS)
 
 
 def clase_nombre(n):
@@ -469,7 +379,7 @@ def card(c,i):
     # los primeros 5 son dimensiones normalizadas; el 6to (WR) es un porcentaje, o `—`: el 100 resalta sólo dimensiones
     nums = ''.join('<span%s>%s</span>' % (' class="top"' if (j < 5 and v == 100) else '', v)
                    for j, v in enumerate(vals))
-    rb   = rombos(c)
+    rb   = columna_izquierda(c, i)
     return """
 <div class="wrap">
   <div class="card %s" style="--acc:%s;--base:%s">
@@ -527,12 +437,6 @@ except Exception:
     _POOL = C
 _PUESTO_CREW.update({k: ('%d/%d' % (pos, tot)) if pos else ''
                      for k, (_cr, pos, tot) in _CW.puestos(_POOL).items()})
-if _FALTAN_EV:
-    # ⚠️ NUNCA EN SILENCIO. Un evento que no carga se lleva puestos los rombos
-    # de todos sus participantes, y la carta sale igual de valida.
-    print('AVISO: %d evento(s) sin icono, sus rombos NO se dibujan:' % len(_FALTAN_EV))
-    for _k, _ic in _FALTAN_EV:
-        print('   %-22s %s' % (_k, _ic))
 cards = ''.join(card(c,i) for i,c in enumerate(C))
 CSS = open(_osruta.path.join(CARD, 'card.css'), encoding='utf-8').read().replace('__OUT__', OUT)
 html = """<!DOCTYPE html><html lang="es"><head><meta charset="UTF-8">
