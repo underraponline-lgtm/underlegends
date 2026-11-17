@@ -378,11 +378,13 @@ def renombrar(viejo, nuevo, motivo='', aplicar=False):
         print('   ⚠️ «%s» está %d veces en la Lista: no sé a cuál renombrar'
               % (viejo, len(fs)))
         return False
-    if filas_de(v, nuevo):
-        print('   ⚠️ «%s» ya está en la Lista (fila %d): no se renombra'
-              % (nuevo, filas_de(v, nuevo)[0][0]))
-        return False
     n, f = fs[0]
+    # ⚠️ la MISMA fila no cuenta como «ya está»: «@j.nibbana» → «j.nibbana» (17/11/2026) es la misma clave, y la
+    # búsqueda por clave encontraba la fila que se iba a renombrar
+    otra = [x for x in filas_de(v, nuevo) if x[0] != n]
+    if otra:
+        print('   ⚠️ «%s» ya está en la Lista (fila %d): no se renombra' % (nuevo, otra[0][0]))
+        return False
     nota = ('%s · antes «%s» (%s)'
             % (_celda(f, col.get('Notas')), PAD.limpio(_celda(f, col['Rapero'])),
                motivo or _ahora_et())).lstrip(' ·')
