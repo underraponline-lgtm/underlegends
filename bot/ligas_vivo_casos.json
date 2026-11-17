@@ -180,6 +180,12 @@
     "ANA:12\n\nBETO:12.5\n\n# REPLICA",
     "# REPLICA ANA VS BETO",
     "# ANA🇺🇾"],
-   "res": [["ANA", "BETO", "ANA", "replica"]]}
+   "res": [["ANA", "BETO", "ANA", "replica"]]},
+  {"n": "CEU: una batalla SIN título, con la de arriba cerrada: dos nombres con puntaje y su «GANADOR»", "fam": "K", "msgs": [
+    "# ANA VS BETO",
+    "ANA: 54\n\nBETO: 48\n\n# GANADOR: ANA\n+3 PTOS ANA",
+    "ANA: 52.5\n\nCARLA: 40.5\n\n# GANADOR: ANA\n+3 PTS ANA",
+    "BETO: 10\n\nANA: 9"],
+   "res": [["ANA", "BETO", "ANA", "directa"], ["ANA", "CARLA", "ANA", "directa"]]}
  ]
 }

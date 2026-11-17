@@ -146,7 +146,10 @@ LIGAS = {
     # en un renglón y la réplica con su propio título (ver `PUNTOS_ANTES`). Esperó en `ligas_esperan` hasta tener esto
     'ceu-fms-ceuta': {'n': 'FMS Ceuta', 'sv': 'CEU', 'fam': 'K', 'vre': r'FMS\s*CEUTA', 'cat': '1554209799221157888',
                       'ver': '1554210754150932520', 'tabla': '1554210034697769021', 'an': '1552349616861618287', 'cc': 'ES',
-                      'df_cuenta': True},
+                      'df_cuenta': True, 'alias': {'ZIARKI': 'IVAN', 'ANDY': 'ANDY MC'},
+                      # «# REPETIMIENTO DE JORNADA 2 LAST VS SANTZ» (16/10) reemplazó la de Last en la jornada 2, «#
+                      # LAST VS MCGLOCK» (03/10): su tabla del 20/10 le da 13 a Last, y con esa batalla serían 15
+                      'anular': {'1556037547639967785': 'repetida: LAST VS SANTZ, «REPETIMIENTO DE JORNADA 2»'}},
 }
 #: 🏟️ la clave de KV con los canales de cada liga, para el vigía de las batallas (`ligasRonda()` en bot/avisos.js)
 CLAVE_VIGIA = 'ligas:vigia'
@@ -864,12 +867,46 @@ def _unificar_k(bats):
                 b[c] = grafia[va[clave(b[c])]]
 
 
+PUNTOS_LINEA_K = re.compile(r'^\W*\+|\bP(?:TS?|TOS?|UNTOS?)\b', re.I)
+
+
+def sin_titulo_k(texto, u):
+    """🆕 Una batalla SIN título: `(a, b)` o None. FMS Ceuta, 03/10/2026: «TROT: 52.5 / LAST: 40.5 / # GANADOR: TROT»
+    justo después de cerrar Trot vs Kaotiko, y su tabla le cuenta esos 3 a Trot. Con la de arriba (`u`) cerrada, un
+    mensaje sin título con los puntajes de DOS nombres —que no son los de arriba— y un «GANADOR» de uno de los dos es
+    otra batalla. Nunca una corrección («me equivoqué»), y los renglones de puntos («+3 PTS TROT») no son nombres.
+    El mismo que `sinTituloK()` de bot/ligas_vivo.js."""
+    if not u or not u.get('gana') or CORRIGE.search(_plano(texto or '')):
+        return None
+    rs = (texto or '').splitlines()
+    if any(lados(l) for l in rs):
+        return None
+    nombres = []
+    for l in rs:
+        if PUNTOS_LINEA_K.search(_plano(l)):
+            continue
+        for n, _p in puntajes_k(l):
+            if clave(n) and all(clave(n) != clave(x) for x in nombres):
+                nombres.append(n)
+    if len(nombres) != 2 or {clave(x) for x in nombres} == {clave(u['a']), clave(u['b'])}:
+        return None
+    for l in rs:
+        g = GANADOR.match(EMOJI.sub(' ', _plano(l)).replace('*', '').strip())
+        if g and not g.group(1) and g.group(2) and _lado_k(g.group(2), nombres[0], nombres[1]):
+            return nombres[0], nombres[1]
+    return None
+
+
 def _lk(msgs):
     """Las batallas de una liga de LKR: `[{id, t, a, b, ea, eb, j, gana, como}]`."""
     bats = []
     for m in msgs:
         corrige = bool(CORRIGE.search(_plano(m.get('content') or '')))
         vistos = set()
+        st = sin_titulo_k(m.get('content') or '', bats[-1] if bats else None)
+        if st:
+            bats.append({'id': m['id'], 't': m['t'], 'a': st[0], 'b': st[1], 'ea': False, 'eb': False, 'j': None,
+                         'gana': '', 'como': '', 'rep': False, 'pt': [None, None], 'pt_rep': False, 'df': False})
         for l0 in (m.get('content') or '').splitlines():
             for l in CORTE_K.split(l0):
                 if not l.strip():
@@ -1056,6 +1093,28 @@ def _ff(msgs):
     return bats
 
 
+def con_alias(msgs, alias):
+    """🪪 Los apodos que usa UNA liga, cambiados por el nombre con que la juega, antes de leerla (`alias` en `LIGAS`).
+    FMS Ceuta, 16/11/2026: «ZIARKI» es IVAN —«# ZIARKI VS MCGLOCK» cierra con «+3 pto 30 ptb IVAN», y su tabla tiene
+    a Ivan y no a Ziarki— y «ANDY» es ANDY MC («SWEETPAIN (andy mc)», en sus anuncios; su tabla tiene un solo Andy MC).
+    Palabra entera y sin importar mayúsculas; «ANDY MC» no se vuelve «ANDY MC MC». Es de esa liga y nada más: la Lista
+    no se toca."""
+    if not alias:
+        return msgs
+    reglas = []
+    for k, v in alias.items():
+        resto = v[len(k):].strip() if v.upper().startswith(k.upper()) else ''
+        reglas.append((re.compile(r'(?<![0-9A-Za-zÁÉÍÓÚÑáéíóúñ])' + re.escape(k) + r'(?![0-9A-Za-zÁÉÍÓÚÑáéíóúñ])', re.I),
+                       v, resto))
+
+    def cambia(t):
+        for rx, v, resto in reglas:
+            t = rx.sub(lambda m_, v=v, resto=resto: m_.group(0) if resto and
+                       re.match(r'\s*' + re.escape(resto) + r'\b', m_.string[m_.end():], re.I) else v, t)
+        return t
+    return [dict(m, content=cambia(m.get('content') or '')) for m in msgs]
+
+
 def leer_liga(lid, msgs, ptb=None, dfs=None):
     """Las batallas de una liga, de sus mensajes en orden: `[[id, iso, jornada, a, b, gana, como, extras]]`.
 
@@ -1066,11 +1125,15 @@ def leer_liga(lid, msgs, ptb=None, dfs=None):
     puntos]]` (`puntos_df()`). Un DF nunca es una batalla: suma en la tabla y en nada más."""
     L = LIGAS[lid]
     f = L['fam']
+    msgs = con_alias(msgs, L.get('alias'))
     bats = _u(msgs) if f == 'U' else _d1(msgs) if f == 'D1' else _d2(msgs) if f == 'D2' else \
         _f(msgs, L['tit']) if f == 'F' else _fd(msgs) if f == 'FD' else _lk(msgs) if f == 'K' else \
         _ff(msgs) if f == 'FF' else _s(msgs, L['emoji'])
     out = []
     for i, b in enumerate(bats):
+        # 🚫 la que su liga ANULÓ y el canal no lo dice en la batalla (`anular` en `LIGAS`): nunca cuenta
+        if str(b.get('id')) in (L.get('anular') or {}):
+            continue
         df_suma = L.get('df_cuenta') and not b.get('nulo') and (b.get('df') or (b.get('dfg') and not b.get('gana')))
         if df_suma and dfs is not None:
             dfs.extend(puntos_df(b))
@@ -2127,7 +2190,7 @@ def correr(aplicar=False):
         dfs = sorted([e for e in v.get('df') or [] if str(e[0]) not in leidos] + dfn,
                      key=lambda e: (e[1], str(e[0]))) if L.get('df_cuenta') else []
         # y la que se guardó PENDIENTE y ahora se lee como DF («3 pt ANDY» sin puntajes) deja de ser una batalla
-        for k in {str(e[0]) for e in dfn}:
+        for k in {str(e[0]) for e in dfn} | set(L.get('anular') or {}):
             guardadas.pop(k, None)
         # 🆕 la primera lectura de una liga que se encontró sola: sólo la temporada que se juega (`_desde_el_hueco()`)
         if L.get('auto') and not guardadas:
@@ -3083,6 +3146,14 @@ def _self_check():
        'Ceuta: «ANA DF» son 3 para Ana, «2 DF´S» son 6, «3 pt DANI» sin puntajes es un DF, «NINGUNO VINO» con «1 PTO '
        'CADA UNO» da 1 a cada uno; suman puntos y no batallas, y en una liga sin `df_cuenta` no suman nada',
        str(_dfs) + str(tabla(_ce, None, _dfs)))
+    _al = con_alias([{'id': '1', 'content': '# ANDY VS ZIARKI\nANDY MC: 3\nandy: 5 / Andy mc 2\nZIARKIS 4'}],
+                    {'ZIARKI': 'IVAN', 'ANDY': 'ANDY MC'})[0]['content']
+    ok(_al == '# ANDY MC VS IVAN\nANDY MC: 3\nANDY MC: 5 / Andy mc 2\nZIARKIS 4' and
+       con_alias([{'content': 'ANDY'}], None)[0]['content'] == 'ANDY' and
+       not leer_liga('ceu-fms-ceuta', [{'id': '1556037547639967785', 't': '2026-10-03T20:17:00Z', 'content': '# ANA VS BETO'},
+                                       {'id': '2', 't': '2026-10-03T20:20:00Z', 'content': 'ANA 10\nBETO 5\n# GANADOR: ANA'}]),
+       'Ceuta: los apodos de la liga (Ziarki es Ivan, Andy es Andy MC; «Andy MC» no se vuelve «Andy MC MC» y «ZIARKIS» '
+       'es otra palabra), sin `alias` no se toca nada, y la batalla que la liga anuló (`anular`) no cuenta', _al)
 
     # 🖼️ el flyer: un afiche, no un separador
     ok(es_flyer({'ct': 'image/jpeg', 'w': 1080, 'h': 1350}) and not es_flyer({'ct': 'image/jpeg', 'w': 1400, 'h': 200})

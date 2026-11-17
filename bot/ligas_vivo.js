@@ -302,6 +302,29 @@ const par = (a, b) => [clave(a), clave(b)].sort().join('|');
  * también de la más vieja a la más nueva. Modifica `bats` y devuelve las nuevas. Una batalla ya cerrada no se vuelve a abrir, y el
  * mismo título publicado otra vez (`dos_horas`) no es otra batalla.
  */
+const PUNTOS_LINEA_K = /^\W*\+|\bP(?:TS?|TOS?|UNTOS?)\b/i;
+/**
+ * 🆕 Una batalla SIN título: `[a, b]` o null. Con la de arriba (`u`) cerrada, un mensaje sin título con los puntajes de DOS
+ * nombres —que no son los de arriba— y un «GANADOR» de uno de los dos es otra (FMS Ceuta, 03/10/2026). El mismo que
+ * `sin_titulo_k()` de bot/ligas.py.
+ */
+export function sinTituloK(texto, u) {
+  if (!u || !u.gana || CORRIGE.test(plano(texto || ''))) return null;
+  const rs = String(texto || '').split(/\r?\n/);
+  if (rs.some((l) => lados(l))) return null;
+  const nombres = [];
+  for (const l of rs) {
+    if (PUNTOS_LINEA_K.test(plano(l))) continue;
+    for (const [n] of puntajesK(l)) if (clave(n) && nombres.every((x) => clave(x) !== clave(n))) nombres.push(n);
+  }
+  if (nombres.length !== 2 || par(nombres[0], nombres[1]) === par(u.a, u.b)) return null;
+  for (const l of rs) {
+    const g = GANADOR.exec(plano(l).replace(EMOJI, ' ').replace(/\*/g, '').trim());
+    if (g && !g[1] && g[2] && ladoK(g[2], nombres[0], nombres[1])) return nombres;
+  }
+  return null;
+}
+
 export function leerMensajes(fam, msgs, bats, dosHoras = 2 * 3600 * 1000) {
   const nuevas = [];
   let j = null;
@@ -312,6 +335,8 @@ export function leerMensajes(fam, msgs, bats, dosHoras = 2 * 3600 * 1000) {
     let vistos = new Set();
     // LKR: «15 = LAST 10= SHADOW … # LAST» trae el cierre en el mismo renglón (`CORTE_K` en ligas.py)
     const renglones = texto.split(/\r?\n/).flatMap((l) => (fam === 'K' ? l.split(CORTE_K) : [l]));
+    const st = fam === 'K' ? sinTituloK(texto, bats[bats.length - 1]) : null;
+    if (st) { const b = nueva(m, [st[0], st[1], false, false, '', ''], j); bats.push(b); nuevas.push(b); }
     for (const l of renglones) {
       if (!l.trim()) continue;
       const pp = plano(l);

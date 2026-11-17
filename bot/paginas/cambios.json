@@ -11,6 +11,17 @@
  ],
  "cambios": [
     {
+        "version": "5.68",
+        "dia": "2026-11-16",
+        "cuando": "2026-11-16T20:17:05-05:00",
+        "titulo": "La tabla de FMS Ceuta, como la suya",
+        "items": [
+            "La tabla de la temporada 1 de **FMS Ceuta** ahora coincide con la que publicó la liga: **Trot 30**, Marcos 26, Last 20, Kaotiko 11, Andy MC 9 y Emi 7.",
+            "En esa liga, **Ziarki** es **Iván** y **Andy** es **Andy MC**: ya no salen como dos personas distintas.",
+            "Se cuenta una batalla de Trot contra Last que se publicó sin título, y deja de contar la de Last contra McGlock, que la liga repitió."
+        ]
+    },
+    {
         "version": "5.67",
         "dia": "2026-11-16",
         "cuando": "2026-11-16T19:51:00-05:00",
