@@ -15537,15 +15537,6 @@
    ]
   }
  },
- "sweetpain": {
-  "temporada": {
-   "📈 EN ASCENSO": [
-    "📈 EN ASCENSO",
-    "t1",
-    1794848577430
-   ]
-  }
- },
  "tam": {
   "competitivo": {
    "⚔️ DUELISTA": [
@@ -16556,44 +16547,6 @@
     "🥉 AL PODIO",
     "t1",
     1793029252929
-   ]
-  }
- },
- "vallest": {
-  "competitivo": {
-   "🤝 SIN MIEDO": [
-    "🤝 SIN MIEDO",
-    "t1",
-    1794533437549
-   ]
-  },
-  "servidor": {
-   "📆 HABITUÉ": [
-    "📆 HABITUÉ",
-    "t1",
-    1794532281126
-   ]
-  },
-  "temporada": {
-   "🌍 TROTAMUNDOS": [
-    "🌍 TROTAMUNDOS",
-    "t1",
-    1794532281126
-   ],
-   "🔟 DOBLE DÍGITO": [
-    "🔟 DOBLE DÍGITO",
-    "t1",
-    1794532281126
-   ],
-   "🛫 NÓMADA": [
-    "🛫 NÓMADA",
-    "t1",
-    1794532281126
-   ],
-   "🧳 VIAJERO": [
-    "🧳 VIAJERO",
-    "t1",
-    1794532281126
    ]
   }
  },
@@ -18311,6 +18264,15 @@
     "🧳 VIAJERO",
     "t1",
     1793029252929
+   ]
+  }
+ },
+ "andymc": {
+  "temporada": {
+   "📈 EN ASCENSO": [
+    "📈 EN ASCENSO",
+    "t1",
+    1794848577430
    ]
   }
  }
