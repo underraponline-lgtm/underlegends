@@ -13,7 +13,8 @@ import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } fr
 import { PAIS, capital, limpio, norm, num } from './liga.js';
 import { Bandera, Cara, Compartir, Ico, Medalla, PUESTO_MEDALLA, enlace, silueta } from './piezas.jsx';
 import { completar, enOrden, esArbol, esDoble, jugado, partirDoble } from './arriba.jsx';
-import { vioVivo, vivoPendiente } from './pase.js';
+import { usePases, vioVivo, vivoPendiente } from './pase.js';
+import { ConMarco } from './marcos.jsx';
 import { TEMAS_SV, leerTemas } from './temas.js';
 import CSS_PAGINA from './css/llave.css?inline';
 import { usarCss } from './css.js';
@@ -149,11 +150,89 @@ const urlCarta = (ctx, f, chica = false) => {
 // 🃏 LA CARTA CHICA (Dlx, 19/10/2026: «si»): en la llave se dibuja a ~80–150 px y bajaba la de Discord, ~150 KB cada una
 // (una llave de 16, ~2,4 MB en el celular). La chica pesa ~22 KB; si todavía no existe (una carta recién dibujada antes
 // de que el ciclo la complete), vuelve a la grande sola, una vez
-function ImgCarta({ ctx, f, cls, grande = false }) {
+// 🖼️ Y CON SU MARCO DEL PASE, SI LO TIENE (Dlx, 17/11/2026: «asegúrate que cada tarjeta tenga su efecto y brillo… sólo si
+// es que lo tienen»): la llave dibujaba la imagen pelada, sin el marco (Premium, Plata, Oro y su brillo) que `Carta` de
+// piezas.jsx le pone en el resto de la página. `ConMarco` decide por el ancho en pantalla: menos de 130 px sólo el
+// contorno, menos de 200 el anillo y la pieza principal. `ancho`: el que ya se sabe (MiniP); si no, se mide
+function ImgCarta({ ctx, f, cls, grande = false, ancho = 0 }) {
+  const pub = usePases();
+  const ref = useRef(null);
+  const [w, setW] = useState(ancho);
+  useLayoutEffect(() => {
+    if (ancho || w || !ref.current) return;
+    const x = ref.current.getBoundingClientRect().width;
+    if (x > 0) setW(x);
+  });
   const chica = grande ? null : urlCarta(ctx, f, true);
   const full = urlCarta(ctx, f);
-  return <img className={cls} alt="" src={chica || full} loading="lazy" decoding="async"
+  const img = <img ref={ref} className={cls} alt="" src={chica || full} loading="lazy" decoding="async"
     onError={chica ? (e) => { if (e.currentTarget.src !== full) e.currentTarget.src = full; } : undefined} />;
+  const mk = f && pub && pub.m && pub.m[f.k];
+  const W = ancho || w;
+  if (!mk || !W) return img;
+  const liga = ctx.liga;
+  const cual = liga.cartaDe(f.k, { sv: ctx.L && ctx.L.sv });
+  const svc = f.sv && liga.svs && liga.svs[f.sv] ? liga.svs[f.sv].color : '';
+  return <span className="lk-mk"><ConMarco m={mk} cual={cual} ancho={W} svColor={svc} cc={f.cc} src={full}>{img}</ConMarco></span>;
+}
+
+// ⭐ LA NOTA DE CADA UNO EN LA LLAVE, COMO LA DE LOS FUTBOLISTAS AL TERMINAR EL PARTIDO (Dlx, 17/11/2026: «quizás poner
+// en cada tarjeta una puntuación así como los futbolistas al final de cada partido»). De 3 a 10 con un decimal, y sale
+// SÓLO de esta llave: arranca en 6; cada batalla ganada suma —más cuanto más adentro de la llave (en una de
+// eliminación, ganar todas suma 2,7 entre todas)—; perder resta 0,6 la primera si no ganaste ninguna y 0,3 las demás (en
+// total, como mucho 1,2); ganarle a alguien de OVR más alto suma hasta 0,5 y perder con uno más bajo resta hasta 0,4; y
+// el campeón, 0,5 (y nunca menos de 8). La más alta lleva ★ (la figura). En vidas y doble eliminación, lo ganado cuenta contra lo más que
+// ganó alguien. 🧪 Con `?prev=nota` hasta que Dlx la vea
+const PREV_NOTA = (() => { try { return !!localStorage.getItem('lg:prev-nota'); } catch (e) { return false; } })();
+function notasDe({ prin, ter, fila, idDe, pts, arbol }) {
+  const R = prin.concat(ter ? [ter] : []);
+  const nR = prin.length;
+  const suma = (nR * (nR + 1)) / 2 || 1;
+  const ovrDe = (s) => {
+    const vs = partes(s).map((m) => { const f = fila(m); return f && f.ovr ? +f.ovr : null; }).filter((v) => v != null);
+    return vs.length ? vs.reduce((a, b) => a + b, 0) / vs.length : null;
+  };
+  const st = {};
+  R.forEach((Rr, i) => Rr.b.forEach((b) => {
+    if (!b[1] || b[0].length < 2) return;
+    b[0].forEach((s) => {
+      const g = gana(b, s);
+      const os = b[0].filter((x) => x !== s).map(ovrDe).filter((v) => v != null);
+      const x = { i: Rr === ter ? Math.max(0, nR - 2) : i, me: ovrDe(s), riv: os.length ? (g ? Math.max(...os) : Math.min(...os)) : null };
+      partes(s).forEach((m) => { const id = idDe(m); const y = st[id] || (st[id] = { w: [], l: [] }); (g ? y.w : y.l).push(x); });
+    });
+  }));
+  const ids = Object.keys(st);
+  if (!ids.length) return null;
+  const maxW = Math.max(1, ...ids.map((id) => st[id].w.length));
+  const out = {};
+  ids.forEach((id) => {
+    const { w, l } = st[id];
+    let v = 6;
+    w.forEach((x) => { v += arbol ? (2.7 * (x.i + 1)) / suma : 2.7 / maxW; });
+    v -= Math.min(1.2, l.reduce((a, x, j) => a + (!w.length && !j ? 0.6 : 0.3), 0));
+    // (lo de ganarle a alguien más fuerte, como mucho 0,6 en toda la llave: si no, el campeón de una de 32 llegaba a 10)
+    v += Math.min(0.6, w.reduce((a, x) => a + (x.me != null && x.riv != null && x.riv > x.me ? Math.min(0.5, (x.riv - x.me) * 0.02) : 0), 0));
+    l.forEach((x) => { if (x.me != null && x.riv != null && x.riv < x.me) v -= Math.min(0.4, (x.me - x.riv) * 0.02); });
+    // 🏆 y el campeón, nunca menos de 8: en las de vidas la llave a veces no le anota las batallas (Lastima, «0 ganadas»)
+    if (pts[id] && pts[id][0] === 'Campeón') v = Math.max(8, v + 0.5);
+    out[id] = Math.round(Math.max(3, Math.min(10, v)) * 10) / 10;
+  });
+  const top = Math.max(...ids.map((id) => out[id]));
+  const mvp = ids.filter((id) => out[id] === top);
+  // a igual nota, la figura es el campeón; si no hay uno solo, nadie
+  const camp = mvp.find((id) => pts[id] && pts[id][0] === 'Campeón');
+  return { v: out, mvp: camp || (mvp.length === 1 ? mvp[0] : '') };
+}
+const tonoNota = (v) => (v >= 9 ? 'n9' : v >= 8 ? 'n8' : v >= 7 ? 'n7' : v >= 6 ? 'n6' : 'n5');
+function Nota({ ctx, s }) {
+  if (!ctx.notas) return null;
+  const ids = partes(s).map(ctx.idDe);
+  const v = ctx.notas.v[ids[0]];
+  if (v == null) return null;
+  const mvp = !!ctx.notas.mvp && ids.includes(ctx.notas.mvp);
+  return <span className={'lk-nota ' + tonoNota(v) + (mvp ? ' mvp' : '')} title={(mvp ? 'La figura de la llave · ' : '') + 'Nota en esta llave: ' + v.toFixed(1)}>
+    {mvp ? <i aria-hidden="true">★</i> : null}{v.toFixed(1)}</span>;
 }
 function Mini({ ctx, f, nombre }) {
   const liga = ctx.liga;
@@ -200,6 +279,7 @@ function Ficha({ ctx, b, s, copa, pasa, llega, grande = false }) {
           {f ? <Bandera cc={f.cc} cls="lk-flag" /> : sb.ccs.map((cc) => <Bandera key={cc} cc={cc} cls="lk-flag" />)}
         </span>}
       {ctx.marca(s, f, perdio)}
+      <Nota ctx={ctx} s={s} />
     </button>
   );
 }
@@ -268,6 +348,7 @@ function MiniP({ ctx, s, ancho = 64, apagado = false, sinNombre = false }) {
       <span className={'lk-mp eq' + (apagado ? ' x' : '')} style={st}>
         <span className="lk-caras">{ms.map((m, i) => { const f = ctx.fila(m); return <Cara key={i} liga={ctx.liga} k={f ? f.k : ''} nombre={f ? f.n : sinBanderas(m).txt} cls="lk-cara" />; })}</span>
         <span className="lk-n">{ms.map((m) => { const f = ctx.fila(m); return f ? capital(limpio(f.n)) : capital(sinBanderas(m).txt); }).join(' · ')}</span>
+        <Nota ctx={ctx} s={s} />
       </span>
     );
   }
@@ -275,12 +356,13 @@ function MiniP({ ctx, s, ancho = 64, apagado = false, sinNombre = false }) {
   const url = urlCarta(ctx, f);
   const sb = sinBanderas(s);
   const nombre = f ? capital(limpio(f.n)) : capital(sb.txt || s);
-  if (url) return <span className={'lk-mp c' + (apagado ? ' x' : '') + (ctx.liga.brilla(f.k) ? ' brilla' : '')} style={st} title={nombre}><ImgCarta ctx={ctx} f={f} cls="lk-mp-img" grande={ancho > 110} /></span>;
+  if (url) return <span className={'lk-mp c' + (apagado ? ' x' : '') + (ctx.liga.brilla(f.k) ? ' brilla' : '')} style={st} title={nombre}><ImgCarta ctx={ctx} f={f} cls="lk-mp-img" grande={ancho > 110} ancho={ancho} /><Nota ctx={ctx} s={s} /></span>;
   return (
     <span className={'lk-mp s' + (apagado ? ' x' : '')} style={st} title={nombre}>
       <Cara liga={ctx.liga} k={f ? f.k : ''} nombre={nombre} cls="lk-cara" />
       {sinNombre ? null : <span className="lk-n">{nombre}</span>}
       {f ? <Bandera cc={f.cc} cls="lk-flag" /> : sb.ccs.map((cc) => <Bandera key={cc} cc={cc} cls="lk-flag" />)}
+      <Nota ctx={ctx} s={s} />
     </span>
   );
 }
@@ -1196,8 +1278,9 @@ export function Llave({ liga, vivoL, n: n0, raiz, dc }) {
       if (!nombres[id]) nombres[id] = sinBanderas(m).txt;
     }))));
     (L.funa || []).forEach((x) => { const id = idDe(x[0]); if (!nombres[id]) nombres[id] = sinBanderas(x[0]).txt; });
+    const notas = PREV_NOTA ? notasDe({ prin, ter, fila, idDe, pts, arbol: !vidasDe(L) && !dob }) : null;
     return { fila, idDe, nombres, esSin, pts, marca, cazas, aca, clasico, prin, ter, cerrada, vale, pasanDe, est, inicial, final, dob,
-      pend, ptsCamp };
+      pend, ptsCamp, notas };
   }, [L, liga, n]);
 
   // 🧭 TU CAMINO, ENCENDIDO DESDE QUE ABRÍS (Dlx, 18/10/2026: «all of them»): si jugás en esta llave, arranca marcado

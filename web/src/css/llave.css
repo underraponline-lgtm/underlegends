@@ -101,7 +101,7 @@
 /* ── 🥊 EL REMAKE DEL 17/11/2026: el versus de la final (la A), el camino de cada uno (la C) y la llave plegada. Las
    personas, en carta chica (`MiniP`): Dlx, «la idea era usar acá las tarjetas en vez de nombres… minis, tampoco tan
    grandes». Sin carta, una ficha del mismo tamaño con su cara, su nombre y su bandera: nunca una caja vacía ── */
-.lk-mp{position:relative;display:grid;place-items:center;flex:none;overflow:hidden;border-radius:4px}
+.lk-mp{position:relative;display:grid;place-items:center;flex:none;border-radius:4px}
 .lk-mp.c .lk-mp-img{width:100%;height:100%;object-fit:contain;display:block}
 .lk-mp.s,.lk-mp.eq{align-content:center;justify-items:center;gap:5px;padding:6px 4px;background:#121216;border:1.5px solid #2A2A2E;color:#F6F6F6}
 .lk-mp.s .lk-cara{width:46%;height:auto;aspect-ratio:1;font-size:clamp(11px,30%,26px);background:#2A2A2E;color:#F6F6F6;box-shadow:0 0 0 1.5px #6E6E72}
@@ -110,7 +110,26 @@
 .lk-mp.eq .lk-caras{display:flex}
 .lk-mp.eq .lk-cara{width:22px;height:22px}
 .lk-mp.x{filter:grayscale(.85);opacity:.55}
-.lk-mp.brilla{box-shadow:0 0 0 1.5px #F5C542}
+/* ✨ el brillo del Pase (nivel 8): el mismo de las cartas del cuadro (.lk-fc.brilla), no una raya quieta */
+.lk-mp.brilla .lk-mp-img{filter:drop-shadow(0 0 3px rgba(229,184,0,.95));animation:lk-fc-brilla 2.6s ease-in-out infinite}
+.app.calma .lk-mp.brilla .lk-mp-img{animation:none}
+@media (prefers-reduced-motion: reduce){.lk-mp.brilla .lk-mp-img{animation:none}}
+/* 🖼️ el marco del Pase adentro de una caja de tamaño fijo: sin el margen de afuera (el hueco ya lo da la grilla) */
+.lk-mk{display:grid;place-items:center;width:100%;height:100%}
+.lk-mk .mk{margin-inline:0;width:100%;height:100%}
+.lk-mk .mk-img{width:100%;height:100%}
+.lk-mk .mk-img > img{width:100%;height:100%;object-fit:contain;display:block}
+/* ⭐ la nota de la llave, colgada de la esquina de abajo: el color dice el tramo (como en el fútbol) y el texto va
+   siempre en negro (los cinco fondos pasan 4,5:1 con negro, ninguno con blanco) */
+.lk-nota{position:absolute;right:-5px;bottom:-5px;z-index:5;display:inline-flex;align-items:center;gap:2px;min-width:30px;
+  justify-content:center;padding:2px 5px;border-radius:3px;font:900 12px/1.15 Archivo,sans-serif;font-variant-numeric:tabular-nums;
+  color:#030304;box-shadow:0 0 0 1.5px #030304;pointer-events:auto}
+.lk-nota i{font-style:normal;font-size:11px}
+.lk-nota.n9{background:#3D8BFD}.lk-nota.n8{background:#19B377}.lk-nota.n7{background:#8FD14F}.lk-nota.n6{background:#F2C230}.lk-nota.n5{background:#F0644B}
+.lk-nota.mvp{padding-inline:6px}
+/* en las chicas (los que llegaron lejos, los rivales del camino) la nota no puede tapar media carta */
+.lk-vsf-resto .lk-nota,.lk-cam .lk-nota{min-width:24px;padding:1px 3px;font-size:10px;right:-4px;bottom:-4px}
+.lk-mp.x .lk-nota,.lk-fc.x .lk-nota{filter:none}
 
 .lk-vsf{display:grid;gap:12px;margin:6px 0 0;padding:0 16px}
 .lk-vsf-in{display:grid;grid-template-columns:minmax(0,1fr) auto minmax(0,1fr);border:2px solid #2A2A2E}
