@@ -1,6 +1,152 @@
 {
  "_leeme": "Los tiers de las crews: el de cada una, la semana en curso (la última foto de los puntos de cada persona) y los últimos cambios. Lo escribe bot/crews_tiers.py en el paso 1c; las reglas viven en ese archivo.",
  "avisado": "2026-11-09",
+ "dia": {
+  "andy": [
+   1500,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0
+  ],
+  "bootraxx": [
+   16875,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0
+  ],
+  "choco": [
+   4500,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0
+  ],
+  "criszj": [
+   7875,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0
+  ],
+  "dominic": [
+   7875,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0
+  ],
+  "elfelpudo974": [
+   4500,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0
+  ],
+  "fisics": [
+   4500,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0
+  ],
+  "lancer": [
+   3750,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0
+  ],
+  "liam": [
+   4500,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0
+  ],
+  "lokillo": [
+   2625,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0
+  ],
+  "mecha": [
+   2625,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0
+  ],
+  "mito": [
+   11250,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0
+  ],
+  "nitro": [
+   1500,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0
+  ],
+  "puppy": [
+   5625,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0
+  ],
+  "soulb": [
+   1500,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0
+  ],
+  "vilca": [
+   1500,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0
+  ]
+ },
  "elo_corregido": "2026-11-17",
  "hist": [
   [

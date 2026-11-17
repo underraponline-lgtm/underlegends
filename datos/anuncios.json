@@ -1,5 +1,5 @@
 {
- "cuando": "2026-11-17T05:55:24+00:00",
+ "cuando": "2026-11-17T06:25:56+00:00",
  "anuncios": [
   {
    "nombre": "¡SE LLEGÓ LA GRAN NOCHE!",
@@ -4516,7 +4516,7 @@
    "categoria_id": "1373343272482902127"
   },
   {
-   "nombre": "NOMBRE",
+   "nombre": "COMPE PANDILLAS",
    "servidor": "DDF",
    "canal": "『📢』Eventos",
    "msg_id": "1572042364237910167",
@@ -4862,7 +4862,7 @@
    "categoria_id": "1309234419525222477"
   },
   {
-   "nombre": "DATOS DEL EVENTO",
+   "nombre": "COMPE PASA Y LLEVATE A 1",
    "servidor": "ACAD",
    "canal": "🥇┇torneos",
    "msg_id": "1570848615402962956",
@@ -5030,45 +5030,6 @@
    "staff": {},
    "autor": "Leonar-T",
    "staff_cuentas": {},
-   "categoria_id": "1309234419525222477"
-  },
-  {
-   "nombre": "UN PLACER MOSTRAR AL EQUIPO DE TRABAJO DE ESTA NACIONAL",
-   "servidor": "ACAD",
-   "canal": "🥇┇torneos",
-   "msg_id": "1568666341064577025",
-   "cuando": "2026-11-07T16:40:00",
-   "canal_id": "1309243940448243856",
-   "guild_id": "765045834647339038",
-   "organizador": "",
-   "orgs": [],
-   "autor_h": "33b8d394b34980ad",
-   "cupos_texto": "",
-   "inscriptos": null,
-   "cupo_total": null,
-   "rango": "",
-   "modalidad": "",
-   "horario": "",
-   "fecha": "",
-   "premios": "",
-   "staff": {
-    "jurado": [
-     "YIO 🇲🇽",
-     "YIO CR"
-    ],
-    "host": [
-     "ZINOX 🇨🇱",
-     "๖ۣۜẔͥḭnͣ๏ͫჯ ༻一"
-    ],
-    "dj": [
-     "TOKIO 🇦🇷"
-    ]
-   },
-   "autor": "Leonar-T",
-   "staff_cuentas": {
-    "YIO CR": "1033600988373848166",
-    "๖ۣۜẔͥḭnͣ๏ͫჯ ༻一": "372088439082057732"
-   },
    "categoria_id": "1309234419525222477"
   },
   {
@@ -5514,35 +5475,6 @@
    "categoria_id": "1489848582189224103"
   },
   {
-   "nombre": "GOD LEVEL 2v2",
-   "servidor": "FDS",
-   "canal": "🎉╏eventos",
-   "msg_id": "1563368358445842493",
-   "cuando": "2026-10-24T01:47:42",
-   "canal_id": "1536569364659044402",
-   "guild_id": "1489848581203689535",
-   "organizador": "🎙️ Hoosteros:",
-   "orgs": [
-    {
-     "n": "️ Hoosteros",
-     "id": ""
-    }
-   ],
-   "autor_h": "d637fa8d09166f5f",
-   "cupos_texto": "",
-   "inscriptos": null,
-   "cupo_total": null,
-   "rango": "",
-   "modalidad": "",
-   "horario": "",
-   "fecha": "",
-   "premios": "",
-   "staff": {},
-   "autor": "Artezzy",
-   "staff_cuentas": {},
-   "categoria_id": "1489848582189224103"
-  },
-  {
    "nombre": "GG SANGRERAP",
    "servidor": "FDS",
    "canal": "🎉╏eventos",
@@ -5854,30 +5786,6 @@
    "premios": "",
    "staff": {},
    "autor": "CNC ®",
-   "staff_cuentas": {},
-   "categoria_id": "1080379388320817233"
-  },
-  {
-   "nombre": "ENTRENN!!",
-   "servidor": "CH",
-   "canal": "📢—anuncios",
-   "msg_id": "1571264382103724154",
-   "cuando": "2026-11-14T20:43:41",
-   "canal_id": "1081721420373041264",
-   "guild_id": "1074328197400887388",
-   "organizador": "",
-   "orgs": [],
-   "autor_h": "17ba9bb10e33206e",
-   "cupos_texto": "",
-   "inscriptos": null,
-   "cupo_total": null,
-   "rango": "",
-   "modalidad": "",
-   "horario": "LA COMPE",
-   "fecha": "",
-   "premios": "",
-   "staff": {},
-   "autor": "chop",
    "staff_cuentas": {},
    "categoria_id": "1080379388320817233"
   },
@@ -6406,7 +6314,7 @@
    "inscripciones_cuando": "2026-11-16T18:43:39"
   },
   {
-   "nombre": "HORARIOS DE INSCRIPCION: ya",
+   "nombre": "COMPE SIN NOMBRE",
    "servidor": "DDS",
    "canal": "📢〕EVENTOS",
    "msg_id": "1569819295305965670",
@@ -6468,7 +6376,7 @@
    "inscripciones_cuando": "2026-11-16T18:43:39"
   },
   {
-   "nombre": "HORARIOS DE INSCRIPCION: ya",
+   "nombre": "COMPE SIN NOMBRE",
    "servidor": "DDS",
    "canal": "📢〕EVENTOS",
    "msg_id": "1568016698022297641",
@@ -7455,20 +7363,20 @@
   {
    "servidor": "CH",
    "canal": "📢—anuncios",
+   "tit": "¡INICIO LA COMPE!",
+   "tx": "ENTRENN!!",
+   "cuando": "2026-11-14T20:43:41",
+   "msg_id": "1571264382103724154",
+   "link": "https://discord.com/channels/1074328197400887388/1081721420373041264/1571264382103724154"
+  },
+  {
+   "servidor": "CH",
+   "canal": "📢—anuncios",
    "tit": "CHOP COMPE V.2 EN 10 MINUTOS ⌛",
    "tx": "1V1 16 CUPOS",
    "cuando": "2026-11-14T19:10:42",
    "msg_id": "1571240984623321251",
    "link": "https://discord.com/channels/1074328197400887388/1081721420373041264/1571240984623321251"
-  },
-  {
-   "servidor": "CH",
-   "canal": "📢—anuncios",
-   "tit": "UNANSE A LA LLAMADA!!",
-   "tx": "CHOP 1V1 YA COMIENZA",
-   "cuando": "2026-11-14T04:59:35",
-   "msg_id": "1571026793723461664",
-   "link": "https://discord.com/channels/1074328197400887388/1081721420373041264/1571026793723461664"
   },
   {
    "servidor": "ACAD",
