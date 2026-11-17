@@ -3,7 +3,7 @@
  "grilla": [
   ["✅  DECIDIR", "", "", "", "", "", "", ""],
   ["Lo que el sistema no pudo resolver solo. Elige una respuesta en la columna amarilla ✍️ —si es alguien que ya está en la Lista de Raperos, escribe su nombre como figura ahí— y el ciclo la aplica en menos de media hora. La fila se pone verde cuando está contestada. Para aclarar algo, 📝 NOTA: se guarda.", "", "", "", "", "", "", ""],
-  ["99 para decidir   —   🏆 16 eventos   ·   📣 2 📣 Reporte   ·   ⚔️ 5 batallas   ·   👤 43 nombres   ·   🪪 33 de identidad   ·   actualizado 17/11 12:31 PM ET", "", "", "", "", "", "", ""],
+  ["100 para decidir   —   🏆 16 eventos   ·   📣 2 📣 Reporte   ·   ⚔️ 5 batallas   ·   👤 43 nombres   ·   🪪 34 de identidad   ·   actualizado 17/11 12:57 PM ET", "", "", "", "", "", "", ""],
   ["", "", "", "", "", "", "", ""],
   ["#", "Tipo", "Qué hay que decidir", "Pistas", "✍️ RESPUESTA", "📝 NOTA", "Estado", "id"],
   ["▸  FVS UNDER · FVS · 26/09 · #461   ·   ver la llave ↗", "", "", "", "", "", "", ""],
@@ -166,6 +166,7 @@
   ["97", "🪪 Identidad", "¿«Dyz» es Dyzz? La cuenta de Dyzz en la Lista se anotó como «Dyz», y en el ranking suman aparte. Si es la misma persona, los puntos de «Dyz» pasan a Dyzz.\nLa cuenta: perfil ↗", "Esa cuenta: en DRA, FFA, URBF, FFS, ACAD, FVS, FRZ, LKR, CH y DDS · en Discord: «#64 | 📿», «Huesitos» · Miembro de DRA · en la Lista como Dyzz · 30 eventos en la T1", "", "", "", "c497f81b26"],
   ["98", "🪪 Identidad", "«Dominic» usó /card en URBF y no está en la Lista de Raperos. Si ya está con otro nombre, elígelo o escribilo: le pongo su Discord.\nSu cuenta: perfil ↗", "¿Será Dominick?\nSu cuenta: en URBF · en Discord: «Dominic», «dominic006363»", "", "", "", "8dac22dbbd"],
   ["99", "🪪 Identidad", "¿«LOKILLO» es VALLES-T? La cuenta de VALLES-T en la Lista se anotó como «LOKILLO», y en el ranking suman aparte. Si es la misma persona, los puntos de «LOKILLO» pasan a VALLES-T.\nLa cuenta: perfil ↗", "Esa cuenta: en DRA, FFA, SR, URBF, FFS, ACAD, FRZ, LKR, CH y CEU · en Discord: «DJ 🐉 (SHADOW)», «#99 |ALEXXXOL🇨🇴🔥🐉» · Miembro de DRA", "", "en la Lista como VALLES-T · 16 eventos en la T1", "", "c38332f661"],
+  ["100", "🪪 Identidad", "«Mony» usó /card y no está en la Lista de Raperos. Si ya está con otro nombre, elígelo o escribilo: le pongo su Discord.\nSu cuenta: perfil ↗", "Su cuenta: en DRA, FFA, SR, URBF, DDF, ACAD, FVS y CH · en Discord: «👤 | Mony», «Mony 𝐒𝐚𝐧𝐢𝐭𝐲» · Miembro de DRA", "", "", "", "4dc79e3e39"],
   ["", "", "", "", "", "", "", ""],
   ["✔️  Lo último que se aplicó", "", "", "", "", "", "", ""],
   ["", "⚔️ Batalla", "FATS BATTLES PALOOZA FECHA 7 · ACAD · 19/10 · octavos · MHAKMA 🇻🇪 🆚 Joba 🇨🇱 🆚 Ezias🇵🇾", "llaves de Discord", "ganó MHAKMA 🇻🇪: entra en la corrida siguiente", "", "✔️ aplicado", ""],
