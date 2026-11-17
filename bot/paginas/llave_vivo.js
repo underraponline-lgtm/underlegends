@@ -1338,7 +1338,34 @@
      el encabezado de cada ronda, cada batalla con TODOS sus lados y abajo el ganador —el renglón que nombra a uno solo;
      la réplica «A X B» y el «X» no votan—. Sin encabezado de ronda no es una llave (un 5 vidas sigue por
      `veredictos()`), y una ronda que vuelve para atrás es otro evento. El contrato con Python está en
-     `bot/llaves_casos.json` (`llaves_v`). */
+     `bot/llaves_casos.json` (`llaves_v`).
+     🏁 Y después de una FINAL con ganador, la batalla de alguien que no había jugado es otro evento (FDS, 13/11/2026:
+     RAP SIN GROSERIAS #6 quedó colgado de la FINAL de RANKED 2): `escuchar.tras_la_final()`. */
+  /* 🥉 la batalla de las semis entre DOS que ya perdieron una semi es la del TERCER PUESTO, aunque se votó sin
+     encabezado: `escuchar.tercero_sin_encabezado()` (URBF, 14/10/2026; FDS, 13/11/2026: «# 3ER PUESTO» no es una
+     ronda que se lea, y en la página salían tres semis) */
+  function terceroSinEncabezado(batallas) {
+    batallas.forEach(function (b, i) {
+      if (b[0] !== 'SEMIFINALES' || b[1].length !== 2) return;
+      var previas = batallas.slice(0, i).filter(function (bb) { return bb[0] === 'SEMIFINALES' && bb[2] && bb[1].length === 2; });
+      var perd = {};
+      previas.forEach(function (bb) { bb[1].forEach(function (x) { if (norm(x) !== norm(bb[2])) perd[norm(x)] = 1; }); });
+      if (previas.length >= 2 && b[1].every(function (x) { return perd[norm(x)]; })) b[0] = 'TERCER LUGAR';
+    });
+    return batallas;
+  }
+  function ganadorVotos(votos) {
+    var cuenta = {}, vistos = [];
+    (votos || []).forEach(function (v) { if (!(v in cuenta)) { cuenta[v] = 0; vistos.push(v); } cuenta[v]++; });
+    var top = vistos.slice().sort(function (x, y) { return cuenta[y] - cuenta[x]; });
+    return top.length && (top.length === 1 || cuenta[top[0]] > cuenta[top[1]]) ? top[0] : null;
+  }
+  function trasLaFinal(batallas, lados) {
+    if (!batallas.some(function (b) { return b[0] === 'FINAL' && b[2]; })) return false;
+    var vistos = {};
+    batallas.forEach(function (b) { b[1].forEach(function (x) { var n = norm(x); if (n) vistos[n] = 1; }); });
+    return (lados || []).some(function (x) { var n = norm(x); return n && !vistos[n]; });
+  }
   function llavesDeVeredictos(rows) {
     var porCanal = {}, canales = [], out = [];
     (rows || []).slice().sort(function (a, b) {
@@ -1376,7 +1403,7 @@
         } else b.razon = o === ultima ? 'última ronda y no dice campeón' : 'no aparece nadie después';
       });
       out.push({ id: cur.id, sv: cur.sv, g: cur.g, canal: cur.canal, pub: cur.pub, ed: cur.ed,
-        batallas: bats.map(function (b) { return [b.r, b.lados, b.gan, b.razon, b.pasan]; }) });
+        batallas: terceroSinEncabezado(bats.map(function (b) { return [b.r, b.lados, b.gan, b.razon, b.pasan]; })) });
     }
     canales.forEach(function (c) {
       var cur = null, ult = 0;
@@ -1397,6 +1424,9 @@
           }
           if (!cur || !cur.r) return;
           if (ns.length >= 2 && SEP.test(l)) {
+            if (trasLaFinal(cur.bats.map(function (b) { return [b.r, b.lados, ganadorVotos(b.votos)]; }), ns.map(sinMarcas))) {
+              cerrar(cur); cur = null; return;
+            }
             cur.bats.push({ r: cur.r, lados: ns.map(sinMarcas), votos: [] });
             cur.ed = Math.max(cur.ed, +m.ed || pub);
             return;

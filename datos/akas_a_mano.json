@@ -155,7 +155,8 @@
   "🇻🇪 2026-11-12 4:18 PM ET: en ACAD «Number» es Number VE (como en DDF): en la ACADEMIA la única cuenta que se anota como «number» es la de Number VE (1310075576991875144, 14 de 14 en datos/inscritos_hist.json); Number 🇺🇾 está en el servidor y nunca se anotó.",
   "🇺🇾 12/11/2026 6:09 PM ET: en DDS y FDS «Sosa» es .SosaATR: Sosa 🇦🇷 no es miembro de esos servidores y ahí sólo se anota .SosaATR. Claude, con la prueba (Dlx, 12/11/2026: «arregla también lo de Sosa»).",
   "🔀 12/11/2026 7:45 PM ET: en DDS «Abraham» es AbrahamH, «Mark» es Mark98 y «Kochi» es Kochi2011, y en DDF «19» es 19 FLEIVA WACK: los de la Lista no son miembros de esos servidores y ahí se anotan esas cuentas. Claude, con la prueba (Dlx, 12/11/2026: «Sí, pásalos»).",
-  "🔀 12/11/2026 7:45 PM ET: ACAD: Damian -> Dominick; URBF: Nemi -> nemmii_as; URBF: Number -> Number VE; FDS: Pepe Mujica -> LRS; LKR: Shadow -> VALLES-T; ACAD: Teo -> Teito; DDF: Teo -> Teito; FDS: Teo -> Teito; FFA: Teo -> Teito (el de la Lista no es miembro de ese servidor y ahí se anota el otro). Claude, con la prueba (Dlx, 12/11/2026: «mira y pasa todo lo demás que tú consideres»)."
+  "🔀 12/11/2026 7:45 PM ET: ACAD: Damian -> Dominick; URBF: Nemi -> nemmii_as; URBF: Number -> Number VE; FDS: Pepe Mujica -> LRS; LKR: Shadow -> VALLES-T; ACAD: Teo -> Teito; DDF: Teo -> Teito; FDS: Teo -> Teito; FFA: Teo -> Teito (el de la Lista no es miembro de ese servidor y ahí se anota el otro). Claude, con la prueba (Dlx, 12/11/2026: «mira y pasa todo lo demás que tú consideres»).",
+  "🏁 16/11/2026 4:10 PM ET, RAP SIN GROSERIAS #6 (FDS, 13/11): «nxux» y «nexux» son NXUZ —su cuenta (1089661639508377630) se anotó a ese evento a las 8:31 PM y Dlx ya había dicho que «Nexus» es él (04/10); en #veredictos el mismo lugar se escribe «NXUX», «NEXUX» y «Nexus»—, y «sentidice» y «elkesobrava» son Senticide —la cuenta de Senticide en el padrón (1355393300672020570) se anotó como «elkesobrava🇨🇱» a las 8:33 PM, y donde la llave dice «araya vs elkesobraba» #veredictos dice «ARAYA VS SENTIDICE»; la semi, la final y el podio lo escriben «sentidice», «SENTIDICE» y «senticide»—. Claude, con la prueba (Dlx, 16/11/2026: «1. ok», a separar el #6 de RANKED 2)."
  ],
  "cuentas": {
   "Monet": [
@@ -454,6 +455,22 @@
   [
    "ZTR",
    "Shadow"
+  ],
+  [
+   "nxux",
+   "NXUZ"
+  ],
+  [
+   "nexux",
+   "NXUZ"
+  ],
+  [
+   "sentidice",
+   "Senticide"
+  ],
+  [
+   "elkesobrava",
+   "Senticide"
   ]
  ],
  "no_confundir": [

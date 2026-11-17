@@ -429,7 +429,11 @@
   "lizenim": "Mito",
   "elcolesito": "Colesito",
   "lizeninn": "Mito",
-  "ztr": "Shadow"
+  "ztr": "Shadow",
+  "nxux": "NXUZ",
+  "nexux": "NXUZ",
+  "sentidice": "Senticide",
+  "elkesobrava": "Senticide"
  },
  "pares": [
   [
@@ -2163,6 +2167,22 @@
   [
    "ZTR",
    "Shadow"
+  ],
+  [
+   "nxux",
+   "NXUZ"
+  ],
+  [
+   "nexux",
+   "NXUZ"
+  ],
+  [
+   "sentidice",
+   "Senticide"
+  ],
+  [
+   "elkesobrava",
+   "Senticide"
   ]
  ],
  "no_confundir": [

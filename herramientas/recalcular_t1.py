@@ -134,8 +134,19 @@ def _hijo(salida):
     if leer:
         with io.open(os.path.join(raiz, 'datos', 'llaves_t1.json'), encoding='utf-8') as f:
             ll = json.load(f)
+        mem = E.conocidos()
         por_canal, solo = {}, {}
         for n in leer.split(','):
+            n = n.strip()
+            # 🔗 Y UN LINK DE MENSAJE EN VEZ DEL NÚMERO (16/11/2026): el evento que nunca tuvo número —RAP SIN GROSERIAS
+            # #6 (FDS, 13/11), que se dio por repetido de RANKED 2— y el que quedó cargado con el link de su #veredictos,
+            # que no es una llave (el #632)
+            if re.search(r'/channels/\d+/\d+/\d+', n):
+                g = re.search(r'/channels/(\d+)/(\d+)/(\d+)', n)
+                por_canal.setdefault(g.group(2), []).append(g.group(3))
+                solo[g.group(2)] = dict((mem.get('canales') or {}).get(g.group(2))
+                                        or {'servidor': '?', 'guild': g.group(1), 'canal': 'llaves'})
+                continue
             e = ll.get(n) or {}
             for link in e.get('links') or []:
                 g = re.search(r'/channels/(\d+)/(\d+)/(\d+)', str(link))
@@ -150,7 +161,16 @@ def _hijo(salida):
 
         def _escuchar_solo(s, forzar=None, por_canal=25):
             out, n_ch, n_msg = E.barrer(s, por_canal=100, solo=solo)
-            return out, {'completo': False, 'canales': n_ch, 'mensajes': n_msg}
+            info = {'completo': False, 'canales': n_ch, 'mensajes': n_msg}
+            # ⚖️ Y #VEREDICTOS, COMO EL CICLO (16/11/2026): la llave «como se jugó» y el ganador de cada batalla que la
+            # del organizador no dice. Sin esto, la relectura de una llave sola no es la del ciclo: el #6 de FDS tiene
+            # siete ganadores que sólo están ahí. Los 5 vidas que trae no se suman: se pidieron estas llaves y no otras
+            try:
+                E.vidas(s, mem, E._guilds(s), False)
+                info.update(ver_batallas=list(E._VER_BATALLAS[0]), ver_llaves=list(E._VER_LLAVES[0]))
+            except Exception as e:                       # noqa: BLE001
+                print('   ⚠️ no pude leer los veredictos (%s): la relectura va sin ellos' % str(e)[:80])
+            return out, info
 
         E.sesion, E.escuchar = _sesion_solo, _escuchar_solo
     import llaves_a_entrada as L

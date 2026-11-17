@@ -5382,6 +5382,698 @@
      ]
     ]
    ]
+  },
+  {
+   "que": "FDS · 13/11/2026: RANKED 2 y después RAP SIN GROSERIAS #6 en el mismo #veredictos (la final con campeón corta)",
+   "filas": [
+    {
+     "id": "1570992648926265568",
+     "canal": "1536574435761332334",
+     "sv": "#FDS ╏FREESTYLE DISCORD SERIES",
+     "g": "1489848581203689535",
+     "autor": "j1",
+     "pub": 1794624235136,
+     "ed": 1794624235136,
+     "texto": "Dios"
+    },
+    {
+     "id": "1570992642655789089",
+     "canal": "1536574435761332334",
+     "sv": "#FDS ╏FREESTYLE DISCORD SERIES",
+     "g": "1489848581203689535",
+     "autor": "j2",
+     "pub": 1794624233641,
+     "ed": 1794624233641,
+     "texto": "DIOS"
+    },
+    {
+     "id": "1570992604592611410",
+     "canal": "1536574435761332334",
+     "sv": "#FDS ╏FREESTYLE DISCORD SERIES",
+     "g": "1489848581203689535",
+     "autor": "j3",
+     "pub": 1794624224566,
+     "ed": 1794624224566,
+     "texto": "🫵🏻"
+    },
+    {
+     "id": "1570992582425845941",
+     "canal": "1536574435761332334",
+     "sv": "#FDS ╏FREESTYLE DISCORD SERIES",
+     "g": "1489848581203689535",
+     "autor": "j3",
+     "pub": 1794624219281,
+     "ed": 1794624219281,
+     "texto": ""
+    },
+    {
+     "id": "1570992510656970905",
+     "canal": "1536574435761332334",
+     "sv": "#FDS ╏FREESTYLE DISCORD SERIES",
+     "g": "1489848581203689535",
+     "autor": "j2",
+     "pub": 1794624202170,
+     "ed": 1794624202170,
+     "texto": "# DIOS VS SENTICIDE"
+    },
+    {
+     "id": "1570992486569214037",
+     "canal": "1536574435761332334",
+     "sv": "#FDS ╏FREESTYLE DISCORD SERIES",
+     "g": "1489848581203689535",
+     "autor": "j4",
+     "pub": 1794624196427,
+     "ed": 1794624196427,
+     "texto": "FINAL"
+    },
+    {
+     "id": "1570989381483888671",
+     "canal": "1536574435761332334",
+     "sv": "#FDS ╏FREESTYLE DISCORD SERIES",
+     "g": "1489848581203689535",
+     "autor": "j5",
+     "pub": 1794623456117,
+     "ed": 1794623456117,
+     "texto": "Dios"
+    },
+    {
+     "id": "1570989353042186321",
+     "canal": "1536574435761332334",
+     "sv": "#FDS ╏FREESTYLE DISCORD SERIES",
+     "g": "1489848581203689535",
+     "autor": "j4",
+     "pub": 1794623449336,
+     "ed": 1794623449336,
+     "texto": "NEXUX VS DIOS"
+    },
+    {
+     "id": "1570987849833128077",
+     "canal": "1536574435761332334",
+     "sv": "#FDS ╏FREESTYLE DISCORD SERIES",
+     "g": "1489848581203689535",
+     "autor": "j6",
+     "pub": 1794623090943,
+     "ed": 1794623090943,
+     "texto": "🏁 @Artezzy ¡hola! Soy el bot de la **Liga Global**: estoy pasando los resultados de **RANKED 2** al ranking de la Liga.\nEn tu llave no encontré quién ganó 4 batallas.\n👉 **Abre cada menú de abajo y elige quién ganó esa batalla.**\n-# Lo puede marcar quien publicó la llave o alguien del staff. Tienen 48 horas: después, lo que falte lo cierra la Liga, y si falta la mitad de la llave o más, la llave no"
+    },
+    {
+     "id": "1570987558933110850",
+     "canal": "1536574435761332334",
+     "sv": "#FDS ╏FREESTYLE DISCORD SERIES",
+     "g": "1489848581203689535",
+     "autor": "j5",
+     "pub": 1794623021587,
+     "ed": 1794623021587,
+     "texto": "Senticide"
+    },
+    {
+     "id": "1570987516410986497",
+     "canal": "1536574435761332334",
+     "sv": "#FDS ╏FREESTYLE DISCORD SERIES",
+     "g": "1489848581203689535",
+     "autor": "j4",
+     "pub": 1794623011449,
+     "ed": 1794623011449,
+     "texto": "MCAREPA VS SENTIDICE"
+    },
+    {
+     "id": "1570985130892333147",
+     "canal": "1536574435761332334",
+     "sv": "#FDS ╏FREESTYLE DISCORD SERIES",
+     "g": "1489848581203689535",
+     "autor": "j5",
+     "pub": 1794622442697,
+     "ed": 1794622442697,
+     "texto": "Senticide"
+    },
+    {
+     "id": "1570985079931539527",
+     "canal": "1536574435761332334",
+     "sv": "#FDS ╏FREESTYLE DISCORD SERIES",
+     "g": "1489848581203689535",
+     "autor": "j4",
+     "pub": 1794622430547,
+     "ed": 1794622430547,
+     "texto": "ARAYA VS  SENTIDICE"
+    },
+    {
+     "id": "1570983585031258204",
+     "canal": "1536574435761332334",
+     "sv": "#FDS ╏FREESTYLE DISCORD SERIES",
+     "g": "1489848581203689535",
+     "autor": "j5",
+     "pub": 1794622074135,
+     "ed": 1794622074135,
+     "texto": "Nexus"
+    },
+    {
+     "id": "1570983561417330718",
+     "canal": "1536574435761332334",
+     "sv": "#FDS ╏FREESTYLE DISCORD SERIES",
+     "g": "1489848581203689535",
+     "autor": "j4",
+     "pub": 1794622068505,
+     "ed": 1794622068505,
+     "texto": "CRAKERO VS NXUX"
+    },
+    {
+     "id": "1570982464833192028",
+     "canal": "1536574435761332334",
+     "sv": "#FDS ╏FREESTYLE DISCORD SERIES",
+     "g": "1489848581203689535",
+     "autor": "j5",
+     "pub": 1794621807059,
+     "ed": 1794621807059,
+     "texto": "Dios"
+    },
+    {
+     "id": "1570982376949944531",
+     "canal": "1536574435761332334",
+     "sv": "#FDS ╏FREESTYLE DISCORD SERIES",
+     "g": "1489848581203689535",
+     "autor": "j7",
+     "pub": 1794621786106,
+     "ed": 1794621786106,
+     "texto": "# Leyenda.X5 vs Dios"
+    },
+    {
+     "id": "1570981432233300161",
+     "canal": "1536574435761332334",
+     "sv": "#FDS ╏FREESTYLE DISCORD SERIES",
+     "g": "1489848581203689535",
+     "autor": "j3",
+     "pub": 1794621560868,
+     "ed": 1794621560868,
+     "texto": "Ganador: @Abraham"
+    },
+    {
+     "id": "1570979944819990661",
+     "canal": "1536574435761332334",
+     "sv": "#FDS ╏FREESTYLE DISCORD SERIES",
+     "g": "1489848581203689535",
+     "autor": "j3",
+     "pub": 1794621206241,
+     "ed": 1794621206241,
+     "texto": "RÉPLICA"
+    },
+    {
+     "id": "1570979654855163996",
+     "canal": "1536574435761332334",
+     "sv": "#FDS ╏FREESTYLE DISCORD SERIES",
+     "g": "1489848581203689535",
+     "autor": "j4",
+     "pub": 1794621137108,
+     "ed": 1794621137108,
+     "texto": "MCAREPA VS CHENTE"
+    },
+    {
+     "id": "1570974061624827954",
+     "canal": "1536574435761332334",
+     "sv": "#FDS ╏FREESTYLE DISCORD SERIES",
+     "g": "1489848581203689535",
+     "autor": "j3",
+     "pub": 1794619803578,
+     "ed": 1794619803578,
+     "texto": ""
+    },
+    {
+     "id": "1570974055203606661",
+     "canal": "1536574435761332334",
+     "sv": "#FDS ╏FREESTYLE DISCORD SERIES",
+     "g": "1489848581203689535",
+     "autor": "j4",
+     "pub": 1794619802047,
+     "ed": 1794619802047,
+     "texto": "Se la lleva"
+    },
+    {
+     "id": "1570974045745319946",
+     "canal": "1536574435761332334",
+     "sv": "#FDS ╏FREESTYLE DISCORD SERIES",
+     "g": "1489848581203689535",
+     "autor": "j8",
+     "pub": 1794619799792,
+     "ed": 1794619799792,
+     "texto": "https://klipy.com/gifs/martesdehuevos-juevesdecocido-juanjo-dios"
+    },
+    {
+     "id": "1570974038161883157",
+     "canal": "1536574435761332334",
+     "sv": "#FDS ╏FREESTYLE DISCORD SERIES",
+     "g": "1489848581203689535",
+     "autor": "j4",
+     "pub": 1794619797984,
+     "ed": 1794619797984,
+     "texto": "1"
+    },
+    {
+     "id": "1570974028141699123",
+     "canal": "1536574435761332334",
+     "sv": "#FDS ╏FREESTYLE DISCORD SERIES",
+     "g": "1489848581203689535",
+     "autor": "j4",
+     "pub": 1794619795595,
+     "ed": 1794619795595,
+     "texto": "2"
+    },
+    {
+     "id": "1570974020961177652",
+     "canal": "1536574435761332334",
+     "sv": "#FDS ╏FREESTYLE DISCORD SERIES",
+     "g": "1489848581203689535",
+     "autor": "j4",
+     "pub": 1794619793883,
+     "ed": 1794619793883,
+     "texto": "3"
+    },
+    {
+     "id": "1570974011494506617",
+     "canal": "1536574435761332334",
+     "sv": "#FDS ╏FREESTYLE DISCORD SERIES",
+     "g": "1489848581203689535",
+     "autor": "j4",
+     "pub": 1794619791626,
+     "ed": 1794619791626,
+     "texto": "4"
+    },
+    {
+     "id": "1570973998416662559",
+     "canal": "1536574435761332334",
+     "sv": "#FDS ╏FREESTYLE DISCORD SERIES",
+     "g": "1489848581203689535",
+     "autor": "j4",
+     "pub": 1794619788508,
+     "ed": 1794619788508,
+     "texto": "5"
+    },
+    {
+     "id": "1570973991772881008",
+     "canal": "1536574435761332334",
+     "sv": "#FDS ╏FREESTYLE DISCORD SERIES",
+     "g": "1489848581203689535",
+     "autor": "j4",
+     "pub": 1794619786924,
+     "ed": 1794619786924,
+     "texto": "6"
+    },
+    {
+     "id": "1570973986710356010",
+     "canal": "1536574435761332334",
+     "sv": "#FDS ╏FREESTYLE DISCORD SERIES",
+     "g": "1489848581203689535",
+     "autor": "j4",
+     "pub": 1794619785717,
+     "ed": 1794619785717,
+     "texto": "7"
+    },
+    {
+     "id": "1570973981215957033",
+     "canal": "1536574435761332334",
+     "sv": "#FDS ╏FREESTYLE DISCORD SERIES",
+     "g": "1489848581203689535",
+     "autor": "j4",
+     "pub": 1794619784407,
+     "ed": 1794619784407,
+     "texto": "8"
+    },
+    {
+     "id": "1570973975608299652",
+     "canal": "1536574435761332334",
+     "sv": "#FDS ╏FREESTYLE DISCORD SERIES",
+     "g": "1489848581203689535",
+     "autor": "j4",
+     "pub": 1794619783070,
+     "ed": 1794619783070,
+     "texto": "9"
+    },
+    {
+     "id": "1570973970180604006",
+     "canal": "1536574435761332334",
+     "sv": "#FDS ╏FREESTYLE DISCORD SERIES",
+     "g": "1489848581203689535",
+     "autor": "j4",
+     "pub": 1794619781776,
+     "ed": 1794619781776,
+     "texto": "10"
+    },
+    {
+     "id": "1570973952472518748",
+     "canal": "1536574435761332334",
+     "sv": "#FDS ╏FREESTYLE DISCORD SERIES",
+     "g": "1489848581203689535",
+     "autor": "j8",
+     "pub": 1794619777554,
+     "ed": 1794619777554,
+     "texto": "## DIOS VS CRAKERO"
+    },
+    {
+     "id": "1570973925230514250",
+     "canal": "1536574435761332334",
+     "sv": "#FDS ╏FREESTYLE DISCORD SERIES",
+     "g": "1489848581203689535",
+     "autor": "j8",
+     "pub": 1794619771059,
+     "ed": 1794619771059,
+     "texto": "# FINAL"
+    },
+    {
+     "id": "1570972162612011039",
+     "canal": "1536574435761332334",
+     "sv": "#FDS ╏FREESTYLE DISCORD SERIES",
+     "g": "1489848581203689535",
+     "autor": "j3",
+     "pub": 1794619350818,
+     "ed": 1794619350818,
+     "texto": "Ganador: MC Arepa"
+    },
+    {
+     "id": "1570971124517445744",
+     "canal": "1536574435761332334",
+     "sv": "#FDS ╏FREESTYLE DISCORD SERIES",
+     "g": "1489848581203689535",
+     "autor": "j8",
+     "pub": 1794619103317,
+     "ed": 1794619103317,
+     "texto": "## MCAREPA VS ARTEZZY"
+    },
+    {
+     "id": "1570971101272608871",
+     "canal": "1536574435761332334",
+     "sv": "#FDS ╏FREESTYLE DISCORD SERIES",
+     "g": "1489848581203689535",
+     "autor": "j8",
+     "pub": 1794619097775,
+     "ed": 1794619097775,
+     "texto": "# 3ER PUESTO"
+    },
+    {
+     "id": "1570970876000735253",
+     "canal": "1536574435761332334",
+     "sv": "#FDS ╏FREESTYLE DISCORD SERIES",
+     "g": "1489848581203689535",
+     "autor": "j4",
+     "pub": 1794619044066,
+     "ed": 1794619044066,
+     "texto": "Dios"
+    },
+    {
+     "id": "1570968791637303429",
+     "canal": "1536574435761332334",
+     "sv": "#FDS ╏FREESTYLE DISCORD SERIES",
+     "g": "1489848581203689535",
+     "autor": "j8",
+     "pub": 1794618547115,
+     "ed": 1794618547115,
+     "texto": "## ARTEZZY VS DIOS"
+    },
+    {
+     "id": "1570968402888097943",
+     "canal": "1536574435761332334",
+     "sv": "#FDS ╏FREESTYLE DISCORD SERIES",
+     "g": "1489848581203689535",
+     "autor": "j4",
+     "pub": 1794618454430,
+     "ed": 1794618454430,
+     "texto": "3"
+    },
+    {
+     "id": "1570968400820314123",
+     "canal": "1536574435761332334",
+     "sv": "#FDS ╏FREESTYLE DISCORD SERIES",
+     "g": "1489848581203689535",
+     "autor": "j8",
+     "pub": 1794618453937,
+     "ed": 1794618453937,
+     "texto": "### CRAKERO"
+    },
+    {
+     "id": "1570968395917041746",
+     "canal": "1536574435761332334",
+     "sv": "#FDS ╏FREESTYLE DISCORD SERIES",
+     "g": "1489848581203689535",
+     "autor": "j4",
+     "pub": 1794618452768,
+     "ed": 1794618452768,
+     "texto": "4"
+    },
+    {
+     "id": "1570968392037572659",
+     "canal": "1536574435761332334",
+     "sv": "#FDS ╏FREESTYLE DISCORD SERIES",
+     "g": "1489848581203689535",
+     "autor": "j4",
+     "pub": 1794618451843,
+     "ed": 1794618451843,
+     "texto": "5"
+    },
+    {
+     "id": "1570966247930077284",
+     "canal": "1536574435761332334",
+     "sv": "#FDS ╏FREESTYLE DISCORD SERIES",
+     "g": "1489848581203689535",
+     "autor": "j8",
+     "pub": 1794617940648,
+     "ed": 1794617940648,
+     "texto": "## MC AREPA VS CRAKERO"
+    },
+    {
+     "id": "1570966220377817193",
+     "canal": "1536574435761332334",
+     "sv": "#FDS ╏FREESTYLE DISCORD SERIES",
+     "g": "1489848581203689535",
+     "autor": "j8",
+     "pub": 1794617934079,
+     "ed": 1794617934079,
+     "texto": "# SEMIFINALES"
+    },
+    {
+     "id": "1570966060213997694",
+     "canal": "1536574435761332334",
+     "sv": "#FDS ╏FREESTYLE DISCORD SERIES",
+     "g": "1489848581203689535",
+     "autor": "j3",
+     "pub": 1794617895893,
+     "ed": 1794617905568,
+     "texto": "Ganador:  ARTEZZY"
+    },
+    {
+     "id": "1570966007487406235",
+     "canal": "1536574435761332334",
+     "sv": "#FDS ╏FREESTYLE DISCORD SERIES",
+     "g": "1489848581203689535",
+     "autor": "j8",
+     "pub": 1794617883322,
+     "ed": 1794617883322,
+     "texto": "## SORAYA VS ARTEZZY"
+    },
+    {
+     "id": "1570964481016725637",
+     "canal": "1536574435761332334",
+     "sv": "#FDS ╏FREESTYLE DISCORD SERIES",
+     "g": "1489848581203689535",
+     "autor": "j8",
+     "pub": 1794617519383,
+     "ed": 1794617546440,
+     "texto": "### crakero"
+    },
+    {
+     "id": "1570964084994609363",
+     "canal": "1536574435761332334",
+     "sv": "#FDS ╏FREESTYLE DISCORD SERIES",
+     "g": "1489848581203689535",
+     "autor": "j8",
+     "pub": 1794617424964,
+     "ed": 1794617424964,
+     "texto": "## CRAKERO VS CRISZJ"
+    },
+    {
+     "id": "1570964042997047489",
+     "canal": "1536574435761332334",
+     "sv": "#FDS ╏FREESTYLE DISCORD SERIES",
+     "g": "1489848581203689535",
+     "autor": "j8",
+     "pub": 1794617414951,
+     "ed": 1794617414951,
+     "texto": "## MC AREPA PASA DEFRENTE"
+    },
+    {
+     "id": "1570961026579570690",
+     "canal": "1536574435761332334",
+     "sv": "#FDS ╏FREESTYLE DISCORD SERIES",
+     "g": "1489848581203689535",
+     "autor": "j8",
+     "pub": 1794616695781,
+     "ed": 1794616695781,
+     "texto": "### DIOS"
+    },
+    {
+     "id": "1570960295252467745",
+     "canal": "1536574435761332334",
+     "sv": "#FDS ╏FREESTYLE DISCORD SERIES",
+     "g": "1489848581203689535",
+     "autor": "j8",
+     "pub": 1794616521419,
+     "ed": 1794616521419,
+     "texto": "# REPLICA : RAIZER VS DIOS"
+    },
+    {
+     "id": "1570960261156700181",
+     "canal": "1536574435761332334",
+     "sv": "#FDS ╏FREESTYLE DISCORD SERIES",
+     "g": "1489848581203689535",
+     "autor": "j8",
+     "pub": 1794616513290,
+     "ed": 1794616513290,
+     "texto": "## RAIZER VS DIOS VS 4´C"
+    },
+    {
+     "id": "1570960126192652380",
+     "canal": "1536574435761332334",
+     "sv": "#FDS ╏FREESTYLE DISCORD SERIES",
+     "g": "1489848581203689535",
+     "autor": "j8",
+     "pub": 1794616481112,
+     "ed": 1794616495217,
+     "texto": "#  CUARTOS"
+    },
+    {
+     "id": "1570958591672713267",
+     "canal": "1536574435761332334",
+     "sv": "#FDS ╏FREESTYLE DISCORD SERIES",
+     "g": "1489848581203689535",
+     "autor": "j8",
+     "pub": 1794616115254,
+     "ed": 1794616115254,
+     "texto": "### DIOS"
+    },
+    {
+     "id": "1570958579119169559",
+     "canal": "1536574435761332334",
+     "sv": "#FDS ╏FREESTYLE DISCORD SERIES",
+     "g": "1489848581203689535",
+     "autor": "j8",
+     "pub": 1794616112261,
+     "ed": 1794616112261,
+     "texto": "## NXUZ VS DIOS VS SOSATR"
+    },
+    {
+     "id": "1570958494797005012",
+     "canal": "1536574435761332334",
+     "sv": "#FDS ╏FREESTYLE DISCORD SERIES",
+     "g": "1489848581203689535",
+     "autor": "j8",
+     "pub": 1794616092157,
+     "ed": 1794616092157,
+     "texto": "# PLAY - OFF"
+    },
+    {
+     "id": "1570958468981063691",
+     "canal": "1536574435761332334",
+     "sv": "#FDS ╏FREESTYLE DISCORD SERIES",
+     "g": "1489848581203689535",
+     "autor": "j8",
+     "pub": 1794616086002,
+     "ed": 1794616086002,
+     "texto": "# <:FDSARGENTINA:1543046627089059900> RANKED #2"
+    }
+   ],
+   "llaves": [
+    [
+     [
+      "CUARTOS",
+      [
+       "RAIZER",
+       "DIOS",
+       "4´C"
+      ],
+      "DIOS",
+      "ronda siguiente",
+      []
+     ],
+     [
+      "CUARTOS",
+      [
+       "REPLICA : RAIZER",
+       "DIOS"
+      ],
+      "DIOS",
+      "veredicto",
+      []
+     ],
+     [
+      "CUARTOS",
+      [
+       "CRAKERO",
+       "CRISZJ"
+      ],
+      "CRAKERO",
+      "veredicto",
+      []
+     ],
+     [
+      "CUARTOS",
+      [
+       "SORAYA",
+       "ARTEZZY"
+      ],
+      "ARTEZZY",
+      "veredicto",
+      []
+     ],
+     [
+      "SEMIFINALES",
+      [
+       "MC AREPA",
+       "CRAKERO"
+      ],
+      "CRAKERO",
+      "veredicto",
+      []
+     ],
+     [
+      "SEMIFINALES",
+      [
+       "ARTEZZY",
+       "DIOS"
+      ],
+      "DIOS",
+      "veredicto",
+      []
+     ],
+     [
+      "TERCER LUGAR",
+      [
+       "MCAREPA",
+       "ARTEZZY"
+      ],
+      "MCAREPA",
+      "veredicto",
+      []
+     ],
+     [
+      "FINAL",
+      [
+       "DIOS",
+       "CRAKERO"
+      ],
+      "DIOS",
+      "veredicto",
+      []
+     ]
+    ],
+    [
+     [
+      "FINAL",
+      [
+       "DIOS",
+       "SENTICIDE"
+      ],
+      "DIOS",
+      "veredicto",
+      []
+     ]
+    ]
+   ]
   }
  ]
 }

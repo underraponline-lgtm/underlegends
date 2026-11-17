@@ -3930,6 +3930,50 @@ def tercero_sin_encabezado(batallas):
     return batallas
 
 
+def _ganador_votos(votos):
+    """El lado con más votos, o `None` si no hay votos o hay empate arriba (lo mismo que `cerrar()`)."""
+    v = collections.Counter(votos or ()).most_common()
+    return v[0][0] if v and (len(v) == 1 or v[0][1] > v[1][1]) else None
+
+
+def tras_la_final(batallas, lados):
+    """🏁 ¿Esta batalla ya es de OTRO evento? Sí, si llega después de una FINAL con ganador y trae a alguien que en
+    este evento no había jugado. `batallas` es `[[ronda, [lados], ganador o None], …]`, lo que va del evento.
+
+    🔴 FDS, 13/11/2026: RANKED 2 terminó a las 8:30 PM —«DIOS VS CRAKERO», «Se la lleva»— y a las 8:52 PM, en el
+    mismo #veredictos, arrancó RAP SIN GROSERIAS #6 con «MCAREPA VS CHENTE», sin encabezado de ronda y 22 minutos
+    después (la pausa que corta es `TANDA_MIN`, 45). Las siete batallas del #6 quedaron colgadas de la FINAL de RANKED
+    2: la llave «como se jugó» tenía 17 personas —se pagó en la escala 16+ teniendo 11— y las dos llaves del
+    organizador la tomaron como suya, así que el #6 se dio por repetido y nunca entró.
+
+    ⚠️ LA RÉPLICA Y EL TERCER PUESTO SIGUEN SIENDO DEL EVENTO: son de gente que ya jugó (la misma pareja, los dos que
+    perdieron su semi). Lo que no puede pasar después de una final con campeón es que entre alguien nuevo."""
+    if not any(b[0] == 'FINAL' and b[2] for b in batallas or ()):
+        return False
+    vistos = {norm(x) for b in batallas for x in b[1] if norm(x)}
+    return any(norm(x) and norm(x) not in vistos for x in lados or ())
+
+
+def hasta_la_final(batallas):
+    """Las batallas de una llave de #veredictos ya guardada, sin lo que vino después de su final (`tras_la_final()`).
+    Para las que se armaron antes de la regla: se guardan `VER_DIAS` y la noche que las mezcló no se vuelve a leer."""
+    for i in range(1, len(batallas or ())):
+        if tras_la_final(batallas[:i], batallas[i][1]):
+            return batallas[:i]
+    return batallas
+
+
+def _texto_llave_v(batallas):
+    """El `texto` de una llave de #veredictos, de sus batallas: el mismo formato que arma `llaves_de_veredictos()`."""
+    lineas, ult = [], None
+    for b in batallas:
+        if b[0] != ult:
+            lineas.append('`[ %s ]`' % b[0])
+            ult = b[0]
+        lineas.append(' 🆚 '.join('⌞%s⌝' % x for x in b[1]))
+    return '\n'.join(lineas)
+
+
 def llaves_de_veredictos(rows):
     """`[{id, sv, g, canal, pub, ed, texto, batallas}]`: cada evento jugado en un canal de veredictos, COMO SE JUGÓ.
 
@@ -3945,6 +3989,8 @@ def llaves_de_veredictos(rows):
         el revivido perdió—;
       · sin encabezado de ronda no es una llave: un 5 vidas sigue por `veredictos()`.
     ⚠️ Una ronda que vuelve para atrás (una FINAL y después OCTAVOS) es otro evento en el mismo canal.
+    🏁 Y también lo es, después de una FINAL con ganador, la batalla de alguien que no había jugado: ver
+    `tras_la_final()`.
     """
     por_canal = {}
     for m in sorted(rows or [], key=lambda m: (len(str(m['id'])), str(m['id']))):
@@ -4011,6 +4057,11 @@ def llaves_de_veredictos(rows):
                 if not cur or not cur['r']:
                     continue
                 if len(ns) >= 2 and SEP.search(l):
+                    if tras_la_final([[b['r'], b['lados'], _ganador_votos(b['votos'])] for b in cur['bats']],
+                                     [_sin_marcas(x) for x in ns]):
+                        cerrar(cur)
+                        cur = None
+                        continue
                     cur['bats'].append({'r': cur['r'], 'lados': [_sin_marcas(x) for x in ns], 'votos': []})
                     cur['lineas'].append(' 🆚 '.join('⌞%s⌝' % _sin_marcas(x) for x in ns))
                     cur['ed'] = max(cur['ed'], int(m.get('ed') or pub))
@@ -4350,6 +4401,11 @@ def vidas(s, mem, guilds, completo):
     # #votaciones después de cada evento, y sin la copia la llave verdadera se pierde con el evento siguiente. La que se
     # vuelve a leer reemplaza a la guardada (puede haberse completado)
     lls = {x['id']: dict(x, batallas=tercero_sin_encabezado(x.get('batallas') or [])) for x in _memoria_llaves_v()}
+    # 🏁 y sin lo que se le pegó después de su final, si se guardó antes de `tras_la_final()` (FDS, 13/11/2026)
+    for k, x in list(lls.items()):
+        bs = hasta_la_final(x['batallas'])
+        if len(bs) < len(x['batallas']):
+            lls[k] = dict(x, batallas=bs, texto=_texto_llave_v(bs))
     for x in llaves_de_veredictos(filas):
         lls[x['id']] = x
     lls = {k: x for k, x in lls.items() if ahora_ms - int(x.get('pub') or 0) <= VER_DIAS * 86400000
@@ -5302,6 +5358,21 @@ def _check_llave_veredictos():
              fila(70, '# [ FINAL ]'), fila(80, '⌞Vacile🇪🇸⌝' + vs + '⌞Motera🇪🇸⌝'), fila(90, 'Motera🇪🇸')]) or [{}])[0]
           .get('batallas') or []] == [('SEMIFINALES', 'Vacile🇪🇸'), ('SEMIFINALES', 'Motera🇪🇸'),
                                        ('TERCER LUGAR', 'Ortiz🇪🇸'), ('FINAL', 'Motera🇪🇸')]),
+        # 🏁 RANKED 2 y RAP SIN GROSERIAS #6 (FDS, 13/11/2026): el que arranca sin encabezado después de la final
+        ('después de una FINAL con campeón, alguien nuevo es otro evento; la réplica y el tercero sin encabezado no',
+         [[' vs '.join(b[1]) for b in L['batallas']] for L in llaves_de_veredictos([
+             fila(0, '# [ SEMIFINAL ]'), fila(10, '⌞Ana⌝' + vs + '⌞Beto⌝'), fila(20, 'Ana'),
+             fila(30, '⌞Caro⌝' + vs + '⌞Dani⌝'), fila(40, 'Caro'),
+             fila(50, '# [ FINAL ]'), fila(60, '⌞Ana⌝' + vs + '⌞Caro⌝'), fila(70, 'Ana'),
+             fila(80, '⌞Caro⌝' + vs + '⌞Ana⌝'), fila(90, 'Ana'), fila(100, '⌞Beto⌝' + vs + '⌞Dani⌝'), fila(110, 'Dani'),
+             fila(400, '⌞Dani⌝' + vs + '⌞Eze⌝'), fila(410, 'Eze'), fila(500, '# [ FINAL ]'),
+             fila(510, '⌞Eze⌝' + vs + '⌞Fer⌝'), fila(520, 'Fer')])]
+         == [['Ana vs Beto', 'Caro vs Dani', 'Ana vs Caro', 'Caro vs Ana', 'Beto vs Dani'], ['Eze vs Fer']]),
+        ('… y a la guardada antes de la regla se le saca lo de después (`hasta_la_final()`)',
+         [b[1][1] for b in hasta_la_final([['SEMIFINALES', ['A', 'B'], 'A'], ['FINAL', ['A', 'C'], 'A'],
+                                            ['FINAL', ['C', 'A'], 'A'], ['FINAL', ['B', 'D'], None],
+                                            ['FINAL', ['A', 'E'], 'A']])] == ['B', 'C', 'A']
+         and len(hasta_la_final([['FINAL', ['A', 'B'], None], ['FINAL', ['C', 'D'], 'C']])) == 2),
     ]:
         print('   %s %s' % ('✅' if ok else '❌', que))
         mal += 0 if ok else 1
