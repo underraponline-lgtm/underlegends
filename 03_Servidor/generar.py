@@ -353,6 +353,7 @@ def montar(gente):
     from comun import tag_elegido as _TE
     from comun.claves import clave as _K
     TS.ELEGIDO = {i: _TE.para('servidor', _K(p.get('nombre') or '')) for i, p in enumerate(gente)}
+    TS.CLAVES = {i: _K(p.get('nombre') or '') for i, p in enumerate(gente)}
     TS.avatares = _Fotos(gente)
 
 
@@ -418,6 +419,13 @@ async def dibujar(gente, prefijo='sv'):
             }''')
             d = os.path.join(SALIDA, '%s_%s.png' % (prefijo, _slug(p['nombre'])))
             await pg.screenshot(path=d, omit_background=True)
+            # 🧩 y la carta armable: acá la página ES la carta, del tamaño de la foto (`comun/armable.py`)
+            from comun import armable
+            # ⚠️ con la MISMA caja con que `TS.recortar()` corta el PNG después (en píxeles a escala `ESCALA`)
+            _cx0, _cy0, _cx1, _cy1 = TS.CAJA_SET
+            await armable.guardar(await pg.query_selector('body'), d, {
+                'x': _cx0 / TS.ESCALA, 'y': _cy0 / TS.ESCALA,
+                'width': (_cx1 - _cx0) / TS.ESCALA, 'height': (_cy1 - _cy0) / TS.ESCALA})
             hechos.append(d)
         await b.close()
     for t in temporales:

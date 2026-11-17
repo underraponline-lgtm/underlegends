@@ -258,6 +258,9 @@ def sincronizar(s):
         # no las sirve nadie. Ver bot/a_webp.py.
         if not clave.endswith('.webp') or '/' not in clave:
             continue
+        # 🧩 las imágenes compartidas de las cartas armables (`cartas/a/`) no son de nadie
+        if clave.startswith('cartas/a/'):
+            continue
         # 🔴 LAS FOTOS NO SON CARTAS, Y ESTABAN ENTRANDO AL INVENTARIO.
         # Viven en `fotos/<temporada>/<quien>.webp` y `rpartition('/')` las
         # metia como una persona llamada `fotos/t1` con **443 cartas**
@@ -350,6 +353,52 @@ def a_webp(datos):
     return out
 
 
+# 🧩 LA CARTA ARMABLE (16/11/2026, `comun/armable.py`): al lado de cada PNG, `<archivo>.armable.html`, que se sube como
+# `<persona>/<carta>.html` para que el Inventario vista la carta en vivo. Las imágenes pesadas que comparte un servidor
+# (su textura, su escudo) van UNA vez a `cartas/a/<huella>.<ext>`: `_activos_subidos` recuerda las de esta corrida y
+# un HEAD a la URL pública las de antes. Si algo de esto falla, la carta igual queda: la página cae a la imagen.
+_activos_subidos = set()
+_activos_lock = threading.Lock()
+_TIPOS = {'png': 'image/png', 'webp': 'image/webp', 'jpg': 'image/jpeg', 'gif': 'image/gif', 'svg': 'image/svg+xml'}
+
+
+def subir_armable(s, ruta, clave):
+    """Sube la armable de la carta `ruta` (si la hay) y las imágenes que nombra. `True` si quedó arriba."""
+    sys.path.insert(0, BASE) if BASE not in sys.path else None
+    from comun import armable
+    arm = armable.ruta_de(ruta)
+    if not os.path.exists(arm):
+        return False
+    with io.open(arm, encoding='utf-8') as f:
+        doc = f.read()
+    carpeta = os.path.join(os.path.dirname(arm), '_activos')
+    for nombre in armable.activos_de(doc):
+        with _activos_lock:
+            if nombre in _activos_subidos:
+                continue
+            _activos_subidos.add(nombre)
+        k = 'cartas/a/' + nombre
+        try:
+            if requests.head('%s/%s' % (PUBLICA, k), timeout=20).status_code == 200:
+                continue
+            with open(os.path.join(carpeta, nombre), 'rb') as f:
+                r = s.put('%s/objects/%s' % (API, k), data=f.read(),
+                          headers={'Content-Type': _TIPOS.get(nombre.rsplit('.', 1)[-1], 'application/octet-stream')}, timeout=60)
+            if _ok(r, k) is None:
+                return False
+        except Exception:                                # noqa: BLE001
+            with _activos_lock:
+                _activos_subidos.discard(nombre)
+            return False
+    doc = doc.replace(armable.R2, PUBLICA)
+    try:
+        r = s.put('%s/objects/%s' % (API, clave[:-5] + '.html'), data=doc.encode('utf-8'),
+                  headers={'Content-Type': 'text/html; charset=utf-8'}, timeout=60)
+        return _ok(r, clave[:-5] + '.html') is not None
+    except Exception:                                    # noqa: BLE001
+        return False
+
+
 def subir(s, ruta, clave, intentos=3):
     """Sube una carta a R2. Devuelve (bytes, md5) o (None, por_que).
 
@@ -383,6 +432,11 @@ def subir(s, ruta, clave, intentos=3):
                               headers={'Content-Type': 'image/webp'}, timeout=60)
                     except Exception:                    # noqa: BLE001
                         pass
+                # 🧩 y la armable, para el Inventario: si no sube, la página cae a la imagen
+                try:
+                    subir_armable(s, ruta, clave)
+                except Exception:                        # noqa: BLE001
+                    pass
                 return len(datos), hashlib.md5(datos).hexdigest()[:8]
         except Exception as e:
             if n == intentos - 1:
@@ -396,7 +450,7 @@ def completar_chicas(s, tope=200):
     grande. Hasta `tope` por corrida, achicando la webp de R2. Devuelve `(hechas, borradas, faltan)`."""
     import requests
     claves = {o['key'] for o in listar(s)}
-    grandes = {k for k in claves if k.endswith('.webp') and not es_chica(k) and not k.startswith('fotos/')
+    grandes = {k for k in claves if k.endswith('.webp') and not es_chica(k) and not k.startswith(('fotos/', 'cartas/a/'))
                and k.rpartition('/')[2][:-5] in CON_CHICA}
     faltan = sorted(k for k in grandes if clave_chica(k) not in claves)
     solas = sorted(k for k in claves if es_chica(k) and k[:-11] + '.webp' not in claves)

@@ -196,10 +196,22 @@ def div(d, propio, acento, y=None):
     cambio que era para el otro. Son dos piezas distintas y miden cosas
     distintas: el titulo sale del OVR y el TAG de combinaciones.
     """
-    from comun.emblema import tono
     # 🏷️ el TAG que eligió de su inventario (25/10/2026, `comun/tag_elegido.py`): sólo en su propia Servidor
     el = d.get('elegido') if d.get('casa') is not False else None
     t, k = el if el else cascada(d)
+    out = pieza(t, k, propio, acento, y)
+    # 🧩 y cada TAG que se le puede poner, ya dibujado, para el Inventario (`comun/piezas.py`): sólo en su Servidor
+    if d.get('clave') and d.get('casa') is not False:
+        from comun import piezas as PZ
+        out += PZ.script({'tag': PZ.variantes('servidor', d['clave'], lambda t2, k2: pieza(t2, k2, propio, acento, y),
+                                               auto=cascada(d))})
+    return out
+
+
+def pieza(t, k, propio, acento, y=None):
+    """🧩 La pastilla del TAG con su texto y su nivel: la de la carta y cada variante del Inventario."""
+    from comun.emblema import tono
+    from comun import piezas as PZ
     # ⚠️ t4, el piso, más apagado que t3: un nivel que se ve igual que otro
     # es el mismo TAG con otras palabras (ver `.tag.t1` de la de País)
     borde = {'t1': f'1.4px solid {acento}',
@@ -212,7 +224,7 @@ def div(d, propio, acento, y=None):
     # la Servidor necesita que el TAG se acomode a cuantos circulos tenga cada
     # una. Sin dato se queda donde diga el CSS.
     pos = f'top:{y}px;' if y is not None else ''
-    return (f'<div class="tagb" style="{pos}background:{tono(propio, -.55)};'
+    return (f'<div class="tagb" {PZ.marca("tag")} style="{pos}background:{tono(propio, -.55)};'
             f'border:{borde};opacity:{op}">{t}</div>')
 
 

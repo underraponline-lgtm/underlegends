@@ -166,6 +166,7 @@ def logo_de(sv):
 # argmax del pool: Erian eligió Urban y su carta decía FFA. Sin elegir, no va ninguno. Ver `comun/servidor_elegido.py`
 from comun import servidor_elegido as _SE  # noqa: E402
 from comun import tag_elegido as _TE  # noqa: E402
+from comun import piezas as _PZ  # noqa: E402
 from comun.claves import clave as _K  # noqa: E402
 
 
@@ -330,6 +331,15 @@ def puesto(c):
     return '#%d' % c['pos']
 
 
+def pieza_tag(tg):
+    """🧩 La pastilla del TAG, `(texto, nivel)`: la que va en la carta y cada variante del Inventario.
+    📏 EL TAG LARGO APRIETA LAS LETRAS, NO LA FILA (14/10/2026). La pastilla vive entre la temporada y el UL en una
+    fila flex: medido, «🏁 SEMIFINALISTA SERIAL» dejaba 3.7 px de cada lado y «🎟️ PRIMER EVENTO PENDIENTE» 0 —se
+    tocaban—. Desde 21 caracteres va con menos espaciado (`.c-band.largo`), desde 25 con casi nada (`.muylargo`)"""
+    cls = tg[1] + (' muylargo' if len(tg[0]) >= 25 else ' largo' if len(tg[0]) >= 21 else '')
+    return '<div class="c-band %s" %s>%s</div>' % (cls, _PZ.marca('tag'), tg[0])
+
+
 def card(c):
     # 🔴 SIN 10 EVENTOS NO HAY LETRA. Dlx, 23/09/2026, mirando esta
     # misma carta: *«no — sin 10 eventos no hay letra en ninguna carta»*.
@@ -358,11 +368,11 @@ def card(c):
     # 🔴 TAMBIÉN SIN JUGAR (26/10/2026): el «primer evento pendiente» pisaba lo elegido, así que el dueño elegía un TAG,
     # la carta se redibujaba y salía igual. Como en la Competitiva (`gencomp.tag_de()`): primero lo elegido
     tg = _TE.para('temporada', _K(c.get('raw') or '')) or (('🎟️ PRIMER EVENTO PENDIENTE', 't4') if c.get('sinjugar') else tag(c))
-    # 📏 EL TAG LARGO APRIETA LAS LETRAS, NO LA FILA (14/10/2026). La pastilla vive entre la temporada y el UL en una
-    # fila flex: medido, «🏁 SEMIFINALISTA SERIAL» dejaba 3.7 px de cada lado y «🎟️ PRIMER EVENTO PENDIENTE» 0 —se
-    # tocaban—. Desde 21 caracteres va con menos espaciado (`.c-band.largo`), desde 25 con casi nada (`.muylargo`), y
-    # los cortos quedan como estaban
-    banda = tg[1] + (' muylargo' if len(tg[0]) >= 25 else ' largo' if len(tg[0]) >= 21 else '')
+    # 📏 el TAG largo aprieta las letras: ver `pieza_tag()`
+    # 🧩 la pieza TAG y todas sus variantes, para el Inventario (`comun/piezas.py`): la carta trae dibujado cada TAG
+    # que se le puede poner, así la página lo cambia ADENTRO de la carta y sale igual que acá
+    auto = (('🎟️ PRIMER EVENTO PENDIENTE', 't4') if c.get('sinjugar') else tag(c))
+    piezas = _PZ.script({'tag': _PZ.variantes('temporada', _K(c.get('raw') or ''), lambda t, n: pieza_tag((t, n)), auto=auto)})
     av  = c['av'].replace('?size=128', '?size=512')
     # 🎤 SIN FOTO —no se puso o la ocultó— VA LA SILUETA, no la inicial (Dlx, 03/10/2026). Ver comun/sin_foto.py
     from comun import sin_foto as SF
@@ -399,7 +409,7 @@ def card(c):
     <div class="c-pos">%s</div>
     <div class="c-fila">
       <div class="c-season">%s</div>
-      <div class="c-band %s">%s</div>
+      %s
       <img class="c-ul" src="%s">
     </div>
     <div class="c-left">
@@ -415,10 +425,11 @@ def card(c):
     <div class="c-frame"></div>
   </div>
   <div class="tag">Rango %s · %s</div>
+  %s
   </div>
-""" % (' bright' if bright else '', tg[1], clase_nombre(c['raw']), g, foto, puesto(c), TEMPORADA, banda, tg[0], UL,
+""" % (' bright' if bright else '', tg[1], clase_nombre(c['raw']), g, foto, puesto(c), TEMPORADA, pieza_tag(tg), UL,
        '—' if c.get('sinjugar') else c['ovr'], rg,
-       chip_bandera(c['cc']), chip_servidor(c['raw']), c['raw'].upper(), filas, rg, _SE.de(c['raw']) or '—')
+       chip_bandera(c['cc']), chip_servidor(c['raw']), c['raw'].upper(), filas, rg, _SE.de(c['raw']) or '—', piezas)
 
 
 

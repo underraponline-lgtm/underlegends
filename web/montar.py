@@ -602,6 +602,16 @@ def main():
     nuevo = rehacer_script(html) if '--script' in sys.argv else pagina(html)
     io.open(idx, 'w', encoding='utf-8', newline='\n').write(nuevo)
     print('✓ %s%s' % (os.path.relpath(idx, BASE), ': el script del principio' if '--script' in sys.argv else ''))
+    # 🧩 las fuentes de las cartas armables (`comun/armable.py`): la MISMA `comun/fonts/embed.css` que usan los
+    # generadores, servida una vez en `/cartas/fuentes.css` para que el Inventario dibuje la carta con sus letras
+    fu = os.path.join(PAG, 'cartas', 'fuentes.css')
+    os.makedirs(os.path.dirname(fu), exist_ok=True)
+    with open(os.path.join(BASE, 'comun', 'fonts', 'embed.css'), 'rb') as f:
+        src = f.read()
+    if not os.path.exists(fu) or open(fu, 'rb').read() != src:
+        with open(fu, 'wb') as f:
+            f.write(src)
+        print('✓ %s' % os.path.relpath(fu, BASE))
 
 
 if __name__ == '__main__':

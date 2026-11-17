@@ -192,8 +192,11 @@ async def _capturar(pg, SALIDA, callado=False):
                      cb['y']-y0, y1-(cb['y']+cb['height'])))
         m=4
         _o.makedirs(_o.path.dirname(SALIDA) or '.', exist_ok=True)
-        await pg.screenshot(path=SALIDA, omit_background=True,
-                            clip={'x':x0-m,'y':y0-m,'width':x1-x0+2*m,'height':y1-y0+2*m})
+        caja={'x':x0-m,'y':y0-m,'width':x1-x0+2*m,'height':y1-y0+2*m}
+        await pg.screenshot(path=SALIDA, omit_background=True, clip=caja)
+        # 🧩 y la carta armable, corrida en su caja como en la foto (`comun/armable.py`)
+        from comun import armable
+        await armable.guardar(c, SALIDA, caja)
 
 
 def _revisar(SALIDA, callado=False):

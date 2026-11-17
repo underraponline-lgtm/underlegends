@@ -222,6 +222,9 @@ def inventario(s):
             # 📸 `konan@temporada` es la foto propia de una carta de konan (13/10/2026): es suya, no otra grafía
             nombre = nombre.split('@', 1)[0]
             cual = 'fotos'
+        elif k.startswith('cartas/a/'):
+            # 🧩 las imágenes compartidas de las cartas armables (la textura de un servidor): no son de nadie
+            continue
         else:
             nombre, _, resto = k.rpartition('/')
             if not resto:

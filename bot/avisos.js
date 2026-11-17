@@ -8662,7 +8662,10 @@ export class Avisos {
       // 🏆 tus Pases premium de campeón de liga, y usar uno (15/11/2026)
       if (ruta === '/vales') return json(this.valesDe(String(d.quien || '')));
       if (ruta === '/vale-usar') { const v = this.valeUsar(d); return json(v, v.error ? 400 : 200); }
-      if (ruta === '/tag-elige') { const v = this.tagElige(d); await this.redibujoYa(v); return json(v, v.error ? 400 : 200); }
+      // 🏷️ sin redibujo a pedido (16/11/2026, Dlx: «se deberían notar en la página al instante, pero no necesariamente al
+      // instante en Discord… para que estemos bien con los límites»): la carta viva del Inventario lo muestra ya, y el
+      // TAG elegido entra al sello de la carta, así que el ciclo la redibuja en su vuelta
+      if (ruta === '/tag-elige') { const v = this.tagElige(d); return json(v, v.error ? 400 : 200); }
       if (ruta === '/tags-ciclo') { const v = this.tagsCiclo(d); return json(v, v.error ? 400 : 200); }
       // 🧠 lo que manda el ciclo: las personas de esta corrida (`bot/subir_datos.py`)
       if (ruta === '/personas-ciclo') {
@@ -17425,10 +17428,9 @@ export class Avisos {
   tagElige(d) {
     const quien = String(d.quien || ''), carta = String(d.carta || ''), tag = String(d.tag || '');
     if (!/^[0-9]{5,25}$/.test(quien) || !TAG_CARTAS.includes(carta) || !tag || tag.length > 60) return { error: 'faltan datos' };
-    const antes = (this.sql.exec('SELECT tag FROM tag_elige WHERE quien = ? AND carta = ?', quien, carta).toArray()[0] || {}).tag || 'auto';
     if (tag === 'auto') {
       this.sql.exec('DELETE FROM tag_elige WHERE quien = ? AND carta = ?', quien, carta);
-      return Object.assign({ ok: true, redibujo: antes !== 'auto' ? this.pedirRedibujo(quien) : null }, this.tagsMios(quien));
+      return Object.assign({ ok: true, redibujo: null }, this.tagsMios(quien));
     }
     if (tag.startsWith('pase:')) {
       if (!this.titulosDe(quien).includes(tag.slice(5))) return { error: 'no lo tienes' };
@@ -17441,7 +17443,7 @@ export class Avisos {
     }
     this.sql.exec('INSERT INTO tag_elige (quien, carta, tag, t) VALUES (?, ?, ?, ?) ON CONFLICT(quien, carta) DO UPDATE SET ' +
       'tag = excluded.tag, t = excluded.t', quien, carta, tag, Date.now());
-    return Object.assign({ ok: true, redibujo: antes !== tag ? this.pedirRedibujo(quien) : null }, this.tagsMios(quien));
+    return Object.assign({ ok: true, redibujo: null }, this.tagsMios(quien));
   }
 
   /**

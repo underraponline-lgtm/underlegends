@@ -11,6 +11,18 @@
  ],
  "cambios": [
     {
+        "version": "5.74",
+        "dia": "2026-11-16",
+        "cuando": "2026-11-16T21:45:00-05:00",
+        "titulo": "Tu Inventario, rehecho: tu carta en vivo",
+        "items": [
+            "**Tu carta de verdad**, dibujada en la página: tocas un TAG y cambia **adentro** de tu carta, igual que en /card. También puedes probarte los que todavía no tienes.",
+            "Tres secciones: **Cartas** (TAG, marco, foto, estilo), **Perfil** (carta principal, fondo, frase y emblemas) y **Colección** (tus insignias, títulos y marcos, con lo que te falta y cómo se gana).",
+            "Lo que guardas se ve al instante en la página; en /card, en la próxima vuelta.",
+            "Tu carta se arma en vivo desde su próximo dibujo: hasta entonces, se ve la imagen."
+        ]
+    },
+    {
         "version": "5.73",
         "dia": "2026-11-16",
         "cuando": "2026-11-16T21:03:36-05:00",

@@ -617,6 +617,8 @@ HECHOS = None
 CASA = None
 # 🏷️ {i: (texto, nivel)} el TAG que eligió de su inventario (25/10/2026, `comun/tag_elegido.py`); None en las hojas
 ELEGIDO = None
+#: 🧩 la clave de cada uno, para las piezas del Inventario (`comun/piezas.py`); None en las hojas de diseño
+CLAVES = None
 
 
 def estilo_img(k):
@@ -1129,7 +1131,7 @@ def carta(i, sufijo):
   {TIT.div(dict(pos_sv=p, total_sv=tot, titulos=tit, podios=pod,
                 racha=rch, duelos=duel, eventos=evt,
                 hechos=(HECHOS or {}).get(i, {}), casa=(CASA or {}).get(i, True),
-                elegido=(ELEGIDO or {}).get(i)), A, B,
+                elegido=(ELEGIDO or {}).get(i), clave=(CLAVES or {}).get(i)), A, B,
            y=y(PIE.tag_centrado(d, cuelga, Y_FILA)))}
   <div class="t1">{TEMPORADA}</div>
   <img class="ul" src="{UL}">

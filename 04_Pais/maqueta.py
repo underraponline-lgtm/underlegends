@@ -99,6 +99,7 @@ sys.path.insert(0, SCR)
 from comun.siluetas import PAIS
 from comun import rangos as RG, nombre as NOM
 from comun import banderas as comun_banderas
+from comun import piezas as _PZ
 # ⚠️ SOLO POR EL GRIS. `bloqueada.TINTA` es el tono que se eligió para «está
 # antes de los ocho niveles»; importarlo en vez de copiar el hex es lo que
 # evita que dentro de un mes haya dos grises distintos que quieren decir lo
@@ -336,6 +337,8 @@ FOTOS = None
 TAGP = None
 #   TAGE   {nombre: (texto, nivel)} el TAG que eligió de su inventario (`comun/tag_elegido.py`); None en la maqueta
 TAGE = None
+#   CLAVE  {nombre: clave} para las piezas del Inventario (`comun/piezas.py`); None en la maqueta
+CLAVE = None
 
 # ⚠️ DNI: DUELOS GANADOS CONTRA COMPATRIOTAS / CONTRA EXTRANJEROS. Dlx:
 # "cuantos duelos del mismo pais gano e internacional con el /". Es la unica
@@ -1953,6 +1956,15 @@ def carta(i, LW, marco, tag_centro=True, acorta=0, remate='punta',
     TAGTXT, TAGN = (TAGE or {}).get(nom) or tag(pos, _tro[0][2], _tro[1][2], evt, pod, win, rch,
                                                  VAL.get('DNA', ''), VAL.get('DIN', ''), (TAGP or {}).get(nom))
     TAGN = TAGN[1]
+    _sube = ' sube' if ul == 'tag' else ''
+
+    def _pieza_tag(t, n):
+        # 🧩 la pastilla del TAG: la de la carta y cada variante del Inventario (`comun/piezas.py`)
+        return (f'<div class="tag t{n[1]}{TAGCLS}{_sube}" {_PZ.marca("tag")} '
+                f'style="left:{LW}px;border-color:{acc}">{t}</div>')
+    _clave = (CLAVE or {}).get(nom)
+    _pz = _PZ.script({'tag': _PZ.variantes('pais', _clave, _pieza_tag, auto=tag(
+        pos, _tro[0][2], _tro[1][2], evt, pod, win, rch, VAL.get('DNA', ''), VAL.get('DIN', ''), (TAGP or {}).get(nom)))}) if _clave else ''
 
     # ⚠️ LOS CHIPS VAN AFUERA DEL RECORTE, en un envoltorio. .card tiene
     # clip-path y overflow:hidden —la silueta— asi que cualquier cosa en
@@ -1984,13 +1996,12 @@ def carta(i, LW, marco, tag_centro=True, acorta=0, remate='punta',
        style="left:{LW}px">
     <div class="par"><div class="cl">{izq}</div>
       <div class="cl">{der}</div></div>{pie2}</div>
-  <div class="tag t{TAGN}{TAGCLS}{' sube' if ul == 'tag' else ''}"
-       style="left:{LW}px;border-color:{acc}">{TAGTXT}</div>
+  {_pieza_tag(TAGTXT, 't' + TAGN)}
   <img class="ul{' baja' if ul == 'tag' else ''}" src="{UL}"
        style="left:{LW / 2 + 2.5 if ul == 'panel' else (LW + W) / 2:.1f}px">
   {panel_svg(i, LW, acc, remate, acorta)}
   {mk}
-</div>{_chips}</div>'''
+</div>{_chips}{_pz}</div>'''
 
 
 def CSSF(H, SIL, num='tinta'):

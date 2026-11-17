@@ -1,24 +1,20 @@
-// 🎒 TU INVENTARIO: tu carta, su marco, su TAG y tu carta principal, en un solo lugar.
+// 🎒 TU INVENTARIO, «EL VESTIDOR» (remake del 16/11/2026, con el estilo del Inicio).
 //
-// Dlx, 25/10/2026: «que los tags de abajo sean personalizables en cada tarjeta… desde el inventario»; 26/10/2026: «eso de
-// tus marcos y todo eso debería estar en inventario», «reworkear cómo se ve el inventario… organizarlo muchísimo mejor»
-// y, mirando la primera vuelta, «está desordenadísimo… otra forma de listar las cosas, quizás un ícono».
-//   · ARRIBA, QUÉ CARTA EDITAS (Temporada · Competitiva · Servidor · País), a todo el ancho: encima de la carta se
-//     pisaba con la corona del marco de oro, que sobresale por arriba.
-//   · A la izquierda la carta, con aire alrededor para su marco, y lo que tiene puesto (cada fila lleva a su pestaña).
-//   · A la derecha, TAG · MARCO · PRINCIPAL, cada una con cuántos tienes. Todo se elige en FICHAS: un cuadro con el
-//     ícono pintado por rareza (Legendario · Épico · Raro · Común, de `niveles` del catálogo), el nombre y qué lo da.
-//     Antes eran 40 pastillas sueltas de un renglón; la ficha dice qué es cada una sin abrir nada.
-//     Ideas de 21st (sólo mirar, sin traer código): «Icon Card Radio Group» (sean0205) para la ficha y «Filter Grid»
-//     (ddoemonn) / «Tabs with Count Badge» (coss.com) para los filtros con su número.
-//   · 👀 TOCAR ES PROBAR, NO GUARDAR (Dlx, 26/10/2026: «cuando clickeo algo que se vea la preview de lo que presioné… y un
-//     botón de guardar y otro de cancelar»). Lo que tocas queda en un borrador: el marco se prueba sobre la carta, el
-//     TAG se muestra encima de ella (la imagen lo trae recién al redibujarse) y abajo aparece la barra con Guardar y
-//     Cancelar. Guardar manda todo junto; salir con cambios sin guardar pregunta antes.
-//   · ⚡ El TAG se dibuja en la imagen: elegir uno pide un redibujo a pedido (`pedirRedibujo()` en bot/avisos.js), que
-//     tarda unos minutos y tiene freno —uno cada 10 minutos, 6 por día—. El marco se ve al momento en la página.
+// Dlx, 16/11/2026: «asegúrate que la pestaña de mi inventario funcione correctamente, y no sólo conmigo»; a la maqueta
+// A/B, «una fusión, pero eso no es un remake… y no sólo hay tags sino más cosas»; a la v2 (el vestidor), «cuando tú
+// seleccionas algo, un tag, ese tiene que cambiar de la tarjeta misma… como si estuviésemos cambiando la ropa a un
+// personaje», «haz que todo sea removable… vamos a añadir más tags, efectos, fondos, colores, formas y marcos… que el
+// inventario sea capaz de resistir todo eso», y «hazle un remake, usa el estilo nuevo de la página de inicio».
+//   · TU CARTA EN VIVO (`cartaviva.jsx`): la de verdad, no una imagen con algo pegado encima. Tocar una pieza la cambia
+//     ADENTRO de la carta, también una que todavía no tienes (probarla no es tenerla: Guardar sólo con lo tuyo).
+//   · TRES SECCIONES: Cartas (TAG, marco, foto, estilo, efecto), Perfil (carta principal, fondo, frase, emblemas) y
+//     Colección (insignias, títulos y marcos: lo que tienes y lo que te falta, y cómo se gana). «Por abrir» arriba.
+//   · CADA PIEZA, DE UN CATÁLOGO: los TAGs salen de `tags_catalogo.json` (todos, no sólo los tuyos), los títulos y los
+//     marcos del Pase. Una pieza nueva entra sola en su sección: el Inventario no tiene listas escritas a mano.
+//   · AL INSTANTE EN LA PÁGINA, DESPUÉS EN DISCORD (Dlx: «se deberían notar en la página al instante, pero no
+//     necesariamente al instante en Discord… para que estemos bien con los límites de nuestras herramientas»).
 // Los 🎯 de estado no se guardan: salen solos mientras se cumplen, con «Automático».
-import { Suspense, useEffect, useMemo, useRef, useState } from 'react';
+import { Suspense, useEffect, useMemo, useState } from 'react';
 import CAT from './tags_catalogo.json';
 import { pasePost, refrescarPases } from './pase.js';
 import { Carta, Ico, accion } from './piezas.jsx';
@@ -28,310 +24,154 @@ import { usarCss } from './css.js';
 import { leerVisto, marcarVisto } from './inv_nuevos.js';
 import { nombreMarco } from './marcos.jsx';
 import { ValesPremium } from './vales.jsx';
+import { CartaViva } from './cartaviva.jsx';
+import { FraseEditor } from './frase.jsx';
 
-// 🎨 su CSS, con su pedazo (web/src/css/inventario.css)
 usarCss('inventario', CSS_PAGINA);
 
 const CARTAS = [['temporada', 'Temporada'], ['competitivo', 'Competitiva'], ['servidor', 'Servidor'], ['pais', 'País']];
-const GRUPO = { siempre: ['♾️', 'Para siempre'], temporada: ['📅', 'De temporada'], pase: ['✨', 'Edición limitada'] };
+const GRUPO = { siempre: 'para siempre', temporada: 'de temporada', pase: 'edición limitada' };
 const RAREZA = (CAT.niveles || {});
-const ORDEN_R = { t1: 0, t2: 1, t3: 2, t4: 3 };
+const NIVELES = ['t1', 't2', 't3', 't4'];
 const TIER = { premium: 'Premium', plata: 'Plata', oro: 'Oro' };
+// 🖼️ los marcos del Pase premium, con el nivel que los da (`bot/pase.py` PREMIUM): para ver también los que faltan
+const MARCOS_PASE = [['premium', 1], ['plata', 15], ['oro', 25]];
 const ORDEN_T = ['oro', 'plata', 'premium'];
 /** «El mejor»: el de nivel más alto que tengas, como `mejorMarco()` de bot/avisos.js */
 const mejor = (ids) => ORDEN_T.map((t) => ids.find((id) => id.split(':')[1] === t)).find(Boolean) || '';
 const sinNum = (t) => t.replace(' x%d', '').replace(' DE %d', '');
-// el ícono es el emoji del principio del nombre («💀 REGICIDA»); los de País no traen: va su inicial
 const EMOJI = /^((?:\p{Extended_Pictographic}|\p{Regional_Indicator})(?:️|‍|\p{Extended_Pictographic}|\p{Regional_Indicator})*)\s*/u;
 function partir(texto) {
-  const m = texto.match(EMOJI);
-  return m ? [m[1], texto.slice(m[0].length)] : ['', texto];
-}
-
-/** Lo que puedes ponerle a `carta`: `[{tag, texto, desc, grupo, nivel}]`, de la rareza más alta a la más baja */
-function opciones(carta, yo) {
-  const cat = (CAT.cat && CAT.cat[carta]) || [];
-  const out = [];
-  for (const [t, n, p, g] of cat) {
-    if (g !== 'siempre' && g !== 'temporada') continue;
-    const x = ((yo.ganados || {})[carta] || {})[t];
-    if (yo.dueno) out.push({ tag: t, texto: x ? x[0] : sinNum(t), desc: p, grupo: g, nivel: n });
-    else if (x && (g === 'siempre' || x[1] === yo.temp)) out.push({ tag: t, texto: x[0], desc: p, grupo: g, nivel: n });
-  }
-  // ✨ cada título del Pase va en UNA carta (`titulo_carta`, de `bot/pase.py`); sin el mapa, en todas como antes
-  const tc = yo.titulo_carta || {};
-  for (const tit of yo.titulos || []) if (!Object.keys(tc).length || tc[tit] === carta) out.push({ tag: 'pase:' + tit, texto: '✨ ' + tit.toUpperCase(), desc: 'Título del Pase de rapero.', grupo: 'pase', nivel: 't1' });
-  return out.sort((a, b) => (ORDEN_R[a.nivel] ?? 9) - (ORDEN_R[b.nivel] ?? 9));
-}
-
-// 🏷️ EL TAG QUE PRUEBAS, DENTRO DE LA CARTA (Dlx, 26/10/2026: «cuando cambie de tag que se cambie el tag de ahí, no que
-// aparezca un label encima»). La imagen trae el TAG recién al redibujarse, así que mientras tanto se dibuja OTRA pastilla
-// igual a la de la carta justo encima de la suya: mismo lugar, misma forma, mismo nivel.
-//   · DÓNDE: medido en las imágenes de verdad, dibujando cada carta con el TAG en t1 y en t4 y restando (el centro de
-//     la pastilla, como fracción de la imagen). `w` es el ancho de la imagen en píxeles de la carta: de ahí la escala.
-//   · CÓMO: el estilo computado de cada generador (`.c-band` de normal_v3, `.tagbot` de card.css, `.tagb` de
-//     comun/titulos.py, `.tag` de maqueta.py), nivel por nivel. Servidor y País pintan la pastilla con el color de tu
-//     servidor o sobre tu bandera: ese fondo se lee de la imagen misma (R2 la sirve con CORS para la página).
-//   · TAPA LA VIEJA: va por lo menos del ancho de la que está dibujada (su texto se sabe: el elegido o el de la
-//     cascada, `/api/tags`), y opaca aunque la de la carta sea traslúcida en t3/t4: si no, se leerían las dos.
-// ⚠️ Si se mueve el TAG en una carta, esto queda corrido: hay que volver a medirlo.
-const PASTILLA = {
-  temporada: { cx: 0.4794, cy: 0.928, w: 300, fs: 9.28, ls: 1.6, pad: [3, 13, 4] },
-  competitivo: { cx: 0.4822, cy: 0.8276, w: 319, fs: 8.96, ls: 1.2, pad: [3.5, 12, 4.5] },
-  // ⚠️ la Servidor sube o baja su TAG hasta 3 px según cuántos círculos tiene (`comun/pie.tag_centrado()`): va al medio
-  // de los dos extremos y 1,5 px más alta arriba y abajo, así tapa la de cualquiera
-  servidor: { cx: 0.5004, cy: 0.8844, w: 300, fs: 8.64, ls: 1.1, pad: [4.5, 11, 5.5] },
-  pais: { cx: 0.6115, cy: 0.9203, w: 308, fs: 8.64, ls: 1.2, pad: [4, 13, 5] },
-};
-// Temporada y Competitiva: el metal de cada nivel (los mismos degradés que la carta; t4 opaco para tapar la de abajo)
-const METAL = {
-  t1: { bg: 'linear-gradient(#FFF0A8,#FFD024 48%,#C89000)', bd: 'rgba(90,66,0,.55)', c: '#2A1E00', sh: '0 0 16px rgba(255,196,32,.75),inset 0 1px 0 rgba(255,255,255,.9)' },
-  t2: { bg: 'linear-gradient(#FFFFFF,#DCE0E8 46%,#9BA3B2)', bd: 'rgba(60,68,82,.45)', c: '#1E2129', sh: '0 0 12px rgba(255,255,255,.55),inset 0 1px 0 rgba(255,255,255,.95)' },
-  t3: { bg: 'linear-gradient(#5A606E,#3A404C 55%,#23272F)', bd: 'rgba(255,255,255,.45)', c: '#EEF1F6', sh: '0 3px 10px rgba(0,0,0,.55)' },
-  t4: { bg: '#141419', bd: 'rgba(255,255,255,.2)', c: '#A8ACB8', sh: '0 3px 10px rgba(0,0,0,.55)' },
-};
-// Servidor y País: el nivel va en el borde (grosor del acento en t1/t2; blanco apagado en t3/t4)
-const BORDE = {
-  servidor: { t1: 1.4, t2: 1, t3: 'rgba(255,255,255,.22)', t4: 'rgba(255,255,255,.12)' },
-  pais: { t1: 1.6, t2: 1, t3: 'rgba(255,255,255,.24)', t4: 'rgba(255,255,255,.14)' },
-};
-
-let _medir = null;
-/** el ancho de una pastilla con `texto`, en píxeles de la carta (Archivo 900, como la carta) */
-function anchoPastilla(texto, p) {
-  if (!texto) return 0;
-  _medir = _medir || document.createElement('canvas').getContext('2d');
-  _medir.font = '900 ' + p.fs + 'px Archivo, sans-serif';
-  return _medir.measureText(texto.toUpperCase()).width + p.ls * [...texto].length + p.pad[1] * 2 + 3;
-}
-
-/** el color de fondo de la pastilla que la carta tiene dibujada, leído de la imagen (la chica alcanza) */
-function useFondoPastilla(liga, k, carta) {
-  const [c, setC] = useState(null);
-  useEffect(() => {
-    setC(null);
-    if (carta !== 'servidor' && carta !== 'pais') return undefined;
-    const url = liga.cartaUrl(k, carta, true);
-    if (!url) return undefined;
-    let vivo = true;
-    const img = new Image();
-    img.crossOrigin = 'anonymous';
-    img.onload = () => {
-      try {
-        const p = PASTILLA[carta];
-        const cv = document.createElement('canvas');
-        cv.width = img.naturalWidth;
-        cv.height = img.naturalHeight;
-        const x = cv.getContext('2d');
-        x.drawImage(img, 0, 0);
-        const s = img.naturalWidth / p.w;
-        // arriba del centro, entre el borde y la letra: sólo fondo
-        const d = x.getImageData(Math.round(p.cx * cv.width) - 1, Math.round(p.cy * cv.height - 7 * s), 3, 1).data;
-        const m = (i) => Math.round((d[i] + d[i + 4] + d[i + 8]) / 3);
-        if (vivo) setC('rgb(' + m(0) + ',' + m(1) + ',' + m(2) + ')');
-      } catch (e) { /* sin CORS: queda el color de siempre */ }
-    };
-    // ⚠️ otra dirección que la del <img>: si el navegador reusa la respuesta sin CORS del caché, el canvas queda sucio
-    img.src = url + (url.indexOf('?') < 0 ? '?' : '&') + 'px=1';
-    return () => { vivo = false; };
-  }, [liga, k, carta]);
-  return c;
-}
-
-/** El estilo de la pastilla del TAG de `carta` a escala `e` (1 = píxeles de la carta): la de prueba encima de la carta y
- *  la de la lupa salen de acá, así las dos son la misma */
-function estiloPastilla({ liga, carta, nivel, e, fondo, rg }) {
-  const p = PASTILLA[carta];
-  const st = { fontSize: p.fs * e, letterSpacing: p.ls * e, padding: p.pad.map((v) => v * e + 'px').join(' ') };
-  if (carta === 'temporada' || carta === 'competitivo') {
-    const m = METAL[nivel] || METAL.t4;
-    Object.assign(st, { background: m.bg, color: m.c, border: Math.max(1, e) + 'px solid ' + m.bd, boxShadow: m.sh });
-  } else {
-    const b = BORDE[carta][nivel] || BORDE[carta].t4;
-    const acento = carta === 'pais' ? (rg ? liga.colorRg(rg) : '#C9CCD6') : '#FFFFFF';
-    Object.assign(st, {
-      background: fondo || (carta === 'pais' ? 'rgb(14,16,24)' : 'rgb(20,24,40)'), color: '#FFFFFF',
-      border: typeof b === 'number' ? b * e + 'px solid ' + acento : Math.max(1, e) + 'px solid ' + b,
-      textShadow: '0 1px 3px rgba(0,0,0,.9)', boxShadow: carta === 'servidor' ? '0 3px 10px rgba(0,0,0,.6)' : 'none',
-    });
-  }
-  return st;
+  const m = String(texto || '').match(EMOJI);
+  return m ? [m[1], texto.slice(m[0].length)] : ['', String(texto || '')];
 }
 
 /**
- * 🔍 LA LUPA DEL TAG (16/11/2026, Dlx: «asegúrate que cuando uno cambie el tag, éste muestre la preview en la tarjeta con
- * ese tag diferente»). La prueba ya iba en la carta, pero medida: 105×17 px en la compu y 60×10 en la hoja del celular,
- * o sea ilegible. Debajo de la carta va la misma pastilla al doble y medio, con el nombre del TAG
+ * Todos los TAGs de `carta`, los tuyos y los que no: `[{tag, texto, desc, grupo, nivel, mio}]`, los tuyos primero y de
+ * la rareza más alta a la más baja. La llave (`tag`) es la de las piezas de la carta (`comun/piezas.py`)
  */
-function LupaTag({ liga, k, carta, texto, nivel, rg }) {
-  const fondo = useFondoPastilla(liga, k, carta);
-  if (!PASTILLA[carta] || !texto) return null;
+function opciones(carta, yo) {
+  const out = [];
+  for (const [t, n, p, g] of (CAT.cat && CAT.cat[carta]) || []) {
+    if (g !== 'siempre' && g !== 'temporada') continue;
+    const x = ((yo.ganados || {})[carta] || {})[t];
+    const mio = !!(yo.dueno || (x && (g === 'siempre' || x[1] === yo.temp)));
+    out.push({ tag: t, texto: x ? x[0] : sinNum(t), desc: p, grupo: g, nivel: n, mio });
+  }
+  // ✨ los títulos del Pase que van en esta carta (`titulo_carta`): los tuyos y los que faltan
+  const tc = yo.titulo_carta || {};
+  const tuyos = new Set(yo.titulos || []);
+  const deEsta = Object.keys(tc).length ? Object.keys(tc).filter((x) => tc[x] === carta) : (yo.titulos || []);
+  for (const tit of deEsta) {
+    out.push({ tag: 'pase:' + tit, texto: '✨ ' + tit.toUpperCase(), desc: 'Título del Pase de rapero.', grupo: 'pase', nivel: 't1', mio: !!(yo.dueno || tuyos.has(tit)) });
+  }
+  return out.sort((a, b) => (b.mio - a.mio) || (NIVELES.indexOf(a.nivel) - NIVELES.indexOf(b.nivel)));
+}
+
+const CAND = <svg className="ves-cand" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" aria-hidden="true"><rect x="5" y="11" width="14" height="10" rx="1" /><path d="M8 11V7a4 4 0 0 1 8 0v4" /></svg>;
+
+/** Un cuadro elegible: el ícono pintado por rareza, el nombre y debajo la rareza (o qué le falta). ⚠️ La rareza va como
+ *  `r-t1`…: `.t3` a secas choca con una regla global del shadow root y desarmaba el grupo Raro (medido el 16/11/2026) */
+function Cuadro({ on, puesto, prueba, nuevo, mio = true, ic, nombre, rar, nivel = '', onClick, children }) {
   return (
-    <div className="iv10-lupa" aria-live="polite">
-      <small>Así queda en tu carta</small>
-      <span key={texto} className="iv9-past iv10-lupa-p" style={estiloPastilla({ liga, carta, nivel, e: Math.min(2.2, 220 / Math.max(1, anchoPastilla(texto, PASTILLA[carta]))), fondo, rg })}>{texto}</span>
-    </div>
-  );
-}
-
-function PastillaTag({ caja, liga, k, carta, texto, nivel, vieja, rg }) {
-  const [pos, setPos] = useState(null);
-  const fondo = useFondoPastilla(liga, k, carta);
-  const p = PASTILLA[carta];
-  useEffect(() => {
-    const cont = caja.current;
-    if (!cont || !p) return undefined;
-    const medir = () => {
-      const img = cont.querySelector('img.iv9-ci');
-      if (!img || !img.naturalWidth) { setPos(null); return; }
-      const a = cont.getBoundingClientRect();
-      const b = img.getBoundingClientRect();
-      setPos({ x: b.left - a.left + p.cx * b.width, y: b.top - a.top + p.cy * b.height, e: b.width / p.w });
-    };
-    medir();
-    const ro = new ResizeObserver(medir);
-    ro.observe(cont);
-    // la imagen puede terminar de cargar después: se vuelve a medir un rato
-    const t = setInterval(medir, 400);
-    const fin = setTimeout(() => clearInterval(t), 4000);
-    return () => { ro.disconnect(); clearInterval(t); clearTimeout(fin); };
-  }, [caja, p, carta, k]);
-  if (!pos || !p || !texto) return null;
-  const e = pos.e;
-  const st = Object.assign(estiloPastilla({ liga, carta, nivel, e, fondo, rg }), { left: pos.x, top: pos.y, minWidth: anchoPastilla(vieja, p) * e });
-  // `key`: cada TAG nuevo vuelve a hacer el destello, así se nota que cambió
-  return <span key={texto} className="iv9-past iv10-nuevo-p" style={st} aria-label={'TAG que pruebas: ' + texto}>{texto}</span>;
-}
-
-/** El aviso de qué pasa con tu carta después de elegir un TAG */
-function avisoRedibujo(r) {
-  if (!r) return 'Listo.';
-  if (r.limite) return 'Listo: ya cambiaste tu carta 6 veces hoy, así que ésta sale en la próxima vuelta del ciclo (media hora como mucho).';
-  const min = Math.ceil((r.en || 0) / 60000);
-  return min > 0 ? '⚡ Listo: tu carta se redibuja en unos ' + (min + 3) + ' minutos (hay una espera de 10 entre cambios).'
-    : '⚡ Listo: tu carta se redibuja en unos 3 minutos.';
-}
-
-/** Un cuadrado elegible (Dlx, 26/10/2026, a la maqueta: «me gusta el A pero… distribuido como el B, en cuadrados en vez
- *  de algo que ocupe una línea entera»): el ícono pintado por rareza, el nombre y la rareza escrita. Qué pide va abajo,
- *  en el detalle de lo elegido, y no en cada cuadrado */
-function Cuadro({ on, puesto, nuevo, ic, nombre, rar, cls = '', disabled, onClick, children }) {
-  return (
-    <button type="button" role="radio" aria-checked={on} className={'iv10-q ' + cls + (on ? ' on' : '') + (on && !puesto ? ' prueba' : '')}
-      disabled={disabled} onClick={onClick}>
-      {children || <span className="iv10-qi" aria-hidden="true">{ic}</span>}
+    <button type="button" role="radio" aria-checked={!!on} onClick={onClick}
+      className={'ves-q' + (nivel ? ' r-' + nivel : '') + (mio ? '' : ' bloq') + (on ? ' on' : '') + (prueba ? ' prueba' : '')}>
+      {puesto ? <i className="ves-pu">Puesto</i> : nuevo ? <i className="ves-nv">Nuevo</i> : null}
+      {mio ? null : CAND}
+      {children || <span className="ves-qi" aria-hidden="true">{ic}</span>}
       <b>{nombre}</b>
       {rar ? <small>{rar}</small> : null}
-      {puesto ? <i className="iv10-pu">Puesto</i> : nuevo ? <i className="iv10-nv">Nuevo</i> : null}
     </button>
   );
 }
 
-/** El detalle de lo que tocaste: rareza, para siempre / de temporada, el nombre y qué pide */
-function Detalle({ o }) {
+/** La ficha de lo que tocaste: qué es, cómo se gana y si es tuyo */
+function Ficha({ o }) {
   if (!o) return null;
   const [ic, txt] = partir(o.texto);
   return (
-    <div className={'iv10-det r-' + o.nivel}>
-      <span className="iv10-qi" aria-hidden="true">{ic || txt.charAt(0)}</span>
-      <div><em>{RAREZA[o.nivel]}{GRUPO[o.grupo] ? ' · ' + GRUPO[o.grupo][0] + ' ' + GRUPO[o.grupo][1].toLowerCase() : ''}</em>
-        <b>{txt}</b>{o.desc ? <p>{o.desc}</p> : null}</div>
+    <div className={'ves-ficha ' + (o.nivel ? 'r-' + o.nivel : '') + (o.mio ? '' : ' bloq')}>
+      <span className="ves-qi" aria-hidden="true">{ic || txt.charAt(0)}</span>
+      <div>
+        <em>{RAREZA[o.nivel] || ''}{o.nivel && GRUPO[o.grupo] ? ' · ' + GRUPO[o.grupo] : ''}{o.mio ? ' · lo tienes' : ''}</em>
+        <b>{txt}</b>
+        {o.mio ? (o.desc ? <p>{o.desc}</p> : null) : <p className="ves-falta">{CAND}<span><b>Cómo se gana:</b> {o.desc || 'todavía no se sabe'}</span></p>}
+      </div>
     </div>
   );
 }
 
+/** Un título de sección con la raya blanca de arriba, como «Lo último» del Inicio */
+const Titulo = ({ children, extra }) => <div className="ves-h"><h3>{children}</h3>{extra || null}</div>;
+
+/** La barra de lo que se completa: `n` de `de` */
+const Barra = ({ n, de, c }) => (
+  <i className="ves-barra" aria-hidden="true"><u style={{ width: (de ? (100 * n) / de : 0) + '%', background: c || undefined }} /></i>
+);
+
 /**
- * 🎒 SIN CARTAS TODAVÍA (16/11/2026): lo que ve casi todo el que entra. Qué te falta para la primera —los dos pasos, como
- * el álbum de Tarjetas— y, si ya ganaste TAGs jugando, cuáles te esperan: se ganan con o sin carta, y se ponen en cuanto
- * la tengas
+ * 🎒 SIN CARTAS TODAVÍA: lo que ve casi todo el que entra. Qué le falta para la primera y, si ya ganó TAGs, cuáles lo
+ * esperan (se ganan con o sin carta, y se ponen en cuanto la tenga)
  */
 function SinCartas({ yo, k }) {
   const ganados = [];
-  for (const [c, n] of CARTAS) for (const o of opciones(c, Object.assign({}, yo, { dueno: false, titulos: [] }))) ganados.push(Object.assign({ carta: n }, o));
-  const n = ganados.length;
+  for (const [c, n] of CARTAS) for (const o of opciones(c, Object.assign({}, yo, { dueno: false, titulos: [] }))) if (o.mio) ganados.push(Object.assign({ carta: n }, o));
   const ver = ganados.slice(0, 8);
   return (
-    <section className="iv10-sin" aria-label="Todavía no tienes cartas">
-      <div className="iv10-sin-cab">
-        <span className="iv10-sin-ic" aria-hidden="true"><Ico n="tarjetas" t={26} /></span>
-        <div>
-          <b>Todavía no tienes cartas</b>
-          <p>Tu TAG, tu marco y tu foto van sobre tus cartas. Las primeras dos se desbloquean en dos pasos:</p>
-        </div>
+    <section className="ves-sin" aria-label="Todavía no tienes cartas">
+      <div className="ves-sin-cab">
+        <span className="ves-sin-ic" aria-hidden="true"><Ico n="tarjetas" t={26} /></span>
+        <div><b>Todavía no tienes cartas</b><p>Tu TAG, tu marco y tu foto van sobre tus cartas. Las primeras dos se desbloquean en dos pasos:</p></div>
       </div>
-      <ol className="iv10-pasos">
+      <ol className="ves-pasos">
         <li><i>1</i><span><b>Verifícate</b><small>Discord Rap Español, rol Miembro y tu país · tu carta de Servidor</small></span>
-          <a className="iv10-sin-b verde" href="#/cuenta/verificar">Verificarme</a></li>
+          <a className="ves-btn blanco" href="#/cuenta/verificar">Verificarme</a></li>
         <li><i>2</i><span><b>Tu primera Tarea del Pase</b><small>Tu carta de Temporada</small></span>
-          <a className="iv10-sin-b" href="#/pase">Ver el Pase</a></li>
+          <a className="ves-btn" href="#/pase">Ver el Pase</a></li>
       </ol>
-      {n ? (
+      {ganados.length ? (
         <>
-          <p className="iv-p"><b>{n === 1 ? 'Ya ganaste un TAG' : 'Ya ganaste ' + n + ' TAGs'}</b> jugando: {n === 1 ? 'te espera' : 'te esperan'} acá
-            para ponérselos a tus cartas en cuanto las tengas.</p>
-          <div className="iv10-grid bloq" aria-label="Tus TAGs">
+          <p className="ves-p"><b>{ganados.length === 1 ? 'Ya ganaste un TAG' : 'Ya ganaste ' + ganados.length + ' TAGs'}</b> jugando:
+            {ganados.length === 1 ? ' te espera' : ' te esperan'} acá para ponérselos a tus cartas en cuanto las tengas.</p>
+          <div className="ves-grid">
             {ver.map((o) => {
               const [ic, txt] = partir(o.texto);
-              return (
-                <div key={o.carta + o.tag} className={'iv10-q r-' + o.nivel + (ic ? '' : ' letra')}>
-                  <span className="iv10-qi" aria-hidden="true">{ic || txt.charAt(0)}</span><b>{txt}</b><small>{o.carta}</small>
-                </div>
-              );
+              return <Cuadro key={o.carta + o.tag} nivel={o.nivel} ic={ic || txt.charAt(0)} nombre={txt} rar={o.carta} onClick={() => {}} />;
             })}
           </div>
-          {n > ver.length ? <p className="iv-nota">Y {n - ver.length} más.</p> : null}
+          {ganados.length > ver.length ? <p className="ves-nota">Y {ganados.length - ver.length} más.</p> : null}
         </>
       ) : null}
-      <a className="iv10-sin-lnk" href={k ? '#/tarjetas' : '#/guia'}>{k ? 'Ver qué me falta para cada carta →' : 'Cómo funciona →'}</a>
+      <a className="ves-lnk" href={k ? '#/tarjetas' : '#/guia'}>{k ? 'Ver qué me falta para cada carta →' : 'Cómo funciona →'}</a>
     </section>
   );
 }
 
-// 🎒 las ranuras de cada pestaña: `[id, etiqueta, ícono]`
-const RANURAS = {
-  cartas: [['tag', 'TAG', '🏷️'], ['marco', 'Marco', '🖼️'], ['foto', 'Foto', '📸'], ['efecto', 'Efecto', '✨']],
-  perfil: [['principal', 'Carta principal', '🃏'], ['fondo', 'Fondo', '🌄'], ['emblemas', 'Emblemas', '🏅']],
-};
-const TITULO = { tag: 'El TAG', marco: 'El marco', foto: 'La foto de tus cartas', efecto: 'Efectos', principal: 'Tu carta principal',
-  fondo: 'Tu fondo', emblemas: 'Tus emblemas' };
+// 🧩 las ranuras de tus cartas: `[id, etiqueta]`. «Efecto» todavía no existe: va con candado y lo dice
+const RANURAS = [['tag', 'TAG'], ['marco', 'Marco'], ['foto', 'Foto'], ['estilo', 'Estilo'], ['efecto', 'Efecto']];
+const anchoDe = () => (typeof window !== 'undefined' && window.innerWidth < 760 ? 208 : 270);
 
-/**
- * 🎒 EL INVENTARIO COMO PÁGINA (`#/inventario[/<carta>[/<ranura>]]`, 26/10/2026). Dlx: «quiero que reworkees y
- * organices de mejor forma el inventario y otras maneras de acceder, porque tengo que irme a mi cuenta, luego a mi
- * perfil…». A la maqueta (https://claude.ai/artifact/1VJLpzDD2rhh2txDFsrZML): «cinco puertas, 1, 3, 4 y 5» y «me gusta
- * el A pero… en cuadrados».
- *   · EL VESTIDOR: tus cartas arriba, la elegida en grande y sus RANURAS (TAG · Marco · Foto · Efecto). Tocar una abre
- *     lo tuyo para esa ranura, en cuadrados. En la compu va a la derecha; en el celular sube como hoja, con la carta
- *     chica arriba para ver lo que pruebas.
- *   · «TU PERFIL»: la carta principal, tu fondo y tus emblemas, que vivían en el visor, en Tu cuenta y en tu perfil.
- *   · LAS PUERTAS: el menú de tu cara (yomenu.jsx), «Personalizar» en tus cartas (visor.jsx), «Ponérselo» en el Pase y
- *     el botón de /card en Discord (bot/worker.js). Antes se llegaba sólo por la pestaña de tu perfil.
- */
 export function Inventario({ liga, dc, carta0 = '', ranura0 = '' }) {
   const [yo, setYo] = useState(undefined);
   const [mk, setMk] = useState(null);
+  const [sec, setSec] = useState(['principal', 'fondo', 'frase', 'emblemas'].includes(ranura0) ? 'perfil' : ranura0 === 'coleccion' ? 'col' : 'cartas');
   const [carta, setCarta] = useState(CARTAS.some(([c]) => c === carta0) ? carta0 : 'temporada');
-  const [tab, setTab] = useState(RANURAS.perfil.some(([r]) => r === ranura0) ? 'perfil' : 'cartas');
-  const [pest, setPest] = useState(TITULO[ranura0] ? ranura0 : 'tag');
-  // 📱 en el celular, la hoja: abierta sólo si se entró por una ranura o se tocó una
-  const [hoja, setHoja] = useState(!!ranura0);
+  const [ran, setRan] = useState(RANURAS.some(([r]) => r === ranura0) ? ranura0 : 'tag');
   const [filtro, setFiltro] = useState('todos');
+  const [busca, setBusca] = useState('');
+  const [sel, setSel] = useState(null);
   const [ocup, setOcup] = useState('');
   const [msg, setMsg] = useState('');
-  const [busca, setBusca] = useState('');
+  const [estado, setEstado] = useState('buscando');
+  const [perf, setPerf] = useState(null);
   // 👀 el borrador: `tags` por carta, `marco`, `estilo` y `principal`; lo que no está, es lo guardado
   const [bor, setBor] = useState({ tags: {} });
-  const cajaCarta = useRef(null);
-  const cajaMini = useRef(null);
-  // 🆕 lo que ya habías visto, leído UNA vez al abrir: lo nuevo se marca mientras estás acá y se da por visto al salir
   const [visto] = useState(leerVisto);
-  // 🏷️ el TAG que la cascada le da hoy a cada carta (el de «Automático»): `{clave: [i, i, i, i]}` en el catálogo
-  const [deCascada, setDeCascada] = useState(null);
+  const [ancho, setAncho] = useState(anchoDe);
   useEffect(() => {
-    let vivo = true;
-    fetch('/api/tags', { headers: { accept: 'application/json' } }).then((r) => (r.ok ? r.json() : null))
-      .then((d) => { if (vivo) setDeCascada((d && d.de) || null); }).catch(() => {});
-    return () => { vivo = false; };
+    const f = () => setAncho(anchoDe());
+    window.addEventListener('resize', f);
+    return () => window.removeEventListener('resize', f);
   }, []);
   useEffect(() => {
     pasePost('tags-mios', {}).then((d) => setYo(d && d._ok ? d : null));
@@ -339,103 +179,86 @@ export function Inventario({ liga, dc, carta0 = '', ranura0 = '' }) {
   }, []);
   useEffect(() => { if (yo) marcarVisto(yo); }, [yo]);
   const k = (dc && dc.clave) || (yo && yo.k) || '';
-  // 🃏 TUS CARTAS TAMBIÉN DESDE TU PERFIL (16/11/2026): fuera de la tabla, la página sólo sabía las que tenías AL ENTRAR
-  // (`dc.cs`), y las de quien está en la Liga sin competir (`f.solo`: 37 con su Servidor) no llegaban nunca: App.jsx
-  // no las trae a propósito, para que el panel no los trate como a alguien que juega. Acá sólo hacen falta las cartas
-  const [deP, setDeP] = useState(null);
+  // 🃏 tus cartas también desde tu perfil (quien está en la Liga sin competir), y tus insignias para la Colección
   useEffect(() => {
-    if (!k || (liga.T && liga.T[k]) || typeof window.perfiles !== 'function') return undefined;
+    if (!k || typeof window.perfiles !== 'function') return undefined;
     let vivo = true;
     Promise.resolve(window.perfiles()).then((d) => {
-      const f = d && d.p && d.p[k] && d.p[k].f;
-      if (!vivo || !f || !Array.isArray(f.c)) return;
-      // y su fila, para que `Carta` encuentre la imagen: `cartaUrl()` la busca en `liga.T` o `liga.X` (`fuera()`)
-      if (!(liga.X && liga.X[k])) liga.fuera(Object.assign({ k }, f));
-      setDeP(f.c);
+      const p = d && d.p && d.p[k];
+      if (!vivo || !p) return;
+      // su fila, para que `Carta` encuentre la imagen: `cartaUrl()` la busca en `liga.T` o `liga.X` (`fuera()`)
+      if (p.f && Array.isArray(p.f.c) && !(liga.T && liga.T[k]) && !(liga.X && liga.X[k])) liga.fuera(Object.assign({ k }, p.f));
+      setPerf(p);
     }).catch(() => {});
     return () => { vivo = false; };
   }, [k, liga]);
-  // las cartas que tienes: la página las sabe por tu fila, tu perfil o tu cuenta (ver `filaDe` de visor.jsx)
   const tienes = useMemo(() => {
     const f = (liga.T && liga.T[k]) || (liga.X && liga.X[k]);
-    const c = new Set([...((f && f.c) || []), ...(deP || []), ...((dc && dc.cs) || [])]);
+    const c = new Set([...((f && f.c) || []), ...((perf && perf.f && perf.f.c) || []), ...((dc && dc.cs) || [])]);
     return CARTAS.filter(([x]) => c.has(x));
-  }, [liga, k, dc, deP]);
+  }, [liga, k, dc, perf]);
   useEffect(() => { if (tienes.length && !tienes.some(([x]) => x === carta)) setCarta(tienes[0][0]); }, [tienes]); // eslint-disable-line react-hooks/exhaustive-deps
   const nCambios = Object.keys(bor.tags).length + ('marco' in bor || 'estilo' in bor ? 1 : 0) + ('principal' in bor ? 1 : 0);
-  // salir con cambios sin guardar pregunta antes
   useEffect(() => {
     if (!nCambios) return undefined;
     const f = (e) => { e.preventDefault(); e.returnValue = ''; };
     window.addEventListener('beforeunload', f);
     return () => window.removeEventListener('beforeunload', f);
   }, [nCambios]);
-  // 📱 con la hoja abierta, la página de atrás no se mueve
-  useEffect(() => {
-    if (!hoja) return undefined;
-    const b = document.body;
-    const antes = b.style.overflow;
-    if (window.matchMedia && window.matchMedia('(max-width: 760px)').matches) b.style.overflow = 'hidden';
-    return () => { b.style.overflow = antes; };
-  }, [hoja]);
+
   if (!dc) {
     return (
-      <div className="iv10 iv10-vacio"><span aria-hidden="true">🎒</span><b>Tu inventario</b>
-        <p>Tus TAGs, tus marcos y tus cartas, en un solo lugar. Entra con Discord para verlo.</p>
-        <button type="button" className="btn verde" onClick={accion.entrar}>Entrar con Discord</button></div>
+      <div className="ves"><section className="ves-sin"><div className="ves-sin-cab"><span className="ves-sin-ic" aria-hidden="true"><Ico n="tarjetas" t={26} /></span>
+        <div><b>Tu inventario</b><p>Tus TAGs, tus marcos y tus cartas, en un solo lugar. Entra con Discord para verlo.</p></div></div>
+        <button type="button" className="ves-btn blanco" onClick={accion.entrar}>Entrar con Discord</button></section></div>
     );
   }
-  if (yo === undefined) return <div className="iv10"><p className="iv-nota">Buscando tu inventario…</p></div>;
-  if (!yo) return <div className="iv10"><p className="iv-nota">No pude leer tu inventario. Entra con Discord y prueba de nuevo.</p></div>;
+  if (yo === undefined) return <div className="ves"><p className="ves-nota">Buscando tu inventario…</p></div>;
+  if (!yo) return <div className="ves"><p className="ves-nota">No pude leer tu inventario. Entra con Discord y prueba de nuevo.</p></div>;
 
-  // ⚠️ SIN CARTAS NO SE INVENTAN CUATRO (16/11/2026): antes salían las cuatro vacías, con «Automático» puesto en cartas que
-  // no tienes. Es lo que veía casi todo el que entra: de 2.760 verificados, la mayoría todavía no jugó
   const cartas = tienes;
   const sinCartas = !cartas.length;
+  const nombre = (CARTAS.find(([x]) => x === carta) || [])[1] || '';
   const ops = opciones(carta, yo);
+  const mias = ops.filter((o) => o.mio);
   const elG = (yo.elegidos || {})[carta] || 'auto';
   const el = carta in bor.tags ? bor.tags[carta] : elG;
   const q = busca.trim().toLowerCase();
-  const buscados = q ? ops.filter((o) => o.texto.toLowerCase().includes(q) || (o.desc || '').toLowerCase().includes(q)) : ops;
-  const cuenta = (g) => buscados.filter((o) => o.grupo === g).length;
-  const vistos = filtro === 'todos' ? buscados : buscados.filter((o) => o.grupo === filtro);
-  const nombre = (CARTAS.find(([x]) => x === carta) || [])[1] || '';
+  const vistos = ops.filter((o) => (filtro === 'todos' || (filtro === 'mios' ? o.mio : !o.mio))
+    && (!q || o.texto.toLowerCase().includes(q) || (o.desc || '').toLowerCase().includes(q)));
   const marcos = (mk && mk.tienes) || [];
+  const idsMarcos = marcos.map(([id]) => id);
   const marcoG = (mk && mk.elegido) || '';
   const estiloG = (mk && mk.estilo) || 'camiseta';
   const principalG = yo.principal || '';
   const marcoAhora = 'marco' in bor ? bor.marco : marcoG;
   const estiloAhora = 'estilo' in bor ? bor.estilo : estiloG;
   const principalAhora = 'principal' in bor ? bor.principal : principalG;
-  const tagAhora = el === 'auto' ? null : ops.find((o) => o.tag === el);
-  // 🏷️ lo que sale con «Automático»: el TAG de la cascada (`/api/tags`), con su nivel del catálogo
-  const iCasc = deCascada && deCascada[k] ? deCascada[k][CARTAS.findIndex(([x]) => x === carta)] : -1;
-  const casc = iCasc >= 0 ? ((CAT.cat || {})[carta] || [])[iCasc] : null;
-  const auto = casc ? { texto: sinNum(casc[0]), nivel: casc[1], desc: casc[2], grupo: casc[3] } : null;
-  const tagGuardado = elG === 'auto' ? auto : ops.find((o) => o.tag === elG) || null;
-  const tagVer = tagAhora || auto;
-  const filaYo = (liga.T && liga.T[k]) || (liga.X && liga.X[k]) || {};
-  // el marco que se prueba sobre la carta, con la misma forma que `marcosPublicos()`: `null` sin marco
+  const temp = yo.temp || 't1';
+  // el marco que se prueba sobre la carta (con la forma de `marcosPublicos()`): `null` sin marco
   const marcoVer = !('marco' in bor || 'estilo' in bor) ? undefined
-    : marcoAhora === 'ninguno' || !marcos.length ? null
-      : [marcoAhora || mejor(marcos.map(([id]) => id)), estiloAhora, (mk && mk.serie) || 0];
+    : marcoAhora === 'ninguno' || (!marcoAhora && !idsMarcos.length) ? null
+      : [marcoAhora || mejor(idsMarcos), estiloAhora, (mk && mk.serie) || 0];
   const esNuevo = (clave) => !!visto && !visto.has(clave);
+  const probando = carta in bor.tags ? ops.find((o) => o.tag === bor.tags[carta]) : null;
+  const bloqueado = Object.entries(bor.tags).some(([c, t]) => t !== 'auto' && !(opciones(c, yo).find((o) => o.tag === t) || {}).mio)
+    || ('marco' in bor && !!bor.marco && bor.marco !== 'ninguno' && !idsMarcos.includes(bor.marco));
 
-  // tocar = probar: lo igual a lo guardado sale del borrador
-  const probar = (campo, v, guardado) => setBor((b) => {
+  // tocar = probar, también lo que no tienes: lo igual a lo guardado sale del borrador
+  const probar = (campo, v, guardado, enCarta = carta) => setBor((b) => {
     const n = { ...b, tags: { ...b.tags } };
-    if (campo === 'tag') { if (v === guardado) delete n.tags[carta]; else n.tags[carta] = v; }
+    if (campo === 'tag') { if (v === guardado) delete n.tags[enCarta]; else n.tags[enCarta] = v; }
     else if (v === guardado) delete n[campo]; else n[campo] = v;
     return n;
   });
-  const cancelar = () => { setBor({ tags: {} }); setMsg(''); };
+  const cancelar = () => { setBor({ tags: {} }); setMsg(''); setSel(null); };
   const guardar = async () => {
     setOcup('guardar');
     const avisos = [];
     let ok = true;
     for (const [c, tag] of Object.entries(bor.tags)) {
       const d = await pasePost('tag-elige', { carta: c, tag });
-      if (d && d._ok) { setYo(d); avisos.push(avisoRedibujo(d.redibujo)); }
+      if (d && d._ok) setYo(d);
       else {
         ok = false;
         avisos.push(d && d.error === 'no lo tienes' ? 'Ese TAG todavía no es tuyo.' : d && d.error === 'ese título va en otra carta'
@@ -444,8 +267,7 @@ export function Inventario({ liga, dc, carta0 = '', ranura0 = '' }) {
     }
     if ('marco' in bor || 'estilo' in bor) {
       const d = await pasePost('marco-elige', { marco: marcoAhora, estilo: estiloAhora });
-      // 🖼️ el marco va también en la imagen de /card: se redibuja como con el TAG (ver bot/con_marco.py)
-      if (d && d._ok) { setMk(d); if (d.redibujo) avisos.push(avisoRedibujo(d.redibujo).replace('tu carta se redibuja', 'tu carta con su marco sale en /card')); } else { ok = false; avisos.push('El marco no se pudo guardar.'); }
+      if (d && d._ok) setMk(d); else { ok = false; avisos.push('El marco no se pudo guardar.'); }
     }
     if ('principal' in bor) {
       const d = await pasePost('carta-principal', { carta: principalAhora });
@@ -454,191 +276,269 @@ export function Inventario({ liga, dc, carta0 = '', ranura0 = '' }) {
     refrescarPases();
     setOcup('');
     setBor({ tags: {} });
-    setMsg((ok ? 'Guardado. ' : 'Se guardó una parte. ') + [...new Set(avisos)].join(' '));
-  };
-  const abrir = (r) => { setPest(r); setHoja(true); setMsg(''); };
-  const cambiarTab = (t) => { setTab(t); setPest(t === 'perfil' && sinCartas ? 'fondo' : RANURAS[t][0][0]); setHoja(false); };
-
-  // lo que muestra cada ranura, en una línea
-  const valor = {
-    tag: tagAhora ? partir(tagAhora.texto)[1] : 'Automático',
-    marco: !marcos.length ? 'Ninguno todavía' : !marcoAhora ? 'El mejor' : marcoAhora === 'ninguno' ? 'Sin marco' : nombreMarco(marcoAhora),
-    foto: 'Tu foto de carta', efecto: 'Pronto',
-    principal: principalAhora ? (CARTAS.find(([c]) => c === principalAhora) || [])[1] : 'La de siempre',
-    fondo: 'Tu imagen de perfil', emblemas: 'Los que se ven',
-  };
-  const cuantos = { tag: ops.length, marco: marcos.length, principal: cartas.length };
-  const sinGuardar = { tag: carta in bor.tags, marco: 'marco' in bor || 'estilo' in bor, principal: 'principal' in bor };
-
-  const cuadroTag = (o) => {
-    const [ic, txt] = partir(o.texto);
-    return <Cuadro key={o.tag} on={el === o.tag} puesto={elG === o.tag} nuevo={esNuevo(o.grupo === 'pase' ? o.tag.replace(/^pase:/, 'pase|') : carta + '|' + o.tag)}
-      ic={ic || txt.charAt(0)} nombre={txt} rar={RAREZA[o.nivel]} cls={'r-' + o.nivel + (ic ? '' : ' letra')} disabled={!!ocup}
-      onClick={() => probar('tag', o.tag, elG)} />;
+    setSel(null);
+    // ⚡ en la página, al instante; en /card y en la imagen que ven los demás, cuando se vuelve a dibujar
+    setMsg(ok ? 'Guardado: ya se ve en tu carta. En /card y en la imagen que ven los demás se actualiza en un rato.'
+      : 'Se guardó una parte. ' + [...new Set(avisos)].join(' '));
   };
 
-  // 🃏 la carta, con lo que estás probando: el marco en la página y el TAG en su pastilla (PastillaTag)
-  // en «Tu perfil», la que elegiste de principal (si no, la que estabas editando)
-  const cartaVer = tab === 'perfil' && principalAhora ? principalAhora : carta;
-  const verCarta = (ref, cls) => (
-    <div className={'iv10-carta ' + cls} ref={ref}>
-      {k ? <Carta key={cartaVer + JSON.stringify(marcoVer)} liga={liga} k={k} cual={cartaVer} cls="iv9-ci" abre={false} marco={marcoVer} /> : null}
-      {k && carta in bor.tags && tagVer ? <PastillaTag caja={ref} liga={liga} k={k} carta={carta} texto={tagVer.texto}
-        nivel={tagVer.nivel} vieja={tagGuardado ? tagGuardado.texto : ''} rg={filaYo.rg} /> : null}
-      {nCambios ? <span className="iv10-vp">Vista previa</span> : null}
-      {k && carta in bor.tags && tagVer && tab === 'cartas' ? <LupaTag liga={liga} k={k} carta={carta} texto={tagVer.texto} nivel={tagVer.nivel} rg={filaYo.rg} /> : null}
+  // 🃏 el escenario: tu carta viva, con lo que estás probando, y tus cartas debajo para cambiar de una a otra
+  const escenario = (
+    <div className="ves-esc">
+      {nCambios ? <span className="ves-vp">Probando</span> : null}
+      <CartaViva liga={liga} k={k} cual={carta} ancho={ancho} piezas={{ tag: el }} marco={marcoVer} onEstado={setEstado} cls="ves-ci" />
+      {estado === 'imagen' ? <p className="ves-nota ves-aun">Tu carta se arma en vivo desde su próximo dibujo: hasta entonces, lo que pruebas se marca en la lista.</p> : null}
+      <div className="ves-mano" role="tablist" aria-label="Qué carta vistes">
+        {cartas.map(([c, n]) => (
+          <button key={c} type="button" role="tab" aria-selected={carta === c} className={carta === c ? 'on' : ''}
+            onClick={() => { setCarta(c); setSel(null); setBusca(''); }}>
+            <span className="ves-mi"><Carta liga={liga} k={k} cual={c} cls="ves-mci" abre={false} /></span>
+            <small>{n}{principalAhora === c ? ' ★' : ''}{c in bor.tags ? <i className="ves-pt" aria-label="sin guardar" /> : null}</small>
+          </button>
+        ))}
+      </div>
     </div>
   );
 
-  const panel = () => {
-    if (pest === 'tag') {
-      return (
-        <>
-          <p className="iv-p">El TAG de abajo de tu carta de <b>{nombre}</b>. Los de estado (EN LLAMAS, TOP DEL SERVIDOR…) salen solos con «Automático».</p>
-          <div className="iv10-barra">
-            {ops.length > 12 ? <input className="iv10-busca" type="search" placeholder="Buscar un TAG…" value={busca} onChange={(e) => setBusca(e.target.value)} aria-label="Buscar un TAG" /> : null}
-            <div className="iv10-filtros" role="radiogroup" aria-label="Qué TAGs ver">
-              {[['todos', 'Todos', buscados.length]].concat(['siempre', 'temporada', 'pase'].filter((g) => ops.some((o) => o.grupo === g)).map((g) => [g, GRUPO[g][1], cuenta(g)])).map(([id, n, c]) => (
-                <button key={id} type="button" role="radio" aria-checked={filtro === id} className={filtro === id ? 'on' : ''} onClick={() => setFiltro(id)}>
-                  {id !== 'todos' ? <span aria-hidden="true">{GRUPO[id][0]}</span> : null}{n}<small>{c}</small></button>
-              ))}
-            </div>
-          </div>
-          <div className="iv10-grid" role="radiogroup" aria-label={'El TAG de tu carta de ' + nombre}>
-            <Cuadro on={el === 'auto'} puesto={elG === 'auto'} ic="🎯" nombre="Automático" rar="El de hoy" cls="auto" disabled={!!ocup} onClick={() => probar('tag', 'auto', elG)} />
-            {vistos.map(cuadroTag)}
-          </div>
-          {!ops.length ? <p className="iv-nota">Todavía no ganaste ninguno que se guarde para esta carta: aparecen acá en cuanto los cumples.</p> : null}
-          {q && !vistos.length ? <p className="iv-nota">Ningún TAG tuyo dice «{busca}».</p> : null}
-          <Detalle o={tagAhora || (auto ? Object.assign({}, auto, { texto: '🎯 ' + partir(auto.texto)[1] }) : null)} />
-        </>
-      );
-    }
-    if (pest === 'marco') {
-      if (!marcos.length) return <p className="iv-nota">Todavía no tienes marcos: se ganan en el Pase premium. Sin marco, tus cartas salen como siempre.</p>;
-      return (
-        <>
-          <p className="iv-p">El marco va alrededor de <b>todas</b> tus cartas. Tócalo para probarlo.</p>
-          <div className="iv10-grid" role="radiogroup" aria-label="El marco de tus cartas">
-            <Cuadro on={!marcoAhora} puesto={!marcoG} ic="⭐" nombre="El mejor" rar="Automático" cls="auto" disabled={!!ocup} onClick={() => probar('marco', '', marcoG)} />
-            {marcos.map(([id]) => {
-              const t = id.split(':')[1];
-              return (
-                <Cuadro key={id} on={marcoAhora === id} puesto={marcoG === id} nombre={nombreMarco(id)} rar={'Marco ' + (TIER[t] || '')} cls={'m-' + t}
-                  disabled={!!ocup} onClick={() => probar('marco', id, marcoG)}><span className="iv10-qi" aria-hidden="true"><i className={'iv9-sw ' + t} /></span></Cuadro>
-              );
-            })}
-            <Cuadro on={marcoAhora === 'ninguno'} puesto={marcoG === 'ninguno'} ic="▢" nombre="Sin marco" rar="Como siempre" disabled={!!ocup} onClick={() => probar('marco', 'ninguno', marcoG)} />
-          </div>
-          {carta === 'servidor' ? (
-            <>
-              <h4 className="iv10-h4">Tu carta de Servidor</h4>
-              <div className="iv10-grid" role="radiogroup" aria-label="El estilo de tu carta de Servidor">
-                {(mk.estilos || ['camiseta', 'cadena']).map((e) => (
-                  <Cuadro key={e} on={estiloAhora === e} puesto={estiloG === e} ic={e === 'cadena' ? '⛓️' : '👕'} nombre={e === 'cadena' ? 'La cadena' : 'La camiseta'}
-                    rar={e === 'cadena' ? 'Estilo' : 'Tus colores'} disabled={!!ocup} onClick={() => probar('estilo', e, estiloG)} />
-                ))}
-              </div>
-            </>
-          ) : null}
-        </>
-      );
-    }
-    if (pest === 'foto') return <Suspense fallback={<p className="iv-nota">Cargando…</p>}><FotoCartaCaja dc={dc} /></Suspense>;
-    if (pest === 'efecto') {
-      return (
-        <div className="iv10-pronto"><span aria-hidden="true">✨</span><b>Efectos para tu carta</b>
-          <p>Brillos y animaciones que se ven en la página y en Discord. Llegan pronto, con el Pase.</p></div>
-      );
-    }
-    if (pest === 'principal') {
-      return (
-        <>
-          <p className="iv-p">La que te representa: sale primero en /card, en tu perfil y en el ranking.</p>
-          <div className="iv10-grid cartas" role="radiogroup" aria-label="Tu carta principal">
-            <Cuadro on={!principalAhora} puesto={!principalG} ic="🎯" nombre="La de siempre" rar="Según dónde" cls="auto" disabled={!!ocup} onClick={() => probar('principal', '', principalG)} />
-            {cartas.map(([c, n]) => (
-              <Cuadro key={c} on={principalAhora === c} puesto={principalG === c} nombre={n} disabled={!!ocup} onClick={() => probar('principal', c, principalG)}>
-                <span className="iv10-qc" aria-hidden="true">{k ? <Carta liga={liga} k={k} cual={c} cls="iv10-qci" abre={false} /> : null}</span>
-              </Cuadro>
+  const cajonTag = () => {
+    const sObj = ops.find((o) => o.tag === sel) || probando;
+    return (
+      <>
+        <div className="ves-barra-f">
+          <div className="ves-fil" role="radiogroup" aria-label="Qué TAGs ver">
+            {[['todos', 'Todos', ops.length], ['mios', 'Tuyos', mias.length], ['faltan', 'Por ganar', ops.length - mias.length]].map(([id, n, c]) => (
+              <button key={id} type="button" role="radio" aria-checked={filtro === id} className={filtro === id ? 'on' : ''} onClick={() => setFiltro(id)}>{n}<em>{c}</em></button>
             ))}
           </div>
-        </>
-      );
-    }
-    if (pest === 'fondo') return <Suspense fallback={<p className="iv-nota">Cargando…</p>}><FondoCaja dc={dc} /></Suspense>;
-    return (
-      <div className="iv10-pronto"><span aria-hidden="true">🏅</span><b>Tus emblemas</b>
-        <p>Se eligen mirando tu perfil: tócalos al lado de tu nombre y marca los que quieres que se vean.</p>
-        <a className="btn borde2 chico" href={'#/r/' + encodeURIComponent(k)}>Ir a mi perfil</a></div>
+          {ops.length > 12 ? <input className="ves-busca" type="search" placeholder="Buscar un TAG…" value={busca} onChange={(e) => setBusca(e.target.value)} aria-label="Buscar un TAG" /> : null}
+        </div>
+        <Ficha o={sObj} />
+        <div className="ves-grp">
+          <div className="ves-grp-h">Automático <span>sale solo el TAG de estado de hoy</span></div>
+          <div className="ves-grid" role="radiogroup" aria-label="Automático">
+            <Cuadro on={el === 'auto'} puesto={elG === 'auto'} prueba={bor.tags[carta] === 'auto'} ic="🎯" nombre="Automático" rar="El de hoy"
+              onClick={() => { setSel(null); probar('tag', 'auto', elG); }} />
+          </div>
+        </div>
+        {NIVELES.map((n) => {
+          const xs = vistos.filter((o) => o.nivel === n);
+          const tot = ops.filter((o) => o.nivel === n);
+          if (!xs.length) return null;
+          const m = tot.filter((o) => o.mio).length;
+          return (
+            <div key={n} className={'ves-grp r-' + n}>
+              <div className="ves-grp-h">{RAREZA[n]} <span>{m} de {tot.length}</span><Barra n={m} de={tot.length} /></div>
+              <div className="ves-grid" role="radiogroup" aria-label={'TAGs ' + RAREZA[n]}>
+                {xs.map((o) => {
+                  const [ic, txt] = partir(o.texto);
+                  return (
+                    <Cuadro key={o.tag} nivel={o.nivel} mio={o.mio} on={el === o.tag} puesto={elG === o.tag} prueba={bor.tags[carta] === o.tag}
+                      nuevo={o.mio && esNuevo(o.grupo === 'pase' ? o.tag.replace(/^pase:/, 'pase|') : carta + '|' + o.tag)}
+                      ic={ic || txt.charAt(0)} nombre={txt} rar={o.mio ? RAREZA[o.nivel] : 'Por ganar'}
+                      onClick={() => { setSel(o.tag); probar('tag', o.tag, elG); }} />
+                  );
+                })}
+              </div>
+            </div>
+          );
+        })}
+        {q && !vistos.length ? <p className="ves-nota">Ningún TAG dice «{busca}».</p> : null}
+      </>
     );
   };
 
-  // sin cartas no hay principal; sin perfil, tampoco emblemas
-  const ranuras = RANURAS[tab].filter(([r]) => !(r === 'principal' && sinCartas) && !(r === 'emblemas' && !k));
-  return (
-    <div className="iv10">
-      <div className="iv10-cab">
-        <h2><span aria-hidden="true">🎒</span> Inventario</h2>
-        <small>Lo tuyo, en un solo lugar{yo.dueno ? ' · 👑 como dueño, tienes todo desbloqueado' : ''}</small>
+  const cajonMarco = () => (
+    <>
+      <p className="ves-p">El marco va alrededor de <b>tus cuatro cartas</b>, en la página y en /card.</p>
+      <div className="ves-grid" role="radiogroup" aria-label="El marco de tus cartas">
+        <Cuadro on={!marcoAhora && !!idsMarcos.length} puesto={!marcoG && !!idsMarcos.length} ic="⭐" nombre="El mejor" rar="Automático"
+          mio={!!idsMarcos.length} onClick={() => probar('marco', '', marcoG)} />
+        {MARCOS_PASE.map(([t, nv]) => {
+          const id = idsMarcos.find((x) => x.split(':')[1] === t) || temp + ':' + t;
+          const mio = idsMarcos.includes(id);
+          return (
+            <Cuadro key={t} mio={mio} on={marcoAhora === id} puesto={marcoG === id} prueba={bor.marco === id} nombre={nombreMarco(id) || 'Marco ' + TIER[t]}
+              rar={mio ? 'Marco ' + TIER[t] : 'Nivel ' + nv + ' del premium'} onClick={() => probar('marco', id, marcoG)}>
+              <span className="ves-qi" aria-hidden="true"><i className={'ves-sw ' + t} /></span>
+            </Cuadro>
+          );
+        })}
+        <Cuadro on={marcoAhora === 'ninguno'} puesto={marcoG === 'ninguno'} ic="▢" nombre="Sin marco" rar="Como siempre" onClick={() => probar('marco', 'ninguno', marcoG)} />
       </div>
-      <div className="iv10-tabs" role="tablist" aria-label="Qué personalizas">
-        {[['cartas', 'Tus cartas'], ['perfil', 'Tu perfil']].map(([t, n]) => (
-          <button key={t} type="button" role="tab" aria-selected={tab === t} className={tab === t ? 'on' : ''} onClick={() => cambiarTab(t)}>{n}</button>
+    </>
+  );
+
+  const cajon = () => {
+    if (ran === 'tag') return cajonTag();
+    if (ran === 'marco') return cajonMarco();
+    if (ran === 'foto') return <Suspense fallback={<p className="ves-nota">Cargando…</p>}><FotoCartaCaja dc={dc} /></Suspense>;
+    if (ran === 'estilo') {
+      return (
+        <>
+          <p className="ves-p">Cómo se viste tu carta de <b>Servidor</b> cuando lleva marco.</p>
+          <div className="ves-grid" role="radiogroup" aria-label="El estilo de tu carta de Servidor">
+            {((mk && mk.estilos) || ['camiseta', 'cadena']).map((e) => (
+              <Cuadro key={e} on={estiloAhora === e} puesto={estiloG === e} ic={e === 'cadena' ? '⛓️' : '👕'} nombre={e === 'cadena' ? 'La cadena' : 'La camiseta'}
+                rar={e === 'cadena' ? 'Estilo' : 'Tus colores'} onClick={() => { setCarta('servidor'); probar('estilo', e, estiloG); }} />
+            ))}
+          </div>
+        </>
+      );
+    }
+    return <div className="ves-ficha bloq"><span className="ves-qi" aria-hidden="true">✨</span><div><em>Pronto</em><b>Efectos</b>
+      <p className="ves-falta">{CAND}<span>Brillos y animaciones para tu carta, en la página y en Discord. Llegan con la Tienda.</span></p></div></div>;
+  };
+
+  const valor = {
+    tag: el === 'auto' ? 'Automático' : partir((ops.find((o) => o.tag === el) || {}).texto || '')[1] || 'Automático',
+    marco: marcoAhora === 'ninguno' ? 'Sin marco' : marcoAhora ? nombreMarco(marcoAhora) : idsMarcos.length ? 'El mejor' : 'Ninguno todavía',
+    foto: 'Tu foto', estilo: estiloAhora === 'cadena' ? 'La cadena' : 'La camiseta', efecto: 'Pronto',
+  };
+  const cuantos = { tag: mias.length + '/' + ops.length, marco: idsMarcos.length + '/' + MARCOS_PASE.length };
+  const ranuras = RANURAS.filter(([r]) => r !== 'estilo' || cartas.some(([c]) => c === 'servidor'));
+
+  // 🏅 la colección: insignias (de tu perfil), títulos y marcos
+  const insCat = (liga.d && liga.d.insignias) || [];
+  const insMias = new Set(((perf && perf.ins) || []).map((x) => x[0]));
+  const titulos = Object.keys(yo.titulo_carta || {});
+  const titMios = new Set(yo.titulos || []);
+  const tagsTot = CARTAS.reduce((a, [c]) => a + opciones(c, yo).filter((o) => o.mio).length, 0);
+
+  return (
+    <div className="ves">
+      <header className="ves-cab">
+        <div>
+          <span className="ves-ceja">Lo tuyo</span>
+          <h2>Inventario</h2>
+          <p>Toca una pieza y tu carta se la prueba. Guardas cuando te guste.{yo.dueno ? ' · 👑 como dueño, tienes todo desbloqueado' : ''}</p>
+        </div>
+        <dl className="ves-num">
+          <div><dt>TAGs</dt><dd>{tagsTot}</dd></div>
+          <div><dt>Marcos</dt><dd>{idsMarcos.length}</dd></div>
+          <div><dt>Insignias</dt><dd>{insMias.size}<small>/{insCat.length}</small></dd></div>
+        </dl>
+      </header>
+
+      {/* 🎁 por abrir: el Pase premium de campeón de liga, arriba de todo (sin ninguno, no se dibuja) */}
+      <ValesPremium />
+
+      <div className="ves-sec" role="tablist" aria-label="Qué miras">
+        {[['cartas', 'Cartas', sinCartas ? 'Ninguna todavía' : cartas.length + ' de 4'], ['perfil', 'Perfil', 'Fondo, frase y más'],
+          ['col', 'Colección', insMias.size + ' insignias']].map(([id, n, s]) => (
+          <button key={id} type="button" role="tab" aria-selected={sec === id} className={sec === id ? 'on' : ''} onClick={() => { setSec(id); setSel(null); }}>
+            <b>{n}</b><small>{s}</small></button>
         ))}
       </div>
-      {/* 🏆 el Pase premium de campeón de liga, si tienes alguno (15/11/2026) */}
-      <ValesPremium />
-      {msg ? <p className="iv-msg" role="status">{msg}</p> : null}
+      {msg ? <p className="ves-msg" role="status">{msg}</p> : null}
 
-      {tab === 'cartas' && sinCartas ? <SinCartas yo={yo} k={k} /> : (
-      <div className="iv10-cuerpo">
-        <aside className="iv10-ver">
-          {tab === 'cartas' ? (
-            <div className="iv10-mano" role="tablist" aria-label="Qué carta editas">
-              {cartas.map(([c, n]) => (
-                <button key={c} type="button" role="tab" aria-selected={carta === c} className={carta === c ? 'on' : ''}
-                  onClick={() => { setCarta(c); setBusca(''); setFiltro('todos'); }}>
-                  <span className="iv10-mi">{k ? <Carta liga={liga} k={k} cual={c} cls="iv10-mci" abre={false} /> : null}</span>
-                  <small>{n}{principalAhora === c ? <i aria-label="principal"> ★</i> : null}{c in bor.tags ? <b className="iv9-pt" aria-label="sin guardar" /> : null}</small>
+      {sec === 'cartas' && sinCartas ? <SinCartas yo={yo} k={k} /> : null}
+      {sec === 'cartas' && !sinCartas ? (
+        <div className="ves-cuerpo">
+          <aside className="ves-izq">{escenario}</aside>
+          <section className="ves-der" aria-label="Lo que le pones a tu carta">
+            <div className="ves-ran" role="tablist" aria-label="Qué le cambias">
+              {ranuras.map(([id, et]) => (
+                <button key={id} type="button" role="tab" aria-selected={ran === id}
+                  className={(ran === id ? 'on' : '') + (id === 'efecto' ? ' lk' : '') + ((id === 'tag' && carta in bor.tags) || (id === 'marco' && 'marco' in bor) || (id === 'estilo' && 'estilo' in bor) ? ' sg' : '')}
+                  onClick={() => { setRan(id); setSel(null); }}>
+                  <small>{et}{cuantos[id] ? ' · ' + cuantos[id] : ''}</small><b>{valor[id]}</b>
                 </button>
               ))}
             </div>
-          ) : null}
-          {sinCartas ? null : verCarta(cajaCarta, 'grande')}
-          <ul className="iv10-ran" aria-label="Las ranuras">
-            {ranuras.map(([id, et, ic]) => (
-              <li key={id}>
-                <button type="button" className={(pest === id ? 'on' : '') + (sinGuardar[id] ? ' sg' : '') + (id === 'efecto' ? ' pronto' : '')} onClick={() => abrir(id)}>
-                  <span className="iv10-ri" aria-hidden="true">{id === 'tag' && tagAhora ? (partir(tagAhora.texto)[0] || '🏷️') : ic}</span>
-                  <span className="iv10-rt"><small>{et}</small><b>{valor[id]}</b></span>
-                  {cuantos[id] ? <em>{cuantos[id]}</em> : id === 'efecto' ? <em aria-hidden="true">🔒</em> : null}
-                </button>
-              </li>
-            ))}
-          </ul>
-        </aside>
+            <Titulo extra={<small className="ves-de">tu {nombre}</small>}>{(RANURAS.find(([r]) => r === ran) || [])[1]}</Titulo>
+            {cajon()}
+          </section>
+        </div>
+      ) : null}
 
-        {/* lo de la ranura abierta: a la derecha en la compu; en el celular, una hoja que sube con la carta chica arriba */}
-        <section className={'iv10-panel' + (hoja ? ' abierta' : '')} aria-label={TITULO[pest]}>
-          <div className="iv10-hcab">
-            <b>{TITULO[pest]}{tab === 'cartas' && pest !== 'efecto' && pest !== 'foto' ? <small> · tu {nombre}</small> : null}</b>
-            <button type="button" className="iv10-x" aria-label="Cerrar" onClick={() => setHoja(false)}>✕</button>
-          </div>
-          {tab === 'cartas' && (pest === 'tag' || pest === 'marco') ? verCarta(cajaMini, 'mini') : null}
-          {panel()}
-          {/* 💾 la barra de guardar: sólo con cambios, pegada abajo */}
-          {nCambios ? (
-            <div className="iv10-guardar" role="region" aria-label="Cambios sin guardar">
-              <span><b>{nCambios === 1 ? '1 cambio' : nCambios + ' cambios'}</b> sin guardar{Object.keys(bor.tags).length ? ' · el TAG se dibuja en tu carta unos minutos después' : ''}</span>
-              <button type="button" className="iv9-cancel" disabled={!!ocup} onClick={cancelar}>Cancelar</button>
-              <button type="button" className="iv9-ok-b" disabled={!!ocup} onClick={guardar}>{ocup === 'guardar' ? 'Guardando…' : 'Guardar'}</button>
-            </div>
+      {sec === 'perfil' ? (
+        <div className="ves-perfil">
+          {!sinCartas ? (
+            <section className="ves-panel">
+              <Titulo>Tu carta principal</Titulo>
+              <p className="ves-p">La que te representa: sale primero en /card, en tu perfil y en el ranking.</p>
+              <div className="ves-grid cartas" role="radiogroup" aria-label="Tu carta principal">
+                <Cuadro on={!principalAhora} puesto={!principalG} ic="🎯" nombre="La de siempre" rar="Según dónde" onClick={() => probar('principal', '', principalG)} />
+                {cartas.map(([c, n]) => (
+                  <Cuadro key={c} on={principalAhora === c} puesto={principalG === c} nombre={n} onClick={() => probar('principal', c, principalG)}>
+                    <span className="ves-qc" aria-hidden="true"><Carta liga={liga} k={k} cual={c} cls="ves-qci" abre={false} /></span>
+                  </Cuadro>
+                ))}
+              </div>
+            </section>
           ) : null}
-        </section>
-        {hoja ? <button type="button" className="iv10-velo" aria-label="Cerrar" onClick={() => setHoja(false)} /> : null}
-      </div>
-      )}
+          <section className="ves-panel"><Titulo>Tu fondo</Titulo><Suspense fallback={<p className="ves-nota">Cargando…</p>}><FondoCaja dc={dc} /></Suspense></section>
+          {k ? <section className="ves-panel"><Titulo>Tu frase</Titulo><FraseEditor k={k} /></section> : null}
+          {k ? (
+            <section className="ves-panel"><Titulo>Tus emblemas</Titulo>
+              <p className="ves-p">Se eligen mirando tu perfil: tócalos al lado de tu nombre y marca los que quieres que se vean.</p>
+              <a className="ves-btn" href={'#/r/' + encodeURIComponent(k)}>Ir a mi perfil</a></section>
+          ) : null}
+        </div>
+      ) : null}
+
+      {sec === 'col' ? (
+        <div className="ves-col">
+          <section className="ves-panel ancha">
+            <Titulo extra={<span className="ves-de">{insMias.size} de {insCat.length}</span>}>Insignias</Titulo>
+            <Barra n={insMias.size} de={insCat.length} c="#F5C542" />
+            {sel && sel.startsWith('in:') ? (() => {
+              const x = insCat.find((i) => i[0] === sel.slice(3));
+              return x ? <Ficha o={{ texto: x[1] + ' ' + x[2], desc: x[3], mio: insMias.has(x[0]) }} /> : null;
+            })() : null}
+            <div className="ves-grid">
+              {[...insCat].sort((a, b) => insMias.has(b[0]) - insMias.has(a[0])).map(([id, ic, n]) => (
+                <Cuadro key={id} mio={insMias.has(id)} on={sel === 'in:' + id} ic={ic} nombre={n} rar={insMias.has(id) ? 'La tienes' : 'Por ganar'}
+                  onClick={() => setSel('in:' + id)} />
+              ))}
+            </div>
+          </section>
+          {titulos.length ? (
+            <section className="ves-panel">
+              <Titulo extra={<span className="ves-de">{titulos.filter((t) => titMios.has(t) || yo.dueno).length} de {titulos.length}</span>}>Títulos del Pase</Titulo>
+              <p className="ves-p">Cada uno va en una carta y se pone como su TAG: tócalo para probártelo.</p>
+              <div className="ves-grid">
+                {titulos.map((t) => {
+                  const c = yo.titulo_carta[t];
+                  const mio = titMios.has(t) || !!yo.dueno;
+                  const en = (CARTAS.find(([x]) => x === c) || [])[1] || '';
+                  return <Cuadro key={t} mio={mio} nivel="t1" ic="✨" nombre={t} rar={mio ? 'En tu ' + en : 'Del Pase'}
+                    onClick={() => {
+                      if (!cartas.some(([x]) => x === c)) return;
+                      setSec('cartas'); setCarta(c); setRan('tag'); setSel('pase:' + t);
+                      probar('tag', 'pase:' + t, (yo.elegidos || {})[c] || 'auto', c);
+                    }} />;
+                })}
+              </div>
+            </section>
+          ) : null}
+          <section className="ves-panel">
+            <Titulo extra={<span className="ves-de">{idsMarcos.length} de {MARCOS_PASE.length}</span>}>Marcos</Titulo>
+            <p className="ves-p">Del Pase premium: tócalo para probártelo en tus cartas.</p>
+            <div className="ves-grid">
+              {MARCOS_PASE.map(([t, nv]) => {
+                const mio = idsMarcos.some((x) => x.split(':')[1] === t);
+                return <Cuadro key={t} mio={mio} nombre={'Marco ' + TIER[t]} rar={mio ? 'Lo tienes' : 'Nivel ' + nv + ' del premium'}
+                  onClick={() => { if (sinCartas) return; setSec('cartas'); setRan('marco'); probar('marco', idsMarcos.find((x) => x.split(':')[1] === t) || temp + ':' + t, marcoG); }}>
+                  <span className="ves-qi" aria-hidden="true"><i className={'ves-sw ' + t} /></span></Cuadro>;
+              })}
+            </div>
+          </section>
+        </div>
+      ) : null}
+
+      {/* 💾 la barra de guardar: con cambios, pegada abajo, con tu carta chica para ver lo que pruebas */}
+      {nCambios ? (
+        <div className="ves-guardar" role="region" aria-label="Cambios sin guardar">
+          {sec === 'cartas' && !sinCartas ? <span className="ves-gmini" aria-hidden="true"><CartaViva liga={liga} k={k} cual={carta} ancho={46} piezas={{ tag: el }} marco={marcoVer} /></span> : null}
+          <span className="ves-gtx">
+            {bloqueado ? <><b>Lo estás probando</b> · todavía no es tuyo: en su ficha dice cómo se gana</>
+              : <><b>{nCambios === 1 ? '1 cambio' : nCambios + ' cambios'}</b> sin guardar</>}
+          </span>
+          <button type="button" className="ves-btn" disabled={!!ocup} onClick={cancelar}>{bloqueado ? 'Volver' : 'Cancelar'}</button>
+          {!bloqueado ? <button type="button" className="ves-btn blanco" disabled={!!ocup} onClick={guardar}>{ocup === 'guardar' ? 'Guardando…' : 'Guardar'}</button> : null}
+        </div>
+      ) : null}
     </div>
   );
 }

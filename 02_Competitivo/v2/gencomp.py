@@ -36,6 +36,7 @@ from comun.escudos import LOGO, escudo
 from comun import servidor_elegido as _SE
 from comun import tag_elegido as _TE
 from comun.claves import clave as _K
+from comun import piezas as _PZ
 DIMS = ['EFI','CON','DOM','RCH','DIV','WR']    # RCH = Racha (rework A5: era TCH/Techo; el calculo no cambia)
 # 🔁 WR abajo y EV arriba (Dlx, 14/10/2026: «en la tarjeta competitivo intercambiar lugares el # eventos y el # de
 # winrate… simplemente cambiar los lugares esos labels»). Ver `_wr()` y `BLOQUE_TR()`
@@ -373,10 +374,20 @@ def _TAG_ELEGIDO(c):
     # 🎟️ y la del dueño «sin jugar», fuera de la cascada como en la Temporada (`normal_v3.py`)
     return _TE.para('competitivo', _K(c.get('raw') or '')) or (('🎟️ PRIMER EVENTO PENDIENTE', 't4') if c.get('sinjugar') else TAG(c))
 
+def pieza_tag(t, k):
+    """🧩 La pastilla del TAG de abajo: la de la carta y cada variante del Inventario (`comun/piezas.py`)."""
+    return '<div class="tagbot %s" %s>%s</div>' % (k, _PZ.marca('tag'), t)
+
 def TAG_ABAJO(c):
     if VAR != '2': return ''
     t, k = _TAG_ELEGIDO(c)
-    return '<div class="tagbot %s">%s</div>' % (k, t)
+    return pieza_tag(t, k)
+
+def PIEZAS(c):
+    """🧩 Cada TAG que se le puede poner a esta carta, ya dibujado: la página lo cambia adentro de la carta."""
+    if VAR != '2': return ''
+    auto = ('🎟️ PRIMER EVENTO PENDIENTE', 't4') if c.get('sinjugar') else TAG(c)
+    return _PZ.script({'tag': _PZ.variantes('competitivo', _K(c.get('raw') or ''), pieza_tag, auto=auto)})
 
 def TAG_CORONA(c):
     if VAR != '3': return ''
@@ -494,12 +505,13 @@ def card(c,i):
     <img class="ul" src="%s">
   </div>
   <div class="cap">Rango %s · #%d de %d · Score %s</div>
+  %s
 </div>""" % (clase_nombre(c['raw']), acc, base, TAG_CORONA(c), foto, TEMPORADA, VW, VH, i, stops, i, OUT, i,
        OUT, acc, OUT, OUT, i,
        BLOQUE_TL(c), rb, BLOQUE_TR(c),
        c['duel_v'], c['duel_t'], c['rch_act'], c['rch_max'], c['raw'].upper(), lbls, nums,
        TAG_ABAJO(c), fila_abajo(c), UL,
-       rg, c['pos'], c['total'], c['score'])
+       rg, c['pos'], c['total'], c['score'], PIEZAS(c))
 
 # ⚠️ CONTRA EL POOL ENTERO, NO CONTRA LO QUE SE ESTA DIBUJANDO. Lo tenia
 # calculado sobre `C`, y `C` es lo que haya en comp.json: ocho personas al

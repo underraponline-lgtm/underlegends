@@ -1,151 +1,203 @@
-/* 🎒 EL INVENTARIO COMO PÁGINA (26/10/2026, la maqueta A «el vestidor», en cuadrados). Va sobre el escenario oscuro,
-   como estaba en el perfil: las cartas se leen mejor así. Plano, una tinta, radios ≤4 (salvo la pastilla del TAG, que
-   es un pedazo de carta). Las clases llevan `iv10-` para no chocar con las globales del shadow root */
-.iv10{--esc-tinta:#F6F6F6;--esc-gris:#A5A5A0;--esc-linea:#2A2A2E;display:grid;gap:14px;max-width:1240px;margin:0 auto;
-  padding:18px 16px 28px;background:#0B0B0D;color:#F6F6F6;min-width:0}
-.iv10 > *{min-width:0}
-.iv10-cab{display:grid;gap:3px}
-.iv10-cab h2{margin:0;font:900 26px/1 Archivo,sans-serif;text-transform:uppercase;letter-spacing:-.01em}
-.iv10-cab small{font:500 14px/1.3 Archivo,sans-serif;color:var(--esc-gris)}
-.iv10-tabs{display:flex;gap:4px}
-.iv10-tabs button{flex:1 1 0;max-width:220px;padding:12px 0;border:0;border-bottom:2px solid var(--esc-linea);background:none;color:var(--esc-gris);
-  font:800 14px/1 Archivo,sans-serif;text-transform:uppercase;cursor:pointer}
-.iv10-tabs button.on{color:#F6F6F6;border-bottom-color:#29B298}
-.iv10 .iv-p{margin:0;font-size:14px;line-height:1.5;color:var(--esc-gris);max-width:70ch}
-.iv10 .iv-p b{color:#F6F6F6}
-.iv10 .iv-nota{margin:0;font-size:13.5px;color:var(--esc-gris)}
-.iv10 .iv-msg{margin:0;padding:10px 12px;border:1.5px solid #29B298;border-radius:4px;font-size:14px;color:#F6F6F6}
+/* 🎒 EL VESTIDOR (remake del 16/11/2026, `tags_inv.jsx`), con la piel del Inicio: mucho negro y algo de blanco —el
+   chip activo, la raya de arriba de cada título, los botones grandes—, paneles de borde fino y radios ≤4. Las clases
+   llevan `ves-` para no chocar con las globales del shadow root. Tu carta va viva en `cartaviva.jsx` (`.cv`) */
+.ves{--v-fondo:#030304;--v-panel:#0B0C0E;--v-borde:#1f2126;--v-borde2:#2A2C31;--v-tinta:#F6F6F6;--v-gris:#A5A5A0;--v-verde:#29B298;
+  --v-rosa:#E41373;--v-oro:#F5C542;--t1:#F5C542;--t2:#B07CFF;--t3:#56A2F2;--t4:#A5A5A0;
+  display:grid;gap:16px;max-width:1240px;margin:0 auto;padding:18px 16px 30px;background:var(--v-fondo);color:var(--v-tinta);min-width:0}
+.ves > *{min-width:0}
+.ves-nota{margin:0;font:500 13.5px/1.45 Archivo,sans-serif;color:var(--v-gris)}
+.ves-p{margin:0;font:500 14px/1.5 Archivo,sans-serif;color:#C9C9CC;max-width:70ch}
+.ves-p b{color:var(--v-tinta)}
+.ves-msg{margin:0;padding:11px 13px;border:1.5px solid var(--v-verde);background:#06120f;font:600 14px/1.4 Archivo,sans-serif}
 
-/* el cuerpo: la carta y sus ranuras a la izquierda, lo de la ranura a la derecha */
-.iv10-cuerpo{display:grid;grid-template-columns:minmax(0,380px) minmax(0,1fr);gap:28px;align-items:start}
-.iv10-ver{display:grid;gap:12px;align-content:start;position:sticky;top:12px;padding-right:24px;border-right:1px solid var(--esc-linea)}
-.iv10-mano{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px}
-.iv10-mano button{display:grid;justify-items:center;gap:5px;padding:7px 2px 6px;border:1.5px solid transparent;border-radius:4px;background:none;
-  color:var(--esc-gris);cursor:pointer}
-.iv10-mano button.on{border-color:#29B298;background:#141418;color:#F6F6F6}
-.iv10-mi{display:grid;place-items:center;height:76px}
-.iv10-mci{max-width:56px;max-height:76px;width:auto;height:auto;display:block}
-.iv10-mano small{font:700 11px/1 "Barlow Condensed",sans-serif;letter-spacing:.08em;text-transform:uppercase}
-.iv10-mano small i{font-style:normal;color:#F5C542}
-.iv10-carta{position:relative;display:grid;justify-items:center;padding:42px 28px 14px}
-.iv10-carta .iv9-ci{width:100%;max-width:230px;height:auto;display:block}
-.iv10-carta.mini{display:none}
-.iv10-vp{position:absolute;top:8px;left:8px;padding:4px 7px;border-radius:3px;background:#E41373;color:#FFFFFF;
-  font:800 11px/1 "Barlow Condensed",sans-serif;letter-spacing:.1em;text-transform:uppercase}
-.iv9-past{position:absolute;z-index:3;transform:translate(-50%,-50%);display:inline-block;box-sizing:border-box;border-radius:20px;
-  font-family:Archivo,sans-serif;font-weight:900;line-height:normal;text-align:center;text-transform:uppercase;white-space:nowrap;
-  pointer-events:none}
-.iv9-pt{display:inline-block;width:7px;height:7px;margin-left:5px;border-radius:50%;background:#E41373;vertical-align:middle}
-.iv9-sw{display:block;width:14px;height:14px;transform:rotate(45deg)}
-.iv9-sw.premium{background:#E41373}.iv9-sw.plata{background:#C9CDD4}.iv9-sw.oro{background:#F5C542}
+/* la cabecera: el título y tus números, como «hoy en la Liga» */
+.ves-cab{display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:14px 24px;padding:18px 18px 16px;border:1.5px solid var(--v-borde);
+  background:radial-gradient(70% 120% at 85% 0%,rgba(41,178,152,.18),transparent 60%),radial-gradient(60% 120% at 10% 100%,rgba(228,19,115,.14),transparent 60%),var(--v-panel)}
+.ves-ceja{font:700 13px/1 "Barlow Condensed",sans-serif;letter-spacing:.14em;text-transform:uppercase;color:var(--v-verde)}
+.ves-cab h2{margin:6px 0 6px;font:900 34px/1 Archivo,sans-serif;font-stretch:115%;text-transform:uppercase;letter-spacing:-.01em}
+.ves-cab p{margin:0;font:500 14px/1.45 Archivo,sans-serif;color:#C9C9CC;max-width:60ch}
+.ves-num{display:flex;gap:10px;margin:0}
+.ves-num div{display:grid;gap:3px;min-width:78px;padding:9px 12px;border:2px solid var(--v-tinta);background:var(--v-fondo)}
+.ves-num dt{order:2;font:700 12px/1 "Barlow Condensed",sans-serif;letter-spacing:.08em;text-transform:uppercase;color:#B9B9BE}
+.ves-num dd{order:1;margin:0;font:900 26px/1 Archivo,sans-serif;font-variant-numeric:tabular-nums}
+.ves-num dd small{font-size:14px;color:var(--v-gris)}
 
-/* las ranuras: dos por fila, cada una dice qué tiene puesto */
-.iv10-ran{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin:0;padding:0;list-style:none}
-.iv10-ran button{display:grid;grid-template-columns:auto minmax(0,1fr) auto;align-items:center;gap:7px;width:100%;padding:10px;
-  border:1.5px solid var(--esc-linea);border-radius:4px;background:#121216;color:#F6F6F6;text-align:left;cursor:pointer}
-.iv10-ran button.on{border-color:#29B298}
-.iv10-ran button.sg{border-color:#E41373}
-.iv10-ran button.pronto{opacity:.6}
-.iv10-ri{display:grid;place-items:center;width:28px;height:28px;border-radius:4px;background:#1F1F25;font-size:16px}
-.iv10-rt{display:grid;gap:3px;min-width:0}
-.iv10-rt small{font:700 11px/1 "Barlow Condensed",sans-serif;letter-spacing:.1em;text-transform:uppercase;color:var(--esc-gris)}
-.iv10-rt b{font:800 12px/1.15 Archivo,sans-serif;overflow-wrap:anywhere;text-transform:uppercase;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
-.iv10-ran em{font:800 12px/1 Archivo,sans-serif;font-style:normal;color:var(--esc-gris)}
+/* las tres secciones: el chip activo en blanco */
+.ves-sec{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:6px}
+.ves-sec button{display:grid;gap:4px;justify-items:start;padding:11px 14px;border:1.5px solid var(--v-borde2);background:var(--v-panel);color:var(--v-tinta);cursor:pointer;text-align:left}
+.ves-sec button b{font:900 17px/1 Archivo,sans-serif;text-transform:uppercase}
+.ves-sec button small{font:700 12.5px/1 "Barlow Condensed",sans-serif;letter-spacing:.06em;text-transform:uppercase;color:var(--v-gris)}
+.ves-sec button.on{background:var(--v-tinta);border-color:var(--v-tinta);color:#030304;box-shadow:5px 5px 0 var(--v-verde)}
+.ves-sec button.on small{color:#3A3A40}
 
-/* lo de la ranura abierta */
-.iv10-panel{display:grid;gap:12px;align-content:start;min-width:0}
-.iv10-hcab{display:flex;align-items:baseline;justify-content:space-between;gap:10px}
-.iv10-hcab b{font:900 18px/1.1 Archivo,sans-serif;text-transform:uppercase}
-.iv10-hcab b small{font:600 14px/1 Archivo,sans-serif;text-transform:none;color:var(--esc-gris)}
-.iv10-x{display:none;width:36px;height:36px;border:1.5px solid var(--esc-linea);border-radius:4px;background:none;color:#F6F6F6;font:900 15px/1 Archivo,sans-serif;cursor:pointer}
-.iv10-barra{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
-.iv10-busca{flex:1 1 220px;max-width:320px;padding:10px 12px;border:1.5px solid #3A3A42;border-radius:4px;background:#0F0F13;color:#F6F6F6;
-  font:600 15px/1.2 Archivo,sans-serif}
-.iv10-filtros{display:flex;flex-wrap:wrap;gap:6px}
-.iv10-filtros button{display:inline-flex;align-items:center;gap:6px;padding:8px 10px;border:1.5px solid #3A3A42;border-radius:4px;background:none;
-  color:var(--esc-gris);font:800 14px/1 "Barlow Condensed",sans-serif;letter-spacing:.04em;text-transform:uppercase;cursor:pointer}
-.iv10-filtros button.on{background:#F6F6F6;border-color:#F6F6F6;color:#030304}
-.iv10-filtros small{font:800 12px/1 "Barlow Condensed",sans-serif;opacity:.8}
-.iv10-h4{margin:6px 0 0;font:900 14px/1 Archivo,sans-serif;text-transform:uppercase}
+/* el cuerpo: tu carta a la izquierda, lo que le pones a la derecha */
+.ves-cuerpo{display:grid;grid-template-columns:minmax(0,1fr);gap:16px;align-items:start}
+.ves-izq{min-width:0}
+.ves-esc{position:relative;display:grid;justify-items:center;gap:12px;padding:30px 16px 14px;border:1.5px solid var(--v-borde);
+  background:radial-gradient(60% 52% at 50% 38%,#24242C 0%,#0B0B0D 72%)}
+.ves-esc:after{content:"";position:absolute;left:50%;top:calc(30px + var(--alto,300px));width:60%;height:14px;transform:translate(-50%,-8px);
+  border-radius:50%;background:radial-gradient(closest-side,rgba(0,0,0,.8),transparent);pointer-events:none}
+.ves-vp{position:absolute;top:10px;left:10px;padding:4px 7px;background:var(--v-rosa);color:#fff;font:800 11px/1 "Barlow Condensed",sans-serif;letter-spacing:.1em;text-transform:uppercase}
+.ves-aun{text-align:center;max-width:34ch}
+.ves-mano{display:flex;gap:6px;justify-content:center;flex-wrap:wrap}
+.ves-mano button{display:grid;justify-items:center;gap:4px;padding:6px 4px 5px;border:1.5px solid transparent;background:none;color:var(--v-gris);cursor:pointer}
+.ves-mano button.on{border-color:var(--v-tinta);background:#141418;color:var(--v-tinta)}
+.ves-mi{display:grid;place-items:center;height:62px}
+.ves-mci{max-width:44px;max-height:62px;width:auto;height:auto;display:block}
+.ves-mano small{font:700 11px/1 "Barlow Condensed",sans-serif;letter-spacing:.08em;text-transform:uppercase}
+.ves-pt{display:inline-block;width:7px;height:7px;margin-left:5px;border-radius:50%;background:var(--v-rosa);vertical-align:middle}
 
-/* los cuadrados (Dlx: «en cuadrados en vez de algo que ocupe una línea entera») */
-.iv10-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(118px,1fr));gap:8px}
-.iv10-grid.cartas{grid-template-columns:repeat(auto-fill,minmax(130px,1fr))}
-.iv10-q{position:relative;display:grid;justify-items:center;align-content:start;gap:5px;min-width:0;padding:14px 6px 11px;
-  border:1.5px solid #2A2A2E;border-radius:4px;background:#0F0F13;color:#F6F6F6;text-align:center;cursor:pointer}
-.iv10-qi{display:grid;place-items:center;width:42px;height:42px;border:1.5px solid #3A3A42;border-radius:4px;font-size:20px}
-/* ✂️ sin guion a mitad de palabra («CAZARRECOM-PENSAS», 16/11/2026): la letra se achica con el cuadro y parte sólo entre palabras */
-.iv10-q{container-type:inline-size}
-.iv10-q b{max-width:100%;font:900 clamp(8.5px,9.4cqi,11.5px)/1.15 Archivo,sans-serif;text-transform:uppercase;overflow-wrap:normal;word-break:normal;hyphens:manual;text-wrap:balance}
-.iv10-q small{font:800 10.5px/1 "Barlow Condensed",sans-serif;letter-spacing:.1em;text-transform:uppercase;color:var(--esc-gris)}
-.iv10-q.letra .iv10-qi{font:900 18px/1 Archivo,sans-serif}
-.iv10-q.r-t1,.iv10-q.m-oro,.iv10-det.r-t1{--rar:#F5C542}.iv10-q.r-t2,.iv10-det.r-t2{--rar:#B07CFF}
-.iv10-q.r-t3,.iv10-det.r-t3{--rar:#56A2F2}.iv10-q.r-t4,.iv10-det.r-t4{--rar:#A5A5A0}
-.iv10-q.m-plata{--rar:#C9CDD4}.iv10-q.m-premium{--rar:#E41373}
-.iv10-q[class*=" r-"] .iv10-qi,.iv10-q[class*=" m-"] .iv10-qi,.iv10-det .iv10-qi{border-color:var(--rar);color:var(--rar)}
-.iv10-q[class*=" r-"] small,.iv10-q[class*=" m-"] small{color:var(--rar)}
-.iv10-q.auto{border-style:dashed}
-.iv10-q.on{border-color:#F6F6F6;background:#1E1E24}
-.iv10-q.on.auto{border-style:solid}
-.iv10-q.prueba{border-color:#E41373;background:#1A0E15}
-.iv10-q:disabled{cursor:progress;opacity:.7}
-.iv10-pu,.iv10-nv{position:absolute;top:5px;padding:3px 5px;border-radius:3px;font:800 9.5px/1 "Barlow Condensed",sans-serif;font-style:normal;
-  letter-spacing:.08em;text-transform:uppercase}
-.iv10-pu{left:5px;background:#29B298;color:#030304}
-.iv10-nv{right:5px;background:#E41373;color:#FFFFFF}
-.iv10-qc{display:grid;place-items:center;height:96px}
-.iv10-qci{max-width:70px;max-height:96px;width:auto;height:auto;display:block}
-.iv10-det{display:grid;grid-template-columns:auto minmax(0,1fr);gap:12px;align-items:start;padding:12px;border:1.5px solid #2A2A2E;border-radius:4px;background:#121216}
-.iv10-det em{font:800 11px/1 "Barlow Condensed",sans-serif;letter-spacing:.1em;text-transform:uppercase;font-style:normal;color:var(--rar)}
-.iv10-det b{display:block;margin-top:4px;font:900 16px/1.1 Archivo,sans-serif;text-transform:uppercase}
-.iv10-det p{margin:4px 0 0;font-size:13.5px;color:#C9C9C4}
-.iv10-pronto{display:grid;justify-items:start;gap:6px;padding:16px;border:1.5px dashed #3A3A42;border-radius:4px}
-.iv10-pronto span{font-size:28px}.iv10-pronto b{font:900 16px/1 Archivo,sans-serif;text-transform:uppercase}
-.iv10-pronto p{margin:0;font-size:14px;color:var(--esc-gris);max-width:52ch}
-.iv10-vacio{justify-items:start}.iv10-vacio span{font-size:34px}.iv10-vacio b{font:900 20px/1 Archivo,sans-serif;text-transform:uppercase}
-.iv10-vacio p{margin:0;color:var(--esc-gris)}
+/* 🧩 la carta viva: el iframe del tamaño de la carta, achicado al ancho que toca */
+.cv{position:relative;display:block;overflow:hidden}
+.cv iframe{position:absolute;left:0;top:0;border:0;transform-origin:0 0;background:transparent;color-scheme:normal;pointer-events:none}
+.cv .cv-tapa{position:absolute;inset:0;width:100%;height:auto}
+.cv.cv-img{overflow:visible}
+.cv .cv-im{display:block;width:100%;height:auto;max-width:none}
 
-/* 💾 guardar */
-.iv10-guardar{position:sticky;bottom:12px;z-index:5;display:flex;align-items:center;gap:10px;flex-wrap:wrap;padding:12px 14px;
-  border:1.5px solid #E41373;border-radius:4px;background:#121216;color:#F6F6F6;font:500 14px/1.3 Archivo,sans-serif}
-.iv10-guardar>span{flex:1 1 220px}
-.iv10-guardar button{padding:11px 18px;border-radius:4px;font:900 14px/1 Archivo,sans-serif;text-transform:uppercase;cursor:pointer}
-.iv9-cancel{border:1.5px solid #3A3A42;background:transparent;color:#F6F6F6}
-.iv9-ok-b{border:1.5px solid #29B298;background:#29B298;color:#030304}
-.iv10-guardar button:disabled{cursor:progress;opacity:.7}
-.iv10-velo{display:none}
+/* las ranuras: lo que tiene puesto cada una, en una fila que se desliza en el celular */
+.ves-der{display:grid;gap:12px;align-content:start;min-width:0}
+.ves-ran{display:flex;gap:6px;overflow-x:auto;scrollbar-width:none;padding-bottom:2px}
+.ves-ran::-webkit-scrollbar{display:none}
+.ves-ran button{flex:0 0 auto;display:grid;gap:3px;justify-items:start;min-width:104px;max-width:180px;padding:9px 11px;border:1.5px solid var(--v-borde2);
+  background:var(--v-panel);color:var(--v-tinta);cursor:pointer;text-align:left}
+.ves-ran button small{font:700 11px/1 "Barlow Condensed",sans-serif;letter-spacing:.09em;text-transform:uppercase;color:var(--v-gris)}
+.ves-ran button b{font:900 12.5px/1.15 Archivo,sans-serif;text-transform:uppercase;max-width:100%;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ves-ran button.on{background:var(--v-tinta);border-color:var(--v-tinta);color:#030304}
+.ves-ran button.on small{color:#3A3A40}
+.ves-ran button.sg{box-shadow:inset 0 -3px 0 var(--v-rosa)}
+.ves-ran button.lk{opacity:.55}
+
+/* un título con la raya blanca de arriba, como en el Inicio */
+.ves-h{display:flex;align-items:baseline;justify-content:space-between;gap:10px;padding-top:10px;border-top:3px solid var(--v-tinta)}
+.ves-h h3{margin:0;font:900 19px/1.1 Archivo,sans-serif;text-transform:uppercase}
+.ves-de{font:700 13px/1 "Barlow Condensed",sans-serif;letter-spacing:.06em;text-transform:uppercase;color:var(--v-gris)}
+
+/* filtros y búsqueda */
+.ves-barra-f{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.ves-fil{display:flex;gap:6px;flex-wrap:wrap}
+.ves-fil button{display:inline-flex;align-items:center;gap:7px;min-height:38px;padding:0 10px;border:1.5px solid var(--v-borde2);background:transparent;color:var(--v-tinta);
+  font:700 14px/1 "Barlow Condensed",sans-serif;letter-spacing:.04em;text-transform:uppercase;cursor:pointer}
+.ves-fil button em{font:800 11.5px/1 Archivo,sans-serif;font-style:normal;padding:3px 5px;background:#1E1E21;color:#C9C9CC}
+.ves-fil button.on{background:var(--v-tinta);border-color:var(--v-tinta);color:#030304}
+.ves-fil button.on em{background:#030304;color:var(--v-tinta)}
+.ves-busca{flex:1 1 200px;max-width:320px;min-height:38px;padding:0 12px;border:1.5px solid var(--v-borde2);background:var(--v-panel);color:var(--v-tinta);font:600 15px/1.2 Archivo,sans-serif}
+
+/* los grupos por rareza, con cuánto tienes de cada uno */
+.ves-grp{display:grid;gap:8px;--r:var(--v-tinta)}
+.ves-grp.r-t1{--r:var(--t1)}.ves-grp.r-t2{--r:var(--t2)}.ves-grp.r-t3{--r:var(--t3)}.ves-grp.r-t4{--r:var(--t4)}
+.ves-grp-h{display:flex;align-items:center;gap:8px;font:800 13px/1 "Barlow Condensed",sans-serif;letter-spacing:.1em;text-transform:uppercase;color:var(--r)}
+.ves-grp-h span{color:var(--v-gris);letter-spacing:.06em}
+.ves-barra{flex:1;display:block;height:4px;min-width:40px;background:#1E1E22;overflow:hidden}
+.ves-barra u{display:block;height:100%;background:var(--r,var(--v-verde))}
+.ves-panel > .ves-barra{flex:none}
+
+/* los cuadros */
+.ves-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(112px,1fr));gap:7px}
+.ves-q{--r:var(--v-borde2);position:relative;display:grid;justify-items:center;align-content:start;gap:5px;min-width:0;padding:13px 6px 10px;border:1.5px solid var(--v-borde);
+  background:var(--v-panel);color:var(--v-tinta);text-align:center;cursor:pointer;container-type:inline-size}
+.ves-q.r-t1{--r:var(--t1)}.ves-q.r-t2{--r:var(--t2)}.ves-q.r-t3{--r:var(--t3)}.ves-q.r-t4{--r:var(--t4)}
+.ves-qi{display:grid;place-items:center;width:40px;height:40px;border:1.5px solid var(--r);font-size:19px;flex:none}
+.ves-q b{max-width:100%;font:900 clamp(8.5px,9.4cqi,11.5px)/1.15 Archivo,sans-serif;text-transform:uppercase;overflow-wrap:normal;word-break:normal;hyphens:manual;text-wrap:balance}
+.ves-q small{font:800 10px/1 "Barlow Condensed",sans-serif;letter-spacing:.09em;text-transform:uppercase;color:var(--r)}
+.ves-q.on{border-color:var(--v-tinta);background:#1C1C22}
+.ves-q.prueba{border-color:var(--v-rosa);background:#1A0E15}
+.ves-q.bloq{border-style:dashed;background:#08080A}
+.ves-q.bloq .ves-qi{filter:grayscale(1);opacity:.4;border-color:var(--v-borde2)}
+.ves-q.bloq b{color:#85858A}
+.ves-q.bloq small{color:#6E6E72}
+.ves-q.bloq.prueba{border-color:var(--v-rosa)}
+.ves-cand{position:absolute;top:6px;right:6px;width:13px;height:13px;color:#8A8A90}
+.ves-pu,.ves-nv{position:absolute;top:5px;left:5px;padding:3px 5px;font:800 9.5px/1 "Barlow Condensed",sans-serif;font-style:normal;letter-spacing:.08em;text-transform:uppercase}
+.ves-pu{background:var(--v-verde);color:#030304}
+.ves-nv{background:var(--v-rosa);color:#fff}
+.ves-qc{display:grid;place-items:center;height:92px}
+.ves-qci{max-width:66px;max-height:92px;width:auto;height:auto;display:block}
+.ves-sw{display:block;width:15px;height:15px;transform:rotate(45deg)}
+.ves-sw.premium{background:var(--v-rosa)}.ves-sw.plata{background:#C9CDD4}.ves-sw.oro{background:var(--v-oro)}
+
+/* la ficha de lo que tocaste */
+.ves-ficha{--r:var(--v-borde2);display:grid;grid-template-columns:auto minmax(0,1fr);gap:12px;align-items:start;padding:12px;border:1.5px solid var(--r);background:var(--v-panel)}
+.ves-ficha.r-t1{--r:var(--t1)}.ves-ficha.r-t2{--r:var(--t2)}.ves-ficha.r-t3{--r:var(--t3)}.ves-ficha.r-t4{--r:var(--t4)}
+.ves-ficha em{font:800 11.5px/1 "Barlow Condensed",sans-serif;font-style:normal;letter-spacing:.1em;text-transform:uppercase;color:var(--r)}
+.ves-ficha > div > b{display:block;margin-top:4px;font:900 17px/1.1 Archivo,sans-serif;text-transform:uppercase}
+.ves-ficha p{margin:5px 0 0;font:500 13.5px/1.45 Archivo,sans-serif;color:#C9C9CC}
+.ves-falta{display:flex;gap:7px;align-items:flex-start;padding:8px 9px;border:1.5px dashed var(--v-borde2)}
+.ves-falta .ves-cand{position:static;flex:none;margin-top:2px}
+.ves-falta b{color:var(--v-tinta)}
+
+/* perfil y colección: paneles */
+.ves-perfil,.ves-col{display:grid;grid-template-columns:minmax(0,1fr);gap:12px}
+.ves-panel{display:grid;gap:12px;align-content:start;padding:14px;border:1.5px solid var(--v-borde);background:var(--v-panel);min-width:0}
+.ves-grid.cartas{grid-template-columns:repeat(auto-fill,minmax(120px,1fr))}
+/* lo de Tu cuenta (tu foto, tu fondo) adentro de un panel: el título ya está en la raya de arriba */
+.ves-panel .cu-caja > h3:first-child,.ves-der .cu-caja > h3:first-child{display:none}
+.ves-panel .cu-caja,.ves-der .cu-caja{border:0;padding:0;background:none}
+
+/* botones: el grande en blanco, como los del Inicio */
+.ves-btn{display:inline-flex;align-items:center;justify-content:center;min-height:42px;padding:0 16px;border:1.5px solid var(--v-borde2);background:transparent;color:var(--v-tinta);
+  font:900 13px/1 Archivo,sans-serif;text-transform:uppercase;text-decoration:none;white-space:nowrap;cursor:pointer;justify-self:start}
+.ves-btn.blanco{background:var(--v-tinta);border-color:var(--v-tinta);color:#030304;box-shadow:4px 4px 0 var(--v-verde)}
+.ves-btn:disabled{opacity:.6;cursor:progress}
+.ves-lnk{justify-self:start;font:800 14px/1.2 Archivo,sans-serif;color:var(--v-verde);text-decoration:none}
+
+/* 💾 guardar, pegado abajo */
+.ves-guardar{position:sticky;bottom:12px;z-index:5;display:flex;align-items:center;gap:10px;flex-wrap:wrap;padding:10px 12px;border:1.5px solid var(--v-rosa);background:#121216}
+.ves-gmini{flex:none;display:block}
+.ves-gtx{flex:1 1 200px;font:500 14px/1.3 Archivo,sans-serif}
+.ves-gtx b{font-weight:900}
+
+/* sin cartas */
+.ves-sin{display:grid;gap:14px;max-width:780px;padding:18px;border:1.5px solid var(--v-borde);background:var(--v-panel)}
+.ves-sin-cab{display:grid;grid-template-columns:auto minmax(0,1fr);gap:14px;align-items:start}
+.ves-sin-ic{display:grid;place-items:center;width:52px;height:52px;border:1.5px dashed var(--v-borde2);color:var(--v-tinta)}
+.ves-sin-cab b{display:block;font:900 20px/1.1 Archivo,sans-serif;text-transform:uppercase}
+.ves-sin-cab p{margin:6px 0 0;font:500 14px/1.5 Archivo,sans-serif;color:#C9C9CC;max-width:62ch}
+.ves-pasos{display:grid;gap:8px;margin:0;padding:0;list-style:none}
+.ves-pasos li{display:grid;grid-template-columns:auto minmax(0,1fr) auto;gap:12px;align-items:center;padding:10px 12px;border:1.5px solid var(--v-borde2);background:#08080A}
+.ves-pasos i{display:grid;place-items:center;width:28px;height:28px;border-radius:50%;background:var(--v-tinta);color:#030304;font:900 14px/1 Archivo,sans-serif;font-style:normal}
+.ves-pasos span{display:grid;gap:3px;min-width:0}
+.ves-pasos b{font:900 14px/1.15 Archivo,sans-serif;text-transform:uppercase}
+.ves-pasos small{font:700 12px/1.2 "Barlow Condensed",sans-serif;letter-spacing:.08em;text-transform:uppercase;color:var(--v-gris)}
 
 @media (hover: hover) and (pointer: fine){
-  .iv10-q:not(.on):hover,.iv10-ran button:not(.on):hover,.iv10-mano button:not(.on):hover,.iv10-filtros button:not(.on):hover{border-color:#6A6A72}}
-
-/* 📱 el celular: una columna, y lo de la ranura sube como hoja con la carta chica arriba */
-@media (max-width: 760px){
-  .iv10{padding:14px 12px 22px}
-  .iv10-cuerpo{grid-template-columns:minmax(0,1fr);gap:14px}
-  .iv10-ver{position:static;padding-right:0;border-right:0}
-  .iv10-carta.grande{padding:36px 22px 10px}
-  .iv10-carta.grande .iv9-ci{max-width:190px}
-  .iv10-panel{display:none}
-  .iv10-panel.abierta{display:grid;position:fixed;left:0;right:0;bottom:0;z-index:60;max-height:92vh;overflow:auto;overscroll-behavior:contain;
-    padding:12px 12px calc(14px + env(safe-area-inset-bottom,0px));border-top:2px solid #2A2A2E;border-radius:4px 4px 0 0;background:#121216}
-  .iv10-velo{display:block;position:fixed;inset:0;z-index:59;border:0;background:rgba(3,3,4,.6)}
-  .iv10-x{display:grid;place-items:center}
-  .iv10-carta.mini{display:grid;padding:6px 0 0}
-  .iv10-carta.mini .iv9-ci{max-width:176px}
-  .iv10-grid{grid-template-columns:repeat(3,minmax(0,1fr))}
-  .iv10-grid.cartas{grid-template-columns:repeat(3,minmax(0,1fr))}
-  .iv10-guardar{bottom:0}
-  .iv10-guardar button{flex:1}
+  .ves-q:not(.on):hover,.ves-ran button:not(.on):hover,.ves-sec button:not(.on):hover,.ves-fil button:not(.on):hover,.ves-mano button:not(.on):hover,.ves-btn:not(.blanco):hover{border-color:#6A6A72}
+  .ves-lnk:hover{text-decoration:underline}
 }
-/* 🃏 sin carta, en las miniaturas (12/11/2026, la captura de Dlx: «DLX SIN CARTA» se salía de cada cuadrito). En chico
-   va sólo la cara: el nombre ya está arriba y «sin carta» lo dice el borde punteado */
-.iv10-mci.sincarta,.iv10-qci.sincarta{padding:4px;gap:0;border-width:1.5px;border-radius:5px;max-width:none;max-height:none}
-.iv10-mci.sincarta{width:52px;height:76px}
-.iv10-qci.sincarta{width:66px;height:96px}
-.iv10-mci.sincarta b,.iv10-mci.sincarta small,.iv10-mci.sincarta .sc-flag,
-.iv10-qci.sincarta b,.iv10-qci.sincarta small,.iv10-qci.sincarta .sc-flag{display:none}
-.iv10-mci.sincarta .sc-cara,.iv10-qci.sincarta .sc-cara{width:80%;font-size:18px;box-shadow:none}
-.iv10-carta .iv9-ci.sincarta{grid-auto-flow:row;justify-items:center;width:100%;max-width:230px}
+
+/* 🖥️ desde 900 px: la carta fija a la izquierda y lo demás a la derecha; perfil y colección en dos columnas */
+@media (min-width: 900px){
+  .ves-cuerpo{grid-template-columns:minmax(0,360px) minmax(0,1fr);gap:20px}
+  .ves-izq{position:sticky;top:12px}
+  .ves-perfil,.ves-col{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .ves-col .ancha{grid-column:1 / -1}
+  .ves-gmini{display:none}
+}
+/* 📱 el celular */
+@media (max-width: 760px){
+  .ves{padding:14px 12px 22px;gap:12px}
+  .ves-cab{padding:14px}
+  .ves-cab h2{font-size:28px}
+  .ves-num{width:100%}
+  .ves-num div{flex:1;min-width:0}
+  .ves-sec button{padding:10px 8px}
+  .ves-sec button b{font-size:14px}
+  .ves-sec button small{font-size:11px}
+  .ves-grid{grid-template-columns:repeat(3,minmax(0,1fr))}
+  /* ⚠️ por encima de la barra de abajo de la página (76 px, como los otros avisos fijos), y con lugar a la derecha para
+     el botón de subir, que si no le tapaba Guardar */
+  .ves-guardar{bottom:calc(76px + env(safe-area-inset-bottom,0px));margin-right:56px}
+  .ves-gtx{flex-basis:120px;font-size:13px}
+  .ves-pasos li{grid-template-columns:auto minmax(0,1fr)}
+  .ves-pasos li .ves-btn{grid-column:1 / -1;justify-self:stretch}
+}
+@media (prefers-reduced-motion: no-preference){.ves-q,.ves-sec button,.ves-ran button{transition:border-color .15s ease,background-color .15s ease}}
+/* 🃏 sin carta, en las miniaturas: sólo la cara (el nombre ya está arriba) */
+.ves-mci.sincarta,.ves-qci.sincarta{padding:4px;gap:0;border-width:1.5px;border-radius:5px;max-width:none;max-height:none}
+.ves-mci.sincarta{width:44px;height:62px}
+.ves-qci.sincarta{width:66px;height:92px}
+.ves-mci.sincarta b,.ves-mci.sincarta small,.ves-mci.sincarta .sc-flag,.ves-qci.sincarta b,.ves-qci.sincarta small,.ves-qci.sincarta .sc-flag{display:none}
+.ves-mci.sincarta .sc-cara,.ves-qci.sincarta .sc-cara{width:80%;font-size:16px;box-shadow:none}
+.ves-ci.sincarta{grid-auto-flow:row;justify-items:center;width:100%;max-width:270px}
 /* 🏆 el Pase premium de campeón de liga (15/11/2026, `web/src/vales.jsx`): un cuadro del panel del Inicio, en el oro del Pase */
 .vp{display:grid;gap:12px;margin:0 0 16px;padding:14px 16px;border:1.5px solid #6b5414;border-radius:4px;
   background:radial-gradient(120% 80% at 85% 0%,rgba(232,185,35,.24),transparent 60%),linear-gradient(160deg,#17130a,#0B0C0E 70%)}

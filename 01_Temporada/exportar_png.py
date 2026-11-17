@@ -140,6 +140,9 @@ async def _capturar(pg, html, salida):
     await pg.wait_for_timeout(300)
     el = await pg.query_selector('.card')
     await el.screenshot(path=salida, omit_background=True)
+    # 🧩 y la carta armable, para que el Inventario la vista en vivo (`comun/armable.py`)
+    from comun import armable
+    await armable.guardar(el, salida)
     os.remove(tmp)
 
 

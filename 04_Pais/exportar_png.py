@@ -160,11 +160,11 @@ async def exportar(gente):
                     cb['y'] - y0, y1 - (cb['y'] + cb['height']))
 
             nombre = 'pais_%s.png' % G.norm(p['nombre'])
-            await pg.screenshot(
-                path=os.path.join(G.SALIDA, nombre), omit_background=True,
-                clip={'x': x0 - MARGEN, 'y': y0 - MARGEN,
-                      'width': x1 - x0 + 2 * MARGEN,
-                      'height': y1 - y0 + 2 * MARGEN})
+            caja = {'x': x0 - MARGEN, 'y': y0 - MARGEN, 'width': x1 - x0 + 2 * MARGEN, 'height': y1 - y0 + 2 * MARGEN}
+            await pg.screenshot(path=os.path.join(G.SALIDA, nombre), omit_background=True, clip=caja)
+            # 🧩 y la carta armable, corrida en su caja como en la foto (`comun/armable.py`)
+            from comun import armable
+            await armable.guardar(c, os.path.join(G.SALIDA, nombre), caja)
             hechos.append((p['nombre'], nombre, sale))
         await br.close()
     os.remove(tmp)
