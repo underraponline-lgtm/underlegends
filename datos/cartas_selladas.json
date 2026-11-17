@@ -202,7 +202,7 @@
    "competitivo": "5f3dcaa10f19:231a54e016d0",
    "pais": "9cfb765f280a:9d66d497e41e",
    "servidor": "baa7b89e907e:aba640c1146a:132451",
-   "temporada": "3532f667f1f2:cdead15a6070"
+   "temporada": "26f2c8c78b51:cdead15a6070"
   },
   "Blue": {
    "competitivo": "342a54cf8c3a:231a54e016d0",
@@ -291,7 +291,7 @@
    "competitivo": "95f01cc1a450:231a54e016d0",
    "pais": "989faf016998:9d66d497e41e",
    "servidor": "6f4ab5dfa56e:aba640c1146a:132451",
-   "temporada": "16278ebf7b68:cdead15a6070"
+   "temporada": "90caae36e6b5:cdead15a6070"
   },
   "CrisZJ": {},
   "Crk": {
@@ -500,7 +500,7 @@
    "competitivo": "d1b0bc5009e6:231a54e016d0",
    "pais": "b20b27bdab44:9d66d497e41e",
    "servidor": "edb76a3d0e00:aba640c1146a:c82496",
-   "temporada": "43bc6bb28fed:cdead15a6070"
+   "temporada": "df2eb6168679:cdead15a6070"
   },
   "EricRJ": {},
   "Erik": {
@@ -823,7 +823,7 @@
    "competitivo": "030d6a6706ec:231a54e016d0",
    "pais": "49de43125c2d:9d66d497e41e",
    "servidor": "f57ea795a95f:aba640c1146a:132451",
-   "temporada": "a4d5205a253d:cdead15a6070"
+   "temporada": "a23e91359145:cdead15a6070"
   },
   "Julda": {},
   "Jult": {
@@ -1478,7 +1478,7 @@
    "competitivo": "6b9e2c5e26f7:231a54e016d0",
    "pais": "093951bd8982:9d66d497e41e",
    "servidor": "25c772999530:aba640c1146a:132451",
-   "temporada": "51c505ec6629:cdead15a6070"
+   "temporada": "704b55d96210:cdead15a6070"
   },
   "Provenza": {
    "competitivo": "0b05db00b3e5:231a54e016d0",
@@ -1621,7 +1621,7 @@
    "competitivo": "40390ef934d1:231a54e016d0",
    "pais": "98ad0b497980:9d66d497e41e",
    "servidor": "0cee2a9cdaa7:aba640c1146a:fce3e6",
-   "temporada": "c4a5ba2b162d:cdead15a6070"
+   "temporada": "397e63561d25:cdead15a6070"
   },
   "Sando": {
    "servidor": "cbd939dd506b:aba640c1146a:27d4a9"
@@ -1829,7 +1829,7 @@
    "competitivo": "b41566b4147f:231a54e016d0",
    "pais": "8b3483b3e189:9d66d497e41e",
    "servidor": "de257384af38:aba640c1146a:132451",
-   "temporada": "feb41072d309:cdead15a6070"
+   "temporada": "24f002bd2b1d:cdead15a6070"
   },
   "Vanet": {
    "servidor": "6c8ac408bbf5:aba640c1146a:055f77"
@@ -2125,5 +2125,5 @@
    "servidor": "7f8885a35a6d:aba640c1146a:71cf5a"
   }
  },
- "cuando": "2026-11-17T05:42:06+00:00"
+ "cuando": "2026-11-17T06:04:32+00:00"
 }
