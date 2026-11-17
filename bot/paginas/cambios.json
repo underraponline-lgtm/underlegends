@@ -11,6 +11,18 @@
   ],
   "cambios": [
     {
+        "version": "6.10",
+        "dia": "2026-11-17",
+        "cuando": "2026-11-17T03:50:00-05:00",
+        "titulo": "La llave de cada evento, rehecha",
+        "items": [
+            "Cuando una llave termina, arriba va el campeón contra el subcampeón con sus tarjetas, y debajo los que llegaron más lejos.",
+            "**El camino**: las batallas del campeón, una por una, con la tarjeta de cada rival. Toca a cualquiera de la llave para ver su camino.",
+            "La llave entera queda plegada debajo: «Ver toda la llave» la abre.",
+            "Las llaves viejas abren más rápido: ahora se baja sólo la que abres, no todas."
+        ]
+    },
+    {
         "version": "6.09",
         "dia": "2026-11-17",
         "cuando": "2026-11-17T03:35:00-05:00",
