@@ -55,7 +55,7 @@
     {
         "version": "5.88",
         "dia": "2026-11-17",
-        "cuando": "2026-11-17T01:20:00-05:00",
+        "cuando": "2026-11-17T00:19:00-05:00",
         "titulo": "Los tiers de las crews, con puntos de verdad",
         "items": [
             "Los tiers de las crews vuelven a sumar los puntos de Temporada de la semana de su gente.",
@@ -76,7 +76,7 @@
     {
         "version": "5.86",
         "dia": "2026-11-17",
-        "cuando": "2026-11-17T00:40:00-05:00",
+        "cuando": "2026-11-17T00:08:00-05:00",
         "titulo": "El menú MODS",
         "items": [
             "Quien modera la Liga tiene un botón MODS arriba, sólo en las páginas donde tiene algo para hacer.",
