@@ -451,7 +451,8 @@ def main():
     # en `cartas_r2.json`). Las tres caían en «ya no se sirven, se pueden borrar» o en «sobran en R2», y las tres se
     # sirven: borrarlas apaga la llave vieja, la carta viva del Inventario y la carta de liga (auditoría roja desde el 19/10)
     OTRAS = (('ligas/', 'flyer(s) de las ligas'), ('fondos/', 'fondo(s) de perfil'), ('pendientes/', 'foto(s) de tarjeta esperando revisión'),
-             ('logos-crews/', 'logo(s) de crews'), ('llaves/', 'llave(s) sueltas de la página'), ('cartas/a/', 'imagen(es) de las cartas armables'))
+             ('logos-crews/', 'logo(s) de crews'), ('llaves/', 'llave(s) sueltas de la página'), ('cartas/a/', 'imagen(es) de las cartas armables'),
+             ('kits/', 'kit(s) privados de los servidores'))
     for pref, que in OTRAS:
         xs = [o for o in todos if o['key'].startswith(pref)]
         if xs:

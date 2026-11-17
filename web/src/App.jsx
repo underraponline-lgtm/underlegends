@@ -192,6 +192,8 @@ function AvisoWeb({ aviso }) {
 // ✅ verificarse, en su página (el remake del 02/11/2026: verificar.jsx, con el trámite de cuenta.jsx adentro)
 const PaginaVerificar = lazy(() => import('./verificar.jsx').then((m) => ({ default: m.PaginaVerificar })));
 const Cambios = pag(() => import('./cambios2.jsx').then((m) => ({ default: m.Cambios })));
+// 🧰 el kit privado de cada servidor (17/11/2026): sólo con su link, `/freestyle-rap/kit/<código>` (ver kit.jsx)
+const Kit = pag(() => import('./kit.jsx').then((m) => ({ default: m.Kit })));
 const PerfilSv = pag(() => import('./entidad2.jsx').then((m) => ({ default: m.PerfilSv })));
 const PaginaCrew = pag(() => import('./crew2.jsx').then((m) => ({ default: m.PaginaCrew })));
 const AjustesCrew = pag(() => import('./crew2.jsx').then((m) => ({ default: m.AjustesCrew })));
@@ -691,7 +693,8 @@ export default function App() {
       : pagina === 'eventos' || pagina === 'avisos' ? 'Los eventos'
       : pagina === 'pase' ? 'Pase de rapero' : pagina === 'tienda' ? 'La tienda' : pagina === 'invitar' ? 'Invita y gana'
       : pagina === 'publicaciones' ? 'Publicaciones' : pagina === 'guia' ? 'Cómo funciona'
-      : pagina === 'cambios' ? 'Changelog' : '';
+      : pagina === 'cambios' ? 'Changelog'
+      : pagina === 'kit' ? 'El kit de tu servidor' : '';
     if (!sv && (pagina === 'r' || pagina === 'llave')) return undefined;
     const poner = () => { document.title = t ? t + ' · Liga Global de Freestyle' : 'Liga Global de Freestyle'; };
     poner();
@@ -795,6 +798,7 @@ export default function App() {
       <span id="contenido" tabIndex={-1} />
       {sv ? <Aislada key="PerfilSv" n="PerfilSv" pagina><Suspense fallback={<Cargando />}><PerfilSv liga={liga} sv={sv} enc={enc} /></Suspense></Aislada>
         : pagina === 'cambios' ? <Aislada key="Cambios" n="Cambios" pagina><Suspense fallback={<Cargando />}><Cambios liga={liga} ver={partes[1] || null} antes={cambiosAntes} /></Suspense></Aislada>
+        : pagina === 'kit' ? <Aislada key="Kit" n="Kit" pagina><Suspense fallback={<Cargando />}><Kit liga={liga} cod={partes[1] || ''} /></Suspense></Aislada>
         : pagina === 'socios' || pagina === 'mundo' ? <Aislada key="Socios" n="Socios" pagina><Suspense fallback={<Cargando />}><Socios liga={liga} /></Suspense></Aislada>
         : pagina === 'llave' && partes[1] ? <Aislada key="Llave" n="Llave" pagina><Suspense fallback={<Cargando />}><Llave liga={liga} vivoL={vivoL} n={partes.slice(1).join('/')} raiz={raiz} dc={yo.dc} /></Suspense></Aislada>
         : pagina === 'tienda' ? <Aislada key="Tienda" n="Tienda" pagina><Suspense fallback={<Cargando />}><Tienda liga={liga} dc={yo.dc} /></Suspense></Aislada>

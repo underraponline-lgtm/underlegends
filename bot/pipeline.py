@@ -1486,6 +1486,12 @@ def _lo_barato(correr):
         paso('2b10', 'los roles de la página')
         if not corre(['bot/roles.py', '--aplicar'], callado=False):
             print('      ⚠️ los roles fallaron: quedan los de la corrida anterior')
+    # ── 2b11 · 🧰 el kit privado de cada servidor (`bot/kits.py`, Dlx 17/11/2026): su tier, sus beneficios, cómo está el
+    # bot ahí y el link para darle Administrador. A R2 sólo lo que cambió. Nunca frena el ciclo
+    if correr:
+        paso('2b11', 'el kit de cada servidor')
+        if not corre(['bot/kits.py', '--aplicar'], callado=True, mostrar=('🧰', '⚠️', '🟡', '✅')):
+            print('      ⚠️ los kits fallaron: quedan los de antes')
     if correr:
         paso('2c', 'la web')
         corre(['bot/subir_web.py', '--aplicar'], callado=False)

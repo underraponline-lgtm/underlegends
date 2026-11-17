@@ -273,26 +273,7 @@ export function Socios({ liga }) {
             ayuda de `/settings` y `/numeral` en `bot/worker.js`); el bot en vivo nombra con @ sin hacer sonar a nadie
             (2.82, `allowed_mentions` vacío); el anti-raid es del dueño, avisa con botones y ni en AUTOMÁTICO expulsa ni
             banea (`bot/antiraid.js`). Si algo de eso cambia, se cambia acá */}
-        <div className="sk-bot">
-          <div className="sk-bot-c si">
-            <h3><Ico n="ok" t={18} /> Lo que hace el bot</h3>
-            <ul>
-              <li><b>Lee los anuncios y las llaves</b>, para cargar cada evento solo; y mientras se juega uno, mira quién está en la llamada.</li>
-              <li><b>Crea la invitación de la Liga</b>, para que la gente llegue a tu servidor y a tus inscripciones.</li>
-              <li><b>Pone el puesto de la Liga en el apodo</b> de tu gente (#N). Lo apaga un admin para todo el servidor con /settings, y cada uno lo decide con /numeral.</li>
-              <li><b>Si lo prendes con /settings</b>, cuenta tu evento en tu chat mientras se juega (la llave, cada ronda, la final y el campeón) y avisa los cambios de rango en el canal que elijas. Nombra a los raperos sin hacer sonar a nadie.</li>
-              <li><b>Si lo prendes con /antiraid</b> (sólo el dueño): un escudo de AutoMod contra el spam, las menciones masivas y los links de otros servidores, una alarma si entra mucha gente de golpe, la vigilancia del staff y un botón de pánico. Avisa con botones y decide tu staff.</li>
-            </ul>
-          </div>
-          <div className="sk-bot-c no">
-            <h3><Ico n="cerrar" t={18} /> Lo que nunca hace</h3>
-            <ul>
-              <li><b>No expulsa ni banea</b> a nadie.</li>
-              <li><b>No edita ni borra los mensajes</b> de tu gente.</li>
-              <li><b>No le manda mensajes privados</b> a nadie de tu servidor.</li>
-            </ul>
-          </div>
-        </div>
+        <QueHaceElBot />
         {(liga.d.redes || []).length ? (
           <nav className="soc-ul" aria-label="Las redes de Under Legends">
             <span>LAS REDES DE UNDER LEGENDS</span>
@@ -303,5 +284,32 @@ export function Socios({ liga }) {
       {/* 📊 la Liga en números, que vivía en el Inicio hasta el 13/10/2026: es de todos los socios juntos */}
       <LaLiga liga={liga} />
     </>
+  );
+}
+
+// 🤖 LO QUE HACE EL BOT Y LO QUE NUNCA HACE, en un solo lugar: lo usan Socios y el kit privado de cada servidor
+// (`kit.jsx`, 17/11/2026). Si algo de eso cambia, se cambia acá
+export function QueHaceElBot() {
+  return (
+    <div className="sk-bot">
+      <div className="sk-bot-c si">
+        <h3><Ico n="ok" t={18} /> Lo que hace el bot</h3>
+        <ul>
+          <li><b>Lee los anuncios y las llaves</b>, para cargar cada evento solo; y mientras se juega uno, mira quién está en la llamada.</li>
+          <li><b>Crea la invitación de la Liga</b>, para que la gente llegue a tu servidor y a tus inscripciones.</li>
+          <li><b>Pone el puesto de la Liga en el apodo</b> de tu gente (#N). Lo apaga un admin para todo el servidor con /settings, y cada uno lo decide con /numeral.</li>
+          <li><b>Si lo prendes con /settings</b>, cuenta tu evento en tu chat mientras se juega (la llave, cada ronda, la final y el campeón) y avisa los cambios de rango en el canal que elijas. Nombra a los raperos sin hacer sonar a nadie.</li>
+          <li><b>Si lo prendes con /antiraid</b> (sólo el dueño): un escudo de AutoMod contra el spam, las menciones masivas y los links de otros servidores, una alarma si entra mucha gente de golpe, la vigilancia del staff y un botón de pánico. Avisa con botones y decide tu staff.</li>
+        </ul>
+      </div>
+      <div className="sk-bot-c no">
+        <h3><Ico n="cerrar" t={18} /> Lo que nunca hace</h3>
+        <ul>
+          <li><b>No expulsa ni banea</b> a nadie.</li>
+          <li><b>No edita ni borra los mensajes</b> de tu gente.</li>
+          <li><b>No le manda mensajes privados</b> a nadie de tu servidor.</li>
+        </ul>
+      </div>
+    </div>
   );
 }

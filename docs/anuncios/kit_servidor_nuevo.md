@@ -5,6 +5,11 @@ lo de tiers, cómo subir de tier, el link de su dashboard, breve explicación de
 *«también que tienen promoción de sus redes sociales, competencias… dan puntos para el ranking de temporada y tienen su
 propio ranking, tiene anti raid, y tienen la capacidad de hacer su propio ranking de ascenso con ayuda del bot»*.
 
+⚠️ **Desde el 17/11/2026 cada servidor tiene además su kit privado en la página** (`bot/kits.py` → `/freestyle-rap/kit/<código>`):
+lo mismo que estos mensajes y cómo está el bot ahí, al día. El link de cada uno lo da `python bot/kits.py --links`.
+El bot se agrega como **Administrador** (Dlx, 17/11: *«el link con permiso de admin en su rol propio para evitar problemas así»*):
+con los permisos justos le faltaban «Gestionar apodos» y «Gestionar servidor» en seis servidores, y en FVS leer el historial.
+
 Son tres mensajes porque Discord corta en 2.000 caracteres. Se copian tal cual. Si cambia un requisito, un beneficio o un
 comando, se cambia acá. De dónde sale cada cosa: `PRESET`, `MIN_SOLO_TEMPORADA`, `medir()` y `recomendar()` de
 `bot/tiers.py`; el ascenso, de `bot/ascenso.py` y `/settings`; las competencias, de `bot/competencias.py` (medido: 12 de los
@@ -20,8 +25,8 @@ hace, de `web/src/socios2.jsx`.
 Tu servidor entra como **Tier 3**: tus eventos salen en la página de la Liga y dan puntos para el ranking de Temporada.
 
 **1. Agrega el bot**
-<https://discord.com/oauth2/authorize?client_id=1550026808404217926&permissions=66561&integration_type=0&scope=bot+applications.commands>
-Sólo pide ver canales, leer el historial y crear invitaciones. No es administrador. Lee tus anuncios y tus llaves para cargar cada evento solo, así que tiene que poder ver esos canales.
+<https://discord.com/oauth2/authorize?client_id=1550026808404217926&permissions=8&integration_type=0&scope=bot+applications.commands>
+Entra como **administrador, con su propio rol**: así no le falta ningún permiso (el #N en los apodos, contar quién entra por tu invitación, leer tus llaves y veredictos). Después sube su rol por encima de los roles de tu gente. Lo que nunca hace está abajo.
 
 **2. Avísame cuando esté adentro** y activo tu servidor.
 
