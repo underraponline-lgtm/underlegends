@@ -5550,6 +5550,18 @@ dialog.pn-pop.pop-gratis{--pc:#F5C542;width:min(640px,calc(100vw - 32px))}
   .app .cab.una .yo-chip .cara{width:32px;height:32px}
   .app .cab.una .yo-chip > span:not(.cara):not(.yo-racha){display:none}
   .app .cab.una .cab-der{gap:8px}
+  /* 📐 LA MISMA CABECERA EN TODAS LAS PÁGINAS (17/11/2026, Dlx: «asegúrate que esto sea consistente y quizás mover un poco
+     las cosas laterales a alejarse un poquitito más del centro»). La racha del Inicio guarda su lugar (`yo-racha-res`); el
+     margen de los costados es 28 px menos que el del contenido, con piso de 40 (a 1200 px, con 24, quedaban 17 px entre la
+     marca y el menú) */
+  .app .cab.una{padding:10px max(40px,calc(var(--gut) - 28px))}
+  .app .cab.una .yo-racha-res{visibility:hidden}
+  /* y la letra del menú, a la misma altura: los grupos (Ranking, Eventos…) son `inline-flex` centrados, los links sueltos
+     eran texto arriba de todo y Publicaciones, con su «43», tenía la línea más alta. Medido: 32,6 · 34,4 · 35,6 px */
+  .app .cab.una .menu > a{display:inline-flex;align-items:center}
+  /* «Entrar» medía 48 (el `min-height` de `.btn`) contra los 40 de los botones: sin cuenta la cabecera era 10 px más alta */
+  .app .cab.una .cab-der{align-items:center}
+  .app .cab.una .entrar{min-height:40px;height:40px}
 }
 /* entre 900 y 1199 el menú no entra con la marca entera: queda el logo (y el título vuelve en cuanto hay lugar) */
 @media (min-width: 900px) and (max-width: 1199.98px){
@@ -5634,7 +5646,9 @@ dialog.pn-pop.pop-gratis{--pc:#F5C542;width:min(640px,calc(100vw - 32px))}
 .app.calma .cab-busca{animation:none}
 @media (prefers-reduced-motion:reduce){.cab-busca{animation:none}}
 /* ⚠️ la regla que esconde tu nombre en el chip (`.yo-chip > span:not(.cara):not(.yo-racha)`) escondía también tu nivel */
-@media (min-width: 1200px){ .app .cab.una .yo-chip > span.yo-nv:not(.cara):not(.yo-racha){display:grid} }
+/* 📐 desde 1320 y no desde 1200 (17/11/2026): entre 1200 y 1319, con la marca entera, la racha y «43» en Publicaciones, el
+   menú se metía 8 px adentro del título. Sin la barra del nivel quedan ~40 px de cada lado */
+@media (min-width: 1320px){ .app .cab.una .yo-chip > span.yo-nv:not(.cara):not(.yo-racha){display:grid} }
 /* 📱 el campo de la barra en el celular: el estilo de `.buscar` sólo existía desde 900 px (quedaba aplastado), y la letra a
    16 px para que el iPhone no haga zoom al escribir */
 .app .cab.una .cab-busca .buscar{display:flex;align-items:center;gap:8px;border:2px solid #29B298;min-height:44px;padding:0 12px;color:#A5A5A0}

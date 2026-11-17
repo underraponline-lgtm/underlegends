@@ -519,7 +519,10 @@ export function Cabecera({ liga, dc, onMenu, pagina = '', sv = '' }) {
                 <b><Ico n="xp" t={12} />Nivel {nv.n}</b><i><u style={{ width: nvPct + '%' }} /></i></span> : null}
               {/* 🔥 la racha, salvo en el Inicio, donde ya está abajo con sus días (Dlx, 13/11/2026: «que desaparezca eso de la
                   racha si eso está abajo») */}
-              {fuego && !enInicio ? <span className="yo-racha" aria-hidden="true"><Ico n="fuego" t={13} />{fuego}</span> : null}</button>
+              {/* …pero su lugar se guarda (`yo-racha-res`, invisible): sin él la columna de la derecha era más angosta en el
+                  Inicio y el menú, centrado entre las dos, se corría de una página a otra (Dlx, 17/11/2026: «asegúrate que esto
+                  sea consistente») */}
+              {fuego ? <span className={'yo-racha' + (enInicio ? ' yo-racha-res' : '')} aria-hidden="true"><Ico n="fuego" t={13} />{fuego}</span> : null}</button>
             {yoM ? <YoMenu k={yo ? yo.k : (dc && dc.clave) || ''} dc={dc} nombre={nombre} cara={cara} onCerrar={() => setYoM(false)} /> : null}
           </span>
         ) : (
