@@ -11,6 +11,17 @@
   ],
   "cambios": [
     {
+        "version": "5.85",
+        "dia": "2026-11-16",
+        "cuando": "2026-11-16T23:50:00-05:00",
+        "titulo": "Las crews, rehechas",
+        "items": [
+            "La página de crews: fundar una crew está arriba, tu crew en una franja, un buscador con la vista previa al costado y la tabla de la semana de cada tier con cuánto falta para subir o bajar.",
+            "La página de cada crew: la jerarquía en pirámide, cuánto aporta cada uno, cómo va la semana y lo que pasó.",
+            "Los ajustes de tu crew tienen su propia página, con un menú."
+        ]
+    },
+    {
         "version": "5.84",
         "dia": "2026-11-16",
         "cuando": "2026-11-16T23:39:00-05:00",
