@@ -25158,7 +25158,7 @@
   "duelos": [
    [
     "Raizer",
-    "Teo",
+    "Teito",
     "Raizer"
    ],
    [
@@ -25172,9 +25172,9 @@
     "giansito"
    ],
    [
-    "Sosa",
+    ".SosaATR",
     "Vilca",
-    "Sosa"
+    ".SosaATR"
    ],
    [
     "NXUZ",
@@ -25183,7 +25183,7 @@
    ],
    [
     "OKAM",
-    "Luck",
+    "Lucky",
     "OKAM"
    ],
    [
@@ -25203,7 +25203,7 @@
    ],
    [
     "NXUZ",
-    "Sosa",
+    ".SosaATR",
     "NXUZ"
    ],
    [
@@ -25233,7 +25233,7 @@
    "giansito": 2
   },
   "fecha": "26/10",
-  "firma": "81ccba53665bc48d",
+  "firma": "6afcccf1034f63ed",
   "msg": "1564411815159402638",
   "nombre": "GG SANGRERAP 6",
   "num": 529,
@@ -25250,19 +25250,24 @@
     7500
    ],
    [
+    ".SosaATR",
+    "Semifinal",
+    3500
+   ],
+   [
     "NXUZ",
     "Subcampeón",
     2500
    ],
    [
-    "Raizer",
+    "Lucky",
     "Cuartos",
     2000
    ],
    [
-    "Sosa",
-    "Semifinal",
-    1750
+    "Raizer",
+    "Cuartos",
+    2000
    ],
    [
     "OKAM",
@@ -25280,11 +25285,6 @@
     1000
    ],
    [
-    "Luck",
-    "Cuartos",
-    1000
-   ],
-   [
     "CrisZJ",
     "Cuartos",
     1000
@@ -25295,7 +25295,7 @@
     1000
    ],
    [
-    "Teo",
+    "Teito",
     "Octavos",
     625
    ],
@@ -30359,7 +30359,7 @@
    "mats": 5
   },
   "fecha": "26/10",
-  "firma": "7a172c14eb2c1305",
+  "firma": "f2388463744403a7",
   "msg": "1565899302046277764",
   "nombre": "RAP SIN GROSERIAS 1",
   "num": 548,
@@ -34004,7 +34004,7 @@
    "yinn": 30
   },
   "fecha": "03/11",
-  "firma": "e9340f58f5cd43c5",
+  "firma": "7ec351085bb66998",
   "msg": "1567394632550187149",
   "nombre": "__ qcyo rapeen 10 __",
   "num": 565,
@@ -36224,7 +36224,7 @@
    ],
    [
     "Tam",
-    "dyzzcord🇨🇱",
+    "Dyzz",
     "Tam"
    ],
    [
@@ -36239,7 +36239,7 @@
    ],
    [
     "Tam",
-    "arce🇵🇾",
+    "arce",
     "Tam"
    ],
    [
@@ -36249,7 +36249,7 @@
    ],
    [
     "Erian",
-    "Joven shenlong 🇵🇦",
+    "Joven shenlong",
     "Erian"
    ],
    [
@@ -36281,7 +36281,7 @@
    "Tam": 23
   },
   "fecha": "05/11",
-  "firma": "defd72d169daab91",
+  "firma": "292896f8588ab27b",
   "msg": "1568115949356327015",
   "nombre": "__ QCYO RAPEEN 11 __",
   "num": 574,
@@ -36349,7 +36349,7 @@
     2500
    ],
    [
-    "dyzzcord🇨🇱",
+    "Dyzz",
     "Cuartos",
     2500
    ],
@@ -36364,7 +36364,7 @@
     2500
    ],
    [
-    "arce🇵🇾",
+    "arce",
     "Cuartos",
     2500
    ],
@@ -36374,7 +36374,7 @@
     2500
    ],
    [
-    "Joven shenlong 🇵🇦",
+    "Joven shenlong",
     "Cuartos",
     2500
    ]
@@ -41069,7 +41069,7 @@
    "Verc": 27
   },
   "fecha": "05/11",
-  "firma": "d5c706f986f23ab8",
+  "firma": "930ee57ba08fd48e",
   "msg": "1569508042813210686",
   "nombre": "ORDEN DEL CHYPHER",
   "num": 596,
@@ -46466,7 +46466,7 @@
    "mats": 11
   },
   "fecha": "12/11",
-  "firma": "7c37c017bbb18cf7",
+  "firma": "9aa8eb20a033ec69",
   "msg": "1570639296652640288",
   "nombre": "TORNEO CLANDESTINO V.2",
   "num": 628,
