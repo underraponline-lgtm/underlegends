@@ -11,6 +11,18 @@
   ],
   "cambios": [
     {
+        "version": "6.09",
+        "dia": "2026-11-17",
+        "cuando": "2026-11-17T03:35:00-05:00",
+        "titulo": "Lo tuyo, arriba; y el Inventario, mejor en el celular",
+        "items": [
+            "En la computadora, el menú de Tu cuenta empieza por «Lo tuyo»: Tu cuenta, Inventario, Pase rapero, Tienda, tu perfil, la app, privacidad y ayuda.",
+            "Inventario en el celular: los nombres largos de los TAGs ya no se salen de su cuadro, y el marco de tu carta no tapa la fila de cartas.",
+            "Tus fondos, adentro del Inventario: se ven bien en el tema Clara y ya puedes elegir tu bandera o tu servidor desde ahí.",
+            "Tu estilo muestra el ícono de tu estilo de juego."
+        ]
+    },
+    {
         "version": "6.08",
         "dia": "2026-11-17",
         "cuando": "2026-11-17T02:59:00-05:00",
