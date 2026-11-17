@@ -70,7 +70,7 @@ export function MesSv({ liga, sv, enc }) {
               <ul>{S.cats_sv.map(([c, n]) => {
                 const x = (m.sv[sv].cats || {})[c] || {};
                 const fila = (x.nom || []).find((y) => y.op === x.gana);
-                return fila ? <li key={c}><Nominado liga={liga} cat={c} x={fila} /><em>{n}</em>{reparto(x)}</li> : null;
+                return fila ? <li key={c}><Nominado liga={liga} cat={c} x={fila} /><em>{n}</em>{reparto(x, liga)}</li> : null;
               })}</ul>
             </div>
           ))}

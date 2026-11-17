@@ -167,7 +167,7 @@ function MesAwards({ liga, enc }) {
               <details key={m.mes} className="sl-hm" open={i === 0}>
                 <summary><b className="sl-hm-mes">{capM(m.nombre)} {m.mes.slice(0, 4)}</b><small>{filas.length} {filas.length === 1 ? 'ganador' : 'ganadores'}</small></summary>
                 <ul>{filas.filter((y) => !y.tipo).map(({ c, n, x, f }) => (
-                  <li key={c}><span className="sl-sello">{n}</span><span className="sl-nom"><Nominado liga={liga} cat={c} x={f} /></span>{reparto(x)}</li>
+                  <li key={c}><span className="sl-sello">{n}</span><span className="sl-nom"><Nominado liga={liga} cat={c} x={f} /></span>{reparto(x, liga)}</li>
                 ))}</ul>
                 {resto.length ? (
                   <ul className="sl-hm-resto">{resto.map(({ c, n, x, f }) => (

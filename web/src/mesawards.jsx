@@ -42,7 +42,12 @@ export function Nominado({ liga, cat, x }) {
         : x.cc ? <img className="ma-cara ma-flag" alt="" src={'/banderas/g/' + x.cc + '.webp'} />
           : x.sv && !x.q ? <img className="ma-cara" alt="" src={liga.logo(x.sv)} />
             : <Cara liga={liga} k={fq ? fq.k : ''} nombre={x.q || x.n} cls="ma-cara" />;
-    return <>{vis}<span className="ma-t"><b>{limpio(x.n)}</b><small>{x.d}</small></span></>;
+    // 🪪 el nombre de la Lista, no el alias con que llegó (17/11/2026): «Over» es AKA de Mr Still Ballin y la misma
+    // página lo mostraba con los dos nombres. Rapero y Revelación ya pasaban por `liga.fila()`; acá sólo cuando el
+    // nominado ES la persona (n = q) o un cruce «A vs B», nunca el título de una promo o una publicación
+    const nb = x.q && x.n === x.q ? (fq ? fq.n : x.n)
+      : x.q && / vs /.test(x.n) ? x.n.split(' vs ').map((s) => (liga.fila(s) || {}).n || s).join(' vs ') : x.n;
+    return <>{vis}<span className="ma-t"><b>{limpio(nb)}</b><small>{x.d}</small></span></>;
   }
   const f = (cat === 'rapero' || cat === 'revelacion') ? liga.fila(x.op) : null;
   // 🔎 la miniatura grande (`Miniatura`, 1280×720) en vez de la de 320×180
@@ -86,16 +91,22 @@ export function Categoria({ liga, enc, cat, nombre, de, nom, encId, gana }) {
 
 // 📊 los porcentajes del cierre (Dlx, 18/10/2026: «me gusta lo de porcentajes»): el ganador y los que le siguen, como
 // publican los FMS AWARDS. Sólo si se decidió por votos: si fue por los números, no hay reparto que mostrar
-export function reparto(x) {
+export function reparto(x, liga) {
   const cu = x.cuenta || {};
   const tot = Object.values(cu).reduce((s, n) => s + (Number(n) || 0), 0);
   if (x.por !== 'votos' || !tot) return null;
-  const nom = (op) => limpio(((x.nom || []).find((y) => y.op === op) || {}).n || op);
+  // 🪪 con el nombre de la Lista, como `Nominado` (17/11/2026): el nominado puede venir con su alias
+  const nom = (op) => {
+    const y = (x.nom || []).find((z) => z.op === op) || {};
+    const n = y.n || op;
+    const f = liga && (y.q ? n === y.q : !y.vid && !y.sv && !y.cc && !y.img && y.pts !== undefined) ? liga.fila(n) : null;
+    return limpio(f ? f.n : n);
+  };
   const orden = Object.keys(cu).sort((a, b) => cu[b] - cu[a]).slice(0, 4);
   return (
     <small className="ma-pct">{orden.map((op, i) => (
       // cada opción entera en su renglón y el «·» al final del de arriba, nunca al principio (16/11: los cortes de línea)
-      <Fragment key={op}>{i ? '\u00a0· ' : ''}<span className="ma-op">{op === x.gana ? <b>{nom(op)} {Math.round((100 * cu[op]) / tot)}%</b> : nom(op) + ' ' + Math.round((100 * cu[op]) / tot) + '%'}</span></Fragment>
+      <Fragment key={op}>{i ? '\u00a0· ' : ''}<span className="ma-rop">{op === x.gana ? <b>{nom(op)} {Math.round((100 * cu[op]) / tot)}%</b> : nom(op) + ' ' + Math.round((100 * cu[op]) / tot) + '%'}</span></Fragment>
     ))}{'\u00a0· ' + tot + (tot === 1 ? '\u00a0voto' : '\u00a0votos')}</small>
   );
 }

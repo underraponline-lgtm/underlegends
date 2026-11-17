@@ -1577,8 +1577,9 @@ button.ma-op:hover{border-color:#F6F6F6}
 /* 📊 los porcentajes del cierre, en su renglón debajo (Dlx, 18/10/2026: «me gusta lo de porcentajes») */
 .ma-hm li .ma-pct{grid-column:1 / -1;font:600 14px/1.3 "Barlow Condensed",sans-serif;letter-spacing:.02em;color:#C4C4BE}
 .ma-hm li .ma-pct b{color:#F6F6F6;font-weight:700}
-/* cada opción de la votación, entera (el «·» queda al final del renglón de arriba; 16/11) */
-.ma-op{white-space:nowrap}
+/* cada opción del reparto, entera (el «·» queda al final del renglón de arriba; 16/11). ⚠️ Era `.ma-op`, la clase del
+   botón de votar: las opciones salían como cajas y el nombre del nominado no cortaba en el celular (17/11) */
+.ma-rop{white-space:nowrap}
 .db-mes-c{margin:10px 0}
 .db-mes-c ul{list-style:none;margin:6px 0 0;padding:0;display:grid;gap:6px}
 .db-mes-c li{display:flex;align-items:center;justify-content:space-between;gap:10px}

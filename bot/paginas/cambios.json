@@ -11,6 +11,16 @@
   ],
   "cambios": [
     {
+        "version": "6.03",
+        "dia": "2026-11-17",
+        "cuando": "2026-11-17T02:01:00-05:00",
+        "titulo": "MES AWARDS: los porcentajes y los nombres",
+        "items": [
+            "Los **porcentajes de los MES AWARDS** se ven otra vez como texto («60 % · 20 % · 5 votos»), en el Salón de la fama y en la página de cada servidor: salían como cajas sueltas.",
+            "Quien juega con un alias sale **con un solo nombre** en los ganadores: en algunas categorías aparecía con el alias y en otras con su nombre de la Lista."
+        ]
+    },
+    {
         "version": "6.02",
         "dia": "2026-11-17",
         "cuando": "2026-11-17T01:56:49-05:00",
