@@ -392,14 +392,13 @@ export function FondoCaja({ dc }) {
   const subir = async () => { if (archivo) await mandar({ img: await aBase64(archivo), perfil, pagina }); };
   const estado = !f ? '' : f.pend ? 'En revisión: el filtro automático no estuvo seguro y la mira la Liga.' : f.estado === 'no' ? 'No se aprobó' + (f.motivo ? ': ' + f.motivo : '') + '. Puedes subir otra.' : 'Ya se ve.';
   return (
-    <Caja t="Tu fondo" d={pu.si ? 'Tu propia imagen de fondo. Pasa por un filtro automático: sin desnudos, sangre, violencia, odio ni datos personales.' : 'Tu propia imagen de fondo, en tu perfil y en tu página.'}>
+    <Caja t="Tu fondo" d={pu.si ? 'Tu propia imagen de fondo. Pasa por un filtro automático: sin desnudos, sangre, violencia, odio ni datos personales.' : 'Tu propia imagen de fondo, en tu perfil.'}>
       {!pu.si && !(f && f.url) ? <p className="cu-d">🔒 Se desbloquea con el <b>nivel {pu.falta || 10}</b> del <a href="#/pase">Pase de rapero</a>{pu.nivel != null ? ' (vas en el ' + pu.nivel + ')' : ''}.</p> : null}
       {f && urlFondo(f.pend || f.url) ? <div className="cu-fondo-ver" style={{ backgroundImage: urlFondo(f.pend || f.url) }} aria-label="Tu fondo" role="img" /> : null}
       {estado ? <p className="cu-d">{estado}</p> : null}
       {f ? (
         <div className="cu-fondo-donde">
           <label><input type="checkbox" checked={perfil} disabled={ocup} onChange={(e) => mandar({ perfil: e.target.checked, pagina })} /> En mi perfil (lo ven todos)</label>
-          <label><input type="checkbox" checked={pagina} disabled={ocup} onChange={(e) => mandar({ perfil, pagina: e.target.checked })} /> De fondo de mi página (lo veo yo)</label>
         </div>) : null}
       {pu.si ? <>
         {vista ? <div className="cu-fondo-ver" style={{ backgroundImage: 'url("' + vista + '")' }} aria-label="La que vas a subir" role="img" /> : null}

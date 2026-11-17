@@ -195,7 +195,6 @@ const PaginaPais = pag(() => import('./entidad2.jsx').then((m) => ({ default: m.
 const Cargando = () => <div className="cargando" role="status"><span>Cargando…</span><i className="cargando-b" aria-hidden="true"><i /></i></div>;
 import { VentanaVideo } from './video.jsx';
 import { claseTema, guardarTemas, leerTemas } from './temas.js';
-import { urlFondo, useFondos } from './fondos.js';
 import { useCalma, useTapado } from './anima.js';
 // 🐞 los errores de la página, al Dashboard (19/10/2026): los de cada sección y los que no agarra ninguna
 import { escucharErrores, reportarError } from './errores.js';
@@ -741,11 +740,10 @@ export default function App() {
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [vistos, grupos]);
 
-  // 🖼️ tu fondo, de fondo de tu propia página, si lo elegiste y está aprobado (13/10/2026). Antes del `return` de abajo:
-  // un hook después de un return condicional cambia la cuenta de hooks
-  const fondosAp = useFondos();
-  const fYo = liga && liga.yo && fondosAp ? fondosAp[liga.yo.k] : null;
-  const miFondo = fYo && fYo[2] ? urlFondo(fYo[0]) : '';
+  // 🖼️ TU FONDO YA NO VA DE FONDO DE TU PÁGINA (17/11/2026). Desde el 13/10 se podía elegir «De fondo de mi página (lo veo
+  // yo)», y pintaba tu portada detrás de cada escena: el Ranking, Eventos, Tu cuenta… Dlx: «en ranking, en mi cuenta,
+  // aparece mi fondo de portada cuando no debería salir eso». Tu fondo va sólo en tu perfil (y en los lugares que se
+  // elijan en «Tus fondos»)
   // 🧘 «Menos animaciones», a la raíz: el CSS de la página vive acá adentro y no ve la clase de <html> (anima.js)
   const calma = (useCalma() ? ' calma' : '') + (useTapado() ? ' tapado' : '');
   // ➡️ de dónde a dónde: el orden del menú, y «más hondo» si es algo de adentro (`#/ligas/<id>`, `#/r/<clave>`)
@@ -761,7 +759,7 @@ export default function App() {
     return <div className="app solo-marco"><MarcoSolo liga={liga} k={partes[1]} cual={partes[2]} sv={partes[3] || ''} cc={(partes[4] || '').toLowerCase()} /></div>;
   }
   return (
-    <div className={'app ' + claseTema(tema, temaSv) + calma + (miFondo ? ' con-fondo' : '')} ref={raiz} style={miFondo ? { '--mi-fondo': miFondo } : undefined}>
+    <div className={'app ' + claseTema(tema, temaSv) + calma} ref={raiz}>
       {/* ♿ «saltar al contenido» (04/10/2026, de la lista de Dlx): no se ve hasta que se llega con el teclado, y salta
           el menú de arriba. Lleva el foco, no sólo la vista: si no, el próximo Tab volvía al menú */}
       <a className="saltar" href="#contenido" onClick={(e) => {

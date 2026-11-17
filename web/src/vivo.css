@@ -3791,7 +3791,7 @@ li.nt-f{cursor:default}
    🔴 NUNCA en lo que es de otro (Dlx, 12/11/2026: «todos los fondos son mi propio fondo de mi perfil»): el perfil de
    otra persona sin fondo propio, la página de un servidor, de una crew, de una liga, una llave y el escenario del
    Inicio (el evento, con su color y su logo) mostraban TU imagen como si fuera suya */
-.app.con-fondo .escena:not(.con-fondo):not(.pf8):not(.ent-esc):not(.crw-esc):not(.lgp-esc):not(.lk-esc):not(.hero-ini){background-image:linear-gradient(180deg,rgba(3,3,4,.68),rgba(3,3,4,.88)),var(--mi-fondo);background-size:cover;background-position:center}
+/* 🔴 y desde el 17/11/2026, en ningún otro lado: la regla que lo pintaba detrás de cada escena se sacó (ver App.jsx) */
 .cu-tema.tsv b img{width:18px;height:18px;border-radius:50%;object-fit:cover}
 .cu-temas.sv{grid-template-columns:repeat(auto-fill,minmax(130px,1fr));max-width:none}
 
