@@ -2370,6 +2370,18 @@ const VOCAB = [
 
 const NO_TITULOS = ['SUPLENTES', 'CLASIFICADOS', 'RESULTADOS', 'FELICIDADES',
   'CANCELAD', 'POSTERGAD', 'SE CANCELA', 'LLAVE', 'BRACKET'];
+// 📣 el «¡únanse, ya empieza!» no es otro evento, la presentación del staff tampoco, y la etiqueta sin llenar no es el
+// nombre (17/11/2026, Dlx: «hay eventos llamados únanse a la llamada»). Igual que `NO_EVENTO`, `STAFF` y `NO_NOMBRE` de
+// `anuncios.py`: el contrato (`avisos_casos.json`) los ata
+const NO_EVENTO = /^(UNANSE|UNETE|ENTREN+(?![A-Z])|INICI[OA] LA COMPE|YA (?:INICIA|COMIENZA|EMPIEZA|EMPEZAMOS|ARRANCA)|EMPEZAMOS|ARRANCAMOS|COMENZAMOS|VENGAN A LA LLAMADA|A LA LLAMADA|CONECTENSE)/;
+const SOLO_STAFF = new Set(['organizador', 'jurado', 'dj', 'host', 'mencion']);
+const NO_NOMBRE = /^(NOMBRE(?: (?:DEL?|DE LA) [A-Z]+)?\W*$|TITULO\W*$|DATOS DEL EVENTO|INFORMACION\b|INDICACIONES|RECOMENDACIONES|REGLAS\b|HORARIOS? DE INSCRIPCION|INSCRIPCIONES?\W*:)/;
+/** 🏷️ «COMPE» y su formato, o «COMPE SIN NOMBRE»: `anuncios.sin_nombre()` */
+export function sinNombre(modalidad) {
+  const m = String(modalidad || '').replace(/<a?:\w+:\d+>|[^\p{L}\p{N}_\s/+-]/gu, ' ').replace(/\s+/g, ' ').trim().toUpperCase();
+  const c = Array.from(m).slice(0, 24).join('').trim();
+  return /[A-Z0-9]/.test(c) ? 'COMPE ' + c : 'COMPE SIN NOMBRE';
+}
 
 const NS = '[^' + S.slice(1);
 const MARCAS = /<a?:\w+:\d+>|<@!?&?\d+>|<#\d+>|<t:-?\d+(?::[a-zA-Z])?>/g;
@@ -2586,13 +2598,15 @@ export function parsearAnuncio(m) {
   if (tipos.size < 2 || !nombre) return null;
   const n = normLinea(nombre);
   if (NO_TITULOS.some((x) => n.startsWith(x)) || n === 'PRUEBA') return null;
+  if (NO_EVENTO.test(n) || ![...tipos].some((k) => !SOLO_STAFF.has(k))) return null;
+  const nom = NO_NOMBRE.test(n) ? sinNombre(p.modalidad) : nombre;
   // sin horario, la marca de Discord de cualquier parte (como en Python)
   if (!p.horario) {
     const mk = /<t:\d{9,11}(?::[tTfFR])?>/.exec(txt);
     if (mk) p.horario = mk[0];
   }
   return {
-    nombre, horario: p.horario, modalidad: p.modalidad,
+    nombre: nom, horario: p.horario, modalidad: p.modalidad,
     cupos: p.cupos, premios: p.premios, organizador: p.organizador,
     fecha: p.fecha || anchos.fecha || '',
   };

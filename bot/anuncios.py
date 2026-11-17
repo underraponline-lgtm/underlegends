@@ -196,6 +196,28 @@ VOCAB = (
 NO_TITULOS = ('SUPLENTES', 'CLASIFICADOS', 'RESULTADOS', 'FELICIDADES',
               'CANCELAD', 'POSTERGAD', 'SE CANCELA', 'LLAVE', 'BRACKET')
 
+# 📣 EL AVISO DE QUE ALGO EMPIEZA NO ES OTRO EVENTO (17/11/2026, Dlx: «veo que hay eventos llamados únanse a la llamada,
+# wtf»). «UNANSE A LA LLAMADA!!» (CH), «¡INICIO LA COMPE! ENTRENN!!» (CH): un llamado con @everyone y una hora sumaba
+# las dos señales y quedaba en el calendario como un evento más, sin llave. Se mira el nombre ya normalizado
+# (`norm_linea`: mayúsculas, sin tildes). ⚠️ «ENTRENAMIENTO» sí puede ser un evento: por eso `ENTREN+` y un borde
+NO_EVENTO = re.compile(r'(UNANSE|UNETE|ENTREN+(?![A-Z])|INICI[OA] LA COMPE|YA (?:INICIA|COMIENZA|EMPIEZA|EMPEZAMOS|ARRANCA)|'
+                       r'EMPEZAMOS|ARRANCAMOS|COMENZAMOS|VENGAN A LA LLAMADA|A LA LLAMADA|CONECTENSE)')
+# 👥 y la presentación del staff tampoco: un mensaje que sólo trae jurados, DJ, host u organizador («UN PLACER MOSTRAR AL
+# EQUIPO DE TRABAJO DE ESTA NACIONAL», ACADEMIA, 07/11) presenta a la gente de un evento que ya se anunció
+SOLO_STAFF = frozenset({'organizador', 'jurado', 'dj', 'host', 'mencion'})
+# 🏷️ Y LO QUE ESTÁ DONDE VA EL NOMBRE PERO NO LO ES: la etiqueta de la plantilla sin llenar («NOMBRE», «NOMBRE DE LA
+# COMPETENCIA», DDF), un encabezado («DATOS DEL EVENTO», ACADEMIA) o un campo que el lector no conocía («HORARIOS DE
+# INSCRIPCION: ya», DDS). Ahí el evento SÍ es un evento: queda, con el nombre de su formato (`sin_nombre()`)
+NO_NOMBRE = re.compile(r'(NOMBRE(?: (?:DEL?|DE LA) [A-Z]+)?\W*$|TITULO\W*$|DATOS DEL EVENTO|INFORMACION\b|INDICACIONES|'
+                       r'RECOMENDACIONES|REGLAS\b|HORARIOS? DE INSCRIPCION|INSCRIPCIONES?\W*:)')
+
+
+def sin_nombre(modalidad):
+    """🏷️ El nombre de un evento cuyo título es una etiqueta sin llenar: «COMPE» y su formato («COMPE PANDILLAS»,
+    «COMPE 1VS1»), o «COMPE SIN NOMBRE». Igual que `sinNombre()` de avisos.js"""
+    m = re.sub(r'\s+', ' ', re.sub(r'<a?:\w+:\d+>|[^\w\s/+-]', ' ', str(modalidad or ''))).strip().upper()[:24]
+    return 'COMPE ' + m if re.search(r'[A-Z0-9]', m) else 'COMPE SIN NOMBRE'
+
 
 def norm_linea(s):
     """`↝**__𝐂𝐔𝐏𝐎𝐒__**: ♾️` -> `CUPOS :`. Ver el encabezado de esta parte.
@@ -768,6 +790,12 @@ def parsear(m, servidor, canal, guild=''):
     n = norm_linea(nom)
     if n.startswith(NO_TITULOS) or n == 'PRUEBA':
         return None
+    # 📣 ni el «¡únanse, ya empieza!» ni la presentación del staff (ver `NO_EVENTO` y `SOLO_STAFF`)
+    if NO_EVENTO.match(n) or not (tipos - SOLO_STAFF):
+        return None
+    # 🏷️ la etiqueta sin llenar o un encabezado no son el nombre: el evento queda, nombrado por su formato
+    if NO_NOMBRE.match(n):
+        nom = sin_nombre(puestos.get('modalidad'))
     a, b = cupos(puestos.get('cupos'))
     # 🔑 SIN HORARIO, LA MARCA DE DISCORD DE CUALQUIER PARTE DEL MENSAJE. Es
     # la hora exacta del evento (`cuando.momento()` le da prioridad), la

@@ -116,8 +116,16 @@ _RELLENO_CIRCUITO = frozenset(('vol', 'volumen', 'edicion', 'fecha', 'the', 'los
 
 
 def limpio(nombre):
-    """El nombre sin el subrayado de Discord: `__ TOKYO __` es `TOKYO`."""
-    return str(nombre or '').strip().strip('_*~ ').strip()
+    """El nombre sin el subrayado de Discord: `__ TOKYO __` es `TOKYO`.
+
+    ⚔️ Y una batalla no es un nombre (17/11/2026): «- L VS MOSQUI» (LKR) salió del renglón «- 🇨🇴L VS MOSQUI🇦🇷», que
+    `llaves_a_entrada.titulo()` no reconoce como batalla porque «L» tiene una letra. Se arregla SÓLO AL MOSTRARLO: en el
+    lector cambiaría la identidad del evento —(nombre, servidor, fecha)— y, medido con `comparar_lector --fresco`, lo
+    juntaba con la otra «(sin titulo)» de LKR de ese día. Un renglón con viñeta y «VS» se muestra como sin título"""
+    s = str(nombre or '').strip().strip('_*~ ').strip()
+    if re.match(r'[-•*·]\s', str(nombre or '').strip()) and re.search(r'(?i)\S\s*\bv\.?s\.?\b\s*\S', s):
+        return '(sin titulo)'
+    return s
 
 
 def clave_nombre(s):
