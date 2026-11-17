@@ -1048,17 +1048,6 @@
   "sv-fvs": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/dnk/sv-fvs.webp",
   "sv-urbf": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/dnk/sv-urbf.webp"
  },
- "dobell": {
-  "bloq-competitivo": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/dobell/bloq-competitivo.webp",
-  "bloq-pais": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/dobell/bloq-pais.webp",
-  "competitivo": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/dobell/competitivo.webp",
-  "pais": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/dobell/pais.webp",
-  "servidor": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/dobell/servidor.webp",
-  "sv-ch": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/dobell/sv-ch.webp",
-  "sv-dra": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/dobell/sv-dra.webp",
-  "sv-ffa": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/dobell/sv-ffa.webp",
-  "sv-sr": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/dobell/sv-sr.webp"
- },
  "dobleh": {
   "bloq-competitivo": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/dobleh/bloq-competitivo.webp",
   "bloq-pais": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/dobleh/bloq-pais.webp",
@@ -3799,18 +3788,6 @@
   "sv-ffa": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/rz/sv-ffa.webp",
   "sv-frz": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/rz/sv-frz.webp"
  },
- "s1lence": {
-  "bloq-competitivo": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/s1lence/bloq-competitivo.webp",
-  "bloq-pais": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/s1lence/bloq-pais.webp",
-  "competitivo": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/s1lence/competitivo.webp",
-  "pais": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/s1lence/pais.webp",
-  "servidor": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/s1lence/servidor.webp",
-  "sv-acad": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/s1lence/sv-acad.webp",
-  "sv-ch": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/s1lence/sv-ch.webp",
-  "sv-ddf": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/s1lence/sv-ddf.webp",
-  "sv-dra": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/s1lence/sv-dra.webp",
-  "sv-ffa": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/s1lence/sv-ffa.webp"
- },
  "saiko": {
   "bloq-competitivo": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/saiko/bloq-competitivo.webp",
   "bloq-pais": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/saiko/bloq-pais.webp",
@@ -4805,22 +4782,5 @@
   "sv-ffa": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/zta/sv-ffa.webp",
   "sv-frz": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/zta/sv-frz.webp",
   "sv-fvs": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/zta/sv-fvs.webp"
- },
- "ztr": {
-  "bloq-competitivo": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/ztr/bloq-competitivo.webp",
-  "bloq-pais": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/ztr/bloq-pais.webp",
-  "competitivo": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/ztr/competitivo.webp",
-  "pais": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/ztr/pais.webp",
-  "servidor": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/ztr/servidor.webp",
-  "sv-acad": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/ztr/sv-acad.webp",
-  "sv-ch": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/ztr/sv-ch.webp",
-  "sv-ddf": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/ztr/sv-ddf.webp",
-  "sv-dra": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/ztr/sv-dra.webp",
-  "sv-ffa": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/ztr/sv-ffa.webp",
-  "sv-ffs": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/ztr/sv-ffs.webp",
-  "sv-frz": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/ztr/sv-frz.webp",
-  "sv-sr": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/ztr/sv-sr.webp",
-  "sv-urbf": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/ztr/sv-urbf.webp",
-  "temporada": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/ztr/temporada.webp"
  }
 }
