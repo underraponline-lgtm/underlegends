@@ -11,6 +11,16 @@
   ],
   "cambios": [
     {
+        "version": "5.77",
+        "dia": "2026-11-16",
+        "cuando": "2026-11-16T22:20:00-05:00",
+        "titulo": "Escudos de crew con muchas más piezas",
+        "items": [
+            "El escudo de tu crew suma formas, símbolos y colores nuevos, divisiones del campo con un tercer color y tres bordes. Y puede llevar la sigla de tu crew.",
+            "Subir tu propio logo ahora está a la vista: «Armar escudo» o «Subir mi logo», en dos pestañas."
+        ]
+    },
+    {
       "version": "5.76",
       "dia": "2026-11-16",
       "cuando": "2026-11-16T22:09:19-05:00",
