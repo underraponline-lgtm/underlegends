@@ -438,7 +438,8 @@
   "vallest": "Shadow",
   "trueno": "KairoX",
   "teorema": "Rafael JR",
-  "wos": "wosito"
+  "wos": "wosito",
+  "bootraxx": "BTRX"
  },
  "pares": [
   [
@@ -2208,6 +2209,10 @@
   [
    "WOS",
    "wosito"
+  ],
+  [
+   "bootraxx",
+   "BTRX"
   ]
  ],
  "no_confundir": [
