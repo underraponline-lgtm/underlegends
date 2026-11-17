@@ -11,6 +11,19 @@
   ],
   "cambios": [
     {
+        "version": "6.15",
+        "dia": "2026-11-17",
+        "cuando": "2026-11-17T16:40:00-05:00",
+        "titulo": "La nota, más justa, y la gente de cada evento",
+        "items": [
+            "**La nota de cada uno** ahora mira contra quién jugaste: ganarle a alguien que tenía todo para ganarte suma más, y perder siendo el favorito resta. Y vale más en un evento fuerte que en uno flojo.",
+            "Es la misma nota en la llave, en el mensaje del bot y en Competencias, y ya no cambia sola después del evento.",
+            "En cada llave, **los inscritos**: en color los que jugaron, y si alguien se anotó con otro nombre, cuál usó.",
+            "**El jurado**, batalla por batalla: quién votó a quién y en qué ronda cambió. Y quién organizó y hosteó, también en las llaves viejas.",
+            "En las llaves por equipos, el campeón y el subcampeón muestran al equipo entero."
+        ]
+    },
+    {
         "version": "6.14",
         "dia": "2026-11-17",
         "cuando": "2026-11-17T16:14:00-05:00",
