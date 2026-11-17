@@ -2197,17 +2197,6 @@
    "vence": "2026-10-26T20:40:51+00:00",
    "vencido": true
   },
-  "Number Elixir": {
-   "con": null,
-   "cumplido": "",
-   "debut": "2026-10-29T00:50:11+00:00",
-   "did": "",
-   "evento": "no se k poner style",
-   "n": 616,
-   "sv": "DDS",
-   "vence": "2026-11-05T00:50:11+00:00",
-   "vencido": true
-  },
   "Number Laden": {
    "avisado": "2026-10-30",
    "chat": "2026-10-31",
@@ -2611,7 +2600,7 @@
    "n": 600,
    "sv": "FFA",
    "vence": "2026-11-17T01:48:30+00:00",
-   "vencido": false
+   "vencido": true
   },
   "Shitka": {
    "avisado": "2026-10-30",

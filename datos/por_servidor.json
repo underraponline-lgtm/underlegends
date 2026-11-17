@@ -10444,17 +10444,6 @@
     "racha": "0/1"
    }
   },
-  "Number Elixir 🇻🇪": {
-   "DDS": {
-    "duelos": "",
-    "ev": 1,
-    "oro": 0,
-    "ovr": 42,
-    "pod": 0,
-    "pts": 2500,
-    "racha": "0/0"
-   }
-  },
   "Number Laden 🇸🇦": {
    "FFA": {
     "duelos": "",
@@ -10504,11 +10493,11 @@
    },
    "DDS": {
     "duelos": "",
-    "ev": 4,
+    "ev": 5,
     "oro": 0,
-    "ovr": 44,
+    "ovr": 45,
     "pod": 0,
-    "pts": 7250,
+    "pts": 9750,
     "racha": "0/0"
    },
    "FFA": {
@@ -13573,7 +13562,7 @@
     "racha": "0/0"
    }
   },
-  "Teorema 🇨🇱": {
+  "Teorema": {
    "LKR": {
     "duelos": "",
     "ev": 1,

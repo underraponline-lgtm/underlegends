@@ -2188,6 +2188,27 @@
      ]
     ],
     [
+     "LUIS",
+     1010,
+     3,
+     4,
+     2,
+     [
+      [
+       -18,
+       "Chop"
+      ],
+      [
+       12,
+       "Calíz"
+      ],
+      [
+       16,
+       "Richard"
+      ]
+     ]
+    ],
+    [
      "Lautaro la sinceridad 🇨🇨",
      1007,
      2,
@@ -2850,27 +2871,6 @@
       [
        -18,
        "crakero"
-      ]
-     ]
-    ],
-    [
-     "Betelguese",
-     985,
-     3,
-     4,
-     2,
-     [
-      [
-       -15,
-       "PichulaMc"
-      ],
-      [
-       -15,
-       "Liberia"
-      ],
-      [
-       16,
-       "VR"
       ]
      ]
     ],
@@ -3804,7 +3804,7 @@
      [
       [
        16,
-       "Teorema 🇨🇱"
+       "Teorema"
       ],
       [
        16,
@@ -4210,7 +4210,7 @@
      ]
     ],
     [
-     "Teorema 🇨🇱",
+     "Teorema",
      1016,
      3,
      5,
@@ -4387,27 +4387,6 @@
       [
        13,
        "NC"
-      ]
-     ]
-    ],
-    [
-     "LUIS",
-     1010,
-     3,
-     5,
-     2,
-     [
-      [
-       -18,
-       "Chop"
-      ],
-      [
-       12,
-       "Calíz"
-      ],
-      [
-       16,
-       "Richard"
       ]
      ]
     ],
@@ -5120,7 +5099,7 @@
      [
       [
        -16,
-       "Teorema 🇨🇱"
+       "Teorema"
       ],
       [
        15,
@@ -5887,6 +5866,27 @@
       [
        -14,
        "Motera"
+      ]
+     ]
+    ],
+    [
+     "Betelguese",
+     985,
+     3,
+     5,
+     2,
+     [
+      [
+       -15,
+       "PichulaMc"
+      ],
+      [
+       -15,
+       "Liberia"
+      ],
+      [
+       16,
+       "VR"
       ]
      ]
     ],
@@ -6815,7 +6815,7 @@
      [
       [
        -16,
-       "Teorema 🇨🇱"
+       "Teorema"
       ]
      ]
     ],
@@ -9004,7 +9004,7 @@
   "Benju": 0,
   "Benshi": 0,
   "Berrun": 8,
-  "Betelguese": 3,
+  "Betelguese": 0,
   "Bishop": 3,
   "Blaxx": 0,
   "Bloody": 11,
@@ -9258,7 +9258,7 @@
   "LRS": 6,
   "LRS LA MARIHUANA🇵🇰": 0,
   "LSO": 0,
-  "LUIS": 0,
+  "LUIS": 3,
   "LUIS 🇦🇷": 0,
   "LV": 3,
   "Lalox": 0,
@@ -9364,7 +9364,6 @@
   "Nox": 0,
   "Noxvell": 6,
   "Number": 6,
-  "Number Elixir 🇻🇪": 0,
   "Number Laden 🇸🇦": 0,
   "Number VE": 3,
   "OEP": 0,
@@ -9702,7 +9701,7 @@
   "Benju": 5,
   "Benshi": 5,
   "Berrun": 3,
-  "Betelguese": 4,
+  "Betelguese": 5,
   "Bishop": 5,
   "Blaxx": 5,
   "Bloody": 2,
@@ -9956,7 +9955,7 @@
   "LRS": 5,
   "LRS LA MARIHUANA🇵🇰": 5,
   "LSO": 5,
-  "LUIS": 5,
+  "LUIS": 4,
   "LUIS 🇦🇷": 5,
   "LV": 5,
   "Lalox": 5,
@@ -10062,7 +10061,6 @@
   "Nox": 5,
   "Noxvell": 3,
   "Number": 3,
-  "Number Elixir 🇻🇪": 5,
   "Number Laden 🇸🇦": 5,
   "Number VE": 5,
   "OEP": 5,
@@ -11557,7 +11555,7 @@
   ],
   [
    "2026-10-26",
-   "Betelguese",
+   "LUIS",
    4
   ],
   [
