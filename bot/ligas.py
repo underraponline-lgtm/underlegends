@@ -149,7 +149,10 @@ LIGAS = {
                       'df_cuenta': True, 'alias': {'ZIARKI': 'IVAN', 'ANDY': 'ANDY MC'},
                       # «# REPETIMIENTO DE JORNADA 2 LAST VS SANTZ» (16/10) reemplazó la de Last en la jornada 2, «#
                       # LAST VS MCGLOCK» (03/10): su tabla del 20/10 le da 13 a Last, y con esa batalla serían 15
-                      'anular': {'1556037547639967785': 'repetida: LAST VS SANTZ, «REPETIMIENTO DE JORNADA 2»'}},
+                      'anular': {'1556037547639967785': 'repetida: LAST VS SANTZ, «REPETIMIENTO DE JORNADA 2»'},
+                      # 🆕 la T2 publica sus resultados en «resultados-1️⃣» —«# MAIN EVENT / Marcos 🇪🇸 +3 pt», con la imagen
+                      # y sin el rival— y la cartelera en «enfrentamientos» (`resultados_sueltos()`)
+                      'res': '1571584513597898924', 'enf': '1554210560067764224'},
 }
 #: 🏟️ la clave de KV con los canales de cada liga, para el vigía de las batallas (`ligasRonda()` en bot/avisos.js)
 CLAVE_VIGIA = 'ligas:vigia'
@@ -1091,6 +1094,61 @@ def _ff(msgs):
                 pa, pb = pb, pa
             b['ptbv'] = (pa, pb)
     return bats
+
+
+VS_CARTEL = re.compile(r'\s+vs\.?\s+', re.I)
+
+
+def _cartelera(texto):
+    """Los cruces de un mensaje de cartelera, `[(a, b, destacado)]`: un renglón «A 🇪🇸 vs B 🇦🇷» cada uno, sin banderas
+    ni emojis. `destacado`: con 🔥, el MAIN EVENT de esa fecha (FMS Ceuta, 14/11/2026: «🔥 Marcos 🇪🇸 vs 1200 🇰🇷 🔥»)."""
+    out = []
+    for l in (texto or '').splitlines():
+        partes = VS_CARTEL.split(l)
+        if len(partes) != 2:
+            continue
+        a, b = (re.sub(r'^[^0-9A-Za-zÁÉÍÓÚÑáéíóúñ]+|[^0-9A-Za-zÁÉÍÓÚÑáéíóúñ)]+$', '',
+                       BANDERA.sub(' ', EMOJI.sub(' ', _plano(x))).replace('*', '')).strip() for x in partes)
+        if a and b and len(a) <= 30 and len(b) <= 30:
+            out.append((a, b, '🔥' in l))
+    return out
+
+
+def resultados_sueltos(lid, ms_res, ms_enf, bats):
+    """🆕 Las batallas de un canal de RESULTADOS que no nombra al rival (`res` en `LIGAS`): `[[id, iso, None, a, b, gana,
+    como, '']]`, las que todavía no están en `bats`.
+
+    FMS Ceuta, temporada 2 (16/11/2026): un mensaje por batalla con la imagen y «# MAIN EVENT / Marcos 🇪🇸 +3 pt». El
+    rival sale de la CARTELERA de esa fecha (`enf`, el último mensaje con cruces antes del resultado): el único cruce
+    donde está el que ganó; si son varios, el 🔥 cuando el resultado dice MAIN EVENT. «+3» es directa y «+2», réplica.
+    Si el cruce no aparece o hay dudas, no se inventa: queda afuera. Y la que ya leyó el canal de veredictos (el mismo
+    cruce en 7 días) no se cuenta dos veces."""
+    L = LIGAS[lid]
+    carteles = sorted(((m['t'], _cartelera(m.get('content'))) for m in ms_enf or []), key=lambda x: x[0])
+    out = []
+    for m in sorted(ms_res or [], key=lambda m: m['t']):
+        texto = (con_alias([m], L.get('alias'))[0]).get('content') or ''
+        gana = como = None
+        for l in texto.splitlines():
+            mp = MAS_PUNTOS.match(BANDERA.sub(' ', EMOJI.sub(' ', _plano(l))).replace('*', '').strip())
+            if mp and not MENCION.search(l):
+                gana, como = mp.group(1).strip(), ('directa' if mp.group(2) == '3' else 'replica')
+                break
+        if not gana:
+            continue
+        cruces = next((c for t, c in reversed(carteles) if t <= m['t'] and c), [])
+        con = [(a, b, d) for a, b, d in cruces if _lado_k(gana, a, b)]
+        if len(con) > 1 and re.search(r'MAIN\s+EVENT', texto, re.I):
+            con = [x for x in con if x[2]]
+        if len(con) != 1:
+            continue
+        a, b, _d = con[0]
+        g = a if _lado_k(gana, a, b) == 'a' else b
+        ya = any({clave(x[3]), clave(x[4])} == {clave(a), clave(b)} and abs(_horas(x[1], m['t'])) <= 7 * 24
+                 for x in list(bats or []) + out)
+        if not ya:
+            out.append([m['id'], m['t'], None, a, b, g, como, ''])
+    return out
 
 
 def con_alias(msgs, alias):
@@ -2189,6 +2247,14 @@ def correr(aplicar=False):
         leidos = {str(m.get('id')) for m in por_canal[L['ver']]}
         dfs = sorted([e for e in v.get('df') or [] if str(e[0]) not in leidos] + dfn,
                      key=lambda e: (e[1], str(e[0]))) if L.get('df_cuenta') else []
+        # 🆕 el canal de resultados que no nombra al rival, con la cartelera (`resultados_sueltos()`)
+        if L.get('res'):
+            for ch in (L['res'], L.get('enf')):
+                if ch and ch not in por_canal and ch not in muerto:
+                    por_canal[ch] = _mensajes(s, ch, PAGINAS)
+                    time.sleep(0.3)
+            nuevas = nuevas + resultados_sueltos(lid, por_canal.get(L['res']), por_canal.get(L.get('enf')),
+                                                 nuevas + list(guardadas.values()))
         # y la que se guardó PENDIENTE y ahora se lee como DF («3 pt ANDY» sin puntajes) deja de ser una batalla
         for k in {str(e[0]) for e in dfn} | set(L.get('anular') or {}):
             guardadas.pop(k, None)
@@ -3154,6 +3220,16 @@ def _self_check():
                                        {'id': '2', 't': '2026-10-03T20:20:00Z', 'content': 'ANA 10\nBETO 5\n# GANADOR: ANA'}]),
        'Ceuta: los apodos de la liga (Ziarki es Ivan, Andy es Andy MC; «Andy MC» no se vuelve «Andy MC MC» y «ZIARKIS» '
        'es otra palabra), sin `alias` no se toca nada, y la batalla que la liga anuló (`anular`) no cuenta', _al)
+    _enf = [{'id': '1', 't': '2026-11-14T21:06:00Z', 'content': '@everyone\nANA 🇪🇸 vs BETO 🇦🇷\n🔥 CARLA 🇪🇸 vs 1200 🇰🇷 🔥\n'
+             'DANI 🇪🇸 vs CARLA MC 🇻🇪'}]
+    _res = [{'id': '2', 't': '2026-11-15T17:56:00Z', 'content': '<@&9>\n# PRIMERA BATALLA DE LIGA'},
+            {'id': '3', 't': '2026-11-16T20:23:00Z', 'content': '<@&9>\n# MAIN EVENT\nCarla 🇪🇸 +3 pt'},
+            {'id': '4', 't': '2026-11-16T21:00:00Z', 'content': 'ANA +2 pts'}]
+    _rs = resultados_sueltos('ceu-fms-ceuta', _res, _enf, [['0', '2026-11-15T16:00:00Z', None, 'BETO', 'ANA', 'BETO',
+                                                          'directa', '']])
+    ok([x[3:7] for x in _rs] == [['CARLA', '1200', 'CARLA', 'directa']],
+       'Ceuta T2: el «+3 pt» del canal de resultados con el rival de la cartelera (el 🔥 si es el MAIN EVENT y el '
+       'nombre está en dos cruces); sin «+N» no hay batalla, y la que ya leyó veredictos no se cuenta dos veces', str(_rs))
 
     # 🖼️ el flyer: un afiche, no un separador
     ok(es_flyer({'ct': 'image/jpeg', 'w': 1080, 'h': 1350}) and not es_flyer({'ct': 'image/jpeg', 'w': 1400, 'h': 200})

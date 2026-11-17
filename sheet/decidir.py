@@ -52,6 +52,7 @@ SCR = os.path.dirname(os.path.abspath(__file__))
 BASE = os.path.dirname(SCR)
 sys.path.insert(0, SCR)
 sys.path.insert(0, BASE)
+import famosos as FA                                    # noqa: E402
 try:
     sys.stdout.reconfigure(encoding='utf-8', errors='replace')
 except AttributeError:
@@ -1184,8 +1185,14 @@ def por_discord(preguntas, respuestas, eventos, dry=True):
     fuera = no_rankear()
     por_id = {str(r.get('discord_id')): (r.get('raw') or r.get('full'))
               for r in _datos('padron') or [] if r.get('discord_id')}
+    # 🪪 Y LAS OTRAS CUENTAS DE ALGUIEN (`cuentas` de akas_a_mano.json): son esa persona. Sin esto, el 12/11/2026 la otra
+    # cuenta de Shadow —Dlx, 10/11: «esta cuenta pasa a ser otra cuenta de Shadow»— entró a la Lista como «VALLES-T»,
+    # por su apodo en la llamada de LKR, y Shadow quedó partido en dos
+    for quien, dids in ((_datos('akas_a_mano') or {}).get('cuentas') or {}).items():
+        for d_ in dids or []:
+            por_id.setdefault(str(d_), quien)
     svs = _datos('servidores_de') or {}
-    en_lista_n = {norm(_sin_bandera(r.get('raw') or r.get('full') or ''))
+    en_lista_n ={norm(_sin_bandera(r.get('raw') or r.get('full') or ''))
                   for r in _datos('padron') or []}
     # 🔴 LA BANDERA DE LA LLAVE, SÓLO SI ES UNA Y ES DE LA LIGA. La misma
     # cuenta aparece como «LAST 🇬🇶» y «Last 🇺🇾», y hay banderas de broma
@@ -1281,6 +1288,11 @@ def por_discord(preguntas, respuestas, eventos, dry=True):
             # ⚠️ ALGUIEN DE LA LISTA SE LLAMA PARECIDO («pollo» y Pollo Sport):
             # puede ser la misma persona sin su cuenta cargada. Eso lo decide
             # Dlx; agregar a otro sería partir a una persona en dos.
+            continue
+        elif FA.es_famoso(det):
+            # 🎤 UN NOMBRE DE FAMOSO NO DA DE ALTA A NADIE (Dlx, 16/11/2026: «es muy poco probable que realmente sea uno
+            # famoso»): es un apodo —VALLES-T era Shadow, Trueno es KairøX—. La pregunta queda en ✅ Decidir, con los
+            # nombres de esa cuenta en Discord. Ver sheet/famosos.py
             continue
         elif len(nuevos) < TOPE_DISCORD and did not in {x[3] for x in nuevos}:
             # ⚠️ UNA FILA POR CUENTA: la otra grafía («Arez» y «AREZ») queda

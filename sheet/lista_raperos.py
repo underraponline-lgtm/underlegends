@@ -51,6 +51,7 @@ BASE = os.path.dirname(SCR)
 sys.path.insert(0, SCR)
 
 import construir_padron as PAD  # noqa: E402
+from famosos import es_famoso as _es_famoso  # noqa: E402
 
 HOJA = 'Lista de Raperos'
 HOJA_AKAS = 'AKAs'
@@ -144,7 +145,24 @@ def _id_usado(v, did, salvo=None):
     for k, f in enumerate(v):
         if k > i and k + 1 != salvo and _celda(f, col.get('Discord ID')) == did:
             return k + 1, _celda(f, col['Rapero'])
+    # 🪪 la OTRA cuenta de alguien (`cuentas` en datos/akas_a_mano.json) también es suya: el 12/11/2026 la otra cuenta de
+    # Shadow entró como «VALLES-T» porque esto sólo miraba la columna del ID
+    quien = _otra_cuenta_de(did)
+    propia = salvo and 0 < salvo <= len(v) and PAD.norm(PAD.limpio(_celda(v[salvo - 1], col['Rapero']))) == PAD.norm(quien)
+    if quien and not propia:
+        return 0, '%s (otra cuenta suya, akas_a_mano.json)' % quien
     return None
+
+
+def _otra_cuenta_de(did):
+    """De quién es esa cuenta según `cuentas` de datos/akas_a_mano.json, o ''."""
+    try:
+        with io.open(os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), 'datos',
+                                  'akas_a_mano.json'), encoding='utf-8') as f:
+            cs = (json.load(f) or {}).get('cuentas') or {}
+    except (OSError, ValueError):
+        return ''
+    return next((q for q, ds in cs.items() if str(did) in {str(x) for x in ds or []}), '')
 
 
 # ── agregar ────────────────────────────────────────────────────────────
@@ -206,6 +224,10 @@ def agregar_varios(personas, aplicar=False):
             continue
         if did and (_id_usado(v, did) or did in vistos_id):
             print('   ⚠️ el ID %s ya está en la Lista: «%s» no se agrega' % (did, nombre))
+            continue
+        # 🎤 un nombre de famoso no entra solo (sheet/famosos.py): a mano, con `--agregar`, sí
+        if _es_famoso(nombre):
+            print('   ⚠️ «%s» es el nombre de un rapero famoso: no se agrega solo (sheet/famosos.py)' % nombre)
             continue
         fila = [''] * len(COLUMNAS)
         pon = lambda c, x, f=fila: f.__setitem__(COLUMNAS.index(c), x)

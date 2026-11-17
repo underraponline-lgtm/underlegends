@@ -35,7 +35,6 @@ DE UN CANAL ENTERO se suman sólo los videos donde ÉL es uno de los lados, con 
 nadie los videos de otro que se llame parecido. Y se vuelve a mirar una vez por semana, por si subieron más.
 """
 import datetime as dt
-import difflib
 import io
 import json
 import os
@@ -57,20 +56,11 @@ POR_DIA, MAX_VIDEOS, MAX_CANALES = 5, 30, 3
 GRANDE = 100000
 #: cuántos reportes distintos ocultan un video
 REPORTES = 2
-#: qué tan parecido a un famoso ya es «famoso» (difflib, sobre el nombre en minúsculas y sin símbolos)
-PARECIDO = 0.84
 #: cada cuánto se vuelve a mirar un canal sugerido
 CANAL_DIAS = 7
-#: los nombres de la élite del freestyle: el que se llame así o parecido no entra solo. ⚠️ Sin los de la Liga que se
-#: llaman como alguien conocido —Force, de FVS (`fvs-freestyle-versus`)—: ésos tienen su nombre en la Lista
-FAMOSOS = (
-    'chuty', 'aczino', 'skone', 'bnet', 'gazir', 'mnak', 'jaze', 'wos', 'trueno', 'dtoke', 'papo', 'zasko', 'arkano',
-    'vallest', 'rapder', 'lokillo', 'teorema', 'kaiser', 'hander', 'stigma', 'nitro', 'blon', 'yartzi', 'kodigo',
-    'larrix', 'elekipo', 'sweetpain', 'mecha', 'tirpa', 'exodolirical', 'jota', 'bta', 'choque', 'kensuke',
-    'sarasocas', 'gold', 'klan', 'titomc', 'basek', 'dozer', 'chang', 'replik', 'reverse', 'loboestepario', 'nekro',
-    'pepegrillo', 'tata', 'joqer', 'cayro', 'ghost', 'litzen', 'jonybeltran', 'cacha', 'strike', 'raptor', 'tom crowley',
-    'invert', 'letra', 'acertijo', 'fat n', 'mkd', 'jony', 'babi', 'rc', 'yoiker', 'el tanque', 'misionero',
-)
+#: 🎤 los nombres de la élite del freestyle, el parecido y `famoso()`: el que se llame así o parecido no entra solo.
+#: Viven en sheet/famosos.py desde el 16/11/2026, con el alta automática de la Lista: una sola lista para las dos cosas
+from famosos import FAMOSOS, PARECIDO, famoso  # noqa: E402,F401
 
 
 def _k(s):
@@ -80,21 +70,6 @@ def _k(s):
 
 def _plano(s):
     return re.sub(r'[^a-z0-9]', '', str(s or '').lower())
-
-
-def famoso(nombre):
-    """¿El nombre es de la élite del freestyle, o se le parece? (`FAMOSOS`, `PARECIDO`)."""
-    n = _plano(nombre)
-    if not n:
-        return False
-    for f in FAMOSOS:
-        f = _plano(f)
-        if n == f or (len(n) >= 3 and difflib.SequenceMatcher(None, n, f).ratio() >= PARECIDO):
-            return True
-        # «Chuti» por «Chuty»: una letra cambiada en un nombre de cuatro o más, que el parecido no ve
-        if len(n) >= 4 and len(n) == len(f) and sum(1 for x, y in zip(n, f) if x != y) == 1:
-            return True
-    return False
 
 
 def suscriptores(texto):

@@ -11,6 +11,16 @@
  ],
  "cambios": [
     {
+        "version": "5.73",
+        "dia": "2026-11-16",
+        "cuando": "2026-11-16T21:03:36-05:00",
+        "titulo": "Los nombres de famosos, y Ceuta T2",
+        "items": [
+            "Si alguien aparece en una llave con el nombre de un rapero famoso (Valles-T, Trueno, Aczino…), el bot ya no lo agrega solo a la Lista con ese nombre: primero hay que ver quién es de verdad.",
+            "En la temporada 2 de **FMS Ceuta** también cuentan los resultados que publican en su canal de resultados, con el rival de la cartelera de esa fecha: Marcos ya suma su victoria contra 1200."
+        ]
+    },
+    {
         "version": "5.72",
         "dia": "2026-11-16",
         "cuando": "2026-11-16T20:44:00-05:00",
