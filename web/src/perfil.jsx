@@ -10,7 +10,7 @@
 // —seguir, el precio por cabeza, el visor de cartas y de llaves— son las de app.js.
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { MESES, diaISO, limpio, minutosDelDia, norm, num, siglaDe } from './liga.js';
-import { Bandera, Cara, Compartir, DosToques, FaltaLista, Ico, Medalla, PUESTO_MEDALLA, QueEsBoton, silueta, QueEsTexto, Rango, accion, diaET, enlace, https, nombrePais, usePerfiles } from './piezas.jsx';
+import { Alguien, Algunos, Bandera, Cara, Compartir, DosToques, FaltaLista, Ico, Medalla, PUESTO_MEDALLA, QueEsBoton, silueta, QueEsTexto, Rango, accion, diaET, enlace, https, nombrePais, usePerfiles } from './piezas.jsx';
 import { PanelEmblemas, PildoraEmblemas, emblemasDe } from './emblemas.jsx';
 import { FichaJurado } from './jurado_ficha.jsx';
 import { REDES } from './servidor.jsx';
@@ -528,7 +528,7 @@ function Cabeza({ liga, f, k, p, dc, esYo, onEmblemas, ems, numeros, ex }) {
 // 👀 DE UN VISTAZO (Dlx, a la v2: «De un vistazo está incompleto, le falta detalle»): seis números, cada uno con una línea
 // que dice qué significa. Los duelos, en negro, con la tira de los últimos. `ev` y `du` vienen del más nuevo al más viejo
 const SEMIS_O_MAS = ['Campeón', 'Subcampeón', 'Tercero', 'Cuarto', 'Semifinal'];
-function DeUnVistazo({ f, p }) {
+function DeUnVistazo({ liga, f, p }) {
   const ev = (p && p.ev) || [];
   const du = (p && p.du) || [];
   const g = du.filter((d) => d[2]).length;
@@ -554,7 +554,7 @@ function DeUnVistazo({ f, p }) {
             {tira.map((d, i) => <i key={i} className={d[2] ? 'g' : 'p'} />)}</span> : null}
           <em>{du.length ? Math.round((100 * g) / du.length) + ' % ganados · el último lo ' + (ult && ult[2] ? 'ganó' : 'perdió') : 'cuentan los 1vs1 de las llaves'}</em></div>
         <div className="negro"><small>RACHA DE DUELOS</small><b>{rd ? rd[0] : 0}{rd ? <span> · máx {rd[1]}</span> : null}</b>
-          <em>{corto ? 'ganados seguidos: la cortó ' + limpio(corto[1]) : rd && rd[0] ? 'ganados seguidos, y sigue' : 'ganados seguidos'}</em></div>
+          <em>{corto ? <>ganados seguidos: la cortó <Alguien liga={liga} nombre={corto[1]} /></> : rd && rd[0] ? 'ganados seguidos, y sigue' : 'ganados seguidos'}</em></div>
         <div><small>RACHA DE EVENTOS</small><b>{rch ? rch[0] : 0}{rch ? <span>{rch[0] && rch[0] >= rch[1] ? ' · y sigue' : ' · máx ' + rch[1]}</span> : null}</b>
           <em>eventos seguidos en semifinal o más{rch && rch[0] && rch[0] >= rch[1] ? ': es su mejor racha' : ''}</em></div>
         <div><small>MISIONES</small><b>+{num(f.mis || 0)}</b><em>lo que le sumaron sus misiones esta temporada</em></div>
@@ -609,12 +609,13 @@ function LoUltimo({ liga, p, e, act, esYo }) {
           const x = (e || {})[n] || (e || {})[String(n)] || [];
           const nom = limpio(x[0] || 'Evento ' + n);
           const ds = du.filter((d) => d[0] === n);
-          const gano = ds.filter((d) => d[2]).map((d) => limpio(d[1]));
+          // 🪪 los rivales con su cara, su nombre oficial y su perfil (17/11/2026): el duelo guarda el nombre de la llave
+          const gano = ds.filter((d) => d[2]).map((d) => d[1]);
           const perdio = ds.find((d) => !d[2]);
-          const lista = (xs) => (xs.length > 1 ? xs.slice(0, -1).join(', ') + ' y ' + xs[xs.length - 1] : xs[0]);
+          const lista = (xs) => <Algunos liga={liga} nombres={xs} />;
           const que = puesto === 'Campeón' ? <>Campeón de <b>{nom}</b></>
-            : puesto === 'Subcampeón' && perdio ? <>Llegó a la final de <b>{nom}</b> y la perdió con {limpio(perdio[1])}</>
-              : gano.length ? <>En <b>{nom}</b> le ganó a {lista(gano.slice(0, 3))}{perdio ? ' y lo sacó ' + limpio(perdio[1]) : ''}</>
+            : puesto === 'Subcampeón' && perdio ? <>Llegó a la final de <b>{nom}</b> y la perdió con <Alguien liga={liga} nombre={perdio[1]} /></>
+              : gano.length ? <>En <b>{nom}</b> le ganó a {lista(gano.slice(0, 3))}{perdio ? <> y lo sacó <Alguien liga={liga} nombre={perdio[1]} /></> : ''}</>
                 : <>{puesto} en <b>{nom}</b></>;
           return (
             <li key={n}>
@@ -721,7 +722,7 @@ function Datos({ liga, p, e, f }) {
   if (du.length) {
     const por = new Map();
     du.forEach((d) => {
-      const r = liga.fila(d[1]);
+      const r = liga.quien(d[1]);
       const id = r ? r.k : 'n:' + limpio(d[1]).toLowerCase();
       if (!por.has(id)) por.set(id, { k: r ? r.k : '', n: r ? r.n : d[1], g: 0, p: 0, evs: new Set() });
       const x = por.get(id);
@@ -1224,7 +1225,7 @@ function Duelos({ liga, p, e }) {
   const rivales = useMemo(() => {
     const por = new Map();
     du.forEach((d) => {
-      const r = liga.fila(d[1]);
+      const r = liga.quien(d[1]);
       const id = r ? r.k : 'n:' + limpio(d[1]).toLowerCase();
       if (!por.has(id)) por.set(id, { id, k: r ? r.k : '', n: r ? r.n : d[1], g: 0, p: 0, ds: [] });
       const x = por.get(id);
@@ -1295,7 +1296,7 @@ export function SusLigas({ liga, k, esYo, p, dentro }) {
   const ls = ((liga.d.ligas || {}).ligas) || [];
   const mias = [];
   for (const L of ls) {
-    const i = (L.tabla || []).findIndex(([raw]) => ((L.ks || {})[raw] || (liga.fila(raw) || {}).k) === k);
+    const i = (L.tabla || []).findIndex(([raw]) => ((L.ks || {})[raw] || (liga.quien(raw) || {}).k) === k);
     if (i >= 0) mias.push([L, i, L.tabla[i]]);
   }
   // 📈 y dónde está en el ascenso de algún servidor (17/10/2026): `[sv, liga, puesto, pts, a cuánto, id, ¿sube?]`
@@ -1422,7 +1423,7 @@ function Logros({ liga, p, esYo, dc }) {
 
 // 🎯 SU CACERÍA (Most Wanted), en negro; en la compu va al costado, junto al precio por su cabeza (las dos son del Most
 // Wanted: Dlx, a la v11, «se ha abierto una grieta a la derecha abajo»)
-function Caceria({ p }) {
+function Caceria({ liga, p }) {
   const mw = (p && p.mw) || {};
   return (
     <section className="sec pf-sec negra pf8-caza">
@@ -1437,8 +1438,9 @@ function Caceria({ p }) {
         <ul className="pf-czd">
           {/* 🔴 `caz` es [período, buscado, categoría, evento, cobró] y NO el orden de `czd` [período, categoría, evento,
               [cazadores]]: copiado de la línea de abajo, decía «Cazó a P» —la primera letra del evento— (19/10/2026) */}
-          {(mw.caz || []).map((x, i) => <li key={'a' + i}><b>Cazó a {limpio(x[1] || '')}</b><small>{limpio(x[2] || '')} · {limpio(x[3] || '')}</small></li>)}
-          {(mw.czd || []).map((x, i) => <li key={'b' + i}><b>Lo cazó {limpio((x[3] || [])[0] || '')}</b><small>{x[1]} · {limpio(x[2] || '')}</small></li>)}
+          {/* 🪪 con su cara, su nombre oficial y su perfil (17/11/2026) */}
+          {(mw.caz || []).map((x, i) => <li key={'a' + i}><b>Cazó a <Alguien liga={liga} nombre={x[1] || ''} /></b><small>{limpio(x[2] || '')} · {limpio(x[3] || '')}</small></li>)}
+          {(mw.czd || []).map((x, i) => <li key={'b' + i}><b>Lo cazó <Algunos liga={liga} nombres={(x[3] || []).slice(0, 1)} /></b><small>{x[1]} · {limpio(x[2] || '')}</small></li>)}
         </ul>
       ) : null}
     </section>
@@ -1637,10 +1639,10 @@ export function Perfil({ liga, dc, k: k0, tab }) {
           </div>
           <aside className="pf8-lat">
             <div className="o2"><ProximaMeta liga={liga} f={f} esYo={esYo} /></div>
-            <div className="o3"><DeUnVistazo f={f} p={p} /></div>
+            <div className="o3"><DeUnVistazo liga={liga} f={f} p={p} /></div>
             {fzAncha ? null : <div className="o6"><Fortalezas liga={liga} f={f} p={p} dmp={P.dmp} esYo={esYo} /></div>}
             <div id="pf-datos" className="o8"><SusDatos liga={liga} f={f} k={k} p={p} e={P.e} esYo={esYo} /></div>
-            <div className="o10"><Caceria p={p} /></div>
+            <div className="o10"><Caceria liga={liga} p={p} /></div>
             <div className="o11"><Precio liga={liga} f={f} esYo={esYo} dc={dc} /></div>
           </aside>
         </div>

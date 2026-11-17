@@ -16,7 +16,7 @@
 // llaves, los próximos, el muro, Se busca. Ningún color de servidor ni de tier se escribe acá.
 import { useRef, useState } from 'react';
 import { limpio, mult, num, siglaDe, utc } from './liga.js';
-import { Bandera, Cara, Compartir, Ico, Poster, Sec, aDiscord, accion, enlace, nombrePais, silueta, usePerfiles } from './piezas.jsx';
+import { Algunos, Bandera, Cara, Compartir, Ico, Poster, Sec, aDiscord, accion, enlace, nombrePais, silueta, usePerfiles } from './piezas.jsx';
 import { McPersona } from './medio.jsx';
 import { CrewCirculo } from './arriba.jsx';
 import { crewViva, useCrews } from './crews.js';
@@ -182,7 +182,8 @@ export function PerfilSv({ liga, sv, enc }) {
   llaves.forEach((ll) => {
     const c = liga.campeon(ll);
     fechas.push({ c: 'hecho', dia: liga.cuando(liga.fechaLlave(ll)).toUpperCase(), hora: 'TERMINÓ · ' + ll.participantes + ' raperos',
-      ev: limpio(ll.nombre), det: c.length ? (c.length > 1 ? 'Campeones: ' : 'Campeón: ') + c.join(' y ') : 'Sin campeón cargado', llave: ll.n });
+      // 🪪 el campeón con su cara y su nombre oficial (17/11/2026); sin link: la tarjeta entera ya lleva a la llave
+      ev: limpio(ll.nombre), det: c.length ? <>{c.length > 1 ? 'Campeones: ' : 'Campeón: '}<Algunos liga={liga} nombres={c} link={false} /></> : 'Sin campeón cargado', llave: ll.n });
   });
   fechas.splice(5);
   const otros = Object.values(liga.svs).filter((o) => o.sv !== sv).sort((a, b) => (b.pts || 0) - (a.pts || 0));

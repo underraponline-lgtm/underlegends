@@ -11,6 +11,18 @@
   ],
   "cambios": [
     {
+        "version": "6.16",
+        "dia": "2026-11-17",
+        "cuando": "2026-11-17T18:07:00-05:00",
+        "titulo": "Cada uno con su nombre de la Liga, su cara y su perfil",
+        "items": [
+            "**Los nombres, como los conoce la Liga.** Si alguien se anotó o lo escribieron de otra forma («velatzzzz»), la página lo muestra con su nombre oficial, **su cara y el link a su perfil**: en las llaves, Eventos, Publicaciones, el Inicio, los perfiles, Ligas, Divisiones, la Tienda y los MES AWARDS.",
+            "En la campana, el aviso de **«¡Te toca!»** y los favoritos del bot en vivo también nombran a cada uno como lo conoce la Liga.",
+            "**Over** es el nombre oficial de quien era Mr Still Ballin: conserva sus puntos, sus cazas del Most Wanted, su rango, sus insignias y sus TAGs.",
+            "Arreglado: quien tenía resultados con dos nombres veía en el ranking de Temporada otra letra que en el Competitivo y en su carta; ahora es la misma. Y las insignias y los TAGs ganados con un nombre viejo aparecen en el perfil de su dueño."
+        ]
+    },
+    {
         "version": "6.15",
         "dia": "2026-11-17",
         "cuando": "2026-11-17T16:40:00-05:00",

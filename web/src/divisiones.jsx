@@ -6,7 +6,7 @@
 // se cambia acá.
 import { useEffect, useState } from 'react';
 import { MESES, limpio, num } from './liga.js';
-import { Cara } from './piezas.jsx';
+import { Alguien, Cara } from './piezas.jsx';
 
 const zonaDe = (n, z) => Math.min(z, Math.floor(n / 3));
 
@@ -34,11 +34,11 @@ function SemanaNueva({ liga, D, esYo }) {
       {ult && ult.sube.length ? (
         <ul className="dvp-sub" aria-label="Subieron la semana pasada">
           {ult.sube.slice(0, 8).map((raw) => {
-            const f = liga.fila(raw);
+            const f = liga.quien(raw);
             return (
               <li key={raw}>
                 {f ? <Cara liga={liga} k={f.k} nombre={f.n} cls="cara dv-cara" /> : <span className="cara dv-cara ini">{limpio(raw).slice(0, 1).toUpperCase()}</span>}
-                {f ? <a className="dv-n" href={'#/r/' + encodeURIComponent(f.k)}>{limpio(raw)}</a> : <span className="dv-n">{limpio(raw)}</span>}
+                {f ? <a className="dv-n" href={'#/r/' + encodeURIComponent(f.k)}>{limpio(f.n)}</a> : <span className="dv-n">{limpio(raw)}</span>}
                 <i className="dv-z">SUBIÓ</i>
               </li>
             );
@@ -84,13 +84,13 @@ export function DivisionPrevia({ liga }) {
       <p className="dvp-yo">{estado} Los {z} primeros de cada grupo suben y ganan <b>{num(D.p)} Puntos de Tienda</b>.</p>
       <ol className="dv-tabla dvp-tabla">
         {filas.map(([f, i]) => {
-          const p = liga.fila(f[0]);
+          const p = liga.quien(f[0]);
           const sube = di > 0 && i < z;
           return (
             <li key={f[0]} className={(sube ? 'sube' : '') + (esYo(f[0]) ? ' yo' : '') + (i === z && filas.length > z ? ' corte' : '')}>
               <span className="dv-i">{i + 1}</span>
               {p ? <Cara liga={liga} k={p.k} nombre={p.n} cls="cara dv-cara" /> : <span className="cara dv-cara ini">{limpio(f[0]).slice(0, 1).toUpperCase()}</span>}
-              {p ? <a className="dv-n" href={'#/r/' + encodeURIComponent(p.k)}>{limpio(f[0])}</a> : <span className="dv-n">{limpio(f[0])}</span>}
+              {p ? <a className="dv-n" href={'#/r/' + encodeURIComponent(p.k)}>{limpio(p.n)}</a> : <span className="dv-n">{limpio(f[0])}</span>}
               {sube ? <i className="dv-z">SUBE</i> : <span />}
               <b className="dv-p">{num(f[1])}</b>
             </li>
@@ -217,7 +217,7 @@ function TuSemanaElo({ liga, D, nombres, divs, esYo }) {
       {/* ± lo que te dio o te sacó cada batalla, como el +/− de Brawl después de cada partida */}
       {ultb.length ? (
         <ul className="dv-ultb" aria-label="Tus últimas batallas">
-          {ultb.map(([x, rival], i) => <li key={i} className={x > 0 ? 'sube' : x < 0 ? 'baja' : ''}><b>{signo(x)}</b> vs {limpio(rival)}</li>)}
+          {ultb.map(([x, rival], i) => <li key={i} className={x > 0 ? 'sube' : x < 0 ? 'baja' : ''}><b>{signo(x)}</b> vs <Alguien liga={liga} nombre={rival} /></li>)}
         </ul>
       ) : null}
     </section>
@@ -234,14 +234,14 @@ function GrupoElo({ liga, g, sel, nombres, D, esYo }) {
       <h3 className="dv-gt"><i className="dv-gema" style={{ background: (D.c || [])[sel] }} aria-hidden="true" />{nombres[sel]}<small>{piso ? 'desde ' + num(piso) + ' de ELO' : 'menos de ' + num(D.t[D.t.length - 1]) + ' de ELO'} · {g.length} {g.length === 1 ? 'rapero' : 'raperos'}</small></h3>
       <ol className="dv-tabla dv-tabla2 elo">
         {vis.map(([[raw, elo, n, a, s, h], i]) => {
-          const f = liga.fila(raw);
+          const f = liga.quien(raw);
           const prov = n < (D.pv || 5);
           const zona = prov ? '' : a < sel ? 'sube' : a > sel ? 'baja' : '';
           return (
             <li key={raw} className={zona + (esYo(raw) ? ' yo' : '') + (i >= TOPE_FILAS ? ' corte' : '')}>
               <span className="dv-i">{i + 1}</span>
               {f ? <Cara liga={liga} k={f.k} nombre={f.n} cls="cara dv-cara" /> : <span className="cara dv-cara ini">{limpio(raw).slice(0, 1).toUpperCase()}</span>}
-              {f ? <a className="dv-n" href={'#/r/' + encodeURIComponent(f.k)}>{limpio(raw)}</a> : <span className="dv-n">{limpio(raw)}</span>}
+              {f ? <a className="dv-n" href={'#/r/' + encodeURIComponent(f.k)}>{limpio(f.n)}</a> : <span className="dv-n">{limpio(raw)}</span>}
               <span className="dv-ev">{SUBS[s || 0]} · {prov ? 'provisional' : n + ' batallas'}{(h || [])[0] ? <em className={h[0][0] > 0 ? 'sube' : h[0][0] < 0 ? 'baja' : ''}> {signo(h[0][0])}</em> : null}</span>
               {zona === 'sube' ? <i className="dv-z">SUBIRÍA</i> : zona === 'baja' ? <i className="dv-z">BAJARÍA</i> : <span />}
               <b className="dv-p">{num(elo)}</b>
@@ -270,12 +270,12 @@ function PreviaElo({ liga, D, esYo }) {
       <p className="dvp-yo">{e ? e.msg : 'Tu división sale de tu ELO: juega batallas 1v1 y entras en el ranking.'}</p>
       <ol className="dv-tabla dvp-tabla">
         {filas.map(([[raw, elo], i]) => {
-          const p = liga.fila(raw);
+          const p = liga.quien(raw);
           return (
             <li key={raw} className={esYo(raw) ? 'yo' : ''}>
               <span className="dv-i">{i + 1}</span>
               {p ? <Cara liga={liga} k={p.k} nombre={p.n} cls="cara dv-cara" /> : <span className="cara dv-cara ini">{limpio(raw).slice(0, 1).toUpperCase()}</span>}
-              {p ? <a className="dv-n" href={'#/r/' + encodeURIComponent(p.k)}>{limpio(raw)}</a> : <span className="dv-n">{limpio(raw)}</span>}
+              {p ? <a className="dv-n" href={'#/r/' + encodeURIComponent(p.k)}>{limpio(p.n)}</a> : <span className="dv-n">{limpio(raw)}</span>}
               <span />
               <b className="dv-p">{num(elo)}</b>
             </li>
@@ -310,7 +310,7 @@ function Escalera({ liga, nombres, divs, sel, setSel, mia, elo, colores }) {
             <span>{nombres[i]}</span>
             {top.length ? (
               <i className="dv-esc-caras" aria-hidden="true">{top.map(([raw]) => {
-                const f = liga.fila(raw);
+                const f = liga.quien(raw);
                 return f ? <Cara key={raw} liga={liga} k={f.k} nombre={f.n} cls="cara dv-esc-cara" />
                   : <span key={raw} className="cara dv-esc-cara ini">{limpio(raw).slice(0, 1).toUpperCase()}</span>;
               })}</i>
@@ -355,15 +355,15 @@ function TuSemana({ liga, D, nombres, divs, esYo }) {
   if (subeZ && pos < subeZ) {
     msg = <>Si la semana cierra así, <b className="sube">subes a {nombres[di - 1]}</b> y cobras {num(D.p)} Puntos de Tienda.</>;
     const atras = g[subeZ];
-    if (atras) chip = limpio(atras[0]) + ', ' + (subeZ + 1) + 'º, a ' + num(Math.max(0, pts - atras[1])) + ' pts';
+    if (atras) chip = liga.aka(atras[0]) + ', ' + (subeZ + 1) + 'º, a ' + num(Math.max(0, pts - atras[1])) + ' pts';
   } else if (bajaZ && pos >= g.length - bajaZ) {
     const arriba = g[g.length - bajaZ - 1];
     msg = <><b className="baja">Zona de descenso</b>: {arriba ? 'te faltan ' + num(Math.max(1, arriba[1] - pts + 1)) + ' pts para salir.' : 'si cierra así, bajas a ' + nombres[di + 1] + '.'}</>;
-    if (arriba) chip = 'para salir: pasar a ' + limpio(arriba[0]);
+    if (arriba) chip = 'para salir: pasar a ' + liga.aka(arriba[0]);
   } else if (subeZ) {
     const corte = g[subeZ - 1];
     msg = <>Te faltan <b>{num(Math.max(1, corte[1] - pts + 1))} pts</b> para entrar en la zona de subida y cobrar {num(D.p)}.</>;
-    chip = 'el ' + subeZ + 'º: ' + limpio(corte[0]) + ' · ' + num(corte[1]);
+    chip = 'el ' + subeZ + 'º: ' + liga.aka(corte[0]) + ' · ' + num(corte[1]);
   } else if (di > 0 && !z) {
     // un grupo de menos de 3: un tercio de 1 o 2 es cero, así que nadie sube (`divisiones.zona()`)
     msg = <>Sos {g.length === 1 ? 'el único' : 'uno de los ' + g.length} en {nombres[di]} esta semana: para que alguien suba, el grupo necesita al menos 3.</>;
@@ -399,13 +399,13 @@ function Grupo({ liga, g, gi, gs, sel, nombres, D, esYo }) {
     if (i === 0 && subeZ) filas.push(banda('sube', '▲ Suben a ' + nombres[sel - 1] + ' · +' + num(D.p) + ' Puntos de Tienda'));
     if (i === subeZ && i < desdeBaja && (subeZ || bajaZ)) filas.push(banda('queda', 'Se quedan en ' + nombres[sel]));
     if (bajaZ && i === desdeBaja) filas.push(banda('baja', '▼ Bajan a ' + nombres[sel + 1]));
-    const f = liga.fila(raw);
+    const f = liga.quien(raw);
     const zona = i < subeZ ? 'sube' : i >= desdeBaja ? 'baja' : '';
     filas.push(
       <li key={raw} className={zona + (esYo(raw) ? ' yo' : '')}>
         <span className="dv-i">{i + 1}</span>
         {f ? <Cara liga={liga} k={f.k} nombre={f.n} cls="cara dv-cara" /> : <span className="cara dv-cara ini">{limpio(raw).slice(0, 1).toUpperCase()}</span>}
-        {f ? <a className="dv-n" href={'#/r/' + encodeURIComponent(f.k)}>{limpio(raw)}</a> : <span className="dv-n">{limpio(raw)}</span>}
+        {f ? <a className="dv-n" href={'#/r/' + encodeURIComponent(f.k)}>{limpio(f.n)}</a> : <span className="dv-n">{limpio(raw)}</span>}
         <span className="dv-ev">{ev} {ev === 1 ? 'evento' : 'eventos'}</span>
         <b className="dv-p">{num(pts)}</b>
       </li>,
@@ -473,8 +473,8 @@ export function Divisiones({ liga }) {
             {ult.sube.length ? (
               <span className="dv-caja-caras" aria-label="Algunos de los que subieron">
                 {ult.sube.slice(0, 10).map((raw) => {
-                  const f = liga.fila(raw);
-                  return f ? <a key={raw} href={'#/r/' + encodeURIComponent(f.k)} title={limpio(raw)}><Cara liga={liga} k={f.k} nombre={f.n} cls="cara dv-esc-cara" /></a>
+                  const f = liga.quien(raw);
+                  return f ? <a key={raw} href={'#/r/' + encodeURIComponent(f.k)} title={limpio(f.n)}><Cara liga={liga} k={f.k} nombre={f.n} cls="cara dv-esc-cara" /></a>
                     : <span key={raw} className="cara dv-esc-cara ini" title={limpio(raw)}>{limpio(raw).slice(0, 1).toUpperCase()}</span>;
                 })}
                 {ult.sube.length > 10 ? <small>+{ult.sube.length - 10}</small> : null}

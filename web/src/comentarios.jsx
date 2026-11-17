@@ -63,6 +63,10 @@ export async function comentar(it, tx) {
 }
 
 export const PJ = { eh: ['EH', '#E41373'], ul: ['UL', '#29B298'], ej: ['EJ', '#FFD24A'] };
+// 🪪 QUIÉN ESCRIBIÓ, CON EL NOMBRE DE HOY (17/11/2026): el comentario guarda el nombre que tenía al escribir (`c.n`), y si
+// después se lo cambió quedaba el viejo. Con su clave en la tabla, el de su perfil; los de la Liga (`et: 'l'`) son un
+// personaje y no tienen perfil
+export const autorDe = (liga, c) => (c && c.et !== 'l' && c.k && liga && liga.T[c.k] ? limpio(liga.T[c.k].n) : limpio(c && c.n));
 const ERR = { vacio: 'Escribe algo.', largo: 'Es muy largo: hasta 200 letras.', link: 'Sin links en los comentarios.',
   mencion: 'Sin @everyone ni @here.', sin_verificar: 'Para comentar necesitas tu cuenta verificada.',
   nueva: 'Tu cuenta de Discord es muy nueva para comentar.', espera: 'Ya comentaste mucho hoy: sigue mañana.',
@@ -89,13 +93,13 @@ function Comentario({ liga, c, ahora, yo, dueno, onResponder, onBorrar, onReport
         : <Cara liga={liga} k={c.k} nombre={c.n} cls={'cara cmh-cara' + (prem ? ' sp-prem-aro' : '')} lazy />}
       <div className="cmh-cu">
         <div className="cmh-q">
-          {f ? <a href={'#/r/' + encodeURIComponent(c.k)}>{limpio(c.n)}</a> : <b>{limpio(c.n)}</b>}
+          {f ? <a href={'#/r/' + encodeURIComponent(c.k)}>{autorDe(liga, c)}</a> : <b>{autorDe(liga, c)}</b>}
           {prem ? <SelloPremium t={13} /> : null}
           {f && f.rg ? <i className="cmh-rg" style={{ background: f.rgc || liga.colorRg(f.rg) }}>{f.rg}</i> : null}
           {c.et === 's' ? <i className="cmh-et sim">simulado</i> : c.et === 'l' ? <i className="cmh-et liga">Liga</i> : null}
           <time>{hace(c.t, ahora)}</time>
         </div>
-        {a ? <small className="cmh-a">↪ a {limpio(a.n)}</small> : null}
+        {a ? <small className="cmh-a">↪ a {autorDe(liga, a)}</small> : null}
         <p>{c.tx}</p>
         <div className="cmh-acc">
           <button type="button" onClick={() => onResponder(c)}>Responder</button>
@@ -133,7 +137,7 @@ export function Hilo({ liga, it, chico }) {
   const responder = (c) => {
     setAbierto(true);
     setResp(c);
-    setTx((t) => (t.startsWith('@') ? t : '@' + limpio(c.n) + ' ' + t));
+    setTx((t) => (t.startsWith('@') ? t : '@' + autorDe(liga, c) + ' ' + t));
     setTimeout(() => { if (caja.current) caja.current.focus(); }, 0);
   };
   const borrar = async (c) => {

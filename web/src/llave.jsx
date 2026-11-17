@@ -11,7 +11,7 @@
 // entero con sus ramas (en espejo si entra), como antes.
 import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import { PAIS, capital, limpio, norm, num } from './liga.js';
-import { Bandera, Cara, Compartir, Ico, Medalla, PUESTO_MEDALLA, enlace, silueta } from './piezas.jsx';
+import { Alguien, Algunos, Bandera, Cara, Compartir, Ico, Medalla, PUESTO_MEDALLA, enlace, silueta } from './piezas.jsx';
 import { completar, enOrden, esArbol, esDoble, jugado, partirDoble } from './arriba.jsx';
 import { usePases, vioVivo, vivoPendiente } from './pase.js';
 import { ConMarco } from './marcos.jsx';
@@ -535,7 +535,8 @@ function Camino({ ctx, L }) {
       <div className="lk-cam-todos" role="group" aria-label="Ver el camino de">
         {ids.map((x) => (
           <button key={x} type="button" className={x === id ? 'on' : ''} aria-pressed={x === id} onClick={() => ctx.seguir(x === id ? '' : x)}>
-            {capital(limpio(ctx.nombres[x] || ''))}</button>
+            {/* 🪪 con su cara (17/11/2026). Sin link: el botón ya marca su camino */}
+            <Alguien liga={ctx.liga} nombre={ctx.nombres[x] || ''} k={/^k:/.test(x) ? x.slice(2) : ''} link={false} cap /></button>
         ))}
       </div>
     </section>
@@ -575,7 +576,7 @@ function etiquetas(ctx, b, est, copa) {
   if (/refuerzo/i.test(s)) out.push(['Refuerzo', '']);
   if (/^podio/i.test(s)) out.push(['Por el podio', '']);
   const c = ctx.clasico(b);
-  if (c) out.push(['Clásico ' + c[2] + '–' + c[3], 'cl', 'Ya se cruzaron ' + (c[2] + c[3]) + ' veces (' + limpio(c[0]) + ' ' + c[2] + '–' + c[3] + ' ' + limpio(c[1]) + '). El que gana suma +10 %.']);
+  if (c) out.push(['Clásico ' + c[2] + '–' + c[3], 'cl', 'Ya se cruzaron ' + (c[2] + c[3]) + ' veces (' + ctx.liga.aka(c[0]) + ' ' + c[2] + '–' + c[3] + ' ' + ctx.liga.aka(c[1]) + '). El que gana suma +10 %.']);
   if (copa && b[1]) out.push(['Campeón', 'copa']);
   return out;
 }
@@ -1201,9 +1202,12 @@ export function Llave({ liga, vivoL, n: n0, raiz, dc }) {
   // todo lo que sale de la llave, una vez por llave (y por quién se sigue)
   const base = useMemo(() => {
     if (!L) return null;
-    const fila = (x) => liga.fila(x);
+    const fila = (x) => liga.quien(x);
     const idDe = (x) => { const f = fila(x); return f ? 'k:' + f.k : 'n:' + clave(x); };
+    // 🪪 el nombre de cada uno: el oficial si se sabe quién es (17/11/2026, Dlx: «si alguien escribe velatzzzz, debería
+    // mostrarse con su aka oficial, Velatz»); si no, como lo escribieron
     const nombres = {};
+    const nomDe = (id, m) => { const f = /^k:/.test(id) ? liga.T[id.slice(2)] || liga.X[id.slice(2)] : null; return f ? limpio(f.n) : sinBanderas(m).txt; };
     // 🔑 EL EQUIPO QUE LA LLAVE NOMBRA CON UN SOLO NOMBRE Y NADIE SABE QUIÉNES SON (`sin`, del lector; Dlx, 29/09/2026:
     // «TEAM VENECIA no es un participante… es un equipo»): sin cara, sin perfil y sin puntos. Sin el paréntesis
     const sinP = (x) => clave(String(x || '').replace(/[(（][^()（）]*[)）]/g, ''));
@@ -1214,7 +1218,7 @@ export function Llave({ liga, vivoL, n: n0, raiz, dc }) {
     (L.tabla || []).forEach((r) => partes(r[0]).forEach((m) => {
       const id = r[3] && partes(r[0]).length === 1 ? 'k:' + r[3] : idDe(m);
       pts[id] = [r[1], r[2]];
-      nombres[id] = sinBanderas(m).txt;
+      nombres[id] = nomDe(id, m);
     }));
     // 🔑 MOST WANTED EN LA LLAVE (Dlx, 27/09/2026): el que cazaron ACÁ lleva 🎯 en la batalla que perdió; en una en
     // vivo, el buscado suelto lleva 🎯 y su recompensa
@@ -1339,9 +1343,9 @@ export function Llave({ liga, vivoL, n: n0, raiz, dc }) {
     // el nombre de cada uno, para la barra de quien se sigue (también los que no están en la tabla de la llave)
     prin.concat(ter ? [ter] : []).forEach((R) => R.b.forEach((b) => b[0].forEach((s) => partes(s).forEach((m) => {
       const id = idDe(m);
-      if (!nombres[id]) nombres[id] = sinBanderas(m).txt;
+      if (!nombres[id]) nombres[id] = nomDe(id, m);
     }))));
-    (L.funa || []).forEach((x) => { const id = idDe(x[0]); if (!nombres[id]) nombres[id] = sinBanderas(x[0]).txt; });
+    (L.funa || []).forEach((x) => { const id = idDe(x[0]); if (!nombres[id]) nombres[id] = nomDe(id, x[0]); });
     return { fila, idDe, nombres, esSin, pts, marca, cazas, aca, clasico, prin, ter, cerrada, vale, pasanDe, est, inicial, final, dob,
       pend, ptsCamp };
   }, [L, liga, n]);
@@ -1414,9 +1418,10 @@ export function Llave({ liga, vivoL, n: n0, raiz, dc }) {
   const orgsL = org || GS.org ? liga.orgsDe(deOrg) : [];
   const st = inf.st || (evV && evV.st) || (GS.host || GS.jurado || GS.dj ? { h: GS.host, j: GS.jurado, d: GS.dj } : {});
   // en UN span: el `gap` del renglón separaba la coma del nombre
-  const gente = (xs) => <span>{(xs || []).map((x, i) => {
-    const f = liga.fila(x);
-    return [i ? ', ' : '', f ? <a key={x} href={'#/r/' + encodeURIComponent(f.k)}>{limpio(f.n)}</a> : <b key={x}>{limpio(x)}</b>];
+  // 🪪 con su cara, como los organizadores (17/11/2026, Dlx: «hazlo más bonito con su foto y su cuenta»)
+  const gente = (xs) => <span className="lk-orgs lk-st">{(xs || []).map((x, i) => {
+    const f = liga.quien(x);
+    return [i ? ', ' : '', f ? <a key={x} href={'#/r/' + encodeURIComponent(f.k)}><Cara liga={liga} k={f.k} nombre={f.n} cls="cara lk-oc" />{limpio(f.n)}</a> : <b key={x}>{limpio(x)}</b>];
   })}</span>;
   const mR = /^Rango (\w+)$/.exec(String(rgo || ''));
   const asc = sv.rangos && mR && sv.rangos[mR[1]] ? sv.rangos[mR[1]].map((p, i) => (i < 3 ? (i + 1) + '°' : '4°') + ' ' + num(p)).join(' · ') : '';
@@ -1522,8 +1527,9 @@ export function Llave({ liga, vivoL, n: n0, raiz, dc }) {
         ) : null}
         {base.cazas.length || base.aca.length ? (
           <div className="lk-mwtx">
-            {base.cazas.map((c, i) => <p key={i}><Ico n="mira" t={15} /> Acá cazaron a <b>{limpio(c[0])}</b> ({c[1]}): {c[2].length ? <>cobró <b>{c[2].map(limpio).join(' y ')}</b></> : 'no cobró nadie'}.</p>)}
-            {base.aca.length ? <p><Ico n="mira" t={15} /> {base.aca.length === 1 ? 'Juega un buscado' : 'Juegan ' + base.aca.length + ' buscados'}: {base.aca.map((y, i) => <span key={i}>{i ? ', ' : ''}<b>{limpio(y.n)}</b> ({y.cn}, {num(y.v)} pts)</span>)}. Quien le gane, cobra.</p> : null}
+            {/* 🪪 con su cara, su nombre oficial y su perfil (17/11/2026) */}
+            {base.cazas.map((c, i) => <p key={i}><Ico n="mira" t={15} /> Acá cazaron a <b><Alguien liga={liga} nombre={c[0]} /></b> ({c[1]}): {c[2].length ? <>cobró <b><Algunos liga={liga} nombres={c[2]} /></b></> : 'no cobró nadie'}.</p>)}
+            {base.aca.length ? <p><Ico n="mira" t={15} /> {base.aca.length === 1 ? 'Juega un buscado' : 'Juegan ' + base.aca.length + ' buscados'}: {base.aca.map((y, i) => <span key={i}>{i ? ', ' : ''}<b><Alguien liga={liga} nombre={y.n} k={y.k} /></b> ({y.cn}, {num(y.v)} pts)</span>)}. Quien le gane, cobra.</p> : null}
           </div>
         ) : null}
         {/* 🔝 los puntos, también arriba: cerrados, son un renglón; lo que se vino a ver es la llave */}

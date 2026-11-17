@@ -1,7 +1,7 @@
 // Las piezas chicas del Inicio: íconos, cartas, caras, rangos, banderas, secciones y las secciones con pestañas.
 // Las clases son las del prototipo (docs/remake/reales.py): su CSS se genera de ahí (web/css_del_prototipo.py).
-import { Children, useEffect, useLayoutEffect, useRef, useState } from 'react';
-import { PAIS, limpio, num } from './liga.js';
+import { Children, Fragment, useEffect, useLayoutEffect, useRef, useState } from 'react';
+import { PAIS, capital, limpio, num } from './liga.js';
 import * as RQ from './requisitos.js';
 // 🖼️ el marco de carta del Pase premium, donde se vea tu carta (25/10/2026)
 import { usePases } from './pase.js';
@@ -330,6 +330,50 @@ export function Cara({ liga, k, nombre, cls = 'cara', lazy = false, grande = fal
   return <span className={cls + ' ini'} data-fk={k || undefined}>{(limpio(nombre).slice(0, 1) || '?').toUpperCase()}</span>;
 }
 
+// 🪪 UN NOMBRE CON SU CARA Y SU PERFIL (Dlx, 17/11/2026: «hay lugares donde aparecen nombres como ellos lo escriben, si
+// alguien escribe velatzzzz, debería mostrarse con su aka oficial, Velatz… y hazlo más bonito con su foto y su cuenta»;
+// «dale, hazlo en todas partes»). `nombre` es el que vino —de una llave, del muro, de lo en vivo— y `k` la clave si se
+// sabe: dibuja la cara, el nombre oficial y el link a su perfil (`liga.quien()`). Sin nadie detrás, el nombre como lo
+// escribieron, sin link (con la cara sólo si es de quien jugó y quedó fuera de la tabla, `avNombre()`).
+// `chip`: con borde, para una fila de nombres. `cara={false}`: sólo el nombre, donde no entra. `link={false}`: adentro de
+// algo que ya se toca —un link adentro de otro link o de un botón no vale, y el click lo ataja el script del principio:
+// frenarlo rompería la navegación—. `cap`: el que no se reconoce va con la inicial en mayúscula, como en la llave.
+// El texto solo (un título, un `aria-label`, lo que se comparte) es `liga.aka(nombre, k)`
+export function Alguien({ liga, nombre, k, cara = true, link = true, chip = false, cap = false, cls = '' }) {
+  const s = String(nombre || '');
+  const f = liga ? liga.quien(s, k) : null;
+  // un equipo («A & B», y en una llave en vivo «A, B»), de a uno: cada cual con su cara y su perfil
+  // (y «A | B», como escriben algunas llaves de equipos)
+  const eq = f ? '' : / & /.test(s) ? ' & ' : /[,|]/.test(s) ? ' y ' : '';
+  if (eq) {
+    const ps = s.split(eq === ' & ' ? /\s+&\s+/ : /\s*[,|]\s*/).filter((x) => limpio(x));
+    if (ps.length > 1) {
+      return <>{ps.map((x, i) => <Fragment key={i}>{i ? eq : null}
+        <Alguien liga={liga} nombre={x} cara={cara} link={link} chip={chip} cap={cap} cls={cls} /></Fragment>)}</>;
+    }
+  }
+  const n = f ? limpio(f.n) : cap ? capital(limpio(s)) : limpio(s);
+  if (!n) return null;
+  const conCara = cara && !!(f || (liga && liga.avNombre && liga.avNombre(s)));
+  const cz = conCara ? <Cara liga={liga} k={f ? f.k : ''} nombre={f ? f.n : s} cls="cara qn-c" /> : null;
+  // 🔗 LA CARA VA PEGADA A LA PRIMERA PALABRA (`qn-u`, sin corte): en el celular «…participaciones.(cara)» quedaba al final
+  // de un renglón y «BTRX» en el siguiente (medido a 390 px; el unidor de palabras U+2060 no frena el corte después de
+  // una imagen). En la ficha no hace falta: es una fila flexible
+  const m = cz && !chip ? /^(\S+)([\s\S]*)$/.exec(n) : null;
+  const cuerpo = m ? <bdi className="qn-n"><bdi className="qn-u">{cz}{m[1]}</bdi>{m[2]}</bdi> : <>{cz}<bdi className="qn-n">{n}</bdi></>;
+  const clase = 'qn' + (chip ? ' qn-chip' : '') + (conCara ? ' qn-con' : '') + (f ? '' : ' qn-sin') + (cls ? ' ' + cls : '');
+  // `bdi` y no `span`: aísla un nombre escrito de derecha a izquierda, y las reglas de cada lugar que pintan sus `span`
+  // («.evs-c span», «.st-gente span»…) no le caen encima
+  if (f && f.k && link) return <a className={clase} href={'#/r/' + encodeURIComponent(f.k)}>{cuerpo}</a>;
+  return <bdi className={clase}>{cuerpo}</bdi>;
+}
+// varios, con «y» antes del último: «Velatz, Oasis y Konan» (`sep` entre los demás)
+export function Algunos({ liga, nombres, ks = [], y = ' y ', sep = ', ', ...resto }) {
+  const xs = (nombres || []).map((x, i) => [x, ks[i]]).filter(([x, kk]) => limpio(x) || kk);
+  return <>{xs.map(([x, kk], i) => <Fragment key={i}>{i ? (i === xs.length - 1 ? y : sep) : null}
+    <Alguien liga={liga} nombre={x} k={kk} {...resto} /></Fragment>)}</>;
+}
+
 export function SinCarta({ liga, k, nombre, cc, cls = 'ci' }) {
   const n = limpio(nombre);
   // 🔤 LA PALABRA MÁS LARGA, PORQUE UNA SOLA NO SE PARTE (16/11/2026): «LEANDROKATANA» medía 164 px en una carta de 132 y
@@ -548,7 +592,7 @@ export function Poster({ liga, b }) {
   let sello = null;
   let cls = '';
   if (b.e === 'cazado') {
-    const por = ((b.c || {}).por || []).map((p) => p.n).join(' y ');
+    const por = ((b.c || {}).por || []).map((p) => liga.aka(p.n, p.k)).join(' y ');
     sello = <span className="p-sello">CAZADO</span>; cls = 'hecho'; pie = 'por ' + por + ' · cobró ' + num(b.v);
   } else if (b.e === 'escondio') {
     sello = <span className="p-sello gris">SE ESCONDIÓ</span>; cls = 'hecho'; pie = 'no jugó: nadie cobró';

@@ -18,7 +18,7 @@ import { Fragment, useEffect, useMemo, useRef, useState } from 'react';
 import { MESES, hora, ksDe, limpio, num, siglaDe, utc } from './liga.js';
 import { CrewCirculo, escenaDe } from './arriba.jsx';
 import { TierChip } from './crewpanel.jsx';
-import { Cara, Carta, Ico, Vacio, accion, promoAbierta, useCampana } from './piezas.jsx';
+import { Alguien, Algunos, Cara, Carta, Ico, Vacio, accion, promoAbierta, useCampana } from './piezas.jsx';
 import { Miniatura, abrirVideo } from './video.jsx';
 import { Elegido, X2 } from './encuestas.jsx';
 import { useAplausos } from './aplausos.js';
@@ -52,10 +52,21 @@ const fuerte = (it) => it.tipo === 'campeon' || it.tipo === 'mesaward' || it.tip
 // 🌙 un nombre del resumen de la noche, con link a su perfil si está en la temporada (las claves van en cada renglón,
 // no en `ks`: ver `muro.noches()`)
 // 💎 `pub` (lo público del Pase): con el premium, el sello al lado del nombre
+// 🪪 con su cara y su nombre oficial (17/11/2026, Dlx: «hazlo más bonito con su foto y su cuenta»); sin nadie detrás, el
+// nombre como vino, en negrita
 function Nombre({ liga, x, pub }) {
-  const n = limpio(x && x.n);
-  if (!(x && x.k && liga.T[x.k])) return <b>{n}</b>;
-  return <><a href={'#/r/' + encodeURIComponent(x.k)}>{n}</a>{esPremium(pub, x.k) ? <SelloPremium t={13} cls="sp-prem-in" /> : null}</>;
+  const f = x ? liga.quien(x.n, x.k) : null;
+  if (!f) return <b>{limpio(x && x.n)}</b>;
+  return <><Alguien liga={liga} nombre={x.n} k={f.k} />{esPremium(pub, f.k) ? <SelloPremium t={13} cls="sp-prem-in" /> : null}</>;
+}
+// 🪪 QUIÉNES SON, CON SU NOMBRE OFICIAL Y SU CLAVE aunque el muro no la traiga (17/11/2026): el muro escribe el nombre de la
+// llave, y sin clave no había cara ni perfil. `[{n, k}]`, en el orden de `quien`
+function genteDe(liga, it) {
+  const ks = Array.isArray(it.ks) ? it.ks : [];
+  return (it.quien || []).map((x, i) => {
+    const f = liga.quien(x, ks[i]);
+    return { n: f ? limpio(f.n) : limpio(x), k: ks[i] || (f && f.k) || '' };
+  });
 }
 const y = (xs) => xs.reduce((acc, x, i) => (i ? acc.concat([i === xs.length - 1 ? ' y ' : ', ', x]) : [x]), []);
 //: cuántos campeones se nombran en el resumen antes de «y N más»
@@ -84,12 +95,7 @@ function Felicitar({ liga, it, A, chico }) {
 
 // los nombres de una publicación, con link a su perfil si está en la temporada (y el sello Premium de quien lo tenga)
 function nombresDe(liga, it, pub) {
-  const q = (it.quien || []).map(limpio);
-  const ks = Array.isArray(it.ks) ? it.ks : [];
-  return q.map((n, i) => (ks[i] && liga.T[ks[i]]
-    ? <Fragment key={i}><a href={'#/r/' + encodeURIComponent(ks[i])}>{n}</a>{esPremium(pub, ks[i]) ? <SelloPremium t={13} cls="sp-prem-in" /> : null}</Fragment>
-    : <b key={i}>{n}</b>))
-    .reduce((acc, x, i) => (i ? acc.concat([i === q.length - 1 ? ' y ' : ', ', x]) : [x]), []);
+  return y(genteDe(liga, it).map((x, i) => <Nombre key={i} liga={liga} x={x} pub={pub} />));
 }
 
 // ── 🗣️ QUIÉN FIRMA CADA PUBLICACIÓN (Dlx, 15/11/2026: «me gustaría que también los sv publiquen cosas de forma automática… y
@@ -99,16 +105,16 @@ function nombresDe(liga, it, pub) {
 // nadie la escribió, y cada uno puede apagar las suyas en Tu cuenta (bot/muro_solos.py `apagados()`) ──
 const DEL_SV = { svlunes: 1, svsemana: 1, svmeta: 1, svtop: 1, svrecord: 1, svnuevo: 1, svtier: 1, anuncio: 1, flyer: 1 };
 const DE_LA_LIGA = { premios: 1, resnoche: 1, liga: 1, crewtier: 1 };
-function autorDe(it) {
+function autorDe(it, liga) {
   const cat = String(it.cat || '');
   if (DEL_SV[it.tipo] || (it.tipo === 'mesaward' && (cat.startsWith('sv:') || cat === 'servidor'))) return it.sv ? { sv: it.sv } : null;
   if (DE_LA_LIGA[it.tipo] || (it.tipo === 'promo' && (it.o === 'liga' || it.o === 'mano')) || (it.tipo === 'mesaward' && (cat === 'otras' || cat === 'batalla'))) return null;
-  const q = (it.quien || []).map(limpio);
-  return q[0] ? { k: ksDe(it)[0] || '', n: q[0] } : null;
+  const g = genteDe(liga, it)[0];
+  return g && g.n ? { k: ksDe(it)[0] || g.k, n: g.n } : null;
 }
 const AUTO = 'La Liga la publica sola con lo que pasó. Si es tuya, puedes apagar las tuyas en Tu cuenta.';
 function Autor({ liga, it, pub, cara = true }) {
-  const a = autorDe(it);
+  const a = autorDe(it, liga);
   if (!a) return <span className="pw-autor">{cara ? <img className="pw-au-c" alt="" src="/ul.png" /> : null}<b>Liga Global</b></span>;
   if (a.sv) {
     return (
@@ -124,13 +130,9 @@ function Autor({ liga, it, pub, cara = true }) {
 }
 // los demás de una publicación de varios (la firma el primero): « con Bea», « con Bea y Cris»
 function conOtros(liga, it, pub) {
-  const q = (it.quien || []).map(limpio);
-  if (q.length < 2) return null;
-  const ks = Array.isArray(it.ks) ? it.ks : [];
-  const xs = q.slice(1).map((n, i) => (ks[i + 1] && liga.T[ks[i + 1]]
-    ? <Fragment key={i}><a href={'#/r/' + encodeURIComponent(ks[i + 1])}>{n}</a>{esPremium(pub, ks[i + 1]) ? <SelloPremium t={13} cls="sp-prem-in" /> : null}</Fragment>
-    : <b key={i}>{n}</b>));
-  return <> con {y(xs)}</>;
+  const g = genteDe(liga, it);
+  if (g.length < 2) return null;
+  return <> con {y(g.slice(1).map((x, i) => <Nombre key={i} liga={liga} x={x} pub={pub} />))}</>;
 }
 const xN = (x) => '×' + String(x).replace('.', ',');
 const NOMBRE_CARTA = { temporada: 'de Temporada', competitivo: 'Competitiva', servidor: 'de Servidor', pais: 'de País' };
@@ -138,8 +140,10 @@ const NOMBRE_CARTA = { temporada: 'de Temporada', competitivo: 'Competitiva', se
 // ── qué dice cada publicación: la categoría, lo que se ve, el texto, el detalle y adónde lleva (lo de publicaciones.jsx,
 // con el dibujo nuevo). `media`: la imagen va arriba y grande (video, flyer) ──
 function contenido(liga, it, pub) {
-  const q = (it.quien || []).map(limpio);
-  const ks = Array.isArray(it.ks) ? it.ks : [];
+  const g = genteDe(liga, it);
+  const q = g.map((x) => x.n);
+  const ks0 = Array.isArray(it.ks) ? it.ks : [];
+  const ks = Array.from({ length: Math.max(ks0.length, g.length) }, (_, i) => ks0[i] || (g[i] && g[i].k) || '');
   const nombres = nombresDe(liga, it, pub);
   const f0 = ks[0] ? liga.T[ks[0]] : null;
   const cara = <Cara liga={liga} k={ks[0] || ''} nombre={q[0] || '?'} cls={'cara pb-cara' + (esPremium(pub, ks[0]) ? ' sp-prem-aro' : '')} />;
@@ -150,7 +154,7 @@ function contenido(liga, it, pub) {
     c.cat = 'Campeón · ' + siglaDe(it.sv);
     c.vis = f0 && (f0.c || []).includes('temporada') ? <Carta liga={liga} k={f0.k} cual="temporada" cls="pb-carta" abre={false} /> : cara;
     // 🥇 el primer título de la temporada de quien firma (`primero`, bot/muro_solos.py)
-    const primero = (it.primero || []).map(limpio).includes(q[0]);
+    const primero = (it.primero || []).map((x) => liga.aka(x)).includes(q[0]);
     c.txt = <>{primero ? '¡Mi primer título! ' : ''}Gané <b>{limpio(it.ev)}</b>{otros}</>;
     c.det = it.part ? it.part + ' raperos' : '';
     c.acc = it.ll ? <button type="button" className="pb-a" onClick={() => accion.llave(it.ll)}>Ver la llave</button> : null;
@@ -169,7 +173,7 @@ function contenido(liga, it, pub) {
   } else if (it.tipo === 'caza') {
     c.cat = 'Most Wanted · Caza';
     c.vis = cara;
-    c.txt = <>Cacé a <b>{limpio(it.a)}</b> ({it.cat}){otros} y {q.length > 1 ? 'cobramos' : 'cobro'} <b>{num(it.pts)}</b></>;
+    c.txt = <>Cacé a <b><Alguien liga={liga} nombre={it.a} /></b> ({it.cat}){otros} y {q.length > 1 ? 'cobramos' : 'cobro'} <b>{num(it.pts)}</b></>;
     c.det = it.ev ? limpio(it.ev) : '';
   } else if (it.tipo === 'sobrevivio') {
     c.cat = 'Most Wanted · Sobrevivió';
@@ -200,14 +204,17 @@ function contenido(liga, it, pub) {
   } else if (it.tipo === 'precio') {
     c.cat = 'Precio por su cabeza';
     c.vis = cara;
-    c.txt = <>Le gané a <b>{limpio(it.a)}</b>{otros} y {q.length > 1 ? 'cobramos' : 'cobro'} el precio por su cabeza: <b>{num(it.pts)}</b></>;
+    c.txt = <>Le gané a <b><Alguien liga={liga} nombre={it.a} /></b>{otros} y {q.length > 1 ? 'cobramos' : 'cobro'} el precio por su cabeza: <b>{num(it.pts)}</b></>;
     c.det = it.ev ? limpio(it.ev) : '';
   } else if (it.tipo === 'premios') {
     c.cat = 'Premios de la semana';
     c.vis = <img className="pb-logo" alt="" src="/ul.png" />;
-    const p = [it.figura ? 'figura: ' + limpio(it.figura[0]) : '', it.revelacion ? 'revelación: ' + limpio(it.revelacion[0]) : '',
-      it.cazador ? 'cazador: ' + limpio(it.cazador[0]) : '', it.servidor ? 'servidor: ' + siglaDe(it.servidor[0]) : ''].filter(Boolean);
-    c.txt = <b>{p.join(' · ')}</b>;
+    // 🪪 cada uno con su cara y su perfil (`ks` es `{figura, revelacion, cazador}`, ver bot/muro.py)
+    const kp = it.ks && !Array.isArray(it.ks) && typeof it.ks === 'object' ? it.ks : {};
+    const p = [['figura', 'figura'], ['revelacion', 'revelación'], ['cazador', 'cazador']].filter(([r]) => it[r])
+      .map(([r, et]) => <Fragment key={r}>{et}: <Alguien liga={liga} nombre={it[r][0]} k={kp[r]} /></Fragment>)
+      .concat(it.servidor ? ['servidor: ' + siglaDe(it.servidor[0])] : []);
+    c.txt = <b>{p.reduce((acc, x, i) => (i ? acc.concat([' · ', x]) : [x]), [])}</b>;
   } else if (it.tipo === 'elegido') {
     c.cat = 'El Elegido';
     c.vis = cara;
@@ -266,7 +273,8 @@ function contenido(liga, it, pub) {
     c.txt = it.que === 'campeon' ? <>Soy el campeón de <b>{limpio(it.ln)}</b></>
       : it.que === 'invicto' ? <>Llevo <b>{it.pg || 5} ganadas sin perder</b> en {limpio(it.ln)}</>
         : <>Tomé la punta de <b>{limpio(it.ln)}</b>{it.pts ? <> con {it.pts} puntos</> : null}</>;
-    c.det = it.que === 'campeon' && (it.podio || []).length > 1 ? 'Podio: ' + it.podio.map(limpio).join(' · ') : '';
+    c.det = it.que === 'campeon' && (it.podio || []).length > 1
+      ? <>Podio: {it.podio.map((x, i) => <Fragment key={i}>{i ? ' · ' : ''}<Alguien liga={liga} nombre={x} /></Fragment>)}</> : '';
     c.acc = <a className="pb-a" href={ir}>Ver la liga</a>;
   } else if (it.tipo === 'flyer') {
     const ir = '#/ligas/' + encodeURIComponent(it.liga || '');
@@ -370,7 +378,7 @@ function contenido(liga, it, pub) {
     c.cat = 'Cierre de la semana · ' + siglaDe(it.sv);
     c.vis = logoSv;
     c.txt = <>Cerramos la semana: <b>{it.eventos}</b> {it.eventos === 1 ? 'evento' : 'eventos'} y <b>{num(it.part)}</b> participaciones</>;
-    c.det = semanaDet(it);
+    c.det = semanaDet(it, liga);
   } else return null;
   return c;
 }
@@ -379,8 +387,9 @@ function lunesDet(it) {
   return [it.meta ? 'Meta: ' + it.meta + ' raperos' : '', it.contra ? 'Guerra contra ' + siglaDe(it.contra) : '',
     it.dorado ? 'Evento dorado: ' + limpio(it.dorado) : ''].filter(Boolean).join(' · ');
 }
-function semanaDet(it) {
-  const cs = (it.camps || []).map(([ev, q]) => (q || []).map(limpio).join(' y ') + ' en ' + limpio(ev));
+function semanaDet(it, liga) {
+  // 🪪 con su nombre oficial (17/11/2026)
+  const cs = (it.camps || []).map(([ev, q]) => (q || []).map((x) => liga.aka(x)).join(' y ') + ' en ' + limpio(ev));
   return [cs.length ? 'Campeones: ' + cs.join('; ') : '', it.meta && it.meta[0] >= it.meta[1] ? '✓ Cumplimos la meta (' + it.meta[0] + ' de ' + it.meta[1] + ')' : '',
     it.guerra ? 'Ganamos la guerra contra ' + siglaDe(it.contra) : ''].filter(Boolean).join(' · ');
 }
@@ -432,14 +441,15 @@ function MasFelicitado({ liga, pubs, A }) {
     <section className="pb-bloque"><h2 className="pb-st">Lo más felicitado<small>esta semana</small></h2>
     <ol className="pb-top">
       {top.map((it) => {
-        const k = ksDe(it)[0];
-        const quien = (it.quien || []).map(limpio).join(' y ');
+        const g = genteDe(liga, it);
+        const k = ksDe(it)[0] || (g[0] && g[0].k);
+        const quien = g.map((x) => x.n).join(' y ');
         const que = it.tipo === 'campeon' ? limpio(it.ev) : it.tipo === 'rango' ? 'rango ' + it.rg
           : it.tipo === 'pase' || it.tipo === 'sorteo' ? 'Pase de rapero' : it.tipo === 'ligahito' ? limpio(it.ln)
             : it.tipo === 'mesaward' ? 'MES AWARDS' : 'Most Wanted';
         return (
           <li key={it.id}><Cara liga={liga} k={k || ''} nombre={quien} cls="cara pb-top-cara" />
-            <span className="pb-top-n"><b>{quien}</b><small>{que}</small>
+            <span className="pb-top-n"><b><Algunos liga={liga} nombres={g.map((x) => x.n)} ks={g.map((x) => x.k)} cara={false} /></b><small>{que}</small>
               <i className="pb-top-b" style={{ width: Math.max(8, Math.round((cu(it) / max) * 100)) + '%' }} /></span>
             <em>👏 {num(cu(it))}</em></li>
         );
@@ -523,12 +533,12 @@ const FILTROS2 = [['', 'Todo'], ['campeones', 'Campeones'], ['rangos', 'Rangos']
 const hace = (liga, t) => { const c = liga.cuando(t); return c ? c.charAt(0).toUpperCase() + c.slice(1) : ''; };
 // el título en texto llano, para el escenario y los resúmenes
 function plano(liga, it) {
-  const q = (it.quien || []).map(limpio);
+  const q = genteDe(liga, it).map((x) => x.n);
   const quien = q.length > 2 ? q.slice(0, -1).join(', ') + ' y ' + q[q.length - 1] : q.join(' y ');
   const varios = q.length > 1;
   if (it.tipo === 'campeon') return 'Gané ' + limpio(it.ev) + (varios ? ' con ' + q.slice(1).join(' y ') : '');
-  if (it.tipo === 'caza') return 'Cacé a ' + limpio(it.a) + ' y ' + (varios ? 'cobramos ' : 'cobro ') + num(it.pts);
-  if (it.tipo === 'precio') return 'Le gané a ' + limpio(it.a) + ' y ' + (varios ? 'cobramos ' : 'cobro ') + num(it.pts);
+  if (it.tipo === 'caza') return 'Cacé a ' + liga.aka(it.a) + ' y ' + (varios ? 'cobramos ' : 'cobro ') + num(it.pts);
+  if (it.tipo === 'precio') return 'Le gané a ' + liga.aka(it.a) + ' y ' + (varios ? 'cobramos ' : 'cobro ') + num(it.pts);
   if (it.tipo === 'sobrevivio') return 'Sobreviví al Most Wanted';
   if (it.tipo === 'elegido') return 'Soy El Elegido';
   if (it.tipo === 'podio') return 'Mi primer podio: ' + limpio(it.ev);
@@ -643,7 +653,7 @@ function CartasG({ liga, xs, nuevo }) {
   const vistos = new Set();
   const us = xs.filter((it) => { const k = (it.ks || [])[0]; if (!k || vistos.has(k + it.carta)) return false; vistos.add(k + it.carta); return true; });
   if (!us.length) return null;
-  const nombres = [...new Set(us.map((it) => limpio((it.quien || [])[0] || '')))];
+  const nombres = [...new Set(us.map((it) => liga.aka((it.quien || [])[0] || '', (it.ks || [])[0])))];
   return (
     <article className={'pw-f c-v' + (nuevo ? ' nueva' : '')}>
       <span className="pw-v"><img className="pw-logo" alt="" src="/ul.png" /></span>
@@ -653,7 +663,7 @@ function CartasG({ liga, xs, nuevo }) {
         <div className="pw-abanico">
           {us.slice(0, 12).map((it) => {
             const k = (it.ks || [])[0];
-            return <button type="button" key={k + it.carta} onClick={() => accion.carta(k, it.carta)} aria-label={'La carta de ' + limpio((it.quien || [])[0] || '')}>
+            return <button type="button" key={k + it.carta} onClick={() => accion.carta(k, it.carta)} aria-label={'La carta de ' + liga.aka((it.quien || [])[0] || '', k)}>
               <Carta liga={liga} k={k} cual={it.carta} cls="pw-mcarta" abre={false} /></button>;
           })}
           {us.length > 12 ? <span className="pw-mas">+{us.length - 12}</span> : null}
@@ -672,8 +682,8 @@ function RangosG({ liga, xs, nuevo }) {
         <span className="pw-cat">Suben de rango · {xs.length}</span>
         <div className="pw-rngs">
           {xs.map((it) => {
-            const k = ksDe(it)[0] || '';
-            const n0 = limpio((it.quien || [])[0] || '');
+            const k = ksDe(it)[0] || (liga.quien((it.quien || [])[0]) || {}).k || '';
+            const n0 = liga.aka((it.quien || [])[0] || '', k);
             return (
               <a key={it.id || it.t + n0} href={'#/publicaciones/' + (it.id || '')} data-pub={it.id || undefined} aria-label={n0 + ': rango ' + it.rg + '. Felicitar o comentar'}>
                 <Cara liga={liga} k={k} nombre={n0} cls={'cara pw-rng-c' + (esPremium(pub, k) ? ' sp-prem-aro' : '')} />
@@ -708,8 +718,8 @@ function LogrosG({ liga, xs, nuevo }) {
           <span className="pw-cat">{tit}</span></div>
         <div className="pw-rngs">
           {xs.map((it) => {
-            const k = ksDe(it)[0] || '';
-            const n0 = limpio((it.quien || [])[0] || '');
+            const k = ksDe(it)[0] || (liga.quien((it.quien || [])[0]) || {}).k || '';
+            const n0 = liga.aka((it.quien || [])[0] || '', k);
             return (
               <a key={it.id || it.t + n0} href={'#/publicaciones/' + (it.id || '')} data-pub={it.id || undefined} aria-label={n0 + ': ' + tit.toLowerCase() + '. Felicitar o comentar'}>
                 <Cara liga={liga} k={k} nombre={n0} cls={'cara pw-rng-c' + (esPremium(pub, k) ? ' sp-prem-aro' : '')} />
@@ -744,7 +754,7 @@ function ServidoresG({ liga, xs, nuevo }) {
         <ul className="pw-anl pw-svl">
           {orden.map((it) => {
             const n = delHilo(it, Date.now()).length;
-            const det = lunes ? lunesDet(it) : semanaDet(it);
+            const det = lunes ? lunesDet(it) : semanaDet(it, liga);
             return (
               <li key={it.id || it.sv} data-pub={it.id || undefined}>
                 <img alt="" src={liga.logo(it.sv)} />
@@ -835,9 +845,9 @@ function ResumenDia({ liga, xs, abrir }) {
       {top.length ? (
         <div className="pw-res-c">
           {top.map((it) => {
-            const k = ksDe(it)[0];
+            const k = ksDe(it)[0] || (liga.quien((it.quien || [])[0]) || {}).k || '';
             const cual = cartaDe(liga, k);
-            const n0 = limpio((it.quien || [])[0] || '');
+            const n0 = liga.aka((it.quien || [])[0] || '', k);
             return (
               <a key={it.id || it.t} href={'#/publicaciones/' + (it.id || '')}>
                 {cual ? <Carta liga={liga} k={k} cual={cual} cls="pw-res-carta" abre={false} /> : <Cara liga={liga} k={k || ''} nombre={n0} cls="cara pw-res-cara" />}
@@ -940,7 +950,9 @@ export function Publicaciones({ liga, enc, foco = '' }) {
   const pasaSv = (it) => (!sv ? true : sv === 'sigo' ? ksDe(it).some((k) => sigo.includes(k)) : liga.svDe(it) === sv);
   const pasaQ = (it) => {
     if (!qn) return true;
-    const txt = [...(it.quien || []), it.ev, it.tit, it.ln, it.a, it.n, siglaDe(liga.svDe(it))].filter(Boolean).map((x) => limpio(x).toLowerCase()).join(' ');
+    // (y por su nombre oficial: «Velatz» encuentra lo que la llave escribió «velatzzzz»)
+    const txt = [...(it.quien || []), ...genteDe(liga, it).map((x) => x.n), it.ev, it.tit, it.ln, it.a, it.a ? liga.aka(it.a) : '', it.n, siglaDe(liga.svDe(it))]
+      .filter(Boolean).map((x) => limpio(x).toLowerCase()).join(' ');
     return txt.includes(qn);
   };
   const base = useMemo(() => todos.filter((it) => pasaSv(it) && pasaQ(it)), [todos, sv, qn, sigo]); // eslint-disable-line react-hooks/exhaustive-deps

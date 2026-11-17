@@ -758,10 +758,12 @@ export function pausaChat(estado, retryAfter) {
 
 /** Los favoritos de una llave: los tres de más OVR entre los que juegan (`tabla` es la del lobby), con el nombre como
  *  lo escribe la llave. Un nombre que en la tabla es de dos personas no cuenta: no se adivina quién es. */
-export function favoritosDe(L, tabla) {
+export function favoritosDe(L, tabla, buscar) {
   const ovr = new Map();
   const dobles = new Set();
+  const porK = new Map();
   for (const f of tabla || []) {
+    if (f && f.k) porK.set(f.k, f);
     const k = f && f.n ? claveTurno(f.n) : '';
     if (!k) continue;
     if (ovr.has(k)) dobles.add(k);
@@ -772,6 +774,16 @@ export function favoritosDe(L, tabla) {
     for (const b of R.b || []) {
       for (const lado of b[0] || []) {
         for (const q of String(lado || '').split(/\s*[,+&]\s*/)) {
+          // 🪪 por quién es —la tabla, los alias y lo que reconoció el vigía: `buscar`, el mismo de `genteChat()`— y con
+          // su nombre de la Liga (17/11/2026: «velatzzzz» es Velatz). Sin saberlo, como antes: el nombre exacto
+          const kq = buscar ? buscar(q.replace(/[\u{1F1E6}-\u{1F1FF}]/gu, '').trim()) || '' : '';
+          const fq = kq ? porK.get(kq) : null;
+          if (fq && fq.ovr) {
+            // por su clave: así dos que se llaman igual (el caso de `dobles`) no se mezclan, porque `buscar` ya los separó
+            const kk = 'k:' + kq;
+            if (!vistos.has(kk)) vistos.set(kk, [String(fq.n).replace(/[\u{1F1E6}-\u{1F1FF}]/gu, '').trim(), fq.ovr]);
+            continue;
+          }
           const k = claveTurno(q);
           if (k && ovr.has(k) && !dobles.has(k) && !vistos.has(k)) {
             vistos.set(k, [q.replace(/[\u{1F1E6}-\u{1F1FF}]/gu, '').trim(), ovr.get(k)]);
@@ -1907,8 +1919,10 @@ export function chatGeneralDe(cs, fuera) {
 
 /** El aviso: «¡Te toca!» (y «¡Te están llamando!» las veces siguientes) o «Sos el próximo», con la batalla y adónde
  *  ir (la llave, en Discord). */
-export function cuerpoTurno(L, bat, tipo, n = 1) {
-  const vs = bat.lados.join(' vs ');
+export function cuerpoTurno(L, bat, tipo, n = 1, oficial = null) {
+  // 🪪 cada nombre como lo conoce la Liga (`oficial`, del índice de «te toca»), no como lo escribió la llave (17/11/2026)
+  const lado = (x) => String(x || '').split(/(\s*[,+&]\s*)/).map((p, i) => (i % 2 || !oficial ? p : oficial(p) || p)).join('');
+  const vs = bat.lados.map(lado).join(' vs ');
   const evento = String((L && L.nombre) || 'la llave').slice(0, 60);
   return {
     v: 1, tipo: 'turno', id: (L && L.id) || '',
@@ -9925,7 +9939,7 @@ export class Avisos {
         if (lobby === null) {
           try { lobby = JSON.parse((await this.env.KV.get('web:lobby')) || '{}') || {}; } catch (e) { lobby = {}; }
         }
-        ms = momentosChat(L, nombre, favoritosDe(L, lobby.tabla || []), nivel, opc);
+        ms = momentosChat(L, nombre, favoritosDe(L, lobby.tabla || [], buscar), nivel, opc);
       }
       // 🏆 EL AVISO DEL CICLO, ANOTADO CON OTRO MENSAJE DE ESTA LLAVE (`campeonCerca()`): se lo queda ésta, así el cierre se
       // le suma en vez de salir aparte. Se pasa a su clave y se borra la del ciclo, para que no la tome otra llave
@@ -11147,7 +11161,8 @@ export class Avisos {
       }
       this.sql.exec('INSERT OR IGNORE INTO hechos (id, t) VALUES (?, ?)', c.clave, ahora);
       pedidos += subs.length;
-      const cuerpo = cuerpoTurno(c.L, c.bat, c.tipo, c.n);
+      const of = (this.indiceTurnos && this.indiceTurnos.o) || {};
+      const cuerpo = cuerpoTurno(c.L, c.bat, c.tipo, c.n, (p) => of[idx[claveTurno(p)]] || '');
       // ⚠️ con el mismo `topic`: si el teléfono estaba apagado, le llega sólo el último y no tres
       const estados = await Promise.all(subs.map((s) => empujar(s, cuerpo,
         { ttl: c.tipo === 'ahora' ? 3 * 60 : 10 * 60, topic: 'turno' + String(c.L.id).slice(-20) },

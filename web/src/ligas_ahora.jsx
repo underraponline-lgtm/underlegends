@@ -2,6 +2,7 @@
 // cada minuto, en `window.VIVO.ligas` (`ligasAhora()` de bot/avisos.js). Va aparte de ligas.jsx porque también la usa el
 // Inicio, que no baja esa página. Sin nada que mostrar no se dibuja: «sin dato no hay pieza».
 import { useEffect, useState } from 'react';
+import { Alguien } from './piezas.jsx';
 
 function leer(id) {
   const xs = (typeof window !== 'undefined' && window.VIVO && window.VIVO.ligas) || [];
@@ -27,8 +28,10 @@ export function BatallasAhora({ liga, id = '', cls = '' }) {
             <a className={'lgv-c lgv-' + x.e} href={'#/ligas/' + x.l}>
               <img alt="" src={liga.logo(x.sv)} />
               <span className="lgv-tx">
-                <b>{x.a}{x.fa ? ' ' + x.fa : ''} <em>vs</em> {x.b}{x.fb ? ' ' + x.fb : ''}</b>
-                <small>{x.n} · {x.e === 'terminada' && x.gana ? 'Ganó ' + x.gana + (x.como === 'replica' ? ' en la réplica' : '') : x.txt}</small>
+                {/* 🪪 con su cara y su nombre oficial (17/11/2026; `ka`/`kb` los manda el vigía cuando sabe quién es). Sin link
+                    propio: la tarjeta entera ya lleva a la liga */}
+                <b><Alguien liga={liga} nombre={x.a} k={x.ka} link={false} />{x.fa ? ' ' + x.fa : ''} <em>vs</em> <Alguien liga={liga} nombre={x.b} k={x.kb} link={false} />{x.fb ? ' ' + x.fb : ''}</b>
+                <small>{x.n} · {x.e === 'terminada' && x.gana ? <>Ganó <Alguien liga={liga} nombre={x.gana} k={x.gana === x.a ? x.ka : x.gana === x.b ? x.kb : ''} link={false} cara={false} />{x.como === 'replica' ? ' en la réplica' : ''}</> : x.txt}</small>
               </span>
             </a>
           </li>

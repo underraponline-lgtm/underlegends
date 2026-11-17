@@ -8,7 +8,7 @@
 // publicación —eran 46 de 80 renglones—, y Felicitar va sólo en los logros de verdad (campeón, rango, Most Wanted).
 import { MESES, ksDe, limpio, num, siglaDe } from './liga.js';
 import { Escudo, escudoDe } from './escudo.jsx';
-import { Cara, Carta, Ico, accion, promoAbierta } from './piezas.jsx';
+import { Alguien, Algunos, Cara, Carta, Ico, accion, promoAbierta } from './piezas.jsx';
 import { Miniatura, abrirVideo } from './video.jsx';
 
 // 📣 las promociones de los servidores (bot/promos.py, 16/10/2026): su pestaña, y no van en «En la Liga»
@@ -57,9 +57,13 @@ export const PUB_TIPOS = Object.fromEntries(['campeon', 'rango', 'caza', 'sobrev
   'tarjeta'].map((x) => [x, 1]));
 
 export function Pub({ liga, it, A }) {
-  const q = (it.quien || []).map(limpio);
-  const ks = Array.isArray(it.ks) ? it.ks : [];
-  const nombres = q.map((n, i) => (ks[i] && liga.T[ks[i]] ? <a key={i} href={'#/r/' + encodeURIComponent(ks[i])}>{n}</a> : <b key={i}>{n}</b>))
+  // 🪪 con su nombre oficial, su cara y su perfil, y la clave aunque el muro no la traiga (17/11/2026, Dlx: «si alguien
+  // escribe velatzzzz, debería mostrarse con su aka oficial… y hazlo más bonito con su foto y su cuenta»)
+  const ks0 = Array.isArray(it.ks) ? it.ks : [];
+  const fs = (it.quien || []).map((x, i) => liga.quien(x, ks0[i]));
+  const q = (it.quien || []).map((x, i) => (fs[i] ? limpio(fs[i].n) : limpio(x)));
+  const ks = Array.from({ length: Math.max(ks0.length, q.length) }, (_, i) => ks0[i] || (fs[i] && fs[i].k) || '');
+  const nombres = q.map((n, i) => (fs[i] ? <Alguien key={i} liga={liga} nombre={n} k={ks[i]} /> : <b key={i}>{n}</b>))
     .reduce((acc, x, i) => (i ? acc.concat([i === q.length - 1 ? ' y ' : ', ', x]) : [x]), []);
   let cat = '';
   let vis = null;
@@ -84,7 +88,7 @@ export function Pub({ liga, it, A }) {
     cat = 'MOST WANTED · CAZA';
     vis = <Cara liga={liga} k={ks[0] || ''} nombre={q[0] || '?'} cls="cara pub-cara" />;
     // ⚠️ en equipo son varios: «JJ, Snow, Verc y yinn cazó» (14/10/2026)
-    txt = <>{nombres}{q.length > 1 ? ' cazaron a ' : ' cazó a '}<b>{limpio(it.a)}</b> ({it.cat}) y {q.length > 1 ? 'cobran' : 'cobra'} <b>{num(it.pts)}</b></>;
+    txt = <>{nombres}{q.length > 1 ? ' cazaron a ' : ' cazó a '}<b><Alguien liga={liga} nombre={it.a} /></b> ({it.cat}) y {q.length > 1 ? 'cobran' : 'cobra'} <b>{num(it.pts)}</b></>;
     det = it.ev ? limpio(it.ev) : '';
   } else if (it.tipo === 'sobrevivio') {
     cat = 'MOST WANTED · SOBREVIVIÓ';
@@ -117,14 +121,17 @@ export function Pub({ liga, it, A }) {
   } else if (it.tipo === 'precio') {
     cat = 'PRECIO POR SU CABEZA';
     vis = <Cara liga={liga} k={ks[0] || ''} nombre={q[0] || '?'} cls="cara pub-cara" />;
-    txt = <>{nombres}{q.length > 1 ? ' le ganaron a ' : ' le ganó a '}<b>{limpio(it.a)}</b> y cobra el precio por su cabeza: <b>{num(it.pts)}</b></>;
+    txt = <>{nombres}{q.length > 1 ? ' le ganaron a ' : ' le ganó a '}<b><Alguien liga={liga} nombre={it.a} /></b> y cobra el precio por su cabeza: <b>{num(it.pts)}</b></>;
     det = it.ev ? limpio(it.ev) : '';
   } else if (it.tipo === 'premios') {
     cat = 'PREMIOS DE LA SEMANA';
     vis = <img className="pub-logo" alt="" src="/ul.png" />;
-    const p = [it.figura ? 'figura: ' + limpio(it.figura[0]) : '', it.revelacion ? 'revelación: ' + limpio(it.revelacion[0]) : '',
-      it.cazador ? 'cazador: ' + limpio(it.cazador[0]) : '', it.servidor ? 'servidor: ' + siglaDe(it.servidor[0]) : ''].filter(Boolean);
-    txt = <b>{p.join(' · ')}</b>;
+    // 🪪 cada uno con su cara y su perfil (`ks` es `{figura, revelacion, cazador}`, ver bot/muro.py)
+    const kp = it.ks && !Array.isArray(it.ks) && typeof it.ks === 'object' ? it.ks : {};
+    const p = [['figura', 'figura'], ['revelacion', 'revelación'], ['cazador', 'cazador']].filter(([r]) => it[r])
+      .map(([r, et]) => <span key={r}>{et}: <Alguien liga={liga} nombre={it[r][0]} k={kp[r]} /></span>)
+      .concat(it.servidor ? ['servidor: ' + siglaDe(it.servidor[0])] : []);
+    txt = <b>{p.reduce((acc, x, i) => (i ? acc.concat([' · ', x]) : [x]), [])}</b>;
   } else if (it.tipo === 'elegido') {
     cat = 'EL ELEGIDO';
     vis = <Cara liga={liga} k={ks[0] || ''} nombre={q[0] || '?'} cls="cara pub-cara" />;
@@ -184,7 +191,7 @@ export function Pub({ liga, it, A }) {
     txt = it.que === 'campeon' ? <>{nombres} es el campeón de <b>{limpio(it.ln)}</b></>
       : it.que === 'invicto' ? <>{nombres} lleva <b>{it.pg || 5} ganadas sin perder</b> en {limpio(it.ln)}</>
         : <>{nombres} tomó la punta de <b>{limpio(it.ln)}</b>{it.pts ? <> con {it.pts} puntos</> : null}</>;
-    det = it.que === 'campeon' && (it.podio || []).length > 1 ? 'Podio: ' + it.podio.map(limpio).join(' · ') : '';
+    det = it.que === 'campeon' && (it.podio || []).length > 1 ? <>Podio: <Algunos liga={liga} nombres={it.podio} y=" · " sep=" · " /></> : '';
     acc = <a className="pub-a" href={ir}>Ver la liga</a>;
   // ── 🔄 lo que publica sola la gente (bot/muro_solos.py, 15/11/2026). Acá en tercera persona, como el resto de este bloque:
   // en el perfil no va la firma de Publicaciones. Hasta la 5.47 no tenían texto y el perfil los contaba sin dibujarlos ──

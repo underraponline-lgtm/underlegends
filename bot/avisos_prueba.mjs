@@ -431,6 +431,17 @@ const ok = (cond, que, det) => {
   ok(JSON.stringify(A.favoritosDe(llaveDe(CUARTOS), [{ n: 'Ana', ovr: 80 }, { n: 'Dora', ovr: 90 },
     { n: 'Cami', ovr: 70 }, { n: 'cami', ovr: 75 }])) === '[["Dora",90],["Ana",80]]',
   'los favoritos: los de más OVR de la llave; un nombre de dos personas no cuenta');
+  // 🪪 con `buscar` (17/11/2026): quien la llave escribe con un alias sale con su nombre de la Liga
+  {
+    const LL = { rondas: [{ b: [[['velatzzzz 🇨🇱', 'Ana'], '']] }] };
+    const tb = [{ n: 'Velatz 🇨🇱', k: 'velatz', ovr: 95 }, { n: 'Ana', k: 'ana', ovr: 80 }];
+    const bus = (n) => ({ velatzzzz: 'velatz', ana: 'ana' }[n.toLowerCase()] || '');
+    ok(JSON.stringify(A.favoritosDe(LL, tb, bus)) === '[["Velatz",95],["Ana",80]]' && JSON.stringify(A.favoritosDe(LL, tb)) === '[["Ana",80]]',
+      'los favoritos, con el nombre de la Liga aunque la llave escriba otro (y sin `buscar`, como antes)');
+    const cu = A.cuerpoTurno({ nombre: 'COPA', id: 'x' }, { lados: ['velatzzzz 🇨🇱', 'Ana + bea'], r: 'Final' }, 'ahora', 1,
+      (p) => ({ velatzzzz: 'Velatz', bea: 'Bea' }[A.claveTurno(p)] || ''));
+    ok(cu.b.startsWith('Velatz vs Ana + Bea (Final)'), '«te toca»: cada nombre como lo conoce la Liga', cu.b);
+  }
   ok(A.chatGeneralDe([{ id: '1', type: 0, name: '💬┇charla' }, { id: '2', type: 0, name: 'chat-general' },
     { id: '3', type: 2, name: 'general' }, { id: '4', type: 0, name: 'general-staff' }]) === '2',
   'el chat general: «general» de texto, nunca el del staff ni el de voz');

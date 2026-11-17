@@ -625,8 +625,27 @@ def _banderas(s):
     return out
 
 
-def k_de(n, tabla):
-    """La clave del perfil de ese nombre, igual que `kDe()` de la página; `''` si no es seguro."""
+_ALIAS_MURO = [None]
+
+
+def _alias_muro():
+    """`{nombre normalizado: nombre de la Lista}` de `datos/akas.json` (los alias de la hoja AKAs y los de a mano)."""
+    if _ALIAS_MURO[0] is None:
+        try:
+            with io.open(os.path.join(BASE, 'datos', 'akas.json'), encoding='utf-8') as f:
+                a = (json.load(f) or {}).get('alias') or {}
+        except (OSError, ValueError):
+            a = {}
+        _ALIAS_MURO[0] = {_norm(k): v for k, v in a.items() if _norm(k) and v}
+    return _ALIAS_MURO[0]
+
+
+def k_de(n, tabla, _alias=True):
+    """La clave del perfil de ese nombre, igual que `kDe()` de la página; `''` si no es seguro.
+
+    🪪 Y POR SUS ALIAS (17/11/2026, Dlx: «si alguien escribe velatzzzz, debería mostrarse con su aka oficial, Velatz»):
+    si el nombre no está en la tabla, se prueba con el nombre de la Lista que dice `datos/akas.json`. Sin esto, la
+    publicación de quien jugó con un alias salía sin cara ni link."""
     exacto = [f for f in tabla or [] if f.get('k') and f.get('n') == n]
     if exacto:
         return exacto[0]['k']
@@ -635,7 +654,10 @@ def k_de(n, tabla):
         return c[0]['k']
     ccs = _banderas(n)
     m = [f for f in c if str(f.get('cc') or '').lower() in ccs]
-    return m[0]['k'] if len(m) == 1 else ''
+    if len(m) == 1:
+        return m[0]['k']
+    real = _alias_muro().get(_norm(n)) if _alias and not c else None
+    return k_de(real, tabla, _alias=False) if real and _norm(real) != _norm(n) else ''
 
 
 def con_claves(items, tabla, entera=None):
@@ -1077,6 +1099,15 @@ def _self_check():
     ok(all(x in DE_ALGUIEN for x in ('podio', 'top10', 'subio', 'racha', 'crewunion', 'crewnueva', 'svtop'))
        and not any(x in DE_ALGUIEN for x in ('svlunes', 'svsemana', 'svmeta', 'svrecord', 'svnuevo', 'svtier')),
        'lo de la gente lleva `ks` (seguidores, Felicitar, apagar); lo del servidor solo, no')
+    # 🪪 por sus alias (17/11/2026): «velatzzzz» de una llave es Velatz, con su perfil
+    viejo_al = _ALIAS_MURO[0]
+    _ALIAS_MURO[0] = {_norm('velatzzzz'): 'Velatz', _norm('Ana'): 'Bea'}
+    try:
+        tb = [{'n': 'Velatz', 'k': 'velatz'}, {'n': 'Ana', 'k': 'ana'}, {'n': 'Bea', 'k': 'bea'}]
+        ok(k_de('velatzzzz', tb) == 'velatz' and k_de('Ana', tb) == 'ana' and k_de('Nadie', tb) == '',
+           'la clave de una publicación, también por los alias; el nombre exacto de la tabla gana siempre')
+    finally:
+        _ALIAS_MURO[0] = viejo_al
     print('\n   %s\n' % ('todo bien' if not mal else '🔴 %d mal' % mal))
     return mal
 

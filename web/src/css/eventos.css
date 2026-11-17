@@ -404,10 +404,11 @@
 .evs-rs button:focus-visible{outline:2px solid var(--tinta);outline-offset:-3px}
 .evs-cr{display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));gap:8px}
 .evs-c{display:grid;align-content:start;border:1.5px solid var(--suave);min-width:0}
-.evs-c span{display:flex;justify-content:space-between;align-items:center;gap:8px;padding:8px 9px;color:var(--gris)}
-.evs-c span + span{border-top:1px solid var(--suave)}
-.evs-c span b{min-width:0;font:700 13.5px/1.2 Archivo,sans-serif;overflow-wrap:anywhere}
-.evs-c span.g{background:#29B298;color:#030304}
+/* (con `>`: adentro va la cara de cada uno, que también es un `span`; 17/11/2026) */
+.evs-c > span{display:flex;justify-content:space-between;align-items:center;gap:8px;padding:8px 9px;color:var(--gris)}
+.evs-c > span + span{border-top:1px solid var(--suave)}
+.evs-c > span > b{min-width:0;font:700 13.5px/1.2 Archivo,sans-serif;overflow-wrap:anywhere}
+.evs-c > span.g{background:#29B298;color:#030304}
 .evs-c i{flex:none;font:700 12px/1 "Barlow Condensed",sans-serif;font-style:normal;letter-spacing:.08em;text-transform:uppercase}
 .evs-acc{display:flex;flex-wrap:wrap;align-items:center;gap:10px 12px;padding-top:12px;border-top:1px solid var(--suave)}
 .evs .t-acc{padding:0}

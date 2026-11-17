@@ -12,7 +12,7 @@
 // `ponerPrecio()`, `errorPrecio()` y `PR_EST`. Se redibuja con `lg:precios`. Afuera se ve cuánto vale cada cabeza, nunca quién puso.
 import { useEffect, useState } from 'react';
 import { limpio, norm, num, utc } from './liga.js';
-import { Bandera, Cara, DosToques, Ico } from './piezas.jsx';
+import { Alguien, Algunos, Bandera, Cara, DosToques, Ico } from './piezas.jsx';
 import { Prenda, Stickers } from './abajo.jsx';
 import { useCrews } from './crews.js';
 import { useSalon } from './mesawards.jsx';
@@ -68,7 +68,7 @@ function Billetera({ liga, dc }) {
         </dl>
         {act.length ? (
           <div className="tn-mios"><small>Tus precios de esta semana · si nadie los caza, vuelven</small>
-            <ul>{act.map((m, i) => <li key={i}>{limpio((liga.fila(m.cabeza) || {}).n || m.cabeza)} <b>{num(m.monto)}</b></li>)}</ul></div>
+            <ul>{act.map((m, i) => <li key={i}>{liga.aka(m.cabeza)} <b>{num(m.monto)}</b></li>)}</ul></div>
         ) : null}
       </div>
     );
@@ -201,7 +201,7 @@ function Cabezas({ liga, dc }) {
     </li>
   ));
   const cazas = (T.cazas || []).slice().reverse();
-  const nombre = (x) => limpio((liga.fila(x) || {}).n || x);
+  const nombre = (x) => liga.aka(x);
   return (
     <section data-tuto="tn-precio" className="sec tn-sec" id="tn-cabeza" aria-labelledby="tn-cab-t">
       <div className="sec-t"><h2 id="tn-cab-t">Precio por cabeza</h2>
@@ -232,12 +232,13 @@ function Cabezas({ liga, dc }) {
           <h3 className="tn-h">Lo último que se cobró</h3>
           <ul className="tn-libro">
             {cazas.map((x, i) => {
-              const f = liga.fila(x.cabeza);
+              const f = liga.quien(x.cabeza);
               return (
                 <li key={i}>
-                  <span className="tn-libro-c">{x.por.slice(0, 2).map((y) => { const g = liga.fila(y[0]); return <Cara key={y[0]} liga={liga} k={g ? g.k : ''} nombre={y[0]} cls="tn-lc" />; })}</span>
-                  <span className="tn-libro-t"><span><b>{x.por.map((y) => nombre(y[0])).join(' y ')}</b>{x.por.length > 1 ? ' le ganaron a ' : ' le ganó a '}
-                    <b>{nombre(x.cabeza)}</b></span><small>{limpio(x.ev)}{x.t ? ' · ' + liga.cuando(x.t) : ''}</small></span>
+                  <span className="tn-libro-c">{x.por.slice(0, 2).map((y) => { const g = liga.quien(y[0]); return <Cara key={y[0]} liga={liga} k={g ? g.k : ''} nombre={y[0]} cls="tn-lc" />; })}</span>
+                  {/* 🪪 con su perfil (17/11/2026): las caras de quienes cobraron ya están a la izquierda; la de la cabeza, en el texto */}
+                  <span className="tn-libro-t"><span><b><Algunos liga={liga} nombres={x.por.map((y) => y[0])} cara={false} /></b>{x.por.length > 1 ? ' le ganaron a ' : ' le ganó a '}
+                    <b><Alguien liga={liga} nombre={x.cabeza} /></b></span><small>{limpio(x.ev)}{x.t ? ' · ' + liga.cuando(x.t) : ''}</small></span>
                   <b className="tn-mas">+{num(x.monto)}{x.por.length > 1 ? <small> entre {x.por.length}</small> : null}</b>
                 </li>
               );

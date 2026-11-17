@@ -329,6 +329,20 @@ def indice_turnos(padron, alias):
     return out
 
 
+def oficiales(padron, idx):
+    """`{discord_id: nombre de la Lista, sin bandera}` de las cuentas del índice de «te toca»."""
+    import re as _re
+    quedan = set(idx.values())
+    out = {}
+    for r in padron or ():
+        did = str(r.get('discord_id') or '').strip()
+        if did in quedan and did not in out and r.get('raw'):
+            n = _re.sub('[\U0001F1E6-\U0001F1FF]', '', str(r['raw'])).strip()
+            if n:
+                out[did] = n
+    return out
+
+
 def subir_turnos(aplicar):
     """El índice a KV, sólo si cambió (se lee antes y se compara: una escritura de KV por cambio, no por corrida)."""
     try:
@@ -340,7 +354,10 @@ def subir_turnos(aplicar):
         print('   🎤 te toca: no pude leer la Lista o los alias (%s)' % str(e)[:60])
         return
     idx = indice_turnos(padron, alias)
-    nuevo = json.dumps({'v': 1, 'n': idx}, ensure_ascii=False, sort_keys=True, separators=(',', ':'))
+    # 🪪 y el nombre de la Liga de cada cuenta (17/11/2026, Dlx: «si alguien escribe velatzzzz, debería mostrarse con su
+    # aka oficial, Velatz»): el aviso de «te toca» escribe a la gente como la conoce la Liga, no como la escribió la llave
+    nuevo = json.dumps({'v': 1, 'n': idx, 'o': oficiales(padron, idx)}, ensure_ascii=False, sort_keys=True,
+                       separators=(',', ':'))
     print('   🎤 te toca: %d nombre(s) con su Discord ID' % len(idx))
     if not aplicar:
         return

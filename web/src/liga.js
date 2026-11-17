@@ -319,12 +319,56 @@ export class Liga {
       return { n, f: this.T[k] || this.fila(n) || (p ? { k, n: p[0] } : null) };
     });
   }
+  // 🪪 QUIÉN ES UN NOMBRE COMO LO ESCRIBIÓ EL ORGANIZADOR (Dlx, 17/11/2026: «si alguien escribe velatzzzz, debería
+  // mostrarse con su aka oficial, Velatz… y hazlo más bonito con su foto y su cuenta»; «dale, hazlo en todas partes»).
+  // La fila de su perfil: por la clave si se sabe (`k`, la de la tabla, la de un perfil abierto o la de un organizador),
+  // si no por el nombre —tal cual, su alias, lo que el vigía reconoció en vivo, en otro orden o sin el «(R)» del
+  // revivido—. Sin nadie, `null`: el nombre queda como lo escribieron.
+  // ⚡ UNA VEZ POR NOMBRE: una llave repite cada nombre en cada ronda y el perfil, «Tu semana» y los duelos recorren todas
+  // las llaves (`esDe()`). Se vuelve a calcular si llega otro `VIVO` (lo que el vigía reconoció cambia con él)
+  quien(nombre, k) {
+    if (k) {
+      const f = this.T[k] || this.X[k];
+      if (f) return f;
+      const p = (this.d.orgp || {})[k];
+      if (p && p[0]) return { k, n: p[0] };
+    }
+    const s = String(nombre || '');
+    if (!s) return null;
+    const V = W.VIVO;
+    if (!this.qM || this.qV !== V) { this.qM = new Map(); this.qV = V; }
+    let f = this.qM.get(s);
+    if (f !== undefined) return f;
+    f = this.fila(s) || this.filaEnOtroOrden(s);
+    if (!f) {
+      const sin = s.replace(/\s*[(（][^()（）]*[)）]?\s*$/u, '');
+      if (sin && sin !== s) f = this.fila(sin);
+    }
+    f = f || null;
+    if (this.qM.size > 20000) this.qM = new Map();
+    this.qM.set(s, f);
+    return f;
+  }
+  // el nombre que se lee: el oficial si se sabe quién es; si no, como lo escribieron. Un equipo («A & B») de a uno
+  aka(nombre, k) {
+    const f = this.quien(nombre, k);
+    if (f) return limpio(f.n);
+    const s = String(nombre || '');
+    return / & /.test(s) ? s.split(/\s+&\s+/).map((x) => this.aka(x)).filter(Boolean).join(' & ') : limpio(s);
+  }
+  // lo de una llave en vivo, donde un equipo viene con comas («A, B»): «A y B», cada uno con su nombre oficial
+  akaVivo(x) {
+    return String(x || '').split(/\s*,\s*/).map((y) => this.aka(y)).filter(Boolean).join(' y ');
+  }
+  // 🔑 y para contar —su perfil, «Tu semana», sus duelos—, también lo que se escribió con su alias: «velats» es Velatz
   esDe(nombre, k) {
     const f = this.T[k];
     if (!f) return false;
     const a = limpio(nombre);
     const b = limpio(f.n);
-    return this.dobles.has(b.toLowerCase()) ? a === b : a.toLowerCase() === b.toLowerCase();
+    if (this.dobles.has(b.toLowerCase()) ? a === b : a.toLowerCase() === b.toLowerCase()) return true;
+    const q = this.quien(nombre);
+    return !!q && q.k === k;
   }
   oficiales() { return (this.d.tabla || []).filter((f) => f.pos).sort((a, b) => a.pos - b.pos); }
   // una fecha que falta no se escribe: decía «el undefined»
@@ -590,7 +634,9 @@ export class Liga {
     const procesada = (L) => hechas.some((x) => { try { return !!(window.llaveDeEvento && window.llaveDeEvento(x, [L])); } catch (err) { return false; } });
     return ls.filter((L) => this.ahora - (L.ed || L.pub || 0) < 8 * 3600000 && !procesada(L)).map((L) => {
       const R = (L.rondas || [])[(L.rondas || []).length - 1];
-      return { L, e: de(L), camp: R && R.b && R.b.length === 1 ? limpio(String(R.b[0][1] || '').split(/\s*,\s*/).join(' y ')) : '' };
+      // 🪪 `campN`: los nombres como vienen, para la cara y el perfil de cada uno; `camp`, el texto con los oficiales
+      const campN = R && R.b && R.b.length === 1 ? String(R.b[0][1] || '').split(/\s*,\s*/).filter((x) => limpio(x)) : [];
+      return { L, e: de(L), campN, camp: campN.map((x) => this.aka(x)).join(' y ') };
     });
   }
   // 🔴 SE BORRÓ SU LLAVE Y NO HUBO OTRA: EL EVENTO SE CANCELÓ (LA REDENCION, FFA, 03/10/2026, Dlx: «pinchó» y «la
@@ -636,9 +682,11 @@ export class Liga {
   // 🔑 por FECHA, la más nueva primero: el número es el orden en que el ciclo las cargó, y se procesan desordenadas (lo
   // que ya hacía Fechas). «La última llave» y «el último campeón» salían de otro día (revisión del 04/10/2026)
   llavesPorFecha() { return this.llaves().slice().sort((a, b) => utc(this.fechaLlave(b)) - utc(this.fechaLlave(a))); }
+  // 🪪 con su nombre oficial (17/11/2026): la llave trae el que escribió el organizador, y quien lo busque en la tabla lo
+  // encuentra igual (`fila()` con el oficial es el exacto)
   campeon(ll) {
     const t = ll.tabla || [];
-    const g = t.filter((x) => x[1] === 'Campeón').map((x) => limpio(x[0]));
+    const g = t.filter((x) => x[1] === 'Campeón').map((x) => this.aka(x[0], x[3]));
     // 🏆 SÓLO QUIEN GANÓ LA FINAL (16/11/2026): sin fila «Campeón» la llave no terminó o se cargó a medias, y tomar la primera
     // fila daba campeón a quien perdió la semi («Primera corona para Player» en L VS MOSQUI). Sin campeón, ninguno
     return g;
@@ -764,15 +812,20 @@ export class Liga {
         const k = (it.ks || [])[i];
         if (!k || vistos.has(k) || k === yo) return;
         vistos.add(k);
-        out.push([k, limpio(q), et]);
+        out.push([k, this.aka(q, k), et]);
       });
     });
     return out;
   }
   // una novedad del muro, para «Lo último»: [categoría, título, visual, cuándo, destino]
+  // 🪪 con los nombres oficiales y la clave de cada uno aunque el muro no la traiga (17/11/2026): el muro escribe el nombre
+  // de la llave, y sin clave no había cara ni perfil
   itemMuro(it) {
-    const q = (it.quien || []).map(limpio);
-    const ks = ksDe(it);
+    const ks0 = ksDe(it);
+    const fs = (it.quien || []).map((n, i) => this.quien(n, ks0[i]));
+    const q = (it.quien || []).map((n, i) => (fs[i] ? limpio(fs[i].n) : limpio(n)));
+    // (tantas como traiga el muro: una carta nueva puede venir con su clave y sin nombre)
+    const ks = Array.from({ length: Math.max(ks0.length, q.length) }, (_, i) => ks0[i] || (fs[i] && fs[i].k) || '');
     const c = this.cuando(it.t);
     if (it.tipo === 'tarjeta') {
       const nombre = { pais: 'de País', temporada: 'de Temporada', servidor: 'de Servidor', competitivo: 'Competitiva' }[it.carta];
@@ -795,7 +848,7 @@ export class Liga {
         ['cara', ks[0] || '', q[0]], c, { llave: it.ll }];
     }
     if (it.tipo === 'caza') {
-      return ['SE BUSCA · CAZA', q[0] + ' cazó a ' + it.a + ' (' + it.cat + ') y cobra ' + num(it.pts),
+      return ['SE BUSCA · CAZA', q[0] + ' cazó a ' + this.aka(it.a) + ' (' + it.cat + ') y cobra ' + num(it.pts),
         ['cara', ks[0] || '', q[0]], c, { ancla: 'sebusca' }];
     }
     if (it.tipo === 'anuncio') {

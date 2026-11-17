@@ -19,7 +19,7 @@ import { Fragment, useEffect, useMemo, useRef, useState } from 'react';
 import { PopCab } from './pop.jsx';
 import { MESES, limpio, norm, num, resultado, siglaDe, srcLogo, utc } from './liga.js';
 import { Escudo, escudoDe } from './escudo.jsx';
-import { Bandera, Cara, Carta, Chevron, Compartir, Ico, accion, enlace, nombrePais } from './piezas.jsx';
+import { Alguien, Bandera, Cara, Carta, Chevron, Compartir, Ico, accion, enlace, nombrePais } from './piezas.jsx';
 import { useDesliza } from './anima.js';
 import { SeBusca } from './abajo.jsx';
 import { W, aPng, armarYCompartir, carta, lienzo, pie } from './historia.js';
@@ -271,7 +271,8 @@ const COL = {
   // 🏆 el tier de la crew (19/10/2026, bot/crews_tiers.py): se ordena de Leyenda a Bronce
   tier: { t: 'Tier', s: (f) => f.tier || 0, v: (f, x) => <TierChip n={f.tier || 0} T={x.liga.d.crews_tiers} chico /> },
   mejor: { t: 'Su mejor', tit: 'El mejor de la crew en la temporada', txt: 1, cls: 'c-izq', s: (f) => norm(limpio(f.mejor)),
-    v: (f, x) => { const t = f.mejor ? x.liga.fila(f.mejor) : null; return t ? <a className="rk-lnk" href={'#/r/' + encodeURIComponent(t.k)}>{limpio(f.mejor)}</a> : limpio(f.mejor || ''); } },
+    // 🪪 con su cara y su nombre oficial (17/11/2026)
+    v: (f, x) => (f.mejor ? <Alguien liga={x.liga} nombre={f.mejor} cls={x.liga.quien(f.mejor) ? 'rk-lnk' : ''} /> : '') },
 };
 
 // 🔑 CADA RANKING DICE SUS FILAS, SU ORDEN Y SUS COLUMNAS (el `SUBS` de app.js). `movil` son las que entran en un

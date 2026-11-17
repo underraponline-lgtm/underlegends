@@ -270,7 +270,7 @@ function Fechas({ liga, L, h }) {
                     <span className="lpg-res">
                       {g ? <em className={'lpg-como ' + (como === 'replica' ? 'rep' : 'dir')}>{como === 'replica' ? 'Réplica' : 'Directa'}</em> : <em className="lpg-como sin">Sin veredicto</em>}
                       {pa !== '' && pb !== '' && pa != null ? <span className="lpg-ptb" title="PTB de cada lado">{ptbTx(pa)} – {ptbTx(pb)}</span> : null}
-                      {vid ? <button type="button" className="lpg-vid" onClick={() => abrirVideo({ vid, tit: limpio(a) + ' vs ' + limpio(b), link: 'https://www.youtube.com/watch?v=' + vid })} aria-label={'Ver el video de ' + limpio(a) + ' contra ' + limpio(b)}>▶</button> : null}
+                      {vid ? <button type="button" className="lpg-vid" onClick={() => abrirVideo({ vid, tit: h.ak(a) + ' vs ' + h.ak(b), link: 'https://www.youtube.com/watch?v=' + vid })} aria-label={'Ver el video de ' + h.ak(a) + ' contra ' + h.ak(b)}>▶</button> : null}
                       {L.vlink && mid ? <a className="lpg-ver" href={L.vlink + mid} target="_blank" rel="noopener noreferrer" aria-label="El veredicto en Discord">↗</a> : null}
                     </span>
                   </li>
@@ -332,18 +332,21 @@ function estadoLiga(liga, L) {
 // 14/10/2026: ForceGP es staff, no está entre los que jugaron eventos, y «le pico donde dice FORCE y no me lleva a nada»)
 function herramientas(liga, L) {
   const yo = liga.yo;
-  const kDe = (raw) => { const f = liga.fila(raw); return f ? f.k : ((L.ks || {})[raw] || ''); };
+  const kDe = (raw) => { const f = liga.quien(raw); return f ? f.k : ((L.ks || {})[raw] || ''); };
+  // 🪪 el nombre que se lee: el oficial si se sabe quién es (17/11/2026, Dlx: «si alguien escribe velatzzzz, debería
+  // mostrarse con su aka oficial, Velatz»); si no, como lo escribieron
+  const ak = (raw) => liga.aka(raw, kDe(raw));
   const miK = (window.DC && window.DC.clave) || (yo && yo.k) || '';
   const esYo = (raw) => (!!yo && liga.esDe(raw, yo.k)) || (!!miK && kDe(raw) === miK);
   const nombre = (raw, cls) => {
     const k = kDe(raw);
-    return k ? <a className={cls} href={'#/r/' + encodeURIComponent(k)}>{limpio(raw)}</a> : <span className={cls}>{limpio(raw)}</span>;
+    return k ? <a className={cls} href={'#/r/' + encodeURIComponent(k)}>{ak(raw)}</a> : <span className={cls}>{ak(raw)}</span>;
   };
   const cara = (raw, cls = 'cara dv-cara') => {
     const k = kDe(raw);
     return k ? <Cara liga={liga} k={k} nombre={raw} cls={cls} /> : <span className={cls + ' ini'}>{(limpio(raw).slice(0, 1) || '?').toUpperCase()}</span>;
   };
-  return { kDe, esYo, nombre, cara, miK };
+  return { kDe, esYo, nombre, cara, miK, ak };
 }
 // la del lobby y su detalle (`fechas`, `flyer` y los perfiles de los nombres que sólo están en las fechas)
 function conDetalle(L0, det) {
@@ -416,7 +419,7 @@ function Torneo({ liga, L, h, sinLado = false, corta = 0 }) {
               {abierta ? <> Toca el % de quien crees que gana: un voto por cuenta de Discord, y lo puedes cambiar hasta que la liga termine.</>
                 : (L.fin && L.fin.c) || L.cerrada ? <> La encuesta cerró: la liga terminó.</>
                   : <> La encuesta cerró: la liga lleva tres semanas sin batallas.</>}</p>
-            <small>{tot ? num(tot) + (tot === 1 ? ' voto' : ' votos') + (top ? ' · va ganando ' + limpio(top[0]) : '') : abierta ? 'Todavía nadie votó: ¿eres el primero?' : 'Nadie votó.'}
+            <small>{tot ? num(tot) + (tot === 1 ? ' voto' : ' votos') + (top ? ' · va ganando ' + h.ak(top[0]) : '') : abierta ? 'Todavía nadie votó: ¿eres el primero?' : 'Nadie votó.'}
               {abierta ? ' · cierra el ' + diaDe(liga.diaClave(L.vota)).replace(/^\S+ /, '') + ' si no hay más batallas' : ''}</small>
             {err === 'entrar' ? (
               <p className="lgt-enc-e">Para votar, entra con Discord. <button type="button" className="btn verde chico" onClick={() => accion.entrar()}>Entrar con Discord</button>
@@ -441,7 +444,7 @@ function Torneo({ liga, L, h, sinLado = false, corta = 0 }) {
                 {L.vota ? (abierta ? (
                   <button type="button" className={'lgt-v' + (esMio ? ' mio' : '') + (va === raw ? ' va' : '')} aria-pressed={esMio}
                     disabled={!!va} onClick={() => votar(raw)} style={{ '--p': p + '%' }}
-                    aria-label={(esMio ? 'Tu voto: ' : 'Votar a ') + limpio(raw) + ' para ganar ' + L.n + ' · ' + p + '% de los votos'}>
+                    aria-label={(esMio ? 'Tu voto: ' : 'Votar a ') + h.ak(raw) + ' para ganar ' + L.n + ' · ' + p + '% de los votos'}>
                     <i aria-hidden="true" />{esMio ? '✓ ' : ''}{p}%</button>
                 ) : <span className="lgt-v cerrada" style={{ '--p': p + '%' }} aria-label={p + '% de los votos'}><i aria-hidden="true" />{p}%</span>) : null}
               </li>
@@ -570,7 +573,7 @@ function Staff({ liga, L }) {
   const fila = ([n, k, an, ver]) => (
     <li key={n + k}>
       {k ? <Cara liga={liga} k={k} nombre={n} cls="cara dv-cara" /> : <span className="cara dv-cara ini">{(limpio(n).slice(0, 1) || '?').toUpperCase()}</span>}
-      {k ? <a className="lpg-st-n" href={kDe(k)}>{limpio(n)}</a> : <span className="lpg-st-n">{limpio(n)}</span>}
+      {k ? <a className="lpg-st-n" href={kDe(k)}>{liga.aka(n, k)}</a> : <span className="lpg-st-n">{liga.aka(n)}</span>}
       <small>{[an ? an + (an === 1 ? ' anuncio' : ' anuncios') : '', ver ? ver + (ver === 1 ? ' veredicto' : ' veredictos') : ''].filter(Boolean).join(' · ')}</small>
     </li>
   );
@@ -772,19 +775,19 @@ function carrera3(L) {
   }
   return out.slice(-12);
 }
-function Carrera3({ L }) {
+function Carrera3({ liga, L }) {
   const c = carrera3(L);
   if (c.length < 2) return null;
   const mx = Math.max(1, ...c.map((x) => Math.max(x[0], x[1])));
   const pts = (i) => c.map((x, j) => ((j / (c.length - 1)) * 300).toFixed(1) + ',' + (54 - (x[i] / mx) * 50).toFixed(1)).join(' ');
   const t = L.tabla;
   return (
-    <div className="lq3-carrera" aria-label={'Cómo vienen ' + limpio(t[0][0]) + ' y ' + limpio(t[1][0]) + ', fecha a fecha'}>
+    <div className="lq3-carrera" aria-label={'Cómo vienen ' + (liga ? liga.aka(t[0][0]) : limpio(t[0][0])) + ' y ' + (liga ? liga.aka(t[1][0]) : limpio(t[1][0])) + ', fecha a fecha'}>
       <svg viewBox="0 0 300 56" preserveAspectRatio="none" aria-hidden="true">
         <polyline points={pts(1)} fill="none" stroke="#F6F6F6" strokeWidth="2" vectorEffect="non-scaling-stroke" opacity=".7" />
         <polyline points={pts(0)} fill="none" stroke="#E41373" strokeWidth="3" vectorEffect="non-scaling-stroke" />
       </svg>
-      <small><span>Fecha a fecha</span><span className="a">{limpio(t[0][0])}</span><span>{limpio(t[1][0])}</span></small>
+      <small><span>Fecha a fecha</span><span className="a">{liga ? liga.aka(t[0][0]) : limpio(t[0][0])}</span><span>{liga ? liga.aka(t[1][0]) : limpio(t[1][0])}</span></small>
     </div>
   );
 }
@@ -793,9 +796,9 @@ function CaraACara3({ liga, L, h, e }) {
   const [a, b] = L.tabla;
   return (
     <div className="lq3-vs">
-      <span className="lq3-vs-c"><Carta3 liga={liga} L={L} raw={a[0]} h={h} /><b>{limpio(a[0])}</b><small>{a[2]} de {a[1]} ganadas</small></span>
+      <span className="lq3-vs-c"><Carta3 liga={liga} L={L} raw={a[0]} h={h} /><b>{h.ak(a[0])}</b><small>{a[2]} de {a[1]} ganadas</small></span>
       <span className="lq3-vs-x">{a[3]}–{b[3]}<small>{e.gap === 0 ? 'EMPATADOS' : 'A ' + e.gap}</small></span>
-      <span className="lq3-vs-c"><Carta3 liga={liga} L={L} raw={b[0]} h={h} /><b>{limpio(b[0])}</b><small>{b[2]} de {b[1]} ganadas</small></span>
+      <span className="lq3-vs-c"><Carta3 liga={liga} L={L} raw={b[0]} h={h} /><b>{h.ak(b[0])}</b><small>{b[2]} de {b[1]} ganadas</small></span>
     </div>
   );
 }
@@ -852,7 +855,7 @@ function Chica3({ liga, L, h, e, w4, w2 }) {
       <h3>{L.n}</h3>
       <p>{L.j ? 'Jornada ' + L.j + ' · ' : ''}{num(L.bat)} {L.bat === 1 ? 'batalla' : 'batallas'} · {desde3(liga, L.ult_t)}</p>
       <span className="lq3-duelo">{t.slice(0, 2).map((f) => (
-        <span key={f[0]}>{h.cara(f[0], 'cara lq3-d-c')}<b>{limpio(f[0])}</b><em>{f[3]}</em><i><u style={{ width: (100 * f[3]) / mx + '%' }} /></i></span>
+        <span key={f[0]}>{h.cara(f[0], 'cara lq3-d-c')}<b>{h.ak(f[0])}</b><em>{f[3]}</em><i><u style={{ width: (100 * f[3]) / mx + '%' }} /></i></span>
       ))}</span>
     </a>
   );
@@ -883,7 +886,7 @@ function Bento3({ liga, top, chicas, prox, camp, hs, est }) {
       {(top.tabla || []).length > 1 ? <CaraACara3 liga={liga} L={top} h={h} e={e} /> : null}
       <h3>{e.gap === 0 ? 'Empatados arriba' : e.gap !== null ? 'A ' + e.gap + (e.gap === 1 ? ' punto' : ' puntos') + ' de la punta' : top.n}</h3>
       <p>{top.j ? 'Jornada ' + top.j + ' · ' : ''}{num(top.bat)} batallas · la próxima decide quién manda.</p>
-      <Carrera3 L={top} />
+      <Carrera3 liga={liga} L={top} />
       <span className="lq3-acc"><a className="btn verde" href={aLiga(top)}>Ver la liga</a>{top.vota ? <a className="btn borde" href={aLiga(top)}>¿Quién gana? · Vota</a> : null}</span>
     </div>
   ) : null;
@@ -902,8 +905,8 @@ function Bento3({ liga, top, chicas, prox, camp, hs, est }) {
       <span className="lq3-t-sv"><img alt="" src={liga.logo(camp.sv)} />{camp.n} · {desde3(liga, camp.ult_t)}</span>
       <span className="lq3-camp">
         <Carta3 liga={liga} L={camp} raw={camp.fin.c} h={hs[camp.id]} />
-        <span><h3>{limpio(camp.fin.c)} se queda con la liga</h3>
-          <ol>{(camp.fin.p || [camp.fin.c]).slice(0, 3).map((n, i) => <li key={n}><i>{i + 1}</i><span>{limpio(n)}</span></li>)}</ol></span>
+        <span><h3>{hs[camp.id].ak(camp.fin.c)} se queda con la liga</h3>
+          <ol>{(camp.fin.p || [camp.fin.c]).slice(0, 3).map((n, i) => <li key={n}><i>{i + 1}</i><span>{hs[camp.id].ak(n)}</span></li>)}</ol></span>
       </span>
     </a>
   ) : null;
@@ -941,14 +944,14 @@ function Numeros3({ liga, ls, hs, det, est, top }) {
           <li key={q.raw + i}><i>{i + 1}</i>{hs[q.L.id].cara(q.raw, 'cara lq3-l-c')}<span><b>{hs[q.L.id].nombre(q.raw)}</b><small>{corto(q.L.n)} · de {q.j}</small><u><s style={{ width: (100 * q.g) / mxc + '%' }} /></u></span><em>{q.g}</em></li>
         ))}</ol>
         {invictos.length ? (
-          <p className="lq3-inv"><b>Sin perder</b>{invictos.slice(0, 5).map((x) => <span key={x.L.id + x.raw}>{hs[x.L.id].cara(x.raw, 'cara lq3-inv-c')}{limpio(x.raw)} <em>{x.pg}–0</em></span>)}</p>
+          <p className="lq3-inv"><b>Sin perder</b>{invictos.slice(0, 5).map((x) => <span key={x.L.id + x.raw}>{hs[x.L.id].cara(x.raw, 'cara lq3-inv-c')}{hs[x.L.id].ak(x.raw)} <em>{x.pg}–0</em></span>)}</p>
         ) : null}
       </div>
       {rey ? (
         <div className="lq3-rey">
           <p className="lq3-rey-t"><b>El que más gana en las ligas</b><small>y los que mandan en cada una</small></p>
           <span className="lq3-lados">{vivas.slice(0, 3).map(lider)}</span>
-          <span className="lq3-rey-c"><Carta3 liga={liga} L={rey.L} raw={rey.raw} h={hs[rey.L.id]} /><b>{limpio(rey.raw)}</b><small>{rey.g} ganadas de {rey.j}</small></span>
+          <span className="lq3-rey-c"><Carta3 liga={liga} L={rey.L} raw={rey.raw} h={hs[rey.L.id]} /><b>{hs[rey.L.id].ak(rey.raw)}</b><small>{rey.g} ganadas de {rey.j}</small></span>
           <span className="lq3-lados">{vivas.slice(3, 6).map(lider)}</span>
         </div>
       ) : null}
@@ -958,7 +961,7 @@ function Numeros3({ liga, ls, hs, det, est, top }) {
             <h3>¿Quién gana {corto(top.n)}?<small>{tot ? num(tot) + (tot === 1 ? ' voto' : ' votos') : 'nadie votó todavía'}</small></h3>
             <ul className="lq3-poll">{cand.map((f) => {
               const p = tot ? Math.round((100 * (Number(cuenta[f[0]]) || 0)) / tot) : 0;
-              return <li key={f[0]}><a href={aLiga(top)}><i style={{ width: p + '%' }} />{hs[top.id].cara(f[0], 'cara lq3-l-c')}<b>{limpio(f[0])}</b><em>{p}%</em></a></li>;
+              return <li key={f[0]}><a href={aLiga(top)}><i style={{ width: p + '%' }} />{hs[top.id].cara(f[0], 'cara lq3-l-c')}<b>{hs[top.id].ak(f[0])}</b><em>{p}%</em></a></li>;
             })}</ul>
             <small className="lq3-nota">{V.t ? 'Toca a quien crees que gana: se vota en la página de la liga, un voto por cuenta.' : 'Se vota en la página de la liga, un voto por cuenta.'}</small>
           </div>
@@ -1013,9 +1016,9 @@ function Todas3({ liga, ls, hs, est }) {
                 <b className="lq3-c-n">{L.n}</b>
                 <span className="lq3-c-sv"><img alt="" src={liga.logo(L.sv)} />{siglaDe(L.sv)} · {num(L.bat)} {L.bat === 1 ? 'batalla' : 'batallas'} · {(L.tabla || []).length} raperos</span>
                 {x ? (
-                  <span className="lq3-c-l">{h.cara(fin ? L.fin.c : x[0], 'cara lq3-c-cara')}<small>{fin ? 'Campeón' : '1º'}</small><b>{limpio(fin ? L.fin.c : x[0])}</b>{fin ? null : <i>{x[3]} PTS</i>}</span>
+                  <span className="lq3-c-l">{h.cara(fin ? L.fin.c : x[0], 'cara lq3-c-cara')}<small>{fin ? 'Campeón' : '1º'}</small><b>{h.ak(fin ? L.fin.c : x[0])}</b>{fin ? null : <i>{x[3]} PTS</i>}</span>
                 ) : null}
-                <small className="lq3-c-u">{y && !fin ? (e.gap === 0 ? 'Empatado con ' + limpio(y[0]) : 'Le saca ' + e.gap + ' a ' + limpio(y[0])) + ' · ' : ''}{L.ult_t ? 'la última, ' + desde3(liga, L.ult_t) : 'todavía sin batallas'}</small>
+                <small className="lq3-c-u">{y && !fin ? (e.gap === 0 ? 'Empatado con ' + h.ak(y[0]) : 'Le saca ' + e.gap + ' a ' + h.ak(y[0])) + ' · ' : ''}{L.ult_t ? 'la última, ' + desde3(liga, L.ult_t) : 'todavía sin batallas'}</small>
               </span>
             </a>
           </li>
@@ -1035,13 +1038,13 @@ function Estante3({ liga }) {
         {/* 🏆 el premio de cada título (Dlx, 15/11/2026): una temporada de Pase premium, en el Inventario del campeón */}
         <p className="lgh-sc-premio"><Ico n="pase" t={18} /><span>Cada campeón de liga gana <b>una temporada de Pase premium</b>: la usa desde su Inventario, en esta temporada o en la que elija.</span></p>
         {xs.length ? <div className="lq3-estante">{xs.map((x) => {
-          const k = (x.ks || {})[x.c] || (liga.fila(x.c) || {}).k || '';
+          const k = (x.ks || {})[x.c] || (liga.quien(x.c) || {}).k || '';
           const u = k ? cartaLiga(liga, x.id, k) : '';
           return (
             <a key={x.id + x.ult} href={'#/ligas/' + encodeURIComponent(x.id)}>
-              {u ? <img className="lq3-carta" src={u} alt={'Carta de liga de ' + limpio(x.c)} loading="lazy" decoding="async" />
+              {u ? <img className="lq3-carta" src={u} alt={'Carta de liga de ' + liga.aka(x.c, k)} loading="lazy" decoding="async" />
                 : <span className="lq3-sinc">{k ? <Cara liga={liga} k={k} nombre={x.c} cls="cara lq3-sinc-c" /> : <span className="cara lq3-sinc-c ini">{(limpio(x.c).slice(0, 1) || '?').toUpperCase()}</span>}</span>}
-              <span className="lq3-placa">{limpio(x.c)}<small>{x.n}{x.lt ? ' T' + x.lt : ''} · {desde3(liga, x.ult)}</small></span>
+              <span className="lq3-placa">{liga.aka(x.c, k)}<small>{x.n}{x.lt ? ' T' + x.lt : ''} · {desde3(liga, x.ult)}</small></span>
             </a>
           );
         })}</div> : <p className="lq3-vacia">Cuando una liga termina, su campeón entra acá con su carta de liga, y se lleva la insignia de <b>Campeón de liga</b>. Todavía no terminó ninguna en esta temporada.</p>}
@@ -1139,8 +1142,8 @@ function Jornadas3({ L, h }) {
           <span className={'lp3-ld' + (g === a ? ' g' : '')}>{h.cara(a, 'cara lp3-ld-c')}{h.nombre(a)}<em>{ptbTx(pa)}</em></span>
           <span className="lp3-vs">VS</span>
           <span className={'lp3-ld d' + (g === b ? ' g' : '')}>{h.cara(b, 'cara lp3-ld-c')}{h.nombre(b)}<em>{ptbTx(pb)}</em></span>
-          <small>{g ? (como === 'replica' ? 'Réplica' : 'Directo') + ' · ganó ' + limpio(g) : 'Sin veredicto todavía'}
-            {vid ? <button type="button" className="lpg-vid" onClick={() => abrirVideo({ vid, tit: limpio(a) + ' vs ' + limpio(b), link: 'https://www.youtube.com/watch?v=' + vid })} aria-label={'Ver el video de ' + limpio(a) + ' contra ' + limpio(b)}>▶</button> : null}
+          <small>{g ? (como === 'replica' ? 'Réplica' : 'Directo') + ' · ganó ' + h.ak(g) : 'Sin veredicto todavía'}
+            {vid ? <button type="button" className="lpg-vid" onClick={() => abrirVideo({ vid, tit: h.ak(a) + ' vs ' + h.ak(b), link: 'https://www.youtube.com/watch?v=' + vid })} aria-label={'Ver el video de ' + h.ak(a) + ' contra ' + h.ak(b)}>▶</button> : null}
             {L.vlink && mid ? <a className="lpg-ver" href={L.vlink + mid} target="_blank" rel="noopener noreferrer" aria-label="El veredicto en Discord">↗</a> : null}</small>
         </li>
       ))}</ul>
@@ -1165,10 +1168,10 @@ function Minis3({ liga, L, h }) {
         <b>{d === null ? (fin ? 'Terminó' : 'Sin anunciar') : d === 0 ? 'Se juega hoy' : 'En ' + d + (d === 1 ? ' día' : ' días')}</b>
         <span>{d !== null ? cap(L.prox.t ? liga.dia(L.prox.t) : diaDe(L.prox.d)) : fin ? 'La próxima temporada, cuando la anuncien' : 'La anuncia ' + siglaDe(L.sv) + ' en su Discord'}</span></span></div>
       <div className="lp3-mini" style={{ '--c': 'var(--verde)' }}><span className="ic">{u ? h.cara(u[2], 'cara lp3-mini-c') : '—'}</span><span><small>La última batalla{L.ult_t ? ' · ' + desde3(liga, L.ult_t) : ''}</small>
-        <b>{u ? limpio(u[2]) + ' le ganó a ' + limpio(u[2] === u[0] ? u[1] : u[0]) : 'Todavía ninguna'}</b>
+        <b>{u ? h.ak(u[2]) + ' le ganó a ' + h.ak(u[2] === u[0] ? u[1] : u[0]) : 'Todavía ninguna'}</b>
         <span>{u ? (u[3] === 'replica' ? 'En réplica' : 'Directo') + (u[4] ? ' · jornada ' + u[4] : '') : ''}</span></span></div>
       <div className="lp3-mini" style={{ '--c': 'var(--magenta)' }}><span className="ic">{mg ? mg[1] : '—'}</span><span><small>El que más gana acá</small>
-        <b>{mg ? limpio(mg[0]) : 'Todavía nadie'}</b><span>{mg ? mg[1] + (mg[1] === 1 ? ' ganada' : ' ganadas') + (N.racha && N.racha[0] === mg[0] && N.racha[1] >= 2 ? ' · racha de ' + N.racha[1] : '') : ''}</span></span></div>
+        <b>{mg ? h.ak(mg[0]) : 'Todavía nadie'}</b><span>{mg ? mg[1] + (mg[1] === 1 ? ' ganada' : ' ganadas') + (N.racha && N.racha[0] === mg[0] && N.racha[1] >= 2 ? ' · racha de ' + N.racha[1] : '') : ''}</span></span></div>
       <div className="lp3-mini" style={{ '--c': '#F6F6F6' }}><span className="ic">{f ? i + 1 + 'º' : '?'}</span><span><small>Tu lugar</small>
         <b>{f ? i + 1 + 'º de ' + L.tabla.length : 'No juegas esta liga'}</b><span>{f ? (i ? 'A ' + (L.tabla[0][3] - f[3]) + ' del 1.º' : 'Vas primero') : 'Se entra por el Discord de ' + siglaDe(L.sv)}</span></span></div>
     </div>
@@ -1225,7 +1228,7 @@ function LigaPerfil({ liga, id }) {
       </div>
     );
   } else if (t.length > 1 && (e.k === 'decide' || e.k === 'juego')) {
-    vis = <div className="lp3-vs"><CaraACara3 liga={liga} L={L} h={h} e={e} /><Carrera3 L={L} /></div>;
+    vis = <div className="lp3-vs"><CaraACara3 liga={liga} L={L} h={h} e={e} /><Carrera3 liga={liga} L={L} /></div>;
   } else if (t.length > 1) vis = <Podio3 L={L} h={h} />;
   const fondo = escenaDe(L.sv) || L.fl;
   return (
@@ -1288,8 +1291,8 @@ function LigaPerfil({ liga, id }) {
           <Sec id="lgp-album" titulo="El álbum" extra="lgp-sec">
             <ul className="lq-alb">{L.album.map(([f, i, k, u]) => (
               <li key={k}>
-                <a href={'#/r/' + encodeURIComponent(k)} aria-label={'El perfil de ' + limpio(f[0])}><img src={u} alt={'Carta de liga de ' + limpio(f[0])} loading="lazy" decoding="async" /></a>
-                <small>{i + 1}º · {limpio(f[0])}</small>
+                <a href={'#/r/' + encodeURIComponent(k)} aria-label={'El perfil de ' + liga.aka(f[0], k)}><img src={u} alt={'Carta de liga de ' + liga.aka(f[0], k)} loading="lazy" decoding="async" /></a>
+                <small>{i + 1}º · {liga.aka(f[0], k)}</small>
               </li>
             ))}</ul>
             <p className="pronto-p">{vieja ? 'Las cartas de esa temporada, como quedaron al terminar: ya no cambian.'

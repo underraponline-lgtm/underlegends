@@ -4,7 +4,7 @@
 // estando abajo es algo tonto porque ya están arriba»), y El Elegido se mudó a Encuestas.
 import { useEffect, useId, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import { ksDe, limpio, nuevaQue, num, quienMira } from './liga.js';
-import { Cara, Chevron, Compartir, Ico, Poster, Sec, accion, enlace, https, promoAbierta, subirSiEsta } from './piezas.jsx';
+import { Alguien, Cara, Chevron, Compartir, Ico, Poster, Sec, accion, enlace, https, promoAbierta, subirSiEsta } from './piezas.jsx';
 import { RED_NOMBRE, RED_SVG } from './redes_ico.jsx';
 import { Buscar, CaraDc, CaraH, CrewCirculo, MENU, MENU_TODO, Orbe, QUE_ES, escenaDe, pubNuevas } from './arriba.jsx';
 import { abrirVideo } from './video.jsx';
@@ -36,7 +36,7 @@ export function SeBusca({ liga, aca }) {
         {(mw.ant || []).map((b) => <Poster key={'a' + b.k} liga={liga} b={b} />)}
         {(mw.caz || []).length ? (
           <article className="poster cazadores"><span className="p-t">CAZADORES</span>
-            <ol>{mw.caz.slice(0, 5).map((c) => <li key={c.k}><Cara liga={liga} k={c.k} nombre={c.n} cls="mono-c" /><b>{limpio(c.n)}</b><em>{num(c.pts)}</em></li>)}</ol>
+            <ol>{mw.caz.slice(0, 5).map((c) => <li key={c.k}><Cara liga={liga} k={c.k} nombre={c.n} cls="mono-c" /><b><Alguien liga={liga} nombre={c.n} k={c.k} cara={false} /></b><em>{num(c.pts)}</em></li>)}</ol>
             <small>lo cobrado en la temporada</small></article>
         ) : null}
       </div>

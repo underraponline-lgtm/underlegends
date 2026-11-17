@@ -37,15 +37,15 @@ export function useSalon() {
 export function nomTexto(liga, cat, x) {
   // 🏆 las de «Ver las demás nominaciones» (bot/mes_otros.py) y el Staff de cada servidor traen su línea hecha (`d`)
   if (x.d !== undefined) {
-    const fq = x.q ? liga.fila(x.q) : null;
+    const fq = x.q ? liga.quien(x.q) : null;
     // 🪪 el nombre de la Lista, no el alias con que llegó (17/11/2026): «Over» es AKA de Mr Still Ballin y la misma
-    // página lo mostraba con los dos nombres. Rapero y Revelación ya pasaban por `liga.fila()`; acá sólo cuando el
+    // página lo mostraba con los dos nombres. Rapero y Revelación ya pasaban por `liga.quien()`; acá sólo cuando el
     // nominado ES la persona (n = q) o un cruce «A vs B», nunca el título de una promo o una publicación
     const nb = x.q && x.n === x.q ? (fq ? fq.n : x.n)
-      : x.q && / vs /.test(x.n) ? x.n.split(' vs ').map((s) => (liga.fila(s) || {}).n || s).join(' vs ') : x.n;
+      : x.q && / vs /.test(x.n) ? x.n.split(' vs ').map((s) => (liga.quien(s) || {}).n || s).join(' vs ') : x.n;
     return { k: fq ? fq.k : '', n: limpio(nb), d: x.d, q: x.q || x.n };
   }
-  const f = (cat === 'rapero' || cat === 'revelacion') ? liga.fila(x.op) : null;
+  const f = (cat === 'rapero' || cat === 'revelacion') ? liga.quien(x.op) : null;
   const d = cat === 'batalla' ? siglaDe(x.sv) + ' · ' + num(x.vistas) + ' vistas'
     : cat === 'servidor' ? num(x.gente) + ' raperos · ' + num(x.ev) + ' eventos'
       : num(x.pts) + ' pts' + (x.oro ? ' · ' + x.oro + (x.oro === 1 ? ' título' : ' títulos') : '') + ' · ' + x.ev + (x.ev === 1 ? ' evento' : ' eventos');
@@ -66,7 +66,8 @@ export function Nominado({ liga, cat, x }) {
     : cat === 'batalla' ? <Miniatura vid={x.op} cls="ma-vid" />
       : cat === 'servidor' ? <img className="ma-cara" alt="" src={liga.logo(x.op)} />
         : <Cara liga={liga} k={t.k} nombre={x.n} cls="ma-cara" />;
-  return <>{vis}<span className="ma-t"><b>{t.n}</b><small>{t.d}</small></span></>;
+  // 🪪 y su perfil, si es una persona (17/11/2026, Dlx: «hazlo más bonito con su foto y su cuenta»)
+  return <>{vis}<span className="ma-t"><b>{t.k ? <a href={'#/r/' + encodeURIComponent(t.k)}>{t.n}</a> : t.n}</b><small>{t.d}</small></span></>;
 }
 
 // (la `Categoria` que se votaba acá se fue el 17/11/2026: el Salón y la página de cada servidor votan con las tarjetas
@@ -82,7 +83,7 @@ export function reparto(x, liga) {
   const nom = (op) => {
     const y = (x.nom || []).find((z) => z.op === op) || {};
     const n = y.n || op;
-    const f = liga && (y.q ? n === y.q : !y.vid && !y.sv && !y.cc && !y.img && y.pts !== undefined) ? liga.fila(n) : null;
+    const f = liga && (y.q ? n === y.q : !y.vid && !y.sv && !y.cc && !y.img && y.pts !== undefined) ? liga.quien(n) : null;
     return limpio(f ? f.n : n);
   };
   const orden = Object.keys(cu).sort((a, b) => cu[b] - cu[a]).slice(0, 4);

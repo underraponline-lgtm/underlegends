@@ -2,9 +2,9 @@
 // (fechas, noticias, raperos, panel, tus_eventos, tu_temporada, numeros).
 import { DIAS, hora, ksDe, limpio, minutosDelDia, num, resultado, siglaDe, srcLogo, utc } from './liga.js';
 import { miReaccion, reaccionesDe, useAplausos } from './aplausos.js';
-import { PJ, delHilo, useComentarios } from './comentarios.jsx';
+import { PJ, autorDe, delHilo, useComentarios } from './comentarios.jsx';
 import { Escudo, escudoDe } from './escudo.jsx';
-import { Bandera, Cara, Carta, Compartir, Ico, Pest, Rango, Sec, aDiscord, accion, enlace, nombrePais } from './piezas.jsx';
+import { Algunos, Alguien, Bandera, Cara, Carta, Compartir, Ico, Pest, Rango, Sec, aDiscord, accion, enlace, nombrePais } from './piezas.jsx';
 import { avance, premioTexto, proximoEspecial, usePase, usePases } from './pase.js';
 import { SelloPremium, esPremium } from './sello.jsx';
 import { useEffect, useRef, useState } from 'react';
@@ -80,10 +80,11 @@ export function Fechas({ liga }) {
   });
   // 🔑 lo que terminó recién y el ciclo todavía no procesó (la NAVE DE EXTERMINACIÓN, 03/10/2026): con su campeón y su
   // llave, hasta que llegue la procesada. Ver `liga.recienTerminadas()`
-  liga.recienTerminadas().forEach(({ L, e, camp }) => {
+  // 🪪 el campeón con su cara y su nombre oficial (17/11/2026); sin link: la tarjeta entera ya lleva a la llave
+  liga.recienTerminadas().forEach(({ L, e, camp, campN }) => {
     t.push({ c: 'hecho', dia: liga.cuando(new Date(L.ed || L.pub)).toUpperCase(),
       hora: 'TERMINÓ' + (L.participantes ? ' · ' + L.participantes + ' raperos' : ''), sv: L.sv || (e && e.sv) || '',
-      ev: limpio((e && e.nombre) || L.nombre), det: camp ? 'Campeón: ' + camp : 'los puntos llegan en un rato', llave: 'v:' + L.id });
+      ev: limpio((e && e.nombre) || L.nombre), det: camp ? <>{campN.length > 1 ? 'Campeones: ' : 'Campeón: '}<Algunos liga={liga} nombres={campN} link={false} /></> : 'los puntos llegan en un rato', llave: 'v:' + L.id });
   });
   // lo que pasó, hasta completar la fila de cinco de la compu (de diez si lo que viene ya pasa de cinco): con tres
   // fijas, sin nada anunciado quedaban dos lugares vacíos al lado (Dlx, 02/10/2026: «un espacio tan grande vacío»)
@@ -94,7 +95,7 @@ export function Fechas({ liga }) {
   porFecha.slice(0, Math.max(t.length > 4 ? 0 : 1, fila - t.length)).forEach((ll) => {
     const g = liga.campeon(ll);
     t.push({ c: 'hecho', dia: liga.cuando(liga.fechaLlave(ll)).toUpperCase(), hora: 'TERMINÓ · ' + ll.participantes + ' raperos', sv: ll.sv,
-      ev: limpio(ll.nombre), det: g.length ? (g.length > 1 ? 'Campeones: ' : 'Campeón: ') + g.join(' y ') : 'Sin campeón cargado', llave: ll.n });
+      ev: limpio(ll.nombre), det: g.length ? <>{g.length > 1 ? 'Campeones: ' : 'Campeón: '}<Algunos liga={liga} nombres={g} link={false} /></> : 'Sin campeón cargado', llave: ll.n });
   });
   if (!t.length) return null;
   return (
@@ -306,7 +307,7 @@ export function LuNube({ liga, it, hilo, n = 1 }) {
         return (
           <span className="lu-nube-c" key={c.id}>
             {pj ? <span className="lu-nube-cara pj" style={{ background: pj[1] }}>{pj[0]}</span> : <Cara liga={liga} k={c.k} nombre={c.n} cls={'lu-nube-cara' + (esPremium(pub, c.k) ? ' sp-prem-aro' : '')} lazy />}
-            <span className="lu-nube-x"><b>{limpio(c.n)}{c.et === 's' ? <i>simulado</i> : null}</b><span>{c.tx}</span></span>
+            <span className="lu-nube-x"><b>{autorDe(liga, c)}{c.et === 's' ? <i>simulado</i> : null}</b><span>{c.tx}</span></span>
           </span>
         );
       })}
@@ -350,9 +351,11 @@ export function Noticias({ liga, raiz, prueba = '' }) {
   const ir = (it) => { const x = liga.itemMuro(it); if (x) irA(x[4], raiz); };
   const tecla = (fn) => (e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); fn(); } };
 
+  // 🪪 la clave de cada uno aunque el muro no la traiga: por su nombre, sus alias o lo que reconoció el vigía (17/11/2026)
+  const kDe = (it, i = 0) => ksDe(it)[i] || ((it.quien || [])[i] ? (liga.quien(it.quien[i]) || {}).k || '' : '');
   // lo de la izquierda de cada fila: la carta, el afiche o la cara con su esquinita
   const visual = (it, x) => {
-    const ks = ksDe(it);
+    const ks = [kDe(it, 0), kDe(it, 1)];
     if (it.tipo === 'tarjeta') return <span className="lu-r-v v-carta"><Carta liga={liga} k={ks[0]} cual={it.carta} cls="lu-r-carta" abre={false} /></span>;
     if (it.tipo === 'flyer') return <span className="lu-r-v v-img"><img alt="" src={it.img} loading="lazy" /></span>;
     if (it.tipo === 'liga') return <span className="lu-r-v v-cara"><span className="nt-cara nt-ico"><img alt="" src="/ul.png" /></span></span>;
@@ -375,7 +378,7 @@ export function Noticias({ liga, raiz, prueba = '' }) {
     const x = liga.itemMuro(it);
     const hilo = hiloDe(it);
     const sv = it.sv ? siglaDe(it.sv) : '';
-    const f0 = liga.T[ksDe(it)[0]];
+    const f0 = liga.T[kDe(it)];
     const sub = it.tipo === 'campeon' ? [sv, it.part ? it.part + ' raperos' : ''].filter(Boolean).join(' · ')
       : it.tipo === 'tarjeta' ? (f0 ? [f0.rg ? 'Rango ' + f0.rg : '', f0.pos ? '#' + f0.pos + ' Temporada' : ''].filter(Boolean).join(' · ') : '')
         : it.tipo === 'rango' ? (f0 ? [f0.pos ? '#' + f0.pos + ' Temporada' : '', f0.ovr ? 'OVR ' + f0.ovr : ''].filter(Boolean).join(' · ') : '')
@@ -410,7 +413,7 @@ export function Noticias({ liga, raiz, prueba = '' }) {
   let grande = null;
   if (feat) {
     const x = liga.itemMuro(feat);
-    const k = ksDe(feat)[0];
+    const k = kDe(feat);
     const f = k ? liga.T[k] : null;
     const esCarta = feat.tipo === 'tarjeta';
     const hilo = hiloDe(feat);
@@ -456,7 +459,7 @@ export function Noticias({ liga, raiz, prueba = '' }) {
         <span className="lu-cat">Anoche en la Liga</span>
         <span className="lu-num">{noche.eventos}<small>{noche.eventos === 1 ? 'evento' : 'eventos'}</small>{noche.part}<small>raperos</small>{cs.length}<small>{cs.length === 1 ? 'campeón' : 'campeones'}</small></span>
         <span className="lu-noche-c">{caras.map(([n, k]) => <Cara key={k} liga={liga} k={k} nombre={n} cls="nt-c" />)}
-          <small>{cs.slice(0, 2).map((c) => (c.quien || []).map((y) => limpio(y[0])).join(' y ')).join(', ')}{cs.length > 2 ? ' y ' + (cs.length - 2) + ' más' : ''}</small></span>
+          <small>{cs.slice(0, 2).map((c) => (c.quien || []).map((y) => liga.aka(y[0], y[1])).join(' y ')).join(', ')}{cs.length > 2 ? ' y ' + (cs.length - 2) + ' más' : ''}</small></span>
       </a>
     );
   }
@@ -1006,7 +1009,7 @@ function Numeros({ liga }) {
         <section className="rec">
           <div className="mis-cab"><span>LOS RÉCORDS DE LA {liga.temp}</span></div>
           <ol>{(liga.d.records || []).slice(0, 6).map((r) => (
-            <li key={r.id}><span>{r.que}</span><a href={r.k ? '#/r/' + encodeURIComponent(r.k) : undefined}><b>{limpio(r.n)}</b></a><em>{typeof r.v === 'number' ? num(r.v) : r.v}</em></li>
+            <li key={r.id}><span>{r.que}</span><a href={r.k ? '#/r/' + encodeURIComponent(r.k) : undefined}><b>{liga.aka(r.n, r.k)}</b></a><em>{typeof r.v === 'number' ? num(r.v) : r.v}</em></li>
           ))}</ol>
         </section>
       ) : null}

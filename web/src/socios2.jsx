@@ -13,7 +13,7 @@
 // evento en el chat de los servidores que tienen prendido el bot en vivo). Lo que pide para sumarse: 300 miembros, se
 // recomiendan 500 (Dlx, 18/10/2026), y escribirle a @itsdlx; lo demás se habla con él. Si algo cambia, se cambia acá.
 import { limpio, mult, num, siglaDe } from './liga.js';
-import { Carta, Compartir, Ico, Sec, enlace } from './piezas.jsx';
+import { Algunos, Carta, Compartir, Ico, Sec, enlace } from './piezas.jsx';
 import { LaLiga } from './medio.jsx';
 import { REDES } from './servidor.jsx';
 import { DLX, QueGana } from './sumar.jsx';
@@ -114,7 +114,7 @@ function Socio({ liga, s, n }) {
         <ul className="sk-datos">
           {mejor ? <li><b>SU MEJOR</b>{limpio(mejor.n)} · #{mejor.pos} de la Liga</li> : null}
           {prox ? <li><b>EL PRÓXIMO</b>{limpio(prox.nombre)} · {liga.dia(liga.cuandoDe(prox))}</li>
-            : ll ? <li><b>EL ÚLTIMO</b>{limpio(ll.nombre)}{camp.length ? ' · ganó ' + camp.join(' y ') : ''}</li> : null}
+            : ll ? <li><b>EL ÚLTIMO</b>{limpio(ll.nombre)}{camp.length ? <> · ganó <Algunos liga={liga} nombres={camp} /></> : ''}</li> : null}
         </ul>
       </div>
       <div className="sk-acc">

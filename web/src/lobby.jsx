@@ -13,7 +13,7 @@
 // dirección: los toques se cuentan igual (`queToco()` de App.jsx)
 import { Suspense, lazy, useEffect, useState } from 'react';
 import { limpio, mult, num, siglaDe, utc } from './liga.js';
-import { Cara, Ico, aDiscord, accion, useCampana } from './piezas.jsx';
+import { Alguien, Algunos, Cara, Ico, aDiscord, accion, useCampana } from './piezas.jsx';
 import { avance, usePase } from './pase.js';
 // 🎉 «¡Subiste!» también en el Inicio (Dlx, 25/10/2026: «como un pop up incluso en la página principal»)
 import { PopPase } from './pase_pop.jsx';
@@ -318,7 +318,7 @@ function Seguidos({ liga }) {
   for (const ll of liga.llavesPorFecha()) {
     if (liga.ahora - utc(liga.fechaLlave(ll)) > 36 * 3600000) break;
     for (const n of liga.campeon(ll)) {
-      const f = liga.fila(n);
+      const f = liga.quien(n);
       if (f && sig.has(f.k) && !out.has(f.k)) out.set(f.k, { k: f.k, n: f.n, que: 'ganó ' + limpio(ll.nombre) });
     }
   }
@@ -395,19 +395,20 @@ export function tuMomento(liga, L) {
   const yo = liga.yo;
   if (!yo || !L) return null;
   const mio = (lado) => String(lado || '').split(/\s*[,+&]\s*/).some((n) => {
-    const f = liga.fila(sinBandera(n));
+    const f = liga.quien(sinBandera(n));
     return !!(f && f.k === yo.k);
   });
-  const contra = (ls) => ls.filter((x) => !mio(x)).map(sinBandera).join(' y ');
+  // 🪪 tu rival con su cara, su nombre oficial y su perfil (17/11/2026): la llave en vivo trae el que escribió el organizador
+  const contra = (ls) => <Algunos liga={liga} nombres={ls.filter((x) => !mio(x))} />;
   const m = momentosLlave(L);
-  if (m && m.ahora && m.ahora.lados.some(mio)) return { et: '¡TE TOCA!', sub: m.ahora.r + ' · contra ' + contra(m.ahora.lados), toca: true };
-  if (m && m.sigue && m.sigue.lados.some(mio)) return { et: 'ERES EL PRÓXIMO', sub: m.sigue.r + ' · contra ' + contra(m.sigue.lados), toca: true };
+  if (m && m.ahora && m.ahora.lados.some(mio)) return { et: '¡TE TOCA!', sub: <>{m.ahora.r} · contra {contra(m.ahora.lados)}</>, toca: true };
+  if (m && m.sigue && m.sigue.lados.some(mio)) return { et: 'ERES EL PRÓXIMO', sub: <>{m.sigue.r} · contra {contra(m.sigue.lados)}</>, toca: true };
   let ult = null;
   (L.rondas || []).forEach((R) => (R.b || []).forEach((b) => { if (lados(b).length >= 2 && lados(b).some(mio)) ult = { r: R.r, b }; }));
   if (!ult) return null;
   const r = String(ult.r || '');
   const g = ganador(ult.b);
-  if (!g) return { et: 'ESPERA TU TURNO', sub: r + ' · contra ' + contra(lados(ult.b)) };
+  if (!g) return { et: 'ESPERA TU TURNO', sub: <>{r} · contra {contra(lados(ult.b))}</> };
   if (mio(g)) {
     if (r === 'Final') return { et: '¡ERES EL CAMPEÓN!', sub: 'Ganaste la final' };
     if (r === 'Tercer puesto') return { et: '¡TERCER PUESTO!', sub: 'Ganaste el tercer puesto' };
@@ -418,7 +419,7 @@ export function tuMomento(liga, L) {
   // la doble se ve por su llave de perdedores o, antes de que se escriba, por la de ganadores
   const doble = esDoble(L.rondas) || (L.rondas || []).some((R) => /ganadores/i.test(R.r || ''));
   if (doble && !/perdedores/i.test(r)) return { et: 'PERDISTE EN ' + r.toUpperCase(), sub: 'Bajas a la llave de perdedores: sigues' };
-  return { et: 'QUEDASTE AFUERA EN ' + r.toUpperCase(), sub: 'Te ganó ' + sinBandera(g), afuera: true };
+  return { et: 'QUEDASTE AFUERA EN ' + r.toUpperCase(), sub: <>Te ganó <Alguien liga={liga} nombre={g} /></>, afuera: true };
 }
 
 // ── 🎯 EL BOTÓN GRANDE: lo tuyo, una sola vez, en su estado de ahora ──
@@ -494,8 +495,8 @@ function ElBoton({ liga }) {
       {reto || m > 1 || debut || juegan.length ? (
         <span className="lb-b-pr">
           {juegan.length ? (
-            <em className="mw">{juegan.length === 1 ? 'Juega ' + limpio(juegan[0].n) : 'Juegan ' + juegan.slice(0, 3).map((b) => limpio(b.n)).join(', ')}
-              , de Se busca{cobras ? ': ' + (juegan.length === 1 ? 'ganale y cobras ' : 'cobras hasta ') + num(cobras) + ' pts' : ''}</em>
+            <em className="mw">{juegan.length === 1 ? 'Juega ' : 'Juegan '}<Algunos liga={liga} nombres={juegan.slice(0, 3).map((b) => b.n)} ks={juegan.slice(0, 3).map((b) => b.k)} y=", " />
+              , de Se busca{cobras ? ': ' + (juegan.length === 1 ? 'gánale y cobras ' : 'cobras hasta ') + num(cobras) + ' pts' : ''}</em>
           ) : null}
           {reto ? <em>Juégalo antes del {liga.dia(new Date(vence))} y ganas 1.000 Puntos de Tienda</em> : null}
           {m > 1 ? <em>{siglaDe(e.sv)} va {mult(m)} esta semana</em> : null}

@@ -9,7 +9,7 @@
 import { Fragment, useEffect, useMemo, useRef, useState } from 'react';
 import { DIAS, MESES, hora, limpio, minutosDelDia, norm, num, quienMira, recorte, resultado, siglaDe, utc } from './liga.js';
 import { claveOrg, seguirOrg, useOrgs } from './orgs.js';
-import { Anotados, Cara, Carta, Compartir, Ico, aDiscord, accion, enlace, useCampana } from './piezas.jsx';
+import { Alguien, Algunos, Anotados, Cara, Carta, Compartir, Ico, aDiscord, accion, enlace, useCampana } from './piezas.jsx';
 import { CuadroMini, LlaveCorta, cortaDe, eventoDelBoton, gcal, ganador, lados, llaveEnVivo } from './arriba.jsx';
 import { PopCab } from './pop.jsx';
 import { H, W, aPng, armarYCompartir, cargarImg, carta, lienzo, pie } from './historia.js';
@@ -26,7 +26,7 @@ usarCss('eventos', CSS_PAGINA);
 function miFila(liga, ll) {
   const yo = liga.yo;
   if (!yo || !ll) return null;
-  return (ll.tabla || []).find((r) => (r[3] ? r[3] === yo.k : ((liga.fila(r[0]) || {}).k === yo.k))) || null;
+  return (ll.tabla || []).find((r) => (r[3] ? r[3] === yo.k : ((liga.quien(r[0]) || {}).k === yo.k))) || null;
 }
 
 const ANDROID = typeof navigator !== 'undefined' && /Android/i.test(navigator.userAgent || '');
@@ -244,7 +244,7 @@ async function imagenCampeon(liga, ll) {
   // de a una: cada carta sin foto recorta su círculo, y dos a la vez se pisaban el recorte
   for (let i = 0; i < dos.length; i += 1) {
     const r = dos[i];
-    const f = r[3] ? liga.T[r[3]] : liga.fila(r[0]);
+    const f = liga.quien(r[0], r[3]);
     const cx = dos.length === 2 ? W / 2 + (i ? 225 : -225) : W / 2;
     // eslint-disable-next-line no-await-in-loop
     ch = Math.max(ch, await carta(g, letra, liga, f ? f.k : '', r[0], 'temporada', cx, yc, dos.length === 2 ? 420 : 540, tope - yc));
@@ -255,7 +255,8 @@ async function imagenCampeon(liga, ll) {
   g.fillStyle = '#29B298'; g.fillRect((W - ew) / 2, ye, ew, 210);
   letra(700, 34, true); g.fillStyle = '#030304'; g.textAlign = 'center';
   g.fillText(varios ? 'CAMPEONES' : 'CAMPEÓN', W / 2, ye + 60);
-  const quien = filas.map((r) => limpio(r[0])).join(' y ').toUpperCase();
+  // 🪪 con su nombre oficial (17/11/2026): la llave trae el que escribió el organizador
+  const quien = filas.map((r) => liga.aka(r[0], r[3])).join(' y ').toUpperCase();
   let pn = 100;
   letra(900, pn, false);
   while (pn > 40 && g.measureText(quien).width > ew - 60) { pn -= 4; letra(900, pn, false); }
@@ -263,7 +264,7 @@ async function imagenCampeon(liga, ll) {
   // a quién le ganó la final, cuando eso se puede decir sin dudas: un campeón y un subcampeón
   const sub = tabla.filter((r) => r[1] === 'Subcampeón');
   if (!varios && sub.length === 1) {
-    const txt = ('Le ganó la final a ' + limpio(sub[0][0])).toUpperCase();
+    const txt = ('Le ganó la final a ' + liga.aka(sub[0][0], sub[0][3])).toUpperCase();
     let pf = 34;
     letra(700, pf, true);
     while (pf > 24 && g.measureText(txt).width > W - 144) { pf -= 2; letra(700, pf, true); }
@@ -352,7 +353,7 @@ function Pila({ liga, filas, n = 2 }) {
   const mas = filas.length - vis.length;
   return (
     <span className="evp-pila" aria-hidden="true">
-      {vis.map((r, i) => { const f = r[3] ? liga.T[r[3]] : liga.fila(r[0]); return <Cara key={i} liga={liga} k={f ? f.k : ''} nombre={r[0]} cls="cara evp-pila-c" />; })}
+      {vis.map((r, i) => { const f = liga.quien(r[0], r[3]); return <Cara key={i} liga={liga} k={f ? f.k : ''} nombre={r[0]} cls="cara evp-pila-c" />; })}
       {mas > 0 ? <em>+{mas}</em> : null}
     </span>
   );
@@ -501,7 +502,7 @@ function Guia({ liga, items, sel, onSel, esHoy }) {
 // 🏆 LA LLAVE, DE A UNA RONDA (la B): los cruces de la ronda elegida, con quién ganó. Arranca en la que se está jugando o,
 // terminada, en la final. Entera, en «Ver la llave entera». `vivo`: sólo en una que se juega se busca la ronda en juego
 // (en una terminada, un cruce sin ganador —un abandono— la dejaba en Octavos)
-function LlaveRondas({ ll, vivo }) {
+function LlaveRondas({ liga, ll, vivo }) {
   const rs = (ll.rondas || []).filter((r) => (r.b || []).length);
   const enJuego = vivo ? rs.findIndex((r) => r.b.some((b) => !ganador(b) && lados(b).length >= 2)) : -1;
   let fin = rs.length - 1;
@@ -527,7 +528,8 @@ function LlaveRondas({ ll, vivo }) {
           const ls = lados(b);
           return (
             <div key={j} className="evs-c">
-              {(ls.length ? ls : ['—']).map((n, k) => <span key={k} className={g && n === g ? 'g' : ''}><b>{n || '—'}</b>{g && n === g ? <i>ganó</i> : null}</span>)}
+              {/* 🪪 con su cara, su nombre oficial y su perfil (17/11/2026); el nombre que vino sigue diciendo quién ganó */}
+              {(ls.length ? ls : ['—']).map((n, k) => <span key={k} className={g && n === g ? 'g' : ''}><b>{n && n !== '—' ? <Alguien liga={liga} nombre={n} /> : '—'}</b>{g && n === g ? <i>ganó</i> : null}</span>)}
             </div>
           );
         })}
@@ -540,8 +542,10 @@ function Podio({ liga, ll }) {
   return (
     <ol className="podio2 evs-podio">
       {(ll.tabla || []).slice(0, 4).map((r, i) => {
-        const f = r[3] ? liga.T[r[3]] : liga.fila(r[0]);
-        return <li key={r[0] + i}><b>{i + 1}</b><span className="evp-pq"><Cara liga={liga} k={f ? f.k : ''} nombre={r[0]} cls="cara evp-pc" />{limpio(r[0])}</span><em>{resultado(r[1], true)} · +{num(r[2])}</em></li>;
+        const f = liga.quien(r[0], r[3]);
+        // 🪪 con su nombre oficial y su perfil (17/11/2026)
+        const q = <><Cara liga={liga} k={f ? f.k : ''} nombre={r[0]} cls="cara evp-pc" />{liga.aka(r[0], r[3])}</>;
+        return <li key={r[0] + i}><b>{i + 1}</b>{f && f.k ? <a className="evp-pq" href={'#/r/' + encodeURIComponent(f.k)}>{q}</a> : <span className="evp-pq">{q}</span>}<em>{resultado(r[1], true)} · +{num(r[2])}</em></li>;
       })}
     </ol>
   );
@@ -568,7 +572,7 @@ function Elegido({ liga, it, sig, pub, Ap }) {
     : me.esta ? siglaDe(e.sv) + ' VA ×' + String(m).replace('.', ',') + ' ESTA SEMANA' : '';
   const camp = ll ? liga.campeon(ll) : [];
   const r = ll ? ((ll.tabla || []).find((y) => y[1] === 'Campeón') || []) : [];
-  const f = r.length ? (r[3] ? liga.T[r[3]] : liga.fila(r[0])) : null;
+  const f = r.length ? liga.quien(r[0], r[3]) : null;
   const cual = f ? liga.cartaDe(f.k, { sv: e.sv }) : '';
   const mia = est === 'hecho' ? miFila(liga, ll) : null;
   const { st, txt } = etiquetaDe(liga, e, est, ll, it.L);
@@ -600,16 +604,16 @@ function Elegido({ liga, it, sig, pub, Ap }) {
           <div className="evs-camp">
             {f && cual ? <Carta liga={liga} k={f.k} cual={cual} cls="evs-ci" />
               : <span className="evs-sin"><Cara liga={liga} k={f ? f.k : ''} nombre={camp[0] || '?'} cls="cara evs-cara" /></span>}
-            {camp.length ? <><span className="evs-tag">{camp.length > 1 ? 'Campeones' : 'Campeón'}</span><b>{nombreCamp(camp)}</b></> : null}
+            {camp.length ? <><span className="evs-tag">{camp.length > 1 ? 'Campeones' : 'Campeón'}</span><b><Algunos liga={liga} nombres={camp} cara={false} /></b></> : null}
           </div>
           <div className="evs-der">
-            <LlaveRondas key={e.ll} ll={ll} />
+            <LlaveRondas key={e.ll} liga={liga} ll={ll} />
             <Podio liga={liga} ll={ll} />
           </div>
         </div>
       ) : null}
-      {!ll && it.campVivo ? <p className="evp-camp">Campeón: <b>{it.campVivo}</b></p> : null}
-      {Lx ? (Array.isArray(Lx.rondas) && Lx.rondas.length ? <LlaveRondas key={Lx.id || 'v'} ll={Lx} vivo={!Lx.terminada} /> : <CuadroLleno liga={liga} ll={Lx} />) : null}
+      {!ll && it.campVivo ? <p className="evp-camp">Campeón: <b>{(it.campN || []).length ? <Algunos liga={liga} nombres={it.campN} /> : it.campVivo}</b></p> : null}
+      {Lx ? (Array.isArray(Lx.rondas) && Lx.rondas.length ? <LlaveRondas key={Lx.id || 'v'} liga={liga} ll={Lx} vivo={!Lx.terminada} /> : <CuadroLleno liga={liga} ll={Lx} />) : null}
       {est === 'vivo' && it.arriba ? <p className="t-nota evp-tx">La llave en vivo está arriba, en el escenario.</p> : null}
       {est === 'vivo' && !it.L ? <p className="t-nota evp-tx">La llave aparece acá apenas la carguen, cruce por cruce.</p> : null}
       {est === 'prox' || (est === 'vivo' && !it.L) ? <Anotados liga={liga} e={e} /> : null}
@@ -693,7 +697,7 @@ function Campeones({ liga }) {
       {ls.map((ll) => {
         const g = liga.campeon(ll);
         const r = (ll.tabla || []).find((x) => x[1] === 'Campeón') || (ll.tabla || [])[0] || [];
-        const f = r[3] ? liga.T[r[3]] : liga.fila(r[0] || g[0]);
+        const f = liga.quien(r[0] || g[0], r[3]);
         const pub = pubs[String(ll.n)];
         return (
           <div key={ll.n} className="evp-cp-w">
@@ -1199,7 +1203,7 @@ export function Eventos({ liga, vivoL, dia: diaRuta, avisos }) {
     ...vivos.map((c) => ({ c, est: 'vivo', L: enVivo(c), arriba: esArriba(c) })),
     ...pausa.map((c) => ({ c, est: 'pausa', L: enVivo(c) })),
     ...prox.map((c) => ({ c, est: 'prox' })),
-    ...hechos.map((c) => { const T = termDe(c); return { c, est: 'hecho', L: T ? T.L : undefined, campVivo: T ? T.camp : '' }; }),
+    ...hechos.map((c) => { const T = termDe(c); return { c, est: 'hecho', L: T ? T.L : undefined, campVivo: T ? T.camp : '', campN: T ? T.campN : [] }; }),
     // con su link, si lo tiene: el id sale de ahí, y tocar el cancelado en la semana tiene que elegir a ESE (revisión del 16/11)
     ...cancelados.map((x) => ({ c: { n: x.n, sv: x.sv, t: x.ini, link: x.link }, est: 'cancelado' })),
   ].map((it) => Object.assign(it, { id: idEv(it.c) }));
@@ -1279,7 +1283,7 @@ export function Eventos({ liga, vivoL, dia: diaRuta, avisos }) {
   } else if (ultima) {
     const g = liga.campeon(ultima);
     const r = (ultima.tabla || []).find((x) => x[1] === 'Campeón') || [];
-    const f = r[3] ? liga.T[r[3]] : liga.fila(r[0] || g[0]);
+    const f = liga.quien(r[0] || g[0], r[3]);
     // la carta del campeón al lado de su nombre (en el celular, una columna de texto al lado de la carta se cortaba). Los
     // pedazos van sueltos, sin caja que los agrupe: así la grilla los acomoda distinto en el celular —la carta al lado
     // del nombre— y en la compu —la carta a la izquierda de todo, para que la tarjeta no sea más alta que el título—
@@ -1288,7 +1292,7 @@ export function Eventos({ liga, vivoL, dia: diaRuta, avisos }) {
         <span className="tag">ÚLTIMO CAMPEÓN · {liga.cuando(liga.fechaLlave(ultima)).toUpperCase()}</span>
         {f ? <div className="evp-mo-carta"><Carta liga={liga} k={f.k} cual={liga.cartaDe(f.k, { sv: ultima.sv }) || 'temporada'} cls="evp-mo-ci" /></div> : null}
         <div className="evp-mo-txt">
-          <div className="evp-mo-n"><img alt="" src={liga.logo(ultima.sv)} /><b>{g.join(' y ')}</b></div>
+          <div className="evp-mo-n"><img alt="" src={liga.logo(ultima.sv)} /><b><Algunos liga={liga} nombres={g} cara={false} /></b></div>
           <small className="evp-mo-s">{limpio(ultima.nombre)} · {siglaDe(ultima.sv)} · {ultima.participantes} raperos</small>
         </div>
         <div className="hero-acc">
