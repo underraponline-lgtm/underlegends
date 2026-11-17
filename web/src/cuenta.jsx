@@ -336,7 +336,7 @@ function EstiloCaja({ dc }) {
       <Caja t="Tu estilo de juego" d={!dc ? 'Entra con Discord para elegirlo.' : d === undefined ? 'Cargando…'
         : est ? 'Va en la columna izquierda de tu carta Competitiva. ' + (d.puede ? 'Puedes cambiarlo una vez en esta temporada.' : 'Ya lo cambiaste esta temporada.')
         : 'Todavía no elegiste. Va en la columna izquierda de tu carta Competitiva: el primero es libre.'}>
-        {est ? <div className="cu-fila"><img className="cpc-est" alt="" src={est[4]} /><span><b>{est[1]}</b><small>{est[3]}</small></span></div> : null}
+        {est ? <div className="cpc-estf"><span className="cpc-est" aria-hidden="true" style={{ WebkitMaskImage: 'url(' + est[4] + ')', maskImage: 'url(' + est[4] + ')' }} /><span><b>{est[1]}</b><small>{est[3]}</small></span></div> : null}
         {dc ? <a className="btn verde chico" href="#/inventario/temporada/juego">{est ? 'Cambiar mi estilo' : 'Elegir mi estilo'}</a> : null}
       </Caja>
       <Caja t="Tus cartas" d="El TAG, el marco, la foto y el estilo de cada una se cambian en el vestidor, con la carta viva al lado.">
@@ -399,7 +399,8 @@ export function FondoCaja({ dc, liga }) {
   if (!st) return <Caja t="Tus fondos"><p className="cu-d">{msg || 'Cargando…'}</p></Caja>;
   const f = st.fondo, pu = st.puede || {}, L = st.lugares || {};
   const perfil = f ? f.perfil : true, pagina = f ? f.pagina : false;
-  const yo = (liga && liga.yo) || {};
+  // quién eres, para la bandera y tu servidor: la fila de la tabla, o la de los perfiles si vas más allá de los 200
+  const yo = (liga && (liga.yo || (dc.clave && ((liga.T && liga.T[dc.clave]) || (liga.X && liga.X[dc.clave]))))) || {};
   // lo que se ve con lo de ahora, con la misma cuenta que usa cada lugar (`fondoEn()`)
   const fo = [f && f.url ? f.url : '', perfil ? 1 : 0, 0, L];
   const elegir = async (e) => {
@@ -1425,8 +1426,12 @@ export function Cuenta({ liga, dc, parte, tema, onTema, temaSv, onTemaSv }) {
   const socio = useSocio(!!dc);
   const todas = gs.flatMap((g) => g[1]);
   // verificarse no está en la lista: se llega desde la tarjeta de arriba (y desde el botón del bot)
-  const extra = parte === 'verificar' ? ['verificar', 'ok', 'Verificarme', ''] : null;
-  const actual = extra || todas.find((x) => x[0] === parte) || null;
+  // 📱 los links de las páginas de la compu (cuenta_pc.jsx) abren en el celular la parte que las tiene: un link copiado en
+  // la compu y abierto en el teléfono no se queda en la lista. Tu estilo y Tu servidor se abren solas, como verificarse
+  const enMovil = { fondos: 'fondo', temas: 'apariencia', resumen: 'cuenta', app: 'hora', ayuda: 'algo-mal' }[parte] || parte;
+  const extra = parte === 'verificar' ? ['verificar', 'ok', 'Verificarme', ''] : parte === 'estilo' ? ['estilo', 'micro', 'Tu estilo', '']
+    : parte === 'servidor' ? ['servidor', 'servidor', 'Tu servidor', ''] : null;
+  const actual = extra || todas.find((x) => x[0] === enMovil) || null;
   // en la computadora siempre hay una abierta: la primera
   const [ancha, setAncha] = useState(() => !!(W.matchMedia && W.matchMedia('(min-width: 900px)').matches));
   useEffect(() => {

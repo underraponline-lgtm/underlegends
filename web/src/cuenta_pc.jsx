@@ -21,7 +21,7 @@ const leer = (k, d) => { try { const v = localStorage.getItem(k); return v == nu
 
 // las páginas: [id, grupo, nombre, ícono, las partes que junta (las cajas de `Parte`)]
 const PAGINAS = [
-  ['resumen', 'Tu cuenta', 'Resumen', 'yo', []],
+  ['resumen', 'Lo tuyo', 'Tu cuenta', 'yo', []],
   ['perfil', 'Tú', 'Tu perfil', 'perfil', ['perfil']],
   ['temas', 'Tú', 'Tus temas', 'tema', ['apariencia']],
   ['fondos', 'Tú', 'Tus fondos', 'imagen', ['fondo']],
@@ -29,9 +29,9 @@ const PAGINAS = [
   ['crew', 'Tu gente', 'Tu crew', 'crews', ['crew']],
   ['servidor', 'Tu gente', 'Tu servidor', 'servidor', ['servidor']],
   ['siguiendo', 'Tu gente', 'Siguiendo', 'seguir', ['siguiendo']],
-  ['app', 'La app y ayuda', 'La app', 'reloj', ['hora', 'avisos', 'accesibilidad', 'instalar']],
-  ['privacidad', 'La app y ayuda', 'Privacidad y datos', 'candado', ['privacidad']],
-  ['ayuda', 'La app y ayuda', 'Ayuda', 'soporte', ['algo-mal', 'introduccion', 'guia', 'novedades', 'legal']],
+  ['app', 'Lo tuyo', 'La app', 'reloj', ['hora', 'avisos', 'accesibilidad', 'instalar']],
+  ['privacidad', 'Lo tuyo', 'Privacidad y datos', 'candado', ['privacidad']],
+  ['ayuda', 'Lo tuyo', 'Ayuda', 'soporte', ['algo-mal', 'introduccion', 'guia', 'novedades', 'legal']],
 ];
 // los nombres de cada parte cuando van juntas en una página (cada una con su título)
 const NOMBRE_PARTE = { hora: 'Hora y zona', avisos: 'Avisos de eventos', accesibilidad: 'Accesibilidad',
@@ -158,10 +158,13 @@ export function CuentaPC({ liga, dc, parte, tema, onTema, temaSv, onTemaSv, soci
   const grupos = [
     socio || dueno ? ['Tus paneles', [socio ? ['#/socio', 'servidor', 'Panel del servidor', 'las estadísticas de tus servidores'] : null,
       dueno ? ['#/dashboard', 'tablero', 'Dashboard', 'lo que espera que decidas'] : null].filter(Boolean)] : null,
-    ...['Tu cuenta', 'Tú', 'Tu gente'].map((g) => [g, PAGINAS.filter((x) => x[1] === g).map(([id, , n, ico]) => ['#/cuenta/' + id, ico, n, id === 'crew' && crew ? limpio(crew.c.nombre) : '', id])]),
-    ['Lo tuyo', [['#/inventario', 'mochila', 'Inventario', 'tus TAGs, marcos y cartas'], ['#/pase', 'pase', 'Pase rapero', 'tu nivel y tus premios'],
-      ['#/tienda', 'tienda', 'Tienda', 'tus Puntos de Tienda'], k ? ['#/r/' + encodeURIComponent(k), 'perfil', 'Mi perfil público', 'lo que ven los demás'] : null].filter(Boolean)],
-    ['La app y ayuda', PAGINAS.filter((x) => x[1] === 'La app y ayuda').map(([id, , n, ico]) => ['#/cuenta/' + id, ico, n, '', id])],
+    // 🧺 LO TUYO, ARRIBA Y CON TODO (Dlx, 17/11/2026: «tu cuenta y ayuda súbelo a lo tuyo… que no haya cuenta y ayuda,
+    // simplemente sube esos arriba, y tu cuenta encima de inventario»): sin los grupos «Tu cuenta» ni «La app y ayuda»
+    ['Lo tuyo', [['#/cuenta/resumen', 'yo', 'Tu cuenta', '', 'resumen'], ['#/inventario', 'mochila', 'Inventario', 'tus TAGs, marcos y cartas'],
+      ['#/pase', 'pase', 'Pase rapero', 'tu nivel y tus premios'], ['#/tienda', 'tienda', 'Tienda', 'tus Puntos de Tienda'],
+      k ? ['#/r/' + encodeURIComponent(k), 'perfil', 'Mi perfil público', 'lo que ven los demás'] : null,
+      ...PAGINAS.filter((x) => x[1] === 'Lo tuyo' && x[0] !== 'resumen').map(([id, , n, ico]) => ['#/cuenta/' + id, ico, n, '', id])].filter(Boolean)],
+    ...['Tú', 'Tu gente'].map((g) => [g, PAGINAS.filter((x) => x[1] === g).map(([id, , n, ico]) => ['#/cuenta/' + id, ico, n, id === 'crew' && crew ? limpio(crew.c.nombre) : '', id])]),
   ].filter(Boolean);
   return (
     <div className="cpc">

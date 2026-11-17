@@ -88,6 +88,9 @@ const CAND = <svg className="ves-cand" viewBox="0 0 24 24" fill="none" stroke="c
 
 /** Un cuadro elegible: el ícono pintado por rareza, el nombre y debajo la rareza (o qué le falta). ⚠️ La rareza va como
  *  `r-t1`…: `.t3` a secas choca con una regla global del shadow root y desarmaba el grupo Raro (medido el 16/11/2026) */
+// 🔠 la palabra más larga de un nombre (`--n`), para que la letra del cuadro baje lo justo y entre entera: «CAZARRECOMPENSAS»
+// se salía de su cuadro en el celular (17/11/2026). Sin guion: la regla de la 5.69 (no se cortan a la mitad) sigue
+const largoDe = (n) => { const w = typeof n === 'string' ? Math.max(0, ...n.split(/\s+/).map((x) => x.length)) : 0; return w >= 10 ? { '--n': w } : undefined; };
 function Cuadro({ on, puesto, prueba, nuevo, mio = true, ic, nombre, rar, pie, nivel = '', onClick, onVer, children }) {
   // 🖱️ pasar el mouse = probártelo en la carta, sin tocar el borrador (Discord y Steam: la vista previa antes de elegir)
   const ver = onVer && FINO ? { onMouseEnter: () => onVer(true), onMouseLeave: () => onVer(false), onFocus: () => onVer(true), onBlur: () => onVer(false) } : {};
@@ -97,7 +100,7 @@ function Cuadro({ on, puesto, prueba, nuevo, mio = true, ic, nombre, rar, pie, n
       {puesto ? <i className="ves-pu">Puesto</i> : nuevo ? <i className="ves-nv" aria-label="Nuevo" /> : null}
       {mio ? null : CAND}
       {children || <span className="ves-qi" aria-hidden="true">{ic}</span>}
-      <b>{nombre}</b>
+      <b style={largoDe(nombre)}>{nombre}</b>
       {rar ? <small>{rar}</small> : null}
       {pie ? <em className="ves-pie">{pie}</em> : null}
     </button>
@@ -637,7 +640,7 @@ export function Inventario({ liga, dc, carta0 = '', ranura0 = '' }) {
               </div>
             </section>
           ) : null}
-          <section className="ves-panel"><Titulo>Tu fondo</Titulo><Suspense fallback={<p className="ves-nota">Cargando…</p>}><FondoCaja dc={dc} /></Suspense></section>
+          <section className="ves-panel"><Titulo>Tus fondos</Titulo><Suspense fallback={<p className="ves-nota">Cargando…</p>}><FondoCaja dc={dc} liga={liga} /></Suspense></section>
           {k ? <section className="ves-panel"><Titulo>Tu frase</Titulo><FraseEditor k={k} /></section> : null}
           {k ? (
             <section className="ves-panel"><Titulo>Tus emblemas</Titulo>
