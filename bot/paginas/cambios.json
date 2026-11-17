@@ -11,6 +11,19 @@
  ],
  "cambios": [
     {
+        "version": "5.67",
+        "dia": "2026-11-16",
+        "cuando": "2026-11-16T19:51:00-05:00",
+        "titulo": "Menos errores al navegar",
+        "items": [
+            "Si tenías la página abierta mientras salía una versión nueva, abrir otra sección podía dejarla en blanco: ahora la página se recarga sola una vez y entra con lo nuevo.",
+            "En **Eventos**, la llave en vivo sigue la ronda que se juega, y tocar un evento cancelado en la semana lo abre a él.",
+            "En **Publicaciones**, los links a un evento anunciado vuelven a abrir su publicación, y «Menos animaciones» frena el escenario.",
+            "En el **Inicio**, deslizar la tira de momentos ya no cambia de momento, y el último comentario ya no se monta sobre la tira.",
+            "En el **Pase**, quien no es de DRA ya no ve «TÚ» en el nivel 1. Y las publicaciones automáticas (podio, top 10, rachas) se felicitan también desde el Inicio."
+        ]
+    },
+    {
         "version": "5.66",
         "dia": "2026-11-16",
         "cuando": "2026-11-16T19:42:00-05:00",
