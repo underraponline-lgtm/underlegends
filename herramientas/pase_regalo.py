@@ -8,8 +8,10 @@ Dlx, 27/10/2026: *«estas personas deberían tener el pase de rapero t1… dasel
 Temporada de la pre-temporada (Konan, Axinu, Abyssus · Bloody, Valen, MCO), que antes iba a ser de la T2: *«cambié de
 opinión, no será t2 sino t1»*.
 
-⚠️ EL PREMIUM ES EL ROL, no una lista: `verificados.refrescar()` deja a quienes lo tienen en datos/pase_premium.json y
-el Pase se desbloquea solo en la corrida siguiente. Por eso esto sólo pone el rol, y sólo SUMA: nunca saca nada.
+⚠️ EL PREMIUM DE REGALO ES EL ROL: `verificados.refrescar()` deja a quienes lo tienen en datos/pase_premium.json y
+el Pase se desbloquea solo en la corrida siguiente. Por eso esto sólo pone el rol, y sólo SUMA: nunca saca nada. Las
+únicas listas son las de todas las temporadas, en `bot/pase.py`: `PERMANENTE` (Konan y Bloody) y `EQUIPO` (el equipo
+de la Liga, 17/11/2026); `premium_ids()` las junta con el rol.
 
 ⚠️ EL ID SALE DEL PADRÓN Y SE CORROBORA CONTRA DISCORD, como `dar_verificado.py`: si el apodo o el usuario de esa cuenta
 en DRA no se llama como el rapero, no se toca y se avisa. Quien no está en DRA no puede recibir el rol.

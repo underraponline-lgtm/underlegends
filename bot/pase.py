@@ -216,6 +216,23 @@ PERMANENTE = {'680268290962227243': 'Konan', '692881329573986317': 'Bloody'}
 REGALO_T1 = {'513409344512065580': 'Axinu', '768561204707983361': 'Abyssus', '1048744067313451050': 'MCO',
              '894017160756736091': 'Valen'}
 REGALO_PLAZO = {'894017160756736091': '2026-11-03'}
+#: 👥 EL EQUIPO DE LA LIGA, CON EL PASE PREMIUM ILIMITADO (Dlx, 17/11/2026: «que el staff de la liga y los owners de cada
+#: servidor, o sea socios, tengan pase premium ilimitado», «o sea el equipo puesto por mí», y con la captura de los diez
+#: del canal: «que todos estos tengan pase premium y sigue el ejemplo… trelok es el representante de cypherhood en este
+#: caso»). Todas las temporadas y sin rol de Discord: entran en `premium_ids()`, igual que `PERMANENTE`. Cada cuenta se
+#: buscó en DRA por el nombre de la captura y salió una sola (Benji Price no está en la Lista: el premium igual le llega).
+#: Dlx no va: el objeto le desbloquea todo (`DUENO`). Para sumar o sacar a alguien, se cambia esta lista
+EQUIPO = {
+    '694719521461764126': 'Jothaze',
+    '563072268830244864': 'ajoel08',
+    '734945161158852630': 'Benji Price',
+    '597257327464284163': 'Trelok (representante de Cypherhood)',
+    '554330098812059679': 'Catarsis',
+    '1440039366654165212': 'Leonart',
+    '1462602972197556237': 'Lil Drako',
+    '1150099153238630410': 'Drexx',
+    '1555067257376346122': 'Zaik',
+}
 BOOST = 20
 PREMIUM = {
     1: ('marco', 'Premium'),
@@ -538,13 +555,15 @@ def vales_campeones():
 
 
 def premium_ids():
-    """💎 Los Discord IDs con alguno de los roles del Pase premium (`ROLES_PREMIUM`), de datos/pase_premium.json. Vacío
-    si no está."""
+    """💎 Los Discord IDs con el Pase premium: los de alguno de los roles (`ROLES_PREMIUM`, de datos/pase_premium.json),
+    los dos `PERMANENTE` (Konan y Bloody, todas las temporadas: hasta el 17/11/2026 sólo lo decía el comentario, y lo
+    sostenía el rol) y el `EQUIPO` de la Liga."""
     try:
         with io.open(os.path.join(BASE, 'datos', 'pase_premium.json'), encoding='utf-8') as f:
-            return sorted(str(x) for x in (json.load(f) or {}).get('ids') or [])
+            roles = [str(x) for x in (json.load(f) or {}).get('ids') or []]
     except (OSError, ValueError):
-        return []
+        roles = []
+    return sorted(set(roles) | set(PERMANENTE) | set(EQUIPO))
 
 
 def mandar(d):
@@ -663,6 +682,11 @@ def _self_check():
     u = umbrales()
     ok(len(ps) == NIVELES and [p[0] for p in ps] == list(range(1, NIVELES + 1)) and len(u) == NIVELES,
        'cincuenta niveles, cada uno con su XP')
+    # 👥 el equipo y los dos permanentes tienen el premium sin rol, y nadie del equipo es Dlx (él ya tiene todo)
+    _ids = premium_ids()
+    ok(set(EQUIPO) <= set(_ids) and set(PERMANENTE) <= set(_ids) and len(_ids) == len(set(_ids))
+       and all(re.match(r'^[0-9]{17,20}$', q) for q in list(EQUIPO) + list(PERMANENTE)) and '739338101603696681' not in EQUIPO,
+       'el equipo de la Liga (%d) y los dos permanentes tienen el Pase premium sin rol' % len(EQUIPO))
     ok(u[:8] == [300, 600, 900, 1400, 2000, 2700, 3500, 4400] and u[8] - u[7] == XP_NIVEL
        and all(b > a for a, b in zip(u, u[1:])),
        'la curva nueva: 300 tres veces, del 4 al 8 de 500 a 900, y 1.000 desde el 9; la XP pedida sólo crece  %s' % u[:9])
