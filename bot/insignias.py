@@ -110,6 +110,13 @@ CATALOGO = (
     ('mes_showman', '🎭', 'Showman del mes', 'Ganó el Showman del mes de los MES AWARDS'),
     ('mes_momento', '✨', 'Momento del mes', 'Su batalla fue el Momento del mes de los MES AWARDS'),
 )
+# 🏆 y las de la GALA de cada temporada (17/11/2026, Dlx: «al finalizar la temporada se haría una de la Liga Global»): las
+# mismas de la Liga, «de la temporada» (`bot/mes_awards.py`, `insignias()`). Salen de las del mes para no escribirlas dos
+# veces; la del Rapero, con corona
+CATALOGO = CATALOGO + tuple(
+    ('gala_' + c[0][4:], '👑' if c[0] == 'mes_rapero' else c[1], c[2].replace(' del mes', ' de la temporada'),
+     'Ganó «%s» en la gala de la Liga Global' % c[2].replace(' del mes', ' de la temporada'))
+    for c in CATALOGO if c[0].startswith('mes_') and not c[0].startswith('mes_sv_'))
 IDS = [c[0] for c in CATALOGO]
 #: las de piedra, de abajo arriba como `divisiones.piedra_fin()`
 PIEDRA_IDS = ('piedra_hierro', 'piedra_jade', 'piedra_zafiro', 'piedra_rubi', 'piedra_diamante', 'piedra_mitico')

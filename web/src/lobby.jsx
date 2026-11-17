@@ -22,10 +22,11 @@ import { cobrarRacha, useRacha } from './racha.js';
 import { PistaNuevos } from './nuevos.jsx';
 // 🔔 la franja de los MES AWARDS, sólo los días de votación (ver mesinicio.jsx): aparte, para que el resto del mes no pese
 const FranjaMesInicio = lazy(() => import('./mesinicio.jsx'));
-/** ¿Se está votando algún MES AWARD de un servidor? Lo dice el lobby (`enc`), sin pedir nada más */
+/** ¿Se está votando algún MES AWARD de un servidor, o la gala de la temporada (`gala`, sin `sv`)? Lo dice el lobby (`enc`),
+ * sin pedir nada más */
 function hayMesAbierto(liga) {
   const ahora = Date.now();
-  return (liga.d.enc || []).some((e) => e && e.tipo === 'mes' && e.sv && utc(e.hasta) > ahora);
+  return (liga.d.enc || []).some((e) => e && e.tipo === 'mes' && (e.sv || e.gala) && utc(e.hasta) > ahora);
 }
 import { esDoble, eventoDelBoton, ganador, lados, llaveEnVivo, momentosLlave } from './arriba.jsx';
 

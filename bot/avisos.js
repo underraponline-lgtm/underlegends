@@ -4357,9 +4357,18 @@ export function validarVoto(defs, d, id, ahora, elegido) {
  * abiertas, y la llave del cofre (`vota:<AAAA-MM>:<SV>`). Quien puede votar una puede votarlas todas: `solo` es el mismo
  * para las de un servidor. Pura.
  */
+//: 🏆 las 4 de la gala que dan el Flight case (Dlx, 17/11/2026: la franja de la gala, «vota las 4 y ganas un Flight case»)
+export const GALA_PRINCIPALES = ['rapero', 'revelacion', 'batalla', 'servidor'];
 export function encuestasMesSv(defs, enc, ahora) {
   const lista = (defs && Array.isArray(defs.lista)) ? defs.lista : [];
   const e0 = lista.find((x) => x && x.id === enc);
+  // 🏆 LA GALA (`mes:<temporada>:<cat>`, sin `sv`): votar las 4 principales da el Flight case (`vota:<temporada>:gala`)
+  const g = /^mes:(t\d{1,3}):([a-z]+)$/.exec(String(enc || ''));
+  if (e0 && g && GALA_PRINCIPALES.includes(g[2])) {
+    const ids = lista.filter((x) => x && x.tipo === 'mes' && !x.sv && GALA_PRINCIPALES.some((c) => x.id === 'mes:' + g[1] + ':' + c) &&
+      ahora < Date.parse(x.hasta)).map((x) => String(x.id).slice(0, 40));
+    return { ids, clave: ids.length ? 'vota:' + g[1] + ':gala' : '' };
+  }
   const m = /^mes:(\d{4}-\d{2}):/.exec(String(enc || ''));
   if (!e0 || !e0.sv || !m || !/^[A-Za-z0-9]{1,10}$/.test(String(e0.sv))) return { ids: [], clave: '' };
   const ids = lista.filter((x) => x && x.tipo === 'mes' && x.sv === e0.sv && String(x.id).startsWith('mes:' + m[1] + ':') &&
@@ -7664,6 +7673,17 @@ export function textoAvisoMes(m, svs, fase, id) {
   }
   return { id, titulo: '🏆 Se votan los MES AWARDS de ' + mes,
     cuerpo: 'En ' + donde + '. Vota todas las de tu servidor y llévate un Cajón de discos.', url };
+}
+/** 🏆 El aviso de la gala de la temporada: lo vota cualquiera; las 4 principales dan el Flight case. Pura. */
+export function textoAvisoGala(g, fase, id) {
+  const t = String((g && g.temp) || '').toUpperCase();
+  const url = 'https://underlegends.pages.dev/freestyle-rap/salon';
+  if (fase === 'ultimo') {
+    return { id, titulo: '⏰ Último día para votar la gala de la ' + t,
+      cuerpo: 'Cierra hoy. Vota lo mejor de toda la temporada: las 4 principales te dan un Flight case.', url };
+  }
+  return { id, titulo: '🏆 La gala de la ' + t + ' está abierta',
+    cuerpo: 'Vota lo mejor de toda la temporada en la Liga Global. Las 4 principales te dan un Flight case.', url };
 }
 //: el aviso de «se abrió» sale en las primeras horas; el del último día, desde estas horas antes del cierre (11 AM ET)
 export const MES_ABRE_VENTANA = 12 * 60 * 60 * 1000;
@@ -14889,12 +14909,14 @@ export class Avisos {
    */
   cofreMes(quien, ids, clave, t = Date.now()) {
     try {
-      const xs = Array.isArray(ids) ? ids.map(String).filter((x) => /^mes:\d{4}-\d{2}:/.test(x)).slice(0, 8) : [];
-      if (!xs.length || !/^vota:\d{4}-\d{2}:[A-Za-z0-9]{1,10}$/.test(String(clave || ''))) return false;
+      const xs = Array.isArray(ids) ? ids.map(String).filter((x) => /^mes:(\d{4}-\d{2}|t\d{1,3}):/.test(x)).slice(0, 8) : [];
+      // 🏆 la de la gala (`vota:<temporada>:gala`) es un Flight case (cofre 1); las de un servidor, un Cajón de discos (0)
+      const gala = /^vota:t\d{1,3}:gala$/.test(String(clave || ''));
+      if (!xs.length || !(gala || /^vota:\d{4}-\d{2}:[A-Za-z0-9]{1,10}$/.test(String(clave || '')))) return false;
       const n = this.sql.exec('SELECT COUNT(DISTINCT enc) AS n FROM votos WHERE quien = ? AND enc IN (' + xs.map(() => '?').join(',') + ')',
         quien, ...xs).toArray()[0].n;
       if (n < xs.length) return false;
-      return this.dropDar(quien, 'cofre5:0:' + clave, 0, t);
+      return this.dropDar(quien, 'cofre5:' + (gala ? 1 : 0) + ':' + clave, 0, t);
     } catch (e) { return false; }
   }
 
@@ -16980,39 +17002,64 @@ export class Avisos {
   async avisosMes(ahora) {
     if (this.pausada()) return 0;
     const m = this.leer('mes_votan');
-    if (!m || !m.mes || !m.sv) return 0;
-    const abre = Date.parse(m.abre), cierra = Date.parse(m.cierra);
-    if (!(ahora >= abre && ahora < cierra)) return 0;
-    const fase = ahora >= cierra - MES_ULTIMO ? 'ultimo' : (ahora < abre + MES_ABRE_VENTANA ? 'abre' : '');
-    if (!fase) return 0;
-    const clave = 'mesav:' + m.mes + ':' + fase;
+    if (!m) return 0;
+    let enviados = 0;
+    const fase = (a, c) => (!(ahora >= a && ahora < c) ? '' : ahora >= c - MES_ULTIMO ? 'ultimo' : ahora < a + MES_ABRE_VENTANA ? 'abre' : '');
+    // 🏟️ los de cada servidor: a quien jugó ahí y a quien lo eligió, con todos sus servidores
+    if (m.mes && m.sv) {
+      const f = fase(Date.parse(m.abre), Date.parse(m.cierra));
+      if (f) {
+        const por = {};
+        const sumar = (q, sv) => {
+          q = String(q);
+          if (!/^[0-9]{5,25}$/.test(q)) return;
+          por[q] = por[q] || [];
+          if (!por[q].includes(sv)) por[q].push(sv);
+        };
+        for (const [sv, ids] of Object.entries(m.sv)) for (const q of ids || []) sumar(q, sv);
+        for (const r of this.sql.exec("SELECT s.quien, s.sv FROM servidor s WHERE s.sv != '' AND s.t = " +
+          '(SELECT MAX(t) FROM servidor WHERE quien = s.quien)').toArray()) if (m.sv[r.sv]) sumar(r.quien, r.sv);
+        enviados += await this.avisarMes('mesav:' + m.mes + ':' + f, por, ahora, (q, todos, idA) => {
+          const svs = f === 'ultimo' ? todos.filter((sv) => !this.sql.exec('SELECT 1 AS x FROM votos WHERE quien = ? AND enc LIKE ? LIMIT 1',
+            q, 'mes:' + m.mes + ':' + sv + ':%').toArray()[0]) : todos;
+          return svs.length ? textoAvisoMes(m, svs, f, idA) : null;
+        });
+      }
+    }
+    // 🏆 la gala de la temporada: a quien jugó en la temporada (el último día, a quien todavía no votó ninguna)
+    const g = m.gala;
+    if (g && /^t\d{1,3}$/.test(String(g.temp || '')) && Array.isArray(g.ids)) {
+      const f = fase(Date.parse(g.abre), Date.parse(g.cierra));
+      if (f) {
+        const por = {};
+        for (const q of g.ids) if (/^[0-9]{5,25}$/.test(String(q))) por[String(q)] = true;
+        enviados += await this.avisarMes('galav:' + g.temp + ':' + f, por, ahora, (q, _x, idA) =>
+          (f === 'ultimo' && this.sql.exec('SELECT 1 AS x FROM votos WHERE quien = ? AND enc LIKE ? LIMIT 1', q, 'mes:' + g.temp + ':%').toArray()[0]
+            ? null : textoAvisoGala(g, f, idA)));
+      }
+    }
+    return enviados;
+  }
+
+  /** El envío de `avisosMes()`: a cada uno de `por` (`{discord_id: lo suyo}`) el aviso que arma `texto()` —o nada si
+   *  devuelve null—, a su bandeja y a sus teléfonos, una vez por `clave` (`hechos`), con `TOPE_MES` teléfonos por minuto. */
+  async avisarMes(clave, por, ahora, texto) {
     if (this.leer(clave)) return 0;
-    const por = {};
-    const sumar = (q, sv) => {
-      q = String(q);
-      if (!/^[0-9]{5,25}$/.test(q)) return;
-      por[q] = por[q] || [];
-      if (!por[q].includes(sv)) por[q].push(sv);
-    };
-    for (const [sv, ids] of Object.entries(m.sv)) for (const q of ids || []) sumar(q, sv);
-    for (const r of this.sql.exec("SELECT s.quien, s.sv FROM servidor s WHERE s.sv != '' AND s.t = " +
-      '(SELECT MAX(t) FROM servidor WHERE quien = s.quien)').toArray()) if (m.sv[r.sv]) sumar(r.quien, r.sv);
     let pedidos = 0, quedan = 0, enviados = 0, fallaron = 0;
-    for (const [q, todos] of Object.entries(por)) {
+    for (const [q, lo] of Object.entries(por)) {
       const idA = clave + ':' + q;
       if (this.yaHecho(idA)) continue;
-      const svs = fase === 'ultimo' ? todos.filter((sv) => !this.sql.exec('SELECT 1 AS x FROM votos WHERE quien = ? AND enc LIKE ? LIMIT 1',
-        q, 'mes:' + m.mes + ':' + sv + ':%').toArray()[0]) : todos;
-      if (!svs.length) { this.sql.exec('INSERT OR IGNORE INTO hechos (id, t) VALUES (?, ?)', idA, ahora); continue; }
+      const a = texto(q, lo, idA);
+      if (!a) { this.sql.exec('INSERT OR IGNORE INTO hechos (id, t) VALUES (?, ?)', idA, ahora); continue; }
       const subs = this.sql.exec('SELECT id, endpoint, p256dh, auth FROM subs WHERE quien = ?', q).toArray();
       if (pedidos + subs.length > TOPE_MES && pedidos) { quedan++; continue; }
-      const a = textoAvisoMes(m, svs, fase, idA);
       this.sql.exec('INSERT OR IGNORE INTO hechos (id, t) VALUES (?, ?)', idA, ahora);
       this.aBandeja(q, idA, 'personal', a.titulo, a.cuerpo, a.url, '', ahora);
       if (!subs.length) continue;
       pedidos += subs.length;
       const cuerpo = cuerpoPersonal(a);
-      const estados = await Promise.all(subs.map((x) => empujar(x, cuerpo, { ttl: 12 * 3600, topic: 'mes' + fase }, this.env, new Map())));
+      const estados = await Promise.all(subs.map((x) => empujar(x, cuerpo, { ttl: 12 * 3600, topic: clave.replace(/[^A-Za-z0-9]/g, '').slice(-20) },
+        this.env, new Map())));
       let llego = 0, reintentar = false;
       estados.forEach((e, i) => {
         if (e >= 200 && e < 300) { enviados++; llego++; }
@@ -17660,14 +17707,22 @@ export class Avisos {
     }
     // 🔔 quién puede votar los MES AWARDS abiertos (`pase.mes_votan()`): lo usa `avisosMes()` para la campana
     const mv = d.mes_votan;
-    if (mv && typeof mv === 'object' && /^\d{4}-\d{2}$/.test(String(mv.mes || '')) && Date.parse(mv.abre) && Date.parse(mv.cierra)) {
-      const sv = {}, siglas = {};
-      for (const [k, ids] of Object.entries(mv.sv || {}).slice(0, 30)) {
-        if (/^[A-Za-z0-9]{1,10}$/.test(k) && Array.isArray(ids)) sv[k] = ids.map(String).filter(id).slice(0, 3000);
+    if (mv && typeof mv === 'object') {
+      const out = {};
+      if (/^\d{4}-\d{2}$/.test(String(mv.mes || '')) && Date.parse(mv.abre) && Date.parse(mv.cierra)) {
+        const sv = {}, siglas = {};
+        for (const [k, ids] of Object.entries(mv.sv || {}).slice(0, 30)) {
+          if (/^[A-Za-z0-9]{1,10}$/.test(k) && Array.isArray(ids)) sv[k] = ids.map(String).filter(id).slice(0, 3000);
+        }
+        for (const [k, n] of Object.entries(mv.siglas || {}).slice(0, 30)) if (sv[k]) siglas[k] = String(n).slice(0, 10);
+        Object.assign(out, { mes: mv.mes, nombre: String(mv.nombre || '').slice(0, 20), abre: String(mv.abre), cierra: String(mv.cierra), sv, siglas });
       }
-      for (const [k, n] of Object.entries(mv.siglas || {}).slice(0, 30)) if (sv[k]) siglas[k] = String(n).slice(0, 10);
-      this.guardar('mes_votan', { mes: mv.mes, nombre: String(mv.nombre || '').slice(0, 20), abre: String(mv.abre),
-        cierra: String(mv.cierra), sv, siglas });
+      // 🏆 la gala: quién jugó en la temporada
+      const gv = mv.gala;
+      if (gv && /^t\d{1,3}$/.test(String(gv.temp || '')) && Date.parse(gv.abre) && Date.parse(gv.cierra) && Array.isArray(gv.ids)) {
+        out.gala = { temp: String(gv.temp), abre: String(gv.abre), cierra: String(gv.cierra), ids: gv.ids.map(String).filter(id).slice(0, 5000) };
+      }
+      this.guardar('mes_votan', out);
     }
     // 🏆 los Pases premium de los campeones de liga que manda el ciclo (`pase.vales_campeones()`): uno por título, y el que
     // ya estaba no se toca (ni usado ni sin usar). Al dueño del perfil, si se sabe su cuenta, le llega a la campana

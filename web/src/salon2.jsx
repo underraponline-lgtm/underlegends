@@ -17,13 +17,17 @@
 //   cada uno; tocar uno abre sus ganadores debajo. Octubre, el único mes de toda la Liga, queda en su fila.
 // - LO DEMÁS DEL SALÓN EN PESTAÑAS (récords, insignias, ligas, figuras, el Pase): eran seis bloques apilados, 6.584 px en
 //   la compu y 14.139 en el celular, y la mitad eran insignias de los MES AWARDS (ahora no van: ya están en la grilla).
+// 🏆 Y LA GALA DE LA TEMPORADA (17/11/2026), lo de toda la Liga al cierre (`gala` de /api/salon): con los nominados afuera
+// la página ABRE CON LA GALA (le gana al mes: los de diciembre de cada servidor se votan los mismos días y van debajo); ya
+// cerrada, sus ganadores van arriba los 30 días que sigue en el payload; y antes, la última columna de la grilla dice
+// cuándo salen sus nominados y qué se lleva cada ganador.
 import { useEffect, useState } from 'react';
 import { DIAS, MESES, limpio, num, siglaDe } from './liga.js';
 import { Cara, Carta, Ico, usePerfiles } from './piezas.jsx';
 import { usePases } from './pase.js';
 import { SelloPremium, esPremium } from './sello.jsx';
 import { Nominado, nomTexto, reparto, useSalon } from './mesawards.jsx';
-import { CatsSv, ChipsSv, Franja, QUIEN_VOTA, mayus, mesDe } from './mesvoto.jsx';
+import { CatCompacta, CatVoto, CatsSv, ChipsSv, Franja, FranjaGala, QUIEN_VOTA, QUIEN_VOTA_GALA, deTemporada, mayus, mesDe, premiosGala } from './mesvoto.jsx';
 import { svElegido, useElegidos } from './elegidos.js';
 import { useIndice } from './indice.js';
 import CSS_PAGINA from './css/salon2.css?inline';
@@ -122,6 +126,22 @@ function tuSv(liga, el, svs) {
     .sort((a, b) => (b.ev || 0) - (a.ev || 0) || (b.n || 0) - (a.n || 0)).map((s) => s.sv)[0] || svs[0] || '';
 }
 
+// 🏆 la gala, según el momento: 'antes' (sin nominados), 'nominados' (salieron, todavía no se vota), 'vota' o 'cerrada'.
+// `de`: la gala del payload es la de ESTA temporada (la grilla y la regla son de la temporada que corre: la de la anterior,
+// cerrada, sigue 30 días en el payload y va sólo en su bloque de ganadores)
+function estadoGala(liga, S) {
+  const g = (S && S.gala) || null;
+  const de = !!(g && String(g.temp || '').toUpperCase() === tempDe(liga));
+  const e = !g ? '' : g.cerrado && g.cats ? 'cerrada' : g.abre && g.cats ? (g.votando ? 'vota' : 'nominados') : 'antes';
+  return { g, e, de };
+}
+// el ganador del Rapero de la temporada, en una gala cerrada
+function raperoGala(liga, g) {
+  const x = ((g && g.cats) || {}).rapero || {};
+  const f = (x.nom || []).find((y) => y.op === x.gana);
+  return f ? nomTexto(liga, 'rapero', f) : null;
+}
+
 // lo que va en una celda de la grilla (y en una fila del celular): el ganador, los nominados o la fecha
 function infoCelda(liga, S, sv, m) {
   const e = estadoMes(S, m);
@@ -157,9 +177,19 @@ function CabFila({ liga, sv }) {
 const colorFila = (liga, sv) => (sv === LIGA ? '#E5B800' : (liga.svs[sv] || {}).color || 'transparent');
 
 // la regla de la temporada: cada mes con lo que pasa ahí, el de ahora en blanco y la gala al final
-function Regla({ liga, S, meses, actual, mesVer, onMes }) {
-  const g = S.gala || null;
+function Regla({ liga, S, meses, actual, mesVer, onMes, onGala }) {
+  const G = estadoGala(liga, S);
+  const g = G.de ? G.g : null;
   const temp = (g && g.temp) || tempDe(liga);
+  const gr = g && G.e === 'cerrada' ? raperoGala(liga, g) : null;
+  // la celda de la gala: cuándo salen los nominados; ya nominada, se vota o cierra (en dorado, como el mes de ahora en
+  // blanco); cerrada, quién ganó el Rapero de la temporada
+  const galaTx = !g ? 'Al cierre · la Liga Global'
+    : G.e === 'vota' ? 'Votando · cierra ' + diaCorto(liga, g.cierra)
+      : G.e === 'nominados' ? 'Nominados · se vota el ' + diaCorto(liga, g.abre)
+        : G.e === 'cerrada' ? 'Cerrada' + (gr ? ' · ganó ' + gr.n : '')
+          : (g.nominados ? 'Nominados ' + diaCorto(liga, g.nominados, true) : 'Al cierre') + ' · la Liga Global';
+  const galaC = <><b>GALA {temp}</b><small>{galaTx}</small></>;
   return (
     <ol className="sd-regla" style={{ '--m': meses.length }} aria-label="Los meses de la temporada">
       {meses.map((m) => {
@@ -180,30 +210,61 @@ function Regla({ liga, S, meses, actual, mesVer, onMes }) {
           </li>
         );
       })}
-      <li className="sd-gl"><span className="sd-rc"><b>GALA {temp}</b>
-        <small>{g && g.nominados ? 'Nominados ' + diaCorto(liga, g.nominados, true) : 'Al cierre'} · la Liga Global</small></span></li>
+      <li className={'sd-gl' + (G.e === 'vota' || G.e === 'nominados' ? ' sd-gl-on' : '')}>
+        {g && G.e !== 'antes' ? <button type="button" className="sd-rc" onClick={onGala} aria-label={'La gala de la ' + temp + ': ' + galaTx}>{galaC}</button>
+          : <span className="sd-rc">{galaC}</span>}</li>
     </ol>
   );
 }
 
-// la gala, en la última columna: cuándo salen sus nominados y sus cuatro categorías principales. ⏳ Votarla viene en enero
-function Gala({ liga, S }) {
-  const g = S.gala || null;
+// 🏆 lo que se lleva cada ganador de la gala: [quiénes, qué], de su `drop`
+function PremiosGala({ g, cls = '' }) {
+  const ps = premiosGala(g);
+  return ps.length ? <ul className={'sd-premios ' + cls}>{ps.map(([q, que]) => <li key={q}><b>{q}</b> · {que}</li>)}</ul> : null;
+}
+// la gala, en la última columna (y en el celular, debajo de las filas): antes, cuándo salen sus nominados, sus cuatro
+// principales y los premios; nominada o votándose, sus nominados al Rapero y el botón a votar; cerrada, el Rapero de la
+// temporada y el botón a los ganadores
+function Gala({ liga, S, onGala }) {
+  const G = estadoGala(liga, S);
+  const g = G.de ? G.g : null;
   const temp = (g && g.temp) || tempDe(liga);
   const fin = (liga.d.fase || {}).termina;
   const princ = (S.cats || []).filter((c) => !c[3]);
+  if (g && (G.e === 'vota' || G.e === 'nominados')) {
+    const nom = ((g.cats.rapero || {}).nom || []).slice(0, 5).map((y) => nomTexto(liga, 'rapero', y));
+    return (
+      <>
+        <b>Gala {temp}</b>
+        <small>{G.e === 'vota' ? 'Se vota hasta el ' + diaCorto(liga, g.cierra, true) + '. ' + QUIEN_VOTA_GALA : 'Salieron los nominados: se vota desde el ' + diaCorto(liga, g.abre, true) + '.'}</small>
+        {nom.length ? <span className="sd-apila">{nom.map((t, j) => <Cara key={j} liga={liga} k={t.k} nombre={t.q} cls="sd-mini" />)}</span> : null}
+        <button type="button" className="sd-gala-ir" onClick={onGala}>{G.e === 'vota' ? 'Votar la gala →' : 'Ver los nominados →'}</button>
+      </>
+    );
+  }
+  if (g && G.e === 'cerrada') {
+    const t = raperoGala(liga, g);
+    return (
+      <>
+        <b>Gala {temp}</b>
+        {t ? <span className="sd-gala-r"><Cara liga={liga} k={t.k} nombre={t.q} cls="sd-cara" /><span><small>Rapero de la temporada</small><strong>{t.n}</strong></span></span> : null}
+        <button type="button" className="sd-gala-ir" onClick={onGala}>Ver los ganadores →</button>
+      </>
+    );
+  }
   return (
     <>
       <b>Gala {temp}</b>
       <small>La Liga Global, con toda la temporada.{g && g.nominados ? ' Los nominados salen el ' + diaCorto(liga, g.nominados, true) + '.'
         : fin ? ' Al cierre, el ' + diaSin(fin) + '.' : ''}</small>
-      {princ.length ? <ul>{princ.map(([c, n]) => <li key={c}>{String(n).replace(/ del mes$/, ' de la temporada')}</li>)}</ul> : null}
+      {princ.length ? <ul>{princ.map(([c, n]) => <li key={c}>{deTemporada(n)}</li>)}</ul> : null}
+      <PremiosGala g={g} />
     </>
   );
 }
 
 // la grilla servidores × meses (en la compu)
-function Grilla({ liga, S, meses, filas, ver, mesVer, onGana, onVota }) {
+function Grilla({ liga, S, meses, filas, ver, mesVer, onGana, onVota, onGala }) {
   const desde = S.sv_desde || '';
   const celda = (sv, m) => {
     const i = infoCelda(liga, S, sv, m);
@@ -233,7 +294,7 @@ function Grilla({ liga, S, meses, filas, ver, mesVer, onGana, onVota }) {
             {resto ? <span role="cell" className="sd-gc sd-tenue sd-gl-va" style={{ gridColumn: 'span ' + resto }}>
               <span className="sd-nada">Desde {mesDe(desde)}, lo de toda la Liga va a la gala</span></span> : null}
             {i === 0 ? <span role="cell" className="sd-gc sd-gala" style={{ gridRow: '2 / span ' + filas.length, gridColumn: meses.length + 2 }}>
-              <Gala liga={liga} S={S} /></span> : null}
+              <Gala liga={liga} S={S} onGala={onGala} /></span> : null}
           </div>
         );
       })}
@@ -303,7 +364,7 @@ function Archivo({ liga, enc, S, ver }) {
 }
 
 // la sección mes a mes: (la franja de cuándo salen los nominados) la regla, la grilla o las filas y lo que se abrió
-function MesAMes({ liga, enc, S, svs, ver, mesVer, onMes, onGana, onVota, franja }) {
+function MesAMes({ liga, enc, S, svs, ver, mesVer, onMes, onGana, onVota, onGala, franja }) {
   const meses = mesesTemp(liga, S);
   if (!meses.length) return null;
   const actual = S.abierto ? S.abierto.mes : S.vivo ? S.vivo.mes : '';
@@ -315,23 +376,30 @@ function MesAMes({ liga, enc, S, svs, ver, mesVer, onMes, onGana, onVota, franja
       {franja}
       <div className="sec-t"><h2>MES AWARDS</h2></div>
       <p className="sec-baj">Cada mes en cada servidor Tier 1, y al cierre de la temporada, la gala de toda la Liga.</p>
-      <Regla liga={liga} S={S} meses={meses} actual={actual} mesVer={mv} onMes={onMes} />
-      <Grilla liga={liga} S={S} meses={meses} filas={filas} ver={ver} mesVer={mv} onGana={onGana} onVota={onVota} />
+      <Regla liga={liga} S={S} meses={meses} actual={actual} mesVer={mv} onMes={onMes} onGala={onGala} />
+      <Grilla liga={liga} S={S} meses={meses} filas={filas} ver={ver} mesVer={mv} onGana={onGana} onVota={onVota} onGala={onGala} />
       <div className="sd-meses-c">
         <Archivo liga={liga} enc={enc} S={S} ver={ver} />
         <Filas liga={liga} S={S} filas={filas} mesVer={mv} ver={ver} onGana={onGana} onVota={onVota} />
+        {/* en el celular no hay grilla: la gala va acá, con lo mismo que su columna */}
+        <div className="sd-gala-cel"><Gala liga={liga} S={S} onGala={onGala} /></div>
       </div>
     </section>
   );
 }
 
 // ── la votación, arriba: tu servidor, la franja y sus nominados ──
-function Votacion({ liga, enc, S, svs, sv, propio, onSv }) {
+// `bajoGala`: va debajo de la gala (se votan los mismos días), así que lleva su título y quién vota
+function Votacion({ liga, enc, S, svs, sv, propio, onSv, bajoGala }) {
   const ab = S.abierto;
   const cuenta = (x) => catsDe(S, ab, x).length;
   const s = liga.svs[sv] || {};
   return (
     <section className="sec negra sd-vota" id="sl-mes" aria-label={'Los MES AWARDS de ' + ab.nombre + ' en ' + siglaDe(sv)}>
+      {bajoGala ? <>
+        <div className="sec-t"><h2>MES AWARDS de {ab.nombre}</h2></div>
+        <p className="sec-baj">Se votan los mismos días que la gala, cada servidor los suyos. {QUIEN_VOTA(siglaDe(sv), ab.nombre)}</p>
+      </> : null}
       <Franja liga={liga} enc={enc} S={S} sv={sv} modo={ab.votando ? 'vota' : 'nominados'} />
       <ChipsSv liga={liga} svs={svs} sv={sv} onSv={onSv} cuenta={cuenta} etiqueta="Los nominados de cada servidor" />
       {propio && propio !== sv && !cuenta(propio) ? <p className="sd-aviso">{siglaDe(propio)} no tiene nominados en {ab.nombre}: mira los de los demás servidores.</p> : null}
@@ -340,6 +408,75 @@ function Votacion({ liga, enc, S, svs, sv, propio, onSv }) {
         {cuenta(sv) ? <CatsSv liga={liga} enc={enc} S={S} sv={sv} m={ab} votando={ab.votando} />
           : <p className="sd-vacio">{siglaDe(sv)} no tiene nominados en {ab.nombre}.</p>}
       </div>
+    </section>
+  );
+}
+
+// ── 🏆 la gala con los nominados afuera: la franja, las 4 principales en tarjetas y las otras 22, compactas ──
+// ⚠️ Las otras 22 detrás de un botón, en la compu también: abiertas son ~1.500 px más (una fila por categoría) y la gala
+// es lo primero de la página; las 4 principales, que son las del Flight case, quedan a la vista
+function GalaVoto({ liga, enc, S, g }) {
+  const [otras, setOtras] = useState(false);
+  const vota = !!g.votando;
+  const temp = String(g.temp || '').toLowerCase();
+  const x = (c) => (g.cats || {})[c] || {};
+  const encDe = (c) => (vota && (x(c).nom || []).length >= 2 ? 'mes:' + temp + ':' + c : '');
+  const princ = (S.cats || []).filter((c) => !c[3] && (x(c[0]).nom || []).length);
+  const resto = (S.cats || []).filter((c) => c[3] && (x(c[0]).nom || []).length);
+  return (
+    <section className="sec negra sd-vota" id="sl-gala" aria-label={'La gala de ' + g.nombre}>
+      <FranjaGala liga={liga} enc={enc} S={S} modo={vota ? 'vota' : 'nominados'} />
+      <div className="sd-panel">
+        <h2 className="sd-panel-t">Las {princ.length} principales · {g.nombre}</h2>
+        <div className="sd-cats">{princ.map(([c, n, de]) => (
+          <CatVoto key={c} liga={liga} enc={enc} cat={c} nombre={deTemporada(n)} de={deTemporada(de)} x={x(c)} encId={encDe(c)} gala />
+        ))}</div>
+      </div>
+      {resto.length ? (
+        <>
+          <div className="sd-otras-b">
+            <button type="button" className="btn borde" aria-expanded={otras} aria-controls="sd-otras" onClick={() => setOtras((v) => !v)}>
+              {otras ? 'Esconder las otras ' + resto.length : 'Ver las otras ' + resto.length}</button>
+            <span>{resto.slice(0, 4).map(([, n]) => deTemporada(n).replace(/ de la temporada$/, '')).join(', ')} y más</span>
+          </div>
+          {otras ? (
+            <div className="sd-panel" id="sd-otras">
+              <h2 className="sd-panel-t">Las otras {resto.length}</h2>
+              {resto.map(([c, n, de]) => <CatCompacta key={c} liga={liga} enc={enc} cat={c} nombre={deTemporada(n)} de={deTemporada(de)} x={x(c)} encId={encDe(c)} />)}
+            </div>
+          ) : null}
+        </>
+      ) : null}
+      <PremiosGala g={g} cls="sd-premios-pie" />
+    </section>
+  );
+}
+// ── 🏆 la gala cerrada: sus ganadores, arriba, los 30 días que sigue en el payload ──
+function GalaGanadores({ liga, enc, S, g }) {
+  const x = (c) => (g.cats || {})[c] || {};
+  const princ = (S.cats || []).filter((c) => !c[3] && (x(c[0]).nom || []).length);
+  const resto = (S.cats || []).filter((c) => c[3]).map(([c, n]) => {
+    const f = (x(c).nom || []).find((y) => y.op === x(c).gana);
+    return f ? { c, n, f } : null;
+  }).filter(Boolean);
+  const cerro = g.cerrado ? liga.diaClave(g.cerrado) : '';
+  return (
+    <section className="sec negra sd-galaw" id="sl-gala">
+      <div className="sec-t"><h2>Los ganadores de la gala de la {g.temp}</h2></div>
+      <p className="sec-baj">Lo mejor de toda {g.nombre} en la Liga Global, votado por la gente{cerro ? ': cerró el ' + diaSin(cerro) : ''}.</p>
+      <div className="sd-panel">
+        <div className="sd-cats">{princ.map(([c, n, de]) => (
+          <CatVoto key={c} liga={liga} enc={enc} cat={c} nombre={deTemporada(n)} de={deTemporada(de)} x={x(c)} cerrado gala />
+        ))}</div>
+      </div>
+      {resto.length ? (
+        <div className="sl-hm sd-galaw-resto">
+          <h3 className="sd-panel-t">Las otras {resto.length}</h3>
+          <ul className="sl-hm-resto">{resto.map(({ c, n, f }) => (
+            <li key={c}><small>{deTemporada(n)}</small><span className="sl-nom"><Nominado liga={liga} cat={c} x={f} /></span>{pctGana(x(c))}</li>
+          ))}</ul>
+        </div>
+      ) : null}
     </section>
   );
 }
@@ -473,7 +610,8 @@ function insDificiles(liga, perf) {
   if (!cat.length || !P) return [];
   const por = {};
   Object.entries(P).forEach(([k, p]) => (p.ins || []).forEach(([id, t]) => { (por[id] = por[id] || []).push([k, t]); }));
-  return cat.filter(([id]) => !String(id).startsWith('mes_'))
+  // 🏆 ni las de la gala (`gala_*`, 17/11/2026): son 22 por temporada, todas ÚNICAS, y sus ganadores ya están en la gala
+  return cat.filter(([id]) => !String(id).startsWith('mes_') && !String(id).startsWith('gala_'))
     .map(([id, ic, n, desc]) => ({ id, ic, n, desc, quien: (por[id] || []).sort((a, b) => String(a[1]).localeCompare(String(b[1]))) }))
     .filter((x) => x.quien.length && x.quien.length <= DIFICIL)
     .sort((a, b) => a.quien.length - b.quien.length);
@@ -636,10 +774,14 @@ export function SalonFama({ liga, enc }) {
   const [ver0, setVer] = useState(undefined);
   const [mesVer0, setMesVer] = useState('');
   const [tab0, setTab] = useState('');
-  const { act, ir, tira, hay } = useIndice(['sl-mes', 'sl-meses', 'sl-vitrina', 'sl-resto']);
+  const { act, ir, tira, hay } = useIndice(['sl-gala', 'sl-mes', 'sl-meses', 'sl-vitrina', 'sl-resto']);
 
   // ── los MES AWARDS: en qué momento del mes estamos, tu servidor y lo que se abrió ──
   const ab = S && S.abierto && Object.keys(S.abierto.sv || {}).length ? S.abierto : null;
+  // 🏆 la gala: con los nominados afuera manda arriba; cerrada, sus ganadores van arriba
+  const G = estadoGala(liga, S);
+  const galaAb = G.e === 'vota' || G.e === 'nominados' ? G.g : null;
+  const galaCe = G.e === 'cerrada' ? G.g : null;
   const svs = S ? svsAwards(liga, S) : [];
   const propio = S ? tuSv(liga, el, svs) : '';
   const conNom = (x) => !!(ab && catsDe(S, ab, x).length);
@@ -664,6 +806,7 @@ export function SalonFama({ liga, enc }) {
   });
   const onGana = (x, m) => { setVer({ sv: x, mes: m }); setMesVer(m); ir2('sl-meses', 'sl-archivo'); };
   const onVota = (x) => { setSvVota(x); ir2('sl-mes'); };
+  const onGala = () => ir2('sl-gala');
   const onMes = (m) => {
     setMesVer(m);
     if (estadoMes(S, m) !== 'cerrado') return;
@@ -687,7 +830,8 @@ export function SalonFama({ liga, enc }) {
 
   // ── el índice pegado arriba: las secciones y, de «Lo demás», cada pestaña ──
   const aTab = (k) => { setTab(k); ir('sl-resto'); };
-  const chips = [['sl-mes', ab && ab.votando ? 'Votar' : 'Nominados'], ['sl-meses', 'MES AWARDS'], ['sl-vitrina', 'Campeón ' + tempDe(liga)]]
+  const chips = [['sl-gala', 'La gala'], ['sl-mes', galaAb ? 'Tu servidor' : ab && ab.votando ? 'Votar' : 'Nominados'], ['sl-meses', 'MES AWARDS'],
+    ['sl-vitrina', 'Campeón ' + tempDe(liga)]]
     .filter(([id]) => hay.includes(id)).map(([id, t]) => ({ id, t, on: act === id, ir: () => ir(id) }))
     .concat(hay.includes('sl-resto') ? tabs.map(([k, , c]) => ({ id: 'tab-' + k, t: c, on: act === 'sl-resto' && tab === k, ir: () => aTab(k) })) : []);
 
@@ -699,7 +843,7 @@ export function SalonFama({ liga, enc }) {
       {numero('RÉCORDS', (liga.d.records || []).length, tabs.some((x) => x[0] === 'rec') ? () => aTab('rec') : null)}
       {numero('INSIGNIAS', ins0, tabs.some((x) => x[0] === 'ins') ? () => aTab('ins') : null)}
       {numero('EVENTOS', num(liga.d.eventos || 0), null)}
-      {numero('TEMPORADAS', nTemp, ab ? () => ir('sl-vitrina') : null)}
+      {numero('TEMPORADAS', nTemp, ab || galaAb ? () => ir('sl-vitrina') : null)}
     </dl>
   );
   const escena = (hijos) => (
@@ -711,7 +855,7 @@ export function SalonFama({ liga, enc }) {
     </div>
   );
   const vota = !!(ab && ab.votando);
-  const mesAMes = S ? <MesAMes liga={liga} enc={enc} S={S} svs={svs} ver={ver} mesVer={mesVer} onMes={onMes} onGana={onGana} onVota={onVota}
+  const mesAMes = S ? <MesAMes liga={liga} enc={enc} S={S} svs={svs} ver={ver} mesVer={mesVer} onMes={onMes} onGana={onGana} onVota={onVota} onGala={onGala}
     franja={!ab && S.vivo ? <Franja liga={liga} enc={enc} S={S} sv={propio} modo="espera" /> : null} /> : null;
   const indice = chips.length > 1 ? (
     <nav className="sl-ix" aria-label="Qué hay en el Salón">
@@ -721,7 +865,44 @@ export function SalonFama({ liga, enc }) {
     </nav>
   ) : null;
   const demas = <LoDemas liga={liga} tabs={tabs} tab={tab} setTab={setTab} carga={!perf} />;
+  const vitrina = (
+    <section className="sec negra sd-vit" id="sl-vitrina">
+      <div className="sec-t"><h2>Salón de la fama</h2></div>
+      <div className="sd-vit-c">
+        <div className="sd-vit-tx">
+          <p>Los campeones de cada temporada, los premios de cada mes, los récords y las insignias más difíciles. Lo que se gana acá queda para siempre.</p>
+          {numeros}
+          <AlCierre />
+        </div>
+        <Estante liga={liga} />
+      </div>
+    </section>
+  );
+  const ganadoresGala = galaCe ? <GalaGanadores liga={liga} enc={enc} S={S} g={galaCe} /> : null;
 
+  if (galaAb) {
+    // 🏆 LA GALA, CON LOS NOMINADOS AFUERA: la página abre con ella (le gana al mes), y los de cada servidor, debajo
+    return (
+      <>
+        {escena(<>
+          <div className="sl-cab-tx">
+            <span className="tag">LIGA GLOBAL · {galaAb.temp}</span>
+            <h1 className="hero-ev largo">La gala de {galaAb.nombre}</h1>
+            <p className="hero-p">Lo mejor de toda la temporada en la Liga Global. {QUIEN_VOTA_GALA}{' '}
+              {galaAb.votando ? 'Una vez por categoría, y puedes cambiar tu voto hasta que cierra: nadie ve a quién votaste.'
+                : 'La votación abre ' + liga.dia(galaAb.abre) + '.'}</p>
+          </div>
+          <div className="sl-copa" aria-hidden="true"><Ico n="copa" t={150} /></div>
+        </>)}
+        {indice}
+        <GalaVoto liga={liga} enc={enc} S={S} g={galaAb} />
+        {ab ? <Votacion liga={liga} enc={enc} S={S} svs={svs} sv={sv} propio={propio} onSv={setSvVota} bajoGala /> : null}
+        {mesAMes}
+        {vitrina}
+        {demas}
+      </>
+    );
+  }
   if (ab) {
     // 🗳️ MIENTRAS SE VOTA (o ya salieron los nominados): la página abre con la votación de tu servidor
     return (
@@ -738,18 +919,9 @@ export function SalonFama({ liga, enc }) {
         </>)}
         {indice}
         <Votacion liga={liga} enc={enc} S={S} svs={svs} sv={sv} propio={propio} onSv={setSvVota} />
+        {ganadoresGala}
         {mesAMes}
-        <section className="sec negra sd-vit" id="sl-vitrina">
-          <div className="sec-t"><h2>Salón de la fama</h2></div>
-          <div className="sd-vit-c">
-            <div className="sd-vit-tx">
-              <p>Los campeones de cada temporada, los premios de cada mes, los récords y las insignias más difíciles. Lo que se gana acá queda para siempre.</p>
-              {numeros}
-              <AlCierre />
-            </div>
-            <Estante liga={liga} />
-          </div>
-        </section>
+        {vitrina}
         {demas}
       </>
     );
@@ -768,6 +940,7 @@ export function SalonFama({ liga, enc }) {
         {estante || <div className="sl-copa" aria-hidden="true"><Ico n="copa" t={150} /></div>}
       </>)}
       {indice}
+      {ganadoresGala}
       {mesAMes}
       {demas}
     </>

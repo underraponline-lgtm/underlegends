@@ -48,6 +48,15 @@ encuesta lleva `sv` y **sólo vota quien jugó ahí ese mes** (`votantes()` → 
 bot/avisos.js). Sólo los Tier 1 (`datos/niveles.json`; sin elegir, Tier 1) y sólo los que tienen algo que votar. El
 ganador se lleva la insignia de su categoría «de su servidor», `PREMIO_SV` Puntos de Tienda (1.000: *«yes sure»*), su
 lugar en la página de su servidor y una publicación por servidor.
+
+🔁 DESDE NOVIEMBRE (Dlx, 17/11/2026: *«sería cada mes por servidor, luego al finalizar la temporada se haría una de la liga
+global»*) cada mes es SÓLO de los servidores (`SOLO_SV_DESDE`), y lo de toda la Liga es LA GALA de cada temporada: las 26
+(`TODAS`) con los números de la temporada entera (`periodo('t1')`, de `comun/temporada.py`), nominada el día siguiente al
+cierre (`tiempos_gala()`), votada por cualquiera con Discord (encuestas `mes:t1:<cat>`, sin `sv`) y cerrada como un mes.
+Se guarda en `galas`. Los premios son Dragón Drops (`DROP_SV`, `DROP_GALA`; los da `bot/drops_merito.py`): los de servidor
+un Nido o un Star; los de la gala el Tesoro, la Funda o el Baúl. Votan los de un servidor quienes jugaron ahí y quienes lo
+eligieron como su servidor (`validarVoto()` de bot/avisos.js). ⚠️ La gala lee los duelos y el staff de la temporada `ACTUAL`:
+el cambio de temporada va DESPUÉS de que se nomine (`espejo_t1.nueva_temporada()` se niega antes).
 """
 import datetime as dt
 import io
@@ -97,6 +106,10 @@ PREMIO_SV = {'rapero': 1000, 'revelacion': 1000, 'batalla': 1000, 'staff': 1000}
 #: pasan a Dragón Drops?»: «A»): el Rapero del mes un Nido, los demás un Star Dragon. Los da `bot/drops_merito.py`
 #: (`de_mes_awards()`) al cierre; acá sólo se dice qué es cada uno, para la página
 DROP_SV = {'rapero': 'nido', 'revelacion': 'star', 'batalla': 'star', 'staff': 'star'}
+#: 🏆 y los de la gala (Dlx, 17/11/2026, «4: A»): el Rapero de la temporada el Tesoro del Dragón, la Revelación y la
+#: Batalla la Funda del Campeón, y las de personas el Baúl de los objetos. El Servidor y los grupos (crew, país, liga),
+#: el Salón y la publicación. Los da `bot/drops_merito.py` (`de_gala()`)
+DROP_GALA = {'rapero': 'cofre:4', 'revelacion': 'cofre:3', 'batalla': 'cofre:3', 'personas': 'cofre:2'}
 NIVELES = os.path.join(BASE, 'datos', 'niveles.json')
 MESES = ('enero', 'febrero', 'marzo', 'abril', 'mayo', 'junio', 'julio', 'agosto', 'septiembre', 'octubre',
          'noviembre', 'diciembre')
@@ -132,13 +145,43 @@ def en_et(mes, dia=1, hora=0):
     return dt.datetime(y, m, dia, hora, tzinfo=_et()).astimezone(dt.timezone.utc)
 
 
+def _fechas():
+    """`{temporada: (arranca, termina)}` de `comun/temporada.py` (`FECHAS`)."""
+    try:
+        from comun import temporada as T
+        return dict(T.FECHAS)
+    except Exception:                                    # noqa: BLE001
+        return {}
+
+
+def es_temporada(clave):
+    return bool(clave) and str(clave)[:1] == 't' and str(clave)[1:].isdigit()
+
+
 def periodo(mes):
-    """`(inicio, fin)` del mes en UTC: del 1 a las 00:00 ET al 1 del siguiente."""
+    """`(inicio, fin)` del mes en UTC: del 1 a las 00:00 ET al 1 del siguiente. 🏆 Con una temporada (`'t1'`), la temporada
+    entera: del día que arranca a las 00:00 ET al día siguiente del que termina (`comun/temporada.py`)."""
+    if es_temporada(mes):
+        a, f = _fechas()[mes]
+        a, f = dt.date.fromisoformat(a), dt.date.fromisoformat(f) + dt.timedelta(days=1)
+        return (dt.datetime(a.year, a.month, a.day, tzinfo=_et()).astimezone(dt.timezone.utc),
+                dt.datetime(f.year, f.month, f.day, tzinfo=_et()).astimezone(dt.timezone.utc))
     return en_et(mes), en_et(siguiente(mes))
 
 
 def nombre_mes(mes):
+    if es_temporada(mes):
+        return 'la temporada ' + str(mes)[1:]
     return MESES[int(mes[5:7]) - 1]
+
+
+def tiempos_gala(temp):
+    """🏆 `(nominados, abre, cierra)` de la gala de una temporada: el día siguiente al que termina, como un mes (los
+    nominados a las `NOMINA_H` ET, la votación a las `ABRE_H` y `DIAS_VOTO` días)."""
+    _a, f = _fechas()[temp]
+    d = dt.date.fromisoformat(f) + dt.timedelta(days=1)
+    mes = '%04d-%02d' % (d.year, d.month)
+    return en_et(mes, d.day, NOMINA_H), en_et(mes, d.day, ABRE_H), en_et(mes, d.day + DIAS_VOTO, ABRE_H)
 
 
 def _iso(t):
@@ -313,6 +356,51 @@ def _datos(vistas=None):
     return evs, fx, vistos, fuera, videos, svs, MU._clave_persona, otros
 
 
+def _hinchas_meses(d, datos):
+    """🙌 `{mes: [[discord_id, xp], …]}` guardado de a poco: el objeto sólo recuerda 65 días (`hinchas()` de avisos.js), así
+    que para la Hincha de la temporada cada mes se guarda acá (el máximo de cada uno)."""
+    out = {m: [list(x) for x in v] for m, v in ((d or {}).get('hinchas') or {}).items()}
+    nuevos = ((datos[7] if datos and len(datos) > 7 else None) or {}).get('hinchas') or {}
+    for m, xs in nuevos.items():
+        ya = {str(x[0]): int(x[1] or 0) for x in out.get(m) or []}
+        for did, xp in xs or []:
+            ya[str(did)] = max(ya.get(str(did), 0), int(xp or 0))
+        out[m] = sorted([[k, v] for k, v in ya.items()], key=lambda x: -x[1])[:60]
+    return out
+
+
+def _datos_gala(temp, datos, hinchas):
+    """Los datos de `numeros()` para la gala de `temp`: los mismos, con la Hincha sumada de todos los meses de la
+    temporada (`mes_otros.numeros()` la busca por el mes en que arranca el período)."""
+    if len(datos) < 8 or datos[7] is None:
+        return datos
+    ini, fin = periodo(temp)
+    suma = {}
+    for m, xs in (hinchas or {}).items():
+        if mes_de(ini) <= m <= mes_de(fin - dt.timedelta(seconds=1)):
+            for did, xp in xs or []:
+                suma[str(did)] = suma.get(str(did), 0) + int(xp or 0)
+    clave = (ini + dt.timedelta(hours=12)).strftime('%Y-%m')
+    otros = dict(datos[7], hinchas={clave: sorted([[k, v] for k, v in suma.items()], key=lambda x: -x[1])[:30]})
+    return tuple(datos[:7]) + (otros,)
+
+
+def ganadores_gala(d=None, con_x=False):
+    """🏆 `[(temporada, cat, opción, la fila del nominado)]` de las galas cerradas."""
+    d = leer() if d is None else d
+    out = []
+    for temp, g in sorted((d.get('galas') or {}).items()):
+        if not g.get('cerrado'):
+            continue
+        cats = g.get('cats') or {}
+        for cat in _orden(cats, TODAS):
+            x = cats.get(cat) or {}
+            fila = next((y for y in x.get('nom') or [] if y['op'] == x.get('gana')), None)
+            if fila:
+                out.append((temp, cat, x['gana'], fila, x) if con_x else (temp, cat, x['gana'], fila))
+    return out
+
+
 def leer(ruta=None):
     try:
         with io.open(ruta or SALIDA, encoding='utf-8') as f:
@@ -345,6 +433,16 @@ def encuestas(ahora=None, d=None):
                 if len(nom) >= 2:
                     out.append({'id': 'mes:%s:%s:%s' % (mes, sv, cat), 'tipo': 'mes', 'cat': cat, 'sv': sv,
                                 'hasta': m['cierra'], 'min': EN.MIN_VOTOS, 'op': [x['op'] for x in nom]})
+    # 🏆 la gala de cada temporada: las de la Liga, sin `sv` (vota cualquiera con Discord), id `mes:<temporada>:<cat>`
+    for temp, g in sorted((d.get('galas') or {}).items()):
+        a, c = _de_iso(g.get('abre')), _de_iso(g.get('cierra'))
+        if not a or not c or not (a <= ahora < c) or g.get('cerrado'):
+            continue
+        for cat, _n, _de in TODAS:
+            nom = (g.get('cats') or {}).get(cat, {}).get('nom') or []
+            if len(nom) >= 2:
+                out.append({'id': 'mes:%s:%s' % (temp, cat), 'tipo': 'mes', 'cat': cat, 'gala': temp, 'hasta': g['cierra'],
+                            'min': EN.MIN_VOTOS, 'op': [x['op'] for x in nom]})
     return out
 
 
@@ -369,9 +467,31 @@ def votantes(lista, d=None, dids=None, clave=None):
     return out
 
 
+def jugaron(temp, eventos=None, dids=None, clave=None):
+    """🏆 Los Discord IDs de los que jugaron en la temporada `temp` (del padrón): a ellos les llega el aviso de la gala.
+    ⚠️ Discord IDs: sólo al objeto (`pase.mes_votan()`), nunca a la página."""
+    import multiplicadores as MU
+    eventos = MU.eventos_de() if eventos is None else eventos
+    clave = clave or MU._clave_persona
+    por_k = {}
+    for raw, did in (_dids_padron() if dids is None else dids).items():
+        if clave(raw):
+            por_k.setdefault(clave(raw), str(did))
+    ini, fin = periodo(temp)
+    out = set()
+    for _n, _sv, t, tabla, _nom in eventos or []:
+        if t and ini <= t < fin:
+            for f in tabla or []:
+                if f and f[0] and clave(f[0]) in por_k:
+                    out.add(por_k[clave(f[0])])
+    return sorted(out)
+
+
 def _paga(cat, sv=False, mes=''):
     """Los Puntos de Tienda de un premio, con los números de HOY (sólo se usan al cerrar: después quedan congelados).
     Los de cada servidor desde `SOLO_SV_DESDE`, 0: se pagan en drops (`DROP_SV`)."""
+    if es_temporada(mes):
+        return 0
     if sv:
         return 0 if mes and mes >= SOLO_SV_DESDE else (PREMIO_SV.get(cat) or 0)
     return PREMIO.get(cat) or (MO.PREMIO_OTRA if cat in dict((c, 1) for c, _n, _d in OTRAS) else 0)
@@ -499,6 +619,38 @@ def correr(aplicar=False, ahora=None, datos=None, votos=None, ajustes=None, niv=
                 print('   🏟️ MES AWARDS de cada servidor: %s' % (', '.join(sorted(meses[prev]['sv'])) or 'ninguno con qué votar'))
             except Exception as e:                       # noqa: BLE001
                 print('   ⚠️ MES AWARDS de cada servidor: %s' % str(e)[:80])
+    # 🏆 LA GALA DE CADA TEMPORADA QUE TERMINÓ (Dlx, 17/11/2026: «al finalizar la temporada se haría una de la Liga
+    # Global»): las 26 de la Liga con los números de la temporada entera, el día siguiente al cierre (`tiempos_gala()`)
+    galas = dict(d.get('galas') or {})
+    hinchas = _hinchas_meses(d, datos)
+    for temp in sorted(_fechas()):
+        try:
+            t_nom, t_abre, t_cierra = tiempos_gala(temp)
+        except (KeyError, ValueError, TypeError):
+            continue
+        g = galas.get(temp)
+        # una que ya pasó hace mucho y nunca se hizo no se inventa ahora
+        if ahora < t_nom or (g is None and ahora > t_cierra) or (g and g.get('cerrado')):
+            continue
+        if g is None or (ahora < _de_iso(g['abre']) and ajustes_ok):
+            dg = _datos_gala(temp, datos, hinchas)
+            noms = nominados(numeros(temp, *dg), [])
+            galas[temp] = {'nominado': (g or {}).get('nominado') or _iso(ahora), 'abre': _iso(t_abre), 'cierra': _iso(t_cierra),
+                           'cats': {c: {'nom': noms[c]} for c, _n, _d in TODAS}}
+            print('   🏆 LA GALA DE LA %s: nominados (%s)' % (temp.upper(), ', '.join(
+                '%s %d' % (c, len(noms[c])) for c, _n, _d in TODAS if noms[c])))
+    for temp, g in sorted(galas.items()):
+        c = _de_iso(g.get('cierra'))
+        if c and ahora >= c and not g.get('cerrado'):
+            if votos is None:
+                import encuestas as EN
+                votos = EN.leer_votos()
+            if votos is None:
+                print('   ⚠️ la gala de la %s: no pude leer los votos; se cierra en la corrida siguiente' % temp.upper())
+                continue
+            galas[temp] = cerrar(temp, g, votos, ahora, did_de=_resolver_did() if real else None)
+            print('   🏆 LA GALA DE LA %s: cerrada (%s)' % (temp.upper(), ', '.join(
+                '%s %s' % (c2, x.get('gana')) for c2, x in galas[temp]['cats'].items() if x.get('gana'))))
     # 🏁 el cierre
     for mes, m in sorted(meses.items()):
         c = _de_iso(m.get('cierra'))
@@ -515,7 +667,7 @@ def correr(aplicar=False, ahora=None, datos=None, votos=None, ajustes=None, niv=
     out = {'_leeme': 'Los MES AWARDS: los nominados, los votos al cierre y los ganadores de cada mes. Los escribe '
                      'bot/mes_awards.py (paso 2b8d); los votos los guarda el objeto (bot/avisos.js). `vistas`: las promos '
                      'abiertas y las felicitaciones, contadas de a poco (bot/mes_otros.py).',
-           'meses': meses, 'vivo': vivo, 'vistas': vistas}
+           'meses': meses, 'vivo': vivo, 'vistas': vistas, 'galas': galas, 'hinchas': hinchas}
     if aplicar:
         with io.open(SALIDA, 'w', encoding='utf-8', newline='\n') as f:
             json.dump(out, f, ensure_ascii=False, indent=1)
@@ -595,6 +747,10 @@ def insignias(d=None):
     for _mes, _sv, cat, _op, fila, x in ganadores_sv(d, con_x=True):
         for q in [p[0] for p in x.get('premio') or []] or personas_sv(cat, fila):
             out.setdefault(q, set()).add('mes_sv_' + cat)
+    # 🏆 y las de la gala: «de la temporada» (`gala_rapero`…). Los grupos y el servidor, ninguna (como en los meses)
+    for _t, cat, _op, fila, x in ganadores_gala(d, con_x=True):
+        for q in [p[0] for p in x.get('premio') or []] or personas(cat, fila):
+            out.setdefault(q, set()).add('gala_' + cat)
     return out
 
 
@@ -689,6 +845,31 @@ def muro(d=None):
         j['quien'] = j['quien'][:12]
         j['n'] = '%d ganadores' % len(j['lista'])
         out.append(j)
+    # 🏆 la gala: como un mes de la Liga (una por cada principal y una con las demás), con `gala` y `mes` = la temporada
+    juntas_g = {}
+    for temp, cat, op, fila in ganadores_gala(d):
+        g = (d.get('galas') or {}).get(temp) or {}
+        x = (g.get('cats') or {}).get(cat) or {}
+        if cat in otras:
+            j = juntas_g.setdefault(temp, {'tipo': 'mesaward', 'gala': True, 't': g.get('cerrado'), 'mes': temp, 'cat': 'otras',
+                                           'quien': [], 'lista': []})
+            j['lista'].append([cat, otras[cat].replace(' del mes', ' de la temporada'), fila.get('n') or op, _pct(x)])
+            for q in personas(cat, fila):
+                if q not in j['quien']:
+                    j['quien'].append(q)
+            continue
+        y = {'tipo': 'mesaward', 'gala': True, 't': g.get('cerrado'), 'mes': temp, 'cat': cat,
+             'quien': personas(cat, fila) or [fila.get('n') or op], 'n': fila.get('n') or op, 'votos': x.get('votos') or 0,
+             'por': x.get('por') or '', 'pct': _pct(x), 'total': x.get('total') or 0}
+        if cat == 'servidor':
+            y['sv'] = op
+        if cat == 'batalla':
+            y['vid'], y['sv'] = op, fila.get('sv') or ''
+        out.append(y)
+    for j in juntas_g.values():
+        j['quien'] = j['quien'][:12]
+        j['n'] = '%d ganadores' % len(j['lista'])
+        out.append(j)
     return out
 
 
@@ -745,21 +926,32 @@ def para_web(d=None, ahora=None, mu=None):
     return {'t': _iso(ahora), 'cats': [list(c) + [0] for c in CATS] + [list(c) + [2 if c[0] in MO.STAFF else 1] for c in OTRAS],
             'cats_sv': [list(c) for c in CATS_SV], 'premio': dict(PREMIO, otra=MO.PREMIO_OTRA), 'premio_sv': dict(PREMIO_SV),
             'abierto': abierto, 'vivo': viv, 'hist': hist[:24], 'semanas': figuras_semana(mu),
-            'sv_desde': SOLO_SV_DESDE, 'gala': gala(), 'drop_sv': dict(DROP_SV)}
+            'sv_desde': SOLO_SV_DESDE, 'gala': gala(d, ahora), 'drop_sv': dict(DROP_SV)}
 
 
-def gala():
-    """🏆 La gala de la temporada en curso: `{temp, nominados}` (el día siguiente al cierre, a las `NOMINA_H` ET), o None si
-    la temporada no tiene fecha de cierre. La página la muestra como la última columna; ⏳ nominarla es la tanda 2."""
+def gala(d=None, ahora=None):
+    """🏆 La gala que toca mostrar: la de la temporada en curso o, si ya se nominó, la última, con su estado —
+    `{temp, nominados, abre?, cierra?, votando?, cats?, cerrado?, drop}`—; None si no hay fechas. Sin los Discord IDs ni
+    `premio` (`_sin_did()`)."""
+    ahora = ahora or dt.datetime.now(dt.timezone.utc)
+    galas = ((d or {}).get('galas') or {})
     try:
         from comun import temporada as T
-        fin = (T.FECHAS.get(T.ACTUAL) or (None, None))[1]
+        actual = T.ACTUAL
     except Exception:                                    # noqa: BLE001
+        actual = ''
+    # la última nominada, si todavía no pasó un mes de su cierre; si no, la de la temporada en curso
+    temp = next((t for t in sorted(galas, reverse=True)
+                 if _de_iso(galas[t].get('cierra')) and ahora < _de_iso(galas[t]['cierra']) + dt.timedelta(days=30)), actual)
+    if not temp or temp not in _fechas():
         return None
-    if not fin:
-        return None
-    dia = dt.date.fromisoformat(fin) + dt.timedelta(days=1)
-    return {'temp': T.ACTUAL.upper(), 'nominados': _iso(en_et('%04d-%02d' % (dia.year, dia.month), dia.day, NOMINA_H))}
+    t_nom, _a, _c = tiempos_gala(temp)
+    out = {'temp': temp.upper(), 'nombre': nombre_mes(temp), 'nominados': _iso(t_nom), 'drop': dict(DROP_GALA)}
+    g = galas.get(temp)
+    if g:
+        out.update(_sin_did(g))
+        out['votando'] = bool(_de_iso(g.get('abre')) and _de_iso(g['abre']) <= ahora and not g.get('cerrado'))
+    return out
 
 
 # ── self-check ───────────────────────────────────────────────────────────────────────────────────────────────────────
@@ -926,6 +1118,29 @@ def _self_check():
         ok(p7 == [['Bea', '', 0]] and not [k for k in tienda(r7, {'Bea': '222'}) if k.startswith('2026-11')]
            and para_web(r7)['drop_sv']['rapero'] == 'nido',
            'desde noviembre los de cada servidor no pagan Puntos: se pagan en drops (un Nido el Rapero)', str(p7))
+        # 🏆 la gala de la T1 (17/11/2026): el 1/1, con los números de toda la temporada
+        io.open(SALIDA, 'w', encoding='utf-8').write(json.dumps({'meses': {}}))
+        datosg = (ev + ev11, fx, vistos, {'fuera'}, dict(vids, **{'w' + k: v for k, v in vids11.items()}), {}, lambda n: n.lower())
+        r8 = correr(aplicar=True, ahora=dt.datetime(2027, 1, 1, 15, tzinfo=utc), datos=datosg, votos={}, ajustes={}, niv=niv)
+        r9 = correr(aplicar=True, ahora=dt.datetime(2027, 1, 1, 17, tzinfo=utc), datos=datosg, votos={}, ajustes={}, niv=niv)
+        g9 = (r9.get('galas') or {}).get('t1') or {}
+        e9 = encuestas(dt.datetime(2027, 1, 2, tzinfo=utc), r9)
+        w9g = para_web(r9, dt.datetime(2027, 1, 2, tzinfo=utc))['gala']
+        ok(not (r8.get('galas') or {}) and [x['op'] for x in g9['cats']['rapero']['nom']] == ['Bea', 'Ana', 'Cid']
+           and g9['cats']['rapero']['nom'][0]['pts'] == 55000 and g9['abre'] == '2027-01-01T23:00:00Z'
+           and g9['cierra'] == '2027-01-04T23:00:00Z' and 'mes:t1:rapero' in [e['id'] for e in e9]
+           and not [e for e in e9 if e['id'].startswith('mes:t1') and e.get('sv')] and w9g['votando'] and w9g['temp'] == 'T1',
+           'la gala de la T1: nominados el 1/1 a las 11 AM ET con los números de toda la temporada (octubre y noviembre '
+           'sumados), se vota del 1 al 4 y la vota cualquiera (sin `sv`)', str((g9.get('cats', {}).get('rapero'), w9g.get('votando'))))
+        r10 = correr(aplicar=True, ahora=dt.datetime(2027, 1, 5, tzinfo=utc), datos=datosg,
+                     votos={'mes:t1:rapero': {'Ana': 5, 'Bea': 1}}, ajustes={}, niv=niv)
+        g10 = r10['galas']['t1']
+        mg = [x for x in muro(r10) if x.get('gala')]
+        ok(g10.get('cerrado') and g10['cats']['rapero']['gana'] == 'Ana' and g10['cats']['rapero']['premio'] == [['Ana', '', 0]]
+           and 'gala_rapero' in insignias(r10).get('Ana', set()) and not [k for k in tienda(r10, {'Ana': '1'}) if 't1' in k]
+           and [x['cat'] for x in mg if x['cat'] == 'rapero'] == ['rapero'] and mg[0]['mes'] == 't1',
+           'la gala cierra: gana el más votado, no paga Puntos (se paga en drops), da la insignia «de la temporada» y sale '
+           'en Publicaciones', str((g10['cats']['rapero'], mg[:1])))
     finally:
         SALIDA = viejo
     # 🥇 las figuras salen de los premios de cada semana: quien repite, sale las dos veces (con las insignias, no)

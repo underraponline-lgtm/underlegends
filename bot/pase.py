@@ -568,24 +568,32 @@ def mes_votan(ahora=None, d=None):
     try:
         import mes_awards as MA
         d = MA.leer() if d is None else d
-        lista = [e for e in MA.encuestas(ahora, d) if e.get('sv')]
-        if not lista:
-            return None
-        vt = MA.votantes(lista, d)
-        mes = str(lista[0]['id']).split(':')[1]
-        m = (d.get('meses') or {}).get(mes) or {}
-        sv = {}
-        for e in lista:
-            sv.setdefault(e['sv'], set()).update(vt.get(e['id']) or [])
-        siglas = {}
-        try:
-            with io.open(os.path.join(BASE, 'datos', 'servidores.json'), encoding='utf-8') as f:
-                todos = (json.load(f) or {}).get('servidores') or {}
-            siglas = {k: (todos.get(k) or {}).get('sigla') or k for k in sv}
-        except (OSError, ValueError):
-            pass
-        return {'mes': mes, 'nombre': MA.nombre_mes(mes), 'abre': m.get('abre'), 'cierra': m.get('cierra'),
-                'sv': {k: sorted(v) for k, v in sorted(sv.items())}, 'siglas': siglas}
+        todas = MA.encuestas(ahora, d)
+        out = {}
+        lista = [e for e in todas if e.get('sv')]
+        if lista:
+            vt = MA.votantes(lista, d)
+            mes = str(lista[0]['id']).split(':')[1]
+            m = (d.get('meses') or {}).get(mes) or {}
+            sv = {}
+            for e in lista:
+                sv.setdefault(e['sv'], set()).update(vt.get(e['id']) or [])
+            siglas = {}
+            try:
+                with io.open(os.path.join(BASE, 'datos', 'servidores.json'), encoding='utf-8') as f:
+                    todos = (json.load(f) or {}).get('servidores') or {}
+                siglas = {k: (todos.get(k) or {}).get('sigla') or k for k in sv}
+            except (OSError, ValueError):
+                pass
+            out.update({'mes': mes, 'nombre': MA.nombre_mes(mes), 'abre': m.get('abre'), 'cierra': m.get('cierra'),
+                        'sv': {k: sorted(v) for k, v in sorted(sv.items())}, 'siglas': siglas})
+        # 🏆 la gala de la temporada: la vota cualquiera; el aviso, a los que jugaron en la temporada
+        gl = [e for e in todas if e.get('gala')]
+        if gl:
+            temp = gl[0]['gala']
+            g = (d.get('galas') or {}).get(temp) or {}
+            out['gala'] = {'temp': temp, 'abre': g.get('abre'), 'cierra': g.get('cierra'), 'ids': MA.jugaron(temp)}
+        return out or None
     except Exception as e:                               # noqa: BLE001
         print('   ⚠️ los avisos de los MES AWARDS no salen en esta vuelta: %s' % str(e)[:120])
         return None

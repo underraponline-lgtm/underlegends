@@ -132,8 +132,10 @@ export function Pub({ liga, it, A }) {
     det = it.de ? it.votos + ' de ' + it.de + ' votos' : '';
   } else if (it.tipo === 'mesaward') {
     // 🏆 un ganador de los MES AWARDS (bot/mes_awards.py, 16/10/2026)
-    const mes = MESES[Number(String(it.mes || '').slice(5, 7)) - 1] || '';
-    cat = 'MES AWARDS · ' + mes.toUpperCase();
+    // 🏆 la gala de la temporada (17/11/2026): `gala` y `mes` = la temporada
+    const gala = !!it.gala;
+    const mes = gala ? 'la ' + String(it.mes || '').toUpperCase() : MESES[Number(String(it.mes || '').slice(5, 7)) - 1] || '';
+    cat = gala ? 'GALA · ' + String(it.mes || '').toUpperCase() : 'MES AWARDS · ' + mes.toUpperCase();
     // 🏟️ los de cada servidor (18/10/2026): una publicación por servidor, con su escudo y sus ganadores
     const deSv = String(it.cat || '').startsWith('sv:');
     if (deSv) cat = 'MES AWARDS · ' + siglaDe(it.sv) + ' · ' + mes.toUpperCase();
@@ -147,9 +149,9 @@ export function Pub({ liga, it, A }) {
       {(it.lista || []).map((y, i) => <span key={y[0]}>{i ? ' · ' : ''}{y[1]}: <b>{limpio(y[2])}</b>{y[3] ? ' (' + y[3] + '%)' : ''}</span>)}</>
       : it.cat === 'otras' ? <>Los demás ganadores de <b>{mes}</b>:{' '}
       {(it.lista || []).map((y, i) => <span key={y[0]}>{i ? ' · ' : ''}{y[1]}: <b>{limpio(y[2])}</b>{y[3] ? ' (' + y[3] + '%)' : ''}</span>)}</>
-      : it.cat === 'batalla' ? <><b>{limpio(it.n)}</b> es la Batalla del mes de {mes}</>
-      : it.cat === 'servidor' ? <><b>{limpio(it.n)}</b> es el Servidor del mes de {mes}</>
-        : <>{nombres} es {MES_CAT[it.cat] || 'ganador'} de <b>{mes}</b></>;
+      : it.cat === 'batalla' ? <><b>{limpio(it.n)}</b> es la Batalla {gala ? 'de la temporada en' : 'del mes de'} {mes}</>
+      : it.cat === 'servidor' ? <><b>{limpio(it.n)}</b> es el Servidor {gala ? 'de la temporada en' : 'del mes de'} {mes}</>
+        : <>{nombres} es {gala ? String(MES_CAT[it.cat] || 'ganador').replace(' del mes', ' de la temporada') + ' en' : (MES_CAT[it.cat] || 'ganador') + ' de'} <b>{mes}</b></>;
     // 📊 con su porcentaje (Dlx, 18/10/2026: «me gusta lo de porcentajes»)
     det = it.cat === 'otras' || deSv ? '' : it.por === 'votos'
       ? (it.pct ? it.pct + '% de los votos · ' : '') + num(it.votos) + (it.votos === 1 ? ' voto' : ' votos') + (it.total ? ' de ' + num(it.total) : '')

@@ -525,7 +525,12 @@ def vistas(viejas, ahora, mes_de, traer=None, promos=None, staff=None):
         ya = out.setdefault(m, {'promo': {}, 'pub': {}, 'an': {}, 'ver': {}})['pub'].get(str(it.get('id')))
         if n or ya:
             out[m]['pub'][str(it['id'])] = [max(n, ya[0] if ya else 0), quien, que_es(it), it.get('t')]
-    return {m: v for m, v in out.items() if m in deje or m >= min(deje)}
+    # 🏆 SE GUARDAN CINCO MESES Y NO DOS (17/11/2026): la gala de la temporada (`mes_awards`, el 1/1) mide la temporada
+    # entera —promos, publicaciones y el staff de sus anuncios—, y una temporada son ~3 meses y medio. Lo que se cuenta
+    # nuevo sigue siendo sólo de este mes y el anterior (`deje`)
+    y0, m0 = int(este[:4]), int(este[5:7]) - 4
+    desde = '%04d-%02d' % (y0 - (m0 <= 0), m0 + 12 if m0 <= 0 else m0)
+    return {m: v for m, v in out.items() if m in deje or m >= desde}
 
 
 def _promos(promos=None):

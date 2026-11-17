@@ -214,9 +214,11 @@ function contenido(liga, it, pub) {
     c.txt = <>La gente me eligió como El Elegido del Most Wanted</>;
     c.det = it.de ? it.votos + ' de ' + it.de + ' votos' : '';
   } else if (it.tipo === 'mesaward') {
-    const mes = MESES[Number(String(it.mes || '').slice(5, 7)) - 1] || '';
+    // 🏆 LA GALA DE LA TEMPORADA (17/11/2026): `gala` y `mes` = la temporada ('t1'). Se dice «la T1» donde va el mes
+    const gala = !!it.gala;
+    const mes = gala ? 'la ' + String(it.mes || '').toUpperCase() : MESES[Number(String(it.mes || '').slice(5, 7)) - 1] || '';
     const deSv = String(it.cat || '').startsWith('sv:');
-    c.cat = 'MES AWARDS · ' + (deSv ? siglaDe(it.sv) + ' · ' : '') + mes;
+    c.cat = (gala ? 'GALA · ' + String(it.mes || '').toUpperCase() : 'MES AWARDS · ' + (deSv ? siglaDe(it.sv) + ' · ' : '') + mes);
     if (it.cat === 'batalla' && it.vid) {
       c.media = true;
       c.vis = (
@@ -228,14 +230,15 @@ function contenido(liga, it, pub) {
         : it.cat === 'otras' ? <span className="pb-logo pb-copa" aria-hidden="true"><Ico n="copa" t={28} /></span> : cara;
     }
     const lista = (it.lista || []).map((y, i) => <span key={y[0]}>{i ? ' · ' : ''}{y[1]}: <b>{limpio(y[2])}</b>{y[3] ? ' (' + y[3] + '%)' : ''}</span>);
+    const catN = (k) => (gala ? String(MES_CAT[k] || 'ganador').replace(' del mes', ' de la temporada') : MES_CAT[k] || 'ganador');
     c.txt = deSv ? <>Nuestros ganadores de <b>{mes}</b>: {lista}</>
-      : it.cat === 'otras' ? <>Los demás ganadores de <b>{mes}</b>: {lista}</>
-      : it.cat === 'batalla' ? <><b>{limpio(it.n)}</b> es la Batalla del mes de {mes}</>
-      : it.cat === 'servidor' ? <>Somos el Servidor del mes de <b>{mes}</b></>
-        : <>Soy {MES_CAT[it.cat] || 'ganador'} de <b>{mes}</b></>;
+      : it.cat === 'otras' ? <>Los demás ganadores de {gala ? 'la gala de ' : ''}<b>{mes}</b>: {lista}</>
+      : it.cat === 'batalla' ? <><b>{limpio(it.n)}</b> es {catN('batalla')} {gala ? 'en' : 'de'} {mes}</>
+      : it.cat === 'servidor' ? <>Somos {catN('servidor')} {gala ? 'en' : 'de'} <b>{mes}</b></>
+        : <>Soy {catN(it.cat)} {gala ? 'en' : 'de'} <b>{mes}</b></>;
     c.det = it.cat === 'otras' || deSv ? '' : it.por === 'votos'
       ? (it.pct ? it.pct + '% de los votos · ' : '') + num(it.votos) + (it.votos === 1 ? ' voto' : ' votos') + (it.total ? ' de ' + num(it.total) : '')
-      : 'por los números del mes';
+      : gala ? 'por los números de la temporada' : 'por los números del mes';
     c.acc = deSv ? <a className="pb-a" href={'#/sv/' + encodeURIComponent(it.sv)}>{siglaDe(it.sv)}</a> : <a className="pb-a" href="#/salon">El Salón de la fama</a>;
   } else if (it.tipo === 'promo') {
     const plat = PLATAFORMA[it.plat] || 'su link';

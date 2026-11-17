@@ -3858,6 +3858,19 @@ const ok = (cond, que, det) => {
     const k4 = await (o.votar({ enc: 'mes:2026-11:FFA:rapero', op: 'A', quien: S, fijo: false, mes_sv: ['mes:x'], mes_clave: 'vota:2026-11:FFA:../x' })).json();
     ok(!k1.cofre && k2.cofre === true && !k3.cofre && !k4.cofre && cajon().length === 1 && cajon()[0].tipo === 'cofre' && cajon()[0].cofre === 0,
       'votar las 2 de FFA da UN Cajón de discos; cambiar el voto no da otro, y una llave rara no da nada', JSON.stringify([k1, k2, k3, cajon()]));
+    // 🏆 el Flight case por votar las 4 principales de la gala
+    const defsG = { lista: ['rapero', 'revelacion', 'batalla', 'servidor', 'duelista'].map((c) =>
+      ({ id: 'mes:t1:' + c, tipo: 'mes', cat: c, gala: 't1', hasta: hastaM, op: ['A', 'B'] })) };
+    const eG = A.encuestasMesSv(defsG, 'mes:t1:rapero', Date.now());
+    ok(eG.clave === 'vota:t1:gala' && eG.ids.length === 4 && !eG.ids.includes('mes:t1:duelista') &&
+      A.encuestasMesSv(defsG, 'mes:t1:duelista', Date.now()).clave === '',
+    'el cofre de la gala: las 4 principales, no las demás', JSON.stringify(eG));
+    const fc = () => o.dropsDe(S).cerrados.filter((c) => /^cofre5:1:vota:t1/.test(c.origen));
+    let gUlt = null;
+    for (const c of ['rapero', 'revelacion', 'batalla', 'servidor']) {
+      gUlt = await (o.votar({ enc: 'mes:t1:' + c, op: 'A', quien: S, fijo: false, mes_sv: eG.ids, mes_clave: eG.clave })).json();
+    }
+    ok(gUlt.cofre === true && fc().length === 1 && fc()[0].cofre === 1, 'votar las 4 principales de la gala da UN Flight case', JSON.stringify(fc()));
     // 🔔 los avisos de los MES AWARDS (17/11/2026, «5: A»): a quien jugó ahí y a quien lo eligió, uno por persona
     const T0 = Date.UTC(2026, 11, 1, 23), H = 3600000, E = '300000000000000013';
     o.guardar('mes_votan', { mes: '2026-12', nombre: 'diciembre', abre: new Date(T0).toISOString(), cierra: new Date(T0 + 72 * H).toISOString(),
@@ -3883,6 +3896,17 @@ const ok = (cond, que, det) => {
     'el último día, sólo a quien no votó, y con los servidores donde todavía no votó', JSON.stringify(ult));
     ok(A.textoAvisoMes({ nombre: 'noviembre', siglas: {} }, ['ACAD'], 'abre', 'x').url === 'https://underlegends.pages.dev/freestyle-rap/salon',
       'el aviso lleva al Salón');
+    // 🏆 la gala: a quien jugó en la temporada; el último día, a quien no votó ninguna
+    const G0 = Date.UTC(2027, 0, 1, 23);
+    o.guardar('mes_votan', { gala: { temp: 't9', abre: new Date(G0).toISOString(), cierra: new Date(G0 + 72 * H).toISOString(), ids: [Q, S] } });
+    const gav = () => o.sql.exec("SELECT quien, clave, titulo FROM bandeja WHERE clave LIKE 'galav:t9:%' ORDER BY quien, clave").toArray();
+    await o.avisosMes(G0 + H);
+    const ga1 = gav();
+    o.sql.exec('INSERT INTO votos (enc, quien, op, t) VALUES (?, ?, ?, ?)', 'mes:t9:rapero', Q, 'X', G0 + 2 * H);
+    await o.avisosMes(G0 + 66 * H);
+    const gu = gav().filter((x) => /:ultimo:/.test(x.clave));
+    ok(ga1.length === 2 && ga1[0].titulo === '🏆 La gala de la T9 está abierta' && gu.length === 1 && gu[0].quien === S,
+      'la gala: un aviso al abrir a quien jugó en la temporada, y el último día sólo a quien no votó', JSON.stringify([ga1, gu]));
     // ⚔️ las libres: Q es «ana», S es «beto»
     o.sql.exec('INSERT INTO idk (id, k, t) VALUES (?, ?, ?), (?, ?, ?)', Q, 'ana', 1, S, 'beto', 1);
     const ya = Date.now();

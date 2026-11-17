@@ -1505,6 +1505,12 @@ export function Perfil({ liga, dc, k: k0, tab }) {
   try { k = decodeURIComponent(k0); } catch (e) { /* tal cual */ }
   // un link viejo con otra forma de la clave (mayúsculas): el de la tabla, como `porK()` de app.js
   if (!liga.T[k]) { const kk = Object.keys(liga.T).find((x) => x.toLowerCase() === String(k).toLowerCase()); if (kk) k = kk; }
+  // 🪪 el link viejo de alguien que cambió de nombre (17/11/2026: «Mr Still Ballin» pasó a «Over»): el nombre viejo queda
+  // de alias, y los alias del payload llevan a la clave de hoy (la misma normalización que `normNombre()` de liga.js)
+  if (!liga.T[k]) {
+    const a = (liga.d.alias || {})[String(k).normalize('NFKD').toLowerCase().replace(/[^\p{L}\p{N}]/gu, '')];
+    if (a && (liga.T[a] || liga.X[a])) k = a;
+  }
   const P = usePerfiles();
   // 👤 y quien no entra en la tabla del lobby (corta en 200): su fila viaja en su perfil, y el staff que no compite trae
   // una mínima (`f.solo`). Dlx, 13/10/2026: «Todos los que jugaron y los del staff». Ver `_perfiles_extra()` en subir_web.py

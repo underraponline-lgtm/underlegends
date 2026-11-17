@@ -233,6 +233,42 @@ button.sd-rc:focus-visible{outline:2px solid #E5B800;outline-offset:-3px}
 .sd-gala ul{display:grid;gap:6px;margin:0;padding:0;list-style:none}
 .sd-gala li{padding-left:9px;border-left:2px solid #E5B800;font:800 13.5px/1.2 Archivo,sans-serif}
 
+/* ── 🏆 la gala: lo que se lleva cada ganador, el botón a la gala, su ganador y su celda de la regla ── */
+.sd-gala ul.sd-premios,ul.sd-premios{display:grid;gap:5px;margin:0;padding:0;list-style:none}
+ul.sd-premios li{padding-left:0;border-left:0;font:500 13px/1.35 Archivo,sans-serif;color:var(--gris)}
+/* con la letra entera: adentro de la columna de la gala, `.sd-gala b` es el título grande y dorado */
+ul.sd-premios li b{font:800 13px/1.35 Archivo,sans-serif;font-stretch:100%;text-transform:none;color:var(--tinta)}
+ul.sd-premios.sd-premios-pie{margin-top:18px;padding-top:14px;border-top:1.5px solid var(--suave)}
+.sd-gala-ir{display:inline-flex;align-items:center;min-height:44px;padding:0 14px;border:0;background:#E5B800;color:#030304;
+  font:800 13px/1 Archivo,sans-serif;letter-spacing:.03em;text-transform:uppercase;cursor:pointer}
+.sd-gala-ir:hover{background:#F6F6F6}
+.sd-gala-ir:focus-visible{outline:2px solid #F6F6F6;outline-offset:2px}
+.sd-gala-r{display:flex;align-items:center;gap:10px;min-width:0}
+.sd-gala-r .sd-cara{width:46px;height:46px;border:2px solid #E5B800}
+.sd-gala-r>span{display:grid;gap:3px;min-width:0}
+.sd-gala-r small{font:700 13px/1 "Barlow Condensed",sans-serif;letter-spacing:.05em;text-transform:uppercase;color:#E5B800}
+.sd-gala-r strong{font:900 17px/1.1 Archivo,sans-serif;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.sd-gala .sd-cara{display:grid;place-items:center;flex:none;border-radius:50%;overflow:hidden;background:#2A2A2E;color:#F6F6F6;font:900 16px/1 Archivo,sans-serif}
+.sd-gala .sd-cara img{display:block;width:100%;height:100%;object-fit:cover}
+/* la celda de la gala en la regla, con los nominados afuera: dorada, como el mes de ahora va en blanco */
+.sd-regla .sd-gl.sd-gl-on{background:#E5B800;color:#030304}
+.sd-regla .sd-gl.sd-gl-on b{color:#030304}
+.sd-regla .sd-gl.sd-gl-on small{color:#3A2A00}
+.sd-regla .sd-gl.sd-gl-on button.sd-rc:hover{background:#F0C82A}
+/* en el celular, la gala debajo de las filas (en la compu está en la grilla) */
+.sd-gala-cel{display:grid;gap:9px;justify-items:start;margin-top:14px;padding:14px;border:1.5px solid var(--suave);border-top:3px solid #E5B800;background:var(--caja)}
+.sd-gala-cel>b{font:900 20px/1 Archivo,sans-serif;font-stretch:125%;text-transform:uppercase;color:#E5B800}
+.sd-gala-cel>small{font:500 13.5px/1.4 Archivo,sans-serif;color:var(--gris)}
+.sd-gala-cel>ul:not(.sd-premios){display:grid;gap:6px;margin:0;padding:0;list-style:none}
+.sd-gala-cel>ul:not(.sd-premios) li{padding-left:9px;border-left:2px solid #E5B800;font:800 13.5px/1.2 Archivo,sans-serif}
+/* «Ver las otras 22», con cuáles son */
+.sd-otras-b{display:flex;flex-wrap:wrap;align-items:center;gap:8px 14px;margin-top:16px}
+.sd-otras-b>span{font:500 13.5px/1.4 Archivo,sans-serif;color:var(--gris)}
+.sd-otras-b+.sd-panel{margin-top:14px}
+/* la gala cerrada: las otras 22 en la lista corta, con su porcentaje */
+.sd-galaw-resto{margin-top:16px;padding:14px 14px 6px;border:1.5px solid var(--suave)}
+.sd-galaw-resto .sd-panel-t{margin-bottom:6px}
+
 /* ── en el celular, un servidor por fila ── */
 .sd-meses-c{display:flex;flex-direction:column}
 .sd-filas{margin-top:14px}
@@ -321,6 +357,7 @@ button.sd-rc:focus-visible{outline:2px solid #E5B800;outline-offset:-3px}
   .app .sd-grilla{display:grid;grid-template-columns:140px repeat(var(--m),minmax(0,1fr)) minmax(0,1.2fr);margin-top:12px;
     border-top:1.5px solid var(--suave);border-left:1.5px solid var(--suave)}
   .app .sd-filas{display:none}
+  .app .sd-gala-cel{display:none}
   .app .sd-tabs{flex-basis:auto;margin:0;padding:0}
   .app .sd-panel{padding:16px 18px 4px}
   .app .sd-archivo{padding:16px 18px 6px}

@@ -7,9 +7,12 @@
 //   de la Batalla, la cara del Staff; «✓ Tu voto» en la tuya.
 // - 🤫 LOS PORCENTAJES, SÓLO AL CERRAR (la maqueta: «los porcentajes se ven sólo al cerrar»): mientras se vota no se ve
 //   cuántos van; con el mes cerrado, el ganador primero con «GANÓ» y el reparto (`reparto()`).
+// 🏆 Y LA GALA DE CADA TEMPORADA (17/11/2026): lo de toda la Liga al cierre (`gala` de /api/salon, bot/mes_awards.py).
+// La misma franja (`FranjaGala`: votar las 4 principales da un Flight case), las mismas tarjetas para las 4 principales y
+// una fila compacta para las otras 22 (`CatCompacta`).
 // ⚠️ Las clases van con `sd-`: las del prototipo son globales adentro del shadow root.
 import { MESES, siglaDe, utc } from './liga.js';
-import { Cara, Carta, accion } from './piezas.jsx';
+import { Cara, Carta, Ico, accion } from './piezas.jsx';
 import { Miniatura } from './video.jsx';
 import { nomTexto, reparto } from './mesawards.jsx';
 import CSS_VOTO from './css/mesvoto.css?inline';
@@ -24,8 +27,36 @@ export const QUIEN_VOTA = (sigla, mes) => 'Votan los que jugaron en ' + sigla + 
 // `/api/salon` como `drop_sv`): el Rapero un Nido, los demás un Star Dragon
 export const PREMIO_SV = (S) => (S && S.drop_sv ? 'un Nido de dragón (el Rapero del mes) o un Star Dragon (las demás)'
   : S && S.premio_sv && S.premio_sv.rapero ? S.premio_sv.rapero.toLocaleString('es') + ' Puntos de Tienda' : '');
-// el cofre por votarlas todas: el cofre 0 de los Dragón Drops (`COFRES` de drops.jsx)
-export const COFRE = 'Cajón de discos';
+// 🎁 los cofres de los Dragón Drops, de menos a más (el `t` de `cofre5:<t>:`, como `COFRES` de drops.jsx): el 0 por votar
+// las de tu servidor, el 1 por votar las 4 principales de la gala, y los premios de la gala salen de su `drop`
+// (`DROP_GALA` de bot/mes_awards.py: 'cofre:4' es el Tesoro del Dragón)
+const COFRES_N = ['Cajón de discos', 'Flight case', 'Baúl de los objetos', 'Funda del Campeón', 'Tesoro del Dragón'];
+export const COFRE = COFRES_N[0];
+export const COFRE_GALA = COFRES_N[1];
+// 🗳️ quién vota la gala: cualquiera con Discord (con la cuenta de 30 días o más: `validarVoto()` de bot/avisos.js)
+export const QUIEN_VOTA_GALA = 'Vota cualquiera con Discord.';
+// 🏆 lo que se lleva cada ganador de la gala, con el artículo: [quiénes, qué]. Sin `drop` en el payload, nada (no se inventa)
+export function premiosGala(g) {
+  const d = (g && g.drop) || {};
+  const de = (k) => {
+    const m = /^cofre:(\d)$/.exec(String(d[k] || ''));
+    const n = m ? COFRES_N[Number(m[1])] : '';
+    return n ? (/^Funda/.test(n) ? 'la ' : 'el ') + n : '';
+  };
+  const out = [];
+  if (de('rapero')) out.push(['El Rapero de la temporada', de('rapero')]);
+  if (de('revelacion') && de('revelacion') === de('batalla')) out.push(['La Revelación y la Batalla', de('revelacion')]);
+  else {
+    if (de('revelacion')) out.push(['La Revelación', de('revelacion')]);
+    if (de('batalla')) out.push(['La Batalla', de('batalla')]);
+  }
+  if (de('personas')) out.push(['Cada una de las de personas', de('personas')]);
+  if (out.length) out.push(['Servidor, Crew, País y Liga', 'su lugar en el Salón y la publicación']);
+  return out;
+}
+// el nombre y el «por qué» de una categoría de la Liga, para la gala: «Rapero del mes» → «Rapero de la temporada»
+export const deTemporada = (s) => String(s || '').replace(/\bdel mes\b/g, 'de la temporada').replace(/\ben el mes\b/g, 'en la temporada')
+  .replace(/\b(ese|este) mes\b/g, 'en la temporada');
 
 const css = () => usarCss('mesvoto', CSS_VOTO);
 export const cssVoto = css;
@@ -72,16 +103,51 @@ export function IcoCofre() {
     </svg>
   );
 }
-// «Vota las 3 y ganas un Cajón de discos» → «te faltan 2 para el Cajón de discos» → «Tu Cajón de discos, listo»
-function PremioVoto({ n, N }) {
+// «Vota las 3 y ganas un Cajón de discos» → «te faltan 2 para el Cajón de discos» → «Tu Cajón de discos, listo». En la
+// gala, `cofre` es el Flight case y `que`, «las 4 principales»
+function PremioVoto({ n, N, cofre = COFRE, que }) {
   const listo = N > 0 && n >= N;
   const k = N - n;
   return (
     <span className={'sd-cofre' + (listo ? ' sd-listo' : '')}>
       <IcoCofre />
-      <span><b>{listo ? 'Tu ' + COFRE + ', listo' : 'Vota ' + (N === 1 ? 'la categoría' : 'las ' + N) + ' y ganas'}</b>
-        <small>{listo ? 'Ya está en tus Dragón Drops' : !n ? 'un ' + COFRE : 'te ' + (k === 1 ? 'falta 1' : 'faltan ' + k) + ' para el ' + COFRE}</small></span>
+      <span><b>{listo ? 'Tu ' + cofre + ', listo' : 'Vota ' + (que || (N === 1 ? 'la categoría' : 'las ' + N)) + ' y ganas'}</b>
+        <small>{listo ? 'Ya está en tus Dragón Drops' : !n ? 'un ' + cofre : 'te ' + (k === 1 ? 'falta 1' : 'faltan ' + k) + ' para el ' + cofre}</small></span>
     </span>
+  );
+}
+
+// 🏆 las 4 principales de la gala que se votan (las de dos nominados o más, como `encuestas()` de bot/mes_awards.py) y
+// cuáles votaste. `id(c)`: la encuesta, `mes:t1:<cat>`. Votarlas todas da el Flight case
+export function votosGala(enc, S) {
+  const g = S && S.gala;
+  const temp = String((g && g.temp) || '').toLowerCase();
+  const id = (c) => 'mes:' + temp + ':' + c;
+  const cats = g && g.cats ? (S.cats || []).filter((c) => !c[3]).map(([c]) => c).filter((c) => ((((g.cats[c] || {}).nom) || []).length >= 2)) : [];
+  const mio = (enc && enc.mio) || {};
+  const hechas = cats.filter((c) => mio[id(c)]);
+  return { cats, hechas, n: hechas.length, N: cats.length, id };
+}
+// ── la franja de la gala: «La gala de la T1 · votaste 2 de 4», cuándo cierra (o abre) y el Flight case ──
+export function FranjaGala({ liga, enc, S, modo }) {
+  css();
+  const g = S.gala;
+  const v = votosGala(enc, S);
+  const vota = modo === 'vota';
+  const t = vota ? g.cierra : g.abre;
+  const f = falta(liga, t);
+  return (
+    <div className="sd-franja">
+      <span className="sd-fr-copa" aria-hidden="true"><Ico n="copa" t={22} /></span>
+      <div className="sd-fr-tx">
+        <b>La gala de la {g.temp} · {vota ? 'votaste ' + v.n + ' de ' + v.N : 'ya salieron los nominados'}</b>
+        <small>{vota ? 'Cierra ' + liga.dia(t) : 'La votación abre ' + liga.dia(t)}{f ? ' · ' + f : ''}</small>
+      </div>
+      {vota && v.N ? <span className="sd-pips" role="img" aria-label={'Votaste ' + v.n + ' de ' + v.N}>
+        {v.cats.map((c) => <i key={c} className={v.hechas.includes(c) ? 'sd-on' : ''} />)}</span> : null}
+      <span className="sd-fr-sp" />
+      {v.N ? <PremioVoto n={vota ? v.n : 0} N={v.N} cofre={COFRE_GALA} que={'las ' + v.N + ' principales'} /> : null}
+    </div>
   );
 }
 
@@ -142,12 +208,25 @@ export function ChipsSv({ liga, svs, sv, onSv, cuenta, etiqueta }) {
   );
 }
 
+// lo que se ve de un nominado en chico: el escudo del servidor, la bandera, el video o la imagen de las de la Liga
+// (bot/mes_otros.py), o la cara. Es lo mismo que decide `Nominado` de mesawards.jsx, con las clases de acá
+function visChica(liga, cat, y, t) {
+  if (cat === 'servidor') return <img className="sd-cara" alt="" src={liga.logo(y.op)} />;
+  if (y.d !== undefined) {
+    if (y.vid) return <Miniatura vid={y.vid} cls="sd-cuad" />;
+    if (y.img) return <img className="sd-cuad" alt="" src={y.img} loading="lazy" />;
+    if (y.cc) return <img className="sd-cuad sd-flag" alt="" src={'/banderas/g/' + y.cc + '.webp'} />;
+    if (y.sv && !y.q) return <img className="sd-cara" alt="" src={liga.logo(y.sv)} />;
+  }
+  return <Cara liga={liga} k={t.k} nombre={t.q} cls="sd-cara" />;
+}
+
 // ── un nominado: la carta, el video o la cara, su nombre, su número y el botón ──
 function Nom({ liga, cat, y, tipo, E, mio, va, gana }) {
   const t = nomTexto(liga, cat, y);
   const vis = tipo === 'vid' ? <Miniatura vid={y.op} cls="sd-vid" />
     : tipo === 'carta' ? <Carta liga={liga} k={t.k} cual="temporada" abre={false} cls="sd-ct" nombre={t.n} />
-      : <Cara liga={liga} k={t.k} nombre={t.q} cls="sd-cara" />;
+      : visChica(liga, cat, y, t);
   const es = mio === y.op;
   const cls = 'sd-nom' + (es ? ' sd-mio' : '') + (gana ? ' sd-gana' : '') + (va === y.op ? ' sd-va' : '');
   const cuerpo = (
@@ -165,8 +244,8 @@ function Nom({ liga, cat, y, tipo, E, mio, va, gana }) {
 }
 
 // ── una categoría: a la izquierda qué es, a la derecha sus nominados (en el celular, de costado) ──
-// `encId`: la encuesta, si se vota; `cerrado`: el mes cerró (el ganador primero, con su reparto)
-export function CatVoto({ liga, enc, cat, nombre, de, x, encId, cerrado, nota }) {
+// `encId`: la encuesta, si se vota; `cerrado`: el mes cerró (el ganador primero, con su reparto); `gala`: es de la gala
+export function CatVoto({ liga, enc, cat, nombre, de, x, encId, cerrado, nota, gala }) {
   css();
   const nom0 = (x && x.nom) || [];
   if (!nom0.length) return null;
@@ -189,7 +268,7 @@ export function CatVoto({ liga, enc, cat, nombre, de, x, encId, cerrado, nota })
         <b>{nombre}</b>
         <small>Por {de}</small>
         {nota ? <span className="sd-nota">{nota}</span> : null}
-        {cerrado ? (x.por === 'votos' ? reparto(x, liga) : <span className="sd-nota sd-gris">Lo decidieron los números del mes</span>) : null}
+        {cerrado ? (x.por === 'votos' ? reparto(x, liga) : <span className="sd-nota sd-gris">Lo decidieron los números {gala ? 'de la temporada' : 'del mes'}</span>) : null}
         {!cerrado && nom.length < 2 ? <span className="sd-nota sd-gris">Un solo nominado: sin votación</span> : null}
         {pie ? <span className="sd-pie" aria-live="polite">{pie}</span> : null}
       </div>
@@ -212,4 +291,38 @@ export function CatsSv({ liga, enc, S, sv, m, votando, cerrado }) {
     return <CatVoto key={c} liga={liga} enc={enc} cat={c} nombre={n} de={de} x={x} encId={encId} cerrado={cerrado} />;
   }).filter(Boolean);
   return xs.length ? <div className="sd-cats">{xs}</div> : null;
+}
+
+// ── 🏆 una de las otras 22 de la gala, compacta: qué es y sus nominados en una fila (en el celular, de costado), cada uno
+// con lo que se ve, su nombre y su número. Se vota tocándolo, como las tarjetas ──
+export function CatCompacta({ liga, enc, cat, nombre, de, x, encId }) {
+  css();
+  const nom = (x && x.nom) || [];
+  if (!nom.length) return null;
+  const E = encId ? ((liga.d.enc || []).find((e) => e.id === encId) || null) : null;
+  const mio = E && enc ? enc.mio[E.id] : '';
+  const est = (E && enc && enc.est[E.id]) || {};
+  // sólo lo que hay que decir: guardando o el error (tu voto ya se ve marcado)
+  const pie = E && enc && (est.va || est.error) ? enc.pie(E, (op) => nomTexto(liga, cat, nom.find((y) => y.op === op) || { op, n: op }).n) : '';
+  return (
+    <div className="sd-cc">
+      <div className="sd-cc-t">
+        <b>{nombre}</b>
+        <small>Por {de}</small>
+        {nom.length < 2 ? <span className="sd-nota sd-gris">Un solo nominado: sin votación</span> : null}
+        {pie ? <span className="sd-pie" aria-live="polite">{pie}</span> : null}
+      </div>
+      <ul className="sd-cc-l" aria-label={nombre}>{nom.map((y) => {
+        const t = nomTexto(liga, cat, y);
+        const es = mio === y.op;
+        const cls = 'sd-cc-o' + (es ? ' sd-mio' : '') + (est.va === y.op ? ' sd-va' : '');
+        const cuerpo = <>{visChica(liga, cat, y, t)}<span className="sd-cc-n"><b>{t.n}</b><small>{t.d}</small></span>
+          {E ? <span className="sd-cc-v" aria-hidden="true">{es ? '✓' : ''}</span> : null}</>;
+        return (
+          <li key={y.op}>{E ? <button type="button" className={cls} aria-pressed={es} title={t.n + ' · ' + t.d} onClick={() => accion.votar(E.id, y.op)}
+            aria-label={(es ? 'Tu voto: ' : 'Votar a ') + t.n}>{cuerpo}</button> : <div className={cls} title={t.n + ' · ' + t.d}>{cuerpo}</div>}</li>
+        );
+      })}</ul>
+    </div>
+  );
 }

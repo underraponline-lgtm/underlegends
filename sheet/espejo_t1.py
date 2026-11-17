@@ -1401,19 +1401,34 @@ _ESCRITAS = set()
 PASAN = {'Lista de Raperos', 'AKAs', 'Config', 'Pendientes', '✅ Decidir'}
 
 
-def nueva_temporada(nueva, de=ACTUAL, base=BASE, aplicar=False):
+def gala_nominada(temp, base=BASE):
+    """🏆 ¿Ya se nominó la gala de `temp`? (`datos/mes_awards.json`, `galas`). Ver `nueva_temporada()`."""
+    try:
+        with io.open(os.path.join(base, 'datos', 'mes_awards.json'), encoding='utf-8') as f:
+            return bool((((json.load(f) or {}).get('galas') or {}).get(temp) or {}).get('cats'))
+    except (OSError, ValueError):
+        return False
+
+
+def nueva_temporada(nueva, de=ACTUAL, base=BASE, aplicar=False, sin_gala=False):
     """🗓️ LOS ARCHIVOS DE LA TEMPORADA QUE VIENE (12/11/2026, sacar el Sheet). Con todo en datos/, cambiar `ACTUAL` en
     `comun/temporada.py` sin esto deja al ciclo frenado en «sin archivo» —a propósito: nunca lee el Sheet viejo—. Arma
     `datos/<nueva>_*.json` desde los de `de`, sin tocarlos (quedan como el archivo de esa temporada). Nunca pisa uno que
     ya exista. Devuelve `[(hoja, qué)]`.
 
     EL CAMBIO DE TEMPORADA, EN ORDEN (los tres en el mismo commit, o el ciclo frena):
+        0. 🏆 DESPUÉS DE QUE SE NOMINE LA GALA de la que termina (`bot/mes_awards.py`: el día siguiente al cierre, desde las
+           11 AM ET): sus 22 de «las demás» leen los duelos, el staff y lo demás de la temporada `ACTUAL`, y cambiarla antes
+           las dejaría sin datos. Con `--aplicar` se niega si la gala no se nominó (`--sin-gala` lo saltea)
         1. `python sheet/espejo_t1.py --nueva-temporada t2 --aplicar`, después de la última corrida de la anterior
         2. `ACTUAL`, `FECHAS` y `TODAS` en `comun/temporada.py`
         3. en `bot/ci/guardar.sh`, los `datos/t1_…` de `ARCHIVOS` pasan a `datos/t2_…`
     El self-check de este archivo y el paso `guardar.sh` de CI se ponen rojos si falta el 1 o el 3."""
     if nueva == de:
         raise ValueError('la temporada nueva es la misma: %s' % nueva)
+    if aplicar and not sin_gala and not gala_nominada(de, base):
+        raise ValueError('la gala de la %s todavía no se nominó (el día siguiente al cierre, desde las 11 AM ET): cambia de '
+                         'temporada después, o con --sin-gala' % de.upper())
     out = []
     pares = [(h, ruta(h, temp=de, base=base), ruta(h, temp=nueva, base=base)) for h in sorted(SIN_SHEET)]
     pares.append(('contador', ruta_contador(de, base), ruta_contador(nueva, base)))
@@ -1867,6 +1882,15 @@ def _self_check():
         t1_antes = {h: _texto_de(ruta(h, temp='t1', base=tmp)) for h in SIN_SHEET}
         simulacro = nueva_temporada('t2', de='t1', base=tmp)
         nada_aun = not any(os.path.exists(ruta(h, temp='t2', base=tmp)) for h in SIN_SHEET)
+        # 🏆 sin la gala nominada se niega (17/11/2026); con ella —o con `sin_gala`— sigue
+        try:
+            nueva_temporada('t2', de='t1', base=tmp, aplicar=True)
+            sin_gala_frena = False
+        except ValueError:
+            sin_gala_frena = not any(os.path.exists(ruta(h, temp='t2', base=tmp)) for h in SIN_SHEET)
+        os.makedirs(os.path.join(tmp, 'datos'), exist_ok=True)
+        with io.open(os.path.join(tmp, 'datos', 'mes_awards.json'), 'w', encoding='utf-8') as f:
+            f.write('{"galas": {"t1": {"cats": {"rapero": {"nom": []}}}}}')
         plan = dict(nueva_temporada('t2', de='t1', base=tmp, aplicar=True))
         lista2 = _texto_de(ruta('Lista de Raperos', temp='t2', base=tmp)) == t1_antes['Lista de Raperos']
         res2 = leer('Resultados', temp='t2', base=tmp) or {}
@@ -1875,6 +1899,7 @@ def _self_check():
         cont2 = contador('t2', tmp) == 611
         otra = dict(nueva_temporada('t2', de='t1', base=tmp, aplicar=True))
         t1_igual = all(_texto_de(ruta(h, temp='t1', base=tmp)) == t1_antes[h] for h in SIN_SHEET)
+    ok(sin_gala_frena, 'el cambio de temporada se niega mientras la gala de la que termina no se nominó, y no escribe nada')
     ok(len(simulacro) == len(SIN_SHEET) + 1 and nada_aun and lista2 and pend2 and cont2 and t1_igual
        and res2.get('cabecera') == ['#', 'Rapero', 'Puntos'] and res2.get('filas') == []
        and vit2.get('filas') == [] and plan['contador'] == 'sigue en 611'
@@ -1899,7 +1924,11 @@ def main():
             print('uso: python sheet/espejo_t1.py --nueva-temporada t2 [--aplicar]')
             return 1
         print('\n══ LA TEMPORADA %s, DESDE LA %s ══\n' % (nueva.upper(), ACTUAL.upper()))
-        plan = nueva_temporada(nueva, aplicar='--aplicar' in a)
+        try:
+            plan = nueva_temporada(nueva, aplicar='--aplicar' in a, sin_gala='--sin-gala' in a)
+        except ValueError as e:
+            print('   🔴 %s\n' % e)
+            return 1
         for h, que in plan:
             print('   %-20s %s' % (h, que))
         print('\n   %s\n' % ('escrito. Después: `ACTUAL` en comun/temporada.py y los datos/%s_… de guardar.sh, en el mismo '

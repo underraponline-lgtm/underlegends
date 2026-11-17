@@ -18,8 +18,8 @@ Puntos de Tienda», en tandas, «Sí, la tanda 1». La tanda 1 es lo que se GANA
 Medido sobre las 4 últimas semanas de la T1 (sólo gente de DRA): ~166.000 Puntos por semana con todas las tandas a
 techo; ésta es la de mérito. Lo que se gana compitiendo no pasa por el tope suave de la semana (`esMerito()` en
 bot/avisos.js). 🏆 Y los MES AWARDS de cada servidor (17/11/2026, «4: A»): un Nido al Rapero del mes y un Star a los demás,
-desde noviembre (`de_mes_awards()`; el primer reparto, al cerrar el 4/12). ⏳ Falta: los premios de la gala de la
-temporada (Tesoro, Funda y Baúl) y el Tesoro de la Superliga y la Clausura (al cierre de la T1).
+desde noviembre (`de_mes_awards()`; el primer reparto, al cerrar el 4/12), y los de la gala de la temporada
+(`de_gala()`: Tesoro, Funda y Baúl). ⏳ Falta: el Tesoro de la Superliga y la Clausura (al cierre de la T1).
 
 🔑 SÓLO DESDE `DESDE`: lo de antes no se paga para atrás. Cada premio lleva su origen (`o`) como llave: el objeto no da
 dos veces el mismo (`dropDar()`), así que mandar todo en cada vuelta es seguro.
@@ -200,6 +200,24 @@ def de_mes_awards(d, Q, desde_mes='2026-11'):
     return out
 
 
+def de_gala(d, Q):
+    """🏆 La gala de cada temporada (Dlx, 17/11/2026, «4: A»): el Rapero de la temporada, el Tesoro del Dragón (cofre 4); la
+    Revelación y la Batalla (a cada lado), la Funda del Campeón (cofre 3); las de personas (Organizador, Duelista, Hincha…),
+    el Baúl de los objetos (cofre 2). El Servidor y los grupos no cobran: no son personas, y su `premio` va vacío."""
+    out = []
+    for temp, g in sorted(((d or {}).get('galas') or {}).items()):
+        cerrado = _iso(g.get('cerrado'))
+        if not cerrado:
+            continue
+        for cat, c in sorted((g.get('cats') or {}).items()):
+            k = 'cofre:4' if cat == 'rapero' else 'cofre:3' if cat in ('revelacion', 'batalla') else 'cofre:2'
+            for p in c.get('premio') or []:
+                q = p[0] if p else ''
+                if Q.get(q):
+                    out.append({'q': Q[q], 'o': 'gala:%s:%s' % (temp, cat), 'k': k, 'd': cerrado.isoformat()})
+    return out
+
+
 def _hoja(ES, hoja):
     """Las filas de `hoja` con su cabecera arriba: `fuente()` da sólo los datos, y la cabecera vive en su archivo (se busca,
     no se clava)."""
@@ -227,6 +245,7 @@ def premios():
         sl = []
     out += de_ligas(sl, (_json('insignias.json', {}) or {}).get('insignias') or {}, Q)
     out += de_mes_awards(_json('mes_awards.json', {}) or {}, Q)
+    out += de_gala(_json('mes_awards.json', {}) or {}, Q)
     # 📦 sólo lo de las últimas `VENTANA_DIAS`: lo de antes ya lo dio una vuelta anterior (el objeto no repite), y así el
     # paquete del Pase no crece con la temporada
     import zoneinfo
@@ -289,8 +308,15 @@ def _self_check():
     ok(sorted((x['q'][0], x['k'], x['o']) for x in ma) == [('1', 'nido', 'mes:2026-11:FFA:rapero'), ('2', 'star', 'mes:2026-11:FFA:batalla')],
        'MES AWARDS: un Nido al Rapero del mes de cada servidor y un Star a los demás (a cada lado de la batalla), desde '
        'noviembre, al cierre y sólo a los de DRA')
-    todos = r + b + m + lg + ma
-    ok(all(re.match(r'^[\w.:-]{3,60}$', x['o']) and x['k'] in ('drop', 'star', 'nido', 'cofre:2', 'cofre:3') for x in todos),
+    ga = de_gala({'galas': {'t1': {'cerrado': '2027-01-05T00:00:00Z', 'cats': {
+        'rapero': {'premio': [['Ana', '', 0]]}, 'batalla': {'premio': [['Beto', '', 0], ['Cami', '', 0]]},
+        'duelista': {'premio': [['Beto', '', 0]]}, 'crew': {'premio': []}}}}}, Q)
+    ok(sorted((x['q'][0], x['k'], x['o']) for x in ga) == [('1', 'cofre:4', 'gala:t1:rapero'), ('2', 'cofre:2', 'gala:t1:duelista'),
+                                                           ('2', 'cofre:3', 'gala:t1:batalla'), ('3', 'cofre:3', 'gala:t1:batalla')],
+       'la gala: el Tesoro al Rapero de la temporada, la Funda a la Batalla (a cada lado) y el Baúl a las de personas; '
+       'los grupos, nada')
+    todos = r + b + m + lg + ma + ga
+    ok(all(re.match(r'^[\w.:-]{3,60}$', x['o']) and x['k'] in ('drop', 'star', 'nido', 'cofre:2', 'cofre:3', 'cofre:4') for x in todos),
        'cada origen pasa el filtro del objeto y cada tipo existe en `MERITO_TIPOS`')
     print('\n  %s' % ('todo ok' if not mal else '%d mal' % mal))
     return mal

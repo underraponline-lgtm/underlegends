@@ -11,6 +11,18 @@
   ],
   "cambios": [
     {
+        "version": "6.14",
+        "dia": "2026-11-17",
+        "cuando": "2026-11-17T16:14:00-05:00",
+        "titulo": "La gala de la temporada",
+        "items": [
+            "**La gala de la T1**: al cierre de la temporada, lo mejor de toda la Liga Global, con los números de la temporada entera: el Rapero, la Revelación, la Batalla y el Servidor de la temporada, y las demás categorías. Los nominados salen el **1 de enero** y se vota hasta el 4. Vota cualquiera con Discord.",
+            "**Los premios de la gala**: el Rapero de la temporada se lleva **el Tesoro del Dragón**, la Revelación y la Batalla **la Funda del Campeón**, y las categorías de personas **el Baúl de los objetos**, cada uno con su insignia «de la temporada».",
+            "**Votar las 4 principales de la gala da un Flight case.** Te avisamos en el Inicio y en la campana cuando abre y el último día.",
+            "El Salón muestra la gala como la última columna de la temporada; mientras se vota, es lo primero de la página."
+        ]
+    },
+    {
         "version": "6.13",
         "dia": "2026-11-17",
         "cuando": "2026-11-17T15:00:00-05:00",
