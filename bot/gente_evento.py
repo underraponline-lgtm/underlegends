@@ -105,14 +105,22 @@ class Fuentes:
         for p, ids in (cu or {}).items():
             for i in ids or []:
                 self.por_id.setdefault(str(i), p)
+        # quién jugó con su propio nombre en alguna llave de la temporada: «0223» juega como «0223» en la #634
+        self.jugadores = {_norm(m) for L in self.llaves.values() for r in (L or {}).get('tabla') or []
+                          for m in re.split(r'[,+&]', str(r[0])) if _norm(m)}
         nl = (_json('datos', 'nombres_llaves.json', defecto={}) or {}).get('llaves') if nombres_llaves is None else nombres_llaves
         self.anuncio_de_msg = {str(k): str(v.get('anuncio')) for k, v in (nl or {}).items() if isinstance(v, dict) and v.get('anuncio')}
-        # cuántos nombres distintos anotó cada cuenta, en todo lo guardado
+        # cuántos nombres distintos anotó cada cuenta, en todo lo guardado; y qué cuentas usaron cada nombre SOLO (una
+        # inscripción de un nombre): si otra cuenta se anota «Lizen» sola, Lizen es esa persona y no el dueño de ésta
         self.nombres_de_cuenta = {}
+        self.cuentas_de_nombre = {}
         for x in self.insc:
             did = str(x.get('discord_id') or '')
-            for n in _nombres(x.get('texto')):
+            ns = _nombres(x.get('texto'))
+            for n in ns:
                 self.nombres_de_cuenta.setdefault(did, set()).add(n)
+            if len(ns) == 1 and did:
+                self.cuentas_de_nombre.setdefault(ns[0], set()).add(did)
 
 
 def anuncio(L, F):
@@ -232,6 +240,29 @@ def _quien_jugo(ins, L, F):
         hit = [gente[n] for n in ns if n in gente]
         if hit:
             x['es'], x['por'] = ', '.join(hit), 'nombre'
+    # 🔁 SEGUNDA VUELTA: la cuenta que anota a varios, cuando su dueño JUGÓ este evento y ninguna otra inscripción de este
+    # evento es suya. Velatz se anota «Velatzz» y a veces anota a otros (3+ nombres): la primera vuelta no lo une, pero si
+    # Velatz jugó y no tiene otra inscripción acá, «Velatzz» es él. Sigue sin unirse si lo escrito es OTRA persona de la
+    # Lista (un amigo) o si es una pareja (17/11/2026)
+    ya = {_norm(p) for x in ins for p in re.split(r',\s*', x.get('es') or '') if p}
+    for x in ins:
+        if x.get('es'):
+            continue
+        ns = _nombres(x['t'])
+        dueno = F.por_id.get(x.get('cuenta') or '')
+        if len(ns) != 1 or not dueno or _norm(dueno) not in gente or _norm(dueno) in ya:
+            continue
+        if ns[0] != _norm(dueno) and ns[0] in F.en_lista:
+            continue
+        # ⚠️ y si OTRA cuenta se anotó alguna vez sola con ese nombre, ese nombre es de esa otra persona (17/11/2026: la
+        # cuenta de Mito anotó «Lizen», y Lizen tiene su cuenta)
+        if F.cuentas_de_nombre.get(ns[0], set()) - {x.get('cuenta') or ''}:
+            continue
+        # ⚠️ ni si ese nombre juega como él mismo en otra llave: es alguien, no un disfraz («0223» de la cuenta de Geoka)
+        if ns[0] != _norm(dueno) and ns[0] in F.jugadores:
+            continue
+        x['es'], x['por'] = gente[_norm(dueno)], 'cuenta'
+        ya.add(_norm(dueno))
     return ins
 
 
@@ -317,6 +348,15 @@ def _self_check():
     ok(es.get('Oasis + Ana') == ('Oasis, Ana', 'nombre'), 'una pareja no se une por la cuenta, sólo por los nombres que escribe')
     ok(es.get('Nadie 🇨🇱') == (None, None), 'la cuenta de Tam anotó a «Nadie», que está en la Lista: es un amigo, no Tam disfrazado')
     ok(es.get('Bea') == ('Bea', 'nombre'), 'una cuenta que anotó 3 nombres distintos no dice quién es: va por el nombre')
+    L3 = dict(L, tabla=L['tabla'] + [['Bea', 'Cuartos', 0]])
+    ins3 = [{'servidor': 'FFA', 'texto': 'Beatriz La Grande', 'discord_id': '55', 'msg_id': 'z1', 'cuando': '2026-11-10T16:00:00'},
+            {'servidor': 'FFA', 'texto': 'Otra', 'discord_id': '55', 'msg_id': 'z2', 'cuando': '2026-11-01T16:00:00'},
+            {'servidor': 'FFA', 'texto': 'Otra2', 'discord_id': '55', 'msg_id': 'z3', 'cuando': '2026-11-01T16:01:00'}]
+    F3 = Fuentes(llaves={'9': L3}, anuncios={'anuncios': [an], 'inscripciones': ins3}, jurados={}, lista=lista, cuentas={},
+                 nombres_llaves={'500': {'anuncio': '400'}})
+    es3 = {x['t']: (x.get('es'), x.get('por')) for x in armar(F3)['9']['ins']}
+    ok(es3.get('Beatriz La Grande') == ('Bea', 'cuenta'),
+       'segunda vuelta: la cuenta de Bea anota a varios, pero Bea jugó y no tiene otra inscripción acá: «Beatriz La Grande» es ella')
     ok('X1' not in es and 'Oasis' not in [x['t'] for x in g['ins']],
        'sólo las inscripciones entre el anuncio y el final del día, y del mismo servidor')
     ok(g.get('jur') == [{'r': 'Final', 'l': ['Oasis', 'Tam'], 'v': [['Juez Dos', 1], ['Juez Uno', 0]]}],

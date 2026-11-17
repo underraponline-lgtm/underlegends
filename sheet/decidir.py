@@ -3677,6 +3677,24 @@ def _resultados_filas():
     return _DATOS['res_filas']
 
 
+def _anotados_sin_jugar(num, tope=6):
+    """📝 `[(lo que escribió, de quién es la cuenta o '')]`: los que se anotaron para el evento `num` y NO aparecen en su
+    llave, de `datos/gente_eventos.json` (`bot/gente_evento.py`, que los guarda antes de que vacíen el canal).
+
+    🔑 Dlx, 17/11/2026: *«mejorar eso de inscripciones… quiénes se inscribieron, quiénes participaron realmente, para
+    luego saber quién fue quién, a pesar de que se pongan nombres tontos»*. Un nombre que nadie conoce en la llave suele
+    ser uno de éstos: alguien que se anotó con un nombre y jugó con otro (Oasis como «Park-Ji Sung»). ⚠️ ES UNA PISTA Y
+    NADA MÁS: con dos o más candidatos no se elige, y una cuenta puede haber anotado a un amigo que no vino."""
+    g = (_datos('gente_eventos') or {}).get(str(num)) or {}
+    por_id = _lista_por_id()
+    out = []
+    for x in g.get('ins') or []:
+        if x.get('es'):
+            continue
+        out.append((str(x.get('t') or '').strip(), por_id.get(str(x.get('cuenta') or '')) or _dueno_de_cuenta(x.get('cuenta') or '') or ''))
+    return out[:tope], max(0, len(out) - tope)
+
+
 def _pistas(p):
     """La columna «Pistas»: lo que ayuda a contestar."""
     t, out = p['tipo'], []
@@ -3708,6 +3726,12 @@ def _pistas(p):
         except Exception:                                # noqa: BLE001
             _sv_ev = ''
         out.append(_en_discord(p['detalle'], _sv_ev)[0])
+        # 📝 los que se anotaron a ese evento y no aparecen en la llave: el nombre desconocido suele ser uno de ellos
+        _sj, _mas = _anotados_sin_jugar(_num_evento(p))
+        if _sj:
+            out.append('📝 Se anotaron y no aparecen en la llave: %s%s' % (
+                ', '.join('«%s»%s' % (txt, ' (cuenta de %s)' % q if q else '') for txt, q in _sj),
+                ' y %d más' % _mas if _mas else ''))
         out.append(_posibles(p['detalle']))
         out.append(_en_llamada(p['detalle'], _num_evento(p))[0])
         out.append(_termino(p['detalle'], _num_evento(p)))
@@ -5836,6 +5860,13 @@ def _self_check():
         nonlocal mal
         mal += not cond
         print('   %s %s' % ('✅' if cond else '🔴', que))
+    # 📝 los anotados que no jugaron, de la foto del evento (17/11/2026)
+    _DATOS['gente_eventos'] = {'901': {'ins': [{'t': 'Park-Ji Sung 🇰🇷', 'cuenta': '999000111', 'es': ''},
+                                              {'t': 'Tam', 'cuenta': '', 'es': 'Tam', 'por': 'nombre'}]}}
+    _sj = _anotados_sin_jugar('901')
+    ok(_sj[0] and _sj[0][0][0] == 'Park-Ji Sung 🇰🇷' and len(_sj[0]) == 1 and _anotados_sin_jugar('1') == ([], 0),
+       'los anotados que no aparecen en la llave, de datos/gente_eventos.json; quien jugó no sale; sin foto, nada')
+    _DATOS.pop('gente_eventos', None)
 
     ab = [(2, {'Tipo': 'Nombre desconocido', 'Origen': 'evento #350',
                'Detalle': 'JAHNO 🇦🇷', 'Posible match': 'Juano',
