@@ -297,7 +297,7 @@ function Acciones({ liga, e, L, fut, ll, est }) {
   return (
     <div className="t-acc">
       {e.ll ? <button type="button" className="btn verde chico" onClick={() => accion.llave(e.ll)}>Ver la llave entera</button> : null}
-      {ll ? <BotonCampeon liga={liga} ll={ll} /> : null}
+      {ll && liga.campeon(ll).length ? <BotonCampeon liga={liga} ll={ll} /> : null}
       {!e.ll && L ? <button type="button" className="btn verde chico" onClick={() => accion.llave('v:' + L.id)}>{L.terminada ? 'Ver la llave' : 'Ver la llave en vivo'}</button> : null}
       {fut ? <button type="button" className="btn verde chico" onClick={() => accion.ir('ev-campana')}><Ico n="campana" t={16} />Quiero aviso</button> : null}
       {fut ? <a href={gcal({ nombre: e.n, sv: e.sv, cuando: e.t, link: e.link })} target="_blank" rel="noopener noreferrer">+ Calendario</a> : null}
@@ -678,7 +678,7 @@ function Campeones({ liga }) {
   // 🧱 en grilla fija (la D, 16/11/2026): en una tira de 140 px se pisaban, y los que no tienen carta eran un recuadro
   // punteado vacío. Seis a la vista y el resto con «Ver los 12»
   const [todos, setTodos] = useState(false);
-  const lsT = liga.llavesPorFecha().slice(0, 12);
+  const lsT = liga.llavesPorFecha().filter((x) => liga.campeon(x).length).slice(0, 12);
   const ls = todos ? lsT : lsT.slice(0, 6);
   const pubs = useMemo(() => {
     const m = {};
@@ -1217,7 +1217,7 @@ export function Eventos({ liga, vivoL, dia: diaRuta, avisos }) {
   // ── el momento de arriba: lo que se juega ahora, lo próximo, o el último campeón ──
   const proximo = cal.filter((c) => utc(c.t).getTime() > ahora && !esVivo(c)).sort((a, b) => (a.t < b.t ? -1 : 1))[0];
   const vivoAhora = vivoS[0];
-  const ultima = liga.llavesPorFecha()[0];
+  const ultima = liga.llavesPorFecha().find((x) => liga.campeon(x).length);
   const A = liga.d.actividad || {};
   const jugadosPorSv = {};
   cal.forEach((c) => { if (c.ll) jugadosPorSv[c.sv] = (jugadosPorSv[c.sv] || 0) + 1; });

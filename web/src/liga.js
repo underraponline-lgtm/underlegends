@@ -623,7 +623,9 @@ export class Liga {
   campeon(ll) {
     const t = ll.tabla || [];
     const g = t.filter((x) => x[1] === 'Campeón').map((x) => limpio(x[0]));
-    return g.length ? g : (t.length ? [limpio(t[0][0])] : []);
+    // 🏆 SÓLO QUIEN GANÓ LA FINAL (16/11/2026): sin fila «Campeón» la llave no terminó o se cargó a medias, y tomar la primera
+    // fila daba campeón a quien perdió la semi («Primera corona para Player» en L VS MOSQUI). Sin campeón, ninguno
+    return g;
   }
   fechaLlave(ll) {
     const c = (this.d.calendario || []).find((e) => e.ll === ll.n || String(e.ll) === String(ll.n));

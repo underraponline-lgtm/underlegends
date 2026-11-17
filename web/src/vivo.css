@@ -633,8 +633,9 @@ span.tab-av img{width:100%;height:100%;object-fit:cover;display:block}
 @keyframes es-reloj{to{transform:scaleX(1)}}
 .app .escena.es2 .quieto .es-reloj,.app .escena.es2 .fuera .es-reloj,.app.tapado .escena.es2 .es-reloj{animation-play-state:paused}
 /* con «Menos animaciones» o el movimiento reducido, quieto: la barra llena y no pasa solo */
-.app.calma .escena.es2 .es-reloj{animation:none;transform:none;opacity:.5}
-@media (prefers-reduced-motion: reduce){.app .escena.es2 .es-reloj{animation:none;transform:none;opacity:.5}}
+/* ⚠️ con `.es-tira`, como la regla de arriba: sin eso pierden por especificidad y el reloj seguía corriendo (16/11/2026) */
+.app.calma .escena.es2 .es-tira .es-reloj{animation:none !important;transform:none;opacity:.5}
+@media (prefers-reduced-motion: reduce){.app .escena.es2 .es-tira .es-reloj{animation:none !important;transform:none;opacity:.5}}
 /* los datos del campeón y lo social */
 .app .escena.es2 .es-datos{display:flex;flex-wrap:wrap;gap:6px;margin-top:12px}
 .app .escena.es2 .es-datos span{padding:6px 9px;border:1px solid #2E2E33;border-radius:4px;background:rgba(20,20,23,.9);color:#D8D8D4;

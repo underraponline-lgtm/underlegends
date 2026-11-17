@@ -181,7 +181,7 @@ export function PerfilSv({ liga, sv, enc }) {
   llaves.forEach((ll) => {
     const c = liga.campeon(ll);
     fechas.push({ c: 'hecho', dia: liga.cuando(liga.fechaLlave(ll)).toUpperCase(), hora: 'TERMINÓ · ' + ll.participantes + ' raperos',
-      ev: limpio(ll.nombre), det: (c.length > 1 ? 'Campeones: ' : 'Campeón: ') + c.join(' y '), llave: ll.n });
+      ev: limpio(ll.nombre), det: c.length ? (c.length > 1 ? 'Campeones: ' : 'Campeón: ') + c.join(' y ') : 'Sin campeón cargado', llave: ll.n });
   });
   fechas.splice(5);
   const otros = Object.values(liga.svs).filter((o) => o.sv !== sv).sort((a, b) => (b.pts || 0) - (a.pts || 0));

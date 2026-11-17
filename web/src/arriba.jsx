@@ -2237,7 +2237,8 @@ function momentos(liga, vivoL, ctx = {}) {
       ),
     });
   });
-  const ll = liga.llavesPorFecha()[0];
+  // la última llave CON campeón: una a medias no corona a nadie
+  const ll = liga.llavesPorFecha().find((x) => liga.campeon(x).length);
   if (ll) {
     const gana = liga.campeon(ll);
     const cu = liga.cuando(liga.fechaLlave(ll));
@@ -2566,7 +2567,12 @@ export function Hero({ liga, vivoL, children, solo }) {
                 style={e0 ? { backgroundImage: 'url("' + e0 + '")' } : undefined} aria-current={k === j ? 'true' : undefined}>
                 <img alt="" src={m.sv ? liga.logo(m.sv) : '/ul.png'} />
                 <span><b>{m.et}</b>{m.hora ? <small>{m.hora}</small> : null}</span>
-                {k === j && n > 1 ? <i key={idDe(m)} className="es-reloj" style={{ animationDuration: (m.peso || 50) >= 80 ? '12s' : '8s' }} onAnimationEnd={() => ver(j + 1)} /> : null}
+                {/* 🔴 SÓLO SI DE VERDAD DURÓ (16/11/2026, Trelok y Dlx: «se mueve muy rápido y sola», «pasa en algunos
+                    dispositivos pero en otros no»): con «reducir movimiento» del sistema, la regla general acorta toda
+                    animación a 0,01 ms y la que apagaba este reloj perdía por especificidad, así que terminaba al instante
+                    y pasaba al siguiente sin parar (medido: 33 cambios en 4 s). Un final de menos de 1 s no es el reloj */}
+                {k === j && n > 1 ? <i key={idDe(m)} className="es-reloj" style={{ animationDuration: (m.peso || 50) >= 80 ? '12s' : '8s' }}
+                  onAnimationEnd={(e) => { if (e.elapsedTime >= 1) ver(j + 1); }} /> : null}
               </button>
             );
           })}

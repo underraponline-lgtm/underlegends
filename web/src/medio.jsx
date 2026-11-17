@@ -93,7 +93,7 @@ export function Fechas({ liga }) {
   porFecha.slice(0, Math.max(t.length > 4 ? 0 : 1, fila - t.length)).forEach((ll) => {
     const g = liga.campeon(ll);
     t.push({ c: 'hecho', dia: liga.cuando(liga.fechaLlave(ll)).toUpperCase(), hora: 'TERMINÓ · ' + ll.participantes + ' raperos', sv: ll.sv,
-      ev: limpio(ll.nombre), det: (g.length > 1 ? 'Campeones: ' : 'Campeón: ') + g.join(' y '), llave: ll.n });
+      ev: limpio(ll.nombre), det: g.length ? (g.length > 1 ? 'Campeones: ' : 'Campeón: ') + g.join(' y ') : 'Sin campeón cargado', llave: ll.n });
   });
   if (!t.length) return null;
   return (
