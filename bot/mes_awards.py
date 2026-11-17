@@ -93,6 +93,10 @@ CATS_SV = (('rapero', 'Rapero del mes', 'los puntos de Temporada del mes en sus 
 #: los Puntos de Tienda de los de cada servidor (Dlx, 18/10/2026, a «¿pagan Puntos de Tienda? nada / 500 / 1.000 como las
 #: demás»: «yes sure»): 1.000, como las de «Ver las demás nominaciones»; la batalla, a cada lado
 PREMIO_SV = {'rapero': 1000, 'revelacion': 1000, 'batalla': 1000, 'staff': 1000}
+#: 🐉 DESDE `SOLO_SV_DESDE` LOS DE CADA SERVIDOR SE PAGAN EN DRAGÓN DROPS Y NO EN PUNTOS (Dlx, 17/11/2026, a «¿los premios
+#: pasan a Dragón Drops?»: «A»): el Rapero del mes un Nido, los demás un Star Dragon. Los da `bot/drops_merito.py`
+#: (`de_mes_awards()`) al cierre; acá sólo se dice qué es cada uno, para la página
+DROP_SV = {'rapero': 'nido', 'revelacion': 'star', 'batalla': 'star', 'staff': 'star'}
 NIVELES = os.path.join(BASE, 'datos', 'niveles.json')
 MESES = ('enero', 'febrero', 'marzo', 'abril', 'mayo', 'junio', 'julio', 'agosto', 'septiembre', 'octubre',
          'noviembre', 'diciembre')
@@ -365,10 +369,11 @@ def votantes(lista, d=None, dids=None, clave=None):
     return out
 
 
-def _paga(cat, sv=False):
-    """Los Puntos de Tienda de un premio, con los números de HOY (sólo se usan al cerrar: después quedan congelados)."""
+def _paga(cat, sv=False, mes=''):
+    """Los Puntos de Tienda de un premio, con los números de HOY (sólo se usan al cerrar: después quedan congelados).
+    Los de cada servidor desde `SOLO_SV_DESDE`, 0: se pagan en drops (`DROP_SV`)."""
     if sv:
-        return PREMIO_SV.get(cat) or 0
+        return 0 if mes and mes >= SOLO_SV_DESDE else (PREMIO_SV.get(cat) or 0)
     return PREMIO.get(cat) or (MO.PREMIO_OTRA if cat in dict((c, 1) for c, _n, _d in OTRAS) else 0)
 
 
@@ -407,7 +412,7 @@ def cerrar(mes, m, votos, ahora, did_de=None):
         fila = next((y for y in x.get('nom') or [] if y['op'] == x.get('gana')), None)
         if fila:
             ps = personas_sv(cat, fila) if sv else personas(cat, fila)
-            x['premio'] = [[q, (did_de(q, fila) if did_de else '') or '', _paga(cat, sv)] for q in ps]
+            x['premio'] = [[q, (did_de(q, fila) if did_de else '') or '', _paga(cat, sv, mes)] for q in ps]
         return x
 
     def una(eid, x):
@@ -740,7 +745,7 @@ def para_web(d=None, ahora=None, mu=None):
     return {'t': _iso(ahora), 'cats': [list(c) + [0] for c in CATS] + [list(c) + [2 if c[0] in MO.STAFF else 1] for c in OTRAS],
             'cats_sv': [list(c) for c in CATS_SV], 'premio': dict(PREMIO, otra=MO.PREMIO_OTRA), 'premio_sv': dict(PREMIO_SV),
             'abierto': abierto, 'vivo': viv, 'hist': hist[:24], 'semanas': figuras_semana(mu),
-            'sv_desde': SOLO_SV_DESDE, 'gala': gala()}
+            'sv_desde': SOLO_SV_DESDE, 'gala': gala(), 'drop_sv': dict(DROP_SV)}
 
 
 def gala():
@@ -915,6 +920,12 @@ def _self_check():
            'desde noviembre se nomina sólo por servidor: la Liga no tiene nominados ni encuestas', str((m6.get('cats'), e6)))
         ok((w6.get('gala') or {}).get('temp') == 'T1' and w6['gala']['nominados'] == '2027-01-01T16:00:00Z',
            'la gala de la T1: los nominados el 1/1 a las 11 AM ET', str(w6.get('gala')))
+        r7 = correr(aplicar=True, ahora=dt.datetime(2026, 12, 5, tzinfo=utc), datos=datos11,
+                    votos={'mes:2026-11:FFA:rapero': {'Bea': 4, 'Ana': 1}}, ajustes={}, niv=niv)
+        p7 = r7['meses']['2026-11']['sv']['FFA']['cats']['rapero'].get('premio')
+        ok(p7 == [['Bea', '', 0]] and not [k for k in tienda(r7, {'Bea': '222'}) if k.startswith('2026-11')]
+           and para_web(r7)['drop_sv']['rapero'] == 'nido',
+           'desde noviembre los de cada servidor no pagan Puntos: se pagan en drops (un Nido el Rapero)', str(p7))
     finally:
         SALIDA = viejo
     # 🥇 las figuras salen de los premios de cada semana: quien repite, sale las dos veces (con las insignias, no)

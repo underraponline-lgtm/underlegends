@@ -520,7 +520,9 @@ def armar(ahora=None):
            # 🏆 una temporada de Pase premium para cada campeón de liga (15/11/2026): ver `vales_campeones()`
            'vales': vales_campeones(),
            # 🥚 los Dragón Drops por ganar (la tanda 1 del rework, 17/11/2026): ver bot/drops_merito.py
-           'drops': drops_por_ganar()}
+           'drops': drops_por_ganar(),
+           # 🔔 quién puede votar los MES AWARDS abiertos, para los avisos de la campana: ver `mes_votan()`
+           'mes_votan': mes_votan(ahora)}
     out['v'] = hashlib.sha256(json.dumps(out, sort_keys=True, ensure_ascii=False).encode('utf-8')).hexdigest()[:16]
     return out
 
@@ -556,6 +558,37 @@ def vales_campeones():
     except Exception as e:                               # noqa: BLE001
         print('   ⚠️ los Pases premium de los campeones no salen en esta vuelta: %s' % str(e)[:120])
         return []
+
+
+def mes_votan(ahora=None, d=None):
+    """🔔 Quién puede votar los MES AWARDS que se están votando, para la campana (Dlx, 17/11/2026, a «¿dónde más se recuerda
+    votar?»: «A»): `{mes, nombre, abre, cierra, sv: {SV: [discord_id]}, siglas}`, o None si no se vota nada. Los que
+    jugaron ahí (`mes_awards.votantes()`); los que lo eligieron como su servidor los suma el objeto (`avisosMes()`).
+    ⚠️ Son Discord IDs: van al objeto en el paquete del Pase, nunca a la página."""
+    try:
+        import mes_awards as MA
+        d = MA.leer() if d is None else d
+        lista = [e for e in MA.encuestas(ahora, d) if e.get('sv')]
+        if not lista:
+            return None
+        vt = MA.votantes(lista, d)
+        mes = str(lista[0]['id']).split(':')[1]
+        m = (d.get('meses') or {}).get(mes) or {}
+        sv = {}
+        for e in lista:
+            sv.setdefault(e['sv'], set()).update(vt.get(e['id']) or [])
+        siglas = {}
+        try:
+            with io.open(os.path.join(BASE, 'datos', 'servidores.json'), encoding='utf-8') as f:
+                todos = (json.load(f) or {}).get('servidores') or {}
+            siglas = {k: (todos.get(k) or {}).get('sigla') or k for k in sv}
+        except (OSError, ValueError):
+            pass
+        return {'mes': mes, 'nombre': MA.nombre_mes(mes), 'abre': m.get('abre'), 'cierra': m.get('cierra'),
+                'sv': {k: sorted(v) for k, v in sorted(sv.items())}, 'siglas': siglas}
+    except Exception as e:                               # noqa: BLE001
+        print('   ⚠️ los avisos de los MES AWARDS no salen en esta vuelta: %s' % str(e)[:120])
+        return None
 
 
 def drops_por_ganar():

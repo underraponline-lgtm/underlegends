@@ -201,7 +201,7 @@ function errorEnc(E) {
     : e === 'opcion' ? 'Esa opción ya no está: la lista se actualiza cada media hora.'
     : e === 'no_existe' ? 'Esa votación ya no está.'
     : e === 'ya_votaste' ? 'Ya votaste esta semana: el voto no se cambia.'
-    : e === 'no_jugo' ? 'Los MES AWARDS de ' + esc(E.sv || 'este servidor') + ' los votan los que jugaron ahí este mes.'
+    : e === 'no_jugo' ? 'Los MES AWARDS de ' + esc(E.sv || 'este servidor') + ' los votan los que jugaron ahí ese mes y los que lo eligieron como su servidor (en Mi cuenta).'
     : 'No pude guardar tu voto. Prueba de nuevo en un rato.');
 }
 

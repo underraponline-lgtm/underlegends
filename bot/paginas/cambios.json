@@ -11,6 +11,17 @@
   ],
   "cambios": [
     {
+        "version": "6.12",
+        "dia": "2026-11-17",
+        "cuando": "2026-11-17T14:52:00-05:00",
+        "titulo": "MES AWARDS: vota tu servidor, premios en Dragón Drops y avisos",
+        "items": [
+            "**Los MES AWARDS de un servidor los votan los que jugaron ahí y también los que lo eligieron como su servidor** en Mi cuenta: los hinchas y el staff ya pueden votar los de su servidor.",
+            "**Los premios de cada servidor son Dragón Drops**: el Rapero del mes se lleva un **Nido de dragón**, y la Revelación, la Batalla (a cada lado) y el Staff un **Star Dragon**. Desde los de noviembre.",
+            "**Te avisamos para votar**: los días de votación, una franja arriba del Inicio con tu servidor, y un aviso en la campana al abrir y el último día, si puedes votar y todavía no lo hiciste."
+        ]
+    },
+    {
         "version": "6.11",
         "dia": "2026-11-17",
         "cuando": "2026-11-17T14:45:00-05:00",

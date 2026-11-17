@@ -2754,6 +2754,11 @@ console.log('\nLAS ENCUESTAS\n');
   ok('los de un servidor los vota quien jugó ahí; quien no, no (y se le dice de qué servidor); sin la lista, nadie',
      !vs('mes:2026-10:FFA:rapero', VIEJO).error && vs('mes:2026-10:FFA:rapero', OTRO).error === 'no_jugo'
      && vs('mes:2026-10:FFA:rapero', OTRO).sv === 'FFA' && vs('mes:2026-10:SR:rapero', VIEJO).error === 'no_jugo');
+  // 🏠 17/11/2026, «B»: también los que lo eligieron como su servidor (y sólo ése)
+  const ve = (enc, id, el) => A.validarVoto(dsv, { enc, op: enc.includes('FFA') ? 'Ana' : 'Cid' }, id, RELOJ, el);
+  ok('y los que eligieron ese servidor como el suyo, aunque no hayan jugado ahí; elegir otro no sirve',
+     !ve('mes:2026-10:SR:rapero', OTRO, 'SR').error && ve('mes:2026-10:SR:rapero', OTRO, 'FFA').error === 'no_jugo'
+     && ve('mes:2026-10:SR:rapero', OTRO, '').error === 'no_jugo' && !ve('mes:2026-10:FFA:rapero', VIEJO, 'SR').error);
 
   // 📣 «¿algo está mal en esta llave?» (Dlx, 28/09/2026: «ok»): mismo portón que el voto
   const rep = (d, id) => A.validarReporte(d, id || VIEJO, RELOJ);

@@ -4323,7 +4323,7 @@ export function creadaEn(id) {
  * página y `id` el Discord ID que devolvió Discord. Pura, sin red: la
  * prueba `bot/probar_local.mjs`.
  */
-export function validarVoto(defs, d, id, ahora) {
+export function validarVoto(defs, d, id, ahora, elegido) {
   const e = ((defs && Array.isArray(defs.lista)) ? defs.lista : []).find((x) => x && x.id === d.enc);
   if (!e) return { error: 'no_existe', estado: 404 };
   if (!(ahora < Date.parse(e.hasta))) return { error: 'cerrada', estado: 409 };
@@ -4338,10 +4338,13 @@ export function validarVoto(defs, d, id, ahora) {
   if (e.tipo === 'elegido' && ((defs.yo || {})[id] || '') === d.op) return { error: 'tú', estado: 403 };
   // 🏟️ LOS MES AWARDS DE UN SERVIDOR LOS VOTAN SUS JUGADORES (Dlx, 18/10/2026: «cada Tier 1 con los suyos… los votan sus
   // jugadores»): la encuesta trae `sv` y el ciclo deja en `solo` quién jugó ahí ese mes (`mes_awards.votantes()`). Sin
-  // esa lista, nadie: antes eso que cualquiera
+  // esa lista, nadie: antes eso que cualquiera.
+  // 🏠 Y LOS QUE LO ELIGIERON COMO «TU SERVIDOR» (Dlx, 17/11/2026, a «¿quién vota los de cada servidor?»: «B»): `elegido`
+  // es el servidor que eligió en Mi cuenta (lo busca la ruta en el objeto, sólo si no jugó ahí)
   if (e.sv) {
     const s = (defs.solo || {})[e.id];
-    if (!Array.isArray(s) || s.indexOf(id) < 0) return { error: 'no_jugo', estado: 403, sv: e.sv };
+    const juega = Array.isArray(s) && s.indexOf(id) >= 0;
+    if (!juega && !(elegido && String(elegido) === String(e.sv))) return { error: 'no_jugo', estado: 403, sv: e.sv };
   }
   // 🔒 el ×2 y El Elegido se votan UNA VEZ (Dlx, 12/11/2026: «se vota 1 vez por semana, deberíamos quitar eso de que se
   // pueda cambiar de voto»). Los MES AWARDS siguen cambiándose hasta que cierran, como dicen sus páginas
@@ -6194,7 +6197,17 @@ export async function rutaAvisos(req, env, ruta) {
     let defs = null;
     try { defs = JSON.parse((await env.KV.get('encuestas', { cacheTtl: 60 })) || 'null'); } catch (e) { defs = null; }
     const ahoraV = Date.now();
-    const v = validarVoto(defs, d, id, ahoraV);
+    // 🏠 el servidor que eligió, sólo si la encuesta es de un servidor y no jugó ahí (un pedido más al objeto, nada más)
+    let elegido = '';
+    const e0 = ((defs && Array.isArray(defs.lista)) ? defs.lista : []).find((x) => x && x.id === d.enc);
+    if (e0 && e0.sv && !(((defs.solo || {})[e0.id] || []).indexOf(id) >= 0)) {
+      try {
+        const r = await elObjeto(env).fetch('https://avisos/sv-elegido', { method: 'POST', body: JSON.stringify({ quien: id }),
+          headers: { 'content-type': 'application/json' } });
+        elegido = String(((await r.json()) || {}).sv || '');
+      } catch (e) { elegido = ''; }
+    }
+    const v = validarVoto(defs, d, id, ahoraV, elegido);
     if (v.error) return json(v, v.estado);
     // 🎁 las de la semana que esta persona puede votar (el ×2 y El Elegido): votarlas todas da el cofre (`votar()`)
     const sem = ((defs && Array.isArray(defs.lista)) ? defs.lista : [])
@@ -7633,6 +7646,30 @@ export function cuerpoPersonal(a) {
   return JSON.stringify({ v: 1, tipo: 'personal', id: String(a.id).slice(0, 40),
     t: String(a.titulo).slice(0, 120), b: String(a.cuerpo || '').slice(0, 240), url });
 }
+
+/**
+ * 🔔 EL AVISO DE LOS MES AWARDS (Dlx, 17/11/2026, a «¿dónde más se recuerda votar?»: «A»): uno al abrir la votación y otro
+ * el último día, por persona y con todos sus servidores (`avisosMes()` del objeto). `m` es lo que mandó el ciclo
+ * (`mes_votan`), `svs` las claves de sus servidores y `fase` 'abre' o 'ultimo'. Pura.
+ */
+export function textoAvisoMes(m, svs, fase, id) {
+  const n = (sv) => String(((m && m.siglas) || {})[sv] || sv);
+  const xs = (svs || []).map(n);
+  const donde = xs.length > 1 ? xs.slice(0, -1).join(', ') + ' y ' + xs[xs.length - 1] : (xs[0] || '');
+  const url = 'https://underlegends.pages.dev/freestyle-rap/salon';
+  const mes = String((m && m.nombre) || 'este mes');
+  if (fase === 'ultimo') {
+    return { id, titulo: '⏰ Último día para votar los MES AWARDS',
+      cuerpo: 'Cierran hoy. Vota lo mejor de ' + mes + ' en ' + donde + ' y llévate un Cajón de discos.', url };
+  }
+  return { id, titulo: '🏆 Se votan los MES AWARDS de ' + mes,
+    cuerpo: 'En ' + donde + '. Vota todas las de tu servidor y llévate un Cajón de discos.', url };
+}
+//: el aviso de «se abrió» sale en las primeras horas; el del último día, desde estas horas antes del cierre (11 AM ET)
+export const MES_ABRE_VENTANA = 12 * 60 * 60 * 1000;
+export const MES_ULTIMO = 7 * 60 * 60 * 1000;
+//: cuántos teléfonos por minuto como mucho (el vigía comparte el tope de pedidos con los canales y `personales()`)
+export const TOPE_MES = 8;
 
 /** Lo que corre el cron de cada minuto. */
 /**
@@ -9114,6 +9151,7 @@ export class Avisos {
         return json(r, r.estado || 200);
       }
       if (ruta === '/mi-servidor') return this.miServidor(d);
+      if (ruta === '/sv-elegido') return json({ sv: this.svElegido(String(d.quien || '')) });
       if (ruta === '/mi-foto') return await this.miFoto(d);
       if (ruta.startsWith('/sesion/')) return await this.sesion(ruta, d);
       if (ruta === '/uso') return this.usoAnotar(d);
@@ -9606,6 +9644,8 @@ export class Avisos {
     try { await this.personales(ahora); } catch (e) {
       this.guardar('personales', { t: ahora, error: String(e).slice(0, 120) });
     }
+    // 🔔 y los de los MES AWARDS, al abrir la votación y el último día. Nunca frena al vigía: ver `avisosMes()`
+    try { await this.avisosMes(ahora); } catch (e) { this.guardar('avisos_mes', { t: ahora, error: String(e).slice(0, 120) }); }
     // 🔑 y lo que le pasó a quien seguís. Nunca frena al vigía: ver `seguidos()`
     try { await this.seguidos(ahora); } catch (e) {
       this.guardar('seguidos', { t: ahora, error: String(e).slice(0, 120) });
@@ -13973,6 +14013,13 @@ export class Avisos {
     return true;
   }
 
+  /** 🏠 El servidor que eligió esa cuenta (el más nuevo), o `''`. Para votar los MES AWARDS de su servidor. */
+  svElegido(quien) {
+    if (!/^[0-9]{5,25}$/.test(quien)) return '';
+    const r = this.sql.exec('SELECT sv FROM servidor WHERE quien = ? ORDER BY t DESC LIMIT 1', quien).toArray()[0];
+    return (r && r.sv) || '';
+  }
+
   /** Lo público: el servidor que eligió cada perfil (sólo raperos) y cuántos eligieron cada uno. */
   servidoresElegidos() {
     const n = {}, cuantos = {};
@@ -16923,6 +16970,61 @@ export class Avisos {
    * ⚠️ SIN VÍNCULO NO HAY AVISO: la cola lleva el Discord ID y sólo le llega
    * a los dispositivos que esa persona vinculó. El resto se descarta.
    */
+  /**
+   * 🔔 LOS MES AWARDS EN LA CAMPANA (Dlx, 17/11/2026, «5: A»): al abrir la votación (`MES_ABRE_VENTANA`) y el último día
+   * (desde `MES_ULTIMO` antes del cierre), un aviso a cada persona que puede votar en algún servidor —los que jugaron ahí
+   * (`mes_votan`, lo manda el ciclo en el paquete del Pase) y los que lo eligieron como su servidor (tabla `servidor`)—,
+   * uno solo con todos sus servidores. Va a su bandeja y, si vinculó la campana, al teléfono. El del último día, sólo
+   * con los servidores donde todavía no votó. Cada persona una vez por fase (`hechos`); terminada la fase, no se mira más.
+   */
+  async avisosMes(ahora) {
+    if (this.pausada()) return 0;
+    const m = this.leer('mes_votan');
+    if (!m || !m.mes || !m.sv) return 0;
+    const abre = Date.parse(m.abre), cierra = Date.parse(m.cierra);
+    if (!(ahora >= abre && ahora < cierra)) return 0;
+    const fase = ahora >= cierra - MES_ULTIMO ? 'ultimo' : (ahora < abre + MES_ABRE_VENTANA ? 'abre' : '');
+    if (!fase) return 0;
+    const clave = 'mesav:' + m.mes + ':' + fase;
+    if (this.leer(clave)) return 0;
+    const por = {};
+    const sumar = (q, sv) => {
+      q = String(q);
+      if (!/^[0-9]{5,25}$/.test(q)) return;
+      por[q] = por[q] || [];
+      if (!por[q].includes(sv)) por[q].push(sv);
+    };
+    for (const [sv, ids] of Object.entries(m.sv)) for (const q of ids || []) sumar(q, sv);
+    for (const r of this.sql.exec("SELECT s.quien, s.sv FROM servidor s WHERE s.sv != '' AND s.t = " +
+      '(SELECT MAX(t) FROM servidor WHERE quien = s.quien)').toArray()) if (m.sv[r.sv]) sumar(r.quien, r.sv);
+    let pedidos = 0, quedan = 0, enviados = 0, fallaron = 0;
+    for (const [q, todos] of Object.entries(por)) {
+      const idA = clave + ':' + q;
+      if (this.yaHecho(idA)) continue;
+      const svs = fase === 'ultimo' ? todos.filter((sv) => !this.sql.exec('SELECT 1 AS x FROM votos WHERE quien = ? AND enc LIKE ? LIMIT 1',
+        q, 'mes:' + m.mes + ':' + sv + ':%').toArray()[0]) : todos;
+      if (!svs.length) { this.sql.exec('INSERT OR IGNORE INTO hechos (id, t) VALUES (?, ?)', idA, ahora); continue; }
+      const subs = this.sql.exec('SELECT id, endpoint, p256dh, auth FROM subs WHERE quien = ?', q).toArray();
+      if (pedidos + subs.length > TOPE_MES && pedidos) { quedan++; continue; }
+      const a = textoAvisoMes(m, svs, fase, idA);
+      this.sql.exec('INSERT OR IGNORE INTO hechos (id, t) VALUES (?, ?)', idA, ahora);
+      this.aBandeja(q, idA, 'personal', a.titulo, a.cuerpo, a.url, '', ahora);
+      if (!subs.length) continue;
+      pedidos += subs.length;
+      const cuerpo = cuerpoPersonal(a);
+      const estados = await Promise.all(subs.map((x) => empujar(x, cuerpo, { ttl: 12 * 3600, topic: 'mes' + fase }, this.env, new Map())));
+      let llego = 0, reintentar = false;
+      estados.forEach((e, i) => {
+        if (e >= 200 && e < 300) { enviados++; llego++; }
+        else if (MUERTA(e)) this.sql.exec('DELETE FROM subs WHERE id = ?', subs[i].id);
+        else if (e === 0 || e === 429 || e >= 500) reintentar = true;
+      });
+      if (reintentar && !llego) { this.hechoDeshacer(idA); fallaron++; }
+    }
+    if (!quedan && !fallaron) this.guardar(clave, { t: ahora, enviados, personas: Object.keys(por).length });
+    return enviados;
+  }
+
   async personales(ahora) {
     if (this.pausada()) return 0;  // 🔔 la campana pausada desde el Dashboard: esperan
     const crudo = await this.env.KV.get(COLA_PERSONAL);
@@ -17555,6 +17657,17 @@ export class Avisos {
       const q = String((x && x.q) || ''), o = String((x && x.o) || ''), k = String((x && x.k) || '');
       if (!id(q) || !/^[\w.:-]{3,60}$/.test(o) || !MERITO_TIPOS[k]) continue;
       this.dropDar(q, MERITO_TIPOS[k][0] + 'merito:' + o, MERITO_TIPOS[k][1]);
+    }
+    // 🔔 quién puede votar los MES AWARDS abiertos (`pase.mes_votan()`): lo usa `avisosMes()` para la campana
+    const mv = d.mes_votan;
+    if (mv && typeof mv === 'object' && /^\d{4}-\d{2}$/.test(String(mv.mes || '')) && Date.parse(mv.abre) && Date.parse(mv.cierra)) {
+      const sv = {}, siglas = {};
+      for (const [k, ids] of Object.entries(mv.sv || {}).slice(0, 30)) {
+        if (/^[A-Za-z0-9]{1,10}$/.test(k) && Array.isArray(ids)) sv[k] = ids.map(String).filter(id).slice(0, 3000);
+      }
+      for (const [k, n] of Object.entries(mv.siglas || {}).slice(0, 30)) if (sv[k]) siglas[k] = String(n).slice(0, 10);
+      this.guardar('mes_votan', { mes: mv.mes, nombre: String(mv.nombre || '').slice(0, 20), abre: String(mv.abre),
+        cierra: String(mv.cierra), sv, siglas });
     }
     // 🏆 los Pases premium de los campeones de liga que manda el ciclo (`pase.vales_campeones()`): uno por título, y el que
     // ya estaba no se toca (ni usado ni sin usar). Al dueño del perfil, si se sabe su cuenta, le llega a la campana

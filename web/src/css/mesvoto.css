@@ -101,3 +101,12 @@ button.sd-nom:hover .sd-votar{border-color:var(--tinta)}
   .app .sd-noms{display:grid;grid-template-columns:repeat(var(--cols,5),minmax(0,1fr));gap:10px;padding:0;overflow:visible}
   .app .sd-noms>li{flex:none}
 }
+
+/* ── 🔔 la franja en el Inicio (mesinicio.jsx, 17/11/2026): la misma franja y, pegado a la derecha, el botón al Salón. La
+   sombra va en el conjunto, así el botón queda adentro. En el celular el botón baja ── */
+.sd-ini{display:grid;grid-template-columns:minmax(0,1fr) auto;margin:0 6px 18px 0;text-decoration:none;color:inherit;box-shadow:6px 6px 0 #29B298}
+.sd-ini .sd-franja{margin:0;box-shadow:none}
+.sd-ini-ir{display:flex;align-items:center;justify-content:center;padding:0 22px;background:#030304;color:#F6F6F6;
+  font:800 14px/1 Archivo,sans-serif;letter-spacing:.04em;text-transform:uppercase;white-space:nowrap}
+.sd-ini:hover .sd-ini-ir,.sd-ini:focus-visible .sd-ini-ir{background:#29B298;color:#030304}
+@media (max-width:600px){.sd-ini{grid-template-columns:1fr}.sd-ini-ir{padding:12px 16px}}

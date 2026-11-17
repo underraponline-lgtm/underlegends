@@ -3858,6 +3858,31 @@ const ok = (cond, que, det) => {
     const k4 = await (o.votar({ enc: 'mes:2026-11:FFA:rapero', op: 'A', quien: S, fijo: false, mes_sv: ['mes:x'], mes_clave: 'vota:2026-11:FFA:../x' })).json();
     ok(!k1.cofre && k2.cofre === true && !k3.cofre && !k4.cofre && cajon().length === 1 && cajon()[0].tipo === 'cofre' && cajon()[0].cofre === 0,
       'votar las 2 de FFA da UN Cajón de discos; cambiar el voto no da otro, y una llave rara no da nada', JSON.stringify([k1, k2, k3, cajon()]));
+    // 🔔 los avisos de los MES AWARDS (17/11/2026, «5: A»): a quien jugó ahí y a quien lo eligió, uno por persona
+    const T0 = Date.UTC(2026, 11, 1, 23), H = 3600000, E = '300000000000000013';
+    o.guardar('mes_votan', { mes: '2026-12', nombre: 'diciembre', abre: new Date(T0).toISOString(), cierra: new Date(T0 + 72 * H).toISOString(),
+      sv: { FFA: [Q], SR: [S, Q] }, siglas: { SR: 'SNK' } });
+    o.sql.exec('INSERT INTO servidor (quien, temporada, sv, de, t, fijo) VALUES (?, ?, ?, ?, ?, ?)', E, 't1', 'SR', '', 1, 0);
+    const avs = () => o.sql.exec("SELECT quien, clave, titulo, cuerpo FROM bandeja WHERE clave LIKE 'mesav:2026-12:%' ORDER BY quien, clave").toArray();
+    await o.avisosMes(T0 - H);
+    const a0 = avs().length;
+    await o.avisosMes(T0 + H);
+    const a1 = avs();
+    await o.avisosMes(T0 + 2 * H);
+    const a2 = avs().length;
+    await o.avisosMes(T0 + 20 * H);
+    ok(a0 === 0 && a1.length === 3 && a2 === 3 && avs().length === 3 &&
+      a1.find((x) => x.quien === Q).cuerpo.startsWith('En FFA y SNK.') && a1.find((x) => x.quien === E).titulo === '🏆 Se votan los MES AWARDS de diciembre',
+    'al abrir: un aviso por persona con todos sus servidores (también a quien eligió SNK sin jugar), una sola vez, y no antes ni a la tarde siguiente', JSON.stringify(a1));
+    o.sql.exec('INSERT INTO votos (enc, quien, op, t) VALUES (?, ?, ?, ?)', 'mes:2026-12:SR:rapero', S, 'X', T0 + 5 * H);
+    o.sql.exec('INSERT INTO votos (enc, quien, op, t) VALUES (?, ?, ?, ?)', 'mes:2026-12:FFA:rapero', Q, 'X', T0 + 5 * H);
+    await o.avisosMes(T0 + 66 * H);
+    const ult = avs().filter((x) => /:ultimo:/.test(x.clave));
+    ok(ult.length === 2 && !ult.find((x) => x.quien === S) && ult.find((x) => x.quien === Q).cuerpo.includes(' en SNK y ') &&
+      ult[0].titulo === '⏰ Último día para votar los MES AWARDS',
+    'el último día, sólo a quien no votó, y con los servidores donde todavía no votó', JSON.stringify(ult));
+    ok(A.textoAvisoMes({ nombre: 'noviembre', siglas: {} }, ['ACAD'], 'abre', 'x').url === 'https://underlegends.pages.dev/freestyle-rap/salon',
+      'el aviso lleva al Salón');
     // ⚔️ las libres: Q es «ana», S es «beto»
     o.sql.exec('INSERT INTO idk (id, k, t) VALUES (?, ?, ?), (?, ?, ?)', Q, 'ana', 1, S, 'beto', 1);
     const ya = Date.now();

@@ -7,7 +7,7 @@ import { Sec, accion } from './piezas.jsx';
 import { Vis } from './medio.jsx';
 import { Pub, useAplausos } from './publicaciones.jsx';
 import { Nominado, reparto, useSalon } from './mesawards.jsx';
-import { CatsSv, Franja, QUIEN_VOTA, mayus } from './mesvoto.jsx';
+import { CatsSv, Franja, PREMIO_SV, QUIEN_VOTA, mayus } from './mesvoto.jsx';
 
 export const REDES = { instagram: 'Instagram', tiktok: 'TikTok', youtube: 'YouTube', twitch: 'Twitch', x: 'X', twitter: 'X', kick: 'Kick' };
 
@@ -51,7 +51,7 @@ export function MesSv({ liga, sv, enc }) {
   const espera = !ab && S.vivo && ((liga.svs[sv] || {}).tier === 1 || hist.length) ? S.vivo : null;
   if (!ab && !hist.length && !espera) return null;
   const sigla = siglaDe(sv);
-  const premio = (S.premio_sv || {}).rapero ? ', ' + num(S.premio_sv.rapero) + ' Puntos de Tienda' : '';
+  const premio = PREMIO_SV(S) ? ', ' + PREMIO_SV(S) : '';
   // el último mes cerrado, con las tarjetas; mientras se vota, en una línea por categoría como los de antes (dos filas de
   // cartas con las mismas caras, una para votar y otra de ganadores, eran 900 px más en la compu)
   const [ult, ...antes] = ab ? [null, ...hist] : hist;

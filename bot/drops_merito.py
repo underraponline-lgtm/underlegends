@@ -17,8 +17,9 @@ Puntos de Tienda», en tandas, «Sí, la tanda 1». La tanda 1 es lo que se GANA
 
 Medido sobre las 4 últimas semanas de la T1 (sólo gente de DRA): ~166.000 Puntos por semana con todas las tandas a
 techo; ésta es la de mérito. Lo que se gana compitiendo no pasa por el tope suave de la semana (`esMerito()` en
-bot/avisos.js). ⏳ Falta en esta tanda: los MES AWARDS (la Funda y el Star en vez de sus Puntos; el primer reparto con
-eso es el del 1 al 4 de diciembre) y el Tesoro de la Superliga y la Clausura (al cierre de la T1).
+bot/avisos.js). 🏆 Y los MES AWARDS de cada servidor (17/11/2026, «4: A»): un Nido al Rapero del mes y un Star a los demás,
+desde noviembre (`de_mes_awards()`; el primer reparto, al cerrar el 4/12). ⏳ Falta: los premios de la gala de la
+temporada (Tesoro, Funda y Baúl) y el Tesoro de la Superliga y la Clausura (al cierre de la T1).
 
 🔑 SÓLO DESDE `DESDE`: lo de antes no se paga para atrás. Cada premio lleva su origen (`o`) como llave: el objeto no da
 dos veces el mismo (`dropDar()`), así que mandar todo en cada vuelta es seguro.
@@ -180,6 +181,25 @@ def de_ligas(salon, insignias, Q, desde=DESDE):
     return out
 
 
+def de_mes_awards(d, Q, desde_mes='2026-11'):
+    """🏆 Los MES AWARDS de cada servidor (Dlx, 17/11/2026, a «¿los premios pasan a Dragón Drops?»: «A»): al cierre de cada
+    mes, el Rapero del mes un Nido; la Revelación, la Batalla (a cada lado) y el Staff, un Star Dragon. En vez de sus Puntos
+    de Tienda (`mes_awards._paga()` da 0 desde `SOLO_SV_DESDE`). Quién cobra sale de lo congelado al cierre (`premio`)."""
+    out = []
+    for mes, m in sorted(((d or {}).get('meses') or {}).items()):
+        cerrado = _iso(m.get('cerrado'))
+        if mes < desde_mes or not cerrado:
+            continue
+        for sv, x in sorted((m.get('sv') or {}).items()):
+            for cat, c in sorted((x.get('cats') or {}).items()):
+                for p in c.get('premio') or []:
+                    q = p[0] if p else ''
+                    if Q.get(q):
+                        out.append({'q': Q[q], 'o': 'mes:%s:%s:%s' % (mes, sv, cat), 'k': 'nido' if cat == 'rapero' else 'star',
+                                    'd': cerrado.isoformat()})
+    return out
+
+
 def _hoja(ES, hoja):
     """Las filas de `hoja` con su cabecera arriba: `fuente()` da sólo los datos, y la cabecera vive en su archivo (se busca,
     no se clava)."""
@@ -206,6 +226,7 @@ def premios():
         print('   ⚠️ drops por ganar: el Salón de las ligas no sale en esta vuelta: %s' % str(e)[:120])
         sl = []
     out += de_ligas(sl, (_json('insignias.json', {}) or {}).get('insignias') or {}, Q)
+    out += de_mes_awards(_json('mes_awards.json', {}) or {}, Q)
     # 📦 sólo lo de las últimas `VENTANA_DIAS`: lo de antes ya lo dio una vuelta anterior (el objeto no repite), y así el
     # paquete del Pase no crece con la temporada
     import zoneinfo
@@ -260,7 +281,15 @@ def _self_check():
     lg = de_ligas(sl, ins, Q, d0)
     ok(sorted((x['q'][0], x['k'], x['o']) for x in lg) == [('1', 'cofre:3', 'liga:fmhes:20261120'), ('3', 'nido', 'inv:20261121')],
        'ligas: la Funda por cada título y un Nido al invicto, desde DESDE')
-    todos = r + b + m + lg
+    ma = de_mes_awards({'meses': {
+        '2026-10': {'cerrado': '2026-11-05T00:00:00Z', 'sv': {'FFA': {'cats': {'rapero': {'premio': [['Ana', '', 1000]]}}}}},
+        '2026-11': {'cerrado': '2026-12-05T00:00:00Z', 'sv': {'FFA': {'cats': {
+            'rapero': {'premio': [['Ana', '', 0]]}, 'batalla': {'premio': [['Beto', '', 0], ['Nadie', '', 0]]}}}}},
+        '2026-12': {'sv': {'FFA': {'cats': {'rapero': {'premio': [['Ana', '', 0]]}}}}}}}, Q)
+    ok(sorted((x['q'][0], x['k'], x['o']) for x in ma) == [('1', 'nido', 'mes:2026-11:FFA:rapero'), ('2', 'star', 'mes:2026-11:FFA:batalla')],
+       'MES AWARDS: un Nido al Rapero del mes de cada servidor y un Star a los demás (a cada lado de la batalla), desde '
+       'noviembre, al cierre y sólo a los de DRA')
+    todos = r + b + m + lg + ma
     ok(all(re.match(r'^[\w.:-]{3,60}$', x['o']) and x['k'] in ('drop', 'star', 'nido', 'cofre:2', 'cofre:3') for x in todos),
        'cada origen pasa el filtro del objeto y cada tipo existe en `MERITO_TIPOS`')
     print('\n  %s' % ('todo ok' if not mal else '%d mal' % mal))

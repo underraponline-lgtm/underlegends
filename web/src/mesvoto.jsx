@@ -15,14 +15,20 @@ import { nomTexto, reparto } from './mesawards.jsx';
 import CSS_VOTO from './css/mesvoto.css?inline';
 import { usarCss } from './css.js';
 
-// 🗳️ QUIÉN VOTA LOS DE UN SERVIDOR, EN UNA SOLA FRASE. Hoy lo decide el Worker (`no_jugo` a quien no jugó ahí ese mes:
-// `validarVoto()` y `votantes()` de bot/mes_awards.py) y Dlx puede cambiar la regla (la pregunta 2 de la maqueta). Si
-// cambia, se cambia acá y en ningún otro lado de la página
-export const QUIEN_VOTA = (sigla, mes) => 'Votan los que jugaron en ' + sigla + (mes ? ' en ' + mes : ' ese mes') + '.';
+// 🗳️ QUIÉN VOTA LOS DE UN SERVIDOR, EN UNA SOLA FRASE. Lo decide el Worker (`validarVoto()`: los que jugaron ahí ese mes,
+// de `votantes()` de bot/mes_awards.py, y desde el 17/11/2026 —Dlx, «2: B»— los que lo eligieron como su servidor). Si
+// la regla cambia, se cambia acá y en ningún otro lado de la página
+export const QUIEN_VOTA = (sigla, mes) => 'Votan los que jugaron en ' + sigla + (mes ? ' en ' + mes : ' ese mes') +
+  ' y los que lo eligieron como su servidor.';
+// 🐉 lo que se lleva cada ganador de un servidor desde noviembre (Dlx, «4: A»; `DROP_SV` de bot/mes_awards.py, en
+// `/api/salon` como `drop_sv`): el Rapero un Nido, los demás un Star Dragon
+export const PREMIO_SV = (S) => (S && S.drop_sv ? 'un Nido de dragón (el Rapero del mes) o un Star Dragon (las demás)'
+  : S && S.premio_sv && S.premio_sv.rapero ? S.premio_sv.rapero.toLocaleString('es') + ' Puntos de Tienda' : '');
 // el cofre por votarlas todas: el cofre 0 de los Dragón Drops (`COFRES` de drops.jsx)
 export const COFRE = 'Cajón de discos';
 
 const css = () => usarCss('mesvoto', CSS_VOTO);
+export const cssVoto = css;
 export const mayus = (s) => (s ? s.charAt(0).toUpperCase() + s.slice(1) : '');
 export const mesDe = (m) => MESES[Number(String(m || '').slice(5, 7)) - 1] || '';
 

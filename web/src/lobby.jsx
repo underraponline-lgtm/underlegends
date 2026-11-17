@@ -11,7 +11,7 @@
 //      hay un motivo de verdad»), que se apaga al entrar.
 // Para todos desde el 13/10/2026 (Dlx: «1. yes»); antes, sólo con `?prev=lobby`. Las puertas llevan `pu` y su
 // dirección: los toques se cuentan igual (`queToco()` de App.jsx)
-import { useEffect, useState } from 'react';
+import { Suspense, lazy, useEffect, useState } from 'react';
 import { limpio, mult, num, siglaDe, utc } from './liga.js';
 import { Cara, Ico, aDiscord, accion, useCampana } from './piezas.jsx';
 import { avance, usePase } from './pase.js';
@@ -20,6 +20,13 @@ import { PopPase } from './pase_pop.jsx';
 import { Batallas, FilaRacha, PnCrew, PnEventos, PnMiLiga, PnMisiones, PnPase, PnSemana, PnServidor, PnTienda, Vestuario, campanaPide } from './panel.jsx';
 import { cobrarRacha, useRacha } from './racha.js';
 import { PistaNuevos } from './nuevos.jsx';
+// 🔔 la franja de los MES AWARDS, sólo los días de votación (ver mesinicio.jsx): aparte, para que el resto del mes no pese
+const FranjaMesInicio = lazy(() => import('./mesinicio.jsx'));
+/** ¿Se está votando algún MES AWARD de un servidor? Lo dice el lobby (`enc`), sin pedir nada más */
+function hayMesAbierto(liga) {
+  const ahora = Date.now();
+  return (liga.d.enc || []).some((e) => e && e.tipo === 'mes' && e.sv && utc(e.hasta) > ahora);
+}
 import { esDoble, eventoDelBoton, ganador, lados, llaveEnVivo, momentosLlave } from './arriba.jsx';
 
 const W = typeof window !== 'undefined' ? window : {};
@@ -551,6 +558,7 @@ export function Lobby({ liga, dc, enc }) {
       {dc && P && P.listo ? <PopPase P={P} /> : null}
       {/* 🐣 las misiones para nuevos, encima de los cuatro paneles (Dlx, 13/11/2026): sólo la primera semana */}
       <PistaNuevos liga={liga} dc={dc} />
+      {hayMesAbierto(liga) ? <Suspense fallback={null}><FranjaMesInicio liga={liga} enc={enc} /></Suspense> : null}
       <FilaRacha dc={dc} R={R} liga={liga} enc={enc} />
       <ElBoton liga={liga} />
       <Batallas liga={liga} dc={dc} />
