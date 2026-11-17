@@ -11,6 +11,16 @@
   ],
   "cambios": [
     {
+        "version": "6.13",
+        "dia": "2026-11-17",
+        "cuando": "2026-11-17T15:00:00-05:00",
+        "titulo": "La nota de cada uno en las llaves",
+        "items": [
+            "En cada llave terminada, cada tarjeta lleva su **nota**, como los futbolistas al final del partido: de 3 a 10, según cuánto ganaste y en qué ronda. La más alta lleva ★: la figura de la llave.",
+            "El mensaje del bot al terminar cada evento también trae las notas de la llave."
+        ]
+    },
+    {
         "version": "6.12",
         "dia": "2026-11-17",
         "cuando": "2026-11-17T14:52:00-05:00",
