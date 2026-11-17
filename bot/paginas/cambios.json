@@ -11,6 +11,16 @@
   ],
   "cambios": [
     {
+        "version": "5.88",
+        "dia": "2026-11-17",
+        "cuando": "2026-11-17T01:20:00-05:00",
+        "titulo": "Los tiers de las crews, con puntos de verdad",
+        "items": [
+            "Los tiers de las crews vuelven a sumar los puntos de Temporada de la semana de su gente.",
+            "En la página de cada crew se ve otra vez quién sumó esta semana y quién falta."
+        ]
+    },
+    {
         "version": "5.87",
         "dia": "2026-11-17",
         "cuando": "2026-11-17T00:11:00-05:00",
