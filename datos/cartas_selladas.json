@@ -1649,10 +1649,10 @@
   },
   "Sexo": {},
   "Shadow": {
-   "competitivo": "3c9f9c4cdab5:231a54e016d0",
-   "pais": "1f43ed028a2a:9d66d497e41e",
-   "servidor": "fe5d517876cb:aba640c1146a:c0bf45",
-   "temporada": "ba93f6bf6187:cdead15a6070"
+   "competitivo": "6051f98410df:231a54e016d0",
+   "pais": "3ce3b5ad3641:9d66d497e41e",
+   "servidor": "72cade18f566:aba640c1146a:c0bf45",
+   "temporada": "0e212d38f93c:cdead15a6070"
   },
   "Simon": {
    "competitivo": "bcebaa56128b:231a54e016d0",
@@ -1846,7 +1846,7 @@
    "servidor": "679c18f5e7e5:aba640c1146a:132451"
   },
   "Vilca": {
-   "competitivo": "9b8dcfa28f82:231a54e016d0",
+   "competitivo": "4a9ed036f995:231a54e016d0",
    "pais": "f93ddc2d0292:9d66d497e41e",
    "servidor": "c7bc076d067b:aba640c1146a:35ef22",
    "temporada": "0b55fbe838eb:cdead15a6070"
@@ -2126,5 +2126,5 @@
    "servidor": "7f8885a35a6d:aba640c1146a:71cf5a"
   }
  },
- "cuando": "2026-11-17T18:43:23+00:00"
+ "cuando": "2026-11-17T19:36:24+00:00"
 }
