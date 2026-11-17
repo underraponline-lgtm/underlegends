@@ -228,6 +228,46 @@ def paso(estado, div, vivas):
     return []
 
 
+# 🔧 LAS DOS SEMANAS QUE CERRARON CON ELO, REHECHAS (17/11/2026). Dlx, a si se rehacían: «Yes, redo them». Son los
+# cierres del 02/11 y el 09/11 vueltos a correr con `cerrar()` y los puntos de Temporada de cada semana
+# (`divisiones.puntos_por_semana`, lo mismo que hoy deja `pts_sem`), con las crews que existían al cerrar cada una.
+# Los aplica el ciclo, una vez (`elo_corregido`), porque el ciclo es el único que escribe `datos/crews_tiers.json`:
+# escrito desde una PC, la corrida en curso lo pisaba al guardar. No vuelve a sonar la campana (`avisado` no cambia)
+# y las subidas salen en Publicaciones con la fecha de su cierre, no como nuevas
+CORRECCION_ELO = {
+    'hist': [['2026-11-09', 'Follombia', 3, 4, 148482], ['2026-11-09', 'Desierto de Atacama', 0, 1, 39812],
+             ['2026-11-09', 'METRICOS', 0, 1, 21269], ['2026-11-02', 'Follombia', 2, 3, 133999], ['2026-11-02', 'KS', 2, 1, 0]],
+    'tier': {'Follombia': 4, 'KS': 1, 'Desierto de Atacama': 1, 'METRICOS': 1},
+    'ult': {'sem': '2026-11-09', 'cuenta': True, 'crews': {
+        'Follombia': {'pts': 148482, 'jugaron': 5, 'de': 3, 'a': 4}, 'KS': {'pts': 12000, 'jugaron': 2, 'de': 1, 'a': 1},
+        'Desierto de Atacama': {'pts': 39812, 'jugaron': 1, 'de': 0, 'a': 1}, 'METRICOS': {'pts': 21269, 'jugaron': 2, 'de': 0, 'a': 1}}},
+}
+
+
+def corregir_elo(estado, vivas):
+    """Aplica `CORRECCION_ELO` una vez, sólo si las semanas mal cerradas siguen siendo las últimas (la semana en curso es
+    la del 16/11: más tarde, un tier ya se movió encima y rehacerlo pisaría un cierre bueno). Devuelve si la aplicó."""
+    if estado.get('elo_corregido') or estado.get('sem') != '2026-11-16':
+        return False
+    existe = {c.get('id') for c in (vivas or {}).get('crews') or []}
+    if not existe:
+        return False
+    C = CORRECCION_ELO
+    hist = estado.get('hist') or []
+    nuevas = [h for h in hist if h[0] >= '2026-11-16']
+    viejas = [h for h in hist if h[0] < '2026-11-02']
+    estado['hist'] = (nuevas + [list(h) for h in C['hist'] if h[1] in existe] + viejas)[:HISTORIA]
+    tiers = estado.setdefault('tier', {})
+    for cid, t in C['tier'].items():
+        if cid in existe:
+            tiers[cid] = t
+    if (estado.get('ult') or {}).get('sem') == C['ult']['sem']:
+        estado['ult'] = {'sem': C['ult']['sem'], 'cuenta': True,
+                         'crews': {cid: dict(x) for cid, x in C['ult']['crews'].items() if cid in existe}}
+    estado['elo_corregido'] = '2026-11-17'
+    return True
+
+
 def para_web(estado, vivas):
     """Lo que viaja a la página: las reglas, el tier de cada crew y cómo va su semana."""
     act = actual(estado, vivas) if vivas else {}
@@ -318,6 +358,15 @@ def _auto():
     ok(pts_de_divisiones(elo) == ('2026-11-16', {}), 'en modo ELO sin los puntos de la semana no se suma el ELO')
     ok(pts_de_divisiones(dict(elo, pts_sem={'Ana': 4500})) == ('2026-11-16', {'ana': 4500}),
        'en modo ELO los puntos de la semana salen de pts_sem')
+    # 🔧 la corrección de las dos semanas con ELO: una vez, sólo en la semana del 16/11, sin tocar lo de antes
+    cv = {'crews': [{'id': 'Follombia'}, {'id': 'KS'}]}
+    ce = {'sem': '2026-11-16', 'tier': {'Follombia': 1, 'KS': 0}, 'avisado': '2026-11-09',
+          'ult': {'sem': '2026-11-09', 'crews': {}}, 'hist': [['2026-11-02', 'KS', 2, 1, 3122], ['2026-10-26', 'KS', 1, 2, 39749]]}
+    ok(corregir_elo(ce, cv) and ce['tier'] == {'Follombia': 4, 'KS': 1} and ce['avisado'] == '2026-11-09'
+       and ce['hist'][-1] == ['2026-10-26', 'KS', 1, 2, 39749] and ['2026-11-02', 'KS', 2, 1, 3122] not in ce['hist']
+       and not any(h[1] == 'METRICOS' for h in ce['hist']) and set(ce['ult']['crews']) == {'Follombia', 'KS'}
+       and not corregir_elo(ce, cv) and not corregir_elo({'sem': '2026-11-23'}, cv),
+       'las semanas del ELO se rehacen una vez, sólo con las crews que existen, y la campana no vuelve a sonar')
     ok(mover(0, 20000, 1) == 1 and mover(0, 1000, 0) == 0, 'Bronce sube con 15.000 y no baja')
     ok(mover(1, 4000, 1) == 0 and mover(1, 10000, 1) == 1, 'Plata baja con menos de 5.000 y se mantiene entre las dos')
     ok(mover(3, 500000, 3) == 3 and mover(3, 500000, 4) == 4, 'a Diamante se entra con 4 que jugaron, no con un crack solo')
@@ -384,6 +433,9 @@ def main():
         return
     if not vivas.get('crews'):
         print('   ⚠️ sin crews_vivas.json: sólo se guarda la foto de la semana (no se cierra ninguna)')
+    if corregir_elo(estado, vivas):
+        print('   🔧 los cierres del 02/11 y el 09/11 rehechos con los puntos de Temporada: %s' % ', '.join(
+            '%s %s' % (cid, TIERS[t][0]) for cid, t in sorted(CORRECCION_ELO['tier'].items())))
     cambios = paso(estado, div, vivas)
     for sem, cid, de, a, total in cambios:
         print('   🏆 %s: %s %s → %s (%s puntos)' % (sem, cid, TIERS[de][0], TIERS[a][0], format(total, ',').replace(',', '.')))
