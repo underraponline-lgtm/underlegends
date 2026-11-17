@@ -3453,7 +3453,7 @@
   "rango": "D",
   "tg_t": {
    "cohete": true,
-   "dobles": 2
+   "dobles": 3
   }
  },
  {
@@ -3479,7 +3479,7 @@
   "srv": 3,
   "racha": 1,
   "racha_act": 0,
-  "score": 12.9,
+  "score": 13.2,
   "av": "",
   "ovr": 55,
   "o": 90,
@@ -20419,10 +20419,7 @@
   "pos": 622,
   "fc": true,
   "total": 256,
-  "rango": "E",
-  "tg_t": {
-   "reciente": true
-  }
+  "rango": "E"
  },
  {
   "full": "@j.nibbana",
@@ -24781,10 +24778,7 @@
   "pos": 736,
   "fc": true,
   "total": 256,
-  "rango": "E",
-  "tg_t": {
-   "reciente": true
-  }
+  "rango": "E"
  },
  {
   "full": "benjadsantis",

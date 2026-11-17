@@ -4629,6 +4629,25 @@
     "DOS NOMBRES: «LOKILLO» → «VALLES-T» · cuenta 1548906948307451906"
    ],
    "escribio": {}
+  },
+  {
+   "id": "aed26fe785",
+   "tipo": "Nombre desconocido",
+   "sec": "CHOP COMPE CEO V.2 · CH · 14/11 · #636",
+   "que": "¿Quién es «<:logocypherhood:1258928534743683176>»?",
+   "r": "Ya no hace falta",
+   "regla": "cierre · ya no hacía falta preguntarlo",
+   "rk": "cierre",
+   "por": "el ciclo",
+   "porque": "ya no está en ningún resultado: el lector lo lee distinto, o ya es alias de alguien",
+   "t": 1794949662742,
+   "filas": [
+    1385
+   ],
+   "variantes": [
+    "<:logocypherhood:1258928534743683176>"
+   ],
+   "escribio": {}
   }
  ],
  "deshechas": []

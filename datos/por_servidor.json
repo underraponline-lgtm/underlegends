@@ -69,7 +69,7 @@
     "racha": "0/1"
    }
   },
-  "0223 🇧🇧": {
+  "0223🇧🇧": {
    "ACAD": {
     "duelos": "0/1",
     "ev": 1,
@@ -226,28 +226,14 @@
     "racha": "1/1"
    }
   },
-  "<:logocypherhood:1258928534743683176>": {
-   "CH": {
-    "duelos": "",
-    "ev": 1,
-    "oro": 0,
-    "ovr": 42,
-    "pod": 0,
-    "pts": 2062,
-    "racha": "0/0",
-    "tg": {
-     "nuevo": true
-    }
-   }
-  },
   "@j.nibbana": {
    "CH": {
     "duelos": "",
     "ev": 1,
     "oro": 0,
-    "ovr": 42,
+    "ovr": 43,
     "pod": 0,
-    "pts": 2062,
+    "pts": 4125,
     "racha": "0/0",
     "tg": {
      "nuevo": true
@@ -1156,7 +1142,7 @@
     "oro": 0,
     "ovr": 55,
     "pod": 1,
-    "pts": 37375,
+    "pts": 38625,
     "racha": "0/1",
     "tg": {
      "fin": 1
@@ -16353,20 +16339,6 @@
      "dv": true,
      "fin": 9,
      "fund": true
-    }
-   }
-  },
-  "}": {
-   "FFA": {
-    "duelos": "",
-    "ev": 1,
-    "oro": 0,
-    "ovr": 42,
-    "pod": 0,
-    "pts": 1250,
-    "racha": "0/0",
-    "tg": {
-     "nuevo": true
     }
    }
   },
