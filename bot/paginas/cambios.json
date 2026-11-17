@@ -11,6 +11,17 @@
   ],
   "cambios": [
     {
+        "version": "5.90",
+        "dia": "2026-11-17",
+        "cuando": "2026-11-17T00:27:16-05:00",
+        "titulo": "La barra de arriba, pareja",
+        "items": [
+            "La barra de arriba queda **igual en todas las páginas**: el menú ya no se corre al pasar del Inicio al Ranking.",
+            "El logo y tus botones, **un poco más hacia los costados**.",
+            "Las palabras del menú, **a la misma altura** (también Publicaciones con su número)."
+        ]
+    },
+    {
         "version": "5.89",
         "dia": "2026-11-17",
         "cuando": "2026-11-17T00:20:00-05:00",
