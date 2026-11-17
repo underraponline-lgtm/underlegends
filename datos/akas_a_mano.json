@@ -158,7 +158,8 @@
   "🔀 12/11/2026 7:45 PM ET: ACAD: Damian -> Dominick; URBF: Nemi -> nemmii_as; URBF: Number -> Number VE; FDS: Pepe Mujica -> LRS; LKR: Shadow -> VALLES-T; ACAD: Teo -> Teito; DDF: Teo -> Teito; FDS: Teo -> Teito; FFA: Teo -> Teito (el de la Lista no es miembro de ese servidor y ahí se anota el otro). Claude, con la prueba (Dlx, 12/11/2026: «mira y pasa todo lo demás que tú consideres»).",
   "🏁 16/11/2026 4:10 PM ET, RAP SIN GROSERIAS #6 (FDS, 13/11): «nxux» y «nexux» son NXUZ —su cuenta (1089661639508377630) se anotó a ese evento a las 8:31 PM y Dlx ya había dicho que «Nexus» es él (04/10); en #veredictos el mismo lugar se escribe «NXUX», «NEXUX» y «Nexus»—, y «sentidice» y «elkesobrava» son Senticide —la cuenta de Senticide en el padrón (1355393300672020570) se anotó como «elkesobrava🇨🇱» a las 8:33 PM, y donde la llave dice «araya vs elkesobraba» #veredictos dice «ARAYA VS SENTIDICE»; la semi, la final y el podio lo escriben «sentidice», «SENTIDICE» y «senticide»—. Claude, con la prueba (Dlx, 16/11/2026: «1. ok», a separar el #6 de RANKED 2).",
   "🎤 16/11/2026 9:30 PM ET: VALLES-T -> Shadow (la cuenta 1548906948307451906 ya era «otra cuenta de Shadow» desde el 10/11; el ciclo la dio de alta el 12/11 por su apodo en la llamada), y los nombres de famoso pasan a ser alias del nombre que usan: Sweet pain -> Andy MC, Trueno -> KairoX, Teorema -> Rafael JR, WOS -> wosito. Se sacó «LKR: Shadow -> VALLES-T». Dlx, 16/11/2026: «Unirlo a Shadow» y renombrar a los cuatro. Ver sheet/famosos.py.",
-  "🎯 17/11/2026 2:06 AM ET: «bootraxx» es BTRX 🇵🇪 (ya eran suyos «Bootrax» y «BOOTRAX HUMILDE»). Entró como otra persona, sin país, con el #652 (DDS, 16/11, campeón, 7.500) y la caza de Mito, y el Inicio lo mostraba con la inicial. Dlx, 17/11/2026: «bootraax es btrx»."
+  "🎯 17/11/2026 2:06 AM ET: «bootraxx» es BTRX 🇵🇪 (ya eran suyos «Bootrax» y «BOOTRAX HUMILDE»). Entró como otra persona, sin país, con el #652 (DDS, 16/11, campeón, 7.500) y la caza de Mito, y el Inicio lo mostraba con la inicial. Dlx, 17/11/2026: «bootraax es btrx».",
+  "🕵️ 17/11/2026 2:06 PM ET: LKR: LOKILLO -> Shadow (Dlx, «Es Shadow», a la pregunta del #654, semifinal, 3.500). Sólo en LKR: «lokillo_18» de Discord es YACO 🇧🇴 y no es él. La otra cuenta de Shadow (1548906948307451906) lo anotó 4 veces y nunca jugaron la misma llave (herramientas/quien_es.py)."
  ],
  "cuentas": {
   "Monet": [
@@ -656,7 +657,8 @@
   "LKR": {
    "Carlos": "Carlosss",
    "Lancer": "Player",
-   "Mecha": "MaYeuTyK"
+   "Mecha": "MaYeuTyK",
+   "LOKILLO": "Shadow"
   },
   "DDS": {
    "Carlos": "Carlosss",
