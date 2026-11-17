@@ -342,7 +342,7 @@
   "rango": "S",
   "tg_t": {
    "busc": 2,
-   "cab": 2,
+   "cab": 1,
    "dobles": 5,
    "perf": 2,
    "relampago": true,
@@ -1252,7 +1252,7 @@
   "crew": "",
   "discord_id": "1515482513106272366",
   "verificado": true,
-  "pts": 192861,
+  "pts": 187861,
   "ev": 25,
   "wr": "57.1%",
   "pod": 8,
@@ -1275,7 +1275,6 @@
   "total": 256,
   "rango": "B",
   "tg_t": {
-   "cobro": 1,
    "dobles": 4,
    "perf": 1,
    "relampago": true,
