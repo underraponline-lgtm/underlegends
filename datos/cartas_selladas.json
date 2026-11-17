@@ -161,7 +161,7 @@
    "competitivo": "cda44ba8bec7:231a54e016d0",
    "pais": "f23493124492:9d66d497e41e",
    "servidor": "2b69f48bbf2e:aba640c1146a:88f477",
-   "temporada": "0fb3ca063c19:cdead15a6070"
+   "temporada": "c9adfa71e750:cdead15a6070"
   },
   "Badterne": {},
   "Baltrip": {},
@@ -264,7 +264,8 @@
    "temporada": "4f875406f25b:cdead15a6070"
   },
   "CayLon": {
-   "servidor": "6e2c00c44103:aba640c1146a:aa8232"
+   "servidor": "513871ea3896:aba640c1146a:c82496",
+   "temporada": "0ef30fa58296:cdead15a6070"
   },
   "Char": {},
   "Charro": {
@@ -1081,7 +1082,7 @@
   "Lvel": {
    "competitivo": "94cc90a6afd7:231a54e016d0",
    "servidor": "773a8d1d9af5:aba640c1146a:62e67f",
-   "temporada": "13d5a60b68d2:cdead15a6070"
+   "temporada": "7f913421d0ad:cdead15a6070"
   },
   "MATICERNA": {},
   "MAXIMILIANO CALVO": {},
@@ -2125,5 +2126,5 @@
    "servidor": "7f8885a35a6d:aba640c1146a:71cf5a"
   }
  },
- "cuando": "2026-11-17T08:06:05+00:00"
+ "cuando": "2026-11-17T16:44:47+00:00"
 }
