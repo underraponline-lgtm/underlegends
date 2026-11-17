@@ -351,6 +351,15 @@
 "temporada"
 ]
 },
+"btrx": {
+"rg": "C",
+"c": [
+"competitivo",
+"pais",
+"servidor",
+"temporada"
+]
+},
 "lrs": {
 "rg": "E",
 "c": [
@@ -377,15 +386,6 @@
 "rg": "C",
 "c": [
 "competitivo",
-"servidor",
-"temporada"
-]
-},
-"btrx": {
-"rg": "C",
-"c": [
-"competitivo",
-"pais",
 "servidor",
 "temporada"
 ]
@@ -661,6 +661,15 @@
 "temporada"
 ]
 },
+"player": {
+"rg": "D",
+"c": [
+"competitivo",
+"pais",
+"servidor",
+"temporada"
+]
+},
 "kravitz": {
 "rg": "E",
 "c": [
@@ -690,15 +699,6 @@
 "rg": "E",
 "c": [
 "competitivo",
-"servidor",
-"temporada"
-]
-},
-"player": {
-"rg": "D",
-"c": [
-"competitivo",
-"pais",
 "servidor",
 "temporada"
 ]
@@ -1151,10 +1151,6 @@
 "rg": "",
 "c": []
 },
-"bootraxx": {
-"rg": "",
-"c": []
-},
 "emilioalva": {
 "rg": "",
 "c": []
@@ -1357,17 +1353,21 @@
 "rg": "",
 "c": []
 },
-"vallest": {
-"rg": "E",
+"krtman": {
+"rg": "",
 "c": [
-"competitivo",
 "servidor",
 "temporada"
 ]
 },
-"krtman": {
+"bootraxx": {
 "rg": "",
+"c": []
+},
+"vallest": {
+"rg": "E",
 "c": [
+"competitivo",
 "servidor",
 "temporada"
 ]
@@ -7794,8 +7794,8 @@
 "ll": 652,
 "quien": [
 [
-"bootraxx",
-"bootraxx"
+"BTRX",
+"btrx"
 ]
 ]
 },
@@ -7813,20 +7813,20 @@
 ],
 "suman": [
 {
+"n": "BTRX",
+"k": "btrx",
+"pts": 7500,
+"ev": 1
+},
+{
 "n": "Puppy",
 "k": "",
 "pts": 7500,
 "ev": 1
 },
 {
-"n": "bootraxx",
-"k": "bootraxx",
-"pts": 7500,
-"ev": 1
-},
-{
-"n": "LANCER 🇻🇪",
-"k": "",
+"n": "Mito",
+"k": "mito",
 "pts": 5000,
 "ev": 1
 }
@@ -7836,28 +7836,22 @@
 "n": "Choco",
 "k": "",
 "de": 633,
-"a": 481
+"a": 478
 },
 {
 "n": "Nitro🇨🇱",
 "k": "",
 "de": 665,
-"a": 568
+"a": 565
 },
 {
 "n": "Fisics",
 "k": "",
 "de": 365,
-"a": 342
+"a": 341
 }
 ],
 "sorpresas": [
-{
-"n": "bootraxx",
-"k": "bootraxx",
-"que": "debut",
-"ev": "SIX SEVEN STYLE 3"
-},
 {
 "n": "Puppy",
 "k": "",
@@ -7975,7 +7969,7 @@
 "xclusivo": 0,
 "trot": 0,
 "adriagner": 0,
-"btrx": 0,
+"btrx": 1,
 "polosport": 2,
 "xubaru": 0,
 "lordviruzz": 0,
@@ -8014,7 +8008,7 @@
 "kravitz": 1,
 "motera": 1,
 "jj": 3,
-"player": 0,
+"player": 1,
 "ariaxer": 0,
 "jult": 0,
 "jeixder": 0,

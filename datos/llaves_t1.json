@@ -44511,7 +44511,7 @@
        "Vandu",
        "MaYeuTyK",
        "Lvel 🇻🇪",
-       "OKAM, <:emoji_5:1462319885810925610>"
+       "okam🇨🇷 + <:emoji_5:1462319885810925610>"
       ],
       "Vandu",
       "triple (4 bandas)"
@@ -44628,6 +44628,11 @@
     2500
    ],
    [
+    "OKAM",
+    "Cuartos",
+    2500
+   ],
+   [
     "Velatz",
     "Cuartos",
     2500
@@ -44641,16 +44646,6 @@
     "romeo",
     "Cuartos",
     2500
-   ],
-   [
-    "<:emoji_5:1462319885810925610>",
-    "Cuartos",
-    1250
-   ],
-   [
-    "OKAM",
-    "Cuartos",
-    1250
    ]
   ],
   "ver": {
@@ -58111,10 +58106,10 @@
     "b": [
      [
       [
-       "Bootraxx",
+       "BTRX",
        "Liam"
       ],
-      "Bootraxx",
+      "BTRX",
       ""
      ],
      [
@@ -58148,10 +58143,10 @@
     "b": [
      [
       [
-       "Bootraxx",
+       "BTRX",
        "CrisZJ"
       ],
-      "Bootraxx",
+      "BTRX",
       ""
      ],
      [
@@ -58169,10 +58164,10 @@
     "b": [
      [
       [
-       "bootraxx",
+       "BTRX",
        "Mito"
       ],
-      "bootraxx",
+      "BTRX",
       ""
      ]
     ],
@@ -58182,7 +58177,7 @@
   "sv": "DDS",
   "tabla": [
    [
-    "bootraxx",
+    "BTRX",
     "Campeón",
     7500
    ],
@@ -58373,10 +58368,10 @@
     "b": [
      [
       [
-       "LANCER🇻🇪",
+       "Player",
        "Nitro🇨🇱"
       ],
-      "LANCER🇻🇪",
+      "Player",
       ""
      ],
      [
@@ -58397,10 +58392,10 @@
      ],
      [
       [
-       "Mecha 🇦🇷",
+       "MaYeuTyK",
        "Andy"
       ],
-      "Mecha 🇦🇷",
+      "MaYeuTyK",
       ""
      ]
     ],
@@ -58410,16 +58405,16 @@
     "b": [
      [
       [
-       "LANCER 🇻🇪",
+       "Player",
        "LOKILLO🇨🇴"
       ],
-      "LANCER 🇻🇪",
+      "Player",
       ""
      ],
      [
       [
        "Puppy",
-       "Mecha 🇦🇷"
+       "MaYeuTyK"
       ],
       "Puppy",
       ""
@@ -58432,7 +58427,7 @@
      [
       [
        "Puppy",
-       "LANCER 🇻🇪"
+       "Player"
       ],
       "Puppy",
       "ganador según #veredictos"
@@ -58449,7 +58444,7 @@
     7500
    ],
    [
-    "LANCER 🇻🇪",
+    "Player",
     "Subcampeón",
     5000
    ],
@@ -58459,7 +58454,7 @@
     3500
    ],
    [
-    "Mecha 🇦🇷",
+    "MaYeuTyK",
     "Semifinal",
     3500
    ],

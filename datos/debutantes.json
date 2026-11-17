@@ -65,19 +65,6 @@
    "vence": "2026-11-06T20:59:18+00:00",
    "vencido": false
   },
-  "<:emoji_5:1462319885810925610>": {
-   "avisado": "2026-11-06",
-   "chat": "2026-11-06",
-   "con": null,
-   "cumplido": "",
-   "debut": "2026-11-07T01:17:28+00:00",
-   "did": "",
-   "evento": "FAT BATTLES PALOOZA FECHA 10 FINALS",
-   "n": 576,
-   "sv": "ACAD",
-   "vence": "2026-11-14T01:17:28+00:00",
-   "vencido": true
-  },
   "<:logocypherhood:1258928534743683176>": {
    "avisado": "2026-11-14",
    "chat": "2026-11-14",
@@ -1650,17 +1637,6 @@
    "vence": "2026-11-23T02:04:55+00:00",
    "vencido": false
   },
-  "LANCER": {
-   "con": null,
-   "cumplido": "",
-   "debut": "2026-11-17T01:03:04+00:00",
-   "did": "",
-   "evento": "(sin titulo)",
-   "n": 654,
-   "sv": "LKR",
-   "vence": "2026-11-24T01:03:04+00:00",
-   "vencido": false
-  },
   "LARRIX": {
    "avisado": "2026-11-12",
    "avisado_cumplido": "2026-11-12",
@@ -2037,17 +2013,6 @@
    "sv": "LKR",
    "vence": "2026-11-01T03:55:52+00:00",
    "vencido": true
-  },
-  "Mecha": {
-   "con": null,
-   "cumplido": "",
-   "debut": "2026-11-17T01:03:04+00:00",
-   "did": "",
-   "evento": "(sin titulo)",
-   "n": 654,
-   "sv": "LKR",
-   "vence": "2026-11-24T01:03:04+00:00",
-   "vencido": false
   },
   "Millonari-O": {
    "avisado": "2026-10-18",
@@ -3215,18 +3180,6 @@
    "n": 636,
    "sv": "CH",
    "vence": "2026-11-21T20:22:29+00:00",
-   "vencido": false
-  },
-  "bootraxx": {
-   "chat": "2026-11-16",
-   "con": null,
-   "cumplido": "",
-   "debut": "2026-11-16T18:48:34+00:00",
-   "did": "",
-   "evento": "SIX SEVEN STYLE 3",
-   "n": 652,
-   "sv": "DDS",
-   "vence": "2026-11-23T18:48:34+00:00",
    "vencido": false
   },
   "botrax": {

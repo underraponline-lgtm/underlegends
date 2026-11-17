@@ -226,17 +226,6 @@
     "racha": "1/1"
    }
   },
-  "<:emoji_5:1462319885810925610>": {
-   "ACAD": {
-    "duelos": "",
-    "ev": 1,
-    "oro": 0,
-    "ovr": 43,
-    "pod": 0,
-    "pts": 6250,
-    "racha": "0/0"
-   }
-  },
   "<:logocypherhood:1258928534743683176>": {
    "CH": {
     "duelos": "",
@@ -1513,12 +1502,15 @@
    },
    "DDS": {
     "duelos": "",
-    "ev": 1,
-    "oro": 0,
-    "ovr": 42,
-    "pod": 0,
-    "pts": 2500,
-    "racha": "0/0"
+    "ev": 2,
+    "oro": 1,
+    "ovr": 47,
+    "pod": 1,
+    "pts": 21062,
+    "racha": "1/1",
+    "tg": {
+     "fin": 1
+    }
    },
    "FFA": {
     "duelos": "5/7",
@@ -7243,21 +7235,6 @@
     }
    }
   },
-  "LANCER 🇻🇪": {
-   "LKR": {
-    "duelos": "",
-    "ev": 1,
-    "oro": 0,
-    "ovr": 44,
-    "pod": 1,
-    "pts": 3750,
-    "racha": "1/1",
-    "tg": {
-     "fin": 1,
-     "nuevo": true
-    }
-   }
-  },
   "LARRIX🇦🇷": {
    "LKR": {
     "duelos": "",
@@ -8689,11 +8666,11 @@
    },
    "LKR": {
     "duelos": "",
-    "ev": 5,
+    "ev": 6,
     "oro": 0,
     "ovr": 47,
     "pod": 0,
-    "pts": 33400,
+    "pts": 36025,
     "racha": "0/1",
     "tg": {
      "fund": true
@@ -9284,20 +9261,6 @@
     "pod": 0,
     "pts": 11575,
     "racha": "0/0"
-   }
-  },
-  "Mecha 🇦🇷": {
-   "LKR": {
-    "duelos": "",
-    "ev": 1,
-    "oro": 0,
-    "ovr": 42,
-    "pod": 0,
-    "pts": 2625,
-    "racha": "0/0",
-    "tg": {
-     "nuevo": true
-    }
    }
   },
   "Medster": {
@@ -10662,9 +10625,9 @@
     "duelos": "",
     "ev": 1,
     "oro": 0,
-    "ovr": 43,
+    "ovr": 44,
     "pod": 0,
-    "pts": 6250,
+    "pts": 12500,
     "racha": "0/0"
    },
    "DDF": {
@@ -11385,6 +11348,19 @@
     "pod": 0,
     "pts": 36000,
     "racha": "0/0"
+   },
+   "LKR": {
+    "duelos": "",
+    "ev": 1,
+    "oro": 0,
+    "ovr": 44,
+    "pod": 1,
+    "pts": 3750,
+    "racha": "1/1",
+    "tg": {
+     "fin": 1,
+     "nuevo": true
+    }
    },
    "URBF": {
     "duelos": "0/1",
@@ -15330,21 +15306,6 @@
     "pts": 2062,
     "racha": "0/0",
     "tg": {
-     "nuevo": true
-    }
-   }
-  },
-  "bootraxx": {
-   "DDS": {
-    "duelos": "",
-    "ev": 1,
-    "oro": 1,
-    "ovr": 46,
-    "pod": 1,
-    "pts": 16875,
-    "racha": "1/1",
-    "tg": {
-     "fin": 1,
      "nuevo": true
     }
    }

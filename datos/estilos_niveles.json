@@ -2,6 +2,10 @@
  "_leeme": "🎭 Lo que no se ve en la carta: desde cuándo tiene cada uno su estilo elegido (`desde`, el día en que el ciclo lo vio), el nivel de cada estilo que jugó (`niveles`) y los que van en su 2.º y 3.º lugar (`ganados`). Lo escribe bot/juegos.py con los eventos de estilo y los resultados de la temporada",
  "temporada": "t1",
  "desde": {
+  "dlx": [
+   "showman",
+   "2026-11-17"
+  ],
   "trelok": [
    "cazafla",
    "2026-11-16"

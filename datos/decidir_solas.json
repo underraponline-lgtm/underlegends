@@ -2,81 +2,6 @@
  "_leeme": "Lo que ✅ Decidir cerró o contestó solo, con la regla y la prueba (sheet/decidir.py, resolver_solo()), para «Lo que se resolvió solo» del Dashboard y su «Deshacer». «deshechas»: lo que Dlx deshizo; ninguna regla lo vuelve a tocar. Dlx, 13/10/2026.",
  "solas": [
   {
-   "id": "822b8c3d03",
-   "tipo": "Nombre desconocido",
-   "sec": "qcyo rapeen · FFA · 02/11 · #563",
-   "que": "¿Quién es «pelota del 10 🇵🇾»?",
-   "r": "Es Millonari-O (en este evento)",
-   "regla": "R21 · la cuenta que se anotó así para ese evento es de alguien de la Lista que esa noche no jugó con su nombre",
-   "rk": "R21",
-   "por": "el ciclo",
-   "porque": "la cuenta @pelotadel_10_68491 (en Discord: «pelota») · en la Lista: Millonari-O se anotó como «pelota del 10» para ese evento, no es staff de FFA y esa noche no jugó con su nombre",
-   "t": 1793684069140,
-   "filas": [
-    1043
-   ],
-   "variantes": [
-    "pelota del 10 🇵🇾"
-   ],
-   "escribio": {
-    "quien": "qcyo rapeen · FFA · 02/11 · pelota del 10 🇵🇾"
-   }
-  },
-  {
-   "id": "9968e3015d",
-   "tipo": "Nombre desconocido",
-   "sec": "qcyo rapeen · FFA · 02/11 · #563",
-   "que": "¿Quién es «familiafortunayexito 🇫🇷»?",
-   "r": "Es Deuxs",
-   "regla": "Discord · su cuenta de Discord: la inscripción, el podio, la llave o la llamada",
-   "rk": "Discord",
-   "por": "el ciclo (su cuenta de Discord)",
-   "porque": "alias de Deuxs: estaba en la llamada del evento con ese nombre",
-   "t": 1793684069140,
-   "filas": [
-    1041
-   ],
-   "variantes": [
-    "familiafortunayexito 🇫🇷"
-   ],
-   "escribio": {
-    "alias": [
-     "familiafortunayexito",
-     "Deuxs"
-    ],
-    "filas": [
-     335
-    ]
-   }
-  },
-  {
-   "id": "4903c1da73",
-   "tipo": "Nombre desconocido",
-   "sec": "qcyo rapeen · FFA · 02/11 · #563",
-   "que": "¿Quién es «ojos de tailandia🇹🇭»?",
-   "r": "Es Six",
-   "regla": "Discord · su cuenta de Discord: la inscripción, el podio, la llave o la llamada",
-   "rk": "Discord",
-   "por": "el ciclo (su cuenta de Discord)",
-   "porque": "alias de Six: el podio de la llave lo menciona",
-   "t": 1793684069140,
-   "filas": [
-    1042
-   ],
-   "variantes": [
-    "ojos de tailandia🇹🇭"
-   ],
-   "escribio": {
-    "alias": [
-     "ojos de tailandia",
-     "Six"
-    ],
-    "filas": [
-     336
-    ]
-   }
-  },
-  {
    "id": "f54878993d",
    "tipo": "Nombre desconocido",
    "sec": "COMPE XCLUSIVISTICA VOL. 1 · DDF · 04/11 · #566",
@@ -4586,6 +4511,84 @@
    ],
    "variantes": [
     "DOS NOMBRES: «99» → «Soulb» · cuenta 645308964141137952"
+   ],
+   "escribio": {}
+  },
+  {
+   "id": "8648a11f7f",
+   "tipo": "Nombre desconocido",
+   "sec": "FAT BATTLES PALOOZA FECHA 10 FINALS · ACAD · 06/11 · #576",
+   "que": "¿Quién es «<:emoji_5:1462319885810925610>»?",
+   "r": "Ya no hace falta",
+   "regla": "cierre · ya no hacía falta preguntarlo",
+   "rk": "cierre",
+   "por": "el ciclo",
+   "porque": "ya no está en ningún resultado: el lector lo lee distinto, o ya es alias de alguien",
+   "t": 1794900731826,
+   "filas": [
+    1125
+   ],
+   "variantes": [
+    "<:emoji_5:1462319885810925610>"
+   ],
+   "escribio": {}
+  },
+  {
+   "id": "8aa82004a1",
+   "tipo": "Nombre desconocido",
+   "sec": "(sin titulo) · LKR · 16/11 · #654",
+   "que": "¿Quién es «LANCER 🇻🇪»? (también escrito «LANCER🇻🇪»)",
+   "r": "Ya no hace falta",
+   "regla": "cierre · ya no hacía falta preguntarlo",
+   "rk": "cierre",
+   "por": "el ciclo",
+   "porque": "ya no está en ningún resultado: el lector lo lee distinto, o ya es alias de alguien",
+   "t": 1794900731826,
+   "filas": [
+    1446,
+    1447
+   ],
+   "variantes": [
+    "LANCER 🇻🇪",
+    "LANCER🇻🇪"
+   ],
+   "escribio": {}
+  },
+  {
+   "id": "b2e7efb8bd",
+   "tipo": "Nombre desconocido",
+   "sec": "(sin titulo) · LKR · 16/11 · #654",
+   "que": "¿Quién es «Mecha 🇦🇷»?",
+   "r": "Ya no hace falta",
+   "regla": "cierre · ya no hacía falta preguntarlo",
+   "rk": "cierre",
+   "por": "el ciclo",
+   "porque": "ya no está en ningún resultado: el lector lo lee distinto, o ya es alias de alguien",
+   "t": 1794900731826,
+   "filas": [
+    1449
+   ],
+   "variantes": [
+    "Mecha 🇦🇷"
+   ],
+   "escribio": {}
+  },
+  {
+   "id": "4935618643",
+   "tipo": "Alias posible",
+   "sec": "🪪 Identidad",
+   "que": "¿«bootraxx» es BTRX? La cuenta de BTRX en la Lista se anotó como «bootraxx», y en el ranking suman aparte. Si es la misma persona, los puntos de «bootraxx» pasan a BTRX.\nLa cuenta: https://discord.com/users/1122273746099638354",
+   "r": "Es la misma persona",
+   "regla": "cierre · ya no hacía falta preguntarlo",
+   "rk": "cierre",
+   "por": "el ciclo",
+   "porque": "la misma persona: «bootraxx» ya es alias de BTRX",
+   "t": 1794900731826,
+   "filas": [
+    1441
+   ],
+   "variantes": [
+    "DOS NOMBRES: «bootraxx» → «BTRX» · cuenta 1122273746099638354"
    ],
    "escribio": {}
   }
