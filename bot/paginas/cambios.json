@@ -11,6 +11,17 @@
   ],
   "cambios": [
     {
+        "version": "6.02",
+        "dia": "2026-11-17",
+        "cuando": "2026-11-17T01:56:49-05:00",
+        "titulo": "Tus títulos, en tus cartas",
+        "items": [
+            "Los títulos de tu **semana de nuevo** (Recién llegado, Buena Gente, Novato de Oro) y el de **Invita y gana** (Reclutador) ya se pueden poner: van en tu carta de **Temporada**.",
+            "Los de los **Dragón Drops** (Lengua de Fuego, Garra Dorada, Aliento de Dragón, Corona de Escamas, Dragón de Diamante), en tu **Competitiva**.",
+            "En el Inventario, cada título dice de dónde sale."
+        ]
+    },
+    {
         "version": "6.01",
         "dia": "2026-11-17",
         "cuando": "2026-11-17T01:58:00-05:00",
