@@ -283,12 +283,12 @@ con su self-check.
 | | |
 |---|---|
 | **18 estilos, 3 familias** | ATAQUE = **rombo** · FOCO (el medio campo) = **círculo** · CABEZA = **escudo**. Técnicas y Estructuras van separadas; Cazaflá se queda |
-| **3 lugares** | 1 lo eliges en la página (una vez por temporada) · 2 eventos de estilo de DRA · 3 se desbloquea en Competencias |
+| **3 lugares** | 1 lo eliges en la página (una vez por temporada) · 2 y 3 se ganan en los eventos de estilo de DRA (van los dos de nivel más alto). Dlx, 17/11: *«olvida esto… que el segundo y tercero se ganen por un evento específico en DRA y ya está»*: **Competencias no da estilos** |
 | **niveles 0 a 3** | 0 punteado · 1 oscuro · 2 media luz + un aro · 3 lleno + aro blanco y aro del rango. Vuelven a 0 cada temporada |
 | **el color** | siempre `--acc`, el del rango: la familia es la **forma**, nunca el color (el rojo ya es el rango A) |
 | **de dónde sale** | `datos/estilos.json`, `{clave: [[estilo, nivel], …]}` en orden de lugar. Entra al sello de la Competitiva sólo para quien tiene |
 | **cómo se elige** | Inventario → «Estilo de juego» (`web/src/juego.jsx`) → el objeto (`juegoElige()`, tabla `juego_elige`: la primera vez libre, un cambio por temporada, los viejos desbloqueados) → el ciclo, paso 2f3 (`bot/juegos.py`) → `datos/estilos.json`. ⚠️ Internamente se llama **«juego»**: «estilo» ya era la camiseta/cadena de la Servidor |
-| **los niveles y el 2.º lugar** | Dlx marca eventos en el Dashboard («Eventos de estilo», ajuste `eventos_estilo`: por número o por `a:<id del anuncio>`, antes de jugarse) → `bot/eventos_estilo.py` (adentro de `subir_web.py`: `je` en el calendario y `datos/eventos_estilo.json` resuelto a número) → `bot/juegos.py` con los resultados: jugar = nivel 1, el cuarto de arriba de la llave (la regla de la Racha) +1 hasta 3; el tuyo sube, otro va al 2.º lugar (el de nivel más alto); el elegido arranca de 0 desde que lo elegiste (`desde` en `datos/estilos_niveles.json`). ⚠️ Un `ll` de más de 6 cifras es el registro de una llave en vivo, no un evento: va por su anuncio |
+| **los niveles y el 2.º y 3.º lugar** | Dlx marca eventos en el Dashboard («Eventos de estilo», ajuste `eventos_estilo`: por número o por `a:<id del anuncio>`, antes de jugarse) → `bot/eventos_estilo.py` (adentro de `subir_web.py`: `je` en el calendario y `datos/eventos_estilo.json` resuelto a número) → `bot/juegos.py` con los resultados: jugar = nivel 1, el cuarto de arriba de la llave (la regla de la Racha) +1 hasta 3; el tuyo sube, otro va al 2.º o 3.º lugar (los dos de nivel más alto); el elegido arranca de 0 desde que lo elegiste (`desde` en `datos/estilos_niveles.json`). ⚠️ Un `ll` de más de 6 cifras es el registro de una llave en vivo, no un evento: va por su anuncio |
 | **las dos copias** | la lista de 18 vive en `CATALOGO` y está copiada en `JUEGOS` (bot/avisos.js) y en `web/src/estilos_juego.json` (`estilos_juego.py --web`): el self-check revienta si se separan |
 
 ⚠️ **POSICIÓN MEDIDA, NO A OJO** (Dlx: *«bien posicionado, acuérdate»*): banda
@@ -1729,10 +1729,10 @@ son solo de la Competitiva y se quedan en `02_Competitivo/v2/estilos/`.
 - **Los duelos.** Hoy son reales en 4 raperos; el resto muestra `0/0`. El dato
   vive en el acumulador, que no estaba montado en el entorno donde se armó esto.
 - **Nadie tiene estilo de juego todavía** (16/11/2026): la columna de la
-  Competitiva, elegirlo en el Inventario y los eventos de estilo (niveles y 2.º
-  lugar) están hechos. Falta el desbloqueo en Competencias (3.º lugar). Al
-  17/11 DRA no tenía ni un evento en el calendario de la T1: el Dashboard deja
-  marcar el de otro servidor con «Todos los servidores».
+  Competitiva, elegirlo en el Inventario y los eventos de estilo (niveles, 2.º
+  y 3.º lugar) están hechos: el sistema está completo. Al 17/11 DRA no tenía ni
+  un evento en el calendario de la T1: el Dashboard deja marcar el de otro
+  servidor con «Todos los servidores».
 - **32 nombres de las llaves no están en el Ranking Competitivo**, incluidos
   campeones: Rodri LP ganó el Interserver, Ceko el de FRZ, Olaf salió segundo,
   Logan segundo en Urban y Edu segundo en DRA. No llegan a los 8 eventos.

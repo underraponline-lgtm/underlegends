@@ -1,5 +1,5 @@
 {
- "_leeme": "🎭 Los estilos de juego de la Competitiva, por clave: [[estilo, nivel], …] en el orden de los lugares (1 el elegido en la página · 2 eventos de estilo de DRA · 3 Competencias). Lo escribe bot/juegos.py; lo lee 02_Competitivo/v2/estilos_juego.py",
+ "_leeme": "🎭 Los estilos de juego de la Competitiva, por clave: [[estilo, nivel], …] en el orden de los lugares (1 el elegido en la página · 2 y 3 los ganados en eventos de estilo de DRA). Lo escribe bot/juegos.py; lo lee 02_Competitivo/v2/estilos_juego.py",
  "trelok": [
   [
    "cazafla",

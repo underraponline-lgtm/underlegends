@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-"""🎭 LOS ESTILOS DE JUEGO DE CADA UNO: lo elegido, los niveles y el 2.º lugar, para la Competitiva (paso 2f3 del ciclo).
+"""🎭 LOS ESTILOS DE JUEGO DE CADA UNO: lo elegido, los niveles y el 2.º y 3.º lugar, para la Competitiva (paso 2f3 del ciclo).
 
     python bot/juegos.py              muestra lo que escribiría (no escribe)
     python bot/juegos.py --aplicar    trae lo elegido, calcula los niveles y escribe `datos/estilos.json`
@@ -9,19 +9,20 @@
 desde la página»; una vez por temporada). Lo guarda el objeto de avisos (`juegoElige()` en `bot/avisos.js`) y esto lo
 trae con la clave del ciclo (`/avisos/juegos-ciclo`), como los TAGs (`bot/tags_inventario.py`).
 
-LOS NIVELES Y EL 2.º LUGAR — LOS EVENTOS DE ESTILO (Dlx, 17/11/2026: «sí a las reglas, y que se pueda marcar antes»).
+LOS NIVELES Y EL 2.º Y 3.º LUGAR — LOS EVENTOS DE ESTILO (Dlx, 17/11/2026: «sí a las reglas, y que se pueda marcar
+antes»; y «olvida esto… que el segundo y tercero se ganen por un evento específico en DRA y ya está»: Competencias no).
 Dlx marca eventos de DRA con un estilo en el Dashboard; `bot/eventos_estilo.py` los resuelve a número de evento
 (`datos/eventos_estilo.json`) y acá, con los resultados de la temporada:
   · jugar un evento de un estilo da **nivel 1** en ese estilo; quedar en el **cuarto de arriba** de la llave (la regla de
     la Racha: la final en una de 8, la semi en una de 16, cuartos en una de 32) **sube uno**, hasta el 3;
-  · si es el estilo que elegiste, sube ese; si no, **se te desbloquea en el 2.º lugar**. Con varios, va el de nivel más
-    alto, y en un empate el más reciente;
+  · si es el estilo que elegiste, sube ese; si no, **se te desbloquea en el 2.º o 3.º lugar**. Con más de dos, van los
+    dos de nivel más alto, y en un empate el más reciente; los demás quedan desbloqueados;
   · el que elegiste **arranca de 0 desde que lo elegiste**: lo que jugaste con ese estilo antes de elegirlo no cuenta
     para él (Dlx: «si eliges una nueva empieza desde 0»). El día en que el ciclo lo vio elegido va en `desde`;
   · los niveles **vuelven a 0 cada temporada**: salen de los resultados de la temporada que corre.
 
 DÓNDE QUEDA: `datos/estilos.json` (`{clave: [[estilo, nivel], …]}` en el orden de los lugares, lo que dibuja la carta) y
-`datos/estilos_niveles.json` (`desde`, `niveles` por estilo y el `segundo`: lo que no se ve en la carta).
+`datos/estilos_niveles.json` (`desde`, `niveles` por estilo y los `ganados` del 2.º y 3.º lugar).
 
 ⚠️ SIN RESPUESTA DEL OBJETO NO SE TOCA NADA. Una caída de red escribiendo `{}` le borraría el estilo a todos y
 redibujaría sus cartas sin él.
@@ -41,10 +42,10 @@ ARCH = os.path.join(BASE, 'datos', 'estilos.json')
 NIVELES = os.path.join(BASE, 'datos', 'estilos_niveles.json')
 EVENTOS = os.path.join(BASE, 'datos', 'eventos_estilo.json')
 LEEME = ('🎭 Los estilos de juego de la Competitiva, por clave: [[estilo, nivel], …] en el orden de los lugares (1 el elegido '
-         'en la página · 2 eventos de estilo de DRA · 3 Competencias). Lo escribe bot/juegos.py; lo lee '
+         'en la página · 2 y 3 los ganados en eventos de estilo de DRA). Lo escribe bot/juegos.py; lo lee '
          '02_Competitivo/v2/estilos_juego.py')
 LEEME_N = ('🎭 Lo que no se ve en la carta: desde cuándo tiene cada uno su estilo elegido (`desde`, el día en que el ciclo lo '
-           'vio), el nivel de cada estilo que jugó (`niveles`) y el que va en su 2.º lugar (`segundo`). Lo escribe '
+           'vio), el nivel de cada estilo que jugó (`niveles`) y los que van en su 2.º y 3.º lugar (`ganados`). Lo escribe '
            'bot/juegos.py con los eventos de estilo y los resultados de la temporada')
 
 
@@ -86,11 +87,12 @@ def actualizar_desde(desde, elegidos, hoy):
 
 
 def calcular(eventos, filas, dias, elegidos, desde, clave_de, LLEGO, umbral, norm):
-    """Los niveles de la temporada y el 2.º lugar.
+    """Los niveles de la temporada y el 2.º y 3.º lugar.
 
     `eventos` `{número: estilo}` · `filas` las de `t1_resultados` (`[n, fecha, sv, escala, rapero, país, posición, …]`)
     · `dias` `{número: 'AAAA-MM-DD'}` · `elegidos` `{clave: estilo}` · `desde` `{clave: [estilo, día]}`.
-    Devuelve `(niveles {clave: {estilo: nivel}}, segundo {clave: estilo})`."""
+    Devuelve `(niveles {clave: {estilo: nivel}}, ganados {clave: [estilo, estilo]})`: los dos de nivel más alto que no son
+    el elegido (en empate, el más reciente)."""
     por_ev = {}
     for f in filas or []:
         if len(f) > 6 and str(f[0]) in eventos:
@@ -113,21 +115,21 @@ def calcular(eventos, filas, dias, elegidos, desde, clave_de, LLEGO, umbral, nor
                 v = min(3, v + 1)
             niv[(k, est)] = v
             ult[(k, est)] = int(n)
-    niveles, segundo = {}, {}
+    niveles, ganados = {}, {}
     for (k, est), v in niv.items():
         niveles.setdefault(k, {})[est] = v
     for k, xs in niveles.items():
-        otros = [e for e in xs if e != elegidos.get(k)]
+        otros = sorted((e for e in xs if e != elegidos.get(k)), key=lambda e: (xs[e], ult[(k, e)]), reverse=True)
         if otros:
-            segundo[k] = max(otros, key=lambda e: (xs[e], ult[(k, e)]))
-    return ({k: dict(sorted(v.items())) for k, v in sorted(niveles.items())}, dict(sorted(segundo.items())))
+            ganados[k] = otros[:2]
+    return ({k: dict(sorted(v.items())) for k, v in sorted(niveles.items())}, dict(sorted(ganados.items())))
 
 
-def armar(elegidos, niveles, segundo, catalogo):
-    """`{clave: [[estilo, nivel], …]}`: el elegido con su nivel y, si tiene, el del 2.º lugar. Lo que no está en el
-    catálogo o una clave rara, afuera."""
+def armar(elegidos, niveles, ganados, catalogo):
+    """`{clave: [[estilo, nivel], …]}`: el elegido con su nivel y, si tiene, los del 2.º y 3.º lugar. Lo que no está
+    en el catálogo o una clave rara, afuera."""
     out = {}
-    for k in sorted(set(elegidos) | set(segundo)):
+    for k in sorted(set(elegidos) | set(ganados)):
         if not isinstance(k, str) or not k or k.startswith('_'):
             continue
         xs = niveles.get(k) if isinstance(niveles.get(k), dict) else {}
@@ -136,10 +138,10 @@ def armar(elegidos, niveles, segundo, catalogo):
         if j in catalogo:
             n = xs.get(j, 0)
             fila.append([j, n if n in (0, 1, 2, 3) else 0])
-        s = segundo.get(k)
-        if s in catalogo and s != j:
-            n = xs.get(s, 1)
-            fila.append([s, n if n in (1, 2, 3) else 1])
+        for s in (ganados.get(k) or [])[:2]:
+            if s in catalogo and s != j:
+                n = xs.get(s, 1)
+                fila.append([s, n if n in (1, 2, 3) else 1])
         if fila:
             out[k] = fila
     return out
@@ -180,8 +182,8 @@ def correr(aplicar):
     filas = (_j(os.path.join(BASE, 'datos', '%s_resultados.json' % ACTUAL), {}).get('filas') or [])
     llaves = _j(os.path.join(BASE, 'datos', 'llaves_%s.json' % ACTUAL), {})
     dias = {str(n): (r or {}).get('dia', '') for n, r in llaves.items() if isinstance(r, dict)}
-    niveles, segundo = calcular(eventos, filas, dias, elegidos, desde, _CL, RK.LLEGO, RK._umbral, RK._norm)
-    gente = armar(elegidos, niveles, segundo, EJ.CATALOGO)
+    niveles, ganados = calcular(eventos, filas, dias, elegidos, desde, _CL, RK.LLEGO, RK._umbral, RK._norm)
+    gente = armar(elegidos, niveles, ganados, EJ.CATALOGO)
     antes = {k: v for k, v in EJ.todos().items() if not k.startswith('_')}
     cambian = sorted(k for k in set(antes) | set(gente) if antes.get(k) != gente.get(k))
     print('      🎭 %d con estilo de juego · %d eventos de estilo%s' % (
@@ -190,7 +192,7 @@ def correr(aplicar):
     if not aplicar:
         return 0
     nuevo_n = {'_leeme': LEEME_N, 'temporada': ACTUAL, 'desde': dict(sorted(desde.items())), 'niveles': niveles,
-               'segundo': segundo}
+               'ganados': ganados}
     if {k: v for k, v in viejo.items() if k != '_leeme'} != {k: v for k, v in nuevo_n.items() if k != '_leeme'}:
         _escribir(NIVELES, nuevo_n)
     if cambian or not os.path.exists(ARCH):
@@ -231,22 +233,28 @@ def _self_check():
     niv, seg = calcular(ev, filas, dias, elegidos, desde, clave, LLEGO, umbral, norm)
     ok(niv['ana'] == {'flow': 2, 'punchline': 3},
        'Ana: campeona en la de Punchline (1 + arriba = 2) y en la final de la otra (+1 = 3); semi en una de 16 de Flow: 2')
-    ok(niv['beto'] == {'punchline': 2} and seg.get('beto') == 'punchline',
+    ok(niv['beto'] == {'punchline': 2} and seg.get('beto') == ['punchline'],
        'Beto: lo de Flow antes de elegirlo no cuenta; Punchline, que no es el suyo, va a su 2.º lugar')
     ok('cami' not in niv, 'Cami: jugó Punchline antes de elegirlo: arranca de 0')
-    ok(niv['dani'] == {'flow': 1, 'punchline': 2} and seg['dani'] == 'punchline',
-       'Dani (sin elegir): subcampeona de 8 (arriba: 2) y octavos de 16 (1); el 2.º lugar es el de nivel más alto')
-    ok(seg['ana'] == 'flow', 'Ana: el 2.º lugar es el que no es el suyo')
+    ok(niv['dani'] == {'flow': 1, 'punchline': 2} and seg['dani'] == ['punchline', 'flow'],
+       'Dani (sin elegir): subcampeona de 8 (arriba: 2) y octavos de 16 (1); primero el de nivel más alto')
+    ok(seg['ana'] == ['flow'], 'Ana: los ganados son los que no son el suyo')
+    _n, _g = calcular({'1': 'flow', '2': 'burla', '3': 'frio'},
+                      [[1, '', '', '', 'Eva', '', 'Campeón'], [1, '', '', '', 'Otro', '', 'Cuartos'],
+                       [2, '', '', '', 'Eva', '', 'Cuartos'], [2, '', '', '', 'Otro', '', 'Campeón'],
+                       [3, '', '', '', 'Eva', '', 'Cuartos'], [3, '', '', '', 'Otro', '', 'Campeón']],
+                      {}, {}, {}, clave, LLEGO, umbral, norm)
+    ok(_g['eva'] == ['flow', 'frio'], 'con tres ganados van dos: el de nivel más alto y, en el empate, el más reciente')
     g = armar(elegidos, niv, seg, EJ.CATALOGO)
     ok(g == {'ana': [['punchline', 3], ['flow', 2]], 'beto': [['flow', 0], ['punchline', 2]], 'cami': [['punchline', 0]],
-             'dani': [['punchline', 2]]},
-       'en la carta: el elegido con su nivel (0 si todavía nada) y el 2.º lugar; sin elegir, sólo el ganado')
+             'dani': [['punchline', 2], ['flow', 1]]},
+       'en la carta: el elegido con su nivel (0 si todavía nada) y los ganados; sin elegir, sólo los ganados')
     ok(actualizar_desde({'ana': ['punchline', '2026-10-01'], 'beto': ['frio', '2026-10-01'], 'x': ['flow', '2026-10-01']},
                         {'ana': 'punchline', 'beto': 'flow'}, '2026-11-17')
        == {'ana': ['punchline', '2026-10-01'], 'beto': ['flow', '2026-11-17']},
        'desde: si el estilo sigue, la fecha de antes; si cambió, hoy; si ya no tiene, afuera')
     EJ._cache = g
-    ok(EJ.de('ana') == [('punchline', 3), ('flow', 2)] and EJ.de('dani') == [('punchline', 2)],
+    ok(EJ.de('ana') == [('punchline', 3), ('flow', 2)] and EJ.de('dani') == [('punchline', 2), ('flow', 1)],
        'y lo que escribe, la carta lo entiende (`estilos_juego.de()`)')
     EJ._cache = None
     print('   %s' % ('todo bien' if not mal else '%d mal' % mal))

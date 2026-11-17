@@ -6,7 +6,7 @@
 // `a:<id del mensaje del anuncio>` si todavía no. El ciclo une el anuncio con su llave cuando se juega
 // (`bot/eventos_estilo.py`) y con los resultados sube los niveles (`bot/juegos.py`):
 //   · jugar un evento de un estilo da nivel 1 en ese estilo; quedar en el cuarto de arriba de la llave sube uno, hasta 3
-//   · si es el tuyo (el que elegiste), sube ese; si no, se te desbloquea en el 2.º lugar
+//   · si es el tuyo (el que elegiste), sube ese; si no, se te desbloquea en el 2.º o 3.º lugar (van los dos más altos)
 // Lo marcado sale en Eventos como «Evento de estilo».
 import { useState } from 'react';
 import CAT from './estilos_juego.json';
@@ -67,7 +67,7 @@ export function AjEventosEstilo({ liga, aj, hacer, ocup }) {
       <div className="db-aj-c"><h3>Eventos de estilo</h3><span className="db-est">{Object.keys(marcados).length} marcados</span></div>
       <p className="db-tx">
         Elige un estilo para un evento de DRA. Jugarlo da <b>nivel 1</b> en ese estilo, y quedar en el <b>cuarto de arriba</b> de
-        la llave sube uno, hasta el 3. Si es el estilo que la persona eligió, sube ese; si no, se le desbloquea en el 2.º lugar.
+        la llave sube uno, hasta el 3. Si es el estilo que la persona eligió, sube ese; si no, se le desbloquea en el 2.º o 3.º lugar.
         Lo puedes marcar antes de que se juegue: sale en Eventos como «Evento de estilo».
       </p>
       <div className="db-ee-f" role="radiogroup" aria-label="Qué eventos ver">

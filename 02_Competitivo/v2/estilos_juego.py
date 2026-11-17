@@ -9,15 +9,16 @@ del competitivo»*. O sea que **la columna izquierda deja de ser los eventos** (
   · **18 estilos en tres familias**: ATAQUE (rombo), FOCO —el medio campo— (círculo) y CABEZA (escudo). «Cazaflá» se
     queda; Técnicas y Estructuras van separadas. El research está en `reports/Estilos de juego del freestyle.md`
     del repo privado.
-  · **Tres lugares**: el 1.º lo elige cada uno en la página (una vez por temporada); el 2.º sale de los eventos de
-    estilo de DRA; el 3.º se desbloquea en Competencias.
+  · **Tres lugares**: el 1.º lo elige cada uno en la página (una vez por temporada); el 2.º y el 3.º se ganan en los
+    eventos de estilo de DRA (Dlx, 17/11/2026: «que el segundo y tercero se ganen por un evento específico en DRA y
+    ya está»; Competencias quedó afuera).
   · **Niveles del 0 al 3**: 0 elegido sin nada más · 1 jugaste un evento de ese estilo · y cada vez que quedas en el
     cuarto de arriba de la llave (la regla de la Racha) subes uno. Vuelven a 0 cada temporada; lo desbloqueado queda.
   · **Nunca toca el Score**: el número de cada carta mide lo que esa carta mide.
 
 DE DÓNDE SALE: `datos/estilos.json`, `{clave: [[estilo, nivel], …]}` en el orden de los lugares (1, 2, 3). Hoy está
 vacío —nadie eligió todavía—, así que la columna no dibuja nada: *sin dato no hay pieza*. Lo llenan la página (el 1.º)
-y el ciclo (el 2.º y el 3.º) en los pasos siguientes.
+y el ciclo (el 2.º y el 3.º, `bot/juegos.py`).
 
 ⚠️ VIVE EN LA CARPETA DE LA COMPETITIVA Y NO EN `comun/`, A PROPÓSITO. Todo lo de `comun/` y de
 `02_Competitivo/v2/estilos/` entra en la huella de las CUATRO cartas (`comun/huella_codigo.py`): ponerlo ahí redibujaba

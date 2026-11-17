@@ -7,7 +7,8 @@
 //     `02_Competitivo/v2/estilos_juego.py --web` (`estilos_juego.json`), el mismo que dibuja la carta.
 //   · La primera vez eliges libre; después, UN cambio por temporada. El que dejas queda desbloqueado (en nivel 0). Lo
 //     cuenta el objeto (`juegoElige()` en bot/avisos.js), no esta página.
-//   · El 2.º lugar (eventos de estilo de DRA) y el 3.º (Competencias) todavía no existen: se dice, sin inventarlos.
+//   · El 2.º y el 3.º se ganan en los eventos de estilo de DRA (Dlx, 17/11/2026: «que el segundo y tercero se ganen por
+//     un evento específico en DRA y ya está»): jugar uno de un estilo que no es el tuyo te lo desbloquea.
 //   · Va en tu carta Competitiva (la columna izquierda) con la próxima corrida del ciclo; sin Competitiva, en tu perfil.
 import { useEffect, useState } from 'react';
 import CAT from './estilos_juego.json';
@@ -106,8 +107,7 @@ export default function EstiloJuego({ dc, Cuadro, Titulo }) {
       </p>
       <ol className="jg-lug">
         <li><b>1.º · Lo eliges acá.</b> La primera vez es libre; después, un cambio por temporada. El que dejas queda desbloqueado.</li>
-        <li className="pr"><b>2.º · Eventos de estilo de DRA.</b> Pronto.</li>
-        <li className="pr"><b>3.º · Competencias.</b> Pronto.</li>
+        <li><b>2.º y 3.º · Eventos de estilo de DRA.</b> Juegas uno de un estilo que no es el tuyo y se te desbloquea acá. Van los dos de nivel más alto.</li>
       </ol>
       <div className="jg-niv" aria-label="Los niveles">
         {[0, 1, 2, 3].map((n) => (
