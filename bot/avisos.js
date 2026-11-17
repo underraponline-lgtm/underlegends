@@ -4348,6 +4348,22 @@ export function validarVoto(defs, d, id, ahora) {
   return { enc: e.id, op: d.op, fijo: e.tipo === 'x2' || e.tipo === 'elegido' };
 }
 
+/**
+ * 🎁 LAS ENCUESTAS DE LOS MES AWARDS DE UN SERVIDOR, PARA EL COFRE (Dlx, 17/11/2026: «hacer acordar a la gente que vote y
+ * se gana un cofre»): si `enc` es de un servidor (`mes:<AAAA-MM>:<SV>:<cat>`), las de ese servidor y ese mes que siguen
+ * abiertas, y la llave del cofre (`vota:<AAAA-MM>:<SV>`). Quien puede votar una puede votarlas todas: `solo` es el mismo
+ * para las de un servidor. Pura.
+ */
+export function encuestasMesSv(defs, enc, ahora) {
+  const lista = (defs && Array.isArray(defs.lista)) ? defs.lista : [];
+  const e0 = lista.find((x) => x && x.id === enc);
+  const m = /^mes:(\d{4}-\d{2}):/.exec(String(enc || ''));
+  if (!e0 || !e0.sv || !m || !/^[A-Za-z0-9]{1,10}$/.test(String(e0.sv))) return { ids: [], clave: '' };
+  const ids = lista.filter((x) => x && x.tipo === 'mes' && x.sv === e0.sv && String(x.id).startsWith('mes:' + m[1] + ':') &&
+    ahora < Date.parse(x.hasta)).map((x) => String(x.id).slice(0, 40)).slice(0, 8);
+  return { ids, clave: ids.length ? 'vota:' + m[1] + ':' + e0.sv : '' };
+}
+
 // ── 🗳️ «¿QUIÉN GANA LA LIGA?» ──────────────────────────────────────────
 // 🔑 Dlx, 14/10/2026: «Encuesta ¿quién gana la liga?»: se vota en la página (uno por persona, se cambia), con los
 // porcentajes al lado de la tabla, y cierra cuando la liga termina. Qué se vota —las ligas, sus tablas y hasta cuándo— lo
@@ -6183,9 +6199,12 @@ export async function rutaAvisos(req, env, ruta) {
     // 🎁 las de la semana que esta persona puede votar (el ×2 y El Elegido): votarlas todas da el cofre (`votar()`)
     const sem = ((defs && Array.isArray(defs.lista)) ? defs.lista : [])
       .filter((e) => e && (e.tipo === 'x2' || e.tipo === 'elegido') && ahoraV < Date.parse(e.hasta)).slice(0, 6);
+    // 🎁 y las de los MES AWARDS de ese servidor ese mes: votarlas todas da un Cajón de discos (`cofreMes()`)
+    const mesSv = encuestasMesSv(defs, v.enc, ahoraV);
     return elObjeto(env).fetch('https://avisos/votar', {
       method: 'POST', body: JSON.stringify({ enc: v.enc, op: v.op, quien: id, fijo: v.fijo === true,
-        semana: sem.map((e) => String(e.id).slice(0, 40)), hasta: sem.map((e) => String(e.hasta).slice(0, 10)).sort().pop() || '' }),
+        semana: sem.map((e) => String(e.id).slice(0, 40)), hasta: sem.map((e) => String(e.hasta).slice(0, 10)).sort().pop() || '',
+        mes_sv: mesSv.ids, mes_clave: mesSv.clave }),
       headers: { 'content-type': 'application/json' },
     });
   }
@@ -14815,6 +14834,23 @@ export class Avisos {
     } catch (e) { return false; }
   }
 
+  /**
+   * 🎁 EL CAJÓN DE DISCOS POR VOTAR LOS MES AWARDS DE UN SERVIDOR (Dlx, 17/11/2026: «hacer acordar a la gente que vote y se
+   * gana un cofre»): votar todas las categorías de ese servidor ese mes (`ids`, de `encuestasMesSv()`) da el cofre 0, una
+   * sola vez por servidor y mes (`clave` = `vota:<AAAA-MM>:<SV>` es su origen y `dropDar()` no repite: cambiar el voto no
+   * da otro). No es por competir, así que sus Puntos cuentan para el tope de la semana, como la barra del día.
+   */
+  cofreMes(quien, ids, clave, t = Date.now()) {
+    try {
+      const xs = Array.isArray(ids) ? ids.map(String).filter((x) => /^mes:\d{4}-\d{2}:/.test(x)).slice(0, 8) : [];
+      if (!xs.length || !/^vota:\d{4}-\d{2}:[A-Za-z0-9]{1,10}$/.test(String(clave || ''))) return false;
+      const n = this.sql.exec('SELECT COUNT(DISTINCT enc) AS n FROM votos WHERE quien = ? AND enc IN (' + xs.map(() => '?').join(',') + ')',
+        quien, ...xs).toArray()[0].n;
+      if (n < xs.length) return false;
+      return this.dropDar(quien, 'cofre5:0:' + clave, 0, t);
+    } catch (e) { return false; }
+  }
+
   // ── ⚔️ LAS BATALLAS LIBRES ─────────────────────────────────────────────
   /** Retar (`/avisos/libre-crear`): `rival` es su clave y `t` la hora (ISO). Hasta 3 pendientes por persona, una por pareja */
   libreCrear(d) {
@@ -16557,7 +16593,8 @@ export class Avisos {
     d.enc.slice(0, 40), String(d.quien), d.op.slice(0, 80), ahora);
     this.xpVio(String(d.quien), 'voto', d.enc.slice(0, 40), ahora);
     this.pasoDia(String(d.quien), 'voto', ahora);
-    const cofre = this.cofreEncuestas(String(d.quien), d.semana, d.hasta, ahora);
+    const cofreSem = this.cofreEncuestas(String(d.quien), d.semana, d.hasta, ahora);
+    const cofre = this.cofreMes(String(d.quien), d.mes_sv, d.mes_clave, ahora) || cofreSem;
     // lo viejo se va: el ciclo lee el resultado cuando la encuesta cierra
     this.sql.exec('DELETE FROM votos WHERE t < ?', ahora - VOTOS_DIAS * DIA_MS);
     const cuenta = {};

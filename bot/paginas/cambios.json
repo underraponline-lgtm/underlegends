@@ -11,6 +11,19 @@
   ],
   "cambios": [
     {
+        "version": "6.08",
+        "dia": "2026-11-17",
+        "cuando": "2026-11-17T02:59:00-05:00",
+        "titulo": "El Salón de la fama, rehecho, y los MES AWARDS de cada servidor",
+        "items": [
+            "**Los MES AWARDS son de cada servidor, cada mes**: el día 1 salen los nominados de cada servidor Tier 1. Lo de toda la Liga (Rapero, Revelación, Batalla, Servidor y las demás) pasa a **la gala de la temporada**, al cierre.",
+            "**Votar da un cofre**: vota todas las categorías de tu servidor en el mes y te llevas un **Cajón de discos**, uno por mes.",
+            "**El Salón de la fama, rehecho**: mientras se vota, abre con los nominados de tu servidor; el resto del mes, con el campeón de la temporada. Una grilla muestra al ganador de cada mes en cada servidor, con la gala al final, y los récords, las insignias, las ligas y las figuras van en pestañas.",
+            "La página de cada servidor vota con la misma tarjeta que el Salón y ya dice cuándo salen sus nominados.",
+            "Las insignias de los MES AWARDS ya no llenan «Las insignias más difíciles»: sus ganadores están en la grilla."
+        ]
+    },
+    {
         "version": "6.07",
         "dia": "2026-11-17",
         "cuando": "2026-11-17T02:36",

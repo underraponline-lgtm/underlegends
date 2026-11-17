@@ -8,7 +8,7 @@
 // cambia hasta que cierra, y afuera se ve cuántos, nunca quién
 import { Fragment, useEffect, useState } from 'react';
 import { limpio, num, siglaDe } from './liga.js';
-import { Cara, accion } from './piezas.jsx';
+import { Cara } from './piezas.jsx';
 import { Miniatura } from './video.jsx';
 
 const SAL = { d: null, pedido: 0, oyentes: new Set() };
@@ -31,63 +31,46 @@ export function useSalon() {
   return SAL.d;
 }
 
-// cada nominado: su cara (o la miniatura de la batalla, o el escudo del servidor), su nombre y su número del mes
-export function Nominado({ liga, cat, x }) {
-  // 🏆 las de «Ver las demás nominaciones» (bot/mes_otros.py) traen su línea hecha (`d`) y qué se ve: un video, una
-  // imagen, el escudo del servidor, la bandera o la cara de `q`
+// 🪪 EL NOMBRE, LA CLAVE Y LA LÍNEA DE CADA NOMINADO, EN UN SOLO LUGAR (17/11/2026): los usan `Nominado` (las listas) y
+// las tarjetas de votar de mesvoto.jsx, que dibujan otra cosa (la carta, el video) con el mismo texto. `k`: la clave de
+// la persona en la tabla, o '' (una batalla, un servidor, alguien fuera de la tabla)
+export function nomTexto(liga, cat, x) {
+  // 🏆 las de «Ver las demás nominaciones» (bot/mes_otros.py) y el Staff de cada servidor traen su línea hecha (`d`)
   if (x.d !== undefined) {
     const fq = x.q ? liga.fila(x.q) : null;
-    const vis = x.vid ? <Miniatura vid={x.vid} cls="ma-vid" />
-      : x.img ? <img className="ma-vid" alt="" src={x.img} loading="lazy" />
-        : x.cc ? <img className="ma-cara ma-flag" alt="" src={'/banderas/g/' + x.cc + '.webp'} />
-          : x.sv && !x.q ? <img className="ma-cara" alt="" src={liga.logo(x.sv)} />
-            : <Cara liga={liga} k={fq ? fq.k : ''} nombre={x.q || x.n} cls="ma-cara" />;
     // 🪪 el nombre de la Lista, no el alias con que llegó (17/11/2026): «Over» es AKA de Mr Still Ballin y la misma
     // página lo mostraba con los dos nombres. Rapero y Revelación ya pasaban por `liga.fila()`; acá sólo cuando el
     // nominado ES la persona (n = q) o un cruce «A vs B», nunca el título de una promo o una publicación
     const nb = x.q && x.n === x.q ? (fq ? fq.n : x.n)
       : x.q && / vs /.test(x.n) ? x.n.split(' vs ').map((s) => (liga.fila(s) || {}).n || s).join(' vs ') : x.n;
-    return <>{vis}<span className="ma-t"><b>{limpio(nb)}</b><small>{x.d}</small></span></>;
+    return { k: fq ? fq.k : '', n: limpio(nb), d: x.d, q: x.q || x.n };
   }
   const f = (cat === 'rapero' || cat === 'revelacion') ? liga.fila(x.op) : null;
-  // 🔎 la miniatura grande (`Miniatura`, 1280×720) en vez de la de 320×180
-  const vis = cat === 'batalla' ? <Miniatura vid={x.op} cls="ma-vid" />
-    : cat === 'servidor' ? <img className="ma-cara" alt="" src={liga.logo(x.op)} />
-      : <Cara liga={liga} k={f ? f.k : ''} nombre={x.n} cls="ma-cara" />;
-  const dato = cat === 'batalla' ? siglaDe(x.sv) + ' · ' + num(x.vistas) + ' vistas'
+  const d = cat === 'batalla' ? siglaDe(x.sv) + ' · ' + num(x.vistas) + ' vistas'
     : cat === 'servidor' ? num(x.gente) + ' raperos · ' + num(x.ev) + ' eventos'
       : num(x.pts) + ' pts' + (x.oro ? ' · ' + x.oro + (x.oro === 1 ? ' título' : ' títulos') : '') + ' · ' + x.ev + (x.ev === 1 ? ' evento' : ' eventos');
-  return <>{vis}<span className="ma-t"><b>{cat === 'batalla' ? limpio(x.n) : f ? limpio(f.n) : limpio(x.n)}</b><small>{dato}</small></span></>;
+  return { k: f ? f.k : '', n: cat === 'batalla' ? limpio(x.n) : f ? limpio(f.n) : limpio(x.n), d, q: x.n };
 }
 
-export function Categoria({ liga, enc, cat, nombre, de, nom, encId, gana }) {
-  const E = encId ? ((liga.d.enc || []).find((e) => e.id === encId) || null) : null;
-  const cu = E && enc ? enc.cuenta(E.id) : {};
-  const tot = Object.values(cu).reduce((s, n) => s + (Number(n) || 0), 0);
-  const mio = E && enc ? enc.mio[E.id] : '';
-  const est = (E && enc && enc.est[E.id]) || {};
-  return (
-    <article className="ma-cat">
-      <header><b>{nombre}</b><small>Por {de}</small></header>
-      <ol className="ma-noms">{nom.map((x, i) => {
-        const n = Number(cu[x.op] || 0);
-        const p = tot ? Math.round((100 * n) / tot) : 0;
-        const cuerpo = <><span className="ma-i">{gana ? (x.op === gana ? '🏆' : '') : i + 1}</span><Nominado liga={liga} cat={cat} x={x} /></>;
-        return (
-          <li key={x.op} className={(gana && x.op === gana ? 'gana ' : '') + (mio === x.op ? 'mio' : '')}>
-            {E ? (
-              <button type="button" className={'ma-op' + (est.va === x.op ? ' va' : '')} onClick={() => accion.votar(E.id, x.op)}
-                aria-pressed={mio === x.op} aria-label={'Votar a ' + limpio(x.n) + ' · ' + p + '% de los votos'}>
-                <i className="ma-bar" style={{ width: p + '%' }} />{cuerpo}<em>{mio === x.op ? '✓ ' : ''}{p}%</em>
-              </button>
-            ) : <div className="ma-op">{cuerpo}</div>}
-          </li>
-        );
-      })}</ol>
-      {E && enc ? <p className="ma-pie" aria-live="polite">{enc.pie(E, (op) => limpio((nom.find((x) => x.op === op) || {}).n || op))}</p> : null}
-    </article>
-  );
+// cada nominado: su cara (o la miniatura de la batalla, o el escudo del servidor), su nombre y su número del mes
+export function Nominado({ liga, cat, x }) {
+  const t = nomTexto(liga, cat, x);
+  // 🏆 las de «Ver las demás nominaciones» traen qué se ve: un video, una imagen, el escudo del servidor, la bandera o
+  // la cara de `q`
+  // 🔎 la miniatura grande (`Miniatura`, 1280×720) en vez de la de 320×180
+  const vis = x.d !== undefined ? (x.vid ? <Miniatura vid={x.vid} cls="ma-vid" />
+    : x.img ? <img className="ma-vid" alt="" src={x.img} loading="lazy" />
+      : x.cc ? <img className="ma-cara ma-flag" alt="" src={'/banderas/g/' + x.cc + '.webp'} />
+        : x.sv && !x.q ? <img className="ma-cara" alt="" src={liga.logo(x.sv)} />
+          : <Cara liga={liga} k={t.k} nombre={t.q} cls="ma-cara" />)
+    : cat === 'batalla' ? <Miniatura vid={x.op} cls="ma-vid" />
+      : cat === 'servidor' ? <img className="ma-cara" alt="" src={liga.logo(x.op)} />
+        : <Cara liga={liga} k={t.k} nombre={x.n} cls="ma-cara" />;
+  return <>{vis}<span className="ma-t"><b>{t.n}</b><small>{t.d}</small></span></>;
 }
+
+// (la `Categoria` que se votaba acá se fue el 17/11/2026: el Salón y la página de cada servidor votan con las tarjetas
+// de mesvoto.jsx)
 
 // 📊 los porcentajes del cierre (Dlx, 18/10/2026: «me gusta lo de porcentajes»): el ganador y los que le siguen, como
 // publican los FMS AWARDS. Sólo si se decidió por votos: si fue por los números, no hay reparto que mostrar

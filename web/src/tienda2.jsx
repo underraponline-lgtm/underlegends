@@ -314,7 +314,9 @@ function SeGanan({ liga }) {
     ['caza', 'Cazando', ['hasta', num(T.tope)], <>El precio entero de la cabeza que le ganas{T.mw ? <>, y el <b>{Math.round(T.mw * 100)} %</b> de lo que pagan los buscados del Most Wanted</> : null}.</>, '#/ranking/mw'],
     ['racha', 'Entrando cada día', ['', 'Cada día'], <>Tu racha paga cada día que entras —el que no se cobra ese día, no se cobra después— y el domingo es un cofre.</>, '#/'],
     ['promos', 'Abriendo promos', ['', '50'], <>Cada promo que abres con tu cuenta te da <b>50</b>, hasta 3 por día.</>, '#/publicaciones'],
-    P ? ['mes', 'Ganando un MES AWARD', ['hasta', num(P.rapero)], <>El Rapero del mes se lleva <b>{num(P.rapero)}</b>, la Revelación <b>{num(P.revelacion)}</b>, la Batalla <b>{num(P.batalla)}</b>{P.otra ? <> y las demás <b>{num(P.otra)}</b></> : null}.</>, '#/salon']
+    // 🏟️ desde noviembre los MES AWARDS son de cada servidor (`sv_desde`, 17/11/2026): lo de toda la Liga va a la gala
+    S && S.sv_desde && S.premio_sv ? ['mes', 'Ganando un MES AWARD', ['', num(S.premio_sv.rapero)], <>Cada mes, el Rapero, la Revelación, la Batalla (a cada lado) y el Staff del mes de cada servidor se llevan <b>{num(S.premio_sv.rapero)}</b>. Y votar todas las de tu servidor da un Cajón de discos.</>, '#/salon']
+      : P ? ['mes', 'Ganando un MES AWARD', ['hasta', num(P.rapero)], <>El Rapero del mes se lleva <b>{num(P.rapero)}</b>, la Revelación <b>{num(P.revelacion)}</b>, la Batalla <b>{num(P.batalla)}</b>{P.otra ? <> y las demás <b>{num(P.otra)}</b></> : null}.</>, '#/salon']
       : ['mes', 'Ganando un MES AWARD', ['', 'Cada mes'], <>Cada ganador del mes se lleva Puntos de Tienda y su insignia.</>, '#/salon'],
     // 💎 el Ranked (bot/divisiones.py): `p` una piedra nueva, `ps` un subnivel, una vez cada uno; viajan en `div`
     liga.d.div && liga.d.div.m === 'elo' && liga.d.div.p ? ['ranked', 'Subiendo en el Ranked', ['', num(liga.d.div.p)], <>Llegar por primera vez a una piedra paga <b>{num(liga.d.div.p)}</b>{liga.d.div.ps ? <> y a cada subnivel <b>{num(liga.d.div.ps)}</b></> : null}.</>, '#/ranking/divisiones'] : null,

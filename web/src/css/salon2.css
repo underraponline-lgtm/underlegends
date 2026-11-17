@@ -41,56 +41,14 @@
   font:900 11px/1 Archivo,sans-serif}
 .sl-cara img,.sl-mini img{display:block;width:100%;height:100%;object-fit:cover}
 
-/* ── los MES AWARDS ── */
-.sl-mes{--oro:#E5B800}
-.sl-mes-cab{margin:0 0 6px;font:600 17px/1.4 Archivo,sans-serif}
-.sl-mes-cab b{color:var(--oro)}
-.sl-mes-como{margin:0 0 16px;font:500 14px/1.5 Archivo,sans-serif;color:var(--gris);max-width:74ch}
-.sl-cats,.sl-cats-g{display:grid;grid-template-columns:minmax(0,1fr);gap:14px;align-items:start}
-.sl-cat{display:grid;gap:10px;align-content:start;min-width:0;padding:14px;border:2px solid var(--linea);background:var(--caja);box-shadow:4px 4px 0 var(--oro)}
-.sl-cat header{display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:center;gap:3px 10px}
-.sl-cat header b{font:900 18px/1.1 Archivo,sans-serif;font-stretch:110%;text-transform:uppercase;letter-spacing:.02em;color:var(--oro)}
-.sl-cat header small{grid-column:1;font:600 13px/1.3 Archivo,sans-serif;color:var(--gris)}
-/* cuántos votaron: «50 %» de dos votos no es lo mismo que de doscientos */
-.sl-cat header em{grid-column:2;grid-row:1 / span 2;padding:5px 7px;border:1.5px solid var(--suave);font:700 13px/1 "Barlow Condensed",sans-serif;font-style:normal;
-  letter-spacing:.05em;text-transform:uppercase;white-space:nowrap;color:var(--tinta)}
-.sl-noms{display:grid;gap:6px;margin:0;padding:0;list-style:none}
-.sl-op{position:relative;display:grid;grid-template-columns:22px minmax(0,1fr) auto;align-items:center;gap:10px;width:100%;min-height:52px;padding:7px 10px;
-  border:1.5px solid var(--suave);background:var(--fondo);color:var(--tinta);text-align:left;font:inherit}
-.sl-op:has(.sl-pista){padding-bottom:15px}
-button.sl-op{cursor:pointer}
-button.sl-op:hover{border-color:var(--tinta)}
-button.sl-op:focus-visible{outline:2px solid var(--oro);outline-offset:2px}
-.sl-noms li.mio .sl-op{border-color:var(--oro);box-shadow:inset 0 0 0 1px var(--oro)}
-.sl-noms li.gana .sl-op{border-color:var(--oro)}
-.sl-op.va{opacity:.6}
-.sl-i{font:900 14px/1 Archivo,sans-serif;color:var(--gris);text-align:center;font-variant-numeric:tabular-nums}
+/* ── los MES AWARDS de la Liga entera (octubre, el único mes de toda la Liga): cada categoría como un sello, el ganador
+   y el reparto. Lo que se vota y los ganadores de cada servidor van con las tarjetas de mesvoto.css ── */
 .sl-nom{display:flex;align-items:center;gap:10px;min-width:0}
 .sl-nom .ma-t{flex:1}
-/* la pista del %, fina y debajo del nombre: arranca donde arranca la cara */
-.sl-pista{position:absolute;left:42px;right:10px;bottom:6px;height:4px;background:var(--suave)}
-.sl-pista>i{display:block;height:100%;background:var(--oro)}
-.sl-p{display:grid;justify-items:end;gap:5px;font:800 14px/1 Archivo,sans-serif;font-style:normal;font-variant-numeric:tabular-nums;white-space:nowrap}
-.sl-tuyo{padding:3px 5px;background:var(--oro);color:#030304;font:800 11px/1 "Barlow Condensed",sans-serif;letter-spacing:.06em}
-.sl-pie{margin:0;font:700 14px/1.3 "Barlow Condensed",sans-serif;color:var(--gris)}
-.sl-mes .sl-st{margin:24px 0 12px}
-.sl-botones{display:flex;flex-wrap:wrap;gap:8px;margin-top:16px}
-.sl-botones .btn{max-width:100%;white-space:normal;line-height:1.15;text-align:center}
-/* los meses cerrados: cada categoría como un sello, el ganador y el reparto */
-.sl-hist{margin-top:8px}
-/* cada mes, plegable: el más nuevo abierto */
-.sl-hm{margin-bottom:12px;border-top:1.5px solid var(--suave)}
-.sl-hm summary{display:flex;align-items:center;gap:10px;min-height:46px;cursor:pointer;list-style:none}
-.sl-hm summary::-webkit-details-marker{display:none}
-.sl-hm summary:after{content:"+";margin-left:auto;font:900 18px/1 Archivo,sans-serif;color:var(--tinta)}
-.sl-hm[open] summary:after{content:"−"}
-.sl-hm summary small{font:700 13px/1 "Barlow Condensed",sans-serif;letter-spacing:.05em;text-transform:uppercase;color:var(--gris)}
-.sl-hm summary:focus-visible{outline:2px solid var(--oro);outline-offset:2px}
-.sl-hm-mes{font:800 15px/1 "Barlow Condensed",sans-serif;letter-spacing:.08em;text-transform:uppercase;color:var(--oro)}
 .sl-hm ul{display:grid;gap:8px;margin:4px 0 0;padding:0;list-style:none}
 .sl-hm ul+ul{margin-top:10px}
 .sl-hm li{display:grid;gap:8px;align-content:start;padding:10px 12px;border:1.5px solid var(--suave);background:var(--caja)}
-.sl-sello{justify-self:start;padding:4px 7px;border:2px solid var(--oro);color:var(--oro);font:800 12px/1 "Barlow Condensed",sans-serif;letter-spacing:.07em;text-transform:uppercase}
+.sl-sello{justify-self:start;padding:4px 7px;border:2px solid #E5B800;color:#E5B800;font:800 12px/1 "Barlow Condensed",sans-serif;letter-spacing:.07em;text-transform:uppercase}
 .sl-hm .ma-pct{font:600 14px/1.3 "Barlow Condensed",sans-serif;letter-spacing:.02em;color:#C4C4BE}
 .sl-hm .ma-pct b{color:#F6F6F6;font-weight:700}
 /* las demás categorías: una línea cada una, la categoría, quién ganó y con cuánto */
@@ -101,34 +59,7 @@ button.sl-op:focus-visible{outline:2px solid var(--oro);outline-offset:2px}
 .sl-hm-resto .ma-cara{width:28px;height:28px}
 .sl-hm-resto .ma-vid{width:48px}
 .sl-hm-resto .ma-t small{display:none}
-.sl-hm-resto em{font:800 14px/1 Archivo,sans-serif;font-style:normal;font-variant-numeric:tabular-nums;color:var(--oro)}
-
-/* ── las temporadas: la que está en juego y la que viene ── */
-.sl-riel{display:grid;gap:14px}
-.sl-temp{display:grid;gap:14px;min-width:0;padding:16px;border:2px solid var(--linea);background:var(--caja)}
-.sl-temp.vivo{box-shadow:5px 5px 0 #E5B800}
-.sl-temp header{display:grid;gap:8px;justify-items:start}
-.sl-temp .tag{background:#E5B800;color:#030304}
-/* «Temporada 1» no se parte (el número va pegado en el JSX) y la letra baja con la tarjeta: a 1000 px la columna
-   mide 222 y «TEMPORADA / 1» dejaba el número solo (16/11) */
-.sl-temp header,.sl-temp.sl-luego{container-type:inline-size}
-.sl-temp h3{margin:0;font:900 min(26px,9.5cqi)/1 Archivo,sans-serif;font-stretch:125%;text-transform:uppercase}
-.sl-temp p{margin:0;font:500 14px/1.45 Archivo,sans-serif;color:#D6D6D2;max-width:60ch}
-.sl-temp-l{display:grid;gap:10px;margin:0;padding:0;list-style:none}
-.sl-temp-l li{display:grid;gap:6px;min-width:0}
-.sl-temp-l li>small{font:700 13px/1 "Barlow Condensed",sans-serif;letter-spacing:.06em;color:#E5B800}
-.sl-tp{display:flex;align-items:center;gap:10px;min-width:0;min-height:56px;padding:8px 10px;border:2px solid #3A3A3E;background:#030304;color:#F6F6F6;text-decoration:none}
-.sl-tp:hover{border-color:#F6F6F6}
-.sl-tp b{flex:1;min-width:0;font:900 17px/1.1 Archivo,sans-serif;text-transform:uppercase;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.sl-tp i{font:700 14px/1 "Barlow Condensed",sans-serif;font-style:normal;color:#A5A5A0;white-space:nowrap}
-.sl-tp .sl-cara{border:2px solid #E5B800}
-/* lo que se define al cierre: punteado, como todo lo provisorio */
-.sl-tp.vacia{border-style:dashed;background:transparent}
-.sl-tp.vacia b{font-size:15px;color:#D6D6D2}
-.sl-temp.sl-luego{grid-template-columns:auto minmax(0,1fr);align-items:center;gap:6px 14px;border-style:dashed;border-color:#4A4A4E;background:transparent}
-.sl-temp.sl-luego h3{font-size:20px;color:#A5A5A0}
-.sl-temp.sl-luego p{grid-column:2;color:#A5A5A0}
-.sl-candado{grid-row:1 / span 2;display:grid;place-items:center;width:56px;height:56px;border:2px dashed #4A4A4E;color:#A5A5A0}
+.sl-hm-resto em{font:800 14px/1 Archivo,sans-serif;font-style:normal;font-variant-numeric:tabular-nums;color:#E5B800}
 
 /* ── los récords: el número primero ── */
 .sl-reyes{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin:0 0 18px}
@@ -213,6 +144,129 @@ button.sl-op:focus-visible{outline:2px solid var(--oro);outline-offset:2px}
 
 .sl-carga{margin:0;font:700 15px/1.3 "Barlow Condensed",sans-serif;color:var(--gris)}
 
+/* ═══ 🏆 LA «D» (17/11/2026): la votación arriba mientras se vota, la vitrina el resto del mes, la temporada mes a mes y
+   lo demás en pestañas. Todo con `sd-` (las tarjetas de votar y la franja están en mesvoto.css) ═══ */
+.sd-sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+
+/* ── la vitrina: quién va primero para ser campeón, con sus cartas ── */
+.sd-estante{display:grid;gap:10px;align-content:start;width:100%;max-width:440px;padding:14px;border:2px solid #E5B800;background:#030304;color:#F6F6F6;
+  box-shadow:8px 8px 0 #E41373}
+.sd-est-t{font:700 14px/1.15 "Barlow Condensed",sans-serif;letter-spacing:.07em;text-transform:uppercase;color:#E5B800}
+.sd-est-dos{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.sd-est-dos figure{display:grid;gap:7px;align-content:start;min-width:0;margin:0}
+.sd-est-ct{display:block;width:100%;aspect-ratio:300/438;object-fit:contain}
+.sd-est-ct.sincarta{display:grid;border-radius:4px}
+.sd-est-dos figcaption{display:grid;gap:4px;min-width:0}
+.sd-est-dos figcaption a{color:inherit;text-decoration:none}
+.sd-est-dos figcaption a:first-child{font:700 13px/1.2 "Barlow Condensed",sans-serif;letter-spacing:.04em;text-transform:uppercase;color:#A5A5A0}
+.sd-est-dos figcaption b{display:block;font:900 16px/1.1 Archivo,sans-serif;text-transform:uppercase;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.sd-est-dos figcaption a:hover b,.sd-est-dos figcaption a:first-child:hover{text-decoration:underline;text-underline-offset:3px}
+/* mientras se vota, la vitrina va después de la temporada, como una sección */
+.sd-vit-c{display:grid;gap:22px}
+.sd-vit-tx{display:grid;gap:16px;align-content:start;min-width:0}
+.sd-vit-tx p{margin:0;font:500 15px/1.5 Archivo,sans-serif;color:var(--gris);max-width:56ch}
+.sd-vit .sl-num{margin:0}
+.sd-cierre{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin:0;padding:0;list-style:none}
+.sd-cierre a{display:grid;gap:5px;min-height:56px;padding:9px 12px;border:2px dashed #4A4A4E;color:#F6F6F6;text-decoration:none}
+.sd-cierre a:hover{border-color:#F6F6F6}
+.sd-cierre small{font:700 13px/1.1 "Barlow Condensed",sans-serif;letter-spacing:.05em;text-transform:uppercase;color:#E5B800}
+.sd-cierre b{font:800 15px/1.1 Archivo,sans-serif;color:#D6D6D2}
+
+/* ── la votación de arriba: la franja, los servidores y los nominados ── */
+.sd-vota{padding-top:26px}
+.sd-aviso{margin:-6px 0 14px;font:600 14px/1.4 Archivo,sans-serif;color:var(--gris)}
+.sd-panel{display:grid;padding:14px 14px 2px;border:1.5px solid var(--suave)}
+.sd-panel-t{margin:0 0 8px;font:700 15px/1.2 "Barlow Condensed",sans-serif;letter-spacing:.08em;text-transform:uppercase;color:#E5B800}
+.sd-vacio{margin:4px 0 14px;font:600 15px/1.4 Archivo,sans-serif;color:var(--gris)}
+
+/* ── la temporada mes a mes: la regla ── */
+.sd-meses .sd-franja{margin-bottom:26px}
+.sd-regla{display:flex;margin:0;padding:0;list-style:none;border:1.5px solid var(--suave);overflow-x:auto;scrollbar-width:none}
+.sd-regla::-webkit-scrollbar{display:none}
+.sd-regla>li{flex:0 0 34%;min-width:0;border-right:1.5px solid var(--suave)}
+.sd-regla>li.sd-gl{flex-basis:44%;border-right:0;background:var(--caja)}
+.sd-rc{display:grid;gap:5px;align-content:start;width:100%;height:100%;min-height:66px;padding:10px 12px;border:0;background:none;color:inherit;font:inherit;text-align:left}
+button.sd-rc{cursor:pointer}
+button.sd-rc:hover{background:#18181B}
+button.sd-rc:focus-visible{outline:2px solid #E5B800;outline-offset:-3px}
+.sd-rc b{font:900 22px/1 Archivo,sans-serif;font-stretch:125%}
+.sd-rc small{font:600 13px/1.25 Archivo,sans-serif;color:var(--gris)}
+.sd-regla .sd-ya b{color:var(--gris)}
+/* el mes de ahora, en blanco; el que se mira, subrayado */
+.sd-regla .sd-on{background:#F6F6F6;color:#030304}
+.sd-regla .sd-on small{color:#4A4A46}
+.sd-regla .sd-on button.sd-rc:hover{background:#E6E6E2}
+.sd-regla .sd-sel .sd-rc{box-shadow:inset 0 -4px 0 #29B298}
+.sd-regla .sd-gl b{color:#E5B800}
+
+/* las caras chicas, el «votando» y lo que todavía no pasó */
+.sd-mini{display:grid;place-items:center;flex:none;width:28px;height:28px;border-radius:50%;overflow:hidden;background:#2A2A2E;color:#F6F6F6;
+  font:900 12px/1 Archivo,sans-serif}
+.sd-mini img{display:block;width:100%;height:100%;object-fit:cover}
+.sd-apila{display:flex;flex:none}
+.sd-apila .sd-mini{width:24px;height:24px;margin-left:-7px;box-shadow:0 0 0 2px var(--fondo);font-size:11px}
+.sd-apila .sd-mini:first-child{margin-left:0}
+.sd-vivo{font:700 13px/1 "Barlow Condensed",sans-serif;letter-spacing:.07em;text-transform:uppercase;color:#29B298}
+.sd-nada{font:600 13px/1.3 Archivo,sans-serif;color:var(--gris)}
+.sd-copa-ic{display:grid;place-items:center;flex:none;width:24px;height:24px;color:#E5B800}
+
+/* ── la grilla servidores × meses (sólo en la compu) ── */
+.sd-grilla{display:none}
+.sd-gr{display:contents}
+.sd-gc{display:flex;align-items:center;gap:8px;min-width:0;min-height:46px;padding:6px 10px;border-right:1.5px solid var(--suave);border-bottom:1.5px solid var(--suave);
+  font:600 14px/1.2 Archivo,sans-serif}
+.sd-gh{min-height:36px;background:var(--caja);color:var(--gris);font:700 13px/1 "Barlow Condensed",sans-serif;letter-spacing:.07em;text-transform:uppercase}
+.sd-gh.sd-mv{color:var(--tinta)}
+.sd-gs{position:relative;padding-left:14px;font:700 15px/1 "Barlow Condensed",sans-serif;letter-spacing:.04em}
+.sd-gs:before{content:"";position:absolute;left:0;top:0;bottom:0;width:4px;background:var(--c)}
+.sd-gs img{width:22px;height:22px;flex:none;border-radius:50%;object-fit:cover}
+.sd-gc.sd-sel{background:#18181B;box-shadow:inset 0 0 0 1.5px #E5B800}
+.sd-gb{display:flex;align-items:center;gap:8px;flex:1;min-width:0;align-self:stretch;margin:-6px -10px;padding:6px 10px;border:0;background:none;color:inherit;
+  font:inherit;text-align:left;cursor:pointer}
+.sd-gb:hover{background:#18181B}
+.sd-gb:focus-visible{outline:2px solid #E5B800;outline-offset:-3px}
+.sd-gb b{min-width:0;font:800 14px/1.15 Archivo,sans-serif;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.sd-gb small{flex:none;margin-left:auto;font:700 13px/1 "Barlow Condensed",sans-serif;letter-spacing:.03em;color:var(--gris)}
+.sd-gala{flex-direction:column;align-items:flex-start;justify-content:center;gap:9px;padding:16px;background:var(--caja)}
+.sd-gala b{font:900 22px/1 Archivo,sans-serif;font-stretch:125%;text-transform:uppercase;color:#E5B800}
+.sd-gala small{font:500 13.5px/1.4 Archivo,sans-serif;color:var(--gris)}
+.sd-gala ul{display:grid;gap:6px;margin:0;padding:0;list-style:none}
+.sd-gala li{padding-left:9px;border-left:2px solid #E5B800;font:800 13.5px/1.2 Archivo,sans-serif}
+
+/* ── en el celular, un servidor por fila ── */
+.sd-meses-c{display:flex;flex-direction:column}
+.sd-filas{margin-top:14px}
+.sd-filas-t{margin:0 0 8px;font:700 14px/1.2 "Barlow Condensed",sans-serif;letter-spacing:.05em;text-transform:uppercase;color:var(--gris)}
+.sd-filas ul{display:grid;gap:6px;margin:0;padding:0;list-style:none}
+.sd-filas li>button,.sd-filas li>div{position:relative;display:flex;align-items:center;gap:10px;width:100%;min-height:50px;padding:7px 10px 7px 14px;
+  border:1.5px solid var(--suave);background:var(--caja);color:var(--tinta);font:inherit;text-align:left}
+.sd-filas li>button{cursor:pointer}
+.sd-filas li>button:focus-visible{outline:2px solid #E5B800;outline-offset:2px}
+.sd-filas li>*:before{content:"";position:absolute;left:-1.5px;top:-1.5px;bottom:-1.5px;width:4px;background:var(--c)}
+.sd-filas li.sd-sel>button{border-color:#E5B800}
+.sd-fl-s{display:flex;align-items:center;gap:7px;flex:none;min-width:76px;font:700 15px/1 "Barlow Condensed",sans-serif;letter-spacing:.04em}
+.sd-fl-s img{width:24px;height:24px;flex:none;border-radius:50%;object-fit:cover}
+.sd-fl-c{display:flex;align-items:center;gap:8px;flex:1;min-width:0}
+.sd-fl-c b{flex:1;min-width:0;font:800 14px/1.15 Archivo,sans-serif;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.sd-fl-c small{flex:none;font:700 13px/1 "Barlow Condensed",sans-serif;letter-spacing:.03em;color:var(--gris)}
+
+/* ── lo que se abrió: los ganadores de un mes (en el celular, arriba de las filas) ── */
+.sd-archivo{margin-top:16px;padding:14px 14px 4px;border:1.5px solid var(--suave);scroll-margin-top:72px}
+.sd-arch-n{margin:0 0 12px;font:500 14px/1.45 Archivo,sans-serif;color:var(--gris);max-width:80ch}
+.sd-archivo.sl-hm{padding-bottom:14px}
+
+/* ── lo demás del Salón, en pestañas ── */
+.sd-resto-t{align-items:center}
+.sd-tabs{display:flex;flex-basis:100%;gap:6px;min-width:0;margin:4px 0 0;padding:0 0 4px;overflow-x:auto;scrollbar-width:none}
+.sd-tabs::-webkit-scrollbar{display:none}
+.sd-tabs button{flex:none;min-height:44px;padding:0 14px;border:1.5px solid var(--linea);background:var(--fondo);color:var(--tinta);
+  font:700 15px/1 "Barlow Condensed",sans-serif;letter-spacing:.04em;text-transform:uppercase;white-space:nowrap;cursor:pointer}
+.sd-tabs button.sd-on{background:var(--inv);color:var(--inv-tinta);border-color:var(--inv)}
+.sd-tabs button:focus-visible{outline:2px solid var(--verde);outline-offset:2px}
+.sd-tab-baj{margin:0 0 14px;font:500 14px/1.45 Archivo,sans-serif;color:var(--gris)}
+.sd-tab-baj a{color:var(--tinta);font-weight:700;text-decoration:underline;text-underline-offset:3px}
+.sd-resto .sl-carga{margin-top:14px}
+
 @media (max-width: 639px){
   /* los ganadores de «las demás»: la categoría en su renglón, así el nombre tiene todo el ancho */
   .sl-hm-resto li{grid-template-columns:minmax(0,1fr) auto;row-gap:4px}
@@ -236,17 +290,9 @@ button.sl-op:focus-visible{outline:2px solid var(--oro);outline-offset:2px}
   .sl-fq .sl-mini{width:24px;height:24px}
 }
 @media (min-width: 640px){
-  /* las categorías en columnas y no en filas: una de dos nominados al lado de una de cinco dejaba un hueco del alto de
-     tres filas; en columnas, cada una sigue debajo de la anterior */
-  .sl-cats{display:block;columns:2;column-gap:14px}
-  .sl-cats>*{break-inside:avoid;margin:0 0 14px}
-  .sl-cats>.sl-botones{margin-top:2px}
-  /* las demás y las del staff, en filas: cada fila arranca pareja */
-  .sl-cats-g{grid-template-columns:repeat(2,minmax(0,1fr))}
   .sl-hm ul{grid-template-columns:repeat(2,minmax(0,1fr))}
   .sl-hm ul.sl-hm-resto{grid-template-columns:minmax(0,1fr)}
   .sl-ins,.sl-lista{grid-template-columns:repeat(2,minmax(0,1fr))}
-  .sl-temp-l{grid-template-columns:repeat(2,minmax(0,1fr))}
 }
 @media (min-width: 900px){
   .app .sl-cab{grid-template-columns:minmax(0,1fr) auto;align-items:center;gap:48px;padding:40px var(--gut) 36px}
@@ -257,15 +303,8 @@ button.sl-op:focus-visible{outline:2px solid var(--oro);outline-offset:2px}
   .app .sl-num div:first-child{border-left:0}
   .app .sl-copa{display:grid;place-items:center;width:220px;height:220px;margin-right:24px;border:3px solid #E5B800;background:#030304;color:#E5B800;box-shadow:8px 8px 0 #E41373}
   .app .sl-ix ol{padding:10px var(--gut)}
-  .app .sl-cats-g.tres{grid-template-columns:repeat(3,minmax(0,1fr))}
   .app .sl-hm ul{grid-template-columns:repeat(4,minmax(0,1fr))}
   .app .sl-hm ul.sl-hm-resto{grid-template-columns:repeat(2,minmax(0,1fr));column-gap:36px}
-  /* la temporada en juego ancha y la que viene, angosta y punteada al lado */
-  .app .sl-riel{grid-template-columns:minmax(0,1fr) 250px;align-items:stretch}
-  .app .sl-temp.vivo{grid-template-columns:minmax(0,.75fr) minmax(0,1.25fr);align-items:center;column-gap:28px;padding:22px 24px}
-  .app .sl-temp.sl-luego{grid-template-columns:minmax(0,1fr);align-content:center;justify-items:start;gap:10px;padding:22px}
-  .app .sl-temp.sl-luego p{grid-column:auto}
-  .app .sl-candado{grid-row:auto}
   /* los cuatro grupos de récords: dos columnas que se leen de arriba abajo */
   .app .sl-recs{grid-template-columns:repeat(2,minmax(0,1fr));column-gap:36px;row-gap:26px}
   .app .sl-reyes>small{flex-basis:auto;margin-right:6px}
@@ -274,6 +313,17 @@ button.sl-op:focus-visible{outline:2px solid var(--oro);outline-offset:2px}
   .app .sl-fig{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px 24px;border:0;background:transparent}
   .app .sl-fig li{border:2px solid var(--linea);background:var(--caja)}
   .app .sl-fig li+li{border-top:2px solid var(--linea)}
+  /* 🏆 la D: la vitrina a la derecha de la portada, la regla en una fila y la grilla en vez de las filas */
+  .app .sl-cab .sd-estante{width:440px;margin-right:8px}
+  .app .sd-vit-c{grid-template-columns:minmax(0,1fr) 440px;align-items:center;gap:48px}
+  .app .sd-regla{display:grid;grid-template-columns:repeat(var(--m),minmax(0,1fr)) minmax(0,1.2fr);overflow:visible}
+  .app .sd-regla>li{flex:none}
+  .app .sd-grilla{display:grid;grid-template-columns:140px repeat(var(--m),minmax(0,1fr)) minmax(0,1.2fr);margin-top:12px;
+    border-top:1.5px solid var(--suave);border-left:1.5px solid var(--suave)}
+  .app .sd-filas{display:none}
+  .app .sd-tabs{flex-basis:auto;margin:0;padding:0}
+  .app .sd-panel{padding:16px 18px 4px}
+  .app .sd-archivo{padding:16px 18px 6px}
 }
 @media (min-width: 1100px){
   /* los récords, un grupo por columna: en dos, cada renglón tenía 600 px para 270 de contenido */

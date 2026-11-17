@@ -66,6 +66,10 @@ SALIDA = os.path.join(BASE, 'datos', 'mes_awards.json')
 CLAVE_WEB = 'web:salon'
 #: el primer mes que se premia
 DESDE = '2026-10'
+#: 🏟️ DESDE NOVIEMBRE, CADA MES ES SÓLO DE LOS SERVIDORES (Dlx, 17/11/2026: *«sería cada mes por servidor, luego al
+#: finalizar la temporada se haría una de la Liga Global»*; ya lo había dicho el 02/11). Octubre fue el único mes de toda
+#: la Liga y queda como está. Lo de la Liga pasa a la GALA del cierre de la temporada (⏳ la tanda 2)
+SOLO_SV_DESDE = '2026-11'
 #: cuántos nominados por categoría
 NOMINADOS = 5
 #: a qué hora (ET) del día 1 salen los nominados, y a qué hora abre la votación; cuántos días dura
@@ -475,11 +479,15 @@ def correr(aplicar=False, ahora=None, datos=None, votos=None, ajustes=None, niv=
         # 🔁 HASTA QUE ABRE, SE RECALCULA EN CADA CORRIDA (pasada del 19/10/2026): las llaves del 31 que se procesan
         # después de las 11 AM del 1 también entran (la madrugada no corre), y lo que Dlx saca entra igual
         if m is None or (ahora < _de_iso(m['abre']) and ajustes_ok):
-            noms = nominados(numeros(prev, *datos), sacar)
+            # 🏟️ desde `SOLO_SV_DESDE` la Liga no se nomina cada mes: `cats` queda vacío y todo lo que lee los ganadores
+            # de la Liga (insignias, Tienda, el muro, la página) no encuentra nada que hacer
+            liga = prev < SOLO_SV_DESDE
+            noms = nominados(numeros(prev, *datos), sacar) if liga else {}
             meses[prev] = {'nominado': (m or {}).get('nominado') or _iso(ahora), 'abre': _iso(abre), 'cierra': _iso(cierra),
-                           'sacar': sacar, 'cats': {c: {'nom': noms[c]} for c, _n, _d in TODAS}}
-            print('   🏆 MES AWARDS de %s: nominados (%s)' % (nombre_mes(prev), ', '.join(
-                '%s %d' % (c, len(noms[c])) for c, _n, _d in TODAS)))
+                           'sacar': sacar, 'cats': {c: {'nom': noms[c]} for c, _n, _d in TODAS} if liga else {}}
+            if liga:
+                print('   🏆 MES AWARDS de %s: nominados (%s)' % (nombre_mes(prev), ', '.join(
+                    '%s %d' % (c, len(noms[c])) for c, _n, _d in TODAS)))
             # 🏟️ y los de cada servidor Tier 1. Nunca frena los de la Liga
             try:
                 meses[prev]['sv'] = nominar_sv(prev, datos, sacar, niv)
@@ -731,7 +739,22 @@ def para_web(d=None, ahora=None, mu=None):
     # `cats`: [clave, nombre, de qué, 0 a la vista · 1 detrás de «Ver las demás nominaciones» · 2 en el bloque del staff]
     return {'t': _iso(ahora), 'cats': [list(c) + [0] for c in CATS] + [list(c) + [2 if c[0] in MO.STAFF else 1] for c in OTRAS],
             'cats_sv': [list(c) for c in CATS_SV], 'premio': dict(PREMIO, otra=MO.PREMIO_OTRA), 'premio_sv': dict(PREMIO_SV),
-            'abierto': abierto, 'vivo': viv, 'hist': hist[:24], 'semanas': figuras_semana(mu)}
+            'abierto': abierto, 'vivo': viv, 'hist': hist[:24], 'semanas': figuras_semana(mu),
+            'sv_desde': SOLO_SV_DESDE, 'gala': gala()}
+
+
+def gala():
+    """🏆 La gala de la temporada en curso: `{temp, nominados}` (el día siguiente al cierre, a las `NOMINA_H` ET), o None si
+    la temporada no tiene fecha de cierre. La página la muestra como la última columna; ⏳ nominarla es la tanda 2."""
+    try:
+        from comun import temporada as T
+        fin = (T.FECHAS.get(T.ACTUAL) or (None, None))[1]
+    except Exception:                                    # noqa: BLE001
+        return None
+    if not fin:
+        return None
+    dia = dt.date.fromisoformat(fin) + dt.timedelta(days=1)
+    return {'temp': T.ACTUAL.upper(), 'nominados': _iso(en_et('%04d-%02d' % (dia.year, dia.month), dia.day, NOMINA_H))}
 
 
 # ── self-check ───────────────────────────────────────────────────────────────────────────────────────────────────────
@@ -878,6 +901,20 @@ def _self_check():
             _MU.ajustes_dueno = viejo_a
         ok('Cid' not in [x['op'] for x in r5['meses']['2026-10']['cats']['rapero']['nom']] and r5['meses']['2026-10']['sacar'] == ['rapero:Cid'],
            'si el Dashboard no contesta, lo que Dlx sacó sigue afuera', str(r5['meses']['2026-10']['cats']['rapero']['nom']))
+        # 🏟️ desde noviembre, sólo los servidores (17/11/2026): los mismos eventos, corridos a noviembre
+        ev11 = [(n, sv, t.replace(month=11) if t.month == 10 else t, f, x) for n, sv, t, f, x in ev]
+        vids11 = {k: [v[0], v[1], v[2], v[3].replace('2026-10', '2026-11'), v[4]] for k, v in vids.items()}
+        datos11 = (ev11, fx, vistos, {'fuera'}, vids11, {}, lambda n: n.lower())
+        io.open(SALIDA, 'w', encoding='utf-8').write(json.dumps({'meses': {}}))
+        r6 = correr(aplicar=True, ahora=dt.datetime(2026, 12, 1, 17, tzinfo=utc), datos=datos11, votos={}, ajustes={}, niv=niv)
+        m6 = r6['meses'].get('2026-11') or {}
+        e6 = encuestas(dt.datetime(2026, 12, 2, tzinfo=utc), r6)
+        w6 = para_web(r6, dt.datetime(2026, 12, 2, tzinfo=utc))
+        ok(m6.get('cats') == {} and list(m6.get('sv') or {}) == ['FFA'] and [e['id'] for e in e6] == ['mes:2026-11:FFA:rapero']
+           and m6['abre'] == '2026-12-01T23:00:00Z' and w6['sv_desde'] == '2026-11' and not muro(r6),
+           'desde noviembre se nomina sólo por servidor: la Liga no tiene nominados ni encuestas', str((m6.get('cats'), e6)))
+        ok((w6.get('gala') or {}).get('temp') == 'T1' and w6['gala']['nominados'] == '2027-01-01T16:00:00Z',
+           'la gala de la T1: los nominados el 1/1 a las 11 AM ET', str(w6.get('gala')))
     finally:
         SALIDA = viejo
     # 🥇 las figuras salen de los premios de cada semana: quien repite, sale las dos veces (con las insignias, no)

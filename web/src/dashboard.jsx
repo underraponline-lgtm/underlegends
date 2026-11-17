@@ -1764,7 +1764,7 @@ function MesAwardsDueno({ aj, hacer, ocup }) {
   const ab = S.abierto;
   if (!ab) {
     const v = S.vivo;
-    return <p className="pronto-p">{v ? 'Así va ' + v.nombre + ': los nominados salen el día 1 a las 11 AM, y desde ahí hasta las 6 PM puedes sacar a alguno acá.' : 'Todavía no hay MES AWARDS.'}</p>;
+    return <p className="pronto-p">{v ? 'Así va ' + v.nombre + ': los nominados de cada servidor salen el día 1 a las 11 AM, y desde ahí hasta las 6 PM puedes sacar a alguno acá.' : 'Todavía no hay MES AWARDS.'}</p>;
   }
   if (ab.votando) return <p className="pronto-p">Se está votando {ab.nombre}: los nominados ya no se cambian. Cierra el {corto(ab.cierra)}.</p>;
   const ya = ((aj.mes_sacar || {}).mes === ab.mes ? (aj.mes_sacar.quitar || []) : []);
@@ -4539,7 +4539,7 @@ function AjustesFilas({ liga, aj, hacer, ocup, chat, ir, abrir, sis }) {
         <Fila {...f('aj-crews')} t="Las crews" que="Cuánto cuesta crear una, cómo se arma su ranking y quién es el líder."
           val={'Crear: ' + num(aj.crew_precio ?? 2500) + ' PdT'}>
           <AjCrews liga={liga} aj={aj} hacer={hacer} ocup={ocup} /></Fila>
-        <Fila {...f('aj-mes')} t="MES AWARDS" que="Los nominados salen solos el día 1; hasta las 6 PM puedes sacar a alguno."
+        <Fila {...f('aj-mes')} t="MES AWARDS" que="Los nominados de cada servidor salen solos el día 1; hasta las 6 PM puedes sacar a alguno."
           val={ms && (ms.quitar || []).length ? 'Sacaste ' + ms.quitar.length : 'Sin cambios'}>
           <MesAwardsDueno aj={aj} hacer={hacer} ocup={ocup} /></Fila>
         <Fila {...f('aj-promos')} t="Promos a mano" que="Agregar una promo que el lector no vio, o sacar una que no va."

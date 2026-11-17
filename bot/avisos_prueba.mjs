@@ -3839,6 +3839,25 @@ const ok = (cond, que, det) => {
     const m1 = await (o.votar({ enc: 'mes-a', op: 'B', quien: Q, fijo: false })).json();
     const m2 = await (o.votar({ enc: 'mes-a', op: 'C', quien: Q, fijo: false })).json();
     ok(m1.ok && m2.ok && m2.cuenta.C === 1 && !m2.cuenta.B, 'los MES AWARDS se siguen cambiando hasta que cierran', JSON.stringify(m2));
+    // 🎁 el Cajón de discos por votar todas las de un servidor en el mes (17/11/2026)
+    const hastaM = new Date(Date.now() + 86400000).toISOString();
+    const defsM = { lista: [
+      { id: 'mes:2026-11:FFA:rapero', tipo: 'mes', sv: 'FFA', hasta: hastaM, op: ['A', 'B'] },
+      { id: 'mes:2026-11:FFA:staff', tipo: 'mes', sv: 'FFA', hasta: hastaM, op: ['C', 'D'] },
+      { id: 'mes:2026-11:SR:rapero', tipo: 'mes', sv: 'SR', hasta: hastaM, op: ['E', 'F'] },
+      { id: 'mes:2026-10:FFA:rapero', tipo: 'mes', sv: 'FFA', hasta: '2026-10-04T22:00:00Z', op: ['A', 'B'] },
+      { id: 'x2-b', tipo: 'x2', hasta: hastaM, op: ['FFA'] }] };
+    const eM = A.encuestasMesSv(defsM, 'mes:2026-11:FFA:rapero', Date.now());
+    ok(eM.clave === 'vota:2026-11:FFA' && eM.ids.join() === 'mes:2026-11:FFA:rapero,mes:2026-11:FFA:staff' &&
+      A.encuestasMesSv(defsM, 'x2-b', Date.now()).clave === '' && A.encuestasMesSv(defsM, 'mes:2026-11:XX:rapero', Date.now()).ids.length === 0,
+    'las del cofre: las abiertas de ese servidor ese mes, no otro servidor, no el mes cerrado, no el ×2', JSON.stringify(eM));
+    const cajon = () => o.dropsDe(S).cerrados.filter((c) => /^cofre5:0:vota:/.test(c.origen));
+    const k1 = await (o.votar({ enc: 'mes:2026-11:FFA:rapero', op: 'A', quien: S, fijo: false, mes_sv: eM.ids, mes_clave: eM.clave })).json();
+    const k2 = await (o.votar({ enc: 'mes:2026-11:FFA:staff', op: 'C', quien: S, fijo: false, mes_sv: eM.ids, mes_clave: eM.clave })).json();
+    const k3 = await (o.votar({ enc: 'mes:2026-11:FFA:staff', op: 'D', quien: S, fijo: false, mes_sv: eM.ids, mes_clave: eM.clave })).json();
+    const k4 = await (o.votar({ enc: 'mes:2026-11:FFA:rapero', op: 'A', quien: S, fijo: false, mes_sv: ['mes:x'], mes_clave: 'vota:2026-11:FFA:../x' })).json();
+    ok(!k1.cofre && k2.cofre === true && !k3.cofre && !k4.cofre && cajon().length === 1 && cajon()[0].tipo === 'cofre' && cajon()[0].cofre === 0,
+      'votar las 2 de FFA da UN Cajón de discos; cambiar el voto no da otro, y una llave rara no da nada', JSON.stringify([k1, k2, k3, cajon()]));
     // ⚔️ las libres: Q es «ana», S es «beto»
     o.sql.exec('INSERT INTO idk (id, k, t) VALUES (?, ?, ?), (?, ?, ?)', Q, 'ana', 1, S, 'beto', 1);
     const ya = Date.now();
