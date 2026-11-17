@@ -284,10 +284,7 @@
     "ovr": 42,
     "pod": 0,
     "pts": 1250,
-    "racha": "0/0",
-    "tg": {
-     "nuevo": true
-    }
+    "racha": "0/0"
    }
   },
   "AFIN": {
@@ -613,10 +610,7 @@
     "ovr": 44,
     "pod": 0,
     "pts": 7500,
-    "racha": "0/0",
-    "tg": {
-     "nuevo": true
-    }
+    "racha": "0/0"
    }
   },
   "Aby": {
@@ -2192,10 +2186,7 @@
     "ovr": 44,
     "pod": 0,
     "pts": 11550,
-    "racha": "0/0",
-    "tg": {
-     "nuevo": true
-    }
+    "racha": "0/0"
    }
   },
   "Camila": {
@@ -2681,10 +2672,7 @@
     "ovr": 42,
     "pod": 0,
     "pts": 1547,
-    "racha": "0/0",
-    "tg": {
-     "nuevo": true
-    }
+    "racha": "0/0"
    },
    "URBF": {
     "duelos": "3/6",
@@ -3522,10 +3510,7 @@
     "ovr": 42,
     "pod": 0,
     "pts": 2500,
-    "racha": "0/0",
-    "tg": {
-     "nuevo": true
-    }
+    "racha": "0/0"
    }
   },
   "Doble J": {
@@ -3893,10 +3878,7 @@
     "ovr": 43,
     "pod": 0,
     "pts": 6600,
-    "racha": "0/0",
-    "tg": {
-     "nuevo": true
-    }
+    "racha": "0/0"
    }
   },
   "EGI": {
@@ -4831,10 +4813,7 @@
     "ovr": 43,
     "pod": 0,
     "pts": 6600,
-    "racha": "0/0",
-    "tg": {
-     "nuevo": true
-    }
+    "racha": "0/0"
    }
   },
   "Fisics": {
@@ -6664,10 +6643,7 @@
     "ovr": 42,
     "pod": 0,
     "pts": 1547,
-    "racha": "0/0",
-    "tg": {
-     "nuevo": true
-    }
+    "racha": "0/0"
    }
   },
   "KRNAN 🇨🇱": {
@@ -10105,10 +10081,7 @@
     "ovr": 43,
     "pod": 0,
     "pts": 4950,
-    "racha": "0/0",
-    "tg": {
-     "nuevo": true
-    }
+    "racha": "0/0"
    }
   },
   "NILS": {
@@ -12790,10 +12763,7 @@
     "ovr": 42,
     "pod": 0,
     "pts": 1250,
-    "racha": "0/0",
-    "tg": {
-     "nuevo": true
-    }
+    "racha": "0/0"
    }
   },
   "Sexo": {
@@ -13785,10 +13755,7 @@
     "ovr": 44,
     "pod": 0,
     "pts": 9900,
-    "racha": "0/0",
-    "tg": {
-     "nuevo": true
-    }
+    "racha": "0/0"
    }
   },
   "Toretto Mexicano": {
@@ -14127,10 +14094,7 @@
     "ovr": 42,
     "pod": 0,
     "pts": 1547,
-    "racha": "0/0",
-    "tg": {
-     "nuevo": true
-    }
+    "racha": "0/0"
    }
   },
   "Urbana JJ 🇻🇪": {
@@ -14352,8 +14316,7 @@
     "pts": 12375,
     "racha": "1/1",
     "tg": {
-     "fin": 1,
-     "nuevo": true
+     "fin": 1
     }
    },
    "SR": {
@@ -14478,8 +14441,7 @@
     "pts": 16500,
     "racha": "1/1",
     "tg": {
-     "fin": 1,
-     "nuevo": true
+     "fin": 1
     }
    }
   },
@@ -15355,10 +15317,7 @@
     "ovr": 43,
     "pod": 0,
     "pts": 6600,
-    "racha": "0/0",
-    "tg": {
-     "nuevo": true
-    }
+    "racha": "0/0"
    }
   },
   "blackstar27": {

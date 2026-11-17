@@ -31,6 +31,7 @@
   "rango": "SSS",
   "tg_t": {
    "busc": 6,
+   "cab": 1,
    "dobles": 33,
    "infalt": true,
    "perf": 3,
@@ -119,7 +120,7 @@
   "rango": "SS",
   "tg_t": {
    "busc": 4,
-   "cab": 1,
+   "cab": 2,
    "dobles": 22,
    "infalt": true,
    "perf": 2,
@@ -165,6 +166,7 @@
   "rango": "SS",
   "tg_t": {
    "busc": 7,
+   "cab": 1,
    "cobro": 3,
    "dcor": true,
    "dobles": 18,
@@ -209,6 +211,7 @@
   "rango": "SS",
   "tg_t": {
    "busc": 1,
+   "cab": 1,
    "cobro": 1,
    "dcor": true,
    "dobles": 5,
@@ -253,6 +256,7 @@
   "rango": "S",
   "tg_t": {
    "busc": 7,
+   "cab": 1,
    "dobles": 12,
    "infalt": true,
    "perf": 2,
@@ -294,6 +298,7 @@
   "rango": "S",
   "tg_t": {
    "busc": 2,
+   "cab": 1,
    "dobles": 9,
    "fenix": 1,
    "perf": 2,
@@ -336,7 +341,7 @@
   "rango": "S",
   "tg_t": {
    "busc": 2,
-   "cab": 1,
+   "cab": 2,
    "dobles": 5,
    "perf": 2,
    "relampago": true,
@@ -418,6 +423,7 @@
   "rango": "S",
   "tg_t": {
    "busc": 2,
+   "cab": 1,
    "dcor": true,
    "dobles": 4,
    "perf": 2,
@@ -460,6 +466,7 @@
   "rango": "S",
   "tg_t": {
    "busc": 1,
+   "cab": 1,
    "dobles": 13,
    "infalt": true,
    "perf": 2,
@@ -5604,10 +5611,7 @@
   "pos": 294,
   "fc": true,
   "total": 256,
-  "rango": "E",
-  "tg_t": {
-   "reciente": true
-  }
+  "rango": "E"
  },
  {
   "full": "oriuz",
@@ -5678,7 +5682,6 @@
   "total": 256,
   "rango": "E",
   "tg_t": {
-   "reciente": true,
    "solo": 1,
    "sube": true
   }
@@ -6554,7 +6557,6 @@
   "rango": "E",
   "tg_t": {
    "dobles": 2,
-   "reciente": true,
    "trios": 1
   }
  },
@@ -8832,10 +8834,7 @@
   "pos": 352,
   "fc": true,
   "total": 256,
-  "rango": "E",
-  "tg_t": {
-   "reciente": true
-  }
+  "rango": "E"
  },
  {
   "full": "Cajita",
@@ -15107,10 +15106,7 @@
   "pos": 490,
   "fc": true,
   "total": 256,
-  "rango": "E",
-  "tg_t": {
-   "reciente": true
-  }
+  "rango": "E"
  },
  {
   "full": "Hardcore",
@@ -19393,10 +19389,7 @@
   "o": 563,
   "pos": 227,
   "total": 256,
-  "rango": "E",
-  "tg_t": {
-   "reciente": true
-  }
+  "rango": "E"
  },
  {
   "full": "LOKILLO🇨🇴",
@@ -19936,10 +19929,7 @@
   "pos": 608,
   "fc": true,
   "total": 256,
-  "rango": "E",
-  "tg_t": {
-   "reciente": true
-  }
+  "rango": "E"
  },
  {
   "full": "Koffi",
