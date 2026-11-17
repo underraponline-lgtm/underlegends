@@ -186,6 +186,16 @@
     "ANA: 54\n\nBETO: 48\n\n# GANADOR: ANA\n+3 PTOS ANA",
     "ANA: 52.5\n\nCARLA: 40.5\n\n# GANADOR: ANA\n+3 PTS ANA",
     "BETO: 10\n\nANA: 9"],
-   "res": [["ANA", "BETO", "ANA", "directa"], ["ANA", "CARLA", "ANA", "directa"]]}
+   "res": [["ANA", "BETO", "ANA", "directa"], ["ANA", "CARLA", "ANA", "directa"]]},
+  {"n": "FMS Coliseo (LKR): el título sin #, con 🆚 y el número romano adelante", "fam": "K", "msgs": [
+    "𝐕. 🇺🇾𝐀𝐍𝐀🇺🇾 🆚 🇦🇷𝐁𝐄𝐓𝐎 𝐂𝐀𝐑𝐎🇦🇷\n8x8\n2.5 - 2.5\n# 31.5 - 43\n# 🇦🇷𝐁𝐄𝐓𝐎 𝐂𝐀𝐑𝐎🇦🇷"],
+   "res": [["ANA", "BETO CARO", "BETO CARO", "directa"]]},
+  {"n": "FMS Coliseo: con # y el romano", "fam": "K", "msgs": [
+    "# 𝐈𝐕. 🇺🇸𝐂𝐄𝐂𝐈🇺🇸 🆚 🇺🇾𝐃𝐀𝐍𝐈🇺🇾\n8x8\n# 43.5 - 38.5\n# 🇺🇸𝐂𝐄𝐂𝐈🇺🇸"],
+   "res": [["CECI", "DANI", "CECI", "directa"]]},
+  {"n": "K: un renglón con 🆚 que NO es el primero no abre batalla", "fam": "K", "msgs": [
+    "# ANA VS BETO\n## ANA",
+    "## buena batalla\ncomentario: la próxima es CECI 🆚 DANI"],
+   "res": [["ANA", "BETO", "ANA", "directa"]]}
  ]
 }

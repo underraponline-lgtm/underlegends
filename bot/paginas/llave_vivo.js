@@ -105,6 +105,9 @@
   // ⚠️ después del «VS», a lo sumo una letra, cifras o `_`: `<:VSCUP:…>` de FVS es una copa (`escuchar.VS_PROPIO`)
   // 🔴 …pero «versus» es una palabra: después va cualquier cosa (`<:VERSUSbatalla:…>` de DDF, 16/11/2026)
   var VS_PROPIO = /<a?:(?!VSF?:)(?:\w*?versus\w*|\w*?vs[a-z]?[\d_]*):\d+>/gi;
+  // el VS animado y con sigla (`<a:vsgif:…>`, `<a:VS_UL:…>`), sólo en las líneas sin marcos: `escuchar.VS_ANIMADO`
+  var VS_ANIMADO = /<a?:(?!VSF?:)\w*?vs(?:_?gif\w*|_[a-z]{1,4}\d*):\d+>/gi;
+  var CON_MARCO = new RegExp('[' + ('[]⌞⌝「」『』' + MARCOS_MAS.join('')).replace(/[\]\[\\^-]/g, '\\$&') + ']');
   var PODIO_PROPIO = /<a?:([123])[a-zº°]*_?puesto\w*:\d+>/gi;
   /* 🏛️ el VS y el podio escritos como texto (`:VSr:`, `:1erPuesto:`): `escuchar.VS_TEXTO` y `PODIO_TEXTO` */
   var VS_TEXTO = /(?<![<\w]):(?!vsf?:)(?:\w*?versus\w*|\w*?vs[a-z]?[\d_]*):(?!\d)/gi;
@@ -243,12 +246,12 @@
 
   /* `escuchar._podio_con_medallas()`: `🏆 |X` del pie de la llave, como `CAMPEÓN: X` (y 🥈, 🥉 igual). Sólo debajo
      de la última batalla y sólo el puesto que la llave no escribe ya con palabras (ONE PIECE, FFA, 30/09/2026) */
-  var MEDALLA_PODIO = { '\u{1F3C6}': 'CAMPEÓN', '\u{1F947}': 'CAMPEÓN', '\u{1F948}': 'SUBCAMPEÓN', '\u{1F949}': '3ER PUESTO' };
+  var MEDALLA_PODIO = { '\u{1F3C6}': 'CAMPEÓN', '\u{1F947}': 'CAMPEÓN', '\u{1F396}': 'CAMPEÓN', '\u{1F948}': 'SUBCAMPEÓN', '\u{1F949}': '3ER PUESTO' };
   var PUNTAS_PODIO = Array.from(' .·▪️*_`:-–—️|┋');
   // con la aclaración entre paréntesis: `3ER LUGAR (3ER PUESTO):` (`escuchar.TERCERO`, 19 CUP de DDF)
   var TERCERO = /(?:\b3\s*(?:ER|RO)|TERC?ER)\s*(?:PUESTO|LUGAR)(?:\s*\([^)\n]*\))?\s*:?\s*[*_`~|]*\s*([^\n]{1,80})/i;
   function hayCampeon(texto) {
-    var re = /(SUB[\s\-]?)?(?:CAMPE[OÓ]N|\b(?:1\s*(?:ER|RO)|PRIMER)\s+PUESTO)\s*:?\s*[*_`~|┋]*\s*([^\n]{1,60})/gi, m;
+    var re = /(SUB[\s\-]?)?(?:CAMPE[OÓ]N|\b(?:1\s*(?:ER|RO)|PRIMER)\s+(?:PUESTO|LUGAR))\s*:?\s*[*_`~|┋]*\s*([^\n]{1,60})/gi, m;
     while ((m = re.exec(texto))) { if (!m[1]) return true; }
     return false;
   }
@@ -295,6 +298,7 @@
     var t = texto.replace(/<(<a?:\w+:\d+>)>/g, '$1');
     // «MATCH 1: P vs L»: `escuchar.MATCH_N`
     t = t.replace(/^([ \t>*_▪️•·-]*)(?:MATCH|PARTIDA|PARTIDO|COMBATE|ENFRENTAMIENTO|CRUCE|GAME)[ \t]*#?[ \t]*\d{1,3}[ \t]*[:.)\-–—][ \t]*/gim, '$1');
+    t = t.split('\n').map(function (l) { return CON_MARCO.test(l) ? l : l.replace(VS_ANIMADO, ' 🆚 '); }).join('\n');
     t = t.replace(VS_PROPIO, ' 🆚 ');
     // 🏛️ la RED BULL CREW de la ACADEMIA: el VS como texto, sin los marcos 〘〙 mal anidados ni la viñeta ➢
     t = t.replace(VS_TEXTO, ' 🆚 ').replace(/[〘〙]/g, ' ').replace(/^[ \t]*[➢➤]+[ \t]*/gm, '');
@@ -625,7 +629,7 @@
 
   /* la línea del campeón: `CAMPEÓN: X`, sin tomar la del SUB-campeón */
   function lineaCampeon(texto) {
-    var re = /(SUB[\s\-]*)?(?:CAMPE[OÓ]N|\b(?:1\s*(?:ER|RO)|PRIMER)\s+PUESTO)\s*:?\s*[*_`~|┋]*\s*([^\n]{1,60})/gi, m;
+    var re = /(SUB[\s\-]*)?(?:CAMPE[OÓ]N|\b(?:1\s*(?:ER|RO)|PRIMER)\s+(?:PUESTO|LUGAR))\s*:?\s*[*_`~|┋]*\s*([^\n]{1,60})/gi, m;
     while ((m = re.exec(texto))) { if (!m[1]) return m[2].trim(); }
     return '';
   }
@@ -633,7 +637,7 @@
      campeón —el nombre puede estar ahí, o seguir ahí: «CAMPEON: Hassan🇪🇬 +» y
      abajo el resto del equipo (EL RAP FECHA 5)—, salvo que sea el del segundo */
   function renglonDeAbajo(texto) {
-    var re = /(SUB[\s\-]*)?(?:CAMPE[OÓ]N|\b(?:1\s*(?:ER|RO)|PRIMER)\s+PUESTO)\s*:?\s*[*_`~|┋]*\s*([^\n]{1,60})/gi, m;
+    var re = /(SUB[\s\-]*)?(?:CAMPE[OÓ]N|\b(?:1\s*(?:ER|RO)|PRIMER)\s+(?:PUESTO|LUGAR))\s*:?\s*[*_`~|┋]*\s*([^\n]{1,60})/gi, m;
     while ((m = re.exec(texto)) && m[1]) { /* el del SUB-campeón no */ }
     if (!m) return '';
     var abajo = lineas(texto.slice(m.index + m[0].length)).slice(1, 3).map(function (l) { return l.trim(); })

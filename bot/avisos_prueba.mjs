@@ -553,6 +553,8 @@ const ok = (cond, que, det) => {
   const anuncios = casos.filter((c) => c.espera.es).length;
   ok(mal === 0, `los ${casos.length} casos dan lo mismo que en Python (${anuncios} anuncios)`);
   ok(casos.length >= 30, 'hay casos de verdad para comparar');
+  // URBF, 14/11/2026: `<t:…:s>` no es de los siete estilos de siempre; es el `_MARCA` de cuando.py
+  ok(A.momentoMs('<t:1790109000:s>', '2026-09-22T00:00:00', null) === 1790109000000, 'la marca <t:…:s> también es la hora');
   // 🔑 la tarjeta del Centro de Competencias de DRA: sin texto, en un embed
   // (el contrato guarda sólo texto; ver el self-check de bot/anuncios.py)
   const inscr = '¡Inscríbete presionando el botón de abajo!';
@@ -2624,6 +2626,12 @@ const ok = (cond, que, det) => {
   ok(tipo('COMPE CANCELADA por falta de jueces') === 'cancelado' && tipo('se cancela la compe de hoy') === 'cancelado'
     && tipo('perdón gente, hoy no se va a hacer') === 'cancelado' && tipo('el torneo queda suspendido') === 'cancelado',
   '«cancelada», «se cancela», «no se va a hacer», «suspendido»: cancelado');
+  // los de noviembre: DDS, DDF y FFA (cancelado) y ACAD (en pausa); y la persona que se baja no cancela nada
+  ok(tipo('# SE CANCELA POR PETICIÓN DE RAIBLES') === 'cancelado' && tipo('CANCELO COMPE @everyone') === 'cancelado'
+    && tipo('⛔ COMPETENCIA SUSPENDIDA · qcyo rapeen 14') === 'cancelado'
+    && A.PISTA_ESTADO.test('la RBCW Latam se cambia de fecha') && tipo('la RBCW Latam se cambia de fecha') === 'pausado'
+    && tipo('cancelo mi inscripción, perdón') === null,
+  '«SE CANCELA», «CANCELO COMPE», «SUSPENDIDA»: cancelado · «se cambia de fecha»: en pausa · «cancelo mi inscripción»: nada');
   const a1 = E('se atrasa 30 minutos la compe');
   const a2 = E('empezamos más tarde, en 20 min arrancamos');
   const a3 = E('nuevo horario <t:1791420000:t>');

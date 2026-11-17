@@ -117,7 +117,7 @@ def _leer_iso(s):
 
 
 #: la marca de tiempo de Discord: `<t:1790109000>` o `<t:1790109000:F>`
-_MARCA = re.compile(r'<t:(\d{9,11})(?::[tTdDfFR])?>')
+_MARCA = re.compile(r'<t:(\d{9,11})(?::[A-Za-z])?>')
 
 #: el huso de cada bandera, para «22:30 🇨🇱». ⚠️ Sin EE.UU.: tiene varios.
 #: El mismo mapa que `ZONA_BANDERA` de bot/avisos.js.
@@ -385,6 +385,9 @@ def _self_check():
     # la de Snake Rap: la marca de Discord, exacta y sin mirar `cuando`
     ok(momento({'horario': '<t:1790109000:F>', 'cuando': 'basura'})
        == '2026-09-22T20:30:00', 'la marca <t:…> de Snake Rap es la hora exacta')
+    # URBF, 14/11/2026: `<t:…:s>` no es de los siete estilos de siempre y no se leía
+    ok(momento({'horario': '<t:1790109000:s>', 'cuando': 'basura'})
+       == '2026-09-22T20:30:00', 'la marca <t:…:s> también')
 
     print('\n  la hora con bandera (los casos reales)')
     casos = [

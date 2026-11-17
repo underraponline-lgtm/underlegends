@@ -196,7 +196,7 @@ export async function claveCiclo(token) {
 export const CANCELADO = /\bcancelad[oa]s?\b|\bsuspendid[oa]s?\b|\bse\s+cancel[aó]\b/i;
 
 //: sin alguna de estas, `estadoDeMensaje()` no tiene nada que leer: el vigía relee cada minuto los mismos mensajes
-export const PISTA_ESTADO = /cancel|suspend|anulad|pospon|pospuest|aplaz|reprogram|posterg|pausa|atras|retras|demor|tarde|horario|reanud|retom|contin|seguimos|sigue|ma[ñn]ana|otro d[ií]a|no se|<t:\d/i;
+export const PISTA_ESTADO = /cancel|suspend|anulad|pospon|pospuest|aplaz|reprogram|posterg|pausa|atras|retras|demor|tarde|horario|reanud|retom|contin|seguimos|sigue|ma[ñn]ana|otro d[ií]a|no se|<t:\d|cambi\w* (?:de|la) fecha/i;
 /**
  * 📢 LO QUE EL ORGANIZADOR AVISA DESPUÉS DEL ANUNCIO, EN UN MENSAJE APARTE (Dlx, 07/10/2026: *«asegurate de q el bot
  * pueda entender cuando pasa estas situaciones… lit el evento se canceló o se va a atrasar»*). GALLOS DEL UNDER AMATEUR
@@ -229,11 +229,13 @@ export function estadoDeMensaje(texto, pub) {
   const otroDia = /\b(?:manana|pasado\s+manana|otro\s+dia|la\s+proxima\s+semana|el\s+(?:lunes|martes|miercoles|jueves|viernes|sabado|domingo))\b/;
   const sigueOtro = new RegExp('\\b(?:reanud\\w*|retom\\w*|continu\\w*|seguimos|seguir\\w*|sigue\\w*|termin\\w*|batallar\\w*|jugamos|se\\s+juega\\w*|se\\s+hace\\w*|terminamos)\\b[^.!?\\n]{0,80}' + otroDia.source
     + '|' + otroDia.source + '[^.!?\\n]{0,40}\\b(?:reanud\\w*|retom\\w*|continu\\w*|seguimos|sigue\\w*|termin\\w*|batallar\\w*|jugamos|se\\s+juega\\w*)\\b');
-  const posterga = /\b(?:se\s+pospone|pospuest[oa]s?|posponemos|pospondr\w*|aplaz\w*|reprogram\w*|posterg\w*|en\s+pausa|pausad[oa]s?|pausamos)\b/;
+  // «la RBCW Latam se cambia de fecha» (ACAD, 15/11/2026)
+  const posterga = /\b(?:se\s+pospone|pospuest[oa]s?|posponemos|pospondr\w*|aplaz\w*|reprogram\w*|posterg\w*|en\s+pausa|pausad[oa]s?|pausamos|cambi\w*\s+(?:de|la)\s+fecha)\b/;
   const atrasa = /\b(?:se\s+atras\w*|atrasad[oa]s?|atrasamos|retras\w*|demor\w*|se\s+corre\s+(?:la\s+hora|el\s+horario|la\s+compe)|(?:empez|arranc|comenz|inici)\w*\s+(?:un\s+poco\s+)?mas\s+tarde|nuevo\s+horario|nueva\s+hora|cambio\s+de\s+(?:hora|horario))\b/;
   const cancela = /\b(?:se\s+cancel\w*|cancelad[oa]s?|cancelamos|cancelo|suspendid[oa]s?|se\s+suspende\w*|suspendemos|no\s+se\s+(?:va\s+a\s+)?(?:hace|hara|hacer|realiza\w*|juega|jugara|jugar)\b|queda\s+anulad[oa]|anulad[oa])/;
   // ⚠️ «tu cupo queda cancelado», «inscripción cancelada»: la regla de siempre, no el evento
-  const cupo = /\b(?:cupo|cupos|inscripcion\w*|participacion|lugar)\b[^.!?\n]{0,30}\b(?:cancelad|anulad)/;
+  // y «cancelo mi inscripción»: lo de una persona, no el evento (ahora se leen también las inscripciones)
+  const cupo = /\b(?:cupo|cupos|inscripcion\w*|participacion|lugar)\b[^.!?\n]{0,30}\b(?:cancelad|anulad)|\bcancel\w*\s+(?:mi|su|tu|la|el)\s+(?:inscripcion\w*|cupo|participacion|lugar)\b/;
   const tardeOtroDia = nueva && pubMs && nueva - pubMs > 18 * 3600000;
   if (sigueOtro.test(s) || (posterga.test(s) && !mas && !desdeAhora) || tardeOtroDia) {
     return { tipo: 'pausado', nueva: tardeOtroDia ? nueva : 0, mas: 0 };
@@ -2634,7 +2636,7 @@ const AHORA = re(B + '(ahora|(?:ya)+a*|empez(ando|amos)|arrancamos|comenzamos|en
   S + '+vivo|right' + S + '+now)' + B, 'i');
 const HORAS = ['h', 'hs', 'hr', 'hrs', 'hora', 'horas'];
 const TOPE_MIN = 60 * 12;
-const MARCA = /<t:(\d{9,11})(?::[tTdDfFR])?>/;
+const MARCA = /<t:(\d{9,11})(?::[A-Za-z])?>/;
 
 // 🔑 «22:30 🇨🇱» ES UNA HORA: la bandera dice de dónde. El mismo mapa y las
 // mismas reglas que `cuando.hora_bandera()` en Python — el contrato
@@ -10455,6 +10457,12 @@ export class Avisos {
           // se recuerda DESPUÉS de escribir: si la escritura falla, la vuelta siguiente lo intenta de nuevo
           const recordar = () => { if (vistos.size >= 20000) vistos.clear(); vistos.set(m.id, texto); };
           if (previo === texto) { recordar(); continue; }
+          // 📢 EL ORGANIZADOR TAMBIÉN AVISA ACÁ (DDS, 05/11/2026: «# SE CANCELA POR PETICIÓN DE RAIBLES», en
+          // INSCRIPCIONES, y el calendario siguió diciendo «SIN LLAVE»). Sólo lo que parece suyo —@everyone, un rol
+          // mencionado o un título—: el resto del canal es gente anotándose o bajándose. Nunca frena
+          if (m.mention_everyone || (m.mention_roles || []).length || /^\s*#{1,3}\s/.test(String(m.content || ''))) {
+            try { this.anotarEstado(m, c, ahora); } catch (e) { /* sigue */ }
+          }
           if (this.inscMem) delete this.inscMem[c.sv || ''];
           this.sql.exec('INSERT INTO inscritos (id, canal, nombre, sv, autor_id, autor, pub, ed, texto) ' +
             'VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?) ON CONFLICT(id) DO UPDATE SET ed = excluded.ed, ' +

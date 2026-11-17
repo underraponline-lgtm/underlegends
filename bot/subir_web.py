@@ -2551,6 +2551,11 @@ def _cancelados(cal, LW, escribir=False, vigia=None, ahora_ms=None, guardados=No
                                                 'auto': 1})
     # 📢 y el que el organizador canceló con un mensaje (la #567, DDF, 05/11/2026): el vigía lo olvida a los 3 días
     por_mensaje = {str(x.get('id') or '') for x in (vigia or {}).get('cancelados') or () if isinstance(x, dict) and x.get('por') == 'mensaje'}
+    # 🔴 Y EL QUE LLEGA TARDE (COMPE PANDILLAS, DDF, 16/11/2026: «CANCELO COMPE @everyone»). El vigía lo anota en
+    # `estados` con su evento, pero `cancelaciones()` sólo pasa a `cancelados` lo de antes de la hora +30 min, y
+    # el organizador muchas veces avisa más tarde: el calendario decía «SIN LLAVE» con el aviso leído
+    por_mensaje |= {str(x.get('evento') or '') for x in (vigia or {}).get('estados') or ()
+                    if isinstance(x, dict) and x.get('tipo') == 'cancelado' and x.get('evento')}
     for c in cal:
         if _clave_cancelado(c) in por_mensaje and not (c.get('ll') or c.get('jugado') or c.get('fut')):
             ev.setdefault(_clave_cancelado(c), {'n': c.get('n') or '', 'sv': c.get('sv') or '', 't': c.get('t') or '',
@@ -4586,6 +4591,12 @@ def _self_check():
                       vigia={'cancelados': [{'id': '1556000000000000006', 'por': 'mensaje'}, {'id': '1556000000000000007', 'por': 'mensaje'}]})
     ok([bool(c.get('can')) for c in _cm] == [True, False] and _nm == 1,
        'cancelado por un mensaje del organizador: sale «cancelado», salvo que su llave se haya procesado')
+    _ct = [_ev(6, 'COMPE PANDILLAS', 'DDF', '2026-11-16T22:00:00'), _ev(7, 'OTRA', 'DDF', '2026-11-16T22:00:00')]
+    _nt = _cancelados(_ct, _LWc, ahora_ms=_ms('2026-11-17T17:00:00'), guardados={'eventos': {}},
+                      vigia={'estados': [{'id': '9', 'tipo': 'cancelado', 'evento': '1556000000000000006'},
+                                         {'id': '8', 'tipo': 'pausado', 'evento': '1556000000000000007'}]})
+    ok([bool(c.get('can')) for c in _ct] == [True, False] and _nt == 1,
+       'y el «CANCELO COMPE» que llega después de la hora (está en `estados`, no en `cancelados`); el «en pausa» no')
     # ⚠️ LA SEMANA DEL ARRANQUE SALE DE `comun/temporada.py`, NO SE ESCRIBE. Este caso clavaba el 14/10, de cuando la
     # T1 arrancaba el 12/10; el 08/10 pasó a arrancar el 22/09 sin corte, `debutantes()` siguió a `FECHAS` y el chequeo
     # quedó rojo culpando al «NUEVO», que estaba bien (13/10/2026: los 5 de esa semana, iguales que a mano). Y la semana

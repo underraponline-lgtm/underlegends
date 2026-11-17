@@ -57,15 +57,18 @@ export function limpio(n) {
   const t = letras(n).replace(EMOJI, ' ').replace(BANDERA, ' ').replace(/\([^)]*\)/g, ' ').replace(/[^\p{L}\p{N}\p{Z}.'\-_]/gu, '');
   return t.replace(/\s+/g, ' ').replace(/^[ .\-_]+|[ .\-_]+$/g, '');
 }
-/** `[a, b, extra_a, extra_b]` de un título `# A vs B`, o `null`. */
-export function lados(linea) {
+/** `[a, b, extra_a, extra_b]` de un título `# A vs B`, o `null`. `primera`: el primer renglón del mensaje, donde vale un
+ *  título sin `#` que lleve 🆚 (FMS Coliseo, 17/11/2026; el mismo `lados()` de ligas.py) */
+export function lados(linea, primera = false) {
   let l = letras(linea).trim();
-  if (!l.startsWith('#')) return null;
+  if (!l.startsWith('#') && !(primera && l.includes('🆚'))) return null;
   l = l.replace(/^#+/, '').trim();
   if (/EXHIBICION/i.test(plano(l)) || /PTB|TABLA/i.test(plano(l))) return null;
   const partes = l.split(SEP);
   if (partes.length !== 2) return null;
-  const [a0, b00] = partes;
+  // 🏛️ el número romano de la batalla adelante («V. LAST»: FMS Coliseo), con su punto y un espacio
+  const [a00, b00] = partes;
+  const a0 = a00.replace(/^\s*[IVXLC]{1,6}\.\s+/, '');
   // 💥 «KUSOH VS RICARDFLEX 💥 MAIN EVENT»: no es parte del nombre (el mismo que `lados()` de ligas.py)
   const b0 = b00.replace(/\s*[-|]\s*(?:JORNADA\s*\d+|RECUPERATIVA\b).*$/i, '').replace(/\s*[-|]?\s*\b(?:CO-?)?MAIN\s+EVENT\b.*$/i, '');
   const a1 = a0.replace(/^.*?\b(?:CO-?)?MAIN\s+EVENT\b\s*[:|-]?\s*/i, '');
@@ -334,14 +337,17 @@ export function leerMensajes(fam, msgs, bats, dosHoras = 2 * 3600 * 1000) {
     const corrige = fam === 'K' && CORRIGE.test(plano(texto));
     let vistos = new Set();
     // LKR: «15 = LAST 10= SHADOW … # LAST» trae el cierre en el mismo renglón (`CORTE_K` en ligas.py)
-    const renglones = texto.split(/\r?\n/).flatMap((l) => (fam === 'K' ? l.split(CORTE_K) : [l]));
+    // 🆚 el primer renglón del mensaje puede ser un título sin `#` (FMS Coliseo): sólo en K, como `_lk()` de ligas.py
+    const crudos = texto.split(/\r?\n/);
+    const prim = crudos.findIndex((x) => x.trim());
+    const renglones = crudos.flatMap((l, i) => (fam === 'K' ? l.split(CORTE_K) : [l]).map((x) => [x, fam === 'K' && i === prim]));
     const st = fam === 'K' ? sinTituloK(texto, bats[bats.length - 1]) : null;
     if (st) { const b = nueva(m, [st[0], st[1], false, false, '', ''], j); bats.push(b); nuevas.push(b); }
-    for (const l of renglones) {
+    for (const [l, esPrim] of renglones) {
       if (!l.trim()) continue;
       const pp = plano(l);
       const lj = JORNADA.exec(pp);
-      const ls = lados(l);
+      const ls = lados(l, esPrim);
       if (fam === 'U' && lj && !ls) { j = Number(lj[1] || lj[2]); continue; }
       if (ls) {
         if (fam === 'K') {

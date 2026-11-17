@@ -352,6 +352,13 @@ _MD = r'(?:\*\*|__)?'
 #: ellos los nombres entraban con el marco pegado. Van todos los pares de ese tipo, no sólo el que apareció
 MARCOS_MAS = ('【】', '〔〕', '［］', '《》', '⟨⟩', '⟦⟧', '〖〗', '⦗⦘',
               '❰❱', '❮❯', '❬❭', '❨❩', '❪❫', '❲❳', '❴❵', '⟪⟫', '⟬⟭', '⟮⟯', '⦅⦆', '〘〙', '〚〛', '⸨⸩', '⁅⁆')
+#: 🔑 EL VS ANIMADO Y CON SIGLA, EN LAS LÍNEAS SIN MARCOS (CH, VERSO ELITE VOL.1, 15/11/2026): `mats 🇺🇾<a:vsgif:…>
+#: THO🇦🇷` en octavos y `MATS (RESPIRACIÓN) <a:VS_UL:…> GEOKA (EZE)` en la final. No entraban, así que quedaban cuartos
+#: y semis, y el podio («PRIMER LUGAR», «SEGUNDO LUGAR») caía sobre las semis como si fueran la final.
+#: ⚠️ SÓLO SIN MARCOS: entre dos marcos cualquier emoji ya separa, y ADENTRO de uno no (PANDILLAS VOL 2, también de CH:
+#: `[ Seko Boy🇨🇴 <a:vsgif:…> Lamborguini 🇦🇷 - Makma 🇻🇪 ]` es un equipo con el emoji puesto por error)
+VS_ANIMADO = re.compile(r'<a?:(?!VSF?:)\w*?vs(?:_?gif\w*|_[a-z]{1,4}\d*):\d+>', re.I)
+_CON_MARCO = re.compile('[' + re.escape('[]⌞⌝「」『』' + ''.join(MARCOS_MAS)) + ']')
 VS_ENTRE = (r'(?:(?:[\N{CROSSED SWORDS}\N{DAGGER KNIFE}\N{HEAVY MULTIPLICATION X}\N{MULTIPLICATION X}\N{BALLOT X}'
             r'\N{MULTIPLICATION SIGN}\N{HIGH VOLTAGE SIGN}\N{COLLISION SYMBOL}\N{BOXING GLOVE}\N{RIGHT-FACING FIST}'
             r'\N{LEFT-FACING FIST}\N{HOCHO}]\N{VARIATION SELECTOR-16}?)+'
@@ -512,7 +519,8 @@ def _equipo_de_banderas(s):
 #: |Skratch 🇨🇱 + Makhma 🇻🇪`. Sin la palabra CAMPEÓN el lector no lo veía y
 #: la final quedaba «sin campeón» con el campeón escrito (Dlx: «asegurate de
 #: chequear bien las llaves»). Se traduce a la forma de FFA, `CAMPEÓN: X`.
-MEDALLA_PODIO = {'\U0001F3C6': 'CAMPEÓN', '\U0001F947': 'CAMPEÓN',
+#: 🎖️ también es la medalla del campeón (LKR, PUTA CUP del 10/11/2026: «🎖️ UNDER 🇨🇴 / 🥈 MONET 🇲🇽»; 17/11/2026)
+MEDALLA_PODIO = {'\U0001F3C6': 'CAMPEÓN', '\U0001F947': 'CAMPEÓN', '\U0001F396': 'CAMPEÓN',
                  '\U0001F948': 'SUBCAMPEÓN', '\U0001F949': '3ER PUESTO'}
 _PUNTAS_PODIO = ' .·▪️*_`:-–—️|┋'
 
@@ -640,6 +648,7 @@ def traducir(texto):
     # 🔑 «MATCH 1: P vs L» (la plantilla de doble eliminación, y lo que la IA escribe de una llave en imagen): el
     # número del cruce no es parte del nombre
     t = MATCH_N.sub(r'\1', t)
+    t = '\n'.join(l if _CON_MARCO.search(l) else VS_ANIMADO.sub(' 🆚 ', l) for l in t.split('\n'))
     t = VS_PROPIO.sub(' 🆚 ', t)
     # 🏛️ LA RED BULL CREW DE LA ACADEMIA (04/10/2026): `➢〘 PANCHOK 🇨🇱〘:VSr:] KOCHI 🇨🇱〙`. El VS llega como
     # texto, los marcos 〘〙 vienen mal anidados —se sacan: el VS ya separa los lados— y la viñeta ➢ no es nadie
@@ -755,7 +764,7 @@ def traducir(texto):
 # contada como «ultima ronda y no dice campeon».
 CAMPEON = re.compile(
     r'(?:(?<!SUB)(?<!SUB-)(?<!SUB )CAMPE[OÓ]N'
-    r'|\b(?:1\s*(?:ER|RO)|PRIMER)\s+PUESTO)'
+    r'|\b(?:1\s*(?:ER|RO)|PRIMER)\s+(?:PUESTO|LUGAR))'
     r'\s*:?\s*[*_`~|┋]*\s*([^\n]{1,60})', re.I)
 MENCION = re.compile(r'<@!?(\d+)>')
 #: una linea de podio: campeon, subcampeon, tercero, cuarto, MVP. Nunca
@@ -2284,6 +2293,14 @@ def resolver(texto, conocidos=None, ids=None, quien=None):
                 # camino, o la comparacion mide la diferencia de caminos.
                 if g is None and _c is not None:
                     g = _parecido(_c(camp), b)
+                # 🔑 LA HISTORIA ENTRE PARÉNTESIS TAMPOCO ES DEL NOMBRE ACÁ (CH, VERSO ELITE VOL.1, 15/11/2026): la
+                # final es `MATS (RESPIRACIÓN) VS GEOKA (EZE)` y el podio dice `PRIMER LUGAR : MATS`. La progresión ya
+                # la saca (`sig_l`, más arriba); la línea CAMPEÓN comparaba contra el lado entero y no era nadie
+                if g is None:
+                    _sinh = {HISTORIA.sub('', n).strip(): n for n in b if HISTORIA.search(n)}
+                    _s = _parecido(camp, list(_sinh)) if _sinh else None
+                    if _s is not None:
+                        g = _sinh[_s]
                 # el mismo equipo escrito al revés, igual que arriba:
                 # `1ER PUESTO: TAM+RIZAS+CUTULÚ` contra el lado
                 # `CUTULÚ+RIZAS+TAM` de la final. Ver `_equipo()`.
@@ -2352,6 +2369,14 @@ def resolver(texto, conocidos=None, ids=None, quien=None):
                                       and _parecido(cand, _miembros(n))]
                     if len(lados) == 1:
                         g, pq = lados[0], 'línea CAMPEÓN, por mención de un integrante'
+                # 🔑 LA MISMA MENCIÓN QUE UN LADO, AUNQUE EL PADRÓN NO LA TENGA (CH, COMPE CHOP NUEVO CEO, 13/11/2026):
+                # la final es `[<@A>] 🆚 [<@B>]` y abajo `CAMPEÓN👑 🥇🏆 : < <@A> >`. El ID es el mismo número en los dos
+                # lugares: no hay que saber de quién es para saber que es ese lado. Sólo si cae en UNO
+                if g is None and MENCION.search(camp):
+                    _ic = set(MENCION.findall(camp))
+                    _ld = [n for n in b if _ic & set(MENCION.findall(n))]
+                    if len(_ld) == 1:
+                        g, pq = _ld[0], 'línea CAMPEÓN, la misma mención que un lado'
                 # 🔑 Y SI EL CAMPEON NO SE RESUELVE, EL SUBCAMPEON PUEDE
                 # DECIRLO. En una final de dos, saber quien perdio ES saber
                 # quien gano. Medido el 24/09/2026: DESGRACIAS EN TOKYO VOL
@@ -2395,7 +2420,10 @@ def resolver(texto, conocidos=None, ids=None, quien=None):
                                 for nom in (ids.get(str(did)) or []):
                                     cand.update(n for n in b if _miembros(n)
                                                 and _parecido(nom, _miembros(n)))
-                        if len(cand) == 1:
+                        # 🔴 SÓLO EN UNA FINAL DE UNA BATALLA (CH, VERSO ELITE VOL.1, 15/11/2026). Si la última ronda que se
+                        # leyó tiene dos —la final no entró y quedaron las semis—, el subcampeón de una semi es el que
+                        # LLEGÓ a la final: «el otro lado» le dio la semi a RESPIRACIÓN, que la perdió con GEOKA
+                        if len(cand) == 1 and len(bats) == 1:
                             g = next(n for n in b if n not in cand)
                             pq = 'línea SUB-CAMPEÓN: el campeón es el otro lado'
                 if g is not None:
@@ -4707,6 +4735,12 @@ def _self_check():
          base + '⌞A⌝ 🆚 ⌞C⌝\n**__CAMPEON:A:flag_ve:__**', 'A'),
         ('`1ER PUESTO` también cuenta',
          base + '⌞A⌝ 🆚 ⌞C⌝\n:1ER PUESTO:┋ C', 'C'),
+        # VERSO ELITE MATS (CH, 15/11/2026): «🥇 PRIMER LUGAR: …»
+        ('`PRIMER LUGAR` también',
+         base + '⌞A⌝ 🆚 ⌞C⌝\nPRIMER LUGAR: C', 'C'),
+        # COMPE CHOP NUEVO CEO (CH, 13/11/2026): la final y el campeón, los dos como mención
+        ('el campeón con la misma mención que un lado',
+         base + '[<@425>] 🆚 [<@897>]\nCAMPEÓN👑 🥇🏆 : < <@425> >', '<@425>'),
         ('una mención no inventa a nadie',
          base + '⌞A⌝ 🆚 ⌞C⌝\nCAMPEON: <@1345962362615894027>', None),
         ('un equipo de tres tampoco',
@@ -4982,6 +5016,10 @@ def _self_check():
         ('`⌞Geoka⌝ 🆚 ⌞⌝` espera rival: un cruce de un lado, sin pegarse con el de abajo (Dos Generaciones Vol 2)',
          espera == [('CUARTOS', [['A 🇦🇷', 'B 🇨🇱'], ['Geoka 🇦🇷'], ['Cinexfilo 🇻🇪']])]),
         ('y sigue siendo idempotente', traducir(medal) == medal),
+        # PUTA CUP (LKR, 10/11/2026): «🎖️ UNDER 🇨🇴» al pie también es el campeón
+        ('`🎖️ Cami` al pie también es el campeón (PUTA CUP)',
+         [g for r, _b, g, _z in resolver(traducir('# FINAL\n[Ana 🇦🇷] 🆚 [Cami 🇻🇪]\n🎖️ Cami 🇻🇪\n🥈 Ana 🇦🇷'))
+          if r == 'FINAL'] == ['Cami 🇻🇪']),
         # 🔴 WETTSIDDEE #2 (FFA, 07/10/2026): un `⌞` sin cerrar en un cruce ENTERO no se come los de abajo
         ('`⌞tuca  vs.   ⌞malasia⌝` (sin el ⌝ de tuca) es un cruce, y los dos de abajo siguen siendo los suyos',
          rondas_de('`[ Cuartos ]`\n⌞mati cerna⌝   vs.   ⌞vandu ⌝\n⌞tuca  vs.   ⌞malasia⌝\n⌞soneto⌝   vs.   ⌞makma⌝\n'

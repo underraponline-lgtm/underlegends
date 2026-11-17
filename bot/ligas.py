@@ -222,10 +222,12 @@ def limpio(nombre):
     return re.sub(r'\s+', ' ', t).strip(' .-_')
 
 
-def lados(linea):
-    """`(a, b, extra_a, extra_b)` de un título `# A VS B`, o `None`. `extra`: el 🎮 del ExtraPlayer (un invitado)."""
+def lados(linea, primera=False):
+    """`(a, b, extra_a, extra_b)` de un título `# A VS B`, o `None`. `extra`: el 🎮 del ExtraPlayer (un invitado).
+    `primera`: es el primer renglón del mensaje; ahí vale también un título SIN `#` que lleve 🆚 (FMS Coliseo, LKR,
+    17/11/2026: «𝐕. 🇺🇾𝐋𝐀𝐒𝐓🇺🇾 🆚 🇦🇷𝐒𝐈𝐌𝐎𝐍…»)."""
     l = _letras(linea).strip()
-    if not l.startswith('#'):
+    if not l.startswith('#') and not (primera and '🆚' in l):
         return None
     l = l.lstrip('#').strip()
     if re.search(r'EXHIBICI[OÓ]N', _plano(l), re.I) or re.search(r'PTB|TABLA', _plano(l), re.I):
@@ -235,6 +237,8 @@ def lados(linea):
     if len(partes) != 2:
         return None
     a, b = partes
+    # 🏛️ el número romano de la batalla adelante («V. LAST», «IV. TOKIO»: FMS Coliseo), con su punto y un espacio
+    a = re.sub(r'^\s*[IVXLC]{1,6}\.\s+', '', a)
     # «… - JORNADA 4» al final del título de FMH Under, y «…| Jornada 2» en el de FDS
     # 🔁 y «- RECUPERATIVA» (FMH España, 05/11/2026): «EFE - RECUPERATIVA» salía como si fuera su nombre, también en el chat
     b = re.sub(r'\s*[-|]\s*(?:JORNADA\s*\d+|RECUPERATIVA\b).*$', '', b, flags=re.I)
@@ -910,11 +914,13 @@ def _lk(msgs):
         if st:
             bats.append({'id': m['id'], 't': m['t'], 'a': st[0], 'b': st[1], 'ea': False, 'eb': False, 'j': None,
                          'gana': '', 'como': '', 'rep': False, 'pt': [None, None], 'pt_rep': False, 'df': False})
-        for l0 in (m.get('content') or '').splitlines():
+        _ren = (m.get('content') or '').splitlines()
+        _prim = next((i for i, x in enumerate(_ren) if x.strip()), -1)
+        for _i, l0 in enumerate(_ren):
             for l in CORTE_K.split(l0):
                 if not l.strip():
                     continue
-                ls = lados(l)
+                ls = lados(l, primera=_i == _prim)
                 if ls:
                     ls = (TIT_REP.sub('', ls[0]).strip() or ls[0], TIT_REP.sub('', ls[1]).strip() or ls[1]) + tuple(ls[2:])
                     u = bats[-1] if bats else None
@@ -1827,6 +1833,16 @@ def _desde_el_hueco(bats, dias=CIERRA_DIAS):
     return bs[corte:]
 
 
+def lector_del_servidor(sv):
+    """📌 El lector que usan las ligas de ese servidor (`ligas_lector` en `datos/servidores.json`), o `''`."""
+    try:
+        with io.open(os.path.join(BASE, 'datos', 'servidores.json'), encoding='utf-8') as f:
+            x = (json.load(f).get('servidores') or {}).get(sv) or {}
+    except (OSError, ValueError):
+        return ''
+    return str(x.get('ligas_lector') or '') if isinstance(x, dict) else ''
+
+
 def esperan():
     """⏸️ `{sv: {categoría}}` de las ligas que NO entran solas aunque un lector las lea (`ligas_esperan` de cada servidor
     en `datos/servidores.json`). 15/11/2026, FMS Ceuta: el lector de LKR leía 16 de sus 53 batallas, se salteaba su
@@ -1879,6 +1895,13 @@ def descubrir(s, mapa, viejas, ahora=None, quietas=None):
         try:
             ms = _mensajes(s, L['ver'], 1)
             prueba, fam = elegir_lector(ms, pref)
+            # 📌 EL LECTOR QUE EL SERVIDOR USA SIEMPRE (`ligas_lector` en datos/servidores.json, 17/11/2026): en las ligas
+            # de FFS el lector K cerraba algunas batallas MÁS que el FF (81 contra 78 en Argentina) adivinando por los
+            # números —el «PTB TOTAL» del que perdió la réplica, un «X DEFAULT» contado como victoria— y entraba con
+            # 5 a 7 ganadores equivocados por liga. Si el lector del servidor llega al mínimo, es ése
+            forzado = lector_del_servidor(L['sv'])
+            if forzado and prueba.get(forzado, 0) >= NUEVA_MIN:
+                fam = forzado
         except Exception as e:                           # noqa: BLE001
             print('   ⚠️ no pude leer los veredictos de %s (%s)' % (L['n'], str(e)[:60]))
             continue

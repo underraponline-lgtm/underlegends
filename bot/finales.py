@@ -237,6 +237,12 @@ def para_preguntar(llaves, estado, hoy=None):
             t = t.replace(tzinfo=datetime.timezone.utc)
         if (hoy - t).days > DIAS:
             continue
+        # 🔎 LA LLAVE QUE EL BOT LEYÓ MAL NO SE PREGUNTA (FDS RANKED 2, 16/11/2026: un menú con cuatro «Final:»). Es la
+        # regla de `forma_ok()`, que hasta hoy se miraba recién a las 48 h: una final tiene a lo sumo dos batallas
+        if sum(str(p.get('ronda') or '').strip().lower() == 'final' for p in f['preguntas']) > 2:
+            print('   🔎 %s · %s: la leí con más de dos batallas en la final; no se le pregunta, queda en ✅ Decidir'
+                  % (f.get('evento') or f.get('llave'), f.get('sv') or ''))
+            continue
         out.append(dict(f, preguntas=f['preguntas'][:MAX_PREGUNTAS]))
     return out[:TOPE]
 
@@ -705,6 +711,9 @@ def _self_check():
         malos.append('se pregunta una de hace más de %d días' % DIAS)
     if len(para_preguntar([dict(f, llave=str(i)) for i in range(10)], {}, hoy)) != TOPE:
         malos.append('el tope por corrida')
+    _fds = dict(f, preguntas=[{'ronda': 'Final', 'lados': ['A%d' % i, 'B%d' % i]} for i in range(4)])
+    if para_preguntar([_fds], {}, hoy) or not para_preguntar([dict(_fds, preguntas=_fds['preguntas'][:2])], {}, hoy):
+        malos.append('la llave con cuatro «Final» (FDS RANKED 2) no se pregunta; la final con su tercer puesto, sí')
     if pendientes({'1': dict(f, retirada='junta sin «+»'), '2': f}) != {'2': f}:
         malos.append('una pregunta retirada no se aplica aunque la contesten')
     malos += _prueba_nuevo()

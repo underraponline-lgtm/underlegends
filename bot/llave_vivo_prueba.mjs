@@ -63,6 +63,9 @@ ok('la ronda que se juega, en una llave sin final', LV.aLlave({ id: '1', texto:
 ok('el SUB-CAMPEÓN nunca es el campeón',
   LV.lineaCampeon('SUB-CAMPEÓN: Pollo\nCAMPEÓN: Hassan') === 'Hassan' &&
   LV.lineaCampeon('SUB-CAMPEÓN: Pollo') === '');
+// VERSO ELITE MATS (CH, 15/11/2026): «PRIMER LUGAR», como `escuchar.CAMPEON`
+ok('«PRIMER LUGAR» es la línea del campeón', LV.lineaCampeon('PRIMER LUGAR: Hassan') === 'Hassan',
+  LV.lineaCampeon('PRIMER LUGAR: Hassan'));
 ok('el nombre del evento, sin el subrayado de Discord',
   LV.titulo('## __ ↱<:x:1> • AGREEMENT: DOOMSDAY V.1 • <:x:1>↲__\n▪️ **[CUARTOS]**') === 'AGREEMENT DOOMSDAY V.1',
   LV.titulo('## __ ↱<:x:1> • AGREEMENT: DOOMSDAY V.1 • <:x:1>↲__\n▪️ **[CUARTOS]**'));

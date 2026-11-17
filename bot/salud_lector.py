@@ -108,7 +108,7 @@ def armar(ahora=None, llaves=None, sin_ganador=None, finales=None, dudas_id=None
             con_duda.add((_norm(p[0]), p[1], p[2]))
     por_sv = {}
     for ev in eventos:
-        c = por_sv.setdefault(ev.get('sv') or '?', {'ev': 0, 'solos': 0, 'preg': 0, 'cont': 0})
+        c = por_sv.setdefault(ev.get('sv') or '?', {'ev': 0, 'solos': 0, 'preg': 0, 'cont': 0, 'nopub': 0})
         c['ev'] += 1
         # ⚠️ «SOLO» ES SIN AYUDA: ni una batalla que siga abierta (`batallas_sin_ganador.json`, que sólo guarda lo de
         # hoy) ni una que se haya decidido a mano —la llave guardada la marca «✅ Decidir»—. Sin lo segundo, lo que
@@ -121,9 +121,15 @@ def armar(ahora=None, llaves=None, sin_ganador=None, finales=None, dudas_id=None
             continue
         t = _dia((f.get('preguntada') or '')[:10])
         if t and desde <= t < hasta + dt.timedelta(days=1):
-            c = por_sv.setdefault(f.get('sv') or '?', {'ev': 0, 'solos': 0, 'preg': 0, 'cont': 0})
+            c = por_sv.setdefault(f.get('sv') or '?', {'ev': 0, 'solos': 0, 'preg': 0, 'cont': 0, 'nopub': 0})
+            # 🔴 `respondidas`, NO `ganador` (17/11/2026): el estado de `bot/finales.py` nunca tuvo ese campo, así que esto
+            # decía «0 contestadas» en todos los servidores. Y la que no se pudo publicar —al bot le falta Enviar
+            # mensajes en ese canal (`sin_permiso`, sin mensaje)— no es una pregunta: va aparte
+            if not f.get('pregunta'):
+                c['nopub'] += 1
+                continue
             c['preg'] += 1
-            c['cont'] += bool(f.get('ganador'))
+            c['cont'] += bool(f.get('preguntas')) and len(f.get('respondidas') or {}) >= len(f.get('preguntas') or [])
     titulo = '📊 Cómo leyó el bot las llaves · %s → %s' % (desde.strftime('%d/%m'), hasta.strftime('%d/%m'))
     if not por_sv:
         return titulo, ['Ninguna llave entró esta semana.']
@@ -133,6 +139,8 @@ def armar(ahora=None, llaves=None, sin_ganador=None, finales=None, dudas_id=None
         lin = '**%s** · %d evento(s), %d solo(s)%s' % (sv, c['ev'], c['solos'], pct)
         if c['preg']:
             lin += ' · %d final(es) preguntada(s), %d contestada(s)' % (c['preg'], c['cont'])
+        if c['nopub']:
+            lin += ' · %d sin poder preguntar (al bot le falta permiso en el canal)' % c['nopub']
         ls.append(lin)
     tot = sum(c['ev'] for c in por_sv.values())
     sol = sum(c['solos'] for c in por_sv.values())
@@ -284,8 +292,16 @@ def _self_check():
               '2': {'sv': 'FFA', 'dia': '2026-10-07', 'nombre': 'B', 'fecha': '07/10', 'rondas': []},
               '3': {'sv': 'FVS', 'dia': '2026-10-08', 'nombre': 'C', 'fecha': '08/10', 'rondas': []},
               '4': {'sv': 'FFA', 'dia': '2026-09-28', 'nombre': 'viejo', 'fecha': '28/09', 'rondas': []}}
-    t, ls = armar(ahora, llaves, ['B · FFA · 07/10 · cuartos · x 🆚 y'], {}, [], {})
+    fin = {'a': {'sv': 'FFA', 'preguntada': '2026-10-06 9:00 PM ET', 'pregunta': '9', 'preguntas': [{}, {}],
+                 'respondidas': {'0': 'X', '1': 'Y'}},
+           'b': {'sv': 'FFA', 'preguntada': '2026-10-07 9:00 PM ET', 'pregunta': '8', 'preguntas': [{}, {}],
+                 'respondidas': {'0': 'X'}},
+           'c': {'sv': 'FVS', 'preguntada': '2026-10-08 9:00 PM ET', 'pregunta': '', 'preguntas': [{}],
+                 'respondidas': {}, 'sin_permiso': True}}
+    t, ls = armar(ahora, llaves, ['B · FFA · 07/10 · cuartos · x 🆚 y'], fin, [], {})
     todo = '\n'.join(ls)
+    if '2 final(es) preguntada(s), 1 contestada(s)' not in todo or '1 sin poder preguntar' not in todo:
+        malos.append('las finales: contestada = todas sus preguntas respondidas, y la que no se publicó aparte:\n' + todo)
     if '**FFA** · 2 evento(s), 1 solo(s) (50 %)' not in todo or '**FVS** · 1 evento(s), 1 solo(s) (100 %)' not in todo:
         malos.append('los números por servidor:\n' + todo)
     if '2 de 3' not in todo:

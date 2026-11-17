@@ -451,7 +451,16 @@
    ],
    "tier": 3,
    "_tier_por_que": "Tier 3 desde el 20/10/2026, elegido por Dlx en el Dashboard (el ciclo lo copió a datos/niveles.json a las 8:59 PM ET). Escrito acá el 15/11 para que, si el ajuste del Dashboard se vacía, no vuelva a Tier 1 solo.",
-   "_sin_carta": "Sin carta de Servidor desde el 15/11/2026: Dlx, a «¿la carta de Servidor de FFS se queda, aunque sea Tier 3?», «Sacarla». sinCarta en el Worker y fuera de que_cambio.SERVIDORES; las 132 camisetas sv-ffs quedan en R2 sin usarse (no se ofrecen ni se muestran)."
+   "_sin_carta": "Sin carta de Servidor desde el 15/11/2026: Dlx, a «¿la carta de Servidor de FFS se queda, aunque sea Tier 3?», «Sacarla». sinCarta en el Worker y fuera de que_cambio.SERVIDORES; las 132 camisetas sv-ffs quedan en R2 sin usarse (no se ofrecen ni se muestran).",
+   "ligas_lector": "FF",
+   "ligas_esperan": {
+    "ids": [
+     "1367688813572526101"
+    ],
+    "notas": {
+     "1367688813572526101": "Future Free Series no es una liga: es la categoría general de FFS, y su «ver» son resultados de postulaciones al staff (17/11/2026)."
+    }
+   }
   },
   "DDF": {
    "nombre": "Dimensión del Freestyle",
@@ -762,6 +771,14 @@
     "canal_id": "1443793172013776997",
     "creada": "2026-11-08",
     "_por_que": "en 👋〕BIENVENIDAS el bot no puede crear invitaciones (403)"
+   },
+   "ligas_esperan": {
+    "ids": [
+     "1460000085847834801"
+    ],
+    "notas": {
+     "1460000085847834801": "Discord League Style World: cada jurado escribe su voto y el host no cierra la batalla; el lector K «cierra» con los números de un solo jurado (la tabla de la DLS 1 salía Mark 14 / Founder 10 contra la oficial Founder 22 / Mark 22). Espera un lector por mayoría de jurados o una línea de cierre del host (17/11/2026)."
+    }
    }
   },
   "CEU": {
