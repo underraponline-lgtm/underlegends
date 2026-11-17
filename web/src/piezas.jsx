@@ -121,6 +121,13 @@ export function Chevron() {
 
 // ── lo que la página le pide a la cañería (cuenta.js, social.js): abrir la cuenta, una carta, una llave, votar ──
 const luego = (f) => setTimeout(f, 0);
+// 🎞️ EL ÚLTIMO TOQUE, para que la ventana de una tarjeta (visor.jsx) haga salir la carta de donde la tocaste. Con
+// `composedPath()`: la página vive en un shadow root, y en `window` el `target` es el host y no lo que se tocó
+if (typeof window !== 'undefined' && !window.__lgToqueOk) {
+  window.__lgToqueOk = true;
+  window.addEventListener('pointerdown', (e) => { const p = e.composedPath ? e.composedPath() : []; window.__lgToque = { el: p[0] || e.target, t: Date.now() }; }, { capture: true, passive: true });
+}
+
 export const accion = {
   // Tu cuenta es una página (desde el 02/10/2026; hasta la tanda 4 se llegaba tocando el botón escondido de app.js)
   cuenta: () => { location.hash = '#/cuenta'; },

@@ -11,6 +11,19 @@
   ],
   "cambios": [
     {
+      "version": "5.76",
+      "dia": "2026-11-16",
+      "cuando": "2026-11-16T22:09:19-05:00",
+      "titulo": "La ventana de las cartas, rehecha",
+      "items": [
+        "Al tocar a alguien, su carta se abre **sobre la página desenfocada**, con la luz del color de su rango, y sale de donde la tocaste.",
+        "**Sus cartas van a los costados**: la elegida en el medio y las de al lado asomando. Se cambia deslizando, tocando la de al lado, con las flechas de abajo o con el teclado. Ahora también están **sus cartas de liga**.",
+        "Al lado (en el celular, abajo) va su ficha: país, servidor, crew, **su último evento** y qué mide esa carta. Los números que la carta ya dice no se repiten.",
+        "**Descargar**, **Ver su perfil** y **Compartir** (el link a su perfil). Si es tuya, también **Hacer principal** y **Personalizar**.",
+        "En la compu, las flechas de las orillas pasan a la persona de al lado en la tabla."
+      ]
+    },
+    {
       "version": "5.75",
       "dia": "2026-11-16",
       "cuando": "2026-11-16T22:05:00-05:00",

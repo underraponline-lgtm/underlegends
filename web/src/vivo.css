@@ -3126,33 +3126,100 @@ li.nt-f{cursor:default}
   .app .lk-pgs{grid-template-columns:repeat(auto-fill,minmax(240px,1fr))}
 }
 
-/* ── 🃏 LA VENTANA DE UNA TARJETA (`visor.jsx`, con la llave): la de app.js era de la página vieja ── */
-.vc{position:fixed;inset:0;z-index:120;display:grid;place-items:center;padding:16px;background:rgba(3,3,4,.82);overscroll-behavior:contain}
-.vc-caja{display:grid;gap:12px;width:min(440px,100%);max-height:calc(100vh - 32px);max-height:calc(100dvh - 32px);overflow:auto;padding:14px 14px 16px;
-  background:var(--fondo);color:var(--tinta);border:2px solid var(--linea)}
-.vc-cab{display:flex;align-items:flex-start;justify-content:space-between;gap:12px}
-.vc-q{display:grid;gap:6px;min-width:0}
-.vc-pos{font:700 15px/1 "Barlow Condensed",sans-serif;letter-spacing:0.05em;text-transform:uppercase;color:var(--magenta-tx)}
-.vc-q h2{margin:0;font:900 24px/1 Archivo,sans-serif;font-stretch:120%;text-transform:uppercase;overflow-wrap:anywhere}
-.vc-sub{display:flex;flex-wrap:wrap;gap:4px 14px;margin:0;font:700 12.5px/1.3 Archivo,sans-serif}
-.vc-sub a{display:inline-flex;align-items:center;gap:6px;min-height:30px;text-decoration:underline;text-underline-offset:3px}
-.vc-flag{width:20px;height:14px;object-fit:cover}
-.vc-x{flex:none;width:44px;height:44px;border:2px solid var(--linea);background:none;color:var(--tinta);font:400 26px/1 Archivo,sans-serif;cursor:pointer}
-.vc-pest{display:flex;flex-wrap:wrap;gap:6px}
-.vc-pest button{min-height:38px;padding:0 10px;border:2px solid var(--linea);background:var(--fondo);color:var(--tinta);
-  font:700 15px/1 "Barlow Condensed",sans-serif;letter-spacing:0.03em;text-transform:uppercase;cursor:pointer}
-.vc-pest button.on{background:var(--inv);color:var(--inv-tinta)}
-.vc-img{display:grid;justify-items:center}
-.vc-img .tj-c{width:auto;max-width:100%;height:min(56vh,520px)}
-.vc-sin{width:100%;margin:0;padding:30px 10px;border:2px dashed var(--gris);font:700 16px/1.4 "Barlow Condensed",sans-serif;color:var(--gris);text-align:center}
-.vc-aviso{margin:0;padding:8px 10px;border:2px solid var(--magenta);background:var(--caja);font:600 12.5px/1.4 Archivo,sans-serif}
-.vc-num{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));margin:0;border:2px solid var(--linea)}
-.vc-num div{display:grid;justify-items:center;gap:4px;padding:8px 4px}
-.vc-num div+div{border-left:1px solid var(--suave)}
-.vc-num dt{font:700 15px/1 "Barlow Condensed",sans-serif;letter-spacing:0.04em;text-transform:uppercase;color:var(--gris)}
-.vc-num dd{margin:0;font:900 17px/1 Archivo,sans-serif;font-variant-numeric:tabular-nums}
-.vc-acc{display:flex;flex-wrap:wrap;gap:8px}
-.vc-acc .btn{flex:1 1 140px}
+/* ── 🃏 LA VENTANA DE UNA TARJETA (`visor.jsx`), REHECHA EL 16/11/2026: la C de la maqueta. El escenario siempre oscuro
+   —la carta luce sobre negro en todos los temas— y la ficha siempre blanca, como la franja del Inicio: no dependen de
+   Clara/Noche ni del color del servidor, así que fijan su propia tinta. Celular: la carta arriba y la ficha abajo, la ✕
+   en la cabecera de la ficha (sin fila propia) y los botones pegados abajo. Tablet de pie: lo mismo, en una columna.
+   Compu (≥900): la carta a la izquierda y la ficha al lado, del alto de lo que tiene; ‹ › en las orillas pasan de
+   persona. SUS CARTAS VAN A LOS COSTADOS: la elegida en el medio y la de cada lado asomando (`--d` y `--k` los pone
+   visor.jsx; `--paso` es cuánto se corre cada una, en % de su propio ancho) ── */
+.vk{position:fixed;inset:0;z-index:120;color:#F6F6F6;background:rgba(3,3,4,.86);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px);overscroll-behavior:contain}
+.vk-in{position:absolute;inset:0;overflow:auto;overscroll-behavior:contain;display:grid;grid-template-columns:minmax(0,1fr);align-content:start;--fw:380px;--pad:84px;scrollbar-width:none}
+.vk-in::-webkit-scrollbar{display:none}
+/* ⚠️ `overflow-x:clip` y NO `hidden`: con `hidden` la escena pasa a ser un contenedor con scroll, la grilla la achica al
+   alto que sobra y la ficha le tapa la carta (medido en la maqueta: 382 px donde hacían falta 486) */
+.vk-esc{position:relative;display:grid;justify-items:center;gap:12px;padding:calc(16px + env(safe-area-inset-top,0px)) 0 20px;overflow-x:clip;
+  --ch:min(clamp(300px,calc(100dvh - 330px),560px),calc((100vw - 90px) * 1.46))}
+.vk-esc::before{content:"";position:absolute;inset:0;pointer-events:none;background:radial-gradient(closest-side,color-mix(in srgb,var(--g) 40%,transparent),transparent)}
+.vk-cc{position:relative;width:100%;height:var(--ch);touch-action:pan-y;-webkit-user-select:none;user-select:none;--paso:58%}
+.vk-sl{position:absolute;top:0;left:50%;height:100%;width:calc(var(--ch) * .685);transform:translateX(calc(-50% + var(--d) * var(--paso))) scale(var(--k));
+  transition:transform .45s cubic-bezier(.2,.8,.2,1),opacity .35s,filter .35s}
+.vk-sl.vk-lado{cursor:pointer;filter:brightness(.55) saturate(.8)}
+.vk-gira{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;transition:transform .5s cubic-bezier(.2,.8,.2,1)}
+.vk-gira img{display:block;height:100%;width:auto;max-width:100%;object-fit:contain;filter:drop-shadow(0 18px 30px rgba(0,0,0,.55));-webkit-user-drag:none}
+.vk-sin{position:absolute;inset:auto 16px 40%;margin:0;padding:30px 10px;border:2px dashed #A5A5A0;font:700 16px/1.4 "Barlow Condensed",sans-serif;color:#A5A5A0;text-align:center}
+.vk-et{position:relative;z-index:12;display:flex;align-items:center;justify-content:center;gap:12px}
+.vk-et span{min-width:150px;text-align:center;font:800 12.5px/1.2 "Barlow Condensed",sans-serif;letter-spacing:.08em;text-transform:uppercase;color:#A5A5A0}
+.vk-et b{display:block;color:#F6F6F6;font:900 15px/1.15 Archivo,sans-serif;font-stretch:112%;letter-spacing:0}
+.vk-fl{display:grid;place-items:center;width:44px;height:44px;border:1.5px solid rgba(246,246,246,.32);background:rgba(3,3,4,.4);color:#F6F6F6;font:400 26px/1 Archivo,sans-serif;cursor:pointer}
+.vk-fl:hover:not(:disabled){border-color:#F6F6F6}
+.vk-fl:disabled{opacity:.28;cursor:default}
+.vk-ficha{position:relative;display:grid;grid-template-columns:minmax(0,1fr);gap:12px;padding:16px 16px 0;margin-top:-10px;background:#F6F6F6;color:#030304;border-radius:10px 10px 0 0}
+.vk-cab{display:flex;justify-content:space-between;align-items:flex-start;gap:10px}
+.vk-q{display:grid;gap:6px;min-width:0}
+.vk-pos{font:800 12.5px/1 "Barlow Condensed",sans-serif;letter-spacing:.1em;text-transform:uppercase;color:#C0105F}
+.vk-q h2{margin:0;color:#030304;font:900 28px/.95 Archivo,sans-serif;font-stretch:125%;text-transform:uppercase;overflow-wrap:anywhere;text-wrap:balance}
+.vk-x{display:grid;place-items:center;flex:none;width:44px;height:44px;padding:0;border:2px solid #030304;background:none;color:#030304;cursor:pointer}
+.vk-xg{display:none}
+.vk-filas{display:grid;margin:0;padding:0;list-style:none;border-top:2px solid #030304}
+.vk-filas a,.vk-filas div{display:grid;grid-template-columns:76px minmax(0,1fr) auto;gap:10px;align-items:center;min-height:46px;border-bottom:1px solid #D6D6D0;color:#030304;text-decoration:none}
+.vk-filas a:hover{background:#ECECE6}
+.vk-k{font:800 11.5px/1.1 "Barlow Condensed",sans-serif;letter-spacing:.1em;text-transform:uppercase;color:#55554F}
+.vk-v{display:flex;align-items:center;gap:7px;min-width:0;font:800 14.5px/1.25 Archivo,sans-serif;overflow-wrap:anywhere}
+.vk-v em{font-style:normal;color:#8A6A00}
+.vk-filas i{font:400 20px/1 Archivo,sans-serif;font-style:normal;color:#55554F}
+.vk-flag{width:22px;height:15px;object-fit:cover;flex:none}
+.vk-aviso{margin:0;padding:8px 10px;border:2px solid #E41373;background:#FFFFFF;color:#030304;font:600 12.5px/1.4 Archivo,sans-serif}
+.vk-mide{margin:0;padding:10px 12px;background:#030304;color:#F6F6F6;font:600 13px/1.4 Archivo,sans-serif}
+.vk-mide b{font:900 12.5px/1 Archivo,sans-serif;text-transform:uppercase;color:#29B298}
+.vk-acc{position:sticky;bottom:0;display:flex;flex-wrap:wrap;gap:8px;margin:0 -16px;padding:12px 16px calc(14px + env(safe-area-inset-bottom,0px));
+  background:#F6F6F6;border-top:1px solid #D6D6D0;box-shadow:0 -12px 14px -12px rgba(3,3,4,.35)}
+.vk-acc > *{min-width:0}
+.vk-bl,.vk-bo{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:48px;padding:0 10px;border:2px solid #030304;font:800 13px/1 Archivo,sans-serif;
+  text-transform:uppercase;text-decoration:none;cursor:pointer;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.vk-bl{flex:1.2 1 0;background:#030304;color:#F6F6F6;box-shadow:4px 4px 0 #29B298}
+.vk-bl svg{flex:none}
+.vk-bl:disabled{opacity:.75;cursor:wait}
+.vk-bo{flex:1 1 0;background:none;color:#030304}
+.vk-bo:hover{background:#ECECE6}
+.vk-bo:disabled{opacity:.6;cursor:wait}
+.vk-bi{display:grid;place-items:center;flex:none;width:48px;min-height:48px;padding:0;border:2px solid #030304;background:none;color:#030304;cursor:pointer}
+.vk-fila2{flex:1 1 100%;display:flex;gap:8px}
+.vk-fila2 > *{flex:1 1 0;min-width:0}
+.vk-per{display:none}
+.vk-toast{position:fixed;left:50%;bottom:calc(92px + env(safe-area-inset-bottom,0px));z-index:5;transform:translateX(-50%);padding:11px 14px;background:#F6F6F6;color:#030304;
+  border:2px solid #030304;font:800 13px/1 Archivo,sans-serif;white-space:nowrap;box-shadow:4px 4px 0 #29B298}
+.vk button:focus-visible,.vk a:focus-visible{outline:3px solid #29B298;outline-offset:2px}
+@media (min-width:700px) and (max-width:899px){
+  .vk-in{grid-template-columns:min(560px,100%);justify-content:center}
+  .vk-ficha{margin:-10px 0 24px;border-radius:8px}
+  .vk-acc{border-radius:0 0 8px 8px}
+}
+@media (min-width:900px){
+  .vk-in{grid-template-columns:auto var(--fw);justify-content:center;align-content:center;align-items:center;padding:28px var(--pad);overflow:hidden}
+  .vk-esc{padding:0 30px 0 0;--ch:min(720px,calc(100dvh - 150px),calc((100vw - var(--fw) - 2 * var(--pad) - 30px) / 1.03))}
+  .vk-cc{width:calc(var(--ch) * 1.03);--paso:31%}
+  .vk-ficha{margin:0;padding:22px 22px 20px;gap:14px;border-radius:4px;max-height:calc(100dvh - 56px);overflow:auto;box-shadow:8px 8px 0 #29B298}
+  .vk-q h2{font-size:36px}
+  .vk-acc{position:static;margin:2px 0 0;padding:0;border:0;background:none;box-shadow:none}
+  .vk-xf{display:none}
+  .vk-xg{display:grid;position:absolute;top:18px;right:18px;z-index:4;border-color:rgba(246,246,246,.4);background:rgba(3,3,4,.5);color:#F6F6F6}
+  .vk-per{display:grid;place-items:center;position:absolute;top:50%;z-index:3;transform:translateY(-50%);width:46px;height:72px;border:1.5px solid rgba(246,246,246,.3);
+    background:rgba(3,3,4,.5);color:#F6F6F6;font:400 30px/1 Archivo,sans-serif;cursor:pointer}
+  .vk-per:hover{border-color:#F6F6F6}
+  .vk-per.vk-pl{left:16px}
+  .vk-per.vk-pr{right:16px}
+  .vk-per small{position:absolute;top:calc(100% + 6px);left:50%;transform:translateX(-50%);max-width:120px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;
+    font:800 11px/1.1 "Barlow Condensed",sans-serif;letter-spacing:.08em;text-transform:uppercase;color:#A5A5A0}
+  .vk-toast{bottom:28px}
+}
+@media (min-width:900px) and (max-width:1150px){.vk-in{--fw:340px;--pad:74px}}
+/* pantallas bajas (1024×768, una notebook chica): la ficha se aprieta antes de pedir barra */
+@media (min-width:900px) and (max-height:820px){
+  .vk-ficha{gap:10px;padding:18px 20px 18px}
+  .vk-q h2{font-size:31px}
+  .vk-filas a,.vk-filas div{min-height:40px}
+}
 
 /* ── 🙋 LOS ANOTADOS (`Anotados` de piezas.jsx, 03/10/2026, Dlx: «Me gusta tu A»): en la tarjeta del evento hasta que
    aparece la llave. Con `currentColor`: va igual sobre el escenario oscuro del Inicio que en la tarjeta clara de Eventos ── */
@@ -3742,8 +3809,9 @@ li.nt-f{cursor:default}
 /* la barra de abajo: la sección elegida hace «pop» */
 .app .tabbar a.on svg,.app .tabbar a.on .tb-cara{animation:an-pop .38s cubic-bezier(.2,.8,.2,1)}
 /* el visor de tarjetas abre desde abajo, con su fondo */
-.app .vc{animation:an-fondo .2s ease-out both}
-.app .vc-caja{animation:an-abre .32s cubic-bezier(.2,.8,.2,1) both}
+.app .vk{animation:an-fondo .2s ease-out both}
+.app .vk-cc{animation:an-abre .32s cubic-bezier(.2,.8,.2,1) both}
+.app .vk-ficha{animation:an-sube .35s cubic-bezier(.2,.8,.2,1) .06s both}
 /* las pestañas cambian de a poco */
 .app .rk-subs button,.app .rk-subs a{transition:color .2s ease,background-color .2s ease,border-color .2s ease}
 
@@ -3771,7 +3839,7 @@ li.nt-f{cursor:default}
    sueltos y NO con `transform`: una animación con `both` deja su `transform` puesto y le pisaba el «levantarse» al pasar
    el mouse (`.tj-grilla .sin-boton:hover .tj-c`) */
 @keyframes an-voltea{from{opacity:0;rotate:y 75deg;scale:.92}60%{opacity:1}to{opacity:1;rotate:y 0deg;scale:1}}
-.app .vc-img .tj-c{animation:an-voltea .55s cubic-bezier(.2,.8,.2,1) both;animation-delay:.1s}
+
 @supports (animation-timeline: view()){
   .app .tj-grilla .tj-c{animation:an-voltea linear both;animation-timeline:view();animation-range:entry 0% entry 45%}
   .app.calma .tj-grilla .tj-c{animation:none !important}
