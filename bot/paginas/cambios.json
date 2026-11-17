@@ -11,6 +11,16 @@
   ],
   "cambios": [
     {
+        "version": "5.94",
+        "dia": "2026-11-17",
+        "cuando": "2026-11-17T00:58:00-05:00",
+        "titulo": "Estrellas de la semana y Por día",
+        "items": [
+            "La página de cada crew muestra las estrellas de la semana: los tres que más sumaron.",
+            "En «Esta semana», cuánto sumó la crew cada día."
+        ]
+    },
+    {
         "version": "5.93",
         "dia": "2026-11-17",
         "cuando": "2026-11-17T00:51:49-05:00",
