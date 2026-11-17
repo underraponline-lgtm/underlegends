@@ -3695,6 +3695,24 @@ def _anotados_sin_jugar(num, tope=6):
     return out[:tope], max(0, len(out) - tope)
 
 
+def _historial_de_nombre(k):
+    """📜 `{cuenta: (veces, {servidores})}` de las inscripciones de UN nombre con esa clave, en TODA la temporada
+    (`datos/inscritos_hist.json`, que guarda cada inscripción aunque el organizador vacíe el canal).
+
+    🔑 17/11/2026, medido: de los 205 «Nombre desconocido» abiertos, 47 los escribió UNA sola cuenta, que está en la
+    Lista, y ✅ Decidir no lo decía: `_cuentas_insc()` sólo mira `anuncios.json`, que guarda las últimas 4.000. ⚠️ ES PISTA:
+    «Steven» lo anotó la cuenta de Player, que es staff y anota a otros (ver `inscripcion-no-siempre-es-el-autor`)."""
+    if 'hist_idx' not in _DATOS:
+        idx = {}
+        for f in (_datos('inscritos_hist') or {}).get('filas') or []:
+            if len(f) >= 4 and f[3]:
+                c = idx.setdefault(str(f[3]), {}).setdefault(str(f[2]), [0, set()])
+                c[0] += 1
+                c[1].add(str(f[1]))
+        _DATOS['hist_idx'] = idx
+    return {did: (n, svs) for did, (n, svs) in (_DATOS['hist_idx'].get(k) or {}).items()}
+
+
 def _pistas(p):
     """La columna «Pistas»: lo que ayuda a contestar."""
     t, out = p['tipo'], []
@@ -3726,6 +3744,15 @@ def _pistas(p):
         except Exception:                                # noqa: BLE001
             _sv_ev = ''
         out.append(_en_discord(p['detalle'], _sv_ev)[0])
+        # 📜 quién se anotó con ESE nombre en toda la temporada (el historial que sobrevive a los canales vaciados), si no
+        # lo dijo ya la inscripción de este evento (`_insc`)
+        _ya = {str(c.get('id')) for c in p.get('_insc') or []}
+        _por_id = _lista_por_id()
+        _hs = [(did, n, svs) for did, (n, svs) in _historial_de_nombre(norm(_sin_bandera(p.get('detalle')))).items() if did not in _ya]
+        if _hs:
+            out.append('📜 En la temporada se anotó así %s' % '; '.join(
+                'la cuenta de %s (%d vez/veces, en %s)' % (_por_id.get(did) or _dueno_de_cuenta(did) or 'alguien fuera de la Lista',
+                                                           n, ', '.join(sorted(svs))) for did, n, svs in _hs[:3]))
         # 📝 los que se anotaron a ese evento y no aparecen en la llave: el nombre desconocido suele ser uno de ellos
         _sj, _mas = _anotados_sin_jugar(_num_evento(p))
         if _sj:
@@ -5866,6 +5893,13 @@ def _self_check():
     _sj = _anotados_sin_jugar('901')
     ok(_sj[0] and _sj[0][0][0] == 'Park-Ji Sung 🇰🇷' and len(_sj[0]) == 1 and _anotados_sin_jugar('1') == ([], 0),
        'los anotados que no aparecen en la llave, de datos/gente_eventos.json; quien jugó no sale; sin foto, nada')
+    _DATOS['inscritos_hist'] = {'filas': [['m1', 'FFA', '555', 'parkjisung', 'kr'], ['m2', 'SR', '555', 'parkjisung', ''],
+                                          ['m3', 'FFA', '666', 'otro', '']]}
+    _DATOS.pop('hist_idx', None)
+    ok(_historial_de_nombre('parkjisung') == {'555': (2, {'FFA', 'SR'})} and _historial_de_nombre('nadie') == {},
+       'el historial de un nombre: qué cuenta lo escribió, cuántas veces y en qué servidores')
+    _DATOS.pop('inscritos_hist', None)
+    _DATOS.pop('hist_idx', None)
     _DATOS.pop('gente_eventos', None)
 
     ab = [(2, {'Tipo': 'Nombre desconocido', 'Origen': 'evento #350',
