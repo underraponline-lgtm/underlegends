@@ -976,7 +976,7 @@ def _podio():
     return _DATOS['podio']
 
 
-def _en_discord(nombre):
+def _en_discord(nombre, sv=''):
     """`(pista, [nombres de la Lista])` de un nombre desconocido: si es el
     apodo, el nombre visible o el usuario de alguna cuenta de los servidores
     de la Liga, y si esa cuenta ya está en la Lista con OTRO nombre.
@@ -998,6 +998,12 @@ def _en_discord(nombre):
     if len(ids) == 1:
         pista = ('En Discord es la cuenta de «%s» en la Lista' % en_lista[0] if en_lista
                  else 'En Discord hay una cuenta con ese nombre, que no está en la Lista')
+        # 🏟️ Y SI ESA CUENTA NI ESTÁ EN EL SERVIDOR DEL EVENTO (17/11/2026): «LOKILLO» (#654, LKR) es el nombre de
+        # Discord de YACO 🇧🇴, que no está en LKR —para jugar ahí hay que estar en su llamada—. Sólo se dice cuando se
+        # sabe en qué servidores está (el caché de apodos es del runner): sin el dato, no se afirma nada
+        donde = _servidores_de(ids[0], _datos('servidores_de') or {}) if sv else []
+        if sv and donde and sv not in donde:
+            pista += ', y esa cuenta no está en el servidor de %s' % sv
     else:
         pista = 'En Discord hay %d cuentas con ese nombre%s' % (len(ids), (
             ': %s en la Lista%s' % (_y(['«%s»' % x for x in en_lista]),
@@ -2749,6 +2755,16 @@ def _ms_iso(x):
         return None
 
 
+def _dueno_de_cuenta(did):
+    """🪪 De quién es una cuenta que NO es la de su fila de la Lista: las «otras cuentas» que Dlx decidió
+    (`akas_a_mano.json`, `cuentas`: {persona: [ids]}). «@tenacious_dragon_23394» es la otra cuenta de Shadow (Dlx, 10/11 y
+    16/11/2026); sin esto la pista del #654 decía sólo la cuenta, y lo que había que saber era de quién es."""
+    for persona, ids in ((_datos('akas_a_mano') or {}).get('cuentas') or {}).items():
+        if str(did) in [str(x) for x in ids or []]:
+            return persona
+    return None
+
+
 def _cuentas_insc(p):
     """🔎 R17: `[{id, usuario, nombre, sv, real}]` de las cuentas que se anotaron CON ESE NOMBRE para el evento de la
     pregunta: en su servidor, desde 12 h antes de la llave hasta que terminó (`_ventana()`), sola o como la de la
@@ -2781,7 +2797,7 @@ def _cuentas_insc(p):
                 continue
             vistos.add(did)
             out.append({'id': did, 'usuario': str(x.get('quien') or ''), 'nombre': str(x.get('texto') or '')[:40],
-                        'sv': [ev[1]], 'real': por_id.get(did), 'rol': _con_rol_en(did, ev[1])})
+                        'sv': [ev[1]], 'real': por_id.get(did) or _dueno_de_cuenta(did), 'rol': _con_rol_en(did, ev[1])})
     return out
 
 
@@ -3618,19 +3634,76 @@ _MOTIVO = {
 }
 
 
+def _otros_de_cuenta(did, k, tope=5):
+    """👥 `(cuántos, [nombres])`: los OTROS nombres que esa cuenta anotó en toda la temporada (sin `k`, que es el de la
+    pregunta). Pura sobre `anuncios.inscripciones`.
+
+    🔑 17/11/2026, «LOKILLO 🇨🇴» (#654): lo anotó la otra cuenta de Shadow, y eso parecía decir «es Shadow». No lo
+    dice: esa cuenta anotó también a SKONE, ZASKO, NAVAS y DREXX —Drexx 🇵🇪 tiene su cuenta—, o sea que anota a sus
+    amigos. Dlx: *«create something so we avoid having to dig under this again»*. `suele anotar a otros` ya existía,
+    pero sólo para el staff con rol: esto lo dice de cualquier cuenta, con los nombres a la vista"""
+    vistos = {}
+    for x in (_datos('anuncios') or {}).get('inscripciones') or []:
+        if str(x.get('discord_id') or '') != str(did):
+            continue
+        for n in _nombres_insc(x.get('texto')):
+            if n != k and n not in vistos:
+                vistos[n] = _sin_bandera(x.get('texto') or n).strip()[:24]
+    return len(vistos), list(vistos.values())[:tope]
+
+
+def _jugaron_juntos(real, k):
+    """⚔️ `[números]` de los eventos donde «real» (su nombre en la Lista) y el nombre `k` están en la MISMA llave. Si
+    hay alguno, son dos personas: nadie pelea contra sí mismo. Sobre `Resultados` (`resultados.filas`)."""
+    if not real:
+        return []
+    kr = norm(_sin_bandera(real))
+    ev = {}
+    for f in _resultados_filas():
+        if len(f) > 4:
+            ev.setdefault(str(f[0]), set()).add(norm(_sin_bandera(f[4])))
+    return sorted((n for n, s in ev.items() if kr in s and k in s), key=lambda x: int(x) if x.isdigit() else 0)
+
+
+def _resultados_filas():
+    if 'res_filas' not in _DATOS:
+        try:
+            import espejo_t1 as _ESP
+            _DATOS['res_filas'] = [list(f) for f in (_ESP.fuente('Resultados') or [])]
+        except Exception:                                # noqa: BLE001
+            d = _datos('t1_resultados')
+            _DATOS['res_filas'] = d.get('filas') if isinstance(d, dict) else (d or [])
+    return _DATOS['res_filas']
+
+
 def _pistas(p):
     """La columna «Pistas»: lo que ayuda a contestar."""
     t, out = p['tipo'], []
     if t == 'Nombre desconocido':
         # ✍️ R17: quién se anotó así para ese evento, firmado por su cuenta (`_cuentas_insc()`)
+        k = norm(_sin_bandera(p.get('detalle')))
         for c in p.get('_insc') or []:
             out.append('✍️ Se anotó así desde la cuenta %s%s' % (
                 cuenta_dicha(c.get('usuario'), c.get('id'), c.get('real')),
                 ' (es organizador o staff de %s: suele anotar a otros)' % c['sv'][0] if c.get('rol') else ''))
+            # 👥 y a quién más anotó esa cuenta, y si su dueño ya jugó con este nombre (17/11/2026, ver `_otros_de_cuenta`)
+            cu, ns = _otros_de_cuenta(c.get('id'), k)
+            if cu >= 2:
+                out.append('👥 Esa cuenta anotó también a %d nombre%s más (%s%s): puede ser alguien que anota a sus amigos'
+                           % (cu, 's' if cu != 1 else '', ', '.join(ns), '…' if cu > len(ns) else ''))
+            jj = _jugaron_juntos(c.get('real'), k)
+            if jj:
+                out.append('⚔️ %s y este nombre jugaron la misma llave (#%s): son dos personas' % (c.get('real'), ', #'.join(jj[:3])))
+            elif c.get('real'):
+                out.append('⚔️ %s y este nombre nunca jugaron la misma llave' % c.get('real'))
         sug = [x for x in _sugerencias(p['match'])]
         if sug:
             out.append('¿Será %s?' % ' o '.join(sug))
-        out.append(_en_discord(p['detalle'])[0])
+        try:
+            _sv_ev = (_ventana(_num_evento(p))[0] or ('', ''))[1]
+        except Exception:                                # noqa: BLE001
+            _sv_ev = ''
+        out.append(_en_discord(p['detalle'], _sv_ev)[0])
         out.append(_posibles(p['detalle']))
         out.append(_en_llamada(p['detalle'], _num_evento(p))[0])
         out.append(_termino(p['detalle'], _num_evento(p)))
