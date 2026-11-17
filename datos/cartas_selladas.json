@@ -450,10 +450,10 @@
    "temporada": "58f18120d0a2:fec25411e829"
   },
   "Dyzz": {
-   "competitivo": "a428883900f1:3cb4ba14e995",
+   "competitivo": "5f192e26bb6e:3cb4ba14e995",
    "pais": "44a4de9c2b3e:50160dcafbc4",
    "servidor": "1666d889603a:e0061cb5005e:e93725",
-   "temporada": "03adb4147863:fec25411e829"
+   "temporada": "7a3b2552e6be:fec25411e829"
   },
   "EIDP": {},
   "ELPIBEOSIRIS": {},
@@ -1116,10 +1116,10 @@
    "servidor": "0493c649fbed:e0061cb5005e:980594"
   },
   "MaYeuTyK": {
-   "competitivo": "d9b136a67a1b:3cb4ba14e995",
+   "competitivo": "52bdb3489ad1:3cb4ba14e995",
    "pais": "cefe1c8362d7:50160dcafbc4",
    "servidor": "513a934ee096:e0061cb5005e:d6a988",
-   "temporada": "cec7e1cd0c8d:fec25411e829"
+   "temporada": "d72eed6df964:fec25411e829"
   },
   "Magic": {
    "competitivo": "9a317cf040e2:3cb4ba14e995",
@@ -1357,10 +1357,10 @@
    "temporada": "ff0225be2a5e:fec25411e829"
   },
   "Number VE": {
-   "competitivo": "816d2ff9a391:3cb4ba14e995",
-   "pais": "6e6bc8b9546c:50160dcafbc4",
-   "servidor": "cd6437b6e5ef:e0061cb5005e:62e67f",
-   "temporada": "03915a651207:fec25411e829"
+   "competitivo": "2039aed681c1:3cb4ba14e995",
+   "pais": "0dde65982bbd:50160dcafbc4",
+   "servidor": "23183c81f7e8:e0061cb5005e:62e67f",
+   "temporada": "c4b9533887fe:fec25411e829"
   },
   "OEP": {
    "competitivo": "84fc6e402a20:3cb4ba14e995",
@@ -1388,7 +1388,7 @@
    "competitivo": "de13cd74bcb6:3cb4ba14e995",
    "pais": "1a3fe53cadff:50160dcafbc4",
    "servidor": "57d04ec27477:e0061cb5005e:40a77e",
-   "temporada": "d5f6b25ca025:fec25411e829"
+   "temporada": "d28fa5bcb586:fec25411e829"
   },
   "Olaf": {
    "servidor": "db75c1a01e35:e0061cb5005e:d3b124"
@@ -2040,10 +2040,10 @@
   "luisito 🏆": {},
   "maldita enfermedad": {},
   "mats": {
-   "competitivo": "942b0df00b44:3cb4ba14e995",
+   "competitivo": "351f0baa5bb5:3cb4ba14e995",
    "pais": "e96f6eec6a76:50160dcafbc4",
    "servidor": "bdb80db7dc9f:e0061cb5005e:9b3a50",
-   "temporada": "ae5e808c8ddb:fec25411e829"
+   "temporada": "357b1631ab5c:fec25411e829"
   },
   "melomaniaco": {
    "competitivo": "cd132e335d4d:3cb4ba14e995",
@@ -2126,5 +2126,5 @@
    "servidor": "7f8885a35a6d:e0061cb5005e:71cf5a"
   }
  },
- "cuando": "2026-11-17T01:36:50+00:00"
+ "cuando": "2026-11-17T02:05:25+00:00"
 }
