@@ -111,8 +111,21 @@ def _clave(nombre):
 
 
 def pts_de_divisiones(div):
-    """`(semana, {clave: puntos})` de la semana en curso, de lo que arma `bot/divisiones.py`."""
+    """`(semana, {clave: puntos})` de la semana en curso, de lo que arma `bot/divisiones.py`.
+
+    🔴 LOS PUNTOS SALEN DE `pts_sem`, NO DE LAS TABLAS (17/11/2026). En modo ELO (`modo: 'elo'`, desde el 02/11) el
+    número de cada fila de `divs` es el ELO, y sumarlo daba ~1.000 por persona jugara o no: las semanas del 02/11 y el
+    09/11 cerraron así y bajaron a Follombia, KS y Los ULEYES. En modo ELO sin `pts_sem` (un divisiones.json de antes)
+    no hay puntos: se devuelve vacío antes que sumar ELO."""
     pts = {}
+    sem = str((div or {}).get('sem') or '')
+    if isinstance((div or {}).get('pts_sem'), dict):
+        for q, v in div['pts_sem'].items():
+            k = _clave(q)
+            pts[k] = pts.get(k, 0) + int(v or 0)
+        return sem, pts
+    if (div or {}).get('modo') == 'elo':
+        return sem, pts
     for d in (div or {}).get('divs') or []:
         for g in d or []:
             for x in g or []:
@@ -300,6 +313,11 @@ def _auto():
             print('  🔴 ' + t)
 
     # las reglas: sube uno, baja uno, se queda; subir pide gente
+    # 🔴 el modo ELO de las divisiones (17/11/2026): los puntos salen de `pts_sem`, nunca del ELO de las tablas
+    elo = {'sem': '2026-11-16', 'modo': 'elo', 'divs': [[[['Ana', 1062, 9], ['Bea', 1000, 0]]]]}
+    ok(pts_de_divisiones(elo) == ('2026-11-16', {}), 'en modo ELO sin los puntos de la semana no se suma el ELO')
+    ok(pts_de_divisiones(dict(elo, pts_sem={'Ana': 4500})) == ('2026-11-16', {'ana': 4500}),
+       'en modo ELO los puntos de la semana salen de pts_sem')
     ok(mover(0, 20000, 1) == 1 and mover(0, 1000, 0) == 0, 'Bronce sube con 15.000 y no baja')
     ok(mover(1, 4000, 1) == 0 and mover(1, 10000, 1) == 1, 'Plata baja con menos de 5.000 y se mantiene entre las dos')
     ok(mover(3, 500000, 3) == 3 and mover(3, 500000, 4) == 4, 'a Diamante se entra con 4 que jugaron, no con un crack solo')

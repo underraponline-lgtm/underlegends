@@ -317,6 +317,11 @@ def correr(filas, ahora=None, aplicar=False):
            'sem': sem, 'fin': fin.astimezone(dt.timezone.utc).strftime('%Y-%m-%dT%H:%M:%SZ'),
            'nombres': list(NOMBRES), 'zona': ZONA, 'premio': PREMIO,
            'divs': c['divs'], 'ult': c['ult'], 'subidas': c['subidas'], 'nivel': c['nivel']}
+    # 🏆 LOS PUNTOS DE TEMPORADA DE LA SEMANA DE CADA UNO, aparte de las tablas (17/11/2026). Los tiers de las crews
+    # (bot/crews_tiers.py) sumaban el número de cada fila de `divs`, y desde `CORTE_ELO` ese número es el ELO: cada
+    # persona aportaba ~1.000 jugara o no (Follombia 8.532 con 8; Oro pide 30.000), y las semanas del 02/11 y el 09/11
+    # cerraron con eso. Dlx: «Yes, fix it». Sólo quien jugó la semana, con los mismos puntos de siempre
+    out['pts_sem'] = {q: int(round(v[0])) for q, v in sorted((semanas.get(sem) or {}).items()) if v and v[1]}
     if elo_al is not None:
         import elo as EL
         out.update(modo='elo', tramos=list(TRAMOS), prov=EL.PROVISIONAL, nombres=list(PIEDRAS), colores=list(COLOR_PIEDRA),

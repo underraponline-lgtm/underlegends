@@ -9,8 +9,9 @@
 // pantalla (`solo`).
 // ⚠️ Ningún número se inventa: el tier, la semana y la historia vienen de bot/crews_tiers.py (payload), la gente y los
 // rangos del objeto (crews.js), los puntos de cada uno de la tabla de la temporada.
-// ⚠️ «Por día» y «Estrellas de la semana» de la maqueta NO están: los puntos de la semana de cada uno salen de las
-// divisiones, que van por ELO desde que se pasaron a ese modo (`div.m === 'elo'`), y un ELO no es lo que sumó la semana
+// ⚠️ «Por día» y «Estrellas de la semana» de la maqueta NO están. Se dejaron afuera porque la semana de cada uno salía
+// del ELO de las divisiones; desde el 17/11/2026 los tiers traen los puntos de Temporada de verdad (`pts_sem`), así que
+// ya se podrían construir: esperan el sí de Dlx
 import { limpio, num } from './liga.js';
 import { Cara, Compartir, enlace, usePerfiles } from './piezas.jsx';
 import { CrewCirculo } from './arriba.jsx';

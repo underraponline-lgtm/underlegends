@@ -263,11 +263,21 @@ export function armarCrews(liga, todas, mia) {
 
 /** 🗓️ Los puntos de ESTA semana de cada uno, `Map(clave → puntos)`: de las divisiones del payload (`liga.d.div`), la
  *  misma fuente que usa bot/crews_tiers.py para la semana de cada crew. Con el modo ELO de las divisiones el número de
- *  cada fila es el ELO y no los puntos: ahí no hay semana de cada uno y vuelve vacío. */
+ *  cada fila es el ELO y no los puntos: ahí salen de los tiers (`crews_tiers.gente`, los puntos de Temporada de la
+ *  semana de cada uno, 17/11/2026), que sólo traen a quien está en una crew y sumó. */
 const SEM = new WeakMap();
 export function ptsSemana(liga) {
   const D = liga.d.div;
-  if (!D || D.m === 'elo') return new Map();
+  const T = liga.d.crews_tiers;
+  if (D && D.m === 'elo') {
+    if (!T || !T.gente) return new Map();
+    if (SEM.has(T)) return SEM.get(T);
+    const m = new Map();
+    for (const xs of Object.values(T.gente)) for (const [k, p] of Object.entries(xs || {})) m.set(k, Number(p) || 0);
+    SEM.set(T, m);
+    return m;
+  }
+  if (!D) return new Map();
   if (SEM.has(D)) return SEM.get(D);
   const m = new Map();
   for (const gs of D.d || []) for (const g of gs || []) for (const f of g || []) {
