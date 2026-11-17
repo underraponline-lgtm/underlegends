@@ -50,6 +50,9 @@ const TIER = { premium: 'Premium', plata: 'Plata', oro: 'Oro', embajador: 'Embaj
 const MARCOS_PASE = [['premium', 1], ['plata', 15], ['oro', 25], ['embajador', 'ref']];
 const ORDEN_T = ['oro', 'embajador', 'plata', 'premium'];
 const comoSeGana = (nv) => (nv === 'ref' ? '10 invitados en Invita y gana' : 'Nivel ' + nv + ' del premium');
+// ✨ de dónde sale un título que no es del Pase (`titulo_de` del objeto, TITULOS_FUERA en bot/avisos.js; 17/11/2026)
+const TIT_DE = { nuevo: ['Título de tu semana de nuevo.', 'De la semana de nuevo'], drop: ['Título de un Dragón Drop.', 'De un Dragón Drop'],
+  ref: ['Título de Invita y gana: 3 invitados.', '3 invitados'] };
 /** «El mejor»: el de nivel más alto que tengas, como `mejorMarco()` de bot/avisos.js */
 const mejor = (ids) => ORDEN_T.map((t) => ids.find((id) => id.split(':')[1] === t)).find(Boolean) || '';
 const sinNum = (t) => t.replace(' x%d', '').replace(' DE %d', '');
@@ -76,7 +79,7 @@ function opciones(carta, yo) {
   const tuyos = new Set(yo.titulos || []);
   const deEsta = Object.keys(tc).length ? Object.keys(tc).filter((x) => tc[x] === carta) : (yo.titulos || []);
   for (const tit of deEsta) {
-    out.push({ tag: 'pase:' + tit, texto: '✨ ' + tit.toUpperCase(), desc: 'Título del Pase de rapero.', grupo: 'pase', nivel: 't1', mio: !!(yo.dueno || tuyos.has(tit)) });
+    out.push({ tag: 'pase:' + tit, texto: '✨ ' + tit.toUpperCase(), desc: (TIT_DE[(yo.titulo_de || {})[tit]] || ['Título del Pase de rapero.'])[0], grupo: 'pase', nivel: 't1', mio: !!(yo.dueno || tuyos.has(tit)) });
   }
   return out.sort((a, b) => (b.mio - a.mio) || (NIVELES.indexOf(a.nivel) - NIVELES.indexOf(b.nivel)));
 }
@@ -656,7 +659,7 @@ export function Inventario({ liga, dc, carta0 = '', ranura0 = '' }) {
           {/* 📊 lo que tienes de todo lo que hay (de la C de la maqueta: Marvel Snap y Steam) */}
           <div className="ves-prog ancha">
             {[[tagsTot, tagsCat, 'TAGs', 'en tus cuatro cartas'], [idsMarcos.length, MARCOS_PASE.length, 'Marcos', 'del Pase premium y de Invita y gana'],
-              [insMias.size, insCat.length, 'Insignias', 'de la temporada'], [titulos.filter((x) => titMios.has(x) || yo.dueno).length, titulos.length, 'Títulos', 'del Pase']]
+              [insMias.size, insCat.length, 'Insignias', 'de la temporada'], [titulos.filter((x) => titMios.has(x) || yo.dueno).length, titulos.length, 'Títulos', 'del Pase, los drops y más']]
               .filter(([, de]) => de).map(([n, de, et, s]) => (
                 <div key={et} className="ves-pr"><b>{n}<small> / {de}</small></b><span>{et}</span><Barra n={n} de={de} /><small>{s}</small></div>
               ))}
@@ -676,14 +679,14 @@ export function Inventario({ liga, dc, carta0 = '', ranura0 = '' }) {
           </section>
           {titulos.length ? (
             <section className="ves-panel">
-              <Titulo extra={<span className="ves-de">{titulos.filter((t) => titMios.has(t) || yo.dueno).length} de {titulos.length}</span>}>Títulos del Pase</Titulo>
+              <Titulo extra={<span className="ves-de">{titulos.filter((t) => titMios.has(t) || yo.dueno).length} de {titulos.length}</span>}>Títulos</Titulo>
               <p className="ves-p">Cada uno va en una carta y se pone como su TAG: tócalo para probártelo.</p>
               <div className="ves-grid">
                 {titulos.map((t) => {
                   const c = yo.titulo_carta[t];
                   const mio = titMios.has(t) || !!yo.dueno;
                   const en = (CARTAS.find(([x]) => x === c) || [])[1] || '';
-                  return <Cuadro key={t} mio={mio} nivel="t1" ic="✨" nombre={t} rar={mio ? 'En tu ' + en : 'Del Pase'}
+                  return <Cuadro key={t} mio={mio} nivel="t1" ic="✨" nombre={t} rar={mio ? 'En tu ' + en : (TIT_DE[(yo.titulo_de || {})[t]] || [0, 'Del Pase'])[1]}
                     onClick={() => {
                       if (!cartas.some(([x]) => x === c)) return;
                       setSec('cartas'); setCarta(c); setRan('tag'); setSel('pase:' + t);

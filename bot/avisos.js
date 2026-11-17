@@ -4131,6 +4131,26 @@ export const REF_TRACK = [
 ];
 const REF_COD = /^[a-z0-9][a-z0-9._-]{0,59}$/;
 
+// ✨ EN QUÉ CARTA VA CADA TÍTULO QUE NO SALE DEL PASE (17/11/2026, Dlx: «arregla lo de los títulos de novato también»).
+// `tagElige()` pide que cada título diga su carta (`titulo_carta`, Dlx 26/10/2026: «cada tarjeta tiene sus tags»), y ese
+// mapa venía sólo del Pase (bot/pase.py): los de la semana de nuevos, los de los drops y el de los referidos se ganaban y
+// no se podían poner en ninguna. Salen de SUS listas, así uno nuevo cae solo en la carta de su grupo: los de llegar
+// (nuevos y referidos) en la Temporada, la del año que juegas; los de los drops en la Competitiva, la de los dragones
+// del Pase. `[carta, de dónde sale]`
+export const TITULOS_FUERA = Object.fromEntries([
+  ...NUEVO_PISTA.filter((d) => d[1][0] === 'titulo').map((d) => [d[1][1], ['temporada', 'nuevo']]),
+  [NUEVO_CAJA.titulo, ['temporada', 'nuevo']],
+  ...Object.values(DROP_TITULOS).flat().map((t) => [t, ['competitivo', 'drop']]),
+  ...REF_TRACK.flatMap(([, ps]) => ps.filter((p) => p[0] === 'titulo').map((p) => [p[1], ['temporada', 'ref']])),
+]);
+
+/** `{título: carta}`: los del Pase (`cfg.titulo_carta`) y los de afuera. Pura. */
+export function tituloCarta(cfg) {
+  const out = Object.assign({}, (cfg && cfg.titulo_carta) || {});
+  for (const [t, [c]] of Object.entries(TITULOS_FUERA)) if (!out[t]) out[t] = c;
+  return out;
+}
+
 /** El premio de una meta, en palabras («2 Dragón Drops»). Pura. */
 export function refPremioTexto(pr) {
   const [t, x] = pr || [];
@@ -18323,7 +18343,8 @@ export class Avisos {
     // ✨ `titulo_carta`: en qué carta va cada título (`bot/pase.py` TITULO_CARTA): la edición limitada también es de una carta
     const P = this.paseDatos();
     return { k, temp: G.temp || '', ganados: (k && G.g && G.g[k]) || {}, titulos: this.titulosDe(quien),
-      titulo_carta: (P.cfg && P.cfg.titulo_carta) || {}, elegidos, dueno: quien === DUENO,
+      titulo_carta: tituloCarta(P.cfg), titulo_de: Object.fromEntries(Object.entries(TITULOS_FUERA).map(([t, x]) => [t, x[1]])),
+      elegidos, dueno: quien === DUENO,
       principal: cp ? cp.carta : '' };
   }
 
@@ -18501,8 +18522,10 @@ export class Avisos {
     if (tag.startsWith('pase:')) {
       if (!this.titulosDe(quien).includes(tag.slice(5))) return { error: 'no lo tienes' };
       // ✨ cada título va en su carta (Dlx, 26/10/2026); un Pase guardado sin el mapa todavía deja ponerlo en cualquiera
-      const tc = (this.paseDatos().cfg || {}).titulo_carta;
-      if (tc && Object.keys(tc).length && tc[tag.slice(5)] !== carta) return { error: 'ese título va en otra carta' };
+      // los de afuera del Pase (TITULOS_FUERA) siempre dicen su carta; los del Pase, si el Pase guardado trae el mapa
+      const tit = tag.slice(5), tcP = (this.paseDatos().cfg || {}).titulo_carta || {};
+      const va = TITULOS_FUERA[tit] ? TITULOS_FUERA[tit][0] : Object.keys(tcP).length ? tcP[tit] : carta;
+      if (va !== carta) return { error: 'ese título va en otra carta' };
     } else if (quien !== DUENO) {
       const yo = this.tagsMios(quien);
       if (!((yo.ganados || {})[carta] || {})[tag]) return { error: 'no lo tienes' };

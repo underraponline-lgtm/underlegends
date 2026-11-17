@@ -4105,6 +4105,14 @@ const ok = (cond, que, det) => {
       && sql.exec('SELECT COUNT(*) AS n FROM drops WHERE quien = ?', ANA).toArray()[0].n === 3
       && o.paseXP(ANA, o.paseDatos().cfg) === 1500 && o.refLlegue({ quien: otros[9], de: 'ana' }).error === 'lleno',
     'a los 10: el marco Embajador, el título Reclutador, los 1.500 de la meta 5, tres drops, 1.500 XP; el 11 ya no entra', JSON.stringify(diez).slice(0, 300));
+    // ✨ y los títulos que no son del Pase se ponen, cada uno en su carta (Dlx: «arregla lo de los títulos de novato»)
+    sql.exec('INSERT INTO nuevo_titulo (quien, titulo, t) VALUES (?, ?, ?)', ANA, 'Novato de Oro', Date.now());
+    const tm = o.tagsMios(ANA);
+    ok(o.tagElige({ quien: ANA, carta: 'temporada', tag: 'pase:Reclutador' }).ok && o.tagElige({ quien: ANA, carta: 'temporada', tag: 'pase:Novato de Oro' }).ok
+      && o.tagElige({ quien: ANA, carta: 'competitivo', tag: 'pase:Novato de Oro' }).error === 'ese título va en otra carta'
+      && o.tagElige({ quien: ANA, carta: 'temporada', tag: 'pase:Garra Dorada' }).error === 'no lo tienes'
+      && tm.titulo_carta['Garra Dorada'] === 'competitivo' && tm.titulo_de['Novato de Oro'] === 'nuevo' && tm.titulo_de.Reclutador === 'ref',
+    'los títulos de nuevos, de drops y de referidos dicen su carta: Reclutador y Novato de Oro van en la Temporada, no en otra');
     o.refMio({ quien: BEA, k: 'bea', accion: 'activar' });
     env.TEMPORADA = 't2';
     ok(!o.refLinkPublico('ana').activo && sql.exec('SELECT quien FROM ref_link ORDER BY quien').toArray().map((r) => r.quien).join() === ANA,

@@ -107,8 +107,7 @@ def del_dueno(carta):
 
 def _titulo_carta():
     import pase
-    # 🎁 y los que no salen del Pase (`TITULOS_FUERA`: «Reclutador», de los referidos), igual que lo que recibe el objeto
-    return dict(pase.TITULO_CARTA, **getattr(pase, 'TITULOS_FUERA', {}))
+    return pase.TITULO_CARTA
 
 
 def revisar(elegidos_obj, ganados, temp):
