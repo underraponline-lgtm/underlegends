@@ -11,6 +11,19 @@
   ],
   "cambios": [
     {
+        "version": "6.06",
+        "dia": "2026-11-17",
+        "cuando": "2026-11-17T02:55:00-05:00",
+        "titulo": "Tus fondos, por lugar",
+        "items": [
+            "En Tu cuenta → Tus fondos eliges qué va detrás de ti en cinco lugares: tu perfil, el VS del Inicio, el escenario de tu carta, el VS en vivo de Discord y tu ficha.",
+            "En cada uno: automático, tu imagen, tu bandera o la escena de tu servidor. Elegir es para todos.",
+            "Subir tu propia imagen es del Pase premium, y pasa por el filtro. Si ya tenías una, la conservas.",
+            "Nuevo en la computadora: al dejar el mouse sobre la cara de alguien sale su ficha, con su fondo, su puesto y su servidor.",
+            "El link de tu perfil, pegado en Discord o WhatsApp, muestra un cartel con tu fondo, tu carta y tu nombre."
+        ]
+    },
+    {
         "version": "6.05",
         "dia": "2026-11-17",
         "cuando": "2026-11-17T02:20:52-05:00",
