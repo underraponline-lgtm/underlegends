@@ -226,20 +226,6 @@
     "racha": "1/1"
    }
   },
-  "@j.nibbana": {
-   "CH": {
-    "duelos": "",
-    "ev": 1,
-    "oro": 0,
-    "ovr": 43,
-    "pod": 0,
-    "pts": 4125,
-    "racha": "0/0",
-    "tg": {
-     "nuevo": true
-    }
-   }
-  },
   "ACH": {
    "FFA": {
     "duelos": "",
@@ -9826,10 +9812,7 @@
     "ovr": 49,
     "pod": 2,
     "pts": 56000,
-    "racha": "2/2",
-    "tg": {
-     "fin": 1
-    }
+    "racha": "2/2"
    }
   },
   "Mr.Kude": {
@@ -15609,6 +15592,20 @@
     "pod": 0,
     "pts": 35689,
     "racha": "0/0"
+   }
+  },
+  "j.nibbana": {
+   "CH": {
+    "duelos": "",
+    "ev": 1,
+    "oro": 0,
+    "ovr": 43,
+    "pod": 0,
+    "pts": 4125,
+    "racha": "0/0",
+    "tg": {
+     "nuevo": true
+    }
    }
   },
   "jazi": {

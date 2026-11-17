@@ -2516,7 +2516,7 @@
    "Zeta": 4
   },
   "fecha": "08/10",
-  "firma": "50c99c044558a69c",
+  "firma": "216b37cd722bc724",
   "msg": "1557926456259248232",
   "nombre": "SNAKE INSIGNIA 4 8",
   "num": 430,
@@ -6508,7 +6508,7 @@
    "Trot": 13
   },
   "fecha": "11/10",
-  "firma": "e85a9e1788ca10ec",
+  "firma": "e83ecdc6358465d1",
   "msg": "1558907910707224587",
   "nombre": "RED BULL NACIONAL ESPAÑA T.5",
   "num": 448,
@@ -9436,7 +9436,7 @@
    "Zignos": 19
   },
   "fecha": "12/10",
-  "firma": "16707352c0f3156c",
+  "firma": "b0b5e4d5a84c067c",
   "msg": "1559587802864295988",
   "nombre": "GODZ",
   "num": 460,
@@ -10218,7 +10218,7 @@
    "Tusicario": 6
   },
   "fecha": "12/10",
-  "firma": "ba88df1743f5e99f",
+  "firma": "188006280da97384",
   "msg": "1559414143948431441",
   "nombre": "IDS V.2",
   "num": 464,
@@ -12534,7 +12534,7 @@
    "Vargas": 1
   },
   "fecha": "14/10",
-  "firma": "b055672ea506cdfc",
+  "firma": "fb1586cafed616ca",
   "msg": "1560070688113688601",
   "nombre": "FF Freestyle Clasico",
   "num": 473,
@@ -13542,9 +13542,9 @@
     "Deluxe"
    ],
    [
-    "Mr Still Ballin",
+    "Over",
     "Makmah",
-    "Mr Still Ballin"
+    "Over"
    ],
    [
     "Bloody",
@@ -13562,9 +13562,9 @@
     "Agus"
    ],
    [
-    "Mr Still Ballin",
+    "Over",
     "Deluxe",
-    "Mr Still Ballin"
+    "Over"
    ],
    [
     "Catarsis",
@@ -13572,9 +13572,9 @@
     "Catarsis"
    ],
    [
-    "Mr Still Ballin",
+    "Over",
     "Agus",
-    "Mr Still Ballin"
+    "Over"
    ],
    [
     "Agus",
@@ -13582,9 +13582,9 @@
     "Agus"
    ],
    [
-    "Mr Still Ballin",
+    "Over",
     "Catarsis",
-    "Mr Still Ballin"
+    "Over"
    ]
   ],
   "ev_antes": {
@@ -13602,7 +13602,7 @@
    "Valdoza": 5
   },
   "fecha": "16/10",
-  "firma": "caf5d98faaa4cac1",
+  "firma": "3f59e63c9b099636",
   "msg": "1560750305312903372",
   "nombre": "SNAKE INSIGNIA 5 8",
   "num": 478,
@@ -13614,7 +13614,7 @@
   "t": "2026-10-16T20:24:28Z",
   "tabla": [
    [
-    "Mr Still Ballin",
+    "Over",
     "Campeón",
     10000
    ],
@@ -13789,7 +13789,7 @@
    ],
    [
     "Panchok",
-    "Mr Still Ballin",
+    "Mr still ballin 🇳🇴",
     "Panchok"
    ],
    [
@@ -13870,7 +13870,7 @@
    "Vandu": 22
   },
   "fecha": "16/10",
-  "firma": "eb9ae2d1779177ad",
+  "firma": "8f677eb1d11f582d",
   "msg": "1560779869497983097",
   "nombre": "PRADERAP VOL.1",
   "num": 479,
@@ -13932,7 +13932,7 @@
     1250
    ],
    [
-    "Mr Still Ballin",
+    "Mr still ballin 🇳🇴",
     "Octavos",
     1250
    ],
@@ -14596,7 +14596,7 @@
    "Panchok": 15
   },
   "fecha": "17/10",
-  "firma": "c3613277b34ef938",
+  "firma": "92fb68dbf820e592",
   "msg": "1561153562665558208",
   "nombre": "MUNDIALITO",
   "num": 482,
@@ -16856,7 +16856,7 @@
    "Trot": 23
   },
   "fecha": "19/10",
-  "firma": "51bf6ec10fc21193",
+  "firma": "d25266591a52dac1",
   "msg": "1561897867122184213",
   "nombre": "FATS BATTLES PALOOZA FECHA 7",
   "num": 491,
@@ -18416,19 +18416,19 @@
     "Fazer"
    ],
    [
-    "Mr Still Ballin",
+    "Over",
     "Rubik",
-    "Mr Still Ballin"
+    "Over"
    ],
    [
-    "Mr Still Ballin",
+    "Over",
     "Efimero",
-    "Mr Still Ballin"
+    "Over"
    ],
    [
-    "Mr Still Ballin",
+    "Over",
     "Molt",
-    "Mr Still Ballin"
+    "Over"
    ],
    [
     "Road",
@@ -18446,9 +18446,9 @@
     "Agus"
    ],
    [
-    "Mr Still Ballin",
+    "Over",
     "MCO",
-    "Mr Still Ballin"
+    "Over"
    ],
    [
     "Masino",
@@ -18457,13 +18457,13 @@
    ],
    [
     "Agus",
-    "Mr Still Ballin",
+    "Over",
     "Agus"
    ],
    [
-    "Mr Still Ballin",
+    "Over",
     "Road",
-    "Mr Still Ballin"
+    "Over"
    ],
    [
     "Agus",
@@ -18493,7 +18493,7 @@
    "Velatz": 38
   },
   "fecha": "21/10",
-  "firma": "e46332f8a4a99e2a",
+  "firma": "39ec75907b071087",
   "msg": "1562607463755161734",
   "nombre": "SNAKE INSIGNIA 6 8",
   "num": 496,
@@ -18515,7 +18515,7 @@
     7500
    ],
    [
-    "Mr Still Ballin",
+    "Over",
     "Tercero",
     6000
    ],
@@ -22514,7 +22514,7 @@
    "Zekha": 4
   },
   "fecha": "25/10",
-  "firma": "fda71d7218026ba5",
+  "firma": "0028e1ba3c113a11",
   "msg": "1564056930748469309",
   "nombre": "REDBULL CREW ARGENTINA 2026",
   "num": 515,
@@ -23369,7 +23369,7 @@
    "Vandu": 34
   },
   "fecha": "25/10",
-  "firma": "6b41fa1cffef3238",
+  "firma": "0af5c513329bff70",
   "msg": "1564145050185891903",
   "nombre": "CHILL",
   "num": 518,
@@ -23508,7 +23508,7 @@
    "Vilca": 1
   },
   "fecha": "27/09",
-  "firma": "b7a9bfc869eb05ef",
+  "firma": "fd3697b72305bc4b",
   "msg": "1564147681973243955",
   "nombre": "Shaoling Battles 1v1 2",
   "num": 519,
@@ -23706,7 +23706,7 @@
    "Vilca": 1
   },
   "fecha": "04/10",
-  "firma": "bd31f462c0879c56",
+  "firma": "6eabef1563e709b1",
   "msg": "1564147692089770025",
   "nombre": "- RED BULL NACIONAL PERÚ 2026 -",
   "num": 520,
@@ -23944,7 +23944,7 @@
    "Vilca": 1
   },
   "fecha": "14/10",
-  "firma": "16f4026675fae3ec",
+  "firma": "756c41b62481ea6a",
   "msg": "1564147696351191051",
   "nombre": "GG SANGRERAP 1",
   "num": 521,
@@ -24112,7 +24112,7 @@
    "Vandu": 35
   },
   "fecha": "20/10",
-  "firma": "38f9cc6c8c982594",
+  "firma": "27ad252d7f0e0f99",
   "msg": "1564147704035151906",
   "nombre": "RAP SIN GROSERIAS 2",
   "num": 522,
@@ -24883,7 +24883,7 @@
    "Tayo": 1
   },
   "fecha": "23/10",
-  "firma": "947c1e5f79cd7da0",
+  "firma": "58b3e20215451920",
   "msg": "1564147718501433356",
   "nombre": "2v2 2",
   "num": 527,
@@ -26454,7 +26454,7 @@
    "Mr.Kude": 2
   },
   "fecha": "27/10",
-  "firma": "8dd462661ea0f428",
+  "firma": "bc6959dcf254972c",
   "msg": "1564725192360464586",
   "nombre": "- IRLANDA FREESTYLE -",
   "num": 533,
@@ -30604,7 +30604,7 @@
    "Walker": 8
   },
   "fecha": "30/10",
-  "firma": "52c4e2d861abc91e",
+  "firma": "efdb592e65ea363b",
   "msg": "1565898869114413108",
   "nombre": "IDS V.3",
   "num": 549,
@@ -31574,7 +31574,7 @@
    "Velatz": 41
   },
   "fecha": "31/10",
-  "firma": "088158e7fe068bf1",
+  "firma": "b7d84d5129e37852",
   "msg": "1566227272355020941",
   "nombre": "SNAKE INSIGNIA 7 8",
   "num": 553,
@@ -32118,7 +32118,7 @@
   "duelos": [
    [
     "BLITZ",
-    "Mr Still Ballin",
+    "Mr still ballin 🇳🇴",
     "BLITZ"
    ],
    [
@@ -32172,14 +32172,14 @@
     "Makmah"
    ],
    [
-    "Mr Still Ballin",
+    "Mr still ballin 🇳🇴",
     "Geoka",
-    "Mr Still Ballin"
+    "Mr still ballin 🇳🇴"
    ],
    [
-    "Mr Still Ballin",
+    "Mr still ballin 🇳🇴",
     "Makmah",
-    "Mr Still Ballin"
+    "Mr still ballin 🇳🇴"
    ]
   ],
   "ev_antes": {
@@ -32196,7 +32196,7 @@
    "yinn": 29
   },
   "fecha": "01/11",
-  "firma": "d6eb3e9ea1dbea42",
+  "firma": "007e28b9c6a5da57",
   "msg": "1566337161006026843",
   "nombre": "__ la palera del edi __",
   "num": 556,
@@ -32208,7 +32208,7 @@
   "t": "2026-11-01T06:24:39Z",
   "tabla": [
    [
-    "Mr Still Ballin",
+    "Mr still ballin 🇳🇴",
     "Campeón",
     4375
    ],
@@ -32719,7 +32719,7 @@
    "Zignos": 27
   },
   "fecha": "01/11",
-  "firma": "fbcf97a0af36d1b2",
+  "firma": "5c6492c724b1ff49",
   "msg": "1566645439611011152",
   "nombre": "__ COCINE FIDEOS __",
   "num": 558,
@@ -32959,7 +32959,7 @@
    "mats": 6
   },
   "fecha": "02/11",
-  "firma": "30acf6fcd2817d5a",
+  "firma": "508c9d11d7a52276",
   "msg": "1566691494083960924",
   "nombre": "__ LA PALERA DEL KACHUM __",
   "num": 559,
@@ -36489,7 +36489,7 @@
    "ikonoxx": 8
   },
   "fecha": "06/11",
-  "firma": "b6423d1922e589f3",
+  "firma": "42a99177037c9e79",
   "msg": "1568364084817297492",
   "nombre": "GALACTICOS DEL FREESTYLE VOL.17",
   "num": 575,
@@ -36660,7 +36660,7 @@
    ],
    [
     "Vandu",
-    "okam🇨🇷 + <:emoji_5:1462319885810925610>",
+    "OKAM",
     "Vandu"
    ],
    [
@@ -36715,7 +36715,7 @@
    "Yor": 4
   },
   "fecha": "06/11",
-  "firma": "39e1b514cf6ca8a5",
+  "firma": "df05534e42b6108c",
   "msg": "1568457450267484231",
   "nombre": "FAT BATTLES PALOOZA FECHA 10 FINALS",
   "num": 576,
@@ -36895,7 +36895,7 @@
    "Xclusivo": 23
   },
   "fecha": "07/11",
-  "firma": "e436b8b9c210d251",
+  "firma": "4306b6ad94894d5b",
   "msg": "1568746606562509004",
   "nombre": "ZONA MORTAL",
   "num": 577,
@@ -37106,7 +37106,7 @@
    "oriuz": 7
   },
   "fecha": "07/10",
-  "firma": "4632bedbae3c7f3f",
+  "firma": "8f4d0847a7c9f085",
   "msg": "1569507985938714665",
   "nombre": "DISCORD STYLE ED. 15",
   "num": 578,
@@ -37843,7 +37843,7 @@
    "replisan": 3
   },
   "fecha": "27/10",
-  "firma": "9a495cbe8a05fc51",
+  "firma": "32fb31c413d41032",
   "msg": "1569508012169633877",
   "nombre": "MASTER STYLE REMAKE",
   "num": 581,
@@ -38662,7 +38662,7 @@
    "oriuz": 7
   },
   "fecha": "03/11",
-  "firma": "9359097ed73a6149",
+  "firma": "51533b774ab22973",
   "msg": "1569508038820237324",
   "nombre": "SIX SEVEN STYLE",
   "num": 585,
@@ -39049,7 +39049,7 @@
    "yinn": 33
   },
   "fecha": "07/11",
-  "firma": "555bc45acc5cc1e4",
+  "firma": "042b1e5cfd3d0fb7",
   "msg": "1568849280746393691",
   "nombre": "KISS OF SHINIGAMI",
   "num": 587,
@@ -39230,7 +39230,7 @@
    "Xclusivo": 26
   },
   "fecha": "08/11",
-  "firma": "9a4834f032ae8054",
+  "firma": "41eff225f7c3697d",
   "msg": "1569060676079722624",
   "nombre": "EVANGELION CUP VOL 1",
   "num": 588,
@@ -39726,7 +39726,7 @@
    "Shadow": 22
   },
   "fecha": "08/11",
-  "firma": "19d14c688eeea657",
+  "firma": "53c4354df3d47f54",
   "msg": "1569508061335396465",
   "nombre": "RED BULL CARACAS REGIONAL T.5",
   "num": 590,
@@ -39934,7 +39934,7 @@
    "Vilca": 15
   },
   "fecha": "08/11",
-  "firma": "88910a06d4ca258a",
+  "firma": "e45aa505aa8d95e6",
   "msg": "1569508065508593856",
   "nombre": "RAP SIN GROSERIAS 4",
   "num": 591,
@@ -41791,7 +41791,7 @@
   ],
   "ev_antes": {},
   "fecha": "10/10",
-  "firma": "cac871c62d578d77",
+  "firma": "cd8a621004a9524a",
   "msg": "1569847767734554677",
   "nombre": "(sin titulo)",
   "num": 602,
@@ -42017,7 +42017,7 @@
    "Vilca": 15
   },
   "fecha": "12/10",
-  "firma": "fc01373871661b46",
+  "firma": "a543155f3522dbd5",
   "msg": "1569847774147776593",
   "nombre": "(sin titulo)",
   "num": 603,
@@ -42184,7 +42184,7 @@
    "Vilca": 16
   },
   "fecha": "10/11",
-  "firma": "d1466334a56d34bf",
+  "firma": "d9bd506d56200dac",
   "msg": "1569848635271680124",
   "nombre": "MF DOOM Y MADLIB EDICION 1",
   "num": 604,
@@ -42463,7 +42463,7 @@
    "oriuz": 7
   },
   "fecha": "20/10",
-  "firma": "318c24e92c4c1911",
+  "firma": "2fbbeb1cfd4a02bf",
   "msg": "1570247714254360748",
   "nombre": "MINI COMPE LLAVES",
   "num": 606,
@@ -42781,7 +42781,7 @@
    "crakero": 4
   },
   "fecha": "11/11",
-  "firma": "06d352faf4b72a8a",
+  "firma": "6166c6436038bd06",
   "msg": "1570271710903537776",
   "nombre": "GALACTICOS DEL FREESTYLE VOL.1",
   "num": 608,
@@ -43397,7 +43397,7 @@
    "crakero": 6
   },
   "fecha": "11/11",
-  "firma": "6bd7399dbf81fb57",
+  "firma": "95a925e2e7fb7683",
   "msg": "1570306951311532114",
   "nombre": "__qcyo rapeen Pandillas__",
   "num": 610,
@@ -45756,7 +45756,7 @@
    "crakero": 7
   },
   "fecha": "12/11",
-  "firma": "b0d86e20e90f6f08",
+  "firma": "e5f347e4f7267e6e",
   "msg": "1570578147399827479",
   "nombre": "CUPO A LA MULTIVERS",
   "num": 624,
@@ -46037,7 +46037,7 @@
    "TøKīØ🦠🧠": 13
   },
   "fecha": "12/11",
-  "firma": "edac2299e0290704",
+  "firma": "95c37cf62898f985",
   "msg": "1570602754639007937",
   "nombre": "RAP SIN GROSERIAS 5",
   "num": 626,
@@ -46266,7 +46266,7 @@
    "Vilca": 22
   },
   "fecha": "12/11",
-  "firma": "53bf1fe227d701ca",
+  "firma": "4613f1d1f8d906c5",
   "msg": "1570602758506151978",
   "nombre": "RANKED 1",
   "num": 627,
@@ -47369,7 +47369,7 @@
    "jazi": 2
   },
   "fecha": "13/11",
-  "firma": "0c2d5d4572fb077b",
+  "firma": "6e7d023f36bb6fa2",
   "msg": "1570957683136139355",
   "nombre": "SNAKE INSIGNIA 8 8",
   "num": 631,
@@ -47992,7 +47992,7 @@
    "romeo": 4
   },
   "fecha": "13/11",
-  "firma": "ecdaef6375f0a02f",
+  "firma": "3f2947ab708b4d88",
   "msg": "1571023860630028319",
   "nombre": "__ qcyo rapeen 15 __",
   "num": 634,
@@ -48214,7 +48214,7 @@
    "Teito": 39
   },
   "fecha": "14/11",
-  "firma": "bd286da14c06d3cb",
+  "firma": "0bf0ceb61e6a39f2",
   "msg": "1571194503703035995",
   "nombre": "COMPE DEMASIADO MAÑANERA",
   "num": 635,
@@ -49756,7 +49756,7 @@
    "Vandu": 52
   },
   "fecha": "15/11",
-  "firma": "d6bf6f39b74c41d1",
+  "firma": "87943cd2e7234e93",
   "msg": "1571637257578873034",
   "nombre": "RED BULL NACIONAL PLAZAS T.5",
   "num": 645,
@@ -49947,7 +49947,7 @@
    "compare": 1
   },
   "fecha": "15/11",
-  "firma": "b039c465112a27c9",
+  "firma": "ceb79a3496361243",
   "msg": "1571635394460516385",
   "nombre": "FU BATTLE NIGHT",
   "num": 646,
@@ -50475,7 +50475,7 @@
    "Yor": 5
   },
   "fecha": "15/11",
-  "firma": "e65e9156376a582f",
+  "firma": "d54e692b28f5183d",
   "msg": "1571735800801136702",
   "nombre": "CHOP COMPE CEO V.3",
   "num": 648,
@@ -50893,7 +50893,7 @@
    "kychi": 1
   },
   "fecha": "15/11",
-  "firma": "1fa7ead570e2cf58",
+  "firma": "ebf0e0cf69febb5f",
   "msg": "1571954381262295063",
   "nombre": "(sin titulo)",
   "num": 651,
@@ -51056,7 +51056,7 @@
    "Mito": 41
   },
   "fecha": "16/11",
-  "firma": "b200005d0abd17aa",
+  "firma": "c1420d280a1fbdab",
   "msg": "1571969969833517087",
   "nombre": "SIX SEVEN STYLE 3",
   "num": 652,

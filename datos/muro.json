@@ -127,11 +127,7 @@
 },
 "mrstillballin": {
 "rg": "S",
-"c": [
-"competitivo",
-"servidor",
-"temporada"
-]
+"c": []
 },
 "mco": {
 "rg": "B",
@@ -627,7 +623,6 @@
 "rg": "E",
 "c": [
 "competitivo",
-"pais",
 "servidor",
 "temporada"
 ]

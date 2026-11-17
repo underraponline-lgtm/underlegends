@@ -3215,7 +3215,7 @@
     ],
     "Abyssus": [
      0,
-     2,
+     1,
      1,
      0,
      0
@@ -3243,7 +3243,7 @@
     ],
     "Agus": [
      0,
-     3,
+     2,
      1,
      0,
      0
@@ -4279,7 +4279,7 @@
     ],
     "Mr Still Ballin": [
      0,
-     2,
+     0,
      2,
      0,
      0
@@ -4927,7 +4927,7 @@
     "AGUSTÍN51K": 300,
     "Abyssus": 1000,
     "Adriagner": 1600,
-    "Agus": 1600,
+    "Agus": 1000,
     "Aldre": 1000,
     "Andres": 1000,
     "BENJI 🇵🇪": 1000,
@@ -6080,7 +6080,7 @@
     "Mr Still Ballin": [
      1,
      2,
-     0,
+     1,
      0,
      0
     ],
@@ -6812,7 +6812,7 @@
     "Mito": 600,
     "Molusco": 900,
     "Motera": 600,
-    "Mr Still Ballin": 900,
+    "Mr Still Ballin": 2900,
     "Mr.Kude": 600,
     "NC": 900,
     "NXUZ": 900,
@@ -8188,13 +8188,6 @@
      0
     ],
     "4'C 🇲🇽": [
-     0,
-     0,
-     0,
-     0,
-     0
-    ],
-    "@j.nibbana": [
      0,
      0,
      0,
@@ -9629,6 +9622,13 @@
      0,
      0
     ],
+    "j.nibbana": [
+     0,
+     0,
+     0,
+     0,
+     0
+    ],
     "jazi": [
      0,
      1,
@@ -9929,7 +9929,7 @@
   "Abyssus": 5500,
   "Adriagner": 4700,
   "Agente sombra": 300,
-  "Agus": 9300,
+  "Agus": 8700,
   "Akuseru": 900,
   "Akutagawa🇹🇼": 300,
   "Aldre": 3900,
@@ -10120,7 +10120,7 @@
   "Monet": 300,
   "Mosquitrap 🦟": 4000,
   "Motera": 3200,
-  "Mr Still Ballin": 7700,
+  "Mr Still Ballin": 9700,
   "Mr.Kude": 600,
   "Musicdum": 300,
   "N1k": 300,
