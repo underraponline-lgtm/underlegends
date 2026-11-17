@@ -11,6 +11,15 @@
   ],
   "cambios": [
     {
+        "version": "5.91",
+        "dia": "2026-11-17",
+        "cuando": "2026-11-17T00:28:00-05:00",
+        "titulo": "El equipo de la Liga, con el Pase premium",
+        "items": [
+            "El equipo de la Liga y los representantes de los servidores socios tienen el Pase premium en todas las temporadas."
+        ]
+    },
+    {
         "version": "5.90",
         "dia": "2026-11-17",
         "cuando": "2026-11-17T00:27:16-05:00",
