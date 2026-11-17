@@ -110,16 +110,22 @@ function anotarUnaVez(k) {
 // en `<página>2.jsx`. Estuvieron unas horas detrás de `?prev=remake` y salieron para todos el mismo día (Dlx: «Publica y
 // haz todo… sube todo»; sus opiniones, después). Las viejas se borraron; lo que otras páginas les pedían prestado quedó
 // en publicaciones.jsx, guia.jsx y servidor.jsx
-// 📦 LAS PÁGINAS SE PRECARGAN DESDE ACÁ (16/11/2026, ver version.js): antes las pedía la pantalla de carga con una lista
-// de nombres escrita en index.html; con el nombre de cada pedazo cambiando en cada versión, la lista la tiene que saber
-// la app. Se anotan al declararlas y se piden cuando la página ya entró (`window.__lgPrecargar`, web/montar.py). No van
-// el Dashboard, el panel del socio ni verificarse: son de pocos
-const PRECARGAR = [];
-function pag(f) { PRECARGAR.push(f); return lazy(f); }
+// 📦 LAS PÁGINAS SE PRECARGAN, SIN CORRERLAS (16/11/2026, ver version.js). Con el nombre de cada pedazo cambiando en cada
+// versión, la lista sale del build: `inicio/trozos.json` (lo escribe web/vite.config.js), y la pide la pantalla de carga
+// cuando la página ya entró (`window.__lgPrecargar`, web/montar.py). Se BAJAN con `modulepreload`, como antes de la 5.67:
+// la 5.67 las importaba, y eso CORRÍA las 21 páginas al entrar —cada una mete su CSS y su código arriba de todo—, un pico
+// de trabajo justo al abrir el Inicio (Dlx, esa noche: «el inicio se mueve rapidísimo»). No van el Dashboard, el panel
+// del socio ni verificarse: son de pocos (la lista ya viene sin ellos)
+const pag = (f) => lazy(f);
 if (typeof window !== 'undefined') {
   window.__lgPrecargar = () => {
     try { const cx = navigator.connection; if (cx && (cx.saveData || /2g/.test(cx.effectiveType || ''))) return; } catch (e) { /* sigue */ }
-    PRECARGAR.forEach((f) => { try { f().catch(() => {}); } catch (e) { /* esa no */ } });
+    fetch('/inicio/trozos.json', { cache: 'no-cache' }).then((r) => (r.ok ? r.json() : [])).then((ps) => {
+      (Array.isArray(ps) ? ps : []).forEach((f) => {
+        if (!/^inicio-[\w.-]+\.js$/.test(f) || document.head.querySelector('link[href="/inicio/' + f + '"]')) return;
+        const l = document.createElement('link'); l.rel = 'modulepreload'; l.href = '/inicio/' + f; document.head.appendChild(l);
+      });
+    }).catch(() => { /* sin la lista, cada página baja al abrirla */ });
   };
 }
 const Tutorial = pag(() => import('./tutorial.jsx').then((m) => ({ default: m.Tutorial })));

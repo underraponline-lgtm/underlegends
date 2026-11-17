@@ -4,8 +4,21 @@
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
 
+// 📦 la lista de pedazos que la página precarga al entrar (16/11/2026): con la huella en el nombre, la escribe el build
+// y no una lista a mano. Sin el Dashboard, el panel del socio ni verificarse (son de pocos). Ver `__lgPrecargar`, App.jsx
+function listaTrozos() {
+  return {
+    name: 'lista-trozos',
+    generateBundle(_, bundle) {
+      const fuera = /^inicio-(dashboard|socio2|panelsocio|verificar)-/;
+      const p = Object.values(bundle).filter((c) => c.type === 'chunk' && !c.isEntry && !fuera.test(c.fileName)).map((c) => c.fileName).sort();
+      this.emitFile({ type: 'asset', fileName: 'trozos.json', source: JSON.stringify(p) });
+    },
+  };
+}
+
 export default defineConfig({
-  plugins: [react()],
+  plugins: [react(), listaTrozos()],
   base: '/inicio/',
   build: {
     outDir: '../bot/paginas/inicio',
