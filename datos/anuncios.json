@@ -1,5 +1,5 @@
 {
- "cuando": "2026-11-17T17:50:20+00:00",
+ "cuando": "2026-11-17T18:02:08+00:00",
  "anuncios": [
   {
    "nombre": "¡SE LLEGÓ LA GRAN NOCHE!",
@@ -7262,6 +7262,15 @@
  ],
  "oficiales": [
   {
+   "servidor": "FFA",
+   "canal": "✦📢—anuncios",
+   "tit": "SE PARTE DEL EQUIPO DE STAFF FFA",
+   "tx": "Es hora de que puedas ser parte de la historia de freestyle for all, postulate en el canal solo selecciona el rol al que postularas, rellena el formulario y realiza la respectiva entrevista. POSTULATE YA!!!",
+   "cuando": "2026-11-17T17:50:43",
+   "msg_id": "1572308019134599297",
+   "link": "https://discord.com/channels/1468472442925092958/1468478722884501709/1572308019134599297"
+  },
+  {
    "servidor": "DDF",
    "canal": "『📢』Anuncios",
    "tit": "D'F I • GENESIS",
@@ -7485,15 +7494,6 @@
    "cuando": "2026-10-22T02:14:07",
    "msg_id": "1562650230275448933",
    "link": "https://discord.com/channels/1468472442925092958/1531832189187264543/1562650230275448933"
-  },
-  {
-   "servidor": "FFA",
-   "canal": "✦⚡—novedades",
-   "tit": "ya se pueden crear crews.",
-   "tx": "",
-   "cuando": "2026-10-19T20:02:55",
-   "msg_id": "1561832038221353032",
-   "link": "https://discord.com/channels/1468472442925092958/1531832189187264543/1561832038221353032"
   },
   {
    "servidor": "CEU",
