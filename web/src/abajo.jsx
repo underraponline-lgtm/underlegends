@@ -11,6 +11,7 @@ import { abrirVideo } from './video.jsx';
 import { YoMenu } from './yomenu.jsx';
 import { miReaccion, reaccionesDe, useAplausos } from './aplausos.js';
 import { comentar, delHilo, useComentarios } from './comentarios.jsx';
+import { ComentariosFlotantes } from './flotantes.jsx';
 import { Carita, LU_REAC } from './medio.jsx';
 import { usePase } from './pase.js';
 
@@ -766,6 +767,23 @@ export function Visor({ liga, grupos, abierto, onCerrar, onVisto, vistos = {}, r
     else if (d.link) window.open(d.link, '_blank', 'noopener');
     else if (d.ancla) accion.ir(d.ancla);
   }, [onCerrar, raiz]);
+  // 💬 CUÁNTOS COMENTARIOS FLOTANTES ENTRAN EN ESTA HISTORIA (17/11/2026): el cuerpo les reserva el lugar abajo y el
+  // contenido se vuelve a centrar más arriba, así no lo tapan. Dos si entran, si no uno, si no ninguno (medido: con dos
+  // fijos pisaban la carta o el flyer en 26 de 59 historias a 390 px). Cada burbuja son 46 px + 6 de aire, y 16 más
+  // entre el contenido y la de arriba. Con un ResizeObserver: la carta y el flyer terminan de bajar después
+  const [filasF, setFilasF] = useState(2);
+  useLayoutEffect(() => {
+    const cu = cuerpoR.current;
+    const st = cu && cu.querySelector('.st');
+    if (!st) return undefined;
+    const medir = () => setFilasF(Math.max(0, Math.min(2, Math.floor((cu.clientHeight - st.offsetHeight - 22) / 52))));
+    medir();
+    if (typeof ResizeObserver === 'undefined') return undefined;
+    const ro = new ResizeObserver(medir);
+    ro.observe(st);
+    ro.observe(cu);
+    return () => ro.disconnect();
+  }, [idAct, hay]);
   if (!hay) return null;
   const s = g.slides.find((x) => x.id === idAct) || g.slides[0];
   // ⏭️ la que sigue —en este círculo o la primera sin ver del próximo—, escondida: sus imágenes bajan antes de llegar
@@ -805,6 +823,11 @@ export function Visor({ liga, grupos, abierto, onCerrar, onVisto, vistos = {}, r
   };
   // 👏 reaccionar (le llega a la persona, como Felicitar en Publicaciones: `window.felicitar`) y responder, en la barra de abajo
   const soc = s.pub && s.pub.id ? <HvSocial key={s.id} liga={liga} it={s.pub} A={A} P={P} onFoco={onFoco} onIr={ir} /> : null;
+  // 💬 los comentarios de su publicación, flotando arriba de la barra como en un vivo (17/11/2026): más seguido que en el
+  // Inicio, porque una historia dura segundos, y los que entran sin tapar el contenido (`filasF`, arriba)
+  const hiloS = s.pub && s.pub.id ? delHilo(s.pub, Date.now()) : [];
+  const flot = hiloS.length >= 2 && filasF > 0 ? <ComentariosFlotantes key={'cf' + s.id} liga={liga} it={s.pub} hilo={hiloS} cls="cfl-hist" cada={1700} max={filasF}
+    onAbrir={() => ir({ ruta: '#/publicaciones/' + encodeURIComponent(s.pub.id) })} /> : null;
   // 🌆 la escena de fondo: la de su servidor (`esc`, dos en el clásico); sin una, la del círculo
   const escs = [...new Set((Array.isArray(s.esc) ? s.esc : [s.esc || g.sv || 'dra']).map(escenaDe).filter(Boolean))];
   const ctaB = s.cta && s.ir && Object.values(s.ir).some(Boolean) ? <button type="button" className="btn verde hv-cta" onClick={() => ir(s.ir)}>{s.cta}</button> : null;
@@ -851,12 +874,12 @@ export function Visor({ liga, grupos, abierto, onCerrar, onVisto, vistos = {}, r
           <button type="button" className={'hv-comp hv-img' + (img ? ' ' + img : '')} aria-label="Guardar como imagen para tus historias"
             title="Como imagen, para tus historias" disabled={img === 'armando'} onClick={imagen}><Ico n="imagen" t={22} /></button>
           <button type="button" className="hv-x" aria-label="Cerrar las historias" onClick={onCerrar} ref={cerrarB}><Ico n="cerrar" t={22} /></button></div>
-        <div className="hv-cuerpo" ref={cuerpoR}><div className="st" key={s.id}><span className={'st-tag' + (s.tono ? ' ' + s.tono : '')}>{s.tag}</span>{s.cuerpo}</div></div>
+        <div className="hv-cuerpo" ref={cuerpoR} style={flot ? { paddingBottom: 16 + filasF * 52 - 6 } : undefined}><div className="st" key={s.id}><span className={'st-tag' + (s.tono ? ' ' + s.tono : '')}>{s.tag}</span>{s.cuerpo}</div></div>
         {proxima ? <div className="hv-sig" aria-hidden="true" ref={(el) => { if (el) el.setAttribute('inert', ''); }}>
           <div className="st"><span className={'st-tag' + (proxima.tono ? ' ' + proxima.tono : '')}>{proxima.tag}</span>{proxima.cuerpo}</div></div> : null}
         {img === 'armando' || img === 'bajada' || img === 'error' ? <p className="hv-est" role="status">{img === 'armando' ? 'Armando la imagen…'
           : img === 'bajada' ? 'Imagen guardada' : 'No pude armar la imagen'}</p> : null}
-        {ctaB || soc ? <div className="hv-pie">{ctaB}{soc}</div> : null}
+        {ctaB || soc ? <div className="hv-pie">{flot}{ctaB}{soc}</div> : null}
         <button type="button" className="hv-zona izq" aria-label="Anterior" onClick={zona(anterior)} />
         <button type="button" className="hv-zona der" aria-label="Siguiente" onClick={zona(siguiente)} />
       </div>

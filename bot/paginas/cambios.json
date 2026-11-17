@@ -11,6 +11,18 @@
   ],
   "cambios": [
     {
+        "version": "6.05",
+        "dia": "2026-11-17",
+        "cuando": "2026-11-17T02:20:52-05:00",
+        "titulo": "Los comentarios, flotando",
+        "items": [
+            "En las publicaciones con comentarios —la grande de **Lo último**, el escenario del Inicio y las **historias**— los comentarios van **apareciendo flotando**, como en un vivo. Las **respuestas** se ven corridas y dicen a quién le contestan.",
+            "El botón de comentar de la grande de Lo último ahora está **junto a los otros botones**, con cuántos comentarios hay.",
+            "En las historias, los comentarios **no tapan** la carta ni el afiche: se ven los que entran.",
+            "Tocar un comentario abre la publicación. Con «Menos animaciones» se quedan quietos."
+        ]
+    },
+    {
         "version": "6.04",
         "dia": "2026-11-17",
         "cuando": "2026-11-17T02:06:50-05:00",

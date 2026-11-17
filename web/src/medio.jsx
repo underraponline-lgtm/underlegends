@@ -8,6 +8,7 @@ import { Bandera, Cara, Carta, Compartir, Ico, Pest, Rango, Sec, aDiscord, accio
 import { avance, premioTexto, proximoEspecial, usePase, usePases } from './pase.js';
 import { SelloPremium, esPremium } from './sello.jsx';
 import { useEffect, useRef, useState } from 'react';
+import { ComentariosFlotantes } from './flotantes.jsx';
 import { pedirLigas } from './ligas_datos.js';
 
 // 🗓️ HOY SUELE HABER (Dlx, 12/10/2026, «5. B»: casi todos anuncian a último momento, así que lo que no se ve con
@@ -223,7 +224,8 @@ export const irPub = (e, id) => {
   if (id) location.hash = '#/publicaciones/' + encodeURIComponent(id);
 };
 
-export function LuSocial({ liga, it, A, hilo, P }) {
+// `sinCm`: sin el botón de comentar (la grande lo lleva en su fila de botones); sin reacciones tampoco, no dibuja nada
+export function LuSocial({ liga, it, A, hilo, P, sinCm = false }) {
   const [abierto, setAbierto] = useState(false);
   const caja = useRef(null);
   useEffect(() => {
@@ -250,6 +252,7 @@ export function LuSocial({ liga, it, A, hilo, P }) {
   const reaccionar = (e) => { if (window.felicitar) window.felicitar(id, e); setAbierto(false); };
   const parar = (e) => e.stopPropagation();
   const err = A.err[id];
+  if (sinCm && !reac.length && !puede && !err) return null;
   return (
     <span className="lu-soc" ref={caja} onClick={parar} onKeyDown={parar}>
       {reac.map(([e, n]) => (
@@ -264,8 +267,8 @@ export function LuSocial({ liga, it, A, hilo, P }) {
           <Carita />{reac.length ? null : <span className="lu-car-t">Reaccionar</span>}
         </button>
       ) : null}
-      <a className="lu-cm" href={'#/publicaciones/' + encodeURIComponent(id)} onClick={(e) => irPub(e, id)} aria-label={nc ? nc + (nc === 1 ? ' comentario' : ' comentarios') : 'Comentar'}>
-        <Ico n="globo" t={15} />{nc ? <em>{num(nc)}</em> : null}</a>
+      {sinCm ? null : <a className="lu-cm" href={'#/publicaciones/' + encodeURIComponent(id)} onClick={(e) => irPub(e, id)} aria-label={nc ? nc + (nc === 1 ? ' comentario' : ' comentarios') : 'Comentar'}>
+        <Ico n="globo" t={15} />{nc ? <em>{num(nc)}</em> : null}</a>}
       {err && err.error === 'reaccion' ? <small className="lu-err">Esa reacción es del Pase premium</small> : null}
       {abierto ? (
         <span className="lu-reac" role="dialog" aria-label="Reaccionar">
@@ -429,9 +432,14 @@ export function Noticias({ liga, raiz, prueba = '' }) {
           <span className="lu-acc">
             {esCarta ? <button type="button" className="lu-btn v" onClick={(e) => { e.stopPropagation(); accion.carta(k, feat.carta); }}>Ver la carta</button> : null}
             {k ? <a className="lu-btn" href={'#/r/' + encodeURIComponent(k)} onClick={(e) => e.stopPropagation()}>Su perfil</a> : null}
+            {/* 💬 comentar, en la fila de los botones (Dlx, 17/11/2026: «ese comentario muévelo a otra parte»): solo, abajo,
+                ocupaba una fila entera para un botón chico */}
+            {feat.id ? <a className="lu-btn lu-btn-cm" href={'#/publicaciones/' + encodeURIComponent(feat.id)} onClick={(e) => irPub(e, feat.id)}
+              aria-label={hilo.length ? hilo.length + (hilo.length === 1 ? ' comentario' : ' comentarios') : 'Comentar'}>
+              <Ico n="globo" t={14} />{hilo.length ? num(hilo.length) : 'Comentar'}</a> : null}
           </span>
-          <LuSocial liga={liga} it={feat} A={A} hilo={hilo} P={P} />
-          <LuNube liga={liga} it={feat} hilo={hilo} n={2} />
+          <LuSocial liga={liga} it={feat} A={A} hilo={hilo} P={P} sinCm />
+          {hilo.length >= 2 ? <ComentariosFlotantes liga={liga} it={feat} hilo={hilo} cls="cfl-feat" /> : <LuNube liga={liga} it={feat} hilo={hilo} n={2} />}
         </span>
       </div>
     );

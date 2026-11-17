@@ -16,6 +16,7 @@ import { SelloPremium, esPremium } from './sello.jsx';
 import { Numero } from './anima.js';
 import { VotoVivo } from './quiengana.jsx';
 import { LuNube, LuSocial } from './medio.jsx';
+import { ComentariosFlotantes } from './flotantes.jsx';
 
 // 🧭 EL ORDEN, EL DEL MENÚ DE ARRIBA AGRUPADO (12/11/2026, ver `GRUPOS`): lo que va suelto arriba, primero, y después lo
 // de cada grupo. Es el de la tira de abajo del celular, así que las cuatro y media que se ven sin deslizar son Inicio,
@@ -1908,7 +1909,8 @@ function CoronaCampeon() {
 function Social({ liga, it, ctx, hilo }) {
   if (!it || !it.id || !ctx || !ctx.A) return null;
   const h = hilo || delHilo(it, liga.ahora);
-  return <div className="es-soc"><LuSocial liga={liga} it={it} A={ctx.A} hilo={h} P={ctx.P} /><LuNube liga={liga} it={it} hilo={h} /></div>;
+  // 💬 con dos o más comentarios, flotando (17/11/2026); con uno, la nube de siempre
+  return <div className="es-soc"><LuSocial liga={liga} it={it} A={ctx.A} hilo={h} P={ctx.P} />{h.length >= 2 ? <ComentariosFlotantes liga={liga} it={it} hilo={h} cls="cfl-es" /> : <LuNube liga={liga} it={it} hilo={h} />}</div>;
 }
 // ⚔️ EN VIVO, CARA A CARA (Dlx, 14/11/2026, a las mejoras: «todas»): la batalla de ahora con las dos cartas (o las caras), el
 // favorito por el OVR de la Temporada —una cuenta simple, y lo dice— y la que sigue debajo
