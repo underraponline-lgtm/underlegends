@@ -272,6 +272,15 @@
 "temporada"
 ]
 },
+"btrx": {
+"rg": "C",
+"c": [
+"competitivo",
+"pais",
+"servidor",
+"temporada"
+]
+},
 "hassan": {
 "rg": "A",
 "c": []
@@ -343,15 +352,6 @@
 ]
 },
 "tenor": {
-"rg": "C",
-"c": [
-"competitivo",
-"pais",
-"servidor",
-"temporada"
-]
-},
-"btrx": {
 "rg": "C",
 "c": [
 "competitivo",
