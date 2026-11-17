@@ -11,6 +11,17 @@
  ],
  "cambios": [
     {
+        "version": "5.65",
+        "dia": "2026-11-16",
+        "cuando": "2026-11-16T19:38:00-05:00",
+        "titulo": "FDS: dos eventos la misma noche",
+        "items": [
+            "En **FDS**, la noche del 13/11 se jugaron dos eventos seguidos: **RANKED 2** y **RAP SIN GROSERIAS #6**. Se estaban leyendo como uno solo; ahora son dos, cada uno con su llave y sus puntos.",
+            "Los puntos de esa noche se vuelven a calcular en la próxima hora: RANKED 2 pasa a pagarse con la escala de 8 a 15 participantes, que es la que le toca, y el #6 entra con la suya.",
+            "Cuando dos eventos se juegan uno detrás del otro en el mismo canal de veredictos, la final que ya tiene campeón cierra el primero."
+        ]
+    },
+    {
         "version": "5.64",
         "dia": "2026-11-16",
         "cuando": "2026-11-16T15:34:00-05:00",
