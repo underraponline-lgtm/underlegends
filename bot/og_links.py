@@ -44,7 +44,7 @@ SALIDA = os.path.join(BASE, 'salida_og')
 PUBLICA = 'https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev'
 ORDEN_CARTA = ('temporada', 'servidor', 'competitivo', 'pais')
 #: cambia esto y se rearman todas (el diseño entra en la huella)
-DISENO = 'v1'
+DISENO = 'v2'
 
 
 def slug_og(x):
@@ -75,9 +75,25 @@ def _get(url, ciclo=False, timeout=25):
         return None
 
 
+def _carta(k, f, cartas):
+    """La URL de la primera carta que tiene (`ORDEN_CARTA`), con su versión, o ''."""
+    vs = f.get('cv').split('.') if isinstance(f.get('cv'), str) else []
+    for c in ORDEN_CARTA:
+        if c in (f.get('c') or []):
+            i = cartas.index(c) if c in cartas else -1
+            v = vs[i] if 0 <= i < len(vs) else ''
+            return '%s/%s/%s.webp%s' % (PUBLICA, k, c, ('?v=' + v) if v else '')
+    return ''
+
+
 def trabajos():
-    """`[(tipo, slug, huella, id)]` de todo lo que hay hoy: las crews (`id` de la crew) y los links abiertos esta temporada
-    (`id` = la clave). La huella es de lo que la miniatura muestra: si no cambió, no se vuelve a sacar."""
+    """`[(tipo, slug, huella, ruta)]` de todo lo que hay hoy: las crews y los links abiertos esta temporada. `ruta` es lo
+    que va después de `#/og/` (ver `dibujar()`). La huella es de lo que la miniatura muestra: si no cambió, no se saca.
+
+    ⚠️ A QUIEN INVITA SE LO BUSCA TAMBIÉN EN LOS PERFILES: el lobby trae sólo la tabla de los 200 primeros, y la primera
+    miniatura salió sin la tarjeta de Dlx (#228). El nombre y la carta viajan en la ruta (`?n=`, `?c=`): la página
+    tampoco lo tiene en su tabla."""
+    from urllib.parse import quote
     import avisar
     out = []
     cw = _get(avisar.WORKER + '/avisos/crews') or {}
@@ -86,23 +102,22 @@ def trabajos():
         if not s:
             continue
         datos = {'n': c.get('nombre'), 's': c.get('sigla'), 'l': c.get('logo'), 'g': len(c.get('gente') or []), 'd': c.get('desc')}
-        out.append(('crew', s, _huella(datos), str(c.get('id'))))
+        out.append(('crew', s, _huella(datos), 'crew/' + quote(str(c.get('id')), safe='')))
     ks = (_get(avisar.WORKER + '/avisos/ref-links', ciclo=True) or {}).get('ks') or []
     if ks:
         L = _get(avisar.WORKER + '/lobby?json=1', timeout=40) or {}
         filas = {f.get('k'): f for f in (L.get('tabla') or []) if isinstance(f, dict)}
         cartas = L.get('cartas') or []
+        if any(k not in filas for k in ks):
+            P = (_get(avisar.WORKER + '/perfiles', timeout=60) or {}).get('p') or {}
+            for k in ks:
+                if k not in filas and isinstance((P.get(k) or {}).get('f'), dict):
+                    filas[k] = P[k]['f']
         for k in ks:
             f = filas.get(k) or {}
-            carta = ''
-            for c in ORDEN_CARTA:
-                if c in (f.get('c') or []):
-                    i = cartas.index(c) if c in cartas else -1
-                    v = f.get('cv').split('.')[i] if isinstance(f.get('cv'), str) and i >= 0 and i < len(f.get('cv').split('.')) else ''
-                    carta = '%s/%s/%s.webp%s' % (PUBLICA, k, c, ('?v=' + v) if v else '')
-                    break
-            r = {'k': k, 'n': f.get('n') or k, 'carta': carta}
-            out.append(('ref', slug_og(k), _huella(r), k))
+            r = {'k': k, 'n': f.get('n') or k, 'carta': _carta(k, f, cartas)}
+            ruta = 'ref/%s?n=%s&c=%s' % (quote(k, safe=''), quote(str(r['n']), safe=''), quote(r['carta'], safe=''))
+            out.append(('ref', slug_og(k), _huella(r), ruta))
     return out
 
 
@@ -118,7 +133,6 @@ def _leer_estado():
 def dibujar(lista):
     """`{(tipo, slug): ruta del JPG}` de las que salieron: la foto de `#/og/<tipo>/<id>` (web/src/og_link.jsx), con un
     navegador para todas. Una que la página no sabe dibujar (la ruta todavía no está publicada) no sale y se reintenta."""
-    from urllib.parse import quote
     import navegador
     navegador.hace_falta()                               # Chromium, sólo si hay algo que sacar (bot/navegador.py)
     from playwright.sync_api import sync_playwright
@@ -128,9 +142,9 @@ def dibujar(lista):
     with sync_playwright() as pw:
         nav = pw.chromium.launch()
         pag = nav.new_page(viewport={'width': 1200, 'height': 630}, device_scale_factor=1)
-        for tipo, slug, _h, ident in lista:
+        for tipo, slug, _h, ruta in lista:
             try:
-                pag.goto('%s/og/%s/%s' % (WEB, tipo, quote(ident, safe='')), wait_until='domcontentloaded', timeout=45000)
+                pag.goto('%s/og/%s' % (WEB, ruta), wait_until='domcontentloaded', timeout=45000)
                 pag.wait_for_function("""() => { const h = document.querySelector('#inicio-nuevo');
                     const o = h && h.shadowRoot && h.shadowRoot.querySelector('.og');
                     return o && o.dataset.listo === '1'; }""", timeout=45000)
@@ -142,7 +156,9 @@ def dibujar(lista):
                 if falta:
                     print('   · %s/%s: la página no lo encontró' % (tipo, slug))
                     continue
-                pag.wait_for_timeout(400)
+                # las fuentes: el nombre se vuelve a medir cuando llegan (og_link.jsx), y medido antes se salía
+                pag.evaluate('() => document.fonts.ready.then(() => 1)')
+                pag.wait_for_timeout(500)
                 png = os.path.join(SALIDA, '%s_%s.png' % (tipo, slug))
                 pag.screenshot(path=png, clip={'x': 0, 'y': 0, 'width': 1200, 'height': 630})
                 jpg = png[:-4] + '.jpg'
