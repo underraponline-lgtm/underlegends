@@ -11,6 +11,18 @@
   ],
   "cambios": [
     {
+        "version": "6.01",
+        "dia": "2026-11-17",
+        "cuando": "2026-11-17T01:58:00-05:00",
+        "titulo": "Tu cuenta, rehecha en la computadora",
+        "items": [
+            "En la computadora, Tu cuenta tiene un menú a la izquierda por grupos y una página para cada cosa: tu perfil, tus temas, tus fondos, tu estilo, tu crew, tu servidor y más.",
+            "Nuevo: «Buscar en tu cuenta», para llegar directo a un ajuste (el tema, la hora, los avisos, borrar tus datos…).",
+            "Nuevo: el Resumen, con tu puesto, tu racha, tu nivel y lo que te falta para completar tu cuenta.",
+            "En el celular, Tu cuenta sigue como estaba."
+        ]
+    },
+    {
         "version": "6.00",
         "dia": "2026-11-17",
         "cuando": "2026-11-17T01:43:32-05:00",
