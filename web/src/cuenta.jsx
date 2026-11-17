@@ -24,6 +24,7 @@ import { PasosInstalar } from './instalar.jsx';
 import { FraseEditor } from './frase.jsx';
 import CSS_PAGINA from './css/cuenta.css?inline';
 import { usarCss } from './css.js';
+import { CuentaPC } from './cuenta_pc.jsx';
 import { achicar as achicarImagen, aBase64 } from './imagen.js';
 
 // 🎨 su CSS, con su pedazo (web/src/css/cuenta.css)
@@ -212,7 +213,7 @@ function CalendarioRacha({ R, liga }) {
   );
 }
 
-function RachaNivel({ dc, liga }) {
+export function RachaNivel({ dc, liga }) {
   const R = useRacha(!!dc);
   if (!R) return null;
   const { racha: r, nivel: n } = R;
@@ -316,7 +317,39 @@ function BotonEntrar({ chico = true }) {
   return <button type="button" className={'btn verde' + (chico ? ' chico' : '')} onClick={accion.entrar}>Entrar con Discord</button>;
 }
 
-function Caja({ t, children, d }) {
+// 🎭 TU ESTILO, en la cuenta (17/11/2026): tu estilo de juego y cómo se ven tus cartas. Elegir se hace en el vestidor del
+// Inventario, que es donde está la carta viva: acá se ve qué tienes y se llega directo
+const CARTAS_EST = [['temporada', 'Temporada'], ['servidor', 'Servidor'], ['competitivo', 'Competitiva'], ['pais', 'País']];
+function EstiloCaja({ dc }) {
+  const [d, setD] = useState(undefined);
+  const [cat, setCat] = useState(null);
+  useEffect(() => {
+    if (!dc) { setD(null); return undefined; }
+    let vivo = true;
+    import('./pase.js').then((m) => m.pasePost('juego-mio', {})).then((r) => { if (vivo) setD(r && r._ok ? r : null); });
+    import('./estilos_juego.json').then((m) => { if (vivo) setCat(m.default || m); });
+    return () => { vivo = false; };
+  }, [dc && dc.id]); // eslint-disable-line react-hooks/exhaustive-deps
+  const est = cat && d && d.juego ? (cat.estilos || []).find((x) => x[0] === d.juego) : null;
+  return (
+    <>
+      <Caja t="Tu estilo de juego" d={!dc ? 'Entra con Discord para elegirlo.' : d === undefined ? 'Cargando…'
+        : est ? 'Va en la columna izquierda de tu carta Competitiva. ' + (d.puede ? 'Puedes cambiarlo una vez en esta temporada.' : 'Ya lo cambiaste esta temporada.')
+        : 'Todavía no elegiste. Va en la columna izquierda de tu carta Competitiva: el primero es libre.'}>
+        {est ? <div className="cu-fila"><img className="cpc-est" alt="" src={est[4]} /><span><b>{est[1]}</b><small>{est[3]}</small></span></div> : null}
+        {dc ? <a className="btn verde chico" href="#/inventario/temporada/juego">{est ? 'Cambiar mi estilo' : 'Elegir mi estilo'}</a> : null}
+      </Caja>
+      <Caja t="Tus cartas" d="El TAG, el marco, la foto y el estilo de cada una se cambian en el vestidor, con la carta viva al lado.">
+        <div className="cu-btns">{CARTAS_EST.map(([c, n]) => <a key={c} className="btn borde2 chico" href={'#/inventario/' + c + '/tag'}>{n}</a>)}</div>
+      </Caja>
+      <Caja t="Tus emblemas y tus looks" d="Los emblemas salen al lado de tu nombre; un look guarda todo lo que llevan puesto tus cartas.">
+        <div className="cu-btns"><a className="btn borde2 chico" href="#/inventario/temporada/emblemas">Mis emblemas</a><a className="btn borde2 chico" href="#/inventario">Mis looks</a></div>
+      </Caja>
+    </>
+  );
+}
+
+export function Caja({ t, children, d }) {
   return <section className="cu-caja"><h3>{t}</h3>{d ? <p className="cu-d">{d}</p> : null}{children}</section>;
 }
 
@@ -729,7 +762,7 @@ function VideosCaja({ dc }) {
 // 🏠 Y AL FINAL DE VERIFICARSE (`paso`; Dlx, 07/10/2026: «que al final te pregunte de qué servidor venís y/o a qué
 // servidor querés representar… todos los socios y la opción ninguno»). La misma elección que Mi cuenta, con «Ninguno»
 // (`sv: ''`), que queda contestado sin fijar la temporada: tu perfil no muestra ningún servidor
-function ServidorCaja({ liga, dc, paso }) {
+export function ServidorCaja({ liga, dc, paso }) {
   const est = useCuentaEst();
   useEffect(() => { if (dc && W.pedirMiServidor) W.pedirMiServidor(); }, [dc && dc.id]);
   const svs = Object.values(liga.svs || {});
@@ -1005,7 +1038,7 @@ function Pedidos({ liga, dc }) {
   );
 }
 
-function Parte({ id, liga, dc, tema, onTema, temaSv, onTemaSv }) {
+export function Parte({ id, liga, dc, tema, onTema, temaSv, onTemaSv, sinServidor = false }) {
   // 🔓 tu nivel, para los colores de los servidores (ver `NIVEL_TEMA` en temas.js)
   const Rn = useRacha(!!dc && id === 'apariencia');
   const [temaMsg, setTemaMsg] = useState('');
@@ -1041,6 +1074,9 @@ function Parte({ id, liga, dc, tema, onTema, temaSv, onTemaSv }) {
     );
   }
   if (id === 'fondo') return <FondoCaja dc={dc} />;
+  // 🖥️ las dos páginas nuevas de la compu (17/11/2026), que el celular también abre si le llega el link
+  if (id === 'servidor') return <ServidorCaja liga={liga} dc={dc} />;
+  if (id === 'estilo') return <EstiloCaja dc={dc} />;
   if (id === 'algo-mal') return <Pedidos liga={liga} dc={dc} />;
   if (id === 'perfil') {
     return (
@@ -1053,7 +1089,8 @@ function Parte({ id, liga, dc, tema, onTema, temaSv, onTemaSv }) {
         <FotoCartaCaja dc={dc} />
         <RedesCaja dc={dc} />
         <VideosCaja dc={dc} />
-        <ServidorCaja liga={liga} dc={dc} />
+        {/* 🖥️ en la compu, tu servidor tiene su propia página (cuenta_pc.jsx): ahí no se repite */}
+        {sinServidor ? null : <ServidorCaja liga={liga} dc={dc} />}
       </>
     );
   }
@@ -1360,6 +1397,11 @@ export function Cuenta({ liga, dc, parte, tema, onTema, temaSv, onTemaSv }) {
     if (m.addEventListener) m.addEventListener('change', f);
     return () => { if (m.removeEventListener) m.removeEventListener('change', f); };
   }, []);
+  // 🖥️ EN LA COMPU, LA CUENTA NUEVA (17/11/2026, cuenta_pc.jsx): el menú por grupos y una página por cosa. El celular
+  // sigue acá abajo, como estaba (Dlx: «me gusta cómo se ve en celular»)
+  if (ancha && parte !== 'verificar') {
+    return <CuentaPC liga={liga} dc={dc} parte={parte} tema={tema} onTema={onTema} temaSv={temaSv} onTemaSv={onTemaSv} socio={socio} dueno={dueno} />;
+  }
   const abierta = actual || (ancha ? todas[0] : null);
   const lista = (
     <nav data-tuto="cu-nav" className="cu-nav" aria-label="Tu cuenta">
