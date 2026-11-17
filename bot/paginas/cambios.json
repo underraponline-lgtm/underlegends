@@ -11,6 +11,17 @@
   ],
   "cambios": [
     {
+        "version": "5.89",
+        "dia": "2026-11-17",
+        "cuando": "2026-11-17T00:20:00-05:00",
+        "titulo": "Dragón Drops: un tope suave por semana",
+        "items": [
+            "Los Puntos de Tienda que dan los Dragón Drops se pagan completos hasta 10.000 por semana; lo que pase de ahí, a la mitad.",
+            "Los títulos salen igual, y lo que ganas compitiendo no tiene tope.",
+            "En tus Dragón Drops ves cuánto llevas esta semana. Se renueva el lunes."
+        ]
+    },
+    {
         "version": "5.88",
         "dia": "2026-11-17",
         "cuando": "2026-11-17T01:20:00-05:00",
