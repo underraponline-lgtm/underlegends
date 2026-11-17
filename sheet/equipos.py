@@ -112,9 +112,25 @@ SEP = '+'                       # el que usa la gente; se deja por claridad
 _PAREN = re.compile(r'[(（][^)）]*[)）]?')
 
 
+#: 😶 el emoji propio de Discord (`<:logocypherhood:1258…>`, `<a:fuego:123>`): adorno o bandera, nunca un nombre
+_EMOJI_PROPIO = re.compile(r'<a?:\w+:\d+>')
+#: 😶 un integrante que es sólo emojis propios, con el separador que lo une: detrás de otro y delante de otro
+_SOLO_EMOJI_ATRAS = re.compile(r'\s*[+,]\s*(?:<a?:\w+:\d+>\s*)+(?=[+,]|$)')
+_SOLO_EMOJI_ADELANTE = re.compile(r'^\s*(?:<a?:\w+:\d+>\s*)+[+,]\s*')
+#: 📛 la arroba escrita a mano delante de un nombre (`@j.nibbana`): es cómo se escribió, no parte del nombre. ⚠️ La mención
+#: de verdad (`<@123…>`) no se toca: ésa es la cuenta, y el lector la resuelve aparte
+_ARROBA = re.compile(r'^@(?=[^\W\d_]|\d)')
+
+
 def limpiar(s):
-    """Un nombre sin los caracteres del dibujo de la llave."""
-    return _DIBUJO.sub('', str(s or '')).strip()
+    """Un nombre sin los caracteres del dibujo de la llave.
+
+    😶 Y sin el emoji propio de Discord ni la arroba de adelante (17/11/2026, Dlx: «arregla también lo de los emojis
+    como personas»). CHOP COMPE CEO V.2 (#636, CH) escribió un lado «@j.nibbana, <:logocypherhood:…>»: la coma lo partía
+    en un equipo de dos y el logo del servidor cobraba la mitad de los puntos como una persona más; en el #576 (ACAD)
+    pasó con «OKAM, <:emoji_5:…>», la bandera de OKAM hecha emoji. `norm()` ya los ignoraba para comparar, así que nadie
+    cambia de identidad: cambia lo que se muestra y quién cobra"""
+    return _ARROBA.sub('', _EMOJI_PROPIO.sub(' ', _DIBUJO.sub('', str(s or ''))).strip()).strip()
 
 
 #: 👥 «SOL Y SADIK»: la «y» como separador, pero SÓLO POR LLAVE. Ver `con_y()`.
@@ -157,6 +173,9 @@ def integrantes(lado):
     sin nada al lado —el lector perdio integrantes— y entonces **esto no
     se carga**: va a `Pendientes`.
     """
+    # 😶 un integrante que sólo es un emoji propio (`OKAM, <:emoji_5:…>`) no es nadie ni un corte: era adorno. Se saca
+    # con su separador ANTES de limpiar, porque limpio deja la coma suelta y eso parece un lado cortado
+    lado = _SOLO_EMOJI_ATRAS.sub('', _SOLO_EMOJI_ADELANTE.sub('', str(lado or '')))
     s = limpiar(lado)
     if not s:
         return [], False
@@ -277,6 +296,13 @@ def _self_check():
     print('')
     # 🔴 EL CORTADO NO PUEDE PASAR POR INDIVIDUO. Es el caso que le daría
     # a Hassan el puesto completo de un equipo de tres.
+    # 😶 el emoji propio y la arroba no son personas (#636 y #576)
+    ok = (integrantes('@j.nibbana, <:logocypherhood:1258928534743683176>') == (['j.nibbana'], False)
+          and integrantes('OKAM, <:emoji_5:1462319885810925610>') == (['OKAM'], False)
+          and integrantes('Snow, <@123456789012345678>')[0] == ['Snow', '<@123456789012345678>'])
+    print('   %s un emoji propio no es un integrante, la arroba escrita se va, y la mención de verdad se queda'
+          % ('✅' if ok else '🔴'))
+    mal += not ok
     nn, cc = integrantes('⌞Hassan🇪🇬 +')
     ok = cc is True and len(nn) == 1
     print('   %s un `+` suelto avisa que está cortado' % ('✅' if ok else '🔴'))

@@ -1299,7 +1299,9 @@ def por_discord(preguntas, respuestas, eventos, dry=True):
             # abierta y la corrida siguiente la resuelve como alias, porque
             # su cuenta ya va a estar en la Lista
             cc = banderas_de.get(did) or set()
-            nuevos.append((p, _sin_bandera(det).strip(),
+            # 📛 sin la arroba ni el emoji propio que la inscripción traía pegados (17/11/2026): «@j.nibbana 🇪🇸
+            # <:logocypherhood:…>» (CH) entró a la Lista como «@j.nibbana». Como `equipos.limpiar()`
+            nuevos.append((p, re.sub(r'\s+', ' ', re.sub(r'^@(?=\w)', '', re.sub(r'<a?:\w+:\d+>', ' ', _sin_bandera(det)).strip())).strip(),
                            next(iter(cc)) if len(cc) == 1 and cc <= liga else '', did, fuente))
     # ⚠️ EL MISMO ALIAS POR DOS PREGUNTAS —el mismo nombre con dos banderas, «PARIA SIN REMEDIO 🇦🇷» y «🇧🇲»— va UNA
     # vez a la hoja AKAs; las dos preguntas se cierran igual (`hechas`)
