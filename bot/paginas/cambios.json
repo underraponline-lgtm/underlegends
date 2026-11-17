@@ -11,6 +11,15 @@
   ],
   "cambios": [
     {
+        "version": "6.04",
+        "dia": "2026-11-17",
+        "cuando": "2026-11-17T02:06:50-05:00",
+        "titulo": "Las imágenes de los links",
+        "items": [
+            "La imagen de un link de crew o de invitación, pegada en Discord o WhatsApp: el nombre sale **entero** (no cortado en medio de la palabra) y quien invita sale **con su tarjeta**."
+        ]
+    },
+    {
         "version": "6.03",
         "dia": "2026-11-17",
         "cuando": "2026-11-17T02:01:00-05:00",
