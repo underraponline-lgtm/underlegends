@@ -11,6 +11,16 @@
   ],
   "cambios": [
     {
+        "version": "5.98",
+        "dia": "2026-11-17",
+        "cuando": "2026-11-17T01:29:00-05:00",
+        "titulo": "El 2.º y el 3.º estilo, de los eventos de estilo",
+        "items": [
+            "Tu carta Competitiva lleva hasta tres estilos: **el 1.º lo eliges tú** en el Inventario, y **el 2.º y el 3.º se ganan en los eventos de estilo de DRA**.",
+            "Si juegas eventos de varios estilos que no son el tuyo, van los dos de **nivel más alto**; los demás quedan desbloqueados."
+        ]
+    },
+    {
         "version": "5.97",
         "dia": "2026-11-17",
         "cuando": "2026-11-17T01:26:00-05:00",
