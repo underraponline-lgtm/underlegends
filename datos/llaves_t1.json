@@ -40523,7 +40523,7 @@
        "NC"
       ],
       "Makmah",
-      "Walk-in 1: makmah 🇻🇪"
+      "Walk-in 1: Makmah 🇻🇪"
      ],
      [
       [
@@ -40897,7 +40897,7 @@
        "AFR"
       ],
       "Gus, Vandu",
-      "triple (4 bandas, pasan 2); también pasa: vandu 🇨🇦"
+      "triple (4 bandas, pasan 2); también pasa: Vandu 🇨🇦"
      ],
      [
       [
@@ -41136,7 +41136,7 @@
        "ikonoxx"
       ],
       "Badterne, Erian",
-      "triple (3 bandas, pasan 2); también pasa: erian 🇦🇷"
+      "triple (3 bandas, pasan 2); también pasa: Erian 🇸🇭"
      ],
      [
       [
@@ -41147,7 +41147,7 @@
        "NC"
       ],
       "Dyzz, Vandu",
-      "triple (5 bandas, pasan 2); también pasa: vandu 🇨🇦"
+      "triple (5 bandas, pasan 2); también pasa: Vandu 🇨🇦"
      ],
      [
       [
@@ -41728,7 +41728,7 @@
        "Ezze"
       ],
       "Calíz, Makmah, PRAISERIZA",
-      "triple (5 bandas, pasan 3); también pasa: makmah 🇻🇪 / praiserizas🇻🇪"
+      "triple (5 bandas, pasan 3); también pasa: Makmah 🇻🇪 / praiserizas🇻🇪"
      ]
     ],
     "r": "Octavos"
@@ -42064,7 +42064,7 @@
        "Rodas"
       ],
       "Molusco, Vandu, LRS",
-      "triple (4 bandas, pasan 3); también pasa: vandu 🇨🇦 / Lrs🇦🇷"
+      "triple (4 bandas, pasan 3); también pasa: Vandu 🇨🇦 / Lrs🇦🇷"
      ],
      [
       [
@@ -42118,7 +42118,7 @@
        "Lvel 🇻🇪"
       ],
       "Geoka, Vandu",
-      "triple (3 bandas, pasan 2); también pasa: vandu 🇨🇦"
+      "triple (3 bandas, pasan 2); también pasa: Vandu 🇨🇦"
      ],
      [
       [
@@ -47691,7 +47691,7 @@
        "Player"
       ],
       "crakero, Erian, PRAISERIZA",
-      "triple (5 bandas, pasan 3); también pasa: erian 🇦🇷 / praiseriza; Revivido: Za🇮🇨"
+      "triple (5 bandas, pasan 3); también pasa: Erian 🇸🇭 / praiseriza; Revivido: Za🇮🇨"
      ]
     ],
     "r": "Clasificatorias"
@@ -58355,6 +58355,137 @@
   ],
   "ver": {
    "min": 65,
+   "v": 1
+  }
+ },
+ "654": {
+  "dia": "2026-11-16",
+  "escala": "8-15",
+  "fecha": "16/11",
+  "links": [
+   "https://discord.com/channels/1558611504046153750/1558611505040064607/1572054434492588202"
+  ],
+  "n": 654,
+  "nombre": "(sin titulo)",
+  "participantes": 8,
+  "rondas": [
+   {
+    "b": [
+     [
+      [
+       "LANCER🇻🇪",
+       "Nitro🇨🇱"
+      ],
+      "LANCER🇻🇪",
+      ""
+     ],
+     [
+      [
+       "LOKILLO🇨🇴",
+       "Vilca"
+      ],
+      "LOKILLO🇨🇴",
+      ""
+     ],
+     [
+      [
+       "Puppy🇨🇴",
+       "99 🇨🇱"
+      ],
+      "Puppy🇨🇴",
+      ""
+     ],
+     [
+      [
+       "Mecha 🇦🇷",
+       "choque🇵🇪"
+      ],
+      "Mecha 🇦🇷",
+      ""
+     ]
+    ],
+    "r": "Cuartos"
+   },
+   {
+    "b": [
+     [
+      [
+       "LANCER 🇻🇪",
+       "LOKILLO🇨🇴"
+      ],
+      "LANCER 🇻🇪",
+      ""
+     ],
+     [
+      [
+       "Puppy🇨🇴",
+       "Mecha 🇦🇷"
+      ],
+      "Puppy🇨🇴",
+      ""
+     ]
+    ],
+    "r": "Semifinales"
+   },
+   {
+    "b": [
+     [
+      [
+       "Puppy🇨🇴",
+       "LANCER 🇻🇪"
+      ],
+      "Puppy🇨🇴",
+      "ganador según #veredictos"
+     ]
+    ],
+    "r": "Final"
+   }
+  ],
+  "sv": "LKR",
+  "tabla": [
+   [
+    "Puppy🇨🇴",
+    "Campeón",
+    7500
+   ],
+   [
+    "LANCER 🇻🇪",
+    "Subcampeón",
+    5000
+   ],
+   [
+    "LOKILLO🇨🇴",
+    "Semifinal",
+    3500
+   ],
+   [
+    "Mecha 🇦🇷",
+    "Semifinal",
+    3500
+   ],
+   [
+    "99 🇨🇱",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Nitro🇨🇱",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Vilca",
+    "Cuartos",
+    2000
+   ],
+   [
+    "choque🇵🇪",
+    "Cuartos",
+    2000
+   ]
+  ],
+  "ver": {
+   "min": 47,
    "v": 1
   }
  }

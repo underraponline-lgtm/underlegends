@@ -607,6 +607,14 @@
 "rg": "C",
 "c": []
 },
+"vilca": {
+"rg": "",
+"c": [
+"competitivo",
+"servidor",
+"temporada"
+]
+},
 "onzass": {
 "rg": "E",
 "c": []
@@ -627,14 +635,6 @@
 "badterne": {
 "rg": "",
 "c": []
-},
-"vilca": {
-"rg": "",
-"c": [
-"competitivo",
-"servidor",
-"temporada"
-]
 },
 "crakero": {
 "rg": "E",
@@ -7784,8 +7784,8 @@
 "tipo": "resnoche",
 "t": "2026-11-17T08:00:00Z",
 "dia": "2026-11-16",
-"eventos": 1,
-"part": 8,
+"eventos": 2,
+"part": 16,
 "campeones": [
 {
 "ev": "SIX SEVEN STYLE 3",
@@ -7797,9 +7797,26 @@
 "bootraxx"
 ]
 ]
+},
+{
+"ev": "(sin titulo)",
+"sv": "LKR",
+"ll": 654,
+"quien": [
+[
+"Puppy🇨🇴",
+""
+]
+]
 }
 ],
 "suman": [
+{
+"n": "Puppy🇨🇴",
+"k": "",
+"pts": 7500,
+"ev": 1
+},
 {
 "n": "bootraxx",
 "k": "bootraxx",
@@ -7807,15 +7824,9 @@
 "ev": 1
 },
 {
-"n": "Mito",
-"k": "mito",
+"n": "LANCER 🇻🇪",
+"k": "",
 "pts": 5000,
-"ev": 1
-},
-{
-"n": "CrisZJ",
-"k": "criszj",
-"pts": 3500,
 "ev": 1
 }
 ],
@@ -7824,19 +7835,19 @@
 "n": "Choco",
 "k": "",
 "de": 633,
-"a": 480
+"a": 482
+},
+{
+"n": "Nitro🇨🇱",
+"k": "",
+"de": 665,
+"a": 569
 },
 {
 "n": "Fisics",
 "k": "",
 "de": 365,
 "a": 342
-},
-{
-"n": "Liam",
-"k": "",
-"de": 148,
-"a": 136
 }
 ],
 "sorpresas": [
@@ -7845,6 +7856,12 @@
 "k": "bootraxx",
 "que": "debut",
 "ev": "SIX SEVEN STYLE 3"
+},
+{
+"n": "Puppy🇨🇴",
+"k": "",
+"que": "debut",
+"ev": "(sin titulo)"
 }
 ]
 }

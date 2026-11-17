@@ -2,14 +2,24 @@
  "_leeme": "Las cartas de liga subidas a R2: {liga: {clave: [sello, ovr, puesto desde 1]}}. Lo escribe 05_Liga/ciclo.py (paso 2b9c) y lo lee subir_web.py. La imagen: <r2>/<clave>/liga-<liga>.webp?v=<sello>.",
  "cartas": {
   "ceu-fms-ceuta": {
+   "1200": [
+    "633bf48669",
+    48,
+    3
+   ],
    "dlx": [
-    "55f19c4258",
+    "146f6e750e",
     0,
     0
    ],
    "krish": [
-    "fefee82b31",
+    "a323e9887d",
     48,
+    4
+   ],
+   "marcos": [
+    "f61eec291b",
+    73,
     2
    ]
   },

@@ -226,6 +226,20 @@
     "racha": "1/1"
    }
   },
+  "99 🇨🇱": {
+   "LKR": {
+    "duelos": "",
+    "ev": 1,
+    "oro": 0,
+    "ovr": 42,
+    "pod": 0,
+    "pts": 1500,
+    "racha": "0/0",
+    "tg": {
+     "nuevo": true
+    }
+   }
+  },
   "<:emoji_5:1462319885810925610>": {
    "ACAD": {
     "duelos": "",
@@ -7209,6 +7223,21 @@
     }
    }
   },
+  "LANCER 🇻🇪": {
+   "LKR": {
+    "duelos": "",
+    "ev": 1,
+    "oro": 0,
+    "ovr": 44,
+    "pod": 1,
+    "pts": 3750,
+    "racha": "1/1",
+    "tg": {
+     "fin": 1,
+     "nuevo": true
+    }
+   }
+  },
   "LARRIX🇦🇷": {
    "LKR": {
     "duelos": "",
@@ -7399,6 +7428,20 @@
     "racha": "0/0",
     "tg": {
      "fund": true
+    }
+   }
+  },
+  "LOKILLO🇨🇴": {
+   "LKR": {
+    "duelos": "",
+    "ev": 1,
+    "oro": 0,
+    "ovr": 42,
+    "pod": 0,
+    "pts": 2625,
+    "racha": "0/0",
+    "tg": {
+     "nuevo": true
     }
    }
   },
@@ -9223,6 +9266,20 @@
     "racha": "0/0"
    }
   },
+  "Mecha 🇦🇷": {
+   "LKR": {
+    "duelos": "",
+    "ev": 1,
+    "oro": 0,
+    "ovr": 42,
+    "pod": 0,
+    "pts": 2625,
+    "racha": "0/0",
+    "tg": {
+     "nuevo": true
+    }
+   }
+  },
   "Medster": {
    "CEU": {
     "duelos": "",
@@ -10257,11 +10314,11 @@
   "Nitro🇨🇱": {
    "LKR": {
     "duelos": "",
-    "ev": 1,
+    "ev": 2,
     "oro": 0,
-    "ovr": 42,
+    "ovr": 43,
     "pod": 0,
-    "pts": 1375,
+    "pts": 2875,
     "racha": "0/0"
    }
   },
@@ -11481,6 +11538,21 @@
     "racha": "0/3",
     "tg": {
      "fin": 11
+    }
+   }
+  },
+  "Puppy🇨🇴": {
+   "LKR": {
+    "duelos": "",
+    "ev": 1,
+    "oro": 1,
+    "ovr": 44,
+    "pod": 1,
+    "pts": 5625,
+    "racha": "1/1",
+    "tg": {
+     "fin": 1,
+     "nuevo": true
     }
    }
   },
@@ -14517,6 +14589,18 @@
     "pod": 0,
     "pts": 3300,
     "racha": "0/0"
+   },
+   "LKR": {
+    "duelos": "",
+    "ev": 1,
+    "oro": 0,
+    "ovr": 42,
+    "pod": 0,
+    "pts": 1500,
+    "racha": "0/0",
+    "tg": {
+     "nuevo": true
+    }
    }
   },
   "Vlade": {
@@ -15401,6 +15485,20 @@
     "racha": "1/1",
     "tg": {
      "fin": 1
+    }
+   }
+  },
+  "choque🇵🇪": {
+   "LKR": {
+    "duelos": "",
+    "ev": 1,
+    "oro": 0,
+    "ovr": 42,
+    "pod": 0,
+    "pts": 1500,
+    "racha": "0/0",
+    "tg": {
+     "nuevo": true
     }
    }
   },

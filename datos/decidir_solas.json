@@ -4527,6 +4527,48 @@
     "DOS NOMBRES: «Number Elixir» → «Number VE» · cuenta 1310075576991875144"
    ],
    "escribio": {}
+  },
+  {
+   "id": "a5a8445b8c",
+   "tipo": "Nombre desconocido",
+   "sec": "(sin titulo) · LKR · 16/11 · #654",
+   "que": "¿Quién es «99 🇨🇱»?",
+   "r": "Es Soulb (en este evento)",
+   "regla": "R21 · la cuenta que se anotó así para ese evento es de alguien de la Lista que esa noche no jugó con su nombre",
+   "rk": "R21",
+   "por": "el ciclo",
+   "porque": "la cuenta @sj.2008_ (en Discord: «#56 | Soulb») · en la Lista: Soulb se anotó como «99» para ese evento, no es staff de LKR y esa noche no jugó con su nombre",
+   "t": 1794882894126,
+   "filas": [
+    1445
+   ],
+   "variantes": [
+    "99 🇨🇱"
+   ],
+   "escribio": {
+    "quien": "(sin titulo) · LKR · 16/11 · 99 🇨🇱"
+   }
+  },
+  {
+   "id": "8a9a20e6b0",
+   "tipo": "Nombre desconocido",
+   "sec": "(sin titulo) · LKR · 16/11 · #654",
+   "que": "¿Quién es «choque🇵🇪»?",
+   "r": "Es Andy (en este evento)",
+   "regla": "R21 · la cuenta que se anotó así para ese evento es de alguien de la Lista que esa noche no jugó con su nombre",
+   "rk": "R21",
+   "por": "el ciclo",
+   "porque": "la cuenta @andy._.2321 · en la Lista: Andy se anotó como «choque» para ese evento, no es staff de LKR y esa noche no jugó con su nombre",
+   "t": 1794882894126,
+   "filas": [
+    1451
+   ],
+   "variantes": [
+    "choque🇵🇪"
+   ],
+   "escribio": {
+    "quien": "(sin titulo) · LKR · 16/11 · choque🇵🇪"
+   }
   }
  ],
  "deshechas": []

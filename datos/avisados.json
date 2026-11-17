@@ -33091,7 +33091,7 @@
    "mats": 7
   },
   "fecha": "02/11",
-  "firma": "a19da401926ee103",
+  "firma": "d48ac64cfc5590e1",
   "msg": "1566714400314884126",
   "nombre": "RAP PARA RAPEROS",
   "num": 560,
@@ -38984,7 +38984,7 @@
    "yinn": 33
   },
   "fecha": "07/11",
-  "firma": "bb2fefeb5a990ae8",
+  "firma": "585c5353afc119c8",
   "msg": "1568849280746393691",
   "nombre": "KISS OF SHINIGAMI",
   "num": 587,
@@ -40268,7 +40268,7 @@
    "crakero": 4
   },
   "fecha": "08/11",
-  "firma": "16d2ced914df9a0a",
+  "firma": "ee4b0cb98d856425",
   "msg": "1569234841730547736",
   "nombre": "__ QCYO RAPEEN 12 __",
   "num": 593,
@@ -47434,7 +47434,7 @@
    "crakero": 9
   },
   "fecha": "13/11",
-  "firma": "3c0a725b58bfbdd8",
+  "firma": "78d1e06279d46947",
   "msg": "1570980323372703807",
   "nombre": "RANKED 2",
   "num": 632,
@@ -47601,7 +47601,7 @@
    "francis": 4
   },
   "fecha": "13/11",
-  "firma": "85e77389e0f15f51",
+  "firma": "5dba456f86a396d7",
   "msg": "1571002908307099750",
   "nombre": "KISS OF SHINIGAMI",
   "num": 633,
@@ -51133,6 +51133,108 @@
    ],
    [
     "Chente",
+    "Cuartos",
+    2000
+   ]
+  ],
+  "v": 2
+ },
+ "654": {
+  "antes": {
+   "Vilca": [
+    65,
+    81,
+    false
+   ]
+  },
+  "canal": "",
+  "duelos": [
+   [
+    "LANCER🇻🇪",
+    "Nitro🇨🇱",
+    "LANCER🇻🇪"
+   ],
+   [
+    "LOKILLO🇨🇴",
+    "Vilca",
+    "LOKILLO🇨🇴"
+   ],
+   [
+    "Puppy🇨🇴",
+    "99 🇨🇱",
+    "Puppy🇨🇴"
+   ],
+   [
+    "Mecha 🇦🇷",
+    "choque🇵🇪",
+    "Mecha 🇦🇷"
+   ],
+   [
+    "LANCER 🇻🇪",
+    "LOKILLO🇨🇴",
+    "LANCER 🇻🇪"
+   ],
+   [
+    "Puppy🇨🇴",
+    "Mecha 🇦🇷",
+    "Puppy🇨🇴"
+   ],
+   [
+    "Puppy🇨🇴",
+    "LANCER 🇻🇪",
+    "Puppy🇨🇴"
+   ]
+  ],
+  "ev_antes": {
+   "Vilca": 23
+  },
+  "fecha": "16/11",
+  "nombre": "(sin titulo)",
+  "num": 654,
+  "participantes": 8,
+  "sello": {
+   "Puppy🇨🇴": ""
+  },
+  "sv": "LKR",
+  "t": "2026-11-17T02:24:29Z",
+  "tabla": [
+   [
+    "Puppy🇨🇴",
+    "Campeón",
+    7500
+   ],
+   [
+    "LANCER 🇻🇪",
+    "Subcampeón",
+    5000
+   ],
+   [
+    "LOKILLO🇨🇴",
+    "Semifinal",
+    3500
+   ],
+   [
+    "Mecha 🇦🇷",
+    "Semifinal",
+    3500
+   ],
+   [
+    "Nitro🇨🇱",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Vilca",
+    "Cuartos",
+    2000
+   ],
+   [
+    "99 🇨🇱",
+    "Cuartos",
+    2000
+   ],
+   [
+    "choque🇵🇪",
     "Cuartos",
     2000
    ]
