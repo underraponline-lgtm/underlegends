@@ -748,7 +748,7 @@ def procesar(batallas, num, fecha, servidor, participantes=None,
         if _sin_int & {_clave_lado(a), _clave_lado(c)}:
             continue
         if a and c and len(equipo(a)) <= 1 and len(equipo(c)) <= 1:
-            ra = resolver(a)
+            ra = resolver((equipo(a) or [a])[0])
             if ra and ra == resolver(c):
                 sobran.append(b)
                 avisos.append('CONSIGO MISMO: «%s» y «%s» son la misma persona (%s): esa batalla no paga ni es duelo'
@@ -1120,6 +1120,11 @@ def procesar(batallas, num, fecha, servidor, participantes=None,
     # perdedores como batallas, y en las amenazas más.
     for pu in ('campeon', 'subcampeon', 'tercero', 'cuarto'):
         base = tab.get(pu, 0)
+        # ⚠️ una final sin campeón (R24) le paga a cada finalista el promedio de 1.º y 2.º, anotado como «subcampeon»: lo
+        # que se reparte es 1.º + 2.º. Sin esto, cada evento así avisaba «reparte 17500 y vale 7500» en cada corrida
+        # (#611, #613 y #616), un falso positivo que tapaba a los de verdad (revisión del 17/11/2026)
+        if pu == 'subcampeon' and sin_campeon:
+            base = tab.get('campeon', 0) + tab.get('subcampeon', 0)
         tot = sum(c for ap in aportes.values() for x, c in ap if x == pu)
         if base and tot > base:
             avisos.append('SUMA: el puesto «%s» reparte %d y vale %d — ¿un '
@@ -1221,7 +1226,12 @@ def procesar(batallas, num, fecha, servidor, participantes=None,
         if nadie and _clave_lado(n) in nadie:
             return n
         ms = equipo(n)
-        if len(ms) <= 1:
+        # ⚠️ UN LADO DE UNO SE RESUELVE POR ESE UNO, no por el texto crudo: desde que `integrantes()` saca lo que no es
+        # nadie, «OKAM, <:emoji_5:…>» es UNA persona, y con `resolver(n)` el duelo y el 1v1 se anotaban a un fantasma con
+        # el emoji y todo, y salía «Nombre desconocido» (revisión del 17/11/2026)
+        if len(ms) == 1:
+            return resolver(ms[0])
+        if not ms:
             return resolver(n)
         return ', '.join(resolver(m) for m in ms)
 

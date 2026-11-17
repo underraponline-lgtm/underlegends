@@ -20,6 +20,8 @@ export function ComentariosFlotantes({ liga, it, hilo, cls = '', onAbrir, cada =
   const pub = usePases();
   const raiz = useRef(null);
   const n = hilo.length;
+  // ⚠️ nunca más filas que comentarios: con 2 y `max` 3 se veían A, B, A a la vez y el tercero salía de la caja (17/11/2026)
+  const M = Math.min(max, n);
   // a quién contesta cada uno y en qué escalón va (0 · respuesta 1 · respuesta de respuesta 2)
   const info = useMemo(() => {
     const por = {};
@@ -51,8 +53,8 @@ export function ComentariosFlotantes({ liga, it, hilo, cls = '', onAbrir, cada =
   // los que se ven: el más nuevo abajo (posición 0) y los de arriba; el que pasa a la posición 3 se está yendo. Cada
   // vuelta tiene su propia llave, así el que reaparece entra de nuevo
   const filas = [];
-  if (quieto) hilo.slice(-max).forEach((c, j, xs) => filas.push({ c, llave: c.id, pos: xs.length - 1 - j }));
-  else for (let s = Math.max(0, i - max); s <= i; s++) filas.push({ c: hilo[s % n], llave: 'v' + s, pos: i - s });
+  if (quieto) hilo.slice(-M).forEach((c, j, xs) => filas.push({ c, llave: c.id, pos: xs.length - 1 - j }));
+  else for (let s = Math.max(0, i - M); s <= i; s++) filas.push({ c: hilo[s % n], llave: 'v' + s, pos: i - s });
   const abrir = (e) => {
     e.preventDefault();
     e.stopPropagation();
@@ -60,14 +62,14 @@ export function ComentariosFlotantes({ liga, it, hilo, cls = '', onAbrir, cada =
     else if (it && it.id) location.hash = '#/publicaciones/' + encodeURIComponent(it.id);
   };
   return (
-    <div className={'cfl ' + cls} ref={raiz} style={{ '--filas': Math.min(n, max) }} aria-label={n + ' comentarios'}>
+    <div className={'cfl ' + cls} ref={raiz} style={{ '--filas': M }} aria-label={n + ' comentarios'}>
       {filas.map(({ c, llave, pos }) => {
         const pj = c.et === 'l' ? PJ[c.k] || ['LG', '#E41373'] : null;
         const prof = info.prof[c.id] || 0;
         const a = c.resp && info.por[c.resp];
         return (
-          <button key={llave} type="button" className={'cfl-b' + (pos >= max ? ' sale' : '') + (prof ? ' resp' : '')}
-            style={{ '--pos': Math.min(pos, max), '--prof': prof }} onClick={abrir} tabIndex={pos >= max ? -1 : 0}
+          <button key={llave} type="button" className={'cfl-b' + (pos >= M ? ' sale' : '') + (prof ? ' resp' : '')}
+            style={{ '--pos': Math.min(pos, M), '--prof': prof }} onClick={abrir} tabIndex={pos >= M ? -1 : 0}
             aria-label={limpio(c.n) + (c.et === 's' ? ' (simulado)' : c.et === 'l' ? ' (Liga)' : '') + (a ? ', responde a ' + limpio(a.n) : '') + ': ' + c.tx}>
             {pj ? <span className="cfl-cara pj" style={{ background: pj[1] }}>{pj[0]}</span>
               : <Cara liga={liga} k={c.k} nombre={c.n} cls={'cfl-cara' + (esPremium(pub, c.k) ? ' sp-prem-aro' : '')} lazy />}

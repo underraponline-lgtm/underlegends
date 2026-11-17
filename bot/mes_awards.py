@@ -923,7 +923,9 @@ def para_web(d=None, ahora=None, mu=None):
         # mes»). Viaja sólo qué mes es y cuándo se vota
         viv = {'mes': viv['mes'], 'nombre': nombre_mes(viv['mes']), 'vota': _iso(en_et(siguiente(viv['mes']), 1, ABRE_H))}
     # `cats`: [clave, nombre, de qué, 0 a la vista · 1 detrás de «Ver las demás nominaciones» · 2 en el bloque del staff]
-    return {'t': _iso(ahora), 'cats': [list(c) + [0] for c in CATS] + [list(c) + [2 if c[0] in MO.STAFF else 1] for c in OTRAS],
+    # `sello` y no `t`: la hora cambia en cada corrida, y `subir_web._sin_sello()` sólo saca `sello` al comparar. Con `t`,
+    # `web:salon` se escribía en KV en cada corrida, ~40 de las 1.000 escrituras del día (revisión del 17/11/2026)
+    return {'sello': _iso(ahora), 'cats': [list(c) + [0] for c in CATS] + [list(c) + [2 if c[0] in MO.STAFF else 1] for c in OTRAS],
             'cats_sv': [list(c) for c in CATS_SV], 'premio': dict(PREMIO, otra=MO.PREMIO_OTRA), 'premio_sv': dict(PREMIO_SV),
             'abierto': abierto, 'vivo': viv, 'hist': hist[:24], 'semanas': figuras_semana(mu),
             'sv_desde': SOLO_SV_DESDE, 'gala': gala(d, ahora), 'drop_sv': dict(DROP_SV)}

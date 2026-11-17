@@ -14,9 +14,12 @@ anotada (`--ver`): una nota sin porqué es un número que nadie discute y nadie 
 
     batalla ganada          +0.4, y más en las rondas finales (`PESO_RONDA`)
     batalla perdida         −0.4
-    🔥 batacazo             ganarle a alguien bastante mejor rankeado: +0.3 a +0.9 según la distancia
-    😬 tropiezo             perder con alguien bastante peor rankeado: −0.2 a −0.5 (salvo que ese día llegó a semis)
+    📈 contra lo esperado   en un 1v1, lo que decía el ELO de ANTES de esa batalla: ganar con poca chance suma hasta
+                            +0.5 y perder siendo muy favorito resta lo mismo (`SORPRESA` × (0,5 − la chance)); que
+                            gane el favorito es lo esperado y no mueve nada
     🏆 el puesto            campeón +0.8, subcampeón +0.4, tercero +0.2
+    🏟️ el nivel del evento  lo ganado y el puesto valen más en un evento fuerte y menos en uno flojo: ×0,7 a ×1,3 según
+                            el ELO promedio de los que jugaron, al empezar el evento
     🗳️ los veredictos       con 2 jurados o más (`datos/jurados.json`): ganar unánime +0.2 y el que no se llevó ni un
                             voto −0.1; ganar dividido no suma nada, y el que perdió con votos +0.2 («por la mínima»)
 
@@ -26,9 +29,15 @@ NOMBRES de los lados (normalizados) y la FECHA (de un día antes a dos después 
 de qué evento es cada batalla. Las de 3 a 5 MCs (FFA) cuentan igual, y desde esta versión también suman como batalla
 ganada o perdida (antes se salteaban).
 
-⚠️ EL RANKING ES EL DE HOY, NO EL DE ESE DÍA. «Mejor rankeado» sale del pool de Temporada de ahora: para un evento de hace
-un mes, alguien que subió mucho después cuenta como fuerte desde antes. Es la versión 1; cuando haya historia de puestos por
-semana se mide contra la de esa semana.
+📈 EL ELO DE ESE MOMENTO, NO EL RANKING DE HOY (Dlx, 17/11/2026: *«basado en el nivel competitivo de la competencia…
+imagínate si uno de rango F le gana a uno S debería sumar algo en su final score»* y *«también vs la expectativa»*). Hasta
+acá el batacazo comparaba los puestos del pool de HOY: alguien que subió mucho después contaba como fuerte desde antes, y
+la nota de un evento viejo cambiaba sola en cada corrida (este archivo se reescribía cada media hora). Ahora sale de
+`bot/elo.py` —el mismo ELO de las Competencias, con los mismos 1v1 (`competencias.cruces()`)— recorrido en orden: cada
+batalla con el ELO que tenían los dos JUSTO ANTES. La nota de un evento queda quieta una vez jugado (sólo la mueve una
+corrección de una llave anterior). El rango no sirve para esto: pide 10 eventos y casi nadie lo tiene; el ELO arranca
+con la primera batalla. ⚠️ Los inscritos no entran al nivel: sólo 1 de cada 5 llaves tiene sus inscripciones y por el
+nombre escrito aparece el 61 % de los que jugaron; cuentan los que jugaron.
 
 ⚠️ LO QUE NO SE PELEÓ NO SUMA: un walk-in, un pase libre o un tercer puesto «sin batalla en la llave» no es una batalla
 ganada (la nota del lado de la llave lo dice: `walk-in`, `sin batalla`).
@@ -50,11 +59,10 @@ GANA, PIERDE = 0.4, -0.4
 #: lo que suma de más ganar en las rondas finales
 PESO_RONDA = {'Cuartos': 0.1, 'Semifinales': 0.2, 'Semifinal': 0.2, 'Final': 0.3}
 PUESTO = {'Campeón': 0.8, 'Subcampeón': 0.4, 'Tercero': 0.2}
-#: perder con alguien que llegó hasta acá no es un tropiezo, aunque esté abajo en el ranking: ese día era de los mejores
-LLEGO_LEJOS = ('Campeón', 'Subcampeón', 'Tercero', 'Cuarto', 'Semifinal', 'Semifinales')
-#: desde cuántos puestos de distancia en el ranking es un batacazo, y el tope de lo que suma
-BATACAZO_DESDE, BATACAZO_TOPE = 15, 0.9
-TROPIEZO_DESDE, TROPIEZO_TOPE = 30, -0.5
+#: 📈 cuánto pesa la sorpresa: × (0,5 − la chance de ganar que tenía). Un 10 % que gana suma 0,4; el 90 % que perdió, −0,4
+SORPRESA = 1.0
+#: 🏟️ el nivel del evento: (ELO promedio − el de arranque) / esto, con un tope de ±`NIVEL_TOPE`
+NIVEL_ESCALA, NIVEL_TOPE = 250.0, 0.3
 #: lo que no fue una batalla de verdad, por la nota de la llave
 NO_PELEO = ('walk-in', 'sin batalla', 'pase libre', 'bye', 'no se presentó', 'no se presento')
 #: 🗳️ los veredictos: desde cuántos jurados cuentan, y lo que suman
@@ -75,22 +83,48 @@ def es_equipo(lado):
 
 
 def personas(lado):
-    """Quiénes son un lado: el equipo partido en sus integrantes (`sheet/equipos.py`), o la persona sola."""
-    if not es_equipo(lado):
-        return [lado]
+    """Quiénes son un lado: el equipo partido en sus integrantes (`sheet/equipos.py`), o la persona sola. ⚠️ La sola
+    también pasa por `integrantes()`: «@j.nibbana, <:logocypherhood:…>» (#636) es UNA persona, y salía con el emoji y todo
+    como nombre (17/11/2026)."""
     from equipos import integrantes
-    return [x for x in integrantes(lado)[0] if x]
+    xs = [x for x in integrantes(lado)[0] if x]
+    return xs if xs else [lado]
 
 
-def puestos():
-    """`{nombre normalizado: puesto en la Temporada}` del pool de hoy (1 = el mejor)."""
-    try:
-        with io.open(os.path.join(BASE, 'datos', 'temporada_pool.json'), encoding='utf-8') as f:
-            pool = json.load(f)
-    except (OSError, ValueError):
-        return {}
-    orden = sorted(pool, key=lambda x: -(x.get('pts') or 0))
-    return {_norm(x.get('raw') or ''): i + 1 for i, x in enumerate(orden) if x.get('raw')}
+def fuerzas(llaves):
+    """📈 `{n: {'nivel': x, 'pre': {(norm ganador, norm perdedor): [(elo g, elo p), …]}}}`: el ELO de cada 1v1 JUSTO ANTES de
+    pelearse y el promedio de los que jugaron cada evento al empezarlo. Con `bot/elo.py` (`INI`, `K`, `esperado`) sobre los
+    mismos 1v1 que cuentan en las Competencias (`competencias.cruces()`, ya en orden de fecha y número)."""
+    import datetime as dt
+    import competencias as CO
+    import elo as EL
+    cr = CO.cruces(llaves, dt.datetime(2000, 1, 1, tzinfo=dt.timezone.utc), dt.datetime(2100, 1, 1, tzinfo=dt.timezone.utc))
+    por_ev = {}
+    for c in cr:
+        por_ev.setdefault(c[2], []).append(c)
+    orden = sorted(llaves, key=lambda n: (str((llaves[n] or {}).get('dia') or ''), int(n) if str(n).isdigit() else 0))
+    elo, out = {}, {}
+    for n in orden:
+        ev = llaves[n] or {}
+        gente = {CO.norm(p) for nombre, _pu, _x in ev.get('tabla') or [] for p in personas(nombre)}
+        gente.discard('')
+        nivel = sum(elo.get(k, EL.INI) for k in gente) / len(gente) if gente else None
+        pre = {}
+        for g, pe, _n, _d in por_ev.get(str(n), ()):
+            eg, ep = elo.get(g, EL.INI), elo.get(pe, EL.INI)
+            pre.setdefault((g, pe), []).append((eg, ep))
+            d = EL.K * (1 - EL.esperado(eg, ep))
+            elo[g], elo[pe] = eg + d, ep - d
+        out[str(n)] = {'nivel': nivel, 'pre': pre}
+    return out
+
+
+def _mult_nivel(nivel):
+    """×0,7 a ×1,3: lo que valen lo ganado y el puesto en un evento de ese nivel (`None`: ×1)."""
+    import elo as EL
+    if nivel is None:
+        return 1.0
+    return 1.0 + max(-NIVEL_TOPE, min(NIVEL_TOPE, (nivel - EL.INI) / NIVEL_ESCALA))
 
 
 def indice_votos(J=None):
@@ -137,28 +171,37 @@ def veredicto(votos, lados, dia):
     return cand[-1] if cand else None
 
 
-def _distancia(pg, pp):
-    """Cuántos puestos más arriba estaba el que perdió (positivo = batacazo). `None` si no se sabe de alguno."""
-    return None if pg is None or pp is None else pg - pp
-
-
-def nota_evento(ev, pos, votos=None):
-    """`{nombre: {'nota': x, 'por': [(razón, delta), …]}}` y el MVP de un evento de `llaves_t1.json`. `votos`, el índice
-    de `indice_votos()`: sin él, la nota es la de antes (sin veredictos)."""
+def nota_evento(ev, fuerza=None, votos=None):
+    """`{nombre: {'nota': x, 'por': [(razón, delta), …]}}` y el MVP de un evento de `llaves_t1.json`. `fuerza`: la de ese
+    evento en `fuerzas()` (sin ella, ni sorpresa ni nivel). `votos`, el índice de `indice_votos()`: sin él, sin veredictos."""
+    import competencias as CO
+    import elo as EL
     out = {}
+    fuerza = fuerza or {}
+    pre = {k: list(v) for k, v in (fuerza.get('pre') or {}).items()}
+    mult = _mult_nivel(fuerza.get('nivel'))
+
+    # 👤 UNA PERSONA, UNA NOTA, con el nombre de la tabla (17/11/2026): la llave escribe a veces distinto la misma persona
+    # —«Doble J» y «DOBLE J» en la #636, «Eldinoco🇨🇩» en cuartos y «Eldinoco🇦🇷» en semis de la #544— y salían dos notas,
+    # una con el puesto y otra con las batallas. Sólo si la tabla tiene UNA persona con esa clave: con dos, son dos
+    tab = {}
+    for nombre, _pu, _x in ev.get('tabla') or []:
+        for p in personas(nombre):
+            tab.setdefault(_norm(p), set()).add(p)
+    canon = {k: next(iter(v)) for k, v in tab.items() if len(v) == 1}
 
     def anotar(n, razon, d):
-        e = out.setdefault(n, {'por': []})
+        e = out.setdefault(canon.get(_norm(n), n), {'por': []})
         e['por'].append((razon, round(d, 2)))
 
     # 👥 EN LOS EVENTOS POR EQUIPOS, CADA INTEGRANTE SE LLEVA LA NOTA DE SU EQUIPO: la pareja campeona son dos campeones.
     # Los batacazos, sólo entre personas (el ranking es de personas, no de parejas)
-    lejos_hoy = {p for nombre, puesto, _pts in ev.get('tabla') or [] if puesto in LLEGO_LEJOS for p in personas(nombre)}
+    nv = '' if mult == 1.0 else ' · evento ×%.2f' % mult
     for nombre, puesto, _pts in ev.get('tabla') or []:
         for p in personas(nombre):
             out.setdefault(p, {'por': []})
             if puesto in PUESTO:
-                anotar(p, puesto.lower(), PUESTO[puesto])
+                anotar(p, puesto.lower() + nv, PUESTO[puesto] * mult)
     for rd in ev.get('rondas') or []:
         extra = PESO_RONDA.get(rd.get('r') or '', 0.0)
         for b in rd.get('b') or []:
@@ -173,7 +216,7 @@ def nota_evento(ev, pos, votos=None):
             if not pierden:
                 continue
             for p in personas(gana):
-                anotar(p, 'ganó en %s' % (rd.get('r') or 'la llave'), GANA + extra)
+                anotar(p, 'ganó en %s%s' % (rd.get('r') or 'la llave', nv), (GANA + extra) * mult)
             for x in pierden:
                 for p in personas(x):
                     anotar(p, 'perdió en %s' % (rd.get('r') or 'la llave'), PIERDE)
@@ -197,11 +240,18 @@ def nota_evento(ev, pos, votos=None):
             pierde = pierden[0]
             if es_equipo(gana) or es_equipo(pierde):
                 continue
-            dist = _distancia(pos.get(_norm(gana)), pos.get(_norm(pierde)))
-            if dist is not None and dist >= BATACAZO_DESDE:
-                anotar(gana, '🔥 batacazo a %s' % pierde, min(BATACAZO_TOPE, 0.3 + (dist - BATACAZO_DESDE) / 100))
-            elif dist is not None and -dist >= TROPIEZO_DESDE and gana not in lejos_hoy:
-                anotar(pierde, '😬 perdió con %s' % gana, max(TROPIEZO_TOPE, -0.2 - (-dist - TROPIEZO_DESDE) / 150))
+            # 📈 contra lo esperado: el ELO de los dos JUSTO ANTES de esta batalla (`fuerzas()`)
+            par = pre.get((CO.norm(gana), CO.norm(pierde)))
+            if not par:
+                continue
+            eg, ep = par.pop(0)
+            ch = EL.esperado(eg, ep)
+            # ⚠️ SÓLO LA SORPRESA: que el favorito gane es lo esperado y no resta (simétrico, el subcampeón que les ganó a
+            # todos los de abajo quedaba igual que uno que perdió en semis)
+            s = SORPRESA * (0.5 - ch)
+            if s >= 0.05:
+                anotar(gana, '🔥 le ganó a %s con %d %% de chance' % (pierde, round(100 * ch)), s)
+                anotar(pierde, '😬 perdió con %s siendo favorito (%d %%)' % (gana, round(100 * (1 - ch))), -s)
     lejos = {p: i for i, (n, _p, _x) in enumerate(ev.get('tabla') or []) for p in personas(n)}
     for n, e in out.items():
         e['nota'] = round(max(1.0, min(10.0, BASE_NOTA + sum(d for _r, d in e['por']))), 1)
@@ -209,16 +259,16 @@ def nota_evento(ev, pos, votos=None):
     return out, mvp
 
 
-def calcular(llaves=None, pos=None, votos=None):
+def calcular(llaves=None, votos=None):
     """`{n: {'mvp': nombre, 'notas': {nombre: nota}}}` de todos los eventos."""
     if llaves is None:
         with io.open(os.path.join(BASE, 'datos', 'llaves_t1.json'), encoding='utf-8') as f:
             llaves = json.load(f)
-    pos = puestos() if pos is None else pos
+    fz = fuerzas(llaves)
     votos = indice_votos() if votos is None else votos
     res = {}
     for n, ev in llaves.items():
-        notas, mvp = nota_evento(ev, pos, votos)
+        notas, mvp = nota_evento(ev, fz.get(str(n)), votos)
         if notas:
             res[str(n)] = {'mvp': mvp, 'notas': {k: v['nota'] for k, v in notas.items()}}
     return res
@@ -237,19 +287,33 @@ def _self_check():
           'rondas': [{'r': 'Semifinales', 'b': [[['A', 'C'], 'A', ''], [['B', 'D'], 'B', '']]},
                      {'r': 'Tercer puesto', 'b': [[['C', 'D'], 'C', 'podio: tercer puesto sin batalla en la llave']]},
                      {'r': 'Final', 'b': [[['A', 'B'], 'A', '']]}]}
-    pos = {'a': 40, 'b': 2, 'c': 3, 'd': 90}
-    notas, mvp = nota_evento(ev, pos)
+    # A (900) le gana a C (1000) y en la final a B (1200): sorpresas; B, que le gana a D (800), era favorito
+    fz = {'nivel': 975.0, 'pre': {('a', 'c'): [(900.0, 1000.0)], ('b', 'd'): [(1200.0, 800.0)], ('a', 'b'): [(900.0, 1200.0)]}}
+    notas, mvp = nota_evento(ev, fz)
     ok(notas['A']['nota'] > notas['B']['nota'] > notas['D']['nota'] and mvp == 'A',
        'el campeón saca más que el subcampeón, el que perdió en semis menos, y el MVP es el campeón')
-    ok(any('batacazo' in r for r, _d in notas['A']['por']) and not any('batacazo' in r for r, _d in notas['B']['por']),
-       'A (puesto 40) le ganó a B (puesto 2) en la final: batacazo; B, que le ganó al 90, no')
+    ok(any('chance' in r for r, _d in notas['A']['por']) and not any('chance' in r for r, _d in notas['B']['por'])
+       and any('favorito' in r for r, d in notas['B']['por'] if d < 0) and not any('D' in r for r, _d in notas['B']['por'] if 'favorito' in r),
+       'A (900) le ganó a B (1200): suma contra lo esperado y B, que era favorito, resta; que B le gane a D (800) no mueve nada')
+    fuerte = nota_evento(ev, dict(fz, nivel=1100.0))[0]
+    flojo = nota_evento(ev, dict(fz, nivel=850.0))[0]
+    ok(fuerte['A']['nota'] > notas['A']['nota'] > flojo['A']['nota'] and fuerte['D']['nota'] == flojo['D']['nota'],
+       'el mismo campeón saca más en un evento fuerte y menos en uno flojo; quien no ganó nada, igual en los dos')
+    import elo as EL
+    _ll = {'1': {'dia': '2026-10-01', 'tabla': [['X', 'Campeón', 0], ['Y', 'Subcampeón', 0]],
+                 'rondas': [{'r': 'Final', 'b': [[['X', 'Y'], 'X', '']]}]},
+           '2': {'dia': '2026-10-02', 'tabla': [['Y', 'Campeón', 0], ['X', 'Subcampeón', 0]],
+                 'rondas': [{'r': 'Final', 'b': [[['X', 'Y'], 'Y', '']]}]}}
+    _fz = fuerzas(_ll)
+    ok(_fz['1']['pre'][('x', 'y')] == [(EL.INI, EL.INI)] and _fz['2']['pre'][('y', 'x')][0][1] > EL.INI > _fz['2']['pre'][('y', 'x')][0][0],
+       'fuerzas(): cada batalla con el ELO de JUSTO ANTES, en orden (la revancha de Y llega con X arriba)')
     ok(not any('Tercer' in r for r, _d in notas['C']['por']),
        'un tercer puesto «sin batalla en la llave» no cuenta como batalla ganada')
     ok(all(1.0 <= e['nota'] <= 10.0 for e in notas.values()), 'todas entre 1 y 10')
     eq, mvp_eq = nota_evento({'tabla': [['a, b', 'Campeón', 0], ['c + d', 'Subcampeón', 0]],
-                              'rondas': [{'r': 'Final', 'b': [[['a, b', 'c + d'], 'a, b', '']]}]}, {'a': 90, 'c': 1})
+                              'rondas': [{'r': 'Final', 'b': [[['a, b', 'c + d'], 'a, b', '']]}]})
     ok(set(eq) == {'a', 'b', 'c', 'd'} and eq['a']['nota'] == eq['b']['nota'] > eq['c']['nota'] and mvp_eq in ('a', 'b')
-       and not any('batacazo' in r for r, _d in eq['a']['por']),
+       and not any('chance' in r for r, _d in eq['a']['por']),
        'por equipos: cada integrante con la nota de su equipo, la pareja campeona arriba y sin batacazos entre parejas')
     # 🗳️ los veredictos: 3–0, 2–1 y una de tres MCs
     J = {'votos': {'1': {'a': 'A 🇦🇷', 'b': 'B', 'pub': 1792900000000, 'v': {'j1': 'a', 'j2': 'a', 'j3': 'a'}},
@@ -261,8 +325,8 @@ def _self_check():
     dia = (dt.datetime.fromtimestamp(1792900000, dt.timezone.utc) - dt.timedelta(hours=4)).date().isoformat()
     ev = {'dia': dia, 'tabla': [], 'rondas': [{'r': 'Octavos', 'b': [[['A', 'B'], 'A', ''], [['C', 'D'], 'C', ''],
                                                                    [['E', 'F', 'G'], 'E', 'triple (3 bandas)']]}]}
-    nv, _m = nota_evento(ev, {}, vi)
-    sin, _m = nota_evento(ev, {})
+    nv, _m = nota_evento(ev, None, vi)
+    sin, _m = nota_evento(ev, None)
     ok(nv['A']['nota'] > sin['A']['nota'] and nv['B']['nota'] < sin['B']['nota'],
        '3–0: el ganador suma por unánime y el que no se llevó ningún voto resta')
     ok(nv['D']['nota'] > sin['D']['nota'] and nv['C']['nota'] == sin['C']['nota'],
@@ -270,7 +334,7 @@ def _self_check():
     ok(nv['G']['nota'] > nv['F']['nota'] and 'E' in sin and sin['F']['nota'] < 6.0,
        'la de tres MCs cuenta como batalla, y G (con un voto) queda arriba de F (sin votos)')
     lejos = dict(ev, dia='2026-01-01')
-    ok(nota_evento(lejos, {}, vi)[0]['A']['nota'] == sin['A']['nota'], 'un voto de otra fecha no se cruza con el evento')
+    ok(nota_evento(lejos, None, vi)[0]['A']['nota'] == sin['A']['nota'], 'un voto de otra fecha no se cruza con el evento')
     print('\n   %s' % ('todo bien' if not mal else '🔴 %d mal' % mal))
     return 1 if mal else 0
 
@@ -286,7 +350,13 @@ def main():
         if not ev:
             print('no hay evento #%s' % n)
             return 1
-        notas, mvp = nota_evento(ev, puestos(), indice_votos())
+        with io.open(os.path.join(BASE, 'datos', 'llaves_t1.json'), encoding='utf-8') as f:
+            todas = json.load(f)
+        fz = fuerzas(todas).get(str(n)) or {}
+        notas, mvp = nota_evento(ev, fz, indice_votos())
+        if fz.get('nivel') is not None:
+            print('ELO promedio de los que jugaron, al empezar: %d · lo ganado y el puesto valen ×%.2f'
+                  % (fz['nivel'], _mult_nivel(fz['nivel'])))
         print('#%s %s · MVP: %s\n' % (n, ev.get('nombre', ''), mvp))
         for k, e in sorted(notas.items(), key=lambda x: -x[1]['nota']):
             print('  %4.1f  %-22s %s' % (e['nota'], k, ' · '.join('%s %+.1f' % (r, d) for r, d in e['por'])))

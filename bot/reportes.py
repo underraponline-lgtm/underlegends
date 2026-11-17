@@ -343,7 +343,10 @@ def sin_adornos(llaves, aplicar):
                     if len(b) > 1:
                         b[1] = g
                     en_llave += 1
-        if str(n) in nums:
+        # la tabla, otra vez desde Resultados si cambió en esta corrida o si todavía tiene a alguien que no es nadie (una
+        # corrida que se cortó entre escribir Resultados y guardar la llave la dejaba así para siempre)
+        import equipos as EQ
+        if str(n) in nums or any(EQ.no_es_persona(r[0]) for r in L.get('tabla') or [] if r and r[0]):
             t = sorted(([str(f[4]), str(f[6] or ''), int(float(f[7] or 0))] for f in filas if str(f[0]).strip() == str(n)),
                        key=lambda r: (-r[2], r[0]))
             if t and t != L.get('tabla'):

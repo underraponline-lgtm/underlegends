@@ -2797,7 +2797,8 @@ def _cuentas_insc(p):
                 continue
             vistos.add(did)
             out.append({'id': did, 'usuario': str(x.get('quien') or ''), 'nombre': str(x.get('texto') or '')[:40],
-                        'sv': [ev[1]], 'real': por_id.get(did) or _dueno_de_cuenta(did), 'rol': _con_rol_en(did, ev[1])})
+                        'sv': [ev[1]], 'real': por_id.get(did), 'dueno': _dueno_de_cuenta(did) if not por_id.get(did) else '',
+                        'rol': _con_rol_en(did, ev[1])})
     return out
 
 
@@ -3684,18 +3685,21 @@ def _pistas(p):
         k = norm(_sin_bandera(p.get('detalle')))
         for c in p.get('_insc') or []:
             out.append('✍️ Se anotó así desde la cuenta %s%s' % (
-                cuenta_dicha(c.get('usuario'), c.get('id'), c.get('real')),
+                cuenta_dicha(c.get('usuario'), c.get('id'), c.get('real') or c.get('dueno')),
                 ' (es organizador o staff de %s: suele anotar a otros)' % c['sv'][0] if c.get('rol') else ''))
             # 👥 y a quién más anotó esa cuenta, y si su dueño ya jugó con este nombre (17/11/2026, ver `_otros_de_cuenta`)
             cu, ns = _otros_de_cuenta(c.get('id'), k)
             if cu >= 2:
                 out.append('👥 Esa cuenta anotó también a %d nombre%s más (%s%s): puede ser alguien que anota a sus amigos'
                            % (cu, 's' if cu != 1 else '', ', '.join(ns), '…' if cu > len(ns) else ''))
-            jj = _jugaron_juntos(c.get('real'), k)
+            # ⚠️ el dueño de una OTRA cuenta (`dueno`, de `akas_a_mano.cuentas`) va SÓLO a las pistas: como `real`, R21 lo
+            # daba por resuelto solo, y la otra cuenta de Shadow anota a sus amigos (revisión del 17/11/2026)
+            quien = c.get('real') or c.get('dueno')
+            jj = _jugaron_juntos(quien, k)
             if jj:
-                out.append('⚔️ %s y este nombre jugaron la misma llave (#%s): son dos personas' % (c.get('real'), ', #'.join(jj[:3])))
-            elif c.get('real'):
-                out.append('⚔️ %s y este nombre nunca jugaron la misma llave' % c.get('real'))
+                out.append('⚔️ %s y este nombre jugaron la misma llave (#%s): son dos personas' % (quien, ', #'.join(jj[:3])))
+            elif quien:
+                out.append('⚔️ %s y este nombre nunca jugaron la misma llave' % quien)
         sug = [x for x in _sugerencias(p['match'])]
         if sug:
             out.append('¿Será %s?' % ' o '.join(sug))

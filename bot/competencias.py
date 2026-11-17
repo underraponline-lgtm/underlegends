@@ -1102,8 +1102,10 @@ def como_llega(k, rival, t, S):
             'sd': math.sqrt(sum((v - media) ** 2 for v in ns) / len(ns)) if len(ns) >= 3 else None}
 
 
-#: cuánto le varían las notas a alguien normal (medido el 04/11/2026: 0,82): de ahí para arriba es irregular
-SD_NOTAS = 0.82
+#: cuánto le varían las notas a alguien normal: de ahí para arriba es irregular. ⚠️ Es el promedio del desvío de las notas
+#: de cada uno (con 3 eventos o más), y se mueve con la fórmula de `bot/notas.py`: 0,82 medido el 04/11/2026, 0,70 con la
+#: misma fórmula el 17/11, y 0,55 desde que la nota sale del ELO de ese momento y del nivel del evento (17/11/2026)
+SD_NOTAS = 0.55
 
 
 def chance_sim(a, b, p0, t, S, replica=False, juegan=()):

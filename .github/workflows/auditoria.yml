@@ -110,6 +110,8 @@ jobs:
         run: python herramientas/numeros_viejos.py || true
 
       - name: ¿el norm() del Worker da lo mismo que el de Python?
+        # 🔁 aunque «auditar» dé rojo: es otra pregunta, y con un rojo arriba no corrió desde el 29/09 hasta el 17/11/2026
+        if: always()
         # 🔴 EL MISMO `norm()` ESCRITO DOS VECES, en Python y en JS. Si
         # se separan para un nombre con tilde, el bot le busca la carta
         # a `p:<otra clave>` y contesta «no tenés carta» a alguien que
@@ -121,6 +123,8 @@ jobs:
         run: python herramientas/claves_js_vs_py.py
 
       - name: ¿falta alguna dependencia declarada?
+        # 🔁 aunque «auditar» dé rojo: es otra pregunta, y con un rojo arriba no corrió desde el 29/09 hasta el 17/11/2026
+        if: always()
         # `numpy` faltaba en `requirements.txt` y tiraba **dos de las
         # cuatro cartas** en Actions: en la máquina de casa venía
         # instalado con otra cosa. Sigue los imports desde los puntos de
@@ -129,6 +133,8 @@ jobs:
         run: python herramientas/falta_en_requirements.py
 
       - name: ¿algún aviso revienta en la consola de Windows?
+        # 🔁 aunque «auditar» dé rojo: es otra pregunta, y con un rojo arriba no corrió desde el 29/09 hasta el 17/11/2026
+        if: always()
         # 🔴 LA HERRAMIENTA YA EXISTÍA Y ENCONTRABA EL BUG. Nadie la
         # corría. El 21/09 apareció a mano un `print('⚠️ no pude leer
         # 1v1…')` dentro de un `except` de `construir_pool_competitivo`
@@ -149,6 +155,8 @@ jobs:
             || { echo "::error::hay scripts que revientan al imprimir un aviso"; exit 1; }
 
       - name: ¿los self-check chequean algo?
+        # 🔁 aunque «auditar» dé rojo: es otra pregunta, y con un rojo arriba no corrió desde el 29/09 hasta el 17/11/2026
+        if: always()
         # 🔴 ESTE SÍ FALLA EL JOB, y es la diferencia con los dos de
         # arriba. `numeros_viejos` y `pendientes` informan —tener cosas
         # ahí es normal—; este dice que un guardián dejó de guardar, y
@@ -160,12 +168,16 @@ jobs:
         run: python herramientas/chequeo_que_no_chequea.py
 
       - name: la temporada, en los tres lugares donde vive
+        # 🔁 aunque «auditar» dé rojo: es otra pregunta, y con un rojo arriba no corrió desde el 29/09 hasta el 17/11/2026
+        if: always()
         # El repo, R2 y el binding del Worker en Cloudflare. El día que
         # arranque la T2 y alguno se quede atrás, salen 138 cartas
         # válidas con la inicial gigante y nada falla.
         run: python comun/temporada.py
 
       - name: el escritor de la vitrina, ensayado
+        # 🔁 aunque «auditar» dé rojo: es otra pregunta, y con un rojo arriba no corrió desde el 29/09 hasta el 17/11/2026
+        if: always()
         # 🔴 ESTE ESCRITOR SE VA A EJECUTAR **UNA VEZ**, el día del
         # reset, sobre la hoja que mira toda la Liga. Sin ensayarlo, se
         # estrena ahí. Es la misma lección que el paso 1 del ciclo tiene
@@ -182,6 +194,8 @@ jobs:
           python sheet/rankings.py --ensayo
 
       - name: la web contra sus casos de borde
+        # 🔁 aunque «auditar» dé rojo: es otra pregunta, y con un rojo arriba no corrió desde el 29/09 hasta el 17/11/2026
+        if: always()
         # 🔴 «EL POOL VACIO ES UN ESTADO, NO UN ERROR» — es regla del
         # proyecto y encontro cuatro bugs en los generadores. La pagina
         # nunca la habia pasado y le encontro dos mas, los dos del tipo
@@ -190,6 +204,8 @@ jobs:
         run: python herramientas/web_en_borde.py
 
       - name: los workflows, validos para GitHub y no solo para PyYAML
+        # 🔁 aunque «auditar» dé rojo: es otra pregunta, y con un rojo arriba no corrió desde el 29/09 hasta el 17/11/2026
+        if: always()
         # 🔴 MI PROPIO CHEQUEO DIO VERDE Y GITHUB DIJO QUE NO. El
         # 24/09/2026 el `ciclo.yml` quedo con DOS claves `jobs:`;
         # `yaml.safe_load` se queda con la ultima sin decir nada, asi que
@@ -199,11 +215,15 @@ jobs:
         run: python herramientas/workflows_validos.py
 
       - name: los nueve escudos
+        # 🔁 aunque «auditar» dé rojo: es otra pregunta, y con un rojo arriba no corrió desde el 29/09 hasta el 17/11/2026
+        if: always()
         # el `KeyError: 'URBF'` que tumbó las 138 por 2 personas, vuelto
         # una pregunta que se hace sola
         run: python comun/escudos.py
 
       - name: los ocho roles de rango siguen en Discord
+        # 🔁 aunque «auditar» dé rojo: es otra pregunta, y con un rojo arriba no corrió desde el 29/09 hasta el 17/11/2026
+        if: always()
         # 🔴 ESTO EXISTE PORQUE `CLAUDE.md` DIJO «SON SEIS» DURANTE DIAS
         # DESPUES DE QUE FUERAN OCHO, y `ESTADO.md` se contradecia a si
         # mismo: arriba «la unica tarea pendiente», ochocientas lineas

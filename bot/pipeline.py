@@ -1435,6 +1435,13 @@ def _lo_barato(correr):
         paso('2b8h', 'las notas y el MVP')
         if not corre(['bot/notas.py'], callado=True, mostrar=('⭐', '⚠️')):
             print('      ⚠️ las notas fallaron: quedan las de antes')
+    # ── 2b8h2 · 👥 la gente de cada evento: host, staff, jurado e inscritos, guardados (`bot/gente_evento.py`, Dlx
+    # 17/11/2026). ANTES de la web, que los cuelga de cada llave. Suma a lo guardado y nunca saca: el canal de inscripciones
+    # lo vacían. Nunca frena el ciclo
+    if correr:
+        paso('2b8h2', 'la gente de cada evento')
+        if not corre(['bot/gente_evento.py', '--aplicar'], callado=True, mostrar=('👥', '⚠️')):
+            print('      ⚠️ la gente de los eventos falló: queda la de antes')
     # ── 2b8i · 🏆 las competencias de la semana (`bot/competencias.py`, Dlx 26/10/2026): la Copa por grupos, la Liga de
     # 10 y la Rapid del día, después de las notas (la simulación usa la forma). Nunca frena el ciclo
     if correr:

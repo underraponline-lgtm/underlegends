@@ -627,8 +627,7 @@ def armar():
         # dibuja el cuadro. Dlx, 25/09/2026, con la imagen de una llave
         # clásica: *«pensé que ibas a crear algo así y rellenar los nombres
         # en esos huecos»*. Ver `llaves_web.enlazar()`.
-        llaves = {n: dict(r, rondas=_LW.enlazar(r.get('rondas') or []), **({'notas': _LW.notas(r)} if _LW.notas(r) else {}))
-                  for n, r in llaves.items()}
+        llaves = {n: _con_nota(dict(r, rondas=_LW.enlazar(r.get('rondas') or []))) for n, r in llaves.items()}
         _info = {}
         calendario = _calendario(ann, regs, llaves, _LW, CU, _ahora, _info)
         # 🎭 los eventos de estilo que marcó Dlx en el Dashboard (17/11/2026): `je` en cada evento marcado y, resuelto a
@@ -663,8 +662,7 @@ def armar():
         # lobby caía al calendario sin decir nada (auditoría del 27/09/2026).
         # Viajan en `CLAVE_LLAVES` y la página las pide sólo en ese caso.
         # ⭐ con la nota de cada uno (`llaves_web.notas()`): la página la dibuja en cada carta
-        todas = {n: dict(r, rondas=_LW.enlazar(r.get('rondas') or []), **({'notas': _LW.notas(r)} if _LW.notas(r) else {}))
-                 for n, r in regs.items()}
+        todas = {n: _con_nota(dict(r, rondas=_LW.enlazar(r.get('rondas') or []))) for n, r in regs.items()}
         for _n, _f in _info.items():
             if _n in todas:
                 todas[_n] = dict(todas[_n], info=_f)
@@ -4320,6 +4318,25 @@ def _token():
     except OSError:
         pass
     return ''
+
+
+def _con_nota(L):
+    """⭐ La llave con la nota de cada uno (`llaves_web.notas()`, la de `bot/notas.py`) y 👥 su gente (host, staff, jurado,
+    inscritos: `gente_evento.para_web()`), si las hay. Una sola vez por llave."""
+    import llaves_web as _LW
+    import gente_evento as _GE
+    nt = _LW.notas(L)
+    if nt:
+        L['notas'] = nt
+    if 'g' not in _GENTE:
+        _GENTE['g'] = _json('datos', 'gente_eventos.json') or {}
+    g = _GE.para_web(_GENTE['g'].get(str(L.get('n'))))
+    if g:
+        L['gente'] = g
+    return L
+
+
+_GENTE = {}
 
 
 def llave_suelta(L):

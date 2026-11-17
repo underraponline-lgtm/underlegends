@@ -446,13 +446,27 @@ def main():
     # 🖼️ Y LO QUE SUBE LA GENTE O EL CICLO QUE NO ES UNA CARTA (19/10/2026, la auditoría dio rojo con «3.105 webp en R2 ·
     # 2.984 en el inventario»: 120 eran los flyers de las ligas y 1 un fondo). Cuarta vez de la misma forma: se cuentan
     # aparte, a la vista, como las fotos y las chicas
+    # 🧩 Y LO DEL 16–17/11/2026, la quinta vez: la llave suelta de cada evento (`llaves/<n>.json`, subir_web), las cartas
+    # armables (`<k>/<carta>.html` y sus imágenes en `cartas/a/`) y las cartas de liga (`<k>/liga-<id>.webp`, que no están
+    # en `cartas_r2.json`). Las tres caían en «ya no se sirven, se pueden borrar» o en «sobran en R2», y las tres se
+    # sirven: borrarlas apaga la llave vieja, la carta viva del Inventario y la carta de liga (auditoría roja desde el 19/10)
     OTRAS = (('ligas/', 'flyer(s) de las ligas'), ('fondos/', 'fondo(s) de perfil'), ('pendientes/', 'foto(s) de tarjeta esperando revisión'),
-             ('logos-crews/', 'logo(s) de crews'))
+             ('logos-crews/', 'logo(s) de crews'), ('llaves/', 'llave(s) sueltas de la página'), ('cartas/a/', 'imagen(es) de las cartas armables'))
     for pref, que in OTRAS:
         xs = [o for o in todos if o['key'].startswith(pref)]
         if xs:
             print('  %d %s en %s, %.1f MB: no son cartas y no se cuentan acá' % (len(xs), que, pref, sum(int(o['size']) for o in xs) / 1024 ** 2))
     todos = [o for o in todos if not o['key'].startswith(tuple(p for p, _ in OTRAS))]
+    for fin, que in (('.html', 'carta(s) armables (<k>/<carta>.html)'),):
+        xs = [o for o in todos if o['key'].endswith(fin)]
+        if xs:
+            print('  %d %s, %.1f MB: se sirven y no se cuentan acá' % (len(xs), que, sum(int(o['size']) for o in xs) / 1024 ** 2))
+    todos = [o for o in todos if not o['key'].endswith('.html')]
+    liga = [o for o in todos if '/liga-' in o['key'] and o['key'].endswith('.webp')]
+    if liga:
+        print('  %d carta(s) de liga (<k>/liga-<id>.webp), %.1f MB: van aparte de cartas_r2.json y no se cuentan acá'
+              % (len(liga), sum(int(o['size']) for o in liga) / 1024 ** 2))
+    todos = [o for o in todos if not ('/liga-' in o['key'] and o['key'].endswith('.webp'))]
     resto = [o for o in todos if not o['key'].startswith('fotos/')]
     objs = [o for o in resto if o['key'].endswith('.webp')]
     viejos = [o for o in resto if not o['key'].endswith('.webp')]

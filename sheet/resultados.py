@@ -360,6 +360,11 @@ def sin_adornos(llaves, dry=True):
                 ks = {clave(EQ.limpiar(p)) for p in re.split(r'[,+&]', lado) if p.strip() and not EQ.no_es_persona(p)}
                 team = [j for j, g in enumerate(filas) if str(g[0]).strip() == num and j != i and g[6] == f[6]
                         and not EQ.no_es_persona(g[4]) and clave(g[4]) in ks]
+                # ⚠️ sin sus compañeros (la llave no está, o el lado no se encuentra) NO se borra: sus puntos se perderían
+                # con la fila. Queda para mirarla a mano
+                if not team and int(float(f[7] or 0)):
+                    print('      ⚠️ #%s «%s» no es nadie, pero no encuentro con quién jugó: la dejo' % (num, txt))
+                    continue
                 if team:
                     tot = sum(int(float(filas[j][7] or 0)) for j in team) + int(float(f[7] or 0))
                     for j in team:
@@ -369,6 +374,28 @@ def sin_adornos(llaves, dry=True):
                 fuera.add(i)
                 nums.add(num)
                 n += 1 + len(team)
+        # 👯 LA MISMA PERSONA DOS VECES EN UN EVENTO (17/11/2026): la #491 tenía «YIN-SON 🇺🇸» subcampeón (1.500) y
+        # «YIN - SON 🇺🇸» cuartos (1.250), la misma clave escrita con y sin espacios, y cobraba las dos. Nadie juega dos
+        # veces la misma llave: queda la fila que más paga y la otra se va. Era la única de la temporada
+        if hoja == 'Resultados':
+            mejor = {}
+            for i, f in enumerate(filas):
+                if i in fuera or not str(f[4]).strip():
+                    continue
+                k = (str(f[0]).strip(), clave(f[4]))
+                if not k[1]:
+                    continue
+                if k in mejor:
+                    j = mejor[k]
+                    sale, queda = (i, j) if int(float(f[7] or 0)) <= int(float(filas[j][7] or 0)) else (j, i)
+                    print('      🧹 #%s «%s» (%s) ya cobra como «%s» (%s): fuera' % (k[0], filas[sale][4], filas[sale][6],
+                                                                              filas[queda][4], filas[queda][6]))
+                    fuera.add(sale)
+                    nums.add(k[0])
+                    mejor[k] = queda
+                    n += 1
+                else:
+                    mejor[k] = i
         for i, f in enumerate(filas):
             if i in fuera:
                 continue
