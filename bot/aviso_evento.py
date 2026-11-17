@@ -211,7 +211,50 @@ def _cambios(reg, pool, insignias, muro):
     return out
 
 
-def armar(reg, niv, pool=None, insignias=None, muro=None, sellos=None, cartas=None):
+_LLAVES = {}
+
+
+def _notas_de(num, llaves=None):
+    """⭐ La nota de cada uno en esa llave (`llaves_web.notas()`, la misma que la página dibuja en cada carta), o `None`.
+    `llaves`: `{num: llave}` (el self-check); si no, `datos/llaves_t1.json`, leído una vez por corrida."""
+    import llaves_web as LW
+    if llaves is None:
+        if 'd' not in _LLAVES:
+            _LLAVES['d'] = LW.leer()
+        llaves = _LLAVES['d']
+    L = llaves.get(str(num))
+    N = LW.notas(L) if L else None
+    # ⚠️ CON LA TABLA DE LA LLAVE, NO LA DEL AVISO: la del aviso guarda los nombres de cuando se mandó («LANCER 🇻🇪») y la
+    # llave ya los tiene resueltos («Player»), que son los que la nota usa. Con la del aviso, el #654 perdía a cinco
+    return dict(N, tabla=L.get('tabla') or []) if N else None
+
+
+#: cuántos entran en «Las notas» del aviso; el resto, en la página
+NOTAS_TOPE = 12
+
+
+def _campo_notas(reg, N):
+    """⭐ «Las notas de la llave» (Dlx, 17/11/2026: *«sí y también en el mensaje que envía el bot al finalizar el
+    evento»*): todos en el orden de la tabla, con su nota; la figura en negrita y con ★. Un equipo, una nota."""
+    import llaves_web as LW
+    if not N:
+        return None
+    xs, vistos = [], set()
+    for r in N.get('tabla') or reg.get('tabla') or []:
+        ks = [k for k in (LW.clave_nota(m) for m in str(r[0]).replace('+', ',').split(',')) if k]
+        if not ks or ks[0] in vistos or ks[0] not in N['v']:
+            continue
+        vistos.add(ks[0])
+        v = '%.1f' % N['v'][ks[0]]
+        xs.append('**%s ★%s**' % (r[0], v) if N.get('mvp') in ks else '%s %s' % (r[0], v))
+    if not xs:
+        return None
+    mas = len(xs) - NOTAS_TOPE
+    return {'name': '⭐ Las notas de la llave', 'inline': False,
+            'value': (' · '.join(xs[:NOTAS_TOPE]) + (' · y %d más en la página' % mas if mas > 0 else ''))[:1024]}
+
+
+def armar(reg, niv, pool=None, insignias=None, muro=None, sellos=None, cartas=None, llaves=None):
     """El embed de un evento con ese nivel. Sin red: todo lo que necesita se le pasa (o sale de `datos/`)."""
     niv = niv if niv in NIVELES else NIVEL_DEFECTO
     pool = _pool() if pool is None else pool
@@ -257,6 +300,10 @@ def armar(reg, niv, pool=None, insignias=None, muro=None, sellos=None, cartas=No
             e['image'] = {'url': url + ('?v=' + hashlib.sha256(s.encode('utf-8')).hexdigest()[:10] if s else '')}
             if s and s == (reg.get('sello') or {}).get(q):
                 e['footer']['text'] += ' · la tarjeta de %s se actualiza en unos minutos' % q
+    # ⭐ las notas de la llave, menos en «lo justo»: van primero, antes de lo que cambió en el ranking
+    notas = _campo_notas(reg, _notas_de(reg.get('num'), llaves)) if niv != 'poco' else None
+    if notas:
+        e['fields'] = [notas]
     if niv == 'todo':
         c = _cambios(reg, pool, insignias if insignias is not None else
                      ((_json('datos', 'insignias.json') or {}).get('insignias') or {}),
@@ -266,8 +313,9 @@ def armar(reg, niv, pool=None, insignias=None, muro=None, sellos=None, cartas=No
         if c['debut']:
             campos.insert(1, ('🎤 Debut', [', '.join('**%s**' % q for q in c['debut'][:8])
                                           + (' y %d más' % (len(c['debut']) - 8) if len(c['debut']) > 8 else '')]))
-        e['fields'] = [{'name': n, 'value': '\n'.join(v)[:1024], 'inline': False} for n, v in campos if v]
-        if not e['fields'] and not reg.get('al_dia'):
+        cambios = [{'name': n, 'value': '\n'.join(v)[:1024], 'inline': False} for n, v in campos if v]
+        e['fields'] = ([notas] if notas else []) + cambios
+        if not cambios and not reg.get('al_dia'):
             e['footer']['text'] += ' · lo que cambió llega en unos minutos'
     return e
 
@@ -393,8 +441,16 @@ def _self_check():
     muro = [{'tipo': 'rango', 't': '2026-10-07T12:00:00Z', 'quien': ['Provenza'], 'rg': 'C'},
             {'tipo': 'rango', 't': '2026-10-06T12:00:00Z', 'quien': ['Jupiter'], 'rg': 'D'}]
     cartas = {'provenza': {'temporada': 'https://r2/provenza/temporada.webp'}}
+    _ll = {'419': {'tabla': reg['tabla'], 'rondas': [
+        {'r': 'Semifinales', 'b': [[['Provenza', 'Rayo'], 'Provenza', ''], [['Jupiter', 'Aldre'], 'Jupiter', '']]},
+        {'r': 'Final', 'b': [[['Provenza', 'Jupiter'], 'Provenza', '']]}]}}
     e = {n: armar(reg, n, pool=pool, insignias=ins, muro=muro, sellos={'Provenza': {'temporada': 'aaa'}},
-                  cartas=cartas) for n in NIVELES}
+                  cartas=cartas, llaves=_ll) for n in NIVELES}
+    _fn = {x['name']: x['value'] for x in e['normal'].get('fields') or []}
+    ok(_fn.get('⭐ Las notas de la llave') == '**Provenza ★9.2** · Jupiter 6.6 · Rayo 5.4 · Aldre 5.4',
+       '«normal»: las notas de la llave, en el orden de la tabla y la figura con ★', _fn.get('⭐ Las notas de la llave'))
+    ok(not e['poco'].get('fields'), '«lo justo»: sin las notas')
+    ok(armar(reg, 'normal', pool=pool, cartas=cartas, llaves={}).get('fields') is None, 'sin la llave, sin notas')
     ok(e['poco']['title'] == 'MAÑANA DE LLUVIA VOL 1', 'el título sin los __ de Discord', e['poco']['title'])
     ok('Provenza' in e['poco']['description'] and '🥈' not in e['poco']['description'] and 'image' not in e['poco'],
        '«lo justo»: el campeón, sin podio ni tarjeta')
@@ -419,9 +475,9 @@ def _self_check():
     ok(f.get('💥 La sorpresa') == '**Rayo** (#40) le ganó a **Jupiter** (#12)',
        'la sorpresa: el de más abajo que le ganó al de más arriba', f.get('💥 La sorpresa'))
     ok(firma(e['todo']) == firma(armar(reg, 'todo', pool=pool, insignias=ins, muro=muro,
-                                       sellos={'Provenza': {'temporada': 'aaa'}}, cartas=cartas)),
+                                       sellos={'Provenza': {'temporada': 'aaa'}}, cartas=cartas, llaves=_ll)),
        'la misma cosa da la misma firma: no se edita de gusto')
-    ok(armar(reg, 'xx', pool=pool, cartas=cartas)['description'] == e['normal']['description'],
+    ok(armar(reg, 'xx', pool=pool, cartas=cartas, llaves=_ll)['description'] == e['normal']['description'],
        'un nivel que no existe es «normal»')
     print('\n  %s\n' % ('todo ok' if not mal[0] else '🔴 %d problema(s)' % mal[0]))
     return 1 if mal[0] else 0

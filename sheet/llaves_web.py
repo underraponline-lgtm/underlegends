@@ -693,6 +693,74 @@ def guardar(planes, archivo=ARCHIVO, links_archivo=LINKS):
     return cambiaron
 
 
+# ⭐ LA NOTA DE CADA UNO EN LA LLAVE, COMO LA DE LOS FUTBOLISTAS AL TERMINAR EL PARTIDO (Dlx, 17/11/2026: «quizás poner
+# en cada tarjeta una puntuación así como los futbolistas al final de cada partido», y al verla, «sí y también en el
+# mensaje que envía el bot al finalizar el evento»). UN SOLO LUGAR, ACÁ: viaja adentro de cada llave (`notas`) y la leen
+# la página (`Nota` de web/src/llave.jsx) y el aviso del bot (`aviso_evento.armar()`). Si se calculara en los dos, se
+# separarían (la regla de siempre: un default que no es la decisión).
+#
+# De 3 a 10 con un decimal, y SÓLO DE LA LLAVE: arranca en 6; cada batalla ganada suma, más cuanto más adentro (en una
+# de eliminación, ganarlas todas suma 2,7 entre todas; en vidas y doble, lo ganado contra lo más que ganó alguien);
+# perder resta 0,6 la primera si no ganaste ninguna y 0,3 las demás (como mucho 1,2); el campeón suma 0,5 y nunca baja
+# de 8 (en vidas, la llave a veces no le anota las batallas). La más alta es la figura (★); a igual nota, el campeón.
+# ⚠️ SIN EL OVR, A PROPÓSITO: la vista previa le sumaba algo por ganarle a uno de OVR más alto, pero el OVR se mueve con
+# cada evento, así que la nota de una llave vieja cambiaba sola, el aviso del bot se reeditaba y la llave se volvía a
+# subir a KV y R2 en cada corrida. Una nota de partido no cambia después del partido.
+_BANDERA = re.compile('[\U0001F1E6-\U0001F1FF]')
+
+
+def clave_nota(m):
+    """El nombre de un integrante como lo busca la nota: sin banderas ni espacios de los costados, en minúsculas. Es
+    `miembros()` de llave.jsx: la página lo busca con la misma regla."""
+    return _BANDERA.sub('', str(m or '')).strip().lower()
+
+
+def _integrantes(lado):
+    return [x for x in (clave_nota(p) for p in re.split(r'[,+&]', str(lado or ''))) if x]
+
+
+def notas(L):
+    """`{'v': {integrante: nota}, 'mvp': integrante}` de una llave procesada, o `None` si no tiene batallas jugadas."""
+    rondas = [R for R in (L or {}).get('rondas') or [] if R.get('b')]
+    vidas = len(rondas) == 1 and re.match(r'^\d+\s*vidas?$', str(rondas[0].get('r') or '').strip(), re.I)
+    doble = any(re.search('perdedores', str(R.get('r') or ''), re.I) for R in rondas)
+    arbol = not vidas and not doble
+    ter = next((R for R in rondas if R.get('r') == 'Tercer puesto'), None)
+    prin = [R for R in rondas if R.get('r') != 'Tercer puesto']
+    n_r = len(prin)
+    suma = n_r * (n_r + 1) / 2 or 1
+    st = {}
+    for i, R in enumerate(prin + ([ter] if ter else [])):
+        idx = max(0, n_r - 2) if R is ter else i
+        for b in R['b']:
+            lados, g = b[0] or [], b[1] if len(b) > 1 else ''
+            if not g or len(lados) < 2:
+                continue
+            gm = set(_integrantes(g))
+            for s in lados:
+                gano = s == g or bool(gm & set(_integrantes(s)))
+                for m in _integrantes(s):
+                    y = st.setdefault(m, {'w': [], 'l': []})
+                    (y['w'] if gano else y['l']).append(idx)
+    if not st:
+        return None
+    max_w = max([1] + [len(y['w']) for y in st.values()])
+    camp = {m for r in (L.get('tabla') or []) if len(r) > 1 and r[1] == 'Campeón' for m in _integrantes(r[0])}
+    out = {}
+    for m, y in st.items():
+        v = 6.0
+        for i in y['w']:
+            v += 2.7 * (i + 1) / suma if arbol else 2.7 / max_w
+        v -= min(1.2, sum(0.6 if not y['w'] and not j else 0.3 for j in range(len(y['l']))))
+        if m in camp:
+            v = max(8.0, v + 0.5)
+        out[m] = int(max(3.0, min(10.0, v)) * 10 + 0.5) / 10.0
+    top = max(out.values())
+    tops = [m for m in out if out[m] == top]
+    mvp = next((m for m in tops if m in camp), tops[0] if len(tops) == 1 else '')
+    return {'v': out, 'mvp': mvp}
+
+
 def _miembros(lado):
     """`'Hassan, PichulaMc'` -> `{'hassan', 'pichulamc'}`."""
     out = set()
@@ -1350,6 +1418,24 @@ def _self_check():
        and _elegir({'sv': 'ACAD', 'nombre': 'HOY ES LA NACIONAL DE VENEC', 'cuando': '2026-11-07T22:00:00'},
                    regs_c) == '624',
        'en la página también se juntan, y el nombre igual le gana al del circuito')
+
+    # ⭐ la nota: el #654 de LKR (eliminación de 8), una de vidas y una sin nada jugado
+    L654 = {'tabla': [['Puppy', 'Campeón', 7500], ['Player', 'Subcampeón', 5000]], 'rondas': [
+        {'r': 'Cuartos', 'b': [[['Player', 'Nitro🇨🇱'], 'Player', ''], [['Shadow', 'Vilca'], 'Shadow', ''],
+                               [['Puppy', 'Soulb'], 'Puppy', ''], [['MaYeuTyK', 'Andy'], 'MaYeuTyK', '']]},
+        {'r': 'Semifinales', 'b': [[['Player', 'Shadow'], 'Player', ''], [['Puppy', 'MaYeuTyK'], 'Puppy', '']]},
+        {'r': 'Final', 'b': [[['Puppy', 'Player'], 'Puppy', '']]}]}
+    nt = notas(L654)
+    ok(nt and nt['v'] == {'puppy': 9.2, 'player': 7.1, 'shadow': 6.2, 'mayeutyk': 6.2, 'nitro': 5.4, 'vilca': 5.4,
+                          'soulb': 5.4, 'andy': 5.4} and nt['mvp'] == 'puppy',
+       'la nota del #654: ganarlas todas 9,2 (+0,5 de campeón), la final perdida 7,1, la semi 6,2, la primera 5,4 ★ Puppy  %s' % nt)
+    nv = notas({'tabla': [['Lastima', 'Campeón', 5000]], 'rondas': [{'r': '5 vidas', 'b': [
+        [['Tokio', 'Lastima'], 'Tokio', ''], [['Tokio', 'Player'], 'Tokio', ''], [['Player', 'Last'], 'Player', '']]}]})
+    ok(nv['v']['lastima'] == 8.0 and nv['v']['tokio'] == 8.7 and nv['mvp'] == 'tokio',
+       'en vidas: el campeón nunca menos de 8 aunque la llave no le anote batallas, y la figura es quien más ganó  %s' % nv)
+    ok(notas({'rondas': [{'r': 'Final', 'b': [[['A', 'B'], '', '']]}]}) is None, 'sin nada jugado, sin nota')
+    ok(notas({'tabla': [], 'rondas': [{'r': 'Final', 'b': [[['Ana 🇨🇴, Bea', 'Ceci + Dani'], 'Ana, Bea', '']]}]})['v']
+       == {'ana': 8.7, 'bea': 8.7, 'ceci': 5.4, 'dani': 5.4}, 'un equipo: cada integrante, sin la bandera, con la misma nota')
 
     print('')
     print('   %s' % ('todo bien' if not mal else '🔴 %d mal' % mal))

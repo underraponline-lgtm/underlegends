@@ -627,7 +627,7 @@ def armar():
         # dibuja el cuadro. Dlx, 25/09/2026, con la imagen de una llave
         # clásica: *«pensé que ibas a crear algo así y rellenar los nombres
         # en esos huecos»*. Ver `llaves_web.enlazar()`.
-        llaves = {n: dict(r, rondas=_LW.enlazar(r.get('rondas') or []))
+        llaves = {n: dict(r, rondas=_LW.enlazar(r.get('rondas') or []), **({'notas': _LW.notas(r)} if _LW.notas(r) else {}))
                   for n, r in llaves.items()}
         _info = {}
         calendario = _calendario(ann, regs, llaves, _LW, CU, _ahora, _info)
@@ -662,7 +662,9 @@ def armar():
         # 27/09/2026), y una llave que ya no está entre las `LLAVES_WEB` del
         # lobby caía al calendario sin decir nada (auditoría del 27/09/2026).
         # Viajan en `CLAVE_LLAVES` y la página las pide sólo en ese caso.
-        todas = {n: dict(r, rondas=_LW.enlazar(r.get('rondas') or [])) for n, r in regs.items()}
+        # ⭐ con la nota de cada uno (`llaves_web.notas()`): la página la dibuja en cada carta
+        todas = {n: dict(r, rondas=_LW.enlazar(r.get('rondas') or []), **({'notas': _LW.notas(r)} if _LW.notas(r) else {}))
+                 for n, r in regs.items()}
         for _n, _f in _info.items():
             if _n in todas:
                 todas[_n] = dict(todas[_n], info=_f)

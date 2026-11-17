@@ -177,60 +177,19 @@ function ImgCarta({ ctx, f, cls, grande = false, ancho = 0 }) {
 }
 
 // ⭐ LA NOTA DE CADA UNO EN LA LLAVE, COMO LA DE LOS FUTBOLISTAS AL TERMINAR EL PARTIDO (Dlx, 17/11/2026: «quizás poner
-// en cada tarjeta una puntuación así como los futbolistas al final de cada partido»). De 3 a 10 con un decimal, y sale
-// SÓLO de esta llave: arranca en 6; cada batalla ganada suma —más cuanto más adentro de la llave (en una de
-// eliminación, ganar todas suma 2,7 entre todas)—; perder resta 0,6 la primera si no ganaste ninguna y 0,3 las demás (en
-// total, como mucho 1,2); ganarle a alguien de OVR más alto suma hasta 0,5 y perder con uno más bajo resta hasta 0,4; y
-// el campeón, 0,5 (y nunca menos de 8). La más alta lleva ★ (la figura). En vidas y doble eliminación, lo ganado cuenta contra lo más que
-// ganó alguien. 🧪 Con `?prev=nota` hasta que Dlx la vea
-const PREV_NOTA = (() => { try { return !!localStorage.getItem('lg:prev-nota'); } catch (e) { return false; } })();
-function notasDe({ prin, ter, fila, idDe, pts, arbol }) {
-  const R = prin.concat(ter ? [ter] : []);
-  const nR = prin.length;
-  const suma = (nR * (nR + 1)) / 2 || 1;
-  const ovrDe = (s) => {
-    const vs = partes(s).map((m) => { const f = fila(m); return f && f.ovr ? +f.ovr : null; }).filter((v) => v != null);
-    return vs.length ? vs.reduce((a, b) => a + b, 0) / vs.length : null;
-  };
-  const st = {};
-  R.forEach((Rr, i) => Rr.b.forEach((b) => {
-    if (!b[1] || b[0].length < 2) return;
-    b[0].forEach((s) => {
-      const g = gana(b, s);
-      const os = b[0].filter((x) => x !== s).map(ovrDe).filter((v) => v != null);
-      const x = { i: Rr === ter ? Math.max(0, nR - 2) : i, me: ovrDe(s), riv: os.length ? (g ? Math.max(...os) : Math.min(...os)) : null };
-      partes(s).forEach((m) => { const id = idDe(m); const y = st[id] || (st[id] = { w: [], l: [] }); (g ? y.w : y.l).push(x); });
-    });
-  }));
-  const ids = Object.keys(st);
-  if (!ids.length) return null;
-  const maxW = Math.max(1, ...ids.map((id) => st[id].w.length));
-  const out = {};
-  ids.forEach((id) => {
-    const { w, l } = st[id];
-    let v = 6;
-    w.forEach((x) => { v += arbol ? (2.7 * (x.i + 1)) / suma : 2.7 / maxW; });
-    v -= Math.min(1.2, l.reduce((a, x, j) => a + (!w.length && !j ? 0.6 : 0.3), 0));
-    // (lo de ganarle a alguien más fuerte, como mucho 0,6 en toda la llave: si no, el campeón de una de 32 llegaba a 10)
-    v += Math.min(0.6, w.reduce((a, x) => a + (x.me != null && x.riv != null && x.riv > x.me ? Math.min(0.5, (x.riv - x.me) * 0.02) : 0), 0));
-    l.forEach((x) => { if (x.me != null && x.riv != null && x.riv < x.me) v -= Math.min(0.4, (x.me - x.riv) * 0.02); });
-    // 🏆 y el campeón, nunca menos de 8: en las de vidas la llave a veces no le anota las batallas (Lastima, «0 ganadas»)
-    if (pts[id] && pts[id][0] === 'Campeón') v = Math.max(8, v + 0.5);
-    out[id] = Math.round(Math.max(3, Math.min(10, v)) * 10) / 10;
-  });
-  const top = Math.max(...ids.map((id) => out[id]));
-  const mvp = ids.filter((id) => out[id] === top);
-  // a igual nota, la figura es el campeón; si no hay uno solo, nadie
-  const camp = mvp.find((id) => pts[id] && pts[id][0] === 'Campeón');
-  return { v: out, mvp: camp || (mvp.length === 1 ? mvp[0] : '') };
-}
+// en cada tarjeta una puntuación así como los futbolistas al final de cada partido»; a la vista previa, «sí»). NO SE
+// CALCULA ACÁ: viaja en la llave (`L.notas`, de `llaves_web.notas()`), que es lo mismo que lee el aviso del bot. La
+// vista previa la calculaba en la página y con el OVR de hoy; ver allá por qué ya no. Una llave en vivo no tiene nota:
+// es la de después del partido. Se busca a cada integrante como `clave_nota()`: sin banderas, en minúsculas
+const kNota = (m) => String(m || '').replace(BANDERAS, '').trim().toLowerCase();
 const tonoNota = (v) => (v >= 9 ? 'n9' : v >= 8 ? 'n8' : v >= 7 ? 'n7' : v >= 6 ? 'n6' : 'n5');
 function Nota({ ctx, s }) {
-  if (!ctx.notas) return null;
-  const ids = partes(s).map(ctx.idDe);
-  const v = ctx.notas.v[ids[0]];
+  const N = ctx.L && ctx.L.notas;
+  if (!N || !N.v) return null;
+  const ks = partes(s).map(kNota);
+  const v = N.v[ks[0]];
   if (v == null) return null;
-  const mvp = !!ctx.notas.mvp && ids.includes(ctx.notas.mvp);
+  const mvp = !!N.mvp && ks.includes(N.mvp);
   return <span className={'lk-nota ' + tonoNota(v) + (mvp ? ' mvp' : '')} title={(mvp ? 'La figura de la llave · ' : '') + 'Nota en esta llave: ' + v.toFixed(1)}>
     {mvp ? <i aria-hidden="true">★</i> : null}{v.toFixed(1)}</span>;
 }
@@ -1278,9 +1237,8 @@ export function Llave({ liga, vivoL, n: n0, raiz, dc }) {
       if (!nombres[id]) nombres[id] = sinBanderas(m).txt;
     }))));
     (L.funa || []).forEach((x) => { const id = idDe(x[0]); if (!nombres[id]) nombres[id] = sinBanderas(x[0]).txt; });
-    const notas = PREV_NOTA ? notasDe({ prin, ter, fila, idDe, pts, arbol: !vidasDe(L) && !dob }) : null;
     return { fila, idDe, nombres, esSin, pts, marca, cazas, aca, clasico, prin, ter, cerrada, vale, pasanDe, est, inicial, final, dob,
-      pend, ptsCamp, notas };
+      pend, ptsCamp };
   }, [L, liga, n]);
 
   // 🧭 TU CAMINO, ENCENDIDO DESDE QUE ABRÍS (Dlx, 18/10/2026: «all of them»): si jugás en esta llave, arranca marcado
