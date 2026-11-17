@@ -1,7 +1,8 @@
 // 🖥️ TU CUENTA EN LA COMPU (17/11/2026, la B de la maqueta Rsok68VBzdTCvZXGX6grH4, v8). Dlx: «en celular está bien…
 // en PC es muy incómodo», «me gusta B, pero sólo hazla para computadora… agrega más opciones a la izquierda», «Tus
 // paneles que esté arriba… que cada bloque tenga todo lo necesario», «me gusta eso de buscar en tu cuenta» y «publícalo».
-//   · un MENÚ FIJO a la izquierda, por grupos: Tus paneles (sólo a quien los tiene), Tu cuenta, Tú, Tu gente, Lo tuyo y La
+//   · un MENÚ FIJO a la izquierda, por grupos: Tus paneles (sólo a quien los tiene), Lo tuyo (con Tu cuenta, la app y
+//     la ayuda, desde la 6.09), Tú y Tu gente. Antes también «Tu cuenta» y «La
 //     app y ayuda, con un buscador arriba y Salir abajo
 //   · cada página con la MISMA CABECERA (el grupo, el nombre, una línea y «Ver mi perfil público»): lo propio baja al cuerpo
 //   · las páginas se arman con las cajas de siempre (`Parte` de cuenta.jsx): no hay dos versiones de un mismo ajuste
