@@ -11,6 +11,16 @@
   ],
   "cambios": [
     {
+        "version": "6.11",
+        "dia": "2026-11-17",
+        "cuando": "2026-11-17T14:45:00-05:00",
+        "titulo": "Tu marco y tu brillo, también en las llaves",
+        "items": [
+            "En la página de cada llave, las tarjetas llevan su marco del Pase (Premium, Plata, Oro) y su brillo, como en el resto de la página: sólo quien lo tiene.",
+            "El brillo de las tarjetas chicas de arriba (el campeón, los que llegaron lejos, el camino) ahora late igual que en el cuadro."
+        ]
+    },
+    {
         "version": "6.10",
         "dia": "2026-11-17",
         "cuando": "2026-11-17T03:50:00-05:00",
