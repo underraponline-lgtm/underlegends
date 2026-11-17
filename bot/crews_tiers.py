@@ -206,11 +206,25 @@ def actual(estado, vivas):
     return {c.get('id'): list(de_la_semana(c, estado.get('pts') or {}, None, modo, n)) for c in (vivas or {}).get('crews') or []}
 
 
+def dia_de_divisiones(div):
+    """`{clave: [7 enteros]}` de la semana en curso (`pts_dia` de `bot/divisiones.py`), o `{}`."""
+    out = {}
+    for q, xs in ((div or {}).get('pts_dia') or {}).items():
+        if isinstance(xs, list) and len(xs) == 7:
+            k = _clave(q)
+            ya = out.get(k) or [0] * 7
+            out[k] = [a + int(b or 0) for a, b in zip(ya, xs)]
+    return out
+
+
 def paso(estado, div, vivas):
     """Una corrida: cierra la semana si `divisiones.json` ya está en otra, o guarda la foto de la de ahora."""
     sem_d, pts = pts_de_divisiones(div)
     if not sem_d:
         return []
+    # 📅 la foto por día va con la de la semana: sólo si es la semana de ahora (una vieja no pisa nada)
+    if sem_d >= (estado.get('sem') or ''):
+        estado['dia'] = dia_de_divisiones(div)
     if not estado.get('sem'):
         estado['sem'], estado['pts'] = sem_d, pts
         return []
@@ -289,6 +303,12 @@ def para_web(estado, vivas):
         'crews': {cid: [int((estado.get('tier') or {}).get(cid, 0))] + (act.get(cid) or [0, 0])
                   + [((ult.get(cid) or {}).get('de', None)), int((ult.get(cid) or {}).get('pts', 0) or 0)] for cid in ids},
         'gente': gente,
+        # 📅 «Por día» (17/11/2026): los puntos de la crew en cada tramo de 24 h de la semana, desde el lunes 11 AM ET. Todos
+        # los que están, menos quien está sin verificarse (como el tier); sólo las crews que sumaron algo
+        'dia': {cid: xs for cid, xs in ((c.get('id'), [sum(((estado.get('dia') or {}).get(g[0]) or [0] * 7)[i]
+                                                          for g in c.get('gente') or [] if not (len(g) > 3 and g[3]))
+                                                      for i in range(7)])
+                                        for c in (vivas or {}).get('crews') or []) if any(xs)},
         'ult': (estado.get('ult') or {}).get('sem') or '',
         'hist': [[h[0], h[1], h[2], h[3]] for h in (estado.get('hist') or []) if len(h) >= 4 and h[1] in ids][:40],
     }
@@ -367,6 +387,11 @@ def _auto():
        and not any(h[1] == 'METRICOS' for h in ce['hist']) and set(ce['ult']['crews']) == {'Follombia', 'KS'}
        and not corregir_elo(ce, cv) and not corregir_elo({'sem': '2026-11-23'}, cv),
        'las semanas del ELO se rehacen una vez, sólo con las crews que existen, y la campana no vuelve a sonar')
+    # 📅 «Por día»: la foto de la semana de cada uno se suma por crew, sin quien está sin verificarse
+    ed = {'sem': '2026-11-16', 'tier': {}, 'pts': {}}
+    paso(ed, {'sem': '2026-11-16', 'modo': 'elo', 'pts_sem': {'Ana': 30}, 'pts_dia': {'Ana': [10, 0, 20, 0, 0, 0, 0], 'Bea': [5] * 7}}, {})
+    pw = para_web(ed, {'crews': [{'id': 'X', 'gente': [['ana', 'lider', 1], ['bea', 'miembro', 1, 99]]}, {'id': 'Y', 'gente': []}]})
+    ok(pw['dia'] == {'X': [10, 0, 20, 0, 0, 0, 0]}, 'por día: se suma por crew, sin el sin verificar y sin crews en cero')
     ok(mover(0, 20000, 1) == 1 and mover(0, 1000, 0) == 0, 'Bronce sube con 15.000 y no baja')
     ok(mover(1, 4000, 1) == 0 and mover(1, 10000, 1) == 1, 'Plata baja con menos de 5.000 y se mantiene entre las dos')
     ok(mover(3, 500000, 3) == 3 and mover(3, 500000, 4) == 4, 'a Diamante se entra con 4 que jugaron, no con un crack solo')

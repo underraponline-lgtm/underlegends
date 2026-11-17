@@ -95,6 +95,22 @@ def zona(n):
     return min(ZONA, n // 3)
 
 
+def puntos_por_dia(filas, factor, ini, fin):
+    """📅 `{rapero: [7 enteros]}`: los puntos de la semana `[ini, fin)` de cada uno, partidos en 7 tramos de 24 h desde el
+    arranque de la semana (lunes 11 AM ET). Con el mismo multiplicador de cada fila que `puntos_por_semana()`; los bonos de
+    la semana no van, porque no son de ningún día. Para «Por día» de la página de cada crew (17/11/2026, Dlx: «Sí, suma
+    Estrellas de la semana y Por día»). Sólo quien jugó."""
+    out = {}
+    for f in filas or []:
+        ev, sv, t, quien, pts = f[0], f[1], f[2], f[3], f[4]
+        if not t or not quien or t < ini or t >= fin:
+            continue
+        d = min(6, max(0, int((t - ini).total_seconds() // 86400)))
+        x = out.setdefault(quien, [0.0] * 7)
+        x[d] += (pts or 0) * (factor(sv, t, ev, quien) if factor else 1)
+    return {q: [int(round(v)) for v in xs] for q, xs in sorted(out.items())}
+
+
 def puntos_por_semana(filas, factor=None, bonos=None, periodo=None, desde=None):
     """`{semana: {rapero: [puntos, eventos, primer instante]}}` con las filas de `rankings.agregar.filas`.
 
@@ -307,7 +323,8 @@ def correr(filas, ahora=None, aplicar=False):
     if desde and desde > ahora:
         desde = None
     sem, ini, fin = MU.periodo(ahora)
-    semanas = puntos_por_semana(filas, MU.factor_de(filas=filas), MU.bonos(filas), MU.periodo, desde)
+    fac = MU.factor_de(filas=filas)
+    semanas = puntos_por_semana(filas, fac, MU.bonos(filas), MU.periodo, desde)
     elo_al = raw_de = None
     if sem >= CORTE_ELO:
         elo_al, raw_de = _elo_de(filas, ahora)
@@ -322,6 +339,8 @@ def correr(filas, ahora=None, aplicar=False):
     # persona aportaba ~1.000 jugara o no (Follombia 8.532 con 8; Oro pide 30.000), y las semanas del 02/11 y el 09/11
     # cerraron con eso. Dlx: «Yes, fix it». Sólo quien jugó la semana, con los mismos puntos de siempre
     out['pts_sem'] = {q: int(round(v[0])) for q, v in sorted((semanas.get(sem) or {}).items()) if v and v[1]}
+    # 📅 y por día, para «Por día» de la página de cada crew (bot/crews_tiers.py los suma por crew)
+    out['pts_dia'] = puntos_por_dia(filas, fac, max(ini, desde) if desde else ini, fin)
     if elo_al is not None:
         import elo as EL
         out.update(modo='elo', tramos=list(TRAMOS), prov=EL.PROVISIONAL, nombres=list(PIEDRAS), colores=list(COLOR_PIEDRA),

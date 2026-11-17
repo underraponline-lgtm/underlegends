@@ -9,9 +9,8 @@
 // pantalla (`solo`).
 // ⚠️ Ningún número se inventa: el tier, la semana y la historia vienen de bot/crews_tiers.py (payload), la gente y los
 // rangos del objeto (crews.js), los puntos de cada uno de la tabla de la temporada.
-// ⚠️ «Por día» y «Estrellas de la semana» de la maqueta NO están. Se dejaron afuera porque la semana de cada uno salía
-// del ELO de las divisiones; desde el 17/11/2026 los tiers traen los puntos de Temporada de verdad (`pts_sem`), así que
-// ya se podrían construir: esperan el sí de Dlx
+// 📅 «Por día» y «Estrellas de la semana» (17/11/2026, Dlx: «Sí, suma Estrellas de la semana y Por día»): los puntos de
+// Temporada de la semana, de bot/crews_tiers.py (`T.dia` por crew y `T.gente` por persona). Sin nadie que sumó, no salen
 import { limpio, num } from './liga.js';
 import { Cara, Compartir, enlace, usePerfiles } from './piezas.jsx';
 import { CrewCirculo } from './arriba.jsx';
@@ -136,6 +135,7 @@ export function PaginaCrew({ liga, id }) {
           </div>
           <div className="ent-col k2-lado">
             {T && viva ? <SemanaCaja liga={liga} T={T} viva={viva} fila={fila} /> : null}
+            {T && viva ? <Estrellas liga={liga} T={T} viva={viva} /> : null}
             {viva ? <Representantes liga={liga} viva={viva} gente={jugaron} /> : null}
             {viva ? <LoQuePaso liga={liga} T={T} viva={viva} /> : null}
           </div>
@@ -223,12 +223,59 @@ function SemanaCaja({ liga, T, viva, fila }) {
         : jug >= juegan ? <>Si cierra así, <b>sube a {T.nombres[sig]}</b>.</> : <>Ya tiene los puntos: faltan {juegan - jug} que jueguen para subir.</>)
         : <>Es el tier más alto.</>}
         {baja ? (cae ? ' Hoy está debajo de la raya.' : ' A ' + T.nombres[n] + ' ya no la baja nada esta semana.') : ''}</p>
+      <PorDia liga={liga} xs={(T.dia || {})[viva.id]} />
       {cae && tarde ? <p className="k2-aviso">Si cierra así, el lunes baja a {T.nombres[n - 1]}: faltan {num(baja - pts)} para quedarse.</p> : null}
       {kj.length ? (
         <div className="k2-jug"><span>Jugaron</span><span className="k2-caras">{kj.slice(0, 12).map((k) => <a key={k} href={'#/r/' + encodeURIComponent(k)} title={nombreDe(liga, k)}>
           <Cara liga={liga} k={k} nombre={nombreDe(liga, k)} cls="cara k2-c" lazy /></a>)}</span></div>
       ) : null}
       <p className="k2-nota">{n >= T.tarjeta ? 'La crew tiene desbloqueada su tarjeta.' : 'En ' + T.nombres[T.tarjeta] + ' se desbloquea la tarjeta de la crew.'}</p>
+    </div>
+  );
+}
+
+// 📅 cada barra es un tramo de 24 h desde el arranque de la semana (lunes 11 AM ET), como lo arma bot/divisiones.py
+const DIAS_L = ['Lu', 'Ma', 'Mi', 'Ju', 'Vi', 'Sá', 'Do'];
+const DIAS_N = ['lunes', 'martes', 'miércoles', 'jueves', 'viernes', 'sábado', 'domingo'];
+
+/** 📅 Por día: cuánto sumó la crew en cada día de la semana, con el de hoy marcado y los que vienen apagados. */
+function PorDia({ liga, xs }) {
+  if (!Array.isArray(xs) || xs.length !== 7 || !xs.some((x) => x > 0)) return null;
+  const max = Math.max(...xs);
+  const cierre = cierreCrews(liga);
+  const hoy = cierre ? Math.floor((liga.ahora - (cierre - 7 * DIA)) / DIA) : -1;
+  return (
+    <div className="k2-dias-w">
+      <span className="k2-et">Por día</span>
+      <div className="k2-dias" role="img" aria-label={'Puntos por día: ' + xs.map((x, i) => DIAS_N[i] + ' ' + num(x)).join(', ')}>
+        {xs.map((x, i) => (
+          <span key={i} className={i === hoy ? 'hoy' : i > hoy && hoy >= 0 ? 'viene' : ''} title={DIAS_N[i] + ' 11 AM a ' + DIAS_N[(i + 1) % 7] + ' 11 AM · ' + num(x) + ' pts'}>
+            <i style={{ height: (x ? Math.max(4, Math.round((100 * x) / max)) : 0) + '%' }} /><small>{DIAS_L[i]}</small>
+          </span>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+/** ⭐ Las estrellas de la semana: los tres que más sumaron para la crew, en podio (el 1.º al medio). */
+function Estrellas({ liga, T, viva }) {
+  const xs = Object.entries((T.gente || {})[viva.id] || {}).filter(([, p]) => p > 0).sort((a, b) => b[1] - a[1]).slice(0, 3);
+  if (!xs.length) return null;
+  const lugar = (k) => xs.findIndex((x) => x[0] === k) + 1;
+  const orden = xs.length === 3 ? [xs[1], xs[0], xs[2]] : xs.length === 2 ? [xs[1], xs[0]] : xs;
+  return (
+    <div className="k2-caja k2-estr">
+      <div className="k2-tit"><h2>Estrellas de la semana</h2><small>los que más sumaron para la crew</small></div>
+      <ol className="k2-podio">{orden.map(([k, p]) => (
+        <li key={k} className={'k2-pp l' + lugar(k)}>
+          <a href={'#/r/' + encodeURIComponent(k)}>
+            <Cara liga={liga} k={k} nombre={nombreDe(liga, k)} cls={'cara k2-pc'} lazy />
+            <b>{nombreDe(liga, k)}</b><small>{num(p)} pts</small>
+          </a>
+          <span className="k2-esc" aria-label={lugar(k) + '.º'}>{lugar(k)}</span>
+        </li>
+      ))}</ol>
     </div>
   );
 }
