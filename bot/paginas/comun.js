@@ -75,9 +75,14 @@ var ZONAS = [['', 'La de este dispositivo'],
   ['America/Caracas', 'Venezuela · Bolivia'], ['America/Santo_Domingo', 'Rep. Dominicana · Puerto Rico'],
   ['America/Santiago', 'Chile'], ['America/Argentina/Buenos_Aires', 'Argentina · Uruguay'],
   ['Europe/Madrid', 'España']];
+// ⚡ la del dispositivo se lee UNA vez: `Intl.DateTimeFormat()` por llamada era la mitad de lo que tardaba Eventos (17/11/2026)
+var zonaDisp = null;
 function zona() {
   if (AJ.tz) return AJ.tz;
-  try { return Intl.DateTimeFormat().resolvedOptions().timeZone || ''; } catch (e) { return ''; }
+  if (zonaDisp === null) {
+    try { zonaDisp = Intl.DateTimeFormat().resolvedOptions().timeZone || ''; } catch (e) { zonaDisp = ''; }
+  }
+  return zonaDisp;
 }
 function opcTz(o) {
   o = o || {};
@@ -85,11 +90,22 @@ function opcTz(o) {
   if (AJ.h12 === true || AJ.h12 === false) o.hour12 = AJ.h12;
   return o;
 }
+// ⚡ un formateador por idioma y opciones (17/11/2026): `toLocale…String` arma uno nuevo en cada llamada. Las opciones
+// llevan la zona y las 12/24 h de Ajustes, así que cambiarlas usa otro
+var FMTS = {};
+function fmtCon(loc, o) {
+  var k = loc + JSON.stringify(o);
+  return FMTS[k] || (FMTS[k] = new Intl.DateTimeFormat(loc, o));
+}
 function fmtHora(d) {
-  try { return new Date(d).toLocaleTimeString('es', opcTz({ hour: 'numeric', minute: '2-digit' })); }
+  try { return fmtCon('es', opcTz({ hour: 'numeric', minute: '2-digit' })).format(new Date(d)); }
   catch (e) { return ''; }
 }
 function fmtFecha(d, o) {
-  try { return new Date(d).toLocaleDateString('es', opcTz(o || { day: 'numeric', month: 'short' })); }
-  catch (e) { return ''; }
+  try {
+    o = opcTz(o || { day: 'numeric', month: 'short' });
+    // sin día, mes, año ni día de la semana, `toLocaleDateString` le agrega la fecha: ese caso sigue igual que antes
+    if (!('day' in o || 'month' in o || 'year' in o || 'weekday' in o)) return new Date(d).toLocaleDateString('es', o);
+    return fmtCon('es', o).format(new Date(d));
+  } catch (e) { return ''; }
 }

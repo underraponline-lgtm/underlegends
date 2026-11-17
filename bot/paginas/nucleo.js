@@ -29,14 +29,29 @@
 /* ── los ayudantes ─────────────────────────────────────────────────── */
 var dd2 = function (n) { return (n < 10 ? '0' : '') + n; };
 // el día de un instante en la zona de quien mira: 'AAAA-MM-DD' (lo usa web/src/liga.js)
+// ⚡ UN FORMATEADOR POR ZONA, Y CADA INSTANTE SE RECUERDA (17/11/2026, Dlx: «cada vez que entro a la página de eventos
+// toma su tiempo en pc»). Medido: entrar a Eventos congelaba la página 5,3 s, y casi todo era esto —un
+// `new Intl.DateTimeFormat` por llamada, más dos de `zona()`— llamado miles de veces (cada evento por cada día)
+var diaFmt = null, diaTz = null, diaMemo = new Map();
 function diaDe(d) {
   try {
-    var o = { year: 'numeric', month: '2-digit', day: '2-digit' }, q = {};
-    if (zona()) o.timeZone = zona();
-    new Intl.DateTimeFormat('en-CA', o).formatToParts(new Date(d)).forEach(function (x) {
+    var tz = zona();
+    if (!diaFmt || diaTz !== tz) {
+      var o = { year: 'numeric', month: '2-digit', day: '2-digit' };
+      if (tz) o.timeZone = tz;
+      diaFmt = new Intl.DateTimeFormat('en-CA', o);
+      diaTz = tz;
+      diaMemo = new Map();
+    }
+    var t = +new Date(d), v = diaMemo.get(t), q = {};
+    if (v !== undefined) return v;
+    diaFmt.formatToParts(new Date(t)).forEach(function (x) {
       q[x.type] = x.value;
     });
-    return q.year + '-' + q.month + '-' + q.day;
+    v = q.year + '-' + q.month + '-' + q.day;
+    if (diaMemo.size > 20000) diaMemo = new Map();
+    diaMemo.set(t, v);
+    return v;
   } catch (e) {
     var x = new Date(d);
     return x.getFullYear() + '-' + dd2(x.getMonth() + 1) + '-' + dd2(x.getDate());

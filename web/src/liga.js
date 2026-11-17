@@ -133,16 +133,32 @@ function diaSemana(d) {
 }
 function diaMes(d) { return Number(diaISO(d).split('-')[2]); }
 // los minutos desde la medianoche, en la zona de quien mira (la de Ajustes si eligió una: `zona()` de app.js)
+// ⚡ un formateador por zona y cada instante se recuerda (17/11/2026): era la segunda cosa que más tardaba al entrar a Eventos
+let minFmt = null;
+let minTz = null;
+let minMemo = new Map();
 export function minutosDelDia(t) {
   const d = utc(t);
   try {
-    const o = { hour: 'numeric', minute: 'numeric', hourCycle: 'h23' };
-    const z = W.zona && W.zona();
-    if (z) o.timeZone = z;
+    const z = (W.zona && W.zona()) || '';
+    if (!minFmt || minTz !== z) {
+      const o = { hour: 'numeric', minute: 'numeric', hourCycle: 'h23' };
+      if (z) o.timeZone = z;
+      minFmt = new Intl.DateTimeFormat('en-US', o);
+      minTz = z;
+      minMemo = new Map();
+    }
+    const k = +d;
+    const c = minMemo.get(k);
+    if (c !== undefined) return c;
     const p = {};
-    new Intl.DateTimeFormat('en-US', o).formatToParts(d).forEach((x) => { p[x.type] = x.value; });
+    minFmt.formatToParts(d).forEach((x) => { p[x.type] = x.value; });
     const n = (Number(p.hour) % 24) * 60 + Number(p.minute);
-    if (!isNaN(n)) return n;
+    if (!isNaN(n)) {
+      if (minMemo.size > 20000) minMemo = new Map();
+      minMemo.set(k, n);
+      return n;
+    }
   } catch (e) { /* la del dispositivo */ }
   return d.getHours() * 60 + d.getMinutes();
 }

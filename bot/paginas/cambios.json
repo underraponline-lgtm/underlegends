@@ -11,6 +11,15 @@
   ],
   "cambios": [
     {
+      "version": "5.99",
+      "dia": "2026-11-17",
+      "cuando": "2026-11-17T01:38:18-05:00",
+      "titulo": "Eventos carga rápido",
+      "items": [
+        "**Eventos carga mucho más rápido en la compu**: la página quedaba trabada unos segundos al entrar, calculando la fecha y la hora de cada evento una por una. Ahora tarda una fracción de segundo."
+      ]
+    },
+    {
         "version": "5.98",
         "dia": "2026-11-17",
         "cuando": "2026-11-17T01:29:00-05:00",
