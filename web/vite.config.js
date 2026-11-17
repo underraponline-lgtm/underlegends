@@ -18,7 +18,9 @@ export default defineConfig({
       input: 'src/main.jsx',
       output: {
         entryFileNames: 'inicio.js',
-        chunkFileNames: 'inicio-[name].js',
+        // 🔄 con su huella (16/11/2026, web/src/version.js): con el nombre fijo, una pestaña abierta durante una
+        // publicación mezclaba el pedazo nuevo de una página con el principal viejo y cargaba funciones equivocadas
+        chunkFileNames: 'inicio-[name]-[hash].js',
         assetFileNames: (a) => ((a.name || '').endsWith('.css') ? 'inicio.css' : 'f/[name][extname]'),
       },
     },

@@ -513,7 +513,8 @@ function Cuatro({ P, ahora, tiene }) {
   return (
     <div className="pc-4">
       {xs.map(([c, ob, et, b, sm, id, href]) => (
-        <a key={et} className="pc-pn" style={{ '--c': c }} href={href || '#/pase'} onClick={(e) => { if (id) { e.preventDefault(); irA(id); } }}>
+        // por su destino y no por la etiqueta: «Hoy · cierra en 3 h» cambia cada 30 s y rearmaba el cuadro (revisión del 16/11)
+        <a key={(id || href || '') + c} className="pc-pn" style={{ '--c': c }} href={href || '#/pase'} onClick={(e) => { if (id) { e.preventDefault(); irA(id); } }}>
           <Objeto tipo={ob} t={40} /><span><i>{et}</i><b>{b}</b><small>{sm}</small></span>
         </a>
       ))}
@@ -675,7 +676,7 @@ export function Pase({ liga, dc }) {
       <div className="pc-cuerpo" ref={cuerpo}>
         {miembro ? <Cuatro P={P} ahora={ahora} tiene={tiene} /> : null}
         {miembro ? <Avisitos P={P} ahora={ahora} /> : null}
-        <PistaDoble libres={libres} prem={prem} nivel={nivel} tiene={tiene} falta={a ? a.falta : 0} frac={a ? a.lleva / a.de : 0} q={q} />
+        <PistaDoble libres={libres} prem={prem} nivel={nivel} tiene={tiene} falta={a ? a.falta : 0} frac={a ? a.lleva / a.de : 0} q={q} miembro={miembro} />
         <TareasC P={P} cfg={cfg} miembro={miembro} ahora={ahora} />
         <div className="pc-dos">
           <PremiumC P={P} prem={prem} tiene={tiene} onTodo={() => setTodoPrem(true)} />

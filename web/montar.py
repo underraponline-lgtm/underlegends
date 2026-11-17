@@ -179,12 +179,11 @@ def conf_carga():
     r2 = re.search(r"^R2 = '([^']+)'", sw, re.M)
     if not r2:
         raise SystemExit('🔴 no encontré R2 en bot/subir_web.py: la pantalla de carga no sabe de dónde sacar los fondos')
-    # 📦 lo que se precarga mientras está la pantalla: las páginas del menú (no el Dashboard ni el panel del socio,
-    # que son de pocos y pesan la mitad de todo)
-    fuera = {'inicio.js', 'inicio-dashboard.js', 'inicio-socio2.js', 'inicio-panelsocio.js', 'inicio-verificar.js'}
-    trozos = sorted(f for f in os.listdir(os.path.join(PAG, 'inicio')) if f.endswith('.js') and f not in fuera)
-    return json.dumps({'r2': r2.group(1), 't': conf['temporada'], 'v': conf.get('v', 1), 'f': conf['fondos'], 'b': [b['id'] for b in conf['batallas']],
-                       'p': trozos}, ensure_ascii=False, separators=(',', ':')), conf['temporada'].upper()
+    # 📦 qué páginas se precargan ya no va acá: lo sabe la app (`window.__lgPrecargar`, App.jsx). Cada pedazo lleva su
+    # huella en el nombre desde el 16/11/2026 (web/src/version.js), y una lista escrita en index.html quedaba vieja en
+    # cuanto alguien construía sin volver a correr este archivo
+    return json.dumps({'r2': r2.group(1), 't': conf['temporada'], 'v': conf.get('v', 1), 'f': conf['fondos'], 'b': [b['id'] for b in conf['batallas']]},
+                      ensure_ascii=False, separators=(',', ':')), conf['temporada'].upper()
 
 
 def cabeza_carga():
@@ -313,7 +312,7 @@ def html_carga():
     // 📦 mientras tanto, las demás páginas: que después no haya esperas (no con ahorro de datos ni en 2G)
     function precargar() {
       try { var cx = navigator.connection; if (cx && (cx.saveData || /2g/.test(cx.effectiveType || ''))) return; } catch (e) {}
-      (C.p || []).forEach(function (f) { var l = document.createElement('link'); l.rel = 'modulepreload'; l.href = '/inicio/' + f; document.head.appendChild(l); });
+      if (window.__lgPrecargar) window.__lgPrecargar();
     }
     // 🧘 EL FINAL ARRANCA EN UN MOMENTO TRANQUILO. Con los datos, la app sigue armándose atrás: medido en un celular
     // modesto, tareas de 0,5 y 1 s después de `lg-listo`. Lo que se mueve lo anima el compositor, pero ARRANCARLO pide un

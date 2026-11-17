@@ -303,6 +303,13 @@ if (!DatabaseSync) {
     && CW.crewMia(o, { quien: id(211), de: 'u1' }).invitados.some((x) => x.k === 'hugo')
     && yo(211, 'u1', { accion: 'desinvitar', a: 'hugo' }).ok && !CW.crewMia(o, { quien: id(211), de: 'u1' }).invitados.some((x) => x.k === 'hugo'),
   'el Veterano ve sus invitaciones y las puede cancelar');
+  // ⚠️ pero las del Líder, no: ni las ve ni las cancela (revisión del 16/11/2026)
+  ok(yo(210, 'tri', { accion: 'invitar', a: 'hugo' }).ok
+    && !CW.crewMia(o, { quien: id(211), de: 'u1' }).invitados.some((x) => x.k === 'hugo')
+    && CW.crewMia(o, { quien: id(210), de: 'tri' }).invitados.some((x) => x.k === 'hugo')
+    && yo(211, 'u1', { accion: 'desinvitar', a: 'hugo' }).ok
+    && CW.crewMia(o, { quien: id(210), de: 'tri' }).invitados.some((x) => x.k === 'hugo'),
+  'el Veterano no ve ni cancela las invitaciones del Líder');
   ok(CW.crewDueno(o, { que: 'borrar', crew: 'Trio' }).ok && bandeja.some((b) => b.quien === id(211) && b.titulo === 'Trio se cerró'),
     'al cerrar una crew, a su gente le llega (las cuentas se buscan antes de borrar)');
 

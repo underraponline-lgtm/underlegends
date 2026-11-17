@@ -48,7 +48,8 @@ function Casilla({ p, n, pr, sig, ya, lock, sel, onSel }) {
   );
 }
 
-export function PistaDoble({ libres, prem, nivel, tiene, falta, frac, q }) {
+// `miembro`: sin ser de DRA (o sin cuenta) no hay «TÚ» ni «Ir a mi nivel»: caía en el nivel 1 (revisión del 16/11)
+export function PistaDoble({ libres, prem, nivel, tiene, falta, frac, q, miembro = true }) {
   const N = libres.length || 50;
   const sigN = Math.min(N, (nivel || 0) + 1);
   const [sel, setSel] = useState(sigN);
@@ -80,7 +81,7 @@ export function PistaDoble({ libres, prem, nivel, tiene, falta, frac, q }) {
     const g = libres[n - 1] || [n, 150, '', ''];
     const pr = premDe[n] || [n, 150, '', ''];
     const ya = n <= nivel;
-    const sig = n === nivel + 1 && n <= N;
+    const sig = miembro && n === nivel + 1 && n <= N;
     const relleno = ya ? 100 : sig ? Math.round(100 * Math.max(0, Math.min(1, frac || 0))) : 0;
     cols.push(
       <div key={n} className={'p2-col' + (sig ? ' sig' : '') + (n === sel ? ' es' : '')} data-n={n}>
@@ -102,7 +103,7 @@ export function PistaDoble({ libres, prem, nivel, tiene, falta, frac, q }) {
         <h2>Los {N} niveles</h2>
         <small>Gratis arriba, Premium abajo</small>
         <span className="p2-flechas">
-          {nivel < N ? <button type="button" className="p2-mio" onClick={() => elegir(sigN)}>Ir a mi nivel</button> : null}
+          {miembro && nivel < N ? <button type="button" className="p2-mio" onClick={() => elegir(sigN)}>Ir a mi nivel</button> : null}
           <button type="button" onClick={() => mover(-1)} aria-label="Niveles anteriores">‹</button>
           <button type="button" onClick={() => mover(1)} aria-label="Niveles siguientes">›</button>
         </span>

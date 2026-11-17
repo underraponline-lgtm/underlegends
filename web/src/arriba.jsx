@@ -1966,7 +1966,8 @@ function titularCampeon(liga, ll, misma, f, g0) {
         sello: 'Batacazo', hora: 'Batacazo' }]);
     }
   }
-  if (ll.participantes >= 30 && n === 1) {
+  // sólo con UN campeón con su fila: con un equipo salía «<el primero del equipo> se impuso…» (revisión del 16/11)
+  if (ll.participantes >= 30 && n === 1 && f && nombre) {
     op.push([60, { peso: 72, tit: nombre + ' se impuso entre ' + ll.participantes, sub: 'La llave más grande de la noche: ' + limpio(ll.nombre) + ', ' + siglaDe(ll.sv) + '.', hora: ll.participantes + ' raperos' }]);
   }
   op.sort((a, b) => b[0] - a[0]);
@@ -2410,6 +2411,8 @@ function momentos(liga, vivoL, ctx = {}) {
       if (!x) continue;
       const k = ks.sort()[0];
       const fk = liga.T[k];
+      // alguien que sigues y no está en la tabla de la página: sin su fila no hay ficha (antes se rompía el escenario entero)
+      if (!fk) continue;
       // 🃏 SU CARTA Y SUS NÚMEROS, NO SÓLO LA CARA (Dlx, 15/11/2026, con capturas del celular: «position everything better, add
       // more stuff to make the empty space less empty»): la cara sola dejaba 160 px vacíos abajo. Ahora su carta de Temporada
       // (si la tiene) y al lado su puesto, su letra, su OVR y sus títulos; y si fue campeón, a la llave. Sin dato no hay pieza
@@ -2484,6 +2487,9 @@ export function Hero({ liga, vivoL, children, solo }) {
   // adentro, con un video abierto y fuera de la vista; con «Menos animaciones» o el movimiento reducido no corre
   const [pausa, setPausa] = useState(false);
   const [enVideo, setEnVideo] = useState(false);
+  // fuera de la vista, en el estado y no a mano en la clase: React reescribía la clase al cambiar `pausa` y borraba la
+  // marca, y el escenario seguía pasando solo sin que nadie lo mirara (revisión del 16/11)
+  const [fuera, setFuera] = useState(false);
   const sec = useRef(null);
   useEffect(() => {
     const f = (e) => setEnVideo(!!e.detail);
@@ -2493,7 +2499,7 @@ export function Hero({ liga, vivoL, children, solo }) {
   useEffect(() => {
     const el = sec.current;
     if (!el || typeof IntersectionObserver === 'undefined') return undefined;
-    const io = new IntersectionObserver(([e]) => el.classList.toggle('fuera', !e.isIntersecting), { threshold: 0.25 });
+    const io = new IntersectionObserver(([e]) => setFuera(!e.isIntersecting), { threshold: 0.25 });
     io.observe(el);
     return () => io.disconnect();
   }, [n > 0]);
@@ -2516,7 +2522,7 @@ export function Hero({ liga, vivoL, children, solo }) {
   };
   return (
     <div className={'escena hero-ini es2' + (escenaDe(m0.esc || m0.sv) ? ' es-sv-fondo' : '')} data-tuto="hoy" style={fondoDe(liga, m0)}>
-      <section ref={sec} className={'hero carrusel' + (pausa || enVideo ? ' quieto' : '')} id="envivo" aria-roledescription="carrusel" aria-label="Lo de ahora"
+      <section ref={sec} className={'hero carrusel' + (pausa || enVideo ? ' quieto' : '') + (fuera ? ' fuera' : '')} id="envivo" aria-roledescription="carrusel" aria-label="Lo de ahora"
         onPointerEnter={(e) => { if (e.pointerType === 'mouse') setPausa(true); }}
         onFocus={() => setPausa(true)}
         onBlur={(e) => { if (!e.currentTarget.contains(e.relatedTarget)) setPausa(false); }}
@@ -2532,7 +2538,9 @@ export function Hero({ liga, vivoL, children, solo }) {
         onTouchStart={(e) => { const t = e.touches[0]; x0.current = t ? [t.clientX, t.clientY] : null; quieto.current = true; }}
         onTouchEnd={(e) => {
           const t = e.changedTouches[0]; const a = x0.current;
-          if (t && Array.isArray(a) && !e.target.closest('.cm-wrap')) {
+          // ⚠️ no en lo que se desliza solo: la tira de momentos y «los otros» en vivo (antes, deslizar la tira para ver el
+          // de más allá también cambiaba de momento; revisión del 16/11)
+          if (t && Array.isArray(a) && !e.target.closest('.cm-wrap, .es-tira, .mo-tabs, .es-otros')) {
             const dx = t.clientX - a[0]; const dy = t.clientY - a[1];
             if (Math.abs(dx) > 50 && Math.abs(dx) > Math.abs(dy) * 1.5) ver(j + (dx < 0 ? 1 : -1));
           }

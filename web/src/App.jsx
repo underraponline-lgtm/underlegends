@@ -110,38 +110,50 @@ function anotarUnaVez(k) {
 // en `<página>2.jsx`. Estuvieron unas horas detrás de `?prev=remake` y salieron para todos el mismo día (Dlx: «Publica y
 // haz todo… sube todo»; sus opiniones, después). Las viejas se borraron; lo que otras páginas les pedían prestado quedó
 // en publicaciones.jsx, guia.jsx y servidor.jsx
-const Tutorial = lazy(() => import('./tutorial.jsx').then((m) => ({ default: m.Tutorial })));
+// 📦 LAS PÁGINAS SE PRECARGAN DESDE ACÁ (16/11/2026, ver version.js): antes las pedía la pantalla de carga con una lista
+// de nombres escrita en index.html; con el nombre de cada pedazo cambiando en cada versión, la lista la tiene que saber
+// la app. Se anotan al declararlas y se piden cuando la página ya entró (`window.__lgPrecargar`, web/montar.py). No van
+// el Dashboard, el panel del socio ni verificarse: son de pocos
+const PRECARGAR = [];
+function pag(f) { PRECARGAR.push(f); return lazy(f); }
+if (typeof window !== 'undefined') {
+  window.__lgPrecargar = () => {
+    try { const cx = navigator.connection; if (cx && (cx.saveData || /2g/.test(cx.effectiveType || ''))) return; } catch (e) { /* sigue */ }
+    PRECARGAR.forEach((f) => { try { f().catch(() => {}); } catch (e) { /* esa no */ } });
+  };
+}
+const Tutorial = pag(() => import('./tutorial.jsx').then((m) => ({ default: m.Tutorial })));
 // 🎮 la pantalla de bienvenida (19/10/2026): se baja sólo para quien llega por primera vez
-const Bienvenida = lazy(() => import('./bienvenida.jsx'));
-const PrimerosPasos = lazy(() => import('./tutorial.jsx').then((m) => ({ default: m.PrimerosPasos })));
+const Bienvenida = pag(() => import('./bienvenida.jsx'));
+const PrimerosPasos = pag(() => import('./tutorial.jsx').then((m) => ({ default: m.PrimerosPasos })));
 // 🔑 EL RANKING Y EVENTOS, EN SU PROPIO ARCHIVO: se bajan recién al abrirlos. Con los dos adentro, el JS del Inicio
 // pasaba de 120 a 133 KB comprimido (02/10/2026), y el Inicio es lo que abre todo el mundo, en el celular
-const Ranking = lazy(() => import('./ranking.jsx').then((m) => ({ default: m.Ranking })));
-const Eventos = lazy(() => import('./eventos.jsx').then((m) => ({ default: m.Eventos })));
-const Publicaciones = lazy(() => import('./publicaciones2.jsx').then((m) => ({ default: m.Publicaciones })));
-const Socios = lazy(() => import('./socios2.jsx').then((m) => ({ default: m.Socios })));
-const Guia = lazy(() => import('./guia2.jsx').then((m) => ({ default: m.Guia })));
-const Tarjetas = lazy(() => import('./tarjetas.jsx').then((m) => ({ default: m.Tarjetas })));
-const Perfil = lazy(() => import('./perfil.jsx').then((m) => ({ default: m.Perfil })));
-const Llave = lazy(() => import('./llave.jsx').then((m) => ({ default: m.Llave })));
-const VisorCarta = lazy(() => import('./visor.jsx').then((m) => ({ default: m.VisorCarta })));
-const Tienda = lazy(() => import('./tienda2.jsx').then((m) => ({ default: m.Tienda })));
-const Pase = lazy(() => import('./pase.jsx').then((m) => ({ default: m.Pase })));
+const Ranking = pag(() => import('./ranking.jsx').then((m) => ({ default: m.Ranking })));
+const Eventos = pag(() => import('./eventos.jsx').then((m) => ({ default: m.Eventos })));
+const Publicaciones = pag(() => import('./publicaciones2.jsx').then((m) => ({ default: m.Publicaciones })));
+const Socios = pag(() => import('./socios2.jsx').then((m) => ({ default: m.Socios })));
+const Guia = pag(() => import('./guia2.jsx').then((m) => ({ default: m.Guia })));
+const Tarjetas = pag(() => import('./tarjetas.jsx').then((m) => ({ default: m.Tarjetas })));
+const Perfil = pag(() => import('./perfil.jsx').then((m) => ({ default: m.Perfil })));
+const Llave = pag(() => import('./llave.jsx').then((m) => ({ default: m.Llave })));
+const VisorCarta = pag(() => import('./visor.jsx').then((m) => ({ default: m.VisorCarta })));
+const Tienda = pag(() => import('./tienda2.jsx').then((m) => ({ default: m.Tienda })));
+const Pase = pag(() => import('./pase.jsx').then((m) => ({ default: m.Pase })));
 // 🏟️ las Ligas, su propia sección desde el 16/10/2026 (eran una pestaña del Ranking): ver ligas.jsx
-const LigasPagina = lazy(() => import('./ligas.jsx').then((m) => ({ default: m.LigasPagina })));
+const LigasPagina = pag(() => import('./ligas.jsx').then((m) => ({ default: m.LigasPagina })));
 // 🏛️ el Salón de la fama (16/10/2026): ver salon2.jsx
-const SalonFama = lazy(() => import('./salon2.jsx').then((m) => ({ default: m.SalonFama })));
+const SalonFama = pag(() => import('./salon2.jsx').then((m) => ({ default: m.SalonFama })));
 // 🏆 las competencias de la semana (26/10/2026): ver competencias.jsx
-const Competencias = lazy(() => import('./competencias.jsx').then((m) => ({ default: m.Competencias })));
+const Competencias = pag(() => import('./competencias.jsx').then((m) => ({ default: m.Competencias })));
 // 🎒 el Inventario como página (26/10/2026): ver tags_inv.jsx
-const PaginaInventario = lazy(() => import('./tags_inv.jsx').then((m) => ({ default: m.PaginaInventario })));
+const PaginaInventario = pag(() => import('./tags_inv.jsx').then((m) => ({ default: m.PaginaInventario })));
 // 👥 las Crews, su propia sección desde el 19/10/2026 (eran una pestaña del Ranking): ver crewspagina.jsx
-const CrewsPagina = lazy(() => import('./crewspagina.jsx').then((m) => ({ default: m.CrewsPagina })));
+const CrewsPagina = pag(() => import('./crewspagina.jsx').then((m) => ({ default: m.CrewsPagina })));
 // 📊 el panel de los socios, para el dueño de cada servidor (19/10/2026; el remake del 02/11, en socio2.jsx)
 const PanelSocio = lazy(() => import('./socio2.jsx').then((m) => ({ default: m.PanelSocio })));
 // ⚡ lo que no hace falta para abrir el Inicio va aparte (la pasada del 04/10/2026: el paquete principal pasaba de los
 // 130 KB comprimidos que se puso el remake): Mi cuenta, el changelog y la página de cada servidor
-const Cuenta = lazy(() => import('./cuenta.jsx').then((m) => ({ default: m.Cuenta })));
+const Cuenta = pag(() => import('./cuenta.jsx').then((m) => ({ default: m.Cuenta })));
 // 🔒 el Dashboard del dueño (04/10/2026): perezoso, y la puerta la pone el servidor (ver dashboard.jsx)
 const Dashboard = lazy(() => import('./dashboard.jsx').then((m) => ({ default: m.Dashboard })));
 // 🏠 y en el Inicio, sólo para Dlx (el mismo archivo: se baja una vez)
@@ -167,10 +179,10 @@ function AvisoWeb({ aviso }) {
 }
 // ✅ verificarse, en su página (el remake del 02/11/2026: verificar.jsx, con el trámite de cuenta.jsx adentro)
 const PaginaVerificar = lazy(() => import('./verificar.jsx').then((m) => ({ default: m.PaginaVerificar })));
-const Cambios = lazy(() => import('./cambios2.jsx').then((m) => ({ default: m.Cambios })));
-const PerfilSv = lazy(() => import('./entidad2.jsx').then((m) => ({ default: m.PerfilSv })));
-const PaginaCrew = lazy(() => import('./entidad2.jsx').then((m) => ({ default: m.PaginaCrew })));
-const PaginaPais = lazy(() => import('./entidad2.jsx').then((m) => ({ default: m.PaginaPais })));
+const Cambios = pag(() => import('./cambios2.jsx').then((m) => ({ default: m.Cambios })));
+const PerfilSv = pag(() => import('./entidad2.jsx').then((m) => ({ default: m.PerfilSv })));
+const PaginaCrew = pag(() => import('./entidad2.jsx').then((m) => ({ default: m.PaginaCrew })));
+const PaginaPais = pag(() => import('./entidad2.jsx').then((m) => ({ default: m.PaginaPais })));
 // ⏳ mientras baja una página: la misma barrita que la pantalla de carga (`#lg-carga`), en chico
 const Cargando = () => <div className="cargando" role="status"><span>Cargando…</span><i className="cargando-b" aria-hidden="true"><i /></i></div>;
 import { VentanaVideo } from './video.jsx';
@@ -179,6 +191,7 @@ import { urlFondo, useFondos } from './fondos.js';
 import { useCalma, useTapado } from './anima.js';
 // 🐞 los errores de la página, al Dashboard (19/10/2026): los de cada sección y los que no agarra ninguna
 import { escucharErrores, reportarError } from './errores.js';
+import { esDeVersion, recargarPorVersion } from './version.js';
 
 escucharErrores();
 
@@ -284,7 +297,11 @@ function vaHacia(previo, clave, i, hondo) {
 class Aislada extends Component {
   constructor(p) { super(p); this.state = { roto: false }; this.va = vaPagina; }
   static getDerivedStateFromError() { return { roto: true }; }
-  componentDidCatch(e) { console.error('[inicio:' + this.props.n + ']', e); reportarError(this.props.n, e); }
+  componentDidCatch(e) {
+    // 🔄 un pedazo de otra versión: se recarga una vez y entra la nueva (ver version.js); si no, se cuenta como siempre
+    if ((esDeVersion(e) && recargarPorVersion()) || window.__lgRecargando) return;
+    console.error('[inicio:' + this.props.n + ']', e); reportarError(this.props.n, e);
+  }
   render() {
     // 🎞️ una PÁGINA entra con su transición (`.pg-entra`, vivo.css): como va con `key` por página, cambiar de sección la
     // vuelve a montar y la animación corre de nuevo (Dlx, 17/10/2026: «mejores transiciones, animaciones… tampoco tan
@@ -302,6 +319,7 @@ export class Respaldo extends Component {
   constructor(p) { super(p); this.state = { roto: false }; }
   static getDerivedStateFromError() { return { roto: true }; }
   componentDidCatch(e) {
+    if ((esDeVersion(e) && recargarPorVersion()) || window.__lgRecargando) return;
     console.error('[inicio]', e);
     reportarError('inicio', e);
     if (window.__sinPagina) window.__sinPagina('Algo de la página se rompió.');

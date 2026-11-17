@@ -580,6 +580,8 @@
 /* 🃏 la carta de quien no tiene carta va en GRILLA: lleva la clase `cmx-carta`, que es `display:block` para las imágenes,
    y así la cara, el nombre, la bandera y «SIN CARTA» corrían en renglón y se salían de la pantalla a 390 px (16/11/2026) */
 .cmx-cartas .sincarta{width:176px;max-width:38vw;display:grid;container-type:inline-size;grid-template-columns:minmax(0,1fr)}
+/* de 1100 a 1199 la columna del medio tiene ~376 px y dos cartas de 176 no entraban: se salían 17 px (medido el 16/11) */
+@media (min-width: 1100px) and (max-width: 1199px){.cmx-carta,.cmx-cartas .sincarta{width:150px}}
 /* 🔤 su nombre: una palabra larga no se parte, así que baja con el ancho de la carta y el largo de la palabra (`--n`, lo pone
    SinCarta desde 9 letras). «LEANDROKATANA» medía 164 px en una carta de 132 */
 .cmx-cartas .sincarta b.sc-largo{font-stretch:100%;font-size:min(15px,calc(132cqi / var(--n)))}

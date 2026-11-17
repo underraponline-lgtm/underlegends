@@ -500,8 +500,11 @@ export function crewMia(o, d) {
     }
     // 📨 las invitaciones que esperan, para todos los que invitan (15/11/2026: el Veterano invitaba y no veía a quién, ni
     // podía cancelar: `desinvitar` existía y la página no tenía el botón)
+    // ⚠️ el Veterano ve y cancela SÓLO las suyas: con todas, podía cancelar las del Líder (revisión del 16/11/2026)
     if (puede(m.rol, 'invitar')) {
-      out.invitados = filas(o, 'SELECT k, de, t FROM crew_inv WHERE crew = ? AND t > ? ORDER BY t', m.crew, ahora - VENCE_MS);
+      out.invitados = m.rol === 'lider' || m.rol === 'colider'
+        ? filas(o, 'SELECT k, de, t FROM crew_inv WHERE crew = ? AND t > ? ORDER BY t', m.crew, ahora - VENCE_MS)
+        : filas(o, 'SELECT k, de, t FROM crew_inv WHERE crew = ? AND de = ? AND t > ? ORDER BY t', m.crew, k, ahora - VENCE_MS);
     }
     // 🔗 los links abiertos de la crew, para los que pueden invitar (Veterano para arriba)
     if (puede(m.rol, 'invitar')) {
@@ -702,7 +705,9 @@ export function crewAccion(o, d) {
   }
   if (a === 'desinvitar') {
     if (!puede(rol, 'invitar')) return mal('rol', 403);
-    o.sql.exec('DELETE FROM crew_inv WHERE crew = ? AND k = ?', c.id, String(d.a || ''));
+    // el Líder y el Colíder, cualquiera; el Veterano, sólo las que mandó él (ver `crewMia`)
+    if (rol === 'lider' || rol === 'colider') o.sql.exec('DELETE FROM crew_inv WHERE crew = ? AND k = ?', c.id, String(d.a || ''));
+    else o.sql.exec('DELETE FROM crew_inv WHERE crew = ? AND k = ? AND de = ?', c.id, String(d.a || ''), k);
     return { ok: true };
   }
   if (a === 'decidir') {

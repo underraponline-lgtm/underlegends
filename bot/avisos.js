@@ -16438,7 +16438,9 @@ export class Avisos {
   valeUsar(d) {
     const quien = String((d && d.quien) || ''), id = String((d && d.vale) || '');
     if (!/^[0-9]{5,25}$/.test(quien) || !id) return { error: 'faltan datos' };
-    const k = this.claveDe(quien);
+    // la misma clave que `valesDe()`, con la del dueño de respaldo: veía sus vales y al usarlos le decía «no es tuyo»
+    // (revisión del 16/11/2026)
+    const k = this.claveDe(quien) || (quien === DUENO ? DUENO_K : '');
     const r = this.sql.exec('SELECT k, usado_temp FROM premium_vale WHERE origen = ?', id).toArray()[0];
     if (!r || !k || r.k !== k) return { error: 'no_es_tuyo' };
     if (r.usado_temp) return { error: 'usado' };

@@ -585,8 +585,10 @@
   .pc-anim > *{opacity:1;transform:none}
 }
 .app.calma .p2-t.pr:hover .p2-cand,.app.calma .p2-t.p2-brilla::after,.app.calma .p2-nodo.sig,.app.calma .p2-tu,.app.calma .dd2-sacude,
+.app.calma .dd2-flash,.app.calma .dd2-shard,.app.calma .dd2-res,.app.calma .dd2-mas,
 .app.calma .dd2-sem li.hoy,.app.calma .pc-haz,.app.calma .pc-xpb u,.app.calma .pc-bar u,.app.calma .pc-raya,.app.calma .pc-t.ok .pc-txp{animation:none!important}
-.app.calma .pc-raya,.app.calma .p2-t.p2-brilla::after{display:none}
+/* el drop del día, igual que con la del sistema (revisión del 16/11): sin el destello ni los pedazos */
+.app.calma .pc-raya,.app.calma .p2-t.p2-brilla::after,.app.calma .dd2-flash,.app.calma .dd2-shard,.app.calma .dd2-mas{display:none}
 .app.calma .pc-anim > *{opacity:1;transform:none}
 .app.tapado .pc-haz,.app.tapado .pc-raya,.app.tapado .p2-t.p2-brilla::after,.app.tapado .p2-nodo.sig{animation-play-state:paused}
 

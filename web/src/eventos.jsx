@@ -505,7 +505,10 @@ function LlaveRondas({ ll, vivo }) {
   const enJuego = vivo ? rs.findIndex((r) => r.b.some((b) => !ganador(b) && lados(b).length >= 2)) : -1;
   let fin = rs.length - 1;
   while (fin > 0 && /tercer/i.test(rs[fin].r || '')) fin -= 1;
-  const [i, setI] = useState(enJuego >= 0 ? enJuego : fin);
+  // `null`: sola, la que se juega (o la final). Con un número fijo, en vivo se quedaba en Octavos cuando ya se jugaban los
+  // Cuartos (revisión del 16/11); al tocar una ronda, manda la elegida
+  const [elegida, setI] = useState(null);
+  const i = elegida == null ? (enJuego >= 0 ? enJuego : fin) : elegida;
   const r = rs[Math.max(0, Math.min(i, rs.length - 1))];
   if (!r) return null;
   return (
@@ -1181,7 +1184,7 @@ export function Eventos({ liga, vivoL, dia: diaRuta, avisos }) {
   const pausa = pasados.filter((c) => !c.ll && liga.enPausa({ link: c.link, t: c.t, sv: c.sv, n: c.n }));
   const hechos = pasados.filter((c) => !liga.canceladoCal(c) && !pausa.includes(c)).sort((a, b) => (a.t < b.t ? 1 : -1));
   const nomSv = (sv, n) => sv + '|' + limpio(n).toLowerCase();
-  const delCal = pasados.filter((c) => liga.canceladoCal(c)).map((c) => ({ id: c.link || c.n, n: c.n, sv: c.sv, ini: c.t }));
+  const delCal = pasados.filter((c) => liga.canceladoCal(c)).map((c) => ({ id: c.link || c.n, n: c.n, sv: c.sv, ini: c.t, link: c.link }));
   const cancelados = delCal.concat(liga.cancelacionesVisibles()
     .filter((c) => c.ini && liga.diaClave(c.ini) === dia && (!svFil || c.sv === svFil) && !delCal.some((d) => nomSv(d.sv, d.n) === nomSv(c.sv, c.n))));
   const enVivo = (c) => llaveEnVivo({ cuando: c.t, sv: c.sv, nombre: c.n }, vivoL);
@@ -1196,7 +1199,8 @@ export function Eventos({ liga, vivoL, dia: diaRuta, avisos }) {
     ...pausa.map((c) => ({ c, est: 'pausa', L: enVivo(c) })),
     ...prox.map((c) => ({ c, est: 'prox' })),
     ...hechos.map((c) => { const T = termDe(c); return { c, est: 'hecho', L: T ? T.L : undefined, campVivo: T ? T.camp : '' }; }),
-    ...cancelados.map((x) => ({ c: { n: x.n, sv: x.sv, t: x.ini }, est: 'cancelado' })),
+    // con su link, si lo tiene: el id sale de ahí, y tocar el cancelado en la semana tiene que elegir a ESE (revisión del 16/11)
+    ...cancelados.map((x) => ({ c: { n: x.n, sv: x.sv, t: x.ini, link: x.link }, est: 'cancelado' })),
   ].map((it) => Object.assign(it, { id: idEv(it.c) }));
   // el elegido: el que se tocó; si no, el en vivo, el último que terminó con llave o lo próximo
   const selIt = itemsDia.find((it) => it.id === foco) || itemsDia.find((it) => it.est === 'vivo')

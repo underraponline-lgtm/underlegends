@@ -28,6 +28,7 @@ import { usePase, usePases } from './pase.js';
 import { SelloPremium, esPremium } from './sello.jsx';
 import { PopCab } from './pop.jsx';
 import { QuienGana } from './quiengana.jsx';
+import { useCalma } from './anima.js';
 import { PLATAFORMA } from './publicaciones.jsx';
 import CSS_PAGINA from './css/publicaciones2.css?inline';
 import { usarCss } from './css.js';
@@ -549,14 +550,16 @@ function Escenario({ liga, xs, A }) {
   const pub = usePases();
   const [i, setI] = useState(0);
   const [quieto, setQuieto] = useState(false);
+  // 🧘 también con «Menos animaciones» de Tu cuenta, no sólo con la del sistema (revisión del 16/11)
+  const calmaLg = useCalma();
   useEffect(() => {
-    if (quieto || xs.length < 2) return undefined;
+    if (quieto || calmaLg || xs.length < 2) return undefined;
     let calma = false;
     try { calma = window.matchMedia('(prefers-reduced-motion: reduce)').matches; } catch (e) { calma = false; }
     if (calma) return undefined;
     const t = setInterval(() => setI((v) => (v + 1) % xs.length), 8000);
     return () => clearInterval(t);
-  }, [quieto, xs.length]);
+  }, [quieto, calmaLg, xs.length]);
   if (!xs.length) return null;
   const it = xs[Math.min(i, xs.length - 1)];
   const c = contenido(liga, it, pub);
@@ -570,7 +573,8 @@ function Escenario({ liga, xs, A }) {
   const tono = COLOR[it.tipo] === 'm' ? 'm' : 'v';
   return (
     <section data-tuto="pb-cab" className={'pw-esc' + (fondo ? ' con-fondo' : '')} style={fondo ? { backgroundImage: 'url("' + fondo + '")' } : undefined}
-      onMouseEnter={() => setQuieto(true)} onMouseLeave={() => setQuieto(false)} onFocus={() => setQuieto(true)} aria-label="Lo más fuerte de estos días">
+      onMouseEnter={() => setQuieto(true)} onMouseLeave={() => setQuieto(false)} onFocus={() => setQuieto(true)}
+      onBlur={(e) => { if (!e.currentTarget.contains(e.relatedTarget)) setQuieto(false); }} aria-label="Lo más fuerte de estos días">
       <div className="pw-esc-in">
         <div className="pw-esc-tx">
           <div className="pw-esc-k">
@@ -960,7 +964,9 @@ export function Publicaciones({ liga, enc, foco = '' }) {
     const desde = liga.ahora - 3 * 86400000;
     return todos.filter((it) => fuerte(it) && utc(it.t) >= desde).slice(0, 4);
   }, [todos, liga]);
-  const foco0 = idFoco ? todos.find((it) => it.id === idFoco) : null;
+  // ⚠️ el que se abre por su link se busca en TODO el muro: los avisos de comentario y los links compartidos de un evento
+  // anunciado (de antes del 16/11) llevan acá, y fuera de la lista no abrían nada (revisión del 16/11)
+  const foco0 = idFoco ? liga.muroLimpio().find((it) => it.id === idFoco) : null;
   const hoyK = liga.diaClave(liga.ahora);
   const titulo = (k) => {
     if (k === hoyK) return 'Hoy';

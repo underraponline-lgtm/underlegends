@@ -19,7 +19,8 @@ function limpiarMsg(s) {
 /** El primer lugar del código que aparece en la pila: `inicio/inicio-llave.js:1:2345`. */
 function lugar(pila) {
   const m = /((?:inicio\/)?[\w.-]+\.js):(\d+):(\d+)/.exec(String(pila || ''));
-  return m ? (m[1] + ':' + m[2] + ':' + m[3]).slice(0, 80) : '';
+  // sin la huella del nombre (`inicio-llave-AbC12xYz.js`, desde el 16/11/2026): el mismo error, una sola fila
+  return m ? (m[1].replace(/-[\w-]{8}\.js$/, '.js') + ':' + m[2] + ':' + m[3]).slice(0, 80) : '';
 }
 
 /** `donde`: la parte de la página (el nombre de la sección aislada, `inicio`, `global` o `promesa`). */

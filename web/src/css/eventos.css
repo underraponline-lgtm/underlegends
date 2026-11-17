@@ -308,7 +308,7 @@
 .evg-hs span{padding:0 0 7px 4px;border-left:1px solid var(--suave);font:700 13px/1 "Barlow Condensed",sans-serif;letter-spacing:.03em;color:var(--gris);white-space:nowrap}
 .evg-hs span.evg-sv{border-left:0;padding:0}
 .evg-f{display:grid;grid-template-columns:96px minmax(0,1fr);border-top:1px solid var(--suave)}
-.evg-sv{position:sticky;left:0;z-index:4;display:flex;align-items:center;gap:6px;padding:0 8px;background:var(--caja);box-shadow:1px 0 0 var(--suave)}
+.evg-sv{position:sticky;left:0;z-index:6;display:flex;align-items:center;gap:6px;padding:0 8px;background:var(--caja);box-shadow:1px 0 0 var(--suave)}
 .evg-sv small{font:700 14px/1 "Barlow Condensed",sans-serif;color:var(--gris)}
 .evg-sv .evl-sig{margin:0}
 .evg-p{position:relative;display:grid;grid-template-columns:repeat(var(--nh),minmax(0,1fr));height:calc(var(--car) * 50px + 6px)}

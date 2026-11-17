@@ -142,7 +142,10 @@ const LU_FILAS = 5;
 const luHace = (liga, t) => { const c = liga.cuando(t); return c ? c.charAt(0).toUpperCase() + c.slice(1) : ''; };
 // 👏 lo que el Worker deja reaccionar: `APLAUDIBLES` de bot/avisos.js. ⚠️ Una carta nueva no: «le toca a todo el que
 // juega una vez». Si se cambia allá, se cambia acá
-export const LU_REAC = new Set(['campeon', 'rango', 'caza', 'sobrevivio', 'pase', 'sorteo', 'ligahito', 'mesaward']);
+// 🔄 y lo que publica sola la gente desde el 15/11 (bot/muro_solos.py): se felicitaba en Publicaciones y acá no
+// (revisión del 16/11)
+export const LU_REAC = new Set(['campeon', 'rango', 'caza', 'sobrevivio', 'pase', 'sorteo', 'ligahito', 'mesaward',
+  'podio', 'top10', 'subio', 'racha', 'svtop']);
 // los filtros: como los de la campana, cuatro
 const LU_FILTROS = [['todo', 'Todo'], ['cartas', 'Cartas'], ['logros', 'Logros'], ['liga', 'Liga']];
 const luCat = (it) => (it.tipo === 'tarjeta' ? 'cartas' : LU_REAC.has(it.tipo) ? 'logros' : 'liga');
