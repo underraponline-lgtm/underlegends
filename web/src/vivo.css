@@ -3444,16 +3444,31 @@ li.nt-f{cursor:default}
 /* ⬆️ la flecha para subir (13/10/2026): negra, abajo a la derecha. En el celular, arriba de la barra de abajo (~62 px);
    el borde claro es para que se vea también sobre lo negro */
 /* y más grande (Dlx, 18/10/2026: «hacé la flecha de ir para arriba más grande»): 58 en el celular, 64 en la compu */
+/* 🔁 REHECHA (Dlx, 17/11/2026: «quiero que remakees esta flecha»): el negro de los botones de la cabecera, 4 px de radio,
+   la flecha contra una raya, y el borde como barra de avance: la raya verde da la vuelta de 0 a 100 % de la página (el
+   avance lo escribe abajo.jsx en `.va`). La pista gris es la que la separa del fondo negro: #5F636B da 3,2:1 contra
+   #030304, lo mínimo para el borde de un control; sobre Clara alcanza con el cuadro negro */
 .subir{position:fixed;right:14px;bottom:calc(env(safe-area-inset-bottom,0px) + 78px);z-index:25;width:58px;height:58px;
-  display:grid;place-items:center;padding:0;cursor:pointer;background:#030304;color:#F6F6F6;border:2px solid #F6F6F6;
-  border-radius:0;box-shadow:4px 4px 0 #29B298;opacity:0;transform:translateY(8px);pointer-events:none;
-  transition:opacity .18s,transform .18s}
+  display:grid;place-items:center;padding:0;cursor:pointer;background:#0B0C0E;color:#F6F6F6;border:0;border-radius:4px;
+  box-shadow:0 10px 26px rgba(0,0,0,.4);opacity:0;transform:translateY(10px);pointer-events:none;
+  translate:0 calc(-1 * var(--subir-sube,0px));
+  transition:opacity .2s ease-out,transform .2s ease-out,translate .22s cubic-bezier(.2,.8,.2,1),background-color .15s}
 .subir.ver{opacity:1;transform:none;pointer-events:auto}
-.subir svg{transform:rotate(-90deg)}
-.subir:hover{background:#29B298;border-color:#29B298;color:#030304}
-.subir:focus-visible{outline:3px solid #29B298;outline-offset:2px}
+.subir-aro{position:absolute;inset:0;width:100%;height:100%;overflow:visible;pointer-events:none}
+.subir-aro rect{fill:none;vector-effect:non-scaling-stroke}
+.subir-aro .pista{stroke:#5F636B;stroke-width:1.5;transition:stroke .15s}
+.subir-aro .va{stroke:#29B298;stroke-width:3;stroke-dasharray:100 100;stroke-dashoffset:100;transition:stroke-dashoffset .1s linear}
+.subir .ico{position:relative;transition:transform .2s cubic-bezier(.2,.8,.2,1)}
+@media (hover: hover) and (pointer: fine){
+  .subir:hover{background:#141417}
+  .subir:hover .ico{transform:translateY(-3px)}
+  .subir:hover .subir-aro .pista{stroke:#F6F6F6}
+}
+.subir.ver:active{transform:scale(.95)}
+.subir:focus-visible{outline:3px solid #29B298;outline-offset:3px}
 @media (min-width: 900px){.subir{right:24px;bottom:24px;width:64px;height:64px}}
-@media (prefers-reduced-motion: reduce){.subir{transition:none}}
+@media (prefers-reduced-motion: reduce){.subir,.subir .ico,.subir-aro .va,.subir-aro .pista{transition:none}.subir.ver:active{transform:none}}
+.app.calma .subir,.app.calma .subir .ico,.app.calma .subir-aro .va{transition:none}
 
 /* 🥇 la medalla de las cartas (13/10/2026, en vez de 🥇🥈🥉): un punto macizo con su anillo, sin brillo */
 .med{display:inline-block;flex:none;width:.72em;height:.72em;margin-right:.32em;border-radius:50%;vertical-align:-.02em;
@@ -4169,9 +4184,9 @@ button.tb-yo.on{background:var(--inv);color:var(--inv-tinta);box-shadow:inset 0 
 .yo-menu-cara{flex:none;display:grid;width:32px;height:32px}
 .yo-menu-cara > *{width:32px!important;height:32px!important;margin:0}
 /* en el celular el menú vive adentro de la barra de abajo, y `.tabbar a` (centrado, Barlow, mayúsculas) le ganaba a `.nt-f` */
-.yo-menu a.nt-f{display:grid;grid-template-columns:42px minmax(0,1fr) auto;gap:11px;justify-items:stretch;align-items:center;padding:10px 16px;
+.yo-menu :is(a,button).nt-f{display:grid;grid-template-columns:42px minmax(0,1fr) auto;gap:11px;justify-items:stretch;align-items:center;padding:10px 16px;
   text-decoration:none;text-align:left;text-transform:none;letter-spacing:0;font:400 14px/1.45 Archivo,sans-serif;color:var(--nt-tinta);background:none;box-shadow:none}
-.yo-menu a.nt-f.nueva{background:#121015}
+.yo-menu :is(a,button).nt-f.nueva{background:#121015}
 .yo-menu .nt-ico{color:var(--nt-tinta)}
 .yo-menu .nt-ico svg{display:block}
 /* tus paneles (Dashboard, el de los servidores): el círculo en magenta, que se distingan de lo demás */
@@ -4180,7 +4195,7 @@ button.tb-yo.on{background:var(--inv);color:var(--inv-tinta);box-shadow:inset 0 
 .yo-menu .nt-hora{font-size:20px;padding:0 0 2px}
 .yo-menu .nt-f.nueva::after{right:18px;bottom:auto;top:50%;margin-top:-3.5px}
 .yo-menu .nt-f.nueva .nt-hora{visibility:hidden}
-@media (hover: hover) and (pointer: fine){.yo-menu a.nt-f:hover{background:#141417}}
+@media (hover: hover) and (pointer: fine){.yo-menu :is(a,button).nt-f:hover{background:#141417}}
 
 /* 💬 el editor de tu frase (web/src/frase.jsx): en Tu cuenta y en los ajustes de tu perfil, sobre fondo claro u oscuro */
 .fr-ed{display:grid;gap:8px}
@@ -6626,7 +6641,7 @@ dialog.pn-pop.un-pop{--pc:#29B298;width:min(540px,calc(100vw - 32px));max-height
 .mods-t b{font:900 22px/1 Archivo,sans-serif;font-stretch:125%;letter-spacing:0.02em}
 .mods-t span{font:700 13px/1.2 "Barlow Condensed",sans-serif;letter-spacing:0.06em;color:#A5A5A0;text-transform:uppercase}
 .app .mods-sw,.app .mods-ir{display:flex;align-items:center;justify-content:space-between;gap:12px;width:100%;min-height:56px;margin:0 0 8px;padding:10px 12px;border:1.6px solid #2A2A2E;border-radius:3px;background:#141417;color:#F6F6F6;font:inherit;text-align:left;text-decoration:none;cursor:pointer}
-.app .mods-sw:hover,.app .mods-ir:hover{border-color:#F6F6F6}
+@media (hover: hover) and (pointer: fine){.app .mods-sw:hover,.app .mods-ir:hover{border-color:#F6F6F6}}
 .mods-sw b,.mods-ir b{display:block;font:800 15px/1.25 Archivo,sans-serif}
 .mods-sw small,.mods-ir small{display:block;margin-top:3px;font:500 13px/1.35 Archivo,sans-serif;color:#A5A5A0}
 .mods-sw i{flex:none;position:relative;width:42px;height:24px;border:1.6px solid #A5A5A0;border-radius:2px}
@@ -6698,3 +6713,23 @@ dialog.pn-pop.un-pop{--pc:#29B298;width:min(540px,calc(100vw - 32px));max-height
 .fh-chips i{font-style:normal;font:700 11.5px/1 "Barlow Condensed",sans-serif;letter-spacing:.06em;text-transform:uppercase;padding:4px 6px;background:#1f1f24;color:#E8E8E3}
 .fh-chips .fh-rg{background:#29B298;color:#030304;font-weight:800}
 .fh-chips .fh-rg.sin{background:#1f1f24;color:#B9B9B4}
+/* 📱 en el celular el botón no entra: partía la cabecera en dos renglones (de 60 a 102 px de alto, medido a 390, 360 y
+   320). Ahí MODS vive en «Tus paneles» del menú de tu cara, que abre la ventana con todos los lugares (17/11/2026) */
+@media (max-width: 539.98px){.app .cab.una .mods-envol{display:none}}
+/* 🗺️ la ventana de «Tus paneles»: un bloque por lugar, con su ícono, su «Ir», y los mismos interruptores y atajos del
+   menú de la cabecera. Es un `pn-pop` como los del panel: al centro en la compu, hoja desde abajo en el celular */
+dialog.pn-pop.mods-lug{--pc:#E41373}
+.mods-lug-in{flex:1 1 auto;min-height:0;overflow:auto;overscroll-behavior:contain;padding:14px 16px 16px;display:grid;gap:10px;align-content:start}
+.mods-lug-g{display:grid;gap:8px;padding:12px;border:1.5px solid #1f2126;border-radius:4px;background:#08090B}
+.mods-lug-h{display:grid;grid-template-columns:36px minmax(0,1fr) auto;gap:10px;align-items:center}
+.mods-lug-ic{width:36px;height:36px;display:grid;place-items:center;border-radius:4px;background:#2a0f1c;color:#FF5BA3}
+.mods-lug-tt{display:grid;gap:2px;min-width:0}
+.mods-lug-tt b{font:800 16px/1.2 Archivo,sans-serif}
+.mods-lug-tt small{font:500 13px/1.3 Archivo,sans-serif;color:#A5A5A0}
+.app .mods-lug-ir{display:inline-flex;align-items:center;gap:6px;min-height:36px;padding:0 12px;border:1.5px solid #2A2C31;border-radius:3px;background:#000;
+  color:#F6F6F6;font:700 15px/1 "Barlow Condensed",sans-serif;letter-spacing:0.08em;text-transform:uppercase;text-decoration:none;white-space:nowrap}
+@media (hover: hover) and (pointer: fine){.app .mods-lug-ir:hover{border-color:#F6F6F6}}
+.app .mods-lug-ir:focus-visible{outline:2px solid #29B298;outline-offset:2px}
+.mods-lug-ir i{font-style:normal;font-size:18px;line-height:1}
+.app .mods-lug .mods-sw,.app .mods-lug .mods-ir{margin:0}
+.mods-lug .mods-pie{margin:2px 0 0}

@@ -17,6 +17,7 @@ import { Ico } from './piezas.jsx';
 import { DUENO } from './liga.js';
 import { useRoles } from './roles.js';
 import { useSocio } from './panelsocio.js';
+import { INTERRUPTORES, abrirLugaresMods, lugaresMods, useModsEstado } from './mods.js';
 
 export function YoMenu({ k, dc, nombre, cara, abajo = false, onCerrar }) {
   const [nuevos, setNuevos] = useState(0);
@@ -51,9 +52,20 @@ export function YoMenu({ k, dc, nombre, cara, abajo = false, onCerrar }) {
     if (p) p.focus();
     return () => { window.removeEventListener('keydown', tecla); window.removeEventListener('pointerdown', fuera); clearTimeout(t); };
   }, [onCerrar]);
+  // 🛠️ MODS, también acá (Dlx, 17/11/2026: «pon el menú de mods dentro de tus paneles… o si se puede ponlo en ambos
+  // lugares»): en el celular el botón de la cabecera no entra —partía la cabecera en dos renglones—, y acá entra siempre.
+  // No abre el menú de una página sino la ventana con TODOS los lugares donde puedes usarlo (mods.jsx, `LugaresMods`).
+  // Quién es sale de lo mismo que ya miran las dos filas de arriba
+  const quien = { owner: esDlx, admin: esDlx || misRoles.includes('admin'), mod: dashboard, socio: !!socio };
+  const lugares = lugaresMods(quien);
+  const M = useModsEstado();
+  const prendidos = Object.keys(INTERRUPTORES).filter((x) => M[x]).length;
   const paneles = [
     dashboard ? ['#/dashboard', 'tablero', 'Dashboard', 'lo que espera que decidas', false, true] : null,
     socio ? ['#/socio', 'servidor', esDlx ? 'Los servidores' : 'Mi servidor', esDlx ? 'las estadísticas de todos los socios' : 'las estadísticas de tu servidor', false, true] : null,
+    lugares.length ? ['', 'escudo', 'MODS', (prendidos ? (prendidos === 1 ? '1 prendido · ' : prendidos + ' prendidos · ') : '')
+      + (lugares.length === 1 ? 'el lugar donde puedes usarlo' : 'los ' + lugares.length + ' lugares donde puedes usarlo'), false, true,
+    () => abrirLugaresMods(quien)] : null,
   ].filter(Boolean);
   const secciones = [
     paneles.length ? ['Tus paneles', paneles] : null,
@@ -84,16 +96,24 @@ export function YoMenu({ k, dc, nombre, cara, abajo = false, onCerrar }) {
         {secciones.map(([t, xs]) => (
           <div key={t}>
             <p className="nt-s">{t}</p>
-            <ul>{xs.map(([h, ic, n, d, nuevo, panel]) => (
-              // las dos filas del Pase van al mismo lugar: la clave lleva el nombre
-              <li key={h + n}>
-                <a href={h} role="menuitem" className={'nt-f' + (nuevo ? ' nueva' : '') + (panel ? ' panel' : '')} onClick={onCerrar}>
+            <ul>{xs.map(([h, ic, n, d, nuevo, panel, fn]) => {
+              const dentro = (
+                <>
                   <span className="nt-cara"><span className="nt-c nt-ico" aria-hidden="true">{ic === 'sello' ? <SelloPremium t={20} /> : <Ico n={ic} t={20} />}</span></span>
                   <span className="nt-t"><b>{n}</b><small className={nuevo ? 'nv' : ''}>{d}</small></span>
                   <span className="nt-hora" aria-hidden="true">›</span>
-                </a>
-              </li>
-            ))}</ul>
+                </>
+              );
+              const cls = 'nt-f' + (nuevo ? ' nueva' : '') + (panel ? ' panel' : '');
+              return (
+                // las dos filas del Pase van al mismo lugar: la clave lleva el nombre
+                <li key={h + n}>
+                  {/* una fila sin link abre algo en vez de ir (MODS): un botón, y el menú se cierra antes */}
+                  {fn ? <button type="button" role="menuitem" className={cls} aria-haspopup="dialog" onClick={() => { onCerrar(); fn(); }}>{dentro}</button>
+                    : <a href={h} role="menuitem" className={cls} onClick={onCerrar}>{dentro}</a>}
+                </li>
+              );
+            })}</ul>
           </div>
         ))}
       </div>

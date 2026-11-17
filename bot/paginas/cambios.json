@@ -11,6 +11,16 @@
   ],
   "cambios": [
     {
+        "version": "6.07",
+        "dia": "2026-11-17",
+        "cuando": "2026-11-17T02:36",
+        "titulo": "La flecha para subir, rehecha, y MODS en tu menú",
+        "items": [
+            "**La flecha para subir** tiene otra cara: su borde se llena a medida que bajas, así sabes cuánto llevas de la página, y la flecha apunta a una raya: hasta arriba de todo.",
+            "**Para el staff**: MODS también está en **Tus paneles**, en el menú de tu cara, con todos los lugares donde puedes usarlo. En el celular el botón de arriba ya no parte la cabecera en dos."
+        ]
+    },
+    {
         "version": "6.06",
         "dia": "2026-11-17",
         "cuando": "2026-11-17T02:55:00-05:00",

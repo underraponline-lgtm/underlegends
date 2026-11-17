@@ -16,6 +16,8 @@ const TRAZOS = {
   campana: <><path d="M6 16V11a6 6 0 1112 0v5l2 2H4z" /><path d="M10 20a2 2 0 004 0" /></>,
   buscar: <><circle cx="11" cy="11" r="6.5" /><path d="M16 16l4.5 4.5" /></>,
   flecha: <path d="M5 12h14M13 6l6 6-6 6" />,
+  // ⬆️ hasta arriba de todo: la flecha contra una raya, no la flecha de «siguiente» girada (la de Subir, 17/11/2026)
+  arriba: <path d="M5 4.5h14M12 20.5V9.5M6.5 15l5.5-5.5 5.5 5.5" />,
   publicaciones: <path d="M4 10v4h3l6 4V6L7 10zM17 9a4 4 0 010 6" />,
   yo: <><circle cx="12" cy="8" r="4" /><path d="M4 21c1.5-4 4.5-6 8-6s6.5 2 8 6" /></>,
   menu: <path d="M4 7h16M4 12h16M4 17h16" />,

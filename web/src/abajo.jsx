@@ -328,14 +328,68 @@ export function Pie({ liga }) {
 // ── ⬆️ LA FLECHA PARA SUBIR (Dlx, 13/10/2026: «poner la flecha negra abajo a la derecha, en la esquina inferior
 // derecha, que te lleve hacia arriba de todo»). Aparece cuando ya bajaste más de una pantalla y media; en el celular va
 // arriba de la barra de abajo. No en el Inicio: ahí la barra «IR A» ya trae su «volver arriba»
+//
+// 🔁 REHECHA (Dlx, 17/11/2026: «quiero que remakees esta flecha»). Era un cuadro negro con borde blanco, la sombra verde
+// corrida y la flecha de «siguiente» girada. Ahora tiene la cara de los botones de la cabecera (el negro de `.btn-ico`,
+// 4 px de radio), su propio ícono —la flecha contra una raya: hasta arriba de todo— y el borde le dice cuánto bajaste:
+// la raya verde lo recorre de 0 a 100 % de la página. El borde se dibuja en SVG con `pathLength=100`, y el avance se
+// escribe en el elemento (no en el estado) una vez por cuadro: bajar no vuelve a dibujar React
+//
+// 🧱 Y SE CORRE ARRIBA DE LO QUE ESTÉ PEGADO ABAJO. Medido al rehacerla: en el Ranking, «Tu lugar» va pegado abajo con un
+// z-index más alto y la tapaba —en el celular entera, en la compu a medias—, y no se podía tocar. No era la única: la barra
+// de la llave, el Guardar del Inventario y del perfil, y el aviso del panel del socio también se pegan abajo. En vez de
+// correr cada una, la flecha mira cuál de esas está en su columna y sube lo justo para quedar 10 px arriba (`--subir-sube`)
+const PIES = '.rk-lugar, .lk-barra, .ves-guardar, .iv9-guardar, .sp-toast-z, [data-pie-fijo]';
 export function Subir() {
   const [ver, setVer] = useState(false);
+  const yo = useRef(null);
+  const va = useRef(null);
   useEffect(() => {
-    // ⬆️ apenas bajaste una pantalla y media no: a 0,6 de pantalla (Dlx, 18/10/2026: «que aparezca más antes»)
-    const mirar = () => setVer(window.scrollY > window.innerHeight * 0.6);
-    window.addEventListener('scroll', mirar, { passive: true });
+    let cuadro = 0;
+    let quieto = 0;
+    // cuánto tiene que subir para no quedar debajo de lo pegado abajo: sus medidas de base (`bottom`, `right`, ancho y
+    // alto del estilo, que no cambian con lo que ya subió) contra cada barra visible que cae en su columna
+    const sube = () => {
+      const b = yo.current;
+      if (!b) return 0;
+      const cs = getComputedStyle(b);
+      const H = window.innerHeight, W = window.innerWidth;
+      const der = W - parseFloat(cs.right), izq = der - parseFloat(cs.width);
+      const piso = H - parseFloat(cs.bottom), techo = piso - parseFloat(cs.height);
+      let s = 0;
+      const raiz = b.getRootNode();
+      for (const el of raiz.querySelectorAll ? raiz.querySelectorAll(PIES) : []) {
+        const r = el.getBoundingClientRect();
+        if (!r.width || !r.height || r.top >= H || r.bottom <= 0 || r.left >= der || r.right <= izq) continue;
+        if (r.top < piso + 10 && r.bottom > techo) s = Math.max(s, piso - r.top + 10);
+      }
+      return Math.round(s);
+    };
+    const mirar = () => {
+      cuadro = 0;
+      const d = document.documentElement;
+      const alto = Math.max(1, d.scrollHeight - window.innerHeight);
+      const p = Math.min(1, Math.max(0, (window.scrollY || d.scrollTop) / alto));
+      if (va.current) va.current.style.strokeDashoffset = String(100 - p * 100);
+      if (yo.current) yo.current.style.setProperty('--subir-sube', sube() + 'px');
+      // ⬆️ apenas bajaste una pantalla y media no: a 0,6 de pantalla (Dlx, 18/10/2026: «que aparezca más antes»)
+      setVer(window.scrollY > window.innerHeight * 0.6);
+    };
+    // las barras de abajo se esconden y aparecen con una transición: se vuelve a mirar cuando el scroll se queda quieto
+    const pedir = () => {
+      if (!cuadro) cuadro = requestAnimationFrame(mirar);
+      clearTimeout(quieto);
+      quieto = setTimeout(() => { if (!cuadro) cuadro = requestAnimationFrame(mirar); }, 320);
+    };
+    window.addEventListener('scroll', pedir, { passive: true });
+    window.addEventListener('resize', pedir);
     mirar();
-    return () => window.removeEventListener('scroll', mirar);
+    return () => {
+      window.removeEventListener('scroll', pedir);
+      window.removeEventListener('resize', pedir);
+      if (cuadro) cancelAnimationFrame(cuadro);
+      clearTimeout(quieto);
+    };
   }, []);
   const subir = () => {
     let quieto = false;
@@ -343,8 +397,14 @@ export function Subir() {
     window.scrollTo({ top: 0, behavior: quieto ? 'auto' : 'smooth' });
   };
   return (
-    <button type="button" className={'subir' + (ver ? ' ver' : '')} aria-label="Volver arriba de todo" title="Volver arriba"
-      tabIndex={ver ? 0 : -1} aria-hidden={!ver} onClick={subir}><Ico n="flecha" t={30} /></button>
+    <button type="button" ref={yo} className={'subir' + (ver ? ' ver' : '')} aria-label="Volver arriba de todo" title="Volver arriba"
+      tabIndex={ver ? 0 : -1} aria-hidden={!ver} onClick={subir}>
+      <svg className="subir-aro" viewBox="0 0 64 64" preserveAspectRatio="none" aria-hidden="true">
+        <rect className="pista" x="1" y="1" width="62" height="62" rx="4" />
+        <rect className="va" ref={va} x="1" y="1" width="62" height="62" rx="4" pathLength="100" />
+      </svg>
+      <Ico n="arriba" t={26} />
+    </button>
   );
 }
 

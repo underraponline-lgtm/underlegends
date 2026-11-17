@@ -80,3 +80,34 @@ export function opcionesMods(Q, pagina, sv) {
   if (Q.mod && (pagina === 'publicaciones' || pagina === 'r')) atajos.push({ t: 'El Dashboard', d: 'lo que espera que decidas', ruta: '#/dashboard' });
   return { sw, atajos };
 }
+
+/** Quién es, en una palabra: lo que dice arriba del menú y de la ventana. */
+export function rolMods(Q) {
+  return Q.owner ? 'Owner' : Q.admin ? 'Admin' : Q.mod ? 'Moderación' : 'Tu servidor';
+}
+
+/**
+ * 🗺️ TODOS LOS LUGARES, PARA «TUS PANELES» (Dlx, 17/11/2026: «pon el menú de mods dentro de tus paneles… o si se puede
+ * ponlo en ambos lugares. La diferencia es que en el de tus paneles ahí te aparece un pop up con todos los lugares que
+ * puedes usar el mod menu dependiendo quién tú eres»). El botón de la cabecera muestra lo de ESTA página; la ventana de
+ * Tus paneles, lo de todas. Cada lugar es una página de `opcionesMods()`: lo que se ofrece sale de ahí y no de una
+ * segunda lista, así que un interruptor nuevo aparece en los dos sitios. `ruta` vacía: el lugar es la página de tu
+ * servidor, que es una por socio, y su atajo ya lleva a donde hace falta.
+ */
+export const LUGARES = [
+  { pagina: 'crews', t: 'Crews', d: 'la lista y la página de cada crew', ruta: '#/crews', ico: 'crews' },
+  { pagina: 'competencias', t: 'Competencias', d: 'la Copa, la Rapid y las ligas simuladas', ruta: '#/competencias', ico: 'competencias' },
+  { pagina: 'servidor', sv: true, t: 'Tu servidor', d: 'desde la página de tu servidor', ruta: '', ico: 'servidor' },
+  { pagina: 'publicaciones', t: 'Publicaciones y perfiles', d: 'para lo que reporta la gente', ruta: '#/publicaciones', ico: 'publicaciones' },
+];
+
+/** Los lugares de `LUGARES` donde esta persona tiene algo, cada uno con sus `sw` y `atajos`. */
+export function lugaresMods(Q) {
+  return LUGARES.map((L) => Object.assign({}, L, opcionesMods(Q, L.pagina, L.sv ? 'tu-servidor' : '')))
+    .filter((L) => L.sw.length || L.atajos.length);
+}
+
+/** Abre la ventana de todos los lugares (`LugaresMods`, montada una vez en App.jsx) con quién es quien la pide. */
+export function abrirLugaresMods(Q) {
+  W.dispatchEvent(new CustomEvent('lg:mods-lugares', { detail: Q }));
+}

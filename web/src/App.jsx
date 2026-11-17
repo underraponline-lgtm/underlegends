@@ -19,7 +19,7 @@ import { MarcoSolo } from './marco_solo.jsx';
 import { irSinHistoria, pasosEnInicio, quiereBienvenida, quiereTutorial } from './primera.js';
 import { ComoFunciona } from './comofunciona.jsx';
 import { AvisoVersion } from './novedad.jsx';
-import { FranjaMods } from './mods.jsx';
+import { FranjaMods, LugaresMods } from './mods.jsx';
 import { FichaHover } from './ficha.jsx';
 // 📊 las secciones que se cuentan: la misma lista que `SECC_EV` de bot/avisos.js
 const SECC = new Set(['inicio', 'eventos', 'ranking', 'competencias', 'inventario', 'publicaciones', 'tarjetas', 'ligas', 'salon', 'pase', 'tienda', 'invitar', 'socios', 'guia',
@@ -783,6 +783,8 @@ export default function App() {
       <div className="barra-ul" />
       <Aislada n="Cabecera"><Cabecera liga={liga} dc={yo.dc} pagina={paginaMenu} sv={sv || ''} onMenu={() => setMenu(true)} /></Aislada>
       <Aislada n="FranjaMods"><FranjaMods /></Aislada>
+      {/* 🗺️ la ventana de MODS con todos los lugares: la abre «Tus paneles» del menú de tu cara (mods.jsx) */}
+      <Aislada n="LugaresMods"><LugaresMods /></Aislada>
       <Aislada n="AvisoWeb"><AvisoWeb aviso={aviso} /></Aislada>
       {/* 🆕 «hay una actualización» (13/10/2026): ver web/src/novedad.jsx */}
       <Aislada n="AvisoVersion"><AvisoVersion pagina={pagina} /></Aislada>
