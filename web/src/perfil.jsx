@@ -19,7 +19,7 @@ import { useNiveles } from './racha.js';
 import { usePaseDe, usePases } from './pase.js';
 import { SelloPremiumBoton, boostPremium, marcoPremium } from './sello.jsx';
 import { textoRol, useRoles } from './roles.js';
-import { urlFondo, useFondos } from './fondos.js';
+import { fondoEn, useFondos } from './fondos.js';
 import { svElegido, useElegidos } from './elegidos.js';
 import * as RQ from './requisitos.js';
 import { Cartas, PUB_TIPOS, Pub, useAplausos } from './publicaciones.jsx';
@@ -429,7 +429,9 @@ function Cabeza({ liga, f, k, p, dc, esYo, onEmblemas, ems, numeros, ex }) {
   const pa = usePaseDe(k);
   const rls = (useRoles() || {})[k] || [];
   const fo = (useFondos() || {})[k];
-  const fondoPf = fo && fo[1] ? urlFondo(fo[0]) : '';
+  // 🖼️ lo que eligió para «Tu perfil» en Tus fondos (17/11/2026): su imagen, su bandera o su servidor; en automático, la
+  // imagen si la quiere en su perfil, como siempre
+  const fondoPf = fondoEn(fo, 'perfil', { cc: f && f.cc, sv: svE || (f && f.sv) });
   const [qe, setQe] = useState('');
   const [aviso, setAviso] = useState('');
   const [rep, setRep] = useState(false);

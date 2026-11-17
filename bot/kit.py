@@ -933,6 +933,59 @@ def html_vs_grupos(v, d):
 </div></body></html>""" % (_fuentes(), _BASE_CSS, css, _suelo_html(lineas, sombras), arriba, ''.join(partes), medio, _evento_html(v, d), _esquinas_html()))
 
 
+def _cc_de_bandera(fl):
+    """🇦🇷 → 'ar': las dos letras regionales de un emoji de bandera ('' si no es una)."""
+    ls = [chr(ord(c) - 0x1F1E6 + 97) for c in str(fl or '') if 0x1F1E6 <= ord(c) <= 0x1F1FF]
+    return ''.join(ls) if len(ls) == 2 else ''
+
+
+_FONDOS_LADO = {}
+
+
+def _fondo_lado(y):
+    """🖼️ LA MITAD DE CADA UNO (17/11/2026, «Tus fondos» → «El VS en vivo de Discord», Dlx: «me gusta el #1»). Lo que
+    eligió cada uno, como `data:` para la imagen: `bandera` (la de su país, del repo) o su imagen (sólo del bucket de la
+    Liga, `fondos/`). '' es el fondo del servidor, como siempre. Lo decide `fondoVivo()` en avisos.js"""
+    f = str((y or {}).get('fondo') or '')
+    if f in _FONDOS_LADO:
+        return _FONDOS_LADO[f] if f != 'bandera' else _fondo_bandera((y or {}).get('fl'))
+    if f == 'bandera':
+        return _fondo_bandera((y or {}).get('fl'))
+    if not re.match(r'^https://pub-[a-z0-9]+\.r2\.dev/fondos/[a-f0-9]{24}\.(webp|jpg|png)$', f):
+        return ''
+    url = ''
+    try:
+        import requests
+        r = requests.get(f, timeout=15)
+        if r.ok and r.content and len(r.content) < 2_000_000:
+            tipo = (r.headers.get('content-type') or 'image/jpeg').split(';')[0]
+            if tipo in ('image/jpeg', 'image/png', 'image/webp'):
+                url = 'data:%s;base64,%s' % (tipo, base64.b64encode(r.content).decode('ascii'))
+    except Exception:                                    # noqa: BLE001
+        url = ''
+    _FONDOS_LADO[f] = url
+    return url
+
+
+def _fondo_bandera(fl):
+    cc = _cc_de_bandera(fl)
+    p = os.path.join(BASE, 'bot', 'paginas', 'banderas', 'xl', '%s.webp' % cc)
+    if not cc or not os.path.exists(p):
+        return ''
+    with open(p, 'rb') as f:
+        return 'data:image/webp;base64,' + base64.b64encode(f.read()).decode('ascii')
+
+
+def _mitades_html(v):
+    """Las dos mitades con el fondo de cada uno, sin tapar la costura. Sin nada elegido, nada."""
+    out = ''
+    for cls in ('a', 'b'):
+        u = _fondo_lado(v.get(cls))
+        if u:
+            out += '<div class="mf %s" style="background-image:linear-gradient(rgba(3,3,4,.42),rgba(3,3,4,.7)),url(%s)"></div>' % (cls, u)
+    return out
+
+
 def html_vs(v, d):
     """🖼️ EL VS (Dlx, 12/10/2026: «hacerlo más visual para mostrar las imágenes cuando sea un vs, o sea las tarjetas»; a
     las dos formas, «B»: una imagen armada). `v` es lo que guardó el objeto (`vsEncolar()` en avisos.js): `{ev, ronda,
@@ -1034,16 +1087,19 @@ def html_vs(v, d):
 #c .segs i.g{background:%(a)s;box-shadow:none}
 #c .fm .et{font-size:17px;letter-spacing:.05em;white-space:nowrap}
 #c .noche{font-weight:600;font-size:17px;line-height:1.2;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:288px}
+#c .mf{position:absolute;top:0;bottom:0;background-size:cover;background-position:center}
+#c .mf.a{left:0;width:660px;clip-path:polygon(0 0,656px 0,524px 100%%,0 100%%)}
+#c .mf.b{left:524px;right:0;clip-path:polygon(152px 0,100%% 0,100%% 100%%,20px 100%%)}
 """ % ca
     return ("""<!doctype html><html><head><meta charset="utf-8"><style>%s%s%s</style></head><body><div id="c" class="f">
-%s
+%s%s
 %s%s%s
 %s
 <div class="vs-fondo"></div><div class="vs">VS</div>
 %s%s%s
 %s
 %s
-</div></body></html>""" % (_fuentes(), _BASE_CSS, css, _suelo_html(), arriba(), lado(v.get('a'), 'a'), lado(v.get('b'), 'b'),
+</div></body></html>""" % (_fuentes(), _BASE_CSS, css, _suelo_html(), _mitades_html(v), arriba(), lado(v.get('a'), 'a'), lado(v.get('b'), 'b'),
                             _escudo_html(d, 80, 204), historia(), pie(v.get('a'), 'a'), pie(v.get('b'), 'b'), _evento_html(v, d), _esquinas_html()))
 
 
@@ -1424,6 +1480,11 @@ def _self_check():
         ('el fondo original de cada servidor: su escena de `bot/vs_fondos/`, sin la sombra de la mitad, y sin escena, el de su tarjeta',
          camiseta({'sv': 'FRZ', 'color': '#26B3A6'})['fondo'].startswith('url(data:image/jpeg') and camiseta({'sv': 'FRZ', 'color': '#26B3A6'})['sombra'] == 0
          and all(_fondo_vs(x) for x in ('FFA', 'DRA', 'SR', 'URBF', 'FFS', 'DDF', 'FDS', 'LKR', 'ACAD', 'FRZ', 'CH')) and not _fondo_vs('NADA') and not _fondo_vs('')),
+        ('tus fondos en el VS en vivo: la bandera del emoji de cada lado, sólo imágenes del bucket, y sin elegir nada, nada',
+         _cc_de_bandera('🇦🇷') == 'ar' and _cc_de_bandera('x') == ''
+         and 'class="mf a"' in html_vs({'a': {'n': 'A', 'fl': '🇦🇷', 'fondo': 'bandera'}, 'b': {'n': 'B'}}, d)
+         and 'class="mf b"' not in html_vs({'a': {'n': 'A', 'fl': '🇦🇷', 'fondo': 'bandera'}, 'b': {'n': 'B', 'fondo': 'https://otro.com/x.png'}}, d)
+         and 'class="mf' not in html_vs({'a': {'n': 'A'}, 'b': {'n': 'B'}}, d)),
         ('el escudo del servidor: su logo y, sin logo, su sigla, en los dos armados',
          'class="escudo" ' in html_vs({'a': {'n': 'A'}, 'b': {'n': 'B'}}, dict(d, logo='data:image/png;base64,AA'))
          and 'escudo sigla' in html_vs({'a': {'n': 'A'}, 'b': {'n': 'B'}}, dict(d, sv='XX'))
@@ -1545,6 +1606,10 @@ if __name__ == '__main__':
         v['a'].update(forma='GGPGG', racha=3, noche='Esta noche pasó con Badterne')
         v['b'].update(forma='PGGPG', racha=0, noche='Esta noche le ganó a Drexx')
         v['h2h'] = [2, 1]
+        # 🖼️ `--fondo-a bandera|<url>` y `--fondo-b …`: la mitad de cada uno (Tus fondos → «El VS en vivo de Discord»)
+        for lado_ in ('a', 'b'):
+            if arg('--fondo-' + lado_):
+                v[lado_]['fondo'] = arg('--fondo-' + lado_)
         # 🏁 `--gano a|b`: la imagen del resultado (`vsResultado()` en avisos.js)
         if arg('--gano') in ('a', 'b'):
             v['gano'] = arg('--gano')

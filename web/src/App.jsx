@@ -20,6 +20,7 @@ import { irSinHistoria, pasosEnInicio, quiereBienvenida, quiereTutorial } from '
 import { ComoFunciona } from './comofunciona.jsx';
 import { AvisoVersion } from './novedad.jsx';
 import { FranjaMods } from './mods.jsx';
+import { FichaHover } from './ficha.jsx';
 // 📊 las secciones que se cuentan: la misma lista que `SECC_EV` de bot/avisos.js
 const SECC = new Set(['inicio', 'eventos', 'ranking', 'competencias', 'inventario', 'publicaciones', 'tarjetas', 'ligas', 'salon', 'pase', 'tienda', 'invitar', 'socios', 'guia',
   'perfil', 'servidor', 'crew', 'crews', 'pais', 'cuenta', 'cambios',
@@ -862,6 +863,7 @@ export default function App() {
       {historia !== null ? <Aislada n="Visor"><Visor liga={liga} grupos={grupos} abierto={historia} onCerrar={() => { setDesde(''); cerrarHistoria(); }} onVisto={visto} vistos={vistos || {}} raiz={raiz} desde={desde} /></Aislada> : null}
       <Aislada n="Video"><VentanaVideo /></Aislada>
       <Aislada n="AvisoPromo"><AvisoPromo /></Aislada>
+      <Aislada n="FichaHover"><FichaHover liga={liga} /></Aislada>
       {carta ? <Aislada key={'c' + carta} n="VisorCarta"><Suspense fallback={null}><VisorCarta liga={liga} dc={yo.dc} k={String(carta).split('|')[0]} inicial={String(carta).split('|')[1] || ''} onCerrar={cerrarCarta} /></Suspense></Aislada> : null}
     </div>
   );

@@ -1534,12 +1534,49 @@ const ok = (cond, que, det) => {
     const despues = o.fondos().f;
     const aj = await o.fondo({ quien: A.DUENO, de: 'dlx', perfil: false, pagina: true });
     const borr = await o.fondo({ quien: A.DUENO, borrar: true });
-    ok(sinNivel.error === 'nivel' && sinNivel.falta === A.FONDO_NIVEL && falsa.error === 'no es una imagen'
+    ok(sinNivel.error === 'premium' && sinNivel.falta === A.FONDO_NIVEL && falsa.error === 'no es una imagen'
       && sub.fondo.estado === 'revisar' && sub.fondo.pend.includes('/fondos/') && !sub.fondo.pagina && !antes.dlx
       && ap.ok && despues.dlx && despues.dlx[1] === 1 && despues.dlx[2] === 0 && aj.fondo.perfil === false && aj.fondo.pagina === true
       && borr.fondo === null && Object.keys(enR2).length === 0,
     'tu fondo: pide el nivel del Pase y que sea una imagen de verdad, se ve recién aprobado, eliges dónde, y quitarlo lo borra de R2',
     JSON.stringify([sinNivel, falsa, sub, despues, enR2]));
+    // 🖼️ TUS FONDOS POR LUGAR (17/11/2026): cualquiera elige la bandera o su servidor sin subir nada; `mia` en el VS en
+    // vivo va con su imagen; lo que no existe no se guarda; quitar la imagen deja lo elegido
+    o._fondos = null;
+    const sinImg = await o.fondo({ quien: '100000052', de: 'ana2', lugares: { perfil: 'bandera', vs: 'servidor', vivo: 'servidor', esc: 'xx', ficha: 'auto', otro: 'mia' } });
+    const mapa1 = o.fondos().f.ana2;
+    o._fondos = null;
+    // la imagen, puesta a mano: subirla contaría en el registro del filtro, que mide la prueba de abajo
+    o.sql.exec("INSERT INTO fondos (quien, k, estado, url, pend, perfil, pagina, motivo, t, subidas) VALUES (?, 'dlx', 'ok', ?, '', 1, 0, '', 1, '')",
+      A.DUENO, 'https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/fondos/' + 'ab'.repeat(12) + '.webp');
+    const conImg = await o.fondo({ quien: A.DUENO, de: 'dlx', lugares: { vivo: 'mia', esc: 'mia' } });
+    o._fondos = null;
+    const vivoDlx = o.fondoVivo('dlx'), vivoAna = o.fondoVivo('ana2'), vivoNadie = o.fondoVivo('nadie');
+    const sinPrem = o.puedeFondo('100000052');
+    const quita = await o.fondo({ quien: A.DUENO, borrar: true });
+    o._fondos = null;
+    const mapa2 = o.fondos().f.dlx;
+    const vsLado = await (async () => { o._fondos = null; await o.fondo({ quien: '100000052', de: 'ana2', lugares: { vivo: 'bandera' } }); o._fondos = null;
+      const r = o.vsEncolar({ canal: '123456', msg: '99', a: { n: 'Ana', k: 'ana2' }, b: { n: 'Otro', k: 'nadie' } });
+      return JSON.parse(o.sql.exec('SELECT datos FROM vs_cola WHERE id = ?', r.id).toArray()[0].datos); })();
+    ok(sinImg.ok && sinImg.fondo === null && JSON.stringify(sinImg.lugares) === JSON.stringify({ perfil: 'bandera', vs: 'servidor' })
+      && mapa1 && mapa1[0] === '' && mapa1[3].perfil === 'bandera' && !('vivo' in mapa1[3])
+      && conImg.lugares.vivo === 'mia' && /\/fondos\//.test(vivoDlx) && vivoAna === '' && vivoNadie === ''
+      && !sinPrem.si && sinPrem.prem === false
+      && quita.fondo === null && quita.lugares.vivo === 'mia' && mapa2 && mapa2[0] === '' && mapa2[3].vivo === 'mia'
+      && vsLado.a.fondo === 'bandera' && vsLado.b.fondo === '',
+    'tus fondos por lugar: sin imagen se elige bandera o servidor, mia va en el VS en vivo, lo inventado no entra, quitar la imagen deja lo elegido',
+    JSON.stringify([sinImg, mapa1, conImg.lugares, vivoDlx, sinPrem, quita, mapa2, vsLado.a, vsLado.b]));
+    // ⚠️ los lugares y sus opciones viven también en web/src/fondos.js (`LUGARES`): si se separan, la página ofrece algo
+    // que el objeto no guarda (o al revés)
+    const webF = readFileSync(join(aqui, '..', 'web', 'src', 'fondos.js'), 'utf8');
+    const enWeb = {};
+    for (const m of webF.matchAll(/\['(\w+)', '[^']*', '[^']*', \[([^\]]*)\]/g)) enWeb[m[1]] = m[2].split(',').map((x) => x.trim().replace(/'/g, ''));
+    ok(JSON.stringify(enWeb) === JSON.stringify(A.LUGARES_FONDO), 'tus fondos: los lugares y sus opciones son los mismos en el objeto y en la página',
+      JSON.stringify([enWeb, A.LUGARES_FONDO]));
+    await o.fondo({ quien: A.DUENO, de: 'dlx', lugares: {} });
+    o.sql.exec("DELETE FROM fondos WHERE quien IN (?, ?)", '100000052', A.DUENO);
+    o._fondos = null;
     // 🛡️ el filtro automático (13/10/2026): limpio se ve ya, con algo que no va no entra, y lo dudoso espera revisión
     const LF = A.leerFiltro;
     const linea = (o2) => A.FILTRO_CATEGORIAS.map((k) => k + '=' + (o2[k] || 'no')).join(' ');

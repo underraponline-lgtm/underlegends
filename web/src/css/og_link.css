@@ -23,3 +23,11 @@
 .og-barra{position:absolute;left:0;right:0;bottom:0;height:14px;display:flex}
 .og-barra i{flex:1;background:#29B298}
 .og-barra i + i{background:#E41373}
+/* 🖼️ el cartel del link de un perfil (`Perfil`, 17/11/2026): su fondo a sangre, apagado hacia la izquierda para el texto */
+.og-pf-f{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.og-pf-velo{position:absolute;inset:0;background:linear-gradient(90deg,rgba(3,3,4,.92) 0%,rgba(3,3,4,.78) 45%,rgba(3,3,4,.35) 75%,rgba(3,3,4,.2) 100%)}
+.og-pf .og-der{left:60px;right:60px;top:64px;gap:20px}
+.og-pf.con .og-der{right:500px}
+.og-pf-pais{display:inline-flex;align-items:center;gap:12px}
+.og-pf-flag{width:48px;height:32px;object-fit:cover;display:block}
+.og-pf-pos{background:#F6F6F6;color:#030304}

@@ -1,5 +1,9 @@
 # -*- coding: utf-8 -*-
-"""🎁 LAS MINIATURAS DE LOS LINKS CORTOS: `og/crew/<slug>.jpg` y `og/ref/<slug>.jpg` en R2, 1200 × 630.
+"""🎁 LAS MINIATURAS DE LOS LINKS CORTOS: `og/crew/<slug>.jpg`, `og/ref/<slug>.jpg` y `og/perfil/<slug>.jpg` en R2, 1200 × 630.
+
+🖼️ Y DESDE EL 17/11/2026 LA DEL LINK DE CADA PERFIL (la tanda 2 del remake de Tu cuenta; Dlx, de la vista previa: «debería
+ser prebuilded»): su fondo de «Tu perfil» (Tus fondos), su carta y su nombre, para los de la tabla con carta. Son muchas:
+se arman hasta `MAX_PERFIL` por corrida, primero las que nunca se armaron, y las demás en la siguiente.
 
     python bot/og_links.py --subir     arma las que cambiaron y las sube (el ciclo, al final de dibujar)
     python bot/og_links.py --seco      dice cuáles armaría, sin abrir el navegador ni subir
@@ -45,6 +49,8 @@ PUBLICA = 'https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev'
 ORDEN_CARTA = ('temporada', 'servidor', 'competitivo', 'pais')
 #: cambia esto y se rearman todas (el diseño entra en la huella)
 DISENO = 'v2'
+#: cuántos carteles de perfil por corrida: la primera vez son unos 200 y cada uno es una foto de Chromium (~1 s)
+MAX_PERFIL = 40
 
 
 def slug_og(x):
@@ -104,10 +110,10 @@ def trabajos():
         datos = {'n': c.get('nombre'), 's': c.get('sigla'), 'l': c.get('logo'), 'g': len(c.get('gente') or []), 'd': c.get('desc')}
         out.append(('crew', s, _huella(datos), 'crew/' + quote(str(c.get('id')), safe='')))
     ks = (_get(avisar.WORKER + '/avisos/ref-links', ciclo=True) or {}).get('ks') or []
+    L = _get(avisar.WORKER + '/lobby?json=1', timeout=40) or {}
+    cartas = L.get('cartas') or []
     if ks:
-        L = _get(avisar.WORKER + '/lobby?json=1', timeout=40) or {}
         filas = {f.get('k'): f for f in (L.get('tabla') or []) if isinstance(f, dict)}
-        cartas = L.get('cartas') or []
         if any(k not in filas for k in ks):
             P = (_get(avisar.WORKER + '/perfiles', timeout=60) or {}).get('p') or {}
             for k in ks:
@@ -118,6 +124,16 @@ def trabajos():
             r = {'k': k, 'n': f.get('n') or k, 'carta': _carta(k, f, cartas)}
             ruta = 'ref/%s?n=%s&c=%s' % (quote(k, safe=''), quote(str(r['n']), safe=''), quote(r['carta'], safe=''))
             out.append(('ref', slug_og(k), _huella(r), ruta))
+    # 🖼️ el cartel del link de cada perfil: los de la tabla con carta. La huella es todo lo que el cartel muestra
+    fondos = (_get(avisar.WORKER + '/avisos/fondos') or {}).get('f') or {}
+    for f in L.get('tabla') or []:
+        k = (f or {}).get('k')
+        carta = _carta(k, f or {}, cartas)
+        if not k or not carta or not slug_og(k):
+            continue
+        r = {'k': k, 'n': f.get('n'), 'carta': carta, 'pos': f.get('pos'), 'ovr': f.get('ovr'), 'rg': f.get('rg'), 'cc': f.get('cc'),
+             'sv': f.get('sv'), 'fondo': fondos.get(k)}
+        out.append(('perfil', slug_og(k), _huella(r), 'perfil/' + quote(k, safe='')))
     return out
 
 
@@ -193,7 +209,14 @@ def correr(seco=False, solo=None):
     if solo:
         todos = [t for t in todos if t[1] == slug_og(solo)]
     faltan = [t for t in todos if solo or (est.get(t[0]) or {}).get(t[1]) != t[2]]
-    print('   🎁 miniaturas de los links: %d crews y links, %d cambiaron' % (len(todos), len(faltan)))
+    # 🖼️ los carteles de perfil, de a `MAX_PERFIL`: primero los que nunca se armaron
+    pf = [t for t in faltan if t[0] == 'perfil']
+    if len(pf) > MAX_PERFIL and not solo:
+        pf.sort(key=lambda t: t[1] in (est.get('perfil') or {}))
+        quedan = set(id(t) for t in pf[:MAX_PERFIL])
+        faltan = [t for t in faltan if t[0] != 'perfil' or id(t) in quedan]
+    print('   🎁 miniaturas de los links: %d crews, links y perfiles, %d para armar ahora (%d perfiles esperan)'
+          % (len(todos), len(faltan), max(0, len(pf) - MAX_PERFIL) if not solo else 0))
     if seco or not faltan:
         for t in faltan[:20]:
             print('      · %s/%s' % (t[0], t[1]))
@@ -227,6 +250,9 @@ def _self_check():
        and slug_og('Follombia') == 'follombia', 'el slug es el de _worker.js: sin tildes, minúsculas, «-» entre palabras')
     a = _huella({'n': 'X', 'g': 3})
     ok(a == _huella({'g': 3, 'n': 'X'}) and a != _huella({'n': 'X', 'g': 4}), 'la huella no depende del orden y cambia con los datos')
+    f0 = {'k': 'ana', 'c': ['servidor', 'temporada'], 'cv': 'a1.b2'}
+    ok(_carta('ana', f0, ['temporada', 'servidor']) == PUBLICA + '/ana/temporada.webp?v=a1' and _carta('x', {}, []) == '',
+       'la carta del cartel: la primera en el orden de la vista previa, con su versión; sin carta, nada')
     with io.open(os.path.join(BASE, 'bot', 'ci', 'guardar.sh'), encoding='utf-8') as f:
         ok('datos/og_links.json' in f.read(), 'datos/og_links.json va en ARCHIVOS de guardar.sh (si no, cada corrida sube todas)')
     print('\n%s' % ('✅ las miniaturas de los links' if not malos else '❌ %d falla(s)' % malos))

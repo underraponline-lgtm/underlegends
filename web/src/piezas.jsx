@@ -323,8 +323,9 @@ export function Cara({ liga, k, nombre, cls = 'cara', lazy = false, grande = fal
   const t = grande ? 1024 : 256;
   const src = (k && liga.avUrl(k, t)) || (liga.avNombre ? liga.avNombre(nombre, t) : null);
   // `lazy` en las listas largas (el Ranking: 200 caras): sin eso el navegador pedía las 200 al abrir
-  if (src && mal !== src) return <span className={cls}><img alt="" src={src} loading={lazy ? 'lazy' : undefined} decoding={lazy ? 'async' : undefined} onError={() => setMal(src)} /></span>;
-  return <span className={cls + ' ini'}>{(limpio(nombre).slice(0, 1) || '?').toUpperCase()}</span>;
+  // 🪪 `data-fk`: quién es, para la ficha al pasar el mouse (ficha.jsx). Un solo oyente para toda la página
+  if (src && mal !== src) return <span className={cls} data-fk={k || undefined}><img alt="" src={src} loading={lazy ? 'lazy' : undefined} decoding={lazy ? 'async' : undefined} onError={() => setMal(src)} /></span>;
+  return <span className={cls + ' ini'} data-fk={k || undefined}>{(limpio(nombre).slice(0, 1) || '?').toUpperCase()}</span>;
 }
 
 export function SinCarta({ liga, k, nombre, cc, cls = 'ci' }) {

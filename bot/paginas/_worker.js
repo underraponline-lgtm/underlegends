@@ -469,9 +469,13 @@ function textoVista(f, k, temp, cartas) {
 
 /** El index.html con la vista previa de esa persona; `null` si no se sabe quién es (queda la de la Liga) */
 async function vistaPerfil(req, env, k, url) {
-  const x = await fichaVista(k).catch(() => null);
+  const [x, og] = await Promise.all([fichaVista(k).catch(() => null), hayOg('perfil', slugOg(k)).catch(() => '')]);
   if (!x) return null;
-  const { titulo, desc, img, alt } = textoVista(x.f, k, x.temp, x.cartas);
+  const tv = textoVista(x.f, k, x.temp, x.cartas);
+  // 🖼️ el cartel armado por el ciclo (17/11/2026, `bot/og_links.py`: su fondo, su carta y su nombre), si ya está. Es de
+  // 1200 × 630, así que se quedan las medidas del cartel; sin él, la carta sola, como antes
+  const { titulo, desc } = tv;
+  const img = og || tv.img, alt = og ? 'El perfil de ' + String(x.f.n || k).trim() + ' en la Liga Global de Freestyle' : tv.alt;
   const pag = await env.ASSETS.fetch(new Request(url.origin + '/', { headers: req.headers }));
   const poner = (atr, valor) => ({ element(el) { el.setAttribute(atr, valor); } });
   const sacar = { element(el) { el.remove(); } };
@@ -482,7 +486,11 @@ async function vistaPerfil(req, env, k, url) {
     .on('meta[name="description"]', poner('content', desc))
     .on('meta[property="og:type"]', poner('content', 'profile'))
     .on('meta[property="og:url"]', poner('content', url.origin + url.pathname));
-  if (img) {
+  if (img && og) {
+    rw = rw.on('meta[property="og:image"]', poner('content', img))
+      .on('meta[name="twitter:image"]', poner('content', img))
+      .on('meta[property="og:image:alt"]', poner('content', alt));
+  } else if (img) {
     // la tarjeta es vertical: sin las medidas del cartel (1200×630), que la deformarían
     rw = rw.on('meta[property="og:image"]', poner('content', img))
       .on('meta[name="twitter:image"]', poner('content', img))

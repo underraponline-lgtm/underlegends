@@ -4681,6 +4681,23 @@ export const puedeRol = (roles, que, tabla) => (roles || []).includes('owner')
 // el nivel `FONDO_NIVEL` del Pase de rapero; se ve recién cuando lo aprueba Dlx (hay menores en la Liga); y cada uno elige
 // si va en su perfil, de fondo de su propia página, o los dos
 export const FONDO_NIVEL = 5;
+// 🖼️ TUS FONDOS POR LUGAR (17/11/2026, la tanda 2 del remake de Tu cuenta). Dlx: «Tus fondos debería tener más
+// significado… el del VS, el de escenario donde aparece la tarjeta, el fondo de mi perfil», y de los lugares nuevos, «el
+// #1 y el #4» (el VS en vivo de Discord y la ficha al pasar el mouse). Cada lugar elige qué va: `auto` (lo de siempre),
+// `mia` (tu imagen), `bandera` (la de tu país) o `servidor` (la escena de tu servidor). En el VS en vivo no hay
+// `servidor`: ahí el fondo de la imagen ya es el del servidor del evento
+export const LUGARES_FONDO = { perfil: ['auto', 'mia', 'bandera', 'servidor'], vs: ['auto', 'mia', 'bandera', 'servidor'],
+  esc: ['auto', 'mia', 'bandera', 'servidor'], vivo: ['auto', 'mia', 'bandera'], ficha: ['auto', 'mia', 'bandera', 'servidor'] };
+/** Lo que mandó la página, sólo con lugares y opciones que existen. `auto` no se guarda (es lo que hay sin elegir). */
+export function lugaresFondo(x) {
+  const o = {};
+  if (!x || typeof x !== 'object') return o;
+  for (const [l, ops] of Object.entries(LUGARES_FONDO)) {
+    const v = String(x[l] || '');
+    if (v && v !== 'auto' && ops.includes(v)) o[l] = v;
+  }
+  return o;
+}
 // 🖼️ los marcos de carta, de menos a más, y los estilos de la carta de Servidor (Dlx, 25/10/2026: «Las 2. Una elige»)
 // 🎁 y `embajador`, el de la última meta de los referidos (17/11/2026). ⚠️ ANTES del Oro, a propósito: sin marco elegido
 // va el mejor (`mejorMarco()`), y quien ya lleva el Oro —Dlx los tiene todos— vería cambiar su carta sola
@@ -6975,7 +6992,7 @@ export async function rutaAvisos(req, env, ruta) {
     try { de = (await env.KV.get('d:' + q.id)) || ''; } catch (e) { de = ''; }
     return elObjeto(env).fetch('https://avisos' + ruta.slice('/avisos'.length), {
       method: 'POST', body: JSON.stringify({ quien: q.id, de: claveValida(de) ? de : '', img: d.img, borrar: d.borrar === true,
-        perfil: d.perfil, pagina: d.pagina }),
+        perfil: d.perfil, pagina: d.pagina, lugares: d.lugares && typeof d.lugares === 'object' ? lugaresFondo(d.lugares) : undefined }),
       headers: { 'content-type': 'application/json' },
     });
   }
@@ -8010,6 +8027,8 @@ export class Avisos {
       this.sql.exec("CREATE TABLE IF NOT EXISTS fondos (quien TEXT PRIMARY KEY, k TEXT NOT NULL DEFAULT '', estado TEXT NOT NULL, " +
         "url TEXT NOT NULL DEFAULT '', pend TEXT NOT NULL DEFAULT '', perfil INTEGER NOT NULL DEFAULT 1, pagina INTEGER NOT NULL DEFAULT 1, " +
         "motivo TEXT NOT NULL DEFAULT '', t INTEGER NOT NULL, subidas TEXT NOT NULL DEFAULT '')");
+      // 🖼️ TUS FONDOS POR LUGAR (17/11/2026): qué va en cada lugar, `{"perfil":"mia","vs":"bandera",…}`. Ver `LUGARES_FONDO`
+      try { this.sql.exec("ALTER TABLE fondos ADD COLUMN lugares TEXT NOT NULL DEFAULT ''"); } catch (e) { /* ya estaba */ }
       // 📸 la foto propia de cada carta (13/10/2026): `estado` 'ok' si se ve la propia ('' o 'no': la de Discord); `pend`,
       // la que espera revisión, aparte —mientras tanto se sigue viendo la de antes—; `t`, cuándo se cambió, para la regla
       // de una por semana. Ver `fotoCarta()`
@@ -12011,6 +12030,16 @@ export class Avisos {
   // no dibuja: el vs queda en `vs_cola`, el vigía prende la tarea `kit.yml` (tipo vs, uno por servidor cada `VS_ENTRE`),
   // `bot/kit.py` se lleva los de su servidor (`/avisos/vs-cola`), los dibuja y devuelve cada imagen (`vsListo()`), que se
   // le agrega al mensaje editándolo. Lo que no llegó en `VS_VENCE` ya no se dibuja: esa batalla ya se jugó.
+  /** 🖼️ Qué va detrás de la mitad de `k` en el VS en vivo: la url de su imagen, `bandera`, o '' (el del servidor). */
+  fondoVivo(k) {
+    if (!k) return '';
+    let fo = null;
+    try { fo = this.fondos().f[k]; } catch (e) { fo = null; }
+    const v = fo && fo[3] && fo[3].vivo;
+    if (v === 'bandera') return 'bandera';
+    return v === 'mia' && /^https:\/\/pub-[a-z0-9]+\.r2\.dev\/fondos\/[a-f0-9]{24}\.(webp|jpg|png)$/.test(fo[0]) ? fo[0] : '';
+  }
+
   /** Un vs para dibujar: `{sv, canal, msg, ev, ronda, titulo, sub, a, b}`, cada lado `{n, fl, k, ovr, carta}`. */
   vsEncolar(d, ahora = Date.now()) {
     if (!/^\d{5,25}$/.test(String(d.canal || '')) || !/^\w{1,25}$/.test(String(d.msg || ''))) return { error: 'datos' };
@@ -12024,7 +12053,9 @@ export class Avisos {
       ev: Math.max(0, Number(y && y.ev) || 0), pod: Math.max(0, Number(y && y.pod) || 0), dg: Math.max(0, Number(y && y.dg) || 0), dt: Math.max(0, Number(y && y.dt) || 0),
       carta: /^https:\/\/pub-[a-z0-9]+\.r2\.dev\//.test(String((y && y.carta) || '')) ? String(y.carta).slice(0, 300) : '',
       // 🌙 lo de esta noche, debajo de la carta (02/11/2026, `nocheVs()`)
-      noche: String((y && y.noche) || '').slice(0, 60) });
+      noche: String((y && y.noche) || '').slice(0, 60),
+      // 🖼️ su mitad del VS en vivo (17/11/2026, «Tus fondos» → «El VS en vivo de Discord»): su imagen o `bandera`
+      fondo: this.fondoVivo(String((y && y.k) || '')) });
     const h2h = Array.isArray(d.h2h) && d.h2h.length === 2 ? d.h2h.map((x) => Math.max(0, Math.min(999, Number(x) || 0))) : null;
     // 🧩 los otros formatos (19/10/2026): hasta 5 lados y 10 personas, cada una como un lado de siempre
     let grupos = null;
@@ -13132,9 +13163,9 @@ export class Avisos {
   }
 
   // ── 🖼️ tu fondo (13/10/2026) ──────────────────────────────────────────
-  /** ¿Puede subir un fondo? El nivel `FONDO_NIVEL` del Pase; Dlx siempre (para probarlo). */
+  /** ¿Puede subir un fondo? Con el Pase premium (desde su nivel de fondo); Dlx siempre (para probarlo). */
   puedeFondo(quien) {
-    if (quien === DUENO) return { si: true, nivel: null, falta: FONDO_NIVEL };
+    if (quien === DUENO) return { si: true, nivel: null, falta: FONDO_NIVEL, prem: true };
     // 🖼️ DESDE EL 25/10/2026 (Dlx: «hazlo como te dije del pase premium… pero un nivel de experiencia en general en tu
     // perfil»): el NIVEL `FONDO_NIVEL` DE TU PERFIL (el general, no el del Pase), o el premium desde su nivel 5. Quien ya
     // tenía su fondo aprobado lo conserva
@@ -13143,15 +13174,23 @@ export class Avisos {
     const pNivel = P.cfg ? this.paseNivel(quien, P.cfg) : 0;
     const prem = P.cfg && this.pasePremium(quien, P.cfg.temp) && pNivel >= (((P.cfg.premium || []).find((p) => p[2] === 'fondo') || [5])[0]);
     const tenia = !!this.sql.exec("SELECT 1 AS x FROM fondos WHERE quien = ? AND estado = 'ok' LIMIT 1", quien).toArray()[0];
-    return { si: nivel >= FONDO_NIVEL || !!prem || tenia, nivel, falta: FONDO_NIVEL };
+    // 💎 DESDE EL 17/11/2026 SUBIR TU IMAGEN ES DEL PREMIUM (Dlx: «PREMIUM lo que te dejaría hacer es subir tu propia
+    // imagen, analizada con el filtro»). Lo demás de «Tus fondos» (la bandera, tu servidor, dónde va cada uno) es de
+    // todos. Quien ya tenía la suya aprobada la conserva y la puede cambiar: no se le saca lo que eligió antes
+    const esPrem = !!(P.cfg && this.pasePremium(quien, P.cfg.temp));
+    return { si: !!prem || tenia, nivel, falta: FONDO_NIVEL, prem: esPrem, pNivel,
+      pFalta: (((P.cfg && P.cfg.premium) || []).find((p) => p[2] === 'fondo') || [5])[0] };
   }
 
   /** Cómo está el fondo de alguien, para su Mi cuenta. */
   fondoDe(quien) {
     if (!/^\d{5,25}$/.test(quien)) return { error: 'falta quién' };
-    const r = this.sql.exec('SELECT estado, url, pend, perfil, pagina, motivo, t FROM fondos WHERE quien = ?', quien).toArray()[0];
-    return { ok: true, puede: this.puedeFondo(quien), fondo: r ? { estado: r.estado, url: r.url, pend: r.pend, perfil: !!r.perfil,
-      pagina: !!r.pagina, motivo: r.motivo, t: r.t } : null };
+    const r = this.sql.exec('SELECT estado, url, pend, perfil, pagina, motivo, t, lugares FROM fondos WHERE quien = ?', quien).toArray()[0];
+    let L = {};
+    try { L = lugaresFondo(JSON.parse((r && r.lugares) || '{}')); } catch (e) { L = {}; }
+    // `fondo` es null si nunca subió una imagen (una fila sólo con los lugares elegidos no es un fondo)
+    return { ok: true, puede: this.puedeFondo(quien), lugares: L, fondo: r && (r.url || r.pend) ? { estado: r.estado, url: r.url,
+      pend: r.pend, perfil: !!r.perfil, pagina: !!r.pagina, motivo: r.motivo, t: r.t } : null };
   }
 
   /** Subir (`img`, base64), cambiar dónde se ve (`perfil`, `pagina`) o quitarlo (`borrar`). Lo nuevo pasa por el filtro
@@ -13168,14 +13207,30 @@ export class Avisos {
     };
     if (d.borrar) {
       if (r) { await borrarR2(r.url); await borrarR2(r.pend); }
-      this.sql.exec('DELETE FROM fondos WHERE quien = ?', quien);
+      // 🖼️ lo que eligió en cada lugar se queda (la bandera o su servidor no son la imagen); sin nada elegido, la fila se va
+      if (r && r.lugares && r.lugares !== '{}') {
+        this.sql.exec("UPDATE fondos SET estado = '', url = '', pend = '', motivo = '' WHERE quien = ?", quien);
+      } else this.sql.exec('DELETE FROM fondos WHERE quien = ?', quien);
+      return this.fondoDe(quien);
+    }
+    // 🖼️ dónde va cada uno (sin imagen nueva): cualquiera que entre, con o sin imagen propia. `mia` sin imagen se guarda
+    // igual y se ve como `auto` hasta que tenga una
+    if (d.lugares && typeof d.lugares === 'object' && !d.img) {
+      const L = JSON.stringify(lugaresFondo(d.lugares));
+      const de = String(d.de || '');
+      if (r) {
+        this.sql.exec("UPDATE fondos SET lugares = ?, k = CASE WHEN ? != '' THEN ? ELSE k END WHERE quien = ?", L, de, de, quien);
+      } else {
+        this.sql.exec("INSERT INTO fondos (quien, k, estado, url, pend, perfil, pagina, motivo, t, subidas, lugares) " +
+          "VALUES (?, ?, '', '', '', 1, 0, '', ?, '', ?)", quien, de, ahora, L);
+      }
       return this.fondoDe(quien);
     }
     const perfil = d.perfil === undefined ? (r ? r.perfil : 1) : (d.perfil ? 1 : 0);
     const pagina = d.pagina === undefined ? (r ? r.pagina : 1) : (d.pagina ? 1 : 0);
     if (d.img) {
       const p = this.puedeFondo(quien);
-      if (!p.si) return { error: 'nivel', nivel: p.nivel, falta: FONDO_NIVEL };
+      if (!p.si) return { error: 'premium', nivel: p.nivel, falta: FONDO_NIVEL, prem: p.prem, pFalta: p.pFalta };
       const hoy = new Date(ahora).toISOString().slice(0, 10);
       const subidas = String((r && r.subidas) || '').split(',').filter((x) => x === hoy);
       if (subidas.length >= FONDO_POR_DIA) return { error: 'tope' };
@@ -13227,7 +13282,7 @@ export class Avisos {
       quien, String(d.de || ''), 'revisar', '', url, perfil, pagina, '', ahora, subidas.concat([hoy]).join(','));
       return Object.assign(this.fondoDe(quien), { filtro: 'revisar' });
     }
-    if (!r) return { error: 'todavía no subiste un fondo' };
+    if (!r || !(r.url || r.pend)) return { error: 'todavía no subiste un fondo' };
     this.sql.exec('UPDATE fondos SET perfil = ?, pagina = ?, k = CASE WHEN ? != \'\' THEN ? ELSE k END WHERE quien = ?',
       perfil, pagina, String(d.de || ''), String(d.de || ''), quien);
     return this.fondoDe(quien);
@@ -13240,13 +13295,16 @@ export class Avisos {
     this.guardar('fondos_filtro', h);
   }
 
-  /** Los aprobados, para la página (público, por clave de perfil): `{t, f: {clave: [url, perfil, pagina]}}`. */
+  /** Los aprobados, para la página (público, por clave de perfil): `{t, f: {clave: [url, perfil, pagina, lugares?]}}`.
+   *  Desde el 17/11/2026 entra también quien no tiene imagen pero eligió algo (la bandera, su servidor): `url` vacío. */
   fondos() {
     // 🛡️ un minuto de memoria, como `roles()`: se olvida al aprobar, quitar o cambiar uno
     if (this._fondos && Date.now() - this._fondos.t < 60000) return this._fondos;
     const f = {};
-    for (const r of this.sql.exec("SELECT k, url, perfil, pagina FROM fondos WHERE url != '' AND k != ''").toArray()) {
-      f[r.k] = [r.url, r.perfil ? 1 : 0, r.pagina ? 1 : 0];
+    for (const r of this.sql.exec("SELECT k, url, perfil, pagina, lugares FROM fondos WHERE (url != '' OR lugares NOT IN ('', '{}')) AND k != ''").toArray()) {
+      let L = {};
+      try { L = lugaresFondo(JSON.parse(r.lugares || '{}')); } catch (e) { L = {}; }
+      f[r.k] = Object.keys(L).length ? [r.url, r.perfil ? 1 : 0, r.pagina ? 1 : 0, L] : [r.url, r.perfil ? 1 : 0, r.pagina ? 1 : 0];
     }
     this._fondos = { t: Date.now(), f };
     return this._fondos;

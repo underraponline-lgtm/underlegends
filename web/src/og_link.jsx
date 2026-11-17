@@ -10,6 +10,8 @@ import { useCrews } from './crews.js';
 import { Escudo, escudoDe } from './escudo.jsx';
 import CSS_PAGINA from './css/og_link.css?inline';
 import { usarCss } from './css.js';
+import { Bandera, nombrePais } from './piezas.jsx';
+import { fondoEn, fondoOpcion, useFondos } from './fondos.js';
 
 usarCss('og_link', CSS_PAGINA);
 
@@ -99,6 +101,53 @@ function Ref({ liga, k }) {
   );
 }
 
+// 🖼️ EL CARTEL DEL LINK DE TU PERFIL (#/og/perfil/<clave>, 17/11/2026, la tanda 2 de Tu cuenta). Dlx, de la vista previa
+// del link: «debería ser prebuilded». Hasta hoy el link de un perfil mostraba la carta sola; ahora es un cartel de 1200 ×
+// 630 con lo que eligió para «Tu perfil» en Tus fondos (sin elegir: su servidor o su bandera), su carta y su nombre
+const primerUrl = (bg) => { const m = /url\("([^"]+)"\)/.exec(bg || ''); return m ? m[1] : ''; };
+function Perfil({ liga, k }) {
+  const fondos = useFondos();
+  const [listas, setListas] = useState(0);
+  const f = liga && ((liga.T && liga.T[k]) || (liga.X && liga.X[k]));
+  if (!liga || !liga.d || !fondos) return <div className="og" />;
+  if (!f) return <div className="og" data-listo="1" data-falta="1" />;
+  const nombre = limpio(f.n || k);
+  const carta = ORDEN_CARTA.find((x) => (f.c || []).includes(x));
+  const i = carta ? (liga.d.cartas || []).indexOf(carta) : -1;
+  const v = carta && typeof f.cv === 'string' && i >= 0 ? f.cv.split('.')[i] : '';
+  const src = carta && liga.d.r2 ? liga.d.r2 + '/' + encodeURIComponent(k) + '/' + carta + '.webp' + (v ? '?v=' + v : '') : '';
+  const q = { cc: f.cc, sv: f.sv };
+  const fo = fondos[k];
+  const bg = primerUrl(fondoEn(fo, 'perfil', q)) || primerUrl(fondoOpcion(fo, 'servidor', q)) || primerUrl(fondoOpcion(fo, 'bandera', q));
+  const faltan = (src ? 1 : 0) + (bg ? 1 : 0);
+  const sv = f.sv && liga.svs && liga.svs[f.sv];
+  const rgc = /^#[0-9a-f]{3,8}$/i.test(f.rgc || '') ? f.rgc : '#29B298';
+  const listo = () => setListas((n) => n + 1);
+  return (
+    <div className={'og og-pf' + (src ? ' con' : '')} data-listo={listas >= faltan ? '1' : ''}>
+      {bg ? <img className="og-pf-f" src={bg} alt="" onLoad={listo} onError={listo} /> : null}
+      <div className="og-pf-velo" />
+      <div className="og-der">
+        <span className="og-k">Liga Global de Freestyle</span>
+        <h1 className={'og-n' + largo(nombre)}>{nombre}</h1>
+        <div className="og-fila">
+          {f.cc ? <span className="og-pf-pais"><Bandera cc={f.cc} cls="og-pf-flag" />{nombrePais(f.cc)}</span> : null}
+          {sv ? <span>{f.cc ? '· ' : ''}{limpio(sv.nombre || f.sv)}</span> : null}
+        </div>
+        <div className="og-fila">
+          {f.pos ? <span className="og-pill og-pf-pos">#{f.pos} de la {String(liga.temp || 'T1').toUpperCase()}</span> : null}
+          {f.ovr ? <b>OVR {f.ovr}</b> : null}
+          {f.rg ? <span className="og-pill" style={{ background: rgc, color: '#030304' }}>Rango {f.rg}</span> : null}
+        </div>
+        <span className="og-url">underlegends.pages.dev</span>
+      </div>
+      {src ? <img className="og-carta" src={src} alt="" onLoad={listo} onError={listo} /> : null}
+      <div className="og-barra"><i /><i /></div>
+    </div>
+  );
+}
+
 export function OgLink({ liga, tipo, id }) {
-  return tipo === 'crew' ? <Crew id={id} /> : tipo === 'ref' ? <Ref liga={liga} k={id} /> : <div className="og" data-listo="1" data-falta="1" />;
+  return tipo === 'crew' ? <Crew id={id} /> : tipo === 'ref' ? <Ref liga={liga} k={id} /> : tipo === 'perfil' ? <Perfil liga={liga} k={id} />
+    : <div className="og" data-listo="1" data-falta="1" />;
 }

@@ -21,6 +21,7 @@ import { limpio, siglaDe } from './liga.js';
 import { Bandera, Ico, enlace, nombrePais } from './piezas.jsx';
 import { pasePost, refrescarPases, usePases } from './pase.js';
 import { pedirLigas } from './ligas_datos.js';
+import { fondoEn, useFondos } from './fondos.js';
 
 const NOMBRE = { temporada: 'Temporada', competitivo: 'Competitiva', servidor: 'Servidor', pais: 'País' };
 const ORDEN = ['temporada', 'competitivo', 'servidor', 'pais'];
@@ -124,6 +125,7 @@ export function VisorCarta({ liga, dc, k, inicial = '', onCerrar }) {
   const [sigue] = useState(() => { const v = window.__lgVkSigue; return v && Date.now() - v.t < 900 ? v.dir : 0; });
   const [sale, setSale] = useState(false);
   const pub = usePases();
+  const fondos = useFondos();
   const cp = (pub && pub.cp && pub.cp[k]) || '';
   const esYo = !!((dc && dc.clave === k) || (liga.yo && liga.yo.k === k));
   // 🏟️ sus cartas de liga, del mismo pedido que ya hace la página (`/api/ligas`, una vez por lobby)
@@ -264,6 +266,9 @@ export function VisorCarta({ liga, dc, k, inicial = '', onCerrar }) {
   const enTabla = !!liga.T[k];
   const u = ultimoEv(f, esYo);
   const color = /^#[0-9a-f]{3,8}$/i.test(f.rgc || '') ? f.rgc : '#29B298';
+  // 🖼️ lo que eligió para «El escenario de tu carta» en Tus fondos (17/11/2026): su imagen, su bandera o su servidor,
+  // apagado detrás de la luz del rango. En automático, sólo la luz, como siempre
+  const escF = fondoEn((fondos || {})[k], 'esc', { cc: f.cc, sv: f.sv });
   const compartir = async () => {
     const url = enlace('#/r/' + encodeURIComponent(k));
     const texto = (esYo ? 'Mi carta' : 'La carta de ' + nombre) + ' en la Liga Global';
@@ -292,7 +297,8 @@ export function VisorCarta({ liga, dc, k, inicial = '', onCerrar }) {
     <div className={'vk' + (dueno ? ' vk-yo' : '') + (desde0 ? ' vk-flip' : '') + (sigue ? ' vk-sigue' : '') + (sale ? ' vk-sale' : '')} ref={raiz} role="presentation"
       style={sigue ? { '--dir': sigue } : undefined} onClick={(e) => { if (e.target === e.currentTarget || e.target.classList.contains('vk-in')) cerrar(); }}>
       <div className="vk-in" role="dialog" aria-modal="true" aria-label={'Las tarjetas de ' + nombre}>
-        <div className="vk-esc" style={{ '--g': color }}>
+        <div className={'vk-esc' + (escF ? ' con-fondo' : '')} style={{ '--g': color }}>
+          {escF ? <span className="vk-esc-f" style={{ backgroundImage: escF }} aria-hidden="true" /> : null}
           <div className="vk-cc" ref={cc} onPointerDown={(e) => { arr.current = { x0: e.clientX, va: false }; }}
             onPointerMove={(e) => {
               const a = arr.current;

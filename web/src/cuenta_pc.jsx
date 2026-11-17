@@ -149,7 +149,7 @@ export function CuentaPC({ liga, dc, parte, tema, onTema, temaSv, onTemaSv, soci
   const sub = useMemo(() => ({
     resumen: [dc && (dc.rapero || dc.clave) ? 'Verificado' : dc ? 'Con Discord' : 'Sin entrar', yo && yo.rg ? 'Rango ' + yo.rg : yo ? 'Sin rango todavía' : '',
       yo && liga.svs[yo.sv] ? limpio(liga.svs[yo.sv].nombre || yo.sv) : ''].filter(Boolean).join(' · '),
-    perfil: 'tu foto, tu frase, tus redes y tus videos', temas: 'Clara o Noche, y los colores de un servidor de la Liga', fondos: 'tu imagen de fondo, en tu perfil', estilo: 'tu estilo de juego y cómo se ven tus cartas',
+    perfil: 'tu foto, tu frase, tus redes y tus videos', temas: 'Clara o Noche, y los colores de un servidor de la Liga', fondos: 'qué va detrás de ti en tu perfil, el VS, tu carta, Discord y tu ficha', estilo: 'tu estilo de juego y cómo se ven tus cartas',
     crew: crew ? 'la tuya: ' + limpio(crew.c.nombre) : 'tus invitaciones; las crews se arman en Crews', servidor: 'el que representas en la Liga · uno por temporada',
     siguiendo: liga.sigue.length ? 'sigues a ' + liga.sigue.length : 'todavía no sigues a nadie', app: 'la hora, los avisos, las animaciones y la app en tu pantalla',
     privacidad: 'tu foto, lo que guardamos y este dispositivo', ayuda: 'algo está mal, la guía, la introducción y lo nuevo',

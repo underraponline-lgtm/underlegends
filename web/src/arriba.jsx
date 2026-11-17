@@ -17,6 +17,7 @@ import { Numero } from './anima.js';
 import { VotoVivo } from './quiengana.jsx';
 import { LuNube, LuSocial } from './medio.jsx';
 import { ComentariosFlotantes } from './flotantes.jsx';
+import { escenaDe } from './fondos.js';
 
 // 🧭 EL ORDEN, EL DEL MENÚ DE ARRIBA AGRUPADO (12/11/2026, ver `GRUPOS`): lo que va suelto arriba, primero, y después lo
 // de cada grupo. Es el de la tira de abajo del celular, así que las cuatro y media que se ven sin deslizar son Inicio,
@@ -1885,8 +1886,8 @@ export function llaveEnVivo(e, vivoL) {
 // Liga» 503, y la página saltaba al cambiar ═══
 // 🌆 las escenas de cada servidor (las de los banners, sin textos: `herramientas/banners_eventos.py` las deja en
 // `bot/paginas/escenas/`). Sin la suya, el fondo de antes
-const ESCENAS = new Set(['acad', 'ch', 'ddf', 'dds', 'dra', 'fds', 'ffa', 'ffs', 'frz', 'fvs', 'lkr', 'sr', 'urbf']);
-export const escenaDe = (sv) => { const k = String(sv || '').toLowerCase(); return ESCENAS.has(k) ? '/escenas/' + k + '.webp' : ''; };
+// La lista vive en fondos.js desde el 17/11/2026: «Tus fondos» también usa la escena de tu servidor
+export { escenaDe };
 
 // 👑 LA CORONA DEL CAMPEÓN, CON EL ESTILO DE LA PÁGINA (Dlx, 14/11/2026: «diferente al del intro»; y después, «pon una corona
 // que quede más con el estilo»). Como los stickers y los sellos de acá: color plano, contorno negro grueso y la sombra dura

@@ -17,7 +17,7 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { limpio, num, siglaDe, srcLogo, utc } from './liga.js';
 import { Bandera, Cara, Ico, accion, nombrePais, useCampana } from './piezas.jsx';
-import { urlFondo, useFondos } from './fondos.js';
+import { fondoEn, useFondos } from './fondos.js';
 import { Escudo, escudoDe } from './escudo.jsx';
 import { avance, pasePost, usePase } from './pase.js';
 import { cuantosNuevos } from './inv_nuevos.js';
@@ -581,12 +581,11 @@ function Logros({ f, cls }) {
 }
 // 🖼️ el fondo de cada lado: el SUYO si eligió mostrarlo en su perfil (Dlx: «en este caso me gustaría que aparezca ahí mi
 // fondo»); si no, su bandera, grande y apagada («eso del fondo de tu bandera está genial… por default»)
+// 🖼️ DESDE EL 17/11/2026 LO ELIGE CADA UNO en Tus fondos → «El VS del Inicio» (`fondoEn()`): su imagen, su bandera o su
+// servidor; en automático, lo de antes. 🔎 La bandera va en HD (`/banderas/xl/`, 1280 de ancho) encima de la chica
 const fondoLado = (f, fo) => {
-  const propio = fo && fo[1] ? urlFondo(fo[0]) : '';
-  if (propio) return { '--bf': propio };
-  // 🔎 la bandera en HD (`/banderas/xl/`, 1280 de ancho, de 04_Pais/banderas): la de `/banderas/g/` mide 240×160 y acá se
-  // estira a media pantalla. Va encima de la chica: si un país no tiene la grande, se ve la de siempre
-  return f && f.cc ? { '--bf': 'url("/banderas/xl/' + f.cc + '.webp"), url("/banderas/g/' + f.cc + '.webp")' } : {};
+  const bg = fondoEn(fo, 'vs', f || {});
+  return bg ? { '--bf': bg } : {};
 };
 // las horas para una batalla libre: las cuatro próximas de 6 y 9 PM del este
 function horasLibres() {

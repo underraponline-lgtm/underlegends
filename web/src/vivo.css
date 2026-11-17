@@ -3145,6 +3145,10 @@ li.nt-f{cursor:default}
 /* 📱 con los dos renglones de botones del dueño, la carta cede 56 px más: a 320×568 los botones tapaban el nombre */
 .vk-yo .vk-esc{--ch:min(clamp(270px,calc(100dvh - 386px),560px),calc((100vw - 90px) * 1.46))}
 .vk-esc::before{content:"";position:absolute;inset:0;pointer-events:none;background:radial-gradient(closest-side,color-mix(in srgb,var(--g) 40%,transparent),transparent)}
+/* 🖼️ el fondo que eligió para «El escenario de tu carta» (Tus fondos, 17/11/2026): apagado y fundido hacia los bordes, para
+   que la carta siga siendo lo que luce. Va debajo de la luz del rango */
+.vk-esc-f{position:absolute;inset:0;pointer-events:none;background:#030304 center/cover no-repeat;opacity:.6;
+  -webkit-mask-image:radial-gradient(ellipse 50% 50% at 50% 50%,#000 50%,transparent 100%);mask-image:radial-gradient(ellipse 50% 50% at 50% 50%,#000 50%,transparent 100%)}
 .vk-cc{position:relative;width:100%;height:var(--ch);touch-action:pan-y;-webkit-user-select:none;user-select:none;--paso:58%;transition:transform .5s cubic-bezier(.22,1,.36,1)}
 .vk-sl{position:absolute;top:0;left:50%;height:100%;width:calc(var(--ch) * .685);transform:translateX(calc(-50% + var(--d) * var(--paso))) scale(var(--k));
   transition:transform .5s cubic-bezier(.22,1,.36,1),opacity .4s ease}
@@ -6673,3 +6677,24 @@ dialog.pn-pop.un-pop{--pc:#29B298;width:min(540px,calc(100vw - 32px));max-height
 .cfl-hist{position:absolute;left:0;right:0;bottom:calc(100% + 12px)}
 .cfl-hist .cfl-b.cfl-b{background:rgba(3,3,4,.72);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px);border-color:rgba(246,246,246,.16)}
 .app .escena.es2 .mo:has(.es-buscados) .es-soc .cfl{display:none}
+/* 🪪 LA FICHA AL PASAR EL MOUSE (ficha.jsx, 17/11/2026): arriba, el fondo que eligió para «Tu ficha»; abajo, quién es.
+   Siempre oscura, como la ventana de la carta: no depende del tema. No se toca (`pointer-events:none`) */
+.fh{position:fixed;z-index:110;pointer-events:none;color:#F6F6F6;background:#0d0d10;border:1.5px solid #2c2c31;box-shadow:0 12px 32px rgba(0,0,0,.45);
+  overflow:hidden;animation:fh-in .16s ease-out}
+.fh.arriba{transform:translateY(-100%)}
+@keyframes fh-in{from{opacity:0}to{opacity:1}}
+.calma .fh{animation:none}
+.fh-f{height:78px;background:#16161a center/cover no-repeat;position:relative}
+.fh-f::after{content:"";position:absolute;inset:0;background:linear-gradient(transparent 35%,#0d0d10)}
+.fh-f.liso{background:linear-gradient(135deg,#1d1d22,#0b0b0d)}
+.fh-b{display:grid;grid-template-columns:52px minmax(0,1fr);gap:10px;align-items:start;padding:0 12px 12px;margin-top:-26px;position:relative}
+.fh-cara{width:52px;height:52px;display:grid;place-items:center;overflow:hidden;background:#1d1d22;border:2px solid #0d0d10;font:900 20px/1 Archivo,sans-serif}
+.fh-cara img{width:100%;height:100%;object-fit:cover;display:block}
+.fh-t{display:grid;gap:4px;min-width:0;padding-top:28px}
+.fh-t b{display:flex;align-items:center;gap:6px;font:900 16px/1.1 Archivo,sans-serif;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.fh-flag{width:18px;height:12px;object-fit:cover;flex:none}
+.fh-t small{font:600 12.5px/1.25 Archivo,sans-serif;color:#B9B9B4}
+.fh-chips{display:flex;flex-wrap:wrap;gap:4px;margin-top:2px}
+.fh-chips i{font-style:normal;font:700 11.5px/1 "Barlow Condensed",sans-serif;letter-spacing:.06em;text-transform:uppercase;padding:4px 6px;background:#1f1f24;color:#E8E8E3}
+.fh-chips .fh-rg{background:#29B298;color:#030304;font-weight:800}
+.fh-chips .fh-rg.sin{background:#1f1f24;color:#B9B9B4}

@@ -16,7 +16,7 @@ import { CaraDc } from './arriba.jsx';
 import { useRacha } from './racha.js';
 import { TEMAS_SV, nivelTema, nombreTema } from './temas.js';
 import { useRoles } from './roles.js';
-import { urlFondo } from './fondos.js';
+import { LUGARES, NOMBRE_OPCION, eleccion, fondoEn, fondoOpcion, urlFondo } from './fondos.js';
 import { useSocio } from './panelsocio.js';
 import { seguirOrg, useOrgs } from './orgs.js';
 
@@ -129,7 +129,7 @@ function grupos(liga, dc, tema, temaSv) {
   return [
     ['TU PERFIL', [
       ['perfil', 'perfil', 'Foto y redes', yo ? 'tu foto, tu frase, tus redes y tu servidor' : 'lo que los demás ven de ti'],
-      ['fondo', 'tema', 'Tu fondo', 'tu imagen, con el nivel 10 del Pase'],
+      ['fondo', 'tema', 'Tus fondos', 'tu imagen y qué va en cada lugar'],
     ]],
     ['TU GENTE', [
       // 👥 las crews que arma la gente (19/10/2026): la tuya y tus invitaciones; armar una, en Crews (3.73)
@@ -368,7 +368,7 @@ async function pedirFondo(ruta, cuerpo) {
     headers: { 'content-type': 'application/json' }, body: JSON.stringify(cuerpo || {}) });
   const j = await r.json().catch(() => ({}));
   if (!r.ok || j.error) {
-    const e = { nivel: 'Se desbloquea con el nivel ' + (j.falta || 10) + ' del Pase de rapero.', tope: 'Ya subiste varias hoy: prueba mañana.',
+    const e = { nivel: 'Se desbloquea con el nivel ' + (j.falta || 10) + ' del Pase de rapero.', premium: 'Subir tu propia imagen es del Pase premium.', tope: 'Ya subiste varias hoy: prueba mañana.',
       'no es una imagen': 'Eso no es una imagen.', 'demasiado grande': 'La imagen es muy pesada.',
       metadatos: 'La imagen trae datos escondidos (como dónde se sacó): elígela de nuevo desde acá y se limpian solos.',
       // 🛡️ el filtro automático (13/10/2026): no entra, y se dice por qué
@@ -378,22 +378,30 @@ async function pedirFondo(ruta, cuerpo) {
   return j;
 }
 
-export function FondoCaja({ dc }) {
+// ═══ 🖼️ TUS FONDOS (17/11/2026, la tanda 2 del remake de Tu cuenta). Dos partes: TU IMAGEN (subirla es del Pase
+// premium; Dlx: «PREMIUM lo que te dejaría hacer es subir tu propia imagen, analizada con el filtro») y DÓNDE VA CADA
+// UNO, para todos: los cinco lugares de `LUGARES` (fondos.js), cada uno con sus opciones y una vista chica de cada una.
+// Elegir guarda al toque (`lugares` en `fondo()` de avisos.js) ═══
+export function FondoCaja({ dc, liga }) {
   const [st, setSt] = useState(null);
   const [vista, setVista] = useState('');
   const [archivo, setArchivo] = useState(null);
   const [ocup, setOcup] = useState(false);
   const [msg, setMsg] = useState('');
+  const [msgL, setMsgL] = useState('');
   useEffect(() => {
     if (!dc) return undefined;
     let vivo = true;
     pedirFondo('mi-fondo').then((j) => { if (vivo) setSt(j); }).catch((e) => { if (vivo) setMsg(e.message); });
     return () => { vivo = false; };
   }, [dc && dc.id]); // eslint-disable-line react-hooks/exhaustive-deps
-  if (!dc) return <Caja t="Tu fondo" d="Entra con Discord para poner tu propia imagen de fondo." />;
-  if (!st) return <Caja t="Tu fondo"><p className="cu-d">{msg || 'Cargando…'}</p></Caja>;
-  const f = st.fondo, pu = st.puede || {};
-  const perfil = f ? f.perfil : true, pagina = f ? f.pagina : true;
+  if (!dc) return <Caja t="Tus fondos" d="Entra con Discord para elegir qué va detrás de ti en cada lugar." />;
+  if (!st) return <Caja t="Tus fondos"><p className="cu-d">{msg || 'Cargando…'}</p></Caja>;
+  const f = st.fondo, pu = st.puede || {}, L = st.lugares || {};
+  const perfil = f ? f.perfil : true, pagina = f ? f.pagina : false;
+  const yo = (liga && liga.yo) || {};
+  // lo que se ve con lo de ahora, con la misma cuenta que usa cada lugar (`fondoEn()`)
+  const fo = [f && f.url ? f.url : '', perfil ? 1 : 0, 0, L];
   const elegir = async (e) => {
     const a = e.target.files && e.target.files[0];
     if (!a) return;
@@ -409,8 +417,8 @@ export function FondoCaja({ dc }) {
       }
     } catch (er) { setMsg('No pude usar esa imagen: ' + er.message); }
   };
-  const mandar = async (cuerpo) => {
-    setOcup(true); setMsg('');
+  const mandar = async (cuerpo, enLugares) => {
+    setOcup(true); (enLugares ? setMsgL : setMsg)('');
     try {
       const j = await pedirFondo('fondo', cuerpo);
       setSt(j);
@@ -419,30 +427,61 @@ export function FondoCaja({ dc }) {
         // 🛡️ limpia se ve ya; si el filtro no estuvo seguro, la mira la Liga
         setMsg(j.filtro === 'ok' ? 'Listo: ya se ve.' : 'El filtro automático no estuvo seguro: la mira la Liga y, cuando la apruebe, se ve.');
       }
-    } catch (er) { setMsg(er.message); }
+      if (enLugares) setMsgL('Guardado. En la página se ve al toque; en el VS en vivo, desde el próximo evento.');
+    } catch (er) { (enLugares ? setMsgL : setMsg)(er.message); }
     setOcup(false);
   };
   const subir = async () => { if (archivo) await mandar({ img: await aBase64(archivo), perfil, pagina }); };
-  const estado = !f ? '' : f.pend ? 'En revisión: el filtro automático no estuvo seguro y la mira la Liga.' : f.estado === 'no' ? 'No se aprobó' + (f.motivo ? ': ' + f.motivo : '') + '. Puedes subir otra.' : 'Ya se ve.';
+  const poner = (l, op) => mandar({ lugares: Object.assign({}, L, { [l]: op }) }, true);
+  const estado = !f ? '' : f.pend ? 'En revisión: el filtro automático no estuvo seguro y la mira la Liga.' : f.estado === 'no' ? 'No se aprobó' + (f.motivo ? ': ' + f.motivo : '') + '. Puedes subir otra.' : f.url ? 'Ya se ve.' : '';
+  const hayMia = !!(f && urlFondo(f.url));
   return (
-    <Caja t="Tu fondo" d={pu.si ? 'Tu propia imagen de fondo. Pasa por un filtro automático: sin desnudos, sangre, violencia, odio ni datos personales.' : 'Tu propia imagen de fondo, en tu perfil.'}>
-      {!pu.si && !(f && f.url) ? <p className="cu-d">🔒 Se desbloquea con el <b>nivel {pu.falta || 10}</b> del <a href="#/pase">Pase de rapero</a>{pu.nivel != null ? ' (vas en el ' + pu.nivel + ')' : ''}.</p> : null}
-      {f && urlFondo(f.pend || f.url) ? <div className="cu-fondo-ver" style={{ backgroundImage: urlFondo(f.pend || f.url) }} aria-label="Tu fondo" role="img" /> : null}
-      {estado ? <p className="cu-d">{estado}</p> : null}
-      {f ? (
-        <div className="cu-fondo-donde">
-          <label><input type="checkbox" checked={perfil} disabled={ocup} onChange={(e) => mandar({ perfil: e.target.checked, pagina })} /> En mi perfil (lo ven todos)</label>
-        </div>) : null}
-      {pu.si ? <>
-        {vista ? <div className="cu-fondo-ver" style={{ backgroundImage: 'url("' + vista + '")' }} aria-label="La que vas a subir" role="img" /> : null}
-        <div className="cu-btns">
-          <label className="btn borde2 chico cu-fondo-arch">{f ? 'Elegir otra imagen' : 'Elegir una imagen'}<input type="file" accept="image/*" onChange={elegir} /></label>
-          {archivo ? <button type="button" className="btn verde chico" disabled={ocup} onClick={subir}>{ocup ? 'Subiendo…' : 'Subir'}</button> : null}
-          {f ? <button type="button" className="btn borde2 chico" disabled={ocup} onClick={() => mandar({ borrar: true })}>Quitar mi fondo</button> : null}
+    <>
+      <Caja t="Tu imagen" d={pu.si ? 'Tu propia imagen de fondo, para los lugares de abajo. Pasa por un filtro automático: sin desnudos, sangre, violencia, odio ni datos personales.'
+        : 'Subir tu propia imagen es del Pase premium, y pasa por un filtro automático. La bandera y tu servidor son de todos: elígelos abajo.'}>
+        {!pu.si && !(f && f.url) ? <p className="cu-d">💎 <a href="#/pase">Ver el Pase premium</a>{pu.prem && pu.pFalta ? ' · se abre en el nivel ' + pu.pFalta + ' del Pase' + (pu.pNivel != null ? ' (vas en el ' + pu.pNivel + ')' : '') : ''}.</p> : null}
+        {f && urlFondo(f.pend || f.url) ? <div className="cu-fondo-ver" style={{ backgroundImage: urlFondo(f.pend || f.url) }} aria-label="Tu imagen" role="img" /> : null}
+        {estado ? <p className="cu-d">{estado}</p> : null}
+        {pu.si ? <>
+          {vista ? <div className="cu-fondo-ver" style={{ backgroundImage: 'url("' + vista + '")' }} aria-label="La que vas a subir" role="img" /> : null}
+          <div className="cu-btns">
+            <label className="btn borde2 chico cu-fondo-arch">{f && (f.url || f.pend) ? 'Elegir otra imagen' : 'Elegir una imagen'}<input type="file" accept="image/*" onChange={elegir} /></label>
+            {archivo ? <button type="button" className="btn verde chico" disabled={ocup} onClick={subir}>{ocup ? 'Subiendo…' : 'Subir'}</button> : null}
+            {f && (f.url || f.pend) ? <button type="button" className="btn borde2 chico" disabled={ocup} onClick={() => mandar({ borrar: true })}>Quitar mi imagen</button> : null}
+          </div>
+        </> : null}
+        {msg ? <p className="cu-d" role="status">{msg}</p> : null}
+      </Caja>
+      <Caja t="Dónde va cada uno" d="Lo que va detrás de ti en cada lugar. «Automático» es lo de siempre.">
+        <div className="tf-lugares">
+          {LUGARES.map(([l, n, d, ops, auto]) => {
+            const e = eleccion(fo, l);
+            return (
+              <div className="tf-lugar" key={l} data-parte={'fondo-' + l}>
+                <div className="tf-lt"><b>{n}</b><small>{d}</small></div>
+                <div className="tf-ops" role="radiogroup" aria-label={n}>
+                  {ops.map((op) => {
+                    const bg = op === 'auto' ? fondoEn([fo[0], fo[1], 0, {}], l, yo) : fondoOpcion(fo, op, yo);
+                    const cerrada = (op === 'mia' && !hayMia) || (op === 'bandera' && !yo.cc) || (op === 'servidor' && !bg);
+                    const on = e === op || (op === 'auto' && e === 'mia' && !hayMia);
+                    return (
+                      <button type="button" key={op} role="radio" aria-checked={on} className={'tf-op' + (on ? ' on' : '') + (cerrada ? ' cerrada' : '')}
+                        disabled={ocup || cerrada} onClick={() => poner(l, op)}
+                        title={op === 'auto' ? auto : cerrada ? (op === 'mia' ? 'Sube tu imagen arriba' : op === 'bandera' ? 'Todavía no tienes país' : 'Tu servidor no tiene escena todavía') : NOMBRE_OPCION[op]}>
+                        <span className={'tf-mini' + (bg ? '' : ' liso')} style={bg ? { backgroundImage: bg } : undefined} aria-hidden="true" />
+                        <span className="tf-on">{NOMBRE_OPCION[op]}</span>
+                        {op === 'auto' ? <small>{auto}</small> : cerrada ? <small>{op === 'mia' ? 'Sin imagen' : 'No disponible'}</small> : null}
+                      </button>
+                    );
+                  })}
+                </div>
+              </div>
+            );
+          })}
         </div>
-      </> : null}
-      {msg ? <p className="cu-d" role="status">{msg}</p> : null}
-    </Caja>
+        {msgL ? <p className="cu-d" role="status">{msgL}</p> : null}
+      </Caja>
+    </>
   );
 }
 
@@ -1073,7 +1112,7 @@ export function Parte({ id, liga, dc, tema, onTema, temaSv, onTemaSv, sinServido
       </>
     );
   }
-  if (id === 'fondo') return <FondoCaja dc={dc} />;
+  if (id === 'fondo') return <FondoCaja dc={dc} liga={liga} />;
   // 🖥️ las dos páginas nuevas de la compu (17/11/2026), que el celular también abre si le llega el link
   if (id === 'servidor') return <ServidorCaja liga={liga} dc={dc} />;
   if (id === 'estilo') return <EstiloCaja dc={dc} />;
