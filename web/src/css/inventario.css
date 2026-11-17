@@ -31,22 +31,72 @@
 .ves-sec button.on{background:var(--v-tinta);border-color:var(--v-tinta);color:#030304;box-shadow:5px 5px 0 var(--v-verde)}
 .ves-sec button.on small{color:#3A3A40}
 
-/* el cuerpo: tu carta a la izquierda, lo que le pones a la derecha */
-.ves-cuerpo{display:grid;grid-template-columns:minmax(0,1fr);gap:16px;align-items:start}
-.ves-izq{min-width:0}
-.ves-esc{position:relative;display:grid;justify-items:center;gap:12px;padding:30px 16px 14px;border:1.5px solid var(--v-borde);
-  background:radial-gradient(60% 52% at 50% 38%,#24242C 0%,#0B0B0D 72%)}
-.ves-esc:after{content:"";position:absolute;left:50%;top:calc(30px + var(--alto,300px));width:60%;height:14px;transform:translate(-50%,-8px);
-  border-radius:50%;background:radial-gradient(closest-side,rgba(0,0,0,.8),transparent);pointer-events:none}
-.ves-vp{position:absolute;top:10px;left:10px;padding:4px 7px;background:var(--v-rosa);color:#fff;font:800 11px/1 "Barlow Condensed",sans-serif;letter-spacing:.1em;text-transform:uppercase}
-.ves-aun{text-align:center;max-width:34ch}
-.ves-mano{display:flex;gap:6px;justify-content:center;flex-wrap:wrap}
-.ves-mano button{display:grid;justify-items:center;gap:4px;padding:6px 4px 5px;border:1.5px solid transparent;background:none;color:var(--v-gris);cursor:pointer}
-.ves-mano button.on{border-color:var(--v-tinta);background:#141418;color:var(--v-tinta)}
-.ves-mi{display:grid;place-items:center;height:62px}
-.ves-mci{max-width:44px;max-height:62px;width:auto;height:auto;display:block}
-.ves-mano small{font:700 11px/1 "Barlow Condensed",sans-serif;letter-spacing:.08em;text-transform:uppercase}
+/* 🎭 EL ESCENARIO (v3, 16/11/2026): la carta es la estrella, como en Valorant y Apex. Las ranuras a la izquierda dicen
+   lo que tienes puesto, tus cartas a la derecha, y debajo de la carta el nombre de la pieza en grande. Sin degradés:
+   negro plano, la raya del piso y el nombre de la ranura gigante y casi invisible detrás */
+.ves-a{display:grid;gap:0;border:1.5px solid var(--v-borde)}
+.ves-esc{position:relative;display:grid;grid-template-columns:220px minmax(0,1fr) 96px;min-height:620px;background:var(--v-fondo);overflow:hidden;
+  border-bottom:1.5px solid var(--v-borde)}
+.ves-esc:before{content:attr(data-fondo);position:absolute;left:50%;top:44%;transform:translate(-50%,-50%);font:900 170px/1 Archivo,sans-serif;
+  font-stretch:125%;text-transform:uppercase;color:rgba(246,246,246,.035);white-space:nowrap;pointer-events:none}
+.ves-rk{display:block;padding:14px 16px 6px;font:700 11.5px/1 "Barlow Condensed",sans-serif;letter-spacing:.14em;text-transform:uppercase;color:var(--v-gris)}
+.ves-rail{position:relative;z-index:1;display:flex;flex-direction:column;padding:6px 0 14px;border-right:1.5px solid var(--v-borde)}
+.ves-rn{display:grid;gap:3px;padding:9px 14px 9px 12px;border:0;border-left:4px solid transparent;background:none;color:var(--v-tinta);text-align:left;cursor:pointer;min-width:0}
+.ves-rn b{display:flex;align-items:center;gap:6px;font:900 14px/1 Archivo,sans-serif;text-transform:uppercase}
+.ves-rn b em{margin-left:auto;font:700 11px/1 "Barlow Condensed",sans-serif;font-style:normal;letter-spacing:.06em;color:var(--v-gris)}
+.ves-rn small{font:600 12px/1.25 Archivo,sans-serif;color:var(--v-gris);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ves-rn.on{border-left-color:var(--v-verde);background:#121216}
+.ves-rn.on small{color:var(--v-tinta)}
+.ves-rn.sg b:after{content:"";width:6px;height:6px;background:var(--v-rosa);border-radius:50%}
+.ves-rn.lk{opacity:.5}
+.ves-rn .ves-pt{margin-left:0}
+.ves-mid{position:relative;z-index:1;display:grid;justify-items:center;align-content:start;gap:12px;padding:24px 16px 22px;min-width:0}
+.ves-carta{position:relative;padding-bottom:16px;border-bottom:2px solid var(--v-borde2);width:min(100%,460px);display:grid;justify-items:center}
+.ves-vp{position:absolute;top:0;left:0;z-index:2;padding:4px 7px;background:var(--v-rosa);color:#fff;font:800 11px/1 "Barlow Condensed",sans-serif;letter-spacing:.1em;text-transform:uppercase}
+.ves-aun{text-align:center;max-width:36ch}
+.ves-info{--r:var(--v-gris);display:grid;justify-items:center;gap:6px;text-align:center;max-width:460px;min-width:0}
+.ves-info.r-t1{--r:var(--t1)}.ves-info.r-t2{--r:var(--t2)}.ves-info.r-t3{--r:var(--t3)}.ves-info.r-t4{--r:var(--t4)}
+.ves-info em{font:800 12px/1 "Barlow Condensed",sans-serif;font-style:normal;letter-spacing:.14em;text-transform:uppercase;color:var(--r)}
+.ves-info > b{max-width:100%;font:900 34px/1 Archivo,sans-serif;font-stretch:112%;text-transform:uppercase;letter-spacing:-.01em;overflow-wrap:anywhere;text-wrap:balance}
+.ves-info p{display:flex;gap:6px;align-items:flex-start;justify-content:center;margin:0;font:500 14px/1.45 Archivo,sans-serif;color:#C9C9CC}
+.ves-info p .ves-cand{position:static;flex:none;margin-top:3px}
+.ves-cg{font-weight:800;color:var(--v-tinta)}
+.ves-est{padding:4px 7px;font:900 10.5px/1 Archivo,sans-serif;text-transform:uppercase;letter-spacing:.04em}
+.ves-est.ok{background:var(--v-verde);color:#030304}
+.ves-est.prob{background:var(--v-rosa);color:#fff}
+.ves-cmp{display:inline-flex;border:1.5px solid var(--v-borde2)}
+.ves-cmp button{min-height:36px;padding:0 13px;border:0;background:none;color:var(--v-gris);font:900 11.5px/1 Archivo,sans-serif;text-transform:uppercase;cursor:pointer}
+.ves-cmp button.on{background:var(--v-tinta);color:#030304}
+.ves-mazo{position:relative;z-index:1;display:flex;flex-direction:column;align-items:center;gap:6px;padding:6px 8px 14px;border-left:1.5px solid var(--v-borde)}
+.ves-mazo .ves-rk{padding:14px 0 4px}
+.ves-mazo button{display:grid;justify-items:center;gap:4px;padding:6px 4px 5px;border:1.5px solid transparent;background:none;color:var(--v-gris);cursor:pointer;opacity:.6}
+.ves-mazo button.on{border-color:var(--v-tinta);background:#141418;color:var(--v-tinta);opacity:1}
+.ves-mi{display:grid;place-items:center;height:72px}
+.ves-mci{max-width:52px;max-height:72px;width:auto;height:auto;display:block}
+.ves-mazo small{font:700 10.5px/1 "Barlow Condensed",sans-serif;letter-spacing:.08em;text-transform:uppercase}
 .ves-pt{display:inline-block;width:7px;height:7px;margin-left:5px;border-radius:50%;background:var(--v-rosa);vertical-align:middle}
+.ves-abajo{display:grid;gap:12px;padding:18px 18px 22px;min-width:0}
+/* los cuadros del escenario: la rareza en el borde de arriba, y el punto magenta de «nuevo» */
+.ves-a .ves-q{border-top:3px solid var(--r)}
+.ves-q.r-auto{--r:var(--v-verde)}
+.ves-q .ves-nv{left:auto;right:6px;top:6px;width:9px;height:9px;padding:0;border-radius:50%;box-shadow:0 0 0 3px rgba(228,19,115,.25)}
+.ves-pie{font:600 11px/1 "Barlow Condensed",sans-serif;font-style:normal;letter-spacing:.04em;color:var(--v-gris)}
+@media (hover: hover) and (pointer: fine){
+  .ves-rn:not(.on):hover{background:#0E0E11}
+  .ves-mazo button:not(.on):hover{opacity:1}
+}
+@media (prefers-reduced-motion: no-preference){
+  .ves-q{transition:border-color .15s ease,background-color .15s ease,transform .15s cubic-bezier(.23,1,.32,1)}
+  .ves-a .ves-q:hover{transform:translateY(-2px)}
+}
+/* 📊 la colección: cuánto tienes de cada cosa */
+.ves-prog{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:8px}
+.ves-pr{display:grid;gap:6px;padding:12px 14px;border:1.5px solid var(--v-borde);background:var(--v-panel)}
+.ves-pr > b{font:900 28px/1 Archivo,sans-serif;font-variant-numeric:tabular-nums}
+.ves-pr > b small{font-size:14px;color:var(--v-gris)}
+.ves-pr > span{font:800 12px/1 "Barlow Condensed",sans-serif;letter-spacing:.12em;text-transform:uppercase}
+.ves-pr > small{font:500 12px/1.2 Archivo,sans-serif;color:var(--v-gris)}
+.ves-pr .ves-barra{flex:none}
 
 /* 🧩 la carta viva: el iframe del tamaño de la carta, achicado al ancho que toca */
 .cv{position:relative;display:block;overflow:hidden}
@@ -161,14 +211,12 @@
 .ves-pasos small{font:700 12px/1.2 "Barlow Condensed",sans-serif;letter-spacing:.08em;text-transform:uppercase;color:var(--v-gris)}
 
 @media (hover: hover) and (pointer: fine){
-  .ves-q:not(.on):hover,.ves-ran button:not(.on):hover,.ves-sec button:not(.on):hover,.ves-fil button:not(.on):hover,.ves-mano button:not(.on):hover,.ves-btn:not(.blanco):hover{border-color:#6A6A72}
+  .ves-q:not(.on):hover,.ves-sec button:not(.on):hover,.ves-fil button:not(.on):hover,.ves-btn:not(.blanco):hover{border-color:#6A6A72}
   .ves-lnk:hover{text-decoration:underline}
 }
 
 /* 🖥️ desde 900 px: la carta fija a la izquierda y lo demás a la derecha; perfil y colección en dos columnas */
 @media (min-width: 900px){
-  .ves-cuerpo{grid-template-columns:minmax(0,360px) minmax(0,1fr);gap:20px}
-  .ves-izq{position:sticky;top:12px}
   .ves-perfil,.ves-col{grid-template-columns:repeat(2,minmax(0,1fr))}
   .ves-col .ancha{grid-column:1 / -1}
   .ves-gmini{display:none}
@@ -184,6 +232,21 @@
   .ves-sec button b{font-size:14px}
   .ves-sec button small{font-size:11px}
   .ves-grid{grid-template-columns:repeat(3,minmax(0,1fr))}
+  /* 🎭 el escenario en el celular: tus cartas arriba, la carta y su ficha, y las ranuras en una fila que se desliza */
+  .ves-esc{grid-template-columns:minmax(0,1fr);min-height:0}
+  .ves-esc:before{font-size:84px;top:34%}
+  .ves-mazo{order:1;flex-direction:row;justify-content:center;border-left:0;border-bottom:1.5px solid var(--v-borde);padding:6px}
+  .ves-mazo .ves-rk{display:none}
+  .ves-mi{height:56px}
+  .ves-mci{max-width:40px;max-height:56px}
+  .ves-mid{order:2;padding:16px 12px 16px}
+  .ves-rail{order:3;flex-direction:row;overflow-x:auto;scrollbar-width:none;border-right:0;border-top:1.5px solid var(--v-borde);padding:0}
+  .ves-rail::-webkit-scrollbar{display:none}
+  .ves-rail .ves-rk,.ves-rn.va,.ves-rn small{display:none}
+  .ves-rn{flex:none;border-left:0;border-bottom:4px solid transparent;padding:13px 14px 10px}
+  .ves-rn.on{border-bottom-color:var(--v-verde)}
+  .ves-info > b{font-size:26px}
+  .ves-abajo{padding:14px 12px 18px}
   /* ⚠️ por encima de la barra de abajo de la página (76 px, como los otros avisos fijos), y con lugar a la derecha para
      el botón de subir, que si no le tapaba Guardar */
   .ves-guardar{bottom:calc(76px + env(safe-area-inset-bottom,0px));margin-right:56px}
