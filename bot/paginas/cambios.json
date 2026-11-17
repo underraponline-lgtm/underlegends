@@ -11,6 +11,17 @@
   ],
   "cambios": [
     {
+        "version": "6.18",
+        "dia": "2026-11-17",
+        "cuando": "2026-11-17T18:24:00-05:00",
+        "titulo": "Un solo ELO por persona",
+        "items": [
+            "**Quien jugó con dos nombres ahora tiene un solo ELO**: si una llave te escribió de otra forma, esas batallas cuentan para ti. Tu división, las Competencias y la nota de cada llave lo toman entero.",
+            "Por eso esta semana algunos cambian de división, y quien entra a una nueva por primera vez cobra su subida como siempre.",
+            "En una copa ya armada, si alguien estaba dos veces (con su nombre y con uno viejo), queda una vez y su rival pasa a la ronda siguiente."
+        ]
+    },
+    {
         "version": "6.17",
         "dia": "2026-11-17",
         "cuando": "2026-11-17T18:25:00-05:00",

@@ -175,9 +175,106 @@ def _j(*p, defecto=None):
         return defecto
 
 
+_REAL = {}
+#: las pruebas lo prenden: sus nombres inventados («Z», «X») pueden ser alias de alguien de verdad
+_SIN_ALIAS = [False]
+
+
+def de_hoy(s):
+    """El nombre de HOY de quien la llave escribió `s` (`rankings.canon()`: los alias de `datos/akas.json`), o `s`.
+
+    🪪 Dlx, 17/11/2026, a que el ELO contaba a 8 personas partidas en dos (Over: 12 batallas como «Mr Still Ballin» y 10
+    como «Over»): *«junta el ELO de una»*. Sin el mapa, el nombre tal cual: es lo de antes."""
+    s = str(s or '').strip()
+    if _SIN_ALIAS[0]:
+        return s
+    if s not in _REAL:
+        try:
+            import rankings as _RK
+            _REAL[s] = _RK.canon(s) or s
+        except Exception:                                # noqa: BLE001
+            _REAL[s] = s
+    return _REAL[s]
+
+
 def norm(s):
+    """🔑 LA IDENTIDAD DE UNA PERSONA EN LAS COMPETENCIAS, EL ELO (`bot/elo.py`), LAS DIVISIONES Y LAS NOTAS
+    (`bot/notas.py`): su nombre de hoy (`de_hoy()`), normalizado.
+
+    🔴 HASTA EL 17/11/2026 ERA CÓMO LA ESCRIBIÓ LA LLAVE, sin alias: quien aparecía con dos nombres tenía dos ELO, dos
+    lugares en las divisiones y dos entradas en las copas. Ese día eran 8 (Over, Shadow, Andy MC, Mito, Rafael JR,
+    wosito…), y Rafael JR, wosito y KairoX ni aparecían en las divisiones: su ELO estaba bajo el nombre viejo. Lo
+    guardado de antes en `datos/competencias.json` se pone al día al leerlo (`al_dia()`)."""
     import construir_padron as PAD
-    return PAD.norm(s)
+    return PAD.norm(de_hoy(s))
+
+
+def al_dia(viejo, hoy=None):
+    """`datos/competencias.json` con cada persona bajo su clave de hoy (`norm()`), sin repetirla en una lista.
+
+    ⚠️ SÓLO LAS CLAVES DE UN ALIAS DECLARADO (las de `rankings._ALIAS` cuyo nombre de hoy es otro): un id
+    («copa:2026-11-02:O:1»), una fecha o una letra no es una clave y no se toca. Los premios no cambian de id —el objeto
+    los paga por id (`tienda()`)—, sólo de dueño, así que nadie cobra dos veces.
+    Lo de la persona manda: en un diccionario, si ya está con su clave de hoy, lo del nombre viejo no la pisa."""
+    import construir_padron as PAD
+    norm_crudo = PAD.norm
+    if hoy is None:
+        try:
+            import rankings as _RK
+            _RK.canon('')
+            al = set(_RK._ALIAS or {})
+        except Exception:                                # noqa: BLE001
+            return viejo
+        memo = {}
+
+        def hoy(x):
+            if x not in al:
+                return x
+            if x not in memo:
+                n = norm(x)
+                memo[x] = n if n and n != x else x
+            return memo[x]
+
+    def k(x):
+        return hoy(x) if isinstance(x, str) and x else x
+
+    # 🏆 UNA LLAVE YA ARMADA NO PUEDE TENER DOS VECES A LA MISMA PERSONA. Las copas y los rapid se rearman desde los
+    # lugares de su primera ronda (`armadas()`), y quien entró con su nombre de hoy y con uno viejo tenía dos lugares
+    # (el 17/11/2026, Shadow y «VALLES-T» en la copa I). El lugar del nombre viejo queda vacío —un pase libre para su
+    # rival, como una llave que no se llenó— y la persona sigue en el suyo
+    viejo = dict(viejo or {})
+    for que in ('copa', 'rapid'):
+        llaves_ = []
+        for r in viejo.get(que) or []:
+            ps = ((r.get('rondas') or [{}])[0]).get('partidos') or []
+            hay = {x for m in ps for x in (m.get('a'), m.get('b')) if isinstance(x, str) and x and k(x) == x}
+            if any(isinstance(x, str) and x and k(x) != x and k(x) in hay for m in ps for x in (m.get('a'), m.get('b'))):
+                r = dict(r)
+                r['rondas'] = [dict(r['rondas'][0])] + list(r['rondas'][1:])
+                r['rondas'][0]['partidos'] = [
+                    {**m, **{l: '' for l in ('a', 'b') if isinstance(m.get(l), str) and m.get(l) and k(m[l]) != m[l]
+                             and k(m[l]) in hay}} for m in ps]
+            llaves_.append(r)
+        if que in viejo:
+            viejo[que] = llaves_
+
+    def ir(o):
+        if isinstance(o, dict):
+            out = {}
+            for a in sorted(o, key=lambda a: k(a) != a):
+                b = k(a)
+                if b not in out:
+                    out[b] = ir(o[a])
+            return out
+        if isinstance(o, list):
+            xs = [ir(v) for v in o]
+            # una lista de claves (la gente de una copa, quiénes entran) no repite a nadie: si el nombre viejo y el de
+            # hoy estaban los dos, queda una vez
+            if any(k(v) != v for v in o) and all(isinstance(v, str) and v == norm_crudo(v) for v in xs):
+                return list(dict.fromkeys(xs))
+            return xs
+        return k(o)
+    return ir(viejo or {})
 
 
 def personas(lado):
@@ -204,7 +301,7 @@ def jugaron(llaves, desde, hasta):
             continue
         for nombre, _p, _x in ev.get('tabla') or []:
             for p in personas(nombre):
-                out.setdefault(norm(p), p)
+                out.setdefault(norm(p), de_hoy(p))
     return out
 
 
@@ -1341,6 +1438,8 @@ def calcular(ahora=None, llaves=None, notas=None, viejo=None):
     llaves = llaves if llaves is not None else (_j('datos', 'llaves_t1.json', defecto={}) or {})
     notas = notas if notas is not None else (_j('datos', 'notas_eventos.json', defecto={}) or {})
     viejo = viejo if viejo is not None else (_j('datos', 'competencias.json', defecto={}) or {})
+    # 🪪 lo guardado, con cada uno bajo su clave de hoy (ver `norm()`)
+    viejo = al_dia(viejo)
     sid, ini, fin = MU.periodo(ahora)
     sid = str(sid)
     fz = fuerzas(llaves, ini)
@@ -1362,7 +1461,7 @@ def calcular(ahora=None, llaves=None, notas=None, viejo=None):
     for ev in llaves.values():
         for nombre, _p, _x in ev.get('tabla') or []:
             for p in personas(nombre):
-                nombres.setdefault(norm(p), p)
+                nombres.setdefault(norm(p), de_hoy(p))
     res = {
         '_leeme': 'Las competencias: las arma bot/competencias.py. Las reglas viven en ese archivo.',
         'sem': sid, 'ini': ini.isoformat(), 'fin': fin.isoformat(),
@@ -1421,11 +1520,25 @@ def _self_check_premios(ok):
 
 def _self_check():
     mal = 0
+    _SIN_ALIAS[0] = True
 
     def ok(c, t, extra=None):
         nonlocal mal
         mal += not c
         print('   %s %s%s' % ('✅' if c else '🔴', t, '' if c or extra is None else '  → %s' % (extra,)))
+
+    # 🪪 un nombre viejo, al día (17/11/2026): bajo la clave de hoy, sin repetir a nadie, y en una llave ya armada su
+    # lugar queda vacío (un pase libre) si la persona ya estaba con su nombre de hoy
+    hoy_ = {'vallest': 'shadow', 'mrviejo': 'over'}.get
+    v_ = al_dia({'copa': [{'gente': ['andres', 'shadow', 'darn', 'vallest'], 'rondas': [{'partidos': [
+        {'a': 'andres', 'b': 'shadow'}, {'a': 'darn', 'b': 'vallest'}]}]}],
+        'premios': {'liga:1:oro-1:3': ['mrviejo', 300, 'oro', 1]}, 'estados': {'mrviejo': [1], 'over': [2]},
+        'entran': ['mrviejo', 'over', 'ana']}, lambda x: hoy_(x, x))
+    ok(v_['copa'][0]['rondas'][0]['partidos'] == [{'a': 'andres', 'b': 'shadow'}, {'a': 'darn', 'b': ''}]
+       and v_['copa'][0]['gente'] == ['andres', 'shadow', 'darn'] and armadas(dict(v_, sem='s'), 's', 'copa') == [['andres', 'shadow', 'darn', '']],
+       'quien estaba con su nombre de hoy y con uno viejo queda una vez, y su rival pasa', v_['copa'])
+    ok(v_['premios'] == {'liga:1:oro-1:3': ['over', 300, 'oro', 1]} and v_['estados'] == {'over': [2]} and v_['entran'] == ['over', 'ana'],
+       'el premio cambia de dueño y no de id (no se cobra dos veces), y lo de la persona manda sobre lo del nombre viejo', v_)
 
     print('\n══ LAS COMPETENCIAS ══\n')
     _self_check_premios(ok)
