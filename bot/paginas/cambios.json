@@ -11,6 +11,17 @@
   ],
   "cambios": [
     {
+        "version": "5.92",
+        "dia": "2026-11-17",
+        "cuando": "2026-11-17T00:35:00-05:00",
+        "titulo": "Eventos de estilo: tu estilo sube de nivel",
+        "items": [
+            "Algunos eventos van a ser **eventos de estilo**: en Eventos dicen «🎭 evento de Punchline» (o del estilo que sea).",
+            "Jugar uno te da **nivel 1** en ese estilo, y quedar en el **cuarto de arriba** de la llave te sube uno, hasta el 3. Si es tu estilo, sube el tuyo; si no, se te desbloquea en el 2.º lugar de tu carta Competitiva.",
+            "Los niveles vuelven a 0 cada temporada."
+        ]
+    },
+    {
         "version": "5.91",
         "dia": "2026-11-17",
         "cuando": "2026-11-17T00:28:00-05:00",
