@@ -2719,8 +2719,10 @@ export function Tira({ liga }) {
           servidores pero ahora que son varios…», y a las opciones, «me gusta una tira que corre… queda más visual»). Del
           más alto al más bajo, dos veces seguidas para que la vuelta no se note (la segunda, escondida para el lector de
           pantalla y el teclado). Se frena al pasar el mouse o con el foco adentro; con «Menos animaciones» o el
-          movimiento reducido del teléfono, quieta y se desliza a mano */}
-      <div className="ts-corre" style={{ '--ts-dur': Math.max(18, svs.length * 3) + 's' }}>
+          movimiento reducido del teléfono, quieta y se desliza a mano.
+          🐢 6 s por servidor (Dlx, 16/11/2026: «se mueve rapidísimo»): con 3 s eran ~55 px por segundo —14 servidores,
+          2.300 px en 42 s—; ahora ~27, la mitad. Por servidor y no fijo, para que la velocidad no cambie con cuántos son */}
+      <div className="ts-corre" style={{ '--ts-dur': Math.max(36, svs.length * 6) + 's' }}>
         <ul className="ts-l ts-pista">
           {[0, 1].map((vuelta) => svs.map((sv) => {
             const x = xs[sv];

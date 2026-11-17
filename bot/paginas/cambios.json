@@ -11,6 +11,15 @@
  ],
  "cambios": [
     {
+        "version": "5.71",
+        "dia": "2026-11-16",
+        "cuando": "2026-11-16T20:42:21-05:00",
+        "titulo": "La tira de Esta semana, más lenta",
+        "items": [
+            "La tira de **Esta semana** del Inicio, la de los multiplicadores de cada servidor, ahora corre a la mitad de velocidad."
+        ]
+    },
+    {
         "version": "5.70",
         "dia": "2026-11-16",
         "cuando": "2026-11-16T20:21:00-05:00",
