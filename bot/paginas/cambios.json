@@ -11,6 +11,15 @@
  ],
  "cambios": [
     {
+        "version": "5.70",
+        "dia": "2026-11-16",
+        "cuando": "2026-11-16T20:21:00-05:00",
+        "titulo": "El Inicio, más liviano al entrar",
+        "items": [
+            "Al entrar, la página ya no arranca todas las secciones de una vez: sólo las deja bajadas para que abran rápido, como antes."
+        ]
+    },
+    {
         "version": "5.69",
         "dia": "2026-11-16",
         "cuando": "2026-11-16T20:20:00-05:00",
