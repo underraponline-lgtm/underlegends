@@ -714,13 +714,14 @@ export default {
     const ua = req.headers.get('user-agent') || '';
 
     // 🎁 LOS LINKS CORTOS (17/11/2026, Dlx: «que el link sea corto para no asustar»): `/i/<clave>` es el de referido y
-    // `/c/<código>` el de una crew. A la persona la llevan a la página (con `?ref=` o `?u=`); a los bots de vista previa
+    // `/c/<código>` el de una crew. A la persona la llevan a la página (`/freestyle-rap/invitar?ref=` o la crew con `?u=`); a los bots de vista previa
     // les dan la miniatura (`vistaRef()`, `vistaCrew()`)
     const mRef = req.method === 'GET' && /^\/i\/([a-z0-9][a-z0-9._-]{0,59})\/?$/i.exec(url.pathname);
     if (mRef) {
       const k = mRef[1].toLowerCase();
       if (BOTS_VISTA.test(ua)) { const v = await vistaRef(req, env, k, url).catch(() => null); if (v) return v; }
-      return Response.redirect(url.origin + '/freestyle-rap/?ref=' + encodeURIComponent(k), 302);
+      // a la página que le dice quién lo invitó y qué hacer (invitar.jsx); `?ref=` lo anota referidos.js
+      return Response.redirect(url.origin + '/freestyle-rap/invitar?ref=' + encodeURIComponent(k), 302);
     }
     const mCod = req.method === 'GET' && /^\/c\/([a-hjkmnp-z2-9]{10})\/?$/i.exec(url.pathname);
     if (mCod) {
