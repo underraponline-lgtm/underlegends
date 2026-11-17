@@ -3935,10 +3935,17 @@ export function validarComentario(items, d, id, mio, ahora) {
 // maqueta, «Sí, constrúyelos». Un drop se GANA —el Pase (35, 45, las cajas del 40 y el 50, y uno cada `drop_cola` XP
 // después del 50) y la barra del día (pasos 1, 3 y 6)— y NUNCA se vende por plata. La rareza la decide el objeto al
 // abrirlo (`dropAbrir()`), con azar del sistema; la página sólo anima hasta lo que salió.
+// ⚖️ LAS PROBABILIDADES, AJUSTADAS A CUÁNTOS DROPS SE REPARTEN (16/11/2026, Dlx: «asegúrate de ajustar las probabilidades
+// basado en la cantidad de dragon drops que tenemos», y a la propuesta, «Sí, aplícalas»). Eran 50/28/15/5,5/1,5 con un
+// legendario seguro cada 10, de cuando sólo estaban la barra del día y el Pase. Con el drop del día y los cofres, quien
+// hace todo recibe ~31 por semana: sacaba un Micrófono de Oro cada 2 días. Medido en el Dashboard: los drops dieron
+// +85.050 Puntos en sus primeros ~4,5 días (~1.600 por drop), y el 16/11 entraron 92.100 Puntos en un día contra
+// 2.000–17.000 antes del 12. Ahora: uno cada 2 o 3 semanas para quien hace todo y ~1 por temporada para quien entra de
+// vez en cuando (la simulación está en el artifact de la maqueta, AcuDQPj6VD2CU2XYCg9FsF)
 //: las rarezas, de la más común a la legendaria, y su peso sobre 10.000 (las probabilidades se muestran tal cual)
-export const DROP_RAREZAS = [['Maqueta', 5000], ['Mixtape', 2800], ['Vinilo', 1500], ['Disco de Oro', 550], ['Micrófono de Oro', 150]];
-//: el décimo drop sin un legendario es legendario
-export const DROP_GARANTIA = 10;
+export const DROP_RAREZAS = [['Maqueta', 5300], ['Mixtape', 2900], ['Vinilo', 1420], ['Disco de Oro', 300], ['Micrófono de Oro', 80]];
+//: el drop número 120 sin un legendario es legendario (era el 10)
+export const DROP_GARANTIA = 120;
 //: los pasos del día que dan un drop
 export const DROP_PASOS = [1, 3, 6];
 //: 🎁 el cofre de votar todas las encuestas de la semana: cuántos drops y desde qué rareza el primero (2 = Vinilo)

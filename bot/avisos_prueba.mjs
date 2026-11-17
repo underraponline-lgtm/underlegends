@@ -3542,10 +3542,11 @@ const ok = (cond, que, det) => {
 // 🐉 LOS DRAGÓN DROPS (12/11/2026): la rareza, la garantía, el premio, la barra del día y abrir, sobre el objeto de verdad
 {
   console.log('\n🐉 los Dragón Drops');
-  ok(A.rarezaDrop(0) === 0 && A.rarezaDrop(0.4999) === 0 && A.rarezaDrop(0.5) === 1 && A.rarezaDrop(0.999) === 4,
-    'las rarezas salen de su peso (50 % Maqueta … 1,5 % Micrófono de Oro)');
-  ok(A.rarezaDrop(0, 2) === 2 && A.rarezaDrop(0, 0, A.DROP_GARANTIA - 1) === 4,
-    'una caja manda la rareza mínima, y el décimo sin legendario es legendario');
+  ok(A.rarezaDrop(0) === 0 && A.rarezaDrop(0.5299) === 0 && A.rarezaDrop(0.53) === 1 && A.rarezaDrop(0.9919) === 3
+    && A.rarezaDrop(0.992) === 4 && A.rarezaDrop(0.9999) === 4,
+    'las rarezas salen de su peso (53 % Maqueta … 0,8 % Micrófono de Oro)');
+  ok(A.rarezaDrop(0, 2) === 2 && A.rarezaDrop(0, 0, A.DROP_GARANTIA - 1) === 4 && A.rarezaDrop(0, 0, A.DROP_GARANTIA - 2) === 0,
+    'una caja manda la rareza mínima, y el drop ' + A.DROP_GARANTIA + ' sin legendario es legendario');
   const pr0 = A.premioDrop(0, 0.5, []), pr4 = A.premioDrop(4, 0.1, []), pr4b = A.premioDrop(4, 0.1, ['Corona de Escamas']);
   ok(pr0.puntos >= 100 && pr0.puntos <= 300 && pr0.puntos % 50 === 0 && pr4.puntos === 10000 && pr4.titulo === 'Corona de Escamas'
     && pr4b.titulo === '', 'el premio crece con la rareza y un título que ya tienes no se repite', JSON.stringify([pr0, pr4, pr4b]));
@@ -3583,16 +3584,17 @@ const ok = (cond, que, det) => {
     ok(o.dropAbrir('300000000000000002', d.cerrados[1].id).error === 'no_existe', 'nadie abre un drop ajeno');
     const pago = o.sql.exec("SELECT monto FROM tienda WHERE id = ?", 'drop:' + id).toArray()[0];
     ok(!a1.puntos || (pago && pago.monto === a1.puntos), 'los Puntos van a la billetera, una vez');
-    // la garantía: nueve abiertos sin legendario, y el décimo lo es
-    for (let i = 0; i < 12; i++) o.dropDar(Q, 'prueba:' + i);
+    // la garantía: los abiertos sin legendario, y el de la garantía lo es. Se leen de la tabla y no de `dropsDe()`, que
+    // devuelve 60 cerrados y la garantía pide más
+    for (let i = 0; i < A.DROP_GARANTIA + 2; i++) o.dropDar(Q, 'prueba:' + i);
     o.sql.exec("UPDATE drops SET rareza = 0 WHERE quien = ? AND abierto = 1", Q);
     let leg = -1;
-    for (const c of o.dropsDe(Q).cerrados) {
+    for (const c of o.sql.exec('SELECT id FROM drops WHERE quien = ? AND abierto = 0 ORDER BY id', Q).toArray()) {
       const r = o.dropAbrir(Q, c.id);
       if (r.rareza === 4) { leg = o.sql.exec('SELECT COUNT(*) AS n FROM drops WHERE quien = ? AND abierto = 1', Q).toArray()[0].n; break; }
       o.sql.exec('UPDATE drops SET rareza = 0 WHERE id = ?', c.id);
     }
-    ok(leg > 0 && leg <= A.DROP_GARANTIA, 'en diez drops sale un legendario sí o sí', leg);
+    ok(leg > 0 && leg <= A.DROP_GARANTIA, 'en ' + A.DROP_GARANTIA + ' drops sale un legendario sí o sí', leg);
   }
 }
 
