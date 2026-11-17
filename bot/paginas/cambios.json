@@ -11,6 +11,17 @@
   ],
   "cambios": [
     {
+        "version": "5.86",
+        "dia": "2026-11-17",
+        "cuando": "2026-11-17T00:40:00-05:00",
+        "titulo": "El menú MODS",
+        "items": [
+            "Quien modera la Liga tiene un botón MODS arriba, sólo en las páginas donde tiene algo para hacer.",
+            "Owner y Admin pueden manejar cualquier crew como su Líder; todo lo que hacen queda anotado con su nombre.",
+            "En Competencias, ver todas las llaves o mirar como quien no juega se prende desde ese menú."
+        ]
+    },
+    {
         "version": "5.85",
         "dia": "2026-11-16",
         "cuando": "2026-11-16T23:50:00-05:00",
