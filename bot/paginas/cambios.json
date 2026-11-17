@@ -11,6 +11,17 @@
   ],
   "cambios": [
     {
+        "version": "5.79",
+        "dia": "2026-11-16",
+        "cuando": "2026-11-16T22:51:00-05:00",
+        "titulo": "El Inicio, quieto, y campeones de verdad",
+        "items": [
+            "En algunas compus el escenario del Inicio pasaba solo y a toda velocidad. **Ya no**: cada momento dura lo que tiene que durar.",
+            "Si tu sistema tiene «reducir movimiento», el escenario se queda quieto y pasas de un momento a otro tocándolos en la tira.",
+            "Una llave sin final no corona a nadie: el último campeón y los titulares salen sólo de llaves terminadas."
+        ]
+    },
+    {
         "version": "5.78",
         "dia": "2026-11-16",
         "cuando": "2026-11-16T22:47:00-05:00",
