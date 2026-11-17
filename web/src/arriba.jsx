@@ -477,13 +477,16 @@ export function Cabecera({ liga, dc, onMenu, pagina = '', sv = '' }) {
   const [yoM, setYoM] = useState(false);
   const cara = yo ? <Cara liga={liga} k={yo.k} nombre={yo.n} /> : (dc ? <CaraDc dc={dc} /> : null);
   const nombre = yo ? limpio(yo.n) : (dc ? limpio(dc.n) : '');
-  // 🔥 tu racha diaria, al lado de tu cuenta (sólo si entraste con Discord: pedirla cuenta el día)
+  // 🔥 tu racha diaria: ya NO va acá (Dlx, 17/11/2026: «esa de racha diaria está abajo ya te dije»), pero pedirla es lo que
+  // cuenta el día y trae tu nivel
   const R = useRacha(!!dc);
-  const fuego = R && R.racha.actual ? R.racha.actual : 0;
+  // 💎 en su lugar, la insignia PREMIUM si tienes el Pase de rapero premium (Dlx: «en vez de ese 9 pon ahí PREMIUM… si
+  // uno lo tiene, y si no, no»). Sale de lo público del Pase, como el sello de al lado del nombre (sello.jsx)
+  const pases = usePases();
+  const prem = !!yo && esPremium(pases, yo.k);
   // ⭐ tu nivel (el general: el de entrar, jugar y lo que hacés en la Liga; no el del Pase), con su barra hasta el siguiente
   // (Dlx, 13/11/2026: «al costado del círculo de perfil una barra… no de Pase de rapero sino nivel de XP en general»)
   const nv = R && R.nivel && R.nivel.n ? R.nivel : null;
-  const enInicio = !pagina || pagina === 'inicio';
   const nvPct = nv && nv.sig > nv.base ? Math.max(0, Math.min(100, Math.round((100 * (nv.xp - nv.base)) / (nv.sig - nv.base)))) : 0;
   // ⌨️ Ctrl K (o ⌘ K, o «/» fuera de un campo) abre el buscador, como la paleta de 21st que se tomó de referencia
   useEffect(() => {
@@ -513,16 +516,14 @@ export function Cabecera({ liga, dc, onMenu, pagina = '', sv = '' }) {
         {cara ? (
           <span className="yo-envol">
             <button type="button" className="yo-chip" data-tuto="cuenta" aria-haspopup="menu" aria-expanded={yoM} onClick={() => setYoM((v) => !v)}
-              aria-label={'Lo tuyo: inventario, perfil y cuenta' + (fuego ? ' · ' + fuego + (fuego === 1 ? ' día seguido' : ' días seguidos') : '')}>
+              aria-label={'Lo tuyo: inventario, perfil y cuenta' + (prem ? ' · Pase de rapero premium' : '')}>
               {cara}<span>{nombre}</span>
               {nv ? <span className="yo-nv" title={'Nivel ' + nv.n + ' · ' + num(nv.sig - nv.xp) + ' XP para el ' + (nv.n + 1)} aria-hidden="true">
                 <b><Ico n="xp" t={12} />Nivel {nv.n}</b><i><u style={{ width: nvPct + '%' }} /></i></span> : null}
-              {/* 🔥 la racha, salvo en el Inicio, donde ya está abajo con sus días (Dlx, 13/11/2026: «que desaparezca eso de la
-                  racha si eso está abajo») */}
-              {/* …pero su lugar se guarda (`yo-racha-res`, invisible): sin él la columna de la derecha era más angosta en el
-                  Inicio y el menú, centrado entre las dos, se corría de una página a otra (Dlx, 17/11/2026: «asegúrate que esto
-                  sea consistente») */}
-              {fuego ? <span className={'yo-racha' + (enInicio ? ' yo-racha-res' : '')} aria-hidden="true"><Ico n="fuego" t={13} />{fuego}</span> : null}</button>
+              {/* la misma en todas las páginas: lo que cambia de ancho a un costado corre el menú (17/11/2026) */}
+              {/* ⚠️ el rombo solo, sin la palabra: con «PREMIUM» el chip crecía 73 px y desde ~1300 px la cabecera tiene ancho fijo
+                  (el contenido de 1200 + los costados): el menú quedaba a 7 px de la marca a 1550 y a 0 a 1920 */}
+              {prem ? <span className="yo-prem" title="Pase de rapero premium" aria-hidden="true"><SelloPremium t={17} /></span> : null}</button>
             {yoM ? <YoMenu k={yo ? yo.k : (dc && dc.clave) || ''} dc={dc} nombre={nombre} cara={cara} onCerrar={() => setYoM(false)} /> : null}
           </span>
         ) : (

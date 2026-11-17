@@ -5551,11 +5551,10 @@ dialog.pn-pop.pop-gratis{--pc:#F5C542;width:min(640px,calc(100vw - 32px))}
   .app .cab.una .yo-chip > span:not(.cara):not(.yo-racha){display:none}
   .app .cab.una .cab-der{gap:8px}
   /* 📐 LA MISMA CABECERA EN TODAS LAS PÁGINAS (17/11/2026, Dlx: «asegúrate que esto sea consistente y quizás mover un poco
-     las cosas laterales a alejarse un poquitito más del centro»). La racha del Inicio guarda su lugar (`yo-racha-res`); el
+     las cosas laterales a alejarse un poquitito más del centro»). Lo del chip es igual en todas las páginas; el
      margen de los costados es 28 px menos que el del contenido, con piso de 40 (a 1200 px, con 24, quedaban 17 px entre la
      marca y el menú) */
   .app .cab.una{padding:10px max(40px,calc(var(--gut) - 28px))}
-  .app .cab.una .yo-racha-res{visibility:hidden}
   /* y la letra del menú, a la misma altura: los grupos (Ranking, Eventos…) son `inline-flex` centrados, los links sueltos
      eran texto arriba de todo y Publicaciones, con su «43», tenía la línea más alta. Medido: 32,6 · 34,4 · 35,6 px */
   .app .cab.una .menu > a{display:inline-flex;align-items:center}
@@ -5649,6 +5648,12 @@ dialog.pn-pop.pop-gratis{--pc:#F5C542;width:min(640px,calc(100vw - 32px))}
 /* 📐 desde 1320 y no desde 1200 (17/11/2026): entre 1200 y 1319, con la marca entera, la racha y «43» en Publicaciones, el
    menú se metía 8 px adentro del título. Sin la barra del nivel quedan ~40 px de cada lado */
 @media (min-width: 1320px){ .app .cab.una .yo-chip > span.yo-nv:not(.cara):not(.yo-racha){display:grid} }
+/* 💎 LA INSIGNIA PREMIUM EN TU CHIP, en el lugar de la racha (17/11/2026, Dlx: «en vez de ese 9 pon ahí PREMIUM… si uno lo
+   tiene, y si no, no»). El rombo del sello (sello.jsx), en todos los anchos de la compu; sin la palabra (ver arriba.jsx) */
+@media (min-width: 900px){
+  .app .cab.una .yo-chip > span.yo-prem:not(.cara):not(.yo-racha){display:inline-flex;align-items:center}
+}
+@media (min-width: 900px) and (max-width: 1199.98px){ .app .cab.una .yo-prem{margin-right:4px} }
 /* 📱 el campo de la barra en el celular: el estilo de `.buscar` sólo existía desde 900 px (quedaba aplastado), y la letra a
    16 px para que el iPhone no haga zoom al escribir */
 .app .cab.una .cab-busca .buscar{display:flex;align-items:center;gap:8px;border:2px solid #29B298;min-height:44px;padding:0 12px;color:#A5A5A0}
