@@ -11,6 +11,17 @@
   ],
   "cambios": [
     {
+        "version": "6.17",
+        "dia": "2026-11-17",
+        "cuando": "2026-11-17T18:25:00-05:00",
+        "titulo": "El kit de cada servidor",
+        "items": [
+            "Cada servidor de la Liga tiene su **página privada**, que sólo se abre con su link: su tier, lo que tiene, el paso a paso para dejar el bot bien configurado y el link para agregarlo como administrador, con su propio rol.",
+            "La página dice cómo está el bot en ese servidor: si le falta algún permiso y cuántos roles tiene por encima (el #N del apodo no se puede poner a quien tiene un rol más alto que el del bot).",
+            "Una llave que escribía el mismo nombre de dos formas ya no le paga dos veces a la misma persona."
+        ]
+    },
+    {
         "version": "6.16",
         "dia": "2026-11-17",
         "cuando": "2026-11-17T18:07:00-05:00",
