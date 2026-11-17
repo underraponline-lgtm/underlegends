@@ -328,6 +328,70 @@ def renombrar_varios(cambios, dry=True):
     return {h.nombre: n for h, _f, n in planes}
 
 
+def sin_adornos(llaves, dry=True):
+    """🧹 LO QUE YA SE ESCRIBIÓ CON UN «NOMBRE» QUE NO ERA NADIE, ARREGLADO (Dlx, 17/11/2026: *«arregla las filas
+    viejas del #576 y #636 y todas las demás»*). El lector ya no los toma (`equipos.no_es_persona()`, `limpiar()`), pero
+    los eventos cargados antes no se pueden volver a leer (sus llaves ya no están entre los mensajes que se releen). En
+    `Resultados`:
+      · la fila de un integrante que no es nadie («}», «<:logocypherhood:…>») se va, y sus puntos vuelven a sus
+        compañeros de ESE lado de la llave (los del mismo puesto): el #636 le pagaba 1.250 al logo de Cypherhood y
+        1.250 a j.nibbana, que jugó solo y cobra 2.500;
+      · «@j.nibbana» queda «j.nibbana» (es la misma clave: sólo cambia lo que se lee).
+    Y lo mismo en `1v1` (la arroba). Idempotente: con todo limpio no escribe nada. `{hoja: celdas}`; `nums`: los
+    eventos que cambiaron, para rehacer su tabla en la llave de la página."""
+    import equipos as EQ
+    import espejo_t1 as _EJ
+    from comun.claves import clave
+    out, nums = {}, set()
+    for hoja, cols in (('Resultados', (4,)), ('1v1', (4, 5, 6, 7))):
+        h = _EJ.hoja(hoja)
+        filas = [list(f) + [''] * (h.ancho - len(f)) for f in _EJ.base_para_escribir(hoja, lambda: _filas_crudas(h))]
+        n = 0
+        fuera = set()
+        if hoja == 'Resultados':
+            for i, f in enumerate(filas):
+                if not str(f[4]).strip() or not EQ.no_es_persona(f[4]):
+                    continue
+                num, txt = str(f[0]).strip(), str(f[4]).strip()
+                L = (llaves or {}).get(num) or {}
+                # el lado de la llave donde estaba, y quiénes eran personas ahí
+                lado = next((x for R in L.get('rondas') or [] for b in R.get('b') or [] for x in b[0] or []
+                             if txt in [p.strip() for p in re.split(r'[,+&]', str(x))]), '')
+                ks = {clave(EQ.limpiar(p)) for p in re.split(r'[,+&]', lado) if p.strip() and not EQ.no_es_persona(p)}
+                team = [j for j, g in enumerate(filas) if str(g[0]).strip() == num and j != i and g[6] == f[6]
+                        and not EQ.no_es_persona(g[4]) and clave(g[4]) in ks]
+                if team:
+                    tot = sum(int(float(filas[j][7] or 0)) for j in team) + int(float(f[7] or 0))
+                    for j in team:
+                        filas[j][7] = int(round(tot / float(len(team))))
+                print('      🧹 #%s «%s» no es nadie: fuera%s' % (num, txt, (' · %s cobra %s' % (
+                    ' y '.join(str(filas[j][4]) for j in team), filas[team[0]][7])) if team else ''))
+                fuera.add(i)
+                nums.add(num)
+                n += 1 + len(team)
+        for i, f in enumerate(filas):
+            if i in fuera:
+                continue
+            for c in cols:
+                s = str(f[c] or '')
+                if s.strip().startswith('@') and EQ.limpiar(s) and EQ.limpiar(s) != s.strip():
+                    print('      🧹 #%s «%s» → «%s»' % (str(f[0]).strip(), s.strip(), EQ.limpiar(s)))
+                    f[c] = EQ.limpiar(s)
+                    n += 1
+                    if hoja == 'Resultados':
+                        nums.add(str(f[0]).strip())
+        filas = [f for i, f in enumerate(filas) if i not in fuera]
+        out[hoja] = n
+        if n and not dry:
+            if h.nombre not in _EJ.SIN_SHEET:
+                raise RuntimeError('%s todavía vive en el Sheet: esto escribe sólo el archivo' % h.nombre)
+            if _EJ.al_escribir(h.nombre, h.cabecera, filas) is None:
+                raise RuntimeError('%s: no pude dejarla en datos/ (ver arriba)' % h.nombre)
+        if hoja == 'Resultados':
+            out['_filas'] = filas
+    return out, nums
+
+
 def guardar_varios(evs, dry=True):
     """Escribe varios eventos en las dos hojas. `{num: (resultados, duelos)}`.
 

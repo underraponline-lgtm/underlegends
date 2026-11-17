@@ -44,6 +44,7 @@ quien lo llame tiene que mandarlo a `Pendientes` en vez de cargarlo.
 """
 import re
 import sys
+import unicodedata
 
 #: Lo que el dibujo de la llave mete y no es parte de ningun nombre.
 #: `⌞⌟⌜⌝` son esquinas, `└┘┌┐│─├┤┬┴┼` cajas, `╭╮╯╰` redondeadas.
@@ -165,6 +166,15 @@ def con_y(lados):
     return {x: _Y.sub(' + ', limpiar(x)) for x in con}
 
 
+def no_es_persona(m):
+    """🚫 Un «integrante» sin una letra ni un número —«}», un emoji propio, una bandera sola— no es una persona: es
+    adorno o un dedazo. Dlx, 17/11/2026: *«arregla las filas viejas del #576 y #636 y todas las demás»*: el #634 (FFA)
+    tenía el lado «Ariaxer, }» y la llave le pagó la mitad de los puntos a «}». Se pregunta sobre lo LIMPIO (sin el
+    emoji propio ni la arroba) y sin las banderas, que son letras de símbolo y no de nombre."""
+    t = re.sub('[\U0001F1E6-\U0001F1FF]', '', limpiar(m))
+    return not any(unicodedata.category(c)[0] in 'LN' for c in t)
+
+
 def integrantes(lado):
     """`(nombres, cortado)` de un lado de la llave.
 
@@ -195,9 +205,10 @@ def integrantes(lado):
     for x in SEPS:
         trozos = [t for p in trozos for t in p.split(x)]
     trozos = [limpiar(t) for t in trozos]
-    nombres = [t for t in trozos if t]
-    # un trozo vacio significa un separador sin nombre: el lado vino cortado
-    cortado = len(nombres) != len(trozos)
+    # un trozo vacio significa un separador sin nombre: el lado vino cortado; uno sin letras ni números («}») no es
+    # un corte ni una persona: se saca (ver `no_es_persona()`)
+    cortado = any(not t for t in trozos)
+    nombres = [t for t in trozos if t and not no_es_persona(t)]
     return nombres, cortado
 
 
@@ -299,6 +310,8 @@ def _self_check():
     # 😶 el emoji propio y la arroba no son personas (#636 y #576)
     ok = (integrantes('@j.nibbana, <:logocypherhood:1258928534743683176>') == (['j.nibbana'], False)
           and integrantes('OKAM, <:emoji_5:1462319885810925610>') == (['OKAM'], False)
+          and integrantes('Ariaxer, }') == (['Ariaxer'], False) and integrantes('Ana, ') == (['Ana'], True)
+          and no_es_persona('}') and no_es_persona('🇨🇴') and not no_es_persona('0223 🇧🇧')
           and integrantes('Snow, <@123456789012345678>')[0] == ['Snow', '<@123456789012345678>'])
     print('   %s un emoji propio no es un integrante, la arroba escrita se va, y la mención de verdad se queda'
           % ('✅' if ok else '🔴'))

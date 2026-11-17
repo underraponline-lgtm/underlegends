@@ -307,6 +307,55 @@ def reafirmar(decis, llaves, aplicar):
     return n
 
 
+def limpiar_lado(x):
+    """El lado de una llave sin los integrantes que no son nadie y sin la arroba (ver `equipos.no_es_persona()`)."""
+    import equipos as EQ
+    partes = _SEP.split(str(x or ''))
+    if len(partes) == 1:
+        s = partes[0]
+        return EQ.limpiar(s) if s.strip().startswith('@') and EQ.limpiar(s) else s
+    nombres = [p for i, p in enumerate(partes) if not i % 2]
+    seps = [p for i, p in enumerate(partes) if i % 2]
+    keep = [p if not p.strip().startswith('@') else EQ.limpiar(p) for p in nombres if not EQ.no_es_persona(p)]
+    if not keep:
+        return x
+    return (seps[0] if seps else ', ').join(keep) if len(keep) != len(nombres) or keep != nombres else x
+
+
+def sin_adornos(llaves, aplicar):
+    """🧹 Lo viejo escrito con un «nombre» que no era nadie (`resultados.sin_adornos()`), y la llave de la página igual:
+    sus lados sin esos integrantes y su tabla otra vez desde `Resultados`. Cuántas celdas cambió."""
+    import resultados as RES
+    try:
+        celdas, nums = RES.sin_adornos(llaves, dry=not aplicar)
+    except (ValueError, RuntimeError) as e:
+        print('   ⚠️ no pude limpiar las filas viejas: %s' % e)
+        return 0
+    filas = celdas.pop('_filas', [])
+    en_llave = 0
+    for n, L in llaves.items():
+        for R in L.get('rondas') or []:
+            for b in R.get('b') or []:
+                nuevo = [limpiar_lado(x) for x in b[0] or []]
+                g = limpiar_lado(b[1]) if len(b) > 1 and b[1] else (b[1] if len(b) > 1 else '')
+                if nuevo != b[0] or (len(b) > 1 and g != b[1]):
+                    b[0] = nuevo
+                    if len(b) > 1:
+                        b[1] = g
+                    en_llave += 1
+        if str(n) in nums:
+            t = sorted(([str(f[4]), str(f[6] or ''), int(float(f[7] or 0))] for f in filas if str(f[0]).strip() == str(n)),
+                       key=lambda r: (-r[2], r[0]))
+            if t and t != L.get('tabla'):
+                L['tabla'] = t
+                en_llave += 1
+    n_tot = sum(celdas.values()) + en_llave
+    if n_tot:
+        print('   🧹 filas viejas sin «nombres» que no eran nadie: %s en la llave de la página%s' % (
+            en_llave, ''.join(' · %s %d' % kv for kv in celdas.items())))
+    return n_tot
+
+
 def _batalla(L, ronda, lados):
     """La batalla de la llave de la página con esa ronda y esos lados, o None."""
     ks = sorted(_norm(x) for x in lados)
@@ -625,6 +674,8 @@ def corregir(cola, aplicar=False):
             estados[str(r['id'])] = [est, que]
     # 🔁 y todas las reglas otra vez sobre lo escrito: lo que una corrida vieja haya pisado (ver `reafirmar()`)
     reafirmar(decis, llaves, aplicar)
+    # 🧹 y lo viejo escrito con un «nombre» que no era nadie («}», un emoji, la arroba): ver `sin_adornos()`
+    sin_adornos(llaves, aplicar)
     # 🔎 la evidencia de cada reporte abierto, con lo que quedó después de corregir
     evid = {}
     try:
@@ -674,6 +725,13 @@ def _self_check():
         nonlocal mal
         mal += not c
         print('   %s %s' % ('ok' if c else '🔴', que))
+
+    # 🧹 los lados de la llave sin lo que no era nadie (17/11/2026: #636, #634, #576)
+    ok(limpiar_lado('@j.nibbana, <:logocypherhood:1258928534743683176>') == 'j.nibbana'
+       and limpiar_lado('Ariaxer, }') == 'Ariaxer' and limpiar_lado('okam🇨🇷 + <:emoji_5:1462319885810925610>') == 'okam🇨🇷'
+       and limpiar_lado('0223 🇧🇧, Erian') == '0223 🇧🇧, Erian' and limpiar_lado('Puppy') == 'Puppy'
+       and limpiar_lado('@j.nibbana') == 'j.nibbana',
+       'el lado de una llave sin el logo, la llave suelta ni la arroba; lo demás, igual')
 
     cola = [{'id': 7, 'quien': '111', 'llave': '370', 'que': 'ganador', 'texto': 'la final la ganó Paria',
              'batalla': '', 't': 1759118400000},
