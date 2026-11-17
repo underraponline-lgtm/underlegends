@@ -4648,6 +4648,33 @@
     "<:logocypherhood:1258928534743683176>"
    ],
    "escribio": {}
+  },
+  {
+   "id": "2c719496c8",
+   "tipo": "Alias posible",
+   "sec": "🪪 Identidad",
+   "que": "¿«Soul» es Magic? La cuenta de Magic en la Lista se anotó como «Soul», y en el ranking suman aparte. Si es la misma persona, los puntos de «Soul» pasan a Magic.\nLa cuenta: https://discord.com/users/915051512575717457",
+   "r": "Es la misma persona",
+   "regla": "R2 · una cuenta de la Lista que se anota con otro nombre donde su dueño no jugó",
+   "rk": "R2",
+   "por": "el ciclo",
+   "porque": "«Soul» se anotó 4 vez/veces sola desde la cuenta de Magic («Soul», en CH, FFA, LKR) y Magic no jugó esos eventos con su nombre; nadie más usa ese nombre y Magic no es organizador, staff, host ni socio ahí",
+   "t": 1794958351938,
+   "filas": [
+    1256
+   ],
+   "variantes": [
+    "DOS NOMBRES: «Soul» → «Magic» · cuenta 915051512575717457"
+   ],
+   "escribio": {
+    "alias": [
+     "Soul",
+     "Magic"
+    ],
+    "filas": [
+     374
+    ]
+   }
   }
  ],
  "deshechas": []

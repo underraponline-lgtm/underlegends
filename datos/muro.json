@@ -125,9 +125,13 @@
 "temporada"
 ]
 },
-"mrstillballin": {
-"rg": "",
-"c": []
+"over": {
+"rg": "S",
+"c": [
+"competitivo",
+"servidor",
+"temporada"
+]
 },
 "mco": {
 "rg": "B",
@@ -156,6 +160,15 @@
 ]
 },
 "miniboy": {
+"rg": "C",
+"c": [
+"competitivo",
+"pais",
+"servidor",
+"temporada"
+]
+},
+"mito": {
 "rg": "C",
 "c": [
 "competitivo",
@@ -195,15 +208,6 @@
 ]
 },
 "nxuz": {
-"rg": "C",
-"c": [
-"competitivo",
-"pais",
-"servidor",
-"temporada"
-]
-},
-"mito": {
 "rg": "C",
 "c": [
 "competitivo",
@@ -443,6 +447,10 @@
 "temporada"
 ]
 },
+"bna": {
+"rg": "C",
+"c": []
+},
 "tøkiø": {
 "rg": "B",
 "c": [
@@ -488,10 +496,6 @@
 },
 "19fleivawack": {
 "rg": "B",
-"c": []
-},
-"bna": {
-"rg": "C",
 "c": []
 },
 "paria": {
@@ -1355,6 +1359,10 @@
 "temporada"
 ]
 },
+"mrstillballin": {
+"rg": "",
+"c": []
+},
 "bootraxx": {
 "rg": "",
 "c": []
@@ -1760,10 +1768,6 @@
 ]
 },
 "alonso": {
-"rg": "",
-"c": []
-},
-"over": {
 "rg": "",
 "c": []
 },
@@ -2867,47 +2871,6 @@
 }
 },
 "cambios": [
-{
-"tipo": "tarjeta",
-"t": "2026-10-11T03:26:17Z",
-"quien": [
-"LRS"
-],
-"carta": "pais"
-},
-{
-"tipo": "rango",
-"t": "2026-10-11T05:28:57Z",
-"quien": [
-"Molusco"
-],
-"rg": "D",
-"primero": true
-},
-{
-"tipo": "tarjeta",
-"t": "2026-10-11T05:28:57Z",
-"quien": [
-"Molusco"
-],
-"carta": "competitivo"
-},
-{
-"tipo": "tarjeta",
-"t": "2026-10-11T05:28:57Z",
-"quien": [
-"Number VE"
-],
-"carta": "pais"
-},
-{
-"tipo": "tarjeta",
-"t": "2026-10-11T05:56:46Z",
-"quien": [
-"Verc"
-],
-"carta": "temporada"
-},
 {
 "tipo": "rango",
 "t": "2026-10-11T06:18:29Z",
@@ -6246,6 +6209,51 @@
 ],
 "rk": "competitivo",
 "pos": 10
+},
+{
+"tipo": "rango",
+"t": "2026-11-17T23:32:17Z",
+"quien": [
+"Over"
+],
+"rg": "S",
+"primero": true
+},
+{
+"tipo": "tarjeta",
+"t": "2026-11-17T23:32:17Z",
+"quien": [
+"Over"
+],
+"carta": "competitivo"
+},
+{
+"tipo": "tarjeta",
+"t": "2026-11-17T23:32:17Z",
+"quien": [
+"Over"
+],
+"carta": "servidor"
+},
+{
+"tipo": "tarjeta",
+"t": "2026-11-17T23:32:17Z",
+"quien": [
+"Over"
+],
+"carta": "temporada"
+},
+{
+"tipo": "top10",
+"t": "2026-11-17T23:32:17Z",
+"quien": [
+"Over"
+],
+"ks": [
+"over"
+],
+"rk": "competitivo",
+"pos": 6
 }
 ],
 "noche_antes": {
@@ -7909,17 +7917,18 @@
 "liberia",
 "panchok",
 "carlosss",
+"over",
 "agus",
 "abyssus",
 "hassan",
-"verc",
-"walker"
+"verc"
 ]
 },
 "top10_t": {
 "temporada:carlosss": "2026-11-16T18:40:04Z",
 "temporada:panchok": "2026-11-16T19:02:43Z",
-"competitivo:walker": "2026-11-17T22:09:56Z"
+"competitivo:walker": "2026-11-17T22:09:56Z",
+"competitivo:over": "2026-11-17T23:32:17Z"
 },
 "racha": {
 "makmah": 0,
@@ -8126,7 +8135,8 @@
 "simonhenriksson": 1,
 "bootraxx": 1,
 "araya": 0,
-"senticide": 1
+"senticide": 1,
+"over": 5
 },
 "sem": {
 "id": "2026-11-16",

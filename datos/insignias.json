@@ -295,12 +295,6 @@
 "prueba"
 ]
 },
-"@j.nibbana": {
-"debut": [
-"2026-11-14T22:27:14Z",
-"prueba"
-]
-},
 "ABRAHAM Y CHOP": {
 "debut": [
 "2026-11-10T22:57:17Z",
@@ -314,12 +308,6 @@
 "ACH": {
 "debut": [
 "2026-10-02T02:54:53Z",
-"prueba"
-]
-},
-"ADACCHI": {
-"debut": [
-"2026-09-27T17:50:55Z",
 "prueba"
 ]
 },
@@ -464,20 +452,6 @@
 "ANTORCHA": {
 "debut": [
 "2026-10-05T23:25:55Z",
-"prueba"
-]
-},
-"ANTORCHA OLÍMPICA": {
-"campeon": [
-"2026-09-27T17:50:55Z",
-"prueba"
-],
-"debut": [
-"2026-09-27T17:50:55Z",
-"prueba"
-],
-"podio": [
-"2026-09-27T17:50:55Z",
 "prueba"
 ]
 },
@@ -643,20 +617,6 @@
 "prueba"
 ]
 },
-"Abysuss": {
-"campeon": [
-"2026-10-13T02:58:11Z",
-"prueba"
-],
-"debut": [
-"2026-10-13T02:58:11Z",
-"prueba"
-],
-"podio": [
-"2026-10-13T02:58:11Z",
-"prueba"
-]
-},
 "Acry": {
 "debut": [
 "2026-09-27T17:50:55Z",
@@ -664,12 +624,6 @@
 ],
 "podio": [
 "2026-09-27T17:50:55Z",
-"prueba"
-]
-},
-"Adachi": {
-"debut": [
-"2026-09-28T20:54:36Z",
 "prueba"
 ]
 },
@@ -819,12 +773,6 @@
 "prueba"
 ]
 },
-"Agustín la reliquia": {
-"debut": [
-"2026-10-09T04:24:33Z",
-"prueba"
-]
-},
 "Aktybo": {
 "debut": [
 "2026-09-29T22:24:13Z",
@@ -910,22 +858,6 @@
 ],
 "cazador": [
 "2026-10-08T21:55:25Z",
-"prueba"
-]
-},
-"Alexis": {
-"debut": [
-"2026-10-05T04:25:04Z",
-"prueba"
-],
-"podio": [
-"2026-10-05T04:25:04Z",
-"prueba"
-]
-},
-"Alexiz": {
-"debut": [
-"2026-10-05T01:25:53Z",
 "prueba"
 ]
 },
@@ -1017,11 +949,9 @@
 "liga": [
 "2026-11-17T02:56:33Z",
 "prueba"
-]
-},
-"Andy mc": {
-"debut": [
-"2026-11-15T17:57:39Z",
+],
+"ascenso": [
+"2026-11-16T16:33:28Z",
 "prueba"
 ]
 },
@@ -1040,12 +970,6 @@
 "Arama": {
 "liga": [
 "2026-10-16T15:26:51Z",
-"prueba"
-]
-},
-"Arez": {
-"debut": [
-"2026-09-27T17:50:55Z",
 "prueba"
 ]
 },
@@ -1072,12 +996,6 @@
 ],
 "trotamundos": [
 "2026-11-06T00:50:40Z",
-"prueba"
-]
-},
-"Armando Faso": {
-"debut": [
-"2026-10-08T01:25:21Z",
 "prueba"
 ]
 },
@@ -1145,21 +1063,9 @@
 "prueba"
 ]
 },
-"Ax": {
-"debut": [
-"2026-10-13T23:24:55Z",
-"prueba"
-]
-},
 "Axinu": {
 "debut": [
 "2026-10-12T06:54:51Z",
-"prueba"
-]
-},
-"Azillmoyta": {
-"debut": [
-"2026-10-02T02:54:53Z",
 "prueba"
 ]
 },
@@ -1172,12 +1078,6 @@
 "BABI": {
 "debut": [
 "2026-11-15T17:30:23Z",
-"prueba"
-]
-},
-"BASTY": {
-"liga": [
-"2026-10-16T15:26:51Z",
 "prueba"
 ]
 },
@@ -1202,26 +1102,6 @@
 ],
 "ascenso": [
 "2026-11-12T08:38:57Z",
-"prueba"
-]
-},
-"BERRUM": {
-"debut": [
-"2026-11-06T00:50:40Z",
-"prueba"
-],
-"podio": [
-"2026-11-06T00:50:40Z",
-"prueba"
-]
-},
-"BETELGEUSE": {
-"debut": [
-"2026-09-29T00:23:51Z",
-"prueba"
-],
-"podio": [
-"2026-09-29T00:23:51Z",
 "prueba"
 ]
 },
@@ -1299,18 +1179,6 @@
 "prueba"
 ]
 },
-"BNET": {
-"debut": [
-"2026-11-12T07:55:15Z",
-"prueba"
-]
-},
-"BOOTRAX HUMILDE": {
-"debut": [
-"2026-09-28T20:24:52Z",
-"prueba"
-]
-},
 "BRAGEURITHER": {
 "debut": [
 "2026-10-03T22:24:54Z",
@@ -1362,12 +1230,6 @@
 ],
 "clasico": [
 "2026-11-12T08:38:57Z",
-"prueba"
-]
-},
-"BYSHOP": {
-"debut": [
-"2026-10-25T23:25:49Z",
 "prueba"
 ]
 },
@@ -1565,16 +1427,6 @@
 "prueba"
 ]
 },
-"Black dmon": {
-"debut": [
-"2026-10-30T19:57:23Z",
-"prueba"
-],
-"podio": [
-"2026-10-30T19:57:23Z",
-"prueba"
-]
-},
 "Blaxx": {
 "debut": [
 "2026-10-18T00:55:39Z",
@@ -1651,12 +1503,6 @@
 "prueba"
 ]
 },
-"Bsk": {
-"debut": [
-"2026-10-02T16:25:37Z",
-"prueba"
-]
-},
 "Btrece": {
 "debut": [
 "2026-10-05T01:25:53Z",
@@ -1683,12 +1529,6 @@
 "prueba"
 ]
 },
-"CFM": {
-"debut": [
-"2026-10-04T01:54:59Z",
-"prueba"
-]
-},
 "CHAMAKO": {
 "debut": [
 "2026-11-16T04:27:52Z",
@@ -1708,18 +1548,6 @@
 ],
 "ascenso": [
 "2026-10-07T18:40:27Z",
-"prueba"
-]
-},
-"CHUTY": {
-"debut": [
-"2026-11-12T07:55:15Z",
-"prueba"
-]
-},
-"CINEX": {
-"debut": [
-"2026-10-14T06:25:36Z",
 "prueba"
 ]
 },
@@ -1772,12 +1600,6 @@
 ],
 "podio": [
 "2026-10-13T03:57:13Z",
-"prueba"
-]
-},
-"CRIZJ": {
-"debut": [
-"2026-10-03T22:38:07Z",
 "prueba"
 ]
 },
@@ -2069,12 +1891,6 @@
 "prueba"
 ]
 },
-"Ceegee": {
-"debut": [
-"2026-09-29T22:24:13Z",
-"prueba"
-]
-},
 "Ceko": {
 "mes_sv_staff": [
 "2026-11-04T23:56:59Z",
@@ -2125,31 +1941,9 @@
 "prueba"
 ]
 },
-"Chimuelitomc": {
-"debut": [
-"2026-10-03T05:55:11Z",
-"prueba"
-]
-},
-"Choclo": {
-"debut": [
-"2026-10-05T04:25:04Z",
-"prueba"
-],
-"ascenso": [
-"2026-10-05T21:55:01Z",
-"prueba"
-]
-},
 "Choco": {
 "debut": [
 "2026-11-09T21:27:39Z",
-"prueba"
-]
-},
-"Chocoperro": {
-"debut": [
-"2026-11-16T19:58:17Z",
 "prueba"
 ]
 },
@@ -2275,12 +2069,6 @@
 "prueba"
 ]
 },
-"Ckl": {
-"debut": [
-"2026-10-06T02:56:28Z",
-"prueba"
-]
-},
 "Clitax": {
 "debut": [
 "2026-09-28T20:54:36Z",
@@ -2380,12 +2168,6 @@
 ],
 "podio": [
 "2026-10-20T00:26:20Z",
-"prueba"
-]
-},
-"Crack and Krank": {
-"debut": [
-"2026-09-27T17:50:55Z",
 "prueba"
 ]
 },
@@ -2523,19 +2305,7 @@
 "prueba"
 ]
 },
-"DANU": {
-"debut": [
-"2026-11-12T06:25:21Z",
-"prueba"
-]
-},
 "DARK ANGEL": {
-"debut": [
-"2026-10-23T23:39:26Z",
-"prueba"
-]
-},
-"DARKO": {
 "debut": [
 "2026-10-23T23:39:26Z",
 "prueba"
@@ -2598,18 +2368,6 @@
 "DOMINICK DE CHOP": {
 "debut": [
 "2026-11-09T23:27:09Z",
-"prueba"
-]
-},
-"DSM-5": {
-"debut": [
-"2026-10-06T22:27:12Z",
-"prueba"
-]
-},
-"DXG": {
-"debut": [
-"2026-09-27T17:50:55Z",
 "prueba"
 ]
 },
@@ -2901,12 +2659,6 @@
 "prueba"
 ]
 },
-"Doce": {
-"debut": [
-"2026-10-12T22:25:38Z",
-"prueba"
-]
-},
 "Dom": {
 "debut": [
 "2026-10-24T03:55:43Z",
@@ -2950,12 +2702,6 @@
 ],
 "duelista": [
 "2026-11-16T18:28:05Z",
-"prueba"
-]
-},
-"Dreex": {
-"debut": [
-"2026-10-27T21:55:33Z",
 "prueba"
 ]
 },
@@ -3143,12 +2889,6 @@
 "prueba"
 ]
 },
-"ELSOLAR": {
-"debut": [
-"2026-09-29T03:23:50Z",
-"prueba"
-]
-},
 "EMMY": {
 "debut": [
 "2026-09-29T22:24:13Z",
@@ -3175,29 +2915,9 @@
 "prueba"
 ]
 },
-"EVANGELINE": {
-"debut": [
-"2026-10-19T02:56:07Z",
-"prueba"
-],
-"liga": [
-"2026-10-19T02:56:07Z",
-"prueba"
-],
-"podio": [
-"2026-10-19T02:56:07Z",
-"prueba"
-]
-},
 "EXE": {
 "debut": [
 "2026-11-12T07:55:15Z",
-"prueba"
-]
-},
-"Eclipse": {
-"debut": [
-"2026-10-04T18:45:44Z",
 "prueba"
 ]
 },
@@ -3241,12 +2961,6 @@
 "prueba"
 ]
 },
-"Edd": {
-"debut": [
-"2026-10-24T00:25:17Z",
-"prueba"
-]
-},
 "Edd y Eddy": {
 "campeon": [
 "2026-10-22T03:25:15Z",
@@ -3261,12 +2975,6 @@
 "prueba"
 ]
 },
-"EddyLaSombra": {
-"debut": [
-"2026-10-26T00:55:52Z",
-"prueba"
-]
-},
 "Efimero": {
 "debut": [
 "2026-10-03T22:24:54Z",
@@ -3274,18 +2982,6 @@
 ],
 "trotamundos": [
 "2026-10-21T23:56:02Z",
-"prueba"
-]
-},
-"Egipto": {
-"debut": [
-"2026-10-09T04:24:33Z",
-"prueba"
-]
-},
-"El Colesito": {
-"debut": [
-"2026-11-06T00:50:40Z",
 "prueba"
 ]
 },
@@ -3341,12 +3037,6 @@
 "prueba"
 ]
 },
-"El violaginas": {
-"debut": [
-"2026-10-07T04:25:06Z",
-"prueba"
-]
-},
 "Elbesaabuelas": {
 "debut": [
 "2026-10-06T17:55:46Z",
@@ -3364,12 +3054,6 @@
 ],
 "ascenso": [
 "2026-11-09T21:27:39Z",
-"prueba"
-]
-},
-"Elinge": {
-"debut": [
-"2026-11-06T00:50:40Z",
 "prueba"
 ]
 },
@@ -3404,12 +3088,6 @@
 ],
 "pluma": [
 "2026-10-19T15:56:40Z",
-"prueba"
-]
-},
-"Emi": {
-"debut": [
-"2026-10-03T05:55:11Z",
 "prueba"
 ]
 },
@@ -3725,12 +3403,6 @@
 "prueba"
 ]
 },
-"FORZA": {
-"liga": [
-"2026-10-16T15:26:51Z",
-"prueba"
-]
-},
 "FOTOSÍNTESIS": {
 "debut": [
 "2026-10-17T03:56:12Z",
@@ -3740,26 +3412,6 @@
 "FOUNDER": {
 "debut": [
 "2026-11-09T21:27:39Z",
-"prueba"
-]
-},
-"FULLY": {
-"campeon": [
-"2026-09-27T17:50:55Z",
-"prueba"
-],
-"debut": [
-"2026-09-27T17:50:55Z",
-"prueba"
-],
-"podio": [
-"2026-09-27T17:50:55Z",
-"prueba"
-]
-},
-"Family": {
-"debut": [
-"2026-10-09T04:24:33Z",
 "prueba"
 ]
 },
@@ -3883,12 +3535,6 @@
 "prueba"
 ]
 },
-"Fix1": {
-"debut": [
-"2026-10-26T22:56:04Z",
-"prueba"
-]
-},
 "Flama": {
 "debut": [
 "2026-10-04T18:45:44Z",
@@ -3965,12 +3611,6 @@
 "prueba"
 ]
 },
-"Frifaier": {
-"debut": [
-"2026-10-13T15:28:01Z",
-"prueba"
-]
-},
 "Fritz": {
 "debut": [
 "2026-11-14T00:27:08Z",
@@ -3983,12 +3623,6 @@
 "prueba"
 ]
 },
-"G8": {
-"debut": [
-"2026-10-08T01:58:14Z",
-"prueba"
-]
-},
 "GATO": {
 "debut": [
 "2026-11-06T00:50:40Z",
@@ -3996,26 +3630,6 @@
 ]
 },
 "GAYBEAT": {
-"liga": [
-"2026-11-05T01:56:45Z",
-"prueba"
-]
-},
-"GERONIMO": {
-"debut": [
-"2026-11-12T07:55:15Z",
-"prueba"
-],
-"liga": [
-"2026-11-12T07:55:15Z",
-"prueba"
-],
-"podio": [
-"2026-11-12T07:55:15Z",
-"prueba"
-]
-},
-"GERÓNIMO": {
 "liga": [
 "2026-11-05T01:56:45Z",
 "prueba"
@@ -4089,12 +3703,6 @@
 "prueba"
 ]
 },
-"Garxziiscity": {
-"debut": [
-"2026-09-27T17:50:55Z",
-"prueba"
-]
-},
 "Gazir": {
 "debut": [
 "2026-11-12T07:55:15Z",
@@ -4148,12 +3756,6 @@
 ],
 "tricampeon": [
 "2026-11-15T17:30:23Z",
-"prueba"
-]
-},
-"Ger9": {
-"debut": [
-"2026-10-07T21:55:18Z",
 "prueba"
 ]
 },
@@ -4236,12 +3838,6 @@
 "Goohan MVP": {
 "debut": [
 "2026-11-06T00:50:40Z",
-"prueba"
-]
-},
-"Gosu": {
-"debut": [
-"2026-10-04T18:45:44Z",
 "prueba"
 ]
 },
@@ -4393,12 +3989,6 @@
 "prueba"
 ]
 },
-"HOTARU": {
-"debut": [
-"2026-10-24T00:25:17Z",
-"prueba"
-]
-},
 "HOTU": {
 "campeon": [
 "2026-10-26T05:28:09Z",
@@ -4426,12 +4016,6 @@
 ]
 },
 "Hardcore": {
-"debut": [
-"2026-10-12T06:54:51Z",
-"prueba"
-]
-},
-"Hasan": {
 "debut": [
 "2026-10-12T06:54:51Z",
 "prueba"
@@ -4507,20 +4091,6 @@
 "prueba"
 ]
 },
-"Hinjkybesuk": {
-"cazador": [
-"2026-10-11T18:25:53Z",
-"prueba"
-],
-"debut": [
-"2026-10-11T18:25:53Z",
-"prueba"
-],
-"ascenso": [
-"2026-10-12T15:34:36Z",
-"prueba"
-]
-},
 "Hirex": {
 "debut": [
 "2026-11-02T00:25:37Z",
@@ -4587,27 +4157,9 @@
 "prueba"
 ]
 },
-"ICONOX": {
-"debut": [
-"2026-10-14T02:25:13Z",
-"prueba"
-]
-},
 "IFX": {
 "debut": [
 "2026-09-29T22:54:28Z",
-"prueba"
-]
-},
-"IKONOX": {
-"debut": [
-"2026-10-09T21:56:30Z",
-"prueba"
-]
-},
-"INFECTE": {
-"debut": [
-"2026-09-27T17:50:55Z",
 "prueba"
 ]
 },
@@ -4620,18 +4172,6 @@
 "ISAIAS": {
 "debut": [
 "2026-09-27T17:50:55Z",
-"prueba"
-]
-},
-"ISMEL": {
-"debut": [
-"2026-10-26T05:28:09Z",
-"prueba"
-]
-},
-"IVOCAPRA": {
-"debut": [
-"2026-10-01T05:54:56Z",
 "prueba"
 ]
 },
@@ -4674,12 +4214,6 @@
 ],
 "trotamundos": [
 "2026-11-09T21:27:39Z",
-"prueba"
-]
-},
-"Infected": {
-"debut": [
-"2026-10-27T21:55:33Z",
 "prueba"
 ]
 },
@@ -4753,33 +4287,9 @@
 "prueba"
 ]
 },
-"JAHNO": {
-"debut": [
-"2026-09-27T17:50:55Z",
-"prueba"
-]
-},
 "JAHNOH": {
 "liga": [
 "2026-10-16T15:26:51Z",
-"prueba"
-]
-},
-"JAWA": {
-"debut": [
-"2026-10-01T01:54:41Z",
-"prueba"
-]
-},
-"JAZII": {
-"debut": [
-"2026-11-06T00:50:40Z",
-"prueba"
-]
-},
-"JB": {
-"debut": [
-"2026-10-13T03:57:13Z",
 "prueba"
 ]
 },
@@ -4911,18 +4421,6 @@
 "prueba"
 ]
 },
-"JOAQUIN": {
-"debut": [
-"2026-10-31T23:26:39Z",
-"prueba"
-]
-},
-"JONY BEL": {
-"debut": [
-"2026-11-12T07:55:15Z",
-"prueba"
-]
-},
 "JOSHU": {
 "campeon": [
 "2026-10-06T19:55:46Z",
@@ -4951,23 +4449,17 @@
 "podio": [
 "2026-10-11T04:55:49Z",
 "prueba"
-]
-},
-"Jahno Afrodisiaco": {
-"debut": [
-"2026-10-28T03:56:03Z",
+],
+"clasico": [
+"2026-10-11T05:25:59Z",
 "prueba"
-]
-},
-"Jahno El Melomaníaco": {
-"debut": [
-"2026-10-29T05:57:00Z",
+],
+"liga": [
+"2026-10-16T15:26:51Z",
 "prueba"
-]
-},
-"Jahno Melomaníaco": {
-"debut": [
-"2026-10-27T01:25:43Z",
+],
+"ascenso": [
+"2026-10-26T15:30:43Z",
 "prueba"
 ]
 },
@@ -4998,12 +4490,6 @@
 "Joaquín La Profecia 👨🏻‍🍳": {
 "debut": [
 "2026-10-12T23:55:42Z",
-"prueba"
-]
-},
-"Joba": {
-"debut": [
-"2026-10-18T23:26:06Z",
 "prueba"
 ]
 },
@@ -5157,28 +4643,6 @@
 "prueba"
 ]
 },
-"Julix": {
-"debut": [
-"2026-10-06T17:55:46Z",
-"prueba"
-],
-"clasico": [
-"2026-10-11T05:25:59Z",
-"prueba"
-],
-"liga": [
-"2026-10-16T15:26:51Z",
-"prueba"
-],
-"podio": [
-"2026-10-26T05:28:09Z",
-"prueba"
-],
-"ascenso": [
-"2026-10-26T15:30:43Z",
-"prueba"
-]
-},
 "Jult": {
 "debut": [
 "2026-09-28T18:54:27Z",
@@ -5277,27 +4741,9 @@
 "prueba"
 ]
 },
-"KOREY": {
-"debut": [
-"2026-09-27T17:50:55Z",
-"prueba"
-]
-},
-"KRAKERO": {
-"debut": [
-"2026-10-10T06:24:50Z",
-"prueba"
-]
-},
 "KRNAN": {
 "debut": [
 "2026-10-01T01:54:41Z",
-"prueba"
-]
-},
-"KULRW": {
-"debut": [
-"2026-09-27T17:50:55Z",
 "prueba"
 ]
 },
@@ -5404,12 +4850,6 @@
 "Khalil": {
 "debut": [
 "2026-10-27T23:07:16Z",
-"prueba"
-]
-},
-"Khat alien": {
-"debut": [
-"2026-11-12T08:38:57Z",
 "prueba"
 ]
 },
@@ -5599,12 +5039,6 @@
 "prueba"
 ]
 },
-"Kude": {
-"debut": [
-"2026-10-05T06:27:01Z",
-"prueba"
-]
-},
 "Kun Z": {
 "debut": [
 "2026-10-12T15:34:36Z",
@@ -5695,12 +5129,6 @@
 "prueba"
 ]
 },
-"LAMBRO": {
-"debut": [
-"2026-10-30T22:57:02Z",
-"prueba"
-]
-},
 "LANCER": {
 "debut": [
 "2026-11-17T02:28:22Z",
@@ -5777,12 +5205,6 @@
 "prueba"
 ]
 },
-"LETRAS": {
-"debut": [
-"2026-11-16T04:27:52Z",
-"prueba"
-]
-},
 "LEWITO": {
 "debut": [
 "2026-09-27T17:50:55Z",
@@ -5838,12 +5260,6 @@
 ],
 "podio": [
 "2026-11-12T23:26:08Z",
-"prueba"
-]
-},
-"LISEN": {
-"debut": [
-"2026-11-01T06:26:26Z",
 "prueba"
 ]
 },
@@ -5919,12 +5335,6 @@
 "prueba"
 ]
 },
-"LRSLASUSTANCIA": {
-"debut": [
-"2026-11-12T07:55:15Z",
-"prueba"
-]
-},
 "LSD": {
 "liga": [
 "2026-10-16T15:26:51Z",
@@ -5992,18 +5402,6 @@
 "Lambroggini": {
 "debut": [
 "2026-10-01T23:25:00Z",
-"prueba"
-]
-},
-"Last": {
-"debut": [
-"2026-09-27T17:50:55Z",
-"prueba"
-]
-},
-"Launnok": {
-"debut": [
-"2026-10-12T06:54:51Z",
 "prueba"
 ]
 },
@@ -6085,34 +5483,6 @@
 "prueba"
 ]
 },
-"Letra": {
-"debut": [
-"2026-11-12T07:55:15Z",
-"prueba"
-],
-"podio": [
-"2026-11-12T07:55:15Z",
-"prueba"
-]
-},
-"Letrao": {
-"campeon": [
-"2026-10-11T05:54:49Z",
-"prueba"
-],
-"debut": [
-"2026-10-11T05:54:49Z",
-"prueba"
-],
-"podio": [
-"2026-10-11T05:54:49Z",
-"prueba"
-],
-"ascenso": [
-"2026-10-12T19:54:55Z",
-"prueba"
-]
-},
 "Leyenda": {
 "debut": [
 "2026-10-05T06:27:01Z",
@@ -6132,12 +5502,6 @@
 ],
 "podio": [
 "2026-11-13T18:56:21Z",
-"prueba"
-]
-},
-"Leyenda.X5": {
-"debut": [
-"2026-10-05T06:27:01Z",
 "prueba"
 ]
 },
@@ -6249,67 +5613,9 @@
 "prueba"
 ]
 },
-"Limtsz": {
-"debut": [
-"2026-11-12T23:56:21Z",
-"prueba"
-]
-},
 "LitKunai": {
 "debut": [
 "2026-10-08T04:55:26Z",
-"prueba"
-]
-},
-"Lizen": {
-"debut": [
-"2026-10-28T03:56:03Z",
-"prueba"
-]
-},
-"Lizenim": {
-"debut": [
-"2026-11-06T00:50:40Z",
-"prueba"
-]
-},
-"Lizenin": {
-"debut": [
-"2026-10-28T18:56:48Z",
-"prueba"
-]
-},
-"Lizeninn": {
-"debut": [
-"2026-09-27T17:50:55Z",
-"prueba"
-],
-"trotamundos": [
-"2026-10-25T04:55:28Z",
-"prueba"
-],
-"ascenso": [
-"2026-10-26T15:30:43Z",
-"prueba"
-],
-"ev10": [
-"2026-10-31T01:26:50Z",
-"prueba"
-],
-"podio": [
-"2026-11-03T22:56:53Z",
-"prueba"
-]
-},
-"Lizennin": {
-"debut": [
-"2026-10-28T00:55:48Z",
-"prueba"
-]
-},
-"Lord": {
-"debut": [
-"2026-09-27T17:50:55Z",
 "prueba"
 ]
 },
@@ -6344,12 +5650,6 @@
 ],
 "ev25": [
 "2026-11-12T07:55:15Z",
-"prueba"
-]
-},
-"Lrs el borrachin": {
-"debut": [
-"2026-10-14T03:55:49Z",
 "prueba"
 ]
 },
@@ -6535,22 +5835,6 @@
 "prueba"
 ]
 },
-"MARTINEZ": {
-"debut": [
-"2026-10-06T01:55:35Z",
-"prueba"
-]
-},
-"MARTYNEZ": {
-"debut": [
-"2026-10-10T04:24:54Z",
-"prueba"
-],
-"liga": [
-"2026-10-24T23:25:33Z",
-"prueba"
-]
-},
 "MAT MC": {
 "debut": [
 "2026-11-09T21:27:39Z",
@@ -6605,12 +5889,6 @@
 "prueba"
 ]
 },
-"MAUZZ": {
-"debut": [
-"2026-10-05T06:27:01Z",
-"prueba"
-]
-},
 "MAWS": {
 "debut": [
 "2026-10-05T06:27:01Z",
@@ -6630,18 +5908,6 @@
 "MAXIRAP": {
 "liga": [
 "2026-10-16T15:26:51Z",
-"prueba"
-]
-},
-"MC Bot": {
-"debut": [
-"2026-10-07T21:55:18Z",
-"prueba"
-]
-},
-"MCGALILEO": {
-"debut": [
-"2026-11-06T05:56:26Z",
 "prueba"
 ]
 },
@@ -6775,12 +6041,6 @@
 "prueba"
 ]
 },
-"MR STLL BALLIN": {
-"debut": [
-"2026-10-23T23:39:26Z",
-"prueba"
-]
-},
 "MR.LABURO": {
 "debut": [
 "2026-10-08T18:56:33Z",
@@ -6788,20 +6048,6 @@
 ],
 "podio": [
 "2026-10-08T18:56:33Z",
-"prueba"
-]
-},
-"MRSTILL": {
-"campeon": [
-"2026-10-08T21:55:25Z",
-"prueba"
-],
-"debut": [
-"2026-10-08T21:55:25Z",
-"prueba"
-],
-"podio": [
-"2026-10-08T21:55:25Z",
 "prueba"
 ]
 },
@@ -6891,12 +6137,6 @@
 "prueba"
 ]
 },
-"Mailen": {
-"debut": [
-"2026-10-06T02:56:28Z",
-"prueba"
-]
-},
 "Majiztral": {
 "debut": [
 "2026-09-27T17:50:55Z",
@@ -6940,12 +6180,6 @@
 ],
 "liga_podio": [
 "2026-11-12T09:08:00Z",
-"prueba"
-]
-},
-"Majiztral[rebibido]": {
-"debut": [
-"2026-10-11T05:25:59Z",
 "prueba"
 ]
 },
@@ -7231,18 +6465,6 @@
 "prueba"
 ]
 },
-"Mato": {
-"debut": [
-"2026-10-26T05:28:09Z",
-"prueba"
-]
-},
-"Mau Kc": {
-"debut": [
-"2026-10-08T18:56:33Z",
-"prueba"
-]
-},
 "MauzzitoEmeces": {
 "debut": [
 "2026-10-05T06:55:35Z",
@@ -7250,12 +6472,6 @@
 ],
 "trotamundos": [
 "2026-11-05T02:56:48Z",
-"prueba"
-]
-},
-"Maximiliano calvo": {
-"debut": [
-"2026-11-13T18:56:21Z",
 "prueba"
 ]
 },
@@ -7306,12 +6522,6 @@
 ],
 "ascenso": [
 "2026-11-16T16:33:28Z",
-"prueba"
-]
-},
-"McK": {
-"debut": [
-"2026-11-09T21:27:39Z",
 "prueba"
 ]
 },
@@ -7417,12 +6627,6 @@
 "prueba"
 ]
 },
-"Miniboy:CL:": {
-"debut": [
-"2026-10-27T02:25:57Z",
-"prueba"
-]
-},
 "Minis": {
 "debut": [
 "2026-11-06T00:50:40Z",
@@ -7471,11 +6675,9 @@
 "liga": [
 "2026-11-16T16:33:28Z",
 "prueba"
-]
-},
-"Mochi": {
-"debut": [
-"2026-11-09T21:27:39Z",
+],
+"cazador": [
+"2026-11-16T16:33:28Z",
 "prueba"
 ]
 },
@@ -7569,16 +6771,6 @@
 "prueba"
 ]
 },
-"Mosqui": {
-"liga": [
-"2026-10-21T01:55:49Z",
-"prueba"
-],
-"debut": [
-"2026-10-24T02:55:27Z",
-"prueba"
-]
-},
 "Mosquito": {
 "liga": [
 "2026-11-12T23:26:08Z",
@@ -7657,68 +6849,6 @@
 "prueba"
 ]
 },
-"Mr Still Ballin": {
-"campeon": [
-"2026-10-08T22:24:52Z",
-"prueba"
-],
-"debut": [
-"2026-10-08T22:24:52Z",
-"prueba"
-],
-"podio": [
-"2026-10-08T22:24:52Z",
-"prueba"
-],
-"cazador": [
-"2026-10-09T21:56:30Z",
-"prueba"
-],
-"regicida": [
-"2026-10-09T21:56:30Z",
-"prueba"
-],
-"racha": [
-"2026-10-10T06:24:50Z",
-"prueba"
-],
-"tricampeon": [
-"2026-10-10T06:24:50Z",
-"prueba"
-],
-"ascenso": [
-"2026-10-12T15:27:35Z",
-"prueba"
-],
-"duelista": [
-"2026-10-18T01:28:26Z",
-"prueba"
-],
-"trotamundos": [
-"2026-10-18T01:28:26Z",
-"prueba"
-],
-"clasico": [
-"2026-10-21T22:06:33Z",
-"prueba"
-],
-"ev10": [
-"2026-10-23T23:55:35Z",
-"prueba"
-],
-"mes_imparable": [
-"2026-11-04T23:56:59Z",
-"prueba"
-],
-"mes_showman": [
-"2026-11-04T23:56:59Z",
-"prueba"
-],
-"mes_sv_rapero": [
-"2026-11-04T23:56:59Z",
-"prueba"
-]
-},
 "Mr.Kude": {
 "debut": [
 "2026-10-07T02:27:04Z",
@@ -7748,18 +6878,6 @@
 "N1k": {
 "debut": [
 "2026-10-06T02:56:28Z",
-"prueba"
-]
-},
-"NAKAMURA": {
-"debut": [
-"2026-10-05T06:27:01Z",
-"prueba"
-]
-},
-"NATSUKI": {
-"liga": [
-"2026-10-16T15:26:51Z",
 "prueba"
 ]
 },
@@ -7806,16 +6924,6 @@
 ],
 "duelista": [
 "2026-10-31T15:31:10Z",
-"prueba"
-]
-},
-"NEMI X DELUX": {
-"debut": [
-"2026-10-14T02:25:13Z",
-"prueba"
-],
-"podio": [
-"2026-10-14T02:25:13Z",
 "prueba"
 ]
 },
@@ -7923,20 +7031,6 @@
 "prueba"
 ]
 },
-"Natsuki": {
-"debut": [
-"2026-10-16T20:26:14Z",
-"prueba"
-],
-"liga": [
-"2026-10-16T20:26:14Z",
-"prueba"
-],
-"podio": [
-"2026-10-16T20:26:14Z",
-"prueba"
-]
-},
 "Nc jupiter Agustín Cinexfilo MCO": {
 "debut": [
 "2026-10-12T15:55:04Z",
@@ -8005,12 +7099,6 @@
 "prueba"
 ]
 },
-"Neo Soul": {
-"debut": [
-"2026-10-09T04:24:33Z",
-"prueba"
-]
-},
 "Nerick": {
 "debut": [
 "2026-10-26T05:28:09Z",
@@ -8020,28 +7108,6 @@
 "NewCharacter": {
 "debut": [
 "2026-10-12T06:54:51Z",
-"prueba"
-]
-},
-"Nexus": {
-"debut": [
-"2026-10-04T02:55:04Z",
-"prueba"
-]
-},
-"Nhp": {
-"debut": [
-"2026-09-27T17:50:55Z",
-"prueba"
-],
-"racha": [
-"2026-10-06T04:25:25Z",
-"prueba"
-]
-},
-"Nito nanel": {
-"debut": [
-"2026-11-13T00:56:37Z",
 "prueba"
 ]
 },
@@ -8092,12 +7158,6 @@
 ],
 "trotamundos": [
 "2026-11-12T06:25:21Z",
-"prueba"
-]
-},
-"Nonne": {
-"debut": [
-"2026-10-05T23:25:55Z",
 "prueba"
 ]
 },
@@ -8425,26 +7485,6 @@
 "prueba"
 ]
 },
-"Oasis-Nacho-Rizas": {
-"campeon": [
-"2026-11-14T03:26:35Z",
-"prueba"
-],
-"debut": [
-"2026-11-14T03:26:35Z",
-"prueba"
-],
-"podio": [
-"2026-11-14T03:26:35Z",
-"prueba"
-]
-},
-"Ola": {
-"debut": [
-"2026-10-05T01:25:53Z",
-"prueba"
-]
-},
 "Olga de Kiev": {
 "debut": [
 "2026-10-27T01:25:43Z",
@@ -8505,6 +7545,54 @@
 "podio": [
 "2026-10-16T20:26:14Z",
 "prueba"
+],
+"cazador": [
+"2026-10-09T21:56:30Z",
+"prueba"
+],
+"regicida": [
+"2026-10-09T21:56:30Z",
+"prueba"
+],
+"racha": [
+"2026-10-10T06:24:50Z",
+"prueba"
+],
+"tricampeon": [
+"2026-10-10T06:24:50Z",
+"prueba"
+],
+"ascenso": [
+"2026-10-12T15:27:35Z",
+"prueba"
+],
+"duelista": [
+"2026-10-18T01:28:26Z",
+"prueba"
+],
+"trotamundos": [
+"2026-10-18T01:28:26Z",
+"prueba"
+],
+"clasico": [
+"2026-10-21T22:06:33Z",
+"prueba"
+],
+"ev10": [
+"2026-10-23T23:55:35Z",
+"prueba"
+],
+"mes_imparable": [
+"2026-11-04T23:56:59Z",
+"prueba"
+],
+"mes_showman": [
+"2026-11-04T23:56:59Z",
+"prueba"
+],
+"mes_sv_rapero": [
+"2026-11-04T23:56:59Z",
+"prueba"
 ]
 },
 "Ozu": {
@@ -8516,40 +7604,6 @@
 "PARADOJA": {
 "debut": [
 "2026-09-27T17:50:55Z",
-"prueba"
-]
-},
-"PARIA SIN REMEDIO": {
-"debut": [
-"2026-09-29T03:23:50Z",
-"prueba"
-],
-"podio": [
-"2026-09-29T03:23:50Z",
-"prueba"
-]
-},
-"PARK JI-SUNG": {
-"campeon": [
-"2026-09-27T17:50:55Z",
-"prueba"
-],
-"debut": [
-"2026-09-27T17:50:55Z",
-"prueba"
-],
-"podio": [
-"2026-09-27T17:50:55Z",
-"prueba"
-]
-},
-"PARKJINGSUN": {
-"debut": [
-"2026-10-13T02:58:11Z",
-"prueba"
-],
-"podio": [
-"2026-10-13T02:58:11Z",
 "prueba"
 ]
 },
@@ -8610,6 +7664,10 @@
 "POXE": {
 "debut": [
 "2026-11-12T07:55:15Z",
+"prueba"
+],
+"liga": [
+"2026-11-14T17:56:38Z",
 "prueba"
 ]
 },
@@ -8684,34 +7742,6 @@
 "PUNISHER": {
 "debut": [
 "2026-11-14T00:27:08Z",
-"prueba"
-]
-},
-"PUPPY": {
-"campeon": [
-"2026-10-13T02:58:11Z",
-"prueba"
-],
-"debut": [
-"2026-10-13T02:58:11Z",
-"prueba"
-],
-"podio": [
-"2026-10-13T02:58:11Z",
-"prueba"
-]
-},
-"Pain": {
-"ascenso": [
-"2026-10-06T04:25:25Z",
-"prueba"
-],
-"debut": [
-"2026-10-06T04:25:25Z",
-"prueba"
-],
-"podio": [
-"2026-10-06T04:25:25Z",
 "prueba"
 ]
 },
@@ -8819,20 +7849,6 @@
 "prueba"
 ]
 },
-"Park Sung-jong": {
-"campeon": [
-"2026-11-12T05:26:29Z",
-"prueba"
-],
-"debut": [
-"2026-11-12T05:26:29Z",
-"prueba"
-],
-"podio": [
-"2026-11-12T05:26:29Z",
-"prueba"
-]
-},
 "Park ji sunk": {
 "debut": [
 "2026-11-13T18:56:21Z",
@@ -8852,18 +7868,6 @@
 "Pcyka": {
 "debut": [
 "2026-10-15T15:55:47Z",
-"prueba"
-]
-},
-"Pedrinho Matador": {
-"debut": [
-"2026-10-03T22:24:54Z",
-"prueba"
-]
-},
-"Penescrotopene ⚫️": {
-"debut": [
-"2026-10-30T22:57:02Z",
 "prueba"
 ]
 },
@@ -8892,34 +7896,6 @@
 "Personality": {
 "debut": [
 "2026-10-09T04:24:33Z",
-"prueba"
-]
-},
-"Pichu": {
-"campeon": [
-"2026-10-27T00:55:57Z",
-"prueba"
-],
-"debut": [
-"2026-10-27T00:55:57Z",
-"prueba"
-],
-"podio": [
-"2026-10-27T00:55:57Z",
-"prueba"
-]
-},
-"Pichula": {
-"debut": [
-"2026-09-30T23:25:01Z",
-"prueba"
-],
-"clasico": [
-"2026-10-04T16:55:36Z",
-"prueba"
-],
-"duelista": [
-"2026-10-04T16:55:36Z",
 "prueba"
 ]
 },
@@ -8981,12 +7957,6 @@
 "prueba"
 ]
 },
-"Pipas": {
-"debut": [
-"2026-10-06T02:56:28Z",
-"prueba"
-]
-},
 "Pipe": {
 "debut": [
 "2026-10-15T05:25:20Z",
@@ -8994,20 +7964,6 @@
 ],
 "trotamundos": [
 "2026-10-27T05:25:37Z",
-"prueba"
-]
-},
-"Piyi": {
-"campeon": [
-"2026-09-29T03:53:52Z",
-"prueba"
-],
-"debut": [
-"2026-09-29T03:53:52Z",
-"prueba"
-],
-"podio": [
-"2026-09-29T03:53:52Z",
 "prueba"
 ]
 },
@@ -9048,16 +8004,6 @@
 ],
 "podio": [
 "2026-10-12T15:27:35Z",
-"prueba"
-]
-},
-"Pollo Sport": {
-"debut": [
-"2026-09-27T17:50:55Z",
-"prueba"
-],
-"podio": [
-"2026-09-27T17:50:55Z",
 "prueba"
 ]
 },
@@ -9106,16 +8052,6 @@
 ],
 "ascenso": [
 "2026-10-12T15:27:35Z",
-"prueba"
-]
-},
-"Poxe": {
-"debut": [
-"2026-10-26T05:28:09Z",
-"prueba"
-],
-"liga": [
-"2026-11-14T17:56:38Z",
 "prueba"
 ]
 },
@@ -9174,12 +8110,6 @@
 ],
 "liga": [
 "2026-10-16T15:26:51Z",
-"prueba"
-]
-},
-"Prove": {
-"debut": [
-"2026-09-27T17:50:55Z",
 "prueba"
 ]
 },
@@ -9295,12 +8225,6 @@
 "prueba"
 ]
 },
-"REPLICA : RAIZER": {
-"debut": [
-"2026-11-14T01:57:56Z",
-"prueba"
-]
-},
 "REPTILE JR": {
 "debut": [
 "2026-10-08T00:25:31Z",
@@ -9319,12 +8243,6 @@
 "prueba"
 ]
 },
-"RICKYFORT  R": {
-"debut": [
-"2026-10-01T01:54:41Z",
-"prueba"
-]
-},
 "RIQUEZA": {
 "debut": [
 "2026-09-27T17:50:55Z",
@@ -9334,16 +8252,6 @@
 "RITMO": {
 "liga": [
 "2026-10-16T15:26:51Z",
-"prueba"
-]
-},
-"RIZAS": {
-"debut": [
-"2026-09-29T05:24:32Z",
-"prueba"
-],
-"podio": [
-"2026-09-29T05:24:32Z",
 "prueba"
 ]
 },
@@ -9483,12 +8391,6 @@
 "prueba"
 ]
 },
-"Replik": {
-"debut": [
-"2026-11-12T07:55:15Z",
-"prueba"
-]
-},
 "Respawm": {
 "debut": [
 "2026-11-09T23:27:09Z",
@@ -9566,12 +8468,6 @@
 ],
 "liga": [
 "2026-11-16T16:33:28Z",
-"prueba"
-]
-},
-"Riley": {
-"debut": [
-"2026-10-12T15:27:35Z",
 "prueba"
 ]
 },
@@ -9713,12 +8609,6 @@
 "prueba"
 ]
 },
-"SAIK": {
-"debut": [
-"2026-10-14T06:41:33Z",
-"prueba"
-]
-},
 "SAMGAMING": {
 "debut": [
 "2026-11-12T08:38:57Z",
@@ -9734,18 +8624,6 @@
 "SDK": {
 "debut": [
 "2026-10-05T06:27:01Z",
-"prueba"
-]
-},
-"SEBITAS": {
-"debut": [
-"2026-10-19T02:56:07Z",
-"prueba"
-]
-},
-"SEKO BOY": {
-"debut": [
-"2026-10-10T06:24:50Z",
 "prueba"
 ]
 },
@@ -9766,12 +8644,6 @@
 "SHULIOT": {
 "debut": [
 "2026-09-27T17:50:55Z",
-"prueba"
-]
-},
-"SHUSUI": {
-"debut": [
-"2026-10-06T22:27:12Z",
 "prueba"
 ]
 },
@@ -9810,12 +8682,6 @@
 ],
 "debut": [
 "2026-11-09T21:27:39Z",
-"prueba"
-]
-},
-"SNX": {
-"debut": [
-"2026-10-08T18:56:33Z",
 "prueba"
 ]
 },
@@ -9877,12 +8743,6 @@
 "prueba"
 ]
 },
-"SORAYA": {
-"debut": [
-"2026-11-14T01:57:56Z",
-"prueba"
-]
-},
 "SUDAKA": {
 "debut": [
 "2026-09-27T17:50:55Z",
@@ -9910,12 +8770,6 @@
 "SYEPORUTE": {
 "debut": [
 "2026-10-12T23:55:42Z",
-"prueba"
-]
-},
-"SYEPORUTE 🏴‍☠️": {
-"debut": [
-"2026-11-15T07:10:49Z",
 "prueba"
 ]
 },
@@ -10141,42 +8995,6 @@
 "prueba"
 ]
 },
-"Shishui": {
-"campeon": [
-"2026-10-05T04:25:04Z",
-"prueba"
-],
-"debut": [
-"2026-10-05T04:25:04Z",
-"prueba"
-],
-"podio": [
-"2026-10-05T04:25:04Z",
-"prueba"
-],
-"ascenso": [
-"2026-10-05T21:55:01Z",
-"prueba"
-]
-},
-"Shisui": {
-"debut": [
-"2026-10-05T23:25:55Z",
-"prueba"
-],
-"podio": [
-"2026-10-05T23:25:55Z",
-"prueba"
-],
-"ascenso": [
-"2026-10-06T04:25:25Z",
-"prueba"
-],
-"racha": [
-"2026-10-06T04:25:25Z",
-"prueba"
-]
-},
 "Shitka": {
 "debut": [
 "2026-10-31T01:26:50Z",
@@ -10195,33 +9013,9 @@
 "prueba"
 ]
 },
-"Silence": {
-"debut": [
-"2026-10-08T18:56:33Z",
-"prueba"
-],
-"liga": [
-"2026-10-16T15:26:51Z",
-"prueba"
-]
-},
 "Simon": {
 "debut": [
 "2026-11-16T04:27:52Z",
-"prueba"
-]
-},
-"Simon Henriksson": {
-"cazador": [
-"2026-11-16T16:33:28Z",
-"prueba"
-],
-"debut": [
-"2026-11-16T16:33:28Z",
-"prueba"
-],
-"podio": [
-"2026-11-16T16:33:28Z",
 "prueba"
 ]
 },
@@ -10260,12 +9054,6 @@
 ],
 "duelista": [
 "2026-10-26T05:28:09Z",
-"prueba"
-]
-},
-"Sintexto": {
-"debut": [
-"2026-10-12T20:25:11Z",
 "prueba"
 ]
 },
@@ -10401,16 +9189,6 @@
 "prueba"
 ]
 },
-"Snow-7-ZIgnos": {
-"debut": [
-"2026-11-14T03:26:35Z",
-"prueba"
-],
-"podio": [
-"2026-11-14T03:26:35Z",
-"prueba"
-]
-},
 "Soft": {
 "debut": [
 "2026-09-27T17:50:55Z",
@@ -10485,12 +9263,6 @@
 "prueba"
 ]
 },
-"SosaTR": {
-"debut": [
-"2026-10-26T05:28:09Z",
-"prueba"
-]
-},
 "Soul": {
 "debut": [
 "2026-11-09T21:27:39Z",
@@ -10555,18 +9327,6 @@
 "prueba"
 ]
 },
-"Spray Lirical": {
-"debut": [
-"2026-10-04T20:56:40Z",
-"prueba"
-]
-},
-"Stan": {
-"debut": [
-"2026-10-25T20:25:12Z",
-"prueba"
-]
-},
 "Steven": {
 "debut": [
 "2026-09-28T20:54:36Z",
@@ -10579,29 +9339,9 @@
 "prueba"
 ]
 },
-"Supreme": {
-"debut": [
-"2026-10-31T15:31:10Z",
-"prueba"
-]
-},
 "Surya": {
 "debut": [
 "2026-11-09T21:27:39Z",
-"prueba"
-]
-},
-"Sweet pain": {
-"debut": [
-"2026-11-12T07:55:15Z",
-"prueba"
-],
-"ascenso": [
-"2026-11-16T16:33:28Z",
-"prueba"
-],
-"liga": [
-"2026-11-16T16:33:28Z",
 "prueba"
 ]
 },
@@ -10611,21 +9351,9 @@
 "prueba"
 ]
 },
-"Sábado": {
-"debut": [
-"2026-09-27T17:50:55Z",
-"prueba"
-]
-},
 "TEAM VENECIA": {
 "debut": [
 "2026-09-29T03:23:50Z",
-"prueba"
-]
-},
-"TEITO": {
-"debut": [
-"2026-09-27T17:50:55Z",
 "prueba"
 ]
 },
@@ -10646,12 +9374,6 @@
 ],
 "ascenso": [
 "2026-11-09T23:27:09Z",
-"prueba"
-]
-},
-"TMAX": {
-"debut": [
-"2026-11-14T16:09:34Z",
 "prueba"
 ]
 },
@@ -10690,18 +9412,6 @@
 ],
 "podio": [
 "2026-11-06T01:59:31Z",
-"prueba"
-]
-},
-"TRRR": {
-"debut": [
-"2026-10-13T02:58:11Z",
-"prueba"
-]
-},
-"TRRRR": {
-"debut": [
-"2026-09-27T17:50:55Z",
 "prueba"
 ]
 },
@@ -10867,12 +9577,6 @@
 "prueba"
 ]
 },
-"Teorema": {
-"debut": [
-"2026-11-12T07:55:15Z",
-"prueba"
-]
-},
 "Terry": {
 "debut": [
 "2026-10-26T05:28:09Z",
@@ -10938,30 +9642,6 @@
 ],
 "liga": [
 "2026-11-16T16:33:28Z",
-"prueba"
-]
-},
-"Tokio": {
-"debut": [
-"2026-10-05T01:25:53Z",
-"prueba"
-],
-"ascenso": [
-"2026-10-05T15:27:42Z",
-"prueba"
-],
-"campeon": [
-"2026-10-06T02:56:28Z",
-"prueba"
-],
-"podio": [
-"2026-10-06T02:56:28Z",
-"prueba"
-]
-},
-"Tony": {
-"debut": [
-"2026-11-06T00:50:40Z",
 "prueba"
 ]
 },
@@ -11039,12 +9719,6 @@
 "prueba"
 ]
 },
-"Trueno": {
-"debut": [
-"2026-11-12T07:55:15Z",
-"prueba"
-]
-},
 "Tuca": {
 "debut": [
 "2026-09-27T17:50:55Z",
@@ -11084,12 +9758,6 @@
 ],
 "cazador": [
 "2026-10-29T03:26:52Z",
-"prueba"
-]
-},
-"Turbo": {
-"debut": [
-"2026-10-27T21:55:33Z",
 "prueba"
 ]
 },
@@ -11181,12 +9849,6 @@
 "prueba"
 ]
 },
-"Uzi": {
-"debut": [
-"2026-10-04T21:25:29Z",
-"prueba"
-]
-},
 "V-zir": {
 "debut": [
 "2026-10-06T02:56:28Z",
@@ -11196,28 +9858,6 @@
 "V1UDON": {
 "debut": [
 "2026-11-12T06:25:21Z",
-"prueba"
-]
-},
-"VALLES-T": {
-"debut": [
-"2026-11-12T07:55:15Z",
-"prueba"
-],
-"ascenso": [
-"2026-11-13T00:56:37Z",
-"prueba"
-],
-"ev10": [
-"2026-11-13T00:56:37Z",
-"prueba"
-],
-"liga": [
-"2026-11-13T00:56:37Z",
-"prueba"
-],
-"trotamundos": [
-"2026-11-13T00:56:37Z",
 "prueba"
 ]
 },
@@ -11304,24 +9944,6 @@
 ],
 "cazador": [
 "2026-11-09T21:27:39Z",
-"prueba"
-]
-},
-"Valki": {
-"debut": [
-"2026-11-09T21:27:39Z",
-"prueba"
-],
-"ascenso": [
-"2026-11-09T21:57:36Z",
-"prueba"
-],
-"clasico": [
-"2026-11-09T21:57:36Z",
-"prueba"
-],
-"duelista": [
-"2026-11-09T21:57:36Z",
 "prueba"
 ]
 },
@@ -11565,12 +10187,6 @@
 "prueba"
 ]
 },
-"WOS": {
-"debut": [
-"2026-11-12T07:55:15Z",
-"prueba"
-]
-},
 "Walker": {
 "campeon": [
 "2026-10-03T22:38:07Z",
@@ -11641,12 +10257,6 @@
 "prueba"
 ]
 },
-"XNOAH": {
-"debut": [
-"2026-10-07T02:27:04Z",
-"prueba"
-]
-},
 "Xclusivo": {
 "debut": [
 "2026-09-28T18:54:27Z",
@@ -11705,12 +10315,6 @@
 "prueba"
 ]
 },
-"Xplic": {
-"debut": [
-"2026-10-12T06:54:51Z",
-"prueba"
-]
-},
 "Xplicit": {
 "debut": [
 "2026-10-03T22:38:07Z",
@@ -11760,12 +10364,6 @@
 ],
 "trotamundos": [
 "2026-11-09T21:27:39Z",
-"prueba"
-]
-},
-"Xubaru prime": {
-"debut": [
-"2026-10-14T06:41:33Z",
 "prueba"
 ]
 },
@@ -11863,18 +10461,6 @@
 "prueba"
 ]
 },
-"ZETRYCO": {
-"liga": [
-"2026-10-16T15:26:51Z",
-"prueba"
-]
-},
-"ZTR": {
-"debut": [
-"2026-09-27T17:50:55Z",
-"prueba"
-]
-},
 "ZWO": {
 "debut": [
 "2026-10-05T06:27:01Z",
@@ -11938,12 +10524,6 @@
 ],
 "podio": [
 "2026-11-13T18:56:21Z",
-"prueba"
-]
-},
-"Zanti SkT": {
-"debut": [
-"2026-10-05T06:27:01Z",
 "prueba"
 ]
 },
@@ -12131,12 +10711,6 @@
 "prueba"
 ]
 },
-"akvmolt": {
-"debut": [
-"2026-11-06T00:50:40Z",
-"prueba"
-]
-},
 "alejozz": {
 "debut": [
 "2026-11-11T16:32:12Z",
@@ -12186,22 +10760,6 @@
 ],
 "podio": [
 "2026-11-12T07:55:15Z",
-"prueba"
-]
-},
-"bay": {
-"debut": [
-"2026-10-31T23:26:39Z",
-"prueba"
-]
-},
-"belleza": {
-"debut": [
-"2026-10-09T04:24:33Z",
-"prueba"
-],
-"podio": [
-"2026-10-09T04:24:33Z",
 "prueba"
 ]
 },
@@ -12301,12 +10859,6 @@
 "prueba"
 ]
 },
-"cronox el estilo pupilo": {
-"debut": [
-"2026-10-07T04:25:06Z",
-"prueba"
-]
-},
 "doble h": {
 "debut": [
 "2026-10-11T18:25:53Z",
@@ -12377,27 +10929,9 @@
 "prueba"
 ]
 },
-"familiafortunaexito": {
-"debut": [
-"2026-10-23T23:39:26Z",
-"prueba"
-]
-},
-"familiafortunayexito": {
-"debut": [
-"2026-11-03T05:27:10Z",
-"prueba"
-]
-},
 "fenix": {
 "debut": [
 "2026-10-29T23:35:40Z",
-"prueba"
-]
-},
-"fleivagner": {
-"debut": [
-"2026-10-09T03:55:25Z",
 "prueba"
 ]
 },
@@ -12425,35 +10959,9 @@
 "prueba"
 ]
 },
-"g8": {
-"debut": [
-"2026-09-27T17:50:55Z",
-"prueba"
-]
-},
 "gary": {
 "debut": [
 "2026-10-27T01:25:43Z",
-"prueba"
-]
-},
-"gianla": {
-"debut": [
-"2026-11-02T05:56:41Z",
-"prueba"
-]
-},
-"gianlamaldad": {
-"campeon": [
-"2026-10-26T04:25:24Z",
-"prueba"
-],
-"debut": [
-"2026-10-26T04:25:24Z",
-"prueba"
-],
-"podio": [
-"2026-10-26T04:25:24Z",
 "prueba"
 ]
 },
@@ -12483,12 +10991,6 @@
 "prueba"
 ]
 },
-"gibraltar": {
-"debut": [
-"2026-10-03T22:24:54Z",
-"prueba"
-]
-},
 "ikonoxx": {
 "debut": [
 "2026-10-09T23:55:55Z",
@@ -12496,6 +10998,12 @@
 ],
 "ascenso": [
 "2026-10-12T16:55:47Z",
+"prueba"
+]
+},
+"j.nibbana": {
+"debut": [
+"2026-11-14T22:27:14Z",
 "prueba"
 ]
 },
@@ -12549,32 +11057,6 @@
 "prueba"
 ]
 },
-"kminante": {
-"campeon": [
-"2026-11-12T05:26:29Z",
-"prueba"
-],
-"debut": [
-"2026-11-12T05:26:29Z",
-"prueba"
-],
-"podio": [
-"2026-11-12T05:26:29Z",
-"prueba"
-]
-},
-"kur": {
-"debut": [
-"2026-10-02T02:24:58Z",
-"prueba"
-]
-},
-"kurl": {
-"debut": [
-"2026-10-02T02:54:53Z",
-"prueba"
-]
-},
 "kychi": {
 "debut": [
 "2026-11-12T03:56:02Z",
@@ -12623,18 +11105,6 @@
 "prueba"
 ]
 },
-"lord viruz": {
-"debut": [
-"2026-10-31T15:31:10Z",
-"prueba"
-]
-},
-"luisito  🏆": {
-"debut": [
-"2026-10-04T01:54:59Z",
-"prueba"
-]
-},
 "luisito 🏆": {
 "debut": [
 "2026-10-04T02:24:58Z",
@@ -12657,27 +11127,9 @@
 "prueba"
 ]
 },
-"malvinitas": {
-"debut": [
-"2026-10-07T19:55:38Z",
-"prueba"
-]
-},
-"manteca sixseven": {
-"debut": [
-"2026-09-27T17:50:55Z",
-"prueba"
-]
-},
 "matacuak": {
 "debut": [
 "2026-10-19T19:56:18Z",
-"prueba"
-]
-},
-"mathias": {
-"debut": [
-"2026-10-05T06:27:01Z",
 "prueba"
 ]
 },
@@ -12717,18 +11169,6 @@
 "prueba"
 ]
 },
-"matthias": {
-"debut": [
-"2026-10-09T04:24:33Z",
-"prueba"
-]
-},
-"melgar": {
-"debut": [
-"2026-10-08T21:55:25Z",
-"prueba"
-]
-},
 "melomaniaco": {
 "debut": [
 "2026-09-27T17:50:55Z",
@@ -12750,12 +11190,6 @@
 ],
 "ascenso": [
 "2026-10-13T02:58:11Z",
-"prueba"
-]
-},
-"nacioenmilan": {
-"debut": [
-"2026-09-28T15:25:09Z",
 "prueba"
 ]
 },
@@ -12835,26 +11269,6 @@
 "prueba"
 ]
 },
-"ojos de tailandia": {
-"campeon": [
-"2026-11-03T05:27:10Z",
-"prueba"
-],
-"debut": [
-"2026-11-03T05:27:10Z",
-"prueba"
-],
-"podio": [
-"2026-11-03T05:27:10Z",
-"prueba"
-]
-},
-"onzas": {
-"debut": [
-"2026-10-07T20:25:19Z",
-"prueba"
-]
-},
 "oriuz": {
 "debut": [
 "2026-10-31T04:56:48Z",
@@ -12883,31 +11297,9 @@
 "prueba"
 ]
 },
-"parttt": {
-"debut": [
-"2026-10-27T05:25:37Z",
-"prueba"
-]
-},
 "pelota del 10": {
 "debut": [
 "2026-11-03T05:27:10Z",
-"prueba"
-]
-},
-"praiserizas": {
-"debut": [
-"2026-10-08T01:25:21Z",
-"prueba"
-],
-"podio": [
-"2026-10-08T01:25:21Z",
-"prueba"
-]
-},
-"publicenemy": {
-"debut": [
-"2026-10-30T02:56:35Z",
 "prueba"
 ]
 },
@@ -12920,12 +11312,6 @@
 "rayito": {
 "debut": [
 "2026-09-27T17:50:55Z",
-"prueba"
-]
-},
-"reenkharnazhion": {
-"debut": [
-"2026-10-22T15:26:30Z",
 "prueba"
 ]
 },
@@ -12957,12 +11343,6 @@
 "prueba"
 ]
 },
-"setes": {
-"debut": [
-"2026-10-07T05:57:26Z",
-"prueba"
-]
-},
 "setesfifi": {
 "debut": [
 "2026-10-07T04:25:06Z",
@@ -12975,31 +11355,9 @@
 "prueba"
 ]
 },
-"shenlong": {
-"debut": [
-"2026-11-14T05:22:19Z",
-"prueba"
-]
-},
 "silence papá de nexus": {
 "debut": [
 "2026-11-12T09:08:00Z",
-"prueba"
-]
-},
-"sir one x": {
-"cazador": [
-"2026-09-29T22:24:13Z",
-"prueba"
-],
-"debut": [
-"2026-09-29T22:24:13Z",
-"prueba"
-]
-},
-"soaraya": {
-"debut": [
-"2026-11-09T21:27:39Z",
 "prueba"
 ]
 },
@@ -13055,37 +11413,7 @@
 "prueba"
 ]
 },
-"tnor": {
-"debut": [
-"2026-10-23T06:55:35Z",
-"prueba"
-]
-},
-"tnr": {
-"debut": [
-"2026-10-12T20:25:11Z",
-"prueba"
-]
-},
-"tomyhilfiger": {
-"debut": [
-"2026-10-19T15:27:25Z",
-"prueba"
-]
-},
-"tomyhilfiger1312": {
-"debut": [
-"2026-11-03T17:26:57Z",
-"prueba"
-]
-},
 "tormen": {
-"debut": [
-"2026-09-27T17:50:55Z",
-"prueba"
-]
-},
-"volk": {
 "debut": [
 "2026-09-27T17:50:55Z",
 "prueba"
@@ -13097,21 +11425,9 @@
 "prueba"
 ]
 },
-"will": {
-"debut": [
-"2026-10-19T22:56:04Z",
-"prueba"
-]
-},
 "wosito": {
 "debut": [
 "2026-11-17T02:56:33Z",
-"prueba"
-]
-},
-"x Za": {
-"debut": [
-"2026-10-26T04:25:24Z",
 "prueba"
 ]
 },
@@ -13207,24 +11523,6 @@
 "prueba"
 ]
 },
-"yo mc": {
-"debut": [
-"2026-11-05T02:56:48Z",
-"prueba"
-]
-},
-"yshows": {
-"debut": [
-"2026-09-27T17:50:55Z",
-"prueba"
-]
-},
-"za": {
-"debut": [
-"2026-10-03T05:55:11Z",
-"prueba"
-]
-},
 "}": {
 "debut": [
 "2026-11-16T02:27:12Z",
@@ -13260,12 +11558,6 @@
 "💥 SF2: ISAC": {
 "debut": [
 "2026-10-24T01:55:27Z",
-"prueba"
-]
-},
-"🔴 Semi 2: DESIO": {
-"debut": [
-"2026-10-21T21:55:21Z",
 "prueba"
 ]
 },

@@ -2,7 +2,7 @@
  "_leeme": "El reto del debut (bot/debutantes.py): quién debutó desde el 12/10/2026 a las 6 PM ET, cuándo vence, si lo cumplió y qué ya se avisó. Dlx, 12/10/2026.",
  "chats": {
   "ACAD": "2026-11-14",
-  "CH": "2026-11-16",
+  "CH": "2026-11-17",
   "DDF": "2026-11-16",
   "DDS": "2026-11-16",
   "FDS": "2026-11-13",
@@ -63,19 +63,6 @@
    "n": 547,
    "sv": "FFA",
    "vence": "2026-11-06T20:59:18+00:00",
-   "vencido": false
-  },
-  "@j.nibbana": {
-   "avisado": "2026-11-14",
-   "chat": "2026-11-14",
-   "con": null,
-   "cumplido": "",
-   "debut": "2026-11-14T20:22:29+00:00",
-   "did": "599711882823204883",
-   "evento": "CHOP COMPE CEO V.2",
-   "n": 636,
-   "sv": "CH",
-   "vence": "2026-11-21T20:22:29+00:00",
    "vencido": false
   },
   "ADEUXE": {
@@ -791,6 +778,7 @@
    "vencido": false
   },
   "Dominic": {
+   "avisado": "2026-11-17",
    "chat": "2026-11-16",
    "con": null,
    "cumplido": "",
@@ -864,6 +852,7 @@
    "vencido": true
   },
   "El felpudo 974": {
+   "avisado": "2026-11-17",
    "chat": "2026-11-16",
    "con": null,
    "cumplido": "",
@@ -2358,6 +2347,7 @@
    "vencido": true
   },
   "Puppy": {
+   "avisado": "2026-11-17",
    "con": null,
    "cumplido": "",
    "debut": "2026-11-17T01:03:04+00:00",
@@ -3245,6 +3235,19 @@
    "n": 531,
    "sv": "FFA",
    "vence": "2026-11-02T22:39:00+00:00",
+   "vencido": false
+  },
+  "j.nibbana": {
+   "avisado": "2026-11-17",
+   "chat": "2026-11-17",
+   "con": null,
+   "cumplido": "",
+   "debut": "2026-11-14T20:22:29+00:00",
+   "did": "599711882823204883",
+   "evento": "CHOP COMPE CEO V.2",
+   "n": 636,
+   "sv": "CH",
+   "vence": "2026-11-21T20:22:29+00:00",
    "vencido": false
   },
   "jazi": {
