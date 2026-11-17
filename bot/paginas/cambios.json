@@ -11,6 +11,16 @@
   ],
   "cambios": [
     {
+      "version": "5.95",
+      "dia": "2026-11-17",
+      "cuando": "2026-11-17T00:56:50-05:00",
+      "titulo": "La ventana de las cartas, más suave",
+      "items": [
+        "Al tocar una carta, la ventana **abre en esa carta** (antes abría en la principal). Y con las flechas de persona, la de al lado abre en el mismo tipo de carta.",
+        "Las animaciones de la ventana, **más suaves**: al arrastrar, la carta sigue tu dedo; el cambio de carta ya no hace que el navegador redibuje la imagen en cada cuadro; el texto cambia con un fundido; y al cerrar se va en vez de desaparecer de golpe."
+      ]
+    },
+    {
         "version": "5.94",
         "dia": "2026-11-17",
         "cuando": "2026-11-17T00:58:00-05:00",

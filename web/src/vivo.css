@@ -3144,11 +3144,14 @@ li.nt-f{cursor:default}
 /* 📱 con los dos renglones de botones del dueño, la carta cede 56 px más: a 320×568 los botones tapaban el nombre */
 .vk-yo .vk-esc{--ch:min(clamp(270px,calc(100dvh - 386px),560px),calc((100vw - 90px) * 1.46))}
 .vk-esc::before{content:"";position:absolute;inset:0;pointer-events:none;background:radial-gradient(closest-side,color-mix(in srgb,var(--g) 40%,transparent),transparent)}
-.vk-cc{position:relative;width:100%;height:var(--ch);touch-action:pan-y;-webkit-user-select:none;user-select:none;--paso:58%}
+.vk-cc{position:relative;width:100%;height:var(--ch);touch-action:pan-y;-webkit-user-select:none;user-select:none;--paso:58%;transition:transform .5s cubic-bezier(.22,1,.36,1)}
 .vk-sl{position:absolute;top:0;left:50%;height:100%;width:calc(var(--ch) * .685);transform:translateX(calc(-50% + var(--d) * var(--paso))) scale(var(--k));
-  transition:transform .45s cubic-bezier(.2,.8,.2,1),opacity .35s,filter .35s}
-.vk-sl.vk-lado{cursor:pointer;filter:brightness(.55) saturate(.8)}
-.vk-gira{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;transition:transform .5s cubic-bezier(.2,.8,.2,1)}
+  transition:transform .5s cubic-bezier(.22,1,.36,1),opacity .4s ease}
+/* la del medio y las de al lado, en su propia capa (todas, con 7 o 13 cartas, frenaba la apertura en el celular) */
+.vk-sl.vk-cur,.vk-sl.vk-lado{will-change:transform,opacity}
+.vk-sl.vk-lado{cursor:pointer}
+.vk-gira{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;transition:transform .5s cubic-bezier(.22,1,.36,1)}
+.vk-etx{display:block}
 .vk-gira img{display:block;height:100%;width:auto;max-width:100%;object-fit:contain;filter:drop-shadow(0 18px 30px rgba(0,0,0,.55));-webkit-user-drag:none}
 .vk-sin{position:absolute;inset:auto 16px 40%;margin:0;padding:30px 10px;border:2px dashed #A5A5A0;font:700 16px/1.4 "Barlow Condensed",sans-serif;color:#A5A5A0;text-align:center}
 .vk-et{position:relative;z-index:12;display:flex;align-items:center;justify-content:center;gap:12px}
@@ -3834,8 +3837,19 @@ li.nt-f{cursor:default}
 .app .tabbar a.on svg,.app .tabbar a.on .tb-cara{animation:an-pop .38s cubic-bezier(.2,.8,.2,1)}
 /* el visor de tarjetas abre desde abajo, con su fondo */
 .app .vk{animation:an-fondo .2s ease-out both}
-.app .vk-cc{animation:an-abre .32s cubic-bezier(.2,.8,.2,1) both}
-.app .vk-ficha{animation:an-sube .35s cubic-bezier(.2,.8,.2,1) .06s both}
+.app .vk-cc{animation:an-abre .32s cubic-bezier(.2,.8,.2,1) backwards}
+.app .vk-ficha{animation:an-sube .38s cubic-bezier(.22,1,.36,1) .06s both}
+/* 🎞️ la ventana de la tarjeta, suave (17/11/2026): el texto que cambia se funde; si la carta sale de la miniatura, la caja no
+   se mueve además; de una persona a la de al lado, la carta entra de costado sin volver a fundir el fondo; y al cerrar se va */
+@keyframes vk-cambia{from{opacity:0;transform:translateY(5px)}to{opacity:1;transform:none}}
+@keyframes vk-entra{from{opacity:0;transform:translateX(calc(var(--dir,1) * 70px)) scale(.97)}to{opacity:1;transform:none}}
+@keyframes vk-fuera{to{opacity:0}}
+.app .vk-etx,.app .vk-mide{animation:vk-cambia .3s cubic-bezier(.22,1,.36,1) both}
+.app .vk.vk-flip .vk-cc{animation:none}
+.app .vk.vk-sigue{animation:none}
+.app .vk.vk-sigue .vk-cc{animation:vk-entra .45s cubic-bezier(.22,1,.36,1) backwards}
+.app .vk.vk-sigue .vk-ficha{animation:vk-cambia .32s cubic-bezier(.22,1,.36,1) both}
+.app .vk.vk-sale{animation:vk-fuera .16s ease-in both}
 /* las pestañas cambian de a poco */
 .app .rk-subs button,.app .rk-subs a{transition:color .2s ease,background-color .2s ease,border-color .2s ease}
 

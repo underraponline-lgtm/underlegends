@@ -381,7 +381,9 @@ export function Carta({ liga, k, cual = 'temporada', cls = 'ci', abre = true, ma
   const svc = f.sv && liga.svs && liga.svs[f.sv] ? liga.svs[f.sv].color : '';
   const img = mk && css ? <ConMarco m={mk} cual={cual} ancho={css} svColor={svc} cc={f.cc} src={src}>{img0}</ConMarco> : img0;
   if (!abre) return img;
-  return <button type="button" className="sin-boton" onClick={() => accion.carta(k)} aria-label={'Ver la carta de ' + f.n}>{img}</button>;
+  // 🃏 con `cual`: abre en ESA carta y no en la principal (Dlx, 17/11/2026: «si selecciono una tarjeta diferente, que lo
+  // primero que me muestre sea esa misma que presioné»)
+  return <button type="button" className="sin-boton" onClick={() => accion.carta(k, cual)} aria-label={'Ver la carta de ' + f.n}>{img}</button>;
 }
 
 export function Rango({ liga, rg }) {

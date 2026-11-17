@@ -113,6 +113,16 @@ function deDonde() {
 
 export function VisorCarta({ liga, dc, k, inicial = '', onCerrar }) {
   const f = filaDe(liga, dc, k);
+  // 🎞️ SUAVE (Dlx, 17/11/2026: «asegúrate que todo tenga animaciones smoother»). Medido con el procesador frenado como un
+  // celular mediano: al pasar de carta tironeaban 41 de 95 cuadros (el peor, 250 ms). Era el `filter` que apagaba las de
+  // al lado —se repinta la imagen entera en cada cuadro—, las imágenes que se creaban y decodificaban de nuevo al pasar,
+  // y dos movimientos encimados al abrir. Ahora: sólo `transform` y `opacity` (los mueve la placa de video), cada carta
+  // que ya se vio queda montada, la carta sigue al dedo mientras arrastras, el texto cambia con un fundido, y al
+  // cerrar se va en vez de desaparecer de golpe
+  // de dónde sale la carta (una sola vez, al abrir) y si vino de la persona de al lado (entra de costado, sin fundir el fondo)
+  const [desde0] = useState(() => deDonde());
+  const [sigue] = useState(() => { const v = window.__lgVkSigue; return v && Date.now() - v.t < 900 ? v.dir : 0; });
+  const [sale, setSale] = useState(false);
   const pub = usePases();
   const cp = (pub && pub.cp && pub.cp[k]) || '';
   const esYo = !!((dc && dc.clave === k) || (liga.yo && liga.yo.k === k));
@@ -166,11 +176,21 @@ export function VisorCarta({ liga, dc, k, inicial = '', onCerrar }) {
       refrescarPases();
     });
   };
+  // ✕, Escape y tocar afuera: se va en 200 ms en vez de desaparecer de golpe; con «Menos animaciones», al instante
+  const cerrar = () => {
+    if (sale) return;
+    const quieta = (raiz.current && raiz.current.closest('.calma')) || (window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches);
+    if (quieta) { onCerrar(); return; }
+    setSale(true);
+    setTimeout(onCerrar, 160);
+  };
+  const cerrarRef = useRef(cerrar);
+  cerrarRef.current = cerrar;
   // Escape cierra, ← → pasan de carta, la página de atrás no se mueve, y el foco vuelve a donde estaba
   useEffect(() => {
     const antes = document.activeElement;
     const tecla = (e) => {
-      if (e.key === 'Escape') onCerrar();
+      if (e.key === 'Escape') cerrarRef.current();
       else if (e.key === 'ArrowRight' || e.key === 'ArrowLeft') { e.preventDefault(); irRef.current(e.key === 'ArrowRight' ? 1 : -1); }
     };
     window.addEventListener('keydown', tecla);
@@ -187,7 +207,7 @@ export function VisorCarta({ liga, dc, k, inicial = '', onCerrar }) {
   }, [onCerrar]);
   // 🎞️ la carta sale de donde la tocaste (una vez, al abrir; con «Menos animaciones» o el sistema en reducido, no)
   useEffect(() => {
-    const desde = deDonde();
+    const desde = desde0;
     const el = raiz.current;
     if (!desde || !el || el.closest('.calma') || (window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches)) return;
     const img = el.querySelector('.vk-sl.vk-cur img');
@@ -196,15 +216,36 @@ export function VisorCarta({ liga, dc, k, inicial = '', onCerrar }) {
       const b = img.getBoundingClientRect();
       if (!b.width) return;
       img.animate([{ transformOrigin: '0 0', transform: 'translate(' + (desde.left - b.left) + 'px,' + (desde.top - b.top) + 'px) scale(' + (desde.width / b.width) + ')' },
-        { transformOrigin: '0 0', transform: 'none' }], { duration: 450, easing: 'cubic-bezier(.2,.8,.2,1)' });
+        { transformOrigin: '0 0', transform: 'none' }], { duration: 520, easing: 'cubic-bezier(.22,1,.36,1)' });
     };
     (img.decode ? img.decode() : Promise.resolve()).then(ir2, ir2);
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
   // 👆 deslizar para pasar de carta (y tocar la de al lado la trae al medio). ⚠️ El navegador manda un click DESPUÉS
   // de soltar, y para entonces la carta que estaba en el medio ya es la de al lado: su «tocar para traerla» la volvía
   // a poner (medido: arrastrar no cambiaba nada). Por eso el click que llega justo después de un deslizar se ignora
-  const x0 = useRef(null);
+  const arr = useRef({ x0: null });
+  const cc = useRef(null);
   const desliz = useRef(0);
+  // 🖼️ cada carta que ya estuvo cerca queda montada: crearla y decodificarla de nuevo al pasar era un tirón
+  const vistos = useRef(new Set());
+  const listas = useRef(new Set());
+  // 🖼️ las tres que siguen hacia cada lado se bajan y se decodifican de antemano: al llegar, la imagen ya está lista y
+  // montarla no frena el paso (medido: era el tirón que quedaba al pasar de carta)
+  // (recién después de abrir: al mismo tiempo que la apertura, en un celular frenado, le robaba cuadros)
+  const abierta = useRef(Date.now());
+  useEffect(() => {
+    const t = setTimeout(() => {
+      items.forEach((y, j) => {
+        if (Math.abs(j - i) > 3 || !y.url || listas.current.has(y.url)) return;
+        listas.current.add(y.url);
+        const im = new Image();
+        im.decoding = 'async';
+        im.src = y.url;
+        if (im.decode) im.decode().catch(() => { /* la carta se pide igual al montarse */ });
+      });
+    }, Math.max(0, 650 - (Date.now() - abierta.current)));
+    return () => clearTimeout(t);
+  }, [i, items]);
   // ↔️ en la compu, ‹ › en las orillas pasan a la persona de al lado en la tabla de la temporada
   const vecinos = useMemo(() => {
     const L = Object.values(liga.T).filter((y) => y.pos && !y.fc).sort((a, b) => a.pos - b.pos);
@@ -233,30 +274,56 @@ export function VisorCarta({ liga, dc, k, inicial = '', onCerrar }) {
     try { await navigator.clipboard.writeText(url); avisar(esYo ? 'Link de tu perfil copiado' : 'Link de su perfil copiado'); } catch (e) { avisar('No pude copiarlo'); }
   };
   const gir = (e) => {
-    if (e.pointerType !== 'mouse' || !gira.current || (raiz.current && raiz.current.closest('.calma'))) return;
+    if (e.pointerType !== 'mouse' || !gira.current || arr.current.va || (raiz.current && raiz.current.closest('.calma'))) return;
+    gira.current.style.transition = 'transform .12s ease-out';
     const r = gira.current.getBoundingClientRect();
     const px = (e.clientX - r.left) / r.width, py = (e.clientY - r.top) / r.height;
     gira.current.style.transform = 'perspective(900px) rotateY(' + ((px - 0.5) * 12).toFixed(2) + 'deg) rotateX(' + ((0.5 - py) * 10).toFixed(2) + 'deg)';
   };
-  const quieto = () => { if (gira.current) gira.current.style.transform = ''; };
+  const quieto = () => { if (gira.current) { gira.current.style.transition = ''; gira.current.style.transform = ''; } };
+  // 👆 arrastrar mueve la caja entera con un `transform` (sólo la placa de video); al soltar vuelve con transición mientras
+  // las cartas van a su lugar nuevo. Con una variable CSS se recalculaban todas las cartas en cada movimiento del dedo
+  const soltar = () => { const el = cc.current; if (el) { el.style.transition = ''; el.style.transform = ''; } };
+  const tipoNav = x && !x.bloq && ORDEN.includes(x.tipo) ? x.tipo : '';
+  const aPersona = (y, dir) => { window.__lgVkSigue = { t: Date.now(), dir }; window.dispatchEvent(new CustomEvent('lg:carta', { detail: y.k + (tipoNav ? '|' + tipoNav : '') })); };
+  items.forEach((y, j) => { if (Math.abs(j - i) <= 2) vistos.current.add(y.id); });
   const dueno = esYo && x && !x.bloq && tipo !== 'liga';
   return (
-    <div className={'vk' + (dueno ? ' vk-yo' : '')} ref={raiz} role="presentation" onClick={(e) => { if (e.target === e.currentTarget || e.target.classList.contains('vk-in')) onCerrar(); }}>
+    <div className={'vk' + (dueno ? ' vk-yo' : '') + (desde0 ? ' vk-flip' : '') + (sigue ? ' vk-sigue' : '') + (sale ? ' vk-sale' : '')} ref={raiz} role="presentation"
+      style={sigue ? { '--dir': sigue } : undefined} onClick={(e) => { if (e.target === e.currentTarget || e.target.classList.contains('vk-in')) cerrar(); }}>
       <div className="vk-in" role="dialog" aria-modal="true" aria-label={'Las tarjetas de ' + nombre}>
         <div className="vk-esc" style={{ '--g': color }}>
-          <div className="vk-cc" onPointerDown={(e) => { x0.current = e.clientX; }} onPointerCancel={() => { x0.current = null; }}
-            onPointerUp={(e) => { if (x0.current === null) return; const dx = e.clientX - x0.current; x0.current = null; if (Math.abs(dx) > 40) { desliz.current = Date.now(); ir(dx < 0 ? 1 : -1); } }}
+          <div className="vk-cc" ref={cc} onPointerDown={(e) => { arr.current = { x0: e.clientX, va: false }; }}
+            onPointerMove={(e) => {
+              const a = arr.current;
+              if (a.x0 === null) return;
+              let dx = e.clientX - a.x0;
+              if (!a.va && Math.abs(dx) < 8) return;
+              if (!a.va) { a.va = true; try { e.currentTarget.setPointerCapture(e.pointerId); } catch (er) { /* sin captura */ } cc.current.style.transition = 'none'; quieto(); }
+              if ((i === 0 && dx > 0) || (i === items.length - 1 && dx < 0)) dx *= 0.35;
+              cc.current.style.transform = 'translateX(' + dx.toFixed(1) + 'px)';
+            }}
+            onPointerCancel={() => { arr.current = { x0: null }; soltar(); }}
+            onPointerUp={(e) => {
+              const a = arr.current;
+              arr.current = { x0: null };
+              if (a.x0 === null) return;
+              const dx = e.clientX - a.x0;
+              soltar();
+              if (a.va) desliz.current = Date.now();
+              if (a.va && Math.abs(dx) > 40) ir(dx < 0 ? 1 : -1);
+            }}
             onClickCapture={(e) => { if (Date.now() - desliz.current < 500) { e.stopPropagation(); e.preventDefault(); } }}>
             {items.length ? items.map((y, j) => {
               const d = j - i, a = Math.abs(d);
               return (
                 <div key={y.id} className={'vk-sl' + (a === 0 ? ' vk-cur' : a === 1 ? ' vk-lado' : '')} aria-hidden={a !== 0}
-                  style={{ '--d': Math.sign(d) * Math.min(a, 2), '--k': a === 0 ? 1 : a === 1 ? 0.84 : 0.7, opacity: a === 0 ? 1 : a === 1 ? 0.6 : 0, zIndex: 10 - a, pointerEvents: a <= 1 ? undefined : 'none' }}
+                  style={{ '--d': Math.sign(d) * Math.min(a, 2), '--k': a === 0 ? 1 : a === 1 ? 0.84 : 0.7, opacity: a === 0 ? 1 : a === 1 ? 0.5 : 0, zIndex: 10 - a, pointerEvents: a <= 1 ? undefined : 'none' }}
                   onClick={a === 1 ? () => setSel(y.id) : undefined}
                   onPointerMove={a === 0 ? gir : undefined} onPointerLeave={a === 0 ? quieto : undefined}>
-                  {a <= 2 ? (
+                  {vistos.current.has(y.id) ? (
                     <div className="vk-gira" ref={a === 0 ? gira : undefined}>
-                      <img src={y.url} alt={a === 0 ? 'Tarjeta ' + (y.tipo === 'liga' ? 'de liga ' + y.nom : y.nom) + ' de ' + nombre + (y.bloq ? ', bloqueada' : '') : ''} draggable="false" />
+                      <img src={y.url} alt={a === 0 ? 'Tarjeta ' + (y.tipo === 'liga' ? 'de liga ' + y.nom : y.nom) + ' de ' + nombre + (y.bloq ? ', bloqueada' : '') : ''} draggable="false" decoding="async" />
                     </div>
                   ) : null}
                 </div>
@@ -266,7 +333,7 @@ export function VisorCarta({ liga, dc, k, inicial = '', onCerrar }) {
           {items.length > 1 ? (
             <div className="vk-et">
               <button type="button" className="vk-fl" onClick={() => ir(-1)} disabled={i === 0} aria-label="Carta anterior">‹</button>
-              <span aria-live="polite"><b>{x.nom}</b>{(x.sub ? x.sub + ' · ' : '') + (i + 1) + ' de ' + items.length}</span>
+              <span aria-live="polite"><span className="vk-etx" key={x.id}><b>{x.nom}</b>{(x.sub ? x.sub + ' · ' : '') + (i + 1) + ' de ' + items.length}</span></span>
               <button type="button" className="vk-fl" onClick={() => ir(1)} disabled={i === items.length - 1} aria-label="Carta siguiente">›</button>
             </div>
           ) : null}
@@ -277,7 +344,7 @@ export function VisorCarta({ liga, dc, k, inicial = '', onCerrar }) {
               <span className="vk-pos">{f.pos && !f.fc ? '#' + f.pos + ' de la temporada' : f.fc ? 'Fuera de concurso' : 'Sin eventos esta temporada'}</span>
               <h2>{nombre}</h2>
             </div>
-            <button type="button" className="vk-x vk-xf" onClick={onCerrar} aria-label="Cerrar"><Ico n="cerrar" t={20} /></button>
+            <button type="button" className="vk-x vk-xf" onClick={cerrar} aria-label="Cerrar"><Ico n="cerrar" t={20} /></button>
           </div>
           <ul className="vk-filas">
             {f.cc ? <li><a href={'#/pais/' + f.cc} onClick={onCerrar}><span className="vk-k">País</span><span className="vk-v"><Bandera cc={f.cc} cls="vk-flag" />{nombrePais(f.cc)}</span><i aria-hidden="true">›</i></a></li> : null}
@@ -286,7 +353,7 @@ export function VisorCarta({ liga, dc, k, inicial = '', onCerrar }) {
             {u ? <li><div><span className="vk-k">Último evento</span><span className="vk-v">{u.dia + ' · '}{u.camp ? <em>{u.res}</em> : u.res}</span></div></li> : null}
           </ul>
           {vieja ? <p className="vk-aviso">⏳ Esta tarjeta se está redibujando con los datos de ahora.</p> : null}
-          {x && x.mide ? <p className="vk-mide"><b>{x.nom}</b>{' ' + x.mide}</p> : null}
+          {x && x.mide ? <p className="vk-mide" key={x.id}><b>{x.nom}</b>{' ' + x.mide}</p> : null}
           <div className="vk-acc">
             {x ? (
               <button type="button" className="vk-bl" disabled={yendo}
@@ -307,9 +374,9 @@ export function VisorCarta({ liga, dc, k, inicial = '', onCerrar }) {
           </div>
         </div>
       </div>
-      <button type="button" className="vk-x vk-xg" onClick={onCerrar} aria-label="Cerrar"><Ico n="cerrar" t={20} /></button>
-      {vecinos[0] ? <button type="button" className="vk-per vk-pl" onClick={() => window.dispatchEvent(new CustomEvent('lg:carta', { detail: vecinos[0].k }))} aria-label={'Anterior: ' + limpio(vecinos[0].n)}>‹<small>{'#' + vecinos[0].pos + ' ' + limpio(vecinos[0].n)}</small></button> : null}
-      {vecinos[1] ? <button type="button" className="vk-per vk-pr" onClick={() => window.dispatchEvent(new CustomEvent('lg:carta', { detail: vecinos[1].k }))} aria-label={'Siguiente: ' + limpio(vecinos[1].n)}>›<small>{'#' + vecinos[1].pos + ' ' + limpio(vecinos[1].n)}</small></button> : null}
+      <button type="button" className="vk-x vk-xg" onClick={cerrar} aria-label="Cerrar"><Ico n="cerrar" t={20} /></button>
+      {vecinos[0] ? <button type="button" className="vk-per vk-pl" onClick={() => aPersona(vecinos[0], -1)} aria-label={'Anterior: ' + limpio(vecinos[0].n)}>‹<small>{'#' + vecinos[0].pos + ' ' + limpio(vecinos[0].n)}</small></button> : null}
+      {vecinos[1] ? <button type="button" className="vk-per vk-pr" onClick={() => aPersona(vecinos[1], 1)} aria-label={'Siguiente: ' + limpio(vecinos[1].n)}>›<small>{'#' + vecinos[1].pos + ' ' + limpio(vecinos[1].n)}</small></button> : null}
       {aviso ? <div className="vk-toast" role="status">{aviso}</div> : null}
     </div>
   );

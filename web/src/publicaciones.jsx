@@ -267,12 +267,12 @@ export function Cartas({ liga, xs }) {
     const k = us[0].ks[0];
     return (
       <article className="pub tarjeta">
-        <div className="pub-v"><button type="button" className="pub-mini" onClick={() => accion.carta(k)} aria-label={'La carta de ' + nombres}>
+        <div className="pub-v"><button type="button" className="pub-mini" onClick={() => accion.carta(k, us[0].carta)} aria-label={'La carta de ' + nombres}>
           <Carta liga={liga} k={k} cual={us[0].carta} cls="pub-carta" abre={false} /></button></div>
         <div className="pub-c">
           <span className="pub-cat">CARTA NUEVA<small>{liga.cuando(us[0].t)}</small></span>
           <p className="pub-t"><b>{nombres}</b> ya tiene su carta {CARTA[us[0].carta] || ''}</p>
-          <div className="pub-acc"><button type="button" className="pub-a" onClick={() => accion.carta(k)}>Ver la carta</button>
+          <div className="pub-acc"><button type="button" className="pub-a" onClick={() => accion.carta(k, us[0].carta)}>Ver la carta</button>
             {liga.T[k] ? <a className="pub-a" href={'#/r/' + encodeURIComponent(k)}>Ver su perfil</a> : null}</div>
         </div>
       </article>
@@ -286,7 +286,7 @@ export function Cartas({ liga, xs }) {
         <div className="pub-cartas">
           {us.slice(0, 12).map((it) => {
             const k = (it.ks || [])[0];
-            return <button type="button" key={k + it.carta} className="pub-mini" onClick={() => accion.carta(k)} aria-label={'La carta de ' + limpio((it.quien || [])[0] || '')}>
+            return <button type="button" key={k + it.carta} className="pub-mini" onClick={() => accion.carta(k, it.carta)} aria-label={'La carta de ' + limpio((it.quien || [])[0] || '')}>
               <Carta liga={liga} k={k} cual={it.carta} cls="pub-mini-c" abre={false} /></button>;
           })}
           {n > 12 ? <span className="pub-mas">+{n - 12}</span> : null}
