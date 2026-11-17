@@ -89,6 +89,35 @@
   .ves-q{transition:border-color .15s ease,background-color .15s ease,transform .15s cubic-bezier(.23,1,.32,1)}
   .ves-a .ves-q:hover{transform:translateY(-2px)}
 }
+/* 👗 tus looks guardados (17/11/2026): una fila entre el escenario y las piezas, como los presets de Rocket League */
+.ves-looks{display:grid;gap:10px;padding:14px 18px;border-bottom:1.5px solid var(--v-borde);background:#08080A}
+.ves-looks-h{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap}
+.ves-looks-h b{font:900 15px/1 Archivo,sans-serif;text-transform:uppercase}
+.ves-looks-h small{font:700 12px/1.2 "Barlow Condensed",sans-serif;letter-spacing:.08em;text-transform:uppercase;color:var(--v-gris)}
+.ves-looks-l{display:flex;gap:8px;overflow-x:auto;scrollbar-width:none;padding:2px 2px 4px}
+.ves-looks-l::-webkit-scrollbar{display:none}
+.ves-look{position:relative;flex:0 0 auto;display:flex;align-items:stretch;min-width:150px;max-width:240px;border:1.5px solid var(--v-borde2);background:var(--v-panel)}
+.ves-look.on{border-color:var(--v-tinta);box-shadow:4px 4px 0 var(--v-verde)}
+.ves-look-b{flex:1;display:grid;gap:4px;justify-items:start;min-width:0;padding:10px 8px 10px 12px;border:0;background:none;color:var(--v-tinta);text-align:left;cursor:pointer}
+.ves-look-b b{max-width:100%;font:900 13px/1.1 Archivo,sans-serif;text-transform:uppercase;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ves-look-b small{max-width:100%;font:600 12px/1.2 Archivo,sans-serif;color:var(--v-gris);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ves-look-b .ves-pu{position:static;justify-self:start}
+.ves-look-x{flex:none;width:34px;border:0;border-left:1.5px solid var(--v-borde);background:none;color:var(--v-gris);font:700 13px/1 Archivo,sans-serif;cursor:pointer}
+.ves-look.mas{align-items:center;justify-content:center;flex-direction:column;gap:3px;padding:10px 14px;border-style:dashed;color:var(--v-tinta);
+  font:900 12.5px/1 Archivo,sans-serif;text-transform:uppercase;cursor:pointer}
+.ves-look.mas small{font:600 11px/1 Archivo,sans-serif;text-transform:none;color:var(--v-gris)}
+.ves-look.mas:disabled{opacity:.55;cursor:default}
+.ves-look.borrar,.ves-look.nuevo{flex-direction:column;gap:8px;padding:10px 12px;min-width:220px;max-width:300px;border-color:var(--v-rosa)}
+.ves-look.nuevo{border-color:var(--v-tinta)}
+.ves-look.borrar b{font:800 13px/1.2 Archivo,sans-serif}
+.ves-look.borrar span,.ves-look.nuevo span{display:flex;gap:6px}
+.ves-look.nuevo input{min-height:38px;padding:0 10px;border:1.5px solid var(--v-borde2);background:var(--v-fondo);color:var(--v-tinta);font:600 15px/1.2 Archivo,sans-serif}
+.ves-look .ves-btn{min-height:34px;padding:0 10px;font-size:12px}
+@media (hover: hover) and (pointer: fine){
+  .ves-look:not(.on):not(.borrar):not(.nuevo):hover{border-color:#6A6A72}
+  .ves-look-x:hover{color:var(--v-tinta)}
+}
+@media (max-width: 760px){.ves-looks{padding:12px}}
 /* 📊 la colección: cuánto tienes de cada cosa */
 .ves-prog{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:8px}
 .ves-pr{display:grid;gap:6px;padding:12px 14px;border:1.5px solid var(--v-borde);background:var(--v-panel)}

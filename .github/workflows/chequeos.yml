@@ -120,6 +120,8 @@ jobs:
           node bot/pase_prueba.mjs
           # 🎭 el estilo de juego: la primera vez libre, un cambio por temporada, los viejos desbloqueados y lo del ciclo
           node bot/juego_prueba.mjs
+          # 👗 los looks guardados del Inventario: el primero libre, pisar, el tope, borrar y cada uno los suyos
+          node bot/looks_prueba.mjs
           # 🤝 unirse a los Tier 1: sólo los elegidos y socios, con su permiso, y cada respuesta de Discord bien leída
           node bot/unirse_prueba.mjs
           # 👤 la tanda 2 del perfil: la frase, los emblemas elegidos, el rol de DRA, Aplausos y Voz del pueblo, y «Lo último»

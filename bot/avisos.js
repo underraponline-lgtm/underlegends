@@ -3538,6 +3538,8 @@ const RUTAS = {
   '/avisos/tags-mios': 'POST', '/avisos/tag-elige': 'POST', '/avisos/tags-ciclo': 'POST',
   // 🎭 tu estilo de juego y elegirlo (con tu sesión), y lo elegido de todos para el ciclo (con su clave). Ver `juegoElige()`
   '/avisos/juego-mio': 'POST', '/avisos/juego-elige': 'POST', '/avisos/juegos-ciclo': 'POST',
+  // 👗 tus looks guardados del Inventario (17/11/2026): verlos, guardar uno y borrarlo, con tu sesión. Ver `lookGuardar()`
+  '/avisos/looks': 'POST', '/avisos/look-guardar': 'POST', '/avisos/look-borrar': 'POST',
   // 🏆 tus Pases premium de campeón de liga y usar uno (15/11/2026): ver `valesDe()` y `valeUsar()`
   '/avisos/vales': 'POST', '/avisos/vale-usar': 'POST',
   // 🎟️ quién tiene nivel en el Pase, para el ciclo (la Temporada es el premio del nivel 1): con `claveCiclo()`
@@ -4521,6 +4523,29 @@ export const MARCOS = ['premium', 'plata', 'oro'];
 export const MARCO_ESTILOS = ['camiseta', 'cadena'];
 // 🏷️ las cartas que llevan TAG elegible (25/10/2026)
 export const TAG_CARTAS = ['temporada', 'competitivo', 'servidor', 'pais'];
+// 👗 cuántos looks guarda cada uno (17/11/2026): cinco entran en una fila en la compu
+export const MAX_LOOKS = 5;
+/**
+ * 👗 Un look, limpio: `{tags: {carta: llave}, marco, estilo}` con sólo lo que tiene forma de serlo. La llave de un TAG
+ * es la del catálogo, `pase:<título>` o `auto`; el marco, '' (el mejor), 'ninguno' o un id como `t1:oro`. `null` si
+ * no queda nada. Que cada pieza sea tuya lo revisa Guardar al ponértelo, no esto
+ */
+export function lookLimpio(x) {
+  if (!x || typeof x !== 'object' || Array.isArray(x)) return null;
+  const out = { tags: {} };
+  const tags = x.tags && typeof x.tags === 'object' && !Array.isArray(x.tags) ? x.tags : {};
+  for (const c of TAG_CARTAS) {
+    const v = tags[c];
+    if (typeof v === 'string' && v && v.length <= 60 && !/[<>\u0000-\u001f]/.test(v)) out.tags[c] = v;
+  }
+  if (typeof x.marco === 'string' && (x.marco === '' || x.marco === 'ninguno' || /^[a-z0-9]{1,12}:[a-z0-9_-]{1,24}$/.test(x.marco))) out.marco = x.marco;
+  if (x.estilo === 'camiseta' || x.estilo === 'cadena') out.estilo = x.estilo;
+  return Object.keys(out.tags).length || 'marco' in out || 'estilo' in out ? out : null;
+}
+/** 👗 El nombre de un look: sin saltos ni etiquetas, hasta 24 letras. Lo ve sólo su dueño */
+export function nombreLook(s) {
+  return String(s || '').replace(/[\u0000-\u001f<>]/g, ' ').replace(/\s+/g, ' ').trim().slice(0, 24);
+}
 // 🎭 LOS ESTILOS DE JUEGO DE LA COMPETITIVA (16/11/2026): las 18 claves de `CATALOGO` en
 // `02_Competitivo/v2/estilos_juego.py`. ⚠️ Es una copia: el self-check de ese módulo revienta si se separan. Cada uno
 // elige el suyo en el Inventario: la primera vez libre y después UN cambio por temporada; el que deja queda desbloqueado
@@ -6591,7 +6616,8 @@ export async function rutaAvisos(req, env, ruta) {
     ruta === '/avisos/sorteo' || ruta === '/avisos/sorteo-entrar' || ruta === '/avisos/marcos' || ruta === '/avisos/marco-elige'
     || ruta === '/avisos/carta-principal' || ruta === '/avisos/tags-mios' || ruta === '/avisos/tag-elige'
     || ruta === '/avisos/vales' || ruta === '/avisos/vale-usar' || ruta === '/avisos/pase-dia'
-    || ruta === '/avisos/juego-mio' || ruta === '/avisos/juego-elige') {
+    || ruta === '/avisos/juego-mio' || ruta === '/avisos/juego-elige'
+    || ruta === '/avisos/looks' || ruta === '/avisos/look-guardar' || ruta === '/avisos/look-borrar') {
     const crudo = await req.text();
     if (crudo.length > 1024) return json({ error: 'demasiado grande' }, 413);
     let d = null;
@@ -6611,7 +6637,8 @@ export async function rutaAvisos(req, env, ruta) {
     return elObjeto(env).fetch('https://avisos' + ruta.slice('/avisos'.length), {
       method: 'POST', body: JSON.stringify({ quien: q.id || '', llave, si: d.si, color: d.color, marco: d.marco, estilo: d.estilo,
         carta: d.carta, tag: d.tag, vale: String(d.vale || '').slice(0, 150),
-        juego: String(d.juego || '').slice(0, 20), temp: String((env && env.TEMPORADA) || 't1') }),
+        juego: String(d.juego || '').slice(0, 20), temp: String((env && env.TEMPORADA) || 't1'),
+        n: d.n, nombre: String(d.nombre || '').slice(0, 60), look: d.look && typeof d.look === 'object' ? d.look : null }),
       headers: { 'content-type': 'application/json' },
     });
   }
@@ -7998,6 +8025,10 @@ export class Avisos {
       // ('' si nunca), `viejos` los que dejó (JSON: quedan desbloqueados). Ver `juegoElige()`
       this.sql.exec('CREATE TABLE IF NOT EXISTS juego_elige (quien TEXT PRIMARY KEY, juego TEXT NOT NULL, cambio TEXT NOT NULL, ' +
         'viejos TEXT NOT NULL, t INTEGER NOT NULL)');
+      // 👗 LOS LOOKS GUARDADOS (17/11/2026, Dlx: «haz lo de los looks guardados también»): hasta `MAX_LOOKS` por persona,
+      // cada uno con su nombre y lo que lleva (`datos`: JSON `{tags: {carta: llave}, marco, estilo}`). Ver `lookGuardar()`
+      this.sql.exec('CREATE TABLE IF NOT EXISTS looks (quien TEXT NOT NULL, n INTEGER NOT NULL, nombre TEXT NOT NULL, ' +
+        'datos TEXT NOT NULL, t INTEGER NOT NULL, PRIMARY KEY (quien, n))');
       // 🎟️ EL SORTEO DEL PASE PREMIUM (Dlx, 25/10/2026: «algo interactivo en la página»): quién entró y con cuántos
       // boletos (1 + las semanas con las cinco semanales, hasta 3). Lo programa Dlx (`pase_sorteo` de los ajustes)
       this.sql.exec('CREATE TABLE IF NOT EXISTS sorteo_part (sorteo TEXT NOT NULL, quien TEXT NOT NULL, boletos INTEGER NOT NULL, ' +
@@ -8879,6 +8910,9 @@ export class Avisos {
       if (ruta === '/juego-mio') return json(this.juegoMio(String(d.quien || ''), String(d.temp || '')));
       if (ruta === '/juego-elige') { const v = this.juegoElige(d); return json(v, v.error === 'ya' ? 409 : v.error ? 400 : 200); }
       if (ruta === '/juegos-ciclo') return json(this.juegosCiclo());
+      if (ruta === '/looks') return json(this.looksDe(String(d.quien || '')));
+      if (ruta === '/look-guardar') { const v = this.lookGuardar(d); return json(v, v.error === 'lleno' ? 409 : v.error ? 400 : 200); }
+      if (ruta === '/look-borrar') { const v = this.lookBorrar(d); return json(v, v.error ? 400 : 200); }
       // 🧠 lo que manda el ciclo: las personas de esta corrida (`bot/subir_datos.py`)
       if (ruta === '/personas-ciclo') {
         const v = this.personasCiclo(d);
@@ -18064,6 +18098,47 @@ export class Avisos {
     this.sql.exec('UPDATE juego_elige SET juego = ?, cambio = ?, viejos = ?, t = ? WHERE quien = ?',
       juego, temp, JSON.stringify(viejos), Date.now(), quien);
     return this.juegoMio(quien, temp);
+  }
+
+  /**
+   * 👗 TUS LOOKS GUARDADOS (17/11/2026): `[{n, nombre, look}]`. Un look es lo que llevas en tus cartas —el TAG de cada una,
+   * el marco y el estilo de la Servidor— con un nombre, para volver a ponértelo de un toque (Rocket League y Fortnite:
+   * si cuesta muchos clics, nadie lo usa). Ponérselo NO pasa por acá: la página lo lleva al borrador y Guardar usa
+   * `tag-elige` y `marco-elige`, que ya revisan que cada pieza sea tuya. Por eso guardar no revisa si lo tienes: un TAG
+   * de temporada que se te vence no rompe el look, sólo no se guarda al ponértelo
+   */
+  looksDe(quien) {
+    if (!/^[0-9]{5,25}$/.test(quien)) return { error: 'faltan datos' };
+    const looks = [];
+    for (const r of this.sql.exec('SELECT n, nombre, datos FROM looks WHERE quien = ? ORDER BY n', quien).toArray()) {
+      let look = null;
+      try { look = JSON.parse(r.datos); } catch (e) { look = null; }
+      if (look) looks.push({ n: Number(r.n), nombre: r.nombre, look });
+    }
+    return { ok: true, looks, max: MAX_LOOKS };
+  }
+
+  /** 👗 Guardar un look: en el lugar `n` (0 a MAX_LOOKS-1, lo pisa) o en el primero libre. `{error: 'lleno'}` es el 409 */
+  lookGuardar(d) {
+    const quien = String(d.quien || '');
+    const look = lookLimpio(d.look);
+    if (!/^[0-9]{5,25}$/.test(quien) || !look) return { error: 'faltan datos' };
+    const usados = new Set(this.sql.exec('SELECT n FROM looks WHERE quien = ?', quien).toArray().map((r) => Number(r.n)));
+    let n = Number.isInteger(d.n) && d.n >= 0 && d.n < MAX_LOOKS ? d.n : -1;
+    if (n < 0) n = [...Array(MAX_LOOKS).keys()].find((i) => !usados.has(i)) ?? -1;
+    if (n < 0) return { error: 'lleno' };
+    const nombre = nombreLook(d.nombre) || 'Look ' + (n + 1);
+    this.sql.exec('INSERT INTO looks (quien, n, nombre, datos, t) VALUES (?, ?, ?, ?, ?) ON CONFLICT(quien, n) DO UPDATE SET ' +
+      'nombre = excluded.nombre, datos = excluded.datos, t = excluded.t', quien, n, nombre, JSON.stringify(look), Date.now());
+    return Object.assign(this.looksDe(quien), { guardado: n });
+  }
+
+  /** 👗 Borrar el look `n` */
+  lookBorrar(d) {
+    const quien = String(d.quien || '');
+    if (!/^[0-9]{5,25}$/.test(quien) || !Number.isInteger(d.n)) return { error: 'faltan datos' };
+    this.sql.exec('DELETE FROM looks WHERE quien = ? AND n = ?', quien, d.n);
+    return this.looksDe(quien);
   }
 
   /** 🎭 Para el ciclo (`bot/juegos.py`, con su clave): `{clave: {juego, viejos}}` de todos. La clave como la de los TAGs */

@@ -164,6 +164,10 @@ const AVISOS = {
   // 🎭 tu estilo de juego y elegirlo (16/11/2026)
   '/api/avisos/juego-mio': 'POST',
   '/api/avisos/juego-elige': 'POST',
+  // 👗 tus looks guardados del Inventario: verlos, guardar uno y borrarlo (17/11/2026)
+  '/api/avisos/looks': 'POST',
+  '/api/avisos/look-guardar': 'POST',
+  '/api/avisos/look-borrar': 'POST',
   // 🏆 tus Pases premium de campeón de liga y usar uno (15/11/2026)
   '/api/avisos/vales': 'POST',
   '/api/avisos/vale-usar': 'POST',

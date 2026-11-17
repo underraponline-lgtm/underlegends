@@ -190,6 +190,14 @@ export function Inventario({ liga, dc, carta0 = '', ranura0 = '' }) {
   const tHov = useRef(0);
   // 🏅 cuánta gente de la Liga tiene cada insignia: `{n, de: {id: cuántos}}`, de los perfiles
   const [pct, setPct] = useState(null);
+  // 👗 TUS LOOKS GUARDADOS (17/11/2026, Dlx: «haz lo de los looks guardados también»; de la B de la maqueta: Rocket
+  // League y Fortnite). `null` si el Worker no los sabe todavía: entonces la fila no se dibuja (sin dato no hay pieza)
+  const [looks, setLooks] = useState(null);
+  const [lookOn, setLookOn] = useState(-1);
+  const [nombreNuevo, setNombreNuevo] = useState(null);
+  const [borrarN, setBorrarN] = useState(-1);
+  const [lookMsg, setLookMsg] = useState('');
+  useEffect(() => { if (dc) pasePost('looks', {}).then((d) => setLooks(d && d._ok && Array.isArray(d.looks) ? d : null)); }, [dc]);
   // 👀 el borrador: `tags` por carta, `marco`, `estilo` y `principal`; lo que no está, es lo guardado
   const [bor, setBor] = useState({ tags: {} });
   const [visto] = useState(leerVisto);
@@ -292,7 +300,41 @@ export function Inventario({ liga, dc, carta0 = '', ranura0 = '' }) {
       return n;
     });
   };
-  const cancelar = () => { setBor({ tags: {} }); setMsg(''); setSel(null); setVer('prob'); };
+  const cancelar = () => { setBor({ tags: {} }); setMsg(''); setSel(null); setVer('prob'); setLookOn(-1); };
+
+  // 👗 lo que llevas ahora en todas tus cartas (lo guardado con lo que estás probando encima): eso es lo que se guarda
+  const lookAhora = () => {
+    const tags = {};
+    for (const [c] of cartas) tags[c] = c in bor.tags ? bor.tags[c] : (yo.elegidos || {})[c] || 'auto';
+    return { tags, marco: marcoAhora, estilo: estiloAhora };
+  };
+  const mismoLook = (a, b) => cartas.every(([c]) => ((a.tags || {})[c] || 'auto') === ((b.tags || {})[c] || 'auto'))
+    && (a.marco === undefined || a.marco === b.marco) && (a.estilo === undefined || a.estilo === b.estilo);
+  // ponerse un look: va al borrador, como si hubieras tocado cada pieza; Guardar revisa que sea tuyo
+  const ponerLook = (L) => {
+    const n = { tags: {} };
+    for (const [c] of cartas) {
+      const v = (L.look.tags || {})[c];
+      if (v && v !== ((yo.elegidos || {})[c] || 'auto')) n.tags[c] = v;
+    }
+    if (typeof L.look.marco === 'string' && L.look.marco !== marcoG) n.marco = L.look.marco;
+    if ((L.look.estilo === 'camiseta' || L.look.estilo === 'cadena') && L.look.estilo !== estiloG) n.estilo = L.look.estilo;
+    setBor(n); setVer('prob'); setHov(null); setLookOn(L.n); setMsg(''); setLookMsg(''); setBorrarN(-1);
+  };
+  const guardarLook = async () => {
+    setOcup('look');
+    const d = await pasePost('look-guardar', { nombre: (nombreNuevo || '').trim(), look: lookAhora() });
+    setOcup('');
+    if (d && d._ok) { setLooks(d); setLookOn(d.guardado); setNombreNuevo(null); setLookMsg('Look guardado: un toque y te lo pones.'); }
+    else setLookMsg(d && d.error === 'lleno' ? 'Ya tienes ' + ((looks && looks.max) || 5) + ' looks: borra uno para guardar otro.' : 'No pude guardar el look. Prueba de nuevo.');
+  };
+  const borrarLook = async (n) => {
+    setOcup('look');
+    const d = await pasePost('look-borrar', { n });
+    setOcup('');
+    setBorrarN(-1);
+    if (d && d._ok) { setLooks(d); if (lookOn === n) setLookOn(-1); } else setLookMsg('No pude borrarlo. Prueba de nuevo.');
+  };
   const guardar = async () => {
     setOcup('guardar');
     const avisos = [];
@@ -527,6 +569,44 @@ export function Inventario({ liga, dc, carta0 = '', ranura0 = '' }) {
               ))}
             </aside>
           </section>
+          {looks ? (
+            <section className="ves-looks" aria-label="Tus looks">
+              <div className="ves-looks-h"><b>Tus looks</b><small>{looks.looks.length ? 'un toque y te lo pones en todas tus cartas' : 'guarda lo que llevas y vuelve a ponértelo de un toque'}</small></div>
+              <div className="ves-looks-l">
+                {looks.looks.map((L) => {
+                  const tg = (L.look.tags || {})[carta] || 'auto';
+                  const txt = tg === 'auto' ? 'Automático' : partir((ops.find((o) => o.tag === tg) || {}).texto || tg)[1];
+                  const puesto = mismoLook(L.look, { tags: Object.fromEntries(cartas.map(([c]) => [c, (yo.elegidos || {})[c] || 'auto'])), marco: marcoG, estilo: estiloG });
+                  return borrarN === L.n ? (
+                    <div key={L.n} className="ves-look borrar"><b>¿Borrar «{L.nombre}»?</b>
+                      <span><button type="button" className="ves-btn" disabled={!!ocup} onClick={() => borrarLook(L.n)}>Sí, borrar</button>
+                        <button type="button" className="ves-btn" onClick={() => setBorrarN(-1)}>No</button></span></div>
+                  ) : (
+                    <div key={L.n} className={'ves-look' + (lookOn === L.n && nCambios ? ' on' : '') + (puesto ? ' puesto' : '')}>
+                      <button type="button" className="ves-look-b" onClick={() => ponerLook(L)} aria-label={'Ponerme el look ' + L.nombre}>
+                        {puesto ? <i className="ves-pu">Puesto</i> : null}
+                        <b>{L.nombre}</b><small>{txt}{L.look.marco !== undefined ? ' · ' + nomMarco(L.look.marco) : ''}</small>
+                      </button>
+                      <button type="button" className="ves-look-x" onClick={() => setBorrarN(L.n)} aria-label={'Borrar el look ' + L.nombre}>✕</button>
+                    </div>
+                  );
+                })}
+                {nombreNuevo !== null ? (
+                  <form className="ves-look nuevo" onSubmit={(e) => { e.preventDefault(); guardarLook(); }}>
+                    <input value={nombreNuevo} maxLength={24} placeholder={'Look ' + (looks.looks.length + 1)} aria-label="Nombre del look"
+                      onChange={(e) => setNombreNuevo(e.target.value)} autoFocus />
+                    <span><button type="submit" className="ves-btn blanco" disabled={!!ocup}>{ocup === 'look' ? 'Guardando…' : 'Guardar'}</button>
+                      <button type="button" className="ves-btn" onClick={() => setNombreNuevo(null)}>Cancelar</button></span>
+                  </form>
+                ) : looks.looks.length < (looks.max || 5) ? (
+                  <button type="button" className="ves-look mas" disabled={bloqueado} onClick={() => { setNombreNuevo(''); setLookMsg(''); }}
+                    title={bloqueado ? 'Lo que estás probando todavía no es tuyo' : undefined}>
+                    + Guardar look{bloqueado ? <small>con piezas tuyas</small> : null}</button>
+                ) : null}
+              </div>
+              {lookMsg ? <p className="ves-nota" role="status">{lookMsg}</p> : null}
+            </section>
+          ) : null}
           <section className="ves-abajo" aria-label="Lo que le pones a tu carta">
             <Titulo extra={<small className="ves-de">{ran === 'tag' || ran === 'marco' ? (FINO ? 'pasa el mouse o toca para probártelo' : 'toca para probártelo') : 'tu ' + nombre}</small>}>
               {etRan}{ran === 'tag' ? ' de tu ' + nombre : ''}</Titulo>
