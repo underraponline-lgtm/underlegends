@@ -196,6 +196,34 @@ def anotar(registro, cumplen, ahora, temporada):
     return nuevas
 
 
+def juntar(registro, real):
+    """El registro con UNA entrada por persona: la de su nombre de hoy (`real`, el de `most_wanted._real()`).
+
+    🔴 EL REGISTRO ES POR NOMBRE, Y LA GENTE CAMBIA DE NOMBRE (17/11/2026, «Mr Still Ballin» pasó a ser Over). Lo que
+    se ganó con el nombre viejo quedaba colgado de él: el perfil busca por el nombre de hoy y no lo veía, y la corrida
+    siguiente se lo volvía a «ganar» con la fecha de ese día —las «🎖️ Insignias nuevas» del aviso del evento y, con el
+    Invicto, un Nido de más (`drops_merito.de_ligas()` lo cobra por fecha)—. Medido ese día: 229 de 1.149 entradas eran
+    un alias de otra persona, y 8 de la gente de hoy cambiaba de nombre en cuanto se destrabara la vitrina.
+
+    ⚠️ LO QUE LA PERSONA YA TIENE CON SU NOMBRE MANDA: el alias sólo agrega las que le faltan, con su fecha (entre dos
+    alias, la más vieja). Reemplazar una fecha ya cobrada por otra le daría un premio nuevo.
+    """
+    out, de_alias = {}, set()
+    for raw in sorted(registro or {}):
+        if (real(raw) or raw) == raw:
+            out.setdefault(raw, {}).update(registro[raw] or {})
+    for raw in sorted(registro or {}):
+        r = real(raw) or raw
+        if r == raw:
+            continue
+        dest = out.setdefault(r, {})
+        for i, v in (registro[raw] or {}).items():
+            if i not in dest or ((r, i) in de_alias and str(v[0]) < str(dest[i][0])):
+                dest[i] = v
+                de_alias.add((r, i))
+    return out
+
+
 def visibles(registro, temporada_actual):
     """`{raw: [[id, cuándo], …]}` para la página: las de la prueba, sólo durante la prueba."""
     out = {}
@@ -325,10 +353,15 @@ NO_SON_PERSONAS = frozenset({'CRONOX XCLUSIVO', 'NEMI PRESAGIO DELUX', 'Nemi x p
 def correr(ahora=None, aplicar=False):
     import multiplicadores as MU
     ahora = ahora or dt.datetime.now(dt.timezone.utc)
-    registro = leer()
+    import most_wanted as MW
+    # 🪪 por persona y no por cómo se escribía su nombre ese día (ver `juntar()`): el registro y lo que se cumple hoy
+    real = MW._real()
+    registro = juntar(leer(), real)
     for k in NO_SON_PERSONAS:
         registro.pop(k, None)
-    c = cumple(*_datos())
+    c = {}
+    for raw, ids in cumple(*_datos()).items():
+        c.setdefault(real(raw) or raw, set()).update(ids)
     nuevas = anotar(registro, c, ahora, MU.temporada_actual(ahora))
     if aplicar:
         with io.open(SALIDA, 'w', encoding='utf-8') as f:
@@ -370,6 +403,14 @@ def _self_check():
     ok(len(v_prueba['Ana']) == 9 and 'Ana' not in v_t1 and v_t1.get('Dan') == [['debut', '2026-09-27T18:00:00Z']],
        'las de la prueba se ven durante la prueba; desde la T1, sólo las de la T1')
     ok(len(IDS) == len(set(IDS)) and all(len(x) == 4 for x in CATALOGO), 'el catálogo: ids únicos, cuatro campos')
+    # 🪪 un nombre viejo (o un alias) se junta con la persona: lo suyo manda, el alias sólo completa
+    rj = juntar({'Over': {'debut': ['2026-10-16T00:00:00Z', 't1']},
+                 'Mr Viejo': {'debut': ['2026-10-08T00:00:00Z', 't1'], 'campeon': ['2026-10-09T00:00:00Z', 't1']},
+                 'mrviejo': {'campeon': ['2026-10-01T00:00:00Z', 't1']}, 'Ana': {'podio': ['x', 't1']}},
+                lambda n: 'Over' if n in ('Mr Viejo', 'mrviejo') else n)
+    ok(set(rj) == {'Over', 'Ana'} and rj['Over']['debut'][0].startswith('2026-10-16')
+       and rj['Over']['campeon'][0].startswith('2026-10-01'),
+       'un nombre viejo se junta con el de hoy: su fecha no pisa la de la persona, y entre dos alias va la más vieja')
     # ✍️ el Writing Challenge: la pluma de oro por ganar una fecha, la pluma por sumar en 3; sin pedir estar en el pool
     cw = cumple(pool, plumas_oro={'Ana', 'Dlx'}, plumas={'Ana': 3, 'Bea': 2, 'Dlx': 1})
     ok({'pluma_oro', 'pluma'} <= cw['Ana'] and not ({'pluma_oro', 'pluma'} & cw['Bea'])

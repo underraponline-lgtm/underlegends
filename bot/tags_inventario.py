@@ -160,11 +160,56 @@ def traer(ganados, temp):
     return d.get('elegidos') if isinstance(d, dict) and isinstance(d.get('elegidos'), dict) else None
 
 
+def clave_de_hoy():
+    """`f(clave) -> la clave de esa persona hoy`: la de su nombre de la Liga si `clave` es la de un nombre viejo o un
+    alias (`datos/akas.json`, por `rankings.canon()`); si no, la misma.
+
+    ⚠️ SÓLO LAS CLAVES DE UN ALIAS DECLARADO: una clave que no es «letras y números» (`volk-co`, la de `_choques()` de
+    `subir_web.py`) o que no está en el mapa se queda como está. Sin el mapa, todas como están."""
+    try:
+        import rankings as _RK
+        _RK.canon('')
+        al = _RK._ALIAS or {}
+        return lambda k: _RK._kk(_RK.canon(k)) or k if isinstance(k, str) and k in al and _RK._kk(k) == k else k
+    except Exception:                                    # noqa: BLE001
+        return lambda k: k
+
+
+def juntar(ganados, hoy):
+    """El inventario con UNA entrada por persona: la de su clave de hoy (`hoy`, de `clave_de_hoy()`).
+
+    🔴 EL INVENTARIO ES POR CLAVE, Y LA CLAVE SALE DEL NOMBRE (17/11/2026, «Mr Still Ballin» pasó a ser Over: de
+    `mrstillballin` a `over`). Lo ganado con la clave vieja quedaba colgado de ella —la página busca por la de hoy y no
+    lo mostraba— y la corrida siguiente se lo volvía a sumar como nuevo, con la fecha de ese día. Medido ese día: 16 de
+    369 claves eran de un alias (Over, Mito, Oasis, Six, Makmah, YOUNG VLAD…).
+
+    ⚠️ LO QUE LA PERSONA YA TIENE CON SU CLAVE MANDA, como en `insignias.juntar()`: la vieja sólo agrega lo que le
+    falta, con su fecha (entre dos viejas, la más vieja)."""
+    out, de_vieja = {}, set()
+    for k in sorted(ganados or {}):
+        if hoy(k) == k:
+            out.setdefault(k, {})
+            for carta, tags in (ganados[k] or {}).items():
+                out[k].setdefault(carta, {}).update(tags or {})
+    for k in sorted(ganados or {}):
+        r = hoy(k)
+        if r == k:
+            continue
+        for carta, tags in (ganados[k] or {}).items():
+            dest = out.setdefault(r, {}).setdefault(carta, {})
+            for tag, x in (tags or {}).items():
+                if tag not in dest or ((r, carta, tag) in de_vieja and (x[2] or 0) < (dest[tag][2] or 0)):
+                    dest[tag] = x
+                    de_vieja.add((r, carta, tag))
+    return out
+
+
 def correr(aplicar):
     import catalogo_tags as CAT
     from comun import temporada as TM
     temp = TM.ACTUAL
-    ganados = _leer(GANADOS)
+    # 🪪 por persona y no por la clave de su nombre de ese día (ver `juntar()`)
+    ganados = juntar(_leer(GANADOS), clave_de_hoy())
     textos, todos = {}, {}
     CAT.de_cada_uno(textos, todos)
     nuevos = sumar(ganados, todos or textos, temp, int(time.time() * 1000))
@@ -214,6 +259,14 @@ def _self_check():
     d = revisar({DUENO_K: {'temporada': '👑 CAMPEÓN x%d', 'servidor': '👑 DUEÑO DE CASA'}}, {}, 't1')
     ok(d.get(DUENO_K) == {'temporada': ['👑 CAMPEÓN', 't3']}, 'el dueño tiene todos los que se guardan (y los de estado tampoco)')
     ok(all(t in CAT.GRUPO for xs in CAT.CATALOGO.values() for t, _n, _p in xs), 'cada TAG del catálogo tiene su grupo')
+    # 🪪 la clave de un nombre viejo se junta con la de hoy: lo suyo manda, la vieja sólo completa
+    jj = juntar({'over': {'temporada': {'A': ['A', 't1', 5]}},
+                 'mrviejo': {'temporada': {'A': ['A', 't1', 1], 'B': ['B', 't1', 3]}, 'pais': {'C': ['C', 't1', 4]}},
+                 'mrviejo2': {'temporada': {'B': ['B', 't1', 2]}}, 'volk-co': {'pais': {'D': ['D', 't1', 1]}}},
+                lambda k: 'over' if k in ('mrviejo', 'mrviejo2') else k)
+    ok(set(jj) == {'over', 'volk-co'} and jj['over']['temporada']['A'][2] == 5 and jj['over']['temporada']['B'][2] == 2
+       and jj['over']['pais']['C'][2] == 4,
+       'una clave vieja se junta con la de hoy: no pisa lo que ya tiene, y entre dos viejas va la fecha más vieja')
     print('\n   %s' % ('todo bien' if not mal else '🔴 %d mal' % mal))
     return mal
 

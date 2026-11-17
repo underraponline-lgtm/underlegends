@@ -1250,6 +1250,15 @@ def rangos_estricto(res):
     # página pública (`MIN_EV_RANGO`, que ya gateaba en 10) y la
     # carta. Era la única incoherencia que quedaba del rango.
     piso = minimo('competitivo', 'ev')
+    # 🔴 CON LOS ALIAS JUNTOS, COMO EL `Ranking Competitivo` (17/11/2026). La vitrina que DECIDE el rango canoniza
+    # las filas antes de `calcular()` (ver `escribir_competitivo()`), y ésta no: quien tiene filas con dos nombres
+    # sacaba una letra con la mitad de sus eventos —o ninguna, si la mitad no llegaba a 10—. Lo destapó Over
+    # (antes «Mr Still Ballin»): 7 eventos con un nombre y 5 con el otro, «S» en el Competitivo y en su carta, y
+    # sin letra en la Temporada. Medido ese día: 7 personas con otra letra en la Temporada, Podios, Duelos y
+    # Mundial que en el Competitivo (Mito, Abyssus, Gocho, Shadow, Over, Zaik y Lvel). Es la regla de arriba:
+    # *«el rango es uno solo por persona»*. `canon()` es idempotente, así que quien ya pasa filas canonizadas
+    # (`misiones.rangos_al()`) recibe lo mismo.
+    res = [list(f[:4]) + [canon(str(f[4]).strip())] + list(f[5:]) if len(f) > 4 else f for f in res or []]
     return {q: de_score(v['score'])
             for q, v in calcular(res).items()
             if (v.get('ev') or 0) >= piso}

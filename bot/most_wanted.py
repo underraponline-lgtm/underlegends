@@ -840,22 +840,45 @@ def suma(d=None):
     d = leer() if d is None else d
     caz, ce = {}, {}
     nuevo = lambda: {'pts': 0, 'caz': 0, 'czd': 0, 'sob': 0}
+    real = _real()
     for per in periodos(d):
         for b in per.get('buscados') or []:
+            bn = real(b['n'])
             if b.get('caza'):
                 c = b['caza']
                 ce.setdefault(str(c.get('n')), []).append(
-                    [b['n'], b.get('cn') or '', [y['n'] for y in c.get('por') or []]])
+                    [bn, b.get('cn') or '', [real(y['n']) for y in c.get('por') or []]])
                 for y in c.get('por') or []:
-                    z = caz.setdefault(y['n'], nuevo())
+                    z = caz.setdefault(real(y['n']), nuevo())
                     z['pts'] += y.get('cobra') or 0
                     z['caz'] += 1
-                caz.setdefault(b['n'], nuevo())['czd'] += 1
+                caz.setdefault(bn, nuevo())['czd'] += 1
             elif b.get('estado') == 'sobrevivio':
-                z = caz.setdefault(b['n'], nuevo())
+                z = caz.setdefault(bn, nuevo())
                 z['sob'] += 1
                 z['pts'] += b.get('paga') or 0
     return caz, ce
+
+
+def _real():
+    """`f(nombre) -> el nombre de esa persona HOY`, como lo escribe el MW (sin banderas ni `❓`).
+
+    🔴 EL MW GUARDA EL NOMBRE DEL DÍA DE LA CAZA, y la persona puede cambiar de nombre después (17/11/2026: «Mr
+    Still Ballin» pasó a ser Over). `suma()` juntaba por ese texto, así que al renombrarlo sus 3 cazas y sus 20.000
+    puntos quedaban colgados del nombre viejo: la Temporada se los sacaba (`rankings.sumar_mw()` busca por el nombre
+    nuevo), y lo mismo la tabla de cazadores de la página y las insignias. Se pasa por `rankings.canon()`, el mismo
+    mapa de alias que junta los resultados, y se le saca la bandera como al pool (`rankings._como_pool()`).
+
+    ⚠️ SIN EL MAPA, EL NOMBRE TAL CUAL: es lo que hacía antes, y no poder leer un json no puede apagar el MW.
+    """
+    try:
+        _s = os.path.join(BASE, 'sheet')
+        if _s not in sys.path:
+            sys.path.insert(0, _s)
+        import rankings as _RK
+        return lambda n: _RK._como_pool(_RK.canon(str(n or '').strip())) or n
+    except Exception:                                    # noqa: BLE001
+        return lambda n: n
 
 
 # ── self-check ───────────────────────────────────────────────────────────
