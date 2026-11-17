@@ -489,6 +489,7 @@ def main():
     print('\n  respaldo -> %s' % os.path.relpath(p, BASE))
 
     ok, fallos = 0, []
+    pudo = {}
     for c in plan:
         # ⚠️ UN SERVIDOR QUE NO DEJA (FFS: el bot no puede cambiar apodos) se
         # intenta una vez y se saltea entero, no cien
@@ -496,9 +497,14 @@ def main():
             fallos.append((c['sv'], c['user'], 'el bot no puede cambiar apodos ahí'))
             continue
         bien, err = poner_apodo(s, c['guild'], c['id'], c['nuevo'])
-        if not bien and err.startswith('403') and 'Missing Permissions' in err and not ok:
+        # 🔴 POR SERVIDOR, NO POR CORRIDA (17/11/2026): era `and not ok`, o sea «si todavía no cambió NINGÚN apodo en toda
+        # la corrida». Con DRA primero, `ok` ya era > 0 y CH, DDS y CEU se intentaban de a uno: 269 «403» por corrida,
+        # 270–620 intentos cada media hora, y la de las 4:22 PM se pasó de los 20 minutos y se cortó sin guardar nada.
+        # Un servidor donde ya se cambió alguno sí sigue: ahí un 403 es la jerarquía de roles de UNA persona
+        if not bien and err.startswith('403') and 'Missing Permissions' in err and not pudo.get(c['guild']):
             poder[c['guild']] = False
         if bien:
+            pudo[c['guild']] = True
             ok += 1
             if ok % 25 == 0:
                 print('   %d de %d...' % (ok, len(plan)))
