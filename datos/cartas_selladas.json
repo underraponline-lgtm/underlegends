@@ -124,8 +124,8 @@
    "temporada": "9844b9c8bf41:fec25411e829"
   },
   "Andy": {
-   "competitivo": "1e99cbff1de9:46554cb000b1",
-   "pais": "8af90647a07e:9d66d497e41e",
+   "competitivo": "9f0f7fdbf2d7:46554cb000b1",
+   "pais": "cc03cc32146a:9d66d497e41e",
    "servidor": "bbc5d5ee6c19:aba640c1146a:374272",
    "temporada": "be69284f84b0:cdead15a6070"
   },
@@ -806,7 +806,7 @@
   },
   "Joshema": {
    "competitivo": "f2e7a595759e:46554cb000b1",
-   "pais": "3483c68e4b5c:9d66d497e41e",
+   "pais": "d6abb1b5733b:9d66d497e41e",
    "servidor": "b9d7bc7e68a9:e0061cb5005e:35ef22",
    "temporada": "fd1ff2efde6f:cdead15a6070"
   },
@@ -1149,7 +1149,7 @@
   "Malva": {},
   "Marcos": {
    "competitivo": "27f225333324:46554cb000b1",
-   "pais": "9af2d9cbe08a:9d66d497e41e",
+   "pais": "3805f447cae3:9d66d497e41e",
    "servidor": "2699ba8f0fed:e0061cb5005e:bcd566",
    "temporada": "43e35553280c:fec25411e829"
   },
@@ -1643,8 +1643,8 @@
   },
   "Sexo": {},
   "Shadow": {
-   "competitivo": "8bb5f986d8b8:46554cb000b1",
-   "pais": "b9569ea604bd:9d66d497e41e",
+   "competitivo": "0db748540582:46554cb000b1",
+   "pais": "e5ceb52e60e1:9d66d497e41e",
    "servidor": "f57274d6e086:aba640c1146a:c0bf45",
    "temporada": "905ef6f35174:cdead15a6070"
   },
@@ -1702,8 +1702,8 @@
    "temporada": "9c69b1bcc8b7:cdead15a6070"
   },
   "Soulb": {
-   "competitivo": "caafaa7b633f:46554cb000b1",
-   "pais": "00f2d0256e07:9d66d497e41e",
+   "competitivo": "8e39d721a7ab:46554cb000b1",
+   "pais": "950cdcececba:9d66d497e41e",
    "servidor": "7ca60b529457:aba640c1146a:205449",
    "temporada": "a6ec3463bfd6:cdead15a6070"
   },
@@ -1791,7 +1791,7 @@
   },
   "Trot": {
    "competitivo": "6fa590135ed4:46554cb000b1",
-   "pais": "132c388f34bb:9d66d497e41e",
+   "pais": "883a074055bd:9d66d497e41e",
    "servidor": "e9d919e7aef2:e0061cb5005e:c0bf45",
    "temporada": "430bb72a93fb:fec25411e829"
   },
@@ -1840,7 +1840,7 @@
    "servidor": "679c18f5e7e5:e0061cb5005e:132451"
   },
   "Vilca": {
-   "competitivo": "6240c0be7528:46554cb000b1",
+   "competitivo": "d02602380aff:46554cb000b1",
    "pais": "5fdafcf40caa:9d66d497e41e",
    "servidor": "6fb68934d2be:e0061cb5005e:35ef22",
    "temporada": "0b55fbe838eb:cdead15a6070"
@@ -2120,5 +2120,5 @@
    "servidor": "7f8885a35a6d:e0061cb5005e:71cf5a"
   }
  },
- "cuando": "2026-11-17T03:30:17+00:00"
+ "cuando": "2026-11-17T03:34:28+00:00"
 }
