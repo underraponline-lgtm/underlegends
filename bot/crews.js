@@ -78,12 +78,35 @@ export const LOGO_CARPETA = 'logos-crews/';
  *  Como sale de piezas que la Liga dibujó, no pasa por el filtro de la IA ni por R2. Sólo 3 de las 29 crews tenían logo:
  *  subir uno era uno de los cuatro frenos para fundar. Los catálogos son los de `web/src/escudo.jsx`: si se agrega una
  *  pieza, en los dos. */
-export const ESC_FORMAS = ['escudo', 'circulo', 'hexagono', 'rombo'];
-export const ESC_SIMBOLOS = ['corona', 'micro', 'llama', 'rayo', 'estrella', 'calavera', 'diamante', 'ojo', 'puno', 'alas'];
-export const ESC_COLORES = ['e41373', '29b298', 'f2b705', '2f6fdb', 'e5484d', '9b5cff', '0e0e10', 'f6f6f6', 'ff7a1a', '5fc8c0'];
+export const ESC_FORMAS = ['escudo', 'circulo', 'hexagono', 'rombo', 'estandarte', 'octagono', 'redondo', 'biselado'];
+export const ESC_SIMBOLOS = ['corona', 'micro', 'llama', 'rayo', 'estrella', 'calavera', 'diamante', 'ojo', 'puno', 'alas',
+  'espadas', 'auriculares', 'vinilo', 'ancla', 'luna', 'sol', 'trofeo', 'dado', 'laurel', 'spray', 'sigla'];
+export const ESC_COLORES = ['e41373', '29b298', 'f2b705', '2f6fdb', 'e5484d', '9b5cff', '0e0e10', 'f6f6f6', 'ff7a1a', '5fc8c0',
+  'c9a227', 'b8bcc4', '7a1f3d', '1b2a4a', '9be22d', 'ff8fc7'];
+/** 🛡️ MÁS PIEZAS (Dlx, 16/11/2026: «crea más variaciones en los crews… da más variaciones para personalizados», y a la
+ *  maqueta, «Sí, todo»): la división del campo con un tercer color, el borde, y la SIGLA como símbolo. El código viejo de
+ *  cuatro piezas sigue valiendo tal cual: `esc:forma.simb.a.b[.division.borde.c][.SIGLA]`. La sigla va adentro del
+ *  código para que cualquier lugar que dibuje el escudo la tenga sin preguntar por la crew; la pone el objeto
+ *  (`conSigla()`), nunca la página. */
+export const ESC_DIVISIONES = ['liso', 'partido', 'cortado', 'banda', 'franja', 'chevron', 'cuartelado'];
+export const ESC_BORDES = ['fino', 'grueso', 'doble'];
+const ESC_RE = /^esc:([a-z]+)\.([a-z]+)\.([0-9a-f]{6})\.([0-9a-f]{6})(?:\.([a-z]+)\.([a-z]+)\.([0-9a-f]{6}))?(?:\.([\p{Lu}\p{Lo}\p{N}]{2,4}))?$/u;
 export function escudoOk(s) {
-  const m = /^esc:([a-z]+)\.([a-z]+)\.([0-9a-f]{6})\.([0-9a-f]{6})$/.exec(typeof s === 'string' ? s : '');
-  return !!m && ESC_FORMAS.includes(m[1]) && ESC_SIMBOLOS.includes(m[2]) && ESC_COLORES.includes(m[3]) && ESC_COLORES.includes(m[4]) && m[3] !== m[4];
+  const m = ESC_RE.exec(typeof s === 'string' ? s.normalize('NFC') : '');
+  if (!m || !ESC_FORMAS.includes(m[1]) || !ESC_SIMBOLOS.includes(m[2]) || !ESC_COLORES.includes(m[3]) || !ESC_COLORES.includes(m[4])
+    || m[3] === m[4]) return false;
+  if (m[5] !== undefined && (!ESC_DIVISIONES.includes(m[5]) || !ESC_BORDES.includes(m[6]) || !ESC_COLORES.includes(m[7]))) return false;
+  // la sigla, sólo con el símbolo de la sigla (y ahí la pone `conSigla()`, así que puede venir sin ella)
+  return m[8] === undefined || m[2] === 'sigla';
+}
+/** El escudo con la sigla de la crew adentro, si su símbolo es la sigla; si no, tal cual. Lo usan crear, cambiar el logo y
+ *  cambiar la sigla: así el escudo nunca dice una sigla vieja. */
+export function conSigla(esc, sigla) {
+  const s = String(esc || '').normalize('NFC');
+  const m = ESC_RE.exec(s);
+  if (!m || m[2] !== 'sigla') return esc;
+  const base = m[8] === undefined ? s : s.slice(0, s.length - m[8].length - 1);
+  return sigla ? base + '.' + sigla : base;
 }
 // el orden de las letras, para comparar «B o más». ⚠️ SÓLO EL ORDEN: los umbrales viven en comun/rangos.py y la letra de
 // cada uno la calcula el ciclo (está en `persona`); escribirlos acá sería el sexto lugar donde vive el rango
@@ -567,7 +590,7 @@ export function crewAccion(o, d) {
     if (ch.error) return ch;
     const { nombre, sigla, entrada, precio, s, descr } = ch;
     // el logo: el que pasó el filtro (`logo_url`, lo pone el objeto) o el escudo armado, que no necesita filtro
-    const logo = d.logo_url || (escudoOk(d.escudo) ? d.escudo : '');
+    const logo = d.logo_url || (escudoOk(d.escudo) ? conSigla(d.escudo, sigla) : '');
     if (!logo) return mal('logo');
     if (!o.cuentaCambio(quien, 'crew-crear', 3)) return mal('espera_dia', 429);
     const vence = 0;
@@ -812,6 +835,8 @@ export function crewAccion(o, d) {
     o.state.storage.transactionSync(() => {
       o.sql.exec('UPDATE crews SET nombre = ?, norm = ?, sigla = ?, nombre_t = ?, t = ? WHERE id = ?', nombre, normCrew(nombre), sigla,
         nombre !== c.nombre ? ahora : c.nombre_t, ahora, c.id);
+      // 🛡️ si el escudo lleva la sigla, cambia con ella
+      if (c.logo && conSigla(c.logo, sigla) !== c.logo) o.sql.exec('UPDATE crews SET logo = ? WHERE id = ?', conSigla(c.logo, sigla), c.id);
       cobrar(o, quien, precio, 'crew-nombre', ahora);
       anotar(o, c.id, 'nombre', nombre, k);
     });
@@ -819,7 +844,7 @@ export function crewAccion(o, d) {
   }
   if (a === 'logo') {
     if (!puede(rol, 'nombre')) return mal('rol', 403);
-    const logo = d.logo_url || (escudoOk(d.escudo) ? d.escudo : '');
+    const logo = d.logo_url || (escudoOk(d.escudo) ? conSigla(d.escudo, c.sigla) : '');
     if (!logo) return mal('logo');
     // el escudo armado sale del catálogo de la Liga: no hay nada que revisar
     const visto = d.logo_url ? d.logo_v === 'ok' : true;
@@ -1108,7 +1133,7 @@ export function crewsSiglas(o, d) {
       no.push(String((x && x.id) || ''));
       continue;
     }
-    o.sql.exec('UPDATE crews SET sigla = ?, t = ? WHERE id = ?', sigla, ahora, c.id);
+    o.sql.exec('UPDATE crews SET sigla = ?, logo = ?, t = ? WHERE id = ?', sigla, c.logo ? conSigla(c.logo, sigla) : '', ahora, c.id);
     anotar(o, c.id, 'sigla', sigla, 'liga');
     hechas.push(c.id);
   }

@@ -7,7 +7,8 @@ import { limpio, norm, num } from './liga.js';
 import { Cara, DosToques } from './piezas.jsx';
 import { aBase64, achicar } from './imagen.js';
 import { ENTRADA_NOMBRE, ROL_NOMBRE, accionCrew, armarCrews, codigoLink, crewDe, diaCrew, errorCrew, linkCrew, ptsSemana, useCrews } from './crews.js';
-import { COLORES, Escudo, FORMAS, NOMBRE_FORMA, NOMBRE_SIMBOLO, SIMBOLOS, codigoEscudo, delNombre, leerEscudo, sugerirSigla } from './escudo.jsx';
+import { BORDES, COLORES, DIVISIONES, Escudo, FORMAS, NOMBRE_BORDE, NOMBRE_DIVISION, NOMBRE_FORMA, NOMBRE_SIMBOLO, SIMBOLOS, codigoEscudo, delNombre,
+  esTrazo, leerEscudo, sugerirSigla } from './escudo.jsx';
 
 // el orden de las letras para elegir el mínimo (de la mejor a la peor): sólo el orden, los umbrales viven en comun/rangos.py
 const LETRAS = ['SSS', 'SS', 'S', 'A', 'B', 'C', 'D', 'E'];
@@ -592,7 +593,8 @@ function AjustesLider({ c, va, hacer, setMsg, pend, mia }) {
   const [desc, setDesc] = useState(c.desc || '');
   const [logo, setLogo] = useState(null);
   const [subiendo, setSubiendo] = useState(false);
-  const [armarEsc, setArmarEsc] = useState(false);
+  // la pestaña abre en lo que la crew usa hoy: una imagen, «Subir mi logo»; un escudo (o nada), «Armar escudo»
+  const [armarEsc, setArmarEsc] = useState(() => !/^https:/.test(c.logo || ''));
   const [esc, setEsc] = useState(() => leerEscudo(c.logo) || delNombre(c.nombre));
   const [rg, setRg] = useState((c.req && c.req.rg) || '');
   const [ev, setEv] = useState(String((c.req && c.req.ev) || 0));
@@ -632,28 +634,29 @@ function AjustesLider({ c, va, hacer, setMsg, pend, mia }) {
       </form>
       <small className="cw-nota"><Cuesta precio={pNombre} saldo={saldo} /> El nombre se cambia una vez cada 30 días. La sigla es obligatoria.</small>
       <h3 className="cw-h">El logo</h3>
-      <div className="cw-fila">
-        <ElegirLogo vista={logo ? logo[1] : (/^https:/.test(c.logo || '') ? c.logo : '')} chico onElegido={(b, u) => setLogo([b, u])} onError={setMsg} />
-        {logo && !subiendo ? <button type="button" className="btn verde chico" disabled={va || corto(pLogo)}
-          onClick={async () => {
-            setSubiendo(true);
-            const j = await hacer({ accion: 'logo', img: await aBase64(logo[0]) }, (r) => 'Listo.' + msgLogo(r));
-            setSubiendo(false);
-            if (j) setLogo(null);
-          }}>{pLogo ? 'Subir el logo · ' + num(pLogo) : 'Subir el logo'}</button> : null}
-      </div>
-      {/* 🛡️ o el escudo armado (29/10/2026): del catálogo, sin filtro; se ve al toque */}
+      {/* 🗂️ las dos maneras, al mismo nivel (16/11/2026): la imagen propia era un enlace chico y casi nadie la encontraba */}
+      <ModoLogo modo={armarEsc ? 'armar' : 'subir'} setModo={(m) => setArmarEsc(m === 'armar')} />
       {armarEsc ? (
         <div className="cw-bloque ae-lider">
-          <ArmarEscudo e={esc} setE={setEsc} />
+          <ArmarEscudo e={esc} setE={setEsc} sigla={c.sigla} />
           <div className="cw-fila">
             <button type="button" className="btn verde chico" disabled={va || corto(pLogo)}
-              onClick={async () => { const j = await hacer({ accion: 'logo', escudo: codigoEscudo(esc) }, 'Listo: ya se ve el escudo nuevo.'); if (j) setArmarEsc(false); }}>
+              onClick={async () => { await hacer({ accion: 'logo', escudo: codigoEscudo(esc) }, 'Listo: ya se ve el escudo nuevo.'); }}>
               {pLogo ? 'Usar este escudo · ' + num(pLogo) : 'Usar este escudo'}</button>
-            <button type="button" className="btn borde2 chico" onClick={() => setArmarEsc(false)}>Cancelar</button>
           </div>
         </div>
-      ) : <button type="button" className="te-link ae-cambia" onClick={() => setArmarEsc(true)}>🛡️ Armar un escudo en vez de una imagen</button>}
+      ) : (
+        <div className="cw-fila">
+          <ElegirLogo vista={logo ? logo[1] : (/^https:/.test(c.logo || '') ? c.logo : '')} chico onElegido={(b, u) => setLogo([b, u])} onError={setMsg} />
+          {logo && !subiendo ? <button type="button" className="btn verde chico" disabled={va || corto(pLogo)}
+            onClick={async () => {
+              setSubiendo(true);
+              const j = await hacer({ accion: 'logo', img: await aBase64(logo[0]) }, (r) => 'Listo.' + msgLogo(r));
+              setSubiendo(false);
+              if (j) setLogo(null);
+            }}>{pLogo ? 'Subir el logo · ' + num(pLogo) : 'Subir el logo'}</button> : null}
+        </div>
+      )}
       {pLogo ? <small className="cw-nota"><Cuesta precio={pLogo} saldo={saldo} /> Si la Liga no aprueba una imagen, te la devolvemos.</small> : null}
       {subiendo ? <Cargando titulo="Subiendo el logo de la crew" etapas={ETAPAS_LOGO} /> : null}
       {pend ? <small className="cw-nota">Tu logo nuevo espera que lo revise la Liga.</small> : null}
@@ -699,46 +702,82 @@ const LEMAS = ['Del barrio pa’l mundo', 'Pura calle, puro flow', 'Nadie nos re
 export const ENTRADA_CORTA = { abierta: 'Cualquiera, en un toque', pedido: 'Con pedido', invitacion: 'Sólo invitados' };
 const ETAPAS_ESCUDO = [[0, 'Armando la crew'], [6000, 'Ya casi']];
 
-/** 🛡️ Armar el escudo: forma, símbolo y dos colores. `e` y `setE` los lleva quien lo usa (la vista grande, también). */
-export function ArmarEscudo({ e, setE }) {
+/** 🗂️ Las dos maneras de tener logo, como pestañas: armarlo con las piezas de la Liga o subir una imagen propia. */
+function ModoLogo({ modo, setModo }) {
+  return (
+    <div className="ae-modo" role="tablist" aria-label="Cómo armar el logo">
+      {[['armar', '🛡️ Armar escudo'], ['subir', '🖼️ Subir mi logo']].map(([k, t]) => (
+        <button key={k} type="button" role="tab" aria-selected={modo === k} className={modo === k ? 'on' : ''} onClick={() => setModo(k)}>{t}</button>
+      ))}
+    </div>
+  );
+}
+
+/** 🛡️ Armar el escudo: forma, símbolo, división, borde y tres colores. `e` y `setE` los lleva quien lo usa (la vista
+ *  grande, también). `sigla`: la de la crew, para el símbolo de la sigla. */
+export function ArmarEscudo({ e, setE, sigla }) {
   const otro = () => {
     const r = (xs) => xs[Math.floor(Math.random() * xs.length)];
     const a = r(COLORES);
     let b = r(COLORES);
     while (b === a) b = r(COLORES);
-    setE({ forma: r(Object.keys(FORMAS)), simb: r(Object.keys(SIMBOLOS)), a, b });
+    let c = r(COLORES);
+    while (c === a || c === b) c = r(COLORES);
+    setE({ forma: r(Object.keys(FORMAS)), simb: r(Object.keys(SIMBOLOS)), a, b, c, div: r(Object.keys(DIVISIONES)), borde: r(BORDES) });
   };
-  const color = (cual, t) => (
-    <div className="ae-fila" role="radiogroup" aria-label={'El color del ' + t.toLowerCase()}>
+  const div = e.div || 'liso';
+  // ⚠️ el tercer color no puede ser el del símbolo ni el del fondo: el símbolo desaparecía sobre la mitad dividida
+  // (medido el 16/11/2026: un escudo sin nombre traía el tercero igual al símbolo). Se corrige solo al elegir
+  const arreglar = (x) => {
+    if (((x.div || 'liso') !== 'liso' || x.borde === 'doble') && (!x.c || x.c === x.a || x.c === x.b)) {
+      return { ...x, c: ['0e0e10', 'f6f6f6', 'c9a227', ...COLORES].find((k) => k !== x.a && k !== x.b) };
+    }
+    return x;
+  };
+  const elegir = (x) => setE(arreglar(x));
+  const color = (cual, t, aria) => (
+    <div className="ae-fila" role="radiogroup" aria-label={aria}>
       <span className="ae-t">{t}</span>
       <span className="ae-sw">{COLORES.map((c) => (
-        <button key={c} type="button" role="radio" aria-checked={e[cual] === c} aria-label={'#' + c} className={e[cual] === c ? 'on' : ''}
-          style={{ background: '#' + c }} disabled={(cual === 'a' ? e.b : e.a) === c}
-          onClick={() => setE({ ...e, [cual]: c })} />
+        <button key={c} type="button" role="radio" aria-checked={(e[cual] || e.b) === c} aria-label={'#' + c} className={(e[cual] || e.b) === c ? 'on' : ''}
+          style={{ background: '#' + c }} disabled={(cual === 'a' && e.b === c) || (cual === 'b' && e.a === c) || (cual === 'c' && (e.a === c || e.b === c))}
+          onClick={() => elegir({ ...e, [cual]: c })} />
       ))}</span>
     </div>
   );
+  // cada botón muestra el escudo de ahora con esa pieza cambiada: se elige mirando el resultado, no la pieza suelta
+  const grilla = (campo, t, claves, nombres, cls) => (
+    <div className="ae-fila" role="radiogroup" aria-label={'El ' + t.toLowerCase()}>
+      <span className="ae-t">{t}</span>
+      <span className={'ae-grilla ' + cls}>{claves.map((k) => (
+        <button key={k} type="button" role="radio" aria-checked={(e[campo] || '') === k} title={nombres[k]} className={(e[campo] || '') === k ? 'on' : ''}
+          onClick={() => elegir({ ...e, [campo]: k })}><Escudo e={arreglar({ ...e, [campo]: k })} sigla={sigla} titulo={nombres[k]} /></button>
+      ))}</span>
+    </div>
+  );
+  // el símbolo, solo y grande: dentro de un escudo chico no se distinguía (medido: 55 px de botón, el dibujo en ~25)
+  const glifo = (x) => (x === 'sigla'
+    ? <svg viewBox="0 0 100 100" role="img" aria-label={NOMBRE_SIMBOLO[x]}><text x="50" y="50" dy="0.35em" textAnchor="middle" fill="currentColor"
+      fontSize={String(sigla || 'ABC').length > 3 ? 30 : 38} fontWeight="900" style={{ fontFamily: 'inherit' }}>{(sigla || 'ABC').slice(0, 4)}</text></svg>
+    : <svg viewBox="0 0 100 100" role="img" aria-label={NOMBRE_SIMBOLO[x]}><path d={SIMBOLOS[x]} fill={esTrazo(x) ? 'none' : 'currentColor'}
+      fillRule={x === 'vinilo' || x === 'dado' ? 'evenodd' : undefined} stroke="currentColor" strokeWidth={esTrazo(x) ? 7 : 2}
+      strokeLinecap="round" strokeLinejoin="round" /></svg>);
   return (
     <div className="ae">
-      <div className="ae-fila" role="radiogroup" aria-label="La forma">
-        <span className="ae-t">Forma</span>
-        <span className="ae-grilla f">{Object.keys(FORMAS).map((f) => (
-          <button key={f} type="button" role="radio" aria-checked={e.forma === f} title={NOMBRE_FORMA[f]} className={e.forma === f ? 'on' : ''}
-            onClick={() => setE({ ...e, forma: f })}><Escudo e={{ forma: f, simb: e.simb, a: e.a, b: e.b }} titulo={NOMBRE_FORMA[f]} /></button>
-        ))}</span>
-      </div>
+      {grilla('forma', 'Forma', Object.keys(FORMAS), NOMBRE_FORMA, 'f')}
       <div className="ae-fila" role="radiogroup" aria-label="El símbolo">
         <span className="ae-t">Símbolo</span>
         <span className="ae-grilla s">{Object.keys(SIMBOLOS).map((x) => (
           <button key={x} type="button" role="radio" aria-checked={e.simb === x} title={NOMBRE_SIMBOLO[x]} className={e.simb === x ? 'on' : ''}
-            onClick={() => setE({ ...e, simb: x })}>
-            <svg viewBox="0 0 100 100" role="img" aria-label={NOMBRE_SIMBOLO[x]}><path d={SIMBOLOS[x]} fill={x === 'micro' ? 'none' : 'currentColor'}
-              stroke="currentColor" strokeWidth={x === 'micro' ? 7 : 2} strokeLinecap="round" strokeLinejoin="round" /></svg>
-          </button>
+            onClick={() => elegir({ ...e, simb: x })}>{glifo(x)}</button>
         ))}</span>
       </div>
-      {color('a', 'Fondo')}
-      {color('b', 'Símbolo')}
+      {grilla('div', 'División', Object.keys(DIVISIONES), NOMBRE_DIVISION, 'd')}
+      {grilla('borde', 'Borde', BORDES, NOMBRE_BORDE, 'b')}
+      {color('a', 'Fondo', 'El color del fondo')}
+      {div !== 'liso' || e.borde === 'doble' ? color('c', div !== 'liso' ? 'División' : 'Ribete', 'El color de la división y el ribete') : null}
+      {color('b', 'Símbolo', 'El color del símbolo')}
+      {e.simb === 'sigla' ? <small className="cw-nota">La sigla del escudo cambia sola si cambias la de la crew.</small> : null}
       <button type="button" className="btn borde2 chico ae-otro" onClick={otro}>🎲 Otro al azar</button>
     </div>
   );
@@ -767,7 +806,7 @@ export function CrearCrew({ mia }) {
       <h3 className="cw-h">Funda tu crew</h3>
       {/* la vista previa: así se va a ver en la página de crews */}
       <div className="ae-vista">
-        <span className="ae-vista-e">{usaImagen ? <img src={logo[1]} alt="" /> : <Escudo e={e} />}</span>
+        <span className="ae-vista-e">{usaImagen ? <img src={logo[1]} alt="" /> : <Escudo e={e} sigla={sg} />}</span>
         <span className="ae-vista-t">
           <b>{nombre.trim() || 'Tu crew'}</b>
           <small>{sg ? '[' + sg + '] · ' : ''}{ENTRADA_CORTA[entrada]} · 1/{mia.max || 20}</small>
@@ -792,19 +831,14 @@ export function CrearCrew({ mia }) {
               onChange={(ev) => { setSiglaTocada(true); setSigla(ev.target.value); }} placeholder="LDS" /></label>
           </div>
           {siglaTocada ? null : <small className="cw-nota ae-ayuda">La sigla sale sola del nombre; puedes cambiarla.</small>}
-          <fieldset className="cw-reps ae-bloque"><legend>Escudo</legend>
+          <fieldset className="cw-reps ae-bloque"><legend>Logo</legend>
+            <ModoLogo modo={conImagen ? 'subir' : 'armar'} setModo={(m) => setConImagen(m === 'subir')} />
             {conImagen ? (
               <div className="cw-logo-campo">
                 <ElegirLogo vista={logo && logo[1]} onElegido={(b, u) => setLogo([b, u])} onError={setMsg} />
                 <small>Cuadrado, se ve en un círculo. Pasa por el filtro automático: nada de desnudos, sangre, odio ni datos personales.</small>
-                <button type="button" className="te-link ae-cambia" onClick={() => setConImagen(false)}>Volver al escudo armado</button>
               </div>
-            ) : (
-              <>
-                <ArmarEscudo e={e} setE={setEsc} />
-                <button type="button" className="te-link ae-cambia" onClick={() => setConImagen(true)}>O sube una imagen propia</button>
-              </>
-            )}
+            ) : <ArmarEscudo e={e} setE={setEsc} sigla={sg} />}
           </fieldset>
           <fieldset className="cw-reps ae-bloque"><legend>Lema <small>(lo que se lee de la crew)</small></legend>
             <span className="ae-chips">

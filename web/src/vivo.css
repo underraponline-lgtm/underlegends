@@ -4186,6 +4186,12 @@ button.tb-yo.on{background:var(--inv);color:var(--inv-tinta);box-shadow:inset 0 
 .ae-t{font:700 13px/1 "Barlow Condensed",sans-serif;letter-spacing:.08em;text-transform:uppercase;color:var(--gris)}
 .ae-grilla{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:6px;max-width:360px}
 .ae-grilla.f{grid-template-columns:repeat(4,minmax(0,1fr));max-width:290px}
+.ae-grilla.s{grid-template-columns:repeat(7,minmax(0,1fr));max-width:420px}
+.ae-grilla.d{grid-template-columns:repeat(7,minmax(0,1fr));max-width:420px}
+.ae-grilla.b{grid-template-columns:repeat(3,minmax(0,1fr));max-width:220px}
+.ae-modo{display:flex;gap:6px;flex-wrap:wrap;margin:2px 0 10px}
+.ae-modo button{padding:8px 14px;border:2px solid var(--suave);border-radius:4px;background:var(--fondo);color:var(--tinta);font:700 14px/1 Archivo,sans-serif;cursor:pointer}
+.ae-modo button.on{border-color:var(--tinta);background:var(--caja)}
 .ae-grilla button{display:grid;place-items:center;aspect-ratio:1;padding:7px;border:2px solid var(--suave);background:var(--fondo);color:var(--tinta);cursor:pointer}
 .ae-grilla button svg{width:100%;height:100%}
 .ae-grilla button.on{border-color:var(--tinta);background:var(--caja)}

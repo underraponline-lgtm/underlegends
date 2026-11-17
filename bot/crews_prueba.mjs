@@ -389,6 +389,18 @@ if (!DatabaseSync) {
   const ES2 = 'esc:rombo.puno.0e0e10.f2b705';
   const le = yo(950, 'esca', { accion: 'logo', escudo: ES2, inicial: 9000 });
   ok(le.ok && pubE().logo === ES2 && !(le.viejos || []).some((u) => /^https:/.test(u)), 'cambiar al escudo: se ve ya');
+  // 🧩 las piezas del 16/11/2026: división, borde, tercer color y la sigla, que la pone el objeto y la sigue al cambiar
+  const ES3 = 'esc:estandarte.sigla.1b2a4a.c9a227.partido.doble.7a1f3d';
+  const l3 = yo(950, 'esca', { accion: 'logo', escudo: ES3 + '.ZZZ', inicial: 9000 });
+  ok(l3.ok && pubE().logo === ES3 + '.CE', 'el escudo con la sigla lleva la de la crew, no la que manda la página');
+  const ns = yo(950, 'esca', { accion: 'nombre', nombre: 'Con Escudo', sigla: 'cx', inicial: 9000 });
+  ok(ns.ok && pubE().logo === ES3 + '.CX', 'cambiar la sigla cambia la del escudo');
+  ok(CW.escudoOk('esc:escudo.micro.e41373.f6f6f6') && CW.escudoOk('esc:octagono.vinilo.0e0e10.ff8fc7.chevron.grueso.c9a227')
+    && !CW.escudoOk('esc:escudo.corona.e41373.f6f6f6.cuadrado.fino.0e0e10')
+    && !CW.escudoOk('esc:escudo.corona.e41373.f6f6f6.liso.fino.0e0e10.AB')
+    && !CW.escudoOk('esc:escudo.corona.e41373.f6f6f6.liso.fino')
+    && CW.conSigla('esc:escudo.corona.e41373.f6f6f6', 'AB') === 'esc:escudo.corona.e41373.f6f6f6',
+  'las piezas nuevas valen; una división que no existe, la sigla sin su símbolo o el código a medias, no');
   // y al cerrarla, un escudo no va a la basura de R2
   ok(!CW.crewBasura(o, 500).some((u) => u.startsWith('esc:')), 'un escudo nunca va a la basura de R2');
   // 🆕 el relanzamiento: cerrar varias de una vez, con el aviso de cada una; las que no existen se dicen
