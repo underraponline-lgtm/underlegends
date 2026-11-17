@@ -3314,6 +3314,11 @@
    ]
   },
   "pais": {
+   "DA LA CARA": [
+    "DA LA CARA",
+    "t1",
+    1794878403871
+   ],
    "EMBAJADOR": [
     "EMBAJADOR",
     "t1",
@@ -3977,10 +3982,20 @@
     "t1",
     1794532281126
    ],
+   "🏯 CIUDADELA": [
+    "🏯 CIUDADELA",
+    "t1",
+    1794878403871
+   ],
    "🏰 FORTALEZA": [
     "🏰 FORTALEZA",
     "t1",
     1794621826916
+   ],
+   "📆 HABITUÉ": [
+    "📆 HABITUÉ",
+    "t1",
+    1794878403871
    ],
    "🪓 VERDUGO DEL DUEÑO": [
     "🪓 VERDUGO DEL DUEÑO",
@@ -4005,9 +4020,14 @@
     1794260565889
    ],
    "👑 CAMPEÓN x%d": [
-    "👑 CAMPEÓN x5",
+    "👑 CAMPEÓN x6",
     "t1",
     1794260565889
+   ],
+   "💯 CENTENARIO": [
+    "💯 CENTENARIO",
+    "t1",
+    1794878403871
    ],
    "📈 EN ASCENSO": [
     "📈 EN ASCENSO",
@@ -9396,6 +9416,11 @@
     "t1",
     1793928952060
    ],
+   "🔟 DOBLE DÍGITO": [
+    "🔟 DOBLE DÍGITO",
+    "t1",
+    1794878403871
+   ],
    "🥉 AL PODIO": [
     "🥉 AL PODIO",
     "t1",
@@ -14241,6 +14266,11 @@
     "🥉 AL PODIO",
     "t1",
     1793029252929
+   ],
+   "🧳 VIAJERO": [
+    "🧳 VIAJERO",
+    "t1",
+    1794878403871
    ]
   }
  },

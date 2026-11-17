@@ -198,7 +198,7 @@
 "temporada"
 ]
 },
-"mito": {
+"nxuz": {
 "rg": "C",
 "c": [
 "competitivo",
@@ -207,7 +207,7 @@
 "temporada"
 ]
 },
-"nxuz": {
+"mito": {
 "rg": "C",
 "c": [
 "competitivo",
@@ -636,6 +636,15 @@
 "temporada"
 ]
 },
+"crakero": {
+"rg": "E",
+"c": [
+"competitivo",
+"pais",
+"servidor",
+"temporada"
+]
+},
 "crk": {
 "rg": "E",
 "c": [
@@ -669,11 +678,10 @@
 "temporada"
 ]
 },
-"crakero": {
-"rg": "E",
+"dios": {
+"rg": "",
 "c": [
 "competitivo",
-"pais",
 "servidor",
 "temporada"
 ]
@@ -735,14 +743,6 @@
 "rg": "",
 "c": []
 },
-"dios": {
-"rg": "",
-"c": [
-"competitivo",
-"servidor",
-"temporada"
-]
-},
 "presagio": {
 "rg": "",
 "c": [
@@ -762,17 +762,18 @@
 "temporada"
 ]
 },
-"richard": {
-"rg": "E",
+"mcarepa": {
+"rg": "",
 "c": [
 "competitivo",
 "servidor",
 "temporada"
 ]
 },
-"mcarepa": {
-"rg": "",
+"richard": {
+"rg": "E",
 "c": [
+"competitivo",
 "servidor",
 "temporada"
 ]
@@ -942,6 +943,10 @@
 "rg": "",
 "c": []
 },
+"leyenda": {
+"rg": "",
+"c": []
+},
 "alexi": {
 "rg": "",
 "c": []
@@ -1010,10 +1015,6 @@
 "temporada"
 ]
 },
-"leyenda": {
-"rg": "",
-"c": []
-},
 "blitz": {
 "rg": "E",
 "c": []
@@ -1071,6 +1072,14 @@
 "kochi": {
 "rg": "",
 "c": [
+"servidor",
+"temporada"
+]
+},
+"zaik": {
+"rg": "E",
+"c": [
+"competitivo",
 "servidor",
 "temporada"
 ]
@@ -1142,14 +1151,6 @@
 "efimero": {
 "rg": "",
 "c": []
-},
-"zaik": {
-"rg": "E",
-"c": [
-"competitivo",
-"servidor",
-"temporada"
-]
 },
 "bootraxx": {
 "rg": "",
@@ -1270,6 +1271,14 @@
 "temporada"
 ]
 },
+"araya": {
+"rg": "",
+"c": [
+"pais",
+"servidor",
+"temporada"
+]
+},
 "yor": {
 "rg": "",
 "c": [
@@ -1331,6 +1340,10 @@
 "servidor",
 "temporada"
 ]
+},
+"senticide": {
+"rg": "",
+"c": []
 },
 "youngvlad": {
 "rg": "",
@@ -1637,10 +1650,6 @@
 "rg": "",
 "c": []
 },
-"senticide": {
-"rg": "",
-"c": []
-},
 "maukc": {
 "rg": "",
 "c": []
@@ -1783,10 +1792,6 @@
 "c": []
 },
 "tambaggio": {
-"rg": "",
-"c": []
-},
-"araya": {
 "rg": "",
 "c": []
 },
@@ -2867,40 +2872,6 @@
 }
 },
 "cambios": [
-{
-"tipo": "rango",
-"t": "2026-10-10T18:26:29Z",
-"quien": [
-"Number VE"
-],
-"rg": "E",
-"primero": true
-},
-{
-"tipo": "tarjeta",
-"t": "2026-10-10T18:26:29Z",
-"quien": [
-"Number VE"
-],
-"carta": "competitivo"
-},
-{
-"tipo": "tarjeta",
-"t": "2026-10-10T19:58:06Z",
-"quien": [
-"Keider"
-],
-"carta": "temporada"
-},
-{
-"tipo": "rango",
-"t": "2026-10-11T00:55:50Z",
-"quien": [
-"PichulaMc"
-],
-"rg": "A",
-"primero": false
-},
 {
 "tipo": "tarjeta",
 "t": "2026-10-11T03:12:26Z",
@@ -6243,6 +6214,38 @@
 ],
 "rk": "temporada",
 "pos": 10
+},
+{
+"tipo": "tarjeta",
+"t": "2026-11-17T01:19:38Z",
+"quien": [
+"Mc arepa"
+],
+"carta": "competitivo"
+},
+{
+"tipo": "tarjeta",
+"t": "2026-11-17T01:19:38Z",
+"quien": [
+"araya"
+],
+"carta": "pais"
+},
+{
+"tipo": "tarjeta",
+"t": "2026-11-17T01:19:38Z",
+"quien": [
+"araya"
+],
+"carta": "servidor"
+},
+{
+"tipo": "tarjeta",
+"t": "2026-11-17T01:19:38Z",
+"quien": [
+"araya"
+],
+"carta": "temporada"
 }
 ],
 "noche_antes": {
@@ -7827,13 +7830,13 @@
 "n": "Fisics",
 "k": "",
 "de": 365,
-"a": 341
+"a": 342
 },
 {
 "n": "Liam",
 "k": "",
 "de": 148,
-"a": 135
+"a": 136
 }
 ],
 "sorpresas": [
@@ -7987,7 +7990,7 @@
 "sosaatr": 0,
 "badterne": 0,
 "vilca": 0,
-"crakero": 2,
+"crakero": 1,
 "crk": 0,
 "cinexfilo": 0,
 "kravitz": 1,
@@ -7998,7 +8001,7 @@
 "jult": 0,
 "jeixder": 0,
 "jobaking": 0,
-"dios": 3,
+"dios": 4,
 "presagio": 4,
 "benjixo": 0,
 "mcnadie": 0,
@@ -8042,7 +8045,7 @@
 "lilnano": 0,
 "zekha": 1,
 "evangeline": 0,
-"leyenda": 1,
+"leyenda": 0,
 "blitz": 0,
 "assuan": 1,
 "prosu": 0,
@@ -8066,7 +8069,7 @@
 "deluxe": 0,
 "ikonoxx": 0,
 "efimero": 0,
-"zaik": 0,
+"zaik": 1,
 "pomberito": 0,
 "andy": 0,
 "emilioalva": 0,
@@ -8109,7 +8112,9 @@
 "ragna": 2,
 "tmaxturbopn": 0,
 "simonhenriksson": 1,
-"bootraxx": 1
+"bootraxx": 1,
+"araya": 0,
+"senticide": 1
 },
 "sem": {
 "id": "2026-11-16",

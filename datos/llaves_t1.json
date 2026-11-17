@@ -40531,7 +40531,7 @@
        "Erian"
       ],
       "Geoka",
-      "Walk-in 1: Geoka 🇦🇷🙇🏻‍♂️👀👉🏻👈🏻"
+      "Walk-in 1: Geoka 🇦🇷"
      ]
     ],
     "r": "Cuartos"
@@ -42086,7 +42086,7 @@
        "Dyzz"
       ],
       "PichulaMc, Leopold sedar 🇸🇳, Geoka",
-      "triple (5 bandas, pasan 3); también pasa: Leopold sedar 🇸🇳 / Geoka 🇦🇷🙇🏻‍♂️👀👉🏻👈🏻"
+      "triple (5 bandas, pasan 3); también pasa: Leopold sedar 🇸🇳 / Geoka 🇦🇷"
      ]
     ],
     "r": "Octavos"
@@ -48251,12 +48251,12 @@
      [
       [
        "Deko",
-       "Kravitz",
+       "Zaik 🇪🇸, Kravitz",
        "Vandu",
        "Colesito"
       ],
       "Deko",
-      "triple (4 bandas); Walk-in 2: Deko 🇦🇷; Walk-in 2: Kravitz🇨🇷"
+      "triple (4 bandas); Walk-in 2: Deko 🇦🇷"
      ],
      [
       [
@@ -48306,6 +48306,16 @@
     3875
    ],
    [
+    "Kravitz",
+    "Semifinal",
+    2625
+   ],
+   [
+    "Zaik 🇪🇸",
+    "Semifinal",
+    2625
+   ],
+   [
     "Benjixo",
     "Cuartos",
     2500
@@ -48329,11 +48339,6 @@
     "Kminant",
     "Cuartos",
     2500
-   ],
-   [
-    "Kravitz",
-    "Semifinal",
-    1312
    ],
    [
     "0223 🇧🇧",
@@ -49265,7 +49270,7 @@
        "Deko"
       ],
       "NC",
-      "Walk-in 1: nc🇰🇷; Walk-in 1: Deko 🇦🇷"
+      "Walk-in 1: nc🇦🇴; Walk-in 1: Deko 🇦🇷"
      ],
      [
       [
@@ -58224,6 +58229,137 @@
   ],
   "ver": {
    "min": 38,
+   "v": 1
+  }
+ },
+ "653": {
+  "dia": "2026-11-13",
+  "escala": "8-15",
+  "fecha": "13/11",
+  "links": [
+   "https://discord.com/channels/1489848581203689535/1500675902042931280/1570976544615174247"
+  ],
+  "n": 653,
+  "nombre": "RAP SIN GROSERIAS 6",
+  "participantes": 10,
+  "rondas": [
+   {
+    "b": [
+     [
+      [
+       "Dios",
+       "Leyenda"
+      ],
+      "Dios",
+      ""
+     ],
+     [
+      [
+       "NXUZ",
+       "crakero"
+      ],
+      "NXUZ",
+      ""
+     ],
+     [
+      [
+       "Senticide",
+       "araya"
+      ],
+      "Senticide",
+      ""
+     ],
+     [
+      [
+       "Mc arepa",
+       "Chente"
+      ],
+      "Mc arepa",
+      ""
+     ]
+    ],
+    "r": "Cuartos"
+   },
+   {
+    "b": [
+     [
+      [
+       "Senticide",
+       "Mc arepa"
+      ],
+      "Senticide",
+      ""
+     ],
+     [
+      [
+       "Dios",
+       "NXUZ"
+      ],
+      "Dios",
+      ""
+     ]
+    ],
+    "r": "Semifinales"
+   },
+   {
+    "b": [
+     [
+      [
+       "Dios",
+       "Senticide"
+      ],
+      "Dios",
+      ""
+     ]
+    ],
+    "r": "Final"
+   }
+  ],
+  "sv": "FDS",
+  "tabla": [
+   [
+    "Dios",
+    "Campeón",
+    7500
+   ],
+   [
+    "Senticide",
+    "Subcampeón",
+    5000
+   ],
+   [
+    "Mc arepa",
+    "Semifinal",
+    3500
+   ],
+   [
+    "NXUZ",
+    "Semifinal",
+    3500
+   ],
+   [
+    "Chente",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Leyenda",
+    "Cuartos",
+    2000
+   ],
+   [
+    "araya",
+    "Cuartos",
+    2000
+   ],
+   [
+    "crakero",
+    "Cuartos",
+    2000
+   ]
+  ],
+  "ver": {
+   "min": 65,
    "v": 1
   }
  }

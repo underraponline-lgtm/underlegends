@@ -47423,21 +47423,6 @@
     "Dios",
     "crakero",
     "Dios"
-   ],
-   [
-    "Dios",
-    "Leyenda",
-    "Dios"
-   ],
-   [
-    "Dios",
-    "NEXUX",
-    "Dios"
-   ],
-   [
-    "Dios",
-    "Senticide",
-    "Dios"
    ]
   ],
   "ev_antes": {
@@ -47449,11 +47434,11 @@
    "crakero": 9
   },
   "fecha": "13/11",
-  "firma": "8e18ba6c81250828",
+  "firma": "3c0a725b58bfbdd8",
   "msg": "1570980323372703807",
   "nombre": "RANKED 2",
   "num": 632,
-  "participantes": 17,
+  "participantes": 10,
   "sello": {
    "Dios": "566f95c1486d:7a510334494e"
   },
@@ -47463,42 +47448,42 @@
    [
     "Dios",
     "Campeón",
-    10000
+    7500
    ],
    [
     "crakero",
     "Subcampeón",
-    7500
+    5000
    ],
    [
     "Artezzy",
     "Cuarto",
-    4500
+    3000
    ],
    [
     "Mc arepa",
     "Tercero",
-    3000
+    2000
    ],
    [
     "Raizer",
     "Cuartos",
-    2500
+    2000
    ],
    [
     "4'C 🇲🇽",
     "Cuartos",
-    2500
+    2000
    ],
    [
     "CrisZJ",
     "Cuartos",
-    2500
+    2000
    ],
    [
     "araya",
     "Cuartos",
-    2500
+    2000
    ]
   ],
   "v": 2
@@ -51002,6 +50987,152 @@
    ],
    [
     "El felpudo 974 🇨🇫",
+    "Cuartos",
+    2000
+   ]
+  ],
+  "v": 2
+ },
+ "653": {
+  "antes": {
+   "Chente": [
+    371,
+    270,
+    true
+   ],
+   "Dios": [
+    77,
+    94,
+    false
+   ],
+   "Leyenda": [
+    288,
+    136,
+    true
+   ],
+   "Mc arepa": [
+    81,
+    99,
+    false
+   ],
+   "NXUZ": [
+    24,
+    25,
+    false
+   ],
+   "Senticide": [
+    377,
+    277,
+    true
+   ],
+   "araya": [
+    136,
+    213,
+    false
+   ],
+   "crakero": [
+    70,
+    86,
+    false
+   ]
+  },
+  "canal": "1489848582189224104",
+  "duelos": [
+   [
+    "Dios",
+    "Leyenda",
+    "Dios"
+   ],
+   [
+    "NXUZ",
+    "crakero",
+    "NXUZ"
+   ],
+   [
+    "Senticide",
+    "araya",
+    "Senticide"
+   ],
+   [
+    "Mc arepa",
+    "Chente",
+    "Mc arepa"
+   ],
+   [
+    "Senticide",
+    "Mc arepa",
+    "Senticide"
+   ],
+   [
+    "Dios",
+    "NXUZ",
+    "Dios"
+   ],
+   [
+    "Dios",
+    "Senticide",
+    "Dios"
+   ]
+  ],
+  "ev_antes": {
+   "Chente": 4,
+   "Dios": 11,
+   "Leyenda": 13,
+   "Mc arepa": 9,
+   "NXUZ": 48,
+   "Senticide": 2,
+   "araya": 5,
+   "crakero": 11
+  },
+  "fecha": "13/11",
+  "firma": "c95abc6045b23ab7",
+  "msg": "1572055186955046984",
+  "nombre": "RAP SIN GROSERIAS 6",
+  "num": 653,
+  "participantes": 10,
+  "sello": {
+   "Dios": "bcfa1ecb31a5:fec25411e829"
+  },
+  "sv": "FDS",
+  "t": "2026-11-17T01:06:01Z",
+  "tabla": [
+   [
+    "Dios",
+    "Campeón",
+    7500
+   ],
+   [
+    "Senticide",
+    "Subcampeón",
+    5000
+   ],
+   [
+    "Mc arepa",
+    "Semifinal",
+    3500
+   ],
+   [
+    "NXUZ",
+    "Semifinal",
+    3500
+   ],
+   [
+    "Leyenda",
+    "Cuartos",
+    2000
+   ],
+   [
+    "crakero",
+    "Cuartos",
+    2000
+   ],
+   [
+    "araya",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Chente",
     "Cuartos",
     2000
    ]

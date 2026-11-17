@@ -2426,11 +2426,11 @@
   "Chente": {
    "FDS": {
     "duelos": "",
-    "ev": 2,
+    "ev": 3,
     "oro": 0,
     "ovr": 44,
     "pod": 0,
-    "pts": 7438,
+    "pts": 11438,
     "racha": "0/0"
    },
    "FFA": {
@@ -3442,14 +3442,14 @@
    },
    "FDS": {
     "duelos": "",
-    "ev": 4,
-    "oro": 4,
-    "ovr": 51,
-    "pod": 4,
-    "pts": 61250,
-    "racha": "4/4",
+    "ev": 5,
+    "oro": 5,
+    "ovr": 52,
+    "pod": 5,
+    "pts": 76250,
+    "racha": "5/5",
     "tg": {
-     "fin": 4
+     "fin": 5
     }
    },
    "FRZ": {
@@ -6995,7 +6995,7 @@
     "oro": 0,
     "ovr": 56,
     "pod": 2,
-    "pts": 54062,
+    "pts": 55375,
     "racha": "2/2",
     "tg": {
      "fin": 1
@@ -7744,11 +7744,11 @@
    },
    "FDS": {
     "duelos": "",
-    "ev": 6,
+    "ev": 7,
     "oro": 0,
-    "ovr": 45,
+    "ovr": 46,
     "pod": 0,
-    "pts": 14413,
+    "pts": 18413,
     "racha": "0/0"
    },
    "URBF": {
@@ -9203,11 +9203,11 @@
   "Mc arepa": {
    "FDS": {
     "duelos": "",
-    "ev": 7,
+    "ev": 8,
     "oro": 0,
-    "ovr": 51,
+    "ovr": 52,
     "pod": 4,
-    "pts": 48437,
+    "pts": 55437,
     "racha": "0/3",
     "tg": {
      "fin": 2
@@ -10108,12 +10108,12 @@
    },
    "FDS": {
     "duelos": "",
-    "ev": 9,
+    "ev": 10,
     "oro": 0,
-    "ovr": 49,
+    "ovr": 50,
     "pod": 1,
-    "pts": 37582,
-    "racha": "1/1",
+    "pts": 44582,
+    "racha": "0/1",
     "tg": {
      "fin": 1,
      "llave": true
@@ -12654,6 +12654,19 @@
     "pts": 3300,
     "racha": "0/0"
    },
+   "FDS": {
+    "duelos": "",
+    "ev": 1,
+    "oro": 0,
+    "ovr": 45,
+    "pod": 1,
+    "pts": 10000,
+    "racha": "1/1",
+    "tg": {
+     "fin": 1,
+     "nuevo": true
+    }
+   },
    "FFA": {
     "duelos": "0/1",
     "ev": 1,
@@ -15032,12 +15045,12 @@
    },
    "FFA": {
     "duelos": "0/4",
-    "ev": 11,
+    "ev": 12,
     "oro": 0,
-    "ovr": 47,
+    "ovr": 48,
     "pod": 0,
-    "pts": 26499,
-    "racha": "0/0"
+    "pts": 29124,
+    "racha": "1/1"
    },
    "LKR": {
     "duelos": "",
@@ -15252,11 +15265,11 @@
   "araya": {
    "FDS": {
     "duelos": "",
-    "ev": 1,
+    "ev": 2,
     "oro": 0,
-    "ovr": 43,
+    "ovr": 44,
     "pod": 0,
-    "pts": 4000,
+    "pts": 8000,
     "racha": "0/0",
     "tg": {
      "nuevo": true
@@ -15454,12 +15467,12 @@
    },
    "FDS": {
     "duelos": "",
-    "ev": 1,
+    "ev": 2,
     "oro": 0,
-    "ovr": 45,
+    "ovr": 46,
     "pod": 1,
-    "pts": 10000,
-    "racha": "1/1",
+    "pts": 14000,
+    "racha": "0/1",
     "tg": {
      "fin": 1,
      "nuevo": true
