@@ -84,6 +84,20 @@ function pedirTodas() {
   return TODAS;
 }
 
+// 📦 UNA SOLA, SUELTA, DE R2 (Dlx, 17/11/2026: «que cuando son llaves antiguas que tome tiempo cargar… para q no cargue
+// toda la data»): `<r2>/llaves/<n>.json` pesa ~1,5 KB contra los 75 KB comprimidos de todas. La sube el ciclo
+// (`subir_web.subir_llaves_sueltas()`); si todavía no está o R2 no contesta, la de siempre
+const UNA = {};
+function pedirUna(n, r2) {
+  if (!/^\d+$/.test(String(n)) || !r2) return pedirTodas().then((t) => (t && t[n]) || null);
+  if (!UNA[n]) {
+    UNA[n] = fetch(r2 + '/llaves/' + n + '.json', { headers: { accept: 'application/json' } })
+      .then((r) => { if (!r.ok) throw new Error(r.status); return r.json(); })
+      .catch(() => { delete UNA[n]; return pedirTodas().then((t) => (t && t[n]) || null); });
+  }
+  return UNA[n];
+}
+
 // 🏟️ las clases del tema de la llave: las de su servidor si quien mira no eligió uno (y si ese servidor tiene tema)
 function temaLlave(sv) {
   const s = String(sv || '').toUpperCase();
@@ -237,6 +251,147 @@ function CampeonG({ ctx }) {
       <span className="lk-camp-t"><Ico n="copa" t={18} />{quien.length > 1 ? 'Campeones' : 'Campeón'}</span>
       <div className="lk-camp-cs">{quien.map((m, i) => <Grande key={i} ctx={ctx} b={fin} s={m} cls="lk-gr lk-camp-c" />)}</div>
       {ctx.ptsCamp ? <small className="lk-camp-p">+{ctx.ptsCamp} pts{quien.length > 1 ? ' cada uno' : ''}</small> : null}
+    </section>
+  );
+}
+
+// 🃏 UNA PERSONA EN CHICO (remake del 17/11/2026, Dlx: «me gusta la C… y podríamos usar el A de vs… la idea era usar acá
+// las tarjetas en vez de nombres… pero minis, tampoco tan grandes»). Su carta en miniatura —ya trae nombre y bandera—;
+// sin carta, una ficha del MISMO tamaño con su cara, su nombre y su bandera (nunca una caja vacía: eso era el campeón sin
+// carta de antes, un rectángulo negro gigante). Un equipo: las caras juntas y los nombres
+function MiniP({ ctx, s, ancho = 64, apagado = false, sinNombre = false }) {
+  const ms = partes(s);
+  const alto = Math.round(ancho * CARTA_AR);
+  const st = { width: ancho, height: alto };
+  if (ms.length > 1) {
+    return (
+      <span className={'lk-mp eq' + (apagado ? ' x' : '')} style={st}>
+        <span className="lk-caras">{ms.map((m, i) => { const f = ctx.fila(m); return <Cara key={i} liga={ctx.liga} k={f ? f.k : ''} nombre={f ? f.n : sinBanderas(m).txt} cls="lk-cara" />; })}</span>
+        <span className="lk-n">{ms.map((m) => { const f = ctx.fila(m); return f ? capital(limpio(f.n)) : capital(sinBanderas(m).txt); }).join(' · ')}</span>
+      </span>
+    );
+  }
+  const f = ctx.fila(s);
+  const url = urlCarta(ctx, f);
+  const sb = sinBanderas(s);
+  const nombre = f ? capital(limpio(f.n)) : capital(sb.txt || s);
+  if (url) return <span className={'lk-mp c' + (apagado ? ' x' : '') + (ctx.liga.brilla(f.k) ? ' brilla' : '')} style={st} title={nombre}><ImgCarta ctx={ctx} f={f} cls="lk-mp-img" grande={ancho > 110} /></span>;
+  return (
+    <span className={'lk-mp s' + (apagado ? ' x' : '')} style={st} title={nombre}>
+      <Cara liga={ctx.liga} k={f ? f.k : ''} nombre={nombre} cls="lk-cara" />
+      {sinNombre ? null : <span className="lk-n">{nombre}</span>}
+      {f ? <Bandera cc={f.cc} cls="lk-flag" /> : sb.ccs.map((cc) => <Bandera key={cc} cc={cc} cls="lk-flag" />)}
+    </span>
+  );
+}
+const nombreDe = (ctx, s) => partes(s).map((m) => { const f = ctx.fila(m); return f ? capital(limpio(f.n)) : capital(sinBanderas(m).txt); }).join(' y ');
+
+// 📁 LA LLAVE ENTERA, PLEGADA CUANDO YA HAY HISTORIA ARRIBA (la C de la maqueta: el versus y el camino cuentan quién ganó;
+// el cuadro es para mirar todo). Abierta en vivo, y se abre sola si tocás a alguien en el cuadro desde el camino
+function Plegada({ si, n, total, children }) {
+  const [ab, setAb] = useState(!si);
+  useEffect(() => { setAb(!si); }, [si, n]);
+  if (!si) return children;
+  return (
+    <div className={'lk-pleg' + (ab ? ' ab' : '')}>
+      <button type="button" className="lk-pleg-b" aria-expanded={ab} onClick={() => setAb((x) => !x)}>
+        <span>{ab ? 'Plegar la llave' : 'Ver toda la llave'}</span><small>{total} batalla{total === 1 ? '' : 's'}</small><i aria-hidden="true">{ab ? '−' : '+'}</i>
+      </button>
+      {ab ? children : null}
+    </div>
+  );
+}
+
+// 🥊 EL VERSUS DE LA FINAL, ARRIBA (la A de la maqueta: la página de evento de UFC). El campeón en blanco, el subcampeón al
+// lado y el resto del podio debajo, en chico. Sale de la tabla de la llave —campeón y subcampeón—, así sirve también para
+// la doble y las vidas, donde la última batalla no es «la final»
+function VersusFinal({ ctx, L }) {
+  const fila = (p) => (L.tabla || []).find((r) => r[1] === p);
+  const c = fila('Campeón');
+  if (!c) return null;
+  const s = fila('Subcampeón');
+  const resto = (L.tabla || []).filter((r) => /^(Tercero|Cuarto|Semifinal)/.test(r[1])).slice(0, 4);
+  const lado = (r, w) => {
+    const id = ctx.idDe(partes(r[0])[0]);
+    return (
+      <button type="button" className={'lk-vsf-l' + (w ? ' w' : '') + (ctx.sigo === id ? ' on' : '')} onClick={() => ctx.seguir(id)}
+        aria-label={nombreDe(ctx, r[0]) + ', ' + r[1].toLowerCase()}>
+        <span className="lk-vsf-et">{w ? <><Ico n="copa" t={14} />Campeón</> : r[1]}</span>
+        <MiniP ctx={ctx} s={r[0]} ancho={ctx.compu ? 132 : 96} />
+        <b className="lk-vsf-n">{nombreDe(ctx, r[0])}</b>
+        {+r[2] ? <small>+{num(r[2])} pts</small> : null}
+      </button>
+    );
+  };
+  return (
+    <section className="lk-vsf" aria-label="La final">
+      {/* sin subcampeón en la tabla (una de vidas que no lo dice), el campeón solo: un «VS» contra nadie no se dibuja */}
+      <div className={'lk-vsf-in' + (s ? '' : ' solo')}>
+        {lado(c, true)}
+        {s ? <span className="lk-vsf-x" aria-hidden="true">VS</span> : null}
+        {s ? lado(s, false) : null}
+      </div>
+      {resto.length ? (
+        <ul className="lk-vsf-resto">
+          {resto.map((r, i) => {
+            const id = ctx.idDe(partes(r[0])[0]);
+            return (
+              <li key={i}><button type="button" className={ctx.sigo === id ? 'on' : ''} onClick={() => ctx.seguir(id)}>
+                <MiniP ctx={ctx} s={r[0]} ancho={40} sinNombre /><span><b>{nombreDe(ctx, r[0])}</b><small><Medalla p={MEDALLA[r[1]] || 4} />{r[1]}{+r[2] ? ' · +' + num(r[2]) + ' pts' : ''}</small></span>
+              </button></li>
+            );
+          })}
+        </ul>
+      ) : null}
+    </section>
+  );
+}
+
+// 🧭 EL CAMINO DE CADA UNO (la C de la maqueta: el «Path to the Final» de Wimbledon y cómo cuenta Red Bull Batalla a sus
+// campeones). Arranca con el campeón —o con vos, si jugaste, o con quien tocaste—: cada ronda, a quién le ganó y con quién
+// cayó, con su carta en chico. Abajo, todos los de la llave para ver el de cualquiera
+function Camino({ ctx, L }) {
+  const camp = (L.tabla || []).find((r) => r[1] === 'Campeón');
+  const id = ctx.sigo || (camp ? ctx.idDe(partes(camp[0])[0]) : '');
+  if (!id) return null;
+  const rondas = ctx.prin.concat(ctx.ter ? [ctx.ter] : []);
+  const pasos = [];
+  rondas.forEach((R) => R.b.forEach((b) => {
+    const mio = b[0].find((s) => partes(s).some((m) => ctx.idDe(m) === id));
+    if (!mio) return;
+    const rivales = b[0].filter((s) => s !== mio);
+    pasos.push({ r: R.r, rivales, gano: gana(b, mio), cayo: !!b[1] && !gana(b, mio), b });
+  }));
+  if (!pasos.length) return null;
+  const nombre = ctx.nombres[id] || '';
+  const ganadas = pasos.filter((p) => p.gano).length;
+  const perdidas = pasos.filter((p) => p.cayo).length;
+  // todos los de la llave, en el orden de la tabla (los que no están en la tabla, al final)
+  const ids = [];
+  (L.tabla || []).forEach((r) => partes(r[0]).forEach((m) => { const x = ctx.idDe(m); if (!ids.includes(x)) ids.push(x); }));
+  Object.keys(ctx.nombres).forEach((x) => { if (!ids.includes(x)) ids.push(x); });
+  return (
+    <section className="lk-cam" aria-label={'El camino de ' + nombre}>
+      <div className="lk-cam-h"><h3>El camino de {capital(limpio(nombre))}</h3>
+        <small>{ganadas} ganada{ganadas === 1 ? '' : 's'}{perdidas ? ' · ' + perdidas + ' perdida' + (perdidas === 1 ? '' : 's') : ''}</small></div>
+      <ol className="lk-cam-tira">
+        {pasos.map((p, i) => (
+          <li key={i} className={p.gano ? 'g' : p.cayo ? 'x' : ''}>
+            <span className="lk-cam-r">{p.r}</span>
+            <span className="lk-cam-rv">{p.rivales.length ? p.rivales.slice(0, 3).map((s, j) => (
+              <button key={j} type="button" onClick={() => ctx.seguir(ctx.idDe(partes(s)[0]))} title={'Ver el camino de ' + nombreDe(ctx, s)}>
+                <MiniP ctx={ctx} s={s} ancho={56} apagado={p.gano} /></button>
+            )) : <em>pasó directo</em>}</span>
+            <b className="lk-cam-res">{p.gano ? (p.rivales.length ? 'le ganó' : 'pasó') : p.cayo ? 'cayó' : (ctx.cerrada ? 'sin ganador' : 'por jugarse')}</b>
+          </li>
+        ))}
+      </ol>
+      <div className="lk-cam-todos" role="group" aria-label="Ver el camino de">
+        {ids.map((x) => (
+          <button key={x} type="button" className={x === id ? 'on' : ''} aria-pressed={x === id} onClick={() => ctx.seguir(x === id ? '' : x)}>
+            {capital(limpio(ctx.nombres[x] || ''))}</button>
+        ))}
+      </div>
     </section>
   );
 }
@@ -856,7 +1011,7 @@ export function Llave({ liga, vivoL, n: n0, raiz, dc }) {
     if (deLobby || enVivo) return undefined;
     let vivo = true;
     setVieja(undefined);
-    pedirTodas().then((t) => { if (vivo) setVieja((t && t[n]) || null); });
+    pedirUna(n, liga.d && liga.d.r2).then((x) => { if (vivo) setVieja(x || null); });
     return () => { vivo = false; };
   }, [n, deLobby, enVivo]);
   const L = deLobby || vieja || null;
@@ -1088,7 +1243,7 @@ export function Llave({ liga, vivoL, n: n0, raiz, dc }) {
     );
   }
   const ctx = Object.assign({}, base, {
-    liga, L, n, sigo, seguir, anim,
+    liga, L, n, sigo, seguir, anim, compu,
     pasan: (i) => base.pasanDe[i] || null,
     // una rama es del camino de quien se sigue si esa persona pasó de la batalla de abajo
     sigoPasa: (b) => !!b[1] && partes(b[1]).some((m) => base.idDe(m) === sigo),
@@ -1139,6 +1294,7 @@ export function Llave({ liga, vivoL, n: n0, raiz, dc }) {
   const podioSin = base.final && base.final[1] ? podio.filter((x) => x.m !== 1) : podio;
   const N = vidasDe(L);
   const hayR = base.prin.length > 0;
+  const conVs = base.cerrada && (L.tabla || []).some((r) => r[1] === 'Campeón');
   const fechaEv = cal ? '#/eventos/' + liga.diaClave(cal.t) : dia ? '#/eventos/' + dia : '#/eventos';
   return (
     <>
@@ -1198,8 +1354,12 @@ export function Llave({ liga, vivoL, n: n0, raiz, dc }) {
         </section>
         {/* ⚔️ lo que se juega ahora, en grande; y al final, el campeón */}
         {!base.cerrada ? <AhoraVs ctx={ctx} /> : null}
-        <CampeonG ctx={ctx} />
-        {podioSin.length ? (
+        {/* 🥊 terminada y con campeón: el versus de la final y el camino de cada uno (remake del 17/11/2026). Sin campeón
+            —una llave a medias, una en vivo—, el campeón en grande y el podio de antes */}
+        {conVs ? <VersusFinal ctx={ctx} L={L} /> : <CampeonG ctx={ctx} />}
+        {/* en vidas el tablero de abajo ya es el camino de cada uno: uno de «0 ganadas · 1 perdida» al campeón confunde */}
+        {conVs && !N ? <Camino ctx={ctx} L={L} /> : null}
+        {!conVs && podioSin.length ? (
           <ol className={'lk-podio n' + podioSin.length + (podioSin !== podio ? ' sin1' : '')} aria-label="El podio">
             {podioSin.map((x) => (
               <li key={x.p} className={'lk-pd ' + x.c}>
@@ -1247,12 +1407,14 @@ export function Llave({ liga, vivoL, n: n0, raiz, dc }) {
         <div className="sec-t"><h2>{N ? N + ' vidas' : base.dob ? 'Doble eliminación' : 'La llave'}</h2>{L.participantes ? <span className="lk-sub">{L.participantes} raperos</span> : null}</div>
         {hayR || (L.funa || []).length ? <p className="lk-ayuda">{N ? 'Cada batalla le saca una vida al que pierde y el que gana se queda. Con ' + N + ' derrotas quedas afuera.' : base.dob ? 'Nadie queda afuera a la primera: quien pierde en la llave de ganadores sigue en la de perdedores. '
             + 'Toca un nombre y se marca su camino.' : 'Toca un nombre y se marca su camino.'}</p> : null}
-        <Funa ctx={ctx} L={L} />
-        {N ? <Vidas ctx={ctx} L={L} N={N} />
-          : !hayR ? ((L.funa || []).length ? null : <p className="pronto-p">Esta llave todavía no tiene batallas.</p>)
-            : base.dob ? <Doble ctx={ctx} d={base.dob} compu={compu} />
-            : compu ? <Arbol ctx={ctx} rondas={base.prin} ter={base.ter} vale={base.vale} />
-              : <Pista ctx={ctx} rondas={base.prin} ter={base.ter} inicial={base.inicial} vale={base.vale} />}
+        <Plegada si={conVs} n={n} total={base.prin.reduce((a, R) => a + R.b.length, 0) + (base.ter ? base.ter.b.length : 0)}>
+          <Funa ctx={ctx} L={L} />
+          {N ? <Vidas ctx={ctx} L={L} N={N} />
+            : !hayR ? ((L.funa || []).length ? null : <p className="pronto-p">Esta llave todavía no tiene batallas.</p>)
+              : base.dob ? <Doble ctx={ctx} d={base.dob} compu={compu} />
+              : compu ? <Arbol ctx={ctx} rondas={base.prin} ter={base.ter} vale={base.vale} />
+                : <Pista ctx={ctx} rondas={base.prin} ter={base.ter} inicial={base.inicial} vale={base.vale} />}
+        </Plegada>
         <Barra ctx={ctx} tb={tb} />
       </section>
     </>

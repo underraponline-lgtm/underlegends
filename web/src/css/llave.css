@@ -97,3 +97,73 @@
    leen sobre el negro */
 .lk-esc{--magenta-tx:#E41373;--fondo:#030304;--tinta:#F6F6F6;--linea:#F6F6F6;--suave:#2A2A2E;--gris:#A5A5A0;--caja:#101012;
   --inv:#F6F6F6;--inv-tinta:#030304}
+
+/* ── 🥊 EL REMAKE DEL 17/11/2026: el versus de la final (la A), el camino de cada uno (la C) y la llave plegada. Las
+   personas, en carta chica (`MiniP`): Dlx, «la idea era usar acá las tarjetas en vez de nombres… minis, tampoco tan
+   grandes». Sin carta, una ficha del mismo tamaño con su cara, su nombre y su bandera: nunca una caja vacía ── */
+.lk-mp{position:relative;display:grid;place-items:center;flex:none;overflow:hidden;border-radius:4px}
+.lk-mp.c .lk-mp-img{width:100%;height:100%;object-fit:contain;display:block}
+.lk-mp.s,.lk-mp.eq{align-content:center;justify-items:center;gap:5px;padding:6px 4px;background:#121216;border:1.5px solid #2A2A2E;color:#F6F6F6}
+.lk-mp.s .lk-cara{width:46%;height:auto;aspect-ratio:1;font-size:clamp(11px,30%,26px);background:#2A2A2E;color:#F6F6F6;box-shadow:0 0 0 1.5px #6E6E72}
+.lk-mp .lk-n{max-width:100%;font:900 11px/1.1 Archivo,sans-serif;text-transform:uppercase;text-align:center;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.lk-mp .lk-flag{width:16px;height:11px}
+.lk-mp.eq .lk-caras{display:flex}
+.lk-mp.eq .lk-cara{width:22px;height:22px}
+.lk-mp.x{filter:grayscale(.85);opacity:.55}
+.lk-mp.brilla{box-shadow:0 0 0 1.5px #F5C542}
+
+.lk-vsf{display:grid;gap:12px;margin:6px 0 0;padding:0 16px}
+.lk-vsf-in{display:grid;grid-template-columns:minmax(0,1fr) auto minmax(0,1fr);border:2px solid #2A2A2E}
+.lk-vsf-in.solo{grid-template-columns:minmax(0,420px);justify-content:center;border:0}
+.lk-vsf-l{display:grid;justify-items:center;gap:8px;padding:16px 12px 14px;border:0;background:none;color:#F6F6F6;cursor:pointer;min-width:0}
+.lk-vsf-l.w{background:#F6F6F6;color:#030304;box-shadow:6px 6px 0 #29B298;position:relative;z-index:1}
+.lk-vsf-et{display:inline-flex;align-items:center;gap:5px;font:800 12px/1 "Barlow Condensed",sans-serif;letter-spacing:.12em;text-transform:uppercase;color:#A5A5A0}
+.lk-vsf-l.w .lk-vsf-et{background:#29B298;color:#030304;padding:4px 7px}
+.lk-vsf-n{max-width:100%;font:900 26px/1 Archivo,sans-serif;text-transform:uppercase;overflow-wrap:anywhere;text-align:center}
+.lk-vsf-l small{font:800 13px/1 Archivo,sans-serif;color:#A5A5A0}
+.lk-vsf-l.w small{color:#3A3A40}
+.lk-vsf-l.on{outline:2px solid #29B298;outline-offset:-2px}
+.lk-vsf-x{display:grid;place-items:center;padding:0 14px;font:900 26px/1 Archivo,sans-serif;color:#6E6E72;border-left:2px solid #2A2A2E;border-right:2px solid #2A2A2E}
+.lk-vsf-resto{display:flex;flex-wrap:wrap;gap:8px;margin:0;padding:0;list-style:none}
+.lk-vsf-resto button{display:flex;align-items:center;gap:10px;padding:6px 12px 6px 6px;border:1.5px solid #2A2A2E;background:#0B0B0D;color:#F6F6F6;cursor:pointer;text-align:left}
+.lk-vsf-resto button.on{border-color:#29B298}
+.lk-vsf-resto b{display:block;font:900 14px/1.1 Archivo,sans-serif;text-transform:uppercase}
+.lk-vsf-resto small{display:flex;align-items:center;gap:5px;font:700 12px/1.2 "Barlow Condensed",sans-serif;letter-spacing:.06em;text-transform:uppercase;color:#A5A5A0}
+
+.lk-cam{display:grid;gap:10px;margin:18px 16px 18px;padding-top:12px;border-top:3px solid #F6F6F6;min-width:0}
+.lk-cam-h{display:flex;align-items:baseline;justify-content:space-between;gap:10px;flex-wrap:wrap}
+.lk-cam-h h3{margin:0;font:900 20px/1 Archivo,sans-serif;text-transform:uppercase;color:#F6F6F6}
+.lk-cam-h small{font:700 13px/1 "Barlow Condensed",sans-serif;letter-spacing:.08em;text-transform:uppercase;color:#A5A5A0}
+.lk-cam-tira{display:flex;gap:26px;overflow-x:auto;margin:0;padding:2px 2px 8px;list-style:none;scrollbar-width:thin}
+.lk-cam-tira li{position:relative;flex:none;display:grid;justify-items:start;gap:7px;padding:10px;border:1.5px solid #2A2A2E;border-left:4px solid #6E6E72;background:#0B0B0D}
+.lk-cam-tira li.g{border-left-color:#29B298}
+.lk-cam-tira li.x{border-left-color:#E41373}
+.lk-cam-tira li+li:before{content:"›";position:absolute;left:-19px;top:50%;transform:translateY(-50%);font:900 20px/1 Archivo,sans-serif;color:#29B298}
+.lk-cam-r{font:800 11.5px/1 "Barlow Condensed",sans-serif;letter-spacing:.12em;text-transform:uppercase;color:#A5A5A0}
+.lk-cam-rv{display:flex;gap:6px}
+.lk-cam-rv button{padding:0;border:0;background:none;cursor:pointer}
+.lk-cam-rv em{font:600 13px/1.3 Archivo,sans-serif;color:#A5A5A0;padding:20px 4px}
+.lk-cam-res{font:900 10.5px/1 Archivo,sans-serif;text-transform:uppercase;padding:4px 7px;background:#2A2A2E;color:#F6F6F6}
+.lk-cam-tira li.g .lk-cam-res{background:#29B298;color:#030304}
+.lk-cam-tira li.x .lk-cam-res{background:#E41373;color:#fff}
+.lk-cam-todos{display:flex;flex-wrap:wrap;gap:6px}
+.lk-cam-todos button{padding:7px 10px;border:1.5px solid #2A2A2E;background:none;color:#F6F6F6;font:800 12px/1 Archivo,sans-serif;text-transform:uppercase;cursor:pointer}
+.lk-cam-todos button.on{background:#29B298;border-color:#29B298;color:#030304}
+
+.lk-pleg-b{display:flex;align-items:center;gap:10px;width:100%;padding:14px 16px;border:2px solid var(--linea,#030304);background:none;color:inherit;cursor:pointer;
+  font:900 15px/1 Archivo,sans-serif;text-transform:uppercase;text-align:left}
+.lk-pleg-b small{font:700 13px/1 "Barlow Condensed",sans-serif;letter-spacing:.08em;opacity:.7}
+.lk-pleg-b i{margin-left:auto;font-style:normal;font-size:20px}
+.lk-pleg.ab .lk-pleg-b{margin-bottom:14px}
+@media (hover: hover) and (pointer: fine){
+  .lk-vsf-l:not(.w):hover,.lk-vsf-resto button:hover,.lk-cam-todos button:not(.on):hover{border-color:#6A6A72}
+}
+@media (max-width: 760px){
+  .lk-vsf-l{padding:12px 8px 12px}
+  .lk-vsf-n{font-size:18px}
+  .lk-vsf-x{padding:0 8px;font-size:18px}
+  .lk-vsf-resto{display:grid;grid-template-columns:1fr}
+  .lk-cam-tira{gap:22px}
+}
+
+@media (min-width: 900px){.lk-vsf{padding:0 var(--gut)}.lk-cam{margin-left:var(--gut);margin-right:var(--gut)}}

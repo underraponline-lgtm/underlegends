@@ -4320,6 +4320,73 @@ def _token():
     return ''
 
 
+def llave_suelta(L):
+    """Los bytes de UNA llave tal como van a R2 (`llaves/<n>.json`): los mismos que esa llave dentro de `CLAVE_LLAVES`."""
+    return json.dumps(L, ensure_ascii=False, separators=(',', ':')).encode('utf-8')
+
+
+def subir_llaves_sueltas(todas):
+    """📦 CADA LLAVE, SUELTA, EN R2 (`llaves/<n>.json`): `(subidas, borradas)`, o `None` si no se pudo.
+
+    Dlx, 17/11/2026: *«que cuando son llaves antiguas que tome tiempo cargar… para q no cargue toda la data»*. Abrir
+    una llave vieja bajaba `/api/llaves` ENTERA —287 llaves, 427 KB (75 KB comprimidos)— para mostrar una sola. Ahora la
+    página pide `<r2>/llaves/<n>.json` (~1,5 KB) y, si no está, cae a la de siempre (`pedirUna()` en llave.jsx).
+
+    ⚠️ R2 Y NO KV, y no es por gusto: KV tiene 1.000 escrituras por día y entran ~30 llaves nuevas por noche, cada una
+    reescrita varias veces mientras se completa. R2 no tiene ese cupo, es público (la página lo lee directo, con CORS
+    para underlegends.pages.dev, como las cartas) y no pasa por el Worker. Sólo sube la que cambió: el `etag` de R2 es
+    el md5 del archivo, así que alcanza con UN listado para saber cuáles.
+
+    ⚠️ BORRA SÓLO ADENTRO DEL RANGO DE ESTA TEMPORADA: una llave que se sacó (prueba, repetida) no puede seguir
+    abriéndose desde R2, pero el contador sigue entre temporadas y `todas` es sólo la de ahora: borrar «lo que no está»
+    se habría llevado la T1 entera el día que arranque la T2."""
+    import hashlib
+    import subir_cartas as SC
+    if not todas:
+        return None
+    nums = [int(n) for n in todas if str(n).isdigit()]
+    try:
+        s = SC.sesion()
+        arriba, cursor = {}, None
+        while True:
+            q = {'per_page': 1000, 'prefix': 'llaves/'}
+            if cursor:
+                q['cursor'] = cursor
+            d = s.get(SC.API + '/objects', params=q, timeout=60).json()
+            if not d.get('success'):
+                return None
+            for o in d.get('result') or []:
+                arriba[o['key']] = (o.get('etag') or '').strip('"')
+            cursor = (d.get('result_info') or {}).get('cursor')
+            if not cursor:
+                break
+    except Exception:                                    # noqa: BLE001
+        return None
+    subidas = borradas = 0
+    for n, L in todas.items():
+        b = llave_suelta(L)
+        k = 'llaves/%s.json' % n
+        if arriba.get(k) == hashlib.md5(b).hexdigest():
+            continue
+        try:
+            r = s.put('%s/objects/%s' % (SC.API, k), data=b, timeout=60,
+                      headers={'Content-Type': 'application/json; charset=utf-8'})
+            subidas += 1 if SC._ok(r, k) is not None else 0
+        except Exception:                                # noqa: BLE001
+            pass
+    if nums:
+        lo, hi = min(nums), max(nums)
+        for k in arriba:
+            m = re.match(r'^llaves/(\d+)\.json$', k)
+            if m and lo <= int(m.group(1)) <= hi and m.group(1) not in todas and int(m.group(1)) not in todas:
+                try:
+                    if SC._ok(s.delete('%s/objects/%s' % (SC.API, k), timeout=60), k) is not None:
+                        borradas += 1
+                except Exception:                        # noqa: BLE001
+                    pass
+    return subidas, borradas
+
+
 def subir(payload, solo_si_cambio=False, clave=None):
     """Lo deja en KV. Devuelve `True` si salió, `None` si no hizo falta.
 
@@ -4966,6 +5033,12 @@ def main():
                          % (len(todas), CLAVE_LLAVES,
                             len(json.dumps(todas, ensure_ascii=False)) / 1024.0)
                          if ok4 else '🔴 no pude subir las llaves'))
+        # 📦 y cada una suelta, para abrir una vieja sin bajarlas todas (ver `subir_llaves_sueltas`). Si falla, la
+        # página cae a `/api/llaves`, que es lo de arriba: nada se rompe, sólo pesa más
+        ls = subir_llaves_sueltas(todas)
+        print('   %s' % ('🟡 las llaves sueltas: no pude leer R2 (la página usa la de todas)' if ls is None else
+                         '✓ las llaves sueltas: iguales' if ls == (0, 0) else
+                         '✅ las llaves sueltas: %d subida(s), %d borrada(s)' % ls))
     print('')
     return 0 if okk is not False else 1
 
