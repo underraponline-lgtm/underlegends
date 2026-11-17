@@ -1,10 +1,10 @@
 {
  "cartas": {
   ".SosaATR": {
-   "competitivo": "f180354dbb5b:3cb4ba14e995",
-   "pais": "413692a034b3:50160dcafbc4",
-   "servidor": "6939bd7a6df4:e0061cb5005e:610cd5",
-   "temporada": "1f689e832640:fec25411e829"
+   "competitivo": "83b29378545f:46554cb000b1",
+   "pais": "cc3bb2b9547a:9d66d497e41e",
+   "servidor": "31ff559638c4:aba640c1146a:610cd5",
+   "temporada": "831f371cca15:cdead15a6070"
   },
   "1200": {},
   "19": {},
@@ -15,19 +15,19 @@
    "servidor": "9bfd1829f167:e0061cb5005e:67201a"
   },
   "AFR": {
-   "competitivo": "2053a57d2b02:3cb4ba14e995",
+   "competitivo": "d49b16a2f8fe:46554cb000b1",
    "pais": "1d0be5c4a91f:50160dcafbc4",
    "servidor": "cfe255f07d1f:e0061cb5005e:ed8290",
-   "temporada": "e91fce96dfcc:fec25411e829"
+   "temporada": "978588807e15:cdead15a6070"
   },
   "AGUSTÍN51K": {
-   "competitivo": "18f528014581:3cb4ba14e995",
+   "competitivo": "d0a07137ff21:46554cb000b1",
    "pais": "a4b004752215:50160dcafbc4",
    "servidor": "b6112bafe6d1:e0061cb5005e:c0bf45",
    "temporada": "aa24467eb982:fec25411e829"
   },
   "ARDEAN": {
-   "competitivo": "711d0f224b69:3cb4ba14e995",
+   "competitivo": "79ae85746f63:46554cb000b1",
    "pais": "0d71821bfc0b:50160dcafbc4",
    "servidor": "dfec55fc7ec8:e0061cb5005e:baabdf",
    "temporada": "9e7083959350:fec25411e829"
@@ -38,7 +38,7 @@
   },
   "Aby": {},
   "Abyssus": {
-   "competitivo": "b13e1d304a0b:3cb4ba14e995",
+   "competitivo": "11309a7e0495:46554cb000b1",
    "pais": "96bc0b500134:50160dcafbc4",
    "servidor": "1e2bd0ecdc88:e0061cb5005e:62e67f",
    "temporada": "a7639a33f863:fec25411e829"
@@ -47,50 +47,50 @@
    "servidor": "03c350320fda:e0061cb5005e:ed8290"
   },
   "Acry": {
-   "competitivo": "d6c9b15bebcb:3cb4ba14e995",
+   "competitivo": "7fe6fc4e6ce0:46554cb000b1",
    "pais": "a546148f8a26:50160dcafbc4",
    "servidor": "9fadda75d941:e0061cb5005e:9397f6"
   },
   "Adriagner": {
-   "competitivo": "efdb4c2333e8:3cb4ba14e995",
-   "pais": "5109a5f4336b:50160dcafbc4",
-   "servidor": "914e3bbfb9a7:e0061cb5005e:cde293",
+   "competitivo": "0ae14ea71d3f:46554cb000b1",
+   "pais": "813a699c5809:9d66d497e41e",
+   "servidor": "606635d339fa:aba640c1146a:cde293",
    "temporada": "deb38bea704d:fec25411e829"
   },
   "Adrianex": {
-   "competitivo": "9eaf27dd01f3:3cb4ba14e995",
+   "competitivo": "550baa7bd31a:46554cb000b1",
    "pais": "dc0cf0a37a5c:50160dcafbc4",
    "servidor": "8ce7f0401e71:e0061cb5005e:001d6f",
-   "temporada": "c652ea11c192:fec25411e829"
+   "temporada": "caa58dd1d57e:cdead15a6070"
   },
   "Afidu": {
    "servidor": "2ccbb01b91d5:e0061cb5005e:15af16"
   },
   "Agre": {},
   "Agus": {
-   "competitivo": "a8c0bcf15a5a:3cb4ba14e995",
+   "competitivo": "d5ef54dddb54:46554cb000b1",
    "pais": "06a730dd299d:50160dcafbc4",
    "servidor": "3e37dbea2fb4:e0061cb5005e:35630e",
    "temporada": "478e0c28f0a0:fec25411e829"
   },
   "Aktybo": {
-   "competitivo": "a87eefb82f56:3cb4ba14e995",
+   "competitivo": "5e3914a2f66c:46554cb000b1",
    "pais": "3370a318ee28:50160dcafbc4",
    "servidor": "9a9289de20ca:e0061cb5005e:aa8232"
   },
   "Akus": {
-   "competitivo": "fa56853c9d61:3cb4ba14e995",
+   "competitivo": "594a25ab0631:46554cb000b1",
    "pais": "f585f091e9a6:50160dcafbc4",
    "servidor": "a60b8b3d8167:e0061cb5005e:35630e",
-   "temporada": "630f70bed30c:fec25411e829"
+   "temporada": "bad0c4e2ff88:cdead15a6070"
   },
   "Akuseru": {
-   "competitivo": "f792fe3a922a:3cb4ba14e995",
+   "competitivo": "d6670941771f:46554cb000b1",
    "pais": "a3969094e890:50160dcafbc4",
    "servidor": "59d19e899c0d:e0061cb5005e:e4fbfa"
   },
   "Aldre": {
-   "competitivo": "0bef06b7c820:3cb4ba14e995",
+   "competitivo": "acc0f6e8ff0a:46554cb000b1",
    "pais": "19692d6a99ce:50160dcafbc4",
    "servidor": "59f79d568116:e0061cb5005e:7dad65",
    "temporada": "0bbaca1a033c:fec25411e829"
@@ -101,9 +101,9 @@
   "Alexi": {},
   "Alonso": {},
   "Am": {
-   "competitivo": "dc4525da071e:3cb4ba14e995",
-   "pais": "ba022ddb9f82:50160dcafbc4",
-   "servidor": "876ff8dabef6:e0061cb5005e:8551cb"
+   "competitivo": "037ba2965243:46554cb000b1",
+   "pais": "a83817992042:9d66d497e41e",
+   "servidor": "379e32809107:aba640c1146a:8551cb"
   },
   "Amaya": {
    "servidor": "db03783dddac:e0061cb5005e:aa8232"
@@ -118,47 +118,47 @@
    "servidor": "0b2d2062e4a6:e0061cb5005e:980594"
   },
   "Andres": {
-   "competitivo": "e2768a729abf:3cb4ba14e995",
+   "competitivo": "973f00e85bdf:46554cb000b1",
    "pais": "dcd75527e110:50160dcafbc4",
    "servidor": "293b46a7a3a1:e0061cb5005e:acc4a5",
    "temporada": "9844b9c8bf41:fec25411e829"
   },
   "Andy": {
-   "competitivo": "43abdca25a61:3cb4ba14e995",
-   "pais": "deac9733f932:50160dcafbc4",
-   "servidor": "58dddcfe2c0a:e0061cb5005e:374272",
-   "temporada": "606264eaddc8:fec25411e829"
+   "competitivo": "1e99cbff1de9:46554cb000b1",
+   "pais": "8af90647a07e:9d66d497e41e",
+   "servidor": "bbc5d5ee6c19:aba640c1146a:374272",
+   "temporada": "be69284f84b0:cdead15a6070"
   },
   "Ariaxer": {
-   "competitivo": "1028fb8d0ca7:3cb4ba14e995",
+   "competitivo": "191472dcd32c:46554cb000b1",
    "pais": "aef3677a8805:50160dcafbc4",
    "servidor": "3b06f7a61439:e0061cb5005e:fce3e6",
-   "temporada": "28ba04efaff1:fec25411e829"
+   "temporada": "b1f0b3af5610:cdead15a6070"
   },
   "Artezzy": {
-   "competitivo": "020657d22ea3:3cb4ba14e995",
+   "competitivo": "40b0ec6ae4b2:46554cb000b1",
    "pais": "60c96229c39f:50160dcafbc4",
    "servidor": "e0f360001e6d:e0061cb5005e:655d26",
-   "temporada": "a404880aac11:fec25411e829"
+   "temporada": "51680c733a1c:cdead15a6070"
   },
   "Ashen": {
    "servidor": "4af907e5d349:e0061cb5005e:055f77"
   },
   "Astral": {
-   "competitivo": "a62535a26982:3cb4ba14e995",
+   "competitivo": "5f2fcf282db0:46554cb000b1",
    "pais": "e29ee20dae8f:50160dcafbc4",
    "servidor": "65c2a3377eac:e0061cb5005e:055f77"
   },
   "Axinu": {
-   "competitivo": "411a6462b00a:3cb4ba14e995",
-   "pais": "9d203c857605:50160dcafbc4",
-   "servidor": "00a6f6170ca5:e0061cb5005e:1b952d"
+   "competitivo": "420321fab89b:46554cb000b1",
+   "pais": "762ddfc7b26a:9d66d497e41e",
+   "servidor": "1665891dba43:aba640c1146a:1b952d"
   },
   "BLANKO": {},
   "BLITZ": {},
   "BNA": {},
   "BTRX": {
-   "competitivo": "a69741414d6c:3cb4ba14e995",
+   "competitivo": "c42b1727baad:46554cb000b1",
    "pais": "9901c9af4c9b:50160dcafbc4",
    "servidor": "80116ef43dab:e0061cb5005e:88f477",
    "temporada": "6accc3654f6c:fec25411e829"
@@ -169,13 +169,13 @@
    "servidor": "f2a0496057bc:e0061cb5005e:74d3ce"
   },
   "BastyRetro": {
-   "competitivo": "a63b792b6eda:3cb4ba14e995",
+   "competitivo": "ec3268bc0e97:46554cb000b1",
    "pais": "e63511a0e8f5:50160dcafbc4",
    "servidor": "4a8a6e0c8947:e0061cb5005e:6203c7",
    "temporada": "3b66b7465d7f:fec25411e829"
   },
   "Bau": {
-   "competitivo": "95985d22aab3:3cb4ba14e995",
+   "competitivo": "4c5d8cd05713:46554cb000b1",
    "pais": "442f6685d0f7:50160dcafbc4",
    "servidor": "7a40e774240a:e0061cb5005e:ca38c9"
   },
@@ -184,43 +184,43 @@
   "Benshi": {},
   "Betelguese": {},
   "Bishop": {
-   "competitivo": "8579fd746af9:3cb4ba14e995",
+   "competitivo": "b64495dba095:46554cb000b1",
    "pais": "762665b25881:50160dcafbc4",
    "servidor": "52ef715466aa:e0061cb5005e:35630e",
-   "temporada": "a1aa6af146d7:fec25411e829"
+   "temporada": "b09fb65d566b:cdead15a6070"
   },
   "Blaxx": {
-   "competitivo": "bd44ebc2afe5:3cb4ba14e995",
+   "competitivo": "b07b532360a1:46554cb000b1",
    "pais": "02fc01b45ff6:50160dcafbc4",
    "servidor": "13ce3b8330df:e0061cb5005e:d6a988",
-   "temporada": "e5e1ab7aba94:fec25411e829"
+   "temporada": "6219d8e898d8:cdead15a6070"
   },
   "Blood": {
    "servidor": "09b6aba527d2:e0061cb5005e:fce3e6"
   },
   "Bloody": {
-   "competitivo": "970922b9d7e7:3cb4ba14e995",
-   "pais": "062c6246d0b2:50160dcafbc4",
-   "servidor": "f636c5af6c0c:e0061cb5005e:132451",
+   "competitivo": "d094a6033384:46554cb000b1",
+   "pais": "9cfb765f280a:9d66d497e41e",
+   "servidor": "baa7b89e907e:aba640c1146a:132451",
    "temporada": "3532f667f1f2:fec25411e829"
   },
   "Blue": {
-   "competitivo": "42a52659932c:3cb4ba14e995",
+   "competitivo": "57e134681cee:46554cb000b1",
    "pais": "9f9a0ee2c024:50160dcafbc4",
    "servidor": "52856d96976d:e0061cb5005e:f3ab27"
   },
   "Bocto": {
-   "competitivo": "32b9c6e9f8ca:3cb4ba14e995",
+   "competitivo": "03d657c6ef1f:46554cb000b1",
    "pais": "c78b3146bbf4:50160dcafbc4",
    "servidor": "cf6c0b92217e:e0061cb5005e:74d3ce"
   },
   "Btrece": {
-   "competitivo": "a1b406143467:3cb4ba14e995",
+   "competitivo": "2312cdb44d3e:46554cb000b1",
    "pais": "812068942cc7:50160dcafbc4",
    "servidor": "543d0a845eed:e0061cb5005e:c82496"
   },
   "Bull12r": {
-   "competitivo": "d220f340400b:3cb4ba14e995",
+   "competitivo": "3c98e2f109ba:46554cb000b1",
    "pais": "e1544aa95ea4:50160dcafbc4",
    "servidor": "5e0503d4998c:e0061cb5005e:57cf8d"
   },
@@ -233,12 +233,12 @@
   },
   "CJ": {},
   "CULT": {
-   "competitivo": "7fc51770caa6:3cb4ba14e995",
+   "competitivo": "9147410f8e28:46554cb000b1",
    "pais": "2934a5d4f005:50160dcafbc4",
    "servidor": "1b5e517ad20d:e0061cb5005e:e4fbfa"
   },
   "Calíz": {
-   "competitivo": "4a61959db193:3cb4ba14e995",
+   "competitivo": "e2d1a2bc9a92:46554cb000b1",
    "pais": "d770782b67ce:50160dcafbc4",
    "servidor": "6b810c56d6f9:e0061cb5005e:bcd566",
    "temporada": "4c8d37ccef5b:fec25411e829"
@@ -246,19 +246,19 @@
   "Camila": {},
   "Carlos": {},
   "Carlosmo": {
-   "competitivo": "10ccb7a15c16:3cb4ba14e995",
+   "competitivo": "2c216020ff4a:46554cb000b1",
    "pais": "f7717f11b971:50160dcafbc4",
    "servidor": "0061355acfef:e0061cb5005e:35630e",
    "temporada": "aa6a304cd1ce:fec25411e829"
   },
   "Carlosss": {
-   "competitivo": "4e796d3dbbfc:3cb4ba14e995",
-   "pais": "3c95612ca002:50160dcafbc4",
-   "servidor": "63f9826d2892:e0061cb5005e:35630e",
+   "competitivo": "0b7772b9b930:46554cb000b1",
+   "pais": "3bdb80d385ef:9d66d497e41e",
+   "servidor": "6c2cbb052511:aba640c1146a:35630e",
    "temporada": "f45b8ec191cc:fec25411e829"
   },
   "Catarsis": {
-   "competitivo": "edd938239632:3cb4ba14e995",
+   "competitivo": "197ca82ef263:46554cb000b1",
    "pais": "8f6cf19a8f30:50160dcafbc4",
    "servidor": "ee56918381cf:e0061cb5005e:c09f56",
    "temporada": "4f875406f25b:fec25411e829"
@@ -281,27 +281,27 @@
   },
   "Chop": {},
   "Cinexfilo": {
-   "competitivo": "7a8d2b770cdc:3cb4ba14e995",
+   "competitivo": "d00e39ade344:46554cb000b1",
    "pais": "470bb0d5eacc:50160dcafbc4",
    "servidor": "dc7b978ae5c8:e0061cb5005e:ca38c9",
    "temporada": "15f77479a52a:fec25411e829"
   },
   "Clitax": {},
   "Colesito": {
-   "competitivo": "0bb530d3c743:3cb4ba14e995",
-   "pais": "033019aa68e5:50160dcafbc4",
-   "servidor": "22f1cf0c37ec:e0061cb5005e:132451",
+   "competitivo": "f7c9a80216e8:46554cb000b1",
+   "pais": "989faf016998:9d66d497e41e",
+   "servidor": "6f4ab5dfa56e:aba640c1146a:132451",
    "temporada": "16278ebf7b68:fec25411e829"
   },
   "CrisZJ": {},
   "Crk": {
-   "competitivo": "9a34fa9aa292:3cb4ba14e995",
+   "competitivo": "47c47abb7350:46554cb000b1",
    "pais": "5ef998f26d78:50160dcafbc4",
    "servidor": "6a42754c44a3:e0061cb5005e:18ae17",
    "temporada": "a53510970b74:fec25411e829"
   },
   "Cronox": {
-   "competitivo": "ab9af8a3e603:3cb4ba14e995",
+   "competitivo": "34c308905bdf:46554cb000b1",
    "pais": "d894b89418d7:50160dcafbc4",
    "servidor": "6e5ff730642c:e0061cb5005e:ed8290",
    "temporada": "a19ad5b963a3:fec25411e829"
@@ -316,9 +316,9 @@
    "servidor": "20be441ab814:e0061cb5005e:055f77"
   },
   "DARK ANGEL": {
-   "competitivo": "c9f31f47c811:3cb4ba14e995",
-   "pais": "43275688989c:50160dcafbc4",
-   "servidor": "17b72c25c886:e0061cb5005e:88f477"
+   "competitivo": "09c64e66ab6e:46554cb000b1",
+   "pais": "80ca8ebdbc2d:9d66d497e41e",
+   "servidor": "fa5fc7aa089b:aba640c1146a:88f477"
   },
   "DIDYER": {},
   "DIST": {
@@ -332,13 +332,13 @@
    "servidor": "0e8f51b25221:e0061cb5005e:055f77"
   },
   "DLX": {
-   "competitivo": "b1cd19527e63:3cb4ba14e995",
+   "competitivo": "760963d7eb5e:46554cb000b1",
    "pais": "548d1b7cfece:50160dcafbc4",
    "servidor": "2e83f176139b:e0061cb5005e:132451",
-   "temporada": "ffc8c4612fbd:fec25411e829"
+   "temporada": "5afe5508f3f7:cdead15a6070"
   },
   "DNK": {
-   "competitivo": "dcaad6a249bc:3cb4ba14e995",
+   "competitivo": "435189520ce1:46554cb000b1",
    "pais": "240884f1069f:50160dcafbc4",
    "servidor": "fc0177ebfb4a:e0061cb5005e:a580df"
   },
@@ -356,42 +356,42 @@
    "servidor": "7d1f5466ccfc:e0061cb5005e:055f77"
   },
   "Dantemx": {
-   "competitivo": "5426fce8a3f6:3cb4ba14e995",
+   "competitivo": "4fefa4063ee2:46554cb000b1",
    "pais": "8920475ff216:50160dcafbc4",
    "servidor": "4b6e0b803337:e0061cb5005e:d6a988",
-   "temporada": "fff834c5d82f:fec25411e829"
+   "temporada": "c572ef0b3882:cdead15a6070"
   },
   "Darkness": {
    "servidor": "a40f04dc128e:e0061cb5005e:948362"
   },
   "DarkoMC": {
-   "competitivo": "d282ca68ab75:3cb4ba14e995",
+   "competitivo": "444c3b2efe71:46554cb000b1",
    "pais": "e81dc7575a7d:50160dcafbc4",
    "servidor": "6bfa22369abb:e0061cb5005e:e6dc77",
-   "temporada": "8bbd299e865c:fec25411e829"
+   "temporada": "bd194e27d569:cdead15a6070"
   },
   "DarnBless": {},
   "Dash": {
    "servidor": "5326ca7e9e57:e0061cb5005e:ce9c52"
   },
   "David": {
-   "competitivo": "ff962299d07c:3cb4ba14e995",
+   "competitivo": "de10600299ae:46554cb000b1",
    "pais": "f70fe99a0c99:50160dcafbc4",
    "servidor": "b331a4508e38:e0061cb5005e:1f00d0"
   },
   "Dcet": {
-   "competitivo": "92994f1283a9:3cb4ba14e995",
+   "competitivo": "7f7c966e5d8d:46554cb000b1",
    "pais": "1ed69a6669d6:50160dcafbc4",
    "servidor": "babe43bdae68:e0061cb5005e:d6a988"
   },
   "Delux": {
-   "competitivo": "2ced62397913:3cb4ba14e995",
+   "competitivo": "c29d9115e28e:46554cb000b1",
    "pais": "c69356dce3ba:50160dcafbc4",
    "servidor": "a4042f4fc00a:e0061cb5005e:9397f6",
    "temporada": "b5d5fc9d803c:fec25411e829"
   },
   "Deluxe": {
-   "competitivo": "3c525f826da1:3cb4ba14e995",
+   "competitivo": "d22dd83b445a:46554cb000b1",
    "pais": "3e7af1c05d4b:50160dcafbc4",
    "servidor": "b520769fa250:e0061cb5005e:51082b",
    "temporada": "de9a41f6de79:fec25411e829"
@@ -404,25 +404,25 @@
    "servidor": "26b98a2001b4:e0061cb5005e:132451"
   },
   "Deuxs": {
-   "competitivo": "89d3a911cc68:3cb4ba14e995",
+   "competitivo": "5f6df1aae0fc:46554cb000b1",
    "pais": "de8f76b40738:50160dcafbc4",
    "servidor": "9235fe2465c1:e0061cb5005e:57cf8d",
    "temporada": "5e892c9a1d1b:fec25411e829"
   },
   "Dev": {
-   "competitivo": "01c8550f610e:3cb4ba14e995",
+   "competitivo": "27e9399f49c0:46554cb000b1",
    "pais": "ab7f1bce39ef:50160dcafbc4",
    "servidor": "b93d14ea40d2:e0061cb5005e:16bc7a",
-   "temporada": "f23ff5e193ca:fec25411e829"
+   "temporada": "a9b127677f58:cdead15a6070"
   },
   "Diablo": {
    "servidor": "a9e63879d519:e0061cb5005e:055f77"
   },
   "Dios": {
-   "competitivo": "b9f0070a24c0:3cb4ba14e995",
+   "competitivo": "4321eec045ca:46554cb000b1",
    "pais": "e26ad3883508:50160dcafbc4",
    "servidor": "4261f035fc65:e0061cb5005e:6203c7",
-   "temporada": "1b2315ea8d6b:fec25411e829"
+   "temporada": "c5f5de2828ee:cdead15a6070"
   },
   "Dobell": {},
   "Dominick": {},
@@ -430,12 +430,12 @@
    "servidor": "20f068cd9aac:e0061cb5005e:8f9835"
   },
   "Drelain": {
-   "competitivo": "cd65695de302:3cb4ba14e995",
+   "competitivo": "2fe13689099f:46554cb000b1",
    "pais": "a37e3f23296a:50160dcafbc4",
    "servidor": "56df8d5cc213:e0061cb5005e:948362"
   },
   "Drexx": {
-   "competitivo": "d5d8552542c6:3cb4ba14e995",
+   "competitivo": "7b0905fa4f09:46554cb000b1",
    "pais": "ff9fd1aa49c9:50160dcafbc4",
    "servidor": "94a50699bc6c:e0061cb5005e:35630e",
    "temporada": "6a5c82fa28ca:fec25411e829"
@@ -444,13 +444,13 @@
    "servidor": "fd4581683589:e0061cb5005e:15af16"
   },
   "Dynoco": {
-   "competitivo": "7346a8066405:3cb4ba14e995",
+   "competitivo": "0518e32c9af7:46554cb000b1",
    "pais": "1d1db8cc9c3b:50160dcafbc4",
    "servidor": "b20f406c6d83:e0061cb5005e:35ef22",
    "temporada": "58f18120d0a2:fec25411e829"
   },
   "Dyzz": {
-   "competitivo": "5f192e26bb6e:3cb4ba14e995",
+   "competitivo": "1e3e7068dde7:46554cb000b1",
    "pais": "44a4de9c2b3e:50160dcafbc4",
    "servidor": "1666d889603a:e0061cb5005e:e93725",
    "temporada": "7a3b2552e6be:fec25411e829"
@@ -491,20 +491,20 @@
   "EmiZor": {},
   "Emilio Alva": {},
   "Emily Family": {
-   "competitivo": "734b35df6f7d:3cb4ba14e995",
+   "competitivo": "3022c15b2ae9:46554cb000b1",
    "pais": "bb3343eb12de:50160dcafbc4",
    "servidor": "c83eadcd8d4d:e0061cb5005e:6203c7",
-   "temporada": "2a76d3880e6f:fec25411e829"
+   "temporada": "9034e3dd3a0f:cdead15a6070"
   },
   "Erian": {
-   "competitivo": "d1b0bc5009e6:3cb4ba14e995",
+   "competitivo": "d520a18a2725:46554cb000b1",
    "pais": "b20b27bdab44:50160dcafbc4",
    "servidor": "edb76a3d0e00:e0061cb5005e:c82496",
    "temporada": "d578f46f5bd2:fec25411e829"
   },
   "EricRJ": {},
   "Erik": {
-   "competitivo": "dba9a45b59fe:3cb4ba14e995",
+   "competitivo": "450d7be27c3f:46554cb000b1",
    "pais": "7dcc7fcfc366:50160dcafbc4",
    "servidor": "884997ba8e38:e0061cb5005e:c0bf45",
    "temporada": "b91e48a37dab:fec25411e829"
@@ -516,19 +516,19 @@
    "servidor": "12e0459e2b2f:e0061cb5005e:055f77"
   },
   "Evangeline": {
-   "competitivo": "96d5f7f15383:3cb4ba14e995",
-   "pais": "5d29f82ea5f4:50160dcafbc4",
-   "servidor": "e93ef2873bfd:e0061cb5005e:80c07f",
+   "competitivo": "1a4d766afee6:46554cb000b1",
+   "pais": "f009cba07538:9d66d497e41e",
+   "servidor": "0e9cdb10768b:aba640c1146a:80c07f",
    "temporada": "27e222259123:fec25411e829"
   },
   "Eze": {
-   "competitivo": "248f979edc82:3cb4ba14e995",
+   "competitivo": "77e178f4b7ca:46554cb000b1",
    "pais": "d79fe25202ab:50160dcafbc4",
    "servidor": "909dd52c211a:e0061cb5005e:132451",
-   "temporada": "edba7709107a:fec25411e829"
+   "temporada": "96ed757164ef:cdead15a6070"
   },
   "Ezias🥈✒️🧢🐍": {
-   "competitivo": "94ccb360be91:3cb4ba14e995",
+   "competitivo": "5e8d579bc5a1:46554cb000b1",
    "pais": "d7a67d90d7a9:50160dcafbc4",
    "servidor": "28bce49f8508:e0061cb5005e:40a77e",
    "temporada": "3c21abf430d6:fec25411e829"
@@ -540,20 +540,20 @@
    "servidor": "287c5cc58f74:e0061cb5005e:80c07f"
   },
   "Filozico": {
-   "competitivo": "6734b77aec69:3cb4ba14e995",
+   "competitivo": "1c120a5f40e7:46554cb000b1",
    "pais": "123818cfc0cb:50160dcafbc4",
    "servidor": "4c1ecce6767c:e0061cb5005e:35630e",
-   "temporada": "5c8430967b04:fec25411e829"
+   "temporada": "b1d52b03ae2b:cdead15a6070"
   },
   "Fin": {
-   "competitivo": "2b34cadb9c12:3cb4ba14e995",
+   "competitivo": "84ba1d8e3569:46554cb000b1",
    "pais": "ffdba6c736fd:50160dcafbc4",
    "servidor": "301701f9ca5d:e0061cb5005e:c0bf45",
-   "temporada": "ae0b4b3a752e:fec25411e829"
+   "temporada": "71609020ca35:cdead15a6070"
   },
   "Fisics": {},
   "Flama": {
-   "competitivo": "0bbc65896dbb:3cb4ba14e995",
+   "competitivo": "d955f5b75175:46554cb000b1",
    "pais": "bbc3140b3140:50160dcafbc4",
    "servidor": "b1c756f29a5f:e0061cb5005e:7d9cf1"
   },
@@ -565,10 +565,10 @@
    "servidor": "fb69f289c010:e0061cb5005e:980594"
   },
   "Focox": {
-   "competitivo": "823429e742f3:3cb4ba14e995",
+   "competitivo": "63fe55162329:46554cb000b1",
    "pais": "7443a0e5e5e6:50160dcafbc4",
    "servidor": "c4fd94419674:e0061cb5005e:fce3e6",
-   "temporada": "6dd8cdf2df11:fec25411e829"
+   "temporada": "44b3807c4c82:cdead15a6070"
   },
   "Fol": {},
   "ForceGP": {
@@ -576,13 +576,13 @@
    "temporada": "4416b2667d37:fec25411e829"
   },
   "Forza": {
-   "competitivo": "6eec4ff88dad:3cb4ba14e995",
+   "competitivo": "04cebd73bbb2:46554cb000b1",
    "pais": "1b4561906071:50160dcafbc4",
    "servidor": "4aa9c911d55e:e0061cb5005e:a1c2cd",
-   "temporada": "40175ee751b6:fec25411e829"
+   "temporada": "be37c6c34cdb:cdead15a6070"
   },
   "Freestyle4AllmyNiggaz 🌏🌏": {
-   "competitivo": "d7ea991c2f36:3cb4ba14e995",
+   "competitivo": "cd41c5445d59:46554cb000b1",
    "pais": "bf0253f0d040:50160dcafbc4",
    "servidor": "7b4480b23702:e0061cb5005e:980594"
   },
@@ -591,29 +591,29 @@
   },
   "G-MC": {},
   "GP": {
-   "competitivo": "9ba6beb1d504:3cb4ba14e995",
+   "competitivo": "ea18609963e0:46554cb000b1",
    "pais": "f945893e436e:50160dcafbc4",
    "servidor": "d3d6ba2cf97d:e0061cb5005e:5ed6b5",
-   "temporada": "bd93a5322686:fec25411e829"
+   "temporada": "f3d7ab734800:cdead15a6070"
   },
   "Gal_Mc": {
-   "competitivo": "990bab3c0a3d:3cb4ba14e995",
+   "competitivo": "c50c5e6a102b:46554cb000b1",
    "pais": "cf9b72e081e9:50160dcafbc4",
    "servidor": "f8d03d1e58e9:e0061cb5005e:e4fbfa"
   },
   "Galileo": {
-   "competitivo": "7613fde091a2:3cb4ba14e995",
+   "competitivo": "9f258a57b48d:46554cb000b1",
    "pais": "693258dd6b15:50160dcafbc4",
    "servidor": "28fbd99c957e:e0061cb5005e:74d3ce"
   },
   "Garxzii": {
-   "competitivo": "00fe1f7dc92c:3cb4ba14e995",
+   "competitivo": "cb8dabf635ab:46554cb000b1",
    "pais": "745be94018f9:50160dcafbc4",
    "servidor": "4e5eddc81581:e0061cb5005e:cb7362",
-   "temporada": "34e2a064f566:fec25411e829"
+   "temporada": "600f3a4210d0:cdead15a6070"
   },
   "Geoka": {
-   "competitivo": "fb563033f55e:3cb4ba14e995",
+   "competitivo": "91f8c73764f4:46554cb000b1",
    "pais": "44bb16888a3f:50160dcafbc4",
    "servidor": "d18565ee599a:e0061cb5005e:f3ab27",
    "temporada": "2b3b49e876f5:fec25411e829"
@@ -622,7 +622,7 @@
    "servidor": "4dd315c53988:e0061cb5005e:980594"
   },
   "Gero": {
-   "competitivo": "102de5276201:3cb4ba14e995",
+   "competitivo": "6a11530e3ed6:46554cb000b1",
    "pais": "35564fe0ce36:50160dcafbc4",
    "servidor": "20e75fd655e3:e0061cb5005e:9b3a50"
   },
@@ -630,7 +630,7 @@
    "servidor": "a59b27cc6996:e0061cb5005e:9e75da"
   },
   "Ghost": {
-   "competitivo": "2021a17850e4:3cb4ba14e995",
+   "competitivo": "b763812a0b6f:46554cb000b1",
    "servidor": "9a5509fae9dd:e0061cb5005e:9e75da"
   },
   "Gian": {},
@@ -638,61 +638,61 @@
    "servidor": "b5c0c86d6f27:e0061cb5005e:055f77"
   },
   "Global Hustler": {
-   "competitivo": "d3de06e39745:3cb4ba14e995",
+   "competitivo": "082e784cac0c:46554cb000b1",
    "pais": "d9947af2fad7:50160dcafbc4",
    "servidor": "810aa0ed0e8d:e0061cb5005e:aa8232",
-   "temporada": "c9ddff9c2e08:fec25411e829"
+   "temporada": "90828191beb8:cdead15a6070"
   },
   "Gocho": {
-   "competitivo": "eb19f92622aa:3cb4ba14e995",
-   "pais": "3ecfc17984c4:50160dcafbc4",
-   "servidor": "0d7d1023b70a:e0061cb5005e:acc4a5",
+   "competitivo": "6417696eb498:46554cb000b1",
+   "pais": "bad3144addf9:9d66d497e41e",
+   "servidor": "9af66a4cc9ee:aba640c1146a:acc4a5",
    "temporada": "2437aa17fe84:fec25411e829"
   },
   "Goru": {
    "servidor": "20408aacfb30:e0061cb5005e:aa8232"
   },
   "Gosu Z": {
-   "competitivo": "0d6b24ddde51:3cb4ba14e995",
+   "competitivo": "8a6d08ae1349:46554cb000b1",
    "pais": "cfc2d52cf512:50160dcafbc4",
    "servidor": "76f13a08c53a:e0061cb5005e:ed8290"
   },
   "Guess": {
-   "competitivo": "d5cf2d187923:3cb4ba14e995",
+   "competitivo": "595ee275f4fe:46554cb000b1",
    "pais": "04ea2c4d8e64:50160dcafbc4",
    "servidor": "46826603ea81:e0061cb5005e:c0bf45",
    "temporada": "5a5b3389a92f:fec25411e829"
   },
   "Gus": {
-   "competitivo": "e4e348265a6e:3cb4ba14e995",
+   "competitivo": "769d841c4452:46554cb000b1",
    "pais": "361d79bfb9c8:50160dcafbc4",
    "servidor": "e05c0877d2ee:e0061cb5005e:ed8290",
    "temporada": "926daa123dd3:fec25411e829"
   },
   "Guty": {
-   "competitivo": "41dc994e9220:3cb4ba14e995",
+   "competitivo": "7733466263b3:46554cb000b1",
    "pais": "970ab60421e6:50160dcafbc4",
    "servidor": "a1dddb9b5a58:e0061cb5005e:77ecb1"
   },
   "Gwynyth": {},
   "HH": {
-   "competitivo": "e29962632ce8:3cb4ba14e995",
+   "competitivo": "58b9708db794:46554cb000b1",
    "pais": "c5f8c8782ce9:50160dcafbc4",
    "servidor": "a256771bff7c:e0061cb5005e:ed8290",
-   "temporada": "e5e51b98c913:fec25411e829"
+   "temporada": "7e98bb11254d:cdead15a6070"
   },
   "HadaH": {
    "servidor": "0dad963cf309:e0061cb5005e:9e75da"
   },
   "Hades": {
-   "competitivo": "e2134275aae3:3cb4ba14e995",
+   "competitivo": "18a5dd05dda7:46554cb000b1",
    "pais": "ca6302ca4a24:50160dcafbc4",
    "servidor": "eafe8222d1c6:e0061cb5005e:fbc56e",
-   "temporada": "d5442671cfc7:fec25411e829"
+   "temporada": "9648a99c6ac3:cdead15a6070"
   },
   "Hardcore": {
-   "competitivo": "531cafe1c9a9:3cb4ba14e995",
-   "pais": "1e9306db0076:50160dcafbc4",
+   "competitivo": "642f9329c9c3:46554cb000b1",
+   "pais": "dfa35cc4ca5a:9d66d497e41e",
    "servidor": "6e587e6bc281:e0061cb5005e:f3ab27"
   },
   "Hassan": {},
@@ -705,9 +705,9 @@
    "temporada": "1bb2058008c2:fec25411e829"
   },
   "Humildad": {
-   "competitivo": "f477b2c6b5ae:3cb4ba14e995",
-   "pais": "ef72cbbe11e6:50160dcafbc4",
-   "servidor": "1b1f9ec592a7:e0061cb5005e:ca38c9"
+   "competitivo": "11944db5961c:46554cb000b1",
+   "pais": "41b6594c822a:9d66d497e41e",
+   "servidor": "68dde59c60f6:aba640c1146a:ca38c9"
   },
   "ICON": {
    "servidor": "39f02a514518:e0061cb5005e:032b09"
@@ -717,19 +717,19 @@
   },
   "ISAIAS": {},
   "Iguana": {
-   "competitivo": "32c888dd9434:3cb4ba14e995",
+   "competitivo": "e41a62cfb8a2:46554cb000b1",
    "pais": "d67b9f241f2a:50160dcafbc4",
    "servidor": "de9cb51c3164:e0061cb5005e:a64318",
-   "temporada": "644cb11db40d:fec25411e829"
+   "temporada": "1f733e7f891d:cdead15a6070"
   },
   "Inder": {
    "servidor": "56c5afce0632:e0061cb5005e:aa8232"
   },
   "Indígena": {},
   "Infecte": {
-   "competitivo": "b84cfd565fa7:3cb4ba14e995",
-   "pais": "54fed44f0652:50160dcafbc4",
-   "servidor": "190a4fe39030:e0061cb5005e:b856a0"
+   "competitivo": "5ad73256f41d:46554cb000b1",
+   "pais": "0462f58c20bb:9d66d497e41e",
+   "servidor": "36c641e7b554:aba640c1146a:b856a0"
   },
   "Inhuman": {
    "servidor": "c1a2af0d1225:e0061cb5005e:aa8232"
@@ -749,94 +749,94 @@
   },
   "Izaya": {},
   "J.r": {
-   "competitivo": "c2a1b6d08455:3cb4ba14e995",
+   "competitivo": "097a4ef9285b:46554cb000b1",
    "pais": "897462fb9c5f:50160dcafbc4",
    "servidor": "aa75a4e864ea:e0061cb5005e:e93725",
-   "temporada": "97871b6ee627:fec25411e829"
+   "temporada": "85db19dbe2e0:cdead15a6070"
   },
   "J19": {
-   "competitivo": "4a916306f16d:3cb4ba14e995",
+   "competitivo": "321a52721acb:46554cb000b1",
    "pais": "7aba8e8e8313:50160dcafbc4",
    "servidor": "f06d29e1b0f6:e0061cb5005e:9b3a50"
   },
   "JD": {
-   "competitivo": "6c69373c5f3e:3cb4ba14e995",
+   "competitivo": "e5edbf674d65:46554cb000b1",
    "pais": "3b86abbbe166:50160dcafbc4",
    "servidor": "c665382068cd:e0061cb5005e:055f77"
   },
   "JEIXDER": {
-   "competitivo": "3b01549d1345:3cb4ba14e995",
+   "competitivo": "e269fd7f6c15:46554cb000b1",
    "pais": "c34edc98105f:50160dcafbc4",
    "servidor": "9b2694d058f0:e0061cb5005e:35ef22",
-   "temporada": "41342e00e3d4:fec25411e829"
+   "temporada": "e93403566444:cdead15a6070"
   },
   "JIMMY": {},
   "Javi": {
    "servidor": "1b54240d32bf:e0061cb5005e:055f77"
   },
   "Jayden": {
-   "competitivo": "3c674ca6d2b2:3cb4ba14e995",
+   "competitivo": "e770dadf1808:46554cb000b1",
    "pais": "ec10843a4b4d:50160dcafbc4",
    "servidor": "f53b1a9c0525:e0061cb5005e:c914f9"
   },
   "Jeisy": {
-   "competitivo": "e5a488a62332:3cb4ba14e995",
-   "pais": "30c431e03aed:50160dcafbc4",
-   "servidor": "b6bcadb259e0:e0061cb5005e:57cf8d"
+   "competitivo": "2b517fe07db0:46554cb000b1",
+   "pais": "89b7dce36428:9d66d497e41e",
+   "servidor": "c89af72a7117:aba640c1146a:57cf8d"
   },
   "Jere": {},
   "Jhonyel7": {
    "servidor": "f71852360a88:e0061cb5005e:055f77"
   },
   "Joaco Zeo": {
-   "competitivo": "2ca05dfcf028:3cb4ba14e995",
+   "competitivo": "eedbd3f99605:46554cb000b1",
    "pais": "a93036f61201:50160dcafbc4",
    "servidor": "6d02054f25ca:e0061cb5005e:aee95c"
   },
   "Jobaking": {
-   "competitivo": "fb93b851488d:3cb4ba14e995",
+   "competitivo": "51897f6daccb:46554cb000b1",
    "pais": "e02ff807122d:50160dcafbc4",
    "servidor": "d0a3952fe216:e0061cb5005e:afeeb3",
-   "temporada": "d3beb1a7cc18:fec25411e829"
+   "temporada": "f631240e1de0:cdead15a6070"
   },
   "Johao": {
-   "competitivo": "39c36dfb74d2:3cb4ba14e995",
+   "competitivo": "7f0e58d0c8de:46554cb000b1",
    "pais": "b14cad59c75f:50160dcafbc4",
    "servidor": "ff717498b6f7:e0061cb5005e:c914f9"
   },
   "Joshema": {
-   "competitivo": "ffce6dbfb1d9:3cb4ba14e995",
-   "pais": "d6abb1b5733b:50160dcafbc4",
+   "competitivo": "f2e7a595759e:46554cb000b1",
+   "pais": "3483c68e4b5c:9d66d497e41e",
    "servidor": "b9d7bc7e68a9:e0061cb5005e:35ef22",
-   "temporada": "b2df79c3607e:fec25411e829"
+   "temporada": "fd1ff2efde6f:cdead15a6070"
   },
   "Jotap": {},
   "Jothaze": {
    "servidor": "727592bfe378:e0061cb5005e:67201a"
   },
   "Juanpa": {
-   "competitivo": "e8827bd0b3aa:3cb4ba14e995",
-   "pais": "f3bfcbd6cde1:50160dcafbc4",
-   "servidor": "034587ef95f0:e0061cb5005e:35630e"
+   "competitivo": "0226e99b756e:46554cb000b1",
+   "pais": "7defd9cb4de3:9d66d497e41e",
+   "servidor": "798e7b5a9771:aba640c1146a:35630e"
   },
   "Juasmio": {
-   "competitivo": "2e1690cb7f74:3cb4ba14e995",
-   "pais": "12e05646b50d:50160dcafbc4",
-   "servidor": "4222c65dd3da:e0061cb5005e:132451",
+   "competitivo": "3c91d6ccb974:46554cb000b1",
+   "pais": "49de43125c2d:9d66d497e41e",
+   "servidor": "f57ea795a95f:aba640c1146a:132451",
    "temporada": "a4d5205a253d:fec25411e829"
   },
   "Julda": {},
   "Jult": {
-   "competitivo": "507ef471d9df:3cb4ba14e995",
+   "competitivo": "807592b7eb2b:46554cb000b1",
    "pais": "42a84ffb2995:50160dcafbc4",
    "servidor": "0f602fccb891:e0061cb5005e:57cf8d",
-   "temporada": "d1f719bd71cc:fec25411e829"
+   "temporada": "be4e15adfd99:cdead15a6070"
   },
   "Jun": {
    "servidor": "50464851ca5b:e0061cb5005e:055f77"
   },
   "Jupiter": {
-   "competitivo": "93d018ae5cd7:3cb4ba14e995",
+   "competitivo": "d93fe467d6e2:46554cb000b1",
    "pais": "fe0c029ec1e8:50160dcafbc4",
    "servidor": "81960b5d39d2:e0061cb5005e:35630e",
    "temporada": "7422b9044b9f:fec25411e829"
@@ -861,26 +861,26 @@
    "servidor": "b532bc49130d:e0061cb5005e:a7b8bd"
   },
   "Karma": {
-   "competitivo": "b700237ebdb0:3cb4ba14e995",
+   "competitivo": "b9eb25257f9a:46554cb000b1",
    "pais": "760f8123a349:50160dcafbc4",
    "servidor": "8ca2de0665a2:e0061cb5005e:83ca49"
   },
   "Keider": {
-   "competitivo": "3fc8c9173a26:3cb4ba14e995",
-   "pais": "ef562eb3c5fb:50160dcafbc4",
-   "servidor": "8223cb01e6da:e0061cb5005e:d6a988",
+   "competitivo": "81f96f15c3a6:46554cb000b1",
+   "pais": "82aebe12bfb8:9d66d497e41e",
+   "servidor": "6d9d119751f8:aba640c1146a:d6a988",
    "temporada": "85cbe50f2d40:fec25411e829"
   },
   "Keku": {
    "servidor": "496320fa3f90:e0061cb5005e:2dfc97"
   },
   "Kenny": {
-   "competitivo": "8f4f1db83f27:3cb4ba14e995",
+   "competitivo": "ebf2d78b8570:46554cb000b1",
    "pais": "a8e211831bc9:50160dcafbc4",
    "servidor": "48c71764818e:e0061cb5005e:9e75da"
   },
   "Khalil": {
-   "competitivo": "47ec22aeda58:3cb4ba14e995",
+   "competitivo": "a835840106eb:46554cb000b1",
    "pais": "689689e8a210:50160dcafbc4",
    "servidor": "403561c7664b:e0061cb5005e:15af16"
   },
@@ -888,19 +888,19 @@
    "servidor": "fee8c99af02f:e0061cb5005e:980594"
   },
   "Kochi": {
-   "competitivo": "21a15b1f3326:3cb4ba14e995",
+   "competitivo": "6d13e4459b35:46554cb000b1",
    "pais": "1401ac46a075:50160dcafbc4",
    "servidor": "fa21eb2af0ea:e0061cb5005e:62e67f",
    "temporada": "470df6e3720c:fec25411e829"
   },
   "Kochi2011": {
-   "competitivo": "6a0d48b51b4e:3cb4ba14e995",
+   "competitivo": "664c4836d5de:46554cb000b1",
    "pais": "3986359b5b58:50160dcafbc4",
    "servidor": "3f8e87f56484:e0061cb5005e:83541c",
-   "temporada": "1e9178630193:fec25411e829"
+   "temporada": "104c0856c21e:cdead15a6070"
   },
   "Konan": {
-   "competitivo": "085de0c921e2:3cb4ba14e995",
+   "competitivo": "5620248a2f11:46554cb000b1",
    "pais": "97f85fde6168:50160dcafbc4",
    "servidor": "88f48309613e:e0061cb5005e:132451"
   },
@@ -909,19 +909,19 @@
   },
   "Korey": {},
   "Kourier": {
-   "competitivo": "592d77eb641c:3cb4ba14e995",
+   "competitivo": "a44dc1e1f553:46554cb000b1",
    "pais": "149f7bc01f37:50160dcafbc4",
    "servidor": "df6b88a3b97f:e0061cb5005e:cde293",
-   "temporada": "1cafbeb72d98:fec25411e829"
+   "temporada": "67161d07861f:cdead15a6070"
   },
   "Kravitz": {
-   "competitivo": "47e1384cfd37:3cb4ba14e995",
+   "competitivo": "ab00b0250ef4:46554cb000b1",
    "pais": "28a8a235f18e:50160dcafbc4",
    "servidor": "fb998cdcdbfb:e0061cb5005e:62e67f",
    "temporada": "8456def30008:fec25411e829"
   },
   "Krish": {
-   "competitivo": "8cd1698c0327:3cb4ba14e995",
+   "competitivo": "92b1ef8484ea:46554cb000b1",
    "pais": "e2d6a77cc219:50160dcafbc4",
    "servidor": "60e539770e34:e0061cb5005e:2ea58b",
    "temporada": "e04f83d818b6:fec25411e829"
@@ -930,10 +930,10 @@
    "servidor": "2de415aac9b8:e0061cb5005e:055f77"
   },
   "Krtman": {
-   "competitivo": "f6c78124e8a9:3cb4ba14e995",
-   "pais": "8d9bad91ca1b:50160dcafbc4",
-   "servidor": "9fe1274dde9b:e0061cb5005e:9554fd",
-   "temporada": "e2c582b013de:fec25411e829"
+   "competitivo": "45b45226204a:46554cb000b1",
+   "pais": "93da3b245a4d:9d66d497e41e",
+   "servidor": "57bbebe7b37c:aba640c1146a:9554fd",
+   "temporada": "b9aad3e69239:cdead15a6070"
   },
   "Krypto": {
    "servidor": "d308669f9a50:e0061cb5005e:e4fbfa"
@@ -942,38 +942,38 @@
    "servidor": "c56d4a8bc580:e0061cb5005e:055f77"
   },
   "Kuni": {
-   "competitivo": "2fa817222c29:3cb4ba14e995",
+   "competitivo": "17f2e1053969:46554cb000b1",
    "pais": "fcc8c026ceae:50160dcafbc4",
    "servidor": "b9c86c05137b:e0061cb5005e:bcd566",
-   "temporada": "b6e878d04f08:fec25411e829"
+   "temporada": "df9178c654db:cdead15a6070"
   },
   "Kyron": {},
   "Kyss": {
-   "competitivo": "790e7d842eeb:3cb4ba14e995",
+   "competitivo": "3bd2449cf092:46554cb000b1",
    "pais": "2dc0aac695e3:50160dcafbc4",
    "servidor": "c1e17d452b81:e0061cb5005e:96eec3",
-   "temporada": "3df8a12bf140:fec25411e829"
+   "temporada": "03d9dc446ff7:cdead15a6070"
   },
   "L": {},
   "LAST": {
-   "competitivo": "e0c08436733a:3cb4ba14e995",
-   "pais": "dbf7e960950f:50160dcafbc4",
-   "servidor": "189d0f750b5d:e0061cb5005e:88f477",
-   "temporada": "8bc0a3c2e089:fec25411e829"
+   "competitivo": "49d69e650049:46554cb000b1",
+   "pais": "2db26540a62c:9d66d497e41e",
+   "servidor": "143fab8bcc7c:aba640c1146a:88f477",
+   "temporada": "97ef952fdf8a:cdead15a6070"
   },
   "LEWITO": {
-   "competitivo": "e76a27aa777b:3cb4ba14e995",
+   "competitivo": "9e6f43cc9401:46554cb000b1",
    "pais": "58c0f44fab4c:50160dcafbc4",
    "servidor": "a91ae4634449:e0061cb5005e:96eec3",
-   "temporada": "18981c06f716:fec25411e829"
+   "temporada": "57a8ea288537:cdead15a6070"
   },
   "LGBD": {
-   "competitivo": "4ade10a083d9:3cb4ba14e995",
-   "pais": "624660aea42c:50160dcafbc4",
-   "servidor": "613ed255f9e5:e0061cb5005e:c0bf45"
+   "competitivo": "2bfdb8e70734:46554cb000b1",
+   "pais": "ee34ecc87afe:9d66d497e41e",
+   "servidor": "57330a938caf:aba640c1146a:c0bf45"
   },
   "LRS": {
-   "competitivo": "17266e04730f:3cb4ba14e995",
+   "competitivo": "89df16441f3d:46554cb000b1",
    "pais": "ce50da9efe1b:50160dcafbc4",
    "servidor": "89c2961f4f2e:e0061cb5005e:132451",
    "temporada": "d981540e5e00:fec25411e829"
@@ -992,7 +992,7 @@
    "servidor": "b59251c171e9:e0061cb5005e:9e75da"
   },
   "Launok": {
-   "competitivo": "497ec8d94973:3cb4ba14e995",
+   "competitivo": "557717d61af5:46554cb000b1",
    "pais": "381ec5890786:50160dcafbc4",
    "servidor": "31c2796226c6:e0061cb5005e:74d240"
   },
@@ -1003,7 +1003,7 @@
    "servidor": "c54e687722a2:e0061cb5005e:aa8232"
   },
   "Leonart": {
-   "competitivo": "27359199ff3d:3cb4ba14e995",
+   "competitivo": "8d0b334e1647:46554cb000b1",
    "pais": "9f417b6bd86e:50160dcafbc4",
    "servidor": "e1595f9f74f0:e0061cb5005e:35ef22",
    "temporada": "6dd838a4b611:fec25411e829"
@@ -1011,13 +1011,13 @@
   "Leyenda": {},
   "Lhyon": {},
   "Liam": {
-   "competitivo": "79705122eb48:3cb4ba14e995",
+   "competitivo": "4592db454b69:46554cb000b1",
    "pais": "7a2c19b7218e:50160dcafbc4",
    "servidor": "ed5eee5ed96a:e0061cb5005e:980594",
-   "temporada": "6c31ef849610:fec25411e829"
+   "temporada": "e7beee4f8809:cdead15a6070"
   },
   "Liberia": {
-   "competitivo": "5c14ec61513a:3cb4ba14e995",
+   "competitivo": "4c3d8809930c:46554cb000b1",
    "pais": "3afae99e17b5:50160dcafbc4",
    "servidor": "9a7dacd3b154:e0061cb5005e:c09f56",
    "temporada": "2144a2f6cfdb:fec25411e829"
@@ -1030,27 +1030,27 @@
    "servidor": "fc642e5ead80:e0061cb5005e:980594"
   },
   "Lilñaño": {
-   "competitivo": "e79d74d9a3ea:3cb4ba14e995",
+   "competitivo": "973b0946ad34:46554cb000b1",
    "pais": "866bd5ad1c44:50160dcafbc4",
    "servidor": "746c06baf786:e0061cb5005e:8551cb"
   },
   "LitKunai": {
-   "competitivo": "b0a034e326ae:3cb4ba14e995",
-   "pais": "e0fffcd2148a:50160dcafbc4",
-   "servidor": "5455c43da6d7:e0061cb5005e:c589ca",
-   "temporada": "2e1f51f944a7:fec25411e829"
+   "competitivo": "695b54b28f22:46554cb000b1",
+   "pais": "2bc99f16968c:9d66d497e41e",
+   "servidor": "4deb3d790e2a:aba640c1146a:c589ca",
+   "temporada": "b4fe96b5d001:cdead15a6070"
   },
   "Longsun Zhao": {
    "servidor": "c1078f7aec71:e0061cb5005e:ed8290"
   },
   "Lord Viruzz": {
-   "competitivo": "5713e422d5ed:3cb4ba14e995",
-   "pais": "51e72f4adfe0:50160dcafbc4",
-   "servidor": "4c2ff558d719:e0061cb5005e:62e67f",
+   "competitivo": "8dc8e4b75d84:46554cb000b1",
+   "pais": "a6de28afc137:9d66d497e41e",
+   "servidor": "1ed7467e49a8:aba640c1146a:62e67f",
    "temporada": "e61b7ea2b1bf:fec25411e829"
   },
   "Lucho": {
-   "competitivo": "6392f58ebb78:3cb4ba14e995",
+   "competitivo": "f5338466f879:46554cb000b1",
    "pais": "bea2e878e14c:50160dcafbc4",
    "servidor": "0863281e6caf:e0061cb5005e:9e75da"
   },
@@ -1059,7 +1059,7 @@
    "temporada": "f53bd6624019:fec25411e829"
   },
   "Luffy": {
-   "competitivo": "d300a7de8d17:3cb4ba14e995",
+   "competitivo": "77a943b47b10:46554cb000b1",
    "pais": "4153b0a4c0c4:50160dcafbc4",
    "servidor": "b6abb0787566:e0061cb5005e:27d4a9"
   },
@@ -1073,26 +1073,26 @@
    "servidor": "354aca75fc36:e0061cb5005e:055f77"
   },
   "Luz": {
-   "competitivo": "195bf372ba28:3cb4ba14e995",
+   "competitivo": "9aa55c764d9b:46554cb000b1",
    "pais": "61dcc6007737:50160dcafbc4",
    "servidor": "16301d5bd752:e0061cb5005e:c0bf45"
   },
   "Luzzano": {},
   "Lvel": {
-   "competitivo": "94cc90a6afd7:3cb4ba14e995",
+   "competitivo": "1d2e8e98f230:46554cb000b1",
    "servidor": "773a8d1d9af5:e0061cb5005e:62e67f",
    "temporada": "13d5a60b68d2:fec25411e829"
   },
   "MATICERNA": {},
   "MAXIMILIANO CALVO": {},
   "MCNadie": {
-   "competitivo": "5a0459c37a2a:3cb4ba14e995",
+   "competitivo": "a4b49ff1f105:46554cb000b1",
    "pais": "f027b4118b23:50160dcafbc4",
    "servidor": "ebe9ee4b1ad9:e0061cb5005e:74d240",
-   "temporada": "500cbe9c9d9e:fec25411e829"
+   "temporada": "b0305714e624:cdead15a6070"
   },
   "MCO": {
-   "competitivo": "cfd504c19e2c:3cb4ba14e995",
+   "competitivo": "b6ac28f1c9da:46554cb000b1",
    "pais": "dacee24ddeaa:50160dcafbc4",
    "servidor": "28992eed092a:e0061cb5005e:132451",
    "temporada": "930d697ad4d3:fec25411e829"
@@ -1105,40 +1105,40 @@
    "servidor": "52824a14b414:e0061cb5005e:24d71d"
   },
   "MTZ": {
-   "competitivo": "998b889f7d55:3cb4ba14e995",
+   "competitivo": "3dbb093254b9:46554cb000b1",
    "pais": "7bd38acef8fc:50160dcafbc4",
    "servidor": "1af3fd98af9a:e0061cb5005e:16bc7a",
    "temporada": "1d5e0e99d639:fec25411e829"
   },
   "MZK": {
-   "competitivo": "204a794cf81c:3cb4ba14e995",
+   "competitivo": "ee059a68c19e:46554cb000b1",
    "pais": "b3aadcce4393:50160dcafbc4",
    "servidor": "0493c649fbed:e0061cb5005e:980594"
   },
   "MaYeuTyK": {
-   "competitivo": "52bdb3489ad1:3cb4ba14e995",
-   "pais": "cefe1c8362d7:50160dcafbc4",
-   "servidor": "513a934ee096:e0061cb5005e:d6a988",
+   "competitivo": "328c5f0eeb96:46554cb000b1",
+   "pais": "2c534a01c462:9d66d497e41e",
+   "servidor": "752f79ffeb66:aba640c1146a:d6a988",
    "temporada": "d72eed6df964:fec25411e829"
   },
   "Magic": {
-   "competitivo": "9a317cf040e2:3cb4ba14e995",
+   "competitivo": "584653c4934d:46554cb000b1",
    "pais": "51c39d0cd50f:50160dcafbc4",
    "servidor": "17944a7aa3a7:e0061cb5005e:9b3a50",
-   "temporada": "9df51806ad9d:fec25411e829"
+   "temporada": "5b5e9b7125e2:cdead15a6070"
   },
   "Mail O": {},
   "Majiztral": {
-   "competitivo": "129ea14c9fb4:3cb4ba14e995",
-   "pais": "d245dba64910:50160dcafbc4",
-   "servidor": "55c6afc474c9:e0061cb5005e:132451",
+   "competitivo": "b0289f895de9:46554cb000b1",
+   "pais": "cf515bfca135:9d66d497e41e",
+   "servidor": "66e501d30b4f:aba640c1146a:132451",
    "temporada": "17a4a2960e8e:fec25411e829"
   },
   "Maki": {
    "servidor": "70fbb8574a0b:e0061cb5005e:74d3ce"
   },
   "Makmah": {
-   "competitivo": "9b07d0663b30:3cb4ba14e995",
+   "competitivo": "e66a9fc4a13b:46554cb000b1",
    "pais": "1ea2cf449787:50160dcafbc4",
    "servidor": "f8952af1de52:e0061cb5005e:35630e",
    "temporada": "2e8c8e17bf67:fec25411e829"
@@ -1148,19 +1148,19 @@
   },
   "Malva": {},
   "Marcos": {
-   "competitivo": "e59df08042e7:3cb4ba14e995",
-   "pais": "3805f447cae3:50160dcafbc4",
+   "competitivo": "27f225333324:46554cb000b1",
+   "pais": "9af2d9cbe08a:9d66d497e41e",
    "servidor": "2699ba8f0fed:e0061cb5005e:bcd566",
    "temporada": "43e35553280c:fec25411e829"
   },
   "Masino": {
-   "competitivo": "787b524db263:3cb4ba14e995",
-   "pais": "440ce1159bbd:50160dcafbc4",
-   "servidor": "0417356ac28e:e0061cb5005e:edd6d7",
+   "competitivo": "183aa9e27ac0:46554cb000b1",
+   "pais": "89142f026819:9d66d497e41e",
+   "servidor": "60766ead292d:aba640c1146a:edd6d7",
    "temporada": "d6e211f828fe:fec25411e829"
   },
   "Mathhias": {
-   "competitivo": "3b8ccb43a9a1:3cb4ba14e995",
+   "competitivo": "9eeed9cd775f:46554cb000b1",
    "pais": "323c8fd81eb3:50160dcafbc4",
    "servidor": "c44847c1545c:e0061cb5005e:552866",
    "temporada": "db9cc92f8e77:fec25411e829"
@@ -1180,16 +1180,16 @@
    "servidor": "0765fd319b27:e0061cb5005e:9e75da"
   },
   "Mc arepa": {
-   "competitivo": "c05b47444a13:3cb4ba14e995",
+   "competitivo": "82c4e4ca0fce:46554cb000b1",
    "pais": "dc4ecc9de453:50160dcafbc4",
    "servidor": "a9ba58b137bd:e0061cb5005e:abdb4a",
-   "temporada": "73d38e26fe00:fec25411e829"
+   "temporada": "43ee6c4fa8bd:cdead15a6070"
   },
   "Mcarita": {
    "servidor": "02128fc165e7:e0061cb5005e:67201a"
   },
   "Medster": {
-   "competitivo": "e10df739e651:3cb4ba14e995",
+   "competitivo": "d884cf6f5d41:46554cb000b1",
    "pais": "77e08a6f00ad:50160dcafbc4",
    "servidor": "57ef81ac0e78:e0061cb5005e:0e0e03"
   },
@@ -1200,12 +1200,12 @@
    "servidor": "9c7ea13f6285:e0061cb5005e:9397f6"
   },
   "MetriOdin": {
-   "competitivo": "0b868166a7e7:3cb4ba14e995",
+   "competitivo": "c2a2dfb70e3c:46554cb000b1",
    "pais": "0e7d581b8fe7:50160dcafbc4",
    "servidor": "5a5cd32934c6:e0061cb5005e:7d9cf1"
   },
   "Miniboy": {
-   "competitivo": "4513b1593768:3cb4ba14e995",
+   "competitivo": "fa82bdf943db:46554cb000b1",
    "pais": "6262137a6f3c:50160dcafbc4",
    "servidor": "802f01ccc6f2:e0061cb5005e:132451",
    "temporada": "73ad8a8e24ef:fec25411e829"
@@ -1214,7 +1214,7 @@
    "servidor": "c3e39b4d3573:e0061cb5005e:77728e"
   },
   "Mito": {
-   "competitivo": "b5a63ad1d1b2:3cb4ba14e995",
+   "competitivo": "9916ed717a9c:46554cb000b1",
    "pais": "248f2e3d3afa:50160dcafbc4",
    "servidor": "8dd99723fd68:e0061cb5005e:c82496",
    "temporada": "aab0389837d0:fec25411e829"
@@ -1223,18 +1223,18 @@
    "servidor": "0995b01c57e5:e0061cb5005e:1b952d"
   },
   "Mochi DG": {
-   "competitivo": "6d28bb1a7fcf:3cb4ba14e995",
+   "competitivo": "68f5006d2a7d:46554cb000b1",
    "pais": "f41ada85bce7:50160dcafbc4",
    "servidor": "54d7f9fb45f7:e0061cb5005e:3a19ff"
   },
   "Molt": {
-   "competitivo": "45f4fba6107b:3cb4ba14e995",
+   "competitivo": "5ddd1ead5eeb:46554cb000b1",
    "pais": "be23bfbeca2a:50160dcafbc4",
    "servidor": "be9d47b63fc2:e0061cb5005e:afbca9",
-   "temporada": "14726a1c22fc:fec25411e829"
+   "temporada": "47b9f6dd6d3e:cdead15a6070"
   },
   "Molusco": {
-   "competitivo": "1950ff55b361:3cb4ba14e995",
+   "competitivo": "18ade2bdcac5:46554cb000b1",
    "pais": "ed7ac199baff:50160dcafbc4",
    "servidor": "154ecb2052ab:e0061cb5005e:132451",
    "temporada": "bb63a3d9f68d:fec25411e829"
@@ -1248,13 +1248,13 @@
   },
   "Mosquitrap 🦟": {},
   "Motera": {
-   "competitivo": "eb2567caecf5:3cb4ba14e995",
+   "competitivo": "e99ed6a78961:46554cb000b1",
    "pais": "9d59c2118970:50160dcafbc4",
    "servidor": "e92f808cbb91:e0061cb5005e:a7b8bd",
    "temporada": "8bd69f58fff6:fec25411e829"
   },
   "Mr Still Ballin": {
-   "competitivo": "89ceee44131d:3cb4ba14e995",
+   "competitivo": "7704e37333c6:46554cb000b1",
    "pais": "72493e9152bf:50160dcafbc4",
    "servidor": "b418bfb53c93:e0061cb5005e:ed8290",
    "temporada": "c80b1f636926:fec25411e829"
@@ -1263,17 +1263,17 @@
    "servidor": "c97088c01554:e0061cb5005e:055f77"
   },
   "Musicdum": {
-   "competitivo": "c39f1a434a5e:3cb4ba14e995",
+   "competitivo": "4da98be1f3f5:46554cb000b1",
    "pais": "b3ac5d9341a3:50160dcafbc4",
    "servidor": "da1a0084460e:e0061cb5005e:e4fbfa",
-   "temporada": "7880c4de4fbd:fec25411e829"
+   "temporada": "3e95694f32af:cdead15a6070"
   },
   "Musttang": {
    "servidor": "ccfd4e58392c:e0061cb5005e:055f77"
   },
   "MvA": {},
   "N1k": {
-   "competitivo": "1274f481607f:3cb4ba14e995",
+   "competitivo": "c6f940076536:46554cb000b1",
    "pais": "51c52cc14ef9:50160dcafbc4",
    "servidor": "eb994fa52f72:e0061cb5005e:aac4a1"
   },
@@ -1282,7 +1282,7 @@
   },
   "NAW": {},
   "NC": {
-   "competitivo": "0de8f96c8859:3cb4ba14e995",
+   "competitivo": "8cb13e880b3f:46554cb000b1",
    "pais": "0dbb25f72a58:50160dcafbc4",
    "servidor": "909d759d1dea:e0061cb5005e:a7b8bd",
    "temporada": "38ce6809480b:fec25411e829"
@@ -1294,16 +1294,16 @@
    "servidor": "e5aa6ec62f13:e0061cb5005e:9e75da"
   },
   "NXUZ": {
-   "competitivo": "3828a4ec8d15:3cb4ba14e995",
-   "pais": "8e6123969c32:50160dcafbc4",
-   "servidor": "8fb9bfa27b40:e0061cb5005e:132451",
+   "competitivo": "b91804906bbb:46554cb000b1",
+   "pais": "2298cb6ca2f5:9d66d497e41e",
+   "servidor": "5e432f8a5433:aba640c1146a:132451",
    "temporada": "4065783e75c3:fec25411e829"
   },
   "Nahu": {
    "servidor": "4a1ff1fe7a60:e0061cb5005e:aa8232"
   },
   "Nain sdp": {
-   "competitivo": "6a93b350e030:3cb4ba14e995",
+   "competitivo": "cd89dbefe296:46554cb000b1",
    "pais": "ed8239605234:50160dcafbc4",
    "servidor": "7c5887455900:e0061cb5005e:324686"
   },
@@ -1338,44 +1338,44 @@
    "servidor": "0ba68011a29f:e0061cb5005e:e4fbfa"
   },
   "Noone": {
-   "competitivo": "86fa7a5fb98f:3cb4ba14e995",
+   "competitivo": "abfb2d0bd91a:46554cb000b1",
    "pais": "ee348435785f:50160dcafbc4",
    "servidor": "06d22659a5d2:e0061cb5005e:d9df3b",
-   "temporada": "fc863259daab:fec25411e829"
+   "temporada": "63505a401794:cdead15a6070"
   },
   "Nova": {
-   "competitivo": "a2ec19ed7817:3cb4ba14e995",
+   "competitivo": "b3ebddb68372:46554cb000b1",
    "pais": "a925afa35a7e:50160dcafbc4",
    "servidor": "9ba0f26fc056:e0061cb5005e:43d041"
   },
   "Nox": {},
   "Noxvell": {},
   "Number": {
-   "competitivo": "bc0ecc03ea23:3cb4ba14e995",
+   "competitivo": "21b653ec3912:46554cb000b1",
    "pais": "703920b1fd54:50160dcafbc4",
    "servidor": "66406dcd6e27:e0061cb5005e:f3ab27",
-   "temporada": "ff0225be2a5e:fec25411e829"
+   "temporada": "8f928912bd97:cdead15a6070"
   },
   "Number VE": {
-   "competitivo": "2039aed681c1:3cb4ba14e995",
-   "pais": "0dde65982bbd:50160dcafbc4",
-   "servidor": "23183c81f7e8:e0061cb5005e:62e67f",
+   "competitivo": "f6a13606d05c:46554cb000b1",
+   "pais": "d5f95ecefcdb:9d66d497e41e",
+   "servidor": "983a5f1dba06:aba640c1146a:62e67f",
    "temporada": "c4b9533887fe:fec25411e829"
   },
   "OEP": {
-   "competitivo": "84fc6e402a20:3cb4ba14e995",
-   "pais": "acedc27dc886:50160dcafbc4",
-   "servidor": "787afce1557b:e0061cb5005e:f3ab27",
-   "temporada": "b409650d86cf:fec25411e829"
+   "competitivo": "98fc55cdc1d9:46554cb000b1",
+   "pais": "3397be0f20d5:9d66d497e41e",
+   "servidor": "de8e1f3d0227:aba640c1146a:f3ab27",
+   "temporada": "fb2c660e383d:cdead15a6070"
   },
   "OG": {
-   "competitivo": "f60a8e52eab4:3cb4ba14e995",
+   "competitivo": "852f1e2a0f23:46554cb000b1",
    "pais": "380b2fe85dac:50160dcafbc4",
    "servidor": "4330808cfd6e:e0061cb5005e:62e67f",
    "temporada": "35b73cf45aa7:fec25411e829"
   },
   "OKAM": {
-   "competitivo": "65849eb29591:3cb4ba14e995",
+   "competitivo": "e6b9a9c17ed7:46554cb000b1",
    "pais": "c1735c575215:50160dcafbc4",
    "servidor": "af632974764f:e0061cb5005e:c82496",
    "temporada": "d53410d8f37b:fec25411e829"
@@ -1385,7 +1385,7 @@
   },
   "ONZASS": {},
   "Oasis": {
-   "competitivo": "de13cd74bcb6:3cb4ba14e995",
+   "competitivo": "3d332f243c56:46554cb000b1",
    "pais": "1a3fe53cadff:50160dcafbc4",
    "servidor": "57d04ec27477:e0061cb5005e:40a77e",
    "temporada": "d28fa5bcb586:fec25411e829"
@@ -1408,40 +1408,40 @@
    "servidor": "4994c2174e30:e0061cb5005e:fbc56e"
   },
   "PRAISERIZA": {
-   "competitivo": "b9b2f590507f:3cb4ba14e995",
+   "competitivo": "c55808935607:46554cb000b1",
    "pais": "5a31b0c7e503:50160dcafbc4",
    "servidor": "3f099b16fb3a:e0061cb5005e:acc4a5",
    "temporada": "96b059b33123:fec25411e829"
   },
   "PUBLIC ENEMY": {},
   "Panchok": {
-   "competitivo": "5584a0412965:3cb4ba14e995",
+   "competitivo": "2f8bc6e6879d:46554cb000b1",
    "pais": "2f6b063df039:50160dcafbc4",
    "servidor": "8b7b60ec0748:e0061cb5005e:132451",
    "temporada": "6f09edda8424:fec25411e829"
   },
   "Paria": {},
   "Partim": {
-   "competitivo": "94b5a09f4439:3cb4ba14e995",
-   "pais": "f109337fd0ea:50160dcafbc4",
-   "servidor": "d3cc1dfe048c:e0061cb5005e:132451"
+   "competitivo": "9e7f99c26661:46554cb000b1",
+   "pais": "0ac2416a41e1:9d66d497e41e",
+   "servidor": "4a4f19c396d2:aba640c1146a:132451"
   },
   "Perrin": {
-   "competitivo": "0185c52b20c4:3cb4ba14e995",
+   "competitivo": "e5ee9f748696:46554cb000b1",
    "pais": "8c7b1eff827f:50160dcafbc4",
    "servidor": "2ec6a45d6750:e0061cb5005e:a159cb"
   },
   "PichulaMc": {
-   "competitivo": "acb75462bc62:3cb4ba14e995",
+   "competitivo": "6950a27f6ae3:46554cb000b1",
    "pais": "857b102a3e22:50160dcafbc4",
    "servidor": "bed98638742d:e0061cb5005e:35630e",
    "temporada": "f42b6c2cebfc:fec25411e829"
   },
   "Pipe": {
-   "competitivo": "76e9252a7a3b:3cb4ba14e995",
+   "competitivo": "9a4eca070ffc:46554cb000b1",
    "pais": "15f32eb5c222:50160dcafbc4",
    "servidor": "0c6248c1e6d1:e0061cb5005e:206053",
-   "temporada": "c6aaf26b6c21:fec25411e829"
+   "temporada": "e00459480b34:cdead15a6070"
   },
   "Pipo": {
    "servidor": "452c143eefde:e0061cb5005e:b8e4ed"
@@ -1450,38 +1450,38 @@
    "servidor": "5e2249b127d7:e0061cb5005e:980594"
   },
   "Player": {
-   "competitivo": "ef2a5c79178d:3cb4ba14e995",
+   "competitivo": "d8551f98649b:46554cb000b1",
    "pais": "4d6492144bf9:50160dcafbc4",
    "servidor": "89f9dfb3ff8d:e0061cb5005e:6203c7",
-   "temporada": "0f2faef08f5f:fec25411e829"
+   "temporada": "68fa5a1a121a:cdead15a6070"
   },
   "Polosport": {
-   "competitivo": "e91d9d084d53:3cb4ba14e995",
+   "competitivo": "b931287d6ca5:46554cb000b1",
    "pais": "472049d8d9d8:50160dcafbc4",
    "servidor": "1c8f62eb5c1b:e0061cb5005e:ff73ac",
    "temporada": "c2e98817cd46:fec25411e829"
   },
   "Pomberito": {},
   "Presagio": {
-   "competitivo": "dfad21951c18:3cb4ba14e995",
+   "competitivo": "d4071ae04a58:46554cb000b1",
    "pais": "45f054ae46af:50160dcafbc4",
    "servidor": "c330733142d0:e0061cb5005e:62e67f",
-   "temporada": "e54857b2df0d:fec25411e829"
+   "temporada": "fe62471e9aec:cdead15a6070"
   },
   "Prodigy": {
-   "competitivo": "03f7fb610922:3cb4ba14e995",
+   "competitivo": "6061a1521362:46554cb000b1",
    "pais": "50aad05a88c9:50160dcafbc4",
    "servidor": "25cb98e3d067:e0061cb5005e:9b3a50",
-   "temporada": "e8f70143b740:fec25411e829"
+   "temporada": "118c50404677:cdead15a6070"
   },
   "Prosu": {
-   "competitivo": "576ce63839cb:3cb4ba14e995",
-   "pais": "7672283a284b:50160dcafbc4",
-   "servidor": "afd577a42f09:e0061cb5005e:132451",
+   "competitivo": "3c3c2dcc6b59:46554cb000b1",
+   "pais": "093951bd8982:9d66d497e41e",
+   "servidor": "25c772999530:aba640c1146a:132451",
    "temporada": "51c505ec6629:fec25411e829"
   },
   "Provenza": {
-   "competitivo": "0b05db00b3e5:3cb4ba14e995",
+   "competitivo": "21bde9d859e3:46554cb000b1",
    "pais": "d66a4e43939c:50160dcafbc4",
    "servidor": "f2de1ddd8bdd:e0061cb5005e:980594",
    "temporada": "88a73656663f:fec25411e829"
@@ -1490,7 +1490,7 @@
    "servidor": "c61e3e877a42:e0061cb5005e:a672ab"
   },
   "QUEEN": {
-   "competitivo": "0c7dc18d1ec8:3cb4ba14e995",
+   "competitivo": "5bd9918f4ea3:46554cb000b1",
    "pais": "dac7072f035c:50160dcafbc4",
    "servidor": "b00737af0745:e0061cb5005e:9b3a50"
   },
@@ -1504,7 +1504,7 @@
    "servidor": "fcb5595d9e04:e0061cb5005e:055f77"
   },
   "RT": {
-   "competitivo": "7bf0305ac793:3cb4ba14e995",
+   "competitivo": "46bcad7c7cfe:46554cb000b1",
    "pais": "54a3bea4b71e:50160dcafbc4",
    "servidor": "97d1d1789b7a:e0061cb5005e:80c07f",
    "temporada": "b870385dfaff:fec25411e829"
@@ -1516,10 +1516,10 @@
    "servidor": "7c09c3205f29:e0061cb5005e:67201a"
   },
   "Raizer": {
-   "competitivo": "c0828333d200:3cb4ba14e995",
+   "competitivo": "2914e170c9b5:46554cb000b1",
    "pais": "1adc6236c20e:50160dcafbc4",
    "servidor": "31104863ca22:e0061cb5005e:e7ef3d",
-   "temporada": "7547b3d6a6f6:fec25411e829"
+   "temporada": "1a41a84f234d:cdead15a6070"
   },
   "Raven": {
    "servidor": "fd3f1b437e73:e0061cb5005e:568a5f"
@@ -1527,47 +1527,47 @@
   "Rayden": {},
   "Rayo": {},
   "Rbk": {
-   "competitivo": "5bc688b70168:3cb4ba14e995",
+   "competitivo": "b804e82a07d0:46554cb000b1",
    "pais": "cd498fba5067:50160dcafbc4",
    "servidor": "0e49ce699f6f:e0061cb5005e:12faed",
-   "temporada": "63f3c45ada55:fec25411e829"
+   "temporada": "ca1a33d916df:cdead15a6070"
   },
   "Redstonita": {},
   "Refran": {
-   "competitivo": "936ad4cb250b:3cb4ba14e995",
+   "competitivo": "1f3da359f846:46554cb000b1",
    "pais": "2aa59b3adb36:50160dcafbc4",
    "servidor": "623612cb6148:e0061cb5005e:2ea58b",
-   "temporada": "3f42860eadf5:fec25411e829"
+   "temporada": "2581eae59b2a:cdead15a6070"
   },
   "Revo": {
-   "competitivo": "fb519e971399:3cb4ba14e995",
+   "competitivo": "f263a7d58b17:46554cb000b1",
    "pais": "57ee305d2d01:50160dcafbc4",
    "servidor": "b5e51842facf:e0061cb5005e:71cf5a",
-   "temporada": "3341ad2a1024:fec25411e829"
+   "temporada": "637c24e8097c:cdead15a6070"
   },
   "Reyes": {},
   "Reyes Mc": {
    "servidor": "a87de8abc9f2:e0061cb5005e:77728e"
   },
   "ReyexXMC": {
-   "competitivo": "490cd30f31a4:3cb4ba14e995",
+   "competitivo": "5e26468e4512:46554cb000b1",
    "pais": "b21796363276:50160dcafbc4",
    "servidor": "cb246aa36eb0:e0061cb5005e:cabaff"
   },
   "Richard": {
-   "competitivo": "9caf45ce1427:3cb4ba14e995",
+   "competitivo": "5c4e24089526:46554cb000b1",
    "pais": "4894444f2856:50160dcafbc4",
    "servidor": "55adb0612456:e0061cb5005e:62e67f",
-   "temporada": "77af4843454a:fec25411e829"
+   "temporada": "03494dc78ac5:cdead15a6070"
   },
   "Riolu": {
-   "competitivo": "79f97ff9a0d8:3cb4ba14e995",
+   "competitivo": "4c29d3a4a6cb:46554cb000b1",
    "pais": "aab8b2cd8f03:50160dcafbc4",
    "servidor": "dd7512f99978:e0061cb5005e:57cf8d",
-   "temporada": "7f75f6899b41:fec25411e829"
+   "temporada": "2c703615b7a9:cdead15a6070"
   },
   "Rodas": {
-   "competitivo": "86f8484bdb31:3cb4ba14e995",
+   "competitivo": "d0484b355026:46554cb000b1",
    "pais": "b4b952efa389:50160dcafbc4",
    "servidor": "ba90b9c8e256:e0061cb5005e:43d041",
    "temporada": "b152bfade2c9:fec25411e829"
@@ -1576,7 +1576,7 @@
    "servidor": "be3ce96eb68f:e0061cb5005e:9e75da"
   },
   "Rubik": {
-   "competitivo": "0ad9545eb6b1:3cb4ba14e995",
+   "competitivo": "adbbbc6cde93:46554cb000b1",
    "pais": "6723c73083f1:50160dcafbc4",
    "servidor": "7afae700d1f8:e0061cb5005e:9b3a50"
   },
@@ -1585,18 +1585,18 @@
   "SGB": {},
   "SHULIOT": {},
   "SK8": {
-   "competitivo": "bdefb5878570:3cb4ba14e995",
+   "competitivo": "bdbe99bee74f:46554cb000b1",
    "pais": "88508a57d501:50160dcafbc4",
    "servidor": "6c1d4957a6e6:e0061cb5005e:afbca9"
   },
   "SMAFF": {},
   "SNE": {
-   "competitivo": "4de24ac233aa:3cb4ba14e995",
+   "competitivo": "24e10a9902c6:46554cb000b1",
    "pais": "eab3dcdaed2d:50160dcafbc4",
    "servidor": "5cf550f17f18:e0061cb5005e:3eef23"
   },
   "SOL": {
-   "competitivo": "7c1fcee901b8:3cb4ba14e995",
+   "competitivo": "7462ba18c12b:46554cb000b1",
    "pais": "53a562b31027:50160dcafbc4",
    "servidor": "cc6c9a73882f:e0061cb5005e:c82496"
   },
@@ -1606,17 +1606,17 @@
   },
   "SUDAKA": {},
   "Saiko": {
-   "competitivo": "1f4fe1583516:3cb4ba14e995",
+   "competitivo": "6de25911f60c:46554cb000b1",
    "pais": "3ff14872291d:50160dcafbc4",
    "servidor": "cfe2f9feae48:e0061cb5005e:374272",
-   "temporada": "5740147fc0c0:fec25411e829"
+   "temporada": "80e5e37ebc66:cdead15a6070"
   },
   "Saito": {},
   "Sami": {
-   "competitivo": "4acfd9a8a388:3cb4ba14e995",
-   "pais": "fe58cdd6b2a7:50160dcafbc4",
-   "servidor": "6704288fd447:e0061cb5005e:fce3e6",
-   "temporada": "1c8e2fc060d8:fec25411e829"
+   "competitivo": "15cbe3ae65e4:46554cb000b1",
+   "pais": "98ad0b497980:9d66d497e41e",
+   "servidor": "0cee2a9cdaa7:aba640c1146a:fce3e6",
+   "temporada": "5e00d01f63b6:cdead15a6070"
   },
   "Sando": {
    "servidor": "cbd939dd506b:e0061cb5005e:27d4a9"
@@ -1628,13 +1628,13 @@
   "Saz": {},
   "Scot": {},
   "Scritura": {
-   "competitivo": "cd2fe0781ecf:3cb4ba14e995",
+   "competitivo": "507d5c22302a:46554cb000b1",
    "pais": "388ea3f2267f:50160dcafbc4",
    "servidor": "a18f27a24b16:e0061cb5005e:c82496",
-   "temporada": "9aece798f0a7:fec25411e829"
+   "temporada": "8840397e69a4:cdead15a6070"
   },
   "Selek": {
-   "competitivo": "c5e3bf7fcd39:3cb4ba14e995",
+   "competitivo": "c70ccf95c1c4:46554cb000b1",
    "pais": "0abdbc0cf758:50160dcafbc4",
    "servidor": "1fd41b203bd2:e0061cb5005e:9b3a50"
   },
@@ -1643,24 +1643,24 @@
   },
   "Sexo": {},
   "Shadow": {
-   "competitivo": "cfcad0ff476c:3cb4ba14e995",
-   "pais": "8a15135d9326:50160dcafbc4",
-   "servidor": "dcd2ccb2e5dd:e0061cb5005e:c0bf45",
-   "temporada": "d4d044bb489e:fec25411e829"
+   "competitivo": "8bb5f986d8b8:46554cb000b1",
+   "pais": "b9569ea604bd:9d66d497e41e",
+   "servidor": "f57274d6e086:aba640c1146a:c0bf45",
+   "temporada": "905ef6f35174:cdead15a6070"
   },
   "Simon": {
-   "competitivo": "f77a5dfb3211:3cb4ba14e995",
+   "competitivo": "d2dc5dae49cf:46554cb000b1",
    "pais": "24432c6c648c:50160dcafbc4",
    "servidor": "07c2d3b03461:e0061cb5005e:874d2d"
   },
   "Sin Limites": {
-   "competitivo": "426cfb7c3f09:3cb4ba14e995",
+   "competitivo": "47bd85da7574:46554cb000b1",
    "pais": "6cde5ba8685e:50160dcafbc4",
    "servidor": "88189697443f:e0061cb5005e:c82496",
    "temporada": "c609ddbcf9d6:fec25411e829"
   },
   "Six": {
-   "competitivo": "eca070107ec6:3cb4ba14e995",
+   "competitivo": "888c30a95d66:46554cb000b1",
    "pais": "0d37b4aab73e:50160dcafbc4",
    "servidor": "32cb85e6b43c:e0061cb5005e:9b3a50",
    "temporada": "8b5d3e1bd8d3:fec25411e829"
@@ -1672,53 +1672,53 @@
    "servidor": "86be739d4f5c:e0061cb5005e:055f77"
   },
   "Skratch": {
-   "competitivo": "71dafffa5e9f:3cb4ba14e995",
+   "competitivo": "1826cf9814fc:46554cb000b1",
    "pais": "42670ba0ea04:50160dcafbc4",
    "servidor": "6d13d067521a:e0061cb5005e:43d041"
   },
   "Slasher": {},
   "Snow": {
-   "competitivo": "6bfd098171a7:3cb4ba14e995",
-   "pais": "b7f31df3c9f1:50160dcafbc4",
-   "servidor": "4f85e477cd66:e0061cb5005e:9b3a50",
+   "competitivo": "4352634047e3:46554cb000b1",
+   "pais": "d7035f6541c6:9d66d497e41e",
+   "servidor": "997c6df6b823:aba640c1146a:9b3a50",
    "temporada": "5a33800fc492:fec25411e829"
   },
   "Soft": {},
   "Sombra": {
-   "competitivo": "6ce589cb4d3e:3cb4ba14e995",
+   "competitivo": "af775af150d0:46554cb000b1",
    "pais": "7c904c690c51:50160dcafbc4",
    "servidor": "fd73d44c6621:e0061cb5005e:a672ab"
   },
   "Soneto": {
-   "competitivo": "dee4dfcda424:3cb4ba14e995",
+   "competitivo": "5e5c1e0301ce:46554cb000b1",
    "pais": "bc54faec38f8:50160dcafbc4",
    "servidor": "231c561ecb89:e0061cb5005e:9b3a50",
    "temporada": "9bfe5f836689:fec25411e829"
   },
   "Sosa": {
-   "competitivo": "02817c6ef0f1:3cb4ba14e995",
+   "competitivo": "289bde590a5d:46554cb000b1",
    "pais": "ff29c1c754c7:50160dcafbc4",
    "servidor": "efc18a460623:e0061cb5005e:132451",
-   "temporada": "cbb4ccc0f378:fec25411e829"
+   "temporada": "9c69b1bcc8b7:cdead15a6070"
   },
   "Soulb": {
-   "competitivo": "4e1c1d414060:3cb4ba14e995",
-   "pais": "c67782cea410:50160dcafbc4",
-   "servidor": "4c154fbe1d9f:e0061cb5005e:205449",
-   "temporada": "d1de968b3cc0:fec25411e829"
+   "competitivo": "caafaa7b633f:46554cb000b1",
+   "pais": "00f2d0256e07:9d66d497e41e",
+   "servidor": "7ca60b529457:aba640c1146a:205449",
+   "temporada": "a6ec3463bfd6:cdead15a6070"
   },
   "Steven": {},
   "Surxf": {
    "servidor": "ff8fc5c42ffc:e0061cb5005e:afeeb3"
   },
   "Surya": {
-   "competitivo": "b0e38c164184:3cb4ba14e995",
+   "competitivo": "2e1f02685787:46554cb000b1",
    "pais": "d4cfde4899c8:50160dcafbc4",
    "servidor": "6aa704eb27f8:e0061cb5005e:a672ab",
-   "temporada": "61cbf7442720:fec25411e829"
+   "temporada": "b2d4a8dc89c4:cdead15a6070"
   },
   "Swid": {
-   "competitivo": "476476c4026a:3cb4ba14e995",
+   "competitivo": "bf9ce455b2ac:46554cb000b1",
    "pais": "4cc5b52012b4:50160dcafbc4",
    "servidor": "8eecd84a24c2:e0061cb5005e:d9df3b"
   },
@@ -1727,7 +1727,7 @@
   },
   "TG": {},
   "THO": {
-   "competitivo": "ed469047735e:3cb4ba14e995",
+   "competitivo": "52f1fad9487e:46554cb000b1",
    "pais": "9f819d24a653:50160dcafbc4",
    "servidor": "bb1fb37f64d5:e0061cb5005e:9e75da"
   },
@@ -1737,10 +1737,10 @@
   "TYPHLOSION": {},
   "Tam": {},
   "Teito": {
-   "competitivo": "4eb679197026:3cb4ba14e995",
-   "pais": "a482cb3eb449:50160dcafbc4",
-   "servidor": "8db67be72b5d:e0061cb5005e:d6a988",
-   "temporada": "3bfa108d51fb:fec25411e829"
+   "competitivo": "5533da034f45:46554cb000b1",
+   "pais": "5e74a43e431a:9d66d497e41e",
+   "servidor": "fb7c72e551b9:aba640c1146a:d6a988",
+   "temporada": "4dfd2d37abac:cdead15a6070"
   },
   "Telmex": {
    "servidor": "2f65f8825722:e0061cb5005e:3544cb"
@@ -1749,7 +1749,7 @@
    "servidor": "8c84bee8607e:e0061cb5005e:9b3a50"
   },
   "Tenor": {
-   "competitivo": "e2a3f5473bf4:3cb4ba14e995",
+   "competitivo": "b9cb7f4427ca:46554cb000b1",
    "pais": "1e75ca7438f8:50160dcafbc4",
    "servidor": "4650bb84cf0e:e0061cb5005e:abdb4a",
    "temporada": "fa0711072ef1:fec25411e829"
@@ -1762,7 +1762,7 @@
    "servidor": "cd644a37ea2b:e0061cb5005e:aa8232"
   },
   "Tier": {
-   "competitivo": "1b5568961159:3cb4ba14e995",
+   "competitivo": "a4090f38991b:46554cb000b1",
    "pais": "2194f2afb74f:50160dcafbc4",
    "servidor": "1f73e4c0a11a:e0061cb5005e:ed8290"
   },
@@ -1770,40 +1770,40 @@
    "servidor": "46f3d0a2d16c:e0061cb5005e:980594"
   },
   "Tmax Turbo [PN]": {
-   "competitivo": "f5f96bc23c9e:3cb4ba14e995",
+   "competitivo": "50ea7956668d:46554cb000b1",
    "pais": "b8071d55004c:50160dcafbc4",
    "servidor": "b86c1853be51:e0061cb5005e:bcd566",
-   "temporada": "6497c5468d98:fec25411e829"
+   "temporada": "8c0785b0fe38:cdead15a6070"
   },
   "Tole Lirica": {
    "servidor": "efd66fcc7bef:e0061cb5005e:055f77"
   },
   "Toretto Mexicano": {
-   "competitivo": "3c20254d3e88:3cb4ba14e995",
+   "competitivo": "52769b565a59:46554cb000b1",
    "pais": "51113f275108:50160dcafbc4",
    "servidor": "5d6bcb03125c:e0061cb5005e:c29281"
   },
   "Trelok": {
-   "competitivo": "10609e7f019b:3cb4ba14e995",
-   "pais": "4bb84b5956b1:50160dcafbc4",
-   "servidor": "640501b2de56:e0061cb5005e:16bc7a",
+   "competitivo": "37bc4df3cf28:46554cb000b1",
+   "pais": "1b3d431d4b58:9d66d497e41e",
+   "servidor": "9af0dc0bc388:aba640c1146a:16bc7a",
    "temporada": "37ebd5c6a064:fec25411e829"
   },
   "Trot": {
-   "competitivo": "9b536776e2de:3cb4ba14e995",
-   "pais": "883a074055bd:50160dcafbc4",
+   "competitivo": "6fa590135ed4:46554cb000b1",
+   "pais": "132c388f34bb:9d66d497e41e",
    "servidor": "e9d919e7aef2:e0061cb5005e:c0bf45",
    "temporada": "430bb72a93fb:fec25411e829"
   },
   "Tuca": {},
   "Tusicario": {
-   "competitivo": "973bdab89aa2:3cb4ba14e995",
+   "competitivo": "7f4dfba6723b:46554cb000b1",
    "pais": "9e9c63720f98:50160dcafbc4",
    "servidor": "74ed50ce7644:e0061cb5005e:7dad65",
-   "temporada": "607781a3191c:fec25411e829"
+   "temporada": "6a11ef075d76:cdead15a6070"
   },
   "TøKīØ🦠🧠": {
-   "competitivo": "4713ef3c8800:3cb4ba14e995",
+   "competitivo": "efbb20ae5abb:46554cb000b1",
    "pais": "b4b498e46106:50160dcafbc4",
    "servidor": "33a2a9c66885:e0061cb5005e:18ae17",
    "temporada": "3b8fcbdab31b:fec25411e829"
@@ -1811,12 +1811,6 @@
   "UDDIZIM": {},
   "UL OFICIA": {
    "servidor": "641109d8f579:e0061cb5005e:15af16"
-  },
-  "VALLES-T": {
-   "competitivo": "2a28042132cf:3cb4ba14e995",
-   "pais": "33a9b27158bc:50160dcafbc4",
-   "servidor": "3cb203f6b164:e0061cb5005e:6203c7",
-   "temporada": "fb5254d0a7bd:fec25411e829"
   },
   "VIXOVERSO": {
    "servidor": "4573739e4f5f:e0061cb5005e:3a19ff"
@@ -1827,9 +1821,9 @@
   },
   "Valdoza": {},
   "Vandu": {
-   "competitivo": "a3ee8789c50f:3cb4ba14e995",
-   "pais": "9a4b25bb377b:50160dcafbc4",
-   "servidor": "6156d97d6e0d:e0061cb5005e:132451",
+   "competitivo": "4966a9948cd8:46554cb000b1",
+   "pais": "8b3483b3e189:9d66d497e41e",
+   "servidor": "8f3ff5691370:aba640c1146a:132451",
    "temporada": "bc9682cf841a:fec25411e829"
   },
   "Vanet": {
@@ -1837,7 +1831,7 @@
   },
   "Velatz": {},
   "Verc": {
-   "competitivo": "b7ce50e49086:3cb4ba14e995",
+   "competitivo": "5d4ae079e168:46554cb000b1",
    "pais": "541a9ac488e7:50160dcafbc4",
    "servidor": "77a6eaca5b0a:e0061cb5005e:35630e",
    "temporada": "0be328f8aa76:fec25411e829"
@@ -1846,26 +1840,26 @@
    "servidor": "679c18f5e7e5:e0061cb5005e:132451"
   },
   "Vilca": {
-   "competitivo": "47bcb116be51:3cb4ba14e995",
-   "pais": "b72b5378c6ed:50160dcafbc4",
+   "competitivo": "6240c0be7528:46554cb000b1",
+   "pais": "5fdafcf40caa:9d66d497e41e",
    "servidor": "6fb68934d2be:e0061cb5005e:35ef22",
-   "temporada": "31ee1c5302f3:fec25411e829"
+   "temporada": "0b55fbe838eb:cdead15a6070"
   },
   "Vize": {
    "servidor": "f878da4ea385:e0061cb5005e:5fd551"
   },
   "Vlade": {
-   "competitivo": "a01f069974f3:3cb4ba14e995",
-   "pais": "df5e687d3225:50160dcafbc4",
-   "servidor": "7cdc8db5add3:e0061cb5005e:132451"
+   "competitivo": "e24a407d08d1:46554cb000b1",
+   "pais": "7c9d8bad8fbb:9d66d497e41e",
+   "servidor": "b1c344658ce1:aba640c1146a:132451"
   },
   "Volg": {
-   "competitivo": "b4421f57fabc:3cb4ba14e995",
+   "competitivo": "99109ef18b0d:46554cb000b1",
    "pais": "d2d59b5adca7:50160dcafbc4",
    "servidor": "be84a134ea94:e0061cb5005e:effa76"
   },
   "Volk": {
-   "competitivo": "9a5e79c4ab50:3cb4ba14e995",
+   "competitivo": "85665b0bb552:46554cb000b1",
    "pais": "ad79e464f364:50160dcafbc4",
    "servidor": "52b0ef1e3506:e0061cb5005e:9e75da"
   },
@@ -1874,30 +1868,30 @@
    "servidor": "272f38d5acf6:e0061cb5005e:055f77"
   },
   "Walker": {
-   "competitivo": "e1ccf1b6ad8e:3cb4ba14e995",
-   "pais": "1746dde9ca7e:50160dcafbc4",
-   "servidor": "171a84a56a64:e0061cb5005e:43ab01",
+   "competitivo": "7b59f587dd2d:46554cb000b1",
+   "pais": "d761669d0c3d:9d66d497e41e",
+   "servidor": "a06c9e4343a1:aba640c1146a:43ab01",
    "temporada": "4aaa55320c09:fec25411e829"
   },
   "Warriorvid": {},
   "Xclusivo": {},
   "Xervoe": {
-   "competitivo": "f35e350f8cf2:3cb4ba14e995",
+   "competitivo": "c0ff2e2ebb7e:46554cb000b1",
    "pais": "2c20449ec0ea:50160dcafbc4",
    "servidor": "b0e4467ff100:e0061cb5005e:35630e",
-   "temporada": "749654fca026:fec25411e829"
+   "temporada": "e23917c7226b:cdead15a6070"
   },
   "Xhay": {
    "servidor": "49b45c822ffe:e0061cb5005e:15f20d"
   },
   "Xplicit": {
-   "competitivo": "2632dd18f03f:3cb4ba14e995",
-   "pais": "c73809e4c4aa:50160dcafbc4",
-   "servidor": "ddb05613d7ce:e0061cb5005e:cb7362"
+   "competitivo": "d03e121a3b8c:46554cb000b1",
+   "pais": "bcd963e56c3a:9d66d497e41e",
+   "servidor": "532ff51ca95d:aba640c1146a:cb7362"
   },
   "Xubaru": {
-   "competitivo": "d303db50386d:3cb4ba14e995",
-   "pais": "9e1c949ff31b:50160dcafbc4",
+   "competitivo": "f7bf8b1a0ccd:46554cb000b1",
+   "pais": "ee5f6c106b8c:9d66d497e41e",
    "servidor": "fa72d694cd1d:e0061cb5005e:0355fe",
    "temporada": "563083046056:fec25411e829"
   },
@@ -1905,16 +1899,16 @@
    "servidor": "8dc17afd358c:e0061cb5005e:980594"
   },
   "Yeyox": {
-   "competitivo": "00e6f13f11eb:3cb4ba14e995",
+   "competitivo": "7168669bbbd8:46554cb000b1",
    "pais": "1a610477e7c6:50160dcafbc4",
    "servidor": "0f8cd2299fd1:e0061cb5005e:ab8bbc"
   },
   "Yio": {},
   "Yor": {
-   "competitivo": "ecf1b204d3b7:3cb4ba14e995",
+   "competitivo": "5f15f729d8b2:46554cb000b1",
    "pais": "bf103f74d629:50160dcafbc4",
    "servidor": "bedb0bc04d6b:e0061cb5005e:ed8290",
-   "temporada": "defd3022109a:fec25411e829"
+   "temporada": "f379413c8eea:cdead15a6070"
   },
   "Young": {
    "servidor": "c2767db846db:e0061cb5005e:aa8232"
@@ -1923,12 +1917,12 @@
    "servidor": "b1642589051e:e0061cb5005e:403ba8"
   },
   "Zafka": {
-   "competitivo": "11b132d0eba2:3cb4ba14e995",
+   "competitivo": "a907d267ad98:46554cb000b1",
    "pais": "6c89b6d88647:50160dcafbc4",
    "servidor": "1b777a986941:e0061cb5005e:88f477"
   },
   "Zaik": {
-   "competitivo": "61816f204848:3cb4ba14e995",
+   "competitivo": "781b446d49a6:46554cb000b1",
    "servidor": "cb7ec6fe00c6:e0061cb5005e:fce3e6",
    "temporada": "d70eebc2c450:fec25411e829"
   },
@@ -1937,7 +1931,7 @@
   },
   "Zanet": {},
   "Zekha": {
-   "competitivo": "049a21238e6c:3cb4ba14e995",
+   "competitivo": "fa68eda1a71e:46554cb000b1",
    "pais": "7a70b33f6a5a:50160dcafbc4",
    "servidor": "aa17d92f1ff3:e0061cb5005e:77319d"
   },
@@ -1945,13 +1939,13 @@
    "servidor": "d2b86c0bbfd9:e0061cb5005e:055f77"
   },
   "Zeta": {
-   "competitivo": "fd4ff1efa69b:3cb4ba14e995",
-   "pais": "82a505877e81:50160dcafbc4",
-   "servidor": "fd41c77f0563:e0061cb5005e:aa8232",
-   "temporada": "afd9910c039b:fec25411e829"
+   "competitivo": "8241afa656d5:46554cb000b1",
+   "pais": "b578edd7f3ad:9d66d497e41e",
+   "servidor": "519ef559e995:aba640c1146a:aa8232",
+   "temporada": "fe2c861b15bd:cdead15a6070"
   },
   "Zetryko": {
-   "competitivo": "d5d8233fa9f6:3cb4ba14e995",
+   "competitivo": "6a7c04569fde:46554cb000b1",
    "pais": "b16fd90386ca:50160dcafbc4",
    "servidor": "c2e8d774dc01:e0061cb5005e:7ebcae",
    "temporada": "207fb65c84e4:fec25411e829"
@@ -1961,7 +1955,7 @@
    "servidor": "95727acb7156:e0061cb5005e:055f77"
   },
   "Zignos": {
-   "competitivo": "ea9e76617cc2:3cb4ba14e995",
+   "competitivo": "ab83ad681a6a:46554cb000b1",
    "pais": "db1381b08cab:50160dcafbc4",
    "servidor": "be06ed57c05f:e0061cb5005e:35630e",
    "temporada": "c841b670c2b3:fec25411e829"
@@ -1977,13 +1971,13 @@
    "servidor": "d83342c293c7:e0061cb5005e:055f77"
   },
   "araya": {
-   "competitivo": "b507f90d1ea4:3cb4ba14e995",
+   "competitivo": "a6aa9c1a7f9f:46554cb000b1",
    "pais": "ce9b1d690dfc:50160dcafbc4",
    "servidor": "3f5bacecbd25:e0061cb5005e:e4fbfa",
-   "temporada": "41e07bc82268:fec25411e829"
+   "temporada": "ea811f520506:cdead15a6070"
   },
   "arce": {
-   "competitivo": "e80a7d628323:3cb4ba14e995",
+   "competitivo": "02a55a7ea7ea:46554cb000b1",
    "pais": "5037179a69f4:50160dcafbc4",
    "servidor": "bdc52e38cc59:e0061cb5005e:43d041"
   },
@@ -1995,19 +1989,19 @@
    "servidor": "03cada35e488:e0061cb5005e:43d041"
   },
   "crakero": {
-   "competitivo": "e2bd7edd0abc:3cb4ba14e995",
+   "competitivo": "4279405e847c:46554cb000b1",
    "pais": "d4e8aaa929fa:50160dcafbc4",
    "servidor": "bfc4267977dc:e0061cb5005e:d6a988",
    "temporada": "f4d61718c87d:fec25411e829"
   },
   "doble h": {
-   "competitivo": "b5688f060fc7:3cb4ba14e995",
+   "competitivo": "3904ea866a26:46554cb000b1",
    "pais": "e222f4970790:50160dcafbc4",
    "servidor": "ae04c334d2ea:e0061cb5005e:e4fbfa",
-   "temporada": "3ffa08987e0a:fec25411e829"
+   "temporada": "f22f585c0a2b:cdead15a6070"
   },
   "dxg": {
-   "competitivo": "09e3a1c80f7d:3cb4ba14e995",
+   "competitivo": "1288e3f2266f:46554cb000b1",
    "pais": "b246513c6e6e:50160dcafbc4",
    "servidor": "efe83853a6b9:e0061cb5005e:d6a988",
    "temporada": "df534a27f460:fec25411e829"
@@ -2020,7 +2014,7 @@
   },
   "fleivaman": {},
   "gary": {
-   "competitivo": "41926e5c1135:3cb4ba14e995",
+   "competitivo": "85974d92d1f4:46554cb000b1",
    "pais": "9220286bd14a:50160dcafbc4",
    "servidor": "21b6eb6e4bf8:e0061cb5005e:80c07f"
   },
@@ -2032,7 +2026,7 @@
    "servidor": "17505f71e7f1:e0061cb5005e:3d792e"
   },
   "kerkoide": {
-   "competitivo": "48776f303aab:3cb4ba14e995",
+   "competitivo": "16fcf2dedab5:46554cb000b1",
    "pais": "33d5c9cc9a34:50160dcafbc4",
    "servidor": "f0f0eb65bc22:e0061cb5005e:86e978"
   },
@@ -2040,33 +2034,33 @@
   "luisito 🏆": {},
   "maldita enfermedad": {},
   "mats": {
-   "competitivo": "351f0baa5bb5:3cb4ba14e995",
+   "competitivo": "44bdeb6086ed:46554cb000b1",
    "pais": "e96f6eec6a76:50160dcafbc4",
    "servidor": "bdb80db7dc9f:e0061cb5005e:9b3a50",
    "temporada": "357b1631ab5c:fec25411e829"
   },
   "melomaniaco": {
-   "competitivo": "cd132e335d4d:3cb4ba14e995",
+   "competitivo": "07cf70842615:46554cb000b1",
    "pais": "a61695e5b35d:50160dcafbc4",
    "servidor": "56fdf16a019b:e0061cb5005e:fbc56e",
-   "temporada": "821fe940fb34:fec25411e829"
+   "temporada": "b67b85026235:cdead15a6070"
   },
   "melztube": {},
   "nemmii_as": {
-   "competitivo": "81be5b0b83ea:3cb4ba14e995",
+   "competitivo": "75c5e195f4d1:46554cb000b1",
    "pais": "184522c82c9f:50160dcafbc4",
    "servidor": "9c0cbbc0afe9:e0061cb5005e:c589ca",
-   "temporada": "8745c80e205d:fec25411e829"
+   "temporada": "343aaeb3e8c6:cdead15a6070"
   },
   "npk": {
-   "competitivo": "236b547ab409:3cb4ba14e995",
+   "competitivo": "28054a0e353e:46554cb000b1",
    "pais": "5a560cc643af:50160dcafbc4",
    "servidor": "4797ddac2f3a:e0061cb5005e:86e978"
   },
   "nueve7": {
-   "competitivo": "4722681d7827:3cb4ba14e995",
-   "pais": "368d2f46b1c7:50160dcafbc4",
-   "servidor": "6c60e1f3b50e:e0061cb5005e:62e67f"
+   "competitivo": "d9f64023ceb7:46554cb000b1",
+   "pais": "71453a95425e:9d66d497e41e",
+   "servidor": "3e344ad5f5f7:aba640c1146a:62e67f"
   },
   "pan1010101": {
    "servidor": "fa52986bc60f:e0061cb5005e:fbc56e"
@@ -2077,16 +2071,16 @@
   },
   "rayito": {},
   "rodrilp": {
-   "competitivo": "3a4f91f08bf5:3cb4ba14e995",
+   "competitivo": "558d82d08fc5:46554cb000b1",
    "pais": "a33bf51bde54:50160dcafbc4",
    "servidor": "b5bb6127c2f3:e0061cb5005e:9b3a50",
-   "temporada": "a6a472223213:fec25411e829"
+   "temporada": "407d10e10f15:cdead15a6070"
   },
   "romeo": {
-   "competitivo": "8c07c0924a4f:3cb4ba14e995",
+   "competitivo": "ba6429ed7b92:46554cb000b1",
    "pais": "c8696a7b748c:50160dcafbc4",
    "servidor": "9e468c629937:e0061cb5005e:bcd566",
-   "temporada": "faf86d6ecf6b:fec25411e829"
+   "temporada": "1cfeb668288c:cdead15a6070"
   },
   "santiago_yv": {
    "servidor": "87fd7a3fbf0f:e0061cb5005e:aac4a1"
@@ -2099,13 +2093,13 @@
   },
   "stormed": {},
   "tito calderon": {
-   "competitivo": "1a4612471497:3cb4ba14e995",
+   "competitivo": "cdedb57e71e3:46554cb000b1",
    "pais": "ae9e523c1643:50160dcafbc4",
    "servidor": "bb0e8c512fec:e0061cb5005e:7dad65"
   },
   "tkl": {},
   "tormen": {
-   "competitivo": "c611368c2ed8:3cb4ba14e995",
+   "competitivo": "48bd17e08c8d:46554cb000b1",
    "pais": "aae50c63a0a8:50160dcafbc4",
    "servidor": "6b06760f8b10:e0061cb5005e:94d46a"
   },
@@ -2114,7 +2108,7 @@
   },
   "xz": {},
   "yinn": {
-   "competitivo": "2a716785a698:3cb4ba14e995",
+   "competitivo": "312e5126f35e:46554cb000b1",
    "pais": "a8794e2fef09:50160dcafbc4",
    "servidor": "160ed512f259:e0061cb5005e:bcd566",
    "temporada": "ad1da1ef97e6:fec25411e829"
@@ -2126,5 +2120,5 @@
    "servidor": "7f8885a35a6d:e0061cb5005e:71cf5a"
   }
  },
- "cuando": "2026-11-17T02:37:16+00:00"
+ "cuando": "2026-11-17T03:30:17+00:00"
 }
