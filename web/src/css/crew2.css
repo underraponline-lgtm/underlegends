@@ -1,0 +1,139 @@
+/* 🛡️ LA PÁGINA DE UNA CREW Y SUS AJUSTES (16/11/2026, la mezcla D; crew2.jsx). La portada, la lista de gente y «las
+   otras» son las de entidad2.css; acá, lo nuevo: el tier sobre el escudo, la pirámide, la semana, lo que pasó y los
+   Ajustes con su menú. Más negro que blanco, con blanco donde va lo importante (tu fila, la franja, la sección elegida).
+   Los colores de los tiers vienen del payload, en línea: ninguno vive acá */
+
+/* el escudo con su tier debajo (el nivel sobre el escudo de Clash of Clans) */
+.k2-emb{position:relative;display:block}
+.k2-emb>.tier-chip{position:absolute;left:50%;bottom:-12px;transform:translateX(-50%);white-space:nowrap}
+.k2-chips{display:flex;flex-wrap:wrap;align-items:center;gap:6px}
+.k2-sig{font:900 17px/1 Archivo,sans-serif;font-stretch:120%;letter-spacing:.02em;color:var(--esc-gris,#B9B9BE)}
+.k2-chip{display:inline-flex;align-items:center;min-height:28px;padding:0 9px;border:2px solid var(--esc-suave,#3A3A3E);
+  font:700 14px/1 "Barlow Condensed",sans-serif;letter-spacing:.05em;text-transform:uppercase;color:var(--esc-tinta,#F6F6F6)}
+.k2-chip.ok{border-color:var(--verde);color:var(--verde)}
+.k2-lema{margin:8px 0 0;font:italic 500 17px/1.35 Archivo,sans-serif;color:var(--esc-tinta,#F6F6F6);max-width:56ch}
+
+.k2-s{padding-top:6px}
+.k2-dos{margin-top:4px}
+.k2-bloque{display:grid;gap:10px}
+.k2-tit{display:grid;gap:4px;border-top:4px solid var(--tinta);padding-top:9px}
+.k2-tit h2{margin:0;font:900 21px/1.05 Archivo,sans-serif;font-stretch:118%;text-transform:uppercase}
+.k2-tit small{font:700 14px/1.25 "Barlow Condensed",sans-serif;letter-spacing:.05em;text-transform:uppercase;color:var(--gris)}
+.k2-nota{margin:0;font:500 14px/1.4 Archivo,sans-serif;color:var(--gris)}
+.k2-caja{display:grid;gap:10px;padding:14px;border:2px solid var(--suave);background:var(--caja)}
+
+/* 👑 la pirámide */
+.k2-pir{display:grid;gap:12px;justify-items:center;padding:16px 10px;border:2px solid var(--suave);background:var(--caja)}
+.k2-niv{display:flex;flex-wrap:wrap;justify-content:center;gap:10px 14px;margin:0;padding:0;list-style:none}
+.k2-niv li a{display:grid;justify-items:center;gap:4px;width:76px;color:inherit;text-decoration:none;text-align:center}
+.k2-niv li b{font:800 13px/1.15 Archivo,sans-serif;overflow-wrap:anywhere}
+.k2-niv li small{font:700 13px/1 "Barlow Condensed",sans-serif;letter-spacing:.04em;color:var(--gris)}
+.k2-niv .k2-pc{width:46px;height:46px;font:900 16px/1 Archivo,sans-serif}
+.k2-niv.lider li a{width:120px}
+.k2-niv.lider .k2-pc{width:78px;height:78px;border:3px solid #E8B923;font-size:24px}
+.k2-niv.colider .k2-pc{width:58px;height:58px;border:3px solid var(--magenta)}
+.k2-niv.veterano .k2-pc{border:3px solid var(--verde)}
+.k2-corona{font:700 13px/1 "Barlow Condensed",sans-serif;letter-spacing:.08em;color:#B8860B}
+.noche .k2-corona{color:#E8B923}
+
+/* el aporte, debajo del nombre en la lista de gente */
+.k2-aporte{display:flex;align-items:center;gap:6px;margin-top:3px;font:700 13px/1 "Barlow Condensed",sans-serif;letter-spacing:.03em;color:var(--gris)}
+.k2-aporte i{display:block;height:5px;min-width:3px;max-width:70px;flex:none}
+
+/* ⏳ esta semana */
+.k2-sem{border-color:var(--tier,var(--suave))}
+.k2-cuenta{justify-self:start;font:900 18px/1 Archivo,sans-serif;font-stretch:120%;background:var(--magenta);color:#fff;padding:8px 11px;font-variant-numeric:tabular-nums}
+.k2-fila{display:flex;align-items:center;gap:12px}
+.k2-fila>span{display:grid;gap:3px}
+.k2-gr{font:900 26px/1 Archivo,sans-serif;font-stretch:120%;font-variant-numeric:tabular-nums}
+.k2-fila small{font:700 14px/1.2 "Barlow Condensed",sans-serif;letter-spacing:.04em;color:var(--gris)}
+.k2-barra{position:relative;height:14px;background:var(--suave)}
+.k2-barra u{position:absolute;inset:0 auto 0 0;background:var(--verde)}
+.k2-barra em{position:absolute;top:-5px;bottom:-5px;width:3px;margin-left:-1px;background:var(--magenta)}
+.k2-extremos{display:flex;flex-wrap:wrap;justify-content:space-between;gap:6px;font:700 14px/1.3 "Barlow Condensed",sans-serif;letter-spacing:.03em;color:var(--gris)}
+.k2-extremos>span{display:inline-flex;align-items:center;gap:6px}
+.k2-zona{margin:0;padding-left:10px;border-left:4px solid var(--verde);font:500 15px/1.4 Archivo,sans-serif}
+.k2-aviso{margin:0;padding:10px 12px;border:2px solid var(--magenta);font:600 14px/1.4 Archivo,sans-serif}
+.k2-jug{display:grid;gap:6px}
+.k2-jug>span:first-child{font:700 13px/1 "Barlow Condensed",sans-serif;letter-spacing:.07em;text-transform:uppercase;color:var(--gris)}
+.k2-caras{display:flex;flex-wrap:wrap}
+.k2-caras a{margin-left:-6px}.k2-caras a:first-child{margin-left:0}
+.k2-c{width:32px;height:32px;border:2px solid var(--caja);font:900 12px/1 Archivo,sans-serif}
+
+/* 🏅 representantes y 📜 lo que pasó */
+.k2-reps{display:flex;flex-wrap:wrap;gap:8px 14px;margin:0;padding:0;list-style:none}
+.k2-reps a{display:flex;align-items:center;gap:8px;color:inherit;text-decoration:none}
+.k2-reps b{font:700 14px/1.2 Archivo,sans-serif}
+.k2-feed{display:grid;margin:0;padding:0;list-style:none}
+.k2-feed li{display:flex;align-items:center;gap:10px;padding:9px 0;border-top:1px solid var(--suave)}
+.k2-feed li:first-child{border-top:0}
+.k2-feed i{flex:none;width:10px;height:10px;transform:rotate(45deg)}
+.k2-feed span{display:grid;gap:2px}
+.k2-feed b{font:700 15px/1.25 Archivo,sans-serif}
+.k2-feed small{font:700 13px/1 "Barlow Condensed",sans-serif;letter-spacing:.04em;color:var(--gris)}
+
+/* ═══ ⚙️ LOS AJUSTES ═══ */
+.k2-aj-cab{grid-template-columns:minmax(0,1fr);align-items:end}
+.k2-aj-id{display:flex;align-items:center;gap:14px;min-width:0}
+.k2-aj-id>span{display:grid;gap:8px;justify-items:start;min-width:0}
+.k2-aj-id .crw-logo{width:64px;height:64px}
+.k2-aj{display:grid;gap:18px;padding:16px 16px 36px}
+.k2-franja{display:flex;flex-wrap:wrap;align-items:center;gap:10px 16px;padding:14px 16px;background:#F6F6F6;color:#030304;
+  border:2px solid #F6F6F6;box-shadow:6px 6px 0 var(--verde)}
+.k2-franja>span{display:grid;gap:3px;flex:1 1 240px;min-width:0}
+.k2-franja small{font:700 13px/1 "Barlow Condensed",sans-serif;letter-spacing:.07em;color:#55554F}
+.k2-franja b{font:900 18px/1.15 Archivo,sans-serif;font-stretch:110%}
+.k2-franja>span>span{font:500 14px/1.4 Archivo,sans-serif;color:#3A3A36}
+.k2-franja .btn.negro{background:#030304;color:#F6F6F6;border-color:#030304}
+.k2-aj-g{display:grid;gap:18px;align-items:start}
+.k2-aj-m{display:grid;gap:4px}
+.k2-aj-m a{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:12px 14px;border:2px solid var(--suave);
+  background:var(--fondo);color:var(--tinta);text-decoration:none}
+.k2-aj-m a>span{display:grid;gap:3px;min-width:0}
+.k2-aj-m a b{font:800 15px/1.15 Archivo,sans-serif}
+.k2-aj-m a small{font:700 13px/1.2 "Barlow Condensed",sans-serif;letter-spacing:.04em;color:var(--gris)}
+.k2-aj-m a i{font:900 18px/1 Archivo,sans-serif;font-style:normal}
+.k2-aj-m a.on{background:var(--tinta);border-color:var(--tinta);color:var(--fondo)}
+.k2-aj-m a.on small{color:inherit;opacity:.75}
+.k2-aj-sec{display:grid;gap:12px;min-width:0}
+.k2-aj-sec .cw-panel{margin:0}
+.k2-volver{justify-self:start;font:700 15px/1 Archivo,sans-serif;color:var(--tinta);text-decoration:none}
+/* 📱 en el celular, el menú o la sección: nunca las dos apiladas */
+.k2-aj:not(.con-sec) .k2-aj-sec{display:none}
+.k2-aj.con-sec .k2-aj-m{display:none}
+.k2-perm-w{overflow-x:auto}
+.k2-perm{width:100%;min-width:420px;border-collapse:collapse}
+.k2-perm th,.k2-perm td{padding:9px 6px;border-bottom:1px solid var(--suave);text-align:center;font:700 14px/1.25 "Barlow Condensed",sans-serif;letter-spacing:.03em}
+.k2-perm th[scope="row"]{text-align:left;font-weight:600;letter-spacing:.02em}
+.k2-perm thead th{color:var(--gris);text-transform:uppercase}
+.k2-perm thead th.yo{color:var(--tinta);box-shadow:inset 0 -3px 0 var(--verde)}
+.k2-perm td.si{color:var(--verde);font-size:17px}
+.k2-perm td.no{color:var(--gris)}
+.k2-perm .sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+
+@media (min-width: 900px){
+  .app .k2-aj-cab{grid-template-columns:minmax(0,1fr) auto}
+  .app .k2-aj{padding:22px var(--gut) 40px}
+  .app .k2-aj-g{grid-template-columns:270px minmax(0,1fr);gap:28px}
+  .app .k2-aj-m{position:sticky;top:76px}
+  .app .k2-aj .k2-aj-sec,.app .k2-aj .k2-aj-m{display:grid}
+  .app .k2-volver{display:none}
+}
+
+/* arreglos medidos (16/11/2026): el tier se cortaba en el borde redondo del emblema; el número del anillo era el de 120 px;
+   y un escudo armado en un círculo con `padding:11%` sobre grid quedaba de un punto (lo mismo que ranking.css, 13/11) */
+.ent-emb:has(.k2-emb){overflow:visible}
+.k2-emb{width:100%;height:100%}
+.k2-emb>.ent-crew{border-radius:50%}
+.ent-crew.con-esc{padding:14%;box-sizing:border-box;background:#121214}
+.ent-o-crew.con-esc{padding:6px;box-sizing:border-box}
+.k2-fila .anillo-in b{font-size:15px}
+.k2-fila .anillo-in small{display:none}
+/* en el celular, «1.507.970» partía el último cero al renglón de abajo (medido a 390 px) */
+@media (max-width: 899px){.ent-cab:has(.k2-emb) .ent-num dd{font-size:22px;letter-spacing:-.01em}}
+/* la cabecera de Ajustes no carga crews.css: el escudo con su tamaño propio (en el celular salía a todo lo ancho) */
+.k2-aj-id .crw-logo{flex:none;display:grid;place-items:center;width:64px;height:64px;border-radius:50%;overflow:hidden;background:#030304}
+.k2-aj-id .crw-logo img{width:100%;height:100%;object-fit:cover}
+.k2-aj-id .crw-logo.con-esc{background:transparent;border-radius:0;overflow:visible;padding:0}
+/* en el celular, «¿Cómo funciona?» (arriba a la derecha) tapaba la etiqueta de la cabecera */
+@media (max-width: 899px){.k2-aj-cab,.ent-cab:has(.k2-emb){padding-top:58px}}

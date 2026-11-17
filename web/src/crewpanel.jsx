@@ -400,7 +400,10 @@ function LinkRapido({ c, mia, va, hacer }) {
 }
 
 // ── el panel de los de adentro ───────────────────────────────────────────────────────────────────────────────────────
-export function PanelCrew({ liga, c }) {
+// 🧩 `solo`: una sección suelta, para la página de Ajustes (el remake del 16/11/2026: «consejos», «yo», «pedidos»,
+// «invitar», «gente», «reps», «crew» o «entrada»). Sin `solo`, todo apilado como antes. `onIr(seccion)`: adónde lleva un
+// consejo cuando cada sección es su propia pantalla
+export function PanelCrew({ liga, c, solo, onIr }) {
   const { mia, todas } = useCrews();
   const { va, msg, hacer, setMsg } = useAccion();
   const [q, setQ] = useState('');
@@ -426,7 +429,10 @@ export function PanelCrew({ liga, c }) {
   const llena = gente.length >= ((todas && todas.max) || 20);
   const sug = invita && !llena ? sugeridosCrew(liga, c, mia) : [];
   // 💡 adónde lleva cada consejo: a su bloque (en el shadow root, por eso se busca desde el botón) o la acción directa
+  const ve = (x) => !solo || solo === x;
   const ir = (a, e) => {
+    const SEC = { invitar: 'invitar', link: 'invitar', pedidos: 'pedidos', reps: 'reps', req: 'entrada' };
+    if (onIr && SEC[a]) { onIr(SEC[a]); if (a === 'invitar') setTimeout(() => { if (busca.current) busca.current.focus({ preventScroll: true }); }, 300); return; }
     const raiz = e && e.currentTarget ? e.currentTarget.getRootNode() : document;
     const a_ = (id) => { const el = raiz.getElementById ? raiz.getElementById(id) : null; if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' }); return el; };
     if (a === 'invitar') { a_('cw-invitar'); setTimeout(() => { if (busca.current) busca.current.focus({ preventScroll: true }); }, 400); }
@@ -444,18 +450,19 @@ export function PanelCrew({ liga, c }) {
   };
   return (
     <section className="cw-panel" aria-label="Tu crew">
-      {manda ? <ConsejosCrew xs={consejosCrew(liga, c, mia, liga.d.crews_tiers && liga.d.crews_tiers.nombres ? liga.d.crews_tiers : null, todas)} ir={ir} /> : null}
-      <div className="cw-yo">
+      {manda && ve('consejos') ? <ConsejosCrew xs={consejosCrew(liga, c, mia, liga.d.crews_tiers && liga.d.crews_tiers.nombres ? liga.d.crews_tiers : null, todas)} ir={ir} /> : null}
+      {ve('yo') ? <div className="cw-yo">
         <span>Eres <RolCrew rol={rol} /> de <b>{limpio(c.nombre)}</b></span>
         {rol === 'lider' && gente.length > 1 ? <small>Para irte, primero pásale el liderazgo a alguien.</small> : (
           <DosToques className="btn borde2 chico" confirmar={rol === 'lider' ? '¿Cerrar la crew?' : '¿Seguro? Esperas 7 días para otra'}
             disabled={va} onClick={() => hacer({ accion: 'salir' }, rol === 'lider' ? 'La crew se cerró.' : 'Saliste de la crew.')}>
             {rol === 'lider' ? 'Cerrar la crew' : 'Salir de la crew'}</DosToques>
         )}
-      </div>
+      </div> : null}
       {msg ? <p role="status" className="cw-msg">{msg}</p> : null}
 
-      {manda && (mia.pedidos || []).length ? (
+      {manda && solo === 'pedidos' && !(mia.pedidos || []).length ? <p className="cw-nota">Nadie pidió entrar. Cuando alguien lo pida, aparece acá y te llega a la campana.</p> : null}
+      {manda && ve('pedidos') && (mia.pedidos || []).length ? (
         <div className="cw-bloque" id="cw-pedidos">
           <h3 className="cw-h">Quieren entrar · {mia.pedidos.length}</h3>
           <ul className="cw-lista">{mia.pedidos.map((p) => (
@@ -471,7 +478,7 @@ export function PanelCrew({ liga, c }) {
         </div>
       ) : null}
 
-      {invita ? (
+      {invita && ve('invitar') ? (
         <div className="cw-bloque" id="cw-invitar">
           <h3 className="cw-h">Invitar</h3>
           {llena ? <p className="cw-nota">La crew está llena.</p> : (
@@ -523,9 +530,9 @@ export function PanelCrew({ liga, c }) {
         </div>
       ) : null}
 
-      {invita ? <details className="cw-mas-links"><summary>Más links: para 1, 5 o 10 personas</summary><LinksCrew c={c} mia={mia} va={va} hacer={hacer} /></details> : null}
+      {invita && ve('invitar') ? <details className="cw-mas-links"><summary>Más links: para 1, 5 o 10 personas</summary><LinksCrew c={c} mia={mia} va={va} hacer={hacer} /></details> : null}
 
-      {manda ? (
+      {manda && ve('gente') ? (
         <div className="cw-bloque">
           <h3 className="cw-h">La gente</h3>
           {gente.some((g) => g[3]) ? (
@@ -555,7 +562,7 @@ export function PanelCrew({ liga, c }) {
         </div>
       ) : null}
 
-      {manda ? (
+      {manda && ve('reps') ? (
         <div className="cw-bloque" id="cw-reps">
           <h3 className="cw-h">Quiénes los representan · hasta {maxReps}</h3>
           <p className="cw-nota">Cuando el ranking de crews se arma con los representantes, cuentan sólo los puntos de estos.</p>
@@ -572,7 +579,7 @@ export function PanelCrew({ liga, c }) {
         </div>
       ) : null}
 
-      {rol === 'lider' ? <AjustesLider c={c} va={va} hacer={hacer} setMsg={setMsg} pend={mia.logo_pend} mia={mia} /> : null}
+      {rol === 'lider' && (!solo || solo === 'crew' || solo === 'entrada') ? <AjustesLider c={c} va={va} hacer={hacer} setMsg={setMsg} pend={mia.logo_pend} mia={mia} parte={solo} /> : null}
     </section>
   );
 }
@@ -584,7 +591,7 @@ function Cuesta({ precio, saldo }) {
   return <>Cuesta <b>{num(precio)} Puntos de Tienda</b>{typeof saldo === 'number' ? <> (tienes {num(saldo)})</> : null}.</>;
 }
 
-function AjustesLider({ c, va, hacer, setMsg, pend, mia }) {
+function AjustesLider({ c, va, hacer, setMsg, pend, mia, parte }) {
   const pNombre = (mia && mia.precio_nombre) || 0, pLogo = (mia && mia.precio_logo) || 0;
   const saldo = mia && typeof mia.saldo === 'number' ? mia.saldo : null;
   const corto = (p) => saldo !== null && p > saldo;
@@ -598,8 +605,10 @@ function AjustesLider({ c, va, hacer, setMsg, pend, mia }) {
   const [esc, setEsc] = useState(() => leerEscudo(c.logo) || delNombre(c.nombre));
   const [rg, setRg] = useState((c.req && c.req.rg) || '');
   const [ev, setEv] = useState(String((c.req && c.req.ev) || 0));
+  const verE = !parte || parte === 'entrada', verC = !parte || parte === 'crew';
   return (
     <div className="cw-bloque">
+      {verE ? <>
       <h3 className="cw-h">Cómo se entra</h3>
       <div className="cw-reps">{Object.entries(ENTRADA_NOMBRE).map(([k, t]) => (
         <label key={k} className={'cw-rep' + (c.entrada === k ? ' on' : '')}>
@@ -622,6 +631,8 @@ function AjustesLider({ c, va, hacer, setMsg, pend, mia }) {
         <button type="submit" className="btn borde2 chico" disabled={va}>Guardar</button>
       </form>
       <small className="cw-nota">Se mira cuando alguien pide entrar o se une a una abierta. A quien invitas, entra igual. Cambiarlo es gratis.</small>
+      </> : null}
+      {verC ? <>
       <h3 className="cw-h">El nombre</h3>
       <form className="cw-fila" onSubmit={(e) => {
         e.preventDefault();
@@ -666,6 +677,7 @@ function AjustesLider({ c, va, hacer, setMsg, pend, mia }) {
           aria-label="La descripción de la crew" />
         <button type="submit" className="btn borde2 chico" disabled={va}>Guardar</button>
       </form>
+      </> : null}
     </div>
   );
 }

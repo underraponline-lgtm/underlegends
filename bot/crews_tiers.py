@@ -219,11 +219,25 @@ def para_web(estado, vivas):
     """Lo que viaja a la página: las reglas, el tier de cada crew y cómo va su semana."""
     act = actual(estado, vivas) if vivas else {}
     ult = (estado.get('ult') or {}).get('crews') or {}
+    ids = {c.get('id') for c in (vivas or {}).get('crews') or []}
+    # 🧩 el remake de las crews (16/11/2026, la mezcla D): lo que ya se calculaba acá y no viajaba. Los puntos de la semana
+    # de cada uno (las «Estrellas de la semana», sólo quien sumó), los de la semana pasada de cada crew (al final de cada
+    # fila de `crews`, después de `tierAntes`: quien lee las cuatro primeras no se entera) y los cambios de tier, para «Lo
+    # que pasó». Sin ningún número nuevo: son la foto de las divisiones y el cierre de los lunes
+    pts = estado.get('pts') or {}
+    gente = {}
+    for c in (vivas or {}).get('crews') or []:
+        xs = {g[0]: int(pts.get(g[0], 0) or 0) for g in c.get('gente') or [] if int(pts.get(g[0], 0) or 0) > 0}
+        if xs:
+            gente[c.get('id')] = xs
     return {
         'nombres': [t[0] for t in TIERS], 'colores': [t[1] for t in TIERS], 'sube': list(SUBE), 'baja': list(BAJA),
         'juegan': list(JUEGAN), 'tarjeta': TARJETA, 'sem': estado.get('sem') or '',
         'crews': {cid: [int((estado.get('tier') or {}).get(cid, 0))] + (act.get(cid) or [0, 0])
-                  + [((ult.get(cid) or {}).get('de', None))] for cid in {c.get('id') for c in (vivas or {}).get('crews') or []}},
+                  + [((ult.get(cid) or {}).get('de', None)), int((ult.get(cid) or {}).get('pts', 0) or 0)] for cid in ids},
+        'gente': gente,
+        'ult': (estado.get('ult') or {}).get('sem') or '',
+        'hist': [[h[0], h[1], h[2], h[3]] for h in (estado.get('hist') or []) if len(h) >= 4 and h[1] in ids][:40],
     }
 
 

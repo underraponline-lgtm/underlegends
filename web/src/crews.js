@@ -255,3 +255,20 @@ export function ptsSemana(liga) {
   SEM.set(D, m);
   return m;
 }
+
+// ⏳ EL CIERRE DE LA SEMANA DE LAS CREWS (el remake del 16/11/2026): el lunes a las 11 AM (hora del este). Sale de las
+// divisiones (`div.fin`, el mismo instante que usa el tier) o, sin eso, del lunes que arrancó la semana + 7 días
+export function cierreCrews(liga) {
+  const D = liga.d.div;
+  if (D && D.fin) return new Date(D.fin).getTime();
+  const T = liga.d.crews_tiers;
+  if (T && T.sem) return new Date(T.sem + 'T16:00:00Z').getTime() + 7 * DIA_C;
+  return 0;
+}
+/** «6 d 12 h», «5 h 20 min», «40 min»: lo que falta para el cierre */
+export function faltaCierre(ms, ahora = Date.now()) {
+  const x = ms - ahora;
+  if (!(x > 0)) return 'cerrando';
+  const d = Math.floor(x / DIA_C), h = Math.floor((x % DIA_C) / 3600000), m = Math.floor((x % 3600000) / 60000);
+  return d ? d + ' d ' + h + ' h' : h ? h + ' h ' + m + ' min' : Math.max(1, m) + ' min';
+}

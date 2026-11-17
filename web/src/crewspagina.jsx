@@ -20,7 +20,7 @@ import { limpio, norm, num } from './liga.js';
 import { Bandera, Cara, ConMas, Vacio, accion } from './piezas.jsx';
 import { CrewCirculo } from './arriba.jsx';
 import { escudoDe, tinta } from './escudo.jsx';
-import { accionCrew, armarCrews as armar, errorCrew, useCrews } from './crews.js';
+import { accionCrew, armarCrews as armar, cierreCrews, errorCrew, faltaCierre, useCrews } from './crews.js';
 import { Anillo, CrearCrew, EntrarDeNuevo, TierChip, consejosCrew } from './crewpanel.jsx';
 import CSS_PAGINA from './css/crews.css?inline';
 import { usarCss } from './css.js';
@@ -40,6 +40,11 @@ const FILTROS = [['', 'Todas'], ['lugar', 'Te aceptan'], ['abiertas', 'Abiertas'
 const ORDENES = [['reco', 'Para ti'], ['activas', 'Más activas esta semana'], ['tier', 'Tier más alto'], ['gente', 'Más gente'],
   ['puntos', 'Más puntos en la temporada'], ['nuevas', 'Las más nuevas']];
 
+// 🧩 EL REMAKE DE LAS CREWS (16/11/2026, la mezcla D de la maqueta privada BEZkuXnUvV98jPMy6NN7KA). Dlx: «una mezcla, me
+// gusta más el club para las crews… pero hay cosas que me gustan de ambas», y a la v3: «Fundar una crew que aparezca más
+// arriba». La lista junta el buscador del CLUB (la vista previa al costado, como las ligas de FC Mobile, y el verbo en el
+// botón: Unirme / Pedir entrar, como las alianzas de Whiteout Survival) con la SEMANA de la LIGA (la tabla de cada tier
+// con la raya de bajar y la cuenta atrás, como las ligas de Duolingo; la semana pasada al lado, como los clubs de Strava).
 export function CrewsPagina({ liga, dc, qs }) {
   const { todas, mia, miaNo } = useCrews();
   const [filElegido, setFil] = useState(null);
@@ -49,6 +54,8 @@ export function CrewsPagina({ liga, dc, qs }) {
   const [abierto, setAbierto] = useState(() => /(?:^|&)armar=1/.test(qs || ''));
   const [orden, setOrden] = useState('reco');
   const [q, setQ] = useState('');
+  const [selId, setSel] = useState(null);
+  const [como, setComo] = useState(false);
   const T = liga.d.crews_tiers && liga.d.crews_tiers.nombres ? liga.d.crews_tiers : null;
   const xs = useMemo(() => armar(liga, todas, mia), [liga, todas, mia]);
   const yo = liga.yo;
@@ -69,11 +76,8 @@ export function CrewsPagina({ liga, dc, qs }) {
   const mias = xs.find((x) => x.mia);
   const filtros = FILTROS.filter(([v]) => (v === 'servidor' ? yo && yo.sv : v === 'pais' ? yo && yo.cc : v === 'conozco' ? (liga.sigue || []).length : true));
   const enCrews = xs.reduce((a, x) => a + x.ks.length, 0);
-  const aceptan = xs.filter((x) => !x.mia && x.puede).length;
   const jugaronSem = xs.filter((x) => x.jugaron > 0).length;
-  // ⭐ PARA TI (Dlx, 19/10/2026: «crews recomendadas para que te unas»): el MAZO del remake (29/10/2026). Las que te
-  // aceptan, vivas, con gente de tu servidor, de tu país o que sigues primero (`reco` de crews.js). Sin crew todavía
-  // —o sin cuenta—, para que se vea qué hay; con crew, no hace falta
+  // ⭐ PARA TI: el MAZO del remake (29/10/2026), sin crew todavía —o sin cuenta—, para que se vea qué hay
   const buscando = !!(dc && mia && mia.de && !mia.crew);
   const sinCrew = !mias;
   const reco = sinCrew ? xs.filter((x) => !x.mia && x.ks.length >= 2 && (x.puede || !dc) && x.act > 0)
@@ -81,59 +85,40 @@ export function CrewsPagina({ liga, dc, qs }) {
   // 🙋 «SER EL 2.º»: de las 29 crews, 16 tenían una sola persona y en 12 su fundador jugó esa semana. Gente activa, sola
   const solas = sinCrew ? xs.filter((x) => !x.mia && x.ks.length === 1 && x.act >= 2 && (x.puede || !dc)).sort((a, b) => b.reco - a.reco).slice(0, 10) : [];
   const fundar = () => { setAbierto(true); setTimeout(() => irA('crw-tu'), 30); };
+  // 👆 la vista previa: la que tocaste, o la primera de la lista
+  const sel = lista.find((x) => x.c.id === selId) || lista[0] || null;
+  const cierre = cierreCrews(liga);
+  const puedeFundar = dc && mia && mia.de && !mia.crew;
   return (
     <>
       <div data-tuto="crw-cab" className="escena pub-esc crw-esc" style={{ '--mo-c': '#E41373', '--mo-o': 0.85 }}>
-        <section className="pub-cab crw-cab">
-          <span className="tag">CREWS · {liga.temp}</span>
-          <h1 className="hero-ev largo">Crews</h1>
-          <p className="hero-p">Funda la tuya o súmate a una. Cada lunes, como en el fútbol, cada crew sube, baja o se mantiene de tier por lo que jugó su gente.</p>
-          {jugaronSem ? <p className="crw-vivo"><i aria-hidden="true" />{jugaronSem === 1 ? '1 crew ya jugó' : jugaronSem + ' crews ya jugaron'} esta semana · cierra el lunes a las 11 AM</p> : null}
-          <div className="crw-cta">
-            {!dc || (!mia && miaNo) ? <button type="button" className="btn verde" onClick={accion.entrar}>{dc ? 'Entrar de nuevo con Discord' : 'Entrar con Discord'}</button>
-              : mias ? <a className="btn verde" href={enlaceCrew(mias.c.id)}>Ir a mi crew</a>
-                : mia && !mia.de ? <a className="btn verde" href="#/cuenta/verificar">Verificarme para entrar</a>
-                  : <>
-                    <button type="button" className="btn verde" onClick={() => irA(reco.length ? 'crw-mazo' : 'crw-todas')}>⚡ Encontrar mi crew</button>
-                    <button type="button" className="btn osc" onClick={fundar}>Fundar una · {num((mia && mia.precio) ?? 2500)}</button>
-                  </>}
+        <section className="pub-cab crw-cab crw-cab2">
+          <div className="crw-cab-tx">
+            <span className="tag">CREWS · {liga.temp}</span>
+            <h1 className="hero-ev largo">Crews</h1>
+            <p className="hero-p">{num(xs.length)} crews · {num(enCrews)} raperos · los tiers suben y bajan cada lunes{jugaronSem ? ' · ' + (jugaronSem === 1 ? '1 ya jugó' : jugaronSem + ' ya jugaron') + ' esta semana' : ''}</p>
+            {/* ⬆️ «Fundar una crew» arriba de todo (Dlx, 16/11/2026: «que aparezca más arriba») */}
+            <div className="crw-cta">
+              {!dc || (!mia && miaNo) ? <button type="button" className="btn verde" onClick={accion.entrar}>{dc ? 'Entrar de nuevo con Discord' : 'Entrar con Discord'}</button>
+                : mia && !mia.de ? <a className="btn verde" href="#/cuenta/verificar">Verificarme para fundar o entrar</a>
+                  : puedeFundar ? <button type="button" className="btn verde" onClick={fundar}>Fundar una crew · {num((mia && mia.precio) ?? 2500)} Puntos</button> : null}
+              {buscando && reco.length ? <button type="button" className="btn osc" onClick={() => irA('crw-mazo')}>⚡ Encontrar mi crew</button> : null}
+              <a className="btn osc" href="#/ranking/crews">Ranking de crews</a>
+            </div>
           </div>
-          <ul className="crw-num">
-            <li><b>{num(xs.length)}</b><span>crews</span></li>
-            <li><b>{num(enCrews)}</b><span>raperos en crews</span></li>
-            <li><b>{num(aceptan)}</b><span>{dc ? 'te aceptan' : 'aceptan gente'}</span></li>
-          </ul>
+          {cierre ? <div className="crw-cierre"><span>Cierra el lunes · 11 AM</span><b>{faltaCierre(cierre, liga.ahora)}</b></div> : null}
         </section>
       </div>
-      <div className="pub-t2 crw-t2">
-        <main className="pub-feed crw-main">
-          <TuCrew liga={liga} dc={dc} mia={mia} miaNo={miaNo} x={mias} T={T} armar={abierto} setArmar={setAbierto} />
-          {reco.length ? (
-            <section className="crw-sec" id="crw-mazo" aria-labelledby="crw-mazo-h">
-              <h2 className="crw-h2" id="crw-mazo-h">Para ti</h2>
-              <p className="crw-tu-s">{buscando ? 'Desliza. La que te guste: «Unirme» y estás adentro.' : 'Las crews más vivas de la semana.'}</p>
-              <ul className="crw-mazo">{reco.map((x) => <li key={x.c.id}><CartaCrew liga={liga} x={x} T={T} dc={dc} mia={mia} /></li>)}</ul>
-            </section>
-          ) : null}
-          {solas.length ? (
-            <section className="crw-sec" aria-labelledby="crw-solas-h">
-              <h2 className="crw-h2" id="crw-solas-h">Buscan su 2.º</h2>
-              <p className="crw-tu-s">Fundaron su crew y juegan solos. Entra y la levantan juntos.</p>
-              <ul className="crw-solas">{solas.map((x) => {
-                const f = x.filas[0];
-                return (
-                  <li key={x.c.id} className="crw-sola">
-                    <a href={enlaceCrew(x.c.id)} className="crw-sola-a"><CrewCirculo c={{ logo: x.logo, crew: x.c.nombre }} cls="crw-logo chico" />
-                      <b>{limpio(x.c.nombre)}</b></a>
-                    <small>{f ? limpio(f.n) + (x.jugaron ? ' jugó esta semana' : ' jugó hace poco') : 'Su fundador juega'}</small>
-                    <Unirme x={x} dc={dc} mia={mia} texto="Ser el 2.º" />
-                  </li>
-                );
-              })}</ul>
-            </section>
-          ) : null}
-          <SemanaCrews xs={xs} T={T} />
-          <h2 data-tuto="crw-todas" className="crw-h2 crw-todas-h" id="crw-todas">Todas las crews</h2>
+      <div className="crw-main2">
+        <TuCrew liga={liga} dc={dc} mia={mia} miaNo={miaNo} x={mias} xs={xs} T={T} armar={abierto} setArmar={setAbierto} />
+        {reco.length ? (
+          <section className="crw-sec" id="crw-mazo" aria-labelledby="crw-mazo-h">
+            <div className="crw-tit"><h2 id="crw-mazo-h">Para ti</h2><small>{buscando ? 'Desliza. La que te guste: «Unirme» y estás adentro.' : 'Las crews más vivas de la semana.'}</small></div>
+            <ul className="crw-mazo">{reco.map((x) => <li key={x.c.id}><CartaCrew liga={liga} x={x} T={T} dc={dc} mia={mia} /></li>)}</ul>
+          </section>
+        ) : null}
+        <section className="crw-sec" aria-labelledby="crw-todas">
+          <div className="crw-tit"><h2 data-tuto="crw-todas" id="crw-todas">Buscar una crew</h2><small>{num(lista.length)} {lista.length === 1 ? 'crew' : 'crews'} · tocas una y la ves al costado</small></div>
           <div className="crw-busca">
             <input type="search" className="cw-busca" value={q} onChange={(e) => setQ(e.target.value)} placeholder="Busca una crew por nombre o sigla"
               aria-label="Buscar una crew" enterKeyHint="search" />
@@ -144,22 +129,49 @@ export function CrewsPagina({ liga, dc, qs }) {
             </label>
           </div>
           <nav className="pub-fil crw-fil" aria-label="Qué crews ver">
-            <ConMas max={4}>
+            <ConMas max={5}>
               {filtros.map(([v, t]) => <button type="button" key={v || 'todas'} className={fil === v ? 'on' : ''} aria-pressed={fil === v} onClick={() => setFil(v)}>{t}</button>)}
             </ConMas>
           </nav>
           {!todas ? <p className="pub-tx">Cargando las crews…</p>
-            : lista.length ? <ul className="crw-lista">{lista.map((x) => <li key={x.c.id}><Ficha liga={liga} x={x} T={T} dc={dc} mia={mia} /></li>)}</ul>
+            : lista.length ? (
+              <div className="crw-busqueda">
+                <ul className="crw-filas">{lista.map((x) => (
+                  <li key={x.c.id} className={sel && sel.c.id === x.c.id ? 'on' : ''}>
+                    <FilaCrew liga={liga} x={x} T={T} dc={dc} mia={mia} onVer={() => setSel(x.c.id)} />
+                    {/* 📱 en el celular, la vista previa se abre debajo de la que tocaste */}
+                    {sel && sel.c.id === x.c.id && selId ? <div className="crw-prev-cel"><Ficha liga={liga} x={x} T={T} dc={dc} mia={mia} /></div> : null}
+                  </li>
+                ))}</ul>
+                {sel ? <aside className="crw-prev" aria-label={'Vista previa de ' + limpio(sel.c.nombre)}><Ficha liga={liga} x={sel} T={T} dc={dc} mia={mia} /></aside> : null}
+              </div>
+            )
               : <Vacio titulo="Ninguna crew con eso" texto={nq ? 'No hay ninguna crew con «' + q.trim() + '» en el nombre o la sigla.' : 'Con ese filtro no queda ninguna.'}
                 acciones={[['Ver todas', () => { setQ(''); setFil(''); }, 'borde2']].concat(buscando ? [['Fundar la mía', () => { setQ(''); setFil(''); fundar(); }]] : [])} />}
-          <p className="crw-rk"><a className="te-link" href="#/ranking/crews">Ver el ranking de crews de la temporada</a></p>
-        </main>
-        <aside className="pub-der crw-der">
-          <div className="pub-der-in">
-            <Tiers T={T} xs={xs} />
-            <ComoFunciona todas={todas} T={T} />
+        </section>
+        <div className="crw-dos">
+          <TablaSemana liga={liga} xs={xs} T={T} onComo={() => setComo(!como)} como={como} />
+          <div className="crw-col">
+            <SemanaPasada xs={xs} T={T} />
+            {solas.length ? (
+              <section className="crw-caja" aria-labelledby="crw-solas-h">
+                <div className="crw-tit"><h2 id="crw-solas-h">Buscan su 2.º</h2><small>fundaron su crew y juegan solos</small></div>
+                <ul className="crw-solas">{solas.map((x) => {
+                  const f = x.filas[0];
+                  return (
+                    <li key={x.c.id} className="crw-sola">
+                      <a href={enlaceCrew(x.c.id)} className="crw-sola-a"><CrewCirculo c={{ logo: x.logo, crew: x.c.nombre }} cls="crw-logo chico" />
+                        <b>{limpio(x.c.nombre)}</b></a>
+                      <small>{f ? limpio(f.n) + (x.jugaron ? ' jugó esta semana' : ' jugó hace poco') + (f.pos ? ' · #' + f.pos + ' de la Liga' : '') : 'Su fundador juega'}</small>
+                      <Unirme x={x} dc={dc} mia={mia} texto="Ser el 2.º" />
+                    </li>
+                  );
+                })}</ul>
+              </section>
+            ) : null}
           </div>
-        </aside>
+        </div>
+        {como ? <div className="crw-dos crw-como-dos"><Tiers T={T} xs={xs} /><ComoFunciona todas={todas} T={T} /></div> : null}
       </div>
     </>
   );
@@ -197,7 +209,7 @@ function CartaCrew({ liga, x, T, dc, mia }) {
         </div>
         <div className="crw-semana-c">
           <Anillo pct={pct} tam={58} grosor={7}><b>{pct}%</b></Anillo>
-          <span><b>{x.jugaron} de {x.ks.length}</b> {x.jugaron === 1 ? 'jugó' : 'jugaron'} esta semana{x.semPts ? ' · ' + num(x.semPts) + ' pts' : ''}.
+          <span><b>{x.jugaron} de {x.ks.length}</b> {x.jugaron === 1 ? 'jugó' : 'jugaron'} esta semana.
             {x.deMiPais ? <><br />🤝 {x.deMiPais === 1 ? '1 de tu país' : x.deMiPais + ' de tu país'} adentro</> : null}</span>
         </div>
         <div className="crw-pie">
@@ -209,54 +221,113 @@ function CartaCrew({ liga, x, T, dc, mia }) {
   );
 }
 
-/** 📊 LA SEMANA DE LAS CREWS: por qué parte de la crew jugó, no por el total — una de 3 le puede ganar a una de 11. */
-function SemanaCrews({ xs, T }) {
-  const ys = xs.filter((x) => x.ks.length >= 2 && x.jugaron > 0).sort((a, b) => (pctDe(b) - pctDe(a)) || (b.semPts - a.semPts)).slice(0, 8);
-  if (ys.length < 2) return null;
+/** Una fila del buscador: su escudo, el nombre con la sigla y cómo se entra, el tier, la gente, la semana y el botón. */
+function FilaCrew({ liga, x, T, dc, mia, onVer }) {
+  const c = x.c;
+  const [e] = ENTRA[c.entrada] || ENTRA.pedido;
+  return (
+    <div className={'crw-fila' + (x.invitado ? ' inv' : '')}>
+      <button type="button" className="sin-boton crw-fila-a" onClick={onVer} aria-label={'Ver ' + limpio(c.nombre) + ' al costado'}>
+        <CrewCirculo c={{ logo: x.logo, crew: c.nombre }} cls="crw-logo" />
+        <span className="crw-n"><b>{limpio(c.nombre)}</b><small>{c.sigla ? '[' + c.sigla + '] · ' : ''}{e}{x.nueva && x.ks.length < 5 ? ' · nueva' : ''}</small></span>
+      </button>
+      <TierChip n={x.tier} T={T} chico />
+      <span className="crw-fila-d"><b>{x.ks.length}</b>/{x.max}<small>gente</small></span>
+      <span className="crw-fila-d"><b>{x.jugaron}</b><small>{x.jugaron === 1 ? 'jugó' : 'jugaron'}</small></span>
+      <span className="crw-fila-b"><Unirme x={x} dc={dc} mia={mia} /></span>
+    </div>
+  );
+}
+
+/**
+ * 📊 LA TABLA DE LA SEMANA, por tier (la Liga de la mezcla D, como las ligas de Duolingo): cada crew con su barra hasta lo
+ * que pide subir, la raya magenta de bajar, «baja si cierra así» / «sube», y la tuya pintada de blanco.
+ */
+function TablaSemana({ liga, xs, T, onComo, como }) {
+  if (!T) return null;
+  const porTier = new Map();
+  xs.filter((x) => x.ks.length).forEach((x) => { if (!porTier.has(x.tier)) porTier.set(x.tier, []); porTier.get(x.tier).push(x); });
+  const tiers = [...porTier.keys()].sort((a, b) => b - a);
+  if (!tiers.length) return null;
   return (
     <section className="crw-sec" aria-labelledby="crw-sem-h">
-      <h2 className="crw-h2" id="crw-sem-h">La semana de las crews</h2>
-      <p className="crw-tu-s">Por la parte de la crew que ya jugó: una de 3 le puede ganar a una de 11.</p>
-      <ol className="crw-tabla">{ys.map((x, i) => (
-        <li key={x.c.id} className={x.mia ? 'yo' : ''}>
-          <span className="crw-pos">{i + 1}</span>
-          <CrewCirculo c={{ logo: x.logo, crew: x.c.nombre }} cls="crw-logo chico" />
-          <a className="crw-t" href={enlaceCrew(x.c.id)}><b>{limpio(x.c.nombre)}{x.mia ? ' · la tuya' : ''}</b>
-            <small>{x.jugaron} de {x.ks.length} jugaron{T ? ' · ' + T.nombres[x.tier] : ''}</small></a>
-          <b className="crw-pct">{pctDe(x)}%</b>
-        </li>
-      ))}</ol>
+      <div className="crw-tit"><h2 id="crw-sem-h">La tabla de la semana</h2><small>{xs.some((x) => x.mia) ? 'tu crew pintada · ' : ''}la raya magenta es la de bajar</small></div>
+      {tiers.map((i) => {
+        const ys = porTier.get(i).sort((a, b) => b.semPts - a.semPts);
+        const tope = T.sube[i] || Math.max(1, ...ys.map((x) => x.semPts));
+        const baja = T.baja[i];
+        return (
+          <div key={i} className="crw-tz">
+            <div className="crw-tz-h"><TierChip n={i} T={T} chico /><small>{T.sube[i] ? 'suben con ' + num(T.sube[i]) + (T.juegan[i + 1] > 1 ? ' y ' + T.juegan[i + 1] + ' que jueguen' : '') : 'el tier más alto'}{baja ? ' · bajan con menos de ' + num(baja) : ''}</small></div>
+            <ol>{ys.map((x, k) => {
+              const sube = T.sube[i] && x.semPts >= T.sube[i] && x.jugaron >= (T.juegan[i + 1] || 0);
+              const cae = baja && x.semPts < baja;
+              return (
+                <li key={x.c.id} className={x.mia ? 'yo' : ''}>
+                  <span className="crw-pos">{k + 1}</span>
+                  <CrewCirculo c={{ logo: x.logo, crew: x.c.nombre }} cls="crw-logo chico" />
+                  <a className="crw-t" href={enlaceCrew(x.c.id)}><b>{limpio(x.c.nombre)}{x.mia ? ' · tu crew' : ''}</b>
+                    <small>{x.jugaron} de {x.ks.length} jugaron{cae ? <> · <span className="crw-cae">baja si cierra así</span></> : sube ? <> · <span className="crw-sube">sube</span></> : null}</small>
+                    <i className="crw-barra" aria-hidden="true"><u style={{ width: Math.min(100, Math.round((100 * x.semPts) / tope)) + '%' }} />
+                      {baja ? <em style={{ left: Math.min(100, (100 * baja) / tope) + '%' }} /> : null}</i></a>
+                  <b className="crw-pts">{num(x.semPts)}</b>
+                </li>
+              );
+            })}</ol>
+          </div>
+        );
+      })}
+      <button type="button" className="te-link crw-como-b" aria-expanded={!!como} onClick={onComo}>{como ? 'Cerrar cómo funcionan' : 'Cómo funcionan los tiers ›'}</button>
     </section>
   );
 }
 
-/** Arriba de todo: tu crew (con su semana) o, sin crew, fundar una; y las invitaciones que tienes. */
-function TuCrew({ liga, dc, mia, miaNo, x, T, armar, setArmar }) {
+/** 🏅 LA SEMANA PASADA (como los clubs de Strava): las tres que más sumaron, del cierre del lunes (`crews_tiers`). */
+function SemanaPasada({ xs, T }) {
+  if (!T || !T.ult) return null;
+  const ys = xs.map((x) => ({ x, p: ((T.crews || {})[x.c.id] || [])[4] || 0 })).filter((y) => y.p > 0).sort((a, b) => b.p - a.p).slice(0, 3);
+  if (ys.length < 2) return null;
+  const orden = ys.length === 3 ? [ys[1], ys[0], ys[2]] : [ys[1], ys[0]];
+  return (
+    <section className="crw-caja" aria-labelledby="crw-pas-h">
+      <div className="crw-tit"><h2 id="crw-pas-h">La semana pasada</h2><small>las que más sumaron hasta el lunes</small></div>
+      <ol className="crw-podio">{orden.map((y) => {
+        const i = ys.indexOf(y);
+        return (
+          <li key={y.x.c.id} className={'p' + (i + 1)}>
+            <a href={enlaceCrew(y.x.c.id)}><CrewCirculo c={{ logo: y.x.logo, crew: y.x.c.nombre }} cls="crw-logo" /><b>{limpio(y.x.c.nombre)}</b>
+              <small>{i + 1}.º · {num(y.p)}</small></a>
+          </li>
+        );
+      })}</ol>
+    </section>
+  );
+}
+
+/** Arriba de todo: tu crew en la franja blanca (con lo que le falta para subir), o el formulario para fundar una. */
+function TuCrew({ liga, dc, mia, miaNo, x, xs, T, armar, setArmar }) {
   if (dc && !mia && miaNo && armar) return <section className="crw-tu armando" id="crw-tu" aria-label="Tu crew"><EntrarDeNuevo /></section>;
   if (!dc || !mia) return null;
   const inv = mia.inv || [];
   if (x) {
-    const pct = pctDe(x);
+    const manda = mia.rol === 'lider' || mia.rol === 'colider';
+    const enTier = xs.filter((y) => y.tier === x.tier && y.ks.length).sort((a, b) => b.semPts - a.semPts);
+    const sig = T && T.sube[x.tier] ? T.nombres[x.tier + 1] : '';
+    const falta = T && T.sube[x.tier] ? Math.max(0, T.sube[x.tier] - x.semPts) : 0;
+    const tp = manda ? consejosCrew(liga, x.c, mia, T, null)[0] : null;
     return (
-      <section className="crw-tu mia" id="crw-tu" aria-label="Tu crew">
-        <a className="crw-tu-c" href={enlaceCrew(x.c.id)}>
-          <CrewCirculo c={{ logo: x.logo, crew: x.c.nombre }} cls="crw-logo" />
-          <span><small>TU CREW</small><b>{limpio(x.c.nombre)}</b>{x.c.sigla ? <em>[{x.c.sigla}]</em> : null}</span>
-          <TierChip n={x.tier} T={T} chico />
-        </a>
-        <div className="crw-semana-c">
-          <Anillo pct={pct} tam={58} grosor={7}><b>{pct}%</b></Anillo>
-          <span><b>{x.jugaron} de {x.ks.length}</b> {x.jugaron === 1 ? 'jugó' : 'jugaron'} esta semana · {num(x.semPts)} puntos.
-            {T && T.sube[x.tier] ? <><br />{x.semPts >= T.sube[x.tier] ? '✅ Si cierra así, el lunes sube a ' + T.nombres[x.tier + 1]
-              : 'Para subir a ' + T.nombres[x.tier + 1] + ' le faltan ' + num(T.sube[x.tier] - x.semPts) + ' puntos'}
-            {T.juegan[x.tier + 1] > 1 ? ' (y que jueguen ' + T.juegan[x.tier + 1] + ')' : ''}.</> : null}</span>
+      <section className="crw-tu crw-franja" id="crw-tu" aria-label="Tu crew">
+        <CrewCirculo c={{ logo: x.logo, crew: x.c.nombre }} cls="crw-logo" />
+        <div className="crw-franja-t">
+          <small>TU CREW{T ? ' · #' + (enTier.indexOf(x) + 1) + ' de la semana en ' + T.nombres[x.tier] : ''}</small>
+          <b>{limpio(x.c.nombre)}{sig ? (falta ? ' sube a ' + sig + ' con ' + num(falta) + ' puntos más' : ': si cierra así, sube a ' + sig) : ''}</b>
+          <span>{x.jugaron} de {x.ks.length} {x.jugaron === 1 ? 'jugó' : 'jugaron'} esta semana{tp ? ' · ' + tp.ico + ' ' + tp.t : ''}
+            {inv.length ? ' · 📨 te invitaron a ' + inv.map((i) => limpio(i.nombre)).join(', ') : ''}</span>
         </div>
-        {/* 💡 el consejo más urgente, si eres de los que mandan (los demás, en la página de la crew) */}
-        {mia.rol === 'lider' || mia.rol === 'colider' ? (() => {
-          const tp = consejosCrew(liga, x.c, mia, T, null)[0];
-          return tp ? <p className="crw-tu-s">{tp.ico} {tp.t}: <a className="te-link" href={'#/crew/' + encodeURIComponent(x.c.id)}>ver los consejos</a></p> : null;
-        })() : null}
-        {inv.length ? <p className="crw-tu-s">📨 Te invitaron a {inv.map((i) => limpio(i.nombre)).join(', ')}: <a className="te-link" href="#/cuenta/crew">verlo en Mi crew</a></p> : null}
+        <span className="crw-franja-b">
+          <a className="btn negro" href={enlaceCrew(x.c.id)}>Ir a mi crew</a>
+          <a className="btn borde-n" href={enlaceCrew(x.c.id) + '/ajustes'}>Ajustes</a>
+        </span>
       </section>
     );
   }

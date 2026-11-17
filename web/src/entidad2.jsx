@@ -78,7 +78,7 @@ export function Indice({ items }) {
 
 // ── «los otros»: celdas iguales con su emblema, su nombre y un número; la última lleva a la lista entera. En filas
 // parejas: con seis columnas fijas, veinte celdas eran 6/6/6/2 (la cuenta es la de las Ligas) ──
-function Otros({ items, href, et }) {
+export function Otros({ items, href, et }) {
   const n = items.length + 1;
   return (
     <ul className={'ent-otros' + (n <= 3 ? ' pocos' : '')} style={{ '--cols': Math.ceil(n / Math.ceil(n / 6)) }}>
@@ -94,7 +94,8 @@ function Otros({ items, href, et }) {
 // dos columnas que se leen de arriba abajo (con la cabecera de cada columna una vez, no en cada fila), y en el celular
 // 15 y «Ver todos». El número es de los miembros: quien está fuera de concurso va con «—», como en el Ranking ──
 const TOPE_CEL = 15;
-function Gente({ liga, gente, roles, pend, conFlag }) {
+// `extra(f)`: una línea más debajo del nombre (el aporte a la crew, en la página de una crew)
+export function Gente({ liga, gente, roles, pend, conFlag, extra }) {
   const [todos, setTodos] = useState(false);
   const lista = useRef(null);
   const n = gente.length;
@@ -124,7 +125,7 @@ function Gente({ liga, gente, roles, pend, conFlag }) {
               <span className="ent-n"><b>{limpio(f.n)}{conFlag ? <Bandera cc={f.cc} cls="ent-flag" /> : null}</b>
                 <small>{f.fc ? 'fuera de concurso' : f.pos ? '#' + f.pos + ' de la Liga' : 'sin puesto en la Liga'}</small>
                 {roles && roles[f.k] && roles[f.k] !== 'miembro' ? <RolCrew rol={roles[f.k]} /> : null}
-                {pend ? <SinVerificar hasta={pend[f.k]} /> : null}</span>
+                {pend ? <SinVerificar hasta={pend[f.k]} /> : null}{extra ? extra(f) : null}</span>
               <span className="ent-d"><b>{f.ovr || '—'}</b><small>OVR</small></span>
               <span className="ent-d"><b>{num(f.pts || 0)}</b><small>PTS</small></span>
               <span className="ent-d ev"><b>{f.ev || 0}</b><small>EV</small></span>

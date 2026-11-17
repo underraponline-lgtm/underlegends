@@ -187,7 +187,8 @@ function AvisoWeb({ aviso }) {
 const PaginaVerificar = lazy(() => import('./verificar.jsx').then((m) => ({ default: m.PaginaVerificar })));
 const Cambios = pag(() => import('./cambios2.jsx').then((m) => ({ default: m.Cambios })));
 const PerfilSv = pag(() => import('./entidad2.jsx').then((m) => ({ default: m.PerfilSv })));
-const PaginaCrew = pag(() => import('./entidad2.jsx').then((m) => ({ default: m.PaginaCrew })));
+const PaginaCrew = pag(() => import('./crew2.jsx').then((m) => ({ default: m.PaginaCrew })));
+const AjustesCrew = pag(() => import('./crew2.jsx').then((m) => ({ default: m.AjustesCrew })));
 const PaginaPais = pag(() => import('./entidad2.jsx').then((m) => ({ default: m.PaginaPais })));
 // ⏳ mientras baja una página: la misma barrita que la pantalla de carga (`#lg-carga`), en chico
 const Cargando = () => <div className="cargando" role="status"><span>Cargando…</span><i className="cargando-b" aria-hidden="true"><i /></i></div>;
@@ -604,8 +605,14 @@ export default function App() {
   const pagina = /^(access_token|error)=/.test(partes[0] || '') ? '' : (partes[0] || '');
   // la crew de `#/crew/<clave>`, decodificada una vez y con try, como el servidor: un `%` suelto en un link compartido
   // tiraba URIError en el render del App y toda la página nueva caía a la de respaldo (revisión del 04/10/2026)
-  let crewId = '';
-  if (pagina === 'crew') { const r = partes.slice(1).join('/'); try { crewId = decodeURIComponent(r); } catch (e) { crewId = r; } }
+  let crewId = '', crewAj = null;
+  // ⚙️ `#/crew/<id>/ajustes[/<sección>]`: los Ajustes de la crew, su propia página (el remake del 16/11/2026)
+  if (pagina === 'crew') {
+    const iA = partes.indexOf('ajustes', 2);
+    const r = partes.slice(1, iA > 0 ? iA : undefined).join('/');
+    try { crewId = decodeURIComponent(r); } catch (e) { crewId = r; }
+    if (iA > 0) crewAj = partes[iA + 1] || '';
+  }
   let ligaId = '';
   if (pagina === 'ligas' && partes[1]) { try { ligaId = decodeURIComponent(partes[1]); } catch (e) { ligaId = partes[1]; } }
   // 🎮 LA BIENVENIDA ES UNA PÁGINA, `/freestyle-rap/bienvenida` (Dlx, 12/11/2026: «haz que todo eso del intro sea una tab,
@@ -778,6 +785,7 @@ export default function App() {
         : pagina === 'llave' && partes[1] ? <Aislada key="Llave" n="Llave" pagina><Suspense fallback={<Cargando />}><Llave liga={liga} vivoL={vivoL} n={partes.slice(1).join('/')} raiz={raiz} dc={yo.dc} /></Suspense></Aislada>
         : pagina === 'tienda' ? <Aislada key="Tienda" n="Tienda" pagina><Suspense fallback={<Cargando />}><Tienda liga={liga} dc={yo.dc} /></Suspense></Aislada>
         : pagina === 'pase' ? <Aislada key="Pase" n="Pase" pagina><Suspense fallback={<Cargando />}><Pase liga={liga} dc={yo.dc} /></Suspense></Aislada>
+        : pagina === 'crew' && partes[1] && crewAj !== null ? <Aislada key={'CrewAj' + partes[1]} n="CrewAj" pagina><Suspense fallback={<Cargando />}><AjustesCrew liga={liga} id={crewId} sec={crewAj} /></Suspense></Aislada>
         : pagina === 'crew' && partes[1] ? <Aislada key={'Crew' + partes[1]} n="Crew" pagina><Suspense fallback={<Cargando />}><PaginaCrew liga={liga} id={crewId} /></Suspense></Aislada>
         : pagina === 'pais' && partes[1] ? <Aislada key={'Pais' + partes[1]} n="Pais" pagina><Suspense fallback={<Cargando />}><PaginaPais liga={liga} cc={partes[1]} /></Suspense></Aislada>
         : pagina === 'r' && partes[1] ? <Aislada key="Perfil" n="Perfil" pagina><Suspense fallback={<Cargando />}><Perfil liga={liga} dc={yo.dc} k={partes[1]} tab={partes[2] || ''} /></Suspense></Aislada>

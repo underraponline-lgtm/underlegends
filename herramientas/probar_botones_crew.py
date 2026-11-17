@@ -123,35 +123,42 @@ def texto(t):
 ruta_crew = '/freestyle-rap/crew/' + quote(CREW)
 
 with sync_playwright() as pw:
+    # ⚙️ 16/11/2026: el panel de quien manda se mudó a su página, Ajustes, una sección por pantalla (crew2.jsx)
+    def en(sec, f):
+        def g(pg, R):
+            pg.evaluate("(h) => { location.hash = h }", '#/crew/' + quote(CREW) + '/ajustes/' + sec)
+            pg.wait_for_timeout(700)
+            return f(pg, R)
+        return g
     pasos_lider = [
-        ('se ven los consejos', texto('Consejos para tu crew'), lambda xs: True),
-        ('consejo «Abrirla» abre la crew', boton('Abrirla'), es(accion='entrada', entrada='abierta')),
-        ('«Copiar el link» arma uno hasta que se llene', boton('Copiar el link'), es(accion='link_crear', max=0)),
-        ('Invitar a un sugerido', lambda pg, R: R.locator('.cw-sug li .btn').first.click(), es(accion='invitar')),
-        ('Cancelar una invitación (dos toques)', dos_toques('Cancelar', '¿Cancelarla?'), es(accion='desinvitar', a='tam')),
-        ('Aceptar un pedido', lambda pg, R: R.locator('#cw-pedidos .btn.verde').first.click(), es(accion='decidir', a='liberia', si=True)),
-        ('Rechazar un pedido', lambda pg, R: R.locator('#cw-pedidos .btn.borde2').first.click(), es(accion='decidir', a='liberia', si=False)),
-        ('Cambiar el rango', lambda pg, R: R.get_by_label('El rango de Six', exact=False).select_option('miembro'), es(accion='rol', a='six', rol='miembro')),
-        ('Hacer Líder (dos toques)', dos_toques('Hacer Líder', '¿Seguro?'), es(accion='lider')),
-        ('Sacar (dos toques)', dos_toques('Sacar', '¿Sacarlo?'), es(accion='sacar')),
-        ('Elegir un representante', lambda pg, R: R.locator('#cw-reps input[type=checkbox]').first.click(), es(accion='reps')),
-        ('Cómo se entra: con pedido', lambda pg, R: R.locator('input[name=cw-entrada]').nth(1).click(), es(accion='entrada', entrada='pedido')),
-        ('Requisitos: guardar', lambda pg, R: (R.locator('#cw-req + form select').select_option('A'), R.locator('#cw-req + form button[type=submit]').click()),
+        ('se ven los consejos', en('consejos', texto('Consejos para tu crew')), lambda xs: True),
+        ('consejo «Abrirla» abre la crew', en('consejos', boton('Abrirla')), es(accion='entrada', entrada='abierta')),
+        ('«Copiar el link» arma uno hasta que se llene', en('invitar', boton('Copiar el link')), es(accion='link_crear', max=0)),
+        ('Invitar a un sugerido', en('invitar', lambda pg, R: R.locator('.cw-sug li .btn').first.click()), es(accion='invitar')),
+        ('Cancelar una invitación (dos toques)', en('invitar', dos_toques('Cancelar', '¿Cancelarla?')), es(accion='desinvitar', a='tam')),
+        ('Aceptar un pedido', en('pedidos', lambda pg, R: R.locator('#cw-pedidos .btn.verde').first.click()), es(accion='decidir', a='liberia', si=True)),
+        ('Rechazar un pedido', en('pedidos', lambda pg, R: R.locator('#cw-pedidos .btn.borde2').first.click()), es(accion='decidir', a='liberia', si=False)),
+        ('Cambiar el rango', en('gente', lambda pg, R: R.get_by_label('El rango de Six', exact=False).select_option('miembro')), es(accion='rol', a='six', rol='miembro')),
+        ('Hacer Líder (dos toques)', en('gente', dos_toques('Hacer Líder', '¿Seguro?')), es(accion='lider')),
+        ('Sacar (dos toques)', en('gente', dos_toques('Sacar', '¿Sacarlo?')), es(accion='sacar')),
+        ('Elegir un representante', en('reps', lambda pg, R: R.locator('#cw-reps input[type=checkbox]').first.click()), es(accion='reps')),
+        ('Cómo se entra: con pedido', en('entrada', lambda pg, R: R.locator('input[name=cw-entrada]').nth(1).click()), es(accion='entrada', entrada='pedido')),
+        ('Requisitos: guardar', en('entrada', lambda pg, R: (R.locator('#cw-req + form select').select_option('A'), R.locator('#cw-req + form button[type=submit]').click())),
          lambda xs: any(x.get('accion') == 'req' and x.get('req', {}).get('rg') == 'A' for x in xs)),
-        ('El nombre: guardar', lambda pg, R: (R.get_by_label('La sigla').fill('CZD'), R.get_by_role('button', name='Guardar · 1.000').click()),
+        ('El nombre: guardar', en('crew', lambda pg, R: (R.get_by_label('La sigla').fill('CZD'), R.get_by_role('button', name='Guardar · 1.000').click())),
          es(accion='nombre', sigla='CZD')),
         # 🧩 16/11/2026: con un escudo, la pestaña abre en «Armar escudo»; se elige una división y se guarda el código largo
-        ('El escudo armado', lambda pg, R: (R.get_by_role('radio', name='Partido').click(), pg.wait_for_timeout(200),
-                                             R.get_by_role('button', name='Usar este escudo · 1.000').click()),
+        ('El escudo armado', en('crew', lambda pg, R: (R.get_by_role('radio', name='Partido').click(), pg.wait_for_timeout(200),
+                                             R.get_by_role('button', name='Usar este escudo · 1.000').click())),
          lambda xs: any(x.get('accion') == 'logo' and str(x.get('escudo', '')).startswith('esc:escudo.corona.e41373.0e0e10.partido.fino.') for x in xs)),
-        ('Pestaña «Subir mi logo»', lambda pg, R: (R.get_by_role('tab', name='🖼️ Subir mi logo').click(), pg.wait_for_timeout(200),
-                                                   R.locator('.cw-logo-el input[type=file]').count()),
+        ('Pestaña «Subir mi logo»', en('crew', lambda pg, R: (R.get_by_role('tab', name='🖼️ Subir mi logo').click(), pg.wait_for_timeout(200),
+                                                   R.locator('.cw-logo-el input[type=file]').count())),
          lambda xs: True),
-        ('La descripción: guardar', lambda pg, R: (R.get_by_label('La descripción de la crew').fill('Los del desierto, rimando fuerte'),
-                                                    R.locator('form:has(textarea[aria-label="La descripción de la crew"]) button').click()),
+        ('La descripción: guardar', en('crew', lambda pg, R: (R.get_by_label('La descripción de la crew').fill('Los del desierto, rimando fuerte'),
+                                                    R.locator('form:has(textarea[aria-label="La descripción de la crew"]) button').click())),
          es(accion='desc', desc='Los del desierto, rimando fuerte')),
-        ('Más links: uno para 5', lambda pg, R: (R.locator('.cw-mas-links summary').click(), pg.wait_for_timeout(200),
-                                                 R.get_by_label('Para cuántos sirve el link').select_option('5'), R.get_by_role('button', name='Armar link').click()),
+        ('Más links: uno para 5', en('invitar', lambda pg, R: (R.locator('.cw-mas-links summary').click(), pg.wait_for_timeout(200),
+                                                 R.get_by_label('Para cuántos sirve el link').select_option('5'), R.get_by_role('button', name='Armar link').click())),
          es(accion='link_crear', max=5)),
     ]
     pasos_afuera = [
