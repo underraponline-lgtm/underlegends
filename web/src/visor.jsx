@@ -241,7 +241,7 @@ export function VisorCarta({ liga, dc, k, inicial = '', onCerrar }) {
   const quieto = () => { if (gira.current) gira.current.style.transform = ''; };
   const dueno = esYo && x && !x.bloq && tipo !== 'liga';
   return (
-    <div className="vk" ref={raiz} role="presentation" onClick={(e) => { if (e.target === e.currentTarget || e.target.classList.contains('vk-in')) onCerrar(); }}>
+    <div className={'vk' + (dueno ? ' vk-yo' : '')} ref={raiz} role="presentation" onClick={(e) => { if (e.target === e.currentTarget || e.target.classList.contains('vk-in')) onCerrar(); }}>
       <div className="vk-in" role="dialog" aria-modal="true" aria-label={'Las tarjetas de ' + nombre}>
         <div className="vk-esc" style={{ '--g': color }}>
           <div className="vk-cc" onPointerDown={(e) => { x0.current = e.clientX; }} onPointerCancel={() => { x0.current = null; }}

@@ -11,6 +11,17 @@
   ],
   "cambios": [
     {
+      "version": "5.81",
+      "dia": "2026-11-16",
+      "cuando": "2026-11-16T23:05:13-05:00",
+      "titulo": "La ventana de las cartas, en el celular",
+      "items": [
+        "En los celulares chicos, como dueño, los botones ya no tapan tu nombre.",
+        "Con el **celular acostado**, la carta y la ficha van **una al lado de la otra**, con los botones siempre a la vista.",
+        "Lo que sigue de la ficha se desvanece al llegar a los botones, en vez de verse cortado."
+      ]
+    },
+    {
         "version": "5.80",
         "dia": "2026-11-16",
         "cuando": "2026-11-16T22:59:51-05:00",

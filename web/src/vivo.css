@@ -3140,7 +3140,9 @@ li.nt-f{cursor:default}
 /* ⚠️ `overflow-x:clip` y NO `hidden`: con `hidden` la escena pasa a ser un contenedor con scroll, la grilla la achica al
    alto que sobra y la ficha le tapa la carta (medido en la maqueta: 382 px donde hacían falta 486) */
 .vk-esc{position:relative;display:grid;justify-items:center;gap:12px;padding:calc(16px + env(safe-area-inset-top,0px)) 0 20px;overflow-x:clip;
-  --ch:min(clamp(300px,calc(100dvh - 330px),560px),calc((100vw - 90px) * 1.46))}
+  --ch:min(clamp(270px,calc(100dvh - 330px),560px),calc((100vw - 90px) * 1.46))}
+/* 📱 con los dos renglones de botones del dueño, la carta cede 56 px más: a 320×568 los botones tapaban el nombre */
+.vk-yo .vk-esc{--ch:min(clamp(270px,calc(100dvh - 386px),560px),calc((100vw - 90px) * 1.46))}
 .vk-esc::before{content:"";position:absolute;inset:0;pointer-events:none;background:radial-gradient(closest-side,color-mix(in srgb,var(--g) 40%,transparent),transparent)}
 .vk-cc{position:relative;width:100%;height:var(--ch);touch-action:pan-y;-webkit-user-select:none;user-select:none;--paso:58%}
 .vk-sl{position:absolute;top:0;left:50%;height:100%;width:calc(var(--ch) * .685);transform:translateX(calc(-50% + var(--d) * var(--paso))) scale(var(--k));
@@ -3174,7 +3176,10 @@ li.nt-f{cursor:default}
 .vk-mide{margin:0;padding:10px 12px;background:#030304;color:#F6F6F6;font:600 13px/1.4 Archivo,sans-serif}
 .vk-mide b{font:900 12.5px/1 Archivo,sans-serif;text-transform:uppercase;color:#29B298}
 .vk-acc{position:sticky;bottom:0;display:flex;flex-wrap:wrap;gap:8px;margin:0 -16px;padding:12px 16px calc(14px + env(safe-area-inset-bottom,0px));
-  background:#F6F6F6;border-top:1px solid #D6D6D0;box-shadow:0 -12px 14px -12px rgba(3,3,4,.35)}
+  background:#F6F6F6;border-top:1px solid #D6D6D0}
+/* 📱 lo que sigue de la ficha se desvanece al llegar a los botones, en vez de asomar cortado (16/11/2026, revisando el
+   celular: la caja negra de «Mide» se veía partida a la mitad, como un error) */
+.vk-acc::before{content:"";position:absolute;left:0;right:0;bottom:100%;height:30px;pointer-events:none;background:linear-gradient(rgba(246,246,246,0),#F6F6F6)}
 .vk-acc > *{min-width:0}
 .vk-bl,.vk-bo{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:48px;padding:0 10px;border:2px solid #030304;font:800 13px/1 Archivo,sans-serif;
   text-transform:uppercase;text-decoration:none;cursor:pointer;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
@@ -3191,18 +3196,20 @@ li.nt-f{cursor:default}
 .vk-toast{position:fixed;left:50%;bottom:calc(92px + env(safe-area-inset-bottom,0px));z-index:5;transform:translateX(-50%);padding:11px 14px;background:#F6F6F6;color:#030304;
   border:2px solid #030304;font:800 13px/1 Archivo,sans-serif;white-space:nowrap;box-shadow:4px 4px 0 #29B298}
 .vk button:focus-visible,.vk a:focus-visible{outline:3px solid #29B298;outline-offset:2px}
-@media (min-width:700px) and (max-width:899px){
+@media (max-width:359px){.vk-bl svg{display:none}.vk-bl,.vk-bo{padding:0 6px;font-size:12px}.vk-acc{gap:6px}}
+@media (min-width:700px) and (max-width:899px) and (min-height:501px){
   .vk-in{grid-template-columns:min(560px,100%);justify-content:center}
   .vk-ficha{margin:-10px 0 24px;border-radius:8px}
   .vk-acc{border-radius:0 0 8px 8px}
 }
-@media (min-width:900px){
+@media (min-width:900px), (min-width:600px) and (max-height:500px){
   .vk-in{grid-template-columns:auto var(--fw);justify-content:center;align-content:center;align-items:center;padding:28px var(--pad);overflow:hidden}
-  .vk-esc{padding:0 30px 0 0;--ch:min(720px,calc(100dvh - 150px),calc((100vw - var(--fw) - 2 * var(--pad) - 30px) / 1.03))}
+  .vk-esc,.vk-yo .vk-esc{padding:0 30px 0 0;--ch:min(720px,calc(100dvh - 150px),calc((100vw - var(--fw) - 2 * var(--pad) - 30px) / 1.03))}
   .vk-cc{width:calc(var(--ch) * 1.03);--paso:31%}
   .vk-ficha{margin:0;padding:22px 22px 20px;gap:14px;border-radius:4px;max-height:calc(100dvh - 56px);overflow:auto;box-shadow:8px 8px 0 #29B298}
   .vk-q h2{font-size:36px}
   .vk-acc{position:static;margin:2px 0 0;padding:0;border:0;background:none;box-shadow:none}
+  .vk-acc::before{display:none}
   .vk-xf{display:none}
   .vk-xg{display:grid;position:absolute;top:18px;right:18px;z-index:4;border-color:rgba(246,246,246,.4);background:rgba(3,3,4,.5);color:#F6F6F6}
   .vk-per{display:grid;place-items:center;position:absolute;top:50%;z-index:3;transform:translateY(-50%);width:46px;height:72px;border:1.5px solid rgba(246,246,246,.3);
@@ -3214,12 +3221,28 @@ li.nt-f{cursor:default}
     font:800 11px/1.1 "Barlow Condensed",sans-serif;letter-spacing:.08em;text-transform:uppercase;color:#A5A5A0}
   .vk-toast{bottom:28px}
 }
-@media (min-width:900px) and (max-width:1150px){.vk-in{--fw:340px;--pad:74px}}
-/* pantallas bajas (1024×768, una notebook chica): la ficha se aprieta antes de pedir barra */
-@media (min-width:900px) and (max-height:820px){
+@media (min-width:900px) and (max-width:1150px), (min-width:600px) and (max-height:500px){.vk-in{--fw:340px;--pad:74px}}
+/* pantallas bajas (1024×768, una notebook chica, el celular acostado): la ficha se aprieta antes de pedir barra */
+@media (min-width:900px) and (max-height:820px), (min-width:600px) and (max-height:500px){
   .vk-ficha{gap:10px;padding:18px 20px 18px}
   .vk-q h2{font-size:31px}
   .vk-filas a,.vk-filas div{min-height:40px}
+}
+/* 📱 EL CELULAR ACOSTADO: la carta y la ficha lado a lado (arriba), pero sin las flechas de persona —no hay lugar— y con
+   la ✕ al lado del nombre y los botones pegados abajo de la ficha, como en el celular de pie: a 740×360 la ✕ y la › caían
+   sobre la ficha, y los botones del dueño quedaban afuera */
+@media (min-width:600px) and (max-height:500px){
+  .vk-ficha{gap:8px;padding:14px 16px}
+  .vk-in{--fw:340px;--pad:16px}
+  .vk-bl,.vk-bo{padding:0 8px;font-size:12px}
+  .vk-per,.vk-xg{display:none}
+  .vk-xf{display:grid}
+  .vk-acc{position:sticky;bottom:-14px;margin:0 -16px -14px;padding:10px 16px 14px;background:#F6F6F6}
+  .vk-acc::before{display:block}
+  .vk-q h2{font-size:26px}
+  .vk-filas a,.vk-filas div{min-height:36px}
+  .vk-mide{padding:8px 10px;font-size:12.5px}
+  .vk-bl,.vk-bo,.vk-bi{min-height:44px}
 }
 
 /* ── 🙋 LOS ANOTADOS (`Anotados` de piezas.jsx, 03/10/2026, Dlx: «Me gusta tu A»): en la tarjeta del evento hasta que
