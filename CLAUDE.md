@@ -287,6 +287,8 @@ con su self-check.
 | **niveles 0 a 3** | 0 punteado · 1 oscuro · 2 media luz + un aro · 3 lleno + aro blanco y aro del rango. Vuelven a 0 cada temporada |
 | **el color** | siempre `--acc`, el del rango: la familia es la **forma**, nunca el color (el rojo ya es el rango A) |
 | **de dónde sale** | `datos/estilos.json`, `{clave: [[estilo, nivel], …]}` en orden de lugar. Entra al sello de la Competitiva sólo para quien tiene |
+| **cómo se elige** | Inventario → «Estilo de juego» (`web/src/juego.jsx`) → el objeto (`juegoElige()`, tabla `juego_elige`: la primera vez libre, un cambio por temporada, los viejos desbloqueados) → el ciclo, paso 2f3 (`bot/juegos.py`) → `datos/estilos.json`. ⚠️ Internamente se llama **«juego»**: «estilo» ya era la camiseta/cadena de la Servidor |
+| **las dos copias** | la lista de 18 vive en `CATALOGO` y está copiada en `JUEGOS` (bot/avisos.js) y en `web/src/estilos_juego.json` (`estilos_juego.py --web`): el self-check revienta si se separan |
 
 ⚠️ **POSICIÓN MEDIDA, NO A OJO** (Dlx: *«bien posicionado, acuérdate»*): banda
 libre entre la pastilla del rango (y=143,2) y la fila de stats (y=299,2), 6 px
@@ -1726,8 +1728,9 @@ son solo de la Competitiva y se quedan en `02_Competitivo/v2/estilos/`.
 - **Los duelos.** Hoy son reales en 4 raperos; el resto muestra `0/0`. El dato
   vive en el acumulador, que no estaba montado en el entorno donde se armó esto.
 - **Nadie tiene estilo de juego todavía** (16/11/2026): la columna de la
-  Competitiva está lista y `datos/estilos.json` no existe. Faltan elegirlo en
-  la página, los eventos de estilo de DRA y el desbloqueo en Competencias.
+  Competitiva y elegirlo en el Inventario están hechos (elegirlo espera a que
+  se despliegue el Worker). Faltan los eventos de estilo de DRA (los niveles,
+  en `datos/estilos_niveles.json`) y el desbloqueo en Competencias.
 - **32 nombres de las llaves no están en el Ranking Competitivo**, incluidos
   campeones: Rodri LP ganó el Interserver, Ceko el de FRZ, Olaf salió segundo,
   Logan segundo en Urban y Edu segundo en DRA. No llegan a los 8 eventos.

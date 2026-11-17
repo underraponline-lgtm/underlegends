@@ -3533,6 +3533,8 @@ const RUTAS = {
   '/avisos/marcos': 'POST', '/avisos/marco-elige': 'POST', '/avisos/carta-principal': 'POST',
   // 🏷️ tus TAGs y elegir cuál lleva cada carta (con tu sesión), y el inventario del ciclo (con su clave)
   '/avisos/tags-mios': 'POST', '/avisos/tag-elige': 'POST', '/avisos/tags-ciclo': 'POST',
+  // 🎭 tu estilo de juego y elegirlo (con tu sesión), y lo elegido de todos para el ciclo (con su clave). Ver `juegoElige()`
+  '/avisos/juego-mio': 'POST', '/avisos/juego-elige': 'POST', '/avisos/juegos-ciclo': 'POST',
   // 🏆 tus Pases premium de campeón de liga y usar uno (15/11/2026): ver `valesDe()` y `valeUsar()`
   '/avisos/vales': 'POST', '/avisos/vale-usar': 'POST',
   // 🎟️ quién tiene nivel en el Pase, para el ciclo (la Temporada es el premio del nivel 1): con `claveCiclo()`
@@ -4514,6 +4516,12 @@ export const MARCOS = ['premium', 'plata', 'oro'];
 export const MARCO_ESTILOS = ['camiseta', 'cadena'];
 // 🏷️ las cartas que llevan TAG elegible (25/10/2026)
 export const TAG_CARTAS = ['temporada', 'competitivo', 'servidor', 'pais'];
+// 🎭 LOS ESTILOS DE JUEGO DE LA COMPETITIVA (16/11/2026): las 18 claves de `CATALOGO` en
+// `02_Competitivo/v2/estilos_juego.py`. ⚠️ Es una copia: el self-check de ese módulo revienta si se separan. Cada uno
+// elige el suyo en el Inventario: la primera vez libre y después UN cambio por temporada; el que deja queda desbloqueado
+// (Dlx, 16/11/2026: «una vez por temporada… si eliges una nueva empieza desde 0, pero tienes el playstyle desbloqueado»)
+export const JUEGOS = ['punchline', 'burla', 'agresividad', 'showman', 'delivery', 'poeta', 'flow', 'doble_tempo', 'metrica',
+  'estructuras', 'tecnicas', 'cazafla', 'respuesta', 'ingenio', 'coherencia', 'conceptos', 'referencias', 'frio'];
 
 // 💬 LA FRASE DEL PERFIL (la tanda 2 del perfil, 27/10/2026; estaba en la maqueta B desde la v1: «su frase entre
 // comillas»). Hasta `FRASE_MAX` caracteres en una línea, con la regla de la descripción de una crew (`descCrew()`): sin
@@ -6557,7 +6565,8 @@ export async function rutaAvisos(req, env, ruta) {
   if (ruta === '/avisos/pase' || ruta === '/avisos/pase-vivo' || ruta === '/avisos/pase-avisos' || ruta === '/avisos/pase-color' ||
     ruta === '/avisos/sorteo' || ruta === '/avisos/sorteo-entrar' || ruta === '/avisos/marcos' || ruta === '/avisos/marco-elige'
     || ruta === '/avisos/carta-principal' || ruta === '/avisos/tags-mios' || ruta === '/avisos/tag-elige'
-    || ruta === '/avisos/vales' || ruta === '/avisos/vale-usar' || ruta === '/avisos/pase-dia') {
+    || ruta === '/avisos/vales' || ruta === '/avisos/vale-usar' || ruta === '/avisos/pase-dia'
+    || ruta === '/avisos/juego-mio' || ruta === '/avisos/juego-elige') {
     const crudo = await req.text();
     if (crudo.length > 1024) return json({ error: 'demasiado grande' }, 413);
     let d = null;
@@ -6570,9 +6579,14 @@ export async function rutaAvisos(req, env, ruta) {
     // 🎟️ el sorteo se puede mirar sin cuenta (entonces no dice si entraste)
     const q = await quienPide(req, env, d);
     if (!q.id && ruta !== '/avisos/sorteo') return json({ error: q.error }, q.estado);
+    // 🎭 elegir tu estilo de juego es de los verificados (va en tu carta): `d:` es el Miembro de DRA. El dueño, siempre
+    if (ruta === '/avisos/juego-elige' && q.id !== DUENO && !claveValida(await env.KV.get('d:' + q.id))) {
+      return json({ error: 'sin_verificar' }, 403);
+    }
     return elObjeto(env).fetch('https://avisos' + ruta.slice('/avisos'.length), {
       method: 'POST', body: JSON.stringify({ quien: q.id || '', llave, si: d.si, color: d.color, marco: d.marco, estilo: d.estilo,
-        carta: d.carta, tag: d.tag, vale: String(d.vale || '').slice(0, 150) }),
+        carta: d.carta, tag: d.tag, vale: String(d.vale || '').slice(0, 150),
+        juego: String(d.juego || '').slice(0, 20), temp: String((env && env.TEMPORADA) || 't1') }),
       headers: { 'content-type': 'application/json' },
     });
   }
@@ -7227,6 +7241,14 @@ export async function rutaAvisos(req, env, ruta) {
   }
   // 🏷️ EL INVENTARIO DE TAGS, DEL CICLO (`bot/tags_inventario.py`): con su clave. Lo que hoy muestra la carta de cada uno,
   // sumado; de vuelta, lo que eligió cada uno
+  // 🎭 LOS ESTILOS DE JUEGO ELEGIDOS, DEL CICLO (`bot/juegos.py`): con su clave. De vuelta, `{clave: {juego, viejos}}`
+  if (ruta === '/avisos/juegos-ciclo') {
+    const k = req.headers.get('x-lg-ciclo') || '';
+    if (!env.DISCORD_TOKEN || k !== await claveCiclo(env.DISCORD_TOKEN)) return json({ error: 'no existe' }, 404);
+    return elObjeto(env).fetch('https://avisos/juegos-ciclo', {
+      method: 'POST', body: '{}', headers: { 'content-type': 'application/json' },
+    });
+  }
   if (ruta === '/avisos/tags-ciclo') {
     const k = req.headers.get('x-lg-ciclo') || '';
     if (!env.DISCORD_TOKEN || k !== await claveCiclo(env.DISCORD_TOKEN)) return json({ error: 'no existe' }, 404);
@@ -7914,6 +7936,10 @@ export class Avisos {
       // inventario lo trae el ciclo (`/avisos/tags-ciclo`, en `estado` como `tags_ganados`)
       this.sql.exec('CREATE TABLE IF NOT EXISTS tag_elige (quien TEXT NOT NULL, carta TEXT NOT NULL, tag TEXT NOT NULL, ' +
         't INTEGER NOT NULL, PRIMARY KEY (quien, carta))');
+      // 🎭 EL ESTILO DE JUEGO DE CADA UNO (16/11/2026): `juego` el elegido, `cambio` la temporada en que usó su cambio
+      // ('' si nunca), `viejos` los que dejó (JSON: quedan desbloqueados). Ver `juegoElige()`
+      this.sql.exec('CREATE TABLE IF NOT EXISTS juego_elige (quien TEXT PRIMARY KEY, juego TEXT NOT NULL, cambio TEXT NOT NULL, ' +
+        'viejos TEXT NOT NULL, t INTEGER NOT NULL)');
       // 🎟️ EL SORTEO DEL PASE PREMIUM (Dlx, 25/10/2026: «algo interactivo en la página»): quién entró y con cuántos
       // boletos (1 + las semanas con las cinco semanales, hasta 3). Lo programa Dlx (`pase_sorteo` de los ajustes)
       this.sql.exec('CREATE TABLE IF NOT EXISTS sorteo_part (sorteo TEXT NOT NULL, quien TEXT NOT NULL, boletos INTEGER NOT NULL, ' +
@@ -8786,6 +8812,9 @@ export class Avisos {
       // TAG elegido entra al sello de la carta, así que el ciclo la redibuja en su vuelta
       if (ruta === '/tag-elige') { const v = this.tagElige(d); return json(v, v.error ? 400 : 200); }
       if (ruta === '/tags-ciclo') { const v = this.tagsCiclo(d); return json(v, v.error ? 400 : 200); }
+      if (ruta === '/juego-mio') return json(this.juegoMio(String(d.quien || ''), String(d.temp || '')));
+      if (ruta === '/juego-elige') { const v = this.juegoElige(d); return json(v, v.error === 'ya' ? 409 : v.error ? 400 : 200); }
+      if (ruta === '/juegos-ciclo') return json(this.juegosCiclo());
       // 🧠 lo que manda el ciclo: las personas de esta corrida (`bot/subir_datos.py`)
       if (ruta === '/personas-ciclo') {
         const v = this.personasCiclo(d);
@@ -17761,6 +17790,57 @@ export class Avisos {
     this.sql.exec('INSERT INTO tag_elige (quien, carta, tag, t) VALUES (?, ?, ?, ?) ON CONFLICT(quien, carta) DO UPDATE SET ' +
       'tag = excluded.tag, t = excluded.t', quien, carta, tag, Date.now());
     return Object.assign({ ok: true, redibujo: null }, this.tagsMios(quien));
+  }
+
+  /**
+   * 🎭 TU ESTILO DE JUEGO (16/11/2026): el elegido, los que dejaste (desbloqueados) y si todavía puedes cambiarlo esta
+   * temporada; y cuántos eligió cada estilo, para elegir viendo cuáles están llenos (Dlx, a «mostrar cuántos tienen cada
+   * estilo al elegirlo»: «como tú decidas»). No dice quién: sólo cuántos
+   */
+  juegoMio(quien, temp) {
+    const r = /^[0-9]{5,25}$/.test(quien)
+      ? this.sql.exec('SELECT juego, cambio, viejos FROM juego_elige WHERE quien = ?', quien).toArray()[0] : null;
+    const cuantos = {};
+    for (const x of this.sql.exec('SELECT juego, COUNT(*) AS n FROM juego_elige GROUP BY juego').toArray()) cuantos[x.juego] = Number(x.n);
+    let viejos = [];
+    try { viejos = r ? JSON.parse(r.viejos || '[]') : []; } catch (e) { viejos = []; }
+    return { ok: true, juego: r ? r.juego : '', viejos, puede: !r || quien === DUENO || r.cambio !== temp, temp, cuantos,
+      dueno: quien === DUENO };
+  }
+
+  /**
+   * 🎭 ELEGIR TU ESTILO DE JUEGO. La primera vez es libre; después, UN cambio por temporada (`cambio` guarda en cuál se
+   * usó). El que dejas queda en `viejos`: desbloqueado, y su nivel vuelve a 0 (los niveles los pone el ciclo). Volver a
+   * uno de tus viejos también es un cambio. El dueño, sin tope (prueba las cosas). `{error: 'ya'}` es el 409
+   */
+  juegoElige(d) {
+    const quien = String(d.quien || ''), juego = String(d.juego || ''), temp = String(d.temp || '');
+    if (!/^[0-9]{5,25}$/.test(quien) || !JUEGOS.includes(juego) || !/^[a-z0-9]{1,12}$/.test(temp)) return { error: 'faltan datos' };
+    const r = this.sql.exec('SELECT juego, cambio, viejos FROM juego_elige WHERE quien = ?', quien).toArray()[0];
+    if (r && r.juego === juego) return this.juegoMio(quien, temp);
+    if (!r) {
+      this.sql.exec('INSERT INTO juego_elige (quien, juego, cambio, viejos, t) VALUES (?, ?, ?, ?, ?)', quien, juego, '', '[]', Date.now());
+      return this.juegoMio(quien, temp);
+    }
+    if (r.cambio === temp && quien !== DUENO) return { error: 'ya' };
+    let viejos = [];
+    try { viejos = JSON.parse(r.viejos || '[]'); } catch (e) { viejos = []; }
+    viejos = [...new Set([...viejos.filter((x) => x !== juego), r.juego])].filter((x) => JUEGOS.includes(x));
+    this.sql.exec('UPDATE juego_elige SET juego = ?, cambio = ?, viejos = ?, t = ? WHERE quien = ?',
+      juego, temp, JSON.stringify(viejos), Date.now(), quien);
+    return this.juegoMio(quien, temp);
+  }
+
+  /** 🎭 Para el ciclo (`bot/juegos.py`, con su clave): `{clave: {juego, viejos}}` de todos. La clave como la de los TAGs */
+  juegosCiclo() {
+    const elegidos = {};
+    for (const r of this.sql.exec('SELECT quien, juego, viejos FROM juego_elige').toArray()) {
+      const k = this.claveDe(r.quien) || (r.quien === DUENO ? DUENO_K : '');
+      let viejos = [];
+      try { viejos = JSON.parse(r.viejos || '[]'); } catch (e) { viejos = []; }
+      if (k) elegidos[k] = { juego: r.juego, viejos };
+    }
+    return { ok: true, elegidos };
   }
 
   /**

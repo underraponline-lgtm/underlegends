@@ -199,6 +199,46 @@ def columna(estilos, uid, archivos):
         insignia(e, n, '%s_%d' % (uid, i), archivos, lugar=i) for i, (e, n) in enumerate(estilos[:LUGARES]))
 
 
+WEB = os.path.join(RAIZ, 'web', 'src', 'estilos_juego.json')
+
+
+def para_la_web():
+    """El catálogo para el Inventario de la página (`web/src/estilos_juego.json`): familias, formas y cada estilo con su
+    ícono chico embebido (96 px: alcanza para la grilla y pesa poco). Se regenera con `--web` y se commitea, como
+    `tags_catalogo.json`. ⚠️ No dice de quién es cada uno: eso lo pide la página con tu sesión (`/avisos/juego-mio`)."""
+    import base64
+    from PIL import Image
+    est = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'estilos')
+    iconos = {}
+    for k, (_, _, icono, _) in CATALOGO.items():
+        if icono in SVG:
+            iconos[k] = 'data:image/svg+xml;base64,' + base64.b64encode(SVG[icono].encode('utf-8')).decode()
+            continue
+        im = Image.open(os.path.join(est, icono + '.png')).convert('RGBA')
+        im.thumbnail((96, 96), Image.LANCZOS)
+        # es una máscara: sólo importa el alfa. Blanco parejo + alfa (LA) pesa la mitad que el RGBA
+        la = Image.merge('LA', (Image.new('L', im.size, 255), im.getchannel('A')))
+        b = io.BytesIO()
+        la.save(b, 'PNG', optimize=True)
+        iconos[k] = 'data:image/png;base64,' + base64.b64encode(b.getvalue()).decode()
+    return {
+        'familias': [[f, FORMA_DE[f]] for f in FAMILIAS],
+        'formas': FORMA, 'caja': CAJA, 'ico': ICO, 'ico_y': ICO_Y, 'margen': MARGEN,
+        'estilos': [[k, v[0], v[1], v[3], iconos[k]] for k, v in CATALOGO.items()],
+    }
+
+
+def _juegos_del_worker():
+    """La copia de la lista que tiene el Worker (`JUEGOS` en `bot/avisos.js`), o None si no se encuentra."""
+    import re
+    try:
+        with io.open(os.path.join(RAIZ, 'bot', 'avisos.js'), encoding='utf-8') as f:
+            m = re.search(r"export const JUEGOS = \[([^\]]*)\]", f.read())
+    except OSError:
+        return None
+    return re.findall(r"'([a-z_]+)'", m.group(1)) if m else None
+
+
 def _self_check():
     import sys
     mal = 0
@@ -236,6 +276,19 @@ def _self_check():
     izq = float(h.split('left:')[1].split('px')[0])
     centro_x = izq + ((x0 + x1) / 2 + MARGEN) * LADO / 100
     ok(abs(centro_x - LINEA_X) < .05, 'la tinta queda centrada sobre la línea del marco (x=%.2f)' % centro_x)
+    # la copia del Worker: si se separan, en la página se elige un estilo que la carta no conoce (o al revés)
+    jw = _juegos_del_worker()
+    ok(jw == list(CATALOGO), 'la lista del Worker (`JUEGOS` en bot/avisos.js) es la misma y en el mismo orden'
+       + ('' if jw == list(CATALOGO) else ' — allá: %s' % jw))
+    # y la de la página: el JSON commiteado tiene que ser el de hoy (se regenera con `--web`)
+    try:
+        with io.open(WEB, encoding='utf-8') as f:
+            w = json.load(f)
+        igual = [e[:4] for e in w.get('estilos', [])] == [[k, v[0], v[1], v[3]] for k, v in CATALOGO.items()]
+    except (OSError, ValueError):
+        igual = False
+    ok(igual, 'el catálogo de la página (`web/src/estilos_juego.json`) está al día — si no: `python %s --web`'
+       % os.path.relpath(os.path.abspath(__file__), RAIZ).replace('\\', '/'))
     _cache = None
     print('   %s' % ('todo bien' if not mal else '%d mal' % mal))
     sys.exit(1 if mal else 0)
@@ -244,4 +297,10 @@ def _self_check():
 if __name__ == '__main__':
     import sys
     sys.stdout.reconfigure(encoding='utf-8')
+    if '--web' in sys.argv:
+        with io.open(WEB, 'w', encoding='utf-8', newline='\n') as f:
+            json.dump(para_la_web(), f, ensure_ascii=False, separators=(',', ':'))
+            f.write('\n')
+        print('escribí %s (%d KB)' % (os.path.relpath(WEB, RAIZ), os.path.getsize(WEB) // 1024))
+        sys.exit(0)
     _self_check()

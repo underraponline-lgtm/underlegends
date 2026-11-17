@@ -23,7 +23,8 @@
 .ves-num dd small{font-size:14px;color:var(--v-gris)}
 
 /* las tres secciones: el chip activo en blanco */
-.ves-sec{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:6px}
+.ves-sec{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:6px}
+@media (max-width:620px){.ves-sec{grid-template-columns:repeat(2,minmax(0,1fr))}}
 .ves-sec button{display:grid;gap:4px;justify-items:start;padding:11px 14px;border:1.5px solid var(--v-borde2);background:var(--v-panel);color:var(--v-tinta);cursor:pointer;text-align:left}
 .ves-sec button b{font:900 17px/1 Archivo,sans-serif;text-transform:uppercase}
 .ves-sec button small{font:700 12.5px/1 "Barlow Condensed",sans-serif;letter-spacing:.06em;text-transform:uppercase;color:var(--v-gris)}
@@ -255,3 +256,27 @@
 }
 @keyframes iv10-destello{from{filter:brightness(1.8);transform:translate(-50%,-50%) scale(1.25)}to{filter:none;transform:translate(-50%,-50%) scale(1)}}
 @keyframes iv10-entra{from{opacity:0;transform:scale(.94)}to{opacity:1;transform:none}}
+
+/* 🎭 tu estilo de juego (16/11/2026, juego.jsx): el dibujo es el de la carta (forma de la familia, luz y aros) */
+.jg{display:grid;gap:14px}
+.jg-ins{position:relative;display:inline-block;flex:none}
+.jg-ins svg{position:absolute;inset:0;width:100%;height:100%;overflow:visible}
+.jg-ins i{position:absolute;-webkit-mask:center/contain no-repeat;mask:center/contain no-repeat}
+.jg-lug{margin:0;padding:0;list-style:none;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:6px}
+.jg-lug li{padding:10px 12px;border:1.5px solid var(--v-tinta);font:500 13px/1.4 Archivo,sans-serif;color:#C9C9CC}
+.jg-lug li b{display:block;margin-bottom:3px;font:800 13px/1.2 "Barlow Condensed",sans-serif;letter-spacing:.06em;text-transform:uppercase;color:var(--v-tinta)}
+.jg-lug li.pr{border-style:dashed;border-color:var(--v-borde2)}
+.jg-lug li.pr b{color:var(--v-gris)}
+@media (max-width:620px){.jg-lug{grid-template-columns:1fr}}
+.jg-niv{display:flex;flex-wrap:wrap;align-items:center;gap:8px 16px}
+.jg-niv > span{display:grid;justify-items:center;gap:4px}
+.jg-niv small{font:800 11px/1 "Barlow Condensed",sans-serif;letter-spacing:.08em;text-transform:uppercase;color:var(--v-gris)}
+.jg-niv .ves-nota{flex:1 1 260px}
+.jg-ficha{grid-template-columns:auto minmax(0,1fr);align-items:center}
+.jg-ficha .ves-btn{margin-top:10px}
+.jg-conf{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-top:10px}
+.jg-conf p{flex:1 1 100%;margin:0 0 4px}
+.ves-q .jg-ins{margin:2px 0 1px}
+/* el gris de la página y no el del borde: en el cuadro y en la ficha, «6 lo tienen» y la familia tienen que leerse */
+.jg .ves-q,.jg .ves-ficha{--r:var(--v-gris)}
+.jg .ves-q.on{--r:var(--v-tinta)}

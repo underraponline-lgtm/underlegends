@@ -1704,6 +1704,16 @@ def main():
     elif not corre(['bot/tags_inventario.py', '--aplicar'], callado=False):
         print('      ⚠️ los TAGs elegidos fallaron: queda lo de la corrida anterior')
 
+    # ── 2f3 · 🎭 el estilo de juego que eligió cada uno (Dlx, 16/11/2026) ──
+    # Lo eligen en el Inventario (una vez por temporada); esto lo trae del objeto y lo deja en `datos/estilos.json`, que
+    # lee la columna izquierda de la Competitiva. ⚠️ Antes de «qué cambió», como el TAG: entra al sello y la carta sale
+    # con él en esta corrida. Nunca frena el ciclo. Ver `bot/juegos.py`
+    paso('2f3', 'los estilos de juego elegidos')
+    if not correr:
+        print('      traería los estilos de juego elegidos (`bot/juegos.py --aplicar`)')
+    elif not corre(['bot/juegos.py', '--aplicar'], callado=False):
+        print('      ⚠️ los estilos de juego fallaron: queda lo de la corrida anterior')
+
     # ── 2 · que cambio ──────────────────────────────────────────────
     paso(3, 'qué cambió')
     import que_cambio as QC

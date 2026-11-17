@@ -14,7 +14,7 @@
 //   · AL INSTANTE EN LA PÁGINA, DESPUÉS EN DISCORD (Dlx: «se deberían notar en la página al instante, pero no
 //     necesariamente al instante en Discord… para que estemos bien con los límites de nuestras herramientas»).
 // Los 🎯 de estado no se guardan: salen solos mientras se cumplen, con «Automático».
-import { Suspense, useEffect, useMemo, useState } from 'react';
+import { Suspense, lazy, useEffect, useMemo, useState } from 'react';
 import CAT from './tags_catalogo.json';
 import { pasePost, refrescarPases } from './pase.js';
 import { Carta, Ico, accion } from './piezas.jsx';
@@ -28,6 +28,8 @@ import { CartaViva } from './cartaviva.jsx';
 import { FraseEditor } from './frase.jsx';
 
 usarCss('inventario', CSS_PAGINA);
+// 🎭 tu estilo de juego (16/11/2026): su pestaña, en su propio pedazo (trae el catálogo con los íconos). Ver `juego.jsx`
+const EstiloJuego = lazy(() => import('./juego.jsx'));
 
 const CARTAS = [['temporada', 'Temporada'], ['competitivo', 'Competitiva'], ['servidor', 'Servidor'], ['pais', 'País']];
 const GRUPO = { siempre: 'para siempre', temporada: 'de temporada', pase: 'edición limitada' };
@@ -154,7 +156,8 @@ const anchoDe = () => (typeof window !== 'undefined' && window.innerWidth < 760 
 export function Inventario({ liga, dc, carta0 = '', ranura0 = '' }) {
   const [yo, setYo] = useState(undefined);
   const [mk, setMk] = useState(null);
-  const [sec, setSec] = useState(['principal', 'fondo', 'frase', 'emblemas'].includes(ranura0) ? 'perfil' : ranura0 === 'coleccion' ? 'col' : 'cartas');
+  const [sec, setSec] = useState(['principal', 'fondo', 'frase', 'emblemas'].includes(ranura0) ? 'perfil' : ranura0 === 'coleccion' ? 'col'
+    : ranura0 === 'juego' ? 'juego' : 'cartas');
   const [carta, setCarta] = useState(CARTAS.some(([c]) => c === carta0) ? carta0 : 'temporada');
   const [ran, setRan] = useState(RANURAS.some(([r]) => r === ranura0) ? ranura0 : 'tag');
   const [filtro, setFiltro] = useState('todos');
@@ -424,7 +427,7 @@ export function Inventario({ liga, dc, carta0 = '', ranura0 = '' }) {
 
       <div className="ves-sec" role="tablist" aria-label="Qué miras">
         {[['cartas', 'Cartas', sinCartas ? 'Ninguna todavía' : cartas.length + ' de 4'], ['perfil', 'Perfil', 'Fondo, frase y más'],
-          ['col', 'Colección', insMias.size + ' insignias']].map(([id, n, s]) => (
+          ['juego', 'Estilo de juego', 'Cómo rapeas'], ['col', 'Colección', insMias.size + ' insignias']].map(([id, n, s]) => (
           <button key={id} type="button" role="tab" aria-selected={sec === id} className={sec === id ? 'on' : ''} onClick={() => { setSec(id); setSel(null); }}>
             <b>{n}</b><small>{s}</small></button>
         ))}
@@ -475,6 +478,13 @@ export function Inventario({ liga, dc, carta0 = '', ranura0 = '' }) {
               <a className="ves-btn" href={'#/r/' + encodeURIComponent(k)}>Ir a mi perfil</a></section>
           ) : null}
         </div>
+      ) : null}
+
+      {sec === 'juego' ? (
+        <section className="ves-panel ancha">
+          <Titulo>Tu estilo de juego</Titulo>
+          <Suspense fallback={<p className="ves-nota">Cargando…</p>}><EstiloJuego dc={dc} Cuadro={Cuadro} Titulo={Titulo} /></Suspense>
+        </section>
       ) : null}
 
       {sec === 'col' ? (
