@@ -686,6 +686,20 @@ def procesar(batallas, num, fecha, servidor, participantes=None,
     # que sin este corte el segundo evento hereda los nombres rotos del
     # primero y no se sabe cual es de quien.
     antes = set(getattr(resolver, 'fallo', ()))
+    # 👯 UNA CLAVE, UNA PERSONA, DENTRO DEL EVENTO (17/11/2026). La #491 escribía «YIN - SON 🇺🇸» en cuartos y
+    # «YIN-SON 🇺🇸» en la semi y la final: la misma clave —el ranking ya los sumaba como uno—, pero dos filas en
+    # `Resultados`, y cobraba 1.250 de cuartos ADEMÁS de los 1.500 de subcampeón. La primera grafía que aparece es la de
+    # todas. La limpieza del paso 0c (`resultados.sin_adornos()`) lo arreglaba y la relectura del paso 1 lo volvía a armar
+    from comun.claves import clave as _clave_p
+    _base_res, _canon = resolver, {}
+
+    def resolver(x, _b=_base_res):
+        r = _b(x)
+        k = _clave_p(r) if r else ''
+        return _canon.setdefault(k, r) if k else r
+    for _at in ('fallo', 'padron', 'n_padron'):
+        if hasattr(_base_res, _at):
+            setattr(resolver, _at, getattr(_base_res, _at))
 
     res, avisos = {}, []
     # 👥 LOS NOMBRES JUNTOS SIN «+», como equipo: ver `juntos()`. Se cambia el lado entero, también donde es el ganador
