@@ -11,6 +11,17 @@
   ],
   "cambios": [
     {
+        "version": "5.82",
+        "dia": "2026-11-16",
+        "cuando": "2026-11-16T23:19:00-05:00",
+        "titulo": "Tu estilo de juego, en el Inventario",
+        "items": [
+            "En tu **Inventario** hay una pestaña nueva, **Estilo de juego**: 18 estilos en tres familias (Ataque, Foco y Cabeza), cada una con su forma, y cuántos eligieron cada uno.",
+            "El que elijas va en la columna izquierda de tu carta **Competitiva**, con el color de tu rango. La primera vez es libre; después lo puedes cambiar una vez por temporada, y el que dejas queda desbloqueado.",
+            "Elegirlo se activa muy pronto; mientras, ya puedes mirar los 18 y pensar el tuyo."
+        ]
+    },
+    {
       "version": "5.81",
       "dia": "2026-11-16",
       "cuando": "2026-11-16T23:05:13-05:00",
