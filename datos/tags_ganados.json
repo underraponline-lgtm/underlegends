@@ -7266,6 +7266,11 @@
     "t1",
     1794526619416
    ],
+   "PRIMER CAMPEÓN": [
+    "PRIMER CAMPEÓN",
+    "t1",
+    1794954779213
+   ],
    "SIN FRONTERAS": [
     "SIN FRONTERAS",
     "t1",
@@ -12285,6 +12290,47 @@
     "🥉 AL PODIO",
     "t1",
     1793029252929
+   ]
+  }
+ },
+ "over": {
+  "competitivo": {
+   "🎯 COMPLETO": [
+    "🎯 COMPLETO",
+    "t1",
+    1794954779213
+   ]
+  },
+  "servidor": {
+   "⚔️ DUELISTA": [
+    "⚔️ DUELISTA",
+    "t1",
+    1794954779213
+   ],
+   "🏅 PODIOS": [
+    "🏅 PODIOS",
+    "t1",
+    1794954779213
+   ],
+   "🏆 CAMPEÓN": [
+    "🏆 CAMPEÓN",
+    "t1",
+    1794954779213
+   ],
+   "🏯 CIUDADELA": [
+    "🏯 CIUDADELA",
+    "t1",
+    1794954779213
+   ],
+   "🏰 FORTALEZA": [
+    "🏰 FORTALEZA",
+    "t1",
+    1794954779213
+   ],
+   "📆 HABITUÉ": [
+    "📆 HABITUÉ",
+    "t1",
+    1794954779213
    ]
   }
  },
