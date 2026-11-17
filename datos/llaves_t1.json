@@ -47397,10 +47397,10 @@
      ],
      [
       [
-       "nexux",
+       "NXUZ",
        "Cinexfilo"
       ],
-      "nexux",
+      "NXUZ",
       "ganador: ✅ Decidir"
      ]
     ],
@@ -54665,14 +54665,14 @@
  },
  "632": {
   "dia": "2026-11-13",
-  "escala": "16+",
+  "escala": "8-15",
   "fecha": "13/11",
   "links": [
    "https://discord.com/channels/1489848581203689535/1536574435761332334/1570960126192652380"
   ],
   "n": 632,
   "nombre": "RANKED 2",
-  "participantes": 17,
+  "participantes": 10,
   "rondas": [
    {
     "b": [
@@ -54755,62 +54755,6 @@
       ],
       "Dios",
       ""
-     ],
-     [
-      [
-       "Dios",
-       "Leyenda"
-      ],
-      "Dios",
-      "Walk-in 2: Leyenda.X5 🇦🇷"
-     ],
-     [
-      [
-       "Dios",
-       "NEXUX"
-      ],
-      "Dios",
-      "Walk-in 2: NEXUX"
-     ],
-     [
-      [
-       "Dios",
-       "Senticide"
-      ],
-      "Dios",
-      "Walk-in 2: SENTICIDE"
-     ],
-     [
-      [
-       "Araya 🇦🇸",
-       "SENTIDICE"
-      ],
-      "",
-      "sin ganador: espera en ✅ Decidir"
-     ],
-     [
-      [
-       "CRAKERO",
-       "NXUX"
-      ],
-      "",
-      "sin ganador: espera en ✅ Decidir"
-     ],
-     [
-      [
-       "MCAREPA",
-       "Chente 🇻🇪"
-      ],
-      "",
-      "sin ganador: espera en ✅ Decidir"
-     ],
-     [
-      [
-       "MCAREPA",
-       "SENTIDICE"
-      ],
-      "",
-      "sin ganador: espera en ✅ Decidir"
      ]
     ],
     "r": "Final"
@@ -54821,42 +54765,42 @@
    [
     "Dios",
     "Campeón",
-    10000
+    7500
    ],
    [
     "crakero",
     "Subcampeón",
-    7500
+    5000
    ],
    [
     "Artezzy",
     "Cuarto",
-    4500
-   ],
-   [
-    "Mc arepa",
-    "Tercero",
     3000
    ],
    [
     "4'C 🇲🇽",
     "Cuartos",
-    2500
+    2000
    ],
    [
     "CrisZJ",
     "Cuartos",
-    2500
+    2000
+   ],
+   [
+    "Mc arepa",
+    "Tercero",
+    2000
    ],
    [
     "Raizer",
     "Cuartos",
-    2500
+    2000
    ],
    [
     "araya",
     "Cuartos",
-    2500
+    2000
    ]
   ],
   "ver": {

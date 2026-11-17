@@ -636,15 +636,6 @@
 "temporada"
 ]
 },
-"crakero": {
-"rg": "E",
-"c": [
-"competitivo",
-"pais",
-"servidor",
-"temporada"
-]
-},
 "crk": {
 "rg": "E",
 "c": [
@@ -673,6 +664,15 @@
 "motera": {
 "rg": "",
 "c": [
+"pais",
+"servidor",
+"temporada"
+]
+},
+"crakero": {
+"rg": "E",
+"c": [
+"competitivo",
 "pais",
 "servidor",
 "temporada"
@@ -790,14 +790,6 @@
 "temporada"
 ]
 },
-"artezzy": {
-"rg": "",
-"c": [
-"competitivo",
-"servidor",
-"temporada"
-]
-},
 "vallest": {
 "rg": "E",
 "c": [
@@ -825,6 +817,14 @@
 "emizor": {
 "rg": "D",
 "c": []
+},
+"artezzy": {
+"rg": "",
+"c": [
+"competitivo",
+"servidor",
+"temporada"
+]
 },
 "krish": {
 "rg": "E",
@@ -1116,16 +1116,16 @@
 "temporada"
 ]
 },
+"monet": {
+"rg": "",
+"c": []
+},
 "raizer": {
 "rg": "",
 "c": [
 "servidor",
 "temporada"
 ]
-},
-"monet": {
-"rg": "",
-"c": []
 },
 "deluxe": {
 "rg": "",

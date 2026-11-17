@@ -2753,7 +2753,7 @@
    "canal": "1487206164864438513",
    "pub": 1793074550929,
    "ed": 1793076686124,
-   "texto": "`[ SEMIFINALES ]`\n⌞SIX YINN⌝ 🆚 ⌞MAKMAH PART⌝\n⌞RIZAS GIANLAMALDAD⌝ 🆚 ⌞KYSS ZIGNOS⌝\n`[ FINAL ]`\n⌞YINN⌝ 🆚 ⌞RIZAS⌝\n⌞RIZAS⌝ 🆚 ⌞PART⌝\n⌞TRELOK⌝ 🆚 ⌞PRAISERIZAS⌝\n⌞GIANLAMALDAD⌝ 🆚 ⌞SIX⌝",
+   "texto": "`[ SEMIFINALES ]`\n⌞SIX YINN⌝ 🆚 ⌞MAKMAH PART⌝\n⌞RIZAS GIANLAMALDAD⌝ 🆚 ⌞KYSS ZIGNOS⌝\n`[ FINAL ]`\n⌞YINN⌝ 🆚 ⌞RIZAS⌝",
    "batallas": [
     [
      "SEMIFINALES",
@@ -2782,36 +2782,6 @@
       "RIZAS"
      ],
      "RIZAS",
-     "veredicto",
-     []
-    ],
-    [
-     "FINAL",
-     [
-      "RIZAS",
-      "PART"
-     ],
-     "RIZAS",
-     "veredicto",
-     []
-    ],
-    [
-     "FINAL",
-     [
-      "TRELOK",
-      "PRAISERIZAS"
-     ],
-     "PRAISERIZAS",
-     "veredicto",
-     []
-    ],
-    [
-     "FINAL",
-     [
-      "GIANLAMALDAD",
-      "SIX"
-     ],
-     "GIANLAMALDAD",
      "veredicto",
      []
     ]
@@ -3058,7 +3028,7 @@
    "canal": "1487206164864438513",
    "pub": 1793246125314,
    "ed": 1793251795595,
-   "texto": "`[ CUARTOS ]`\n⌞GUS⌝ 🆚 ⌞YINN ZA TENOR⌝\n⌞VERC⌝ 🆚 ⌞PRESAGIO SIX⌝\n⌞PRESAGIO⌝ 🆚 ⌞VERC⌝\n⌞SIX⌝ 🆚 ⌞VERC⌝\n⌞GEOKA LRS⌝ 🆚 ⌞PARK JI SUNG⌝\n⌞PICHULA MC⌝ 🆚 ⌞YO MC⌝\n`[ SEMIFINALES ]`\n⌞YINN ZA⌝ 🆚 ⌞GIANLAMALDAD SIX PRESAGIO⌝\n⌞PRESAGIO⌝ 🆚 ⌞YINN⌝\n⌞PICHULA⌝ 🆚 ⌞PARK JI SUNG⌝\n`[ FINAL ]`\n⌞YINN⌝ 🆚 ⌞GIANLAMALDAD⌝\n⌞YINN⌝ 🆚 ⌞VERC⌝\n⌞VERC⌝ 🆚 ⌞PICHULA MC⌝\n⌞VERC⌝ 🆚 ⌞PRAISERIZAS⌝\n⌞PRAISERIZAS⌝ 🆚 ⌞SIX⌝\n⌞PRAISERIZAS⌝ 🆚 ⌞GIAN⌝\n⌞PARK JI SUNG⌝ 🆚 ⌞GIANLAMALDAD⌝",
+   "texto": "`[ CUARTOS ]`\n⌞GUS⌝ 🆚 ⌞YINN ZA TENOR⌝\n⌞VERC⌝ 🆚 ⌞PRESAGIO SIX⌝\n⌞PRESAGIO⌝ 🆚 ⌞VERC⌝\n⌞SIX⌝ 🆚 ⌞VERC⌝\n⌞GEOKA LRS⌝ 🆚 ⌞PARK JI SUNG⌝\n⌞PICHULA MC⌝ 🆚 ⌞YO MC⌝\n`[ SEMIFINALES ]`\n⌞YINN ZA⌝ 🆚 ⌞GIANLAMALDAD SIX PRESAGIO⌝\n⌞PRESAGIO⌝ 🆚 ⌞YINN⌝\n⌞PICHULA⌝ 🆚 ⌞PARK JI SUNG⌝\n`[ FINAL ]`\n⌞YINN⌝ 🆚 ⌞GIANLAMALDAD⌝\n⌞YINN⌝ 🆚 ⌞VERC⌝\n⌞VERC⌝ 🆚 ⌞PICHULA MC⌝",
    "batallas": [
     [
      "CUARTOS",
@@ -3179,46 +3149,6 @@
      "VERC",
      "veredicto",
      []
-    ],
-    [
-     "FINAL",
-     [
-      "VERC",
-      "PRAISERIZAS"
-     ],
-     null,
-     "última ronda y no dice campeón",
-     []
-    ],
-    [
-     "FINAL",
-     [
-      "PRAISERIZAS",
-      "SIX"
-     ],
-     "PRAISERIZAS",
-     "veredicto",
-     []
-    ],
-    [
-     "FINAL",
-     [
-      "PRAISERIZAS",
-      "GIAN"
-     ],
-     "GIAN",
-     "veredicto",
-     []
-    ],
-    [
-     "FINAL",
-     [
-      "PARK JI SUNG",
-      "GIANLAMALDAD"
-     ],
-     "PARK JI SUNG",
-     "veredicto",
-     []
     ]
    ]
   },
@@ -3303,7 +3233,7 @@
    "canal": "1487206164864438513",
    "pub": 1793322296166,
    "ed": 1793327191077,
-   "texto": "`[ CUARTOS ]`\n⌞DREXX LRS ADRIAGNER⌝ 🆚 ⌞YINN VERC⌝\n⌞DREXX⌝ 🆚 ⌞VERC⌝\n⌞GUAICURUS⌝ 🆚 ⌞KARUMAI⌝\n`[ SEMIFINALES ]`\n⌞GUAICURUS⌝ 🆚 ⌞LIBERIA KIBAK⌝\n`[ FINAL ]`\n⌞ABBYSUS⌝ 🆚 ⌞PARK JI SUNG⌝\n⌞ABBYSUS⌝ 🆚 ⌞PARK JI SUNG⌝\n⌞PARK JI SUNG⌝ 🆚 ⌞YINN⌝\n⌞PARK JI SUNG⌝ 🆚 ⌞LEWITO⌝\n⌞PRESAGIO⌝ 🆚 ⌞NEO⌝",
+   "texto": "`[ CUARTOS ]`\n⌞DREXX LRS ADRIAGNER⌝ 🆚 ⌞YINN VERC⌝\n⌞DREXX⌝ 🆚 ⌞VERC⌝\n⌞GUAICURUS⌝ 🆚 ⌞KARUMAI⌝\n`[ SEMIFINALES ]`\n⌞GUAICURUS⌝ 🆚 ⌞LIBERIA KIBAK⌝\n`[ FINAL ]`\n⌞ABBYSUS⌝ 🆚 ⌞PARK JI SUNG⌝\n⌞ABBYSUS⌝ 🆚 ⌞PARK JI SUNG⌝",
    "batallas": [
     [
      "CUARTOS",
@@ -3362,36 +3292,6 @@
       "PARK JI SUNG"
      ],
      "PARK JI SUNG",
-     "veredicto",
-     []
-    ],
-    [
-     "FINAL",
-     [
-      "PARK JI SUNG",
-      "YINN"
-     ],
-     "PARK JI SUNG",
-     "veredicto",
-     []
-    ],
-    [
-     "FINAL",
-     [
-      "PARK JI SUNG",
-      "LEWITO"
-     ],
-     "PARK JI SUNG",
-     "veredicto",
-     []
-    ],
-    [
-     "FINAL",
-     [
-      "PRESAGIO",
-      "NEO"
-     ],
-     "PRESAGIO",
      "veredicto",
      []
     ]
@@ -3761,7 +3661,7 @@
    "canal": "1487206164864438513",
    "pub": 1793420621062,
    "ed": 1793421760557,
-   "texto": "`[ SEMIFINALES ]`\n⌞PRAISERIZAS BETELGEUSE⌝ 🆚 ⌞SIX TENOR⌝\n`[ FINAL ]`\n⌞PRAISERIZAS⌝ 🆚 ⌞PARIA⌝\n⌞PRAISERIZAS⌝ 🆚 ⌞ZA⌝\n⌞PRAISERIZAS⌝ 🆚 ⌞ERIAN⌝",
+   "texto": "`[ SEMIFINALES ]`\n⌞PRAISERIZAS BETELGEUSE⌝ 🆚 ⌞SIX TENOR⌝\n`[ FINAL ]`\n⌞PRAISERIZAS⌝ 🆚 ⌞PARIA⌝",
    "batallas": [
     [
      "SEMIFINALES",
@@ -3782,26 +3682,6 @@
      "PRAISERIZAS",
      "veredicto",
      []
-    ],
-    [
-     "FINAL",
-     [
-      "PRAISERIZAS",
-      "ZA"
-     ],
-     "PRAISERIZAS",
-     "veredicto",
-     []
-    ],
-    [
-     "FINAL",
-     [
-      "PRAISERIZAS",
-      "ERIAN"
-     ],
-     "PRAISERIZAS",
-     "veredicto",
-     []
     ]
    ]
   },
@@ -3812,33 +3692,13 @@
    "canal": "1487206164864438513",
    "pub": 1793420888912,
    "ed": 1793421760557,
-   "texto": "`[ FINAL ]`\n⌞PRAISERIZAS⌝ 🆚 ⌞PARIA⌝\n⌞PRAISERIZAS⌝ 🆚 ⌞ZA⌝\n⌞PRAISERIZAS⌝ 🆚 ⌞ERIAN⌝",
+   "texto": "`[ FINAL ]`\n⌞PRAISERIZAS⌝ 🆚 ⌞PARIA⌝",
    "batallas": [
     [
      "FINAL",
      [
       "PRAISERIZAS",
       "PARIA"
-     ],
-     "PRAISERIZAS",
-     "veredicto",
-     []
-    ],
-    [
-     "FINAL",
-     [
-      "PRAISERIZAS",
-      "ZA"
-     ],
-     "PRAISERIZAS",
-     "veredicto",
-     []
-    ],
-    [
-     "FINAL",
-     [
-      "PRAISERIZAS",
-      "ERIAN"
      ],
      "PRAISERIZAS",
      "veredicto",
@@ -4564,7 +4424,7 @@
    "canal": "1487206164864438513",
    "pub": 1793674799860,
    "ed": 1793681764426,
-   "texto": "`[ OCTAVOS ]`\n⌞JOBA⌝ 🆚 ⌞LRS⌝ 🆚 ⌞AKUSERU⌝ 🆚 ⌞DOMINIC⌝ 🆚 ⌞MCO⌝ 🆚 ⌞TOMY HILFIGHER⌝\n⌞MATS⌝ 🆚 ⌞PELOTA⌝ 🆚 ⌞OJOS DE TAILANDIA PICHULA⌝ 🆚 ⌞VANDU⌝ 🆚 ⌞LVEL⌝\n⌞O223⌝ 🆚 ⌞IKONOX⌝ 🆚 ⌞71 TNOR TAM⌝ 🆚 ⌞DEUXS⌝\n⌞CALIZ⌝ 🆚 ⌞JOVEN SEXLONG⌝ 🆚 ⌞MAKMAH⌝ 🆚 ⌞EZZE⌝ 🆚 ⌞PRAISERIZA⌝\n`[ CUARTOS ]`\n⌞CALIZ LRS⌝ 🆚 ⌞OJOS DE TAILANDIA⌝\n⌞71 TENOR TAM⌝ 🆚 ⌞MAKMAH⌝\n`[ SEMIFINALES ]`\n⌞PRAISERIZAS⌝ 🆚 ⌞MAKMAH⌝\n⌞TENOR 71 TAM⌝ 🆚 ⌞OJOS DE TAILANDIA⌝\n`[ FINAL ]`\n⌞PRAISERIZAS⌝ 🆚 ⌞MAKMAH⌝\n⌞PRAISERIZAS⌝ 🆚 ⌞PRODIGY⌝\n⌞SIX⌝ 🆚 ⌞ZA⌝\n⌞SIX⌝ 🆚 ⌞TAM⌝\n⌞TENOR⌝ 🆚 ⌞SIX⌝",
+   "texto": "`[ OCTAVOS ]`\n⌞JOBA⌝ 🆚 ⌞LRS⌝ 🆚 ⌞AKUSERU⌝ 🆚 ⌞DOMINIC⌝ 🆚 ⌞MCO⌝ 🆚 ⌞TOMY HILFIGHER⌝\n⌞MATS⌝ 🆚 ⌞PELOTA⌝ 🆚 ⌞OJOS DE TAILANDIA PICHULA⌝ 🆚 ⌞VANDU⌝ 🆚 ⌞LVEL⌝\n⌞O223⌝ 🆚 ⌞IKONOX⌝ 🆚 ⌞71 TNOR TAM⌝ 🆚 ⌞DEUXS⌝\n⌞CALIZ⌝ 🆚 ⌞JOVEN SEXLONG⌝ 🆚 ⌞MAKMAH⌝ 🆚 ⌞EZZE⌝ 🆚 ⌞PRAISERIZA⌝\n`[ CUARTOS ]`\n⌞CALIZ LRS⌝ 🆚 ⌞OJOS DE TAILANDIA⌝\n⌞71 TENOR TAM⌝ 🆚 ⌞MAKMAH⌝\n`[ SEMIFINALES ]`\n⌞PRAISERIZAS⌝ 🆚 ⌞MAKMAH⌝\n⌞TENOR 71 TAM⌝ 🆚 ⌞OJOS DE TAILANDIA⌝\n`[ FINAL ]`\n⌞PRAISERIZAS⌝ 🆚 ⌞MAKMAH⌝",
    "batallas": [
     [
      "OCTAVOS",
@@ -4667,46 +4527,6 @@
      "PRAISERIZAS",
      "veredicto",
      []
-    ],
-    [
-     "FINAL",
-     [
-      "PRAISERIZAS",
-      "PRODIGY"
-     ],
-     "PRAISERIZAS",
-     "veredicto",
-     []
-    ],
-    [
-     "FINAL",
-     [
-      "SIX",
-      "ZA"
-     ],
-     "SIX",
-     "veredicto",
-     []
-    ],
-    [
-     "FINAL",
-     [
-      "SIX",
-      "TAM"
-     ],
-     "SIX",
-     "veredicto",
-     []
-    ],
-    [
-     "FINAL",
-     [
-      "TENOR",
-      "SIX"
-     ],
-     "SIX",
-     "veredicto",
-     []
     ]
    ]
   },
@@ -4788,7 +4608,7 @@
    "canal": "1487206164864438513",
    "pub": 1793760828802,
    "ed": 1793766217645,
-   "texto": "`[ CUARTOS ]`\n⌞LEOPOLD SEAR⌝ 🆚 ⌞LRS⌝ 🆚 ⌞YINN⌝\n⌞TAM⌝ 🆚 ⌞MOLUSCO⌝ 🆚 ⌞MAKMAH⌝\n⌞GEOKA⌝ 🆚 ⌞LVEL⌝ 🆚 ⌞VANDU⌝\n⌞PICHULA⌝ 🆚 ⌞SIX⌝ 🆚 ⌞AGUS⌝\n`[ SEMIFINALES ]`\n⌞YINN LEOPOLD SEAR⌝ 🆚 ⌞TAM MOLUSCO⌝\n⌞GEOKA VANDU⌝ 🆚 ⌞SIX AGUS⌝\n`[ FINAL ]`\n⌞YINN MOLUSCO TAM⌝ 🆚 ⌞SIX GEOKA AGUS⌝\n⌞GEOKA⌝ 🆚 ⌞YINN⌝\n⌞YINN⌝ 🆚 ⌞AGUS⌝\n⌞YINN⌝ 🆚 ⌞SIX⌝\n⌞NHP⌝ 🆚 ⌞SIX⌝\n⌞MOLUSCO⌝ 🆚 ⌞SIX⌝\n⌞SIX⌝ 🆚 ⌞TAM⌝",
+   "texto": "`[ CUARTOS ]`\n⌞LEOPOLD SEAR⌝ 🆚 ⌞LRS⌝ 🆚 ⌞YINN⌝\n⌞TAM⌝ 🆚 ⌞MOLUSCO⌝ 🆚 ⌞MAKMAH⌝\n⌞GEOKA⌝ 🆚 ⌞LVEL⌝ 🆚 ⌞VANDU⌝\n⌞PICHULA⌝ 🆚 ⌞SIX⌝ 🆚 ⌞AGUS⌝\n`[ SEMIFINALES ]`\n⌞YINN LEOPOLD SEAR⌝ 🆚 ⌞TAM MOLUSCO⌝\n⌞GEOKA VANDU⌝ 🆚 ⌞SIX AGUS⌝\n`[ FINAL ]`\n⌞YINN MOLUSCO TAM⌝ 🆚 ⌞SIX GEOKA AGUS⌝\n⌞GEOKA⌝ 🆚 ⌞YINN⌝\n⌞YINN⌝ 🆚 ⌞AGUS⌝\n⌞YINN⌝ 🆚 ⌞SIX⌝",
    "batallas": [
     [
      "CUARTOS",
@@ -4893,36 +4713,6 @@
      "SIX",
      "veredicto",
      []
-    ],
-    [
-     "FINAL",
-     [
-      "NHP",
-      "SIX"
-     ],
-     "SIX",
-     "veredicto",
-     []
-    ],
-    [
-     "FINAL",
-     [
-      "MOLUSCO",
-      "SIX"
-     ],
-     "SIX",
-     "veredicto",
-     []
-    ],
-    [
-     "FINAL",
-     [
-      "SIX",
-      "TAM"
-     ],
-     "SIX",
-     "veredicto",
-     []
     ]
    ]
   },
@@ -4954,7 +4744,7 @@
    "canal": "1487206164864438513",
    "pub": 1793937034730,
    "ed": 1793938100363,
-   "texto": "`[ SEMIFINALES ]`\n⌞SNOW TAM⌝ 🆚 ⌞PARIA ERIAN⌝\n`[ FINAL ]`\n⌞PARK JI SUNG⌝ 🆚 ⌞ERIAN⌝\n⌞PARK JI SUNG⌝ 🆚 ⌞PARIA⌝\n⌞PARK JI SUNG⌝ 🆚 ⌞SNOW⌝",
+   "texto": "`[ SEMIFINALES ]`\n⌞SNOW TAM⌝ 🆚 ⌞PARIA ERIAN⌝\n`[ FINAL ]`\n⌞PARK JI SUNG⌝ 🆚 ⌞ERIAN⌝",
    "batallas": [
     [
      "SEMIFINALES",
@@ -4971,26 +4761,6 @@
      [
       "PARK JI SUNG",
       "ERIAN"
-     ],
-     "PARK JI SUNG",
-     "veredicto",
-     []
-    ],
-    [
-     "FINAL",
-     [
-      "PARK JI SUNG",
-      "PARIA"
-     ],
-     "PARK JI SUNG",
-     "veredicto",
-     []
-    ],
-    [
-     "FINAL",
-     [
-      "PARK JI SUNG",
-      "SNOW"
      ],
      "PARK JI SUNG",
      "veredicto",
@@ -6605,7 +6375,7 @@
    "canal": "1536574435761332334",
    "pub": 1794616481112,
    "ed": 1794624235136,
-   "texto": "`[ CUARTOS ]`\n⌞RAIZER⌝ 🆚 ⌞DIOS⌝ 🆚 ⌞4´C⌝\n⌞REPLICA : RAIZER⌝ 🆚 ⌞DIOS⌝\n⌞CRAKERO⌝ 🆚 ⌞CRISZJ⌝\n⌞SORAYA⌝ 🆚 ⌞ARTEZZY⌝\n`[ SEMIFINALES ]`\n⌞MC AREPA⌝ 🆚 ⌞CRAKERO⌝\n⌞ARTEZZY⌝ 🆚 ⌞DIOS⌝\n⌞MCAREPA⌝ 🆚 ⌞ARTEZZY⌝\n`[ FINAL ]`\n⌞DIOS⌝ 🆚 ⌞CRAKERO⌝\n⌞MCAREPA⌝ 🆚 ⌞CHENTE⌝\n⌞Leyenda.X5⌝ 🆚 ⌞Dios⌝\n⌞CRAKERO⌝ 🆚 ⌞NXUX⌝\n⌞ARAYA⌝ 🆚 ⌞SENTIDICE⌝\n⌞MCAREPA⌝ 🆚 ⌞SENTIDICE⌝\n⌞NEXUX⌝ 🆚 ⌞DIOS⌝\n`[ FINAL ]`\n⌞DIOS⌝ 🆚 ⌞SENTICIDE⌝",
+   "texto": "`[ CUARTOS ]`\n⌞RAIZER⌝ 🆚 ⌞DIOS⌝ 🆚 ⌞4´C⌝\n⌞REPLICA : RAIZER⌝ 🆚 ⌞DIOS⌝\n⌞CRAKERO⌝ 🆚 ⌞CRISZJ⌝\n⌞SORAYA⌝ 🆚 ⌞ARTEZZY⌝\n`[ SEMIFINALES ]`\n⌞MC AREPA⌝ 🆚 ⌞CRAKERO⌝\n⌞ARTEZZY⌝ 🆚 ⌞DIOS⌝\n`[ TERCER LUGAR ]`\n⌞MCAREPA⌝ 🆚 ⌞ARTEZZY⌝\n`[ FINAL ]`\n⌞DIOS⌝ 🆚 ⌞CRAKERO⌝",
    "batallas": [
     [
      "CUARTOS",
@@ -6683,76 +6453,6 @@
      [
       "DIOS",
       "CRAKERO"
-     ],
-     "DIOS",
-     "veredicto",
-     []
-    ],
-    [
-     "FINAL",
-     [
-      "MCAREPA",
-      "CHENTE"
-     ],
-     null,
-     "última ronda y no dice campeón",
-     []
-    ],
-    [
-     "FINAL",
-     [
-      "Leyenda.X5",
-      "Dios"
-     ],
-     "Dios",
-     "veredicto",
-     []
-    ],
-    [
-     "FINAL",
-     [
-      "CRAKERO",
-      "NXUX"
-     ],
-     null,
-     "última ronda y no dice campeón",
-     []
-    ],
-    [
-     "FINAL",
-     [
-      "ARAYA",
-      "SENTIDICE"
-     ],
-     null,
-     "última ronda y no dice campeón",
-     []
-    ],
-    [
-     "FINAL",
-     [
-      "MCAREPA",
-      "SENTIDICE"
-     ],
-     null,
-     "última ronda y no dice campeón",
-     []
-    ],
-    [
-     "FINAL",
-     [
-      "NEXUX",
-      "DIOS"
-     ],
-     "DIOS",
-     "veredicto",
-     []
-    ],
-    [
-     "FINAL",
-     [
-      "DIOS",
-      "SENTICIDE"
      ],
      "DIOS",
      "veredicto",
@@ -7695,7 +7395,7 @@
    "canal": "1487206164864438513",
    "pub": 1794785977551,
    "ed": 1794792645120,
-   "texto": "`[ OCTAVOS ]`\n⌞BLITZ⌝ 🆚 ⌞DXG⌝ 🆚 ⌞SURYA⌝ 🆚 ⌞TROT⌝ 🆚 ⌞MINIBOY⌝\n⌞THANIEL⌝ 🆚 ⌞RIZAS⌝ 🆚 ⌞GOCHO⌝\n⌞YINN⌝ 🆚 ⌞SIX⌝ 🆚 ⌞EZEE⌝ 🆚 ⌞LVEL⌝ 🆚 ⌞LIMITZ⌝\n⌞MAJIZTRAL⌝ 🆚 ⌞TENOR⌝ 🆚 ⌞MITO MANIAK⌝ 🆚 ⌞LORDVIRUZ⌝ 🆚 ⌞COLESITO BENJIXO⌝\n⌞MOLUSCO⌝ 🆚 ⌞AGUS⌝ 🆚 ⌞YINN⌝ 🆚 ⌞COLESITO⌝\n`[ CUARTOS ]`\n⌞BLITZ⌝ 🆚 ⌞GOCHO⌝\n⌞SIX⌝ 🆚 ⌞COLESITO LORD⌝ 🆚 ⌞YINN AGUS⌝\n⌞BENJIXO TENOR⌝ 🆚 ⌞PICHULA EZEE⌝\n⌞RIZAS⌝ 🆚 ⌞SURYA⌝\n`[ SEMIFINALES ]`\n⌞PICHULA+EZEE⌝ 🆚 ⌞RIZAS⌝\n⌞SIX PICHULA⌝ 🆚 ⌞EZEE GOCHO AGUS⌝\n⌞EZZE⌝ 🆚 ⌞PICHULA⌝\n`[ FINAL ]`\n⌞RIZAS⌝ 🆚 ⌞PICHULA⌝\n⌞RIZAS⌝ 🆚 ⌞EZEE⌝\n⌞AGUS+GOCHO⌝ 🆚 ⌞RIZAS⌝",
+   "texto": "`[ OCTAVOS ]`\n⌞BLITZ⌝ 🆚 ⌞DXG⌝ 🆚 ⌞SURYA⌝ 🆚 ⌞TROT⌝ 🆚 ⌞MINIBOY⌝\n⌞THANIEL⌝ 🆚 ⌞RIZAS⌝ 🆚 ⌞GOCHO⌝\n⌞YINN⌝ 🆚 ⌞SIX⌝ 🆚 ⌞EZEE⌝ 🆚 ⌞LVEL⌝ 🆚 ⌞LIMITZ⌝\n⌞MAJIZTRAL⌝ 🆚 ⌞TENOR⌝ 🆚 ⌞MITO MANIAK⌝ 🆚 ⌞LORDVIRUZ⌝ 🆚 ⌞COLESITO BENJIXO⌝\n⌞MOLUSCO⌝ 🆚 ⌞AGUS⌝ 🆚 ⌞YINN⌝ 🆚 ⌞COLESITO⌝\n`[ CUARTOS ]`\n⌞BLITZ⌝ 🆚 ⌞GOCHO⌝\n⌞SIX⌝ 🆚 ⌞COLESITO LORD⌝ 🆚 ⌞YINN AGUS⌝\n⌞BENJIXO TENOR⌝ 🆚 ⌞PICHULA EZEE⌝\n⌞RIZAS⌝ 🆚 ⌞SURYA⌝\n`[ SEMIFINALES ]`\n⌞PICHULA+EZEE⌝ 🆚 ⌞RIZAS⌝\n⌞SIX PICHULA⌝ 🆚 ⌞EZEE GOCHO AGUS⌝\n⌞EZZE⌝ 🆚 ⌞PICHULA⌝\n`[ FINAL ]`\n⌞RIZAS⌝ 🆚 ⌞PICHULA⌝\n⌞RIZAS⌝ 🆚 ⌞EZEE⌝",
    "batallas": [
     [
      "OCTAVOS",
@@ -7854,16 +7554,6 @@
      [
       "RIZAS",
       "EZEE"
-     ],
-     "RIZAS",
-     "veredicto",
-     []
-    ],
-    [
-     "FINAL",
-     [
-      "AGUS+GOCHO",
-      "RIZAS"
      ],
      "RIZAS",
      "veredicto",
