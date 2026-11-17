@@ -11,6 +11,15 @@
   ],
   "cambios": [
     {
+        "version": "5.97",
+        "dia": "2026-11-17",
+        "cuando": "2026-11-17T01:26:00-05:00",
+        "titulo": "Tu fondo, sólo en tu perfil",
+        "items": [
+            "Tu fondo de portada ya no aparece detrás del Ranking, Eventos o Tu cuenta: sólo en tu perfil."
+        ]
+    },
+    {
       "version": "5.96",
       "dia": "2026-11-17",
       "cuando": "2026-11-17T01:18:00-05:00",
