@@ -859,11 +859,6 @@
      2,
      2
     ],
-    "Mr Still Ballin": [
-     1,
-     9,
-     1
-    ],
     "Musicdum": [
      1,
      0,
@@ -953,6 +948,11 @@
      0,
      0,
      8
+    ],
+    "Over": [
+     1,
+     9,
+     1
     ],
     "Ozu": [
      0,
@@ -1640,7 +1640,6 @@
     "Molusco": 300,
     "Monet": 300,
     "Motera": 1000,
-    "Mr Still Ballin": 2900,
     "Musicdum": 300,
     "N1k": 300,
     "NC": 900,
@@ -1656,6 +1655,7 @@
     "OG": 2900,
     "ONZASS": 300,
     "Oasis": 2900,
+    "Over": 2900,
     "PIERR🇵🇪": 300,
     "PRAISERIZA": 2900,
     "PROMETHEUS BIB 🇨🇴": 300,
@@ -2489,12 +2489,6 @@
      1,
      0
     ],
-    "Mr Still Ballin": [
-     4,
-     1,
-     1,
-     0
-    ],
     "Mr.Kude": [
      1,
      8,
@@ -2571,6 +2565,12 @@
      1,
      4,
      4,
+     0
+    ],
+    "Over": [
+     4,
+     1,
+     1,
      0
     ],
     "PETER🇵🇪": [
@@ -3066,7 +3066,6 @@
     "Molusco": 2900,
     "Mosquitrap 🦟": 1600,
     "Motera": 1600,
-    "Mr Still Ballin": 2900,
     "NC": 2900,
     "NXUZ": 900,
     "Neo": 900,
@@ -3075,6 +3074,7 @@
     "ONZASS": 900,
     "Oasis": 2900,
     "Ortiz": 600,
+    "Over": 2900,
     "Panchok": 2900,
     "Paria": 300,
     "PichulaMc": 2900,
@@ -3215,7 +3215,7 @@
     ],
     "Abyssus": [
      0,
-     1,
+     2,
      1,
      0,
      0
@@ -3243,7 +3243,7 @@
     ],
     "Agus": [
      0,
-     2,
+     3,
      1,
      0,
      0
@@ -4277,13 +4277,6 @@
      1,
      0
     ],
-    "Mr Still Ballin": [
-     0,
-     0,
-     2,
-     0,
-     0
-    ],
     "Mr.Kude": [
      0,
      0,
@@ -4386,6 +4379,13 @@
      0,
      0,
      8,
+     0,
+     0
+    ],
+    "Over": [
+     0,
+     2,
+     2,
      0,
      0
     ],
@@ -4927,7 +4927,7 @@
     "AGUSTÍN51K": 300,
     "Abyssus": 1000,
     "Adriagner": 1600,
-    "Agus": 1000,
+    "Agus": 1600,
     "Aldre": 1000,
     "Andres": 1000,
     "BENJI 🇵🇪": 1000,
@@ -4971,7 +4971,6 @@
     "Miniboy": 1000,
     "Molusco": 1000,
     "Mosquitrap 🦟": 2400,
-    "Mr Still Ballin": 1000,
     "NC": 1000,
     "NXUZ": 1000,
     "Neo": 1000,
@@ -4979,6 +4978,7 @@
     "OG": 1000,
     "OKAM": 2400,
     "Oasis": 1000,
+    "Over": 1000,
     "PRAISERIZA": 1000,
     "Panchok": 1000,
     "PichulaMc": 2400,
@@ -6077,13 +6077,6 @@
      0,
      0
     ],
-    "Mr Still Ballin": [
-     1,
-     2,
-     1,
-     0,
-     0
-    ],
     "Mr.Kude": [
      0,
      2,
@@ -6186,6 +6179,13 @@
      0,
      1,
      0,
+     0,
+     0
+    ],
+    "Over": [
+     1,
+     2,
+     1,
      0,
      0
     ],
@@ -6812,7 +6812,6 @@
     "Mito": 600,
     "Molusco": 900,
     "Motera": 600,
-    "Mr Still Ballin": 2900,
     "Mr.Kude": 600,
     "NC": 900,
     "NXUZ": 900,
@@ -6821,6 +6820,7 @@
     "OG": 900,
     "OKAM": 900,
     "Oasis": 1700,
+    "Over": 2900,
     "PRAISERIZA": 900,
     "Panchok": 600,
     "Paria": 600,
@@ -9929,7 +9929,7 @@
   "Abyssus": 5500,
   "Adriagner": 4700,
   "Agente sombra": 300,
-  "Agus": 8700,
+  "Agus": 9300,
   "Akuseru": 900,
   "Akutagawa🇹🇼": 300,
   "Aldre": 3900,
@@ -10120,7 +10120,6 @@
   "Monet": 300,
   "Mosquitrap 🦟": 4000,
   "Motera": 3200,
-  "Mr Still Ballin": 9700,
   "Mr.Kude": 600,
   "Musicdum": 300,
   "N1k": 300,
@@ -10142,6 +10141,7 @@
   "ONZASS": 1200,
   "Oasis": 10800,
   "Ortiz": 600,
+  "Over": 9700,
   "PIERR🇵🇪": 300,
   "PRAISERIZA": 5100,
   "PROMETHEUS BIB 🇨🇴": 300,

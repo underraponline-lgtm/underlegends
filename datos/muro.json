@@ -126,7 +126,7 @@
 ]
 },
 "mrstillballin": {
-"rg": "S",
+"rg": "",
 "c": []
 },
 "mco": {
@@ -2867,14 +2867,6 @@
 }
 },
 "cambios": [
-{
-"tipo": "tarjeta",
-"t": "2026-10-11T03:26:17Z",
-"quien": [
-"CrisZJ"
-],
-"carta": "pais"
-},
 {
 "tipo": "tarjeta",
 "t": "2026-10-11T03:26:17Z",
@@ -6242,6 +6234,18 @@
 ],
 "rg": "E",
 "primero": true
+},
+{
+"tipo": "top10",
+"t": "2026-11-17T22:09:56Z",
+"quien": [
+"Walker"
+],
+"ks": [
+"walker"
+],
+"rk": "competitivo",
+"pos": 10
 }
 ],
 "noche_antes": {
@@ -7905,16 +7909,17 @@
 "liberia",
 "panchok",
 "carlosss",
-"mrstillballin",
 "agus",
 "abyssus",
 "hassan",
-"verc"
+"verc",
+"walker"
 ]
 },
 "top10_t": {
 "temporada:carlosss": "2026-11-16T18:40:04Z",
-"temporada:panchok": "2026-11-16T19:02:43Z"
+"temporada:panchok": "2026-11-16T19:02:43Z",
+"competitivo:walker": "2026-11-17T22:09:56Z"
 },
 "racha": {
 "makmah": 0,

@@ -1,5 +1,5 @@
 {
- "cuando": "2026-11-17T21:26:04+00:00",
+ "cuando": "2026-11-17T21:56:50+00:00",
  "anuncios": [
   {
    "nombre": "¡SE LLEGÓ LA GRAN NOCHE!",
@@ -7188,6 +7188,33 @@
  ],
  "oficiales": [
   {
+   "servidor": "DDS",
+   "canal": "📢]ANUNCIOS",
+   "tit": "DLS 2 ESTA DE REGRESO CON NUEVA IMAGEN",
+   "tx": "",
+   "cuando": "2026-11-17T21:47:03",
+   "msg_id": "1572367491785826489",
+   "link": "https://discord.com/channels/1443770831598649528/1464796928939135059/1572367491785826489"
+  },
+  {
+   "servidor": "DDS",
+   "canal": "🚨〕ANUNCIOS",
+   "tit": "hoy se anuncian los participantes atentos",
+   "tx": "",
+   "cuando": "2026-11-17T21:46:23",
+   "msg_id": "1572367324915171481",
+   "link": "https://discord.com/channels/1443770831598649528/1443789190012604436/1572367324915171481"
+  },
+  {
+   "servidor": "DDS",
+   "canal": "🚨〕ANUNCIOS",
+   "tit": "Con nuevo cambio de imagen",
+   "tx": "",
+   "cuando": "2026-11-17T21:46:10",
+   "msg_id": "1572367269550366783",
+   "link": "https://discord.com/channels/1443770831598649528/1443789190012604436/1572367269550366783"
+  },
+  {
    "servidor": "FFA",
    "canal": "✦📢—anuncios",
    "tit": "SE PARTE DEL EQUIPO DE STAFF FFA",
@@ -7350,24 +7377,6 @@
    "link": "https://discord.com/channels/838593179187544064/850777668386291712/1569748204642107492"
   },
   {
-   "servidor": "DDS",
-   "canal": "🚨〕ANUNCIOS",
-   "tit": "GENTE VOLVIO RAIBLES DICTADOR",
-   "tx": "",
-   "cuando": "2026-11-10T02:50:08",
-   "msg_id": "1569544664061837403",
-   "link": "https://discord.com/channels/1443770831598649528/1443789190012604436/1569544664061837403"
-  },
-  {
-   "servidor": "DDS",
-   "canal": "🚨〕ANUNCIOS",
-   "tit": "MAINSTREAM VS DISCORD STYLE PRONTO💙.... ¡¡",
-   "tx": "",
-   "cuando": "2026-11-08T05:51:24",
-   "msg_id": "1568865505836666931",
-   "link": "https://discord.com/channels/1443770831598649528/1443789190012604436/1568865505836666931"
-  },
-  {
    "servidor": "FFA",
    "canal": "✦⚡—novedades",
    "tit": "Por lo contrario en la liga de ORO, lo ganara OASIS?",
@@ -7375,15 +7384,6 @@
    "cuando": "2026-11-06T03:52:18",
    "msg_id": "1568110757751558266",
    "link": "https://discord.com/channels/1468472442925092958/1531832189187264543/1568110757751558266"
-  },
-  {
-   "servidor": "DDS",
-   "canal": "📢]ANUNCIOS",
-   "tit": "HOST´S CONFIRMADOS PARA LA DUO STYLE 5 Y",
-   "tx": "",
-   "cuando": "2026-11-06T03:47:55",
-   "msg_id": "1568109654809251961",
-   "link": "https://discord.com/channels/1443770831598649528/1476035007133778001/1568109654809251961"
   },
   {
    "servidor": "FDS",

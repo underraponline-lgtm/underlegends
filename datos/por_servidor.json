@@ -9783,38 +9783,6 @@
     }
    }
   },
-  "Mr Still Ballin": {
-   "ACAD": {
-    "duelos": "0/1",
-    "ev": 1,
-    "oro": 0,
-    "ovr": 43,
-    "pod": 0,
-    "pts": 6250,
-    "racha": "0/0"
-   },
-   "FFA": {
-    "duelos": "13/14",
-    "ev": 9,
-    "oro": 5,
-    "ovr": 57,
-    "pod": 7,
-    "pts": 162688,
-    "racha": "4/4",
-    "tg": {
-     "fin": 6
-    }
-   },
-   "SR": {
-    "duelos": "6/7",
-    "ev": 2,
-    "oro": 1,
-    "ovr": 49,
-    "pod": 2,
-    "pts": 56000,
-    "racha": "2/2"
-   }
-  },
   "Mr.Kude": {
    "ACAD": {
     "duelos": "0/1",
@@ -10778,6 +10746,41 @@
     "pod": 1,
     "pts": 28000,
     "racha": "0/0"
+   }
+  },
+  "Over": {
+   "ACAD": {
+    "duelos": "0/1",
+    "ev": 1,
+    "oro": 0,
+    "ovr": 43,
+    "pod": 0,
+    "pts": 6250,
+    "racha": "0/0"
+   },
+   "FFA": {
+    "duelos": "13/14",
+    "ev": 9,
+    "oro": 5,
+    "ovr": 57,
+    "pod": 7,
+    "pts": 162688,
+    "racha": "4/4",
+    "tg": {
+     "fin": 2
+    }
+   },
+   "SR": {
+    "duelos": "6/7",
+    "ev": 2,
+    "oro": 1,
+    "ovr": 49,
+    "pod": 2,
+    "pts": 56000,
+    "racha": "2/2",
+    "tg": {
+     "fin": 1
+    }
    }
   },
   "Ozu": {
