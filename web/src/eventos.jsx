@@ -388,7 +388,8 @@ function etiquetaDe(liga, e, est, ll, L) {
 function detalleDe(liga, e, ll, sinSigla) {
   const inf = (ll && ll.info) || {};
   const x = e.px || {};
-  return [sinSigla ? '' : siglaDe(e.sv), formato(e.mod || inf.mod || x.modalidad), x.cupos ? 'cupos ' + String(x.cupos).toLowerCase() : '',
+  // 🎭 el evento de estilo que marcó Dlx (17/11/2026): jugarlo da nivel en ese estilo. `je` es el nombre (`bot/eventos_estilo.py`)
+  return [sinSigla ? '' : siglaDe(e.sv), e.je ? '🎭 evento de ' + e.je : '', formato(e.mod || inf.mod || x.modalidad), x.cupos ? 'cupos ' + String(x.cupos).toLowerCase() : '',
     ll ? ll.participantes + ' raperos' : '',
     // 👥 de a uno y con su nombre de la Liga («HERYIETEERJOUK…» era Benjixo): `Liga.orgsDe()`
     (() => { const os = liga.orgsDe(x.org || x.os ? x : inf); return os.length ? 'organiza ' + os.map((o) => limpio(o.f ? o.f.n : o.n)).join(', ') : ''; })()]

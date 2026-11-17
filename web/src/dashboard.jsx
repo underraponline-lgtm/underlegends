@@ -10,6 +10,7 @@ import { diaISO, hora, limpio, mult, num, siglaDe } from './liga.js';
 import { Cara, DosToques, Ico, usePerfiles } from './piezas.jsx';
 import { urlFondo } from './fondos.js';
 import { pedirCrews, useCrews } from './crews.js';
+import { AjEventosEstilo } from './dash_estilos.jsx';
 import { useNumero } from './anima.js';
 
 // 📸 la dirección de una foto de tarjeta, para el CSS: sólo del bucket de la Liga (las caras y las que esperan revisión)
@@ -2075,7 +2076,7 @@ const NOMBRE_AJ = { campana_pausada: 'La campana', pase_sorteo: 'El sorteo del p
   eventos_discord: 'Los eventos de Discord', tiers: 'El tier de los servidores', beneficios: 'Lo que recibe cada servidor', altas: 'Sumar un servidor',
   socios_duenos: 'El dueño de un servidor socio', promos_mano: 'Las promos a mano', promos_quitar: 'Las promos sacadas', mes_sacar: 'Los nominados de los MES AWARDS',
   crew_precio: 'Lo que cuesta crear una crew', crew_precio_nombre: 'Lo que cuesta cambiarle el nombre a una crew', crew_precio_logo: 'Lo que cuesta cambiarle el logo a una crew',
-  crews_ranking: 'El ranking de crews', crews_tiers_num: 'Los tiers de las crews' };
+  crews_ranking: 'El ranking de crews', crews_tiers_num: 'Los tiers de las crews', eventos_estilo: 'Los eventos de estilo' };
 function Historial({ hist, hacer, ocup }) {
   const xs = (hist || []).slice(0, 15);
   if (!xs.length) return <p className="db-tx">Todavía no hay cambios anotados: el historial empezó el 13/10/2026.</p>;
@@ -3493,7 +3494,7 @@ const msDe = (t) => (typeof t === 'number' ? t : Date.parse(t || '') || 0);
 
 // 🔎 LO QUE ENCUENTRA «BUSCAR» (Ctrl+K): cada ajuste y cada lugar, con el área donde vive y el ancla a la que baja
 const BUSCABLES = [
-  ['La campana (pausar los avisos)', 'web', 'aj-campana'], ['El sorteo del premium', 'web', 'aj-sorteo'],
+  ['La campana (pausar los avisos)', 'web', 'aj-campana'], ['El sorteo del premium', 'web', 'aj-sorteo'], ['Eventos de estilo (marcar un evento de DRA)', 'web', 'aj-estilos'],
   ['Aviso arriba de la página', 'web', 'aj-aviso'], ['El bot en vivo', 'web', 'aj-vivo'], ['Cada cuánto habla el bot en vivo', 'web', 'aj-ritmo'],
   ['Horario de silencio', 'web', 'aj-silencio'], ['Las apuestas', 'web', 'aj-apuestas'], ['El aviso de cada evento', 'web', 'aj-avisos'],
   ['Las crews: precios, ranking y tiers', 'web', 'aj-crews'], ['MES AWARDS: sacar un nominado', 'web', 'aj-mes'], ['Promos a mano', 'web', 'aj-promos'],
@@ -4545,6 +4546,13 @@ function AjustesFilas({ liga, aj, hacer, ocup, chat, ir, abrir, sis }) {
           val={promos ? promos + ' a mano' : 'Ninguna'}>
           <PromosMano aj={aj} hacer={hacer} ocup={ocup} /></Fila>
       </ul>
+      <h3 className="dz-h">Los estilos de juego</h3>
+      <ul>
+        <Fila {...f('aj-estilos')} t="Eventos de estilo" que="Marca un evento de DRA con un estilo: jugarlo da nivel 1 y el cuarto de arriba de la llave sube uno."
+          val={Object.keys(aj.eventos_estilo || {}).length ? Object.keys(aj.eventos_estilo).length + ' marcados' : 'Ninguno'}
+          tono={Object.keys(aj.eventos_estilo || {}).length ? 'ok' : ''}>
+          <AjEventosEstilo liga={liga} aj={aj} hacer={hacer} ocup={ocup} /></Fila>
+      </ul>
       <h3 className="dz-h">Publicaciones</h3>
       <ul>
         <Fila {...f('aj-comentarios')} t="Comentarios simulados" que="A quién le preguntaste si su cara puede comentar. Sí va sin etiqueta, sin preguntar va con «simulado» y No no aparece nunca."
@@ -4706,6 +4714,7 @@ function enPalabras(cual, v, liga) {
   if (cual === 'ritmo') return 'uno cada ' + v.normal + ' min · ' + v.batalla + ' en «Cada batalla»';
   if (cual === 'apuestas') return (v.montos || []).map(num).join(' · ') + (v.minutos ? ' · ' + v.minutos + ' min' : '');
   if (cual === 'pase_sorteo') return v.id + (v.sorteo && liga ? ' · se sortea ' + liga.dia(v.sorteo) : '');
+  if (cual === 'eventos_estilo') { const n = Object.keys(v || {}).length; return n === 1 ? '1 evento marcado' : n + ' eventos marcados'; }
   if (typeof v === 'boolean') return v ? 'sí' : 'no';
   if (typeof v === 'number') return num(v);
   if (typeof v === 'string') return corte(v, 40);

@@ -986,3 +986,12 @@ button.dz-cu-b:focus-visible{outline:2px solid var(--verde);outline-offset:2px}
 .cmd-seg button[aria-pressed="true"].no{background:var(--magenta);color:#fff}
 .dz-nota{margin:0;font:500 14px/1.4 Archivo,sans-serif;color:var(--gris)}
 @media (max-width:520px){ .cmd-l li{grid-template-columns:minmax(0,1fr)} .cmd-seg{justify-self:start} }
+
+/* 🎭 los eventos de estilo (17/11/2026, dash_estilos.jsx): un evento de DRA por renglón con su estilo */
+.db-ee{margin:0;padding:0;list-style:none;display:grid;gap:6px}
+.db-ee-f{display:flex;flex-wrap:wrap;gap:6px;margin:4px 0 8px}
+.db-ee li{display:grid;grid-template-columns:86px minmax(0,1fr) minmax(150px,220px);gap:10px;align-items:center;padding:8px 10px;border:1px solid var(--borde,#2A2C31)}
+.db-ee li.on{border-color:currentColor}
+.db-ee-d{font-variant-numeric:tabular-nums;opacity:.8}
+.db-ee-n{display:grid;min-width:0}.db-ee-n b{overflow-wrap:anywhere}.db-ee-n small{opacity:.7}
+@media (max-width:620px){.db-ee li{grid-template-columns:1fr}}

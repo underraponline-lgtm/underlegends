@@ -1,39 +1,60 @@
 # -*- coding: utf-8 -*-
-"""🎭 LOS ESTILOS DE JUEGO QUE ELIGIÓ CADA UNO, del objeto a las cartas (paso 2f3 del ciclo).
+"""🎭 LOS ESTILOS DE JUEGO DE CADA UNO: lo elegido, los niveles y el 2.º lugar, para la Competitiva (paso 2f3 del ciclo).
 
     python bot/juegos.py              muestra lo que escribiría (no escribe)
-    python bot/juegos.py --aplicar    trae lo elegido y escribe `datos/estilos.json`
+    python bot/juegos.py --aplicar    trae lo elegido, calcula los niveles y escribe `datos/estilos.json`
     python bot/juegos.py --auto       el self-check (no pide nada a nadie)
 
-Cada uno elige su estilo en el Inventario de la página (Dlx, 16/11/2026: el 1.º lugar «lo puedes elegir desde la
-página»; una vez por temporada). Lo guarda el objeto de avisos (`juegoElige()` en `bot/avisos.js`) y esto lo trae con la
-clave del ciclo (`/avisos/juegos-ciclo`), como los TAGs (`bot/tags_inventario.py`), y lo deja donde la Competitiva lo
-lee: `datos/estilos.json`, `{clave: [[estilo, nivel], …]}` en el orden de los lugares (ver
-`02_Competitivo/v2/estilos_juego.py`).
+1.º LUGAR — EL QUE ELIGES. Cada uno lo elige en el Inventario de la página (Dlx, 16/11/2026: el 1.º «lo puedes elegir
+desde la página»; una vez por temporada). Lo guarda el objeto de avisos (`juegoElige()` en `bot/avisos.js`) y esto lo
+trae con la clave del ciclo (`/avisos/juegos-ciclo`), como los TAGs (`bot/tags_inventario.py`).
 
-HOY ESCRIBE SÓLO EL 1.º LUGAR. El 2.º (los eventos de estilo de DRA) y el 3.º (Competencias) todavía no existen, y los
-niveles tampoco: van en `datos/estilos_niveles.json` (`{clave: {estilo: nivel}}`) cuando lleguen. Sin ese archivo, todo
-en nivel 0 —el elegido sin nada más—. ⚠️ Los que dejaste (`viejos`) quedan desbloqueados en el objeto y en la página,
-pero no van en la carta: la carta lleva el elegido.
+LOS NIVELES Y EL 2.º LUGAR — LOS EVENTOS DE ESTILO (Dlx, 17/11/2026: «sí a las reglas, y que se pueda marcar antes»).
+Dlx marca eventos de DRA con un estilo en el Dashboard; `bot/eventos_estilo.py` los resuelve a número de evento
+(`datos/eventos_estilo.json`) y acá, con los resultados de la temporada:
+  · jugar un evento de un estilo da **nivel 1** en ese estilo; quedar en el **cuarto de arriba** de la llave (la regla de
+    la Racha: la final en una de 8, la semi en una de 16, cuartos en una de 32) **sube uno**, hasta el 3;
+  · si es el estilo que elegiste, sube ese; si no, **se te desbloquea en el 2.º lugar**. Con varios, va el de nivel más
+    alto, y en un empate el más reciente;
+  · el que elegiste **arranca de 0 desde que lo elegiste**: lo que jugaste con ese estilo antes de elegirlo no cuenta
+    para él (Dlx: «si eliges una nueva empieza desde 0»). El día en que el ciclo lo vio elegido va en `desde`;
+  · los niveles **vuelven a 0 cada temporada**: salen de los resultados de la temporada que corre.
 
-⚠️ SIN RESPUESTA DEL OBJETO NO SE TOCA EL ARCHIVO. Una caída de red escribiendo `{}` le borraría el estilo a todos y
-redibujaría sus cartas sin él. Tampoco con el Worker todavía sin desplegar (la ruta da 404): queda lo de antes.
+DÓNDE QUEDA: `datos/estilos.json` (`{clave: [[estilo, nivel], …]}` en el orden de los lugares, lo que dibuja la carta) y
+`datos/estilos_niveles.json` (`desde`, `niveles` por estilo y el `segundo`: lo que no se ve en la carta).
+
+⚠️ SIN RESPUESTA DEL OBJETO NO SE TOCA NADA. Una caída de red escribiendo `{}` le borraría el estilo a todos y
+redibujaría sus cartas sin él.
 """
+import datetime
 import io
 import json
 import os
 import sys
 
 BASE = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-for _p in (BASE, os.path.join(BASE, 'bot'), os.path.join(BASE, '02_Competitivo', 'v2')):
+for _p in (BASE, os.path.join(BASE, 'bot'), os.path.join(BASE, 'sheet'), os.path.join(BASE, '02_Competitivo', 'v2')):
     if _p not in sys.path:
         sys.path.insert(0, _p)
 
 ARCH = os.path.join(BASE, 'datos', 'estilos.json')
 NIVELES = os.path.join(BASE, 'datos', 'estilos_niveles.json')
+EVENTOS = os.path.join(BASE, 'datos', 'eventos_estilo.json')
 LEEME = ('🎭 Los estilos de juego de la Competitiva, por clave: [[estilo, nivel], …] en el orden de los lugares (1 el elegido '
          'en la página · 2 eventos de estilo de DRA · 3 Competencias). Lo escribe bot/juegos.py; lo lee '
          '02_Competitivo/v2/estilos_juego.py')
+LEEME_N = ('🎭 Lo que no se ve en la carta: desde cuándo tiene cada uno su estilo elegido (`desde`, el día en que el ciclo lo '
+           'vio), el nivel de cada estilo que jugó (`niveles`) y el que va en su 2.º lugar (`segundo`). Lo escribe '
+           'bot/juegos.py con los eventos de estilo y los resultados de la temporada')
+
+
+def _j(ruta, defecto):
+    try:
+        with io.open(ruta, encoding='utf-8') as f:
+            d = json.load(f)
+        return d if isinstance(d, type(defecto)) else defecto
+    except (OSError, ValueError):
+        return defecto
 
 
 def traer():
@@ -54,47 +75,125 @@ def traer():
     return d.get('elegidos') if isinstance(d, dict) and isinstance(d.get('elegidos'), dict) else None
 
 
-def _niveles():
-    try:
-        with io.open(NIVELES, encoding='utf-8') as f:
-            d = json.load(f)
-        return d if isinstance(d, dict) else {}
-    except (OSError, ValueError):
-        return {}
-
-
-def armar(elegidos, niveles, catalogo):
-    """`{clave: [[estilo, nivel]]}` de lo elegido. Lo que no está en el catálogo o una clave rara, afuera; el nivel, de
-    `niveles` (0 a 3), y si no hay, 0."""
+def actualizar_desde(desde, elegidos, hoy):
+    """`{clave: [estilo, día]}`: el día en que se vio elegido el estilo de hoy. Si cambió, desde hoy; si dejó de tener,
+    afuera."""
     out = {}
-    for k, x in sorted((elegidos or {}).items()):
-        juego = (x or {}).get('juego') if isinstance(x, dict) else None
-        if not isinstance(k, str) or not k or k.startswith('_') or juego not in catalogo:
-            continue
-        n = ((niveles.get(k) or {}) if isinstance(niveles.get(k), dict) else {}).get(juego, 0)
-        out[k] = [[juego, n if n in (0, 1, 2, 3) else 0]]
+    for k, juego in elegidos.items():
+        d = desde.get(k)
+        out[k] = d if isinstance(d, list) and len(d) == 2 and d[0] == juego else [juego, hoy]
     return out
 
 
-def escribir(gente):
-    d = dict({'_leeme': LEEME}, **gente)
-    with io.open(ARCH, 'w', encoding='utf-8', newline='\n') as f:
-        json.dump(d, f, ensure_ascii=False, indent=1, sort_keys=False)
+def calcular(eventos, filas, dias, elegidos, desde, clave_de, LLEGO, umbral, norm):
+    """Los niveles de la temporada y el 2.º lugar.
+
+    `eventos` `{número: estilo}` · `filas` las de `t1_resultados` (`[n, fecha, sv, escala, rapero, país, posición, …]`)
+    · `dias` `{número: 'AAAA-MM-DD'}` · `elegidos` `{clave: estilo}` · `desde` `{clave: [estilo, día]}`.
+    Devuelve `(niveles {clave: {estilo: nivel}}, segundo {clave: estilo})`."""
+    por_ev = {}
+    for f in filas or []:
+        if len(f) > 6 and str(f[0]) in eventos:
+            por_ev.setdefault(str(f[0]), []).append((f[4], norm(f[6])))
+    niv, ult = {}, {}
+    for n in sorted(por_ev, key=int):
+        est, gente, dia = eventos[n], por_ev[n], dias.get(n, '')
+        tam = max((LLEGO.get(p, 0) for _, p in gente), default=0)
+        tope = umbral(tam) if tam else 0
+        for rapero, pos in gente:
+            k = clave_de(rapero)
+            if not k:
+                continue
+            d = desde.get(k)
+            # el elegido arranca de 0 desde que lo eligió: antes de eso, ese estilo no cuenta para nada
+            if elegidos.get(k) == est and d and dia and dia < d[1]:
+                continue
+            v = max(niv.get((k, est), 0), 1)
+            if tope and LLEGO.get(pos, 999) <= tope:
+                v = min(3, v + 1)
+            niv[(k, est)] = v
+            ult[(k, est)] = int(n)
+    niveles, segundo = {}, {}
+    for (k, est), v in niv.items():
+        niveles.setdefault(k, {})[est] = v
+    for k, xs in niveles.items():
+        otros = [e for e in xs if e != elegidos.get(k)]
+        if otros:
+            segundo[k] = max(otros, key=lambda e: (xs[e], ult[(k, e)]))
+    return ({k: dict(sorted(v.items())) for k, v in sorted(niveles.items())}, dict(sorted(segundo.items())))
+
+
+def armar(elegidos, niveles, segundo, catalogo):
+    """`{clave: [[estilo, nivel], …]}`: el elegido con su nivel y, si tiene, el del 2.º lugar. Lo que no está en el
+    catálogo o una clave rara, afuera."""
+    out = {}
+    for k in sorted(set(elegidos) | set(segundo)):
+        if not isinstance(k, str) or not k or k.startswith('_'):
+            continue
+        xs = niveles.get(k) if isinstance(niveles.get(k), dict) else {}
+        fila = []
+        j = elegidos.get(k)
+        if j in catalogo:
+            n = xs.get(j, 0)
+            fila.append([j, n if n in (0, 1, 2, 3) else 0])
+        s = segundo.get(k)
+        if s in catalogo and s != j:
+            n = xs.get(s, 1)
+            fila.append([s, n if n in (1, 2, 3) else 1])
+        if fila:
+            out[k] = fila
+    return out
+
+
+def _escribir(ruta, d):
+    with io.open(ruta, 'w', encoding='utf-8', newline='\n') as f:
+        json.dump(d, f, ensure_ascii=False, indent=1)
         f.write('\n')
+
+
+def escribir(gente):
+    _escribir(ARCH, dict({'_leeme': LEEME}, **gente))
+
+
+def _hoy():
+    try:
+        import zoneinfo
+        return datetime.datetime.now(zoneinfo.ZoneInfo('America/New_York')).date().isoformat()
+    except Exception:                                    # noqa: BLE001
+        return datetime.date.today().isoformat()
 
 
 def correr(aplicar):
     import estilos_juego as EJ
+    import rankings as RK
+    from comun.claves import clave as _CL
+    from comun.temporada import ACTUAL
     el = traer()
     if el is None:
         print('      🎭 el objeto no contestó lo elegido (¿el Worker sin desplegar?): queda lo de antes')
         return 0
-    gente = armar(el, _niveles(), EJ.CATALOGO)
+    elegidos = {k: (x or {}).get('juego') for k, x in el.items()
+                if isinstance(x, dict) and (x or {}).get('juego') in EJ.CATALOGO and isinstance(k, str) and k}
+    viejo = _j(NIVELES, {})
+    desde = actualizar_desde(viejo.get('desde') or {}, elegidos, _hoy())
+    eventos = (_j(EVENTOS, {}).get('eventos') or {})
+    filas = (_j(os.path.join(BASE, 'datos', '%s_resultados.json' % ACTUAL), {}).get('filas') or [])
+    llaves = _j(os.path.join(BASE, 'datos', 'llaves_%s.json' % ACTUAL), {})
+    dias = {str(n): (r or {}).get('dia', '') for n, r in llaves.items() if isinstance(r, dict)}
+    niveles, segundo = calcular(eventos, filas, dias, elegidos, desde, _CL, RK.LLEGO, RK._umbral, RK._norm)
+    gente = armar(elegidos, niveles, segundo, EJ.CATALOGO)
     antes = {k: v for k, v in EJ.todos().items() if not k.startswith('_')}
     cambian = sorted(k for k in set(antes) | set(gente) if antes.get(k) != gente.get(k))
-    print('      🎭 %d con estilo de juego%s' % (len(gente), (' · cambian: ' + ', '.join(cambian[:12]) +
-                                                         ('…' if len(cambian) > 12 else '')) if cambian else ' · nada cambió'))
-    if aplicar and (cambian or not os.path.exists(ARCH)):
+    print('      🎭 %d con estilo de juego · %d eventos de estilo%s' % (
+        len(gente), len(eventos), (' · cambian: ' + ', '.join(cambian[:12]) + ('…' if len(cambian) > 12 else ''))
+        if cambian else ' · nada cambió'))
+    if not aplicar:
+        return 0
+    nuevo_n = {'_leeme': LEEME_N, 'temporada': ACTUAL, 'desde': dict(sorted(desde.items())), 'niveles': niveles,
+               'segundo': segundo}
+    if {k: v for k, v in viejo.items() if k != '_leeme'} != {k: v for k, v in nuevo_n.items() if k != '_leeme'}:
+        _escribir(NIVELES, nuevo_n)
+    if cambian or not os.path.exists(ARCH):
         escribir(gente)
     return 0
 
@@ -108,13 +207,47 @@ def _self_check():
         print('   %s %s' % ('✅' if c else '❌', que))
         mal += 0 if c else 1
 
-    el = {'ana': {'juego': 'punchline', 'viejos': ['flow']}, 'bea': {'juego': 'inventado'}, '': {'juego': 'flow'},
-          'cami': 'roto', 'dani': {'juego': 'frio'}, 'eze': {'juego': 'flow'}}
-    g = armar(el, {'ana': {'punchline': 2}, 'dani': {'frio': 7}, 'eze': 'roto'}, EJ.CATALOGO)
-    ok(g == {'ana': [['punchline', 2]], 'dani': [['frio', 0]], 'eze': [['flow', 0]]},
-       'sólo lo del catálogo, con su nivel (0 a 3; raro o sin nivel, 0); lo roto afuera')
+    LLEGO = {'campeon': 1, 'subcampeon': 2, 'tercero': 4, 'cuarto': 4, 'semifinal': 4, 'cuartos': 8, 'octavos': 16}
+
+    def umbral(t):
+        return t // 4 if t >= 32 else 4 if t >= 16 else 2
+    import unicodedata
+
+    def norm(s):
+        """como `rankings._norm()`: sin tildes y en minúsculas («Campeón» → «campeon»)"""
+        return ''.join(c for c in unicodedata.normalize('NFKD', str(s)) if not unicodedata.combining(c)).lower().strip()
+    clave = str.lower
+    # #10 (Punchline, llave de 8 → arriba = la final), #11 (Flow, de 16 → arriba = semis), #12 (Punchline, de 8)
+    ev = {'10': 'punchline', '11': 'flow', '12': 'punchline'}
+    filas = [[10, '01/11', 'DRA', '8-15', 'Ana', 'ar', 'Campeón'], [10, '01/11', 'DRA', '8-15', 'Beto', 'cl', 'Cuartos'],
+             [10, '01/11', 'DRA', '8-15', 'Cami', 'uy', 'Semifinal'], [10, '01/11', 'DRA', '8-15', 'Dani', 'pe', 'Subcampeón'],
+             [11, '05/11', 'DRA', '16+', 'Ana', 'ar', 'Semifinal'], [11, '05/11', 'DRA', '16+', 'Beto', 'cl', 'Octavos'],
+             [11, '05/11', 'DRA', '16+', 'Dani', 'pe', 'Octavos'],
+             [12, '09/11', 'DRA', '8-15', 'Ana', 'ar', 'Subcampeón'], [12, '09/11', 'DRA', '8-15', 'Beto', 'cl', 'Campeón'],
+             [99, '09/11', 'FFA', '8-15', 'Ana', 'ar', 'Campeón']]
+    dias = {'10': '2026-11-01', '11': '2026-11-05', '12': '2026-11-09'}
+    elegidos = {'ana': 'punchline', 'beto': 'flow', 'cami': 'punchline'}
+    desde = {'ana': ['punchline', '2026-10-01'], 'beto': ['flow', '2026-11-06'], 'cami': ['punchline', '2026-11-02']}
+    niv, seg = calcular(ev, filas, dias, elegidos, desde, clave, LLEGO, umbral, norm)
+    ok(niv['ana'] == {'flow': 2, 'punchline': 3},
+       'Ana: campeona en la de Punchline (1 + arriba = 2) y en la final de la otra (+1 = 3); semi en una de 16 de Flow: 2')
+    ok(niv['beto'] == {'punchline': 2} and seg.get('beto') == 'punchline',
+       'Beto: lo de Flow antes de elegirlo no cuenta; Punchline, que no es el suyo, va a su 2.º lugar')
+    ok('cami' not in niv, 'Cami: jugó Punchline antes de elegirlo: arranca de 0')
+    ok(niv['dani'] == {'flow': 1, 'punchline': 2} and seg['dani'] == 'punchline',
+       'Dani (sin elegir): subcampeona de 8 (arriba: 2) y octavos de 16 (1); el 2.º lugar es el de nivel más alto')
+    ok(seg['ana'] == 'flow', 'Ana: el 2.º lugar es el que no es el suyo')
+    g = armar(elegidos, niv, seg, EJ.CATALOGO)
+    ok(g == {'ana': [['punchline', 3], ['flow', 2]], 'beto': [['flow', 0], ['punchline', 2]], 'cami': [['punchline', 0]],
+             'dani': [['punchline', 2]]},
+       'en la carta: el elegido con su nivel (0 si todavía nada) y el 2.º lugar; sin elegir, sólo el ganado')
+    ok(actualizar_desde({'ana': ['punchline', '2026-10-01'], 'beto': ['frio', '2026-10-01'], 'x': ['flow', '2026-10-01']},
+                        {'ana': 'punchline', 'beto': 'flow'}, '2026-11-17')
+       == {'ana': ['punchline', '2026-10-01'], 'beto': ['flow', '2026-11-17']},
+       'desde: si el estilo sigue, la fecha de antes; si cambió, hoy; si ya no tiene, afuera')
     EJ._cache = g
-    ok(EJ.de('ana') == [('punchline', 2)] and EJ.de('dani') == [('frio', 0)], 'y lo que escribe, la carta lo entiende')
+    ok(EJ.de('ana') == [('punchline', 3), ('flow', 2)] and EJ.de('dani') == [('punchline', 2)],
+       'y lo que escribe, la carta lo entiende (`estilos_juego.de()`)')
     EJ._cache = None
     print('   %s' % ('todo bien' if not mal else '%d mal' % mal))
     return 1 if mal else 0

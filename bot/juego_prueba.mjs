@@ -74,6 +74,13 @@ try {
     && c.elegidos[A.DUENO_K] && c.elegidos[A.DUENO_K].juego === 'cazafla' && !Object.values(c.elegidos).some((x) => x.juego === undefined),
     'el ciclo recibe {clave: {juego, viejos}}; quien no tiene clave todavía no va', c);
   ok(!('bea' in c.elegidos) && Object.keys(c.elegidos).length === 2, 'sin clave no hay a quién dibujarle la carta: queda afuera', c);
+
+  // 🎭 los eventos de estilo que marca Dlx en el Dashboard (17/11/2026): el número del evento o el id del anuncio
+  const V = (x) => A.ajusteValido('eventos_estilo', x);
+  ok(JSON.stringify(V({ 653: 'punchline', 'a:1440000000000000000': 'flow' })) === JSON.stringify({ 653: 'punchline', 'a:1440000000000000000': 'flow' }),
+    'eventos de estilo: por número o por anuncio, con un estilo del catálogo');
+  ok(V(null) === null && V({ 653: 'inventado' }) === undefined && V({ 'x:1': 'flow' }) === undefined && V(['flow']) === undefined
+    && V({ 'a:12': 'flow' }) === undefined, 'y nada raro: un estilo que no existe, una clave rara, una lista, un id corto');
 } catch (e) {
   fallas += 1;
   console.log('  🔴 la prueba reventó: ' + (e && e.stack));

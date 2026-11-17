@@ -5122,6 +5122,19 @@ export function ajusteValido(cual, valor) {
     }
     return out;
   }
+  // 🎭 LOS EVENTOS DE ESTILO (17/11/2026, Dlx: «B, desde el Dashboard» y «que se pueda marcar antes»): `{clave: estilo}`.
+  // La clave es el número del evento ya jugado (`653`) o `a:<id del mensaje de su anuncio>` antes de jugarse; el estilo,
+  // uno de `JUEGOS`. Los niveles los calcula el ciclo con los resultados (`bot/eventos_estilo.py` y `bot/juegos.py`)
+  if (cual === 'eventos_estilo') {
+    if (valor === null) return null;
+    if (!valor || typeof valor !== 'object' || Array.isArray(valor) || Object.keys(valor).length > 300) return undefined;
+    const out = {};
+    for (const [k, v] of Object.entries(valor)) {
+      if (!/^(a:[0-9]{15,22}|[0-9]{1,6})$/.test(k) || !JUEGOS.includes(v)) return undefined;
+      out[k] = v;
+    }
+    return out;
+  }
   // 🏆 los nominados que Dlx saca de los MES AWARDS antes de que abra la votación (`bot/mes_awards.py`): `{mes, quitar}`
   if (cual === 'mes_sacar') {
     if (valor === null) return null;
