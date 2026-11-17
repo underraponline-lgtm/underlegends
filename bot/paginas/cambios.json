@@ -11,6 +11,19 @@
   ],
   "cambios": [
     {
+        "version": "5.84",
+        "dia": "2026-11-16",
+        "cuando": "2026-11-16T23:39:00-05:00",
+        "titulo": "Tu Inventario, como escenario",
+        "items": [
+            "**Tu carta, la estrella**: grande y al centro, como en los juegos. A la izquierda lo que tienes puesto (TAG, marco, foto, estilo) y a la derecha tus cartas.",
+            "Debajo de la carta, el nombre de la pieza en grande y cómo se gana.",
+            "En la compu, **pasa el mouse** por una pieza y tu carta se la prueba; tocarla la elige. Y con «Lo puesto / Probando» comparas antes de guardar.",
+            "Los TAGs nuevos llevan un punto y tienen su filtro.",
+            "En Colección, cuánto tienes de cada cosa y **qué % de la Liga** tiene cada insignia."
+        ]
+    },
+    {
         "version": "5.83",
         "dia": "2026-11-16",
         "cuando": "2026-11-16T23:23:17-05:00",
