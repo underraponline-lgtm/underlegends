@@ -1,5 +1,5 @@
 {
- "cuando": "2026-11-17T01:07:38+00:00",
+ "cuando": "2026-11-17T01:25:57+00:00",
  "anuncios": [
   {
    "nombre": "¡SE LLEGÓ LA GRAN NOCHE!",
@@ -4744,76 +4744,6 @@
    "inscripciones_cuando": "2026-11-17T00:16:09"
   },
   {
-   "nombre": "GALACTICOS DEL FREESTYLE VOL.15",
-   "servidor": "DDF",
-   "canal": "『📢』Eventos",
-   "msg_id": "1566883982123991051",
-   "cuando": "2026-11-02T18:37:32",
-   "canal_id": "1470097121284980736",
-   "guild_id": "1469009547971526659",
-   "organizador": "",
-   "orgs": [
-    {
-     "n": "Adriagner",
-     "id": "1316490165836972104"
-    }
-   ],
-   "autor_h": "0f624d80ff313923",
-   "cupos_texto": "INDEFINIDOS",
-   "inscriptos": null,
-   "cupo_total": null,
-   "rango": "",
-   "modalidad": "1V1",
-   "horario": "YAAAA",
-   "fecha": "AHORIIITA",
-   "premios": "SALON DE LA FAMA DE GDF",
-   "staff": {
-    "jurado": [
-     "Adriagner"
-    ],
-    "host": [
-     "Adriagner"
-    ],
-    "dj": [
-     "Bootrax D Callao"
-    ]
-   },
-   "autor": "Adriagner",
-   "staff_cuentas": {
-    "Adriagner": "1316490165836972104",
-    "Bootrax D Callao": "1122273746099638354"
-   },
-   "categoria_id": "1469944166137073857",
-   "inscripciones": "abiertas",
-   "inscripciones_cuando": "2026-11-17T00:16:09"
-  },
-  {
-   "nombre": "19 CUP COMPE EXPRESS",
-   "servidor": "DDF",
-   "canal": "『📢』Eventos",
-   "msg_id": "1566227679223484579",
-   "cuando": "2026-10-31T23:09:37",
-   "canal_id": "1470097121284980736",
-   "guild_id": "1469009547971526659",
-   "organizador": "",
-   "orgs": [],
-   "autor_h": "b360fced798207fd",
-   "cupos_texto": "8 almas valientes",
-   "inscriptos": null,
-   "cupo_total": null,
-   "rango": "",
-   "modalidad": "[Directo a eliminación sencilla / 4avos de final]",
-   "horario": "¡En breve arrancamos esta batalla express!",
-   "fecha": "",
-   "premios": "Honor, gloria y respeto en el freestyle (Sin premio / Rango)",
-   "staff": {},
-   "autor": "deleted_user1932553526641",
-   "staff_cuentas": {},
-   "categoria_id": "1469944166137073857",
-   "inscripciones": "abiertas",
-   "inscripciones_cuando": "2026-11-17T00:16:09"
-  },
-  {
    "nombre": "GALACTICOS DEL FREESTYLE VOL.16",
    "servidor": "DDF",
    "canal": "╰┈➤-PLANTILLAS-PARA-COMPETENCIA",
@@ -6424,7 +6354,7 @@
      "id": "987149314591719474"
     },
     {
-     "n": "VILCA⁷⁷",
+     "n": "DANU",
      "id": "846870712950194196"
     }
    ],
@@ -7677,6 +7607,33 @@
   }
  ],
  "inscripciones": [
+  {
+   "servidor": "LKR",
+   "canal": "⟡・INSCRIPCIONES",
+   "texto": "Sergio 🇻🇪",
+   "quien": "3decopas.",
+   "discord_id": "1494178897908990136",
+   "msg_id": "1572057811997827123",
+   "cuando": "2026-11-17T01:16:29"
+  },
+  {
+   "servidor": "DDF",
+   "canal": "『📑』Inscripciones",
+   "texto": "Number 🇨🇫",
+   "quien": "numbyng",
+   "discord_id": "1310075576991875144",
+   "msg_id": "1572056523910156311",
+   "cuando": "2026-11-17T01:11:22"
+  },
+  {
+   "servidor": "LKR",
+   "canal": "⟡・INSCRIPCIONES",
+   "texto": "El menor🇨🇱",
+   "quien": "min_g16m",
+   "discord_id": "950011515434573824",
+   "msg_id": "1572056040764211281",
+   "cuando": "2026-11-17T01:09:27"
+  },
   {
    "servidor": "LKR",
    "canal": "⟡・INSCRIPCIONES",
@@ -43649,33 +43606,6 @@
    "discord_id": "1347663033949880360",
    "msg_id": "1559988902800924674",
    "cuando": "2026-10-14T17:58:57"
-  },
-  {
-   "servidor": "FFA",
-   "canal": "✦📝—inscripciones",
-   "texto": "Lrs🇦🇷",
-   "quien": "lrs0378",
-   "discord_id": "1385452830684614697",
-   "msg_id": "1559988869821235361",
-   "cuando": "2026-10-14T17:58:49"
-  },
-  {
-   "servidor": "FFA",
-   "canal": "✦📝—inscripciones",
-   "texto": "agre🇦🇷",
-   "quien": "axel_2034",
-   "discord_id": "305098839868571651",
-   "msg_id": "1559988749801095229",
-   "cuando": "2026-10-14T17:58:21"
-  },
-  {
-   "servidor": "FFA",
-   "canal": "✦📝—inscripciones",
-   "texto": "Cinexfilo 🇻🇪",
-   "quien": "cinexfilosanity",
-   "discord_id": "781971857519804417",
-   "msg_id": "1559988677067808891",
-   "cuando": "2026-10-14T17:58:03"
   }
  ]
 }

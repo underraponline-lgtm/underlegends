@@ -2141,6 +2141,19 @@
      ]
     ],
     [
+     "Guaicurús🇰🇷",
+     1016,
+     1,
+     4,
+     2,
+     [
+      [
+       16,
+       "Karumailafmasha🇹🇼"
+      ]
+     ]
+    ],
+    [
      "letrao",
      1016,
      1,
@@ -2576,6 +2589,19 @@
      ]
     ],
     [
+     "MATUK 🇦🇷",
+     993,
+     1,
+     4,
+     2,
+     [
+      [
+       -7,
+       "Oasis"
+      ]
+     ]
+    ],
+    [
      "Desio",
      992,
      7,
@@ -2807,19 +2833,6 @@
      ]
     ],
     [
-     "Spartan",
-     986,
-     1,
-     4,
-     2,
-     [
-      [
-       -14,
-       "Tuca"
-      ]
-     ]
-    ],
-    [
      "CrisZJ",
      985,
      54,
@@ -2837,6 +2850,27 @@
       [
        -18,
        "crakero"
+      ]
+     ]
+    ],
+    [
+     "Betelguese",
+     985,
+     3,
+     4,
+     2,
+     [
+      [
+       -15,
+       "PichulaMc"
+      ],
+      [
+       -15,
+       "Liberia"
+      ],
+      [
+       16,
+       "VR"
       ]
      ]
     ],
@@ -3334,23 +3368,6 @@
       [
        -13,
        "Verc"
-      ]
-     ]
-    ],
-    [
-     "Dantemx",
-     965,
-     2,
-     4,
-     0,
-     [
-      [
-       -17,
-       "Drexx"
-      ],
-      [
-       -18,
-       "Mito"
       ]
      ]
     ],
@@ -4231,19 +4248,6 @@
       [
        16,
        "DIDYER"
-      ]
-     ]
-    ],
-    [
-     "Guaicurús🇰🇷",
-     1016,
-     1,
-     5,
-     2,
-     [
-      [
-       16,
-       "Karumailafmasha🇹🇼"
       ]
      ]
     ],
@@ -5426,19 +5430,6 @@
      ]
     ],
     [
-     "MATUK 🇦🇷",
-     993,
-     1,
-     5,
-     2,
-     [
-      [
-       -7,
-       "Oasis"
-      ]
-     ]
-    ],
-    [
      "Surya",
      992,
      1,
@@ -5874,6 +5865,19 @@
      ]
     ],
     [
+     "Spartan",
+     986,
+     1,
+     5,
+     2,
+     [
+      [
+       -14,
+       "Tuca"
+      ]
+     ]
+    ],
+    [
      "Xowee",
      986,
      1,
@@ -5883,27 +5887,6 @@
       [
        -14,
        "Motera"
-      ]
-     ]
-    ],
-    [
-     "Betelguese",
-     985,
-     3,
-     5,
-     2,
-     [
-      [
-       -15,
-       "PichulaMc"
-      ],
-      [
-       -15,
-       "Liberia"
-      ],
-      [
-       16,
-       "VR"
       ]
      ]
     ],
@@ -8005,6 +7988,23 @@
      ]
     ],
     [
+     "Dantemx",
+     965,
+     2,
+     5,
+     2,
+     [
+      [
+       -17,
+       "Drexx"
+      ],
+      [
+       -18,
+       "Mito"
+      ]
+     ]
+    ],
+    [
      "Valdoza",
      958,
      3,
@@ -8987,7 +8987,7 @@
   "BELIKKO": 0,
   "BENJI 🇵🇪": 6,
   "BLANKO 🇺🇸": 0,
-  "BLITZ": 3,
+  "BLITZ": 2,
   "BLUE BURKA🇦🇪": 0,
   "BM": 0,
   "BNA": 7,
@@ -9004,7 +9004,7 @@
   "Benju": 0,
   "Benshi": 0,
   "Berrun": 8,
-  "Betelguese": 0,
+  "Betelguese": 3,
   "Bishop": 3,
   "Blaxx": 0,
   "Bloody": 11,
@@ -9047,7 +9047,6 @@
   "Crk": 3,
   "Cronox": 3,
   "DANCOLL": 0,
-  "DANU": 0,
   "DARK ANGEL": 0,
   "DAVIJUAN": 0,
   "DECYS🇦🇷": 0,
@@ -9057,7 +9056,7 @@
   "DNK": 0,
   "DO-C": 0,
   "DOMINICK DE CHOP": 0,
-  "Dantemx": 3,
+  "Dantemx": 0,
   "DarkoMC": 3,
   "DarnBless": 3,
   "David": 0,
@@ -9154,7 +9153,7 @@
   "Gonorrea": 0,
   "Goohan MVP": 0,
   "Gosu Z": 0,
-  "Guaicurús🇰🇷": 0,
+  "Guaicurús🇰🇷": 3,
   "Guess": 10,
   "Gus": 3,
   "Gustavo Urrutia Perez 🇲🇽": 0,
@@ -9345,7 +9344,7 @@
   "MvA": 0,
   "N1k": 0,
   "NAW": 0,
-  "NC": 6,
+  "NC": 9,
   "NILS": 0,
   "NIT NATION": 0,
   "NOON🇵🇪": 0,
@@ -9474,7 +9473,7 @@
   "Shadow": 0,
   "Shitka": 0,
   "SikoV": 0,
-  "Sin Limites": 9,
+  "Sin Limites": 6,
   "Six": 11,
   "Skiller": 0,
   "Skratch": 0,
@@ -9487,7 +9486,7 @@
   "Soneto": 3,
   "Sosa": 0,
   "Soulb": 7,
-  "Spartan": 3,
+  "Spartan": 0,
   "Steven🇨🇴": 0,
   "Stt🇮🇨": 0,
   "Sweet pain": 3,
@@ -9703,7 +9702,7 @@
   "Benju": 5,
   "Benshi": 5,
   "Berrun": 3,
-  "Betelguese": 5,
+  "Betelguese": 4,
   "Bishop": 5,
   "Blaxx": 5,
   "Bloody": 2,
@@ -9746,7 +9745,6 @@
   "Crk": 5,
   "Cronox": 5,
   "DANCOLL": 5,
-  "DANU": 5,
   "DARK ANGEL": 5,
   "DAVIJUAN": 5,
   "DECYS🇦🇷": 5,
@@ -9756,7 +9754,7 @@
   "DNK": 5,
   "DO-C": 5,
   "DOMINICK DE CHOP": 5,
-  "Dantemx": 4,
+  "Dantemx": 5,
   "DarkoMC": 5,
   "DarnBless": 5,
   "David": 5,
@@ -9853,7 +9851,7 @@
   "Gonorrea": 5,
   "Goohan MVP": 5,
   "Gosu Z": 5,
-  "Guaicurús🇰🇷": 5,
+  "Guaicurús🇰🇷": 4,
   "Guess": 2,
   "Gus": 4,
   "Gustavo Urrutia Perez 🇲🇽": 5,
@@ -9988,7 +9986,7 @@
   "MARTINES": 4,
   "MAT MC": 5,
   "MATICERNA": 4,
-  "MATUK 🇦🇷": 5,
+  "MATUK 🇦🇷": 4,
   "MAU KC 🇨🇴": 5,
   "MAWS🇻🇪": 5,
   "MAXIMILIANO CALVO": 5,
@@ -10186,7 +10184,7 @@
   "Soneto": 4,
   "Sosa": 5,
   "Soulb": 3,
-  "Spartan": 4,
+  "Spartan": 5,
   "Steven🇨🇴": 5,
   "Stt🇮🇨": 5,
   "Sweet pain": 4,
@@ -10934,12 +10932,12 @@
   ],
   [
    "2026-10-05",
-   "Flama",
+   "Number",
    4
   ],
   [
    "2026-10-05",
-   "Spartan",
+   "Flama",
    4
   ],
   [
@@ -11179,12 +11177,12 @@
   ],
   [
    "2026-10-12",
-   "Molusco",
+   "OG",
    3
   ],
   [
    "2026-10-12",
-   "OG",
+   "NC",
    3
   ],
   [
@@ -11204,12 +11202,12 @@
   ],
   [
    "2026-10-12",
-   "Vandu",
+   "Molusco",
    3
   ],
   [
    "2026-10-12",
-   "Bloody",
+   "Vandu",
    3
   ],
   [
@@ -11504,12 +11502,12 @@
   ],
   [
    "2026-10-26",
-   "Kochi2011",
+   "Guaicurús🇰🇷",
    4
   ],
   [
    "2026-10-26",
-   "Dantemx",
+   "Kochi2011",
    4
   ],
   [
@@ -11544,11 +11542,6 @@
   ],
   [
    "2026-10-26",
-   "BLITZ",
-   4
-  ],
-  [
-   "2026-10-26",
    "Kravitz",
    4
   ],
@@ -11560,6 +11553,11 @@
   [
    "2026-10-26",
    "Bau",
+   4
+  ],
+  [
+   "2026-10-26",
+   "Betelguese",
    4
   ],
   [
@@ -11584,7 +11582,7 @@
   ],
   [
    "2026-10-26",
-   "NC",
+   "Tam",
    3
   ],
   [
@@ -11629,12 +11627,12 @@
   ],
   [
    "2026-10-26",
-   "NXUZ",
+   "NC",
    2
   ],
   [
    "2026-10-26",
-   "Sin Limites",
+   "NXUZ",
    2
   ],
   [

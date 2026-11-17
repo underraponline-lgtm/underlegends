@@ -49639,10 +49639,10 @@
      ],
      [
       [
-       "Vilca, DANU",
+       "Vilca, Vilca",
        "Nobu, NIT NATION"
       ],
-      "Vilca, DANU",
+      "Vilca, Vilca",
       ""
      ],
      [
@@ -49705,10 +49705,10 @@
      ],
      [
       [
-       "Vilca, DANU",
+       "Vilca, Vilca",
        "CrisZJ, NXUZ"
       ],
-      "Vilca, DANU",
+      "Vilca, Vilca",
       ""
      ],
      [
@@ -49735,7 +49735,7 @@
      [
       [
        "AbrahamH, Chop",
-       "Vilca, DANU"
+       "Vilca, Vilca"
       ],
       "AbrahamH, Chop",
       ""
@@ -49768,6 +49768,11 @@
   "sv": "DDS",
   "tabla": [
    [
+    "Vilca",
+    "Semifinal",
+    5250
+   ],
+   [
     "SOL",
     "Campeón",
     5000
@@ -49793,17 +49798,7 @@
     2625
    ],
    [
-    "DANU",
-    "Semifinal",
-    2625
-   ],
-   [
     "MCO",
-    "Semifinal",
-    2625
-   ],
-   [
-    "Vilca",
     "Semifinal",
     2625
    ],
