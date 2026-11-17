@@ -530,7 +530,19 @@ def main():
             vistos[et] = c
     clones = []
     fuera_kv = 0
+    # 🔑 EL SERVIDOR CONTRA EL QUE SE DIBUJA LA CARTA PROPIA ES EL DEL POOL (`03_Servidor/generar.py`: `c['sv']` del
+    # competitivo), no el de KV. Desde el 06/10 los `p:` viven en el Durable Object y la copia de KV quedó congelada ese
+    # día: la alarma pasó de 1 a 18 «clones» que eran la propia contra la de su servidor (revisión del 17/11/2026)
+    try:
+        from comun.claves import clave as _cl
+        with io.open(os.path.join(BASE, 'datos', 'competitivo_pool.json'), encoding='utf-8') as _f:
+            sv_pool = {_cl(x.get('raw') or ''): (x.get('sv') or '').lower() for x in json.load(_f) or [] if x.get('raw')}
+    except (OSError, ValueError, ImportError):
+        sv_pool = {}
     for q, a, b in crudos:
+        if sv_pool.get(q) and {a, b} == {'servidor', 'sv-' + sv_pool[q]}:
+            esperados += 1
+            continue
         cq = kv('p:' + q)
         # 🔴 QUIEN NO ESTA EN KV NO TIENE CONTRA QUE COMPARAR, y el bot no le
         # sirve esas cartas. Medido el 25/09/2026 a las 12:40 AM: la

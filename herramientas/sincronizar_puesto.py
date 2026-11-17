@@ -124,6 +124,9 @@ GUILDS = tuple(_servidores())
 # copia lee la planilla vieja y devuelve datos validos de la temporada
 # equivocada. No falla: miente.
 from planillas import OFICIAL  # noqa: E402
+
+#: ⏱️ los segundos que el ciclo le da a este paso por corrida (ver el bucle de `main()`)
+PRESUPUESTO_CICLO = 180
 HOJA = 'Ranking Competitivo'
 TOPE = 32
 MARCA = re.compile(r'^\s*#\s*\d+\s*(\||$)')
@@ -490,7 +493,15 @@ def main():
 
     ok, fallos = 0, []
     pudo = {}
-    for c in plan:
+    t0 = time.time()
+    for i, c in enumerate(plan):
+        # ⏱️ EN EL CICLO, CON PRESUPUESTO (17/11/2026). Cuando entra alguien arriba (Over en el #6) se corren cientos de
+        # números a la vez: 351 apodos son 7 minutos, el trabajo `escuchar` se pasó de sus 20 y se cortó DOS veces sin
+        # guardar nada —ni la web, ni los resultados, ni las notas—. Un apodo que tarda media hora más no importa; una
+        # corrida que no guarda, sí. Lo que falta se pone en la próxima (el plan se rearma solo)
+        if '--ciclo' in sys.argv and time.time() - t0 > PRESUPUESTO_CICLO:
+            print('   ⏱️ se acabó el tiempo de este paso (%d s): quedan %d para la próxima corrida' % (PRESUPUESTO_CICLO, len(plan) - i))
+            break
         # ⚠️ UN SERVIDOR QUE NO DEJA (FFS: el bot no puede cambiar apodos) se
         # intenta una vez y se saltea entero, no cien
         if poder.get(c['guild']) is False:
