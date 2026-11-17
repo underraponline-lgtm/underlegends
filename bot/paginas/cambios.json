@@ -11,6 +11,16 @@
  ],
  "cambios": [
     {
+        "version": "5.66",
+        "dia": "2026-11-16",
+        "cuando": "2026-11-16T19:42:00-05:00",
+        "titulo": "Los DF suman en la tabla de FMS Ceuta",
+        "items": [
+            "En la tabla de **FMS Ceuta** ahora suman los **DF**, como en la tabla de la liga: 3 puntos al que se presentó, y el punto que da la liga cuando no vino ninguno.",
+            "Los DF suman puntos, pero no cuentan como batallas jugadas ni ganadas."
+        ]
+    },
+    {
         "version": "5.65",
         "dia": "2026-11-16",
         "cuando": "2026-11-16T19:38:00-05:00",

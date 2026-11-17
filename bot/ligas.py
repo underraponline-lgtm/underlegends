@@ -145,7 +145,8 @@ LIGAS = {
     # 🇪🇸 FMS Ceuta (CEU, Tier 3), 16/11/2026: escribe como LKR —el host es el mismo Krish— más «# +3 PUNTOS TROT», los DF
     # en un renglón y la réplica con su propio título (ver `PUNTOS_ANTES`). Esperó en `ligas_esperan` hasta tener esto
     'ceu-fms-ceuta': {'n': 'FMS Ceuta', 'sv': 'CEU', 'fam': 'K', 'vre': r'FMS\s*CEUTA', 'cat': '1554209799221157888',
-                      'ver': '1554210754150932520', 'tabla': '1554210034697769021', 'an': '1552349616861618287', 'cc': 'ES'},
+                      'ver': '1554210754150932520', 'tabla': '1554210034697769021', 'an': '1552349616861618287', 'cc': 'ES',
+                      'df_cuenta': True},
 }
 #: 🏟️ la clave de KV con los canales de cada liga, para el vigía de las batallas (`ligasRonda()` en bot/avisos.js)
 CLAVE_VIGIA = 'ligas:vigia'
@@ -896,9 +897,17 @@ def _lk(msgs):
                     continue
                 # «MARCOS DF», «NINGUNO VINO»: no se jugó. Con el nombre de uno de los dos: un «# DFS :» de título no es
                 df = DF_LINEA.search(pl)
-                if df and len(pl.split()) <= 5 and (re.search(r'NINGUNO', pl, re.I) or
-                                                    _lado_k(DF_LINEA.sub(' ', pl), b['a'], b['b'])):
+                lado_df = _lado_k(DF_LINEA.sub(' ', pl), b['a'], b['b']) if df else None
+                if df and len(pl.split()) <= 5 and (re.search(r'NINGUNO', pl, re.I) or lado_df):
                     b['df'] = True
+                    # 🏳️ quién se lo llevó: «MARCOS DF» es que Marcos ganó por DF (FMS Ceuta, 16/11/2026). Sólo para la
+                    # tabla de una liga que suma los DF (`df_cuenta`); nunca es una batalla. «TEITO 2 DF´S» bajo
+                    # «# TEITO VS UNDER Y EMI» son dos
+                    if lado_df and not re.search(r'NINGUNO', pl, re.I):
+                        b['dfg'] = lado_df
+                        nd = re.search(r'\b([2-9])\s*DF', pl, re.I)
+                        if nd:
+                            b['dfn'] = int(nd.group(1))
                     continue
                 pa_ = PUNTOS_ANTES.match(pl)
                 if pa_:
@@ -906,6 +915,14 @@ def _lk(msgs):
                     # sin ningún puntaje antes, «3 pt ANDY» es lo que cobró por un DF: no es una batalla que se jugó
                     if lado and (b['rep'] or any(x is not None for x in b['pt'])):
                         b['gana'], b['como'] = b[lado], 'directa' if pa_.group(1) == '3' else 'replica'
+                    elif lado and pa_.group(1) == '3':
+                        # sigue PENDIENTE para todas (como en ligas_vivo.js); una liga con `df_cuenta` lo suma como DF
+                        b['dfg'] = lado
+                    elif b['df'] and pa_.group(1) == '1':
+                        # «NINGUNO VINO» y después «+ 1PTO CADA UNO» o «+1 PUNTO A EMI»: el punto de cada uno
+                        quien = 'ab' if re.search(r'CADA\s+UNO', pa_.group(2) or '', re.I) else \
+                            (_lado_k(pa_.group(2), b['a'], b['b']) or '') if pa_.group(2) else ''
+                        b['dfpt'] = quien
                     continue
                 g = GANADOR.match(pl)
                 if g:
@@ -1039,12 +1056,14 @@ def _ff(msgs):
     return bats
 
 
-def leer_liga(lid, msgs, ptb=None):
+def leer_liga(lid, msgs, ptb=None, dfs=None):
     """Las batallas de una liga, de sus mensajes en orden: `[[id, iso, jornada, a, b, gana, como, extras]]`.
 
     `msgs`: `[{id, t (iso), content}]`, del más viejo al más nuevo. `extras`: `''`, `'a'`, `'b'` o `'ab'`.
     `ptb`: un dict donde dejar el PTB de cada batalla que lo dijo, `{id: [a, b]}` (17/10/2026). Va aparte y no en la
-    batalla: varias partes la desarman por posición (`tabla()`, `duelos()`), y un campo más las rompía."""
+    batalla: varias partes la desarman por posición (`tabla()`, `duelos()`), y un campo más las rompía.
+    `dfs`: una lista donde dejar los puntos por DF de una liga que los suma (`df_cuenta`), `[[id, iso, jornada, nombre,
+    puntos]]` (`puntos_df()`). Un DF nunca es una batalla: suma en la tabla y en nada más."""
     L = LIGAS[lid]
     f = L['fam']
     bats = _u(msgs) if f == 'U' else _d1(msgs) if f == 'D1' else _d2(msgs) if f == 'D2' else \
@@ -1052,7 +1071,10 @@ def leer_liga(lid, msgs, ptb=None):
         _ff(msgs) if f == 'FF' else _s(msgs, L['emoji'])
     out = []
     for i, b in enumerate(bats):
-        if b.get('df') or b.get('nulo'):
+        df_suma = L.get('df_cuenta') and not b.get('nulo') and (b.get('df') or (b.get('dfg') and not b.get('gana')))
+        if df_suma and dfs is not None:
+            dfs.extend(puntos_df(b))
+        if b.get('df') or b.get('nulo') or df_suma:
             continue
         # el mismo título publicado dos veces (Faso vs MTZ, Albiceleste): cuenta el de después, que es el que se cerró
         par = {clave(b['a']), clave(b['b'])}
@@ -1065,11 +1087,37 @@ def leer_liga(lid, msgs, ptb=None):
     return out
 
 
-def tabla(bats, r=None):
+def puntos_df(b):
+    """🏳️ Los puntos que deja un DF, para la tabla de una liga que los suma (`df_cuenta`): `[[id, iso, jornada, nombre,
+    puntos]]`. Dlx, 16/11/2026: «que los DF cuenten en la tabla de Ceuta, así funciona esa liga».
+
+    Quien ganó por DF se lleva lo de una directa (3), una vez por rival: «TEITO 2 DF´S» bajo «# TEITO VS UNDER Y EMI»
+    son 6 (su tabla: «TEITO SUMANDO +9 PT POR DF'S»). «NINGUNO VINO» con «+1 PTO CADA UNO» o «+1 PUNTO A EMI» deja ese
+    punto. No suma jugadas ni ganadas: no se jugó, y la tabla dice «X de Y ganadas». Los invitados no suman, como en
+    `tabla()`."""
+    out = []
+    ex = ('a' if b.get('ea') else '') + ('b' if b.get('eb') else '')
+    lado = b.get('dfg') or ('a' if b.get('gana') and b['gana'] == b['a'] else 'b' if b.get('gana') and b['gana'] == b['b']
+                            else '')
+    if lado and lado not in ex:
+        otro = b['b' if lado == 'a' else 'a']
+        n = b.get('dfn') or len([x for x in re.split(r'\s+Y\s+|\s*,\s*|\s*&\s*', otro or '', flags=re.I) if x.strip()]) or 1
+        out.append([b['id'], b['t'], b.get('j'), b[lado], PUNTOS['directa'][0] * n])
+    for x in b.get('dfpt') or '':
+        if x not in ex:
+            out.append([b['id'], b['t'], b.get('j'), b[x], 1])
+    return out
+
+
+def tabla(bats, r=None, dfs=None):
     """`[[nombre, jugadas, ganadas, puntos]]` de las batallas con resultado, sin los ExtraPlayers (son invitados).
-    `r`: nombre → el de la Lista, para que «CRIZJ» y «CRISZJ» sean la misma fila (FMS PERU, 12/10/2026)."""
+    `r`: nombre → el de la Lista, para que «CRIZJ» y «CRISZJ» sean la misma fila (FMS PERU, 12/10/2026).
+    `dfs`: los puntos por DF de una liga que los suma (`puntos_df()`): sólo puntos, ni jugadas ni ganadas."""
     r = r or (lambda x: x)
     t = {}
+    for _id, _t, _j, nom, pts in dfs or []:
+        nom = r(nom)
+        t.setdefault(clave(nom), [nom, 0, 0, 0])[3] += pts
     for _id, _t, _j, a, b, gana, como, ex in bats:
         if not gana or como not in PUNTOS:
             continue
@@ -1846,7 +1894,7 @@ def _temp(bats, c):
             'p': c.get('p') or [], 'fuente': c.get('fuente') or '', 'n': c.get('n'), 'msg': c.get('msg') or ''}
 
 
-def temporadas(bats, cierres):
+def temporadas(bats, cierres, dfs=None):
     """Las batallas partidas por temporada, de la más vieja a la más nueva: `[{bats, desde, hasta, c, p, fuente, n}]`. La
     última no tiene `hasta` si sigue abierta. Un cierre sin batallas después (dos cierres seguidos: el de los canales y
     el que contestó Dlx) no arma una temporada vacía: la que cerró se queda con el que trae campeón, y si los dos lo
@@ -1880,6 +1928,12 @@ def temporadas(bats, cierres):
         i += 1
     if cur:
         out.append(_temp(cur, None))
+    # 🏳️ los puntos por DF de una liga que los suma (`puntos_df()`), a la temporada en la que cayeron: después del cierre
+    # de la anterior y hasta el suyo. Uno de antes de la primera batalla va a la primera
+    for k, t in enumerate(out):
+        lo = out[k - 1]['hasta'] if k else ''
+        hi = t['hasta']
+        t['df'] = [e for e in dfs or [] if e[1] and (not lo or e[1] > lo) and (not hi or e[1] <= hi)]
     return out
 
 
@@ -1925,14 +1979,14 @@ def campeones(decis=None, d=None, resolver=None, ps=None, desde=None):
         vistos = set()
         base = {'liga': lid, 'n': x.get('n') or L.get('n') or lid, 'sv': x.get('sv') or L.get('sv') or '',
                 'temporada': _temporada_liga_global(), 'fuente': 'anuncio'}
-        for t in temporadas(x.get('batallas') or [], cierres_de(lid, x, decis)):
+        for t in temporadas(x.get('batallas') or [], cierres_de(lid, x, decis), x.get('df')):
             if t['fuente'] != 'anuncio' or not t['c']:
                 continue
             vistos.add(t['msg'])
             ult = ultima(t['bats'])
             if (lid, ult) in ya or (desde and ult < desde):
                 continue
-            tb = tabla(t['bats'], r)
+            tb = tabla(t['bats'], r, t['df'])
             c = next((f[0] for f in tb if clave(f[0]) == clave(r(t['c']))), r(t['c']))
             out.append(dict(base, ult=ult, lt=t['n'], campeon=c, podio=podio([f[0] for f in tb], c), t=t['hasta']))
         for c in anunc:
@@ -2060,12 +2114,21 @@ def correr(aplicar=False):
         if L['ver'] not in por_canal:
             # la primera vez con el PTB (17/10/2026) se lee la temporada entera, como la primera vez de todas: sin eso
             # las jornadas viejas no tendrían MVP
-            primera = not guardadas or 'ptb' not in v
+            # las jornadas viejas no tendrían MVP. Lo mismo la primera vez que una liga suma los DF: los de antes
+            primera = not guardadas or 'ptb' not in v or (L.get('df_cuenta') and 'df' not in v)
             por_canal[L['ver']] = _mensajes(s, L['ver'], PAGINAS_PRIMERA if primera else PAGINAS)
             time.sleep(0.3)
         antes = dict(guardadas) if lid in viejo else None
         ptb = dict(v.get('ptb') or {})
-        nuevas = leer_liga(lid, por_canal[L['ver']], ptb)
+        dfn = []
+        nuevas = leer_liga(lid, por_canal[L['ver']], ptb, dfn)
+        # 🏳️ los puntos por DF (`df_cuenta`): lo releído reemplaza a lo guardado de esos mensajes, como las batallas
+        leidos = {str(m.get('id')) for m in por_canal[L['ver']]}
+        dfs = sorted([e for e in v.get('df') or [] if str(e[0]) not in leidos] + dfn,
+                     key=lambda e: (e[1], str(e[0]))) if L.get('df_cuenta') else []
+        # y la que se guardó PENDIENTE y ahora se lee como DF («3 pt ANDY» sin puntajes) deja de ser una batalla
+        for k in {str(e[0]) for e in dfn}:
+            guardadas.pop(k, None)
         # 🆕 la primera lectura de una liga que se encontró sola: sólo la temporada que se juega (`_desde_el_hueco()`)
         if L.get('auto') and not guardadas:
             nuevas = _desde_el_hueco(nuevas)
@@ -2093,7 +2156,9 @@ def correr(aplicar=False):
         # sin el canal (Discord no contestó) queda la de antes; `para_web()` no muestra una que ya pasó
         prox = proxima_de(L, ms_an) if ms_an else v.get('prox')
         out[lid] = {'n': L['n'], 'sv': L['sv'], 'jornada': max(js) if js else None,
-                    'batallas': bats, 'tabla': tabla(bats)}
+                    'batallas': bats, 'tabla': tabla(bats, None, dfs)}
+        if L.get('df_cuenta'):
+            out[lid]['df'] = dfs                    # vacía también: sin la clave se vuelve a leer la temporada entera
         if flyer:
             out[lid]['flyer'] = flyer
         if prox:
@@ -2124,12 +2189,12 @@ def correr(aplicar=False):
         # que se lee, y la temporada tiene que seguir cerrada
         temps = [dict(c) for c in v.get('temps') or []]
         msgs = [dict(m, canal=L['ver']) for m in por_canal.get(L['ver']) or []] + [dict(m, canal=an) for m in ms_an]
-        ts = temporadas(bats, cierres_de(lid, {'temps': temps, 'cerrada': cer}, decis))
+        ts = temporadas(bats, cierres_de(lid, {'temps': temps, 'cerrada': cer}, decis), dfs)
         abierta = ts[-1] if ts and not ts[-1]['hasta'] else None
         tn = v.get('tn')
         if abierta:
             tn = num_actual(L, msgs, abierta['desde']) or (tn if str(v.get('tn_desde') or '') == abierta['desde'] else None)
-            tb_a = tabla(abierta['bats'])
+            tb_a = tabla(abierta['bats'], None, abierta['df'])
             camp = None
             if not cer and sum(1 for b in abierta['bats'] if b[5]) >= CAMPEON_MIN:
                 no = {str(i) for i in decis.get(NO_ANUNCIO) or []}
@@ -2521,7 +2586,8 @@ def tablas(d=None, resolver=None, ps=None, desde=''):
     r0 = _resolvedor_de(resolver)
     ps = por_servidor() if ps is None else ps
     return {lid: [f[0] for f in tabla([b for b in x.get('batallas') or [] if not desde or str(b[1] or '')[:19] >= desde],
-                                     _de_servidor(x.get('sv'), r0, ps))]
+                                     _de_servidor(x.get('sv'), r0, ps),
+                                     [e for e in x.get('df') or [] if not desde or str(e[1] or '')[:19] >= desde])]
             for lid, x in (d.get('ligas') or {}).items()}
 
 
@@ -2550,9 +2616,9 @@ def tabla_temporada(lid, ult, d=None, resolver=None, ps=None, decis=None):
     if not x:
         return []
     r = _de_servidor(x.get('sv'), _resolvedor_de(resolver), por_servidor() if ps is None else ps)
-    ts = [t for t in temporadas(x.get('batallas') or [], cierres_de(lid, x, decis)) if any(b[5] for b in t['bats'])]
+    ts = [t for t in temporadas(x.get('batallas') or [], cierres_de(lid, x, decis), x.get('df')) if any(b[5] for b in t['bats'])]
     t = next((t for t in reversed(ts) if ultima(t['bats']) == ult), None) if ult else (ts[-1] if ts else None)
-    return [f[0] for f in tabla(t['bats'], r)] if t else []
+    return [f[0] for f in tabla(t['bats'], r, t['df'])] if t else []
 
 
 def campeones_hitos(decis=None, d=None, resolver=None, ps=None):
@@ -2623,7 +2689,7 @@ def para_web(d=None, claves=None, ps=None, ahora=None, resolver=None, decis=None
         """Una temporada de una liga, como la ve la página. `temp`: la de `temporadas()`; `cid`: el id de una temporada
         TERMINADA que no es la que se muestra (`<liga>~<día de su primera batalla>`), para «Ligas completadas»."""
         con = [b for b in bats if b[5]]
-        tb = tabla(bats, r)[:30]
+        tb = tabla(bats, r, (temp or {}).get('df') if temp else x.get('df'))[:30]
         # 🔤 y en los últimos resultados, el mismo nombre que la tabla (ForceGP, 14/10/2026: «está repetido»): quien no
         # está en la Lista se escribe «Aluvion», «Aluvión» y «ALUVIÓN» según el jurado; la tabla ya era una fila
         canon = {}
@@ -2642,6 +2708,8 @@ def para_web(d=None, claves=None, ps=None, ahora=None, resolver=None, decis=None
              'pend': len(bats) - len(con), 'ult_t': con[-1][1],
              'tabla': tb, 'ult': ult, 'fechas': fechas, 'ks': ks,
              'link': 'https://discord.com/channels/%s/%s' % (g, L.get('tabla')) if g and L.get('tabla') else ''}
+        if L.get('df_cuenta'):
+            y['dfc'] = 1                            # 🏳️ los DF suman en su tabla: la página lo dice (`puntos_df()`)
         # 🔢 el número de esa temporada de la liga, si lo dijo: el del cierre, o el que se leyó mientras se jugaba
         lt = (temp or {}).get('n') or (x.get('tn') if temp and str(x.get('tn_desde') or '') == temp['desde'] else None)
         if lt:
@@ -2742,7 +2810,7 @@ def para_web(d=None, claves=None, ps=None, ahora=None, resolver=None, decis=None
         g = (svs.get(x.get('sv')) or {}).get('guild_id')
         # 🏆 LAS TEMPORADAS (11/11/2026): se muestra la última con resultados —la que terminó se sigue viendo, con su
         # campeón, hasta el primer veredicto de la siguiente— y las de antes van a «Ligas completadas»
-        ts = [t for t in temporadas(todas, cierres_de(lid, x, decis)) if any(b[5] for b in t['bats'])]
+        ts = [t for t in temporadas(todas, cierres_de(lid, x, decis), x.get('df')) if any(b[5] for b in t['bats'])]
         act = ts[-1] if ts else None
         y = _una(lid, x, L, r, g, act['bats'] if act else todas, act)
         viejas = []
@@ -3000,6 +3068,21 @@ def _self_check():
                                 ['Last', 'KUDE', 'KUDE', 'directa']],
        'LKR: «GANADOR X» en otro mensaje, «Replica» y «GANADOR Replica» abren la réplica, el apodo del cierre (GLOCK, '
        'SOUL) y sin cierre gana el de más puntos (15/11/2026: FMS LATAM se cierra así)', str([x[3:7] for x in lk]))
+
+    # 🏳️ FMS Ceuta (16/11/2026): los DF suman en su tabla (`df_cuenta`), nunca como batalla
+    _dfs = []
+    _ce = leer_liga('ceu-fms-ceuta', ms(
+        '# ANA VS BETO', 'ANA DF', '# CARLA VS DANI Y BETO', 'CARLA 2 DF´S', '# DANI VS ANA', '3 pt DANI',
+        '# BETO VS CARLA (NINGUNO VINO)', '+ 1PTO CADA UNO Y 40 PTB', '# ANA VS CARLA', 'ANA: 40\n\nCARLA: 30\n# +3 PUNTOS ANA'), {}, _dfs)
+    _lk0 = []
+    leer_liga('lkr-champions', ms('# ANA VS BETO', 'ANA DF'), {}, _lk0)
+    ok([x[3:7] for x in _ce] == [['ANA', 'CARLA', 'ANA', 'directa']] and
+       [(e[3], e[4]) for e in _dfs] == [('ANA', 3), ('CARLA', 6), ('DANI', 3), ('BETO', 1), ('CARLA', 1)] and
+       [f[:4] for f in tabla(_ce, None, _dfs)] == [['CARLA', 1, 0, 7], ['ANA', 1, 1, 6], ['DANI', 0, 0, 3], ['BETO', 0, 0, 1]]
+       and not _lk0,
+       'Ceuta: «ANA DF» son 3 para Ana, «2 DF´S» son 6, «3 pt DANI» sin puntajes es un DF, «NINGUNO VINO» con «1 PTO '
+       'CADA UNO» da 1 a cada uno; suman puntos y no batallas, y en una liga sin `df_cuenta` no suman nada',
+       str(_dfs) + str(tabla(_ce, None, _dfs)))
 
     # 🖼️ el flyer: un afiche, no un separador
     ok(es_flyer({'ct': 'image/jpeg', 'w': 1080, 'h': 1350}) and not es_flyer({'ct': 'image/jpeg', 'w': 1400, 'h': 200})

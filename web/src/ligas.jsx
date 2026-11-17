@@ -451,7 +451,9 @@ function Torneo({ liga, L, h, sinLado = false, corta = 0 }) {
         {/* 📏 las primeras y «Ver los N» (15/11/2026): con las 23 de Plaza abiertas, el costado quedaba vacío a media página */}
         {corta && (L.tabla || []).length > corta ? <button type="button" className="btn borde2 chico lp3-mas" onClick={() => setTodos(!todos)}>{todos ? 'Ver menos' : 'Ver los ' + L.tabla.length}</button> : null}
         <p className="lg-nota">La tabla sale de los veredictos que se pudieron leer: directa 3 puntos, réplica 2 y 1, sin los invitados.
-          {L.link ? <> La oficial, con sanciones y defaults, está en <a className="te-link" href={L.link} target="_blank" rel="noopener noreferrer">su Discord</a>.</> : null}</p>
+          {/* 🏳️ una liga que suma los DF (`df_cuenta` en bot/ligas.py, FMS Ceuta, 16/11/2026): suman puntos, no batallas */}
+          {L.dfc ? ' En esta liga los DF también suman, como en su tabla: 3 al que se presentó, y el punto que dé la liga cuando no vino ninguno. No cuentan como batallas jugadas.' : null}
+          {L.link ? <> La oficial, con sanciones{L.dfc ? '' : ' y defaults'}, está en <a className="te-link" href={L.link} target="_blank" rel="noopener noreferrer">su Discord</a>.</> : null}</p>
         <AvisarLiga key={L.id} L={L} />
       </div>
     </div>
