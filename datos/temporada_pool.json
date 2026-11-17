@@ -1328,7 +1328,7 @@
   "crew": "",
   "discord_id": "1122273746099638354",
   "verificado": true,
-  "pts": 131962,
+  "pts": 130712,
   "ev": 23,
   "wr": "56.0%",
   "pod": 6,
@@ -9878,10 +9878,7 @@
   "pos": 373,
   "fc": true,
   "total": 256,
-  "rango": "E",
-  "tg_t": {
-   "reciente": true
-  }
+  "rango": "E"
  },
  {
   "full": "Mark98",

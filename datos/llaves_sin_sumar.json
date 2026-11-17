@@ -966,7 +966,7 @@
      [
       [
        "Marcos",
-       "Sweet pain"
+       "Andy MC"
       ],
       "Marcos",
       ""
@@ -1001,12 +1001,12 @@
     0
    ],
    [
-    "Krish",
+    "Andy MC",
     "Semifinal",
     0
    ],
    [
-    "Sweet pain",
+    "Krish",
     "Semifinal",
     0
    ]
@@ -2522,6 +2522,123 @@
    ]
   ]
  },
+ "144181537": {
+  "dia": "2026-09-23",
+  "escala": "4-7",
+  "fecha": "23/09",
+  "links": [
+   "https://discord.com/channels/1513624656538636459/1518202754294612028/1552364720844181537"
+  ],
+  "n": 144181537,
+  "nombre": "PUERTA MAGICA",
+  "ns": 1,
+  "participantes": 6,
+  "rondas": [
+   {
+    "b": [
+     [
+      [
+       "Trot",
+       "Teito",
+       "Lvel 🇻🇪"
+      ],
+      "Trot, Teito",
+      "triple (3 bandas, pasan 2); también pasa: Teito🇨🇴"
+     ],
+     [
+      [
+       "Marcos",
+       "Krish",
+       "Andy"
+      ],
+      "Marcos, Krish",
+      "triple (3 bandas, pasan 2); también pasa: Krish 🇪🇸"
+     ]
+    ],
+    "r": "Cuartos"
+   },
+   {
+    "b": [
+     [
+      [
+       "Trot",
+       "Krish"
+      ],
+      "Trot",
+      ""
+     ],
+     [
+      [
+       "Marcos",
+       "Teito"
+      ],
+      "Marcos",
+      ""
+     ]
+    ],
+    "r": "Semifinales"
+   },
+   {
+    "b": [
+     [
+      [
+       "Krish",
+       "Teito"
+      ],
+      "Krish",
+      ""
+     ]
+    ],
+    "r": "Tercer puesto"
+   },
+   {
+    "b": [
+     [
+      [
+       "Trot",
+       "Marcos"
+      ],
+      "Trot",
+      ""
+     ]
+    ],
+    "r": "Final"
+   }
+  ],
+  "sv": "CEU",
+  "tabla": [
+   [
+    "Trot",
+    "Campeón",
+    0
+   ],
+   [
+    "Marcos",
+    "Subcampeón",
+    0
+   ],
+   [
+    "Krish",
+    "Tercero",
+    0
+   ],
+   [
+    "Teito",
+    "Cuarto",
+    0
+   ],
+   [
+    "Andy",
+    "Cuartos",
+    0
+   ],
+   [
+    "Lvel 🇻🇪",
+    "Cuartos",
+    0
+   ]
+  ]
+ },
  "150218372": {
   "dia": "2026-11-07",
   "escala": "8-15",
@@ -3740,6 +3857,130 @@
    ],
    [
     "Raizer",
+    "Cuartos",
+    0
+   ]
+  ]
+ },
+ "168578631": {
+  "dia": "2026-09-24",
+  "escala": "8-15",
+  "fecha": "24/09",
+  "links": [
+   "https://discord.com/channels/1513624656538636459/1518202754294612028/1552719256368578631"
+  ],
+  "n": 168578631,
+  "nombre": "YYY891",
+  "ns": 1,
+  "participantes": 9,
+  "rondas": [
+   {
+    "b": [
+     [
+      [
+       "Marcos",
+       "Krish"
+      ],
+      "Marcos",
+      ""
+     ],
+     [
+      [
+       "Kyron",
+       "Andy"
+      ],
+      "Kyron",
+      ""
+     ],
+     [
+      [
+       "Trot",
+       "LEVEL🇻🇪"
+      ],
+      "Trot",
+      ""
+     ],
+     [
+      [
+       "Andy",
+       "Krish",
+       "Lvel 🇻🇪"
+      ],
+      "Andy",
+      "triple (3 bandas)"
+     ]
+    ],
+    "r": "Cuartos"
+   },
+   {
+    "b": [
+     [
+      [
+       "Marcos",
+       "Kyron"
+      ],
+      "Marcos",
+      ""
+     ],
+     [
+      [
+       "Trot",
+       "Andy"
+      ],
+      "Trot",
+      ""
+     ]
+    ],
+    "r": "Semifinales"
+   },
+   {
+    "b": [
+     [
+      [
+       "Trot",
+       "Marcos"
+      ],
+      "Trot",
+      ""
+     ]
+    ],
+    "r": "Final"
+   }
+  ],
+  "sv": "CEU",
+  "tabla": [
+   [
+    "Trot",
+    "Campeón",
+    0
+   ],
+   [
+    "Marcos",
+    "Subcampeón",
+    0
+   ],
+   [
+    "Andy",
+    "Semifinal",
+    0
+   ],
+   [
+    "Kyron",
+    "Semifinal",
+    0
+   ],
+   [
+    "Krish",
+    "Cuartos",
+    0
+   ],
+   [
+    "LEVEL🇻🇪",
+    "Cuartos",
+    0
+   ],
+   [
+    "Lvel 🇻🇪",
     "Cuartos",
     0
    ]
