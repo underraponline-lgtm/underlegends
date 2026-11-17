@@ -8276,10 +8276,11 @@
   "arc_sv": 43,
   "tg_c": {
    "bestia": 1,
-   "clasico": 2,
-   "dg": 2,
-   "riv": 12,
-   "venc": 2
+   "clasico": 3,
+   "dg": 3,
+   "riv": 13,
+   "venc": 3,
+   "vengo": 1
   },
   "tg_p": {
    "paises": 8,
@@ -8287,10 +8288,10 @@
   },
   "nac": {
    "evn": 1,
-   "evi": 15,
+   "evi": 16,
    "com": 0,
    "top": [
-    11,
+    10,
     "pe"
    ]
   }
@@ -16628,12 +16629,12 @@
   "pos_sv": "3/7",
   "arc_sv": 71,
   "tg_c": {
-   "bestia": 2,
+   "bestia": 1,
    "clasico": 4,
    "dg": 18,
    "fg": 1,
    "fp": 4,
-   "riv": 27,
+   "riv": 26,
    "venc": 14,
    "vengo": 1
   },

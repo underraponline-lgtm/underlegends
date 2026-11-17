@@ -7428,20 +7428,6 @@
     }
    }
   },
-  "LOKILLO🇨🇴": {
-   "LKR": {
-    "duelos": "",
-    "ev": 1,
-    "oro": 0,
-    "ovr": 42,
-    "pod": 0,
-    "pts": 2625,
-    "racha": "0/0",
-    "tg": {
-     "nuevo": true
-    }
-   }
-  },
   "LOLOELGAUCHO 🇦🇷": {
    "FFA": {
     "duelos": "",
@@ -12816,12 +12802,15 @@
    },
    "LKR": {
     "duelos": "",
-    "ev": 3,
+    "ev": 4,
     "oro": 0,
     "ovr": 44,
     "pod": 0,
-    "pts": 6422,
-    "racha": "0/0"
+    "pts": 9310,
+    "racha": "0/0",
+    "tg": {
+     "nuevo": true
+    }
    },
    "URBF": {
     "duelos": "0/2",

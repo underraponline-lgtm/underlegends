@@ -4591,6 +4591,44 @@
     "DOS NOMBRES: «bootraxx» → «BTRX» · cuenta 1122273746099638354"
    ],
    "escribio": {}
+  },
+  {
+   "id": "187446d2ec",
+   "tipo": "Nombre desconocido",
+   "sec": "(sin titulo) · LKR · 16/11 · #654",
+   "que": "¿Quién es «LOKILLO🇨🇴»?",
+   "r": "Ya no hace falta",
+   "regla": "cierre · ya no hacía falta preguntarlo",
+   "rk": "cierre",
+   "por": "el ciclo",
+   "porque": "ya no está en ningún resultado: el lector lo lee distinto, o ya es alias de alguien",
+   "t": 1794943996515,
+   "filas": [
+    1448
+   ],
+   "variantes": [
+    "LOKILLO🇨🇴"
+   ],
+   "escribio": {}
+  },
+  {
+   "id": "c38332f661",
+   "tipo": "Alias posible",
+   "sec": "🪪 Identidad",
+   "que": "¿«LOKILLO» es VALLES-T? La cuenta de VALLES-T en la Lista se anotó como «LOKILLO», y en el ranking suman aparte. Si es la misma persona, los puntos de «LOKILLO» pasan a VALLES-T.\nLa cuenta: https://discord.com/users/1548906948307451906",
+   "r": "Ya no hace falta",
+   "regla": "cierre · ya no hacía falta preguntarlo",
+   "rk": "cierre",
+   "por": "el ciclo",
+   "porque": "ya no hace falta: «LOKILLO» ya no suma aparte en el ranking",
+   "t": 1794943996515,
+   "filas": [
+    1452
+   ],
+   "variantes": [
+    "DOS NOMBRES: «LOKILLO» → «VALLES-T» · cuenta 1548906948307451906"
+   ],
+   "escribio": {}
   }
  ],
  "deshechas": []

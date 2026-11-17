@@ -2,26 +2,6 @@
  "_leeme": "El precio por cabeza: lo arma bot/precios.py en el ciclo (paso 2b4). Las reglas y los números viven en ese archivo.",
  "precios": [
   {
-   "id": 27,
-   "cabeza": "Verc",
-   "monto": 5000,
-   "t": "2026-10-18T19:24:59Z",
-   "fin": "2026-10-19T15:00:00Z",
-   "e": "cazado",
-   "por": [
-    [
-     "Guess",
-     5000
-    ]
-   ],
-   "ev": {
-    "n": 484,
-    "nombre": "LA BELLA ARTE DE LA DESGRACIA VOL7",
-    "sv": "FFA",
-    "t": "2026-10-18T20:57:26Z"
-   }
-  },
-  {
    "id": 28,
    "cabeza": "Majiztral",
    "monto": 1000,
@@ -383,7 +363,6 @@
   }
  ],
  "suma": {
-  "Guess": 5000,
   "BLUE BURKA": 375,
   "BNA": 375,
   "PichulaMc": 1375,
