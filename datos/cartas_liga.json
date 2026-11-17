@@ -3,14 +3,14 @@
  "cartas": {
   "ceu-fms-ceuta": {
    "1200": [
-    "a7e6a85cd2",
-    48,
-    4
-   ],
-   "adrianex": [
-    "b36b2f8b85",
+    "efa69f0ce3",
     48,
     5
+   ],
+   "adrianex": [
+    "bd8acb458b",
+    48,
+    6
    ],
    "dlx": [
     "146f6e750e",
@@ -18,19 +18,24 @@
     0
    ],
    "krish": [
-    "8a1787b66c",
+    "2b2a34821c",
     48,
-    6
+    7
    ],
-   "marcos": [
-    "f61eec291b",
-    73,
+   "last": [
+    "2ddc0f3c7b",
+    74,
     2
    ],
-   "medster": [
-    "1a5192d68f",
-    74,
+   "marcos": [
+    "5db6368807",
+    73,
     3
+   ],
+   "medster": [
+    "fe86693790",
+    74,
+    4
    ]
   },
   "ceu-fms-ceuta~2026-09-28": {

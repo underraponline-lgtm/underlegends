@@ -2516,7 +2516,7 @@
    "Zeta": 4
   },
   "fecha": "08/10",
-  "firma": "56bdf28f191a4fde",
+  "firma": "50c99c044558a69c",
   "msg": "1557926456259248232",
   "nombre": "SNAKE INSIGNIA 4 8",
   "num": 430,
@@ -6508,7 +6508,7 @@
    "Trot": 13
   },
   "fecha": "11/10",
-  "firma": "6982a5eb43be5fb7",
+  "firma": "e85a9e1788ca10ec",
   "msg": "1558907910707224587",
   "nombre": "RED BULL NACIONAL ESPAÑA T.5",
   "num": 448,
@@ -9436,7 +9436,7 @@
    "Zignos": 19
   },
   "fecha": "12/10",
-  "firma": "cea0342383cf7340",
+  "firma": "16707352c0f3156c",
   "msg": "1559587802864295988",
   "nombre": "GODZ",
   "num": 460,
@@ -10218,7 +10218,7 @@
    "Tusicario": 6
   },
   "fecha": "12/10",
-  "firma": "3ecdfe8c761546b6",
+  "firma": "ba88df1743f5e99f",
   "msg": "1559414143948431441",
   "nombre": "IDS V.2",
   "num": 464,
@@ -12534,7 +12534,7 @@
    "Vargas": 1
   },
   "fecha": "14/10",
-  "firma": "0d7e56748c0ce611",
+  "firma": "b055672ea506cdfc",
   "msg": "1560070688113688601",
   "nombre": "FF Freestyle Clasico",
   "num": 473,
@@ -13602,7 +13602,7 @@
    "Valdoza": 5
   },
   "fecha": "16/10",
-  "firma": "a5e095fc10645385",
+  "firma": "caf5d98faaa4cac1",
   "msg": "1560750305312903372",
   "nombre": "SNAKE INSIGNIA 5 8",
   "num": 478,
@@ -23324,7 +23324,7 @@
    "Vandu": 34
   },
   "fecha": "25/10",
-  "firma": "a74d4a7524d24587",
+  "firma": "6b41fa1cffef3238",
   "msg": "1564145050185891903",
   "nombre": "CHILL",
   "num": 518,
@@ -23434,9 +23434,9 @@
     "Vilca"
    ],
    [
-    "Abraham 🇻🇪",
+    "Abraham",
     "TøKīØ🦠🧠",
-    "Abraham 🇻🇪"
+    "Abraham"
    ],
    [
     "nzux 🇵🇪",
@@ -23445,7 +23445,7 @@
    ],
    [
     "Vilca",
-    "Abraham 🇻🇪",
+    "Abraham",
     "Vilca"
    ],
    [
@@ -23463,7 +23463,7 @@
    "Vilca": 1
   },
   "fecha": "27/09",
-  "firma": "999de2c9df4fac91",
+  "firma": "b7a9bfc869eb05ef",
   "msg": "1564147681973243955",
   "nombre": "Shaoling Battles 1v1 2",
   "num": 519,
@@ -23490,7 +23490,7 @@
     3500
    ],
    [
-    "Abraham 🇻🇪",
+    "Abraham",
     "Semifinal",
     3500
    ],
@@ -23574,7 +23574,7 @@
   "duelos": [
    [
     "SOL",
-    "Pepe Mujica",
+    "LRS",
     "SOL"
    ],
    [
@@ -23583,9 +23583,9 @@
     "Cinexfilo"
    ],
    [
-    "Sosa",
+    ".SosaATR",
     "Mato 🇧🇴",
-    "Sosa"
+    ".SosaATR"
    ],
    [
     "NXUZ",
@@ -23609,7 +23609,7 @@
    ],
    [
     "CrisZJ",
-    "Abraham 🇻🇪",
+    "Abraham",
     "CrisZJ"
    ],
    [
@@ -23619,7 +23619,7 @@
    ],
    [
     "NXUZ",
-    "Sosa",
+    ".SosaATR",
     "NXUZ"
    ],
    [
@@ -23661,7 +23661,7 @@
    "Vilca": 1
   },
   "fecha": "04/10",
-  "firma": "215daf165f1dd1cd",
+  "firma": "bd31f462c0879c56",
   "msg": "1564147692089770025",
   "nombre": "- RED BULL NACIONAL PERÚ 2026 -",
   "num": 520,
@@ -23698,7 +23698,7 @@
     2500
    ],
    [
-    "Sosa",
+    ".SosaATR",
     "Cuartos",
     2500
    ],
@@ -23713,7 +23713,7 @@
     2500
    ],
    [
-    "Pepe Mujica",
+    "LRS",
     "Octavos",
     1250
    ],
@@ -23748,7 +23748,7 @@
     1250
    ],
    [
-    "Abraham 🇻🇪",
+    "Abraham",
     "Octavos",
     1250
    ]
@@ -23899,7 +23899,7 @@
    "Vilca": 1
   },
   "fecha": "14/10",
-  "firma": "554fe47628eb44a5",
+  "firma": "16f4026675fae3ec",
   "msg": "1564147696351191051",
   "nombre": "GG SANGRERAP 1",
   "num": 521,
@@ -24067,7 +24067,7 @@
    "Vandu": 35
   },
   "fecha": "20/10",
-  "firma": "0653452af333fb0c",
+  "firma": "38f9cc6c8c982594",
   "msg": "1564147704035151906",
   "nombre": "RAP SIN GROSERIAS 2",
   "num": 522,
@@ -26298,9 +26298,9 @@
     "Mito"
    ],
    [
-    "Luck",
+    "Lucky",
     "Molt",
-    "Luck"
+    "Lucky"
    ],
    [
     "Ragna",
@@ -26314,7 +26314,7 @@
    ],
    [
     "Ragna",
-    "Luck",
+    "Lucky",
     "Ragna"
    ],
    [
@@ -26378,9 +26378,9 @@
     "Dynoco"
    ],
    [
-    "Luck",
+    "Lucky",
     "Cinexfilo",
-    "Luck"
+    "Lucky"
    ],
    [
     "MTZ",
@@ -26389,7 +26389,7 @@
    ],
    [
     "Dynoco",
-    "Luck",
+    "Lucky",
     "Dynoco"
    ],
    [
@@ -26409,7 +26409,7 @@
    "Mr.Kude": 2
   },
   "fecha": "27/10",
-  "firma": "a94fbfab775c47cd",
+  "firma": "8dd462661ea0f428",
   "msg": "1564725192360464586",
   "nombre": "- IRLANDA FREESTYLE -",
   "num": 533,
@@ -26426,7 +26426,7 @@
     7500
    ],
    [
-    "Luck",
+    "Lucky",
     "Semifinal",
     7000
    ],
@@ -30314,7 +30314,7 @@
    "mats": 5
   },
   "fecha": "26/10",
-  "firma": "ccd81a32935f5792",
+  "firma": "7a172c14eb2c1305",
   "msg": "1565899302046277764",
   "nombre": "RAP SIN GROSERIAS 1",
   "num": 548,
@@ -31529,7 +31529,7 @@
    "Velatz": 41
   },
   "fecha": "31/10",
-  "firma": "69799edc93299909",
+  "firma": "088158e7fe068bf1",
   "msg": "1566227272355020941",
   "nombre": "SNAKE INSIGNIA 7 8",
   "num": 553,
@@ -32151,7 +32151,7 @@
    "yinn": 29
   },
   "fecha": "01/11",
-  "firma": "d16a059fd188bf46",
+  "firma": "d6eb3e9ea1dbea42",
   "msg": "1566337161006026843",
   "nombre": "__ la palera del edi __",
   "num": 556,
@@ -32674,7 +32674,7 @@
    "Zignos": 27
   },
   "fecha": "01/11",
-  "firma": "9db55964ecd5282f",
+  "firma": "fbcf97a0af36d1b2",
   "msg": "1566645439611011152",
   "nombre": "__ COCINE FIDEOS __",
   "num": 558,
@@ -32914,7 +32914,7 @@
    "mats": 6
   },
   "fecha": "02/11",
-  "firma": "b0290a7dafac9095",
+  "firma": "30acf6fcd2817d5a",
   "msg": "1566691494083960924",
   "nombre": "__ LA PALERA DEL KACHUM __",
   "num": 559,
@@ -33735,7 +33735,7 @@
    "OEP": 2
   },
   "fecha": "03/11",
-  "firma": "f7143e14df9ed373",
+  "firma": "b9ed0eb2137542f5",
   "msg": "1567309579967144037",
   "nombre": "Rayos y Centellas",
   "num": 564,
@@ -36444,7 +36444,7 @@
    "ikonoxx": 8
   },
   "fecha": "06/11",
-  "firma": "3b7378cd7af12a73",
+  "firma": "b6423d1922e589f3",
   "msg": "1568364084817297492",
   "nombre": "GALACTICOS DEL FREESTYLE VOL.17",
   "num": 575,
@@ -36855,7 +36855,7 @@
    "Xclusivo": 23
   },
   "fecha": "07/11",
-  "firma": "85b55ae6931126b0",
+  "firma": "e436b8b9c210d251",
   "msg": "1568746606562509004",
   "nombre": "ZONA MORTAL",
   "num": 577,
@@ -37066,7 +37066,7 @@
    "oriuz": 7
   },
   "fecha": "07/10",
-  "firma": "928e4c5a2ee3c8fe",
+  "firma": "4632bedbae3c7f3f",
   "msg": "1569507985938714665",
   "nombre": "DISCORD STYLE ED. 15",
   "num": 578,
@@ -37241,9 +37241,9 @@
   "canal": "1443793172013776997",
   "duelos": [
    [
-    "Abraham",
-    "Mark",
-    "Abraham"
+    "AbrahamH",
+    "Mark98",
+    "AbrahamH"
    ],
    [
     "Drexx",
@@ -37257,7 +37257,7 @@
    ],
    [
     "Sadik",
-    "Mato  🇧🇴",
+    "Mato 🇧🇴",
     "Sadik"
    ],
    [
@@ -37281,9 +37281,9 @@
     "Soulb"
    ],
    [
-    "Abraham",
+    "AbrahamH",
     "Drexx",
-    "Abraham"
+    "AbrahamH"
    ],
    [
     "Sadik",
@@ -37302,7 +37302,7 @@
    ],
    [
     "Sadik",
-    "Abraham",
+    "AbrahamH",
     "Sadik"
    ],
    [
@@ -37334,7 +37334,7 @@
    "oriuz": 7
   },
   "fecha": "17/10",
-  "firma": "3eb4b22467d1c967",
+  "firma": "fd50482548127e88",
   "msg": "1569507995547602980",
   "nombre": "DISCORD STYLE ED. 16",
   "num": 579,
@@ -37356,7 +37356,7 @@
     7500
    ],
    [
-    "Abraham",
+    "AbrahamH",
     "Semifinal",
     5250
    ],
@@ -37386,7 +37386,7 @@
     2500
    ],
    [
-    "Mark",
+    "Mark98",
     "Octavos",
     1250
    ],
@@ -37401,7 +37401,7 @@
     1250
    ],
    [
-    "Mato  🇧🇴",
+    "Mato 🇧🇴",
     "Octavos",
     1250
    ],
@@ -37785,6 +37785,11 @@
     "CrisZJ",
     ".SosaATR",
     "CrisZJ"
+   ],
+   [
+    "NXUZ",
+    "ramses",
+    ""
    ]
   ],
   "ev_antes": {
@@ -37798,7 +37803,7 @@
    "replisan": 3
   },
   "fecha": "27/10",
-  "firma": "1b80bd1cc646a2cb",
+  "firma": "9a495cbe8a05fc51",
   "msg": "1569508012169633877",
   "nombre": "MASTER STYLE REMAKE",
   "num": 581,
@@ -37848,6 +37853,11 @@
     "Miniboy",
     "Cuartos",
     2000
+   ],
+   [
+    "ramses",
+    "Semifinal",
+    1750
    ]
   ],
   "v": 2
@@ -38758,7 +38768,7 @@
    "NXUZ": 36
   },
   "fecha": "07/11",
-  "firma": "fe89ef6686355fd6",
+  "firma": "d15c713455d0b08c",
   "msg": "1569508050510028801",
   "nombre": "MF DOOM Y MADLIB EDICION 1",
   "num": 586,
@@ -38984,7 +38994,7 @@
    "yinn": 33
   },
   "fecha": "07/11",
-  "firma": "1c30713db7f54b52",
+  "firma": "555bc45acc5cc1e4",
   "msg": "1568849280746393691",
   "nombre": "KISS OF SHINIGAMI",
   "num": 587,
@@ -39165,7 +39175,7 @@
    "Xclusivo": 26
   },
   "fecha": "08/11",
-  "firma": "4427fe6d3dd3d68c",
+  "firma": "9a4834f032ae8054",
   "msg": "1569060676079722624",
   "nombre": "EVANGELION CUP VOL 1",
   "num": 588,
@@ -39574,7 +39584,7 @@
    ],
    [
     "JJ",
-    "Carlos",
+    "Carlosss",
     "JJ"
    ],
    [
@@ -39599,13 +39609,13 @@
    ],
    [
     "Makmah",
-    "Lizeninn",
+    "Mito",
     "Makmah"
    ],
    [
-    "Number",
+    "Number VE",
     "Shadow",
-    "Number"
+    "Number VE"
    ],
    [
     "JJ",
@@ -39624,7 +39634,7 @@
    ],
    [
     "Makmah",
-    "Number",
+    "Number VE",
     "Makmah"
    ],
    [
@@ -39661,7 +39671,7 @@
    "Shadow": 22
   },
   "fecha": "08/11",
-  "firma": "e841fd1c24b9f28f",
+  "firma": "19d14c688eeea657",
   "msg": "1569508061335396465",
   "nombre": "RED BULL CARACAS REGIONAL T.5",
   "num": 590,
@@ -39708,7 +39718,7 @@
     2500
    ],
    [
-    "Number",
+    "Number VE",
     "Cuartos",
     2500
    ],
@@ -39718,7 +39728,7 @@
     1250
    ],
    [
-    "Carlos",
+    "Carlosss",
     "Octavos",
     1250
    ],
@@ -39743,7 +39753,7 @@
     1250
    ],
    [
-    "Lizeninn",
+    "Mito",
     "Octavos",
     1250
    ],
@@ -39869,7 +39879,7 @@
    "Vilca": 15
   },
   "fecha": "08/11",
-  "firma": "7c7ed78cf96b366f",
+  "firma": "88910a06d4ca258a",
   "msg": "1569508065508593856",
   "nombre": "RAP SIN GROSERIAS 4",
   "num": 591,
@@ -41669,9 +41679,9 @@
     "AbrahamH, Chop"
    ],
    [
-    "Vilca, DANU",
+    "Vilca, Vilca",
     "Nobu, NIT NATION",
-    "Vilca, DANU"
+    "Vilca, Vilca"
    ],
    [
     "CrisZJ, NXUZ",
@@ -41689,9 +41699,9 @@
     "AbrahamH, Chop"
    ],
    [
-    "Vilca, DANU",
+    "Vilca, Vilca",
     "CrisZJ, NXUZ",
-    "Vilca, DANU"
+    "Vilca, Vilca"
    ],
    [
     "Chase, MCO",
@@ -41705,7 +41715,7 @@
    ],
    [
     "AbrahamH, Chop",
-    "Vilca, DANU",
+    "Vilca, Vilca",
     "AbrahamH, Chop"
    ],
    [
@@ -41726,7 +41736,7 @@
   ],
   "ev_antes": {},
   "fecha": "10/10",
-  "firma": "b5a744e853aa3b22",
+  "firma": "cac871c62d578d77",
   "msg": "1569847767734554677",
   "nombre": "(sin titulo)",
   "num": 602,
@@ -41737,6 +41747,11 @@
   "sv": "DDS",
   "t": "2026-11-10T22:54:32Z",
   "tabla": [
+   [
+    "Vilca",
+    "Semifinal",
+    5250
+   ],
    [
     "SOL",
     "Campeón",
@@ -41756,16 +41771,6 @@
     "Chop",
     "Subcampeón",
     3750
-   ],
-   [
-    "Vilca",
-    "Semifinal",
-    2625
-   ],
-   [
-    "DANU",
-    "Semifinal",
-    2625
    ],
    [
     "Chase",
@@ -41922,12 +41927,12 @@
    ],
    [
     "Vilca",
-    "Sosa",
+    ".SosaATR",
     "Vilca"
    ],
    [
     "CrisZJ",
-    "Abraham",
+    "AbrahamH",
     "CrisZJ"
    ],
    [
@@ -41957,7 +41962,7 @@
    "Vilca": 15
   },
   "fecha": "12/10",
-  "firma": "328ac0f923eeec85",
+  "firma": "fc01373871661b46",
   "msg": "1569847774147776593",
   "nombre": "(sin titulo)",
   "num": 603,
@@ -41999,12 +42004,12 @@
     2000
    ],
    [
-    "Sosa",
+    ".SosaATR",
     "Cuartos",
     2000
    ],
    [
-    "Abraham",
+    "AbrahamH",
     "Cuartos",
     2000
    ]
@@ -42124,7 +42129,7 @@
    "Vilca": 16
   },
   "fecha": "10/11",
-  "firma": "d9e71f98b06d2353",
+  "firma": "d1466334a56d34bf",
   "msg": "1569848635271680124",
   "nombre": "MF DOOM Y MADLIB EDICION 1",
   "num": 604,
@@ -45977,7 +45982,7 @@
    "TøKīØ🦠🧠": 13
   },
   "fecha": "12/11",
-  "firma": "4dada72b148ab54c",
+  "firma": "edac2299e0290704",
   "msg": "1570602754639007937",
   "nombre": "RAP SIN GROSERIAS 5",
   "num": 626,
@@ -46375,6 +46380,21 @@
     "OKAM, Miniboy",
     "NC, Akus",
     "OKAM, Miniboy"
+   ],
+   [
+    "0223 🇧🇧, y Jahno 🇧🇧",
+    "Diz🇨🇱, Mc arepa",
+    ""
+   ],
+   [
+    "Riolu, romeo",
+    "mats, Kuni",
+    ""
+   ],
+   [
+    "NC, Paria",
+    "Geoka, melomaniaco",
+    "NC, Paria"
    ]
   ],
   "ev_antes": {
@@ -46391,7 +46411,7 @@
    "mats": 11
   },
   "fecha": "12/11",
-  "firma": "235e0c3f9879d9eb",
+  "firma": "7c37c017bbb18cf7",
   "msg": "1570639296652640288",
   "nombre": "TORNEO CLANDESTINO V.2",
   "num": 628,
@@ -46434,6 +46454,16 @@
     2625
    ],
    [
+    "Geoka",
+    "Semifinal",
+    2625
+   ],
+   [
+    "melomaniaco",
+    "Semifinal",
+    2625
+   ],
+   [
     "Soulb",
     "Cuartos",
     1250
@@ -46450,6 +46480,41 @@
    ],
    [
     "TøKīØ🦠🧠",
+    "Cuartos",
+    1250
+   ],
+   [
+    "0223 🇧🇧",
+    "Cuartos",
+    1250
+   ],
+   [
+    "y Jahno 🇧🇧",
+    "Cuartos",
+    1250
+   ],
+   [
+    "Diz🇨🇱",
+    "Cuartos",
+    1250
+   ],
+   [
+    "Mc arepa",
+    "Cuartos",
+    1250
+   ],
+   [
+    "Riolu",
+    "Cuartos",
+    1250
+   ],
+   [
+    "romeo",
+    "Cuartos",
+    1250
+   ],
+   [
+    "Kuni",
     "Cuartos",
     1250
    ],
@@ -47179,7 +47244,7 @@
    ],
    [
     "MAGMA",
-    "Fritz 🇨🇴",
+    "Fritz",
     "MAGMA"
    ],
    [
@@ -47249,7 +47314,7 @@
    "jazi": 2
   },
   "fecha": "13/11",
-  "firma": "fb0ef04f90111afe",
+  "firma": "0c2d5d4572fb077b",
   "msg": "1570957683136139355",
   "nombre": "SNAKE INSIGNIA 8 8",
   "num": 631,
@@ -47326,7 +47391,7 @@
     1250
    ],
    [
-    "Fritz 🇨🇴",
+    "Fritz",
     "Octavos",
     1250
    ],
@@ -47434,7 +47499,7 @@
    "crakero": 9
   },
   "fecha": "13/11",
-  "firma": "6d11378bb94d0a80",
+  "firma": "d0556670009a6a8d",
   "msg": "1570980323372703807",
   "nombre": "RANKED 2",
   "num": 632,
@@ -48099,7 +48164,7 @@
    "Teito": 39
   },
   "fecha": "14/11",
-  "firma": "8b96ed9b732963d4",
+  "firma": "bd286da14c06d3cb",
   "msg": "1571194503703035995",
   "nombre": "COMPE DEMASIADO MAÑANERA",
   "num": 635,
@@ -49832,7 +49897,7 @@
    "compare": 1
   },
   "fecha": "15/11",
-  "firma": "b68cf726d0445db5",
+  "firma": "b039c465112a27c9",
   "msg": "1571635394460516385",
   "nombre": "FU BATTLE NIGHT",
   "num": 646,
@@ -50099,7 +50164,7 @@
    "yinn": 36
   },
   "fecha": "15/11",
-  "firma": "6b729dbdaad63b10",
+  "firma": "8ec44597326c5bc3",
   "msg": "1571699312382054502",
   "nombre": "__ qcyo rapeen 17 __",
   "num": 647,
@@ -50360,7 +50425,7 @@
    "Yor": 5
   },
   "fecha": "15/11",
-  "firma": "885d8dcbdef5b4ae",
+  "firma": "e65e9156376a582f",
   "msg": "1571735800801136702",
   "nombre": "CHOP COMPE CEO V.3",
   "num": 648,
@@ -50778,7 +50843,7 @@
    "kychi": 1
   },
   "fecha": "15/11",
-  "firma": "392ffe193dc594d3",
+  "firma": "1fa7ead570e2cf58",
   "msg": "1571954381262295063",
   "nombre": "(sin titulo)",
   "num": 651,
@@ -50941,7 +51006,7 @@
    "Mito": 41
   },
   "fecha": "16/11",
-  "firma": "15146bc11058bfb3",
+  "firma": "b200005d0abd17aa",
   "msg": "1571969969833517087",
   "nombre": "SIX SEVEN STYLE 3",
   "num": 652,
