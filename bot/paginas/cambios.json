@@ -11,6 +11,16 @@
   ],
   "cambios": [
     {
+        "version": "5.78",
+        "dia": "2026-11-16",
+        "cuando": "2026-11-16T22:47:00-05:00",
+        "titulo": "La Competitiva hace lugar para los estilos de juego",
+        "items": [
+            "La carta **Competitiva** ya no muestra los rombos de los eventos de la pre-temporada en su columna izquierda. Ese lugar es para tus **estilos de juego**: hasta tres, que llegan pronto.",
+            "Los eventos que jugaste siguen en tu perfil de la página."
+        ]
+    },
+    {
         "version": "5.77",
         "dia": "2026-11-16",
         "cuando": "2026-11-16T22:20:00-05:00",
