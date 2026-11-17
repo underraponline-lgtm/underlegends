@@ -16,6 +16,13 @@ export function pedirAjustes(sv, cambio) {
   return W.conCuenta('/api/avisos/socio-ajustes', cambio ? { sv, cambio } : { sv }).then((j) => j || { error: 'red' }).catch(() => ({ error: 'red' }));
 }
 
+/** 🧪 (16/11/2026) Probar el canal elegido para algo (`vivo`, `avisos`, `ascenso`, `resumen`, `ligas`): el bot manda un
+ *  mensaje corto ahí. `{ok, estado}`: 403 o 404 es que no puede escribir */
+export function probarCanal(sv, cual) {
+  if (!W.conCuenta) return Promise.resolve({ error: 'red' });
+  return W.conCuenta('/api/avisos/socio-ajustes', { sv, probar: cual }).then((j) => j || { error: 'red' }).catch(() => ({ error: 'red' }));
+}
+
 /** 🏁 Quién ganó una batalla que el bot no entendió (`v`: la letra del lado, o `z` para «Nadie siguió»). Lo mismo que
  *  tocar el botón en Discord: lo pasa el ciclo a `datos/decisiones.json`. */
 export function contestarFinal(sv, k, v) {
@@ -55,6 +62,12 @@ export function pedirLlave(sv, accion, extra) {
 export function pedirLiga(sv, liga, accion, extra) {
   if (!W.conCuenta) return Promise.resolve({ error: 'red' });
   return W.conCuenta('/api/avisos/socio-liga', Object.assign({ sv, liga, accion }, extra || {})).then((j) => j || { error: 'red' }).catch(() => ({ error: 'red' }));
+}
+
+/** 🛡️ (16/11/2026) Lo demás del staff: `que` es `quien`, `nombres`, `vs`, `agenda` o `muro` (`socioStaff()` en avisos.js) */
+export function pedirStaff(sv, que, accion, extra) {
+  if (!W.conCuenta) return Promise.resolve({ error: 'red' });
+  return W.conCuenta('/api/avisos/socio-staff', Object.assign({ sv, que, accion: accion || 'ver' }, extra || {})).then((j) => j || { error: 'red' }).catch(() => ({ error: 'red' }));
 }
 
 /** 🛡️ ¿Ese rol puede `que`? Con `permisos`, la tabla que manda el Worker (`SOCIO_PERMISOS` de bot/avisos.js, vía

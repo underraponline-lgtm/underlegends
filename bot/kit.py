@@ -386,7 +386,10 @@ def _vs_subidos():
                 import avisar as AV
                 r = requests.get(AV.WORKER + '/avisos/vs-fondos', timeout=8)
                 v = r.json() if r.ok else {}
-                _VS_SUBIDOS = {k: u for k, u in (v or {}).items() if isinstance(u, str) and u.startswith('https://pub-')}
+                # 🎚️ lo de Dlx (una URL de R2) o, si no subió nada, lo que eligió el staff del servidor entre los aprobados
+                # (16/11/2026, «repo:vs:ffa» o «repo:ev:ffa»: uno de bot/vs_fondos o de bot/eventos_fondos)
+                _VS_SUBIDOS = {k: u for k, u in (v or {}).items() if isinstance(u, str)
+                               and (u.startswith('https://pub-') or re.fullmatch(r'repo:(vs|ev):[a-z]{2,6}', u))}
             except Exception:                            # noqa: BLE001
                 _VS_SUBIDOS = {}
     return _VS_SUBIDOS
@@ -397,6 +400,14 @@ def _fondo_vs(sv):
     not the same as the card»): una escena propia en `bot/vs_fondos/<sv>.jpg`, que no sale de su tarjeta. `url(...)` o `''`.
     🎚️ Si Dlx subió otra en el Dashboard, va ésa (`_vs_subidos()`); si no se puede bajar, la del repo."""
     u = _vs_subidos().get(str(sv or '').upper())
+    # 🎚️ uno de los aprobados, elegido por el staff de su servidor desde su panel (16/11/2026)
+    if u and u.startswith('repo:'):
+        _, cual, otro = u.split(':')
+        p = os.path.join(BASE, 'bot', 'vs_fondos' if cual == 'vs' else 'eventos_fondos', '%s.jpg' % otro)
+        if os.path.exists(p):
+            with open(p, 'rb') as f:
+                return 'url(data:image/jpeg;base64,%s) center/cover no-repeat' % base64.b64encode(f.read()).decode('ascii')
+        u = ''
     if u:
         try:
             import requests

@@ -3102,6 +3102,47 @@ const ok = (cond, que, det) => {
       'la liga de un servidor: el moderador carga una batalla (el asistente no), nada en una liga de otro, el ciclo la ve, y deshacerla la saca',
         JSON.stringify([lg1.error, lg2.error, lg3.error, enCiclo, lg4.error]));
       await eq('400000000000000001', 'rol', { id: '400000000000000006', rol: 'admin' });
+      // 🛡️ lo demás del staff (16/11/2026): ¿quién es?, nombres, fondo del VS, agenda y publicaciones
+      const st = (quien, que, accion, extra) => o.socioStaff(Object.assign({ quien, sv: 'FFA', que, accion }, extra || {}));
+      o.guardar('decidir_preguntas', { t: 1, preguntas: [
+        { id: 'q1', tipo: 'Nombre desconocido', libre: true, sec: 'COPA · FFA · 01/11 · #600', que: '¿Quién es «ANITA»?', opciones: ['Es alguien nuevo'] },
+        { id: 'q2', tipo: 'Nombre desconocido', libre: true, sec: 'OTRA · SR · 01/11 · #601', que: '¿Quién es «X»?', opciones: [] }] });
+      const q1 = await st('400000000000000001', 'quien', 'ver');
+      const q2 = await st('400000000000000001', 'quien', 'contestar', { id: 'q1', r: 'Es Ana' });
+      const q3 = await st('400000000000000001', 'quien', 'contestar', { id: 'q2', r: 'Es Ana' });
+      await eq('400000000000000001', 'rol', { id: '400000000000000006', rol: 'asistente' });
+      const q4 = await st('400000000000000006', 'quien', 'contestar', { id: 'q1', r: 'Es Beto' });
+      const n1 = await st('400000000000000001', 'nombres', 'poner', { nombre: 'ANITA', es: 'Ana' });
+      const v1 = await st('400000000000000001', 'vs', 'elegir', { fondo: 'ev:ffa' });
+      const v2 = await st('400000000000000001', 'vs', 'elegir', { fondo: '../x' });
+      const ag1 = await st('400000000000000001', 'agenda', 'agregar', { nombre: 'COPA DEL STAFF', ini: Date.now() + 86400000, formato: '1v1' });
+      const ag2 = await st('400000000000000006', 'agenda', 'agregar', { nombre: 'OTRA', ini: Date.now() + 86400000 });
+      kvMem.set('web:muro', JSON.stringify({ items: [{ id: 'abc123abc123', sv: 'FFA', tipo: 'anuncio' }, { id: 'def456def456', sv: 'SR', tipo: 'anuncio' }] }));
+      o.guardar('murono_t', 0); o.guardar('murono_pend', 0);
+      const m1 = await st('400000000000000001', 'muro', 'ocultar', { pub: 'abc123abc123' });
+      const m2 = await st('400000000000000001', 'muro', 'ocultar', { pub: 'def456def456' });
+      const mkv = JSON.parse(kvMem.get('muro:no') || '{}');
+      await eq('400000000000000001', 'rol', { id: '400000000000000006', rol: 'admin' });
+      ok(q1.preguntas.length === 1 && q1.preguntas[0].id === 'q1' && q2.ok && q2.respuestas.q1.r === 'Es Ana' && q3.error === 'esa pregunta ya no está'
+        && q4.error === 'no_rol' && n1.ok && n1.nombres[0].es === 'Ana' && o.sql.exec('SELECT COUNT(*) AS n FROM sv_nombres').toArray()[0].n === 1
+        && v1.ok && o.leer('vs_elegido').FFA === 'ev:ffa' && v2.error === 'valor' && ag1.ok && ag1.agenda[0].nombre === 'COPA DEL STAFF' && ag2.error === 'no_rol'
+        && m1.ok && m1.ocultos[0].id === 'abc123abc123' && m2.error === 'no_es_tuya' && (mkv.ocultos || []).includes('abc123abc123'),
+      'lo demás del staff: contesta «¿quién es?» sólo de sus eventos (el asistente no), dice quién es un nombre, elige un fondo aprobado, anuncia un evento y oculta una publicación SUYA (que viaja en muro:no)',
+        JSON.stringify([q1.error, q2.error, q3.error, q4.error, n1.error, v1.error, v2.error, ag1.error, ag2.error, m1.error, m2.error, mkv]).slice(0, 500));
+      // 🌙 las horas sin bot y 🧪 probar el canal (16/11/2026)
+      o._cfgT = new Map();
+      const hs1 = await aj('400000000000000001', 'silencio', { desde: '01:00', hasta: '09:00' });
+      o._cfgT = new Map();
+      const hs2 = await aj('400000000000000001', 'silencio', { desde: '25:00', hasta: '09:00' });
+      kvMem.set('cfg:111111111111111111', JSON.stringify(Object.assign(JSON.parse(kvMem.get('cfg:111111111111111111') || '{}'), { vivo: '555' })));
+      const pr1 = await (await o.socioAjustes({ quien: '400000000000000001', sv: 'FFA', probar: 'vivo' })).json();
+      const pr2 = await (await o.socioAjustes({ quien: '400000000000000001', sv: 'FFA', probar: 'vivo' })).json();
+      const pr3 = await (await o.socioAjustes({ quien: '400000000000000001', sv: 'FFA', probar: 'resumen' })).json();
+      ok(hs1.ok && hs1.cfg.silencio.desde === '01:00' && hs2.error === 'valor' && pr1.probado === 'vivo' && pr1.estado === 404 && !pr1.ok
+        && pr2.error === 'espera' && pr3.error === 'sin_canal' && pedidos.some((u) => /channels\/555\/messages$/.test(u))
+        && A.enSilencio({ silencio: { desde: '00:00', hasta: '23:59' } }, Date.UTC(2026, 10, 16, 18)) && !A.enSilencio({ silencio: '' }),
+      'las horas sin bot de un servidor se guardan (y una hora que no existe no); «Probar» manda un mensaje al canal elegido, uno por minuto, y sin canal no',
+        JSON.stringify([hs1.error, hs2.error, pr1, pr2.error, pr3.error]));
       // 📲 Discord no deja escribir: al equipo, una vez por día y canal
       await o.chatSinPermiso('FFA', '555', 403);
       await o.chatSinPermiso('FFA', '555', 403);

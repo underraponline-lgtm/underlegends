@@ -776,6 +776,17 @@ def _self_check():
        and dict(h) == {'A · FFA · 01/11': 'cuenta', 'B · DDF · 02/11': 'nada', 'C · SR · 03/11': 'no cuenta'}
        and no_cuentan(dl) == ['C · SR · 03/11'],
        'las llaves del Dashboard: «no cuenta» escribe la decisión, «cuenta» sólo saca un «no cuenta», y lo raro no hace nada')
+    # 🪪 los nombres del staff de cada servidor (16/11/2026): AKA de ese servidor, sólo alguien de la Lista
+    _m = {'por_servidor': {'LKR': {'beto': 'Viejo'}}, '_leeme': []}
+    _pc = {'ana': 'Ana', 'carla': 'Carla'}
+    _h = nombres_socios([{'sv': 'LKR', 'nombre': 'ANITA', 'es': 'ana', 'estado': 'activo', 't': 1},
+                         {'sv': 'LKR', 'nombre': 'BETO', 'es': 'Carla', 'estado': 'activo', 't': 2},
+                         {'sv': 'CEU', 'nombre': 'X', 'es': 'Nadie', 'estado': 'activo', 't': 3}], _m, _pc)
+    _h2 = nombres_socios([{'sv': 'LKR', 'nombre': 'ANITA', 'es': 'ana', 'estado': 'quitado', 't': 4},
+                          {'sv': 'LKR', 'nombre': 'ANITA', 'es': 'ana', 'estado': 'quitado', 't': 5}], _m, _pc)
+    ok(len(_h) == 2 and len(_h2) == 1 and _m['por_servidor'] == {'LKR': {'BETO': 'Carla'}} and len(_m['_leeme']) == 2,
+       'los nombres del staff: «es» alguien de la Lista, por servidor; reemplaza lo de antes, uno de afuera de la Lista no '
+       'entra, y quitar lo saca una vez')
     print('\n  %s\n' % ('todo ok' if not mal else '🔴 %d problema(s)' % mal))
     return 1 if mal else 0
 
@@ -860,9 +871,74 @@ def llaves_del_dashboard(aplicar=False):
     return sum(1 for _c, q in hecho if q != 'nada')
 
 
+def nombres_socios(filas, mano, porclave):
+    """🪪 LOS NOMBRES QUE PUSO EL STAFF DE CADA SERVIDOR (Dlx, 16/11/2026: «me gustan todas las ideas», a «sus
+    inscripciones: corregir quién se anotó como quién»; `socioStaff()` de bot/avisos.js, `que: 'nombres'`). Cada uno es
+    el AKA de ESE servidor, como `corregir_liga()`: `mano['por_servidor'][sv][nombre] = persona de la Lista`. Sólo
+    alguien de la Lista: un servidor no crea gente. Lo quitado se saca si todavía dice eso. Devuelve los cambios."""
+    from comun.claves import clave
+    hechos = []
+    for f in sorted(filas or [], key=lambda x: x.get('t') or 0):
+        sv, nombre = str(f.get('sv') or ''), str(f.get('nombre') or '').strip()
+        if not sv or not nombre:
+            continue
+        nom = porclave.get(clave(f.get('es') or ''))
+        ps = (mano.get('por_servidor') or {}).get(sv) or {}
+        k = next((x for x in ps if clave(x) == clave(nombre)), None)
+        if f.get('estado') == 'activo':
+            if not nom or (k is not None and clave(ps[k]) == clave(nom)):
+                continue
+            ps = mano.setdefault('por_servidor', {}).setdefault(sv, {})
+            if k is not None and k != nombre:
+                del ps[k]
+            ps[nombre] = nom
+            hechos.append('%s: «%s» es %s' % (sv, nombre, nom))
+        elif k is not None and nom and clave(ps[k]) == clave(nom):
+            del ps[k]
+            hechos.append('%s: «%s» ya no es %s' % (sv, nombre, nom))
+    if hechos and isinstance(mano.get('_leeme'), list):
+        mano['_leeme'].append('🪪 %s: lo puso el staff de su servidor en su panel: %s.' % (_et(int(time.time() * 1000)), '; '.join(hechos)))
+    return hechos
+
+
+def _nombres_del_objeto():
+    """Los nombres del staff de cada servidor, del Worker (`/avisos/sv-nombres`, con la clave del ciclo), o `None`."""
+    try:
+        import requests
+        import avisar
+        import clave_ciclo as CC
+        t = avisar._token()
+        if not t:
+            return None
+        r = requests.get(avisar.WORKER + '/avisos/sv-nombres', headers={'x-lg-ciclo': CC.clave(t)}, timeout=20)
+        j = r.json() if r.ok else None
+    except Exception:                                    # noqa: BLE001
+        return None
+    return j.get('nombres') if isinstance(j, dict) and isinstance(j.get('nombres'), list) else None
+
+
 def main():
     if '--auto' in sys.argv:
         return _self_check()
+    if '--corregir' in sys.argv:
+        # 🪪 los nombres que puso el staff de cada servidor (16/11/2026), a `akas_a_mano.json` (`por_servidor`)
+        try:
+            de_socios = _nombres_del_objeto()
+            if de_socios:
+                import motor
+                resolver, _n = motor._resolvedor()
+                ruta = os.path.join(BASE, 'datos', 'akas_a_mano.json')
+                with io.open(ruta, encoding='utf-8') as f:
+                    mano = json.load(f) or {}
+                hechos = nombres_socios(de_socios, mano, resolver.padron)
+                for h in hechos:
+                    print('   🪪 %s' % h)
+                if hechos and '--aplicar' in sys.argv:
+                    with io.open(ruta, 'w', encoding='utf-8', newline='\n') as f:
+                        json.dump(mano, f, ensure_ascii=False, indent=1)
+                        f.write('\n')
+        except Exception as e:                           # noqa: BLE001  nunca frena las correcciones de los reportes
+            print('   ⚠️ los nombres del staff de cada servidor: %s' % str(e)[:120])
     if '--corregir' in sys.argv:
         print('\n══ 📣 LO QUE DLX CORRIGIÓ DESDE EL DASHBOARD ══\n')
         try:

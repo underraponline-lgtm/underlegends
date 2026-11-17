@@ -860,6 +860,10 @@ def armar(p, guardado=None, ahora=None, fuentes=None, perfiles=None, permisos=No
     # 🙈 quien apagó sus publicaciones en Tu cuenta (bot/muro_solos.py): sin `apagados`, la copia de la última lectura
     import muro_solos as MS
     muro['items'] = MS.sin_apagados(muro['items'], MS.apagados(None) if apagados is None else apagados)
+    # 🙈 y las que ocultó el staff de su servidor desde su panel (16/11/2026, `MS.ocultos()`)
+    oc_ = MS.ocultos()
+    if oc_:
+        muro['items'] = [x for x in muro['items'] if str(x.get('id') or '') not in oc_]
     # 💬 Y LOS COMENTARIOS SIMULADOS de cada publicación (Dlx, 12/11/2026: «Sí, constrúyelo»): ver bot/comentarios_sim.py.
     # ⚠️ Después de los ids y las claves: el `id` no los mira, así felicitar y comentar siguen apuntando a lo mismo
     try:

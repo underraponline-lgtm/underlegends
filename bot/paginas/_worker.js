@@ -123,6 +123,7 @@ const AVISOS = {
   '/api/avisos/socio-roles': 'POST',
   '/api/avisos/socio-llave': 'POST',
   '/api/avisos/socio-liga': 'POST',
+  '/api/avisos/socio-staff': 'POST',
   '/api/avisos/socio-pagina': 'POST',
   '/api/avisos/dueno-socios': 'POST',
   '/api/avisos/promo-vio': 'POST',

@@ -106,7 +106,9 @@ def apagados(s=None):
             if d is not None:
                 os.makedirs(os.path.dirname(COPIA), exist_ok=True)
                 with io.open(COPIA, 'w', encoding='utf-8') as f:
-                    json.dump({'no': sorted(str(k) for k in d.get('no') or [])}, f)
+                    # 🙈 y las publicaciones que ocultó el staff de su servidor (16/11/2026, `ocultos()`), en la misma copia
+                    json.dump({'no': sorted(str(k) for k in d.get('no') or []),
+                               'ocultos': sorted(str(k) for k in d.get('ocultos') or [])}, f)
         except Exception:                                # noqa: BLE001
             d = None
     if d is None:
@@ -116,6 +118,17 @@ def apagados(s=None):
         except (OSError, ValueError):
             d = {}
     return {str(k) for k in d.get('no') or []}
+
+
+def ocultos():
+    """🙈 `set(ids)` de las publicaciones que ocultó el staff de su servidor (Dlx, 16/11/2026: «me gustan todas las
+    ideas», a «ocultar publicaciones de su servidor en el muro»; `socioStaff()` de bot/avisos.js, `que: 'muro'`). Viajan
+    en `muro:no` con lo apagado por cada uno, así que salen de la copia que deja `apagados(s)`. Sin copia, ninguna."""
+    try:
+        with io.open(COPIA, encoding='utf-8') as f:
+            return {str(k) for k in (json.load(f) or {}).get('ocultos') or []}
+    except (OSError, ValueError):
+        return set()
 
 
 def sin_apagados(items, no):

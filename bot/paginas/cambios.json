@@ -11,6 +11,19 @@
   ],
   "cambios": [
     {
+        "version": "5.83",
+        "dia": "2026-11-16",
+        "cuando": "2026-11-16T23:23:17-05:00",
+        "titulo": "Más para el staff de cada servidor",
+        "items": [
+            "En el panel de tu servidor, **Quién es quién**: contesta los «¿Quién es?» de tus eventos y di quién es cada nombre de tus inscripciones.",
+            "**Tus eventos**: anuncia un evento desde el panel y sale en Eventos y en la campana, aunque el bot no lea tu anuncio.",
+            "**Tus publicaciones**: oculta una publicación de tu servidor en el muro.",
+            "**El fondo del VS**: elige uno de las escenas de la Liga para los VS de tu servidor.",
+            "En los ajustes: **Horas sin bot** (de qué hora a qué hora no habla en tu chat) y **Probar** al lado de cada canal."
+        ]
+    },
+    {
         "version": "5.82",
         "dia": "2026-11-16",
         "cuando": "2026-11-16T23:19:00-05:00",
