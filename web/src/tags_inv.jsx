@@ -21,7 +21,7 @@
 import { Suspense, useEffect, useMemo, useRef, useState } from 'react';
 import CAT from './tags_catalogo.json';
 import { pasePost, refrescarPases } from './pase.js';
-import { Carta, accion } from './piezas.jsx';
+import { Carta, Ico, accion } from './piezas.jsx';
 import { FondoCaja, FotoCartaCaja } from './cuenta.jsx';
 import CSS_PAGINA from './css/inventario.css?inline';
 import { usarCss } from './css.js';
@@ -219,6 +219,53 @@ function Detalle({ o }) {
   );
 }
 
+/**
+ * 🎒 SIN CARTAS TODAVÍA (16/11/2026): lo que ve casi todo el que entra. Qué te falta para la primera —los dos pasos, como
+ * el álbum de Tarjetas— y, si ya ganaste TAGs jugando, cuáles te esperan: se ganan con o sin carta, y se ponen en cuanto
+ * la tengas
+ */
+function SinCartas({ yo, k }) {
+  const ganados = [];
+  for (const [c, n] of CARTAS) for (const o of opciones(c, Object.assign({}, yo, { dueno: false, titulos: [] }))) ganados.push(Object.assign({ carta: n }, o));
+  const n = ganados.length;
+  const ver = ganados.slice(0, 8);
+  return (
+    <section className="iv10-sin" aria-label="Todavía no tienes cartas">
+      <div className="iv10-sin-cab">
+        <span className="iv10-sin-ic" aria-hidden="true"><Ico n="tarjetas" t={26} /></span>
+        <div>
+          <b>Todavía no tienes cartas</b>
+          <p>Tu TAG, tu marco y tu foto van sobre tus cartas. Las primeras dos se desbloquean en dos pasos:</p>
+        </div>
+      </div>
+      <ol className="iv10-pasos">
+        <li><i>1</i><span><b>Verifícate</b><small>Discord Rap Español, rol Miembro y tu país · tu carta de Servidor</small></span>
+          <a className="iv10-sin-b verde" href="#/cuenta/verificar">Verificarme</a></li>
+        <li><i>2</i><span><b>Tu primera Tarea del Pase</b><small>Tu carta de Temporada</small></span>
+          <a className="iv10-sin-b" href="#/pase">Ver el Pase</a></li>
+      </ol>
+      {n ? (
+        <>
+          <p className="iv-p"><b>{n === 1 ? 'Ya ganaste un TAG' : 'Ya ganaste ' + n + ' TAGs'}</b> jugando: {n === 1 ? 'te espera' : 'te esperan'} acá
+            para ponérselos a tus cartas en cuanto las tengas.</p>
+          <div className="iv10-grid bloq" aria-label="Tus TAGs">
+            {ver.map((o) => {
+              const [ic, txt] = partir(o.texto);
+              return (
+                <div key={o.carta + o.tag} className={'iv10-q r-' + o.nivel + (ic ? '' : ' letra')}>
+                  <span className="iv10-qi" aria-hidden="true">{ic || txt.charAt(0)}</span><b>{txt}</b><small>{o.carta}</small>
+                </div>
+              );
+            })}
+          </div>
+          {n > ver.length ? <p className="iv-nota">Y {n - ver.length} más.</p> : null}
+        </>
+      ) : null}
+      <a className="iv10-sin-lnk" href={k ? '#/tarjetas' : '#/guia'}>{k ? 'Ver qué me falta para cada carta →' : 'Cómo funciona →'}</a>
+    </section>
+  );
+}
+
 // 🎒 las ranuras de cada pestaña: `[id, etiqueta, ícono]`
 const RANURAS = {
   cartas: [['tag', 'TAG', '🏷️'], ['marco', 'Marco', '🖼️'], ['foto', 'Foto', '📸'], ['efecto', 'Efecto', '✨']],
@@ -271,12 +318,28 @@ export function Inventario({ liga, dc, carta0 = '', ranura0 = '' }) {
   }, []);
   useEffect(() => { if (yo) marcarVisto(yo); }, [yo]);
   const k = (dc && dc.clave) || (yo && yo.k) || '';
-  // las cartas que tienes: la página las sabe por tu fila o tu cuenta (ver `filaDe` de visor.jsx)
+  // 🃏 TUS CARTAS TAMBIÉN DESDE TU PERFIL (16/11/2026): fuera de la tabla, la página sólo sabía las que tenías AL ENTRAR
+  // (`dc.cs`), y las de quien está en la Liga sin competir (`f.solo`: 37 con su Servidor) no llegaban nunca: App.jsx
+  // no las trae a propósito, para que el panel no los trate como a alguien que juega. Acá sólo hacen falta las cartas
+  const [deP, setDeP] = useState(null);
+  useEffect(() => {
+    if (!k || (liga.T && liga.T[k]) || typeof window.perfiles !== 'function') return undefined;
+    let vivo = true;
+    Promise.resolve(window.perfiles()).then((d) => {
+      const f = d && d.p && d.p[k] && d.p[k].f;
+      if (!vivo || !f || !Array.isArray(f.c)) return;
+      // y su fila, para que `Carta` encuentre la imagen: `cartaUrl()` la busca en `liga.T` o `liga.X` (`fuera()`)
+      if (!(liga.X && liga.X[k])) liga.fuera(Object.assign({ k }, f));
+      setDeP(f.c);
+    }).catch(() => {});
+    return () => { vivo = false; };
+  }, [k, liga]);
+  // las cartas que tienes: la página las sabe por tu fila, tu perfil o tu cuenta (ver `filaDe` de visor.jsx)
   const tienes = useMemo(() => {
     const f = (liga.T && liga.T[k]) || (liga.X && liga.X[k]);
-    const c = new Set([...((f && f.c) || []), ...((dc && dc.cs) || [])]);
+    const c = new Set([...((f && f.c) || []), ...(deP || []), ...((dc && dc.cs) || [])]);
     return CARTAS.filter(([x]) => c.has(x));
-  }, [liga, k, dc]);
+  }, [liga, k, dc, deP]);
   useEffect(() => { if (tienes.length && !tienes.some(([x]) => x === carta)) setCarta(tienes[0][0]); }, [tienes]); // eslint-disable-line react-hooks/exhaustive-deps
   const nCambios = Object.keys(bor.tags).length + ('marco' in bor || 'estilo' in bor ? 1 : 0) + ('principal' in bor ? 1 : 0);
   // salir con cambios sin guardar pregunta antes
@@ -304,7 +367,10 @@ export function Inventario({ liga, dc, carta0 = '', ranura0 = '' }) {
   if (yo === undefined) return <div className="iv10"><p className="iv-nota">Buscando tu inventario…</p></div>;
   if (!yo) return <div className="iv10"><p className="iv-nota">No pude leer tu inventario. Entra con Discord y prueba de nuevo.</p></div>;
 
-  const cartas = tienes.length ? tienes : CARTAS;
+  // ⚠️ SIN CARTAS NO SE INVENTAN CUATRO (16/11/2026): antes salían las cuatro vacías, con «Automático» puesto en cartas que
+  // no tienes. Es lo que veía casi todo el que entra: de 2.760 verificados, la mayoría todavía no jugó
+  const cartas = tienes;
+  const sinCartas = !cartas.length;
   const ops = opciones(carta, yo);
   const elG = (yo.elegidos || {})[carta] || 'auto';
   const el = carta in bor.tags ? bor.tags[carta] : elG;
@@ -370,7 +436,7 @@ export function Inventario({ liga, dc, carta0 = '', ranura0 = '' }) {
     setMsg((ok ? 'Guardado. ' : 'Se guardó una parte. ') + [...new Set(avisos)].join(' '));
   };
   const abrir = (r) => { setPest(r); setHoja(true); setMsg(''); };
-  const cambiarTab = (t) => { setTab(t); setPest(RANURAS[t][0][0]); setHoja(false); };
+  const cambiarTab = (t) => { setTab(t); setPest(t === 'perfil' && sinCartas ? 'fondo' : RANURAS[t][0][0]); setHoja(false); };
 
   // lo que muestra cada ranura, en una línea
   const valor = {
@@ -486,7 +552,8 @@ export function Inventario({ liga, dc, carta0 = '', ranura0 = '' }) {
     );
   };
 
-  const ranuras = RANURAS[tab];
+  // sin cartas no hay principal; sin perfil, tampoco emblemas
+  const ranuras = RANURAS[tab].filter(([r]) => !(r === 'principal' && sinCartas) && !(r === 'emblemas' && !k));
   return (
     <div className="iv10">
       <div className="iv10-cab">
@@ -502,6 +569,7 @@ export function Inventario({ liga, dc, carta0 = '', ranura0 = '' }) {
       <ValesPremium />
       {msg ? <p className="iv-msg" role="status">{msg}</p> : null}
 
+      {tab === 'cartas' && sinCartas ? <SinCartas yo={yo} k={k} /> : (
       <div className="iv10-cuerpo">
         <aside className="iv10-ver">
           {tab === 'cartas' ? (
@@ -515,7 +583,7 @@ export function Inventario({ liga, dc, carta0 = '', ranura0 = '' }) {
               ))}
             </div>
           ) : null}
-          {verCarta(cajaCarta, 'grande')}
+          {sinCartas ? null : verCarta(cajaCarta, 'grande')}
           <ul className="iv10-ran" aria-label="Las ranuras">
             {ranuras.map(([id, et, ic]) => (
               <li key={id}>
@@ -548,6 +616,7 @@ export function Inventario({ liga, dc, carta0 = '', ranura0 = '' }) {
         </section>
         {hoja ? <button type="button" className="iv10-velo" aria-label="Cerrar" onClick={() => setHoja(false)} /> : null}
       </div>
+      )}
     </div>
   );
 }

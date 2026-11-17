@@ -74,7 +74,9 @@
 .iv10-q{position:relative;display:grid;justify-items:center;align-content:start;gap:5px;min-width:0;padding:14px 6px 11px;
   border:1.5px solid #2A2A2E;border-radius:4px;background:#0F0F13;color:#F6F6F6;text-align:center;cursor:pointer}
 .iv10-qi{display:grid;place-items:center;width:42px;height:42px;border:1.5px solid #3A3A42;border-radius:4px;font-size:20px}
-.iv10-q b{font:900 11.5px/1.15 Archivo,sans-serif;text-transform:uppercase;hyphens:auto;overflow-wrap:anywhere}
+/* ✂️ sin guion a mitad de palabra («CAZARRECOM-PENSAS», 16/11/2026): la letra se achica con el cuadro y parte sólo entre palabras */
+.iv10-q{container-type:inline-size}
+.iv10-q b{max-width:100%;font:900 clamp(8.5px,9.4cqi,11.5px)/1.15 Archivo,sans-serif;text-transform:uppercase;overflow-wrap:normal;word-break:normal;hyphens:manual;text-wrap:balance}
 .iv10-q small{font:800 10.5px/1 "Barlow Condensed",sans-serif;letter-spacing:.1em;text-transform:uppercase;color:var(--esc-gris)}
 .iv10-q.letra .iv10-qi{font:900 18px/1 Archivo,sans-serif}
 .iv10-q.r-t1,.iv10-q.m-oro,.iv10-det.r-t1{--rar:#F5C542}.iv10-q.r-t2,.iv10-det.r-t2{--rar:#B07CFF}
@@ -162,3 +164,31 @@
 .vp-ok{display:flex;gap:8px;flex-wrap:wrap}
 .vp-nota,.vp-msg{margin:0;font:500 13px/1.4 Archivo,sans-serif;color:#c9cbd1}
 .vp-msg{color:#F6F6F6;font-weight:700}
+/* 🃏 sin cartas todavía (16/11/2026): los dos pasos y los TAGs que te esperan */
+.iv10-sin{display:grid;gap:14px;max-width:760px;padding:18px;border:1.5px solid var(--esc-linea);border-radius:4px;background:#121216}
+.iv10-sin-cab{display:grid;grid-template-columns:auto minmax(0,1fr);gap:14px;align-items:start}
+.iv10-sin-ic{display:grid;place-items:center;width:52px;height:52px;border:1.5px dashed #3A3A42;border-radius:4px;color:#F6F6F6}
+.iv10-sin-cab b{display:block;font:900 20px/1.1 Archivo,sans-serif;text-transform:uppercase}
+.iv10-sin-cab p{margin:6px 0 0;font-size:14px;line-height:1.5;color:var(--esc-gris);max-width:62ch}
+.iv10-sin-cab p b{display:inline;font:inherit;font-weight:800;text-transform:none;color:#F6F6F6}
+.iv10-pasos{display:grid;gap:8px;margin:0;padding:0;list-style:none}
+.iv10-pasos li{display:grid;grid-template-columns:auto minmax(0,1fr) auto;gap:12px;align-items:center;padding:10px 12px;border:1.5px solid var(--esc-linea);border-radius:4px;background:#0F0F13}
+.iv10-pasos i{display:grid;place-items:center;width:28px;height:28px;border-radius:50%;background:#F6F6F6;color:#030304;font:900 14px/1 Archivo,sans-serif;font-style:normal}
+.iv10-pasos span{display:grid;gap:3px;min-width:0}
+.iv10-pasos b{font:900 14px/1.15 Archivo,sans-serif;text-transform:uppercase}
+.iv10-pasos small{font:700 12px/1.2 "Barlow Condensed",sans-serif;letter-spacing:.08em;text-transform:uppercase;color:var(--esc-gris)}
+/* los botones, a mano: los `.btn` de la página son para fondo claro y `borde2` quedaba negro sobre negro */
+.iv10-sin-b{display:inline-grid;place-items:center;min-height:40px;padding:0 16px;border:1.5px solid #3A3A42;border-radius:4px;color:#F6F6F6;
+  font:900 13px/1 Archivo,sans-serif;text-transform:uppercase;text-decoration:none;white-space:nowrap}
+.iv10-sin-b.verde{border-color:#29B298;background:#29B298;color:#030304}
+@media (hover: hover) and (pointer: fine){.iv10-sin-b:not(.verde):hover{border-color:#F6F6F6}}
+.iv10-grid.bloq .iv10-q{cursor:default;opacity:.85}
+.iv10-sin-lnk{justify-self:start;font:800 14px/1.2 Archivo,sans-serif;color:#29B298;text-decoration:none}
+@media (hover: hover) and (pointer: fine){.iv10-sin-lnk:hover{text-decoration:underline}}
+/* lo de Tu cuenta (tu foto, tu fondo) dentro de una ranura: el título ya está en la cabecera de la ranura */
+.iv10-panel .cu-caja > h3:first-child{display:none}
+@media (max-width: 760px){
+  .iv10-sin{padding:14px}
+  .iv10-pasos li{grid-template-columns:auto minmax(0,1fr)}
+  .iv10-pasos li .iv10-sin-b{grid-column:1 / -1}
+}

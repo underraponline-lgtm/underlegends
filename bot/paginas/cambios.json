@@ -11,6 +11,17 @@
  ],
  "cambios": [
     {
+        "version": "5.69",
+        "dia": "2026-11-16",
+        "cuando": "2026-11-16T20:20:00-05:00",
+        "titulo": "Tu Inventario, también sin cartas",
+        "items": [
+            "Si todavía **no tienes cartas**, el Inventario te dice qué te falta (verificarte y tu primera Tarea del Pase) y te muestra **los TAGs que ya ganaste**, esperándote. Antes eran cuatro casilleros vacíos.",
+            "Si estás en la Liga **sin competir**, tu carta de Servidor ya aparece en tu Inventario.",
+            "Los nombres largos de los TAGs ya no se cortan con guion."
+        ]
+    },
+    {
         "version": "5.68",
         "dia": "2026-11-16",
         "cuando": "2026-11-16T20:17:05-05:00",
