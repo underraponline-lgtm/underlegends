@@ -122,6 +122,7 @@
    "busc": 4,
    "cab": 2,
    "dobles": 22,
+   "elite": true,
    "infalt": true,
    "perf": 2,
    "podsem": true,
@@ -468,6 +469,7 @@
    "busc": 1,
    "cab": 1,
    "dobles": 13,
+   "elite": true,
    "infalt": true,
    "perf": 2,
    "sube": true,
@@ -550,6 +552,7 @@
   "tg_t": {
    "busc": 2,
    "dobles": 12,
+   "elite": true,
    "perf": 1,
    "relampago": true,
    "rey": true,
@@ -1509,6 +1512,7 @@
   "tg_t": {
    "busc": 3,
    "dobles": 6,
+   "elite": true,
    "infalt": true,
    "suelto": true,
    "svc": 1
@@ -5258,6 +5262,7 @@
   "tg_t": {
    "dcor": true,
    "dobles": 1,
+   "elite": true,
    "perf": 1,
    "svc": 2
   }
@@ -5329,6 +5334,7 @@
   "tg_t": {
    "busc": 4,
    "dobles": 1,
+   "elite": true,
    "svc": 2
   }
  },
@@ -9168,6 +9174,7 @@
   "total": 256,
   "rango": "E",
   "tg_t": {
+   "elite": true,
    "trios": 1
   }
  },
@@ -13152,7 +13159,10 @@
   "o": 372,
   "pos": 185,
   "total": 256,
-  "rango": "E"
+  "rango": "E",
+  "tg_t": {
+   "elite": true
+  }
  },
  {
   "full": "Mato 🇧🇴",
@@ -13445,6 +13455,7 @@
   "rango": "E",
   "tg_t": {
    "dcor": true,
+   "elite": true,
    "svc": 1
   }
  },
@@ -26589,7 +26600,10 @@
   "o": 785,
   "pos": 255,
   "total": 256,
-  "rango": "E"
+  "rango": "E",
+  "tg_t": {
+   "elite": true
+  }
  },
  {
   "full": "Warriorvid",

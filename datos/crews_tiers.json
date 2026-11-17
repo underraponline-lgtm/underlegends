@@ -1,34 +1,42 @@
 {
  "_leeme": "Los tiers de las crews: el de cada una, la semana en curso (la última foto de los puntos de cada persona) y los últimos cambios. Lo escribe bot/crews_tiers.py en el paso 1c; las reglas viven en ese archivo.",
  "avisado": "2026-11-09",
+ "elo_corregido": "2026-11-17",
  "hist": [
   [
    "2026-11-09",
-   "KS",
-   1,
+   "Follombia",
+   3,
+   4,
+   148482
+  ],
+  [
+   "2026-11-09",
+   "Desierto de Atacama",
    0,
-   3162
+   1,
+   39812
+  ],
+  [
+   "2026-11-09",
+   "METRICOS",
+   0,
+   1,
+   21269
   ],
   [
    "2026-11-02",
    "Follombia",
    2,
-   1,
-   8381
+   3,
+   133999
   ],
   [
    "2026-11-02",
    "KS",
    2,
    1,
-   3122
-  ],
-  [
-   "2026-11-02",
-   "Los ULEYES",
-   2,
-   1,
-   969
+   0
   ],
   [
    "2026-10-26",
@@ -156,36 +164,36 @@
  },
  "sem": "2026-11-16",
  "tier": {
-  "Desierto de Atacama": 0,
-  "Follombia": 1,
-  "KS": 0,
-  "METRICOS": 0
+  "Desierto de Atacama": 1,
+  "Follombia": 4,
+  "KS": 1,
+  "METRICOS": 1
  },
  "ult": {
   "crews": {
    "Desierto de Atacama": {
-    "a": 0,
+    "a": 1,
     "de": 0,
     "jugaron": 1,
-    "pts": 1317
+    "pts": 39812
    },
    "Follombia": {
-    "a": 1,
-    "de": 1,
-    "jugaron": 8,
-    "pts": 8490
+    "a": 4,
+    "de": 3,
+    "jugaron": 5,
+    "pts": 148482
    },
    "KS": {
-    "a": 0,
+    "a": 1,
     "de": 1,
-    "jugaron": 3,
-    "pts": 3162
+    "jugaron": 2,
+    "pts": 12000
    },
    "METRICOS": {
-    "a": 0,
+    "a": 1,
     "de": 0,
     "jugaron": 2,
-    "pts": 1831
+    "pts": 21269
    }
   },
   "cuenta": true,

@@ -1,5 +1,5 @@
 {
- "cuando": "2026-11-17T05:25:42+00:00",
+ "cuando": "2026-11-17T05:55:24+00:00",
  "anuncios": [
   {
    "nombre": "¡SE LLEGÓ LA GRAN NOCHE!",
@@ -5834,32 +5834,6 @@
    "categoria_id": ""
   },
   {
-   "nombre": "MANIJA EXPRESS NOCTURNA",
-   "servidor": "CH",
-   "canal": "📢—anuncios",
-   "msg_id": "1572113199413723156",
-   "cuando": "2026-11-17T04:56:35",
-   "canal_id": "1081721420373041264",
-   "guild_id": "1074328197400887388",
-   "organizador": "",
-   "orgs": [],
-   "autor_h": "6b5f775be582dcbe",
-   "cupos_texto": "Ilimitados si llegan a la hora establecida",
-   "inscriptos": null,
-   "cupo_total": null,
-   "rango": "",
-   "modalidad": "UNO CONTRA UNO ( 1 VS 1 )",
-   "horario": "En 20 minutos",
-   "fecha": "16/11/2026 HOYYYYYY",
-   "premios": "El respeto +",
-   "staff": {},
-   "autor": "trelok",
-   "staff_cuentas": {},
-   "categoria_id": "1080379388320817233",
-   "inscripciones": "abiertas",
-   "inscripciones_cuando": "2026-11-17T04:57:11"
-  },
-  {
    "nombre": "COMPE SABADEÑA",
    "servidor": "CH",
    "canal": "📢—anuncios",
@@ -5881,9 +5855,7 @@
    "staff": {},
    "autor": "CNC ®",
    "staff_cuentas": {},
-   "categoria_id": "1080379388320817233",
-   "inscripciones": "abiertas",
-   "inscripciones_cuando": "2026-11-17T04:57:11"
+   "categoria_id": "1080379388320817233"
   },
   {
    "nombre": "ENTRENN!!",
@@ -5907,9 +5879,7 @@
    "staff": {},
    "autor": "chop",
    "staff_cuentas": {},
-   "categoria_id": "1080379388320817233",
-   "inscripciones": "abiertas",
-   "inscripciones_cuando": "2026-11-17T04:57:11"
+   "categoria_id": "1080379388320817233"
   },
   {
    "nombre": "COMPE ATERRADORA",
@@ -5933,9 +5903,7 @@
    "staff": {},
    "autor": "Designo",
    "staff_cuentas": {},
-   "categoria_id": "1080379388320817233",
-   "inscripciones": "abiertas",
-   "inscripciones_cuando": "2026-11-17T04:57:11"
+   "categoria_id": "1080379388320817233"
   },
   {
    "nombre": "MINUTOS A SANGRE - D3ATHROWCHAMPS VOL 3",
@@ -5959,9 +5927,7 @@
    "staff": {},
    "autor": ".",
    "staff_cuentas": {},
-   "categoria_id": "1080379388320817233",
-   "inscripciones": "abiertas",
-   "inscripciones_cuando": "2026-11-17T04:57:11"
+   "categoria_id": "1080379388320817233"
   },
   {
    "nombre": "EL ONMITRIX VOL 1.",
@@ -5985,9 +5951,7 @@
    "staff": {},
    "autor": "†JEIXDER",
    "staff_cuentas": {},
-   "categoria_id": "1080379388320817233",
-   "inscripciones": "abiertas",
-   "inscripciones_cuando": "2026-11-17T04:57:11"
+   "categoria_id": "1080379388320817233"
   },
   {
    "nombre": "FARK PREMIUM VOL 3",
@@ -6016,9 +5980,7 @@
    "staff": {},
    "autor": "Bohemio.rap",
    "staff_cuentas": {},
-   "categoria_id": "1080379388320817233",
-   "inscripciones": "abiertas",
-   "inscripciones_cuando": "2026-11-17T04:57:11"
+   "categoria_id": "1080379388320817233"
   },
   {
    "nombre": "EL PODERIO DE LOS DIOSES VOL 3",
@@ -6042,9 +6004,7 @@
    "staff": {},
    "autor": "†JEIXDER",
    "staff_cuentas": {},
-   "categoria_id": "1080379388320817233",
-   "inscripciones": "abiertas",
-   "inscripciones_cuando": "2026-11-17T04:57:11"
+   "categoria_id": "1080379388320817233"
   },
   {
    "nombre": "EL PODERIO DE LOS DIOSES VOL 2",
@@ -6068,9 +6028,7 @@
    "staff": {},
    "autor": "†JEIXDER",
    "staff_cuentas": {},
-   "categoria_id": "1080379388320817233",
-   "inscripciones": "abiertas",
-   "inscripciones_cuando": "2026-11-17T04:57:11"
+   "categoria_id": "1080379388320817233"
   },
   {
    "nombre": "RECONOCIENDO LA OBRA",
@@ -6099,9 +6057,7 @@
    "staff": {},
    "autor": "erik_",
    "staff_cuentas": {},
-   "categoria_id": "1080379388320817233",
-   "inscripciones": "abiertas",
-   "inscripciones_cuando": "2026-11-17T04:57:11"
+   "categoria_id": "1080379388320817233"
   },
   {
    "nombre": "EL PODERIO DE LOS DIOSES",
@@ -6125,9 +6081,7 @@
    "staff": {},
    "autor": "†JEIXDER",
    "staff_cuentas": {},
-   "categoria_id": "1080379388320817233",
-   "inscripciones": "abiertas",
-   "inscripciones_cuando": "2026-11-17T04:57:11"
+   "categoria_id": "1080379388320817233"
   },
   {
    "nombre": "PALABRA SAGRADA EDICION 1",
@@ -6151,9 +6105,7 @@
    "staff": {},
    "autor": "dante",
    "staff_cuentas": {},
-   "categoria_id": "1080379388320817233",
-   "inscripciones": "abiertas",
-   "inscripciones_cuando": "2026-11-17T04:57:11"
+   "categoria_id": "1080379388320817233"
   },
   {
    "nombre": "JEIX CUP CLASIFICATORIO",
@@ -6177,9 +6129,7 @@
    "staff": {},
    "autor": "†JEIXDER",
    "staff_cuentas": {},
-   "categoria_id": "1080379388320817233",
-   "inscripciones": "abiertas",
-   "inscripciones_cuando": "2026-11-17T04:57:11"
+   "categoria_id": "1080379388320817233"
   },
   {
    "nombre": "PUNTO MUERTO FECHA 8 (ULTIMO CUPO)",
@@ -6203,9 +6153,31 @@
    "staff": {},
    "autor": "dante",
    "staff_cuentas": {},
-   "categoria_id": "1080379388320817233",
-   "inscripciones": "abiertas",
-   "inscripciones_cuando": "2026-11-17T04:57:11"
+   "categoria_id": "1080379388320817233"
+  },
+  {
+   "nombre": "CELEBRITY DEATH MATCH Vol. 2 (RANKED)",
+   "servidor": "CH",
+   "canal": "📢—anuncios",
+   "msg_id": "1535795532851716209",
+   "cuando": "2026-08-08T23:43:08",
+   "canal_id": "1081721420373041264",
+   "guild_id": "1074328197400887388",
+   "organizador": "@⚡ 𝑴𝒂𝒖𝒓𝒐𝒍𝒐𝒄𝒓𝒂𝒛𝒚 ⚡",
+   "orgs": [],
+   "autor_h": "5da160fbc5d330ad",
+   "cupos_texto": "(24)",
+   "inscriptos": null,
+   "cupo_total": null,
+   "rango": "",
+   "modalidad": "1 vs 1",
+   "horario": "",
+   "fecha": "01/08/26",
+   "premios": "+ SUMA TUS PRIMEROS PUNTOS DEL NUEVO RANKING 2026 - 2027",
+   "staff": {},
+   "autor": "CNC ®",
+   "staff_cuentas": {},
+   "categoria_id": "1080379388320817233"
   },
   {
    "nombre": "Horarios de la competencia",
