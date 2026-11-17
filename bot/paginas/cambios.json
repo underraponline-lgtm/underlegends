@@ -11,6 +11,18 @@
   ],
   "cambios": [
     {
+        "version": "6.00",
+        "dia": "2026-11-17",
+        "cuando": "2026-11-17T01:43:32-05:00",
+        "titulo": "Invita y gana",
+        "items": [
+            "**Invita y gana** 🎁: al lado de la campana (y en tu menú). Tu link corto de la temporada, para pasárselo a alguien que todavía no esté en la Liga.",
+            "Cuenta cuando esa persona entra con Discord desde tu link, se verifica y llega al **nivel 1 del Pase**. A ti te da **250 Puntos de Tienda y 150 XP del Pase**; a quien llega, **500 de bienvenida**.",
+            "El track, hasta **10**: un Dragón Drop con el primero, el título **Reclutador** con 3, dos Dragón Drops y 1.500 Puntos con 5, y con 10 el **marco Embajador** para todas tus cartas.",
+            "Los links de invitación de las crews ahora son **cortos** (`underlegends.pages.dev/c/…`), y pegados en Discord o WhatsApp salen con **su propia imagen**: el escudo de la crew, su nombre y cuántos son. Los de referido, con tu tarjeta."
+        ]
+    },
+    {
       "version": "5.99",
       "dia": "2026-11-17",
       "cuando": "2026-11-17T01:38:18-05:00",
