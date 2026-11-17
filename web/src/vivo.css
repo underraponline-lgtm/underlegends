@@ -4862,6 +4862,7 @@ dialog.pn-pop.dd-pop{width:min(760px,calc(100vw - 32px));border-color:#9B5CFF}
   background:linear-gradient(170deg,color-mix(in srgb,var(--c) 35%,#000),#000 75%);box-shadow:0 0 40px color-mix(in srgb,var(--c) 60%,transparent)}
 .dd-premio b{font:900 18px/1.15 Archivo,sans-serif;text-transform:uppercase}
 .dd-premio small{color:var(--c);font:800 12px/1 "Barlow Condensed",sans-serif;letter-spacing:.1em;text-transform:uppercase}
+.dd-tope{max-width:32ch;color:#c9cbd1;font:500 12px/1.35 Archivo,sans-serif;text-align:center}
 .dd-vacio{position:relative;z-index:1;margin:0;padding:0 18px;text-align:center;color:#c9c9d0;font:500 14px/1.5 Archivo,sans-serif}
 .dd-msg{position:relative;z-index:2;color:#FF4F93}
 .dd-lado{display:grid;gap:8px;align-content:start;min-width:0}

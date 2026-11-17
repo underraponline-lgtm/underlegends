@@ -129,6 +129,8 @@ export function AbrirDrops({ D, cerrar }) {
               <span className="dd-ficha">{ICONO_RZ[res.rareza]}</span>
               {res.titulo ? <b>Título «{res.titulo}»</b> : null}
               {res.puntos ? <b>+{num(res.puntos)} Puntos de Tienda</b> : null}
+              {/* 🧢 el tope suave de la semana (17/11/2026): lo que pasa de 10.000 en drops va a la mitad (`conTope()` en bot/avisos.js) */}
+              {res.sin_tope && res.semana ? <span className="dd-tope">Ya pasaste los {num(res.semana.de)} de la semana: va a la mitad (eran {num(res.sin_tope)})</span> : null}
               <small>{NOMBRES[res.rareza]}</small>
               {quedan ? <button type="button" className="btn verde chico" onClick={otro}>Abrir otro ({quedan})</button>
                 : <button type="button" className="btn borde2 chico" onClick={cerrar}>Listo</button>}
@@ -156,6 +158,7 @@ export function AbrirDrops({ D, cerrar }) {
           <ul className="dd-rzs">{(D.rarezas || []).map(([n, p], i) => (
             <li key={n} style={{ '--c': COLOR_RZ[i] }}><i aria-hidden="true" /><b>{n}</b><strong>{(Math.round((1000 * p) / tot) / 10).toLocaleString('es')} %</strong></li>))}</ul>
           <p className="dd-nota">Cada {D.garantia} drops sin un Micrófono de Oro, el siguiente lo es seguro. Llevas <b>{D.sin}</b>.</p>
+          {D.semana ? <p className="dd-nota">Esta semana llevas <b>{num(D.semana.cobrado)}</b> de {num(D.semana.de)} Puntos completos. Lo que pase de ahí va a la mitad, y se renueva el lunes.</p> : null}
           {(D.abiertos || []).length ? (
             <><h5>Lo último que abriste</h5>
               <ul className="dd-ult">{D.abiertos.slice(0, 6).map((x) => (

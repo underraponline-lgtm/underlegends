@@ -3688,6 +3688,31 @@ const ok = (cond, que, det) => {
       o.sql.exec('UPDATE drops SET rareza = 0 WHERE id = ?', c.id);
     }
     ok(leg > 0 && leg <= A.DROP_GARANTIA, 'en ' + A.DROP_GARANTIA + ' drops sale un legendario sí o sí', leg);
+    // 🧢 el tope suave: la semana de Q ya lleva más de 10.000 (los ~120 de arriba), así que uno nuevo paga la mitad.
+    // Otra persona, con la semana justo en 10.000, cobra la mitad de cualquier premio (con 9.900, uno de 100 no se tocaría)
+    ok(A.conTope(500, 0) === 500 && A.conTope(500, 9800) === 350 && A.conTope(10000, 10000) === 5000
+      && A.conTope(10000, 9000) === 5500 && A.conTope(0, 20000) === 0 && A.conTope(250, 12000) === 100,
+      'el tope suave: completo hasta 10.000 por semana y la mitad de lo que pasa, en múltiplos de 50');
+    const T = '300000000000000003';
+    o.sql.exec("INSERT INTO tienda (id, ref, quien, monto, t) VALUES ('drop:x1', 0, ?, 10000, ?)", T, Date.now());
+    o.sql.exec("INSERT INTO tienda (id, ref, quien, monto, t) VALUES ('pase:x1', 0, ?, 50000, ?)", T, Date.now());
+    o.sql.exec("INSERT INTO tienda (id, ref, quien, monto, t) VALUES ('drop:x2', 0, ?, 50000, ?)", T, Date.now() - 8 * 86400000);
+    ok(o.dropSemana(T) === 10000 && o.dropsDe(T).semana.cobrado === 10000 && o.dropsDe(T).semana.de === A.DROP_TOPE,
+      'la semana cuenta sólo los drops de esta semana (ni el Pase ni la semana pasada)', o.dropSemana(T));
+    let conPuntos = null;
+    for (let i = 0; i < 40 && !conPuntos; i++) {
+      o.dropDar(T, 'tope:' + i);
+      const c = o.sql.exec('SELECT id FROM drops WHERE quien = ? AND abierto = 0 ORDER BY id', T).toArray()[0];
+      const r = o.dropAbrir(T, c.id);
+      if (r.puntos > 0) conPuntos = r;
+    }
+    ok(conPuntos && conPuntos.sin_tope > conPuntos.puntos && conPuntos.puntos === A.conTope(conPuntos.sin_tope, 10000)
+      && conPuntos.semana.cobrado === 10000 + conPuntos.puntos,
+      'abrir un drop con la semana casi llena paga con el tope, y dice lo que habría pagado', JSON.stringify(conPuntos));
+    const otra = o.dropAbrir(T, conPuntos.id);
+    ok(otra.ya && otra.puntos === conPuntos.puntos && otra.sin_tope === conPuntos.sin_tope, 'abrirlo de nuevo devuelve lo mismo, con el tope');
+    const pagoT = o.sql.exec('SELECT monto FROM tienda WHERE id = ?', 'drop:' + conPuntos.id).toArray()[0];
+    ok(pagoT && pagoT.monto === conPuntos.puntos, 'a la billetera va lo pagado con el tope, no lo de antes');
   }
 }
 

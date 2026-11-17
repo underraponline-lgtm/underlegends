@@ -104,7 +104,9 @@ export function DropDia({ P, miembro, dc, invita }) {
       </span>
     );
     boton = <><button type="button" className="btn dd2-b blanco" onClick={() => setEst('')}>Listo · vuelve mañana</button>
-      <small className="dd2-nota">Queda también en tus Dragón Drops, en el Inicio.</small></>;
+      {/* 🧢 el tope suave de la semana (17/11/2026, `conTope()` en bot/avisos.js) */}
+      <small className="dd2-nota">{res.sin_tope && res.semana ? 'Ya pasaste los ' + num(res.semana.de) + ' de la semana en drops: va a la mitad (eran ' + num(res.sin_tope) + ').'
+        : 'Queda también en tus Dragón Drops, en el Inicio.'}</small></>;
   } else if (d && (d.ya || res)) {
     const a = d.abierto || res;
     titulo = 'Ya abriste el de hoy. Vuelve mañana';

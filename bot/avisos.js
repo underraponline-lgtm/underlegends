@@ -3956,6 +3956,21 @@ export function validarComentario(items, d, id, mio, ahora) {
 export const DROP_RAREZAS = [['Maqueta', 5300], ['Mixtape', 2900], ['Vinilo', 1420], ['Disco de Oro', 300], ['Micrófono de Oro', 80]];
 //: el drop número 120 sin un legendario es legendario (era el 10)
 export const DROP_GARANTIA = 120;
+//: 🧢 EL TOPE SUAVE DE LA SEMANA (17/11/2026). Dlx: «o podríamos limitar el dinero ganado x semana», y entre tres formas
+//: (tope suave a los drops, tope fijo a todo lo que ganas, tope a lo que tienes guardado), «A». Los Puntos de Tienda que
+//: dan los drops se pagan completos hasta `DROP_TOPE` por semana (lunes a domingo, hora del este) y lo que pasa de ahí,
+//: a la mitad. Los títulos siguen saliendo igual, y lo que se gana compitiendo (Competencias, MES AWARDS, el Most
+//: Wanted) no pasa por acá. Simulado con las probabilidades de la 5.75: quien hace todo sacaba ~19.200 por semana de
+//: drops y queda en ~14.600; el jugador activo (~9.400) ni se entera. El porqué, medido en el Dashboard: en 14 días
+//: entraron ~309.000 Puntos y salieron 22.500 (informe «Economía de los Puntos de Tienda», 17/11/2026)
+export const DROP_TOPE = 10000;
+export const DROP_TOPE_PARTE = 0.5;
+/** Lo que paga un drop de `puntos` si la semana ya lleva `cobrado` de drops: completo hasta el tope y la mitad del resto,
+ *  en múltiplos de 50 como los premios. Pura. */
+export function conTope(puntos, cobrado) {
+  const lleno = Math.max(0, Math.min(puntos, DROP_TOPE - Math.max(0, cobrado)));
+  return lleno + Math.floor(((puntos - lleno) * DROP_TOPE_PARTE) / 50) * 50;
+}
 //: los pasos del día que dan un drop
 export const DROP_PASOS = [1, 3, 6];
 //: 🎁 el cofre de votar todas las encuestas de la semana: cuántos drops y desde qué rareza el primero (2 = Vinilo)
@@ -7927,6 +7942,8 @@ export class Avisos {
         "origen TEXT NOT NULL, min INTEGER NOT NULL DEFAULT 0, t INTEGER NOT NULL, abierto INTEGER NOT NULL DEFAULT 0, " +
         "rareza INTEGER NOT NULL DEFAULT -1, premio TEXT NOT NULL DEFAULT '', t_abierto INTEGER NOT NULL DEFAULT 0, UNIQUE (quien, origen))");
       this.sql.exec('CREATE INDEX IF NOT EXISTS drops_quien ON drops (quien, abierto)');
+      // 🧢 la billetera de UNA persona (el tope de los drops la pide al abrir cada uno, y `saldo()` siempre la pidió)
+      this.sql.exec('CREATE INDEX IF NOT EXISTS tienda_quien ON tienda (quien, t)');
       // ⚔️ LAS BATALLAS LIBRES (12/11/2026, Dlx: «Hacerla real»): `a` retó a `b` (claves de perfil) para la hora `t`. Pasada
       // la hora, cada uno dice quién ganó (`ga`, `gb`: la clave del ganador): si coinciden, `hecha`; si no, `sin_acuerdo`.
       // No tocan el ranking. Ver `libreCrear()` y `libreResultado()`
@@ -14622,7 +14639,8 @@ export class Avisos {
     });
     const hechos = this.sql.exec('SELECT que FROM dia_pasos WHERE quien = ? AND dia = ?', quien, dia).toArray().map((r) => r.que);
     return { ok: true, cerrados, abiertos, dia: { pasos: hechos.length, hechos, de: Object.keys(PASOS_QUE).length, drops: DROP_PASOS },
-      sin: this.dropSin(quien), garantia: DROP_GARANTIA, rarezas: DROP_RAREZAS, que: PASOS_QUE };
+      sin: this.dropSin(quien), garantia: DROP_GARANTIA, rarezas: DROP_RAREZAS, que: PASOS_QUE,
+      semana: { cobrado: this.dropSemana(quien), de: DROP_TOPE } };
   }
 
   /** 🐉 Abrir un drop (`/avisos/drop-abrir`): la rareza y el premio los decide el objeto, una sola vez */
@@ -14633,7 +14651,8 @@ export class Avisos {
     if (f.abierto) {
       let pr = {};
       try { pr = JSON.parse(f.premio) || {}; } catch (e) { pr = {}; }
-      return { ok: true, ya: true, id, rareza: f.rareza, puntos: pr.puntos || 0, titulo: pr.titulo || '' };
+      return { ok: true, ya: true, id, rareza: f.rareza, puntos: pr.puntos || 0, titulo: pr.titulo || '', sin_tope: pr.sin_tope || 0,
+        semana: { cobrado: this.dropSemana(quien), de: DROP_TOPE } };
     }
     const azar = () => { const a = new Uint32Array(1); crypto.getRandomValues(a); return a[0] / 4294967296; };
     const rareza = rarezaDrop(azar(), f.min, this.dropSin(quien));
@@ -14642,13 +14661,28 @@ export class Avisos {
     // un título que ya tenía (no debería salir: `premioDrop()` lo saca) se cambia por Puntos
     if (pr.titulo && tiene.includes(pr.titulo)) { pr.puntos += 1500; pr.titulo = ''; }
     const ahora = Date.now();
+    // 🧢 el tope suave de la semana: lo que pasa de `DROP_TOPE`, a la mitad. `sin_tope` guarda lo que habría pagado
+    const cobrado = this.dropSemana(quien, ahora);
+    if (pr.puntos > 0) {
+      const paga = conTope(pr.puntos, cobrado);
+      if (paga < pr.puntos) { pr.sin_tope = pr.puntos; pr.puntos = paga; }
+    }
     const r = this.sql.exec('UPDATE drops SET abierto = 1, rareza = ?, premio = ?, t_abierto = ? WHERE id = ? AND quien = ? AND abierto = 0',
       rareza, JSON.stringify(pr), ahora, id, quien);
     if (r && r.rowsWritten === 0) return this.dropAbrir(quien, id);
     if (pr.puntos > 0) {
       this.sql.exec('INSERT OR IGNORE INTO tienda (id, ref, quien, monto, t) VALUES (?, 0, ?, ?, ?)', 'drop:' + id, quien, pr.puntos, ahora);
     }
-    return { ok: true, id, rareza, nombre: DROP_RAREZAS[rareza][0], puntos: pr.puntos, titulo: pr.titulo };
+    return { ok: true, id, rareza, nombre: DROP_RAREZAS[rareza][0], puntos: pr.puntos, titulo: pr.titulo, sin_tope: pr.sin_tope || 0,
+      semana: { cobrado: cobrado + (pr.puntos || 0), de: DROP_TOPE } };
+  }
+
+  /** 🧢 Los Puntos de drops que `quien` ya cobró esta semana (lunes a domingo, hora del este), para el tope suave */
+  dropSemana(quien, t = Date.now()) {
+    const ini = rangoDiaET(semanaDeDia(diaET(t))[0])[0];
+    const f = this.sql.exec("SELECT COALESCE(SUM(monto), 0) AS n FROM tienda WHERE quien = ? AND t >= ? AND id LIKE 'drop:%'",
+      String(quien), ini).toArray()[0];
+    return (f && f.n) || 0;
   }
 
   /** 🐉 El drop del día del Pase: cómo va tu semana (lunes a domingo, hora del este) y si ya abriste el de hoy */
