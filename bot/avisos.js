@@ -2058,7 +2058,7 @@ export const TUTO_EV = new Set(['tour', 'tour_fin', 'salta0', 'salta1', 'salta2'
  * (web/src/App.jsx, `lg:secc`) y acá sólo se suma un número por sección y por día: nunca quién. Es lo que hace falta
  * para ordenar la tira de abajo por uso de verdad y no por intuición
  */
-export const SECC_EV = new Set(['inicio', 'eventos', 'ranking', 'competencias', 'inventario', 'publicaciones', 'tarjetas', 'ligas', 'salon', 'pase', 'tienda', 'socios',
+export const SECC_EV = new Set(['inicio', 'eventos', 'ranking', 'competencias', 'inventario', 'publicaciones', 'tarjetas', 'ligas', 'salon', 'pase', 'tienda', 'invitar', 'socios',
   'guia', 'perfil', 'servidor', 'crew', 'crews', 'pais', 'cuenta', 'cambios',
   // 👆 y QUÉ SE TOCA EN EL INICIO (Dlx, 13/10/2026: «añadir eso de saber qué clickea la gente, y después tomar
   // decisiones así de drásticas»): `i-` cada bloque, `p-` cada puerta. Mismo trato: una vez por navegador y por día
@@ -3523,6 +3523,9 @@ const RUTAS = {
   '/avisos/pase-dia': 'POST',
   // 🐣 las misiones para nuevos y las redes que seguiste (13/11/2026). Ver `nuevoDe()`
   '/avisos/nuevo': 'POST',
+  // 🎁 los referidos (17/11/2026): lo tuyo y llegar por un link (con tu sesión); si un link está abierto (público, para la
+  // vista de `/i/<k>`); los abiertos (el ciclo, con su clave); y de qué crew es un link corto (`/c/<código>`). Ver `refMio()`
+  '/avisos/ref': 'POST', '/avisos/ref-link': 'GET', '/avisos/ref-links': 'GET', '/avisos/crew-link': 'GET',
   // ⚔️ las batallas libres, de verdad (12/11/2026): las tuyas, retar, decir quién ganó y cancelar. Ver `libreCrear()`
   '/avisos/libres': 'POST', '/avisos/libre-crear': 'POST', '/avisos/libre-resultado': 'POST', '/avisos/libre-cancelar': 'POST',
   // 📣 abrir una promo paga Tienda y XP: ver `validarPromo()` y `promoVio()`
@@ -4103,6 +4106,56 @@ export const NUEVO_PISTA = [
 //: la Caja del Nuevo: al completar los siete días
 export const NUEVO_CAJA = { puntos: 5000, star: 2, titulo: 'Novato de Oro' };
 
+// ── 🎁 LOS REFERIDOS (17/11/2026) ─────────────────────────────────────────────────────────────────────────────────
+// Dlx: «una nueva opción con el ícono de regalo… será un sistema de referrals», «sólo al verificarse e interactuar con la
+// Liga Global, no necesariamente jugar», «de cosa final pon algo buenísimo… como un marco especial», «el link… por
+// temporada, se limpien los que no se usaron» y «que el máximo sea 10 de momento».
+//   · Tu link es `/i/<tu clave>` y vale la temporada en que lo activaste (`ref_link`); los de temporadas pasadas que no
+//     trajeron a nadie se borran solos.
+//   · Quien entra por él queda anotado (`referidos`) si es NUEVO de verdad: sin verificar, sin nada hecho en la Liga antes
+//     de anteayer (`nuevoPuede()`, lo mismo que la semana de nuevos) y con su cuenta de Discord de 30 días o más
+//     (`EDAD_MIN_DIAS`, el freno de las cuentas de un día que ya usan los aplausos).
+//   · CUENTA cuando se verifica y llega al nivel 1 del Pase (dos Tareas): ser Miembro de DRA ya es verificado, y el nivel
+//     1 dice que entró e hizo algo. Lo mira `refRevisar()` cada vez que se le anota una Tarea.
+//   · Paga: a quien invitó, REF_PDT y REF_XP del Pase por cada uno, más las metas de REF_TRACK; a quien llegó, REF_BIEN.
+export const REF_MAX = 10;
+export const REF_PDT = 250;
+export const REF_XP = 150;
+export const REF_BIEN = 500;
+//: las metas: `[cuántos, [[premio, …]]]`. El marco de la última es nuevo (`embajador`, ver MARCOS)
+export const REF_TRACK = [
+  [1, [['drop', 1]]],
+  [3, [['titulo', 'Reclutador']]],
+  [5, [['drop', 2], ['pdt', 1500]]],
+  [10, [['marco', 'embajador']]],
+];
+const REF_COD = /^[a-z0-9][a-z0-9._-]{0,59}$/;
+
+/** El premio de una meta, en palabras («2 Dragón Drops»). Pura. */
+export function refPremioTexto(pr) {
+  const [t, x] = pr || [];
+  if (t === 'drop') return x === 1 ? 'un Dragón Drop' : x + ' Dragón Drops';
+  if (t === 'pdt') return x + ' Puntos de Tienda';
+  if (t === 'titulo') return 'el título «' + x + '»';
+  if (t === 'marco') return 'el marco ' + (x === 'embajador' ? 'Embajador' : x) + ' para tus cartas';
+  return '';
+}
+
+/**
+ * ¿Puede quedar anotado como referido? Devuelve '' si sí, o por qué no. Pura: lo que sabe cada uno se lo pasa
+ * `refLlegue()`. `o`: `{quien, de, propio, ya, v, nuevo, edad, lleno, activo}`
+ */
+export function refPuede(o) {
+  if (!/^[0-9]{5,25}$/.test(String(o.quien || '')) || !REF_COD.test(String(o.de || ''))) return 'faltan_datos';
+  if (!o.activo) return 'link_vencido';
+  if (o.propio) return 'propio';
+  if (o.ya) return 'ya';
+  if (o.v || !o.nuevo) return 'no_nuevo';
+  if (!(o.edad >= EDAD_MIN_DIAS)) return 'cuenta_nueva';
+  if (o.lleno) return 'lleno';
+  return '';
+}
+
 /** Días de calendario entre dos `YYYY-MM-DD`. Pura. */
 export function diasEntre(a, b) {
   return Math.round((Date.parse(b + 'T00:00:00Z') - Date.parse(a + 'T00:00:00Z')) / 86400000);
@@ -4609,7 +4662,9 @@ export const puedeRol = (roles, que, tabla) => (roles || []).includes('owner')
 // si va en su perfil, de fondo de su propia página, o los dos
 export const FONDO_NIVEL = 5;
 // 🖼️ los marcos de carta, de menos a más, y los estilos de la carta de Servidor (Dlx, 25/10/2026: «Las 2. Una elige»)
-export const MARCOS = ['premium', 'plata', 'oro'];
+// 🎁 y `embajador`, el de la última meta de los referidos (17/11/2026). ⚠️ ANTES del Oro, a propósito: sin marco elegido
+// va el mejor (`mejorMarco()`), y quien ya lleva el Oro —Dlx los tiene todos— vería cambiar su carta sola
+export const MARCOS = ['premium', 'plata', 'embajador', 'oro'];
 export const MARCO_ESTILOS = ['camiseta', 'cadena'];
 // 🏷️ las cartas que llevan TAG elegible (25/10/2026)
 export const TAG_CARTAS = ['temporada', 'competitivo', 'servidor', 'pais'];
@@ -6576,6 +6631,33 @@ export async function rutaAvisos(req, env, ruta) {
       body: JSON.stringify({ quien: q.id, v, nuevo: d.nuevo === true, desde: Number(d.desde) || 0, hechos }),
     });
   }
+  // 🎁 LOS REFERIDOS (17/11/2026): quién pide lo dice la sesión; si está verificado (y su clave, para el link), KV `d:`
+  if (ruta === '/avisos/ref') {
+    const crudo = await req.text();
+    if (crudo.length > 1024) return json({ error: 'demasiado grande' }, 413);
+    let d = null;
+    try { d = JSON.parse(crudo || '{}'); } catch (e) { d = null; }
+    if (!d || typeof d !== 'object' || (d.token && !/^[A-Za-z0-9._-]{10,300}$/.test(String(d.token)))) return json({ error: 'faltan datos' }, 400);
+    if (!['ver', 'activar', 'llegue'].includes(d.accion)) return json({ error: 'faltan datos' }, 400);
+    const q = await quienPide(req, env, d);
+    if (!q.id) return json({ error: q.error }, q.estado);
+    let k = '';
+    try { k = (await env.KV.get('d:' + q.id)) || ''; } catch (e) { k = ''; }
+    return elObjeto(env).fetch('https://avisos/ref', {
+      method: 'POST', headers: { 'content-type': 'application/json' },
+      body: JSON.stringify({ quien: q.id, k, v: !!k, accion: d.accion, de: String(d.de || '').toLowerCase().slice(0, 60) }),
+    });
+  }
+  // 🔗 un link de referido o de crew, por su código (públicos: no dicen ningún Discord ID)
+  if (ruta === '/avisos/ref-link' || ruta === '/avisos/crew-link') {
+    const x = String(new URL(req.url).searchParams.get(ruta === '/avisos/ref-link' ? 'k' : 'cod') || '').toLowerCase().slice(0, 60);
+    return elObjeto(env).fetch('https://avisos' + ruta.slice('/avisos'.length) + '?x=' + encodeURIComponent(x));
+  }
+  if (ruta === '/avisos/ref-links') {
+    const k = req.headers.get('x-lg-ciclo') || '';
+    if (!env.DISCORD_TOKEN || k !== await claveCiclo(env.DISCORD_TOKEN)) return json({ error: 'no existe' }, 404);
+    return elObjeto(env).fetch('https://avisos/ref-links');
+  }
   // ⚔️ LAS BATALLAS LIBRES (12/11/2026): quién lo dice la sesión; con quién y cuándo, la página; el resto, el objeto
   if (ruta === '/avisos/libres' || ruta === '/avisos/libre-crear' || ruta === '/avisos/libre-resultado' || ruta === '/avisos/libre-cancelar') {
     const crudo = await req.text();
@@ -8106,6 +8188,14 @@ export class Avisos {
       this.sql.exec('CREATE TABLE IF NOT EXISTS marcos (quien TEXT NOT NULL, marco TEXT NOT NULL, t INTEGER NOT NULL, PRIMARY KEY (quien, marco))');
       this.sql.exec("CREATE TABLE IF NOT EXISTS marco_elige (quien TEXT PRIMARY KEY, marco TEXT NOT NULL DEFAULT '', " +
         "estilo TEXT NOT NULL DEFAULT 'camiseta', t INTEGER NOT NULL)");
+      // 🎁 LOS REFERIDOS (17/11/2026, ver REF_TRACK): el link de cada uno (`k` su clave, `temp` la temporada en que lo
+      // activó) y quién llegó por cuál (`de`: el Discord ID de quien invitó; `cumple`: 1 cuando ya cuenta; `n`: qué número
+      // fue para quien invitó, del 1 al REF_MAX)
+      this.sql.exec('CREATE TABLE IF NOT EXISTS ref_link (quien TEXT PRIMARY KEY, k TEXT NOT NULL, temp TEXT NOT NULL, t INTEGER NOT NULL)');
+      this.sql.exec('CREATE INDEX IF NOT EXISTS ref_link_k ON ref_link (k)');
+      this.sql.exec('CREATE TABLE IF NOT EXISTS referidos (quien TEXT PRIMARY KEY, de TEXT NOT NULL, temp TEXT NOT NULL, ' +
+        't INTEGER NOT NULL, cumple INTEGER NOT NULL DEFAULT 0, n INTEGER NOT NULL DEFAULT 0, t_cumple INTEGER NOT NULL DEFAULT 0)');
+      this.sql.exec('CREATE INDEX IF NOT EXISTS referidos_de ON referidos (de, cumple)');
       // 🃏 la carta que cada uno elige como principal (26/10/2026): ver `cartaPrincipal()`
       this.sql.exec('CREATE TABLE IF NOT EXISTS carta_principal (quien TEXT PRIMARY KEY, carta TEXT NOT NULL, t INTEGER NOT NULL)');
       // 👤 LA TANDA 2 DEL PERFIL (27/10/2026): su frase y los emblemas que eligió para que se vean (`emb`, JSON), con la
@@ -8767,6 +8857,10 @@ export class Avisos {
       if (ruta === '/servidores') return json(this.delMinuto('/servidores', 60, () => this.servidoresElegidos()), 200, 60);
       // 👥 todas las crews, sin ningún Discord ID: la página y el ciclo (`bot/crews_vivas.py`)
       if (ruta === '/crews') { const r = CW.crewsPublico(this); await this.vaciarBasuraCrews(); return json(r, 200, 60); }
+      // 🎁 los links cortos: si el de referido está abierto, y de qué crew es el de un código (ver `refLinkPublico()`)
+      if (ruta === '/ref-link') return json(this.refLinkPublico(new URL(req.url).searchParams.get('x')), 200, 60);
+      if (ruta === '/crew-link') return json(this.crewDeLink(new URL(req.url).searchParams.get('x')), 200, 60);
+      if (ruta === '/ref-links') return json({ ok: true, ks: this.refLinksCiclo() }, 200, 0);
       if (ruta === '/aplausos') return json(this.aplausosCuenta(), 200, 20);
       // 💬 los comentarios de verdad de cada publicación: perfil, nombre y texto, nunca el Discord ID
       if (ruta === '/comentarios') return json(this.comentarios(), 200, 20);
@@ -8907,6 +9001,7 @@ export class Avisos {
       if (ruta === '/cm-permiso') return await this.cmPermiso(d);
       if (ruta === '/drops') return json(this.dropsDe(String(d.quien || '')));
       if (ruta === '/nuevo') { const v = this.nuevoDe(d); return json(v, v.error ? 400 : 200); }
+      if (ruta === '/ref') { const v = d.accion === 'llegue' ? this.refLlegue(d) : this.refMio(d); return json(v, v.error ? 400 : 200); }
       if (ruta === '/libres') return json(this.libresDe(String(d.quien || '')));
       if (ruta === '/libre-crear' || ruta === '/libre-resultado' || ruta === '/libre-cancelar') {
         const v = ruta === '/libre-crear' ? this.libreCrear(d) : ruta === '/libre-resultado' ? this.libreResultado(d) : this.libreCancelar(d);
@@ -12627,6 +12722,9 @@ export class Avisos {
     this.sql.exec('DELETE FROM comentario WHERE quien = ?', String(d.quien));
     // 🐉 y sus drops y su barra del día
     this.sql.exec('DELETE FROM drops WHERE quien = ?', String(d.quien));
+    // 🎁 y su link de invitación, por quién llegó y a quiénes trajo
+    this.sql.exec('DELETE FROM ref_link WHERE quien = ?', String(d.quien));
+    this.sql.exec('DELETE FROM referidos WHERE quien = ? OR de = ?', String(d.quien), String(d.quien));
     this.sql.exec('DELETE FROM cm_reporte WHERE quien = ?', String(d.quien));
     this.sql.exec('DELETE FROM dia_pasos WHERE quien = ?', String(d.quien));
     // 📖 y qué historias vio
@@ -14292,7 +14390,9 @@ export class Avisos {
       // 💎🖼️ lo del 25/10/2026: el premium, sus avisos, su color, sus marcos y lo del sorteo
       'pase_premium', 'pase_aviso', 'pase_color', 'marcos', 'marco_elige', 'sorteo_part',
       // 🏷️ y el TAG que eligió para cada carta
-      'tag_elige'];
+      'tag_elige',
+      // 🎁 su link de invitación y por qué link llegó (a quiénes trajo va aparte: `de`, abajo)
+      'ref_link', 'referidos'];
     const movidas = {}, fallas = [];
     // 🔴 LAS CLAVES DE LA TIENDA LLEVAN EL ID ADENTRO (pasada del 19/10/2026): `rhito:<id>:…`, `racha:<id>:…`,
     // `rdia:<día>:<id>`, `bien:<id>:<paso>`, `pase:…:<id>:<nivel>`… Pasaba la fila a la cuenta nueva con la clave vieja,
@@ -14310,6 +14410,7 @@ export class Avisos {
       } catch (e) { fallas.push(t); }
     }
     try { this.sql.exec('UPDATE OR IGNORE idk SET id = ? WHERE id = ?', nuevo, viejo); } catch (e) { fallas.push('idk'); }
+    try { this.sql.exec('UPDATE referidos SET de = ? WHERE de = ?', nuevo, viejo); } catch (e) { fallas.push('referidos-de'); }
     // 🏆 el Pase de campeón ya usado sigue a la cuenta: su premium se mudó con `pase_premium`, y la cuenta del rol lo
     // reconoce por `usado_por` (`paseCiclo()`)
     try { this.sql.exec('UPDATE premium_vale SET usado_por = ? WHERE usado_por = ?', nuevo, viejo); } catch (e) { fallas.push('premium_vale'); }
@@ -14957,6 +15058,145 @@ export class Avisos {
   /** 🏷️ Los títulos de la pista de nuevos (salen con los del Pase y los de los drops) */
   titulosNuevo(quien) {
     try { return this.sql.exec('SELECT titulo FROM nuevo_titulo WHERE quien = ?', String(quien)).toArray().map((r) => r.titulo); } catch (e) { return []; }
+  }
+
+  // ── 🎁 LOS REFERIDOS (17/11/2026, ver REF_TRACK) ──────────────────────────────────────────────────────────
+  /** La temporada de hoy (la del Worker) y, de paso, los links de temporadas pasadas que no trajeron a nadie */
+  refTemp() {
+    const temp = String(this.env.TEMPORADA || 't1');
+    try {
+      this.sql.exec('DELETE FROM ref_link WHERE temp != ? AND quien NOT IN (SELECT de FROM referidos)', temp);
+    } catch (e) { /* la limpieza no frena nada */ }
+    return temp;
+  }
+
+  /**
+   * 🎁 Lo tuyo (`/avisos/ref`): tu link, a quién trajiste y el track. `d`: `{quien, k, accion}` — `k` es tu clave si
+   * estás verificado (la dice el Worker, de KV `d:`); sin ella no hay link. `accion: 'activar'` lo abre para esta temporada
+   */
+  refMio(d) {
+    const quien = String(d.quien || '');
+    if (!/^[0-9]{5,25}$/.test(quien)) return { error: 'faltan datos' };
+    const k = REF_COD.test(String(d.k || '')) ? String(d.k) : '';
+    const temp = this.refTemp(), ahora = Date.now();
+    if (d.accion === 'activar') {
+      if (!k) return { error: 'sin_verificar' };
+      this.sql.exec('INSERT INTO ref_link (quien, k, temp, t) VALUES (?, ?, ?, ?) ON CONFLICT(quien) DO UPDATE SET ' +
+        'k = excluded.k, temp = excluded.temp, t = excluded.t', quien, k, temp, ahora);
+    }
+    const ln = this.sql.exec('SELECT k, temp, t FROM ref_link WHERE quien = ?', quien).toArray()[0];
+    const filas = this.sql.exec('SELECT quien, t, cumple, n, t_cumple FROM referidos WHERE de = ? ORDER BY t DESC LIMIT 40', quien).toArray();
+    // 👤 de los que ya cuentan, su perfil (son verificados); de los que no, sólo cuándo llegaron: todavía no son de la Liga
+    const lista = filas.map((r) => (r.cumple === 1 ? { k: this.claveDe(r.quien) || '', n: r.n, t: r.t_cumple, cumple: true }
+      : { t: r.t, cumple: false }));
+    const hechos = filas.filter((r) => r.cumple === 1).length;
+    return {
+      ok: true, puede: !!k, k: ln ? ln.k : k, activo: !!(ln && ln.temp === temp), temp,
+      hechos, max: REF_MAX, track: REF_TRACK, pdt: REF_PDT, xp: REF_XP, bien: REF_BIEN, lista,
+    };
+  }
+
+  /** 🔗 ¿Está abierto el link de `k` esta temporada? Público (`/avisos/ref-link/<k>`): lo pregunta la vista de `/i/<k>` */
+  refLinkPublico(k) {
+    if (!REF_COD.test(String(k || ''))) return { ok: false };
+    const temp = this.refTemp();
+    const ln = this.sql.exec('SELECT quien FROM ref_link WHERE k = ? AND temp = ?', String(k), temp).toArray()[0];
+    if (!ln) return { ok: true, activo: false };
+    const hechos = Number((this.sql.exec('SELECT COUNT(*) AS n FROM referidos WHERE de = ? AND cumple = 1', ln.quien).toArray()[0] || {}).n) || 0;
+    return { ok: true, activo: true, lleno: hechos >= REF_MAX };
+  }
+
+  /** 🔗 De qué crew es un link de invitación, si sigue sirviendo (`/c/<código>`): sin quién lo armó ni cuántos lo usaron */
+  crewDeLink(cod) {
+    if (!/^[a-hjkmnp-z2-9]{10}$/.test(String(cod || ''))) return { ok: false };
+    let r = null;
+    try { r = this.sql.exec('SELECT crew, vence, usos, max FROM crew_links WHERE cod = ?', String(cod)).toArray()[0]; } catch (e) { r = null; }
+    const vale = !!r && r.vence > Date.now() && (!r.max || r.usos < r.max);
+    return { ok: true, crew: r ? String(r.crew) : '', vale };
+  }
+
+  /** Los links abiertos esta temporada, para el ciclo (`bot/og_links.py`, la miniatura de cada uno): sólo las claves */
+  refLinksCiclo() {
+    const temp = this.refTemp();
+    return this.sql.exec('SELECT k FROM ref_link WHERE temp = ? ORDER BY t DESC LIMIT 500', temp).toArray().map((r) => r.k);
+  }
+
+  /**
+   * 🙋 Llegué por el link de `de` (`/avisos/ref`, `accion: 'llegue'`). `d`: `{quien, de, v}` — `v`: si ya estaba
+   * verificado (KV). Anota sólo a los nuevos de verdad (ver `refPuede()`), y avisa a quien invitó
+   */
+  refLlegue(d) {
+    const quien = String(d.quien || ''), de = String(d.de || '');
+    const temp = this.refTemp(), ahora = Date.now();
+    const ln = REF_COD.test(de) ? this.sql.exec('SELECT quien FROM ref_link WHERE k = ? AND temp = ?', de, temp).toArray()[0] : null;
+    const ya = /^[0-9]{5,25}$/.test(quien) && !!this.sql.exec('SELECT 1 AS x FROM referidos WHERE quien = ?', quien).toArray()[0];
+    const propio = !!ln && (ln.quien === quien || this.quienesDeClave(de).includes(quien));
+    const hechos = ln ? Number((this.sql.exec('SELECT COUNT(*) AS n FROM referidos WHERE de = ? AND cumple = 1', ln.quien).toArray()[0] || {}).n) || 0 : 0;
+    const no = refPuede({ quien, de, activo: !!ln, propio, ya, v: !!d.v, nuevo: ya || this.nuevoPuede(quien, ahora),
+      edad: (ahora - creadaEn(quien)) / DIA_MS, lleno: hechos >= REF_MAX });
+    if (no === 'ya') return { ok: true, ya: true };
+    if (no) return { error: no };
+    this.sql.exec('INSERT OR IGNORE INTO referidos (quien, de, temp, t) VALUES (?, ?, ?, ?)', quien, ln.quien, temp, ahora);
+    this.aBandeja(ln.quien, 'ref:llego:' + quien, 'ref', '🎁 Alguien entró con tu link',
+      'Cuenta cuando se verifique y llegue al nivel 1 del Pase de rapero.', HUB + '/freestyle-rap/invitar', '', ahora);
+    this.refRevisar(quien);
+    return { ok: true };
+  }
+
+  /**
+   * ✅ ¿Ya cuenta? Se verificó (es Miembro de DRA) y llegó al nivel 1 del Pase. Lo llama `paseRevisar()` cada vez que le
+   * anota una Tarea, y `refLlegue()`. Paga una sola vez: cada pago tiene su clave
+   */
+  refRevisar(quien) {
+    let r;
+    try { r = this.sql.exec('SELECT de FROM referidos WHERE quien = ? AND cumple = 0', String(quien)).toArray()[0]; } catch (e) { return; }
+    if (!r) return;
+    const P = this.paseDatos();
+    if (!P.cfg || !P.miembros.has(quien) || this.paseNivel(quien, P.cfg) < 1) return;
+    const de = r.de, ahora = Date.now();
+    const hechos = Number((this.sql.exec('SELECT COUNT(*) AS n FROM referidos WHERE de = ? AND cumple = 1', de).toArray()[0] || {}).n) || 0;
+    // 🔟 con el tope lleno no cuenta más (Dlx: «el máximo sea 10 de momento»): queda anotado, sin pagar
+    if (hechos >= REF_MAX) return;
+    const n = hechos + 1;
+    this.sql.exec('UPDATE referidos SET cumple = 1, n = ?, t_cumple = ? WHERE quien = ? AND cumple = 0', n, ahora, quien);
+    const pdt = (q, id, monto) => this.sql.exec('INSERT OR IGNORE INTO tienda (id, ref, quien, monto, t) VALUES (?, 0, ?, ?, ?)', id, q, monto, ahora);
+    // 👋 a quien llegó, su bienvenida
+    pdt(quien, 'refb:' + quien, REF_BIEN);
+    this.aBandeja(quien, 'ref:bien', 'ref', '🎁 Bienvenida por invitación',
+      '+' + REF_BIEN + ' Puntos de Tienda por entrar a la Liga con un link de invitación.', HUB + '/freestyle-rap/tienda', '', ahora);
+    // 🎟️ a quien invitó: los Puntos, la XP del Pase (una «Tarea» `ref<n>`, ver `paseDatos()`) y las metas
+    pdt(de, 'ref:' + de + ':' + quien, REF_PDT);
+    if (P.miembros.has(de)) {
+      try {
+        this.sql.exec('INSERT OR IGNORE INTO pase_hecho (quien, temp, sem, tarea, t) VALUES (?, ?, ?, ?, ?)', de, P.cfg.temp, 'ref', 'ref' + n, ahora);
+        this.pxpOlvidar();
+        this.premiarPase(de);
+      } catch (e) { /* la XP no frena lo demás */ }
+    }
+    const metas = this.refPagarMetas(de, n, ahora);
+    let nombre = '';
+    try { const kq = this.claveDe(quien); nombre = kq ? String((JSON.parse(this.persona('p:' + kq) || '{}') || {}).n || '') : ''; } catch (e) { nombre = ''; }
+    this.aBandeja(de, 'ref:cuenta:' + quien, 'ref', '🎁 ' + (nombre || 'Tu invitado') + ' ya cuenta · ' + n + ' de ' + REF_MAX,
+      '+' + REF_PDT + ' Puntos de Tienda y +' + REF_XP + ' XP del Pase.' + (metas.length ? ' Llegaste a ' + n + ': ganaste ' + metas.join(' y ') + '.' : ''),
+      HUB + '/freestyle-rap/invitar', '', ahora);
+  }
+
+  /** Las metas del track hasta `n`, cada una una sola vez (las claves lo aseguran). Devuelve las que tocan justo en `n` */
+  refPagarMetas(de, n, ahora) {
+    const temp = String(this.env.TEMPORADA || 't1'), nuevas = [];
+    for (const [meta, premios] of REF_TRACK) {
+      if (meta > n) continue;
+      premios.forEach((pr, i) => {
+        if (pr[0] === 'drop') for (let j = 1; j <= pr[1]; j++) this.dropDar(de, 'ref:' + meta + ':' + i + ':' + j, 0, ahora);
+        else if (pr[0] === 'pdt') this.sql.exec('INSERT OR IGNORE INTO tienda (id, ref, quien, monto, t) VALUES (?, 0, ?, ?, ?)', 'refm:' + de + ':' + meta, de, pr[1], ahora);
+        else if (pr[0] === 'titulo') this.sql.exec('INSERT OR IGNORE INTO nuevo_titulo (quien, titulo, t) VALUES (?, ?, ?)', de, pr[1], ahora);
+        else if (pr[0] === 'marco' && MARCOS.includes(pr[1])) {
+          this.sql.exec('INSERT OR IGNORE INTO marcos (quien, marco, t) VALUES (?, ?, ?)', de, temp + ':' + pr[1], ahora);
+        }
+      });
+      if (meta === n) nuevas.push(...premios.map(refPremioTexto));
+    }
+    return nuevas;
   }
 
   /**
@@ -16851,7 +17091,8 @@ export class Avisos {
     for (const x of this.sql.exec('SELECT que, COUNT(*) AS n FROM xp_log WHERE quien = ? GROUP BY que', quien).toArray()) {
       cuentas[x.que] = x.n;
     }
-    cuentas.tarea = this.sql.exec('SELECT COUNT(*) AS n FROM pase_hecho WHERE quien = ?', quien).toArray()[0].n || 0;
+    // 🎁 sin las de los referidos (`sem = 'ref'`): no son Tareas, son la XP del Pase de cada invitado que cuenta
+    cuentas.tarea = this.sql.exec("SELECT COUNT(*) AS n FROM pase_hecho WHERE quien = ? AND sem != 'ref'", quien).toArray()[0].n || 0;
     return xpDeFuentes(cuentas);
   }
 
@@ -17074,6 +17315,8 @@ export class Avisos {
         cfg.especiales || [])) cfg.xp[t[0]] = t[5];
       // 👥 la meta de la crew paga como una Tarea más (`crew`)
       if (cfg.crew) cfg.xp.crew = cfg.crew[0];
+      // 🎁 y cada referido que ya cuenta, también (`ref1`…`ref10`, ver `refRevisar()`)
+      for (let i = 1; i <= REF_MAX; i++) cfg.xp['ref' + i] = REF_XP;
       this.paseHeredar(cfg, this._pase.sem);
     }
     return this._pase;
@@ -17437,7 +17680,7 @@ export class Avisos {
     const [xp, porCabeza, piso, techo] = P.cfg.crew;
     const meta = Math.max(piso, Math.min(techo, porCabeza * qs.length));
     let hechas = 0, mias = 0;
-    for (const r of this.sql.exec("SELECT quien, COUNT(*) AS n FROM pase_hecho WHERE temp = ? AND t >= ? AND t < ? AND tarea != 'crew' " +
+    for (const r of this.sql.exec("SELECT quien, COUNT(*) AS n FROM pase_hecho WHERE temp = ? AND t >= ? AND t < ? AND tarea != 'crew' AND sem != 'ref' " +
       'AND quien IN (' + qs.map(() => '?').join(',') + ') GROUP BY quien', P.cfg.temp, s[1], s[2], ...qs).toArray()) {
       hechas += r.n;
       if (String(r.quien) === quien) mias = r.n;
@@ -17526,6 +17769,8 @@ export class Avisos {
     this.pasoDia(quien, 'tarea');
     this.pxpParche(quien, cfg);
     const { nivel, cola } = this.premiarPase(quien);
+    // 🎁 si llegó por un link de invitación, con el nivel 1 ya cuenta para quien lo invitó (ver `refRevisar()`)
+    if (nivel >= 1) { try { this.refRevisar(quien); } catch (e) { /* no frena el Pase */ } }
     // 🏛️ los niveles que se publican (y el último es el Salón del Pase): cuándo llegó a cada uno, una vez
     for (const h of cfg.publicar || []) {
       if (nivel >= h) {

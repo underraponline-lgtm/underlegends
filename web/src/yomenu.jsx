@@ -65,6 +65,8 @@ export function YoMenu({ k, dc, nombre, cara, abajo = false, onCerrar }) {
       // 🛍️ la Tienda vive acá desde que salió del menú de arriba (Dlx, 12/11/2026: «Tienda me gusta en tu cuenta… ahí nos
       // ahorramos un espacio»): es donde se gastan tus Puntos
       ['#/tienda', 'tienda', 'Tienda', 'tus Puntos y el precio por cabeza'],
+      // 🎁 Invita y gana (17/11/2026): también acá, porque en pantallas angostas el regalo de arriba no entra
+      ['#/invitar', 'regalo', 'Invita y gana', 'tu link, tu track y tus invitados'],
     ].filter(Boolean)],
     ['Cuenta y ayuda', [
       ['#/cuenta', 'engranaje', 'Tu cuenta', 'foto, redes, avisos y la app'],

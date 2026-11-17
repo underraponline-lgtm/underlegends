@@ -113,6 +113,8 @@ const AVISOS = {
   '/api/avisos/pase-dia': 'POST',
   // 🐣 las misiones para nuevos y las redes que seguiste (13/11/2026). Ver `nuevoDe()` en bot/avisos.js
   '/api/avisos/nuevo': 'POST',
+  // 🎁 los referidos (17/11/2026): tu link, a quién trajiste y llegar por uno. Ver `refMio()` en bot/avisos.js
+  '/api/avisos/ref': 'POST',
   // 📖 las historias que viste, en tu cuenta (18/10/2026)
   '/api/avisos/historias': 'POST',
   '/api/avisos/panel-socio': 'POST',
@@ -641,6 +643,11 @@ async function conVista(req, env, url, v) {
     .on('meta[name="twitter:image"]', poner('content', v.img))
     .on('meta[property="og:image:alt"]', poner('content', v.alt || v.titulo))
     .on('meta[name="theme-color"]', poner('content', v.color || '#E41373'));
+  // una tarjeta es vertical: sin las medidas del cartel (1200×630), que la deformarían (como en `vistaPerfil()`)
+  if (v.vertical) {
+    const sacar = { element(el) { el.remove(); } };
+    rw.on('meta[property="og:image:width"]', sacar).on('meta[property="og:image:height"]', sacar);
+  }
   const out = rw.transform(pag);
   const h = new Headers(out.headers);
   h.set('cache-control', 'public, max-age=300');
@@ -665,15 +672,65 @@ async function vistaCrew(req, env, id, url) {
   const n = (c.gente || []).length;
   const desc = (c.desc ? String(c.desc).trim().slice(0, 160) + ' · ' : '') + n + (n === 1 ? ' integrante' : ' integrantes')
     + (c.sigla ? ' · ' + String(c.sigla).toUpperCase() : '') + ' · una crew de la Liga Global de Freestyle.';
-  const img = R2_CREWS.test(String(c.logo || '')) ? String(c.logo) : url.origin + '/og/p/crews.png';
+  // 🖼️ la miniatura armada por el ciclo (`bot/og_links.py`: logo, nombre, sigla y cuántos son), si ya está; si no, el logo
+  const og = await hayOg('crew', slugOg(id));
+  const img = og || (R2_CREWS.test(String(c.logo || '')) ? String(c.logo) : url.origin + '/og/p/crews.png');
   return conVista(req, env, url, { tab: nombre + ' · Liga Global de Freestyle', titulo: nombre + ' · crew de la Liga Global', desc, img,
-    alt: 'El logo de ' + nombre });
+    alt: og ? nombre + ', una crew de la Liga Global de Freestyle' : 'El logo de ' + nombre });
+}
+
+// 🎁 LAS MINIATURAS DE LOS LINKS CORTOS (17/11/2026, Dlx: «que tenga un thumbnail personalizable… de la crew en este caso,
+// y en este caso el referral también»; «armada sola»). Las arma el ciclo (`bot/og_links.py`) en R2, `og/<tipo>/<slug>.jpg`,
+// y acá se pregunta si ya está (HEAD, cinco minutos en el borde). El slug es el mismo en los dos lados: `slug_og()` en Python
+function slugOg(x) {
+  return String(x || '').normalize('NFD').replace(/\p{M}/gu, '').toLowerCase().replace(/[^a-z0-9]+/g, '-')
+    .replace(/^-+|-+$/g, '').slice(0, 60);
+}
+async function hayOg(tipo, slug) {
+  if (!slug) return '';
+  const u = R2_CARTAS + '/og/' + tipo + '/' + slug + '.jpg';
+  const r = await fetch(u, { method: 'HEAD', cf: { cacheTtl: 300, cacheEverything: true } }).catch(() => null);
+  return r && r.ok ? u : '';
+}
+
+// 🎁 Y LA DE CADA LINK DE REFERIDO (`/i/<clave>`): «X te invita», con su miniatura o, si todavía no está, su tarjeta.
+// Sólo si el link está abierto esta temporada (`/avisos/ref-link`); si no, la vista de siempre
+async function vistaRef(req, env, k, url) {
+  const [x, rl] = await Promise.all([fichaVista(k).catch(() => null),
+    fetch(ORIGEN + '/avisos/ref-link?k=' + encodeURIComponent(k), { headers: { accept: 'application/json' }, cf: { cacheTtl: 60, cacheEverything: true } })
+      .then((r) => (r.ok ? r.json() : null)).catch(() => null)]);
+  if (!x || !rl || !rl.activo) return null;
+  const nombre = String(x.f.n || k).trim();
+  const og = await hayOg('ref', slugOg(k));
+  const tv = textoVista(x.f, k, x.temp, x.cartas);
+  return conVista(req, env, url, { tab: nombre + ' te invita · Liga Global de Freestyle', titulo: nombre + ' te invita a la Liga Global de Freestyle',
+    desc: 'Torneos de freestyle online todas las semanas, tu tarjeta y el ranking mundial. Entra con su link: 500 Puntos de Tienda de bienvenida.',
+    img: og || tv.img || url.origin + '/og.png', alt: nombre + ' te invita a la Liga Global de Freestyle', color: '#29B298', vertical: !og && !!tv.img });
 }
 
 export default {
   async fetch(req, env, ctx) {
     const url = new URL(req.url);
     const ua = req.headers.get('user-agent') || '';
+
+    // 🎁 LOS LINKS CORTOS (17/11/2026, Dlx: «que el link sea corto para no asustar»): `/i/<clave>` es el de referido y
+    // `/c/<código>` el de una crew. A la persona la llevan a la página (con `?ref=` o `?u=`); a los bots de vista previa
+    // les dan la miniatura (`vistaRef()`, `vistaCrew()`)
+    const mRef = req.method === 'GET' && /^\/i\/([a-z0-9][a-z0-9._-]{0,59})\/?$/i.exec(url.pathname);
+    if (mRef) {
+      const k = mRef[1].toLowerCase();
+      if (BOTS_VISTA.test(ua)) { const v = await vistaRef(req, env, k, url).catch(() => null); if (v) return v; }
+      return Response.redirect(url.origin + '/freestyle-rap/?ref=' + encodeURIComponent(k), 302);
+    }
+    const mCod = req.method === 'GET' && /^\/c\/([a-hjkmnp-z2-9]{10})\/?$/i.exec(url.pathname);
+    if (mCod) {
+      const cod = mCod[1].toLowerCase();
+      const r = await fetch(ORIGEN + '/avisos/crew-link?cod=' + cod, { headers: { accept: 'application/json' } }).catch(() => null);
+      const j = r && r.ok ? await r.json().catch(() => null) : null;
+      const id = j && j.crew ? String(j.crew) : '';
+      if (id && BOTS_VISTA.test(ua)) { const v = await vistaCrew(req, env, id, url).catch(() => null); if (v) return v; }
+      return Response.redirect(url.origin + (id ? '/freestyle-rap/crew/' + encodeURIComponent(id) + '?u=' + cod : '/freestyle-rap/crews'), 302);
+    }
 
     // 🖼️ la vista previa de cada página, sólo para los bots: una liga, una llave o un país tienen la suya; las demás, la de
     // su página (ver `vistaPagina()` y las tres de arriba)

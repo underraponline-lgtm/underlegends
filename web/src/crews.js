@@ -111,9 +111,11 @@ export function codigoLink() {
 }
 
 /** 🔗 El link para compartir: la página de la crew con el código. */
+// 🔗 CORTO DESDE EL 17/11/2026 (Dlx: «que el link de invitación de la crew sea más corto para no asustar»): `/c/<código>`.
+// `bot/paginas/_worker.js` lo lleva a `/freestyle-rap/crew/<id>?u=<código>` y a los bots les da la miniatura de la crew.
+// `id` queda en la firma: los links viejos (largos) siguen andando, y quien llama no cambia
 export function linkCrew(id, cod) {
-  const r = '#/crew/' + encodeURIComponent(id) + '?u=' + cod;
-  return 'https://underlegends.pages.dev' + (W.urlLG ? W.urlLG(r) : '/' + r);
+  return 'https://underlegends.pages.dev/c/' + cod;
 }
 
 export function accionCrew(cuerpo) {

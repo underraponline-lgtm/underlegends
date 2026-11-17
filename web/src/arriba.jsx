@@ -27,7 +27,7 @@ export const MENU = [
   ['Socios', '#/socios'], ['Guía', '#/guia'],
 ];
 // el ☰ sigue teniendo todas, con la Tienda
-export const MENU_TODO = [...MENU, ['Tienda', '#/tienda']];
+export const MENU_TODO = [...MENU, ['Tienda', '#/tienda'], ['Invita y gana', '#/invitar']];
 // 🧭 EL MENÚ DE ARRIBA, AGRUPADO (Dlx, 12/11/2026: «los títulos de arriba… no se ven en todas las resoluciones», y su
 // idea: «INICIO, Ranking ahí con todos sus rankings… la sección de eventos que abre Torneos, Competencias y Ligas… PASE
 // RAPERO solo, Publicaciones solo y comunidad»; eligió esa, la D de la maqueta). Eran 13 en fila y medido a 1100 px no
@@ -140,7 +140,7 @@ export const QUE_ES = {
   '#/crews': 'Arma tu crew o súmate a una, con su tier',
   '#/salon': 'Los campeones, los récords y lo más difícil de la Liga',
   '#/pase': 'Premios por participar en la temporada',
-  '#/tienda': 'Tus Puntos de Tienda, y el precio por cabeza', '#/socios': 'Los servidores que forman la Liga',
+  '#/tienda': 'Tus Puntos de Tienda, y el precio por cabeza', '#/invitar': 'Tu link de invitación, tu track y tus invitados', '#/socios': 'Los servidores que forman la Liga',
   '#/guia': 'Cómo funciona todo',
 };
 
@@ -510,6 +510,9 @@ export function Cabecera({ liga, dc, onMenu, pagina = '', sv = '' }) {
           title="Buscar · Ctrl K" onClick={() => setBusca((v) => !v)}><Ico n="buscar" t={20} /></button>
         {/* 🛠️ MODS: sólo para quien puede, y sólo donde le sirve (mods.js) */}
         <BotonMods liga={liga} dc={dc} pagina={pagina} sv={sv} />
+        {/* 🎁 INVITA Y GANA (17/11/2026, Dlx: «una nueva opción con el ícono de regalo… al costado de notificaciones»). Desde
+            1280 px: más angosta no entra sin pisar el menú (medido); ahí está en tu menú y en el ☰ */}
+        <a className={'btn-ico rf-b' + (pagina === 'invitar' ? ' on' : '')} href="#/invitar" aria-label="Invita y gana" title="Invita y gana"><Ico n="regalo" t={20} /></a>
         <Campanita liga={liga} />
         {/* ⚙️ SIN EL ENGRANAJE (Dlx, 12/11/2026: «quitar eso del ícono de ajustes porque se puede entrar desde tu cuenta»):
             los ajustes están en Tu cuenta, que abre tu cara arriba y «Tu cuenta» abajo en el celular, y en el ☰ */}

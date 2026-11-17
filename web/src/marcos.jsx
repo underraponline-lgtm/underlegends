@@ -20,7 +20,9 @@
 import { Fragment, useId } from 'react';
 import { PAIS } from './liga.js';
 
-const METAL = { premium: '#E41373', plata: '#C9CDD4', oro: '#F5C542' };
+// 🎁 y el EMBAJADOR (17/11/2026), el premio final de los referidos (Dlx: «de cosa final pon algo buenísimo… como un marco
+// especial»): todo lo del Oro —la corona, el brillo, los destellos— en aqua, para que se distinga de un vistazo
+const METAL = { premium: '#E41373', plata: '#C9CDD4', oro: '#F5C542', embajador: '#3FE0C5' };
 const NEGRO = '#030304';
 const CL = { temporada: 't', competitivo: 'c', servidor: 's', pais: 'p', liga: 'l' };
 
@@ -240,7 +242,7 @@ export function ConMarco({ m, cual, ancho, svColor, cc, children, src, sigla }) 
   const mini = ancho < 130;
   const escala = Math.max(0.35, Math.min(1.3, ancho / 200));
   const c = METAL[tier];
-  const plata = tier !== 'premium', oro = tier === 'oro';
+  const plata = tier !== 'premium', oro = tier === 'oro' || tier === 'embajador';
   // ⛓️ en la mini no se dibujan eslabones (serían de 4 px): un canto de metal, como las otras
   const lista = cl === 's' && estilo === 'cadena' && mini ? [[6, c], [3.5, NEGRO]] : capas(cl, tier, estilo, vivo(svColor || '#8B3DFF'), cc);
   const anillo = ANILLO[cl === 's' ? 's-' + estilo : cl];
@@ -284,6 +286,6 @@ export function ConMarco({ m, cual, ancho, svColor, cc, children, src, sigla }) 
 /** Cómo se llama un marco: «Oro · T1» */
 export const nombreMarco = (id) => {
   const [t, n] = String(id || '').split(':');
-  return ({ premium: 'Premium', plata: 'Plata', oro: 'Oro' }[n] || n) + ' · ' + String(t || '').toUpperCase();
+  return ({ premium: 'Premium', plata: 'Plata', oro: 'Oro', embajador: 'Embajador' }[n] || n) + ' · ' + String(t || '').toUpperCase();
 };
 export { METAL as MARCO_METAL };

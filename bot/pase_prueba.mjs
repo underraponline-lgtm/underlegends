@@ -252,9 +252,9 @@ try {
   const md = o.marcosDe(A.DUENO);
   const elD = o.marcoElige({ quien: A.DUENO, marco: Cd.temp + ':oro', estilo: 'cadena' });
   const prD = o.pasePremios(Cd, 0, A.DUENO);
-  ok(!!o.pasePremium(A.DUENO, Cd.temp) && md.tienes.length === 3 && elD.ok && prD.premium && prD.marco
+  ok(!!o.pasePremium(A.DUENO, Cd.temp) && md.tienes.length === A.MARCOS.length && elD.ok && prD.premium && prD.marco
     && prD.titulo === (Cd.premium.filter((p) => p[2] === 'titulo').pop() || [])[3],
-  'el dueño: premium siempre, los tres marcos para elegir y lo del nivel más alto', JSON.stringify({ md, elD, prD }));
+  'el dueño: premium siempre, todos los marcos para elegir (también el Embajador de los referidos) y lo del nivel más alto', JSON.stringify({ md, elD, prD }));
 
   // ── ↩️ el Dashboard (25/10/2026): «Deshacer» vuelve a `null` en todos, y las siglas de 6 letras valen en todos ──
   ok(['campana_pausada', 'en_vivo', 'en_vivo_nivel', 'eventos_discord'].every((k) => A.ajusteValido(k, null) === null)

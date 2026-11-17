@@ -5576,6 +5576,9 @@ dialog.pn-pop.pop-gratis{--pc:#F5C542;width:min(640px,calc(100vw - 32px))}
   .app .cab.una .cab-der{align-items:center}
   .app .cab.una .entrar{min-height:40px;height:40px}
 }
+/* 🎁 y desde 1440, 56 px menos (17/11/2026): con el regalo al lado de la campana, la cabecera de ancho fijo dejaba 14 px entre
+   el menú y la marca a 1920. Abriendo los costados, ~40 px de cada lado en las pantallas grandes */
+@media (min-width: 1440px){ .app .cab.una{padding:10px max(40px,calc(var(--gut) - 56px))} }
 /* entre 900 y 1199 el menú no entra con la marca entera: queda el logo (y el título vuelve en cuanto hay lugar) */
 @media (min-width: 900px) and (max-width: 1199.98px){
   .app .cab.una .marca small.lg{display:none}
@@ -5662,12 +5665,21 @@ dialog.pn-pop.pop-gratis{--pc:#F5C542;width:min(640px,calc(100vw - 32px))}
 /* 📐 desde 1320 y no desde 1200 (17/11/2026): entre 1200 y 1319, con la marca entera, la racha y «43» en Publicaciones, el
    menú se metía 8 px adentro del título. Sin la barra del nivel quedan ~40 px de cada lado */
 @media (min-width: 1320px){ .app .cab.una .yo-chip > span.yo-nv:not(.cara):not(.yo-racha){display:grid} }
+/* ⚠️ Y LA BARRA DEL NIVEL SE VA ENTRE 1440 Y 1599: desde 1440 la página entera va con `zoom:1.1` (`.app{zoom:1.1}`), así que a 1440
+   hay ~1310 px de verdad, pero la letra del menú (en `vw`) no se achica con el zoom. Con el regalo, el rombo premium y el número de Publicaciones, el menú se
+   metía 2 px en el título a 1440 (medido). Sin la barra, ~35 px de cada lado; desde 1600 vuelve */
+@media (min-width: 1440px) and (max-width: 1599.98px){ .app .cab.una .yo-chip > span.yo-nv:not(.cara):not(.yo-racha){display:none} }
 /* 💎 LA INSIGNIA PREMIUM EN TU CHIP, en el lugar de la racha (17/11/2026, Dlx: «en vez de ese 9 pon ahí PREMIUM… si uno lo
    tiene, y si no, no»). El rombo del sello (sello.jsx), en todos los anchos de la compu; sin la palabra (ver arriba.jsx) */
 @media (min-width: 900px){
   .app .cab.una .yo-chip > span.yo-prem:not(.cara):not(.yo-racha){display:inline-flex;align-items:center}
 }
 @media (min-width: 900px) and (max-width: 1199.98px){ .app .cab.una .yo-prem{margin-right:4px} }
+/* 🎁 el regalo de Invita y gana, al lado de la campana (17/11/2026): desde 1280; más angosta pisaba el menú. Abajo de eso,
+   en tu menú y en el ☰ (arriba.jsx) */
+.app .cab.una .rf-b{display:none}
+@media (min-width: 1280px){ .app .cab.una .rf-b{display:grid} }
+.app .cab.una .rf-b.on{border-color:#F6F6F6;color:#29B298}
 /* 📱 el campo de la barra en el celular: el estilo de `.buscar` sólo existía desde 900 px (quedaba aplastado), y la letra a
    16 px para que el iPhone no haga zoom al escribir */
 .app .cab.una .cab-busca .buscar{display:flex;align-items:center;gap:8px;border:2px solid #29B298;min-height:44px;padding:0 12px;color:#A5A5A0}

@@ -4040,6 +4040,78 @@ const ok = (cond, que, det) => {
   }
 }
 
+// ── 🎁 LOS REFERIDOS (17/11/2026): quién cuenta, qué se paga, el tope de 10 y el cambio de temporada ──────────────
+{
+  const P = A.refPuede;
+  const base = { quien: '555555555555555555', de: 'ana', activo: true, nuevo: true, edad: 400 };
+  ok(P(base) === '' && P(Object.assign({}, base, { de: 'A NA' })) === 'faltan_datos' && P(Object.assign({}, base, { activo: false })) === 'link_vencido'
+    && P(Object.assign({}, base, { propio: true })) === 'propio' && P(Object.assign({}, base, { ya: true })) === 'ya'
+    && P(Object.assign({}, base, { v: true })) === 'no_nuevo' && P(Object.assign({}, base, { nuevo: false })) === 'no_nuevo'
+    && P(Object.assign({}, base, { edad: 3 })) === 'cuenta_nueva' && P(Object.assign({}, base, { lleno: true })) === 'lleno',
+  'refPuede: link abierto, no es uno mismo, no estaba, es nuevo de verdad, cuenta de 30 días y el tope sin llenar');
+  ok(A.REF_MAX === 10 && A.REF_TRACK[A.REF_TRACK.length - 1][0] === A.REF_MAX && A.REF_TRACK.at(-1)[1][0][0] === 'marco'
+    && A.MARCOS.includes(A.REF_TRACK.at(-1)[1][0][1]) && A.refPremioTexto(['drop', 2]) === '2 Dragón Drops',
+  'el track termina en el tope (10) con el marco, y el marco existe en MARCOS');
+  let DatabaseSync = null;
+  try { ({ DatabaseSync } = await import('node:sqlite')); } catch (e) { DatabaseSync = null; }
+  if (DatabaseSync) {
+    const db = new DatabaseSync(':memory:');
+    const sql = {
+      exec(q, ...ps) {
+        const t = String(q).trim();
+        if (!ps.length && /;\s*\S/.test(t)) { db.exec(t); return { toArray: () => [], rowsWritten: 0 }; }
+        const st = db.prepare(t);
+        if (/^\s*(SELECT|WITH|PRAGMA)/i.test(t)) { const rows = st.all(...ps); return { toArray: () => rows, rowsWritten: 0 }; }
+        const r = st.run(...ps);
+        return { toArray: () => [], rowsWritten: Number(r.changes) };
+      },
+    };
+    const env = { KV: { get: async () => null }, TEMPORADA: 't1' };
+    const o = new A.Avisos({ storage: { sql, setAlarm() {}, getAlarm() { return null; } }, blockConcurrencyWhile: async (f) => f() }, env);
+    await new Promise((r) => setTimeout(r, 5));
+    const ANA = '444444444444444444', NUEVO = '555555555555555555', BEA = '666666666666666666';
+    const JOVEN = ((BigInt(Date.now() - 1420070400000 - 86400000)) << 22n).toString();
+    const otros = Array.from({ length: 11 }, (_, i) => String(600000000000000000n + BigInt(i) * 1000n));
+    const pase = (miembros) => {
+      o.guardar('pase', { cfg: { temp: 't1', niveles: 3, umbrales: [300, 600, 900], diarias: [], semanales: [['dra', 'Juega', '', 'dra', 1, 500]],
+        temporada: [], premios: [] }, sem: [['s1', 0, 9e12]], miembros, hechas: {} });
+      o.guardar('pase_v', 'v' + miembros.length);
+    };
+    pase([ANA, NUEVO].concat(otros));
+    const tienda = (q) => sql.exec('SELECT id, monto FROM tienda WHERE quien = ? ORDER BY id', q).toArray();
+    const cumplir = (q) => { sql.exec('INSERT OR IGNORE INTO pase_hecho (quien, temp, sem, tarea, t) VALUES (?, ?, ?, ?, ?)', q, 't1', 's1', 'dra', Date.now()); o.pxpOlvidar(); o.refRevisar(q); };
+    ok(o.refMio({ quien: ANA, k: '', accion: 'activar' }).error === 'sin_verificar' && !o.refLinkPublico('ana').activo,
+      'sin verificar no hay link');
+    const m = o.refMio({ quien: ANA, k: 'ana', accion: 'activar' });
+    ok(m.ok && m.activo && m.k === 'ana' && m.hechos === 0 && o.refLinkPublico('ana').activo, 'Ana activa su link de esta temporada');
+    ok(o.refLlegue({ quien: ANA, de: 'ana' }).error === 'propio' && o.refLlegue({ quien: JOVEN, de: 'ana' }).error === 'cuenta_nueva'
+      && o.refLlegue({ quien: NUEVO, de: 'ana', v: true }).error === 'no_nuevo' && o.refLlegue({ quien: NUEVO, de: 'nadie' }).error === 'link_vencido',
+    'no cuenta: su propio link, una cuenta de Discord de ayer, alguien ya verificado ni un link cerrado');
+    ok(o.refLlegue({ quien: NUEVO, de: 'ana' }).ok && o.refLlegue({ quien: NUEVO, de: 'ana' }).ya
+      && o.refMio({ quien: ANA, accion: 'ver' }).lista.length === 1 && !tienda(NUEVO).length,
+    'el nuevo queda anotado una vez y todavía no paga nada');
+    cumplir(NUEVO);
+    const ya = o.refMio({ quien: ANA, accion: 'ver' });
+    ok(ya.hechos === 1 && tienda(NUEVO).some((t) => t.id === 'refb:' + NUEVO && t.monto === 500)
+      && tienda(ANA).some((t) => t.id === 'ref:' + ANA + ':' + NUEVO && t.monto === 250)
+      && o.paseXP(ANA, o.paseDatos().cfg) === 150 && sql.exec('SELECT COUNT(*) AS n FROM drops WHERE quien = ?', ANA).toArray()[0].n === 1,
+    'con el nivel 1 cuenta: 500 al nuevo; a Ana 250, 150 XP del Pase y el Dragón Drop de la primera meta', JSON.stringify(ya));
+    cumplir(NUEVO);
+    ok(tienda(ANA).filter((t) => t.id.startsWith('ref:')).length === 1, 'cumplir de nuevo no paga dos veces');
+    for (const q of otros.slice(0, 9)) { o.refLlegue({ quien: q, de: 'ana' }); cumplir(q); }
+    const diez = o.refMio({ quien: ANA, accion: 'ver' });
+    ok(diez.hechos === 10 && sql.exec('SELECT marco FROM marcos WHERE quien = ?', ANA).toArray().map((r) => r.marco).join() === 't1:embajador'
+      && o.titulosNuevo(ANA).includes('Reclutador') && tienda(ANA).some((t) => t.id === 'refm:' + ANA + ':5' && t.monto === 1500)
+      && sql.exec('SELECT COUNT(*) AS n FROM drops WHERE quien = ?', ANA).toArray()[0].n === 3
+      && o.paseXP(ANA, o.paseDatos().cfg) === 1500 && o.refLlegue({ quien: otros[9], de: 'ana' }).error === 'lleno',
+    'a los 10: el marco Embajador, el título Reclutador, los 1.500 de la meta 5, tres drops, 1.500 XP; el 11 ya no entra', JSON.stringify(diez).slice(0, 300));
+    o.refMio({ quien: BEA, k: 'bea', accion: 'activar' });
+    env.TEMPORADA = 't2';
+    ok(!o.refLinkPublico('ana').activo && sql.exec('SELECT quien FROM ref_link ORDER BY quien').toArray().map((r) => r.quien).join() === ANA,
+      'en la T2 el link de la T1 se cierra; el de Bea, que no trajo a nadie, se borra; el de Ana queda (trajo gente)');
+  } else console.log('  ⓘ sin node:sqlite: los referidos no se prueban sobre el objeto');
+}
+
 if (fallas) {
   console.log(`\n❌ ${fallas} prueba(s) fallaron`);
   process.exit(1);

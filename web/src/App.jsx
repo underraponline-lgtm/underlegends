@@ -21,7 +21,7 @@ import { ComoFunciona } from './comofunciona.jsx';
 import { AvisoVersion } from './novedad.jsx';
 import { FranjaMods } from './mods.jsx';
 // 📊 las secciones que se cuentan: la misma lista que `SECC_EV` de bot/avisos.js
-const SECC = new Set(['inicio', 'eventos', 'ranking', 'competencias', 'inventario', 'publicaciones', 'tarjetas', 'ligas', 'salon', 'pase', 'tienda', 'socios', 'guia',
+const SECC = new Set(['inicio', 'eventos', 'ranking', 'competencias', 'inventario', 'publicaciones', 'tarjetas', 'ligas', 'salon', 'pase', 'tienda', 'invitar', 'socios', 'guia',
   'perfil', 'servidor', 'crew', 'crews', 'pais', 'cuenta', 'cambios',
   'i-historias', 'i-envivo', 'i-semana', 'i-ira', 'i-fechas', 'i-sebusca', 'i-noticias', 'i-encuestas', 'i-raperos',
   'i-panel', 'i-merch', 'i-numeros', 'p-eventos', 'p-ranking', 'p-mw', 'p-tarjetas', 'p-pase', 'p-tienda']);
@@ -145,6 +145,10 @@ const Perfil = pag(() => import('./perfil.jsx').then((m) => ({ default: m.Perfil
 const Llave = pag(() => import('./llave.jsx').then((m) => ({ default: m.Llave })));
 const VisorCarta = pag(() => import('./visor.jsx').then((m) => ({ default: m.VisorCarta })));
 const Tienda = pag(() => import('./tienda2.jsx').then((m) => ({ default: m.Tienda })));
+// 🎁 Invita y gana (17/11/2026): tu link de referido, el track y quién te invitó. Ver invitar.jsx y referidos.js
+const Invitar = pag(() => import('./invitar.jsx').then((m) => ({ default: m.Invitar })));
+// 🖼️ y la miniatura de un link corto, para la foto de bot/og_links.py (og_link.jsx): sin nada alrededor, como la del marco
+const OgLink = pag(() => import('./og_link.jsx').then((m) => ({ default: m.OgLink })));
 const Pase = pag(() => import('./pase.jsx').then((m) => ({ default: m.Pase })));
 // 🏟️ las Ligas, su propia sección desde el 16/10/2026 (eran una pestaña del Ranking): ver ligas.jsx
 const LigasPagina = pag(() => import('./ligas.jsx').then((m) => ({ default: m.LigasPagina })));
@@ -199,6 +203,8 @@ import { useCalma, useTapado } from './anima.js';
 // 🐞 los errores de la página, al Dashboard (19/10/2026): los de cada sección y los que no agarra ninguna
 import { escucharErrores, reportarError } from './errores.js';
 import { esDeVersion, recargarPorVersion } from './version.js';
+// 🎁 al cargar: el `?ref=` de un link de invitación, y mandarlo cuando haya cuenta (referidos.js)
+import './referidos.js';
 
 escucharErrores();
 
@@ -682,7 +688,7 @@ export default function App() {
       : pagina === 'cuenta' || pagina === 'ajustes' ? 'Tu cuenta' : pagina === 'dashboard' ? 'Dashboard'
       : pagina === 'ranking' || pagina === 'duelos' ? 'Los rankings'
       : pagina === 'eventos' || pagina === 'avisos' ? 'Los eventos'
-      : pagina === 'pase' ? 'Pase de rapero' : pagina === 'tienda' ? 'La tienda'
+      : pagina === 'pase' ? 'Pase de rapero' : pagina === 'tienda' ? 'La tienda' : pagina === 'invitar' ? 'Invita y gana'
       : pagina === 'publicaciones' ? 'Publicaciones' : pagina === 'guia' ? 'Cómo funciona'
       : pagina === 'cambios' ? 'Changelog' : '';
     if (!sv && (pagina === 'r' || pagina === 'llave')) return undefined;
@@ -755,6 +761,11 @@ export default function App() {
   vaPagina = va;
   if (!liga) return <div className={'app ' + claseTema(tema, temaSv) + calma}><div className="barra-ul" /><div className="cargando">Cargando la Liga…</div></div>;
   // 🖼️ la carta sola con su marco, para la foto de `bot/con_marco.py`: nada alrededor (ver marco_solo.jsx)
+  if (pagina === 'og' && partes[1] && partes[2]) {
+    let id = partes.slice(2).join('/');
+    try { id = decodeURIComponent(id); } catch (e) { /* tal cual */ }
+    return <div className="app solo-og"><Suspense fallback={null}><OgLink liga={liga} tipo={partes[1]} id={id} /></Suspense></div>;
+  }
   if (pagina === 'marco' && partes[1] && partes[2]) {
     return <div className="app solo-marco"><MarcoSolo liga={liga} k={partes[1]} cual={partes[2]} sv={partes[3] || ''} cc={(partes[4] || '').toLowerCase()} /></div>;
   }
@@ -784,6 +795,7 @@ export default function App() {
         : pagina === 'socios' || pagina === 'mundo' ? <Aislada key="Socios" n="Socios" pagina><Suspense fallback={<Cargando />}><Socios liga={liga} /></Suspense></Aislada>
         : pagina === 'llave' && partes[1] ? <Aislada key="Llave" n="Llave" pagina><Suspense fallback={<Cargando />}><Llave liga={liga} vivoL={vivoL} n={partes.slice(1).join('/')} raiz={raiz} dc={yo.dc} /></Suspense></Aislada>
         : pagina === 'tienda' ? <Aislada key="Tienda" n="Tienda" pagina><Suspense fallback={<Cargando />}><Tienda liga={liga} dc={yo.dc} /></Suspense></Aislada>
+        : pagina === 'invitar' ? <Aislada key="Invitar" n="Invitar" pagina><Suspense fallback={<Cargando />}><Invitar liga={liga} dc={yo.dc} /></Suspense></Aislada>
         : pagina === 'pase' ? <Aislada key="Pase" n="Pase" pagina><Suspense fallback={<Cargando />}><Pase liga={liga} dc={yo.dc} /></Suspense></Aislada>
         : pagina === 'crew' && partes[1] && crewAj !== null ? <Aislada key={'CrewAj' + partes[1]} n="CrewAj" pagina><Suspense fallback={<Cargando />}><AjustesCrew liga={liga} id={crewId} sec={crewAj} /></Suspense></Aislada>
         : pagina === 'crew' && partes[1] ? <Aislada key={'Crew' + partes[1]} n="Crew" pagina><Suspense fallback={<Cargando />}><PaginaCrew liga={liga} id={crewId} /></Suspense></Aislada>

@@ -1,0 +1,65 @@
+/* 🎁 INVITA Y GANA (17/11/2026, invitar.jsx). Prefijo `rf-` (buscado: no lo usa nadie más). Arriba, el escenario oscuro de
+   siempre con tu link al costado; abajo, el track y tus invitados sobre el fondo del tema. Sin degradés ni radios de más */
+.rf-cab{display:grid;gap:18px;padding:22px 16px 24px}
+.rf-cab-tx{display:grid;justify-items:start;align-content:end;gap:10px}
+.rf-cab-tx .hero-ev{margin:4px 0 0}
+.rf-cab-tx .hero-p{max-width:620px;font-size:15px;line-height:1.5}
+.rf-k{font:800 12px/1.2 Archivo,sans-serif;letter-spacing:.06em;text-transform:uppercase;color:var(--esc-gris)}
+.rf-p{margin:0;font-size:15px;line-height:1.5;max-width:60ch}
+.rf-p b{font-weight:800}
+.rf-link{display:grid;gap:10px;align-content:start;border:1.5px solid var(--esc-linea);background:#0B0C0E;padding:16px;border-radius:4px;color:var(--esc-tinta)}
+.rf-link .rf-p{color:#E4E4E0}
+.rf-link-sin{justify-items:start}
+.rf-url{display:block;font:800 18px/1.25 Archivo,sans-serif;color:#F6F6F6;word-break:break-all;padding:10px 12px;border:1.5px dashed #29B298;border-radius:4px}
+.rf-link-b{display:flex;flex-wrap:wrap;gap:8px}
+.rf-err{margin:0 16px 18px;font-weight:700;color:#FF8FB8}
+
+/* 🙋 quien llegó por un link */
+.rf-llego-c{display:flex;gap:16px;align-items:flex-start;border:2px solid var(--verde);background:var(--caja);padding:16px;border-radius:4px}
+.rf-llego .rf-k{color:var(--gris)}
+.rf-llego-n{font:900 26px/1.1 Archivo,sans-serif;font-stretch:112%;margin:2px 0 8px;color:var(--tinta)}
+.rf-llego .rf-p{margin-bottom:12px;color:var(--tinta)}
+.rf-llego .rf-p.rf-no{color:var(--magenta-tx)}
+.rf-llego-cara{width:64px;height:64px;flex:none}
+
+/* 🛤️ el track */
+.rf-cuenta{font:700 15px/1 Archivo,sans-serif;color:var(--gris)}
+.rf-cuenta b{font:900 26px/1 Archivo,sans-serif;color:var(--tinta)}
+.rf-track{position:relative;height:46px;margin:8px 14px 18px}
+.rf-barra{position:absolute;left:0;right:0;top:19px;height:8px;background:var(--suave);border-radius:4px;overflow:hidden}
+.rf-barra u{position:absolute;inset:0 auto 0 0;background:var(--verde);text-decoration:none}
+.rf-hito{position:absolute;top:7px;transform:translateX(-50%);display:grid;place-items:center;width:32px;height:32px;border-radius:50%;
+  background:var(--fondo);border:2.5px solid var(--linea);font:900 14px/1 Archivo,sans-serif;color:var(--tinta)}
+.rf-hito.on{background:var(--verde);border-color:var(--verde);color:#030304}
+.rf-metas{list-style:none;margin:0;padding:0;display:grid;gap:8px}
+.rf-metas li{display:grid;grid-template-columns:44px minmax(0,1fr) auto;align-items:center;gap:12px;padding:10px 12px;border:1.5px solid var(--suave);border-radius:4px;background:var(--caja)}
+.rf-metas li.on{border-color:var(--verde)}
+.rf-metas li .ico{color:var(--verde)}
+.rf-metas-n{display:grid;place-items:center;width:40px;height:40px;border-radius:50%;border:2.5px solid var(--linea);font:900 17px/1 Archivo,sans-serif}
+.rf-metas li.on .rf-metas-n{background:var(--verde);border-color:var(--verde);color:#030304}
+.rf-metas-t{display:grid;gap:3px;font:800 15px/1.3 Archivo,sans-serif}
+.rf-metas-t small{font:600 13px/1.35 Archivo,sans-serif;color:var(--gris)}
+/* el premio final: el marco, en el aqua del marco Embajador (marcos.jsx) con borde de tinta para que se lea en los dos temas */
+.rf-metas li.final{border-color:var(--linea);border-width:2px}
+.rf-metas li.final .rf-metas-n{background:#3FE0C5;border-color:var(--linea);color:#030304}
+.rf-nota{margin:14px 0 0;font-size:14px;color:var(--gris);max-width:70ch}
+.rf-nota b{color:var(--tinta)}
+
+/* 👥 tus invitados */
+.rf-lista{list-style:none;margin:0;padding:0;display:grid;gap:6px}
+.rf-lista li{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:6px 12px;padding:8px 10px;border:1.5px solid var(--suave);border-radius:4px}
+.rf-q{display:inline-flex;align-items:center;gap:10px;min-width:0;color:var(--tinta)}
+.rf-q b{font-weight:800;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.rf-q-c{width:32px;height:32px;flex:none}
+.rf-est{font:700 13px/1.3 Archivo,sans-serif;color:var(--gris)}
+.rf-est.ok{color:var(--tinta)}
+.rf-est.ok::before{content:'';display:inline-block;width:8px;height:8px;border-radius:50%;background:var(--verde);margin-right:6px;vertical-align:1px}
+
+.rf-reglas ul{margin:0;padding-left:20px;display:grid;gap:6px;font-size:14.5px;line-height:1.5;color:var(--tinta);max-width:75ch}
+.rf-reglas b{font-weight:800}
+
+@media (min-width: 900px){
+  .app .rf-cab{grid-template-columns:minmax(0,1fr) minmax(320px,420px);align-items:end;gap:36px;padding:38px var(--gut) 34px}
+  .app .rf-err{margin:0 var(--gut) 18px}
+  .app .rf-track{margin:8px 18px 22px}
+}

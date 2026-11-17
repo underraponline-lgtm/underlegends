@@ -43,10 +43,13 @@ const CARTAS = [['temporada', 'Temporada'], ['competitivo', 'Competitiva'], ['se
 const GRUPO = { siempre: 'para siempre', temporada: 'de temporada', pase: 'edición limitada' };
 const RAREZA = (CAT.niveles || {});
 const NIVELES = ['t1', 't2', 't3', 't4'];
-const TIER = { premium: 'Premium', plata: 'Plata', oro: 'Oro' };
+const TIER = { premium: 'Premium', plata: 'Plata', oro: 'Oro', embajador: 'Embajador' };
 // 🖼️ los marcos del Pase premium, con el nivel que los da (`bot/pase.py` PREMIUM): para ver también los que faltan
-const MARCOS_PASE = [['premium', 1], ['plata', 15], ['oro', 25]];
-const ORDEN_T = ['oro', 'plata', 'premium'];
+// 🎁 y el Embajador (17/11/2026): no es del Pase, es la meta de 10 de Invita y gana (`nv` = 'ref'). El orden de «el mejor»
+// es el de MARCOS en bot/avisos.js, al revés: el Oro primero (quien ya lo lleva no ve cambiar su carta sola)
+const MARCOS_PASE = [['premium', 1], ['plata', 15], ['oro', 25], ['embajador', 'ref']];
+const ORDEN_T = ['oro', 'embajador', 'plata', 'premium'];
+const comoSeGana = (nv) => (nv === 'ref' ? '10 invitados en Invita y gana' : 'Nivel ' + nv + ' del premium');
 /** «El mejor»: el de nivel más alto que tengas, como `mejorMarco()` de bot/avisos.js */
 const mejor = (ids) => ORDEN_T.map((t) => ids.find((id) => id.split(':')[1] === t)).find(Boolean) || '';
 const sinNum = (t) => t.replace(' x%d', '').replace(' DE %d', '');
@@ -410,7 +413,7 @@ export function Inventario({ liga, dc, carta0 = '', ranura0 = '' }) {
           const mio = idsMarcos.includes(id);
           return (
             <Cuadro key={t} mio={mio} on={marcoAhora === id} puesto={marcoG === id} prueba={bor.marco === id} nombre={nombreMarco(id) || 'Marco ' + TIER[t]}
-              rar={mio ? 'Marco ' + TIER[t] : 'Nivel ' + nv + ' del premium'} onVer={verPieza('marco', id)} onClick={() => probar('marco', id, marcoG)}>
+              rar={mio ? 'Marco ' + TIER[t] : comoSeGana(nv)} onVer={verPieza('marco', id)} onClick={() => probar('marco', id, marcoG)}>
               <span className="ves-qi" aria-hidden="true"><i className={'ves-sw ' + t} /></span>
             </Cuadro>
           );
@@ -475,8 +478,8 @@ export function Inventario({ liga, dc, carta0 = '', ranura0 = '' }) {
     const tier = (m || '').split(':')[1] || '';
     const mio = !m || m === 'ninguno' ? (m === 'ninguno' || !!idsMarcos.length) : idsMarcos.includes(m);
     const nv = (MARCOS_PASE.find(([x]) => x === tier) || [])[1];
-    foco = { texto: '🖼️ ' + nomMarco(m), mio, nivel: tier === 'oro' ? 't1' : tier ? 't2' : '', cambia: m !== marcoG,
-      desc: mio ? 'Va alrededor de tus cuatro cartas, en la página y en /card.' : 'Nivel ' + nv + ' del Pase premium.' };
+    foco = { texto: '🖼️ ' + nomMarco(m), mio, nivel: tier === 'oro' || tier === 'embajador' ? 't1' : tier ? 't2' : '', cambia: m !== marcoG,
+      desc: mio ? 'Va alrededor de tus cuatro cartas, en la página y en /card.' : nv === 'ref' ? 'Se gana con 10 invitados en Invita y gana.' : 'Nivel ' + nv + ' del Pase premium.' };
   } else if (ran === 'foto') {
     foco = { texto: '📸 Tu foto', desc: 'La de tu carta. Se cambia abajo, una vez por temporada.', mio: true };
   } else if (ran === 'estilo') {
@@ -652,7 +655,7 @@ export function Inventario({ liga, dc, carta0 = '', ranura0 = '' }) {
         <div className="ves-col">
           {/* 📊 lo que tienes de todo lo que hay (de la C de la maqueta: Marvel Snap y Steam) */}
           <div className="ves-prog ancha">
-            {[[tagsTot, tagsCat, 'TAGs', 'en tus cuatro cartas'], [idsMarcos.length, MARCOS_PASE.length, 'Marcos', 'del Pase premium'],
+            {[[tagsTot, tagsCat, 'TAGs', 'en tus cuatro cartas'], [idsMarcos.length, MARCOS_PASE.length, 'Marcos', 'del Pase premium y de Invita y gana'],
               [insMias.size, insCat.length, 'Insignias', 'de la temporada'], [titulos.filter((x) => titMios.has(x) || yo.dueno).length, titulos.length, 'Títulos', 'del Pase']]
               .filter(([, de]) => de).map(([n, de, et, s]) => (
                 <div key={et} className="ves-pr"><b>{n}<small> / {de}</small></b><span>{et}</span><Barra n={n} de={de} /><small>{s}</small></div>
@@ -692,11 +695,11 @@ export function Inventario({ liga, dc, carta0 = '', ranura0 = '' }) {
           ) : null}
           <section className="ves-panel">
             <Titulo extra={<span className="ves-de">{idsMarcos.length} de {MARCOS_PASE.length}</span>}>Marcos</Titulo>
-            <p className="ves-p">Del Pase premium: tócalo para probártelo en tus cartas.</p>
+            <p className="ves-p">Del Pase premium y de Invita y gana: tócalo para probártelo en tus cartas.</p>
             <div className="ves-grid">
               {MARCOS_PASE.map(([t, nv]) => {
                 const mio = idsMarcos.some((x) => x.split(':')[1] === t);
-                return <Cuadro key={t} mio={mio} nombre={'Marco ' + TIER[t]} rar={mio ? 'Lo tienes' : 'Nivel ' + nv + ' del premium'}
+                return <Cuadro key={t} mio={mio} nombre={'Marco ' + TIER[t]} rar={mio ? 'Lo tienes' : comoSeGana(nv)}
                   onClick={() => { if (sinCartas) return; setSec('cartas'); setRan('marco'); probar('marco', idsMarcos.find((x) => x.split(':')[1] === t) || temp + ':' + t, marcoG); }}>
                   <span className="ves-qi" aria-hidden="true"><i className={'ves-sw ' + t} /></span></Cuadro>;
               })}

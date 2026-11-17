@@ -284,6 +284,9 @@ DROP_COLA = 3000
 #: acá no se puede poner en ninguna: uno nuevo tiene que decir su carta (el self-check lo pide).
 TITULO_CARTA = {'Del Pase': 'competitivo', 'De la casa': 'servidor', 'Pilar de UL': 'temporada',
                 'Escama de Oro': 'temporada', 'Rey Dragón': 'competitivo'}
+#: 🎁 y los títulos que NO salen del Pase pero se ponen igual (17/11/2026): «Reclutador», la meta de 3 de los referidos
+#: (REF_TRACK en bot/avisos.js). Aparte de TITULO_CARTA porque el self-check pide que ésa sea exactamente la del Pase
+TITULOS_FUERA = {'Reclutador': 'temporada'}
 #: ✨ desde qué nivel brilla tu carta en las llaves (lo lee `subir_web.py` para la página, con `nivel_brillo()`): el 8
 #: con la curva de antes; el 4 desde `CURVA_DESDE` (Dlx, 25/10/2026: «dale», el informe, cambio 7)
 NIVEL_BRILLO_VIEJO, NIVEL_BRILLO = 8, 4
@@ -396,7 +399,7 @@ def config(temp, dra=True, nuevas=True, curva=True, cm=True):
     out.update({'bienvenida': [list(t) for t in BIENVENIDA], 'especiales': [],
                 'doble': [[_ms_et(a), _ms_et(b), m] for a, b, m in XP_DOBLE], 'gracia_desde': GRACIA_DESDE,
                 'crew': list(CREW), 'boost': BOOST, 'premium': premios_premium(), 'rol_regalo': ROL_REGALO,
-                'titulo_carta': dict(TITULO_CARTA)})
+                'titulo_carta': dict(TITULO_CARTA, **TITULOS_FUERA)})
     # ⚠️ LA SEMANA DE PRUEBA TENÍA «Completá tus misiones», que ya no es una Tarea: lo que se cumplió sigue valiendo lo
     # que vale una semanal (si no, a quien sólo tenía ésa se le iba el nivel 1, y con él la tarjeta de Temporada)
     if out['temp'] == 'prueba':

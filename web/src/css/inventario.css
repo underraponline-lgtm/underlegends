@@ -193,7 +193,7 @@
 .ves-qc{display:grid;place-items:center;height:92px}
 .ves-qci{max-width:66px;max-height:92px;width:auto;height:auto;display:block}
 .ves-sw{display:block;width:15px;height:15px;transform:rotate(45deg)}
-.ves-sw.premium{background:var(--v-rosa)}.ves-sw.plata{background:#C9CDD4}.ves-sw.oro{background:var(--v-oro)}
+.ves-sw.premium{background:var(--v-rosa)}.ves-sw.plata{background:#C9CDD4}.ves-sw.oro{background:var(--v-oro)}.ves-sw.embajador{background:#3FE0C5}
 
 /* la ficha de lo que tocaste */
 .ves-ficha{--r:var(--v-borde2);display:grid;grid-template-columns:auto minmax(0,1fr);gap:12px;align-items:start;padding:12px;border:1.5px solid var(--r);background:var(--v-panel)}
