@@ -1,10 +1,10 @@
 {
  "cartas": {
   ".SosaATR": {
-   "competitivo": "c56d856c2069:3cb4ba14e995",
+   "competitivo": "f180354dbb5b:3cb4ba14e995",
    "pais": "413692a034b3:50160dcafbc4",
    "servidor": "6939bd7a6df4:e0061cb5005e:610cd5",
-   "temporada": "34b415cf1a11:fec25411e829"
+   "temporada": "1f689e832640:fec25411e829"
   },
   "1200": {},
   "19": {},
@@ -1846,10 +1846,10 @@
    "servidor": "679c18f5e7e5:e0061cb5005e:132451"
   },
   "Vilca": {
-   "competitivo": "3614b506febf:3cb4ba14e995",
-   "pais": "f46c076ae7f8:50160dcafbc4",
-   "servidor": "580fffe5e25c:e0061cb5005e:35ef22",
-   "temporada": "cc75f22a9a36:fec25411e829"
+   "competitivo": "47bcb116be51:3cb4ba14e995",
+   "pais": "b72b5378c6ed:50160dcafbc4",
+   "servidor": "6fb68934d2be:e0061cb5005e:35ef22",
+   "temporada": "31ee1c5302f3:fec25411e829"
   },
   "Vize": {
    "servidor": "f878da4ea385:e0061cb5005e:5fd551"
@@ -2126,5 +2126,5 @@
    "servidor": "7f8885a35a6d:e0061cb5005e:71cf5a"
   }
  },
- "cuando": "2026-11-17T02:05:25+00:00"
+ "cuando": "2026-11-17T02:37:16+00:00"
 }
