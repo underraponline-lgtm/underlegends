@@ -129,7 +129,7 @@ function Perfil({ liga, k }) {
       <div className="og-pf-velo" />
       <div className="og-der">
         <span className="og-k">Liga Global de Freestyle</span>
-        <h1 className={'og-n' + largo(nombre)}>{nombre}</h1>
+        <Nombre texto={nombre} />
         <div className="og-fila">
           {f.cc ? <span className="og-pf-pais"><Bandera cc={f.cc} cls="og-pf-flag" />{nombrePais(f.cc)}</span> : null}
           {sv ? <span>{f.cc ? '· ' : ''}{limpio(sv.nombre || f.sv)}</span> : null}
