@@ -11,6 +11,16 @@
  ],
  "cambios": [
     {
+        "version": "5.72",
+        "dia": "2026-11-16",
+        "cuando": "2026-11-16T20:44:00-05:00",
+        "titulo": "El TAG que pruebas, grande debajo de tu carta",
+        "items": [
+            "En tu **Inventario**, al tocar un TAG tu carta lo muestra en su lugar con un destello, y debajo aparece **«Así queda en tu carta»** con el TAG en grande.",
+            "En el celular, la carta de la hoja es más grande."
+        ]
+    },
+    {
         "version": "5.71",
         "dia": "2026-11-16",
         "cuando": "2026-11-16T20:42:21-05:00",

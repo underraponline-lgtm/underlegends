@@ -138,6 +138,42 @@ function useFondoPastilla(liga, k, carta) {
   return c;
 }
 
+/** El estilo de la pastilla del TAG de `carta` a escala `e` (1 = píxeles de la carta): la de prueba encima de la carta y
+ *  la de la lupa salen de acá, así las dos son la misma */
+function estiloPastilla({ liga, carta, nivel, e, fondo, rg }) {
+  const p = PASTILLA[carta];
+  const st = { fontSize: p.fs * e, letterSpacing: p.ls * e, padding: p.pad.map((v) => v * e + 'px').join(' ') };
+  if (carta === 'temporada' || carta === 'competitivo') {
+    const m = METAL[nivel] || METAL.t4;
+    Object.assign(st, { background: m.bg, color: m.c, border: Math.max(1, e) + 'px solid ' + m.bd, boxShadow: m.sh });
+  } else {
+    const b = BORDE[carta][nivel] || BORDE[carta].t4;
+    const acento = carta === 'pais' ? (rg ? liga.colorRg(rg) : '#C9CCD6') : '#FFFFFF';
+    Object.assign(st, {
+      background: fondo || (carta === 'pais' ? 'rgb(14,16,24)' : 'rgb(20,24,40)'), color: '#FFFFFF',
+      border: typeof b === 'number' ? b * e + 'px solid ' + acento : Math.max(1, e) + 'px solid ' + b,
+      textShadow: '0 1px 3px rgba(0,0,0,.9)', boxShadow: carta === 'servidor' ? '0 3px 10px rgba(0,0,0,.6)' : 'none',
+    });
+  }
+  return st;
+}
+
+/**
+ * 🔍 LA LUPA DEL TAG (16/11/2026, Dlx: «asegúrate que cuando uno cambie el tag, éste muestre la preview en la tarjeta con
+ * ese tag diferente»). La prueba ya iba en la carta, pero medida: 105×17 px en la compu y 60×10 en la hoja del celular,
+ * o sea ilegible. Debajo de la carta va la misma pastilla al doble y medio, con el nombre del TAG
+ */
+function LupaTag({ liga, k, carta, texto, nivel, rg }) {
+  const fondo = useFondoPastilla(liga, k, carta);
+  if (!PASTILLA[carta] || !texto) return null;
+  return (
+    <div className="iv10-lupa" aria-live="polite">
+      <small>Así queda en tu carta</small>
+      <span key={texto} className="iv9-past iv10-lupa-p" style={estiloPastilla({ liga, carta, nivel, e: Math.min(2.2, 220 / Math.max(1, anchoPastilla(texto, PASTILLA[carta]))), fondo, rg })}>{texto}</span>
+    </div>
+  );
+}
+
 function PastillaTag({ caja, liga, k, carta, texto, nivel, vieja, rg }) {
   const [pos, setPos] = useState(null);
   const fondo = useFondoPastilla(liga, k, carta);
@@ -162,24 +198,9 @@ function PastillaTag({ caja, liga, k, carta, texto, nivel, vieja, rg }) {
   }, [caja, p, carta, k]);
   if (!pos || !p || !texto) return null;
   const e = pos.e;
-  const st = {
-    left: pos.x, top: pos.y, fontSize: p.fs * e, letterSpacing: p.ls * e,
-    padding: p.pad.map((v) => v * e + 'px').join(' '),
-    minWidth: anchoPastilla(vieja, p) * e,
-  };
-  if (carta === 'temporada' || carta === 'competitivo') {
-    const m = METAL[nivel] || METAL.t4;
-    Object.assign(st, { background: m.bg, color: m.c, border: Math.max(1, e) + 'px solid ' + m.bd, boxShadow: m.sh });
-  } else {
-    const b = BORDE[carta][nivel] || BORDE[carta].t4;
-    const acento = carta === 'pais' ? (rg ? liga.colorRg(rg) : '#C9CCD6') : '#FFFFFF';
-    Object.assign(st, {
-      background: fondo || (carta === 'pais' ? 'rgb(14,16,24)' : 'rgb(20,24,40)'), color: '#FFFFFF',
-      border: typeof b === 'number' ? b * e + 'px solid ' + acento : Math.max(1, e) + 'px solid ' + b,
-      textShadow: '0 1px 3px rgba(0,0,0,.9)', boxShadow: carta === 'servidor' ? '0 3px 10px rgba(0,0,0,.6)' : 'none',
-    });
-  }
-  return <span className="iv9-past" style={st} aria-label={'TAG que pruebas: ' + texto}>{texto}</span>;
+  const st = Object.assign(estiloPastilla({ liga, carta, nivel, e, fondo, rg }), { left: pos.x, top: pos.y, minWidth: anchoPastilla(vieja, p) * e });
+  // `key`: cada TAG nuevo vuelve a hacer el destello, así se nota que cambió
+  return <span key={texto} className="iv9-past iv10-nuevo-p" style={st} aria-label={'TAG que pruebas: ' + texto}>{texto}</span>;
 }
 
 /** El aviso de qué pasa con tu carta después de elegir un TAG */
@@ -465,6 +486,7 @@ export function Inventario({ liga, dc, carta0 = '', ranura0 = '' }) {
       {k && carta in bor.tags && tagVer ? <PastillaTag caja={ref} liga={liga} k={k} carta={carta} texto={tagVer.texto}
         nivel={tagVer.nivel} vieja={tagGuardado ? tagGuardado.texto : ''} rg={filaYo.rg} /> : null}
       {nCambios ? <span className="iv10-vp">Vista previa</span> : null}
+      {k && carta in bor.tags && tagVer && tab === 'cartas' ? <LupaTag liga={liga} k={k} carta={carta} texto={tagVer.texto} nivel={tagVer.nivel} rg={filaYo.rg} /> : null}
     </div>
   );
 

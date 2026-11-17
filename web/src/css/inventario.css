@@ -131,7 +131,7 @@
   .iv10-velo{display:block;position:fixed;inset:0;z-index:59;border:0;background:rgba(3,3,4,.6)}
   .iv10-x{display:grid;place-items:center}
   .iv10-carta.mini{display:grid;padding:6px 0 0}
-  .iv10-carta.mini .iv9-ci{max-width:132px}
+  .iv10-carta.mini .iv9-ci{max-width:176px}
   .iv10-grid{grid-template-columns:repeat(3,minmax(0,1fr))}
   .iv10-grid.cartas{grid-template-columns:repeat(3,minmax(0,1fr))}
   .iv10-guardar{bottom:0}
@@ -192,3 +192,14 @@
   .iv10-pasos li{grid-template-columns:auto minmax(0,1fr)}
   .iv10-pasos li .iv10-sin-b{grid-column:1 / -1}
 }
+/* 🔍 la lupa del TAG que pruebas (16/11/2026): la misma pastilla, grande, debajo de la carta */
+.iv10-lupa{display:grid;justify-items:center;gap:6px;margin-top:12px}
+.iv10-lupa small{font:800 11px/1 "Barlow Condensed",sans-serif;letter-spacing:.12em;text-transform:uppercase;color:var(--esc-gris)}
+.iv10-lupa .iv10-lupa-p{position:static;transform:none;max-width:100%;overflow:hidden;text-overflow:ellipsis}
+.iv10-carta.mini .iv10-lupa{margin-top:8px}
+@media (prefers-reduced-motion: no-preference){
+  .iv10-nuevo-p{animation:iv10-destello .5s cubic-bezier(.23,1,.32,1)}
+  .iv10-lupa-p{animation:iv10-entra .32s cubic-bezier(.23,1,.32,1)}
+}
+@keyframes iv10-destello{from{filter:brightness(1.8);transform:translate(-50%,-50%) scale(1.25)}to{filter:none;transform:translate(-50%,-50%) scale(1)}}
+@keyframes iv10-entra{from{opacity:0;transform:scale(.94)}to{opacity:1;transform:none}}
