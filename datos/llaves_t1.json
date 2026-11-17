@@ -24163,7 +24163,7 @@
      [
       [
        "Trot",
-       "VALLES-T"
+       "Shadow"
       ],
       "Trot",
       ""
@@ -24260,7 +24260,7 @@
     2000
    ],
    [
-    "VALLES-T",
+    "Shadow",
     "Cuartos",
     2000
    ],
@@ -25333,10 +25333,10 @@
      ],
      [
       [
-       "VALLES-T",
+       "Shadow",
        "Joshema"
       ],
-      "VALLES-T",
+      "Shadow",
       ""
      ],
      [
@@ -25379,7 +25379,7 @@
      [
       [
        "Hotaru Adeyemi 🏳️‍⚧️",
-       "VALLES-T"
+       "Shadow"
       ],
       "Hotaru Adeyemi 🏳️‍⚧️",
       ""
@@ -25463,7 +25463,7 @@
     2500
    ],
    [
-    "VALLES-T",
+    "Shadow",
     "Cuartos",
     2500
    ],
@@ -33964,7 +33964,7 @@
      [
       [
        "MAT MC",
-       "VALLES-T"
+       "Shadow"
       ],
       "MAT MC",
       ""
@@ -34117,7 +34117,7 @@
     1250
    ],
    [
-    "VALLES-T",
+    "Shadow",
     "Octavos",
     1250
    ]
@@ -34552,7 +34552,7 @@
      [
       [
        "Vilca",
-       "VALLES-T"
+       "Shadow"
       ],
       "Vilca",
       ""
@@ -34647,17 +34647,17 @@
     2000
    ],
    [
+    "Shadow",
+    "Cuartos",
+    2000
+   ],
+   [
     "Sin Limites",
     "Cuartos",
     2000
    ],
    [
     "TøKīØ🦠🧠",
-    "Cuartos",
-    2000
-   ],
-   [
-    "VALLES-T",
     "Cuartos",
     2000
    ]
@@ -53998,7 +53998,7 @@
        "Miniboy",
        "MaYeuTyK",
        "Marcos",
-       "Trueno",
+       "KairoX",
        "Molusco",
        "Dominick",
        "yinn"
@@ -54112,6 +54112,11 @@
     2500
    ],
    [
+    "KairoX",
+    "Cuartos",
+    2500
+   ],
+   [
     "Leyenda",
     "Subcampeón",
     2500
@@ -54124,11 +54129,6 @@
    [
     "Oasis",
     "Subcampeón",
-    2500
-   ],
-   [
-    "Trueno",
-    "Cuartos",
     2500
    ]
   ],
@@ -56434,7 +56434,7 @@
      [
       [
        "Under",
-       "Sweet pain"
+       "Andy MC"
       ],
       "Under",
       ""
@@ -56500,6 +56500,11 @@
     3500
    ],
    [
+    "Andy MC",
+    "Cuartos",
+    2000
+   ],
+   [
     "BABI",
     "Cuartos",
     2000
@@ -56511,11 +56516,6 @@
    ],
    [
     "Medster",
-    "Cuartos",
-    2000
-   ],
-   [
-    "Sweet pain",
     "Cuartos",
     2000
    ],
@@ -56933,7 +56933,7 @@
      [
       [
        "Marcos",
-       "Sweet pain"
+       "Andy MC"
       ],
       "Marcos",
       ""
@@ -57036,17 +57036,17 @@
     3000
    ],
    [
+    "Andy MC",
+    "Cuartos",
+    2000
+   ],
+   [
     "Kourier",
     "Cuartos",
     2000
    ],
    [
     "LAST",
-    "Cuartos",
-    2000
-   ],
-   [
-    "Sweet pain",
     "Cuartos",
     2000
    ],
@@ -57124,7 +57124,7 @@
        "Molusco"
       ],
       "yinn, Colesito, Agus",
-      "triple (4 bandas, pasan 3); también pasa: colesito🇻🇪 / agus🇦🇷"
+      "triple (4 bandas, pasan 3); también pasa: colesito🇦🇶 / agus🇦🇷"
      ]
     ],
     "r": "Octavos"
@@ -58390,7 +58390,7 @@
      [
       [
        "Puppy🇨🇴",
-       "99 🇨🇱"
+       "Soulb"
       ],
       "Puppy🇨🇴",
       ""
@@ -58398,7 +58398,7 @@
      [
       [
        "Mecha 🇦🇷",
-       "choque🇵🇪"
+       "Andy"
       ],
       "Mecha 🇦🇷",
       ""
@@ -58464,7 +58464,7 @@
     3500
    ],
    [
-    "99 🇨🇱",
+    "Andy",
     "Cuartos",
     2000
    ],
@@ -58474,12 +58474,12 @@
     2000
    ],
    [
-    "Vilca",
+    "Soulb",
     "Cuartos",
     2000
    ],
    [
-    "choque🇵🇪",
+    "Vilca",
     "Cuartos",
     2000
    ]

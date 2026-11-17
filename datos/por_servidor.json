@@ -226,20 +226,6 @@
     "racha": "1/1"
    }
   },
-  "99 🇨🇱": {
-   "LKR": {
-    "duelos": "",
-    "ev": 1,
-    "oro": 0,
-    "ovr": 42,
-    "pod": 0,
-    "pts": 1500,
-    "racha": "0/0",
-    "tg": {
-     "nuevo": true
-    }
-   }
-  },
   "<:emoji_5:1462319885810925610>": {
    "ACAD": {
     "duelos": "",
@@ -1099,6 +1085,41 @@
     "ovr": 45,
     "pod": 0,
     "pts": 15000,
+    "racha": "0/0"
+   },
+   "LKR": {
+    "duelos": "",
+    "ev": 1,
+    "oro": 0,
+    "ovr": 42,
+    "pod": 0,
+    "pts": 1500,
+    "racha": "0/0",
+    "tg": {
+     "nuevo": true
+    }
+   }
+  },
+  "Andy MC": {
+   "CEU": {
+    "duelos": "",
+    "ev": 3,
+    "oro": 0,
+    "ovr": 44,
+    "pod": 0,
+    "pts": 7500,
+    "racha": "0/1",
+    "tg": {
+     "nuevo": true
+    }
+   },
+   "LKR": {
+    "duelos": "",
+    "ev": 1,
+    "oro": 0,
+    "ovr": 42,
+    "pod": 0,
+    "pts": 2750,
     "racha": "0/0"
    }
   },
@@ -6682,6 +6703,29 @@
     "racha": "0/0"
    }
   },
+  "KairoX": {
+   "ACAD": {
+    "duelos": "",
+    "ev": 1,
+    "oro": 0,
+    "ovr": 43,
+    "pod": 0,
+    "pts": 6188,
+    "racha": "0/0",
+    "tg": {
+     "nuevo": true
+    }
+   },
+   "LKR": {
+    "duelos": "",
+    "ev": 1,
+    "oro": 0,
+    "ovr": 42,
+    "pod": 0,
+    "pts": 1375,
+    "racha": "0/0"
+   }
+  },
   "Kaizz": {
    "CH": {
     "duelos": "1/2",
@@ -11698,6 +11742,17 @@
     "racha": "0/0"
    }
   },
+  "Rafael JR": {
+   "LKR": {
+    "duelos": "",
+    "ev": 1,
+    "oro": 0,
+    "ovr": 43,
+    "pod": 0,
+    "pts": 5775,
+    "racha": "1/1"
+   }
+  },
   "Ragna": {
    "FRZ": {
     "duelos": "6/6",
@@ -12754,12 +12809,12 @@
   },
   "Shadow": {
    "ACAD": {
-    "duelos": "0/1",
-    "ev": 1,
+    "duelos": "1/3",
+    "ev": 2,
     "oro": 0,
-    "ovr": 42,
+    "ovr": 44,
     "pod": 0,
-    "pts": 1875,
+    "pts": 14375,
     "racha": "0/0"
    },
    "CEU": {
@@ -12772,12 +12827,12 @@
     "racha": "0/0"
    },
    "DDF": {
-    "duelos": "0/4",
-    "ev": 4,
+    "duelos": "1/10",
+    "ev": 11,
     "oro": 0,
-    "ovr": 45,
+    "ovr": 49,
     "pod": 0,
-    "pts": 13375,
+    "pts": 31249,
     "racha": "0/0",
     "tg": {
      "fund": true
@@ -12797,29 +12852,38 @@
    },
    "FDS": {
     "duelos": "",
-    "ev": 1,
+    "ev": 3,
     "oro": 0,
-    "ovr": 42,
+    "ovr": 44,
     "pod": 0,
-    "pts": 2000,
+    "pts": 5250,
     "racha": "0/0"
    },
    "FFA": {
     "duelos": "",
-    "ev": 2,
+    "ev": 3,
     "oro": 0,
     "ovr": 43,
     "pod": 0,
-    "pts": 2500,
+    "pts": 4375,
+    "racha": "0/0"
+   },
+   "LKR": {
+    "duelos": "",
+    "ev": 3,
+    "oro": 0,
+    "ovr": 44,
+    "pod": 0,
+    "pts": 6422,
     "racha": "0/0"
    },
    "URBF": {
-    "duelos": "0/1",
-    "ev": 1,
+    "duelos": "0/2",
+    "ev": 3,
     "oro": 0,
-    "ovr": 43,
+    "ovr": 45,
     "pod": 0,
-    "pts": 4125,
+    "pts": 16725,
     "racha": "0/0"
    }
   },
@@ -13281,14 +13345,15 @@
    },
    "LKR": {
     "duelos": "",
-    "ev": 6,
+    "ev": 7,
     "oro": 0,
-    "ovr": 46,
+    "ovr": 47,
     "pod": 0,
-    "pts": 24287,
+    "pts": 25787,
     "racha": "0/1",
     "tg": {
-     "fund": true
+     "fund": true,
+     "llave": true
     }
    }
   },
@@ -13350,29 +13415,6 @@
     "ovr": 43,
     "pod": 0,
     "pts": 6875,
-    "racha": "0/0"
-   }
-  },
-  "Sweet pain": {
-   "CEU": {
-    "duelos": "",
-    "ev": 3,
-    "oro": 0,
-    "ovr": 44,
-    "pod": 0,
-    "pts": 7500,
-    "racha": "0/1",
-    "tg": {
-     "fund": true
-    }
-   },
-   "LKR": {
-    "duelos": "",
-    "ev": 1,
-    "oro": 0,
-    "ovr": 42,
-    "pod": 0,
-    "pts": 2750,
     "racha": "0/0"
    }
   },
@@ -13634,17 +13676,6 @@
     "racha": "0/0"
    }
   },
-  "Teorema": {
-   "LKR": {
-    "duelos": "",
-    "ev": 1,
-    "oro": 0,
-    "ovr": 43,
-    "pod": 0,
-    "pts": 5775,
-    "racha": "1/1"
-   }
-  },
   "Terry": {
    "LKR": {
     "duelos": "",
@@ -13877,29 +13908,6 @@
     "tg": {
      "fin": 1
     }
-   }
-  },
-  "Trueno": {
-   "ACAD": {
-    "duelos": "",
-    "ev": 1,
-    "oro": 0,
-    "ovr": 43,
-    "pod": 0,
-    "pts": 6188,
-    "racha": "0/0",
-    "tg": {
-     "nuevo": true
-    }
-   },
-   "LKR": {
-    "duelos": "",
-    "ev": 1,
-    "oro": 0,
-    "ovr": 42,
-    "pod": 0,
-    "pts": 1375,
-    "racha": "0/0"
    }
   },
   "Tuca": {
@@ -14155,62 +14163,6 @@
     "ovr": 42,
     "pod": 0,
     "pts": 625,
-    "racha": "0/0"
-   }
-  },
-  "VALLES-T": {
-   "ACAD": {
-    "duelos": "1/2",
-    "ev": 1,
-    "oro": 0,
-    "ovr": 44,
-    "pod": 0,
-    "pts": 12500,
-    "racha": "0/0"
-   },
-   "DDF": {
-    "duelos": "1/6",
-    "ev": 7,
-    "oro": 0,
-    "ovr": 46,
-    "pod": 0,
-    "pts": 18906,
-    "racha": "0/0"
-   },
-   "FDS": {
-    "duelos": "",
-    "ev": 2,
-    "oro": 0,
-    "ovr": 43,
-    "pod": 0,
-    "pts": 3250,
-    "racha": "0/0"
-   },
-   "FFA": {
-    "duelos": "",
-    "ev": 1,
-    "oro": 0,
-    "ovr": 42,
-    "pod": 0,
-    "pts": 1875,
-    "racha": "0/0"
-   },
-   "LKR": {
-    "duelos": "",
-    "ev": 3,
-    "oro": 0,
-    "ovr": 44,
-    "pod": 0,
-    "pts": 6422,
-    "racha": "0/0"
-   },
-   "URBF": {
-    "duelos": "0/1",
-    "ev": 2,
-    "oro": 0,
-    "ovr": 44,
-    "pod": 0,
-    "pts": 12600,
     "racha": "0/0"
    }
   },
@@ -14688,17 +14640,6 @@
     "ovr": 42,
     "pod": 0,
     "pts": 1250,
-    "racha": "0/0"
-   }
-  },
-  "WOS": {
-   "LKR": {
-    "duelos": "",
-    "ev": 1,
-    "oro": 0,
-    "ovr": 42,
-    "pod": 0,
-    "pts": 2750,
     "racha": "0/0"
    }
   },
@@ -15485,20 +15426,6 @@
     "racha": "1/1",
     "tg": {
      "fin": 1
-    }
-   }
-  },
-  "choque🇵🇪": {
-   "LKR": {
-    "duelos": "",
-    "ev": 1,
-    "oro": 0,
-    "ovr": 42,
-    "pod": 0,
-    "pts": 1500,
-    "racha": "0/0",
-    "tg": {
-     "nuevo": true
     }
    }
   },
@@ -16401,6 +16328,17 @@
     "pod": 0,
     "pts": 5775,
     "racha": "1/1"
+   }
+  },
+  "wosito": {
+   "LKR": {
+    "duelos": "",
+    "ev": 1,
+    "oro": 0,
+    "ovr": 42,
+    "pod": 0,
+    "pts": 2750,
+    "racha": "0/0"
    }
   },
   "xJuniorTime": {

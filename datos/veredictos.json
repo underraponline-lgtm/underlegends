@@ -224,50 +224,6 @@
   }
  },
  "batallas": {
-  "1569538250312519832": {
-   "id": "1569538250312519832",
-   "sv": "[FFA] Freestyle For All 👾",
-   "g": "1468472442925092958",
-   "canal": "1487206164864438513",
-   "pub": 1794277479485,
-   "a": "GEOKA",
-   "b": "VERC",
-   "ganador": "VERC",
-   "votos": "1–0"
-  },
-  "1569538641779490899": {
-   "id": "1569538641779490899",
-   "sv": "[FFA] Freestyle For All 👾",
-   "g": "1468472442925092958",
-   "canal": "1487206164864438513",
-   "pub": 1794277572818,
-   "a": "DREXX",
-   "b": "XUBARU",
-   "ganador": "XUBARU",
-   "votos": "1–0"
-  },
-  "1569542787182100542": {
-   "id": "1569542787182100542",
-   "sv": "[FFA] Freestyle For All 👾",
-   "g": "1468472442925092958",
-   "canal": "1487206164864438513",
-   "pub": 1794278561159,
-   "a": "Júpiter",
-   "b": "yinn",
-   "ganador": "yinn",
-   "votos": "1–0"
-  },
-  "1569545354188161145": {
-   "id": "1569545354188161145",
-   "sv": "[FFA] Freestyle For All 👾",
-   "g": "1468472442925092958",
-   "canal": "1487206164864438513",
-   "pub": 1794279173181,
-   "a": "CRONOX",
-   "b": "NC",
-   "ganador": "NC",
-   "votos": "1–0"
-  },
   "1569548209939021931": {
    "id": "1569548209939021931",
    "sv": "[FFA] Freestyle For All 👾",
@@ -2291,140 +2247,20 @@
    "b": "LANCER 🇻🇪",
    "ganador": "PUPPY🇨🇴",
    "votos": "1–0"
+  },
+  "1572070519510138921": {
+   "id": "1572070519510138921",
+   "sv": "🔥LKR (Champios Legue)🐉",
+   "g": "1558611504046153750",
+   "canal": "1560448027490001067",
+   "pub": 1794881219509,
+   "a": "TOKIO🇦🇷",
+   "b": "CALIZ🇲🇽",
+   "ganador": "TOKIO🇦🇷",
+   "votos": "1–0"
   }
  },
  "llaves": {
-  "1564464702078189679": {
-   "id": "1564464702078189679",
-   "sv": "#FDS ╏FREESTYLE DISCORD SERIES",
-   "g": "1489848581203689535",
-   "canal": "1536574435761332334",
-   "pub": 1793067851324,
-   "ed": 1793076352506,
-   "texto": "`[ OCTAVOS ]`\n⌞MC AREPA⌝ 🆚 ⌞CHENTE⌝\n⌞SIN LIMITES⌝ 🆚 ⌞MATS⌝\n⌞ARTEZZY⌝ 🆚 ⌞MCAREPA⌝\n⌞GARY⌝ 🆚 ⌞SHIKTA⌝\n⌞OKAM⌝ 🆚 ⌞JAZI⌝\n⌞MCAREPA⌝ 🆚 ⌞GARI⌝\n⌞CHENTE⌝ 🆚 ⌞SIN LIMITES⌝\n⌞CHENTE⌝ 🆚 ⌞SIN LÍMITES⌝\n⌞AL3⌝ 🆚 ⌞OKAM⌝\n⌞LUCK⌝ 🆚 ⌞ESEKA⌝\n⌞SIN LIMITES⌝ 🆚 ⌞MCAREPA⌝\n⌞LUCK⌝ 🆚 ⌞MCAREPA⌝",
-   "batallas": [
-    [
-     "OCTAVOS",
-     [
-      "MC AREPA",
-      "CHENTE"
-     ],
-     "CHENTE",
-     "veredicto",
-     []
-    ],
-    [
-     "OCTAVOS",
-     [
-      "SIN LIMITES",
-      "MATS"
-     ],
-     "SIN LIMITES",
-     "veredicto",
-     []
-    ],
-    [
-     "OCTAVOS",
-     [
-      "ARTEZZY",
-      "MCAREPA"
-     ],
-     "MCAREPA",
-     "veredicto",
-     []
-    ],
-    [
-     "OCTAVOS",
-     [
-      "GARY",
-      "SHIKTA"
-     ],
-     "GARY",
-     "veredicto",
-     []
-    ],
-    [
-     "OCTAVOS",
-     [
-      "OKAM",
-      "JAZI"
-     ],
-     "OKAM",
-     "veredicto",
-     []
-    ],
-    [
-     "OCTAVOS",
-     [
-      "MCAREPA",
-      "GARI"
-     ],
-     "MCAREPA",
-     "veredicto",
-     []
-    ],
-    [
-     "OCTAVOS",
-     [
-      "CHENTE",
-      "SIN LIMITES"
-     ],
-     null,
-     "última ronda y no dice campeón",
-     []
-    ],
-    [
-     "OCTAVOS",
-     [
-      "CHENTE",
-      "SIN LÍMITES"
-     ],
-     "SIN LÍMITES",
-     "veredicto",
-     []
-    ],
-    [
-     "OCTAVOS",
-     [
-      "AL3",
-      "OKAM"
-     ],
-     "AL3",
-     "veredicto",
-     []
-    ],
-    [
-     "OCTAVOS",
-     [
-      "LUCK",
-      "ESEKA"
-     ],
-     "LUCK",
-     "veredicto",
-     []
-    ],
-    [
-     "OCTAVOS",
-     [
-      "SIN LIMITES",
-      "MCAREPA"
-     ],
-     null,
-     "última ronda y no dice campeón",
-     []
-    ],
-    [
-     "OCTAVOS",
-     [
-      "LUCK",
-      "MCAREPA"
-     ],
-     "LUCK",
-     "veredicto",
-     []
-    ]
-   ]
-  },
   "1564480372513710131": {
    "id": "1564480372513710131",
    "sv": "#FDS ╏FREESTYLE DISCORD SERIES",

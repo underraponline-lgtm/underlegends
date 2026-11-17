@@ -361,6 +361,7 @@
   "shenlong": "Joven shenlong",
   "snow7zignos": "Snow",
   "tmax": "Tmax Turbo [PN]",
+  "sweetpain": "Andy MC",
   "letras": "leteletras",
   "simonhenriksson": "Mito",
   "chocoperro": "Choco",
@@ -435,7 +436,6 @@
   "sentidice": "Senticide",
   "elkesobrava": "Senticide",
   "vallest": "Shadow",
-  "sweetpain": "Andy MC",
   "trueno": "KairoX",
   "teorema": "Rafael JR",
   "wos": "wosito"
@@ -1890,8 +1890,8 @@
    "Tmax Turbo [PN]"
   ],
   [
-   "ANDY MC",
-   "Sweet pain"
+   "Sweet pain",
+   "Andy MC"
   ],
   [
    "LETRAS",
@@ -2192,6 +2192,22 @@
   [
    "elkesobrava",
    "Senticide"
+  ],
+  [
+   "VALLES-T",
+   "Shadow"
+  ],
+  [
+   "Trueno",
+   "KairoX"
+  ],
+  [
+   "Teorema",
+   "Rafael JR"
+  ],
+  [
+   "WOS",
+   "wosito"
   ]
  ],
  "no_confundir": [

@@ -686,6 +686,14 @@
 "temporada"
 ]
 },
+"shadow": {
+"rg": "E",
+"c": [
+"competitivo",
+"servidor",
+"temporada"
+]
+},
 "player": {
 "rg": "D",
 "c": [
@@ -787,14 +795,6 @@
 "c": [
 "competitivo",
 "pais",
-"servidor",
-"temporada"
-]
-},
-"vallest": {
-"rg": "E",
-"c": [
-"competitivo",
 "servidor",
 "temporada"
 ]
@@ -1100,17 +1100,16 @@
 "rg": "",
 "c": []
 },
-"benji": {
-"rg": "",
-"c": []
-},
-"shadow": {
+"andy": {
 "rg": "",
 "c": [
-"competitivo",
 "servidor",
 "temporada"
 ]
+},
+"benji": {
+"rg": "",
+"c": []
 },
 "sol": {
 "rg": "",
@@ -1155,13 +1154,6 @@
 "bootraxx": {
 "rg": "",
 "c": []
-},
-"andy": {
-"rg": "",
-"c": [
-"servidor",
-"temporada"
-]
 },
 "emilioalva": {
 "rg": "",
@@ -1364,6 +1356,14 @@
 "fleivaman": {
 "rg": "",
 "c": []
+},
+"vallest": {
+"rg": "E",
+"c": [
+"competitivo",
+"servidor",
+"temporada"
+]
 },
 "krtman": {
 "rg": "",
@@ -2872,14 +2872,6 @@
 }
 },
 "cambios": [
-{
-"tipo": "tarjeta",
-"t": "2026-10-11T03:12:26Z",
-"quien": [
-"Verc"
-],
-"carta": "servidor"
-},
 {
 "tipo": "tarjeta",
 "t": "2026-10-11T03:26:17Z",
@@ -6246,6 +6238,15 @@
 "araya"
 ],
 "carta": "temporada"
+},
+{
+"tipo": "rango",
+"t": "2026-11-17T03:06:56Z",
+"quien": [
+"Shadow"
+],
+"rg": "E",
+"primero": true
 }
 ],
 "noche_antes": {
@@ -7835,19 +7836,19 @@
 "n": "Choco",
 "k": "",
 "de": 633,
-"a": 482
+"a": 481
 },
 {
 "n": "Nitro🇨🇱",
 "k": "",
 "de": 665,
-"a": 569
+"a": 568
 },
 {
 "n": "Fisics",
 "k": "",
 "de": 365,
-"a": 342
+"a": 341
 }
 ],
 "sorpresas": [

@@ -1503,12 +1503,14 @@
    ],
    "semillero": {
     "nuevos": {
-     "DDS": 2
+     "DDS": 2,
+     "LKR": 5
     },
     "gente": {
-     "DDS": 8
+     "DDS": 8,
+     "LKR": 8
     },
-    "gana": null
+    "gana": "LKR"
    },
    "meta_va": {
     "ACAD": 0,
@@ -1522,7 +1524,7 @@
     "FFS": 0,
     "FRZ": 0,
     "FVS": 0,
-    "LKR": 0,
+    "LKR": 8,
     "SR": 0,
     "URBF": 0
    }

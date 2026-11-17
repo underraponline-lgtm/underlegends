@@ -1268,6 +1268,98 @@
    ]
   ]
  },
+ "126047346": {
+  "dia": "2026-11-16",
+  "escala": "4-7",
+  "fecha": "16/11",
+  "links": [
+   "https://discord.com/channels/1558611504046153750/1558611505040064607/1572077418926047346"
+  ],
+  "n": 126047346,
+  "nombre": "- L VS MOSQUI",
+  "ns": 1,
+  "participantes": 7,
+  "rondas": [
+   {
+    "b": [
+     [
+      [
+       "TøKīØ🦠🧠",
+       "Calíz"
+      ],
+      "TøKīØ🦠🧠",
+      ""
+     ],
+     [
+      [
+       "Under",
+       "LAST"
+      ],
+      "Under",
+      ""
+     ],
+     [
+      [
+       "Player",
+       "Adriagner"
+      ],
+      "Player",
+      ""
+     ]
+    ],
+    "r": "Cuartos"
+   },
+   {
+    "b": [
+     [
+      [
+       "Under",
+       "TøKīØ🦠🧠"
+      ],
+      "Under",
+      ""
+     ],
+     [
+      [
+       "Mosquitrap 🦟",
+       "Player"
+      ],
+      "Mosquitrap 🦟",
+      ""
+     ]
+    ],
+    "r": "Semifinales"
+   }
+  ],
+  "sv": "LKR",
+  "tabla": [
+   [
+    "Player",
+    "Semifinal",
+    0
+   ],
+   [
+    "TøKīØ🦠🧠",
+    "Semifinal",
+    0
+   ],
+   [
+    "Adriagner",
+    "Cuartos",
+    0
+   ],
+   [
+    "Calíz",
+    "Cuartos",
+    0
+   ],
+   [
+    "LAST",
+    "Cuartos",
+    0
+   ]
+  ]
+ },
  "133386008": {
   "dia": "2026-10-22",
   "escala": "4-7",

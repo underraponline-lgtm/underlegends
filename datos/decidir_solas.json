@@ -4569,6 +4569,25 @@
    "escribio": {
     "quien": "(sin titulo) · LKR · 16/11 · choque🇵🇪"
    }
+  },
+  {
+   "id": "f7207fed3a",
+   "tipo": "Alias posible",
+   "sec": "🪪 Identidad",
+   "que": "¿«99» es Soulb? La cuenta de Soulb en la Lista se anotó como «99», y en el ranking suman aparte. Si es la misma persona, los puntos de «99» pasan a Soulb.\nLa cuenta: https://discord.com/users/645308964141137952",
+   "r": "Ya no hace falta",
+   "regla": "cierre · ya no hacía falta preguntarlo",
+   "rk": "cierre",
+   "por": "el ciclo",
+   "porque": "ya no hace falta: «99» ya no suma aparte en el ranking",
+   "t": 1794884834137,
+   "filas": [
+    1453
+   ],
+   "variantes": [
+    "DOS NOMBRES: «99» → «Soulb» · cuenta 645308964141137952"
+   ],
+   "escribio": {}
   }
  ],
  "deshechas": []
