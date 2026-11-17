@@ -516,7 +516,9 @@ def armar(ahora=None):
            'sem': sems,
            'miembros': miembros, 'hechas': h,
            # 🏆 una temporada de Pase premium para cada campeón de liga (15/11/2026): ver `vales_campeones()`
-           'vales': vales_campeones()}
+           'vales': vales_campeones(),
+           # 🥚 los Dragón Drops por ganar (la tanda 1 del rework, 17/11/2026): ver bot/drops_merito.py
+           'drops': drops_por_ganar()}
     out['v'] = hashlib.sha256(json.dumps(out, sort_keys=True, ensure_ascii=False).encode('utf-8')).hexdigest()[:16]
     return out
 
@@ -551,6 +553,17 @@ def vales_campeones():
         return vales_de_salon(_LG.salon(claves=claves))
     except Exception as e:                               # noqa: BLE001
         print('   ⚠️ los Pases premium de los campeones no salen en esta vuelta: %s' % str(e)[:120])
+        return []
+
+
+def drops_por_ganar():
+    """🥚 Lo que se ganó compitiendo desde el arranque de la tanda 1 (`drops_merito.premios()`), para el objeto. Nunca frena
+    el Pase: si algo falla, esta vuelta no manda ninguno y la próxima los manda (el objeto no repite)."""
+    try:
+        import drops_merito as DM
+        return DM.premios()
+    except Exception as e:                               # noqa: BLE001
+        print('   ⚠️ los Dragón Drops por ganar no salen en esta vuelta: %s' % str(e)[:120])
         return []
 
 

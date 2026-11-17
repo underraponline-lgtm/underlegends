@@ -3713,6 +3713,53 @@ const ok = (cond, que, det) => {
     ok(otra.ya && otra.puntos === conPuntos.puntos && otra.sin_tope === conPuntos.sin_tope, 'abrirlo de nuevo devuelve lo mismo, con el tope');
     const pagoT = o.sql.exec('SELECT monto FROM tienda WHERE id = ?', 'drop:' + conPuntos.id).toArray()[0];
     ok(pagoT && pagoT.monto === conPuntos.puntos, 'a la billetera va lo pagado con el tope, no lo de antes');
+
+    // 🥚🎁 LA TANDA 1 DEL REWORK (17/11/2026): el Nido, los cofres y lo que se gana compitiendo
+    ok(A.tipoDrop('star:x') === 'star' && A.tipoDrop('nido:x') === 'nido' && A.tipoDrop('cofre5:3:x') === 'cofre' && A.tipoDrop('cofre:x:1') === 'drop'
+      && A.tipoDrop('dia:x') === 'drop' && A.cofreDe('cofre5:4:x') === 4 && A.cofreDe('nido:x') === -1,
+      'el tipo sale del origen (el cofre de las encuestas de antes sigue siendo un drop)');
+    ok(A.esMerito('nido:merito:camp:1') && A.esMerito('de:9:1:merito') && !A.esMerito('dia:2026-11-17:1') && !A.esMerito('meritorio'),
+      'lo que se gana compitiendo se reconoce por el origen');
+    ok(A.rarezaNido(0) === 1 && A.rarezaNido(0.9999) === 5 && A.rarezaNido(0, 3) === 3 && A.parteNido(0) === 1 && A.parteNido(0.71) === 2
+      && A.parteNido(0.95) === 4 && A.parteNido(0.995) === 8, 'el Nido: desde Mixtape, llega al Diamante, y se parte 70/20/8/2');
+    ok(JSON.stringify(A.subeCofre(0, [0, 0, 0])) === '{"cofre":3,"sube":[true,true,true]}' && A.subeCofre(3, [0, 0, 0]).cofre === 3
+      && A.subeCofre(4, [0, 0, 0]).cofre === 4 && A.subeCofre(1, [0.5, 0.05, 0.5]).cofre === 2,
+      'un toque sube el cofre un escalón con 10 %, y nunca al Tesoro');
+    const N = '300000000000000004';
+    o.dropDar(N, 'nido:prueba', A.NIDO_MIN);
+    const nid = o.sql.exec("SELECT id FROM drops WHERE quien = ? AND origen = 'nido:prueba'", N).toArray()[0].id;
+    const n1 = o.dropAbrir(N, nid), n2 = o.dropAbrir(N, nid);
+    ok(n1.ok && n1.tipo === 'nido' && n1.rareza >= 1 && n1.rareza <= 5 && [1, 2, 4, 8].includes(n1.n) && n1.premios.length === n1.n
+      && n1.puntos === n1.premios.reduce((s, p) => s + p.puntos, 0) && n2.ya && n2.n === n1.n && n2.puntos === n1.puntos,
+      'abrir un Nido: su rareza, en cuántos se partió y un premio por huevo; abrirlo de nuevo devuelve lo mismo', JSON.stringify(n1));
+    const sinAntes = o.dropSin(N);
+    o.dropDar(N, 'cofre5:0:prueba', 0);
+    const cid = o.sql.exec("SELECT id FROM drops WHERE quien = ? AND origen = 'cofre5:0:prueba'", N).toArray()[0].id;
+    const c1 = o.dropAbrir(N, cid), c2 = o.dropAbrir(N, cid);
+    const C = A.COFRES[c1.cofre];
+    ok(c1.ok && c1.tipo === 'cofre' && c1.desde === 0 && c1.cofre >= 0 && c1.cofre <= 3 && c1.sube.length === 3
+      && c1.nuevos.length === C.drops.length && c1.nuevos.every((x, i) => x.min === C.drops[i] && x.tipo === 'drop' && !x.abierto)
+      && c2.ya && c2.cofre === c1.cofre && c2.nuevos.length === c1.nuevos.length,
+      'abrir un cofre: sube o no, y deja creados los drops de adentro con su rareza mínima', JSON.stringify(c1));
+    const pc = o.sql.exec('SELECT monto FROM tienda WHERE id = ?', 'cofre5:' + cid).toArray()[0];
+    ok((C.puntos ? pc && pc.monto === C.puntos : !pc) && o.dropSin(N) === sinAntes, 'sus Puntos van a la billetera, y un cofre no cuenta para la garantía');
+    o.dropDar(N, 'cofre5:4:prueba:merito', 0);
+    const tid = o.sql.exec("SELECT id FROM drops WHERE quien = ? AND origen = 'cofre5:4:prueba:merito'", N).toArray()[0].id;
+    const t1 = o.dropAbrir(N, tid);
+    ok(t1.cofre === 4 && t1.nuevos.length === 4 && t1.nuevos[0].tipo === 'nido' && t1.nuevos[0].min === 3 && t1.nuevos.every((x) => A.esMerito(x.origen)),
+      'el Tesoro trae un Nido desde Disco de Oro, y lo de un cofre por ganar sigue siendo por ganar', JSON.stringify(t1.nuevos));
+    // lo que se gana compitiendo no pasa por el tope ni cuenta para él: con la semana llena (T, 10.000+), paga entero
+    const sem0 = o.dropSemana(T);
+    let m1 = null;
+    for (let i = 0; i < 40 && !m1; i++) {
+      o.dropDar(T, 'merito:prueba:' + i, 0);
+      const c = o.sql.exec("SELECT id FROM drops WHERE quien = ? AND abierto = 0 AND origen LIKE 'merito:prueba:%' ORDER BY id", T).toArray()[0];
+      const r = o.dropAbrir(T, c.id);
+      if (r.puntos > 0) m1 = r;
+    }
+    const pm = m1 && o.sql.exec('SELECT monto FROM tienda WHERE id = ?', 'dropm:' + m1.id).toArray()[0];
+    ok(m1 && !m1.sin_tope && pm && pm.monto === m1.puntos && o.dropSemana(T) === sem0,
+      'un drop por ganar paga entero aunque la semana pasó el tope, y no suma a la semana', JSON.stringify(m1));
   }
 }
 

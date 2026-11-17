@@ -3993,7 +3993,67 @@ export const COFRE_ENC_MIN = 2;
 //: lo que trae cada Caja del Campeón (a la vista): cuántos drops, desde qué rareza, y Puntos de Tienda
 export const CAJAS = { 40: { drops: 3, min: 2, puntos: 2000 }, 50: { drops: 1, min: 4, puntos: 5000 } };
 //: los títulos que sólo salen de un drop, por rareza (2 Vinilo, 3 Disco de Oro, 4 Micrófono de Oro)
-export const DROP_TITULOS = { 2: ['Lengua de Fuego', 'Garra Dorada'], 3: ['Aliento de Dragón'], 4: ['Corona de Escamas'] };
+export const DROP_TITULOS = { 2: ['Lengua de Fuego', 'Garra Dorada'], 3: ['Aliento de Dragón'], 4: ['Corona de Escamas'],
+  5: ['Dragón de Diamante'] };
+// 🥚 LA TANDA 1 DEL REWORK DE LOS DRAGÓN DROPS (17/11/2026). Dlx, a la maqueta (AcuDQPj6VD2CU2XYCg9FsF): «transformar está
+// muy bueno», «asegúrate que haya cofres… y diferentes rarezas», a los 12 lugares nuevos de dónde salen, «Todas», y a
+// encenderlos por tandas con la versión ajustada del informe de la economía, «Sí, la tanda 1». Un drop se reconoce por
+// su origen (`tipoDrop()`): `star:` el Star Dragon, `nido:` el Nido, `cofre5:<t>:` un cofre, y lo demás el de siempre.
+//: 🥚 EL NIDO: el único que llega a la sexta rareza, el Disco de Diamante (como el Ultra de Brawl, que sólo sale de los
+//: Chaos Drops), y se parte como ellos: ×1 el 70 %, ×2 el 20 %, ×4 el 8 % y ×8 el 2 %. Todos los huevos con la rareza que
+//: salió y un premio cada uno. Sale desde Mixtape
+export const NIDO_RAREZAS = [['Maqueta', 0], ['Mixtape', 5000], ['Vinilo', 3000], ['Disco de Oro', 1300], ['Micrófono de Oro', 400],
+  ['Disco de Diamante', 300]];
+export const NIDO_PARTES = [[1, 70], [2, 20], [4, 8], [8, 2]];
+export const NIDO_MIN = 1;
+//: lo que se paga en Puntos por un título que ya tenías (o que salió dos veces en el mismo Nido), por rareza
+export const REPE = { 2: 1500, 3: 3000, 4: 5000, 5: 10000 };
+//: 🎁 LOS COFRES, de menos a más (`t`): lo que traen adentro (la rareza mínima de cada drop; `nido3` es un Nido desde
+//: Disco de Oro) y sus Puntos. Se abren con 3 toques y cada uno lo puede subir un escalón (`COFRE_SUBE`), nunca al Tesoro
+export const COFRES = [
+  { n: 'Cajón de discos', drops: [2, 0, 0], puntos: 0 },
+  { n: 'Flight case', drops: [2, 0, 0, 0], puntos: 1000 },
+  { n: 'Baúl de los objetos', drops: [2, 2, 2], puntos: 2000 },
+  { n: 'Funda del Campeón', drops: [4], puntos: 5000 },
+  { n: 'Tesoro del Dragón', drops: ['nido3', 2, 2, 2], puntos: 10000 },
+];
+export const COFRE_SUBE = 0.1;
+//: 🏆 lo que el ciclo puede dar por ganar (`pase.drops_merito()` → `paseCiclo()`): qué es cada cosa y desde qué rareza
+export const MERITO_TIPOS = { drop: ['', 0], star: ['star:', 2], nido: ['nido:', 1], 'cofre:0': ['cofre5:0:', 0],
+  'cofre:1': ['cofre5:1:', 0], 'cofre:2': ['cofre5:2:', 0], 'cofre:3': ['cofre5:3:', 0], 'cofre:4': ['cofre5:4:', 0] };
+/** El tipo de un drop por su origen. Pura. */
+export function tipoDrop(origen) {
+  const o = String(origen || '');
+  return o.startsWith('star:') ? 'star' : o.startsWith('nido:') ? 'nido' : /^cofre5:[0-4]:/.test(o) ? 'cofre' : 'drop';
+}
+/** El cofre (0–4) de un origen `cofre5:<t>:…`, o -1. Pura. */
+export function cofreDe(origen) {
+  const m = /^cofre5:([0-4]):/.exec(String(origen || ''));
+  return m ? +m[1] : -1;
+}
+/** 🏆 Un premio por ganar (lleva `merito` en el origen): no pasa por el tope de la semana ni cuenta para él. Pura. */
+export function esMerito(origen) {
+  return /(^|:)merito(:|$)/.test(String(origen || ''));
+}
+/** La rareza de un Nido con `r` en [0, 1). Pura. */
+export function rarezaNido(r, min = NIDO_MIN) {
+  const tot = NIDO_RAREZAS.reduce((s, x) => s + x[1], 0);
+  let x = Math.floor(Math.max(0, Math.min(0.999999, r)) * tot), i = 0;
+  for (; i < NIDO_RAREZAS.length - 1; i++) { if (x < NIDO_RAREZAS[i][1]) break; x -= NIDO_RAREZAS[i][1]; }
+  return Math.max(i, Math.min(Math.max(min, NIDO_MIN), NIDO_RAREZAS.length - 1));
+}
+/** En cuántos huevos se parte un Nido. Pura. */
+export function parteNido(r) {
+  let x = Math.floor(Math.max(0, Math.min(0.999999, r)) * 100);
+  for (const [n, p] of NIDO_PARTES) { if (x < p) return n; x -= p; }
+  return 1;
+}
+/** Un cofre `t` con los tres toques `rs` (en [0, 1)): `{cofre, sube}`. Nunca llega al Tesoro subiendo. Pura. */
+export function subeCofre(t, rs) {
+  let c = t;
+  const sube = (rs || []).slice(0, 3).map((r) => { const s = c < 3 && r < COFRE_SUBE; if (s) c += 1; return s; });
+  return { cofre: c, sube };
+}
 //: qué suma un paso de la barra del día (cada cosa, una vez por día)
 export const PASOS_QUE = { jugo: 'Jugar un evento', cm: 'Comentar', fel: 'Felicitar', voto: 'Votar o apostar',
   tarea: 'Una Tarea del Pase', promo: 'Abrir una promo o seguir a alguien' };
@@ -4072,6 +4132,7 @@ export function premioDrop(rareza, r, tiene) {
       : { puntos: entre(1200, 2000), titulo: '' };
   }
   if (rareza === 3) return libres.length && r < 0.5 ? { puntos: 1000, titulo: libres[0] } : { puntos: entre(3000, 5000), titulo: '' };
+  if (rareza >= 5) return { puntos: 15000, titulo: libres[0] || '' };
   return { puntos: 10000, titulo: libres[0] || '' };
 }
 
@@ -14642,14 +14703,15 @@ export class Avisos {
   /** 🐉 Los títulos que ganó en drops (salen en sus títulos, como los del Pase) */
   titulosDrop(quien) {
     return this.sql.exec("SELECT premio FROM drops WHERE quien = ? AND abierto = 1 AND premio LIKE '%titulo%'", String(quien)).toArray()
-      .map((r) => { try { return String((JSON.parse(r.premio) || {}).titulo || ''); } catch (e) { return ''; } }).filter(Boolean);
+      .flatMap((r) => { try { const p = JSON.parse(r.premio) || {}; return [String(p.titulo || '')].concat((p.titulos || []).map(String)); } catch (e) { return []; } })
+      .filter(Boolean);
   }
 
   /** 🐉 Cuántos abrió desde el último legendario (la garantía) */
   dropSin(quien) {
-    const ult = this.sql.exec('SELECT MAX(t_abierto) AS t FROM drops WHERE quien = ? AND abierto = 1 AND rareza = ?', String(quien),
+    const ult = this.sql.exec('SELECT MAX(t_abierto) AS t FROM drops WHERE quien = ? AND abierto = 1 AND rareza >= ?', String(quien),
       DROP_RAREZAS.length - 1).toArray()[0];
-    return this.sql.exec('SELECT COUNT(*) AS n FROM drops WHERE quien = ? AND abierto = 1 AND t_abierto > ?', String(quien),
+    return this.sql.exec('SELECT COUNT(*) AS n FROM drops WHERE quien = ? AND abierto = 1 AND rareza >= 0 AND t_abierto > ?', String(quien),
       (ult && ult.t) || 0).toArray()[0].n;
   }
 
@@ -14657,8 +14719,10 @@ export class Avisos {
   dropsDe(quien) {
     if (!/^[0-9]{5,25}$/.test(quien)) return { error: 'faltan datos' };
     const dia = diaET();
-    const cerrados = this.sql.exec('SELECT id, origen, min, t FROM drops WHERE quien = ? AND abierto = 0 ORDER BY t LIMIT 60', quien).toArray();
-    const abiertos = this.sql.exec('SELECT id, origen, rareza, premio, t_abierto FROM drops WHERE quien = ? AND abierto = 1 ' +
+    const cerrados = this.sql.exec('SELECT id, origen, min, t FROM drops WHERE quien = ? AND abierto = 0 ORDER BY t LIMIT 60', quien).toArray()
+      .map((r) => Object.assign(r, { tipo: tipoDrop(r.origen) }, tipoDrop(r.origen) === 'cofre' ? { cofre: cofreDe(r.origen) } : {}));
+    // los cofres abiertos no van: lo suyo son los drops que trajeron (rareza -1)
+    const abiertos = this.sql.exec('SELECT id, origen, rareza, premio, t_abierto FROM drops WHERE quien = ? AND abierto = 1 AND rareza >= 0 ' +
       'ORDER BY t_abierto DESC LIMIT 12', quien).toArray().map((r) => {
       let pr = {};
       try { pr = JSON.parse(r.premio) || {}; } catch (e) { pr = {}; }
@@ -14667,19 +14731,23 @@ export class Avisos {
     const hechos = this.sql.exec('SELECT que FROM dia_pasos WHERE quien = ? AND dia = ?', quien, dia).toArray().map((r) => r.que);
     return { ok: true, cerrados, abiertos, dia: { pasos: hechos.length, hechos, de: Object.keys(PASOS_QUE).length, drops: DROP_PASOS },
       sin: this.dropSin(quien), garantia: DROP_GARANTIA, rarezas: DROP_RAREZAS, que: PASOS_QUE,
-      semana: { cobrado: this.dropSemana(quien), de: DROP_TOPE } };
+      semana: { cobrado: this.dropSemana(quien), de: DROP_TOPE },
+      rarezas_nido: NIDO_RAREZAS, partes: NIDO_PARTES, cofres: COFRES, sube: COFRE_SUBE };
   }
 
   /** 🐉 Abrir un drop (`/avisos/drop-abrir`): la rareza y el premio los decide el objeto, una sola vez */
   dropAbrir(quien, id) {
     if (!/^[0-9]{5,25}$/.test(quien) || !Number.isInteger(id)) return { error: 'faltan datos' };
-    const f = this.sql.exec('SELECT id, min, abierto, rareza, premio FROM drops WHERE id = ? AND quien = ?', id, quien).toArray()[0];
+    const f = this.sql.exec('SELECT id, origen, min, abierto, rareza, premio FROM drops WHERE id = ? AND quien = ?', id, quien).toArray()[0];
     if (!f) return { error: 'no_existe' };
+    const tipo = tipoDrop(f.origen);
+    if (tipo === 'cofre') return this.cofreAbrir(quien, f);
+    if (tipo === 'nido') return this.nidoAbrir(quien, f);
     if (f.abierto) {
       let pr = {};
       try { pr = JSON.parse(f.premio) || {}; } catch (e) { pr = {}; }
-      return { ok: true, ya: true, id, rareza: f.rareza, puntos: pr.puntos || 0, titulo: pr.titulo || '', sin_tope: pr.sin_tope || 0,
-        semana: { cobrado: this.dropSemana(quien), de: DROP_TOPE } };
+      return { ok: true, ya: true, id, tipo, rareza: f.rareza, nombre: (DROP_RAREZAS[f.rareza] || [''])[0], puntos: pr.puntos || 0,
+        titulo: pr.titulo || '', sin_tope: pr.sin_tope || 0, semana: { cobrado: this.dropSemana(quien), de: DROP_TOPE } };
     }
     const azar = () => { const a = new Uint32Array(1); crypto.getRandomValues(a); return a[0] / 4294967296; };
     const rareza = rarezaDrop(azar(), f.min, this.dropSin(quien));
@@ -14688,9 +14756,11 @@ export class Avisos {
     // un título que ya tenía (no debería salir: `premioDrop()` lo saca) se cambia por Puntos
     if (pr.titulo && tiene.includes(pr.titulo)) { pr.puntos += 1500; pr.titulo = ''; }
     const ahora = Date.now();
-    // 🧢 el tope suave de la semana: lo que pasa de `DROP_TOPE`, a la mitad. `sin_tope` guarda lo que habría pagado
+    // 🧢 el tope suave de la semana: lo que pasa de `DROP_TOPE`, a la mitad. `sin_tope` guarda lo que habría pagado. Lo que
+    // se gana compitiendo (`esMerito()`) no pasa por el tope ni cuenta para él: va a la billetera como `dropm:`
+    const merito = esMerito(f.origen);
     const cobrado = this.dropSemana(quien, ahora);
-    if (pr.puntos > 0) {
+    if (pr.puntos > 0 && !merito) {
       const paga = conTope(pr.puntos, cobrado);
       if (paga < pr.puntos) { pr.sin_tope = pr.puntos; pr.puntos = paga; }
     }
@@ -14698,10 +14768,78 @@ export class Avisos {
       rareza, JSON.stringify(pr), ahora, id, quien);
     if (r && r.rowsWritten === 0) return this.dropAbrir(quien, id);
     if (pr.puntos > 0) {
-      this.sql.exec('INSERT OR IGNORE INTO tienda (id, ref, quien, monto, t) VALUES (?, 0, ?, ?, ?)', 'drop:' + id, quien, pr.puntos, ahora);
+      this.sql.exec('INSERT OR IGNORE INTO tienda (id, ref, quien, monto, t) VALUES (?, 0, ?, ?, ?)', (merito ? 'dropm:' : 'drop:') + id,
+        quien, pr.puntos, ahora);
     }
-    return { ok: true, id, rareza, nombre: DROP_RAREZAS[rareza][0], puntos: pr.puntos, titulo: pr.titulo, sin_tope: pr.sin_tope || 0,
-      semana: { cobrado: cobrado + (pr.puntos || 0), de: DROP_TOPE } };
+    return { ok: true, id, tipo, rareza, nombre: DROP_RAREZAS[rareza][0], puntos: pr.puntos, titulo: pr.titulo, sin_tope: pr.sin_tope || 0,
+      semana: { cobrado: cobrado + (merito ? 0 : (pr.puntos || 0)), de: DROP_TOPE } };
+  }
+
+  /** 🥚 Abrir un Nido (lo llama `dropAbrir()`): la rareza, en cuántos huevos se parte y un premio por huevo, una sola vez.
+   *  El título que ya tenías, o que sale dos veces en el mismo Nido, se paga en Puntos (`REPE`) */
+  nidoAbrir(quien, f) {
+    const id = f.id, merito = esMerito(f.origen);
+    const leer = () => { try { return JSON.parse(f.premio) || {}; } catch (e) { return {}; } };
+    const salida = (pr, rareza, cobrado) => ({ ok: true, id, tipo: 'nido', rareza, nombre: (NIDO_RAREZAS[rareza] || [''])[0], n: pr.n || 1,
+      premios: pr.premios || [], puntos: pr.puntos || 0, sin_tope: pr.sin_tope || 0, semana: { cobrado, de: DROP_TOPE } });
+    if (f.abierto) return Object.assign({ ya: true }, salida(leer(), f.rareza, this.dropSemana(quien)));
+    const azar = () => { const a = new Uint32Array(1); crypto.getRandomValues(a); return a[0] / 4294967296; };
+    const rareza = rarezaNido(azar(), f.min), n = parteNido(azar());
+    const tiene = new Set(this.titulosDrop(quien));
+    const premios = [];
+    for (let i = 0; i < n; i++) {
+      const p = premioDrop(rareza, azar(), [...tiene]);
+      const repe = !p.titulo && (DROP_TITULOS[rareza] || []).length > 0 && (DROP_TITULOS[rareza] || []).every((t) => tiene.has(t));
+      if (repe && REPE[rareza]) p.puntos = Math.max(p.puntos, REPE[rareza]);
+      if (p.titulo) tiene.add(p.titulo);
+      premios.push({ puntos: p.puntos, titulo: p.titulo, repe });
+    }
+    const pr = { n, premios, titulos: premios.map((p) => p.titulo).filter(Boolean), puntos: premios.reduce((s, p) => s + p.puntos, 0) };
+    const ahora = Date.now();
+    const cobrado = this.dropSemana(quien, ahora);
+    if (pr.puntos > 0 && !merito) {
+      const paga = conTope(pr.puntos, cobrado);
+      if (paga < pr.puntos) { pr.sin_tope = pr.puntos; pr.puntos = paga; }
+    }
+    const r = this.sql.exec('UPDATE drops SET abierto = 1, rareza = ?, premio = ?, t_abierto = ? WHERE id = ? AND quien = ? AND abierto = 0',
+      rareza, JSON.stringify(pr), ahora, id, quien);
+    if (r && r.rowsWritten === 0) return this.dropAbrir(quien, id);
+    if (pr.puntos > 0) {
+      this.sql.exec('INSERT OR IGNORE INTO tienda (id, ref, quien, monto, t) VALUES (?, 0, ?, ?, ?)', (merito ? 'dropm:' : 'drop:') + id,
+        quien, pr.puntos, ahora);
+    }
+    return salida(pr, rareza, cobrado + (merito ? 0 : pr.puntos));
+  }
+
+  /** 🎁 Abrir un cofre (lo llama `dropAbrir()`): los tres toques (si sube), sus Puntos y los drops de adentro, que quedan
+   *  creados para abrirse uno por uno (`nuevos`). Los de un cofre por ganar siguen siendo por ganar */
+  cofreAbrir(quien, f) {
+    const id = f.id, merito = esMerito(f.origen);
+    const hijos = () => this.sql.exec("SELECT id, origen, min, abierto FROM drops WHERE quien = ? AND (origen LIKE ? OR origen LIKE ?) ORDER BY id",
+      quien, 'de:' + id + ':%', 'nido:de:' + id + ':%').toArray().map((x) => ({ id: x.id, origen: x.origen, min: x.min, tipo: tipoDrop(x.origen),
+      abierto: !!x.abierto }));
+    const salida = (pr) => ({ ok: true, id, tipo: 'cofre', desde: pr.desde, cofre: pr.cofre, sube: pr.sube || [],
+      nombre: (COFRES[pr.cofre] || {}).n || '', puntos: pr.puntos || 0, nuevos: hijos(), semana: { cobrado: this.dropSemana(quien), de: DROP_TOPE } });
+    if (f.abierto) { let pr = {}; try { pr = JSON.parse(f.premio) || {}; } catch (e) { pr = {}; } return Object.assign({ ya: true }, salida(pr)); }
+    const azar = () => { const a = new Uint32Array(1); crypto.getRandomValues(a); return a[0] / 4294967296; };
+    const desde = cofreDe(f.origen);
+    const { cofre, sube } = subeCofre(desde, [azar(), azar(), azar()]);
+    const C = COFRES[cofre];
+    const pr = { desde, cofre, sube, puntos: C.puntos };
+    const ahora = Date.now();
+    // rareza -1: un cofre no es una rareza (ni cuenta para la garantía)
+    const r = this.sql.exec('UPDATE drops SET abierto = 1, rareza = -1, premio = ?, t_abierto = ? WHERE id = ? AND quien = ? AND abierto = 0',
+      JSON.stringify(pr), ahora, id, quien);
+    if (r && r.rowsWritten === 0) return this.dropAbrir(quien, id);
+    if (C.puntos > 0) {
+      this.sql.exec('INSERT OR IGNORE INTO tienda (id, ref, quien, monto, t) VALUES (?, 0, ?, ?, ?)', 'cofre5:' + id, quien, C.puntos, ahora);
+    }
+    const suf = merito ? ':merito' : '';
+    C.drops.forEach((m, i) => {
+      if (m === 'nido3') this.dropDar(quien, 'nido:de:' + id + ':' + (i + 1) + suf, 3, ahora);
+      else this.dropDar(quien, 'de:' + id + ':' + (i + 1) + suf, m, ahora);
+    });
+    return salida(pr);
   }
 
   /** 🧢 Los Puntos de drops que `quien` ya cobró esta semana (lunes a domingo, hora del este), para el tope suave */
@@ -17052,6 +17190,13 @@ export class Avisos {
           this.sql.exec('UPDATE pase_premium SET hasta = ? WHERE quien = ? AND temp = ?', ahoraP, r.quien, cfg.temp);
         }
       }
+    }
+    // 🥚 LOS DRAGÓN DROPS POR GANAR que manda el ciclo (`pase.drops_merito()`, la tanda 1 del rework, 17/11/2026): uno por
+    // cosa ganada, con su origen como llave (`dropDar()` no repite), y sólo los tipos de `MERITO_TIPOS`
+    for (const x of (Array.isArray(d.drops) ? d.drops : []).slice(0, 400)) {
+      const q = String((x && x.q) || ''), o = String((x && x.o) || ''), k = String((x && x.k) || '');
+      if (!id(q) || !/^[\w.:-]{3,60}$/.test(o) || !MERITO_TIPOS[k]) continue;
+      this.dropDar(q, MERITO_TIPOS[k][0] + 'merito:' + o, MERITO_TIPOS[k][1]);
     }
     // 🏆 los Pases premium de los campeones de liga que manda el ciclo (`pase.vales_campeones()`): uno por título, y el que
     // ya estaba no se toca (ni usado ni sin usar). Al dueño del perfil, si se sabe su cuenta, le llega a la campana
