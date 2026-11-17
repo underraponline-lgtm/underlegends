@@ -3729,8 +3729,11 @@ const ok = (cond, que, det) => {
     o.dropDar(N, 'nido:prueba', A.NIDO_MIN);
     const nid = o.sql.exec("SELECT id FROM drops WHERE quien = ? AND origen = 'nido:prueba'", N).toArray()[0].id;
     const n1 = o.dropAbrir(N, nid), n2 = o.dropAbrir(N, nid);
+    // con un Nido muy alto (un Micrófono ×2, un Diamante) el total pasa los 10.000 y el tope de la semana lo recorta
+    const sumaN = n1.premios.reduce((s, p) => s + p.puntos, 0);
     ok(n1.ok && n1.tipo === 'nido' && n1.rareza >= 1 && n1.rareza <= 5 && [1, 2, 4, 8].includes(n1.n) && n1.premios.length === n1.n
-      && n1.puntos === n1.premios.reduce((s, p) => s + p.puntos, 0) && n2.ya && n2.n === n1.n && n2.puntos === n1.puntos,
+      && (n1.sin_tope ? n1.sin_tope === sumaN && n1.puntos === A.conTope(sumaN, 0) : n1.puntos === sumaN)
+      && n2.ya && n2.n === n1.n && n2.puntos === n1.puntos,
       'abrir un Nido: su rareza, en cuántos se partió y un premio por huevo; abrirlo de nuevo devuelve lo mismo', JSON.stringify(n1));
     const sinAntes = o.dropSin(N);
     o.dropDar(N, 'cofre5:0:prueba', 0);
