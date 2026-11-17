@@ -55739,10 +55739,10 @@
      [
       [
        "REPECHAJE",
-       "Krish 🇪🇸"
+       "Krish"
       ],
-      "",
-      "sin ganador: espera en ✅ Decidir"
+      "REPECHAJE",
+      "ganador: ✅ Decidir"
      ]
     ],
     "r": "Cuartos"
@@ -55803,6 +55803,11 @@
     "NC",
     "Semifinal",
     3500
+   ],
+   [
+    "Krish",
+    "Cuartos",
+    2000
    ],
    [
     "Lvel 🇻🇪",

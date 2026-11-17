@@ -7058,11 +7058,11 @@
    },
    "CEU": {
     "duelos": "",
-    "ev": 2,
+    "ev": 3,
     "oro": 0,
-    "ovr": 43,
+    "ovr": 44,
     "pod": 0,
-    "pts": 5000,
+    "pts": 7000,
     "racha": "0/0",
     "tg": {
      "fund": true
