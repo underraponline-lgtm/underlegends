@@ -2471,7 +2471,11 @@ def correr(aplicar=False):
     d['faltan'] = {lid: u['faltan'] for lid, u in ubicados.items() if u['faltan']} if mapa else viejos_f
     for lid, u in ubicados.items():
         if u['faltan'] or u['movidos']:
-            print('   🔴 %-24s sin %s%s' % (LIGAS[lid]['n'], ', '.join(u['faltan']) or '—', ' · movidos: %s' % u['movidos'] if u['movidos'] else ''))
+            # 🔴 sólo la primera vez; después, gris: FMS Titans, Perú y Tricolor perdieron sus canales el 12/11 y el 🔴 se
+            # repetía en cada corrida, tapando a los rojos nuevos (revisión del 17/11/2026). Logs ya se avisa una vez
+            ya = sorted(viejos_f.get(lid) or []) == sorted(u['faltan']) and not u['movidos']
+            print('   %s %-24s sin %s%s%s' % ('·' if ya else '🔴', LIGAS[lid]['n'], ', '.join(u['faltan']) or '—',
+                                            ' · movidos: %s' % u['movidos'] if u['movidos'] else '', ' (ya avisado)' if ya else ''))
     if aplicar and ubicados:
         _avisar_canales(viejos_f, ubicados)
     if aplicar:
