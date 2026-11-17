@@ -11,6 +11,18 @@
   ],
   "cambios": [
     {
+      "version": "5.96",
+      "dia": "2026-11-17",
+      "cuando": "2026-11-17T01:18:00-05:00",
+      "titulo": "Dragón Drops: el Nido, los cofres y los premios por ganar",
+      "items": [
+        "Abrir un drop ahora es a pantalla completa y con sonido: el Drop se transforma, el Star Dragon es una escama y los cofres se abren a toques.",
+        "Nuevo: el Nido de dragón, el único que puede darte el Disco de Diamante. A veces se parte en 2, 4 u 8.",
+        "Ganar da drops: el campeón de un evento se lleva un Nido (el primer título de la semana), el 2.º y el 3.º un Dragón Drop, y el campeón de una liga la Funda del Campeón. También el batacazo y el Most Wanted.",
+        "Lo que ganas compitiendo no cuenta para el tope de la semana."
+      ]
+    },
+    {
       "version": "5.95",
       "dia": "2026-11-17",
       "cuando": "2026-11-17T00:56:50-05:00",
