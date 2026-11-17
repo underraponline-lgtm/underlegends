@@ -23847,7 +23847,7 @@
    ],
    [
     "MAT MC",
-    "VALLES-T",
+    "Shadow",
     "MAT MC"
    ],
    [
@@ -23899,7 +23899,7 @@
    "Vilca": 1
   },
   "fecha": "14/10",
-  "firma": "2ade761267419bc3",
+  "firma": "554fe47628eb44a5",
   "msg": "1564147696351191051",
   "nombre": "GG SANGRERAP 1",
   "num": 521,
@@ -23981,7 +23981,7 @@
     1250
    ],
    [
-    "VALLES-T",
+    "Shadow",
     "Octavos",
     1250
    ]
@@ -24213,7 +24213,7 @@
    "Vilca": 1
   },
   "fecha": "21/10",
-  "firma": "1212f7bbef408c41",
+  "firma": "2bddd7bb70fc0d2b",
   "msg": "1564147707952758815",
   "nombre": "- RED BULL TORNEO DE PLAZAS 2026 -",
   "num": 523,
@@ -24436,7 +24436,7 @@
   "duelos": [
    [
     "Vilca",
-    "VALLES-T",
+    "Shadow",
     "Vilca"
    ],
    [
@@ -24481,7 +24481,7 @@
    "Vilca": 1
   },
   "fecha": "22/10",
-  "firma": "7a691cabd1e25f88",
+  "firma": "19b172f03274cd19",
   "msg": "1564147714000953499",
   "nombre": "GG SANGRERAP 4",
   "num": 525,
@@ -24513,7 +24513,7 @@
     3500
    ],
    [
-    "VALLES-T",
+    "Shadow",
     "Cuartos",
     2000
    ],
@@ -42124,7 +42124,7 @@
    "Vilca": 16
   },
   "fecha": "10/11",
-  "firma": "57bf014637804954",
+  "firma": "ac17984cd22d1ed8",
   "msg": "1569848635271680124",
   "nombre": "MF DOOM Y MADLIB EDICION 1",
   "num": 604,
@@ -45977,7 +45977,7 @@
    "TøKīØ🦠🧠": 13
   },
   "fecha": "12/11",
-  "firma": "60710cad2cf9f98b",
+  "firma": "618f04d7c6b030b4",
   "msg": "1570602754639007937",
   "nombre": "RAP SIN GROSERIAS 5",
   "num": 626,
@@ -50604,6 +50604,7 @@
   "v": 2
  },
  "651": {
+  "al_dia": true,
   "antes": {
    "19 FLEIVA WACK": [
     275,
@@ -50872,6 +50873,7 @@
   "v": 2
  },
  "652": {
+  "al_dia": true,
   "antes": {
    "CrisZJ": [
     260,
@@ -50994,6 +50996,7 @@
   "v": 2
  },
  "653": {
+  "al_dia": true,
   "antes": {
    "Chente": [
     371,
@@ -51085,7 +51088,7 @@
    "crakero": 11
   },
   "fecha": "13/11",
-  "firma": "ac45051a643c341f",
+  "firma": "323ed147bc531c70",
   "msg": "1572055186955046984",
   "nombre": "RAP SIN GROSERIAS 6",
   "num": 653,
