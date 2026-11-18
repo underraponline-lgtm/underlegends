@@ -129,6 +129,16 @@ def _titulo(evento):
     return re.sub(r'^[\s_*~|`]+|[\s_*~|`]+$', '', t).strip()
 
 
+WEB = 'https://underlegends.pages.dev'
+
+
+def _logo(sv):
+    """🛡️ La URL pública del logo del servidor (bot/paginas/logos/<sv>.webp, servido por la página), o `''` si no hay.
+    Dlx, 18/11/2026: «que el embed tenga el logo del servidor en su ícono»."""
+    sv = str(sv or '').lower()
+    return '%s/logos/%s.webp' % (WEB, sv) if sv and os.path.exists(os.path.join(BASE, 'bot', 'paginas', 'logos', sv + '.webp')) else ''
+
+
 def _sv_info(sv):
     """`(nombre del servidor, color)`, de `datos/servidores.json` y `datos/colores_sv_marca.json`."""
     svs = (_j(os.path.join(BASE, 'datos', 'servidores.json'), {}) or {}).get('servidores') or {}
@@ -248,7 +258,10 @@ def mensaje(evento, sv, g, Q, miembros, oficiales=None, puntos=None):
     # las tarjetas son el lugar donde más gente ha entrado»: el link a la página es lo que trae gente). Va como el botón
     # de una Sección (type 9): a la derecha del texto de los premios, o del campeón si no hay premios. Nunca queda solo
     ver = {'type': 2, 'style': 5, 'label': 'Ver mis drops', 'emoji': {'name': '🐉'}, 'url': WEB_DROPS}
-    adentro = [{'type': 10, 'content': cabeza},
+    # 🛡️ el título con el logo del servidor a la derecha (una Sección con su miniatura), si el servidor tiene logo
+    logo = _logo(sv)
+    adentro = [{'type': 9, 'components': [{'type': 10, 'content': cabeza}], 'accessory': {'type': 11, 'media': {'url': logo}}}
+               if logo else {'type': 10, 'content': cabeza},
                {'type': 9, 'components': [{'type': 10, 'content': corona}], 'accessory': ver} if not premios
                else {'type': 10, 'content': corona}]
     if tabla:
@@ -469,7 +482,7 @@ def _self_check():
     ok('Miembro de DRA' not in json.dumps(comps, ensure_ascii=False) and 'Cada botón' not in caja,
        'sin la línea de «si todavía no eres Miembro de DRA» ni la de «cada botón lo abre…»')
     filas = [c for c in comps[1]['components'] if c['type'] == 1]
-    secs = [c for c in comps[1]['components'] if c['type'] == 9]
+    secs = [c for c in comps[1]['components'] if c['type'] == 9 and c['accessory'].get('type') == 2]
     ok(comps[1]['components'][-1]['type'] == 1 and len(filas) == 1 and 'Ver mis drops' not in json.dumps(filas, ensure_ascii=False)
        and len(secs) == 1 and secs[0]['accessory'].get('url') == WEB_DROPS and 'Los premios' in secs[0]['components'][0]['content'],
        '«Ver mis drops» al costado de los premios (una Sección), nunca solo en una fila; termina con los botones de los ganadores')
@@ -483,6 +496,11 @@ def _self_check():
        and c2[-1]['components'][1]['type'] == 9 and c2[-1]['components'][1]['accessory'].get('url') == WEB_DROPS,
        'sin título, «Terminó el evento»; sin batacazos ni puntos, sin esas partes; el campeón con su Drop y «Ver mis drops» a su lado')
     ok(_titulo('**__ NEW GENESIS __**') == 'NEW GENESIS' and _titulo('(sin titulo)') == '', 'el adorno del título se va')
+    cab0 = comps[1]['components'][0]
+    ok(cab0['type'] == 9 and cab0['accessory']['type'] == 11 and cab0['accessory']['media']['url'].endswith('/logos/ffa.webp')
+       and '## 🏆' in cab0['components'][0]['content'], 'el título lleva el logo del servidor a la derecha (FFA tiene)')
+    c_sin, _i, _t = mensaje('X', 'ZZZ', {'camp': ('Ana', 'drop'), 'pod': [], 'bat': []}, Q, set())
+    ok(c_sin[-1]['components'][0]['type'] == 10, 'un servidor sin logo: el título solo, sin miniatura rota')
     res3 = [['Evento #', 'Fecha', 'Servidor', 'Rapero', 'Posición'],
             ['800', '13/11/2026', 'ACAD', 'Zanti', 'Campeón'], ['800', '13/11/2026', 'ACAD', 'Mayeu', 'Campeón'],
             ['800', '13/11/2026', 'ACAD', 'Mini', 'Campeón'], ['800', '13/11/2026', 'ACAD', 'Chuwin', 'Subcampeón'],
