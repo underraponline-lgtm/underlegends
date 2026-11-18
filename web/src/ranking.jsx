@@ -20,6 +20,7 @@ import { PopCab } from './pop.jsx';
 import { MESES, limpio, norm, num, resultado, siglaDe, srcLogo, utc } from './liga.js';
 import { Escudo, escudoDe } from './escudo.jsx';
 import { Alguien, Bandera, Cara, Carta, Chevron, Compartir, Ico, accion, enlace, nombrePais } from './piezas.jsx';
+import { FondoT, NombreT } from './puesto.js';
 import { useDesliza } from './anima.js';
 import { SeBusca } from './abajo.jsx';
 import { W, aPng, armarYCompartir, carta, lienzo, pie } from './historia.js';
@@ -161,10 +162,12 @@ function Quien({ x, f }) {
   const nombre = limpio(f.n);
   return (
     <span className="rk-q">
+      {/* 🛍️ el fondo de tu fila, de la Tienda (tanda 3): detrás de la cara y el nombre, apagándose hacia los números */}
+      {f.k ? <FondoT k={f.k} lugar="fila" /> : null}
       <Cara liga={liga} k={f.k} nombre={f.n} cls="cara rk-cara" lazy />
       <span className="rk-qn">
         <span className="rk-qa">
-          {f.k ? <a href={'#/r/' + encodeURIComponent(f.k)}>{nombre}</a> : <b>{nombre}</b>}
+          {f.k ? <a href={'#/r/' + encodeURIComponent(f.k)}><NombreT k={f.k} n={nombre} /></a> : <b>{nombre}</b>}
           {esPremium(x.pub, f.k) ? <SelloPremium t={14} /> : null}
           <Bandera cc={f.cc} cls="rk-flag" />
         </span>

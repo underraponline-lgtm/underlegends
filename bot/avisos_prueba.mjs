@@ -4456,6 +4456,19 @@ const ok = (cond, que, det) => {
     ok(r.ok && r.avisos >= 1 && sql.exec("SELECT 1 AS x FROM bandeja WHERE clave LIKE 'tdeseo:X2:sale%'").toArray().length >= 1,
       'cuando deja de ser «pronto», la campana le avisa a quien la tenía en su lista', JSON.stringify(r));
 
+    // 👀 la tanda 3: lo que cada uno tiene puesto viaja por clave (nunca por cuenta) y el arte liviano, sin las vistas previas
+    sql.exec("INSERT OR REPLACE INTO tienda_puesto (quien, ranura, pieza, t) VALUES (?, 'aro', 'X1', ?)", ANA, ahora);
+    sql.exec("INSERT OR REPLACE INTO tienda_puesto (quien, ranura, pieza, t) VALUES (?, 'aro', 'X1', ?)", '400000000000000099', ahora);
+    const tp = TI.puestosPublicos(o);
+    ok(tp.ana && tp.ana.aro === 'X1' && Object.keys(tp).length === 1 && !JSON.stringify(tp).includes('4000000000'),
+      'lo puesto sale por clave de perfil, sin Discord IDs, y quien no tiene perfil no sale', JSON.stringify(tp));
+    ok(o.pases().tp && o.pases().tp.ana && typeof o.pases().ta === 'string', 'y viaja en /pases, con la versión del arte');
+    TI.arteGuardar(o, { arte: { v: 'abc124', css: '.ta-raiz{}', p: { X1: { v: '<i>vista</i>', aro: '<svg></svg>' }, F1: { v: 'x', lugar: 'y', fondo: '<div></div>' } } } });
+    const uso = TI.arteUso(o);
+    ok(uso.ok && uso.v === 'abc124' && uso.p.X1.aro && !uso.p.X1.v && uso.p.F1.fondo && !uso.p.F1.lugar,
+      'el arte liviano: sólo lo que se dibuja fuera de la Tienda', JSON.stringify(uso.p));
+    ok(TI.RANURAS.includes('perfil'), 'lo del perfil se puede poner (antes se compraba y no había ranura)');
+
     // olvidarme
     TI.tiendaOlvidar(o, CAR);
     ok(!mia(CAR, 'car').yo.inv.length && !sql.exec('SELECT 1 AS x FROM tienda_num WHERE quien = ?', CAR).toArray().length,

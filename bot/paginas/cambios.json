@@ -11,6 +11,20 @@
   ],
   "cambios": [
     {
+        "version": "6.35",
+        "dia": "2026-11-17",
+        "cuando": "2026-11-17T22:32:44-05:00",
+        "titulo": "Lo que te pones en la Tienda, en toda la página",
+        "items": [
+            "Tu **aro** y tu **decoración** van alrededor de tu cara en el ranking, los comentarios, Publicaciones, tu perfil, tu ficha y donde salga tu foto.",
+            "Tu **efecto de nombre** se ve en tu perfil, tu fila del ranking, tu ficha y en todos los lugares donde sale tu nombre.",
+            "Tu **efecto de carta** va en tus cartas de la página y en el visor.",
+            "Lo de tu **perfil** (stickers y entradas) va arriba, en tu portada, y la entrada pasa una vez cada vez que alguien lo abre.",
+            "Los **fondos de la Tienda** van en su lugar: la portada de tu perfil, tu mitad del VS del Inicio, el escenario de tu carta, tu ficha y **tu fila del ranking**.",
+            "Lo que te pones se ve al toque para ti y en unos minutos para los demás. En **/card** y en el **VS de Discord** llega muy pronto."
+        ]
+    },
+    {
       "version": "6.34",
       "dia": "2026-11-17",
       "cuando": "2026-11-17T22:30:24-05:00",

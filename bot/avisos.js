@@ -73,7 +73,8 @@ const MED_QUIETO = 2000;
 // tablas de lo que ELIGE alguien, que se escriben poco: lo que cambia solo (el nivel del Pase, las claves) espera su
 // tiempo, como ya esperaba en el borde. ⚠️ `estado` nunca va acá: tirar una copia escribe en `estado`
 const RUTA_TABLAS = {
-  '/pases': ['marcos', 'marco_elige', 'carta_principal', 'marco_img', 'redibujo', 'pase_premium'],
+  // 🛍️ `tienda_puesto` (tanda 3): lo que alguien se pone en la Tienda viaja en `/pases` (`tp`), y ponérselo tira la copia
+  '/pases': ['marcos', 'marco_elige', 'carta_principal', 'marco_img', 'redibujo', 'pase_premium', 'tienda_puesto'],
   '/fondos': ['fondos'], '/servidores': ['servidor'], '/roles': ['roles_manual'],
 };
 
@@ -3480,7 +3481,7 @@ const RUTAS = {
   '/avisos/crews-sembrar': 'POST', '/avisos/crews-siglas': 'POST',
   // 🛍️ LA TIENDA (17/11/2026, bot/tienda.js): lo tuyo, una acción, y el catálogo con la clave del ciclo
   '/avisos/tienda': 'POST', '/avisos/tienda-accion': 'POST', '/avisos/tienda-catalogo': 'POST',
-  '/avisos/tienda-arte': 'POST', '/avisos/tienda-arte-subir': 'POST',
+  '/avisos/tienda-arte': 'POST', '/avisos/tienda-arte-subir': 'POST', '/avisos/tienda-uso': 'GET',
   // 🆕 el relanzamiento: cerrar varias y avisarle a su gente, con la clave del ciclo (`bot/crews_vivas.py --cerrar`).
   // ⚠️ Sin esta línea la ruta da 404 aunque su manejador exista: pasó el 29/10/2026
   '/avisos/crews-cerrar': 'POST',
@@ -9098,6 +9099,8 @@ export class Avisos {
       if (ruta === '/niveles') return json(this.delMinuto('/niveles', 300, () => this.niveles()), 200, 300);
       if (ruta === '/socio-paginas') return json(this.paginasPublicas(), 200, 60);
       if (ruta === '/pases') return json(this.delMinuto('/pases', 300, () => this.pases()), 200, 300);
+      // 🛍️ el arte liviano de la Tienda, para dibujar lo que cada uno tiene puesto (tanda 3): diez minutos en el borde
+      if (ruta === '/tienda-uso') { const r = TI.arteUso(this); return json(r, r.estado || 200, r.ok ? 600 : 30); }
       if (ruta === '/roles') return json(this.delMinuto('/roles', 300, () => this.roles()), 200, 300);
       // 🎚️ lo que subió Dlx manda; si no subió nada, el que eligió el staff del servidor entre los aprobados (16/11/2026,
       // «repo:vs:ffa»: lo entiende `bot/kit.py`)
@@ -18643,7 +18646,8 @@ export class Avisos {
   pases() {
     const P = this.paseDatos();
     const out = {};
-    if (!P.cfg) return { t: Date.now(), n: out };
+    // 🛍️ lo de la Tienda va igual sin Pase configurado (no depende de él)
+    if (!P.cfg) return { t: Date.now(), n: out, tp: TI.puestosPublicos(this), ta: this.leer('tienda_arte_v') || '' };
     const c = P.cfg;
     const cfg = { temp: c.temp, niveles: c.niveles, umbrales: c.umbrales, cola: c.cola, diarias: c.diarias,
       por_dia: c.por_dia, semanales: c.semanales, temporada: c.temporada, premios: c.premios || [], publicar: c.publicar || [],
@@ -18671,7 +18675,9 @@ export class Avisos {
     }
     return { t: Date.now(), n: out, cfg, salon, m: this.marcosPublicos(), cp: this.cartasPrincipales(), vr: this.versionesRedibujo(),
       // 🖼️ qué cartas tienen su foto con marco: la descarga del visor baja ésa, como /card
-      mi: this.marcosEnImagen() };
+      mi: this.marcosEnImagen(),
+      // 🛍️ lo que cada perfil se puso en la Tienda (`{clave: {ranura: pieza}}`) y la versión del arte con que se dibuja
+      tp: TI.puestosPublicos(this), ta: this.leer('tienda_arte_v') || '' };
   }
 
   /**

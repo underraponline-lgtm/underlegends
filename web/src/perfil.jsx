@@ -11,6 +11,7 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { MESES, diaISO, limpio, minutosDelDia, norm, num, siglaDe } from './liga.js';
 import { Alguien, Algunos, Bandera, Cara, Compartir, DosToques, FaltaLista, Ico, Medalla, PUESTO_MEDALLA, QueEsBoton, silueta, QueEsTexto, Rango, accion, diaET, enlace, https, nombrePais, usePerfiles } from './piezas.jsx';
+import { CapaPerfilT, FondoT, NombreT } from './puesto.js';
 import { PanelEmblemas, PildoraEmblemas, emblemasDe } from './emblemas.jsx';
 import { FichaJurado } from './jurado_ficha.jsx';
 import { REDES } from './servidor.jsx';
@@ -461,7 +462,8 @@ function Cabeza({ liga, f, k, p, dc, esYo, onEmblemas, ems, numeros, ex }) {
   return (
     <>
     <div className={'escena pf8' + (fondoPf ? ' con-fondo' : '')} style={{ '--mo-c': (sv && sv.color) || '#E41373', '--mo-o': 0.85, '--mo-c2': '#29B298', ...silueta(sv && svE, sv && sv.color), ...(fondoPf ? { '--pf-fondo': fondoPf } : {}) }}>
-      <div className="pf8-cover" />
+      {/* 🛍️ la portada y lo del perfil que se puso en la Tienda (tanda 3, puesto.js): el fondo detrás, los stickers y la entrada encima */}
+      <div className="pf8-cover"><FondoT k={k} lugar="perfil" /><CapaPerfilT k={k} foto={liga.avUrl(k, 256) || ''} n={limpio(f.n)} /></div>
       <MenuMas liga={liga} f={f} k={k} esYo={esYo} dc={dc} onEmblemas={() => onEmblemas('')} onReportar={() => setRep(true)} onAjustes={() => setAj(true)} />
       <section className="pf8-cab">
         {/* 👤 SU FOTO, EN UN CÍRCULO, en vez de la carta (Dlx, 21/10/2026: «en vez de la tarjeta que sea la foto elegida en
@@ -473,10 +475,10 @@ function Cabeza({ liga, f, k, p, dc, esYo, onEmblemas, ems, numeros, ex }) {
             {/* 💎 el sello Premium al lado del nombre: se toca y explica qué es (sello.jsx) */}
             {pa && pa.premium ? (
               <span className="sp-prem-w">
-                <h1 className="hero-ev largo" style={pa.color ? { color: pa.color } : undefined}>{limpio(f.n)}</h1>
+                <h1 className="hero-ev largo" style={pa.color ? { color: pa.color } : undefined}><NombreT k={k} n={limpio(f.n)} /></h1>
                 <SelloPremiumBoton t={22} boost={boostPremium(pub)} />
               </span>
-            ) : <h1 className="hero-ev largo" style={pa && pa.color ? { color: pa.color } : undefined}>{limpio(f.n)}</h1>}
+            ) : <h1 className="hero-ev largo" style={pa && pa.color ? { color: pa.color } : undefined}><NombreT k={k} n={limpio(f.n)} /></h1>}
             {cn || ems.length ? (
               <div className="pf8-pills">
                 {cn ? (chref ? <a className="pf8-crew" href={chref} title={limpio(cn)}><b>{csig || '?'}</b><span>{limpio(cn)}</span>{cv && cv.rol !== 'miembro' ? <RolCrew rol={cv.rol} /> : null}</a>

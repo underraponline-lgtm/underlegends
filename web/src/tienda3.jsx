@@ -14,6 +14,7 @@ import { useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react
 import { num } from './liga.js';
 import CSS_PAGINA from './css/tienda3.css?inline';
 import { usarCss } from './css.js';
+import { refrescarPases } from './pase.js';
 
 usarCss('tienda3', CSS_PAGINA);
 
@@ -34,7 +35,10 @@ const DONDE = {
 };
 // ⏳ ABIERTA ANTES QUE LA TANDA 3 (17/11/2026, Dlx: «abrir ya, avisando»): lo que te pones se ve en la Tienda y todavía no
 // en el resto de la página. Cuando la tanda 3 lo lleve a cada lugar, se borra esta línea y el «Se va a ver en» vuelve a «Se ve en»
-const POR_AHORA = 'Por ahora se ve acá, en la Tienda; en el resto de la página, muy pronto.';
+// ✅ DESDE LA TANDA 3 se ve en toda la página (puesto.js). Lo que todavía falta es lo que se dibuja para Discord —/card y la
+// imagen del VS en vivo, que se arman en GitHub—: eso lo dice cada pieza a la que le toca
+const EN_DISCORD = { aro: 'En /card y en el VS de Discord, muy pronto.', deco: 'En /card y en el VS de Discord, muy pronto.',
+  carta: 'En /card, muy pronto.', fd: 'Muy pronto: el VS de Discord se dibuja aparte.' };
 const MENSAJES = ['Sin mensaje', '¡Felicitaciones!', 'Para tu próxima batalla', 'Te lo ganaste'];
 const ERRORES = { pronto: 'Todavía no se vende: sale pronto.', saldo: 'No te alcanzan los Puntos.', ya_la_tienes: 'Ya la tienes.', premium: 'Es sólo para Premium.', no_esta: 'Ya no está en la vitrina.',
   fuera_de_fecha: 'Ya no se vende.', todavia_no: 'Todavía no está a la venta.', cerrada: 'La venta ya cerró.', agotada: 'Se agotaron.',
@@ -44,6 +48,8 @@ const ERRORES = { pronto: 'Todavía no se vende: sale pronto.', saldo: 'No te al
   no_miembro: 'El drop del día es de los Miembros de DRA.', ya: 'Ya abriste el de hoy.', todavia: 'La billetera todavía no está lista: prueba en un rato.' };
 const esFondo = (c) => ['fp', 'fv', 'fe', 'fd', 'ff', 'fr'].includes(c);
 const seProbar = (p) => !!p && (['aro', 'deco', 'nom', 'carta'].includes(p.c) || esFondo(p.c));
+// lo de tu perfil no se prueba en el escenario, pero se pone igual (sale en tu perfil)
+const sePone = (p) => seProbar(p) || (!!p && p.c === 'perfil');
 const tiene = (p, x) => !!p && (p.t || []).includes(x);
 const esc = (s) => String(s == null ? '' : s).replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
 const enVentana = (w, t) => !!w && t >= w.desde && t < w.hasta;
@@ -311,7 +317,7 @@ function fichaPieza(X, S, st, tengo, liga, id) {
   let acc = '';
   if (st.error) acc += `<p class="tz-conf falta">${esc(ERRORES[st.error] || 'No se pudo: ' + st.error)}</p>`;
   if (paso === 'ver') {
-    if (mio) acc += `<div class="tz-tuyo">✓ Lo tienes${S.yo.numeros[id] ? ' · el tuyo es el #' + S.yo.numeros[id] + ' de ' + (ed ? ed.copias : 10) : ''}</div>${seProbar(p) ? '<button class="tz-b prim" data-acc="poner">Usar ahora</button>' : ''}${inv && inv.deshacer ? '<button class="tz-b" data-acc="deshacer">Deshacer</button>' : ''}`;
+    if (mio) acc += `<div class="tz-tuyo">✓ Lo tienes${S.yo.numeros[id] ? ' · el tuyo es el #' + S.yo.numeros[id] + ' de ' + (ed ? ed.copias : 10) : ''}</div>${sePone(p) ? '<button class="tz-b prim" data-acc="poner">Usar ahora</button>' : ''}${inv && inv.deshacer ? '<button class="tz-b" data-acc="deshacer">Deshacer</button>' : ''}`;
     else if (tiene(p, 'pronto')) acc += `<p class="tz-fecha tz-ancho">Sale pronto</p><p class="tz-nota tz-ancho">Todavía no se vende: falta terminar lo que hace. Ponla en tu lista y la campana te avisa.</p>${cor}`;
     else if (tiene(p, 'num')) {
       const abre = ed && Date.now() >= ed.venta;
@@ -330,7 +336,7 @@ function fichaPieza(X, S, st, tengo, liga, id) {
     const r = st.res || {};
     acc += `${(r.colecciones || []).length ? `<div class="tz-logro">¡Completaste la colección «${esc((S.cat.colecciones[r.colecciones[0]] || {}).n || '')}»! Te llevas su insignia y su pieza exclusiva.</div>` : ''}<div class="tz-tuyo">✓ ${r.numero ? 'Es tuya: la #' + r.numero : pr ? 'Ya es tuya' : 'Reclamada: es tuya'}</div>
       <p class="tz-nota tz-ancho">${inv && inv.deshacer ? 'Está en tu Inventario. Mientras no te la pongas, la puedes deshacer durante 24 horas (una vez por pieza).' : 'Está en tu Inventario.'}</p>
-      ${seProbar(p) && !(inv && inv.usada) ? '<button class="tz-b prim" data-acc="poner">Usar ahora</button>' : ''}<button class="tz-b" data-acc="cerrar">Seguir mirando</button>${inv && inv.deshacer ? '<button class="tz-b" data-acc="deshacer">Deshacer</button>' : ''}`;
+      ${sePone(p) && !(inv && inv.usada) ? '<button class="tz-b prim" data-acc="poner">Usar ahora</button>' : ''}<button class="tz-b" data-acc="cerrar">Seguir mirando</button>${inv && inv.deshacer ? '<button class="tz-b" data-acc="deshacer">Deshacer</button>' : ''}`;
   } else if (paso === 'deshecho') acc += `<div class="tz-tuyo">Deshecho: te volvieron ${num((st.res || {}).vuelve || 0)} Puntos</div><p class="tz-nota tz-ancho">Si la vuelves a comprar, esa compra ya no se puede deshacer.</p><button class="tz-b" data-acc="cerrar">Seguir mirando</button>`;
   else if (paso === 'regalado') acc += `<div class="tz-tuyo">Enviado</div><p class="tz-nota tz-ancho">Le llegó a su campana${st.msg ? ', con «' + MENSAJES[st.msg] + '»' : ''}. Si no lo acepta en 14 días, te vuelven los Puntos.</p><button class="tz-b" data-acc="cerrar">Seguir mirando</button>`;
   const precio = !pr ? '<b>Gratis</b> <small>para todos, hasta el 1/1</small>'
@@ -345,7 +351,7 @@ function fichaPieza(X, S, st, tengo, liga, id) {
   return `<div class="tz-ficha" role="dialog" aria-label="${esc(p.n)}">${popCab(esc(p.n), subDe(S, id), RZ[p.r][1])}
     <div class="tz-f-vis">${vistaGrande(X, S, id)}</div>
     <div class="tz-f-inf">${unaEtiqueta(S, tengo, id) ? `<div class="tz-fila">${unaEtiqueta(S, tengo, id)}</div>` : ''}
-      <p>${esc(p.d)}</p><p class="tz-donde"><b>Se va a ver en:</b> ${DONDE[p.c] || ''}.${p.c === 'serv' ? '' : ' ' + POR_AHORA}</p>
+      <p>${esc(p.d)}</p><p class="tz-donde"><b>Se ve en:</b> ${DONDE[p.c] || ''}.${EN_DISCORD[p.c] ? ' ' + EN_DISCORD[p.c] : ''}</p>
       ${paso === 'ver' && !mio ? `<div class="tz-f-precio">${precio}</div>` : ''}
       <div class="tz-acc">${acc}</div>${duenos}</div></div>`;
 }
@@ -449,6 +455,8 @@ export default function TiendaNueva({ liga, dc, S, recargar, partes }) {
     if (!j || !j.ok) { E.error = (j && j.error) || 'error'; pinta(); return null; }
     E.res = j;
     if (despues) despues(j);
+    // 🛍️ lo que te pusiste se ve en toda la página (tanda 3): `/pases` lo trae, y se pide de nuevo ya mismo
+    if (d.accion === 'poner' || d.accion === 'comprar-puesto' || (d.accion === 'comprar' && d.poner)) refrescarPases();
     await recargar();
     pinta();
     return j;

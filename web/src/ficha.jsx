@@ -8,6 +8,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { limpio, num } from './liga.js';
 import { Bandera, Cara, nombrePais } from './piezas.jsx';
+import { FondoT, NombreT } from './puesto.js';
 import { fondoEn, useFondos } from './fondos.js';
 
 const ESPERA = 450, ANCHO = 280;
@@ -63,11 +64,11 @@ export function FichaHover({ liga }) {
     <>
       <span ref={ref} hidden />
       <div className={'fh' + (v.abajo ? '' : ' arriba')} role="tooltip" style={{ left: v.x + 'px', top: v.y + 'px', width: ANCHO + 'px' }}>
-        <div className={'fh-f' + (bg ? '' : ' liso')} style={bg ? { backgroundImage: bg } : undefined} />
+        <div className={'fh-f' + (bg ? '' : ' liso')} style={bg ? { backgroundImage: bg } : undefined}><FondoT k={f.k} lugar="ficha" /></div>
         <div className="fh-b">
           <Cara liga={liga} k={f.k} nombre={f.n} cls="fh-cara" />
           <div className="fh-t">
-            <b>{limpio(f.n)}{f.cc ? <Bandera cc={f.cc} cls="fh-flag" /> : null}</b>
+            <b><NombreT k={f.k} n={limpio(f.n)} />{f.cc ? <Bandera cc={f.cc} cls="fh-flag" /> : null}</b>
             <small>{[f.pos ? '#' + f.pos + ' de la Temporada' : 'Sin puesto todavía', f.ovr ? 'OVR ' + f.ovr : ''].filter(Boolean).join(' · ')}</small>
             <span className="fh-chips">
               {f.rg ? <i className="fh-rg" style={rgc ? { background: rgc } : undefined}>{f.rg}</i> : <i className="fh-rg sin">Sin rango</i>}

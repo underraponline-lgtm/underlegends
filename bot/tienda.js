@@ -28,7 +28,8 @@
 export const MENSAJES = ['', '¡Felicitaciones!', 'Para tu próxima batalla', 'Te lo ganaste'];
 export const CATEGORIAS = ['aro', 'deco', 'nom', 'carta', 'perfil', 'serv', 'fp', 'fv', 'fe', 'fd', 'ff', 'fr'];
 /** dónde se pone cada cosa: las cuatro de tu cara y tu carta, y los seis lugares del fondo */
-export const RANURAS = ['aro', 'deco', 'nom', 'carta', 'fp', 'fv', 'fe', 'fd', 'ff', 'fr'];
+// `perfil` (stickers, entradas, pancartas) faltaba: se compraba y no se podía poner (tanda 3, 17/11/2026)
+export const RANURAS = ['aro', 'deco', 'nom', 'carta', 'perfil', 'fp', 'fv', 'fe', 'fd', 'ff', 'fr'];
 // `pronto`: se ve en la Tienda y no se vende todavía (lo que necesita algo que no está hecho: el cambio de nombre, la
 // pancarta con tu texto). Se saca la marca del catálogo privado el día que funcione
 export const MARCAS = ['prem', 'num', 'nav', 'rot', 'col', 'gratis', 'pronto'];
@@ -602,7 +603,44 @@ export function arteGuardar(o, d) {
   for (const [id, x] of Object.entries(a.p)) if (!ID.test(id) || !x || typeof x.v !== 'string') return mal('arte', 400, { id });
   o.guardar('tienda_arte', { v: a.v, css: a.css, p: a.p });
   o.guardar('tienda_arte_v', a.v);
+  o.guardar('tienda_uso', arteLiviano(a));
   return { ok: true, v: a.v, piezas: Object.keys(a.p).length };
+}
+// 👀 LO QUE SE PONE, EN TODA LA PÁGINA (tanda 3, 17/11/2026): cada página dibuja el aro, el nombre, la carta, la capa del
+// perfil y los fondos de quien los tiene puestos, así que necesita el arte —pero no las vistas previas de la Tienda (`v`,
+// `lugar`), que son casi todo el peso—. Se arma una vez al guardar y sale por `/avisos/tienda-uso`, guardada en el borde
+const USO = ['aro', 'deco', 'nom', 'letras', 'carta', 'capa', 'fondo'];
+function arteLiviano(a) {
+  const p = {};
+  for (const [id, x] of Object.entries(a.p || {})) {
+    const y = {};
+    for (const c of USO) if (x[c]) y[c] = x[c];
+    if (Object.keys(y).length) p[id] = y;
+  }
+  return { v: a.v, css: a.css, p };
+}
+/** El arte liviano, abierta la Tienda: para cualquiera (es lo que ya se ve en ella) */
+export function arteUso(o) {
+  const cat = catalogo(o);
+  if (!cat || !cat.abierta) return mal('cerrada', 404);
+  let u = o.leer('tienda_uso');
+  if (!u) { const a = o.leer('tienda_arte'); if (!a) return mal('sin_arte', 404); u = arteLiviano(a); o.guardar('tienda_uso', u); }
+  return Object.assign({ ok: true }, u);
+}
+/**
+ * Qué tiene puesto cada perfil: `{clave: {ranura: pieza}}`, para `/avisos/pases`. Por clave, NUNCA por cuenta (quien no
+ * tiene perfil no sale). Sólo con la Tienda abierta, y sólo lo que sigue en el catálogo
+ */
+export function puestosPublicos(o) {
+  const cat = catalogo(o);
+  if (!cat || !cat.abierta) return {};
+  const out = {};
+  for (const r of filas(o, 'SELECT quien, ranura, pieza FROM tienda_puesto')) {
+    if (!cat.piezas[r.pieza]) continue;
+    const k = o.claveDe(r.quien);
+    if (k) (out[k] = out[k] || {})[r.ranura] = r.pieza;
+  }
+  return out;
 }
 /** El arte para la página: abierta, a cualquiera; cerrada, sólo al dueño. Si ya tiene esa versión, no se manda de nuevo. */
 export function arteMio(o, d, H) {

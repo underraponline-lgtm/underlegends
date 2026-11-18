@@ -6,6 +6,7 @@ import * as RQ from './requisitos.js';
 // 🖼️ el marco de carta del Pase premium, donde se vea tu carta (25/10/2026)
 import { usePases } from './pase.js';
 import { ConMarco } from './marcos.jsx';
+import { ConEfecto, capaCara, nombreTienda, tieneAro, usePuesto } from './puesto.js';
 
 const TRAZOS = {
   // 💬 el globo de los comentarios (13/11/2026, «Lo último»)
@@ -320,14 +321,20 @@ export function Bandera({ cc, cls = 'r-flag' }) {
 // persona y, con un sí/no, heredaba la inicial aunque su foto anduviera (revisión del 01/10/2026)
 export function Cara({ liga, k, nombre, cls = 'cara', lazy = false, grande = false }) {
   const [mal, setMal] = useState(null);
+  // 🛍️ el aro y la decoración que se puso en la Tienda (tanda 3, puesto.js): una capa más grande que la cara, encima
+  const P = usePuesto(k);
+  const capaT = capaCara(P);
   // la de la tabla; si no está (corta en 200), la que viene aparte por nombre (`avNombre()`). `grande`: donde se dibuja
   // a más de ~130 px, la más grande que tenga Discord
   const t = grande ? 1024 : 256;
   const src = (k && liga.avUrl(k, t)) || (liga.avNombre ? liga.avNombre(nombre, t) : null);
   // `lazy` en las listas largas (el Ranking: 200 caras): sin eso el navegador pedía las 200 al abrir
   // 🪪 `data-fk`: quién es, para la ficha al pasar el mouse (ficha.jsx). Un solo oyente para toda la página
-  if (src && mal !== src) return <span className={cls} data-fk={k || undefined}><img alt="" src={src} loading={lazy ? 'lazy' : undefined} decoding={lazy ? 'async' : undefined} onError={() => setMal(src)} /></span>;
-  return <span className={cls + ' ini'} data-fk={k || undefined}>{(limpio(nombre).slice(0, 1) || '?').toUpperCase()}</span>;
+  // `con-aro`: el aro de la Tienda reemplaza al dorado del premium (no van dos anillos)
+  const cl = capaT ? cls + ' con-tienda' + (tieneAro(P) ? ' con-aro' : '') : cls;
+  const envuelve = (x) => (capaT ? <span className="ct-in">{x}{capaT}</span> : x);
+  if (src && mal !== src) return <span className={cl} data-fk={k || undefined}>{envuelve(<img alt="" src={src} loading={lazy ? 'lazy' : undefined} decoding={lazy ? 'async' : undefined} onError={() => setMal(src)} />)}</span>;
+  return <span className={cl + ' ini'} data-fk={k || undefined}>{envuelve((limpio(nombre).slice(0, 1) || '?').toUpperCase())}</span>;
 }
 
 // 🪪 UN NOMBRE CON SU CARA Y SU PERFIL (Dlx, 17/11/2026: «hay lugares donde aparecen nombres como ellos lo escriben, si
@@ -342,6 +349,8 @@ export function Cara({ liga, k, nombre, cls = 'cara', lazy = false, grande = fal
 export function Alguien({ liga, nombre, k, cara = true, link = true, chip = false, cap = false, cls = '' }) {
   const s = String(nombre || '');
   const f = liga ? liga.quien(s, k) : null;
+  // 🛍️ el efecto de nombre de la Tienda (tanda 3): sólo con su nombre oficial, el de alguien que la Liga conoce
+  const P = usePuesto(f ? f.k : '');
   // un equipo («A & B», y en una llave en vivo «A, B»), de a uno: cada cual con su cara y su perfil
   // (y «A | B», como escriben algunas llaves de equipos)
   const eq = f ? '' : / & /.test(s) ? ' & ' : /[,|]/.test(s) ? ' y ' : '';
@@ -360,7 +369,9 @@ export function Alguien({ liga, nombre, k, cara = true, link = true, chip = fals
   // de un renglón y «BTRX» en el siguiente (medido a 390 px; el unidor de palabras U+2060 no frena el corte después de
   // una imagen). En la ficha no hace falta: es una fila flexible
   const m = cz && !chip ? /^(\S+)([\s\S]*)$/.exec(n) : null;
-  const cuerpo = m ? <bdi className="qn-n"><bdi className="qn-u">{cz}{m[1]}</bdi>{m[2]}</bdi> : <>{cz}<bdi className="qn-n">{n}</bdi></>;
+  const nt = f ? nombreTienda(P, n) : null;
+  const cuerpo = nt ? <>{cz}<bdi className="qn-n">{nt}</bdi></>
+    : m ? <bdi className="qn-n"><bdi className="qn-u">{cz}{m[1]}</bdi>{m[2]}</bdi> : <>{cz}<bdi className="qn-n">{n}</bdi></>;
   const clase = 'qn' + (chip ? ' qn-chip' : '') + (conCara ? ' qn-con' : '') + (f ? '' : ' qn-sin') + (cls ? ' ' + cls : '');
   // `bdi` y no `span`: aísla un nombre escrito de derecha a izquierda, y las reglas de cada lugar que pintan sus `span`
   // («.evs-c span», «.st-gente span»…) no le caen encima
@@ -394,6 +405,8 @@ export function SinCarta({ liga, k, nombre, cc, cls = 'ci' }) {
 export function Carta({ liga, k, cual = 'temporada', cls = 'ci', abre = true, marco, nombre }) {
   const [fallo, setFallo] = useState({ src: null, n: 0 });
   const pub = usePases();
+  // 🛍️ el efecto de carta de la Tienda (tanda 3): una capa encima de la imagen, adentro del marco del Pase si lo tiene
+  const P = usePuesto(k);
   // el ancho en que se dibuja, en píxeles de pantalla: 0 todavía no se midió, -1 no se pudo (va la grande)
   const [ancho, setAncho] = useState(0);
   const ref = useRef(null);
@@ -428,7 +441,8 @@ export function Carta({ liga, k, cual = 'temporada', cls = 'ci', abre = true, ma
   const mk = marco !== undefined ? marco : pub && pub.m && pub.m[k];
   const css = ancho > 0 ? ancho / Math.max(1, window.devicePixelRatio || 1) : 0;
   const svc = f.sv && liga.svs && liga.svs[f.sv] ? liga.svs[f.sv].color : '';
-  const img = mk && css ? <ConMarco m={mk} cual={cual} ancho={css} svColor={svc} cc={f.cc} src={src}>{img0}</ConMarco> : img0;
+  const conFx = src ? <ConEfecto P={P} src={src}>{img0}</ConEfecto> : img0;
+  const img = mk && css ? <ConMarco m={mk} cual={cual} ancho={css} svColor={svc} cc={f.cc} src={src}>{conFx}</ConMarco> : conFx;
   if (!abre) return img;
   // 🃏 con `cual`: abre en ESA carta y no en la principal (Dlx, 17/11/2026: «si selecciono una tarjeta diferente, que lo
   // primero que me muestre sea esa misma que presioné»)

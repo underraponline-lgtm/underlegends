@@ -17,6 +17,7 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { limpio, num, siglaDe, srcLogo, utc } from './liga.js';
 import { Bandera, Cara, Ico, accion, nombrePais, useCampana } from './piezas.jsx';
+import { FondoT } from './puesto.js';
 import { fondoEn, useFondos } from './fondos.js';
 import { Escudo, escudoDe } from './escudo.jsx';
 import { avance, pasePost, usePase } from './pase.js';
@@ -718,7 +719,8 @@ export function Batallas({ liga, dc }) {
   };
   return (
     <section className="pn-vs con-lg">
-      <span className="pn-vs-f izq" aria-hidden="true" style={fondoLado(yoF, FO[yo.k])} /><span className="pn-vs-f der" aria-hidden="true" style={fondoLado(p0.f, FO[p0.k])} />
+      {/* 🛍️ con un fondo de la Tienda para el VS (tanda 3), ése va en su mitad, apagándose hacia el medio */}
+      <span className="pn-vs-f izq" aria-hidden="true" style={fondoLado(yoF, FO[yo.k])}><FondoT k={yo.k} lugar="vs" /></span><span className="pn-vs-f der" aria-hidden="true" style={fondoLado(p0.f, FO[p0.k])}>{p0.k ? <FondoT k={p0.k} lugar="vs" /> : null}</span>
       <div className="pn-rv"><Cara liga={liga} k={yo.k} nombre={yo.n} cls="pn-vs-c" />
         <span><b>{limpio(yo.n)}</b><small><span className="pn-pos">#{yoF.pos || '—'} · </span>OVR {yoF.ovr || '—'}</small><small className="pn-du">{duelos(yoF)}</small></span></div>
       <div className="pn-mid">

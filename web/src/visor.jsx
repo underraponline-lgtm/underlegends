@@ -22,6 +22,7 @@ import { Bandera, Ico, enlace, nombrePais } from './piezas.jsx';
 import { pasePost, refrescarPases, usePases } from './pase.js';
 import { pedirLigas } from './ligas_datos.js';
 import { fondoEn, useFondos } from './fondos.js';
+import { ConEfecto, fondoTienda, usePuesto } from './puesto.js';
 
 const NOMBRE = { temporada: 'Temporada', competitivo: 'Competitiva', servidor: 'Servidor', pais: 'País' };
 const ORDEN = ['temporada', 'competitivo', 'servidor', 'pais'];
@@ -126,6 +127,8 @@ export function VisorCarta({ liga, dc, k, inicial = '', onCerrar }) {
   const [sale, setSale] = useState(false);
   const pub = usePases();
   const fondos = useFondos();
+  // 🛍️ lo que se puso en la Tienda (tanda 3): el efecto de su carta y el fondo de su escenario
+  const PT = usePuesto(k);
   const cp = (pub && pub.cp && pub.cp[k]) || '';
   const esYo = !!((dc && dc.clave === k) || (liga.yo && liga.yo.k === k));
   // 🏟️ sus cartas de liga, del mismo pedido que ya hace la página (`/api/ligas`, una vez por lobby)
@@ -299,6 +302,7 @@ export function VisorCarta({ liga, dc, k, inicial = '', onCerrar }) {
       <div className="vk-in" role="dialog" aria-modal="true" aria-label={'Las tarjetas de ' + nombre}>
         <div className={'vk-esc' + (escF ? ' con-fondo' : '')} style={{ '--g': color }}>
           {escF ? <span className="vk-esc-f" style={{ backgroundImage: escF }} aria-hidden="true" /> : null}
+          {fondoTienda(PT, 'esc')}
           <div className="vk-cc" ref={cc} onPointerDown={(e) => { arr.current = { x0: e.clientX, va: false }; }}
             onPointerMove={(e) => {
               const a = arr.current;
@@ -329,7 +333,9 @@ export function VisorCarta({ liga, dc, k, inicial = '', onCerrar }) {
                   onPointerMove={a === 0 ? gir : undefined} onPointerLeave={a === 0 ? quieto : undefined}>
                   {vistos.current.has(y.id) ? (
                     <div className="vk-gira" ref={a === 0 ? gira : undefined}>
-                      <img src={y.url} alt={a === 0 ? 'Tarjeta ' + (y.tipo === 'liga' ? 'de liga ' + y.nom : y.nom) + ' de ' + nombre + (y.bloq ? ', bloqueada' : '') : ''} draggable="false" decoding="async" />
+                      <ConEfecto P={y.tipo !== 'liga' && !y.bloq ? PT : null} src={y.url}>
+                        <img src={y.url} alt={a === 0 ? 'Tarjeta ' + (y.tipo === 'liga' ? 'de liga ' + y.nom : y.nom) + ' de ' + nombre + (y.bloq ? ', bloqueada' : '') : ''} draggable="false" decoding="async" />
+                      </ConEfecto>
                     </div>
                   ) : null}
                 </div>

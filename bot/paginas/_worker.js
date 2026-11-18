@@ -91,6 +91,8 @@ const AVISOS = {
   '/api/avisos/tienda': 'POST',
   '/api/avisos/tienda-accion': 'POST',
   '/api/avisos/tienda-arte': 'POST',
+  // 👀 el arte liviano, para dibujar en toda la página lo que cada uno tiene puesto (tanda 3): público y guardado en el borde
+  '/api/avisos/tienda-uso': 'GET',
   '/api/avisos/dueno/crew': 'POST',
   // 🙈 «ocultar mi foto» (02/10/2026): en Mi cuenta → Privacidad. Ver `miFoto()` en bot/avisos.js
   '/api/avisos/mi-foto': 'POST',
@@ -363,6 +365,10 @@ async function avisos(req, url, ctx) {
     // cada minuto; con esto, mucha gente mirando son pocos pedidos al Worker.
     // Los votos, igual: quien vota recibe su cuenta en la respuesta del voto
     ttl = 30;
+  } else if (url.pathname.endsWith('/tienda-uso')) {
+    // 🛍️ el arte de lo que se pone (~100 KB, el mismo para todos): cambia cuando se sube arte nuevo. La página lo guarda
+    // por versión y pide `?r=` sólo si el borde le dio una vieja
+    ttl = 600;
   } else if (url.pathname.endsWith('/seguidores') || url.pathname.endsWith('/servidores')) {
     // cuántos siguen a cada uno: se mira al abrir un perfil, y un minuto
     // de atraso no le cambia nada a nadie
