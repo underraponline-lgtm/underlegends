@@ -11,6 +11,15 @@
   ],
   "cambios": [
     {
+        "version": "6.25",
+        "dia": "2026-11-17",
+        "cuando": "2026-11-17T21:50:00-05:00",
+        "titulo": "Tus estilos de juego, con color",
+        "items": [
+            "Los estilos del Inventario salen con el color de tu rango; si todavía no tienes letra, con el verde de la Liga."
+        ]
+    },
+    {
         "version": "6.24",
         "dia": "2026-11-17",
         "cuando": "2026-11-17T20:50:00-05:00",
