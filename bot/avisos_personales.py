@@ -343,6 +343,19 @@ def oficiales(padron, idx):
     return out
 
 
+def donde_estan(idx, servidores_de):
+    """`{discord_id: [servidores]}` de las cuentas del índice, de `datos/servidores_de.json` (lo mide Discord).
+
+    🔔 PARA MENCIONAR EN EL CHAT DE CADA SERVIDOR (18/11/2026, Dlx con una captura del bot en vivo de FFA: «tú sabes
+    quién es Valen, ¿por qué no lo etiquetas?»). El bot en vivo menciona sólo a quien está en el servidor de ese chat
+    (`genteChat()` de avisos.js: si no, Discord dibuja «@unknown-user»), y eso lo sacaba de `persona`, que tiene SÓLO a
+    los verificados. Valen está en FFA y en SR, no en DRA: sin ficha, el bot no se animaba. Con esto lo sabe de todos.
+    ⚠️ Sólo las cuentas del índice (~800, ~40 KB): las demás no se pueden mencionar igual.
+    """
+    quedan = set(idx.values())
+    return {d: sorted(set(svs)) for d, svs in (servidores_de or {}).items() if d in quedan and svs}
+
+
 def subir_turnos(aplicar):
     """El índice a KV, sólo si cambió (se lee antes y se compara: una escritura de KV por cambio, no por corrida)."""
     try:
@@ -354,9 +367,16 @@ def subir_turnos(aplicar):
         print('   🎤 te toca: no pude leer la Lista o los alias (%s)' % str(e)[:60])
         return
     idx = indice_turnos(padron, alias)
+    # 🔔 y en qué servidores está cada cuenta, para mencionarla en el chat de ese servidor (ver `donde_estan()`). Sin el
+    # archivo, nada: el Worker sigue con `persona`, como antes
+    try:
+        with io.open(os.path.join(BASE, 'datos', 'servidores_de.json'), encoding='utf-8') as f:
+            donde = donde_estan(idx, json.load(f))
+    except (OSError, ValueError):
+        donde = {}
     # 🪪 y el nombre de la Liga de cada cuenta (17/11/2026, Dlx: «si alguien escribe velatzzzz, debería mostrarse con su
     # aka oficial, Velatz»): el aviso de «te toca» escribe a la gente como la conoce la Liga, no como la escribió la llave
-    nuevo = json.dumps({'v': 1, 'n': idx, 'o': oficiales(padron, idx)}, ensure_ascii=False, sort_keys=True,
+    nuevo = json.dumps({'v': 1, 'n': idx, 'o': oficiales(padron, idx), 's': donde}, ensure_ascii=False, sort_keys=True,
                        separators=(',', ':'))
     print('   🎤 te toca: %d nombre(s) con su Discord ID' % len(idx))
     if not aplicar:
@@ -507,6 +527,8 @@ def _self_check():
                          {'raw': 'Cami', 'full': 'Cami', 'discord_id': ''}], {'cf': 'Bea'})
     ok(idx == {'bea': '2', 'cf': '2'},
        'el índice: la Lista y los alias; sin Discord ID no entra, y un nombre de dos personas tampoco  %s' % idx)
+    ok(donde_estan(idx, {'2': ['SR', 'FFA', 'FFA'], '3': ['DRA'], '9': ['FFA'], '1': []}) == {'2': ['FFA', 'SR']},
+       'dónde está cada cuenta del índice (para mencionarla en el chat de ese servidor): sólo las del índice, sin repetir')
     print('')
     print('   %s' % ('todo bien' if not mal else '🔴 %d mal' % mal))
     return 1 if mal else 0

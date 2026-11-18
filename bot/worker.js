@@ -5084,6 +5084,8 @@ export default {
         const esperarD = frenado(yo, 'click');
         if (esperarD) return espera(esperarD);
         if (dueno && dueno !== yo) return aviso('Eso es de otra persona: usa **`/drops`** para ver los tuyos.');
+        // 🥚 el Nido del campeón (el aviso de ganadores, 18/11/2026) no se abre en Discord: a él solo, el link de la página
+        if (que === 'dd' && quien === 'nido') return aviso('🥚 Tu **Nido** se abre en la página, con su animación: ' + HUB_URL + '/freestyle-rap/?drops=1');
         if (que === 'dd') return (quien === 'drop' || quien === 'star') ? pensandoYEditar(i, ctx, () => abrirDropChat(env, yo, quien)) : aviso('Ese botón ya no anda.');
         const val = ((i.data && i.data.values) || [])[0] || '';
         if (!RANURA_NOMBRE[quien] || !val) return aviso('Ese menú ya no anda: usa **`/equipar`** de nuevo.');

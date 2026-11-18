@@ -1923,6 +1923,13 @@ console.log('\n🛍️🐉 LA TIENDA Y LOS DROPS EN DISCORD (tanda 1)\n');
   const rp = await pedir({ type: 3, guild_id: G.FFA, channel_id: '1', member: { user: { id: '700953' } }, message: { id: '1' },
                            data: { custom_id: 'dd:drop:x:700953', component_type: 2 } });
   ok('y el suyo contesta «pensando»', rp.json?.type === 5, JSON.stringify(rp.json));
+  // 🥚 el Nido del campeón (aviso de ganadores, 18/11/2026): a él, el link de la página; a otro, «es de otra persona»
+  const rn = await pedir({ type: 3, guild_id: G.FFA, channel_id: '1', member: { user: { id: '700953' } }, message: { id: '1' },
+                           data: { custom_id: 'dd:nido:x:700953', component_type: 2 } });
+  const rn2 = await pedir({ type: 3, guild_id: G.FFA, channel_id: '1', member: { user: { id: '700955' } }, message: { id: '1' },
+                            data: { custom_id: 'dd:nido:x:700953', component_type: 2 } });
+  ok('el botón del Nido le pasa a su dueño el link de la página, y a otro no', /Nido.*drops=1/s.test(rn.json?.data?.content || '')
+     && rn.json?.data?.flags === 64 && /otra persona/.test(rn2.json?.data?.content || ''), JSON.stringify([rn.json?.data, rn2.json?.data]));
 }
 
 console.log('\n/WEBSITE Y /NOTIFY\n');

@@ -346,11 +346,22 @@ const ok = (cond, que, det) => {
     '«Consigue tu tarjeta»: sale si alguno del vs va con la silueta; con sólo la Servidor (una tarjeta) no; sin vs, nada');
     // 📊🌙 EL REMAKE DEL VS (02/11/2026): «Ver estadísticas» al lado de «Consigue tu tarjeta», lo de esta noche, la ficha
     const fv = A.filasVs({ a: { carta: '' }, b: { carta: ct }, fid: 'abcdef012345' });
-    ok(fv.length === 2 && fv[0].components[0].custom_id === 'vx:abcdef012345' && fv[1].components[0].url === A.HUB_TARJETAS
+    ok(fv.length === 1 && fv[0].components[0].custom_id === 'vx:abcdef012345' && fv[0].components[1].url === A.HUB_TARJETAS
       && A.filasVs({ a: { carta: ct }, b: { carta: ct }, fid: 'abcdef012345' })[0].components.length === 1
       && A.filasVs({ a: { carta: ct }, b: { carta: ct } }).length === 0
       && A.filasVs({ a: {}, b: {}, fid: 'no-vale' })[0].components[0].url === A.HUB_TARJETAS,
-    '«Ver estadísticas» y «Consigue tu tarjeta», cada una en su fila; sin ficha (o con un id que no vale), lo de antes');
+    '«Estadísticas» y «Consigue tu tarjeta», en UNA fila (18/11/2026); sin ficha (o con un id que no vale), lo de antes');
+    const fv3 = A.filasVs({ a: { n: 'Valen', k: 'valen', carta: '' }, b: { n: 'Oasis', k: 'oasis', carta: ct }, fid: 'abcdef012345' });
+    ok(fv3.length === 1 && fv3[0].components.map((c) => c.label).join('|') === 'Estadísticas|Perfiles|Consigue tu tarjeta',
+      'los tres botones del vs (Estadísticas, Perfiles y Consigue tu tarjeta) van en una sola fila, no uno debajo del otro');
+    // 🔁 LA LLAVE REPUBLICADA (18/11/2026, NEW GENESIS de FFA): el mismo cuadro con otro título es la misma llave
+    const cuerpoNG = '\n\n**[•OCTAVOS DE FINAL•]**\n\n▪️   [YOR] 🆚 [NC] 🆚 [ONZAS] vs [COLESITO]\n▪️   [THANIEL] 🆚 [GEOKA] 🆚 [AKUSERU] 🆚 [SINTEXT]\n'
+      + '▪️   [OKAM] 🆚 [PARK JI SUNG]\n▪️   [RIZAS] 🆚 [RODRI LP] 🆚 [LRS] 🆚 [TENOR]\n▪️   [JULDA] 🆚 [TOMMYHILFIGER] 🆚 [DEKO] 🆚 [SNOW] 🆚 [ROMEO]\n';
+    const otraNoche = '**__ COPA SOOLAR 9 __**\n\n**[•OCTAVOS•]**\n▪️ [VALEN] 🆚 [GUTY]\n▪️ [OASIS] 🆚 [BADTERNE]\n▪️ [LIBERIA] 🆚 [DREXX]\n▪️ [NC] 🆚 [MOLUSCO]\n';
+    ok(A.mismaLlave('**__ DESGRACIAS EN TOKYO VOL 21 1v1 __**' + cuerpoNG, '**__ ↱  |🔌 NEW GENESIS 🔌|  ↲__**' + cuerpoNG)
+      && !A.mismaLlave(otraNoche, '**__ ↱  |🔌 NEW GENESIS 🔌|  ↲__**' + cuerpoNG)
+      && !A.mismaLlave('**__ VOL 2 __**\n[NC] 🆚 [YOR]', '**__ VOL 3 __**\n[NC] 🆚 [YOR]'),
+    'la llave borrada y publicada otra vez con otro título es la MISMA (la gente coincide); otra noche con un par en común, no; con muy poca gente no se adivina');
     const genteN = (l) => A.genteChat(l, null, null);
     const rondasN = [{ r: 'Octavos', b: [[['Oasis, Badterne', 'Molusco, LRS'], 'Oasis, Badterne'], [['Liberia', 'Drexx'], 'Liberia']] },
       { r: 'Cuartos', b: [[['Oasis', 'Liberia'], '']] }];
@@ -2084,7 +2095,7 @@ const ok = (cond, que, det) => {
     const msg = pedidos[0] && pedidos[0].b;
     const ap = sql.exec('SELECT * FROM apuestas').toArray()[0];
     ok(pedidos.length === 1 && msg && /LA REVANCHA/.test(msg.content) && /Ana 🇦🇷\*\* vs \*\*Bea 🇨🇱/.test(msg.content)
-      && /🎲 \*\*Apuestas abiertas/.test(msg.content) && msg.components && msg.components.length === 4 && ap && ap.estado === 'abierta'
+      && /🎲 \*\*Apuestas abiertas/.test(msg.content) && msg.components && msg.components.length === 2 && ap && ap.estado === 'abierta'
       && /^ve:[0-9a-f]+:A:[0-9a-f]+$/.test(msg.components[0].components[0].custom_id) && /🗳️ /.test(msg.content)
       && msg.components.some((f) => f.components.some((x) => x.url === A.HUB_TARJETAS))
       // 📊 y «Ver estadísticas» en la misma fila, con su ficha ya guardada (02/11/2026)
@@ -2138,7 +2149,7 @@ const ok = (cond, que, det) => {
     await o.chatVivo(T + 4 * 60000);
     const cierre = pedidos.find((p) => p.m === 'PATCH');
     ok(cierre && /🔒 Apuestas cerradas · pozo de \*\*850\*\* entre 2/.test(cierre.b.content) && cierre.b.components[0].components.every((c) => !c.disabled)
-      && /🗳️ /.test(cierre.b.content) && cierre.b.components.length === 4 && /^qg:/.test(cierre.b.components[0].components[0].custom_id) && cierre.b.components.flatMap((f) => f.components).some((x) => x.url === A.HUB_TARJETAS)
+      && /🗳️ /.test(cierre.b.content) && cierre.b.components.length === 2 && /^qg:/.test(cierre.b.components[0].components[0].custom_id) && cierre.b.components.flatMap((f) => f.components).some((x) => x.url === A.HUB_TARJETAS)
       && cierre.b.components.flatMap((f) => f.components).some((x) => /^vx:/.test(x.custom_id || ''))
       && (await pedir({ quien: U3, ap: ap.id, lado: 'A', monto: 50 }, T + 4 * 60000)).error === 'cerrada', 'a los 3 minutos cierra la apuesta: dice el pozo, no se puede apostar y quedan los botones del voto, sin perder su renglón');
     pedidos.length = 0;
@@ -2732,11 +2743,11 @@ const ok = (cond, que, det) => {
   'cada título nuevo sale sólo con su dato');
   const bp = A.botonesPerfil({ n: 'Ana 🇦🇷', k: 'ana' }, { n: 'Sin perfil', k: '' });
   const fv = A.filasVs({ fid: 'abcdef012345', a: { n: 'A', k: 'a', carta: 'x' }, b: { n: 'B', k: 'b', carta: 'y' } });
-  ok(bp.length === 1 && /r\/ana$/.test(bp[0].url) && bp[0].label === 'Ana' && fv.length === 2 && fv[0].components.length === 1
-    && fv[0].components[0].label === 'Estadísticas' && fv[1].components.length === 1 && fv[1].components[0].custom_id === 'vp:abcdef012345'
-    && fv[1].components[0].label === 'Perfiles' && !JSON.stringify(fv).includes('\u2800')
+  ok(bp.length === 1 && /r\/ana$/.test(bp[0].url) && bp[0].label === 'Ana' && fv.length === 1 && fv[0].components.length === 2
+    && fv[0].components[0].label === 'Estadísticas' && fv[0].components[1].custom_id === 'vp:abcdef012345'
+    && fv[0].components[1].label === 'Perfiles' && !JSON.stringify(fv).includes('\u2800')
     && A.filasVs({ a: { n: 'A', k: 'a', carta: 'x' }, b: { n: 'B', k: 'b', carta: 'y' } })[0].components.every((x) => x.style === 5),
-  'en filas: las estadísticas en la suya y los dos perfiles juntos; quien no tiene perfil no lleva botón');
+  'en UNA fila (18/11/2026): las estadísticas y los dos perfiles juntos; quien no tiene perfil no lleva botón');
   // 👤 los perfiles: una caja por persona, con su cara si la tiene, y su botón
   const fp = { sv: 'FRZ', a: { n: 'PUBLICENEMYNUMEROUNO', fl: '🇨🇱', k: 'ana' }, b: { n: 'Beto', fl: '', k: '' },
     perfil: [{ av: '123456/abc', pos: 4, rg: 'B', ev: 66, oro: 9, pod: 18, wr: 56, crew: 'Follombia', sv: 'FFA' }, null] };

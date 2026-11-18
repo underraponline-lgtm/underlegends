@@ -472,8 +472,9 @@ export function genteChat(lado, buscar, tabla, ids, enSv) {
     let id = ids ? String(ids[claveTurno(n)] || (f && f.n ? ids[claveTurno(f.n)] : '') || '') : '';
     // 🙈 SÓLO A QUIEN ESTÁ EN ESE SERVIDOR (19/10/2026, Dlx con una captura de FFA: «¿por qué dice unknown user?»). La
     // mención de alguien que no está en el servidor del chat Discord la dibuja «@unknown-user»: con `enSv` (sus servidores,
-    // de `persona`) se escribe su nombre en vez de mencionarlo. Sin saber quién es (`k`), tampoco se menciona
-    if (id && enSv && !enSv(k)) id = '';
+    // de `persona` o, desde el 18/11/2026, del índice: ver `estaEn()`) se escribe su nombre en vez de mencionarlo. Sin
+    // saber quién es (`k`), tampoco se menciona
+    if (id && enSv && !enSv(k, id)) id = '';
     if (f && f.n) {
       n = sinBandera(f.n);
       fl = banderaDe(f.cc) || fl;
@@ -1361,7 +1362,11 @@ export function filasVs(vs) {
   if (vs && vs.grupos && /^[0-9a-f]{12}$/.test(String(vs.pid || ''))) filas.push({ type: 1, components: [botonVerPerfiles(vs.pid)] });
   const t = filaTarjeta(vs);
   if (t.length) filas.push({ type: 1, components: t[0].components });
-  return filas;
+  // 🧱 EN UNA SOLA FILA (18/11/2026, Dlx con una captura del chat de FFA: «esos botones creo que habíamos hablado de
+  // mejorarlos»): salían uno debajo del otro, una fila por botón. Juntos mientras entren (Discord: 5 por fila); en el
+  // celular Discord los baja solo si no entran
+  const todos = filas.flatMap((f) => f.components);
+  return todos.length && todos.length <= 5 ? [{ type: 1, components: todos }] : filas;
 }
 
 /**
@@ -5714,6 +5719,30 @@ export function claveMedida(k) {
  * es el canal entero. Si falló (`msgs` no es una lista), no se sabe nada y no
  * se toca nada. Devuelve los ids a sacar.
  */
+//: 🔁 la llave republicada: hasta tantos minutos entre que se borró una y se publicó la otra
+export const REPUBLICADA_MIN = 30;
+// palabras de una llave que no son gente (las rondas, el formato)
+const NO_GENTE = new Set(['octavos', 'cuartos', 'semifinal', 'semifinales', 'final', 'de', 'del', 'la', 'el', 'vs', 'vol',
+  'llave', 'ronda', 'tercer', 'lugar', 'campeon', 'subcampeon', 'grupo', 'grupos', '1v1', '2v2', '1vs1', '2vs2', 'fase']);
+/** La gente que nombra el principio de una llave, como claves (`claveTurno()`): palabras de 3 letras o más. */
+const genteDelTexto = (t) => new Set(String(t || '').split(/[\s\[\]()|,+&:•·▪️🆚*_~#>-]+/u).map(claveTurno)
+  .filter((x) => x.length >= 3 && !NO_GENTE.has(x) && !/^\d+$/.test(x)));
+/**
+ * 🔁 ¿ES LA MISMA LLAVE, PUBLICADA OTRA VEZ? (18/11/2026, Dlx con dos capturas del chat de FFA: «se subió doble el mismo
+ * mensaje»). El organizador publicó la llave de NEW GENESIS con el título de una vieja («DESGRACIAS EN TOKYO VOL 21»), a la
+ * medianoche la borró y la volvió a publicar con el título bueno, y para el bot era otra llave: repitió la noche entera
+ * desde «Arrancó», con un voto y una apuesta nuevos en la final. Es la misma si casi toda la gente del principio coincide
+ * (el título puede cambiar, que es justo lo que pasó): dos de cada tres nombres, contados sobre la llave más corta.
+ */
+export function mismaLlave(textoA, textoB) {
+  const a = genteDelTexto(textoA), b = genteDelTexto(textoB);
+  const menor = Math.min(a.size, b.size);
+  if (menor < 4) return false;
+  let comun = 0;
+  for (const x of a) if (b.has(x)) comun++;
+  return comun / menor >= 2 / 3;
+}
+
 export function borradasDelCanal(guardadas, msgs, limite) {
   if (!Array.isArray(msgs)) return [];
   const ids = new Set(msgs.map((m) => String(m.id)));
@@ -10051,6 +10080,8 @@ export class Avisos {
       if (ahora < (this.leer('chat_pausa:' + canal) || 0)) continue;
       const L = llaves.get(b.id);
       if (!L) continue;
+      // 🔁 si es una llave borrada y publicada otra vez, sigue donde iba la vieja (ver `heredarLlave()`)
+      this.heredarLlave(L, canal, ahora);
       const nivel = nivelChat(dashNivel[b.sv], cfgs.get(b.g).vivo_nivel);
       const entre = porBatalla(nivel) ? rit.batalla : rit.normal;
       const hechos = {};
@@ -10084,12 +10115,9 @@ export class Avisos {
         const q = qsv[normPagina(n)];
         return (q && (dc.tabla[q] || dc.perf[q]) ? q : '') || dc.buscar(n);
       };
-      // 🙈 quién está en el servidor de ESTE chat, para mencionarlo (ver `genteChat()`): sus servidores, de `persona`
+      // 🙈 quién está en el servidor de ESTE chat, para mencionarlo (ver `genteChat()` y `estaEn()`)
       const svChat = b.sv || L.sv || '';
-      const enSv = (k) => {
-        if (!k || !svChat) return false;
-        try { return ((JSON.parse(this.persona('p:' + k) || '{}') || {}).svs || []).includes(svChat); } catch (e) { return false; }
-      };
+      const enSv = (k, id) => this.estaEn(k, id, svChat);
       const opc = { buscar, tabla: dc.tabla, perf: dc.perf, perfT: dc.perfT, cartaDe: dc.cartaDe, sv: svChat,
         ids: await this.indiceNombres(ahora), enSv };
       let ms = momentosChat(L, nombre, [], nivel, opc);
@@ -11251,6 +11279,48 @@ export class Avisos {
       this.indiceTurnosT = ahora;
     }
     return (this.indiceTurnos && this.indiceTurnos.n) || {};
+  }
+
+  /**
+   * 🙈 ¿Está la persona `k` (con la cuenta `id`) en el servidor `sv`? Para mencionarla en el chat de ese servidor. Primero
+   * su ficha (`persona`, sólo de los verificados) y si no, lo que el ciclo midió en Discord para todas las cuentas del
+   * índice (`s` de `turnos:nombres`, ver `donde_estan()` en bot/avisos_personales.py). 18/11/2026, Dlx con una captura
+   * del bot en vivo de FFA: «tú sabes quién es Valen, ¿por qué no lo etiquetas?»: está en FFA y en SR, no en DRA, así
+   * que no tenía ficha. Sin saber quién es (`k`), no: ante la duda, su nombre.
+   */
+  /**
+   * 🔁 LA LLAVE BORRADA Y PUBLICADA OTRA VEZ (ver `mismaLlave()`): la nueva se queda con lo que el chat ya dijo de la vieja
+   * —los mensajes, que se siguen editando—, con su voto y con sus apuestas, en vez de repetir la noche desde «Arrancó».
+   * Una vieja del mismo servidor, borrada hasta `REPUBLICADA_MIN` antes o después de que salió ésta, y con casi la misma
+   * gente. Devuelve el id de la vieja, o `''`.
+   */
+  heredarLlave(L, canal, ahora) {
+    // ⚠️ sólo una llave que todavía no dijo nada en este chat: una que ya habló es la suya
+    if (this.sql.exec('SELECT 1 FROM chat_vivo WHERE llave = ? AND canal = ? LIMIT 1', L.id, canal).toArray().length) return '';
+    const yo = this.sql.exec('SELECT substr(texto, 1, 600) AS t FROM vivo WHERE id = ?', L.id).toArray()[0];
+    if (!yo || !yo.t) return '';
+    const cerca = REPUBLICADA_MIN * MIN;
+    const viejas = this.sql.exec('SELECT id, texto, t FROM vivo_borradas WHERE sv = ? AND id != ? AND t > ? ORDER BY t DESC LIMIT 5',
+      L.sv || '', L.id, ahora - 3 * HORA).toArray()
+      .filter((v) => Math.abs((v.t || 0) - (L.pub || 0)) <= cerca && mismaLlave(v.texto, yo.t)
+        && this.sql.exec('SELECT 1 FROM chat_vivo WHERE llave = ? AND canal = ? LIMIT 1', v.id, canal).toArray().length);
+    const v = viejas[0];
+    if (!v) return '';
+    // lo que el chat ya dijo, y el voto y la apuesta que siguen vivos: con la llave nueva, como si nunca se hubiera ido
+    this.state.storage.transactionSync(() => {
+      this.sql.exec('UPDATE chat_vivo SET llave = ? WHERE llave = ? AND canal = ?', L.id, v.id, canal);
+      this.sql.exec("UPDATE qg SET llave = ? WHERE llave = ? AND canal = ? AND estado = 'abierta'", L.id, v.id, canal);
+      this.sql.exec("UPDATE apuestas SET llave = ? WHERE llave = ? AND canal = ? AND estado IN ('abierta', 'cerrada')", L.id, v.id, canal);
+    });
+    this.guardar('chat_heredada', { t: ahora, de: v.id, a: L.id, sv: L.sv || '' });
+    return v.id;
+  }
+
+  estaEn(k, id, sv) {
+    if (!k || !sv) return false;
+    try { if (((JSON.parse(this.persona('p:' + k) || '{}') || {}).svs || []).includes(sv)) return true; } catch (e) { /* sin ficha */ }
+    const s = (this.indiceTurnos && this.indiceTurnos.s) || {};
+    return !!id && Array.isArray(s[id]) && s[id].includes(sv);
   }
 
   /**
@@ -12527,10 +12597,7 @@ export class Avisos {
   async ligaAnunciar(b, L, donde, ahora) {
     const dc = await this.datosCruce(ahora);
     const ids = await this.indiceNombres(ahora);
-    const enSv = (k) => {
-      if (!k) return false;
-      try { return ((JSON.parse(this.persona('p:' + k) || '{}') || {}).svs || []).includes(L.sv); } catch (e) { return false; }
-    };
+    const enSv = (k, id) => this.estaEn(k, id, L.sv);
     const buscar = (n, fl) => dc.buscar(n, fl);
     const ga = genteChat(b.ra || b.a, buscar, dc.tabla, ids, enSv);
     const gb = genteChat(b.rb || b.b, buscar, dc.tabla, ids, enSv);
