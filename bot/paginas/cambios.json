@@ -11,6 +11,18 @@
   ],
   "cambios": [
     {
+        "version": "6.53",
+        "dia": "2026-11-18",
+        "cuando": "2026-11-18T01:30:00-05:00",
+        "titulo": "Tu primera semana: los premios se ven",
+        "items": [
+            "**Los avisos de cada premio esperan a que nada los tape**: ya no se pierden detrás de la bienvenida, el tutorial o la ventana de drops. El de tu primer cofre trae el botón para abrirlo.",
+            "Al terminar el tutorial completo vuelve a salir su tarjeta con tu Cajón de discos, y la Caja del Nuevo, una vez abierta, queda como abierta.",
+            "Si te verificaste y vuelves más tarde, Mi cuenta ya lo sabe, sin salir y entrar de nuevo.",
+            "En el teléfono la barra de arriba entra en un renglón, el aviso de deslizar la barra se ve antes de irse, y los días de tu semana ya no se pisan."
+        ]
+    },
+    {
         "version": "6.52",
         "dia": "2026-11-18",
         "cuando": "2026-11-18T00:17:00-05:00",
