@@ -34,10 +34,6 @@
   "t": "2026-11-18T06:14:48.334033+00:00",
   "texto": "2 corridas del ciclo se cancelaron esperando su turno de dibujar (18/11 1:14 AM ET): la anterior tardó de más. Lo que no dibujaron lo dibuja la próxima.\nhttps://github.com/underraponline-lgtm/underlegends/actions/runs/44244965412"
  },
- "ciclo:escuchar": {
-  "t": "2026-11-18T16:43:11.143706+00:00",
-  "texto": "El ciclo, en «escuchar», se cortó antes de terminar (18/11 11:43 AM ET): llegó a su tiempo máximo o alguien la canceló. Lo que alcanzó a sellar queda; el resto sigue en la próxima corrida.\nhttps://github.com/underraponline-lgtm/underlegends/actions/runs/44346488643"
- },
  "recordado:a7": {
   "t": "2026-09-26T03:54:52.348453+00:00",
   "texto": "Lo que me pediste recordarte: **A7**, llevar el Score del Competitivo a 40–99. **PichulaMc ya tiene 8 eventos**: cuando alguien llega a 10 tiene letra, y cambiar la escala después se la mueve a mitad de temporada. Si va, decime y lo aplico junto con los umbrales de los 8 rangos."
