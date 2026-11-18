@@ -585,7 +585,9 @@ def sacar_no_confundir(a, b, aplicar=False):
 
 
 def main():
-    args = [a for a in sys.argv[1:] if a != '--aplicar']
+    # ⚠️ `--desde-aca` es del permiso de escribir desde una PC (`espejo_t1.un_escritor()`), no un argumento: sin
+    # sacarlo, los comandos de largo fijo (`--cuenta-nueva`, `--id`) mostraban la ayuda (17/11/2026, con Deko)
+    args = [a for a in sys.argv[1:] if a not in ('--aplicar', '--desde-aca')]
     aplicar = '--aplicar' in sys.argv
     if not args or args[0] == '--fusionar':
         fusionar(aplicar, args[args.index('--solo') + 1] if '--solo' in args and args.index('--solo') + 1 < len(args) else None)

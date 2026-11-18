@@ -402,6 +402,7 @@ def _canonizador():
     padron = _json(os.path.join(BASE, 'datos', 'padron.json'), []) or []
     por_id = {str(p['discord_id']): p['raw'] for p in padron if p.get('discord_id') and p.get('raw')}
     por_k = {clave(p['raw']): p['raw'] for p in padron if p.get('raw')}
+    por_id.update({d: r for d, r in otras_cuentas(por_k).items() if d not in por_id})
     pool = {clave(p['raw']): (p.get('cc') or '') for p in (_json(os.path.join(BASE, 'datos', 'temporada_pool.json'), [])
                                                            or []) if p.get('raw')}
     # la bandera de quien no jugó la Temporada: la del país de la Lista
@@ -429,6 +430,24 @@ def _canonizador():
         k = clave(raw) if raw else ('id' + str(did) if did else clave(nombre))
         return k, raw, limpio(raw) if raw else limpio(nombre), pool.get(k, '')
     return canon
+
+
+def otras_cuentas(por_k=None):
+    """`{discord_id: raw del padrón}` de las OTRAS cuentas de cada uno (`cuentas` de `datos/akas_a_mano.json`).
+
+    🪪 Dlx, 17/11/2026, a Deko en dos filas del ranking de FFA («deko» con @deko0705 y «Deko» con @dekocwp): *«junta las
+    dos filas de Deko en FFA»*. Su bot cuenta por cuenta, así que una persona con dos cuentas tenía dos filas; una cuenta
+    que Dlx ya decidió que es de alguien (la de Shadow, la de Erian…) cuenta para esa persona."""
+    if por_k is None:
+        por_k = {clave(p['raw']): p['raw'] for p in (_json(os.path.join(BASE, 'datos', 'padron.json'), []) or [])
+                 if p.get('raw')}
+    out = {}
+    for quien, ids in ((_json(os.path.join(BASE, 'datos', 'akas_a_mano.json'), {}) or {}).get('cuentas') or {}).items():
+        raw = por_k.get(clave(quien))
+        for d in ids or []:
+            if raw and str(d).isdigit():
+                out.setdefault(str(d), raw)
+    return out
 
 
 def _nombre_dc(s, did, cache):
@@ -633,7 +652,7 @@ def _correr_ffa(s, sv, R, canon, nombres_cache):
     # (#117), dos cuentas distintas, caían en la misma persona de la Lista y se sumaban en una fila. Con ID y sin estar en
     # la Lista, es esa cuenta y nadie más; el nombre sólo decide para las filas de la base que no tienen ID
     en_lista = {str(p.get('discord_id')) for p in (_json(os.path.join(BASE, 'datos', 'padron.json'), []) or [])
-                if p.get('discord_id')}
+                if p.get('discord_id')} | set(otras_cuentas())
 
     def canon_ffa(n, did=''):
         if did and str(did) not in en_lista:
