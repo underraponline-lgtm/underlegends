@@ -1,5 +1,5 @@
 {
- "cuando": "2026-11-18T17:55:45+00:00",
+ "cuando": "2026-11-18T18:07:57+00:00",
  "anuncios": [
   {
    "nombre": "¡SE LLEGÓ LA GRAN NOCHE!",
@@ -5742,9 +5742,7 @@
     "chop": "1364747464170668042",
     "Diego🦉": "559905831932526603"
    },
-   "categoria_id": "1080379388320817233",
-   "inscripciones": "abiertas",
-   "inscripciones_cuando": "2026-11-18T02:49:30"
+   "categoria_id": "1080379388320817233"
   },
   {
    "nombre": "COMPE SABADEÑA",
@@ -5768,9 +5766,7 @@
    "staff": {},
    "autor": "CNC ®",
    "staff_cuentas": {},
-   "categoria_id": "1080379388320817233",
-   "inscripciones": "abiertas",
-   "inscripciones_cuando": "2026-11-18T02:49:30"
+   "categoria_id": "1080379388320817233"
   },
   {
    "nombre": "COMPE ATERRADORA",
@@ -5794,9 +5790,7 @@
    "staff": {},
    "autor": "Designo",
    "staff_cuentas": {},
-   "categoria_id": "1080379388320817233",
-   "inscripciones": "abiertas",
-   "inscripciones_cuando": "2026-11-18T02:49:30"
+   "categoria_id": "1080379388320817233"
   },
   {
    "nombre": "MINUTOS A SANGRE - D3ATHROWCHAMPS VOL 3",
@@ -5820,9 +5814,7 @@
    "staff": {},
    "autor": ".",
    "staff_cuentas": {},
-   "categoria_id": "1080379388320817233",
-   "inscripciones": "abiertas",
-   "inscripciones_cuando": "2026-11-18T02:49:30"
+   "categoria_id": "1080379388320817233"
   },
   {
    "nombre": "EL ONMITRIX VOL 1.",
@@ -5846,9 +5838,7 @@
    "staff": {},
    "autor": "†JEIXDER",
    "staff_cuentas": {},
-   "categoria_id": "1080379388320817233",
-   "inscripciones": "abiertas",
-   "inscripciones_cuando": "2026-11-18T02:49:30"
+   "categoria_id": "1080379388320817233"
   },
   {
    "nombre": "FARK PREMIUM VOL 3",
@@ -5877,9 +5867,7 @@
    "staff": {},
    "autor": "Bohemio.rap",
    "staff_cuentas": {},
-   "categoria_id": "1080379388320817233",
-   "inscripciones": "abiertas",
-   "inscripciones_cuando": "2026-11-18T02:49:30"
+   "categoria_id": "1080379388320817233"
   },
   {
    "nombre": "EL PODERIO DE LOS DIOSES VOL 3",
@@ -5903,9 +5891,7 @@
    "staff": {},
    "autor": "†JEIXDER",
    "staff_cuentas": {},
-   "categoria_id": "1080379388320817233",
-   "inscripciones": "abiertas",
-   "inscripciones_cuando": "2026-11-18T02:49:30"
+   "categoria_id": "1080379388320817233"
   },
   {
    "nombre": "EL PODERIO DE LOS DIOSES VOL 2",
@@ -5929,9 +5915,7 @@
    "staff": {},
    "autor": "†JEIXDER",
    "staff_cuentas": {},
-   "categoria_id": "1080379388320817233",
-   "inscripciones": "abiertas",
-   "inscripciones_cuando": "2026-11-18T02:49:30"
+   "categoria_id": "1080379388320817233"
   },
   {
    "nombre": "RECONOCIENDO LA OBRA",
@@ -5960,9 +5944,7 @@
    "staff": {},
    "autor": "erik_",
    "staff_cuentas": {},
-   "categoria_id": "1080379388320817233",
-   "inscripciones": "abiertas",
-   "inscripciones_cuando": "2026-11-18T02:49:30"
+   "categoria_id": "1080379388320817233"
   },
   {
    "nombre": "EL PODERIO DE LOS DIOSES",
@@ -5986,9 +5968,7 @@
    "staff": {},
    "autor": "†JEIXDER",
    "staff_cuentas": {},
-   "categoria_id": "1080379388320817233",
-   "inscripciones": "abiertas",
-   "inscripciones_cuando": "2026-11-18T02:49:30"
+   "categoria_id": "1080379388320817233"
   },
   {
    "nombre": "PALABRA SAGRADA EDICION 1",
@@ -6012,9 +5992,7 @@
    "staff": {},
    "autor": "dante",
    "staff_cuentas": {},
-   "categoria_id": "1080379388320817233",
-   "inscripciones": "abiertas",
-   "inscripciones_cuando": "2026-11-18T02:49:30"
+   "categoria_id": "1080379388320817233"
   },
   {
    "nombre": "JEIX CUP CLASIFICATORIO",
@@ -6038,9 +6016,7 @@
    "staff": {},
    "autor": "†JEIXDER",
    "staff_cuentas": {},
-   "categoria_id": "1080379388320817233",
-   "inscripciones": "abiertas",
-   "inscripciones_cuando": "2026-11-18T02:49:30"
+   "categoria_id": "1080379388320817233"
   },
   {
    "nombre": "PUNTO MUERTO FECHA 8 (ULTIMO CUPO)",
@@ -6064,9 +6040,7 @@
    "staff": {},
    "autor": "dante",
    "staff_cuentas": {},
-   "categoria_id": "1080379388320817233",
-   "inscripciones": "abiertas",
-   "inscripciones_cuando": "2026-11-18T02:49:30"
+   "categoria_id": "1080379388320817233"
   },
   {
    "nombre": "TORNEO CLASIFICATORIO",
@@ -7900,19 +7874,19 @@
   {
    "servidor": "CH",
    "canal": "📜—inscripciones",
-   "texto": "tomyhilfiger1312🇾🇹",
-   "quien": "crakero_crew_1312",
-   "discord_id": "1374555884868337738",
-   "msg_id": "1572443681640943820",
+   "texto": "MCO 🇦🇷",
+   "quien": "mcorap",
+   "discord_id": "1048744067313451050",
+   "msg_id": "1572443681146015846",
    "cuando": "2026-11-18T02:49:48"
   },
   {
    "servidor": "CH",
    "canal": "📜—inscripciones",
-   "texto": "MCO 🇦🇷",
-   "quien": "mcorap",
-   "discord_id": "1048744067313451050",
-   "msg_id": "1572443681146015846",
+   "texto": "tomyhilfiger1312🇾🇹",
+   "quien": "crakero_crew_1312",
+   "discord_id": "1374555884868337738",
+   "msg_id": "1572443681640943820",
    "cuando": "2026-11-18T02:49:48"
   },
   {
