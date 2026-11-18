@@ -11,6 +11,17 @@
   ],
   "cambios": [
     {
+        "version": "6.45",
+        "dia": "2026-11-17",
+        "cuando": "2026-11-17T23:45:00-05:00",
+        "titulo": "Tus cartas, a la vista mientras eliges",
+        "items": [
+            "En la compu, tu carta queda fija a la izquierda mientras eliges el TAG, el marco o el efecto a la derecha.",
+            "En el celular, tu carta grande con las otras asomando, y todos tus TAGs en una hoja que deja la carta a la vista.",
+            "Los efectos de carta de la Tienda ya se eligen desde el Inventario, y los que no tienes se prueban en tu carta."
+        ]
+    },
+    {
         "version": "6.44",
         "dia": "2026-11-17",
         "cuando": "2026-11-17T23:33:00-05:00",
@@ -70,8 +81,8 @@
     },
     {
       "version": "6.39",
-      "dia": "2026-11-18",
-      "cuando": "2026-11-18T00:40:00-05:00",
+      "dia": "2026-11-17",
+      "cuando": "2026-11-17T22:48:00-05:00",
       "titulo": "Tu perfil, como te ven",
       "items": [
         "La pestaña Perfil del Inventario te muestra tu perfil de verdad mientras eliges tu carta, tus fondos y tu frase.",

@@ -65,7 +65,7 @@ const quieto = () => typeof window !== 'undefined' && window.matchMedia && windo
  * catálogo, `pase:<título>` o `auto`); lo que no viene queda como se dibujó. `marco` como en `Carta`. `onEstado`
  * recibe `'viva'` cuando la carta ya se puede vestir y `'imagen'` cuando no hay armable.
  */
-// 🛍️ `efecto` (18/11/2026, el remake de la pestaña Cartas): el efecto de carta de la Tienda que se está probando, con
+// 🛍️ `efecto` (17/11/2026, el remake de la pestaña Cartas): el efecto de carta de la Tienda que se está probando, con
 // `arte` (el de `pedirArte()`): un id, `''` para ninguno, o `undefined` para el que tiene puesto. Lo demás que tenga
 // puesto (aro, nombre…) no cambia
 export function CartaViva({ liga, k, cual, ancho, piezas = {}, marco, onEstado, cls = '', efecto, arte }) {

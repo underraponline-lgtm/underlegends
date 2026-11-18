@@ -23,7 +23,7 @@
 // «Lo puesto / Probando» compara. De la C (Marvel Snap, Steam): la Colección con barras y el % de la Liga que tiene
 // cada insignia.
 //
-// 🃏 LA PESTAÑA CARTAS, REHECHA (18/11/2026). Dlx: «ahora remakea la pestaña de cartas del inventario»; a la maqueta
+// 🃏 LA PESTAÑA CARTAS, REHECHA (17/11/2026). Dlx: «ahora remakea la pestaña de cartas del inventario»; a la maqueta
 // privada https://claude.ai/artifact/BZpFWfUdrZ6Eq3Kf67caJV, «A compu, B celular». Medido en la de antes: la grilla
 // arrancaba a 1.290 px en la compu y a 1.530 en el celular (elegías sin ver la carta), el costado repetía Perfil, Estilo
 // de juego y Colección, y «Efecto» decía «Pronto» con los efectos de la Tienda ya andando (6.35).
