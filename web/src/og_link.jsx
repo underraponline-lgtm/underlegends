@@ -126,8 +126,8 @@ function encajarCine(caja) {
     el.classList.remove('og-c-dos', 'og-c-corto');
     el.style.fontSize = f + 'px';
     while (ancho(el) + barra > w + 1 && f > min) { f -= 2; el.style.fontSize = f + 'px'; }
-    if (el.dataset.nombre == null || ancho(el) <= w + 1) return;
-    if (/\s/.test(el.textContent.trim())) {
+    if (ancho(el) <= w + 1 || (el.dataset.nombre == null && el.dataset.corta == null)) return;
+    if (el.dataset.nombre != null && /\s/.test(el.textContent.trim())) {
       el.classList.add('og-c-dos');
       f = Math.min(max, Math.round(f * 1.5));
       el.style.fontSize = f + 'px';
@@ -136,7 +136,7 @@ function encajarCine(caja) {
       el.classList.remove('og-c-dos');
     }
     el.classList.add('og-c-corto');
-    el.style.fontSize = '60px';
+    el.style.fontSize = Math.max(min, 60) + 'px';
   });
 }
 
@@ -196,6 +196,99 @@ function Ref({ liga, k }) {
   );
 }
 
+// 🎬 LAS MINIATURAS TIPO CINE DE LAS PÁGINAS (18/11/2026; Dlx, de las maquetas: «en general me gusta más eso de estilo
+// cine», «alzar el brillo», «que se vea la persona», «evitemos repetir personas», «elige frames nítidos» y, a la pregunta de
+// pasarlas a la página: «Yes, move them»). Una para cada página del menú (`#/og/pag/<pagina>`), cada servidor (`sv`), cada
+// país (`pais`), cada llave (`llave`) y cada liga (`liga`): la foto la saca bot/og_links.py en el ciclo y la da
+// bot/paginas/_worker.js. ESTA PIEZA NO DECIDE NINGÚN TEXTO: todo viene en la ruta, armado por `_cine()` de og_links.py —
+// `f` el fondo (R2 `og/fondos/<temporada>/<f>.webp`, herramientas/fondos_og.py), `l` el armado (`a` afiche: el título a lo
+// ancho; `c` columna: lo de la derecha), `s` el sello, `a` y `b` el título, `d` las líneas de datos (`*x*` va en magenta),
+// `o=1` el «online» chiquito, `v` lo de la derecha (`podio`, `abanico`, `escudos`, `rangos`, `bandera`, `escudo`), `c`
+// las cartas y `e` los escudos o la bandera. Así el texto vive en un solo lugar y la huella sabe cuándo rearmar.
+//: el diseño de estas: el mismo `DISENO_CINE` de bot/og_links.py (si la página publicada dice otro, el ciclo no saca la foto)
+export const DISENO_CINE = 'cine-1';
+const CODIGO = /^[a-z]{2,5}$/;
+//: dónde va cada carta: [izquierda, arriba, alto, giro, capa], en el orden en que vienen en `c`
+const LUGARES = {
+  podio: [[790, 72, 470, 0, 2], [700, 150, 360, -7, 1], [920, 150, 360, 7, 1]],            // #1 al medio, #2 y #3 detrás
+  abanico: [[690, 175, 320, -12, 1], [940, 170, 320, 11, 1], [745, 110, 380, -4, 2], [860, 95, 400, 4, 3]],
+  bandera: [[850, 84, 450, 3, 2]],
+  escudo: [[860, 84, 450, 4, 2]],
+};
+
+/** `*x*` → x en magenta */
+function negritas(t) {
+  return String(t).split(/\*([^*]+)\*/).map((p, i) => (i % 2 ? <b key={i}>{p}</b> : p));
+}
+
+function Cine({ liga }) {
+  const [fondo, setFondo] = useState('');
+  const [ul, setUl] = useState(false);
+  const [imgs, setImgs] = useState(0);
+  const [medido, setMedido] = useState('');
+  const txt = useRef(null);
+  const q = deLaRuta();
+  const D = (liga && liga.d) || {};
+  const col = q.get('l') === 'c';
+  const f = String(q.get('f') || '').replace(/[^a-z0-9_-]/g, '');
+  const bg = D.r2 && f ? D.r2 + '/og/fondos/' + String(D.temporada || 't1').toLowerCase() + '/' + f + '.webp' : '';
+  const sello = q.get('s') || '', t1 = q.get('a') || '', t2 = q.get('b') || '';
+  const datos = q.getAll('d').filter(Boolean).slice(0, 3);
+  const v = q.get('v') || '';
+  const cartas = String(q.get('c') || '').split(',').filter((u) => R2.test(u)).slice(0, (LUGARES[v] || []).length);
+  const cods = String(q.get('e') || '').split(',').map((x) => x.toLowerCase()).filter((x) => CODIGO.test(x)).slice(0, 16);
+  const escudos = v === 'escudos' || v === 'escudo' ? cods.slice(0, v === 'escudo' ? 1 : 16) : [];
+  const bandera = v === 'bandera' && cods[0] ? cods[0] : '';
+  const rangos = v === 'rangos' ? (D.rangos || []).filter((r) => r && r.r) : [];
+  const espera = cartas.length + escudos.length + (bandera ? 1 : 0);
+  const una = () => setImgs((x) => x + 1);
+  const clave = [f, t1, t2, datos.join('|'), v, cartas.join(','), cods.join(',')].join('§');
+  useLayoutEffect(() => {
+    let vivo = true;
+    const medir = () => { if (vivo) { encajarCine(txt.current); setMedido(clave); } };
+    if (document.fonts && document.fonts.ready) document.fonts.ready.then(medir); else medir();
+    return () => { vivo = false; };
+  }, [clave]);
+  if (!t1) return <div className="og" data-listo="1" data-falta="1" />;
+  const listo = !!(liga && liga.d && bg && fondo === bg && ul && medido === clave && imgs >= espera);
+  const t1px = t1.length <= 4 ? 190 : col ? 140 : 150;
+  return (
+    <div className={'og og-c ' + (col ? 'og-c-a' : 'og-c-b') + (v === 'abanico' ? ' og-c-angosta' : '')} data-d={DISENO_CINE} data-listo={listo ? '1' : ''}>
+      {bg ? <img key={bg} className="og-c-bg" src={bg} alt="" onLoad={() => setFondo(bg)} onError={() => setFondo(bg)} /> : null}
+      <i className="og-c-velo" />
+      <i className="og-c-vineta" />
+      {cartas.map((u, i) => {
+        const [x, y, h, g, z] = LUGARES[v][i];
+        return <img key={u} className="og-c-k" src={u} alt="" style={{ left: x + 'px', top: y + 'px', height: h + 'px', rotate: g + 'deg', zIndex: 14 + z }} onLoad={una} onError={una} />;
+      })}
+      {v === 'escudos' && escudos.length ? (
+        <span className="og-c-escudos">{escudos.map((s) => <img key={s} src={'/logos/' + s + '.webp'} alt="" onLoad={una} onError={una} />)}</span>
+      ) : null}
+      {v === 'escudo' && escudos[0] ? <img className="og-c-escudo" src={'/logos/' + escudos[0] + '.webp'} alt="" onLoad={una} onError={una} /> : null}
+      {bandera ? <img className="og-c-bandera" src={'/banderas/g/' + bandera + '.webp'} alt="" onLoad={una} onError={una} /> : null}
+      {rangos.length ? (
+        // ⚠️ los colores de rango vienen del lobby (comun/rangos.py), nunca del CSS
+        <span className="og-c-rangos">{rangos.map((r) => <span key={r.r} style={{ color: r.color, borderColor: r.color }}>{r.r}</span>)}</span>
+      ) : null}
+      <span className="og-c-marca">
+        <img src="/ul-blanco.png" alt="Under Legends" onLoad={() => setUl(true)} onError={() => setUl(true)} /><i /><b>{liga && liga.temp}</b>
+      </span>
+      <div className="og-c-txt" ref={txt}>
+        {sello ? <span className="og-c-sello">{sello}</span> : null}
+        <span className="og-c-t">
+          <span className="og-c-t1" data-px={t1px} data-min="48" data-corta="">{t1}</span>
+          {t2 ? <span className="og-c-t2" data-px="76" data-min="40">{t2}{q.get('o') === '1' ? <small className="og-c-on">online</small> : null}</span> : null}
+        </span>
+        {datos.map((x, i) => <span key={i} className={'og-c-dato' + (i ? ' og-c-d2' : '')} data-px="46" data-min="40">{negritas(x)}</span>)}
+      </div>
+      <svg className="og-c-grano" aria-hidden="true">
+        <filter id="og-c-gr2"><feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="2" stitchTiles="stitch" /></filter>
+        <rect width="100%" height="100%" filter="url(#og-c-gr2)" />
+      </svg>
+    </div>
+  );
+}
+
 // 🖼️ EL CARTEL DEL LINK DE TU PERFIL (#/og/perfil/<clave>, 17/11/2026, la tanda 2 de Tu cuenta). Dlx, de la vista previa
 // del link: «debería ser prebuilded». Hasta hoy el link de un perfil mostraba la carta sola; ahora es un cartel de 1200 ×
 // 630 con lo que eligió para «Tu perfil» en Tus fondos (sin elegir: su servidor o su bandera), su carta y su nombre
@@ -242,7 +335,9 @@ function Perfil({ liga, k }) {
   );
 }
 
+const CINE = new Set(['pag', 'sv', 'pais', 'llave', 'liga']);
 export function OgLink({ liga, tipo, id }) {
+  if (CINE.has(tipo)) return <Cine liga={liga} />;
   return tipo === 'crew' ? <Crew id={id} /> : tipo === 'ref' ? <Ref liga={liga} k={id} /> : tipo === 'perfil' ? <Perfil liga={liga} k={id} />
     : <div className="og" data-listo="1" data-falta="1" />;
 }

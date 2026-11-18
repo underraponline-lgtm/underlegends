@@ -11,6 +11,17 @@
   ],
   "cambios": [
     {
+        "version": "6.59",
+        "dia": "2026-11-18",
+        "cuando": "2026-11-18T02:59:00-05:00",
+        "titulo": "Las miniaturas de las páginas, tipo cine",
+        "items": [
+            "Cuando pegas en Discord el link de **una página, un servidor, un país, una llave o una liga**, ahora sale una miniatura **tipo cine**, como la intro: un momento de batalla en blanco y negro con su título.",
+            "**Una persona distinta en cada página**, con los números de hoy: los miembros y los 14 socios, el top 3 en cartas, los torneos de la semana, el récord del Salón…",
+            "Los perfiles siguen con el fondo que eliges en **Tus fondos**."
+        ]
+    },
+    {
         "version": "6.58",
         "dia": "2026-11-18",
         "cuando": "2026-11-18T02:31:00-05:00",

@@ -63,3 +63,17 @@
 .og-c-dato::before{content:'';flex:none;width:12px;height:46px;background:#29B298}
 .og-c-d2{margin-top:-2px;color:#C9C9C4}
 .og-c-d2::before{background:#E41373}
+/* 🎬 las de las páginas (`Cine`, 18/11/2026): lo mismo, más lo de la derecha. La columna de abanico (Tarjetas) es más angosta */
+.og-c-angosta .og-c-txt{width:580px}
+.og-c-k{position:absolute;width:auto;filter:drop-shadow(0 18px 28px rgba(0,0,0,.7))}
+.og-c-escudos{position:absolute;left:674px;top:96px;display:grid;grid-template-columns:repeat(4,104px);gap:12px;z-index:15}
+.og-c-escudos img{width:104px;height:104px;object-fit:contain;filter:drop-shadow(0 6px 12px rgba(0,0,0,.6))}
+.og-c-escudo{position:absolute;left:650px;top:160px;width:210px;height:210px;object-fit:contain;z-index:15;filter:drop-shadow(0 6px 12px rgba(0,0,0,.6))}
+.og-c-bandera{position:absolute;left:672px;top:372px;width:162px;height:108px;object-fit:cover;border-radius:6px;z-index:15;filter:drop-shadow(0 6px 12px rgba(0,0,0,.6))}
+.og-c-rangos{position:absolute;left:700px;top:78px;display:grid;grid-template-columns:repeat(2,auto);gap:14px 18px;z-index:15}
+.og-c-rangos span{display:grid;place-items:center;min-width:120px;height:84px;padding:0 14px;border:4px solid;background:rgba(3,3,4,.72);
+  font:900 48px/1 Archivo,sans-serif;font-stretch:125%;transform:skewX(-10deg)}
+.og-c-dato b{color:#E41373;font-weight:700}
+/* «online», chiquito al lado de FREESTYLE (Dlx, 18/11/2026) */
+.og-c-on{font:700 40px/1 'Barlow Condensed',sans-serif;letter-spacing:.16em;color:#F6F6F6;margin-left:16px;position:relative;top:-8px;
+  text-shadow:0 1px 8px rgba(3,3,4,.9)}

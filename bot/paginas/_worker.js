@@ -530,7 +530,8 @@ async function vistaServidor(req, env, x, url) {
   const titulo = nombre + ' en la Liga Global de Freestyle';
   const desc = (s.tag ? String(s.tag).charAt(0) + String(s.tag).slice(1).toLowerCase() + '. ' : '')
     + 'Sus eventos, su gente y sus tarjetas, en el ranking mundial del freestyle online.';
-  const img = url.origin + '/og/' + s.sv.toLowerCase() + '.png';
+  // 🎬 la de cine (bot/og_links.py, 18/11/2026), si ya está; si no, la de banner_link.py
+  const img = (await hayOg('sv', slugOg(s.sv))) || url.origin + '/og/' + s.sv.toLowerCase() + '.png';
   const pag = await env.ASSETS.fetch(new Request(url.origin + '/', { headers: req.headers }));
   const poner = (atr, valor) => ({ element(el) { el.setAttribute(atr, valor); } });
   const rw = new HTMLRewriter()
@@ -597,7 +598,7 @@ async function vistaLiga(req, env, id, url) {
     clausura: ['Clausura', 'El cierre del ranking de Temporada: el top 16, en octavos.'] };
   if (fijas[id]) {
     return conVista(req, env, url, { tab: fijas[id][0] + ' · Liga Global de Freestyle', titulo: fijas[id][0] + ' · Liga Global de Freestyle',
-      desc: fijas[id][1], img: url.origin + '/og/p/ligas.png', alt: fijas[id][0] });
+      desc: fijas[id][1], img: (await hayOg('pag', 'ligas')) || url.origin + '/og/p/ligas.png', alt: fijas[id][0] });
   }
   const L = await pedirJson('/lobby?json=1');
   // 🏟️ las ligas ya no viajan en el lobby (25/10/2026): van en `/ligas`, con lo del Inicio en `lobby`. El lobby viejo,
@@ -608,8 +609,9 @@ async function vistaLiga(req, env, id, url) {
   const s = (L.svs || []).find((y) => y && y.sv === x.sv);
   const nombre = String(x.n).trim();
   const desc = 'La liga de ' + (s ? s.nombre : x.sv) + (x.bat ? ' · ' + x.bat + ' batallas' : '') + '. Sus fechas, su tabla y sus campeones, en la Liga Global de Freestyle.';
+  const og = (await hayOg('liga', slugOg(id))) || (x.sv ? await hayOg('sv', slugOg(x.sv)) : '');
   return conVista(req, env, url, { tab: nombre + ' · Liga Global de Freestyle', titulo: nombre + ' · Liga Global de Freestyle', desc,
-    img: imagenSv(L, x.sv, url, 'ligas'), alt: nombre, color: s && /^#[0-9a-f]{6}$/i.test(String(s.color || '')) ? s.color : '' });
+    img: og || imagenSv(L, x.sv, url, 'ligas'), alt: nombre, color: s && /^#[0-9a-f]{6}$/i.test(String(s.color || '')) ? s.color : '' });
 }
 
 // 🏆 LA DE CADA LLAVE (`/freestyle-rap/llave/<n>`): el nombre del evento, su servidor, la fecha, cuántos jugaron y el
@@ -622,11 +624,13 @@ async function vistaLlave(req, env, n, url) {
   if (!x || !x.nombre) return null;
   const s = L && (L.svs || []).find((y) => y && y.sv === x.sv);
   const camp = (x.tabla || []).filter((f) => Array.isArray(f) && f[1] === 'Campeón').map((f) => String(f[0]).trim()).slice(0, 2);
-  const nombre = String(x.nombre).trim();
+  // «(sin titulo)» es como el lector guarda la llave sin nombre: se la llama por su número (como su miniatura, bot/og_links.py)
+  const nombre = /^\(?\s*sin\s+t[ií]tulo\s*\)?$/i.test(String(x.nombre).trim()) ? 'Llave #' + n : String(x.nombre).trim();
   const desc = [x.fecha ? String(x.fecha) : '', s ? s.nombre : String(x.sv || ''), x.participantes ? x.participantes + ' participantes' : '',
     camp.length ? 'Campeón: ' + camp.join(' y ') : ''].filter(Boolean).join(' · ') + '. La llave completa, batalla por batalla.';
+  const og = (await hayOg('llave', n)) || (x.sv ? await hayOg('sv', slugOg(x.sv)) : '');
   return conVista(req, env, url, { tab: nombre + ' · Liga Global de Freestyle', titulo: nombre + (x.sv ? ' · ' + x.sv : '') + ' · Liga Global',
-    desc, img: imagenSv(L, x.sv, url, 'eventos'), alt: 'La llave de ' + nombre,
+    desc, img: og || imagenSv(L, x.sv, url, 'eventos'), alt: 'La llave de ' + nombre,
     color: s && /^#[0-9a-f]{6}$/i.test(String(s.color || '')) ? s.color : '' });
 }
 
@@ -644,7 +648,7 @@ async function vistaPais(req, env, cc, url) {
   const desc = (p && p.n ? p.n + (p.n === 1 ? ' rapero' : ' raperos') + ' en la Liga Global. ' : '')
     + 'Su ranking, su OVR Nacional y sus tarjetas de País en el freestyle online.';
   return conVista(req, env, url, { tab: nombre + ' · Liga Global de Freestyle', titulo: nombre + ' en la Liga Global de Freestyle', desc,
-    img: url.origin + '/og/pais/' + cc + '.png', alt: 'La bandera de ' + nombre });
+    img: (await hayOg('pais', cc)) || url.origin + '/og/pais/' + cc + '.png', alt: 'La bandera de ' + nombre });
 }
 
 /** El index.html con otra vista previa: `{tab, titulo, desc, img, alt, color?}` sobre la página de siempre */
@@ -672,10 +676,26 @@ async function conVista(req, env, url, v) {
   return new Response(out.body, { status: 200, headers: h });
 }
 
-function vistaPagina(req, env, pagina, url) {
+async function vistaPagina(req, env, pagina, url) {
   const [nombre, desc] = PAGINAS[pagina];
+  // 🎬 la de cine (bot/og_links.py, 18/11/2026: Dlx, de las maquetas, «Yes, move them»), si ya está; si no, la de antes
+  const img = (await hayOg('pag', pagina)) || url.origin + '/og/p/' + pagina + '.png';
   return conVista(req, env, url, { tab: nombre + ' · Liga Global de Freestyle', titulo: nombre + ' · Liga Global de Freestyle', desc,
-    img: url.origin + '/og/p/' + pagina + '.png', alt: nombre + ' en la Liga Global de Freestyle' });
+    img, alt: nombre + ' en la Liga Global de Freestyle' });
+}
+
+// 🎬 Y LA PORTADA (`/` y `/freestyle-rap`): el mismo título y la misma bajada del index.html, sólo con la imagen de cine en
+// vez de `og.png` cuando ya está. Sin ella, `null`: queda la de siempre
+async function vistaInicio(req, env, url) {
+  const img = await hayOg('pag', 'inicio');
+  if (!img) return null;
+  const pag = await env.ASSETS.fetch(new Request(url.origin + '/', { headers: req.headers }));
+  const poner = (atr, valor) => ({ element(el) { el.setAttribute(atr, valor); } });
+  const out = new HTMLRewriter().on('meta[property="og:image"]', poner('content', img)).on('meta[name="twitter:image"]', poner('content', img))
+    .transform(pag);
+  const h = new Headers(out.headers);
+  h.set('cache-control', 'public, max-age=300');
+  return new Response(out.body, { status: 200, headers: h });
 }
 
 // 👥 Y LA DE CADA CREW: su nombre, su descripción, cuántos son y su logo (`/avisos/crews` es público y se cachea 5 min).
@@ -753,6 +773,10 @@ export default {
 
     // 🖼️ la vista previa de cada página, sólo para los bots: una liga, una llave o un país tienen la suya; las demás, la de
     // su página (ver `vistaPagina()` y las tres de arriba)
+    if (req.method === 'GET' && BOTS_VISTA.test(ua) && /^\/(?:freestyle-rap\/?)?$/.test(url.pathname)) {
+      const v = await vistaInicio(req, env, url).catch(() => null);
+      if (v) return v;
+    }
     const mPag = req.method === 'GET' && BOTS_VISTA.test(ua) && RUTA_PAGINA.exec(url.pathname);
     if (mPag) {
       const pagina = ALIAS[mPag[1]] || mPag[1];
