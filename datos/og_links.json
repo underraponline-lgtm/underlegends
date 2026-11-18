@@ -5,6 +5,43 @@
   "ks": "c9a9fea46e1c9087",
   "metricos": "0b96d3bdb3daee08"
  },
+ "pag": {
+  "cambios": "67d07d94c5172ca1",
+  "crews": "766d14de3d70ebd7",
+  "cuenta": "1891feb30c93ebb5",
+  "eventos": "5d1f976a15618a94",
+  "guia": "b6d98b7c91aa1622",
+  "inicio": "236ca2c73e74971e",
+  "ligas": "cc19405f8a9ed378",
+  "pase": "ef0f89f8e517280b",
+  "publicaciones": "b9dfd95d345f24ce",
+  "ranking": "8aa1b73557459cf9",
+  "salon": "459387bd38140b82",
+  "socio": "505882504df70b87",
+  "socios": "f2835012362dbf9a",
+  "tarjetas": "c1d78e390d12a602",
+  "tienda": "69ab0ce9f504f61d"
+ },
+ "pais": {
+  "ar": "f189e6f8ed5d7ea7",
+  "bo": "d0d428793bb8a4dc",
+  "cl": "5b637d86d7b1a00f",
+  "co": "37465cd7be3fe865",
+  "cr": "4ad7da511be52628",
+  "do": "52ff6af786fbfa50",
+  "ec": "f9a9645eaf5508fe",
+  "es": "9448b37a82581351",
+  "hn": "1c1cd92f1159e35a",
+  "mx": "0e57835d7b1f6730",
+  "ni": "1160fe76f87fb5a3",
+  "pa": "29b442631ebf10c3",
+  "pe": "f00d005a058f06d7",
+  "pr": "41e68cdfce1c7019",
+  "py": "dec1d8e386fe131c",
+  "us": "89c2fbf43ca3522b",
+  "uy": "977506f99bae7e95",
+  "ve": "b32b55b6f04ced5d"
+ },
  "perfil": {
   "abrahamh": "7c555773a6804640",
   "abyssus": "0918f21da1585cc2",
@@ -43,7 +80,7 @@
   "dxg": "7dea14b01c70c303",
   "dynoco": "d5f3787ded1f443f",
   "dyzz": "d52915a2261bae6d",
-  "erian": "3debdd6208d07f93",
+  "erian": "f6350bfad8953de3",
   "erik": "50bc21e08d2f203d",
   "evangeline": "b63adf7a6777ef17",
   "eze": "7d955cb3b3db65a0",
@@ -143,6 +180,20 @@
   "zignos": "2bde9b35c3973d4f"
  },
  "ref": {
-  "dlx": "e3cfe89a4e885408"
+  "dlx": "c8995daf8e1af3f8"
+ },
+ "sv": {
+  "acad": "46be86d2108df843",
+  "ceu": "ba555dfd9edaed4b",
+  "ch": "3a1c098c393f76a1",
+  "ddf": "5c47adb3ff0152ac",
+  "dds": "40fae11bc9bd3109",
+  "fds": "5929dfcc8d40f4f8",
+  "ffa": "fb1d1e219c7f7da9",
+  "frz": "71feb966cd213409",
+  "fvs": "a4dd0d8115225b7c",
+  "lkr": "63efec7b22ba2a38",
+  "sr": "be67f502e97076cb",
+  "urbf": "414721bfbf63cd90"
  }
 }
