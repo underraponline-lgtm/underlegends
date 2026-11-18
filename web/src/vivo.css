@@ -6060,7 +6060,7 @@ dialog.pn-pop.pop-gratis{--pc:#F5C542;width:min(640px,calc(100vw - 32px))}
 .lu-r.nt-f{box-shadow:inset 3px 0 0 var(--lu-c,#FF4F9A)}
 .lu-r .lu-cat,.lu-feat .lu-cat{color:var(--lu-c,#FF4F9A)}
 .lu-r-v .nt-cara > .nt-c{box-shadow:0 0 0 2px #0B0B0D,0 0 0 4px var(--lu-c,#2A2A2E)}
-.lu-r .nt-c.ini,.lu-noche-c .nt-c.ini{background:#2A2A2E;color:#F6F6F6}
+.lu-r .nt-c.ini,.lu-noche-c .nt-c.ini,.lu-nl-caras .nt-c.ini{background:#2A2A2E;color:#F6F6F6}
 .lu-r .nt-cara > .nt-c.ini{background:var(--lu-c,#2A2A2E);color:#030304;font:400 20px/1 Anton,Archivo,sans-serif}
 .lu-r-v.v-carta{filter:drop-shadow(0 0 0 transparent)}
 .lu-r-sv{width:32px;height:32px;border-radius:50%;object-fit:cover;border:1px solid #2E2E33;background:#141417}
@@ -6092,6 +6092,35 @@ dialog.pn-pop.pop-gratis{--pc:#F5C542;width:min(640px,calc(100vw - 32px))}
 .lu-noche .lu-cat{color:#FFD024}
 .lu-noche-c{min-width:0}
 .lu-noche-c small{flex:1}
+/* 🌙 sin afiche, «Anoche» es la última caja y se estira (18/11/2026, Dlx con la captura: «is this a bug?»): era un grid y
+   repartía el alto entre sus tres renglones —168, 191 y 189 px para 20, 40 y 32 de contenido—. Ahora va en columna, arriba,
+   y llena con el resumen. ⚠️ `contain:size` es lo que hace que el resumen NO empuje la columna: su alto sale de lo que
+   sobra, no de lo que trae. Y el wrap en columna manda a la derecha (recortado) la fila que no entra ENTERA: el título va
+   pegado a la primera fila de su grupo (`.lu-nl-g`), así nunca queda un título sin filas ni una fila cortada */
+.lu-noche{align-content:start}
+.lu-noche.larga{display:flex;flex-direction:column;gap:12px}
+.lu-noche.larga .lu-noche-c{display:none}
+.lu-nl{flex:1 1 0;min-height:0;contain:size;overflow:hidden;display:flex;flex-direction:column;flex-wrap:wrap;align-content:flex-start;gap:8px 48px}
+.lu-nl > *{width:100%}
+.lu-nl-g{display:grid;gap:8px}
+.lu-nl-g:not(:first-child){margin-top:10px}
+.lu-nl-k{color:#A5A5A0;font:700 12px/1 "Barlow Condensed",sans-serif;letter-spacing:.08em;text-transform:uppercase}
+.lu-nl-f{display:grid;grid-template-columns:60px minmax(0,1fr) auto;align-items:center;gap:10px}
+.lu-nl-caras{display:flex;padding-left:6px}
+.lu-nl-caras .nt-c{width:32px;height:32px;margin-left:-6px;border:2px solid #0B0B0D;font-size:12px}
+.lu-nl-t{display:grid;gap:3px;min-width:0}
+.lu-nl-t b{font:700 14px/1.2 Archivo,sans-serif;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.lu-nl-t small{color:#A5A5A0;font-size:12px;line-height:1.2;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.lu-nl-d{font:400 19px/1 Anton,Archivo,sans-serif;color:#FFD024;white-space:nowrap}
+.lu-nl-d.lu-nl-sube{color:#29B298;font:700 14px/1 "Barlow Condensed",sans-serif;letter-spacing:.04em}
+.lu-nl-pie{display:flex;justify-content:space-between;gap:12px;padding-top:12px;border-top:1px solid #232326;color:#C9C9C4;
+  font:700 13px/1 "Barlow Condensed",sans-serif;letter-spacing:.06em;text-transform:uppercase}
+@media (hover: hover) and (pointer: fine){.lu-noche:hover .lu-nl-pie{color:#F6F6F6}}
+@media (max-width: 899.98px){
+  /* en el celular no se estira nada: la fila de caras de siempre */
+  .lu-noche.larga .lu-noche-c{display:flex}
+  .lu-nl,.lu-nl-pie{display:none}
+}
 /* el celular: una columna, la grande arriba */
 @media (max-width: 899.98px){
   .lu-dos{grid-template-columns:minmax(0,1fr)}

@@ -11,6 +11,15 @@
   ],
   "cambios": [
     {
+        "version": "6.66",
+        "dia": "2026-11-18",
+        "cuando": "2026-11-18T15:20:00-05:00",
+        "titulo": "Anoche en la Liga, completo",
+        "items": [
+            "**Anoche en la Liga, completo**: en el Inicio, cuando no hay afiche de liga, la caja de anoche ya no queda vacía: trae los campeones con su evento, los que más sumaron y los que subieron en la Temporada."
+        ]
+    },
+    {
         "version": "6.65",
         "dia": "2026-11-18",
         "cuando": "2026-11-18T14:55:00-05:00",

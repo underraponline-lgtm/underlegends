@@ -454,12 +454,41 @@ export function Noticias({ liga, raiz, prueba = '' }) {
     const cs = (noche.campeones || []);
     const caras = [];
     cs.forEach((c) => (c.quien || []).forEach(([n, k]) => { if (caras.length < 5 && !caras.some((y) => y[1] === k)) caras.push([n, k]); }));
+    // 🌙 SIN AFICHE, ESTA CAJA ES LA ÚLTIMA DE LA COLUMNA Y SE ESTIRA hasta la altura de la lista (18/11/2026, Dlx con la
+    // captura: «is this a bug?»): estiraba sus tres renglones —607 px de caja para 92 de contenido—. Ahora trae el resumen
+    // entero (campeones, más puntos, subieron), que ya venía en el muro y sólo se leía en Publicaciones. Lo que no entra se
+    // va de a grupo entero (vivo.css, `.lu-nl`); en el celular no se estira nada y queda la fila de caras
+    const larga = !flyer;
+    const fila3 = (key, cs3, t, s, d, dCls) => (
+      <span key={key} className="lu-nl-f">
+        <span className="lu-nl-caras">{cs3.map(([n, k]) => <Cara key={k} liga={liga} k={k} nombre={n} cls="nt-c" />)}</span>
+        <span className="lu-nl-t"><b>{t}</b>{s ? <small>{s}</small> : null}</span>
+        {d ? <span className={'lu-nl-d' + (dCls ? ' ' + dCls : '')}>{d}</span> : null}
+      </span>
+    );
+    const suman = noche.suman || [], suben = noche.suben || [];
+    // cada grupo: el título pegado a su primera fila (nunca un título solo) y las demás filas sueltas, así el último grupo
+    // muestra las que entran
+    const grupo = (key, titulo, filas) => (filas.length ? [
+      <span key={key} className="lu-nl-g"><small className="lu-nl-k">{titulo}</small>{filas[0]}</span>, ...filas.slice(1)] : []);
     nocheT = (
-      <a className="lu-noche" href="#/publicaciones">
+      <a className={'lu-noche' + (larga ? ' larga' : '')} href="#/publicaciones">
         <span className="lu-cat">Anoche en la Liga</span>
         <span className="lu-num">{noche.eventos}<small>{noche.eventos === 1 ? 'evento' : 'eventos'}</small>{noche.part}<small>raperos</small>{cs.length}<small>{cs.length === 1 ? 'campeón' : 'campeones'}</small></span>
         <span className="lu-noche-c">{caras.map(([n, k]) => <Cara key={k} liga={liga} k={k} nombre={n} cls="nt-c" />)}
           <small>{cs.slice(0, 2).map((c) => (c.quien || []).map((y) => liga.aka(y[0], y[1])).join(' y ')).join(', ')}{cs.length > 2 ? ' y ' + (cs.length - 2) + ' más' : ''}</small></span>
+        {larga ? (
+          <span className="lu-nl">
+            {grupo('gc', cs.length === 1 ? 'El campeón' : 'Los campeones',
+              cs.map((c, i) => fila3('c' + i, (c.quien || []).slice(0, 2), (c.quien || []).map((y) => liga.aka(y[0], y[1])).join(' y '),
+                [c.ev, c.sv ? siglaDe(c.sv) : ''].filter(Boolean).join(' · '))))}
+            {grupo('gs', 'Los que más sumaron',
+              suman.map((x) => fila3('s' + x.k, [[x.n, x.k]], liga.aka(x.n, x.k), x.ev === 1 ? '1 evento' : x.ev + ' eventos', '+' + num(x.pts))))}
+            {grupo('gu', 'Subieron en la Temporada',
+              suben.map((x) => fila3('u' + x.k, [[x.n, x.k]], liga.aka(x.n, x.k), '', '#' + x.de + ' → #' + x.a, 'lu-nl-sube')))}
+          </span>
+        ) : null}
+        {larga ? <span className="lu-nl-pie"><span>Todo lo de anoche, en Publicaciones</span><b>→</b></span> : null}
       </a>
     );
   }
