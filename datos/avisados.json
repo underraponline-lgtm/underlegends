@@ -37041,7 +37041,7 @@
    ],
    [
     "oriuz",
-    "Mato 🇧🇴",
+    "Mato  🇧🇴",
     "oriuz"
    ],
    [
@@ -37101,7 +37101,7 @@
    "oriuz": 7
   },
   "fecha": "07/10",
-  "firma": "ff5f00366d150599",
+  "firma": "1faed8c624694f44",
   "msg": "1569507985938714665",
   "nombre": "DISCORD STYLE ED. 15",
   "num": 578,
@@ -37178,7 +37178,7 @@
     1250
    ],
    [
-    "Mato 🇧🇴",
+    "Mato  🇧🇴",
     "Octavos",
     1250
    ],
@@ -37292,7 +37292,7 @@
    ],
    [
     "Sadik",
-    "Mato 🇧🇴",
+    "Mato  🇧🇴",
     "Sadik"
    ],
    [
@@ -37369,7 +37369,7 @@
    "oriuz": 7
   },
   "fecha": "17/10",
-  "firma": "dd3078f453abaf24",
+  "firma": "23485b26db92d7f2",
   "msg": "1569507995547602980",
   "nombre": "DISCORD STYLE ED. 16",
   "num": 579,
@@ -37436,7 +37436,7 @@
     1250
    ],
    [
-    "Mato 🇧🇴",
+    "Mato  🇧🇴",
     "Octavos",
     1250
    ],
@@ -46047,7 +46047,7 @@
    "TøKīØ🦠🧠": 13
   },
   "fecha": "12/11",
-  "firma": "3a6dca6879de727c",
+  "firma": "ee084a3937e2d46f",
   "msg": "1570602754639007937",
   "nombre": "RAP SIN GROSERIAS 5",
   "num": 626,
@@ -47564,7 +47564,7 @@
    "crakero": 9
   },
   "fecha": "13/11",
-  "firma": "97ab46bd92cc4415",
+  "firma": "11dfb5ce59651876",
   "msg": "1570980323372703807",
   "nombre": "RANKED 2",
   "num": 632,
@@ -51213,7 +51213,7 @@
    "crakero": 11
   },
   "fecha": "13/11",
-  "firma": "eb9df469c6fbb749",
+  "firma": "580f7325862bf764",
   "msg": "1572055186955046984",
   "nombre": "RAP SIN GROSERIAS 6",
   "num": 653,
@@ -51823,6 +51823,116 @@
    ],
    [
     "Majiztral",
+    "Cuartos",
+    2000
+   ]
+  ],
+  "v": 2
+ },
+ "659": {
+  "antes": {
+   "MaYeuTyK": [
+    47,
+    55,
+    false
+   ],
+   "Puppy": [
+    385,
+    289,
+    true
+   ],
+   "Soulb": [
+    48,
+    56,
+    false
+   ],
+   "Vilca": [
+    65,
+    78,
+    false
+   ]
+  },
+  "canal": "",
+  "duelos": [
+   [
+    "Nc-Nacho",
+    "LANCER L🇻🇪",
+    "Nc-Nacho"
+   ],
+   [
+    "MaYeuTyK",
+    "Vilca",
+    "MaYeuTyK"
+   ],
+   [
+    "Soulb",
+    "Papo🇦🇷",
+    "Soulb"
+   ],
+   [
+    "MaYeuTyK",
+    "NACHO SRK🇪🇸🇦🇷",
+    "MaYeuTyK"
+   ],
+   [
+    "Puppy",
+    "Soulb",
+    "Puppy"
+   ],
+   [
+    "Puppy",
+    "MaYeuTyK",
+    "Puppy"
+   ]
+  ],
+  "ev_antes": {
+   "MaYeuTyK": 24,
+   "Puppy": 1,
+   "Soulb": 32,
+   "Vilca": 24
+  },
+  "fecha": "17/11",
+  "nombre": "(sin titulo)",
+  "num": 659,
+  "participantes": 10,
+  "sello": {
+   "Puppy": ""
+  },
+  "sv": "LKR",
+  "t": "2026-11-18T03:54:14Z",
+  "tabla": [
+   [
+    "MaYeuTyK",
+    "Subcampeón",
+    5000
+   ],
+   [
+    "Puppy",
+    "Campeón",
+    3750
+   ],
+   [
+    "NACHO SRK🇪🇸🇦🇷",
+    "Semifinal",
+    3500
+   ],
+   [
+    "Soulb",
+    "Semifinal",
+    3500
+   ],
+   [
+    "LANCER L🇻🇪",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Vilca",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Papo🇦🇷",
     "Cuartos",
     2000
    ]

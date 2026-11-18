@@ -2131,8 +2131,7 @@
     "pts": 40575,
     "racha": "1/1",
     "tg": {
-     "fin": 2,
-     "llave": true
+     "fin": 2
     }
    },
    "URBF": {
@@ -7274,6 +7273,20 @@
     }
    }
   },
+  "LANCER L🇻🇪": {
+   "LKR": {
+    "duelos": "",
+    "ev": 1,
+    "oro": 0,
+    "ovr": 42,
+    "pod": 0,
+    "pts": 1500,
+    "racha": "0/0",
+    "tg": {
+     "nuevo": true
+    }
+   }
+  },
   "LARRIX🇦🇷": {
    "LKR": {
     "duelos": "",
@@ -8719,14 +8732,14 @@
    },
    "LKR": {
     "duelos": "",
-    "ev": 8,
+    "ev": 9,
     "oro": 0,
-    "ovr": 50,
-    "pod": 1,
-    "pts": 44687,
-    "racha": "0/1",
+    "ovr": 51,
+    "pod": 2,
+    "pts": 48437,
+    "racha": "1/1",
     "tg": {
-     "fin": 1,
+     "fin": 2,
      "fund": true,
      "llave": true
     }
@@ -9207,20 +9220,8 @@
     "racha": "0/0"
    }
   },
-  "Mato 🇧🇴": {
+  "Mato  🇧🇴": {
    "DDS": {
-    "duelos": "",
-    "ev": 2,
-    "oro": 0,
-    "ovr": 43,
-    "pod": 0,
-    "pts": 3125,
-    "racha": "0/0",
-    "tg": {
-     "fund": true
-    }
-   },
-   "FDS": {
     "duelos": "",
     "ev": 2,
     "oro": 0,
@@ -9231,16 +9232,28 @@
     "tg": {
      "fund": true
     }
-   }
-  },
-  "Mato 🇵🇪": {
+   },
    "FDS": {
     "duelos": "",
     "ev": 1,
     "oro": 0,
     "ovr": 42,
     "pod": 0,
-    "pts": 1750,
+    "pts": 1250,
+    "racha": "0/0",
+    "tg": {
+     "fund": true
+    }
+   }
+  },
+  "Mato 🇵🇪": {
+   "FDS": {
+    "duelos": "",
+    "ev": 2,
+    "oro": 0,
+    "ovr": 43,
+    "pod": 0,
+    "pts": 3000,
     "racha": "0/0",
     "tg": {
      "fund": true
@@ -9496,8 +9509,7 @@
     "pts": 29359,
     "racha": "0/0",
     "tg": {
-     "fund": true,
-     "llave": true
+     "fund": true
     }
    },
    "URBF": {
@@ -9953,6 +9965,20 @@
     "pod": 0,
     "pts": 4125,
     "racha": "0/0"
+   }
+  },
+  "NACHO SRK🇪🇸🇦🇷": {
+   "LKR": {
+    "duelos": "",
+    "ev": 1,
+    "oro": 0,
+    "ovr": 42,
+    "pod": 0,
+    "pts": 2625,
+    "racha": "0/0",
+    "tg": {
+     "nuevo": true
+    }
    }
   },
   "NAVAS 🇪🇸": {
@@ -11175,6 +11201,20 @@
     }
    }
   },
+  "Papo🇦🇷": {
+   "LKR": {
+    "duelos": "",
+    "ev": 1,
+    "oro": 0,
+    "ovr": 42,
+    "pod": 0,
+    "pts": 1500,
+    "racha": "0/0",
+    "tg": {
+     "nuevo": true
+    }
+   }
+  },
   "Paria": {
    "CH": {
     "duelos": "",
@@ -11614,14 +11654,14 @@
   "Puppy": {
    "LKR": {
     "duelos": "",
-    "ev": 1,
-    "oro": 1,
-    "ovr": 44,
-    "pod": 1,
-    "pts": 5625,
-    "racha": "1/1",
+    "ev": 2,
+    "oro": 2,
+    "ovr": 46,
+    "pod": 2,
+    "pts": 9844,
+    "racha": "2/2",
     "tg": {
-     "fin": 1,
+     "fin": 2,
      "nuevo": true
     }
    }
@@ -13395,11 +13435,11 @@
    },
    "LKR": {
     "duelos": "",
-    "ev": 7,
+    "ev": 8,
     "oro": 0,
     "ovr": 47,
     "pod": 0,
-    "pts": 25787,
+    "pts": 28412,
     "racha": "0/1",
     "tg": {
      "fund": true
@@ -14574,11 +14614,11 @@
    },
    "LKR": {
     "duelos": "",
-    "ev": 1,
+    "ev": 2,
     "oro": 0,
-    "ovr": 42,
+    "ovr": 43,
     "pod": 0,
-    "pts": 1500,
+    "pts": 3000,
     "racha": "0/0",
     "tg": {
      "nuevo": true

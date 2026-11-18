@@ -1,5 +1,5 @@
 {
- "cuando": "2026-11-18T03:25:33+00:00",
+ "cuando": "2026-11-18T03:55:31+00:00",
  "anuncios": [
   {
    "nombre": "¡SE LLEGÓ LA GRAN NOCHE!",
@@ -644,14 +644,14 @@
      "Kravitz",
      "la monalisa",
      "zaik0009",
-     "Simon Henriksson"
+     "Lizeninn"
     ]
    },
    "autor": "Kravitz",
    "staff_cuentas": {
     "Kravitz": "1345962362615894027",
     "la monalisa": "1487658663148785734",
-    "Simon Henriksson": "1493416945037611140"
+    "Lizeninn": "1493416945037611140"
    },
    "categoria_id": "1468478330826260500"
   },
@@ -4526,7 +4526,7 @@
    "organizador": "",
    "orgs": [
     {
-     "n": "Simon Henriksson",
+     "n": "Lizeninn",
      "id": "1493416945037611140"
     }
    ],
@@ -4541,10 +4541,10 @@
    "premios": "RESPETO Y PUNTOS RANKING",
    "staff": {
     "jurado": [
-     "Simon Henriksson"
+     "Lizeninn"
     ],
     "host": [
-     "Simon Henriksson",
+     "Lizeninn",
      "Y",
      "Drexx"
     ],
@@ -4552,9 +4552,9 @@
      "Lízeninn"
     ]
    },
-   "autor": "Simon Henriksson",
+   "autor": "Lizeninn",
    "staff_cuentas": {
-    "Simon Henriksson": "1493416945037611140",
+    "Lizeninn": "1493416945037611140",
     "Drexx": "1150099153238630410",
     "Lízeninn": "1474585358292222015"
    },
@@ -7462,6 +7462,69 @@
   }
  ],
  "inscripciones": [
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "Les gano y los cojo 🇨🇱",
+   "quien": "curtirelmambonuncafueunaopcion",
+   "discord_id": "1487658663148785734",
+   "msg_id": "1572459577981542450",
+   "cuando": "2026-11-18T03:52:58"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "Jahnoh 🇦🇷",
+   "quien": "deslanofthemind",
+   "discord_id": "1055474244089286706",
+   "msg_id": "1572458956729614357",
+   "cuando": "2026-11-18T03:50:30"
+  },
+  {
+   "servidor": "CH",
+   "canal": "📜—inscripciones",
+   "texto": "shogun 🇦🇷",
+   "quien": "uvesr18",
+   "discord_id": "962438373295923280",
+   "msg_id": "1572456841596899339",
+   "cuando": "2026-11-18T03:42:05"
+  },
+  {
+   "servidor": "CH",
+   "canal": "📜—inscripciones",
+   "texto": "DarnBless mc 🇨🇴",
+   "quien": "juanclaudio0959",
+   "discord_id": "1508771760709963930",
+   "msg_id": "1572456544128208957",
+   "cuando": "2026-11-18T03:40:54"
+  },
+  {
+   "servidor": "CH",
+   "canal": "📜—inscripciones",
+   "texto": "Voy a ganar sdc 🇨🇱",
+   "quien": "curtirelmambonuncafueunaopcion",
+   "discord_id": "1487658663148785734",
+   "msg_id": "1572456469935427698",
+   "cuando": "2026-11-18T03:40:37"
+  },
+  {
+   "servidor": "CH",
+   "canal": "📜—inscripciones",
+   "texto": "Vilkovich🇧🇮",
+   "quien": "vilca_16",
+   "discord_id": "846870712950194196",
+   "msg_id": "1572456344525606923",
+   "cuando": "2026-11-18T03:40:07"
+  },
+  {
+   "servidor": "CH",
+   "canal": "📜—inscripciones",
+   "texto": "23",
+   "quien": "lanumero10",
+   "discord_id": "766509416689565708",
+   "msg_id": "1572453351168278549",
+   "cuando": "2026-11-18T03:28:13"
+  },
   {
    "servidor": "FFA",
    "canal": "✦📝—inscripciones",
@@ -43398,69 +43461,6 @@
    "discord_id": "1324178951119175711",
    "msg_id": "1560112789211713608",
    "cuando": "2026-10-15T02:11:14"
-  },
-  {
-   "servidor": "FRZ",
-   "canal": "➣「📝」inscripciones",
-   "texto": "nc🇲🇾",
-   "quien": "nachonc_",
-   "discord_id": "1523082259870257315",
-   "msg_id": "1560107076561150136",
-   "cuando": "2026-10-15T01:48:32"
-  },
-  {
-   "servidor": "FRZ",
-   "canal": "➣「📝」inscripciones",
-   "texto": "Scritura",
-   "quien": "scritura",
-   "discord_id": "1559007314126704653",
-   "msg_id": "1560105630063263756",
-   "cuando": "2026-10-15T01:42:47"
-  },
-  {
-   "servidor": "FRZ",
-   "canal": "➣「📝」inscripciones",
-   "texto": "Erian 🇨🇴",
-   "quien": "deslanofthemind",
-   "discord_id": "1055474244089286706",
-   "msg_id": "1560104703474536449",
-   "cuando": "2026-10-15T01:39:06"
-  },
-  {
-   "servidor": "FRZ",
-   "canal": "➣「📝」inscripciones",
-   "texto": "Nico 🇵🇪",
-   "quien": "lokero_13",
-   "discord_id": "558443582202052608",
-   "msg_id": "1560104683945857146",
-   "cuando": "2026-10-15T01:39:01"
-  },
-  {
-   "servidor": "FRZ",
-   "canal": "➣「📝」inscripciones",
-   "texto": "Elviolavaginas🇧🇦",
-   "quien": "sj.2008_",
-   "discord_id": "645308964141137952",
-   "msg_id": "1560104672013062227",
-   "cuando": "2026-10-15T01:38:59"
-  },
-  {
-   "servidor": "FRZ",
-   "canal": "➣「📝」inscripciones",
-   "texto": "sin limites 🇵🇪",
-   "quien": "sinlimites2026",
-   "discord_id": "1508623564285149357",
-   "msg_id": "1560104566719127647",
-   "cuando": "2026-10-15T01:38:34"
-  },
-  {
-   "servidor": "FRZ",
-   "canal": "➣「📝」inscripciones",
-   "texto": "juasmio",
-   "quien": "jmiopa",
-   "discord_id": "729439360545587291",
-   "msg_id": "1560104489414037507",
-   "cuando": "2026-10-15T01:38:15"
   }
  ]
 }

@@ -4047,7 +4047,7 @@
   "T": 15,
   "V": 36,
   "wr": "36.8%",
-  "rch_act": 0,
+  "rch_act": 1,
   "rch_max": 2,
   "duel_v": 6,
   "duel_t": 15,
@@ -4072,7 +4072,7 @@
    "bestia": 1,
    "clasico": 3,
    "dg": 14,
-   "fp": 3,
+   "fp": 4,
    "riv": 26,
    "venc": 13
   },

@@ -1637,6 +1637,17 @@
    "vence": "2026-11-23T02:04:55+00:00",
    "vencido": false
   },
+  "LANCER L": {
+   "con": null,
+   "cumplido": "",
+   "debut": "2026-11-18T02:50:43+00:00",
+   "did": "",
+   "evento": "(sin titulo)",
+   "n": 659,
+   "sv": "LKR",
+   "vence": "2026-11-25T02:50:43+00:00",
+   "vencido": false
+  },
   "LARRIX": {
    "avisado": "2026-11-12",
    "avisado_cumplido": "2026-11-12",
@@ -2094,6 +2105,17 @@
    "vence": "2026-11-06T23:28:52+00:00",
    "vencido": true
   },
+  "NACHO SRK": {
+   "con": null,
+   "cumplido": "",
+   "debut": "2026-11-18T02:50:43+00:00",
+   "did": "",
+   "evento": "(sin titulo)",
+   "n": 659,
+   "sv": "LKR",
+   "vence": "2026-11-25T02:50:43+00:00",
+   "vencido": false
+  },
   "NAVAS": {
    "avisado": "2026-11-12",
    "con": null,
@@ -2356,6 +2378,17 @@
    "vence": "2026-10-27T22:07:15+00:00",
    "vencido": true
   },
+  "Papo": {
+   "con": null,
+   "cumplido": "",
+   "debut": "2026-11-18T02:50:43+00:00",
+   "did": "",
+   "evento": "(sin titulo)",
+   "n": 659,
+   "sv": "LKR",
+   "vence": "2026-11-25T02:50:43+00:00",
+   "vencido": false
+  },
   "Park ji sunk": {
    "avisado": "2026-11-13",
    "chat": "2026-11-14",
@@ -2396,8 +2429,8 @@
   },
   "Puppy": {
    "avisado": "2026-11-17",
-   "con": null,
-   "cumplido": "",
+   "con": 659,
+   "cumplido": "2026-11-18T02:50:43+00:00",
    "debut": "2026-11-17T01:03:04+00:00",
    "did": "",
    "evento": "(sin titulo)",

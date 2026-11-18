@@ -430,19 +430,19 @@
 "rg": "D",
 "c": []
 },
+"mayeutyk": {
+"rg": "C",
+"c": [
+"competitivo",
+"servidor",
+"temporada"
+]
+},
 "lordviruzz": {
 "rg": "D",
 "c": [
 "competitivo",
 "pais",
-"servidor",
-"temporada"
-]
-},
-"mayeutyk": {
-"rg": "C",
-"c": [
-"competitivo",
 "servidor",
 "temporada"
 ]
@@ -7881,6 +7881,55 @@
 "ev": "(sin titulo)"
 }
 ]
+},
+"2026-11-17": {
+"tipo": "resnoche",
+"t": "2026-11-18T08:00:00Z",
+"dia": "2026-11-17",
+"eventos": 1,
+"part": 10,
+"campeones": [
+{
+"ev": "(sin titulo)",
+"sv": "LKR",
+"ll": 659,
+"quien": [
+[
+"Puppy",
+""
+]
+]
+}
+],
+"suman": [
+{
+"n": "MaYeuTyK",
+"k": "mayeutyk",
+"pts": 5000,
+"ev": 1
+},
+{
+"n": "Puppy",
+"k": "",
+"pts": 3750,
+"ev": 1
+},
+{
+"n": "NACHO SRK🇪🇸🇦🇷",
+"k": "",
+"pts": 3500,
+"ev": 1
+}
+],
+"suben": [
+{
+"n": "Puppy",
+"k": "",
+"de": 391,
+"a": 348
+}
+],
+"sorpresas": []
 }
 },
 "extra": {
@@ -8002,7 +8051,7 @@
 "dominick": 0,
 "mathhias": 0,
 "tøkiø": 0,
-"mayeutyk": 0,
+"mayeutyk": 1,
 "dyzz": 0,
 "mats": 2,
 "numberve": 0,

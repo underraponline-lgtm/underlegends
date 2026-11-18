@@ -33678,7 +33678,7 @@
      [
       [
        ".SosaATR",
-       "Mato 🇧🇴"
+       "MATO 🇵🇪"
       ],
       ".SosaATR",
       ""
@@ -33871,7 +33871,7 @@
     1250
    ],
    [
-    "Mato 🇧🇴",
+    "MATO 🇵🇪",
     "Octavos",
     1250
    ],
@@ -33914,7 +33914,7 @@
        "Abraham"
       ],
       "Sin Limites",
-      "Revivido: Abraham 🇻🇪"
+      "Revivido: Abraham"
      ],
      [
       [
@@ -50153,7 +50153,7 @@
        "oriuz"
       ],
       "Benji 🇵🇪",
-      "Walk-in 1: Oriuz 🇦🇷"
+      "Walk-in 1: oriuz"
      ]
     ],
     "r": "Semifinales"
@@ -59132,6 +59132,132 @@
   ],
   "ver": {
    "min": 7,
+   "v": 1
+  }
+ },
+ "659": {
+  "dia": "2026-11-17",
+  "escala": "8-15",
+  "fecha": "17/11",
+  "links": [
+   "https://discord.com/channels/1558611504046153750/1558611505040064607/1572443914546450443"
+  ],
+  "n": 659,
+  "nombre": "(sin titulo)",
+  "participantes": 10,
+  "rondas": [
+   {
+    "b": [
+     [
+      [
+       "Nc-Nacho",
+       "LANCER L🇻🇪"
+      ],
+      "Nc-Nacho",
+      ""
+     ],
+     [
+      [
+       "MaYeuTyK",
+       "Vilca"
+      ],
+      "MaYeuTyK",
+      ""
+     ],
+     [
+      [
+       "Soulb",
+       "Papo🇦🇷"
+      ],
+      "Soulb",
+      ""
+     ],
+     [
+      [
+       "Caquiña🇵🇪",
+       "Alek🇪🇸"
+      ],
+      "",
+      "sin ganador: espera en ✅ Decidir"
+     ]
+    ],
+    "r": "Cuartos"
+   },
+   {
+    "b": [
+     [
+      [
+       "MaYeuTyK",
+       "NACHO SRK🇪🇸🇦🇷"
+      ],
+      "MaYeuTyK",
+      ""
+     ],
+     [
+      [
+       "Puppy",
+       "Soulb"
+      ],
+      "Puppy",
+      "Walk-in 1: Puppy🇨🇴"
+     ]
+    ],
+    "r": "Semifinales"
+   },
+   {
+    "b": [
+     [
+      [
+       "Puppy",
+       "MaYeuTyK"
+      ],
+      "Puppy",
+      ""
+     ]
+    ],
+    "r": "Final"
+   }
+  ],
+  "sv": "LKR",
+  "tabla": [
+   [
+    "MaYeuTyK",
+    "Subcampeón",
+    5000
+   ],
+   [
+    "Puppy",
+    "Campeón",
+    3750
+   ],
+   [
+    "NACHO SRK🇪🇸🇦🇷",
+    "Semifinal",
+    3500
+   ],
+   [
+    "Soulb",
+    "Semifinal",
+    3500
+   ],
+   [
+    "LANCER L🇻🇪",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Papo🇦🇷",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Vilca",
+    "Cuartos",
+    2000
+   ]
+  ],
+  "ver": {
+   "min": 31,
    "v": 1
   }
  }

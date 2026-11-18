@@ -4839,6 +4839,33 @@
     "DOS NOMBRES: «Betelguese» → «Benjixo» · cuenta 1493317254581063680"
    ],
    "escribio": {}
+  },
+  {
+   "id": "0d4eb0a471",
+   "tipo": "Nombre desconocido",
+   "sec": "(sin titulo) · LKR · 17/11 · #659",
+   "que": "¿Quién es «NACHO SRK🇪🇸🇦🇷»?",
+   "r": "Es Mito",
+   "regla": "Discord · su cuenta de Discord: la inscripción, el podio, la llave o la llamada",
+   "rk": "Discord",
+   "por": "el ciclo (su cuenta de Discord)",
+   "porque": "alias de Mito: la misma cuenta de Discord",
+   "t": 1794974507438,
+   "filas": [
+    1483
+   ],
+   "variantes": [
+    "NACHO SRK🇪🇸🇦🇷"
+   ],
+   "escribio": {
+    "alias": [
+     "NACHO SRK",
+     "Mito"
+    ],
+    "filas": [
+     376
+    ]
+   }
   }
  ],
  "deshechas": []

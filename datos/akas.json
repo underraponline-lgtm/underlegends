@@ -368,6 +368,7 @@
   "danu": "Vilca",
   "soul": "Magic",
   "respiracion": "Efimero",
+  "nachosrk": "Mito",
   "zetryco": "Zetryko",
   "martynez": "MaYeuTyK",
   "basty": "BastyRetro",
@@ -1921,6 +1922,10 @@
   [
    "RESPIRACIÓN",
    "Efimero"
+  ],
+  [
+   "NACHO SRK",
+   "Mito"
   ],
   [
    "Zetryco",
