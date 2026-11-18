@@ -2020,5 +2020,32 @@
   "sv": "LKR",
   "t_pregunta": ""
  },
+ "1572446923003265176": {
+  "autor": "1364747464170668042",
+  "canal": "1222379620494741604",
+  "canal_pregunta": "1538678065306140684",
+  "cuando": "2026-11-18T03:02:41.095000+00:00",
+  "donde": "staff",
+  "evento": "CHOP ES CEO V.4",
+  "fecha": "17/11",
+  "llave": "1572446923003265176",
+  "pregunta": "1572505148335333539",
+  "preguntada": "2026-11-18 1:54 AM ET",
+  "preguntas": [
+   {
+    "lados": [
+     "0223 🇧🇧",
+     "Simon🇺🇸",
+     "Nestor🇺🇾"
+    ],
+    "ronda": "OCTAVOS"
+   }
+  ],
+  "respondidas": {},
+  "sin_permiso": false,
+  "staff_probado": true,
+  "sv": "CH",
+  "t_pregunta": "2026-11-18T06:54:03+00:00"
+ },
  "_leeme": "Las llaves que el ciclo no entendió y se las preguntó a quien las publicó, con botones o un menú (bot/finales.py). Una vez por llave, por su ID: así nunca se pregunta dos veces. Dlx, 12/10/2026."
 }
