@@ -12,6 +12,7 @@ import { Cabecera, EscenarioPrueba, Hero, Historias, Instalar, IrA, MENU, Tira, 
 import { LosQueMandan, Noticias } from './medio.jsx';
 import { Menu, Merch, Pie, Subir, Tabbar, Visor } from './abajo.jsx';
 import { Lobby } from './lobby.jsx';
+import { PistaNuevos } from './nuevos.jsx';
 // (SemanaComp, de semana_comp.jsx, ya no va en el Inicio: la reemplaza PnSemana del panel)
 import { MarcoSolo } from './marco_solo.jsx';
 // 🧭 el tutorial (Dlx, 12/10/2026, «A … B … C … D … E. Dale»): quién es nuevo se decide al cargar (primera.js, chico);
@@ -832,6 +833,10 @@ export default function App() {
         : pagina === 'dashboard' ? <Aislada key="Dashboard" n="Dashboard" pagina><Suspense fallback={<Cargando />}><Dashboard dc={yo.dc} liga={liga} /></Suspense></Aislada>
         : pagina === 'cuenta' ? <Aislada key="Cuenta" n="Cuenta" pagina><Suspense fallback={<Cargando />}><Cuenta liga={liga} dc={yo.dc} parte={partes[1] || null} tema={tema} onTema={elegirTema} temaSv={temaSv} onTemaSv={elegirSv} /></Suspense></Aislada>
         : pagina === 'ajustes' ? <Aislada key="Ajustes" n="Ajustes" pagina><Suspense fallback={<Cargando />}><Cuenta liga={liga} dc={yo.dc} parte={partes[1] || null} tema={tema} onTema={elegirTema} temaSv={temaSv} onTemaSv={elegirSv} /></Suspense></Aislada> : <div className={'pg-entra' + (va ? ' va-' + va : '')} key="inicio">
+        {/* 🐣 LAS MISIONES PARA NUEVOS, LO PRIMERO DEL INICIO (17/11/2026, Dlx a la maqueta, «Tus elecciones»): antes iban
+            dentro del lobby, debajo de las historias, el escenario y la tira, y en un teléfono de 844 empezaban en y=1118.
+            Sólo mientras dura tu semana (`pistaDe()` de nuevos.jsx: si no, no se dibuja y el Inicio queda como siempre) */}
+        <Aislada n="PistaNuevos"><div className="nvp-arriba"><PistaNuevos liga={liga} dc={yo.dc} /></div></Aislada>
         {/* 🏠 el Dashboard, sólo para Dlx: si la cuenta del navegador no es la suya ni se baja (la puerta igual es el servidor) */}
         {yo.dc && String(yo.dc.id) === DUENO ? <Aislada n="PanelDueno"><Suspense fallback={null}><PanelDueno liga={liga} /></Suspense></Aislada> : null}
         <Aislada n="Historias"><Historias liga={liga} grupos={grupos} vistos={vistos || {}} onAbrir={setHistoria} /></Aislada>

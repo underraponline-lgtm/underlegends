@@ -248,6 +248,11 @@
   border:0;border-radius:3px;background:#E41373;color:#fff;font:900 18px/1 Archivo,sans-serif;letter-spacing:.04em;text-transform:uppercase;
   cursor:pointer;box-shadow:5px 5px 0 #29B298;transition:transform .12s,box-shadow .12s}
 .bv-si svg{flex:none}
+/* 🎁 la segunda línea, chica (17/11/2026): «y abre tu primer cofre». El botón no crece de alto en el teléfono (todo tiene
+   que entrar sin scroll, ver abajo): se le saca relleno lo que suma la línea */
+.bv-si-tx{display:grid;justify-items:start;gap:4px;text-align:left}
+.bv-si-tx small{font:700 13px/1 "Barlow Condensed",sans-serif;letter-spacing:.08em;text-transform:none;color:#FFE4F0}
+.bv-si.con-cofre{padding-block:9px}
 @media (hover:hover) and (pointer:fine){.bv-si:hover{background:#F0247F}}
 .bv-si:active{transform:translate(4px,4px);box-shadow:1px 1px 0 #29B298}
 .bv-si:focus-visible,.bv-luego:focus-visible,.bv-puntos-nav button:focus-visible{outline:3px solid #29B298;outline-offset:3px}
@@ -269,6 +274,7 @@
   .bv-barra{gap:8px;padding:10px 16px calc(10px + env(safe-area-inset-bottom,0px))}
   .bv-acc{gap:0}
   .bv-si{min-height:52px;padding:12px 18px;font-size:17px}
+  .bv-si.con-cofre{padding-block:7px}
   .bv-luego{min-height:40px;padding:8px 12px}
   .bv-pag{gap:14px;padding:14px 16px 12px}
   /* centrada en la altura con márgenes automáticos: si alguna vez no entra, no se corta arriba (`align-content:center` sí cortaba) */

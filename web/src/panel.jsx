@@ -30,7 +30,7 @@ import { ERR_LIBRE, LB, libreAccion, useLibres } from './libres.js';
 import { svElegido, useElegidos } from './elegidos.js';
 import { pedirLigas } from './ligas_datos.js';
 import { BarraDia } from './drops.jsx';
-import { RedesLista, faltanRedes } from './nuevos.jsx';
+import { IR_BIEN, RedesLista, faltanRedes, usePistaVisible } from './nuevos.jsx';
 import { Elegido, Opinion, X2 } from './encuestas.jsx';
 import { PopCab } from './pop.jsx';
 import { delHilo, useComentarios } from './comentarios.jsx';
@@ -109,8 +109,10 @@ function RachaCorta({ R, sola }) {
     </section>
   );
 }
-// 🌱 los primeros 7 días de quien recién llega, chicos, en el lugar de la racha
-const IR_PASO = { seguir: '#/ranking', campana: '#/avisos', llave: '#/eventos', verificar: '#/cuenta/verificar', anotarse: '#/eventos' };
+// 🌱 los primeros 7 días de quien recién llega, chicos, en el lugar de la racha. ⚠️ Mientras se ve la pista de nuevos
+// (17/11/2026, Dlx, «Tus elecciones») esto es una fila de su día de hoy y acá no sale (`FilaRacha`): queda para quien
+// sigue con sus primeros 7 días cuando la pista ya terminó. A dónde lleva cada paso, `IR_BIEN` de nuevos.jsx
+const IR_PASO = IR_BIEN;
 function BienvenidaCorta({ B }) {
   const [ocup, setOcup] = useState(false);
   const [msg, setMsg] = useState('');
@@ -271,8 +273,13 @@ export function FilaRacha({ dc, R, liga, enc }) {
   const mm = liga ? (liga.d.mult || {}) : {};
   const mx = Object.entries(mm.sv || {}).sort((p, q) => q[1] - p[1])[0];
   if (mx && mx[1] > 1) extras.push('semana');
+  // 🌱 «Tus primeros 7 días» va adentro de la pista de nuevos mientras se ve (17/11/2026, «Tus elecciones»): acá no se
+  // repite, y su lugar lo toma el que sigue de la lista. A la racha de todos los días no se la pone en su lugar: quien
+  // tiene la bienvenida nunca la vio en esta fila, y sería un «Cobrar» nuevo para la primera semana
+  const enPista = usePistaVisible(dc);
+  const sinBien = !!(R && R.bienvenida && enPista);
   // el 1.º: tu racha; mientras viene, su lugar guardado (así no salta), y si no llega, el que sigue de la lista
-  const primero = !dc ? 'invita' : R ? 'racha' : sinRacha ? extras.shift() || null : 'espera';
+  const primero = !dc ? 'invita' : sinBien ? extras.shift() || null : R ? 'racha' : sinRacha ? extras.shift() || null : 'espera';
   const segundo = camp ? 'campana' : ult ? 'ultimo' : extras.shift() || null;
   const cuarto = extras.shift() || null;
   const pinta = (q) => (q === 'campana' ? <CampanaCorta key="c" dc={dc} /> : q === 'ultimo' ? <UltCorto key="u" liga={liga} u={ult} />

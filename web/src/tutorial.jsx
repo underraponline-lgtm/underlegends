@@ -248,8 +248,8 @@ function Recorrido({ liga, dc, inicio, onCerrar }) {
         <Centro et={corto ? 'TUTORIAL CORTO · ' + CORTO.length + ' DE ' + CORTO.length : 'TUTORIAL COMPLETO'} onCerrar={() => cerrar('fin')}>
           <h2 id="rc-h">{corto ? 'Ya conoces la Liga' : 'Terminaste el tutorial completo'}</h2>
           {fin.premio === null ? <p>Un momento…</p>
-            : gano ? <><p>Te ganaste {corto ? <b>3 Dragón Drops</b> : <b>un cofre</b>}: ábrelos cuando quieras.</p><Huevos n={corto ? 3 : 1} cofre={!corto} /></>
-              : sinCuenta ? <><p>Te ganaste {corto ? <b>3 Dragón Drops</b> : <b>un cofre</b>}. Te esperan en cuanto vincules tu cuenta de Discord: es gratis y tarda diez segundos.</p>
+            : gano ? <><p>Te ganaste {corto ? <b>3 Dragón Drops</b> : <b>{txtPremio(['cofre', 0])}</b>}: {corto ? 'ábrelos' : 'ábrelo'} cuando quieras.</p><Huevos n={corto ? 3 : 1} cofre={!corto} /></>
+              : sinCuenta ? <><p>Te ganaste {corto ? <b>3 Dragón Drops</b> : <b>{txtPremio(['cofre', 0])}</b>}. Te esperan en cuanto vincules tu cuenta de Discord: es gratis y tarda diez segundos.</p>
                 <Huevos n={corto ? 3 : 1} cofre={!corto} lock /></>
                 : <p>{corto ? 'Ya sabes dónde está cada cosa.' : 'Ya pasaste por todas las páginas de la Liga.'} Lo que sigue: entra a un evento o sube el Pase con Tareas.</p>}
           <div className="rc-acc">
@@ -384,7 +384,7 @@ export function Capitulos() {
     <div className="ap" ref={yo} id="aprende">
       <div className="ap-cab">
         <p>Nueve capítulos de un minuto. Cada uno te lleva a su página y te muestra lo que hay. Se guarda dónde quedaste.
-          {enSemanaNueva() && !T.completo ? <> Al terminar los nueve te llevas <b>{txtPremio(['cofre'])}</b>.</> : null}</p>
+          {enSemanaNueva() && !T.completo ? <> Al terminar los nueve te llevas <b>{txtPremio(['cofre', 0])}</b>.</> : null}</p>
         <span className="ap-av"><b>{hechos} de {CAPITULOS.length}</b><span className="rc-barra" aria-hidden="true"><i style={{ width: (100 * hechos) / CAPITULOS.length + '%' }} /></span></span>
         <button type="button" className="ap-corto" onClick={() => pedirRecorrido('corto')}>¿Apurado? El corto · 1 min</button>
       </div>

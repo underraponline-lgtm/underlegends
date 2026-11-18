@@ -477,6 +477,14 @@ export function Tabbar({ liga, dc, pagina = '' }) {
     const t3 = setTimeout(() => { asomando.current = false; }, 3600);
     return () => { clearTimeout(t1); clearTimeout(t2); clearTimeout(t3); };
   }, [aprende]);
+  // 💬 EL GLOBO SE VA SOLO A LOS 6 SEGUNDOS (17/11/2026, Dlx a la maqueta, «Tus elecciones»): se quedaba hasta tocar la ✕,
+  // tapando la página justo encima de la barra. Ya se vio y la barra ya se asomó sola: cuenta como aprendido, así no
+  // vuelve en cada visita. Sólo donde la barra se ve (el teléfono), y también con «menos animaciones»
+  useEffect(() => {
+    if (!aprende || (window.innerWidth || 0) >= 900) return undefined;
+    const t = setTimeout(aprendio, 6000);
+    return () => clearTimeout(t);
+  }, [aprende]); // eslint-disable-line react-hooks/exhaustive-deps
   return (
     <nav className="tabbar" aria-label="Secciones">
       {aprende ? (

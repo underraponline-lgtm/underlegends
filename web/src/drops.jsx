@@ -43,8 +43,9 @@ export function useDrops(dc) {
 //: los colores de cada rareza (la misma escala de la maqueta). La sexta, el Disco de Diamante, sólo sale del Nido
 export const COLOR_RZ = ['#9AA4B2', '#29B298', '#9B5CFF', '#FF4F93', '#F5C542', '#BFF4FF'];
 const NOMBRES = ['Maqueta', 'Mixtape', 'Vinilo', 'Disco de Oro', 'Micrófono de Oro', 'Disco de Diamante'];
-//: los cofres de `cofre5:<t>:`, por si `cofres` todavía no llegó del objeto (el nombre bueno viene de ahí)
-const COFRES = ['Cajón de discos', 'Flight case', 'Baúl de los objetos', 'Funda del Campeón', 'Tesoro del Dragón'];
+//: los cofres de `cofre5:<t>:`, por si `cofres` todavía no llegó del objeto (el nombre bueno viene de ahí). Los nombra
+//: también la pista de nuevos (nuevos.jsx: «tu primer cofre · Flight case»)
+export const COFRES = ['Cajón de discos', 'Flight case', 'Baúl de los objetos', 'Funda del Campeón', 'Tesoro del Dragón'];
 const COLOR_COFRE = ['#D08C4A', '#8FA3B8', '#F5C542', '#E41373', '#BFF4FF'];
 
 //: el escenario y su CSS: el CSS va con la ventana (la lista lo usa) y el escenario se pide al abrirla, así el primer
@@ -52,6 +53,48 @@ const COLOR_COFRE = ['#D08C4A', '#8FA3B8', '#F5C542', '#E41373', '#BFF4FF'];
 function preparar() {
   usarCss('drops-show', CSS_DROPS);
   return import('./drops_show.js');
+}
+//: dónde se cuelga el escenario: el shadow root de la página (ahí vale su CSS), que sale de cualquier elemento suyo
+function hostDe(el) {
+  const raiz = el && el.getRootNode ? el.getRootNode() : null;
+  return typeof ShadowRoot !== 'undefined' && raiz instanceof ShadowRoot ? raiz : document.body;
+}
+const abrirReal = (id) => (W.conCuenta ? W.conCuenta('/api/avisos/drop-abrir', { id }) : Promise.resolve(null));
+const refrescar = () => { E.va = false; pedirDrops(); };
+
+// 🐣 LO DE LAS MISIONES PARA NUEVOS (17/11/2026, Dlx a la maqueta, «Tus elecciones»): los cofres de la pista se abren con
+// el mismo escenario, desde la pista misma, sin pasar por la ventana de los drops
+/** Abre ya el drop cerrado cuyo origen empieza con `prefijo` (el Flight case de entrar, el Cajón del tutorial). Si no
+ *  está (ya lo abriste, o todavía no llegó), abre la ventana de los drops */
+export function abrirOrigen(el, prefijo) {
+  E.va = false;
+  return pedirDrops().then((D) => {
+    const x = ((D && D.cerrados) || []).map(queEs).find((c) => String(c.origen || '').startsWith(prefijo));
+    if (!x) { W.dispatchEvent(new Event('lg:abrir-drops')); return null; }
+    return preparar().then(({ mostrarDrops }) => mostrarDrops(hostDe(el), [x], { cofres: D.cofres, abrir: abrirReal, alCerrar: refrescar }));
+  });
+}
+/**
+ * 🎁 LA CAJA DEL NUEVO, COMO UN COFRE (17/11/2026). Lo que trae ya está pagado al completar los siete días (`nuevoPagar()`
+ * de bot/avisos.js: los Puntos, dos Star Dragons y el título): esto lo DESTAPA con la animación de un cofre (el de oro,
+ * `COFRES[2]`, con su nombre) y abre ahí mismo los dos Star Dragons si todavía están cerrados. La Caja no pasa por el
+ * objeto: no hay nada que decidir, todo se sabe. `caja`: `cajaPremio` de la pista
+ */
+export function abrirCajaNuevo(el, caja) {
+  E.va = false;
+  const C = caja || {};
+  return pedirDrops().then((D) => {
+    const stars = ((D && D.cerrados) || []).map(queEs).filter((x) => /^star:nuevo:caja:/.test(String(x.origen || '')));
+    const faltan = Math.max(0, (Number(C.star) || 0) - stars.length);
+    const item = { id: 'caja-nuevo', tipo: 'cofre', cofre: 2, nombre: 'Caja del Nuevo', origen: '' };
+    const abrir = (id) => (id === item.id ? Promise.resolve({ ok: true, tipo: 'cofre', desde: 2, cofre: 2, sube: [], puntos: Number(C.puntos) || 0,
+      titulo: C.titulo || '', nuevos: stars, ya: faltan ? [faltan === 1 ? '1 Star Dragon' : faltan + ' Star Dragons'] : [] }) : abrirReal(id));
+    return preparar().then(({ mostrarDrops }) => mostrarDrops(hostDe(el), [item], { cofres: D && D.cofres, abrir, alCerrar: refrescar }));
+  });
+}
+/** 🐣 El momento de un día completo (`mostrarMomento()` de drops_show.js). Devuelve una Promise que se cumple al cerrarse */
+export function abrirMomento(el, datos) {
+  return preparar().then(({ mostrarMomento }) => mostrarMomento(hostDe(el), datos));
 }
 
 /** Qué es cada cerrado: el `tipo` del objeto o, si no viene, el prefijo de su `origen` (ver el contrato) */
@@ -144,11 +187,8 @@ export function AbrirDrops({ D, cerrar }) {
     setMsg('');
     const cola = [cerrados[i], ...cerrados.filter((_, k) => k !== i)];
     preparar().then(({ mostrarDrops }) => {
-      const el = caja.current;
-      const raiz = el && el.getRootNode ? el.getRootNode() : null;
       // el shadow root de la página: ahí vale su CSS (y un <dialog> modal se dibuja encima de esta ventana igual)
-      const host = typeof ShadowRoot !== 'undefined' && raiz instanceof ShadowRoot ? raiz : document.body;
-      mostrarDrops(host, cola, {
+      mostrarDrops(hostDe(caja.current), cola, {
         cofres: D.cofres,
         abrir: (id) => (W.conCuenta ? W.conCuenta('/api/avisos/drop-abrir', { id }) : Promise.resolve(null)).then((j) => {
           if (j && j.ok) hechos.current.add(id);

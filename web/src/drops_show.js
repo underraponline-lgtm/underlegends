@@ -493,6 +493,9 @@ export function mostrarDrops(host, cola, { abrir, alCerrar, cofres } = {}) {
   const T = (ms) => (S.calma ? Math.round(ms * 0.55) : ms);
   const espera = (ms) => new Promise((r) => setTimeout(r, T(ms)));
   const nombreCofre = (t) => (cofres && cofres[t] && cofres[t].n) || CF[t].n;
+  // 🐣 un cofre que no es de `COFRES` (17/11/2026: la Caja del Nuevo, `abrirCajaNuevo()` de drops.jsx) trae su nombre en
+  // la fila (`nombre`) y se dibuja con el material del cofre `t`. Si sube, pasa a llamarse como el cofre al que subió
+  const nombreDe = (t) => (S.item && S.item.tipo === 'cofre' && S.item.nombre && tCofre(S.item.cofre) === t ? String(S.item.nombre) : nombreCofre(t));
 
   /* ------------------------------------------------ las partículas (un canvas para todo) */
   const fx = { c: $('.dsw-fx'), g: null, ps: [], va: false, t: 0, w: 0, h: 0 };
@@ -748,7 +751,7 @@ export function mostrarDrops(host, cola, { abrir, alCerrar, cofres } = {}) {
     escEl.style.setProperty('--c', C.c); escEl.style.setProperty('--c1', C.b1); escEl.style.setProperty('--c2', C.b2);
     escEl.style.setProperty('--rayos', [0.1, 0.2, 0.4, 0.55, 0.7][t]);
     escEl.classList.toggle('dsw-prisma', !!C.prisma);
-    rzEl.textContent = nombreCofre(t); rzEl.classList.toggle('dsw-prisma', !!C.prisma);
+    rzEl.textContent = nombreDe(t); rzEl.classList.toggle('dsw-prisma', !!C.prisma);
     if (pop) saltaTitulo();
   }
   function saltaTitulo() { rzEl.animate([{ transform: 'scale(1.5) rotate(-4deg)', opacity: 0.2 }, { transform: 'scale(.94) rotate(1deg)', opacity: 1, offset: 0.6 }, { transform: 'none', opacity: 1 }], { duration: T(380), easing: 'cubic-bezier(.2,.9,.3,1.3)' }); }
@@ -955,7 +958,8 @@ export function mostrarDrops(host, cola, { abrir, alCerrar, cofres } = {}) {
   //: el cofre abierto: los Puntos que trae y los drops de adentro, que se abren después uno detrás del otro
   async function abrirCofre() {
     const r = S.res, pts = nPts(r.puntos);
-    S.extra = { cofre: nombreCofre(S.cofre), puntos: pts, c: S.cofre };
+    // 🏷️ `titulo` y `ya` (17/11/2026, la Caja del Nuevo): un título que trae el cofre, y lo que trajo y ya abriste antes
+    S.extra = { cofre: nombreDe(S.cofre), puntos: pts, c: S.cofre, titulo: String(r.titulo || ''), ya: Array.isArray(r.ya) ? r.ya.map(String) : [] };
     S.puntos += pts; puntosTodos += pts;
     const nota = notaTope(r, 'este cofre');
     if (nota) S.notas.push(nota);
@@ -965,7 +969,7 @@ export function mostrarDrops(host, cola, { abrir, alCerrar, cofres } = {}) {
     verEscena(false);
     fase('premio-anim'); S.saltar = false;
     const ico = $('.dsw-pr-ico'), num = $('.dsw-pr-num'), nom = $('.dsw-pr-nombre');
-    premioEl.hidden = false; $('.dsw-pr-cuenta').textContent = ''; $('.dsw-pr-et').textContent = nombreCofre(S.cofre);
+    premioEl.hidden = false; $('.dsw-pr-cuenta').textContent = ''; $('.dsw-pr-et').textContent = nombreDe(S.cofre);
     $('.dsw-pr-chip').textContent = ''; $('.dsw-pr-tope').textContent = nota; num.textContent = ''; num.classList.remove('dsw-chico');
     ico.classList.remove('dsw-silueta');
     ico.innerHTML = S.fila.length ? `<div class="dsw-cf-fila">${S.fila.map(fichaDrop).join('')}</div>` : '<i class="dsw-pr-rayos"></i>' + svgMoneda(5);
@@ -980,6 +984,12 @@ export function mostrarDrops(host, cola, { abrir, alCerrar, cofres } = {}) {
     }
     if (pts) { num.classList.add('dsw-chico'); await contar(num, pts); num.textContent += ' Puntos'; Son.ding(Math.min(MAX, S.cofre + 1)); }
     if (!S.vivo) return;
+    if (S.extra.titulo) {
+      const chip = $('.dsw-pr-chip');
+      chip.textContent = 'Título «' + S.extra.titulo + '»'; chip.classList.remove('dsw-prisma'); chip.style.removeProperty('--c');
+      chip.animate([{ transform: 'rotate(-4deg) scale(1.8)', opacity: 0 }, { transform: 'none', opacity: 1 }], { duration: T(300), easing: 'cubic-bezier(.3,1.4,.5,1)' });
+      Son.brillo();
+    }
     if (S.fila.length) { fase('contenido'); pista(S.fila.length === 1 ? 'Toca para abrir el drop' : 'Toca para abrir los drops', true); }
     else { S.premios = []; S.ip = 0; fase('premio'); pista('Toca para seguir', true); }
   }
@@ -1046,7 +1056,9 @@ export function mostrarDrops(host, cola, { abrir, alCerrar, cofres } = {}) {
     fase('resumen-anim'); pista(''); brasas(false); pips();
     premioEl.hidden = true; rsEl.hidden = false; verEscena(false);
     const items = [];
+    if (S.extra && S.extra.titulo) items.push({ txt: `Título «${S.extra.titulo}»`, R: { c: CF[S.extra.c].c, n: 'Se pone en tu perfil' } });
     S.acum.forEach((p) => { if (p.titulo) items.push({ txt: `Título «${p.titulo}»`, p, R: RZ[p.r] }); });
+    ((S.extra && S.extra.ya) || []).forEach((t) => items.push({ txt: t, R: { c: '#5CC8FF', n: 'Ya los abriste' } }));
     const mejor = S.acum.reduce((m, p) => Math.max(m, p.r), 0);
     const de = S.acum.filter((p) => p.puntos).length + (S.extra && S.extra.puntos ? 1 : 0);
     const Rp = S.acum.length ? RZ[mejor] : S.extra ? CF[S.extra.c] : RZ[0];
@@ -1161,4 +1173,81 @@ export function mostrarDrops(host, cola, { abrir, alCerrar, cofres } = {}) {
   if (!lista.length) { mostrarError(); return { cerrar }; }
   siguienteDeCola(true);
   return { cerrar };
+}
+
+/**
+ * 🐣 EL MOMENTO DE UN DÍA COMPLETO (17/11/2026, Dlx a la maqueta, «Tus elecciones»: al completar un día de las misiones
+ * para nuevos, «Día N de 7 · completo», lo que ganaste y lo que abre mañana). El mismo escenario que los drops —fondo,
+ * escamas, rayos y el «Te llevaste»— pero sin toques: se ve, se va solo a los `dur` ms (salvo que lo toques o lo mires
+ * con el teclado; con `dur: 0`, nunca) y se cierra con cualquier toque, la ✕ o Escape. Sin sonido: llega sin que lo pidas.
+ *
+ *   mostrarMomento(host, { sub, titulo, lista, nota, botones, pal, dur })
+ *     lista    [{txt, small, tipo}] — `tipo`: pdt · titulo · drop · star · cofre (con `t`) · caja
+ *     botones  [{txt, fn, blanco}] — cada uno cierra el momento y después llama a `fn`
+ *     pal      {c, c1, c2} los colores del fondo (los de un cofre)
+ *   devuelve una Promise que se cumple al cerrarse
+ */
+export function mostrarMomento(host, { sub = '', titulo = '', lista = [], nota = '', botones = [], pal = null, dur = 6500 } = {}) {
+  const casa = host || document.body;
+  const raiz = casa.getRootNode ? casa.getRootNode() : document;
+  ponerCss(raiz);
+  const calma = (() => { try { return quieto() || !!(raiz.querySelector && raiz.querySelector('.app.calma')); } catch (e) { return false; } })();
+  const P = pal || CF[3];
+  const ico = (x) => (x.tipo === 'pdt' ? svgMoneda(1) : x.tipo === 'drop' ? svgCasete(1, 'MIXTAPE', false) : x.tipo === 'star' ? svgEscama(2, false, true)
+    : x.tipo === 'cofre' || x.tipo === 'caja' ? svgCofreRap(tCofre(x.t != null ? x.t : 2), 0) : ICO_TITULO({ c: P.c }));
+  const dlg = document.createElement('dialog');
+  dlg.className = 'dsw dsw-momento' + (calma ? ' dsw-calma' : '');
+  dlg.setAttribute('aria-label', titulo ? sub + ': ' + titulo : sub);
+  dlg.innerHTML = `
+    <div class="dsw-esc" style="--c:${P.c};--c1:${P.b1 || P.c};--c2:${P.b2 || '#0B0B0E'};--rayos:.32">
+      <div class="dsw-fondo"></div><div class="dsw-escamas"></div><div class="dsw-rayos"></div><div class="dsw-velo"></div>
+      <section class="dsw-capa dsw-rs" aria-live="polite">
+        ${sub ? `<p class="dsw-pr-cuenta">${esc(sub)}</p>` : ''}
+        <h2 class="dsw-rs-t">${esc(titulo)}</h2>
+        ${lista.length ? `<ul class="dsw-rs-lista">${lista.map((x) => `<li class="dsw-rs-i" style="--c:${P.c}"><span class="dsw-ic">${ico(x)}</span><span><b>${esc(x.txt)}</b>${x.small ? `<small>${esc(x.small)}</small>` : ''}</span></li>`).join('')}</ul>` : ''}
+        ${nota ? `<p class="dsw-rs-nota">${esc(nota)}</p>` : ''}
+        <div class="dsw-rs-bot">${(botones.length ? botones : [{ txt: 'Seguir', blanco: true }]).map((b, i) => `<button type="button" class="dsw-b ${b.blanco || i === 0 ? 'dsw-b-blanco' : 'dsw-b-negro'}" data-i="${i}">${esc(b.txt)}</button>`).join('')}</div>
+      </section>
+      <div class="dsw-flash"></div>
+    </div>
+    <div class="dsw-ctl"><button type="button" class="dsw-ctl-b dsw-x" aria-label="Cerrar">${ICO_X}</button></div>`;
+  casa.appendChild(dlg);
+  const $ = (s) => dlg.querySelector(s);
+  let vivo = true, quieta = false, reloj = null, fin = null;
+  const listo = new Promise((r) => { fin = r; });
+  const cerrar = (luego) => {
+    if (!vivo) return;
+    vivo = false;
+    clearTimeout(reloj);
+    try { if (dlg.open) dlg.close(); } catch (e) { /* sigue */ }
+    dlg.remove();
+    fin();
+    if (typeof luego === 'function') { try { luego(); } catch (e) { /* sigue */ } }
+  };
+  //: tocarlo o llegar con el teclado lo deja quieto: quien lo está leyendo no lo pierde a la mitad
+  const quedarse = () => { if (!quieta) { quieta = true; clearTimeout(reloj); } };
+  dlg.querySelectorAll('.dsw-rs-bot button').forEach((b) => b.addEventListener('click', (e) => {
+    e.stopPropagation();
+    const B = (botones.length ? botones : [{}])[Number(b.dataset.i) || 0] || {};
+    cerrar(B.fn);
+  }));
+  $('.dsw-x').addEventListener('click', () => cerrar());
+  $('.dsw-rs').addEventListener('click', (e) => { if (e.target === e.currentTarget) cerrar(); });
+  dlg.addEventListener('keydown', quedarse, true);
+  dlg.addEventListener('cancel', (e) => { e.preventDefault(); cerrar(); });
+  dlg.addEventListener('close', () => cerrar());
+  try { dlg.showModal(); } catch (e) { dlg.setAttribute('open', ''); dlg.classList.add('dsw-sin-modal'); }
+  //: `dur: 0`, no se va solo (la Caja: hay algo que elegir)
+  if (dur > 0) reloj = setTimeout(() => { if (!quieta) cerrar(); }, dur);
+  // la entrada: el destello, el título que salta y los premios uno detrás del otro (como el «Te llevaste»)
+  if (!calma) {
+    try {
+      $('.dsw-flash').animate([{ opacity: 0.85 }, { opacity: 0 }], { duration: 420, easing: 'ease-out' });
+      $('.dsw-rs-t').animate([{ transform: 'scale(1.5) rotate(-4deg)', opacity: 0.2 }, { transform: 'scale(.94) rotate(1deg)', opacity: 1, offset: 0.6 }, { transform: 'none', opacity: 1 }], { duration: 420, easing: 'cubic-bezier(.2,.9,.3,1.3)' });
+      dlg.querySelectorAll('.dsw-rs-i').forEach((li, i) => li.animate([{ transform: 'scale(.4)', opacity: 0 }, { transform: 'scale(1.1)', opacity: 1, offset: 0.6 }, { transform: 'none', opacity: 1 }],
+        { duration: 300, delay: 260 + i * 120, easing: 'cubic-bezier(.2,.9,.3,1.2)', fill: 'backwards' }));
+    } catch (e) { /* sin animaciones, igual se ve */ }
+  }
+  try { $('.dsw-rs-bot button').focus({ preventScroll: true }); } catch (e) { /* sigue */ }
+  return listo;
 }

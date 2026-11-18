@@ -18,6 +18,7 @@ import { VotoVivo } from './quiengana.jsx';
 import { LuNube, LuSocial } from './medio.jsx';
 import { ComentariosFlotantes } from './flotantes.jsx';
 import { escenaDe } from './fondos.js';
+import { PreguntaCab } from './comofunciona.jsx';
 
 // 🧭 EL ORDEN, EL DEL MENÚ DE ARRIBA AGRUPADO (12/11/2026, ver `GRUPOS`): lo que va suelto arriba, primero, y después lo
 // de cada grupo. Es el de la tira de abajo del celular, así que las cuatro y media que se ven sin deslizar son Inicio,
@@ -508,6 +509,8 @@ export function Cabecera({ liga, dc, onMenu, pagina = '', sv = '' }) {
       <MenuArriba pagina={pagina} nuevas={pubNuevas(liga, pagina)} />
       <div className="cab-der">
         <Buscar liga={liga} />
+        {/* ❓ en el teléfono, el «¿Cómo funciona?» de la página (17/11/2026): el flotante tapaba títulos y pestañas */}
+        <PreguntaCab pagina={pagina} />
         <button className={'btn-ico lupa-b' + (busca ? ' on' : '')} type="button" aria-label={busca ? 'Cerrar el buscador' : 'Buscar (Ctrl K)'} aria-expanded={busca}
           title="Buscar · Ctrl K" onClick={() => setBusca((v) => !v)}><Ico n="buscar" t={20} /></button>
         {/* 🛠️ MODS: sólo para quien puede, y sólo donde le sirve (mods.js) */}

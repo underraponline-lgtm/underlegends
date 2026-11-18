@@ -18,7 +18,7 @@
 import { Suspense, lazy, useEffect, useRef, useState } from 'react';
 import { Ico } from './piezas.jsx';
 import { limpio, num, srcLogo, utc } from './liga.js';
-import { contar, irSinHistoria, pedirRecorrido, tutoPoner } from './primera.js';
+import { contar, enSemanaNueva, irSinHistoria, pedirRecorrido, tutoPoner } from './primera.js';
 import { pedirLigas } from './ligas_datos.js';
 import { VV, baseVideo, elegirHd, quieto } from './fondovideo.jsx';
 import ESTILO from './bienvenida.css?inline';
@@ -179,7 +179,7 @@ function Pagina({ id, vista, sello, titulo, etiqueta, texto, puntos, extra, visu
   );
 }
 
-function Paso1({ liga, unirme, cerrar, tit }) {
+function Paso1({ liga, unirme, cerrar, tit, cofre }) {
   const [pag, setPag] = useState(0);
   const [vistas, setVistas] = useState(() => new Set([0]));
   const pista = useRef(null);
@@ -447,8 +447,12 @@ function Paso1({ liga, unirme, cerrar, tit }) {
           ))}</ol>
         </nav>
         <div className="bv-acc">
-          <button type="button" className="bv-si" onClick={unirme}>
-            <svg viewBox="0 0 24 24" width="24" height="24" aria-hidden="true"><path fill="currentColor" d={DISCORD} /></svg>Unirme con Discord</button>
+          {/* 🎁 «y abre tu primer cofre» (17/11/2026, Dlx a la maqueta, «Tus elecciones»): entrar con Discord da un Flight case
+              en la pista de nuevos (`NUEVO_PISTA` de bot/avisos.js). Sólo a quien todavía lo puede ganar, por lo que sabe este
+              navegador: llegó hace menos de una semana y no entró. Que la cuenta sea nueva de verdad lo mira el objeto */}
+          <button type="button" className={'bv-si' + (cofre ? ' con-cofre' : '')} onClick={unirme}>
+            <svg viewBox="0 0 24 24" width="24" height="24" aria-hidden="true"><path fill="currentColor" d={DISCORD} /></svg>
+            {cofre ? <span className="bv-si-tx">Unirme con Discord<small>y abre tu primer cofre</small></span> : 'Unirme con Discord'}</button>
           <div className="bv-acc-2">
             <button type="button" className="bv-luego" onClick={() => cerrar('luego')}>En otro momento</button>
             {/* (la nota «Te sumamos a Discord Rap Español… nunca tu contraseña» se fue el 12/11/2026, Dlx: «está de más… e
@@ -513,7 +517,7 @@ export default function Bienvenida({ liga, dc }) {
     <div className={'bv' + (sale ? ' sale' : '')} role="dialog" aria-modal="true" aria-labelledby="bv-t">
       <style>{ESTILO}</style>
       {paso === 1 ? (
-        <Paso1 liga={liga} unirme={unirme} cerrar={cerrar} tit={tit} />
+        <Paso1 liga={liga} unirme={unirme} cerrar={cerrar} tit={tit} cofre={enSemanaNueva() && !(dc && dc.id)} />
       ) : (<>
         {/* 🎬 el paso 2 con el mismo video detrás (Dlx, 12/11/2026: «sí, sigue», a la idea de que la vuelta de Discord se
             sienta parte de la misma entrada y no una pantalla negra). Es el mismo archivo: ya está en caché del paso 1 */}

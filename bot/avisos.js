@@ -4139,23 +4139,75 @@ export const REDES_LIGA = ['instagram', 'tiktok', 'youtube', 'x', 'twitch', 'kic
 //: lo que la página puede decir que hizo
 export const NUEVO_CLIENTE = new Set(['corto', 'completo', 'historia']);
 //: los siete días: [nombre, premio del día, [[id, texto, premio], …]]. Un premio: ['pdt', n] · ['drop', n] · ['star', n] ·
-//: ['cofre'] · ['titulo', t] · ['redes'] (cada red da lo suyo) · ['caja'] (`NUEVO_CAJA`, al completar los siete)
+//: ['cofre', t] (un cofre de verdad, `COFRES[t]`) · ['titulo', t] · ['redes'] (cada red da lo suyo) · ['caja'] (`NUEVO_CAJA`,
+//: al completar los siete)
 //: ⚠️ El marco «Nuevo», la reacción y el fondo de la maqueta no existen como premio suelto (el marco es un dibujo de la
 //: carta, y la reacción y el fondo del Pase son etiquetas): van dos títulos y un drop en su lugar
+// 🐣 LA PRIMERA SEMANA, SEGUNDA MANO (17/11/2026, Dlx a la maqueta privada, «Tus elecciones»):
+//   · VERIFICARSE VA EL DÍA 1, detrás de entrar: siete de las dieciséis misiones piden estar verificado (`NUEVO_VERIF`) y
+//     la pista no lo decía; quien no se verificaba se trababa el día 2 sin saber por qué.
+//     ⚠️ A QUIEN YA ESTÁ EN SU SEMANA el día 1 se le puede volver incompleto hasta que se verifique (pasa de tres misiones
+//     a cuatro). Nada de lo cobrado se devuelve ni se vuelve a pagar: cada pago tiene su clave (`m:verif` es la misma, y
+//     el título del día 1 ya está en `nuevo_titulo`). El día 2 queda en dos misiones, y una (`perfil`) pide verificarse:
+//     quien no se verificó no lo puede completar antes que ahora. La Caja pide las dieciséis, como antes.
+//   · ENTRAR CON DISCORD DA UN FLIGHT CASE (`COFRES[1]`) y no 500 Puntos: «tu primer cofre», que se abre con la animación
+//     de los cofres. Y el tutorial completo da un Cajón de discos de verdad (`COFRES[0]`: lo mismo que los tres drops
+//     sueltos de antes, el primero desde Vinilo). ⚠️ A quien ya cobró lo de antes no se le da también lo nuevo
+//     (`nuevoYaPago()`).
 export const NUEVO_PISTA = [
   ['Llegaste', ['titulo', 'Recién llegado'], [['corto', 'Haz el tutorial corto', ['drop', 3]],
-    ['entrar', 'Entra con Discord', ['pdt', 500]], ['campana', 'Prende la campana', ['pdt', 200]]]],
-  ['Quién eres', ['drop', 1], [['verif', 'Verifícate en DRA', ['pdt', 1000]],
-    ['perfil', 'Pon tu foto, tu fondo o tu frase', ['pdt', 200]], ['redes', 'Síguenos en una red', ['redes']]]],
+    ['entrar', 'Entra con Discord', ['cofre', 1]], ['verif', 'Verifícate en DRA', ['pdt', 1000]],
+    ['campana', 'Prende la campana', ['pdt', 200]]]],
+  ['Quién eres', ['drop', 1], [['perfil', 'Pon tu foto, tu fondo o tu frase', ['pdt', 200]], ['redes', 'Síguenos en una red', ['redes']]]],
   ['Tu gente', ['titulo', 'Buena Gente'], [['sigue3', 'Sigue a 3 raperos', ['pdt', 200]],
     ['fel', 'Felicita un logro', ['pdt', 100]], ['historia', 'Mira una historia', ['pdt', 100]]]],
   ['Tu Pase', ['drop', 2], [['nivel1', 'Llega al nivel 1 del Pase', ['pdt', 300]], ['tareas2', 'Haz 2 Tareas del Pase', ['pdt', 300]]]],
   ['A la cancha', ['drop', 1], [['cancha', 'Juega un evento o apuesta en un VS', ['pdt', 1000]]]],
   ['Tu crew', ['star', 1], [['crew', 'Súmate a una crew o ármala', ['pdt', 500]], ['cm', 'Comenta en Publicaciones', ['pdt', 200]]]],
-  ['Maestro', ['caja'], [['completo', 'Termina el tutorial completo', ['cofre']], ['encuesta', 'Vota una encuesta', ['pdt', 200]]]],
+  ['Maestro', ['caja'], [['completo', 'Termina el tutorial completo', ['cofre', 0]], ['encuesta', 'Vota una encuesta', ['pdt', 200]]]],
 ];
+//: 🔒 LAS MISIONES QUE PIDEN ESTAR VERIFICADO (17/11/2026), en una sola lista: la página les pone el candado y «Al
+//: verificarte» en vez de «Ir». Cada una, por lo que mira `nuevoOk()`: `perfil` (la frase, el fondo y la foto de carta son
+//: del perfil de `d:`), `sigue3` (seguir pide `d:`), `nivel1` y `tareas2` (el Pase es de los Miembros de DRA), `crew`
+//: (crear, invitar y entrar son de Miembros) y `cm` (comentar pide `d:`). Felicitar, votar, jugar y la campana, no
+export const NUEVO_VERIF = ['perfil', 'sigue3', 'nivel1', 'tareas2', 'crew', 'cm'];
 //: la Caja del Nuevo: al completar los siete días
 export const NUEVO_CAJA = { puntos: 5000, star: 2, titulo: 'Novato de Oro' };
+
+/** Un premio de la pista en palabras («un Flight case», «3 Dragón Drops»), para la campana. Pura. */
+export function nuevoPremioTexto(pr) {
+  const [t, x] = pr || [];
+  if (t === 'pdt') return milesAp(x) + ' Puntos de Tienda';
+  if (t === 'drop') return x === 1 ? 'un Dragón Drop' : x + ' Dragón Drops';
+  if (t === 'star') return x === 1 ? 'un Star Dragon' : x + ' Star Dragons';
+  if (t === 'cofre') return 'un ' + ((COFRES[x] || COFRES[0]).n);
+  if (t === 'titulo') return 'el título «' + x + '»';
+  if (t === 'caja') return 'la Caja del Nuevo';
+  if (t === 'redes') return 'un Star Dragon por red';
+  return '';
+}
+
+/**
+ * 🔔 El aviso de un día completo de la pista, para la campana (`nuevoDe()`, una vez por día). `n` el día que se completó,
+ * `hoy` el día de la semana en que va la persona, `caja` si ya ganó la Caja. Lo que abre mañana sólo si el día de
+ * mañana todavía está cerrado: quien se pone al día con uno de atrás ya tiene el siguiente abierto. Pura.
+ */
+export function nuevoDiaAviso(n, hoy, caja) {
+  const D = NUEVO_PISTA[n - 1];
+  if (!D) return null;
+  const de = NUEVO_PISTA.length;
+  const titulo = '🐣 Día ' + n + ' de ' + de + ' · completo';
+  let cuerpo;
+  if (D[1][0] === 'caja') {
+    cuerpo = caja ? 'Ganaste la Caja del Nuevo: ' + milesAp(NUEVO_CAJA.puntos) + ' Puntos de Tienda, ' + NUEVO_CAJA.star
+      + ' Star Dragons y el título «' + NUEVO_CAJA.titulo + '».' : 'Completa los días que te faltan y te llevas la Caja del Nuevo.';
+  } else {
+    const sig = NUEVO_PISTA[n];
+    cuerpo = 'Ganaste ' + nuevoPremioTexto(D[1]) + '.' + (sig ? (n >= hoy ? ' Mañana se abre el día ' + (n + 1) + ': ' + sig[0] + '.'
+      : ' Ya tienes abierto el día ' + (n + 1) + ': ' + sig[0] + '.') : '');
+  }
+  return { titulo, cuerpo };
+}
 
 // ── 🎁 LOS REFERIDOS (17/11/2026) ─────────────────────────────────────────────────────────────────────────────────
 // Dlx: «una nueva opción con el ícono de regalo… será un sistema de referrals», «sólo al verificarse e interactuar con la
@@ -6798,7 +6850,7 @@ export async function rutaAvisos(req, env, ruta) {
     const q = await quienPide(req, env, d);
     // 👤 sin cuenta, la pista vacía (la de la página es de quien no entró: todo con candado) — salvo que la página diga
     // que tiene cuenta (`cuenta`): ahí el 401 es el que hace que `conCuenta()` vuelva a pasar por Discord
-    if (!q.id) return d.cuenta ? json({ error: q.error }, q.estado) : json({ ok: true, sin: true, plantilla: NUEVO_PISTA, caja: NUEVO_CAJA });
+    if (!q.id) return d.cuenta ? json({ error: q.error }, q.estado) : json({ ok: true, sin: true, plantilla: NUEVO_PISTA, caja: NUEVO_CAJA, verif: NUEVO_VERIF });
     let v = false;
     try { v = !!(await env.KV.get('d:' + q.id)); } catch (e) { v = false; }
     const hechos = (Array.isArray(d.hechos) ? d.hechos : []).filter((h) => typeof h === 'string' && /^[a-z:]{2,24}$/.test(h)).slice(0, 12);
@@ -15382,22 +15434,51 @@ export class Avisos {
     }
   }
 
-  /** Paga un premio de la pista, una sola vez por `clave` (cada camino es idempotente: `dropDar()`, la tienda, el título) */
+  /**
+   * Paga un premio de la pista, una sola vez por `clave` (cada camino es idempotente: `dropDar()`, la tienda, el título).
+   * Devuelve si pagó algo AHORA (17/11/2026): con eso `nuevoDe()` le dice a la página qué festejar y anota el día en la
+   * campana una sola vez. Se pregunta antes de escribir, así no depende de lo que cuente un `INSERT OR IGNORE`
+   */
   nuevoPagar(quien, clave, pr, t) {
-    const pdt = (monto, k) => this.sql.exec('INSERT OR IGNORE INTO tienda (id, ref, quien, monto, t) VALUES (?, 0, ?, ?, ?)',
-      'nuevo:' + quien + ':' + k, quien, monto, t);
-    const titulo = (x) => this.sql.exec('INSERT OR IGNORE INTO nuevo_titulo (quien, titulo, t) VALUES (?, ?, ?)', quien, x, t);
+    const hay = (sql, ...a) => !!this.sql.exec(sql, ...a).toArray()[0];
+    const pdt = (monto, k) => {
+      const id = 'nuevo:' + quien + ':' + k;
+      if (hay('SELECT 1 AS x FROM tienda WHERE id = ?', id)) return false;
+      this.sql.exec('INSERT OR IGNORE INTO tienda (id, ref, quien, monto, t) VALUES (?, 0, ?, ?, ?)', id, quien, monto, t);
+      return true;
+    };
+    const titulo = (x) => {
+      if (hay('SELECT 1 AS x FROM nuevo_titulo WHERE quien = ? AND titulo = ?', quien, x)) return false;
+      this.sql.exec('INSERT OR IGNORE INTO nuevo_titulo (quien, titulo, t) VALUES (?, ?, ?)', quien, x, t);
+      return true;
+    };
     const tipo = pr[0];
-    if (tipo === 'pdt') pdt(pr[1], clave);
-    else if (tipo === 'drop') for (let i = 1; i <= pr[1]; i++) this.dropDar(quien, 'nuevo:' + clave + ':' + i, 0, t);
-    else if (tipo === 'star') for (let i = 1; i <= pr[1]; i++) this.dropDar(quien, 'star:nuevo:' + clave + ':' + i, STAR_MIN, t);
-    else if (tipo === 'cofre') for (let i = 1; i <= COFRE_ENC; i++) this.dropDar(quien, 'cofre:nuevo:' + i, i === 1 ? COFRE_ENC_MIN : 0, t);
-    else if (tipo === 'titulo') titulo(pr[1]);
+    let pago = false;
+    if (tipo === 'pdt') pago = pdt(pr[1], clave);
+    else if (tipo === 'drop') for (let i = 1; i <= pr[1]; i++) pago = this.dropDar(quien, 'nuevo:' + clave + ':' + i, 0, t) || pago;
+    else if (tipo === 'star') for (let i = 1; i <= pr[1]; i++) pago = this.dropDar(quien, 'star:nuevo:' + clave + ':' + i, STAR_MIN, t) || pago;
+    else if (tipo === 'cofre') {
+      // 🎁 un cofre de verdad (17/11/2026): `cofre5:<t>:` se abre con la animación de los cofres y trae lo de `COFRES[t]`
+      const c = Math.max(0, Math.min(COFRES.length - 1, Number(pr[1]) || 0));
+      if (!this.nuevoYaPago(quien, clave)) pago = this.dropDar(quien, 'cofre5:' + c + ':nuevo:' + clave, 0, t);
+    } else if (tipo === 'titulo') pago = titulo(pr[1]);
     else if (tipo === 'caja') {
-      pdt(NUEVO_CAJA.puntos, 'caja');
-      for (let i = 1; i <= NUEVO_CAJA.star; i++) this.dropDar(quien, 'star:nuevo:caja:' + i, STAR_MIN, t);
-      titulo(NUEVO_CAJA.titulo);
+      pago = pdt(NUEVO_CAJA.puntos, 'caja');
+      for (let i = 1; i <= NUEVO_CAJA.star; i++) pago = this.dropDar(quien, 'star:nuevo:caja:' + i, STAR_MIN, t) || pago;
+      pago = titulo(NUEVO_CAJA.titulo) || pago;
     }
+    return pago;
+  }
+
+  /**
+   * ¿Ya cobró esta misión con el premio de ANTES del 17/11/2026? Entrar daba 500 Puntos (`nuevo:<quien>:m:entrar` en la
+   * tienda) y el tutorial completo, tres drops sueltos (`cofre:nuevo:1…3`). A quien ya los tiene no se le da también el
+   * cofre nuevo: eso sería cambiar en silencio lo que ya se pagó
+   */
+  nuevoYaPago(quien, clave) {
+    const hay = (sql, ...a) => { try { return !!this.sql.exec(sql, ...a).toArray()[0]; } catch (e) { return false; } };
+    if (hay('SELECT 1 AS x FROM tienda WHERE id = ?', 'nuevo:' + quien + ':' + clave)) return true;
+    return clave === 'm:completo' && hay("SELECT 1 AS x FROM drops WHERE quien = ? AND origen = 'cofre:nuevo:1'", quien);
   }
 
   /** 🏷️ Los títulos de la pista de nuevos (salen con los del Pase y los de los drops) */
@@ -15575,25 +15656,42 @@ export class Avisos {
     const dia = diasEntre(diaET(fila.desde), diaET(ahora)) + 1;
     const fin = dia > NUEVO_PISTA.length;
     let hechas = 0, total = 0, completos = 0;
+    // 🎉 lo que se pagó EN ESTE PEDIDO (17/11/2026, «Tus elecciones»: festejar cada misión y cada día). La página lo usa
+    // para no festejar de nuevo lo de antes la primera vez que lo ve un dispositivo; la campana, para anotar el día una vez
+    const recien = { mis: [], dias: [], caja: false };
     const dias = NUEVO_PISTA.map(([t, premio, mis], i) => {
       const n = i + 1, abierto = n <= dia;
       const ms = mis.map(([id, tx, pr]) => {
         const ok = abierto && this.nuevoOk(quien, id, d.v, cliente);
         total++;
         if (ok) hechas++;
-        if (ok && !fin) this.nuevoPagar(quien, 'm:' + id, pr, ahora);
+        if (ok && !fin && this.nuevoPagar(quien, 'm:' + id, pr, ahora)) recien.mis.push(id);
         return { id, t: tx, premio: pr, ok };
       });
       const hecho = abierto && ms.every((m) => m.ok);
       if (hecho) completos++;
       // 🎁 el premio del día; el del 7 es la Caja, que pide los siete
-      if (hecho && !fin && premio[0] !== 'caja') this.nuevoPagar(quien, 'd:' + n, premio, ahora);
+      const pagoDia = hecho && !fin && premio[0] !== 'caja' && this.nuevoPagar(quien, 'd:' + n, premio, ahora);
+      if (hecho && !fin && (pagoDia || ms.some((m) => recien.mis.includes(m.id)))) recien.dias.push(n);
       return { n, t, premio, abierto, hecho, mis: ms };
     });
     const caja = completos === NUEVO_PISTA.length;
-    if (caja && !fin) this.nuevoPagar(quien, 'caja', ['caja'], ahora);
-    return { ok: true, redes, pista: { dia: Math.min(dia, NUEVO_PISTA.length + 1), de: NUEVO_PISTA.length, desde: fila.desde, fin,
-      hechas, total, caja, dias, cajaPremio: NUEVO_CAJA } };
+    if (caja && !fin) recien.caja = this.nuevoPagar(quien, 'caja', ['caja'], ahora);
+    // 🔔 un aviso por día completo en la campana (la bandeja), sólo el día que se completa: a quien ya los tenía hechos
+    // cuando salió esto no le llega una tanda de golpe
+    const avisos = recien.dias.map((n) => ['nuevo:dia:' + n, nuevoDiaAviso(n, dia, caja)]);
+    // la Caja que se gana poniéndose al día con uno de atrás (el día 7 ya estaba): su propio aviso
+    if (recien.caja && !recien.dias.includes(NUEVO_PISTA.length)) {
+      avisos.push(['nuevo:caja', { titulo: '🎁 Ganaste la Caja del Nuevo', cuerpo: 'Completaste los ' + NUEVO_PISTA.length + ' días: '
+        + milesAp(NUEVO_CAJA.puntos) + ' Puntos de Tienda, ' + NUEVO_CAJA.star + ' Star Dragons y el título «' + NUEVO_CAJA.titulo + '».' }]);
+    }
+    for (const [clave, a] of avisos) {
+      if (a) {
+        try { this.aBandeja(quien, clave, 'nuevo', a.titulo, a.cuerpo, HUB + '/freestyle-rap/', '', ahora); } catch (e) { /* la campana no frena la pista */ }
+      }
+    }
+    return { ok: true, redes, verif: NUEVO_VERIF, pista: { dia: Math.min(dia, NUEVO_PISTA.length + 1), de: NUEVO_PISTA.length, desde: fila.desde, fin,
+      hechas, total, caja, dias, cajaPremio: NUEVO_CAJA, v: !!d.v, recien } };
   }
 
   /** Lo público, para `/avisos/aplausos`: cuántos lleva cada publicación. ⚠️ Nunca quién. */

@@ -19,7 +19,6 @@ import { avance, usePase } from './pase.js';
 import { PopPase } from './pase_pop.jsx';
 import { Batallas, FilaRacha, PnCrew, PnEventos, PnMiLiga, PnMisiones, PnPase, PnSemana, PnServidor, PnTienda, Vestuario, campanaPide } from './panel.jsx';
 import { cobrarRacha, useRacha } from './racha.js';
-import { PistaNuevos } from './nuevos.jsx';
 // 🔔 la franja de los MES AWARDS, sólo los días de votación (ver mesinicio.jsx): aparte, para que el resto del mes no pese
 const FranjaMesInicio = lazy(() => import('./mesinicio.jsx'));
 /** ¿Se está votando algún MES AWARD de un servidor, o la gala de la temporada (`gala`, sin `sv`)? Lo dice el lobby (`enc`),
@@ -558,8 +557,9 @@ export function Lobby({ liga, dc, enc }) {
   return (
     <section className="lobby pn" aria-label="Tu lobby">
       {dc && P && P.listo ? <PopPase P={P} /> : null}
-      {/* 🐣 las misiones para nuevos, encima de los cuatro paneles (Dlx, 13/11/2026): sólo la primera semana */}
-      <PistaNuevos liga={liga} dc={dc} />
+      {/* 🐣 las misiones para nuevos iban acá, encima de los cuatro paneles (Dlx, 13/11/2026). Desde el 17/11/2026 van
+          PRIMERO en el Inicio, antes de las historias (App.jsx; Dlx, «Tus elecciones»): acá empezaban en y=1118 de un
+          teléfono de 844 */}
       {hayMesAbierto(liga) ? <Suspense fallback={null}><FranjaMesInicio liga={liga} enc={enc} /></Suspense> : null}
       <FilaRacha dc={dc} R={R} liga={liga} enc={enc} />
       <ElBoton liga={liga} />

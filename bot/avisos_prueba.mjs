@@ -4146,33 +4146,93 @@ const ok = (cond, que, det) => {
     const sinPedir = o.nuevoDe({ quien: N, nuevo: false });
     ok(sinPedir.pista === null && !o.sql.exec('SELECT 1 AS x FROM nuevo WHERE quien = ?', N).toArray()[0],
       'sin que el navegador diga que es nuevo, no arranca');
-    // día 1: el tutorial corto, entrar (siempre) y la campana
+    // 🐣 el orden nuevo (17/11/2026, «Tus elecciones»): verificarse va el día 1, detrás de entrar
+    ok(JSON.stringify(A.NUEVO_PISTA[0][2].map((m) => m[0])) === '["corto","entrar","verif","campana"]'
+      && JSON.stringify(A.NUEVO_PISTA[1][2].map((m) => m[0])) === '["perfil","redes"]'
+      && A.NUEVO_PISTA.flatMap((x) => x[2]).length === 16,
+      'el día 1 es corto, entrar, verificarse y la campana; el día 2, perfil y redes; siguen siendo 16 misiones');
+    // 🔒 la lista de las que piden verificarse: una sola, de misiones que existen, y verificarse no está (es lo que abre)
+    const ids = A.NUEVO_PISTA.flatMap((x) => x[2].map((m) => m[0]));
+    ok(JSON.stringify(A.NUEVO_VERIF) === '["perfil","sigue3","nivel1","tareas2","crew","cm"]'
+      && A.NUEVO_VERIF.every((x) => ids.includes(x)) && !A.NUEVO_VERIF.includes('verif'),
+      'las misiones que piden verificarse son seis, todas de la pista, y verificarse no es una', JSON.stringify(A.NUEVO_VERIF));
+    // 🎁 entrar da un Flight case y el tutorial completo un Cajón de discos (los dos, cofres de `COFRES`)
+    ok(A.NUEVO_PISTA[0][2][1][2][0] === 'cofre' && A.COFRES[A.NUEVO_PISTA[0][2][1][2][1]].n === 'Flight case'
+      && A.NUEVO_PISTA[6][2][0][2][0] === 'cofre' && A.COFRES[A.NUEVO_PISTA[6][2][0][2][1]].n === 'Cajón de discos'
+      && JSON.stringify(A.COFRES[0].drops) === JSON.stringify([A.COFRE_ENC_MIN].concat(Array(A.COFRE_ENC - 1).fill(0))),
+      'entrar da un Flight case, el tutorial completo un Cajón de discos, y el Cajón trae lo mismo que los tres drops de antes');
+    // día 1: el tutorial corto, entrar (siempre); la verificación y la campana todavía no
     let r = o.nuevoDe({ quien: N, nuevo: true, desde: ahora, hechos: ['corto', 'red:instagram', 'red:nada', 'trampa'] });
     const d1 = r.pista && r.pista.dias[0];
     ok(r.pista && r.pista.dia === 1 && d1.abierto && !r.pista.dias[1].abierto && d1.mis.find((m) => m.id === 'corto').ok
-      && d1.mis.find((m) => m.id === 'entrar').ok && !d1.mis.find((m) => m.id === 'campana').ok,
-      'el día 1 abre, el 2 no; el corto y entrar cuentan, la campana todavía no', JSON.stringify(r.pista && r.pista.dias[0]));
+      && d1.mis.find((m) => m.id === 'entrar').ok && !d1.mis.find((m) => m.id === 'verif').ok && !d1.mis.find((m) => m.id === 'campana').ok,
+      'el día 1 abre, el 2 no; el corto y entrar cuentan, verificarse y la campana todavía no', JSON.stringify(r.pista && r.pista.dias[0]));
+    ok(JSON.stringify(r.verif) === JSON.stringify(A.NUEVO_VERIF) && r.pista.v === false,
+      'la pista trae la lista de las que piden verificarse y si está verificado', JSON.stringify([r.verif, r.pista.v]));
+    ok(JSON.stringify(r.pista.recien.mis) === '["corto","entrar"]' && !r.pista.recien.dias.length,
+      'lo que se pagó en este pedido: el corto y entrar, y ningún día', JSON.stringify(r.pista.recien));
     ok(r.redes.length === 1 && r.redes[0] === 'instagram', 'las redes: una válida da su Star Dragon y lo inventado no', JSON.stringify(r.redes));
     const drops = () => o.dropsDe(N).cerrados;
     ok(drops().filter((c) => /^nuevo:m:corto:/.test(c.origen)).length === 3, 'el tutorial corto da 3 Dragón Drops');
     const star = drops().find((c) => c.origen === 'star:red:instagram');
     ok(star && star.min === A.STAR_MIN, 'el Star Dragon sale de Vinilo para arriba', JSON.stringify(star));
     const pdt = (k) => (o.sql.exec('SELECT monto FROM tienda WHERE id = ?', 'nuevo:' + N + ':' + k).toArray()[0] || {}).monto || 0;
-    ok(pdt('m:entrar') === 500 && pdt('m:campana') === 0, 'entrar paga sus Puntos y la campana todavía no');
+    const fc = drops().find((c) => c.origen === 'cofre5:1:nuevo:m:entrar');
+    ok(fc && fc.tipo === 'cofre' && fc.cofre === 1 && pdt('m:entrar') === 0 && pdt('m:campana') === 0,
+      'entrar da un Flight case de verdad (un cofre, no Puntos) y la campana todavía no', JSON.stringify(fc));
     r = o.nuevoDe({ quien: N, hechos: ['corto', 'red:instagram'] });
-    ok(drops().filter((c) => /^nuevo:m:corto:/.test(c.origen)).length === 3 && o.dropsDe(N).cerrados.filter((c) => /^star:/.test(c.origen)).length === 1,
-      'pedirla otra vez no paga dos veces');
-    // la campana completa el día 1: su título
+    ok(drops().filter((c) => /^nuevo:m:corto:/.test(c.origen)).length === 3 && o.dropsDe(N).cerrados.filter((c) => /^star:/.test(c.origen)).length === 1
+      && drops().filter((c) => /^cofre5:/.test(c.origen)).length === 1 && !r.pista.recien.mis.length,
+      'pedirla otra vez no paga dos veces, y no dice que pagó');
+    // la campana sola ya no completa el día 1: falta verificarse
     o.sql.exec("INSERT INTO subs (endpoint, p256dh, auth, alta, visto, quien) VALUES ('https://x', 'p', 'a', 1, 1, ?)", N);
     r = o.nuevoDe({ quien: N });
-    ok(r.pista.dias[0].hecho && o.titulosNuevo(N).includes('Recién llegado') && pdt('m:campana') === 200,
-      'con la campana el día 1 queda hecho y da su título', JSON.stringify(o.titulosNuevo(N)));
-    // un día después se abre el 2: verificado y una red ya seguida cuentan solos
+    ok(!r.pista.dias[0].hecho && !o.titulosNuevo(N).includes('Recién llegado') && pdt('m:campana') === 200 && !r.pista.recien.dias.length,
+      'con la campana y sin verificarse el día 1 sigue abierto: la campana paga, el título todavía no', JSON.stringify(r.pista.dias[0]));
+    // verificado, el día 1 queda hecho: su título, sus 1.000 Puntos y UN aviso en la campana
+    r = o.nuevoDe({ quien: N, v: true });
+    const band = () => o.sql.exec("SELECT clave, titulo, cuerpo, visto FROM bandeja WHERE quien = ? AND clave LIKE 'nuevo:%'", N).toArray();
+    ok(r.pista.dias[0].hecho && o.titulosNuevo(N).includes('Recién llegado') && pdt('m:verif') === 1000
+      && JSON.stringify(r.pista.recien.dias) === '[1]' && band().length === 1 && band()[0].clave === 'nuevo:dia:1'
+      && /Día 1 de 7 · completo/.test(band()[0].titulo) && /Recién llegado/.test(band()[0].cuerpo) && /Mañana se abre el día 2/.test(band()[0].cuerpo),
+      'verificado, el día 1 queda hecho y da su título; la campana dice qué ganó y qué abre mañana', JSON.stringify([r.pista.recien, band()]));
+    o.sql.exec('UPDATE bandeja SET visto = 1 WHERE quien = ?', N);
+    r = o.nuevoDe({ quien: N, v: true });
+    ok(!r.pista.recien.dias.length && band().length === 1 && band()[0].visto === 1,
+      'pedirla otra vez no vuelve a anotar el día en la campana (ni lo marca como nuevo)', JSON.stringify(band()));
+    // un día después se abre el 2: una red ya seguida cuenta sola; el perfil, no
     o.sql.exec('UPDATE nuevo SET desde = ? WHERE quien = ?', ahora - 86400000 - 1000, N);
     r = o.nuevoDe({ quien: N, v: true });
     const d2 = r.pista.dias[1];
-    ok(r.pista.dia === 2 && d2.abierto && d2.mis.find((m) => m.id === 'verif').ok && d2.mis.find((m) => m.id === 'redes').ok
-      && !d2.mis.find((m) => m.id === 'perfil').ok && !r.pista.dias[2].abierto, 'el día 2: la verificación y la red cuentan solas', JSON.stringify(d2));
+    ok(r.pista.dia === 2 && d2.abierto && d2.mis.find((m) => m.id === 'redes').ok
+      && !d2.mis.find((m) => m.id === 'perfil').ok && !r.pista.dias[2].abierto, 'el día 2: la red cuenta sola, el perfil todavía no', JSON.stringify(d2));
+    // 🎁 el tutorial completo, el día 7: un Cajón de discos de verdad, que se abre como cofre y trae lo de `COFRES[0]`
+    const N2 = '300000000000000033', N3 = '300000000000000034';
+    o.nuevoDe({ quien: N2, nuevo: true, desde: ahora - 6 * 86400000 });
+    r = o.nuevoDe({ quien: N2, hechos: ['completo'] });
+    const caj = o.dropsDe(N2).cerrados.find((c) => c.origen === 'cofre5:0:nuevo:m:completo');
+    ok(r.pista.dia === 7 && caj && caj.tipo === 'cofre' && caj.cofre === 0 && r.pista.recien.mis.includes('completo')
+      && !o.dropsDe(N2).cerrados.some((c) => /^cofre:nuevo:/.test(c.origen)),
+      'el tutorial completo da un Cajón de discos (cofre5:0), no tres drops sueltos', JSON.stringify(caj));
+    const ab = o.dropAbrir(N2, caj.id);
+    ok(ab.ok && ab.tipo === 'cofre' && ab.desde === 0 && ab.nuevos.length === A.COFRES[ab.cofre].drops.length
+      && ab.nuevos.every((x, i) => x.min === A.COFRES[ab.cofre].drops[i]),
+      'el Cajón se abre como cofre y trae sus drops (el primero desde Vinilo)', JSON.stringify(ab));
+    // ⚠️ a quien ya cobró lo de antes no se le da también lo nuevo: los 500 de entrar y los tres drops del completo
+    o.nuevoDe({ quien: N3, nuevo: true, desde: ahora - 6 * 86400000 });
+    o.sql.exec("DELETE FROM drops WHERE quien = ? AND origen LIKE 'cofre5:%'", N3);
+    o.sql.exec('INSERT INTO tienda (id, ref, quien, monto, t) VALUES (?, 0, ?, 500, ?)', 'nuevo:' + N3 + ':m:entrar', N3, ahora);
+    for (let i = 1; i <= 3; i++) o.dropDar(N3, 'cofre:nuevo:' + i, i === 1 ? 2 : 0);
+    r = o.nuevoDe({ quien: N3, hechos: ['completo'] });
+    ok(!o.dropsDe(N3).cerrados.some((c) => /^cofre5:/.test(c.origen)) && !r.pista.recien.mis.includes('entrar') && !r.pista.recien.mis.includes('completo')
+      && r.pista.dias[0].mis.find((m) => m.id === 'entrar').ok,
+      'quien ya cobró los 500 de entrar o los drops del completo no recibe además el cofre', JSON.stringify(o.dropsDe(N3).cerrados.map((c) => c.origen)));
+    // 🔔 el aviso de cada día, en palabras
+    const av3 = A.nuevoDiaAviso(3, 5, false), av7 = A.nuevoDiaAviso(7, 7, true), av7n = A.nuevoDiaAviso(7, 7, false);
+    ok(A.nuevoPremioTexto(['cofre', 1]) === 'un Flight case' && A.nuevoPremioTexto(['drop', 1]) === 'un Dragón Drop'
+      && /Ya tienes abierto el día 4: Tu Pase/.test(av3.cuerpo) && /Buena Gente/.test(av3.cuerpo)
+      && /Caja del Nuevo/.test(av7.cuerpo) && /Novato de Oro/.test(av7.cuerpo) && /te faltan/i.test(av7n.cuerpo) && A.nuevoDiaAviso(8, 8, false) === null,
+      'el aviso de un día: qué ganó y qué abre (mañana, o ya abierto si se pone al día); el 7, la Caja', JSON.stringify([av3, av7, av7n]));
     // pasada la semana, no paga nada más
     o.sql.exec('UPDATE nuevo SET desde = ? WHERE quien = ?', ahora - 9 * 86400000, N);
     const antes = o.sql.exec('SELECT COUNT(*) AS n FROM tienda').toArray()[0].n;

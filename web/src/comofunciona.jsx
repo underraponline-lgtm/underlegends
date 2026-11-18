@@ -2,7 +2,8 @@
 // nuevo, tablero 7, y Dlx: «el completo en la guía tmb… y tmb un aviso chico porq cambió mucho». Va en toda la página y
 // es liviano a propósito: no baja el tutorial (tutorial.jsx) hasta que alguien lo pide.
 //   · en cada página con capítulo (capitulos.js), un botón chico arriba a la derecha: en una línea qué es la página, y el
-//     capítulo entero. La primera vez lleva un punto magenta: reemplaza las notas de «Primera vez acá»
+//     capítulo entero. La primera vez lleva un punto magenta: reemplaza las notas de «Primera vez acá». Debajo de 760 px
+//     (17/11/2026) ese botón no se dibuja y va un «?» redondo en la cabecera (`PreguntaCab`)
 //   · en el Inicio, para quien ya venía antes del tutorial nuevo, una franja una sola vez: «la página cambió mucho»
 import { useEffect, useRef, useState } from 'react';
 import { Ico } from './piezas.jsx';
@@ -15,10 +16,10 @@ const AVISO_HASTA = Date.parse('2026-12-14T05:00:00Z');
 
 const aLaGuia = () => { location.hash = '#/guia'; setTimeout(() => W.dispatchEvent(new Event('lg:aprende')), 300); };
 
-export function ComoFunciona({ pagina }) {
+/** Lo que comparten el botón flotante y el de la cabecera: abrir y cerrar (afuera o con Escape), y el capítulo */
+function useCF(pagina) {
   const C = capituloDe(pagina);
   const [abierto, setAbierto] = useState(false);
-  const [, setN] = useState(0);
   const caja = useRef(null);
   useEffect(() => { setAbierto(false); }, [pagina]);
   useEffect(() => {
@@ -29,6 +30,55 @@ export function ComoFunciona({ pagina }) {
     W.addEventListener('keydown', tecla);
     return () => { document.removeEventListener('pointerdown', fuera, true); W.removeEventListener('keydown', tecla); };
   }, [abierto]);
+  return { C, abierto, setAbierto, caja };
+}
+
+/** La ventana chica: el capítulo en una línea, verlo, y todo el tutorial */
+function PopCF({ C, hecho, cerrar }) {
+  return (
+    <div className="cf-pop" role="dialog" aria-label={'Cómo funciona: ' + C.t}>
+      <span className="cf-k">{C.t.toUpperCase()} · EN UNA LÍNEA</span>
+      <p>{C.linea}</p>
+      <button type="button" className="cf-ver" onClick={() => { cerrar(); pedirRecorrido('cap:' + C.id); }}>
+        <span>{hecho ? 'Ver el capítulo otra vez' : 'Ver el capítulo'}</span><small>{C.pasos.length} pasos · 1 min</small></button>
+      <div className="cf-pie">
+        <button type="button" onClick={() => { cerrar(); aLaGuia(); }}>Todo el tutorial · {CAPITULOS.length} capítulos</button>
+      </div>
+    </div>
+  );
+}
+
+/**
+ * 📱 EN EL TELÉFONO, UN «?» REDONDO EN LA CABECERA (17/11/2026, Dlx a la maqueta, «Tus elecciones»). Debajo de 760 px el
+ * botón flotante tapaba títulos y pestañas (en /ranking caía debajo de «Competitivo» y no se podía tocar). La opción
+ * aprobada era un «?» al lado del título de la página, pero cada página arma su título a su manera (`hero-ev`, `ta-h`,
+ * `cu-h`, un `h1` suelto…, y el Pase cambia el suyo con tu nivel): colgarse de él no es confiable en las nueve. Va en la
+ * cabecera, al lado de la lupa y la campana, que es la misma en todas. En la compu sigue el de siempre (`ComoFunciona`)
+ */
+export function PreguntaCab({ pagina }) {
+  const { C, abierto, setAbierto, caja } = useCF(pagina);
+  const [, setN] = useState(0);
+  if (!C) return null;
+  const T = tuto();
+  const visto = !!(T && (T.cf || {})[C.id]);
+  const hecho = !!(T && (T.caps || {})[C.id]);
+  const abrir = () => {
+    setAbierto((v) => !v);
+    if (T && !visto) { tutoPoner({ cf: Object.assign({}, T.cf || {}, { [C.id]: 1 }) }); setN((n) => n + 1); }
+  };
+  return (
+    <div className="cf-cab" ref={caja}>
+      <button type="button" className={'btn-ico cf-cab-b' + (abierto ? ' on' : '')} aria-expanded={abierto} onClick={abrir}
+        aria-label={'¿Cómo funciona ' + C.t + '?'} title="¿Cómo funciona?">
+        <i aria-hidden="true">?</i>{!visto ? <span className="cf-pt" aria-label="nuevo" /> : null}</button>
+      {abierto ? <PopCF C={C} hecho={hecho} cerrar={() => setAbierto(false)} /> : null}
+    </div>
+  );
+}
+
+export function ComoFunciona({ pagina }) {
+  const { C, abierto, setAbierto, caja } = useCF(pagina);
+  const [, setN] = useState(0);
   const T = tuto();
   // 📣 el aviso, en el Inicio, a quien ya venía: una sola vez
   const aviso = pagina === '' && T && !T.nuevo && !T.aviso_tuto && Date.now() < AVISO_HASTA;
@@ -54,17 +104,7 @@ export function ComoFunciona({ pagina }) {
     <div className="cf" ref={caja}>
       <button type="button" className={'cf-q' + (abierto ? ' on' : '')} aria-expanded={abierto} onClick={abrir}>
         <i aria-hidden="true">?</i>¿Cómo funciona?{!visto ? <span className="cf-pt" aria-label="nuevo" /> : null}</button>
-      {abierto ? (
-        <div className="cf-pop" role="dialog" aria-label={'Cómo funciona: ' + C.t}>
-          <span className="cf-k">{C.t.toUpperCase()} · EN UNA LÍNEA</span>
-          <p>{C.linea}</p>
-          <button type="button" className="cf-ver" onClick={() => { setAbierto(false); pedirRecorrido('cap:' + C.id); }}>
-            <span>{hecho ? 'Ver el capítulo otra vez' : 'Ver el capítulo'}</span><small>{C.pasos.length} pasos · 1 min</small></button>
-          <div className="cf-pie">
-            <button type="button" onClick={() => { setAbierto(false); aLaGuia(); }}>Todo el tutorial · {CAPITULOS.length} capítulos</button>
-          </div>
-        </div>
-      ) : null}
+      {abierto ? <PopCF C={C} hecho={hecho} cerrar={() => setAbierto(false)} /> : null}
     </div>
   );
 }
