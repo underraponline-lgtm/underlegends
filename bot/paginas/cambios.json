@@ -11,6 +11,15 @@
   ],
   "cambios": [
     {
+        "version": "6.46",
+        "dia": "2026-11-17",
+        "cuando": "2026-11-17T23:42:29-05:00",
+        "titulo": "Más momentos de batallas",
+        "items": [
+            "La pantalla de carga tiene **muchos más momentos de batallas**: 38 en vez de 21, con los dos MC de cada una."
+        ]
+    },
+    {
         "version": "6.45",
         "dia": "2026-11-17",
         "cuando": "2026-11-17T23:45:00-05:00",

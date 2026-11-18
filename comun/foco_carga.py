@@ -70,7 +70,9 @@ def baja(b, fmt):
     if fmt == 'hd' and 'pc' in dada:
         return float(dada['pc'])
     c = b['cara']
-    if fmt in ('pc', 'hd') and (c[2] <= .30 or c[0] >= .70):
+    # en la compu el título va del 30 al 70 % del ancho, pero en una ventana más angosta que 16:9 la imagen se recorta
+    # de los costados y la cara se corre hacia el centro: sólo se salva sin bajar la que está bien afuera (22 % / 78 %)
+    if fmt in ('pc', 'hd') and (c[2] <= .22 or c[0] >= .78):
         return 0.0
     return round(max(0.0, ARRANCA[fmt] - c[1]), 2)
 

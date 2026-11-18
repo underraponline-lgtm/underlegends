@@ -15,6 +15,7 @@ Qué fondos hay y cómo se arma cada uno vive en `web/carga.json`.
     python herramientas/fondos_carga.py 1 4          sólo esos
     python herramientas/fondos_carga.py --batallas   los momentos de «La batalla» (yt-dlp + ffmpeg + Real-ESRGAN, con
                                                     tarjeta de video; cuando cambia un momento en web/carga.json)
+    python herramientas/fondos_carga.py --batallas sol4 makma3   sólo esos (y `--subir 2-sol4- 2-makma3-` los sube)
     python herramientas/fondos_carga.py --subir      sube .cache/carga/out/ a R2, carga/<temporada>/
 
 🎨 EL ESTILO ES EL DE LA BIENVENIDA (Dlx: «con la intro y bienvenida hay un contraste gigantísimo»): fotos en blanco y
@@ -74,7 +75,8 @@ FUENTES = ("<link href='https://fonts.googleapis.com/css2?family=Anton&family=Ar
            "&family=Rubik+Mono+One&family=Bowlby+One+SC&family=Rock+Salt&family=Sedgwick+Ave+Display"
            "&family=Black+Ops+One&display=swap' rel='stylesheet'>")
 #: las marcas de agua de los canales: se borronean (no se recorta: correría la persona)
-MARCAS = {'bvs': [(.40, .93, .60, .99)], 'ko': [(.43, .80, .57, .96)]}
+#: (`dn`: el logo de «Desastres Naturales», que el video de Makma lleva abajo al centro en su primera mitad)
+MARCAS = {'bvs': [(.40, .93, .60, .99)], 'ko': [(.43, .80, .57, .96)], 'dn': [(.38, .71, .62, .93)]}
 GRANO = ("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='220' height='220'><filter id='n'>"
          "<feTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2' stitchTiles='stitch'/>"
          "<feColorMatrix values='0 0 0 0 .5 0 0 0 0 .5 0 0 0 0 .5 0 0 0 .9 0'/></filter>"
@@ -395,7 +397,7 @@ def cuadro(b, x4=False):
     return os.path.join(BAT, '%s-%s%s.png' % (b['id'], b['seg'], '-x4' if x4 else ''))
 
 
-def bajar_batallas():
+def bajar_batallas(solo=()):
     """El cuadro de cada momento, SIN PÉRDIDA y agrandado ×4 (17/11/2026). Dlx: *«a veces sale borrosa, no se ve al MC»*.
 
     🔴 ANTES SE PERDÍA NITIDEZ EN DOS PASOS. yt-dlp cortaba un tramo de 2 s con `--force-keyframes-at-cuts`, que VUELVE
@@ -410,6 +412,8 @@ def bajar_batallas():
     ff = ffmpeg()
     exe = os.path.join(ESRGAN, 'realesrgan-ncnn-vulkan.exe')
     for b in CONF['batallas']:
+        if solo and b['id'] not in solo:
+            continue
         dest = cuadro(b)
         if not os.path.exists(dest):
             r = subprocess.run([sys.executable, '-m', 'yt_dlp', '-g', '--no-warnings', '-f',
@@ -685,8 +689,15 @@ def subir(solo=()):
 
 if __name__ == '__main__':
     if '--batallas' in sys.argv:
-        bajar_batallas()
+        # `--batallas kainheat4 sol5`: sólo esos momentos (sumar uno no tiene que rehacer, agrandar y subir los demás)
+        solo = [a for a in sys.argv[sys.argv.index('--batallas') + 1:] if not a.startswith('--')]
+        faltan = set(solo) - {b['id'] for b in CONF['batallas']}
+        if faltan:
+            raise SystemExit('🔴 no están en web/carga.json: %s' % ', '.join(sorted(faltan)))
+        bajar_batallas(solo)
         for b in CONF['batallas']:
+            if solo and b['id'] not in solo:
+                continue
             for fmt in FORMATOS_BATALLA:
                 print(batalla(b, fmt))
     elif '--caras' in sys.argv:
