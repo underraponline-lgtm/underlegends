@@ -49,6 +49,7 @@
 // 🛡️ el anti-raid (18/10/2026): su lógica y lo que contesta el Worker viven en `bot/antiraid.js`; acá, la vuelta de cada minuto
 import * as AR from './antiraid.js';
 import * as CW from './crews.js';
+import * as TI from './tienda.js';
 import * as LIV from './ligas_vivo.js';
 
 export const CRON_VIGIA = '* * * * *';
@@ -3477,6 +3478,8 @@ const RUTAS = {
   // 34 de antes, una vez, con la clave del ciclo
   '/avisos/crews': 'GET', '/avisos/crew': 'POST', '/avisos/crew-mia': 'POST', '/avisos/dueno/crew': 'POST',
   '/avisos/crews-sembrar': 'POST', '/avisos/crews-siglas': 'POST',
+  // 🛍️ LA TIENDA (17/11/2026, bot/tienda.js): lo tuyo, una acción, y el catálogo con la clave del ciclo
+  '/avisos/tienda': 'POST', '/avisos/tienda-accion': 'POST', '/avisos/tienda-catalogo': 'POST',
   // 🆕 el relanzamiento: cerrar varias y avisarle a su gente, con la clave del ciclo (`bot/crews_vivas.py --cerrar`).
   // ⚠️ Sin esta línea la ruta da 404 aunque su manejador exista: pasó el 29/10/2026
   '/avisos/crews-cerrar': 'POST',
@@ -5145,6 +5148,8 @@ export const APP_ID = '1550026808404217926';
 export const DUENO = '739338101603696681';
 // 👑 y su perfil (/r/dlx, sus cartas en R2 bajo `dlx/`): no juega, así que `claveDe()` no siempre lo encuentra
 export const DUENO_K = 'dlx';
+/** 🛍️ lo que bot/tienda.js necesita de acá (sin importar avisos.js desde allá, que daría un ciclo) */
+const TI_H = { DUENO, diaET, rangoDiaET, semanaDeDia, claveValida };
 // ⚙️ LOS AJUSTES DEL DASHBOARD (Dlx, 04/10/2026: «todo y muchas más cosas»): lo que sólo cambia el dueño. Viven en el
 // objeto (`ajustes()`), los escribe `/avisos/dueno/ajuste` (sólo Dlx) y los leen el vigía, el ciclo (`/avisos/ajustes`,
 // con su clave) y la página (sólo el aviso, adentro de `/avisos/vivo`)
@@ -6401,6 +6406,33 @@ export async function rutaAvisos(req, env, ruta) {
       method: 'POST', body: JSON.stringify(Object.assign(v, base)), headers: { 'content-type': 'application/json' },
     });
   }
+  // 🛍️ LA TIENDA (17/11/2026, bot/tienda.js): lo tuyo, o una acción. Quién sos lo dice Discord o tu sesión, y de qué
+  // perfil, `d:` (comprar, regalar y ponerse son de verificados). Acá se valida la forma; las reglas y la plata las mira el
+  // objeto, que es uno solo. Cerrada hasta el lanzamiento: el objeto sólo le contesta al dueño
+  if (ruta === '/avisos/tienda' || ruta === '/avisos/tienda-accion') {
+    const crudo = await req.text();
+    if (crudo.length > 4096) return json({ error: 'demasiado grande' }, 413);
+    let d = null;
+    try { d = JSON.parse(crudo || '{}'); } catch (e) { d = null; }
+    if (!d || typeof d !== 'object' || Array.isArray(d) || (d.token && !/^[A-Za-z0-9._-]{10,300}$/.test(String(d.token)))) {
+      return json({ error: 'faltan datos' }, 400);
+    }
+    const q = await quienPide(req, env, d);
+    if (!q.id) return json({ error: q.error }, q.estado);
+    let de = '';
+    try { de = (await env.KV.get('d:' + q.id)) || ''; } catch (e) { de = ''; }
+    // la billetera: con cuánto arrancó la temporada, como `/avisos/crew`
+    let cfg = null;
+    try { cfg = JSON.parse((await env.KV.get('precios', { cacheTtl: 60 })) || 'null'); } catch (e) { cfg = null; }
+    const c = { accion: d.accion, pieza: d.pieza, col: d.col, piezas: d.piezas, ranura: d.ranura, para: d.para, msg: d.msg,
+      id: d.id, si: d.si, poner: d.poner };
+    for (const x of Object.keys(c)) if (c[x] === undefined) delete c[x];
+    const cuerpo = Object.assign(c, { quien: q.id, de: claveValida(de) ? de : '' });
+    if (cfg && Number.isInteger(cfg.inicial)) { cuerpo.inicial = cfg.inicial; cuerpo.desde = Date.parse(cfg.desde || '') || 0; }
+    return elObjeto(env).fetch('https://avisos' + ruta.slice('/avisos'.length), {
+      method: 'POST', body: JSON.stringify(cuerpo), headers: { 'content-type': 'application/json' },
+    });
+  }
   // 👥 lo del dueño (y Admin) con las crews: el líder de las de antes, el nombre, cerrarla. La puerta del Dashboard
   if (ruta === '/avisos/dueno/crew') {
     const crudo = await req.text();
@@ -6425,7 +6457,7 @@ export async function rutaAvisos(req, env, ruta) {
   }
   // 🌱 las 34 de antes, una vez: lo manda el ciclo, con su clave (`bot/crews_vivas.py --sembrar`); y 🪪 quiénes de las
   // crews no están verificados, cada corrida (`bot/crews_verificar.py`)
-  if (ruta === '/avisos/crews-sembrar' || ruta === '/avisos/crews-siglas' || ruta === '/avisos/crews-verificar' || ruta === '/avisos/crews-tiers' || ruta === '/avisos/crews-cerrar') {
+  if (ruta === '/avisos/crews-sembrar' || ruta === '/avisos/crews-siglas' || ruta === '/avisos/crews-verificar' || ruta === '/avisos/crews-tiers' || ruta === '/avisos/crews-cerrar' || ruta === '/avisos/tienda-catalogo') {
     const k = req.headers.get('x-lg-ciclo') || '';
     if (!env.DISCORD_TOKEN || k !== await claveCiclo(env.DISCORD_TOKEN)) return json({ error: 'no existe' }, 404);
     const crudo = await req.text();
@@ -8439,6 +8471,8 @@ export class Avisos {
         't INTEGER NOT NULL, estado INTEGER NOT NULL DEFAULT 0, texto TEXT NOT NULL DEFAULT \'\')');
       // 👥 LAS CREWS QUE ARMA LA GENTE (19/10/2026): sus tablas viven con su lógica, en bot/crews.js
       CW.crewTablas(this.sql);
+      // 🛍️ LA TIENDA (17/11/2026): sus tablas viven con su lógica, en bot/tienda.js
+      TI.tiendaTablas(this.sql);
       // 📏 LOS ÍNDICES QUE FALTABAN (05/10/2026), medidos con `medidas`: en una hora tranquila el objeto leía 61.000
       // filas, y el 57 % eran dos limpiezas que corren cada minuto —las inscripciones viejas y las marcas de «ya
       // avisado»— recorriendo la tabla entera para borrar casi nada. Con el índice, borrar lee sólo lo que borra.
@@ -9205,6 +9239,10 @@ export class Avisos {
       // 👥 las crews: quién actúa y de qué perfil lo dice el Worker (`/avisos/crew`, el bot), nunca la página
       if (ruta === '/crew') { const r = await this.crewConImagen(d); await this.vaciarBasuraCrews(); return json(r, r.estado || 200); }
       if (ruta === '/crew-mia') return json(CW.crewMia(this, d));
+      // 🛍️ la Tienda: quién actúa lo dice el Worker; el catálogo llega con la clave del ciclo (`bot/tienda_subir.py`)
+      if (ruta === '/tienda') return json(TI.tiendaMia(this, d, TI_H));
+      if (ruta === '/tienda-accion') { const r = TI.tiendaAccion(this, d, TI_H); return json(r, r.estado || 200); }
+      if (ruta === '/tienda-catalogo') { const r = TI.catalogoGuardar(this, d); return json(r, r.estado || 200); }
       if (ruta === '/crew-dueno') {
         const r = CW.crewDueno(this, d);
         if (r.viejos) await this.borrarLogosCrew(r.viejos);
@@ -12886,6 +12924,8 @@ export class Avisos {
     // más viejo; si era el único, se cierra (`crewOlvidar()`)
     if (d.clave && typeof d.clave === 'string') { try { CW.crewOlvidar(this, d.clave.slice(0, 100)); } catch (e) { /* sigue con lo demás */ } }
     try { this.sql.exec("UPDATE crew_miembros SET quien = '' WHERE quien = ?", String(d.quien)); } catch (e) { /* sin crews */ }
+    // 🛍️ y lo suyo de la Tienda: lo que compró, lo que se puso, su lista y sus regalos (bot/tienda.js)
+    try { TI.tiendaOlvidar(this, String(d.quien)); } catch (e) { /* sin tienda */ }
     const r = this.sql.exec("UPDATE subs SET quien = '' WHERE quien = ?", String(d.quien));
     // 🔑 Y SUS VOTOS: van con su Discord ID, así que son un dato suyo. Lo que
     // ya se aplicó (un Elegido, un ×2) quedó en el ciclo y no cambia.
@@ -14643,7 +14683,9 @@ export class Avisos {
       // 🏷️ y el TAG que eligió para cada carta
       'tag_elige',
       // 🎁 su link de invitación y por qué link llegó (a quiénes trajo va aparte: `de`, abajo)
-      'ref_link', 'referidos'];
+      'ref_link', 'referidos',
+      // 🛍️ y lo de la Tienda: lo que tiene, lo que se puso, su lista, sus colecciones y sus números
+      ...TI.TABLAS_QUIEN];
     const movidas = {}, fallas = [];
     // 🔴 LAS CLAVES DE LA TIENDA LLEVAN EL ID ADENTRO (pasada del 19/10/2026): `rhito:<id>:…`, `racha:<id>:…`,
     // `rdia:<día>:<id>`, `bien:<id>:<paso>`, `pase:…:<id>:<nivel>`… Pasaba la fila a la cuenta nueva con la clave vieja,
@@ -14667,6 +14709,7 @@ export class Avisos {
     try { this.sql.exec('UPDATE premium_vale SET usado_por = ? WHERE usado_por = ?', nuevo, viejo); } catch (e) { fallas.push('premium_vale'); }
     // 👥 las crews son de un PERFIL, no de una cuenta: sólo se anota el ID nuevo (no van en `tablas`, que borra lo viejo)
     try { CW.crewMudar(this, viejo, nuevo); } catch (e) { fallas.push('crews'); }
+    try { TI.tiendaMudar(this, viejo, nuevo); } catch (e) { fallas.push('tienda'); }
     try { this.sql.exec('UPDATE inscritos SET autor_id = ? WHERE autor_id = ?', nuevo, viejo); } catch (e) { fallas.push('inscritos'); }
     this.inscMem = null;
     this.sql.exec('DELETE FROM sesiones WHERE quien = ?', viejo);

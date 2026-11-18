@@ -4262,6 +4262,179 @@ const ok = (cond, que, det) => {
   } else console.log('  ⓘ sin node:sqlite: los referidos no se prueban sobre el objeto');
 }
 
+// ── 🛍️ LA TIENDA (17/11/2026, bot/tienda.js): cerrada salvo para el dueño, comprar, deshacer una vez, ponerse, Premium,
+// la vitrina, las colecciones con su premio, las ediciones de 10, lo gratis, regalar (tope, aceptar, rechazar, vencer),
+// la lista, los precios que nunca suben y la diferencia cuando bajan, y el drop del día. Con un catálogo de MUESTRA: el de
+// verdad no vive en el repo
+{
+  console.log('\n🛍️ la Tienda');
+  const TI = await import('./tienda.js');
+  let DatabaseSync = null;
+  try { ({ DatabaseSync } = await import('node:sqlite')); } catch (e) { DatabaseSync = null; }
+  if (!DatabaseSync) {
+    console.log('  ⓘ sin node:sqlite: la Tienda no se prueba sobre el objeto');
+  } else {
+    const db = new DatabaseSync(':memory:');
+    const sql = {
+      exec(q, ...ps) {
+        const t = String(q).trim();
+        if (!ps.length && /;\s*\S/.test(t)) { db.exec(t); return { toArray: () => [] }; }
+        const st = db.prepare(t);
+        if (/^\s*(SELECT|WITH|PRAGMA)/i.test(t)) { const rows = st.all(...ps); return { toArray: () => rows }; }
+        const r = st.run(...ps);
+        return { toArray: () => [], rowsWritten: r.changes };
+      },
+    };
+    const o = new A.Avisos({ storage: { sql, setAlarm() {}, getAlarm() { return null; }, transactionSync: (f) => f() },
+      blockConcurrencyWhile: async (f) => f() }, { DISCORD_TOKEN: 'x', KV: { get: async () => null } });
+    await new Promise((r) => setTimeout(r, 5));
+    const H = { DUENO: A.DUENO, diaET: A.diaET, rangoDiaET: A.rangoDiaET, semanaDeDia: A.semanaDeDia, claveValida: A.claveValida };
+    const ANA = '400000000000000001', BEA = '400000000000000002', CAR = '400000000000000003';
+    const INI = 200000;
+    for (const [q, k, ev] of [[ANA, 'ana', 4], [BEA, 'bea', 0], [CAR, 'car', 2]]) {
+      sql.exec('INSERT INTO jugo_temp (quien, temp, k, eventos) VALUES (?, ?, ?, ?)', q, 'T1', k, ev);
+    }
+    const ahora = Date.now();
+    const cat = {
+      abierta: false, temp: 'T1', precios: [1000, 2000, 5000, 10000, 20000, 50000],
+      desc: { prem: 0.5, col: 0.5, col_prem: 0.4 }, regalos_semana: 3, regalo_dias: 14, deshacer_h: 24, baja_dias: 14,
+      piezas: {
+        X1: { c: 'aro', r: 1 }, X2: { c: 'aro', r: 3, t: ['prem'] }, X3: { c: 'deco', r: 1, t: ['rot'] },
+        X4: { c: 'deco', r: 1, t: ['rot'] }, F1: { c: 'fp', r: 1 }, F2: { c: 'fv', r: 1 }, F3: { c: 'fe', r: 1 },
+        P1: { c: 'aro', r: 2, t: ['col'] }, N1: { c: 'carta', r: 5, t: ['num'] }, G1: { c: 'deco', r: 1, t: ['gratis'] },
+        S1: { c: 'serv', r: 2 },
+      },
+      vitrina: { ids: ['X3', 'X1'], hasta: ahora + 7 * 86400000 },
+      colecciones: { C1: { n: 'Calle', piezas: ['F1', 'F2', 'F3'], premio: 'P1' } },
+      ediciones: { N1: { venta: ahora - 1000, cierra: ahora + 86400000, copias: 3 } },
+      gratis: { G1: { desde: ahora - 1000, hasta: ahora + 86400000 } },
+    };
+    const acc = (q, k, d) => TI.tiendaAccion(o, Object.assign({ quien: q, de: k, inicial: INI, desde: 0 }, d), H);
+    const mia = (q, k) => TI.tiendaMia(o, { quien: q, de: k, inicial: INI, desde: 0 }, H);
+    const saldo = (q) => o.saldo(q, 0, INI);
+
+    ok(!mia(ANA, 'ana').abierta && acc(ANA, 'ana', { accion: 'comprar', pieza: 'X1' }).error === 'cerrada',
+      'sin catálogo no hay Tienda');
+    ok(TI.catalogoGuardar(o, { catalogo: Object.assign({}, cat, { piezas: { BAD: { c: 'aro', r: 9 } } }) }).error === 'pieza',
+      'un catálogo con una pieza rota no se guarda');
+    ok(TI.catalogoGuardar(o, { catalogo: cat }).ok, 'el catálogo se guarda');
+    const ens = mia(A.DUENO, 'dlx');
+    ok(!mia(ANA, 'ana').abierta && ens.ensayo && ens.cat && ens.cat.piezas.X1,
+      'cerrada: la gente no la ve y el dueño la ensaya', JSON.stringify(mia(ANA, 'ana')));
+    TI.catalogoGuardar(o, { catalogo: Object.assign({}, cat, { abierta: true }) });
+    ok(mia(ANA, 'ana').abierta && acc(ANA, '', { accion: 'comprar', pieza: 'X1' }).error === 'verificate',
+      'abierta: sin perfil verificado no se compra');
+
+    // comprar y deshacer
+    let r = acc(ANA, 'ana', { accion: 'comprar', pieza: 'X1' });
+    ok(r.ok && r.total === 2000 && saldo(ANA) === INI - 2000, 'comprar cobra el precio de su rareza', JSON.stringify(r));
+    ok(acc(ANA, 'ana', { accion: 'comprar', pieza: 'X1' }).error === 'ya_la_tienes', 'no se compra dos veces');
+    ok(mia(ANA, 'ana').yo.inv.find((x) => x.p === 'X1').deshacer, 'recién comprada, se puede deshacer');
+    r = acc(ANA, 'ana', { accion: 'deshacer', pieza: 'X1' });
+    ok(r.ok && r.vuelve === 2000 && saldo(ANA) === INI, 'deshacer devuelve lo que pagaste', JSON.stringify(r));
+    acc(ANA, 'ana', { accion: 'comprar', pieza: 'X1' });
+    ok(acc(ANA, 'ana', { accion: 'deshacer', pieza: 'X1' }).error === 'ya_deshecha', 'una vez por pieza: la segunda compra es definitiva');
+    ok(acc(ANA, 'ana', { accion: 'poner', ranura: 'aro', pieza: 'X1' }).ok && mia(ANA, 'ana').yo.puesto.aro === 'X1'
+      && acc(ANA, 'ana', { accion: 'poner', ranura: 'deco', pieza: 'X1' }).error === 'ranura', 'ponerse va en su ranura');
+
+    // Premium, vitrina, gratis
+    ok(acc(ANA, 'ana', { accion: 'comprar', pieza: 'X2' }).error === 'premium', 'lo sólo-Premium pide Premium');
+    sql.exec('INSERT INTO pase_premium (quien, temp, desde, hasta) VALUES (?, ?, ?, NULL)', ANA, 'T1', ahora - 1000);
+    let s0 = saldo(ANA);
+    r = acc(ANA, 'ana', { accion: 'comprar', pieza: 'X2' });
+    ok(r.ok && r.total === 5000 && saldo(ANA) === s0 - 5000, 'con Premium, su descuento (10.000 → 5.000 en la muestra)', JSON.stringify(r));
+    ok(acc(ANA, 'ana', { accion: 'comprar', pieza: 'X4' }).error === 'no_esta' && acc(ANA, 'ana', { accion: 'comprar', pieza: 'X3' }).ok,
+      'lo de rotación se vende sólo mientras está en la vitrina');
+    s0 = saldo(ANA);
+    ok(acc(ANA, 'ana', { accion: 'comprar', pieza: 'G1' }).ok && saldo(ANA) === s0 && acc(ANA, 'ana', { accion: 'deshacer', pieza: 'G1' }).error === 'no_se_puede',
+      'lo gratis no cobra y no se deshace');
+    ok(acc(ANA, 'ana', { accion: 'comprar', pieza: 'P1' }).error === 'premio', 'el premio de una colección no se vende');
+
+    // colecciones: con descuento sobre lo que falta (otro con Premium), el premio al completarla, y deshacer la compra junta entera
+    s0 = saldo(BEA);
+    r = acc(BEA, 'bea', { accion: 'comprar', pieza: 'F1' });
+    r = acc(BEA, 'bea', { accion: 'comprar-col', col: 'C1' });
+    ok(r.ok && r.total === 2000 && r.colecciones.includes('C1') && saldo(BEA) === s0 - 2000 - 2000,
+      'la colección cobra con descuento lo que falta (2 × 2.000 → 2.000 en la muestra) y da su premio', JSON.stringify(r));
+    let yo = mia(BEA, 'bea').yo;
+    ok(yo.inv.some((x) => x.p === 'P1' && x.o === 'coleccion') && yo.colecciones.C1.completa, 'el premio queda en el Inventario');
+    r = acc(BEA, 'bea', { accion: 'deshacer', pieza: 'F2' });
+    yo = mia(BEA, 'bea').yo;
+    ok(r.ok && r.vuelve === 2000 && r.piezas.length === 2 && !yo.inv.some((x) => x.p === 'P1') && !yo.colecciones.C1.completa,
+      'deshacer una pieza de la colección deshace la compra junta y se lleva el premio', JSON.stringify(r));
+    s0 = saldo(ANA);
+    r = acc(ANA, 'ana', { accion: 'comprar-puesto', piezas: ['F1', 'F2', 'F3'] });
+    ok(r.ok && r.total === 2400 && saldo(ANA) === s0 - 2400 && mia(ANA, 'ana').yo.puesto.fp === 'F1',
+      'comprar lo puesto: si completa una colección, se cobra como colección (con Premium: 6.000 → 2.400) y queda puesto', JSON.stringify(r));
+    ok(acc(ANA, 'ana', { accion: 'deshacer', pieza: 'F1' }).error === 'usada', 'lo que te pusiste ya no se deshace');
+
+    // ediciones de 10
+    ok(acc(BEA, 'bea', { accion: 'comprar', pieza: 'N1' }).error === 'no_jugaste', 'una edición es para quien jugó en la temporada');
+    r = acc(ANA, 'ana', { accion: 'comprar', pieza: 'N1' });
+    ok(r.ok && r.numero === 2 && r.total === 50000, 'la primera que se vende es la #2 (la #1 es del campeón), sin descuento Premium', JSON.stringify(r));
+    ok(acc(ANA, 'ana', { accion: 'deshacer', pieza: 'N1' }).error === 'no_se_puede', 'una numerada no se deshace');
+    ok(acc(CAR, 'car', { accion: 'comprar', pieza: 'N1' }).numero === 3, 'la siguiente, la #3');
+    sql.exec('INSERT INTO jugo_temp (quien, temp, k, eventos) VALUES (?, ?, ?, ?)', '400000000000000004', 'T1', 'dia', 1);
+    ok(acc('400000000000000004', 'dia', { accion: 'comprar', pieza: 'N1' }).error === 'agotada', 'con todas vendidas, agotada');
+    ok(acc(ANA, 'ana', { accion: 'num-campeon', pieza: 'N1', para: CAR }).error === 'no'
+      && acc(A.DUENO, 'dlx', { accion: 'num-campeon', pieza: 'N1', para: BEA }).ok
+      && mia(BEA, 'bea').cat.ediciones.N1.duenos[0][0] === 1, 'la #1 la da el dueño, al campeón');
+
+    // regalar
+    ok(acc(BEA, 'bea', { accion: 'regalar', pieza: 'X1', para: 'ana' }).error === 'no_jugaste', 'para regalar hay que haber jugado');
+    ok(acc(ANA, 'ana', { accion: 'regalar', pieza: 'N1', para: 'car' }).error === 'no_se_regala'
+      && acc(ANA, 'ana', { accion: 'regalar', pieza: 'X2', para: 'car' }).error === 'no_se_regala', 'las numeradas y lo Premium no se regalan');
+    ok(acc(ANA, 'ana', { accion: 'regalar', pieza: 'X1', para: 'nadie' }).error === 'no_verificado', 'sólo a un perfil que existe');
+    s0 = saldo(ANA);
+    r = acc(ANA, 'ana', { accion: 'regalar', pieza: 'X1', para: 'car', msg: 1 });
+    ok(r.ok && saldo(ANA) === s0 - 1000, 'regalar cobra al que regala (con su Premium: 2.000 → 1.000)', JSON.stringify(r));
+    const reg = mia(CAR, 'car').yo.regalos[0];
+    ok(reg && reg.de === 'ana' && reg.msg === '¡Felicitaciones!', 'le llega a quien lo recibe, con quién y el mensaje', JSON.stringify(reg));
+    ok(acc(CAR, 'car', { accion: 'regalo', id: reg.id, si: false }).ok && saldo(ANA) === s0, 'si lo rechaza, vuelven los Puntos');
+    r = acc(ANA, 'ana', { accion: 'regalar', pieza: 'X1', para: 'car' });
+    ok(acc(CAR, 'car', { accion: 'regalo', id: r.id, si: true }).ok && mia(CAR, 'car').yo.inv.some((x) => x.p === 'X1' && x.o === 'regalo'),
+      'si lo acepta, es suyo');
+    ok(acc(ANA, 'ana', { accion: 'regalar', pieza: 'X1', para: 'car' }).error === 'ya_lo_tiene', 'lo que ya tiene no se regala');
+    s0 = saldo(ANA);
+    r = acc(ANA, 'ana', { accion: 'regalar', pieza: 'X3', para: 'car' });
+    sql.exec('UPDATE tienda_regalo SET fin = ? WHERE id = ?', ahora - 1, r.id);
+    ok(TI.vencerRegalos(o) === 1 && saldo(ANA) === s0, 'a los 14 días sin respuesta, vuelve solo');
+    ok(acc(ANA, 'ana', { accion: 'regalar', pieza: 'X3', para: 'car' }).error === 'tope', 'tres por semana');
+    sql.exec('DELETE FROM tienda_regalo');
+    sql.exec('DELETE FROM tienda_inv WHERE quien = ? AND pieza = ?', CAR, 'F1');
+    s0 = saldo(ANA);
+    r = acc(ANA, 'ana', { accion: 'regalar', col: 'C1', para: 'car' });
+    ok(r.ok && saldo(ANA) === s0 - 2400, 'una colección regalada cobra lo que le falta a quien la recibe (con el Premium de quien regala)', JSON.stringify(r));
+
+    // la lista
+    ok(acc(BEA, 'bea', { accion: 'deseo', pieza: 'X4' }).ok && acc(BEA, 'bea', { accion: 'deseo-publico', si: true }).ok
+      && mia(BEA, 'bea').yo.deseos.includes('X4') && mia(BEA, 'bea').yo.deseo_publico, 'la lista, y mostrarla en el perfil');
+
+    // los precios nunca suben; si bajan, vuelve la diferencia
+    const sube = JSON.parse(JSON.stringify(Object.assign({}, cat, { abierta: true })));
+    sube.piezas.X1.r = 2;
+    ok(TI.catalogoGuardar(o, { catalogo: sube }).error === 'sube', 'un catálogo que sube un precio no se guarda');
+    const baja = JSON.parse(JSON.stringify(Object.assign({}, cat, { abierta: true })));
+    baja.piezas.X3.r = 0;
+    baja.vitrina.ids = ['X3', 'X4'];
+    s0 = saldo(ANA);
+    r = TI.catalogoGuardar(o, { catalogo: baja });
+    ok(r.ok && r.devueltos >= 1 && saldo(ANA) === s0 + Math.round(1000 * (2000 - 1000) / 2000),
+      'si una pieza baja, quien la compró hace poco recibe la diferencia (en proporción a lo que pagó)', JSON.stringify(r));
+    ok(r.avisos >= 1, 'y la lista avisa lo que entra en la vitrina');
+
+    // el drop del día
+    ok(acc(BEA, 'bea', { accion: 'drop' }).error === 'no_miembro', 'el drop del día es de los Miembros de DRA');
+    r = acc(A.DUENO, 'dlx', { accion: 'drop' });
+    ok(r.ok && acc(A.DUENO, 'dlx', { accion: 'drop' }).error === 'ya', 'uno por día', JSON.stringify(r));
+
+    // olvidarme
+    TI.tiendaOlvidar(o, CAR);
+    ok(!mia(CAR, 'car').yo.inv.length && !sql.exec('SELECT 1 AS x FROM tienda_num WHERE quien = ?', CAR).toArray().length,
+      '«olvidarme» borra lo suyo de la Tienda');
+  }
+}
+
 if (fallas) {
   console.log(`\n❌ ${fallas} prueba(s) fallaron`);
   process.exit(1);
