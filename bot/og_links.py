@@ -83,7 +83,7 @@ def _get(url, ciclo=False, timeout=25):
 
 #: el diseño de la miniatura del link de invitación: el mismo `DISENO_REF` de web/src/og_link.jsx (`data-d`). Cambiarlo rearma
 #: sólo ésas, no las crews ni los perfiles; y si la página publicada todavía dice otro, la foto se saltea
-DISENO_REF = 'ref-4b-t1'
+DISENO_REF = 'ref-4b-mas'
 #: países que no se toman en cuenta (Dlx, 22/09/2026: «Emiratos y Brasil no deberían existir»)
 SIN_PAIS = ('ae', 'br', 'no')
 
@@ -109,7 +109,8 @@ def _vitrina(L, ahora=None):
         m = 0
     ps = [p for p in (L or {}).get('paises') or [] if isinstance(p, dict) and p.get('cc') and p['cc'] not in SIN_PAIS]
     ps.sort(key=lambda p: -(p.get('n') or 0))
-    return {'t': t // 10 * 10, 'm': m // 1000 * 1000, 'b': [p['cc'] for p in ps[:12]]}
+    # 11 banderas y la 12.ª casilla dice cuántos países más hay (Dlx, 18/11/2026: «una banderita con un más»)
+    return {'t': t // 10 * 10, 'm': m // 1000 * 1000, 'b': [p['cc'] for p in ps[:11]], 'p': len(ps)}
 
 
 def _carta(k, f, cartas):
@@ -156,8 +157,8 @@ def trabajos():
             # la «4b» (17/11/2026): los números y las banderas entran en la huella, ya redondeados; `d` es el diseño de
             # ésta sola, así cambiarlo no rearma las crews ni los perfiles
             r = {'k': k, 'n': f.get('n') or k, 'carta': _carta(k, f, cartas), 'd': DISENO_REF, **V}
-            ruta = 'ref/%s?n=%s&c=%s&t=%d&m=%d&b=%s' % (quote(k, safe=''), quote(str(r['n']), safe=''), quote(r['carta'], safe=''),
-                                                     V['t'], V['m'], ','.join(V['b']))
+            ruta = 'ref/%s?n=%s&c=%s&t=%d&m=%d&b=%s&p=%d' % (quote(k, safe=''), quote(str(r['n']), safe=''), quote(r['carta'], safe=''),
+                                                          V['t'], V['m'], ','.join(V['b']), V['p'])
             out.append(('ref', slug_og(k), _huella(r), ruta))
     # 🖼️ el cartel del link de cada perfil: los de la tabla con carta. La huella es todo lo que el cartel muestra
     fondos = (_get(avisar.WORKER + '/avisos/fondos') or {}).get('f') or {}
@@ -301,9 +302,9 @@ def _self_check():
     L0 = {'calendario': cal, 'comunidad': {'personas': 21386},
           'paises': [{'cc': 'ar', 'n': 171}, {'cc': 'br', 'n': 900}, {'cc': 'co', 'n': 76}, {'cc': 'cl', 'n': 93}, {'cc': 'ae', 'n': 5}]}
     V = _vitrina(L0, hoy)
-    ok(V == {'t': 40, 'm': 21000, 'b': ['ar', 'cl', 'co']},
+    ok(V == {'t': 40, 'm': 21000, 'b': ['ar', 'cl', 'co'], 'p': 3},
        'la miniatura del link: 42 torneos en 7 días → 40, 21.386 → 21.000, banderas por raperos y sin Emiratos ni Brasil (%s)' % V)
-    ok(_vitrina({}, hoy) == {'t': 0, 'm': 0, 'b': []}, 'sin lobby, ceros y sin banderas (la página esconde lo que no llega)')
+    ok(_vitrina({}, hoy) == {'t': 0, 'm': 0, 'b': [], 'p': 0}, 'sin lobby, ceros y sin banderas (la página esconde lo que no llega)')
     with io.open(os.path.join(BASE, 'web', 'src', 'og_link.jsx'), encoding='utf-8') as f:
         mj = re.search(r"export const DISENO_REF = '([^']+)'", f.read())
     ok(mj is not None and mj.group(1) == DISENO_REF,

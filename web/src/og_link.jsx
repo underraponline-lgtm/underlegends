@@ -88,28 +88,33 @@ function Crew({ id }) {
 // ⚠️ «Miembros» son las personas de los servidores donde está el bot (`comunidad.personas`), no gente anotada en la Liga.
 //: el diseño de esta miniatura: el mismo `d` que pone bot/og_links.py en la huella. Si la página publicada dice otro, el ciclo
 //: no saca la foto (sería la vieja con la huella nueva) y la reintenta en la corrida siguiente
-export const DISENO_REF = 'ref-4b-t1';
-const SIN_PAIS = new Set(['ae', 'br', 'no']);              // Dlx, 22/09: Emiratos y Brasil «no se les toma en cuenta»
+export const DISENO_REF = 'ref-4b-mas';
+const SIN_PAIS = new Set(['ae', 'br', 'no']);
+const BANDERAS = 11;                                      // y la 12.ª casilla es la del «+N»              // Dlx, 22/09: Emiratos y Brasil «no se les toma en cuenta»
 const nro = (x) => Number(x) || 0;
 const miles = (x) => String(Math.trunc(x)).replace(/\B(?=(\d{3})+(?!\d))/g, '.');
 
-/** `{t, m, b}`: torneos de los últimos 7 días (para abajo a la decena), personas en los servidores (al millar) y los 12
- *  países con más raperos. La misma regla que `_vitrina()` de bot/og_links.py */
+/** `{t, m, b, p}`: torneos de los últimos 7 días (para abajo a la decena), personas en los servidores (al millar), los 11
+ *  países con más raperos y cuántos hay en total (el «+N» de la banderita del final: Dlx, 18/11/2026, «una banderita con un
+ *  más, o sea que hay más países, no sólo esos»). La misma regla que `_vitrina()` de bot/og_links.py */
 export function vitrinaRef(d, q) {
   const D = d || {};
   const ahora = Date.now(), desde = ahora - 7 * 864e5;
   const t = q && q.get('t') != null ? nro(q.get('t'))
     : Math.floor((D.calendario || []).filter((c) => { const x = Date.parse((c && (c.t || c.cuando)) || ''); return x >= desde && x <= ahora; }).length / 10) * 10;
   const m = q && q.get('m') != null ? nro(q.get('m')) : Math.floor(nro(D.comunidad && D.comunidad.personas) / 1000) * 1000;
-  const b = q && q.get('b') != null ? String(q.get('b')).split(',').filter((x) => /^[a-z]{2}$/.test(x)).slice(0, 12)
-    : (D.paises || []).filter((p) => p && p.cc && !SIN_PAIS.has(p.cc)).sort((a, c) => nro(c.n) - nro(a.n)).slice(0, 12).map((p) => p.cc);
-  return { t, m, b };
+  const todos = (D.paises || []).filter((p) => p && p.cc && !SIN_PAIS.has(p.cc)).sort((a, c) => nro(c.n) - nro(a.n));
+  const b = q && q.get('b') != null ? String(q.get('b')).split(',').filter((x) => /^[a-z]{2}$/.test(x)).slice(0, BANDERAS)
+    : todos.slice(0, BANDERAS).map((p) => p.cc);
+  const p = q && q.get('p') != null ? nro(q.get('p')) : todos.length;
+  return { t, m, b, p: Math.max(p, b.length) };
 }
 
 // 🔠 «¡MAKMAH TE INVITÓ!» EN UNA CABECERA, COMO LA BARRA DE ABAJO (Dlx, 17/11/2026: «o podríamos hacer una cabecera parecida
 // a la de abajo que diga X te invitó, centrado»). Antes era una etiqueta en la columna de la carta: la 4b guardada sólo
 // entraba con nombres de hasta 3 letras, y achicarla para que entrara le comía lugar a la carta. A lo ancho entra casi
-// cualquier nombre: de 52 a 30 px hasta entrar en 1.120, y si ni así (el más largo de la Liga tiene 48 letras), «…».
+// cualquier nombre: de 42 a 28 px hasta entrar en 1.120 (franja de 64 px desde el 18/11: «sus líneas menos altas»), y si ni
+// así (el más largo de la Liga tiene 48 letras), «…».
 // Se mide con las fuentes ya cargadas: con la de reemplazo, las medidas salían de otro ancho.
 const ANCHO_CAB = 1120;
 function anchoTxt(txt, px) {
@@ -119,8 +124,8 @@ function anchoTxt(txt, px) {
 }
 export function encajeCabecera(nombre, medir = anchoTxt) {
   const t = '¡' + nombre + ' te invitó!';
-  for (let px = 52; px >= 30; px -= 1) if (medir(t, px) <= ANCHO_CAB) return px;
-  return 30;
+  for (let px = 42; px >= 28; px -= 1) if (medir(t, px) <= ANCHO_CAB) return px;
+  return 28;
 }
 
 function Ref({ liga, k }) {
@@ -157,7 +162,12 @@ function Ref({ liga, k }) {
         <span className="og-r4-bc og-r4-caja">Todos los niveles</span>
       </div>
       <div className="og-r4-der">
-        {V.b.length ? <span className="og-r4-flags">{V.b.map((cc) => <img key={cc} src={'/banderas/g/' + cc + '.webp'} alt="" onLoad={una(1)} onError={una(1)} />)}</span> : null}
+        {V.b.length ? (
+          <span className="og-r4-flags">
+            {V.b.map((cc) => <img key={cc} src={'/banderas/g/' + cc + '.webp'} alt="" onLoad={una(1)} onError={una(1)} />)}
+            {V.p > V.b.length ? <span className="og-r4-mas">+{V.p - V.b.length}</span> : null}
+          </span>
+        ) : null}
         {V.m >= 1000 ? (
           <span className="og-r4-miem"><span className="og-r4-bc">Más de</span><b>{miles(V.m)}</b><span className="og-r4-bc og-r4-m">miembros</span></span>
         ) : null}

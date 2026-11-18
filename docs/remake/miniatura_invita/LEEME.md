@@ -67,3 +67,6 @@ largos) y la carta sin girar, hasta 420 px de alto. `final_dlx.png` y `final_nom
 
 **6.49**: Dlx, «una cabecera parecida a la de abajo que diga X te invitó, centrado» y «entra ahora y gana un premio, y
 abajo a los costados la temporada y el logo de UL en negrito». `final_dlx.png` y `final_nombres.png` ya son ésta.
+
+**6.51**: Dlx, «haz lo blanco, sus líneas menos altas» y «una banderita con un más»: franjas de 64 y 72 px, 11
+banderas y «+N». `final_dlx.png` y `final_nombres.png` ya son ésta.

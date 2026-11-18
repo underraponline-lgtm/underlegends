@@ -11,6 +11,16 @@
   ],
   "cambios": [
     {
+        "version": "6.51",
+        "dia": "2026-11-18",
+        "cuando": "2026-11-18T00:10:00-05:00",
+        "titulo": "La miniatura de tu link: la carta más grande, y «+10» países",
+        "items": [
+            "En la miniatura de tu link de invitación, **las franjas blancas son más bajas** y tu carta más grande.",
+            "Las banderas: los 11 países con más raperos y **una casilla con «+10»**, porque hay más países en la Liga."
+        ]
+    },
+    {
         "version": "6.50",
         "dia": "2026-11-18",
         "cuando": "2026-11-18T00:03:00-05:00",
