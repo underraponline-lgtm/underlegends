@@ -2840,7 +2840,7 @@ export function Tira({ liga }) {
 
 // ── IR A: una barra negra pegada arriba que aparece cuando pasaste el escenario ─────────────────────
 const SECCIONES = [['envivo', 'Ahora'], ['semana', 'Esta semana'], ['fechas', 'Fechas'], ['sebusca', 'Se busca'],
-  ['noticias', 'Lo último'], ['encuestas', 'Encuestas'], ['raperos', 'Los que mandan'], ['panel', 'Misiones'], ['merch', 'Merchandising'],
+  ['noticias', 'Lo último'], ['encuestas', 'Encuestas'], ['raperos', 'Los que mandan'], ['panel', 'Misiones'], ['merch', 'La Tienda'],
   ['numeros', 'La Liga']];
 
 // 🔔 IR A, CON EL ESTILO DE LA CAMPANA (Dlx, 15/11/2026: «cuando uno arrastra hacia abajo aparece como un menú de opciones

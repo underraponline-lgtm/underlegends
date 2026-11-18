@@ -11,6 +11,20 @@
   ],
   "cambios": [
     {
+        "version": "6.54",
+        "dia": "2026-11-18",
+        "cuando": "2026-11-18T00:53:33-05:00",
+        "titulo": "El bot en vivo sin repetirse, el aviso de los ganadores nuevo y la Tienda en el Inicio",
+        "items": [
+            "Si el organizador **borra la llave y la vuelve a publicar**, el bot en vivo sigue donde iba: ya no repite la noche entera.",
+            "El bot en vivo **te etiqueta** en el chat del servidor donde juegas, también si todavía no te verificaste.",
+            "Los botones del bot en vivo (**Estadísticas**, **Perfiles** y **Consigue tu tarjeta**) van en una sola fila.",
+            "El **aviso de los ganadores**, nuevo: un recuadro con el color del servidor y **un botón para cada ganador, con su nombre**, que sólo abre esa persona.",
+            "En el Inicio, **La Tienda**: una franja corta con lo que consigues con tus Puntos y la ropa que viene.",
+            "El menú de tu cara, más ordenado: **Tu cuenta y Soporte arriba**, tus paneles en fichas y el Premium dentro del Pase."
+        ]
+    },
+    {
         "version": "6.53",
         "dia": "2026-11-18",
         "cuando": "2026-11-18T01:30:00-05:00",

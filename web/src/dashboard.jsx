@@ -1070,7 +1070,7 @@ const NOMBRE_SECC = { inicio: 'Inicio', eventos: 'Eventos', ranking: 'Ranking', 
   servidor: 'Un servidor', crew: 'Una crew', pais: 'Un país', cuenta: 'Mi cuenta', cambios: 'Novedades',
   'i-historias': 'Las historias', 'i-envivo': 'Lo de arriba (Ahora)', 'i-semana': 'Esta semana', 'i-ira': 'La barra IR A',
   'i-fechas': 'Fechas', 'i-sebusca': 'Se busca', 'i-noticias': 'Lo último', 'i-encuestas': 'Encuestas y Tus eventos',
-  'i-raperos': 'Los que mandan', 'i-panel': 'Misiones', 'i-merch': 'Merchandising', 'i-numeros': 'La Liga en números',
+  'i-raperos': 'Los que mandan', 'i-panel': 'Misiones', 'i-merch': 'La Tienda (ropa)', 'i-numeros': 'La Liga en números',
   'p-eventos': 'Puerta · Eventos', 'p-ranking': 'Puerta · Ranking', 'p-mw': 'Puerta · Se busca', 'p-tarjetas': 'Puerta · Tarjetas',
   'p-pase': 'Puerta · Pase', 'p-tienda': 'Puerta · Tienda' };
 // la página de cada servidor llega como «sv-URBF»: con la sigla que se lee (URB, LCW, CYH), no el código (12/11/2026)

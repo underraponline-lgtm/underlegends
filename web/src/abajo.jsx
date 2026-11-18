@@ -225,60 +225,30 @@ export function Stickers({ logos }) {
   );
 }
 
-// 👕 EL DROP, OPCIÓN A (13/11/2026, Dlx: «A y A», de https://claude.ai/artifact/Rumigw5P7eu1sFKJqaa8T9): una remera
-// grande sobre negro y, al lado, los colores de los servidores; tocas uno y la remera cambia a la de ese socio. El buzo,
-// la gorra y los stickers, al costado. «Ejemplos, todavía no se vende nada» una sola vez, arriba, y no en cada tarjeta
-// como antes, y sin la caja gris de cada dibujo. Ideas de 21st, sólo miradas: «Featured Product Showcase» (ziegfiroyt),
-// «Product Drop Card» (ravikatiyar162) y «ProductCard» de colores (youcefbnm)
+// 🛍️ CORTO, Y DE LA TIENDA (18/11/2026, Dlx: «necesito que merchandising sea algo corto de la tienda»). Era la remera
+// grande con los colores de cada socio (la opción A del 13/11): ocupaba una pantalla entera para algo que todavía no se
+// vende, y la Tienda ya abrió. Ahora es una franja: lo que sí se consigue con los Puntos de Tienda, la ropa en chico con
+// «pronto» y el botón a la Tienda. La ropa sigue siendo la misma (`Prenda`, `Stickers`); el catálogo NO se pide acá:
+// sería un pedido al objeto por cada visita al Inicio
 export function Merch({ liga }) {
-  // los socios: los servidores de la Liga que vienen en el lobby, con su color y su logo
-  const svs = liga ? Object.values(liga.svs || {}).filter((s) => s.color && s.sv) : [];
-  const socios = svs.filter((s) => s.logo).slice(0, 7);
-  const remeras = [
-    { k: 'ul', sig: 'UL', marca: 'Under Legends', n: 'Remera Under Legends', d: 'Negra, con el logo al pecho', col: '#141414',
-      dib: <Prenda tipo="remera" color="#141414" logo="/ul.png" /> },
-    ...socios.map((s) => {
-      const sig = String(s.sigla || s.sv).toUpperCase();
-      return { k: s.sv, sig, marca: s.nombre, n: 'Remera ' + sig, d: s.nombre + ', socio de la Liga', col: s.color,
-        dib: <Prenda tipo="remera" color={s.color} logo={liga.logo(s.sv)} texto={sig} /> };
-    }),
-  ];
-  const [i0, setI] = useState(0);
-  const i = Math.min(i0, remeras.length - 1);
-  const r = remeras[i];
+  const svs = liga ? Object.values(liga.svs || {}).filter((s) => s.color && s.sv && s.logo) : [];
+  const ropa = [
+    { k: 'remera', n: 'Remera UL', dib: <Prenda tipo="remera" color="#141414" logo="/ul.png" /> },
+    { k: 'buzo', n: 'Buzo Liga Global', dib: <Prenda tipo="buzo" color="#E41373" logo="/ul.png" texto="LIGA GLOBAL" /> },
+    { k: 'gorra', n: 'Gorra UL', dib: <Prenda tipo="gorra" color="#F2F2F2" logo="/ul.png" /> },
+    svs.length ? { k: 'stickers', n: 'Stickers', dib: <Stickers logos={['/ul.png', ...svs.map((s) => liga.logo(s.sv))]} /> } : null,
+  ].filter(Boolean);
   return (
-    <Sec id="merch" titulo="Merchandising" extra="negra mqa">
-      {/* el texto en UN span: la nota es flex, y cada pedazo suelto quedaba como un ítem con su hueco («nada : cuando») */}
-      <p className="mq-nota"><span className="tag-pronto">EJEMPLOS</span><span>Así podría ser la ropa de Under Legends y de sus socios. <b>Todavía no se vende nada</b>: cuando salga, la ves acá primero.</span></p>
-      <div className="mqa-g">
-        <div className="mqa-uno" style={{ '--mqa-c': r.col }}>
-          <div className="mqa-img" key={r.k}>{r.dib}</div>
-          <div className="mqa-t">
-            <span className="mqa-k">Remeras · {r.marca}</span>
-            <b>{r.n}</b>
-            <span className="mqa-d">{r.d}</span>
-            {remeras.length > 1 ? <>
-              <span className="mqa-k gris">Elige el servidor</span>
-              <div className="mqa-sw" role="radiogroup" aria-label="Elige el servidor">
-                {remeras.map((x, j) => (
-                  <button type="button" key={x.k} role="radio" aria-checked={j === i} aria-label={x.marca} className={'mqa-c' + (j === i ? ' on' : '')} onClick={() => setI(j)}>
-                    <i style={{ background: x.col }} />{x.sig}
-                  </button>
-                ))}
-              </div>
-            </> : null}
-          </div>
+    <Sec id="merch" titulo="La Tienda" extra="negra mqb">
+      <div className="mqb-g">
+        <div className="mqb-t">
+          <p className="mqb-p">Marcos, efectos, fondos y TAGs para tu perfil y tus tarjetas, con tus <b>Puntos de Tienda</b>.</p>
+          <p className="mqb-pronto"><span className="tag-pronto">PRONTO</span><span>La ropa de Under Legends y de sus socios.</span></p>
+          <a className="btn mqb-b" href="#/tienda">Ir a la Tienda <Ico n="flecha" t={16} /></a>
         </div>
-        <div className="mqa-otros">
-          <article className="mqa-p"><div className="mqa-p-img"><Prenda tipo="buzo" color="#E41373" logo="/ul.png" texto="LIGA GLOBAL" /></div>
-            <div><b>Buzo Liga Global</b><small>Magenta, con el logo y «LIGA GLOBAL»</small></div></article>
-          <article className="mqa-p"><div className="mqa-p-img"><Prenda tipo="gorra" color="#F2F2F2" logo="/ul.png" /></div>
-            <div><b>Gorra UL</b><small>Blanca, con el logo bordado</small></div></article>
-          {svs.length ? (
-            <article className="mqa-p ancho"><div className="mqa-p-img"><Stickers logos={['/ul.png', ...svs.filter((s) => s.logo).map((s) => liga.logo(s.sv))]} /></div>
-              <div><b>Stickers de la Liga</b><small>Los logos de los socios, para la laptop, el celular o la tabla</small></div></article>
-          ) : null}
-        </div>
+        <ul className="mqb-ropa" aria-label="La ropa, pronto">
+          {ropa.map((c) => <li key={c.k}><div className="mqb-img">{c.dib}</div><span>{c.n}</span></li>)}
+        </ul>
       </div>
     </Sec>
   );

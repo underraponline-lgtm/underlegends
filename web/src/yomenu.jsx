@@ -60,31 +60,39 @@ export function YoMenu({ k, dc, nombre, cara, abajo = false, onCerrar }) {
   const lugares = lugaresMods(quien);
   const M = useModsEstado();
   const prendidos = Object.keys(INTERRUPTORES).filter((x) => M[x]).length;
+  // 🧹 ACOMODADO EL 18/11/2026 (Dlx, con una captura del menú largo: «acomoda esas cosas de ajustes de mejor manera»).
+  // Eran once filas iguales y el final no entraba: «Cuenta y ayuda» quedaba debajo del scroll. Ahora:
+  // - TUS PANELES, como fichas en una fila (Dashboard, los servidores, MODS): son atajos de quien administra, no cosas tuyas;
+  // - LO TUYO, cinco filas: el Inventario primero (la puerta 1 del 26/10), tu perfil, la Tienda —ya no es «el precio
+  //   por cabeza»: son marcos, efectos y fondos—, el Pase con el Premium ADENTRO (era una fila aparte que iba al mismo
+  //   lugar) e Invita y gana;
+  // - Tu cuenta y Soporte, arriba, uno al lado del otro («tu cuenta y soporte que estén de lado y arriba»).
   const paneles = [
-    dashboard ? ['#/dashboard', 'tablero', 'Dashboard', 'lo que espera que decidas', false, true] : null,
-    socio ? ['#/socio', 'servidor', esDlx ? 'Los servidores' : 'Mi servidor', esDlx ? 'las estadísticas de todos los socios' : 'las estadísticas de tu servidor', false, true] : null,
-    lugares.length ? ['', 'escudo', 'MODS', (prendidos ? (prendidos === 1 ? '1 prendido · ' : prendidos + ' prendidos · ') : '')
-      + (lugares.length === 1 ? 'el lugar donde puedes usarlo' : 'los ' + lugares.length + ' lugares donde puedes usarlo'), false, true,
-    () => abrirLugaresMods(quien)] : null,
+    // en la ficha entra el nombre y nada más (medido: a 340 px de menú, «lo que espera» se cortaba); MODS dice cuántos prendidos
+    dashboard ? ['#/dashboard', 'tablero', 'Dashboard', ''] : null,
+    socio ? ['#/socio', 'servidor', esDlx ? 'Servidores' : 'Mi servidor', ''] : null,
+    lugares.length ? ['', 'escudo', 'MODS', prendidos ? (prendidos === 1 ? '1 prendido' : prendidos + ' prendidos') : '', () => abrirLugaresMods(quien)] : null,
   ].filter(Boolean);
-  const secciones = [
-    paneles.length ? ['Tus paneles', paneles] : null,
-    ['Lo tuyo', [
-      ['#/inventario', 'mochila', 'Inventario', nuevos ? nuevos + (nuevos === 1 ? ' cosa nueva' : ' cosas nuevas') : 'tus TAGs, marcos y cartas', nuevos > 0],
-      [k ? '#/r/' + encodeURIComponent(k) : '#/cuenta/perfil', 'perfil', 'Mi perfil', 'lo que ven los demás'],
-      ['#/pase', 'pase', 'Pase rapero', 'tu nivel y tus premios'],
-      prem ? ['#/pase', 'sello', 'Tienes el Premium', (marco ? 'Tu marco: ' + marco + ' · ' : '') + '+' + boostPremium(pub) + ' % de XP'] : null,
-      // 🛍️ la Tienda vive acá desde que salió del menú de arriba (Dlx, 12/11/2026: «Tienda me gusta en tu cuenta… ahí nos
-      // ahorramos un espacio»): es donde se gastan tus Puntos
-      ['#/tienda', 'tienda', 'Tienda', 'tus Puntos y el precio por cabeza'],
-      // 🎁 Invita y gana (17/11/2026): también acá, porque en pantallas angostas el regalo de arriba no entra
-      ['#/invitar', 'regalo', 'Invita y gana', 'tu link, tu track y tus invitados'],
-    ].filter(Boolean)],
-    ['Cuenta y ayuda', [
-      ['#/cuenta', 'engranaje', 'Tu cuenta', 'foto, redes, avisos y la app'],
-      ['#/cuenta/algo-mal', 'soporte', 'Soporte', 'perdí mi cuenta, mi país, algo está mal'],
-    ]],
-  ].filter(Boolean);
+  const tuyo = [
+    ['#/inventario', 'mochila', 'Inventario', nuevos ? nuevos + (nuevos === 1 ? ' cosa nueva' : ' cosas nuevas') : 'tus TAGs, marcos y cartas', nuevos > 0],
+    [k ? '#/r/' + encodeURIComponent(k) : '#/cuenta/perfil', 'perfil', 'Mi perfil', 'lo que ven los demás'],
+    // 🛍️ la Tienda vive acá desde que salió del menú de arriba (Dlx, 12/11/2026: «Tienda me gusta en tu cuenta… ahí nos
+    // ahorramos un espacio»): es donde se gastan tus Puntos
+    ['#/tienda', 'tienda', 'Tienda', 'marcos, efectos y fondos con tus Puntos'],
+    // 💎 con el Premium, el sello y lo que suma, en la misma fila
+    ['#/pase', prem ? 'sello' : 'pase', 'Pase rapero', prem ? 'Premium' + (marco ? ' · marco ' + marco : '') + ' · +' + boostPremium(pub) + ' % de XP' : 'tu nivel y tus premios'],
+    // 🎁 Invita y gana (17/11/2026): también acá, porque en pantallas angostas el regalo de arriba no entra
+    ['#/invitar', 'regalo', 'Invita y gana', 'tu link y tus invitados'],
+  ];
+  const fila = ([h, ic, n, d, nuevo]) => (
+    <li key={h + n}>
+      <a href={h} role="menuitem" className={'nt-f' + (nuevo ? ' nueva' : '')} onClick={onCerrar}>
+        <span className="nt-cara"><span className="nt-c nt-ico" aria-hidden="true">{ic === 'sello' ? <SelloPremium t={20} /> : <Ico n={ic} t={20} />}</span></span>
+        <span className="nt-t"><b>{n}</b><small className={nuevo ? 'nv' : ''}>{d}</small></span>
+        <span className="nt-hora" aria-hidden="true">›</span>
+      </a>
+    </li>
+  );
   return (
     <div className={'yo-menu' + (abajo ? ' abajo' : '')} ref={caja} role="menu" aria-label="Lo tuyo">
       <div className="nt-h">
@@ -92,30 +100,31 @@ export function YoMenu({ k, dc, nombre, cara, abajo = false, onCerrar }) {
         <h2>{nombre || 'Lo tuyo'}</h2>
         <button type="button" className="nt-ib" aria-label="Cerrar" onClick={onCerrar}><Ico n="cerrar" t={16} /></button>
       </div>
+      {/* Tu cuenta y Soporte, arriba y uno al lado del otro (Dlx, 18/11/2026: «tu cuenta y soporte que estén de lado y arriba») */}
+      <div className="ym-arriba">
+        <a href="#/cuenta" role="menuitem" onClick={onCerrar}><Ico n="engranaje" t={16} />Tu cuenta</a>
+        <a href="#/cuenta/algo-mal" role="menuitem" onClick={onCerrar}><Ico n="soporte" t={16} />Soporte</a>
+      </div>
       <div className="nt-cuerpo">
-        {secciones.map(([t, xs]) => (
-          <div key={t}>
-            <p className="nt-s">{t}</p>
-            <ul>{xs.map(([h, ic, n, d, nuevo, panel, fn]) => {
-              const dentro = (
-                <>
-                  <span className="nt-cara"><span className="nt-c nt-ico" aria-hidden="true">{ic === 'sello' ? <SelloPremium t={20} /> : <Ico n={ic} t={20} />}</span></span>
-                  <span className="nt-t"><b>{n}</b><small className={nuevo ? 'nv' : ''}>{d}</small></span>
-                  <span className="nt-hora" aria-hidden="true">›</span>
-                </>
-              );
-              const cls = 'nt-f' + (nuevo ? ' nueva' : '') + (panel ? ' panel' : '');
+        {paneles.length ? (
+          <div>
+            <p className="nt-s">Tus paneles</p>
+            <ul className={'ym-fichas n' + paneles.length}>{paneles.map(([h, ic, n, d, fn]) => {
+              const dentro = <><span className="ym-ico" aria-hidden="true"><Ico n={ic} t={18} /></span><b>{n}</b>{d ? <small>{d}</small> : null}</>;
               return (
-                // las dos filas del Pase van al mismo lugar: la clave lleva el nombre
-                <li key={h + n}>
-                  {/* una fila sin link abre algo en vez de ir (MODS): un botón, y el menú se cierra antes */}
-                  {fn ? <button type="button" role="menuitem" className={cls} aria-haspopup="dialog" onClick={() => { onCerrar(); fn(); }}>{dentro}</button>
-                    : <a href={h} role="menuitem" className={cls} onClick={onCerrar}>{dentro}</a>}
+                <li key={n}>
+                  {/* MODS abre algo en vez de ir: un botón, y el menú se cierra antes */}
+                  {fn ? <button type="button" role="menuitem" className="ym-ficha" aria-haspopup="dialog" onClick={() => { onCerrar(); fn(); }}>{dentro}</button>
+                    : <a href={h} role="menuitem" className="ym-ficha" onClick={onCerrar}>{dentro}</a>}
                 </li>
               );
             })}</ul>
           </div>
-        ))}
+        ) : null}
+        <div>
+          <p className="nt-s">Lo tuyo</p>
+          <ul>{tuyo.map(fila)}</ul>
+        </div>
       </div>
     </div>
   );
