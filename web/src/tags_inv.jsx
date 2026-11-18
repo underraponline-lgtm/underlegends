@@ -40,6 +40,8 @@ usarCss('inventario', CSS_PAGINA);
 const EstiloJuego = lazy(() => import('./juego.jsx'));
 // 🏅 la Colección, «la vitrina» (17/11/2026): su pestaña, en su propio pedazo. Ver `coleccion.jsx`
 const Coleccion = lazy(() => import('./coleccion.jsx'));
+// 👤 la pestaña Perfil, «el probador» (17/11/2026). Ver `perfil_inv.jsx`
+const PerfilProbador = lazy(() => import('./perfil_inv.jsx'));
 
 const CARTAS = [['temporada', 'Temporada'], ['competitivo', 'Competitiva'], ['servidor', 'Servidor'], ['pais', 'País']];
 const GRUPO = { siempre: 'para siempre', temporada: 'de temporada', pase: 'edición limitada' };
@@ -628,30 +630,12 @@ export function Inventario({ liga, dc, carta0 = '', ranura0 = '' }) {
         </div>
       ) : null}
 
+      {/* 👤 LA PESTAÑA PERFIL, «EL PROBADOR» (remake del 17/11/2026, `perfil_inv.jsx`): qué cambias a la izquierda y cómo te
+          ven al medio. La carta principal sigue yendo al borrador (la barra de guardar de abajo) */}
       {sec === 'perfil' ? (
-        <div className="ves-perfil">
-          {!sinCartas ? (
-            <section className="ves-panel">
-              <Titulo>Tu carta principal</Titulo>
-              <p className="ves-p">La que te representa: sale primero en /card, en tu perfil y en el ranking.</p>
-              <div className="ves-grid cartas" role="radiogroup" aria-label="Tu carta principal">
-                <Cuadro on={!principalAhora} puesto={!principalG} ic="🎯" nombre="La de siempre" rar="Según dónde" onClick={() => probar('principal', '', principalG)} />
-                {cartas.map(([c, n]) => (
-                  <Cuadro key={c} on={principalAhora === c} puesto={principalG === c} nombre={n} onClick={() => probar('principal', c, principalG)}>
-                    <span className="ves-qc" aria-hidden="true"><Carta liga={liga} k={k} cual={c} cls="ves-qci" abre={false} /></span>
-                  </Cuadro>
-                ))}
-              </div>
-            </section>
-          ) : null}
-          <section className="ves-panel"><Titulo>Tus fondos</Titulo><Suspense fallback={<p className="ves-nota">Cargando…</p>}><FondoCaja dc={dc} liga={liga} /></Suspense></section>
-          {k ? <section className="ves-panel"><Titulo>Tu frase</Titulo><FraseEditor k={k} /></section> : null}
-          {k ? (
-            <section className="ves-panel"><Titulo>Tus emblemas</Titulo>
-              <p className="ves-p">Se eligen mirando tu perfil: tócalos al lado de tu nombre y marca los que quieres que se vean.</p>
-              <a className="ves-btn" href={'#/r/' + encodeURIComponent(k)}>Ir a mi perfil</a></section>
-          ) : null}
-        </div>
+        <Suspense fallback={<p className="ves-nota">Cargando…</p>}>
+          <PerfilProbador liga={liga} dc={dc} k={k} cartas={cartas} principalAhora={principalAhora} principalG={principalG} probar={probar} sinCartas={sinCartas} />
+        </Suspense>
       ) : null}
 
       {/* 🎮 el estilo de juego va directo sobre el negro, sin el panel gris (el remake del 17/11/2026, `juego.jsx`) */}

@@ -14,6 +14,7 @@
 //   · Tienda y La semana, en la misma línea.
 // ⚠️ SIN DEGRADÉS: cada panel lleva su color en un fondo teñido y un borde (la regla del remake), no en un degradé.
 // ⚠️ Los comentarios de los personajes de la Liga son BOTS y lo dicen (`bot`): Dlx, «Liga characters as bots yeah».
+import { RZ } from './tienda_rz.js';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { limpio, num, siglaDe, srcLogo, utc } from './liga.js';
 import { Bandera, Cara, Ico, accion, nombrePais, useCampana } from './piezas.jsx';
@@ -874,7 +875,7 @@ export function Vestuario({ liga, dc }) {
     const top = (liga.d.tabla || []).filter((f) => f.pos && liga.cartaUrl(f.k, 'temporada')).slice(0, 3);
     return (
       <div className="pn-cu pn-yo sin con-esc-yo">
-      <span className="pn-esc" aria-hidden="true" style={{ backgroundImage: 'url(' + escenaDe('dra') + ')' }} />
+      <span className="pn-ti3" aria-hidden="true" style={{ backgroundImage: 'url(' + escenaDe('dra') + ')' }} />
       <div className="pn-sin-in">
         <div className="pn-abre">{top.map((f, j) => <img key={f.k} alt="" data-o={j === 0 ? 0 : j === 1 ? 2 : 1} src={liga.cartaUrl(f.k, 'temporada')} />)}</div>
         <div className="pn-sin-tx"><b>Tus tarjetas</b>
@@ -928,7 +929,7 @@ export function Vestuario({ liga, dc }) {
   const escU = escenaDe(svElegido(liga, el, yo.k) || yo.sv) || escenaDe('dra');
   return (
     <div className="pn-cu pn-yo con-esc-yo">
-      {escU ? <span className="pn-esc" aria-hidden="true" style={{ backgroundImage: 'url(' + escU + ')' }} /> : null}
+      {escU ? <span className="pn-ti3" aria-hidden="true" style={{ backgroundImage: 'url(' + escU + ')' }} /> : null}
       <div className="pn-yo-in">
         <div className="pn-izq">{conCarta.slice(0, 3).map((x) => <Chip key={x[0]} liga={liga} x={x} elegida={i} onElegir={setElegida} />)}</div>
         <div className="pn-car">
@@ -1331,11 +1332,58 @@ export function PnPase({ dc, chico = false }) {
 }
 
 // ── 🛍️ Tienda y 📅 La semana, en la misma línea ──────────────────────────────────────────────────────────────────
+// 🛍️ ¿La Tienda nueva está abierta para quien mira? La misma pregunta que `useTiendaNueva()` de tienda2.jsx, sólo con
+// cuenta (sin cuenta el cuadro es el de siempre: el Inicio es la página más vista y no vale un pedido al objeto por visita), y
+// guardada 10 minutos en la pestaña. Devuelve lo del objeto si abre (`cat`, `yo`), o null
+const TN_CLAVE = 'lg:tienda-nueva';
+function useTiendaNuevaChica(dc) {
+  const [S, setS] = useState(() => {
+    try { const g = JSON.parse(sessionStorage.getItem(TN_CLAVE) || 'null'); return g && Date.now() - g.t < 600000 && g.id === (dc && dc.id) ? g.S : null; } catch (e) { return null; }
+  });
+  useEffect(() => {
+    if (!dc || S || typeof window.conCuenta !== 'function') return undefined;
+    let vivo = true;
+    window.conCuenta('/api/avisos/tienda', {}).then((j) => {
+      const ok = j && j.ok && (j.abierta || j.ensayo) && j.yo && j.cat ? { cat: { vitrina: j.cat.vitrina, piezas: j.cat.piezas, precios: j.cat.precios }, yo: { regalos: j.yo.regalos || [] } } : false;
+      try { sessionStorage.setItem(TN_CLAVE, JSON.stringify({ t: Date.now(), id: dc.id, S: ok })); } catch (e) { /* sin guardar */ }
+      if (vivo) setS(ok);
+    }).catch(() => { if (vivo) setS(false); });
+    return () => { vivo = false; };
+  }, [dc && dc.id]); // eslint-disable-line react-hooks/exhaustive-deps
+  return S || null;
+}
 export function PnTienda({ saldo, dc, cuadro = false, liga = null }) {
   const valor = typeof W.valorCabezas === 'function' ? W.valorCabezas() || {} : {};
   const tope = Object.values(valor).reduce((m, v) => Math.max(m, Number(v) || 0), 0);
   const mios = useMios(dc);
+  // 🛍️ la Tienda nueva, si está abierta para quien mira (o es el dueño, el ensayo): la misma pregunta que tienda2.jsx
+  const nueva = useTiendaNuevaChica(dc);
   // 🔁 cuadrada, en el lugar de Eventos (12/11/2026, Dlx: «intercambiar tienda x eventos»)
+  // 🪟 «EL ESCAPARATE» (17/11/2026, Dlx a la maqueta https://claude.ai/artifact/WsyPQxba5yfKmPhcCL1xEC: «Tienda A»): una sola
+  // cosa grande con su luz girando —hoy la cabeza más cara; con la Tienda nueva, la pieza de la vitrina con el color de su
+  // rareza— y debajo dos líneas: lo que más se compra con su precio y si te alcanza, o el Dragón Drop del día y tus regalos
+  if (cuadro && nueva) {
+    const c = nueva.cat, id = (c.vitrina && c.vitrina.ids || [])[0], p = id ? c.piezas[id] : null;
+    const rz = p ? RZ[p.r] || RZ[0] : null;
+    const regalos = (nueva.yo && nueva.yo.regalos || []).length;
+    return (
+      <a className="pn-cu pn-ti2 pn-ti3" href="#/tienda">
+        <div className="pn-ti2-cab"><h4>Tienda</h4>
+          <span className="pn-ti2-bill"><i aria-hidden="true">$</i><b>{saldo != null ? num(saldo) : '—'}</b></span></div>
+        {p ? (
+          <span className="pn-ti3-f" style={{ '--r': rz[1] }}>
+            <span className="pn-ti3-luz" aria-hidden="true"><i /><em>✦</em></span>
+            <span className="pn-ti3-t"><em>La vitrina de la semana</em><b>{limpio(p.n)}</b><small>{rz[0]} · {num((c.precios || {})[p.r] || 0)}</small></span>
+          </span>
+        ) : null}
+        <span className="pn-ti3-l">
+          <span><i>🎁 Tu Dragón Drop del día</i><strong>gratis</strong></span>
+          {regalos ? <span className="si"><i>{regalos === 1 ? 'Un regalo para ti' : regalos + ' regalos para ti'}</i><strong>Ver</strong></span> : null}
+        </span>
+        <small className="pn-ti2-ir">Ver la vitrina ›</small>
+      </a>
+    );
+  }
   if (cuadro) {
     // 🛍️ COMO UNA TIENDA DE VERDAD (12/11/2026, Dlx: «creo que tienda… puede ser mejor»): la cabeza más cara con su cara
     // (lo que más se mira), y lo que se vende hoy con su precio y si te alcanza (los mismos que `Catalogo` de tienda2.jsx)
@@ -1343,20 +1391,19 @@ export function PnTienda({ saldo, dc, cuadro = false, liga = null }) {
     const caraK = Object.keys(valor).reduce((m, k) => (!m || (Number(valor[k]) || 0) > (Number(valor[m]) || 0) ? k : m), '');
     const fc = caraK ? liga.fila(caraK) : null;
     const tieneCrew = !!(liga.yo && liga.crewDe(liga.yo));
+    // dos líneas y no tres: el escaparate se lleva el lugar (la tercera era fundar tu crew, que sigue en la Tienda)
     const items = [
       ['mira', 'Precio por cabeza', Number(T.min) || 500, true],
-      ['novedades', '+1 semana de tu promo', 2500, false],
-      tieneCrew ? null : ['crews', 'Fundar tu crew', 2500, false],
-    ].filter(Boolean);
+      tieneCrew ? ['novedades', '+1 semana de tu promo', 2500, false] : ['crews', 'Fundar tu crew', 2500, false],
+    ];
     return (
-      <a className="pn-cu pn-ti2" href="#/tienda">
+      <a className="pn-cu pn-ti2 pn-ti3" href="#/tienda">
         <div className="pn-ti2-cab"><h4>Tienda</h4>
           <span className="pn-ti2-bill"><i aria-hidden="true">$</i><b>{saldo != null ? num(saldo) : '—'}</b></span></div>
         {tope ? (
-          <span className="pn-ti2-top">
-            <Cara liga={liga} k={fc ? fc.k : ''} nombre={fc ? fc.n : caraK} cls="cara pn-ti2-c" />
-            <span><em>La cabeza más cara</em><b>{limpio(fc ? fc.n : caraK)}</b></span>
-            <strong>{num(tope)}</strong>
+          <span className="pn-ti3-f" style={{ '--r': 'var(--oro)' }}>
+            <span className="pn-ti3-luz con-cara" aria-hidden="true"><i /><Cara liga={liga} k={fc ? fc.k : ''} nombre={fc ? fc.n : caraK} cls="cara pn-ti2-c" /></span>
+            <span className="pn-ti3-t"><em>La cabeza más cara</em><b>{limpio(fc ? fc.n : caraK)}</b><small>{num(tope)} si lo cazas</small></span>
           </span>
         ) : null}
         <span className="pn-ti2-l">

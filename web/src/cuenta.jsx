@@ -362,8 +362,10 @@ export function Caja({ t, children, d }) {
 const FONDO_W = 2400, FONDO_H = 960, FONDO_TOPE = 600 * 1024;
 
 const achicar = (archivo, AN = FONDO_W, AL = FONDO_H, TOPE = FONDO_TOPE) => achicarImagen(archivo, AN, AL, TOPE);
+// 🧩 también los usa la pestaña Perfil del Inventario («el probador», perfil_inv.jsx)
+export { achicar as achicarFondo, FONDO_W, FONDO_H };
 
-async function pedirFondo(ruta, cuerpo) {
+export async function pedirFondo(ruta, cuerpo) {
   const r = await fetch('/api/avisos/' + ruta, { method: 'POST', credentials: 'same-origin',
     headers: { 'content-type': 'application/json' }, body: JSON.stringify(cuerpo || {}) });
   const j = await r.json().catch(() => ({}));

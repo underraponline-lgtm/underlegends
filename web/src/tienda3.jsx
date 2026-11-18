@@ -10,6 +10,7 @@
 // __CARTA__ y __N__— que se llenan acá; su CSS va debajo de `.ta-raiz` y sus clases llevan `ta-` (ver bot/tienda.js).
 // ⚠️ Lo que se ve se arma como texto (como la maqueta) y los toques se atajan en el contenedor: así la página es la maqueta
 // tal cual, y cada pieza del arte, un molde. La plata la decide el objeto: acá sólo se muestra lo que él dijo.
+import { RZ } from './tienda_rz.js';
 import { useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { num } from './liga.js';
 import CSS_PAGINA from './css/tienda3.css?inline';
@@ -18,9 +19,8 @@ import { refrescarPases } from './pase.js';
 
 usarCss('tienda3', CSS_PAGINA);
 
-// las rarezas son las de los Dragón Drops (públicas): nombre y color
-const RZ = [['Maqueta', '#9AA4B2'], ['Mixtape', '#29B298'], ['Vinilo', '#9B5CFF'], ['Disco de Oro', '#FF4F93'], ['Micrófono de Oro', '#F5C542'],
-  ['Disco de Diamante', '#BFF4FF']];
+// las rarezas son las de los Dragón Drops (públicas): nombre y color. Viven en tienda_rz.js: también las usa el cuadro de
+// la Tienda del panel del Inicio (17/11/2026)
 const LUGARES_F = [['fp', 'Perfil'], ['fv', 'VS'], ['fe', 'Escenario'], ['fd', 'Discord'], ['ff', 'Ficha'], ['fr', 'Ranking']];
 const LUGAR_DE = Object.fromEntries(LUGARES_F);
 const RANURA = { aro: 'Aro', deco: 'Deco', nom: 'Nombre', carta: 'Carta', perfil: 'Perfil', serv: 'Nombre' };
