@@ -3,6 +3,7 @@
 
     python herramientas/textos_ingles.py            recorre la página publicada y deja salida_ingles/faltan.json
     python herramientas/textos_ingles.py --local    con lo construido acá (bot/paginas/inicio), sobre la página publicada
+    python herramientas/textos_ingles.py --cel      a ancho de teléfono: tiene textos que la compu no muestra (se suma a lo otro)
     python herramientas/textos_ingles.py --auto     self-check: el diccionario tiene los mismos huecos en cada lado
 
 Recorre cada página como alguien que ya vino (sin intro), EN CASTELLANO, y junta cada texto del shadow root (y los
@@ -82,7 +83,7 @@ def huecos(t):
     return (len(re.findall(r'\{n\}', t)), len(re.findall(r'\{p\}', t)))
 
 
-def recorrer(local=False):
+def recorrer(local=False, cel=False):
     from playwright.sync_api import sync_playwright
     # ⚠️ Playwright corre el init script en su propio ámbito: las funciones se cuelgan de `window` a mano
     js = (io.open(BASE_JS, encoding='utf-8').read().replace('export function ', 'function ')
@@ -91,7 +92,9 @@ def recorrer(local=False):
     ini = os.path.join(BASE, 'bot', 'paginas', 'inicio')
     with sync_playwright() as p:
         br = p.chromium.launch()
-        ctx = br.new_context(viewport={'width': 1440, 'height': 900}, locale='es-ES')
+        # ⚠️ el teléfono tiene textos propios (el menú de tu cuenta, los consejos de la barra de abajo): se recorre aparte, con --cel
+        ctx = (br.new_context(viewport={'width': 390, 'height': 844}, locale='es-ES', is_mobile=True, has_touch=True) if cel
+               else br.new_context(viewport={'width': 1440, 'height': 900}, locale='es-ES'))
         # alguien que ya vino, en castellano: sin la pantalla de carga larga, sin bienvenida ni tutorial
         ctx.add_init_script("""try { const n = Date.now(); localStorage.removeItem('lg:lang'); localStorage.setItem('lg:visita', String(n));
           localStorage.setItem('lg:carga', String(n)); localStorage.setItem('lg:tuto', JSON.stringify({t: n - 90 * 864e5, nuevo: false,
@@ -150,7 +153,7 @@ def main():
         pass
     if '--auto' in sys.argv:
         return _self_check()
-    claves = recorrer(local='--local' in sys.argv)
+    claves = recorrer(local='--local' in sys.argv, cel='--cel' in sys.argv)
     d = leer_dic()
     faltan = [{'k': k, 'ej': v['ej'], 'pags': v['pags']} for k, v in sorted(claves.items()) if k not in d]
     os.makedirs(SALIDA, exist_ok=True)

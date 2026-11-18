@@ -11,6 +11,15 @@
   ],
   "cambios": [
     {
+        "version": "6.64",
+        "dia": "2026-11-18",
+        "cuando": "2026-11-18T14:40:00-05:00",
+        "titulo": "En inglés, también en el teléfono",
+        "items": [
+            "**En inglés, también en el teléfono**: con el link `/en`, el menú de tu cuenta y los consejos que sólo salen en el teléfono ahora también están en inglés."
+        ]
+    },
+    {
         "version": "6.63",
         "dia": "2026-11-18",
         "cuando": "2026-11-18T14:10:00-05:00",
