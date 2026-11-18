@@ -15,7 +15,8 @@ post-evento en el chat general: prendido en todos los socios, el dueño lo apaga
 - MENCIONA SÓLO A LOS GANADORES con su cuenta en la Lista (`allowed_mentions.users`, nunca @everyone ni roles). Los
   demás, en negrita y con `/vincular`: si se vinculan en `VENTANA_DIAS`, el drop les llega igual (`drops_merito`).
 - BOTONES (desde el 18/11/2026): UNO POR GANADOR Y POR PREMIO, con su nombre, que sólo abre esa persona
-  (`dd:<drop|star|nido>:x:<id>`, worker.js); el del Nido le pasa el link de la página, donde se abre. Antes eran
+  (`dd:<drop|star|nido>:x:<id>`, worker.js); el del Nido le pasa el link de la página, donde se abre. «Ver mis drops»
+  (`?drops=1`), al costado de los premios. Antes eran
   «Abrir mi Drop / Star» sin dueño, y cualquiera abría los suyos desde el aviso de otro.
 - EL FORMATO, el de los anuncios de la Liga (Componentes V2): un recuadro con el color del servidor, con los puntos del
   evento por puesto, y LAS MENCIONES AFUERA, en una línea arriba (Dlx: «gente dentro del embed no se menciona»).
@@ -230,15 +231,21 @@ def mensaje(evento, sv, g, Q, miembros, oficiales=None, puntos=None):
     if sin:
         chica.append('-# 🔗 %s: vincula tu cuenta con `/vincular` en los próximos 14 días y lo que ganaste es tuyo.'
                      % y('**%s**' % _md(n) for n in sin))
-    adentro = [{'type': 10, 'content': cabeza}, {'type': 10, 'content': corona}]
+    # 🐉 «VER MIS DROPS», AL COSTADO DE LOS PREMIOS (Dlx, 18/11/2026: primero «queda raro ver mis drops solo, hay un espacio
+    # ahí vacío» —con cuatro ganadores Discord lo bajaba a otra línea, solo— y después «pero ver drops creo que es necesario…
+    # las tarjetas son el lugar donde más gente ha entrado»: el link a la página es lo que trae gente). Va como el botón
+    # de una Sección (type 9): a la derecha del texto de los premios, o del campeón si no hay premios. Nunca queda solo
+    ver = {'type': 2, 'style': 5, 'label': 'Ver mis drops', 'emoji': {'name': '🐉'}, 'url': WEB_DROPS}
+    adentro = [{'type': 10, 'content': cabeza},
+               {'type': 9, 'components': [{'type': 10, 'content': corona}], 'accessory': ver} if not premios
+               else {'type': 10, 'content': corona}]
     if tabla:
         adentro += [{'type': 14, 'divider': True, 'spacing': 1}, {'type': 10, 'content': '### 📊 Los puntos\n' + '\n'.join(tabla)}]
     if premios:
-        adentro += [{'type': 14, 'divider': True, 'spacing': 1}, {'type': 10, 'content': '### 🎁 Los premios\n' + '\n'.join(premios)}]
+        adentro += [{'type': 14, 'divider': True, 'spacing': 1},
+                    {'type': 9, 'components': [{'type': 10, 'content': '### 🎁 Los premios\n' + '\n'.join(premios)}], 'accessory': ver}]
     if chica:
         adentro.append({'type': 10, 'content': '\n'.join(chica)})
-    # 🧹 sin «Ver mis drops» (Dlx, a la muestra 3: «queda raro ver mis drops solo, hay un espacio ahí vacío»): con cuatro
-    # ganadores Discord lo bajaba a otra línea, solo. Los botones de cada uno abren lo suyo y el del Nido lleva a la página
     adentro += [{'type': 1, 'components': botones[i:i + 5]} for i in range(0, len(botones), 5)]
     comps = [{'type': 17, 'accent_color': color, 'components': adentro}]
     # 🔔 las menciones, AFUERA del recuadro y arriba: la única línea que suena
@@ -448,16 +455,19 @@ def _self_check():
     ok('Miembro de DRA' not in json.dumps(comps, ensure_ascii=False) and 'Cada botón' not in caja,
        'sin la línea de «si todavía no eres Miembro de DRA» ni la de «cada botón lo abre…»')
     filas = [c for c in comps[1]['components'] if c['type'] == 1]
-    ok(comps[1]['components'][-1]['type'] == 1 and len(filas) == 1 and 'Ver mis drops' not in caja,
-       'termina con la fila de los botones de los ganadores, sin «Ver mis drops» (quedaba solo en otra línea)')
+    secs = [c for c in comps[1]['components'] if c['type'] == 9]
+    ok(comps[1]['components'][-1]['type'] == 1 and len(filas) == 1 and 'Ver mis drops' not in json.dumps(filas, ensure_ascii=False)
+       and len(secs) == 1 and secs[0]['accessory'].get('url') == WEB_DROPS and 'Los premios' in secs[0]['components'][0]['content'],
+       '«Ver mis drops» al costado de los premios (una Sección), nunca solo en una fila; termina con los botones de los ganadores')
     cids = [b.get('custom_id') for b in bots]
     ok(cids[:3] == ['dd:nido:x:111111', 'dd:drop:x:222222', 'dd:star:x:222222'] and 'dd:drop:x:' not in cids
        and [b.get('label') for b in bots][:3] == ['Nido · Ana', 'Drop · Beto', 'Star · Beto'],
        'un botón por ganador y premio, con su nombre y su dueño (Caro no tiene cuenta: sin botón); ninguno sin dueño')
     c2, _i2, t2 = mensaje('(sin titulo)', 'LKR', {'camp': ('Ana', 'drop'), 'pod': [], 'bat': []}, Q, {'111111'})
     t2j = json.dumps(c2, ensure_ascii=False)
-    ok('Terminó el evento' in t2j and 'dd:star' not in t2j and 'Los puntos' not in t2j and 'dd:drop:x:111111' in t2j,
-       'sin título, «Terminó el evento»; sin batacazos, sin Star; sin puntos, sin esa parte; el campeón con su Drop')
+    ok('Terminó el evento' in t2j and 'dd:star' not in t2j and 'Los puntos' not in t2j and 'dd:drop:x:111111' in t2j
+       and c2[-1]['components'][1]['type'] == 9 and c2[-1]['components'][1]['accessory'].get('url') == WEB_DROPS,
+       'sin título, «Terminó el evento»; sin batacazos ni puntos, sin esas partes; el campeón con su Drop y «Ver mis drops» a su lado')
     ok(_titulo('**__ NEW GENESIS __**') == 'NEW GENESIS' and _titulo('(sin titulo)') == '', 'el adorno del título se va')
     c3, _i3, _t3 = mensaje('X', 'FFA', {'camp': ('rodrilp', 'drop'), 'pod': [], 'bat': []}, {'rodrilp': '333333'}, set(), {'333333': 'Rodri LP'})
     ok('Drop · Rodri LP' in json.dumps(c3, ensure_ascii=False), 'el botón con el nombre de la Lista, no con la clave de la hoja')
