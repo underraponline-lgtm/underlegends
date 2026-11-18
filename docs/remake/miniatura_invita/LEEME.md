@@ -32,3 +32,20 @@ chico se ve de 12 px en el celular.
 - **Las banderas**: los 12 países con más raperos en `paises` del lobby, sin Emiratos ni Brasil (Dlx, 22/09: «no
   deberían existir»).
 - **La carta**: la de quien invita (`liga.cartaUrl(k, liga.cartaDe(k))`), como la miniatura de hoy (`bot/og_links.py`).
+
+## Los nombres largos (`nombres_largos.png`, `thumb_largos.py`)
+
+⚠️ **La 4b tal cual sólo entra con nombres de hasta 3 letras.** Con «Makmah» (6, la mediana de la Liga) la etiqueta
+«MAKMAH TE INVITA» ya invade el magenta, y con los largos cruza la miniatura entera. En la Liga el 90 % de los nombres
+tiene 10 letras o menos, pero hay de 21 («Lautaro la sinceridad»), una sola palabra de 29 y uno en broma de 48.
+
+La regla (a la izquierda de la hoja, cómo queda sin ella; a la derecha, con ella):
+
+1. Si «NOMBRE TE INVITA» entra en una línea a 54 px en el ancho de la columna (342 px), va así: es la 4b guardada.
+2. Si no, el nombre va en su propia etiqueta y «TE INVITA» en otra debajo. El nombre se achica de 54 a 44 px hasta entrar.
+3. Si ni a 44 entra, pasa a dos líneas cortando por palabras; si aun así no entra (una palabra sola, o más de dos
+   líneas), termina en «…». Nunca baja de 44 px: a 300 px son 11 px.
+4. La carta llena lo que queda entre las etiquetas y «Liga Global de Freestyle», sin pisar ninguno.
+
+⚠️ **Se mide con las fuentes ya cargadas** (`document.fonts.ready`): medido antes, con la fuente de reemplazo, «DLX TE
+INVITA» parecía no entrar y se partía en dos.
