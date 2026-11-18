@@ -32,8 +32,11 @@ const DONDE = {
   fp: 'la portada de tu perfil', fv: 'tu mitad del VS del Inicio', fe: 'el escenario de tu carta', fd: 'tu mitad del VS en vivo de Discord',
   ff: 'tu ficha', fr: 'tu fila en el ranking',
 };
+// ⏳ ABIERTA ANTES QUE LA TANDA 3 (17/11/2026, Dlx: «abrir ya, avisando»): lo que te pones se ve en la Tienda y todavía no
+// en el resto de la página. Cuando la tanda 3 lo lleve a cada lugar, se borra esta línea y el «Se va a ver en» vuelve a «Se ve en»
+const POR_AHORA = 'Por ahora se ve acá, en la Tienda; en el resto de la página, muy pronto.';
 const MENSAJES = ['Sin mensaje', '¡Felicitaciones!', 'Para tu próxima batalla', 'Te lo ganaste'];
-const ERRORES = { saldo: 'No te alcanzan los Puntos.', ya_la_tienes: 'Ya la tienes.', premium: 'Es sólo para Premium.', no_esta: 'Ya no está en la vitrina.',
+const ERRORES = { pronto: 'Todavía no se vende: sale pronto.', saldo: 'No te alcanzan los Puntos.', ya_la_tienes: 'Ya la tienes.', premium: 'Es sólo para Premium.', no_esta: 'Ya no está en la vitrina.',
   fuera_de_fecha: 'Ya no se vende.', todavia_no: 'Todavía no está a la venta.', cerrada: 'La venta ya cerró.', agotada: 'Se agotaron.',
   no_jugaste: 'Es para quien jugó en la temporada.', usada: 'Ya te la pusiste: no se puede deshacer.', tarde: 'Pasaron las 24 horas.',
   ya_deshecha: 'Ya la deshiciste una vez.', no_se_puede: 'No se puede deshacer.', tope: 'Ya mandaste tus regalos de esta semana.',
@@ -64,12 +67,20 @@ function precioCol(S, col, set) {
 const pct = (d) => Math.round((1 - d) * 100) + ' %';
 
 // ── el arte: los moldes con tu foto, tu carta y tu nombre ──
-function moldeX(X, h) { return h ? h.split('__FOTO__').join(X.foto).split('__CARTA__').join(X.carta).split('__N__').join(X.n) : ''; }
+// las imágenes del molde llevan su respaldo (`data-ini`): una cara o una carta que no carga pasa a la inicial o a la muestra
+function moldeX(X, h) {
+  if (!h) return '';
+  return h.split('src="__FOTO__"').join('src="__FOTO__" data-ini="' + X.ini + '"').split('src="__CARTA__"').join('src="__CARTA__" data-ini="' + X.cartaIni + '"')
+    .split('__FOTO__').join(X.foto).split('__CARTA__').join(X.carta).split('__N__').join(X.n);
+}
 const envolver = (X, h) => `<span class="ta-raiz tz-w" style="--carta:url('${X.carta}');--dragon:url('/ul-blanco.png')">${h}</span>`;
 // 🙂 SIN FOTO, LA INICIAL: como en el resto de la página (Dlx: «la web con la inicial»). Quien no tiene cara en la tabla,
 // o tiene un link de Discord que ya murió (cambió la foto), se probaba los aros sobre un ícono de imagen rota. La cara
 // que falla se anota y no se vuelve a pedir en cada repintado
 const FOTO_MUERTA = new Set();
+// y sin carta (sin cuenta, o todavía no tienes la de Temporada), una de muestra: la silueta de la carta y «Tu carta». Sin
+// comillas simples adentro, porque va en un `url('…')` del estilo
+const CARTA_MUESTRA = 'data:image/svg+xml,' + encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 438"><rect x="3" y="3" width="294" height="432" rx="10" fill="#17191E" stroke="#3A3D45" stroke-width="6"/><rect x="24" y="24" width="252" height="250" rx="6" fill="#22252B"/><circle cx="150" cy="128" r="46" fill="#2E3138"/><path d="M78 274c8-50 40-78 72-78s64 28 72 78z" fill="#2E3138"/><text x="150" y="338" text-anchor="middle" font-family="Archivo,Arial,sans-serif" font-weight="900" font-size="34" fill="#F6F6F6">TU CARTA</text><rect x="70" y="368" width="160" height="10" rx="5" fill="#2E3138"/><rect x="95" y="392" width="110" height="10" rx="5" fill="#2E3138"/></svg>');
 function inicialSvg(n) {
   const ch = ([...String(n || '').replace(/[^\p{L}\p{N}]/gu, '')][0] || '?').toUpperCase();
   return 'data:image/svg+xml,' + encodeURIComponent(`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><rect width="100" height="100" fill="#2A2A33"/><text x="50" y="50" dy=".35em" text-anchor="middle" font-family="Archivo,Arial,sans-serif" font-weight="900" font-size="50" fill="#F6F6F6">${ch}</text></svg>`);
@@ -84,7 +95,7 @@ function nombre(X, id) {
   if (a.letras) return envolver(X, `<span class="ta-nom ta-${id.toLowerCase()}" data-t="${X.n}">${[...X.crudo].map((ch, i) => `<span class="ta-l" style="animation-delay:${(i * 0.13).toFixed(1)}s">${esc(ch)}</span>`).join('')}</span>`);
   return envolver(X, moldeX(X, a.nom));
 }
-function carta(X, id) { const a = id && X.p[id]; return envolver(X, a && a.carta ? moldeX(X, a.carta) : `<div class="ta-carta"><img alt="" src="${X.carta}"></div>`); }
+function carta(X, id) { const a = id && X.p[id]; return envolver(X, a && a.carta ? moldeX(X, a.carta) : `<div class="ta-carta"><img alt="" src="${X.carta}" data-ini="${X.cartaIni}"></div>`); }
 const vista = (X, id) => envolver(X, moldeX(X, (X.p[id] || {}).v));
 const arteFondo = (X, id) => envolver(X, moldeX(X, (X.p[id] || {}).fondo));
 const enLugar = (X, id) => envolver(X, moldeX(X, (X.p[id] || {}).lugar));
@@ -157,7 +168,7 @@ function hero(X, S, st, tengo) {
     return `<button class="tz-hc${i === st.slide ? ' on' : ''}" data-slide="${i}" style="--r:${RZ[y.r][1]};--i:${i}"><svg class="tz-hc-luz" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true"><rect x="1" y="1" width="98" height="98" pathLength="100" vector-effect="non-scaling-stroke"/></svg><span class="tz-hc-v">${esFondo(y.c) ? arteFondo(X, x.id) : vista(X, x.id)}</span><span class="tz-hc-t"><b>${esc(y.n)}</b><small>${sub}</small></span></button>`;
   }).join('');
   const precio = s.t === 'nav' || mio ? '' : `<p class="tz-precio"><b>${num(precioIt(S, s.id))}</b> <small>Puntos de Tienda${s.t === 'num' && ed ? ' · a la venta el ' + diaCorto(ed.venta) : S.yo.prem ? ' · con tu Premium' : tiene(it, 'num') ? '' : ' · Premium ' + num(Math.round(S.cat.precios[it.r] * S.cat.desc.prem))}</small></p>`;
-  return `<section class="tz-hero" aria-label="La vitrina de esta semana">
+  return `<section data-tuto="tz-vitrina" class="tz-hero" aria-label="La vitrina de esta semana">
     <div class="tz-hero-in">
       <div class="tz-hero-tx">
         <div class="tz-hero-et"><span class="tz-etq">La vitrina · ${esc(String(S.cat.temp || '').toUpperCase())}</span><span class="tz-cambia">${cambiaTxt(S)}</span></div>
@@ -191,7 +202,7 @@ function probando(S, st, tengo) {
   const filas = r.juegos.map((g) => `<li><span>Colección «${esc(g.j.n)}» <small>completa</small></span><b>${num(g.p)}</b><button class="tz-solo" data-abre="${g.id}">Ver</button><span></span></li>`).join('')
     + r.sueltas.map((id) => `<li><span>${esc(S.cat.piezas[id].n)} <small>${RANURA[S.cat.piezas[id].c] || LUGAR_DE[S.cat.piezas[id].c] || ''}</small></span><b>${num(precioIt(S, id))}</b><button class="tz-solo" data-comprar="${id}">${S.yo.saldo >= precioIt(S, id) ? 'Sólo esto' : 'Ver'}</button><button class="tz-x2" data-saca="${id}" aria-label="Sacar ${esc(S.cat.piezas[id].n)}">×</button></li>`).join('');
   const alc = S.yo.saldo >= r.total;
-  return `<div class="tz-probando"><div class="tz-pr-h"><b>Probando</b><span>${r.n ? 'Total ' + num(r.total) + ' · tienes ' + num(S.yo.saldo) : 'todo tuyo'}</span></div>
+  return `<div class="tz-probando"><div class="tz-pr-h"><b>Probando</b><span>${r.n ? 'Total ' + num(r.total) + (S.anon ? '' : ' · tienes ' + num(S.yo.saldo)) : 'todo tuyo'}</span></div>
     ${filas ? `<ul>${filas}</ul>` : ''}
     <div class="tz-pr-b">${cambiado(st) ? '<button class="tz-b l" data-acc="volver">Volver a lo mío</button>' : ''}${r.n ? (alc ? `<button class="tz-b negro" data-abre="__puesto">Comprar todo · ${num(r.total)}</button>` : `<button class="tz-b l falta" data-abre="__puesto">Te faltan ${num(r.total - S.yo.saldo)}</button>`) : ''}</div></div>`;
 }
@@ -202,7 +213,7 @@ function tile(X, S, st, tengo, id) {
   const prob = on && !mio;
   const eti = prob ? '<span class="tz-et prob">Probando</span>' : mio ? '<span class="tz-et mio">Tuyo</span>' : tiene(p, 'num') ? '<span class="tz-et num">Edición de 10</span>' : tiene(p, 'prem') ? '<span class="tz-et prem">Sólo Premium</span>' : '';
   const pr = precioIt(S, id), base = S.cat.precios[p.r];
-  const precio = mio ? '<span class="tz-ok">✓ Tuyo</span>' : !pr ? 'Gratis' : S.yo.prem && pr !== base ? `<s>${num(base)}</s> ${num(pr)}` : num(pr);
+  const precio = mio ? '<span class="tz-ok">✓ Tuyo</span>' : tiene(p, 'pronto') ? 'Pronto' : !pr ? 'Gratis' : S.yo.prem && pr !== base ? `<s>${num(base)}</s> ${num(pr)}` : num(pr);
   return `<article class="tz-q${prob ? ' prob' : ''}${on && mio ? ' on' : ''}" style="--r:${RZ[p.r][1]}" title="${esc(p.n)} · ${RZ[p.r][0]}">
     <button class="tz-q-v" ${puede ? `data-prueba="${id}" aria-pressed="${on}" aria-label="Probarte ${esc(p.n)}"` : `data-abre="${id}" aria-label="Ver ${esc(p.n)}"`}>${esFondo(p.c) ? arteFondo(X, id) : vista(X, id)}${eti}</button>
     ${mio || !pr ? '' : corazon(S, id)}
@@ -236,7 +247,7 @@ function tabs(S, st) {
   if (EXTRA[st.tab] && !base.some(([k]) => k === st.tab)) base.push([st.tab, EXTRA[st.tab]]);
   return `<nav class="tz-tabs" aria-label="Ranuras">${base.map(([k, n]) => `<button data-tab="${k}" aria-pressed="${st.tab === k}">${n}</button>`).join('')}</nav>`;
 }
-const pildora = (S, st) => `<span class="tz-bill-c"><button class="tz-lista" data-tab="deseo" aria-pressed="${st.tab === 'deseo'}" aria-label="Tu lista, ${S.yo.deseos.length} piezas">♥ ${S.yo.deseos.length}</button><button class="tz-bill" data-abre="__bill"><b>${num(S.yo.saldo || 0)}</b><small>Puntos de Tienda${S.yo.prem ? ' · Premium' : ''}</small></button></span>`;
+const pildora = (S, st) => S.anon ? '<span class="tz-bill-c"><button class="tz-bill" data-acc="entrar"><b>Entrar</b><small>con Discord para comprar</small></button></span>' : `<span class="tz-bill-c"><button class="tz-lista" data-tab="deseo" aria-pressed="${st.tab === 'deseo'}" aria-label="Tu lista, ${S.yo.deseos.length} piezas">♥ ${S.yo.deseos.length}</button><button class="tz-bill" data-abre="__bill"><b>${num(S.yo.saldo || 0)}</b><small>Puntos de Tienda${S.yo.prem ? ' · Premium' : ''}</small></button></span>`;
 function regalosRecibidos(X, S) {
   if (!S.yo.regalos.length) return '';
   return `<section class="tz-sec tz-recibidos">${S.yo.regalos.map((r) => `<div class="tz-regalo"><span class="tz-regalo-v">${r.piezas[0] && S.cat.piezas[r.piezas[0]] ? (esFondo(S.cat.piezas[r.piezas[0]].c) ? arteFondo(X, r.piezas[0]) : vista(X, r.piezas[0])) : ''}</span>
@@ -301,6 +312,7 @@ function fichaPieza(X, S, st, tengo, liga, id) {
   if (st.error) acc += `<p class="tz-conf falta">${esc(ERRORES[st.error] || 'No se pudo: ' + st.error)}</p>`;
   if (paso === 'ver') {
     if (mio) acc += `<div class="tz-tuyo">✓ Lo tienes${S.yo.numeros[id] ? ' · el tuyo es el #' + S.yo.numeros[id] + ' de ' + (ed ? ed.copias : 10) : ''}</div>${seProbar(p) ? '<button class="tz-b prim" data-acc="poner">Usar ahora</button>' : ''}${inv && inv.deshacer ? '<button class="tz-b" data-acc="deshacer">Deshacer</button>' : ''}`;
+    else if (tiene(p, 'pronto')) acc += `<p class="tz-fecha tz-ancho">Sale pronto</p><p class="tz-nota tz-ancho">Todavía no se vende: falta terminar lo que hace. Ponla en tu lista y la campana te avisa.</p>${cor}`;
     else if (tiene(p, 'num')) {
       const abre = ed && Date.now() >= ed.venta;
       acc += abre ? `<button class="tz-b prim" data-acc="comprar">Comprar por ${num(pr)}</button><button class="tz-b" data-acc="probar">Probar</button>`
@@ -333,7 +345,7 @@ function fichaPieza(X, S, st, tengo, liga, id) {
   return `<div class="tz-ficha" role="dialog" aria-label="${esc(p.n)}">${popCab(esc(p.n), subDe(S, id), RZ[p.r][1])}
     <div class="tz-f-vis">${vistaGrande(X, S, id)}</div>
     <div class="tz-f-inf">${unaEtiqueta(S, tengo, id) ? `<div class="tz-fila">${unaEtiqueta(S, tengo, id)}</div>` : ''}
-      <p>${esc(p.d)}</p><p class="tz-donde"><b>Se ve en:</b> ${DONDE[p.c] || ''}</p>
+      <p>${esc(p.d)}</p><p class="tz-donde"><b>Se va a ver en:</b> ${DONDE[p.c] || ''}.${p.c === 'serv' ? '' : ' ' + POR_AHORA}</p>
       ${paso === 'ver' && !mio ? `<div class="tz-f-precio">${precio}</div>` : ''}
       <div class="tz-acc">${acc}</div>${duenos}</div></div>`;
 }
@@ -385,13 +397,16 @@ const dropPop = (st) => { const r = st.drop || {}; const c = RZ[r.rareza || 0] |
 
 // ── el arte: se pide una vez por versión y queda en el navegador ──
 function leerArte() { try { return JSON.parse(sessionStorage.getItem('lg:tienda-arte') || 'null'); } catch (e) { return null; } }
-function useArte(v) {
+function useArte(v, anon) {
   const [A, setA] = useState(() => { const c = leerArte(); return c && c.v === v ? c : null; });
   useEffect(() => {
     if (!v) return;
     const c = leerArte();
     if (c && c.v === v) { usarCss('tienda-arte-' + v, c.css); setA(c); return; }
-    window.conCuenta('/api/avisos/tienda-arte', { v: '' }).then((j) => {
+    const pide = anon || typeof window.conCuenta !== 'function'
+      ? fetch('/api/avisos/tienda-arte', { method: 'POST', headers: { 'content-type': 'application/json' }, body: '{"anon":1}' }).then((r) => r.json())
+      : window.conCuenta('/api/avisos/tienda-arte', { v: '' });
+    pide.then((j) => {
       if (j && j.ok && j.p) {
         try { sessionStorage.setItem('lg:tienda-arte', JSON.stringify({ v: j.v, css: j.css, p: j.p })); } catch (e) { /* igual */ }
         usarCss('tienda-arte-' + j.v, j.css);
@@ -411,7 +426,7 @@ function desdeServidor(S) {
 
 export default function TiendaNueva({ liga, dc, S, recargar, partes }) {
   const k = (dc && dc.clave) || '';
-  const A = useArte(S.arte_v);
+  const A = useArte(S.arte_v, !!S.anon);
   const [, repintar] = useState(0);
   const pinta = () => repintar((x) => x + 1);
   const st = useRef(null);
@@ -454,6 +469,10 @@ export default function TiendaNueva({ liga, dc, S, recargar, partes }) {
     const t = e.target.closest('[data-abre],[data-acc],[data-tab],[data-lugar],[data-prueba],[data-saca],[data-elige],[data-msg],[data-deseo],[data-publico],[data-slide],[data-comprar],[data-reclamar],[data-probar-ir],[data-cmp],[data-drop],[data-regalo],[data-mas]');
     if (!t || t.disabled) return;
     const d = t.dataset;
+    // sin cuenta se mira y se prueba todo; lo que mueve Puntos o guarda algo tuyo pasa por Discord (y vuelve a la Tienda)
+    const pideCuenta = d.acc === 'entrar' || (S.anon && (d.deseo || d.publico !== undefined || d.regalo || d.drop !== undefined || d.comprar ||
+      d.reclamar || d.abre === '__bill' || ['comprar', 'regalar', 'poner', 'deseo', 'deshacer', 'confirmar', 'confirmar-puesto', 'confirmar-regalo'].includes(d.acc)));
+    if (pideCuenta) { if (window.urlLogin) location.href = window.urlLogin('t'); return; }
     if (d.deseo) { const si = !S.yo.deseos.includes(d.deseo); accion({ accion: 'deseo', pieza: d.deseo, si }); return; }
     if (d.publico !== undefined) { accion({ accion: 'deseo-publico', si: !S.yo.deseo_publico }); return; }
     if (d.regalo) { accion({ accion: 'regalo', id: d.regalo, si: d.si === '1' }); return; }
@@ -531,7 +550,7 @@ export default function TiendaNueva({ liga, dc, S, recargar, partes }) {
   // la cara: la de la tabla, la de tu cuenta de Discord, la de quien jugó y no está en la tabla; si no hay, la inicial
   const cara = liga.avUrl(k, 1024) || (dc && dc.av ? 'https://cdn.discordapp.com/avatars/' + dc.av + '.webp?size=1024' : null) || (liga.avNombre ? liga.avNombre(crudo, 1024) : null);
   const ini = inicialSvg(crudo);
-  const X = { p: A.p, foto: esc(cara && !FOTO_MUERTA.has(cara) ? cara : ini), ini: esc(ini), carta: esc(liga.cartaUrl(k, 'temporada') || ''), n: esc(crudo), crudo };
+  const X = { p: A.p, foto: esc(cara && !FOTO_MUERTA.has(cara) ? cara : ini), ini: esc(ini), carta: esc((k && liga.cartaUrl(k, 'temporada')) || CARTA_MUESTRA), cartaIni: esc(CARTA_MUESTRA), n: esc(crudo), crudo };
   let hoja = '';
   if (E.abierta) {
     const id = E.abierta;
@@ -540,9 +559,9 @@ export default function TiendaNueva({ liga, dc, S, recargar, partes }) {
       : S.cat.colecciones[id] ? fichaCol(X, S, E, tengo, liga, id) : S.cat.piezas[id] ? fichaPieza(X, S, E, tengo, liga, id) : '';
   }
   const arriba = `${S.ensayo ? '<p class="tz-ensayo">Ensayo: la Tienda está cerrada y sólo la ves tú. Lo que compres es de verdad.</p>' : ''}${regalosRecibidos(X, S)}${hero(X, S, E, tengo)}
-    <section class="tz-sec" id="tz-prob"><div class="tz-sec-t"><h2>El probador</h2>${pildora(S, E)}</div>
+    <section class="tz-sec" id="tz-prob" data-tuto="tz-probador"><div class="tz-sec-t"><h2>El probador</h2>${pildora(S, E)}</div>
       <div class="tz-prob"><div class="tz-col-esc">${escenario(X, S, E)}${probando(S, E, tengo)}</div><div class="tz-col-cat">${tabs(S, E)}${piezas(X, S, E, tengo)}</div></div></section>
-    <section class="tz-sec tz-sec-mas"><div class="tz-tira"><span class="tz-tira-et">Más con tus Puntos</span>
+    <section class="tz-sec tz-sec-mas" data-tuto="tz-mas"><div class="tz-tira"><span class="tz-tira-et">Más con tus Puntos</span>
       <button data-mas="cabezas" aria-pressed="${E.mas === 'cabezas'}">Precio por cabeza ›</button><button data-mas="promo" aria-pressed="${E.mas === 'promo'}">Tu promo ›</button><a href="#/crews">Tu crew ›</a><button data-mas="ropa" aria-pressed="${E.mas === 'ropa'}">Ropa de UL · pronto</button>
       <button class="tz-tira-r" data-abre="__reglas">¿Cómo funciona la Tienda?</button></div></section>`;
   const abajo = `${dropDia(E)}${barraCelu(S, E, tengo)}`;

@@ -6418,6 +6418,15 @@ export async function rutaAvisos(req, env, ruta) {
     if (!d || typeof d !== 'object' || Array.isArray(d) || (d.token && !/^[A-Za-z0-9._-]{10,300}$/.test(String(d.token)))) {
       return json({ error: 'faltan datos' }, 400);
     }
+    // 👀 ABIERTA, SE MIRA SIN SESIÓN (17/11/2026, Dlx: «súbela completa para todos»): la página pide `anon` cuando no hay
+    // nadie conectado, y el objeto contesta el catálogo sin nada de nadie (y «cerrada» mientras lo esté). Comprar, regalar
+    // y la lista siguen pidiendo tu cuenta. Con `anon` no se pregunta a Discord: un permiso vencido no cae acá
+    if (d.anon && ruta !== '/avisos/tienda-accion') {
+      return elObjeto(env).fetch('https://avisos' + ruta.slice('/avisos'.length), {
+        method: 'POST', body: JSON.stringify({ quien: '', de: '', v: typeof d.v === 'string' ? d.v.slice(0, 40) : '' }),
+        headers: { 'content-type': 'application/json' },
+      });
+    }
     const q = await quienPide(req, env, d);
     if (!q.id) return json({ error: q.error }, q.estado);
     let de = '';
@@ -16949,8 +16958,10 @@ export class Avisos {
       return json({ error: 'faltan datos' }, 400);
     }
     const quien = String(d.quien), desde = Number(d.desde) || 0;
-    const cobrado = this.sql.exec('SELECT COALESCE(SUM(monto), 0) AS n FROM tienda WHERE quien = ? AND t >= ?',
-      quien, desde).toArray()[0].n;
+    // «Cobrado cazando»: sólo las cazas y el Most Wanted. Sumaba toda la billetera, y con la Tienda abierta cada compra
+    // (`tcompra:`, en negativo) lo bajaba. El saldo sí suma todo (`saldo()`)
+    const cobrado = this.sql.exec("SELECT COALESCE(SUM(monto), 0) AS n FROM tienda WHERE quien = ? AND t >= ? AND " +
+      "(id LIKE 'caza:%' OR id LIKE 'mw:%')", quien, desde).toArray()[0].n;
     const mios = this.sql.exec('SELECT id, cabeza, monto, t, fin, estado FROM precios WHERE quien = ? AND t >= ? ' +
       'ORDER BY t DESC LIMIT 30', quien, Math.max(desde, Date.now() - VOTOS_DIAS * DIA_MS)).toArray();
     return json({ ok: true, saldo: this.saldo(quien, desde, Number(d.inicial)), inicial: Number(d.inicial),

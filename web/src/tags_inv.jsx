@@ -495,7 +495,7 @@ export function Inventario({ liga, dc, carta0 = '', ranura0 = '' }) {
   } else if (ran === 'estilo') {
     foco = { texto: estiloAhora === 'cadena' ? '⛓️ La cadena' : '👕 La camiseta', desc: 'Cómo se viste tu carta de Servidor cuando lleva marco.', mio: true, cambia: 'estilo' in bor };
   } else {
-    foco = { texto: '✨ Efectos', desc: 'Brillos y animaciones para tu carta, en la página y en Discord. Llegan con la Tienda.', mio: false, pronto: true };
+    foco = { texto: '✨ Efectos', desc: 'Brillos y animaciones para tu carta, en la página y en Discord. Ya están en la Tienda; ponértelos desde acá llega pronto.', mio: false, pronto: true };
   }
   const fichaEm = [RAREZA[foco.nivel], GRUPO[foco.grupo], foco.mio && foco.nivel ? 'lo tienes' : ''].filter(Boolean).join(' · ') || 'Tu ' + etRan.toLowerCase();
 

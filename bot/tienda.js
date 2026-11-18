@@ -29,7 +29,9 @@ export const MENSAJES = ['', '¡Felicitaciones!', 'Para tu próxima batalla', 'T
 export const CATEGORIAS = ['aro', 'deco', 'nom', 'carta', 'perfil', 'serv', 'fp', 'fv', 'fe', 'fd', 'ff', 'fr'];
 /** dónde se pone cada cosa: las cuatro de tu cara y tu carta, y los seis lugares del fondo */
 export const RANURAS = ['aro', 'deco', 'nom', 'carta', 'fp', 'fv', 'fe', 'fd', 'ff', 'fr'];
-export const MARCAS = ['prem', 'num', 'nav', 'rot', 'col', 'gratis'];
+// `pronto`: se ve en la Tienda y no se vende todavía (lo que necesita algo que no está hecho: el cambio de nombre, la
+// pancarta con tu texto). Se saca la marca del catálogo privado el día que funcione
+export const MARCAS = ['prem', 'num', 'nav', 'rot', 'col', 'gratis', 'pronto'];
 /** las tablas con `quien`: se mudan con la cuenta (`mudarCuenta()`) y se borran con «olvidarme» */
 export const TABLAS_QUIEN = ['tienda_inv', 'tienda_deshecha', 'tienda_deseo', 'tienda_pref', 'tienda_puesto', 'tienda_col', 'tienda_num'];
 const DIA_MS = 24 * 3600 * 1000;
@@ -139,6 +141,7 @@ export function precioColeccion(cat, col, tiene, prem) {
 export function vendible(cat, id, ahora = Date.now()) {
   const p = cat.piezas[id];
   if (!p) return 'no_existe';
+  if (p.t.includes('pronto')) return 'pronto';
   if (p.t.includes('col')) return 'premio';
   if (p.t.includes('rot') && !cat.vitrina.ids.includes(id)) return 'no_esta';
   if (p.t.includes('nav') && cat.navidad && !(ahora >= cat.navidad.desde && ahora < cat.navidad.hasta)) return 'fuera_de_fecha';
@@ -573,12 +576,15 @@ export function catalogoGuardar(o, d) {
   }
   // la lista de deseos: lo que entra en la vitrina y lo que baja, una vez por pieza y por semana de vitrina
   const entra = viejo ? nuevo.vitrina.ids.filter((x) => !viejo.vitrina.ids.includes(x)) : nuevo.vitrina.ids;
-  const avisar = [...new Set([...entra, ...baja.map((x) => x[0])])];
+  // y lo que salía «pronto» y ya se vende (la ficha promete que la campana avisa)
+  const sale = viejo ? Object.keys(nuevo.piezas).filter((x) => viejo.piezas[x] && viejo.piezas[x].t.includes('pronto') && !nuevo.piezas[x].t.includes('pronto')) : [];
+  const avisar = [...new Set([...entra, ...baja.map((x) => x[0]), ...sale])];
   if (nuevo.abierta && avisar.length) {
     for (const r of filas(o, 'SELECT quien, pieza FROM tienda_deseo WHERE pieza IN (' + avisar.map(() => '?').join(',') + ') LIMIT 2000', ...avisar)) {
-      const enVit = entra.includes(r.pieza);
-      o.aBandeja(r.quien, 'tdeseo:' + r.pieza + ':' + nuevo.vitrina.hasta, 'tienda', enVit ? '♥ Algo de tu lista está en la vitrina' : '♥ Algo de tu lista bajó de precio',
-        enVit ? 'Pasa por la Tienda antes de que cambie el lunes.' : 'Mira el precio nuevo en la Tienda.', '#/tienda', '', ahora);
+      const enVit = entra.includes(r.pieza), yaSale = sale.includes(r.pieza);
+      o.aBandeja(r.quien, 'tdeseo:' + r.pieza + ':' + (yaSale ? 'sale' : nuevo.vitrina.hasta), 'tienda',
+        yaSale ? '♥ Algo de tu lista ya se vende' : enVit ? '♥ Algo de tu lista está en la vitrina' : '♥ Algo de tu lista bajó de precio',
+        yaSale ? 'Ya está a la venta en la Tienda.' : enVit ? 'Pasa por la Tienda antes de que cambie el lunes.' : 'Mira el precio nuevo en la Tienda.', '#/tienda', '', ahora);
       avisos++;
     }
   }

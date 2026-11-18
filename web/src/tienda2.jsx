@@ -358,7 +358,7 @@ function Merch({ liga }) {
   /* eslint-enable react/jsx-key */
   return (
     <section className="sec negra tn-merch" aria-labelledby="tn-merch-t">
-      <div className="sec-t"><h2 id="tn-merch-t">La tienda abre pronto</h2><span className="tag-pronto">EJEMPLOS · NO ESTÁ A LA VENTA</span></div>
+      <div className="sec-t"><h2 id="tn-merch-t">La ropa de UL llega pronto</h2><span className="tag-pronto">EJEMPLOS · NO ESTÁ A LA VENTA</span></div>
       <div className="tn-merch-cab">
         <p className="tn-merch-p">Acá vas a poder canjear tus Puntos de Tienda. Así podría ser la ropa de Under Legends y de sus socios: <b>todavía no se vende
           nada</b>. Cuando abra se anuncia en la Liga y, con los avisos, te llega al teléfono.</p>
@@ -381,11 +381,20 @@ function Merch({ liga }) {
 // que está abierta, o que quien mira es el dueño (el ensayo); si no —sin sesión, cerrada, o el objeto no contesta—, sigue
 // la de hoy, tal cual. Lo que ya se pagaba (el precio por cabeza, la promo, la ropa) entra en su «Más con tus Puntos».
 const TiendaNueva = lazy(() => import('./tienda3.jsx'));
+// 👀 Sin cuenta también se mira (17/11/2026, Dlx: «súbela completa para todos»): se pide `anon` y llega el catálogo sin
+// nada tuyo; la página se arma con una billetera vacía y comprar, regalar o la lista te mandan a entrar con Discord
+export const YO_VACIO = { saldo: 0, prem: false, jugo: false, verificado: false, inv: [], puesto: {}, deseos: [], deseo_publico: false,
+  colecciones: {}, numeros: {}, regalos_quedan: 0, regalos: [] };
 function useTiendaNueva(dc) {
   const [S, setS] = useState(null);
   const pedir = useCallback(() => {
-    if (!dc || typeof window.conCuenta !== 'function') { setS({ ok: false }); return Promise.resolve(); }
-    return window.conCuenta('/api/avisos/tienda', {}).then((j) => setS(j && j.ok ? j : { ok: false })).catch(() => setS({ ok: false }));
+    const listo = (j) => setS(j && j.ok ? (j.yo ? j : Object.assign({}, j, { yo: YO_VACIO, anon: true })) : { ok: false });
+    if (!dc) {
+      return fetch('/api/avisos/tienda', { method: 'POST', headers: { 'content-type': 'application/json' }, body: '{"anon":1}' })
+        .then((r) => r.json()).then(listo).catch(() => setS({ ok: false }));
+    }
+    if (typeof window.conCuenta !== 'function') { setS({ ok: false }); return Promise.resolve(); }
+    return window.conCuenta('/api/avisos/tienda', {}).then(listo).catch(() => setS({ ok: false }));
   }, [dc && dc.id]);
   useEffect(() => { pedir(); }, [pedir]);
   return [S, pedir];

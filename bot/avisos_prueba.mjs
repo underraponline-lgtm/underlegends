@@ -4438,6 +4438,24 @@ const ok = (cond, que, det) => {
     TI.catalogoGuardar(o, { catalogo: Object.assign({}, baja, { abierta: true }) });
     ok(!!TI.arteMio(o, { quien: ANA }, H).p, 'abierta, lo recibe cualquiera');
 
+    // sin cuenta (la página pide `anon`): el catálogo sin nada de nadie, el arte también; cerrada, nada
+    r = TI.tiendaMia(o, { quien: '' }, H);
+    ok(r.ok && r.abierta && r.cat && r.cat.piezas.X1 && !r.yo && !!TI.arteMio(o, { quien: '' }, H).p,
+      'abierta, sin cuenta se ve el catálogo y el arte, sin billetera ni nada de nadie');
+    TI.catalogoGuardar(o, { catalogo: Object.assign({}, baja, { abierta: false }) });
+    ok(!TI.tiendaMia(o, { quien: '' }, H).cat && TI.arteMio(o, { quien: '' }, H).error === 'cerrada', 'cerrada, sin cuenta no sale nada');
+
+    // lo que sale «pronto»: se ve y no se vende; cuando se le saca la marca, la lista avisa
+    const pr = JSON.parse(JSON.stringify(Object.assign({}, baja, { abierta: true })));
+    pr.piezas.X2.t = ['pronto'];
+    ok(TI.catalogoGuardar(o, { catalogo: pr }).ok && TI.vendible(TI.catalogoValido(pr), 'X2') === 'pronto'
+      && acc(BEA, 'bea', { accion: 'comprar', pieza: 'X2' }).error === 'pronto', 'lo marcado «pronto» se ve y no se vende');
+    acc(BEA, 'bea', { accion: 'deseo', pieza: 'X2', si: true });
+    pr.piezas.X2.t = [];
+    r = TI.catalogoGuardar(o, { catalogo: pr });
+    ok(r.ok && r.avisos >= 1 && sql.exec("SELECT 1 AS x FROM bandeja WHERE clave LIKE 'tdeseo:X2:sale%'").toArray().length >= 1,
+      'cuando deja de ser «pronto», la campana le avisa a quien la tenía en su lista', JSON.stringify(r));
+
     // olvidarme
     TI.tiendaOlvidar(o, CAR);
     ok(!mia(CAR, 'car').yo.inv.length && !sql.exec('SELECT 1 AS x FROM tienda_num WHERE quien = ?', CAR).toArray().length,

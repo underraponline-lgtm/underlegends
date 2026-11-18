@@ -11,6 +11,23 @@
   ],
   "cambios": [
     {
+        "version": "6.32",
+        "dia": "2026-11-17",
+        "cuando": "2026-11-17T21:36:57-05:00",
+        "titulo": "La Tienda abre",
+        "items": [
+            "**La Tienda nueva**, con tus **Puntos de Tienda**: aros y decoraciones para tu foto, efectos para tu nombre y tu carta, cosas para tu perfil y fondos para cada lugar.",
+            "**La vitrina**: piezas que sólo están ahí y vuelven cada tanto, con la pieza **puesta en ti** para que veas cómo te queda.",
+            "**El probador**: pruébate todo lo que quieras y compra junto lo que te guste. Si no te la pusiste, la puedes **deshacer** en 24 horas.",
+            "**Colecciones** con descuento y un premio al completarlas, **ediciones de 10** numeradas (la #1 es del campeón) y **regalos**: hasta 3 por semana, y quien los recibe los acepta o los rechaza.",
+            "**Tu lista ♥**: la campana te avisa cuando algo de ahí entra en la vitrina o baja de precio. Y si un precio baja, quien lo compró en los 14 días anteriores recibe la diferencia.",
+            "**El Dragón Drop del día**, gratis: uno por día para los Miembros de DRA.",
+            "Con el **Pase premium**, −20 % en cada pieza y −30 % en las colecciones.",
+            "Sin cuenta también se mira y se prueba; para comprar, **entras con Discord**.",
+            "Lo que te pones **por ahora se ve en la Tienda**: en tu perfil, el ranking, los comentarios y /card llega muy pronto."
+        ]
+    },
+    {
         "version": "6.31",
         "dia": "2026-11-17",
         "cuando": "2026-11-17T22:30:00-05:00",
