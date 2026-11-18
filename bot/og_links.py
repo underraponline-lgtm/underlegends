@@ -83,7 +83,7 @@ def _get(url, ciclo=False, timeout=25):
 
 #: el diseño de la miniatura del link de invitación: el mismo `DISENO_REF` de web/src/og_link.jsx (`data-d`). Cambiarlo rearma
 #: sólo ésas, no las crews ni los perfiles; y si la página publicada todavía dice otro, la foto se saltea
-DISENO_REF = 'ref-4b-cab'
+DISENO_REF = 'ref-4b-t1'
 #: países que no se toman en cuenta (Dlx, 22/09/2026: «Emiratos y Brasil no deberían existir»)
 SIN_PAIS = ('ae', 'br', 'no')
 

@@ -88,7 +88,7 @@ function Crew({ id }) {
 // ⚠️ «Miembros» son las personas de los servidores donde está el bot (`comunidad.personas`), no gente anotada en la Liga.
 //: el diseño de esta miniatura: el mismo `d` que pone bot/og_links.py en la huella. Si la página publicada dice otro, el ciclo
 //: no saca la foto (sería la vieja con la huella nueva) y la reintenta en la corrida siguiente
-export const DISENO_REF = 'ref-4b-cab';
+export const DISENO_REF = 'ref-4b-t1';
 const SIN_PAIS = new Set(['ae', 'br', 'no']);              // Dlx, 22/09: Emiratos y Brasil «no se les toma en cuenta»
 const nro = (x) => Number(x) || 0;
 const miles = (x) => String(Math.trunc(x)).replace(/\B(?=(\d{3})+(?!\d))/g, '.');
@@ -162,9 +162,9 @@ function Ref({ liga, k }) {
           <span className="og-r4-miem"><span className="og-r4-bc">Más de</span><b>{miles(V.m)}</b><span className="og-r4-bc og-r4-m">miembros</span></span>
         ) : null}
       </div>
-      {/* Dlx, 17/11/2026: «entra ahora y gana un premio, y abajo a los costados la temporada y el logo de UL en negrito» */}
+      {/* Dlx, 17/11/2026: «entra ahora y gana un premio, y abajo a los costados la temporada y el logo de UL en negrito»; «el T1, no temporada 1» */}
       <div className="og-r4-barra">
-        <span className="og-r4-temp">{liga && liga.tempLarga}</span>
+        <span className="og-r4-temp">{liga && liga.temp}</span>
         <span className="og-r4-cta">Entra ahora y gana un premio</span>
         <img className="og-r4-ul" src="/ul-blanco.png" alt="Under Legends" onLoad={() => setUl(true)} onError={() => setUl(true)} />
       </div>

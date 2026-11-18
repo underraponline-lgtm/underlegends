@@ -11,6 +11,15 @@
   ],
   "cambios": [
     {
+        "version": "6.50",
+        "dia": "2026-11-18",
+        "cuando": "2026-11-18T00:03:00-05:00",
+        "titulo": "La miniatura de tu link: «T1»",
+        "items": [
+            "Abajo, en la miniatura de tu link de invitación, la temporada dice **«T1»**."
+        ]
+    },
+    {
         "version": "6.49",
         "dia": "2026-11-17",
         "cuando": "2026-11-17T23:56:00-05:00",
