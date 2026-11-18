@@ -11,6 +11,17 @@
   ],
   "cambios": [
     {
+        "version": "6.30",
+        "dia": "2026-11-17",
+        "cuando": "2026-11-17T22:50:00-05:00",
+        "titulo": "Tu Colección, nueva",
+        "items": [
+            "La Colección del Inventario muestra cuánto tienes de todo, tu última insignia y las más fáciles que te faltan.",
+            "Cada insignia dice qué tan rara es: Común, Rara, Épica o Legendaria, según cuánta gente de la Liga la tiene.",
+            "Estilo de juego tiene más vida: rayos detrás de tu estilo, quiénes lo usan y cómo va en tu carta."
+        ]
+    },
+    {
       "version": "6.29",
       "dia": "2026-11-17",
       "cuando": "2026-11-17T21:21:00-05:00",
