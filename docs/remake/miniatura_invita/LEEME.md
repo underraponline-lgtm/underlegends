@@ -61,3 +61,6 @@ y su carta con el nivel 1: por eso «una recompensa» y no un número.
 - Sin «Liga Global de Freestyle»: la carta ocupa lo que queda bajo el nombre.
 - Vive en `web/src/og_link.jsx` (`Ref`, clases `og-r4-`) y la foto la saca `bot/og_links.py`, que le pasa los números y
   las banderas en la ruta (`t`, `m`, `b`, de `_vitrina()`) para que entren en la huella.
+
+**6.47**: Dlx, «lo que dice Makmah te invita podría ser más pequeño… y quizás recta»: la etiqueta a 40 px (34–32 para los
+largos) y la carta sin girar, hasta 420 px de alto. `final_dlx.png` y `final_nombres.png` ya son ésta.

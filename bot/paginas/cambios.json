@@ -11,6 +11,15 @@
   ],
   "cambios": [
     {
+        "version": "6.47",
+        "dia": "2026-11-17",
+        "cuando": "2026-11-17T23:45:00-05:00",
+        "titulo": "La miniatura de tu link: la carta, más grande",
+        "items": [
+            "En la miniatura de tu link de invitación, **«TE INVITA» es más chico y tu carta va recta y más grande**."
+        ]
+    },
+    {
         "version": "6.46",
         "dia": "2026-11-17",
         "cuando": "2026-11-17T23:42:29-05:00",

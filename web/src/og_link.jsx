@@ -106,7 +106,7 @@ export function vitrinaRef(d, q) {
 // 🔠 EL NOMBRE DE QUIEN INVITA: la 4b guardada sólo entraba con nombres de hasta 3 letras («MAKMAH TE INVITA» ya invadía
 // el magenta). Medido sobre los nombres de la Liga (mediana 6, el 90 % ≤ 10, el más largo 48): si «NOMBRE TE INVITA» entra
 // en una etiqueta a 54 px, va así; si no, el nombre en la suya (de 54 a 44 px), en dos líneas por palabras si hace falta, y
-// con «…» si una palabra sola no entra. Nunca menos de 44 px: a 300 px de ancho (el celular) son 11.
+// con «…» si una palabra sola no entra.
 const ANCHO_Q = 342;
 function anchoTxt(txt, px) {
   const c = anchoTxt.c || (anchoTxt.c = document.createElement('canvas').getContext('2d'));
@@ -114,12 +114,15 @@ function anchoTxt(txt, px) {
   const T = String(txt).toUpperCase();
   let w = c.measureText(T).width;
   if ('letterSpacing' in c) { c.letterSpacing = '2px'; w = c.measureText(T).width; c.letterSpacing = '0px'; } else w += 2 * T.length;
-  return w + 32;                                           // el relleno de la etiqueta
+  return w + 24;                                           // el relleno de la etiqueta
 }
+// 📏 MÁS CHICA Y LA CARTA RECTA (Dlx, 17/11/2026, con la miniatura en vivo: «lo que dice Makmah te invita podría ser más
+// pequeño para que la tarjeta se vea mejor, y quizás recta»). De 54 a 40 px: «MAKMAH TE INVITA» vuelve a una sola etiqueta
+// y la carta gana lo que deja. Una línea de 40 a 34 px; si no, el nombre en la suya de 40 a 32 (a 300 px de ancho, 8)
 export function encajeNombre(nombre, medir = anchoTxt) {
-  if (medir(nombre + ' te invita', 54) <= ANCHO_Q) return { una: true, px: 54 };
-  for (let px = 54; px >= 44; px -= 1) if (medir(nombre, px) <= ANCHO_Q) return { una: false, px, dos: false };
-  return { una: false, px: 44, dos: /\s/.test(nombre.trim()) };
+  for (let px = 40; px >= 34; px -= 1) if (medir(nombre + ' te invita', px) <= ANCHO_Q) return { una: true, px };
+  for (let px = 40; px >= 32; px -= 1) if (medir(nombre, px) <= ANCHO_Q) return { una: false, px, dos: false };
+  return { una: false, px: 32, dos: /\s/.test(nombre.trim()) };
 }
 
 function Ref({ liga, k }) {
@@ -146,10 +149,10 @@ function Ref({ liga, k }) {
   return (
     <div className="og og-r4" data-listo={listo ? '1' : ''}>
       <div className="og-r4-izq">
-        {!enc || enc.una ? <span className="og-r4-tag">{nombre} te invita</span> : (
+        {!enc || enc.una ? <span className="og-r4-tag" style={enc ? { fontSize: enc.px + 'px' } : null}>{nombre} te invita</span> : (
           <>
             <span className={'og-r4-tag og-r4-nom' + (enc.dos ? ' dos' : '')} style={{ fontSize: enc.px + 'px' }}>{nombre}</span>
-            <span className="og-r4-tag">te invita</span>
+            <span className="og-r4-tag" style={{ fontSize: enc.px + 'px' }}>te invita</span>
           </>
         )}
         {src && !mala ? <span className="og-r4-carta"><img src={src} alt="" onLoad={() => setOk(true)} onError={() => { setMala(true); setOk(true); }} /></span> : null}
