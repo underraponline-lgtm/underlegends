@@ -102,8 +102,10 @@ export function YoMenu({ k, dc, nombre, cara, abajo = false, onCerrar }) {
       </div>
       {/* Tu cuenta y Soporte, arriba y uno al lado del otro (Dlx, 18/11/2026: «tu cuenta y soporte que estén de lado y arriba») */}
       <div className="ym-arriba">
-        <a href="#/cuenta" role="menuitem" onClick={onCerrar}><Ico n="engranaje" t={16} />Tu cuenta</a>
-        <a href="#/cuenta/algo-mal" role="menuitem" onClick={onCerrar}><Ico n="soporte" t={16} />Soporte</a>
+        {/* con la forma de las demás filas —el ícono en su círculo, al costado— (Dlx: «que esté de lado así como está la
+            gran mayoría»), pero de a dos */}
+        <a href="#/cuenta" role="menuitem" onClick={onCerrar}><span className="nt-c nt-ico" aria-hidden="true"><Ico n="engranaje" t={18} /></span><b>Tu cuenta</b></a>
+        <a href="#/cuenta/algo-mal" role="menuitem" onClick={onCerrar}><span className="nt-c nt-ico" aria-hidden="true"><Ico n="soporte" t={18} /></span><b>Soporte</b></a>
       </div>
       <div className="nt-cuerpo">
         {paneles.length ? (
