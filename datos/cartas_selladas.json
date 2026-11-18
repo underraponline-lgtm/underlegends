@@ -1114,8 +1114,8 @@
    "servidor": "c812f980e2d2:aba640c1146a:980594"
   },
   "MaYeuTyK": {
-   "competitivo": "134a2ef1076e:87dc186e0dfa",
-   "pais": "0495b44cee2b:cde66a9b3790",
+   "competitivo": "2590e35bb800:87dc186e0dfa",
+   "pais": "f2ad17325c98:cde66a9b3790",
    "servidor": "2067fbee8105:0eacf6bc135d:d6a988",
    "temporada": "74c0d0f8eb46:81dd524cea56"
   },
@@ -1212,10 +1212,10 @@
    "servidor": "c3e39b4d3573:aba640c1146a:77728e"
   },
   "Mito": {
-   "competitivo": "71bcef6dcda0:231a54e016d0",
-   "pais": "73c0e4137a2b:9d66d497e41e",
-   "servidor": "9dfad2be07ec:aba640c1146a:c82496",
-   "temporada": "ec386aba650e:cdead15a6070"
+   "competitivo": "6c887e66de6e:87dc186e0dfa",
+   "pais": "b79e54fe072b:cde66a9b3790",
+   "servidor": "ab4a0497d00c:0eacf6bc135d:c82496",
+   "temporada": "23ed2e85cf9f:81dd524cea56"
   },
   "Mknoli": {
    "servidor": "0995b01c57e5:aba640c1146a:1b952d"
@@ -1705,8 +1705,8 @@
    "temporada": "0d82307f6d8c:cdead15a6070"
   },
   "Soulb": {
-   "competitivo": "d383d3301cf4:87dc186e0dfa",
-   "pais": "63a6d598efc4:cde66a9b3790",
+   "competitivo": "d23d30c50dee:87dc186e0dfa",
+   "pais": "118f8453fc64:cde66a9b3790",
    "servidor": "81f0fdb8fa2e:0eacf6bc135d:205449",
    "temporada": "7499128b8f6c:81dd524cea56"
   },
@@ -1839,8 +1839,8 @@
    "servidor": "679c18f5e7e5:aba640c1146a:132451"
   },
   "Vilca": {
-   "competitivo": "081446b0c707:87dc186e0dfa",
-   "pais": "a3d87a2fb060:cde66a9b3790",
+   "competitivo": "05a56087beb6:87dc186e0dfa",
+   "pais": "9e96cc521e01:cde66a9b3790",
    "servidor": "5a2745bf4e5a:0eacf6bc135d:35ef22",
    "temporada": "a9aeaa346255:81dd524cea56"
   },
@@ -2114,5 +2114,5 @@
    "servidor": "7f8885a35a6d:aba640c1146a:71cf5a"
   }
  },
- "cuando": "2026-11-18T04:05:16+00:00"
+ "cuando": "2026-11-18T04:34:18+00:00"
 }
