@@ -4909,6 +4909,17 @@ def _self_check():
     # 114 corridas, ninguna de 10 ms o más; en local, 1,3 ms a 243 KB y +0,25 ms cada 50 KB). Lo caro es la bajada de
     # quien mira, en cada visita: el lobby real (con caras y novedades) pesaba 68,3 KB en brotli. Lo que sigue creciendo
     # es la gente con ELO (~8 bytes por persona) y los eventos de 28 días a medida que entran servidores
+    # 🔴 Y SE PASÓ EL 18/11/2026 (52.043 B, 50,8 KB) y NO se subió. No fue ningún commit de código: medido con el mismo
+    # código en `82c56598b` (el último verde) el lobby ya pesaba 51.771 B, a 229 del tope, y los datos de los ciclos de
+    # esa noche (+134 `llaves`, +104 `mis`, +43 `div`) lo pasaron. O sea que llevaba días sin holgura. Se mudó lo que la
+    # página no dibuja: `mis.total` traía la suma de TODAS las personas (345, 2,4 KB comprimidos) y `Misiones` sólo
+    # muestra las diez de arriba, así que ahora viaja con esas diez y sus empatados (`misiones.top_total()`):
+    # 52.043 → 50.344 B, 1,6 KB de holgura, y una clave menos que crece con la gente.
+    # ⚠️ NO SE TOCÓ `cv` (2,8 KB de `tabla`, el hash de las cuatro cartas de cada fila) aunque es lo más grande que
+    # queda sin comprimir: es el `?v=` de cada carta y acortarlo hace que todos los navegadores bajen todas otra vez
+    # (`_compactas()`). Tampoco `rivales` (2,2 KB: lo leen la diapositiva del Inicio y las batallas de una llave en vivo)
+    # ni `LLAVES_WEB`, de la que dependen los campeones de hoy y «tus últimos» de Eventos. Si vuelve a pasarse y no hay
+    # otra cosa que la página no dibuje, ahí hay que decidir; pero con 1,6 KB de holgura no es para esta semana
     ok(comp < 52000, 'y pesa poco: %.1f KB comprimido (%.1f KB de JSON)' % (comp / 1024.0, tam / 1024.0))
     ok(_compactas({'temporada': 'a1', 'pais': 'd4'}) == 'a1...d4' and _compactas({}) == '',
        'las versiones de las cartas viajan compactas, en el orden de `CARTAS`')

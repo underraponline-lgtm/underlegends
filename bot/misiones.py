@@ -150,6 +150,12 @@ APARTE = ('caza', 'dorado', 'writing')
 LLEGO = {'campeon': 1, 'subcampeon': 2, 'tercero': 4, 'cuarto': 4, 'semifinal': 4, 'cuartos': 8,
          'octavos': 16, 'r32': 32, 'dieciseisavos': 32, 'r64': 64}
 
+#: 📏 cuántos de «lo sumado en la temporada» viajan en el lobby (18/11/2026). La página dibuja los diez de arriba
+#: (`Misiones` de web/src/misiones.jsx: `.sort(…).slice(0, 10)`) y es lo único que lee de `total`; con las 345 personas
+#: que ya sumaron algo eran 2,4 KB comprimidos en CADA visita, y crece con cada persona que cumple una misión. Si la
+#: página muestra más de diez, se sube esto y se cambia ese `slice` a la vez
+TOTAL_TOP = 10
+
 SALIDA = os.path.join(BASE, 'datos', 'misiones.json')
 
 
@@ -634,8 +640,24 @@ def leer(ruta=None):
         return {}
 
 
+def top_total(suma, n=TOTAL_TOP):
+    """Lo sumado en la temporada, sólo de quienes pueden entrar entre los `n` primeros: el `n`.º valor y todo lo que lo
+    iguala o lo pasa. ⚠️ CON TODOS LOS EMPATADOS DEL CORTE, no `n` cortados: la página desempata por nombre
+    (`misiones.jsx`), así que dibuja exactamente lo mismo que con la lista entera. Cortar justo en un empate dejaría
+    afuera a alguien que hoy sí se ve. Con menos de `n` personas, la lista entera."""
+    suma = suma or {}
+    if len(suma) <= n:
+        return dict(suma)
+    corte = sorted((v or 0 for v in suma.values()), reverse=True)[n - 1]
+    return {k: v for k, v in suma.items() if (v or 0) >= corte}
+
+
 def para_web(d):
     """Lo de la semana para la página: `{sem, fin, lista, bono, prog, pts, total}`, o `None` si todavía no hay.
+
+    `total` viaja sólo con los `TOTAL_TOP` de arriba (`top_total()`): es lo que la página dibuja y el resto pesaba 2,4 KB
+    comprimidos en cada visita. La suma de cada persona sigue entera en `datos/misiones.json` y en la columna «Misiones»
+    del ranking (`subir_web._mis_de()`).
 
     ⚠️ EL PROGRESO VA LISTO PARA MOSTRAR: «cuánto llevás de cuánto», con la meta `m` de cada misión. Las de llegar a
     una ronda o de jugar en un servidor son de sí o no (`m` = 1), y `llego` (la mejor ronda, menor es mejor) no se
@@ -667,7 +689,7 @@ def para_web(d):
     return {'sem': d['sem'], 'fin': s.get('fin'), 'bono': d.get('bono', BONO),
             'lista': [fila(x, m) for x, m in zip(lista, metas)],
             'prog': {q: mostrar(vs) for q, vs in (s.get('prog') or {}).items()},
-            'pts': s.get('pts') or {}, 'total': d.get('suma') or {}}
+            'pts': s.get('pts') or {}, 'total': top_total(d.get('suma'))}
 
 
 def _self_check_nuevas(ok):
@@ -858,6 +880,27 @@ def _self_check():
     w = para_web({'sem': '2026-10-05', 'semanas': {'2026-10-05': s}, 'suma': r['suma']})
     ok(w and len(w['lista']) == 3 and w['total'] == r['suma'], 'la página recibe las tres, el progreso y lo sumado')
     ok(para_web({}) is None, 'sin semana, nada para la página')
+    # 📏 `total` viaja sólo con los diez de arriba, y con TODOS los empatados del corte (18/11/2026): la página ordena por
+    # puntos y desempata por nombre, así que con eso dibuja lo mismo que con la lista entera
+    # siete arriba, cuatro empatados en 2.000 (los puestos 8 a 11: el décimo cae en medio del empate) y veinte más abajo
+    _suma = {'p%02d' % i: 5000 + i * 100 for i in range(7)}
+    _suma.update({'z_empate_a': 2000, 'z_empate_b': 2000, 'z_empate_c': 2000, 'a_empate_d': 2000})
+    _suma.update({'q%02d' % i: 100 + i for i in range(20)})
+    _page = lambda t: sorted(t.items(), key=lambda kv: (-kv[1], kv[0]))[:TOTAL_TOP]      # lo que hace misiones.jsx
+    _t = top_total(_suma)
+    ok(_page(_t) == _page(_suma) and len(_t) == 11 and len(_suma) == 31,
+       'el total del lobby se recorta pero la página dibuja los mismos diez  (%d de %d)' % (len(_t), len(_suma)))
+    ok(all(k in _t for k in ('z_empate_a', 'z_empate_b', 'z_empate_c', 'a_empate_d')),
+       'y no corta a la mitad un empate en el décimo lugar')
+    # ⚠️ y no depende de cómo desempate la página: con el orden de nombres al revés (otro motor de JS, otra regla de
+    # comparación), el recorte con empates sigue dando los mismos diez, y uno de diez a secas NO
+    _al_reves = lambda t: sorted(t.items(), key=lambda kv: (-kv[1], [-ord(c) for c in kv[0]]))[:TOTAL_TOP]
+    _ingenuo = dict(sorted(_suma.items(), key=lambda kv: (-kv[1], kv[0]))[:TOTAL_TOP])
+    ok(_al_reves(_t) == _al_reves(_suma) and _al_reves(_ingenuo) != _al_reves(_suma),
+       'con otro desempate sigue igual (y un corte de diez a secas no)')
+    ok(top_total({'a': 1, 'b': 2}) == {'a': 1, 'b': 2} and top_total({}) == {} and top_total(None) == {}
+       and top_total({'a': 5, 'b': None, 'c': 3}, 2) == {'a': 5, 'c': 3},
+       'con menos de diez, la lista entera; sin nada, vacío; y un valor vacío no rompe el corte')
     # 🎯 la cacería: la presa es de los activos, la misma para todos, y se cumple ganándole un duelo
     t2 = dt.datetime(2026, 10, 13, 1, 0, tzinfo=U)       # lunes 12/10, 9 PM ET: la semana del 12
     tv = dt.datetime(2026, 10, 8, 1, 0, tzinfo=U)
