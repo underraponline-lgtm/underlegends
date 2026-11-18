@@ -11,6 +11,15 @@
   ],
   "cambios": [
     {
+        "version": "6.36",
+        "dia": "2026-11-17",
+        "cuando": "2026-11-17T22:35:57-05:00",
+        "titulo": "La pared de tarjetas",
+        "items": [
+            "Uno de los fondos de la pantalla de carga, rehecho: **las tarjetas del top pegadas en una pared con grafitis**, con el #1 en grande. Se actualiza solo todos los días."
+        ]
+    },
+    {
         "version": "6.35",
         "dia": "2026-11-17",
         "cuando": "2026-11-17T22:32:44-05:00",

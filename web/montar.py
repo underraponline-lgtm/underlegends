@@ -227,8 +227,10 @@ def conf_carga():
     bv = {}
     for b in conf['batallas']:
         bv.setdefault(b['video'], []).append(b['id'])
+    # 🧱 y la tarjeta del #1 de la pared de tarjetas (el fondo 3), que se encuadra igual que una cara
+    p3 = {f: foco_carga.caja_pared(conf, f) for f in ('pc', 'cel')} if conf.get('pared') else {}
     return json.dumps({'r2': r2.group(1), 't': conf['temporada'], 'v': conf.get('v', 1), 'f': conf['fondos'], 'bv': list(bv.values()),
-                       'fo': fo}, ensure_ascii=False, separators=(',', ':')), conf['temporada'].upper()
+                       'fo': fo, 'p3': p3}, ensure_ascii=False, separators=(',', ':')), conf['temporada'].upper()
 
 
 def cabeza_carga():
@@ -260,7 +262,7 @@ def cabeza_carga():
       else if (fmt === 'pc' && Math.max(innerWidth, innerHeight * 16 / 9) * (window.devicePixelRatio || 1) > 2900) fmt = 'hd';
     }
     // 🎯 la cara del MC en esta imagen, para encuadrarla (ver `encuadre()` en la pantalla de carga)
-    window.__lgCara = (bat && C.fo && C.fo[bat] && C.fo[bat][fmt]) || null;
+    window.__lgCara = (bat && C.fo && C.fo[bat] && C.fo[bat][fmt]) || (n === 3 && C.p3 && C.p3[fmt]) || null;
     var d = new Date(), dia = d.getUTCFullYear() * 1e4 + (d.getUTCMonth() + 1) * 100 + d.getUTCDate();
     var src = window.__lgFondo = C.r2 + '/carga/' + C.t + '/' + nom + '-' + fmt + '.webp?d=' + dia + '-' + (C.v || 1);
     var l = document.createElement('link');

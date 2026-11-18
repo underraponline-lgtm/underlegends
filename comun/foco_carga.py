@@ -82,6 +82,18 @@ def caja(b, fmt):
     return [round((c[0] - x0) / ancho, 3), round(c[1] + dy, 3), round((c[2] - x0) / ancho, 3), round(min(c[3] + dy, 1), 3)]
 
 
+#: la forma de la tarjeta de Temporada (300×438): la del #1 de la pared
+ASPECTO_CARTA = 300 / 438
+
+
+def caja_pared(conf, fmt):
+    """🧱 La caja de la tarjeta del #1 en la pared de tarjetas (el fondo 3), [x0, y0, x1, y1] en fracciones: la página la
+    encuadra como a la cara de una batalla. Sale de `pared.uno` de carga.json, lo mismo que usa el generador."""
+    x, y, alto = conf['pared']['uno'][fmt]
+    ancho = alto * ASPECTO_CARTA / ASPECTO[fmt]
+    return [round(x - ancho / 2, 3), round(y, 3), round(x + ancho / 2, 3), round(y + alto, 3)]
+
+
 def titulo(aspecto):
     """Hasta dónde llega el título (y desde dónde arranca la barra), en fracciones del alto: medido con Playwright sobre
     la página (17/11/2026). En la compu el título va al 26–28 %; en el teléfono parado, al ~20 %; en la tablet parada, al

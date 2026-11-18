@@ -6,11 +6,12 @@ Qué fondos hay y cómo se arma cada uno vive en `web/carga.json`.
 
     1  Afiches       los de la Liga como tapas de disco pintadas a mano y pegadas con cinta (sale del ranking)
     2  La batalla    un momento real de cada video que pasó Dlx; cada video tiene su parte del 20 %
-    3  Tarjetas 3D   las tarjetas de verdad en un escenario (Blender): la Temporada adelante, el Competitivo arriba
+    3  La pared      las tarjetas de verdad del top, pegadas con cinta en una pared con grafitis (desde el 17/11/2026;
+                     antes, en 3D con Blender: queda en `--3d`)
     4  Competitivo   los mejores del Competitivo que tienen una foto suya de avatar, con la cara a la vista
     5  VS de la Liga espera su imagen de IA
 
-    python herramientas/fondos_carga.py              arma 1, 3 y 4 en .cache/carga/out/ (Playwright; el 3, Blender)
+    python herramientas/fondos_carga.py              arma 1, 3 y 4 en .cache/carga/out/ (Playwright)
     python herramientas/fondos_carga.py 1 4          sólo esos
     python herramientas/fondos_carga.py --batallas   los momentos de «La batalla» (yt-dlp + ffmpeg + Real-ESRGAN, con
                                                     tarjeta de video; cuando cambia un momento en web/carga.json)
@@ -491,9 +492,15 @@ def bajar_cartas():
     for k, t in pedir:
         p = os.path.join(CARTAS, f'{k}__{t}.webp')
         if t in inv.get(k, {}) and not (os.path.exists(p) and os.path.getsize(p)):
-            r = s.get(inv[k][t], timeout=30)
-            if r.status_code == 200:
-                open(p, 'wb').write(r.content)
+            # una que no baja (un corte de la conexión) se saltea: la pared sale con una menos, no se cae el día
+            for _ in range(3):
+                try:
+                    r = s.get(inv[k][t], timeout=30)
+                except requests.RequestException:
+                    continue
+                if r.status_code == 200:
+                    open(p, 'wb').write(r.content)
+                break
     return tem, com
 
 
@@ -516,8 +523,120 @@ def tarjetas_3d():
         print(f'3 · {fmt}: listo ({motor})')
 
 
+def pared(fmt):
+    """🧱 LAS TARJETAS PEGADAS EN LA PARED (17/11/2026). Dlx, de los fondos: el del Competitivo es el mejor, el de los
+    afiches *«looks good as fuck»* y el 3D de tarjetas *«el más feo»*; a «¿qué hago con él?» eligió **rehacerlo como
+    pared**. Las mismas tarjetas que el 3D (el top 5 de la Temporada y el del Competitivo, las de hoy), pero en el
+    idioma de los afiches: pegadas con cinta sobre papeles de la paleta, en una pared de concreto en blanco y negro con
+    grafitis en magenta y celeste, y el sticker de «FREE STYLE». El #1, el más grande, al centro y DEBAJO del título;
+    las demás tarjetas de la Liga, chicas, apagadas y en gris, tapizan la pared de atrás.
+
+    El color va sólo en las tarjetas del top y en los toques magenta y celeste, como en los otros fondos. Nada cae en la
+    zona del título (arriba al centro) ni en la de la barra (abajo): en el teléfono, la barra va casi de lado a lado."""
+    tem, com = bajar_cartas()
+    w, h, _ = FORMATOS[fmt]
+    pc = fmt == 'pc'
+    random.seed(31 if pc else 32)
+
+    def archivo(k, t):
+        p = os.path.join(CARTAS, f'{k}__{t}.webp')
+        return p if os.path.exists(p) and os.path.getsize(p) else None
+
+    # 🎯 dónde va cada una: (centro x, arriba y, alto) en fracciones de la pantalla, y cuánto se gira
+    if pc:
+        lugares_t = [tuple(CONF['pared']['uno']['pc']) + (-1.5,), (.305, .40, .37, -5), (.695, .40, .37, 5), (.135, .50, .31, -8), (.865, .50, .31, 8)]
+        lugares_c = [(.07, .10, .27, -9), (.93, .08, .27, 8), (.205, .05, .24, 5), (.795, .06, .24, -5), (.955, .69, .21, 10)]
+    else:
+        lugares_t = [tuple(CONF['pared']['uno']['cel']) + (-1.5,), (.13, .52, .22, -7), (.87, .52, .22, 7), (.15, .71, .16, 5), (.85, .71, .16, -5)]
+        lugares_c = [(.09, .215, .17, -10), (.91, .205, .17, 9), (.05, .40, .13, 8), (.95, .39, .13, -8)]
+    principales, usadas = [], set()
+    for (k, t), (x, y, alto, gira) in list(zip([(k, 'temporada') for k in tem], lugares_t)) + list(zip([(k, 'competitivo') for k in com], lugares_c)):
+        p = archivo(k, t)
+        if not p:
+            continue
+        usadas.add(os.path.basename(p))
+        principales.append((x, y, alto, gira, p, t == 'temporada' and k == tem[0]))
+    # el fondo: las demás tarjetas de la Liga, chicas y en gris
+    resto = sorted(f for f in os.listdir(CARTAS) if f.endswith('.webp') and f not in usadas)
+    random.shuffle(resto)
+    atras = []
+    filas, cols = (3, 9) if pc else (6, 4)
+    for r in range(filas):
+        for c in range(cols):
+            if not resto:
+                break
+            f = resto.pop()
+            alto = random.uniform(.17, .23) if pc else random.uniform(.10, .13)
+            x = (c + .5 + random.uniform(-.3, .3)) / cols
+            y = (r + random.uniform(-.25, .2)) / filas
+            atras.append(f"<img class=at src='{url(os.path.join(CARTAS, f))}' style='left:{x * 100:.1f}%;top:{y * 100:.1f}%;"
+                         f"height:{alto * 100:.1f}%;rotate:{random.uniform(-14, 14):.1f}deg'>")
+    PAPELES = ['#E41373', '#29B298', '#F4F4F0', '#111114', '#E41373']
+    piezas = []
+    for i, (x, y, alto, gira, p, es1) in enumerate(principales):
+        papel = PAPELES[i % len(PAPELES)]
+        pg = random.uniform(-6, 6)
+        # el papel de atrás asoma con los bordes rotos; la tarjeta va encima, con dos cintas
+        rotos = ','.join(f'{a:.0f}% {b:.0f}%' for a, b in (
+            (random.uniform(0, 4), random.uniform(0, 5)), (random.uniform(30, 45), random.uniform(0, 3)), (random.uniform(60, 75), random.uniform(1, 5)),
+            (random.uniform(96, 100), random.uniform(0, 4)), (random.uniform(97, 100), random.uniform(40, 60)), (random.uniform(95, 100), random.uniform(96, 100)),
+            (random.uniform(55, 70), random.uniform(97, 100)), (random.uniform(20, 40), random.uniform(95, 100)), (random.uniform(0, 4), random.uniform(96, 100)),
+            (random.uniform(0, 3), random.uniform(45, 60))))
+        cintas = ''.join(f"<i class=cinta style='left:{cx:.0f}%;top:{cy:.0f}%;rotate:{cr:.0f}deg'></i>"
+                         for cx, cy, cr in ((random.uniform(-8, 6), -2, random.uniform(-45, -30)), (random.uniform(72, 86), -2, random.uniform(30, 45))))
+        piezas.append(f"<div class='tj{' uno' if es1 else ''}' style='left:{x * 100:.1f}%;top:{y * 100:.1f}%;height:{alto * 100:.1f}%;"
+                      f"rotate:{gira:.1f}deg;z-index:{50 if es1 else 40 - i}'>"
+                      f"<i class=papel style='background:{papel};rotate:{pg:.1f}deg;clip-path:polygon({rotos})'></i>"
+                      f"<img src='{url(p)}'>{cintas}</div>")
+    # ✍️ los grafitis: dónde y qué (fuera del título y de la barra)
+    if pc:
+        tags = [("TOP 5", "'Sedgwick Ave Display'", '#E41373', 2.5, 74, 100, -7), ("COMPE", "'Permanent Marker'", '#29B298', 75, 76, 60, -6),
+]
+        stk = (34.5, 73, 120)
+    else:
+        tags = [("TOP 5", "'Sedgwick Ave Display'", '#E41373', 30, 69, 54, -7)]
+        stk = (63, 58, 74)
+    grafitis = ''.join(f"<b class=tag style=\"left:{x}%;top:{y}%;font-family:{f};color:{c};font-size:{t}px;rotate:{g}deg;"
+                       f"--sp:{c}\">{txt}</b>" for txt, f, c, x, y, t, g in tags)
+    chorros = ''.join(f"<i class=chorro style='left:{x:.1f}%;top:{y:.1f}%;height:{l:.0f}px;background:{c}'></i>"
+                      for x, y, l, c in ((t[3] + random.uniform(1, 9), t[4] + (7 if pc else 4.5), random.uniform(18, 60), t[2]) for t in tags[:2] for _ in range(3)))
+    return f"""<div class=pared>
+<i class=muro></i><i class=luz></i>
+{''.join(atras)}<i class=velo></i>
+{grafitis}{chorros}
+{''.join(piezas)}
+<div class=stk style='left:{stk[0]}%;top:{stk[1]}%;width:{stk[2]}px;height:{stk[2]}px'>FREE<br>STYLE</div>
+<i class=haz></i>
+</div>
+<style>
+.pared{{position:absolute;inset:0;overflow:hidden;background:#141418}}
+.pared .muro{{position:absolute;inset:0;background:
+  url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='600' height='600'><filter id='m'><feTurbulence type='fractalNoise' baseFrequency='.012' numOctaves='4' seed='3'/><feColorMatrix values='0 0 0 0 .55 0 0 0 0 .55 0 0 0 0 .58 0 0 0 .22 0'/></filter><rect width='100%25' height='100%25' filter='url(%23m)'/></svg>"),
+  url("{GRANO}"),linear-gradient(152deg,#1c1c22 0 54%,#111114 54% 100%)}}
+.pared .luz{{position:absolute;left:50%;top:-30%;width:120%;height:120%;translate:-50% 0;
+  background:radial-gradient(ellipse at 50% 40%,rgba(246,246,246,.14),transparent 60%)}}
+.pared img.at{{position:absolute;translate:-50% 0;filter:grayscale(1) brightness(.3) contrast(1.15);box-shadow:0 6px 14px rgba(0,0,0,.5)}}
+.pared .velo{{position:absolute;inset:0;background:radial-gradient(ellipse at 50% 55%,transparent 30%,rgba(10,10,12,.72) 95%),
+  linear-gradient(180deg,rgba(10,10,12,.35),transparent 30% 75%,rgba(10,10,12,.6))}}
+.pared .tj{{position:absolute;translate:-50% 0}}
+.pared .tj img{{position:relative;display:block;height:100%;width:auto;filter:drop-shadow(0 14px 18px rgba(0,0,0,.7))}}
+.pared .tj .papel{{position:absolute;inset:-5% -7%;z-index:-1;box-shadow:0 10px 20px rgba(0,0,0,.55)}}
+.pared .tj .cinta{{position:absolute;width:{'70' if pc else '40'}px;height:{'22' if pc else '13'}px;background:rgba(232,232,228,.55);z-index:2}}
+.pared .tj.uno img{{filter:drop-shadow(0 18px 26px rgba(0,0,0,.8)) drop-shadow(0 0 22px rgba(255,208,36,.18))}}
+/* los grafitis van ENCIMA de las tarjetas, como en una pared de verdad (debajo del #1) */
+.pared .tag{{position:absolute;font-weight:400;line-height:.9;white-space:nowrap;z-index:45;opacity:.92;
+  text-shadow:0 0 6px var(--sp),0 0 18px var(--sp),0 0 2px #000;filter:blur(.3px)}}
+.pared .chorro{{position:absolute;width:{'4' if pc else '3'}px;border-radius:0 0 3px 3px;opacity:.75;z-index:44}}
+.pared .stk{{position:absolute;display:grid;place-items:center;text-align:center;border-radius:50%;font:400 {'24' if pc else '15'}px/.95 Bungee;
+  background:#E41373;color:#fff;box-shadow:6px 6px 0 #29B298;rotate:-12deg;border:{'5' if pc else '3'}px solid #fff;z-index:60}}
+.pared .haz{{position:absolute;left:-10%;top:-30%;width:70%;height:160%;rotate:-38deg;background:linear-gradient(90deg,transparent,
+  rgba(246,246,246,.07) 30%,rgba(246,246,246,.07) 70%,transparent);z-index:70;pointer-events:none;mix-blend-mode:screen}}
+</style>"""
+
+
 # ───────────────────────── armar y subir ─────────────────────────
-HTML = {'1': afiches, '4': competitivo}
+#: el 3 es la pared de tarjetas desde el 17/11/2026; el 3D de Blender (`tarjetas_3d()`) queda para `--3d`
+HTML = {'1': afiches, '3': pared, '4': competitivo}
 
 
 def render(cuales):
@@ -539,7 +658,8 @@ def render(cuales):
                 im = Image.open(io.BytesIO(pg.screenshot())).convert('RGB')
                 pg.close()
                 dest = os.path.join(OUT, f'{n}-{fmt}.webp')
-                im.save(dest, 'WEBP', quality=CALIDAD, method=6)
+                # la pared lleva 10 tarjetas con letra chica y 27 atrás: a 88 pesaba 771 KB (los afiches, 469)
+                im.save(dest, 'WEBP', quality=80 if n == '3' else CALIDAD, method=6)
                 print(f'{n} · {fmt}: {os.path.getsize(dest) // 1024} KB')
         nav.close()
 
@@ -575,6 +695,10 @@ if __name__ == '__main__':
         subir([a for a in sys.argv[sys.argv.index('--subir') + 1:] if not a.startswith('--')])
     else:
         cuales = [a for a in sys.argv[1:] if a in ('1', '3', '4')] or ['1', '3', '4']
-        render([c for c in cuales if c in HTML])
-        if '3' in cuales:
-            tarjetas_3d()
+        if '--3d' in sys.argv:
+            # el 3 de antes, en Blender (hasta el 17/11/2026): Dlx lo encontró «el más feo» y pidió la pared
+            render([c for c in cuales if c in HTML and c != '3'])
+            if '3' in cuales:
+                tarjetas_3d()
+        else:
+            render([c for c in cuales if c in HTML])
