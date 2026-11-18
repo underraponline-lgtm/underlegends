@@ -5487,6 +5487,30 @@
    ]
   }
  },
+ "flash": {
+  "temporada": {
+   "🌱 PROMESA": [
+    "🌱 PROMESA",
+    "t1",
+    1794981844562
+   ],
+   "👑 CAMPEÓN x%d": [
+    "👑 CAMPEÓN x1",
+    "t1",
+    1794981844562
+   ],
+   "🚪 DEBUT CON CORONA": [
+    "🚪 DEBUT CON CORONA",
+    "t1",
+    1794981844562
+   ],
+   "🥉 AL PODIO": [
+    "🥉 AL PODIO",
+    "t1",
+    1794981844562
+   ]
+  }
+ },
  "fleivaman": {
   "temporada": {
    "🥉 AL PODIO": [
@@ -7189,6 +7213,11 @@
     "🥉 AL PODIO",
     "t1",
     1793029252929
+   ],
+   "🧳 VIAJERO": [
+    "🧳 VIAJERO",
+    "t1",
+    1794981844562
    ]
   }
  },
@@ -12074,6 +12103,11 @@
     "🧟 RESUCITADO",
     "t1",
     1792953978519
+   ],
+   "🧳 VIAJERO": [
+    "🧳 VIAJERO",
+    "t1",
+    1794981844562
    ]
   }
  },
@@ -17217,6 +17251,11 @@
    ]
   },
   "temporada": {
+   "⚡ MARATONISTA": [
+    "⚡ MARATONISTA",
+    "t1",
+    1794981844562
+   ],
    "🌍 TROTAMUNDOS": [
     "🌍 TROTAMUNDOS",
     "t1",

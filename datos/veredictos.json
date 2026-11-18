@@ -2115,6 +2115,17 @@
    "b": "KEPLATOO",
    "ganador": "BLACKMEME🇨🇱",
    "votos": "1–0"
+  },
+  "1572484273251029023": {
+   "id": "1572484273251029023",
+   "sv": "CYPHERHOOD™ | Hip-Hop, Freestyle & Producción Musical",
+   "g": "1074328197400887388",
+   "canal": "1222380923048296459",
+   "pub": 1794979866088,
+   "a": "Flash",
+   "b": "KYSS🇲🇽",
+   "ganador": "Flash",
+   "votos": "1–0"
   }
  },
  "llaves": {
@@ -6970,7 +6981,7 @@
    "g": "1074328197400887388",
    "canal": "1222380923048296459",
    "pub": 1794979866088,
-   "ed": 1794979866088,
+   "ed": 1794980371528,
    "texto": "`[ FINAL ]`\n⌞FLASH⌝ 🆚 ⌞KYSS⌝",
    "batallas": [
     [
@@ -6979,8 +6990,8 @@
       "FLASH",
       "KYSS"
      ],
-     null,
-     "última ronda y no dice campeón",
+     "FLASH",
+     "veredicto",
      []
     ]
    ]

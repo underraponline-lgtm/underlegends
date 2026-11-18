@@ -346,15 +346,19 @@
    "e": "cazado",
    "por": [
     [
-     "rodrilp",
-     500
+     "Karma",
+     250
+    ],
+    [
+     "LRS",
+     250
     ]
    ],
    "ev": {
-    "n": 660,
-    "nombre": "NEW GENESIS",
-    "sv": "FFA",
-    "t": "2026-11-18T04:56:25Z"
+    "n": 661,
+    "nombre": "CHOP ES CEO V.4",
+    "sv": "CH",
+    "t": "2026-11-18T03:02:41Z"
    }
   },
   {
@@ -407,7 +411,9 @@
   "PRAISERIZA": 500,
   "Artezzy": 2500,
   "Fazer": 1000,
-  "rodrilp": 1000,
-  "Deko": 500
+  "rodrilp": 500,
+  "Deko": 500,
+  "Karma": 250,
+  "LRS": 250
  }
 }

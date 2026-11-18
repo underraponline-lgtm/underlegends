@@ -59593,5 +59593,277 @@
    "min": 5,
    "v": 1
   }
+ },
+ "661": {
+  "dia": "2026-11-17",
+  "escala": "16+",
+  "fecha": "17/11",
+  "links": [
+   "https://discord.com/channels/1074328197400887388/1222379620494741604/1572446923003265176"
+  ],
+  "n": 661,
+  "nombre": "CHOP ES CEO V.4",
+  "participantes": 25,
+  "rondas": [
+   {
+    "b": [
+     [
+      [
+       "Kyss",
+       "Vilca",
+       "NC"
+      ],
+      "Kyss",
+      "triple (3 bandas)"
+     ],
+     [
+      [
+       "Flash 🇺🇸",
+       "tixer",
+       "ONZASS"
+      ],
+      "Flash 🇺🇸",
+      "triple (3 bandas)"
+     ],
+     [
+      [
+       "Sin Limites",
+       "tato🇦🇷",
+       "DarnBless"
+      ],
+      "Sin Limites",
+      "triple (3 bandas)"
+     ],
+     [
+      [
+       "LRS",
+       "Karma",
+       "K1NGT0🇨🇱",
+       "masterx🇻🇪",
+       "crakero",
+       "Vandu"
+      ],
+      "LRS, Karma",
+      "triple (6 bandas, pasan 2); también pasa: karma 🇦🇷"
+     ],
+     [
+      [
+       "blackmeme🇨🇱",
+       "OG",
+       "THO"
+      ],
+      "blackmeme🇨🇱",
+      "triple (3 bandas)"
+     ],
+     [
+      [
+       "Mf doom🇺🇸",
+       "Zanz",
+       "23"
+      ],
+      "Mf doom🇺🇸",
+      "triple (3 bandas)"
+     ],
+     [
+      [
+       "0223 🇧🇧",
+       "Simon🇺🇸",
+       "Nestor🇺🇾"
+      ],
+      "",
+      "sin ganador: espera en ✅ Decidir"
+     ]
+    ],
+    "r": "Octavos"
+   },
+   {
+    "b": [
+     [
+      [
+       "Kyss",
+       "LRS"
+      ],
+      "Kyss",
+      ""
+     ],
+     [
+      [
+       "Flash 🇺🇸",
+       "Karma"
+      ],
+      "Flash 🇺🇸",
+      ""
+     ],
+     [
+      [
+       "Keplatoo🇪🇸",
+       "Sin Limites"
+      ],
+      "Keplatoo🇪🇸",
+      "Walk-in 1: Keplatoo🇪🇸"
+     ],
+     [
+      [
+       "blackmeme🇨🇱",
+       "Mf doom🇺🇸"
+      ],
+      "blackmeme🇨🇱",
+      ""
+     ]
+    ],
+    "r": "Cuartos"
+   },
+   {
+    "b": [
+     [
+      [
+       "Kyss",
+       "blackmeme🇨🇱"
+      ],
+      "Kyss",
+      ""
+     ],
+     [
+      [
+       "Flash 🇺🇸",
+       "Keplatoo🇪🇸"
+      ],
+      "Flash 🇺🇸",
+      ""
+     ]
+    ],
+    "r": "Semifinales"
+   },
+   {
+    "b": [
+     [
+      [
+       "Flash 🇺🇸",
+       "Kyss"
+      ],
+      "Flash 🇺🇸",
+      ""
+     ]
+    ],
+    "r": "Final"
+   }
+  ],
+  "sv": "CH",
+  "tabla": [
+   [
+    "Flash 🇺🇸",
+    "Campeón",
+    10000
+   ],
+   [
+    "Kyss",
+    "Subcampeón",
+    7500
+   ],
+   [
+    "blackmeme🇨🇱",
+    "Semifinal",
+    5250
+   ],
+   [
+    "Keplatoo🇪🇸",
+    "Semifinal",
+    2625
+   ],
+   [
+    "Karma",
+    "Cuartos",
+    2500
+   ],
+   [
+    "LRS",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Mf doom🇺🇸",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Sin Limites",
+    "Cuartos",
+    2500
+   ],
+   [
+    "23",
+    "Octavos",
+    1250
+   ],
+   [
+    "DarnBless",
+    "Octavos",
+    1250
+   ],
+   [
+    "K1NGT0🇨🇱",
+    "Octavos",
+    1250
+   ],
+   [
+    "NC",
+    "Octavos",
+    1250
+   ],
+   [
+    "OG",
+    "Octavos",
+    1250
+   ],
+   [
+    "ONZASS",
+    "Octavos",
+    1250
+   ],
+   [
+    "THO",
+    "Octavos",
+    1250
+   ],
+   [
+    "Vandu",
+    "Octavos",
+    1250
+   ],
+   [
+    "Vilca",
+    "Octavos",
+    1250
+   ],
+   [
+    "Zanz",
+    "Octavos",
+    1250
+   ],
+   [
+    "crakero",
+    "Octavos",
+    1250
+   ],
+   [
+    "masterx🇻🇪",
+    "Octavos",
+    1250
+   ],
+   [
+    "tato🇦🇷",
+    "Octavos",
+    1250
+   ],
+   [
+    "tixer",
+    "Octavos",
+    1250
+   ]
+  ],
+  "ver": {
+   "min": 159,
+   "v": 1
+  }
  }
 }

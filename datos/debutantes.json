@@ -1031,6 +1031,17 @@
    "vence": "2026-11-01T04:08:34+00:00",
    "vencido": false
   },
+  "Flash": {
+   "con": null,
+   "cumplido": "",
+   "debut": "2026-11-18T03:02:41+00:00",
+   "did": "",
+   "evento": "CHOP ES CEO V.4",
+   "n": 661,
+   "sv": "CH",
+   "vence": "2026-11-25T03:02:41+00:00",
+   "vencido": false
+  },
   "Force": {
    "avisado": "2026-11-12",
    "con": null,
@@ -1464,6 +1475,17 @@
    "vence": "2026-11-21T03:28:31+00:00",
    "vencido": false
   },
+  "K1NGT0": {
+   "con": null,
+   "cumplido": "",
+   "debut": "2026-11-18T03:02:41+00:00",
+   "did": "",
+   "evento": "CHOP ES CEO V.4",
+   "n": 661,
+   "sv": "CH",
+   "vence": "2026-11-25T03:02:41+00:00",
+   "vencido": false
+  },
   "KARDIOLOGO": {
    "avisado": "2026-11-13",
    "chat": "2026-11-14",
@@ -1551,6 +1573,17 @@
    "n": 553,
    "sv": "SR",
    "vence": "2026-11-07T21:34:25+00:00",
+   "vencido": false
+  },
+  "Keplatoo": {
+   "con": null,
+   "cumplido": "",
+   "debut": "2026-11-18T03:02:41+00:00",
+   "did": "",
+   "evento": "CHOP ES CEO V.4",
+   "n": 661,
+   "sv": "CH",
+   "vence": "2026-11-25T03:02:41+00:00",
    "vencido": false
   },
   "Khalil": {
@@ -2054,6 +2087,17 @@
    "sv": "LKR",
    "vence": "2026-11-01T03:55:52+00:00",
    "vencido": true
+  },
+  "Mf doom": {
+   "con": null,
+   "cumplido": "",
+   "debut": "2026-11-18T03:02:41+00:00",
+   "did": "",
+   "evento": "CHOP ES CEO V.4",
+   "n": 661,
+   "sv": "CH",
+   "vence": "2026-11-25T03:02:41+00:00",
+   "vencido": false
   },
   "Millonari-O": {
    "avisado": "2026-10-18",
@@ -3225,6 +3269,17 @@
    "vence": "2026-11-16T14:38:17+00:00",
    "vencido": true
   },
+  "blackmeme": {
+   "con": null,
+   "cumplido": "",
+   "debut": "2026-11-18T03:02:41+00:00",
+   "did": "",
+   "evento": "CHOP ES CEO V.4",
+   "n": 661,
+   "sv": "CH",
+   "vence": "2026-11-25T03:02:41+00:00",
+   "vencido": false
+  },
   "blackstar27": {
    "avisado": "2026-11-14",
    "chat": "2026-11-14",
@@ -3417,6 +3472,17 @@
    "vence": "2026-10-25T02:26:23+00:00",
    "vencido": true
   },
+  "masterx": {
+   "con": null,
+   "cumplido": "",
+   "debut": "2026-11-18T03:02:41+00:00",
+   "did": "",
+   "evento": "CHOP ES CEO V.4",
+   "n": 661,
+   "sv": "CH",
+   "vence": "2026-11-25T03:02:41+00:00",
+   "vencido": false
+  },
   "npk": {
    "avisado": "2026-10-21",
    "chat": "2026-10-22",
@@ -3518,6 +3584,28 @@
    "sv": "FFA",
    "vence": "2026-11-16T03:16:00+00:00",
    "vencido": true
+  },
+  "tato": {
+   "con": null,
+   "cumplido": "",
+   "debut": "2026-11-18T03:02:41+00:00",
+   "did": "",
+   "evento": "CHOP ES CEO V.4",
+   "n": 661,
+   "sv": "CH",
+   "vence": "2026-11-25T03:02:41+00:00",
+   "vencido": false
+  },
+  "tixer": {
+   "con": null,
+   "cumplido": "",
+   "debut": "2026-11-18T03:02:41+00:00",
+   "did": "",
+   "evento": "CHOP ES CEO V.4",
+   "n": 661,
+   "sv": "CH",
+   "vence": "2026-11-25T03:02:41+00:00",
+   "vencido": false
   },
   "wosito": {
    "con": null,

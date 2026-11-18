@@ -369,6 +369,7 @@
   "soul": "Magic",
   "respiracion": "Efimero",
   "nachosrk": "Mito",
+  "mfdoom": "Agente sombra",
   "zetryco": "Zetryko",
   "martynez": "MaYeuTyK",
   "basty": "BastyRetro",
@@ -1926,6 +1927,10 @@
   [
    "NACHO SRK",
    "Mito"
+  ],
+  [
+   "Mf doom",
+   "Agente sombra"
   ],
   [
    "Zetryco",

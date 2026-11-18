@@ -4866,6 +4866,131 @@
      376
     ]
    }
+  },
+  {
+   "id": "005b80ae7b",
+   "tipo": "Nombre desconocido",
+   "sec": "CHOP ES CEO V.4 · CH · 17/11 · #661",
+   "que": "¿Quién es «Mf doom🇺🇸»?",
+   "r": "Es Agente sombra",
+   "regla": "Discord · su cuenta de Discord: la inscripción, el podio, la llave o la llamada",
+   "rk": "Discord",
+   "por": "el ciclo (su cuenta de Discord)",
+   "porque": "alias de Agente sombra: se anotó así en inscripciones",
+   "t": 1794981836774,
+   "filas": [
+    1492
+   ],
+   "variantes": [
+    "Mf doom🇺🇸"
+   ],
+   "escribio": {
+    "alias": [
+     "Mf doom",
+     "Agente sombra"
+    ],
+    "filas": [
+     377
+    ]
+   }
+  },
+  {
+   "id": "8183219850",
+   "tipo": "Nombre desconocido",
+   "sec": "CHOP ES CEO V.4 · CH · 17/11 · #661",
+   "que": "¿Quién es «BLACKMEME🇨🇱»? (también escrito «blackmeme🇨🇱»)",
+   "r": "Es alguien nuevo: alta con su cuenta 814959258725777419",
+   "regla": "Discord · su cuenta de Discord: la inscripción, el podio, la llave o la llamada",
+   "rk": "Discord",
+   "por": "el ciclo (su cuenta de Discord)",
+   "porque": "nuevo: entró a la Lista con la cuenta que estaba en la llamada con ese nombre (814959258725777419)",
+   "t": 1794981836774,
+   "filas": [
+    1487,
+    1493
+   ],
+   "variantes": [
+    "BLACKMEME🇨🇱",
+    "blackmeme🇨🇱"
+   ],
+   "escribio": {
+    "alta": [
+     "BLACKMEME",
+     "814959258725777419"
+    ]
+   }
+  },
+  {
+   "id": "3ece22ba13",
+   "tipo": "Nombre desconocido",
+   "sec": "CHOP ES CEO V.4 · CH · 17/11 · #661",
+   "que": "¿Quién es «Flash 🇺🇸»?",
+   "r": "Es alguien nuevo: alta con su cuenta 1339483432207781928",
+   "regla": "Discord · su cuenta de Discord: la inscripción, el podio, la llave o la llamada",
+   "rk": "Discord",
+   "por": "el ciclo (su cuenta de Discord)",
+   "porque": "nuevo: entró a la Lista con la cuenta con que se anotó (1339483432207781928)",
+   "t": 1794981836774,
+   "filas": [
+    1488
+   ],
+   "variantes": [
+    "Flash 🇺🇸"
+   ],
+   "escribio": {
+    "alta": [
+     "Flash",
+     "1339483432207781928"
+    ]
+   }
+  },
+  {
+   "id": "763bb06863",
+   "tipo": "Nombre desconocido",
+   "sec": "CHOP ES CEO V.4 · CH · 17/11 · #661",
+   "que": "¿Quién es «K1NGT0🇨🇱»?",
+   "r": "Es alguien nuevo: alta con su cuenta 630925224426340372",
+   "regla": "Discord · su cuenta de Discord: la inscripción, el podio, la llave o la llamada",
+   "rk": "Discord",
+   "por": "el ciclo (su cuenta de Discord)",
+   "porque": "nuevo: entró a la Lista con la cuenta que estaba en la llamada con ese nombre (630925224426340372)",
+   "t": 1794981836774,
+   "filas": [
+    1489
+   ],
+   "variantes": [
+    "K1NGT0🇨🇱"
+   ],
+   "escribio": {
+    "alta": [
+     "K1NGT0",
+     "630925224426340372"
+    ]
+   }
+  },
+  {
+   "id": "daf13d036d",
+   "tipo": "Nombre desconocido",
+   "sec": "CHOP ES CEO V.4 · CH · 17/11 · #661",
+   "que": "¿Quién es «tato🇦🇷»?",
+   "r": "Es alguien nuevo: alta con su cuenta 1451439942256562256",
+   "regla": "Discord · su cuenta de Discord: la inscripción, el podio, la llave o la llamada",
+   "rk": "Discord",
+   "por": "el ciclo (su cuenta de Discord)",
+   "porque": "nuevo: entró a la Lista con la cuenta que estaba en la llamada con ese nombre (1451439942256562256)",
+   "t": 1794981836774,
+   "filas": [
+    1495
+   ],
+   "variantes": [
+    "tato🇦🇷"
+   ],
+   "escribio": {
+    "alta": [
+     "tato",
+     "1451439942256562256"
+    ]
+   }
   }
  ],
  "deshechas": []
