@@ -489,8 +489,56 @@ const conY = (xs) => (xs.length < 2 ? xs.join('') : xs.slice(0, -1).join(', ') +
  * 🔔 Un nombre para el chat: la MENCIÓN de su cuenta si la conocemos (Dlx, 12/10/2026: «no menciona a la gente»), y si
  * no, su nombre. ⚠️ La mención no suena: todos los mensajes van con `allowed_mentions` vacío, así que se ve y se toca
  * (abre su perfil de Discord) sin notificar a nadie. El freno de «nunca molestar» sigue en pie.
+ *
+ * 🎨 DESDE EL 18/11/2026 LA MENCIÓN LLEVA TAMBIÉN EL NOMBRE (`MEN_A id MEN_B nombre MEN_C`, caracteres de uso privado que
+ * nadie escribe): el bot en vivo pasó a Componentes V2 (`cuerpoV2()`), donde las menciones van en una línea AFUERA del
+ * recuadro y adentro queda el nombre (Dlx: «gente dentro del embed no se menciona»). El texto se guarda así y se traduce
+ * al mandarlo: `textoV1()` para un mensaje de antes, `cuerpoV2()` para uno nuevo. Nunca sale crudo a Discord.
  */
-export const nombreChat = (y) => (y.id ? '<@' + y.id + '>' : escMd(y.n));
+const MEN_A = '', MEN_B = '', MEN_C = '';
+const RE_MEN = /(\d{5,25})([^]*)/g;
+export const nombreChat = (y) => (y.id ? MEN_A + y.id + MEN_B + escMd(y.n) + MEN_C : escMd(y.n));
+/** El texto del chat para un mensaje del formato de antes: cada mención, `<@id>` como siempre. */
+export const textoV1 = (t) => String(t == null ? '' : t).replace(RE_MEN, '<@$1>');
+/** Las cuentas que menciona un texto del chat, sin repetir y en el orden en que aparecen. */
+export const mencionadosChat = (t) => [...new Set([...String(t == null ? '' : t).matchAll(RE_MEN)].map((m) => m[1]))];
+/** 🎨 El texto de adentro del recuadro: cada mención, su nombre en negrita (o sólo el nombre, si ya está en negrita). */
+export function textoAdentro(t) {
+  return String(t == null ? '' : t).split('\n').map((l) => {
+    let out = '', i = 0, negrita = false, m;
+    const re = /(\d{5,25})([^]*)|\*\*/g;
+    while ((m = re.exec(l))) {
+      out += l.slice(i, m.index);
+      if (m[0] === '**') { negrita = !negrita; out += '**'; } else out += negrita ? m[2] : '**' + m[2] + '**';
+      i = re.lastIndex;
+    }
+    return out + l.slice(i);
+  }).join('\n');
+}
+/** El color del recuadro: el del servidor (el mismo del vs y de «Estadísticas»), o el de la Liga. */
+export const colorChat = (sv) => (VS_SV[String(sv || '').toUpperCase()] || [0x26045B])[0];
+/**
+ * 🎨 UN MENSAJE DEL BOT EN VIVO EN COMPONENTES V2 (Dlx, 18/11/2026: «sigue con el bot en vivo en V2», sobre la muestra que
+ * aprobó: «me gusta cómo se ve, buena idea»). Arriba y AFUERA, una línea con las menciones (no suenan: `allowed_mentions`
+ * vacío, como siempre); el RECUADRO del color del servidor, con el primer renglón de título, el resto del texto con los
+ * nombres en negrita y los botones; y la imagen grande ABAJO, afuera (el vs o la tarjeta del campeón).
+ */
+export function cuerpoV2(texto, filas, img, color) {
+  const t = String(texto == null ? '' : texto);
+  const ids = mencionadosChat(t);
+  const lineas = textoAdentro(t).split('\n');
+  const comps = [];
+  if (ids.length) {
+    const emo = ((lineas[0] || '').trim().match(/^\p{Extended_Pictographic}️?/u) || [''])[0];
+    comps.push({ type: 10, content: ((emo ? emo + ' ' : '') + conY(ids.map((i) => '<@' + i + '>'))).slice(0, 1500) });
+  }
+  const cab = lineas.length > 1 && lineas[0].trim() && lineas[0].length <= 140 ? '### ' + lineas[0] : lineas[0];
+  const dentro = [{ type: 10, content: ([cab].concat(lineas.slice(1)).join('\n').slice(0, 2400)) || '…' }];
+  for (const f of filas || []) if (f && f.type === 1 && Array.isArray(f.components) && f.components.length) dentro.push(f);
+  comps.push({ type: 17, accent_color: color || colorChat(''), components: dentro });
+  if (img) comps.push({ type: 12, items: [{ media: { url: String(img) } }] });
+  return { flags: 32768, components: comps, allowed_mentions: { parse: [] } };
+}
 /** Los nombres de `genteChat()`, cada uno con su bandera: «RodriLP 🇦🇷, Velatz 🇨🇱 y Snow 🇨🇴». */
 export const nombresChat = (gs) => conY(gs.map((y) => nombreChat(y) + (y.fl ? ' ' + y.fl : '')));
 //: el batacazo del cierre: tantos puntos de OVR de diferencia, o más
@@ -8169,6 +8217,11 @@ export class Avisos {
       this.sql.exec('CREATE TABLE IF NOT EXISTS vs_ficha (id TEXT PRIMARY KEY, datos TEXT NOT NULL, t INTEGER NOT NULL)');
       this.sql.exec('CREATE TABLE IF NOT EXISTS chat_vivo (llave TEXT NOT NULL, canal TEXT NOT NULL, m TEXT NOT NULL, ' +
         "msg TEXT NOT NULL DEFAULT '', texto TEXT NOT NULL DEFAULT '', t INTEGER NOT NULL, PRIMARY KEY (llave, canal, m))");
+      // 🎨 LO ÚLTIMO DE CADA MENSAJE DEL BOT EN VIVO EN COMPONENTES V2 (18/11/2026, ver `chatFetch()`): un mensaje V2 no acepta
+      // `content` y cada edición manda todo, así que lo que una edición no trae —los botones, la imagen, el texto— sale de acá.
+      // Un mensaje SIN fila es de antes del V2 y se sigue editando como siempre
+      this.sql.exec("CREATE TABLE IF NOT EXISTS chat_v2 (canal TEXT NOT NULL, msg TEXT NOT NULL, texto TEXT NOT NULL DEFAULT '', " +
+        "filas TEXT NOT NULL DEFAULT '[]', img TEXT NOT NULL DEFAULT '', color INTEGER NOT NULL DEFAULT 0, t INTEGER NOT NULL, PRIMARY KEY (canal, msg))");
       // 🔑 LAS ENCUESTAS (27/09/2026): un voto por Discord ID y por encuesta,
       // que se cambia hasta que cierra. Ver `validarVoto()` y `votar()`.
       this.sql.exec('CREATE TABLE IF NOT EXISTS votos (enc TEXT NOT NULL, quien TEXT NOT NULL, ' +
@@ -9844,6 +9897,8 @@ export class Avisos {
       this.sql.exec('DELETE FROM dia_pasos WHERE t < ?', ahora - 7 * DIA_MS);
       // 🎤 y lo que dijo el bot en vivo: dos días (de una llave sólo se habla mientras se mueve)
       this.sql.exec('DELETE FROM chat_vivo WHERE t < ?', ahora - 2 * DIA_MS);
+      // 🎨 y lo de cada mensaje V2: lo mismo (una apuesta o un voto se cierra en minutos, una llave en horas)
+      this.sql.exec('DELETE FROM chat_v2 WHERE t < ?', ahora - 2 * DIA_MS);
       // ⚡ y lo que antes se borraba CADA MINUTO recorriendo la tabla entera (09/11/2026: 160.000 filas por día entre las
       // cinco): las votaciones cerradas de hace una semana (`qgRevisar()`), los vs de más de un día y las fichas de «Ver
       // estadísticas» de más de dos (`vsDespachar()`). Una hora de más guardados no le cambia nada a nadie
@@ -9989,6 +10044,47 @@ export class Avisos {
    * canal con `/settings` (`cfg:<guild>` en KV, `vivo`), o en el chat general si Dlx lo prendió desde el Dashboard
    * (`en_vivo[SV] = true`); `en_vivo[SV] = false` lo apaga aunque el admin lo haya prendido. Devuelve los pedidos.
    */
+  /**
+   * 🎨 LA PUERTA DEL BOT EN VIVO A DISCORD, EN COMPONENTES V2 (Dlx, 18/11/2026: «sigue con el bot en vivo en V2»). Todo lo
+   * que el chat manda o edita —la charla de la llave, la apuesta, el voto, los resultados, los anotados, la imagen del vs y
+   * las ligas— pasa por acá con el cuerpo de siempre (`content`, `components`, `embeds`; o `img` sola) y sale como un
+   * mensaje V2 (`cuerpoV2()`). Un mensaje V2 no acepta `content` y cada edición manda TODO: lo que la edición no trae —los
+   * botones, la imagen, el texto— sale de `chat_v2`, que guarda lo último de cada mensaje (`components` presente reemplaza
+   * los botones, como antes). ⚠️ Un mensaje de ANTES del V2 (sin fila en `chat_v2`) se sigue editando como siempre, con las
+   * menciones de vuelta a `<@id>` (`textoV1()`): no se le cambia el formato a un mensaje a mitad de una llave.
+   * Devuelve la respuesta de Discord, que se puede leer (el id del mensaje nuevo).
+   */
+  async chatFetch(canal, msg, cuerpo, sv) {
+    canal = String(canal || '');
+    msg = String(msg || '');
+    const h = { Authorization: 'Bot ' + this.env.DISCORD_TOKEN, 'User-Agent': UA, 'content-type': 'application/json' };
+    const url = `${DC}/channels/${canal}/messages` + (msg ? '/' + msg : '');
+    const reg = msg ? this.sql.exec('SELECT texto, filas, img, color FROM chat_v2 WHERE canal = ? AND msg = ?', canal, msg).toArray()[0] : null;
+    if (msg && !reg) {
+      const b = Object.assign({}, cuerpo);
+      delete b.img;
+      if (b.content != null) b.content = textoV1(b.content);
+      return fetch(url, { method: 'PATCH', headers: h, body: JSON.stringify(b) });
+    }
+    const texto = cuerpo.content != null ? String(cuerpo.content) : (reg ? reg.texto : '');
+    let filas = [];
+    if (cuerpo.components !== undefined) filas = cuerpo.components || [];
+    else if (reg) { try { filas = JSON.parse(reg.filas || '[]') || []; } catch (e) { filas = []; } }
+    const emb = Array.isArray(cuerpo.embeds) ? cuerpo.embeds : null;
+    const img = emb ? String((emb[0] && emb[0].image && emb[0].image.url) || '') : cuerpo.img !== undefined ? String(cuerpo.img || '') : (reg ? reg.img : '');
+    const color = (reg && reg.color) || colorChat(sv);
+    const r = await fetch(url, { method: msg ? 'PATCH' : 'POST', headers: h, body: JSON.stringify(cuerpoV2(texto, filas, img, color)) });
+    if (r && r.ok) {
+      let id = msg;
+      if (!id) { try { id = String((await r.clone().json()).id || ''); } catch (e) { id = ''; } }
+      if (id) {
+        this.sql.exec('INSERT OR REPLACE INTO chat_v2 (canal, msg, texto, filas, img, color, t) VALUES (?, ?, ?, ?, ?, ?, ?)',
+          canal, id, texto, JSON.stringify(filas), img || '', color, Date.now());
+      }
+    }
+    return r;
+  }
+
   async chatVivo(ahora) {
     const aj = this.ajustes();
     const dash = (aj.en_vivo && typeof aj.en_vivo === 'object') ? aj.en_vivo : {};
@@ -10177,11 +10273,7 @@ export class Avisos {
             pedidos++;
             let r = null;
             try {
-              r = await fetch(`${DC}/channels/${canal}/messages/${prev.msg}`, {
-                method: 'PATCH',
-                headers: { Authorization: 'Bot ' + this.env.DISCORD_TOKEN, 'User-Agent': UA, 'content-type': 'application/json' },
-                body: JSON.stringify({ content: nuevo.slice(0, 1900), allowed_mentions: { parse: [] } }),
-              });
+              r = await this.chatFetch(canal, prev.msg, { content: nuevo.slice(0, 1900), allowed_mentions: { parse: [] } }, b.sv);
             } catch (e) { r = null; }
             if (r && r.ok) { texto = nuevo; editados++; }
           }
@@ -10337,12 +10429,8 @@ export class Avisos {
           pedidos++;
           let r = null;
           try {
-            r = await fetch(`${DC}/channels/${canal}/messages`, {
-              method: 'POST',
-              headers: { Authorization: 'Bot ' + this.env.DISCORD_TOKEN, 'User-Agent': UA, 'content-type': 'application/json' },
-              body: JSON.stringify({ content: texto.slice(0, 1900), allowed_mentions: { parse: [] }, flags: 4,
-                components: botonesElegir(voto, ap.id) }),
-            });
+            r = await this.chatFetch(canal, '', { content: texto.slice(0, 1900), allowed_mentions: { parse: [] }, flags: 4,
+              components: botonesElegir(voto, ap.id) }, b.sv);
           } catch (e) { r = null; }
           let id = '';
           if (r && r.ok) { try { id = String((await r.json()).id || ''); } catch (e) { id = ''; } }
@@ -10397,11 +10485,7 @@ export class Avisos {
           pedidos++;
           let r = null;
           try {
-            r = await fetch(`${DC}/channels/${canal}/messages/${msg}`, {
-              method: 'PATCH',
-              headers: { Authorization: 'Bot ' + this.env.DISCORD_TOKEN, 'User-Agent': UA, 'content-type': 'application/json' },
-              body: JSON.stringify({ content: e.texto.slice(0, 1900), allowed_mentions: { parse: [] } }),
-            });
+            r = await this.chatFetch(canal, msg, { content: e.texto.slice(0, 1900), allowed_mentions: { parse: [] } }, b.sv);
           } catch (err) { r = null; }
           if (!r || !r.ok) { errores.push(b.sv + ' ' + (r ? r.status : 'red')); continue; }
           editados++;
@@ -10433,18 +10517,13 @@ export class Avisos {
         const filaT = p.tipo === 'mandar' ? filasVs(p.vs) : [];
         let r = null;
         try {
-          r = await fetch(`${DC}/channels/${canal}/messages` + (p.tipo === 'editar' ? '/' + p.msg : ''), {
-            method: p.tipo === 'editar' ? 'PATCH' : 'POST',
-            headers: { Authorization: 'Bot ' + this.env.DISCORD_TOKEN, 'User-Agent': UA, 'content-type': 'application/json' },
-            // 🛑 nunca menciona a nadie, y sin la vista previa del link. 🏆 Con imagen (la tarjeta del campeón) va como
-            // adjunto del mensaje, y sin el freno de las vistas previas, que también la escondería: los links van entre <>
-            // ⚠️ una EDICIÓN no manda `flags`: el mensaje se queda con las suyas (con `flags: 4` se escondía la imagen)
-            body: JSON.stringify(Object.assign({ content: p.texto.slice(0, 1900), allowed_mentions: { parse: [] } },
-              p.tipo === 'editar' ? {} : p.img ? { embeds: [{ image: { url: p.img }, color: 0xE41373 }] } : { flags: 4 },
-              conAp || conVoto || filaT.length ? { components: (conAp && conVoto ? botonesElegir(conVoto, conAp.id)
-                : conAp ? botonesApuesta(conAp.id, conAp.a, conAp.b, false, apc.montos, conAp.gente)
-                  : conVoto ? botonesVoto(conVoto.id, conVoto.a, conVoto.b, conVoto.mas || [], conVoto.gente) : []).concat(filaT) } : {})),
-          });
+          // 🛑 nunca menciona a nadie (las menciones se ven y no suenan). 🏆 Con imagen (la tarjeta del campeón), abajo del
+          // recuadro (`chatFetch()` la saca del embed). ⚠️ Una EDICIÓN no trae botones ni imagen: quedan los que el mensaje tiene
+          r = await this.chatFetch(canal, p.tipo === 'editar' ? p.msg : '', Object.assign({ content: p.texto.slice(0, 1900), allowed_mentions: { parse: [] } },
+            p.tipo === 'editar' ? {} : p.img ? { embeds: [{ image: { url: p.img }, color: 0xE41373 }] } : { flags: 4 },
+            conAp || conVoto || filaT.length ? { components: (conAp && conVoto ? botonesElegir(conVoto, conAp.id)
+              : conAp ? botonesApuesta(conAp.id, conAp.a, conAp.b, false, apc.montos, conAp.gente)
+                : conVoto ? botonesVoto(conVoto.id, conVoto.a, conVoto.b, conVoto.mas || [], conVoto.gente) : []).concat(filaT) } : {}), b.sv);
         } catch (e) { r = null; }
         if (r && r.ok) {
           if (p.tipo === 'editar') {
@@ -10945,12 +11024,8 @@ export class Avisos {
       n++;
       let r = null;
       try {
-        r = await fetch(`${DC}/channels/${q.canal}/messages/${q.msg}`, {
-          method: 'PATCH',
-          headers: { Authorization: 'Bot ' + this.env.DISCORD_TOKEN, 'User-Agent': UA, 'content-type': 'application/json' },
-          body: JSON.stringify(Object.assign({ content: texto.slice(0, 1900), allowed_mentions: { parse: [] } },
-            g ? { components: this.filaTarjetaDe(q.canal, q.msg) } : {})),
-        });
+        r = await this.chatFetch(q.canal, q.msg, Object.assign({ content: texto.slice(0, 1900), allowed_mentions: { parse: [] } },
+          g ? { components: this.filaTarjetaDe(q.canal, q.msg) } : {}), q.sv);
       } catch (e) { r = null; }
       if (r && r.ok) {
         this.sql.exec('UPDATE chat_vivo SET texto = ? WHERE canal = ? AND msg = ?', texto, q.canal, q.msg);
@@ -11060,14 +11135,10 @@ export class Avisos {
       // 🗳️ al cerrar la apuesta quedan los botones del voto, si sigue abierto; sin voto, los montos en gris (los mensajes de antes)
       const q = estado === 'cerrada' ? this.sql.exec("SELECT * FROM qg WHERE canal = ? AND msg = ? AND estado = 'abierta' LIMIT 1", ap.canal, ap.msg).toArray()[0] : null;
       try {
-        const r = await fetch(`${DC}/channels/${ap.canal}/messages/${ap.msg}`, {
-          method: 'PATCH',
-          headers: { Authorization: 'Bot ' + this.env.DISCORD_TOKEN, 'User-Agent': UA, 'content-type': 'application/json' },
-          body: JSON.stringify({ content: texto.slice(0, 1900), allowed_mentions: { parse: [] },
-            components: (q ? botonesVoto(q.id, q.a, q.b, [], genteDe(q)) : estado === 'cerrada'
-              ? botonesApuesta(ap.id, ap.a, ap.b, true, apuestasCfg(this.ajustes()).montos, genteDe(ap)) : [])
-              .concat(this.filaTarjetaDe(ap.canal, ap.msg)) }),
-        });
+        const r = await this.chatFetch(ap.canal, ap.msg, { content: texto.slice(0, 1900), allowed_mentions: { parse: [] },
+          components: (q ? botonesVoto(q.id, q.a, q.b, [], genteDe(q)) : estado === 'cerrada'
+            ? botonesApuesta(ap.id, ap.a, ap.b, true, apuestasCfg(this.ajustes()).montos, genteDe(ap)) : [])
+            .concat(this.filaTarjetaDe(ap.canal, ap.msg)) }, ap.sv);
         if (r.ok) {
           this.sql.exec('UPDATE apuestas SET texto = ? WHERE id = ?', texto, ap.id);
           // 🔴 y en lo que el chat cree que dice ese mensaje (02/11/2026): si no, el «✅ Pasa…» que llega después se
@@ -11196,11 +11267,7 @@ export class Avisos {
       pedidos++;
       let r = null;
       try {
-        r = await fetch(`${DC}/channels/${canal}/messages` + (h ? '/' + h.msg : ''), {
-          method: h ? 'PATCH' : 'POST',
-          headers: { Authorization: 'Bot ' + this.env.DISCORD_TOKEN, 'User-Agent': UA, 'content-type': 'application/json' },
-          body: JSON.stringify({ content: texto.slice(0, 1900), allowed_mentions: { parse: [] }, flags: 4 }),
-        });
+        r = await this.chatFetch(canal, h ? h.msg : '', { content: texto.slice(0, 1900), allowed_mentions: { parse: [] }, flags: 4 }, a.sv);
       } catch (e) { r = null; }
       if (!r || !r.ok) {
         if (!h && r) { this.guardar('chat_pausa:' + canal, ahora + pausaChat(r.status, 0)); await this.chatSinPermiso(a.sv, canal, r.status, ahora); }
@@ -12469,6 +12536,12 @@ export class Avisos {
       this.sql.exec("UPDATE vs_cola SET estado = 'error' WHERE id = ?", f.id);
       return { error: url ? 'vencido' : 'url' };
     }
+    // 🎨 un mensaje del bot en vivo en V2 (`chatFetch()`): la imagen va ABAJO del recuadro, grande, con el link de R2
+    if (this.sql.exec('SELECT 1 FROM chat_v2 WHERE canal = ? AND msg = ?', String(f.canal), String(f.msg)).toArray().length) {
+      const r2 = await this.chatFetch(f.canal, f.msg, { img: url }, f.sv);
+      this.sql.exec('UPDATE vs_cola SET estado = ? WHERE id = ?', r2.ok ? 'hecho' : 'error', f.id);
+      return { ok: r2.ok, estado: r2.status };
+    }
     const api = `${DC}/channels/${f.canal}/messages/${f.msg}`;
     // 🖼️ como adjunto, que se ve más grande (ver `editarConAdjunto()`). Un adjunto se ve aunque el mensaje tenga el freno
     // de las vistas previas, así que no se le tocan las `flags`; si no se pudo, en el embed de antes
@@ -12628,11 +12701,8 @@ export class Avisos {
     }
     const texto = LIV.textoArranca(L.n, b.j, '**' + nombresChat(ga) + '** vs **' + nombresChat(gb) + '**', lineas);
     const filas = vs ? filasVs(vs) : [];
-    const r = await fetch(`${DC}/channels/${donde.canal}/messages`, {
-      method: 'POST',
-      headers: { Authorization: 'Bot ' + this.env.DISCORD_TOKEN, 'User-Agent': UA, 'content-type': 'application/json' },
-      body: JSON.stringify(Object.assign({ content: texto, allowed_mentions: { parse: [] }, flags: 4 }, filas.length ? { components: filas } : {})),
-    });
+    const r = await this.chatFetch(donde.canal, '', Object.assign({ content: texto, allowed_mentions: { parse: [] }, flags: 4 },
+      filas.length ? { components: filas } : {}), L.sv);
     if (!r.ok) {
       let ra = 0;
       if (r.status === 429) { try { ra = Number((await r.json()).retry_after) || 0; } catch (e) { ra = 0; } }
@@ -12651,11 +12721,7 @@ export class Avisos {
 
   /** ✏️ El mismo mensaje, con cómo terminó: una edición no le suena a nadie. */
   async ligaEditar(b, texto) {
-    const r = await fetch(`${DC}/channels/${b.canal}/messages/${b.msg}`, {
-      method: 'PATCH',
-      headers: { Authorization: 'Bot ' + this.env.DISCORD_TOKEN, 'User-Agent': UA, 'content-type': 'application/json' },
-      body: JSON.stringify({ content: texto, allowed_mentions: { parse: [] } }),
-    });
+    const r = await this.chatFetch(b.canal, b.msg, { content: texto, allowed_mentions: { parse: [] } }, '');
     return r.ok || r.status === 404;
   }
 
@@ -12830,11 +12896,8 @@ export class Avisos {
               hablados++;
               const perdio = b.gana === b.a ? (b.nb || b.b) : (b.na || b.a);
               try {
-                await fetch(`${DC}/channels/${donde.canal}/messages`, {
-                  method: 'POST',
-                  headers: { Authorization: 'Bot ' + this.env.DISCORD_TOKEN, 'User-Agent': UA, 'content-type': 'application/json' },
-                  body: JSON.stringify({ content: '🏁 **' + L.n + '**\n🏆 **' + escMd(gana) + '** le ganó a **' + escMd(perdio) + '**' + (b.como === 'replica' ? ' en la réplica' : ''), allowed_mentions: { parse: [] }, flags: 4 }),
-                });
+                await this.chatFetch(donde.canal, '', { content: '🏁 **' + L.n + '**\n🏆 **' + escMd(gana) + '** le ganó a **' + escMd(perdio) + '**'
+                  + (b.como === 'replica' ? ' en la réplica' : ''), allowed_mentions: { parse: [] }, flags: 4 }, L.sv);
               } catch (e) { errores.push(L.sv + ' resultado'); }
             }
           } else b.cerrado = 1;

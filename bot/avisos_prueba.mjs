@@ -25,6 +25,22 @@ if (!globalThis.crypto) globalThis.crypto = webcrypto;
 const aqui = dirname(fileURLToPath(import.meta.url));
 const A = await import('./avisos.js');
 
+// 🎨 EL BOT EN VIVO EN COMPONENTES V2 (18/11/2026, `cuerpoV2()`): lo que se manda, visto como antes para poder leer los dos
+// formatos igual. `content` es el texto de ADENTRO del recuadro (sin el `### ` del título), `afuera` la línea de las
+// menciones, `components` los botones del recuadro e `img` la imagen de abajo. Un cuerpo de antes queda como está
+const vista = (b) => {
+  if (!b || !(Number(b.flags) & 32768)) return b;
+  const top = b.components || [];
+  const caja = top.find((c) => c.type === 17) || { components: [] };
+  const gal = top.find((c) => c.type === 12);
+  return Object.assign({}, b, {
+    content: caja.components.filter((c) => c.type === 10).map((c) => String(c.content).replace(/^### /, '')).join('\n'),
+    afuera: top.filter((c) => c.type === 10).map((c) => c.content).join('\n'),
+    components: caja.components.filter((c) => c.type === 1),
+    img: gal ? gal.items[0].media.url : '',
+  });
+};
+
 let fallas = 0;
 // ⚡ los resúmenes del Dashboard quedan guardados 10 min (`delMinuto('resumen:…')`, 10/11/2026): para mirar lo recién
 // anotado, se tira la copia (en memoria y en `estado`)
@@ -240,7 +256,7 @@ const ok = (cond, que, det) => {
     // 🙈 la mención, sólo a quien está en el servidor del chat (19/10/2026: «¿por qué dice unknown user?»)
     const idsT = { snow: '700000101', number: '700000102' };
     const gm = A.genteChat('SNOW 🇨🇴, NUMBER 🇺🇾', bus, tb, idsT, (k) => k === 'snow');
-    ok(gm[0].id === '700000101' && gm[1].id === '' && A.nombresChat(gm) === '<@700000101> 🇨🇴 y Number 🇺🇾'
+    ok(gm[0].id === '700000101' && gm[1].id === '' && A.textoV1(A.nombresChat(gm)) === '<@700000101> 🇨🇴 y Number 🇺🇾'
       && A.genteChat('SNOW', bus, tb, idsT)[0].id === '700000101',
     'la mención sólo a quien está en ese servidor; a los demás, su nombre (si no, Discord pone «@unknown-user»)');
     // el equipo que crece: «pasa» una vez, y quien llega después «se suma»
@@ -1031,10 +1047,10 @@ const ok = (cond, que, det) => {
     const pedidos = [], apuestasVistas = [];
     globalThis.fetch = async (u, op = {}) => {
       if (op.body && /"custom_id":"ap[:a-z]|Apuestas abiertas/.test(op.body)) {
-        apuestasVistas.push((op.method || 'GET') + ' ' + JSON.parse(op.body).content);
+        apuestasVistas.push((op.method || 'GET') + ' ' + vista(JSON.parse(op.body)).content);
         return new Response(JSON.stringify({ id: 'a' + apuestasVistas.length }), { status: 200 });
       }
-      pedidos.push({ u: String(u), m: op.method || 'GET', b: op.body ? JSON.parse(op.body) : null });
+      pedidos.push({ u: String(u), m: op.method || 'GET', b: op.body ? vista(JSON.parse(op.body)) : null });
       return new Response(JSON.stringify({ id: 'm' + pedidos.length }), { status: 200 });
     };
     const T = Date.parse('2026-10-05T23:00:00Z');
@@ -1147,7 +1163,7 @@ const ok = (cond, que, det) => {
       // y el que se repite, una vez al canal de Logs (el de una sola vez, no)
       const fA = globalThis.fetch;
       const logs = [];
-      globalThis.fetch = async (u, op = {}) => { logs.push({ u: String(u), b: op.body ? JSON.parse(op.body) : null }); return new Response('{}', { status: 200 }); };
+      globalThis.fetch = async (u, op = {}) => { logs.push({ u: String(u), b: op.body ? vista(JSON.parse(op.body)) : null }); return new Response('{}', { status: 200 }); };
       const n1 = await o.erroresAvisar(Date.now());
       const n2 = await o.erroresAvisar(Date.now());
       globalThis.fetch = fA;
@@ -1161,7 +1177,7 @@ const ok = (cond, que, det) => {
       const pedidosEv = [];
       let resp = 200;
       globalThis.fetch = async (u, op = {}) => {
-        pedidosEv.push({ u: String(u), m: op.method || 'GET', b: op.body ? JSON.parse(op.body) : null });
+        pedidosEv.push({ u: String(u), m: op.method || 'GET', b: op.body ? vista(JSON.parse(op.body)) : null });
         return new Response(JSON.stringify({ id: 'EV1' }), { status: resp });
       };
       const t0 = Date.now();
@@ -1875,7 +1891,7 @@ const ok = (cond, que, det) => {
     const antesF = globalThis.fetch;
     const pedidos = [];
     globalThis.fetch = async (u, op = {}) => {
-      pedidos.push({ u: String(u), m: op.method || 'GET', b: op.body ? JSON.parse(op.body) : null });
+      pedidos.push({ u: String(u), m: op.method || 'GET', b: op.body ? vista(JSON.parse(op.body)) : null });
       return new Response(JSON.stringify({ id: 'm' + pedidos.length }), { status: 200 });
     };
     const T = Date.parse('2026-10-12T23:00:00Z');
@@ -1885,9 +1901,10 @@ const ok = (cond, que, det) => {
     llave('# COPA Y\n`[ CUARTOS ]`\n⌞Ana 🇦🇷⌝ 🆚 ⌞Bea 🇨🇱⌝\n⌞Cami 🇻🇪⌝ 🆚 ⌞Dora 🇲🇽⌝\n', T);
     await o.chatVivo(T);
     const m1 = pedidos[0];
-    ok(pedidos.length === 1 && m1.m === 'POST' && m1.b.content.includes('⚔️ Cuartos: **<@' + ANA + '> 🇦🇷** vs **Bea 🇨🇱**')
-      && JSON.stringify(m1.b.allowed_mentions) === '{"parse":[]}',
-    'con datos: el cruce menciona a quien la Liga conoce, y no suena', m1 && m1.b.content);
+    // 🎨 en V2 (18/11/2026): la mención va AFUERA del recuadro, en la línea de arriba, y adentro su nombre en negrita
+    ok(pedidos.length === 1 && m1.m === 'POST' && m1.b.flags === 32768 && m1.b.content.includes('⚔️ Cuartos: **Ana 🇦🇷** vs **Bea 🇨🇱**')
+      && m1.b.afuera.includes('<@' + ANA + '>') && !m1.b.content.includes('<@') && JSON.stringify(m1.b.allowed_mentions) === '{"parse":[]}',
+    'con datos: el cruce menciona a quien la Liga conoce (afuera del recuadro, en V2), y no suena', m1 && JSON.stringify(m1.b));
     // 🎲 y lleva la apuesta, siempre (11/11/2026): el voto abre el modal (`ve:`), con el nombre del ranking en los botones
     const fila1 = ((m1 && m1.b.components) || [])[0] || {};
     ok(/^🎲 \*\*Apuestas abiertas/m.test((m1 && m1.b.content) || '') && (fila1.components || []).length === 2
@@ -1897,9 +1914,11 @@ const ok = (cond, que, det) => {
     await o.chatVivo(T + 3 * 60000);
     const ed = pedidos.find((p, i) => i >= 1 && p.m === 'PATCH');
     const nuevo = pedidos.find((p, i) => i >= 1 && p.m === 'POST');
-    ok(ed && ed.u.endsWith('/messages/m1') && /\n✅ Pasa \*\*<@123456789012345678> 🇦🇷\*\*$/.test(ed.b.content) && !('flags' in ed.b)
+    // 🎨 en V2 una edición manda TODO: el texto con el resultado, y los botones que el mensaje ya tenía (`chat_v2`)
+    ok(ed && ed.u.endsWith('/messages/m1') && /\n✅ Pasa \*\*Ana 🇦🇷\*\*$/.test(ed.b.content) && ed.b.flags === 32768
+      && ed.b.afuera.includes('<@123456789012345678>') && ed.b.components.length === m1.b.components.length
       && nuevo && !/✅/.test(nuevo.b.content) && /Cuartos: \*\*Cami 🇻🇪\*\* vs \*\*Dora 🇲🇽\*\*/.test(nuevo.b.content),
-    'el resultado se le agrega al mensaje de su cruce (sin tocar sus banderas), y el mensaje nuevo es sólo el cruce que viene',
+    'el resultado se le agrega al mensaje de su cruce (con sus mismos botones), y el mensaje nuevo es sólo el cruce que viene',
     JSON.stringify(pedidos.slice(1).map((p) => [p.m, p.u.slice(-14), p.b && p.b.content])));
     const n2 = pedidos.length;
     llave('# COPA Y\n`[ CUARTOS ]`\n⌞Ana 🇦🇷⌝ ✅ 🆚 ⌞Bea 🇨🇱⌝\n⌞Cami 🇻🇪⌝ ✅ 🆚 ⌞Dora 🇲🇽⌝\n`[ FINAL ]`\n⌞Ana 🇦🇷⌝ 🆚 ⌞Cami 🇻🇪⌝\n',
@@ -1916,7 +1935,7 @@ const ok = (cond, que, det) => {
     '# COPA Z\n`[ CUARTOS ]`\n⌞Frifaier 🇨🇱⌝ 🆚 ⌞Bea 🇨🇱⌝\n⌞Cami 🇻🇪⌝ 🆚 ⌞Dora 🇲🇽⌝\n', T + 30 * 60000);
     await o.chatVivo(T + 30 * 60000);
     const zf = pedidos.slice(n3).find((p) => p.m === 'POST' && /COPA Z/.test((p.b && p.b.content) || ''));
-    ok(zf && zf.b.content.includes('<@' + ANA + '>') && !zf.b.content.includes('Frifaier'),
+    ok(zf && zf.b.afuera.includes('<@' + ANA + '>') && zf.b.content.includes('**Ana') && !zf.b.content.includes('Frifaier'),
       'quien se anotó con otro nombre sale como quien es (por la inscripción, `quien`)', zf && zf.b.content);
     // 🧮 TODOS CONTRA TODOS (19/10/2026, Dlx: «¿qué sucede cuando son 3 personas distintas batallando?»): un cruce con un
     // botón de voto por lado, y se vota a cualquiera de los tres
@@ -1928,7 +1947,7 @@ const ok = (cond, que, det) => {
     const tres = pedidos.slice(n4).find((p) => p.m === 'POST' && /TODOS CONTRA TODOS/.test((p.b && p.b.content) || ''));
     const bts = tres && tres.b.components && tres.b.components[0] ? tres.b.components[0].components : [];
     ok(tres && bts.length === 3 && bts.map((x) => x.custom_id.slice(-1)).join('') === 'ABC'
-      && /Octavos: \*\*<@123456789012345678> 🇦🇷\*\* vs \*\*Bea 🇨🇱\*\* vs \*\*Cami 🇻🇪\*\*/.test(tres.b.content),
+      && /Octavos: \*\*Ana 🇦🇷\*\* vs \*\*Bea 🇨🇱\*\* vs \*\*Cami 🇻🇪\*\*/.test(tres.b.content),
     'todos contra todos: el cruce sale, con un botón por lado', JSON.stringify(pedidos.slice(n4).map((p) => [p.m, p.b && p.b.content, p.b && p.b.components])));
     const qid = bts.length ? bts[2].custom_id.split(':')[1] : '';
     const v1 = o.qgVotar({ quien: '700000201', id: qid, lado: 'C' }, T + 61 * 60000);
@@ -1944,6 +1963,22 @@ const ok = (cond, que, det) => {
     const vpTres = ((tres && tres.b.components) || []).flatMap((f) => f.components || []).find((x) => /^vp:/.test(x.custom_id || ''));
     const pfTres = vpTres ? o.vsPerfiles(vpTres.custom_id.split(':')[1]) : {};
     ok(!!vpTres && pfTres.ok && pfTres.comps.length === 3, 'todos contra todos: «Perfiles», una caja por cada uno', JSON.stringify(pfTres));
+    // 🎨 EL V2 (18/11/2026): un mensaje de ANTES del cambio (sin fila en `chat_v2`) se sigue editando como siempre, con
+    // `content` y la mención `<@id>`; y ningún texto sale a Discord con los caracteres de uso privado de la mención
+    const nV = pedidos.length;
+    await o.chatFetch('2', 'viejo1', { content: '✅ Pasa ' + A.nombreChat({ id: ANA, n: 'Ana' }), allowed_mentions: { parse: [] } }, 'FFA');
+    const viejo = pedidos[nV];
+    ok(viejo && viejo.m === 'PATCH' && viejo.u.endsWith('/messages/viejo1') && viejo.b.content === '✅ Pasa <@' + ANA + '>'
+      && !(Number(viejo.b.flags) & 32768), 'un mensaje de antes del V2 se edita como siempre, con la mención de siempre', viejo && viejo.b);
+    ok(!JSON.stringify(pedidos.map((p) => p.b)).match(/[-]/), 'ningún mensaje sale con los caracteres internos de la mención');
+    const c2 = A.cuerpoV2('🎤 Arrancó **COPA**\n✅ ' + A.nombreChat({ id: ANA, n: 'Ana' }) + ' pasa · **' + A.nombreChat({ id: '700000777', n: 'Bea' }) + ' 🇨🇱**',
+      [{ type: 1, components: [{ type: 2, style: 5, label: 'Síguela', url: 'https://x' }] }], 'https://pub-a.r2.dev/vs/a.jpg', A.colorChat('FFA'));
+    ok(c2.flags === 32768 && c2.components[0].type === 10 && c2.components[0].content === '🎤 <@' + ANA + '> y <@700000777>'
+      && c2.components[1].type === 17 && c2.components[1].components[0].content === '### 🎤 Arrancó **COPA**\n✅ **Ana** pasa · **Bea 🇨🇱**'
+      && c2.components[1].components[1].type === 1 && c2.components[2].type === 12 && c2.components[2].items[0].media.url.endsWith('/a.jpg')
+      && JSON.stringify(c2.allowed_mentions) === '{"parse":[]}',
+    'V2: las menciones arriba y afuera; adentro el título, los nombres en negrita (sin doble negrita) y los botones; la imagen abajo',
+    JSON.stringify(c2));
     // 👥🏷️ CON EQUIPOS (11/11/2026, Dlx: «Sí, agrégalo» y «que ahí abajo sea el nombre como aparece en el ranking»): «Perfiles»
     // de los dos lados, sin «Estadísticas», y los botones con el nombre de la Liga aunque la llave diga «ana» y «bea»
     const n5 = pedidos.length;
@@ -2022,7 +2057,7 @@ const ok = (cond, que, det) => {
     const antesF = globalThis.fetch;
     const pedidos = [];
     globalThis.fetch = async (u, op = {}) => {
-      pedidos.push({ u: String(u), m: op.method || 'GET', b: op.body ? JSON.parse(op.body) : null });
+      pedidos.push({ u: String(u), m: op.method || 'GET', b: op.body ? vista(JSON.parse(op.body)) : null });
       return new Response(JSON.stringify({ id: 'm' + pedidos.length }), { status: 200 });
     };
     const T = Date.parse('2026-11-11T23:00:00Z');
@@ -2080,7 +2115,7 @@ const ok = (cond, que, det) => {
       // 🖼️ el multipart de un adjunto (13/10/2026, `editarConAdjunto()`): se anota lo que manda
       const form = typeof FormData !== 'undefined' && op.body instanceof FormData;
       pedidos.push({ u: String(u), m: op.method || 'GET', form,
-        b: form ? JSON.parse(op.body.get('payload_json')) : op.body ? JSON.parse(op.body) : null,
+        b: form ? JSON.parse(op.body.get('payload_json')) : op.body ? vista(JSON.parse(op.body)) : null,
         f: form ? op.body.get('files[0]') : null });
       return new Response(JSON.stringify({ id: 'm' + pedidos.length }), { status: 200 });
     };
@@ -2114,10 +2149,11 @@ const ok = (cond, que, det) => {
     const vl = await o.vsListo({ id: cola[0].id, url: 'https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/vs/ffa-abc.jpg' });
     ok(vl.ok === true || vl.estado === undefined || true, 'vsListo contesta');
     const ed = pedidos[pedidos.length - 1];
-    // 🖼️ como ADJUNTO, que se ve más grande (Dlx, 13/10/2026): baja la imagen y edita con multipart, sin embed
-    ok(pedidos.length === nped + 2 && pedidos[nped].u.endsWith('/vs/ffa-abc.jpg') && ed.m === 'PATCH' && ed.form
-      && ed.u.endsWith('/messages/' + 'm1') && ed.b.embeds.length === 0 && ed.b.attachments[0].filename === 'vs.jpg'
-      && ed.f && ed.f.name === 'vs.jpg', 'y se le agrega al mensaje del cruce como adjunto, editándolo', ed);
+    // 🎨 en V2 (18/11/2026) la imagen va ABAJO del recuadro, grande, con el link de R2: una sola edición, sin bajarla, y el
+    // mensaje conserva su texto y sus botones (`chat_v2`)
+    ok(pedidos.length === nped + 1 && ed.m === 'PATCH' && !ed.form && ed.u.endsWith('/messages/' + 'm1') && ed.b.flags === 32768
+      && ed.b.img === 'https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/vs/ffa-abc.jpg' && /LA REVANCHA/.test(ed.b.content)
+      && ed.b.components.length === 2, 'y se le agrega al mensaje del cruce abajo del recuadro, editándolo con todo lo que tenía', ed);
     const ini = { inicial: 5000, desde: 0 };
     const pedir = async (d, t = T + 60000) => (await o.apostar(Object.assign({}, ini, d), t)).json();
     const U1 = '100000000000000001', U2 = '100000000000000002', U3 = '100000000000000003';

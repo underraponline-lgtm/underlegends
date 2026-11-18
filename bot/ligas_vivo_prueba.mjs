@@ -10,6 +10,18 @@ const V = await import('./ligas_vivo.js');
 
 let fallas = 0;
 const ok = (c, t) => { console.log((c ? '   ✅ ' : '   🔴 ') + t); if (!c) fallas++; };
+// 🎨 el bot en vivo en Componentes V2 (18/11/2026, `cuerpoV2()` de avisos.js): lo mandado, visto como antes —el texto de
+// adentro del recuadro en `content`, las menciones de afuera en `afuera`, los botones del recuadro en `components`—
+const vista = (b) => {
+  if (!b || !(Number(b.flags) & 32768)) return b;
+  const top = b.components || [];
+  const caja = top.find((c) => c.type === 17) || { components: [] };
+  return Object.assign({}, b, {
+    content: caja.components.filter((c) => c.type === 10).map((c) => String(c.content).replace(/^### /, '')).join('\n'),
+    afuera: top.filter((c) => c.type === 10).map((c) => c.content).join('\n'),
+    components: caja.components.filter((c) => c.type === 1),
+  });
+};
 
 const { casos } = JSON.parse(readFileSync(join(AQUI, 'ligas_vivo_casos.json'), 'utf8'));
 for (const c of casos) {
@@ -130,8 +142,8 @@ if (!DatabaseSync) {
     if ((mm = /\/channels\/(\d+)\/messages\?limit=\d+&after=(\d+)$/.exec(u))) {
       return js(canales[mm[1]].filter((m) => BigInt(m.id) > BigInt(mm[2])).reverse().slice(0, 30));
     }
-    if (op.method === 'PATCH') { editados.push(JSON.parse(op.body)); return js({ id: 'x' }); }
-    if (op.method === 'POST') { const b = JSON.parse(op.body); mandados.push(b); return js({ id: '9' + mandados.length }); }
+    if (op.method === 'PATCH') { editados.push(vista(JSON.parse(op.body))); return js({ id: 'x' }); }
+    if (op.method === 'POST') { const b = vista(JSON.parse(op.body)); mandados.push(b); return js({ id: '9' + mandados.length }); }
     return js({}, 404);
   };
   const vuelta = (min) => o.ligasVuelta(T0 + min * M);
@@ -147,7 +159,9 @@ if (!DatabaseSync) {
   ok(estadoDe().join() === 'arranca' && mandados.length === 1 && /🔴 \*\*FMH Tricolor\*\*/.test(mandados[0].content) && /está arrancando/.test(mandados[0].content)
     && JSON.stringify(mandados[0].allowed_mentions) === '{"parse":[]}', 'el título en los dos canales es UNA batalla: arranca, y sale una vez en el chat sin mencionar a nadie', );
   ok(!(o.leer('ligas_vivo').errores || []).length && !o.leer('ligas_vivo').ult_error, 'sin errores: ' + JSON.stringify(o.leer('ligas_vivo').errores));
-  ok(sql.exec('SELECT COUNT(*) AS n FROM vs_cola').toArray()[0].n === 1 && (mandados[0].components || []).length >= 2, 'en «Con datos» lleva el VS y sus botones');
+  // ⚠️ se cuentan BOTONES y no filas: desde la 6.54 van juntos en una sola fila mientras entren (`filasVs()`)
+  ok(sql.exec('SELECT COUNT(*) AS n FROM vs_cola').toArray()[0].n === 1 && (mandados[0].components || []).flatMap((f) => f.components || []).length >= 2,
+    'en «Con datos» lleva el VS y sus botones');
   const vsL = JSON.parse(sql.exec('SELECT datos FROM vs_cola').toArray()[0].datos);
   ok(vsL.liga && vsL.liga.id === 'fmh-tricolor' && vsL.liga.n === 'FMH Tricolor' && vsL.a.k === 'bloody',
     'el VS llega a la cola marcado como de liga, con la clave de cada uno: así se dibuja como afiche con sus cartas de liga');

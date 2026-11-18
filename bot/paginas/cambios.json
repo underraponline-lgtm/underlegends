@@ -11,6 +11,15 @@
   ],
   "cambios": [
     {
+        "version": "6.62",
+        "dia": "2026-11-18",
+        "cuando": "2026-11-18T13:58:00-05:00",
+        "titulo": "El bot en vivo, con el formato nuevo",
+        "items": [
+            "**El bot en vivo, con el formato nuevo**: cada mensaje va en un recuadro del color del servidor, con los nombres en negrita y sus botones adentro; las menciones van en una línea arriba, y la imagen del cruce, grande, abajo."
+        ]
+    },
+    {
         "version": "6.61",
         "dia": "2026-11-18",
         "cuando": "2026-11-18T13:50:00-05:00",
