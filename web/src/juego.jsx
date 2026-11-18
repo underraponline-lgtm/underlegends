@@ -35,6 +35,8 @@ const FORMA_DE = Object.fromEntries(CAT.familias);
 const ESTILO = Object.fromEntries(CAT.estilos.map(([k, n, f, d, ic]) => [k, { k, n, f, d, ic }]));
 const OSC = 'rgba(10,10,18,.94)';
 const BLANCO = '#F4F4F6';
+// 🎨 sin letra todavía (no jugó, o es el dueño), el verde de la Liga: en blanco la pestaña entera salía sin color (17/11/2026)
+const SIN_RANGO = '#29B298';
 
 /** Un estilo dibujado como en la carta: la forma de su familia y el nivel por luz y aros. `c` es el color */
 export function Insignia({ k, nivel = 1, tam = 52, c = BLANCO }) {
@@ -124,7 +126,7 @@ export default function EstiloJuego({ liga, dc, k, Cuadro, Titulo }) {
   const nivelDe = (x) => (x === mio ? (niveles[x] || 0) : ganados.find((g) => g[0] === x) ? ganados.find((g) => g[0] === x)[1] : (niveles[x] || 0));
   const tiene = (x) => x === mio || ganados.some((g) => g[0] === x) || viejos.has(x) || x in niveles;
   const f = liga && k ? liga.T[k] : null;
-  const rg = f && f.rg && liga ? liga.colorRg(f.rg) : BLANCO;
+  const rg = f && f.rg && liga ? liga.colorRg(f.rg) : SIN_RANGO;
   const e = ESTILO[sel] || ESTILO[mio] || ESTILO.punchline;
   const nv = tiene(e.k) ? nivelDe(e.k) : 1;
 
@@ -213,7 +215,7 @@ export default function EstiloJuego({ liga, dc, k, Cuadro, Titulo }) {
             {lugar(3, 'DRA', ganados[1] ? ganados[1][0] : '', ganados[1] ? ganados[1][1] : 0, ganados[1] ? 'Ganado en un evento de estilo' : 'Van los dos de nivel más alto')}
           </ol>
           {mio && d ? <span className={'jg-pill' + (d.puede ? '' : ' gris')}>{d.puede ? '✓ Tienes tu cambio de esta temporada' : 'Ya usaste tu cambio de esta temporada'}</span> : null}
-          <p className="ves-nota">Van en la columna izquierda de tu carta Competitiva. La forma es la familia; el color, el de tu rango.</p>
+          <p className="ves-nota">Van en la columna izquierda de tu carta Competitiva. La forma es la familia; el color, el de tu rango{f && f.rg ? '' : ' (sin rango todavía, el verde de la Liga)'}.</p>
         </aside>
       </section>
 
@@ -230,7 +232,7 @@ export default function EstiloJuego({ liga, dc, k, Cuadro, Titulo }) {
                     rar={mio === x ? 'Tu estilo' : g >= 0 ? 'Lugar ' + (g + 2) : viejos.has(x) ? 'Desbloqueado' : cuantosCorto(cuantos[x] || 0)}
                     onClick={() => tocar(x)}>
                     {/* todos como nivel 1: el nivel es de lo que jugaste, no de esta grilla. Lo tuyo lo dice «Puesto» */}
-                    <Insignia k={x} nivel={1} tam={58} />
+                    <Insignia k={x} nivel={1} tam={58} c={rg} />
                   </Cuadro>
                 );
               })}
