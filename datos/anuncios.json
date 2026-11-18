@@ -1,5 +1,5 @@
 {
- "cuando": "2026-11-18T21:25:56+00:00",
+ "cuando": "2026-11-18T21:55:47+00:00",
  "anuncios": [
   {
    "nombre": "¡SE LLEGÓ LA GRAN NOCHE!",
@@ -376,35 +376,6 @@
    "autor": "Geronimo",
    "staff_cuentas": {},
    "categoria_id": "1497457390637809837"
-  },
-  {
-   "nombre": "Sitema:D",
-   "servidor": "FFA",
-   "canal": "✦🏆—eventos",
-   "msg_id": "1572722333691674717",
-   "cuando": "2026-11-18T21:17:04",
-   "canal_id": "1487206325602484295",
-   "guild_id": "1468472442925092958",
-   "organizador": "𓂀",
-   "orgs": [
-    {
-     "n": "𓂀",
-     "id": "1071185986366742630"
-    }
-   ],
-   "autor_h": "335e29b6c78f88b1",
-   "cupos_texto": "lo q sean",
-   "inscriptos": null,
-   "cupo_total": null,
-   "rango": "BRONCE 3",
-   "modalidad": "MULTIVERSE",
-   "horario": "Ahora",
-   "fecha": "",
-   "premios": "rapia",
-   "staff": {},
-   "autor": "𓂀",
-   "staff_cuentas": {},
-   "categoria_id": "1468478330826260500"
   },
   {
    "nombre": "KRDX BATTLES",
@@ -1068,6 +1039,35 @@
    "canal": "✦🏆—eventos",
    "msg_id": "1566622075555160157",
    "cuando": "2026-11-02T01:16:49",
+   "canal_id": "1487206325602484295",
+   "guild_id": "1468472442925092958",
+   "organizador": "@nachonc_",
+   "orgs": [
+    {
+     "n": "nachonc_",
+     "id": ""
+    }
+   ],
+   "autor_h": "d83234c3da26ac85",
+   "cupos_texto": "",
+   "inscriptos": null,
+   "cupo_total": null,
+   "rango": "bronce",
+   "modalidad": "1v1",
+   "horario": "en 15",
+   "fecha": "",
+   "premios": "aura",
+   "staff": {},
+   "autor": "Nc",
+   "staff_cuentas": {},
+   "categoria_id": "1468478330826260500"
+  },
+  {
+   "nombre": "la palera del edi",
+   "servidor": "FFA",
+   "canal": "✦🏆—eventos",
+   "msg_id": "1566313645850234961",
+   "cuando": "2026-11-01T04:51:13",
    "canal_id": "1487206325602484295",
    "guild_id": "1468472442925092958",
    "organizador": "@nachonc_",
@@ -7143,6 +7143,24 @@
  ],
  "oficiales": [
   {
+   "servidor": "DDS",
+   "canal": "🚨〕ANUNCIOS",
+   "tit": "apoyemos gente algunos de los beats estaran en la discord style 20 y edicion campeones",
+   "tx": "",
+   "cuando": "2026-11-18T21:44:17",
+   "msg_id": "1572729183807864927",
+   "link": "https://discord.com/channels/1443770831598649528/1443789190012604436/1572729183807864927"
+  },
+  {
+   "servidor": "DDS",
+   "canal": "🚨〕ANUNCIOS",
+   "tit": "NUEVO ALBUM DE BEATS DE DJ BOOTRAX - ACHIMEGA 21",
+   "tx": "PARA QUE COMPARTAN , APOYEN, PRACTIQUEN Y USEN EN COMPETENCIAS DJ BOOTRAX",
+   "cuando": "2026-11-18T21:43:48",
+   "msg_id": "1572729062466650245",
+   "link": "https://discord.com/channels/1443770831598649528/1443789190012604436/1572729062466650245"
+  },
+  {
    "servidor": "LKR",
    "canal": "anuncios",
    "tit": "NUEVO ALBUM DE BEATS DE DJ BOOTRAX - ACHIMEGA 21",
@@ -7195,24 +7213,6 @@
    "cuando": "2026-11-18T01:26:32",
    "msg_id": "1572422729645424683",
    "link": "https://discord.com/channels/1443770831598649528/1443789190012604436/1572422729645424683"
-  },
-  {
-   "servidor": "DDS",
-   "canal": "📢]ANUNCIOS",
-   "tit": "9 CONFIRMADO 🔥😎 - DLS 2 WORLD 💜❤️",
-   "tx": "",
-   "cuando": "2026-11-18T01:22:50",
-   "msg_id": "1572421795124875469",
-   "link": "https://discord.com/channels/1443770831598649528/1464796928939135059/1572421795124875469"
-  },
-  {
-   "servidor": "DDS",
-   "canal": "📢]ANUNCIOS",
-   "tit": "8 CONFIRMADO 👽🤡 - DLS 2 WORLD 💜❤️",
-   "tx": "",
-   "cuando": "2026-11-18T01:22:26",
-   "msg_id": "1572421697296932966",
-   "link": "https://discord.com/channels/1443770831598649528/1464796928939135059/1572421697296932966"
   },
   {
    "servidor": "FFA",
