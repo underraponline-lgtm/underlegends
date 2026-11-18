@@ -4539,6 +4539,17 @@ const ok = (cond, que, det) => {
     ok(vsr.ok && vsd.a.tc === 'N1' && vsd.a.tfd === '' && vsd.b.tc === '' && TI.cartaPuestaDe(o, [ANA]) === 'N1',
       'el VS en vivo lleva el efecto de carta de cada lado (sólo el id de la pieza)', JSON.stringify(vsd.a));
 
+    // 🔒 Discord, tanda 1: los drops que se ganan compitiendo se dan a todos y se abren siendo Miembro de DRA
+    o.guardar('pase_v', 'prueba-miembros'); o.guardar('pase', { miembros: [ANA] }); o._pase = null;
+    o.dropDar(BEA, 'merito:camp:999', 0); o.dropDar(ANA, 'merito:camp:999', 0); o.dropDar(BEA, 'dia:2026-11-17:1', 0);
+    const dropDe = (q, orig) => (sql.exec('SELECT id FROM drops WHERE quien = ? AND origen = ?', q, orig).toArray()[0] || {}).id;
+    ok(o.dropAbrir(BEA, dropDe(BEA, 'merito:camp:999')).error === 'vincula' && o.dropsDe(BEA).miembro === false,
+      'un drop ganado compitiendo no se abre sin ser Miembro de DRA (queda guardado)');
+    ok(!o.dropAbrir(BEA, dropDe(BEA, 'dia:2026-11-17:1')).error && o.dropAbrir(ANA, dropDe(ANA, 'merito:camp:999')).ok && o.dropsDe(ANA).miembro === true,
+      'los demás drops siguen como estaban, y el miembro abre el suyo');
+    o.guardar('pase', { miembros: [] }); o.guardar('pase_v', 'prueba-miembros-2'); o._pase = null;
+    ok(o.dropsDe(BEA).miembro === true, 'sin la lista de miembros todavía, no se traba a nadie');
+
     // olvidarme
     TI.tiendaOlvidar(o, CAR);
     ok(!mia(CAR, 'car').yo.inv.length && !sql.exec('SELECT 1 AS x FROM tienda_num WHERE quien = ?', CAR).toArray().length,

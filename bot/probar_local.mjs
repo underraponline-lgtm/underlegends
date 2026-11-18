@@ -1901,6 +1901,30 @@ console.log('\nLA FOTO DESDE LA PÁGINA\n');
   delete env.CARTAS;
 }
 
+console.log('\n🛍️🐉 LA TIENDA Y LOS DROPS EN DISCORD (tanda 1)\n');
+
+{
+  // /vincular sin cuenta vinculada: el botón a la página, que te suma a DRA
+  const rv = await pedir({ type: 2, guild_id: G.FFA, channel_id: '1', member: { user: { id: '700950' } }, data: { name: 'vincular' } });
+  const bv = (rv.json?.data?.components || []).flatMap((f) => f.components || []);
+  ok('/vincular sin vincular: efímero, con el botón a la página que te suma a DRA',
+     rv.json?.data?.flags === 64 && bv.some((b) => /\/cuenta\/verificar$/.test(b.url || '')) && /DRA/.test(rv.json?.data?.content || ''), JSON.stringify(rv.json?.data));
+  // los que hablan con el objeto contestan «pensando» y efímero (el objeto puede estar dormido)
+  for (const n of ['drops', 'billetera', 'inventario']) {
+    const r = await pedir({ type: 2, guild_id: G.FFA, channel_id: '1', member: { user: { id: '700951' } }, data: { name: n } });
+    ok('/' + n + ' contesta «pensando», sólo para quien lo pidió', r.json?.type === 5 && r.json?.data?.flags === 64, JSON.stringify(r.json));
+  }
+  const re = await pedir({ type: 2, guild_id: G.FFA, channel_id: '1', member: { user: { id: '700952' } }, data: { name: 'equipar', options: [{ name: 'que', value: 'nada' }] } });
+  ok('/equipar con un lugar que no existe: lo dice, sin llamar al objeto', re.json?.type === 4 && /Elige un lugar/.test(re.json?.data?.content || ''), JSON.stringify(re.json?.data));
+  // el botón de abrir un drop: de quien lo pidió, no de otro
+  const rb = await pedir({ type: 3, guild_id: G.FFA, channel_id: '1', member: { user: { id: '700953' } }, message: { id: '1' },
+                           data: { custom_id: 'dd:drop:x:700954', component_type: 2 } });
+  ok('el botón «Abrir un Drop» de otro no abre nada', /otra persona/.test(rb.json?.data?.content || ''), JSON.stringify(rb.json?.data));
+  const rp = await pedir({ type: 3, guild_id: G.FFA, channel_id: '1', member: { user: { id: '700953' } }, message: { id: '1' },
+                           data: { custom_id: 'dd:drop:x:700953', component_type: 2 } });
+  ok('y el suyo contesta «pensando»', rp.json?.type === 5, JSON.stringify(rp.json));
+}
+
 console.log('\n/WEBSITE Y /NOTIFY\n');
 
 {

@@ -11,6 +11,18 @@
   ],
   "cambios": [
     {
+        "version": "6.41",
+        "dia": "2026-11-17",
+        "cuando": "2026-11-17T23:18:30-05:00",
+        "titulo": "Tus drops y la Tienda, también desde Discord",
+        "items": [
+            "Comandos nuevos del bot: **/drops**, **/billetera**, **/inventario**, **/equipar** y **/vincular**. Lo que contestan lo ves sólo tú.",
+            "Con **/drops**, el **Drop** y el **Star** se abren ahí mismo, en Discord; los Nidos y los cofres, en la página.",
+            "Con **/equipar** eliges el lugar y la pieza, y te la pones sin abrir la página.",
+            "Los **Dragón Drops por ganar** ahora van a **todos los ganadores**, no sólo a los de DRA. Se abren siendo Miembro de DRA: si todavía no lo eres, quedan guardados hasta que vincules tu cuenta (**/vincular**)."
+        ]
+    },
+    {
         "version": "6.40",
         "dia": "2026-11-18",
         "cuando": "2026-11-18T00:05:00-05:00",

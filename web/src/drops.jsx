@@ -144,6 +144,17 @@ export function BarraDia({ dc }) {
     W.addEventListener('lg:cofre', cofre);
     return () => { W.removeEventListener('lg:abrir-drops', abrir); W.removeEventListener('lg:cofre', cofre); };
   }, []);
+  // 🔗 `?drops=1` la abre al llegar (Discord, tanda 1: el botón de /drops y del aviso del evento manda acá los que no se
+  // abren allá —el Nido y los cofres—). Una vez, y se saca de la dirección
+  useEffect(() => {
+    if (!dc) return;
+    try {
+      if (/(^|[?&])drops=1(&|$)/.test(W.location.search)) {
+        W.history.replaceState(W.history.state, '', W.location.pathname + W.location.hash);
+        setTimeout(abrirVentana, 500);
+      }
+    } catch (e) { /* sin dirección: nada */ }
+  }, [dc && dc.id]); // eslint-disable-line react-hooks/exhaustive-deps
   if (!dc) return null;
   const pasos = D ? D.dia.pasos : 0;
   const de = D ? D.dia.de : 6;
@@ -181,11 +192,14 @@ export function AbrirDrops({ D, cerrar }) {
   const cerrados = (D.cerrados || []).filter((x) => x && !hechos.current.has(x.id)).map(queEs);
   const marcas = (D.dia && D.dia.drops) || [1, 3, 6];
   // abre el elegido a pantalla completa, con los demás en fila detrás («Abrir otro» en el resumen)
+  // 🔒 los que se ganan compitiendo se abren siendo Miembro de DRA (`dropAbrir()` en bot/avisos.js): se quedan guardados
+  const traba = (x) => D.miembro === false && /merito/.test(String((x && x.origen) || ''));
   const abrirUno = (i) => {
+    if (traba(cerrados[i])) { setMsg('Ése lo ganaste compitiendo: se abre siendo Miembro de DRA. Vincula tu cuenta y queda listo.'); return; }
     if (abierto.current) return;
     abierto.current = true;
     setMsg('');
-    const cola = [cerrados[i], ...cerrados.filter((_, k) => k !== i)];
+    const cola = [cerrados[i], ...cerrados.filter((x, k) => k !== i && !traba(x))];
     preparar().then(({ mostrarDrops }) => {
       // el shadow root de la página: ahí vale su CSS (y un <dialog> modal se dibuja encima de esta ventana igual)
       mostrarDrops(hostDe(caja.current), cola, {
@@ -221,6 +235,10 @@ export function AbrirDrops({ D, cerrar }) {
           ) : (
             <p className="dsw-vacio">No tienes drops para abrir.<br />Sigue la barra del día: drop en el paso {marcas.slice(0, -1).join(', el ')}{marcas.length > 1 ? ' y el ' : ''}{marcas[marcas.length - 1]}.</p>
           )}
+          {cerrados.some(traba) ? (
+            <p className="dsw-msg">Los que ganaste compitiendo se abren siendo <b>Miembro de DRA</b>: quedan guardados hasta que vincules tu cuenta.{' '}
+              <button type="button" className="btn verde chico" onClick={() => { if (W.urlLogin) W.location.href = W.urlLogin('d'); }}>Vincular mi cuenta</button></p>
+          ) : null}
           {msg ? <p className="dsw-msg" role="alert">{msg}</p> : null}
         </section>
         <section className="dd-lado">

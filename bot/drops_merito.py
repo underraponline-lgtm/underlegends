@@ -23,8 +23,11 @@ desde noviembre (`de_mes_awards()`; el primer reparto, al cerrar el 4/12), y los
 
 🔑 SÓLO DESDE `DESDE`: lo de antes no se paga para atrás. Cada premio lleva su origen (`o`) como llave: el objeto no da
 dos veces el mismo (`dropDar()`), así que mandar todo en cada vuelta es seguro.
-🔑 SÓLO MIEMBROS DE DRA, como el Pase y el drop del día: el nombre de la llave se lleva a la cuenta por la Lista (y sus
-AKAs) y la cuenta tiene que estar en `datos/verificados.json`.
+🔑 PARA TODO GANADOR CON SU CUENTA CONOCIDA, desde la tanda 1 de Discord (17/11/2026; Dlx: «los drops por ganar pasan a ser
+para todos los ganadores… para vincular la cuenta el bot te manda a DRA igualmente… si se sale pues pierde ese
+beneficio pero le avisa»): el nombre de la llave se lleva a la cuenta por la Lista (y sus AKAs). Hasta acá sólo iban a
+los de `datos/verificados.json`. ABRIRLOS sigue siendo de Miembros de DRA (`dropAbrir()` en bot/avisos.js): quien no lo
+es, los tiene guardados hasta vincularse; quien se va de DRA, igual, y se lo avisa la campana.
 Lo manda `pase.armar()` dentro del paquete del Pase (`drops`), y lo reparte `paseCiclo()` del objeto.
 """
 import datetime as dt
@@ -77,10 +80,10 @@ def _llave(x):
 
 
 def quienes():
-    """`nombre -> Discord ID` de los miembros de DRA: la Lista (por su nombre) y sus AKAs."""
-    dra = set(str(x) for x in ((_json('verificados.json', {}) or {}).get('ids') or []))
+    """`nombre -> Discord ID` de todo el que tiene su cuenta en la Lista (por su nombre) y sus AKAs. Ya no sólo DRA: abrir
+    los drops lo frena el objeto, no el reparto"""
     por_raw = {p.get('raw'): str(p.get('discord_id') or '') for p in (_json('padron.json', []) or []) if p.get('raw')}
-    out = {n: i for n, i in por_raw.items() if i in dra}
+    out = {n: i for n, i in por_raw.items() if re.match(r'^[0-9]{5,25}$', i or '')}
     for alias, raw in ((_json('akas.json', {}) or {}).items()):
         if isinstance(raw, str) and raw in out and alias not in out:
             out[alias] = out[raw]

@@ -15214,6 +15214,11 @@ export class Avisos {
   }
 
   /** 🐉 Lo tuyo (`/avisos/drops`): los cerrados, los últimos que abriste, la barra de hoy y la garantía */
+  /** 🔒 ¿puede abrir drops? Miembro de DRA (o el dueño). Sin la lista de miembros todavía, sí */
+  dropMiembro(quien) {
+    try { const P = this.paseDatos(); return !P.miembros.size || P.miembros.has(String(quien)) || String(quien) === DUENO; } catch (e) { return true; }
+  }
+
   dropsDe(quien) {
     if (!/^[0-9]{5,25}$/.test(quien)) return { error: 'faltan datos' };
     const dia = diaET();
@@ -15227,7 +15232,7 @@ export class Avisos {
       return { id: r.id, origen: r.origen, rareza: r.rareza, puntos: pr.puntos || 0, titulo: pr.titulo || '', t: r.t_abierto };
     });
     const hechos = this.sql.exec('SELECT que FROM dia_pasos WHERE quien = ? AND dia = ?', quien, dia).toArray().map((r) => r.que);
-    return { ok: true, cerrados, abiertos, dia: { pasos: hechos.length, hechos, de: Object.keys(PASOS_QUE).length, drops: DROP_PASOS },
+    return { ok: true, cerrados, abiertos, miembro: this.dropMiembro(quien), dia: { pasos: hechos.length, hechos, de: Object.keys(PASOS_QUE).length, drops: DROP_PASOS },
       sin: this.dropSin(quien), garantia: DROP_GARANTIA, rarezas: DROP_RAREZAS, que: PASOS_QUE,
       semana: { cobrado: this.dropSemana(quien), de: DROP_TOPE },
       rarezas_nido: NIDO_RAREZAS, partes: NIDO_PARTES, cofres: COFRES, sube: COFRE_SUBE };
@@ -15238,6 +15243,9 @@ export class Avisos {
     if (!/^[0-9]{5,25}$/.test(quien) || !Number.isInteger(id)) return { error: 'faltan datos' };
     const f = this.sql.exec('SELECT id, origen, min, abierto, rareza, premio FROM drops WHERE id = ? AND quien = ?', id, quien).toArray()[0];
     if (!f) return { error: 'no_existe' };
+    // 🔒 los que se ganan compitiendo se dan a todos y se abren siendo Miembro de DRA (Discord, tanda 1). Los demás (votar,
+    // la barra del día) siguen como estaban. Sin la lista de miembros todavía (el Pase sin llegar), no se traba a nadie
+    if (!f.abierto && esMerito(f.origen) && !this.dropMiembro(quien)) return { error: 'vincula' };
     const tipo = tipoDrop(f.origen);
     if (tipo === 'cofre') return this.cofreAbrir(quien, f);
     if (tipo === 'nido') return this.nidoAbrir(quien, f);
@@ -17961,8 +17969,22 @@ export class Avisos {
         }
       }
     }
+    // 🚪 QUIEN SE FUE DE DRA CON DROPS GUARDADOS (Discord, tanda 1, 17/11/2026; Dlx: «si se sale pues pierde ese
+    // beneficio pero le avisa»): sus drops quedan, sin abrir, hasta que vuelva. El aviso va a la campana, nunca por DM
+    try {
+      const antes = this.paseDatos().miembros, ahoraM = new Set(d.miembros.map(String));
+      if (antes.size && ahoraM.size) {
+        for (const q of antes) {
+          if (ahoraM.has(q) || q === DUENO) continue;
+          if (!this.sql.exec("SELECT 1 AS x FROM drops WHERE quien = ? AND abierto = 0 AND origen LIKE '%merito%' LIMIT 1", q).toArray().length) continue;
+          this.aBandeja(q, 'dra-fuera:' + diaET(), 'drops', 'Saliste de DRA', 'Tus Dragón Drops quedan guardados: vuelve a DRA para abrirlos.',
+            '#/cuenta/verificar', '', Date.now());
+        }
+      }
+    } catch (e) { /* sin aviso: los drops igual quedan */ }
     // 🥚 LOS DRAGÓN DROPS POR GANAR que manda el ciclo (`pase.drops_merito()`, la tanda 1 del rework, 17/11/2026): uno por
-    // cosa ganada, con su origen como llave (`dropDar()` no repite), y sólo los tipos de `MERITO_TIPOS`
+    // cosa ganada, con su origen como llave (`dropDar()` no repite), y sólo los tipos de `MERITO_TIPOS`. Desde la tanda 1
+    // de Discord, para TODO ganador con su cuenta conocida; abrirlos pide ser Miembro de DRA (`dropAbrir()`)
     for (const x of (Array.isArray(d.drops) ? d.drops : []).slice(0, 400)) {
       const q = String((x && x.q) || ''), o = String((x && x.o) || ''), k = String((x && x.k) || '');
       if (!id(q) || !/^[\w.:-]{3,60}$/.test(o) || !MERITO_TIPOS[k]) continue;

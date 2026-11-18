@@ -1196,6 +1196,171 @@ const seguir = (i, txt, botones) =>
       flags: EFIMERO, content: txt, components: filaDe(botones) }),
   });
 
+// ═══ 🛍️🐉 LA TIENDA Y LOS DROPS EN DISCORD (Discord, tanda 1, 17/11/2026) ═══════════════════════════════════════════
+// Dlx: «comandos nuevos: /inventario + /equipar, /billetera + /drops, /vincular. No /tienda» y «en Discord se abren el
+// Drop común y el Star; Nido, cofres y Tesoro mandan a la página». Todo es de quien tocó (Discord lo firma: `idDe(i)`) y
+// se lo contesta sólo a él (efímero). Los datos son los del objeto, por Discord ID, igual que en la página.
+//
+// ⚠️ EL OBJETO PUEDE ESTAR DORMIDO (~4 s en frío): se contesta «pensando» (tipo 5) y se edita después, como `/foto`.
+const RANURA_NOMBRE = { aro: 'Aro', deco: 'Decoración', nom: 'Nombre', carta: 'Efecto de carta', perfil: 'Perfil',
+  fp: 'Fondo · tu perfil', fv: 'Fondo · VS del Inicio', fe: 'Fondo · escenario de tu carta', fd: 'Fondo · VS de Discord',
+  ff: 'Fondo · tu ficha', fr: 'Fondo · tu fila del ranking' };
+const RAREZA_NOMBRE = ['Maqueta', 'Mixtape', 'Vinilo', 'Disco de Oro', 'Micrófono de Oro', 'Disco de Diamante'];
+const URL_DROPS = HUB_URL + '/freestyle-rap/?drops=1';
+const URL_TIENDA = HUB_URL + '/freestyle-rap/tienda';
+const URL_VINCULAR = HUB_URL + '/cuenta/verificar';
+
+const alObjeto = (env, ruta, cuerpo) => env.AVISOS.get(env.AVISOS.idFromName('liga')).fetch('https://avisos/' + ruta, {
+  method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify(cuerpo || {}),
+}).then((r) => r.json()).catch(() => ({ error: 'red' }));
+
+/** «Pensando» ya, y el mensaje (efímero) cuando `trabajo()` termina: `{content, components}` */
+function pensandoYEditar(i, ctx, trabajo) {
+  luego(ctx, (async () => {
+    let data;
+    try { data = await trabajo(); } catch (e) { data = { content: 'No pude: prueba de nuevo en un minuto.' }; }
+    await fetch(`https://discord.com/api/v10/webhooks/${i.application_id}/${i.token}/messages/@original`, {
+      method: 'PATCH', headers: { 'content-type': 'application/json' },
+      body: JSON.stringify(Object.assign({ allowed_mentions: { parse: [] } }, data)),
+    }).catch(() => {});
+  })());
+  return new Response(JSON.stringify({ type: RESPONDE.PENSANDO, data: { flags: EFIMERO } }), { headers: { 'content-type': 'application/json' } });
+}
+
+const tipoDeDrop = (o) => (/^star:/.test(String(o || '')) ? 'star' : /^nido:/.test(String(o || '')) ? 'nido' : /^cofre5:/.test(String(o || '')) ? 'cofre' : 'drop');
+const plural = (n, uno, varios) => n + ' ' + (n === 1 ? uno : varios);
+
+/** 🐉 Lo de `/drops`: cuántos tienes para abrir, los botones del Drop y el Star, y la página para el resto */
+async function panelDrops(env, did) {
+  const j = await alObjeto(env, 'drops', { quien: did });
+  if (!j || !j.ok) return { content: 'No pude ver tus drops: prueba de nuevo en un minuto.' };
+  const cerr = (j.cerrados || []).map((x) => Object.assign({}, x, { t: x.tipo || tipoDeDrop(x.origen) }));
+  const cuenta = (t) => cerr.filter((x) => x.t === t).length;
+  const traba = j.miembro === false;
+  const meritos = cerr.filter((x) => /merito/.test(String(x.origen || ''))).length;
+  if (!cerr.length) {
+    return { content: '🐉 **No tienes drops para abrir.** Se ganan con la barra del día en la página, jugando y ganando eventos.',
+      components: filaDe([botonLink('Abrir la página', URL_DROPS)]) };
+  }
+  const partes = [[cuenta('drop'), 'Drop', 'Drops'], [cuenta('star'), 'Star', 'Stars'], [cuenta('nido'), 'Nido', 'Nidos'], [cuenta('cofre'), 'cofre', 'cofres']]
+    .filter((x) => x[0]).map((x) => plural(x[0], x[1], x[2]));
+  const lineas = ['🐉 **Tienes ' + plural(cerr.length, 'drop', 'drops') + ' para abrir:** ' + partes.join(' · ') + '.'];
+  const bots = [];
+  const puede = (t) => cerr.some((x) => x.t === t && !(traba && /merito/.test(String(x.origen || ''))));
+  if (puede('drop')) bots.push({ type: COMP.BOTON, style: ESTILO.PRIMARIO, label: 'Abrir un Drop', custom_id: 'dd:drop:x:' + did });
+  if (puede('star')) bots.push({ type: COMP.BOTON, style: ESTILO.PRIMARIO, label: 'Abrir un Star', custom_id: 'dd:star:x:' + did });
+  if (cuenta('nido') || cuenta('cofre')) lineas.push('Los Nidos y los cofres se abren en la página, con su animación.');
+  if (traba && meritos) {
+    lineas.push('🔒 ' + plural(meritos, 'lo ganaste', 'los ganaste') + ' compitiendo: se abren siendo **Miembro de DRA**. Vincula tu cuenta con **`/vincular`** y quedan listos.');
+  }
+  bots.push(botonLink('Abrir en la página', URL_DROPS));
+  return { content: lineas.join('\n'), components: filaDe(bots) };
+}
+
+/** 🐉 Abre el primer Drop o Star cerrado de quien tocó y dice qué salió */
+async function abrirDropChat(env, did, tipo) {
+  const j = await alObjeto(env, 'drops', { quien: did });
+  if (!j || !j.ok) return { content: 'No pude ver tus drops: prueba de nuevo en un minuto.' };
+  const traba = j.miembro === false;
+  const cerr = (j.cerrados || []).filter((x) => (x.tipo || tipoDeDrop(x.origen)) === tipo);
+  const x = cerr.find((y) => !(traba && /merito/.test(String(y.origen || ''))));
+  if (!x) {
+    if (cerr.length && traba) return { content: '🔒 Ése lo ganaste compitiendo: se abre siendo **Miembro de DRA**. Vincula tu cuenta con **`/vincular`**.' };
+    return { content: tipo === 'star' ? 'No te quedan Stars para abrir.' : 'No te quedan Drops para abrir.', components: filaDe([botonLink('Ver mis drops', URL_DROPS)]) };
+  }
+  const r = await alObjeto(env, 'drop-abrir', { quien: did, id: Number(x.id) });
+  if (!r || !r.ok) {
+    return { content: r && r.error === 'vincula' ? '🔒 Ése se abre siendo **Miembro de DRA**: `/vincular`.' : 'No pude abrirlo: prueba de nuevo en un minuto.' };
+  }
+  const nom = r.nombre || RAREZA_NOMBRE[r.rareza] || '';
+  const premio = r.titulo ? 'el título **«' + r.titulo + '»**' : '**+' + milesChat(r.puntos) + '** Puntos de Tienda';
+  const quedan = cerr.length - 1;
+  const bots = [];
+  if (quedan > 0) bots.push({ type: COMP.BOTON, style: ESTILO.PRIMARIO, label: tipo === 'star' ? 'Abrir otro Star' : 'Abrir otro Drop', custom_id: 'dd:' + tipo + ':x:' + did });
+  bots.push(botonLink('Ver en la página', URL_DROPS));
+  return { content: '🐉 **' + (tipo === 'star' ? 'Star' : 'Drop') + ' abierto: ' + nom + '.** Te llevas ' + premio + '.'
+    + (r.sin_tope ? '\n*(Esta semana ya pasaste el tope: lo de arriba de 10.000 va a la mitad.)*' : '')
+    + (quedan > 0 ? '\nTe quedan ' + plural(quedan, tipo === 'star' ? 'Star' : 'Drop', tipo === 'star' ? 'Stars' : 'Drops') + '.' : ''),
+  components: filaDe(bots) };
+}
+
+/** 💰 Lo de `/billetera` */
+async function panelBilletera(env, did) {
+  const c = await datosApuesta(env, did);
+  if (!c) return { content: 'La billetera todavía no está lista: prueba en un rato.' };
+  const j = await alObjeto(env, 'billetera', { quien: did, inicial: c.inicial, desde: c.desde });
+  if (!j || !j.ok) return { content: 'No pude ver tu billetera: prueba de nuevo en un minuto.' };
+  const ahora = Date.now();
+  const act = (j.mios || []).filter((m) => !m.estado && m.fin > ahora);
+  const enJuego = act.reduce((a, m) => a + (Number(m.monto) || 0), 0);
+  return { content: ['💰 **Tienes ' + milesChat(j.saldo) + ' Puntos de Tienda.**',
+    '· Cobrado cazando esta temporada: **' + milesChat(j.cobrado) + '**',
+    act.length ? '· En juego: **' + milesChat(enJuego) + '** en ' + plural(act.length, 'cabeza', 'cabezas') + ' (si nadie las caza, vuelven)' : '',
+    'Se ganan jugando, entrando cada día, con el Pase, cazando y con los Dragón Drops.'].filter(Boolean).join('\n'),
+  components: filaDe([botonLink('Ir a la Tienda', URL_TIENDA)]) };
+}
+
+/** 🎒 `/tienda` del objeto para quien tocó (su clave, si está verificado, y la billetera) */
+async function tiendaDe(env, did) {
+  const c = await datosApuesta(env, did);
+  let de = '';
+  try { de = (await env.KV.get('d:' + did)) || ''; } catch (e) { de = ''; }
+  return alObjeto(env, 'tienda', Object.assign({ quien: did, de }, c ? { inicial: c.inicial, desde: c.desde } : {}));
+}
+
+/** 🎒 Lo de `/inventario`: lo de la Tienda que tienes y lo que tienes puesto */
+async function panelInventario(env, did) {
+  const S = await tiendaDe(env, did);
+  if (!S || !S.ok || !S.yo) return { content: S && S.ok && !S.abierta ? 'La Tienda todavía no abrió.' : 'No pude ver tu inventario: prueba de nuevo en un minuto.' };
+  const P = (S.cat && S.cat.piezas) || {};
+  const inv = (S.yo.inv || []).filter((x) => P[x.p]);
+  const puesto = S.yo.puesto || {};
+  if (!inv.length) {
+    return { content: '🎒 **Todavía no tienes nada de la Tienda.** Tienes **' + milesChat(S.yo.saldo) + '** Puntos de Tienda para estrenar.',
+      components: filaDe([botonLink('Ir a la Tienda', URL_TIENDA)]) };
+  }
+  const por = {};
+  for (const x of inv) { const r = P[x.p].c; por[r] = (por[r] || 0) + 1; }
+  const tienes = Object.entries(por).map(([r, n]) => (RANURA_NOMBRE[r] || r) + ' ' + n).join(' · ');
+  const puestas = Object.entries(puesto).filter(([, id]) => P[id]).map(([r, id]) => '· ' + (RANURA_NOMBRE[r] || r) + ': **' + P[id].n + '**');
+  return { content: ['🎒 **De la Tienda tienes ' + plural(inv.length, 'pieza', 'piezas') + ':** ' + tienes + '.',
+    puestas.length ? '**Puesto ahora:**\n' + puestas.join('\n') : 'No tienes nada puesto: **`/equipar`** te lo pone.',
+    'Te quedan **' + milesChat(S.yo.saldo) + '** Puntos de Tienda.'].join('\n'),
+  components: filaDe([botonLink('Tu Inventario', URL_INVENTARIO), botonLink('La Tienda', URL_TIENDA)]) };
+}
+
+/** 🎽 Lo de `/equipar que:<ranura>`: un menú con lo tuyo de ese lugar (y «Quitar») */
+async function panelEquipar(env, did, ranura) {
+  const S = await tiendaDe(env, did);
+  if (!S || !S.ok || !S.yo) return { content: 'No pude ver lo tuyo: prueba de nuevo en un minuto.' };
+  const P = (S.cat && S.cat.piezas) || {};
+  const mias = (S.yo.inv || []).filter((x) => P[x.p] && P[x.p].c === ranura);
+  const ahora = (S.yo.puesto || {})[ranura] || '';
+  const nombre = RANURA_NOMBRE[ranura] || ranura;
+  if (!mias.length) {
+    return { content: '🎽 No tienes nada de **' + nombre + '** todavía.', components: filaDe([botonLink('Ver en la Tienda', URL_TIENDA)]) };
+  }
+  const opciones = mias.slice(0, 24).map((x) => ({ label: String(P[x.p].n).slice(0, 100), value: x.p, default: x.p === ahora }));
+  if (ahora) opciones.push({ label: 'Quitar lo que tengo puesto', value: '-' });
+  return { content: '🎽 **' + nombre + '**' + (ahora && P[ahora] ? ' · ahora: **' + P[ahora].n + '**' : '') + '\nElige qué ponerte:',
+    components: [{ type: COMP.FILA, components: [{ type: COMP.SELECT, custom_id: 'eq:' + ranura + ':x:' + did, placeholder: 'Elige…', options: opciones }] }] };
+}
+
+/** 🎽 Ponerse (o sacarse) lo elegido en el menú de `/equipar` */
+async function ponerChat(env, did, ranura, pieza) {
+  const c = await datosApuesta(env, did);
+  let de = '';
+  try { de = (await env.KV.get('d:' + did)) || ''; } catch (e) { de = ''; }
+  const j = await alObjeto(env, 'tienda-accion', Object.assign({ accion: 'poner', ranura, pieza: pieza === '-' ? '' : pieza, quien: did, de },
+    c ? { inicial: c.inicial, desde: c.desde } : {}));
+  if (!j || !j.ok) {
+    const por = { verificate: 'Primero verifícate: **`/vincular`**.', no_la_tienes: 'Ésa no es tuya.', ranura: 'Eso no va ahí.' };
+    return { content: '🎽 ' + (por[j && j.error] || 'No pude ponértelo: prueba de nuevo en un minuto.'), components: [] };
+  }
+  return { content: pieza === '-' ? '🎽 Listo: te lo quité.' : '🎽 **Listo, te lo pusiste.** Se ve en la página en unos minutos' + (ranura === 'carta' ? ', y en `/card` cuando se rehaga tu carta.' : '.'),
+    components: [] };
+}
+
 // ── Los botones se apagan solos ───────────────────────────────────────────
 // Dlx, 17/09/2026: «después de cierta inactividad, que todos se desactiven o
 // que ya no funcionen para la persona que escribió el comando».
@@ -2585,6 +2750,27 @@ const AYUDA = {
     'Compartir → Agregar a inicio). Se apagan o se cambian en la misma página.',
   ].join('\n'),
 
+  drops: () => [
+    '## `/drops` — tus Dragón Drops',
+    'Cuántos tienes para abrir. El **Drop** y el **Star** se abren acá mismo; los Nidos y los cofres, en la página.',
+    'Los que ganas compitiendo se abren siendo Miembro de DRA (`/vincular`).',
+  ].join('\n'),
+  billetera: () => [
+    '## `/billetera` — tus Puntos de Tienda',
+    'Cuántos tienes, lo cobrado cazando y lo que tienes en juego. Sólo lo ves tú.',
+  ].join('\n'),
+  inventario: () => [
+    '## `/inventario` — lo tuyo de la Tienda',
+    'Lo que compraste y lo que tienes puesto. Sólo lo ves tú.',
+  ].join('\n'),
+  equipar: () => [
+    '## `/equipar` — ponerte algo de la Tienda',
+    'Eliges el lugar (aro, nombre, carta, un fondo…) y después la pieza. Se ve en la página en unos minutos.',
+  ].join('\n'),
+  vincular: () => [
+    '## `/vincular` — tu cuenta con tu perfil de la Liga',
+    'Para que tus premios y tus drops sean tuyos: entras con Discord en la página y te suma a DRA.',
+  ].join('\n'),
   website: () => [
     '## `/website` — la página de la Liga',
     'Te deja el link a la página: rankings, perfiles, llaves y calendario.',
@@ -2622,6 +2808,10 @@ const AYUDA_INDICE = [
   '· **`/verificar`** — qué te falta para verificarte (y tener las cuatro)',
   '· **`/notify`** — activa los avisos de eventos en tu celular o compu',
   '· **`/website`** — la página de la Liga',
+  '· **`/drops`** — tus Dragón Drops: el Drop y el Star se abren acá',
+  '· **`/billetera`** — tus Puntos de Tienda',
+  '· **`/inventario`** y **`/equipar`** — lo tuyo de la Tienda, y ponértelo',
+  '· **`/vincular`** — tu cuenta con tu perfil de la Liga',
   '· **`/versus`** — quién gana entre dos, en la categoría que elijas',
   '· **`/foto`** — usa tu foto de Discord en tus tarjetas ' +
   '*(una por temporada, libre hasta que arranque)*',
@@ -3604,6 +3794,41 @@ const COMANDOS = {
     return aviso(panelEstado(m, disp));
   },
 
+  // 🐉 /drops — los tuyos para abrir; el Drop y el Star se abren acá (Discord, tanda 1)
+  drops(i, env, ctx) {
+    const did = idDe(i);
+    return pensandoYEditar(i, ctx, () => panelDrops(env, did));
+  },
+  // 💰 /billetera — tus Puntos de Tienda
+  billetera(i, env, ctx) {
+    const did = idDe(i);
+    return pensandoYEditar(i, ctx, () => panelBilletera(env, did));
+  },
+  // 🎒 /inventario — lo de la Tienda que tienes y lo que tienes puesto
+  inventario(i, env, ctx) {
+    const did = idDe(i);
+    return pensandoYEditar(i, ctx, () => panelInventario(env, did));
+  },
+  // 🎽 /equipar que:<lugar> — un menú con lo tuyo de ese lugar
+  equipar(i, env, ctx) {
+    const did = idDe(i);
+    const ranura = String(((i.data.options || []).find((o) => o.name === 'que') || {}).value || '');
+    if (!RANURA_NOMBRE[ranura]) return aviso('Elige un lugar: aro, decoración, nombre, carta, perfil o un fondo.');
+    return pensandoYEditar(i, ctx, () => panelEquipar(env, did, ranura));
+  },
+  // 🔗 /vincular — tu cuenta de Discord con tu perfil de la Liga (para que tus premios y drops sean tuyos)
+  async vincular(i, env, ctx) {
+    const did = idDe(i);
+    let k = '';
+    try { k = (await env.KV.get('d:' + did)) || ''; } catch (e) { k = ''; }
+    if (k) {
+      return aviso('🔗 **Tu cuenta ya está vinculada:** en la Liga eres **' + k + '** ✅\nTus premios y tus drops van directo a ti.',
+        [botonLink('Tu perfil', HUB_URL + '/freestyle-rap/r/' + encodeURIComponent(k))]);
+    }
+    return aviso('🔗 **Vincula tu cuenta** para que tus premios y tus Dragón Drops sean tuyos. El botón te lleva a la página: '
+      + 'entras con Discord y te suma a **DRA**, el servidor de la Liga. Si después te vas de DRA, lo que ganaste queda guardado hasta que vuelvas.',
+      [botonLink('Vincular mi cuenta', URL_VINCULAR)]);
+  },
   ping(i) {
     return aviso(
       '🏓 **Liga Global** responde.\n' +
@@ -4851,6 +5076,19 @@ export default {
       // mensaje se actualiza con cómo va en la vuelta siguiente del vigía (`qgRevisar()`)
       // ── 👥 las crews (19/10/2026): `cw:si|no:<crew>:<invitado>` y `cw:salir:x:<quien>` (ver `crewBoton`) ──────────
       if (que === 'cw') return crewBoton(i, env, quien, extra, dueno);
+
+      // ── 🐉 «Abrir un Drop / Star» (`dd:<drop|star>:x:<dueño>`) y 🎽 el menú de `/equipar` (`eq:<lugar>:x:<dueño>`) ─
+      // Discord, tanda 1. Con dueño, sólo él; sin dueño (el aviso del evento, tanda 2), cada uno abre los suyos
+      if (que === 'dd' || que === 'eq') {
+        const yo = idDe(i);
+        const esperarD = frenado(yo, 'click');
+        if (esperarD) return espera(esperarD);
+        if (dueno && dueno !== yo) return aviso('Eso es de otra persona: usa **`/drops`** para ver los tuyos.');
+        if (que === 'dd') return (quien === 'drop' || quien === 'star') ? pensandoYEditar(i, ctx, () => abrirDropChat(env, yo, quien)) : aviso('Ese botón ya no anda.');
+        const val = ((i.data && i.data.values) || [])[0] || '';
+        if (!RANURA_NOMBRE[quien] || !val) return aviso('Ese menú ya no anda: usa **`/equipar`** de nuevo.');
+        return pensandoYEditar(i, ctx, () => ponerChat(env, yo, quien, val));
+      }
 
       // ── 📊 «Ver estadísticas» de un cruce (02/11/2026, el remake del VS): `vx:<id>` ─────────────────────────────
       // Dlx: «un botón para enviar un mensaje efímero con las estadísticas». La ficha ya la calculó el vigía al armar el
