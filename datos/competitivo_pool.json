@@ -179,7 +179,7 @@
   "nac": {
    "evn": 13,
    "evi": 20,
-   "com": 8,
+   "com": 9,
    "top": [
     1,
     "cl"
@@ -1463,25 +1463,25 @@
   "arc_sv": 91,
   "pos_crew": "1/10",
   "tg_c": {
-   "bestia": 3,
+   "bestia": 2,
    "clasico": 3,
-   "dg": 50,
+   "dg": 47,
    "fg": 8,
    "fp": 4,
    "mata": 1,
-   "riv": 72,
-   "venc": 43,
+   "riv": 70,
+   "venc": 41,
    "vengo": 3
   },
   "tg_p": {
-   "paises": 15,
-   "paisesg": 13,
+   "paises": 14,
+   "paisesg": 12,
    "pionero": true,
    "primer": true
   },
   "nac": {
    "evn": 2,
-   "evi": 77,
+   "evi": 76,
    "com": 0,
    "top": [
     1,
@@ -2709,21 +2709,21 @@
   "tg_c": {
    "bestia": 2,
    "clasico": 2,
-   "dg": 12,
+   "dg": 10,
    "fg": 1,
    "fp": 1,
    "mata": 1,
-   "riv": 18,
-   "venc": 10,
+   "riv": 16,
+   "venc": 9,
    "vengo": 1
   },
   "tg_p": {
-   "paises": 10,
+   "paises": 9,
    "paisesg": 7
   },
   "nac": {
    "evn": 3,
-   "evi": 15,
+   "evi": 14,
    "com": 0,
    "top": [
     1,
@@ -3330,18 +3330,18 @@
   "tg_c": {
    "bestia": 1,
    "clasico": 1,
-   "dg": 2,
+   "dg": 3,
    "fp": 1,
-   "riv": 8,
-   "venc": 2
+   "riv": 10,
+   "venc": 3
   },
   "tg_p": {
    "paises": 5,
    "paisesg": 2
   },
   "nac": {
-   "evn": 5,
-   "evi": 8,
+   "evn": 6,
+   "evi": 9,
    "com": 2,
    "top": [
     1,
@@ -3394,12 +3394,12 @@
    "fg": 3,
    "fp": 2,
    "mata": 2,
-   "riv": 28,
+   "riv": 27,
    "venc": 18,
    "vengo": 1
   },
   "tg_p": {
-   "paises": 12,
+   "paises": 11,
    "paisesg": 10,
    "primer": true,
    "unico": true
@@ -3654,7 +3654,7 @@
   },
   "nac": {
    "evn": 4,
-   "evi": 26,
+   "evi": 25,
    "com": 2,
    "top": [
     5,
@@ -4071,10 +4071,10 @@
   "tg_c": {
    "bestia": 1,
    "clasico": 3,
-   "dg": 15,
+   "dg": 14,
    "fp": 3,
-   "riv": 27,
-   "venc": 14
+   "riv": 26,
+   "venc": 13
   },
   "tg_p": {
    "paises": 10,
@@ -5150,10 +5150,10 @@
   "duel_real": true,
   "dna_v": 4,
   "dna_t": 9,
-  "din_v": 5,
-  "din_t": 7,
+  "din_v": 6,
+  "din_t": 9,
   "crn_t": 12,
-  "cri_t": 11,
+  "cri_t": 13,
   "pos": 132,
   "total": 85,
   "rango": "",
@@ -6310,7 +6310,7 @@
   },
   "nac": {
    "evn": 2,
-   "evi": 7,
+   "evi": 8,
    "com": 0,
    "top": [
     5,
@@ -8340,12 +8340,12 @@
   "pos_sv": "67/171",
   "arc_sv": 61,
   "tg_c": {
-   "bestia": 2,
+   "bestia": 1,
    "clasico": 2,
-   "dg": 11,
+   "dg": 10,
    "fg": 2,
    "fp": 2,
-   "mata": 3,
+   "mata": 2,
    "riv": 22,
    "venc": 10,
    "vengo": 1
@@ -9549,10 +9549,10 @@
   "duel_real": true,
   "dna_v": 3,
   "dna_t": 6,
-  "din_v": 7,
-  "din_t": 9,
+  "din_v": 9,
+  "din_t": 11,
   "crn_t": 8,
-  "cri_t": 10,
+  "cri_t": 12,
   "pos": 177,
   "total": 85,
   "rango": "",
@@ -10244,7 +10244,7 @@
   "din_v": 2,
   "din_t": 4,
   "crn_t": 2,
-  "cri_t": 15,
+  "cri_t": 16,
   "pos": 187,
   "total": 85,
   "rango": "",
@@ -12499,10 +12499,10 @@
   "duel_t": 8,
   "duel_real": true,
   "dna_v": 0,
-  "dna_t": 0,
+  "dna_t": 1,
   "din_v": 3,
   "din_t": 7,
-  "crn_t": 0,
+  "crn_t": 1,
   "cri_t": 7,
   "pos": 216,
   "total": 85,
@@ -12523,11 +12523,11 @@
    "vengo": 2
   },
   "tg_p": {
-   "paises": 2,
+   "paises": 3,
    "paisesg": 2
   },
   "nac": {
-   "evn": 0,
+   "evn": 1,
    "evi": 1,
    "com": 0,
    "top": [
@@ -16945,10 +16945,10 @@
   "duel_real": true,
   "dna_v": 0,
   "dna_t": 1,
-  "din_v": 0,
-  "din_t": 5,
+  "din_v": 2,
+  "din_t": 7,
   "crn_t": 2,
-  "cri_t": 6,
+  "cri_t": 8,
   "pos": 295,
   "total": 85,
   "rango": "",
@@ -16967,7 +16967,8 @@
    "venc": 1
   },
   "tg_p": {
-   "paises": 3
+   "paises": 3,
+   "paisesg": 1
   },
   "nac": {
    "evn": 2,
@@ -17015,14 +17016,14 @@
   "arc_sv": 38,
   "tg_c": {
    "clasico": 1,
-   "riv": 3
+   "riv": 2
   },
   "tg_p": {
-   "paises": 3
+   "paises": 2
   },
   "nac": {
    "evn": 2,
-   "evi": 3,
+   "evi": 2,
    "com": 0
   }
  },
@@ -20634,7 +20635,7 @@
   "din_v": 0,
   "din_t": 1,
   "crn_t": 0,
-  "cri_t": 2,
+  "cri_t": 3,
   "pos": 366,
   "total": 85,
   "rango": "",
@@ -24722,16 +24723,9 @@
   "arc_pais": 0,
   "pos_sv": "",
   "arc_sv": 0,
-  "tg_c": {
-   "clasico": 1,
-   "riv": 1
-  },
-  "tg_p": {
-   "paises": 1
-  },
   "nac": {
    "evn": 0,
-   "evi": 2,
+   "evi": 1,
    "com": 0
   }
  },
@@ -33635,7 +33629,7 @@
  {
   "full": "Lhyon",
   "raw": "Lhyon",
-  "cc": "",
+  "cc": "pe",
   "sv": "SR",
   "crew": "",
   "discord_id": "429733075870810112",
@@ -33654,12 +33648,12 @@
   "duel_v": 2,
   "duel_t": 7,
   "duel_real": true,
-  "dna_v": 0,
-  "dna_t": 0,
-  "din_v": 0,
-  "din_t": 0,
-  "crn_t": 0,
-  "cri_t": 0,
+  "dna_v": 1,
+  "dna_t": 1,
+  "din_v": 1,
+  "din_t": 6,
+  "crn_t": 1,
+  "cri_t": 8,
   "pos": 638,
   "total": 85,
   "rango": "",
@@ -33683,9 +33677,9 @@
    "paisesg": 2
   },
   "nac": {
-   "evn": 0,
-   "evi": 0,
-   "com": 0
+   "evn": 1,
+   "evi": 2,
+   "com": 1
   }
  },
  {

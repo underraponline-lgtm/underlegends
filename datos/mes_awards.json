@@ -10181,6 +10181,20 @@
       "Drexx": "1150099153238630410",
       "Lízeninn": "1474585358292222015"
      }
+    },
+    "1572431003018862733": {
+     "sv": "FFA",
+     "nombre": "NEW GENESIS",
+     "mo": "2026-11-18T01:59:25Z",
+     "staff": {},
+     "orgs": [
+      {
+       "n": "deslanofthemind",
+       "id": ""
+      }
+     ],
+     "organizador": "@deslanofthemind",
+     "cuentas": {}
     }
    },
    "ver": {
@@ -10815,7 +10829,7 @@
     "LKR|2026-11-12": {
      "483070865081237505": [
       "",
-      "Trueno",
+      "LAST",
       "last5724"
      ],
      "756958777126682674": [
@@ -11164,6 +11178,11 @@
       "",
       "#99 |ALEXXXOL🇨🇴🔥🐉",
       "tenacious_dragon_23394"
+     ],
+     "1316490165836972104": [
+      "Mi amor",
+      "Adriagner",
+      "adriagner"
      ]
     }
    }
