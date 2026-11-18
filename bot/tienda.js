@@ -369,7 +369,11 @@ export function tiendaAccion(o, d, H) {
   if (a === 'poner') {
     const ranura = String(d.ranura || ''), id = d.pieza == null ? '' : String(d.pieza);
     if (!RANURAS.includes(ranura)) return mal('ranura');
-    if (!id) { o.sql.exec('DELETE FROM tienda_puesto WHERE quien = ? AND ranura = ?', quien, ranura); return { ok: true }; }
+    if (!id) {
+      o.sql.exec('DELETE FROM tienda_puesto WHERE quien = ? AND ranura = ?', quien, ranura);
+      if (ranura === 'carta' && o.pedirRedibujo) o.pedirRedibujo(quien);
+      return { ok: true };
+    }
     if (!tiene.has(id)) return mal('no_la_tienes');
     if (cat.piezas[id].c !== ranura) return mal('ranura');
     o.state.storage.transactionSync(() => ponerUna(o, quien, cat, id, ahora));
@@ -439,6 +443,8 @@ function ponerUna(o, quien, cat, id, ahora) {
   const c = cat.piezas[id].c;
   if (!RANURAS.includes(c)) return;
   o.sql.exec('INSERT OR REPLACE INTO tienda_puesto (quien, ranura, pieza, t) VALUES (?, ?, ?, ?)', quien, c, id, ahora);
+  // 🃏 un efecto de carta va también en la foto de /card (tanda 3b): se pide el redibujo, con el mismo freno que el marco
+  if (c === 'carta' && o.pedirRedibujo) { try { o.pedirRedibujo(quien); } catch (e) { /* sin redibujo: la de antes */ } }
   o.sql.exec('UPDATE tienda_inv SET usada = 1 WHERE quien = ? AND pieza = ?', quien, id);
 }
 
@@ -631,6 +637,14 @@ export function arteUso(o) {
  * Qué tiene puesto cada perfil: `{clave: {ranura: pieza}}`, para `/avisos/pases`. Por clave, NUNCA por cuenta (quien no
  * tiene perfil no sale). Sólo con la Tienda abierta, y sólo lo que sigue en el catálogo
  */
+/** 🃏 El efecto de carta que tiene puesto alguna de esas cuentas (para la foto de /card, `firmaImagen()`), o '' */
+export function cartaPuestaDe(o, quienes) {
+  const cat = catalogo(o);
+  const qs = (quienes || []).map(String).filter((x) => QUIEN.test(x));
+  if (!cat || !cat.abierta || !qs.length) return '';
+  const r = filas(o, 'SELECT pieza FROM tienda_puesto WHERE ranura = ? AND quien IN (' + qs.map(() => '?').join(',') + ') ORDER BY t DESC LIMIT 1', 'carta', ...qs)[0];
+  return r && cat.piezas[r.pieza] ? r.pieza : '';
+}
 export function puestosPublicos(o) {
   const cat = catalogo(o);
   if (!cat || !cat.abierta) return {};

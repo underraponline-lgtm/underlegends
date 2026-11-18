@@ -6,6 +6,7 @@
 import { useState } from 'react';
 import { ConMarco } from './marcos.jsx';
 import { usePases } from './pase.js';
+import { ConEfecto, usePuesto } from './puesto.js';
 
 export function MarcoSolo({ liga, k, cual, sv, cc }) {
   const pub = usePases();
@@ -15,10 +16,14 @@ export function MarcoSolo({ liga, k, cual, sv, cc }) {
   const svc = sv && liga.svs && liga.svs[sv] ? liga.svs[sv].color : '';
   // la carta recién subida, sin la copia del navegador
   const src = liga.d.r2 + '/' + k + '/' + cual + '.webp?m=' + t;
+  // 🃏 el efecto de carta de la Tienda (tanda 3b): va en la misma foto que el marco, así /card lo muestra. Se espera al arte
+  const P = usePuesto(k);
+  const tc = pub && pub.tp && pub.tp[k] ? pub.tp[k].carta || '' : '';
   const img = <img className="ms-img" src={src} alt="" onLoad={() => setOk(true)} />;
+  const fx = <ConEfecto P={P} src={src}>{img}</ConEfecto>;
   return (
-    <div className="ms" data-listo={ok && mk !== undefined ? '1' : ''} data-marco={mk ? '1' : '0'}>
-      {mk ? <ConMarco m={mk} cual={cual} ancho={300} svColor={svc} cc={cc} src={src}>{img}</ConMarco> : img}
+    <div className="ms" data-listo={ok && mk !== undefined && (!tc || P) ? '1' : ''} data-marco={mk || tc ? '1' : '0'}>
+      {mk ? <ConMarco m={mk} cual={cual} ancho={300} svColor={svc} cc={cc} src={src}>{fx}</ConMarco> : fx}
     </div>
   );
 }

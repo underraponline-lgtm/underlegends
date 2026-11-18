@@ -27,7 +27,7 @@ const RANURA = { aro: 'Aro', deco: 'Deco', nom: 'Nombre', carta: 'Carta', perfil
 const TABS = [['aro', 'Aros'], ['deco', 'Decoraciones'], ['nom', 'Nombre'], ['perfil', 'Perfil'], ['carta', 'Carta'], ['fondo', 'Fondos'], ['juego', 'Colecciones'], ['prem', 'Premium']];
 const EXTRA = { nav: 'Navidad', num: 'Ediciones de 10', deseo: '♥ Tu lista' };
 const DONDE = {
-  aro: 'tu foto en toda la página: el ranking, los comentarios, Publicaciones, tu perfil, /card y tu mitad del VS en vivo',
+  aro: 'tu foto en toda la página: el ranking, los comentarios, Publicaciones, tu perfil y tu ficha',
   deco: 'tu foto en toda la página, encima de tu aro', nom: 'tu nombre en el ranking, tu perfil, tu ficha y los comentarios',
   carta: 'tus cartas en la página y en /card', perfil: 'tu perfil', serv: 'toda la Liga: tu nombre de ahora queda como alias',
   fp: 'la portada de tu perfil', fv: 'tu mitad del VS del Inicio', fe: 'el escenario de tu carta', fd: 'tu mitad del VS en vivo de Discord',
@@ -35,10 +35,9 @@ const DONDE = {
 };
 // ⏳ ABIERTA ANTES QUE LA TANDA 3 (17/11/2026, Dlx: «abrir ya, avisando»): lo que te pones se ve en la Tienda y todavía no
 // en el resto de la página. Cuando la tanda 3 lo lleve a cada lugar, se borra esta línea y el «Se va a ver en» vuelve a «Se ve en»
-// ✅ DESDE LA TANDA 3 se ve en toda la página (puesto.js). Lo que todavía falta es lo que se dibuja para Discord —/card y la
-// imagen del VS en vivo, que se arman en GitHub—: eso lo dice cada pieza a la que le toca
-const EN_DISCORD = { aro: 'En /card y en el VS de Discord, muy pronto.', deco: 'En /card y en el VS de Discord, muy pronto.',
-  carta: 'En /card, muy pronto.', fd: 'Muy pronto: el VS de Discord se dibuja aparte.' };
+// ✅ DESDE LA TANDA 3 se ve en toda la página (puesto.js) y desde la 3b en Discord: el efecto de carta en /card (la foto
+// la rehace `bot/con_marco.py`, con el freno del marco) y el fondo de Discord y el efecto en el VS en vivo (`bot/kit.py`)
+const EN_DISCORD = { carta: 'En /card se ve unos minutos después de ponértela.' };
 const MENSAJES = ['Sin mensaje', '¡Felicitaciones!', 'Para tu próxima batalla', 'Te lo ganaste'];
 const ERRORES = { pronto: 'Todavía no se vende: sale pronto.', saldo: 'No te alcanzan los Puntos.', ya_la_tienes: 'Ya la tienes.', premium: 'Es sólo para Premium.', no_esta: 'Ya no está en la vitrina.',
   fuera_de_fecha: 'Ya no se vende.', todavia_no: 'Todavía no está a la venta.', cerrada: 'La venta ya cerró.', agotada: 'Se agotaron.',

@@ -11,6 +11,16 @@
   ],
   "cambios": [
     {
+        "version": "6.38",
+        "dia": "2026-11-17",
+        "cuando": "2026-11-17T22:46:57-05:00",
+        "titulo": "Lo de la Tienda, también en Discord",
+        "items": [
+            "Tu **efecto de carta** sale en **/card**: la imagen se rehace sola unos minutos después de ponértelo.",
+            "En el **VS en vivo** de Discord, tu mitad lleva tu **fondo de Discord** de la Tienda y tu carta, su **efecto**."
+        ]
+    },
+    {
       "version": "6.37",
       "dia": "2026-11-17",
       "cuando": "2026-11-17T22:45:05-05:00",

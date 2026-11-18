@@ -47,14 +47,28 @@ def _j(*p, defecto=None):
         return defecto
 
 
-def marcos_publicos():
-    """`{clave: [marco, estilo, serie]}` de quienes tienen marco puesto (lo público del Pase)."""
+def pases_publicos():
+    """Lo público del Pase: `m` (`{clave: [marco, estilo, serie]}`, quienes tienen marco) y `tp` (lo que cada uno se puso
+    en la Tienda, `{clave: {ranura: pieza}}`)."""
     import requests
     try:
         r = requests.get('https://underlegends.pages.dev/api/avisos/pases', timeout=30)
-        return (r.json() or {}).get('m') or {} if r.status_code == 200 else {}
+        return (r.json() or {}) if r.status_code == 200 else {}
     except (OSError, ValueError):
         return {}
+
+
+def marcos_publicos():
+    """`{clave: [marco, estilo, serie]}` de quienes tienen marco puesto (lo público del Pase)."""
+    return pases_publicos().get('m') or {}
+
+
+def firma_de(m, tc):
+    """🖼️🃏 Lo que lleva la foto: el marco (`marco|estilo`) y, desde la tanda 3b de la Tienda, el efecto de carta (`|C1`;
+    sin marco, `-|-|C1`). ⚠️ La misma cuenta que `firmaImagen()` en bot/avisos.js: si no coinciden, /card nunca la usa"""
+    if not m and not tc:
+        return ''
+    return ('%s|%s' % (m[0], m[1]) if m else '-|-') + ('|' + tc if tc else '')
 
 
 def datos_de(raw):
@@ -168,14 +182,16 @@ def subir(hechas):
 
 def correr(quienes, simulacro=False):
     """Las fotos de `quienes` (nombres) que tienen marco puesto. Devuelve `{clave: {firma, cartas}}` para el objeto."""
-    pub = marcos_publicos()
+    pp = pases_publicos()
+    pub, tp = pp.get('m') or {}, pp.get('tp') or {}
     trabajos, firma = [], {}
     for raw in quienes:
         k, sv, cc, cartas = datos_de(raw)
         m = pub.get(k)
-        if not m or not cartas:
+        tc = str((tp.get(k) or {}).get('carta') or '')
+        if not (m or tc) or not cartas:
             continue
-        firma[k] = '%s|%s' % (m[0], m[1])
+        firma[k] = firma_de(m, tc)
         trabajos += [(k, c, sv, cc) for c in cartas]
     if not trabajos:
         print('   🖼️ nadie con marco en esta tanda')
@@ -219,6 +235,9 @@ def _self_check():
     print('\n══ LAS CARTAS CON MARCO ══\n')
     ok(set(CARTAS) == {'temporada', 'competitivo', 'pais', 'servidor'}, 'las cuatro cartas')
     ok(ESCALA * 300 == 900, 'la foto sale del mismo ancho que las cartas (900 px)')
+    # 🃏 la firma: igual a la de antes sin efecto (las fotos que ya están siguen valiendo) y con el efecto de la Tienda al final
+    ok(firma_de(['plata', 'camiseta'], '') == 'plata|camiseta' and firma_de(['plata', 'camiseta'], 'C1') == 'plata|camiseta|C1'
+       and firma_de(None, 'C1') == '-|-|C1' and firma_de(None, '') == '', 'la firma de la foto: el marco y el efecto de carta')
     print('\n   %s' % ('todo bien' if not mal else '🔴 %d mal' % mal))
     return 1 if mal else 0
 

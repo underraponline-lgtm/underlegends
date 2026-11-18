@@ -976,11 +976,93 @@ def _fondo_bandera(fl):
         return 'data:image/webp;base64,' + base64.b64encode(f.read()).decode('ascii')
 
 
+# 🛍️ LO QUE CADA UNO SE PUSO EN LA TIENDA, EN EL VS (tanda 3b, 17/11/2026): el fondo de Discord (`tfd`) y el efecto de
+# carta (`tc`), que manda `vsEncolar()` como ids de pieza. El dibujo NO vive en el repo (las piezas son sorpresa hasta que
+# salen): se baja de la ruta pública `/avisos/tienda-uso`, una vez por corrida. Sin él, el VS de siempre
+TIENDA_USO = 'https://underlegends.pages.dev/api/avisos/tienda-uso'
+_ARTE_TIENDA = None
+_DATOS_URL = {}
+
+
+def _arte_tienda():
+    global _ARTE_TIENDA
+    if _ARTE_TIENDA is None:
+        _ARTE_TIENDA = {}
+        try:
+            import requests
+            r = requests.get(TIENDA_USO, timeout=20)
+            j = r.json() if r.status_code == 200 else {}
+            if j.get('ok') and isinstance(j.get('p'), dict):
+                _ARTE_TIENDA = {'css': str(j.get('css') or ''), 'p': j['p']}
+        except Exception:                                    # noqa: BLE001
+            _ARTE_TIENDA = {}
+    return _ARTE_TIENDA
+
+
+def _molde(pieza, campo):
+    if not re.match(r'^[A-Z0-9]{1,8}$', str(pieza or '')):
+        return ''
+    x = (_arte_tienda().get('p') or {}).get(str(pieza)) or {}
+    return str(x.get(campo) or '')
+
+
+def _como_dato(url):
+    """La imagen como `data:` (las máscaras de los efectos piden CORS, y la página del kit no tiene origen)"""
+    if url in _DATOS_URL:
+        return _DATOS_URL[url]
+    out = url if str(url).startswith('data:') else ''
+    if not out and re.match(r'^https://pub-[a-z0-9]+\.r2\.dev/', str(url or '')):
+        try:
+            import requests
+            r = requests.get(url, timeout=15)
+            tipo = (r.headers.get('content-type') or 'image/webp').split(';')[0]
+            if r.ok and r.content and len(r.content) < 3_000_000 and tipo.startswith('image/'):
+                out = 'data:%s;base64,%s' % (tipo, base64.b64encode(r.content).decode('ascii'))
+        except Exception:                                    # noqa: BLE001
+            out = ''
+    _DATOS_URL[url] = out or url
+    return _DATOS_URL[url]
+
+
+def _dragon():
+    p = os.path.join(BASE, 'bot', 'paginas', 'ul-blanco.png')
+    try:
+        with open(p, 'rb') as f:
+            return "url('data:image/png;base64,%s')" % base64.b64encode(f.read()).decode('ascii')
+    except OSError:
+        return 'none'
+
+
+def _usa_tienda(v):
+    for c in ('a', 'b'):
+        y = v.get(c) or {}
+        if _molde(y.get('tfd'), 'fondo') or (y.get('carta') and _molde(y.get('tc'), 'carta')):
+            return True
+    return False
+
+
+def _css_tienda(v):
+    """El CSS del arte y dónde va cada capa, sólo si algún lado tiene algo puesto"""
+    if not _usa_tienda(v):
+        return ''
+    return _arte_tienda().get('css', '') + """
+#c .mft{overflow:hidden}#c .mft-in{position:absolute;inset:0}#c .mft-in>.ta-fondo{position:absolute;inset:0}
+#c .mft::after{content:"";position:absolute;inset:0;background:linear-gradient(rgba(3,3,4,.42),rgba(3,3,4,.7))}
+#c .ctw .ta-carta{height:456px;width:auto;max-width:312px;aspect-ratio:900/1314}
+"""
+
+
 def _mitades_html(v):
-    """Las dos mitades con el fondo de cada uno, sin tapar la costura. Sin nada elegido, nada."""
+    """Las dos mitades con el fondo de cada uno, sin tapar la costura. Sin nada elegido, nada. Un fondo de Discord de la
+    Tienda manda sobre el elegido en «Tus fondos» (lo compró para esto)"""
     out = ''
     for cls in ('a', 'b'):
-        u = _fondo_lado(v.get(cls))
+        y = v.get(cls) or {}
+        t = _molde(y.get('tfd'), 'fondo')
+        if t:
+            out += '<div class="mf %s mft"><div class="ta-raiz mft-in" style="--dragon:%s">%s</div></div>' % (cls, _dragon(), t)
+            continue
+        u = _fondo_lado(y)
         if u:
             out += '<div class="mf %s" style="background-image:linear-gradient(rgba(3,3,4,.42),rgba(3,3,4,.7)),url(%s)"></div>' % (cls, u)
     return out
@@ -1013,6 +1095,13 @@ def html_vs(v, d):
         y = y or {}
         perdio = ' perdio' if gano and gano != cls else ''
         if y.get('carta'):
+            # 🛍️ con un efecto de carta de la Tienda, el molde con su carta adentro (como en la página: puesto.js)
+            t = _molde(y.get('tc'), 'carta')
+            if t:
+                u = _como_dato(y['carta'])
+                capa = t.replace('__CARTA__', _e(u)).replace('__FOTO__', '').replace('__N__', _e(y.get('n')))
+                return ('<div class="ld %s%s"><div class="ta-raiz ctw" style="--carta:url(&quot;%s&quot;);--dragon:%s">%s</div></div>'
+                        % (cls, perdio, _e(u), _dragon(), capa))
             return '<div class="ld %s%s"><img class="carta" src="%s" alt=""></div>' % (cls, perdio, _e(y['carta']))
         return '<div class="ld %s%s">%s</div>' % (cls, perdio, _carta_sin(y, d, 'sin', 1.036))
 
@@ -1099,7 +1188,7 @@ def html_vs(v, d):
 %s%s%s
 %s
 %s
-</div></body></html>""" % (_fuentes(), _BASE_CSS, css, _suelo_html(), _mitades_html(v), arriba(), lado(v.get('a'), 'a'), lado(v.get('b'), 'b'),
+</div></body></html>""" % (_fuentes(), _BASE_CSS, css + _css_tienda(v), _suelo_html(), _mitades_html(v), arriba(), lado(v.get('a'), 'a'), lado(v.get('b'), 'b'),
                             _escudo_html(d, 80, 204), historia(), pie(v.get('a'), 'a'), pie(v.get('b'), 'b'), _evento_html(v, d), _esquinas_html()))
 
 
@@ -1421,6 +1510,21 @@ def _texto_avisos():
         return ''
 
 
+def _prueba_tienda(d):
+    global _ARTE_TIENDA
+    antes, _ARTE_TIENDA = _ARTE_TIENDA, {'css': '.ta-raiz .ta-x{color:red}', 'p': {
+        'FD1': {'fondo': '<div class="ta-fondo ta-fd1"></div>'},
+        'C1': {'carta': '<div class="ta-carta ta-c1"><img src="__CARTA__"><span class="ta-fx"></span></div>'}}}
+    try:
+        con = html_vs({'a': {'n': 'Snow', 'carta': 'data:image/webp;base64,AA', 'tfd': 'FD1', 'tc': 'C1'}, 'b': {'n': 'Pepe', 'carta': ''}}, d)
+        _ARTE_TIENDA = {}
+        sin = html_vs({'a': {'n': 'Snow', 'carta': 'data:image/webp;base64,AA', 'tfd': 'FD1', 'tc': 'C1'}, 'b': {'n': 'Pepe'}}, d)
+        return ('ta-fd1' in con and 'ta-c1' in con and '.ta-x{color:red}' in con and 'class="mf a mft"' in con
+                and 'ta-fd1' not in sin and 'class="carta"' in sin and '.ta-x' not in sin)
+    finally:
+        _ARTE_TIENDA = antes
+
+
 def _self_check():
     mal = 0
     d = {'nombre': 'Freestyle For All', 'guild': '1', 'color': '#26045B', 'logo': ''}
@@ -1561,6 +1665,8 @@ def _self_check():
         ('en equipos, el promedio dice cuántos cuentan: «1 de 2 con datos» y no «2 raperos» como si promediaran los dos',
          '1 de 2 con datos' in html_vs({'grupos': [[{'n': 'A', 'ovr': 78}, {'n': 'B'}], [{'n': 'C', 'ovr': 70}]]}, d)
          and '2 raperos' in html_vs({'grupos': [[{'n': 'A', 'ovr': 78}, {'n': 'B', 'ovr': 70}], [{'n': 'C', 'ovr': 70}]]}, d)),
+        ('🛍️ lo de la Tienda en el VS: el fondo de Discord en su mitad y el efecto sobre su carta; sin arte, el VS de siempre',
+         _prueba_tienda(d)),
         ('lo que viene de Discord se escapa: ningún HTML crudo',
          '<b>x' not in html_afiche(dict(a, nombre='<b>x</b>', horario='<i>9</i>'), 'FFA', d)
          and '&lt;i&gt;9' in html_afiche(dict(a, nombre='<b>x</b>', horario='<i>9</i>'), 'FFA', d)),

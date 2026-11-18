@@ -12251,6 +12251,11 @@ export class Avisos {
   vsEncolar(d, ahora = Date.now()) {
     if (!/^\d{5,25}$/.test(String(d.canal || '')) || !/^\w{1,25}$/.test(String(d.msg || ''))) return { error: 'datos' };
     const id = [...crypto.getRandomValues(new Uint8Array(10))].map((x) => x.toString(16).padStart(2, '0')).join('');
+    // 🛍️ lo que cada lado tiene puesto en la Tienda (tanda 3b): el fondo de Discord (`fd`) y el efecto de carta. Viajan
+    // sólo los ids de pieza; el dibujo lo baja `bot/kit.py` de `/avisos/tienda-uso`
+    let tp = {};
+    try { tp = TI.puestosPublicos(this); } catch (e) { tp = {}; }
+    const pieza = (k, r) => { const x = tp[k] && tp[k][r]; return /^[A-Z0-9]{1,8}$/.test(String(x || '')) ? x : ''; };
     const lado = (y) => ({ n: String((y && y.n) || '').slice(0, 40), fl: String((y && y.fl) || '').slice(0, 8),
       k: String((y && y.k) || '').slice(0, 60), ovr: Number(y && y.ovr) || 0,
       // 📊🧾 lo de la barra y los costados (13/10/2026): el Score, la letra, los últimos 5 y la racha. ⚠️ Esta lista
@@ -12262,7 +12267,8 @@ export class Avisos {
       // 🌙 lo de esta noche, debajo de la carta (02/11/2026, `nocheVs()`)
       noche: String((y && y.noche) || '').slice(0, 60),
       // 🖼️ su mitad del VS en vivo (17/11/2026, «Tus fondos» → «El VS en vivo de Discord»): su imagen o `bandera`
-      fondo: this.fondoVivo(String((y && y.k) || '')) });
+      fondo: this.fondoVivo(String((y && y.k) || '')),
+      tfd: pieza(String((y && y.k) || ''), 'fd'), tc: pieza(String((y && y.k) || ''), 'carta') });
     const h2h = Array.isArray(d.h2h) && d.h2h.length === 2 ? d.h2h.map((x) => Math.max(0, Math.min(999, Number(x) || 0))) : null;
     // 🧩 los otros formatos (19/10/2026): hasta 5 lados y 10 personas, cada una como un lado de siempre
     let grupos = null;
@@ -19167,16 +19173,17 @@ export class Avisos {
    *  Si cambió de marco (o lo sacó), su foto vieja no se usa y /card vuelve a la carta sola hasta la nueva */
   marcosEnImagen() {
     // ⚡ una vez, en memoria: ver `memo()`. Con las tablas de `marcosPublicos()`, que usa adentro
-    return this.memo('marcosEnImagen', ['marco_img', 'marcos', 'marco_elige', 'jugo_temp', 'idk'], () => this._marcosEnImagen());
+    return this.memo('marcosEnImagen', ['marco_img', 'marcos', 'marco_elige', 'jugo_temp', 'idk', 'tienda_puesto'], () => this._marcosEnImagen());
   }
 
   _marcosEnImagen() {
     const out = {};
     try {
       const pub = this.marcosPublicos();
+      const tp = TI.puestosPublicos(this);
       for (const r of this.sql.exec('SELECT k, firma, cartas FROM marco_img').toArray()) {
-        const m = pub[r.k];
-        if (m && r.firma === m[0] + '|' + m[1]) out[r.k] = JSON.parse(r.cartas);
+        const m = pub[r.k], tc = (tp[r.k] && tp[r.k].carta) || '';
+        if ((m || tc) && r.firma === this.firmaImagen(r.k, [], m || null, tc)) out[r.k] = JSON.parse(r.cartas);
       }
     } catch (e) { /* sin fotos: la carta sola */ }
     return out;
@@ -19257,9 +19264,19 @@ export class Avisos {
     try {
       const r = this.sql.exec('SELECT firma, cartas FROM marco_img WHERE k = ?', k).toArray()[0];
       if (!r) return undefined;
-      const m = this.marcoPublicoDe(k, quienes);
-      return m && r.firma === m[0] + '|' + m[1] ? JSON.parse(r.cartas) : undefined;
+      const f = this.firmaImagen(k, quienes);
+      return f && r.firma === f ? JSON.parse(r.cartas) : undefined;
     } catch (e) { return undefined; }
+  }
+
+  /**
+   * 🖼️🃏 LO QUE LLEVA LA FOTO DE /card (`<carta>-m.webp`): el marco del Pase (`marco|estilo`) y, desde la tanda 3b de la
+   * Tienda (17/11/2026), el efecto de carta que tiene puesto (`|C1`); sin marco, `-|-|C1`. Sin efecto queda igual que
+   * antes, así las fotos que ya están no se redibujan. '' si no lleva nada. ⚠️ `bot/con_marco.py` arma la misma firma
+   */
+  firmaImagen(k, quienes = this.quienesDeClave(k), m = this.marcoPublicoDe(k, quienes), tc = TI.cartaPuestaDe(this, quienes)) {
+    if (!m && !tc) return '';
+    return (m ? m[0] + '|' + m[1] : '-|-') + (tc ? '|' + tc : '');
   }
 
   /** 👑 los marcos del dueño: los tres de la temporada que corre */

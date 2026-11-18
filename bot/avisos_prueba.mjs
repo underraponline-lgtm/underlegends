@@ -4469,6 +4469,16 @@ const ok = (cond, que, det) => {
       'el arte liviano: sólo lo que se dibuja fuera de la Tienda', JSON.stringify(uso.p));
     ok(TI.RANURAS.includes('perfil'), 'lo del perfil se puede poner (antes se compraba y no había ranura)');
 
+    // 🃏 la tanda 3b: la foto de /card lleva el efecto de carta en su firma, y el VS en vivo recibe el fondo y el efecto
+    ok(o.firmaImagen('ana', [ANA], null, '') === '' && o.firmaImagen('ana', [ANA], null, 'C1') === '-|-|C1'
+      && o.firmaImagen('ana', [ANA], ['plata', 'camiseta'], '') === 'plata|camiseta' && o.firmaImagen('ana', [ANA], ['plata', 'camiseta'], 'C1') === 'plata|camiseta|C1',
+      'la firma de la foto de /card: igual que antes sin efecto, y con el efecto al final');
+    sql.exec("INSERT OR REPLACE INTO tienda_puesto (quien, ranura, pieza, t) VALUES (?, 'carta', 'N1', ?)", ANA, ahora);
+    const vsr = o.vsEncolar({ canal: '123456789', msg: 'm1', a: { k: 'ana', n: 'Ana' }, b: { k: 'nadie', n: 'Otro' } });
+    const vsd = JSON.parse(sql.exec('SELECT datos FROM vs_cola WHERE id = ?', vsr.id).toArray()[0].datos);
+    ok(vsr.ok && vsd.a.tc === 'N1' && vsd.a.tfd === '' && vsd.b.tc === '' && TI.cartaPuestaDe(o, [ANA]) === 'N1',
+      'el VS en vivo lleva el efecto de carta de cada lado (sólo el id de la pieza)', JSON.stringify(vsd.a));
+
     // olvidarme
     TI.tiendaOlvidar(o, CAR);
     ok(!mia(CAR, 'car').yo.inv.length && !sql.exec('SELECT 1 AS x FROM tienda_num WHERE quien = ?', CAR).toArray().length,
