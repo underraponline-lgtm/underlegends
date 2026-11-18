@@ -33,17 +33,23 @@
 "como":"fila nueva",
 "por":"se anotó así 2 vez/veces + su apodo o nombre visible",
 "pais":""
+},
+"554806755545055262":{
+"n":"tixer",
+"cuando":"18/11/2026 02:55 AM ET",
+"como":"id",
+"por":"se anotó así 1 vez/veces + su apodo o nombre visible"
 }
 },
-"ultima":"2026-11-17T23:55-05:00",
+"ultima":"2026-11-18T02:55-05:00",
 "ultimo_conteo":{
 "nada":112,
-"no":27,
+"no":29,
 "empate":17,
 "probable":22,
-"disfraz":47,
-"seguro":1,
-"sin_id":226,
-"auto":0
+"disfraz":48,
+"seguro":2,
+"sin_id":230,
+"auto":1
 }
 }
