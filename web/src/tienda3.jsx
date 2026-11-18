@@ -451,7 +451,8 @@ export default function TiendaNueva({ liga, dc, S, recargar, partes }) {
     let j = null;
     try { j = await pedir(d); } catch (e) { j = { error: 'red' }; }
     E.va = false;
-    if (!j || !j.ok) { E.error = (j && j.error) || 'error'; pinta(); return null; }
+    // 💰 si el objeto dice que no alcanza, el saldo que se veía estaba viejo: se trae el de verdad (17/11/2026)
+    if (!j || !j.ok) { E.error = (j && j.error) || 'error'; if (E.error === 'saldo') await recargar(); pinta(); return null; }
     E.res = j;
     if (despues) despues(j);
     // 🛍️ lo que te pusiste se ve en toda la página (tanda 3): `/pases` lo trae, y se pide de nuevo ya mismo

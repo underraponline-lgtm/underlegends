@@ -65,6 +65,15 @@ function pedirBilletera(entrar) {
     })
     .catch(function () { BILL = { error: 'red' }; pintaPrecios(); });
 }
+/* 💰 al volver a la pestaña, la billetera de nuevo (17/11/2026): una apuesta en Discord la cambia y la página seguía
+   mostrando la de antes. Sólo si ya se había leído (quien nunca abrió nada con su cuenta no pregunta) y como mucho
+   una vez por minuto */
+var BILL_T = 0;
+document.addEventListener('visibilitychange', function () {
+  if (document.hidden || !BILL || !BILL.ok || Date.now() - BILL_T < 60000) return;
+  BILL_T = Date.now();
+  pedirBilletera(false);
+});
 function ponerPrecio(cabeza, monto) {
   PR_EST[cabeza] = { va: monto };
   pintaPrecios();
