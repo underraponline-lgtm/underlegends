@@ -22,7 +22,7 @@ import { CrewCirculo } from './arriba.jsx';
 import { crewViva, useCrews } from './crews.js';
 import { CasaCrew, EntrarCrew, PanelCrew, RolCrew, SinVerificar, TierChip } from './crewpanel.jsx';
 import { MesSv, PromosSv, REDES } from './servidor.jsx';
-import { Banda, SvCampeones, SvCuando, SvDuelo, SvEventos, SvFieles, SvForma, SvHistorias, SvMuro, SvNoche, SvOrganiza, SvProximo, SvRecords, SvTabla, SvVistazo, SvVuelven, useBalanceSv, useSvDatos } from './servidor_bandas.jsx';
+import { Banda, SvCampeones, SvCuando, SvDuelo, SvEventos, SvFieles, SvForma, SvHistorias, SvMuro, SvNoche, SvOrganiza, SvProximo, SvRecords, SvTabla, SvVistazo, SvVuelven, B2_FLEX, B3_FLEX, aLaDerecha, useBalanceSv, useSvDatos } from './servidor_bandas.jsx';
 import { useSalon } from './mesawards.jsx';
 import { useIndice } from './indice.js';
 import CSS_PAGINA from './css/entidad2.css?inline';
@@ -186,6 +186,9 @@ export function PerfilSv({ liga, sv, enc }) {
   // eventos» y «Lo último» de antes viven ahora en Su próximo evento, Sus eventos y Su muro
   const items = [['ent-cartas', 'Los que mandan', gente.length], ['sv-muro', 'Muro', null], ['sv-eventos', 'Eventos', D ? D.evs.length : null],
     ['sv-mes', 'MES AWARDS', null], ['sv-promos', 'Promos', null], ['ent-buscados', 'Se busca', buscados.length], ['ent-otros', 'Los otros', otros.length]];
+  // las piezas que el balance mueve de lado (`useBalanceSv`): «Sus noches» y «Su temporada»
+  const b2 = D ? { 'sv9-duelo': <SvDuelo key="du" liga={liga} D={D} sv={sv} />, 'sv9-org': <SvOrganiza key="or" liga={liga} sv={sv} /> } : {};
+  const b3 = D ? { 'sv9-camp': <SvCampeones key="ca" liga={liga} D={D} />, 'sv9-hm': <SvCuando key="hm" D={D} />, 'pf9-rec': <SvRecords key="re" D={D} /> } : {};
   const cartas = gente.length ? (
     <Sec id="ent-cartas" titulo={'Los que mandan en ' + siglaDe(sv)} enlace="Todos los raperos" href="#/ranking" extra="negra">
       <div className="rail mcs2">{gente.map((f) => <McPersona key={f.k} liga={liga} f={f} cual={liga.cartaDe(f.k, { sv }) || 'temporada'} />)}</div>
@@ -227,14 +230,14 @@ export function PerfilSv({ liga, sv, enc }) {
             {cartas}
             <Banda color="blanca" titulo="Sus noches" link="Calendario" ir="#/eventos">
               <div className="pf9-g pf9-g-2 sv9-b2">
-                <div className="pf9-pila"><SvNoche liga={liga} D={D} sv={sv} /><SvDuelo liga={liga} D={D} sv={sv} /><SvOrganiza liga={liga} sv={sv} /></div>
-                <div className="pf9-pila"><SvMuro liga={liga} sv={sv} n={B.mu} /></div>
+                <div className="pf9-pila"><SvNoche liga={liga} D={D} sv={sv} />{B2_FLEX.filter((c) => !aLaDerecha(B.b2, B2_FLEX, c)).map((c) => b2[c])}</div>
+                <div className="pf9-pila"><SvMuro liga={liga} sv={sv} n={B.mu} />{B2_FLEX.filter((c) => aLaDerecha(B.b2, B2_FLEX, c)).map((c) => b2[c])}</div>
               </div>
             </Banda>
             <Banda color="negra" titulo="Su temporada" link="Ranking" ir="#/ranking">
               <div className="pf9-g pf9-g-rail sv9-b3">
-                <div className="pf9-pila pf9-t-main"><SvEventos liga={liga} D={D} n={B.ev} /><SvCampeones liga={liga} D={D} /></div>
-                <div className="pf9-pila pf9-t-lat"><SvTabla liga={liga} sv={sv} /><SvCuando D={D} /><SvRecords D={D} /></div>
+                <div className="pf9-pila pf9-t-main"><SvEventos liga={liga} D={D} n={B.ev} />{B3_FLEX.filter((c) => !aLaDerecha(B.b3, B3_FLEX, c)).map((c) => b3[c])}</div>
+                <div className="pf9-pila pf9-t-lat"><SvTabla liga={liga} sv={sv} />{B3_FLEX.filter((c) => aLaDerecha(B.b3, B3_FLEX, c)).map((c) => b3[c])}</div>
               </div>
             </Banda>
             <Banda color="blanca" titulo="Su gente" link="Ranking" ir="#/ranking">
@@ -249,7 +252,8 @@ export function PerfilSv({ liga, sv, enc }) {
           <>
             <Banda color="negra">
               <SvHistorias liga={liga} sv={sv} />
-              <div className="pf9-g pf9-g-2"><div className="pf9-pila"><SvProximo liga={liga} sv={sv} /><SvTabla liga={liga} sv={sv} /></div><div className="pf9-pila"><SvMuro liga={liga} sv={sv} /></div></div>
+              <div className="pf9-g sv9-dos"><SvProximo liga={liga} sv={sv} /><SvTabla liga={liga} sv={sv} /></div>
+              <SvMuro liga={liga} sv={sv} />
             </Banda>
             {cartas}
           </>

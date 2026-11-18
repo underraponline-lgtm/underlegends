@@ -99,10 +99,16 @@ const Av = ({ liga, D, k, cls = '' }) => <Cara liga={liga} k={liga.T[k] ? k : ''
 // ── ⚖️ LAS COLUMNAS DE CADA BANDA TERMINAN JUNTAS (como el perfil del rapero): en «Sus noches» el muro muestra más o
 // menos publicaciones, en «Su temporada» la lista de eventos crece o se achica y en «Su gente» los de la casa. Sólo en la
 // compu, una fila por vuelta y con tope de vueltas, para que nada salte ──
+// Los servidores chicos (pocas publicaciones, pocos eventos) no se emparejan sólo con las listas: además, las piezas que
+// pueden ir a cualquier lado (`B2_FLEX`, `B3_FLEX`) van donde dejan las dos columnas más parejas, como «Lo suyo» del perfil
+export const B2_FLEX = ['sv9-duelo', 'sv9-org'];
+export const B3_FLEX = ['sv9-camp', 'sv9-hm', 'pf9-rec'];
+const B0 = { ev: 6, mu: 5, fi: 8, b2: 0, b3: 0b011, v: 0 };
+export const aLaDerecha = (mask, flex, c) => !!((mask >> (flex.length - 1 - flex.indexOf(c))) & 1);
 export function useBalanceSv(raiz, sv, listo) {
-  const [L, setL] = useState({ sv: '', ev: 6, mu: 5, fi: 8, v: 0 });
+  const [L, setL] = useState(Object.assign({ sv: '' }, B0));
   const [medida, setMedida] = useState(0);
-  const B = L.sv === sv ? L : { sv, ev: 6, mu: 5, fi: 8, v: 0 };
+  const B = L.sv === sv ? L : Object.assign({ sv }, B0);
   useEffect(() => {
     const el = raiz.current;
     if (!el || !listo || typeof ResizeObserver !== 'function') return undefined;
@@ -115,6 +121,18 @@ export function useBalanceSv(raiz, sv, listo) {
     if (!el || !listo || B.v > 20 || !window.matchMedia || !window.matchMedia('(min-width: 900px)').matches) return;
     const dif = (c) => { const [a, b] = el.querySelectorAll('.' + c + ' > .pf9-pila'); return a && b ? b.getBoundingClientRect().bottom - a.getBoundingClientRect().bottom : 0; };
     const alto = (sel) => { const x = el.querySelector(sel); return x ? x.getBoundingClientRect().height + 8 : 60; };
+    // primero, qué pieza va a cada lado: el alto de cada una (14 px de hueco) y todas las combinaciones
+    const h = (c) => { const x = el.querySelector('.' + c); return x ? x.getBoundingClientRect().height + 14 : 0; };
+    const mejor = (fijoI, fijoD, flex, mask) => {
+      const lados = (m) => flex.reduce((acc, c) => { acc[aLaDerecha(m, flex, c) ? 1 : 0] += h(c); return acc; }, [h(fijoI), h(fijoD)]);
+      const desv = (m) => { const [a, b] = lados(m); return Math.abs(a - b); };
+      let best = mask;
+      for (let m = 0; m < 1 << flex.length; m++) if (desv(m) < desv(best) - 60) best = m;
+      return best;
+    };
+    const b2 = mejor('pf9-noche', 'pf9-muro', B2_FLEX, B.b2);
+    const b3 = mejor('sv9-eventos', 'sv9-tsv', B3_FLEX, B.b3);
+    if (b2 !== B.b2 || b3 !== B.b3) { setL(Object.assign({}, B, { sv, b2, b3, v: B.v + 1 })); return; }
     const n = Object.assign({}, B);
     const d2 = dif('sv9-b2'), h2 = alto('.pf9-filas > *');
     if (d2 > h2 && n.mu > 2) n.mu -= 1; else if (d2 < -h2 * 1.5 && n.mu < 10) n.mu += 1;
@@ -123,7 +141,7 @@ export function useBalanceSv(raiz, sv, listo) {
     const d4 = dif('sv9-b4'), h4 = alto('.sv9-fie li');
     if (d4 > h4 && n.fi > 3) n.fi -= 1; else if (d4 < -h4 && n.fi < 12) n.fi += 1;
     if (n.mu !== B.mu || n.ev !== B.ev || n.fi !== B.fi) setL(Object.assign(n, { sv, v: B.v + 1 }));
-  }, [medida, sv, listo, B.mu, B.ev, B.fi]); // eslint-disable-line react-hooks/exhaustive-deps
+  }, [medida, sv, listo, B.mu, B.ev, B.fi, B.b2, B.b3]); // eslint-disable-line react-hooks/exhaustive-deps
   return B;
 }
 

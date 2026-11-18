@@ -224,6 +224,10 @@ const COL = {
   i: { t: '#', cls: 'c-pos', s: (f) => f._o || f._i, v: (f) => <Num n={f._i} fc={f.fc} /> },
   n: { t: 'Rapero', cls: 'c-n', txt: 1, s: (f) => norm(limpio(f.n)), v: (f, x) => <Quien x={x} f={f} /> },
   ovr: { t: 'OVR', tit: 'El número de la temporada, de 40 a 99', s: (f) => f.ovr || 0, v: (f) => (f.ovr ? f.ovr : NADA) },
+  // 🏟️ «Servidores» (17/11/2026): el OVR de su carta de Servidor, su servidor y su puesto adentro de él
+  osv: { t: 'OVR SV', tit: 'El número de su carta de Servidor: su OVR en su servidor', s: (f) => f.osv || 0, v: (f) => (f.osv ? f.osv : NADA) },
+  isv: { t: '#', cls: 'c-pos', tit: 'Su puesto adentro de su servidor', s: (f) => f._isv || 0, v: (f) => <Num n={f._isv} /> },
+  svc: { t: 'Servidor', txt: 1, s: (f) => f.sv || '', v: (f, x) => (f.sv ? <a className="rk-svc" href={'#/sv/' + encodeURIComponent(siglaDe(f.sv))}><img alt="" src={x.liga.logo(f.sv)} />{siglaDe(f.sv)}</a> : NADA) },
   // ⚠️ EL RANGO SE ORDENA POR SCORE, que es de donde sale: por letra, «SSS» quedaría abajo de «S»
   rg: { t: 'Rango', tit: 'La letra, de E a SSS: sale del Score y aparece con 10 eventos', s: (f) => (f.rg ? f.sc || 0 : ''),
     v: (f, x) => (f.rg ? <span className="rg rk-rg" style={{ background: x.liga.colorRg(f.rg) }}>{f.rg}</span> : NADA) },
@@ -514,6 +518,23 @@ const SUBS = {
       }],
     ],
   },
+  // 🏟️ LOS QUE MANDAN EN CADA SERVIDOR (Dlx, 17/11/2026: «haz un ranking de servidores, osea para ver los q mandan en cada
+  // servidor con su tarjeta respectiva y servidor respectivo»): por el OVR de su carta de Servidor (`osv`, bot/subir_web.py),
+  // de mayor a menor, y el puesto de cada uno adentro de su servidor. Abre en tu servidor (o el más grande) y el podio son
+  // las cartas de Servidor de los tres primeros de ése. Sin `osv` en el lobby todavía, no se dibuja (`hay`)
+  servidores: {
+    et: 'Servidores', porSv: 1, podio: 'servidor', num: (f) => f._isv || 0,
+    filas: (L) => {
+      const xs = (L.d.tabla || []).filter((f) => f.osv && f.sv && !f.fc).map((f) => Object.assign({}, f)).sort(ordenOsv);
+      const n = {};
+      xs.forEach((f) => { n[f.sv] = (n[f.sv] || 0) + 1; f._isv = n[f.sv]; });
+      return xs;
+    },
+    orden: ordenOsv, hay: (L) => (L.d.tabla || []).some((f) => f.osv),
+    cols: ['isv', 'n', 'svc', 'osv', 'ovr', 'ev', 'pts'], movil: ['isv', 'n', 'svc', 'osv'],
+    baj: <>Los que mandan en <b>cada servidor</b>, por el <b>OVR de su carta de Servidor</b>: el número de ese servidor, no el de la Temporada. El <b>#</b> es su puesto adentro de su servidor. Elige uno arriba.</>,
+    valor: [(f) => f.osv || 0, 'OVR'], dato: (f) => 'OVR ' + f.osv + ' · ' + siglaDe(f.sv),
+  },
   paises: {
     et: 'Países', grupo: 'pais', filas: (L) => L.d.paises || [], sinChips: 1, nombre: (f) => nombrePais(f.cc), orden: 'pts',
     cols: ['i', 'pais', 'np', 'pts', 'prom'], movil: ['i', 'pais', 'np', 'pts'], que: ['país', 'países'],
@@ -568,7 +589,7 @@ const DIV_ELO = {
   baj: <>Como el Ranked de Brawl Stars: tu rango sale de tu <b>ELO</b>, de Hierro a Mítico, y subes o bajas con cada batalla 1v1. Se mira cada lunes; llegar por primera vez a cada rango paga <b>Puntos de Tienda</b>.</>,
 };
 export const subDe = (liga, id) => (id === 'divisiones' && liga && liga.d.div && liga.d.div.m === 'elo' ? { ...SUBS.divisiones, ...DIV_ELO } : SUBS[id]);
-export const RANKINGS = ['temporada', 'divisiones', 'competitivo', 'duelos', 'podios', 'rachas', 'eventos', 'paises', 'crews', 'ascensos', 'mw', 'misiones'];
+export const RANKINGS = ['temporada', 'divisiones', 'competitivo', 'servidores', 'duelos', 'podios', 'rachas', 'eventos', 'paises', 'crews', 'ascensos', 'mw', 'misiones'];
 
 function req(L, id) {
   const q = (L.d.requisitos || []).find((x) => x.id === id);
@@ -605,7 +626,9 @@ function armar(liga, cfg) {
   return base;
 }
 // el número que se muestra: la Temporada, el oficial; los demás, el de este ranking
-const numero = (cfg, f) => (cfg.orden === 'pos' ? (f.fc ? 0 : f.pos) : f._i);
+const numero = (cfg, f) => (cfg.num ? cfg.num(f) : cfg.orden === 'pos' ? (f.fc ? 0 : f.pos) : f._i);
+// por el OVR de su servidor; a igual OVR, el que va más arriba en la Liga
+function ordenOsv(a, b) { return (b.osv || 0) - (a.osv || 0) || (a.o || a.pos || 999) - (b.o || b.pos || 999); }
 const clave = (f) => f.k || f.cc || f.crew || f.n;
 
 // ── el podio: las cartas de verdad paradas en su escalón, el 1 en el medio ─────────────────────────────────────────
@@ -624,7 +647,8 @@ function Podio({ liga, cfg, top, sem }) {
           nombre = limpio(f.crew);
         } else {
           const t = liga.T[f.k];
-          const cual = cfg.podio === 'competitivo' && t && (t.c || []).includes('competitivo') ? 'competitivo' : 'temporada';
+          const cual = cfg.podio === 'competitivo' && t && (t.c || []).includes('competitivo') ? 'competitivo'
+            : cfg.podio === 'servidor' && t && (t.c || []).includes('servidor') ? 'servidor' : 'temporada';
           vis = <Carta liga={liga} k={f.k} cual={cual} cls="rk-ci" />;
           // ⏳ mientras la carta se redibuja, su número puede no coincidir con este orden: se dice
           if (liga.cartaVieja(f.k, cual)) nota = <small className="rk-pnota">SE ESTÁ REDIBUJANDO</small>;
@@ -1051,7 +1075,8 @@ async function imagenPuesto(liga, cfg, f, n) {
   g.fillStyle = '#F6F6F6'; g.fillText(cfg.et.toUpperCase(), 72, 132 + 24 + px * 0.9);
   // la carta: la de esta categoría si la tiene (la Competitiva en el Competitivo), si no la de Temporada
   const t = liga.T[f.k] || {};
-  const cual = cfg.podio === 'competitivo' && (t.c || []).includes('competitivo') ? 'competitivo' : 'temporada';
+  const cual = cfg.podio === 'competitivo' && (t.c || []).includes('competitivo') ? 'competitivo'
+    : cfg.podio === 'servidor' && (t.c || []).includes('servidor') ? 'servidor' : 'temporada';
   const y0 = 330;
   const ch = await carta(g, letra, liga, f.k, f.n, cual, W / 2, y0, 600, 900);
   // el escalón con el puesto: el 1 en verde agua, el 2 en magenta, el resto en blanco
@@ -1105,6 +1130,19 @@ export function Ranking({ liga, sub: subRuta, ver: abre = '', dc, raiz }) {
   const [q, setQ] = useState('');
   const [sv, setSv] = useState('');
   const [cc, setCc] = useState('');
+  // 🏟️ «Servidores» abre en tu servidor (o el de más gente en la tabla), una vez por entrada: «Todos» sigue andando
+  const svAuto = useRef('');
+  useEffect(() => {
+    if (sub !== 'servidores') { svAuto.current = ''; return; }
+    if (svAuto.current || !liga) return;
+    const xs = (liga.d.tabla || []).filter((f) => f.osv && f.sv);
+    if (!xs.length) return;
+    const cuenta = {};
+    xs.forEach((f) => { cuenta[f.sv] = (cuenta[f.sv] || 0) + 1; });
+    const mio = liga.yo && cuenta[liga.yo.sv] ? liga.yo.sv : Object.keys(cuenta).sort((a, b) => cuenta[b] - cuenta[a])[0];
+    svAuto.current = sub;
+    setSv(mio || '');
+  }, [sub, liga]);
   const [soloSigo, setSoloSigo] = useState(false);
   const [soloNuevos, setSoloNuevos] = useState(false);
   const [abierta, setAbierta] = useState(null);
@@ -1198,7 +1236,7 @@ export function Ranking({ liga, sub: subRuta, ver: abre = '', dc, raiz }) {
   };
 
   // el podio: los tres primeros con número (la Temporada, por su puesto oficial)
-  const top = base.filter((f) => numero(cfg, f)).slice(0, 3);
+  const top = cfg.porSv ? (sv ? base.filter((f) => f.sv === sv).slice(0, 3) : []) : base.filter((f) => numero(cfg, f)).slice(0, 3);
   // las flechas de arriba: el ranking de al lado en la tira, salteando los que todavía no existen (Misiones, Ligas) o
   // no tienen con qué (Most Wanted sin buscados); al final vuelve al principio
   const vivos = RANKINGS.filter((id) => !SUBS[id].pronto && !(SUBS[id].hay && !SUBS[id].hay(liga)));
