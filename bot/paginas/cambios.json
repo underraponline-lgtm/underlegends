@@ -11,6 +11,18 @@
   ],
   "cambios": [
     {
+        "version": "6.19",
+        "dia": "2026-11-17",
+        "cuando": "2026-11-17T19:05:00-05:00",
+        "titulo": "Llaves, cancelaciones y ligas que el bot leía a medias",
+        "items": [
+            "**Las llaves que dicen «PRIMER LUGAR»** o que marcan al campeón con 🎖️ ya cuentan a su campeón, y las que separan las batallas con un VS animado se leen enteras (antes podían quedar sin octavos o sin final).",
+            "**Si el organizador avisa que el evento se canceló**, el calendario dice «CANCELADO» aunque el aviso llegue después de la hora de arranque.",
+            "**La hora de Discord en cualquier estilo** ya se entiende en los anuncios, así que esos eventos salen en el calendario a su hora y no a la de publicación.",
+            "**Ligas**: se leen también las batallas con el 🆚 en el título sin «#» o con número romano, y dos ligas más que tienen su propio formato."
+        ]
+    },
+    {
         "version": "6.18",
         "dia": "2026-11-17",
         "cuando": "2026-11-17T18:24:00-05:00",
