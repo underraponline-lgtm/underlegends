@@ -51938,5 +51938,524 @@
    ]
   ],
   "v": 2
+ },
+ "660": {
+  "al_dia": true,
+  "antes": {
+   "Akuseru": [
+    107,
+    146,
+    false
+   ],
+   "Colesito": [
+    12,
+    12,
+    false
+   ],
+   "Deko": [
+    129,
+    194,
+    false
+   ],
+   "Elbesaabuelas": [
+    410,
+    329,
+    true
+   ],
+   "Geoka": [
+    31,
+    33,
+    false
+   ],
+   "Julda": [
+    606,
+    577,
+    true
+   ],
+   "LRS": [
+    42,
+    48,
+    false
+   ],
+   "Luzzano": [
+    355,
+    246,
+    true
+   ],
+   "Mito": [
+    20,
+    20,
+    false
+   ],
+   "NC": [
+    23,
+    24,
+    false
+   ],
+   "OKAM": [
+    25,
+    26,
+    false
+   ],
+   "ONZASS": [
+    271,
+    80,
+    true
+   ],
+   "Oasis": [
+    2,
+    2,
+    false
+   ],
+   "PRAISERIZA": [
+    5,
+    5,
+    false
+   ],
+   "Pomberito": [
+    310,
+    176,
+    true
+   ],
+   "Provenza": [
+    17,
+    17,
+    false
+   ],
+   "Raizer": [
+    115,
+    159,
+    false
+   ],
+   "SINTEXT": [
+    332,
+    212,
+    true
+   ],
+   "Sin Limites": [
+    34,
+    37,
+    false
+   ],
+   "Snow": [
+    6,
+    6,
+    false
+   ],
+   "Tam": [
+    257,
+    22,
+    true
+   ],
+   "Tenor": [
+    37,
+    43,
+    false
+   ],
+   "Thaniel": [
+    729,
+    721,
+    true
+   ],
+   "Valen": [
+    288,
+    128,
+    true
+   ],
+   "Vandu": [
+    10,
+    10,
+    false
+   ],
+   "Yor": [
+    135,
+    208,
+    false
+   ],
+   "crakero": [
+    67,
+    84,
+    false
+   ],
+   "melomaniaco": [
+    122,
+    174,
+    false
+   ],
+   "rodrilp": [
+    163,
+    301,
+    false
+   ],
+   "romeo": [
+    121,
+    172,
+    false
+   ]
+  },
+  "canal": "1468472443843776659",
+  "duelos": [
+   [
+    "NC",
+    "Yor",
+    "NC"
+   ],
+   [
+    "NC",
+    "ONZASS",
+    "NC"
+   ],
+   [
+    "NC",
+    "Colesito",
+    "NC"
+   ],
+   [
+    "Geoka",
+    "Thaniel",
+    "Geoka"
+   ],
+   [
+    "Geoka",
+    "Akuseru",
+    "Geoka"
+   ],
+   [
+    "Geoka",
+    "SINTEXT",
+    "Geoka"
+   ],
+   [
+    "Oasis",
+    "OKAM",
+    "Oasis"
+   ],
+   [
+    "PRAISERIZA",
+    "LRS",
+    "PRAISERIZA"
+   ],
+   [
+    "PRAISERIZA",
+    "Tenor",
+    "PRAISERIZA"
+   ],
+   [
+    "Valen",
+    "123 🇦🇲",
+    "Valen"
+   ],
+   [
+    "Valen",
+    "Elbesaabuelas",
+    "Valen"
+   ],
+   [
+    "Valen",
+    "Pomberito",
+    "Valen"
+   ],
+   [
+    "Valen",
+    "Sin Limites",
+    "Valen"
+   ],
+   [
+    "Deko",
+    "Julda",
+    "Deko"
+   ],
+   [
+    "Deko",
+    "crakero",
+    "Deko"
+   ],
+   [
+    "Deko",
+    "Snow",
+    "Deko"
+   ],
+   [
+    "Deko",
+    "romeo",
+    "Deko"
+   ],
+   [
+    "Tam",
+    "Snow",
+    "Tam"
+   ],
+   [
+    "Tam",
+    "melomaniaco",
+    "Tam"
+   ],
+   [
+    "Tam",
+    "Raizer",
+    "Tam"
+   ],
+   [
+    "Tam",
+    "Luzzano",
+    "Tam"
+   ],
+   [
+    "rodrilp",
+    "melomaniaco",
+    "rodrilp"
+   ],
+   [
+    "rodrilp",
+    "Provenza",
+    "rodrilp"
+   ],
+   [
+    "rodrilp",
+    "Vandu",
+    "rodrilp"
+   ],
+   [
+    "rodrilp",
+    "Mito",
+    "rodrilp"
+   ],
+   [
+    "Valen",
+    "NC",
+    "Valen"
+   ],
+   [
+    "Deko",
+    "Geoka",
+    "Deko"
+   ],
+   [
+    "Oasis",
+    "Tam",
+    "Oasis"
+   ],
+   [
+    "rodrilp",
+    "PRAISERIZA",
+    "rodrilp"
+   ],
+   [
+    "Valen",
+    "Deko",
+    "Valen"
+   ],
+   [
+    "Oasis",
+    "rodrilp",
+    "Oasis"
+   ],
+   [
+    "Valen",
+    "Oasis",
+    "Valen"
+   ]
+  ],
+  "ev_antes": {
+   "Akuseru": 7,
+   "Colesito": 43,
+   "Deko": 4,
+   "Elbesaabuelas": 3,
+   "Geoka": 32,
+   "Julda": 1,
+   "LRS": 39,
+   "Luzzano": 4,
+   "Mito": 43,
+   "NC": 59,
+   "OKAM": 30,
+   "ONZASS": 12,
+   "Oasis": 45,
+   "PRAISERIZA": 22,
+   "Pomberito": 3,
+   "Provenza": 43,
+   "Raizer": 9,
+   "SINTEXT": 6,
+   "Sin Limites": 49,
+   "Snow": 45,
+   "Tam": 30,
+   "Tenor": 21,
+   "Thaniel": 1,
+   "Valen": 4,
+   "Vandu": 53,
+   "Yor": 6,
+   "crakero": 14,
+   "melomaniaco": 8,
+   "rodrilp": 2,
+   "romeo": 5
+  },
+  "fecha": "17/11",
+  "firma": "9f661125c7b7f72c",
+  "msg": "1572482511865380916",
+  "nombre": "__ NEW GENESIS __",
+  "num": 660,
+  "participantes": 34,
+  "sello": {
+   "Valen": ""
+  },
+  "sv": "FFA",
+  "t": "2026-11-18T05:24:05Z",
+  "tabla": [
+   [
+    "Valen",
+    "Campeón",
+    10000
+   ],
+   [
+    "Oasis",
+    "Subcampeón",
+    7500
+   ],
+   [
+    "Deko",
+    "Semifinal",
+    5250
+   ],
+   [
+    "rodrilp",
+    "Semifinal",
+    5250
+   ],
+   [
+    "NC",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Geoka",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Tam",
+    "Cuartos",
+    2500
+   ],
+   [
+    "PRAISERIZA",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Snow",
+    "Octavos",
+    1875
+   ],
+   [
+    "melomaniaco",
+    "Octavos",
+    1875
+   ],
+   [
+    "Yor",
+    "Octavos",
+    1250
+   ],
+   [
+    "ONZASS",
+    "Octavos",
+    1250
+   ],
+   [
+    "Colesito",
+    "Octavos",
+    1250
+   ],
+   [
+    "Thaniel",
+    "Octavos",
+    1250
+   ],
+   [
+    "Akuseru",
+    "Octavos",
+    1250
+   ],
+   [
+    "SINTEXT",
+    "Octavos",
+    1250
+   ],
+   [
+    "OKAM",
+    "Octavos",
+    1250
+   ],
+   [
+    "LRS",
+    "Octavos",
+    1250
+   ],
+   [
+    "Tenor",
+    "Octavos",
+    1250
+   ],
+   [
+    "123 🇦🇲",
+    "Octavos",
+    1250
+   ],
+   [
+    "Elbesaabuelas",
+    "Octavos",
+    1250
+   ],
+   [
+    "Pomberito",
+    "Octavos",
+    1250
+   ],
+   [
+    "Sin Limites",
+    "Octavos",
+    1250
+   ],
+   [
+    "Julda",
+    "Octavos",
+    1250
+   ],
+   [
+    "crakero",
+    "Octavos",
+    1250
+   ],
+   [
+    "romeo",
+    "Octavos",
+    1250
+   ],
+   [
+    "Raizer",
+    "Octavos",
+    1250
+   ],
+   [
+    "Luzzano",
+    "Octavos",
+    1250
+   ],
+   [
+    "Provenza",
+    "Octavos",
+    1250
+   ],
+   [
+    "Vandu",
+    "Octavos",
+    1250
+   ],
+   [
+    "Mito",
+    "Octavos",
+    1250
+   ]
+  ],
+  "v": 2
  }
 }

@@ -1554,6 +1554,14 @@
   [648, "15/11", "CH", "cuartos", "Yukan", "Tam", "Yukan", "Tam"],
   [648, "15/11", "CH", "semifinales", "Colesito", "leteletras", "Colesito", "leteletras"],
   [648, "15/11", "CH", "semifinales", "LAMBO", "Yukan", "LAMBO", "Yukan"],
-  [648, "15/11", "CH", "final", "Colesito", "LAMBO", "Colesito", "LAMBO"]
+  [648, "15/11", "CH", "final", "Colesito", "LAMBO", "Colesito", "LAMBO"],
+  [660, "17/11", "FFA", "octavos", "Oasis", "OKAM", "Oasis", "OKAM"],
+  [660, "17/11", "FFA", "cuartos", "Valen", "NC", "Valen", "NC"],
+  [660, "17/11", "FFA", "cuartos", "Deko", "Geoka", "Deko", "Geoka"],
+  [660, "17/11", "FFA", "cuartos", "Oasis", "Tam", "Oasis", "Tam"],
+  [660, "17/11", "FFA", "cuartos", "rodrilp", "PRAISERIZA", "rodrilp", "PRAISERIZA"],
+  [660, "17/11", "FFA", "semifinales", "Valen", "Deko", "Valen", "Deko"],
+  [660, "17/11", "FFA", "semifinales", "Oasis", "rodrilp", "Oasis", "rodrilp"],
+  [660, "17/11", "FFA", "final", "Valen", "Oasis", "Valen", "Oasis"]
  ]
 }

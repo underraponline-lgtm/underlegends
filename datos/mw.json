@@ -47,10 +47,22 @@
     "nivel": "A",
     "base": 12000,
     "o": 2,
-    "estado": "suelto",
-    "ev": 0,
-    "fase": "",
-    "valor": 12000
+    "estado": "cazado",
+    "ev": 1,
+    "fase": "Subcampeón",
+    "valor": 12000,
+    "caza": {
+     "n": 660,
+     "evento": "NEW GENESIS",
+     "sv": "FFA",
+     "t": "2026-11-18T04:56:25Z",
+     "por": [
+      {
+       "n": "Valen",
+       "cobra": 20000
+      }
+     ]
+    }
    },
    {
     "n": "Dios",
@@ -112,10 +124,22 @@
     "nivel": "B",
     "base": 9000,
     "o": 5,
-    "estado": "suelto",
-    "ev": 0,
-    "fase": "",
-    "valor": 9000
+    "estado": "cazado",
+    "ev": 1,
+    "fase": "Cuartos",
+    "valor": 9000,
+    "caza": {
+     "n": 660,
+     "evento": "NEW GENESIS",
+     "sv": "FFA",
+     "t": "2026-11-18T04:56:25Z",
+     "por": [
+      {
+       "n": "rodrilp",
+       "cobra": 18000
+      }
+     ]
+    }
    },
    {
     "n": "Bloody",

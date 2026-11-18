@@ -1,5 +1,5 @@
 {
- "cuando": "2026-11-18T04:55:04+00:00",
+ "cuando": "2026-11-18T05:25:15+00:00",
  "anuncios": [
   {
    "nombre": "¡SE LLEGÓ LA GRAN NOCHE!",
@@ -7465,6 +7465,15 @@
   {
    "servidor": "CH",
    "canal": "📜—inscripciones",
+   "texto": "mats 🇺🇾",
+   "quien": "matttt.15",
+   "discord_id": "597240876573392946",
+   "msg_id": "1572479233358303304",
+   "cuando": "2026-11-18T05:11:04"
+  },
+  {
+   "servidor": "CH",
+   "canal": "📜—inscripciones",
    "texto": "Akuseru 🇦🇷",
    "quien": "akuseru_dionisio",
    "discord_id": "1564834243039731832",
@@ -8095,10 +8104,10 @@
   {
    "servidor": "FFA",
    "canal": "✦📝—inscripciones",
-   "texto": "Elbesaabuelas 🇦🇷",
-   "quien": "xnoah_12341",
-   "discord_id": "1544902851975843900",
-   "msg_id": "1572432363508736051",
+   "texto": "Nxuz 🇵🇪",
+   "quien": "n_x_u_z_",
+   "discord_id": "1089661639508377630",
+   "msg_id": "1572432361101205595",
    "cuando": "2026-11-18T02:04:49"
   },
   {
@@ -8113,10 +8122,10 @@
   {
    "servidor": "FFA",
    "canal": "✦📝—inscripciones",
-   "texto": "Nxuz 🇵🇪",
-   "quien": "n_x_u_z_",
-   "discord_id": "1089661639508377630",
-   "msg_id": "1572432361101205595",
+   "texto": "Elbesaabuelas 🇦🇷",
+   "quien": "xnoah_12341",
+   "discord_id": "1544902851975843900",
+   "msg_id": "1572432363508736051",
    "cuando": "2026-11-18T02:04:49"
   },
   {
@@ -43451,15 +43460,6 @@
    "quien": "elinzano1009",
    "discord_id": "1089661639508377630",
    "msg_id": "1560112848632418307",
-   "cuando": "2026-10-15T02:11:28"
-  },
-  {
-   "servidor": "FFA",
-   "canal": "✦📝—inscripciones",
-   "texto": "Lrs🇦🇷",
-   "quien": "lrs0378",
-   "discord_id": "1385452830684614697",
-   "msg_id": "1560112848905048107",
    "cuando": "2026-10-15T02:11:28"
   }
  ]

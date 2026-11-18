@@ -1968,5 +1968,57 @@
   "sv": "CH",
   "t_pregunta": ""
  },
+ "1572429715107741818": {
+  "autor": "1548906948307451906",
+  "canal": "1558611505040064607",
+  "canal_pregunta": "",
+  "cuando": "2026-11-18T01:54:18.413000+00:00",
+  "donde": "",
+  "evento": "(sin titulo)",
+  "fecha": "17/11",
+  "llave": "1572429715107741818",
+  "pregunta": "",
+  "preguntada": "2026-11-18 12:23 AM ET",
+  "preguntas": [
+   {
+    "lados": [
+     "Soul B 🇨🇱",
+     "Adriagner🇳🇮"
+    ],
+    "ronda": "FINAL"
+   }
+  ],
+  "respondidas": {},
+  "sin_permiso": true,
+  "staff_probado": true,
+  "sv": "LKR",
+  "t_pregunta": ""
+ },
+ "1572443914546450443": {
+  "autor": "483070865081237505",
+  "canal": "1558611505040064607",
+  "canal_pregunta": "",
+  "cuando": "2026-11-18T02:50:43.823000+00:00",
+  "donde": "",
+  "evento": "(sin titulo)",
+  "fecha": "17/11",
+  "llave": "1572443914546450443",
+  "pregunta": "",
+  "preguntada": "2026-11-18 12:23 AM ET",
+  "preguntas": [
+   {
+    "lados": [
+     "Caquiña🇵🇪",
+     "Alek🇪🇸"
+    ],
+    "ronda": "CUARTOS"
+   }
+  ],
+  "respondidas": {},
+  "sin_permiso": true,
+  "staff_probado": true,
+  "sv": "LKR",
+  "t_pregunta": ""
+ },
  "_leeme": "Las llaves que el ciclo no entendió y se las preguntó a quien las publicó, con botones o un menú (bot/finales.py). Una vez por llave, por su ID: así nunca se pregunta dos veces. Dlx, 12/10/2026."
 }

@@ -59260,5 +59260,338 @@
    "min": 31,
    "v": 1
   }
+ },
+ "660": {
+  "dia": "2026-11-17",
+  "escala": "16+",
+  "fecha": "17/11",
+  "links": [
+   "https://discord.com/channels/1468472442925092958/1487207377601040516/1572475545831342162"
+  ],
+  "n": 660,
+  "nombre": "NEW GENESIS",
+  "participantes": 34,
+  "rondas": [
+   {
+    "b": [
+     [
+      [
+       "NC",
+       "Yor",
+       "ONZASS",
+       "Colesito"
+      ],
+      "NC",
+      "triple (4 bandas)"
+     ],
+     [
+      [
+       "Geoka",
+       "Thaniel",
+       "Akuseru",
+       "SINTEXT"
+      ],
+      "Geoka",
+      "triple (4 bandas)"
+     ],
+     [
+      [
+       "Oasis",
+       "OKAM"
+      ],
+      "Oasis",
+      ""
+     ],
+     [
+      [
+       "PRAISERIZA",
+       "rodrilp",
+       "LRS",
+       "Tenor"
+      ],
+      "PRAISERIZA, rodrilp",
+      "triple (4 bandas, pasan 2); también pasa: Rodri lp 🇦🇷"
+     ],
+     [
+      [
+       "Valen",
+       "123 🇦🇲",
+       "Elbesaabuelas",
+       "Pomberito",
+       "Sin Limites"
+      ],
+      "Valen",
+      "triple (5 bandas)"
+     ],
+     [
+      [
+       "Deko",
+       "Julda",
+       "crakero",
+       "Snow",
+       "romeo"
+      ],
+      "Deko",
+      "triple (5 bandas)"
+     ],
+     [
+      [
+       "Tam",
+       "Snow",
+       "melomaniaco",
+       "Raizer",
+       "Luzzano"
+      ],
+      "Tam",
+      "triple (5 bandas)"
+     ],
+     [
+      [
+       "rodrilp",
+       "melomaniaco",
+       "Provenza",
+       "Vandu",
+       "Mito"
+      ],
+      "rodrilp",
+      "triple (5 bandas)"
+     ]
+    ],
+    "r": "Octavos"
+   },
+   {
+    "b": [
+     [
+      [
+       "Valen",
+       "NC"
+      ],
+      "Valen",
+      ""
+     ],
+     [
+      [
+       "Deko",
+       "Geoka"
+      ],
+      "Deko",
+      ""
+     ],
+     [
+      [
+       "Oasis",
+       "Tam"
+      ],
+      "Oasis",
+      ""
+     ],
+     [
+      [
+       "rodrilp",
+       "PRAISERIZA"
+      ],
+      "rodrilp",
+      ""
+     ]
+    ],
+    "r": "Cuartos"
+   },
+   {
+    "b": [
+     [
+      [
+       "Valen",
+       "Deko"
+      ],
+      "Valen",
+      ""
+     ],
+     [
+      [
+       "Oasis",
+       "rodrilp"
+      ],
+      "Oasis",
+      ""
+     ]
+    ],
+    "r": "Semifinales"
+   },
+   {
+    "b": [
+     [
+      [
+       "Valen",
+       "Oasis"
+      ],
+      "Valen",
+      ""
+     ]
+    ],
+    "r": "Final"
+   }
+  ],
+  "sv": "FFA",
+  "tabla": [
+   [
+    "Valen",
+    "Campeón",
+    10000
+   ],
+   [
+    "Oasis",
+    "Subcampeón",
+    7500
+   ],
+   [
+    "Deko",
+    "Semifinal",
+    5250
+   ],
+   [
+    "rodrilp",
+    "Semifinal",
+    5250
+   ],
+   [
+    "Geoka",
+    "Cuartos",
+    2500
+   ],
+   [
+    "NC",
+    "Cuartos",
+    2500
+   ],
+   [
+    "PRAISERIZA",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Tam",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Snow",
+    "Octavos",
+    1875
+   ],
+   [
+    "melomaniaco",
+    "Octavos",
+    1875
+   ],
+   [
+    "123 🇦🇲",
+    "Octavos",
+    1250
+   ],
+   [
+    "Akuseru",
+    "Octavos",
+    1250
+   ],
+   [
+    "Colesito",
+    "Octavos",
+    1250
+   ],
+   [
+    "Elbesaabuelas",
+    "Octavos",
+    1250
+   ],
+   [
+    "Julda",
+    "Octavos",
+    1250
+   ],
+   [
+    "LRS",
+    "Octavos",
+    1250
+   ],
+   [
+    "Luzzano",
+    "Octavos",
+    1250
+   ],
+   [
+    "Mito",
+    "Octavos",
+    1250
+   ],
+   [
+    "OKAM",
+    "Octavos",
+    1250
+   ],
+   [
+    "ONZASS",
+    "Octavos",
+    1250
+   ],
+   [
+    "Pomberito",
+    "Octavos",
+    1250
+   ],
+   [
+    "Provenza",
+    "Octavos",
+    1250
+   ],
+   [
+    "Raizer",
+    "Octavos",
+    1250
+   ],
+   [
+    "SINTEXT",
+    "Octavos",
+    1250
+   ],
+   [
+    "Sin Limites",
+    "Octavos",
+    1250
+   ],
+   [
+    "Tenor",
+    "Octavos",
+    1250
+   ],
+   [
+    "Thaniel",
+    "Octavos",
+    1250
+   ],
+   [
+    "Vandu",
+    "Octavos",
+    1250
+   ],
+   [
+    "Yor",
+    "Octavos",
+    1250
+   ],
+   [
+    "crakero",
+    "Octavos",
+    1250
+   ],
+   [
+    "romeo",
+    "Octavos",
+    1250
+   ]
+  ],
+  "ver": {
+   "min": 5,
+   "v": 1
+  }
  }
 }

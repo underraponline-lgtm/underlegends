@@ -1,6 +1,6 @@
 {
  "_leeme": "El ranking de ascenso de cada servidor, al día (bot/ascenso.py): su tabla oficial más lo que vino después, con sus reglas (datos/ascenso_reglas.json). `filas`: [nombre, cc, pts, lo sumado, raw]. `pendiente`: lo que no se sabe y no suma (las preguntas de Dlx a cada servidor).",
- "t": "2026-11-18T05:00:27Z",
+ "t": "2026-11-18T05:34:51Z",
  "sv": {
   "SR": {
    "filas": [
@@ -667,8 +667,8 @@
     [
      "Park Ji Sung",
      "cl",
-     15120,
-     500,
+     15270,
+     650,
      "Oasis"
     ],
     [
@@ -1022,6 +1022,13 @@
      "Cronox"
     ],
     [
+     "Kibak",
+     "ar",
+     950,
+     200,
+     "Valen"
+    ],
+    [
      "Mau KC en Spotify",
      "",
      935,
@@ -1090,13 +1097,6 @@
      750,
      0,
      "MCNadie"
-    ],
-    [
-     "Kibak",
-     "ar",
-     750,
-     0,
-     "Valen"
     ],
     [
      "EYOU SIPY",
@@ -1540,6 +1540,13 @@
      "Cinexfilo"
     ],
     [
+     "Deleted user",
+     "ar",
+     220,
+     110,
+     "rodrilp"
+    ],
+    [
      "TøKīØ",
      "us",
      200,
@@ -1792,13 +1799,6 @@
      ""
     ],
     [
-     "Deleted user",
-     "ar",
-     110,
-     0,
-     "rodrilp"
-    ],
-    [
      "MALBORO",
      "ar",
      110,
@@ -1896,6 +1896,30 @@
        "Gocho",
        "Subcampeón",
        375
+      ]
+     ],
+     "fuera": []
+    },
+    {
+     "n": null,
+     "evento": "New Genesis",
+     "dia": "2026-11-18",
+     "rango": "bronce iii",
+     "puntos": [
+      [
+       "Valen",
+       "Campeón",
+       200
+      ],
+      [
+       "Oasis",
+       "Subcampeón",
+       150
+      ],
+      [
+       "rodrilp",
+       "Tercero",
+       110
       ]
      ],
      "fuera": []

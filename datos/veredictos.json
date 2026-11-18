@@ -2038,6 +2038,61 @@
    "b": "RODRI LP",
    "ganador": "PARK JI SUNG",
    "votos": "1–0"
+  },
+  "1572475082922659871": {
+   "id": "1572475082922659871",
+   "sv": "CYPHERHOOD™ | Hip-Hop, Freestyle & Producción Musical",
+   "g": "1074328197400887388",
+   "canal": "1222380923048296459",
+   "pub": 1794977674943,
+   "a": "Flash",
+   "b": "karma",
+   "ganador": "Flash",
+   "votos": "3–0"
+  },
+  "1572475774332833903": {
+   "id": "1572475774332833903",
+   "sv": "[FFA] Freestyle For All 👾",
+   "g": "1468472442925092958",
+   "canal": "1487206164864438513",
+   "pub": 1794977839788,
+   "a": "KIBAK",
+   "b": "PARK JI SUNG",
+   "ganador": "KIBAK",
+   "votos": "1–0"
+  },
+  "1572476284049825835": {
+   "id": "1572476284049825835",
+   "sv": "CYPHERHOOD™ | Hip-Hop, Freestyle & Producción Musical",
+   "g": "1074328197400887388",
+   "canal": "1222380923048296459",
+   "pub": 1794977961314,
+   "a": "SIN LIMITES",
+   "b": "keplatooo",
+   "ganador": "keplatooo",
+   "votos": "1–0"
+  },
+  "1572477527920873546": {
+   "id": "1572477527920873546",
+   "sv": "CYPHERHOOD™ | Hip-Hop, Freestyle & Producción Musical",
+   "g": "1074328197400887388",
+   "canal": "1222380923048296459",
+   "pub": 1794978257876,
+   "a": "BLACKMEME🇨🇱",
+   "b": "Mf doom🇺🇸",
+   "ganador": "BLACKMEME🇨🇱",
+   "votos": "1–0"
+  },
+  "1572480185352192022": {
+   "id": "1572480185352192022",
+   "sv": "CYPHERHOOD™ | Hip-Hop, Freestyle & Producción Musical",
+   "g": "1074328197400887388",
+   "canal": "1222380923048296459",
+   "pub": 1794978891457,
+   "a": "keplatooo",
+   "b": "Flash",
+   "ganador": "Flash",
+   "votos": "2–0"
   }
  },
  "llaves": {
@@ -6812,8 +6867,8 @@
    "g": "1468472442925092958",
    "canal": "1487206164864438513",
    "pub": 1794975711120,
-   "ed": 1794977539036,
-   "texto": "`[ CUARTOS ]`\n⌞NC⌝ 🆚 ⌞KIBAK⌝\n⌞TAM⌝ 🆚 ⌞PARK JI SUNG⌝\n⌞GEOKA⌝ 🆚 ⌞DEKO⌝\n⌞RIZAS⌝ 🆚 ⌞RODRI LP⌝\n`[ SEMIFINALES ]`\n⌞KIBAK⌝ 🆚 ⌞DEKO⌝\n⌞PARK JI SUNG⌝ 🆚 ⌞RODRI LP⌝",
+   "ed": 1794978097108,
+   "texto": "`[ CUARTOS ]`\n⌞NC⌝ 🆚 ⌞KIBAK⌝\n⌞TAM⌝ 🆚 ⌞PARK JI SUNG⌝\n⌞GEOKA⌝ 🆚 ⌞DEKO⌝\n⌞RIZAS⌝ 🆚 ⌞RODRI LP⌝\n`[ SEMIFINALES ]`\n⌞KIBAK⌝ 🆚 ⌞DEKO⌝\n⌞PARK JI SUNG⌝ 🆚 ⌞RODRI LP⌝\n`[ FINAL ]`\n⌞KIBAK⌝ 🆚 ⌞PARK JI SUNG⌝",
    "batallas": [
     [
      "CUARTOS",
@@ -6872,6 +6927,16 @@
       "RODRI LP"
      ],
      "PARK JI SUNG",
+     "veredicto",
+     []
+    ],
+    [
+     "FINAL",
+     [
+      "KIBAK",
+      "PARK JI SUNG"
+     ],
+     "KIBAK",
      "veredicto",
      []
     ]
