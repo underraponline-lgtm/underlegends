@@ -81,6 +81,34 @@ def _get(url, ciclo=False, timeout=25):
         return None
 
 
+#: países que no se toman en cuenta (Dlx, 22/09/2026: «Emiratos y Brasil no deberían existir»)
+SIN_PAIS = ('ae', 'br', 'no')
+
+
+def _vitrina(L, ahora=None):
+    """Lo que muestra la miniatura del link de invitación, redondeado para abajo para que no se rearme por una unidad: los
+    torneos de los últimos 7 días del calendario (a la decena), las personas de los servidores (`comunidad.personas`, al
+    millar) y los 12 países con más raperos. La misma regla que `vitrinaRef()` de web/src/og_link.jsx."""
+    import datetime
+    ahora = ahora or datetime.datetime.now(datetime.timezone.utc)
+    desde = ahora - datetime.timedelta(days=7)
+    t = 0
+    for c in (L or {}).get('calendario') or []:
+        try:
+            x = datetime.datetime.fromisoformat(str((c or {}).get('t') or (c or {}).get('cuando') or '').replace('Z', '+00:00'))
+        except ValueError:
+            continue
+        if x.tzinfo and desde <= x <= ahora:
+            t += 1
+    try:
+        m = int(((L or {}).get('comunidad') or {}).get('personas') or 0)
+    except (TypeError, ValueError):
+        m = 0
+    ps = [p for p in (L or {}).get('paises') or [] if isinstance(p, dict) and p.get('cc') and p['cc'] not in SIN_PAIS]
+    ps.sort(key=lambda p: -(p.get('n') or 0))
+    return {'t': t // 10 * 10, 'm': m // 1000 * 1000, 'b': [p['cc'] for p in ps[:12]]}
+
+
 def _carta(k, f, cartas):
     """La URL de la primera carta que tiene (`ORDEN_CARTA`), con su versión, o ''."""
     vs = f.get('cv').split('.') if isinstance(f.get('cv'), str) else []
@@ -119,10 +147,14 @@ def trabajos():
             for k in ks:
                 if k not in filas and isinstance((P.get(k) or {}).get('f'), dict):
                     filas[k] = P[k]['f']
+        V = _vitrina(L)
         for k in ks:
             f = filas.get(k) or {}
-            r = {'k': k, 'n': f.get('n') or k, 'carta': _carta(k, f, cartas)}
-            ruta = 'ref/%s?n=%s&c=%s' % (quote(k, safe=''), quote(str(r['n']), safe=''), quote(r['carta'], safe=''))
+            # la «4b» (17/11/2026): los números y las banderas entran en la huella, ya redondeados; `d` es el diseño de
+            # ésta sola, así cambiarlo no rearma las crews ni los perfiles
+            r = {'k': k, 'n': f.get('n') or k, 'carta': _carta(k, f, cartas), 'd': 'ref-4b', **V}
+            ruta = 'ref/%s?n=%s&c=%s&t=%d&m=%d&b=%s' % (quote(k, safe=''), quote(str(r['n']), safe=''), quote(r['carta'], safe=''),
+                                                     V['t'], V['m'], ','.join(V['b']))
             out.append(('ref', slug_og(k), _huella(r), ruta))
     # 🖼️ el cartel del link de cada perfil: los de la tabla con carta. La huella es todo lo que el cartel muestra
     fondos = (_get(avisar.WORKER + '/avisos/fondos') or {}).get('f') or {}
@@ -171,6 +203,12 @@ def dibujar(lista):
                     return document.querySelector('#inicio-nuevo').shadowRoot.querySelector('.og').dataset.falta === '1'; }""")
                 if falta:
                     print('   · %s/%s: la página no lo encontró' % (tipo, slug))
+                    continue
+                # ⚠️ la «4b» va en la huella: si la página publicada todavía es la de antes (el ciclo corrió antes de que se
+                # desplegara la web), la foto saldría vieja con la huella nueva y no se volvería a sacar nunca. Se saltea
+                # y se reintenta en la corrida siguiente
+                if tipo == 'ref' and not pag.evaluate("() => !!document.querySelector('#inicio-nuevo').shadowRoot.querySelector('.og.og-r4')"):
+                    print('   · %s/%s: la página publicada todavía es la de antes' % (tipo, slug))
                     continue
                 # las fuentes: el nombre se vuelve a medir cuando llegan (og_link.jsx), y medido antes se salía
                 pag.evaluate('() => document.fonts.ready.then(() => 1)')
@@ -253,6 +291,16 @@ def _self_check():
     f0 = {'k': 'ana', 'c': ['servidor', 'temporada'], 'cv': 'a1.b2'}
     ok(_carta('ana', f0, ['temporada', 'servidor']) == PUBLICA + '/ana/temporada.webp?v=a1' and _carta('x', {}, []) == '',
        'la carta del cartel: la primera en el orden de la vista previa, con su versión; sin carta, nada')
+    import datetime
+    hoy = datetime.datetime(2026, 11, 18, 3, 0, tzinfo=datetime.timezone.utc)
+    cal = [{'t': (hoy - datetime.timedelta(hours=h)).strftime('%Y-%m-%dT%H:%M:%SZ')} for h in range(0, 42 * 4, 4)]
+    cal.append({'t': (hoy - datetime.timedelta(days=9)).strftime('%Y-%m-%dT%H:%M:%SZ')})     # fuera de la semana
+    L0 = {'calendario': cal, 'comunidad': {'personas': 21386},
+          'paises': [{'cc': 'ar', 'n': 171}, {'cc': 'br', 'n': 900}, {'cc': 'co', 'n': 76}, {'cc': 'cl', 'n': 93}, {'cc': 'ae', 'n': 5}]}
+    V = _vitrina(L0, hoy)
+    ok(V == {'t': 40, 'm': 21000, 'b': ['ar', 'cl', 'co']},
+       'la miniatura del link: 42 torneos en 7 días → 40, 21.386 → 21.000, banderas por raperos y sin Emiratos ni Brasil (%s)' % V)
+    ok(_vitrina({}, hoy) == {'t': 0, 'm': 0, 'b': []}, 'sin lobby, ceros y sin banderas (la página esconde lo que no llega)')
     with io.open(os.path.join(BASE, 'bot', 'ci', 'guardar.sh'), encoding='utf-8') as f:
         ok('datos/og_links.json' in f.read(), 'datos/og_links.json va en ARCHIVOS de guardar.sh (si no, cada corrida sube todas)')
     print('\n%s' % ('✅ las miniaturas de los links' if not malos else '❌ %d falla(s)' % malos))

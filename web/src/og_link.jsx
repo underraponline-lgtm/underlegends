@@ -78,25 +78,94 @@ function Crew({ id }) {
   );
 }
 
+// 🎁 LA MINIATURA DEL LINK DE INVITACIÓN, LA «4b» (17/11/2026). Dlx eligió, de ocho ganchos y cinco versiones hechas con su
+// brain, 21st, Taste y la crítica de Impeccable (el lienzo: https://claude.ai/artifact/9EZdEof3J7tLiisKuzXspF, guardada en
+// docs/remake/miniatura_invita/): «me gusta como se ve ahora… guarda este preset», «más de 21000 miembros», la barra de
+// abajo con «entra ahora y gana una recompensa» y «quita liga global de freestyle, eso estará en el link».
+// Tres columnas y una barra: quien invita y su carta · «+40 torneos por semana» y «todos los niveles» en magenta · las
+// banderas y «más de 21.000 miembros». Los números y las banderas los manda bot/og_links.py en la ruta (`t`, `m`, `b`),
+// así la huella sabe cuándo rearmar; sin ellos se calculan acá con la misma regla.
+// ⚠️ «Miembros» son las personas de los servidores donde está el bot (`comunidad.personas`), no gente anotada en la Liga.
+const SIN_PAIS = new Set(['ae', 'br', 'no']);              // Dlx, 22/09: Emiratos y Brasil «no se les toma en cuenta»
+const nro = (x) => Number(x) || 0;
+const miles = (x) => String(Math.trunc(x)).replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+
+/** `{t, m, b}`: torneos de los últimos 7 días (para abajo a la decena), personas en los servidores (al millar) y los 12
+ *  países con más raperos. La misma regla que `_vitrina()` de bot/og_links.py */
+export function vitrinaRef(d, q) {
+  const D = d || {};
+  const ahora = Date.now(), desde = ahora - 7 * 864e5;
+  const t = q && q.get('t') != null ? nro(q.get('t'))
+    : Math.floor((D.calendario || []).filter((c) => { const x = Date.parse((c && (c.t || c.cuando)) || ''); return x >= desde && x <= ahora; }).length / 10) * 10;
+  const m = q && q.get('m') != null ? nro(q.get('m')) : Math.floor(nro(D.comunidad && D.comunidad.personas) / 1000) * 1000;
+  const b = q && q.get('b') != null ? String(q.get('b')).split(',').filter((x) => /^[a-z]{2}$/.test(x)).slice(0, 12)
+    : (D.paises || []).filter((p) => p && p.cc && !SIN_PAIS.has(p.cc)).sort((a, c) => nro(c.n) - nro(a.n)).slice(0, 12).map((p) => p.cc);
+  return { t, m, b };
+}
+
+// 🔠 EL NOMBRE DE QUIEN INVITA: la 4b guardada sólo entraba con nombres de hasta 3 letras («MAKMAH TE INVITA» ya invadía
+// el magenta). Medido sobre los nombres de la Liga (mediana 6, el 90 % ≤ 10, el más largo 48): si «NOMBRE TE INVITA» entra
+// en una etiqueta a 54 px, va así; si no, el nombre en la suya (de 54 a 44 px), en dos líneas por palabras si hace falta, y
+// con «…» si una palabra sola no entra. Nunca menos de 44 px: a 300 px de ancho (el celular) son 11.
+const ANCHO_Q = 342;
+function anchoTxt(txt, px) {
+  const c = anchoTxt.c || (anchoTxt.c = document.createElement('canvas').getContext('2d'));
+  c.font = '700 ' + px + 'px "Barlow Condensed", sans-serif';
+  const T = String(txt).toUpperCase();
+  let w = c.measureText(T).width;
+  if ('letterSpacing' in c) { c.letterSpacing = '2px'; w = c.measureText(T).width; c.letterSpacing = '0px'; } else w += 2 * T.length;
+  return w + 32;                                           // el relleno de la etiqueta
+}
+export function encajeNombre(nombre, medir = anchoTxt) {
+  if (medir(nombre + ' te invita', 54) <= ANCHO_Q) return { una: true, px: 54 };
+  for (let px = 54; px >= 44; px -= 1) if (medir(nombre, px) <= ANCHO_Q) return { una: false, px, dos: false };
+  return { una: false, px: 44, dos: /\s/.test(nombre.trim()) };
+}
+
 function Ref({ liga, k }) {
   const [ok, setOk] = useState(false);
+  const [mala, setMala] = useState(false);
+  const [enc, setEnc] = useState(null);
+  const [banderas, setBanderas] = useState(0);
   const q = deLaRuta();
   const f = liga && ((liga.T && liga.T[k]) || (liga.X && liga.X[k]));
   const nombre = limpio(q.get('n') || (f && f.n) || k);
   const carta = f && ORDEN_CARTA.find((x) => (f.c || []).includes(x));
   const deRuta = R2.test(q.get('c') || '') ? q.get('c') : '';
   const src = deRuta || (carta && liga.d && liga.d.r2 ? liga.d.r2 + '/' + encodeURIComponent(k) + '/' + carta + '.webp' : '');
+  const V = vitrinaRef(liga && liga.d, q);
+  // el nombre se mide con las fuentes ya cargadas: con la de reemplazo «DLX TE INVITA» parecía no entrar
+  useLayoutEffect(() => {
+    let vivo = true;
+    const medir = () => { if (vivo) setEnc(encajeNombre(nombre)); };
+    if (document.fonts && document.fonts.ready) document.fonts.ready.then(medir); else medir();
+    return () => { vivo = false; };
+  }, [nombre]);
+  const listo = liga && liga.d && enc && (!src || ok) && banderas >= V.b.length;
+  const una = (n) => () => setBanderas((x) => x + n);
   return (
-    <div className={'og og-ref' + (src ? ' con' : '')} data-listo={!liga || !liga.d ? '' : !src || ok ? '1' : ''}>
-      <div className="og-der">
-        <span className="og-k">🎁 Te invita</span>
-        <Nombre texto={nombre} />
-        <p className="og-p og-p1">a la Liga Global de Freestyle</p>
-        <p className="og-p">Torneos de freestyle online todas las semanas. Entra con su link: <b>500 Puntos de Tienda</b> de bienvenida.</p>
-        <span className="og-url">underlegends.pages.dev/i/{k}</span>
+    <div className="og og-r4" data-listo={listo ? '1' : ''}>
+      <div className="og-r4-izq">
+        {!enc || enc.una ? <span className="og-r4-tag">{nombre} te invita</span> : (
+          <>
+            <span className={'og-r4-tag og-r4-nom' + (enc.dos ? ' dos' : '')} style={{ fontSize: enc.px + 'px' }}>{nombre}</span>
+            <span className="og-r4-tag">te invita</span>
+          </>
+        )}
+        {src && !mala ? <span className="og-r4-carta"><img src={src} alt="" onLoad={() => setOk(true)} onError={() => { setMala(true); setOk(true); }} /></span> : null}
       </div>
-      {src ? <img className="og-carta" src={src} alt="" onLoad={() => setOk(true)} onError={() => setOk(true)} /> : null}
-      <div className="og-barra"><i /><i /></div>
+      <div className="og-r4-med">
+        {V.t >= 10 ? <><b className="og-r4-num">+{V.t}</b><span className="og-r4-bc og-r4-tor">torneos<br />por semana</span></>
+          : <span className="og-r4-bc og-r4-tor">torneos<br />todas las<br />semanas</span>}
+        <span className="og-r4-bc og-r4-caja">Todos los niveles</span>
+      </div>
+      <div className="og-r4-der">
+        {V.b.length ? <span className="og-r4-flags">{V.b.map((cc) => <img key={cc} src={'/banderas/g/' + cc + '.webp'} alt="" onLoad={una(1)} onError={una(1)} />)}</span> : null}
+        {V.m >= 1000 ? (
+          <span className="og-r4-miem"><span className="og-r4-bc">Más de</span><b>{miles(V.m)}</b><span className="og-r4-bc og-r4-m">miembros</span></span>
+        ) : null}
+      </div>
+      <div className="og-r4-barra">Entra ahora y gana una recompensa</div>
     </div>
   );
 }

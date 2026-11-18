@@ -49,3 +49,15 @@ La regla (a la izquierda de la hoja, cómo queda sin ella; a la derecha, con ell
 
 ⚠️ **Se mide con las fuentes ya cargadas** (`document.fonts.ready`): medido antes, con la fuente de reemplazo, «DLX TE
 INVITA» parecía no entrar y se partía en dos.
+
+## La que salió (6.44): `final_dlx.png`, `final_nombres.png`
+
+Dlx eligió «la barra de abajo» de tres lugares para el llamado, y: *«quita liga global de freestyle debido a que eso
+estará en el link»* y *«el premio no es 500 puntos… mejor solo decir gana una recompensa»*. Quien entra por un link se
+lleva los 500 Puntos de bienvenida (`REF_BIEN`), pero también arranca con 5.000, tiene la bienvenida de su primera semana
+y su carta con el nivel 1: por eso «una recompensa» y no un número.
+
+- La barra: blanca, de lado a lado, 92 px de alto, «ENTRA AHORA Y GANA UNA RECOMPENSA» (Archivo 900, 48 px).
+- Sin «Liga Global de Freestyle»: la carta ocupa lo que queda bajo el nombre.
+- Vive en `web/src/og_link.jsx` (`Ref`, clases `og-r4-`) y la foto la saca `bot/og_links.py`, que le pasa los números y
+  las banderas en la ruta (`t`, `m`, `b`, de `_vitrina()`) para que entren en la huella.

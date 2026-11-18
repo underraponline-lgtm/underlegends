@@ -11,6 +11,17 @@
   ],
   "cambios": [
     {
+        "version": "6.44",
+        "dia": "2026-11-17",
+        "cuando": "2026-11-17T23:33:00-05:00",
+        "titulo": "Tu link de invitación, con su miniatura nueva",
+        "items": [
+            "**Cuando pegas tu link de Invita y gana en Discord**, la miniatura ahora muestra tu carta, cuántos torneos hay por semana, que es para todos los niveles, las banderas de los países de la Liga y cuántos miembros hay en sus servidores.",
+            "Abajo, de lado a lado: **«Entra ahora y gana una recompensa»**.",
+            "Si tu nombre es largo, va en su propia línea y la carta se acomoda: nada se sale de su lugar."
+        ]
+    },
+    {
         "version": "6.43",
         "dia": "2026-11-17",
         "cuando": "2026-11-17T23:29:54-05:00",
