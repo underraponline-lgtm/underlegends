@@ -1,9 +1,9 @@
 {
  "v": 1,
- "cuando": "2026-11-18T03:10:47Z",
+ "cuando": "2026-11-18T04:06:20Z",
  "trabajo": "dibujar",
  "codigo": 0,
- "dur_s": 417.0,
+ "dur_s": 199.0,
  "pasos": [
   {
    "n": "2f",
@@ -15,7 +15,7 @@
    "n": "2f2",
    "que": "los TAGs elegidos",
    "ok": true,
-   "s": 1.0
+   "s": 0.7
   },
   {
    "n": "2f3",
@@ -27,61 +27,61 @@
    "n": "3",
    "que": "qué cambió",
    "ok": true,
-   "s": 10.0
+   "s": 10.1
   },
   {
    "n": "4",
    "que": "las caras, desde R2",
    "ok": true,
-   "s": 247.4
+   "s": 63.8
   },
   {
    "n": "5",
-   "que": "tanda 1 de 1 · 1 persona(s)",
+   "que": "tanda 1 de 1 · 6 persona(s)",
    "ok": true,
-   "s": 17.1
+   "s": 58.8
   },
   {
    "n": "5b",
    "que": "las Bloqueadas",
    "ok": true,
-   "s": 79.0
+   "s": 9.2
   },
   {
    "n": "6",
    "que": "refrescar KV",
    "ok": true,
-   "s": 60.5
+   "s": 54.8
   }
  ],
  "fallas": [],
  "ultimo_evento": {
-  "n": "658",
-  "nombre": "MULTIVERS VIDA O MUERTE",
+  "n": "659",
+  "nombre": "(sin titulo)",
   "sv": "LKR",
-  "dia": "2026-11-12"
+  "dia": "2026-11-17"
  },
  "cuotas": {
   "kv": {
-   "write": 191,
-   "read": 5416
+   "write": 261,
+   "read": 8314
   },
   "objeto": {
-   "leidas": 652620,
-   "escritas": 16676,
-   "pedidos": 4127
+   "leidas": 909641,
+   "escritas": 21061,
+   "pedidos": 5563
   },
   "worker": {
-   "pedidos": 18487,
+   "pedidos": 18653,
    "errores": 0,
-   "sub": 20615,
+   "sub": 20522,
    "cortados": 0,
-   "p50_ms": 1.14,
-   "p99_ms": 15.81,
+   "p50_ms": 1.12,
+   "p99_ms": 15.96,
    "cpu": {
-    "total": 39039,
-    "objeto_10": 2108,
-    "worker_10": 667
+    "total": 39043,
+    "objeto_10": 2124,
+    "worker_10": 700
    }
   },
   "r2": {
