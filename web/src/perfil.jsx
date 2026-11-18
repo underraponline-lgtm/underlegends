@@ -776,13 +776,26 @@ function Datos({ liga, p, e, f }) {
 
 // 🗂️ SUS DATOS, TODO JUNTO (Dlx, a la v1: «poner ligas en la sección de datos… y ser más específicos»): sus ligas, sus
 // datos, en cada ranking y lo que le falta, en una sola sección blanca. Cada parte se apaga sola si no tiene con qué
-function SusDatos({ liga, f, k, p, e, esYo }) {
+// ✂️ EN DOS PIEZAS (Dlx, 17/11/2026, al perfil en bandas: «divide sus datos en dos para que quede parejo»): era la pieza más
+// larga de «Lo suyo» —1.426 px en MCO— y no dejaba que las dos columnas terminaran juntas. Ahora cómo juega va por un lado
+// y dónde está parado (sus ligas, en cada ranking, lo que le falta) por el otro, y el reparto de la banda los mueve por
+// separado. Sin renglones, «Sus datos» no se dibuja (`Datos` no tiene hooks: se llama como función para saberlo)
+function SusDatos({ liga, f, p, e, esYo }) {
+  const filas = Datos({ liga, p, e, f });
+  if (!filas) return null;
   return (
     <section className="sec pf-sec pf8-sd">
       <div className="sec-t"><h2>{esYo ? 'Tus datos' : 'Sus datos'}</h2></div>
-      <SusLigas liga={liga} k={k} esYo={esYo} p={p} dentro />
-      <Datos liga={liga} p={p} e={e} f={f} />
+      {filas}
+    </section>
+  );
+}
+function SusRankings({ liga, f, k, p, esYo }) {
+  return (
+    <section className="sec pf-sec pf8-sd">
+      <div className="sec-t"><h2>{esYo ? 'Dónde estás' : 'Dónde está'}</h2></div>
       <EnCadaRanking liga={liga} f={f} p={p} dentro />
+      <SusLigas liga={liga} k={k} esYo={esYo} p={p} dentro />
       <LoQueFalta f={f} p={p} esYo={esYo} dentro />
     </section>
   );
@@ -1545,8 +1558,8 @@ export function Perfil({ liga, dc, k: k0, tab }) {
   // publicaciones. Pasa sólo si mejora de verdad (60 px) y con tope de vueltas, para que nada salte de un lado al otro
   // «Lo suyo» tiene cinco piezas de largos muy distintos (Sus datos puede ser la mitad de la banda): ahí se elige el
   // reparto entero —cuál va a cada lado, en su orden— que deja las dos columnas más parejas (`b4`, una máscara: 1 = derecha)
-  const B4 = ['logros', 'ultimo', 'fz', 'datos', 'jurado'];
-  const B4_0 = 0b11000;
+  const B4 = ['logros', 'ultimo', 'fz', 'datos', 'rk', 'jurado'];
+  const B4_0 = 0b000111;
   const [lay, setLay] = useState({ k: '', riv: 'izq', b4: B4_0, nm: 4, v: 0 });
   const L = lay.k === k ? lay : { k, riv: 'izq', b4: B4_0, nm: 4, v: 0 };
   useEffect(() => {
@@ -1565,7 +1578,7 @@ export function Perfil({ liga, dc, k: k0, tab }) {
       return Math.abs(otro) < Math.abs(dif) - 60 ? (lado === 'izq' ? 'der' : 'izq') : null;
     };
     const riv = mover('pf9-b2', '.pf9-riv', L.riv);
-    // el mejor reparto de «Lo suyo»: el alto de cada pieza (14 px de hueco entre una y otra) y las 32 combinaciones
+    // el mejor reparto de «Lo suyo»: el alto de cada pieza (14 px de hueco entre una y otra) y las 64 combinaciones
     const hs = B4.map((id) => { const x = el.querySelector('[data-pz="' + id + '"]'); const hh = x ? x.getBoundingClientRect().height : 0; return hh ? hh + 14 : 0; });
     const lados = (m) => hs.reduce((acc, hh, i) => { acc[(m >> (B4.length - 1 - i)) & 1] += hh; return acc; }, [0, 0]);
     const desv = (m) => { const [x, y] = lados(m); return Math.abs(x - y); };
@@ -1623,7 +1636,8 @@ export function Perfil({ liga, dc, k: k0, tab }) {
     logros: <div key="logros" data-pz="logros" id="pf-insignias"><Logros liga={liga} p={p} esYo={esYo} dc={dc} /></div>,
     ultimo: <div key="ultimo" data-pz="ultimo" id="pf-ultimo"><LoUltimo liga={liga} p={p} e={P.e} act={ex && ex.act} esYo={esYo} /></div>,
     fz: <div key="fz" data-pz="fz"><Fortalezas liga={liga} f={f} p={p} dmp={P.dmp} esYo={esYo} /></div>,
-    datos: <div key="datos" data-pz="datos" id="pf-datos"><SusDatos liga={liga} f={f} k={k} p={p} e={P.e} esYo={esYo} /></div>,
+    datos: <div key="datos" data-pz="datos" id="pf-datos"><SusDatos liga={liga} f={f} p={p} e={P.e} esYo={esYo} /></div>,
+    rk: <div key="rk" data-pz="rk"><SusRankings liga={liga} f={f} k={k} p={p} esYo={esYo} /></div>,
     jurado: <div key="jurado" data-pz="jurado"><FichaJurado k={k} /></div>,
   } : {};
   return (
