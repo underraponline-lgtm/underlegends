@@ -20,16 +20,26 @@
 //   · LOS PREMIOS SE PAGABAN CALLADOS (la Caja sólo cambiaba de color): cada misión cobrada sale en un aviso corto, cada día
 //     completo en un momento a pantalla completa (el escenario de los drops), una vez por día y por dispositivo, y en la
 //     campana (eso lo anota el objeto). La Caja del Nuevo se abre como un cofre.
+//
+// 🫣 LA SEMANA, TERCERA MANO (17/11/2026, la simulación de un nuevo con la 6.40). Los avisos se gastaban sin verse: se
+// anotaban como festejados al ponerse en la fila y salían debajo de la carga, de la bienvenida, del tutorial o de los
+// drops (y adentro de `.pg-entra`, que con su `transform` los mandaba a y≈5980). Ahora esperan a que no haya nada delante
+// (`algoTapa()` de tapa.js), se cuelgan fuera de toda animación (`capaFija()`) y se anotan recién cuando se vieron enteros.
+// La Caja ya abierta dice «Abierta» (no se vuelve a destapar), y una misión hecha no dice qué cofre dio si pudo ser el de antes
 import { useEffect, useRef, useState } from 'react';
+import { createPortal } from 'react-dom';
 import { num } from './liga.js';
 import { Ico, accion } from './piezas.jsx';
 import { RED_NOMBRE, RED_SVG } from './redes_ico.jsx';
 import { DIAS_PISTA, enSemanaNueva, nuevoLocal, pedirRecorrido, redAbierta, tuto, tutoPoner } from './primera.js';
 import { cobrarRacha, useRacha } from './racha.js';
-import { COFRES, abrirCajaNuevo, abrirMomento, abrirOrigen } from './drops.jsx';
+import { COFRES, abrirCajaNuevo, abrirMomento, abrirOrigen, useDrops } from './drops.jsx';
+import { useCalma } from './anima.js';
+import { algoTapa, capaFija, seVe } from './tapa.js';
 
 const W = typeof window !== 'undefined' ? window : {};
-const E = { d: null, cuenta: null, va: false, t: 0, oyen: new Set() };
+// `va`: el pedido en vuelo ({cuenta, p}); `sig`: el que espera a que ése termine (nunca se tira)
+const E = { d: null, cuenta: null, va: null, sig: null, t: 0, oyen: new Set() };
 const avisar = () => E.oyen.forEach((f) => f());
 
 // 🎉 LO QUE YA SE FESTEJÓ EN ESTE DISPOSITIVO (17/11/2026): las misiones (`m`) y los días (`d`), en `lg:tuto` (`nvp`), así
@@ -56,16 +66,30 @@ function sembrar(P) {
   });
 }
 
-/** Lo tuyo, del objeto (con cuenta) o la pista vacía (sin cuenta). Lo nuevo que se cobró trae los drops de nuevo */
+/**
+ * Lo tuyo, del objeto (con cuenta) o la pista vacía (sin cuenta). Lo nuevo que se cobró trae los drops de nuevo.
+ * ⏭️ UN PEDIDO CON CUENTA NO SE TIRA (17/11/2026): si había otro en vuelo (el de sin cuenta, de antes de saber quién
+ * eras, o uno que salió antes de lo que se quiere ver ahora), éste espera a que termine y sale después, una vez. Antes
+ * devolvía lo que hubiera, y al cerrar la bienvenida la pista quedaba en `null` hasta el próximo pedido
+ */
 export function pedirNuevo(dc, forzar) {
   const cuenta = !!dc;
-  if (E.va || (!forzar && E.d && E.cuenta === cuenta && Date.now() - E.t < 60000)) return Promise.resolve(E.d);
-  E.va = true;
+  if (E.va) {
+    if (E.va.cuenta === cuenta && !forzar) return E.va.p;
+    if (E.sig) { E.sig.dc = dc; return E.sig.p; }
+    const sig = { dc };
+    sig.p = E.va.p.then(() => { E.sig = null; return pedirNuevo(sig.dc, true); });
+    E.sig = sig;
+    return sig.p;
+  }
+  if (!forzar && E.d && E.cuenta === cuenta && Date.now() - E.t < 60000) return Promise.resolve(E.d);
   const cuerpo = Object.assign({}, nuevoLocal(), cuenta ? { cuenta: true } : {});
+  const va = { cuenta };
+  E.va = va;
   const p = cuenta && W.conCuenta ? W.conCuenta('/api/avisos/nuevo', cuerpo)
     : fetch('/api/avisos/nuevo', { method: 'POST', headers: { 'content-type': 'application/json' }, body: '{}' }).then((r) => r.json());
-  return p.then((j) => {
-    E.va = false;
+  va.p = p.then((j) => {
+    E.va = null;
     if (j && j.ok) {
       const antes = E.d;
       E.d = j; E.cuenta = cuenta; E.t = Date.now();
@@ -75,6 +99,9 @@ export function pedirNuevo(dc, forzar) {
         const redes = [...new Set([...(T.redes || []), ...(j.redes || [])])];
         tutoPoner({ pista: j.pista && !j.pista.fin ? 'si' : 'no', redes });
         sembrar(j.pista);
+        // 🔁 el objeto dice que estás verificado y este navegador no lo sabe (te verificaste y volviste otro día): que «lo
+        // de la cuenta» se ponga al día (`refrescarVerificado()` de bot/paginas/cuenta.js, una vez por carga)
+        if (j.pista && j.pista.v && typeof W.refrescarVerificado === 'function') W.refrescarVerificado();
       }
       avisar();
       // 🐉 si cobró algo nuevo, la barra de los drops se vuelve a pedir (la escucha `lg:cofre`)
@@ -82,7 +109,8 @@ export function pedirNuevo(dc, forzar) {
       if (cuenta && j.pista && j.pista.recien && (j.pista.recien.mis || []).length && !antes) W.dispatchEvent(new Event('lg:cofre'));
     }
     return E.d;
-  }).catch(() => { E.va = false; return E.d; });
+  }).catch(() => { E.va = null; return E.d; });
+  return va.p;
 }
 const cobrado = (j) => [((j.pista || {}).hechas) || 0, (j.redes || []).length];
 
@@ -137,7 +165,17 @@ export function txtPremio(pr) {
 }
 //: el premio de una misión en su pastilla: entrar con Discord es «tu primer cofre» (Dlx, «Tus elecciones»)
 const txtMision = (m) => (m.id === 'entrar' && m.premio[0] === 'cofre' ? 'Tu primer cofre · ' + (COFRES[m.premio[1]] || COFRES[1]) : txtPremio(m.premio));
+//: 🧾 el premio de una misión YA HECHA, en la lista (17/11/2026): las que pagan un cofre desde el 17/11 —entrar y el tutorial
+//: completo— antes pagaban 500 Puntos y tres drops, y a quien ya los cobró no se le da el cofre (`nuevoYaPago()` de
+//: bot/avisos.js). La página no sabe cuál cobró cada uno: no dice «Flight case» a quien se llevó los Puntos
+const txtHecha = (m) => (m.premio[0] === 'cofre' ? 'Premio cobrado' : txtMision(m));
 const CLASE = { pdt: 'pdt', drop: 'drop', star: 'star', cofre: 'cofre', titulo: 'tit', redes: 'star', caja: 'cofre' };
+//: ⏱️ cuánto tiene que verse entero un aviso para contar como festejado, y cuánto tiene que estar libre la página antes de
+//: que salga (sin esto, en el segundo entre la bienvenida y el «¿Cómo quieres conocer la Liga?» salía y se volvía a tapar)
+const AVISO_MS = 4500;
+const LIBRE_MS = 1200;
+//: 🎁 lo que trae la Caja, en palabras
+const txtCaja = (C) => num(C.puntos) + ' Puntos de Tienda, ' + C.star + ' Star Dragons y el título «' + C.titulo + '»';
 
 /** La pista sin cuenta: la del objeto, con lo que sabe este navegador (los tutoriales) y el día desde su primera visita */
 function pistaLocal(pl) {
@@ -161,7 +199,8 @@ export const IR_BIEN = { seguir: '#/ranking', campana: '#/avisos', llave: '#/eve
 
 /** A dónde lleva cada misión. `el`: una pieza de la pista (de ahí sale el shadow root, para llegar a las historias) */
 function irA(id, abrirRedes, el) {
-  const rutas = { campana: '#/avisos', verif: '#/cuenta/verificar', perfil: '#/cuenta', sigue3: '#/ranking', fel: '#/publicaciones',
+  // «Pon tu foto, tu fondo o tu frase» abre «Foto y redes» de Mi cuenta, no su principio (17/11/2026)
+  const rutas = { campana: '#/avisos', verif: '#/cuenta/verificar', perfil: '#/cuenta/perfil', sigue3: '#/ranking', fel: '#/publicaciones',
     cm: '#/publicaciones', nivel1: '#/pase', tareas2: '#/pase', cancha: '#/eventos', crew: '#/crews', encuesta: '#/publicaciones' };
   if (id === 'corto') return () => pedirRecorrido('corto');
   if (id === 'completo') return () => { location.hash = '#/guia'; setTimeout(() => W.dispatchEvent(new Event('lg:aprende')), 300); };
@@ -185,7 +224,17 @@ const PAL_CAJA = { c: '#F5C542', b1: '#FFE07A', b2: '#7E4C00' };
 const tipoDe = (pr) => (pr[0] === 'titulo' ? 'titulo' : pr[0] === 'redes' ? 'star' : pr[0]);
 const itemsCaja = (C) => [{ txt: num(C.puntos) + ' Puntos de Tienda', small: 'Caja del Nuevo', tipo: 'pdt' },
   { txt: C.star + ' Star Dragons', small: 'Caja del Nuevo', tipo: 'star' }, { txt: 'Título «' + C.titulo + '»', small: 'Caja del Nuevo', tipo: 'titulo' }];
-const botonesCaja = (P, el) => [{ txt: 'Abrir la Caja del Nuevo', fn: () => abrirCajaNuevo(el, P.cajaPremio) }, { txt: 'Luego' }];
+const botonesCaja = (P, el) => [{ txt: 'Abrir la Caja del Nuevo', fn: () => abrirCajaNuevo(el, P.cajaPremio, cajaDestapada) }, { txt: 'Luego' }];
+//: 🎁 LA CAJA SE DESTAPA UNA VEZ (17/11/2026): se podía «abrir» para siempre —el panel seguía diciendo «Ábrela» y volvía a
+//: festejar los 5.000 Puntos ya pagados—. Destapada en este dispositivo queda en `lg:tuto` (`caja`; sin almacenamiento, en
+//: memoria), y en cualquiera lo dicen sus Star Dragons: ya no están cerrados (ver `cajaAbierta` en `PistaNuevos`)
+let CAJA_VISTA = false;
+const cajaVista = () => !!(CAJA_VISTA || (tuto() || {}).caja);
+function cajaDestapada() {
+  CAJA_VISTA = true;
+  if (tuto()) tutoPoner({ caja: 1 });
+  avisar();
+}
 /**
  * El momento de un día completo: qué ganaste (el premio del día y las misiones que cerraron con él) y qué abre mañana.
  * `conCaja`: además, la Caja del Nuevo, que este día (uno de atrás) terminó de ganar
@@ -219,10 +268,21 @@ export function PistaNuevos({ liga, dc }) {
   const [toast, setToast] = useState(null);
   const [bienMsg, setBienMsg] = useState('');
   const [ocup, setOcup] = useState(false);
+  const [capa, setCapa] = useState(null);
+  const [turno, setTurno] = useState(0);
+  const calma = useCalma();
+  const Dr = useDrops(dc);
   const yo = useRef(null);
+  // 📬 los avisos que esperan su turno: `{k, mis}` (misiones cobradas: se anotan al verse enteras) o `{k, txt, sub}`
+  const cola = useRef([]);
+  const enCola = useRef(new Set());   // las misiones que ya esperan su aviso o se están viendo
+  const ahora = useRef(null);         // el aviso que se ve (lo lee el reloj de abajo, que no ve el estado)
+  const reloj = useRef({ libre: 0, visto: 0, ult: 0 });   // desde cuándo está libre la página, y cuánto se vio el aviso
+  useEffect(() => { ahora.current = toast; }, [toast]);
   const P = pistaDe(D, dc);
   // 🎉 lo que se cobró y este dispositivo todavía no festejó: las misiones, en un aviso corto; los días, en su momento
-  // (uno detrás del otro). Se anota ANTES de mostrarlo: recargar no lo repite
+  // (uno detrás del otro). Los días se anotan ya (su momento es un <dialog> modal: sale delante de todo); las misiones
+  // sueltas, recién cuando su aviso se vio entero (ver el reloj de abajo): recargar no repite lo visto, ni se pierde lo tapado
   useEffect(() => {
     if (!dc || !P || !D || !D.pista) return;
     sembrar(D.pista);
@@ -234,28 +294,83 @@ export function PistaNuevos({ liga, dc }) {
       if (x.hecho && !mem.d.includes(x.n)) dias.push(x);
     });
     const cajaNueva = !!(P.caja && P.cajaPremio && !mem.c);
-    if (!mis.length && !dias.length && !cajaNueva) return;
-    guardarMemoria({ m: mem.m.concat(mis.map((m) => m.id)), d: mem.d.concat(dias.map((x) => x.n)), c: !!(mem.c || P.caja) });
-    // las misiones de un día que se completó van en su momento; las otras, en el aviso
+    // las misiones de un día que se completó van en su momento (y si esperaban su aviso, ya no); las otras, en el aviso
     const enDia = new Set(dias.map((x) => x.n));
-    const sueltas = mis.filter((m) => !enDia.has(m.n));
-    if (sueltas.length) setToast({ k: Date.now(), mis: sueltas });
+    if (enDia.size) {
+      cola.current = cola.current.map((it) => (it.mis ? Object.assign({}, it, { mis: it.mis.filter((m) => !enDia.has(m.n)) }) : it))
+        .filter((it) => !it.mis || it.mis.length);
+      mis.forEach((m) => { if (enDia.has(m.n)) enCola.current.delete(m.id); });
+    }
+    const sueltas = mis.filter((m) => !enDia.has(m.n) && !enCola.current.has(m.id));
+    if (sueltas.length) {
+      sueltas.forEach((m) => enCola.current.add(m.id));
+      const espera = cola.current.find((it) => it.mis);
+      if (espera) espera.mis = espera.mis.concat(sueltas); else cola.current.push({ k: Date.now(), mis: sueltas });
+      setTurno((n) => n + 1);
+    }
+    if (!dias.length && !cajaNueva) return;
+    guardarMemoria({ m: mem.m.concat(mis.filter((m) => enDia.has(m.n)).map((m) => m.id)), d: mem.d.concat(dias.map((x) => x.n)), c: !!(mem.c || P.caja) });
     const el = yo.current;
     // la Caja va en el momento del último día que se festeja (si es el 7 ya la trae), o sola
-    const cola = dias.map((x, j) => momentoDe(x, P, mis, el, cajaNueva && j === dias.length - 1));
-    if (cajaNueva && !dias.length) cola.push(momentoCaja(P, el));
+    const momentos = dias.map((x, j) => momentoDe(x, P, mis, el, cajaNueva && j === dias.length - 1));
+    if (cajaNueva && !dias.length) momentos.push(momentoCaja(P, el));
     (async () => {
-      for (const m of cola) {
+      for (const m of momentos) {
         try { await abrirMomento(el, m); } catch (e) { /* sin escenario: queda el aviso */ }
       }
     })();
   }, [D]); // eslint-disable-line react-hooks/exhaustive-deps
-  // el aviso se va solo (≈4 s)
+  // 🫣 la capa donde se cuelga el aviso: fuera de `.pg-entra` y de toda animación (tapa.js)
+  useEffect(() => { if (yo.current && !capa) setCapa(capaFija(yo.current)); }, [!!P]); // eslint-disable-line react-hooks/exhaustive-deps
+  // ⏱️ EL RELOJ DE LOS AVISOS: sale el primero de la fila cuando no hay nada delante (la carga, la bienvenida, el tutorial,
+  // los drops, el «¡Subiste!»…) desde hace `LIBRE_MS`; mientras se ve cuenta el tiempo, y si algo se le pone delante se
+  // esconde y vuelve a la fila, entero. Con `AVISO_MS` vistos se anota como festejado
+  const terminar = (it) => {
+    if (it && it.mis) {
+      const mem = memoria() || { m: [], d: [], c: false };
+      guardarMemoria(Object.assign({}, mem, { m: [...new Set(mem.m.concat(it.mis.map((m) => m.id)))] }));
+      it.mis.forEach((m) => enCola.current.delete(m.id));
+    }
+    reloj.current.libre = 0;
+    setToast(null);
+  };
+  const fin = useRef(terminar);
+  useEffect(() => { fin.current = terminar; });
   useEffect(() => {
-    if (!toast) return undefined;
-    const t = setTimeout(() => setToast(null), 4500);
-    return () => clearTimeout(t);
-  }, [toast]);
+    if (!toast && !cola.current.length) return undefined;
+    const V = reloj.current;
+    const iv = setInterval(() => {
+      const el = yo.current;
+      if (!el) return;
+      const t = Date.now();
+      const it = ahora.current;
+      const oculta = document.visibilityState === 'hidden';
+      if (it) {
+        const nvt = capa && capa.querySelector('.nvt');
+        if (oculta) { V.ult = t; return; }
+        if (algoTapa(el) || (nvt && !seVe(nvt))) {
+          cola.current.unshift(it); V.libre = 0; V.visto = 0;
+          setToast(null);
+          return;
+        }
+        V.visto += t - (V.ult || t); V.ult = t;
+        if (V.visto >= AVISO_MS) fin.current(it);
+        return;
+      }
+      if (oculta || algoTapa(el)) { V.libre = 0; return; }
+      if (!V.libre) V.libre = t;
+      const sig = cola.current[0];
+      if (!sig || (sig.mis && t - V.libre < LIBRE_MS)) return;
+      cola.current.shift();
+      // lo que otra pestaña ya festejó, no
+      const mem = memoria();
+      const x = sig.mis ? Object.assign({}, sig, { mis: sig.mis.filter((m) => !(mem && mem.m.includes(m.id))) }) : sig;
+      if (x.mis && !x.mis.length) { sig.mis.forEach((m) => enCola.current.delete(m.id)); return; }
+      V.visto = 0; V.ult = t;
+      setToast(Object.assign({}, x, { k: t }));
+    }, 250);
+    return () => clearInterval(iv);
+  }, [!!toast, turno, capa]); // eslint-disable-line react-hooks/exhaustive-deps
   if (!P) return null;
   const caja = dc ? D.pista.cajaPremio : D.caja;
   const hoy = Math.min(P.dia, P.de) - 1;
@@ -275,11 +390,18 @@ export function PistaNuevos({ liga, dc }) {
   const cobrarBien = async () => {
     setOcup(true); setBienMsg('');
     const r = await cobrarRacha('bienvenida').catch(() => null);
-    if (r && r.cobrado) setToast({ k: Date.now(), txt: '+' + num(r.cobrado) + ' Puntos de Tienda', sub: 'Tus primeros 7 días' });
+    if (r && r.cobrado) { cola.current.unshift({ k: Date.now(), txt: '+' + num(r.cobrado) + ' Puntos de Tienda', sub: 'Tus primeros 7 días' }); setTurno((n) => n + 1); }
     else setBienMsg(r && r.error === 'manana' ? 'Uno por día: vuelve mañana.' : r && r.error === 'falta' && bPaso ? 'Primero: ' + bPaso[2].toLowerCase() + '.' : 'No se pudo: prueba de nuevo.');
     setOcup(false);
   };
   const cofreEn = toast && toast.mis ? toast.mis.find((m) => m.premio[0] === 'cofre') : null;
+  // 🎁 ¿ya se destapó la Caja? En este dispositivo, o en otro: sus Star Dragons ya no están entre los cerrados y sí entre
+  // los abiertos (o la lista de abiertos, que trae los últimos 12, ya los pasó). Con los drops de antes de ganarla tampoco
+  // hay cerrados: por eso no alcanza con eso solo
+  const esCaja = (x) => /^star:nuevo:caja:/.test(String((x && x.origen) || ''));
+  const starsCaja = Dr && Array.isArray(Dr.cerrados) ? { cerradas: Dr.cerrados.filter(esCaja).length,
+    abiertas: (Dr.abiertos || []).filter(esCaja).length, llena: (Dr.abiertos || []).length >= 12 } : null;
+  const cajaAbierta = !!(dc && P.caja && caja && (cajaVista() || (starsCaja && !starsCaja.cerradas && (starsCaja.abiertas || starsCaja.llena))));
   return (
     <section className="nvp" aria-labelledby="nvp-t" ref={yo}>
       <div className="nvp-cab">
@@ -293,7 +415,8 @@ export function PistaNuevos({ liga, dc }) {
         <ol>
           {P.dias.map((x, j) => {
             const falta = x.mis.filter((m) => !m.ok).length;
-            const sub = x.hecho ? 'Hecho' : j === hoy ? 'Hoy' : !x.abierto ? (j === hoy + 1 ? 'Mañana' : 'Día ' + x.n) : falta === 1 ? 'Te falta 1' : 'Te faltan ' + falta;
+            // 📏 «Falta 1» y no «Te falta 1» (17/11/2026): a 390 px cada día tiene ~47 px y «TE FALTAN 2» se pisaba con el de al lado
+            const sub = x.hecho ? 'Hecho' : j === hoy ? 'Hoy' : !x.abierto ? (j === hoy + 1 ? 'Mañana' : 'Día ' + x.n) : falta === 1 ? 'Falta 1' : 'Faltan ' + falta;
             return (
               <li key={x.n}>
                 <button type="button" className={'nvp-nv' + (x.hecho ? ' hecho' : '') + (j === hoy ? ' hoy' : '') + (!x.abierto ? ' cerrado' : '') + (j === i ? ' sel' : '')}
@@ -306,13 +429,17 @@ export function PistaNuevos({ liga, dc }) {
           })}
         </ol>
         {/* 🎁 ganada, la Caja se abre como un cofre (17/11/2026): lo que pagó, destapado con la animación de los cofres */}
-        {dc && P.caja ? (
-          <button type="button" className="nvp-caja hecho" onClick={() => abrirCajaNuevo(yo.current, caja)}
-            aria-label={'Abrir la Caja del Nuevo: ' + num(caja.puntos) + ' Puntos de Tienda, ' + caja.star + ' Star Dragons y el título «' + caja.titulo + '»'}>
+        {cajaAbierta ? (
+          <span className="nvp-caja hecho abierta" title={'Abierta: ' + txtCaja(caja)}>
+            <span className="nvp-cj" aria-hidden="true"><Ico n="ok" t={22} /></span><b>Caja del Nuevo</b><small>Abierta</small>
+          </span>
+        ) : dc && P.caja ? (
+          <button type="button" className="nvp-caja hecho" onClick={() => abrirCajaNuevo(yo.current, caja, cajaDestapada)}
+            aria-label={'Abrir la Caja del Nuevo: ' + txtCaja(caja)}>
             <span className="nvp-cj" aria-hidden="true"><Ico n="premio" t={22} /></span><b>Caja del Nuevo</b><small>Ábrela</small>
           </button>
         ) : (
-          <span className={'nvp-caja' + (ya === P.de ? ' hecho' : '')} title={caja ? num(caja.puntos) + ' Puntos de Tienda, ' + caja.star + ' Star Dragons y el título «' + caja.titulo + '»' : ''}>
+          <span className={'nvp-caja' + (ya === P.de ? ' hecho' : '')} title={caja ? txtCaja(caja) : ''}>
             <span className="nvp-cj" aria-hidden="true"><Ico n="premio" t={22} /></span><b>Caja del Nuevo</b><small>{ya} de {P.de} días</small>
           </span>
         )}
@@ -325,14 +452,15 @@ export function PistaNuevos({ liga, dc }) {
       ) : null}
       <div className="nvp-dia">
         <span className="nvp-dt"><b>Día {d.n} · {d.t}</b>{d.abierto ? null : <em>se abre {i === hoy + 1 ? 'mañana' : 'el día ' + d.n}</em>}
-          <span className={'nvp-pr ' + CLASE[d.premio[0]]}>Al completarlo: {d.premio[0] === 'caja' ? 'la Caja del Nuevo (los siete días)' : txtPremio(d.premio)}</span></span>
+          <span className={'nvp-pr ' + CLASE[d.premio[0]]}>{d.premio[0] === 'caja' && cajaAbierta ? 'La Caja del Nuevo te dio ' + txtCaja(caja)
+            : 'Al completarlo: ' + (d.premio[0] === 'caja' ? 'la Caja del Nuevo (los siete días)' : txtPremio(d.premio))}</span></span>
         <ul className={'nvp-ms n' + d.mis.length}>
           {d.mis.map((m) => (
             <li key={m.id} className={(m.ok ? 'ok' : '') + (traba(m) ? ' traba' : '')}>
               <span className="nvp-ck" aria-hidden="true">{m.ok ? <Ico n="ok" t={14} /> : traba(m) ? <Ico n="candado" t={12} /> : null}</span>
               <span className="nvp-mt"><b>{m.t}</b>
                 <span className={'nvp-pr ' + CLASE[m.premio[0]] + (!dc || !d.abierto ? ' lock' : '')}>
-                  {!dc || !d.abierto ? <Ico n="candado" t={11} /> : null}{txtMision(m)}</span></span>
+                  {!dc || !d.abierto ? <Ico n="candado" t={11} /> : null}{m.ok ? txtHecha(m) : txtMision(m)}</span></span>
               {m.ok ? <span className="nvp-ya">Hecho</span>
                 : !d.abierto ? <span className="nvp-ya">Día {d.n}</span>
                   : traba(m) ? <a className="nvp-ir nvp-lockb" href="#/cuenta/verificar" aria-label={m.t + ': se abre al verificarte'}><Ico n="candado" t={12} />Al verificarte</a>
@@ -353,8 +481,9 @@ export function PistaNuevos({ liga, dc }) {
           </div>
         ) : null}
       </div>
-      {toast ? (
-        <div className="nvt" role="status" key={toast.k}>
+      {/* 🫣 en la capa de arriba (`capaFija()`), no acá adentro: `.pg-entra` anima con `transform` y lo mandaba fuera de la pantalla */}
+      {toast && capa ? createPortal(
+        <div className={'nvt' + (calma ? ' calma' : '')} role="status" key={toast.k}>
           <span className="nvt-ic" aria-hidden="true"><Ico n={toast.mis ? 'ok' : 'moneda'} t={18} /></span>
           <span className="nvt-tx">
             {toast.mis ? <>
@@ -362,10 +491,10 @@ export function PistaNuevos({ liga, dc }) {
               {toast.mis.slice(0, 3).map((m) => <small key={m.id}><em>{txtMision(m)}</em> · {m.t}</small>)}
             </> : <><b>{toast.txt}</b><small>{toast.sub}</small></>}
           </span>
-          {cofreEn ? <button type="button" className="nvt-b" onClick={() => { setToast(null); abrirOrigen(yo.current, 'cofre5:' + cofreEn.premio[1] + ':nuevo:m:' + cofreEn.id); }}>Abrir</button> : null}
-          <button type="button" className="nvt-x" aria-label="Cerrar" onClick={() => setToast(null)}><Ico n="cerrar" t={14} /></button>
-        </div>
-      ) : null}
+          {/* tocar «Abrir» o la ✕ es haberlo visto: cuenta como festejado */}
+          {cofreEn ? <button type="button" className="nvt-b" onClick={() => { terminar(toast); abrirOrigen(yo.current, 'cofre5:' + cofreEn.premio[1] + ':nuevo:m:' + cofreEn.id); }}>Abrir</button> : null}
+          <button type="button" className="nvt-x" aria-label="Cerrar" onClick={() => terminar(toast)}><Ico n="cerrar" t={14} /></button>
+        </div>, capa) : null}
       {redes ? <VentanaRedes liga={liga} dc={dc} cerrar={() => setRedes(false)} /> : null}
     </section>
   );

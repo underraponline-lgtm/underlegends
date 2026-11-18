@@ -261,6 +261,35 @@ function quienSoy(c) {
   pintaPaneles();
   pintaPopCuenta();
 }
+/* 🔁 TE VERIFICASTE Y VOLVISTE OTRO DÍA (17/11/2026, la simulación de alguien que vuelve): `lg:dc` se pone al día al volver
+   de Discord y al verificarse desde la página, pero quien se verificó, cerró y volvió después de que el ciclo lo cargó
+   seguía con «Con Discord · Todavía sin tarjeta · Verificarme» en Mi cuenta mientras la pista decía «Verifícate en DRA ·
+   Hecho». Lo llama la pista de nuevos (web/src/nuevos.jsx) cuando el objeto dice que estás verificado (`pista.v`) y este
+   navegador no lo sabe. UNA VEZ POR CARGA, y nunca manda a Discord:
+   · con el permiso en memoria (recién vuelto de Discord), lo de siempre: `/api/cuenta`, la cuenta entera;
+   · sin él, la sesión alcanza para saber tu clave: `/api/avisos/ref` la lee de `d:` (lo mismo que dice si estás
+     verificado) y sólo lee. El nombre sale del ranking si estás, si no el de Discord; tus cartas, en la próxima entrada.
+   ⚠️ `/api/cuenta` no acepta la sesión (pide el permiso de Discord): por eso este segundo camino. */
+var DC_REFRESCO = false;
+function refrescarVerificado() {
+  if (DC_REFRESCO || !DC || DC.clave || DC.rapero) return;
+  DC_REFRESCO = true;
+  var id = DC.id;
+  if (DC_TOKEN) {
+    fetch('/api/cuenta', { method: 'POST', headers: { 'content-type': 'application/json' },
+      body: JSON.stringify({ token: DC_TOKEN }) })
+      .then(function (r) { return r.json(); })
+      .then(function (c) { if (c && c.id === id && DC && DC.id === id) quienSoy(c); })
+      .catch(function () { /* queda como estaba: la próxima entrada lo trae */ });
+    return;
+  }
+  pedirConCuenta('/api/avisos/ref', { accion: 'ver' }, false).then(function (j) {
+    if (!j || j.status !== 200 || !j.puede || !/^[a-z0-9][a-z0-9._-]{0,59}$/.test(String(j.k || ''))) return;
+    if (!DC || DC.id !== id || DC.clave) return;
+    var p = porK(j.k);
+    quienSoy(Object.assign({}, DC, { clave: j.k, rapero: (p && p.n) || DC.n || j.k }));
+  }).catch(function () { /* queda como estaba */ });
+}
 function cerrarSesion() {
   DC_TOKEN = null;
   BILL = null;

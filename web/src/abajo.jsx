@@ -3,6 +3,7 @@
 // y los servidores (Dlx: «la TIENDA no debería estar ahí, debería estar merchandising» y «los servidores de la liga
 // estando abajo es algo tonto porque ya están arriba»), y El Elegido se mudó a Encuestas.
 import { useEffect, useId, useLayoutEffect, useMemo, useRef, useState } from 'react';
+import { createPortal } from 'react-dom';
 import { ksDe, limpio, nuevaQue, num, quienMira } from './liga.js';
 import { Alguien, Cara, Chevron, Compartir, Ico, Poster, Sec, accion, enlace, https, promoAbierta, subirSiEsta } from './piezas.jsx';
 import { RED_NOMBRE, RED_SVG } from './redes_ico.jsx';
@@ -14,6 +15,7 @@ import { comentar, delHilo, useComentarios } from './comentarios.jsx';
 import { ComentariosFlotantes } from './flotantes.jsx';
 import { Carita, LU_REAC } from './medio.jsx';
 import { usePase } from './pase.js';
+import { algoTapa, capaFija, seVe } from './tapa.js';
 
 
 // ── Se busca ──────────────────────────────────────────────────────────────────────────────────────
@@ -459,40 +461,65 @@ export function Tabbar({ liga, dc, pagina = '' }) {
     if (!t) return;
     if (!asomando.current && t.scrollLeft > 24 && aprende) aprendio();
   };
-  useEffect(() => {
-    if (!aprende || (window.innerWidth || 0) >= 900) return undefined;
+  // 👉 la tira se asoma sola y vuelve, una vez: cuando el globo ya se ve (ver abajo), no a los 1,6 s debajo de la carga
+  const asomar = () => {
     let quieto = false;
     try { quieto = window.matchMedia('(prefers-reduced-motion: reduce)').matches; } catch (e) { quieto = false; }
-    if (quieto) return undefined;
-    const t1 = setTimeout(() => {
-      const t = tira.current;
-      if (!t || t.scrollLeft > 0) return;
-      asomando.current = true;
-      t.scrollTo({ left: Math.min(140, t.scrollWidth - t.clientWidth), behavior: 'smooth' });
-    }, 1600);
-    const t2 = setTimeout(() => {
-      const t = tira.current;
-      if (t) t.scrollTo({ left: 0, behavior: 'smooth' });
-    }, 2700);
-    const t3 = setTimeout(() => { asomando.current = false; }, 3600);
-    return () => { clearTimeout(t1); clearTimeout(t2); clearTimeout(t3); };
-  }, [aprende]);
+    const t = tira.current;
+    if (quieto || !t || t.scrollLeft > 0) return;
+    asomando.current = true;
+    setTimeout(() => { if (tira.current) tira.current.scrollTo({ left: Math.min(140, tira.current.scrollWidth - tira.current.clientWidth), behavior: 'smooth' }); }, 400);
+    setTimeout(() => { if (tira.current) tira.current.scrollTo({ left: 0, behavior: 'smooth' }); }, 1500);
+    setTimeout(() => { asomando.current = false; }, 2400);
+  };
   // 💬 EL GLOBO SE VA SOLO A LOS 6 SEGUNDOS (17/11/2026, Dlx a la maqueta, «Tus elecciones»): se quedaba hasta tocar la ✕,
   // tapando la página justo encima de la barra. Ya se vio y la barra ya se asomó sola: cuenta como aprendido, así no
-  // vuelve en cada visita. Sólo donde la barra se ve (el teléfono), y también con «menos animaciones»
+  // vuelve en cada visita. Sólo donde la barra se ve (el teléfono), y también con «menos animaciones».
+  // 🫣 Y LOS 6 SEGUNDOS SON VISTOS (17/11/2026, la simulación de la 6.40): salía a los 1,8 s debajo de la pantalla de carga,
+  // después detrás de la bienvenida (y≈6339), se iba a los 6,8 s y quedaba aprendido sin que nadie lo viera. Ahora sale
+  // cuando no hay nada delante (`algoTapa()` de tapa.js, y un aviso de misión: ése va primero) y la barra está en la
+  // pantalla; se cuelga en la capa de arriba (`capaFija()`) pegado encima de la barra; y cuenta sólo el tiempo que se ve
+  const [globo, setGlobo] = useState(null);   // `{abajo, capa}`: dónde va y dónde se cuelga, mientras se ve
+  const nav = useRef(null);
   useEffect(() => {
     if (!aprende || (window.innerWidth || 0) >= 900) return undefined;
-    const t = setTimeout(aprendio, 6000);
-    return () => clearTimeout(t);
+    const V = { libre: 0, visto: 0, ult: 0, on: false, asomo: false };
+    const iv = setInterval(() => {
+      const tb = nav.current;
+      if (!tb) return;
+      const t = Date.now();
+      const H = window.innerHeight || 0;
+      const b = tb.getBoundingClientRect();
+      const g = V.on ? capaFija(tb).querySelector('.tb-globo') : null;
+      const libre = document.visibilityState !== 'hidden' && b.height > 0 && b.top < H && b.bottom > H * 0.5
+        && !algoTapa(tb, ['.nvt']) && !(g && !seVe(g));
+      if (!libre) {
+        V.libre = 0; V.ult = 0;
+        if (V.on) { V.on = false; setGlobo(null); }
+        return;
+      }
+      if (!V.on) {
+        if (!V.libre) V.libre = t;
+        // 2 s libre (el aviso de una misión espera 1,2): si hay uno esperando, sale él primero y el globo no aparece y se va
+        if (t - V.libre < 2000) return;
+        V.on = true; V.ult = t;
+        setGlobo({ abajo: Math.round(H - b.top + 10), capa: capaFija(tb) });
+        if (!V.asomo) { V.asomo = true; asomar(); }
+        return;
+      }
+      V.visto += t - (V.ult || t); V.ult = t;
+      setGlobo((x) => (x && x.abajo === Math.round(H - b.top + 10) ? x : { abajo: Math.round(H - b.top + 10), capa: capaFija(tb) }));
+      if (V.visto >= 6000) aprendio();
+    }, 250);
+    return () => clearInterval(iv);
   }, [aprende]); // eslint-disable-line react-hooks/exhaustive-deps
   return (
-    <nav className="tabbar" aria-label="Secciones">
-      {aprende ? (
-        <div className="tb-globo" role="note">
+    <nav className="tabbar" aria-label="Secciones" ref={nav}>
+      {aprende && globo ? createPortal(
+        <div className="tb-globo" role="note" style={{ bottom: globo.abajo }}>
           <span className="tb-mano" aria-hidden="true">👆</span> Desliza la barra de costado: hay más secciones
           <button type="button" aria-label="Entendido" onClick={aprendio}>✕</button>
-        </div>
-      ) : null}
+        </div>, globo.capa) : null}
       <div className="tb-tira" ref={tira} onScroll={mirar}>
         {MENU.map(([n, r]) => {
           const k = r.replace(/^#\/?/, '') || 'inicio';

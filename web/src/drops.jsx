@@ -78,17 +78,20 @@ export function abrirOrigen(el, prefijo) {
  * 🎁 LA CAJA DEL NUEVO, COMO UN COFRE (17/11/2026). Lo que trae ya está pagado al completar los siete días (`nuevoPagar()`
  * de bot/avisos.js: los Puntos, dos Star Dragons y el título): esto lo DESTAPA con la animación de un cofre (el de oro,
  * `COFRES[2]`, con su nombre) y abre ahí mismo los dos Star Dragons si todavía están cerrados. La Caja no pasa por el
- * objeto: no hay nada que decidir, todo se sabe. `caja`: `cajaPremio` de la pista
+ * objeto: no hay nada que decidir, todo se sabe. `caja`: `cajaPremio` de la pista. `alAbrir`: se llama cuando la Caja se
+ * destapa (17/11/2026: desde ahí el panel dice «Abierta» y no se vuelve a destapar, ver `cajaDestapada()` de nuevos.jsx).
+ * Con su nombre y su etiqueta (`etiqueta`, en la tapa): el material es el del baúl, pero no es el Baúl de los objetos
  */
-export function abrirCajaNuevo(el, caja) {
+export function abrirCajaNuevo(el, caja, alAbrir) {
   E.va = false;
   const C = caja || {};
   return pedirDrops().then((D) => {
     const stars = ((D && D.cerrados) || []).map(queEs).filter((x) => /^star:nuevo:caja:/.test(String(x.origen || '')));
     const faltan = Math.max(0, (Number(C.star) || 0) - stars.length);
-    const item = { id: 'caja-nuevo', tipo: 'cofre', cofre: 2, nombre: 'Caja del Nuevo', origen: '' };
-    const abrir = (id) => (id === item.id ? Promise.resolve({ ok: true, tipo: 'cofre', desde: 2, cofre: 2, sube: [], puntos: Number(C.puntos) || 0,
-      titulo: C.titulo || '', nuevos: stars, ya: faltan ? [faltan === 1 ? '1 Star Dragon' : faltan + ' Star Dragons'] : [] }) : abrirReal(id));
+    const item = { id: 'caja-nuevo', tipo: 'cofre', cofre: 2, nombre: 'Caja del Nuevo', etiqueta: 'NUEVO', origen: '' };
+    const destapar = () => { if (typeof alAbrir === 'function') { try { alAbrir(); } catch (e) { /* el festejo sigue */ } } };
+    const abrir = (id) => (id === item.id ? Promise.resolve(destapar()).then(() => ({ ok: true, tipo: 'cofre', desde: 2, cofre: 2, sube: [], puntos: Number(C.puntos) || 0,
+      titulo: C.titulo || '', nuevos: stars, ya: faltan ? [faltan === 1 ? '1 Star Dragon' : faltan + ' Star Dragons'] : [] })) : abrirReal(id));
     return preparar().then(({ mostrarDrops }) => mostrarDrops(hostDe(el), [item], { cofres: D && D.cofres, abrir, alCerrar: refrescar }));
   });
 }

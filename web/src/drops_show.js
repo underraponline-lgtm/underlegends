@@ -326,8 +326,9 @@ function svgEscama(r, osc, star) {
 }
 
 //: los cofres de rap (Lil Drako: «los baúles de las competencias donde sacan los objetos, un porta discos, lo que cubre al
-//: disco de vinilo»). Cada uno con su `.dsw-tapa` (lo que vuela al abrir) y, si tiene, su `.dsw-cerr`
-function svgCofreRap(t, g) {
+//: disco de vinilo»). Cada uno con su `.dsw-tapa` (lo que vuela al abrir) y, si tiene, su `.dsw-cerr`. `et`: lo que dice la
+//: placa del baúl (17/11/2026: la Caja del Nuevo usa su material y decía «OBJETOS»)
+function svgCofreRap(t, g, et) {
   const C = CF[t], u = nid(), m = C.mat, luz = Math.min(1, g * 0.3);
   const brillo = (y) => `<rect x="30" y="${y}" width="180" height="28" fill="${C.claro}" opacity="${luz.toFixed(2)}" filter="url(#${u}b)"/>`;
   const defs = `<defs><filter id="${u}b" x="-30%" y="-200%" width="160%" height="500%"><feGaussianBlur stdDeviation="7"/></filter>
@@ -366,7 +367,7 @@ function svgCofreRap(t, g) {
       <g class="dsw-tapa"><path d="${TAPA}" fill="#211C29" stroke="#0B0B0E" stroke-width="7" stroke-linejoin="round"/>
         <rect x="46" y="80" width="16" height="50" fill="url(#${u}o)" stroke="#0B0B0E" stroke-width="4"/><rect x="178" y="80" width="16" height="50" fill="url(#${u}o)" stroke="#0B0B0E" stroke-width="4"/>
         <rect x="70" y="90" width="100" height="24" fill="url(#${u}o)" stroke="#0B0B0E" stroke-width="4"/>
-        <text x="120" y="107" text-anchor="middle" font-family="Archivo, sans-serif" font-weight="900" font-size="12" letter-spacing="1" fill="#0B0B0E">OBJETOS</text></g>
+        <text x="120" y="107" text-anchor="middle" font-family="Archivo, sans-serif" font-weight="900" font-size="12" letter-spacing="1" fill="#0B0B0E">${esc(et || 'OBJETOS')}</text></g>
       <g class="dsw-cerr"><rect x="104" y="114" width="32" height="38" rx="5" fill="#F5C542" stroke="#0B0B0E" stroke-width="5"/><circle cx="120" cy="129" r="5" fill="#0B0B0E"/><rect x="118" y="129" width="4" height="12" fill="#0B0B0E"/></g></svg>`;
   }
   // la funda del Campeón: el disco de oro asoma arriba y sale girando al abrir; el sello «T1» hace de cerradura
@@ -496,6 +497,8 @@ export function mostrarDrops(host, cola, { abrir, alCerrar, cofres } = {}) {
   // 🐣 un cofre que no es de `COFRES` (17/11/2026: la Caja del Nuevo, `abrirCajaNuevo()` de drops.jsx) trae su nombre en
   // la fila (`nombre`) y se dibuja con el material del cofre `t`. Si sube, pasa a llamarse como el cofre al que subió
   const nombreDe = (t) => (S.item && S.item.tipo === 'cofre' && S.item.nombre && tCofre(S.item.cofre) === t ? String(S.item.nombre) : nombreCofre(t));
+  //: y lo que dice su placa (`etiqueta`), con la misma regla
+  const etiquetaDe = (t) => (S.item && S.item.tipo === 'cofre' && S.item.etiqueta && tCofre(S.item.cofre) === t ? String(S.item.etiqueta) : '');
 
   /* ------------------------------------------------ las partículas (un canvas para todo) */
   const fx = { c: $('.dsw-fx'), g: null, ps: [], va: false, t: 0, w: 0, h: 0 };
@@ -710,7 +713,7 @@ export function mostrarDrops(host, cola, { abrir, alCerrar, cofres } = {}) {
     },
     cofre: {
       get pista() { return S.cofre === 4 ? 'Toca el cofre' : 'Tócalo'; },
-      svg: () => (S.cofre === 4 ? svgTesoro(S.grieta) : svgCofreRap(S.cofre, S.grieta)),
+      svg: () => (S.cofre === 4 ? svgTesoro(S.grieta) : svgCofreRap(S.cofre, S.grieta, etiquetaDe(S.cofre))),
       async cargar() {
         await todas(giros(), (el) => el.animate([{ transform: 'none' }, { transform: 'translateY(-14%) scale(.95,1.07) rotate(-3deg)' }, { transform: 'translateY(0) scale(1.07,.9)' }, { transform: 'scale(.98,1.03) rotate(2deg)' }, { transform: 'none' }], { duration: T(320), easing: 'ease-out' }));
         repintar(); polvo(); chispas(8, ['#fff', CF[S.cofre].claro]);
@@ -1061,7 +1064,8 @@ export function mostrarDrops(host, cola, { abrir, alCerrar, cofres } = {}) {
     ((S.extra && S.extra.ya) || []).forEach((t) => items.push({ txt: t, R: { c: '#5CC8FF', n: 'Ya los abriste' } }));
     const mejor = S.acum.reduce((m, p) => Math.max(m, p.r), 0);
     const de = S.acum.filter((p) => p.puntos).length + (S.extra && S.extra.puntos ? 1 : 0);
-    const Rp = S.acum.length ? RZ[mejor] : S.extra ? CF[S.extra.c] : RZ[0];
+    // 🏷️ un cofre con su propio nombre (la Caja del Nuevo) lo lleva también acá: decía «Baúl de los objetos» (17/11/2026)
+    const Rp = S.acum.length ? RZ[mejor] : S.extra ? Object.assign({}, CF[S.extra.c], { n: S.extra.cofre || CF[S.extra.c].n }) : RZ[0];
     if (S.puntos || !items.length) items.push({ txt: `+${fmt.format(S.puntos)} Puntos`, puntos: S.puntos, R: Rp, de });
     rsEl.dataset.puntos = String(S.puntos);
     $('.dsw-rs-t').textContent = S.extra ? 'Te llevaste · ' + S.extra.cofre : 'Te llevaste';
@@ -1194,7 +1198,7 @@ export function mostrarMomento(host, { sub = '', titulo = '', lista = [], nota =
   const calma = (() => { try { return quieto() || !!(raiz.querySelector && raiz.querySelector('.app.calma')); } catch (e) { return false; } })();
   const P = pal || CF[3];
   const ico = (x) => (x.tipo === 'pdt' ? svgMoneda(1) : x.tipo === 'drop' ? svgCasete(1, 'MIXTAPE', false) : x.tipo === 'star' ? svgEscama(2, false, true)
-    : x.tipo === 'cofre' || x.tipo === 'caja' ? svgCofreRap(tCofre(x.t != null ? x.t : 2), 0) : ICO_TITULO({ c: P.c }));
+    : x.tipo === 'cofre' || x.tipo === 'caja' ? svgCofreRap(tCofre(x.t != null ? x.t : 2), 0, x.tipo === 'caja' ? 'NUEVO' : '') : ICO_TITULO({ c: P.c }));
   const dlg = document.createElement('dialog');
   dlg.className = 'dsw dsw-momento' + (calma ? ' dsw-calma' : '');
   dlg.setAttribute('aria-label', titulo ? sub + ': ' + titulo : sub);

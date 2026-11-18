@@ -1427,6 +1427,9 @@ export function Cuenta({ liga, dc, parte, tema, onTema, temaSv, onTemaSv }) {
   const dueno = !!dc && (String(dc.id) === DUENO || misRoles.some((r) => ['admin', 'asistente', 'moderador'].includes(r)));
   // 📊 dueño de un servidor socio (Tier 1 o 2): el botón a su panel (`#/socio`). Se pregunta una vez por sesión
   const socio = useSocio(!!dc);
+  // 🔁 ¿te verificaste en otra visita? Mi cuenta es donde se lee «Verificarme» o «Verificado»: si este navegador te tiene
+  // sin verificar, se pregunta una vez por carga (`refrescarVerificado()` de bot/paginas/cuenta.js, con la sesión) (17/11/2026)
+  useEffect(() => { if (dc && !dc.rapero && !dc.clave && W.refrescarVerificado) W.refrescarVerificado(); }, [dc && dc.id]); // eslint-disable-line react-hooks/exhaustive-deps
   const todas = gs.flatMap((g) => g[1]);
   // verificarse no está en la lista: se llega desde la tarjeta de arriba (y desde el botón del bot)
   // 📱 los links de las páginas de la compu (cuenta_pc.jsx) abren en el celular la parte que las tiene: un link copiado en

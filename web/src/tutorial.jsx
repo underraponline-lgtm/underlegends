@@ -190,10 +190,13 @@ function Recorrido({ liga, dc, inicio, onCerrar }) {
   };
   const terminarCap = () => {
     const T = tuto() || {};
+    // ⚠️ ANTES de `tutoPoner()` (17/11/2026): `tuto()` es el mismo objeto que `tutoPoner()` cambia, así que leído después
+    // `completo` ya era 1 y la tarjeta de «Terminaste el tutorial completo» no salía nunca (quedaba la del capítulo 9 de 9)
+    const yaCompleto = !!T.completo;
     const caps = Object.assign({}, T.caps || {}, { [cap.id]: 1 });
     const todos = CAPITULOS.every((x) => caps[x.id]);
     tutoPoner(Object.assign({ caps }, todos ? { completo: 1 } : {}));
-    if (todos && !T.completo) { contar('completo'); cobrar('completo', 'completo'); return; }
+    if (todos && !yaCompleto) { contar('completo'); cobrar('completo', 'completo'); return; }
     setFin({ que: 'cap' }); setModo('fin');
   };
   const cerrar = (como) => onCerrar(como || 'salto', i + 1);
@@ -211,7 +214,7 @@ function Recorrido({ liga, dc, inicio, onCerrar }) {
             <small>{enSemanaNueva() ? 'Te llevas 3 Dragón Drops' : '5 pasos · 1 min'}</small></button>
           <button type="button" className="rc-op" onClick={() => { cerrar('completo'); location.hash = '#/guia'; setTimeout(() => W.dispatchEvent(new Event('lg:aprende')), 300); }}>
             <b>Completo</b><span>Nueve capítulos de un minuto, cada uno en su página.</span>
-            <small>{enSemanaNueva() ? 'Te llevas 1 cofre' : '9 capítulos'}</small></button>
+            <small>{enSemanaNueva() ? 'Te llevas ' + txtPremio(['cofre', 0]) : '9 capítulos'}</small></button>
         </div>
         {(W.innerWidth || 0) < 900 ? <p className="rc-nota">Todo está en la barra de abajo, que se desliza de costado.</p> : null}
         <div className="rc-acc"><button type="button" className="rc-saltar" onClick={() => cerrar('salto')}>Ahora no</button></div>
@@ -234,7 +237,7 @@ function Recorrido({ liga, dc, inicio, onCerrar }) {
       dentro = (
         <Centro et={'CAPÍTULO ' + (CAPITULOS.indexOf(cap) + 1) + ' DE ' + CAPITULOS.length} onCerrar={() => cerrar('fin')}>
           <h2 id="rc-h">{cap.t}: listo</h2>
-          <p>Llevas {hechos} de {CAPITULOS.length}.{enSemanaNueva() ? ' Al terminar los nueve te llevas un cofre.' : ''}</p>
+          <p>Llevas {hechos} de {CAPITULOS.length}.{enSemanaNueva() ? ' Al terminar los nueve te llevas ' + txtPremio(['cofre', 0]) + '.' : ''}</p>
           <span className="rc-barra" aria-hidden="true"><i style={{ width: (100 * hechos) / CAPITULOS.length + '%' }} /></span>
           <div className="rc-acc">
             {sigue ? <button type="button" className="btn verde chico" onClick={() => { setFin(null); empezarCap(sigue.id); }}>Siguiente: {sigue.t}</button> : null}
@@ -258,7 +261,7 @@ function Recorrido({ liga, dc, inicio, onCerrar }) {
                 : <button type="button" className="btn verde chico" onClick={() => cerrar('fin')}>Listo</button>}
           </div>
           {corto ? (
-            <p className="rc-mas">¿Quieres más? El <b>tutorial completo</b> son nueve capítulos de un minuto{enSemanaNueva() ? <> y da <b>1 cofre</b> al terminarlo</> : null}.{' '}
+            <p className="rc-mas">¿Quieres más? El <b>tutorial completo</b> son nueve capítulos de un minuto{enSemanaNueva() ? <> y da <b>{txtPremio(['cofre', 0])}</b> al terminarlo</> : null}.{' '}
               <a href="#/guia" onClick={() => { cerrar('fin'); setTimeout(() => W.dispatchEvent(new Event('lg:aprende')), 300); }}>Ver los capítulos</a></p>
           ) : null}
         </Centro>

@@ -251,7 +251,8 @@
 /* 🎁 la segunda línea, chica (17/11/2026): «y abre tu primer cofre». El botón no crece de alto en el teléfono (todo tiene
    que entrar sin scroll, ver abajo): se le saca relleno lo que suma la línea */
 .bv-si-tx{display:grid;justify-items:start;gap:4px;text-align:left}
-.bv-si-tx small{font:700 13px/1 "Barlow Condensed",sans-serif;letter-spacing:.08em;text-transform:none;color:#FFE4F0}
+/* blanco, no rosa (17/11/2026): #FFE4F0 sobre el magenta daba 3,8:1 en letra de 13 px; blanco, 4,5:1 */
+.bv-si-tx small{font:700 13px/1 "Barlow Condensed",sans-serif;letter-spacing:.08em;text-transform:none;color:#FFFFFF}
 .bv-si.con-cofre{padding-block:9px}
 @media (hover:hover) and (pointer:fine){.bv-si:hover{background:#F0247F}}
 .bv-si:active{transform:translate(4px,4px);box-shadow:1px 1px 0 #29B298}
