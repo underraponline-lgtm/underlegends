@@ -11,6 +11,16 @@
   ],
   "cambios": [
     {
+        "version": "6.48",
+        "dia": "2026-11-17",
+        "cuando": "2026-11-17T23:58:00-05:00",
+        "titulo": "Tus Puntos, siempre al día",
+        "items": [
+            "Después de apostar en Discord, la Tienda y tu billetera muestran tus Puntos de ahora al volver a la página.",
+            "Si una compra no te alcanza, la Tienda te muestra cuántos Puntos tienes de verdad."
+        ]
+    },
+    {
         "version": "6.47",
         "dia": "2026-11-17",
         "cuando": "2026-11-17T23:45:00-05:00",
