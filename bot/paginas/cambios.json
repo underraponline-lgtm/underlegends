@@ -11,6 +11,18 @@
   ],
   "cambios": [
     {
+        "version": "6.31",
+        "dia": "2026-11-17",
+        "cuando": "2026-11-17T22:30:00-05:00",
+        "titulo": "Tu primera semana, sin tropiezos",
+        "items": [
+            "**Cuando te verificas, la página se entera al momento**: Mi cuenta, Crews y el Inicio ya te muestran como verificado, sin tener que salir y volver a entrar.",
+            "La racha de la semana vuelve a mostrar su «/7».",
+            "En la Tienda, lo que antes decía «Cobrado cazando» ahora dice «Ganado en la Liga», que es lo que suma de verdad: drops, misiones y cazas.",
+            "En el teléfono, los botones de arriba de Crews ya no se salen de la pantalla, y en Mi cuenta la sección para subir tu propia imagen se llama distinto de la foto de Discord."
+        ]
+    },
+    {
         "version": "6.30",
         "dia": "2026-11-17",
         "cuando": "2026-11-17T22:50:00-05:00",
