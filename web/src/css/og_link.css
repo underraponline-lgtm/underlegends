@@ -46,7 +46,8 @@
   justify-content:center;align-items:flex-start;padding:0 32px;gap:18px}
 .og-r4-num{font:900 150px/.88 Archivo,sans-serif;letter-spacing:-5px}
 .og-r4-tor{font-size:60px;margin-top:-8px}
-.og-r4-caja{font-size:52px;color:#030304;background:#F6F6F6;padding:8px 14px 10px}
+.og-r4-caja{font-size:52px;color:#030304;background:#F6F6F6;padding:8px 16px 10px 12px;display:flex;align-items:center;gap:12px}
+.og-r4-caja .ico{flex:none;color:#E41373;stroke-width:3}
 .og-r4-der{position:absolute;left:800px;top:64px;bottom:72px;width:400px;display:flex;flex-direction:column;justify-content:center;padding:0 32px;gap:22px}
 .og-r4-flags{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
 .og-r4-flags img{width:100%;aspect-ratio:3/2;object-fit:cover;display:block;border-radius:2px}

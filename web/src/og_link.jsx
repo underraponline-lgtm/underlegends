@@ -10,7 +10,7 @@ import { useCrews } from './crews.js';
 import { Escudo, escudoDe } from './escudo.jsx';
 import CSS_PAGINA from './css/og_link.css?inline';
 import { usarCss } from './css.js';
-import { Bandera, nombrePais } from './piezas.jsx';
+import { Bandera, Ico, nombrePais } from './piezas.jsx';
 import { fondoEn, fondoOpcion, useFondos } from './fondos.js';
 
 usarCss('og_link', CSS_PAGINA);
@@ -88,7 +88,7 @@ function Crew({ id }) {
 // ⚠️ «Miembros» son las personas de los servidores donde está el bot (`comunidad.personas`), no gente anotada en la Liga.
 //: el diseño de esta miniatura: el mismo `d` que pone bot/og_links.py en la huella. Si la página publicada dice otro, el ciclo
 //: no saca la foto (sería la vieja con la huella nueva) y la reintenta en la corrida siguiente
-export const DISENO_REF = 'ref-4b-mas';
+export const DISENO_REF = 'ref-4b-ico';
 const SIN_PAIS = new Set(['ae', 'br', 'no']);
 const BANDERAS = 11;                                      // y la 12.ª casilla es la del «+N»              // Dlx, 22/09: Emiratos y Brasil «no se les toma en cuenta»
 const nro = (x) => Number(x) || 0;
@@ -159,7 +159,9 @@ function Ref({ liga, k }) {
       <div className="og-r4-med">
         {V.t >= 10 ? <><b className="og-r4-num">+{V.t}</b><span className="og-r4-bc og-r4-tor">torneos<br />por semana</span></>
           : <span className="og-r4-bc og-r4-tor">torneos<br />todas las<br />semanas</span>}
-        <span className="og-r4-bc og-r4-caja">Todos los niveles</span>
+        {/* con la escalera de la página (Ico «subir»), en SVG: un emoji depende de la fuente del que saca la foto (Dlx, 18/11/2026:
+            «agrega un ícono o emoji al costado de todos los niveles») */}
+        <span className="og-r4-bc og-r4-caja"><Ico n="subir" t={66} /><span>Todos los<br />niveles</span></span>
       </div>
       <div className="og-r4-der">
         {V.b.length ? (

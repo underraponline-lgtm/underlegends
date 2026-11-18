@@ -70,3 +70,5 @@ abajo a los costados la temporada y el logo de UL en negrito». `final_dlx.png` 
 
 **6.51**: Dlx, «haz lo blanco, sus líneas menos altas» y «una banderita con un más»: franjas de 64 y 72 px, 11
 banderas y «+N». `final_dlx.png` y `final_nombres.png` ya son ésta.
+
+**6.52**: «agrega un ícono o emoji al costado de todos los niveles»: la escalera de la página (`Ico n="subir"`), en SVG.
