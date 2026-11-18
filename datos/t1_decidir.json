@@ -3,7 +3,7 @@
  "grilla": [
   ["✅  DECIDIR", "", "", "", "", "", "", ""],
   ["Lo que el sistema no pudo resolver solo. Elige una respuesta en la columna amarilla ✍️ —si es alguien que ya está en la Lista de Raperos, escribe su nombre como figura ahí— y el ciclo la aplica en menos de media hora. La fila se pone verde cuando está contestada. Para aclarar algo, 📝 NOTA: se guarda.", "", "", "", "", "", "", ""],
-  ["100 para decidir   —   🏆 13 eventos   ·   📣 2 📣 Reporte   ·   ⚔️ 11 batallas   ·   👤 42 nombres   ·   🪪 32 de identidad   ·   actualizado 17/11 08:28 PM ET", "", "", "", "", "", "", ""],
+  ["100 para decidir   —   🏆 13 eventos   ·   📣 2 📣 Reporte   ·   ⚔️ 11 batallas   ·   👤 42 nombres   ·   🪪 32 de identidad   ·   actualizado 17/11 08:40 PM ET", "", "", "", "", "", "", ""],
   ["", "", "", "", "", "", "", ""],
   ["#", "Tipo", "Qué hay que decidir", "Pistas", "✍️ RESPUESTA", "📝 NOTA", "Estado", "id"],
   ["▸  FVS UNDER · FVS · 26/09 · #461   ·   ver la llave ↗", "", "", "", "", "", "", ""],
@@ -101,7 +101,7 @@
   ["▸  Red Bull Crew VENEC · ACAD · 07/11 · #623   ·   ver la llave ↗", "", "", "", "", "", "", ""],
   ["53", "👤 Nombre", "¿Quién es «El Cuicho🇪🇨»?", "¿Será Lucho?\nEn Discord hay 2 cuentas con ese nombre, ninguna en la Lista\n📝 Se anotaron y no aparecen en la llave: «trelok» (cuenta de Trelok), «v-zir» (cuenta de V-zir)\nTerminó Octavos (1.250 pts)\nOctavos: perdió con 19", "", "", "", "4df454c14d"],
   ["▸  CUPO A LA MULTIVERS · ACAD · 12/11 · #624   ·   ver la llave ↗", "", "", "", "", "", "", ""],
-  ["54", "👤 Nombre", "¿Quién es «NITO NANEL 🇵🇪»?", "¿Será Noone?\n🎙️ En la llamada de ACAD, mientras se jugaba, había alguien parecido: «Nito Nanel 2.0»\nTerminó Cuartos (2.000 pts)\nCuartos: perdió con Zetryko", "", "", "", "fca1831964"],
+  ["54", "👤 Nombre", "¿Quién es «NITO NANEL 🇵🇪»?", "¿Será Noone?\n📝 Se anotaron y no aparecen en la llave: «La puta cabra 🇧🇱» (cuenta de Emilio Alva), «OKAM» (cuenta de OKAM), «Eclipse🇨🇱» (cuenta de Eclipsito), «Dios 🇲🇽» (cuenta de Dios), «MCO 🇦🇷» (cuenta de MCO), «MaYeuTyK 🇺🇾» (cuenta de MaYeuTyK)\n🎙️ En la llamada de ACAD, mientras se jugaba, había alguien parecido: «Nito Nanel 2.0»\nTerminó Cuartos (2.000 pts)\nCuartos: perdió con Zetryko", "", "🎙️ En la llamada de ACAD, mientras se jugaba, había alguien parecido: «Nito Nanel 2.0»", "", "fca1831964"],
   ["▸  RAP SIN GROSERIAS 5 · FDS · 12/11 · #626   ·   ver la llave ↗", "", "", "", "", "", "", ""],
   ["", "⚡ Todo el evento", "¿Los 2 nombres de este evento que no están en la Lista son todos gente nueva?", "Si alguno ya está en la Lista, contestalo en su fila: esa respuesta manda. · Nito nanel, Showsero", "", "", "", "todos:0a2865a48f"],
   ["55", "👤 Nombre", "¿Quién es «Nito nanel»?", "¿Será Noone?\n🎙️ En la llamada de FDS, mientras se jugaba, había alguien parecido: «Nito Nanel 2.0»\nTerminó Cuartos (2.000 pts)\nCuartos: perdió con Mc arepa", "", "", "", "10c9304276"],

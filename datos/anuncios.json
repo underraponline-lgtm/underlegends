@@ -1,5 +1,5 @@
 {
- "cuando": "2026-11-18T01:17:13+00:00",
+ "cuando": "2026-11-18T01:32:43+00:00",
  "anuncios": [
   {
    "nombre": "¡SE LLEGÓ LA GRAN NOCHE!",
@@ -6047,6 +6047,31 @@
    "categoria_id": "1080379388320817233"
   },
   {
+   "nombre": "TORNEO CLASIFICATORIO",
+   "servidor": "DDS",
+   "canal": "🚨〕ANUNCIOS",
+   "msg_id": "1572422869164498946",
+   "cuando": "2026-11-18T01:27:06",
+   "canal_id": "1443789190012604436",
+   "guild_id": "1443770831598649528",
+   "organizador": "",
+   "orgs": [],
+   "autor_h": "cc5bf399801b74a0",
+   "cupos_texto": "",
+   "inscriptos": null,
+   "cupo_total": null,
+   "rango": "",
+   "modalidad": "",
+   "horario": "7:00 PM",
+   "fecha": "SÁBADO 21",
+   "premios": "",
+   "staff": {},
+   "autor": "Benji Price",
+   "staff_cuentas": {},
+   "de_imagen": true,
+   "categoria_id": "1443770833100083292"
+  },
+  {
    "nombre": "Horarios de la competencia",
    "servidor": "DDS",
    "canal": "📢]ANUNCIOS-LEVEL-UP",
@@ -7147,6 +7172,33 @@
  ],
  "oficiales": [
   {
+   "servidor": "DDS",
+   "canal": "🚨〕ANUNCIOS",
+   "tit": "YA SE PUEDEN ANOTAR AL TORNEO CLASIFICATORIO",
+   "tx": "",
+   "cuando": "2026-11-18T01:26:32",
+   "msg_id": "1572422729645424683",
+   "link": "https://discord.com/channels/1443770831598649528/1443789190012604436/1572422729645424683"
+  },
+  {
+   "servidor": "DDS",
+   "canal": "📢]ANUNCIOS",
+   "tit": "9 CONFIRMADO 🔥😎 - DLS 2 WORLD 💜❤️",
+   "tx": "",
+   "cuando": "2026-11-18T01:22:50",
+   "msg_id": "1572421795124875469",
+   "link": "https://discord.com/channels/1443770831598649528/1464796928939135059/1572421795124875469"
+  },
+  {
+   "servidor": "DDS",
+   "canal": "📢]ANUNCIOS",
+   "tit": "8 CONFIRMADO 👽🤡 - DLS 2 WORLD 💜❤️",
+   "tx": "",
+   "cuando": "2026-11-18T01:22:26",
+   "msg_id": "1572421697296932966",
+   "link": "https://discord.com/channels/1443770831598649528/1464796928939135059/1572421697296932966"
+  },
+  {
    "servidor": "DDF",
    "canal": "『📢』Anuncios",
    "tit": "🇵🇪 JEIXDER 🇵🇪",
@@ -7163,33 +7215,6 @@
    "cuando": "2026-11-17T23:38:11",
    "msg_id": "1572395461837455471",
    "link": "https://discord.com/channels/1469009547971526659/1469943663332425738/1572395461837455471"
-  },
-  {
-   "servidor": "DDS",
-   "canal": "📢]ANUNCIOS",
-   "tit": "5 CONFIRMADO 🎶🇪🇨 - DLS 2 WORLD 💜❤️",
-   "tx": "",
-   "cuando": "2026-11-17T23:18:11",
-   "msg_id": "1572390427028619416",
-   "link": "https://discord.com/channels/1443770831598649528/1464796928939135059/1572390427028619416"
-  },
-  {
-   "servidor": "DDS",
-   "canal": "📢]ANUNCIOS",
-   "tit": "4 CONFIRMADO 🔥⚽ - DLS 2 WORLD 💜❤️",
-   "tx": "",
-   "cuando": "2026-11-17T23:05:29",
-   "msg_id": "1572387230687957244",
-   "link": "https://discord.com/channels/1443770831598649528/1464796928939135059/1572387230687957244"
-  },
-  {
-   "servidor": "DDS",
-   "canal": "📢]ANUNCIOS",
-   "tit": "3 CONFIRMADO 👾🔥 - DLS 2 WORLD 💜❤️",
-   "tx": "",
-   "cuando": "2026-11-17T22:55:40",
-   "msg_id": "1572384760121135177",
-   "link": "https://discord.com/channels/1443770831598649528/1464796928939135059/1572384760121135177"
   },
   {
    "servidor": "FFA",
