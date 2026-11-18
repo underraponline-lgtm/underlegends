@@ -320,7 +320,9 @@ export function Inventario({ liga, dc, carta0 = '', ranura0 = '' }) {
   const elG = (yo.elegidos || {})[carta] || 'auto';
   const el = carta in bor.tags ? bor.tags[carta] : elG;
   const q = busca.trim().toLowerCase();
-  const vistos = ops.filter((o) => (filtro === 'todos' || (filtro === 'mios' ? o.mio : !o.mio))
+  // 🆕 «Nuevos» pasa como «Todos» y el cruce con `nuevos` (más abajo) deja sólo esos (18/11/2026): caía en la rama de
+  // «Por ganar» (`!o.mio`), y como los nuevos son todos tuyos, la grilla quedaba vacía siempre
+  const vistos = ops.filter((o) => (filtro === 'todos' || filtro === 'nuevos' || (filtro === 'mios' ? o.mio : !o.mio))
     && (!q || o.texto.toLowerCase().includes(q) || (o.desc || '').toLowerCase().includes(q)));
   const marcos = (mk && mk.tienes) || [];
   const idsMarcos = marcos.map(([id]) => id);
@@ -423,7 +425,9 @@ export function Inventario({ liga, dc, carta0 = '', ranura0 = '' }) {
       if (d && d._ok) setYo(d); else { ok = false; avisos.push('La carta principal no se pudo guardar.'); }
     }
     if ('efecto' in bor) {
-      const d = await window.conCuenta('/api/avisos/tienda-accion', { accion: 'poner', ranura: 'carta', pieza: bor.efecto || null });
+      // 📶 sin red `conCuenta` rechaza (18/11/2026): sin el catch, `guardar()` se cortaba acá y «Guardando…» quedaba
+      // trabado, sin mensaje. Así cuenta como «no se pudo poner» y sigue hasta soltar los botones
+      const d = await window.conCuenta('/api/avisos/tienda-accion', { accion: 'poner', ranura: 'carta', pieza: bor.efecto || null }).catch(() => null);
       if (d && d.ok) setTi((x) => (x ? Object.assign({}, x, { puesto: bor.efecto || '' }) : x));
       else { ok = false; avisos.push('El efecto no se pudo poner.'); }
     }
@@ -438,7 +442,10 @@ export function Inventario({ liga, dc, carta0 = '', ranura0 = '' }) {
 
   const claveNueva = (o) => (o.grupo === 'pase' ? o.tag.replace(/^pase:/, 'pase|') : carta + '|' + o.tag);
   const nuevos = ops.filter((o) => o.mio && esNuevo(claveNueva(o)));
-  const vistosF = filtro === 'nuevos' ? vistos.filter((o) => nuevos.includes(o)) : vistos;
+  // 🫙 «Nuevos» sin nuevos es «Todos» (18/11/2026): al pasar a una carta sin TAGs nuevos el botón desaparece, el filtro
+  // seguía en 'nuevos' y la grilla quedaba vacía, sin «Automático» y sin nada marcado
+  const fil = filtro === 'nuevos' && !nuevos.length ? 'todos' : filtro;
+  const vistosF = fil === 'nuevos' ? vistos.filter((o) => nuevos.includes(o)) : vistos;
 
   // 🏷️ los TAGs: una sola grilla (la rareza va en el borde de arriba de cada cuadro), lo tuyo primero
   const cajonTag = () => (
@@ -447,13 +454,13 @@ export function Inventario({ liga, dc, carta0 = '', ranura0 = '' }) {
         <div className="ves-fil" role="radiogroup" aria-label="Qué TAGs ver">
           {[['todos', 'Todos', ops.length], ['mios', 'Tuyos', mias.length], ['faltan', 'Por ganar', ops.length - mias.length], ['nuevos', 'Nuevos', nuevos.length]]
             .filter(([id, , c]) => id !== 'nuevos' || c).map(([id, n, c]) => (
-              <button key={id} type="button" role="radio" aria-checked={filtro === id} className={filtro === id ? 'on' : ''} onClick={() => setFiltro(id)}>{n}<em>{c}</em></button>
+              <button key={id} type="button" role="radio" aria-checked={fil === id} className={fil === id ? 'on' : ''} onClick={() => setFiltro(id)}>{n}<em>{c}</em></button>
             ))}
         </div>
         {ops.length > 12 ? <input className="ves-busca" type="search" placeholder="Buscar un TAG…" value={busca} onChange={(e) => setBusca(e.target.value)} aria-label="Buscar un TAG" /> : null}
       </div>
       <div className="ves-grid" role="radiogroup" aria-label={'El TAG de tu ' + nombre}>
-        {filtro === 'todos' || filtro === 'mios' ? (
+        {fil === 'todos' || fil === 'mios' ? (
           <Cuadro nivel="auto" on={el === 'auto'} puesto={elG === 'auto'} prueba={bor.tags[carta] === 'auto'} ic="🎯" nombre="Automático" rar="El de hoy"
             onVer={verPieza('tag', 'auto')} onClick={() => { setSel(null); probar('tag', 'auto', elG); }} />
         ) : null}
@@ -578,10 +585,13 @@ export function Inventario({ liga, dc, carta0 = '', ranura0 = '' }) {
   } else if (ran === 'marco') {
     const m = ver === 'puesto' ? marcoG : hov && hov.campo === 'marco' ? hov.v : marcoAhora;
     const tier = (m || '').split(':')[1] || '';
-    const mio = !m || m === 'ninguno' ? (m === 'ninguno' || !!idsMarcos.length) : idsMarcos.includes(m);
+    // 🖼️ sin marco elegido, lo puesto es tuyo aunque no tengas marcos (18/11/2026): sin marcos, «El mejor» es «Sin
+    // marco», y la ficha lo dibujaba con candado y «Cómo se gana: Nivel undefined del Pase premium.»
+    const mio = !m || m === 'ninguno' || idsMarcos.includes(m);
     const nv = (MARCOS_PASE.find(([x]) => x === tier) || [])[1];
     foco = { texto: '🖼️ ' + nomMarco(m), mio, nivel: tier === 'oro' || tier === 'embajador' ? 't1' : tier ? 't2' : '', cambia: m !== marcoG,
-      desc: mio ? 'Va alrededor de tus cuatro cartas, en la página y en /card.' : nv === 'ref' ? 'Se gana con 10 invitados en Invita y gana.' : 'Nivel ' + nv + ' del Pase premium.' };
+      desc: mio ? 'Va alrededor de tus cuatro cartas, en la página y en /card.' : nv === 'ref' ? 'Se gana con 10 invitados en Invita y gana.'
+        : nv ? 'Nivel ' + nv + ' del Pase premium.' : 'Del Pase premium y de Invita y gana.' };
   } else if (ran === 'foto') {
     foco = { texto: '📸 Tu foto', desc: 'La de tu carta. Se cambia abajo, una vez por temporada.', mio: true };
   } else if (ran === 'estilo') {

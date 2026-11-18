@@ -161,8 +161,10 @@ export const accion = {
 };
 
 // 🚪 las secciones que se fueron del Inicio (13/10/2026) y dónde viven ahora
+// 🗓️ `semana` no se mudó (18/11/2026): la Tira vive en el Inicio, pero el botón de la historia de cada servidor la pide
+// con `{ ancla: 'semana' }` cuando no hay anuncio «Lunes de la Liga», y fuera del Inicio (#/sv/X) no hacía nada
 const MUDADAS = { sebusca: '#/ranking/mw', panel: '#/ranking/misiones', encuestas: '#/publicaciones', merch: '#/tienda',
-  numeros: '#/socios' };
+  numeros: '#/socios', semana: '#/' };
 
 // la dirección de algo de la página, para compartirla (sirve también en las direcciones de prueba de Pages):
 // «#/r/hassan» -> «https://…/freestyle-rap/r/hassan», con `urlLG()` del script del principio (web/montar.py)
@@ -236,12 +238,31 @@ export function GrillaDias({ semanas, marca, hoy, vertical = true, etiqueta }) {
 }
 
 export function usePerfiles() {
-  const [p, setP] = useState(null);
+  // ⚡ con lo que ya se bajó (revisión del 18/11/2026): App vuelve a montar el perfil y el servidor por clave, y sin esto
+  // cada cambio de persona o de servidor pasaba un cuadro por «Cargando…» con /api/perfiles ya en memoria
+  const [p, setP] = useState(() => (typeof window !== 'undefined' && window.PERF && window.PERF.p ? window.PERF : null));
   useEffect(() => {
     if (typeof window.perfiles !== 'function') return undefined;
-    let vivo = true;
-    Promise.resolve(window.perfiles()).then((d) => { if (vivo && d) setP(d); }).catch(() => {});
-    return () => { vivo = false; };
+    // 🔁 SI FALLA, `false` Y OTRA VEZ (18/11/2026): pedía una sola vez y, si /api/perfiles fallaba (`perfiles()` de datos.js
+    // da null), quedaba en null para siempre: el perfil del servidor en «Cargando…» hasta recargar. `false` es «falló»
+    // (entidad2.jsx dibuja la rama sin bandas; `!P` lo trata igual que null) y se reintenta hasta 5 veces, más al volver
+    // la red. `perfiles()` comparte un solo pedido en vuelo, así que varias instancias no lo multiplican
+    let vivo = true, t = null, n = 0, listo = false, va = false;
+    const pedir = () => {
+      if (va) return;
+      va = true;
+      Promise.resolve(window.perfiles()).catch(() => null).then((d) => {
+        va = false;
+        if (!vivo) return;
+        if (d) { listo = true; setP(d); return; }
+        setP((x) => x || false);
+        if (n < 5) { n += 1; t = setTimeout(pedir, 3000 * n); }
+      });
+    };
+    pedir();
+    const on = () => { if (vivo && !listo && n && !va) { clearTimeout(t); pedir(); } };
+    window.addEventListener('online', on);
+    return () => { vivo = false; clearTimeout(t); window.removeEventListener('online', on); };
   }, []);
   return p;
 }
@@ -412,7 +433,9 @@ export function Carta({ liga, k, cual = 'temporada', cls = 'ci', abre = true, ma
   const ref = useRef(null);
   // 🔴 TAMBIÉN QUIEN NO ESTÁ EN LA TABLA (`liga.X`, 26/10/2026): `cartaUrl()` ya lo encontraba ahí, y con la imagen y
   // sin la fila, `f.n` rompía la página entera (el Inventario de Dlx: «dice que no pudo cargar la página»)
-  const f = liga.T[k] || (liga.X && liga.X[k]) || null;
+  // 👥 y quien está fuera de las 200 filas con su fila entera (`persona()`: la tabla, un perfil abierto o /api/perfiles,
+  // 18/11/2026): `cartaUrl()` ya lo veía ahí y esto no, así que salía «<clave> · SIN CARTA» con la carta subida
+  const f = (liga.persona ? liga.persona(k) : liga.T[k] || (liga.X && liga.X[k])) || null;
   const src0 = f ? liga.cartaUrl(k, cual) : null;
   // las fallas cuentan para ESA dirección: una carta nueva (otra `?v=`) se vuelve a intentar
   const fallas = fallo.src === src0 ? fallo.n : 0;
@@ -427,7 +450,7 @@ export function Carta({ liga, k, cual = 'temporada', cls = 'ci', abre = true, ma
     const w = ref.current.getBoundingClientRect().width;
     setAncho(w > 0 ? w * Math.max(1, window.devicePixelRatio || 1) : -1);
   }, [ancho, src0]);
-  if (!src0 || fallas > 1) return <SinCarta liga={liga} k={k} nombre={f ? f.n : (nombre || k)} cc={f ? f.cc : ''} cls={cls} />;
+  if (!src0 || fallas > 1) return <SinCarta liga={liga} k={k} nombre={f ? f.n : (liga.nombreDe ? liga.nombreDe(k, nombre) : nombre || k)} cc={f ? f.cc : ''} cls={cls} />;
   // 🔴 una carta que no carga (R2 corta a veces) mostraba el ícono de imagen rota: se reintenta una vez y, si
   // vuelve a fallar, la cara con «SIN CARTA» (revisión del 30/09/2026). Si falla la chica, entra la grande
   const grande = fallas ? src0 + (src0.indexOf('?') < 0 ? '?' : '&') + 'r=1' : src0;
@@ -611,13 +634,16 @@ export function Poster({ liga, b }) {
   } else if (b.e === 'escondio') {
     sello = <span className="p-sello gris">SE ESCONDIÓ</span>; cls = 'hecho'; pie = 'no jugó: nadie cobró';
   }
+  // 18/11/2026: sin clave (el nombre no está en `gente`: 4 de 30 afiches hoy), sin link, como `Alguien`. Antes iba a
+  // «#/r/», que cae al Inicio a media página y con el título de la pestaña anterior
+  const Tag = b.k ? 'a' : 'div';
   return (
-    <a className={'poster ' + cls} href={'#/r/' + encodeURIComponent(b.k)}>
+    <Tag className={'poster ' + cls} href={b.k ? '#/r/' + encodeURIComponent(b.k) : undefined}>
       <span className="p-t">SE BUSCA</span>
       <span className="p-fw"><Cara liga={liga} k={b.k} nombre={b.n} cls="p-foto" />{sello}</span>
       <b>{limpio(b.n)}</b><span className="p-cat">{String(b.cn || '').toUpperCase()}</span>
       <span className="p-precio">{num(b.v)} PTS</span><small>{pie}</small>
-    </a>
+    </Tag>
   );
 }
 

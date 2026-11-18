@@ -10,12 +10,13 @@
 //   · los links de antes (`#/cuenta/algo-mal`, `#/cuenta/hora`…) abren la página nueva que los tiene y bajan hasta su caja
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { limpio, num } from './liga.js';
-import { Cara, Ico, accion, usePerfiles } from './piezas.jsx';
+import { Cara, Ico, accion, useCampana, usePerfiles } from './piezas.jsx';
 import { CaraDc } from './arriba.jsx';
 import { crewDe } from './crews.js';
 import { useRacha } from './racha.js';
 import { useFondos } from './fondos.js';
 import { Parte, RachaNivel } from './cuenta.jsx';
+import { usePerfilExtra } from './perfil_extra.js';
 
 const W = window;
 const leer = (k, d) => { try { const v = localStorage.getItem(k); return v == null ? d : JSON.parse(v); } catch (e) { return d; } };
@@ -94,18 +95,25 @@ function Buscador() {
   );
 }
 
-/** ✅ «Completa tu cuenta»: lo que ya está y lo que falta, con lo que la página ya sabe (sin pedir nada nuevo). */
+/** ✅ «Completa tu cuenta»: lo que ya está y lo que falta, con lo que la página ya sabe (y tu frase, de perfil-extra). */
 function useCompleta(liga, dc) {
   const P = usePerfiles();
   const F = useFondos();
+  // 🔔 el estado de verdad de la campana (18/11/2026), como en cuenta.jsx: `campana:activada` es una marca que sólo
+  // baja Desactivar, así que con el permiso quitado en el navegador seguía dando ✓ Avisos. La marca queda de respaldo
+  const camp = useCampana();
   const k = (liga.yo && liga.yo.k) || (dc && dc.clave) || '';
   const p = (P && P.p && k && P.p[k]) || null;
+  // 💬 LA FRASE NO VIENE EN /api/perfiles (18/11/2026): vive en el objeto y llega por perfil-extra, como en tu perfil y
+  // en FraseEditor. Con `p.fr` sola, quien ya la había escrito veía «Te falta frase» para siempre. Un pedido con memo de
+  // 60 s, compartido con el perfil; antes del `return` por el orden de los hooks, y sin cuenta no pide nada
+  const ex = usePerfilExtra(dc ? k : '');
   if (!dc || !k) return null;
   return [
     ['verificado', 'Verificado', !!(dc.rapero || dc.clave), '#/cuenta/verificar'],
-    ['frase', 'Frase', !!(p && p.fr), '#/cuenta/perfil'],
+    ['frase', 'Frase', !!((ex && ex.fr) || (p && p.fr)), '#/cuenta/perfil'],
     ['redes', 'Redes', !!(p && p.redes && p.redes.length), '#/cuenta/perfil'],
-    ['avisos', 'Avisos', !!leer('campana:activada', false), '#/cuenta/avisos'],
+    ['avisos', 'Avisos', camp ? !!camp.activa : !!leer('campana:activada', false), '#/cuenta/avisos'],
     ['crew', 'Crew', !!crewDe(k), '#/crews'],
     ['fondo', 'Fondo', !!(F && F[k]), '#/cuenta/fondos'],
   ];
@@ -119,6 +127,9 @@ function Resumen({ liga, dc }) {
   const n = R && R.nivel;
   const tramo = n ? Math.max(1, n.sig - n.base) : 1;
   const crew = crewDe((yo && yo.k) || (dc && dc.clave));
+  // ⭐ a cuántos sigues, la lista entera (18/11/2026): `liga.sigue` viene filtrada por las 200 filas de la tabla, y
+  // quien seguía a gente de fuera leía «Sigues a 2» con cinco caras en Siguiendo
+  const nSigue = (liga.sigueTodos || liga.sigue).length;
   return (
     <>
       <div className="cpc-nums">
@@ -140,7 +151,7 @@ function Resumen({ liga, dc }) {
       <div className="cpc-tres">
         <div className="cpc-parte" data-parte="cuenta"><Parte id="cuenta" liga={liga} dc={dc} /></div>
         <section className="cu-caja"><h3>Tu gente</h3>
-          <p className="cu-d">{crew ? 'Tu crew: ' + limpio(crew.c.nombre) + '.' : 'Todavía no estás en una crew.'} Sigues a {liga.sigue.length} {liga.sigue.length === 1 ? 'rapero' : 'raperos'}.</p>
+          <p className="cu-d">{crew ? 'Tu crew: ' + limpio(crew.c.nombre) + '.' : 'Todavía no estás en una crew.'} Sigues a {nSigue} {nSigue === 1 ? 'rapero' : 'raperos'}.</p>
           <div className="cu-btns"><a className="btn borde2 chico" href="#/cuenta/crew">Tu crew</a><a className="btn borde2 chico" href="#/cuenta/siguiendo">Siguiendo</a></div></section>
         <section className="cu-caja"><h3>Ayuda</h3>
           <p className="cu-d">Si algo está mal (perdiste tu cuenta, tu país, un video que no es tuyo), o para repasar cómo funciona la Liga.</p>
@@ -148,6 +159,19 @@ function Resumen({ liga, dc }) {
       </div>
     </>
   );
+}
+
+// 🚪 POR QUÉ NO ENTRASTE (18/11/2026): si al volver de Discord `/api/cuenta` falló (Discord ocupado, un 401, sin red),
+// cuenta.js lo deja en `ENTRAR_ERR` y avisa con `lg:cuentaest`. Antes el menú volvía a «Entrar con Discord» sin decir
+// nada. Aparte, para que el aviso no redibuje la página entera (y exportado: el celular lo usa en `Quien` de cuenta.jsx)
+export function EntrarError() {
+  const [, setN] = useState(0);
+  useEffect(() => {
+    const f = () => setN((n) => n + 1);
+    W.addEventListener('lg:cuentaest', f);
+    return () => W.removeEventListener('lg:cuentaest', f);
+  }, []);
+  return W.ENTRAR_ERR ? <p className="cu-d" role="alert">{W.ENTRAR_ERR}</p> : null;
 }
 
 export function CuentaPC({ liga, dc, parte, tema, onTema, temaSv, onTemaSv, socio, dueno }) {
@@ -158,6 +182,9 @@ export function CuentaPC({ liga, dc, parte, tema, onTema, temaSv, onTemaSv, soci
   const R = useRacha(!!dc);
   const caja = useRef(null);
   const crew = crewDe(k);
+  // ⭐ la lista entera de a quién sigues (18/11/2026, ver `Resumen`): con `liga.sigue` la línea de Tu gente contaba sólo
+  // a los de las 200 filas, y las columnas se armaban para menos caras de las que dibuja Siguiendo
+  const nSigue = (liga.sigueTodos || liga.sigue).length;
   // ⤵️ un link de antes (`#/cuenta/hora`) baja hasta su caja, si no se ve entera: en Tu gente las tres entran en la
   // primera pantalla, y bajar escondía la cabecera sin mostrar nada nuevo
   useEffect(() => {
@@ -177,12 +204,12 @@ export function CuentaPC({ liga, dc, parte, tema, onTema, temaSv, onTemaSv, soci
       yo && liga.svs[yo.sv] ? limpio(liga.svs[yo.sv].nombre || yo.sv) : ''].filter(Boolean).join(' · '),
     perfil: 'tu foto, tu frase, tus redes y tus videos', temas: 'Clara o Noche, y los colores de un servidor de la Liga', fondos: 'qué va detrás de ti en tu perfil, el VS, tu carta, Discord y tu ficha', estilo: 'tu estilo de juego y cómo se ven tus cartas',
     gente: [crew ? 'tu crew: ' + limpio(crew.c.nombre) : 'tus invitaciones de crew', 'el servidor que representas',
-      liga.sigue.length ? 'sigues a ' + liga.sigue.length : 'a quién sigues'].join(' · '),
+      nSigue ? 'sigues a ' + nSigue : 'a quién sigues'].join(' · '),
     app: 'la hora, los avisos, las animaciones y la app en tu pantalla',
     privacidad: 'tu foto, lo que guardamos y este dispositivo', ayuda: 'algo está mal, la guía, la introducción y lo nuevo',
-  }), [dc, yo, liga, crew]);
+  }), [dc, yo, liga, crew, nSigue]);
   const nItems = (R && R.nivel) ? R.nivel.n : null;
-  const cols = pag === 'gente' ? columnasGente(liga.sigue.length) : COLUMNAS[pag] || [P[4]];
+  const cols = pag === 'gente' ? columnasGente(nSigue) : COLUMNAS[pag] || [P[4]];
   const grupos = [
     socio || dueno ? ['Tus paneles', [socio ? ['#/socio', 'servidor', 'Panel del servidor', 'las estadísticas de tus servidores'] : null,
       dueno ? ['#/dashboard', 'tablero', 'Dashboard', 'lo que espera que decidas'] : null].filter(Boolean)] : null,
@@ -203,7 +230,8 @@ export function CuentaPC({ liga, dc, parte, tema, onTema, temaSv, onTemaSv, soci
         <div className="cpc-yo">
           {yo ? <Cara liga={liga} k={yo.k} nombre={yo.n} cls="cpc-cara" /> : dc ? <CaraDc dc={dc} cls="cpc-cara" /> : <span className="cpc-cara"><Ico n="yo" t={22} /></span>}
           <span><b>{limpio(yo ? yo.n : dc ? dc.n : 'Sin entrar')}</b>
-            <small>{[yo && yo.pos ? '#' + yo.pos : '', nItems ? 'nivel ' + nItems : '', R && R.racha && R.racha.actual ? R.racha.actual + ' días' : ''].filter(Boolean).join(' · ') || 'tu cuenta'}</small></span>
+            {/* (18/11/2026) «1 día», no «1 días»: el singular, como en el Resumen */}
+            <small>{[yo && yo.pos ? '#' + yo.pos : '', nItems ? 'nivel ' + nItems : '', R && R.racha && R.racha.actual ? R.racha.actual + (R.racha.actual === 1 ? ' día' : ' días') : ''].filter(Boolean).join(' · ') || 'tu cuenta'}</small></span>
         </div>
         <Buscador />
         {grupos.map(([g, xs]) => (
@@ -214,7 +242,7 @@ export function CuentaPC({ liga, dc, parte, tema, onTema, temaSv, onTemaSv, soci
             ))}</ul></div>
         ))}
         {dc ? <button type="button" className="cpc-salir" onClick={accion.salir}><Ico n="salir" t={16} />Salir de tu cuenta</button>
-          : <button type="button" className="btn verde chico" onClick={accion.entrar}>Entrar con Discord</button>}
+          : <><EntrarError /><button type="button" className="btn verde chico" onClick={accion.entrar}>Entrar con Discord</button></>}
       </aside>
       <div className="cpc-pag">
         {/* 🧱 LA MISMA CABECERA EN TODAS LAS PÁGINAS (Dlx, v7 de la maqueta): el grupo, el nombre, una línea y tu perfil */}

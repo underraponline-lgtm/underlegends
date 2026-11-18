@@ -74,18 +74,25 @@ export function Cambios({ liga, ver, antes: antes0 }) {
   const [q0, setQ] = useState('');
   const q = norm(q0).trim();
   // por mes y por día, en la zona de quien mira
+  // 📅 EL GRUPO SE BUSCA POR SU CLAVE, NO SE MIRA SÓLO EL ÚLTIMO (18/11/2026): `cambios.json` va por número de versión, no
+  // por hora (varias sesiones publican a la vez: la 6.40 es de las 00:05 del 18 y viene entre la 6.41 y la 6.39, del 17),
+  // y el día se repetía: «hoy», «ayer», «hoy», «ayer»…, con claves repetidas que se abrían y cerraban juntas y el mes
+  // contando días de más. Adentro de cada día sigue el orden por versión; los meses y los días, del más nuevo al más viejo
   const meses = useMemo(() => {
     const ms = [];
     (lista || []).forEach((x) => {
       const t = instante(x);
       const k = liga.diaClave(t);
-      let m = ms[ms.length - 1];
-      if (!m || m.k !== k.slice(0, 7)) { m = { k: k.slice(0, 7), dias: [], n: 0 }; ms.push(m); }
-      let d = m.dias[m.dias.length - 1];
-      if (!d || d.k !== k) { d = { k, t, xs: [] }; m.dias.push(d); }
+      let m = ms.find((y) => y.k === k.slice(0, 7));
+      if (!m) { m = { k: k.slice(0, 7), dias: [], n: 0 }; ms.push(m); }
+      let d = m.dias.find((y) => y.k === k);
+      if (!d) { d = { k, t, xs: [] }; m.dias.push(d); }
       d.xs.push(x);
       m.n += 1;
     });
+    const desc = (a, b) => (a.k < b.k ? 1 : a.k > b.k ? -1 : 0);
+    ms.sort(desc);
+    ms.forEach((m) => m.dias.sort(desc));
     return ms;
   }, [lista, liga]);
   const dias0 = useMemo(() => meses.flatMap((m) => m.dias), [meses]);

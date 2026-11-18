@@ -84,7 +84,7 @@ export function UnirseTier1({ liga }) {
         onClick={(e) => { if (e.target === dlg.current) cerrar(); }}>
         <PopCab ico="socios" t="Unirte a los Tier 1" sub={U ? 'Cómo quedó' : 'Tú eliges a cuáles'} cerrar={cerrar} />
         <div className="un-in">
-          {U && U.cargando ? <p className="un-p" aria-live="polite">Sumándote a {U.svs ? U.svs.length : ''} servidores…</p>
+          {U && U.cargando ? <p className="un-p" aria-live="polite">{/* «1 servidor», en singular (18/11/2026): decía «1 servidores» con un solo Tier 1 */}Sumándote a {U.svs && U.svs.length === 1 ? '1 servidor' : (U.svs ? U.svs.length : '') + ' servidores'}…</p>
             : U && U.error ? (
               <>
                 <p className="un-p un-mal" role="alert">{ERROR[U.error] || 'No se pudo. Prueba de nuevo.'}</p>

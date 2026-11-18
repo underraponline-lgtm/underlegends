@@ -19,7 +19,9 @@ async function pedir(cuerpo) {
     headers: { 'content-type': 'application/json' }, body: JSON.stringify(cuerpo) });
   const j = await r.json().catch(() => ({}));
   if (r.ok && j.orgs) { lista = j.orgs; avisar(); }
-  return r.ok ? '' : j.error || 'error';
+  // (18/11/2026: el objeto contesta 200 también con {error: 'muchos'} —ya sigues a 30— y se leía como hecho: «Te
+  // avisamos…» sin quedar anotado, y «Ya sigues a 30.» no salía nunca)
+  return r.ok && !j.error ? '' : j.error || 'error';
 }
 
 /** `[{org, nombre}]` de quien entró con Discord, o `null` mientras no se sabe (o sin cuenta). */

@@ -21,8 +21,8 @@
 import { useEffect, useState } from 'react';
 import { contestarFinal, pedirAjustes, pedirEquipo, pedirLiga, pedirLlave, pedirPagina, pedirPanel, pedirRoles, pedirStaff, probarCanal, puede } from './panelsocio.js';
 import { aBase64, achicar } from './imagen.js';
-import { limpio, num, siglaDe } from './liga.js';
-import { DosToques, Ico, Sec, silueta } from './piezas.jsx';
+import { limpio, msDeLocal, nombreEv, num, siglaDe } from './liga.js';
+import { DosToques, Ico, Sec, diaET, masDias, silueta } from './piezas.jsx';
 import { useNumero } from './anima.js';
 import { Indice, Portada } from './entidad2.jsx';
 import CSS_PAGINA from './css/socio2.css?inline';
@@ -316,7 +316,12 @@ function SuGente({ p }) {
 
 // ── las visitas a su página: una por persona y por día ──
 function Visitas({ x }) {
-  const v = x.visitas || [];
+  // 📅 LOS 28 DÍAS, TAMBIÉN LOS SIN VISITAS (18/11/2026): el objeto sólo manda los días con fila en `secciones` (una se crea
+  // con la primera visita), y una barra por fila pegaba el 1/11, el 9/11 y el 17/11 como tres días seguidos. Del día de
+  // hoy en hora del este (el `diaET()` del objeto) para atrás; el último con visitas manda si este reloj va atrasado
+  const m = new Map(x.visitas || []);
+  const hoy = (x.visitas || []).reduce((a, d) => (d[0] > a ? d[0] : a), diaET());
+  const v = Array.from({ length: 28 }, (_, i) => { const d = masDias(hoy, i - 27); return [d, m.get(d) || 0]; });
   const tot = v.reduce((s, d) => s + (d[1] || 0), 0);
   if (!tot) return <p className="sp-vacio">Todavía no hay visitas contadas: se cuenta una por persona y por día.</p>;
   const max = Math.max(1, ...v.map((d) => d[1] || 0));
@@ -446,6 +451,9 @@ function Ajustes({ sv }) {
       setOcup(false);
       if (r && r.ok) setMsg(['bien', 'Listo: mandé un mensaje de prueba a ' + nombre(c[cual]) + '. Si lo ves, el bot puede escribir ahí.']);
       else if (r && (r.estado === 403 || r.estado === 404)) setMsg(['mal', 'El bot no puede escribir en ' + nombre(c[cual]) + ': dale permiso de «Enviar mensajes» ahí.']);
+      // ⏱️ (18/11/2026) el objeto deja una prueba por minuto y por servidor, y el «espera un segundo» de AJ_ERR (el de los 2 s
+      // del guardado) hacía reintentar al segundo y volver a fallar durante casi un minuto
+      else if (r && r.error === 'espera') setMsg(['mal', 'Una prueba por minuto en cada servidor: espera un momento y vuelve a probar.']);
       else setMsg(['mal', AJ_ERR[r && r.error] || 'No se pudo probar: intenta en un minuto.']);
     });
   };
@@ -562,6 +570,11 @@ function Servidor({ liga, x, svs, onSel, t, permisos }) {
   const preg = x.preguntas || [];
   // 🛡️ qué ve cada rol (16/11/2026): los ajustes y la página, de admin para arriba; el equipo, sólo el dueño
   const p_ = (que) => puede(x.rol, que, permisos);
+  // 🧭 las secciones que sí se dibujan (18/11/2026): a un moderador o un asistente la sugerencia «Trajiste N raperos
+  // nuevos…» le ofrecía «Ver los ajustes», que no se le dibujan, y el botón no hacía nada. Lo mismo «Ver las semanas»
+  // con las ocho en cero. Son las mismas condiciones de cada `<Sec>` de abajo
+  const hay = new Set(['sp-puntaje', vu && 'sp-vuelven', (p.dias || []).length && 'sp-cuando', (p.semanas || []).some((s) => s[2]) && 'sp-semanas',
+    (p.raperos || []).length && 'sp-gente', p_('ajustes') && 'sp-ajustes'].filter(Boolean));
   const dueno = x.rol === 'dueno' || x.rol === 'dlx';
   const items = [...(preg.length && p_('final') ? [['sp-preg', 'Para contestar', preg.length]] : []), ['sp-llaves', 'Tus llaves', null], ['sp-ligas', 'Tus ligas', null],
     ['sp-quien', 'Quién es quién', null], ['sp-agenda', 'Tus eventos', null], ['sp-muro', 'Publicaciones', null], ...(p_('ajustes') ? [['sp-vs', 'Fondo del VS', null]] : []),
@@ -623,7 +636,7 @@ function Servidor({ liga, x, svs, onSel, t, permisos }) {
           {/* el botón una vez por destino: cuatro «Ver cuándo» seguidos llevan al mismo lugar */}
           <ol className="sp-sug">{sugs.map((s, i) => (
             <li key={s}><span>{String(i + 1).padStart(2, '0')}</span><p>{resaltar(s)}</p>
-              {IR[irs[i]] && irs.indexOf(irs[i]) === i ? <button type="button" className="sp-ir" onClick={(e) => irA(e, irs[i])}>{IR[irs[i]]}</button> : null}</li>
+              {IR[irs[i]] && hay.has(irs[i]) && irs.indexOf(irs[i]) === i ? <button type="button" className="sp-ir" onClick={(e) => irA(e, irs[i])}>{IR[irs[i]]}</button> : null}</li>
           ))}</ol>
         </Sec>
       ) : null}
@@ -693,11 +706,13 @@ function TuPagina({ sv }) {
     pedirPagina(sv).then((r) => { if (vivo) cargar(r); });
     return () => { vivo = false; };
   }, [sv]);
-  const mandar = (cambio, listo) => {
+  // 🖼️ `todo` (18/11/2026): subir o sacar el banner contesta con el texto y las redes GUARDADOS, y `cargar()` pisaba lo
+  // que se estaba escribiendo sin guardar. Para el banner sólo se toma `j` (banner y pend)
+  const mandar = (cambio, listo, todo = true) => {
     setOcup(true); setMsg('');
     pedirPagina(sv, cambio).then((r) => {
       setOcup(false);
-      if (r && r.ok) { cargar(r); setMsg(r.filtro === 'revisar' ? 'El banner quedó para que lo mire la Liga: te avisamos cuando se vea.' : listo); }
+      if (r && r.ok) { if (todo) cargar(r); else setJ(r); setMsg(r.filtro === 'revisar' ? 'El banner quedó para que lo mire la Liga: te avisamos cuando se vea.' : listo); }
       else setMsg(PAG_ERR[r && r.error] || 'No se pudo guardar: prueba de nuevo en un rato.');
     });
   };
@@ -707,7 +722,7 @@ function TuPagina({ sv }) {
     if (!a) return;
     // 🔎 2400×900 (antes 1600×600): va a lo ancho de la página como el fondo de perfil (Dlx, 12/11/2026: «que todo esté
     // siempre en HD»); el tope del Worker (600 KB) no cambia y `achicar()` baja el tamaño si no entra
-    try { const b = await achicar(a, 2400, 900, 550 * 1024); mandar({ img: await aBase64(b) }, 'Listo: tu banner sale en la página en la próxima media hora.'); }
+    try { const b = await achicar(a, 2400, 900, 550 * 1024); mandar({ img: await aBase64(b) }, 'Listo: tu banner sale en la página en la próxima media hora.', false); }
     catch (er) { setMsg('No pude usar esa imagen: ' + er.message); }
   };
   if (!j) return <p className="pronto-p">Buscando tu página…</p>;
@@ -727,7 +742,7 @@ function TuPagina({ sv }) {
       <div className="sp-pag-acc">
         <label className="btn borde2"><input type="file" accept="image/*" hidden disabled={ocup} onChange={subir} />{j.banner || j.pend ? 'Cambiar el banner' : 'Subir un banner'}</label>
         {j.banner || j.pend ? <DosToques className="btn borde2 chico" disabled={ocup} confirmar="Toca de nuevo: se saca el banner"
-          onClick={() => mandar({ quitar_banner: true }, 'Listo: tu página vuelve a su fondo de siempre.')}>Sacar el banner</DosToques> : null}
+          onClick={() => mandar({ quitar_banner: true }, 'Listo: tu página vuelve a su fondo de siempre.', false)}>Sacar el banner</DosToques> : null}
       </div>
       {msg ? <p className="sp-preg-msg" role="status">{msg}</p> : null}
     </div>
@@ -1135,7 +1150,9 @@ function AgendaStaff({ sv, rol, permisos }) {
       if (x && x.ok) { setJ(x); setF({ nombre: '', cuando: '', formato: '' }); setMsg(listo); } else setMsg(errStaff(x));
     });
   };
-  const ini = f.cuando ? new Date(f.cuando).getTime() : NaN;
+  // 🕐 (18/11/2026) «tu hora» es la de Ajustes, la misma con que la lista de abajo la muestra: `new Date()` la leía en la
+  // del dispositivo y, con otra zona elegida, el evento quedaba corrido para todos
+  const ini = f.cuando ? msDeLocal(f.cuando) : NaN;
   const xs = (j && j.ok && j.agenda) || [];
   return (
     <div className="sp-ll">
@@ -1197,7 +1214,13 @@ function FondoVs({ sv, rol, permisos }) {
 }
 
 // 🙈 TUS PUBLICACIONES: las del muro que son de tu servidor, con «Ocultar» (sale del muro en la próxima media hora)
-const MURO_TIPO = { anuncio: 'Anuncio', svlunes: 'Lunes', svsemana: 'La semana', svmeta: 'Meta', svtop: 'Top', svrecord: 'Récord', svnuevo: 'Nuevo', svtier: 'Tier', svchat: 'El chat' };
+// 🏷️ (18/11/2026) y los demás que el muro marca con `sv` (bot/muro.py, ligas.py, mes_awards.py): sin ellos salían crudos
+// («campeon», «caza», «precio», «promo»)
+const MURO_TIPO = { anuncio: 'Anuncio', svlunes: 'Lunes', svsemana: 'La semana', svmeta: 'Meta', svtop: 'Top', svrecord: 'Récord', svnuevo: 'Nuevo', svtier: 'Tier', svchat: 'El chat',
+  campeon: 'Campeón', caza: 'Caza', precio: 'Precio por cabeza', promo: 'Promo', flyer: 'Flyer de liga', ligahito: 'Liga', mesaward: 'MES AWARDS' };
+// de qué es y de quién, para que dos del mismo evento (las dos cazas de una noche) no salgan idénticas
+const muroDe = (x) => (x.ev ? nombreEv(x.ev, x.ll) : limpio(x.ln || x.tit || ''));
+const muroQuien = (x) => (x.quien || []).map(limpio).filter(Boolean).join(' y ');
 function MuroStaff({ sv, rol, permisos }) {
   const [items, setItems] = useState(null);
   const [j, setJ] = useState(null);
@@ -1224,7 +1247,10 @@ function MuroStaff({ sv, rol, permisos }) {
     <div className="sp-ll">
       {items.length ? <ol className="sp-lg-l">{items.map((x) => (
         <li key={x.id} className={oc.has(x.id) ? 'sp-lg-fuera' : ''}>
-          <span><b>{MURO_TIPO[x.tipo] || x.tipo}{x.ev ? ': ' + limpio(x.ev) : ''}</b><small>{String(x.t || '').slice(0, 10)}{oc.has(x.id) ? ' · oculta' : ''}</small></span>
+          {/* 📅 (18/11/2026) la fecha por fmtFecha, en la zona de Ajustes: cortar el ISO daba el día en UTC (lo de después de
+              las 7 PM ET salía con el día siguiente) y en AAAA-MM-DD */}
+          <span><b>{MURO_TIPO[x.tipo] || x.tipo}{muroDe(x) ? ': ' + muroDe(x) : ''}</b><small>{[muroQuien(x),
+            W.fmtFecha ? W.fmtFecha(x.t, { day: 'numeric', month: 'short' }) : String(x.t || '').slice(0, 10)].filter(Boolean).join(' · ')}{oc.has(x.id) ? ' · oculta' : ''}</small></span>
           {puedo ? (oc.has(x.id) ? <button type="button" className="btn borde2 chico" disabled={ocup} onClick={() => hacer('mostrar', x.id)}>Mostrar</button>
             : <DosToques className="btn borde2 chico" disabled={ocup} confirmar="Toca de nuevo: se oculta" onClick={() => hacer('ocultar', x.id)}>Ocultar</DosToques>) : null}
         </li>
@@ -1287,5 +1313,8 @@ export function PanelSocio({ liga, q }) {
       : 'No pude traer el panel ahora. Prueba de nuevo en un rato.'} />;
   }
   const x = svs.find((s) => s.sv === sel) || svs[0];
-  return <Servidor liga={liga} x={x} svs={svs} onSel={setSel} t={j.t} permisos={perm} />;
+  // 🔑 `key` (18/11/2026): sin ella, al tocar otro servidor React reusaba las mismas piezas, y la respuesta de un cambio en
+  // FFA que llegaba tarde pisaba el panel de DDF (con «Guardado»); los borradores de «Tus eventos» y «Quién es quién» se
+  // guardaban en el otro servidor. Con la key cada servidor arranca de cero
+  return <Servidor key={x.sv} liga={liga} x={x} svs={svs} onSel={setSel} t={j.t} permisos={perm} />;
 }

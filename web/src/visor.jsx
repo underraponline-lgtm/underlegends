@@ -92,13 +92,17 @@ function queMide(tipo, yo) {
 }
 
 // 📅 su último evento (`ult` del lobby: el día y hasta dónde llegó). Lo que la carta NO dice
+// 🔤 «Tercero» y «Cuarto» son puestos, no rondas, y «R32» es jerga (18/11/2026): salía «llegó a Tercero», «llegó a
+// Cuarto» (que se confunde con Cuartos) y «llegó a R32». Se dicen como `resultado()` de liga.js
+const PUESTO = { Tercero: 'Tercer puesto', Cuarto: 'Cuarto puesto' };
+const RONDA = { R32: '16avos', Semifinal: 'Semifinales' };
 function ultimoEv(f, yo) {
   if (!Array.isArray(f.ult) || !f.ult[0]) return null;
   const [d, r] = f.ult;
   const x = new Date(d + 'T12:00:00');
   if (isNaN(x)) return null;
-  const tope = /^(campe|subcampe)/i.test(r || '');
-  return { dia: DIAS[x.getDay()] + ' ' + d.slice(8, 10) + '/' + d.slice(5, 7), res: tope ? r : r ? (yo ? 'llegaste a ' : 'llegó a ') + r : '', camp: /^campe/i.test(r || '') };
+  const tope = /^(campe|subcampe)/i.test(r || '') || !!PUESTO[r];
+  return { dia: DIAS[x.getDay()] + ' ' + d.slice(8, 10) + '/' + d.slice(5, 7), res: PUESTO[r] || (tope ? r : r ? (yo ? 'llegaste a ' : 'llegó a ') + (RONDA[r] || r) : ''), camp: /^campe/i.test(r || '') };
 }
 
 // 🎞️ LA CARTA SALE DE DONDE LA TOCASTE: la miniatura de la carta que se tocó antes de abrir (piezas.jsx guarda el último
@@ -142,7 +146,10 @@ export function VisorCarta({ liga, dc, k, inicial = '', onCerrar }) {
     if (!f) return [];
     const r2 = liga.d.r2 + '/' + encodeURIComponent(k) + '/';
     const cs = ORDEN.filter((c) => (f.c || []).includes(c));
-    const out = cs.map((c) => ({ id: c, tipo: c, nom: NOMBRE[c], url: liga.cartaUrl(k, c), mide: queMide(c, esYo) }));
+    // 🃏 sin fila que traiga esa carta —el staff `solo` con cartas, o las de tu cuenta (`dc.cs`) que tu fila no tiene—
+    // `cartaUrl()` da null: el visor salía en blanco y «Descargar» pedía `/null` (la página, guardada como .png). Ahí,
+    // la de R2 sin versión, como las Bloqueadas y `TuCarta` (18/11/2026)
+    const out = cs.map((c) => ({ id: c, tipo: c, nom: NOMBRE[c], url: liga.cartaUrl(k, c) || r2 + c + '.webp', mide: queMide(c, esYo) }));
     const mias = (lx && lx.cartas && lx.cartas[k]) || [];
     if (mias.length) {
       const nom = {};
@@ -157,10 +164,14 @@ export function VisorCarta({ liga, dc, k, inicial = '', onCerrar }) {
   // 🃏 sin pedir una, abre en su carta principal (26/10/2026), si la eligió
   const primera = inicial && items.some((x) => x.id === inicial) ? inicial : cp && items.some((x) => x.id === cp) ? cp : (items[0] ? items[0].id : '');
   const [sel, setSel] = useState(primera);
-  useEffect(() => { setSel(primera); }, [k, inicial, cp]); // eslint-disable-line react-hooks/exhaustive-deps
+  // ⭐ sólo mientras no te moviste (18/11/2026): «Hacer principal» cambia `cp`, el efecto volvía a correr y te devolvía a
+  // la carta con que se abrió (`inicial`), con «☆ Hacer principal» bajo el aviso de «Listo». Si `cp` llega tarde y no
+  // tocaste nada, sigue abriendo en tu principal. Otra persona remonta el visor (key `'c' + carta`), no hace falta volverlo
+  const movio = useRef(false);
+  useEffect(() => { if (!movio.current) setSel(primera); }, [k, inicial, cp]); // eslint-disable-line react-hooks/exhaustive-deps
   const i = Math.max(0, items.findIndex((x) => x.id === sel));
   const x = items[i];
-  const ir = (d) => { const n = Math.max(0, Math.min(items.length - 1, i + d)); if (items[n]) setSel(items[n].id); };
+  const ir = (d) => { const n = Math.max(0, Math.min(items.length - 1, i + d)); if (items[n]) { movio.current = true; setSel(items[n].id); } };
   const irRef = useRef(ir);
   irRef.current = ir;
   const [yendo, setYendo] = useState(false);
@@ -174,6 +185,8 @@ export function VisorCarta({ liga, dc, k, inicial = '', onCerrar }) {
   // confuso»: en el Inventario era una pestaña más al lado del TAG y el marco)
   const [princ, setPrinc] = useState(false);
   const hacerPrincipal = (c) => {
+    // (y elegirla o quitarla te deja en ésta: al quitarla, sin `inicial`, saltaba a la primera)
+    movio.current = true;
     setPrinc(true);
     pasePost('carta-principal', { carta: c }).then((d) => {
       setPrinc(false);
@@ -193,7 +206,10 @@ export function VisorCarta({ liga, dc, k, inicial = '', onCerrar }) {
   cerrarRef.current = cerrar;
   // Escape cierra, ← → pasan de carta, la página de atrás no se mueve, y el foco vuelve a donde estaba
   useEffect(() => {
-    const antes = document.activeElement;
+    // 🎯 adentro del shadow root (18/11/2026): `document.activeElement` es el host `#inicio-nuevo`, un <div> sin tabindex;
+    // al cerrar, `focus()` no hacía nada y el foco caía al <body>. Se baja hasta el botón que abrió la ventana
+    let antes = document.activeElement;
+    while (antes && antes.shadowRoot && antes.shadowRoot.activeElement) antes = antes.shadowRoot.activeElement;
     const tecla = (e) => {
       if (e.key === 'Escape') cerrarRef.current();
       else if (e.key === 'ArrowRight' || e.key === 'ArrowLeft') { e.preventDefault(); irRef.current(e.key === 'ArrowRight' ? 1 : -1); }
@@ -263,7 +279,8 @@ export function VisorCarta({ liga, dc, k, inicial = '', onCerrar }) {
   const vieja = x && !x.bloq && tipo !== 'liga' && liga.cartaVieja(k, tipo);
   // 🖼️ la descarga, con su marco si lo tiene en la imagen (bot/con_marco.py): lo mismo que manda /card
   const conMarco = x && !x.bloq && tipo !== 'liga' && pub && pub.mi && (pub.mi[k] || []).includes(tipo);
-  const urlBajar = x ? (conMarco ? x.url.replace('/' + tipo + '.webp', '/' + tipo + '-m.webp') : x.url) : '';
+  // (sin `url`, nada que bajar: `x.url.replace` reventaba en el render, 18/11/2026)
+  const urlBajar = x && x.url ? (conMarco ? x.url.replace('/' + tipo + '.webp', '/' + tipo + '-m.webp') : x.url) : '';
   const crew = liga.crewDe ? liga.crewDe(f) : null;
   const sv = f.sv && liga.svs[f.sv];
   const enTabla = !!liga.T[k];
@@ -329,7 +346,7 @@ export function VisorCarta({ liga, dc, k, inicial = '', onCerrar }) {
               return (
                 <div key={y.id} className={'vk-sl' + (a === 0 ? ' vk-cur' : a === 1 ? ' vk-lado' : '')} aria-hidden={a !== 0}
                   style={{ '--d': Math.sign(d) * Math.min(a, 2), '--k': a === 0 ? 1 : a === 1 ? 0.84 : 0.7, opacity: a === 0 ? 1 : a === 1 ? 0.5 : 0, zIndex: 10 - a, pointerEvents: a <= 1 ? undefined : 'none' }}
-                  onClick={a === 1 ? () => setSel(y.id) : undefined}
+                  onClick={a === 1 ? () => { movio.current = true; setSel(y.id); } : undefined}
                   onPointerMove={a === 0 ? gir : undefined} onPointerLeave={a === 0 ? quieto : undefined}>
                   {vistos.current.has(y.id) ? (
                     <div className="vk-gira" ref={a === 0 ? gira : undefined}>
@@ -367,7 +384,7 @@ export function VisorCarta({ liga, dc, k, inicial = '', onCerrar }) {
           {vieja ? <p className="vk-aviso">⏳ Esta tarjeta se está redibujando con los datos de ahora.</p> : null}
           {x && x.mide ? <p className="vk-mide" key={x.id}><b>{x.nom}</b>{' ' + x.mide}</p> : null}
           <div className="vk-acc">
-            {x ? (
+            {x && urlBajar ? (
               <button type="button" className="vk-bl" disabled={yendo}
                 onClick={() => { setYendo(true); bajar(urlBajar, nombre.replace(/[\\/:*?"<>|]/g, '') + ' - ' + (tipo === 'liga' ? 'Liga ' + x.nom : NOMBRE[tipo] || tipo) + (x.bloq ? ' (bloqueada)' : '') + '.png', () => setYendo(false)); }}>
                 <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="square" aria-hidden="true"><path d="M12 4v11M7 10l5 5 5-5M5 20h14" /></svg>

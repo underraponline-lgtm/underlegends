@@ -15,7 +15,7 @@
 // ⚠️ Lo que Dlx decidió de esta página sigue igual: las encuestas no son lo primero (después del primer día, y al final
 // si ya votaste en todas); Felicitar sólo en los logros; las cartas del día juntas; Promos y «A quien sigo».
 import { Fragment, useEffect, useMemo, useRef, useState } from 'react';
-import { MESES, hora, horaET, ksDe, limpio, mult, num, siglaDe, utc } from './liga.js';
+import { MESES, hora, horaET, ksDe, limpio, mult, nombreEv, num, siglaDe, utc } from './liga.js';
 import { CrewCirculo, escenaDe } from './arriba.jsx';
 import { TierChip } from './crewpanel.jsx';
 import { Alguien, Algunos, Cara, Carta, Ico, Vacio, accion, promoAbierta, useCampana } from './piezas.jsx';
@@ -126,7 +126,8 @@ function Autor({ liga, it, pub, cara = true }) {
   const prem = esPremium(pub, a.k);
   const cuerpo = <>{cara ? <Cara liga={liga} k={a.k} nombre={a.n} cls={'cara pw-au-c' + (prem ? ' sp-prem-aro' : '')} /> : null}<b>{a.n}</b>
     {prem ? <SelloPremium t={12} cls="sp-prem-in" /> : null}<small title={AUTO}>automática</small></>;
-  return a.k && liga.T[a.k] ? <a className="pw-autor" href={'#/r/' + encodeURIComponent(a.k)}>{cuerpo}</a> : <span className="pw-autor">{cuerpo}</span>;
+  // 18/11/2026: con liga.T[a.k] el autor de fuera de las 200 filas salía sin link, y también tiene perfil
+  return a.k && liga.existe(a.k) ? <a className="pw-autor" href={'#/r/' + encodeURIComponent(a.k)}>{cuerpo}</a> : <span className="pw-autor">{cuerpo}</span>;
 }
 // los demás de una publicación de varios (la firma el primero): « con Bea», « con Bea y Cris»
 function conOtros(liga, it, pub) {
@@ -155,7 +156,9 @@ function contenido(liga, it, pub) {
     c.vis = f0 && (f0.c || []).includes('temporada') ? <Carta liga={liga} k={f0.k} cual="temporada" cls="pb-carta" abre={false} /> : cara;
     // 🥇 el primer título de la temporada de quien firma (`primero`, bot/muro_solos.py)
     const primero = (it.primero || []).map((x) => liga.aka(x)).includes(q[0]);
-    c.txt = <>{primero ? '¡Mi primer título! ' : ''}Gané <b>{limpio(it.ev)}</b>{otros}</>;
+    // 🏷️ `nombreEv()` y no `limpio()` (18/11/2026): la llave sin nombre llegaba cruda, «Gané (sin titulo)» (las #654 y #659
+    // de LKR). Lo mismo en todo lo que nombra el evento en esta página
+    c.txt = <>{primero ? '¡Mi primer título! ' : ''}Gané <b>{nombreEv(it.ev, it.ll)}</b>{otros}</>;
     c.det = it.part ? it.part + ' raperos' : '';
     c.acc = it.ll ? <button type="button" className="pb-a" onClick={() => accion.llave(it.ll)}>Ver la llave</button> : null;
   } else if (it.tipo === 'tarjeta') {
@@ -174,7 +177,7 @@ function contenido(liga, it, pub) {
     c.cat = 'Most Wanted · Caza';
     c.vis = cara;
     c.txt = <>Cacé a <b><Alguien liga={liga} nombre={it.a} /></b> ({it.cat}){otros} y {q.length > 1 ? 'cobramos' : 'cobro'} <b>{num(it.pts)}</b></>;
-    c.det = it.ev ? limpio(it.ev) : '';
+    c.det = it.ev ? nombreEv(it.ev, it.ll) : '';
   } else if (it.tipo === 'sobrevivio') {
     c.cat = 'Most Wanted · Sobrevivió';
     c.vis = cara;
@@ -205,7 +208,7 @@ function contenido(liga, it, pub) {
     c.cat = 'Precio por su cabeza';
     c.vis = cara;
     c.txt = <>Le gané a <b><Alguien liga={liga} nombre={it.a} /></b>{otros} y {q.length > 1 ? 'cobramos' : 'cobro'} el precio por su cabeza: <b>{num(it.pts)}</b></>;
-    c.det = it.ev ? limpio(it.ev) : '';
+    c.det = it.ev ? nombreEv(it.ev, it.ll) : '';
   } else if (it.tipo === 'premios') {
     c.cat = 'Premios de la semana';
     c.vis = <img className="pb-logo" alt="" src="/ul.png" />;
@@ -300,7 +303,7 @@ function contenido(liga, it, pub) {
     c.cat = 'Resumen de la noche' + (d ? ' · ' + d + '/' + m : '');
     c.vis = <img className="pb-logo" alt="" src="/ul.png" />;
     const cs = (it.campeones || []).slice(0, NOCHE_CAMPEONES).map((e, i) => (
-      <Fragment key={i}>{y((e.quien || []).map(([n, k], j) => <Nombre key={j} liga={liga} x={{ n, k }} pub={pub} />))} ganó <b>{limpio(e.ev)}</b></Fragment>));
+      <Fragment key={i}>{y((e.quien || []).map(([n, k], j) => <Nombre key={j} liga={liga} x={{ n, k }} pub={pub} />))} ganó <b>{nombreEv(e.ev, e.ll)}</b></Fragment>));
     const mas = (it.campeones || []).length - cs.length;
     c.txt = <>{it.eventos} {it.eventos === 1 ? 'evento' : 'eventos'} y {num(it.part)} {it.part === 1 ? 'participación' : 'participaciones'}.{' '}
       {cs.reduce((acc, x, i) => (i ? acc.concat(['; ', x]) : [x]), [])}{mas > 0 ? <>, y {mas} más</> : null}{cs.length ? '.' : ''}</>;
@@ -320,7 +323,7 @@ function contenido(liga, it, pub) {
   } else if (it.tipo === 'podio') {
     c.cat = 'Primer podio · ' + siglaDe(it.sv);
     c.vis = cara;
-    c.txt = <>Mi primer podio: salí <b>{String(it.puesto || '').toLowerCase()}</b> en <b>{limpio(it.ev)}</b></>;
+    c.txt = <>Mi primer podio: salí <b>{String(it.puesto || '').toLowerCase()}</b> en <b>{nombreEv(it.ev, it.ll)}</b></>;
     c.acc = it.ll ? <button type="button" className="pb-a" onClick={() => accion.llave(it.ll)}>Ver la llave</button> : null;
   } else if (it.tipo === 'top10') {
     const rk = it.rk === 'competitivo' ? 'Competitivo' : 'Temporada';
@@ -331,7 +334,8 @@ function contenido(liga, it, pub) {
   } else if (it.tipo === 'subio') {
     c.cat = 'Sube en el Ranking';
     c.vis = cara;
-    c.txt = <>Subí <b>{(it.de || 0) - (it.a || 0)} puestos</b> esta semana: del #{it.de} al <b>#{it.a}</b></>;
+    // 18/11/2026: «en la semana» y no «esta semana»: muro_solos.py mide la semana ANTERIOR y el ítem queda ~8 días (como liga.js y avisos.js)
+    c.txt = <>Subí <b>{(it.de || 0) - (it.a || 0)} puestos</b> en la semana: del #{it.de} al <b>#{it.a}</b></>;
     c.acc = <a className="pb-a" href="#/ranking/temporada">Ver el ranking</a>;
   } else if (it.tipo === 'racha') {
     c.cat = 'Racha';
@@ -355,7 +359,7 @@ function contenido(liga, it, pub) {
   } else if (it.tipo === 'svrecord') {
     c.cat = 'Récord · ' + siglaDe(it.sv);
     c.vis = logoSv;
-    c.txt = <>Récord de la temporada: <b>{it.part} raperos</b> en <b>{limpio(it.ev)}</b></>;
+    c.txt = <>Récord de la temporada: <b>{it.part} raperos</b> en <b>{nombreEv(it.ev, it.ll)}</b></>;
     c.det = it.antes ? 'El anterior era de ' + it.antes : '';
     c.acc = it.ll ? <button type="button" className="pb-a" onClick={() => accion.llave(it.ll)}>Ver la llave</button> : null;
   } else if (it.tipo === 'svchat') {
@@ -365,7 +369,11 @@ function contenido(liga, it, pub) {
     c.cat = (it.que === 'polemica' ? 'Polémica' : 'El chat') + ' · ' + siglaDe(it.sv);
     c.vis = logoSv;
     c.txt = <>{ct.tit}: <b>{num(it.msgs)} mensajes</b> en un día</>;
-    c.det = [it.x >= 2 ? mult(it.x) + ' un día normal' : '', num(it.gente) + ' personas', 'el pico, a las ' + horaET(it.h), ct.ev ? 'la noche de ' + ct.ev : ''].filter(Boolean).join(' · ');
+    // 🕘 el pico en tu zona y tu formato (18/11/2026), como en la historia (arriba.jsx): `horaET(it.h)` escribía la hora del
+    // este sin decirlo («11 PM» para quien en Argentina lo vivió a la 1 AM). `t` es h:30 ET (bot/chats.py): media hora
+    // antes es el comienzo de la hora del pico
+    const pico = it.t ? hora(new Date(utc(it.t).getTime() - 30 * 60000)) : horaET(it.h);
+    c.det = [it.x >= 2 ? mult(it.x) + ' un día normal' : '', num(it.gente) + ' personas', 'el pico, a las ' + pico, ct.ev ? 'la noche de ' + ct.ev : ''].filter(Boolean).join(' · ');
     c.acc = <a className="pb-a" href={'#/sv/' + encodeURIComponent(siglaDe(it.sv))}>Ver {siglaDe(it.sv)}</a>;
   } else if (it.tipo === 'svnuevo') {
     c.cat = 'Socio nuevo';
@@ -398,7 +406,8 @@ function lunesDet(it) {
 }
 function semanaDet(it, liga) {
   // 🪪 con su nombre oficial (17/11/2026)
-  const cs = (it.camps || []).map(([ev, q]) => (q || []).map((x) => liga.aka(x)).join(' y ') + ' en ' + limpio(ev));
+  // 🏷️ (y la llave sin nombre, «un evento»: `camps` no trae su número; el 16/11 LKR y DDF decían «en (sin titulo)»)
+  const cs = (it.camps || []).map(([ev, q]) => (q || []).map((x) => liga.aka(x)).join(' y ') + ' en ' + nombreEv(ev));
   return [cs.length ? 'Campeones: ' + cs.join('; ') : '', it.meta && it.meta[0] >= it.meta[1] ? '✓ Cumplimos la meta (' + it.meta[0] + ' de ' + it.meta[1] + ')' : '',
     it.guerra ? 'Ganamos la guerra contra ' + siglaDe(it.contra) : ''].filter(Boolean).join(' · ');
 }
@@ -453,9 +462,13 @@ function MasFelicitado({ liga, pubs, A }) {
         const g = genteDe(liga, it);
         const k = ksDe(it)[0] || (g[0] && g[0].k);
         const quien = g.map((x) => x.n).join(' y ');
-        const que = it.tipo === 'campeon' ? limpio(it.ev) : it.tipo === 'rango' ? 'rango ' + it.rg
+        // 🔄 los de bot/muro_solos.py con su nombre (18/11/2026): se sumaron a LOGROS el 15/11 y todo lo que esto no
+        // reconocía caía en «Most Wanted» (un top 10 decía «Vandu · Most Wanted»). Ahora sólo la caza y el que sobrevivió
+        const que = it.tipo === 'campeon' ? nombreEv(it.ev, it.ll) : it.tipo === 'rango' ? 'rango ' + it.rg
           : it.tipo === 'pase' || it.tipo === 'sorteo' ? 'Pase de rapero' : it.tipo === 'ligahito' ? limpio(it.ln)
-            : it.tipo === 'mesaward' ? 'MES AWARDS' : 'Most Wanted';
+            : it.tipo === 'mesaward' ? 'MES AWARDS' : it.tipo === 'podio' ? 'primer podio · ' + nombreEv(it.ev, it.ll)
+              : it.tipo === 'top10' ? 'top 10 · #' + it.pos : it.tipo === 'subio' ? 'subió ' + ((it.de || 0) - (it.a || 0)) + ' puestos'
+                : it.tipo === 'racha' ? it.racha + ' eventos seguidos' : it.tipo === 'svtop' ? '#1 de ' + siglaDe(it.sv) : 'Most Wanted';
         return (
           <li key={it.id}><Cara liga={liga} k={k || ''} nombre={quien} cls="cara pb-top-cara" />
             <span className="pb-top-n"><b><Algunos liga={liga} nombres={g.map((x) => x.n)} ks={g.map((x) => x.k)} cara={false} /></b><small>{que}</small>
@@ -472,7 +485,8 @@ function MasFelicitado({ liga, pubs, A }) {
 function Avisame() {
   const e = useCampana();
   const C = window.Campana;
-  if (!e || !C || (e.activa && e.yo && e.yo.id)) return null;
+  // 🔕 `{ no: 1 }` es quien tocó «Desvincular» a propósito (campana.js, 18/11/2026): no se le vuelve a pedir
+  if (!e || !C || (e.activa && e.yo && (e.yo.id || e.yo.no))) return null;
   const puede = e.soporta && !e.negado;
   return (
     <section className="pb-bloque">
@@ -486,14 +500,16 @@ function Avisame() {
   );
 }
 
+// 👥 TAMBIÉN LOS DE FUERA DE LAS 200 FILAS (18/11/2026): se filtraba por `liga.T`, así que a quien sigues más allá del
+// corte no salía ni contaba. Con `existe()` y `nombreDe()`, que los encuentran (`sigo` es `sigueTodos`, ver abajo)
 function Sigo({ liga, sigo, onVer }) {
-  const xs = sigo.filter((k) => liga.T[k]);
+  const xs = sigo.filter((k) => liga.existe(k));
   if (!xs.length) return null;
   return (
     <section className="pb-bloque">
       <h2 className="pb-st">A quién sigues<small>{xs.length}</small></h2>
       <div className="pb-sigo">
-        <ul>{xs.slice(0, 9).map((k) => <li key={k}><a href={'#/r/' + encodeURIComponent(k)} title={limpio(liga.T[k].n)}><Cara liga={liga} k={k} nombre={liga.T[k].n} cls="cara pb-sigo-c" /></a></li>)}
+        <ul>{xs.slice(0, 9).map((k) => <li key={k}><a href={'#/r/' + encodeURIComponent(k)} title={liga.nombreDe(k)}><Cara liga={liga} k={k} nombre={liga.nombreDe(k)} cls="cara pb-sigo-c" /></a></li>)}
           {xs.length > 9 ? <li className="pb-sigo-mas">+{xs.length - 9}</li> : null}</ul>
         <button type="button" className="pb-a" onClick={onVer}>Ver sólo lo suyo</button>
       </div>
@@ -545,14 +561,15 @@ function plano(liga, it) {
   const q = genteDe(liga, it).map((x) => x.n);
   const quien = q.length > 2 ? q.slice(0, -1).join(', ') + ' y ' + q[q.length - 1] : q.join(' y ');
   const varios = q.length > 1;
-  if (it.tipo === 'campeon') return 'Gané ' + limpio(it.ev) + (varios ? ' con ' + q.slice(1).join(' y ') : '');
+  // 🏷️ la llave sin nombre, con `nombreEv()` (18/11/2026): el escenario gritaba «GANÉ (SIN TITULO)»
+  if (it.tipo === 'campeon') return 'Gané ' + nombreEv(it.ev, it.ll) + (varios ? ' con ' + q.slice(1).join(' y ') : '');
   if (it.tipo === 'caza') return 'Cacé a ' + liga.aka(it.a) + ' y ' + (varios ? 'cobramos ' : 'cobro ') + num(it.pts);
   if (it.tipo === 'precio') return 'Le gané a ' + liga.aka(it.a) + ' y ' + (varios ? 'cobramos ' : 'cobro ') + num(it.pts);
   if (it.tipo === 'sobrevivio') return 'Sobreviví al Most Wanted';
   if (it.tipo === 'elegido') return 'Soy El Elegido';
-  if (it.tipo === 'podio') return 'Mi primer podio: ' + limpio(it.ev);
+  if (it.tipo === 'podio') return 'Mi primer podio: ' + nombreEv(it.ev, it.ll);
   if (it.tipo === 'svtop') return 'Tenemos nuevo #1: ' + quien;
-  if (it.tipo === 'svrecord') return 'Récord: ' + it.part + ' raperos en ' + limpio(it.ev);
+  if (it.tipo === 'svrecord') return 'Récord: ' + it.part + ' raperos en ' + nombreEv(it.ev, it.ll);
   if (it.tipo === 'svmeta') return '¡Cumplimos la meta de la semana!';
   if (it.tipo === 'svchat') { const ct = liga.chatTexto(it, true); return ct ? ct.tit : ''; }
   if (it.tipo === 'resnoche') return it.eventos + (it.eventos === 1 ? ' evento y ' : ' eventos y ') + num(it.part) + ' participaciones';
@@ -593,7 +610,8 @@ function Escenario({ liga, xs, A }) {
   const fondo = escenaDe(sv);
   const vis = cual ? <Carta liga={liga} k={k} cual={cual} cls="pw-esc-carta" abre={false} />
     : <img className="pw-esc-logo" alt="" src={sv ? liga.logo(sv, true) : '/ul.png'} />;
-  const tono = COLOR[it.tipo] === 'm' ? 'm' : 'v';
+  // 18/11/2026: sin clase para el magenta (ya es el fondo de .pw-chip): `.m` es la batalla de la llave chica (estilo.css), global en el shadow root, y le ponía su borde de 2 px
+  const tono = COLOR[it.tipo] === 'm' ? '' : 'v';
   return (
     <section data-tuto="pb-cab" className={'pw-esc' + (fondo ? ' con-fondo' : '')} style={fondo ? { backgroundImage: 'url("' + fondo + '")' } : undefined}
       onMouseEnter={() => setQuieto(true)} onMouseLeave={() => setQuieto(false)} onFocus={() => setQuieto(true)}
@@ -712,7 +730,7 @@ function RangosG({ liga, xs, nuevo }) {
 // ── 🔄 los logros del mismo día y del mismo tipo (primer podio, top 10, subidas, rachas), juntos como las subidas de rango:
 // una noche deja varios y cada uno en su fila grande llenaba el muro. Tocar a uno abre su publicación para felicitarlo ──
 const LOGRO_G = {
-  podio: ['Primeros podios', (it) => (it.puesto === 'Subcampeón' ? '2.º' : '3.º'), (it) => limpio(it.ev)],
+  podio: ['Primeros podios', (it) => (it.puesto === 'Subcampeón' ? '2.º' : '3.º'), (it) => nombreEv(it.ev, it.ll)],
   top10: ['Entran al top 10', (it) => '#' + it.pos, (it) => (it.rk === 'competitivo' ? 'Competitivo' : 'Temporada')],
   subio: ['Suben en el Ranking', (it) => '+' + ((it.de || 0) - (it.a || 0)), (it) => '#' + it.de + ' → #' + it.a],
   racha: ['Rachas', (it) => String(it.racha), () => 'seguidos'],
@@ -845,7 +863,10 @@ const NOMBRE_T = { campeon: ['campeón', 'campeones'], rango: ['rango', 'rangos'
   podio: ['primer podio', 'primeros podios'], top10: ['top 10', 'top 10'], subio: ['subida', 'subidas'], racha: ['racha', 'rachas'],
   crewunion: ['de crews', 'de crews'], crewnueva: ['crew nueva', 'crews nuevas'], svlunes: ['de servidores', 'de servidores'],
   svsemana: ['cierre', 'cierres'], svmeta: ['meta', 'metas'], svtop: ['#1 nuevo', '#1 nuevos'], svrecord: ['récord', 'récords'],
-  svnuevo: ['socio nuevo', 'socios nuevos'], svtier: ['tier', 'tiers'], svchat: ['del chat', 'del chat'] };
+  svnuevo: ['socio nuevo', 'socios nuevos'], svtier: ['tier', 'tiers'], svchat: ['del chat', 'del chat'],
+  // ⚠️ faltaban (18/11/2026) y salía la clave interna: el lunes 16/11 cerrado decía «1 LIGA · 1 ELEGIDO»
+  liga: ['de la Liga', 'de la Liga'], elegido: ['El Elegido', 'El Elegido'], premios: ['premios de la semana', 'premios de la semana'],
+  sobrevivio: ['sobrevivió', 'sobrevivieron'], sorteo: ['sorteo', 'sorteos'] };
 function ResumenDia({ liga, xs, abrir }) {
   const top = xs.filter((it) => it.tipo === 'campeon' || it.tipo === 'caza' || it.tipo === 'precio' || (it.tipo === 'ligahito' && it.que === 'campeon')).slice(0, 10);
   const c = {};
@@ -867,7 +888,8 @@ function ResumenDia({ liga, xs, abrir }) {
           })}
         </div>
       ) : null}
-      <div className="pw-res-n">{Object.entries(c).map(([t, n]) => <span key={t}><b>{n}</b>{(NOMBRE_T[t] || [t, t])[n === 1 ? 0 : 1]}</span>)}</div>
+      {/* un tipo nuevo sin nombre en NOMBRE_T no se cuenta acá, en vez de salir con su clave */}
+      <div className="pw-res-n">{Object.entries(c).filter(([t]) => NOMBRE_T[t]).map(([t, n]) => <span key={t}><b>{n}</b>{NOMBRE_T[t][n === 1 ? 0 : 1]}</span>)}</div>
       <button type="button" className="btn borde2 chico" onClick={abrir}>Ver el día</button>
     </div>
   );
@@ -910,13 +932,31 @@ function Hoja({ liga, it, A, P }) {
     const d = ref.current;
     if (d && !d.open) { try { d.showModal(); } catch (e) { d.setAttribute('open', ''); } }
   }, [it && it.id]);
+  // 🎬 EL VIDEO Y LA CARTA, DELANTE (18/11/2026): la hoja es un <dialog> modal (la capa de arriba, todo lo demás inerte), y la
+  // ventana del video y el visor de la carta son capas comunes de App.jsx: el ▶ de una promo arrancaba el video con sonido
+  // DETRÁS de la hoja, sin verse y sin poder cerrarlo. Al abrirse uno de los dos, la hoja se cierra y vuelve a la lista
+  useEffect(() => {
+    const f = (e) => { const d = ref.current; if (e && e.detail && d && d.open) d.close(); };
+    window.addEventListener('lg:video', f);
+    window.addEventListener('lg:carta', f);
+    return () => { window.removeEventListener('lg:video', f); window.removeEventListener('lg:carta', f); };
+  }, []);
   if (!it) return null;
   const c = contenido(liga, it, pub);
   if (!c) return null;
   const cerrar = () => { if (ref.current && ref.current.open) ref.current.close(); };
   const hilo = delHilo(it, Date.now());
+  // ↩️ CERRAR NO SUMA UN PASO (18/11/2026): `location.hash = …` empujaba otra entrada y el historial quedaba [lista, hoja,
+  // lista], así que «Atrás» volvía a abrir la hoja recién cerrada. La lista ocupa el lugar de la hoja (con `urlLG()`: con
+  // <base href="/">, un '#/x' suelto deja la dirección en /#/x) y `lg:dir` hace que la app vuelva a leer la ruta
+  const alCerrar = () => {
+    try {
+      history.replaceState(history.state, '', window.urlLG ? window.urlLG('#/publicaciones') : '/freestyle-rap/publicaciones');
+      window.dispatchEvent(new Event('lg:dir'));
+    } catch (e) { location.hash = '#/publicaciones'; }
+  };
   return (
-    <dialog ref={ref} className="pn-pop pw-hoja" aria-label={c.cat} onClose={() => { location.hash = '#/publicaciones'; }}
+    <dialog ref={ref} className="pn-pop pw-hoja" aria-label={c.cat} onClose={alCerrar}
       onClick={(e) => { if (e.target === ref.current) cerrar(); }}>
       <PopCab ico="globo" t={c.cat} sub={hace(liga, it.t)} cerrar={cerrar} />
       <div className="pw-hoja-in">
@@ -946,14 +986,19 @@ export function Publicaciones({ liga, enc, foco = '' }) {
   const [q, setQ] = useState('');
   const [dias, setDias] = useState(4);
   const [abiertos, setAbiertos] = useState({});
-  const sigo = liga.sigue || [];
+  // 👥 la lista entera de a quién sigues (18/11/2026): `liga.sigue` está filtrada por las 200 filas, y «A quién sigues»,
+  // el círculo «A quien sigo» y su filtro dejaban afuera a los de más allá del corte
+  const sigo = liga.sigueTodos || liga.sigue || [];
   // 📅 SIN LOS EVENTOS ANUNCIADOS (Dlx, 16/11/2026: «que en publicaciones haya todo lo demás menos anuncios de eventos…
   // por eso está la página de eventos»). El muro los sigue trayendo: los usa el Inicio (`arriba.jsx`). Quedan las
   // novedades de la Liga y los flyers de las ligas, en el chip «Anuncios»
   const todos = useMemo(() => liga.muroLimpio().filter((it) => it.tipo !== 'anuncio'), [liga]);
   const visto = useVisto(todos);
-  const barra = useRef(null);
-  const subir = () => { const b = barra.current; if (b && b.getBoundingClientRect().top < 0) b.scrollIntoView({ block: 'start' }); };
+  // ⬆️ al filtrar desde abajo, la lista vuelve al principio. 🔴 Se mide una marca justo antes de la barra, no la barra
+  // (18/11/2026): la barra es `sticky; top:0`, pegada arriba su top es 0 y nunca negativo, así que no subía nunca y el
+  // primer resultado quedaba por encima de la pantalla
+  const marca = useRef(null);
+  const subir = () => { const m = marca.current; if (m && m.getBoundingClientRect().top < 0) m.scrollIntoView({ block: 'start' }); };
   const setFil = (f) => { setFil0(f); setDias(4); subir(); };
   const setSv = (s) => { setSv0(s); setDias(4); };
   const qn = limpio(q).toLowerCase();
@@ -999,7 +1044,10 @@ export function Publicaciones({ liga, enc, foco = '' }) {
     return f.charAt(0).toUpperCase() + f.slice(1);
   };
   const fecha = (k) => { const [, m, d] = k.split('-').map(Number); return d + ' de ' + (MESES[m - 1] || ''); };
-  const nuevas = visto ? todos.filter((it) => utc(it.t) > visto).length : 0;
+  // 🆕 sobre lo que se dibuja (`pubs`), no sobre todo el muro (18/11/2026): con un chip, un servidor o una búsqueda sin nada
+  // nuevo, el primer día (de hace semanas) decía «3 nuevas» y la raya «Lo de arriba salió desde tu última visita» caía
+  // debajo de una publicación vieja
+  const nuevas = visto ? pubs.filter((it) => utc(it.t) > visto).length : 0;
   const masFel = <MasFelicitado liga={liga} pubs={todos.filter((it) => utc(it.t) >= liga.desdeLunes())} A={A} />;
   const fila = (it, nuevo) => (it.tipo === 'g-tarjeta' ? <CartasG liga={liga} xs={it.xs} nuevo={nuevo} />
     : it.tipo === 'g-rango' ? <RangosG liga={liga} xs={it.xs} nuevo={nuevo} />
@@ -1012,7 +1060,8 @@ export function Publicaciones({ liga, enc, foco = '' }) {
     <div className="pw">
       <Escenario liga={liga} xs={destacadas} A={A} />
       <Circulos liga={liga} todos={todos} sv={sv} setSv={setSv} sigo={sigo} visto={visto} />
-      <div data-tuto="pb-fil" className="pw-barra" ref={barra}>
+      <div ref={marca} aria-hidden="true" />
+      <div data-tuto="pb-fil" className="pw-barra">
         <label className="pw-busca"><Ico n="buscar" t={16} />
           <input id="pw-busca" type="search" value={q} onChange={(e) => { setQ(e.target.value); setDias(4); }} placeholder="Busca un rapero, un servidor o un evento"
             aria-label="Buscar en las publicaciones" />

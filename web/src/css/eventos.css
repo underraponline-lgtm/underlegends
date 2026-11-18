@@ -419,11 +419,16 @@
 @media (hover: hover) and (pointer: fine){.evs .evp-fel:hover:not(:disabled){background:var(--caja)}}
 @media (min-width: 700px){
   .evs-cuerpo{grid-template-columns:128px minmax(0,1fr);align-items:start}
+  /* sin campeón no va la columna de su carta (18/11/2026): la llave caía en la de 128 px */
+  .evs-cuerpo.sin-camp{grid-template-columns:minmax(0,1fr)}
   .evs-camp{grid-template-columns:minmax(0,1fr);justify-items:start}
   .evs-camp > .evs-ci,.evs-camp > .evs-sin{grid-row:auto;width:128px}
 }
 
 /* 🧱 los últimos campeones, en grilla fija */
+/* «N esta semana» al lado del título (18/11/2026): con `evp-sem` heredaba la grilla y el relleno de la vista Semana. Como
+   el de «Subieron de rango» del Ranking */
+.evp-camp-n{display:inline-block;white-space:nowrap;margin-left:6px;font:700 15px/1 "Barlow Condensed",sans-serif;letter-spacing:.06em;color:var(--gris);text-transform:uppercase}
 .evp-camps2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px 14px}
 .evp-camps-mas{margin-top:16px}
 @media (min-width: 600px){.evp-camps2{grid-template-columns:repeat(3,minmax(0,1fr))}}

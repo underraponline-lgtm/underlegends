@@ -10,7 +10,7 @@
 //   C · `NOTAS`: una línea la primera vez en una página que no tiene capítulo (las que lo tienen llevan su «¿Cómo funciona?»)
 //   D · la franja: quien entra por un link (un perfil, una llave) ve primero eso, y arriba «¿primera vez?»
 //   E · lo cuenta `contar()`, y lo muestra el Dashboard
-import { useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import { num } from './liga.js';
 import { Ico, accion } from './piezas.jsx';
 import { usePase } from './pase.js';
@@ -113,14 +113,19 @@ function Foco({ paso, n, de, onSig, onAtras, onSaltar, ultimo, txtUltimo }) {
 /** Una ventana al centro (elegir, y los finales) */
 function Centro({ children, onCerrar, et }) {
   const yo = useRef(null);
+  // ⌨️ el foco UNA vez, al abrir (18/11/2026): el efecto dependía de `onCerrar`, una flecha nueva en cada dibujo, y cada
+  // redibujo de App (el reloj, cada 60 s) devolvía el foco a «Rápido»: quien iba con Tab en «Completo» o «Ahora no» elegía
+  // otra cosa con Enter. El Escape lee la última `onCerrar` de la ref
+  const cb = useRef(onCerrar);
+  cb.current = onCerrar;
   useEffect(() => {
-    const k = (e) => { if (e.key === 'Escape') onCerrar(); };
+    const k = (e) => { if (e.key === 'Escape') cb.current(); };
     W.addEventListener('keydown', k);
     // el foco, en lo principal (no en la ✕ de arriba)
     const b = yo.current && (yo.current.querySelector('.rc-acc .btn, .rc-op') || yo.current.querySelector('button, a'));
     if (b) b.focus({ preventScroll: true });
     return () => W.removeEventListener('keydown', k);
-  }, [onCerrar]);
+  }, []);
   return (
     <div className="rc">
       <div className="rc-luz rc-todo" />
@@ -150,10 +155,18 @@ function Recorrido({ liga, dc, inicio, onCerrar }) {
   const [modo, setModo] = useState(null);   // 'elegir' | 'corto' | 'cap' | 'fin' | 'espera'
   const [cap, setCap] = useState(null);
   const [i, setI] = useState(0);
-  const [fin, setFin] = useState(null);     // { que: 'corto' | 'cap' | 'completo', premio: bool | null }
+  const [fin, setFin] = useState(null);     // { que: 'corto' | 'cap' | 'completo', premio: bool | null | 'espera' | 'dia:<n>' }
   const raiz = useRef(null);
   const c = liga.d.comunidad || {};
   const deRaiz = () => (raiz.current ? raiz.current.getRootNode() : null);
+  // 🧷 el paso del corto, el MISMO objeto entre dibujos (18/11/2026): sin cuenta, el paso con `pSin` se armaba nuevo en
+  // cada render, y los efectos `[paso]` de Foco volvían a poner el foco en «Siguiente» (y a medir y correr la página) con
+  // cada redibujo de App, como mínimo cada 60 s
+  const conCuenta = !!dc;
+  const pasoCorto = useMemo(() => {
+    const p = CORTO[i];
+    return p && !conCuenta && p.pSin ? Object.assign({}, p, { p: p.pSin }) : p;
+  }, [i, conCuenta]);
 
   const empezarCorto = useCallback(() => {
     setModo('espera');
@@ -172,12 +185,17 @@ function Recorrido({ liga, dc, inicio, onCerrar }) {
   }, [inicio, empezarCorto, empezarCap]);
 
   // ¿cobró? Se le pregunta al objeto (sólo con cuenta); sin cuenta, lo que dice este navegador
+  // 💰 «se pagó EN ESTE PEDIDO» (`pista.recien.mis`), no «la misión está hecha» (18/11/2026): con `m.ok`, repetir el corto
+  // desde la Guía volvía a decir «Te ganaste 3 Dragón Drops» (se pagan una vez), y el completo terminado antes del día 7
+  // (su misión es del día 7, que todavía no se abrió) no decía nada del Cajón prometido. Ese caso es `'dia:<n>'`
   const cobrar = (que, id) => {
     const ok = (D) => {
       const P = D && D.pista;
       if (!P) return false;
-      const m = P.dias.flatMap((x) => x.mis).find((x) => x.id === id);
-      return !!(m && m.ok);
+      if (((P.recien || {}).mis || []).includes(id)) return true;
+      const dia = (P.dias || []).find((x) => (x.mis || []).some((m) => m.id === id));
+      if (dia && !dia.abierto && !P.fin) return 'dia:' + dia.n;
+      return false;
     };
     setFin({ que, premio: dc ? null : (enSemanaNueva() ? 'espera' : false) });
     setModo('fin');
@@ -206,23 +224,26 @@ function Recorrido({ liga, dc, inicio, onCerrar }) {
     dentro = (
       <Centro et="BIENVENIDO" onCerrar={() => cerrar('salto')}>
         <h2 id="rc-h">¿Cómo quieres conocer la Liga?</h2>
-        <p>{c.personas && c.servidores ? <>{num(c.personas)} raperos de {num(c.servidores)} servidores de Discord compiten en un mismo ranking. </> : null}
+        {/* 👥 `personas` es la gente de los servidores donde está el bot (18/11/2026): decía «21.387 raperos… compiten»,
+            unas 26 veces los que compiten de verdad */}
+        <p>{c.personas && c.servidores ? <>{num(c.personas)} personas en {num(c.servidores)} servidores de Discord, y un solo ranking. </> : null}
           Te lo mostramos sobre la página de verdad.</p>
         <div className="rc-ops">
+          {/* 🎁 el premio, sólo si todavía no lo cobró este navegador (18/11/2026): se pagan una vez, y repetir el corto o el
+              completo desde la Guía lo seguía prometiendo */}
           <button type="button" className="rc-op" onClick={empezarCorto}>
             <b>Rápido</b><span>Un minuto: cinco pasos acá en el Inicio.</span>
-            <small>{enSemanaNueva() ? 'Te llevas 3 Dragón Drops' : '5 pasos · 1 min'}</small></button>
+            <small>{enSemanaNueva() && (tuto() || {}).corto !== 'fin' ? 'Te llevas 3 Dragón Drops' : '5 pasos · 1 min'}</small></button>
           <button type="button" className="rc-op" onClick={() => { cerrar('completo'); location.hash = '#/guia'; setTimeout(() => W.dispatchEvent(new Event('lg:aprende')), 300); }}>
             <b>Completo</b><span>Nueve capítulos de un minuto, cada uno en su página.</span>
-            <small>{enSemanaNueva() ? 'Te llevas ' + txtPremio(['cofre', 0]) : '9 capítulos'}</small></button>
+            <small>{enSemanaNueva() && !(tuto() || {}).completo ? 'Te llevas ' + txtPremio(['cofre', 0]) : '9 capítulos'}</small></button>
         </div>
         {(W.innerWidth || 0) < 900 ? <p className="rc-nota">Todo está en la barra de abajo, que se desliza de costado.</p> : null}
         <div className="rc-acc"><button type="button" className="rc-saltar" onClick={() => cerrar('salto')}>Ahora no</button></div>
       </Centro>
     );
   } else if (modo === 'corto') {
-    const paso = CORTO[i];
-    dentro = <Foco paso={!dc && paso.pSin ? Object.assign({}, paso, { p: paso.pSin }) : paso} n={i + 1} de={CORTO.length} ultimo={i === CORTO.length - 1} txtUltimo="Terminar"
+    dentro = <Foco paso={pasoCorto} n={i + 1} de={CORTO.length} ultimo={i === CORTO.length - 1} txtUltimo="Terminar"
       onSig={() => (i === CORTO.length - 1 ? terminarCorto() : setI(i + 1))} onAtras={() => setI(Math.max(0, i - 1))} onSaltar={() => cerrar('salto')} />;
   } else if (modo === 'cap' && cap) {
     dentro = <Foco paso={cap.pasos[i]} n={i + 1} de={cap.pasos.length} ultimo={i === cap.pasos.length - 1} txtUltimo="Terminar el capítulo"
@@ -230,6 +251,8 @@ function Recorrido({ liga, dc, inicio, onCerrar }) {
   } else if (modo === 'fin' && fin) {
     const sinCuenta = fin.premio === 'espera';
     const gano = fin.premio === true;
+    // el día de la semana de nuevo en que se cobra (`'dia:<n>'`): hecho antes de que se abra su día
+    const elDia = typeof fin.premio === 'string' && fin.premio.startsWith('dia:') ? fin.premio.slice(4) : null;
     if (fin.que === 'cap') {
       const T = tuto() || {};
       const hechos = CAPITULOS.filter((x) => (T.caps || {})[x.id]).length;
@@ -237,7 +260,8 @@ function Recorrido({ liga, dc, inicio, onCerrar }) {
       dentro = (
         <Centro et={'CAPÍTULO ' + (CAPITULOS.indexOf(cap) + 1) + ' DE ' + CAPITULOS.length} onCerrar={() => cerrar('fin')}>
           <h2 id="rc-h">{cap.t}: listo</h2>
-          <p>Llevas {hechos} de {CAPITULOS.length}.{enSemanaNueva() ? ' Al terminar los nueve te llevas ' + txtPremio(['cofre', 0]) + '.' : ''}</p>
+          {/* sin la promesa si ya terminó los nueve antes y está repitiendo uno (18/11/2026) */}
+          <p>Llevas {hechos} de {CAPITULOS.length}.{enSemanaNueva() && !T.completo ? ' Al terminar los nueve te llevas ' + txtPremio(['cofre', 0]) + '.' : ''}</p>
           <span className="rc-barra" aria-hidden="true"><i style={{ width: (100 * hechos) / CAPITULOS.length + '%' }} /></span>
           <div className="rc-acc">
             {sigue ? <button type="button" className="btn verde chico" onClick={() => { setFin(null); empezarCap(sigue.id); }}>Siguiente: {sigue.t}</button> : null}
@@ -254,6 +278,7 @@ function Recorrido({ liga, dc, inicio, onCerrar }) {
             : gano ? <><p>Te ganaste {corto ? <b>3 Dragón Drops</b> : <b>{txtPremio(['cofre', 0])}</b>}: {corto ? 'ábrelos' : 'ábrelo'} cuando quieras.</p><Huevos n={corto ? 3 : 1} cofre={!corto} /></>
               : sinCuenta ? <><p>Te ganaste {corto ? <b>3 Dragón Drops</b> : <b>{txtPremio(['cofre', 0])}</b>}. Te esperan en cuanto vincules tu cuenta de Discord: es gratis y tarda diez segundos.</p>
                 <Huevos n={corto ? 3 : 1} cofre={!corto} lock /></>
+                : elDia ? <p>Quedó anotado: {corto ? <><b>3 Dragón Drops</b> se cobran</> : <><b>{txtPremio(['cofre', 0])}</b> se cobra</>} el día {elDia} de tu semana, cuando entres a la página.</p>
                 : <p>{corto ? 'Ya sabes dónde está cada cosa.' : 'Ya pasaste por todas las páginas de la Liga.'} Lo que sigue: entra a un evento o sube el Pase con Tareas.</p>}
           <div className="rc-acc">
             {gano ? <button type="button" className="btn verde chico" onClick={() => { cerrar('fin'); W.dispatchEvent(new Event('lg:abrir-drops')); }}>{corto ? 'Abrirlos' : 'Abrir el cofre'}</button>
@@ -261,7 +286,7 @@ function Recorrido({ liga, dc, inicio, onCerrar }) {
                 : <button type="button" className="btn verde chico" onClick={() => cerrar('fin')}>Listo</button>}
           </div>
           {corto ? (
-            <p className="rc-mas">¿Quieres más? El <b>tutorial completo</b> son nueve capítulos de un minuto{enSemanaNueva() ? <> y da <b>{txtPremio(['cofre', 0])}</b> al terminarlo</> : null}.{' '}
+            <p className="rc-mas">¿Quieres más? El <b>tutorial completo</b> son nueve capítulos de un minuto{enSemanaNueva() && !(tuto() || {}).completo ? <> y da <b>{txtPremio(['cofre', 0])}</b> al terminarlo</> : null}.{' '}
               <a href="#/guia" onClick={() => { cerrar('fin'); setTimeout(() => W.dispatchEvent(new Event('lg:aprende')), 300); }}>Ver los capítulos</a></p>
           ) : null}
         </Centro>
@@ -428,7 +453,9 @@ export function PrimerosPasos({ liga, dc, enGuia }) {
       <a key="b" className="btn verde chico" href="#/pase">Ver mis Tareas</a>],
     ['campana', !!leerLS('campana:activada'), 'Prende la campana', 'Te avisa al minuto cuando un servidor anuncia un evento.',
       <a key="b" className="btn verde chico" href="#/avisos">Activar</a>],
-    ['seguir', liga.sigue.length > 0, 'Sigue a un rapero', 'Te avisa cuando gana algo.',
+    // la lista entera (18/11/2026): `liga.sigue` deja afuera a quien no está en las 200 filas, y seguir sólo a alguien de
+    // más abajo dejaba este paso sin tildar
+    ['seguir', liga.sigueTodos.length > 0, 'Sigue a un rapero', 'Te avisa cuando gana algo.',
       <a key="b" className="btn verde chico" href="#/ranking">Ver el ranking</a>],
   ];
   const hechos = pasos.filter((p) => p[1]).length;

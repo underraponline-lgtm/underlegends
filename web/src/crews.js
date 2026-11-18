@@ -3,28 +3,48 @@
 // cuenta: tu rol, tus invitaciones, lo que espera tu respuesta). Se piden una vez y se recuerdan mientras la página está
 // abierta; después de cada acción, de nuevo. El payload (`liga.d.crews`) sigue trayendo los PUNTOS: esto trae la GENTE.
 import { useEffect, useState } from 'react';
+// 🔢 `num()` para los Puntos de Tienda del error (18/11/2026): `toLocaleString('es')` no agrupa los de 4 cifras, y decía
+// «cuesta 2500» al lado del botón «Fundar · 2.500». liga.js no importa este archivo: no se forma un ciclo
+import { num } from './liga.js';
 
 const W = typeof window !== 'undefined' ? window : {};
 export const ROL_NOMBRE = { lider: 'Líder', colider: 'Colíder', veterano: 'Veterano', miembro: 'Miembro' };
 export const ENTRADA_NOMBRE = { abierta: 'Abierta: entra quien quiera', pedido: 'Con pedido: el Líder o un Colíder acepta',
   invitacion: 'Sólo por invitación' };
 
-const E = { todas: null, tTodas: 0, mia: null, miaNo: '', pidiendo: false, pidiendoMia: false, oyentes: new Set() };
+const E = { todas: null, tTodas: 0, todasNo: '', mia: null, miaNo: '', miaFallo: '', pidiendo: false, otraVez: false,
+  pidiendoMia: false, oyentes: new Set() };
 const avisar = () => E.oyentes.forEach((f) => f());
 
 // 🕐 la lista se vuelve a pedir si tiene más de un minuto (13/11/2026, Dlx: «Oasis creó una crew pero no se actualizó en
 // vivo, yinn no lo ve»): antes se pedía UNA vez por carga de la página, y quien la tenía abierta no veía las nuevas nunca.
-// Es pública y el borde la guarda 20 s: volver a pedirla no le cuesta al objeto
+// Es pública: la guarda 20 s el navegador (`max-age=20`) y 30 s el borde (`ttl` de bot/paginas/_worker.js, desde el
+// 18/11/2026; antes el borde no la guardaba y cada pedido despertaba al objeto): volver a pedirla no le cuesta al objeto
 const VIEJA_MS = 60 * 1000;
 
 export function pedirCrews(forzar = false) {
-  if ((E.todas && !forzar && Date.now() - E.tTodas < VIEJA_MS) || E.pidiendo) return;
+  // 🔁 LO FORZADO NO SE PIERDE (18/11/2026): con un pedido en curso, el de después de una acción se salteaba. Queda
+  // anotado y sale cuando el otro vuelve
+  if (E.pidiendo) { if (forzar) E.otraVez = true; return; }
+  if (E.todas && !forzar && Date.now() - E.tTodas < VIEJA_MS) return;
   E.pidiendo = true;
-  fetch('/api/avisos/crews').then((r) => r.json()).then((j) => {
+  const otra = () => { if (E.otraVez) { E.otraVez = false; pedirCrews(true); } };
+  // 🧊 y lo forzado saltea la caché del navegador (18/11/2026): con `max-age=20`, el pedido de después de cada acción lo
+  // contestaba la copia de hasta 20 s antes —el representante recién marcado volvía desmarcado, y el siguiente clic lo
+  // borraba—. `reload` va a la red
+  // 🧊 y también la del borde (18/11/2026): desde que el borde la guarda 30 s, lo forzado podía volver con su copia —el
+  // proxy la borra después de cada acción de crew, pero un pedido que salió antes de la acción la vuelve a dejar vieja
+  // al llegar—. `?r=` es «lo de ahora» para `delBorde()`: no lee su copia y la reemplaza. ⚠️ El navegador guarda esta
+  // respuesta con el `?r=`, no en la dirección sin él: una recarga de la página dentro de los 20 s de la copia de antes
+  // puede ver esa
+  fetch('/api/avisos/crews' + (forzar ? '?r=' + Date.now() : ''), { cache: forzar ? 'reload' : 'default' }).then((r) => r.json()).then((j) => {
     E.pidiendo = false;
     // 🗑️ y queda en `window.CREWS_VIVAS` para `liga.crewDe()` (13/11/2026): ver el porqué allá
-    if (j && Array.isArray(j.crews)) { E.todas = j; E.tTodas = Date.now(); W.CREWS_VIVAS = j; avisar(); }
-  }).catch(() => { E.pidiendo = false; });
+    if (j && Array.isArray(j.crews)) { E.todas = j; E.tTodas = Date.now(); E.todasNo = ''; W.CREWS_VIVAS = j; avisar(); }
+    // ⚠️ y si falla, se dice (18/11/2026): `todasNo`, para que «Cargando…» no espere para siempre
+    else { E.todasNo = (j && j.error) || 'red'; avisar(); }
+    otra();
+  }).catch(() => { E.pidiendo = false; E.todasNo = 'red'; avisar(); otra(); });
 }
 
 export function pedirMia(forzar = false) {
@@ -32,12 +52,16 @@ export function pedirMia(forzar = false) {
   E.pidiendoMia = true;
   W.conCuenta('/api/avisos/crew-mia', {}).then((j) => {
     E.pidiendoMia = false;
-    if (j && j.ok) { E.mia = j; E.miaNo = ''; avisar(); }
+    if (j && j.ok) { E.mia = j; E.miaNo = ''; E.miaFallo = ''; avisar(); }
     // 🔑 LA SESIÓN VENCIDA (Oasis, 13/11/2026: «no se puede crear crews»): el navegador recuerda quién eres (`lg:dc`)
     // pero la cookie ya no vale, y el Worker contesta 401. Sin esto `mia` se quedaba en null: «Fundar una» no abría
     // nada y Mi crew decía «Mirando tu crew…» para siempre. Se anota para pedir entrar de nuevo.
-    else if (j && j.status === 401) { E.miaNo = j.error || 'sin_sesion'; avisar(); }
-  }).catch(() => { E.pidiendoMia = false; });
+    else if (j && j.status === 401) { E.miaNo = j.error || 'sin_sesion'; E.miaFallo = ''; avisar(); }
+    // ⚠️ LOS DEMÁS FALLOS (18/11/2026): un 429, un 500, Discord ocupado (503) o sin red dejaban todo en null sin avisar,
+    // y Mi crew se quedaba en «Mirando tu crew…». Van aparte, en `miaFallo`: `miaNo` es «entra de nuevo con Discord»
+    // y un fallo pasajero no es una sesión vencida. Con `pedirMia(true)` se reintenta
+    else { E.miaFallo = (j && j.error) || 'red'; avisar(); }
+  }).catch(() => { E.pidiendoMia = false; E.miaFallo = 'red'; avisar(); });
 }
 
 /** Todas las crews y la tuya, y que la pantalla se entere cuando cambian. `que`: 'todo'; 'todas', sólo la lista pública
@@ -52,11 +76,12 @@ export function useCrews(que = 'todo') {
     const f = () => setN((n) => n + 1);
     E.oyentes.add(f);
     // al entrar con Discord (o salir), lo tuyo cambia: `lg:cuenta` (bot/paginas/cuenta.js), como en App.jsx
-    const dc = () => { E.mia = null; E.miaNo = ''; pedirMia(true); };
+    const dc = () => { E.mia = null; E.miaNo = ''; E.miaFallo = ''; pedirMia(true); };
     W.addEventListener('lg:cuenta', dc);
     return () => { E.oyentes.delete(f); W.removeEventListener('lg:cuenta', dc); };
   }, []);
-  return { todas: E.todas, mia: E.mia, miaNo: E.miaNo, miaMod: E.miaMod, miaModNo: E.miaModNo };
+  // `todasNo` y `miaFallo` (18/11/2026): el pedido de la lista o el de lo tuyo falló por algo que no es tu sesión
+  return { todas: E.todas, todasNo: E.todasNo, mia: E.mia, miaNo: E.miaNo, miaFallo: E.miaFallo, miaMod: E.miaMod, miaModNo: E.miaModNo };
 }
 
 /**
@@ -185,7 +210,8 @@ export function errorCrew(j) {
     no_verificado: 'Esa persona todavía no es Miembro verificado de DRA: las crews son sólo de verificados.',
     requisitos: 'Esa crew pide ' + ((j && j.falta) || []).join(' y ') + ': todavía no llegas.',
     req: 'Los requisitos no valen: una letra de la Liga y de 0 a 100 eventos.',
-    espera: 'Saliste de una crew hace poco: puedes entrar a otra en ' + dias(j && j.faltan_ms) + ' días.',
+    // «en 1 día», no «en 1 días» (18/11/2026): `dias()` da 1 todo el último día de la espera
+    espera: 'Saliste de una crew hace poco: puedes entrar a otra en ' + ((n) => n + (n === 1 ? ' día.' : ' días.'))(dias(j && j.faltan_ms)),
     nombre: 'Ese nombre no vale: de 3 a 24 letras o números, sin símbolos.',
     nombre_usado: 'Ya hay una crew con ese nombre.',
     nombre_espera: 'El nombre se cambia una vez cada 30 días.',
@@ -198,8 +224,8 @@ export function errorCrew(j) {
     'no es una imagen': 'Eso no es una imagen.',
     'demasiado grande': 'La imagen es muy pesada.',
     sin_crew: 'No estás en ninguna crew.',
-    saldo: 'No te alcanzan los Puntos de Tienda: cuesta ' + ((j && j.precio) || 2500).toLocaleString('es')
-      + (j && typeof j.saldo === 'number' ? ' y tienes ' + j.saldo.toLocaleString('es') : '') + '.',
+    saldo: 'No te alcanzan los Puntos de Tienda: cuesta ' + num((j && j.precio) || 2500)
+      + (j && typeof j.saldo === 'number' ? ' y tienes ' + num(j.saldo) : '') + '.',
     llena: 'La crew está llena: son ' + ((j && j.max) || 20) + ' como máximo.',
     solo_invitacion: 'A esta crew se entra sólo por invitación.',
     sin_invitacion: 'Esa invitación ya no está.',
@@ -219,18 +245,25 @@ const ordenLetras = (liga) => (liga.d.rangos || []).map((r) => r.r).reverse();
 
 /** Todo lo que la página de Crews dice de cada crew, armado una vez (19/10/2026: también lo usan las «Crews que te
  *  aceptan» del perfil y de Mi crew, sin bajarse la página entera). */
-export function armarCrews(liga, todas, mia) {
+export function armarCrews(liga, todas, mia, P) {
   const T = liga.d.crews_tiers && liga.d.crews_tiers.nombres ? liga.d.crews_tiers : null;
   const pay = new Map((liga.d.crews || []).map((c) => [c.clave || c.crew, c]));
   const yo = liga.yo;
-  const sigo = new Set(liga.sigue || []);
+  // ⭐ `sigueTodos` y no `sigue` (18/11/2026): `sigue` viene filtrada por la tabla, así que a quien sigues y está más
+  // allá de las 200 no lo contaba «Con gente que sigues» ni «N que sigues», aunque `filas` ya lo encuentra
+  const sigo = new Set(liga.sigueTodos || liga.sigue || []);
   const L = ordenLetras(liga);
   const max = (todas && todas.max) || 20;
   const miId = mia && mia.crew ? mia.crew.id : '';
   const invitado = new Set(((mia && mia.inv) || []).map((x) => x.crew));
   return ((todas && todas.crews) || []).map((c) => {
     const ks = (c.gente || []).map((g) => g[0]);
-    const filas = ks.map((k) => liga.T[k]).filter(Boolean);
+    // 🧑 la fila de cada uno aunque esté más allá de los 200 de la tabla (18/11/2026): `persona()` mira también
+    // /api/perfiles si ya se bajó, y `P` (lo de `usePerfiles()`, opcional) es para que quien la dibuja se rearme cuando
+    // llegan. Con `liga.T` solo, a Follombia le faltaba la bandera de JD, el filtro «De mi país» la dejaba afuera, y una
+    // crew de gente de más abajo salía «Dormida»
+    const filas = ks.map((k) => liga.persona(k) || (P && P.p && P.p[k] && P.p[k].f ? Object.assign({ k }, P.p[k].f) : null))
+      .filter(Boolean);
     const [tier, semPts, jugaron] = (T && T.crews && T.crews[c.id]) || [0, 0, 0];
     const ult = filas.map((f) => (f.ult && f.ult[0]) || '').filter(Boolean).sort().pop() || '';
     const dias = ult ? Math.max(0, Math.floor((liga.ahora - new Date(ult + 'T16:00:00Z')) / DIA_C)) : null;

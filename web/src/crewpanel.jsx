@@ -6,13 +6,16 @@ import { useEffect, useRef, useState } from 'react';
 import { limpio, norm, num } from './liga.js';
 import { Cara, DosToques } from './piezas.jsx';
 import { aBase64, achicar } from './imagen.js';
-import { ENTRADA_NOMBRE, ROL_NOMBRE, accionCrew, armarCrews, codigoLink, crewDe, diaCrew, errorCrew, linkCrew, ptsSemana, useCrews } from './crews.js';
+import { ENTRADA_NOMBRE, ROL_NOMBRE, accionCrew, armarCrews, codigoLink, crewDe, diaCrew, errorCrew, linkCrew, pedirMia, ptsSemana, quedan, useCrews } from './crews.js';
 import { BORDES, COLORES, DIVISIONES, Escudo, FORMAS, NOMBRE_BORDE, NOMBRE_DIVISION, NOMBRE_FORMA, NOMBRE_SIMBOLO, SIMBOLOS, codigoEscudo, delNombre,
   esTrazo, leerEscudo, sugerirSigla } from './escudo.jsx';
 
 // el orden de las letras para elegir el mínimo (de la mejor a la peor): sólo el orden, los umbrales viven en comun/rangos.py
 const LETRAS = ['SSS', 'SS', 'S', 'A', 'B', 'C', 'D', 'E'];
-const nombreDe = (liga, k) => { const f = liga.T[k]; return f ? limpio(f.n) : k; };
+// 🧑 con `liga.nombreDe()` (18/11/2026): con `liga.T` solo, quien está más allá de las 200 filas salía con su clave cruda
+// en los pedidos, «Esperan respuesta», la gente, los representantes y «te invitó X». Mira también /api/perfiles si ya se
+// bajó (lo piden PaginaCrew y AjustesCrew, que vuelven a dibujar el panel cuando llegan) y las filas ligeras
+const nombreDe = (liga, k) => liga.nombreDe(k);
 const enlaceCrew = (id) => '#/crew/' + encodeURIComponent(id);
 
 /** Un botón que hace una acción y dice cómo le fue. `ok`: el texto, o una función de la respuesta que lo arma. */
@@ -103,6 +106,8 @@ export function SinVerificar({ hasta }) {
 // segundo y tercero»). Una crew nueva ya no vence: en su lugar, quien manda ve los consejos de `ConsejosCrew` y los
 // sugeridos para invitar ──────────────────────────────────────────────────────────────────────────────────────────────
 const DIA = 86400000;
+// «1 día» o «N días» para la espera entre crews, redondeado para arriba como antes (18/11/2026: decía «en 1 días»)
+const enDias = (ms) => { const n = Math.ceil((Number(ms) || 0) / DIA); return n === 1 ? '1 día' : n + ' días'; };
 
 // ── 🏆 el tier (Dlx, 19/10/2026: «como los equipos de fútbol: pueden bajar de división, subir y mantenerse») ─────
 // Las reglas y los colores viajan en el payload (`liga.d.crews_tiers`, de bot/crews_tiers.py): acá no se escribe ninguno
@@ -270,8 +275,12 @@ function LinksCrew({ c, mia, va, hacer }) {
 // las mejores de «Para vos» de la página de Crews (`armarCrews()`, la misma cuenta) que lo aceptan y están vivas ──────
 export function CrewsParaVos({ liga, max = 3, seccion = '' }) {
   const { todas, mia } = useCrews();
+  // 🧑 los perfiles, para la gente de cada crew más allá de las 200 filas (18/11/2026): con la tabla sola, una crew así
+  // salía «sin actividad» y no se recomendaba, y no contaba a los de tu servidor. En Mi crew nadie más los pide; se
+  // piden sólo si esto se va a mostrar (antes del `return null`, por la regla de los hooks)
+  const todos = usePerfiles(!!(todas && mia && mia.de && !mia.crew));
   if (!todas || !mia || !mia.de || mia.crew) return null;
-  const xs = armarCrews(liga, todas, mia).filter((x) => x.puede && x.act > 0).sort((a, b) => b.reco - a.reco).slice(0, max);
+  const xs = armarCrews(liga, todas, mia, todos ? { p: todos } : null).filter((x) => x.puede && x.act > 0).sort((a, b) => b.reco - a.reco).slice(0, max);
   if (!xs.length) return null;
   // `seccion`: envuelta en su sección sólo cuando hay algo (en el perfil, una sección vacía dejaba un hueco)
   const bloque = (
@@ -280,7 +289,8 @@ export function CrewsParaVos({ liga, max = 3, seccion = '' }) {
       <ul className="cw-lista">{xs.map((x) => (
         <li key={x.c.id}>
           <a href={enlaceCrew(x.c.id)}><b>{limpio(x.c.nombre)}</b></a>
-          <small>{x.ks.length} raperos{x.conozco.length ? ' · ' + x.conozco.length + ' que sigues' : ''}{x.deMiSv ? ' · ' + x.deMiSv + ' de tu servidor' : ''}
+          {/* «1 rapero», no «1 raperos» (18/11/2026): una crew con sólo su fundador también sale acá */}
+          <small>{x.ks.length === 1 ? '1 rapero' : x.ks.length + ' raperos'}{x.conozco.length ? ' · ' + x.conozco.length + ' que sigues' : ''}{x.deMiSv ? ' · ' + x.deMiSv + ' de tu servidor' : ''}
             {' · '}{x.invitado ? 'te invitaron' : x.c.entrada === 'abierta' ? 'entras directo' : 'pides entrar'}</small>
         </li>
       ))}</ul>
@@ -301,7 +311,9 @@ export function consejosCrew(liga, c, mia, T, todas) {
   const max = (todas && todas.max) || 20;
   const rol = mia.rol;
   const manda = rol === 'lider' || rol === 'colider';
-  const filas = gente.map((g) => liga.T[g[0]]).filter(Boolean);
+  // 🧑 `persona()` y no `liga.T` (18/11/2026): con la tabla sola, una crew de gente más allá del #200 le decía al Líder
+  // «Nadie de la crew jugó todavía» aunque hubieran jugado ayer
+  const filas = gente.map((g) => liga.persona(g[0])).filter(Boolean);
   const ult = filas.map((f) => (f.ult && f.ult[0]) || '').filter(Boolean).sort().pop() || '';
   const dias = ult ? Math.max(0, Math.floor((liga.ahora - new Date(ult + 'T16:00:00Z')) / DIA)) : null;
   const [tier, , jug, antes] = (T && T.crews && T.crews[c.id]) || [0, 0, 0, null];
@@ -313,18 +325,23 @@ export function consejosCrew(liga, c, mia, T, todas) {
   if (manda && ped) out.push({ p: 100, ico: '📨', t: ped === 1 ? 'Alguien quiere entrar' : ped + ' quieren entrar', d: 'Respóndeles: el pedido vence a la semana y se van a otra crew.', b: ['Ver los pedidos', 'pedidos'] });
   if (n === 1) out.push({ p: 95, ico: '🫂', t: 'Estás solo en la crew', d: 'Las crews que crecen arrancan invitando a gente de su servidor. Abajo tienes sugeridos y tu link para compartir.', b: ['Invitar', 'invitar'] });
   else if (n < 5 && n < max) out.push({ p: 70, ico: '➕', t: 'Son ' + n + ': inviten a más', d: 'Con 5 o más que jueguen, la crew sube de tier más rápido y no depende de uno solo.', b: ['Invitar', 'invitar'] });
-  if (manda && c.entrada === 'invitacion' && n < 8) out.push({ p: 80, ico: '🔓', t: 'Sólo entran invitados', d: 'Abierta, cualquiera entra en un toque desde la página de Crews. La puedes volver a cerrar cuando quieras.', b: ['Abrirla', 'abrir'] });
-  else if (manda && c.entrada === 'pedido' && !ped && n < 5) out.push({ p: 40, ico: '🔓', t: 'Con pedido, cada uno espera tu sí', d: 'Si la abres, entran sin esperar: quien busca crew se suele unir a una abierta.', b: ['Abrirla', 'abrir'] });
+  // 🔓 sólo el Líder (18/11/2026): cambiar cómo se entra es suyo (`puede()` de bot/crews.js), y con `manda` el Colíder
+  // veía «Abrirla» y le salía «Tu rango en la crew no te deja hacer eso.»
+  if (rol === 'lider' && c.entrada === 'invitacion' && n < 8) out.push({ p: 80, ico: '🔓', t: 'Sólo entran invitados', d: 'Abierta, cualquiera entra en un toque desde la página de Crews. La puedes volver a cerrar cuando quieras.', b: ['Abrirla', 'abrir'] });
+  else if (rol === 'lider' && c.entrada === 'pedido' && !ped && n < 5) out.push({ p: 40, ico: '🔓', t: 'Con pedido, cada uno espera tu sí', d: 'Si la abres, entran sin esperar: quien busca crew se suele unir a una abierta.', b: ['Abrirla', 'abrir'] });
   if (rol === 'lider' && (req.rg || req.ev) && n < 8) {
     out.push({ p: 60, ico: '🎯', t: 'Tus requisitos dejan afuera a mucha gente', d: 'Pides ' + [req.rg ? 'letra ' + req.rg + ' o más' : '', req.ev ? req.ev + ' eventos' : ''].filter(Boolean).join(' y ')
       + '. Bajarlos es gratis, y a quien invitas entra igual.', b: ['Cambiarlos', 'req'] });
   }
   if (n > 1 && dias === null) out.push({ p: 85, ico: '🎤', t: 'Nadie de la crew jugó todavía', d: 'Elijan un evento y entren juntos: lo que suma la crew es lo que juega su gente.', b: ['Ver los eventos', 'eventos'] });
   else if (dias !== null && dias > 7) out.push({ p: 90, ico: '💤', t: 'Nadie jugó en ' + dias + ' días', d: 'Una crew quieta baja de tier. Armen una fecha juntos y avísenles por Discord.', b: ['Ver los eventos', 'eventos'] });
-  else if (n >= 3 && T && jug < mitad) out.push({ p: 50, ico: '📣', t: 'Esta semana ' + (jug === 1 ? 'jugó 1' : 'jugaron ' + jug) + ' de ' + n, d: 'Faltan ' + (mitad - jug) + ' para que juegue la mitad. La semana cierra el lunes a las 11 AM (hora del este).', b: ['Ver los eventos', 'eventos'] });
+  // «Falta 1», no «Faltan 1» (18/11/2026): con 3 o 4 en la crew y uno que jugó, falta uno solo
+  else if (n >= 3 && T && jug < mitad) out.push({ p: 50, ico: '📣', t: 'Esta semana ' + (jug === 1 ? 'jugó 1' : 'jugaron ' + jug) + ' de ' + n, d: (mitad - jug === 1 ? 'Falta 1' : 'Faltan ' + (mitad - jug)) + ' para que juegue la mitad. La semana cierra el lunes a las 11 AM (hora del este).', b: ['Ver los eventos', 'eventos'] });
   if (T && T.nombres && antes !== null && antes !== undefined && antes > tier && T.sube[tier]) out.push({ p: 75, ico: '📉', t: 'Bajaron a ' + T.nombres[tier], d: 'Con ' + num(T.sube[tier]) + ' puntos en una semana vuelven a subir.', b: null });
   if (pend.length) out.push({ p: 65, ico: '🪪', t: pend.length === 1 ? 'Uno sin verificar' : pend.length + ' sin verificar', d: 'Si no se verifican en Discord Rap Español antes de su fecha, salen de la crew, y mientras tanto no suman. Pásales cómo verificarse.', b: ['Copiar cómo se verifican', 'verificar'] });
-  if (viejas.length) out.push({ p: 45, ico: '⏳', t: viejas.length === 1 ? 'Una invitación espera hace días' : viejas.length + ' invitaciones esperan hace días', d: 'Escríbeles por Discord, o mándales el link: con el link entran en un toque.', b: ['Copiar el link', 'link'] });
+  // 🔗 «Ir a tu link» y no «Copiar el link» (18/11/2026): el botón lleva a «Invitar», donde está el que copia de verdad
+  // (`LinkRapido`); decía «Copiar» y no tocaba el portapapeles, y quien pegaba en Discord pegaba lo que tenía antes
+  if (viejas.length) out.push({ p: 45, ico: '⏳', t: viejas.length === 1 ? 'Una invitación espera hace días' : viejas.length + ' invitaciones esperan hace días', d: 'Escríbeles por Discord, o mándales el link: con el link entran en un toque.', b: ['Ir a tu link', 'link'] });
   const modo = todas && todas.ranking && todas.ranking.modo;
   if (manda && modo === 'reps' && !(c.reps || []).length && n > 1) out.push({ p: 72, ico: '🏅', t: 'Elijan a sus representantes', d: 'El ranking de crews de esta temporada cuenta sólo los puntos de los representantes.', b: ['Elegirlos', 'reps'] });
   return out.sort((a, b) => b.p - a.p);
@@ -354,7 +371,9 @@ function ConsejosCrew({ xs, ir }) {
 // importa a la crew: de su servidor, de su país, que el que invita sigue, que jugó hace poco. El objeto vuelve a mirar
 // todo al invitar: esto sólo ordena
 export function sugeridosCrew(liga, c, mia, n = 6) {
-  const yo = liga.T[mia.de] || liga.yo || {};
+  // 🧑 `persona()` (18/11/2026): con `liga.T` solo, a quien invita desde más allá del #200 le quedaba `liga.yo`, que es la
+  // fila de quien mira y no siempre está (o no es la del Líder, como mod): sin servidor ni país, nadie «de tu servidor»
+  const yo = liga.persona(mia.de) || liga.yo || {};
   const en = new Set((c.gente || []).map((g) => g[0]));
   const inv = new Set((mia.invitados || []).map((x) => x.k));
   const sigo = new Set(liga.sigue || []);
@@ -411,12 +430,17 @@ export function PanelCrew({ liga, c, solo, onIr, mod = false }) {
   const [q, setQ] = useState('');
   const busca = useRef(null);
   const todos = usePerfiles(q.trim().length >= 2);
+  // 🏅 los representantes que devolvió el objeto, hasta que llegue la lista nueva (18/11/2026): entre la respuesta y la
+  // de `pedirCrews(true)` los botones ya estaban prendidos con `c.reps` viejo, y un segundo clic mandaba la lista de
+  // antes y deshacía el primero. Vuelve a `c.reps` cuando cambia
+  const [repsYa, setRepsYa] = useState(null);
+  useEffect(() => setRepsYa(null), [c && c.reps]);
   if (!c || !mia || !mia.crew || mia.crew.id !== c.id) return null;
   const rol = mia.rol;
   const manda = rol === 'lider' || rol === 'colider';
   const invita = manda || rol === 'veterano';
   const maxReps = (todas && todas.ranking && todas.ranking.n) || 5;
-  const reps = c.reps || [];
+  const reps = repsYa || c.reps || [];
   const gente = c.gente || [];
   const nq = norm(q).trim(), nqc = junto(q);
   // 📨 TODOS LOS QUE TIENEN PERFIL, TAMBIÉN LOS QUE ESTÁN EN OTRA CREW (19/10/2026): antes sólo la tabla de la temporada y
@@ -519,10 +543,13 @@ export function PanelCrew({ liga, c, solo, onIr, mod = false }) {
               <span className="cw-sug-t">Esperan respuesta · {mia.invitados.length}</span>
               <ul className="cw-lista">{mia.invitados.map((x) => {
                 const d = Math.floor((liga.ahora - x.t) / DIA);
+                // ⏳ cuánto le queda, con `quedan()` (18/11/2026): decía «vence en 1 días» el último día, y «vence en 7 días»
+                // el primero aunque quedaran 6 y pico. Vence a los 7 días de mandarla (VENCE_MS de bot/crews.js)
+                const vence = quedan(Math.max(0, x.t + 7 * DIA - liga.ahora)).replace(/^Quedan? /, '');
                 return (
                   <li key={x.k}>
                     <Cara liga={liga} k={x.k} nombre={nombreDe(liga, x.k)} cls="cara cw-cara" />
-                    <span>{nombreDe(liga, x.k)}<small className="cw-en"> · {d <= 0 ? 'hoy' : d === 1 ? 'hace 1 día' : 'hace ' + d + ' días'}{x.de && x.de !== mia.de ? ' · invitó ' + nombreDe(liga, x.de) : ''} · vence en {Math.max(0, 7 - d)} días</small></span>
+                    <span>{nombreDe(liga, x.k)}<small className="cw-en"> · {d <= 0 ? 'hoy' : d === 1 ? 'hace 1 día' : 'hace ' + d + ' días'}{x.de && x.de !== mia.de ? ' · invitó ' + nombreDe(liga, x.de) : ''} · vence en {vence}</small></span>
                     <span className="cw-acc"><DosToques className="btn borde2 chico" confirmar="¿Cancelarla?" disabled={va} onClick={() => hacer({ accion: 'desinvitar', a: x.k }, 'Invitación cancelada.')}>Cancelar</DosToques></span>
                   </li>
                 );
@@ -537,9 +564,10 @@ export function PanelCrew({ liga, c, solo, onIr, mod = false }) {
       {manda && ve('gente') ? (
         <div className="cw-bloque">
           <h3 className="cw-h">La gente</h3>
+          {/* «Pásale», con tú (18/11/2026): decía «Pasale» */}
           {gente.some((g) => g[3]) ? (
             <p className="cw-nota">Quien dice «Sin verificar» todavía no es Miembro de Discord Rap Español: tiene hasta esa fecha para
-              verificarse o sale de la crew, y mientras tanto no suma. Pasale el link: <a href="#/cuenta/verificar">cómo verificarse</a>.</p>
+              verificarse o sale de la crew, y mientras tanto no suma. Pásale el link: <a href="#/cuenta/verificar">cómo verificarse</a>.</p>
           ) : null}
           <ul className="cw-lista">{gente.filter((g) => g[0] !== mia.de).map(([k, r, , pend]) => {
             const puedeTocar = rol === 'lider' || r === 'veterano' || r === 'miembro';
@@ -573,7 +601,8 @@ export function PanelCrew({ liga, c, solo, onIr, mod = false }) {
             return (
               <label key={k} className={'cw-rep' + (on ? ' on' : '')}>
                 <input type="checkbox" checked={on} disabled={va || (!on && reps.length >= maxReps)}
-                  onChange={() => hacer({ accion: 'reps', reps: on ? reps.filter((x) => x !== k) : reps.concat(k) })} />
+                  onChange={() => hacer({ accion: 'reps', reps: on ? reps.filter((x) => x !== k) : reps.concat(k) },
+                    (j) => { if (Array.isArray(j.reps)) setRepsYa(j.reps); })} />
                 {nombreDe(liga, k)}
               </label>
             );
@@ -827,7 +856,8 @@ export function CrearCrew({ mia }) {
           {lema.trim() ? <i>«{lema.trim()}»</i> : null}
         </span>
       </div>
-      {espera ? <p className="cw-nota">Saliste de una crew hace poco: puedes fundar la tuya en {Math.ceil(mia.espera_ms / 86400000)} días.</p> : null}
+      {/* «en 1 día», no «en 1 días» (18/11/2026): el último día de la espera de 7 */}
+      {espera ? <p className="cw-nota">Saliste de una crew hace poco: puedes fundar la tuya en {enDias(mia.espera_ms)}.</p> : null}
       <form className="cw-crear" onSubmit={async (ev) => {
         ev.preventDefault();
         if (armando) return;
@@ -920,8 +950,9 @@ export function CasaCrew({ liga, c, T }) {
       <div className="casa-sem">
         <Anillo pct={pct}><b>{pct}%</b><small>jugó</small></Anillo>
         <p className="casa-t"><b>{jug} de {ks.length}</b> ya {jug === 1 ? 'jugó' : 'jugaron'} esta semana.{' '}
+          {/* «Falta 1», no «Faltan 1» (18/11/2026): cada lunes, en una crew de 1 o 2 */}
           {jug >= mitad ? <span className="casa-ok">Ya jugó la mitad de la crew.</span>
-            : <>Faltan <b className="casa-n">{mitad - jug}</b> para que juegue la mitad.</>}
+            : <>{mitad - jug === 1 ? 'Falta' : 'Faltan'} <b className="casa-n">{mitad - jug}</b> para que juegue la mitad.</>}
           <small>La semana cierra el lunes a las 11 AM (hora del este).</small></p>
       </div>
       {pts.size ? (
@@ -949,10 +980,16 @@ export function EntrarDeNuevo() {
 }
 
 export function MiCrew({ liga, dc }) {
-  const { mia, miaNo } = useCrews();
+  const { mia, miaNo, miaFallo } = useCrews();
   const { va, msg, hacer, setMsg } = useAccion();
   if (!dc) return <p className="cu-d">Entra con Discord para armar tu crew o aceptar una invitación.</p>;
   if (!mia && miaNo) return <EntrarDeNuevo />;
+  // ⚠️ si el pedido falló por algo que no es la sesión (un 429, un 500, Discord ocupado, sin red), se dice y se reintenta
+  // (18/11/2026): `miaNo` es sólo la sesión vencida, y esto se quedaba en «Mirando tu crew…» para siempre
+  if (!mia && miaFallo) {
+    return <p className="cu-d">{(window.errorCuenta && window.errorCuenta(miaFallo)) || 'No pude traer tu crew.'}{' '}
+      <button type="button" className="btn borde2 chico" onClick={() => pedirMia(true)}>Probar de nuevo</button></p>;
+  }
   if (!mia) return <p className="cu-d">Mirando tu crew…</p>;
   if (!mia.de) return <p className="cu-d">Las crews son de los Miembros de Discord Rap Español: <a href="#/cuenta/verificar">verifícate</a> y arma la tuya o súmate a una.</p>;
   if (mia.crew) {
@@ -1007,7 +1044,7 @@ export function MiCrew({ liga, dc }) {
         </div>
       ) : null}
       {(mia.ped || []).length ? <p className="cu-d">Pediste entrar a {mia.ped.map((x) => limpio(x.nombre)).join(', ')}: falta que te acepten.</p> : null}
-      {espera ? <p className="cu-d">Saliste de una crew hace poco: puedes entrar a otra o armar la tuya en {Math.ceil(mia.espera_ms / 86400000)} días.</p> : null}
+      {espera ? <p className="cu-d">Saliste de una crew hace poco: puedes entrar a otra o armar la tuya en {enDias(mia.espera_ms)}.</p> : null}
       {!espera ? <CrewsParaVos liga={liga} /> : null}
       {/* 🧱 el formulario se mudó a la página de Crews (Dlx, 19/10/2026: «la gente no sabe dónde crear crews»): acá, el camino */}
       <div className="cw-bloque">

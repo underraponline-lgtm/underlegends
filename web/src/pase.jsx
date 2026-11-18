@@ -45,6 +45,9 @@ function corto(ms) {
   return h < 48 ? h + ' H' : Math.round(h / 24) + ' D';
 }
 const fechaET = (t, o) => new Intl.DateTimeFormat('es', Object.assign({ timeZone: 'America/New_York' }, o)).format(new Date(t));
+// 🕐 un instante, en la zona y las 12/24 h de Ajustes (`fmtFecha()` de comun.js), 18/11/2026: `fechaET` lo clavaba en
+// hora del este para todos. Sin comun.js (o si falla), vacío: quien la usa pone su respaldo
+const fechaZ = (t, o) => (typeof window !== 'undefined' && window.fmtFecha ? window.fmtFecha(t, Object.assign({}, o)) : '');
 
 // un reloj que se mueve solo, de a segundo, mientras la página está abierta
 function useAhora(paso = 1000) {
@@ -211,6 +214,9 @@ function Sorteo({ liga, dc, miembro }) {
     );
   }
   const abierto = ahora < s.cierra;
+  // 🕐 la hora del sorteo en la zona de quien mira (18/11/2026): salía «(hora del este)» para todos, y es un instante,
+  // no un horario que se repite. Si fmtFecha no está, la de liga.dia(), que también respeta Ajustes
+  const cuandoS = fechaZ(s.cuando, { weekday: 'long', day: 'numeric', month: 'long', hour: 'numeric', minute: '2-digit' });
   const entrar = async () => {
     setOcup(true); setMsg('');
     const d = await pasePost('sorteo-entrar', {});
@@ -229,16 +235,21 @@ function Sorteo({ liga, dc, miembro }) {
           </div>
           {rueda && rueda.fin ? <p className="ps-srt-gano"><span className="ps-tag2">GANÓ</span> <b>{nombre(res.k)}</b>{res.yo ? (res.rol === 1 ? ': ¡eres tú! Ya tienes el rol «Pase Premium» en DRA.' : ': ¡eres tú! El bot te pone el rol «Pase Premium» en DRA en un minuto.') : ' se lleva el rol «Pase Premium» de DRA.'}</p> : null}
           <ul className="ps-srt-d">
-            <li><b>{num(res.personas)} entraron</b>, con {num(res.boletos)} boletos en total.</li>
+            {/* 🔢 el singular (18/11/2026): con uno solo decía «1 entraron, con 1 boletos» */}
+            <li><b>{num(res.personas)} {res.personas === 1 ? 'entró' : 'entraron'}</b>, con {num(res.boletos)} {res.boletos === 1 ? 'boleto' : 'boletos'} en total.</li>
             <li><b>Cómo se eligió</b>: la semilla es el SHA-256 del sorteo y de la lista de boletos; el ganador, la semilla dividida por los boletos (lo que sobra). Cualquiera con la lista repite la cuenta.</li>
             <li className="ps-semilla">Semilla: <code>{res.semilla.slice(0, 16)}…</code></li>
           </ul>
         </div>
       ) : (
         <div className="ps-srt-a">
-          <p>{abierto ? <>Se sortea el <b>{fechaET(s.cuando, { weekday: 'long', day: 'numeric', month: 'long', hour: 'numeric', minute: '2-digit', hour12: true })} (hora del este)</b>, en vivo acá. Cierra en <b className="ps-cd">{reloj(s.cierra - ahora)}</b>.</>
-            : ahora < s.cuando ? <>Ya cerró. Se sortea en <b className="ps-cd">{reloj(s.cuando - ahora)}</b>, en vivo acá.</> : <>Sorteando…</>}</p>
-          <p className="ps-sub">{num(s.personas)} {s.personas === 1 ? 'entró' : 'entraron'} · {num(s.boletos)} boletos. Entrar es gratis: <b>1 boleto</b>, y uno más por cada semana con las cinco semanales completas (hasta 3).</p>
+          {/* 🕳️ y sin nadie anotado no sale resultado nunca (`sortear()` de avisos.js no sortea a nadie): pasada la hora quedaba
+              en «Sorteando…» para siempre (18/11/2026) */}
+          <p>{abierto ? <>Se sortea {cuandoS ? <>el <b>{cuandoS}</b></> : <b>{liga.dia(s.cuando)}</b>}, en vivo acá. Cierra en <b className="ps-cd">{reloj(s.cierra - ahora)}</b>.</>
+            : ahora < s.cuando ? <>Ya cerró. Se sortea en <b className="ps-cd">{reloj(s.cuando - ahora)}</b>, en vivo acá.</>
+              : !s.personas ? <>Nadie entró: este sorteo no se hizo.</> : <>Sorteando…</>}</p>
+          {/* 🔢 «1 entró · 1 boletos» (18/11/2026): el primero puede entrar con un solo boleto */}
+          <p className="ps-sub">{num(s.personas)} {s.personas === 1 ? 'entró' : 'entraron'} · {num(s.boletos)} {s.boletos === 1 ? 'boleto' : 'boletos'}. Entrar es gratis: <b>1 boleto</b>, y uno más por cada semana con las cinco semanales completas (hasta 3).</p>
           {S.mio ? <p className="ps-srt-ok">✓ Estás adentro con <b>{S.mio} {S.mio === 1 ? 'boleto' : 'boletos'}</b>.</p>
             : abierto ? (dc ? <button type="button" className="btn verde" disabled={ocup || !miembro} onClick={entrar}>{ocup ? '…' : miembro ? 'Entrar gratis' : 'Es de los miembros de DRA'}</button>
               : <button type="button" className="btn verde" onClick={accion.entrar}>Entrar con Discord</button>) : null}
@@ -312,7 +323,9 @@ function Premium({ liga, dc, P, prem, nivel, miembro }) {
       {tiene ? (
         <section className="ps-tuyo">
           <span className="ps-tag2">TIENES EL PREMIUM</span>
-          <b>Desde el {fechaET(P.premium.desde, { day: 'numeric', month: 'long' })}</b>
+          {/* 👑 el dueño lo tiene «desde siempre» (`pasePremium()` le da [0, null]): la fecha 0 decía «Desde el 31 de
+              diciembre» (18/11/2026). Y la fecha, en la zona de Ajustes */}
+          <b>{P.premium.desde ? 'Desde el ' + (fechaZ(P.premium.desde, { day: 'numeric', month: 'long' }) || fechaET(P.premium.desde, { day: 'numeric', month: 'long' })) : 'Desde siempre'}</b>
           <p>Tus Tareas dan <b>+{boost} % de XP</b> mientras lo tengas, y cobras la fila de arriba nivel por nivel.</p>
           {nivel >= nColor && (P.colores || []).length ? (
             <div className="ps-colores" role="group" aria-label="El color de tu nombre">
@@ -523,9 +536,13 @@ function Cuatro({ P, ahora, tiene }) {
 }
 
 /** 🏛️ El Salón, como «Los que mandan»: los niveles más altos, y tú. Con el anillo dorado quien tiene el premium */
-function SalonC({ liga, pub, nivel, temp }) {
+function SalonC({ liga, pub, nivel, temp, niveles }) {
   const n = (pub && pub.n) || {};
-  const todos = Object.entries(n).filter(([k]) => liga.T && liga.T[k]).sort((a, b) => b[1][0] - a[1][0]);
+  // 🧑 cualquiera con perfil, no sólo las 200 filas de la tabla (18/11/2026): quien tenía nivel alto y estaba más allá
+  // del corte (o no compite) se quedaba afuera del Salón. El nombre, de su clave (`nombreDe()`)
+  // 👑 y con nivel (18/11/2026): `pases()` manda al dueño aunque no juegue, con nivel 0 (para su título y su marco).
+  // Con la tabla quedaba afuera (es #228); con `existe()` entraba a «los niveles más altos» con un 0
+  const todos = Object.entries(n).filter(([k, v]) => v && v[0] > 0 && liga.existe(k)).sort((a, b) => b[1][0] - a[1][0]);
   if (!todos.length) return null;
   const top = todos[0][1][0] || 1;
   const yoK = liga.yo && liga.yo.k;
@@ -535,12 +552,13 @@ function SalonC({ liga, pub, nivel, temp }) {
   const completo = (pub && pub.salon && pub.salon[temp]) || [];
   return (
     <section className="pc-salon" id="ps-salon" aria-label="El Salón del Pase">
-      <div className="pc-h"><h2>El Salón del Pase</h2><small>{completo.length ? completo.length + (completo.length === 1 ? ' lo completó' : ' lo completaron') : 'El 30 te mete para siempre'}</small></div>
+      {/* 🏛️ el Salón es el último nivel (`pase_hito WHERE nivel = niveles`): desde el 12/11 el 50, y decía «El 30» (18/11/2026) */}
+      <div className="pc-h"><h2>El Salón del Pase</h2><small>{completo.length ? completo.length + (completo.length === 1 ? ' lo completó' : ' lo completaron') : 'El ' + niveles + ' te mete para siempre'}</small></div>
       <ol>{xs.map(([[k, v], i]) => (
         <li key={k} className={k === yoK ? 'yo' : ''}>
           <b className="pc-sp">{i + 1}</b>
-          <a href={'#/r/' + encodeURIComponent(k)} className="pc-sn"><Cara liga={liga} k={k} nombre={liga.T[k].n} cls={'cara ps-c40' + (v[3] ? ' pc-oro' : '')} />
-            <span>{k === yoK ? 'Tú' : limpio(liga.T[k].n)}</span></a>
+          <a href={'#/r/' + encodeURIComponent(k)} className="pc-sn"><Cara liga={liga} k={k} nombre={liga.nombreDe(k)} cls={'cara ps-c40' + (v[3] ? ' pc-oro' : '')} />
+            <span>{k === yoK ? 'Tú' : liga.nombreDe(k)}</span></a>
           <span className="pc-sb"><u style={{ width: Math.round((100 * v[0]) / top) + '%' }} /></span>
           <b className="pc-sl">{v[0]}</b>
         </li>
@@ -587,7 +605,11 @@ export function Pase({ liga, dc }) {
   const yo = liga.yo;
   const carta = yo ? liga.cartaUrl(yo.k, 'temporada') : '';
   const fin = (liga.d.fase || {}).termina;
-  const dias = fin ? Math.max(0, Math.round((Date.parse(fin) - ahora) / DIA)) : null;
+  // 📅 días de calendario en hora del este, como cierreDe() de ligas.jsx y cuentaT1() de lobby.jsx (18/11/2026): restaba
+  // la hora a la medianoche UTC de `termina` (el 30/12 a las 7 PM ET), así que decía un día menos que el resto y «0 días»
+  // desde el 30/12, y el Math.max lo dejaba en 0 pasado el cierre. El 31/12 dice «Termina hoy»; después, no se dibuja
+  const hoyET = new Intl.DateTimeFormat('en-CA', { timeZone: 'America/New_York' }).format(new Date(ahora));
+  const dias = fin ? Math.round((Date.parse(fin) - Date.parse(hoyET)) / DIA) : null;
   const cuantos = pub && pub.n ? Object.keys(pub.n).length : 0;
   const dra = (liga.svs && liga.svs.DRA) || {};
   const a = miembro ? avance(P) : null;
@@ -652,7 +674,7 @@ export function Pase({ liga, dc }) {
                 <span><b>{cuenta(semH)}</b><small>La semana</small></span>
                 <span><b>{cuenta(temH)}</b><small>De temporada</small></span>
                 {prox ? <span className="x2"><b>XP ×{prox[2]}</b><small>{doble ? 'Hasta el ' + fechaET(prox[1], { day: 'numeric', month: 'numeric' }) : 'Desde el ' + fechaET(prox[0], { day: 'numeric', month: 'numeric' })}</small></span>
-                  : dias != null ? <span><b>{dias} {dias === 1 ? 'día' : 'días'}</b><small>Para que termine la {liga.temp}</small></span> : null}
+                  : dias != null && dias >= 0 ? <span><b>{dias === 0 ? 'Termina hoy' : dias + ' ' + (dias === 1 ? 'día' : 'días')}</b><small>{dias === 0 ? 'La ' + liga.temp : 'Para que termine la ' + liga.temp}</small></span> : null}
               </div>
             ) : cuantos ? <p className="pc-p">{num(cuantos)} ya tienen nivel en el Pase.</p> : null}
           </div>
@@ -680,7 +702,7 @@ export function Pase({ liga, dc }) {
         <TareasC P={P} cfg={cfg} miembro={miembro} ahora={ahora} />
         <div className="pc-dos">
           <PremiumC P={P} prem={prem} tiene={tiene} onTodo={() => setTodoPrem(true)} />
-          <SalonC liga={liga} pub={pub} nivel={nivel} temp={temp} />
+          <SalonC liga={liga} pub={pub} nivel={nivel} temp={temp} niveles={cfg.niveles || libres.length || 50} />
         </div>
         {todoPrem ? <div className="pc-todo"><Premium liga={liga} dc={dc} P={P} prem={prem} nivel={nivel} miembro={miembro} /></div> : null}
         {!miembro && P ? <LoQueGanarias libres={libres} cuantos={cuantos} /> : null}

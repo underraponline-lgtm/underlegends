@@ -37,10 +37,13 @@ const kmil = (n) => (n >= 1000 ? coma(n / 1000) + 'k' : num(n));
 export function usePerfilDatos(liga, f, p, e) {
   return useMemo(() => {
     const E = e || {};
+    // 🕳️ TODOS SUS EVENTOS, TAMBIÉN LOS SIN HORA (18/11/2026): se tiraban los de `iso` vacío (el ciclo no siempre sabe el
+    // instante: hoy 5, como FFA DELUXE o MULTIVERSE) y Eliot, campeón dos veces, leía «Semis o más: 0 · en 0 eventos».
+    // `p.ev` ya viene del más nuevo al más viejo (con la fecha de respaldo del ciclo): ese orden manda, no el `iso`
     const evs = ((p && p.ev) || []).map(([n, puesto, pts]) => {
       const x = E[n] || E[String(n)] || [];
       return { n, pu: puesto, pts: pts || 0, nom: limpio(x[0] || 'Evento ' + n), sv: x[1] || '', iso: x[2] || '', gente: x[3] || 0 };
-    }).filter((x) => x.iso).sort((a, b) => b.iso.localeCompare(a.iso));
+    });
     const du = (p && p.du) || [];
     const saco = (n) => (du.find((d) => d[0] === n && !d[2]) || [])[1] || '';
     // por rival: cuántas ganó y perdió (por su clave si está en la tabla, si no por el nombre)
@@ -112,7 +115,9 @@ export function SuForma({ liga, D, esYo }) {
                 <b style={{ height: Math.max(12, Math.round((100 * x.pts) / mx)) + '%', background: c[1] }} />
                 <span style={{ background: c[1], color: c[2] }}>{c[0]}</span>
               </button>
-              <span className="pf9-fm-q" title={s ? 'Lo sacó ' + liga.aka(s) : 'Campeón'}>{s ? <Cara liga={liga} k={(liga.quien(s) || {}).k || ''} nombre={s} cls="cara pf9-av xs" lazy /> : '🏆'}</span>
+              {/* 🏆 sólo si lo ganó (18/11/2026): sin duelo perdido —triples, equipos, llaves sin 1v1— salía el trofeo con
+                  «Campeón» debajo de unos cuartos. Sin dato, la casilla queda vacía (guarda su alto en perfil.css) */}
+              <span className="pf9-fm-q" title={s ? 'Lo sacó ' + liga.aka(s) : x.pu === 'Campeón' ? 'Campeón' : undefined}>{s ? <Cara liga={liga} k={(liga.quien(s) || {}).k || ''} nombre={s} cls="cara pf9-av xs" lazy /> : x.pu === 'Campeón' ? '🏆' : null}</span>
               <small>{fecha(x.iso).toLowerCase()}</small>
             </li>
           );
@@ -127,12 +132,15 @@ export function SuForma({ liga, D, esYo }) {
 // finales que se le escaparon ──
 const RONDAS = ['Final', 'Semifinal', 'Cuartos', 'Octavos', '16avos', '32avos'];
 const HASTA = { Campeón: 0, Subcampeón: 0, Tercero: 1, Cuarto: 1, Semifinal: 1, Cuartos: 2, Octavos: 3 };
+// «8 oct · FFA · 32 raperos» sin la parte que falta: un evento sin hora no tiene fecha, y quedaba « · FFA…» (18/11/2026)
+const junta = (...xs) => xs.filter(Boolean).join(' · ');
 export function SuMejorNoche({ liga, f, D, esYo }) {
   const { evs, du } = D;
   if (!evs.length) return null;
   const titulos = evs.filter((x) => x.pu === 'Campeón');
   const orden = (x) => (LEJOS.indexOf(x.pu) < 0 ? -1 : LEJOS.indexOf(x.pu));
-  const mejor = titulos[0] || [...evs].sort((a, b) => orden(b) - orden(a) || b.iso.localeCompare(a.iso))[0];
+  // a igual puesto, el más nuevo: `evs` ya viene así y el sort es estable (con el `iso`, uno sin hora perdía siempre)
+  const mejor = titulos[0] || [...evs].sort((a, b) => orden(b) - orden(a))[0];
   // sus duelos de esa noche, del primero a la final (`du` viene del más nuevo al más viejo)
   const ds = du.filter((d) => d[0] === mejor.n).reverse();
   const tope = HASTA[mejor.pu] != null ? HASTA[mejor.pu] : 0;
@@ -144,7 +152,8 @@ export function SuMejorNoche({ liga, f, D, esYo }) {
     <section className="pf9-pz pf9-noche tinte-o">
       <header className="pf9-h"><h3>{esYo ? 'Tu mejor noche' : 'Su mejor noche'}</h3><span>{titulos.length ? titulos.length + (titulos.length === 1 ? ' título' : ' títulos') + ' en la ' + liga.temp : 'su mejor puesto'}</span></header>
       <p className="pf9-nt">{mejor.nom}</p>
-      <p className="pf9-pie">{fecha(mejor.iso).toLowerCase()} · {siglaDe(mejor.sv)}{mejor.gente ? ' · ' + mejor.gente + ' raperos' : ''} · +{num(mejor.pts)}{ds.length ? ' · ' + (esYo ? 'le ganaste a ' : 'le ganó a ') + (gano === ds.length ? 'los ' + gano + ' que cruzó' : gano + ' de ' + ds.length) : ''}</p>
+      <p className="pf9-pie">{junta(fecha(mejor.iso).toLowerCase(), siglaDe(mejor.sv), mejor.gente ? mejor.gente + ' raperos' : '', '+' + num(mejor.pts),
+        ds.length ? (esYo ? 'le ganaste a ' : 'le ganó a ') + (gano === ds.length ? 'los ' + gano + ' que cruzó' : gano + ' de ' + ds.length) : '')}</p>
       {pasos.length ? (
         <ol className="pf9-ruta">
           {pasos.map(({ d, r, f: x }, i) => (
@@ -160,8 +169,9 @@ export function SuMejorNoche({ liga, f, D, esYo }) {
         </ol>
       ) : null}
       {otros.length ? (
-        <div className="pf9-otros"><span className="pf9-k">{esYo ? 'Tus' : 'Sus'} otros {otros.length} {otros.length === 1 ? 'título' : 'títulos'}</span>
-          <ul>{otros.map((x) => <li key={x.n}><button type="button" onClick={() => accion.llave(String(x.n))}><b>{x.nom}</b><small>{fecha(x.iso).toLowerCase()} · {siglaDe(x.sv)}{x.gente ? ' · ' + x.gente + ' raperos' : ''}</small></button></li>)}</ul></div>
+        // con uno solo, «Su otro título» (18/11/2026): decía «Sus otros 1 título»
+        <div className="pf9-otros"><span className="pf9-k">{otros.length === 1 ? (esYo ? 'Tu otro título' : 'Su otro título') : (esYo ? 'Tus' : 'Sus') + ' otros ' + otros.length + ' títulos'}</span>
+          <ul>{otros.map((x) => <li key={x.n}><button type="button" onClick={() => accion.llave(String(x.n))}><b>{x.nom}</b><small>{junta(fecha(x.iso).toLowerCase(), siglaDe(x.sv), x.gente ? x.gente + ' raperos' : '')}</small></button></li>)}</ul></div>
       ) : null}
       {finales.length ? (
         <div className="pf9-otros fp"><span className="pf9-k">{finales.length === 1 ? 'La final que se ' + (esYo ? 'te' : 'le') + ' escapó' : 'Las ' + finales.length + ' finales que se ' + (esYo ? 'te' : 'le') + ' escaparon'}</span>
@@ -172,7 +182,7 @@ export function SuMejorNoche({ liga, f, D, esYo }) {
               <li key={x.n}><button type="button" onClick={() => accion.llave(String(x.n))}>
                 {q ? <Cara liga={liga} k={r ? r.k : ''} nombre={q} cls="cara pf9-av xs" lazy /> : null}
                 <b>{q ? liga.aka(q) : x.nom}</b>
-                <small>{q ? (r && r.ovr ? 'OVR ' + r.ovr + (r.pos ? ' · #' + r.pos : '') + ' · ' : '') + x.nom : fecha(x.iso).toLowerCase() + ' · ' + x.gente + ' raperos'}</small>
+                <small>{q ? (r && r.ovr ? 'OVR ' + r.ovr + (r.pos ? ' · #' + r.pos : '') + ' · ' : '') + x.nom : junta(fecha(x.iso).toLowerCase(), x.gente + ' raperos')}</small>
               </button></li>
             );
           })}</ul></div>
@@ -190,11 +200,13 @@ export function Rivalidades({ liga, D, esYo }) {
   const cla = [...rivales].filter((r) => r.g + r.p >= 2 && (!nem || r.id !== nem.id)).sort((a, b) => (b.g + b.p) - (a.g + a.p) || b.g - a.g)[0];
   const mv = gig[0];
   const ev = (n) => limpio(((D.evs.find((x) => x.n === n) || {}).nom) || '');
+  // 🔢 `nom` primero (18/11/2026): en `gig` la `n` es el número del evento, y «Su mejor victoria» decía «391» en vez del
+  // rival. Los de `rivales` no traen `nom` y siguen con su `n`, que ahí es el nombre
   const tarjeta = (k, r, sc, cls, pie) => (
     <div className="pf9-rc">
       <span className="pf9-k">{k}</span>
-      <Cara liga={liga} k={r.k} nombre={r.n || r.nom} cls="cara pf9-av lg" lazy />
-      <b><Alguien liga={liga} nombre={r.n || r.nom} cara={false} /></b>
+      <Cara liga={liga} k={r.k} nombre={r.nom || r.n} cls="cara pf9-av lg" lazy />
+      <b><Alguien liga={liga} nombre={r.nom || r.n} cara={false} /></b>
       <span className={'pf9-sc ' + cls}>{sc}</span>
       <small>{pie}</small>
     </div>
@@ -238,7 +250,10 @@ export function SuCamino({ liga, f, p, esYo }) {
         {pasos.slice(-4).map((x, i, xs) => (
           <li key={i}><span className="pf9-rg" style={{ background: liga.colorRg(x.rg) }}>{x.rg}</span><small>{x.t ? (i ? 'desde el ' : 'el ') + fecha(x.t).toLowerCase() : i === xs.length - 1 && i ? 'hoy' : ''}</small></li>
         ))}
-        {sig ? <li className="sig"><span className="pf9-rg">{sig.r}</span><small>pide {sig.min}</small></li> : null}
+        {/* 🏷️ `pf9-sig` y no `sig` (18/11/2026): `.sig` es una clase global de estilo.css (la del Inicio) y en el shadow root le
+            ponía 14 px de margen arriba y otra letra, así que la casilla de la que sigue quedaba más abajo que las demás.
+            Su aspecto —sin relleno, con el borde— va en línea, como el color de las otras: no depende de perfil.css */}
+        {sig ? <li className="pf9-sig"><span className="pf9-rg" style={{ background: 'transparent', color: '#F6F6F6', boxShadow: 'inset 0 0 0 1.5px #4A4A50' }}>{sig.r}</span><small>pide {sig.min}</small></li> : null}
       </ol>
       {sig && act ? (
         <>

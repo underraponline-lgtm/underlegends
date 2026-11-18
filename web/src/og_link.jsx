@@ -336,7 +336,14 @@ function Perfil({ liga, k }) {
 }
 
 const CINE = new Set(['pag', 'sv', 'pais', 'llave', 'liga']);
+// 🔒 SÓLO PARA EL FOTÓGRAFO (18/11/2026): la ruta es pública y dibujaba con la marca de la Liga lo que viniera en la
+// dirección —`?n=`, `t`, `m` y `s` de Ref; `a`, `b`, `s` y `d` de Cine; la clave del path—: con un link armado,
+// «¡REGALO DE 500 PDT EN OTROSITIO te invitó!» y «más de 9.999.000 miembros» en underlegends.pages.dev. Quien la abre
+// de verdad es bot/og_links.py con Playwright (`navigator.webdriver` es true); en localhost, para mirar el diseño
+const paraLaFoto = () => typeof navigator !== 'undefined' && typeof location !== 'undefined'
+  && (navigator.webdriver === true || location.hostname === 'localhost' || location.hostname === '127.0.0.1');
 export function OgLink({ liga, tipo, id }) {
+  if (!paraLaFoto()) return <div className="og" data-listo="1" data-falta="1" />;
   if (CINE.has(tipo)) return <Cine liga={liga} />;
   return tipo === 'crew' ? <Crew id={id} /> : tipo === 'ref' ? <Ref liga={liga} k={id} /> : tipo === 'perfil' ? <Perfil liga={liga} k={id} />
     : <div className="og" data-listo="1" data-falta="1" />;

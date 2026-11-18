@@ -15,7 +15,7 @@ import { limpio, num } from './liga.js';
 import { Cara, Compartir, enlace, usePerfiles } from './piezas.jsx';
 import { CrewCirculo } from './arriba.jsx';
 import { useEffect, useRef, useState } from 'react';
-import { ROL_NOMBRE, cierreCrews, crewViva, faltaCierre, ponerModCrew, useCrews } from './crews.js';
+import { ROL_NOMBRE, cierreCrews, crewViva, faltaCierre, pedirCrews, pedirMia, ponerModCrew, useCrews } from './crews.js';
 import { useModsEstado, useQuienMod } from './mods.js';
 import { Anillo, EntrarCrew, PanelCrew, TierChip, consejosCrew } from './crewpanel.jsx';
 import { Gente, Otros, Portada } from './entidad2.jsx';
@@ -33,8 +33,10 @@ const porLugar = (a, b) => (a.o || a.pos || 999) - (b.o || b.pos || 999);
 const claveNombre = (s) => String(s || '').normalize('NFD').toLowerCase().replace(/[^\p{L}\p{N}]/gu, '');
 const enlaceCrew = (id) => '#/crew/' + encodeURIComponent(id);
 const ENTRA = { abierta: 'Abierta', pedido: 'Con pedido', invitacion: 'Sólo invitados' };
-const fecha = (ms) => new Date(ms).toLocaleDateString('es', { timeZone: 'America/New_York', day: '2-digit', month: '2-digit' });
-const fechaSem = (s) => { const [, m, d] = String(s).split('-'); return d + '/' + m; };
+// 🗓️ en la zona de Ajustes, con `fmtFecha()` de comun.js (18/11/2026): estaba clavada en hora del este, y quien entró
+// después de las 10 PM ET salía con el día anterior para quien mira desde Argentina o España
+const fecha = (ms) => (window.fmtFecha ? window.fmtFecha(ms, { day: '2-digit', month: '2-digit' })
+  : new Date(ms).toLocaleDateString('es', { day: '2-digit', month: '2-digit' }));
 
 /** Lo que hace falta de una crew, de los dos lados: el objeto (`viva`) y el payload (`c0`, sus puntos). */
 function laCrew(liga, id) {
@@ -52,6 +54,14 @@ function NoEsta() {
   );
 }
 
+// ⏳ «TODAVÍA NO LLEGÓ» NO ES «NO EXISTE» (18/11/2026): `viva` sale de la lista en vivo (`/api/avisos/crews`), que en el
+// primer render es null. Al abrir directo los Ajustes, o una crew recién fundada que el payload todavía no trae (el caso
+// del invitado por `/c/<código>`), salía «Esa crew no existe» hasta que contestaba, y para siempre si el pedido fallaba.
+// `no`: el pedido falló (`todasNo` de crews.js; mientras no lo traiga, se queda en «Cargando…», que no miente)
+function Cargando({ no }) {
+  return <section className="sec"><p className="pronto-p">{no ? 'No pude traer la crew. Prueba de nuevo en un rato.' : 'Cargando la crew…'}</p></section>;
+}
+
 // ═══ LA PÁGINA ═══════════════════════════════════════════════════════════════════════════════════════════════════════
 /** 🛠️ ¿Quien mira maneja crews ajenas ahora? Owner o Admin, con el interruptor de MODS prendido (mods.js). */
 function useComoMod(liga) {
@@ -62,7 +72,7 @@ function useComoMod(liga) {
 }
 
 export function PaginaCrew({ liga, id }) {
-  const { mia } = useCrews();
+  const { mia, todas, todasNo } = useCrews();
   const comoMod = useComoMod(liga);
   // 🙋 la fila de quien quedó más allá de los 200 del lobby viene en su perfil (`/api/perfiles`, `p[k].f`)
   const perf = usePerfiles();
@@ -71,6 +81,19 @@ export function PaginaCrew({ liga, id }) {
   const [todaLaGente, setTodaLaGente] = useState(false);
   const { cs, viva, c0 } = laCrew(liga, id);
   const existe = !!(c0 || viva);
+  // 🔁 ANTES DE «NO EXISTE», UNA VEZ LA LISTA FRESCA (revisión del 18/11/2026): `/api/avisos/crews` se guarda 30 s en el
+  // borde de cada ciudad, y una crew recién fundada salía «Esa crew no existe» a quien abría su link en seguida. Se pide
+  // sin el borde (`pedirCrews(true)`, `?r=`) y se espera la respuesta, o 5 s
+  const reintento = useRef(null);
+  const [esperaFin, setEsperaFin] = useState(false);
+  useEffect(() => {
+    if (existe || !todas || reintento.current) return undefined;
+    reintento.current = todas;
+    pedirCrews(true);
+    const t = setTimeout(() => setEsperaFin(true), 5000);
+    return () => clearTimeout(t);
+  }, [existe, todas]);
+  const noEsta = !!todas && !!reintento.current && (todas !== reintento.current || esperaFin);
   const c = Object.assign({}, c0 || (viva ? { crew: viva.nombre, clave: viva.id, n: 0, pts: 0, gente: [] } : { crew: id, clave: id, n: 0, pts: 0, gente: [] }),
     viva && viva.logo ? { logo: viva.logo } : {});
   const nombre = limpio((viva && viva.nombre) || c.crew);
@@ -103,7 +126,7 @@ export function PaginaCrew({ liga, id }) {
   const D = useCrewDatos(liga, ks, perf);
   const muro = useMuroCrew(liga, ks, cid, nombre);
   const B = useBalanceCrew(raiz, cid, !!perf);
-  if (!existe) return <NoEsta />;
+  if (!existe) return noEsta ? <NoEsta /> : <Cargando no={todasNo} />;
   // en la compu la tabla muestra las filas que equilibran la banda (el resto, detrás de «Ver los N»); en el celular, todas
   // (la lista ya se corta sola a las 15)
   const corta = compu && !todaLaGente && jugaron.length > B.ge;
@@ -147,7 +170,9 @@ export function PaginaCrew({ liga, id }) {
           <div className="pf9-g pf9-g-2 k2-b2">
             <div className="pf9-pila">
               <section className="pf9-pz k2-gente">
-                <header className="pf9-h"><h3>Sus raperos · {gente.length}</h3><span>por puntos de la temporada</span></header>
+                {/* 🔢 «por su puesto en la Liga» (18/11/2026): decía «por puntos de la temporada», pero `porLugar` ordena por el
+                    puesto (el OVR), y en KS salía 1.º Abyssus con 161.349 pts y 2.º Zignos con 195.984 */}
+                <header className="pf9-h"><h3>Sus raperos · {gente.length}</h3><span>por su puesto en la Liga</span></header>
                 {jugaron.length ? <Gente liga={liga} gente={verGente} roles={roles} pend={pend} conFlag extra={aporte} /> : null}
                 {corta || (compu && todaLaGente && jugaron.length > B.ge) ? (
                   <button type="button" className="pf9-btn" aria-expanded={todaLaGente} onClick={() => setTodaLaGente(!todaLaGente)}>{todaLaGente ? 'Ver menos' : 'Ver los ' + jugaron.length}</button>
@@ -215,7 +240,10 @@ function useCompu() {
   return si;
 }
 
-const nombreDe = (liga, k) => { const f = liga.T[k]; return f ? limpio(f.n) : k; };
+// 🙋 el nombre de quien quedó más allá de las 200 filas de la tabla (18/11/2026): miraba sólo `liga.T`, y la jerarquía,
+// Jugaron, Estrellas, Representantes y Lo que pasó decían «vlade», «jd» o «dlx». `liga.nombreDe()` busca también en
+// su perfil (`/api/perfiles`, que la página ya pide) y en los de fuera de la tabla; la clave, sólo si nadie la conoce
+const nombreDe = (liga, k) => liga.nombreDe(k);
 
 /** 👑 LA JERARQUÍA EN PIRÁMIDE (las crews de GTA Online): el Líder arriba con su corona, y cada rango debajo, más chico. */
 function Piramide({ liga, viva }) {
@@ -229,7 +257,8 @@ function Piramide({ liga, viva }) {
         {niveles.filter(([, ks]) => ks.length).map(([r, ks]) => (
           <ul key={r} className={'k2-niv ' + r} aria-label={ROL_NOMBRE[r] || r}>
             {ks.map((k) => {
-              const f = liga.T[k];
+              // la fila entera, también la de fuera de la tabla: el puesto salía «—» aunque lo tenía (18/11/2026)
+              const f = liga.persona(k);
               return (
                 <li key={k}><a href={'#/r/' + encodeURIComponent(k)}>
                   {r === 'lider' ? <span className="k2-corona">♛ LÍDER</span> : null}
@@ -282,8 +311,9 @@ function SemanaCaja({ liga, T, viva, fila, abajo }) {
         <span>{n > 0 ? <><TierChip n={n - 1} T={T} chico /> debajo de {num(baja)}</> : 'Bronce no baja'}</span>
         <span>{sube ? <>{num(sube)} <TierChip n={sig} T={T} chico /></> : 'el más alto'}</span>
       </div>
+      {/* «falta 1 que juegue», no «faltan 1 que jueguen» (18/11/2026): con los puntos y uno menos de los que piden, decía el plural */}
       <p className="k2-zona">{sube ? (falta ? <>Le faltan <b>{num(falta)}</b> para {T.nombres[sig]}{juegan > 1 ? ' y que jueguen ' + juegan : ''}.</>
-        : jug >= juegan ? <>Si cierra así, <b>sube a {T.nombres[sig]}</b>.</> : <>Ya tiene los puntos: faltan {juegan - jug} que jueguen para subir.</>)
+        : jug >= juegan ? <>Si cierra así, <b>sube a {T.nombres[sig]}</b>.</> : <>Ya tiene los puntos: {juegan - jug === 1 ? 'falta 1 que juegue' : 'faltan ' + (juegan - jug) + ' que jueguen'} para subir.</>)
         : <>Es el tier más alto.</>}
         {baja ? (cae ? ' Hoy está debajo de la raya.' : ' A ' + T.nombres[n] + ' ya no la baja nada esta semana.') : ''}</p>
       {cae && tarde ? <p className="k2-aviso">Si cierra así, el lunes baja a {T.nombres[n - 1]}: faltan {num(baja - pts)} para quedarse.</p> : null}
@@ -350,30 +380,49 @@ function Estrellas({ liga, T, viva }) {
   );
 }
 
+// 🏆 SEGÚN EL MODO DEL RANKING (18/11/2026): no leía `ranking.modo`, y con `todos` (el de hoy: Follombia suma a sus 11)
+// decía «cuentan los 5 mejores»; con `mejores`, «los eligió quien manda» aunque no se los mira. Ahora dice lo que hace
+// `puntosCrew()` de bot/crews.js: `todos` suma a todos; `mejores`, los N con más puntos; `reps`, los elegidos (los
+// primeros N) y, sin elegidos, como `mejores`. Sin `ranking` en la lista, el del servidor: `todos`
 /** 🏅 Los representantes: los que cuentan en el ranking de crews (los elige quien manda), o los N mejores si no eligió. */
 function Representantes({ liga, viva, gente }) {
   const { todas } = useCrews();
   const rk = (todas && todas.ranking) || {};
+  const modo = rk.modo || 'todos';
   const nMax = rk.n || 5;
   const reps = viva.reps || [];
-  const ks = reps.length ? reps : gente.slice(0, nMax).map((f) => f.k);
-  if (!ks.length) return null;
+  const elegidos = modo === 'reps' && reps.length > 0;
+  // los que más suman, como los cuenta el ranking: por puntos, no por el puesto en la Liga
+  const mas = gente.slice().sort((a, b) => (b.pts || 0) - (a.pts || 0) || porLugar(a, b)).slice(0, nMax).map((f) => f.k);
+  const ks = modo === 'todos' ? reps : elegidos ? reps.slice(0, nMax) : mas;
+  if (!ks.length && !(modo === 'todos' && gente.length)) return null;
+  const nota = modo === 'todos' ? (reps.length ? 'Los eligió quien manda: ' + reps.length + ' de ' + nMax + '. Cuentan solos cuando el ranking se arma con los representantes.'
+    : 'Cuentan los puntos de toda la crew, no sólo los de unos pocos.')
+    : modo === 'mejores' ? 'Cuentan los ' + nMax + ' que más suman.'
+      : elegidos ? 'Los eligió quien manda: ' + ks.length + ' de ' + nMax + '.' : 'Todavía no los eligieron: cuentan los ' + nMax + ' mejores.';
   return (
     <div className="k2-caja">
-      <div className="k2-tit"><h2>Los representantes</h2><small>los que cuentan en el ranking de crews</small></div>
-      <p className="k2-nota">{reps.length ? 'Los eligió quien manda: ' + reps.length + ' de ' + nMax + '.' : 'Todavía no los eligieron: cuentan los ' + nMax + ' mejores.'}</p>
-      <ul className="k2-reps">{ks.map((k) => (
+      <div className="k2-tit"><h2>Los representantes</h2><small>{modo === 'todos' ? 'hoy el ranking de crews suma a todos' : 'los que cuentan en el ranking de crews'}</small></div>
+      <p className="k2-nota">{nota}</p>
+      {ks.length ? <ul className="k2-reps">{ks.map((k) => (
         <li key={k}><a href={'#/r/' + encodeURIComponent(k)}><Cara liga={liga} k={k} nombre={nombreDe(liga, k)} cls="cara k2-c" lazy /><b>{nombreDe(liga, k)}</b></a></li>
-      ))}</ul>
+      ))}</ul> : null}
     </div>
   );
 }
 
 /** 📜 LO QUE PASÓ: los tiers que subió y bajó (el cierre de los lunes), quién entró y cuándo se fundó. */
 function LoQuePaso({ liga, T, viva, solo }) {
+  // 🙋 que se entere cuando llegan los perfiles (18/11/2026): quien entró desde más allá de las 200 filas de la tabla
+  // salía con su clave. La página de la crew y los Ajustes (`AjustesCrew`) ya los piden: no repite la bajada
+  usePerfiles();
   const xs = [];
   for (const [f, cid, de, a] of (T && T.hist) || []) {
-    if (cid === viva.id) xs.push({ t: new Date(f + 'T16:00:00Z').getTime(), c: T.colores[a], b: (a > de ? 'Subió a ' : 'Bajó a ') + T.nombres[a], s: 'lunes ' + fechaSem(f) });
+    // 📅 la fecha del CIERRE, no la del arranque (18/11/2026): `hist[0]` es el lunes en que arrancó la semana cerrada
+    // (`cerrar()` de bot/crews_tiers.py) y el tier cambia al cerrarla, 7 días después, como ya lo cuenta bot/muro.py.
+    // Desierto de Atacama, fundada el 13/11, decía «Subió a Plata · lunes 09/11», antes de existir
+    const tc = Date.parse(f + 'T16:00:00Z') + 7 * DIA;
+    if (cid === viva.id) xs.push({ t: tc, c: T.colores[a], b: (a > de ? 'Subió a ' : 'Bajó a ') + T.nombres[a], s: 'lunes ' + fecha(tc) });
   }
   const desde = viva.creada || 0;
   for (const [k, r, d] of viva.gente || []) {
@@ -401,7 +450,10 @@ const PERMISOS = [['Invitar', 1, 1, 1, 0], ['Aceptar pedidos', 1, 1, 0, 0], ['El
   ['Pasar el liderazgo y cerrar', 1, 0, 0, 0]];
 
 export function AjustesCrew({ liga, id, sec }) {
-  const { mia: mia0, todas, miaNo, miaMod, miaModNo } = useCrews();
+  const { mia: mia0, todas, todasNo, miaNo, miaFallo, miaMod, miaModNo } = useCrews();
+  // 🙋 que se entere cuando llegan los perfiles (18/11/2026): `consejosCrew()` lee la fila entera de cada uno
+  // (`liga.persona()`, que mira `window.PERF`), y sin esto los consejos de acá arriba se quedaban con la tabla sola
+  usePerfiles();
   const { viva, c0 } = laCrew(liga, id);
   const comoMod = useComoMod(liga);
   const suya = !!(viva && mia0 && mia0.crew && mia0.crew.id === viva.id);
@@ -411,7 +463,7 @@ export function AjustesCrew({ liga, id, sec }) {
     ponerModCrew(mod ? viva.id : '');
     return () => ponerModCrew('');
   }, [mod, viva && viva.id]);
-  if (!viva) return <NoEsta />;
+  if (!viva) return todas ? <NoEsta /> : <Cargando no={todasNo} />;
   const logo = viva.logo || (c0 && c0.logo) || '';
   const mia = mod ? miaMod : mia0;
   const miCrew = !!(mia && mia.crew && mia.crew.id === viva.id);
@@ -425,8 +477,13 @@ export function AjustesCrew({ liga, id, sec }) {
     }
     return (
       <section className="sec k2-s"><div className="sec-t"><h2>Los Ajustes de {limpio(viva.nombre)}</h2></div>
+        {/* ⚠️ si el pedido de lo tuyo falló (un 429, un 500, sin red), se dice y se reintenta (18/11/2026): antes se
+            quedaba en «Cargando…» para siempre, porque `miaNo` es sólo la sesión vencida */}
         <p className="pronto-p">{!mia && miaNo ? 'Tu sesión de Discord venció: entra de nuevo para ver los Ajustes de tu crew.'
-          : mia ? 'Sólo la gente de la crew ve sus Ajustes.' : 'Cargando…'} <a className="te-link" href={enlaceCrew(viva.id)}>Ver la crew</a></p></section>
+          : !mia && miaFallo ? 'No pude traer tu crew. Prueba de nuevo en un rato.'
+            : mia ? 'Sólo la gente de la crew ve sus Ajustes.' : 'Cargando…'}{' '}
+          {!mia && miaFallo ? <><button type="button" className="te-link" onClick={() => pedirMia(true)}>Probar de nuevo</button>{' '}</> : null}
+          <a className="te-link" href={enlaceCrew(viva.id)}>Ver la crew</a></p></section>
     );
   }
   const rol = mia.rol;

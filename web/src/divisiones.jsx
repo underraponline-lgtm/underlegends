@@ -5,7 +5,7 @@
 // ⚠️ LA ZONA ES LA MISMA CUENTA QUE `divisiones.zona()`: cinco, o un tercio si el grupo es chico. Si se cambia allá,
 // se cambia acá.
 import { useEffect, useState } from 'react';
-import { MESES, limpio, num } from './liga.js';
+import { MESES, hora, limpio, num } from './liga.js';
 import { Alguien, Cara } from './piezas.jsx';
 
 const zonaDe = (n, z) => Math.min(z, Math.floor(n / 3));
@@ -131,6 +131,13 @@ function corteDe(D, d, s) {
   const piso = d < D.t.length ? D.t[d] : D.t[D.t.length - 1] - 50;
   return piso + Math.ceil((s * 50) / 3);
 }
+// 🪨 el subnivel de un ELO EN la división `d` (18/11/2026): es `divisiones.subnivel(elo, d)`. El de la fila (`f[4]`) es el
+// de la división de «si cerrara ahora» (`f[3]`), y cruzado con la de esta semana daba «Hierro II» con 1072 de ELO o
+// «Zafiro III» debajo del piso de Zafiro
+function subEn(D, d, elo) {
+  const piso = d < D.t.length ? D.t[d] : D.t[D.t.length - 1] - 50;
+  return Math.max(0, Math.min(2, Math.floor((elo - piso) / (50 / 3))));
+}
 // el próximo escalón por encima de alguien: [su nombre, el ELO desde el que empieza], o null en Mítico III
 function proximo(D, d, s) {
   if (s < 2) return [rango(D, d, s + 1), corteDe(D, d, s + 1)];
@@ -201,7 +208,7 @@ function TuSemanaElo({ liga, D, nombres, divs, esYo }) {
   const ultb = (f[5] || []).length ? f[5] : ((bat || {})[f[0]] || []);
   const e = estadoElo(D, nombres, di, f);
   // 📏 tu ELO entre el piso de tu subnivel y el próximo escalón
-  const s = f[4] || 0;
+  const s = f[3] === di ? (f[4] || 0) : subEn(D, di, f[1]);
   const piso = corteDe(D, di, s);
   const sig = proximo(D, di, s);
   const techo = sig ? sig[1] : Math.max(f[1], g[0][1]);
@@ -242,7 +249,7 @@ function GrupoElo({ liga, g, sel, nombres, D, esYo }) {
               <span className="dv-i">{i + 1}</span>
               {f ? <Cara liga={liga} k={f.k} nombre={f.n} cls="cara dv-cara" /> : <span className="cara dv-cara ini">{limpio(raw).slice(0, 1).toUpperCase()}</span>}
               {f ? <a className="dv-n" href={'#/r/' + encodeURIComponent(f.k)}>{limpio(f.n)}</a> : <span className="dv-n">{limpio(raw)}</span>}
-              <span className="dv-ev">{SUBS[s || 0]} · {prov ? 'provisional' : n + ' batallas'}{(h || [])[0] ? <em className={h[0][0] > 0 ? 'sube' : h[0][0] < 0 ? 'baja' : ''}> {signo(h[0][0])}</em> : null}</span>
+              <span className="dv-ev">{SUBS[a === sel ? (s || 0) : subEn(D, sel, elo)]} · {prov ? 'provisional' : n + ' batallas'}{(h || [])[0] ? <em className={h[0][0] > 0 ? 'sube' : h[0][0] < 0 ? 'baja' : ''}> {signo(h[0][0])}</em> : null}</span>
               {zona === 'sube' ? <i className="dv-z">SUBIRÍA</i> : zona === 'baja' ? <i className="dv-z">BAJARÍA</i> : <span />}
               <b className="dv-p">{num(elo)}</b>
             </li>
@@ -266,7 +273,7 @@ function PreviaElo({ liga, D, esYo }) {
   const e = yo ? estadoElo(D, nombres, di, yo.f) : null;
   return (
     <div className="dvp">
-      <p className="dvp-cab"><b>{yo ? rango(D, di, yo.f[4]) : nombres[di]}</b> · {g.length} {g.length === 1 ? 'rapero' : 'raperos'} en {nombres[di]} · cierra {liga.dia(D.fin)}</p>
+      <p className="dvp-cab"><b>{yo ? rango(D, di, yo.f[3] === di ? yo.f[4] : subEn(D, di, yo.f[1])) : nombres[di]}</b> · {g.length} {g.length === 1 ? 'rapero' : 'raperos'} en {nombres[di]} · cierra {liga.dia(D.fin)}</p>
       <p className="dvp-yo">{e ? e.msg : 'Tu división sale de tu ELO: juega batallas 1v1 y entras en el ranking.'}</p>
       <ol className="dv-tabla dvp-tabla">
         {filas.map(([[raw, elo], i]) => {
@@ -366,7 +373,8 @@ function TuSemana({ liga, D, nombres, divs, esYo }) {
     chip = 'el ' + subeZ + 'º: ' + liga.aka(corte[0]) + ' · ' + num(corte[1]);
   } else if (di > 0 && !z) {
     // un grupo de menos de 3: un tercio de 1 o 2 es cero, así que nadie sube (`divisiones.zona()`)
-    msg = <>Sos {g.length === 1 ? 'el único' : 'uno de los ' + g.length} en {nombres[di]} esta semana: para que alguien suba, el grupo necesita al menos 3.</>;
+    // «Eres», con tú (18/11/2026: decía «Sos»)
+    msg = <>Eres {g.length === 1 ? 'el único' : 'uno de los ' + g.length} en {nombres[di]} esta semana: para que alguien suba, el grupo necesita al menos 3.</>;
   } else {
     msg = di === 0 ? <>Estás en <b>Primera</b>: la cima.</> : <>Vas {pos + 1}º de {g.length}.</>;
   }
@@ -460,7 +468,9 @@ export function Divisiones({ liga }) {
       <div className="dv2-info">
         <section className="dv-caja">
           <h4>Cómo funciona</h4>
-          {elo ? <p>Como el Ranked de Brawl Stars: tu rango sale de tu <b>ELO</b>, tu nivel según a quién le ganas y con quién pierdes en las batallas 1v1, y subes o bajas con él. Se mira cada lunes a las 11 AM.
+          {/* 🕐 la hora del cierre, la de quien mira (18/11/2026): decía «11 AM» a mano y sin zona —la 1 PM en Argentina—.
+              Sin su punto final: con 12 h en Ajustes sale «11:00 a. m.» y, con el de la frase, «a. m..» */}
+          {elo ? <p>Como el Ranked de Brawl Stars: tu rango sale de tu <b>ELO</b>, tu nivel según a quién le ganas y con quién pierdes en las batallas 1v1, y subes o bajas con él. Se mira cada lunes a las {(D.fin && hora(D.fin).replace(/\.$/, '')) || '11 AM (hora del este)'}.
             {' '}{nombres.slice(0, D.t.length).map((x, i) => x + ' desde ' + num(D.t[i])).join(', ')}, y {nombres[nombres.length - 1]} abajo; cada uno con tres subniveles, I, II y III.
             {' '}La primera vez que llegas a una piedra cobras <b>{num(D.p)} Puntos de Tienda</b>, y a un subnivel {num(D.ps || 150)}. Al final de la temporada hay premio según el rango más alto que alcanzaste. Con menos de {D.pv || 5} batallas tu ELO es provisional y no te mueve.</p> : <p>Semana del {fechaCorta(D.sem)} al {liga.dia(D.fin)}. Juegas un evento y entras en Sexta; los grupos son de 30.
             {' '}Al cierre, los {D.z} primeros de cada grupo suben y cobran <b>{num(D.p)} Puntos de Tienda</b>, y los {D.z} últimos bajan. En un grupo chico, un tercio.</p>}

@@ -306,7 +306,9 @@ function MenuMas({ liga, f, k, esYo, dc, onEmblemas, onReportar, onAjustes }) {
   const ref = useRef(null);
   useEffect(() => {
     if (!ab) return undefined;
-    const fuera = (e) => { if (ref.current && !ref.current.contains(e.target)) setAb(false); };
+    // 🖱️ por `composedPath()` (18/11/2026): en el shadow root `e.target` llega cambiado al host (#inicio-nuevo), así que
+    // `contains(e.target)` daba false siempre y el menú se cerraba en el pointerdown, antes del click en la opción
+    const fuera = (e) => { const p = e.composedPath ? e.composedPath() : []; if (ref.current && !p.includes(ref.current)) setAb(false); };
     const esc = (e) => { if (e.key === 'Escape') setAb(false); };
     document.addEventListener('pointerdown', fuera, true);
     window.addEventListener('keydown', esc);
@@ -367,16 +369,18 @@ function CopasVitrina() {
 }
 
 // 🚪 LAS DOS PUERTAS (Dlx, a la v4: «eso de las tarjetas ocupa bastante… podríamos hacer un espacio que diga ver
-// tarjetas»): sus tarjetas (las suyas y las de servidor) en el visor, y la Vitrina, que llega después
+// tarjetas»): sus tarjetas en el visor, y la Vitrina, que llega después
+// 🔢 cuenta sólo las suyas (18/11/2026): sumaba las camisetas de servidor (`svc`), que el visor no muestra, y con cero
+// propias el botón apagado decía «5 · las suyas y 5 de servidor». `svc` queda para el día que el visor las tenga
 function Puertas({ liga, f, k, cs, svc }) {
   const [pronto, setPronto] = useState(false);
-  const total = cs.length + svc.length;
+  const total = cs.length;
   const prev = cs.slice(0, 3);
   return (
     <div className="pf8-puertas">
       <button type="button" className="pf8-pu" onClick={() => accion.carta(k)} disabled={!cs.length} aria-label={'Ver las tarjetas de ' + limpio(f.n)}>
         <span className="pf8-pu-tj" aria-hidden="true">{prev.map((c) => <img key={c} alt="" src={liga.cartaUrl(k, c)} loading="lazy" />)}</span>
-        <span className="pf8-pu-tx"><b>Tarjetas</b><small>{!total ? 'todavía ninguna' : total + (svc.length ? ' · las suyas y ' + svc.length + ' de servidor' : total === 1 ? ' tarjeta' : ' tarjetas')}</small></span>
+        <span className="pf8-pu-tx"><b>Tarjetas</b><small>{!total ? 'todavía ninguna' : total + (total === 1 ? ' tarjeta' : ' tarjetas')}</small></span>
         <em aria-hidden="true">›</em>
       </button>
       <button type="button" className="pf8-pu" aria-expanded={pronto} onClick={() => setPronto(!pronto)}>
@@ -408,10 +412,12 @@ function NumerosB({ liga, f, q }) {
 }
 
 function Cabeza({ liga, f, k, p, dc, esYo, onEmblemas, ems, numeros, ex }) {
-  const si = (liga.sigue || []).includes(k);
+  // ⭐ con la lista ENTERA (`liga.sigo`, 18/11/2026): `liga.sigue` va filtrada por las 200 filas de la tabla, así que a los
+  // de fuera el botón les decía siempre «Seguir» y tocarlo te sacaba (`alternarSigo()` mira la lista de verdad)
+  const si = liga.sigo(k);
   const n0 = useSeguidores(k);
   const [si0, setSi0] = useState(si);
-  useEffect(() => { setSi0((liga.sigue || []).includes(k)); }, [k]); // eslint-disable-line react-hooks/exhaustive-deps
+  useEffect(() => { setSi0(liga.sigo(k)); }, [k]); // eslint-disable-line react-hooks/exhaustive-deps
   const segs = n0 == null ? null : Math.max(0, n0 + (si ? 1 : 0) - (si0 ? 1 : 0));
   const sigue = useSiguiendo(k, n0);
   // 🃏 su carta principal, primero (26/10/2026)
@@ -545,7 +551,10 @@ function DeUnVistazo({ f, p, D, esYo }) {
   const mas = ev.reduce((a, b) => (!a || b.pts > a.pts ? b : a), null);
   const xs = [
     ['Podios', <span key="m" className="pf-med"><span title="Campeón"><Medalla p={1} />{f.oro || 0}</span><span title="Subcampeón"><Medalla p={2} />{f.seg || 0}</span><span title="Tercero"><Medalla p={3} />{f.ter || 0}</span></span>, 'oro, plata y bronce'],
-    fin ? ['Finales', tit + ' de ' + fin, (esYo ? 'ganaste ' : 'ganó ') + tit + ' de las ' + fin + (esYo ? ' que jugaste' : ' que jugó')] : null,
+    // con una sola final, en singular (18/11/2026): decía «ganó 1 de las 1 que jugó»
+    fin ? ['Finales', tit + ' de ' + fin, fin === 1
+      ? (tit ? (esYo ? 'ganaste la única que jugaste' : 'ganó la única que jugó') : (esYo ? 'perdiste la única que jugaste' : 'perdió la única que jugó'))
+      : (esYo ? 'ganaste ' : 'ganó ') + tit + ' de las ' + fin + (esYo ? ' que jugaste' : ' que jugó')] : null,
     du.length ? ['Duelos', <span key="d">{g}<small>/{du.length}</small></span>, Math.round((100 * g) / du.length) + ' % ganados' + (rk.du ? ' · #' + rk.du[0] + ' de ' + rk.du[1] : '')] : null,
     ['Semis o más', String(semisMas), 'en ' + ev.length + (ev.length === 1 ? ' evento' : ' eventos')],
     ev.length ? ['Por evento', '+' + num(Math.round(tot / ev.length)), mas ? (esYo ? 'el que más te dio: +' : 'el que más le dio: +') + num(mas.pts) : ''] : null,
@@ -565,7 +574,8 @@ function DeUnVistazo({ f, p, D, esYo }) {
 // mezclado por fecha con lo que jugó (ver `ACT`)
 function cuandoFue(iso) {
   const d = haceDias(iso);
-  return d === 'hoy' ? 'HOY' : d === 'ayer' ? 'ANOCHE' : fecha(iso);
+  // 🌙 «anoche» sólo desde las 8 PM, el corte de `liga.cuando()` (18/11/2026): lo de ayer a la tarde también decía ANOCHE
+  return d === 'hoy' ? 'HOY' : d === 'ayer' ? (minutosDelDia(iso) >= 20 * 60 ? 'ANOCHE' : 'AYER') : fecha(iso);
 }
 // 🖱️ LO QUE HIZO EN LA PÁGINA (la tanda 2 del perfil, 27/10/2026), de `perfilExtra()`: sólo cuántos, nunca a quién ni qué
 // —a quién sigues, a quién felicitaste y qué votaste no son públicos en ningún lado de la Liga—. `[qué, cuántos, ms, nivel]`
@@ -950,7 +960,9 @@ function ProximaMeta({ liga, f, esYo }) {
 function EnCadaRanking({ liga, f, p, dentro }) {
   const rk = (p && p.rk) || {};
   const filas = [];
-  const total = liga.oficiales().length;
+  // 🔢 el «de N» son todos los que tienen número (`n_oficiales`, 18/11/2026), no las filas con puesto que viajan en la
+  // tabla (corta en 200): a los de fuera les salía «#133 de 132»
+  const total = liga.nOficiales();
   filas.push(['Temporada', f.pos ? '#' + f.pos + ' de ' + total : 'Fuera de concurso', '#/ranking/temporada']);
   if (rk.du) filas.push(['Duelos', '#' + rk.du[0] + ' de ' + rk.du[1], '#/ranking/duelos']);
   if (rk.pod) filas.push(['Podios', '#' + rk.pod[0] + ' de ' + rk.pod[1], '#/ranking/podios']);
@@ -1048,7 +1060,8 @@ function TiraTemporada({ liga, ev, e }) {
     if (d === ini || d.endsWith('-01') || d.endsWith('-15')) marcas.push(d);
   }
   const quedan = fase.termina ? Math.max(0, Math.round((diaN(fase.termina) - diaN(hoy)) / DIA_MS)) : 0;
-  const txQ = 'QUEDAN ' + quedan + ' DÍAS DE LA ' + liga.temp + ' →';
+  // el 30/12 queda uno: en singular (18/11/2026, decía «QUEDAN 1 DÍAS»)
+  const txQ = (quedan === 1 ? 'QUEDA 1 DÍA' : 'QUEDAN ' + quedan + ' DÍAS') + ' DE LA ' + liga.temp + ' →';
   const rotulo = (d) => (d === ini ? Number(d.slice(8)) + ' ' + MES_CORTO[Number(d.slice(5, 7)) - 1] + ' · ARRANCA LA ' + liga.temp
     : d.endsWith('-01') ? MES_CORTO[Number(d.slice(5, 7)) - 1] : '15 ' + MES_CORTO[Number(d.slice(5, 7)) - 1]);
   // 📐 una marca cuyo rótulo cae encima de «QUEDAN N DÍAS» no se escribe (salía «NOV» adentro de esa frase, 25/10/2026).
@@ -1120,7 +1133,9 @@ function Eventos({ liga, p, e, n = 5 }) {
       <ol className="pf8-evl">
         {vis.map(([x, puesto, pts]) => {
           const it = de(x);
-          const m = it[2] ? MES_LARGO[Number(diaET(Date.parse(it[2])).slice(5, 7)) - 1] : '';
+          // 📅 el mes en la zona de quien mira, como la fecha de la fila (`fecha()`, 18/11/2026): iba en hora del este y
+          // «1 NOV» de CALLE DEL TERROR caía bajo «OCTUBRE» para quien mira desde Argentina
+          const m = it[2] && !isNaN(new Date(it[2])) ? MES_LARGO[Number(diaISO(new Date(it[2])).slice(5, 7)) - 1] : '';
           const titulo = m && m !== mes ? (mes = m) : '';
           return (
             <li key={x}>
@@ -1384,8 +1399,9 @@ function Logros({ liga, p, esYo, dc }) {
         {si.length ? <ul className="pf-ins">{si.map(fila)}</ul> : <p className="pf-ins-nada">Todavía ninguna.</p>}
         {no.length ? (
           <>
+            {/* (18/11/2026) con una sola decía «Ver las 1 que faltan» */}
             <button type="button" className="btn borde chico pf-ins-mas" aria-expanded={faltan} onClick={() => setFaltan(!faltan)}>
-              {faltan ? 'Esconder las que faltan' : 'Ver las ' + no.length + ' que faltan'}</button>
+              {faltan ? 'Esconder las que faltan' : (no.length === 1 ? 'Ver la que falta' : 'Ver las ' + no.length + ' que faltan')}</button>
             {faltan ? <ul className="pf-ins pf-ins-no">{no.map(fila)}</ul> : null}
           </>
         ) : null}
@@ -1611,7 +1627,9 @@ export function Perfil({ liga, dc, k: k0, tab }) {
   }
   // 👁️ en tu perfil, elegir cuáles se ven al lado de tu nombre: devuelve el error para el panel, o nada
   const elegir = esYo ? (ids) => guardarPerfilMio({ emb: ids }).then((j) => (j.error ? errorPerfilTx(j.error) : '')) : null;
-  const panel = emb != null && ems.length ? <PanelEmblemas xs={ems} sel0={emb} nombre={limpio(f.n)} esYo={esYo} onElegir={elegir} onCerrar={() => setEmb(null)} /> : null;
+  // 🔓 en tu perfil se abre aunque no tengas ninguno (18/11/2026): «Ver mis emblemas» y «Tus emblemas» no hacían nada, y
+  // lo único útil ahí para ti es la lista «Para desbloquear»
+  const panel = emb != null && (ems.length || esYo) ? <PanelEmblemas xs={ems} sel0={emb} nombre={limpio(f.n)} esYo={esYo} onElegir={elegir} onCerrar={() => setEmb(null)} /> : null;
   // 🏷️ el staff que no compite: quién es y su rol, sin números ni tarjetas
   if (f.solo) {
     return (
@@ -1619,7 +1637,8 @@ export function Perfil({ liga, dc, k: k0, tab }) {
         <Cabeza liga={liga} f={f} k={k} p={p} dc={dc} esYo={esYo} ems={ems} ex={ex} onEmblemas={(x) => setEmb(x || '')} numeros={false} />
         <section className="sec pf-sec"><p className="pronto-p">{esYo ? 'No jugaste eventos esta temporada: estás en la Liga por tu rol.' : 'No jugó eventos esta temporada: está en la Liga por su rol.'}</p></section>
         <SusLigas liga={liga} k={k} esYo={esYo} p={p} />
-        <FichaJurado k={k} />
+        {/* (18/11/2026) con `liga`: sin ella, «A quién más votó» sacaba sólo la bandera, sin el AKA oficial ni el link */}
+        <FichaJurado liga={liga} k={k} />
         {/* 🏷️ tus Logros y tu Inventario también sin jugar (Dlx, 26/10/2026: «tampoco puedo ver mi inventario en mi
             perfil»): el perfil mínimo cortaba antes de esta sección, y elegir tu carta principal y tus TAGs vive acá */}
         {esYo ? <Logros liga={liga} p={p} esYo={esYo} dc={dc} /> : null}
@@ -1640,7 +1659,8 @@ export function Perfil({ liga, dc, k: k0, tab }) {
     fz: <div key="fz" data-pz="fz"><Fortalezas liga={liga} f={f} p={p} dmp={P.dmp} esYo={esYo} /></div>,
     datos: <div key="datos" data-pz="datos" id="pf-datos"><SusDatos liga={liga} f={f} p={p} e={P.e} esYo={esYo} /></div>,
     rk: <div key="rk" data-pz="rk"><SusRankings liga={liga} f={f} k={k} p={p} esYo={esYo} /></div>,
-    jurado: <div key="jurado" data-pz="jurado"><FichaJurado k={k} /></div>,
+    // (18/11/2026) con `liga`, como en el perfil del staff: el AKA oficial y el link en «A quién más votó»
+    jurado: <div key="jurado" data-pz="jurado"><FichaJurado liga={liga} k={k} /></div>,
   } : {};
   return (
     <div className="pf8-pag pf9-pag" ref={raiz}>
@@ -1651,8 +1671,12 @@ export function Perfil({ liga, dc, k: k0, tab }) {
           crew: ver `CrewsParaVos` de crewpanel.jsx) */}
       {esYo && !crewDe(k) ? <CrewsParaVos liga={liga} seccion="sec pf-sec" /> : null}
       {f.fuera ? <section className="sec pf-sec"><p className="pronto-p">Tu historial todavía no está en la página: aparece cuando entras entre los 200 de la tabla.</p></section> : null}
+      {/* 🔁 `key={k}` (18/11/2026): el perfil iba con clave fija en App, así que al pasar a otro perfil Eventos, Duelos,
+          Videos y Su muro se quedaban con la búsqueda y el filtro del anterior, y podían dejar una lista vacía sin chips.
+          App ya lo remonta por el link (`'Perfil' + partes[1]`); esto queda por si la clave cambia con el mismo link
+          (las mayúsculas o un alias, que se resuelven contra la tabla y los de fuera) */}
       {!P ? <div className="cargando">Cargando…</div> : (
-        <div className="pf9-cuerpo">
+        <div className="pf9-cuerpo" key={k}>
           <Banda color="negra">
             <SusHistorias liga={liga} f={f} p={p} esYo={esYo} />
             <div className="pf9-g pf9-g-forma">

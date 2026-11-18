@@ -10,7 +10,7 @@
 // (`L.sin`); el Clásico, el 🎯 del Most Wanted, los puntos por puesto y «¿Algo está mal?». En la compu, el cuadro
 // entero con sus ramas (en espejo si entra), como antes.
 import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
-import { PAIS, capital, limpio, norm, num } from './liga.js';
+import { PAIS, capital, esSinTitulo, limpio, norm, normNombre, num } from './liga.js';
 import { Alguien, Algunos, Bandera, Cara, Compartir, Ico, Medalla, PUESTO_MEDALLA, enlace, silueta } from './piezas.jsx';
 import { completar, enOrden, esArbol, esDoble, jugado, partirDoble } from './arriba.jsx';
 import { usePases, vioVivo, vivoPendiente } from './pase.js';
@@ -89,12 +89,15 @@ function pedirTodas() {
 // toda la data»): `<r2>/llaves/<n>.json` pesa ~1,5 KB contra los 75 KB comprimidos de todas. La sube el ciclo
 // (`subir_web.subir_llaves_sueltas()`); si todavía no está o R2 no contesta, la de siempre
 const UNA = {};
+// 📶 'error' si no se pudo bajar NADA (18/11/2026): sin red fallaban R2 y /api/llaves, y el null de «no la bajé» se
+// leía como «no existe»: «Esa llave no está… el link está mal copiado», de una llave que existe y sin reintentar
+const deTodas = (n) => pedirTodas().then((t) => (t ? (t[n] || null) : 'error'));
 function pedirUna(n, r2) {
-  if (!/^\d+$/.test(String(n)) || !r2) return pedirTodas().then((t) => (t && t[n]) || null);
+  if (!/^\d+$/.test(String(n)) || !r2) return deTodas(n);
   if (!UNA[n]) {
     UNA[n] = fetch(r2 + '/llaves/' + n + '.json', { headers: { accept: 'application/json' } })
       .then((r) => { if (!r.ok) throw new Error(r.status); return r.json(); })
-      .catch(() => { delete UNA[n]; return pedirTodas().then((t) => (t && t[n]) || null); });
+      .catch(() => { delete UNA[n]; return deTodas(n); });
   }
   return UNA[n];
 }
@@ -338,15 +341,25 @@ const nombreDe = (ctx, s) => partes(s).map((m) => { const f = ctx.fila(m); retur
 // 👥 LOS INSCRITOS Y EL JURADO DE LA LLAVE (Dlx, 17/11/2026: «mostrar cada llave… quiénes se inscribieron y alumbrar a
 // los que finalmente participaron» y «los staff que había, quiénes votaban y si cambiaron en qué ronda»). Sale de
 // `L.gente` (bot/gente_evento.py), que se guarda al verse: el canal de inscripciones lo vacían. Sin nada, no se dibuja
+// 🔒 el mensaje de inscripción viaja crudo (18/11/2026): «<@1358539185778327612> 🇦🇷» de la #521 dejaba un Discord ID a la
+// vista. Sin menciones, canales ni emojis propios de Discord; lo que queda vacío y sin `es` no se dibuja
+const sinMenciones = (t) => limpio(String(t || '').replace(/<a?:\w+:\d+>|<@[!&]?\d+>|<#\d+>/g, ''));
 function GenteEvento({ liga, G }) {
-  const ins = G.ins || [];
+  const ins = (G.ins || []).filter(([t, es]) => es || sinMenciones(t));
   const jur = G.jur || [];
   if (!ins.length && !jur.length) return null;
   const persona = (x) => {
     const f = liga.fila(x);
     return f ? <a href={'#/r/' + encodeURIComponent(f.k)}>{limpio(f.n)}</a> : <b>{limpio(x)}</b>;
   };
-  const jugaron = ins.filter((x) => x[1]).length;
+  // 🔢 PERSONAS, NO INSCRIPCIONES (18/11/2026): quien se anotó dos veces, o solo y en el trío, contaba doble («24 anotados ·
+  // 11 jugaron» en la #652, que tiene 8 raperos)
+  const jugaron = new Set(ins.filter((x) => x[1]).flatMap((x) => partes(x[1]).map((m) => {
+    const f = liga.quien(m);
+    return f ? f.k : norm(limpio(m));
+  }))).size;
+  // y «1 juez», no «1 jueces» (18/11/2026: 4 de las 5 llaves del lobby con jurado tenían uno solo)
+  const nJueces = new Set(jur.flatMap((b) => b.v.map((x) => x[0]))).size;
   // el jurado de cada ronda, en orden, y si cambió respecto de la anterior
   const rondas = [];
   jur.forEach((b) => {
@@ -360,12 +373,12 @@ function GenteEvento({ liga, G }) {
     <section className="lk-gev" aria-label="Inscritos y jurado">
       {ins.length ? (
         <div className="lk-gev-b">
-          <div className="lk-cam-h"><h3>Los inscritos</h3><small>{ins.length} anotados{jugaron ? ' · ' + jugaron + ' jugaron' : ''}</small></div>
+          <div className="lk-cam-h"><h3>Los inscritos</h3><small>{ins.length} anotado{ins.length === 1 ? '' : 's'}{jugaron ? ' · ' + jugaron + ' jugaron' : ''}</small></div>
           <ul className="lk-ins">
             {ins.map(([t, es, por], i) => (
               <li key={i} className={es ? 'si' : 'no'} title={es ? 'Jugó' : 'Se anotó y no aparece en la llave'}>
-                {es ? partes(es).map((m, j) => <span key={j}>{j ? ' + ' : ''}{persona(m)}</span>) : <span>{limpio(t)}</span>}
-                {es && por === 'cuenta' && soloLetras(t) !== soloLetras(es) ? <small>se anotó «{limpio(t)}»</small> : null}
+                {es ? partes(es).map((m, j) => <span key={j}>{j ? ' + ' : ''}{persona(m)}</span>) : <span>{sinMenciones(t)}</span>}
+                {es && por === 'cuenta' && sinMenciones(t) && soloLetras(sinMenciones(t)) !== soloLetras(es) ? <small>se anotó «{sinMenciones(t)}»</small> : null}
               </li>
             ))}
           </ul>
@@ -374,7 +387,7 @@ function GenteEvento({ liga, G }) {
       ) : null}
       {rondas.length ? (
         <div className="lk-gev-b">
-          <div className="lk-cam-h"><h3>El jurado</h3><small>{new Set(jur.flatMap((b) => b.v.map((x) => x[0]))).size} jueces · {jur.length} batalla{jur.length === 1 ? '' : 's'} con votos</small></div>
+          <div className="lk-cam-h"><h3>El jurado</h3><small>{nJueces} {nJueces === 1 ? 'juez' : 'jueces'} · {jur.length} batalla{jur.length === 1 ? '' : 's'} con votos</small></div>
           {rondas.map((R, i) => {
             const cambio = i > 0 && clave(R.j) !== clave(rondas[i - 1].j);
             return (
@@ -444,6 +457,20 @@ function ladosDe(ctx, L, re, tope) {
   });
   return out;
 }
+// 💰 LOS PUNTOS DE UN LADO, LOS DE TODOS SUS INTEGRANTES (18/11/2026): se escribían los de la PRIMERA fila de la tabla con
+// ese puesto como si fueran de todos: «+4.250 pts cada uno» en la #360, donde Abyssus y Hassan sacaron 2.500 (un equipo
+// no siempre cobra parejo, como dice el podio). Parejos, «cada uno»; si no, el rango. Sin ninguna fila del lado en la
+// tabla, la que vino, como antes. Sin puntos, nada (nunca «+0 pts»)
+const ptsLado = (ctx, L, r, cu) => {
+  const ids = partes(r[0]).map((m) => ctx.idDe(m));
+  const idsFila = (f) => partes(f[0]).map((m) => ctx.idDe(m)).concat(f[3] && partes(f[0]).length === 1 ? ['k:' + f[3]] : []);
+  const ps = (L.tabla || []).filter((f) => f[1] === r[1] && idsFila(f).some((id) => ids.includes(id))).map((f) => +f[2] || 0);
+  const xs = ps.length ? ps : [+r[2] || 0];
+  const lo = Math.min(...xs);
+  const hi = Math.max(...xs);
+  if (!hi) return '';
+  return lo === hi ? num(hi) + ' pts' + (r[3] ? cu : '') : num(lo) + ' a ' + num(hi) + ' pts';
+};
 function VersusFinal({ ctx, L }) {
   const fin = ctx.final;
   const c0 = (L.tabla || []).find((r) => r[1] === 'Campeón');
@@ -456,13 +483,14 @@ function VersusFinal({ ctx, L }) {
   const resto = ladosDe(ctx, L, /^(Tercero|Cuarto|Semifinal)/, 4);
   const lado = (r, w) => {
     const id = ctx.idDe(partes(r[0])[0]);
+    const pl = ptsLado(ctx, L, r, ' cada uno');
     return (
       <button type="button" className={'lk-vsf-l' + (w ? ' w' : '') + (ctx.sigo === id ? ' on' : '')} onClick={() => ctx.seguir(id)}
         aria-label={nombreDe(ctx, r[0]) + ', ' + r[1].toLowerCase()}>
         <span className="lk-vsf-et">{w ? <><Ico n="copa" t={14} />Campeón</> : r[1]}</span>
         <MiniP ctx={ctx} s={r[0]} ancho={ctx.compu ? 132 : 96} />
         <b className="lk-vsf-n">{nombreDe(ctx, r[0])}</b>
-        {+r[2] ? <small>+{num(r[2])} pts{r[3] ? ' cada uno' : ''}</small> : null}
+        {pl ? <small>+{pl}</small> : null}
       </button>
     );
   };
@@ -478,9 +506,10 @@ function VersusFinal({ ctx, L }) {
         <ul className="lk-vsf-resto">
           {resto.map((r, i) => {
             const id = ctx.idDe(partes(r[0])[0]);
+            const pl = ptsLado(ctx, L, r, ' c/u');
             return (
               <li key={i}><button type="button" className={ctx.sigo === id ? 'on' : ''} onClick={() => ctx.seguir(id)}>
-                <MiniP ctx={ctx} s={r[0]} ancho={40} sinNombre /><span><b>{nombreDe(ctx, r[0])}</b><small><Medalla p={MEDALLA[r[1]] || 4} />{r[1]}{+r[2] ? ' · +' + num(r[2]) + ' pts' + (r[3] ? ' c/u' : '') : ''}</small></span>
+                <MiniP ctx={ctx} s={r[0]} ancho={40} sinNombre /><span><b>{nombreDe(ctx, r[0])}</b><small><Medalla p={MEDALLA[r[1]] || 4} />{r[1]}{pl ? ' · +' + pl : ''}</small></span>
               </button></li>
             );
           })}
@@ -917,8 +946,10 @@ function Vidas({ ctx, L, N }) {
   return (
     <div className={'lk-vd' + (ctx.sigo ? ' siguiendo' : '')}>
       <ol className="lk-vd-t">
+        {/* 🔴 «lk-vd-pie» y no «pie» (18/11/2026): las clases son globales en el shadow root y `.pie` es el pie del sitio
+            (estilo.css): la fila de quien sigue en pie salía con margen, raya arriba y otro relleno. Ningún CSS la usa */}
         {gente.map((s, i) => (
-          <li key={s} className={(cae[s] ? '' : 'pie') + (partes(s).some((m) => ctx.idDe(m) === ctx.sigo) ? ' sigue' : '')}>
+          <li key={s} className={(cae[s] ? '' : 'lk-vd-pie') + (partes(s).some((m) => ctx.idDe(m) === ctx.sigo) ? ' sigue' : '')}>
             <b className="lk-vd-l">{i + 1}.º</b>
             <span className="lk-vd-n"><Persona ctx={ctx} x={s} /></span>
             <span className="lk-vd-cs" aria-label={(N - perd[s]) + ' de ' + N + ' vidas'}>
@@ -941,7 +972,9 @@ function Vidas({ ctx, L, N }) {
                 <div key={j} className={'lk-l' + (gana(b, s) ? ' g' : (b[1] ? ' x' : ''))}>
                   <span className="lk-ns"><Persona ctx={ctx} x={s} perdio={!!b[1] && !gana(b, s)} /></span>
                   {gana(b, s) ? <span className="lk-ok" aria-label="Ganó y se queda">✓</span>
-                    : x && x[0] === s ? <span className={'lk-vd-m' + (ult ? ' ult' : '')}>{ult ? 'sin vidas' : '−1 ♥ · le quedan ' + (N - x[1])}</span> : null}
+                    // 🔴 «lk-vd-ult» y no «ult» (18/11/2026): `.ult` es el bloque del Inicio (estilo.css:455), global en el
+                    // shadow root, y a «sin vidas» le sumaba margin-top 22px, borde arriba, padding y display:grid. El gris va en llave.css
+                    : x && x[0] === s ? <span className={'lk-vd-m' + (ult ? ' lk-vd-ult' : '')}>{ult ? 'sin vidas' : '−1 ♥ · le quedan ' + (N - x[1])}</span> : null}
                 </div>
               ))}
               {x ? null : <p className="lk-vd-sin">{/réplica/.test(b[2] || '') ? 'Réplica: se vuelve a pelear.' : L.vivo && i === bs.length - 1 ? 'Se está votando.' : 'Sin ganador: no le sacó vida a nadie.'}</p>}
@@ -1001,8 +1034,9 @@ function Barra({ ctx, tb }) {
   const f = k ? ctx.liga.T[k] : null;
   const nombre = f ? limpio(f.n) : ctx.nombres[ctx.sigo] || '';
   const p = ctx.pts[ctx.sigo];
+  // 🏁 una en vivo con la final decidida no «se juega ahora» (18/11/2026): la cabecera ya decía «TERMINÓ» y la barra no
   const res = p ? <><Medalla p={MEDALLA[p[0]]} />{(MEDALLA[p[0]] ? p[0] : 'Quedó en ' + p[0]) + ' · ' + num(p[1]) + ' pts'}</>
-    : ctx.L.vivo ? 'Se juega ahora' : 'Sin puntos en esta llave';
+    : ctx.L.vivo ? (ctx.L.terminada ? 'Terminó: los puntos llegan cuando se procese' : 'Se juega ahora') : 'Sin puntos en esta llave';
   return (
     <aside className="lk-barra" style={{ '--lk-tb': tb + 'px' }} aria-live="polite">
       <Cara liga={ctx.liga} k={k} nombre={nombre} cls="lk-bcara" />
@@ -1066,7 +1100,8 @@ function Reporte({ n, nombres }) {
         <button type="button" className="btn verde chico" disabled={!que || va || (que === 'nombre' && ((nombres.length && !nombre) || txt.trim().length < 2))} onClick={enviar}>{va ? 'Enviando…' : 'Enviar'}</button>
         <span aria-live="polite">{est}</span>
       </div>
-      <p className="lk-rep-nota">Se guarda con tu cuenta de Discord 30 días, para revisarlo.</p>
+      {/* 14 y no 30 (18/11/2026): `REPORTE_VIDA_DIAS` de avisos.js bajó a 14 el 13/10, como dicen privacidad y las ligas */}
+      <p className="lk-rep-nota">Se guarda con tu cuenta de Discord 14 días, para revisarlo.</p>
     </div>
   );
 }
@@ -1158,14 +1193,21 @@ export function Llave({ liga, vivoL, n: n0, raiz, dc }) {
   const enVivo = String(n).indexOf('v:') === 0;
   const deLobby = enVivo ? (vivoL || {})[String(n).slice(2)] : (liga.d.llaves || {})[n];
   const [vieja, setVieja] = useState(undefined);
+  // 📶 «Prueba de nuevo» cuando no se pudo bajar (18/11/2026): `vieja === 'error'` nunca llega a `L`
+  const [intento, setIntento] = useState(0);
   useEffect(() => {
     if (deLobby || enVivo) return undefined;
     let vivo = true;
     setVieja(undefined);
-    pedirUna(n, liga.d && liga.d.r2).then((x) => { if (vivo) setVieja(x || null); });
+    pedirUna(n, liga.d && liga.d.r2).then((x) => { if (vivo) setVieja(x === 'error' ? 'error' : (x || null)); });
     return () => { vivo = false; };
-  }, [n, deLobby, enVivo]);
-  const L = deLobby || vieja || null;
+  }, [n, deLobby, enVivo, intento]);
+  const L = deLobby || (vieja && vieja !== 'error' ? vieja : null) || null;
+  // 🏷️ EL NOMBRE QUE SE LEE (18/11/2026): el lector guarda «(sin titulo)» y el h1, la pestaña y Compartir lo mostraban
+  // crudo, aunque el calendario supiera cómo se llama el evento (la #651, «RED BULL INTERNACIONAL»). El suyo; si es
+  // «(sin titulo)», el del calendario para ese número; si tampoco, '' (y cada uno pone lo suyo)
+  const calN = L && esSinTitulo(L.nombre) ? (liga.d.calendario || []).find((c) => String(c.ll) === String(n)) : null;
+  const nomL = !L ? '' : !esSinTitulo(L.nombre) ? limpio(L.nombre) : calN && !esSinTitulo(calN.n) ? limpio(calN.n) : '';
   // 🎟️ «MIRÁ UNA LLAVE EN VIVO», la Tarea del Pase (05/10/2026): con tu cuenta y después de 20 segundos con la llave
   // abierta —tocarla y volver no es mirarla—. Si no sos miembro de DRA, el servidor no la cuenta
   const seJuega = enVivo && !!L && !!L.vivo && !L.terminada;
@@ -1183,11 +1225,11 @@ export function Llave({ liga, vivoL, n: n0, raiz, dc }) {
   useEffect(() => { window.scrollTo(0, 0); setSigo(''); }, [n]);
   useEffect(() => {
     if (!L) return undefined;
-    const poner = () => { document.title = (limpio(L.nombre) || 'La llave') + ' · Liga Global de Freestyle'; };
+    const poner = () => { document.title = (nomL || 'La llave') + ' · Liga Global de Freestyle'; };
     poner();
     const r = setTimeout(poner, 0);
     return () => clearTimeout(r);
-  }, [L]);
+  }, [L, nomL]);
   // el alto de la barra de abajo del celular: la de quien se sigue va justo encima (como «tu lugar» del Ranking)
   const [tb, setTb] = useState(0);
   useEffect(() => {
@@ -1206,7 +1248,14 @@ export function Llave({ liga, vivoL, n: n0, raiz, dc }) {
   // todo lo que sale de la llave, una vez por llave (y por quién se sigue)
   const base = useMemo(() => {
     if (!L) return null;
-    const fila = (x) => liga.quien(x);
+    // 🧭 Y TÚ, AUNQUE ESTÉS FUERA DE LAS 200 (18/11/2026): `quien()` sin clave te encuentra fuera de la tabla sólo con tu
+    // nombre exacto, y escrito con otro espacio, otra puntuación o tu alias quedabas 'n:<clave>': tu camino no arrancaba
+    // marcado (`juegoAca`), y la barra no te daba tu perfil ni la llave tu carta
+    const yo = liga.yo && liga.yo.k && !liga.T[liga.yo.k] ? liga.yo : null;
+    const yoC = yo ? clave(yo.n) : '';
+    // 🔑 el alias va con la clave del lobby (`normNombre`, NFKD) y no con la de acá, que también pliega ø, ł o ß (18/11/2026)
+    const esYo = (x) => !!yo && ((!!yoC && clave(x) === yoC) || (liga.d.alias || {})[normNombre(x)] === yo.k);
+    const fila = (x) => liga.quien(x) || (esYo(x) ? yo : null);
     const idDe = (x) => { const f = fila(x); return f ? 'k:' + f.k : 'n:' + clave(x); };
     // 🪪 el nombre de cada uno: el oficial si se sabe quién es (17/11/2026, Dlx: «si alguien escribe velatzzzz, debería
     // mostrarse con su aka oficial, Velatz»); si no, como lo escribieron
@@ -1388,6 +1437,15 @@ export function Llave({ liga, vivoL, n: n0, raiz, dc }) {
 
   if (!L) {
     if (!enVivo && vieja === undefined) return <div className="cargando">Buscando la llave…</div>;
+    // 📶 no se pudo bajar (sin red): no es «no está», y se puede volver a pedir (18/11/2026)
+    if (!enVivo && vieja === 'error') {
+      return (
+        <section className="sec lk-sec">
+          <div className="sec-t"><h2>No pude bajar la llave</h2></div>
+          <p className="pronto-p">Puede ser la conexión. <button type="button" className="btn verde chico" onClick={() => setIntento((i) => i + 1)}>Prueba de nuevo</button></p>
+        </section>
+      );
+    }
     return (
       <section className="sec lk-sec">
         <div className="sec-t"><h2>{enVivo ? 'Esa llave ya no se está jugando' : 'Esa llave no está'}</h2></div>
@@ -1453,6 +1511,10 @@ export function Llave({ liga, vivoL, n: n0, raiz, dc }) {
   const N = vidasDe(L);
   const hayR = base.prin.length > 0;
   const conVs = base.cerrada && (L.tabla || []).some((r) => r[1] === 'Campeón');
+  // 🚩 «¿Algo está mal?» y «Corregir» sólo donde el Worker los acepta (18/11/2026): una llave que no suma (n de nueve
+  // cifras, `llaves_a_entrada.BASE_N`) o una de vidas de #veredictos (`v:ver:…`) volvían siempre con error, y la página
+  // decía «prueba de nuevo en un rato». ⚠️ Es la regla de `validarReporte()` de bot/avisos.js: se cambian juntas
+  const reportable = enVivo ? /^v:\d{15,22}$/.test(String(n)) : /^\d{1,6}$/.test(String(n)) && !L.ns;
   const fechaEv = cal ? '#/eventos/' + liga.diaClave(cal.t) : dia ? '#/eventos/' + dia : '#/eventos';
   return (
     <>
@@ -1464,7 +1526,7 @@ export function Llave({ liga, vivoL, n: n0, raiz, dc }) {
             <div className="lk-cab-tx">
               <span className="tag">{L.vivo ? (L.terminada ? 'TERMINÓ · ' : '● EN VIVO · ') : (cuando ? cuando.toUpperCase() + ' · ' : '')}{(sv.nombre || L.sv || '').toUpperCase()}</span>
               {/* una palabra muy larga («EXTERMINACION») se partía en el celular («EXTERMINAC / ION»): más chica */}
-              <h1 className={'hero-ev largo lk-tit' + (Math.max(0, ...String(limpio(L.nombre) || '').split(/\s+/).map((w) => w.length)) >= 11 ? ' pal-larga' : '')}>{limpio(L.nombre) || 'La llave'}</h1>
+              <h1 className={'hero-ev largo lk-tit' + (Math.max(0, ...String(nomL).split(/\s+/).map((w) => w.length)) >= 11 ? ' pal-larga' : '')}>{nomL || 'La llave'}</h1>
             </div>
           </div>
           <ul className="lk-datos">
@@ -1503,12 +1565,16 @@ export function Llave({ liga, vivoL, n: n0, raiz, dc }) {
           {tareaVivo ? <p className="lk-pase">Tu Tarea «{tareaVivo.t}» cuenta con una llave que se esté jugando, y ésta ya terminó. Las que se juegan están en <a href="#/">En vivo, en el Inicio</a>.</p> : null}
           {/* 🔝 ARRIBA DE TODO (Dlx, 03/10/2026: «estas cosas dentro de la llave deberían estar arriba de todo, no
               debajo»): ir a Discord, compartir y avisar si algo está mal. Estaban al pie, después del cuadro entero */}
-          <div className="lk-acc-b">
-            {(L.links || []).map((u, i, t) => <a key={u} className="btn borde2 chico" href={u} target="_blank" rel="noopener noreferrer">{t.length > 1 ? 'Llave ' + (i + 1) : 'La llave en Discord'} ↗</a>)}
-            {L.vivo ? null : <Compartir cls="btn borde2 chico" url={enlace('#/llave/' + encodeURIComponent(n))} texto={'La llave de ' + limpio(L.nombre)} etiqueta="Compartir" />}
-            <Reporte n={n} nombres={nombresDe(L)} />
-            {enVivo ? null : <StaffLlave n={n} L={L} />}
-          </div>
+          {/* sin «¿Algo está mal?» puede no quedar nada (18/11/2026): una de #veredictos sin link, en vivo y sin
+              Compartir, dejaba la caja vacía y su hueco de 14px en la cabecera */}
+          {(L.links || []).length || !L.vivo || reportable ? (
+            <div className="lk-acc-b">
+              {(L.links || []).map((u, i, t) => <a key={u} className="btn borde2 chico" href={u} target="_blank" rel="noopener noreferrer">{t.length > 1 ? 'Llave ' + (i + 1) : 'La llave en Discord'} ↗</a>)}
+              {L.vivo ? null : <Compartir cls="btn borde2 chico" url={enlace('#/llave/' + encodeURIComponent(n))} texto={'La llave de ' + (nomL || 'este evento')} etiqueta="Compartir" />}
+              {reportable ? <Reporte n={n} nombres={nombresDe(L)} /> : null}
+              {!enVivo && reportable ? <StaffLlave n={n} L={L} /> : null}
+            </div>
+          ) : null}
         </section>
         {/* ⚔️ lo que se juega ahora, en grande; y al final, el campeón */}
         {!base.cerrada ? <AhoraVs ctx={ctx} /> : null}

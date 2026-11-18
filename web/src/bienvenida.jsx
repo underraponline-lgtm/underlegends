@@ -17,9 +17,11 @@
 // ⚠️ Sin degradés, sin blur y con radios chicos (las reglas del remake); con «Menos animaciones», quieta.
 import { Suspense, lazy, useEffect, useRef, useState } from 'react';
 import { Ico } from './piezas.jsx';
+import { Escudo, escudoDe } from './escudo.jsx';
 import { limpio, num, srcLogo, utc } from './liga.js';
 import { contar, enSemanaNueva, irSinHistoria, pedirRecorrido, tutoPoner } from './primera.js';
 import { pedirLigas } from './ligas_datos.js';
+import { usePases } from './pase.js';
 import { VV, baseVideo, elegirHd, quieto } from './fondovideo.jsx';
 import ESTILO from './bienvenida.css?inline';
 
@@ -258,6 +260,11 @@ function Paso1({ liga, unirme, cerrar, tit, cofre }) {
   const miembros = (liga.d.svs || []).reduce((s, x) => s + ((x && x.miembros) || 0), 0);
   const nMiembros = useCuenta(miembros);
   const base = baseVideo(liga);
+  // 🎟️ cuántos niveles tiene el Pase (18/11/2026): el último es el Salón del Pase (`pase_hito` con `nivel = c.niveles`), y
+  // desde que el Pase pasó a 50 (`NIVELES` de bot/pase.py) la bienvenida seguía diciendo 30, que hoy es la insignia Pase Oro.
+  // Del Pase público (`usePases()`, el mismo pedido que el resto de la página), con 50 de respaldo
+  const pubPase = usePases();
+  const nPase = (pubPase && pubPase.cfg && pubPase.cfg.niveles) || 50;
   const [lider, setLider] = useState(null);
   useEffect(() => {
     let vivo = true;
@@ -362,7 +369,8 @@ function Paso1({ liga, unirme, cerrar, tit, cofre }) {
     ) : null,
     pase: (
       <div className="bv-v-pase">
-        <ol className="bv-niveles">{[[1, 'Tu carta de Temporada'], [8, 'Tu carta brilla en las llaves'], [30, 'El Salón del Pase']].map(([n, t], k) => (
+        {/* ✨ 18/11/2026: el brillo en las llaves es del nivel 4 desde el 26/10 (`NIVEL_BRILLO` de bot/pase.py); decía 8 */}
+        <ol className="bv-niveles">{[[1, 'Tu carta de Temporada'], [4, 'Tu carta brilla en las llaves'], [nPase, 'El Salón del Pase']].map(([n, t], k) => (
           <li key={n} {...e(2 + k)}><b>{n}</b><span>{t}</span></li>
         ))}</ol>
         {tienda.inicial ? <p {...e(5, 'bv-moneda')}><Ico n="moneda" t={22} /><span><b>{num(tienda.inicial)}</b> Puntos de Tienda para empezar</span></p> : null}
@@ -371,10 +379,15 @@ function Paso1({ liga, unirme, cerrar, tit, cofre }) {
     gente: (
       <div {...e(1, 'bv-v-lista')}>
         {crews.length ? <><p className="bv-v-t"><span>Las crews de arriba</span><span>Puntos</span></p>
-          <ol className="bv-crews">{crews.map((c, i) => (
-            <li key={c.clave || c.crew} {...e(3 + i)}><span className="bv-pos">{i + 1}</span>{c.logo ? <img alt="" src={srcLogo(c.logo)} /> : <i className="bv-sinlogo" aria-hidden="true" />}
+          {/* 🛡️ 18/11/2026: el escudo armado (`esc:…`) o el de su nombre, como CrewCirculo (arriba.jsx). Antes el `esc:` iba
+              a srcLogo() y Pages contestaba el index.html: imagen rota en METRICOS, en la primera pantalla de quien llega.
+              El círculo de `bv-sinlogo` le da el tamaño, y los 4 px de aire son el que lleva el escudo en los otros círculos
+              (`.con-esc` de vivo.css, `.rk-clogo.con-esc` de ranking.css): sin ellos la forma «escudo» (una de cada
+              cuatro de `delNombre()`) asomaba las puntas fuera del círculo */}
+          <ol className="bv-crews">{crews.map((c, i) => { const es = escudoDe(c.logo, limpio(c.crew)); return (
+            <li key={c.clave || c.crew} {...e(3 + i)}><span className="bv-pos">{i + 1}</span>{es ? <i className="bv-sinlogo bv-esc" style={{ padding: 4 }} aria-hidden="true"><Escudo e={es} /></i> : <img alt="" src={srcLogo(c.logo)} />}
               <span><b>{limpio(c.crew)}</b><small>{c.n} raperos</small></span><span className="bv-ovr chico">{num(c.pts || 0)}</span></li>
-          ))}</ol></> : null}
+          ); })}</ol></> : null}
         <p {...e(7, 'bv-cifras')}>{com.personas ? <span><b>{num(com.personas)}</b> personas en los servidores</span> : null}
           {ligas.length ? <span><b>{ligas.length}</b> ligas de los servidores</span> : null}</p>
       </div>
@@ -411,7 +424,8 @@ function Paso1({ liga, unirme, cerrar, tit, cofre }) {
       texto: 'Tus puntos de todos los servidores, en una sola tabla. Ocho rangos, de SSS a E.',
       puntos: [['ranking', 'Temporada, Competitivo, Duelos, Países y Crews'], ['copa', 'Los mejores clasifican al cierre de la temporada'], ['perfil', 'Tu perfil con tus números y tus rivales']] },
     { id: 'pase', sello: 'PASE Y TIENDA', titulo: 'Tareas, niveles y premios',
-      texto: 'El Pase de rapero tiene 30 niveles por temporada: subes con las Tareas del día, de la semana y de la temporada.',
+      // 🎟️ el número del Pase (18/11/2026): decía 30, y al lado el Salón ya va en el último (`nPase`)
+      texto: 'El Pase de rapero tiene ' + nPase + ' niveles por temporada: subes con las Tareas del día, de la semana y de la temporada.',
       puntos: [['pase', 'Cada nivel trae un premio para tu perfil'], ['tienda', 'Puntos de Tienda para apostar y cazar cabezas'], ['fuego', 'Tu racha de días y tu nivel en la Liga']] },
     { id: 'gente', sello: 'COMUNIDAD', titulo: 'Tu crew, tus ligas, tu gente',
       texto: 'Arma tu crew o súmate a una, sigue las ligas de cada servidor y a los raperos que te gustan.',

@@ -73,7 +73,8 @@ export const CAPITULOS = [
     linea: 'Cada semana hay Copa, Rapid y mini eventos, y las ligas de 10 corren toda la temporada.',
     pasos: [
       { sel: 'cm-cab', k: 'LA SEMANA', h: 'Lo de esta semana', p: 'Tu liga, tu Copa y tu Rapid: cómo vas, o lo que te falta para entrar. Toca la Copa o la Rapid para ver tu llave.' },
-      { sel: 'cm-dias', k: 'EL CIERRE', h: 'Cuánto falta', p: 'Qué día de la semana va y cuánto falta para el próximo cierre. Las jornadas de las ligas cierran lunes, miércoles y viernes a las 11 AM.' },
+      // (18/11/2026: «a las 11 AM» sin zona se leía como hora local, y es la del este; como competencias.jsx y la Guía)
+      { sel: 'cm-dias', k: 'EL CIERRE', h: 'Cuánto falta', p: 'Qué día de la semana va y cuánto falta para el próximo cierre. Las jornadas de las ligas cierran lunes, miércoles y viernes a las 11 AM (hora del este).' },
       { sel: 'cm-ligas', k: 'LAS LIGAS', h: 'Ligas de 10', p: 'Tres jornadas por semana y nueve por temporada. Los dos primeros suben de división.' },
     ] },
   { id: 'publicaciones', ruta: '#/publicaciones', pag: ['publicaciones'], t: 'Publicaciones e historias', d: 'Felicitar, comentar y seguir lo que pasa.',

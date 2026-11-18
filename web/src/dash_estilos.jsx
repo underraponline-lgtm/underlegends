@@ -10,6 +10,7 @@
 // Lo marcado sale en Eventos como «Evento de estilo».
 import { useState } from 'react';
 import CAT from './estilos_juego.json';
+import { siglaDe } from './liga.js';
 
 const NOMBRE = Object.fromEntries(CAT.estilos.map(([k, n]) => [k, n]));
 const FAMILIA = { ATAQUE: 'Ataque', FOCO: 'Foco', CABEZA: 'Cabeza' };
@@ -17,8 +18,9 @@ const FAMILIA = { ATAQUE: 'Ataque', FOCO: 'Foco', CABEZA: 'Cabeza' };
 /** Las claves con las que puede estar marcado un evento del calendario: su número y el id de su anuncio */
 export function clavesDe(e) {
   const out = [];
-  // ⚠️ sólo si es un NÚMERO DE EVENTO (hasta 6 cifras): una llave en vivo trae en `ll` su registro (`#126047346`), que
-  // no es un evento; ese va por su anuncio. El Worker rechaza el ajuste entero con una clave así
+  // ⚠️ sólo si es un NÚMERO DE EVENTO (hasta 6 cifras): la llave de un servidor que no suma (Tier 2 y 3,
+  // `datos/llaves_sin_sumar.json`) trae en `ll` su registro (`#126047346`), que no es un evento; ese va por su anuncio.
+  // El Worker rechaza el ajuste entero con una clave así. (18/11/2026: esto decía «una llave en vivo», y no lo es)
   if (e && e.ll && /^[0-9]{1,6}$/.test(String(e.ll))) out.push(String(e.ll));
   const m = /\/([0-9]{15,22})\/?$/.exec((e && e.link) || '');
   if (m) out.push('a:' + m[1]);
@@ -34,7 +36,9 @@ export function AjEventosEstilo({ liga, aj, hacer, ocup }) {
   const hayDRA = delCal.some((e) => e.sv === 'DRA');
   const cal = delCal.filter((e) => todos || e.sv === 'DRA')
     .sort((a, b) => (b.fut - a.fut) || (b.fut ? String(a.t).localeCompare(String(b.t)) : String(b.t).localeCompare(String(a.t))));
-  const usadas = new Set(cal.flatMap(clavesDe));
+  // 🔎 contra el calendario ENTERO, no el filtrado (18/11/2026): con «Sólo DRA» (lo de entrada) todo lo marcado de otro
+  // servidor salía en «ya no están en el calendario», como «#493» o «anuncio», y seguía estando
+  const usadas = new Set(delCal.flatMap(clavesDe));
   const sueltos = Object.keys(marcados).filter((k) => !usadas.has(k));
   const valor = (e) => { for (const k of clavesDe(e)) if (marcados[k]) return marcados[k]; return ''; };
   const poner = (e, juego) => {
@@ -82,7 +86,9 @@ export function AjEventosEstilo({ liga, aj, hacer, ocup }) {
             return (
               <li key={e.link || e.ll || e.t} className={v ? 'on' : ''}>
                 <span className="db-ee-d">{liga.dia ? liga.dia(e.t) : String(e.t).slice(0, 10)}</span>
-                <span className="db-ee-n"><b>{e.n}</b><small>{todos ? e.sv + ' · ' : ''}{e.fut ? 'por jugar' : /^[0-9]{1,6}$/.test(String(e.ll || '')) ? '#' + e.ll : e.ll ? 'en vivo' : 'sin llave'}</small></span>
+                {/* 🏷️ la sigla, no el código (ACAD → LCW, SR → SNK: `siglaDe()`), y un `ll` de 9 cifras es una llave de
+                    `llaves_sin_sumar.json` (Tier 2 y 3), no una en vivo: decía «en vivo» de eventos de hace semanas (18/11/2026) */}
+                <span className="db-ee-n"><b>{e.n}</b><small>{todos ? siglaDe(e.sv) + ' · ' : ''}{e.fut ? 'por jugar' : /^[0-9]{1,6}$/.test(String(e.ll || '')) ? '#' + e.ll : e.ll ? 'no suma' : 'sin llave'}</small></span>
                 <select className="db-sel" disabled={ocup || !clavesDe(e).length} value={v} aria-label={'El estilo de «' + e.n + '»'}
                   onChange={(ev) => poner(e, ev.target.value)}>{opciones}</select>
               </li>

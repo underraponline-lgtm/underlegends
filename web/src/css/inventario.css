@@ -369,7 +369,11 @@
    🎮 EL REMAKE, OPCIÓN B (17/11/2026): el estilo en grande sobre el negro de la página, con su nombre gigante y tenue
    detrás —como «TAG» en el escenario de Cartas— y un halo del color de tu rango; tus tres lugares al costado; la grilla
    de seis a todo el ancho; y al pie cómo se sube y el próximo evento. Sin panel gris alrededor */
-.jg{display:grid;gap:18px}
+/* ⚠️ `:not(.tz-grid)` (18/11/2026): la grilla de Colecciones de la Tienda ERA `tz-grid jg` (tienda3.jsx) y esta regla,
+   con la misma especificidad que su `.tz-grid{gap:10px}`, le ganaba si el Inventario se bajó después: la misma pestaña
+   salía con 10 o con 18 px (14 en el celular) según el recorrido. Desde ese día es `tz-grid tz-cols`; el `:not` queda
+   de resguardo, por si una grilla de la Tienda vuelve a llevar `jg` */
+.jg:not(.tz-grid){display:grid;gap:18px}
 .jg-ins{position:relative;display:inline-block;flex:none}
 .jg-ins svg{position:absolute;inset:0;width:100%;height:100%;overflow:visible}
 .jg-ins i{position:absolute;-webkit-mask:center/contain no-repeat;mask:center/contain no-repeat}
@@ -481,7 +485,7 @@
 }
 /* 📱 el celular: el estilo arriba, los lugares en una fila, la grilla de a tres */
 @media (max-width:760px){
-  .jg{gap:14px}
+  .jg:not(.tz-grid){gap:14px}
   .jg-hero{padding:18px 14px;gap:16px}
   .jg-hero:before{font-size:92px;top:28%;left:50%}
   .jg-sel{gap:14px}

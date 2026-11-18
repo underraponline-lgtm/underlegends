@@ -1,9 +1,9 @@
 // Lo de arriba del Inicio: la cabecera negra, las historias, el escenario (el carrusel de momentos), la Tira de
 // «Esta semana» y la barra IR A. Traducido de docs/remake/reales.py (cabecera, historias, momentos, hero, semana, ir_a).
 import { useEffect, useMemo, useRef, useState } from 'react';
-import { MESES, capital, diaISO, horaET, ksDe, limpio, mult, norm, num, recorte, resultado, siglaDe, srcLogo, utc } from './liga.js';
+import { MESES, capital, diaISO, hora, horaET, ksDe, limpio, mult, norm, num, recorte, resultado, siglaDe, srcLogo, utc } from './liga.js';
 import { Escudo, escudoDe } from './escudo.jsx';
-import { Alguien, Algunos, Anotados, Cara, Carta, Chevron, Compartir, Ico, Poster, aDiscord, accion, enlace, nombrePais, silueta, subirSiEsta, useCampana } from './piezas.jsx';
+import { Alguien, Algunos, Anotados, Cara, Carta, Chevron, Compartir, Ico, Poster, aDiscord, accion, diaET, enlace, nombrePais, silueta, subirSiEsta, useCampana } from './piezas.jsx';
 import { Miniatura, abrirVideo } from './video.jsx';
 import { useRacha } from './racha.js';
 import { YoMenu } from './yomenu.jsx';
@@ -83,10 +83,16 @@ function Grupo({ n, items, on, pagina }) {
   const entra = (e) => { if (e.pointerType !== 'mouse') return; clearTimeout(t.current); setAbierto(true); };
   const sale = (e) => { if (e.pointerType !== 'mouse') return; clearTimeout(t.current); t.current = setTimeout(() => setAbierto(false), 160); };
   useEffect(() => () => clearTimeout(t.current), []);
+  // 🖱️ con el mouse el clic sólo abre (18/11/2026): el pointerenter ya la había abierto y el clic la cerraba en el acto. El
+  // dedo y el teclado siguen alternando (Enter no trae pointerdown). Se recuerda en pointerdown: Safari viejo no trae
+  // `pointerType` en el click
+  const tipo = useRef('');
   const id = 'grp-' + norm(n).replace(/[^a-z]/g, '');
   return (
     <div className={'grp' + (abierto ? ' abierto' : '')} data-tuto={'menu-' + norm(n).replace(/[^a-z]/g, '')} ref={caja} onPointerEnter={entra} onPointerLeave={sale}>
-      <button type="button" className={'grp-b' + (on ? ' on' : '')} aria-expanded={abierto} aria-controls={id} onClick={() => setAbierto((v) => !v)}>
+      <button type="button" className={'grp-b' + (on ? ' on' : '')} aria-expanded={abierto} aria-controls={id}
+        onPointerDown={(e) => { tipo.current = e.pointerType; }}
+        onClick={() => { const m = tipo.current === 'mouse'; tipo.current = ''; setAbierto((v) => (m ? true : !v)); }}>
         {n}<Chevron /></button>
       {abierto ? (
         // 🔔 CON EL ESTILO DE LA CAMPANA (Dlx, 13/11/2026: «me gusta bastante el estilo de notificaciones… al abrir cada
@@ -166,8 +172,10 @@ const TIPOS = { rapero: 0, servidor: 1, pais: 2, crew: 3, pagina: 4, evento: 5 }
 const ETIQUETA_TIPO = { rapero: 'rapero', servidor: 'servidor', pais: 'país', crew: 'crew', pagina: 'página', evento: 'evento' };
 // 🔎 «QUE TE DEJE BUSCAR CUALQUIER COSA» (Dlx, 13/11/2026): también las páginas (las del menú, cada ranking y lo de tu
 // cuenta) y los eventos (los que vienen y los de las últimas semanas)
+// ⚙️ «Ajustes» abre «La app» (18/11/2026): `#/ajustes` caía en el resumen de Tu cuenta, igual que el resultado de al lado.
+// En el celular `enMovil` (cuenta.jsx) pasa 'app' a «Hora y zona»
 const PAGINAS_EXTRA = [['Tienda', '#/tienda', 'tienda'], ['Inventario', '#/inventario', 'tarjetas'], ['Tu cuenta', '#/cuenta', 'perfil'],
-  ['Ajustes', '#/ajustes', 'engranaje'], ['Novedades de la página', '#/cambios', 'novedades']];
+  ['Ajustes', '#/cuenta/app', 'engranaje'], ['Novedades de la página', '#/cambios', 'novedades']];
 // 🔑 Y POR SUS AKAS (Dlx, 07/10/2026: «cuando buscan a alguien con cualquiera de sus akas, que le aparezca el mismo
 // rapero… si alguien busca vice, que aparezca el nombre principal»). El payload ya trae `alias` —{aka: clave}, los de
 // quien tiene perfil; lo arma `subir_web._alias()` y lo usa la llave en vivo—, con la clave como `respaldo._norm()`:
@@ -377,8 +385,9 @@ function Sugerencias({ liga, rec, icono, ir, borrar, pub }) {
   const hoy = liga.diaClave(liga.ahora);
   const vivos = liga.vivo();
   const hoyEv = vivos.concat(liga.luego().filter((x) => liga.diaClave(x.cuando) === hoy && !vivos.includes(x))).slice(0, 3);
-  const sigo = (liga.sigue || []).slice(0, 5);
-  const raperos = (sigo.length ? sigo.map((k) => liga.T[k]) : liga.oficiales().slice(0, 5)).filter(Boolean);
+  // 🧑 los que sigues aunque no estén en las 200 de la tabla (18/11/2026): con `liga.sigue` y `liga.T` no salían
+  const sigo = (liga.sigueTodos || []).filter((k) => liga.quienK(k)).slice(0, 5);
+  const raperos = (sigo.length ? sigo.map((k) => liga.quienK(k)) : liga.oficiales().slice(0, 5)).filter(Boolean);
   return (
     <div className="nt-p bs-panel">
       {hoyEv.length ? (
@@ -390,7 +399,8 @@ function Sugerencias({ liga, rec, icono, ir, borrar, pub }) {
               <a key={'ev' + i} className={'nt-vivo' + (v ? '' : ' luego')} href="#/eventos" onClick={() => ir()}>
                 <span className="nt-pt" aria-hidden="true" />
                 <b>{limpio(x.nombre)}<small>{siglaDe(x.sv)}{v ? ' · se está jugando' : ''}</small></b>
-                <em>{v ? 'EN VIVO' : liga.dia(x.cuando).replace(/^hoy /, '').toUpperCase()}</em>
+                {/* 🔑 sin hora que se pueda leer (`sin_hora`, 18/11/2026): su «cuando» es el de publicación, no una hora de inicio */}
+                <em>{v ? 'EN VIVO' : x.sin_hora ? ('anunciado ' + liga.cuando(x.cuando)).toUpperCase() : liga.dia(x.cuando).replace(/^hoy /, '').toUpperCase()}</em>
               </a>
             );
           })}
@@ -696,6 +706,12 @@ function PanelAvisos({ liga, B, onCerrar }) {
   const vivos = liga.vivo();
   const hoyEv = vivos.concat(liga.luego().filter((x) => liga.diaClave(x.cuando) === hoy && !vivos.includes(x))).slice(0, 4);
   const ir = (ruta) => { onCerrar(); location.hash = ruta; };
+  // 🔗 lo que lleva fuera del hub (18/11/2026: el «📣 X organiza Y · toca para ver el anuncio» trae el link del mensaje de
+  // Discord, y `rutaDe()` lo volvía un hash que no abría nada: el toque sólo cerraba el panel) se abre en otra pestaña
+  const abrir = (u) => {
+    u = String(u || '');
+    if (/^https?:\/\//.test(u) && !/^https:\/\/underlegends\.pages\.dev(\/|$)/.test(u)) { onCerrar(); window.open(u, '_blank', 'noopener'); } else ir(rutaDe(u));
+  };
 
   // ⚔️ PARA HACER: tus batallas libres pendientes (libres.js, la misma lista que el Inicio) y lo que espera ganador
   const yoK = LBd && LBd.yo;
@@ -705,7 +721,8 @@ function PanelAvisos({ liga, B, onCerrar }) {
   const finales = items.filter((x) => esFinal(x) && ahora - x.t < 2 * DIA_MS_AV);
   const resto = items.filter((x) => !esFinal(x));
   const nHacer = libres.length + finales.length;
-  const cuenta = { todo: resto.length + nHacer, hacer: nHacer, liga: hoyEv.length };
+  // «Todo» cuenta también los eventos de hoy, que dibuja (18/11/2026: quedaba por debajo de «Liga»)
+  const cuenta = { todo: resto.length + nHacer + hoyEv.length, hacer: nHacer, liga: hoyEv.length };
   for (const x of resto) cuenta[catDe(x)] = (cuenta[catDe(x)] || 0) + 1;
   const ver = (c) => fil === 'todo' || fil === c;
   const decir = async (id, gane) => {
@@ -715,12 +732,13 @@ function PanelAvisos({ liga, B, onCerrar }) {
     setMsg(j && j.ok ? (j.estado === 'hecha' ? 'Listo: los dos dijeron lo mismo.' : j.estado === 'sin_acuerdo' ? 'Cada uno dijo otro ganador: queda sin acuerdo.' : 'Listo: falta que tu rival lo diga.')
       : (j && ERR_LIBRE[j.error]) || 'No se pudo guardar: prueba de nuevo.');
   };
-  const nombre = (k) => { const f = liga.T[k]; return f ? limpio(f.n) : k; };
+  // 🧑 también quien no está en las 200 de la tabla (18/11/2026): un reto de alguien de fuera decía su clave y salía sin cara
+  const nombre = (k) => liga.nombreDe(k);
   const nueva = (x) => !x.visto && !leidas;
 
   // la cara con su esquinita, o el ícono solo en el círculo cuando no hay cara
   const cara = (k, ico) => {
-    const f = k ? liga.T[k] : null;
+    const f = k ? liga.quienK(k) : null;
     if (!f) return <span className="nt-cara nt-ico" aria-hidden="true">{ico}</span>;
     return (
       <span className="nt-cara">
@@ -737,7 +755,7 @@ function PanelAvisos({ liga, B, onCerrar }) {
     const cuerpo = pdt ? x.cuerpo.replace(PDT_RE, '').trim() : x.cuerpo;
     return (
       <li key={x.clave}>
-        <button type="button" className={'nt-f' + (nueva(x) ? ' nueva' : '')} onClick={() => ir(rutaDe(x.url))}>
+        <button type="button" className={'nt-f' + (nueva(x) ? ' nueva' : '')} onClick={() => abrir(x.url)}>
           {cara(x.cara, ico)}
           <span className="nt-t"><b>{tit}{pdt ? <span className="nt-pdt">+{pdt[1]} PdT</span> : null}</b>{cuerpo ? <small>{cuerpo}</small> : null}</span>
           <span className="nt-hora">{liga.cuando(new Date(x.t))}</span>
@@ -785,7 +803,8 @@ function PanelAvisos({ liga, B, onCerrar }) {
           <button key={'ev' + i} type="button" className={'nt-vivo' + (v ? '' : ' luego')} onClick={() => ir('#/eventos')}>
             <span className="nt-pt" aria-hidden="true" />
             <b>{limpio(x.nombre)}<small>{siglaDe(x.sv)}{v ? ' · se está jugando' : ''}</small></b>
-            <em>{v ? 'EN VIVO' : liga.dia(x.cuando).replace(/^hoy /, '').toUpperCase()}</em>
+            {/* 🔑 sin hora que se pueda leer (`sin_hora`, 18/11/2026): su «cuando» es el de publicación */}
+            <em>{v ? 'EN VIVO' : x.sin_hora ? ('anunciado ' + liga.cuando(x.cuando)).toUpperCase() : liga.dia(x.cuando).replace(/^hoy /, '').toUpperCase()}</em>
           </button>
         );
       }) : null}
@@ -819,7 +838,7 @@ function PanelAvisos({ liga, B, onCerrar }) {
               <li key={x.clave} className={'nt-f' + (nueva(x) ? ' nueva' : '')}>
                 {cara('', '🏁')}
                 <span className="nt-t"><b>{sinEmoji(x.titulo)}</b><small>{String(x.cuerpo || '').replace(/\s*Márcalo en tu panel\.?$/, '')}</small>
-                  <span className="nt-acc"><button type="button" className="nt-btn v" onClick={() => ir(rutaDe(x.url))}>Marcarlo en tu panel</button></span></span>
+                  <span className="nt-acc"><button type="button" className="nt-btn v" onClick={() => abrir(x.url)}>Marcarlo en tu panel</button></span></span>
                 <span className="nt-hora">{liga.cuando(new Date(x.t))}</span>
               </li>
             ))}
@@ -892,8 +911,11 @@ function slidesDe(liga, items) {
       const quienes = [];
       g.forEach((o) => { const x = liga.aka((o.quien || [])[0], ksDe(o)[0]); if (x && !quienes.includes(x)) quienes.push(x); });
       const txt = quienes.length > 1 ? quienes.slice(0, -1).join(', ') + ' y ' + quienes[quienes.length - 1] : quienes[0];
-      out.push(Slide('CARTAS NUEVAS', <><h3 className="st-h">{txt} ya tienen sus cartas</h3><div className="st-minis">{g.slice(0, 4).map((o, i) => <Carta key={i} liga={liga} k={(o.ks || [])[0]} cual={o.carta} cls="st-mini-c hx-carta" abre={false} />)}</div></>,
-        c, 'Ver sus perfiles', { perfil: ks[0] }, undefined, undefined, { esc: svDeK(liga, ks[0]) || it.sv, tono: 'verde' }));
+      // 🃏 una sola persona con varias cartas a la vez (lo normal al verificarse), en singular (18/11/2026: decía «Valen ya
+      // tienen sus cartas» y «Ver sus perfiles»)
+      const uno = quienes.length === 1;
+      out.push(Slide('CARTAS NUEVAS', <><h3 className="st-h">{uno ? txt + ' ya tiene ' + g.length + ' cartas nuevas' : txt + ' ya tienen sus cartas'}</h3><div className="st-minis">{g.slice(0, 4).map((o, i) => <Carta key={i} liga={liga} k={(o.ks || [])[0]} cual={o.carta} cls="st-mini-c hx-carta" abre={false} />)}</div></>,
+        c, uno ? 'Ver su perfil' : 'Ver sus perfiles', { perfil: ks[0] }, undefined, undefined, { esc: svDeK(liga, ks[0]) || it.sv, tono: 'verde' }));
     } else if (it.tipo === 'tarjeta') {
       const nombre = { pais: 'de País', temporada: 'de Temporada', servidor: 'de Servidor', competitivo: 'Competitiva' }[it.carta];
       out.push(Slide('CARTA NUEVA', <><h3 className="st-h">{q[0]} ya tiene su carta {nombre}</h3><Carta liga={liga} k={ks[0]} cual={it.carta} cls="st-carta hx-carta" abre={false} /></>,
@@ -967,7 +989,11 @@ function slidesDe(liga, items) {
       const e = liga.proximos().find((x) => limpio(x.nombre) === limpio(it.ev));
       let cu = '';
       if (e) {
-        cu = liga.vivo().includes(e) ? 'en vivo desde las ' + liga.dia(e.cuando).replace(/^hoy /, '') : liga.dia(e.cuando);
+        // 🕘 la hora sola (18/11/2026): `dia()` de un evento que empezó antes de tu medianoche da «martes 17 · 11:00 p. m.», y
+        // salía «en vivo desde las martes 17 · …». Y sin hora que se pueda leer (`sin_hora`), «anunciado …»: su «cuando» es
+        // el de publicación, no el de inicio
+        cu = liga.vivo().includes(e) ? (e.sin_hora ? 'en vivo' : 'en vivo desde las ' + hora(e.cuando))
+          : e.sin_hora ? 'anunciado ' + liga.cuando(e.cuando) : liga.dia(e.cuando);
         if (e.modalidad) cu += ' · ' + e.modalidad;
       }
       out.push(Slide('ANUNCIÓ · ' + siglaDe(it.sv), <><img className="st-logo" alt="" src={liga.logo(it.sv)} /><h3 className="st-h">{limpio(it.ev)}</h3>
@@ -979,15 +1005,18 @@ function slidesDe(liga, items) {
       // escribió no viaja. ⚠️ En una polémica, ni caras ni evento
       const ct = liga.chatTexto(it);
       if (ct) {
-        const fs = it.que === 'polemica' ? [] : (it.hablan || []).filter((k) => liga.T[k]).slice(0, 3);
+        // 🧑 también los de fuera de las 200 de la tabla (18/11/2026): quedaban sin cara y sin nombre
+        const fs = it.que === 'polemica' ? [] : (it.hablan || []).filter((k) => liga.quienK(k)).slice(0, 3);
         const hs = Array.isArray(it.hs) && it.hs.length === 24 ? it.hs : null;
         const mx = hs ? Math.max(1, ...hs) : 1;
         out.push(Slide((it.que === 'polemica' ? 'POLÉMICA · ' : 'EL CHAT · ') + siglaDe(it.sv), <><h3 className="st-h">{ct.tit}</h3>
           <div className="hx-chat-n"><span className="hx-total"><Numero v={Number(it.msgs) || 0} f={num} /><small>MENSAJES EN UN DÍA</small></span>
             {it.x >= 2 ? <span className="hx-mv sube">{mult(it.x)} UN DÍA NORMAL</span> : null}</div>
           {hs ? <div className="hx-horas" aria-hidden="true">{hs.map((n, i) => <i key={i} className={i === it.h ? 'on' : ''} style={{ height: Math.max(4, Math.round((n / mx) * 100)) + '%' }} />)}</div> : null}
-          {fs.length ? <ul className="st-gente">{fs.map((k) => <li key={k}><Cara liga={liga} k={k} nombre={liga.T[k].n} cls="st-mini" /><span>{limpio(liga.T[k].n)}</span></li>)}</ul> : null}
-          <small className="st-s">{num(it.gente)} personas · el pico, a las {horaET(it.h)}{ct.ev ? ' · la noche de ' + ct.ev : ''}</small></>,
+          {fs.length ? <ul className="st-gente">{fs.map((k) => <li key={k}><Cara liga={liga} k={k} nombre={liga.nombreDe(k)} cls="st-mini" /><span>{liga.nombreDe(k)}</span></li>)}</ul> : null}
+          {/* 🕘 el pico en tu zona y tu formato (18/11/2026): `horaET(it.h)` escribía la hora del este sin decirlo. `t` es h:30
+              ET en UTC (bot/chats.py), así que media hora antes es el comienzo de la hora del pico */}
+          <small className="st-s">{num(it.gente)} personas · el pico, a las {it.t ? hora(new Date(utc(it.t).getTime() - 30 * 60000)) : horaET(it.h)}{ct.ev ? ' · la noche de ' + ct.ev : ''}</small></>,
         c, 'Ver ' + siglaDe(it.sv), { ruta: '#/sv/' + encodeURIComponent(siglaDe(it.sv)) }, undefined, undefined,
         { esc: it.sv, tono: it.que === 'polemica' ? 'vivo' : 'verde' }));
       }
@@ -1055,19 +1084,41 @@ function historiasTuyas(liga, mm) {
   const yo = liga.yo;
   if (!yo) return [];
   const desde = utc(mm.ini || '');
-  const mios = liga.semanaDe(yo.k).filter(([ll]) => !isNaN(desde) && utc(liga.fechaLlave(ll)) >= desde);
-  mios.sort((a, b) => utc(liga.fechaLlave(a[0])) - utc(liga.fechaLlave(b[0])));
+  // `[llave, puesto, pts, instante]`
+  const mios = liga.semanaDe(yo.k).map(([ll, p, n]) => [ll, p, n, liga.fechaLlave(ll)])
+    .filter((x) => !isNaN(desde) && utc(x[3]) >= desde);
+  // 📅 EL LOBBY TRAE SÓLO LAS ~12 LLAVES MÁS NUEVAS (18/11/2026, `LLAVES_WEB` de bot/subir_web.py): de jueves en adelante las
+  // del lunes ya no están, y a quien jugó sólo ese día le decía «Esta semana todavía no jugaste». Si tu perfil ya se bajó
+  // (`window.PERF`, otra página lo pidió: el Inicio no lo baja) se suman de ahí; si no, `cubre` dice si el lobby llega
+  // hasta el lunes, y sin eso no se afirma la semana: tu último evento (`ult`) dice si jugaste
+  const P = typeof window !== 'undefined' ? window.PERF : null;
+  const pp = P && P.p && P.e && P.p[yo.k];
+  if (pp && !isNaN(desde)) {
+    const ya = new Set(mios.map((x) => String(x[0].n)));
+    (pp.ev || []).forEach(([n, p, pt]) => {
+      const e = P.e[n] || P.e[String(n)];
+      if (!e || !e[2] || ya.has(String(n)) || utc(e[2]) < desde) return;
+      ya.add(String(n));
+      mios.push([(liga.d.llaves || {})[String(n)] || { n, nombre: e[0], sv: e[1] }, p, pt, e[2]]);
+    });
+  }
+  mios.sort((a, b) => utc(a[3]) - utc(b[3]));
+  const cubre = !!pp || isNaN(desde) || liga.llaves().some((ll) => utc(liga.fechaLlave(ll)) <= desde);
+  const jugo = mios.length > 0 || (!cubre && !!(yo.ult && yo.ult[0] && yo.ult[0] >= diaET(desde)));
   const pts = mios.reduce((t, x) => t + (Number(x[2]) || 0), 0);
   const mv = yo.mv || 0;
   const mueve = mv > 0 ? '▲ subiste ' + mv + (mv === 1 ? ' puesto' : ' puestos') : mv < 0 ? '▼ bajaste ' + (-mv) + (mv === -1 ? ' puesto' : ' puestos') : '';
   const out = [];
-  const ultimo = mios.length ? liga.fechaLlave(mios[mios.length - 1][0]) : String(mm.ini || '');
-  out.push(Slide('TU SEMANA', <><h3 className="st-h">{mios.length ? 'Jugaste ' + mios.length + (mios.length === 1 ? ' evento' : ' eventos') : 'Esta semana todavía no jugaste'}</h3>
+  const ultimo = mios.length ? mios[mios.length - 1][3] : String(mm.ini || '');
+  // «PTS EN TUS ÚLTIMOS» sólo con eventos a la vista (18/11/2026): sin ninguno decía «0 PTS EN TUS ÚLTIMOS» debajo de
+  // «Esta semana todavía no jugaste»
+  out.push(Slide('TU SEMANA', <><h3 className="st-h">{mios.length ? (cubre ? 'Jugaste ' + mios.length + (mios.length === 1 ? ' evento' : ' eventos') : 'Tus últimos eventos')
+    : jugo ? 'Esta semana ya jugaste' : 'Esta semana todavía no jugaste'}</h3>
     <div className="hx-tusem"><CartaO liga={liga} k={yo.k} nombre={yo.n} />
-      <div className="hx-tusem-d"><span className="hx-total">{mios.length ? <>+<Numero v={pts} f={num} /></> : '0'}<small>PTS ESTA SEMANA</small></span>
+      <div className="hx-tusem-d">{mios.length || !jugo ? <span className="hx-total">{mios.length ? <>+<Numero v={pts} f={num} /></> : '0'}<small>{cubre || !mios.length ? 'PTS ESTA SEMANA' : 'PTS EN TUS ÚLTIMOS'}</small></span> : null}
         {mueve ? <span className={'hx-mv ' + (mv > 0 ? 'sube' : 'baja')}>{mueve}{yo.pos ? ' · #' + yo.pos : ''}</span> : yo.pos ? <span className="hx-mv">#{yo.pos} en el Ranking</span> : null}</div></div>
     {mios.length ? <ul className="hx-evs">{mios.slice(-4).map(([ll, p, n], i) => <li key={i}><span>{limpio(ll.nombre)}</span><b>{limpio(String(p || '')).toUpperCase()} · {num(Number(n) || 0)}</b></li>)}</ul>
-      : <small className="st-s">Juega uno y sumas para tu Temporada</small>}</>,
+      : jugo ? null : <small className="st-s">Juega uno y sumas para tu Temporada</small>}</>,
   'esta semana', 'Ver tu perfil', { perfil: yo.k }, 'yo:sem:' + (mm.ini || '') + ':' + mios.length, ultimo, { esc: yo.sv, tono: 'oro' }));
   // tu próximo evento: el primero de un servidor donde jugaste; si no, el primero que viene
   const svs = new Set(liga.semanaDe(yo.k).map(([ll]) => ll.sv));
@@ -1075,9 +1126,10 @@ function historiasTuyas(liga, mm) {
   const e = prox.find((x) => svs.has(x.sv)) || prox[0];
   if (e) {
     const m = liga.multSv(e.sv);
+    // 🔑 sin hora que se pueda leer (`sin_hora`, 18/11/2026): no hay cuenta atrás, y su «cuando» es el de publicación
     out.push(Slide('TU PRÓXIMO EVENTO', <><h3 className="st-h">{limpio(e.nombre)}</h3><img className="st-logo grande" alt="" src={liga.logo(e.sv)} />
-      <span className="hx-cuenta"><small>EMPIEZA EN</small><b>{liga.falta(liga.cuandoDe(e))}</b></span>
-      <small className="st-s">{liga.dia(liga.cuandoDe(e))} · {siglaDe(e.sv)}{m ? ' · ' + mult(m) + ' esta semana' : ''}</small></>,
+      {e.sin_hora ? null : <span className="hx-cuenta"><small>EMPIEZA EN</small><b>{liga.falta(liga.cuandoDe(e))}</b></span>}
+      <small className="st-s">{e.sin_hora ? 'anunciado ' + liga.cuando(e.cuando) : liga.dia(liga.cuandoDe(e))} · {siglaDe(e.sv)}{m ? ' · ' + mult(m) + ' esta semana' : ''}</small></>,
     'lo que viene', 'Quiero aviso', { ruta: '#/avisos' }, 'yo:prox:' + e.sv + ':' + limpio(e.nombre) + ':' + liga.cuandoDe(e), ultimo, { esc: e.sv, tono: 'verde' }));
   }
   return out;
@@ -1098,7 +1150,7 @@ function historiasLiga(liga, mm) {
     const cuantos = n === 1 ? (hoyEv.length ? 'Un evento hoy' : 'Una liga hoy')
       : n + (!hoyLg.length ? ' eventos hoy' : !hoyEv.length ? ' ligas hoy' : ' fechas hoy');
     out.push(Slide('HOY SE JUEGA', <><h3 className="st-h">{cuantos}</h3>
-      <ul className="st-l">{hoyEv.slice(0, 5).map((e, i) => <li key={i}><b>{liga.dia(e.cuando).replace(/^hoy /, '')} · {siglaDe(e.sv)}</b>{limpio(e.nombre)}</li>)}
+      <ul className="st-l">{hoyEv.slice(0, 5).map((e, i) => <li key={i}><b>{e.sin_hora ? 'anunciado ' + liga.cuando(e.cuando) : liga.dia(e.cuando).replace(/^hoy /, '')} · {siglaDe(e.sv)}</b>{limpio(e.nombre)}</li>)}
         {hoyLg.slice(0, Math.max(0, 6 - Math.min(hoyEv.length, 5))).map((x) => <li key={x.L.id}><b>{x.t ? liga.dia(x.t).replace(/^hoy /, '') + ' · ' : ''}{siglaDe(x.L.sv)} · LIGA</b>
           {x.L.n}{x.j ? ', jornada ' + x.j : ''}</li>)}</ul></>,
     'hoy', hoyEv.length ? 'Ver Eventos' : 'Ver las ligas', { ruta: hoyEv.length ? '#/eventos' : '#/ligas' },
@@ -1238,7 +1290,9 @@ export function gruposHistorias(liga) {
     grupos.push({
       id: 'vivo-' + e.sv + '-' + limpio(e.nombre).toLowerCase(), tipo: 'vivo', nombre: 'En vivo · ' + siglaDe(e.sv), logo: liga.logo(e.sv), nom: limpio(e.nombre), firma: 'vivo:' + e.nombre + e.cuando,
       slides: [Slide('EN VIVO AHORA · ' + siglaDe(e.sv), <><img className={'st-logo' + (enVivo ? '' : ' grande')} alt="" src={liga.logo(e.sv, true)} /><h3 className={'st-h' + (enVivo ? '' : ' grande')}>{limpio(e.nombre)}</h3>
-        {enVivo || <small className="st-s">Empezó a las {liga.dia(e.cuando).replace(/^hoy /, '')}{m ? ' · ' + mult(m) + ' esta semana' : ''}.{L ? (L.enJuego ? ' ' + L.enJuego + ' en juego.' : '') : ' La llave aparece acá apenas la carguen.'}</small>}</>,
+        {/* 🕘 la hora sola (18/11/2026): `dia()` de algo que empezó antes de tu medianoche daba «Empezó a las martes 17 · …».
+            Sin hora que se pueda leer (`sin_hora`), su «cuando» es el de publicación: «Anunciado …» */}
+        {enVivo || <small className="st-s">{e.sin_hora ? 'Anunciado ' + liga.cuando(e.cuando) : 'Empezó a las ' + hora(e.cuando)}{m ? ' · ' + mult(m) + ' esta semana' : ''}.{L ? (L.enJuego ? ' ' + L.enJuego + ' en juego.' : '') : ' La llave aparece acá apenas la carguen.'}</small>}</>,
       'ahora', L ? 'Ver la llave' : dd ? dd.txt : 'Mirar en Discord', L ? { llave: 'v:' + L.id } : { link: dd ? dd.url : e.link },
       'vivo:' + e.sv + ':' + limpio(e.nombre) + ':' + e.cuando, '', { esc: e.sv, tono: 'vivo' })],
     });
@@ -1288,6 +1342,11 @@ export function gruposHistorias(liga) {
     // Siri, algo como una galaxia o un vórtice»
     grupos.push({ id: 'promos', tipo: 'promos', nombre: 'Promos', nom: 'Promos', nuevo: true, firma: firma(proms), slides });
   }
+  // 🗓️ el anuncio «Lunes de la Liga» de esta semana, para el botón de cada servidor (18/11/2026): con `{ ancla: 'semana' }`
+  // no hacía nada fuera del Inicio (la Tira sólo existe ahí, y el perfil del servidor abre estas mismas historias)
+  const iniSem = utc(mm.ini || '').getTime();
+  const novLunes = (liga.d.novedades || []).filter((x) => /lunes de la liga/i.test(x.tit || '') && x.link
+    && !(utc(x.t).getTime() < iniSem - 12 * 3600000)).sort((a, b) => utc(b.t) - utc(a.t))[0];
   // 🎮 tu servidor primero (13/10/2026, el research de los lobbies: «las historias por cercanía»), y después por tamaño
   const miSv = liga.yo ? liga.yo.sv : '';
   Object.values(liga.svs).sort((a, b) => (Number(b.sv === miSv) - Number(a.sv === miSv)) || b.n - a.n).forEach((s) => {
@@ -1307,7 +1366,7 @@ export function gruposHistorias(liga) {
     if (m || lineas.length) {
       // la de la semana es una historia más: se ve una vez por semana, con la hora del lunes en que empezó
       slides.push(Slide('ESTA SEMANA · ' + siglaDe(sv), <><img className="st-logo" alt="" src={liga.logo(sv)} />
-        {m ? <b className={'st-mult ' + (m > 1 ? 'sube' : 'baja')}>{mult(m)}</b> : null}<ul className="st-l">{lineas}</ul></>, 'lunes', 'Lunes de la Liga', { ancla: 'semana' },
+        {m ? <b className={'st-mult ' + (m > 1 ? 'sube' : 'baja')}>{mult(m)}</b> : null}<ul className="st-l">{lineas}</ul></>, 'lunes', 'Lunes de la Liga', novLunes ? { link: novLunes.link } : { ancla: 'semana' },
       'sem:' + sv + ':' + (mm.ini || ''), String(mm.ini || ''), { esc: sv, tono: 'verde' }));
     }
     const propios = muro.filter((it) => liga.svDe(it) === sv);
@@ -1345,8 +1404,10 @@ export function gruposHistorias(liga) {
   if (c) {
     const ks = new Set(c.gente.map((n) => liga.quien(n)).filter(Boolean).map((f) => f.k));
     ks.delete(yo.k);
+    // «el mejor», sólo si lo hay (18/11/2026): una crew recién creada llega sin fila del ciclo (`mejor: ''`) y terminaba
+    // en «· el mejor: »
     const slides = [Slide('TU CREW', <><CrewCirculo c={c} cls="st-crew" /><h3 className="st-h">{limpio(c.crew).toUpperCase()}</h3>
-      <small className="st-s">{c.n} {c.n !== 1 ? 'raperos' : 'rapero'} · {num(c.pts)} pts · el mejor: {liga.aka(c.mejor)}</small>
+      <small className="st-s">{c.n} {c.n !== 1 ? 'raperos' : 'rapero'} · {num(c.pts)} pts{c.mejor && liga.aka(c.mejor) ? ' · el mejor: ' + liga.aka(c.mejor) : ''}</small>
       <ul className="st-gente">{c.gente.slice(0, 8).map((n, i) => { const f = liga.quien(n); return <li key={i}><Cara liga={liga} k={f ? f.k : ''} nombre={n} cls="st-mini" /><span>{liga.aka(n)}</span></li>; })}</ul></>,
     'esta temporada', 'Ver la crew', { ruta: '#/crew/' + encodeURIComponent(c.clave || c.crew) }, 'crew:' + claveCrew(c.crew) + ':' + (mm.ini || ''),
     String(mm.ini || ''), { esc: yo.sv, tono: 'verde' })];
@@ -1994,8 +2055,15 @@ export function eventoDelBoton(liga) {
   if (liga.vivo().some(estoy)) return { e: null, anotado: null };
   const luego = liga.luego();
   const anotado = luego.find(estoy) || null;
-  const cerca = luego.filter((x) => utc(x.cuando) - liga.ahora < 36 * 3600000);
-  return { e: anotado || (yo && cerca.find((x) => x.sv === yo.sv)) || cerca[0] || luego[0] || null, anotado };
+  // 🔑 lo anunciado sin hora que se pueda leer (`sin_hora`, 18/11/2026) viene en `luego()` con la hora de publicación, que
+  // ya pasó: entraba siempre en «las próximas 36 h» y le ganaba al de tu servidor. No es «el próximo» si no se sabe cuándo
+  const conHora = luego.filter((x) => !x.sin_hora);
+  // ⏰ con la hora que vale (`cuandoDe()`, 18/11/2026): con un atraso avisado, la anunciada lo daba «en las próximas 36 h»
+  // aunque ya se hubiera corrido más allá, y le ganaba al de tu servidor. `luego()` ya filtra y ordena así, y el escenario también
+  const cerca = conHora.filter((x) => utc(liga.cuandoDe(x)) - liga.ahora < 36 * 3600000);
+  // …pero si es lo único anunciado, va (18/11/2026): sin él el botón decía «TODAVÍA NO ANUNCIARON EL PRÓXIMO» con el
+  // escenario al lado en «PRÓXIMO · ANUNCIADO HACE 20 MIN». El botón ya dice «anunciado …» (lobby.jsx)
+  return { e: anotado || (yo && cerca.find((x) => x.sv === yo.sv)) || cerca[0] || conHora[0] || luego[0] || null, anotado };
 }
 
 export function llaveEnVivo(e, vivoL) {
@@ -2281,9 +2349,11 @@ function momentos(liga, vivoL, ctx = {}) {
       tipo: 'vivo', clave: iv ? 'vivo-' + e.sv + '-' + iv : 'vivo', et: 'En vivo', sv: e.sv, hora: 'Ahora', peso: 100,
       _n: n, _ir: L ? () => accion.llave('v:' + L.id) : null, _href: !L && dd ? dd.url : '',
       txt: <><div className="hero-t"><img className="hv-logo" alt="" src={liga.logo(e.sv)} /><span className="tag vivo-late">EN VIVO AHORA</span>
-        <span className="hero-meta">{siglaDe(e.sv)} · EMPEZÓ {liga.dia(e.cuando).replace(/^hoy /, '')}{m ? ' · ' + mult(m) + ' ESTA SEMANA' : ''}</span></div>
+        {/* 🔑 sin hora que se pueda leer (`sin_hora`, 18/11/2026): su «cuando» es el de publicación, no el de inicio */}
+        <span className="hero-meta">{siglaDe(e.sv)} · {e.sin_hora ? 'ANUNCIADO ' + liga.cuando(e.cuando) : 'EMPEZÓ ' + liga.dia(e.cuando).replace(/^hoy /, '')}{m ? ' · ' + mult(m) + ' ESTA SEMANA' : ''}</span></div>
         <Tit c={'hero-ev' + (n.length > 16 ? ' largo' : '')}>{n}</Tit>
-        {det || e.premios ? <p className="hero-p">{det}{e.premios ? (det ? '. ' : '') + 'Premio: ' + recorte(e.premios, 70) : ''}</p> : null}
+        {/* ✂️ `60`: el largo al que el ciclo corta el premio (18/11/2026): «3 pt» salía «3…» */}
+        {det || e.premios ? <p className="hero-p">{det}{e.premios ? (det ? '. ' : '') + 'Premio: ' + recorte(e.premios, 70, 60) : ''}</p> : null}
         {/* 📱 en el celular, con la llave a la vista, esta línea y «Quiero aviso» no van: el en vivo era el momento más alto (630 px)
             y todos los demás quedaban con su hueco. La campana sigue arriba, en la cabecera */}
         <p className={'hero-p' + (L ? ' es-pc' : '')}>{L ? 'La llave, cruce por cruce, mientras se juega.' : 'La llave aparece acá apenas la carguen, cruce por cruce. Mientras, se mira en Discord.'}</p>
@@ -2308,7 +2378,13 @@ function momentos(liga, vivoL, ctx = {}) {
   } else out.push(...enVivo);
   // el próximo de la Liga, si no es el mismo que ya muestra el botón grande del lobby (`eventoDelBoton()`)
   const delBoton = eventoDelBoton(liga).e;
-  liga.luego().filter((x) => (utc(x.cuando) - liga.ahora) / 1000 < 36 * 3600 && x !== delBoton).slice(0, 1).forEach((e) => {
+  // ⏰ con la hora que vale (`cuandoDe()`, 18/11/2026): `luego()` ya trae el atrasado por su hora nueva, y acá se contaba
+  // desde la anunciada —«EMPIEZA EN -1 H -10 MIN» y la hora vieja en la etiqueta—. Lo anunciado sin hora que se pueda leer
+  // (`sin_hora`) no tiene cuenta atrás: su «cuando» es el de publicación, y se dice «anunciado …»
+  liga.luego().filter((x) => (utc(liga.cuandoDe(x)) - liga.ahora) / 1000 < 36 * 3600 && x !== delBoton).slice(0, 1).forEach((e) => {
+    const cu = liga.cuandoDe(e);
+    const sh = !!e.sin_hora;
+    const cuTxt = sh ? 'anunciado ' + liga.cuando(e.cuando) : liga.dia(cu);
     const dor = liga.esDorado(e.nombre, e.sv);
     const det = [siglaDe(e.sv), e.modalidad, e.cupos ? 'cupos ' + String(e.cupos).toLowerCase() : '', e.org ? 'organiza ' + e.org : ''].filter(Boolean).join(' · ');
     const n = limpio(e.nombre);
@@ -2316,24 +2392,25 @@ function momentos(liga, vivoL, ctx = {}) {
     const dd = aDiscord(liga, e, false);
     const ins = dd && e.ins ? dd : null;
     out.push({
-      tipo: 'prox', et: 'Próximo', sv: e.sv, hora: liga.dia(e.cuando),
-      txt: <><div className="hero-t"><img className="hv-logo" alt="" src={liga.logo(e.sv)} /><span className="tag tg-prox">PRÓXIMO · {liga.dia(e.cuando).toUpperCase()}</span></div>
+      tipo: 'prox', et: 'Próximo', sv: e.sv, hora: cuTxt,
+      txt: <><div className="hero-t"><img className="hv-logo" alt="" src={liga.logo(e.sv)} /><span className="tag tg-prox">PRÓXIMO · {cuTxt.toUpperCase()}</span></div>
         <Tit c={'hero-ev' + (n.length > 16 ? ' largo' : '')}>{n}</Tit>
-        <p className="hero-p">{det}{e.premios ? '. Premio: ' + recorte(e.premios, 70) : ''}</p>
+        {/* ✂️ el premio llega cortado a 60 (bot/subir_web.py): más corto vino entero y no se le come la palabra del final */}
+        <p className="hero-p">{det}{e.premios ? '. Premio: ' + recorte(e.premios, 70, 60) : ''}</p>
         <Anotados liga={liga} e={e} />
         <div className="hero-acc">{ins ? <a className="btn verde" href={ins.url} target="_blank" rel="noopener noreferrer">{ins.txt} ↗</a> : null}
           <a className={'btn ' + (ins ? 'borde' : 'verde')} href="#/avisos"><Ico n="campana" t={18} />Quiero aviso</a>
-          {ins ? null : <a className="btn borde" href={gcal(e)} target="_blank" rel="noopener noreferrer">+ Calendario</a>}</div></>,
+          {ins || sh ? null : <a className="btn borde" href={gcal(e)} target="_blank" rel="noopener noreferrer">+ Calendario</a>}</div></>,
       // ⏳ la cuenta atrás grande, al lado del logo (Dlx, 14/11/2026, a las mejoras: «todas»)
       // 🏆 y a quién hay que ganarle: los tres de ese servidor que más suman en la Temporada (15/11/2026, Dlx: «add more stuff»)
       vis: (
         <div className="es-prox-w">
           <div className="es-prox"><span className="mo-logo"><img alt="" src={liga.logo(e.sv, true)} />{dor ? <span className="mo-sello">DORADO ×3</span> : null}</span>
-            <span className="es-cuenta"><small>Empieza en</small><b>{liga.falta(e.cuando)}</b><small>{liga.dia(e.cuando)}</small></span></div>
+            {sh ? null : <span className="es-cuenta"><small>Empieza en</small><b>{liga.falta(cu)}</b><small>{liga.dia(cu)}</small></span>}</div>
           <MasSuman liga={liga} sv={e.sv} />
         </div>
       ),
-      peso: utc(e.cuando) - liga.ahora < 3 * 3600000 ? 92 : 60,
+      peso: !sh && utc(cu) - liga.ahora < 3 * 3600000 ? 92 : 60,
     });
   });
   // 🏟️ LA FECHA DE HOY DE CADA LIGA, COMO UN EVENTO MÁS (Dlx, 14/10/2026: «Ligas en el Inicio»). Hoy es lo que la liga
@@ -2841,8 +2918,9 @@ export function Instalar() {
   return (
     <aside className="instalar" aria-label="Instalar la página como app">
       <img alt="" src="/ul-192.png" />
+      {/* «Instálala», con tú (18/11/2026: decía «Instalala», el imperativo del vos; NOVEDADES 3.81) */}
       <span className="inst-tx"><b>La Liga en tu celular</b>
-        <small>{ev ? 'Instalala como app: queda en tu pantalla y se abre de un toque.' : 'En el iPhone se instala desde Safari, y así también te llegan los avisos.'}</small></span>
+        <small>{ev ? 'Instálala como app: queda en tu pantalla y se abre de un toque.' : 'En el iPhone se instala desde Safari, y así también te llegan los avisos.'}</small></span>
       {ev ? <button type="button" className="btn verde chico" onClick={instalar}>Instalar</button>
         // los pasos, con un dibujo por paso, viven en Ajustes (Dlx, 01/10/2026: «sé más específico»)
         : <a className="btn verde chico" href="#/cuenta/instalar">Ver cómo</a>}

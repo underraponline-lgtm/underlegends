@@ -64,12 +64,31 @@ export function DropDia({ P, miembro, dc, invita }) {
   const star = d ? !!d.star : false;
   // con la vuelta de tu Pase después de abrirlo, `d.ya` queda en true: lo de la pantalla no salta
   useEffect(() => { if (est === 'mal') { const t = setTimeout(() => setEst(''), 4000); return () => clearTimeout(t); } return undefined; }, [est]);
+  // 🌙 EL CAMBIO DE DÍA (18/11/2026): nada volvía a pedir el Pase a la medianoche del este, así que con el drop abierto
+  // el reloj se quedaba en 00:00:00, sin botón, y el `res` de ayer seguía diciendo «Ya abriste el de hoy» aunque llegara
+  // el día nuevo (se podía perder el día, y con él el Star del domingo). Con otro `dia` se olvida lo de ayer, y 5 s
+  // después de `fin` se pide el Pase otra vez (una sola: va atado a `fin`, que no cambia si el servidor sigue en el mismo
+  // día). Con la pestaña de fondo, espera a que vuelva a verse
+  const dia = d ? d.dia : '';
+  const fin = d ? d.fin : 0;
+  useEffect(() => { setRes(null); setEst(''); }, [dia]);
+  useEffect(() => {
+    if (!fin) return undefined;
+    const doc = W.document;
+    const verse = () => { if (doc && !doc.hidden) { doc.removeEventListener('visibilitychange', verse); pedirPase(); } };
+    const t = setTimeout(() => {
+      if (!doc || !doc.hidden) pedirPase(); else doc.addEventListener('visibilitychange', verse);
+    }, Math.max(0, fin - Date.now()) + 5000);
+    return () => { clearTimeout(t); if (doc) doc.removeEventListener('visibilitychange', verse); };
+  }, [fin]);
   const abrir = async () => {
     if (pidiendo.current || !d || d.ya) return;
     pidiendo.current = true;
     setEst('abre');
     const t0 = Date.now();
-    const j = W.conCuenta ? await W.conCuenta('/api/avisos/pase-dia', {}) : null;
+    // 18/11/2026: sin red `conCuenta` rechaza (pedirConCuenta no tiene catch) y esto tiraba antes de soltar `pidiendo`:
+    // el botón quedaba en «Abriendo…» para siempre. Con el catch sale «No se pudo abrir: prueba de nuevo»
+    const j = W.conCuenta ? await W.conCuenta('/api/avisos/pase-dia', {}).catch(() => null) : null;
     // que tiemble lo suyo aunque el servidor conteste rápido
     const resta = 1250 - (Date.now() - t0);
     if (resta > 0) await new Promise((r) => setTimeout(r, resta));

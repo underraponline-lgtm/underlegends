@@ -42,7 +42,9 @@ function sueleHoy(liga) {
 // ── Fechas ────────────────────────────────────────────────────────────────────────────────────────
 export function Fechas({ liga }) {
   const t = [];
-  liga.vivo().forEach((e) => t.push({ c: 'vivo', dia: 'HOY', hora: '● EN VIVO · empezó ' + liga.dia(e.cuando).replace(/^hoy /, ''), sv: e.sv, ev: limpio(e.nombre),
+  // 🔑 (18/11/2026) sin hora que se pueda leer (`sin_hora`), su «cuando» es el de publicación: decía «empezó» a la hora en
+  // que se anunció
+  liga.vivo().forEach((e) => t.push({ c: 'vivo', dia: 'HOY', hora: '● EN VIVO' + (e.sin_hora ? '' : ' · empezó ' + liga.dia(e.cuando).replace(/^hoy /, '')), sv: e.sv, ev: limpio(e.nombre),
     det: e.modalidad || 'se mira en Discord', link: (aDiscord(liga, e, true) || {}).url }));
   // ⏸ lo que el organizador pausó —«seguimos mañana»—: ni en vivo ni terminado (ver `liga.estado()`)
   liga.pausados().forEach(({ e, st }) => t.push({ c: 'pausado', dia: 'HOY', hora: '⏸ EN PAUSA', sv: e.sv, ev: limpio(e.nombre),
@@ -52,9 +54,15 @@ export function Fechas({ liga }) {
     const det = [e.modalidad, e.cupos ? 'cupos ' + String(e.cupos).toLowerCase() : ''].filter(Boolean).join(' · ');
     // ⏰ el que se atrasó, con su hora nueva y dicho
     const cu = liga.cuandoDe(e);
-    const atr = (liga.estado(e) || {}).tipo === 'atrasado';
-    t.push({ c: dor ? 'dorado' : atr ? 'pausado' : '', dia: liga.dia(cu).split(' ')[0].toUpperCase(),
-      hora: (atr ? '⏰ ' : '') + hora(cu) + (atr ? ' · se atrasó' : ' · tu hora'),
+    const st = liga.estado(e) || {};
+    const atr = st.tipo === 'atrasado';
+    // 🔑 (18/11/2026) y el anunciado sin hora que se pueda leer (`sin_hora`, a lo sumo 3 h después de publicado: ver
+    // `SIN_HORA_H` de bot/subir_web.py) viene con la de publicación, que ya pasó: salía como si arrancara a esa hora.
+    // ⏰ Salvo que el organizador haya dicho la hora nueva (`nueva`, 18/11/2026) y todavía no llegó: ésa sí se lee, y
+    // decía «anunciado …»
+    const sh = e.sin_hora && !(atr && st.nueva && utc(cu) > liga.ahora);
+    t.push({ c: dor ? 'dorado' : atr ? 'pausado' : '', dia: sh ? 'HOY' : liga.dia(cu).split(' ')[0].toUpperCase(),
+      hora: sh ? 'anunciado ' + liga.cuando(e.cuando) : (atr ? '⏰ ' : '') + hora(cu) + (atr ? ' · se atrasó' : ' · tu hora'),
       sv: e.sv, ev: limpio(e.nombre), det, badge: dor ? 'DORADO ×3' : '', link: (aDiscord(liga, e, false) || {}).url });
   });
   // 🗓️ lo que suele haber hoy y todavía no se anunció (ver `sueleHoy()`)
@@ -285,7 +293,11 @@ export function LuSocial({ liga, it, A, hilo, P, sinCm = false }) {
               );
             })}
           </span>
-          {todas.some(([e]) => !mias.includes(e)) ? <a className="lu-reac-pie" href="#/pase">Las apagadas se ganan con el Pase premium</a> : null}
+          {/* 🔁 (18/11/2026) el `parar` del span corta el clic antes del script que ataja los `#/…` (web/montar.py), y el
+              navegador iba a `/#/pase` recargando la página entera: se navega acá, como `irPub`. Con Ctrl o la rueda, otra pestaña */}
+          {todas.some(([e]) => !mias.includes(e)) ? <a className="lu-reac-pie" href="#/pase"
+            onClick={(e) => { if (e.button !== 0 || e.ctrlKey || e.metaKey || e.shiftKey || e.altKey) return; e.preventDefault(); setAbierto(false); location.hash = '#/pase'; }}>
+            Las apagadas se ganan con el Pase premium</a> : null}
         </span>
       ) : null}
     </span>
@@ -329,7 +341,11 @@ export function Noticias({ liga, raiz, prueba = '' }) {
   if (!muro.length) return null;
   // la grande: la última carta nueva; si no hay, el último logro
   const feat = muro.find((it) => it.tipo === 'tarjeta') || muro.find((it) => LU_REAC.has(it.tipo) && liga.itemMuro(it)) || null;
-  const noche = muro.find((it) => it.tipo === 'resnoche') || null;
+  // 🌙 (18/11/2026) sólo si es de anoche: una noche sin eventos no deja resumen (`resumen_noche()` de bot/muro.py da None),
+  // y al otro día «Anoche en la Liga» mostraba, sin fecha, la de dos noches atrás. `t` es las 3 AM ET del día siguiente a
+  // esa noche: se ve hasta las 5 AM del otro, y el de la noche nueva entra antes
+  const noche0 = muro.find((it) => it.tipo === 'resnoche') || null;
+  const noche = noche0 && liga.ahora - utc(noche0.t) < 26 * 3600000 ? noche0 : null;
   // el afiche de la liga va grande a la izquierda, debajo de la carta: es lo más visual que hay
   const flyer = muro.find((it) => it.tipo === 'flyer' && it.img) || null;
   // la lista: todo lo demás que se sabe dibujar, sin dos cartas seguidas de la misma persona (llegan juntas)
@@ -349,7 +365,9 @@ export function Noticias({ liga, raiz, prueba = '' }) {
   const filtros = LU_FILTROS.filter(([k]) => k === 'todo' || cuenta[k]);
   const filas = lista.filter((it) => fil === 'todo' || luCat(it) === fil).slice(0, prueba ? 20 : LU_FILAS);
   const ir = (it) => { const x = liga.itemMuro(it); if (x) irA(x[4], raiz); };
-  const tecla = (fn) => (e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); fn(); } };
+  // ⌨️ (18/11/2026) sólo la tecla sobre la fila misma: Enter en «Su perfil», «Comentar» o la nube subía hasta acá, el
+  // `preventDefault()` cancelaba el link y se abría la carta. Lo de adentro se activa solo (como competencias.jsx)
+  const tecla = (fn) => (e) => { if (e.target !== e.currentTarget) return; if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); fn(); } };
 
   // 🪪 la clave de cada uno aunque el muro no la traiga: por su nombre, sus alias o lo que reconoció el vigía (17/11/2026)
   const kDe = (it, i = 0) => ksDe(it)[i] || ((it.quien || [])[i] ? (liga.quien(it.quien[i]) || {}).k || '' : '');
@@ -430,11 +448,19 @@ export function Noticias({ liga, raiz, prueba = '' }) {
           {f ? <span className="lu-datos">
             {f.rg ? <span>Rango <b style={{ color: f.rgc || undefined }}>{f.rg}</b></span> : null}
             {f.pos ? <span>#{f.pos} Temporada</span> : null}
-            {f.ev ? <span>{f.ev} eventos</span> : null}
+            {/* 🔢 (18/11/2026) en singular cuando es uno: decía «1 eventos» (en /api/lobby hay filas con ev = 1) */}
+            {f.ev ? <span>{f.ev} {f.ev === 1 ? 'evento' : 'eventos'}</span> : null}
           </span> : null}
           <span className="lu-acc">
             {esCarta ? <button type="button" className="lu-btn v" onClick={(e) => { e.stopPropagation(); accion.carta(k, feat.carta); }}>Ver la carta</button> : null}
-            {k ? <a className="lu-btn" href={'#/r/' + encodeURIComponent(k)} onClick={(e) => e.stopPropagation()}>Su perfil</a> : null}
+            {/* 🔁 (18/11/2026) el `stopPropagation()` frenaba también al script que ataja los `#/…` (web/montar.py): el navegador
+                iba a `/#/r/<k>` y recargaba la página entera. Se navega acá, como `irPub`; con Ctrl o la rueda, otra pestaña */}
+            {k ? <a className="lu-btn" href={'#/r/' + encodeURIComponent(k)} onClick={(e) => {
+              e.stopPropagation();
+              if (e.button !== 0 || e.ctrlKey || e.metaKey || e.shiftKey || e.altKey) return;
+              e.preventDefault();
+              location.hash = '#/r/' + encodeURIComponent(k);
+            }}>Su perfil</a> : null}
             {/* 💬 comentar, en la fila de los botones (Dlx, 17/11/2026: «ese comentario muévelo a otra parte»): solo, abajo,
                 ocupaba una fila entera para un botón chico */}
             {feat.id ? <a className="lu-btn lu-btn-cm" href={'#/publicaciones/' + encodeURIComponent(feat.id)} onClick={(e) => irPub(e, feat.id)}
@@ -474,7 +500,9 @@ export function Noticias({ liga, raiz, prueba = '' }) {
     nocheT = (
       <a className={'lu-noche' + (larga ? ' larga' : '')} href="#/publicaciones">
         <span className="lu-cat">Anoche en la Liga</span>
-        <span className="lu-num">{noche.eventos}<small>{noche.eventos === 1 ? 'evento' : 'eventos'}</small>{noche.part}<small>raperos</small>{cs.length}<small>{cs.length === 1 ? 'campeón' : 'campeones'}</small></span>
+        {/* 🔢 (18/11/2026) `part` suma los participantes de cada llave: son participaciones, no raperos distintos (el 17/11,
+            69 de unos 52). Publicaciones ya lo llama así */}
+        <span className="lu-num">{noche.eventos}<small>{noche.eventos === 1 ? 'evento' : 'eventos'}</small>{noche.part}<small>{noche.part === 1 ? 'participación' : 'participaciones'}</small>{cs.length}<small>{cs.length === 1 ? 'campeón' : 'campeones'}</small></span>
         <span className="lu-noche-c">{caras.map(([n, k]) => <Cara key={k} liga={liga} k={k} nombre={n} cls="nt-c" />)}
           <small>{cs.slice(0, 2).map((c) => (c.quien || []).map((y) => liga.aka(y[0], y[1])).join(' y ')).join(', ')}{cs.length > 2 ? ' y ' + (cs.length - 2) + ' más' : ''}</small></span>
         {larga ? (
@@ -651,6 +679,16 @@ function Mandan({ liga, c, xs, yoFila, pub }) {
 
 // los números grandes en corto: 786.861 → 787K, 1.250.000 → 1,25M
 const corto = (n) => (n >= 1e6 ? (Math.round(n / 1e4) / 100).toString().replace('.', ',') + 'M' : n >= 1e4 ? Math.round(n / 1e3) + 'K' : num(n));
+// 🎯 LOS EVENTOS DE LA LETRA SON LOS DE TIER 1 (18/11/2026): «tu fila» del Competitivo y Tu temporada contaban `ev` (todos
+// los eventos), y a quien tenía 10 o más pero menos de 10 de Tier 1 le decían «Tu letra llega con la próxima corrida»
+// (Vilca: 26 eventos, 4 de Tier 1). La regla es la del Ranking (ranking.jsx, 13/11/2026): `evc ?? ev` —el payload trae
+// `evc` sólo cuando difiere—, y el 10 sale de los requisitos del payload, como allá
+const evcDe = (f) => (f && typeof f.evc === 'number' ? f.evc : (f && f.ev) || 0);
+function pideComp(liga) {
+  const q = (liga.d.requisitos || []).find((x) => x.id === 'competitivo');
+  const m = q && /(\d+)/.exec((q.pide || [])[0] || '');
+  return (m && Number(m[1])) || 10;
+}
 
 export function LosQueMandan({ liga, dc }) {
   const [ligasR, setLigasR] = useState(null);
@@ -680,15 +718,19 @@ export function LosQueMandan({ liga, dc }) {
   const compT = T.filter((f) => f.rg).sort((a, b) => (b.sc || 0) - (a.sc || 0));
   let yoComp = null;
   if (yo && !yo.rg) {
-    const falta = Math.max(0, 10 - (yo.ev || 0));
-    yoComp = <Puesto cara={cara} quien={quien} pos="—" pct={Math.round((100 * Math.min(10, yo.ev || 0)) / 10)}
-      txt={falta ? 'Te faltan ' + falta + (falta === 1 ? ' evento' : ' eventos') + ' para tu letra' : 'Tu letra llega con la próxima corrida'} href="#/ranking/competitivo" />;
+    // los de Tier 1 (`evcDe()`, 18/11/2026), con el texto del Ranking Competitivo
+    const pide = pideComp(liga);
+    const evc = evcDe(yo);
+    const falta = Math.max(0, pide - evc);
+    yoComp = <Puesto cara={cara} quien={quien} pos="—" pct={Math.round((100 * Math.min(pide, evc)) / pide)}
+      txt={falta ? 'Te ' + (falta === 1 ? 'falta 1 evento' : 'faltan ' + falta + ' eventos') + ' en servidores Tier 1 para tu letra' : 'Tu letra llega con la próxima corrida'} href="#/ranking/competitivo" />;
   } else if (yo) {
     yoComp = fila(puestoDe(liga, compT, (f) => f.k === yo.k, (f) => f.sc || 0, 'de Score', 1), '#/ranking/competitivo');
   }
   const sc1 = (x) => (Number(x) || 0).toFixed(1).replace('.', ',');
-  cats.push(['competitivo', 'Competitivo', compT.slice(0, 5).map((f) => per(f, 'competitivo', f.sc || 0, sc1(f.sc), 'SCORE', 'Rango ' + f.rg + ' · ' + (f.ev || 0) + ' eventos', '',
-    [[sc1(f.sc), 'SCORE'], [f.rg, 'RANGO'], [f.ev || 0, 'EVENTOS'], [f.wr || '—', 'GANADAS']])), yoComp]);
+  // los eventos del Competitivo, los de Tier 1 (`evcDe()`, 18/11/2026): decía 34 de Carlosss y su Ranking, 28
+  cats.push(['competitivo', 'Competitivo', compT.slice(0, 5).map((f) => per(f, 'competitivo', f.sc || 0, sc1(f.sc), 'SCORE', 'Rango ' + f.rg + ' · ' + evcDe(f) + ' eventos', '',
+    [[sc1(f.sc), 'SCORE'], [f.rg, 'RANGO'], [evcDe(f), 'EVENTOS'], [f.wr || '—', 'GANADAS']])), yoComp]);
   // ⚔️ ELO (Dlx, 12/11/2026: «los rankings que faltan»): las batallas uno contra uno por divisiones. La carta es la
   // Competitiva (la que habla de batallas); su «#» es el del Competitivo: el puesto en ELO es el de esta lista
   const eloT = [];
@@ -713,8 +755,20 @@ export function LosQueMandan({ liga, dc }) {
   if (ligasC && Object.keys(ligasC).length) {
     const nomLiga = {};
     ((ligasL || {}).ligas || []).forEach((L) => { nomLiga[L.id] = L.n; });
+    // 🧑 (18/11/2026) no sólo los de la tabla: la carta de liga no sale de las 200 filas, y quien está más abajo (Krtman es
+    // el #133 y no viaja) no entraba nunca, ni a su propia fila. Con su fila entera (`persona()`: la tabla, un perfil
+    // abierto o los perfiles ya bajados) y sin «fuera de concurso». ⚠️ El staff que no compite (`solo`: Ceko, OVR de liga
+    // 98) sigue afuera hasta que Dlx diga si cuenta; y de quien sólo viaja con su nombre no se sabe si es `fc`: afuera
     const todas = [];
-    Object.entries(ligasC).forEach(([k, xs]) => (xs || []).forEach((x) => { if (liga.T[k] && !liga.T[k].fc) todas.push({ k, lid: x[0], v: x[1], ovr: x[2] || 0 }); }));
+    // 🏷️ y la marca de `/api/ligas` (18/11/2026, `_con_cartas_liga()`: 1 fuera de concurso, 2 staff que no compite, 3 no
+    // jugó la temporada, 0 del pool con número) dice lo que el Inicio no sabe de quien sólo viaja con su nombre; con un
+    // `/api/ligas` de antes, sin marca, como hasta ahí
+    Object.entries(ligasC).forEach(([k, xs]) => {
+      const f = liga.persona(k);
+      const marca = ((xs || [])[0] || [])[4];
+      if ((f && (f.fc || f.solo)) || marca === 1 || marca === 2 || marca === 3 || (!f && marca == null)) return;
+      (xs || []).forEach((x) => todas.push({ k, lid: x[0], v: x[1], ovr: x[2] || 0 }));
+    });
     todas.sort((a, b) => b.ovr - a.ovr);
     const vistos = new Set();
     const mejores = todas.filter((x) => (vistos.has(x.k) ? false : vistos.add(x.k))).slice(0, 5);
@@ -722,11 +776,12 @@ export function LosQueMandan({ liga, dc }) {
     const iMiL = miL ? todas.filter((x, j) => todas.findIndex((y) => y.k === x.k) === j).findIndex((x) => x.k === yo.k) : -1;
     const src = (x, chica) => liga.d.r2 + '/' + encodeURIComponent(x.k) + '/liga-' + x.lid + (chica ? '.chica' : '') + '.webp?v=' + x.v;
     cats.push(['ligas', 'Ligas', mejores.map((x) => {
-      const f = liga.T[x.k];
+      // la fila de fuera de la tabla también (`persona()`, ver arriba): el nombre, con `nombreDe()`
+      const f = liga.persona(x.k) || liga.quienK(x.k) || {};
       return {
-        key: x.k, pk: x.k, href: '#/ligas/' + encodeURIComponent(x.lid), nom: limpio(f.n), cc: f.cc, sub: nomLiga[x.lid] ? limpio(nomLiga[x.lid]) : 'Su liga', v: x.ovr, vt: x.ovr, vl: 'OVR',
+        key: x.k, pk: x.k, href: '#/ligas/' + encodeURIComponent(x.lid), nom: liga.nombreDe(x.k, f.n), cc: f.cc, sub: nomLiga[x.lid] ? limpio(nomLiga[x.lid]) : 'Su liga', v: x.ovr, vt: x.ovr, vl: 'OVR',
         st: [[x.ovr, 'OVR DE LIGA'], [(ligasC[x.k] || []).length, (ligasC[x.k] || []).length === 1 ? 'LIGA' : 'LIGAS']],
-        grande: <img className="ci mn-carta" alt={'Carta de liga de ' + limpio(f.n)} loading="lazy" src={src(x, true)} />,
+        grande: <img className="ci mn-carta" alt={'Carta de liga de ' + liga.nombreDe(x.k, f.n)} loading="lazy" src={src(x, true)} />,
         mini: <img className="ci mn-ci" alt="" loading="lazy" src={src(x, true)} />,
       };
     }),
@@ -972,7 +1027,11 @@ export function TuTemporada({ liga, dc }) {
     );
   }
   const ev = f.ev || 0;
-  const falta = Math.max(0, 10 - ev);
+  // 🎯 la letra pide eventos de Tier 1 (`evcDe()`, 18/11/2026): con `ev` decía «Ya tienes letra.» a quien no la tenía
+  const pide = pideComp(liga);
+  const evc = evcDe(f);
+  const falta = f.rg ? 0 : Math.max(0, pide - evc);
+  const llenas = f.rg ? 10 : Math.round((10 * Math.min(pide, evc)) / pide);
   const bus = liga.buscado(f.k);
   const mw = liga.d.mw || {};
   return (
@@ -983,8 +1042,9 @@ export function TuTemporada({ liga, dc }) {
         {f.rg ? <Rango liga={liga} rg={f.rg} /> : <span className="rg sinletra">?</span>}
       </div>
       <div className="tu-prog">
-        <div className="barra10">{Array.from({ length: 10 }, (_, i) => <i key={i} className={i < ev ? 'si' : ''} />)}</div>
-        <small>{falta ? 'Todavía sin letra: ' + ev + ' de 10 eventos. Te faltan ' + falta + ' para tu rango.' : 'Ya tienes letra.'}</small>
+        <div className="barra10">{Array.from({ length: 10 }, (_, i) => <i key={i} className={i < llenas ? 'si' : ''} />)}</div>
+        <small>{falta ? 'Todavía sin letra: ' + evc + ' de ' + pide + ' eventos en servidores Tier 1. Te ' + (falta === 1 ? 'falta 1' : 'faltan ' + falta) + ' para tu rango.'
+          : f.rg ? 'Ya tienes letra.' : 'Tu letra llega con la próxima corrida.'}</small>
       </div>
       {bus ? <div className="te-buscan"><b>HOY TE BUSCAN</b><span>{num(bus.v)} pts por tu cabeza · {bus.cn} · hasta {liga.dia(mw.fin)}</span></div> : null}
       <div className="tu-acc"><a className="btn negro" href={'#/r/' + encodeURIComponent(f.k)}>Ver mi perfil</a>
@@ -998,7 +1058,9 @@ function Numeros({ liga }) {
   const c = liga.d.comunidad || {};
   const a = liga.d.actividad || {};
   const grandes = [['PERSONAS', c.personas, 'en ' + (c.servidores || 0) + ' servidores'], ['EN LA LISTA', c.lista, 'compitieron o se anotaron'],
-    ['CON SU DISCORD', c.con_id, 'el bot sabe quiénes son'], ['VERIFICADAS', c.verificados, 'con las cuatro tarjetas']].filter((x) => x[1]);
+    // 🪪 (18/11/2026) «con las cuatro tarjetas» era la regla de antes de la 2.41: verificarse da la Servidor, y las demás
+    // piden lo suyo. `verificados` cuenta a quien pasa el portón: Miembro de DRA, con su Discord y su país
+    ['CON SU DISCORD', c.con_id, 'el bot sabe quiénes son'], ['VERIFICADAS', c.verificados, 'Miembros de Discord Rap Español']].filter((x) => x[1]);
   // sin un solo evento en las dos semanas no se dibuja: una tira de ceros el día del arranque dice «no pasa nada»,
   // y lo que pasa es que la temporada recién empieza (medido con la página en cero, 02/10/2026)
   const dias = jugoAlgo(a) ? a.dias : [];

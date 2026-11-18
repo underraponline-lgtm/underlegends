@@ -281,8 +281,10 @@ export function Cartas({ liga, xs }) {
         <div className="pub-c">
           <span className="pub-cat">CARTA NUEVA<small>{liga.cuando(us[0].t)}</small></span>
           <p className="pub-t"><b>{nombres}</b> ya tiene su carta {CARTA[us[0].carta] || ''}</p>
+          {/* 🪪 `liga.existe(k)` y no `liga.T[k]` (18/11/2026): quien está fuera de las 200 filas también tiene perfil, y
+              «Ver su perfil» no salía */}
           <div className="pub-acc"><button type="button" className="pub-a" onClick={() => accion.carta(k, us[0].carta)}>Ver la carta</button>
-            {liga.T[k] ? <a className="pub-a" href={'#/r/' + encodeURIComponent(k)}>Ver su perfil</a> : null}</div>
+            {liga.existe(k) ? <a className="pub-a" href={'#/r/' + encodeURIComponent(k)}>Ver su perfil</a> : null}</div>
         </div>
       </article>
     );

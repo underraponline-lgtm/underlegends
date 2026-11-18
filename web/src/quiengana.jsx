@@ -39,8 +39,12 @@ function useQG() {
     const traer = () => fetch('/api/avisos/qg-finales').then((r) => (r.ok ? r.json() : null))
       .then((j) => { if (vivo && j && Array.isArray(j.f)) setD(j); }).catch(() => {});
     traer();
-    const id = setInterval(traer, 60000);
-    return () => { vivo = false; clearInterval(id); };
+    // (18/11/2026: con la pestaña oculta seguía pidiendo cada minuto, como los aplausos y los votos de las ligas antes
+    // del 10/11; al volver a verla, se pide enseguida)
+    const id = setInterval(() => { if (!document.hidden) traer(); }, 60000);
+    const vis = () => { if (!document.hidden) traer(); };
+    document.addEventListener('visibilitychange', vis);
+    return () => { vivo = false; clearInterval(id); document.removeEventListener('visibilitychange', vis); };
   }, []);
   const votar = async (q, lado) => {
     if (!q.abierta || !W.conCuenta || mios[q.id] === lado) return;

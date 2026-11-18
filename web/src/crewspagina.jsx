@@ -17,10 +17,10 @@
 // cada crew del objeto (crews.js), y la letra, el país y el último evento de cada uno, de la tabla de la temporada.
 import { useMemo, useState } from 'react';
 import { limpio, norm, num } from './liga.js';
-import { Bandera, Cara, ConMas, Vacio, accion } from './piezas.jsx';
+import { Bandera, Cara, ConMas, Vacio, accion, usePerfiles } from './piezas.jsx';
 import { CrewCirculo } from './arriba.jsx';
 import { escudoDe, tinta } from './escudo.jsx';
-import { accionCrew, armarCrews as armar, cierreCrews, errorCrew, faltaCierre, useCrews } from './crews.js';
+import { accionCrew, armarCrews as armar, cierreCrews, errorCrew, faltaCierre, pedirCrews, pedirMia, useCrews } from './crews.js';
 import { Anillo, CrearCrew, EntrarDeNuevo, TierChip, consejosCrew } from './crewpanel.jsx';
 import CSS_PAGINA from './css/crews.css?inline';
 import { usarCss } from './css.js';
@@ -46,7 +46,9 @@ const ORDENES = [['reco', 'Para ti'], ['activas', 'Más activas esta semana'], [
 // botón: Unirme / Pedir entrar, como las alianzas de Whiteout Survival) con la SEMANA de la LIGA (la tabla de cada tier
 // con la raya de bajar y la cuenta atrás, como las ligas de Duolingo; la semana pasada al lado, como los clubs de Strava).
 export function CrewsPagina({ liga, dc, qs }) {
-  const { todas, mia, miaNo } = useCrews();
+  // ⚠️ `todasNo` y `miaFallo` (18/11/2026): con un fallo pasajero la cabecera se quedaba sin ningún botón (ni Fundar ni
+  // Entrar) y la lista en «Cargando las crews…» para siempre
+  const { todas, todasNo, mia, miaNo, miaFallo } = useCrews();
   const [filElegido, setFil] = useState(null);
   // 🧱 «Fundar una» abre el formulario acá mismo (Dlx, 19/10/2026: «la gente no sabe dónde crear crews»); `?armar=1`
   // lo trae abierto (el botón de Mi crew). ⚠️ No se llama `armar`: así se llama la función importada que arma la lista,
@@ -57,7 +59,11 @@ export function CrewsPagina({ liga, dc, qs }) {
   const [selId, setSel] = useState(null);
   const [como, setComo] = useState(false);
   const T = liga.d.crews_tiers && liga.d.crews_tiers.nombres ? liga.d.crews_tiers : null;
-  const xs = useMemo(() => armar(liga, todas, mia), [liga, todas, mia]);
+  // 🧑 la fila entera de quien está más allá de los 200 (18/11/2026): `armar` la toma de /api/perfiles, pero en una carga
+  // en frío de Crews nadie lo bajaba ni rearmaba la lista al llegar —faltaban banderas, «De tu servidor/país» y salía
+  // «Dormida»—. Con `P`, la lista (y TuCrew con sus consejos) se rearma sola
+  const P = usePerfiles();
+  const xs = useMemo(() => armar(liga, todas, mia, P), [liga, todas, mia, P]);
   const yo = liga.yo;
   // «Te aceptan» prendido para quien busca crew (como «sólo clanes a los que puedo entrar» de Clash of Clans)
   const fil = filElegido !== null ? filElegido : dc && mia && mia.de && !mia.crew ? 'lugar' : '';
@@ -74,7 +80,9 @@ export function CrewsPagina({ liga, dc, qs }) {
             : orden === 'nuevas' ? (b.c.creada || 0) - (a.c.creada || 0)
               : b.reco - a.reco) || (b.pts - a.pts));
   const mias = xs.find((x) => x.mia);
-  const filtros = FILTROS.filter(([v]) => (v === 'servidor' ? yo && yo.sv : v === 'pais' ? yo && yo.cc : v === 'conozco' ? (liga.sigue || []).length : true));
+  // ⭐ `sigueTodos` (18/11/2026): `conozco` (crews.js) ya cuenta a quien sigues fuera de las 200 filas, y con `sigue` el
+  // filtro no salía a quien sólo sigue a gente de más abajo
+  const filtros = FILTROS.filter(([v]) => (v === 'servidor' ? yo && yo.sv : v === 'pais' ? yo && yo.cc : v === 'conozco' ? (liga.sigueTodos || liga.sigue || []).length : true));
   const enCrews = xs.reduce((a, x) => a + x.ks.length, 0);
   const jugaronSem = xs.filter((x) => x.jugaron > 0).length;
   // ⭐ PARA TI: el MAZO del remake (29/10/2026), sin crew todavía —o sin cuenta—, para que se vea qué hay
@@ -100,13 +108,15 @@ export function CrewsPagina({ liga, dc, qs }) {
             {/* ⬆️ «Fundar una crew» arriba de todo (Dlx, 16/11/2026: «que aparezca más arriba») */}
             <div className="crw-cta">
               {!dc || (!mia && miaNo) ? <button type="button" className="btn verde" onClick={accion.entrar}>{dc ? 'Entrar de nuevo con Discord' : 'Entrar con Discord'}</button>
+                : !mia && miaFallo ? <button type="button" className="btn verde" onClick={() => pedirMia(true)}>No pude traer tu crew · Probar de nuevo</button>
                 : mia && !mia.de ? <a className="btn verde" href="#/cuenta/verificar">Verificarme para fundar o entrar</a>
                   : puedeFundar ? <button type="button" className="btn verde" onClick={fundar}>Fundar una crew · {num((mia && mia.precio) ?? 2500)} Puntos</button> : null}
               {buscando && reco.length ? <button type="button" className="btn osc" onClick={() => irA('crw-mazo')}>⚡ Encontrar mi crew</button> : null}
               <a className="btn osc" href="#/ranking/crews">Ranking de crews</a>
             </div>
           </div>
-          {cierre ? <div className="crw-cierre"><span>Cierra el lunes · 11 AM</span><b>{faltaCierre(cierre, liga.ahora)}</b></div> : null}
+          {/* 🕐 «(hora del este)» (18/11/2026): la hora no pasa por la zona de Ajustes, y sin decirlo se leía como la tuya */}
+          {cierre ? <div className="crw-cierre"><span>Cierra el lunes · 11 AM (hora del este)</span><b>{faltaCierre(cierre, liga.ahora)}</b></div> : null}
         </section>
       </div>
       <div className="crw-main2">
@@ -133,7 +143,7 @@ export function CrewsPagina({ liga, dc, qs }) {
               {filtros.map(([v, t]) => <button type="button" key={v || 'todas'} className={fil === v ? 'on' : ''} aria-pressed={fil === v} onClick={() => setFil(v)}>{t}</button>)}
             </ConMas>
           </nav>
-          {!todas ? <p className="pub-tx">Cargando las crews…</p>
+          {!todas ? <p className="pub-tx">{todasNo ? <>No pude traer las crews. <button type="button" className="te-link" onClick={() => pedirCrews(true)}>Probar de nuevo</button></> : 'Cargando las crews…'}</p>
             : lista.length ? (
               <div className="crw-busqueda">
                 <ul className="crw-filas">{lista.map((x) => (
@@ -314,13 +324,20 @@ function TuCrew({ liga, dc, mia, miaNo, x, xs, T, armar, setArmar }) {
     const enTier = xs.filter((y) => y.tier === x.tier && y.ks.length).sort((a, b) => b.semPts - a.semPts);
     const sig = T && T.sube[x.tier] ? T.nombres[x.tier + 1] : '';
     const falta = T && T.sube[x.tier] ? Math.max(0, T.sube[x.tier] - x.semPts) : 0;
+    // 👥 y cuántos tienen que jugar (18/11/2026): el cierre pide `jugaron >= JUEGAN[tier + 1]` (crews_tiers.py) y esto
+    // miraba sólo los puntos. A una crew de uno le decía «si cierra así, sube a Oro» y el lunes no subía.
+    // «falta 1 que juegue», no «faltan 1 que jueguen» (18/11/2026): es justo el caso de la crew de uno, como en crew2.jsx
+    const jj = T && T.sube[x.tier] ? ((T.juegan || [])[x.tier + 1] || 0) : 0;
+    const subeTxt = falta ? ' sube a ' + sig + ' con ' + num(falta) + ' puntos más' + (jj > 1 ? ' y que jueguen ' + jj : '')
+      : x.jugaron >= jj ? ': si cierra así, sube a ' + sig
+        : ': ya tiene los puntos, ' + (jj - x.jugaron === 1 ? 'falta 1 que juegue' : 'faltan ' + (jj - x.jugaron) + ' que jueguen') + ' para subir a ' + sig;
     const tp = manda ? consejosCrew(liga, x.c, mia, T, null)[0] : null;
     return (
       <section className="crw-tu crw-franja" id="crw-tu" aria-label="Tu crew">
         <CrewCirculo c={{ logo: x.logo, crew: x.c.nombre }} cls="crw-logo" />
         <div className="crw-franja-t">
           <small>TU CREW{T ? ' · #' + (enTier.indexOf(x) + 1) + ' de la semana en ' + T.nombres[x.tier] : ''}</small>
-          <b>{limpio(x.c.nombre)}{sig ? (falta ? ' sube a ' + sig + ' con ' + num(falta) + ' puntos más' : ': si cierra así, sube a ' + sig) : ''}</b>
+          <b>{limpio(x.c.nombre)}{sig ? subeTxt : ''}</b>
           <span>{x.jugaron} de {x.ks.length} {x.jugaron === 1 ? 'jugó' : 'jugaron'} esta semana{tp ? ' · ' + tp.ico + ' ' + tp.t : ''}
             {inv.length ? ' · 📨 te invitaron a ' + inv.map((i) => limpio(i.nombre)).join(', ') : ''}</span>
         </div>
@@ -354,7 +371,8 @@ function Ficha({ liga, x, T, dc, mia }) {
   const L = liga.d.rangos || [];
   const color = (r) => (L.find((y) => y.r === r) || {}).color || 'var(--gris)';
   const caras = x.filas.slice().sort((a, b) => (a.pos || 1e9) - (b.pos || 1e9)).slice(0, 5);
-  const conocidos = x.conozco.map((k) => limpio((liga.T[k] || {}).n || k));
+  // 🪪 `nombreDe()` y no `liga.T[k]` (18/11/2026): quien sigues y quedó fuera de las 200 filas salía con su clave
+  const conocidos = x.conozco.map((k) => liga.nombreDe(k));
   return (
     <article className={'crw-ficha' + (x.invitado ? ' inv' : '')}>
       <a className="crw-top" href={enlaceCrew(c.id)}>
@@ -379,7 +397,7 @@ function Ficha({ liga, x, T, dc, mia }) {
         : x.dias !== null ? (x.dias === 0 ? 'Jugaron hoy' : 'Nadie jugó esta semana · el último, hace ' + x.dias + (x.dias === 1 ? ' día' : ' días'))
           : 'Nadie de la crew jugó todavía en la temporada'}</p>
       {conocidos.length || x.deMiSv || x.deMiPais ? (
-        <p className="crw-conoce">{x.conozco.slice(0, 3).map((k) => <Cara key={k} liga={liga} k={k} nombre={(liga.T[k] || {}).n || k} cls="cara crw-cara chica" lazy />)}
+        <p className="crw-conoce">{x.conozco.slice(0, 3).map((k) => <Cara key={k} liga={liga} k={k} nombre={liga.nombreDe(k)} cls="cara crw-cara chica" lazy />)}
           {[conocidos.length ? 'Sigues a ' + conocidos.slice(0, 2).join(' y ') + (conocidos.length > 2 ? ' y ' + (conocidos.length - 2) + ' más' : '') : '',
           x.deMiSv ? x.deMiSv + ' de tu servidor' : '', x.deMiPais ? x.deMiPais + ' de tu país' : ''].filter(Boolean).join(' · ')}</p>
       ) : null}
@@ -417,8 +435,11 @@ function Unirme({ x, dc, mia, texto }) {
   } else if (mia.crew) b = null;
   else if (pedi) b = <small className="crw-ya">Pediste entrar</small>;
   else if (mia.espera_ms > 0) {
-    const f = new Date(Date.now() + mia.espera_ms).toLocaleDateString('es', { day: 'numeric', month: 'numeric' });
-    b = <small className="crw-ya">Podés entrar desde el {f}</small>;
+    // 🕐 por fmtFecha() y con «tú» (18/11/2026): `toLocaleDateString` iba en la zona del dispositivo e ignoraba la de
+    // Ajustes —cerca de la medianoche, un día corrido del resto de la página—, y decía «Podés»
+    const d = new Date(Date.now() + mia.espera_ms);
+    const f = window.fmtFecha ? window.fmtFecha(d.toISOString(), { day: 'numeric', month: 'numeric' }) : d.toLocaleDateString('es', { day: 'numeric', month: 'numeric' });
+    b = <small className="crw-ya">Puedes entrar desde el {f}</small>;
   }
   else if (x.llena) b = <small className="crw-ya">Llena</small>;
   else if (c.entrada === 'invitacion') b = <small className="crw-ya">Sólo por invitación</small>;

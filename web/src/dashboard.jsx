@@ -133,7 +133,10 @@ function Sistema({ s, sesiones }) {
 // últimas las trae la puerta (`corridasCiclo()` en bot/avisos.js, con el token del Worker); correrlo es el mismo
 // `workflow_dispatch` que larga el cron cada media hora, como mucho una vez cada 10 minutos (`cicloAMano()`).
 const ESTADO_CORRIDA = { queued: '⏳ en cola', waiting: '⏳ esperando', pending: '⏳ en cola', requested: '⏳ pedida', in_progress: '▶️ corriendo' };
-const FIN_CORRIDA = { success: '✅ terminó bien', failure: '⚠️ falló', cancelled: '⛔ cancelada', timed_out: '⚠️ se pasó de tiempo', skipped: 'salteada' };
+// ⚠️ las otras conclusiones de GitHub también (18/11/2026): el 11/11 una `startup_failure` salió en inglés crudo y como
+// «terminó» en Salud. Cada una con su emoji y un espacio delante: cuatro lugares le cortan la primera palabra
+const FIN_CORRIDA = { success: '✅ terminó bien', failure: '⚠️ falló', cancelled: '⛔ cancelada', timed_out: '⚠️ se pasó de tiempo', skipped: 'salteada',
+  startup_failure: '⚠️ no arrancó', action_required: '⚠️ pide aprobación', neutral: '✅ terminó', stale: '⚠️ quedó vieja' };
 function Corridas({ corridas, s, github }) {
   const [msg, setMsg] = useState('');
   const [ocup, setOcup] = useState(false);
@@ -263,7 +266,10 @@ const MARCA_AJ = { multiplicadores: 'multiplicador a mano', campana_pausada: 'ca
 function marcasPorSemana(cambios, hist) {
   const v = {}, a = {}, m = {};
   for (const c of cambios || []) if (c.dia && c.version) { const k = lunesDe(c.dia); (v[k] = v[k] || []).push(c.version + ' ' + (c.titulo || '')); }
-  for (const h of hist || []) if (MARCA_AJ[h.cual]) { const k = lunesDe(new Date(msDe(h.t)).toISOString()); (a[k] = a[k] || new Set()).add('✍ ' + MARCA_AJ[h.cual]); }
+  // 📅 el día del ajuste en hora del este, como las cohortes (18/11/2026): con `toISOString()` era el día UTC, y lo
+  // tocado un domingo desde las 7 PM ET caía en la semana siguiente
+  const diaET = new Intl.DateTimeFormat('en-CA', { timeZone: 'America/New_York', year: 'numeric', month: '2-digit', day: '2-digit' });
+  for (const h of hist || []) if (MARCA_AJ[h.cual]) { const k = lunesDe(diaET.format(new Date(msDe(h.t)))); (a[k] = a[k] || new Set()).add('✍ ' + MARCA_AJ[h.cual]); }
   for (const k of new Set([...Object.keys(v), ...Object.keys(a)])) {
     const xs = (v[k] || []);
     m[k] = { corto: [xs.length ? num(xs.length) + (xs.length === 1 ? ' versión' : ' versiones') + ' de la página' : '', ...(a[k] || [])].filter(Boolean),
@@ -296,7 +302,8 @@ function VueltaSegundo({ r, marcas }) {
           <b>{pc(k / n)} %</b>
           <div>
             <p><b>{num(k)} de {num(n)}</b> que debutaron {ult.length === 1 ? 'en la última semana cerrada' : 'en las últimas ' + ult.length + ' semanas cerradas'} volvieron a jugar en 14 días.</p>
-            <small>De verdad puede estar entre {pc(lo)} % y {pc(hi)} %{na ? '. Las 4 de antes: ' + pc(ka / na) + ' % (' + num(na) + ' personas)' + (claro ? (k / n > ka / na ? ': subió.' : ': bajó.') : ': sin cambio claro.') : '.'}</small>
+            {/* 🔢 cuántas «de antes» de verdad (18/11/2026): hasta tener 8 cerradas son menos de 4, y decía «Las 4 de antes» por una sola */}
+            <small>De verdad puede estar entre {pc(lo)} % y {pc(hi)} %{na ? '. ' + (ant.length === 1 ? 'La semana de antes' : 'Las ' + ant.length + ' de antes') + ': ' + pc(ka / na) + ' % (' + num(na) + ' personas)' + (claro ? (k / n > ka / na ? ': subió.' : ': bajó.') : ': sin cambio claro.') : '.'}</small>
           </div>
         </div>
       ) : <p className="db-tx">Todavía no cerró ninguna semana: la primera se sabe 14 días después del debut.</p>}
@@ -373,7 +380,9 @@ function PrimerizosLista({ P, vuelve, liga, alVuelve }) {
   const svs = [...new Set(xs0.map((f) => f[1]).filter(Boolean))].sort();
   const xs = xs0.filter((f) => (!sv || f[1] === sv) && contiene([f[0]], q));
   const ver = mas ? xs.slice(0, 200) : xs.slice(0, 25);
-  const hoy = Date.now();
+  // 📅 días de calendario en hora del este (18/11/2026): `f[2]` y `f[3]` son días ET y se redondeaban horas contra el
+  // mediodía UTC, así que desde las 7 PM ET un debut de hoy decía «ayer»
+  const hoy = Date.parse(hoyET() + 'T12:00:00Z');
   const dias = (d) => Math.max(0, Math.round((hoy - Date.parse(d + 'T12:00:00Z')) / 864e5));
   const haceDias = (d) => { const n = dias(d); return n === 0 ? 'hoy' : n === 1 ? 'ayer' : 'hace ' + n + ' días'; };
   const avisar = async (k) => {
@@ -448,6 +457,8 @@ const ORIGEN_PDT = { ap: 'apuestas', precio: 'precios por cabeza', semana: 'prem
   pase: 'Pase de rapero', 'pase-premium': 'Pase premium', deb: 'reto del debut', wr: 'Writing Challenge',
   promox: 'una semana más de promo' };
 function Economia({ e, liga }) {
+  // 👤 los perfiles, para nombrar a quien no está en la tabla (18/11/2026: salía la clave cruda)
+  usePerfiles();
   if (!e) return <p className="pronto-p">La billetera de la temporada todavía no está configurada.</p>;
   const ent = e.dias.reduce((t, x) => t + x[1], 0), sal = e.dias.reduce((t, x) => t + x[2], 0);
   const max = Math.max(1, ...e.dias.map((x) => Math.max(x[1], x[2])));
@@ -482,14 +493,14 @@ function Economia({ e, liga }) {
         <div>
           <h4 className="dz-h4">Los que más tienen</h4>
           <ol className="dz-lista dz-eco-top">{e.top.slice(0, 10).map(([k, n], i) => (
-            <li key={k + i}><span>{i + 1}. {k ? <><Quien liga={liga} n={(liga.T[k] || {}).n || k} /> <BotonFicha k={k} /></> : 'sin perfil'}</span><b>{num(n)}</b></li>
+            <li key={k + i}><span>{i + 1}. {k ? <><Quien liga={liga} n={liga.nombreDe(k)} /> <BotonFicha k={k} /></> : 'sin perfil'}</span><b>{num(n)}</b></li>
           ))}</ol>
         </div>
       </div>
       {(e.raros || []).length ? (
         <div className="dz-freno">
           <p><b>Para mirar:</b> sumaron 5.000 o más en 24 horas. Puede ser un premio grande; si no, mira de dónde vino en su perfil.</p>
-          <ul className="dz-lista">{e.raros.map(([k, n]) => <li key={k}><span>{k ? <><Quien liga={liga} n={(liga.T[k] || {}).n || k} /> <BotonFicha k={k} /></> : 'sin perfil'}</span><b>+{num(n)}</b></li>)}</ul>
+          <ul className="dz-lista">{e.raros.map(([k, n]) => <li key={k}><span>{k ? <><Quien liga={liga} n={liga.nombreDe(k)} /> <BotonFicha k={k} /></> : 'sin perfil'}</span><b>+{num(n)}</b></li>)}</ul>
         </div>
       ) : null}
       <p className="db-tx">Sólo números de la billetera: no se ve qué apostó cada uno. Se mide en cada visita al Dashboard.</p>
@@ -821,7 +832,8 @@ function PromosMano({ aj, hacer, ocup }) {
         <small>Va primera en Publicaciones, en las historias y, si pones de quién, en su perfil. Sin el tope de dos por persona.</small>
         {mano.length ? <ul className="ti-alta-p">{mano.map((x) => (
           <li key={x.u}><a href={x.u} target="_blank" rel="noopener noreferrer">{x.u.replace(/^https:\/\/(www\.)?/, '').slice(0, 48)}</a>
-            {x.quien ? ' · ' + x.quien : ''} · {x.dias} {x.dias === 1 ? 'día' : 'días'} desde el {new Date(x.t).toLocaleDateString('es')}
+            {/* 📅 con diaISO y en corto (18/11/2026): `toLocaleDateString` iba en la zona del dispositivo y con otro formato */}
+            {x.quien ? ' · ' + x.quien : ''} · {x.dias} {x.dias === 1 ? 'día' : 'días'} desde el {corto(diaISO(new Date(x.t)))}
             <button type="button" className="ti-ben-x" disabled={ocup} onClick={() => sacarMia(x.u)}>quitar</button></li>
         ))}</ul> : null}
       </form>
@@ -972,7 +984,10 @@ function Tiers({ T, aj, hacer, ocup, msg, liga }) {
 }
 
 // lo que está cerca del techo, para el panel del Inicio
-const cuotasEnRojo = (q) => (q ? TOPES.filter(([g, k, , tope]) => ((q[g] || {})[k] || 0) >= 0.9 * tope) : []);
+// ⚠️ sólo con una medición de HOY en UTC, la regla de `deAyer` de Cuotas (18/11/2026): el cupo se renueva a medianoche
+// UTC y las cuotas se piden una vez por visita, así que «casi llenas hoy» seguía saliendo toda la noche ya renovado
+const cuotasEnRojo = (q) => (q && String(q.cuando || '').slice(0, 10) === new Date().toISOString().slice(0, 10)
+  ? TOPES.filter(([g, k, , tope]) => ((q[g] || {})[k] || 0) >= 0.9 * tope) : []);
 function Cuotas({ q }) {
   if (q === null) return <p className="pronto-p">Midiendo…</p>;
   if (!q) return <p className="pronto-p">Todavía no hay una medición del ciclo.</p>;
@@ -1244,6 +1259,8 @@ export function AjSorteo({ liga, aj, hacer, ocup }) {
   const [du, setDu] = useState(null);         // lo del dueño: quién entró, los anteriores
   const [busy, setBusy] = useState(false);
   const [msj, setMsj] = useState('');
+  // 👤 los perfiles, para nombrar a quien está fuera de las 200 filas (18/11/2026): se redibuja cuando llegan
+  usePerfiles();
   const pedir = () => {
     fetch('/api/avisos/sorteo', { method: 'POST', headers: { 'content-type': 'application/json' }, body: '{}' })
       .then((r) => (r.ok ? r.json() : null)).then(setEst).catch(() => setEst(null));
@@ -1252,7 +1269,9 @@ export function AjSorteo({ liga, aj, hacer, ocup }) {
   };
   useEffect(() => { if (S) pedir(); else setEst(null); }, [S && S.id, S && S.cierra, S && S.sorteo, ocup]); // eslint-disable-line react-hooks/exhaustive-deps
   const s = est && est.sorteo, res = est && est.resultado;
-  const nom = (k) => (k && liga.T && liga.T[k] ? limpio(liga.T[k].n) : k || '(sin perfil)');
+  // 👤 el nombre aunque no esté en la tabla (18/11/2026): `liga.T` trae 200 filas, y quien ganaba o entraba fuera de
+  // ellas salía con la clave cruda («lautarolasinceridad»). Y el plural de «boletos» con su singular, como «persona»
+  const nom = (k) => (k ? liga.nombreDe(k) : '(sin perfil)');
   const ahora = Date.now();
   const abierto = !!S && ahora < Date.parse(S.cierra), porSortear = !!S && !res && ahora >= Date.parse(S.cierra);
   const usados = new Set([...((du && du.hist) || []).map((h) => h.id), S && S.id].filter(Boolean));
@@ -1279,10 +1298,13 @@ export function AjSorteo({ liga, aj, hacer, ocup }) {
       pedir();
     } finally { setBusy(false); }
   };
-  const estado = res ? '✓ Sorteado' : abierto ? '● Abierto' : porSortear ? '⏳ Por sortear' : 'Sin sorteo';
+  // ○ un sorteo sin nadie (18/11/2026): `sortear()` (avisos.js) no escribe resultado con 0 personas, así que pasada la
+  // hora quedaba en «⏳ Por sortear» para siempre y en verde. Ya no se va a sortear: se dice, y en gris
+  const nadie = porSortear && !!s && !s.personas && ahora >= Date.parse(S.sorteo);
+  const estado = res ? '✓ Sorteado' : abierto ? '● Abierto' : nadie ? '○ Nadie entró' : porSortear ? '⏳ Por sortear' : 'Sin sorteo';
   return (
     <div className="db-aj">
-      <div className="db-aj-c"><h3>El sorteo del premium</h3><span className={'db-est' + (S && !res ? ' ok' : '')}>{estado}</span></div>
+      <div className="db-aj-c"><h3>El sorteo del premium</h3><span className={'db-est' + (S && !res && !nadie ? ' ok' : '')}>{estado}</span></div>
       <p className="db-tx">La gente entra gratis desde la pestaña Premium del Pase: 1 boleto, y uno más por cada semana con las cinco semanales (hasta 3). A la hora se sortea solo, se ve en vivo en la página y sale en Publicaciones. El bot le pone el rol «Pase Premium» al ganador.</p>
 
       {S && res && !f ? (
@@ -1291,7 +1313,7 @@ export function AjSorteo({ liga, aj, hacer, ocup }) {
           <div className="db-sr-txt">
             <span className="db-sr-et">Ganó</span>
             <b className="db-sr-gan">{nom(res.k)}</b>
-            <span className="db-sr-dato">{liga.dia(res.t)} · entre {num(res.personas)} {res.personas === 1 ? 'persona' : 'personas'} y {num(res.boletos)} boletos</span>
+            <span className="db-sr-dato">{liga.dia(res.t)} · entre {num(res.personas)} {res.personas === 1 ? 'persona' : 'personas'} y {num(res.boletos)} {res.boletos === 1 ? 'boleto' : 'boletos'}</span>
             <span className={'db-sr-rol' + (res.rol === -1 ? ' mal' : res.rol === 1 ? ' bien' : '')}>
               {res.rol === 1 ? '✓ Ya tiene el rol «Pase Premium»' : res.rol === -1 ? '✕ Ya no está en DRA: el bot no pudo ponerle el rol' : '… el bot le está poniendo el rol'}</span>
             {res.semilla ? <span className="db-sr-dato" title={res.semilla}>Cuenta para verificar: {res.semilla.slice(0, 12)}…</span> : null}
@@ -1302,7 +1324,7 @@ export function AjSorteo({ liga, aj, hacer, ocup }) {
       {S && !res && !f ? (
         <p className="db-tx">{abierto ? <>Cierra el <b>{liga.dia(S.cierra)}</b> y se sortea el <b>{liga.dia(S.sorteo)}</b>.</>
           : <>Ya cerró. Se sortea el <b>{liga.dia(S.sorteo)}</b>.</>}
-        {s ? <> Van <b>{num(s.personas)}</b> {s.personas === 1 ? 'persona' : 'personas'} y <b>{num(s.boletos)}</b> boletos.</> : null}</p>
+        {s ? <> Van <b>{num(s.personas)}</b> {s.personas === 1 ? 'persona' : 'personas'} y <b>{num(s.boletos)}</b> {s.boletos === 1 ? 'boleto' : 'boletos'}.</> : null}</p>
       ) : null}
 
       {f ? (
@@ -1343,7 +1365,7 @@ export function AjSorteo({ liga, aj, hacer, ocup }) {
         <details className="db-sr-lista">
           <summary>Los sorteos anteriores ({num(du.hist.length)})</summary>
           <ul>
-            {du.hist.map((h) => <li key={h.id}><span>{liga.dia(h.t)} · <b>{nom(h.k)}</b></span><span>{num(h.n)} personas · {num(h.b)} boletos</span></li>)}
+            {du.hist.map((h) => <li key={h.id}><span>{liga.dia(h.t)} · <b>{nom(h.k)}</b></span><span>{num(h.n)} {h.n === 1 ? 'persona' : 'personas'} · {num(h.b)} {h.b === 1 ? 'boleto' : 'boletos'}</span></li>)}
             {du.rehechos.map((h, i) => <li key={'r' + i} className="db-sr-tachado"><span>{nom(h.k)} (se volvió a sortear: {h.motivo})</span><span>{liga.dia(h.t)}</span></li>)}
           </ul>
         </details>
@@ -1551,7 +1573,8 @@ function AjApuestas({ liga, aj, hacer, ocup, chat, general }) {
             onClick={() => hacer('apuestas', null, 'Volvieron los de siempre.')}>Volver a lo de siempre</DosToques> : null}
         </div>
       </form>
-      <p className="db-tx">Lo de siempre: botones de {def.montos.map(num).join(', ')}, {def.minutos} minutos y hasta {num(def.tope)} por batalla.</p>
+      {/* 🎲 sin «y hasta N por batalla» (18/11/2026): el tope se fue el 11/11 y `def.tope` llegaba undefined, «hasta 0» */}
+      <p className="db-tx">Lo de siempre: botones de {def.montos.map(num).join(', ')} y {def.minutos} minutos.</p>
     </div>
   );
 }
@@ -1600,6 +1623,12 @@ function TiersCrew({ liga, aj, hacer, ocup }) {
     juegan: P.juegan || TIERS_DEF.juegan };
   const nombres = P.nombres || TIERS_DEF.nombres;
   const [t, setT] = useState(() => ({ sube: de.sube.map(String), baja: de.baja.map(String), juegan: de.juegan.map(String) }));
+  // 🔁 vuelve a lo guardado cuando el ajuste cambia (18/11/2026): tras «Volver a los de siempre» o el «Deshacer» la fila
+  // sigue abierta, y los campos mostraban (y volvían a guardar) los números de antes. Lo mismo que AjApuestas y AjRitmo
+  const firma = JSON.stringify(aj.crews_tiers_num || null);
+  useEffect(() => {
+    setT({ sube: de.sube.map(String), baja: de.baja.map(String), juegan: de.juegan.map(String) });
+  }, [firma]); // eslint-disable-line react-hooks/exhaustive-deps
   const pon = (que, i, v) => setT((x) => Object.assign({}, x, { [que]: x[que].map((y, j) => (j === i ? v : y)) }));
   const num0 = (xs) => xs.map((x) => Number(x));
   return (
@@ -1635,6 +1664,7 @@ function TiersCrew({ liga, aj, hacer, ocup }) {
 }
 function AjCrews({ liga, aj, hacer, ocup }) {
   const { todas } = useCrews();
+  usePerfiles();
   const r = aj.crews_ranking || { modo: 'todos', n: 5 };
   const [precio, setPrecio] = useState(String(aj.crew_precio ?? 2500));
   // 💸 cambiar el nombre (o la sigla) y el logo (Dlx, 19/10/2026: «cuesta plata»): lo de siempre, `PRECIO_NOMBRE` y
@@ -1653,7 +1683,8 @@ function AjCrews({ liga, aj, hacer, ocup }) {
       if (j && j.ok) { setMsg('Listo: nuevo líder.'); pedirCrews(true); } else setMsg('No pude (' + ((j && j.error) || 'red') + ').');
     }).catch(() => { setVa(false); setMsg('No pude.'); });
   };
-  const nombre = (k) => { const f = liga.T[k]; return f ? limpio(f.n) : k; };
+  // 👤 el líder y su gente con su nombre aunque estén fuera de las 200 filas (18/11/2026), no con la clave
+  const nombre = (k) => liga.nombreDe(k);
   const crews = ((todas && todas.crews) || []).slice().sort((a, b) => (b.oficial - a.oficial) || String(a.nombre).localeCompare(b.nombre));
   return (
     <div className="db-aj db-aj-ancho">
@@ -1893,7 +1924,9 @@ function Logs({ l }) {
   return (
     <ul className="db-logs">{xs.map((x) => (
       <li key={x.id} className={'db-log ' + x.nivel}>
-        <div><b>{x.tit}</b><small>{corto(x.t)}{' · '}<a href={'https://discord.com/channels/' + l.guild + '/' + l.canal + '/' + x.id} target="_blank" rel="noopener noreferrer">en Discord ↗</a></small>
+        {/* 📅 el día en la zona de quien mira (18/11/2026): `x.t` es el timestamp UTC de Discord y se cortaba el texto, así
+            que lo de la noche (desde las 7 PM ET) salía con el día siguiente */}
+        <div><b>{x.tit}</b><small>{corto(diaISO(new Date(x.t)))}{' · '}<a href={'https://discord.com/channels/' + l.guild + '/' + l.canal + '/' + x.id} target="_blank" rel="noopener noreferrer">en Discord ↗</a></small>
           {x.mas.length ? <details><summary>Ver el detalle</summary><ul>{x.mas.map((m, i) => <li key={i}>{m}</li>)}</ul></details> : null}
         </div>
         <button type="button" className="btn borde2 chico" onClick={() => ver(x.id)}>Ya lo vi</button>
@@ -2291,9 +2324,12 @@ function useLlavesTodas() {
   useEffect(() => {
     if (llavesTodas) return undefined;
     let vivo = true;
+    // ⚠️ un fallo NO se guarda (18/11/2026): se guardaba `{}`, que es verdadero, y no se volvía a pedir en toda la visita
+    // —la lista salía vacía y sin avisar—. Ahora queda `null` para la próxima vez y esta dice que no pudo (`false`)
     fetch('/api/llaves').then((r) => (r.ok ? r.json() : null)).catch(() => null).then((j) => {
-      llavesTodas = j && typeof j === 'object' ? j : {};
-      if (vivo) setX(llavesTodas);
+      const ok = !!j && typeof j === 'object';
+      llavesTodas = ok ? j : null;
+      if (vivo) setX(ok ? j : false);
     });
     return () => { vivo = false; };
   }, []);
@@ -2321,6 +2357,7 @@ function LlavesCuentan({ L, liga, alCambiar }) {
   const [ocup, setOcup] = useState(false);
   const [msg, setMsg] = useState('');
   if (!L) return <p className="pronto-p">Esto aparece cuando el bot se actualice: la lista de lo que no cuenta vive en el servidor.</p>;
+  if (todas === false) return <p className="db-tx">No pude traer las llaves de la temporada: prueba en un rato.</p>;
   if (!todas) return <p className="db-tx">Cargando las llaves de la temporada…</p>;
   const no = new Set(L.no_cuentan || []);
   const ped = L.pedidos || {};
@@ -2466,8 +2503,10 @@ function FondosVs({ F, svs, liga, alCambiar }) {
 }
 
 function FondosVistos({ fs, liga }) {
-  // el nombre como sale en el ranking («Calíz»), no la clave del perfil («caliz»)
-  const nom = (k) => ((liga && liga.T && liga.T[k]) || {}).n || k;
+  // el nombre como sale en el ranking («Calíz»), no la clave del perfil («caliz»). Aunque esté fuera de las 200 filas
+  // (18/11/2026), y también en el aviso de «Quitado», que decía la clave
+  usePerfiles();
+  const nom = (k) => (liga ? liga.nombreDe(k) : k);
   const [fuera, setFuera] = useState({});
   const [sel, setSel] = useState('');
   const [motivo, setMotivo] = useState(MOTIVOS_FONDO[0]);
@@ -2483,7 +2522,7 @@ function FondosVistos({ fs, liga }) {
       const j = await r.json().catch(() => ({}));
       if (!r.ok || j.error) throw new Error(j.error || String(r.status));
       setFuera(Object.assign({}, fuera, { [f.quien]: 1 })); setSel('');
-      setMsg('Quitado: a ' + (f.k || 'esa persona') + ' le llega el aviso a su campana.');
+      setMsg('Quitado: a ' + (f.k ? nom(f.k) : 'esa persona') + ' le llega el aviso a su campana.');
     } catch (e) { setMsg('No se pudo: ' + e.message); }
     setOcup(false);
   };
@@ -2616,6 +2655,13 @@ const ESTADO_REP = {
 // 🛡️ (16/11/2026) `staff`: lo corrigió el staff del servidor en su panel; `sugerencia`: lo propuso un asistente (`socioLlave()`)
 const QUE_REP = { ganador: 'el ganador', gente: 'falta o sobra alguien', nombre: 'un nombre', otro: 'otra cosa', perfil: 'su perfil',
   staff: 'lo corrigió su servidor', sugerencia: 'una sugerencia de su servidor' };
+// 🏷️ QUÉ ES LO REPORTADO, EN PALABRAS Y EN UN SOLO LUGAR (18/11/2026): se armaba a mano en cuatro y sólo la Bandeja
+// conocía los cuatro tipos; el Resumen, «Desde tu última visita» y la ficha decían «llave #perfil:makmah» o «una liga»
+// por un perfil o una llave en vivo
+const etiquetaRep = (r) => {
+  const l = String(r.llave);
+  return /^\d+$/.test(l) ? 'Llave #' + l : l.startsWith('liga:') ? 'Una liga' : l.startsWith('perfil:') ? 'Un perfil' : 'Una llave en vivo';
+};
 // las partes de un lado: «Presagio, NC, Agus» son tres
 const partes = (x) => String(x || '').split(/\s*[,+&]\s*/).map((s) => s.trim()).filter(Boolean);
 
@@ -2707,6 +2753,11 @@ function Corregir({ r, liga, alListo, hermanos }) {
   const yaDice = modo === 'ganador' && !!b && !!gana && gana === b.ganador;
   const falta = modo === 'nombre' ? (!nombre ? 'Elige el nombre que está mal.' : !listo ? 'Elige de quién era.' : '')
     : (!b ? 'Elige la batalla.' : !gana ? 'Elige quién la ganó.' : '');
+  // 👥 con «quien lo mandó», sólo los reportes hermanos que mandó LA MISMA persona (18/11/2026): `reporta` el ciclo lo
+  // resuelve con el autor de cada reporte, así que el de otra persona le daba el nombre (y sus puntos) a ella. Sin
+  // `de` ni `evid.quien` no se sabe de quién es y queda afuera: se corrige aparte
+  const mismo = (h) => (!!h.de && h.de === r.de) || (!!(h.evid && h.evid.quien) && !!(r.evid && r.evid.quien) && h.evid.quien === r.evid.quien);
+  const herm = modo === 'nombre' && quien === 'reporta' ? hermanos.filter(mismo) : hermanos;
   const aplicar = async () => {
     setOcup(true); setMsg('');
     try {
@@ -2716,7 +2767,7 @@ function Corregir({ r, liga, alListo, hermanos }) {
       // 🧩 y lo mismo para los otros reportes abiertos de esta llave, si se marcó (Dlx: «hazlo sencillo de solucionar
       // múltiples problemas»): el ciclo los da por corregidos con la misma regla
       let l = await decidirReporte(Object.assign({ id: r.id }, c));
-      for (const h of (conHermanos ? hermanos : [])) l = await decidirReporte(Object.assign({ id: h.id }, c));
+      for (const h of (conHermanos ? herm : [])) l = await decidirReporte(Object.assign({ id: h.id }, c));
       alListo(l);
     } catch (e) { setMsg('No se pudo: ' + e.message); setOcup(false); }
   };
@@ -2759,8 +2810,8 @@ function Corregir({ r, liga, alListo, hermanos }) {
       </>}
       {yaDice ? <p className="db-rep-ya">La llave ya dice que ganó {gana}: no hay nada que corregir. Si el reporte pedía eso, ciérralo con «Listo».</p>
         : <p className="db-rep-nota">Cambia sólo en la #{r.llave}. Lo aplica el ciclo en su próxima corrida y a quien lo reportó le llega a la campana.</p>}
-      {hermanos.length && !yaDice ? <label className="db-rep-herm"><input type="checkbox" checked={conHermanos} onChange={(e) => setConHermanos(e.target.checked)} />
-        {' '}lo mismo para {hermanos.length === 1 ? 'el otro reporte' : 'los otros ' + hermanos.length + ' reportes'} de la #{r.llave}</label> : null}
+      {herm.length && !yaDice ? <label className="db-rep-herm"><input type="checkbox" checked={conHermanos} onChange={(e) => setConHermanos(e.target.checked)} />
+        {' '}lo mismo para {herm.length === 1 ? 'el otro reporte' : 'los otros ' + herm.length + ' reportes'} de la #{r.llave}</label> : null}
       <div className="cu-btns">
         {yaDice ? <button type="button" className="btn verde chico" disabled={ocup} onClick={cerrarListo}>Listo</button>
           : <button type="button" className="btn verde chico" disabled={!listo || ocup} onClick={aplicar}>{ocup ? 'Guardando…' : 'Aplicar'}</button>}
@@ -3447,7 +3498,9 @@ function Decisiones({ dec, alCambiar, liga }) {
           ['resp', 'Respuesta', opciones(ps, resp, [['no', 'Sin contestar'], ['si', 'Contestadas']])],
         ]} />
       {!vista.length ? <p className="pronto-p">Ninguna con estos filtros.</p> : null}
-      <Lote ps={ps} sel={sel} setSel={setSel} alListo={setX} visibles={vista.map((p) => Object.assign({ r: rs[p.id] }, p))} />
+      {/* ☑️ sólo las abiertas (18/11/2026): la que se contestó a mano seguía elegida en `sel`, y el lote la volvía a
+          contestar y pisaba su respuesta (el objeto hace INSERT OR REPLACE) */}
+      <Lote ps={ps.filter((p) => !rs[p.id])} sel={sel} setSel={setSel} alListo={setX} visibles={vista.map((p) => Object.assign({ r: rs[p.id] }, p))} />
       {secs.map((s) => {
         const link = (s.ps.find((p) => p.link) || {}).link;
         return (
@@ -3500,7 +3553,9 @@ const BUSCABLES = [
   ['Las crews: precios, ranking y tiers', 'web', 'aj-crews'], ['MES AWARDS: sacar un nominado', 'web', 'aj-mes'], ['Promos a mano', 'web', 'aj-promos'],
   ['Comentarios simulados: a quién le preguntaste', 'web', 'aj-comentarios'],
   ['El multiplicador de la semana', 'servidores', 'sv-cada'], ['Bot en vivo, apuestas y aviso de cada servidor', 'servidores', 'sv-cada'],
-  ['Los tiers de los servidores', 'servidores', 'sv-tiers'], ['Sumar un servidor', 'servidores', 'sv-tiers'], ['El dueño de un servidor socio', 'servidores', 'sv-tiers'],
+  // ⚓ `sv-tiers` ya no existe (18/11/2026: se fue con la tabla del 25/10): el tier y el dueño viven en la Ficha de cada
+  // fila (`sv-cada`) y sumar uno en `sv-sumar`. Con el ancla muerta, el buscador dejaba al principio del área
+  ['Los tiers de los servidores', 'servidores', 'sv-cada'], ['Sumar un servidor', 'servidores', 'sv-sumar'], ['El dueño de un servidor socio', 'servidores', 'sv-cada'],
   ['¿Quién es quién? (✅ Decidir)', 'pendientes', '', 'quien'], ['Errores en las llaves', 'pendientes', '', 'llaves'],
   ['Fondos, fotos de carta, logos y videos', 'pendientes', '', 'imagenes'], ['Pedidos de la gente', 'pendientes', '', 'pedidos'],
   ['Comparar semanas', 'numeros', 'nu-semanas'], ['El bot y la página, 7 días', 'numeros', 'nu-uso'], ['El tutorial', 'numeros', 'nu-tuto'],
@@ -3615,7 +3670,7 @@ function desdeVisita(d, prev, logs) {
   if (!prev) return null;
   const xs = [];
   for (const h of d.ajustes_hist || []) if (msDe(h.t) > prev) xs.push([msDe(h.t), (NOMBRE_AJ[h.cual] || h.cual) + ' cambió' + (h.por && h.por !== 'Dlx' ? ' (lo cambió ' + h.por + ')' : ''), 'historial']);
-  for (const r of d.reportes || []) if (msDe(r.t) > prev) xs.push([msDe(r.t), 'Un reporte nuevo de la llave #' + r.llave + (r.de ? ', de ' + r.de : ''), 'pendientes', 'llaves']);
+  for (const r of d.reportes || []) if (msDe(r.t) > prev) xs.push([msDe(r.t), 'Un reporte nuevo ' + (/^\d+$/.test(String(r.llave)) ? 'de la llave #' + r.llave : 'de ' + etiquetaRep(r).toLowerCase()) + (r.de ? ', de ' + r.de : ''), 'pendientes', 'llaves']);
   for (const p of d.pedidos || []) if (msDe(p.t) > prev) xs.push([msDe(p.t), 'Un pedido nuevo: ' + (PED_TIPO[p.tipo] || p.tipo).toLowerCase(), 'pendientes', 'pedidos']);
   for (const f of d.fondos || []) if (msDe(f.t) > prev) xs.push([msDe(f.t), 'Un fondo nuevo para revisar', 'pendientes', 'imagenes']);
   for (const c of d.corridas || []) if (msDe(c.creada) > prev && c.fin && c.fin !== 'success' && c.fin !== 'skipped') xs.push([msDe(c.creada), 'Una vuelta del ciclo ' + String(FIN_CORRIDA[c.fin] || c.fin).replace(/^\S+\s/, ''), 'salud']);
@@ -3676,7 +3731,7 @@ function itemsBandeja(d, ver, sueltas) {
     }
   }
   if (ver.llave) for (const r of d.reportes || []) if (r.estado === '' || r.estado === 'no_pude') {
-    const llave = /^\d+$/.test(r.llave) ? 'Llave #' + r.llave : String(r.llave).startsWith('liga:') ? 'Una liga' : String(r.llave).startsWith('perfil:') ? 'Un perfil' : 'Una llave en vivo';
+    const llave = etiquetaRep(r);
     xs.push({ k: 'r' + r.id, tipo: 'llave', t: msDe(r.t), titulo: llave + ' · ' + (QUE_REP[r.que] || r.que), sub: r.texto || (r.de ? 'lo mandó ' + r.de : ''), r });
   }
   if (ver.imagen) {
@@ -3829,6 +3884,9 @@ function DetalleLlave({ it, liga, d, alCambiar, corrige }) {
         </> : <>
           {corrige && !abierto && (/^\d+$/.test(r.llave) || String(r.llave).startsWith('liga:')) ? <button type="button" className="btn verde" onClick={() => setAbierto(true)}>Corregir</button> : null}
           {corrige && !abierto && /^\d+$/.test(r.llave) ? <button type="button" className="btn borde2" onClick={() => setSeguro(true)}>No cuenta</button> : null}
+          {/* 💬 un perfil reportado: su frase se quita desde acá (18/11/2026). «Quitar su frase» vivía sólo en `Reportes`, que
+              la Bandeja dejó sin montar el 25/10, así que nunca se vio. Pide `reportes`, el mismo permiso que la ruta */}
+          {corrige && String(r.llave).startsWith('perfil:') ? <QuitarFrase k={String(r.llave).slice(7)} /> : null}
         </>}
       </div>
       {/* cerrarlo sin corregir dice por qué: es lo que arma «qué falló» */}
@@ -4113,15 +4171,24 @@ function Bandeja({ d, liga, ve, cambiarD, sub }) {
     if (o._sacarLogo) setFuera((f) => Object.assign({}, f, { ['l' + o._sacarLogo]: 1 }));
     if (o._sacarVideo != null) setFuera((f) => Object.assign({}, f, { ['v' + o._sacarVideo]: 1 }));
     const limpio0 = Object.assign({}, o); delete limpio0._sacarLogo; delete limpio0._sacarVideo; delete limpio0.crews_logos;
+    // 🧮 y sale también de la lista del panel (18/11/2026): `fuera` es de la Bandeja y se pierde al cambiar de área, así
+    // que el menú y el Resumen lo seguían contando y, volviendo antes del refresco, reaparecía para decidirlo otra vez.
+    // El `crews_logos` vacío que manda DetalleImagen no se usa: vaciaría todos los pendientes (`vistos` se conserva)
+    if (o._sacarLogo) limpio0.crews_logos = Object.assign({}, d.crews_logos, { pend: ((d.crews_logos || {}).pend || []).filter((y) => y.id !== o._sacarLogo) });
+    if (o._sacarVideo != null) limpio0.videos = (d.videos || []).filter((v) => Number(v[0]) !== Number(o._sacarVideo));
     if (Object.keys(limpio0).length) cambiarD(limpio0);
     setSel(sig ? sig.k : '');
   };
   // ⌨️ J/K, A/R y /
   useEffect(() => {
     const f = (e) => {
-      const tg = e.target && e.target.tagName;
-      if (e.ctrlKey || e.metaKey || e.altKey || tg === 'INPUT' || tg === 'TEXTAREA' || tg === 'SELECT') return;
-      const k = e.key.toLowerCase();
+      // 🌑 lo que se tocó, con composedPath (18/11/2026): el listener está en `window` y la página vive en el shadow root,
+      // así que `e.target` era el host (un DIV) y escribir «rafa» en el buscador rechazaba y aprobaba imágenes. Y `key`
+      // puede no venir (el autocompletado de Chrome manda keydown sin él)
+      const t0 = e.composedPath ? e.composedPath()[0] : e.target;
+      const tg = t0 && t0.tagName;
+      if (e.ctrlKey || e.metaKey || e.altKey || tg === 'INPUT' || tg === 'TEXTAREA' || tg === 'SELECT' || (t0 && t0.isContentEditable)) return;
+      const k = String(e.key || '').toLowerCase();
       if (k === 'j' || k === 'k') { const n = xs[i0 + (k === 'j' ? 1 : -1)]; if (n) { e.preventDefault(); setSel(n.k); } }
       else if (k === '/') { e.preventDefault(); if (buscar.current) buscar.current.focus(); }
       else if (k === 'h' && it && filtro !== 'posp') { e.preventDefault(); posponer(it); }
@@ -4483,9 +4550,10 @@ function Fila({ id, t, que, val, tono, abierta, alAbrir, accion, children }) {
   );
 }
 
-function AjustesFilas({ liga, aj, hacer, ocup, chat, ir, abrir, sis }) {
+function AjustesFilas({ liga, aj, hacer, ocup, chat, ir, abrir, pedido, sis }) {
   const [ab, setAb] = useState(abrir || '');
-  useEffect(() => { if (abrir) setAb(abrir); }, [abrir]);
+  // `pedido`: la misma fila pedida otra vez (cerrada con «Cerrar») se vuelve a abrir (18/11/2026)
+  useEffect(() => { if (abrir) setAb(abrir); }, [abrir, pedido]);
   const f = (id) => ({ id, abierta: ab === id, alAbrir: () => setAb(ab === id ? '' : id) });
   const c = chat || {};
   const p = !!aj.campana_pausada;
@@ -4661,9 +4729,10 @@ function SemanaCorta({ d, retencion, ir }) {
   const nuevosSolos = (P.una || []).filter((f) => enSemana(f[2])).length;
   const avisados = Object.values(d.vuelve || {}).filter((v) => Date.now() - v[0] < 7 * 864e5).length;
   const top = (d.reportes_causas || []).filter((c) => c.n7 && c.causa !== 'prueba').sort((a, b) => b.n7 - a.n7)[0];
+  // 🔤 con su singular, como CausasLinea (18/11/2026): el arreglo del 12/11 quedó en un lugar de dos, «1 nombres mal leídos»
   const lineas = [
     ult ? ['La vuelta al segundo evento', Math.round((100 * ult.volvieron) / ult.nuevos) + ' % (' + num(ult.volvieron) + ' de ' + num(ult.nuevos) + ', los que debutaron la semana del ' + corto(ult.semana) + ')', 'numeros', 'nu-vuelta'] : null,
-    ['Lo que más falló del bot', top ? num(top.n7) + ' ' + (CAUSAS.find((x) => x[0] === top.causa) || [0, 0, top.causa])[2] : 'nada reportado', 'pendientes', ''],
+    ['Lo que más falló del bot', top ? num(top.n7) + ' ' + (CAUSAS.find((x) => x[0] === top.causa) || [0, 0, top.causa, top.causa])[top.n7 === 1 ? 3 : 2] : 'nada reportado', 'pendientes', ''],
     ['Jugaron una sola vez', num(nuevosSolos) + ' de los que debutaron la semana pasada', 'numeros', 'nu-primerizos'],
     ['Se les avisó que vuelvan', num(avisados) + ' en 7 días', 'numeros', 'nu-primerizos'],
   ].filter(Boolean);
@@ -4880,9 +4949,11 @@ function ChatsDueno({ c }) {
   const motivos = [...new Set(ms.map((m) => m.motivo))];
   const ver = filtro ? ms.filter((m) => m.motivo === filtro) : ms;
   const sv = Object.entries((c && c.por_sv) || {}).sort((a, b) => b[1].msgs - a[1].msgs);
+  // 🔤 la sigla que se lee (18/11/2026): `bot/chats.py` manda el código interno (ACAD, CH, SR, URBF) y el resto del
+  // Dashboard muestra LCW, CYH, SNK, URB. Las `key` se quedan con el código
   return (
     <div className="dch">
-      {sv.length ? <p className="dch-sv">{c.dia ? 'Lectura del ' + corto(c.dia) + ': ' : ''}{sv.map(([s, x]) => <span key={s}><b>{s}</b> {num(x.msgs)}</span>)}</p> : null}
+      {sv.length ? <p className="dch-sv">{c.dia ? 'Lectura del ' + corto(c.dia) + ': ' : ''}{sv.map(([s, x]) => <span key={s}><b>{siglaDe(s)}</b> {num(x.msgs)}</span>)}</p> : null}
       {motivos.length > 1 ? (
         <div className="dz-subs" role="tablist" aria-label="Qué mostrar">
           {['', ...motivos].map((m) => <button key={m || 'todo'} type="button" role="tab" aria-selected={filtro === m} className={'dz-sub' + (filtro === m ? ' on' : '')}
@@ -4891,7 +4962,7 @@ function ChatsDueno({ c }) {
       {ver.length ? (
         <ul className="dch-l">{ver.slice(0, 80).map((m) => (
           <li key={m.id}>
-            <span className="dch-c"><b>{MOTIVO_CHAT[m.motivo] || '•'} {m.motivo}</b><small>{m.sv} · {corto(diaISO(new Date(m.t)))} {hora(new Date(m.t).toISOString())}</small></span>
+            <span className="dch-c"><b>{MOTIVO_CHAT[m.motivo] || '•'} {m.motivo}</b><small>{siglaDe(m.sv)} · {corto(diaISO(new Date(m.t)))} {hora(new Date(m.t).toISOString())}</small></span>
             <p><b>{m.k ? <BotonFicha k={m.k} n={m.n} /> : null}{limpio(m.n) || 'alguien'}:</b> {m.texto}</p>
             <a href={'https://discord.com/channels/' + m.g + '/' + m.c + '/' + m.id} target="_blank" rel="noreferrer">Ver en Discord ↗</a>
           </li>))}</ul>
@@ -4900,10 +4971,11 @@ function ChatsDueno({ c }) {
   );
 }
 
-function NumerosTabs({ tabs, abrir }) {
+function NumerosTabs({ tabs, abrir, pedido }) {
   const [t, setT0] = useState(() => { try { return localStorage.getItem(NUM_TAB) || ''; } catch (e) { return ''; } });
   const setT = (k) => { setT0(k); try { localStorage.setItem(NUM_TAB, k); } catch (e) { /* sin guardar */ } };
-  useEffect(() => { if (abrir && TAB_DE[abrir]) setT(TAB_DE[abrir]); }, [abrir]);
+  // `pedido`: la misma sección pedida otra vez desde otra pestaña vuelve a abrir la suya (18/11/2026)
+  useEffect(() => { if (abrir && TAB_DE[abrir]) setT(TAB_DE[abrir]); }, [abrir, pedido]);
   const xs = tabs.filter(Boolean);
   const actual = xs.find(([k]) => k === t) || xs[0];
   if (!actual) return <p className="pronto-p">Todavía no hay números.</p>;
@@ -4935,9 +5007,11 @@ function BotonFicha({ k, n }) {
   if (!ctx || !k) return null;
   // 🗂️ con una sanción en pie, se ve al lado del nombre (no hace falta abrir la ficha para saberlo)
   const san = (ctx.sanciones || {})[k];
+  // 📅 las tres fechas de la ficha (la sanción, el alta de la cuenta, el vencimiento de una nota) pasan por diaISO
+  // (18/11/2026): con `toISOString()` iban en UTC, y lo anotado de tarde o de noche salía con un día de más
   return (
     <>
-      {san !== undefined ? <span className="dz-san" title={san ? 'Sanción hasta el ' + corto(new Date(san).toISOString().slice(0, 10)) : 'Sanción sin fecha de fin'}>⚠ sanción</span> : null}
+      {san !== undefined ? <span className="dz-san" title={san ? 'Sanción hasta el ' + corto(diaISO(new Date(san))) : 'Sanción sin fecha de fin'}>⚠ sanción</span> : null}
       <button type="button" className="dz-fbtn" onClick={() => ctx.abrir(k, n)} aria-label={'La ficha de ' + (n || k)}>ficha</button>
     </>
   );
@@ -5001,11 +5075,11 @@ function FichaPersona({ k, n, liga, cerrar, puedeNotas }) {
         {err && !F ? <p className="dz-dt-msg">No pude leer su ficha: {err}</p> : !F ? <p className="pronto-p">Leyendo su ficha…</p> : (
           <>
             <dl className="dz-dl">
-              <div><dt>Cuenta en la página</dt><dd>{F.cuenta ? 'Sí, desde el ' + corto(new Date(F.cuenta.desde).toISOString().slice(0, 10)) : 'No: no le llegan avisos de la página'}</dd></div>
+              <div><dt>Cuenta en la página</dt><dd>{F.cuenta ? 'Sí, desde el ' + corto(diaISO(new Date(F.cuenta.desde))) : 'No: no le llegan avisos de la página'}</dd></div>
               {F.roles && F.roles.length ? <div><dt>En el Dashboard</dt><dd>{F.roles.map(nombreRol).join(', ')}</dd></div> : null}
               {F.saldo != null ? <div><dt>Puntos de Tienda</dt><dd>{num(F.saldo)}</dd></div> : null}
               {F.vuelve ? <div><dt>Se le avisó que vuelva</dt><dd>{hace(F.vuelve.t)} · {F.vuelve.por}</dd></div> : null}
-              {(F.reportes || []).length ? <div><dt>Reportes que mandó</dt><dd>{F.reportes.map((r) => (/^\d+$/.test(r.llave) ? '#' + r.llave : 'una liga') + ' (' + (QUE_REP[r.que] || r.que) + ', ' + (r.estado || 'abierto') + ')').join(' · ')}</dd></div> : null}
+              {(F.reportes || []).length ? <div><dt>Reportes que mandó</dt><dd>{F.reportes.map((r) => (/^\d+$/.test(String(r.llave)) ? '#' + r.llave : etiquetaRep(r).toLowerCase()) + ' (' + (QUE_REP[r.que] || r.que) + ', ' + (ESTADO_REP[r.estado] || [r.estado || 'abierto'])[0] + ')').join(' · ')}</dd></div> : null}
               {(F.pedidos || []).length ? <div><dt>Pedidos</dt><dd>{F.pedidos.map((x) => (PED_TIPO[x.tipo] || x.tipo) + ' · ' + (PED_EST_C[x.estado] || x.estado)).join(' · ')}</dd></div> : null}
             </dl>
             <div className="dz-notas">
@@ -5014,7 +5088,7 @@ function FichaPersona({ k, n, liga, cerrar, puedeNotas }) {
                 <li key={x.id}>
                   <span className={'dz-et ' + x.et}>{(ETIQUETAS.find((y) => y[0] === x.et) || [0, x.et])[1]}</span>
                   <p>{x.texto}</p>
-                  <small>{x.por} · {hace(x.t)}{x.hasta ? (x.hasta > Date.now() ? ' · vence ' + corto(new Date(x.hasta).toISOString().slice(0, 10)) : ' · venció') : ''}</small>
+                  <small>{x.por} · {hace(x.t)}{x.hasta ? (x.hasta > Date.now() ? ' · vence ' + corto(diaISO(new Date(x.hasta))) : ' · venció') : ''}</small>
                   {puedeNotas ? <DosToques className="dz-lnk" disabled={ocup} confirmar="Toca de nuevo para borrarla" onClick={() => nota({ borrar: x.id })}>Borrar</DosToques> : null}
                 </li>
               ))}</ul> : <p className="db-tx">Todavía nadie anotó nada.</p>}
@@ -5072,6 +5146,9 @@ export function Dashboard({ dc, liga }) {
   // la cola que se abre: la que se eligió, o sola la primera que tiene algo
   const [sub, setSub] = useState('');
   const [abrir, setAbrir] = useState('');
+  // 🔁 cuántas veces se pidió ir (18/11/2026): pedir la misma ancla dos veces no cambia `abrir`, y los efectos que abren
+  // la pestaña de Números o la fila del ajuste no volvían a correr (Ctrl+K → «El tutorial», otra pestaña, otra vez)
+  const [pedido, setPedido] = useState(0);
   const [buscar, setBuscar] = useState(false);
   const raiz = useRef(null);
   // ir a un área (y bajar hasta un ajuste, o abrir una cola de Pendientes)
@@ -5079,6 +5156,7 @@ export function Dashboard({ dc, liga }) {
     setArea0(a); ponerArea(a);
     setSub(s || '');
     setAbrir(ancla || '');
+    setPedido((n) => n + 1);
     setTimeout(() => {
       const el = ancla && raiz.current ? raiz.current.querySelector('#' + ancla) : null;
       if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
@@ -5158,7 +5236,7 @@ export function Dashboard({ dc, liga }) {
   const primerPed = (d.pedidos || []).find((x) => x.estado === '');
   const CUADROS = [
     ['quien', n.quien, '¿Quién es quién?', 'nombres que el bot no reconoció', true, 'quien'],
-    ['llaves', n.llaves, 'Errores en las llaves', primeroRep ? 'llave #' + primeroRep.llave + (primeroRep.de ? ' · lo reportó ' + primeroRep.de : '') : 'reportados por la gente', true, 'llaves'],
+    ['llaves', n.llaves, 'Errores en las llaves', primeroRep ? etiquetaRep(primeroRep).toLowerCase() + (primeroRep.de ? ' · lo reportó ' + primeroRep.de : '') : 'reportados por la gente', true, 'llaves'],
     ['imagenes', n.imagenes, 'Imágenes', 'fondos, fotos de carta y logos', false, 'imagenes'],
     ['videos', n.videos, 'Videos', 'alguien dice «es mío»', false, 'videos'],
     ['pedidos', n.pedidos, 'Pedidos', primerPed ? PED_TIPO[primerPed.tipo] || primerPed.tipo : 'cuenta perdida, país, un video', false, 'pedidos'],
@@ -5236,13 +5314,13 @@ export function Dashboard({ dc, liga }) {
     vista = (
       <>
         {msg ? <p className="db-msg dz-msg" role="status">{msg}</p> : null}
-        <AjustesFilas liga={liga} aj={aj} hacer={hacer} ocup={ocup} chat={d.chat} ir={ir} abrir={abrir} sis={d.sistema} />
+        <AjustesFilas liga={liga} aj={aj} hacer={hacer} ocup={ocup} chat={d.chat} ir={ir} abrir={abrir} pedido={pedido} sis={d.sistema} />
       </>
     );
   } else if (areaV === 'numeros') {
     const S = d.secciones && Object.keys(d.secciones.n || {}).length ? d.secciones : null;
     vista = (
-      <NumerosTabs abrir={abrir} tabs={[
+      <NumerosTabs abrir={abrir} pedido={pedido} tabs={[
         // 👥 «La gente» tenía siete secciones (11/11/2026, Dlx: «Números en pestañas»): lo de quién vuelve y lo de la semana
         ['gente', 'Quién vuelve', <>
           {sec('nu-vuelta', 'LA VUELTA AL SEGUNDO EVENTO', 'el número del 42 %', <VueltaSegundo r={retencion} marcas={marcasPorSemana(cambios, d.ajustes_hist)} />)}
@@ -5253,7 +5331,9 @@ export function Dashboard({ dc, liga }) {
         </>],
         ['semana', 'La semana', <>
           {sec('nu-uso', 'ESTA SEMANA · EL BOT Y LA PÁGINA', u.desde ? 'se cuenta desde el ' + corto(u.desde) : null, <Cajas u={u} />)}
-          {sec('nu-semanas', 'COMPARAR SEMANAS', 'de lunes a domingo, en hora del este', <CompararSemanas S={semanas} uso={d.uso_semanas} liga={liga} />)}
+          {/* 🔑 se vuelve a montar cuando llegan las semanas (18/11/2026): sus dos `useState` arrancan con las que hay, y
+              abriendo directo en esta pestaña llegaban null y quedaba comparando la primera semana contra sí misma */}
+          {sec('nu-semanas', 'COMPARAR SEMANAS', 'de lunes a domingo, en hora del este', <CompararSemanas key={semanas ? 'si' : 'no'} S={semanas} uso={d.uso_semanas} liga={liga} />)}
           {(d.dias || []).length ? sec('', 'DÍA POR DÍA · DOS SEMANAS', 'hasta hoy', <Dias dias={d.dias} />) : null}
         </>],
         S || d.clics || (d.tutorial && Object.keys(d.tutorial.n || {}).length) ? ['pagina', 'La página', <>

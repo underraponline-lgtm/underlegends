@@ -89,7 +89,7 @@
     MSG = 'Guardando…';
     pinta();
     alta(true).then(function () { MSG = '✅ Listo: te llegan los avisos de ' + textoPedido(v) + '.'; pinta(); })
-      .catch(function (e) { MSG = '⚠️ No pude guardar: ' + e.message; pinta(); });
+      .catch(function (e) { MSG = '⚠️ No pude guardar: ' + textoError(e); pinta(); });
   }
   function leer(k, def) {
     try { var v = JSON.parse(localStorage.getItem(k)); return v == null ? def : v; }
@@ -140,6 +140,17 @@
     return d;
   }
 
+  // 🌐 LOS ERRORES, EN ESPAÑOL (18/11/2026): se mostraba el `err.message` del navegador tal cual, y sin red se leía
+  // «⚠️ Failed to fetch» (o «No pude guardar: Failed to fetch») sin ninguna pista. Pasan igual los que ya vienen en
+  // español: los de `pedir()` (traen `estado`) y los de acá (`propio`, ver `errorPropio()`)
+  function errorPropio(t) { var e = new Error(t); e.propio = true; return e; }
+  function textoError(err) {
+    var m = String((err && err.message) || '');
+    if (err && (err.estado || err.propio)) return m || 'no se pudo';
+    if (/Failed to fetch|NetworkError|Load failed|network connection/i.test(m)) return 'no hay conexión, prueba de nuevo.';
+    return 'no se pudo, prueba de nuevo.';
+  }
+
   async function clave() { return (await pedir('clave')).clave; }
 
   // ── anotarse ────────────────────────────────────────────────────────
@@ -152,8 +163,12 @@
     // no los manda: si este navegador perdió su localStorage, mandar `[]`
     // borraría lo que la persona eligió.
     if (conServidores) cuerpo.svs = SVS;
+    // ⏱️ LA RESPUESTA SÓLO SE APLICA SI NADIE ELIGIÓ OTRA COSA MIENTRAS VIAJABA (18/11/2026): traía la lista vieja, la
+    // ponía encima del toque recién hecho y el alta de ese toque salía con la vieja («✅ Guardado.» y el cambio perdido).
+    // Alcanza con la referencia: `elegir()`, `aplicarPedido()` y `activar()` siempre ponen un arreglo nuevo
+    var enviado = SVS;
     var d = await pedir('alta', cuerpo);
-    if (Array.isArray(d.svs)) { SVS = d.svs; guardar('campana:svs', SVS); }
+    if (Array.isArray(d.svs) && SVS === enviado) { SVS = d.svs; guardar('campana:svs', SVS); }
     guardar('campana:alta', Date.now());
   }
 
@@ -165,10 +180,28 @@
     var k = await clave();
     REG = REG || await navigator.serviceWorker.register('/sw.js');
     await navigator.serviceWorker.ready;
-    SUB = await REG.pushManager.subscribe({ userVisibleOnly: true, applicationServerKey: bytes(k) });
+    // 🧭 SI EL NAVEGADOR NO DEJA ANOTARSE, SE DICE QUÉ HACER (18/11/2026): Brave trae apagada de fábrica la mensajería
+    // push de Google y `subscribe()` rechaza con «Registration failed - push service error», que se mostraba tal cual,
+    // en inglés y sin salida. El original queda en la consola
+    try {
+      SUB = await REG.pushManager.subscribe({ userVisibleOnly: true, applicationServerKey: bytes(k) });
+    } catch (e) {
+      try { console.warn('[campana]', e); } catch (e2) { /* sin consola */ }
+      throw errorPropio('Este navegador no dejó anotar el dispositivo. En Brave: Configuración → Privacidad y seguridad → ' +
+        'activa «Usar los servicios de Google para la mensajería push» y recarga; si no, prueba con Chrome, Edge o Firefox.');
+    }
     // quien llega desde `/notify` se anota a lo que eligió en Discord
     var v = pedidoValido();
-    if (v) { SVS = conPrueba(v); guardar('campana:svs', SVS); PEDIDO = null; }
+    if (v) {
+      SVS = conPrueba(v); guardar('campana:svs', SVS); PEDIDO = null;
+      // ⚠️ Y SE APLICA UNA VEZ, COMO EN `aplicarPedido()` (18/11/2026): este camino dejaba `avisos/FFA` en la dirección,
+      // y recargar o volver atrás lo reenviaba y pisaba lo elegido después. Sólo si sigue ahí: durante el permiso la
+      // persona pudo irse a otra página
+      var r = window.rutaLG ? window.rutaLG() : (location.hash || '').replace(/^#\/?/, '');
+      if (/^avisos\//.test(String(r || ''))) {
+        try { history.replaceState(history.state, '', window.urlLG ? window.urlLG('avisos') : '#/avisos'); } catch (e) { /* igual */ }
+      }
+    }
     await alta(true);
     MSG = '';
     await probar(true);
@@ -222,7 +255,7 @@
           'algunos navegadores de compu (Opera GX, por ejemplo): en esta compu prueba con ' +
           'Chrome, Edge o Firefox. En el teléfono, Chrome anda.';
     } catch (e) {
-      MSG = e.estado === 429 ? 'Espera unos segundos entre pruebas.' : '⚠️ ' + e.message;
+      MSG = e.estado === 429 ? 'Espera unos segundos entre pruebas.' : '⚠️ ' + textoError(e);
     }
     pinta();
   }
@@ -242,6 +275,9 @@
     SUB = null;
     if (ep) { try { await pedir('baja', { endpoint: ep }); } catch (e) { /* se cae sola */ } }
     guardar('campana:yo', null);
+    // 🔕 y la marca de «activada» (18/11/2026): sólo la ponía `pinta()` y nada la bajaba, así que después de Desactivar
+    // la lista del perfil completo y los primeros pasos seguían dándola por prendida
+    guardar('campana:activada', 0);
     MSG = 'Listo: este dispositivo ya no recibe avisos.';
     pinta();
   }
@@ -265,12 +301,15 @@
   }
   async function vincular() {
     if (await vincularConSesion()) { window.dispatchEvent(new Event('lg:vinculado')); return; }
-    if (typeof window.urlLogin !== 'function') throw new Error('recarga la página');
+    if (typeof window.urlLogin !== 'function') throw errorPropio('recarga la página');
     location.href = window.urlLogin('v');
   }
   async function desvincular() {
     if (SUB) await pedir('desvincular', { endpoint: SUB.endpoint });
-    guardar('campana:yo', null);
+    // 🔓 LA BAJA SE RECUERDA (18/11/2026): con `null`, la próxima carga veía `campana:yo` vacío y la sesión abierta, y
+    // `arrancar()` lo volvía a vincular solo. `{ no: 1 }` no tiene `id` (la página muestra «Vincular»); lo pisan volver
+    // a vincular, Desactivar y Salir (cuenta.js), y ahí el vínculo solo vuelve a valer
+    guardar('campana:yo', { no: 1 });
     MSG = 'Listo: este dispositivo ya no recibe tus avisos personales.';
     pinta();
   }
@@ -292,6 +331,10 @@
     var prueba = SVS.indexOf(PRUEBA) >= 0;
     var reales = SVS.filter(function (x) { return x !== PRUEBA; });
     var todos = servidores().map(function (s) { return s.sv; });
+    // 🧪 «TODOS» CON PRUEBAS LLEGA COMO LA LISTA ENTERA (18/11/2026), y la página nueva apaga uno con «todos» prendido
+    // eligiendo los demás, contando con que los SUMA: acá cada uno ya estaba, así que lo sacaba y quedaba prendido justo
+    // el que se quiso apagar. La lista entera se toma por «todos» antes de alternar, como la lee `estado()`
+    if (todos.length && reales.length >= todos.length) reales = [];
     if (sv === PRUEBA) prueba = !prueba;
     else if (sv === '') reales = [];
     else if (reales.indexOf(sv) >= 0) reales = reales.filter(function (x) { return x !== sv; });
@@ -306,7 +349,7 @@
     clearTimeout(tElegir);
     tElegir = setTimeout(function () {
       alta(true).then(function () { MSG = '✅ Guardado.'; pinta(); })
-        .catch(function (e) { MSG = '⚠️ No pude guardar: ' + e.message; pinta(); });
+        .catch(function (e) { MSG = '⚠️ No pude guardar: ' + textoError(e); pinta(); });
     }, 500);
   }
 
@@ -487,7 +530,8 @@
     refrescarEstado();
     if (!SUB) return;
     aplicarPedido();
-    // 🔑 con la campana activa y tu cuenta adentro, se vincula sola (una vez: después queda en `campana:yo`)
+    // 🔑 con la campana activa y tu cuenta adentro, se vincula sola (una vez: después queda en `campana:yo`; tras
+    // «Desvincular» queda `{ no: 1 }` y no se vuelve a vincular sola, ver `desvincular()`)
     if (!leer('campana:yo', null) && window.DC && window.DC.id) { if (await vincularConSesion()) pinta(); }
     try {
       // 🔴 SI LA CLAVE DEL WORKER CAMBIO, LA SUSCRIPCION VIEJA NO SIRVE: se
@@ -527,7 +571,8 @@
   // dispositivo en el Worker
   function correr(f) {
     return Promise.resolve().then(f).catch(function (err) {
-      MSG = '⚠️ ' + (err && err.message ? err.message : 'no se pudo');
+      // en español, ver `textoError()` (18/11/2026)
+      MSG = '⚠️ ' + textoError(err);
       pinta();
     });
   }

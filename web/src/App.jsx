@@ -256,6 +256,21 @@ envolver('pintaPopCuenta', 'lg:cuentaest');
 // 💰 Y EL PRECIO POR CABEZA (03/10/2026): el perfil nuevo muestra lo que vale cada cabeza y cómo salió tu precio, que
 // viven en tienda.js (`valorCabezas()`, `PR_EST`, `BILL`); `pintaPrecios()` corre después de cada cambio
 envolver('pintaPrecios', 'lg:precios');
+// 👥 Y CUANDO LLEGAN LOS PERFILES (18/11/2026): `liga.persona()` lee `window.PERF` cuando se lo preguntan, pero lo que
+// se calculó con la Liga de antes (los `useMemo` de cada página) no se volvía a preguntar hasta el minuto siguiente, y
+// la gente de fuera de las 200 filas quedaba sin nombre ni cara. `perfiles()` (datos.js) avisa `lg:perfiles` al
+// contestar, la llame quien la llame, y el App rehace la Liga una vez (ver `perfV`)
+(function () {
+  const f = window.perfiles;
+  if (typeof f !== 'function' || f.__inicio) return;
+  const g = function () {
+    const r = f.apply(this, arguments);
+    Promise.resolve(r).then((d) => { if (d) window.dispatchEvent(new Event('lg:perfiles')); }).catch(() => {});
+    return r;
+  };
+  g.__inicio = true;
+  window.perfiles = g;
+})();
 
 // ── el changelog: qué versión habías visto ANTES de abrirlo. nucleo.js la da por vista apenas lo abrís
 // (`pintaCambios()`), y lo hace antes que esto. Si la página se abrió en `#/cambios`, ya pasó antes de que cargara
@@ -296,6 +311,17 @@ function rutaHash() {
   if (/^#(access_token|error)=/.test(h) || !window.rutaLG) return h;
   return '#/' + window.rutaLG();
 }
+// 🔗 ¿ESTA VISITA ENTRÓ POR EL LINK DE UNA HISTORIA (`/freestyle-rap/?h=<id>`)? (18/11/2026) Para la bienvenida era el
+// Inicio pelado: quien abría una historia compartida por primera vez iba a /bienvenida, el `?h=` se perdía y la historia
+// no se abría. Quien entra por un link va directo a eso (primera.js). Se lee AL CARGAR: el visor saca el `?h=` de la
+// dirección, y leerlo después mandaría a la bienvenida apenas cambiara de página
+const CON_HISTORIA = (() => { try { return /[?&]h=/.test(location.search || ''); } catch (e) { return false; } })();
+// ⏳ SI EL AVISO DE «NO PUDE CARGAR» SALIÓ ANTES DE QUE LLEGARA LA APP (18/11/2026): el plan B de index.html lo pone si a
+// los 8 s de bajar todo la app no se montó. Como el plazo de 15 s de los datos (abajo), es «tardó», no «falló»: si los
+// datos llegan, la página vuelve (ver el efecto de `lg-listo`)
+try {
+  if (document.documentElement.classList.contains('sin-pagina') && !window.__sinDatos) window.__sinPorPlazo = true;
+} catch (e) { /* nada */ }
 
 // 🔴 CADA SECCIÓN, AISLADA — la regla que tenía `pintaDatos()` de app.js: una que falla (un dato con otra forma) queda
 // sin dibujar y el resto del Inicio sale igual. El error queda en la consola con el nombre de la sección.
@@ -440,6 +466,9 @@ export default function App() {
       if (window.D || window.__sinDatos) { clearInterval(plazo); return; }
       if (Date.now() - t0 > 15000) {
         clearInterval(plazo);
+        // ⏳ marcado como «tardó» (18/11/2026): nucleo.js no le pone plazo al lobby, así que puede llegar igual, y la
+        // página quedaba escondida detrás del aviso con los datos ya puestos (ver el efecto de `lg-listo`)
+        window.__sinPorPlazo = true;
         if (window.__sinPagina) window.__sinPagina('El servidor no contestó.');
       }
     }, 400);
@@ -554,11 +583,20 @@ export default function App() {
   // 🏟️ LAS LIGAS LLEGAN APARTE (25/10/2026, ver web/src/ligas_datos.js): con cada lobby nuevo se piden una vez y se ponen
   // en `liga.d.ligas`, así quien las lee no cambia. Mientras no llegan, cada sección de ligas se apaga sola
   const [ligasL, setLigasL] = useState(null);
+  // 🔁 Y SI /api/ligas FALLA, SE VUELVE A PEDIR (18/11/2026): no se pedía hasta el próximo lobby (otro `sello`), y Ligas se
+  // quedaba en «Cargando…» (ligas.jsx) todo ese rato. Cada vez más espaciado (30 s, 1, 2, 4 y de ahí cada 5 min): el borde
+  // guarda un error 15 s nada más (`delBorde()`, _worker.js), así que en una caída cada pestaña abierta llegaría al Worker
+  // cada 30 s. `pedirLigas` ya suelta el pedido que falló, así que cada vuelta es un pedido nuevo
   useEffect(() => {
     if (!D || D.ligas) return undefined;
-    let vivo = true;
-    pedirLigas(D.sello).then((x) => { if (vivo && x && x.lobby) setLigasL(x.lobby); });
-    return () => { vivo = false; };
+    let vivo = true, t = 0, espera = 30000;
+    const pide = () => pedirLigas(D.sello).then((x) => {
+      if (!vivo) return;
+      if (x && x.lobby) setLigasL(x.lobby);
+      else if (!x) { t = setTimeout(pide, espera); espera = Math.min(espera * 2, 300000); }
+    });
+    pide();
+    return () => { vivo = false; clearTimeout(t); };
   }, [D && D.sello]); // eslint-disable-line react-hooks/exhaustive-deps
   // 📅 Y LA TEMPORADA ENTERA DEL CALENDARIO (29/10/2026, ver web/src/calendario_datos.js): el lobby trae 4 semanas, y al
   // abrir Eventos o una llave se pide el resto y se junta en `liga.d.calendario`. Una vez pedida, queda para toda la visita
@@ -590,10 +628,31 @@ export default function App() {
     }).catch(() => {});
     return () => { vivo = false; };
   }, [fueraDe200, yo.k]); // eslint-disable-line react-hooks/exhaustive-deps
+  // 👥 los perfiles llegaron (`lg:perfiles`, ver arriba): la Liga se rehace UNA vez por cada `window.PERF` nuevo
+  // (18/11/2026), así lo que se calculó con ella vuelve a preguntar por la gente de fuera de la tabla
+  const [perfV, setPerfV] = useState(0);
+  useEffect(() => {
+    let visto = null;
+    const f = () => { const p = window.PERF || null; if (p && p !== visto) { visto = p; setPerfV((v) => v + 1); } };
+    window.addEventListener('lg:perfiles', f);
+    f();
+    return () => window.removeEventListener('lg:perfiles', f);
+  }, []);
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  const liga = useMemo(() => (D2 ? new Liga(D2, muro, ahora, yo.k, aQuienSigo(), yoFila) : null), [D2, muro, ahora, yo, sigoV, yoFila]);
+  const liga = useMemo(() => (D2 ? new Liga(D2, muro, ahora, yo.k, aQuienSigo(), yoFila) : null), [D2, muro, ahora, yo, sigoV, yoFila, perfV]);
   // ⏳ con los datos, se va la pantalla de carga del HTML (`#lg-carga`, web/montar.py)
-  useEffect(() => { if (liga) document.documentElement.classList.add('lg-listo'); }, [!!liga]);
+  useEffect(() => {
+    if (!liga) return;
+    const c = document.documentElement.classList;
+    c.add('lg-listo');
+    // ⏳ Y SI EL AVISO SALIÓ POR TARDAR, SE VA (18/11/2026): el lobby que llegaba pasados los 15 s (o la app pasados los
+    // 8 s del plan B) llenaba la página, pero `sin-pagina` la dejaba escondida detrás de «No pude cargar» hasta tocar
+    // «Reintentar». Con un error de verdad del lobby (`__sinDatos`) el aviso se queda. `lg-fuera` va porque la pantalla
+    // de carga ya dejó de mirar (su `tic` se corta con `sin-pagina`): sin él volvía y tapaba la página para siempre.
+    // Y `lg-sale` (18/11/2026, revisión): es lo que espera `useTapado()` (anima.js) para sacar `.app.tapado`; sin él las
+    // animaciones quedaban en pausa en su primer cuadro —`.pg-entra` arranca en opacidad 0— y la página volvía en blanco
+    if (c.contains('sin-pagina') && window.__sinPorPlazo && !window.__sinDatos) { c.remove('sin-pagina'); c.add('lg-sale', 'lg-fuera'); }
+  }, [!!liga]);
   // el perfil de un servidor (#/sv/<SIGLA>)
   const mSv = /^#\/sv\/([^/?#]+)/i.exec(hash || '');
   let sv = null;
@@ -630,8 +689,9 @@ export default function App() {
   // primera vez al Inicio —una pestaña privada lo es: el navegador no tiene nada guardado— va ahí solo, y quien vuelve
   // de Discord en el medio (el paso 2) también. Va EN EL MISMO LUGAR DEL HISTORIAL: con un paso nuevo, «atrás» lo
   // devolvía al Inicio y el Inicio lo volvía a mandar. Y como es una dirección, se puede abrir con un link
+  // 🔗 Salvo que haya entrado por el link de una historia (`CON_HISTORIA`, 18/11/2026): ésa es su página, como un perfil
   useEffect(() => {
-    if (pagina !== 'bienvenida' && quiereBienvenida(yo.dc)) irSinHistoria('#/bienvenida');
+    if (pagina !== 'bienvenida' && !CON_HISTORIA && quiereBienvenida(yo.dc)) irSinHistoria('#/bienvenida');
   }, [pagina, yo.dc]);
   // la del menú: `#/duelos` es el Ranking, y `#/mundo` es Socios
   const paginaMenu = pagina === 'duelos' ? 'ranking' : pagina === 'avisos' ? 'eventos' : pagina === 'mundo' ? 'socios' : pagina;
@@ -639,9 +699,11 @@ export default function App() {
   // respuesta seguía siendo sí y no se movía, y la Tienda, el Changelog, las crews y los países no estaban. Se veía como
   // que el toque no hizo nada: Chile abría a 1.500 px, con el título fuera de la pantalla. El perfil y la llave van a su
   // lugar al abrir, y `#/avisos` baja hasta la campana
+  // 🏠 EL INICIO TAMBIÉN (18/11/2026): su `lugar` es '' y el `lugar &&` lo dejaba afuera, así que tocar «Inicio» desde el
+  // Ranking bajado a 2.300 px abría el Inicio a esa altura, en Noticias y no en las historias
   const lugar = sv ? 'sv/' + sv : pagina === 'crew' || pagina === 'pais' ? pagina + '/' + (partes[1] || '') : paginaMenu;
   useEffect(() => {
-    if (lugar && pagina !== 'r' && pagina !== 'llave' && pagina !== 'avisos') window.scrollTo(0, 0);
+    if (pagina !== 'r' && pagina !== 'llave' && pagina !== 'avisos') window.scrollTo(0, 0);
   }, [lugar]); // eslint-disable-line react-hooks/exhaustive-deps
   // 📊 QUÉ SECCIONES SE ABREN (Dlx, 12/10/2026, el research «página sencilla»: medir antes de mover la tira). Cada
   // sección cuenta UNA vez por día y por navegador (`lg:secc`, en hora del este como la visita) y el vigía sólo suma un
@@ -779,7 +841,11 @@ export default function App() {
     return <div className="app solo-og"><Suspense fallback={null}><OgLink liga={liga} tipo={partes[1]} id={id} /></Suspense></div>;
   }
   if (pagina === 'marco' && partes[1] && partes[2]) {
-    return <div className="app solo-marco"><MarcoSolo liga={liga} k={partes[1]} cual={partes[2]} sv={partes[3] || ''} cc={(partes[4] || '').toLowerCase()} /></div>;
+    // 🔤 la clave decodificada, como la del `og` de arriba (18/11/2026): Chromium codifica el camino y `tøkiø` llegaba
+    // como `t%C3%B8ki%C3%B8`, que no está en los marcos ni en los efectos de carta: /card le saldría sin marco y sin aviso
+    let km = partes[1];
+    try { km = decodeURIComponent(km); } catch (e) { /* tal cual */ }
+    return <div className="app solo-marco"><MarcoSolo liga={liga} k={km} cual={partes[2]} sv={partes[3] || ''} cc={(partes[4] || '').toLowerCase()} /></div>;
   }
   return (
     <div className={'app ' + claseTema(tema, temaSv) + calma} ref={raiz}>
@@ -804,18 +870,22 @@ export default function App() {
       {/* ❓ el «¿Cómo funciona?» de cada página con capítulo, y el aviso de que el tutorial es nuevo (comofunciona.jsx) */}
       <Aislada n="ComoFunciona"><ComoFunciona pagina={paginaMenu} /></Aislada>
       <span id="contenido" tabIndex={-1} />
-      {sv ? <Aislada key="PerfilSv" n="PerfilSv" pagina><Suspense fallback={<Cargando />}><PerfilSv liga={liga} sv={sv} enc={enc} /></Suspense></Aislada>
+      {/* 🔑 UNA POR SERVIDOR, UNA POR LLAVE Y UNA POR PERSONA (18/11/2026), como las crews y los países: con la `key` fija,
+          pasar de FFA a CEU dejaba puesto el filtro de «Su muro» (CEU sin esas publicaciones y sin chips: vacío), y de
+          un perfil a otro la búsqueda de «Sus eventos» («0 de 4» sin buscador). Un `Aislada` roto rompía los siguientes.
+          El perfil va sólo con la clave: `#/r/<k>/eventos` baja a la sección sin volver a montar */}
+      {sv ? <Aislada key={'PerfilSv' + sv} n="PerfilSv" pagina><Suspense fallback={<Cargando />}><PerfilSv liga={liga} sv={sv} enc={enc} /></Suspense></Aislada>
         : pagina === 'cambios' ? <Aislada key="Cambios" n="Cambios" pagina><Suspense fallback={<Cargando />}><Cambios liga={liga} ver={partes[1] || null} antes={cambiosAntes} /></Suspense></Aislada>
         : pagina === 'kit' ? <Aislada key="Kit" n="Kit" pagina><Suspense fallback={<Cargando />}><Kit liga={liga} cod={partes[1] || ''} /></Suspense></Aislada>
         : pagina === 'socios' || pagina === 'mundo' ? <Aislada key="Socios" n="Socios" pagina><Suspense fallback={<Cargando />}><Socios liga={liga} /></Suspense></Aislada>
-        : pagina === 'llave' && partes[1] ? <Aislada key="Llave" n="Llave" pagina><Suspense fallback={<Cargando />}><Llave liga={liga} vivoL={vivoL} n={partes.slice(1).join('/')} raiz={raiz} dc={yo.dc} /></Suspense></Aislada>
+        : pagina === 'llave' && partes[1] ? <Aislada key={'Llave' + partes.slice(1).join('/')} n="Llave" pagina><Suspense fallback={<Cargando />}><Llave liga={liga} vivoL={vivoL} n={partes.slice(1).join('/')} raiz={raiz} dc={yo.dc} /></Suspense></Aislada>
         : pagina === 'tienda' ? <Aislada key="Tienda" n="Tienda" pagina><Suspense fallback={<Cargando />}><Tienda liga={liga} dc={yo.dc} /></Suspense></Aislada>
         : pagina === 'invitar' ? <Aislada key="Invitar" n="Invitar" pagina><Suspense fallback={<Cargando />}><Invitar liga={liga} dc={yo.dc} /></Suspense></Aislada>
         : pagina === 'pase' ? <Aislada key="Pase" n="Pase" pagina><Suspense fallback={<Cargando />}><Pase liga={liga} dc={yo.dc} /></Suspense></Aislada>
         : pagina === 'crew' && partes[1] && crewAj !== null ? <Aislada key={'CrewAj' + partes[1]} n="CrewAj" pagina><Suspense fallback={<Cargando />}><AjustesCrew liga={liga} id={crewId} sec={crewAj} /></Suspense></Aislada>
         : pagina === 'crew' && partes[1] ? <Aislada key={'Crew' + partes[1]} n="Crew" pagina><Suspense fallback={<Cargando />}><PaginaCrew liga={liga} id={crewId} /></Suspense></Aislada>
         : pagina === 'pais' && partes[1] ? <Aislada key={'Pais' + partes[1]} n="Pais" pagina><Suspense fallback={<Cargando />}><PaginaPais liga={liga} cc={partes[1]} /></Suspense></Aislada>
-        : pagina === 'r' && partes[1] ? <Aislada key="Perfil" n="Perfil" pagina><Suspense fallback={<Cargando />}><Perfil liga={liga} dc={yo.dc} k={partes[1]} tab={partes[2] || ''} /></Suspense></Aislada>
+        : pagina === 'r' && partes[1] ? <Aislada key={'Perfil' + partes[1]} n="Perfil" pagina><Suspense fallback={<Cargando />}><Perfil liga={liga} dc={yo.dc} k={partes[1]} tab={partes[2] || ''} /></Suspense></Aislada>
         : pagina === 'salon' ? <Aislada key="Salon" n="Salon" pagina><Suspense fallback={<Cargando />}><SalonFama liga={liga} enc={enc} /></Suspense></Aislada>
         : pagina === 'competencias' ? <Aislada key="Competencias" n="Competencias" pagina><Suspense fallback={<Cargando />}><Competencias liga={liga} dc={yo.dc} sub={partes[1] || ''} /></Suspense></Aislada>
         : pagina === 'inventario' ? <Aislada key="Inventario" n="Inventario" pagina><Suspense fallback={<Cargando />}><PaginaInventario liga={liga} dc={yo.dc} carta={partes[1] || ''} ranura={partes[2] || ''} /></Suspense></Aislada>

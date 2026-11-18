@@ -156,8 +156,10 @@
 .tz-tabs button{flex:none;min-height:36px;padding:0 12px;border:1.5px solid var(--linea);border-radius:3px;background:var(--fondo);color:var(--tinta);cursor:pointer;font:700 15px/1 var(--tz-e);letter-spacing:.05em;text-transform:uppercase}
 .tz-tabs button[aria-pressed="true"]{background:var(--inv);color:var(--inv-tinta);box-shadow:4px 4px 0 #29B298}
 .tz-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(128px,1fr));gap:10px}
-.tz-grid.jg{grid-template-columns:repeat(auto-fill,minmax(250px,1fr))}
-@media (max-width:599.98px){.tz-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.tz-grid.jg{grid-template-columns:1fr}}
+/* la grilla de Colecciones (18/11/2026): era `.tz-grid.jg`, y `.jg` es también la página de Estilo de juego
+   (inventario.css), que le cambiaba el gap según qué página se bajó antes */
+.tz-grid.tz-cols{grid-template-columns:repeat(auto-fill,minmax(250px,1fr))}
+@media (max-width:599.98px){.tz-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.tz-grid.tz-cols{grid-template-columns:1fr}}
 .tz-q{position:relative;display:grid;grid-template-rows:auto 1fr;background:var(--caja);border:2px solid var(--linea);border-radius:4px;overflow:hidden;min-width:0}
 .tz-q.prob{border-color:#E41373;box-shadow:4px 4px 0 #E41373}
 .tz-q.on{box-shadow:4px 4px 0 #29B298}

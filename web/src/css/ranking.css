@@ -8,10 +8,8 @@
 .dv-g{display:grid;gap:8px}
 .dv-gt{margin:6px 0 0;display:flex;align-items:baseline;gap:10px;font:900 18px/1.1 Archivo,sans-serif;text-transform:uppercase}
 .dv-gt small{font:700 15px/1 "Barlow Condensed",sans-serif;letter-spacing:0.02em;color:var(--gris);text-transform:none}
-.dv-i{font:800 14px/1 Archivo,sans-serif;text-align:right;font-variant-numeric:tabular-nums}
-.dv-cara{width:32px;height:32px}
-.dv-n{font:800 15px/1.2 Archivo,sans-serif;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:inherit}
-@media (max-width: 520px){.dv-cara{width:28px;height:28px}}
+/* 🧑 .dv-i, .dv-cara y .dv-n viven en vivo.css desde el 18/11/2026: las usan también Ligas (su propio pedazo, sin este
+   CSS: las fotos del Staff medían 282×282) y la vista previa de Divisiones. Las de `.mi-presa-n .dv-n` se quedan acá */
 .mi-tus{display:grid;gap:12px}
 .mi-tus-cab{display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:12px}
 .mi-tus-tx{display:grid;gap:6px;min-width:0;flex:1 1 320px}
@@ -149,15 +147,20 @@
 .rk-det-sem li b{font:800 13px/1 Archivo,sans-serif;font-variant-numeric:tabular-nums;color:var(--gris)}
 .rk-det-sem li i{display:block;width:100%;background:var(--verde);border-radius:2px 2px 0 0}
 .rk-det-sem li small{font:700 11px/1 "Barlow Condensed",sans-serif;letter-spacing:0.04em;text-transform:uppercase;color:var(--gris);white-space:nowrap}
-.rk-det-sem li.ult b,.rk-det-sem li.ult small{color:var(--magenta)}
-.rk-det-sem li.ult i{background:var(--magenta)}
+/* ⚠️ `.rk-hoy` y no `.ult` (18/11/2026): `.ult` es el bloque del Inicio (estilo.css:455), global en este shadow root, y
+   le sumaba relleno, borde y margen a la última barrita: salía siempre llena (18 px), aunque esa semana valiera 0 */
+.rk-det-sem li.rk-hoy b,.rk-det-sem li.rk-hoy small{color:var(--magenta)}
+.rk-det-sem li.rk-hoy i{background:var(--magenta)}
 .rk-ten i{display:block;width:5px;background:var(--verde);border-radius:1px}
-.rk-ten i.ult{background:var(--magenta)}
+.rk-ten i.rk-hoy{background:var(--magenta)}
 
 /* ── 🏁 EL RANKING COMO LA MAQUETA C v5 (Dlx, 20/10/2026). Las reglas base siguen en vivo.css; esto las pisa ── */
 /* el escenario: el texto, el podio y la tira (en la compu, la tira debajo del texto; en el celular, debajo del podio) */
 .rk-cab{grid-template-areas:"tx" "podio" "tu"}
 .rk-tx{grid-area:tx}
+/* 🔗 un link en el texto de la cabecera (la «página de crews» de Crews) va sobre la escena: toma su tinta (18/11/2026).
+   `.te-link` usa `--tinta`, que en Clara es #030304, y quedaba negro sobre la escena negra: no se veía. Como entidad2.css */
+.rk-tx .hero-p .te-link{color:var(--esc-tinta)}
 .rk-podio{grid-area:podio}
 .rk-tu{grid-area:tu}
 @media (min-width: 900px){

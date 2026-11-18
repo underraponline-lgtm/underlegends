@@ -37,7 +37,8 @@ const guardar = (k, v) => { try { localStorage.setItem(k, JSON.stringify(v)); } 
 function falta(ms) {
   if (!(ms > 0)) return '';
   const m = Math.round(ms / 60000);
-  if (m < 60) return m + ' MIN';
+  // ⏱ nunca «0 MIN» (18/11/2026): entre 0 y 30 segundos el redondeo daba cero, como `liga.falta()`
+  if (m < 60) return Math.max(1, m) + ' MIN';
   const h = Math.round(m / 60);
   return h < 48 ? h + ' H' : Math.round(h / 24) + ' D';
 }
@@ -446,7 +447,9 @@ function ElBoton({ liga }) {
         {t ? (
           <span className="lb-b-pr">
             <em>{t.sub}</em>
-            {otro ? <em className="gris">El próximo: {limpio(otro.nombre)} · en {falta(utc(otro.cuando) - ahora) || 'un rato'}</em> : null}
+            {/* ⏰ con la hora que vale (`cuandoDe()`, 18/11/2026): con el atraso que avisó el organizador, no la anunciada. Y lo
+                anunciado sin hora que se pueda leer (`sin_hora`) no tiene cuenta atrás: su «cuando» es el de publicación */}
+            {otro ? <em className="gris">El próximo: {limpio(otro.nombre)} · {otro.sin_hora ? 'anunciado ' + liga.cuando(otro.cuando) : 'en ' + (falta(utc(liga.cuandoDe(otro)) - ahora) || 'un rato')}</em> : null}
           </span>
         ) : null}
         {L ? <button type="button" className="btn verde" onClick={() => accion.llave('v:' + L.id)}>Ver la llave</button>
@@ -474,7 +477,9 @@ function ElBoton({ liga }) {
   // 🥈 TU SEGUNDO EVENTO: después del primero, qué sumaste y el reto del debut (1.000 Puntos de Tienda si jugás otro
   // en 7 días; `bot/debutantes.py`)
   const primero = yo && ev === 1 ? liga.semanaDe(yo.k)[0] : null;
-  const vence = primero ? utc(liga.fechaLlave(primero[0])) + 7 * 86400000 : 0;
+  // 🔴 CON `.getTime()` (18/11/2026): `utc()` devuelve un Date, y Date + número se pega como texto («Mon Nov 16 2026 …
+  // 604800000»); `vence > ahora` daba siempre falso y el reto del debut no salía nunca. El mismo de `doradoVigente()`
+  const vence = primero ? utc(liga.fechaLlave(primero[0])).getTime() + 7 * 86400000 : 0;
   const reto = !!primero && vence > ahora;
   const m = liga.multSv(e.sv);
   const ins = aDiscord(liga, e, false);
@@ -489,7 +494,10 @@ function ElBoton({ liga }) {
   const debut = primero && (ahora - utc(liga.fechaLlave(primero[0]))) / 3600000 >= 48 ? primero : null;
   return (
     <div className={'lb-boton' + (anotado ? ' anotado' : '')}>
-      <span className="lb-b-et">{et} · EMPIEZA EN {falta(utc(e.cuando) - ahora) || 'UN RATO'}</span>
+      {/* ⏰ la cuenta atrás con la hora que vale (`cuandoDe()`, 18/11/2026): contaba desde la anunciada, y con un atraso
+          avisado decía «30 MIN» con el escenario en «1 H 30», o «UN RATO» todo el atraso. Sin hora que se pueda leer
+          (`sin_hora`, al que puedes estar anotado), «anunciado …»: su «cuando» es el de publicación */}
+      <span className="lb-b-et">{et} · {e.sin_hora ? ('anunciado ' + liga.cuando(e.cuando)).toUpperCase() : 'EMPIEZA EN ' + (falta(utc(liga.cuandoDe(e)) - ahora) || 'UN RATO')}</span>
       <span className="lb-b-ev"><img alt="" src={liga.logo(e.sv)} /><b>{limpio(e.nombre)}</b></span>
       {reto || m > 1 || debut || juegan.length ? (
         <span className="lb-b-pr">
@@ -502,7 +510,8 @@ function ElBoton({ liga }) {
           {debut ? <em className="gris">Tu debut: {limpio(debut[0].nombre)} · +{num(debut[2])} pts</em> : null}
         </span>
       ) : null}
-      {anotado ? <a className="btn verde" href="#/avisos"><Ico n="campana" t={18} />Avisame cuando empiece</a>
+      {/* 🗣️ «Avísame», con tú (18/11/2026): decía «Avisame», el voseo que la pasada del 20/10 (3.85) no había alcanzado */}
+      {anotado ? <a className="btn verde" href="#/avisos"><Ico n="campana" t={18} />Avísame cuando empiece</a>
         : ins ? <a className="btn verde lb-b-ya" href={ins.url} target="_blank" rel="noopener noreferrer">Anotarme</a> : null}
     </div>
   );
@@ -521,7 +530,8 @@ function PedirCampana({ liga, dc }) {
   const yo = liga.yo;
   if (!dc || !yo || !(yo.ev >= 1) || no || !c || !C) return null;
   if (!c.soporta || c.negado || (c.ios && !c.instalada) || c.pausada) return null;
-  if (c.activa && c.yo && c.yo.id) return null;
+  // 🔕 `{ no: 1 }` es quien tocó «Desvincular» a propósito (campana.js, 18/11/2026): no se le vuelve a pedir
+  if (c.activa && c.yo && (c.yo.id || c.yo.no)) return null;
   const b = eventoDelBoton(liga);
   if (!b.e || b.anotado) return null;
   const paso2 = !!c.activa;

@@ -450,17 +450,17 @@ def _pais(cc):
 # ── las catorce: etiqueta, título en dos líneas (blanca y magenta), bajada e ilustración ───────────────────────────
 PAGINAS = {
     'ranking': ('Temporada 1 · Ranking', 'El ranking', 'de la temporada', 'Los mejores del freestyle online, de todos los servidores, en una sola tabla.', _ranking),
-    'crews': ('Liga Global · Crews', 'Las crews', 'de la Liga', 'Armá la tuya, invitá a tu gente y subí de tier cada semana.', _crews),
+    'crews': ('Liga Global · Crews', 'Las crews', 'de la Liga', 'Arma la tuya, invita a tu gente y sube de tier cada semana.', _crews),
     'eventos': ('Liga Global · Eventos', 'Los eventos', 'de hoy', 'Qué se juega hoy en cada servidor, con la llave en vivo y la campana.', _eventos),
     'tarjetas': ('Liga Global · Tarjetas', 'Tu tarjeta', 'estilo FIFA', 'Temporada, Competitiva, Servidor y País: tus números, en una carta.', _tarjetas),
-    'pase': ('Liga Global · Pase rapero', 'El Pase', 'de rapero', 'Tareas diarias y semanales, XP y niveles: subí y desbloqueá.', _pase),
+    'pase': ('Liga Global · Pase rapero', 'El Pase', 'de rapero', 'Tareas diarias y semanales, XP y niveles: sube y desbloquea.', _pase),
     'ligas': ('Liga Global · Ligas', 'Las ligas', 'de cada servidor', 'Fechas, tablas y campeones de las ligas de los servidores socios.', _ligas),
-    'tienda': ('Liga Global · Tienda', 'La Tienda', 'de la Liga', 'Cazá cabezas, apostá en vivo y gastá tus Puntos de Tienda.', _tienda),
+    'tienda': ('Liga Global · Tienda', 'La Tienda', 'de la Liga', 'Caza cabezas, apuesta en vivo y gasta tus Puntos de Tienda.', _tienda),
     'publicaciones': ('Liga Global · Publicaciones', 'Lo que pasa', 'en la Liga', 'Campeones, rachas y crews que suben: el muro de todos los servidores.', _publicaciones),
     'socios': ('Liga Global · Socios', 'Los servidores', 'socios', 'Los servidores de rap online que suman al ranking mundial.', _socios),
     'guia': ('Liga Global · Guía', 'Cómo funciona', 'la Liga', 'Puntos, rangos, tarjetas y TAGs, explicados en una página.', _guia),
     'salon': ('Liga Global · Salón de la fama', 'El Salón', 'de la fama', 'Los MES AWARDS, las promos y los que hicieron historia.', _salon),
-    'cuenta': ('Liga Global · Tu cuenta', 'Tu cuenta', 'en la Liga', 'Entrá con Discord: tus tarjetas, tu Pase, tus Puntos y tus avisos, en un lugar.', _cuenta),
+    'cuenta': ('Liga Global · Tu cuenta', 'Tu cuenta', 'en la Liga', 'Entra con Discord: tus tarjetas, tu Pase, tus Puntos y tus avisos, en un lugar.', _cuenta),
     'cambios': ('Liga Global · Lo nuevo', 'Lo nuevo', 'de la Liga', 'Cada cambio de la página y del bot, con su versión y su hora.', _cambios_ilus),
     'socio': ('Liga Global · Socios', 'El panel', 'de tu servidor', 'Tu puntaje, cuándo hay actividad, tus raperos y los ajustes del bot, para los dueños.', _socio),
 }

@@ -34,6 +34,9 @@ const diaSem = (iso) => (new Date(diaISO(new Date(iso)) + 'T12:00:00Z').getUTCDa
 const DIAS = ['Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb', 'Dom'];
 const DIAS_PL = ['lunes', 'martes', 'miércoles', 'jueves', 'viernes', 'sábados', 'domingos'];
 const FRANJAS = [['Madrugada', 0, 6], ['Mañana', 6, 12], ['Mediodía', 12, 16], ['Tarde', 16, 20], ['Noche', 20, 24]];
+// 🕒 cada franja dentro de una frase (18/11/2026): se armaba «a la » + la etiqueta, y «Mediodía» es masculino —«los
+// domingos a la mediodía», en DDF, CEU, URBF, SR, FRZ y FVS—
+const EN_FRANJA = ['a la madrugada', 'a la mañana', 'al mediodía', 'a la tarde', 'a la noche'];
 const SEMIS = ['Semifinal', 'Tercero', 'Cuarto'];
 const coma = (x) => String(Math.round(x * 10) / 10).replace('.', ',');
 const cuenta = (xs) => { const m = new Map(); xs.forEach((x) => m.set(x, (m.get(x) || 0) + 1)); return m; };
@@ -47,16 +50,19 @@ export function useSvDatos(liga, sv, P) {
     const puestos = {};
     const primero = {};
     const veces = {};
+    // 👀 sin las llaves que no suman (`x[5]`, la marca de /api/perfiles para las de `llaves_sin_sumar.json`) (18/11/2026):
+    // entraban a los eventos, al debut, a las veces y al cara a cara, y CEU decía 26 eventos con 10 en su tira (`s.ev`).
+    // Dlx, 20/10/2026, de esas llaves: «No cuenta para nada». Siguen en el calendario y en «Ver llave»
     Object.entries(P.p).forEach(([k, v]) => {
       const xs = [];
       (v.ev || []).forEach(([n, pu]) => {
         (puestos[n] = puestos[n] || {})[k] = pu;
         const x = E[n];
-        if (x && x[2]) xs.push([x[2], x[1]]);
+        if (x && x[2] && !x[5]) xs.push([x[2], x[1]]);
       });
       if (xs.length) { xs.sort((a, b) => a[0].localeCompare(b[0])); primero[k] = xs[0][1]; veces[k] = xs.length; }
     });
-    const evs = Object.entries(E).filter(([, x]) => x[1] === sv && x[2]).map(([n, x]) => {
+    const evs = Object.entries(E).filter(([, x]) => x[1] === sv && x[2] && !x[5]).map(([n, x]) => {
       const pz = puestos[n] || {};
       const ks = Object.keys(pz);
       return { n, nom: limpio(x[0] || 'Evento ' + n), iso: x[2], gente: x[3] || ks.length, ks,
@@ -84,7 +90,8 @@ export function useSvDatos(liga, sv, P) {
     dias.forEach((d) => { const t = Date.parse(d + 'T12:00:00Z'); racha = prev != null && t - prev === 864e5 ? racha + 1 : 1; mejor = Math.max(mejor, racha); prev = t; });
     // el de cualquier servidor, para el cara a cara
     const stats = (s) => {
-      const xs = Object.entries(E).filter(([, x]) => x[1] === s && x[2]);
+      // 👀 sin las que no suman (`x[5]`), como `evs` (18/11/2026)
+      const xs = Object.entries(E).filter(([, x]) => x[1] === s && x[2] && !x[5]);
       const g = new Set(xs.flatMap(([n]) => Object.keys(puestos[n] || {})));
       const o = liga.svs[s] || {};
       return { ev: xs.length, gente: g.size, prom: xs.reduce((t, [, x]) => t + (x[3] || 0), 0) / Math.max(1, xs.length), mayor: Math.max(0, ...xs.map(([, x]) => x[3] || 0)), pts: o.pts || 0, miembros: o.miembros || 0 };
@@ -94,7 +101,9 @@ export function useSvDatos(liga, sv, P) {
 }
 
 const ovrTxt = (f) => (f && f.ovr && f.pos ? <>{f.cc ? <Bandera cc={f.cc} cls="pf9-flag" /> : null}OVR {f.ovr} · #{f.pos}</> : 'fuera del ranking');
-const Av = ({ liga, D, k, cls = '' }) => <Cara liga={liga} k={liga.T[k] ? k : ''} nombre={D.nombre(k)} cls={'cara pf9-av ' + cls} lazy />;
+// 🧑 la clave va también para quien está fuera de las 200 filas (18/11/2026): con `liga.T[k]` le llegaba vacía y su cara
+// dependía de encontrarla por nombre; `avUrl()` ya la busca por clave en los perfiles y en los que viajan fuera
+const Av = ({ liga, D, k, cls = '' }) => <Cara liga={liga} k={liga.existe(k) ? k : ''} nombre={D.nombre(k)} cls={'cara pf9-av ' + cls} lazy />;
 
 // ── ⚖️ LAS COLUMNAS DE CADA BANDA TERMINAN JUNTAS (como el perfil del rapero): en «Sus noches» el muro muestra más o
 // menos publicaciones, en «Su temporada» la lista de eventos crece o se achica y en «Su gente» los de la casa. Sólo en la
@@ -170,9 +179,26 @@ export function SvHistorias({ liga, sv }) {
   );
 }
 
-// ── 📊 su forma: los últimos doce eventos; el alto es la gente, abajo quién ganó ──
+/** 🖥️ ¿Es la compu (900 px o más)? La misma de crew2.jsx: el corte del CSS de las bandas. */
+function useCompu() {
+  const q = '(min-width: 900px)';
+  const [si, setSi] = useState(() => typeof window !== 'undefined' && !!window.matchMedia && window.matchMedia(q).matches);
+  useEffect(() => {
+    if (!window.matchMedia) return undefined;
+    const m = window.matchMedia(q);
+    const f = () => setSi(m.matches);
+    m.addEventListener('change', f);
+    return () => m.removeEventListener('change', f);
+  }, []);
+  return si;
+}
+
+// ── 📊 su forma: los últimos doce eventos (ocho en el teléfono); el alto es la gente, abajo quién ganó ──
+// 📱 el corte del teléfono va acá y no en el CSS (18/11/2026): el CSS escondía cuatro columnas y el título, el promedio
+// y el pie seguían contando doce —«últimos 12 eventos» sobre 8 barras, en CEU a 390 px—
 export function SvForma({ liga, D }) {
-  const xs = D.evs.slice(0, 12).reverse();
+  const compu = useCompu();
+  const xs = D.evs.slice(0, compu ? 12 : 8).reverse();
   if (xs.length < 2) return null;
   const mx = Math.max(...xs.map((e) => e.gente), 1);
   const rec = Math.max(...D.evs.map((e) => e.gente));
@@ -214,7 +240,8 @@ export function SvProximo({ liga, sv }) {
     <section className="pf9-pz sv9-prox">
       <span className="sv9-k">{vivo ? '● En vivo ahora' : 'Su próximo evento'}</span>
       <p className="sv9-prox-t">{limpio(e.nombre)}</p>
-      <p className="sv9-prox-d">{vivo ? 'empezó ' + liga.dia(liga.cuandoDe(e)) : liga.dia(liga.cuandoDe(e))}{e.modalidad ? ' · ' + limpio(e.modalidad) : ''}
+      {/* ⏰ un sin_hora dice cuándo se anunció (revisión del 18/11/2026): su `cuando` es la hora de publicación */}
+      <p className="sv9-prox-d">{vivo ? 'empezó ' + liga.dia(liga.cuandoDe(e)) : e.sin_hora ? 'anunciado ' + liga.cuando(e.cuando) : liga.dia(liga.cuandoDe(e))}{e.modalidad ? ' · ' + limpio(e.modalidad) : ''}
         {e.cupos ? ' · cupos ' + e.cupos : ''}{e.premios ? ' · ' + limpio(e.premios).toLowerCase() : ''}{e.org ? ' · organiza ' + limpio(e.org) : ''}</p>
       <div className="sv9-acc">
         {d ? <a className="pf9-btn sv9-negro" href={d.url} target="_blank" rel="noopener noreferrer">{d.txt}</a> : null}
@@ -229,14 +256,18 @@ export function SvVistazo({ D, sv }) {
   const ev = D.evs;
   const tot = ev.reduce((t, e) => t + e.gente, 0);
   const mayor = Math.max(...ev.map((e) => e.gente));
-  const semanas = Object.keys(D.sem).sort();
-  const esta = semanas.length ? D.sem[semanas[semanas.length - 1]][0] : 0;
+  // 📅 la semana de HOY, con la misma clave que `D.sem` (el lunes, en la zona de quien mira) (18/11/2026): se tomaba la
+  // última semana con eventos, y FVS decía «1 esta semana» con su último evento del 13/10
+  const hoy = new Date();
+  const lun = new Date(diaISO(hoy) + 'T12:00:00Z');
+  lun.setUTCDate(lun.getUTCDate() - diaSem(hoy.toISOString()));
+  const esta = (D.sem[lun.toISOString().slice(0, 10)] || [0])[0];
   const pct = D.deb.length ? Math.round((100 * D.volvio.length) / D.deb.length) : null;
   const pctL = D.debL.length ? Math.round((100 * D.volvioL.length) / D.debL.length) : null;
   const top = masComun(D.titulos)[0];
   const pa = masComun(D.paises)[0];
   const xs = [
-    ['Eventos', num(ev.length), esta + ' esta semana · ' + num(tot) + ' participaciones'],
+    ['Eventos', num(ev.length), (esta ? esta + ' esta semana · ' : '') + num(tot) + ' participaciones'],
     ['Raperos', num(D.gente.size), 'distintos jugaron acá'],
     ['Por evento', coma(tot / ev.length), 'el más lleno: ' + mayor],
     ['Campeones', String(D.titulos.size), top ? top[1] + (top[1] === 1 ? ' título de ' : ' títulos de ') + D.nombre(top[0]) : ''],
@@ -259,9 +290,10 @@ export function SvNoche({ liga, D, sv }) {
     <li key={r + k} className={cls}><span className="pf9-rd">{r}</span><Av liga={liga} D={D} k={k} cls={cls ? 'lg' : ''} /><b><Alguien liga={liga} nombre={D.nombre(k)} cara={false} /></b><small>{ovrTxt(D.fila(k))}</small></li>
   );
   const pod = [...e.camp.slice(0, 1).map((k) => lugar(k, 'Campeón', 'cop')), ...e.sub.slice(0, 1).map((k) => lugar(k, 'Final')), ...e.semi.slice(0, 2).map((k) => lugar(k, 'Semifinal'))];
+  // 🔢 «1 evento», en singular (18/11/2026): con un solo evento decía «1 eventos en la T1»
   return (
     <section className="pf9-pz pf9-noche tinte-o">
-      <header className="pf9-h"><h3>Su noche más grande</h3><span>{D.evs.length} eventos en la {liga.temp}</span></header>
+      <header className="pf9-h"><h3>Su noche más grande</h3><span>{D.evs.length} {D.evs.length === 1 ? 'evento' : 'eventos'} en la {liga.temp}</span></header>
       <p className="pf9-nt">{e.nom}</p>
       <p className="pf9-pie">{fecha(e.iso)} · {e.gente} raperos · el récord de {siglaDe(sv)} en la {liga.temp}</p>
       {pod.length ? <ol className="pf9-ruta sv9-pod">{pod}</ol> : null}
@@ -335,7 +367,11 @@ export function SvMuro({ liga, sv, n = VER_MURO }) {
   const xs = useMemo(() => liga.muroLimpio().filter((it) => it.tipo !== 'anuncio' && liga.svDe(it) === sv), [liga, sv]);
   if (!xs.length) return null;
   const nsv = xs.filter(DEL_SV).length;
-  const lista = fil === 'sv' ? xs.filter(DEL_SV) : fil === 'gente' ? xs.filter((it) => !DEL_SV(it)) : xs;
+  // 🧹 el filtro vale sólo si los chips están a la vista (18/11/2026): el perfil no se vuelve a montar al pasar de un
+  // servidor a otro, y «De su gente» marcado en FFA dejaba a ACAD —sólo publicaciones del servidor— con «Su muro» vacío
+  // y sin chips para volver a «Todo»
+  const f = nsv && nsv < xs.length ? fil : '';
+  const lista = f === 'sv' ? xs.filter(DEL_SV) : f === 'gente' ? xs.filter((it) => !DEL_SV(it)) : xs;
   const ver = todas ? lista : lista.slice(0, n);
   const ch = (k, t, n) => <button type="button" className={fil === k ? 'on' : ''} aria-pressed={fil === k} onClick={() => { setFil(k); setTodas(false); }}>{t} <em>{n}</em></button>;
   return (
@@ -438,8 +474,8 @@ export function SvCuando({ D }) {
   const tops = Object.entries(D.cal).filter(([, c]) => c === mx).map(([k]) => k.split(':').map(Number)).sort((a, b) => a[1] - b[1] || a[0] - b[0]);
   const fr = [...new Set(tops.map((x) => x[1]))];
   const ds = tops.map((x) => DIAS_PL[x[0]]);
-  const fuerte = fr.length === 1 ? 'los ' + (ds.length > 1 ? ds.slice(0, -1).join(', ') + ' y ' + ds[ds.length - 1] : ds[0]) + ' a la ' + FRANJAS[fr[0]][0].toLowerCase()
-    : tops.slice(0, 3).map(([d, f]) => 'los ' + DIAS_PL[d] + ' a la ' + FRANJAS[f][0].toLowerCase()).join(' · ');
+  const fuerte = fr.length === 1 ? 'los ' + (ds.length > 1 ? ds.slice(0, -1).join(', ') + ' y ' + ds[ds.length - 1] : ds[0]) + ' ' + EN_FRANJA[fr[0]]
+    : tops.slice(0, 3).map(([d, f]) => 'los ' + DIAS_PL[d] + ' ' + EN_FRANJA[f]).join(' · ');
   return (
     <section className="pf9-pz sv9-hm">
       <header className="pf9-h"><h3>Cuándo juega</h3><span>en tu hora</span></header>
@@ -450,7 +486,8 @@ export function SvCuando({ D }) {
           return <i key={d + f} className={'c' + (c ? Math.min(4, Math.ceil((4 * c) / mx)) : 0)} title={d + ' · ' + fn + ': ' + c}>{c || ''}</i>;
         })])}
       </div>
-      <p className="pf9-pie">Su hora fuerte: <b>{fuerte}</b> ({mx} {mx === 1 ? 'evento' : 'eventos cada uno'})</p>
+      {/* «cada uno» sólo si hay más de una casilla en el máximo (18/11/2026: con una sola decía «6 eventos cada uno») */}
+      <p className="pf9-pie">Su hora fuerte: <b>{fuerte}</b> ({mx} {mx === 1 ? 'evento' : 'eventos'}{tops.length > 1 ? ' cada uno' : ''})</p>
     </section>
   );
 }

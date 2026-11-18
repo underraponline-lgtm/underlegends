@@ -125,7 +125,8 @@
 .cu .cu-g a small{font:500 12.5px/1.25 Archivo,sans-serif}
 .cu-ico{display:grid;place-items:center;width:30px;height:30px;border-radius:6px;background:var(--suave);color:var(--tinta)}
 .cu-ico.v{background:#29B298;color:#030304}
-.cu-ico.m{background:var(--magenta);color:#fff}
+/* `mg` y no `m` (18/11/2026): `.m` es la batalla de la llave chica del Inicio y le sumaba su borde de 2 px */
+.cu-ico.mg{background:var(--magenta);color:#fff}
 /* la fila abierta: mi regla de la caja (3 clases) pisaba al `.cu-g a.on` de vivo.css (2) y dejaba texto blanco sobre fondo claro */
 .cu .cu-g a.on{background:var(--inv);color:var(--inv-tinta);border-color:var(--inv)}
 .cu .cu-g a.on .cu-ico{background:var(--inv-tinta);color:var(--inv)}

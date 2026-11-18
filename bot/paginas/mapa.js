@@ -182,6 +182,8 @@
   /* Cómo está cada pieza ahora: {nivel: ok|ojo|falla|duerme, txt, lineas}. `null`: sin dato, sin pieza. */
   // la hora contra la que se juzga: ahora, o la de la foto
   function REF() { return FOTO && EST.medido ? new Date(EST.medido) : new Date(); }
+  // cómo terminó una corrida de GitHub (`conclusion`), en español
+  var FIN = { failure: 'falló', cancelled: 'cancelada', timed_out: 'se pasó de tiempo', skipped: 'salteada', startup_failure: 'no arrancó', action_required: 'espera aprobación' };
   function estadoDe(id) {
     var ahora = REF(), p = partes(ahora), noche = madrugada(p.hour);
     var A = EST.avisos || null, q = cuotas(), x, l;
@@ -195,8 +197,10 @@
         if (c.length) l.push('De las últimas ' + c.length + ', el Worker arrancó ' + c.filter(function (r) { return r.evento === 'workflow_dispatch'; }).length);
         if (A && A.disparador && A.disparador.ultimo) l.push('El Worker disparó por última vez a las ' + cuando(A.disparador.ultimo.t) + (A.disparador.ultimo.ok ? ', bien' : ', y GitHub dijo que no'));
         if (pr) l.push('Próxima: ' + hora(pr) + ' ET, ' + falta(pr - ahora));
-        if (noche) return { nivel: 'duerme', txt: 'duerme hasta las 11:22 AM', lineas: l };
         var ok = c[0] && REF() - new Date(c[0].t) < 45 * 60e3;
+        // 🌙 y hasta las 11:30, como `pausa_max()` de bot/madrugada.py (18/11/2026): de 11:00 a ~11:27 la última era la de
+        // las 2:52 (o la de las 4 del cron) y el punto salía amarillo «para mirar» todos los días, con todo andando bien
+        if (noche || (!ok && p.hour === 11 && p.minute < 30)) return { nivel: 'duerme', txt: 'duerme hasta las 11:22 AM', lineas: l };
         return { nivel: ok ? 'ok' : 'ojo', txt: c[0] ? 'última: ' + cuando(c[0].t) : 'sin corridas', lineas: l };
       }
       case 'escuchar': case 'dibujar': {
@@ -224,7 +228,8 @@
       case 'audit': {
         x = EST.auditoria;
         if (!x) return null;
-        return { nivel: x.fin_ok === 'success' ? 'ok' : x.fin_ok ? 'falla' : 'ojo', txt: (x.fin_ok === 'success' ? 'bien' : x.fin_ok || 'corriendo') + ' · ' + cuando(x.t), lineas: ['Última auditoría: ' + cuando(x.t) + ' (' + hace(x.t) + ')'] };
+        // en español (18/11/2026): se pintaba el `conclusion` crudo de GitHub, «failure · lun 16/11 5:36 PM»
+        return { nivel: x.fin_ok === 'success' ? 'ok' : x.fin_ok ? 'falla' : 'ojo', txt: (x.fin_ok === 'success' ? 'bien' : FIN[x.fin_ok] || x.fin_ok || 'corriendo') + ' · ' + cuando(x.t), lineas: ['Última auditoría: ' + cuando(x.t) + ' (' + hace(x.t) + ')'] };
       }
       case 'operativo': return pasosDe('escuchar', ['1', '2', '2d']);
       case 'oficial': return pasosDe('escuchar', ['1c']);
@@ -510,7 +515,7 @@
       if (Array.from(abiertos).sort().join() !== antes) rebuild();
     }
     pintarFoco();
-    pintarPanel();
+    pintarPanel(true);
     if (d && angosto.matches) abrirPanel(true);
   }
 
@@ -626,7 +631,9 @@
     return '<div class="ahora-p nivel-' + st.nivel + '"><h3>' + (EST.modo === 'vivo' ? 'Ahora' : 'En la foto') + '</h3><ul>' +
       st.lineas.map(function (x) { return '<li>' + esc(x) + '</li>'; }).join('') + '</ul></div>';
   }
-  function pintarPanel() {
+  // `nueva`: se eligió otra pieza (elegir()). El refresco de cada minuto (aplicarEstado) y «Mostrarlas en el mapa» no la
+  // pasan: vuelven a pintar la misma y no suben el panel (18/11/2026: cada 60 s el panel volvía arriba mientras se leía)
+  function pintarPanel(nueva) {
     if (rec) return;
     var d = sel;
     if (!d) { pintarInicio(); return; }
@@ -670,7 +677,7 @@
     h += lista('Le llega de', vienen) + lista('Le manda a', van);
     h += '<div><h3>En el repo</h3><div class="arch">' + n.arch.map(function (a) { return '<code>' + esc(a) + '</code>'; }).join('') + '</div></div>';
     cuerpoP.innerHTML = h; tituloP.textContent = n.t;
-    if (!angosto.matches && panel.scrollTop) panel.scrollTop = 0;
+    if (nueva && !angosto.matches && panel.scrollTop) panel.scrollTop = 0;
   }
   function pintarRec(r) {
     var h = '<div class="p-cab"><span class="chip rec">Recorrido</span><span class="donde">' + r.pasos.length + ' pasos</span></div><h2>' + esc(r.t) + '</h2>';
@@ -795,5 +802,13 @@
     setInterval(function () { if (document.visibilityState !== 'hidden') traer(false); }, 60e3);
   }
   if (angosto.addEventListener) angosto.addEventListener('change', function () { if (!angosto.matches) abrirPanel(false); });
-  window.addEventListener('resize', function () { encuadrarTodo(false); });
+  // sólo si cambió el tamaño del lienzo (18/11/2026): en el teléfono, esconder o mostrar la barra de direcciones al bajar
+  // la página dispara 'resize' sin mover el .marco (66vh), y re-encuadrar borraba el zoom y el centrado que habías hecho
+  var tamAntes = svg.node().clientWidth + 'x' + svg.node().clientHeight;
+  window.addEventListener('resize', function () {
+    var el = svg.node(), t = el.clientWidth + 'x' + el.clientHeight;
+    if (t === tamAntes) return;
+    tamAntes = t;
+    encuadrarTodo(false);
+  });
 })();

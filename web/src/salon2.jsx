@@ -49,11 +49,14 @@ const diaSemana = (d) => {
   const [y, m, dd] = String(d || '').slice(0, 10).split('-').map(Number);
   return y ? DIAS[new Date(Date.UTC(y, m - 1, dd)).getUTCDay()] : '';
 };
+// 👥 la cara y el nombre de quien sea, también de los que quedan fuera de las 200 de la tabla (18/11/2026): miraban sólo
+// `liga.T`, y en las insignias (que salen de los 856 de /api/perfiles) «Joven shenlong» salía con la inicial y con su
+// clave («jovenshenlong») como nombre. `quienK()`/`nombreDe()` buscan también en los perfiles y en los de fuera
 function Persona({ liga, k, n, cls = 'sl-cara' }) {
-  const f = k && liga.T[k];
+  const f = k && liga.quienK(k);
   return <Cara liga={liga} k={f ? k : ''} nombre={(f && f.n) || n || k || '?'} cls={cls} />;
 }
-const nomDe = (liga, k, n) => limpio((k && liga.T[k] && liga.T[k].n) || n || k || '');
+const nomDe = (liga, k, n) => liga.nombreDe(k, n);
 // bajar hasta algo de adentro del shadow root
 const raiz = () => { const h = document.getElementById('inicio-nuevo'); return h && h.shadowRoot; };
 
@@ -529,7 +532,9 @@ const UNIDAD = { racha: 'eventos seguidos', mev: 'pts', grande: 'raperos', dia: 
 // es su unidad, que ya va al lado del número
 function detalle(r) {
   if (!r.x || r.id === 'dia' || r.id === 'rdu') return '';
-  if (r.id === 'grande') return String(r.x).replace(/^raperos\s*·\s*/, '');
+  // con la sigla y no el código interno (18/11/2026): `_records()` manda «raperos · ACAD» y se leía «ACAD» donde toda la
+  // página dice «LCW»
+  if (r.id === 'grande') return siglaDe(String(r.x).replace(/^raperos\s*·\s*/, '').trim());
   return (r.id === 'mev' ? 'en ' : '') + limpio(r.x);
 }
 function Records({ liga }) {
@@ -655,14 +660,18 @@ function CampeonesLigas({ liga, xs }) {
   );
 }
 
-const tempsPase = (pub) => { const por = (pub && pub.salon) || {}; return Object.keys(por).filter((t) => (por[t] || []).length).sort().reverse(); };
+// 🎟️ los que se pueden nombrar, con su puesto de llegada (18/11/2026): la lista filtraba por `liga.T` y la pestaña contaba
+// a todos, así que con dlx (#226, fuera de las 200) solo, «Salón del Pase» salía con la lista vacía; y el «N.º» se
+// numeraba después de filtrar, así que si el 1.º quedaba afuera el 2.º se leía «1.º». `[[clave, cuándo], índice]`
+const vistosPase = (liga, xs) => (xs || []).map((x, i) => [x, i]).filter(([[k]]) => liga.existe(k));
+const tempsPase = (liga, pub) => { const por = (pub && pub.salon) || {}; return Object.keys(por).filter((t) => vistosPase(liga, por[t]).length).sort().reverse(); };
 function SalonPase({ liga, pub, temps }) {
   const por = (pub && pub.salon) || {};
   return (
     <>
       <p className="sd-tab-baj">Los que completaron el Pase de rapero, en el orden en que llegaron. <a href="#/pase">El Pase</a></p>
       {temps.map((t) => (
-        <ol key={t} className="sl-lista">{por[t].filter(([k]) => liga.T[k]).map(([k, cuando], i) => (
+        <ol key={t} className="sl-lista">{vistosPase(liga, por[t]).map(([[k, cuando], i]) => (
           <li key={k}>
             {/* 💎 con el premium, el aro dorado en la cara y el sello al lado del nombre */}
             <Persona liga={liga} k={k} cls={'sl-cara' + (esPremium(pub, k) ? ' sp-prem-aro' : '')} />
@@ -819,7 +828,7 @@ export function SalonFama({ liga, enc }) {
   const ins = insDificiles(liga, perf);
   const ligasX = ((liga.d.ligas || {}).salon) || [];
   const figs = filasFig(liga, S, perf);
-  const temps = tempsPase(pub);
+  const temps = tempsPase(liga, pub);
   const tabs = PESTANAS.map(([k, n, c]) => [k, n, c,
     k === 'rec' ? ((liga.d.records || []).length ? <Records liga={liga} /> : null)
       : k === 'ins' ? (ins.length ? <Insignias liga={liga} xs={ins} /> : null)

@@ -25,6 +25,16 @@ function hora(ms) {
   return new Date(ms).toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' });
 }
 
+// 📅 el día, para la hora nueva de una pausa (18/11/2026): siempre cae otro día —el objeto la pone sólo si es más de
+// 18 h después del mensaje— y el aviso decía «sigue 9:30 p. m.», que se lee como hoy. Se calcula al recibirlo, como
+// cuando(); con 'es' fijo, o un teléfono en inglés diría «Thursday»
+function dia(ms) {
+  var a = new Date(); a.setHours(0, 0, 0, 0);
+  var b = new Date(ms); b.setHours(0, 0, 0, 0);
+  var n = Math.round((b - a) / 86400000);
+  return n === 0 ? 'hoy' : n === 1 ? 'mañana' : 'el ' + new Date(ms).toLocaleDateString('es', { weekday: 'long', day: 'numeric' });
+}
+
 function cuando(ms) {
   var m = Math.round((ms - Date.now()) / 60000);
   if (m > 1) {
@@ -72,7 +82,7 @@ function armar(d) {
     const pausa = d.est === 'pausado';
     return {
       titulo: (pausa ? '⏸ En pausa: ' : '⏰ Se atrasó: ') + (d.t || 'el evento'),
-      cuerpo: [d.svn || d.sv, d.nueva ? (pausa ? 'sigue ' : 'ahora a las ') + hora(d.nueva) : ''].filter(Boolean).join(' · ') +
+      cuerpo: [d.svn || d.sv, d.nueva ? (pausa ? 'sigue ' + dia(d.nueva) + ' a las ' : 'ahora a las ') + hora(d.nueva) : ''].filter(Boolean).join(' · ') +
         (pausa ? '\nEl organizador avisó que sigue otro día.' : d.nueva ? '' : '\nEl organizador avisó que empieza más tarde.'),
       url: d.url || '/', tag: 'ev' + (d.id || ''),
     };

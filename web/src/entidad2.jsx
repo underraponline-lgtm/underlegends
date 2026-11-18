@@ -222,7 +222,10 @@ export function PerfilSv({ liga, sv, enc }) {
         ) : null} />
       <Indice items={items} />
       <div className="pf9-pag sv9-pag" ref={raiz}>
-        {!P ? <div className="cargando">Cargando…</div> : D ? (
+        {/* ⏳ «Cargando…» sólo mientras no llegó (18/11/2026): si /api/perfiles falla, `usePerfiles()` da `false` y la
+            página cae en la rama sin bandas, que sale del lobby. Con `!P` el «Cargando…» tapaba para siempre «Los que
+            mandan», su próximo evento, la tabla y el muro */}
+        {P === null ? <div className="cargando">Cargando…</div> : D ? (
           <>
             <Banda color="negra">
               <div className="pf9-g pf9-g-forma">
@@ -264,9 +267,11 @@ export function PerfilSv({ liga, sv, enc }) {
       {/* sin envoltorio: entre dos secciones negras, uno de más cortaba `.sec.negra+.sec.negra` y dejaba una franja clara */}
       <MesSv liga={liga} sv={sv} enc={enc} />
       <PromosSv liga={liga} sv={sv} />
+      {/* 🔑 18/11/2026: la key con el nombre de respaldo, como en abajo.jsx: un buscado sin clave (k:'', el nombre no está en
+          `gente`) daba keys repetidas en cuanto dos caían en el mismo servidor */}
       {buscados.length ? (
         <Sec id="ent-buscados" titulo={'Se busca en ' + siglaDe(sv)} enlace="Most Wanted" href="#/ranking/mw" extra="negra">
-          <div className="mw-rail" style={{ '--cols': Math.ceil(buscados.length / Math.ceil(buscados.length / 6)) }}>{buscados.map((b) => <Poster key={b.k} liga={liga} b={b} />)}</div>
+          <div className="mw-rail" style={{ '--cols': Math.ceil(buscados.length / Math.ceil(buscados.length / 6)) }}>{buscados.map((b) => <Poster key={b.k || 'n:' + b.n} liga={liga} b={b} />)}</div>
         </Sec>
       ) : null}
       <Sec id="ent-otros" titulo="Los otros servidores">
@@ -317,8 +322,9 @@ function Escalera({ T, id }) {
 export function PaginaCrew({ liga, id }) {
   useCrews();
   // 🙋 la fila de quien quedó más allá de los 200 del lobby viene en su perfil (`/api/perfiles`, `p[k].f`): con ella sale en
-  // la lista con su puesto, su OVR y sus puntos, como los demás
-  const perf = usePerfiles();
+  // la lista con su puesto, su OVR y sus puntos, como los demás. Se pide acá para que llegue (y la página se vuelva a
+  // dibujar); la lee `liga.persona()` (18/11/2026: el `filaDe` de acá hacía lo mismo, sin la clave y sin el perfil abierto)
+  usePerfiles();
   const cs = liga.d.crews || [];
   const viva = crewViva(id);
   const c0 = cs.find((x) => clave(x) === id) || cs.find((x) => limpio(x.crew).toLowerCase() === limpio(id).toLowerCase())
@@ -335,9 +341,8 @@ export function PaginaCrew({ liga, id }) {
   // 🃏 la tabla trae a los primeros de la Liga. `c.gente` son todos los de la crew que jugaron, entren o no: quien jugó y
   // quedó más abajo no es «todavía no jugó» (revisión del 04/11/2026: salían ahí con 4 eventos, y hasta el mejor de la crew)
   const jugo = Object.fromEntries((c.gente || []).map((n) => [claveNombre(n), limpio(n)]));
-  const filaDe = (k) => liga.T[k] || (perf && perf.p && perf.p[k] && perf.p[k].f) || null;
-  const gente = (viva ? viva.gente.map(([k]) => filaDe(k) || { k, n: jugo[k] || k })
-    : (c.gente || []).map((n) => liga.fila(n) || filaDe(claveNombre(n)) || { k: claveNombre(n), n: limpio(n) })).sort(porLugar);
+  const gente = (viva ? viva.gente.map(([k]) => liga.persona(k) || { k, n: jugo[k] || k })
+    : (c.gente || []).map((n) => liga.fila(n) || liga.persona(claveNombre(n)) || { k: claveNombre(n), n: limpio(n) })).sort(porLugar);
   // 🗒️ quien jugó va en la lista aunque esté más allá de los 200 (Dlx, 16/11/2026: «elimina esto de jugaron fuera de los
   // 200 primeros… listalos nomás como Krish»). Hasta acá iban aparte, en un recuadro con su cara y su nombre
   const jugaron = gente.filter((f) => f.pos || f.o || jugo[f.k]);
@@ -358,7 +363,8 @@ export function PaginaCrew({ liga, id }) {
         // el tier va en la tira, no también en el cartel
         tag={pos ? '#' + pos + ' DE LAS CREWS' : 'SIN PUESTO · HACEN FALTA TRES RAPEROS'}
         sub={<>{ccs.length ? <span className="ent-flags">{ccs.map((cc) => <Bandera key={cc} cc={cc} cls="ent-flag" />)}</span> : null}
-          {lider ? <span>Líder: <a className="te-link ent-toque" href={'#/r/' + encodeURIComponent(lider[0])}>{limpio((liga.T[lider[0]] || {}).n || lider[0])}</a></span> : null}</>}
+          {/* el nombre con `nombreDe()` (18/11/2026): con `liga.T` un Líder de más allá de los 200 salía con su clave */}
+          {lider ? <span>Líder: <a className="te-link ent-toque" href={'#/r/' + encodeURIComponent(lider[0])}>{liga.nombreDe(lider[0])}</a></span> : null}</>}
         // «Pedir entrar» arriba, donde el servidor tiene «Entrar al servidor»: abajo quedaba a 1.150 px en el celular
         acciones={<>{viva ? <EntrarCrew c={viva} /> : null}
           <Compartir cls="btn borde" url={enlace('#/crew/' + encodeURIComponent(clave(c)))} texto={nombre + ' en la Liga Global'} /></>}

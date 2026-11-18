@@ -88,6 +88,8 @@ export const CATALOGO = [
   ['voz', '🗳️', 'Voz del pueblo', 'votar en los MES AWARDS', [[1, '1 mes'], [3, '3 meses'], [6, '6 meses'], [12, '12 meses']], 'meses'],
 ];
 const POR_ID = Object.fromEntries(CATALOGO.map((e) => [e[0], e]));
+// 18/11/2026: la unidad en singular, para «falta 1 día» (con la del catálogo salía «Le falta 1 días para Bronce»)
+const UNO = { días: 'día', niveles: 'nivel', seguidores: 'seguidor', tarjetas: 'tarjeta', promos: 'promo', aplausos: 'aplauso', personas: 'persona', meses: 'mes' };
 // lo que pide el primer nivel, para «Para desbloquear»
 const PIDE = {
   racha: 'Entrar a la página 7 días seguidos', seguidores: 'Llegar a 10 seguidores', coleccion: 'Tener 2 tarjetas',
@@ -179,8 +181,9 @@ export function PanelEmblemas({ xs, sel0, nombre, esYo, onCerrar, onElegir }) {
         <button type="button" className="emb-x" onClick={onCerrar} aria-label="Cerrar"><Ico n="cerrar" t={18} /></button>
         <div className="emb-izq">
           <h3>{esYo ? 'Tus emblemas' : 'Los emblemas de ' + nombre}</h3>
-          <p>Son de {esYo ? 'tu' : 'su'} cuenta en Under Legends, no de la competencia (eso son {esYo ? 'tus' : 'sus'} logros). Toca uno.</p>
-          {esYo && onElegir ? <p className="emb-ele-n">{ele.length ? (ele.length === 1 ? 'Al lado de tu nombre se ve el que elegiste (●).' : 'Al lado de tu nombre se ven los ' + ele.length + ' que elegiste (●).') : 'Al lado de tu nombre se ven los de más nivel. Toca uno y elige si se ve.'}</p> : null}
+          <p>Son de {esYo ? 'tu' : 'su'} cuenta en Under Legends, no de la competencia (eso son {esYo ? 'tus' : 'sus'} logros).{xs.length ? ' Toca uno.' : ''}</p>
+          {/* 🫙 sin emblemas no hay nada que tocar ni que elegir (18/11/2026): queda «Para desbloquear» */}
+          {esYo && onElegir && xs.length ? <p className="emb-ele-n">{ele.length ? (ele.length === 1 ? 'Al lado de tu nombre se ve el que elegiste (●).' : 'Al lado de tu nombre se ven los ' + ele.length + ' que elegiste (●).') : 'Al lado de tu nombre se ven los de más nivel. Toca uno y elige si se ve.'}</p> : null}
           <div className="emb-grid">
             {xs.map((x) => (
               <button key={x.id} type="button" className={'emb-c' + (x.id === (e && e.id) ? ' on' : '')} aria-pressed={x.id === (e && e.id)}
@@ -206,8 +209,11 @@ export function PanelEmblemas({ xs, sel0, nombre, esYo, onCerrar, onElegir }) {
             </> : null}
             {e.esc ? (
               <div className="emb-prog">
+                {/* 18/11/2026: con 1, la unidad en singular («1 día», no «1 días»), y en tu perfil «Te falta», que el
+                    rótulo dice «TU PROGRESO» (decía «Le faltan…» también ahí) */}
                 <div className="emb-pt"><small>{esYo ? 'TU PROGRESO' : 'SU PROGRESO'}</small>
-                  <b>{sig ? (falta === 1 ? 'Le falta 1' : 'Le faltan ' + falta.toLocaleString('es')) + ' ' + (e.u || '') + ' para ' + TIER[e.t + 1][0] : 'Nivel máximo'}</b></div>
+                  <b>{sig ? (falta === 1 ? (esYo ? 'Te falta 1 ' : 'Le falta 1 ') + (UNO[e.u] || e.u || '')
+                    : (esYo ? 'Te faltan ' : 'Le faltan ') + falta.toLocaleString('es') + ' ' + (e.u || '')) + ' para ' + TIER[e.t + 1][0] : 'Nivel máximo'}</b></div>
                 <div className="emb-bar"><Arte g={e.g} t={e.t} px={24} /><span><u style={{ width: pct + '%' }} /></span>
                   {sig ? <Arte g={e.g} t={e.t + 1} px={24} lock /> : null}</div>
                 <ol className="emb-esc">

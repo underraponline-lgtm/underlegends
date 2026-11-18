@@ -15,7 +15,7 @@
 // página no lo inventa.
 import { useEffect, useState } from 'react';
 import { capital, diaISO, hora, limpio, num, siglaDe, utc } from './liga.js';
-import { Cara, Compartir, Ico, accion } from './piezas.jsx';
+import { Cara, Compartir, Ico, accion, usePerfiles } from './piezas.jsx';
 import { diaCrew } from './crews.js';
 import { REF_ERROR, mandarRef, pedirRef, useRefPendiente } from './referidos.js';
 import CSS_PAGINA from './css/invitar.css?inline';
@@ -27,10 +27,10 @@ const W = window;
 const TRACK = [[1, [['drop', 1]]], [3, [['titulo', 'Reclutador']]], [5, [['drop', 2], ['pdt', 1500]]], [10, [['marco', 'embajador']]]];
 const VISTO = 'lg:ref_visto';
 
-const nombreK = (liga, k) => {
-  const f = liga && ((liga.T && liga.T[k]) || (liga.X && liga.X[k]));
-  return limpio((f && f.n) || k);
-};
+// 🧑 el nombre oficial aunque no esté entre las 200 filas de la tabla (18/11/2026): miraba sólo `T` y `X`, y quien invita
+// y los invitados que ya cuentan casi nunca están ahí, así que se leía la clave («martoar» por «Marto AR»).
+// `nombreDe()` también mira /api/perfiles (que `Invitar` pide con `usePerfiles()`) y a los que viajan fuera de la tabla
+const nombreK = (liga, k) => (liga && liga.nombreDe ? liga.nombreDe(k) : limpio(k));
 const premioTx = (pr) => {
   const [t, x] = pr || [];
   if (t === 'drop') return x === 1 ? 'Dragón Drop' : x + ' Dragón Drops';
@@ -72,12 +72,17 @@ function guardarVisto(n) { try { W.localStorage.setItem(VISTO, String(n)); } cat
 
 // ───────────────────────────── quien llega por un link ─────────────────────────────
 
+// 🏠 el Inicio es '#/' (18/11/2026): '#/inicio' no es una ruta de App.jsx; dibujaba el Inicio por defecto pero sin marcarlo
+// en el menú, con el botón Subir y sin contar sus toques
 const ERR_LLEGO = {
-  propio: ['Ése es tu propio link', 'Pásaselo a alguien que todavía no esté en la Liga.', 'Ir al Inicio', '#/inicio'],
-  no_nuevo: ['Ya estabas en la Liga', 'Las invitaciones son para quien llega por primera vez. Lo tuyo sigue igual.', 'Ir al Inicio', '#/inicio'],
+  propio: ['Ése es tu propio link', 'Pásaselo a alguien que todavía no esté en la Liga.', 'Ir al Inicio', '#/'],
+  no_nuevo: ['Ya estabas en la Liga', 'Las invitaciones son para quien llega por primera vez. Lo tuyo sigue igual.', 'Ir al Inicio', '#/'],
   cuenta_nueva: ['Tu cuenta de Discord es muy nueva', 'Para una invitación tiene que tener 30 días o más. Igual puedes entrar y jugar.', 'Ver los eventos', '#/eventos'],
   link_vencido: ['Ese link ya no está abierto', 'Pídele uno nuevo a quien te invitó. Igual puedes entrar y jugar.', 'Ver los eventos', '#/eventos'],
   lleno: ['Llegó al tope de invitados', 'Su talonario ya está completo. Igual puedes entrar y jugar.', 'Ver los eventos', '#/eventos'],
+  // 🔑 la sesión vencida tiene arreglo (18/11/2026): caía en el genérico «No pude anotar la invitación» con «Ver los
+  // eventos», y la salida es volver a entrar. Sin dirección (`''`): el botón es «Entrar con Discord» (`accion.entrar`)
+  sin_sesion: ['Entra de nuevo con Discord', 'Tu sesión se cerró: entra otra vez y la invitación se anota sola.', 'Entrar con Discord', ''],
 };
 
 const PASOS = [
@@ -96,8 +101,14 @@ function Llegaste({ liga, dc, rp }) {
   const anotado = r === 'ok' || r === 'ya';
   const err = dc && r && !anotado ? (ERR_LLEGO[r] || ['No pude anotar la invitación', REF_ERROR[r] || 'Prueba de nuevo en un rato.', 'Ver los eventos', '#/eventos']) : null;
   const hecho = anotado ? 1 : 0;
-  const prox = liga.proximos().filter((p) => utc(p.cuando).getTime() > Date.now() && !liga.esCancelado(p))
-    .sort((a, b) => utc(a.cuando) - utc(b.cuando)).slice(0, 3);
+  // ⏰ `luego()` (18/11/2026): con la hora nueva del que se atrasó (`cuandoDe()`) y sin los que están en pausa. Rehecha a
+  // mano con `p.cuando` mostraba la hora vieja y lo escondía cuando esa hora pasaba. Sin los `sin_hora`: la caja es «en tu hora»
+  const prox = liga.luego().filter((p) => !p.sin_hora).slice(0, 3);
+  // 🪨 desde el 02/11 las divisiones son las piedras del ELO (`div.m === 'elo'`): se entra en la de abajo (Hierro) y no
+  // hay grupos. «Sexta» y «los primeros de cada grupo» eran de las divisiones de antes (18/11/2026)
+  const D = liga.d && liga.d.div;
+  const elo = !!(D && D.m === 'elo' && Array.isArray(D.n) && D.n.length);
+  const piso = elo ? D.n[D.n.length - 1] : 'Sexta';
   const hoy = diaISO(new Date()), manana = diaISO(new Date(Date.now() + 864e5));
   const dia = (t) => {
     const d = utc(t), x = diaISO(d);
@@ -119,7 +130,8 @@ function Llegaste({ liga, dc, rp }) {
               <div className="rl-err" role="status">
                 <b>{err[0]}</b>
                 <span>{err[1]}</span>
-                <a className="btn borde" href={err[3]}>{err[2]}</a>
+                {err[3] ? <a className="btn borde" href={err[3]}>{err[2]}</a>
+                  : <button type="button" className="btn borde" onClick={accion.entrar}>{err[2]}</button>}
               </div>
             ) : (
               <>
@@ -157,8 +169,9 @@ function Llegaste({ liga, dc, rp }) {
             <span><b>Tu propia carta</b><small>Con tu nombre, tu país y tus números. Llega con el nivel 1 del Pase y sube con cada torneo.</small></span>
           </div>
           <div className="rl-caja">
-            <b>Empiezas en Sexta</b>
-            <small>Juegas un evento y entras en Sexta, la división de quien recién empieza: compites con gente de tu nivel y los primeros de cada grupo suben cada lunes.</small>
+            <b>Empiezas en {piso}</b>
+            <small>{elo ? 'Juegas un evento y entras en ' + piso + ', la piedra de quien recién empieza: tu ELO sube ganando batallas 1v1 y la piedra se mira cada lunes.'
+              : 'Juegas un evento y entras en Sexta, la división de quien recién empieza: compites con gente de tu nivel y los primeros de cada grupo suben cada lunes.'}</small>
             <span className="rl-divs" aria-hidden="true">{[0, 1, 2, 3, 4, 5].map((i) => <i key={i} className={i === 5 ? 'on' : ''} />)}</span>
           </div>
           {prox.length ? (
@@ -167,7 +180,7 @@ function Llegaste({ liga, dc, rp }) {
               {prox.map((p) => (
                 <a key={(p.link || p.nombre) + p.cuando} className="rl-ev" href={p.link || '#/eventos'} target={p.link ? '_blank' : undefined} rel="noreferrer">
                   <img src={liga.logo(p.sv)} alt="" width="28" height="28" loading="lazy" />
-                  <span className="rl-ev-n"><b>{dia(p.cuando)} · {hora(p.cuando)}</b><small>{limpio(p.nombre)}</small></span>
+                  <span className="rl-ev-n"><b>{dia(liga.cuandoDe(p))} · {hora(liga.cuandoDe(p))}</b><small>{limpio(p.nombre)}</small></span>
                   <span className="rl-ev-sv">{siglaDe(p.sv)}</span>
                 </a>
               ))}
@@ -198,7 +211,7 @@ function Cerrada({ max, titulo, texto, candado, children }) {
   );
 }
 
-function TuLink({ liga, dc, R, abrir, va }) {
+function TuLink({ liga, dc, R, abrir, va, fallo, otraVez }) {
   const [rasga, setRasga] = useState(0);
   const max = (R && R.max) || 10;
   const T = String((R && R.temp) || liga.temp || '').toUpperCase();
@@ -206,6 +219,22 @@ function TuLink({ liga, dc, R, abrir, va }) {
     return (
       <Cerrada max={max} titulo="Tu entrada se abre con tu cuenta" texto="Entra con Discord para tener tu link y empezar tu talonario." candado>
         <button type="button" className="btn verde rf-btn" onClick={accion.entrar}>Entrar con Discord</button>
+      </Cerrada>
+    );
+  }
+  // 🔁 si /avisos/ref no contestó bien, se dice y hay salida (18/11/2026): se quedaba en «Cargando tu entrada…» para
+  // siempre. La sesión dura 30 días y `lg:dc` no vence, así que «con cuenta y sin sesión» es común
+  if (!R && fallo === 'sesion') {
+    return (
+      <Cerrada max={max} titulo="Tu sesión venció" texto="Entra con Discord de nuevo para ver tu link." candado>
+        <button type="button" className="btn verde rf-btn" onClick={accion.entrar}>Entrar con Discord</button>
+      </Cerrada>
+    );
+  }
+  if (!R && fallo) {
+    return (
+      <Cerrada max={max} titulo="No pude cargar tu entrada" texto="Puede ser la conexión: prueba de nuevo.">
+        <button type="button" className="btn borde rf-btn" onClick={otraVez}>Reintentar</button>
       </Cerrada>
     );
   }
@@ -224,7 +253,9 @@ function TuLink({ liga, dc, R, abrir, va }) {
       </Cerrada>
     );
   }
-  const url = 'https://underlegends.pages.dev/i/' + R.k;
+  // 🔤 la clave, codificada en el link que se comparte (18/11/2026): `comun/claves.clave()` deja la ø y el cirílico, y
+  // pegada tal cual el link de «TøKiØ» viajaba crudo. A la vista (`rf-url`) va como se lee
+  const url = 'https://underlegends.pages.dev/i/' + encodeURIComponent(R.k);
   const quedan = Math.max(0, max - (R.hechos || 0));
   return (
     <div className="rf-lado">
@@ -232,7 +263,7 @@ function TuLink({ liga, dc, R, abrir, va }) {
         <div className="rf-tk-cara">
           <span className="rf-tk-k">ENTRADA · LIGA GLOBAL DE FREESTYLE</span>
           <b className="rf-tk-n">Invita {nombreK(liga, R.k)}</b>
-          <code className="rf-url">{url.replace(/^https:\/\//, '')}</code>
+          <code className="rf-url">{'underlegends.pages.dev/i/' + R.k}</code>
           <span className="rf-tk-p">Quien entra con ella recibe <b>{num(R.bien)} Puntos de Tienda</b> de bienvenida.</span>
         </div>
         <div key={rasga} className={'rf-tk-talon' + (rasga ? ' rasga' : '')}>
@@ -328,7 +359,7 @@ function Invitados({ liga, R }) {
   const ya = xs.filter((x) => x.cumple), pend = xs.filter((x) => !x.cumple);
   const max = R.max || 10;
   const texto = '¿Ya entraste a la Liga? Verifícate y haz dos Tareas del Pase: te llegan ' + num(R.bien) +
-    ' Puntos de Tienda de bienvenida. https://underlegends.pages.dev/i/' + R.k;
+    ' Puntos de Tienda de bienvenida. https://underlegends.pages.dev/i/' + encodeURIComponent(R.k); // 🔤 codificada, como en `TuLink` (18/11/2026)
   const copiar = async () => {
     try { await navigator.clipboard.writeText(texto); setCopiado(true); setTimeout(() => setCopiado(false), 1800); } catch (e) { setCopiado(false); }
   };
@@ -405,12 +436,22 @@ export function Invitar({ liga, dc }) {
   const [R, setR] = useState(null);
   const [va, setVa] = useState(false);
   const [err, setErr] = useState('');
+  // 🔁 qué pasó si `ver` no contestó bien: 'sesion' (401 `sin_sesion`) o 'red' (sin respuesta u otro error). Se limpia al
+  // volver a pedir —otra cuenta o «Reintentar» (`otra`)— para no mostrar el error viejo (18/11/2026)
+  const [fallo, setFallo] = useState('');
+  const [otra, setOtra] = useState(0);
+  // 🧑 /api/perfiles, para el nombre, la cara y la carta de quien invita y de los invitados fuera de la tabla (18/11/2026)
+  usePerfiles();
   useEffect(() => {
+    setFallo('');
     if (!dc) { setR(null); return undefined; }
     let vivo = true;
-    pedirRef('ver').then((j) => { if (vivo && j && j.ok) setR(j); });
+    pedirRef('ver').then((j) => {
+      if (!vivo) return;
+      if (j && j.ok) { setR(j); setFallo(''); } else setFallo(j && j.error === 'sin_sesion' ? 'sesion' : 'red');
+    });
     return () => { vivo = false; };
-  }, [dc && dc.id]);
+  }, [dc && dc.id, otra]);
   const abrir = async () => {
     setVa(true); setErr('');
     const j = await pedirRef('activar');
@@ -434,7 +475,7 @@ export function Invitar({ liga, dc }) {
               {R ? <b>{num(R.pdt)} Puntos de Tienda y {num(R.xp)} XP</b> : 'Puntos de Tienda y XP'}. Con {max}, el marco Embajador para todas tus cartas.</p>
             {hasta ? <p className="rf-vence">Tu link vale toda la {String(liga.temp || '').toUpperCase()}: {hasta}.</p> : null}
           </div>
-          <TuLink liga={liga} dc={dc} R={R} abrir={abrir} va={va} />
+          <TuLink liga={liga} dc={dc} R={R} abrir={abrir} va={va} fallo={fallo} otraVez={() => setOtra((n) => n + 1)} />
         </section>
         {err ? <p className="rf-err" role="status">{err}</p> : null}
       </div>

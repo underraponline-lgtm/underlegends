@@ -112,9 +112,8 @@
   .sv9-hm-g{grid-template-columns:58px repeat(7,minmax(0,1fr))}
   .sv9-hm-g i{height:24px;font-size:10px}
   .sv9-podio b{font-size:12px}
-  /* su forma: en el teléfono, los últimos ocho (doce columnas no entran en 390 px) */
-  .sv9-pag .pf9-fm{grid-template-columns:repeat(8,minmax(0,1fr)) !important}
-  .sv9-pag .pf9-fm li:nth-last-child(n+9){display:none}
+  /* su forma: en el teléfono, los últimos ocho (doce columnas no entran en 390 px). Desde el 18/11/2026 los corta
+     `SvForma` (servidor_bandas.jsx): escondidos acá, el título y el pie seguían diciendo doce */
 }
 
 /* sin eventos en la temporada: el próximo evento y la tabla de servidores lado a lado (o uno solo a todo el ancho) */

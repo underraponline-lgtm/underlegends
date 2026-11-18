@@ -5,9 +5,11 @@ import { useEffect, useState } from 'react';
 const W = window;
 
 /** 📊 Pide el panel. `irse`: si no hay cuenta, ir a entrar con Discord. */
+// (18/11/2026: con la 's', que ahora vuelve a la ruta desde donde saliste, el panel dependía de esa ruta guardada; tiene
+// su propia letra en cuenta.js, la 'a', que vuelve siempre a #/socio)
 export function pedirPanel(irse = false) {
   if (!W.conCuenta) return Promise.resolve({ error: 'red' });
-  return W.conCuenta('/api/avisos/panel-socio', {}, irse ? 's' : undefined).then((j) => j || { error: 'red' }).catch(() => ({ error: 'red' }));
+  return W.conCuenta('/api/avisos/panel-socio', {}, irse ? 'a' : undefined).then((j) => j || { error: 'red' }).catch(() => ({ error: 'red' }));
 }
 
 /** ⚙️ Los ajustes del bot de un servidor socio, y un cambio (`{cual, valor}`). Sólo con la cuenta; nunca manda a Discord solo. */
@@ -74,21 +76,32 @@ export function pedirStaff(sv, que, accion, extra) {
  *  `pedirRoles()`): la página no tiene su copia. El dueño y Dlx, todo */
 export const puede = (rol, que, permisos) => rol === 'dlx' || rol === 'dueno' || ((permisos || {})[rol] || []).includes(que);
 
+// (18/11/2026: lo guardado no decía de qué cuenta era y nada lo borraba: tras «Salir» el botón «Mi servidor» seguía a la
+// vista, y quien entraba después en la misma pestaña heredaba el «sí» del anterior. Ahora va con el id de la cuenta,
+// `<id>:1`, vale sólo para esa, y sin cuenta nunca dice que sí)
+const idCuenta = () => String((W.DC && W.DC.id) || '');
+function deSesion() {
+  const id = idCuenta();
+  let v = null;
+  try { v = sessionStorage.getItem('lg:socio'); } catch (e) { v = null; }
+  return id && v && v.slice(0, -2) === id ? v.slice(-1) : null;
+}
+
 /** ¿Es dueño de algún socio? Una vez por sesión, en silencio: para el botón de Mi cuenta. */
 export function useSocio(conCuenta) {
-  const [si, setSi] = useState(() => { try { return sessionStorage.getItem('lg:socio') === '1'; } catch (e) { return false; } });
+  const [si, setSi] = useState(() => deSesion() === '1');
   useEffect(() => {
     if (!conCuenta) return undefined;
-    let ya = null;
-    try { ya = sessionStorage.getItem('lg:socio'); } catch (e) { ya = null; }
-    if (ya !== null) return undefined;
+    const ya = deSesion();
+    if (ya !== null) { setSi(ya === '1'); return undefined; }
     let vivo = true;
     pedirPanel(false).then((j) => {
       const s = !!(j && j.ok && (j.servidores || []).length);
-      try { if (j && j.ok) sessionStorage.setItem('lg:socio', s ? '1' : '0'); } catch (e) { /* igual */ }
+      const id = idCuenta();
+      try { if (j && j.ok && id) sessionStorage.setItem('lg:socio', id + ':' + (s ? '1' : '0')); } catch (e) { /* igual */ }
       if (vivo) setSi(s);
     });
     return () => { vivo = false; };
   }, [conCuenta]);
-  return si;
+  return !!conCuenta && si;
 }

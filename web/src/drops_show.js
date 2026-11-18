@@ -1035,7 +1035,9 @@ export function mostrarDrops(host, cola, { abrir, alCerrar, cofres } = {}) {
       if (p.puntos) { await espera(320); num.classList.add('dsw-chico'); await contar(num, p.puntos); num.textContent += ' Puntos'; Son.ding(p.r); }
     } else {
       $('.dsw-pr-et').textContent = 'Puntos de Tienda';
-      if (p.repe) nom.textContent = `Ya tienes «${p.repe}»: va en Puntos`;
+      // 🏷️ (18/11/2026) el objeto manda `repe` como booleano (`nidoAbrir()`): se leía «Ya tienes «true»: va en Puntos».
+      // El nombre, sólo si llega uno
+      if (p.repe) nom.textContent = typeof p.repe === 'string' ? `Ya tienes «${p.repe}»: va en Puntos` : 'Ese título ya es tuyo: va en Puntos';
       ico.classList.remove('dsw-silueta');
       ico.innerHTML = '<i class="dsw-pr-rayos"></i>' + svgMoneda(p.r <= 1 ? 1 : p.r <= 3 ? 3 : 5);
       ico.animate([{ transform: 'translateY(-60%) scale(.6)', opacity: 0 }, { transform: 'translateY(4%) scale(1.06,.94)', opacity: 1, offset: 0.7 }, { transform: 'none', opacity: 1 }], { duration: T(420), easing: 'cubic-bezier(.3,.1,.3,1)' });

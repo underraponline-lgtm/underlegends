@@ -8,8 +8,8 @@
 // `cuentaRedes()`, `cuentaServidor()`, `cuentaSalir()`…) y esta página se entera de cada cambio por `lg:cuentaest`
 // (App.jsx envuelve `pintaPopCuenta()`). Su ventana vieja queda de respaldo, si esto no se monta.
 import { useEffect, useRef, useState } from 'react';
-import { DUENO, PAIS, hora, limpio, nuevaQue, num, siglaDe } from './liga.js';
-import { Bandera, Cara, Carta, Chevron, DosToques, GrillaDias, Ico, accion, diaET, masDias, semanasEntre, usePerfiles } from './piezas.jsx';
+import { DUENO, PAIS, hora, limpio, norm, nuevaQue, num, siglaDe } from './liga.js';
+import { Bandera, Cara, Carta, Chevron, DosToques, GrillaDias, Ico, accion, diaET, masDias, semanasEntre, useCampana, usePerfiles } from './piezas.jsx';
 import { MiCrew } from './crewpanel.jsx';
 import { crewDe } from './crews.js';
 import { CaraDc } from './arriba.jsx';
@@ -24,7 +24,7 @@ import { PasosInstalar } from './instalar.jsx';
 import { FraseEditor } from './frase.jsx';
 import CSS_PAGINA from './css/cuenta.css?inline';
 import { usarCss } from './css.js';
-import { CuentaPC } from './cuenta_pc.jsx';
+import { CuentaPC, EntrarError } from './cuenta_pc.jsx';
 import { achicar as achicarImagen, aBase64 } from './imagen.js';
 
 // 🎨 su CSS, con su pedazo (web/src/css/cuenta.css)
@@ -118,13 +118,18 @@ function ParteInstalar() {
 // cabecera (`Quien`)—, Ajustes dejó de ser otra página (el ⚙ de arriba abre «La app» acá mismo) y los grupos son por lo
 // que la persona quiere hacer: tu perfil, tu gente, avisos, la app, ayuda y tus datos. `#/ajustes/<parte>` sigue
 // abriendo lo mismo, para los links que ya circulan
-function grupos(liga, dc, tema, temaSv) {
+function grupos(liga, dc, tema, temaSv, camp) {
   const yo = liga.yo;
   const { z, f, aj } = horaYZona();
   const C = W.CAMBIOS;
   const ult = Array.isArray(C) && C[0] ? C[0].version : '';
   const nuevo = !!ult && nuevaQue(ult, W.CAMBIOS_VISTO);
-  const avisos = !!leer('campana:activada', false);
+  // 🔔 el estado de verdad de la campana (18/11/2026): `campana:activada` es una marca —esconde la invitación del
+  // Inicio— que la baja Desactivar (campana.js), pero no una baja que hace el navegador solo (permiso revocado), y ahí
+  // seguía diciendo «activados». La marca, sólo si campana.js no cargó
+  const avisos = camp ? !!camp.activa : !!leer('campana:activada', false);
+  // 👥 a cuántos sigues, también los de fuera de las 200 filas (18/11/2026): `liga.sigue` viene filtrada por la tabla
+  const nSigue = (liga.sigueTodos || liga.sigue).length;
   const crew = crewDe(dc && dc.clave);
   return [
     ['TU PERFIL', [
@@ -134,7 +139,7 @@ function grupos(liga, dc, tema, temaSv) {
     ['TU GENTE', [
       // 👥 las crews que arma la gente (19/10/2026): la tuya y tus invitaciones; armar una, en Crews (3.73)
       ['crew', 'socios', 'Mi crew', crew ? 'la tuya: ' + limpio(crew.c.nombre) : 'tus invitaciones; se arman en Crews'],
-      ['siguiendo', 'seguir', 'Siguiendo', liga.sigue.length ? liga.sigue.length + (liga.sigue.length === 1 ? ' rapero' : ' raperos') : 'todavía nadie'],
+      ['siguiendo', 'seguir', 'Siguiendo', nSigue ? nSigue + (nSigue === 1 ? ' rapero' : ' raperos') : 'todavía nadie'],
     ]],
     ['AVISOS', [
       ['avisos', 'campana', 'Avisos de eventos', avisos ? 'activados en este dispositivo' : 'apagados'],
@@ -262,7 +267,9 @@ function AnilloNivel({ dc }) {
 }
 
 // 🎨 el color del cuadradito de cada fila, como en la maqueta (20/10/2026): verde lo tuyo, magenta tu gente; el resto, gris
-const ICO_COLOR = { perfil: 'v', fondo: 'v', crew: 'm', siguiendo: 'm' };
+// ⚠️ magenta es `mg` y no `m` (18/11/2026): `.m` es la batalla de la llave chica del Inicio (estilo.css) y, global en el
+// shadow root, le ponía un borde de 2 px a los cuadraditos de Tu gente
+const ICO_COLOR = { perfil: 'v', fondo: 'v', crew: 'mg', siguiendo: 'mg' };
 
 function Quien({ liga, dc }) {
   const yo = liga.yo;
@@ -270,7 +277,9 @@ function Quien({ liga, dc }) {
     return (
       <div className="cu-quien anon">
         <span className="cu-av anon"><Ico n="yo" t={30} /></span>
-        <div className="cu-q"><b>Todavía no entraste</b><small>Entra con Discord y ves tu puesto, tus tarjetas y tus avisos, y puedes seguir a otros.</small></div>
+        {/* 🚪 por qué no entraste (18/11/2026): si al volver de Discord /api/cuenta falló, el celular volvía a «Entrar con
+            Discord» sin decir nada. EntrarError escucha `lg:cuentaest` solo: Quien no se redibuja con ese aviso */}
+        <div className="cu-q"><b>Todavía no entraste</b><small>Entra con Discord y ves tu puesto, tus tarjetas y tus avisos, y puedes seguir a otros.</small><EntrarError /></div>
         <button type="button" className="btn verde" onClick={accion.entrar}>Entrar con Discord</button>
       </div>
     );
@@ -303,7 +312,7 @@ function Quien({ liga, dc }) {
       </div>
       {/* la sesión de antes del 25/09 no trae la clave: es un toque, `prompt=none` no vuelve a pedir nada */}
       {dc && dc.rapero && !dc.clave ? (
-        <p className="cu-d cu-ver">Tu sesión es de una versión anterior. Actualizala para ver tus tarjetas y tu perfil: es un toque, no te pide nada.{' '}
+        <p className="cu-d cu-ver">Tu sesión es de una versión anterior. Actualízala para ver tus tarjetas y tu perfil: es un toque, no te pide nada.{' '}
           <button type="button" className="btn borde2 chico" onClick={accion.entrar}>Actualizar mi cuenta</button></p>
       ) : null}
       <RachaNivel dc={dc} liga={liga} />
@@ -500,7 +509,11 @@ export function FondoCaja({ dc, liga }) {
 // automático (`fotoCarta()` en avisos.js) y cada tarjeta se cambia una vez por semana. Se achica acá: 768×768 ──
 const FOTO_LADO = 768, FOTO_TOPE = 500 * 1024;
 const CARTAS_FOTO = [['temporada', 'Temporada'], ['competitivo', 'Competitiva'], ['servidor', 'Servidor'], ['pais', 'País']];
-const nombresCartas = (cs) => (cs || []).map((c) => (CARTAS_FOTO.find((x) => x[0] === c) || [c, c])[1]).join(', ');
+// la última va con « y » (18/11/2026): «Temporada, Competitiva, Servidor, País se vuelven…» se leía cortado
+const nombresCartas = (cs) => {
+  const ns = (cs || []).map((c) => (CARTAS_FOTO.find((x) => x[0] === c) || [c, c])[1]);
+  return ns.length > 1 ? ns.slice(0, -1).join(', ') + ' y ' + ns[ns.length - 1] : ns.join('');
+};
 const fechaLarga = (ms) => (W.fmtFecha ? W.fmtFecha(new Date(ms).toISOString(), { weekday: 'long', day: 'numeric', month: 'long' })
   : new Date(ms).toLocaleDateString());
 
@@ -532,7 +545,9 @@ export function FotoCartaCaja({ dc }) {
     let vivo = true;
     pedirFotoCarta('mi-foto-carta').then((j) => { if (vivo) setSt(j); }).catch((e) => { if (vivo) setMsg(e.message); });
     return () => { vivo = false; };
-  }, [dc && dc.id]); // eslint-disable-line react-hooks/exhaustive-deps
+    // también con la clave (18/11/2026): `refrescarVerificado()` se la suma al MISMO `dc` (el id no cambia) y la caja
+    // se quedaba en «Cargando…» hasta recargar
+  }, [dc && dc.id, dc && dc.clave]); // eslint-disable-line react-hooks/exhaustive-deps
   // se llamaba «Tu foto de tarjeta», pegada a «Tu foto de la tarjeta» (la de Discord): parecían la misma sección dos veces
   const T = 'Tu propia imagen en las tarjetas';
   if (!dc) return <Caja t={T} d="Entra con Discord para poner tu propia foto en tus tarjetas." />;
@@ -555,7 +570,9 @@ export function FotoCartaCaja({ dc }) {
       setSt(j);
       if (cuerpo.img) {
         setArchivo(null); setVista(''); setSel(null);
-        setMsg(j.filtro === 'ok' ? 'Listo: ' + nombresCartas(cuerpo.cartas) + ' se vuelven a dibujar con ella en unos minutos.'
+        // una sola carta, en singular (18/11/2026): «Listo: Competitiva se vuelven a dibujar…» con una
+        setMsg(j.filtro === 'ok' ? 'Listo: ' + (cuerpo.cartas.length === 1 ? 'tu tarjeta ' + nombresCartas(cuerpo.cartas) + ' se vuelve'
+          : 'tus tarjetas ' + nombresCartas(cuerpo.cartas) + ' se vuelven') + ' a dibujar con ella en unos minutos.'
           : 'El filtro automático no estuvo seguro: la mira la Liga y, cuando la apruebe, sale en tus tarjetas.');
       } else setMsg('Listo: esa tarjeta vuelve a tu foto de Discord en unos minutos.');
     } catch (er) { setMsg(er.message); }
@@ -770,8 +787,12 @@ function VideosCaja({ dc }) {
   const [msg, setMsg] = useState('');
   const [va, setVa] = useState(false);
   const pedir = async (cuerpo) => {
-    const r = await fetch('/api/avisos/mis-videos', { method: 'POST', credentials: 'same-origin',
-      headers: { 'content-type': 'application/json' }, body: JSON.stringify(cuerpo) });
+    // sin red, el fetch se rechaza (18/11/2026): sin esto «Sumar» y «Mandar» se quedaban en «Mandando…» para siempre
+    let r;
+    try {
+      r = await fetch('/api/avisos/mis-videos', { method: 'POST', credentials: 'same-origin',
+        headers: { 'content-type': 'application/json' }, body: JSON.stringify(cuerpo) });
+    } catch (e) { return 'Sin conexión: prueba de nuevo.'; }
     const j = await r.json().catch(() => ({}));
     if (j.pedidos) setPs(j.pedidos);
     return r.ok ? '' : VID_ERR[j.error] || 'No se pudo. Prueba de nuevo.';
@@ -779,7 +800,8 @@ function VideosCaja({ dc }) {
   useEffect(() => {
     if (!dc || !dc.clave) return;
     pedir({ accion: 'ver' }).then((e) => { if (e) setMsg(e); });
-  }, [dc && dc.id]); // eslint-disable-line react-hooks/exhaustive-deps
+    // también con la clave (18/11/2026): llega por `refrescarVerificado()` con la página abierta y el mismo id
+  }, [dc && dc.id, dc && dc.clave]); // eslint-disable-line react-hooks/exhaustive-deps
   if (!dc || !dc.clave) return null;
   const mandar = async (e) => {
     e.preventDefault();
@@ -902,25 +924,30 @@ function CaraComentarios({ dc }) {
   const d = 'Debajo de las publicaciones salen comentarios cortos que escribe la Liga. Pueden salir con tu foto y tu nombre, con la etiqueta «simulado». Si lo apagas, no apareces nunca.';
   if (!dc) return <Caja t="Comentarios con tu cara" d={d + ' Entra con Discord para elegir.'}><BotonEntrar /></Caja>;
   if (st && st.sin_perfil) return null;
-  const on = !!st && st.estado !== 'no';
+  // sin respuesta buena, no se dice «prendido» (18/11/2026, como en `PublicarSolo`): con la sesión vencida llegaba
+  // `{error: 'sin_sesion'}`, sin `estado`, y la casilla salía marcada aunque lo hubieras apagado
+  const roto = !!st && !st.ok;
+  const on = !!st && !roto && st.estado !== 'no';
   const cambiar = async (quiero) => {
     if (!W.conCuenta) return;
     setVa(true);
     setMsg('');
     try {
-      const j = await W.conCuenta('/api/avisos/cm-mio', { quiero }, 'p');
+      // 's' y no 'p' (18/11/2026): con la sesión vencida, 'p' volvía de Discord a Publicaciones; 's' vuelve acá mismo
+      const j = await W.conCuenta('/api/avisos/cm-mio', { quiero }, 's');
       if (j && j.ok) setSt(j);
       else if (j) setMsg(j.error === 'espera' ? 'Ya lo cambiaste muchas veces hoy: prueba mañana.' : 'No se pudo: prueba de nuevo.');
     } finally { setVa(false); }
   };
   const nota = !st ? 'Cargando…' : msg || (va ? 'Guardando…'
-    : !on ? 'Apagado: no apareces en ningún comentario simulado.'
-      : st.estado === 'si' ? 'Prendido, sin etiqueta: le dijiste que sí a Dlx.'
-        : 'Prendido: sales con la etiqueta «simulado».');
+    : roto ? ((W.errorCuenta && W.errorCuenta(st.error)) || 'No pude leerlo. Prueba en un rato.')
+      : !on ? 'Apagado: no apareces en ningún comentario simulado.'
+        : st.estado === 'si' ? 'Prendido, sin etiqueta: le dijiste que sí a Dlx.'
+          : 'Prendido: sales con la etiqueta «simulado».');
   return (
     <Caja t="Comentarios con tu cara" d={d}>
       <label className="cu-sw"><span><b>Dejar que la Liga comente con mi foto</b><small role="status">{nota}</small></span>
-        <input type="checkbox" checked={on} disabled={!st || va} onChange={(ev) => cambiar(ev.target.checked)} />
+        <input type="checkbox" checked={on} disabled={!st || va || roto} onChange={(ev) => cambiar(ev.target.checked)} />
         <i aria-hidden="true" /></label>
     </Caja>
   );
@@ -949,7 +976,8 @@ function PublicarSolo({ dc }) {
     setVa(true);
     setMsg('');
     try {
-      const j = await W.conCuenta('/api/avisos/muro-mio', { publicar }, 'p');
+      // 's' y no 'p' (18/11/2026): con la sesión vencida, 'p' volvía de Discord a Publicaciones; 's' vuelve acá mismo
+      const j = await W.conCuenta('/api/avisos/muro-mio', { publicar }, 's');
       if (j && j.ok) setSt(j);
       else if (j) setMsg(j.error === 'espera' ? 'Ya lo cambiaste muchas veces hoy: prueba mañana.' : 'No se pudo: prueba de nuevo.');
     } finally { setVa(false); }
@@ -966,12 +994,32 @@ function PublicarSolo({ dc }) {
   );
 }
 
+// a quién sigues. 🧑 DE LA LISTA ENTERA (18/11/2026): `liga.sigue` viene filtrada por las 200 filas de la tabla, así que
+// a quien seguías del #201 en adelante no salía acá ni se contaba. Es su propio componente para pedir los perfiles
+// (`quienK()` los lee cuando llegan) sólo en esta parte
+function Sigues({ liga, dc }) {
+  usePerfiles();
+  const fs = (liga.sigueTodos || liga.sigue).map((k) => liga.quienK(k)).filter(Boolean);
+  return (
+    <Caja t={'Sigues a ' + fs.length} d={dc ? 'Te llega un aviso cuando ganan, suben de rango o desbloquean una tarjeta (activa los avisos en este dispositivo).'
+      : 'Entra con Discord y te avisamos cuando ganen o suban de rango.'}>
+      {fs.length ? <ul className="cu-gente">{fs.map((f) => (
+        <li key={f.k}><a href={'#/r/' + encodeURIComponent(f.k)}><Cara liga={liga} k={f.k} nombre={f.n} cls="cu-av chica" /><b>{limpio(f.n)}</b>
+          <small>{f.pos ? '#' + f.pos : ''}</small></a></li>
+      ))}</ul> : <a className="btn borde2 chico" href="#/ranking">Buscar a quién seguir</a>}
+    </Caja>
+  );
+}
+
 // quién te sigue: cuántos, y de ésos los que son raperos (los demás no tienen perfil)
 function TeSiguen({ liga }) {
   const est = useCuentaEst();
+  // 🧑 también los de fuera de las 200 filas (18/11/2026): con `liga.T` el #250 que te sigue se contaba entre «personas
+  // que no compiten». `quienK()` mira la tabla, los perfiles (por eso se piden: llegan después) y las filas ligeras
+  usePerfiles();
   const ms = est.ME_SIGUEN;
   if (!ms || !ms.n) return null;
-  const suyos = (ms.perfiles || []).map((k) => liga.T[k]).filter(Boolean);
+  const suyos = (ms.perfiles || []).map((k) => liga.quienK(k)).filter(Boolean);
   const otros = ms.n - suyos.length;
   return (
     <Caja t={'Te siguen ' + ms.n} d={otros > 0 ? (suyos.length ? 'Y ' : '') + otros + (otros === 1 ? ' persona que no compite.' : ' personas que no compiten.') : ''}>
@@ -1017,16 +1065,32 @@ function Pedidos({ liga, dc }) {
     W.conCuenta('/api/avisos/mis-pedidos', {}).then((j) => setMios((j && j.pedidos) || [])).catch(() => setMios([]));
   };
   useEffect(pedirMios, [dc && dc.id]);
+  // 🧑 TODOS LOS PERFILES, NO SÓLO LAS 200 FILAS (18/11/2026): quien estaba del #201 en adelante no se encontraba, y
+  // «Perdí mi cuenta», «Ese no soy yo» y «Un video» piden el perfil: el botón no se habilitaba nunca. Antes del
+  // `return` de abajo, por el orden de los hooks
+  const P = usePerfiles();
   if (!dc) {
     return <Caja t="Algo está mal" d="Entra con Discord —con la cuenta que usas ahora— para pedir que lo arreglemos."><BotonEntrar chico={false} /></Caja>;
   }
-  const res = q.trim().length >= 2 ? (liga.d.tabla || []).filter((f) => limpio(f.n).toLowerCase().includes(q.trim().toLowerCase())).slice(0, 6) : [];
-  const elegido = k ? liga.T[k] : null;
+  // con `norm()`, que pliega las tildes: «andres» encuentra a «Andrés»
+  const nq = norm(q).trim();
+  let res = [];
+  if (nq.length >= 2) {
+    const pool = new Map();
+    (liga.d.tabla || []).forEach((f) => { if (f && f.k) pool.set(f.k, f); });
+    Object.values((P && P.p) || {}).forEach((x) => { if (x && x.f && x.f.k && !pool.has(x.f.k)) pool.set(x.f.k, x.f); });
+    Object.values(liga.Fx || {}).forEach((f) => { if (f && f.k && !pool.has(f.k)) pool.set(f.k, f); });
+    res = [...pool.values()].filter((f) => norm(limpio(f.n)).includes(nq)).slice(0, 6);
+  }
+  // y el elegido sale de cualquiera de esos (en «video» se pone el tuyo solo, y puedes estar fuera de las 200)
+  const elegido = k ? liga.quienK(k) : null;
   // Emiratos y Brasil no cuentan como países de la Liga (Dlx, 22/09/2026)
   const paises = Object.entries(PAIS).filter(([c]) => c !== 'ae' && c !== 'br').sort((a, b) => a[1].localeCompare(b[1]));
   const mandar = () => {
     setEst({ va: true });
     const v = (vid.match(/(?:youtu\.be\/|v=|shorts\/)([A-Za-z0-9_-]{11})/) || [])[1] || vid.trim();
+    // 's' vuelve de Discord a esta misma parte (18/11/2026): hasta hoy la 's' llevaba al panel del socio (#/socio); ahora
+    // el panel tiene su 'a' y la 's' vuelve a la ruta desde donde se fue (`lg:vuelta-s`, `urlLogin()` en cuenta.js)
     W.conCuenta('/api/avisos/pedido', { tipo, k, texto, cc, vid: v }, 's').then((j) => {
       if (j === null) return; // se fue a Discord a confirmar quién eres
       if (j && j.ok) { setEst({ ok: true }); setTipo(''); setTexto(''); setK(''); setQ(''); pedirMios(); }
@@ -1091,6 +1155,8 @@ export function Parte({ id, liga, dc, tema, onTema, temaSv, onTemaSv, sinServido
   // 🔓 tu nivel, para los colores de los servidores (ver `NIVEL_TEMA` en temas.js)
   const Rn = useRacha(!!dc && id === 'apariencia');
   const [temaMsg, setTemaMsg] = useState('');
+  // 🔔 si la campana está activa de verdad, para «Avisos» (18/11/2026): arriba y sin condición, por el orden de los hooks
+  const camp = useCampana();
   const yo = liga.yo;
   const { aj, zonas, z } = horaYZona();
   if (id === 'cuenta') {
@@ -1103,7 +1169,7 @@ export function Parte({ id, liga, dc, tema, onTema, temaSv, onTemaSv, sinServido
           ) : <BotonEntrar chico={false} />}
           {/* la sesión de antes del 25/09 no trae la clave: es un toque, `prompt=none` no vuelve a pedir nada */}
           {dc && dc.rapero && !dc.clave ? (
-            <p className="cu-d">Tu sesión es de una versión anterior. Actualizala para ver tus tarjetas y tu perfil: es un toque, no te pide nada.{' '}
+            <p className="cu-d">Tu sesión es de una versión anterior. Actualízala para ver tus tarjetas y tu perfil: es un toque, no te pide nada.{' '}
               <button type="button" className="btn borde2 chico" onClick={accion.entrar}>Actualizar mi cuenta</button></p>
           ) : null}
         </Caja>
@@ -1146,16 +1212,7 @@ export function Parte({ id, liga, dc, tema, onTema, temaSv, onTemaSv, sinServido
   }
   if (id === 'crew') return <Caja t="Mi crew"><MiCrew liga={liga} dc={dc} /></Caja>;
   if (id === 'siguiendo') {
-    const fs = liga.sigue.map((k) => liga.T[k]).filter(Boolean);
-    const sigues = (
-      <Caja key="sigues" t={'Sigues a ' + fs.length} d={dc ? 'Te llega un aviso cuando ganan, suben de rango o desbloquean una tarjeta (activa los avisos en este dispositivo).'
-        : 'Entra con Discord y te avisamos cuando ganen o suban de rango.'}>
-        {fs.length ? <ul className="cu-gente">{fs.map((f) => (
-          <li key={f.k}><a href={'#/r/' + encodeURIComponent(f.k)}><Cara liga={liga} k={f.k} nombre={f.n} cls="cu-av chica" /><b>{limpio(f.n)}</b>
-            <small>{f.pos ? '#' + f.pos : ''}</small></a></li>
-        ))}</ul> : <a className="btn borde2 chico" href="#/ranking">Buscar a quién seguir</a>}
-      </Caja>
-    );
+    const sigues = <Sigues key="sigues" liga={liga} dc={dc} />;
     const teSiguen = <TeSiguen key="te" liga={liga} />;
     const orgs = <OrgsCaja key="orgs" dc={dc} />;
     if (cols) return <DosCol a={[sigues]} b={[teSiguen, orgs]} />;
@@ -1177,11 +1234,13 @@ export function Parte({ id, liga, dc, tema, onTema, temaSv, onTemaSv, sinServido
   }
   if (id === 'avisos') {
     const svs = leer('campana:svs', []) || [];
-    const activos = !!leer('campana:activada', false);
+    // el estado de verdad (18/11/2026): `campana:activada` la baja Desactivar (campana.js), pero no una baja que hace el
+    // navegador solo (permiso revocado), y ahí seguía diciendo «Activados». La marca, sólo si campana.js no cargó
+    const activos = camp ? !!camp.activa : !!leer('campana:activada', false);
     const de = Object.values(liga.svs).filter((o) => !svs.length || svs.includes(o.sv));
     return (
       <Caja t="En este dispositivo" d={activos ? 'Activados: te avisa al minuto de que ' + (svs.length ? de.map((o) => siglaDe(o.sv)).join(', ') : 'cualquier servidor') + ' anuncia un evento.'
-        : 'Apagados. Activalos y te avisa al minuto de que un servidor anuncia un evento.'}>
+        : 'Apagados. Actívalos y te avisa al minuto de que un servidor anuncia un evento.'}>
         <a className="btn verde chico" href="#/avisos">{activos ? 'Cambiar los avisos' : 'Activar los avisos'}</a>
       </Caja>
     );
@@ -1428,7 +1487,9 @@ export function Verificar({ liga, dc, nota = true }) {
 // —la lista en cajas a la izquierda, la parte a la derecha—, con la primera abierta de entrada. Hasta hoy la compu
 // mostraba TODAS las partes en tarjetas, en dos columnas (Dlx, 02/10: «me gusta rellenar el espacio así»): la sacó él
 export function Cuenta({ liga, dc, parte, tema, onTema, temaSv, onTemaSv }) {
-  const gs = grupos(liga, dc, tema, temaSv);
+  // 🔔 el estado de verdad de la campana, para la fila «Avisos de eventos» (18/11/2026, ver `grupos()`)
+  const camp = useCampana();
+  const gs = grupos(liga, dc, tema, temaSv, camp);
   // 🔒 el acceso al Dashboard, a la vista sólo para el dueño. Es un atajo: la puerta de verdad está en el servidor
   // 🔐 el botón del Dashboard: Dlx, y quien tiene un rol que lo abre (Admin, Asistente, Moderador; 13/10/2026)
   const misRoles = ((useRoles() || {})[liga.yo && liga.yo.k] || []).map((x) => x[0]);

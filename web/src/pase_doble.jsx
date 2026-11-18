@@ -20,7 +20,10 @@ const CAND = <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke=
 export function nivelQueDa(q, libres, prem) {
   const t = norm(q).trim();
   if (!t) return 0;
-  if (/^\d+$/.test(t)) return Math.max(1, Math.min(libres.length || 50, Number(t)));
+  // 🔢 «nivel 25» también, que es el ejemplo del propio buscador (18/11/2026): sólo se leía el número suelto, y «nivel 25»
+  // se buscaba como texto en los premios, que nunca dicen «nivel»: la pista no se movía
+  const m = /^(?:nivel|niv|n)?\s*(\d+)$/.exec(t);
+  if (m) return Math.max(1, Math.min(libres.length || 50, Number(m[1])));
   const dice = (p, pr) => norm(premioLargo(p, pr) + ' ' + premioCorto(p, pr) + ' ' + objetoDe(p)).includes(t);
   const g = libres.find((p) => p[2] && dice(p)), pp = prem.find((p) => p[2] && dice(p, true));
   if (g && pp) return Math.min(g[0], pp[0]);
@@ -83,13 +86,15 @@ export function PistaDoble({ libres, prem, nivel, tiene, falta, frac, q, miembro
     const ya = n <= nivel;
     const sig = miembro && n === nivel + 1 && n <= N;
     const relleno = ya ? 100 : sig ? Math.round(100 * Math.max(0, Math.min(1, frac || 0))) : 0;
+    // 🏷️ `p2-sig` y no `sig` (18/11/2026): `.sig` es una regla global de estilo.css (`margin:14px 0 0`, otra letra y
+    // otro color), y bajaba 14 px la columna del que sigue y 28 su rombo. Sus reglas, en css/pase.css como `.p2-sig`
     cols.push(
-      <div key={n} className={'p2-col' + (sig ? ' sig' : '') + (n === sel ? ' es' : '')} data-n={n}>
+      <div key={n} className={'p2-col' + (sig ? ' p2-sig' : '') + (n === sel ? ' es' : '')} data-n={n}>
         {sig && falta > 0 ? <span className="p2-falta">Faltan {num(falta)} XP</span> : null}
         <Casilla p={g} n={n} sig={sig} ya={ya} sel={n === sel} onSel={() => setSel(n)} />
         <span className="p2-riel" aria-hidden="true">
           <i className="p2-base" /><i className="p2-lleno" style={{ width: relleno + '%' }} />
-          <b className={'p2-nodo' + (ya ? ' ya' : sig ? ' sig' : '')}><i>{n}</i></b>
+          <b className={'p2-nodo' + (ya ? ' ya' : sig ? ' p2-sig' : '')}><i>{n}</i></b>
           {sig ? <span className="p2-tu" style={{ left: Math.max(8, Math.min(92, relleno)) + '%' }}><b>TÚ</b></span> : null}
         </span>
         <Casilla p={pr} n={n} pr sig={sig} ya={ya && tiene} lock={!tiene} sel={n === sel} onSel={() => setSel(n)} />

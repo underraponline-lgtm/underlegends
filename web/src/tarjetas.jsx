@@ -72,7 +72,9 @@ function datoDe(liga, f, c) {
   return '';
 }
 async function imagenTarjeta(liga, k, c) {
-  const f = liga.T[k] || {};
+  // 🧑 (18/11/2026) la fila de quien no está en la tabla también (el staff `solo`, un perfil abierto): con `liga.T` sola el
+  // título y el dato salían con la clave en minúsculas
+  const f = liga.persona(k) || {};
   const { c: lz, g, letra } = await lienzo();
   letra(700, 34, true); g.fillStyle = '#A5A5A0';
   g.fillText(('LIGA GLOBAL · ' + liga.temp + ' · MI TARJETA').toUpperCase(), 72, 132);
@@ -99,7 +101,8 @@ async function imagenTarjeta(liga, k, c) {
 }
 // 🗂️ tu álbum para historias: tus cartas de a dos por fila, con «MI ÁLBUM · 3 DE 4» arriba
 async function imagenAlbum(liga, k, tiene) {
-  const f = liga.T[k] || {};
+  // 🧑 (18/11/2026) como en `imagenTarjeta()`: sin la fila de fuera de la tabla, el título era la clave
+  const f = liga.persona(k) || {};
   const { c: lz, g, letra } = await lienzo();
   letra(700, 34, true); g.fillStyle = '#A5A5A0';
   g.fillText(('LIGA GLOBAL · ' + liga.temp + ' · MI ÁLBUM').toUpperCase(), 72, 132);
@@ -141,12 +144,18 @@ function BotonHistoria({ liga, k, c, album, cls = 'tj-hist', texto = 'Para histo
 // 🔑 LAS REGLAS DEL 05/10/2026 (2.41; Dlx: «C», «1. dale», «4. nivel 1»): sin verificarse, ninguna; la Servidor sale al
 // verificarse; la Temporada, con el nivel 1 del Pase (tu primera Tarea); la Competitiva y la de País, verificado y con su
 // requisito. Quien ya las tenía las conserva hasta la T1: eso es `tiene`
-function faltaDe(c, { cs, nv, nivel }) {
+function faltaDe(c, { cs, nv, nivel, pide = [] }) {
   if (nv) return { txt: 'Primero verifícate. ' + RQ.sinVerificar(nv, true), ir: ['#/cuenta/verificar', 'Verificarme'] };
   if (c === 'servidor') return { txt: 'Se está dibujando: llega en la próxima vuelta del ciclo.' };
   if (c === 'temporada') return nivel >= 1 ? { txt: 'Se está dibujando: llega en la próxima vuelta del ciclo.' } : { txt: RQ.pase(true), ir: ['#/pase', 'Ver el Pase'] };
   if (cs.length && cs.every((q) => q[0] >= q[1])) return { txt: 'Se está dibujando: llega en la próxima vuelta del ciclo.' };
-  return { cs: cs.filter((q) => q[0] < q[1]).slice(0, 1) };
+  const q = cs.filter((x) => x[0] < x[1]);
+  if (q.length) return { cs: q.slice(0, 1) };
+  // 🔒 SIN `req` NO QUEDA UN CUADRO VACÍO (18/11/2026): el staff `solo` no lo trae nunca, y los demás mientras baja
+  // /api/perfiles (o si falla). Devolvía `{cs: []}` sin `txt` y el álbum dibujaba «TU COMPETITIVA» con un <p> vacío.
+  // Lo que pide esa carta, del lobby (`requisitos`); «verificado» ya se cumple: con `nv`, salió arriba
+  const p = pide.filter((x) => !/verificad/i.test(x));
+  return { txt: p.length ? 'Pide ' + p.join(', ') + '.' : 'Todavía no está desbloqueada.' };
 }
 
 // 🃏 TU CARTA AUNQUE NO ESTÉS EN LA TABLA (25/10/2026): `Carta` arma la dirección con la fila de la tabla, y quien
@@ -270,10 +279,21 @@ function Album({ liga, dc, perf, onAbrir }) {
   const faltan = ORDEN.filter((c) => !tiene.includes(c));
   // de las que faltan, la primera que dice CUÁNTO falta (la Competitiva o la de País); si no, la primera
   const fc = faltan.find((c) => (c === 'competitivo' || c === 'pais') && !nv) || faltan[0];
-  const fx = fc ? faltaDe(fc, { cs: req[fc] || [], nv, nivel }) : null;
+  const fx = fc ? faltaDe(fc, { cs: req[fc] || [], nv, nivel, pide: ((liga.d.requisitos || []).find((r) => r.id === fc) || {}).pide || [] }) : null;
   const nombre = limpio((f && f.n) || (dc && (dc.rapero || dc.n)) || k);
   const cc = (f && f.cc) || (dc && dc.cc) || '';
   const sv = (f && f.sv) || (dc && dc.sv) || '';
+  // 🃏 TU FILA PARA LA IMAGEN DE HISTORIAS Y EL VISOR (18/11/2026): el staff `solo` no está en la tabla y App.jsx no la
+  // registra (`yoFila` sólo sin `solo`), así que `cartaUrl()` daba null si /api/perfiles no había llegado —o no traía esa
+  // carta— y la historia salía con la inicial en cada casilla. Como hace el perfil (`liga.fuera()`): con lo de tu cuenta
+  // (`tiene`) y la versión de la imagen de tu perfil, si llegó. ⚠️ Nunca encima de una fila de verdad (la de `yoFila`):
+  // sólo la que puso el álbum (`album`), que se rehace cuando llegan los perfiles
+  // 🃏 con las cartas de los DOS juntas (18/11/2026, la revisión): esta fila tapa la del perfil en `persona()` y frena la
+  // de tags_inv.jsx, así que `c: tiene` solo le sacaba a `cartaUrl()` la carta que el perfil ya traía y tu cuenta no
+  // (lo mismo que perfil.jsx: «JUNTAS, NO UNA U OTRA»)
+  if (!f && !liga.T[k] && tiene.length && (!liga.X[k] || liga.X[k].album)) {
+    liga.fuera(Object.assign({ k, n: nombre, cc, sv }, p && p.f, { c: [...new Set([...((p && p.f && p.f.c) || []), ...tiene])], album: 1 }));
+  }
   const primera = ORDEN.find((c) => tiene.includes(c));
   return (
     <section className="sec negra ta-alb">
@@ -300,7 +320,8 @@ function Album({ liga, dc, perf, onAbrir }) {
       <TusLigas liga={liga} k={k} />
       <div className="ta-acc">
         {tiene.length ? <BotonHistoria liga={liga} k={k} album={ORDEN.filter((c) => tiene.includes(c))} cls="btn verde chico ta-bh" texto="Mi álbum para historias" /> : null}
-        {liga.T[k] ? <a className="btn borde2 chico" href={'#/r/' + encodeURIComponent(k)}>Ver mi perfil</a> : null}
+        {/* 🪪 `liga.existe(k)` y no `liga.T[k]` (18/11/2026): quien está fuera de las 200 filas también tiene perfil, y el botón no le salía */}
+        {liga.existe(k) ? <a className="btn borde2 chico" href={'#/r/' + encodeURIComponent(k)}>Ver mi perfil</a> : null}
       </div>
       <div className="ta-t2"><span>LLEGAN EN LA T2</span>{T2.map((x) => <i key={x}>{x}</i>)}</div>
     </section>
@@ -405,7 +426,7 @@ function Abanico({ liga, onAbrir }) {
 }
 
 // ── LA HOJA: la carta grande, y deslizar para pasar a la siguiente del mismo estante ──
-function Hoja({ liga, yoK, h, setH, onComparar }) {
+function Hoja({ liga, yoK, h, setH, onComparar, enCmp }) {
   const { t, lista, i, grupo } = h;
   const f = lista[i];
   const cerrar = () => setH(null);
@@ -416,7 +437,9 @@ function Hoja({ liga, yoK, h, setH, onComparar }) {
   const teclas = useRef(null);
   teclas.current = { cerrar, ir };
   useEffect(() => {
-    const antes = document.activeElement;
+    // 🎯 adentro del shadow root (18/11/2026): document.activeElement es el host #inicio-nuevo; al cerrar el foco caía al body
+    let antes = document.activeElement;
+    while (antes && antes.shadowRoot && antes.shadowRoot.activeElement) antes = antes.shadowRoot.activeElement;
     const tecla = (e) => {
       if (e.key === 'Escape') teclas.current.cerrar();
       if (e.key === 'ArrowRight') teclas.current.ir(1);
@@ -464,8 +487,12 @@ function Hoja({ liga, yoK, h, setH, onComparar }) {
           {sv ? ' · ' + siglaDe(f.sv) : ''}
         </p>
         <div className="ta-h-acc">
-          {liga.T[f.k] ? <a className="btn verde chico" href={'#/r/' + encodeURIComponent(f.k)} onClick={cerrar}>{mia ? 'Ver mi perfil' : 'Ver su perfil'}</a> : null}
-          {yoK && !mia ? <button type="button" className="btn borde2 chico" onClick={() => { cerrar(); onComparar(t, f.k); }}>⇄ Comparar conmigo</button> : null}
+          {/* 🪪 `liga.existe()` y no `liga.T[…]` (18/11/2026): el botón no salía para quien está fuera de las 200 filas */}
+          {liga.existe(f.k) ? <a className="btn verde chico" href={'#/r/' + encodeURIComponent(f.k)} onClick={cerrar}>{mia ? 'Ver mi perfil' : 'Ver su perfil'}</a> : null}
+          {/* ⇄ sólo si los DOS están en «Comparar» de esta carta (18/11/2026), la regla del mismo botón del perfil
+              (`enComparar()` de perfil.jsx): sin tu carta —o sin tu cara— «Comparar» ponía al #1 en tu lugar sin avisar, y
+              el Abanico abre cartas sin mirar `fo` */}
+          {yoK && !mia && enCmp(t, yoK) && enCmp(t, f.k) ? <button type="button" className="btn borde2 chico" onClick={() => { cerrar(); onComparar(t, f.k); }}>⇄ Comparar conmigo</button> : null}
           {mia ? <BotonHistoria liga={liga} k={f.k} c={t} cls="btn borde2 chico ta-bh" /> : url ? <Compartir cls="btn borde2 chico" url={url} texto={'La ' + NOMBRE[t] + ' de ' + nombre} etiqueta="Compartir" /> : null}
         </div>
         {lista.length > 1 ? <p className="ta-h-t">Desliza para pasar a la siguiente</p> : null}
@@ -667,17 +694,23 @@ export function Tarjetas({ liga, dc, tipo, q = '' }) {
     return Object.fromEntries(ORDEN.map((c) => [c, new Set(liga.muro.filter((it) => it.tipo === 'tarjeta' && it.carta === c && utc(it.t) >= d).flatMap((it) => it.ks || []))]));
   }, [liga]);
   const abrir = (tt, lista, i, grupo) => setH({ t: tt, lista, i, grupo });
+  // 🔁 EN «VER TODAS» NO HAY «COMPARAR» (18/11/2026): la rama de la galería no lo dibuja, así que `accion.ir('tj-cmp')` no
+  // encontraba nada y el botón sólo cerraba la hoja. Se vuelve al álbum —la misma `Tarjetas`, así `cmp` se queda— y se
+  // baja con el plazo del efecto de `?a=&b=` (sin `?a=&b=` en la dirección: ese efecto pone la Temporada)
   const comparar = (tt, k) => {
     setCmp({ t: tt, a: yoK, b: k });
-    setTimeout(() => accion.ir('tj-cmp'), 150);
+    if (t) location.hash = '#/tarjetas';
+    setTimeout(() => accion.ir('tj-cmp'), t ? 400 : 150);
   };
+  // ¿está en «Comparar» de esa carta? (`porTipo`: con la carta y con su cara)
+  const enCmp = (tt, k) => !!k && (porTipo[tt] || []).some((x) => x.k === k);
   // tocar una de tus cartas en la mano: la hoja con las tuyas
   const abrirMia = (c) => {
     const f = liga.T[yoK];
     if (!f) { accion.carta(yoK, c); return; }
     setH({ t: c, lista: [f], i: 0, grupo: false });
   };
-  const hoja = h ? <Hoja liga={liga} yoK={yoK} h={h} setH={setH} onComparar={comparar} /> : null;
+  const hoja = h ? <Hoja liga={liga} yoK={yoK} h={h} setH={setH} onComparar={comparar} enCmp={enCmp} /> : null;
   if (t) {
     return (
       <>

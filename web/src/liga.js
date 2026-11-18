@@ -38,9 +38,12 @@ export function capital(s) {
   return t.replace(/[\p{L}\p{N}]+/gu, (w) => (w.length <= 2 ? w.toUpperCase()
     : w.charAt(0).toUpperCase() + w.slice(1).toLowerCase()));
 }
-export function recorte(s, n = 120) {
+// ✂️ `corte`: el largo al que el ciclo ya cortó ese texto (18/11/2026). La palabra corta del final se saca porque puede ser
+// media palabra de un texto cortado; si el texto es más corto que el corte, vino entero y no se le come nada
+export function recorte(s, n = 120, corte = 0) {
+  const crudo = String(s || '').length;
   s = limpio(s).replace(/\*/g, '');
-  if (s.length <= n && !/\s\S{1,2}$/.test(s)) return s;
+  if (s.length <= n && ((corte && crudo < corte) || !/\s\S{1,2}$/.test(s))) return s;
   const t = s.slice(0, n);
   const i = t.lastIndexOf(' ');
   return (i > 0 ? t.slice(0, i) : t).replace(/[ ,.;:]+$/, '') + '…';
@@ -54,6 +57,13 @@ const RES = {
 export function resultado(r, corto = false) {
   const x = RES[r];
   return x ? x[corto ? 1 : 0] : String(r || '').toUpperCase();
+}
+// 🏷️ LA LLAVE SIN NOMBRE (18/11/2026): el lector guarda «(sin titulo)», y crudo llegaba a Lo último, a la llave y a Eventos.
+// `esSinTitulo()` lo reconoce; `nombreEv()` da el que se lee —«la llave #N» o «un evento»— (la convención de _worker.js)
+export const esSinTitulo = (s) => /^\(?\s*sin\s+t[ií]tulo\s*\)?$/i.test(limpio(s));
+export function nombreEv(ev, ll) {
+  const s = limpio(ev);
+  return !s || esSinTitulo(s) ? (ll ? 'la llave #' + ll : 'un evento') : s;
 }
 export const num = (n) => String(Math.trunc(Number(n) || 0)).replace(/\B(?=(\d{3})+(?!\d))/g, '.');
 export const mult = (x) => '×' + String(x || 1).replace('.', ',');
@@ -94,7 +104,13 @@ export function siglaDe(sv) { return SIGLAS[sv] || sv || ''; }
 // 11 AM, cuando salieron los primeros premios. Lo de antes vivía sólo en publicaciones.jsx (13/10/2026)
 export const ksDe = (it) => (Array.isArray(it && it.ks) ? it.ks : it && it.ks && typeof it.ks === 'object' ? Object.values(it.ks) : []);
 // como `normNombre()` de app.js: la clave de `alias` en el payload (`respaldo._norm`)
-const normNombre = (s) => String(s || '').normalize('NFKD').toLowerCase().replace(/[^\p{L}\p{N}]/gu, '');
+export const normNombre = (s) => String(s || '').normalize('NFKD').toLowerCase().replace(/[^\p{L}\p{N}]/gu, '');
+// 🔑 LA CLAVE DE UN NOMBRE, como `comun/claves.py` (18/11/2026, la pasada de bugs de las páginas): sin banderas ni «❓»,
+// NFD, minúsculas y lo alfanumérico de cualquier alfabeto. Probada contra las 856 claves de /api/perfiles: coincide en
+// 841; las otras 15 son choques con sufijo (`volk-co`, `julix-x`), por eso quien la usa mira antes `alias`
+const banderasTxt = (s) => (String(s || '').match(/[\u{1F1E6}-\u{1F1FF}]{2}/gu) || []).sort().join('');
+export const claveDe = (n) => String(n || '').replace(/[\u{1F1E6}-\u{1F1FF}]/gu, '').replace(/❓/g, '').trim().toLowerCase()
+  .normalize('NFD').replace(/[^\p{L}\p{N}]/gu, '') || 'sinnombre';
 // «1.10» es más nueva que «1.9»: se comparan los números, no el texto (la regla de `nuevaQue()` de app.js)
 export function nuevaQue(a, b) {
   const pa = String(a || '').split('.').map(Number);
@@ -134,6 +150,26 @@ function diaSemana(d) {
   return new Date(Date.UTC(y, m - 1, dd)).getUTCDay();
 }
 function diaMes(d) { return Number(diaISO(d).split('-')[2]); }
+// 🕐 UNA HORA ESCRITA («AAAA-MM-DDTHH:mm», de un `<input type="datetime-local">`) LEÍDA EN LA ZONA DE AJUSTES (18/11/2026):
+// `new Date(s)` la lee en la del dispositivo y después se mostraba en la elegida, corrida. Las dos vueltas de
+// `utcDeZona()` de bot/worker.js. Sin zona elegida, o si no se puede leer, la del dispositivo
+export function msDeLocal(s) {
+  const z = (W.zona && W.zona()) || '';
+  const pared = Date.parse(String(s || '') + 'Z');
+  if (!z || isNaN(pared)) return new Date(s).getTime();
+  try {
+    const fmt = new Intl.DateTimeFormat('en-US', { timeZone: z, hourCycle: 'h23', year: 'numeric', month: '2-digit',
+      day: '2-digit', hour: '2-digit', minute: '2-digit', second: '2-digit' });
+    const enZona = (ms) => {
+      const p = {};
+      fmt.formatToParts(new Date(ms)).forEach((x) => { p[x.type] = x.value; });
+      return Date.UTC(+p.year, +p.month - 1, +p.day, +p.hour % 24, +p.minute, +p.second);
+    };
+    let t = pared - (enZona(pared) - pared);
+    t -= enZona(t) - pared;
+    return t;
+  } catch (e) { return new Date(s).getTime(); }
+}
 // los minutos desde la medianoche, en la zona de quien mira (la de Ajustes si eligió una: `zona()` de app.js)
 // ⚡ un formateador por zona y cada instante se recuerda (17/11/2026): era la segunda cosa que más tardaba al entrar a Eventos
 let minFmt = null;
@@ -194,6 +230,33 @@ export class Liga {
     (D.avs || []).forEach(([n, av]) => { if (n && av) this.A[limpio(n).toLowerCase()] = av; });
     // 👥 y las de quienes organizan sin estar en la tabla (`orgp`, 14/10/2026): ver `orgsDe()`
     Object.values(D.orgp || {}).forEach(([n, av]) => { if (n && av) this.A[limpio(n).toLowerCase()] = av; });
+    // 🧑 LOS DE FUERA DE LA TABLA, POR CLAVE (18/11/2026, la pasada de bugs: ~25 lugares trataban a quien está fuera de
+    // las 200 como si no existiera, o lo nombraban con su clave cruda). Filas LIGERAS —`{k, n, av, c: [], parcial: 1}`,
+    // la misma forma que `quien()` ya devolvía para `orgp`— con lo que ya viaja: `avs` (281 que jugaron) y `orgp`.
+    // La clave sale del nombre (`alias` primero); un nombre repetido o que ya es de alguien de la tabla no entra: mejor
+    // sin fila que con la de otro. La fila ENTERA, si se bajaron los perfiles: `persona()`
+    this.Fx = {};
+    this.FxN = {};
+    const malos = new Set();
+    const sumaFx = (k, n, av) => {
+      if (!k || !n || this.T[k]) return;
+      const nn = limpio(n).toLowerCase();
+      if (this.N[nn] || malos.has(nn)) return;
+      if (this.FxN[nn] && this.FxN[nn].k !== k) { malos.add(nn); delete this.Fx[this.FxN[nn].k]; delete this.FxN[nn]; return; }
+      if (this.Fx[k]) {
+        // 🏳️ la misma clave con OTRA bandera escrita (`Volk 🇲🇽` / `volk 🇨🇴`, revisión del 18/11/2026) son dos personas
+        const b1 = banderasTxt(this.Fx[k].n), b2 = banderasTxt(n);
+        if (b1 && b2 && b1 !== b2) { malos.add(nn); delete this.FxN[nn]; delete this.Fx[k]; return; }
+        if (!this.Fx[k].av && av) this.Fx[k].av = av;
+        return;
+      }
+      this.Fx[k] = { k, n, av: av || '', c: [], parcial: 1 };
+      this.FxN[nn] = this.Fx[k];
+    };
+    Object.entries(D.orgp || {}).forEach(([k, p]) => { if (Array.isArray(p)) sumaFx(k, p[0], p[1]); });
+    (D.avs || []).forEach(([n, av]) => { if (n) sumaFx((D.alias || {})[normNombre(n)] || claveDe(n), n, av); });
+    // los de un perfil abierto (`fuera()`), por nombre: para `quien()`
+    this.XN = {};
     this.svs = {};
     (D.svs || []).forEach((s) => { this.svs[s.sv] = s; });
     SIGLAS = {};
@@ -208,17 +271,47 @@ export class Liga {
     // la temporada sale del payload: «T1» escrito a mano quedaría viejo el día que arranque la T2
     this.temp = String(D.temporada || 'T1').toUpperCase();
     this.tempLarga = 'TEMPORADA ' + this.temp.replace(/^T/, '');
+    // ⚠️ `sigue` se queda filtrado por la tabla A PROPÓSITO: hay lectores que hacen `liga.T[k].n` sin guarda (el Inicio).
+    // Para contar, tildar o el botón «Seguir», `sigueTodos` y `sigo(k)`: la lista entera, también los de fuera (18/11/2026)
     this.sigue = (sigue || []).filter((k) => this.T[k]);
+    this.sigueTodos = (sigue || []).filter(Boolean);
   }
+
+  // ── QUIÉN ES UNA CLAVE, AUNQUE NO ESTÉ EN LA TABLA (18/11/2026, la pasada de bugs de las páginas) ──
+  // 🧑 la fila ENTERA: la de la tabla, la de un perfil abierto o la de /api/perfiles si ya se bajó (`window.PERF`,
+  // datos.js). Sin caché a propósito: los perfiles llegan después, y lo que pregunte otra vez los encuentra. ⚠️ Puede
+  // ser la del staff que no compite (`solo`, sin números pero con sus cartas): para contar, la tabla
+  persona(k) {
+    if (!k) return null;
+    const p = W.PERF && W.PERF.p && W.PERF.p[k];
+    return this.T[k] || this.X[k] || (p && p.f ? Object.assign({ k }, p.f) : null);
+  }
+  // y si no, la fila ligera de los que viajan fuera de la tabla (`Fx`: nombre y cara). Para nombrar, no para contar
+  quienK(k) { return k ? this.persona(k) || this.Fx[k] || null : null; }
+  // el nombre que se lee de una clave: el oficial si se sabe; si no, el que vino (`n0`); la clave, sólo al final
+  nombreDe(k, n0) { const f = this.quienK(k); return limpio((f && f.n) || n0 || k || ''); }
+  // ¿hay alguien con esa clave? (para «Ver su perfil»: los 656 de fuera de la tabla también tienen el suyo)
+  existe(k) { return !!this.quienK(k); }
+  // ¿la sigues? Con la lista entera, no la filtrada por la tabla
+  sigo(k) { return !!k && this.sigueTodos.includes(k); }
+  // 🔢 el «de N» de la Temporada: los que tienen número, aunque la tabla traiga 200 filas (`n_oficiales`, 258 hoy)
+  nOficiales() { return Number(this.d.n_oficiales) || this.oficiales().length; }
 
   // ── rutas de imágenes (todas públicas: R2, el CDN de Discord y la propia página) ──
   // 🃏 `chica`: la de 300 px de ancho (19/10/2026, `CHICA_ANCHO` de bot/subir_cartas.py), para donde se dibuja en chico
   // —las llaves—; ~22 KB en vez de ~150. Puede no existir todavía: quien la usa vuelve a la grande si no carga
   // 🃏 quien no está en la tabla (no jugó, o quedó más allá del corte) y tiene cartas: su perfil lo anota acá para
   // que sus cartas se vean (26/10/2026, Dlx: «aún no tengo mis tarjetas»)
-  fuera(f) { if (f && f.k && !this.T[f.k] && Array.isArray(f.c)) this.X[f.k] = f; }
+  fuera(f) {
+    if (!(f && f.k && !this.T[f.k] && Array.isArray(f.c))) return;
+    this.X[f.k] = f;
+    // por nombre también, para `quien()`; y lo que `quien()` ya contestó sin esta fila se vuelve a preguntar
+    const nn = limpio(f.n).toLowerCase();
+    if (nn && !this.N[nn]) this.XN[nn] = f;
+    this.qM = null;
+  }
   cartaUrl(k, cual, chica = false) {
-    const f = this.T[k] || this.X[k];
+    const f = this.persona(k);
     if (!f || !(f.c || []).includes(cual)) return null;
     const i = (this.d.cartas || []).indexOf(cual);
     const v = typeof f.cv === 'string' && i >= 0 ? f.cv.split('.')[i] : '';
@@ -233,7 +326,7 @@ export class Liga {
   // 🃏 Y DESDE EL 26/10/2026 (Dlx: «me gustan tus otras ideas»): en lo de un país (`pais`, su página), la de País; y donde
   // ninguna toca, la CARTA PRINCIPAL que eligió (`cartaPrincipal()` del objeto), antes que la Temporada
   cartaDe(k, donde = {}) {
-    const f = this.T[k];
+    const f = this.persona(k);
     const c = (f && f.c) || [];
     if (!c.length) return null;
     if (donde.sv && c.includes('servidor') && String(f.sv || '').toUpperCase() === String(donde.sv).toUpperCase()) return 'servidor';
@@ -249,7 +342,7 @@ export class Liga {
   // `vj`); es el `vieja()` de app.js. Dlx, 01/10/2026: Makmah #3 en su carta y cuarto en Los que mandan — la carta se
   // estaba redibujando y no lo decía
   cartaVieja(k, cual) {
-    const f = this.T[k];
+    const f = this.persona(k);
     const i = (this.d.cartas || []).indexOf(cual);
     return !!(f && i >= 0 && typeof f.vj === 'string' && f.vj.indexOf(String(i)) >= 0);
   }
@@ -257,7 +350,7 @@ export class Liga {
   // grande donde la cara se dibuja grande (el perfil, ~240 px; Dlx, 12/11/2026: «que todo esté siempre en HD»). El CDN
   // de Discord devuelve lo que la persona subió, nunca más: pedir 1024 no agranda nada, sólo deja de achicar
   avUrl(k, t = 256) {
-    const f = this.T[k];
+    const f = this.quienK(k);
     return f && f.av ? 'https://cdn.discordapp.com/avatars/' + f.av + '.webp?size=' + t : null;
   }
   // la cara de alguien que jugó y no está en la tabla (corta en 200): la piden `Cara` y `CaraH` cuando no hay clave
@@ -334,6 +427,7 @@ export class Liga {
       if (f) return f;
       const p = (this.d.orgp || {})[k];
       if (p && p[0]) return { k, n: p[0] };
+      if (this.Fx[k]) return this.Fx[k];
     }
     const s = String(nombre || '');
     if (!s) return null;
@@ -345,6 +439,12 @@ export class Liga {
     if (!f) {
       const sin = s.replace(/\s*[(（][^()（）]*[)）]?\s*$/u, '');
       if (sin && sin !== s) f = this.fila(sin);
+    }
+    // 🧑 y si no es de nadie de la tabla: alguien de fuera con ese nombre exacto —un perfil abierto o los que viajan
+    // fuera (`Fx`)— (18/11/2026: en una llave, quien estaba más allá del puesto 200 no tenía su camino ni su perfil)
+    if (!f) {
+      const nn = limpio(s).toLowerCase();
+      f = this.XN[nn] || this.FxN[nn] || null;
     }
     f = f || null;
     if (this.qM.size > 20000) this.qM = new Map();
@@ -363,10 +463,14 @@ export class Liga {
     return String(x || '').split(/\s*,\s*/).map((y) => this.aka(y)).filter(Boolean).join(' y ');
   }
   // 🔑 y para contar —su perfil, «Tu semana», sus duelos—, también lo que se escribió con su alias: «velats» es Velatz
+  // 🧑 también para quien está fuera de la tabla (18/11/2026): su perfil abierto, su fila de /api/perfiles o la ligera de
+  // `Fx`. Antes cortaba en `T[k]`, y a esa gente no le salían «Tu semana», sus cruces ni sus duelos. ⚠️ Sin estar en la
+  // tabla, un nombre que SÍ es de alguien de la tabla es de ése y no de `k` (dos «julix»: `julix` y `julix-x`)
   esDe(nombre, k) {
-    const f = this.T[k];
+    const f = this.T[k] || this.X[k] || (k && this.Fx[k]) || (k ? this.persona(k) : null);
     if (!f) return false;
     const a = limpio(nombre);
+    if (!this.T[k]) { const o = this.fila(a); if (o && o.k !== k) return false; }
     const b = limpio(f.n);
     if (this.dobles.has(b.toLowerCase()) ? a === b : a.toLowerCase() === b.toLowerCase()) return true;
     const q = this.quien(nombre);
@@ -411,8 +515,9 @@ export class Liga {
     const m = Number(diaISO(b).split('-')[1]);
     return DIAS[diaSemana(b)] + ' ' + diaMes(b) + ' de ' + MESES[m - 1];
   }
+  // ⏱ nunca negativo: con una hora vieja (un evento atrasado leído con su hora de antes) decía «-1 H -10 MIN»
   falta(t) {
-    const seg = Math.floor((utc(t) - this.ahora) / 1000);
+    const seg = Math.max(0, Math.floor((utc(t) - this.ahora) / 1000) || 0);
     const h = Math.floor(seg / 3600);
     const m = Math.floor((seg % 3600) / 60);
     return h ? h + ' H ' + m + ' MIN' : Math.max(1, m) + ' MIN';
@@ -588,20 +693,13 @@ export class Liga {
     // de ocho que arranca 20:00 y termina 20:50 salía a la vez «● EN VIVO» y «TERMINÓ · Campeón» en Fechas, y «se juega
     // ahora» en el escenario, hasta las 21:30. Terminó = su llave en vivo tiene campeón y no hay otra sin terminar, o el
     // ciclo ya procesó su llave (`ll` del calendario)
-    const termino = (e) => {
-      if (todas.length && window.llaveDeEvento) {
-        try {
-          const L = window.llaveDeEvento(e, todas);
-          if (L && L.terminada && !window.llaveDeEvento(e, ls)) return true;
-        } catch (err) { /* sigue */ }
-      }
-      return (this.d.calendario || []).some((c) => c.ll && ((e.link && c.link === e.link)
-        || (c.sv === e.sv && limpio(c.n) === limpio(e.nombre) && Math.abs(utc(c.t) - utc(e.cuando)) < 6 * 3600000)));
-    };
+    const termino = (e) => this.termino(e, todas, ls);
     const out = this.proximos().filter((e) => {
       const s = desde(e);
       // ⏸ y lo que está en pausa —«seguimos mañana»— tampoco: va aparte (`pausados()`)
-      return !this.esCancelado(e) && !this.enPausa(e) && s >= 0 && (s <= m * 60 || (s <= 8 * 3600 && sigue(e))) && !this.llaveBorrada(e) && !termino(e);
+      // 🔑 sin una hora que se pueda leer (`sin_hora`: va con la de publicación), en vivo sólo si su llave se está jugando:
+      // por la hora salía «EN VIVO» desde que se anunciaba (18/11/2026; lo que hacía `empezo()` de app.js)
+      return !this.esCancelado(e) && !this.enPausa(e) && s >= 0 && (!e.sin_hora || sigue(e)) && (s <= m * 60 || (s <= 8 * 3600 && sigue(e))) && !this.llaveBorrada(e) && !termino(e);
     });
     (this.d.calendario || []).forEach((c) => {
       const e = { nombre: c.n, sv: c.sv, cuando: c.t, link: c.link };
@@ -676,14 +774,47 @@ export class Liga {
   }
   // en orden de hora: lo que suma el vigía va al final de la lista y puede ser lo primero que se juega
   // ⏰ y con la hora nueva del que se atrasó; lo que está en pausa, no (`pausados()`)
+  // 🔑 lo anunciado sin hora que se pueda leer (`sin_hora`) viene aunque su «hora» —la de publicación— ya pasó, y va al
+  // final: no se sabe cuándo es. Quien lo dibuja dice «anunciado …» en vez de una cuenta atrás (18/11/2026)
+  // 🏁 si un evento ya terminó (la regla de `vivo()`, 04/10/2026): su llave en vivo tiene campeón y no hay otra sin
+  // terminar, o el ciclo ya procesó su llave (`ll` del calendario). `todas` y `ls` son las llaves en vivo, si ya se tienen
+  termino(e, todas, ls) {
+    if (!todas) todas = typeof window !== 'undefined' ? Object.values(window.VIVO_L || {}) : [];
+    if (!ls) ls = todas.filter((L) => !L.terminada);
+    if (todas.length && typeof window !== 'undefined' && window.llaveDeEvento) {
+      try {
+        const L = window.llaveDeEvento(e, todas);
+        if (L && L.terminada && !window.llaveDeEvento(e, ls)) return true;
+      } catch (err) { /* sigue */ }
+    }
+    return (this.d.calendario || []).some((c) => c.ll && ((e.link && c.link === e.link)
+      || (c.sv === e.sv && limpio(c.n) === limpio(e.nombre) && Math.abs(utc(c.t) - utc(e.cuando)) < 6 * 3600000)));
+  }
   luego() {
-    return this.proximos().filter((e) => utc(this.cuandoDe(e)) > this.ahora && !this.esCancelado(e) && !this.enPausa(e))
-      .sort((a, b) => utc(this.cuandoDe(a)) - utc(this.cuandoDe(b)));
+    const ps = this.proximos();
+    const vivos = ps.some((e) => e.sin_hora) ? new Set(this.vivo()) : null;
+    // ⚠️ un sin_hora es «próximo» mientras no esté en vivo, NI TERMINADO NI CON LA LLAVE BORRADA (revisión del 18/11/2026):
+    // `vivo()` lo deja afuera por las tres cosas, y salía a la vez «TERMINÓ · Campeón» y «anunciado hace 2 h» en Fechas
+    return ps.filter((e) => (e.sin_hora ? !vivos.has(e) && !this.termino(e) && !this.llaveBorrada(e) : utc(this.cuandoDe(e)) > this.ahora)
+      && !this.esCancelado(e) && !this.enPausa(e))
+      .sort((a, b) => (a.sin_hora ? 1 : 0) - (b.sin_hora ? 1 : 0) || utc(this.cuandoDe(a)) - utc(this.cuandoDe(b)));
   }
   llaves() { return Object.values(this.d.llaves || {}).sort((a, b) => Number(b.n) - Number(a.n)); }
   // 🔑 por FECHA, la más nueva primero: el número es el orden en que el ciclo las cargó, y se procesan desordenadas (lo
   // que ya hacía Fechas). «La última llave» y «el último campeón» salían de otro día (revisión del 04/10/2026)
-  llavesPorFecha() { return this.llaves().slice().sort((a, b) => utc(this.fechaLlave(b)) - utc(this.fechaLlave(a))); }
+  llavesPorFecha() {
+    // sin fecha (ni calendario ni `dia`: `fechaLlave()` da ''), al final y en orden: NaN dejaba el orden indefinido
+    const ms = (ll) => { const x = +utc(this.fechaLlave(ll)); return Number.isFinite(x) ? x : -Infinity; };
+    return this.llaves().slice().sort((a, b) => ms(b) - ms(a) || Number(b.n) - Number(a.n));
+  }
+  // 🏷️ el nombre que se lee de una llave (18/11/2026): el suyo; si es «(sin titulo)», el del calendario para ese número;
+  // si tampoco, «Sin título»
+  nombreLlave(ll) {
+    if (!ll) return '';
+    if (!esSinTitulo(ll.nombre) && limpio(ll.nombre)) return limpio(ll.nombre);
+    const c = (this.d.calendario || []).find((x) => String(x.ll) === String(ll.n));
+    return c && !esSinTitulo(c.n) && limpio(c.n) ? limpio(c.n) : 'Sin título';
+  }
   // 🪪 con su nombre oficial (17/11/2026): la llave trae el que escribió el organizador, y quien lo busque en la tabla lo
   // encuentra igual (`fila()` con el oficial es el exacto)
   campeon(ll) {
@@ -695,7 +826,9 @@ export class Liga {
   }
   fechaLlave(ll) {
     const c = (this.d.calendario || []).find((e) => e.ll === ll.n || String(e.ll) === String(ll.n));
-    return c ? c.t : ll.dia + 'T23:00:00Z';
+    // ⚠️ sin fila en el calendario ni `dia` (18/11/2026) daba 'undefinedT23:00:00Z' → NaN, y el orden de
+    // `llavesPorFecha()` quedaba indefinido: sin fecha, al final
+    return c ? c.t : ll.dia ? ll.dia + 'T23:00:00Z' : '';
   }
   multSv(sv) { return ((this.d.mult || {}).sv || {})[sv]; }
   // 📅 EL MULTIPLICADOR DE LA SEMANA EN QUE SE JUGÓ (Dlx, 14/10/2026: «¿en ese momento era ×3 o esta semana? haz que se
@@ -729,9 +862,11 @@ export class Liga {
     const g = this.dorado();
     return !!(g && g.sv === sv && limpio(g.n) === limpio(nombre));
   }
+  // 📅 la más nueva primero POR FECHA (18/11/2026): por número, «Tu último evento» salía de otro día (las llaves se
+  // procesan desordenadas: ver `llavesPorFecha()`)
   semanaDe(k) {
     const out = [];
-    this.llaves().forEach((ll) => (ll.tabla || []).forEach((f) => {
+    this.llavesPorFecha().forEach((ll) => (ll.tabla || []).forEach((f) => {
       // la clave, si la llave la trae (el ciclo la pone cuando el nombre se repite: dos «SOL»); si no, el nombre
       if (f[3] ? f[3] === k : this.esDe(f[0], k)) out.push([ll, f[1], f[2]]);
     }));
@@ -752,7 +887,7 @@ export class Liga {
         const fila = (this.d.crews || []).find((y) => y.clave === viva.id || limpio(y.crew).toLowerCase() === n0);
         if (fila) return Object.assign({}, fila, { crew: viva.nombre, logo: viva.logo || fila.logo });
         return { crew: viva.nombre, clave: viva.id, logo: viva.logo || '', n: viva.gente.length, pts: 0, rk: 0, tier: 0, mejor: '',
-          gente: viva.gente.map((g) => (this.T[g[0]] ? this.T[g[0]].n : '')).filter(Boolean) };
+          gente: viva.gente.map((g) => (g && g[0] && this.existe(g[0]) ? this.nombreDe(g[0]) : '')).filter(Boolean) };
       }
     }
     if (!f.crew) return null;
@@ -846,7 +981,7 @@ export class Liga {
         ['cara', ks[0] || '', q[0]], c, { ruta: '#/ligas/' + encodeURIComponent(it.liga || '') }];
     }
     if (it.tipo === 'campeon') {
-      return ['CAMPEÓN · ' + siglaDe(it.sv), q.join(' y ') + (q.length > 1 ? ' se quedan con ' : ' se queda con ') + limpio(it.ev),
+      return ['CAMPEÓN · ' + siglaDe(it.sv), q.join(' y ') + (q.length > 1 ? ' se quedan con ' : ' se queda con ') + nombreEv(it.ev, it.ll),
         ['cara', ks[0] || '', q[0]], c, { llave: it.ll }];
     }
     if (it.tipo === 'caza') {
@@ -866,16 +1001,16 @@ export class Liga {
     // 🔄 lo que publican solos la gente y los servidores (bot/muro_solos.py, 15/11/2026). Acá en tercera persona: Lo último
     // no lleva la firma arriba, como Publicaciones. El lunes y el cierre de cada servidor no: son trece a la vez
     const perfil = { perfil: ks[0] };
-    if (it.tipo === 'podio') return ['PRIMER PODIO · ' + siglaDe(it.sv), q[0] + ' salió ' + String(it.puesto || '').toLowerCase() + ' en ' + limpio(it.ev), ['cara', ks[0] || '', q[0]], c, it.ll ? { llave: it.ll } : perfil];
+    if (it.tipo === 'podio') return ['PRIMER PODIO · ' + siglaDe(it.sv), q[0] + ' salió ' + String(it.puesto || '').toLowerCase() + ' en ' + nombreEv(it.ev, it.ll), ['cara', ks[0] || '', q[0]], c, it.ll ? { llave: it.ll } : perfil];
     if (it.tipo === 'top10') return ['TOP 10', q[0] + ' entró al top 10 del Ranking ' + (it.rk === 'competitivo' ? 'Competitivo' : 'Temporada') + ' (#' + it.pos + ')', ['cara', ks[0] || '', q[0]], c, perfil];
-    if (it.tipo === 'subio') return ['SUBE EN EL RANKING', q[0] + ' subió ' + ((it.de || 0) - (it.a || 0)) + ' puestos esta semana', ['cara', ks[0] || '', q[0]], c, perfil];
+    if (it.tipo === 'subio') return ['SUBE EN EL RANKING', q[0] + ' subió ' + ((it.de || 0) - (it.a || 0)) + ' puestos en la semana', ['cara', ks[0] || '', q[0]], c, perfil];
     if (it.tipo === 'racha') return ['RACHA', q[0] + ' lleva ' + it.racha + ' eventos seguidos', ['cara', ks[0] || '', q[0]], c, perfil];
     if (it.tipo === 'crewunion' || it.tipo === 'crewnueva') {
       return ['CREWS', q[0] + (it.tipo === 'crewnueva' ? ' creó la crew ' : ' se unió a la crew ') + limpio(it.nombre), ['cara', ks[0] || '', q[0]], c,
         { ruta: '#/crew/' + encodeURIComponent(it.crew || '') }];
     }
     if (it.tipo === 'svtop') return ['NUEVO #1 · ' + siglaDe(it.sv), q[0] + ' es el nuevo #1 de ' + siglaDe(it.sv), ['cara', ks[0] || '', q[0]], c, perfil];
-    if (it.tipo === 'svrecord') return ['RÉCORD · ' + siglaDe(it.sv), siglaDe(it.sv) + ': ' + it.part + ' raperos en ' + limpio(it.ev) + ', su récord', ['sv', it.sv], c, it.ll ? { llave: it.ll } : { ruta: '#/eventos' }];
+    if (it.tipo === 'svrecord') return ['RÉCORD · ' + siglaDe(it.sv), siglaDe(it.sv) + ': ' + it.part + ' raperos en ' + nombreEv(it.ev, it.ll) + ', su récord', ['sv', it.sv], c, it.ll ? { llave: it.ll } : { ruta: '#/eventos' }];
     if (it.tipo === 'svchat') {
       const ct = this.chatTexto(it);
       return ct ? [(it.que === 'polemica' ? 'POLÉMICA · ' : 'EL CHAT · ') + siglaDe(it.sv), ct.tit, ['sv', it.sv], c, { ruta: '#/sv/' + encodeURIComponent(siglaDe(it.sv)) }] : null;
@@ -889,7 +1024,7 @@ export class Liga {
   // ⚠️ Una polémica no trae nombres ni evento (el muro no los manda): nunca se dice de quién ni de qué
   chatTexto(it, nos) {
     const sv = siglaDe(it.sv);
-    const q = (it.hablan || []).map((k) => this.T[k]).filter(Boolean).map((f) => limpio(f.n));
+    const q = (it.hablan || []).map((k) => this.quienK(k)).filter(Boolean).map((f) => limpio(f.n));
     const nombres = q.length > 1 ? q.slice(0, -1).join(', ') + ' y ' + q[q.length - 1] : q[0] || '';
     let tit;
     if (it.que === 'polemica') tit = nos ? 'Se armó la polémica en nuestro chat' : 'Polémica en el chat de ' + sv;

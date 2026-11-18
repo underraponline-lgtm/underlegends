@@ -23,6 +23,9 @@ var RED_NOMBRE = { instagram: 'Instagram', youtube: 'YouTube', x: 'X', tiktok: '
    servidor sigue sin saber quién sos, se dice y no se manda a ningún lado; y
    si Discord no contesta (503), también. */
 var DC_VUELTA = false;
+// 🚪 POR QUÉ NO ENTRASTE (18/11/2026): si al volver de Discord `/api/cuenta` falla (503 de Discord ocupado, 401 o sin red),
+// la página quedaba en «Entrar con Discord» sin decir nada. Lo lee Mi cuenta; se avisa con `pintaPopCuenta()`
+var ENTRAR_ERR = '';
 function pedirConCuenta(ruta, cuerpo, conPermiso) {
   var b = Object.assign({}, cuerpo);
   if (conPermiso && DC_TOKEN) b.token = DC_TOKEN;
@@ -37,8 +40,14 @@ function pedirConCuenta(ruta, cuerpo, conPermiso) {
 function conCuenta(ruta, cuerpo, modo, clave, pendiente) {
   var irse = function (j) {
     if (!modo || DC_VUELTA) return j;
-    try { if (clave) sessionStorage.setItem(clave, JSON.stringify(pendiente)); } catch (e) { /* igual */ }
-    location.href = urlLogin(modo);
+    // 🧾 LO PENDIENTE VA ATADO A SU VIAJE (18/11/2026): con el `state` que se lleva a Discord (`lg:estado`, que escribe
+    // `urlLogin()`). Sin eso, un precio o un aplauso cuyo viaje se canceló (o con «Atrás») quedaba en la pestaña y salía
+    // solo en la próxima entrada del mismo modo —el «Entrar» de la Tienda gastaba Puntos que nadie confirmó—
+    var u = urlLogin(modo);
+    try {
+      if (clave) sessionStorage.setItem(clave, JSON.stringify(Object.assign({}, pendiente, { st: sessionStorage.getItem('lg:estado') || '' })));
+    } catch (e) { /* igual */ }
+    location.href = u;
     return null;
   };
   return pedirConCuenta(ruta, cuerpo, false).then(function (j) {
@@ -111,7 +120,9 @@ function elegirMiServidor(sv) {
    y tus tarjetas van con tu inicial. Lo dibuja Mi cuenta → Privacidad (web/src/cuenta.jsx) */
 var MIFOTO = null, MIFOTO_EST = {}, MIFOTO_PIDE = false;
 function pedirMiFoto() {
-  if (!DC || MIFOTO || MIFOTO_PIDE) return;
+  // 🔁 lo guardado como error se vuelve a pedir (18/11/2026): un primer pedido fallido dejaba «Ocultar mi foto» deshabilitado
+  // con «Prueba en un rato» hasta recargar. Lo llaman sólo las cajas al montarse: no hay bucle
+  if (!DC || (MIFOTO && !MIFOTO.error) || MIFOTO_PIDE) return;
   MIFOTO_PIDE = true;
   pedirConCuenta('/api/avisos/mi-foto', {}, false).then(function (j) {
     MIFOTO_PIDE = false;
@@ -152,12 +163,19 @@ function urlLogin(modo) {
   // billetera), 'd' verificarse (pide `guilds.join`: el bot te mete en DRA),
   // 'p' felicitar en Publicaciones, o entrar
   var conRedes = modo === true || modo === 'r';
-  // 'o' el Dashboard del dueño (04/10/2026): vuelve a /dashboard; 's' el panel de tu servidor: vuelve a #/socio
+  // 'o' el Dashboard del dueño (04/10/2026): vuelve a /dashboard; 'a' el panel de tu servidor: vuelve a #/socio
   // 'u' unirte a los servidores Tier 1 que elegiste (13/11/2026): pide `guilds.join` y SIEMPRE con la pantalla de Discord
+  // 's' entrar con sesión desde donde estás (seguir, tu servidor, tu foto, las crews…): vuelve ahí, a la ruta que se
+  // guarda acá (`lg:vuelta-s`). 🔴 Hasta el 18/11/2026 la 's' volvía SIEMPRE al panel del socio (4.24 se la dio a él):
+  // con la sesión de 30 días vencida, «Seguir» o «Entrar con Discord» en Crews terminaban en «Este panel es para los
+  // dueños…». El panel tiene ahora su letra, la 'a'
   var st = (conRedes ? 'r' : modo === 'v' || modo === 'f' || modo === 'e' || modo === 't' || modo === 'd' ||
-    modo === 'p' || modo === 'o' || modo === 's' || modo === 'u' ? modo : 'i') +
+    modo === 'p' || modo === 'o' || modo === 's' || modo === 'a' || modo === 'u' ? modo : 'i') +
     Math.random().toString(36).slice(2) + Date.now().toString(36);
   try { sessionStorage.setItem('lg:estado', st); } catch (e) { /* sin sesión: igual anda */ }
+  if (modo === 's') {
+    try { sessionStorage.setItem('lg:vuelta-s', window.rutaLG ? window.rutaLG() : ''); } catch (e) { /* vuelve a Mi cuenta */ }
+  }
   return 'https://discord.com/oauth2/authorize?client_id=' + DC_APP + '&response_type=token' +
     '&redirect_uri=' + encodeURIComponent(location.origin + '/') +
     '&scope=' + encodeURIComponent(conRedes ? 'identify connections' : modo === 'd' || modo === 'u' ? 'identify guilds.join' : 'identify') +
@@ -253,7 +271,9 @@ function quienSoy(c) {
   // 👀 quien no está verificado: a quién mira como propio, aparte y sólo para el Ranking (13/11/2026, `cuentaMira()`
   // del Worker). NUNCA en `lg:yo`: eso abriría lo de la cuenta, que es de los verificados
   guardarLS('lg:mira', c.mira ? { id: c.id, k: c.mira } : null);
-  YO = c.clave && porK(c.clave) ? c.clave : c.rapero ? kDe(c.rapero) : '';
+  // 🔑 la clave verificada manda (18/11/2026): la da el Worker. Exigir que estuviera en la tabla (`porK`) dejaba `lg:yo`
+  // vacío a quien está fuera de las 200 filas, porque al volver de Discord /api/perfiles casi nunca se bajó
+  YO = c.clave || (c.rapero ? kDe(c.rapero) : '');
   guardarLS('lg:yo', YO || null);
   // ★ a quién seguís, del servidor (y lo de este dispositivo sube)
   try { pedirSigo(); } catch (e) { console.error('[pedirSigo]', e); }
@@ -284,7 +304,9 @@ function refrescarVerificado() {
     return;
   }
   pedirConCuenta('/api/avisos/ref', { accion: 'ver' }, false).then(function (j) {
-    if (!j || j.status !== 200 || !j.puede || !/^[a-z0-9][a-z0-9._-]{0,59}$/.test(String(j.k || ''))) return;
+    // 🔤 la clave conserva cualquier alfabeto (18/11/2026, comun/claves.py: «`[a-z0-9]` ES EL CRITERIO EQUIVOCADO»):
+    // con `[a-z0-9]`, `tøkiø` no se enteraba nunca de que ya estaba verificado
+    if (!j || j.status !== 200 || !j.puede || !/^[\p{L}\p{N}][\p{L}\p{N}._-]{0,59}$/u.test(String(j.k || ''))) return;
     if (!DC || DC.id !== id || DC.clave) return;
     var p = porK(j.k);
     quienSoy(Object.assign({}, DC, { clave: j.k, rapero: (p && p.n) || DC.n || j.k }));
@@ -369,18 +391,29 @@ function volverDeDiscord() {
   });
   // quien vino a vincular sus avisos vuelve a la campana; quien vino a poner
   // un precio, adonde lo tocó (la tienda o un perfil)
-  var modo0 = String(q.state || '').charAt(0), pp = null;
+  var modo0 = String(q.state || '').charAt(0);
   // 🔗 LOS ROLES VINCULADOS (19/10/2026): Discord vuelve acá —es la dirección registrada— y el trámite sigue en su
-  // página, con lo que trajo (el permiso o el error)
-  if (modo0 === 'l') { location.replace('/vincular/' + location.hash); return; }
-  if (modo0 === 't') {
-    try { pp = JSON.parse(sessionStorage.getItem('lg:precio') || 'null'); } catch (e) { pp = null; }
-  }
+  // página, con lo que trajo (el permiso o el error). ⚠️ Con `h`, no con `location.hash` (18/11/2026): el script del
+  // principio ya sacó el permiso de la dirección (04/10), así que /vincular/ llegaba sin nada y volvía a mandar a
+  // Discord: con el permiso dado, un ciclo / → /vincular/ → Discord que no se cortaba
+  if (modo0 === 'l') { location.replace('/vincular/' + h); return; }
+  // 🧾 lo pendiente de ESTE viaje (18/11/2026, ver `conCuenta()`): se lee y se borra siempre —también si se canceló—, y
+  // sale sólo si lleva el mismo `state` que trajo Discord. Uno de un viaje anterior (o de antes, sin `st`) se descarta
+  var pendiente = function (c) {
+    var x = null;
+    try { x = JSON.parse(sessionStorage.getItem(c) || 'null'); sessionStorage.removeItem(c); } catch (e) { x = null; }
+    return x && q.state && x.st === q.state ? x : null;
+  };
+  var pp = pendiente('lg:precio'), pv = pendiente('lg:voto'), pa = pendiente('lg:aplauso');
+  // ↩️ adónde vuelve la 's' (18/11/2026, ver `urlLogin()`): la ruta desde donde se fue; sin ella (una página de antes), a Mi cuenta
+  var vs = null;
+  try { vs = sessionStorage.getItem('lg:vuelta-s'); sessionStorage.removeItem('lg:vuelta-s'); } catch (e) { vs = null; }
   // 🔑 Y QUIEN VINO A ENTRAR, A CAMBIAR SU FOTO O A ELEGIR SUS REDES VUELVE A MI CUENTA (02/10/2026), no a una
   // ventana encima del Inicio: ver `nuevaCuenta()`
   var aCuenta = nuevaCuenta() && (modo0 === 'i' || modo0 === 'f' || modo0 === 'r');
   // 🔒 y quien vino a su Dashboard vuelve al Dashboard, sin la ventana vieja de Mi cuenta encima (revisión del 05/10/2026)
-  var destino = '#/' + (aCuenta ? (modo0 === 'i' ? 'cuenta' : 'cuenta/perfil') : modo0 === 'o' ? 'dashboard' : modo0 === 's' ? 'socio' : modo0 === 'v' ? 'avisos'
+  var destino = '#/' + (aCuenta ? (modo0 === 'i' ? 'cuenta' : 'cuenta/perfil') : modo0 === 'o' ? 'dashboard' : modo0 === 'a' ? 'socio'
+    : modo0 === 's' ? (vs !== null ? vs : 'cuenta') : modo0 === 'v' ? 'avisos'
     : modo0 === 'd' ? 'cuenta/verificar' : modo0 === 'u' ? 'socios' : modo0 === 'p' ? 'publicaciones' : modo0 === 't'
     ? String((pp && pp.volver) || 'tienda').replace(/^#?\/?/, '') : '');
   try { history.replaceState(null, '', urlDe(destino)); } catch (e) { location.hash = destino; }
@@ -421,36 +454,34 @@ function volverDeDiscord() {
   }
   // recién vuelto de Discord: si igual no se sabe quién sos, no se vuelve a ir
   DC_VUELTA = true;
-  // el precio que se tocó antes de entrar sale ya; si no, se muestra la billetera
+  // el precio que se tocó antes de entrar sale ya; si no, se muestra la billetera (`pp`, `pv` y `pa`: los de este
+  // viaje, ya leídos y borrados arriba)
   if (porTienda) {
-    try { sessionStorage.removeItem('lg:precio'); } catch (e) { /* igual */ }
     if (pp && pp.cabeza && pp.monto) ponerPrecio(String(pp.cabeza), Number(pp.monto));
     else pedirBilletera(false);
   }
   // el voto que se tocó antes de entrar sale ya, sin esperar a `/api/cuenta`:
   // el Worker le pregunta a Discord por su cuenta (ver `votar()`)
   if (porVoto) {
-    var pv = null;
-    try {
-      pv = JSON.parse(sessionStorage.getItem('lg:voto') || 'null');
-      sessionStorage.removeItem('lg:voto');
-    } catch (e) { pv = null; }
     if (pv && pv.enc && pv.op) votar(String(pv.enc), String(pv.op));
   }
   // 👏 y la felicitación que se tocó antes de entrar, igual
   if (porAplauso) {
-    var pa = null;
-    try {
-      pa = JSON.parse(sessionStorage.getItem('lg:aplauso') || 'null');
-      sessionStorage.removeItem('lg:aplauso');
-    } catch (e) { pa = null; }
     if (pa && pa.id) felicitar(String(pa.id), pa.e ? String(pa.e) : '');
   }
+  // (`entro`: un error de lo que sigue a `quienSoy()` también cae en el `.catch` de abajo, y ahí ya entraste)
+  var entro = false;
   fetch('/api/cuenta', { method: 'POST', headers: { 'content-type': 'application/json' },
     body: JSON.stringify({ token: q.access_token }) })
-    .then(function (r) { return r.json(); })
+    .then(function (r) { return r.json().catch(function () { return {}; }); })
     .then(function (c) {
-      if (!c || !c.id) return;
+      if (!c || !c.id) {
+        ENTRAR_ERR = errorCuenta(c && c.error) || 'No pude entrar. Prueba de nuevo en un rato.';
+        pintaPopCuenta();
+        return;
+      }
+      entro = true;
+      ENTRAR_ERR = '';
       quienSoy(c);
       // con Mi cuenta nueva no hay ventana: ya se volvió a `#/cuenta` (ver `aCuenta`)
       if (porAvisos) {
@@ -485,7 +516,11 @@ function volverDeDiscord() {
         }).catch(function () { REDES_MIAS = { error: 'red' }; pintaPopCuenta(); });
       }
     })
-    .catch(function () { /* si falla, queda como estaba */ });
+    .catch(function () {
+      if (entro) return;
+      ENTRAR_ERR = 'No pude entrar: revisa tu conexión y prueba de nuevo.';
+      pintaPopCuenta();
+    });
 }
 
 /* 🔑 MI CUENTA, EN SU PÁGINA (Dlx, 02/10/2026: «ajustes y cuenta separados, y me gusta cómo lo propusiste»).
@@ -530,14 +565,39 @@ function cuentaSalir() {
   MISV_EST = {};
   MIFOTO = null;
   MIFOTO_EST = {};
+  olvidarVotos();
+  // 🚪 (18/11/2026) y el «No pude entrar» de una vuelta anterior: con `lg:dc` guardado no se ve, pero al salir quedaba
+  // a la vista encima de «Entrar con Discord», viejo y como si fuera de recién
+  ENTRAR_ERR = '';
   YO = '';
   DC = null;
   guardarLS('lg:yo', null);
   guardarLS('lg:mira', null);
   guardarLS('lg:dc', null);
+  // 🏛️ y si eras dueño de un socio (18/11/2026): panelsocio.js ya lo ata al id de la cuenta, pero no hace falta que la
+  // pestaña lo siga diciendo de una cuenta que salió
+  try { sessionStorage.removeItem('lg:socio'); } catch (e) { /* igual */ }
   pintaCuenta();
   pintaPopCuenta();
   pintaPaneles();
+  pintaEncuestas();
+  avisarAplausos();
+}
+/* 🗳️ LO QUE VOTASTE Y FELICITASTE ES DE TU CUENTA, NO DE ESTE DISPOSITIVO (18/11/2026). Sólo lo recuerda el navegador
+   (`lg:votos`, `lg:aplausos`, `lg:aplausos-e`, `lg:ligavotos`), y «Salir» no lo borraba: en uno compartido el que
+   entraba después leía «Votaste por <lo del anterior>», no podía votar el ×2 ni El Elegido esa semana y veía
+   «Felicitaste» en lo que el otro aplaudió. En el ×2 y El Elegido, quien vuelve a entrar recupera su voto al tocar: el
+   objeto contesta `ya_votaste` con él (ver `votar()` en social.js) */
+function olvidarVotos() {
+  ENC_MIO = {};
+  ENC_EST = {};
+  guardarLS('lg:votos', null);
+  APLAUSOS.mios = {};
+  APLAUSOS.miE = {};
+  APLAUSOS.err = {};
+  guardarLS('lg:aplausos', null);
+  guardarLS('lg:aplausos-e', null);
+  guardarLS('lg:ligavotos', null);
 }
 /* olvidar todo lo de este dispositivo: quién sos y los ajustes */
 function cuentaOlvidarTodo() {
@@ -550,6 +610,8 @@ function cuentaOlvidarTodo() {
   MISV_EST = {};
   MIFOTO = null;
   MIFOTO_EST = {};
+  olvidarVotos();
+  ENTRAR_ERR = '';  // (18/11/2026, ver `cuentaSalir()`)
   AJ = {};
   YO = '';
   DC = null;
@@ -557,10 +619,14 @@ function cuentaOlvidarTodo() {
   guardarLS('lg:yo', null);
   guardarLS('lg:mira', null);
   guardarLS('lg:dc', null);
+  // 🏛️ lo del panel del socio, también (18/11/2026, ver `cuentaSalir()`)
+  try { sessionStorage.removeItem('lg:socio'); } catch (e) { /* igual */ }
   aplicarCalma();
   pintaCuenta();
   pintaPopCuenta();
   pintaPopAjustes();
   repintarHoras();
+  pintaEncuestas();
+  avisarAplausos();
   try { window.dispatchEvent(new Event('lg:ajustes')); } catch (e) { /* navegador viejo */ }
 }

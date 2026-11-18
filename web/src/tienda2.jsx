@@ -10,7 +10,7 @@
 //   los que ya estaban escritos en la página).
 // ⚠️ LA PLATA LA SIGUE MANEJANDO bot/paginas/tienda.js, como en tienda.jsx: `BILL`, `pedirBilletera()`, `valorCabezas()`,
 // `ponerPrecio()`, `errorPrecio()` y `PR_EST`. Se redibuja con `lg:precios`. Afuera se ve cuánto vale cada cabeza, nunca quién puso.
-import { lazy, Suspense, useCallback, useEffect, useState } from 'react';
+import { lazy, Suspense, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { limpio, norm, num, utc } from './liga.js';
 import { Alguien, Algunos, Bandera, Cara, DosToques, Ico } from './piezas.jsx';
 import { Prenda, Stickers } from './abajo.jsx';
@@ -127,9 +127,10 @@ function Catalogo({ liga, todas, mia }) {
 }
 
 // ── una cabeza: su cara, su nombre, cuánto vale y cuánto le falta al tope ──
-function Fila({ liga, n, v, on, onSel, cara, info }) {
+// `f`: la fila de esa cabeza, también la de quien está fuera de las 200 (la busca `Cabezas`)
+function Fila({ liga, n, f: f0, v, on, onSel, cara, info }) {
   const T = liga.d.tienda;
-  const f = liga.fila(n);
+  const f = f0 || liga.fila(n);
   return (
     <button type="button" className={'tn-c' + (on ? ' on' : '')} aria-expanded={on} onClick={onSel}>
       <Cara liga={liga} k={f ? f.k : ''} nombre={f ? f.n : n} cls="tn-cara" />
@@ -142,13 +143,13 @@ function Fila({ liga, n, v, on, onSel, cara, info }) {
 }
 
 // ── ponerle precio: los montos, por qué alguno está apagado y cómo queda ──
-function Panel({ liga, n, dc }) {
+function Panel({ liga, n, f: f0, dc }) {
   const T = liga.d.tienda;
   const v = valores()[n] || 0;
   const est = (window.PR_EST || {})[n] || {};
   const saldo = window.BILL && window.BILL.ok ? window.BILL.saldo : null;
   const queda = T.tope - v;
-  const f = liga.fila(n);
+  const f = f0 || liga.fila(n);
   const esYo = !!(f && liga.yo && liga.yo.k === f.k);
   const msg = est.va ? 'Poniendo ' + num(est.va) + '…'
     : est.ok ? '✓ Pusiste ' + num(est.ok) + '. Si nadie lo caza en la semana, vuelven a ti.'
@@ -182,23 +183,57 @@ function Panel({ liga, n, dc }) {
   );
 }
 
+// 🧑 LAS CABEZAS DE FUERA DE LAS 200 FILAS (18/11/2026, la pasada de bugs): el objeto acepta a los 258 con número
+// (`cabezas()` de bot/precios.py: los de la temporada que no son fuera de concurso) y acá sólo se podía buscar y ponerle
+// precio a los 132 con número de la tabla. Los demás salen de /api/perfiles (`p[k].f`, con su `pos`), que se pide la
+// primera vez que se busca o cuando una cabeza con precio no está en la tabla —no al abrir: son ~160 KB—. Por nombre,
+// que es lo que el objeto valida
+function useFuera(liga, activo) {
+  const [P, setP] = useState(() => window.PERF || null);
+  useEffect(() => {
+    if (P || !activo || typeof window.perfiles !== 'function') return undefined;
+    let vivo = true;
+    // sin perfiles queda la tabla, como antes (y no «Buscando…» para siempre)
+    Promise.resolve(window.perfiles()).then((d) => { if (vivo) setP(d || { p: {} }); }).catch(() => { if (vivo) setP({ p: {} }); });
+    return () => { vivo = false; };
+  }, [activo, P]);
+  const filas = useMemo(() => {
+    const m = new Map();
+    Object.entries((P && P.p) || {}).forEach(([k, x]) => {
+      const f = x && x.f;
+      // un nombre que ya es de alguien de la tabla no entra (como en `Fx` de liga.js): mejor sin fila que con la de otro
+      if (f && f.n && f.pos && !f.fc && !liga.T[k] && !m.has(f.n) && !liga.fila(f.n)) m.set(f.n, Object.assign({ k }, f));
+    });
+    return m;
+  }, [P, liga]);
+  return [filas, !!P || typeof window.perfiles !== 'function'];
+}
+
 function Cabezas({ liga, dc }) {
+  // 🔁 se redibuja con `lg:precios` (18/11/2026): adentro de la Tienda nueva llega como `partes.cabezas`, un elemento que
+  // React no vuelve a dibujar cuando ella se repinta, y después de confirmar no salía ni «Poniendo…» ni «✓ Pusiste»: el
+  // botón seguía prendido y se podía pagar dos veces
+  usePrecios();
   const T = liga.d.tienda;
   const [sel, setSel] = useState({ n: '', d: '' });
   const [q, setQ] = useState('');
   const v = valores();
-  const puede = (n) => (liga.d.tabla || []).some((x) => x.n === n && !x.fc);
-  const top = Object.keys(v).filter((c) => v[c] > 0 && puede(c)).sort((a, b) => v[b] - v[a]);
   const qq = norm(q).trim();
-  const res = qq ? (liga.d.tabla || []).filter((x) => !x.fc && norm(x.n).includes(qq)).slice(0, 8) : [];
+  const enTabla = (n) => (liga.d.tabla || []).some((x) => x.n === n);
+  const [fuera, fueraListo] = useFuera(liga, !!qq || Object.keys(v).some((c) => v[c] > 0 && !enTabla(c)));
+  const puede = (n) => (liga.d.tabla || []).some((x) => x.n === n && !x.fc) || fuera.has(n);
+  const fila = (n) => liga.fila(n) || fuera.get(n) || null;
+  const top = Object.keys(v).filter((c) => v[c] > 0 && puede(c)).sort((a, b) => v[b] - v[a]);
+  const res = qq ? (liga.d.tabla || []).filter((x) => !x.fc && norm(x.n).includes(qq))
+    .concat([...fuera.values()].filter((x) => norm(x.n).includes(qq))).slice(0, 8) : [];
   // sin buscar: los primeros del ranking que todavía no tienen precio (quien no sabe a quién, empieza por ahí)
   const yo = liga.yo && liga.yo.k;
   const sug = qq ? [] : liga.oficiales().filter((x) => !x.fc && !v[x.n] && x.k !== yo).slice(0, top.length ? 4 : 6);
   const elegir = (n, d) => setSel((s) => (s.n === n && s.d === d ? { n: '', d: '' } : { n, d }));
   const lista = (ns, d) => ns.map((n, i) => (
     <li key={n}>
-      <Fila liga={liga} n={n} v={v[n] || 0} on={sel.n === n && sel.d === d} onSel={() => elegir(n, d)} cara={d === 'top' && i === 0 && top.length > 1} info={d === 'sug'} />
-      {sel.n === n && sel.d === d ? <Panel liga={liga} n={n} dc={dc} /> : null}
+      <Fila liga={liga} n={n} f={fila(n)} v={v[n] || 0} on={sel.n === n && sel.d === d} onSel={() => elegir(n, d)} cara={d === 'top' && i === 0 && top.length > 1} info={d === 'sug'} />
+      {sel.n === n && sel.d === d ? <Panel liga={liga} n={n} f={fila(n)} dc={dc} /> : null}
     </li>
   ));
   const cazas = (T.cazas || []).slice().reverse();
@@ -225,7 +260,7 @@ function Cabezas({ liga, dc }) {
           <input type="search" className="tn-busca" value={q} onChange={(e) => setQ(e.target.value)} placeholder="Busca a quién"
             aria-label="Buscar un rapero para ponerle precio" enterKeyHint="search" />
           {qq ? (res.length ? <ul className="tn-lista">{lista(res.map((x) => x.n), 'res')}</ul>
-            : <p className="tn-nota">No hay nadie con ese nombre en la temporada.</p>)
+            : <p className="tn-nota">{fueraListo ? 'No hay nadie con ese nombre en la temporada.' : 'Buscando…'}</p>)
             : sug.length ? <><small className="tn-sug">Los primeros del ranking sin precio</small><ul className="tn-lista">{lista(sug.map((x) => x.n), 'sug')}</ul></> : null}
         </div>
       {cazas.length ? (
@@ -254,6 +289,8 @@ function Cabezas({ liga, dc }) {
 
 // ── tu promo, una semana más: con la fecha nueva antes de pagar ──
 function TuPromo({ liga, dc }) {
+  // 🔁 lo mismo que `Cabezas` (18/11/2026): en la Tienda nueva es `partes.promo`, y el saldo que apaga «+1 semana» se quedaba viejo
+  usePrecios();
   const [est, setEst] = useState({});
   // ⚠️ con la clave de la cuenta: quien no entra en la tabla no tiene `liga.yo`, y leía «no tienes ninguna» con la suya al aire
   const yo = (liga.yo && liga.yo.k) || (dc && dc.clave);
@@ -378,8 +415,8 @@ function Merch({ liga }) {
 }
 
 // 🛍️ LA TIENDA NUEVA (etapa 4, 17/11/2026, tienda3.jsx): apagada hasta el lanzamiento. Se monta sólo si el objeto dice
-// que está abierta, o que quien mira es el dueño (el ensayo); si no —sin sesión, cerrada, o el objeto no contesta—, sigue
-// la de hoy, tal cual. Lo que ya se pagaba (el precio por cabeza, la promo, la ropa) entra en su «Más con tus Puntos».
+// que está abierta, o que quien mira es el dueño (el ensayo); si no —sin sesión, cerrada, o el objeto no contesta al
+// abrir—, sigue la de hoy, tal cual (con la nueva ya abierta, un refresco que falla no la cambia: `useTiendaNueva`). Lo que ya se pagaba (el precio por cabeza, la promo, la ropa) entra en su «Más con tus Puntos».
 const TiendaNueva = lazy(() => import('./tienda3.jsx'));
 // 👀 Sin cuenta también se mira (17/11/2026, Dlx: «súbela completa para todos»): se pide `anon` y llega el catálogo sin
 // nada tuyo; la página se arma con una billetera vacía y comprar, regalar o la lista te mandan a entrar con Discord
@@ -387,15 +424,40 @@ export const YO_VACIO = { saldo: 0, prem: false, jugo: false, verificado: false,
   colecciones: {}, numeros: {}, regalos_quedan: 0, regalos: [] };
 function useTiendaNueva(dc) {
   const [S, setS] = useState(null);
+  const id = (dc && dc.id) || '';
+  // 🛟 UN REFRESCO QUE FALLA NO TIRA LA TIENDA ABIERTA (18/11/2026, la pasada de bugs). El sondeo de 15 s, el de volver a
+  // la pestaña y el `recargar()` de después de comprar pisaban el último estado bueno con `{ ok: false }` ante cualquier
+  // fallo —la red al volver de Discord en el teléfono, un 5xx, el Worker viejo recién desplegado—, y `Tienda` cambiaba la
+  // nueva por la vieja («abre pronto»): se perdían la ficha abierta, el probador y la compra en curso. Ahora un fallo deja
+  // lo último bueno si es de la misma persona (`de`: después de «Salir» no queda a la vista la billetera de quien salió).
+  // Una Tienda que se cierra de verdad llega con `ok: true, abierta: false`, así que se sigue respetando. Y cada pedido
+  // lleva su número (`n`): una respuesta que llega después de otra más nueva no la pisa (el saldo de antes de comprar)
+  const de = useRef(null);
+  const n = useRef(0);
+  // `ya`: el número de la última respuesta buena que se aplicó (18/11/2026, revisión): se tira sólo la que es más vieja
+  // que ésa. Con «hay un pedido más nuevo» a secas, si cada respuesta tardaba más que el sondeo de 15 s (red lenta) todas
+  // llegaban con otro pedido ya salido, se tiraban todas y la Tienda nueva no se montaba nunca
+  const ya = useRef(0);
   const pedir = useCallback(() => {
-    const listo = (j) => setS(j && j.ok ? (j.yo ? j : Object.assign({}, j, { yo: YO_VACIO, anon: true })) : { ok: false });
+    const este = ++n.current;
+    const falla = () => {
+      if (este < ya.current) return;
+      setS((prev) => (prev && prev.ok && de.current === id ? prev : { ok: false }));
+    };
+    const listo = (j) => {
+      if (este < ya.current) return;
+      if (!(j && j.ok)) { falla(); return; }
+      ya.current = este;
+      de.current = id;
+      setS(j.yo ? j : Object.assign({}, j, { yo: YO_VACIO, anon: true }));
+    };
     if (!dc) {
       return fetch('/api/avisos/tienda', { method: 'POST', headers: { 'content-type': 'application/json' }, body: '{"anon":1}' })
-        .then((r) => r.json()).then(listo).catch(() => setS({ ok: false }));
+        .then((r) => r.json()).then(listo).catch(falla);
     }
-    if (typeof window.conCuenta !== 'function') { setS({ ok: false }); return Promise.resolve(); }
-    return window.conCuenta('/api/avisos/tienda', {}).then(listo).catch(() => setS({ ok: false }));
-  }, [dc && dc.id]);
+    if (typeof window.conCuenta !== 'function') { falla(); return Promise.resolve(); }
+    return window.conCuenta('/api/avisos/tienda', {}).then(listo).catch(falla);
+  }, [id]); // eslint-disable-line react-hooks/exhaustive-deps
   useEffect(() => { pedir(); }, [pedir]);
   // 💰 EL SALDO NO SE QUEDA VIEJO (17/11/2026, Dlx: «acabo de apostar y perdí todo mi dinero pero la página no se
   // actualizó… y me dejó comprar»). La apuesta se cobra en Discord, en el mismo objeto, y la página seguía mostrando lo de

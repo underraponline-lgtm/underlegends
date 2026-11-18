@@ -247,10 +247,19 @@ function kDe(n) {
   // (Hassan) tampoco abrían su perfil.
   // 🕵️ y, si tampoco es un alias, lo que el vigía reconoció en vivo: la inscripción de su cuenta, la llamada o la
   // mención (02/10/2026). Ver `kVivo()`
-  if (!c.length) return (D.alias && D.alias[normNombre(n)]) || kVivo(n) || '';
+  // 👥 y, si nadie de la tabla se llama así, alguien de fuera de las 200 filas que viaja en `avs` con ese nombre
+  // exacto (18/11/2026): la llave en vivo no reconocía a nadie de más abajo. Sólo si el nombre es de UNA persona, y
+  // nunca con una clave que ya es de otro de la tabla (`Volk` / `volk-co`). La clave es la de comun/claves.py
+  if (!c.length) return (D.alias && D.alias[normNombre(n)]) || kVivo(n) || kAvs(n);
   var ccs = banderasDe(n);
   var m = c.filter(function (f) { return ccs.indexOf(String(f.cc || '').toLowerCase()) >= 0; });
   return m.length === 1 ? m[0].k : '';
+}
+function kAvs(n) {
+  var xs = (D.avs || []).filter(function (x) { return x && x[0] === n; });
+  if (xs.length !== 1 || typeof normK !== 'function') return '';
+  var k = normK(n).replace(/-/g, '');
+  return k && !(D.tabla || []).some(function (f) { return f.k === k; }) ? k : '';
 }
 
 /* 🔑 QUIÉN ES CADA NOMBRE DE UNA LLAVE EN VIVO (02/10/2026), para `LlaveVivo.aLlave()`: la clave de su perfil por la

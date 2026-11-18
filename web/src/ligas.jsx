@@ -50,7 +50,10 @@ function AvisarLiga({ L }) {
     if (!window.conCuenta) { setEst('No pude mandarlo. Prueba de nuevo en un rato.'); return; }
     setVa(true);
     setEst('');
-    window.conCuenta('/api/avisos/reportar', { llave: 'liga:' + L.id, que: 'nombre', texto: t, batalla: nombre }).then((j) => {
+    // 🏆 la de una temporada que terminó va con su liga (`L.liga`, 18/11/2026): su id es `<liga>~<día>`, el Worker no acepta
+    // la «~» (`validarReporte()`, 400 'llave') y se leía «No pude mandarlo» siempre. La corrección es por servidor, para
+    // todas las batallas de esa liga (`reportes.corregir_liga()`)
+    window.conCuenta('/api/avisos/reportar', { llave: 'liga:' + (L.liga || L.id), que: 'nombre', texto: t, batalla: nombre }).then((j) => {
       setVa(false);
       if (j && j.ok) { setOk(true); return; }
       const e = (j && j.error) || '';
@@ -296,12 +299,15 @@ function diaCorto(d) {
 }
 // 🏆 cómo se llama una temporada de una liga: «T5» si su servidor la numeró; si no, hasta cuándo se jugó —su última
 // batalla, no el día en que el bot vio que terminó—. Sólo la que terminó: la que se juega no necesita nombre
-export function etiquetaTemp(L) {
+export function etiquetaTemp(L, liga) {
   if (!L) return '';
   if (L.lt) return 'T' + L.lt;
   if (!L.hasta && !L.cerrada && !(L.fin && L.fin.c)) return '';
   const h = L.ult_t || L.hasta || L.cerrada || '';
-  return h ? 'hasta el ' + String(h).slice(8, 10) + '/' + String(h).slice(5, 7) : '';
+  // 🗓️ un instante, en el día de quien mira (18/11/2026): cortado del ISO en UTC, la Champions LKR decía «hasta el 21/10»
+  // y su última batalla fue el 20/10 a las 8:38 PM ET. Un día suelto (AAAA-MM-DD) va tal cual
+  const dia = /T/.test(String(h)) && liga ? liga.diaClave(h) : String(h);
+  return dia ? 'hasta el ' + dia.slice(8, 10) + '/' + dia.slice(5, 7) : '';
 }
 function estadoLiga(liga, L) {
   // 🏆 terminó y se sabe quién la ganó (lo anunció su servidor o lo confirmó Dlx en ✅ Decidir, `fin`): eso manda sobre
@@ -646,13 +652,17 @@ function Videos({ L }) {
 
 // ── 📖 CÓMO FUNCIONA Y EL HISTORIAL (Dlx, 17/10/2026): lo que publicó su servidor (`datos/ligas_info.json`) y los
 // campeones: los de antes y el de esta temporada, si Dlx ya lo confirmó (el Salón) ─────────────────────────────────────
-function Como({ L, h }) {
+function Como({ liga, L, h }) {
   const inf = L.info || {};
   const hist = [...(inf.hist || [])];
   // 🏆 lo que el bot vio terminar (11/11/2026): las de antes (`temps`, con el link a su tabla) y la que se ve. La que
   // ya está en lo que publicó su servidor (el mismo número) no se repite
   const ya = (n) => !!n && hist.some((x) => new RegExp('\\b' + n + '\\b').test(String(x[0])));
-  (L.temps || []).forEach((t) => { if (t.c && !ya(t.lt)) hist.push([t.lt ? 'Temporada ' + t.lt : 'Hasta el ' + dm(t.h), t.c, '', t.id]); });
+  // 🗓️ «Hasta el…» es su última batalla (`ult_t` de la temporada entera, en el detalle), en el día de quien mira, como
+  // la cabecera de esa temporada (`etiquetaTemp()`). Con `t.h` —el día en que se vio el cierre— FMS Ceuta decía «Hasta
+  // el 11/11» acá y «hasta el 27/10» al abrirla (18/11/2026). Sin el detalle, el día del cierre
+  const hasta = (t) => { const u = ((DET.comp || {})[t.id] || {}).ult_t; return dm(u && liga ? liga.diaClave(u) : t.h); };
+  (L.temps || []).forEach((t) => { if (t.c && !ya(t.lt)) hist.push([t.lt ? 'Temporada ' + t.lt : 'Hasta el ' + hasta(t), t.c, '', t.id]); });
   if (L.fin && L.fin.c && !ya(L.lt)) hist.push([(L.lt ? 'Temporada ' + L.lt : L.liga ? 'Esa temporada' : 'Esta temporada'), L.fin.c, 'campeón']);
   return (
     <div className="lpg-comof">
@@ -835,11 +845,13 @@ const COMO_LIGAS = (
     <li><b>¿Quién gana?</b><span>En cada liga se vota quién la gana: un voto por cuenta de Discord, y se cierra cuando lleva tres semanas sin batallas.</span></li>
   </ul>
 );
-// ⏱️ cuántos días faltan para la próxima fecha (con la hora si el anuncio la dijo)
+// ⏱️ cuántos días faltan para la próxima fecha (con la hora si el anuncio la dijo). ⚠️ Negativo si para quien mira ya
+// pasó (18/11/2026): el ciclo la saca recién cuando terminó su día en la zona de la liga, y recortado a 0 un domingo se
+// leía «Se juega hoy · Sábado 21 de noviembre». Quien lo usa pregunta `>= 0`, como `estadoLiga()`
 function faltan3(liga, P) {
   const hoy = liga.diaClave(liga.ahora);
   const dia = P.t ? liga.diaClave(P.t) : P.d;
-  return Math.max(0, Math.round((Date.parse(dia) - Date.parse(hoy)) / 86400000));
+  return Math.round((Date.parse(dia) - Date.parse(hoy)) / 86400000);
 }
 
 // ── 🧱 LA CARTELERA: el bento ─────────────────────────────────────────────────────────────────────────────────────────
@@ -894,7 +906,8 @@ function Bento3({ liga, top, chicas, prox, camp, hs, est }) {
     <a className={'lq3-t w lq3-tk-t' + (alto ? ' alto' : '')} href={aLiga(prox)}>
       <span className="lq3-tk">
         <span className="lq3-tk-f" style={{ backgroundImage: fondo3(prox) ? 'url(' + fondo3(prox) + ')' : undefined }} />
-        <span className="lq3-tk-i"><Tag3 k="prox" /><h3>{prox.n}</h3><p>{prox.prox.t ? 'Con hora: ' + liga.dia(prox.prox.t) : 'La hora la dice el servidor.'} Te avisa la campana si sigues la liga.</p></span>
+        {/* (con su punto: `liga.dia()` no lo trae y se leía «… 8:00 PM Te avisa la campana», 18/11/2026) */}
+        <span className="lq3-tk-i"><Tag3 k="prox" /><h3>{prox.n}</h3><p>{prox.prox.t ? 'Con hora: ' + liga.dia(prox.prox.t) + '.' : 'La hora la dice el servidor.'} Te avisa la campana si sigues la liga.</p></span>
         <span className="lq3-tk-n"><small>La próxima fecha</small><b>{faltan3(liga, prox.prox) || 'HOY'}</b><small>{faltan3(liga, prox.prox) ? (faltan3(liga, prox.prox) === 1 ? 'día' : 'días') : ''}</small></span>
       </span>
     </a>
@@ -941,7 +954,7 @@ function Numeros3({ liga, ls, hs, det, est, top }) {
       <div className="lq3-caja mg">
         <h3>La carrera<small>batallas ganadas</small></h3>
         <ol className="lq3-lista">{cs.slice(0, 7).map((q, i) => (
-          <li key={q.raw + i}><i>{i + 1}</i>{hs[q.L.id].cara(q.raw, 'cara lq3-l-c')}<span><b>{hs[q.L.id].nombre(q.raw)}</b><small>{corto(q.L.n)} · de {q.j}</small><u><s style={{ width: (100 * q.g) / mxc + '%' }} /></u></span><em>{q.g}</em></li>
+          <li key={q.raw + i}><i>{i + 1}</i>{hs[q.L.id].cara(q.raw, 'cara lq3-l-c')}<span><b>{hs[q.L.id].nombre(q.raw)}</b><small>{q.ls.size > 1 ? 'en ' + q.ls.size + ' ligas' : corto(q.L.n)} · de {q.j}</small><u><s style={{ width: (100 * q.g) / mxc + '%' }} /></u></span><em>{q.g}</em></li>
         ))}</ol>
         {invictos.length ? (
           <p className="lq3-inv"><b>Sin perder</b>{invictos.slice(0, 5).map((x) => <span key={x.L.id + x.raw}>{hs[x.L.id].cara(x.raw, 'cara lq3-inv-c')}{hs[x.L.id].ak(x.raw)} <em>{x.pg}–0</em></span>)}</p>
@@ -1029,6 +1042,21 @@ function Todas3({ liga, ls, hs, est }) {
 }
 
 // ── 🏆 EL ESTANTE DE CAMPEONES (el Salón, con sus cartas de liga) ────────────────────────────────────────────────────
+// 🏆 LA TEMPORADA QUE SE CERRÓ, NO LA LIGA DE HOY (18/11/2026): el Salón manda la liga base (`id`) y un día (`ult`). Cuando
+// esa liga ya arrancó otra temporada, la cerrada vive en el detalle como `<liga>~<día>` (`comp`), y con ese id están sus
+// cartas: con el de la base, Trot salía sin su carta de FMS Ceuta y el link llevaba a la temporada nueva, donde no está.
+// Devuelve su id y el instante de su última batalla; sin el detalle, la base, como antes
+function cerradaDe(liga, x) {
+  const cs = DET.comp || {};
+  const ids = Object.keys(cs).filter((c) => cs[c].liga === x.id);
+  const dia = ids.find((c) => String(cs[c].ult_t || '').slice(0, 10) === x.ult);
+  if (dia) return [dia, cs[dia].ult_t];
+  // la de hoy terminó con ese campeón: es ésa (un campeón que repite no se va a la temporada vieja)
+  const hoy = liga.ligas().find((L) => L.id === x.id);
+  if (hoy && hoy.fin && hoy.fin.c === x.c) return [x.id, hoy.ult_t || ''];
+  const c = ids.find((y) => (cs[y].fin || {}).c === x.c);
+  return c ? [c, cs[c].ult_t] : [x.id, ''];
+}
 function Estante3({ liga }) {
   const xs = ((liga.d.ligas || {}).salon) || [];
   return (
@@ -1039,12 +1067,16 @@ function Estante3({ liga }) {
         <p className="lgh-sc-premio"><Ico n="pase" t={18} /><span>Cada campeón de liga gana <b>una temporada de Pase premium</b>: la usa desde su Inventario, en esta temporada o en la que elija.</span></p>
         {xs.length ? <div className="lq3-estante">{xs.map((x) => {
           const k = (x.ks || {})[x.c] || (liga.quien(x.c) || {}).k || '';
-          const u = k ? cartaLiga(liga, x.id, k) : '';
+          const [cid, ut] = cerradaDe(liga, x);
+          const u = k ? cartaLiga(liga, cid, k) : '';
+          // 🗓️ el día: el instante de su última batalla; si no, `ult` (AAAA-MM-DD) al mediodía UTC. Solo, `liga.cuando()` lo
+          // leía como la medianoche UTC y en toda América caía el día anterior: FMH España «el 10» y fue el 11 (18/11/2026)
+          const t = ut || (x.ult ? x.ult + 'T12:00:00Z' : '');
           return (
-            <a key={x.id + x.ult} href={'#/ligas/' + encodeURIComponent(x.id)}>
+            <a key={x.id + x.ult} href={'#/ligas/' + encodeURIComponent(cid)}>
               {u ? <img className="lq3-carta" src={u} alt={'Carta de liga de ' + liga.aka(x.c, k)} loading="lazy" decoding="async" />
                 : <span className="lq3-sinc">{k ? <Cara liga={liga} k={k} nombre={x.c} cls="cara lq3-sinc-c" /> : <span className="cara lq3-sinc-c ini">{(limpio(x.c).slice(0, 1) || '?').toUpperCase()}</span>}</span>}
-              <span className="lq3-placa">{liga.aka(x.c, k)}<small>{x.n}{x.lt ? ' T' + x.lt : ''} · {desde3(liga, x.ult)}</small></span>
+              <span className="lq3-placa">{liga.aka(x.c, k)}<small>{x.n}{x.lt ? ' T' + x.lt : ''} · {desde3(liga, t)}</small></span>
             </a>
           );
         })}</div> : <p className="lq3-vacia">Cuando una liga termina, su campeón entra acá con su carta de liga, y se lleva la insignia de <b>Campeón de liga</b>. Todavía no terminó ninguna en esta temporada.</p>}
@@ -1055,7 +1087,9 @@ function Estante3({ liga }) {
 
 function LigasPortada({ liga, falta = '' }) {
   const ls = liga.ligas();
-  const det = useDetalle(liga.d.ligas ? liga.d.ligas.t : null);
+  // 🔑 con el sello del lobby, la misma clave con la que App.jsx pide /api/ligas (18/11/2026): con `ligas.t`, que es otro
+  // instante, pasado el minuto de ligas_datos.js se volvía a bajar y mientras tanto la liga decía «Todavía nadie»
+  const det = useDetalle(liga.d.sello);
   // las de la portada, con sus fechas del detalle (para la carrera fecha a fecha del cuadro grande)
   const ld = useMemo(() => ls.map((L) => conDetalle(L, det)), [ls, det]);
   const hs = useMemo(() => { const o = {}; ld.forEach((L) => { o[L.id] = herramientas(liga, L); }); return o; }, [liga, ld]);
@@ -1160,7 +1194,10 @@ function Minis3({ liga, L, h }) {
   const N = numerosDe(L);
   const i = (L.tabla || []).findIndex(([raw]) => h.esYo(raw));
   const f = i >= 0 ? L.tabla[i] : null;
-  const d = L.prox ? faltan3(liga, L.prox) : null;
+  const sabe = !!(h.miK || window.DC);
+  // una fecha que ya pasó para quien mira no es «la próxima» (18/11/2026, ver `faltan3()`)
+  const f3 = L.prox ? faltan3(liga, L.prox) : -1;
+  const d = f3 >= 0 ? f3 : null;
   const fin = !!((L.fin && L.fin.c) || L.cerrada);
   return (
     <div className="lp3-minis">
@@ -1172,15 +1209,18 @@ function Minis3({ liga, L, h }) {
         <span>{u ? (u[3] === 'replica' ? 'En réplica' : 'Directo') + (u[4] ? ' · jornada ' + u[4] : '') : ''}</span></span></div>
       <div className="lp3-mini" style={{ '--c': 'var(--magenta)' }}><span className="ic">{mg ? mg[1] : '—'}</span><span><small>El que más gana acá</small>
         <b>{mg ? h.ak(mg[0]) : 'Todavía nadie'}</b><span>{mg ? mg[1] + (mg[1] === 1 ? ' ganada' : ' ganadas') + (N.racha && N.racha[0] === mg[0] && N.racha[1] >= 2 ? ' · racha de ' + N.racha[1] : '') : ''}</span></span></div>
+      {/* 🪪 sin saber quién mira (ni `liga.yo` ni una cuenta de Discord) no se afirma «No juegas esta liga»: se invita a
+          entrar (18/11/2026). El botón, como link: un `.btn` no entra en el cuadro a 360 px */}
       <div className="lp3-mini" style={{ '--c': '#F6F6F6' }}><span className="ic">{f ? i + 1 + 'º' : '?'}</span><span><small>Tu lugar</small>
-        <b>{f ? i + 1 + 'º de ' + L.tabla.length : 'No juegas esta liga'}</b><span>{f ? (i ? 'A ' + (L.tabla[0][3] - f[3]) + ' del 1.º' : 'Vas primero') : 'Se entra por el Discord de ' + siglaDe(L.sv)}</span></span></div>
+        <b>{f ? i + 1 + 'º de ' + L.tabla.length : sabe ? 'No juegas esta liga' : 'Entra para ver tu lugar'}</b><span>{f ? (i ? 'A ' + (L.tabla[0][3] - f[3]) + ' del 1.º' : 'Vas primero')
+          : sabe ? 'Se entra por el Discord de ' + siglaDe(L.sv) : <button type="button" className="lp3-entra" onClick={() => accion.entrar()}>Entrar con Discord</button>}</span></span></div>
     </div>
   );
 }
 
 function LigaPerfil({ liga, id }) {
-  const D = liga.d.ligas;
-  const det = useDetalle(D ? D.t : null);
+  // 🔑 el detalle, con el sello del lobby (18/11/2026, ver LigasPortada)
+  const det = useDetalle(liga.d.sello);
   useEffect(() => { window.scrollTo(0, 0); }, [id]);
   // 🗂️ la pestaña, ANTES de cualquier `return`: un hook después de uno se rompe cuando la liga todavía no llegó
   const [tab, setTab] = useState('tabla');
@@ -1193,7 +1233,7 @@ function LigaPerfil({ liga, id }) {
   const vieja = !!C;
   const L = C ? Object.assign({}, C, { info: (det[C.liga] || {}).info }) : conDetalle(ls.find((x) => x.id === id), det);
   if (!L) return id.indexOf('~') > 0 && !DET.d ? null : <LigasPortada liga={liga} falta={id} />;
-  const et = etiquetaTemp(L);
+  const et = etiquetaTemp(L, liga);
   const h = herramientas(liga, L);
   // 🃏 el álbum: la carta de liga de cada uno de la tabla que la tiene, en el orden de la tabla
   L.album = (L.tabla || []).map((f, i) => [f, i, h.kDe(f[0])]).map(([f, i, k]) => [f, i, k, k ? cartaLiga(liga, L.id, k) : ''])
@@ -1253,7 +1293,7 @@ function LigaPerfil({ liga, id }) {
                   {vieja || fin ? null : <SeguirLiga key={L.id} L={L} />}
                   <Compartir cls="btn borde" url={enlace(aLiga(L))} texto={'La tabla de ' + L.n + (et ? ' ' + et : '') + ' en la Liga Global'} />
                   {/* 📖 junto a Seguir y no arriba a la derecha: ahí va el «¿Cómo funciona?» de la página (comofunciona.jsx), y se pisaban */}
-                  <BotonComo titulo="Cómo funciona esta liga">{hay(L, 'como') ? <Como L={L} h={h} /> : COMO_LIGAS}</BotonComo>
+                  <BotonComo titulo="Cómo funciona esta liga">{hay(L, 'como') ? <Como liga={liga} L={L} h={h} /> : COMO_LIGAS}</BotonComo>
                   {L.link && !vieja && !L.cerrada ? <a className="lp3-dc" href={L.link} target="_blank" rel="noopener noreferrer">Su tabla en Discord ↗</a> : null}
                 </div>
               </div>
@@ -1283,7 +1323,8 @@ function LigaPerfil({ liga, id }) {
                   ))}</ul></div>
               ) : null}
               {L.flyer ? <div className="lp3-caja"><h3>El último flyer<small>{sig}</small></h3><Flyer liga={liga} L={L} /></div> : null}
-              {L.prox && e.k !== 'prox' ? <div className="lp3-caja"><Proxima liga={liga} P={L.prox} /></div> : null}
+              {/* ⏱️ y no la que ya pasó para quien mira: Proxima decía «HOY» (18/11/2026, ver `faltan3()`) */}
+              {L.prox && e.k !== 'prox' && faltan3(liga, L.prox) >= 0 ? <div className="lp3-caja"><Proxima liga={liga} P={L.prox} /></div> : null}
             </aside>
           </section>
         ) : null}
@@ -1343,10 +1384,12 @@ export function Ascenso({ A, h, desde = '' }) {
       <p className="asc-p">La tabla oficial de {siglaDe(A.sv)}{A.of ? ' (la del ' + dm(A.of) + ')' : ''} más lo que se jugó después,
         con sus mismas reglas. <b>Lo oficial lo decide su staff.</b></p>
       <ol className="asc-t">
+        {/* 🪪 sin nombre, el mismo texto que los podios de bot/ascenso.py (18/11/2026): 7 de las 168 de FFA llegaban con el
+            nombre vacío —un Discord ID que no está en la Lista— y el renglón era un puesto y unos puntos sin nadie */}
         {ver.map(([n, cc, pts, suma, k], i) => (
           <li key={i + n} className={(i < suben ? 'sube' : i < suben + po ? 'po' : '') + (k && k === h.miK ? ' yo' : '')}>
             <span className="asc-i">{i + 1}</span>
-            <span className="asc-n">{cc ? <Bandera cc={cc} /> : null}{k ? <a href={'#/r/' + encodeURIComponent(k)}>{limpio(n)}</a> : <span>{limpio(n)}</span>}</span>
+            <span className="asc-n">{cc ? <Bandera cc={cc} /> : null}{k ? <a href={'#/r/' + encodeURIComponent(k)}>{limpio(n)}</a> : <span>{limpio(n) || 'Una cuenta de Discord'}</span>}</span>
             {suma ? <em className="asc-mas">+{num(suma)}</em> : <span />}
             <b className="asc-pts">{num(pts)}</b>
           </li>
@@ -1377,7 +1420,10 @@ function cuentas(liga, ls, hs, det) {
         const k = h.kDe(raw);
         const g = b[2] === raw ? 1 : 0;
         const id = k || limpio(raw).toLowerCase();
-        const q = gente[id] = gente[id] || { raw, L, g: 0, j: 0 };
+        // 🏟️ y en cuántas ligas (`ls`, 18/11/2026): las batallas son de todas, y el rótulo con la primera sola decía
+        // «FMS Ceuta · de 33» de alguien que juega ocho, cuando Ceuta tiene 4
+        const q = gente[id] = gente[id] || { raw, L, g: 0, j: 0, ls: new Set() };
+        q.ls.add(L.id);
         q.g += g;
         q.j += 1;
         const fi = k && (liga.T[k] || (liga.X && liga.X[k]));
@@ -1448,9 +1494,17 @@ function TuLugar({ liga, top, cual }) {
   if (i >= 0) {
     txt = cual === 'competitivo' ? (i < 4 ? <>Si la temporada terminara hoy, <b>entras directo a la Superliga</b>.</> : <>Si la temporada terminara hoy, <b>vas al duelo a muerte</b> por un lugar en la Superliga.</>)
       : <>Si la temporada terminara hoy, <b>juegas la Clausura</b> como {i + 1}º.</>;
+  } else if (yo.fc) {
+    // 🪪 fuera de concurso (18/11/2026): `topCierre()` lo saca, y acá leía «Estás pegado al 16º» o «Te faltan 3 de OVR»
+    // aunque no puede entrar. Lo que le falta es verificarse, como dice el Ranking
+    txt = <>Hoy juegas <b>fuera de concurso</b>: para entrar a {que} tienes que verificarte en Discord Rap Español.</>;
   } else if (cual === 'competitivo' && !yo.rg) {
-    const pide = 10;
-    txt = <>Para entrar al Competitivo hacen falta <b>{pide} eventos</b> en la temporada: llevás {yo.ev || 0}.</>;
+    // 🎯 los eventos que cuentan son los de Tier 1 (`evc`, como el Ranking): con `ev`, Vilca leía «hacen falta 10…: llevás
+    // 26» (18/11/2026). Y cuántos pide, de `requisitos` del payload, como `req()` de ranking.jsx
+    const q = (liga.d.requisitos || []).find((x) => x.id === 'competitivo');
+    const m = q && /(\d+)/.exec((q.pide || [])[0] || '');
+    const pide = m ? Number(m[1]) : 10;
+    txt = <>Para entrar al Competitivo hacen falta <b>{pide} eventos</b> de servidores Tier 1 en la temporada: llevas {(typeof yo.evc === 'number' ? yo.evc : yo.ev) || 0}.</>;
   } else if (top.length === CIERRE) {
     const c = top[CIERRE - 1];
     const d = cual === 'competitivo' ? Math.round(((c.sc || 0) - (yo.sc || 0)) * 10) / 10 : (c.ovr || 0) - (yo.ovr || 0);
@@ -1603,5 +1657,10 @@ const INVICTO = 5;
 export function LigasPagina({ liga, id = '' }) {
   if (id === 'superliga') return <Superliga liga={liga} />;
   if (id === 'clausura') return <Clausura liga={liga} />;
+  // ⏳ las ligas llegan aparte del lobby (/api/ligas, App.jsx): mientras no están, «Cargando» —el mismo de App.jsx— y no
+  // «Esa liga no está» ni «Ahora no se está jugando ninguna liga», que es lo que leía quien abría un link compartido
+  // (18/11/2026). La Superliga y la Clausura salen de la tabla del lobby: no esperan. Va acá y no en LigaPerfil ni en
+  // LigasPortada: ahí el `return` quedaría antes de sus hooks
+  if (!liga.d.ligas) return <div className="cargando" role="status"><span>Cargando…</span><i className="cargando-b" aria-hidden="true"><i /></i></div>;
   return id ? <LigaPerfil liga={liga} id={id} /> : <LigasPortada liga={liga} />;
 }

@@ -194,6 +194,11 @@ function Barra({ partes }) {
   );
 }
 
+// 🔠 el material viaja como identificador (MATERIAL de comun/rangos.py: 'rubi', sin tilde) y la Guía lo pegaba tal cual:
+// «A rubi». Se escribe acá y no en rangos.py, que entra en la huella de las cuatro cartas (18/11/2026)
+const MAT_TX = { rubi: 'rubí' };
+const matTx = (m) => MAT_TX[m] || m || '';
+
 // 🔠 los ocho rangos en una regla de 0 a 100: cada letra ocupa lo que mide su tramo. Abajo, el material de cada una,
 // que es el de su tarjeta (lo decía la Guía de antes y se había perdido)
 function Regla({ rangos }) {
@@ -211,7 +216,7 @@ function Regla({ rangos }) {
           );
         })}
       </div>
-      {xs.some((r) => r.mat) ? <p className="gx-nota">Cada letra tiene su material, el de su tarjeta: {xs.map((r) => r.r + ' ' + (r.mat || '')).join(' · ')}.</p> : null}
+      {xs.some((r) => r.mat) ? <p className="gx-nota">Cada letra tiene su material, el de su tarjeta: {xs.map((r) => r.r + ' ' + matTx(r.mat)).join(' · ')}.</p> : null}
     </div>
   );
 }
@@ -251,7 +256,7 @@ export function Guia({ liga, dc }) {
       ...PREGUNTAS.map(([t, a], i) => ['preguntas', t, plano(a), { id: 'gx-faq-' + i }]),
       ...reqs.map((x) => ['tarjetas', x.titulo, x.mide + ' ' + (x.pide || []).map(pideLargo).join(' · '), { id: 'gx-car-' + x.id }]),
       ...(P.tablas ? PUESTOS.map((p) => ['puntos', p + ' · puntos', porEsc(p), { id: 'gx-pts-' + p }]).filter((x) => x[2]) : []),
-      ...rgs.map((r, i) => ['rangos', 'Rango ' + r.r + (r.mat ? ' · ' + r.mat : ''),
+      ...rgs.map((r, i) => ['rangos', 'Rango ' + r.r + (r.mat ? ' · ' + matTx(r.mat) : ''),
         r.min ? 'Desde ' + r.min + ' de Score.' : 'Menos de ' + ((rgs[i + 1] || {}).min || '') + ' de Score.', { id: 'gx-rg-' + r.r }]),
       ...(G.ovr || []).map((x) => ['rangos', 'OVR · ' + x[0], x[1] + ' % del OVR. Cada parte se compara con la mejor de la temporada.', { id: 'gx-ovr' }]),
       ...(G.score || []).map((x) => ['rangos', 'Score · ' + x[1], x[3] + ' % del Score. ' + (x[2] || ''), { id: 'gx-score' }]),

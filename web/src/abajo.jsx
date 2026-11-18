@@ -16,6 +16,7 @@ import { ComentariosFlotantes } from './flotantes.jsx';
 import { Carita, LU_REAC } from './medio.jsx';
 import { usePase } from './pase.js';
 import { algoTapa, capaFija, seVe } from './tapa.js';
+import { nombreSv } from './temas.js';
 
 
 // ── Se busca ──────────────────────────────────────────────────────────────────────────────────────
@@ -33,9 +34,11 @@ export function SeBusca({ liga, aca }) {
         <span className="mw-fl"><button type="button" className="mw-b" aria-label="Anteriores" onClick={() => correr(-1)}>←</button>
           <button type="button" className="mw-b" aria-label="Siguientes" onClick={() => correr(1)}>→</button></span></div>
       <div className="mw-rail" ref={tira}>
-        {mw.b.map((b) => <Poster key={b.k} liga={liga} b={b} />)}
+        {/* 🔑 un buscado puede venir sin clave (`k: ''`, quien no está en `gente`: Refran, jazi…): por su nombre, o tres
+            hermanos compartían la key 'a' (18/11/2026) */}
+        {mw.b.map((b) => <Poster key={b.k || 'n:' + b.n} liga={liga} b={b} />)}
         {(mw.ant || []).length ? <div className="mw-div"><span>{diario ? 'AYER' : 'LA SEMANA PASADA'}</span></div> : null}
-        {(mw.ant || []).map((b) => <Poster key={'a' + b.k} liga={liga} b={b} />)}
+        {(mw.ant || []).map((b) => <Poster key={'a' + (b.k || 'n:' + b.n)} liga={liga} b={b} />)}
         {(mw.caz || []).length ? (
           <article className="poster cazadores"><span className="p-t">CAZADORES</span>
             <ol>{mw.caz.slice(0, 5).map((c) => <li key={c.k}><Cara liga={liga} k={c.k} nombre={c.n} cls="mono-c" /><b><Alguien liga={liga} nombre={c.n} k={c.k} cara={false} /></b><em>{num(c.pts)}</em></li>)}</ol>
@@ -554,8 +557,9 @@ export function Menu({ liga, abierto, onCerrar, tema, onTema, temaSv }) {
               <button type="button" aria-pressed={tema === 'clara'} onClick={() => onTema('clara')}>Clara</button>
               <button type="button" aria-pressed={tema === 'noche'} onClick={() => onTema('noche')}>Noche</button>
             </div></div>
-          {/* 🎨 y los de los servidores (13/10/2026): están en Apariencia, con la vista previa de cada uno */}
-          <div className="x-fila"><span>Colores de un servidor<small>{temaSv ? 'Ahora: ' + temaSv + '. ' : ''}Encima de Clara o de Noche, los colores de un servidor de la Liga.</small></span>
+          {/* 🎨 y los de los servidores (13/10/2026): están en Apariencia, con la vista previa de cada uno. Por su nombre
+              (`nombreSv()`, como Apariencia), no por el código: decía «Ahora: SR.» y «Ahora: ACAD.» (18/11/2026) */}
+          <div className="x-fila"><span>Colores de un servidor<small>{temaSv ? 'Ahora: ' + nombreSv(temaSv) + '. ' : ''}Encima de Clara o de Noche, los colores de un servidor de la Liga.</small></span>
             <a className="btn negro chico" href="#/cuenta/apariencia" onClick={onCerrar}>Elegir</a></div>
           <div className="x-fila"><span>Hora, zona y más<small>El formato de la hora, tu zona y menos animaciones.</small></span>
             <a className="btn negro chico" href="#/cuenta/hora" onClick={onCerrar}>Abrir</a></div>
@@ -900,7 +904,9 @@ export function Visor({ liga, grupos, abierto, onCerrar, onVisto, vistos = {}, r
     : g.tipo === 'pais' ? '#/pais/' + g.cc
       : g.tipo === 'crew' ? '#/crew/' + encodeURIComponent(g.crew.clave || g.crew.crew)
         : g.tipo === 'sv' ? '#/sv/' + encodeURIComponent(g.nom) : g.tipo === 'liga' ? '#/ranking'
-          : g.tipo === 'yo' ? '#/r/' + encodeURIComponent(g.k) : '#/eventos';
+          : g.tipo === 'yo' ? '#/r/' + encodeURIComponent(g.k)
+            // 🎬 las promos viven en Publicaciones (18/11/2026): caían en el '#/eventos' de abajo, que es del círculo En vivo
+            : g.tipo === 'promos' ? '#/publicaciones' : '#/eventos';
   const circuloDe = (x) => (x.tipo === 'gente' || x.tipo === 'yo' ? <CaraH liga={liga} k={x.k} nombre={x.nom} cc={x.cc} />
     : x.tipo === 'liga' ? <span className="h-c"><img alt="" src="/ul.png" /></span>
     : x.tipo === 'promos' ? <span className="h-c"><Orbe /></span>

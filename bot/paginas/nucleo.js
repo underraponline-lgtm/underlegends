@@ -73,7 +73,13 @@ var porK = function (k) {
   if (f) return f;
   // 🔴 LOS LINKS VIEJOS: hasta el 25/09/2026 la clave era el nombre en minúsculas (`mau kc`) y la de R2, `maukc`
   var n = normK(k);
-  return n ? t.filter(function (x) { return normK(x.k) === n; })[0] : undefined;
+  var g = n ? t.filter(function (x) { return normK(x.k) === n; })[0] : undefined;
+  if (g) return g;
+  // 🧑 Y FUERA DE LAS 200 FILAS (18/11/2026): la de /api/perfiles si ya se bajó (`PERF`, datos.js), como `persona()` de
+  // web/src/liga.js. Sin esto quien no está en la tabla no era nadie para cuenta.js ni para la Tienda
+  var P = window.PERF && window.PERF.p;
+  var p = P && k ? P[k] : null;
+  return p && p.f ? Object.assign({ k: k }, p.f) : undefined;
 };
 function svDe(sv) {
   return ((D && D.svs) || []).filter(function (s) { return s.sv === sv; })[0] || {};
@@ -209,5 +215,10 @@ lobbyP
     // 🔴 QUE FALLE SE VE, y no como una página vacía: lo dice y deja reintentar
     console.error('[lobby]', e);
     window.__sinDatos = true;
-    if (window.__sinPagina) window.__sinPagina('El servidor contestó ' + (e && e.message ? e.message : 'con un error') + '.');
+    // 🗣️ el número sólo si lo hay (18/11/2026): sin red decía «El servidor contestó Failed to fetch.» (o «Load failed», o
+    // el error del JSON), en inglés y sin que el servidor contestara nada. Si los datos llegaron y lo que se rompió es
+    // `pinta()`, no es el servidor: lo mismo que dice el plan B de web/montar.py
+    var m = e && /^\d{3}$/.test(String(e.message)) ? 'El servidor contestó ' + e.message + '.'
+      : D ? 'La página no terminó de cargar.' : 'No pude conectar con el servidor.';
+    if (window.__sinPagina) window.__sinPagina(m);
   });

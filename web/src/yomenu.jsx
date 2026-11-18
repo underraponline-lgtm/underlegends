@@ -40,18 +40,28 @@ export function YoMenu({ k, dc, nombre, cara, abajo = false, onCerrar }) {
     return () => { vivo = false; };
   }, []);
   // se cierra con Escape, tocando afuera o eligiendo algo
+  // ⏱️ (18/11/2026) una sola vez, al abrirse: `onCerrar` llega nuevo en cada vuelta de App (cada 60 s, como mínimo), y con
+  // `[onCerrar]` el efecto se rearmaba y volvía a enfocar el primer link —la lista subía sola y el Tab arrancaba de nuevo—.
+  // La de cada vuelta, en una ref (como el visor de historias de abajo.jsx)
+  const cerrar = useRef(onCerrar);
+  cerrar.current = onCerrar;
   useEffect(() => {
-    const tecla = (e) => { if (e.key === 'Escape') onCerrar(); };
+    const tecla = (e) => { if (e.key === 'Escape') cerrar.current(); };
     const fuera = (e) => {
       const c = caja.current;
-      if (c && !e.composedPath().includes(c)) onCerrar();
+      const p = e.composedPath();
+      if (!c || p.includes(c)) return;
+      // 👤 (18/11/2026) tu cara (arriba) y «Tu cuenta» (abajo) no cuentan: ellas mismas abren y cierran, como la lupa del
+      // buscador. Tocadas «afuera», el pointerdown cerraba y su click lo volvía a abrir: no se cerraba nunca
+      if (p.some((n) => n && n.classList && (n.classList.contains('yo-chip') || n.classList.contains('tb-yo')))) return;
+      cerrar.current();
     };
     window.addEventListener('keydown', tecla);
     const t = setTimeout(() => window.addEventListener('pointerdown', fuera), 0);
     const p = caja.current && caja.current.querySelector('a');
     if (p) p.focus();
     return () => { window.removeEventListener('keydown', tecla); window.removeEventListener('pointerdown', fuera); clearTimeout(t); };
-  }, [onCerrar]);
+  }, []);
   // 🛠️ MODS, también acá (Dlx, 17/11/2026: «pon el menú de mods dentro de tus paneles… o si se puede ponlo en ambos
   // lugares»): en el celular el botón de la cabecera no entra —partía la cabecera en dos renglones—, y acá entra siempre.
   // No abre el menú de una página sino la ventana con TODOS los lugares donde puedes usarlo (mods.jsx, `LugaresMods`).

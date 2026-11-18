@@ -4,6 +4,7 @@
 // de Competencias para que el perfil no se baje la página entera.
 import { useCompetencias } from './competencias_datos.js';
 import { usarCss } from './css.js';
+import { Alguien } from './piezas.jsx';
 
 usarCss('jurado-ficha', `
 .jf{display:flex;flex-direction:column;gap:12px;padding:16px;border:1.6px solid var(--esc-linea,#2A2A2C)}
@@ -18,7 +19,10 @@ usarCss('jurado-ficha', `
 .jf p{margin:0;font:500 13.5px/1.45 Archivo,sans-serif;color:var(--esc-gris,#A5A5A0)}
 `);
 
-export function FichaJurado({ k }) {
+// 👤 (18/11/2026) «A quién más votó» traía el nombre crudo de #veredictos —«MAKMAH 🇻🇪», «RIZAS🇻🇪»— sin el AKA oficial ni
+// link, cuando en el resto de la página esa gente es Makmah o PRAISERIZA (la regla del 17/11, 6.16). Va con Alguien: el
+// AKA y su perfil si lo reconoce, el nombre sin bandera si no (también sin `liga`)
+export function FichaJurado({ liga, k }) {
   const C = useCompetencias();
   const f = C && C.jur && C.jur[k];
   if (!f || !f.v) return null;
@@ -33,8 +37,8 @@ export function FichaJurado({ k }) {
           <div><dt>Coincide con el resultado</dt><dd>{P(f.co)}</dd></div>
           <div><dt>Vota al favorito</dt><dd>{P(f.fa)}</dd></div>
           <div><dt>Con gente de su servidor</dt><dd>{P(f.pr)}</dd></div>
-          {f.mas ? <div><dt>A quien más votó</dt><dd>{f.mas[0]} ({f.mas[1]})</dd></div> : null}
-          {f.menos ? <div><dt>Contra quien más votó</dt><dd>{f.menos[0]} ({f.menos[1]})</dd></div> : null}
+          {f.mas ? <div><dt>A quien más votó</dt><dd><Alguien liga={liga} nombre={f.mas[0]} cara={false} /> ({f.mas[1]})</dd></div> : null}
+          {f.menos ? <div><dt>Contra quien más votó</dt><dd><Alguien liga={liga} nombre={f.menos[0]} cara={false} /> ({f.menos[1]})</dd></div> : null}
         </dl>
         <p>La nota sale de cuántas veces su voto coincide con el resultado. Se cuenta con lo que votó en #veredictos desde el 26/10.</p>
       </div>

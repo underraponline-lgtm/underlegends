@@ -481,6 +481,9 @@
   .app .pf8-ult-l strong{justify-self:start}
   .app .pf8-evb{grid-template-columns:44px minmax(0,1fr) 150px 90px;grid-template-areas:"m t b s"}
   .app .emb-panel{grid-template-columns:320px minmax(0,1fr);min-height:560px}
+  /* 🔓 (18/11/2026) tu panel sin ningún emblema todavía (se abre igual, por «Para desbloquear»): no hay columna del
+     detalle, así que una sola, del ancho de la de la izquierda. Con las dos quedaba media ventana vacía a la derecha */
+  .app .emb-panel:has(> .emb-izq:last-child){grid-template-columns:minmax(0,1fr);width:min(320px,100%);min-height:0}
 }
 
 /* 🎒 EL INVENTARIO (26/10/2026, segunda vuelta; Dlx: «está desordenadísimo… otra forma de listar las cosas, quizás un
@@ -701,7 +704,8 @@
 .pf9-sube{list-style:none;margin:0;padding:0;display:grid;grid-auto-flow:column;grid-auto-columns:minmax(0,1fr);gap:6px}
 .pf9-sube li{display:grid;justify-items:center;gap:5px}
 .pf9-rg{width:100%;height:38px;display:grid;place-items:center;border-radius:3px;font:900 18px/1 Archivo,sans-serif;color:#030304}
-.pf9-sube li.sig .pf9-rg{background:transparent;color:#F6F6F6;box-shadow:inset 0 0 0 1.5px #4A4A50}
+/* (18/11/2026) el siguiente rango ya no es `li.sig`: `.sig` es global de estilo.css y le metía 14 px de margen, así que
+   perfil_bandas.jsx usa `li.pf9-sig` con el aspecto en línea, y la regla de acá quedó sin nadie */
 .pf9-sube small{font:500 11px/1.2 Archivo,sans-serif;color:#A5A5A0;text-align:center}
 .pf9-scb{display:grid;grid-template-columns:auto 1fr auto;gap:8px;align-items:center;font:800 12px/1 "Barlow Condensed",sans-serif;letter-spacing:.06em;color:#A5A5A0}
 .pf9-scb i{height:8px;border-radius:4px;background:#2A2A2E;overflow:hidden}

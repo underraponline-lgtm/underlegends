@@ -8,7 +8,13 @@
 export async function achicar(archivo, AN, AL, TOPE) {
   const url = URL.createObjectURL(archivo);
   try {
-    const img = await new Promise((ok, mal) => { const i = new Image(); i.onload = () => ok(i); i.onerror = mal; i.src = url; });
+    // ⚠️ con un Error con texto (18/11/2026): `onerror` rechazaba con el Event del <img>, que no trae `.message`, y con una
+    // HEIC, una TIFF o un archivo dañado el aviso decía «No pude usar esa imagen: undefined»
+    const img = await new Promise((ok, mal) => {
+      const i = new Image(); i.onload = () => ok(i);
+      i.onerror = () => mal(new Error('tu navegador no pudo abrirla; prueba con una JPG o PNG'));
+      i.src = url;
+    });
     // 🔎 cuánto medía la imagen de verdad, para avisar si es más chica de lo que se va a mostrar (Dlx, 12/11/2026: «el fondo
     // no se ve en HD»)
     const origen = { w: img.naturalWidth, h: img.naturalHeight };
@@ -44,6 +50,7 @@ export async function achicar(archivo, AN, AL, TOPE) {
 export const aBase64 = (b) => new Promise((ok, mal) => {
   const r = new FileReader();
   r.onload = () => ok(String(r.result).split(',')[1] || '');
-  r.onerror = mal;
+  // lo mismo que en `achicar()` (18/11/2026): el evento del FileReader no trae `.message`
+  r.onerror = () => mal(new Error('tu navegador no pudo leerla; prueba de nuevo'));
   r.readAsDataURL(b);
 });

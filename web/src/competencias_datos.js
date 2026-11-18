@@ -17,9 +17,12 @@ export function pedirCompetencias() {
   return pedido;
 }
 
-export function useCompetencias() {
+// ⚠️ `false` si el pedido falló y no hay nada de antes (18/11/2026): un fallo en la primera carga se quedaba en «Cargando
+// las competencias…» para siempre, porque el efecto corre sólo al montar. `false` se lee igual que `null` (`!C`), así que
+// quien no lo mira no cambia; quien quiera dar «Reintentar» pasa `otra` y la sube para volver a pedir
+export function useCompetencias(otra = 0) {
   const [c, setC] = useState(dato);
-  useEffect(() => { let vivo = true; pedirCompetencias().then((x) => { if (vivo && x) setC(x); }); return () => { vivo = false; }; }, []);
+  useEffect(() => { let vivo = true; pedirCompetencias().then((x) => { if (vivo) setC(x || dato || false); }); return () => { vivo = false; }; }, [otra]);
   return c;
 }
 
@@ -58,7 +61,9 @@ export function ultimas(g, k, n = 5) {
 export function cruceDe(g, n, k) {
   const j = (g.j || []).find((x) => x.n === n);
   const m = j && j.p.find((x) => x[0] === k || x[1] === k);
-  if (!m) return null;
+  // 🚫 contra la clave vacía '' no hay cruce (18/11/2026): en las ligas el descanso no se emite, y un '' que el backend
+  // metió como persona (ascenso-9, desde el 16/11) pasaba a ser «tu próximo cruce» sin rival y tapaba la Copa y la Rapid
+  if (!m || !m[0] || !m[1]) return null;
   return { m, rival: m[0] === k ? m[1] : m[0], p: m[0] === k ? m[4] : 1 - m[4] };
 }
 
@@ -71,6 +76,13 @@ export function faltaTxt(iso, ahora = Date.now()) {
   if (h < 48) return h + ' h ' + String(Math.floor((ms % 3600000) / 60000)).padStart(2, '0');
   return Math.round(h / 24) + ' días';
 }
+
+/**
+ * 🕚 «cierra en 8 h 05» dicho en una frase, o `ya` si el instante pasó (18/11/2026): entre el cierre de las 11 AM ET y la
+ * primera corrida del ciclo los datos siguen con su `hasta` vencido, y pegarle `faltaTxt()` a «cierra en», «Faltan» o
+ * «ABRE EN» daba «cierra en cerrado». `faltaTxt` sola se queda como está: la palabra suelta «cerrado» sí vale
+ */
+export const enFrase = (iso, pre, ya = 'se está cerrando') => (new Date(iso).getTime() > Date.now() ? pre + faltaTxt(iso) : ya);
 
 /** «19 al 26 de octubre», en la hora del este */
 export function semanaTxt(C) {

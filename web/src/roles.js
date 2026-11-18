@@ -4,6 +4,7 @@
 // (`roles()` en bot/avisos.js): los que salen solos de Discord (`bot/roles.py`) y lo que pone o saca Dlx. Por clave de
 // perfil, una vez por visita y con cinco minutos de borde, como los niveles (racha.js).
 import { useEffect, useState } from 'react';
+import { siglaDe } from './liga.js';
 
 let roles = null, rolesT = 0, rolesP = null;
 
@@ -29,8 +30,10 @@ export const ROL = {
 };
 
 // «Organizador · FFA, DDF»; con más de dos servidores, cuántos (no sobrecargar el perfil)
+// (18/11/2026: los servidores llegan como código —SR, URBF, ACAD, CH— y se leían así al lado del chip que dice SNK;
+// lo que se lee es la sigla, siglaDe())
 export function textoRol([rol, svs]) {
   const n = (ROL[rol] || [rol])[0];
   if (!svs || !svs.length) return n;
-  return n + ' · ' + (svs.length > 2 ? svs.length + ' servidores' : svs.join(', '));
+  return n + ' · ' + (svs.length > 2 ? svs.length + ' servidores' : svs.map(siglaDe).join(', '));
 }

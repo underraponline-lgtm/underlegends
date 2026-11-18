@@ -87,7 +87,10 @@ function Socio({ liga, s, n }) {
   const mm = liga.d.mult || {};
   const x = (mm.sv || {})[s.sv];
   const prox = liga.luego().filter((e) => e.sv === s.sv)[0];
-  const ll = liga.llaves().filter((l) => l.sv === s.sv)[0];
+  // 🔑 la última por FECHA, no por número (18/11/2026): las de los registros en vivo llevan 9 cifras y quedaban siempre
+  // primeras —LKR mostraba la del 16/11, sin campeón, y no la #659 del 17/11, que ganó Puppy—. Y con `nombreLlave()`,
+  // que no deja a la vista el «(sin titulo)» con que se guardan algunas
+  const ll = liga.llavesPorFecha().find((l) => l.sv === s.sv);
   const camp = ll ? liga.campeon(ll) : [];
   // su mejor de la temporada, con la carta de Servidor: es lo que gana un servidor al sumarse (CLAUDE.md)
   const mejor = liga.oficiales().find((f) => f.sv === s.sv);
@@ -113,8 +116,9 @@ function Socio({ liga, s, n }) {
         ) : null}
         <ul className="sk-datos">
           {mejor ? <li><b>SU MEJOR</b>{limpio(mejor.n)} · #{mejor.pos} de la Liga</li> : null}
-          {prox ? <li><b>EL PRÓXIMO</b>{limpio(prox.nombre)} · {liga.dia(liga.cuandoDe(prox))}</li>
-            : ll ? <li><b>EL ÚLTIMO</b>{limpio(ll.nombre)}{camp.length ? <> · ganó <Algunos liga={liga} nombres={camp} /></> : ''}</li> : null}
+          {/* ⏰ un sin_hora dice cuándo se anunció, no una hora de arranque que no tiene (revisión del 18/11/2026) */}
+          {prox ? <li><b>EL PRÓXIMO</b>{limpio(prox.nombre)} · {prox.sin_hora ? 'anunciado ' + liga.cuando(prox.cuando) : liga.dia(liga.cuandoDe(prox))}</li>
+            : ll ? <li><b>EL ÚLTIMO</b>{liga.nombreLlave(ll)}{camp.length ? <> · ganó <Algunos liga={liga} nombres={camp} /></> : ''}</li> : null}
         </ul>
       </div>
       <div className="sk-acc">
@@ -141,9 +145,11 @@ function Publican({ liga, svs }) {
         <ul className="pf-vid sk-vid" style={{ '--n': vids.length }}>
           {vids.map((v) => (
             <li key={v.vid}>
-              <button type="button" className="pf-vid-b" onClick={() => abrirVideo({ vid: v.vid, tit: v.tit, link: v.link })}>
+              {/* 🧹 el título por limpio(), como en el Inicio (18/11/2026): venía crudo de YouTube, con emojis, banderas y
+                  dibujos de caja («• 🚇 ╎FREESTYLE LEAGUE N°3 ╎ 🚇 •»), acá y en el visor */}
+              <button type="button" className="pf-vid-b" onClick={() => abrirVideo({ vid: v.vid, tit: limpio(v.tit), link: v.link })}>
                 <span className="pf-vid-m"><Miniatura vid={v.vid} cls="pf-vid-img" /><i aria-hidden="true">▶</i></span>
-                <b>{v.tit}</b>
+                <b>{limpio(v.tit)}</b>
                 <small>{siglaDe(v.sv)} · {liga.cuando(v.t)}</small>
               </button>
             </li>

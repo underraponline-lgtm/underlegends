@@ -49,11 +49,24 @@ export function delHilo(it, ahora) {
   return sim.concat(ver).sort((a, b) => a.t - b.t);
 }
 
+// 🔁 UN COMENTARIO REPETIDO (18/11/2026): el objeto contesta `{ok, ya, c}` sin la fila (ni k, ni n, ni tx, ni t), y
+// empujarlo a `E.mios` dejaba una fila rota —sin nombre ni texto, «hace NaN días» y «Reportar» sobre el propio— cuando
+// la lista todavía no lo traía (recargaste antes de que el borde lo sirviera, o lo mandaste desde otro dispositivo).
+// No se empuja: se vuelve a pedir la lista, ahora y pasados los 30 s del borde. Dice si ya se ve
+function yaEstaba(it, c) {
+  if (((E.por && E.por[it.id]) || []).concat(E.mios[it.id] || []).some((x) => x[0] === c)) return true;
+  pedir(true);
+  setTimeout(() => pedir(true), 31000);
+  return false;
+}
+
 /** 💬 Comentar desde afuera del hilo (la barra de responder de las historias): `{ok}` o `{ok: false, msg}`. */
 export async function comentar(it, tx) {
   if (!it || !it.id || !String(tx || '').trim() || !W.conCuenta) return { ok: false, msg: '' };
   const j = await W.conCuenta('/api/avisos/comentar', { id: it.id, tx, resp: '' }, 'p');
   if (!j) return { ok: false, msg: '' };
+  // con la fila entera (si algún día el objeto la manda también con `ya`), sigue por el camino de siempre
+  if (j.ok && j.ya && !j.t) { yaEstaba(it, j.c); return { ok: true }; }
   if (j.ok) {
     E.mios[it.id] = (E.mios[it.id] || []).concat([[j.c, j.k, j.n, j.tx, j.resp, j.t]]);
     avisar();
@@ -160,6 +173,13 @@ export function Hilo({ liga, it, chico }) {
     try {
       const j = await W.conCuenta('/api/avisos/comentar', { id: it.id, tx, resp: resp ? resp.id : '' }, 'p');
       if (!j) return;
+      // 🔁 repetido y sin la fila (ver `yaEstaba()`): no se empuja una fila rota
+      if (j.ok && j.ya && !j.t) {
+        setTx('');
+        setResp(null);
+        if (!yaEstaba(it, j.c)) setMsg('Ya lo habías enviado: aparece en unos segundos.');
+        return;
+      }
       if (j.ok) {
         // lo propio se ve enseguida: la lista de todos llega con hasta 30 s de atraso del borde
         E.mios[it.id] = (E.mios[it.id] || []).concat([[j.c, j.k, j.n, j.tx, j.resp, j.t]]);

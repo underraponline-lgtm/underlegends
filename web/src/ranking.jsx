@@ -62,15 +62,19 @@ function Num({ n, fc }) {
 
 // ── 📈 SEMANA A SEMANA (Dlx, 19/10/2026, «me gustan todas», a «Sparkline» de 21st): cuánto sumó cada uno en cada
 // semana de la temporada, de `/api/semanas` (`_semanas_de()` de bot/subir_web.py: va aparte del lobby, que ya está al
-// tope). Se pide una vez por sesión, sólo en el Ranking de Temporada; la última barra es esta semana hasta hoy ────────
+// tope). Se pide una vez por sesión, en los rankings que la muestran (18/11/2026: hasta ahí sólo en la Temporada, y
+// Actividad y Servidores comparaban «Esta semana» 0 contra 0); la última barra es esta semana hasta hoy ────────
 let SEM = null, semPidiendo = null;
 function useSemanas(activo) {
   const [s, setS] = useState(SEM);
   useEffect(() => {
     if (!activo || SEM) return undefined;
     let vivo = true;
+    // ⚠️ lo que falla NO se guarda (18/11/2026, como `pedirTodas()` de llave.jsx): la promesa resuelta en null quedaba
+    // para toda la visita y «Esta semana» salía vacía hasta recargar
     semPidiendo = semPidiendo || fetch('/api/semanas', { headers: { accept: 'application/json' } })
-      .then((r) => (r.ok ? r.json() : null)).catch(() => null);
+      .then((r) => (r.ok ? r.json() : null)).catch(() => null)
+      .then((j) => { if (!(j && j.g)) semPidiendo = null; return j; });
     semPidiendo.then((j) => { if (j && j.g) SEM = j; if (vivo) setS(SEM); });
     return () => { vivo = false; };
   }, [activo]);
@@ -105,10 +109,12 @@ function Tendencia({ g, lunes }) {
   // 🗣️ con el número de esta semana al lado (Dlx, 20/10/2026: «es difícil de entender si primera vez lo ves»): las
   // barritas solas no dicen qué miden; «+40» en magenta, sí —y es lo que ordena la columna
   const hoy = g[g.length - 1] || 0;
+  // ⚠️ `rk-hoy` y no `ult` (18/11/2026): `.ult` es el bloque del Inicio (estilo.css), global en el shadow root, y le
+  // ponía a la última barrita 16 px de relleno y 2 px de borde: con border-box salía siempre llena, aunque valiera 0
   return (
     <span className="rk-ten-c" title={tit} aria-label={tit}>
       <span className="rk-ten">
-        {g.map((v, i) => <i key={i} className={i === g.length - 1 ? 'ult' : ''} style={{ height: Math.max(2, Math.round((16 * v) / max)) + 'px' }} />)}
+        {g.map((v, i) => <i key={i} className={i === g.length - 1 ? 'rk-hoy' : ''} style={{ height: Math.max(2, Math.round((16 * v) / max)) + 'px' }} />)}
       </span>
       <small className="rk-ten-n">{hoy ? '+' + num(hoy) : '0'}</small>
     </span>
@@ -124,7 +130,7 @@ function Semanas({ g, lunes }) {
       <span className="rk-det-t">SEMANA A SEMANA</span>
       <ol className="rk-det-sem" aria-label="Puntos que sumó cada semana de la temporada">
         {g.map((v, i) => (
-          <li key={i} className={i === g.length - 1 ? 'ult' : ''}>
+          <li key={i} className={i === g.length - 1 ? 'rk-hoy' : ''}>{/* `rk-hoy`, no `ult`: ver `Tendencia` (18/11/2026) */}
             <b>{v ? '+' + num(v) : '0'}</b>
             <i style={{ height: Math.max(3, Math.round((34 * v) / max)) + 'px' }} />
             <small>{i === g.length - 1 ? 'esta sem.' : lunes && lunes[i] ? fechaCorta(lunes[i]) : 'sem. ' + (i + 1)}</small>
@@ -291,7 +297,10 @@ function Ascensos({ liga }) {
   const mapa = (liga.d.ligas && liga.d.ligas.asc) || {};
   const svs = Object.keys(mapa);
   const [sv, setSv] = useState(svs[0] || '');
-  const det = useDetalle(liga.d.ligas ? liga.d.ligas.t : null);
+  // 🔑 con el `sello` del lobby, la misma clave con la que App.jsx y ligas.jsx piden /api/ligas (18/11/2026): con
+  // `ligas.t`, que es otro instante, pasado el minuto de ligas_datos.js se volvían a bajar 168 KB y el ascenso quedaba
+  // en «Cargando» mientras tanto
+  const det = useDetalle(liga.d.sello);
   const elegido = mapa[sv] ? sv : svs[0];
   const dest = (mapa[elegido] || [])[1];
   // 📈 FFA no sube a ninguna liga: su tabla viaja aparte (`ascsv`) y no lleva el link a la liga
@@ -365,6 +374,9 @@ function Subieron({ liga }) {
 // (`P`) y las cinco dimensiones del Score (`D`, `dims`)
 const wrDe = (f) => Math.round(pct(f.wr) || 0);
 const duDe = (f) => (f && Array.isArray(f.du) ? f.du : [0, 0]);
+// ⚔️ ganados y jugados de quien viene de `/api/duelos` y no está en la tabla (18/11/2026): esa fila trae `g` y `t`, no
+// `du`, y «TÚ CONTRA» le ponía 0 · 0 · 0 % a los 123 de fuera de las 200. Las de la tabla no traen `t`: siguen por `du`
+const gjDe = (f) => (f && f.t != null ? [f.g || 0, f.t || 0] : duDe(f));
 // ⚡ la actividad en general: cada evento, cada batalla de liga y cada duelo de la temporada
 function actDe(f) { return (f.ev || 0) + (f.lg || 0) + (duDe(f)[1] || 0); }
 const pctDe = (g, j) => (j ? Math.round((100 * g) / j) : 0);
@@ -400,8 +412,8 @@ const NUMEROS = {
       const rd = rdDe(c, t);
       return [['Ganados', g], ['Jugados', j], j ? ['Ganó el', pctDe(g, j) + '%'] : null, rd[1] ? ['Racha', rd[0]] : null, rd[1] ? ['Mejor racha', rd[1]] : null];
     },
-    vs: (a, b, c) => [['Ganados', duDe(a)[0], duDe(b)[0], String], ['Jugados', duDe(a)[1], duDe(b)[1], String],
-      ['% ganados', pctDe(...duDe(a)), pctDe(...duDe(b)), (v) => v + '%'], ['Racha', rdDe(c, a)[0], rdDe(c, b)[0], String],
+    vs: (a, b, c) => [['Ganados', gjDe(a)[0], gjDe(b)[0], String], ['Jugados', gjDe(a)[1], gjDe(b)[1], String],
+      ['% ganados', pctDe(...gjDe(a)), pctDe(...gjDe(b)), (v) => v + '%'], ['Racha', rdDe(c, a)[0], rdDe(c, b)[0], String],
       ['Mejor racha', rdDe(c, a)[1], rdDe(c, b)[1], String]],
   },
   podios: {
@@ -531,7 +543,8 @@ const SUBS = {
       return xs;
     },
     orden: ordenOsv, hay: (L) => (L.d.tabla || []).some((f) => f.osv),
-    cols: ['isv', 'n', 'svc', 'osv', 'ovr', 'ev', 'pts'], movil: ['isv', 'n', 'svc', 'osv'],
+    // 📱 en el celular, el OVR SV primero (18/11/2026): el primero después del puesto es el número grande de la derecha
+    cols: ['isv', 'n', 'svc', 'osv', 'ovr', 'ev', 'pts'], movil: ['isv', 'n', 'osv', 'svc'],
     baj: <>Los que mandan en <b>cada servidor</b>, por el <b>OVR de su carta de Servidor</b>: el número de ese servidor, no el de la Temporada. El <b>#</b> es su puesto adentro de su servidor. Elige uno arriba.</>,
     valor: [(f) => f.osv || 0, 'OVR'], dato: (f) => 'OVR ' + f.osv + ' · ' + siglaDe(f.sv),
   },
@@ -760,8 +773,11 @@ function TuTira({ x, cfg, sub, base, iYo, lugar, yo, dc, encontrarme, tira, mira
   const f = iYo >= 0 ? base[iYo] : null;
   // ⚠️ sin fila en esta tabla (fuera de las 200 que viajan), el número es el de tu fila (`lugar.n`)
   const n = f ? numero(cfg, f) : lugar.n || 0;
-  const arriba = f && n ? base.slice(0, iYo).reverse().find((g) => numero(cfg, g)) : null;
-  const abajo = f && n ? base.slice(iYo + 1).find((g) => numero(cfg, g)) : null;
+  // 🏟️ en «Servidores» los vecinos son de TU servidor (18/11/2026): la base mezcla todos y el número es el de adentro de
+  // cada uno, así que el #1 de DDF salía «A … de <uno de FFA>, el #7»
+  const mismo = (g) => !cfg.porSv || g.sv === f.sv;
+  const arriba = f && n ? base.slice(0, iYo).reverse().find((g) => mismo(g) && numero(cfg, g)) : null;
+  const abajo = f && n ? base.slice(iYo + 1).find((g) => mismo(g) && numero(cfg, g)) : null;
   const dA = arriba ? distancia(cfg, arriba, f) : null;
   const dB = abajo ? distancia(cfg, f, abajo) : null;
   // la frase: a cuánto estás del de arriba (y si está a un evento, que se note)
@@ -781,7 +797,10 @@ function TuTira({ x, cfg, sub, base, iYo, lugar, yo, dc, encontrarme, tira, mira
       <div className="rk-tu-l">
         {lugar.cara}
         <span className="rk-tu-n"><Num n={n} fc={f && f.fc} /></span>
-        <span className="rk-tu-t"><small>{lugar.quien}{lugar.mov ? <> · <Mov mv={lugar.mov} largo /></> : n ? ' · igual que el lunes' : ''}</small><b>{frase}</b></span>
+        {/* «igual que el lunes» sólo en la Temporada y si ya estaba el lunes (18/11/2026): `mov` es el `mv` del ciclo, que
+            mide sólo el puesto de la Temporada contra la foto del lunes; en los demás rankings la frase decía un dato que
+            nadie midió, y a quien debutó esta semana (`nu`) no hay lunes con qué comparar */}
+        <span className="rk-tu-t"><small>{lugar.quien}{lugar.mov ? <> · <Mov mv={lugar.mov} largo /></> : n && sub === 'temporada' && !(f || yo).nu ? ' · igual que el lunes' : ''}</small><b>{frase}</b></span>
       </div>
       {arriba || abajo ? (
         <div className="rk-tu-chips">
@@ -801,7 +820,9 @@ function TuTira({ x, cfg, sub, base, iYo, lugar, yo, dc, encontrarme, tira, mira
 // derecha, el número que ordena. Tocar la fila la abre, como en la tabla. «Todos los datos» vuelve a la tabla entera ──
 function ListaCel({ x, cfg, vis, abierta, setAbierta, miFila, corteK, directoK, sinFiltro, perf, sub }) {
   const { liga } = x;
-  const ids = (cfg.movil || cfg.cols).filter((id) => !['pos', 'i', 'n'].includes(id));
+  // `isv` también (18/11/2026): es el puesto de «Servidores», que ya va a la izquierda; se repetía a la derecha en grande
+  // y el OVR SV, que es lo que ordena, bajaba al segundo renglón
+  const ids = (cfg.movil || cfg.cols).filter((id) => !['pos', 'i', 'isv', 'n'].includes(id));
   const lead = ids[0];
   const resto = ids.slice(1);
   return (
@@ -822,7 +843,8 @@ function ListaCel({ x, cfg, vis, abierta, setAbierta, miFila, corteK, directoK, 
               <span className="rk-fila-q">{COL.n.v(f, x)}
                 <small className="rk-fila-2">
                   {sub === 'temporada'
-                    ? <>{num(f.pts)} pts · <em className={sem ? 'sem' : 'q'}>{sem ? '+' + num(sem) : '0'}</em> esta semana</>
+                    // «—» mientras /api/semanas no llegó (18/11/2026): «0» le decía a todos que no sumaron nada
+                    ? <>{num(f.pts)} pts · <em className={sem ? 'sem' : 'q'}>{sem ? '+' + num(sem) : x.sem ? '0' : '—'}</em> esta semana</>
                     : resto.map((id) => <span key={id}>{COL[id].tc || COL[id].t} {COL[id].v(f, x)}</span>)}
                 </small>
               </span>
@@ -1131,18 +1153,24 @@ export function Ranking({ liga, sub: subRuta, ver: abre = '', dc, raiz }) {
   const [sv, setSv] = useState('');
   const [cc, setCc] = useState('');
   // 🏟️ «Servidores» abre en tu servidor (o el de más gente en la tabla), una vez por entrada: «Todos» sigue andando
+  // ⚠️ `svAuto` guarda EL SERVIDOR que puso la vista, y al salir se saca sólo ése (18/11/2026): quedaba puesto y Duelos,
+  // Podios o la Temporada abrían filtrados a un servidor que nadie eligió. Uno que eligió la persona se queda
   const svAuto = useRef('');
   useEffect(() => {
-    if (sub !== 'servidores') { svAuto.current = ''; return; }
+    if (sub !== 'servidores') {
+      if (svAuto.current && sv === svAuto.current) setSv('');
+      svAuto.current = '';
+      return;
+    }
     if (svAuto.current || !liga) return;
     const xs = (liga.d.tabla || []).filter((f) => f.osv && f.sv);
     if (!xs.length) return;
     const cuenta = {};
     xs.forEach((f) => { cuenta[f.sv] = (cuenta[f.sv] || 0) + 1; });
     const mio = liga.yo && cuenta[liga.yo.sv] ? liga.yo.sv : Object.keys(cuenta).sort((a, b) => cuenta[b] - cuenta[a])[0];
-    svAuto.current = sub;
+    svAuto.current = mio || '';
     setSv(mio || '');
-  }, [sub, liga]);
+  }, [sub, liga, sv]);
   const [soloSigo, setSoloSigo] = useState(false);
   const [soloNuevos, setSoloNuevos] = useState(false);
   const [abierta, setAbierta] = useState(null);
@@ -1152,7 +1180,10 @@ export function Ranking({ liga, sub: subRuta, ver: abre = '', dc, raiz }) {
   const [irA, setIrA] = useState(null);
   const [yoVisible, setYoVisible] = useState(false);
   const [tiraVisible, setTiraVisible] = useState(false);
-  const tira = useRef(null);
+  // 🪪 la tira «TÚ», con una ref de función (18/11/2026): con `useRef` el observador se enganchaba sólo al cambiar de
+  // ranking, y en Duelos la tira se monta DESPUÉS (cuando llega /api/duelos): no observaba nada y la barra «Tu lugar»
+  // quedaba a la vista repitiendo lo mismo. Ahora cada tira nueva que se monta vuelve a engancharlo
+  const [tiraEl, tira] = useState(null);
   const [tb, setTb] = useState(0);
   const movil = useMovil();
   const nav = useRef(null);
@@ -1173,7 +1204,9 @@ export function Ranking({ liga, sub: subRuta, ver: abre = '', dc, raiz }) {
   const [miraF, miraEst] = useMira(liga, dc);
   const yo = liga.yo || miraF;
   const miCrewF = yo ? liga.crewDe(yo) : null;
-  const sem = useSemanas(sub === 'temporada');
+  // 📈 en todo ranking cuyos números las usan (18/11/2026): Actividad y Servidores comparan «Esta semana» en «TÚ CONTRA»,
+  // y sin esto, quien entraba directo leía 0 contra 0. Los grupos y las vistas propias no abren filas de gente
+  const sem = useSemanas(!pronto && !cfg.propia && !cfg.grupo && !(cfg.nums || NUMEROS.temporada).sinSemanas);
   const due = useDuelos(sub === 'duelos' && !liga.d.duelos, liga.d.sello);
   // 📊 la barra bajo cada nombre, sólo en la Temporada: sus puntos contra el que más sumó
   const maxPts = useMemo(() => (liga.d.tabla || []).reduce((m, f) => Math.max(m, f.pts || 0), 0), [liga]);
@@ -1260,9 +1293,10 @@ export function Ranking({ liga, sub: subRuta, ver: abre = '', dc, raiz }) {
       : cfg.grupo === 'crew' ? (f) => x.miCrew && limpio(f.crew).toLowerCase() === x.miCrew
         : (f) => f.k === yo.k;
     const i = base.findIndex(esMio);
-    const cara = cfg.grupo === 'pais' ? <Bandera cc={yo.cc} cls="rk-lflag" /> : cfg.grupo === 'crew' && miCrewF ? <LogoCrew c={miCrewF} cls="rk-llogo" />
+    // sin país, tu cara y «TU LUGAR», como sin crew (18/11/2026: salía «TU PAÍS · » sin bandera)
+    const cara = cfg.grupo === 'pais' && yo.cc ? <Bandera cc={yo.cc} cls="rk-lflag" /> : cfg.grupo === 'crew' && miCrewF ? <LogoCrew c={miCrewF} cls="rk-llogo" />
       : <Cara liga={liga} k={yo.k} nombre={yo.n} cls="cara rk-lcara" />;
-    const quien = cfg.grupo === 'pais' ? 'TU PAÍS · ' + nombrePais(yo.cc).toUpperCase() : cfg.grupo === 'crew' && miCrewF ? 'TU CREW · ' + limpio(miCrewF.crew).toUpperCase() : 'TU LUGAR · ' + limpio(yo.n).toUpperCase();
+    const quien = cfg.grupo === 'pais' && yo.cc ? 'TU PAÍS · ' + nombrePais(yo.cc).toUpperCase() : cfg.grupo === 'crew' && miCrewF ? 'TU CREW · ' + limpio(miCrewF.crew).toUpperCase() : 'TU LUGAR · ' + limpio(yo.n).toUpperCase();
     if (i >= 0) {
       const f = base[i];
       miFila = clave(f);
@@ -1273,8 +1307,10 @@ export function Ranking({ liga, sub: subRuta, ver: abre = '', dc, raiz }) {
         txt = f.fc ? 'Fuera de concurso: verifícate en Discord Rap Español y tienes número'
           : cfg.grupo === 'crew' ? 'Sin puesto: una crew necesita tres raperos en la temporada' : 'Sin puesto todavía';
       } else {
-        // el de arriba con número (la Temporada tiene empates: con el mismo número, «empatado»)
-        const arriba = base.slice(0, i).reverse().find((g) => numero(cfg, g));
+        // el de arriba con número (la Temporada tiene empates: con el mismo número, «empatado»). 🏟️ En «Servidores», el de
+        // TU servidor (18/11/2026): la base los mezcla a todos y el número es el de adentro de cada uno, así que el #1 de
+        // DDF leía «Empatado con el #7» por uno de FFA
+        const arriba = base.slice(0, i).reverse().find((g) => (!cfg.porSv || g.sv === f.sv) && numero(cfg, g));
         if (!arriba) txt = 'Estás primero';
         else if (numero(cfg, arriba) === n) txt = 'Empatado en el #' + n;
         else if (cfg.valor) {
@@ -1298,9 +1334,22 @@ export function Ranking({ liga, sub: subRuta, ver: abre = '', dc, raiz }) {
       // 🎯 los eventos del Competitivo son los de Tier 1 (`evc`, 13/11/2026): con `ev` contaba también los de Tier 3
       const falta = Math.max(0, (req(liga, 'competitivo') || 10) - (typeof yo.evc === 'number' ? yo.evc : yo.ev || 0));
       lugar = { cara, quien, n: 0, txt: falta ? 'Te ' + (falta === 1 ? 'falta 1 evento' : 'faltan ' + falta + ' eventos') + ' en servidores Tier 1 para tu letra' : 'Tu letra llega con la próxima corrida' };
+    } else if (sub === 'duelos') {
+      // ⚔️ (18/11/2026) /api/duelos trae los primeros 300, y quien jugó y quedó más abajo leía «Todavía no jugaste un
+      // duelo»: con duelos en su fila (`du`), está más abajo. Y mientras la lista no llegó, nada: no se sabe todavía
+      if (base.length) lugar = { cara, quien, n: 0, txt: duDe(yo)[1] ? 'Estás más abajo de los que muestra la tabla' : 'Todavía no jugaste un duelo uno contra uno' };
+    } else if (cfg.grupo === 'crew' && !miCrewF) {
+      // 👥 (18/11/2026) sin crew, lo que falta es una crew, no jugar: decía «juega un evento y apareces»
+      lugar = { cara, quien, n: 0, txt: 'Todavía no estás en una crew: súmate a una o arma la tuya' };
+    } else if (cfg.grupo === 'pais' && !yo.cc) {
+      // 🏳️ (18/11/2026) sin país, igual: el país se elige al verificarse. Quien ya es miembro y no tiene (su país no
+      // cuenta en la Liga: hoy son dos de la tabla) no tiene nada que verificar
+      lugar = { cara, quien, n: 0, txt: yo.fc ? 'Todavía no elegiste tu país: verifícate y apareces' : 'Todavía no tienes país en la Liga', verificar: !!yo.fc };
     } else if (!cfg.grupo) {
-      const no = { duelos: 'Todavía no jugaste un duelo uno contra uno', podios: 'Todavía no subiste a un podio', rachas: 'Todavía sin racha', mw: 'Todavía no cazaste a ningún buscado' }[sub];
-      if (no) lugar = { cara, quien, n: 0, txt: no };
+      // 🏟️ «Servidores» saca a los fuera de concurso (18/11/2026): leían «juega un evento y apareces» habiendo jugado
+      const no = { podios: 'Todavía no subiste a un podio', rachas: 'Todavía sin racha', mw: 'Todavía no cazaste a ningún buscado',
+        servidores: yo.fc ? 'Fuera de concurso: verifícate en Discord Rap Español y tienes número' : 'Todavía no tienes carta de Servidor' }[sub];
+      if (no) lugar = { cara, quien, n: 0, txt: no, verificar: sub === 'servidores' && !!yo.fc };
     }
   }
 
@@ -1316,11 +1365,11 @@ export function Ranking({ liga, sub: subRuta, ver: abre = '', dc, raiz }) {
     return () => io.disconnect();
   }, [miFila, vistas]);
   useEffect(() => {
-    if (!tira.current || !window.IntersectionObserver) { setTiraVisible(false); return undefined; }
+    if (!tiraEl || !window.IntersectionObserver) { setTiraVisible(false); return undefined; }
     const io = new IntersectionObserver((es) => setTiraVisible(es.some((e) => e.isIntersecting)), { threshold: 0.3 });
-    io.observe(tira.current);
+    io.observe(tiraEl);
     return () => io.disconnect();
-  }, [sub, pronto]);
+  }, [tiraEl]);
 
   // el alto de la barra de abajo del celular: «tu lugar» va justo encima
   useEffect(() => {
@@ -1359,9 +1408,13 @@ export function Ranking({ liga, sub: subRuta, ver: abre = '', dc, raiz }) {
 
   // cambiar de ranking: como app.js, con `replaceState` (es un filtro de la vista, no otra vista: «atrás» no recorre
   // las pestañas). Si la tira ya estaba pegada arriba —estabas lejos, en la tabla—, se vuelve al podio del nuevo
+  // 🔴 Y SE AVISA `lg:ruta` (18/11/2026, como `irSinHistoria()` de primera.js): sin aviso, la ruta de App.jsx se quedaba en
+  // el ranking de entrada, y una flecha o el «Ranking» del menú que volvía a ése cambiaba la dirección y no la página
+  // (la prop `sub` salía igual y el efecto de `ruta` no corría)
   const elegir = (id) => {
     setSub(id);
     try { history.replaceState(history.state, '', window.urlLG ? window.urlLG('#/ranking/' + id) : '#/ranking/' + id); } catch (e) { /* queda la dirección */ }
+    try { window.dispatchEvent(new Event('lg:ruta')); } catch (e) { /* nada */ }
     const n = nav.current;
     if (n && n.getBoundingClientRect().top <= 1 && window.scrollY > 0) window.scrollTo({ top: 0, behavior: 'auto' });
   };
@@ -1377,8 +1430,11 @@ export function Ranking({ liga, sub: subRuta, ver: abre = '', dc, raiz }) {
   const ar = fase.arranca ? utc(fase.arranca + 'T12:00:00Z') : null;
   const te = fase.termina ? utc(fase.termina + 'T12:00:00Z') : null;
   let estado = '';
+  // ⏳ `termina` es el último día ENTERO en hora del este (como `cuentaT1()` de lobby.jsx): se compara por día ET
+  // (18/11/2026). Contra el mediodía UTC, el 31/12 desde las 7 AM ET la cabecera perdía «T1 en juego · termina el…»
+  const hoyET = new Intl.DateTimeFormat('en-CA', { timeZone: 'America/New_York' }).format(new Date(liga.ahora));
   if (ar && liga.ahora < ar && !isNaN(ar)) estado = 'Fase de prueba · la ' + liga.temp + ' arranca el ' + ar.getUTCDate() + ' de ' + MESES[ar.getUTCMonth()];
-  else if (te && liga.ahora <= te && !isNaN(te)) estado = liga.temp + ' en juego · termina el ' + te.getUTCDate() + ' de ' + MESES[te.getUTCMonth()];
+  else if (fase.termina && te && !isNaN(te) && hoyET <= fase.termina) estado = liga.temp + ' en juego · termina el ' + te.getUTCDate() + ' de ' + MESES[te.getUTCMonth()];
   const hace = liga.d.sello ? liga.cuando(liga.d.sello) : '';
   const que = cfg.que || ['rapero', 'raperos'];
   const fcs = base.filter((f) => f.fc).length;

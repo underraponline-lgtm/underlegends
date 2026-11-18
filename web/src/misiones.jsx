@@ -114,7 +114,8 @@ function Mision({ liga, x, v, cumplieron }) {
       <div className="mi-cuerpo">
         {x.sv ? <img className="mi-sv" alt="" src={liga.logo(x.sv)} loading="lazy" /> : null}
         {x.n === 'caza' && x.x ? <Quien liga={liga} raw={x.x} cls="cara mi-cara" /> : null}
-        <b className="mi-t">{presa ? <>Ganale un duelo a <a href={'#/r/' + encodeURIComponent(presa.k)}>{limpio(presa.n)}</a></> : x.t}</b>
+        {/* 18/11/2026: «Gánale», con tú; «Ganale» era voseo (como el CATALOGO de bot/misiones.py) */}
+        <b className="mi-t">{presa ? <>Gánale un duelo a <a href={'#/r/' + encodeURIComponent(presa.k)}>{limpio(presa.n)}</a></> : x.t}</b>
       </div>
       {v != null ? (
         <>
@@ -150,7 +151,8 @@ function Caceria({ liga, M, i, esYo, mio }) {
             <Quien liga={liga} raw={x.x} cls="cara mi-presa-cara" />
             {f ? <a className="dv-n" href={'#/r/' + encodeURIComponent(f.k)}>{limpio(f.n)}</a> : <b className="dv-n">{limpio(x.x)}</b>}
           </div>
-          <p>Una de las más activas de la Liga. Ganale un duelo en cualquier evento de la semana y sumas <b>+{num(x.p)}</b> a tu Temporada.</p>
+          {/* 18/11/2026: «Gánale» con tú, que la misma frase sigue con «sumas» (decía «Ganale», voseo) */}
+          <p>Una de las más activas de la Liga. Gánale un duelo en cualquier evento de la semana y sumas <b>+{num(x.p)}</b> a tu Temporada.</p>
           {mio != null ? <p className={'mi-presa-yo' + (yoSi ? ' si' : '')}>{yoSi ? '✓ La cazaste' : 'Todavía no la cazaste'}</p> : null}
           <span className="mi-eti">{cazaron.length ? 'YA LA ' + de(cazaron.length, 'CAZÓ 1', 'CAZARON ' + cazaron.length) : 'NADIE LA CAZÓ TODAVÍA'}</span>
           {cazaron.length ? (
