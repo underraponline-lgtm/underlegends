@@ -236,8 +236,9 @@ def mensaje(evento, sv, g, Q, miembros, oficiales=None, puntos=None):
         adentro += [{'type': 14, 'divider': True, 'spacing': 1}, {'type': 10, 'content': '### 🎁 Los premios\n' + '\n'.join(premios)}]
     if chica:
         adentro.append({'type': 10, 'content': '\n'.join(chica)})
-    todos = botones + [{'type': 2, 'style': 5, 'label': 'Ver mis drops', 'emoji': {'name': '🐉'}, 'url': WEB_DROPS}]
-    adentro += [{'type': 1, 'components': todos[i:i + 5]} for i in range(0, len(todos), 5)]
+    # 🧹 sin «Ver mis drops» (Dlx, a la muestra 3: «queda raro ver mis drops solo, hay un espacio ahí vacío»): con cuatro
+    # ganadores Discord lo bajaba a otra línea, solo. Los botones de cada uno abren lo suyo y el del Nido lleva a la página
+    adentro += [{'type': 1, 'components': botones[i:i + 5]} for i in range(0, len(botones), 5)]
     comps = [{'type': 17, 'accent_color': color, 'components': adentro}]
     # 🔔 las menciones, AFUERA del recuadro y arriba: la única línea que suena
     if ids:
@@ -446,11 +447,11 @@ def _self_check():
     ok('Miembro de DRA' not in json.dumps(comps, ensure_ascii=False) and 'Cada botón' not in caja,
        'sin la línea de «si todavía no eres Miembro de DRA» ni la de «cada botón lo abre…»')
     filas = [c for c in comps[1]['components'] if c['type'] == 1]
-    ok(comps[1]['components'][-1]['type'] == 1 and filas[-1]['components'][-1].get('url') == WEB_DROPS and len(filas) == 1,
-       '«Ver mis drops» va en la misma fila que los botones de los ganadores, al final: nada suelto abajo')
+    ok(comps[1]['components'][-1]['type'] == 1 and len(filas) == 1 and 'Ver mis drops' not in caja,
+       'termina con la fila de los botones de los ganadores, sin «Ver mis drops» (quedaba solo en otra línea)')
     cids = [b.get('custom_id') for b in bots]
     ok(cids[:3] == ['dd:nido:x:111111', 'dd:drop:x:222222', 'dd:star:x:222222'] and 'dd:drop:x:' not in cids
-       and any(b.get('url') == WEB_DROPS for b in bots) and [b.get('label') for b in bots][:3] == ['Nido · Ana', 'Drop · Beto', 'Star · Beto'],
+       and [b.get('label') for b in bots][:3] == ['Nido · Ana', 'Drop · Beto', 'Star · Beto'],
        'un botón por ganador y premio, con su nombre y su dueño (Caro no tiene cuenta: sin botón); ninguno sin dueño')
     c2, _i2, t2 = mensaje('(sin titulo)', 'LKR', {'camp': ('Ana', 'drop'), 'pod': [], 'bat': []}, Q, {'111111'})
     t2j = json.dumps(c2, ensure_ascii=False)
